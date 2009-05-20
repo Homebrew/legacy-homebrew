@@ -1,0 +1,137 @@
+Homebrew
+========
+A simple package management system for OS X Leopard. Packages are brewed in
+individual, versioned kegs. For example:
+
+/Brewery/Cellar/wget/1.14/bin/wget
+
+Then symlinks are created to give a normal POSIX tree:
+
+bin/wget -> Cellar/wget/1.14/bin/wget
+
+This way the filesystem is the package database. Everything else is now easy.
+We are made of win.
+
+Max Howell -- http://twitter.com/mxcl
+
+
+Installation
+============
+Homebrew uses ruby and some other stuff that is already installed on Leopard.
+Just copy this directory somewhere. I suggest /Brewery but leave the directory
+user writable (for now). I wouldn't worry about it not being root. We don't
+install anything base enough for it to be a concern (unlike MacPorts or Fink).
+
+You can stick this directory in your home directory if you like. In that case
+a typical (POSIX) choice would be: /User/mxcl/local
+
+It's actually pretty useful if you are a developer to put the tree at
+/usr/local because almost all build scripts look there as part of their
+configure step, so your work (outside of Homebrew) will be somewhat easier.
+
+You then need to stick /Brewery/bin or ~/local/bin in your path.
+
+To 'install' the brew tool, do:
+
+    $ ruby /Brewery/Cellar/homebrew/brewkit.rb
+
+
+Usage
+=====
+Install wget:
+    ruby /Brewery/Formula/wget.rb
+
+Update recipes list:
+    cd /Brewery && git pull origin master
+
+Delete a package:
+    rm -rf /Brewery/Cellar/wget && brew prune
+
+List all files in a package:
+    find /Brewery/Cellar/wget
+
+Search for a package to install:
+    ls /Brewery/Formula/*wget*
+
+Search for a package already installed:
+    ls /Brewery/Cellar/*wget*
+
+List all packages available to install:
+    ls /Brewery/Formula
+
+Compute installed size of package:
+    du -h /Brewery/Cellar/wget
+
+You get the idea.
+
+Maybe we should overload this stuff with the brew command, but frankly I feel
+that this way *you* will understand the capabilities of the system better. And
+you basically know everything that is going on.
+
+With apt, you type apt-get install wget. Now what is happening? With Homebrew
+you are running a ruby script. You know what is happening. You can easily and
+quickly read the source and modify it and then push the patch to github if
+anything you need is missing or something is not working. This is real open
+source.
+
+NOTE you have to install git before you can update the package list. *shrug*
+
+
+Why Not MacPorts?
+=================
+1. MacPorts installs its own libz, its own openssl, etc. It is an autarky.
+   This makes no sense to me. OS X comes with all that shit.
+2. MacPorts support Tiger, and PPC. We don't, so things are better optimised.
+
+
+Homebrew Will Never Build:
+==========================
+1. KDE, or GNOME, or anything that vast
+2. Anything that should be distributed in a .app bundle
+3. Anything that needs to install outside of the Homebrew tree
+4. Stuff OS X already does, eg. rubygems (duplication sucks)
+
+
+Why Compile From Source?
+========================
+Since we only target Intel Leopard boxes, why not just distribute binaries?
+Well, I can't afford too :P And compiling from source gives more flexibility.
+If you want to adapt the system and make it work with binaries. Fork away. 
+Bandwidth is on you though :P
+
+
+How do I Notify Someone that a Package is Out of Date?
+======================================================
+Chances are that if the package hasn't been updated for a few days, then the
+previous maintainer has vanished. You have to do it. Don't worry, unlike every
+other packaging system ever, it's easy with Homebrew:
+
+1. Edit the relevant ruby file in +/recipes
+2. Fork Homebrew on github
+3. Send mxcl a pull request
+
+Congratulations, you have contributed to an open source project!
+
+
+Contributing
+============
+New Formulas
+------------
+Relative to every other stupid packaging system ever, this is trivial. Just
+fork it at: http://github.com/mxcl/homebrew and create a new recipe. Then ask
+me to pull. Using git made all this so much easier.
+
+Code
+----
+Yes please! Fork and improve :)
+
+
+FAQ
+===
+Are you excessively interested in beer?
+---------------------------------------
+Yes.
+
+Was Homebrew devised under the influence of alchohol?
+-----------------------------------------------------
+Yes.
