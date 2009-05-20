@@ -1,0 +1,47 @@
+#!/usr/bin/ruby
+# Copyright 2009 Max Howell <max@methylblue.com>
+# Licensed as per the GPL version 3
+require 'Find'
+require 'Pathname'
+$root = Pathname.new(__FILE__).realpath.dirname.parent.parent
+
+case ARGV[0]
+  when 'brew', 'install' then
+    file="#{$root}/Formula/#{ARGV[1]}"
+    file+='.rb' unless File.exist? file
+    system "ruby #{file}"
+
+  when 'ln' then
+    abort "#{ARGV[1]} is not a directory" unless File.directory? ARGV[1]
+
+    #TODO check is under +/ with name AND version
+    #TODO you should mkdirs as you find them and symlink files otherwise
+    #TODO consider using hardlinks
+
+    Find.find ARGV[1] do |from|
+      next if from == ARGV[1] #rubysucks
+
+      from=Pathname.new from
+      relto=from.relative_path_from(Pathname.new(ARGV[1]))
+      to=$root+relto;
+
+      if from.directory?
+        to.mkpath unless to.exist? and relto.to_s.include? '/'
+      elsif from.file?
+        to.make_symlink from
+      end
+    end
+
+  when 'prune', 'pasteurize' then
+    $root.find do |path| 
+      if path.directory?
+        name=path.basename
+        Find.prune if name == 'brews' or name == 'yeasts'
+      elsif path.symlink?
+        path.unlink unless path.readlink.exist?
+      end
+    end
+
+  else
+    puts "usage: #{$0} [prune] [ln path]"
+end
