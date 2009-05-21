@@ -5,6 +5,17 @@ require 'find'
 require 'pathname'
 $root = Pathname.new(__FILE__).realpath.dirname.parent.parent
 
+def prune
+  $root.find do |path|
+    if path.directory?
+      name=path.basename
+      Find.prune if name == 'Cellar' or name == 'Formula'
+    elsif path.symlink?
+      path.unlink unless path.readlink.exist?
+    end
+  end
+end
+
 case ARGV[0]
   when 'brew', 'install' then
     abort "You must specify a Formula" unless ARGV[1]
@@ -12,6 +23,13 @@ case ARGV[0]
     file="#{$root}/Formula/#{ARGV.shift}"
     file+='.rb' unless File.exist? file
     system "ruby #{file} #{ARGV.join ' '}"
+
+  when 'rm' then
+    path=$root+'Cellar'+ARGV[1]
+    abort "#{ARGV[1]} is not installed" unless path.directory?
+    path.rmtree
+    prune
+    puts "#{path} removed"
 
   when 'ln' then
     abort "#{ARGV[1]} is not a directory" unless File.directory? ARGV[1]
@@ -35,14 +53,7 @@ case ARGV[0]
     end
 
   when 'prune', 'pasteurize' then
-    $root.find do |path| 
-      if path.directory?
-        name=path.basename
-        Find.prune if name == 'Cellar' or name == 'Formula'
-      elsif path.symlink?
-        path.unlink unless path.readlink.exist?
-      end
-    end
+    prune
 
   else
     puts "usage: #{$0} [prune] [ln path] [install pkg]"
