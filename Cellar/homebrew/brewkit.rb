@@ -1,13 +1,19 @@
 # Copyright 2009 Max Howell <max@methylblue.com>
 # Licensed as per the GPL version 3
 require 'find'
-require 'pathname'
 require 'fileutils'
+require 'pathname'
+
 $agent = "Homebrew 0.1 (Ruby; Mac OS X 10.5 Leopard)"
 $cellar = Pathname.new(__FILE__).dirname.parent.realpath
 
 ENV['MACOSX_DEPLOYMENT_TARGET']='10.5'
 ENV['CFLAGS']=ENV['CXXFLAGS']='-O3 -w'
+
+def h1 title
+  puts "\033[0;34m==>\033[0;0;1m #{title} \033[0;0m"
+end
+
 
 class Formula
   # if you reimplement, assign @name, @version, @url and @md5
@@ -38,10 +44,12 @@ class Formula
     prefix=$cellar+@name+@version
     raise "#{prefix} already exists!" if prefix.exist?
 
+    h1 "Preparing build"
+
     appsupport = File.expand_path "~/Library/Application Support/Homebrew"
     FileUtils.mkpath appsupport unless File.exist? appsupport
     Dir.chdir appsupport do
-      tgz=Pathname.new self.fetch
+      tgz=Pathname.new fetch()
       raise "MD5 mismatch" unless `md5 -q "#{tgz}"`.strip == @md5.downcase
 
       # we make an additional subdirectory so know exactly what we are
@@ -65,7 +73,7 @@ class Formula
       # stay in appsupport in case any odd files gets created etc.
       `#{$cellar}/homebrew/brew ln #{prefix}` if prefix.exist?
       
-      puts "#{prefix}: "+`find #{prefix} | wc -l`.strip+' files, '+`du -hd0 #{prefix} | cut -d"\t" -f1`.strip
+      puts "#{prefix}: "+`find #{prefix} -type f | wc -l`.strip+' files, '+`du -hd0 #{prefix} | cut -d"\t" -f1`.strip
     end
   end
 
@@ -108,6 +116,24 @@ end
 def inreplace(path, before, after)
   # we're not using Ruby because the perl script is more concise
   `perl -pi -e "s|#{before}|#{after}|g" "#{path}"`
+end
+
+def system cmd
+  h1 cmd
+
+  out=''
+  IO.popen("#{cmd} 2>1") do |f|
+    until f.eof?
+      s=f.gets
+      out+=s
+      puts s if ARGV.include? '--verbose'
+    end
+  end
+
+  unless $? == 0
+    puts out unless ARGV.include? '--verbose' #already did that above
+    raise "Failure during: #{cmd}"
+  end
 end
 
 
