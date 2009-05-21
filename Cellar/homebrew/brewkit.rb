@@ -20,7 +20,7 @@ end
 class Formula
   require 'find'
   require 'fileutils'
-  
+
   # if you reimplement, assign @name, @version, @url and @md5
   def initialize(url, md5)
     @name = File.basename $0, '.rb' #original script that the interpreter started
@@ -44,7 +44,7 @@ class Formula
   def brew
     raise "@name.nil?" if @name.nil?
     raise "@version.nil?" if @version.nil?
-    
+
     # disabled until the regexp makes sense :P
     #raise "@name does not validate to our regexp" unless /^\w+$/ =~ @name
 
@@ -86,7 +86,7 @@ class Formula
 
       # stay in appsupport in case any odd files gets created etc.
       `#{$cellar}/homebrew/brew ln #{prefix}` if prefix.exist?
-      
+
       puts "#{prefix}: "+`find #{prefix} -type f | wc -l`.strip+' files, '+`du -hd0 #{prefix} | cut -d"\t" -f1`.strip+", built in #{Time.now - beginning} seconds"
     end
   end
@@ -102,7 +102,7 @@ protected
   def fetch
     tgz=File.expand_path File.basename(@url)
     unless File.exists? tgz
-      `curl -LOA "#{$agent}" "#{@url}"` 
+      `curl -LOA "#{$agent}" "#{@url}"`
       raise "Download failed" unless $? == 0
     end
     return tgz

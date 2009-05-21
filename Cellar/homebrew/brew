@@ -14,10 +14,10 @@ case ARGV[0]
   when 'ln' then
     abort "#{ARGV[1]} is not a directory" unless File.directory? ARGV[1]
 
-    #TODO check is under +/ with name AND version
+    #TODO if user specifies just name and not version dir, do latest version
     #TODO you should mkdirs as you find them and symlink files otherwise
     #TODO consider using hardlinks
-    
+
     target=Pathname.new(ARGV[1]).realpath
     target.find do |from|
       next if from == ARGV[1] #rubysucks
@@ -28,7 +28,7 @@ case ARGV[0]
         to.mkpath unless to.exist?
       elsif from.file?
         tod=to.dirname
-        Dir.chdir(tod) { `ln -s #{from.relative_path_from tod}` }
+        Dir.chdir(tod) { `ln -s "#{from.relative_path_from tod}"` }
       end
     end
 
@@ -43,5 +43,5 @@ case ARGV[0]
     end
 
   else
-    puts "usage: #{$0} [prune] [ln path]"
+    puts "usage: #{$0} [prune] [ln path] [install pkg]"
 end
