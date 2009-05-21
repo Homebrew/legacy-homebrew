@@ -12,7 +12,7 @@ ENV['CPPFLAGS']="-I#{$cellar.parent}/include"
 ENV['LDFLAGS']="-L#{$cellar.parent}/lib"
 
 
-def h1 title
+def ohai title
   puts "\033[0;34m==>\033[0;0;1m #{title} \033[0;0m"
 end
 
@@ -53,7 +53,7 @@ class Formula
     prefix=$cellar+@name+@version
     raise "#{prefix} already exists!" if prefix.exist?
 
-    h1 "Preparing build"
+    ohai "Preparing build"
 
     appsupport = File.expand_path "~/Library/Application Support/Homebrew"
     FileUtils.mkpath appsupport unless File.exist? appsupport
@@ -72,9 +72,9 @@ class Formula
           Dir.chdir uncompress(tgz) do
             caveats = yield prefix
             if caveats
-              h1 "Caveats"
+              ohai "Caveats"
               puts caveats
-              h1 "Summary"
+              ohai "Summary"
             end
             #TODO copy changelog or CHANGES file to pkg root,
             #TODO maybe README, etc. to versioned root
@@ -136,7 +136,7 @@ def inreplace(path, before, after)
 end
 
 def system cmd
-  h1 cmd
+  ohai cmd
 
   out=''
   IO.popen("#{cmd} 2>1") do |f|

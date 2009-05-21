@@ -38,7 +38,7 @@ url='http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.1.tar.gz'
 md5='eeb612aba2fff14cbaf1f3bec7e1eb60'
 
 Formula.new(url, md5).brew do |prefix|
-  h1 "make"  
+  ohai "make"  
   #TODO we should deprefixify since it's python and thus possible
   inreplace 'grc', '/etc', prefix+'/etc'
   inreplace 'grc.1', '/etc', prefix+'/etc'
