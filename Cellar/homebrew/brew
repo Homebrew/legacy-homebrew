@@ -22,13 +22,13 @@ case ARGV[0]
       next if from == ARGV[1] #rubysucks
 
       from=Pathname.new from
-      relto=from.relative_path_from(Pathname.new(ARGV[1]))
-      to=$root+relto;
+      to=$root+from.relative_path_from(Pathname.new(ARGV[1]))
 
       if from.directory?
-        to.mkpath unless to.exist? and relto.to_s.include? '/'
+        to.mkpath unless to.exist?
       elsif from.file?
-        to.make_symlink from
+        tod=to.dirname
+        Dir.chdir(tod) { `ln -s #{from.relative_path_from tod}` }
       end
     end
 
