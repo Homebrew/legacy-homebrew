@@ -40,8 +40,8 @@ md5='eeb612aba2fff14cbaf1f3bec7e1eb60'
 Formula.new(url, md5).brew do |prefix|
   ohai "make"  
   #TODO we should deprefixify since it's python and thus possible
-  inreplace 'grc', '/etc', prefix+'/etc'
-  inreplace 'grc.1', '/etc', prefix+'/etc'
+  inreplace 'grc', '/etc', prefix+'etc'
+  inreplace 'grc.1', '/etc', prefix+'etc'
   inreplace 'grcat', '/usr/local', prefix
   inreplace 'grcat.1', '/usr/local', prefix
 
