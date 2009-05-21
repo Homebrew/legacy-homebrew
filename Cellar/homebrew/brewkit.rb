@@ -1,7 +1,5 @@
 # Copyright 2009 Max Howell <max@methylblue.com>
 # Licensed as per the GPL version 3
-require 'find'
-require 'fileutils'
 require 'pathname'
 
 $agent = "Homebrew 0.1 (Ruby; Mac OS X 10.5 Leopard)"
@@ -16,6 +14,9 @@ end
 
 
 class Formula
+  require 'find'
+  require 'fileutils'
+  
   # if you reimplement, assign @name, @version, @url and @md5
   def initialize(url, md5)
     @name = File.basename $0, '.rb' #original script that the interpreter started
@@ -40,6 +41,8 @@ class Formula
     raise "@name.nil?" if @name.nil?
     raise "@version.nil?" if @version.nil?
     raise "@name does not validate to our regexp" unless /^\w+$/ =~ @name
+
+    beginning = Time.now
 
     prefix=$cellar+@name+@version
     raise "#{prefix} already exists!" if prefix.exist?
@@ -78,7 +81,7 @@ class Formula
       # stay in appsupport in case any odd files gets created etc.
       `#{$cellar}/homebrew/brew ln #{prefix}` if prefix.exist?
       
-      puts "#{prefix}: "+`find #{prefix} -type f | wc -l`.strip+' files, '+`du -hd0 #{prefix} | cut -d"\t" -f1`.strip
+      puts "#{prefix}: "+`find #{prefix} -type f | wc -l`.strip+' files, '+`du -hd0 #{prefix} | cut -d"\t" -f1`.strip+", built in #{Time.now - beginning} seconds"
     end
   end
 
@@ -141,6 +144,13 @@ def system cmd
   end
 end
 
+# force a prettier exception handler unless --verbose or HOMEBREW_DEBUG
+Kernel.at_exit {
+  unless ARGV.include? '--verbose' or ENV['HOMEBREW_DEBUG']
+    puts "\033[1;31mError\033[0;0m: #{$!}" if $!
+    exit! 1
+  end
+}
 
 ########################################################################script
 if $0 == __FILE__
