@@ -5,9 +5,19 @@ require 'pathname'
 $agent = "Homebrew 0.1 (Ruby; Mac OS X 10.5 Leopard)"
 $cellar = Pathname.new(__FILE__).dirname.parent.realpath
 
-#TODO don't add the prefixes if we're in /usr or /usr/local
+# optimise all the way to eleven, references:
+# http://en.gentoo-wiki.com/wiki/Safe_Cflags/Intel
+# http://forums.mozillazine.org/viewtopic.php?f=12&t=577299
+# http://gcc.gnu.org/onlinedocs/gcc-4.0.1/gcc/i386-and-x86_002d64-Options.html
 ENV['MACOSX_DEPLOYMENT_TARGET']='10.5'
-ENV['CFLAGS']=ENV['CXXFLAGS']='-O3 -w'
+ENV['CFLAGS']=ENV['CXXFLAGS']='-O3 -w -pipe -fomit-frame-pointer -march=prescott'
+
+# lets use gcc 4.2, it is newer and "better", at least I believe so, mail me
+# if I'm wrong
+ENV['CC']='gcc-4.2'
+ENV['CXX']='g++-4.2'
+
+#TODO don't add the prefixes if we're in /usr or /usr/local
 ENV['CPPFLAGS']="-I#{$cellar.parent}/include"
 ENV['LDFLAGS']="-L#{$cellar.parent}/lib"
 
