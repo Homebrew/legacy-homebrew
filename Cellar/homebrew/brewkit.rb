@@ -81,6 +81,15 @@ class Formula
             #TODO maybe README, etc. to versioned root
           end
         end
+      rescue
+        if ARGV.include? '--debug'
+          # debug mode allows the packager to intercept a failed build and
+          # investigate the problems
+          puts "Rescued build at: #{tmp}"
+          exit! 1
+        else
+          raise
+        end
       ensure
         FileUtils.rm_rf tmp
       end
