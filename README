@@ -7,7 +7,7 @@ individual, versioned kegs. For example:
 
 Then symlinks are created to give a normal POSIX tree:
 
-bin/wget -> Cellar/wget/1.14/bin/wget
+bin/wget -> ../Cellar/wget/1.14/bin/wget
 
 This way the filesystem is the package database. Everything else is now easy.
 We are made of win.
@@ -17,9 +17,9 @@ Max Howell -- http://twitter.com/mxcl
 
 Installation
 ============
-Homebrew uses ruby and some other stuff that is already installed on Leopard.
+Homebrew uses Ruby and some other stuff that is already installed on Leopard.
 Just copy this directory somewhere. I suggest /Brewery but leave the directory
-user writable (for now). I wouldn't worry about it not being root. We don't
+user writable (for now). I wouldn't worry about it not being chroot. We don't
 install anything base enough for it to be a concern (unlike MacPorts or Fink).
 
 You can stick this directory in your home directory if you like. In that case
@@ -31,7 +31,7 @@ configure step, so your work (outside of Homebrew) will be somewhat easier.
 
 You then need to stick /Brewery/bin or ~/local/bin in your path.
 
-To 'install' the brew tool, do:
+To 'install' the brew tool to Homebrew's bin dir, do:
 
     $ ruby /Brewery/Cellar/homebrew/brewkit.rb
 
