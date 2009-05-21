@@ -3,11 +3,15 @@ Homebrew
 A simple package management system for OS X Leopard. Packages are brewed in
 individual, versioned kegs. For example:
 
-/Brewery/Cellar/wget/1.14/bin/wget
+/Brewery/Cellar/wget/1.11.4/bin/wget
+/Brewery/Cellar/wget/1.11.4/share/man/man1/wget.1
+…
 
-Then symlinks are created to create a normal POSIX tree:
+And symlinks are created to allow a normal POSIX tree:
 
-/Brewery/bin/wget -> /Brewery/Cellar/wget/1.14/bin/wget
+/Brewery/bin/wget -> /Brewery/Cellar/wget/1.11.4/bin/wget
+/Brewery/etc/wgetrc -> /Brewery/Cellar/wget/1.11.4/etc/wgetrc
+…
 
 This way the filesystem is the package database. Everything else is now easy.
 We are made of win.
@@ -42,7 +46,7 @@ Install wget:
     ruby /Brewery/Formula/wget.rb
 
 Update recipes list:
-    cd /Brewery && git pull origin master
+    cd /Brewery && git pull origin masterbrew
 
 Delete a package:
     rm -rf /Brewery/Cellar/wget && brew prune
@@ -74,7 +78,12 @@ quickly read the source and modify it and then push the patch to github if
 anything you need is missing or something is not working. This is real open
 source.
 
-NOTE you have to install git before you can update the package list. *shrug*
+NOTE you have to install git before you can update the package list, but 
+that's easy:
+
+    brew install git
+or
+    ruby /Brewery/Formula/git.rb
 
 
 Why Not MacPorts?
@@ -82,6 +91,7 @@ Why Not MacPorts?
 1. MacPorts installs its own libz, its own openssl, etc. It's an autarky.
    This makes no sense to me. OS X comes with all that shit.
 2. MacPorts support Tiger, and PPC. We don't, so things are better optimised.
+3. cmake has like 100 dependencies in MacPorts, with Homebrew it has one
 
 
 Homebrew Will Never Build:
@@ -90,6 +100,9 @@ Homebrew Will Never Build:
 2. Anything that should be distributed in a .app bundle
 3. Anything that needs to install outside of the Homebrew tree
 4. Stuff OS X already does, eg. rubygems (duplication sucks)
+
+I say never, but if you really want these things you can fork the tree and
+do it yourself. It's just my tree will never build those things.
 
 
 Why Compile From Source?
@@ -107,7 +120,7 @@ previous maintainer has vanished. You have to do it. Don't worry, unlike every
 other packaging system ever, it's easy with Homebrew:
 
 1. Edit the relevant ruby file in /Brewery/Formula
-2. Fork Homebrew on github (or generate a patch)
+2. Fork Homebrew on github (or git diff > patch)
 3. Send mxcl a pull request
 
 Congratulations, you have contributed to an open source project!
