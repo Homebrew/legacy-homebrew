@@ -38,6 +38,7 @@ url='http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.1.tar.gz'
 md5='eeb612aba2fff14cbaf1f3bec7e1eb60'
 
 Formula.new(url, md5).brew do |prefix|
+  h1 "make"  
   #TODO we should deprefixify since it's python and thus possible
   inreplace 'grc', '/etc', prefix+'/etc'
   inreplace 'grc.1', '/etc', prefix+'/etc'
@@ -57,14 +58,11 @@ Formula.new(url, md5).brew do |prefix|
   `cp -fv grc.conf #{prefix}/etc`
   `cp -fv grc.1 grcat.1 #{prefix}/share/man/man1`
 
-  puts <<-sput
-We suggest you add this to your .profile in order to make grc work! :P
-
-#{profile_string.strip}
-
-We can do this for you:
+  <<-nruter
+grc won't work as is. One option is to add some aliases to your ~/.profile 
+file. Homebrew can do that for you, just execute this command:
 
     ruby #{$0} --profile >> ~/.profile
 
-sput
+nruter
 end

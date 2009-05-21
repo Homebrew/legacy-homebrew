@@ -6,7 +6,7 @@ url='http://kent.dl.sourceforge.net/sourceforge/mad/libmad-0.15.1b.tar.gz'
 md5='1be543bc30c56fb6bea1d7bf6a64e66c'
 
 Formula.new(url, md5).brew do |prefix|
-  `./configure --disable-debugging --enable-fpm=intel --prefix="#{prefix}"`
-  `make`
-  `make install`
+  system "./configure --disable-debugging --enable-fpm=intel --prefix='#{prefix}'"
+  system "make"
+  system "make install"
 end

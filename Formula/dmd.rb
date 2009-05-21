@@ -6,6 +6,7 @@ url='http://ftp.digitalmars.com/dmd.1.043.zip'
 md5='6c83b7296cb84090a9ebc11ab0fb94a2'
 
 Formula.new(url, md5).brew do |prefix|
+  h1 "make"
   prefix.mkpath
   FileUtils.cp_r 'osx/bin', prefix
   FileUtils.cp_r 'osx/lib', prefix
