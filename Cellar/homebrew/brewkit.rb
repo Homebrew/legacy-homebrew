@@ -151,7 +151,17 @@ end
 
 
 def inreplace(path, before, after)
+  before=before.to_s
+  after=after.to_s
+
+  before.gsub! '"', '\"'
+  after.gsub! '"', '\"'
+  before.gsub! '|', '\|"'
+  after.gsub! '|', '\|"'
   # we're not using Ruby because the perl script is more concise
+  #TODO the above escapes are worse, use a proper ruby script :P
+  #TODO optimise it by taking before and after as arrays
+  #Bah, just make the script writers do it themselves with a standard collect block
   `perl -pi -e "s|#{before}|#{after}|g" "#{path}"`
 end
 
