@@ -17,12 +17,12 @@ case ARGV[0]
     #TODO check is under +/ with name AND version
     #TODO you should mkdirs as you find them and symlink files otherwise
     #TODO consider using hardlinks
-
-    Find.find ARGV[1] do |from|
+    
+    target=Pathname.new(ARGV[1]).realpath
+    target.find do |from|
       next if from == ARGV[1] #rubysucks
 
-      from=Pathname.new from
-      to=$root+from.relative_path_from(Pathname.new(ARGV[1]))
+      to=$root+from.relative_path_from(target)
 
       if from.directory?
         to.mkpath unless to.exist?
