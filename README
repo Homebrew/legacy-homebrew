@@ -5,9 +5,9 @@ individual, versioned kegs. For example:
 
 /Brewery/Cellar/wget/1.14/bin/wget
 
-Then symlinks are created to give a normal POSIX tree:
+Then symlinks are created to create a normal POSIX tree:
 
-bin/wget -> ../Cellar/wget/1.14/bin/wget
+/Brewery/bin/wget -> /Brewery/Cellar/wget/1.14/bin/wget
 
 This way the filesystem is the package database. Everything else is now easy.
 We are made of win.
@@ -79,7 +79,7 @@ NOTE you have to install git before you can update the package list. *shrug*
 
 Why Not MacPorts?
 =================
-1. MacPorts installs its own libz, its own openssl, etc. It is an autarky.
+1. MacPorts installs its own libz, its own openssl, etc. It's an autarky.
    This makes no sense to me. OS X comes with all that shit.
 2. MacPorts support Tiger, and PPC. We don't, so things are better optimised.
 
@@ -95,19 +95,19 @@ Homebrew Will Never Build:
 Why Compile From Source?
 ========================
 Since we only target Intel Leopard boxes, why not just distribute binaries?
-Well, I can't afford too :P And compiling from source gives more flexibility.
-If you want to adapt the system and make it work with binaries. Fork away. 
-Bandwidth is on you though :P
+Well, I can't afford to :P And compiling from source gives more flexibility.
+If you want to adapt the system and make it work with binaries; fork away. 
+The bandwidth is on you though :P
 
 
-How do I Notify Someone that a Package is Out of Date?
+How do I Notify Someone that a Package is out of Date?
 ======================================================
 Chances are that if the package hasn't been updated for a few days, then the
 previous maintainer has vanished. You have to do it. Don't worry, unlike every
 other packaging system ever, it's easy with Homebrew:
 
-1. Edit the relevant ruby file in +/recipes
-2. Fork Homebrew on github
+1. Edit the relevant ruby file in /Brewery/Formula
+2. Fork Homebrew on github (or generate a patch)
 3. Send mxcl a pull request
 
 Congratulations, you have contributed to an open source project!
