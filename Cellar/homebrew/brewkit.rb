@@ -101,7 +101,10 @@ class Formula
 protected
   def fetch
     tgz=File.expand_path File.basename(@url)
-    `curl -LOA "#{$agent}" "#{@url}"` unless File.exists? tgz
+    unless File.exists? tgz
+      `curl -LOA "#{$agent}" "#{@url}"` 
+      raise "Download failed" unless $? == 0
+    end
     return tgz
   end
 
