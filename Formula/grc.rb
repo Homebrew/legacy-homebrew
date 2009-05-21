@@ -4,6 +4,7 @@ require 'fileutils'
 
 def profile_string
   <<-sput
+################################################################## >> Homebrew
 GRC=`which grc`
 if [ "$TERM" != dumb ] && [ -n GRC ]
 then
@@ -20,16 +21,14 @@ then
     alias ping='colourify ping'
     alias traceroute='colourify /usr/sbin/traceroute'
 fi
+################################################################## << Homebrew
   sput
 end
 
 ######################################################################### ARGV
 case ARGV[0]
   when '--profile' then
-    puts
-    puts '################################################################## >> yumports'
     puts profile_string
-    puts '################################################################## << yumports'
     exit 0
 end
 
@@ -61,11 +60,11 @@ Formula.new(url, md5).brew do |prefix|
   puts <<-sput
 We suggest you add this to your .profile in order to make grc work! :P
 
-#{profile_string}
+#{profile_string.strip}
 
 We can do this for you:
-  
-  #{$0} --profile >> ~/.profile
+
+    ruby #{$0} --profile >> ~/.profile
 
 sput
 end

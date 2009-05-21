@@ -10,7 +10,7 @@ Formula.new(url, md5).brew do |prefix|
   FileUtils.cp_r 'osx/bin', prefix
   FileUtils.cp_r 'osx/lib', prefix
   FileUtils.cp_r 'man', prefix
-  FileUtils.cp_r 'man', prefix
+  FileUtils.cp_r 'src', prefix
   
   share=prefix+'share'+'doc'+'d'
   html=share+'html'
