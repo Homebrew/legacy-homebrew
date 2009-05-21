@@ -61,7 +61,12 @@ class Formula
         tmp=`mktemp -dt #{@name}-#{@version}`.strip
         Dir.chdir tmp do
           Dir.chdir uncompress(tgz) do
-            yield prefix
+            caveats = yield prefix
+            if caveats
+              h1 "Caveats"
+              puts caveats
+              h1 "Summary"
+            end
             #TODO copy changelog or CHANGES file to pkg root,
             #TODO maybe README, etc. to versioned root
           end
