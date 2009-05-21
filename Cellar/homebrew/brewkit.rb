@@ -165,9 +165,12 @@ end
 
 # force a prettier exception handler unless --verbose or HOMEBREW_DEBUG
 Kernel.at_exit {
-  unless ARGV.include? '--verbose' or ENV['HOMEBREW_DEBUG']
-    puts "\033[1;31mError\033[0;0m: #{$!}" if $!
-    exit! 1
+  if $! and not (ARGV.include? '--verbose' or ENV['HOMEBREW_DEBUG'])
+    exit! 130 if $1.class == Interrupt #control-c
+    if $!.kind_of? StandardError
+        puts "\033[1;31mError\033[0;0m: #{$!}"
+        exit! 1
+    end
   end
 }
 
