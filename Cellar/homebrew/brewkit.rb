@@ -6,6 +6,9 @@ require 'fileutils'
 $agent = "Homebrew 0.1 (Ruby; Mac OS X 10.5 Leopard)"
 $cellar = Pathname.new(__FILE__).dirname.parent.realpath
 
+ENV['MACOSX_DEPLOYMENT_TARGET']='10.5'
+ENV['CFLAGS']=ENV['CXXFLAGS']='-O3 -w'
+
 class Formula
   # if you reimplement, assign @name, @version, @url and @md5
   def initialize(url, md5)
