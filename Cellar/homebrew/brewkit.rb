@@ -5,8 +5,12 @@ require 'pathname'
 $agent = "Homebrew 0.1 (Ruby; Mac OS X 10.5 Leopard)"
 $cellar = Pathname.new(__FILE__).dirname.parent.realpath
 
+#TODO don't add the prefixes if we're in /usr or /usr/local
 ENV['MACOSX_DEPLOYMENT_TARGET']='10.5'
 ENV['CFLAGS']=ENV['CXXFLAGS']='-O3 -w'
+ENV['CPPFLAGS']="-I#{$cellar.parent}/include"
+ENV['LDFLAGS']="-L#{$cellar.parent}/lib"
+
 
 def h1 title
   puts "\033[0;34m==>\033[0;0;1m #{title} \033[0;0m"
@@ -40,7 +44,9 @@ class Formula
   def brew
     raise "@name.nil?" if @name.nil?
     raise "@version.nil?" if @version.nil?
-    raise "@name does not validate to our regexp" unless /^\w+$/ =~ @name
+    
+    # disabled until the regexp makes sense :P
+    #raise "@name does not validate to our regexp" unless /^\w+$/ =~ @name
 
     beginning = Time.now
 
