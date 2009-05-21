@@ -59,7 +59,8 @@ class Formula
     FileUtils.mkpath appsupport unless File.exist? appsupport
     Dir.chdir appsupport do
       tgz=Pathname.new fetch()
-      raise "MD5 mismatch" unless `md5 -q "#{tgz}"`.strip == @md5.downcase
+      md5=`md5 -q "#{tgz}"`.strip
+      raise "MD5 mismatch: #{md5}" unless md5 == @md5.downcase
 
       # we make an additional subdirectory so know exactly what we are
       # recursively deleting later
