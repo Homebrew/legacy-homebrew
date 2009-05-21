@@ -1,8 +1,8 @@
 # Copyright 2009 Max Howell <max@methylblue.com>
 # Licensed as per the GPL version 3
-require 'FileUtils'
-require 'Find'
-require 'Pathname'
+require 'find'
+require 'pathname'
+require 'fileutils'
 $agent = "Homebrew 0.1 (Ruby; Mac OS X 10.5 Leopard)"
 $cellar = Pathname.new(__FILE__).dirname.parent.realpath
 

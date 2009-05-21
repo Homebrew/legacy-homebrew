@@ -1,6 +1,6 @@
 $:.unshift "#{File.dirname __FILE__}/../Cellar/homebrew" #rubysucks
 require 'brewkit'
-require 'FileUtils'
+require 'fileutils'
 
 def profile_string
   <<-sput

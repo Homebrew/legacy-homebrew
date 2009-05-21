@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
 # Copyright 2009 Max Howell <max@methylblue.com>
 # Licensed as per the GPL version 3
-require 'Find'
-require 'Pathname'
+require 'find'
+require 'pathname'
 $root = Pathname.new(__FILE__).realpath.dirname.parent.parent
 
 case ARGV[0]
@@ -36,7 +36,7 @@ case ARGV[0]
     $root.find do |path| 
       if path.directory?
         name=path.basename
-        Find.prune if name == 'brews' or name == 'yeasts'
+        Find.prune if name == 'Cellar' or name == 'Formula'
       elsif path.symlink?
         path.unlink unless path.readlink.exist?
       end
