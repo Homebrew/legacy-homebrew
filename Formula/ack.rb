@@ -21,4 +21,5 @@ UncompressedFormula.new.brew do |prefix|
   bin=prefix+'bin'
   FileUtils.mkpath bin
   FileUtils.cp 'ack', bin
+  `chmod u+x #{bin}/ack`
 end
