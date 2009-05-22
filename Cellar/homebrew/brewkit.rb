@@ -68,7 +68,7 @@ class Formula
     appsupport = File.expand_path "~/Library/Application Support/Homebrew"
     FileUtils.mkpath appsupport unless File.exist? appsupport
     Dir.chdir appsupport do
-      tgz=Pathname.new fetch()
+      tgz=Pathname.new(fetch()).realpath
       md5=`md5 -q "#{tgz}"`.strip
       raise "MD5 mismatch: #{md5}" unless md5 == @md5.downcase
 
@@ -120,9 +120,19 @@ class Formula
 
 protected
   def fetch
-    tgz=File.expand_path File.basename(@url)
+    %r[http://(www.)?github.com/.*/(zip|tar)ball/].match @url
+    if $2
+      # curl doesn't do the redirect magic that we would like, so we get a
+      # stupidly named file, this is why wget would be beter, but oh well
+      tgz="#{@name}-#{@version}.#{$2=='tar' ? 'tgz' : $2}"
+      oarg="-o #{tgz}"
+    else
+      oarg='-O' #use the filename that curl gets
+      tgz=File.expand_path File.basename(@url)
+    end
+
     unless File.exists? tgz
-      `curl -#LOA "#{$agent}" "#{@url}"`
+      `curl -#LA "#{$agent}" #{oarg} "#{@url}"`
       raise "Download failed" unless $? == 0
     end
     return tgz
