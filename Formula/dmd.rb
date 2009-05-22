@@ -21,6 +21,9 @@ Formula.new(url, md5).brew do |prefix|
   
   FileUtils.cp_r Dir['html/d/*'], html unless ARGV.include? '--no-html'
   FileUtils.cp_r Dir['samples/d/*'], samples unless ARGV.include? '--no-samples'
-  
+
+  # zip files suck
+  Dir.chdir(prefix+'bin') { `chmod u+x dmd dumpobj obj2asm` }
+
   nil
 end
