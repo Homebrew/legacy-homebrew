@@ -6,14 +6,27 @@ require 'pathname'
 $root = Pathname.new(__FILE__).realpath.dirname.parent.parent
 
 def prune
+  n=0
+  dirs=Array.new
   $root.find do |path|
     if path.directory?
-      name=path.basename
-      Find.prune if name == 'Cellar' or name == 'Formula'
+      name=path.relative_path_from($root).to_s
+      if name == '.git' or name == 'Cellar' or name == 'Formula'
+        Find.prune
+      else
+        dirs<<path
+      end
     elsif path.symlink?
-      path.unlink unless path.readlink.exist?
+      resolved_path=path.dirname+path.readlink
+      unless resolved_path.exist?
+        path.unlink
+        n+=1
+      end
     end
   end
+  # entries lists '.' and '..' so 2 is minimum basically
+  dirs.sort.reverse_each { |d| d.rmdir if d.children.length == 0 }
+  return n
 end
 
 case ARGV[0]
@@ -48,12 +61,16 @@ case ARGV[0]
         to.mkpath unless to.exist?
       elsif from.file?
         tod=to.dirname
-        Dir.chdir(tod) { `ln -s "#{from.relative_path_from tod}"` }
+        Dir.chdir(tod) do
+          `ln -sf "#{from.relative_path_from tod}"`
+          n+=1
+        end
       end
     end
+    puts "Created #{n} links"
 
   when 'prune', 'pasteurize' then
-    prune
+    puts "Pruned #{prune} files"
 
   else
     puts "usage: #{$0} [prune] [ln path] [install pkg]"
