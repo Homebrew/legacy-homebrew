@@ -45,13 +45,28 @@ case ARGV[0]
     puts "#{path} removed"
 
   when 'ln' then
-    abort "#{ARGV[1]} is not a directory" unless File.directory? ARGV[1]
+    target=Pathname.new(ARGV[1])
+    target=$root+'Cellar'+target unless target.exist?
 
-    #TODO if user specifies just name and not version dir, do latest version
+    abort "#{target} is not a directory" unless target.directory?
+
+    target=target.realpath
+
+    if target.parent.parent == $root
+      # we are one dir too high
+      kids=target.children
+      abort "#{target} is empty :(" if kids.length == 0
+      abort "There are multiple versions of #{target.basename} installed please specify one" if kids.length > 1
+      target=target.children.first
+      abort "#{target} is not a directory!" unless target.directory?
+    elsif target.parent.parent.parent != $root
+      abort '#{target} is not a keg'
+    end
+
     #TODO you should mkdirs as you find them and symlink files otherwise
     #TODO consider using hardlinks
 
-    target=Pathname.new(ARGV[1]).realpath
+    n=0
     target.find do |from|
       next if from == ARGV[1] #rubysucks
 
