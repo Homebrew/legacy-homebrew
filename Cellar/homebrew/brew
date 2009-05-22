@@ -84,6 +84,10 @@ case ARGV[0]
     end
     puts "Created #{n} links"
 
+  when 'abv', 'stats', 'statistics'
+    cellar=$root+'Cellar'
+    print `find #{cellar} -type f | wc -l`.strip+' files,'+`du -hd0 #{cellar} | cut -d"\t" -f1`
+
   when 'prune', 'pasteurize' then
     puts "Pruned #{prune} files"
 
