@@ -256,5 +256,6 @@ Kernel.at_exit {
 if $0 == __FILE__
   d=$cellar.parent+'bin'
   d.mkpath unless d.exist?
-  (d+'brew').make_symlink $cellar+'homebrew'+'brew'
+  Dir.chdir d
+  Pathname.new('brew').make_symlink Pathname.new('../Cellar')+'homebrew'+'brew'
 end
