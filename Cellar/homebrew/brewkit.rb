@@ -225,7 +225,7 @@ def system cmd
   ohai cmd
 
   out=''
-  IO.popen("#{cmd} 2>1") do |f|
+  IO.popen("#{cmd} 2>&1") do |f|
     until f.eof?
       s=f.gets
       out+=s
