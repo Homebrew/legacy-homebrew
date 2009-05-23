@@ -16,6 +16,7 @@ ENV['CFLAGS']=ENV['CXXFLAGS']='-O3 -w -pipe -fomit-frame-pointer -march=prescott
 # if I'm wrong
 ENV['CC']='gcc-4.2'
 ENV['CXX']='g++-4.2'
+ENV['MAKEFLAGS']='-j2'
 
 #TODO don't add the prefixes if we're in /usr or /usr/local
 ENV['CPPFLAGS']="-I#{$cellar.parent}/include"
