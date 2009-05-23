@@ -37,7 +37,7 @@ case ARGV[0]
     file+='.rb' unless File.exist? file
     system "ruby #{file} #{ARGV.join ' '}"
 
-  when 'rm' then
+  when 'rm', 'uninstall' then
     path=$root+'Cellar'+ARGV[1]
     abort "#{ARGV[1]} is not installed" unless path.directory?
     path.rmtree
