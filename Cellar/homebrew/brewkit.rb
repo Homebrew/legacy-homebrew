@@ -159,6 +159,18 @@ private
   end
 end
 
+# you have to reimplement initialize to set the version, for example usage
+# see the ack script
+class UncompressedScriptFormula < Formula
+  def initialize(url)
+    @url=url
+    @name=File.basename url
+  end
+  def uncompress path
+    path.dirname
+  end
+end
+
 def inreplace(path, before, after)
   before=before.to_s.gsub('"', '\"').gsub('/', '\/')
   after=after.to_s.gsub('"', '\"').gsub('/', '\/')

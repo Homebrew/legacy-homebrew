@@ -4,22 +4,19 @@ require 'fileutils'
 
 homepage='http://betterthangrep.com/'
 
-class UncompressedFormula < Formula
+class AckFormula < UncompressedScriptFormula
   def initialize
-    @name='ack'
+    super('http://ack.googlecode.com/svn/tags/1.88/ack')
     @version='1.88'
-    @url='http://ack.googlecode.com/svn/tags/1.88/ack'
     @md5='8009a13ab0fc66047bea0ea2ad89419c'
-  end
-
-  def uncompress path
-    path.dirname
   end
 end
 
-UncompressedFormula.new.brew do |prefix|
+ack=AckFormula.new
+ack.brew do |prefix|
   bin=prefix+'bin'
-  FileUtils.mkpath bin
-  FileUtils.cp 'ack', bin
-  `chmod u+x #{bin}/ack`
+  bin.mkpath
+  FileUtils.cp ack.name, bin
+  (bin+ack.name).chmod 0544
+  nil
 end
