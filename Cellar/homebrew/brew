@@ -91,6 +91,29 @@ case ARGV[0]
   when 'prune', 'pasteurize' then
     puts "Pruned #{prune} files"
 
+  when 'prefix'
+    # Get the clean path to $prefix/Cellar/homebrew/brew/../../../
+    # Don't resolve any symlinks of that final result.
+    # Rationale: if the user calls /usr/local/bin/brew but that will resolve
+    # to /Brewery/Cellar/homebrew/brew we should give /usr/local and not
+    # /Brewery because the user probably has chosen /usr/local as the Homebrew
+    # to expose to the system.
+    if File.symlink? __FILE__
+      # using pathname as it will handle readlink returning abs or rel paths
+      d=Pathname.new(__FILE__).dirname
+      puts File.expand_path(d+File.readlink(__FILE__)+'../../../')
+    else
+      # Dir.pwd resolves the symlink :P #rubysucks
+      # we use the cwd because __FILE__ can be relative and expand_path 
+      # resolves the symlink for the working directory if fed a relative path
+      # SIGH
+      cwd=Pathname.new `pwd`.strip
+      puts File.expand_path(cwd+__FILE__+'../../../')
+    end
+
+  when 'cache'
+    puts File.expand_path('~/Library/Application Support/Homebrew')
+
   else
     puts "usage: #{$0} [prune] [ln path] [install pkg]"
 end
