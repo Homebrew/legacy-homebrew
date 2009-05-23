@@ -18,9 +18,10 @@ ENV['CC']='gcc-4.2'
 ENV['CXX']='g++-4.2'
 ENV['MAKEFLAGS']='-j2'
 
-#TODO don't add the prefixes if we're in /usr or /usr/local
-ENV['CPPFLAGS']="-I#{$cellar.parent}/include"
-ENV['LDFLAGS']="-L#{$cellar.parent}/lib"
+unless $cellar.parent.to_s == '/usr/local'
+  ENV['CPPFLAGS']="-I#{$cellar.parent}/include" 
+  ENV['LDFLAGS']="-L#{$cellar.parent}/lib"
+end
 
 
 def ohai title
