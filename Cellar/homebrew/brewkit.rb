@@ -171,6 +171,27 @@ class UncompressedScriptFormula < Formula
   end
 end
 
+class GithubGistFormula < Formula
+  def initialize(url, md5)
+    @url=url
+    @name=File.basename url
+    @version=File.basename(File.dirname url)[0,6]
+    @md5=md5
+
+    brew do |prefix|
+      bin=prefix+'bin'
+      bin.mkpath
+      FileUtils.cp @name, bin
+      (bin+@name).chmod 0544
+      nil
+    end
+  end
+  
+  def uncompress path
+    File.dirname path
+  end
+end
+
 def inreplace(path, before, after)
   before=before.to_s.gsub('"', '\"').gsub('/', '\/')
   after=after.to_s.gsub('"', '\"').gsub('/', '\/')
