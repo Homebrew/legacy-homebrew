@@ -63,7 +63,7 @@ class Formula
     prefix=$cellar+@name+@version
     raise "#{prefix} already exists!" if prefix.exist?
 
-    ohai "Preparing build"
+    ohai "Downloading #{@url}"
 
     appsupport = File.expand_path "~/Library/Application Support/Homebrew"
     FileUtils.mkpath appsupport unless File.exist? appsupport
@@ -104,8 +104,21 @@ class Formula
         FileUtils.rm_rf tmp
       end
 
+      ohai 'Finishing up'
+
       # stay in appsupport in case any odd files gets created etc.
       `#{$cellar}/homebrew/brew ln #{prefix}` if prefix.exist?
+      
+      prefix.find do |path|
+        if path==prefix #rubysucks
+          next
+        elsif path.file? and `file -h #{path}` =~ /Mach-O/
+          puts "strip #{path}" if ARGV.include? '--verbose'
+          `strip #{path}`
+        elsif path.directory? and path!=prefix+'bin' and path!=prefix+'lib'
+          Find.prune
+        end
+      end
 
       puts "#{prefix}: "+`find #{prefix} -type f | wc -l`.strip+' files, '+`du -hd0 #{prefix} | cut -d"\t" -f1`.strip+", built in #{Time.now - beginning} seconds"
     end
@@ -134,6 +147,8 @@ protected
     unless File.exists? tgz
       `curl -#LA "#{$agent}" #{oarg} "#{@url}"`
       raise "Download failed" unless $? == 0
+    else
+      puts "File already downloaded and cached"
     end
     return tgz
   end
@@ -175,7 +190,7 @@ class GithubGistFormula < Formula
   def initialize(url, md5)
     @url=url
     @name=File.basename url
-    @version=File.basename(File.dirname url)[0,6]
+    @version=File.basename(File.dirname(url))[0,6]
     @md5=md5
 
     brew do |prefix|
