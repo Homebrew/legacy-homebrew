@@ -25,7 +25,8 @@ end
 
 
 def ohai title
-  puts "\033[0;34m==>\033[0;0;1m #{title} \033[0;0m"
+  n=`tput cols`.strip.to_i-4
+  puts "\033[0;34m==>\033[0;0;1m #{title[0,n]}\033[0;0m"
 end
 
 
@@ -114,9 +115,15 @@ class Formula
       prefix.find do |path|
         if path==prefix #rubysucks
           next
-        elsif path.file? and `file -h #{path}` =~ /Mach-O/
-          puts "strip #{path}" if ARGV.include? '--verbose'
-          `strip #{path}`
+        elsif path.file?
+          fo=`file -h #{path}`
+          args=nil 
+          args='-SxX' if fo =~ /Mach-O dynamically linked shared library/
+          args='' if fo =~ /Mach-O executable/ #defaults strip everything
+          if args
+            puts "Stripping: #{path}" if ARGV.include? '--verbose'
+            `strip #{args} #{path}`
+          end
         elsif path.directory? and path!=prefix+'bin' and path!=prefix+'lib'
           Find.prune
         end
