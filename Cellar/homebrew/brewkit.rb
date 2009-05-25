@@ -104,7 +104,8 @@ class Formula
           raise
         end
       ensure
-        FileUtils.rm_rf tmp
+        FileUtils.rm_rf tmp if tmp
+        FileUtils.rm tgz if tgz and not self.cache?
       end
 
       ohai 'Finishing up'
@@ -176,6 +177,10 @@ protected
     raise "Too many folders in uncompressed result. You need to reimplement the Recipe.uncompress function." if entries.length > 1
     return entries.first
   end
+  
+  def cache?
+    true
+  end
 
 private
   def method_added(method)
@@ -192,6 +197,9 @@ class UncompressedScriptFormula < Formula
   end
   def uncompress path
     path.dirname
+  end
+  def cache?
+    false
   end
 end
 
