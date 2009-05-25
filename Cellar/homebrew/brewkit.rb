@@ -29,6 +29,11 @@ def ohai title
   puts "\033[0;34m==>\033[0;0;1m #{title[0,n]}\033[0;0m"
 end
 
+def appsupport
+  appsupport = File.expand_path "~/Library/Application Support/Homebrew"
+  FileUtils.mkpath appsupport unless File.exist? appsupport
+  return appsupport
+end
 
 class Formula
   require 'find'
@@ -70,8 +75,6 @@ class Formula
 
     ohai "Downloading #{@url}"
 
-    appsupport = File.expand_path "~/Library/Application Support/Homebrew"
-    FileUtils.mkpath appsupport unless File.exist? appsupport
     Dir.chdir appsupport do
       tgz=Pathname.new(fetch()).realpath
       md5=`md5 -q "#{tgz}"`.strip
