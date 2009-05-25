@@ -16,6 +16,11 @@ class BeerTasting < Test::Unit::TestCase
     assert_equal '1.1', r.version
   end
 
+  def test_version_underscores_all_the_way
+    r=Formula.new "http://example.com/boost_1_39_0.tar.bz2", 'nomd5'
+    assert_equal '1.39.0', r.version
+  end
+
   def test_version_internal_dash
     r=Formula.new "http://example.com/foo-arse-1.1-2.tar.gz", 'nomd5'
     assert_equal '1.1-2', r.version

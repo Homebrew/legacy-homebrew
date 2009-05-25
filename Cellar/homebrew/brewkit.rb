@@ -44,8 +44,10 @@ class Formula
     filename=File.basename url
     i=filename.index /[-_]\d/
     unless i.nil?
-      /^((\d+[.-])*\d+)/.match filename[i+1,1000] #1000 because rubysucks
-      @version = $1
+      /^((\d+[._])*(\d+-)?\d+)/.match filename[i+1,1000] #1000 because rubysucks
+      @version=$1
+      # if there are no dots replace underscores, boost do this, the bastards!
+      @version.gsub!('_', '.') unless @version.include? '.'
     else
       # no divisor or a '.' divisor, eg. dmd.1.11.zip
       /^[a-zA-Z._-]*((\d+\.)*\d+)/.match filename
