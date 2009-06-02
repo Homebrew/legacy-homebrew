@@ -1,29 +1,42 @@
-$:.unshift "#{File.dirname __FILE__}/../Cellar/homebrew" #rubysucks
 require 'brewkit'
 
-homepage='http://www.digitalmars.com/d/'
-url='http://ftp.digitalmars.com/dmd.1.043.zip'
-md5='6c83b7296cb84090a9ebc11ab0fb94a2'
+class Dmd <Formula
+  @homepage='http://www.digitalmars.com/d/'
+  @url='http://ftp.digitalmars.com/dmd.1.043.zip'
+  @md5='6c83b7296cb84090a9ebc11ab0fb94a2'
 
-Formula.new(url, md5).brew do |prefix|
-  ohai "make"
-  prefix.mkpath
-  FileUtils.cp_r 'osx/bin', prefix
-  FileUtils.cp_r 'osx/lib', prefix
-  FileUtils.cp_r 'man', prefix
-  FileUtils.cp_r 'src', prefix
+  def doc
+    #use d and not dmd, rationale: meh
+    prefix+'share'+'doc'+'d'
+  end
   
-  share=prefix+'share'+'doc'+'d'
-  html=share+'html'
-  samples=share+'examples' #examples is the more typical directory name
-  html.mkpath
-  samples.mkpath
+  def install
+    ohai "install"
+    FileUtils.cp_r 'osx/bin', prefix
+    FileUtils.cp_r 'osx/lib', prefix
+    FileUtils.cp_r 'man/man1', man
+    FileUtils.cp_r 'src', prefix
   
-  FileUtils.cp_r Dir['html/d/*'], html unless ARGV.include? '--no-html'
-  FileUtils.cp_r Dir['samples/d/*'], samples unless ARGV.include? '--no-samples'
+    #lol
+    man5=man+'man5'
+    man5.mkpath
+    (man+'man1'+'dmd.conf.5').mv man5
+    #lol ends
+  
+    html=doc+'html'
+    samples=doc+'examples' #examples is the more typical directory name
+    html.mkpath
+    samples.mkpath
+  
+    FileUtils.cp_r Dir['html/d/*'], html unless ARGV.include? '--no-html'
+    FileUtils.cp_r Dir['samples/d/*'], samples unless ARGV.include? '--no-samples'
 
-  # zip files suck
-  Dir.chdir(prefix+'bin') { `chmod u+x dmd dumpobj obj2asm` }
-
-  nil
+    # zip files suck TODO FileUtils.chmod
+    Dir.chdir(bin) { `chmod u+x dmd dumpobj obj2asm` }
+    
+    (prefix+'bin'+'dmd.conf').open('w') do |f|
+      f.puts "[Environment]"
+      f.puts "DFLAGS=-I#{prefix}/src/phobos -L-L#{prefix}/lib"
+    end
+  end
 end

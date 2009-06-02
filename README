@@ -128,11 +128,14 @@ Congratulations, you have contributed to an open source project!
 
 Contributing
 ============
-New Formulas
+New Formulae
 ------------
 Relative to every other stupid packaging system ever, this is trivial. Just
 fork it at: http://github.com/mxcl/homebrew and create a new recipe. Then ask
 me to pull. Using git made all this so much easier.
+
+HomeBrew is not an Autarky so any dependencies outside of OS X that a package
+may require may be installed separately. We have functions to help with that.
 
 Code
 ----

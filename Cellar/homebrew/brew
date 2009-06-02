@@ -3,7 +3,10 @@
 # Licensed as per the GPL version 3
 require 'find'
 require 'pathname'
-$root = Pathname.new(__FILE__).realpath.dirname.parent.parent
+$:.unshift "#{File.dirname __FILE__}/../Cellar/homebrew"
+$root=Pathname.new(__FILE__).realpath.dirname.parent.parent
+$formula=$root+'Formula'
+$cellar=$root+'Cellar'
 
 def prune
   n=0
@@ -25,95 +28,224 @@ def prune
     end
   end
   # entries lists '.' and '..' so 2 is minimum basically
-  dirs.sort.reverse_each { |d| d.rmdir if d.children.length == 0 }
+  dirs.sort.reverse_each do |d|
+    if d.children.length == 0
+      d.rmdir
+      n+=1
+    end
+  end
   return n
 end
 
-case ARGV[0]
-  when 'brew', 'install' then
-    abort "You must specify a Formula" unless ARGV[1]
-    ARGV.shift
-    file="#{$root}/Formula/#{ARGV.shift}"
-    file+='.rb' unless File.exist? file
-    system "ruby #{file} #{ARGV.join ' '}"
+def shift_formulae
+  name=Pathname.new ARGV.shift
 
-  when 'rm', 'uninstall' then
-    path=$root+'Cellar'+ARGV[1]
-    abort "#{ARGV[1]} is not installed" unless path.directory?
-    path.rmtree
-    prune
-    puts "#{path} removed"
+  return name if name.directory? and name.parent.realpath == $cellar
+  return File.basename(name, '.rb') if name.file? and name.extname == '.rb' and name.parent.realpath == $formula
 
-  when 'ln' then
-    target=Pathname.new(ARGV[1])
-    target=$root+'Cellar'+target unless target.exist?
+  name=name.to_s
+  raise "#{name} is an invalid name for a formula" if name.include? '/'
 
-    abort "#{target} is not a directory" unless target.directory?
+  return name if ($formula+(name+'.rb')).file?
+  return name if ($cellar+name).directory?
 
-    target=target.realpath
+  raise "No formula or keg for #{name} found"
+end
 
-    if target.parent.parent == $root
-      # we are one dir too high
-      kids=target.children
-      abort "#{target} is empty :(" if kids.length == 0
-      abort "There are multiple versions of #{target.basename} installed please specify one" if kids.length > 1
-      target=target.children.first
-      abort "#{target} is not a directory!" unless target.directory?
-    elsif target.parent.parent.parent != $root
-      abort '#{target} is not a keg'
-    end
+def __class name
+  #remove invalid characters and camelcase
+  name.capitalize.gsub(/[-_\s]([a-zA-Z0-9])/) { $1.upcase }
+end
 
-    #TODO you should mkdirs as you find them and symlink files otherwise
-    #TODO consider using hardlinks
+def __rb name
+  $formula+(name+'.rb')
+end
 
-    n=0
-    target.find do |from|
-      next if from == ARGV[1] #rubysucks
+def __obj name
+  require "#{__rb name}"
+  o=eval(__class(name)).new
+  o.name=name
+  return o
+end
 
-      to=$root+from.relative_path_from(target)
+def rm keg
+  #TODO if multiple versions don't rm all unless --force
+  path=$cellar+keg
+  path.rmtree
+  puts "#{path} removed (#{prune} files)"
+end
 
-      if from.directory?
-        to.mkpath unless to.exist?
-      elsif from.file?
-        tod=to.dirname
-        Dir.chdir(tod) do
-          `ln -sf "#{from.relative_path_from tod}"`
-          n+=1
-        end
-      end
-    end
-    puts "Created #{n} links"
+def ln name
+  keg=$cellar+name
+  keg=keg.realpath
 
-  when 'abv', 'stats', 'statistics'
-    cellar=$root+'Cellar'
-    print `find #{cellar} -type f | wc -l`.strip+' files, '+`du -hd0 #{cellar} | cut -d"\t" -f1`.strip
+  if keg.parent.parent == $root
+    # we are one dir too high
+    kids=keg.children
+    raise "#{keg} is empty :(" if kids.length == 0
+    raise "There are multiple versions of #{keg.basename} installed please specify one" if kids.length > 1
+    keg=keg.children.first
+    raise "#{keg} is not a directory" unless keg.directory?
+  elsif keg.parent.parent.parent != $root
+    raise '#{keg} is not a keg'
+  end
 
-  when 'prune', 'pasteurize' then
-    puts "Pruned #{prune} files"
+  #TODO consider using hardlinks
 
-  when 'prefix'
-    # Get the clean path to $prefix/Cellar/homebrew/brew/../../../
-    # Don't resolve any symlinks of that final result.
-    # Rationale: if the user calls /usr/local/bin/brew but that will resolve
-    # to /Brewery/Cellar/homebrew/brew we should give /usr/local and not
-    # /Brewery because the user probably has chosen /usr/local as the Homebrew
-    # to expose to the system.
-    if File.symlink? __FILE__
-      # using pathname as it will handle readlink returning abs or rel paths
-      d=Pathname.new(__FILE__).dirname
-      puts File.expand_path(d+File.readlink(__FILE__)+'../../../')
+  # yeah indeed, you have to force anything you want in the main tree into
+  # these directories :P
+  $n=0
+  lnd(keg, 'etc') {nil}
+  lnd(keg, 'include') {nil}
+  
+  lnd(keg, 'lib') do |path|
+    :mkpath if ['pkgconfig','php'].include? path.to_s
+  end
+
+  lnd(keg, 'bin') do |path| 
+    if path.extname.to_s == '.app'
+      # no need to put .app bundles in the path, just use spotlight, or the
+      # open command
+      :skip
     else
-      # Dir.pwd resolves the symlink :P #rubysucks
-      # we use the cwd because __FILE__ can be relative and expand_path 
-      # resolves the symlink for the working directory if fed a relative path
-      # SIGH
-      cwd=Pathname.new `pwd`.strip
-      puts File.expand_path(cwd+__FILE__+'../../../')
+      :mkpath
     end
+  end
 
-  when 'cache'
-    puts File.expand_path('~/Library/Application Support/Homebrew')
+  lnd(keg, 'share') do |path|
+    path=path.to_s
+    if ['man','doc','locale','info'].include? path
+      :mkpath
+    else
+      mans=(1..9).collect {|x| "man/man#{x}"}
+      :mkpath if mans.include? path
+    end
+  end
 
+  return $n
+end
+
+def symlink_relative_to from, to
+  tod=to.dirname
+  tod.mkpath
+  Dir.chdir(tod) do
+    #TODO use ruby function so we get exceptions
+    `ln -sf "#{from.relative_path_from tod}"`
+    $n+=1
+  end
+end
+
+# symlinks a directory recursively into our FHS tree
+def lnd keg, start
+  start=keg+start
+  return unless start.directory?
+
+  start.find do |from|
+    next if from == start
+
+    prune=false    
+    relative_path=from.relative_path_from keg
+    to=$root+relative_path
+
+    if from.directory?
+      cmd=yield from.relative_path_from(start)
+      
+      if :skip == cmd
+        Find.prune
+      elsif :mkpath == cmd
+        to.mkpath
+        $n+=1
+      else
+        symlink_relative_to from, to
+        Find.prune
+      end
+    elsif from.file?
+      symlink_relative_to from, to
+    end
+  end
+end
+
+def prefix
+  # Get the clean path to $prefix/Cellar/homebrew/brew/../../../
+  # Don't resolve any symlinks of that final result.
+  # Rationale: if the user calls /usr/local/bin/brew but that will resolve
+  # to /Brewery/Cellar/homebrew/brew we should give /usr/local and not
+  # /Brewery because the user probably has chosen /usr/local as the Homebrew
+  # to expose to the system.
+  if File.symlink? __FILE__
+    # using pathname as it will handle readlink returning abs or rel paths
+    d=Pathname.new(__FILE__).dirname
+    File.expand_path(d+File.readlink(__FILE__)+'../../../')
   else
-    puts "usage: #{$0} [prune] [ln path] [install pkg]"
+    # Dir.pwd resolves the symlink :P #rubysucks
+    # we use the cwd because __FILE__ can be relative and expand_path
+    # resolves the symlink for the working directory if fed a relative path
+    # SIGH
+    cwd=Pathname.new `pwd`.strip
+    File.expand_path(cwd+__FILE__+'../../../')
+  end
+end
+
+def usage
+  name=File.basename $0
+  <<-EOS
+Usage: #{name} [abv] [prune] [--prefix] [--cache]
+Usage: #{name} [install] [ln] [rm] [info] [list] beverage
+  EOS
+end
+
+######################################################################### impl
+begin
+  #TODO proper options parsing so --options can go first if necessary
+  
+  case ARGV.shift
+    when 'abv'
+      `find #{$cellar} -type f | wc -l`.strip+' files, '+`du -hd0 #{$cellar} | cut -d"\t" -f1`.strip
+    when 'prune'
+      puts "Pruned #{prune} files"
+    when '--prefix'
+      puts prefix
+    when '--cache'
+      puts File.expand_path('~/Library/Application Support/Homebrew')
+    when '-h', '--help', '--usage', '-?'
+      puts usage
+    when '-v', '--version'
+      puts HOMEBREW_VERSION
+    when 'list'
+      puts `find #{$cellar+shift_formulae}`
+    when 'install'
+      name=shift_formulae
+      beginning = Time.now
+      o=__obj(name)
+      raise "#{o.prefix} already exists!" if o.prefix.exist?
+      o.brew { o.install }
+      ln name
+      puts "#{o.prefix}: "+`find #{o.prefix} -type f | wc -l`.strip+
+                           ' files, '+
+                           `du -hd0 #{o.prefix} | cut -d"\t" -f1`.strip+
+                           ", built in #{Time.now - beginning} seconds"
+    when 'ln'
+      puts "Created #{ln shift_formulae} links"
+    when 'rm'
+      rm shift_formulae
+    when 'info'
+      o=__obj shift_formulae
+      puts "#{o.name} #{o.version}"
+      puts o.homepage
+    else
+      puts usage
+  end
+
+rescue StandardError, Interrupt => e
+  if ARGV.include? '--verbose' or ENV['HOMEBREW_DEBUG']
+    raise
+  elsif e.kind_of? Interrupt
+    puts # seeimgly a newline is typical
+    exit 130
+  elsif e.kind_of? StandardError and not e.kind_of? NameError
+    puts "\033[1;31mError\033[0;0m: #{e}"
+    exit 1
+  else
+    raise
+  end
 end

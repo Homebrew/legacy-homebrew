@@ -2,8 +2,7 @@
 # Licensed as per the GPL version 3
 require 'pathname'
 
-$agent = "Homebrew 0.1 (Ruby; Mac OS X 10.5 Leopard)"
-$cellar = Pathname.new(__FILE__).dirname.parent.realpath
+HOMEBREW_VERSION='0.1'
 
 # optimise all the way to eleven, references:
 # http://en.gentoo-wiki.com/wiki/Safe_Cflags/Intel
@@ -18,9 +17,9 @@ ENV['CC']='gcc-4.2'
 ENV['CXX']='g++-4.2'
 ENV['MAKEFLAGS']='-j2'
 
-unless $cellar.parent.to_s == '/usr/local'
-  ENV['CPPFLAGS']="-I#{$cellar.parent}/include" 
-  ENV['LDFLAGS']="-L#{$cellar.parent}/lib"
+unless $root.to_s == '/usr/local'
+  ENV['CPPFLAGS']='-I'+$root+'include'
+  ENV['LDFLAGS']='-L'+$root+'lib'
 end
 
 
@@ -35,21 +34,59 @@ def appsupport
   return appsupport
 end
 
+
+# make our code neater
+class Pathname
+  def mv dst
+    FileUtils.mv to_s, dst
+  end
+  def cp dst
+    if file?
+      FileUtils.cp to_s, dst
+    else
+      FileUtils.cp_r to_s, dst
+    end
+  end
+end
+
+
 class Formula
   require 'find'
   require 'fileutils'
 
-  # if you reimplement, assign @name, @version, @url and @md5
-  def initialize(url, md5)
-    @name = File.basename $0, '.rb' #original script that the interpreter started
-    @url = url
-    @md5 = md5
+  # fuck knows, ruby is weird
+  def self.url
+    @url
+  end
+  def url
+    self.class.url
+  end
+  def self.md5
+    @md5
+  end
+  def md5
+    self.class.md5
+  end
+  def self.homepage
+    @homepage
+  end
+  def homepage
+    self.class.homepage
+  end  
+  # end ruby is weird section
+
+  def initialize
+    # fuck knows, ruby is weird
+    @url=url if @url.nil?
+    raise "@url.nil?" if @url.nil?
+    @md5=md5 if @md5.nil?
+    # end ruby is weird section
 
     # pls improve this version extraction crap
-    filename=File.basename url
+    filename=File.basename @url
     i=filename.index /[-_]\d/
     unless i.nil?
-      /^((\d+[._])*(\d+-)?\d+)/.match filename[i+1,1000] #1000 because rubysucks
+      /^((\d+[._])*(\d+-)?\d+[abc]?)/.match filename[i+1,1000] #1000 because rubysucks
       @version=$1
       # if there are no dots replace underscores, boost do this, the bastards!
       @version.gsub!('_', '.') unless @version.include? '.'
@@ -59,26 +96,57 @@ class Formula
       @version = $1
     end
   end
+  
+private
+  def maybe_mkpath path
+    path.mkpath unless path.exist?
+    return path
+  end
 
+public  
+  def prefix
+    raise "@name.nil!" if @name.nil?
+    raise "@version.nil?" if @version.nil?
+    $cellar+@name+@version
+  end
+  def bin
+    maybe_mkpath prefix+'bin'
+  end
+  def doc
+    maybe_mkpath prefix+'share'+'doc'+name
+  end
+  def man
+    maybe_mkpath prefix+'share'+'man'
+  end
+  def lib
+    maybe_mkpath prefix+'lib'
+  end
+  def include
+    maybe_mkpath prefix+'include'
+  end
+
+  def name=name
+    raise "Name assigned twice, I'm not letting you do that!" if @name
+    @name=name
+  end
+
+protected  
+  def caveats
+    nil
+  end
+
+public
   #yields a Pathname object for the installation prefix
   def brew
-    raise "@name.nil?" if @name.nil?
-    raise "@version.nil?" if @version.nil?
-
     # disabled until the regexp makes sense :P
     #raise "@name does not validate to our regexp" unless /^\w+$/ =~ @name
-
-    beginning = Time.now
-
-    prefix=$cellar+@name+@version
-    raise "#{prefix} already exists!" if prefix.exist?
 
     ohai "Downloading #{@url}"
 
     Dir.chdir appsupport do
       tgz=Pathname.new(fetch()).realpath
       md5=`md5 -q "#{tgz}"`.strip
-      raise "MD5 mismatch: #{md5}" unless md5 == @md5.downcase
+      raise "MD5 mismatch: #{md5}" unless md5 and md5 == @md5.downcase
 
       # we make an additional subdirectory so know exactly what we are
       # recursively deleting later
@@ -86,26 +154,27 @@ class Formula
       # can't handle being built in a directory with spaces in it :P
       tmp=nil
       begin
-        tmp=`mktemp -dt #{@name}-#{@version}`.strip
+        tmp=`mktemp -dt #{File.basename @url}`.strip
         Dir.chdir tmp do
           Dir.chdir uncompress(tgz) do
-            caveats = yield prefix
+            prefix.mkpath
+            yield self
             if caveats
               ohai "Caveats"
               puts caveats
-              ohai "Summary"
             end
             #TODO copy changelog or CHANGES file to pkg root,
             #TODO maybe README, etc. to versioned root
           end
         end
-      rescue
+      rescue Interrupt, RuntimeError
         if ARGV.include? '--debug'
           # debug mode allows the packager to intercept a failed build and
           # investigate the problems
           puts "Rescued build at: #{tmp}"
           exit! 1
         else
+          FileUtils.rm_rf prefix
           raise
         end
       ensure
@@ -115,27 +184,26 @@ class Formula
 
       ohai 'Finishing up'
 
-      # stay in appsupport in case any odd files gets created etc.
-      `#{$cellar}/homebrew/brew ln #{prefix}` if prefix.exist?
-      
       prefix.find do |path|
         if path==prefix #rubysucks
           next
         elsif path.file?
-          fo=`file -h #{path}`
-          args=nil 
-          args='-SxX' if fo =~ /Mach-O dynamically linked shared library/
-          args='' if fo =~ /Mach-O executable/ #defaults strip everything
-          if args
-            puts "Stripping: #{path}" if ARGV.include? '--verbose'
-            `strip #{args} #{path}`
+          if path.extname == '.la'
+            path.unlink
+          else
+            fo=`file -h #{path}`
+            args=nil 
+            args='-SxX' if fo =~ /Mach-O dynamically linked shared library/
+            args='' if fo =~ /Mach-O executable/ #defaults strip everything
+            if args
+              puts "Stripping: #{path}" if ARGV.include? '--verbose'
+              `strip #{args} #{path}`
+            end
           end
         elsif path.directory? and path!=prefix+'bin' and path!=prefix+'lib'
           Find.prune
         end
       end
-
-      puts "#{prefix}: "+`find #{prefix} -type f | wc -l`.strip+' files, '+`du -hd0 #{prefix} | cut -d"\t" -f1`.strip+", built in #{Time.now - beginning} seconds"
     end
   end
 
@@ -159,8 +227,10 @@ protected
       tgz=File.expand_path File.basename(@url)
     end
 
+    agent="Homebrew #{HOMEBREW_VERSION} (Ruby #{VERSION}; Mac OS X 10.5 Leopard)"
+
     unless File.exists? tgz
-      `curl -#LA "#{$agent}" #{oarg} "#{@url}"`
+      `curl -#LA "#{agent}" #{oarg} "#{@url}"`
       raise "Download failed" unless $? == 0
     else
       puts "File already downloaded and cached"
@@ -178,9 +248,15 @@ protected
     raise "Compression tool failed" if $? != 0
 
     entries=Dir['*']
-    raise "Empty tar!" if entries.nil? or entries.length == 0
-    raise "Too many folders in uncompressed result. You need to reimplement the Recipe.uncompress function." if entries.length > 1
-    return entries.first
+    if entries.nil? or entries.length == 0
+      raise "Empty tarball!" 
+    elsif entries.length == 1
+      # if one dir enter it as that will be where the build is
+      entries.first
+    else
+      # if there's more than one dir, then this is the build directory already
+      Dir.pwd
+    end
   end
   
   def cache?
@@ -193,22 +269,21 @@ private
   end
 end
 
-# you have to reimplement initialize to set the version, for example usage
-# see the ack script
-class UncompressedScriptFormula < Formula
-  def initialize(url)
-    @url=url
-    @name=File.basename url
-  end
+# see ack.rb for an example usage
+class UncompressedScriptFormula <Formula
   def uncompress path
     path.dirname
   end
   def cache?
     false
   end
+  def install
+    FileUtils.cp name, bin
+    (bin+name).chmod 0544
+  end
 end
 
-class GithubGistFormula < Formula
+class GithubGistFormula <Formula
   def initialize(url, md5)
     @url=url
     @name=File.basename url
@@ -225,7 +300,7 @@ class GithubGistFormula < Formula
   end
   
   def uncompress path
-    File.dirname path
+    path.dirname
   end
 end
 
@@ -258,19 +333,6 @@ def system cmd
     raise "Failure during: #{cmd}"
   end
 end
-
-# force a prettier exception handler unless --verbose or HOMEBREW_DEBUG
-Kernel.at_exit {
-  if $! and not (ARGV.include? '--verbose' or ENV['HOMEBREW_DEBUG'])
-    if $!.kind_of? Interrupt #control-c
-      puts # seeimgly a newline is more typical
-      exit! 130 
-    elsif $!.kind_of? StandardError
-        puts "\033[1;31mError\033[0;0m: #{$!}"
-        exit! 1
-    end
-  end
-}
 
 ########################################################################script
 if $0 == __FILE__
