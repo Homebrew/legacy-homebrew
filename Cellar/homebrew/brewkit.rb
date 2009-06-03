@@ -158,7 +158,6 @@ public
         tmp=`mktemp -dt #{File.basename @url}`.strip
         Dir.chdir tmp do
           Dir.chdir uncompress(tgz) do
-            prefix.mkpath
             yield self
             if caveats
               ohai "Caveats"
@@ -184,6 +183,14 @@ public
       end
 
       ohai 'Finishing up'
+
+      begin
+        prefix
+      rescue RuntimeError
+        # you can have packages that aren't for installing, see git
+        # this is a HACK though, and dirty, and not right
+        return
+      end
 
       prefix.find do |path|
         if path==prefix #rubysucks
