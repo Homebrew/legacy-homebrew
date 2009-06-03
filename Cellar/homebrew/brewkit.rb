@@ -1,6 +1,7 @@
 # Copyright 2009 Max Howell <max@methylblue.com>
 # Licensed as per the GPL version 3
 require 'pathname'
+require 'osx/cocoa' # to get number of cores
 
 HOMEBREW_VERSION='0.1'
 
@@ -15,7 +16,7 @@ ENV['CFLAGS']=ENV['CXXFLAGS']='-O3 -w -pipe -fomit-frame-pointer -march=prescott
 # if I'm wrong
 ENV['CC']='gcc-4.2'
 ENV['CXX']='g++-4.2'
-ENV['MAKEFLAGS']='-j2'
+ENV['MAKEFLAGS']="-j#{OSX::NSProcessInfo.processInfo.processorCount}"
 
 unless $root.to_s == '/usr/local'
   ENV['CPPFLAGS']='-I'+$root+'include'
