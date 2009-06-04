@@ -3,74 +3,73 @@ Homebrew
 A simple package management system for OS X Leopard. Packages are brewed in
 individual, versioned kegs. For example:
 
-/Brewery/Cellar/wget/1.11.4/bin/wget
-/Brewery/Cellar/wget/1.11.4/share/man/man1/wget.1
+/usr/local/Cellar/wget/1.11.4/bin/wget
+/usr/local/Cellar/wget/1.11.4/share/man/man1/wget.1
 …
 
 And symlinks are created to allow a normal POSIX tree:
 
-/Brewery/bin/wget -> /Brewery/Cellar/wget/1.11.4/bin/wget
-/Brewery/etc/wgetrc -> /Brewery/Cellar/wget/1.11.4/etc/wgetrc
+/usr/local/bin/wget -> /usr/local/Cellar/wget/1.11.4/bin/wget
+/usr/local/etc/wgetrc -> /usr/local/Cellar/wget/1.11.4/etc/wgetrc
 …
 
 This way the filesystem is the package database. Everything else is now easy.
 We are made of win.
 
-Max Howell -- http://twitter.com/mxcl
+Max Howell <http://twitter.com/mxcl>
 
 
 Installation
 ============
 Homebrew uses Ruby and some other stuff that is already installed on Leopard.
-Just copy this directory somewhere. I suggest /Brewery but leave the directory
-user writable (for now). I wouldn't worry about it not being chroot. We don't
-install anything base enough for it to be a concern (unlike MacPorts or Fink).
+It is self-contained and ready to go. Just copy this directory somewhere. Things
+work really well if you put it in /usr/local (especially if you are a 
+developer).
+
+I also recommend you make /usr/local user-writable. I wouldn't worry about it
+not being chroot. We don't install anything base enough for it to be a concern
+(unlike MacPorts or Fink).
 
 You can stick this directory in your home directory if you like. In that case
-a typical (POSIX) choice would be: /User/mxcl/local
+a typical (POSIX) choice would be: /User/mxcl/.local
 
-It's actually pretty useful if you are a developer to put the tree at
-/usr/local because almost all build scripts look there as part of their
-configure step, so your work (outside of Homebrew) will be somewhat easier.
-
-You then need to stick /Brewery/bin or ~/local/bin in your path.
-
-To 'install' the brew tool to Homebrew's bin dir, do:
-
-    $ ruby /Brewery/Cellar/homebrew/brewkit.rb
+If you don't install to /usr/local (but seriously it's great!) then you'll need
+to edit your ~/.profile file to add Homebrew's bin directory to the PATH.
 
 
 Usage
 =====
 Install wget:
-    ruby /Brewery/Formula/wget.rb
+    brew install wget
 
 Update recipes list:
-    cd /Brewery && git pull origin masterbrew
+    cd /usr/local && git pull origin masterbrew
 
 Delete a package:
-    rm -rf /Brewery/Cellar/wget && brew prune
+ 1. rm -rf /usr/local/Cellar/wget && brew prune
+ 2. brew rm wget
 
 List all files in a package:
-    find /Brewery/Cellar/wget
+ 1. find /usr/local/Cellar/wget
+ 2. brew list wget
 
 Search for a package to install:
-    ls /Brewery/Formula/*wget*
+    ls /usr/local/Library/Formula/*wget*
 
 Search for a package already installed:
-    ls /Brewery/Cellar/*wget*
+    ls /usr/local/Cellar/*wget*
 
 List all packages available to install:
-    ls /Brewery/Formula
+    ls /Brewery/Library/Formula
 
 Compute installed size of package:
     du -h /Brewery/Cellar/wget
 
 You get the idea.
 
-Maybe we should overload this stuff with the brew command, but frankly I feel
-that this way *you* will understand the capabilities of the system better. And
-you basically know everything that is going on.
+Maybe we should overload more of this stuff with the brew command, but frankly I
+feel that this way *you* will understand the capabilities of the system better.
+And you basically know everything that is going on.
 
 With apt, you type apt-get install wget. Now what is happening? With Homebrew
 you are running a ruby script. You know what is happening. You can easily and
@@ -82,8 +81,6 @@ NOTE you have to install git before you can update the package list, but
 that's easy:
 
     brew install git
-or
-    ruby /Brewery/Formula/git.rb
 
 
 Why Not MacPorts?
@@ -148,6 +145,6 @@ Are you excessively interested in beer?
 ---------------------------------------
 Yes.
 
-Was Homebrew devised under the influence of alchohol?
+Was Homebrew devised under the influence of alcohol?
 -----------------------------------------------------
 Yes.
