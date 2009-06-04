@@ -113,7 +113,7 @@ class Formula
       @version = $1
     end
   end
-  
+
 private
   def maybe_mkpath path
     path.mkpath unless path.exist?

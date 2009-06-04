@@ -210,6 +210,7 @@ begin
       beginning = Time.now
       o=__obj(name)
       raise "#{o.prefix} already exists!" if o.prefix.exist?
+      o.prefix.mkpath
       o.brew { o.install }
       ohai 'Finishing up'
       o.clean
