@@ -1,11 +1,6 @@
 #!/usr/bin/ruby
-$:.unshift File.dirname(__FILE__)
-require 'pathname'
-$root=Pathname.new(__FILE__).realpath.dirname.parent.parent
-$cellar=$root+'Cellar'
-require 'brewkit'
 require 'test/unit'
-
+require "#{__FILE__}/../brewkit"
 
 class TestFormula <Formula
   def initialize url, md5

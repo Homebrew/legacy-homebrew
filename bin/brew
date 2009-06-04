@@ -1,12 +1,9 @@
 #!/usr/bin/ruby
-# Copyright 2009 Max Howell <max@methylblue.com>
-# Licensed as per the GPL version 3
+
 require 'find'
 require 'pathname'
-$:.unshift "#{File.dirname __FILE__}/../Cellar/homebrew"
-$root=Pathname.new(__FILE__).realpath.dirname.parent.parent
-$formula=$root+'Formula'
-$cellar=$root+'Cellar'
+$:.unshift Pathname.new(__FILE__).dirname.parent.realpath+'Library'+'Homebrew'
+require 'env'
 
 def prune
   n=0
@@ -14,7 +11,7 @@ def prune
   $root.find do |path|
     if path.directory?
       name=path.relative_path_from($root).to_s
-      if name == '.git' or name == 'Cellar' or name == 'Formula'
+      if name == '.git' or name == 'Cellar' or name == 'Library/Homebrew' or name == 'Library/Formula'
         Find.prune
       else
         dirs<<path
@@ -90,10 +87,10 @@ def ln name
     raise '#{keg} is not a keg'
   end
 
-  #TODO consider using hardlinks
-
-  # yeah indeed, you have to force anything you want in the main tree into
-  # these directories :P
+  # yeah indeed, you have to force anything you need in the main tree into
+  # these directories :P 
+  # NOTE that not everything needs to be in the main tree
+  # TODO consider using hardlinks
   $n=0
   lnd(keg, 'etc') {nil}
   lnd(keg, 'include') {nil}
@@ -113,13 +110,8 @@ def ln name
   end
 
   lnd(keg, 'share') do |path|
-    path=path.to_s
-    if ['man','doc','locale','info'].include? path
-      :mkpath
-    else
-      mans=(1..9).collect {|x| "man/man#{x}"}
-      :mkpath if mans.include? path
-    end
+    includes=(1..9).collect {|x| "man/man#{x}"} <<'man'<<'doc'<<'locale'<<'info'
+    :mkpath if includes.include? path.to_s
   end
 
   return $n
@@ -219,6 +211,8 @@ begin
       o=__obj(name)
       raise "#{o.prefix} already exists!" if o.prefix.exist?
       o.brew { o.install }
+      ohai 'Finishing up'
+      o.clean
       ln name
       puts "#{o.prefix}: "+`find #{o.prefix} -type f | wc -l`.strip+
                            ' files, '+

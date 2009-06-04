@@ -1,7 +1,23 @@
-# Copyright 2009 Max Howell <max@methylblue.com>
-# Licensed as per the GPL version 3
+#  Copyright 2009 Max Howell <max@methylblue.com>
+#
+#  This file is part of Homebrew.
+#
+#  Homebrew is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  Homebrew is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with Homebrew.  If not, see <http://www.gnu.org/licenses/>.
+
 require 'pathname'
 require 'osx/cocoa' # to get number of cores
+require "#{File.dirname __FILE__}/env"
 
 HOMEBREW_VERSION='0.1'
 
@@ -181,36 +197,28 @@ public
         FileUtils.rm_rf tmp if tmp
         FileUtils.rm tgz if tgz and not self.cache?
       end
-
-      ohai 'Finishing up'
-
-      begin
-        prefix
-      rescue RuntimeError
-        # you can have packages that aren't for installing, see git
-        # this is a HACK though, and dirty, and not right
-        return
-      end
-
-      prefix.find do |path|
-        if path==prefix #rubysucks
-          next
-        elsif path.file?
-          if path.extname == '.la'
-            path.unlink
-          else
-            fo=`file -h #{path}`
-            args=nil 
-            args='-SxX' if fo =~ /Mach-O dynamically linked shared library/
-            args='' if fo =~ /Mach-O executable/ #defaults strip everything
-            if args
-              puts "Stripping: #{path}" if ARGV.include? '--verbose'
-              `strip #{args} #{path}`
-            end
+    end
+  end
+  
+  def clean
+    prefix.find do |path|
+      if path==prefix #rubysucks
+        next
+      elsif path.file?
+        if path.extname == '.la'
+          path.unlink
+        else
+          fo=`file -h #{path}`
+          args=nil 
+          args='-SxX' if fo =~ /Mach-O dynamically linked shared library/
+          args='' if fo =~ /Mach-O executable/ #defaults strip everything
+          if args
+            puts "Stripping: #{path}" if ARGV.include? '--verbose'
+            `strip #{args} #{path}`
           end
-        elsif path.directory? and path!=prefix+'bin' and path!=prefix+'lib'
-          Find.prune
         end
+      elsif path.directory? and path!=prefix+'bin' and path!=prefix+'lib'
+        Find.prune
       end
     end
   end

@@ -1,6 +1,4 @@
 .DS_Store
 /*/
-!/Cellar/
-!/Formula/
-/Cellar/*/
-!/Cellar/homebrew/
+!/Library/
+!/bin/brew

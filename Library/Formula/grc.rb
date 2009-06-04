@@ -63,7 +63,7 @@ class Grc <Formula
     grc won't work as is. One option is to add some aliases to your ~/.profile 
     file. Homebrew can do that for you, just execute this command:
 
-        ruby #{$0} --profile >> ~/.profile
+        brew grc --profile >> ~/.profile
 
     EOS
   end

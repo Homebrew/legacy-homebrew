@@ -11,10 +11,10 @@ class Git <Formula
   @homepage='http://git-scm.com'
 
   def install
-    system "./configure --prefix='#{prefix}' --disable-debug"
-    system "make install"
-
     # the manuals come separately, well sort of, it's easier this way though
     GitManuals.new.brew { FileUtils.mv Dir['*'], man }
+
+    system "./configure --prefix='#{prefix}' --disable-debug"
+    system "make install"
   end
 end
