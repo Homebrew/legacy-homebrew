@@ -168,9 +168,18 @@ end
 def usage
   name=File.basename $0
   <<-EOS
-Usage: #{name} [abv] [prune] [--prefix] [--cache]
-Usage: #{name} [install] [ln] [rm] [info] [list] beverage
-  EOS
+Usage: #{name} command [formula] ...
+Usage: #{name} [--prefix] [--cache] [--version]
+
+Commands:
+  install [formula] ...
+  rm [formula] ...
+  list [formula] ...
+  ln [formula] ...
+  info [formula]
+  prune
+  abv
+EOS
 end
 
 ######################################################################### impl
