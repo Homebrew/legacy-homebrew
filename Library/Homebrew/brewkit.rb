@@ -19,8 +19,6 @@ require 'pathname'
 require 'osx/cocoa' # to get number of cores
 require "#{File.dirname __FILE__}/env"
 
-HOMEBREW_VERSION='0.1'
-
 # optimise all the way to eleven, references:
 # http://en.gentoo-wiki.com/wiki/Safe_Cflags/Intel
 # http://forums.mozillazine.org/viewtopic.php?f=12&t=577299

@@ -20,3 +20,5 @@ require 'pathname'
 $root=Pathname.new(__FILE__).dirname.parent.parent.realpath
 $formula=$root+'Library'+'Formula'
 $cellar=$root+'Cellar'
+
+HOMEBREW_VERSION='0.2'
