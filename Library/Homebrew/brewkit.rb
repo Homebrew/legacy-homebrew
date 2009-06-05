@@ -17,7 +17,7 @@
 
 require 'pathname'
 require 'osx/cocoa' # to get number of cores
-require "#{File.dirname __FILE__}/env"
+require 'env'
 
 # optimise all the way to eleven, references:
 # http://en.gentoo-wiki.com/wiki/Safe_Cflags/Intel
@@ -161,7 +161,7 @@ public
     Dir.chdir appsupport do
       tgz=Pathname.new(fetch()).realpath
       md5=`md5 -q "#{tgz}"`.strip
-      raise "MD5 mismatch: #{md5}" unless md5 and md5 == @md5.downcase
+      raise "MD5 mismatch: #{md5}" unless @md5 and md5 == @md5.downcase
 
       # we make an additional subdirectory so know exactly what we are
       # recursively deleting later
@@ -297,24 +297,16 @@ class UncompressedScriptFormula <Formula
   end
 end
 
-class GithubGistFormula <Formula
-  def initialize(url, md5)
-    @url=url
+class GithubGistFormula <UncompressedScriptFormula
+  def initialize
+    super
     @name=File.basename url
     @version=File.basename(File.dirname(url))[0,6]
-    @md5=md5
-
-    brew do |prefix|
-      bin=prefix+'bin'
-      bin.mkpath
-      FileUtils.cp @name, bin
-      (bin+@name).chmod 0544
-      nil
-    end
   end
   
-  def uncompress path
-    path.dirname
+  def install
+    FileUtils.cp @name, bin
+    (bin+@name).chmod 0544
   end
 end
 
@@ -348,7 +340,7 @@ def system cmd
   end
 end
 
-########################################################################script
+####################################################################### script
 if $0 == __FILE__
   d=$cellar.parent+'bin'
   d.mkpath unless d.exist?

@@ -1,6 +1,8 @@
 #!/usr/bin/ruby
+
+$:.unshift File.dirname __FILE__
 require 'test/unit'
-require "#{__FILE__}/../brewkit"
+require 'brewkit'
 
 class TestFormula <Formula
   def initialize url, md5
