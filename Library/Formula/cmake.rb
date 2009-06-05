@@ -9,5 +9,6 @@ class Cmake <Formula
     system "make install"
 
     ['man','doc'].each { |d| (prefix+d).mv prefix+'share' }
+    (doc.parent+'cmake-2.6').mv doc
   end
 end

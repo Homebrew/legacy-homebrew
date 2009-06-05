@@ -17,6 +17,8 @@ class Flac <Formula
     system "./configure --disable-debug --disable-asm-optimizations --prefix='#{prefix}' --mandir='#{prefix}/share/man'"
     system "OBJ_FORMAT=macho make install"
 
+    (doc.parent+"#{@name}-#{@version}").mv doc
+
     Flac2Mp3.new.brew do |flac2mp3|
       FileUtils.chmod 0544, flac2mp3.name
       FileUtils.cp flac2mp3.name, bin
