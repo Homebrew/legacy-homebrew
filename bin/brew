@@ -34,9 +34,8 @@ def prune
   return n
 end
 
-def shift_formulae
-  name=Pathname.new ARGV.shift
-
+def formulize name
+  name=Pathname.new name
   return name if name.directory? and name.parent.realpath == $cellar
   return File.basename(name, '.rb') if name.file? and name.extname == '.rb' and name.parent.realpath == $formula
 
@@ -47,6 +46,15 @@ def shift_formulae
   return name if ($cellar+name).directory?
 
   raise "No formula or keg for #{name} found"
+end
+
+def shift_formulae_from_ARGV
+  fae=Array.new
+  while name=ARGV[0]
+    fae<<formulize(ARGV.shift).to_s unless name[0] == '-'
+  end
+  raise "You must specify a formula" if fae.empty?
+  return fae
 end
 
 def __class name
@@ -167,11 +175,9 @@ end
 
 ######################################################################### impl
 begin
-  #TODO proper options parsing so --options can go first if necessary
-  
   case ARGV.shift
     when 'abv'
-      `find #{$cellar} -type f | wc -l`.strip+' files, '+`du -hd0 #{$cellar} | cut -d"\t" -f1`.strip
+      puts `find #{$cellar} -type f | wc -l`.strip+' files, '+`du -hd0 #{$cellar} | cut -d"\t" -f1`.strip
     when 'prune'
       puts "Pruned #{prune} files"
     when '--prefix'
@@ -187,27 +193,31 @@ begin
     when '-v', '--version'
       puts HOMEBREW_VERSION
     when 'list'
-      puts `find #{$cellar+shift_formulae}`
+      fae=shift_formulae_from_ARGV.collect {|name| ($cellar+name).to_s}
+      puts `find #{fae.join' '}`
     when 'install'
-      name=shift_formulae
-      beginning = Time.now
-      o=__obj(name)
-      raise "#{o.prefix} already exists!" if o.prefix.exist?
-      o.prefix.mkpath
-      o.brew { o.install }
-      ohai 'Finishing up'
-      o.clean
-      ln name
-      puts "#{o.prefix}: "+`find #{o.prefix} -type f | wc -l`.strip+
-                           ' files, '+
-                           `du -hd0 #{o.prefix} | cut -d"\t" -f1`.strip+
-                           ", built in #{Time.now - beginning} seconds"
+      shift_formulae_from_ARGV.each do |name|
+        beginning = Time.now
+        o=__obj(name)
+        raise "#{o.prefix} already exists!" if o.prefix.exist?
+        o.prefix.mkpath
+        o.brew { o.install }
+        ohai 'Finishing up'
+        o.clean
+        ln name
+        puts "#{o.prefix}: "+`find #{o.prefix} -type f | wc -l`.strip+
+                             ' files, '+
+                             `du -hd0 #{o.prefix} | cut -d"\t" -f1`.strip+
+                             ", built in #{Time.now - beginning} seconds"
+     end
     when 'ln'
-      puts "Created #{ln shift_formulae} links"
+      n=0
+      shift_formulae_from_ARGV.each {|name| n+=ln name}
+      puts "Created #{n} links"
     when 'rm'
-      rm shift_formulae
+      shift_formulae_from_ARGV.each {|name| rm name}
     when 'info'
-      o=__obj shift_formulae
+      o=__obj shift_formulae_from_ARGV[0]
       puts "#{o.name} #{o.version}"
       puts o.homepage
     else
