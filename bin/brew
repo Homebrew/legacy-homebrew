@@ -123,7 +123,7 @@ def ln name
   end
 
   lnd(keg, 'share') do |path|
-    includes=(1..9).collect {|x| "man/man#{x}"} <<'man'<<'doc'<<'locale'<<'info'
+    includes=(1..9).collect {|x| "man/man#{x}"} <<'man'<<'doc'<<'locale'<<'info'<<'aclocal'
     :mkpath if includes.include? path.to_s
   end
 
