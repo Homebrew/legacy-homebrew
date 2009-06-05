@@ -1,6 +1,6 @@
 require 'brewkit'
 
-class Ack <UncompressedScriptFormula
+class Ack <ScriptFileFormula
   def initialize
     @version='1.88'
     @url="http://ack.googlecode.com/svn/tags/#{@version}/ack"

@@ -45,7 +45,7 @@ end
 
 def appsupport
   appsupport = File.expand_path "~/Library/Application Support/Homebrew"
-  FileUtils.mkpath appsupport unless File.exist? appsupport
+  FileUtils.mkpath appsupport
   return appsupport
 end
 
@@ -65,11 +65,14 @@ class Pathname
 end
 
 
-class Formula
+# the base class variety of formula, you don't get a prefix, so it's not really
+# useful. See the derived classes for fun and games.
+class AbstractFormula
   require 'find'
   require 'fileutils'
 
   # fuck knows, ruby is weird
+  # TODO please fix!
   def self.url
     @url
   end
@@ -90,26 +93,38 @@ class Formula
   end  
   # end ruby is weird section
 
-  def initialize
+  def version
+    @version
+  end
+  def name
+    @name
+  end
+
+  def initialize name=nil
+    @name=name
     # fuck knows, ruby is weird
     @url=url if @url.nil?
     raise "@url.nil?" if @url.nil?
     @md5=md5 if @md5.nil?
     # end ruby is weird section
+  end
 
-    # pls improve this version extraction crap
-    filename=File.basename @url
-    i=filename.index /[-_]\d/
-    unless i.nil?
-      /^((\d+[._])*(\d+-)?\d+[abc]?)/.match filename[i+1,1000] #1000 because rubysucks
-      @version=$1
-      # if there are no dots replace underscores, boost do this, the bastards!
-      @version.gsub!('_', '.') unless @version.include? '.'
-    else
-      # no divisor or a '.' divisor, eg. dmd.1.11.zip
-      /^[a-zA-Z._-]*((\d+\.)*\d+)/.match filename
-      @version = $1
-    end
+protected
+  # pass in the basename of the filename _without_ any file extension
+  def extract_version basename
+    # eg. foobar4.5.1
+    # eg. foobar-4.5.1
+    # eg. foobar-4.5.1b
+    /^[^0-9]*((\d+\.)*(\d+-)?\d+[abc]?)$/.match basename
+    return @version=$1 if $1
+
+    # eg. boost_1_39_0
+    /^[^0-9]*((\d+_)*\d+)$/.match basename
+    return @version=$1.gsub('_', '.') if $1
+    
+    # eg. (erlang) otp_src_R13B
+    /^.*[-_.](.*)$/.match basename
+    return @version=$1 if $1
   end
 
 private
@@ -140,22 +155,12 @@ public
     maybe_mkpath prefix+'include'
   end
 
-  def name=name
-    raise "Name assigned twice, I'm not letting you do that!" if @name
-    @name=name
-  end
-
-protected  
   def caveats
     nil
   end
 
-public
-  #yields a Pathname object for the installation prefix
+  # yields self with current working directory set to the uncompressed tarball
   def brew
-    # disabled until the regexp makes sense :P
-    #raise "@name does not validate to our regexp" unless /^\w+$/ =~ @name
-
     ohai "Downloading #{@url}"
 
     Dir.chdir appsupport do
@@ -215,14 +220,15 @@ public
     end
   end
 
-  def version
-    @version
+protected
+  def cache?
+    true
   end
-  def name
-    @name
+  def uncompress path
+    path.dirname
   end
 
-protected
+private
   def fetch
     %r[http://(www.)?github.com/.*/(zip|tar)ball/].match @url
     if $2
@@ -246,6 +252,25 @@ protected
     return tgz
   end
 
+  def method_added method
+    raise 'You cannot override Formula.brew' if method == 'brew'
+  end
+end
+
+# somewhat useful, it'll raise if you call prefix, but it'll unpack a tar/zip
+# for you, check the md5, and allow you to yield from brew
+class UnidentifiedFormula <AbstractFormula
+  def initialize name=nil
+    super name
+  end
+
+private
+  def extname
+    /\.(zip|tar\.(gz|bz2)|tgz)$/.match @url
+    return ".#{$1}" if $1
+    raise "Only tarballs and zips are supported by this class"
+  end
+
   def uncompress(path)
     if path.extname == '.zip'
       `unzip -qq "#{path}"`
@@ -265,23 +290,19 @@ protected
       # if there's more than one dir, then this is the build directory already
       Dir.pwd
     end
-  end
-  
-  def cache?
-    true
-  end
+  end  
+end
 
-private
-  def method_added(method)
-    raise 'You cannot override Formula.brew' if method == 'brew'
+# this is what you will mostly use, reimplement install, prefix won't raise
+class Formula <UnidentifiedFormula
+  def initialize name
+    super name
+    extract_version File.basename(@url, extname)
   end
 end
 
 # see ack.rb for an example usage
-class UncompressedScriptFormula <Formula
-  def uncompress path
-    path.dirname
-  end
+class ScriptFileFormula <AbstractFormula
   def cache?
     false
   end
@@ -291,16 +312,10 @@ class UncompressedScriptFormula <Formula
   end
 end
 
-class GithubGistFormula <UncompressedScriptFormula
+class GithubGistFormula <ScriptFileFormula
   def initialize
-    super
-    @name=File.basename url
+    super File.basename(url)
     @version=File.basename(File.dirname(url))[0,6]
-  end
-  
-  def install
-    FileUtils.cp @name, bin
-    (bin+@name).chmod 0544
   end
 end
 
