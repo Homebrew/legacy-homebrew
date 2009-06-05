@@ -175,8 +175,8 @@ public
             yield self
           end
         end
-      rescue Interrupt, RuntimeError
-        if ARGV.include? '--debug'
+      rescue => e
+        if e.kind_of? Interrupt and ARGV.include? '--debug'
           # debug mode allows the packager to intercept a failed build and
           # investigate the problems
           puts "Rescued build at: #{tmp}"
