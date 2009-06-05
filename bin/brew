@@ -172,27 +172,36 @@ Usage: #{name} command [formula] ...
 Usage: #{name} [--prefix] [--cache] [--version]
 
 Commands:
-  install [formula] ...
-  rm [formula] ...
-  list [formula] ...
-  ln [formula] ...
-  info [formula]
+  install formula ...
+  rm formula ...
+  list formula ...
+  ln formula ...
+  info formula
+  abv [formula]
   prune
-  abv
 EOS
+end
+
+def abv keg
+  keg=$cellar+keg
+  `find #{keg} -type f | wc -l`.strip+' files, '+`du -hd0 #{keg} | cut -d"\t" -f1`.strip
 end
 
 ######################################################################### impl
 begin
   case ARGV.shift
     when 'abv'
-      puts `find #{$cellar} -type f | wc -l`.strip+' files, '+`du -hd0 #{$cellar} | cut -d"\t" -f1`.strip
+      if ARGV.empty?
+        puts abv
+      else
+        puts abv(shift_formulae_from_ARGV[0])
+      end
     when 'prune'
       puts "Pruned #{prune} files"
     when '--prefix'
       # we use the cwd because __FILE__ can be relative and expand_path
       # resolves the symlink for the working directory if fed a relative path
-      # NOTE we don't use Dir.pwd because it resolves the symlink :P #rubysucks
+      # NOTE we don't use Dir.pwd because it resolves the symlink :(
       cwd=Pathname.new `pwd`.strip
       puts File.expand_path(cwd+__FILE__+'../../')
     when '--cache'
@@ -214,11 +223,8 @@ begin
         ohai 'Finishing up'
         o.clean
         ln name
-        puts "#{o.prefix}: "+`find #{o.prefix} -type f | wc -l`.strip+
-                             ' files, '+
-                             `du -hd0 #{o.prefix} | cut -d"\t" -f1`.strip+
-                             ", built in #{Time.now - beginning} seconds"
-     end
+        puts "#{o.prefix}: "+abv(name)+", built in #{Time.now - beginning} seconds"
+      end
     when 'ln'
       n=0
       shift_formulae_from_ARGV.each {|name| n+=ln name}
