@@ -50,8 +50,13 @@ end
 
 def shift_formulae_from_ARGV
   fae=Array.new
-  while name=ARGV[0]
-    fae<<formulize(ARGV.shift).to_s unless name[0] == '-'
+  i=0
+  while name=ARGV[i]
+    unless name[0,1] == '-'
+      fae<<formulize(ARGV.shift).to_s 
+    else
+      i+=1
+    end
   end
   raise "You must specify a formula" if fae.empty?
   return fae
@@ -235,6 +240,10 @@ begin
       o=__obj shift_formulae_from_ARGV[0]
       puts "#{o.name} #{o.version}"
       puts o.homepage
+      if o.caveats
+        ohai 'Caveats'
+        puts o.caveats
+      end
     else
       puts usage
   end
