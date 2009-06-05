@@ -73,9 +73,7 @@ end
 
 def __obj name
   require "#{__rb name}"
-  o=eval(__class(name)).new
-  o.name=name
-  return o
+  return eval(__class(name)).new(name)
 end
 
 def rm keg
@@ -142,7 +140,7 @@ def lnd keg, start
     if from.directory?
       # no need to put .app bundles in the path, the user can just use
       # spotlight, or the open command and actual mac apps use an equivalent
-      Find.prune if path.extname.to_s == '.app'
+      Find.prune if from.extname.to_s == '.app'
       
       cmd=yield from.relative_path_from(start)
       
@@ -174,6 +172,7 @@ Commands:
   ln formula ...
   info formula
   abv [formula]
+  mk url
   prune
 EOS
 end
@@ -224,7 +223,8 @@ begin
         if o.caveats
           ohai "Caveats"
           puts o.caveats
-        end        
+          ohai "Summary"
+        end
         puts "#{o.prefix}: "+abv(name)+", built in #{Time.now - beginning} seconds"
       end
     when 'ln'
@@ -233,6 +233,30 @@ begin
       puts "Created #{n} links"
     when 'rm'
       shift_formulae_from_ARGV.each {|name| rm name}
+    when 'mk'
+      require 'brewkit'
+      class Template <Formula
+        @url=ARGV.shift
+      end
+
+      t=Template.new
+      /(.*)[-_.]#{t.version}/.match File.basename(t.url)
+      t.name = $1
+
+      f=File.new $formula+(t.name+'.rb'), 'w'
+      f.puts "require 'brewkit'"
+      f.puts
+      f.puts "class #{__class t.name} <Formula"
+      f.puts "  @url=#{t.url}"
+      f.puts "  @md5=''"
+      f.puts "  @homepage=''"
+      f.puts
+      f.puts "  def install"
+      f.puts "    system \"./configure --disable-debug --prefix='\#{prefix}'\""
+      f.puts "    system \"make install\""
+      f.puts "  end"
+      f.puts "end"
+      f.close
     when 'info'
       o=__obj shift_formulae_from_ARGV[0]
       puts "#{o.name} #{o.version}"
