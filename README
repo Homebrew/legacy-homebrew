@@ -21,6 +21,17 @@ Max Howell <http://twitter.com/mxcl>
 
 Installation
 ============
+Firstly, we build from source, so you need Xcode.
+
+http://developer.apple.com/technology/xcode.html
+
+Next, uninstall MacPorts and Fink (or just rename their root folders). Many
+build scripts blindly look in /opt/local etc. and end up linking to that stuff
+anyway!
+
+http://trac.macports.org/wiki/FAQ#HowDoIRemoveOrUninstallMacPorts
+http://www.finkproject.org/faq/usage-fink.php#removing
+
 Homebrew uses Ruby and some other stuff that is already installed on Leopard.
 It is self-contained and ready to go. Just copy this directory somewhere. Things
 work really well if you put it in /usr/local (especially if you are a 
