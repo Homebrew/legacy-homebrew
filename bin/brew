@@ -105,26 +105,13 @@ def ln name
   # NOTE that not everything needs to be in the main tree
   # TODO consider using hardlinks
   $n=0
-  lnd(keg, 'etc') {nil}
-  lnd(keg, 'include') {nil}
-  
-  lnd(keg, 'lib') do |path|
-    :mkpath if ['pkgconfig','php'].include? path.to_s
-  end
-
-  lnd(keg, 'bin') do |path| 
-    if path.extname.to_s == '.app'
-      # no need to put .app bundles in the path, just use spotlight, or the
-      # open command
-      :skip
-    else
-      :mkpath
-    end
-  end
-
+  lnd(keg, 'etc') {:mkdir}
+  lnd(keg, 'include') {:link}
+  lnd(keg, 'bin') {:link}  
+  lnd(keg, 'lib') {|path| :mkpath if ['pkgconfig','php'].include? path.to_s}
   lnd(keg, 'share') do |path|
-    includes=(1..9).collect {|x| "man/man#{x}"} <<'man'<<'doc'<<'locale'<<'info'<<'aclocal'
-    :mkpath if includes.include? path.to_s
+    mkpaths=(1..9).collect {|x| "man/man#{x}"} <<'man'<<'doc'<<'locale'<<'info'<<'aclocal'
+    :mkpath if mkpaths.include? path.to_s
   end
 
   return $n
@@ -153,6 +140,10 @@ def lnd keg, start
     to=$root+relative_path
 
     if from.directory?
+      # no need to put .app bundles in the path, the user can just use
+      # spotlight, or the open command and actual mac apps use an equivalent
+      Find.prune if path.extname.to_s == '.app'
+      
       cmd=yield from.relative_path_from(start)
       
       if :skip == cmd
