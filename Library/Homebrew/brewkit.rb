@@ -173,12 +173,6 @@ public
         Dir.chdir tmp do
           Dir.chdir uncompress(tgz) do
             yield self
-            if caveats
-              ohai "Caveats"
-              puts caveats
-            end
-            #TODO copy changelog or CHANGES file to pkg root,
-            #TODO maybe README, etc. to versioned root
           end
         end
       rescue Interrupt, RuntimeError

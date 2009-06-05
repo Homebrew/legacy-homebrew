@@ -226,8 +226,14 @@ begin
         o.prefix.mkpath
         o.brew { o.install }
         ohai 'Finishing up'
+        #TODO copy changelog or CHANGES file to pkg root,
+        #TODO maybe README, etc. to versioned root
         o.clean
         ln name
+        if o.caveats
+          ohai "Caveats"
+          puts o.caveats
+        end        
         puts "#{o.prefix}: "+abv(name)+", built in #{Time.now - beginning} seconds"
       end
     when 'ln'
