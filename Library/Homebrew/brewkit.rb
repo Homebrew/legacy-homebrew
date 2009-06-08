@@ -88,6 +88,11 @@ class Pathname
   def mv dst
     FileUtils.mv to_s, dst
   end
+
+  def mv_from src
+    FileUtils.mv src, to_s
+  end
+
   def cp dst
     if file?
       FileUtils.cp to_s, dst
