@@ -179,6 +179,9 @@ public
   def man
     maybe_mkpath prefix+'share'+'man'
   end
+  def man1
+    maybe_mkpath prefix+'share'+'man'+'man1'
+  end
   def lib
     maybe_mkpath prefix+'lib'
   end
