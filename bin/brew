@@ -177,7 +177,7 @@ Commands:
 EOS
 end
 
-def abv keg
+def abv keg=''
   keg=$cellar+keg
   `find #{keg} -type f | wc -l`.strip+' files, '+`du -hd0 #{keg} | cut -d"\t" -f1`.strip
 end
