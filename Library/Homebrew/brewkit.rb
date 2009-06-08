@@ -210,28 +210,25 @@ public
       end
     end
   end
-  
+
   def clean
-    prefix.find do |path|
-      if path==prefix #rubysucks
+    [bin,lib].each {|path| path.find do |path|
+      if not path.file?
         next
-      elsif path.file?
-        if path.extname == '.la'
-          path.unlink
-        else
-          fo=`file -h #{path}`
-          args=nil 
-          args='-SxX' if fo =~ /Mach-O dynamically linked shared library/
-          args='' if fo =~ /Mach-O executable/ #defaults strip everything
-          if args
-            puts "Stripping: #{path}" if ARGV.include? '--verbose'
-            `strip #{args} #{path}`
-          end
+      elsif path.extname == '.la'
+        # .la files are stupid
+        path.unlink
+      else
+        fo=`file -h #{path}`
+        args=nil
+        args='-SxX' if fo =~ /Mach-O dynamically linked shared library/
+        args='' if fo =~ /Mach-O executable/ #defaults strip everything
+        if args
+          puts "Stripping: #{path}" if ARGV.include? '--verbose'
+          `strip #{args} #{path}`
         end
-      elsif path.directory? and path!=prefix+'bin' and path!=prefix+'lib'
-        Find.prune
       end
-    end
+    end}
   end
 
 protected
