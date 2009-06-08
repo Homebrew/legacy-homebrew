@@ -207,7 +207,7 @@ begin
       puts HOMEBREW_VERSION
     when 'list'
       fae=shift_formulae_from_ARGV.collect {|name| ($cellar+name).to_s}
-      puts `find #{fae.join' '}`
+      puts `find #{fae.join' '} -type f -print`
     when 'install'
       shift_formulae_from_ARGV.each do |name|
         beginning = Time.now
