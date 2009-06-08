@@ -235,19 +235,20 @@ begin
       shift_formulae_from_ARGV.each {|name| rm name}
     when 'mk'
       require 'brewkit'
-      class Template <Formula
-        @url=ARGV.shift
-      end
+      url=ARGV.shift
+      version=extract_version File.basename(url, Pathname.new(url).extname)
 
-      t=Template.new
-      /(.*)[-_.]#{t.version}/.match File.basename(t.url)
-      t.name = $1
+      /(.*?)[-_.]?#{version}/.match File.basename(url)
+      raise "Couldn't parse name from #{url}" if $1.nil?
 
-      f=File.new $formula+(t.name+'.rb'), 'w'
+      path=$formula+($1+'.rb')
+      raise "#{path} already exists!" if File.exist? path
+
+      f=File.new path, 'w'
       f.puts "require 'brewkit'"
       f.puts
-      f.puts "class #{__class t.name} <Formula"
-      f.puts "  @url=#{t.url}"
+      f.puts "class #{__class $1} <Formula"
+      f.puts "  @url='#{url}'"
       f.puts "  @md5=''"
       f.puts "  @homepage=''"
       f.puts
@@ -257,6 +258,8 @@ begin
       f.puts "  end"
       f.puts "end"
       f.close
+
+      puts path
     when 'info'
       o=__obj shift_formulae_from_ARGV[0]
       puts "#{o.name} #{o.version}"

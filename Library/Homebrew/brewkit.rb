@@ -49,6 +49,29 @@ def appsupport
   return appsupport
 end
 
+class BuildError <RuntimeError
+  def initialize cmd
+    super "Build failed during: #{cmd}"
+  end
+end
+
+# pass in the basename of the filename _without_ any file extension
+def extract_version basename
+  # eg. foobar4.5.1
+  # eg. foobar-4.5.1
+  # eg. foobar-4.5.1b
+  /^[^0-9]*((\d+\.)*(\d+-)?\d+[abc]?)$/.match basename
+  return $1 if $1
+
+  # eg. boost_1_39_0
+  /^[^0-9]*((\d+_)*\d+)$/.match basename
+  return $1.gsub('_', '.') if $1
+  
+  # eg. (erlang) otp_src_R13B
+  /^.*[-_.](.*)$/.match basename
+  return $1 if $1
+end
+
 
 # make our code neater
 class Pathname
@@ -61,6 +84,17 @@ class Pathname
     else
       FileUtils.cp_r to_s, dst
     end
+  end
+
+  def extname
+    /\.(zip|tar\.(gz|bz2)|tgz)$/.match to_s
+    return ".#{$1}" if $1
+    return File.extname(to_s)
+  end
+
+  # for files we support, basename without extension
+  def stem
+    return File.basename(to_s, extname)
   end
 end
 
@@ -107,24 +141,6 @@ class AbstractFormula
     raise "@url.nil?" if @url.nil?
     @md5=md5 if @md5.nil?
     # end ruby is weird section
-  end
-
-protected
-  # pass in the basename of the filename _without_ any file extension
-  def extract_version basename
-    # eg. foobar4.5.1
-    # eg. foobar-4.5.1
-    # eg. foobar-4.5.1b
-    /^[^0-9]*((\d+\.)*(\d+-)?\d+[abc]?)$/.match basename
-    return @version=$1 if $1
-
-    # eg. boost_1_39_0
-    /^[^0-9]*((\d+_)*\d+)$/.match basename
-    return @version=$1.gsub('_', '.') if $1
-    
-    # eg. (erlang) otp_src_R13B
-    /^.*[-_.](.*)$/.match basename
-    return @version=$1 if $1
   end
 
 private
@@ -265,12 +281,6 @@ class UnidentifiedFormula <AbstractFormula
   end
 
 private
-  def extname
-    /\.(zip|tar\.(gz|bz2)|tgz)$/.match @url
-    return ".#{$1}" if $1
-    raise "Only tarballs and zips are supported by this class"
-  end
-
   def uncompress(path)
     if path.extname == '.zip'
       `unzip -qq "#{path}"`
@@ -297,7 +307,7 @@ end
 class Formula <UnidentifiedFormula
   def initialize name
     super name
-    extract_version File.basename(@url, extname)
+    @version=extract_version Pathname.new(File.basename(@url)).stem
   end
 end
 
@@ -338,14 +348,17 @@ def system cmd
   IO.popen("#{cmd} 2>&1") do |f|
     until f.eof?
       s=f.gets
-      out+=s
-      puts s if ARGV.include? '--verbose'
+      if ARGV.include? '--verbose'
+        puts s
+      else
+        out+=s
+      end
     end
   end
 
   unless $? == 0
     puts out unless ARGV.include? '--verbose' #already did that above
-    raise "Failure during: #{cmd}"
+    raise BuildError.new(cmd)
   end
 end
 

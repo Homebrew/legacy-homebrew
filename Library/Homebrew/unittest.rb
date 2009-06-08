@@ -71,8 +71,6 @@ class BeerTasting <Test::Unit::TestCase
       TestFormula.new 'test-0.1.tgz'
       TestFormula.new 'test-0.1.zip'
     end
-    assert_raise(RuntimeError) {TestFormula.new 'test-0.1.7'}
-    assert_raise(RuntimeError) {TestFormula.new 'test-0.1.arse'}
   end
 
   def test_prefix
