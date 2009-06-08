@@ -178,32 +178,30 @@ public
   # yields self with current working directory set to the uncompressed tarball
   def brew
     ohai "Downloading #{@url}"
-
     Dir.chdir appsupport do
-      tgz=Pathname.new(fetch()).realpath
-      md5=`md5 -q "#{tgz}"`.strip
-      raise "MD5 mismatch: #{md5}" unless @md5 and md5 == @md5.downcase
-
-      # we make an additional subdirectory so know exactly what we are
-      # recursively deleting later
-      # we use mktemp rather than appsupport/blah because some build scripts
-      # can't handle being built in a directory with spaces in it :P
-      tmp=nil
+      tmp=tgz=nil
       begin
+        tgz=Pathname.new(fetch()).realpath
+        md5=`md5 -q "#{tgz}"`.strip
+        raise "MD5 mismatch: #{md5}" unless @md5 and md5 == @md5.downcase
+
+        # we make an additional subdirectory so know exactly what we are
+        # recursively deleting later
+        # we use mktemp rather than appsupport/blah because some build scripts
+        # can't handle being built in a directory with spaces in it :P
         tmp=`mktemp -dt #{File.basename @url}`.strip
         Dir.chdir tmp do
           Dir.chdir uncompress(tgz) do
             yield self
           end
         end
-      rescue => e
-        if e.kind_of? Interrupt and ARGV.include? '--debug'
+      rescue Interrupt, RuntimeError
+        if ARGV.include? '--debug'
           # debug mode allows the packager to intercept a failed build and
           # investigate the problems
           puts "Rescued build at: #{tmp}"
           exit! 1
         else
-          FileUtils.rm_rf prefix
           raise
         end
       ensure

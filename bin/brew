@@ -212,20 +212,28 @@ begin
       shift_formulae_from_ARGV.each do |name|
         beginning = Time.now
         o=__obj(name)
-        raise "#{o.prefix} already exists!" if o.prefix.exist?
-        o.prefix.mkpath
-        o.brew { o.install }
-        ohai 'Finishing up'
-        #TODO copy changelog or CHANGES file to pkg root,
-        #TODO maybe README, etc. to versioned root
-        o.clean
-        ln name
-        if o.caveats
-          ohai "Caveats"
-          puts o.caveats
-          ohai "Summary"
+        begin
+          raise "#{o.prefix} already exists!" if o.prefix.exist?
+          o.prefix.mkpath
+          o.brew do
+            o.install
+            ['README','ChangeLog','COPYING','AUTHORS'].each do |file|
+              FileUtils.cp file, o.prefix if File.file? file
+            end
+          end
+          ohai 'Finishing up'
+          o.clean
+          ln name
+          if o.caveats
+            ohai "Caveats"
+            puts o.caveats
+            ohai "Summary"
+          end
+          puts "#{o.prefix}: "+abv(name)+", built in #{Time.now - beginning} seconds"
+        rescue Exception
+          FileUtils.rm_rf o.prefix
+          raise
         end
-        puts "#{o.prefix}: "+abv(name)+", built in #{Time.now - beginning} seconds"
       end
     when 'ln'
       n=0
