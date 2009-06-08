@@ -272,7 +272,12 @@ begin
       f.puts "end"
       f.close
 
-      puts path
+      if Kernel.system "which mate > /dev/null" and $? == 0
+        exec "mate #{path}"
+      else
+        puts path
+      end
+
     when 'info'
       o=__obj shift_formulae_from_ARGV[0]
       puts "#{o.name} #{o.version}"
