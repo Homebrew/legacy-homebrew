@@ -57,16 +57,26 @@ end
 
 # pass in the basename of the filename _without_ any file extension
 def extract_version basename
-  # eg. foobar4.5.1
-  # eg. foobar-4.5.1
-  # eg. foobar-4.5.1b
-  /^[^0-9]*((\d+\.)*(\d+-)?\d+[abc]?)$/.match basename
+  # eg. boost_1_39_0
+  /((\d+_)+\d+)$/.match basename
+  return $1.gsub('_', '.') if $1
+
+  # eg. foobar-4.5.1-1
+  /-((\d+\.)*\d+-\d+)$/.match basename
   return $1 if $1
 
-  # eg. boost_1_39_0
-  /^[^0-9]*((\d+_)*\d+)$/.match basename
-  return $1.gsub('_', '.') if $1
+  # eg. foobar-4.5.1
+  /-((\d+\.)*\d+)$/.match basename
+  return $1 if $1
+
+  # eg. foobar-4.5.1b
+  /-((\d+\.)*\d+[abc])$/.match basename
+  return $1 if $1
   
+  # eg. foobar4.5.1
+  /((\d+\.)*\d+)$/.match basename
+  return $1 if $1
+
   # eg. (erlang) otp_src_R13B
   /^.*[-_.](.*)$/.match basename
   return $1 if $1

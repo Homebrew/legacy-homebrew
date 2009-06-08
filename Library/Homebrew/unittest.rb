@@ -33,6 +33,11 @@ class BeerTasting <Test::Unit::TestCase
     r=TestFormula.new "http://erlang.org/download/otp_src_R13B.tar.gz"
     assert_equal 'R13B', r.version
   end
+  
+  def test_dos2unix
+    r=TestFormula.new "http://www.sfr-fresh.com/linux/misc/dos2unix-3.1.tar.gz"
+    assert_equal '3.1', r.version
+  end
 
   def test_version_internal_dash
     r=TestFormula.new "http://example.com/foo-arse-1.1-2.tar.gz"
