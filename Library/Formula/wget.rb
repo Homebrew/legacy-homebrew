@@ -7,7 +7,6 @@ class Wget <Formula
 
   def install
     system "./configure --disable-debug --prefix='#{prefix}'"
-    system "make"
     system "make install"
   end
 end

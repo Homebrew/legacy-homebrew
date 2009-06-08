@@ -7,6 +7,6 @@ class Pngcrush <Formula
 
   def install
     system "make"
-    FileUtils.cp 'pngcrush', bin
+    bin.mv_from 'pngcrush'
   end
 end
