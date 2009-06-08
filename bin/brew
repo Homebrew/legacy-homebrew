@@ -216,9 +216,14 @@ begin
           raise "#{o.prefix} already exists!" if o.prefix.exist?
           o.prefix.mkpath
           o.brew do
-            o.install
-            ['README','ChangeLog','COPYING','AUTHORS'].each do |file|
-              FileUtils.cp file, o.prefix if File.file? file
+            if ARGV.include? '--interactive'
+              ohai "Entering interactive mode, type `exit' to return to this shell"
+              exec "bash"
+            else
+              o.install
+              ['README','ChangeLog','COPYING','COPYRIGHT','AUTHORS'].each do |file|
+                FileUtils.cp file, o.prefix if File.file? file
+              end
             end
           end
           ohai 'Finishing up'
