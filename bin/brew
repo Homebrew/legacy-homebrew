@@ -170,8 +170,7 @@ Commands:
   rm formula ...
   list formula ...
   ln formula ...
-  info formula
-  abv [formula]
+  info [formula]
   mk url
   prune
 EOS
@@ -179,18 +178,13 @@ end
 
 def abv keg=''
   keg=$cellar+keg
+  return nil if not File.directory? keg
   `find #{keg} -type f | wc -l`.strip+' files, '+`du -hd0 #{keg} | cut -d"\t" -f1`.strip
 end
 
 ######################################################################### impl
 begin
   case ARGV.shift
-    when 'abv'
-      if ARGV.empty?
-        puts abv
-      else
-        puts abv(shift_formulae_from_ARGV[0])
-      end
     when 'prune'
       puts "Pruned #{prune} files"
     when '--prefix'
@@ -278,16 +272,22 @@ begin
         puts path
       end
 
-    when 'info'
-      o=__obj shift_formulae_from_ARGV[0]
-      puts "#{o.name} #{o.version}"
-      puts o.homepage
-      if o.caveats
-        ohai 'Caveats'
-        puts o.caveats
+    when 'info','abv'
+      if ARGV.empty?
+        puts abv
+      else
+        o=__obj shift_formulae_from_ARGV[0]
+        puts "#{o.name} #{o.version}"
+        puts o.homepage
+        if abv=abv(o.name)
+          ohai "Installation"
+          puts abv
+        end
+        if o.caveats
+          ohai 'Caveats'
+          puts o.caveats
+        end        
       end
-    else
-      puts usage
   end
 
 rescue StandardError, Interrupt => e
