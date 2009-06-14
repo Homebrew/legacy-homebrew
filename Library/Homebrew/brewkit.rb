@@ -77,9 +77,11 @@ def extract_version basename
   /((\d+\.)*\d+)$/.match basename
   return $1 if $1
 
-  # eg. (erlang) otp_src_R13B
-  /^.*[-_.](.*)$/.match basename
-  return $1 if $1
+  # eg. otp_src_R13B (this is erlang's style)
+  # eg. astyle_1.23_macosx.tar.gz
+  basename.scan /_([^_]+)/ do |match|
+    return match.first if /\d/.match $1
+  end
 end
 
 
