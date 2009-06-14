@@ -91,7 +91,7 @@ class Pathname
     FileUtils.mv to_s, dst
   end
 
-  def mv_from src
+  def install src
     FileUtils.mv src, to_s
   end
 

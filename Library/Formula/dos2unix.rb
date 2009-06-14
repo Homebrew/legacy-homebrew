@@ -9,7 +9,7 @@ class Dos2unix <Formula
     system "make clean"
     system "make"
     # make install is broken due to INSTALL file, but also it sucks so we'll do it
-    bin.mv_from ['dos2unix', 'mac2unix']
-    man1.mv_from ['dos2unix.1', 'mac2unix.1']
+    bin.install ['dos2unix', 'mac2unix']
+    man1.install ['dos2unix.1', 'mac2unix.1']
   end
 end
