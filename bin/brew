@@ -182,6 +182,13 @@ def abv keg=''
   `find #{keg} -type f | wc -l`.strip+' files, '+`du -hd0 #{keg} | cut -d"\t" -f1`.strip
 end
 
+######################################################################## utils
+def pretty_duration s
+  return "#{(s*1000).to_i} milliseconds" if s < 3
+  return "#{s.to_i} seconds" if s < 10*60
+  return "#{(s/60).to_i} minutes"
+end
+
 ######################################################################### impl
 begin
   case ARGV.shift
@@ -228,7 +235,7 @@ begin
             puts o.caveats
             ohai "Summary"
           end
-          puts "#{o.prefix}: "+abv(name)+", built in #{Time.now - beginning} seconds"
+          puts "#{o.prefix}: "+abv(name)+", built in #{pretty_duration Time.now-beginning}"
         rescue Exception
           FileUtils.rm_rf o.prefix
           raise
