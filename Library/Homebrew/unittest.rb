@@ -3,6 +3,7 @@
 $:.unshift File.dirname(__FILE__)
 require 'test/unit'
 require 'brewkit'
+require 'stringio'
 
 class TestFormula <Formula
   def initialize url, md5='nomd5'
@@ -10,6 +11,13 @@ class TestFormula <Formula
     @md5=md5
     super 'test'
   end
+end
+
+def nostdout
+  tmp=$stdout
+  $stdout=StringIO.new
+  yield
+  $stdout=tmp
 end
 
 
@@ -86,12 +94,12 @@ class BeerTasting <Test::Unit::TestCase
   def test_prefix
     url='http://www.methylblue.com/test-0.1.tar.gz'
     md5='d496ea538a21dc4bb8524a8888baf88c'
-    
-    TestFormula.new(url, md5).brew do |f|
-      prefix=f.prefix
-      # we test for +/unittest/0.1 because we derive @name from $0
-      assert_equal File.expand_path(prefix), ($cellar+'test'+'0.1').to_s
-      assert_kind_of Pathname, prefix
+
+    nostdout do
+      TestFormula.new(url, md5).brew do |f|
+        assert_equal File.expand_path(f.prefix), ($cellar+f.name+'0.1').to_s
+        assert_kind_of Pathname, f.prefix
+      end
     end
   end
 end
