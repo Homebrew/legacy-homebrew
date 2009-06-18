@@ -219,12 +219,15 @@ begin
           o.brew do
             if ARGV.include? '--interactive'
               ohai "Entering interactive mode, type `exit' to return to this shell"
-              exec "bash"
+              exec "bash" #TODO why exec?
             else
               o.install
               ['README','ChangeLog','COPYING','COPYRIGHT','AUTHORS'].each do |file|
                 FileUtils.cp file, o.prefix if File.file? file
               end
+              #this is common, and we don't want it
+              versioned_docs=o.doc.parent+"#{o.name}-#{o.version}"
+              versioned_docs.rename o.doc if versioned_docs.exist?
             end
           end
           ohai 'Finishing up'

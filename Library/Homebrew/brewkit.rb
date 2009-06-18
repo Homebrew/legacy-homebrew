@@ -87,8 +87,14 @@ end
 
 # make our code neater
 class Pathname
-  def mv dst
+  def mv dst    
     FileUtils.mv to_s, dst
+  end
+  
+  def rename dst
+    dst=Pathname.new dst
+    dst.unlink if dst.exist?
+    mv dst
   end
 
   def install src
