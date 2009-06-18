@@ -248,7 +248,7 @@ begin
       n=0
       shift_formulae_from_ARGV.each {|name| n+=ln name}
       puts "Created #{n} links"
-    when 'rm'
+    when 'rm', 'uninstall'
       shift_formulae_from_ARGV.each {|name| rm name}
     when 'mk'
       require 'brewkit'
