@@ -306,6 +306,9 @@ begin
           end
         end
       end
+      
+    else
+      puts usage
   end
 
 rescue StandardError, Interrupt => e
