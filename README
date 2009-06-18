@@ -71,10 +71,13 @@ Search for a package already installed:
     ls /usr/local/Cellar/*wget*
 
 List all packages available to install:
-    ls /Brewery/Library/Formula
+    ls /usr/local/Library/Formula
 
 Compute installed size of package:
-    du -h /Brewery/Cellar/wget
+    du -h /usr/local/Cellar/wget
+    
+Show expensive packages:
+    du -md1 /usr/local/Cellar
 
 You get the idea.
 
@@ -97,7 +100,7 @@ that's easy:
 Why Not MacPorts?
 =================
 1. MacPorts installs its own libz, its own openssl, etc. It's an autarky.
-   This makes no sense to me. OS X comes with all that shit.
+   This makes no sense to me. OS X comes with all that stuff.
 2. MacPorts support Tiger, and PPC. We don't, so things are better optimised.
 3. cmake has like 100 dependencies in MacPorts, with Homebrew it has one
 
@@ -127,7 +130,7 @@ Chances are that if the package hasn't been updated for a few days, then the
 previous maintainer has vanished. You have to do it. Don't worry, unlike every
 other packaging system ever, it's easy with Homebrew:
 
-1. Edit the relevant ruby file in /Brewery/Formula
+1. Edit the relevant ruby file in /usr/local/Formula
 2. Fork Homebrew on github (or git diff > patch)
 3. Send mxcl a pull request
 

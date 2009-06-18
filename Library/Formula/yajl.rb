@@ -6,7 +6,7 @@ class Yajl <Formula
   @md5='f4a3cbc764c43231ed1aedc54438b69b'
 
   def deps
-    dep_test_bin 'cmake'
+    BinaryDep.new 'cmake'
   end
 
   def install

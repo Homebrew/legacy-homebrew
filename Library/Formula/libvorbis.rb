@@ -6,7 +6,7 @@ class Libvorbis <Formula
   @homepage='http://vorbis.com'
 
   def deps
-    test_lib 'ogg'
+    LibraryDep.new 'ogg'
   end
 
   def install
