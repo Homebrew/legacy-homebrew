@@ -305,10 +305,6 @@ begin
             puts o.caveats
           end
         end
-        if o.caveats
-          ohai 'Caveats'
-          puts o.caveats
-        end        
       end
   end
 
