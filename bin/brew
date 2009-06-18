@@ -270,7 +270,7 @@ begin
       f.puts "    system \"./configure --disable-debug --prefix='\#{prefix}'\""
       f.puts "    system \"make install\""
       f.puts "  end"
-      f.puts "end"
+      f.print "end"
       f.close
 
       if Kernel.system "which mate > /dev/null" and $? == 0
