@@ -220,7 +220,11 @@ begin
           o.brew do
             if ARGV.include? '--interactive'
               ohai "Entering interactive mode, type `exit' to return to this shell"
-              exec "bash" #TODO why exec?
+              exec "bash" # exec() because system() didn't work :(
+            elsif ARGV.include? '--help'
+              ohai './configure --help'
+              puts `./configure --help`
+              exit
             else
               o.install
               ['README','ChangeLog','COPYING','COPYRIGHT','AUTHORS'].each do |file|
