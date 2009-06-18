@@ -142,6 +142,12 @@ Relative to every other stupid packaging system ever, this is trivial. Just
 fork it at: http://github.com/mxcl/homebrew and create a new recipe. Then ask
 me to pull. Using git made all this so much easier.
 
+To make a new package use brew mk:
+
+    brew mk http://foo.org/foobar-1.2.1.tar.bz2
+    
+This will either open TextMate or print the location of the generated stub.
+
 HomeBrew is not an Autarky so any dependencies outside of OS X that a package
 may require may be installed separately. We have functions to help with that.
 
