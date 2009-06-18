@@ -6,7 +6,9 @@ class Libogg <Formula
   @md5='eaf7dc6ebbff30975de7527a80831585'
 
   def install
-    system "./configure --disable-debug --prefix='#{prefix}'"
+    system "./configure --disable-debug --disable-dependency-tracking --prefix='#{prefix}'"
+    system "make"
+    ENV['MAKEFLAGS']=''
     system "make install"
   end
 end
