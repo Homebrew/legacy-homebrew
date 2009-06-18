@@ -286,12 +286,24 @@ begin
       if ARGV.empty?
         puts abv
       else
-        o=__obj shift_formulae_from_ARGV[0]
-        puts "#{o.name} #{o.version}"
-        puts o.homepage
-        if abv=abv(o.name)
-          ohai "Installation"
-          puts abv
+        if ARGV[0][0..6] == 'http://'
+          require 'brewkit'
+          path=Pathname.new ARGV[0]
+          basename=File.basename path, path.extname
+          v=extract_version basename
+          puts v
+        else
+          o=__obj shift_formulae_from_ARGV[0]
+          puts "#{o.name} #{o.version}"
+          puts o.homepage
+          if abv=abv(o.name)
+            ohai "Installation"
+            puts abv
+          end
+          if o.caveats
+            ohai 'Caveats'
+            puts o.caveats
+          end
         end
         if o.caveats
           ohai 'Caveats'
