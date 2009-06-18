@@ -70,7 +70,7 @@ def extract_version basename
   return $1 if $1
 
   # eg. foobar-4.5.1b
-  /-((\d+\.)*\d+[abc])$/.match basename
+  /-((\d+\.)*\d+([abc]|rc\d))$/.match basename
   return $1 if $1
   
   # eg. foobar4.5.1

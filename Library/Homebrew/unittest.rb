@@ -47,6 +47,11 @@ class BeerTasting <Test::Unit::TestCase
     assert_equal '1.23', r.version
   end
   
+  def test_version_libvorbis
+    r=TestFormula.new "http://downloads.xiph.org/releases/vorbis/libvorbis-1.2.2rc1.tar.bz2"
+    assert_equal '1.2.2rc1', r.version
+  end
+  
   def test_dos2unix
     r=TestFormula.new "http://www.sfr-fresh.com/linux/misc/dos2unix-3.1.tar.gz"
     assert_equal '3.1', r.version
