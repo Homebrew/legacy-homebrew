@@ -263,7 +263,7 @@ begin
       /(.*?)[-_.]?#{version}/.match File.basename(url)
       raise "Couldn't parse name from #{url}" if $1.nil?
 
-      path=$formula+($1+'.rb')
+      path=$formula+($1.downcase+'.rb')
       raise "#{path} already exists!" if File.exist? path
 
       f=File.new path, 'w'
