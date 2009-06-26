@@ -217,6 +217,15 @@ begin
       end
       raise 'No such keg' if fae.first.nil? and fae.length == 1
       puts `find #{fae.join' '} -type f -print`
+    when 'macports'
+      exec "open 'http://www.macports.org/ports.php?by=name&substr=#{ARGV.shift}'"
+    when 'edit'
+      if ARGV.empty?
+        exec "mate #{$formula} #{$root}/Library/Homebrew #{$root}/bin/brew #{$root}/README"
+      else
+        exec "mate #{$formula}/#{ARGV.shift}.rb"
+      end
+
     when 'install'
       shift_formulae_from_ARGV.each do |name|
         beginning = Time.now
