@@ -232,16 +232,22 @@ begin
         o=__obj(name)
         begin
           raise "#{o.prefix} already exists!" if o.prefix.exist?
-          o.prefix.mkpath
           o.brew do
             if ARGV.include? '--interactive'
               ohai "Entering interactive mode, type `exit' to return to this shell"
-              exec "bash" # exec() because system() didn't work :(
+              puts "Install to this prefix: #{o.prefix}"
+              pid=fork
+              if pid.nil?
+                exec 'bash'
+              else
+                Process.wait pid
+              end
             elsif ARGV.include? '--help'
               ohai './configure --help'
               puts `./configure --help`
               exit
             else
+              o.prefix.mkpath
               o.install
               ['README','ChangeLog','COPYING','COPYRIGHT','AUTHORS'].each do |file|
                 FileUtils.cp file, o.prefix if File.file? file
@@ -277,7 +283,7 @@ begin
       version=extract_version File.basename(url, Pathname.new(url).extname)
 
       /(.*?)[-_.]?#{version}/.match File.basename(url)
-      raise "Couldn't parse name from #{url}" if $1.nil?
+      raise "Couldn't parse name from #{url}" if $1.nil? or $1.empty?
 
       path=$formula+($1.downcase+'.rb')
       raise "#{path} already exists!" if File.exist? path
