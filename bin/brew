@@ -293,8 +293,8 @@ begin
       f.puts
       f.puts "class #{__class $1} <Formula"
       f.puts "  @url='#{url}'"
+      f.puts "  @homepage=''" # second because you fill in these two first
       f.puts "  @md5=''"
-      f.puts "  @homepage=''"
       f.puts
       f.puts "  def install"
       f.puts "    system \"./configure --disable-debug --prefix='\#{prefix}'\""
