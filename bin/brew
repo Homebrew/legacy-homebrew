@@ -108,7 +108,7 @@ def ln name
   $n=0
   lnd(keg, 'etc') {:mkdir}
   lnd(keg, 'include') {:link}
-  lnd(keg, 'bin') {:link}  
+  lnd(keg, 'bin') {:link}
   lnd(keg, 'lib') {|path| :mkpath if ['pkgconfig','php'].include? path.to_s}
   lnd(keg, 'share') do |path|
     mkpaths=(1..9).collect {|x| "man/man#{x}"} <<'man'<<'doc'<<'locale'<<'info'<<'aclocal'
@@ -211,7 +211,11 @@ begin
     when '-v', '--version'
       puts HOMEBREW_VERSION
     when 'list'
-      fae=shift_formulae_from_ARGV.collect {|name| ($cellar+name).to_s}
+      fae=shift_formulae_from_ARGV.collect do |name|
+        keg=$cellar+name
+        keg.directory? ? keg : nil
+      end
+      raise 'No such keg' if fae.first.nil? and fae.length == 1
       puts `find #{fae.join' '} -type f -print`
     when 'install'
       shift_formulae_from_ARGV.each do |name|
