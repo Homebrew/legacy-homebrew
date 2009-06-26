@@ -5,6 +5,9 @@ require 'pathname'
 $:.unshift Pathname.new(__FILE__).dirname.parent.realpath+'Library'+'Homebrew'
 require 'env'
 
+# often causes Ruby to throw exception ffs
+Dir.chdir '/' unless File.exist? Dir.getwd
+
 def prune
   n=0
   dirs=Array.new
