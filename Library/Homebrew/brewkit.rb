@@ -98,7 +98,10 @@ class Pathname
   end
 
   def install src
-    FileUtils.mv src, to_s
+    if File.exist? src
+      mkpath
+      FileUtils.mv src, to_s
+    end
   end
 
   def cp dst
@@ -166,12 +169,6 @@ class AbstractFormula
     # end ruby is weird section
   end
 
-private
-  def maybe_mkpath path
-    path.mkpath unless path.exist?
-    return path
-  end
-
 public  
   def prefix
     raise "@name.nil!" if @name.nil?
@@ -179,22 +176,22 @@ public
     $cellar+@name+@version
   end
   def bin
-    maybe_mkpath prefix+'bin'
+    prefix+'bin'
   end
   def doc
-    maybe_mkpath prefix+'share'+'doc'+name
+    prefix+'share'+'doc'+name
   end
   def man
-    maybe_mkpath prefix+'share'+'man'
+    prefix+'share'+'man'
   end
   def man1
-    maybe_mkpath prefix+'share'+'man'+'man1'
+    prefix+'share'+'man'+'man1'
   end
   def lib
-    maybe_mkpath prefix+'lib'
+    prefix+'lib'
   end
   def include
-    maybe_mkpath prefix+'include'
+    prefix+'include'
   end
 
   def caveats
@@ -247,14 +244,23 @@ public
       else
         fo=`file -h #{path}`
         args=nil
+        chmod=0444
         args='-SxX' if fo =~ /Mach-O dynamically linked shared library/
-        args='' if fo =~ /Mach-O executable/ #defaults strip everything
+        if fo =~ /Mach-O executable/ #defaults strip everything
+          args='' # still do the strip
+          chmod=0544
+        end
         if args
           puts "Stripping: #{path}" if ARGV.include? '--verbose'
+          path.chmod 0644 # so we can strip
           `strip #{args} #{path}`
         end
+        path.chmod chmod
       end
     end}
+    
+    # remove empty directories
+    `perl -MFile::Find -e"finddepth(sub{rmdir},'#{prefix}')"`
   end
 
 protected
@@ -328,7 +334,7 @@ end
 class Formula <UnidentifiedFormula
   def initialize name
     super name
-    @version=extract_version Pathname.new(File.basename(@url)).stem
+    @version=extract_version Pathname.new(File.basename(@url)).stem unless @version
   end
 end
 

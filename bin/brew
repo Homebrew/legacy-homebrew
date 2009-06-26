@@ -82,6 +82,7 @@ end
 def rm keg
   #TODO if multiple versions don't rm all unless --force
   path=$cellar+keg
+  `chmod -R u+rw #{path}` # we leave things read only
   path.rmtree
   puts "#{path} removed (#{prune} files)"
 end

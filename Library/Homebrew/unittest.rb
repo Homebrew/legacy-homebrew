@@ -42,6 +42,11 @@ class BeerTasting <Test::Unit::TestCase
     assert_equal 'R13B', r.version
   end
   
+  def test_p7zip_version_style
+    r=TestFormula.new "http://kent.dl.sourceforge.net/sourceforge/p7zip/p7zip_9.04_src_all.tar.bz2"
+    assert_equal '9.04', r.version
+  end
+  
   def test_astyle_verson_style
     r=TestFormula.new "http://kent.dl.sourceforge.net/sourceforge/astyle/astyle_1.23_macosx.tar.gz"
     assert_equal '1.23', r.version
