@@ -33,8 +33,8 @@ http://trac.macports.org/wiki/FAQ#HowDoIRemoveOrUninstallMacPorts
 http://www.finkproject.org/faq/usage-fink.php#removing
 
 Homebrew uses Ruby and some other stuff that is already installed on Leopard.
-It is self-contained and ready to go. Just copy this directory somewhere. Things
-work really well if you put it in /usr/local (especially if you are a 
+It is self-contained and ready to go. Just copy this directory somewhere.
+Things work really well if you put it in /usr/local (especially if you are a 
 developer).
 
 I also recommend you make /usr/local user-writable. I wouldn't worry about it
@@ -44,8 +44,8 @@ not being chroot. We don't install anything base enough for it to be a concern
 You can stick this directory in your home directory if you like. In that case
 a typical (POSIX) choice would be: /User/mxcl/.local
 
-If you don't install to /usr/local (but seriously it's great!) then you'll need
-to edit your ~/.profile file to add Homebrew's bin directory to the PATH.
+If you don't install to /usr/local (but seriously it's great!) then you'll
+need to edit your ~/.profile file to add Homebrew's bin directory to the PATH.
 
 
 Usage
@@ -81,9 +81,9 @@ Show expensive packages:
 
 You get the idea.
 
-Maybe we should overload more of this stuff with the brew command, but frankly I
-feel that this way *you* will understand the capabilities of the system better.
-And you basically know everything that is going on.
+Maybe we should overload more of this stuff with the brew command, but frankly
+I feel that this way *you* will understand the capabilities of the system
+better. And you basically know everything that is going on.
 
 With apt, you type apt-get install wget. Now what is happening? With Homebrew
 you are running a ruby script. You know what is happening. You can easily and
@@ -141,22 +141,52 @@ Contributing
 ============
 New Formulae
 ------------
-Relative to every other stupid packaging system ever, this is trivial. Just
-fork it at: http://github.com/mxcl/homebrew and create a new recipe. Then ask
-me to pull. Using git made all this so much easier.
-
-To make a new package use brew mk:
+Firstly generate the formula:
 
     brew mk http://foo.org/foobar-1.2.1.tar.bz2
-    
-This will either open TextMate or print the location of the generated stub.
 
-HomeBrew is not an Autarky so any dependencies outside of OS X that a package
+You now have /usr/local/Library/Formula/foobar.rb.
+Now it would be useful to amend the formula based on its configure options:
+
+    brew install foobar --help
+
+Now you know foobar's configure options.
+
+    brew install foobar --interactive
+    
+This opens an interactive bash shell at the extracted tarball. You can now 
+install to the recommended prefix or just read the README and type `exit'.
+
+Try to install it:
+
+    brew install foobar
+
+If it worked, fork http://github.com/mxcl/homebrew and ask me to pull. If it 
+didn't you may need to dig a little deeper.
+
+I'll try to optimise the package when I pull, but it would be nice if you did
+that for me ;)
+
+HomeBrew is not an autarky so any dependencies outside of OS X that a package
 may require may be installed separately. We have functions to help with that.
+
+Other useful commands when contributing
+---------------------------------------
+    brew edit # opens Textmate with all of Homebrew as a project
+    brew edit foobar # opens that formula for editing in Textmate
+    brew install foobar --debug # if the build fails, you can fix it
+    brew [something] --verbose # you get a proper ruby backtrace
+    brew install foobar --interactive # you are dumped at a shell with the extracted tarball as PWD
 
 Code
 ----
 Yes please! Fork and improve :)
+
+TODO
+----
+1. upgrades, yeah still need this
+2. install multiple versions of tools, which is very useful for eg. Qt
+3. formula revisions, to allow upgrades irrespective of the underlying package
 
 
 FAQ
