@@ -1,7 +1,7 @@
 require 'brewkit'
 
 class Flac2Mp3 <GithubGistFormula
-  @url='http://gist.github.com/raw/124242/70e0dddd5ed3af94eca75f8e653a284a53a2bdf4/flac2mp3'
+  @url='http://gist.github.com/raw/124242/b17123e5d1c1c88c3d6667a03d59d1cf6b8f8532/flac2mp3'
   @md5='a38d150b5ebbcbc010c777bccf1c19a6'
 end
 
