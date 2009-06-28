@@ -43,10 +43,10 @@ def ohai title
   puts "\033[0;34m==>\033[0;0;1m #{title[0,n]}\033[0;0m"
 end
 
-def appsupport
-  appsupport = File.expand_path "~/Library/Application Support/Homebrew"
-  FileUtils.mkpath appsupport
-  return appsupport
+def cache
+  cache=File.expand_path "~/Library/Caches/Homebrew"
+  FileUtils.mkpath cache
+  return cache
 end
 
 class BuildError <RuntimeError
@@ -201,7 +201,7 @@ public
   # yields self with current working directory set to the uncompressed tarball
   def brew
     ohai "Downloading #{@url}"
-    Dir.chdir appsupport do
+    Dir.chdir cache do
       tmp=tgz=nil
       begin
         tgz=Pathname.new(fetch()).realpath
