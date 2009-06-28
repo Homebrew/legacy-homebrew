@@ -27,7 +27,7 @@ http://developer.apple.com/technology/xcode.html
 
 Next, uninstall MacPorts and Fink (or just rename their root folders). Many
 build scripts blindly look in /opt/local etc. and end up linking to that stuff
-anyway!
+anyway! If you just want to trial Homebrew then you'll get away with not moving MacPorts or Fink, it's just not recommended.
 
 http://trac.macports.org/wiki/FAQ#HowDoIRemoveOrUninstallMacPorts
 http://www.finkproject.org/faq/usage-fink.php#removing
@@ -37,15 +37,30 @@ It is self-contained and ready to go. Just copy this directory somewhere.
 Things work really well if you put it in /usr/local (especially if you are a 
 developer).
 
-I also recommend you make /usr/local user-writable. I wouldn't worry about it
-not being chroot. We don't install anything base enough for it to be a concern
-(unlike MacPorts or Fink).
-
 You can stick this directory in your home directory if you like. In that case
 a typical (POSIX) choice would be: /User/mxcl/.local
 
 If you don't install to /usr/local (but seriously it's great!) then you'll
 need to edit your ~/.profile file to add Homebrew's bin directory to the PATH.
+
+Don't sudo
+----------
+Well clearly you can sudo if you like. Homebrew is all about you doing it your
+way. But we recommend that you don't sudo. Apple designed the OS X heirarchy
+so that you can do things like:
+
+    $ cpan -i MP3::Info
+
+Without having to sudo (although you still need an admin user account).
+Clearly they intended for you to install new stuff that they didn't provide
+without becoming root.
+
+Sudo is dangerous, it can break your system. All the tools Homebrew installs 
+are not system critical. Sudo just makes Homebrew more difficult and more 
+dangerous for you to play with.
+
+If you don't sudo, you know for sure that /usr and /System haven't been
+tampered with. Thus you'll sleep better at night.
 
 
 Usage
@@ -122,6 +137,16 @@ Since we only target Intel Leopard boxes, why not just distribute binaries?
 Well, I can't afford to :P And compiling from source gives more flexibility.
 If you want to adapt the system and make it work with binaries; fork away. 
 The bandwidth is on you though :P
+
+
+CPAN, EasyInstall, RubyGems
+===========================
+Homebrew doesn't reinvent the wheel. These tools are already designed to make
+it easy to install Perl, Ruby and Python tools and libraries. So we insist 
+that you use them. However we don't think you should have to sudo, or install
+to /usr, so we suggest you adapt the tools to install into Homebrew's prefix:
+
+http://github.com/mxcl/homebrew/wiki
 
 
 How do I Notify Someone that a Package is out of Date?
