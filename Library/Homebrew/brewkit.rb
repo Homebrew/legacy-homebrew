@@ -245,9 +245,12 @@ public
         fo=`file -h #{path}`
         args=nil
         chmod=0444
-        args='-SxX' if fo =~ /Mach-O dynamically linked shared library/
-        if fo =~ /Mach-O executable/ #defaults strip everything
+        if fo =~ /Mach-O dynamically linked shared library/
+          args='-SxX'
+        elsif fo =~ /Mach-O executable/ # defaults strip everything
           args='' # still do the strip
+          chmod=0544
+        elsif fo =~ /script text executable/
           chmod=0544
         end
         if args
