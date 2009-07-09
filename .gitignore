@@ -1,4 +1,8 @@
 .DS_Store
-/*/
+/bin
+/Cellar
+/lib
+/include
+/share
 !/Library/
 !/bin/brew
