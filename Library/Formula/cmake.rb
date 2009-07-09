@@ -6,6 +6,7 @@ class Cmake <Formula
 
   def deps
     LibraryDep.new 'xmlrpc', 'xmlrpc-c'
+  end
 
   def install
     system "./bootstrap --prefix=#{prefix} --system-libs"
