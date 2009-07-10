@@ -33,8 +33,8 @@ end
 ######################################################################### cook
 class Grc <Formula
   @homepage='http://korpus.juls.savba.sk/~garabik/software/grc.html'
-  @url='http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.1.tar.gz'
-  @md5='eeb612aba2fff14cbaf1f3bec7e1eb60'
+  @url='http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.3.tar.gz'
+  @md5='a4814dcee965c3ff67681f6b59e6378c'
 
   def install
     ohai "make"  
