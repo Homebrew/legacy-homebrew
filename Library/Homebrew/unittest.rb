@@ -47,6 +47,11 @@ class BeerTasting <Test::Unit::TestCase
     assert_equal '9.04', r.version
   end
   
+  def test_gloox_beta_style
+    r=TestFormula.new "http://camaya.net/download/gloox-1.0-beta7.tar.bz2"
+    assert_equal '1.0-beta7', r.version
+  end
+  
   def test_astyle_verson_style
     r=TestFormula.new "http://kent.dl.sourceforge.net/sourceforge/astyle/astyle_1.23_macosx.tar.gz"
     assert_equal '1.23', r.version
