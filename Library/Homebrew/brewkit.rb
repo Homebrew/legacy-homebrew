@@ -239,6 +239,7 @@ public
   end
 
   def clean
+      #TODO strip libexec too
     [bin,lib].each {|path| path.find do |path|
       if not path.file?
         next
@@ -248,21 +249,30 @@ public
       else
         fo=`file -h #{path}`
         args=nil
-        chmod=0444
+        perms=0444
         if fo =~ /Mach-O dynamically linked shared library/
           args='-SxX'
         elsif fo =~ /Mach-O executable/ # defaults strip everything
           args='' # still do the strip
-          chmod=0544
+          perms=0544
         elsif fo =~ /script text executable/
-          chmod=0544
+          perms=0544
         end
         if args
           puts "Stripping: #{path}" if ARGV.include? '--verbose'
           path.chmod 0644 # so we can strip
-          `strip #{args} #{path}`
+          unless path.stat.nlink > 1
+            `strip #{args} #{path}`
+          else
+            # strip unlinks the file and recreates it, thus breaking hard links!
+            # is this expected behaviour? patch does it too… still,mktm this fixes it
+            tmp=`mktemp -t #{path.basename}`.strip
+            `strip -o #{tmp} #{path}`
+            `cat #{tmp} > #{path}`
+            File.unlink tmp
+          end
         end
-        path.chmod chmod
+        path.chmod perms
       end
     end}
     
