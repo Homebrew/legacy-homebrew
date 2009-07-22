@@ -1,33 +1,78 @@
 Homebrew
 ========
-A simple package management system for OS X Leopard. Packages are brewed in
-individual, versioned kegs. For example:
+Homebrew's purpose is the same as MacPorts or Fink, ie. to let you easily
+install other open source software on your Mac.
 
-/usr/local/Cellar/wget/1.11.4/bin/wget
-/usr/local/Cellar/wget/1.11.4/share/man/man1/wget.1
-…
+Here's why you may prefer Homebrew to the alternatives:
 
-And symlinks are created to allow a normal POSIX tree:
+1. Zeroconf installation
+   Copy the contents of this directory to /usr/local. Homebrew is now ready
+   for use.
 
-/usr/local/bin/wget -> /usr/local/Cellar/wget/1.11.4/bin/wget
-/usr/local/etc/wgetrc -> /usr/local/Cellar/wget/1.11.4/etc/wgetrc
-…
+2. Or… install anywhere!
+   You can actually stick this directory anywhere. Like ~/.local or /opt or 
+   /lol if you like. You can even move this directory somewhere else later.
 
-This way the filesystem is the package database. Everything else is now easy.
-We are made of win.
+3. The GoboLinux approach
+   Packages are installed to their own prefix (eg. /usr/local/Cellar/wget) and
+   then symlinked into the Homebrew prefix (eg. /usr/local). 
+
+   This way the filesystem is the package database. As is often the case with
+   the simplest possible solution, it makes everything else easier and better.
+
+   Eg. You can, if you like, rm -rf to uninstall a package. Or use find to
+   list the package contents. Or du to see its size.
+
+4. You don't have to sudo
+   It's up to you. We recommend not to--see the relevant later section.
+
+5. Easy package creation
+   Packages are just Ruby scripts. Generate a template with:
+
+      brew mk http://foo/tarball-0.89.tgz
+
+   Homebrew will automatically open it for you to tweak with TextMate or
+   $EDITOR.
+
+   Or skip going via a package entirely, just install into the Cellar and use
+   "brew ln" to symlink it into the main tree.
+
+6. Optimisation
+   We optimise for Leopard Intel, binaries are stripped, compile flags 
+   tweaked. Nobody wants crappy, slow software. Apart from MacPorts and Fink.
+
+7. Integration with existing OS X technologies
+   Homebrew integrates with Ruby gems, CPAN and Python disttools. These tools
+   exist already and do the job great. We don't reinvent the wheel, we just
+   improve it by making these tools install with more management options.
+
+8. Complimenting what OS X already has
+   Macports is an autarky. You get a duplicate copy of libz, OpenSSL, Python
+   etc. They do this to support OS X Tiger, etc. more easily. We don't support
+   Tiger, we duplicate nothing. Homebrew compliments OS X, it doesn't seek to
+   operate independently of it.
+
+9. Homebrew has a beer theme
+   Beer goggles will help you to evangelise Homebrew more effectively.
+
+X. Homebrew helps get you chicks
+   There's no conclusive scientific evidence as yet, but I firmly believe it's
+   just a matter of statistics and time.
 
 Max Howell <http://twitter.com/mxcl>
 
 
 Installation
 ============
-Firstly, we build from source, so you need Xcode.
+Homebrew is zeroconf, but almost everything it installs is built from source;
+so you need Xcode:
 
 http://developer.apple.com/technology/xcode.html
 
-Next, uninstall MacPorts and Fink (or just rename their root folders). Many
-build scripts blindly look in /opt/local etc. and end up linking to that stuff
-anyway! If you just want to trial Homebrew then you'll get away with not moving MacPorts or Fink, it's just not recommended.
+Also, a lot of build scripts assume MacPorts or Fink on OS X. Which isn't a
+problem until you uninstall them and stuff you built with Homebrew breaks and
+you email me with a bug report. So uninstall them (or rename their root 
+folders if you don't want to burn bridges).
 
 http://trac.macports.org/wiki/FAQ#HowdoIremoveoruninstallMacPorts
 http://www.finkproject.org/faq/usage-fink.php#removing
@@ -37,30 +82,37 @@ It is self-contained and ready to go. Just copy this directory somewhere.
 Things work really well if you put it in /usr/local (especially if you are a 
 developer).
 
-You can stick this directory in your home directory if you like. In that case
-a typical (POSIX) choice would be: /User/mxcl/.local
-
-If you don't install to /usr/local (but seriously it's great!) then you'll
-need to edit your ~/.profile file to add Homebrew's bin directory to the PATH.
-
-Don't sudo
-----------
+If you install to /usr/local don't sudo
+---------------------------------------
 Well clearly you can sudo if you like. Homebrew is all about you doing it your
-way. But we recommend that you don't sudo. Apple designed the OS X heirarchy
-so that you can do things like:
+way. But the Homebrew recommendation is: don't sudo!
+
+On OS X, this requires your user to be in the admin group, but it doesn't
+require sudo:
 
     $ cpan -i MP3::Info
 
-Without having to sudo (although you still need an admin user account).
-Clearly they intended for you to install new stuff that they didn't provide
-without becoming root.
+OS X is designed to minimise sudo use, you only need it for real root level 
+stuff. On OS X you know your /System and /usr are as clean and pure as the day
+you bought your Mac because you didn't sudo. You can sleep better at night.
 
-Sudo is dangerous, it can break your system. All the tools Homebrew installs 
-are not system critical. Sudo just makes Homebrew more difficult and more 
-dangerous for you to play with.
+If you are already the kind of guy who installed TextMate by dragging and 
+dropping it to /Applications, then you won't mind if libflac and pngcrush are
+installed under your user privileges too. Lets face it; Homebrew is not 
+installing anything system-critical. Apple already did that.
 
-If you don't sudo, you know for sure that /usr and /System haven't been
-tampered with. Thus you'll sleep better at night.
+Let this be the last sudo you do for quite some time:
+
+    $ sudo chown -r `whoami`:staff /usr/local
+
+I already have a bunch of junk in /usr/local
+--------------------------------------------
+Yeah that's typical. See what you've got, mv the local folder somewhere else,
+mv Homebrew there and then just reinstall that stuff using Homebrew.
+
+How about mate and gitx and that?
+---------------------------------
+They can easily coexist with Homebrew, that's the beauty of the homebrew-way.
 
 
 Usage
@@ -68,67 +120,36 @@ Usage
 Install wget:
     brew install wget
 
-Update recipes list:
-    cd /usr/local && git pull origin masterbrew
+Update package list:
+    cd /usr/local && git pull origin masterbrew    [1]
 
 Delete a package:
- 1. rm -rf /usr/local/Cellar/wget && brew prune
- 2. brew rm wget
+    brew rm wget      OR    rm -rf /usr/local/Cellar/wget && brew prune
 
 List all files in a package:
- 1. find /usr/local/Cellar/wget
- 2. brew list wget
+    brew list wget    OR    find /usr/local/Cellar/wget
 
 Search for a package to install:
-    ls /usr/local/Library/Formula/*wget*
+    ls /usr/local/Library/Formula/
 
 Search for a package already installed:
-    ls /usr/local/Cellar/*wget*
-
-List all packages available to install:
-    ls /usr/local/Library/Formula
+    ls /usr/local/Cellar/
 
 Compute installed size of package:
-    du -h /usr/local/Cellar/wget
+    brew info wget    OR    du /usr/local/Cellar/wget
     
 Show expensive packages:
     du -md1 /usr/local/Cellar
 
-You get the idea.
+With Homebrew this is all Ruby. If you want to improve the package 
+installation, amend the Ruby script. If you want to improve the brew command
+amend the Ruby script. If you want to know exactly what is going on, read the
+Ruby script.
 
-Maybe we should overload more of this stuff with the brew command, but frankly
-I feel that this way *you* will understand the capabilities of the system
-better. And you basically know everything that is going on.
-
-With apt, you type apt-get install wget. Now what is happening? With Homebrew
-you are running a ruby script. You know what is happening. You can easily and
-quickly read the source and modify it and then push the patch to github if
-anything you need is missing or something is not working. This is real open
-source.
-
-NOTE you have to install git before you can update the package list, but 
+[1] You have to install git before you can update the package list, but 
 that's easy:
 
     brew install git
-
-
-Why Not MacPorts?
-=================
-1. MacPorts installs its own libz, its own openssl, etc. It's an autarky.
-   This makes no sense to me. OS X comes with all that stuff.
-2. MacPorts support Tiger, and PPC. We don't, so things are better optimised.
-3. cmake has like 100 dependencies in MacPorts, with Homebrew it has one
-
-
-Homebrew Will Never Build:
-==========================
-1. KDE, or GNOME, or anything that vast
-2. Anything that should be distributed in a .app bundle
-3. Anything that needs to install outside of the Homebrew tree
-4. Stuff OS X already does, eg. rubygems (duplication sucks)
-
-I say never, but if you really want these things you can fork the tree and
-do it yourself. It's just my tree will never build those things.
 
 
 Why Compile From Source?
@@ -149,29 +170,14 @@ to /usr, so we suggest you adapt the tools to install into Homebrew's prefix:
 http://github.com/mxcl/homebrew/wiki
 
 
-How do I Notify Someone that a Package is out of Date?
-======================================================
-Chances are that if the package hasn't been updated for a few days, then the
-previous maintainer has vanished. You have to do it. Don't worry, unlike every
-other packaging system ever, it's easy with Homebrew:
-
-1. Edit the relevant ruby file in /usr/local/Formula
-2. Fork Homebrew on github (or git diff > patch)
-3. Send mxcl a pull request
-
-Congratulations, you have contributed to an open source project!
-
-
-Contributing
-============
-New Formulae
-------------
-Firstly generate the formula:
+Contributing New Formulae
+=========================
+Homebrew can generate the formula with most stuff pre-done:
 
     brew mk http://foo.org/foobar-1.2.1.tar.bz2
 
-You now have /usr/local/Library/Formula/foobar.rb.
-Now it would be useful to amend the formula based on its configure options:
+You now have /usr/local/Library/Formula/foobar.rb. This may already work.
+But maybe there are some juicy configure options?
 
     brew install foobar --help
 
@@ -186,22 +192,15 @@ Try to install it:
 
     brew install foobar
 
-If it worked, fork http://github.com/mxcl/homebrew and ask me to pull. If it 
-didn't you may need to dig a little deeper.
-
-I'll try to optimise the package when I pull, but it would be nice if you did
-that for me ;)
-
-HomeBrew is not an autarky so any dependencies outside of OS X that a package
-may require may be installed separately. We have functions to help with that.
+Fork http://github.com/mxcl/homebrew and ask mxcl to pull.
 
 Other useful commands when contributing
 ---------------------------------------
-    brew edit # opens Textmate with all of Homebrew as a project
-    brew edit foobar # opens that formula for editing in Textmate
-    brew install foobar --debug # if the build fails, you can fix it
-    brew [something] --verbose # you get a proper ruby backtrace
-    brew install foobar --interactive # you are dumped at a shell with the extracted tarball as PWD
+    brew edit                         # opens Textmate with all of Homebrew as a project
+    brew edit foobar                  # opens that formula for editing in Textmate
+    brew install foobar --debug       # if the build fails, you can fix it
+    brew [something] --verbose        # you get a proper ruby backtrace
+    brew install foobar --interactive # opens a new shell at the extract tarball
 
 Code
 ----
