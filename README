@@ -24,12 +24,12 @@ Here's why you may prefer Homebrew to the alternatives:
    list the package contents. Or du to see its size.
 
 4. You don't have to sudo
-   It's up to you. We recommend not to--see the relevant later section.
+   It's up to you. We recommend not--see the relevant later section.
 
 5. Easy package creation
    Packages are just Ruby scripts. Generate a template with:
 
-      brew mk http://foo/tarball-0.89.tgz
+      brew mk http://foo.com/tarball-0.8.9.tgz
 
    Homebrew will automatically open it for you to tweak with TextMate or
    $EDITOR.
@@ -55,9 +55,13 @@ Here's why you may prefer Homebrew to the alternatives:
 9. Homebrew has a beer theme
    Beer goggles will help you to evangelise Homebrew more effectively.
 
-X. Homebrew helps get you chicks
+X. Homebrew helps you get chicks
    There's no conclusive scientific evidence as yet, but I firmly believe it's
    just a matter of statistics and time.
+
+I know I've made it sound so awesome you can hardly wait to rip MacPorts out
+and embrace the fresh hoppy taste of Homebrew, but I should point out that it
+is really new and still under heavy development. Thanks!
 
 Max Howell <http://twitter.com/mxcl>
 
@@ -194,23 +198,20 @@ Try to install it:
 
 Fork http://github.com/mxcl/homebrew and ask mxcl to pull.
 
-Other useful commands when contributing
----------------------------------------
+Useful commands when contributing
+---------------------------------
     brew edit                         # opens Textmate with all of Homebrew as a project
     brew edit foobar                  # opens that formula for editing in Textmate
     brew install foobar --debug       # if the build fails, you can fix it
     brew [something] --verbose        # you get a proper ruby backtrace
     brew install foobar --interactive # opens a new shell at the extract tarball
 
-Code
-----
-Yes please! Fork and improve :)
 
 TODO
-----
-1. upgrades, yeah still need this
-2. install multiple versions of tools, which is very useful for eg. Qt
-3. formula revisions, to allow upgrades irrespective of the underlying package
+====
+1. Upgrades, yeah still need this
+2. Install multiple versions of tools, which is very useful for eg. Qt
+3. Formula revisions, to allow upgrades irrespective of the underlying package
 
 
 FAQ

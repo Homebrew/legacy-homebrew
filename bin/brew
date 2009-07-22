@@ -235,7 +235,7 @@ begin
           raise "#{o.prefix} already exists!" if o.prefix.exist?
           o.brew do
             if ARGV.include? '--interactive'
-              ohai "Entering interactive mode, type `exit' to return to this shell"
+              ohai "Entering interactive mode, type `exit' to return to finalize installation"
               puts "Install to this prefix: #{o.prefix}"
               pid=fork
               if pid.nil?
@@ -250,7 +250,7 @@ begin
             else
               o.prefix.mkpath
               o.install
-              ['README','ChangeLog','COPYING','COPYRIGHT','AUTHORS'].each do |file|
+              %w[README ChangeLog COPYING COPYRIGHT AUTHORS].each do |file|
                 FileUtils.cp file, o.prefix if File.file? file
               end
               #this is common, and we don't want it
@@ -272,12 +272,15 @@ begin
           raise
         end
       end
+
     when 'ln'
       n=0
       shift_formulae_from_ARGV.each {|name| n+=ln name}
       puts "Created #{n} links"
+
     when 'rm', 'uninstall'
       shift_formulae_from_ARGV.each {|name| rm name}
+
     when 'mk'
       require 'brewkit'
       url=ARGV.shift
