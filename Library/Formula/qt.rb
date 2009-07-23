@@ -1,8 +1,8 @@
 require 'brewkit'
 
 class Qt <Formula
-  @url='http://get.qtsoftware.com/qt/source/qt-mac-opensource-src-4.5.1.tar.gz'
-  @md5='9fc0e96197df6db48a0628ac4d63e0dd'
+  @url='http://get.qtsoftware.com/qt/source/qt-mac-opensource-src-4.5.2.tar.gz'
+  @md5='c549d6c0c2e0723377cb955c78a1b680'
   @homepage='http://www.qtsoftware.com'
 
   def install
@@ -18,7 +18,7 @@ class Qt <Formula
                -nomake demos -nomake examples -no-qt3support
                -release -cocoa -arch x86
                -confirm-license -opensource
-               -I /usr/X11R6/include -L /usr/X11R6/lib
+               -I/usr/X11R6/include -L/usr/X11R6/lib
                -fast
                EOS
 
