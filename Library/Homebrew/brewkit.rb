@@ -102,9 +102,19 @@ class Pathname
   end
 
   def install src
-    if File.exist? src
+    if src.is_a? Array
+      src.each {|src| install src }
+    elsif File.exist? src
       mkpath
-      FileUtils.mv src, to_s
+      if File.symlink? src
+        # we cp symlinks because FileUtils.mv is shit and won't mv a symlink
+        # if its final destination has an invalid target! FFS. Ruby is shit.
+        FileUtils.cp src, to_s
+      else
+        # we mv when possible as it is faster and you should only be using
+        # this function when installing from the temporary build directory
+        FileUtils.mv src, to_s
+      end
     end
   end
 
@@ -116,13 +126,14 @@ class Pathname
     end
   end
 
+  # for filetypes we support
   def extname
     /\.(zip|tar\.(gz|bz2)|tgz)$/.match to_s
     return ".#{$1}" if $1
     return File.extname(to_s)
   end
 
-  # for files we support, basename without extension
+  # for filetypes we support, basename without extension
   def stem
     return File.basename(to_s, extname)
   end

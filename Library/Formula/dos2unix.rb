@@ -6,10 +6,15 @@ class Dos2unix <Formula
   @homepage='http://www.sfr-fresh.com/linux/misc/'
 
   def install
-    system "make clean"
-    system "make"
+    File.unlink 'dos2unix'
+    # we don't use make as it doesn't optimise :P
+    system "gcc -O3 dos2unix.c -o dos2unix"
     # make install is broken due to INSTALL file, but also it sucks so we'll do it
-    bin.install ['dos2unix', 'mac2unix']
-    man1.install ['dos2unix.1', 'mac2unix.1']
+    # also Ruby 1.8 is broken, it won't allow you to move a symlink that's
+    # target is invalid. FFS very dissapointed with dependability of 
+    # fundamental Ruby functions. Maybe we shouldn't use them?
+    # Anyway, that is why the symlink is installed first.
+    bin.install %w[mac2unix dos2unix]
+    man1.install %w[mac2unix.1 dos2unix.1]
   end
 end
