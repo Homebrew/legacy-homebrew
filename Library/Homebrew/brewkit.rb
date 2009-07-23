@@ -244,7 +244,6 @@ public
         end
       ensure
         FileUtils.rm_rf tmp if tmp
-        FileUtils.rm tgz if tgz and not self.cache?
       end
     end
   end
@@ -292,9 +291,6 @@ public
   end
 
 protected
-  def cache?
-    true
-  end
   def uncompress path
     path.dirname
   end
@@ -368,12 +364,8 @@ end
 
 # see ack.rb for an example usage
 class ScriptFileFormula <AbstractFormula
-  def cache?
-    false
-  end
   def install
-    FileUtils.cp name, bin
-    (bin+name).chmod 0544
+    bin.install name
   end
 end
 
