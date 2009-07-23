@@ -4,5 +4,6 @@
 /lib
 /include
 /share
+/etc
 !/Library/
 !/bin/brew
