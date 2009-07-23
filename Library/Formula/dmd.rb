@@ -2,8 +2,8 @@ require 'brewkit'
 
 class Dmd <Formula
   @homepage='http://www.digitalmars.com/d/'
-  @url='http://ftp.digitalmars.com/dmd.1.043.zip'
-  @md5='6c83b7296cb84090a9ebc11ab0fb94a2'
+  @url='http://ftp.digitalmars.com/dmd.1.046.zip'
+  @md5='9ca82389e82e3f39185f999d7dda4617'
 
   def doc
     #use d and not dmd, rationale: meh
@@ -11,30 +11,22 @@ class Dmd <Formula
   end
 
   def install
-    ohai "install"
-    man.mkpath
-    
-    FileUtils.cp_r 'osx/bin', prefix
-    FileUtils.cp_r 'osx/lib', prefix
-    FileUtils.cp_r 'man/man1', man
-    FileUtils.cp_r 'src', prefix
+    ohai "Installing dmd"
 
-    #lol
-    man5=man+'man5'
-    man5.mkpath
-    man5.install man+'man1'+'dmd.conf.5'
-    #lol ends
+    # clean it up a little first
+    Dir['src/*.mak'].each {|f| File.unlink f}
+    FileUtils.mv 'license.txt', 'COPYING'
+    FileUtils.mv 'README.TXT', 'README'
+    FileUtils.mv 'src/phobos/phoboslicense.txt', 'src/phobos/COPYING.phobos'
 
-    html=doc+'html'
-    samples=doc+'examples' #examples is the more typical directory name
-    html.mkpath
-    samples.mkpath
+    prefix.install 'osx/lib'
+    prefix.install 'osx/bin'
+    prefix.install 'src'
+    man.install 'man/man1'
 
-    FileUtils.cp_r Dir['html/d/*'], html unless ARGV.include? '--no-html'
-    FileUtils.cp_r Dir['samples/d/*'], samples unless ARGV.include? '--no-samples'
-
-    # zip files suck
-    FileUtils.chmod 0544, ['dmd','dumpobj','obj2asm'].collect{|x|"osx/bin/#{x}"}
+    (prefix+'src'+'dmd').rmtree # we don't need the dmd sources thanks
+    (man+'man5').install man1+'dmd.conf.5' # oops
+    (prefix+'share'+'d'+'examples').install Dir['samples/d/*']
 
     (prefix+'bin'+'dmd.conf').open('w') do |f|
       f.puts "[Environment]"
