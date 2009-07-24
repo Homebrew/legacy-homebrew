@@ -1,7 +1,7 @@
 Homebrew
 ========
-Homebrew's purpose is the same as MacPorts or Fink, ie. to let you easily
-install other open source software on your Mac.
+Homebrew's purpose is basically the same as MacPorts or Fink, ie. to let you
+easily install other open source software on your Mac.
 
 Here's why you may prefer Homebrew to the alternatives:
 
@@ -34,30 +34,43 @@ Here's why you may prefer Homebrew to the alternatives:
    Homebrew will automatically open it for you to tweak with TextMate or
    $EDITOR.
 
-   Or skip going via a package entirely, just install into the Cellar and use
-   "brew ln" to symlink it into the main tree.
+6. DIY package installation
+   MacPorts doesn't support the beta version? Need an older version? Need
+   custom compile flags? The Homebrew toolchain is carefully segregated so
+   you can just build your own stuff while still reaping the benefits of
+   package management.
 
-6. Optimisation
+   Just install to the Cellar and then call brew ln to symlink that 
+   installation into /usr/local, eg.
+
+       ./configure --prefix=/usr/local/Cellar/wget/1.10
+       make install
+       brew ln wget
+
+   This means you can also install multiple versions of the same package and
+   switch on demand.
+
+7. Optimisation
    We optimise for Leopard Intel, binaries are stripped, compile flags 
    tweaked. Nobody wants crappy, slow software. Apart from MacPorts and Fink.
 
-7. Integration with existing OS X technologies
+8. Integration with existing OS X technologies
    Homebrew integrates with Ruby gems, CPAN and Python disttools. These tools
    exist already and do the job great. We don't reinvent the wheel, we just
    improve it by making these tools install with more management options.
 
-8. Complimenting what OS X already has
+9. Complimenting what OS X already has
    Macports is an autarky. You get a duplicate copy of libz, OpenSSL, Python
    etc. They do this to support OS X Tiger, etc. more easily. We don't support
    Tiger, we duplicate nothing. Homebrew compliments OS X, it doesn't seek to
    operate independently of it.
 
-9. Homebrew has a beer theme
+A. Homebrew has a beer theme
    Beer goggles will help you to evangelise Homebrew more effectively.
 
-X. Homebrew helps you get chicks
+B. Homebrew helps get you chicks
    There's no conclusive scientific evidence as yet, but I firmly believe it's
-   just a matter of statistics and time.
+   just a matter of time and statistics.
 
 I know I've made it sound so awesome you can hardly wait to rip MacPorts out
 and embrace the fresh hoppy taste of Homebrew, but I should point out that it

@@ -8,6 +8,7 @@ require 'env'
 # often causes Ruby to throw exception ffs
 Dir.chdir '/' unless File.directory? ENV['PWD']
 
+######################################################################## funcs
 def prune
   n=0
   dirs=Array.new
@@ -37,130 +38,113 @@ def prune
   return n
 end
 
-def formulize name
-  name=Pathname.new name
-  return name if name.directory? and name.parent.realpath == $cellar
-  return File.basename(name, '.rb') if name.file? and name.extname == '.rb' and name.parent.realpath == $formula
-
-  name=name.to_s
-  raise "#{name} is an invalid name for a formula" if name.include? '/'
-
-  return name if ($formula+(name+'.rb')).file?
-  return name if ($cellar+name).directory?
-
-  raise "No formula or keg for #{name} found"
-end
-
-def shift_formulae_from_ARGV
-  fae=Array.new
-  i=0
-  while name=ARGV[i]
-    unless name[0,1] == '-'
-      fae<<formulize(ARGV.shift).to_s 
+# we actually remove formulae from ARGV so that any other analysis of ARGV
+# only includes relevent arguments
+# TODO require will throw if no formula, so we should catch no?
+def extract_named_args
+  args=Array.new
+  ARGV.delete_if do |arg|
+    if arg[0,1] == '-'
+      false
     else
-      i+=1
+      args<<arg
+      true
     end
   end
-  raise "You must specify a formula" if fae.empty?
-  return fae
+  return args
 end
 
-def __class name
-  #remove invalid characters and camelcase
-  name.capitalize.gsub(/[-_\s]([a-zA-Z0-9])/) { $1.upcase }
+def extract_kegs
+  require 'keg'
+  kegs=extract_named_args.collect {|name| Keg.new name}
+  raise "Expecting the name of a keg or formula, eg:\n\tbrew #{ARGV.join ' '} wget" if kegs.empty?
+  return kegs
 end
 
-def __rb name
-  $formula+(name+'.rb')
-end
-
-def __obj name
-  require "#{__rb name}"
-  return eval(__class(name)).new(name)
-end
-
-def rm keg
-  #TODO if multiple versions don't rm all unless --force
-  path=$cellar+keg
-  `chmod -R u+rw #{path}` # we leave things read only
-  path.rmtree
-  puts "#{path} removed (#{prune} files)"
-end
-
-def ln name
-  keg=$cellar+name
-  keg=keg.realpath
-
-  if keg.parent.parent == $root
-    # we are one dir too high
-    kids=keg.children
-    raise "#{keg} is empty :(" if kids.length == 0
-    raise "There are multiple versions of #{keg.basename} installed please specify one" if kids.length > 1
-    keg=keg.children.first
-    raise "#{keg} is not a directory" unless keg.directory?
-  elsif keg.parent.parent.parent != $root
-    raise '#{keg} is not a keg'
-  end
-
-  # yeah indeed, you have to force anything you need in the main tree into
-  # these directories :P 
-  # NOTE that not everything needs to be in the main tree
-  # TODO consider using hardlinks
-  $n=0
-  lnd(keg, 'etc') {:mkdir}
-  lnd(keg, 'include') {:link}
-  lnd(keg, 'bin') {:link}
-  lnd(keg, 'lib') {|path| :mkpath if ['pkgconfig','php'].include? path.to_s}
-  lnd(keg, 'share') do |path|
-    mkpaths=(1..9).collect {|x| "man/man#{x}"} <<'man'<<'doc'<<'locale'<<'info'<<'aclocal'
-    :mkpath if mkpaths.include? path.to_s
-  end
-
-  return $n
-end
-
-def symlink_relative_to from, to
-  tod=to.dirname
-  tod.mkpath
-  Dir.chdir(tod) do
-    #TODO use ruby function so we get exceptions
-    `ln -sf "#{from.relative_path_from tod}"`
-    $n+=1
+def abv keg=nil
+  path=keg ? keg.path : $cellar
+  if path.directory?
+    `find #{path} -type f | wc -l`.strip+' files, '+`du -hd0 #{path} | cut -d"\t" -f1`.strip
+  else
+    nil
   end
 end
 
-# symlinks a directory recursively into our FHS tree
-def lnd keg, start
-  start=keg+start
-  return unless start.directory?
+def install formula
+  require 'keg'
 
-  start.find do |from|
-    next if from == start
+  raise "#{formula.name} already installed!\n\t#{formula.prefix}" if formula.installed?
+  
+  beginning = Time.now
 
-    prune=false    
-    relative_path=from.relative_path_from keg
-    to=$root+relative_path
-
-    if from.directory?
-      # no need to put .app bundles in the path, the user can just use
-      # spotlight, or the open command and actual mac apps use an equivalent
-      Find.prune if from.extname.to_s == '.app'
-      
-      cmd=yield from.relative_path_from(start)
-      
-      if :skip == cmd
-        Find.prune
-      elsif :mkpath == cmd
-        to.mkpath
-        $n+=1
+  formula.brew do
+    if ARGV.include? '--interactive'
+      ohai "Entering interactive mode"
+      puts "Type `exit' to return and finalize the installation"
+      puts "Install to this prefix: #{formula.prefix}"
+      pid=fork
+      if pid.nil?
+        exec 'bash'
       else
-        symlink_relative_to from, to
-        Find.prune
+        Process.wait pid
       end
-    elsif from.file?
-      symlink_relative_to from, to
+    elsif ARGV.include? '--help'
+      ohai './configure --help'
+      puts `./configure --help`
+      exit
+    else
+      formula.prefix.mkpath
+      formula.install
+      %w[README ChangeLog COPYING COPYRIGHT AUTHORS].each do |file|
+        formula.prefix.install file if File.file? file
+      end
     end
   end
+  ohai 'Finishing up'
+  keg=Keg.new formula
+  keg.clean
+  keg.ln
+  if formula.caveats
+    ohai "Caveats"
+    puts formula.caveats
+    ohai "Summary"
+  end
+  puts "#{keg.path}: "+abv(keg)+", built in #{pretty_duration Time.now-beginning}"
+rescue Exception
+  formula.prefix.rmtree
+  raise
+end
+
+def mk url
+  require 'formula'
+  path=Pathname.new(url)
+
+  /(.*?)[-_.]?#{path.version}/.match path.basename
+  raise "Couldn't parse name from #{url}" if $1.nil? or $1.empty?
+
+  path=Formula.path $1
+  raise "#{path} already exists!" if File.exist? path
+
+  f=File.new path, 'w'
+  f.puts "require 'brewkit'"
+  f.puts
+  f.puts "class #{Formula.class $1} <Formula"
+  f.puts "  @url='#{url}'"
+  f.puts "  @homepage=''" # second because you fill in these two first
+  f.puts "  @md5=''"
+  f.puts
+  f.puts "  def install"
+  f.puts "    system \"./configure --disable-debug --prefix='\#{prefix}'\""
+  f.puts "    system \"make install\""
+  f.puts "  end"
+  f.print "end"
+  f.close
+
+  return path
+end
+
+def prefix
+  Pathname.new(__FILE__).dirname.parent.expand_path
 end
 
 def usage
@@ -181,11 +165,6 @@ Commands:
 EOS
 end
 
-def abv keg=''
-  keg=$cellar+keg
-  return nil if not File.directory? keg
-  `find #{keg} -type f | wc -l`.strip+' files, '+`du -hd0 #{keg} | cut -d"\t" -f1`.strip
-end
 
 ######################################################################## utils
 def pretty_duration s
@@ -197,147 +176,80 @@ end
 ######################################################################### impl
 begin
   case ARGV.shift
-    when 'prune'
-      puts "Pruned #{prune} files"
-    when '--prefix'
-      # we use the cwd because __FILE__ can be relative and expand_path
-      # resolves the symlink for the working directory if fed a relative path
-      # NOTE we don't use Dir.pwd because it resolves the symlink :(
-      cwd=Pathname.new `pwd`.strip
-      puts File.expand_path(cwd+__FILE__+'../../')
-    when '--cache'
-      puts File.expand_path('~/Library/Application Support/Homebrew')
-    when '-h', '--help', '--usage', '-?'
-      puts usage
-    when '-v', '--version'
-      puts HOMEBREW_VERSION
-    when 'list'
-      fae=shift_formulae_from_ARGV.collect do |name|
-        keg=$cellar+name
-        keg.directory? ? keg : nil
-      end
-      raise 'No such keg' if fae.first.nil? and fae.length == 1
-      puts `find #{fae.join' '} -type f -print`
-    when 'macports'
-      exec "open 'http://www.macports.org/ports.php?by=name&substr=#{ARGV.shift}'"
+    when '--prefix' then puts prefix
+    when '--cache' then puts Homebrew::cache
+    when '-h', '--help', '--usage', '-?' then puts usage
+    when '-v', '--version' then puts HOMEBREW_VERSION
+    when 'macports' then exec "open 'http://www.macports.org/ports.php?by=name&substr=#{ARGV.shift}'"
+
+    when 'ls', 'list'
+      dirs=extract_kegs.collect {|keg| keg.path}
+      exec "find #{dirs.join' '} -not -type d -print"
+
     when 'edit'
       if ARGV.empty?
         exec "mate #{$formula} #{$root}/Library/Homebrew #{$root}/bin/brew #{$root}/README"
       else
-        exec "mate #{$formula}/#{ARGV.shift}.rb"
+        paths=extract_kegs.collect {|keg| keg.formula_path.to_s.gsub ' ', '\\ '}
+        exec "mate #{paths.join ' '}"
       end
 
     when 'install'
-      shift_formulae_from_ARGV.each do |name|
-        beginning = Time.now
-        o=__obj(name)
-        begin
-          raise "#{o.prefix} already exists!" if o.prefix.exist?
-          o.brew do
-            if ARGV.include? '--interactive'
-              ohai "Entering interactive mode, type `exit' to return to finalize installation"
-              puts "Install to this prefix: #{o.prefix}"
-              pid=fork
-              if pid.nil?
-                exec 'bash'
-              else
-                Process.wait pid
-              end
-            elsif ARGV.include? '--help'
-              ohai './configure --help'
-              puts `./configure --help`
-              exit
-            else
-              o.prefix.mkpath
-              o.install
-              %w[README ChangeLog COPYING COPYRIGHT AUTHORS].each do |file|
-                FileUtils.cp file, o.prefix if File.file? file
-              end
-              #this is common, and we don't want it
-              versioned_docs=o.doc.parent+"#{o.name}-#{o.version}"
-              versioned_docs.rename o.doc if versioned_docs.exist?
-            end
-          end
-          ohai 'Finishing up'
-          o.clean
-          ln name
-          if o.caveats
-            ohai "Caveats"
-            puts o.caveats
-            ohai "Summary"
-          end
-          puts "#{o.prefix}: "+abv(name)+", built in #{pretty_duration Time.now-beginning}"
-        rescue Exception
-          FileUtils.rm_rf o.prefix
-          raise
-        end
+      require 'formula'
+      extract_named_args.each do |name|
+        install Formula.create(name)
       end
 
-    when 'ln'
+    when 'ln', 'link'
       n=0
-      shift_formulae_from_ARGV.each {|name| n+=ln name}
+      (kegs=extract_kegs).each do |keg|
+        n+=nn=keg.ln
+        puts "Created #{nn} links for #{keg.name}" if kegs.length > 1
+      end
       puts "Created #{n} links"
 
     when 'rm', 'uninstall'
-      shift_formulae_from_ARGV.each {|name| rm name}
+      extract_kegs.each do |keg|
+        puts "Removing #{keg.name}..."
+        keg.rm
+      end
+      print "Pruning #{prefix}/..."
+      puts " #{prune} symbolic links pruned"
 
-    when 'mk'
-      require 'brewkit'
-      url=ARGV.shift
-      version=extract_version File.basename(url, Pathname.new(url).extname)
+    when 'prune'
+      puts "Pruned #{prune} symbolic links"
 
-      /(.*?)[-_.]?#{version}/.match File.basename(url)
-      raise "Couldn't parse name from #{url}" if $1.nil? or $1.empty?
-
-      path=$formula+($1.downcase+'.rb')
-      raise "#{path} already exists!" if File.exist? path
-
-      f=File.new path, 'w'
-      f.puts "require 'brewkit'"
-      f.puts
-      f.puts "class #{__class $1} <Formula"
-      f.puts "  @url='#{url}'"
-      f.puts "  @homepage=''" # second because you fill in these two first
-      f.puts "  @md5=''"
-      f.puts
-      f.puts "  def install"
-      f.puts "    system \"./configure --disable-debug --prefix='\#{prefix}'\""
-      f.puts "    system \"make install\""
-      f.puts "  end"
-      f.print "end"
-      f.close
-
-      if Kernel.system "which mate > /dev/null" and $? == 0
-        exec "mate #{path}"
+    when 'mk', 'make'
+      paths=ARGV.collect {|arg| mk arg}
+      if paths.empty?
+        raise "Invalid URL"
+      elsif Kernel.system "which mate > /dev/null" and $? == 0
+        paths=paths.collect {|path| path.to_s.gsub " ", "\\ "}
+        exec "mate #{paths.join ' '}"
       else
-        puts path
+        puts paths.join("\n")
       end
 
-    when 'info','abv'
+    when 'info', 'abv'
       if ARGV.empty?
         puts abv
+      elsif ARGV[0][0..6] == 'http://'
+        puts Pathname.new(ARGV.shift).version
       else
-        if ARGV[0][0..6] == 'http://'
-          require 'brewkit'
-          path=Pathname.new ARGV[0]
-          basename=File.basename path, path.extname
-          v=extract_version basename
-          puts v
-        else
-          o=__obj shift_formulae_from_ARGV[0]
-          puts "#{o.name} #{o.version}"
-          puts o.homepage
-          if abv=abv(o.name)
-            ohai "Installation"
-            puts abv
-          end
-          if o.caveats
-            ohai 'Caveats'
-            puts o.caveats
-          end
+        #TODO show outdated status and that
+        keg=extract_kegs[0]
+        frm=Formula.create keg.name
+        puts "#{keg.name} #{keg.version}"
+        puts frm.homepage
+        if keg.installed?
+          puts "#{abv keg} (installed to #{keg.path})"
+        end
+        if frm.caveats
+          ohai 'Caveats'
+          puts frm.caveats
         end
       end
-      
+
     else
       puts usage
   end

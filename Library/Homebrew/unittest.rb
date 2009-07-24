@@ -2,7 +2,7 @@
 
 $:.unshift File.dirname(__FILE__)
 require 'test/unit'
-require 'brewkit'
+require 'formula'
 require 'stringio'
 
 class TestFormula <Formula

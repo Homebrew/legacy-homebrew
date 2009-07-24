@@ -6,9 +6,9 @@ class Qt <Formula
   @homepage='http://www.qtsoftware.com'
 
   def install
-    if version == '4.5.1'
+    if version == '4.5.2'
       # Reported 6 months ago (at 4.5.0-rc1), still not fixed in the this release! :(
-      makefiles=['plugins/sqldrivers/sqlite/sqlite.pro', '3rdparty/webkit/WebCore/WebCore.pro']
+      makefiles=%w[plugins/sqldrivers/sqlite/sqlite.pro 3rdparty/webkit/WebCore/WebCore.pro]
       makefiles.each { |makefile| `echo 'LIBS += -lsqlite3' >> src/#{makefile}` }
     end
 
@@ -22,9 +22,9 @@ class Qt <Formula
                -fast
                EOS
 
-    system configure.gsub("\n", ' ').strip.squeeze(' ')
+    system configure.gsub("\n", '\\')
     system "make install"
-    
+
     # fuck weird prl files
     `find #{lib} -name \*.prl -delete`
     # fuck crazy disk usage
