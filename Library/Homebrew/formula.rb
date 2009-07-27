@@ -127,9 +127,9 @@ public
     ohai "Downloading #{@url}"
     FileUtils.mkpath HOMEBREW_CACHE
     Dir.chdir HOMEBREW_CACHE do
-      tmp=tgz=nil
+      tmp=nil
+      tgz=Pathname.new(fetch()).realpath
       begin
-        tgz=Pathname.new(fetch()).realpath
         md5=`md5 -q "#{tgz}"`.strip
         raise "MD5 mismatch: #{md5}" unless @md5 and md5 == @md5.downcase
 
