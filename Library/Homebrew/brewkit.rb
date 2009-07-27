@@ -23,7 +23,7 @@ require 'formula'
 # http://forums.mozillazine.org/viewtopic.php?f=12&t=577299
 # http://gcc.gnu.org/onlinedocs/gcc-4.0.1/gcc/i386-and-x86_002d64-Options.html
 ENV['MACOSX_DEPLOYMENT_TARGET']='10.5'
-ENV['CFLAGS']=ENV['CXXFLAGS']='-O3 -w -pipe -fomit-frame-pointer -march=prescott'
+ENV['CFLAGS']=ENV['CXXFLAGS']='-O3 -w -pipe -fomit-frame-pointer -march=prescott -mmacosx-version-min=10.5'
 
 # lets use gcc 4.2, it is newer and "better", at least I believe so, mail me
 # if I'm wrong
