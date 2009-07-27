@@ -36,18 +36,15 @@ unless $root.to_s == '/usr/local'
   ENV['LDFLAGS']='-L'+$root+'lib'
 end
 
-
-######################################################################## utils
-
 def inreplace(path, before, after)
-  before=before.to_s.gsub('"', '\"').gsub('/', '\/')
-  after=after.to_s.gsub('"', '\"').gsub('/', '\/')
+  before=Regexp.escape before.to_s
+  after=Regexp.escape after.to_s
+  before=before.gsub "/", "\\\/"
+  after=after.gsub "/", "\\\/"
+  before=before.gsub "'", '\''
+  after=after.gsub "'", '\''
 
-  # we're not using Ruby because the perl script is more concise
-  #TODO the above escapes are worse, use a proper ruby script :P
-  #TODO optimise it by taking before and after as arrays
-  #Bah, just make the script writers do it themselves with a standard collect block
-  #TODO use ed -- less to escape
-  #TODO the above doesn't escape all regexp symbols!
-  `perl -pi -e "s/#{before}/#{after}/g" "#{path}"`
+  # TODO this sucks
+  # either use 'ed', or allow regexp and use a proper ruby function
+  `perl -pi -e $'s/#{before}/#{after}/g' "#{path}"`
 end
