@@ -120,7 +120,7 @@ installing anything system-critical. Apple already did that.
 
 Let this be the last sudo you do for quite some time:
 
-    $ sudo chown -r `whoami`:staff /usr/local
+    $ sudo chown -R `whoami`:staff /usr/local
 
 I already have a bunch of junk in /usr/local
 --------------------------------------------
