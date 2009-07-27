@@ -37,8 +37,7 @@ Here's why you may prefer Homebrew to the alternatives:
 6. DIY package installation
    MacPorts doesn't support the beta version? Need an older version? Need
    custom compile flags? The Homebrew toolchain is carefully segregated so
-   you can just build your own stuff while still reaping the benefits of
-   package management.
+   you can build stuff by hand but still end up with package management.
 
    Just install to the Cellar and then call brew ln to symlink that 
    installation into /usr/local, eg.
@@ -65,10 +64,14 @@ Here's why you may prefer Homebrew to the alternatives:
    Tiger, we duplicate nothing. Homebrew compliments OS X, it doesn't seek to
    operate independently of it.
 
-A. Homebrew has a beer theme
+A. Fork with Git
+   The package descriptions are all on git, so just fork to add new packages,
+   or add extra remotes to get packages from more exotic maintainers.
+
+B. Homebrew has a beer theme
    Beer goggles will help you to evangelise Homebrew more effectively.
 
-B. Homebrew helps get you chicks
+C. Homebrew helps get you chicks
    There's no conclusive scientific evidence as yet, but I firmly believe it's
    just a matter of time and statistics.
 
@@ -98,6 +101,9 @@ Homebrew uses Ruby and some other stuff that is already installed on Leopard.
 It is self-contained and ready to go. Just copy this directory somewhere.
 Things work really well if you put it in /usr/local (especially if you are a 
 developer).
+
+ISSUE: Currently in order to update you need to clone the git repository. And
+I'm not exactly sure what the best fix for that is yet.
 
 If you install to /usr/local don't sudo
 ---------------------------------------
@@ -180,7 +186,7 @@ The bandwidth is on you though :P
 CPAN, EasyInstall, RubyGems
 ===========================
 Homebrew doesn't reinvent the wheel. These tools are already designed to make
-it easy to install Perl, Ruby and Python tools and libraries. So we insist 
+it easy to install Perl, Python and Ruby tools and libraries. So we insist 
 that you use them. However we don't think you should have to sudo, or install
 to /usr, so we suggest you adapt the tools to install into Homebrew's prefix:
 
@@ -216,7 +222,7 @@ Useful commands when contributing
     brew edit                         # opens Textmate with all of Homebrew as a project
     brew edit foobar                  # opens that formula for editing in Textmate
     brew install foobar --debug       # if the build fails, you can fix it
-    brew [something] --verbose        # you get a proper ruby backtrace
+    brew [something] --verbose        # you get a proper Ruby backtrace
     brew install foobar --interactive # opens a new shell at the extract tarball
 
 
