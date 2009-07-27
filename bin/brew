@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-
 require 'find'
 require 'pathname'
 $:.unshift Pathname.new(__FILE__).dirname.parent.realpath+'Library'+'Homebrew'
@@ -15,7 +14,7 @@ def prune
   $root.find do |path|
     if path.directory?
       name=path.relative_path_from($root).to_s
-      if name == '.git' or name == 'Cellar' or name == 'Library/Homebrew' or name == 'Library/Formula'
+      if name == '.git' or name == 'Cellar' or name == 'Library'
         Find.prune
       else
         dirs<<path
@@ -28,7 +27,6 @@ def prune
       end
     end
   end
-  # entries lists '.' and '..' so 2 is minimum basically
   dirs.sort.reverse_each do |d|
     if d.children.length == 0
       d.rmdir
@@ -232,7 +230,7 @@ begin
 
     when 'info', 'abv'
       if ARGV.empty?
-        puts abv
+        puts `ls #{$cellar} | wc -l`.strip+" kegs, "+abv
       elsif ARGV[0][0..6] == 'http://'
         puts Pathname.new(ARGV.shift).version
       else
