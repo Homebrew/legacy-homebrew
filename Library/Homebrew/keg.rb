@@ -80,9 +80,13 @@ class Keg
   end
 
   def rm
+    # don't rmtree shit if we aren't positive about our location!
+    raise "Bad stuff!" unless path.parent.parent == $cellar
+
     if path.directory?
       FileUtils.chmod_R 0777, path # ensure we have permission to delete
-      path.rmtree
+      path.rmtree # $cellar/foo/1.2.0
+      path.parent.rmdir if path.parent.children.length == 0 # $cellar/foo
     end
   end
 
