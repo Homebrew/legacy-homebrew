@@ -8,13 +8,26 @@ fi
 source_base=`pwd`
 
 if [[ $mode == install ]]; then
+    # Ensure that the Cellar exists
+    if [[ ! -e "$source_base/Cellar" ]] ; then
+        mkdir -p "$source_base/Cellar"
+    fi
+    
     ln -s "$source_base/bin/brew" "/usr/local/bin/brew";
     ln -s "$source_base/Library" "/usr/local/Library";
     ln -s "$source_base/Cellar" "/usr/local/Cellar";
-elif [[ $mode == undo ]]; then 
-    rm "/usr/local/bin/brew"
-    rm "/usr/local/Library"
-    rm "/usr/local/Cellar"
+elif [[ $mode == undo ]]; then
+    if [[ -h "/usr/local/bin/brew" ]] ; then
+        rm "/usr/local/bin/brew"
+    fi
+
+    if [[ -h "/usr/local/Library" ]] ; then
+        rm "/usr/local/Library"
+    fi
+
+    if [[ -h "/usr/local/Cellar" ]] ; then
+        rm "/usr/local/Cellar"
+    fi
 else
     echo "Unknown command: $mode";
     echo "\tselflink.sh [install] >> symlinks to /usr/local"
