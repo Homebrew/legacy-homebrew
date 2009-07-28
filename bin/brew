@@ -113,7 +113,7 @@ rescue Exception
   raise
 end
 
-def mk url
+def mk url, mode='make'
   require 'formula'
   path=Pathname.new(url)
 
@@ -131,9 +131,25 @@ def mk url
   f.puts "  @homepage=''" # second because you fill in these two first
   f.puts "  @md5=''"
   f.puts
+
+  if mode == "cmake"
+    f.puts "  def deps"
+    f.puts "    BinaryDep.new 'cmake'"
+    f.puts "  end"
+    f.puts
+  end
+
   f.puts "  def install"
-  f.puts "    system \"./configure --disable-debug --prefix='\#{prefix}'\""
-  f.puts "    system \"make install\""
+  
+  if mode == "make"
+    f.puts "    system \"./configure --disable-debug --prefix='\#{prefix}'\""
+    f.puts "    system \"make install\""
+  elsif mode == "cmake"
+    f.puts "    system \"cmake -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX=\#{prefix}\""
+    f.puts "    system \"make\""
+    f.puts "    system \"make install\""
+  end
+  
   f.puts "  end"
   f.print "end"
   f.close
@@ -218,7 +234,15 @@ begin
       puts "Pruned #{prune} symbolic links"
 
     when 'mk', 'make'
-      paths=ARGV.collect {|arg| mk arg}
+      mode = "make"
+      if ARGV.length > 0
+        if ARGV[0] == '--cmake'
+          ARGV.shift
+          mode = "cmake"
+        end
+      end
+      
+      paths=ARGV.collect {|arg| mk arg, mode}
       if paths.empty?
         raise "Invalid URL"
       elsif Kernel.system "which mate > /dev/null" and $? == 0
