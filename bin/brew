@@ -263,7 +263,7 @@ begin
         frm=Formula.create keg.name
         puts "#{keg.name} #{keg.version}"
         puts frm.homepage
-        if keg.installed?
+        if frm.installed?
           puts "#{abv keg} (installed to #{keg.path})"
         end
         if frm.caveats
