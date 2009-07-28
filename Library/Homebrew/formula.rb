@@ -51,16 +51,15 @@ class AbstractFormula
   end  
   # end ruby is weird section
 
-  def version
-    @version
-  end
-  def name
-    @name
+  attr_reader :version, :name
+  
+  # reimplement if your package has dependencies
+  def deps
   end
 
   # if the dir is there, but it's empty we consider it not installed
   def installed?
-    return prefix.children.count > 0
+    return prefix.children.length > 0
   rescue
     return false
   end
@@ -74,7 +73,6 @@ class AbstractFormula
     # end ruby is weird section
   end
 
-public  
   def prefix
     raise "@name.nil!" if @name.nil?
     raise "@version.nil?" if @version.nil?
