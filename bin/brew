@@ -70,8 +70,6 @@ end
 
 def install formula
   require 'keg'
-
-  raise "#{formula.name} already installed!\n\t#{formula.prefix}" if formula.installed?
   
   beginning = Time.now
 
@@ -98,6 +96,9 @@ def install formula
       end
     end
   end
+  
+  raise "Nothing installed" unless formula.installed?
+  
   ohai 'Finishing up'
   keg=Keg.new formula
   keg.clean
@@ -109,7 +110,7 @@ def install formula
   end
   puts "#{keg.path}: "+abv(keg)+", built in #{pretty_duration Time.now-beginning}"
 rescue Exception
-  formula.prefix.rmtree
+  formula.prefix.rmtree if formula.prefix.directory?
   raise
 end
 
@@ -211,7 +212,9 @@ begin
     when 'install'
       require 'formula'
       extract_named_args.each do |name|
-        install Formula.create(name)
+        f=Formula.create(name)
+        raise "#{f.name} already installed!\n\t#{f.prefix}" if f.installed?
+        install f
       end
 
     when 'ln', 'link'
