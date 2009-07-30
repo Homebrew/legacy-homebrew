@@ -93,7 +93,7 @@ def install formula
     else
       formula.prefix.mkpath
       formula.install
-      %w[README ChangeLog COPYING COPYRIGHT AUTHORS].each do |file|
+      %w[README ChangeLog COPYING LICENSE COPYRIGHT AUTHORS].each do |file|
         formula.prefix.install file if File.file? file
       end
     end
