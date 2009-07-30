@@ -129,7 +129,11 @@ class AbstractFormula
       tgz=Pathname.new(fetch()).realpath
       begin
         md5=`md5 -q "#{tgz}"`.strip
-        raise "MD5 mismatch: #{md5}" unless @md5 and md5 == @md5.downcase
+        if @md5 and not @md5.empty?
+          raise "MD5 mismatch: #{md5}" unless md5 == @md5.downcase
+        else
+          ohai "Warning: Formula does not provide an MD5 hash."
+        end
 
         # we make an additional subdirectory so know exactly what we are
         # recursively deleting later
