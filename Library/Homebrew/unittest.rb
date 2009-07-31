@@ -1,16 +1,23 @@
 #!/usr/bin/ruby
 $:.unshift File.dirname(__FILE__)
 require 'formula'
+require 'keg'
 require 'pathname+yeast'
 require 'stringio'
-require 'test/unit'
 require 'utils'
 
-# these are defined in env usually, but we want a fake place for everything init
-HOMEBREW_VERSION='1t'
+# these are defined in env.rb usually, but we don't want to break our actual
+# homebrew tree, and we do want to test everything :)
+HOMEBREW_VERSION='0.3t'
 HOMEBREW_CACHE="/tmp/testbrew"
 HOMEBREW_PREFIX=Pathname.new(HOMEBREW_CACHE)+'prefix'
 HOMEBREW_CELLAR=Pathname.new(HOMEBREW_CACHE)+'cellar'
+
+HOMEBREW_CELLAR.mkpath
+raise "HOMEBREW_CELLAR couldn't be created!" unless HOMEBREW_CELLAR.directory?
+at_exit { Pathname.new(HOMEBREW_CACHE).rmtree }
+require 'test/unit' # must be after at_exit
+
 
 class TestFormula <Formula
   def initialize url, md5='nomd5'
@@ -19,6 +26,27 @@ class TestFormula <Formula
     super 'test'
   end
 end
+
+class TestBall <Formula
+  def initialize
+    @url="file:///#{Pathname.new(__FILE__).parent.realpath}/testball-0.1.tbz"
+    super "testball"
+  end
+  
+  def install
+    prefix.install "bin"
+    prefix.install "libexec"
+  end
+end
+
+class TestBallValidMd5 <TestBall
+  @md5='71aa838a9e4050d1876a295a9e62cbe6'
+end
+
+class TestBallInvalidMd5 <TestBall
+  @md5='61aa838a9e4050d1876a295a9e62cbe6'
+end
+
 
 def nostdout
   tmp=$stdout
@@ -109,19 +137,50 @@ class BeerTasting <Test::Unit::TestCase
       TestFormula.new 'test-0.1.tar.gz'
       TestFormula.new 'test-0.1.tar.bz2'
       TestFormula.new 'test-0.1.tgz'
+      TestFormula.new 'test-0.1.bgz'
       TestFormula.new 'test-0.1.zip'
     end
   end
 
   def test_prefix
-    url='http://www.methylblue.com/test-0.1.tar.gz'
-    md5='d496ea538a21dc4bb8524a8888baf88c'
-
     nostdout do
-      TestFormula.new(url, md5).brew do |f|
+      TestBall.new.brew do |f|
         assert_equal File.expand_path(f.prefix), (HOMEBREW_CELLAR+f.name+'0.1').to_s
         assert_kind_of Pathname, f.prefix
       end
+    end
+  end
+  
+  def test_install
+    f=TestBall.new
+    nostdout do 
+      f.brew do
+        f.install
+      end
+    end
+    
+    assert f.bin.directory?
+    assert_equal f.bin.children.length, 3
+    libexec=f.prefix+'libexec'
+    assert libexec.directory?
+    assert_equal libexec.children.length, 1
+    
+    assert !(f.prefix+'main.c').exist?
+    
+    keg=Keg.new f
+    keg.ln
+    assert_equal HOMEBREW_PREFIX.children.length, 1
+    assert (HOMEBREW_PREFIX+'bin').directory?
+    assert_equal (HOMEBREW_PREFIX+'bin').children.length, 3
+  end
+  
+  def test_md5
+    assert_nothing_raised { nostdout { TestBallValidMd5.new.brew {} } }
+  end
+  
+  def test_badmd5
+    assert_raises RuntimeError do
+      nostdout { TestBallInvalidMd5.new.brew {} } 
     end
   end
 end

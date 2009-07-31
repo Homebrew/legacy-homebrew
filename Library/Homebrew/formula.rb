@@ -15,6 +15,8 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Homebrew.  If not, see <http://www.gnu.org/licenses/>.
 
+require 'utils'
+
 class BuildError <RuntimeError
   def initialize cmd
     super "Build failed during: #{cmd}"
