@@ -18,6 +18,7 @@
 require 'pathname+yeast'
 require 'utils'
 
+# TODO if whoami == root then use /Library/Caches/Homebrew instead
 HOMEBREW_VERSION='0.3'
 HOMEBREW_CACHE=File.expand_path "~/Library/Caches/Homebrew"
 HOMEBREW_PREFIX=Pathname.new(__FILE__).dirname.parent.parent.realpath
