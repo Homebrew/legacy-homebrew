@@ -19,7 +19,7 @@ _brew_to_completion()
         brew_base=`dirname ${brew_base}`/..
         
         # Commands that take an existing brew...
-        if [[ ($prev == "list") || ($prev == "ln") || ($prev == "rm") ]] ; then
+        if [[ ($prev == "list") || ($prev == "ln") || ($prev == "rm") || ($prev == "info") ]] ; then
             cellar_contents=`ls ${brew_base}/Cellar/`
             COMPREPLY=( $(compgen -W "${cellar_contents}" -- ${cur}) )
             return 0
