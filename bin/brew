@@ -64,7 +64,7 @@ def abv keg=nil
   if path.directory?
     `find #{path} -type f | wc -l`.strip+' files, '+`du -hd0 #{path} | cut -d"\t" -f1`.strip
   else
-    nil
+    ''
   end
 end
 
@@ -205,7 +205,8 @@ begin
       if ARGV.empty?
         exec "mate #{$formula} #{$root}/Library/Homebrew #{$root}/bin/brew #{$root}/README"
       else
-        paths=extract_kegs.collect {|keg| keg.formula_path.to_s.gsub ' ', '\\ '}
+        require 'formula'
+        paths=extract_named_args.collect {|name| Formula.path(name).to_s.gsub ' ', '\\ '}
         exec "mate #{paths.join ' '}"
       end
 
