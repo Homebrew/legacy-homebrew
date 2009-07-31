@@ -47,6 +47,15 @@ class TestBallInvalidMd5 <TestBall
   @md5='61aa838a9e4050d1876a295a9e62cbe6'
 end
 
+class TestBallOverrideBrew <Formula
+  def initialize
+    super "foo"
+  end
+  def brew
+    puts "We can't override brew"
+  end
+end
+
 
 def nostdout
   tmp=$stdout
@@ -177,6 +186,10 @@ class BeerTasting <Test::Unit::TestCase
     assert_equal 2, HOMEBREW_PREFIX.children.length
     assert (HOMEBREW_PREFIX+'bin').directory?
     assert_equal 3, (HOMEBREW_PREFIX+'bin').children.length
+    
+    keg.rm
+    assert !keg.path.exist?
+    assert !f.installed?
   end
   
   def test_md5
@@ -202,5 +215,9 @@ class BeerTasting <Test::Unit::TestCase
     `echo "require 'brewkit'; class #{classname} <Formula; @url=''; end" > #{path}`
     
     assert_not_nil Formula.create(FOOBAR)
+  end
+  
+  def test_cant_override_brew
+    assert_raises(RuntimeError) { TestBallOverrideBrew.new }
   end
 end
