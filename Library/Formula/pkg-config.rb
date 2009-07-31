@@ -8,7 +8,7 @@ class PkgConfig <Formula
   #TODO depend on our glib if available. --with-installed-glib
 
   def install
-    system "./configure --with-pc-path=/usr/lib/pkgconfig:/usr/local/lib/pkgconfig:#{$root}/lib/pkgconfig --disable-debug --prefix='#{prefix}'"
+    system "./configure --with-pc-path=/usr/lib/pkgconfig:/usr/local/lib/pkgconfig:#{HOMEBREW_PREFIX}/lib/pkgconfig --disable-debug --prefix='#{prefix}'"
     system "make install"
   end
 end

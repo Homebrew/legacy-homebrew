@@ -1,8 +1,7 @@
 #!/usr/bin/ruby
-require 'find'
-require 'pathname'
-$:.unshift Pathname.new(__FILE__).dirname.parent.realpath+'Library'+'Homebrew'
+$:.unshift __FILE__+'/../../Library/Homebrew'
 require 'env'
+require 'find'
 
 # often causes Ruby to throw exception ffs
 Dir.chdir '/' unless File.directory? ENV['PWD']
@@ -11,9 +10,9 @@ Dir.chdir '/' unless File.directory? ENV['PWD']
 def prune
   n=0
   dirs=Array.new
-  $root.find do |path|
+  HOMEBREW_PREFIX.find do |path|
     if path.directory?
-      name=path.relative_path_from($root).to_s
+      name=path.relative_path_from(HOMEBREW_PREFIX).to_s
       if name == '.git' or name == 'Cellar' or name == 'Library'
         Find.prune
       else
@@ -60,7 +59,7 @@ def extract_kegs
 end
 
 def abv keg=nil
-  path=keg ? keg.path : $cellar
+  path=keg ? keg.path : HOMEBREW_CELLAR
   if path.directory?
     `find #{path} -type f | wc -l`.strip+' files, '+`du -hd0 #{path} | cut -d"\t" -f1`.strip
   else
@@ -203,7 +202,8 @@ begin
 
     when 'edit'
       if ARGV.empty?
-        exec "mate #{$formula} #{$root}/Library/Homebrew #{$root}/bin/brew #{$root}/README"
+        r=HOMEBREW_PREFIX
+        exec "mate #{r}/Library/Formula #{r}/Library/Homebrew #{r}/bin/brew #{r}/README"
       else
         require 'formula'
         paths=extract_named_args.collect {|name| Formula.path(name).to_s.gsub ' ', '\\ '}
@@ -258,7 +258,7 @@ begin
 
     when 'info', 'abv'
       if ARGV.empty?
-        puts `ls #{$cellar} | wc -l`.strip+" kegs, "+abv
+        puts `ls #{HOMEBREW_CELLAR} | wc -l`.strip+" kegs, "+abv
       elsif ARGV[0][0..6] == 'http://'
         puts Pathname.new(ARGV.shift).version
       else

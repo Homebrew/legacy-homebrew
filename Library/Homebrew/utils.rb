@@ -15,10 +15,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Homebrew.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'pathname+yeast'
-require 'utils'
-
-HOMEBREW_VERSION='0.3'
-HOMEBREW_CACHE=File.expand_path "~/Library/Caches/Homebrew"
-HOMEBREW_PREFIX=Pathname.new(__FILE__).dirname.parent.parent.realpath
-HOMEBREW_CELLAR=HOMEBREW_PREFIX+'Cellar'
+def ohai title
+  n=`tput cols`.strip.to_i-4
+  puts "\033[0;34m==>\033[0;0;1m #{title[0,n]}\033[0;0m"
+end

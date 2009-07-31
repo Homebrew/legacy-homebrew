@@ -31,18 +31,18 @@ ENV['CC']='gcc-4.2'
 ENV['CXX']='g++-4.2'
 ENV['MAKEFLAGS']="-j#{OSX::NSProcessInfo.processInfo.processorCount}"
 
-unless $root.to_s == '/usr/local'
-  ENV['CPPFLAGS']='-I'+$root+'include'
-  ENV['LDFLAGS']='-L'+$root+'lib'
+unless HOMEBREW_PREFIX == '/usr/local'
+  ENV['CPPFLAGS']="-I#{HOMEBREW_PREFIX}/include"
+  ENV['LDFLAGS']="-L#{HOMEBREW_PREFIX}/lib"
 end
 
 def inreplace(path, before, after)
   before=Regexp.escape before.to_s
   after=Regexp.escape after.to_s
-  before=before.gsub "/", "\\\/"
-  after=after.gsub "/", "\\\/"
-  before=before.gsub "'", '\''
-  after=after.gsub "'", '\''
+  before.gsub! "/", "\\\/"
+  after.gsub! "/", "\\\/"
+  before.gsub! "'", '\''
+  after.gsub! "'", '\''
 
   # TODO this sucks
   # either use 'ed', or allow regexp and use a proper ruby function

@@ -15,7 +15,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Homebrew.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'env'
 require 'formula'
 
 class Keg
@@ -29,7 +28,7 @@ class Keg
     elsif formula.is_a? Pathname
       # TODO
     elsif formula.is_a? String
-      path=$cellar+formula
+      path=HOMEBREW_CELLAR+formula
       kids=path.children
       raise "Empty installation: #{path}" if kids.length < 1
       raise "Multiple versions installed" if kids.length > 1
@@ -83,12 +82,12 @@ class Keg
 
   def rm
     # don't rmtree shit if we aren't positive about our location!
-    raise "Bad stuff!" unless path.parent.parent == $cellar
+    raise "Bad stuff!" unless path.parent.parent == HOMEBREW_CELLAR
 
     if path.directory?
       FileUtils.chmod_R 0777, path # ensure we have permission to delete
-      path.rmtree # $cellar/foo/1.2.0
-      path.parent.rmdir if path.parent.children.length == 0 # $cellar/foo
+      path.rmtree # HOMEBREW_CELLAR/foo/1.2.0
+      path.parent.rmdir if path.parent.children.length == 0 # HOMEBREW_CELLAR/foo
     end
   end
 
@@ -109,13 +108,14 @@ private
     start=path+start
     return unless start.directory?
 
+    root=Pathname.new HOMEBREW_PREFIX
     start.find do |from|
       next if from == start
 
       prune=false
 
       relative_path=from.relative_path_from path
-      to=$root+relative_path
+      to=root+relative_path
 
       if from.file?
         __symlink_relative_to from, to
