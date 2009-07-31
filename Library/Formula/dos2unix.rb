@@ -8,7 +8,7 @@ class Dos2unix <Formula
   def install
     File.unlink 'dos2unix'
     # we don't use make as it doesn't optimise :P
-    system "gcc -O3 dos2unix.c -o dos2unix"
+    system "gcc #{ENV['CFLAGS']} dos2unix.c -o dos2unix"
     # make install is broken due to INSTALL file, but also it sucks so we'll do it
     # also Ruby 1.8 is broken, it won't allow you to move a symlink that's
     # target is invalid. FFS very dissapointed with dependability of 
