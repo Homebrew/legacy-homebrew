@@ -239,7 +239,7 @@ class Formula <UnidentifiedFormula
   end
 
   def self.path name
-    Pathanme.new(HOMEBREW_PREFIX)+'Formula'+(name.downcase+'.rb')
+    Pathname.new(HOMEBREW_PREFIX)+'Library'+'Formula'+(name.downcase+'.rb')
   end
   
   def self.create name
