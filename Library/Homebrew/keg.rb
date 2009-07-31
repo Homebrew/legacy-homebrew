@@ -52,8 +52,8 @@ class Keg
         perms=0444
         if fo =~ /Mach-O dynamically linked shared library/
           args='-SxX'
-        elsif fo =~ /Mach-O [^ ]* executable/ # defaults strip everything
-          args='' # still do the strip
+        elsif fo =~ /Mach-O [^ ]* ?executable/
+          args='' # use strip defaults
           perms=0544
         elsif fo =~ /script text executable/
           perms=0544
