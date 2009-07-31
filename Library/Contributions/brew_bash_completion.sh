@@ -1,3 +1,10 @@
+# This script contains bash completions for brew.
+# To use, edit your .bashrc and add the line:
+#   source <path-to-homebrew>/Library/Contributions/brew_bash_completion.sh
+#
+# Assuming you have brew installed in /usr/local, then you'll want:
+#   source /usr/local/Library/Contributions/brew_bash_completion.sh
+
 _brew_to_completion()
 {
     local actions cur prev
@@ -7,28 +14,34 @@ _brew_to_completion()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
     
-    actions="install rm list info ln edit"
+    # We only complete unabbreviated commands...
+    actions="edit info install list link make uninstall"
     
-    # Command list
+    # Subcommand list
     if [[ ( ${COMP_CWORD} -eq 1 ) && ( ${COMP_WORDS[0]} == brew )  ]] ; then
         COMPREPLY=( $(compgen -W "${actions}" -- ${cur}) )
         return 0
-    # Handle subcommands
+    # Subcommands
     else
         brew_base=`which brew`
         brew_base=`dirname ${brew_base}`/..
         
-        # Commands that take an existing brew...
-        if [[ ($prev == "list") || ($prev == "ln") || ($prev == "rm") || ($prev == "info") ]] ; then
-            cellar_contents=`ls ${brew_base}/Cellar/`
-            COMPREPLY=( $(compgen -W "${cellar_contents}" -- ${cur}) )
-            return 0
-        # Commands that take a formula...
-        elif [[ ($prev == "install") ]] ; then
-            formulae=`ls ${brew_base}/Library/Formula/ | sed "s/\.rb//g"`
-            COMPREPLY=( $(compgen -W "${formulae}" -- ${cur}) )
-            return 0
-        fi
+        case ${prev} in
+            # Commands that take a formula...
+            edit|install)
+                formulae=`ls ${brew_base}/Library/Formula/ | sed "s/\.rb//g"`
+                COMPREPLY=( $(compgen -W "${formulae}" -- ${cur}) )
+                return 0
+            ;;
+
+            # Commands that take an existing brew...
+            abv|info|list|link|ls|ln|rm|uninstall)
+                cellar_contents=`ls ${brew_base}/Cellar/`
+                COMPREPLY=( $(compgen -W "${cellar_contents}" -- ${cur}) )
+                return 0
+            ;;
+            
+        esac
     fi
 }
 
