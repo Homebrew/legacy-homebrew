@@ -31,11 +31,11 @@ class AbstractFormula
 
 private
   class <<self
-    attr_reader :url, :version, :md5, :url, :homepage
+    attr_reader :url, :version, :md5, :url, :homepage, :sha1
   end
 
 public
-  attr_reader :url, :version, :md5, :url, :homepage, :name
+  attr_reader :url, :version, :url, :homepage, :name
   
   # reimplement if your package has dependencies
   def deps
@@ -54,6 +54,7 @@ public
     @url=self.class.url unless @url
     @homepage=self.class.homepage unless @homepage
     @md5=self.class.md5 unless @md5
+    @sha1=self.class.sha1 unless @sha1
     raise "@url.nil?" if @url.nil?
   end
 
@@ -101,6 +102,22 @@ public
     # The None part makes cmake use the environment's CFLAGS etc. settings
     "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None"
   end
+  
+  def verify_download_integrity fn
+    require 'digest'
+    type='MD5'
+    type='SHA1' if @sha1
+    supplied=eval "@#{type.downcase}"
+    hash=eval("Digest::#{type}").hexdigest(fn.read)
+
+    if supplied
+      raise "#{type} mismatch: #{hash}" unless supplied.upcase == hash.upcase
+    else
+      opoo "Cannot verify package integrity"
+      puts "The formula did not provide a download checksum"
+      puts "For your reference the #{type} is: #{hash}"
+    end
+  end
 
   # yields self with current working directory set to the uncompressed tarball
   def brew
@@ -110,14 +127,7 @@ public
       tmp=nil
       tgz=Pathname.new(fetch()).realpath
       begin
-        md5=`md5 -q "#{tgz}"`.strip
-        if @md5 and not @md5.empty?
-          raise "MD5 mismatch: #{md5}" unless md5 == @md5.downcase
-        else
-          opoo "Cannot verify package integrity"
-          puts "The formula did not provide a download checksum"
-          puts "For your reference the MD5 is: #{md5}"
-        end
+        verify_download_integrity tgz
 
         # we make an additional subdirectory so know exactly what we are
         # recursively deleting later
