@@ -19,3 +19,8 @@ def ohai title
   n=`tput cols`.strip.to_i-4
   puts "\033[0;34m==>\033[0;0;1m #{title[0,n]}\033[0;0m"
 end
+
+# shows a warning in delicious pink
+def opoo warning
+  puts "WARNING \033[1;35m#{warning}\033[0;0m"
+end
