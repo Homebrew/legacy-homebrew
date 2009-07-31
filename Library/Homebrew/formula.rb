@@ -15,8 +15,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Homebrew.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'env'
-
 class BuildError <RuntimeError
   def initialize cmd
     super "Build failed during: #{cmd}"
@@ -76,7 +74,7 @@ class AbstractFormula
   def prefix
     raise "@name.nil!" if @name.nil?
     raise "@version.nil?" if @version.nil?
-    $cellar+@name+@version
+    HOMEBREW_CELLAR+@name+@version
   end
   def bin
     prefix+'bin'
@@ -239,7 +237,7 @@ class Formula <UnidentifiedFormula
   end
 
   def self.path name
-    $formula+(name.downcase+'.rb')
+    Pathanme.new(HOMEBREW_PREFIX)+'Formula'+(name.downcase+'.rb')
   end
   
   def self.create name

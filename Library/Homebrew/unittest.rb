@@ -1,9 +1,16 @@
 #!/usr/bin/ruby
-
 $:.unshift File.dirname(__FILE__)
-require 'test/unit'
 require 'formula'
+require 'pathname+yeast'
 require 'stringio'
+require 'test/unit'
+require 'utils'
+
+# these are defined in env usually, but we want a fake place for everything init
+HOMEBREW_VERSION='1t'
+HOMEBREW_CACHE="/tmp/testbrew"
+HOMEBREW_PREFIX=Pathname.new(HOMEBREW_CACHE)+'prefix'
+HOMEBREW_CELLAR=Pathname.new(HOMEBREW_CACHE)+'cellar'
 
 class TestFormula <Formula
   def initialize url, md5='nomd5'
@@ -112,7 +119,7 @@ class BeerTasting <Test::Unit::TestCase
 
     nostdout do
       TestFormula.new(url, md5).brew do |f|
-        assert_equal File.expand_path(f.prefix), ($cellar+f.name+'0.1').to_s
+        assert_equal File.expand_path(f.prefix), (HOMEBREW_CELLAR+f.name+'0.1').to_s
         assert_kind_of Pathname, f.prefix
       end
     end
