@@ -29,7 +29,9 @@ class Keg
     elsif formula.is_a? Pathname
       # TODO
     elsif formula.is_a? String
-      kids=($cellar+formula).children
+      path=$cellar+formula
+      kids=path.children
+      raise "Empty installation: #{path}" if kids.length < 1
       raise "Multiple versions installed" if kids.length > 1
       @path=kids[0]
       @name=formula
