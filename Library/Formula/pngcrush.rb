@@ -6,6 +6,10 @@ class Pngcrush <Formula
   @md5='2cfe54e660e586a0302a6def1aa8b08e'
 
   def install
+    # use our CFLAGS and LDFLAGS thanks :P
+    inreplace 'Makefile', 'CFLAGS = -I. -O3 -fomit-frame-pointer -Wall -Wshadow', ''
+    inreplace 'Makefile', 'LDFLAGS =', ''
+
     system "make"
     bin.install 'pngcrush'
   end
