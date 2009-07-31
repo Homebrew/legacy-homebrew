@@ -2,7 +2,7 @@ require 'brewkit'
 
 class Flac2Mp3 <GithubGistFormula
   @url='http://gist.github.com/raw/124242/79857936f1d72824be0fb5d2ac845c02322abea0/flac2mp3'
-  @md5='a38d150b5ebbcbc010c777bccf1c19a6'
+  @md5='8351009b64afedfeb7a9e162ccd8d94c'
 end
 
 class Flac <Formula
@@ -15,7 +15,8 @@ class Flac <Formula
     # cares or knows how to fix it
     # TODO --enable-sse
     system "./configure --disable-debug --disable-asm-optimizations --prefix='#{prefix}' --mandir='#{prefix}/share/man'"
-    system "OBJ_FORMAT=macho make install"
+    ENV['OBJ_FORMAT']='macho'
+    system "make install"
 
     (doc.parent+"#{@name}-#{@version}").mv doc
 
