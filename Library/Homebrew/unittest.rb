@@ -153,25 +153,30 @@ class BeerTasting <Test::Unit::TestCase
   
   def test_install
     f=TestBall.new
+    
+    assert !f.installed?
+    
     nostdout do 
       f.brew do
         f.install
       end
     end
     
+    assert_match Regexp.new("^#{HOMEBREW_CELLAR}/"), f.prefix.to_s
+    
     assert f.bin.directory?
-    assert_equal f.bin.children.length, 3
+    assert_equal 3, f.bin.children.length
     libexec=f.prefix+'libexec'
     assert libexec.directory?
-    assert_equal libexec.children.length, 1
-    
+    assert_equal 1, libexec.children.length
     assert !(f.prefix+'main.c').exist?
+    assert f.installed?
     
     keg=Keg.new f
     keg.ln
-    assert_equal HOMEBREW_PREFIX.children.length, 1
+    assert_equal 2, HOMEBREW_PREFIX.children.length
     assert (HOMEBREW_PREFIX+'bin').directory?
-    assert_equal (HOMEBREW_PREFIX+'bin').children.length, 3
+    assert_equal 3, (HOMEBREW_PREFIX+'bin').children.length
   end
   
   def test_md5
@@ -182,5 +187,20 @@ class BeerTasting <Test::Unit::TestCase
     assert_raises RuntimeError do
       nostdout { TestBallInvalidMd5.new.brew {} } 
     end
+  end
+  
+  FOOBAR='foo-bar'
+  def test_formula_funcs
+    classname=Formula.class(FOOBAR)
+    path=Formula.path(FOOBAR)
+    
+    assert_equal "FooBar", classname
+    assert_match Regexp.new("^#{HOMEBREW_PREFIX}/Library/Formula"), path.to_s
+
+    path=HOMEBREW_PREFIX+'Library'+'Formula'+"#{FOOBAR}.rb"
+    path.dirname.mkpath
+    `echo "require 'brewkit'; class #{classname} <Formula; @url=''; end" > #{path}`
+    
+    assert_not_nil Formula.create(FOOBAR)
   end
 end
