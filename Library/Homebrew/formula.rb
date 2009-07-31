@@ -245,7 +245,7 @@ class Formula <UnidentifiedFormula
   def self.create name
     require Formula.path(name)
     return eval(Formula.class(name)).new(name)
-  rescue
+  rescue LoadError
     raise "No formula for #{name}"
   end
 end
