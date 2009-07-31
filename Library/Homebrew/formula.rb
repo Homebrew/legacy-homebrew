@@ -190,10 +190,6 @@ private
     end
     return tgz
   end
-
-  def method_added method
-    raise 'You cannot override Formula.brew' if method == 'brew'
-  end
 end
 
 # somewhat useful, it'll raise if you call prefix, but it'll unpack a tar/zip
@@ -232,7 +228,7 @@ class Formula <UnidentifiedFormula
     super name
     @version=Pathname.new(@url).version unless @version
   end
-  
+
   def self.class name
     #remove invalid characters and camelcase
     name.capitalize.gsub(/[-_\s]([a-zA-Z0-9])/) { $1.upcase }
@@ -241,12 +237,16 @@ class Formula <UnidentifiedFormula
   def self.path name
     Pathname.new(HOMEBREW_PREFIX)+'Library'+'Formula'+(name.downcase+'.rb')
   end
-  
+
   def self.create name
     require Formula.path(name)
     return eval(Formula.class(name)).new(name)
   rescue LoadError
     raise "No formula for #{name}"
+  end
+
+  def method_added method
+    raise 'You cannot override Formula.brew' if method == 'brew'
   end
 end
 
