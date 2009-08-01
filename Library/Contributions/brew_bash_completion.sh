@@ -1,6 +1,6 @@
 # This script contains bash completions for brew.
 # To use, edit your .bashrc and add the line:
-#   source <path-to-homebrew>/Library/Contributions/brew_bash_completion.sh
+#   source `brew --prefix`/Library/Contributions/brew_bash_completion.sh
 #
 # Assuming you have brew installed in /usr/local, then you'll want:
 #   source /usr/local/Library/Contributions/brew_bash_completion.sh
@@ -28,7 +28,7 @@ _brew_to_completion()
         
         case ${prev} in
             # Commands that take a formula...
-            edit|install)
+            edit|install|home)
                 formulae=`ls ${brew_base}/Library/Formula/ | sed "s/\.rb//g"`
                 COMPREPLY=( $(compgen -W "${formulae}" -- ${cur}) )
                 return 0
