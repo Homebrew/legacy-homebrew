@@ -41,7 +41,7 @@ case hw_model
     #ENV['CFLAGS']="#{ENV['CFLAGS']} -march=nocona -msse3 -mmmx -m64"
     #ENV['LDFLAGS']="-arch x86_64"
 
-  when :xeon, :macpro
+  when :xeon
     # TODO what optimisations for xeon?
 
   when :ppc   then abort "Sorry, Homebrew does not support PowerPC architectures"

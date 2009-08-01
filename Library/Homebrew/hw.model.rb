@@ -13,66 +13,44 @@ def hw_model
       when "iMac" 
         if major <=4
           :core1
-        elsif major <=8
-          :core2
         else
-          $unknown_hw_model=true
+          $unknown_hw_model=true if major >8
           :core2
         end
 
       when "MacBookAir"
-        if major <= 1
-          :core2
-        else
-          $unknown_hw_model=true
-          :core2
-        end
+        $unknown_hw_model=true if major > 1
+        :core2
 
       when "MacBook"
         if major <= 1
           :core1
-        elsif major <= 4
-          :core2
         else
-          $unknown_hw_model=true
+          $unknown_hw_model=true if major > 4
           :core2
         end
       
       when "MacBookPro"
         if major <= 1
           :core1
-        elsif major <= 5
-          :core2
         else
-          $unknown_hw_model=true
+          $unknown_hw_model=true if major > 5
           :core2
         end
       
       when "Macmini" # Mac mini (Core Duo/Solo)
-        if major <= 1
-          :core
-        else
-          $unknown_hw_model=true
-          :core
-        end
+        $unknown_hw_model=true if major > 1
+        :core
         
       when "MacPro"
-        if major <= 3
-          :xeon
-        else
-          $unknown_hw_model=true
-          :xeon
-        end
+        $unknown_hw_model=true if major > 3
+        :xeon
 
       when "PowerBook", "PowerMac", "RackMac" then :ppc
 
       when "Xserve"
-        if major <=2
-          :xeon
-        else
-          $unknown_hw_model=true
-          :xeon
-        end
+        $unknown_hw_model=true if major > 2
+        :xeon
         
       when "ADP" then :dunno # Developer Transition Kit
       when "M43ADP" then :dunno # Development Mac Pro
