@@ -199,6 +199,10 @@ begin
     when '-v', '--version' then puts HOMEBREW_VERSION
     when 'macports' then exec "open 'http://www.macports.org/ports.php?by=name&substr=#{ARGV.shift}'"
 
+    when 'home', 'homepage'
+      homepages=extract_names.collect {|keg| Formula.create(name).homepage}
+      exec "open #{homepages.join' '}"
+
     when 'ls', 'list'
       dirs=extract_kegs.collect {|keg| keg.path}
       exec "find #{dirs.join' '} -not -type d -print"
