@@ -29,29 +29,13 @@ class AbstractFormula
   require 'find'
   require 'fileutils'
 
-  # fuck knows, ruby is weird
-  # TODO please fix!
-  def self.url
-    @url
+private
+  class <<self
+    attr_reader :url, :version, :md5, :url, :homepage
   end
-  def url
-    self.class.url
-  end
-  def self.md5
-    @md5
-  end
-  def md5
-    self.class.md5
-  end
-  def self.homepage
-    @homepage
-  end
-  def homepage
-    self.class.homepage
-  end  
-  # end ruby is weird section
 
-  attr_reader :version, :name
+public
+  attr_reader :url, :version, :md5, :url, :homepage, :name
   
   # reimplement if your package has dependencies
   def deps
@@ -66,11 +50,11 @@ class AbstractFormula
 
   def initialize name=nil
     @name=name
-    # fuck knows, ruby is weird
-    @url=url if @url.nil?
+    @version=self.class.version unless @version
+    @url=self.class.url unless @url
+    @homepage=self.class.homepage unless @homepage
+    @md5=self.class.md5 unless @md5
     raise "@url.nil?" if @url.nil?
-    @md5=md5 if @md5.nil?
-    # end ruby is weird section
   end
 
   def prefix
@@ -78,24 +62,13 @@ class AbstractFormula
     raise "@version.nil?" if @version.nil?
     HOMEBREW_CELLAR+@name+@version
   end
-  def bin
-    prefix+'bin'
-  end
-  def doc
-    prefix+'share'+'doc'+name
-  end
-  def man
-    prefix+'share'+'man'
-  end
-  def man1
-    man+'man1'
-  end
-  def lib
-    prefix+'lib'
-  end
-  def include
-    prefix+'include'
-  end
+
+  def bin;  prefix+'bin' end
+  def doc;  prefix+'share'+'doc'+name end
+  def lib;  prefix+'lib' end
+  def man;  prefix+'share'+'man' end
+  def man1; man+'man1' end
+  def include; prefix+'include' end
 
   def caveats
     nil
@@ -251,6 +224,7 @@ class Formula <UnidentifiedFormula
 end
 
 # see ack.rb for an example usage
+# you need to set @version and @name
 class ScriptFileFormula <AbstractFormula
   def install
     bin.install name
