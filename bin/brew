@@ -3,10 +3,13 @@ $:.unshift __FILE__+'/../../Library/Homebrew'
 require 'env'
 require 'find'
 
+PRISTINE_ARGV=ARGV.dup
+
 # often causes Ruby to throw exception ffs
 Dir.chdir '/' unless File.directory? ENV['PWD']
 
 ######################################################################## funcs
+# remove symlinks that no longer point to files
 def prune
   n=0
   dirs=Array.new
@@ -54,7 +57,7 @@ end
 def extract_kegs
   require 'keg'
   kegs=extract_named_args.collect {|name| Keg.new name}
-  raise "Expecting the name of a keg or formula, eg:\n\tbrew #{ARGV.join ' '} wget" if kegs.empty?
+  raise "Expecting the name of a keg or formula, eg:\n==> brew #{PRISTINE_ARGV.join ' '} wget" if kegs.empty?
   return kegs
 end
 
