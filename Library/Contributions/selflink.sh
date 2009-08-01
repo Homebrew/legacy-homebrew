@@ -13,6 +13,10 @@ if [[ $mode == install ]]; then
         mkdir -p "$source_base/Cellar"
     fi
     
+    if [[ ! -e "/usr/local/bin" ]] ; then
+        mkdir -p /usr/local/bin
+    fi
+    
     ln -s "$source_base/bin/brew" "/usr/local/bin/brew";
     ln -s "$source_base/Library" "/usr/local/Library";
     ln -s "$source_base/Cellar" "/usr/local/Cellar";
