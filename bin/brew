@@ -96,7 +96,7 @@ def install formula
     end
   end
   
-  raise "Nothing installed" unless formula.installed?
+  raise "Nothing was installed to #{formula.prefix}" unless formula.installed?
   
   ohai 'Finishing up'
   keg=Keg.new formula
@@ -214,7 +214,7 @@ begin
       require 'formula'
       extract_named_args.each do |name|
         f=Formula.create(name)
-        raise "#{f.name} already installed!\n\t#{f.prefix}" if f.installed?
+        raise "#{f.name} already installed!\n==> #{f.prefix}" if f.installed? unless ARGV.include? '--force'
         install f
       end
 
@@ -262,12 +262,13 @@ begin
       elsif ARGV[0][0..6] == 'http://'
         puts Pathname.new(ARGV.shift).version
       else
+        require 'formula'
         #TODO show outdated status and that
-        keg=extract_kegs[0]
-        frm=Formula.create keg.name
-        puts "#{keg.name} #{keg.version}"
+        frm=Formula.create(extract_named_args[0])
+        puts "#{frm.name} #{frm.version}"
         puts frm.homepage
         if frm.installed?
+          keg=Keg.new frm
           puts "#{abv keg} (installed to #{keg.path})"
         end
         if frm.caveats
