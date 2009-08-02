@@ -2,8 +2,8 @@ require 'brewkit'
 
 class Pngcrush <Formula
   @homepage='http://pmt.sourceforge.net/pngcrush/'
-  @url='http://downloads.sourceforge.net/sourceforge/pmt/pngcrush-1.6.19.tar.bz2'
-  @md5='2cfe54e660e586a0302a6def1aa8b08e'
+  @url='http://downloads.sourceforge.net/sourceforge/pmt/pngcrush-1.7.0.tar.bz2'
+  @md5='033f1542ef452952b1ba585cf21be70b'
 
   def install
     # use our CFLAGS and LDFLAGS thanks :P
