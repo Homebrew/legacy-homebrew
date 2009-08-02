@@ -209,8 +209,8 @@ begin
 
     when 'edit'
       if ARGV.empty?
-        r=HOMEBREW_PREFIX
-        exec "mate #{r}/Library/Formula #{r}/Library/Homebrew #{r}/bin/brew #{r}/README"
+        d=HOMEBREW_PREFIX
+        exec "mate #{Dir["#{d}/Library/*"].join' '} #{d}/bin/brew #{d}/README"
       else
         require 'formula'
         paths=extract_named_args.collect {|name| Formula.path(name).to_s.gsub ' ', '\\ '}
