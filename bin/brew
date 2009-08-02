@@ -275,6 +275,7 @@ begin
         puts "#{frm.name} #{frm.version}"
         puts frm.homepage
         if frm.installed?
+          require 'keg'
           keg=Keg.new frm
           puts "#{abv keg} (installed to #{keg.path})"
         end
