@@ -8,10 +8,10 @@ require 'utils'
 
 # these are defined in env.rb usually, but we don't want to break our actual
 # homebrew tree, and we do want to test everything :)
-HOMEBREW_VERSION='0.3t'
 HOMEBREW_PREFIX=Pathname.new '/tmp/testbrew/prefix'
 HOMEBREW_CACHE=HOMEBREW_PREFIX.parent+"cache"
 HOMEBREW_CELLAR=HOMEBREW_PREFIX.parent+"cellar"
+HOMEBREW_USER_AGENT="Homebrew"
 
 HOMEBREW_CELLAR.mkpath
 raise "HOMEBREW_CELLAR couldn't be created!" unless HOMEBREW_CELLAR.directory?
