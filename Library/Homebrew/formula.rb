@@ -96,7 +96,7 @@ public
   # yields self with current working directory set to the uncompressed tarball
   def brew
     ohai "Downloading #{@url}"
-    FileUtils.mkpath HOMEBREW_CACHE
+    HOMEBREW_CACHE.mkpath
     Dir.chdir HOMEBREW_CACHE do
       tmp=nil
       tgz=Pathname.new(fetch()).realpath

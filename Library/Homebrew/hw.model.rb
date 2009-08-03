@@ -1,7 +1,7 @@
 def hw_model_output
   require 'fileutils'
-  FileUtils.mkpath HOMEBREW_CACHE
-  exe=Pathname.new(HOMEBREW_CACHE)+'hw.model'
+  HOMEBREW_CACHE.mkpath
+  exe=HOMEBREW_CACHE+'hw.model'
   Kernel.system "gcc -Os #{File.dirname __FILE__}/hw.model.c -o #{exe}" unless exe.file?
   /(.*)(\d+),(\d+)/ =~ `#{exe}`
   yield $1, $2.to_i, $3.to_i
