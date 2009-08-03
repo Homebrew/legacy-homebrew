@@ -1,4 +1,6 @@
 def hw_model_output
+  require 'fileutils'
+  FileUtils.mkpath HOMEBREW_CACHE
   exe=Pathname.new(HOMEBREW_CACHE)+'hw.model'
   Kernel.system "gcc -Os #{File.dirname __FILE__}/hw.model.c -o #{exe}" unless exe.file?
   /(.*)(\d+),(\d+)/ =~ `#{exe}`
