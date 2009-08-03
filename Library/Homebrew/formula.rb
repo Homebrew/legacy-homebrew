@@ -174,10 +174,8 @@ private
       tgz=File.expand_path File.basename(@url)
     end
 
-    agent="Homebrew #{HOMEBREW_VERSION} (Ruby #{VERSION}; Mac OS X 10.5 Leopard)"
-
     unless File.exists? tgz
-      `curl -#LA "#{agent}" #{oarg} "#{@url}"`
+      `curl -#LA "#{HOMEBREW_USER_AGENT}" #{oarg} "#{@url}"`
       raise "Download failed" unless $? == 0
     else
       puts "File already downloaded and cached"

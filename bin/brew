@@ -4,6 +4,7 @@ require 'env'
 require 'find'
 
 PRISTINE_ARGV=ARGV.dup
+HOMEBREW_USER_AGENT="Homebrew #{HOMEBREW_VERSION} (Ruby #{VERSION}; Mac OS X 10.5 Leopard)"
 
 # often causes Ruby to throw exception ffs
 Dir.chdir '/' unless File.directory? ENV['PWD']
