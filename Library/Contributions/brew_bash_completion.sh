@@ -28,14 +28,14 @@ _brew_to_completion()
         
         case ${prev} in
             # Commands that take a formula...
-            edit|install|home)
+            edit|install|home|homepage)
                 formulae=`ls ${brew_base}/Library/Formula/ | sed "s/\.rb//g"`
                 COMPREPLY=( $(compgen -W "${formulae}" -- ${cur}) )
                 return 0
             ;;
 
             # Commands that take an existing brew...
-            abv|home|homepage|info|list|link|ls|ln|rm|uninstall)
+            abv|info|list|link|ls|ln|rm|uninstall)
                 cellar_contents=`ls ${brew_base}/Cellar/`
                 COMPREPLY=( $(compgen -W "${cellar_contents}" -- ${cur}) )
                 return 0
