@@ -200,7 +200,8 @@ begin
     when 'macports' then exec "open 'http://www.macports.org/ports.php?by=name&substr=#{ARGV.shift}'"
 
     when 'home', 'homepage'
-      homepages=extract_names.collect {|keg| Formula.create(name).homepage}
+      require 'formula'
+      homepages=extract_named_args.collect {|name| Formula.create(name).homepage}
       exec "open #{homepages.join' '}"
 
     when 'ls', 'list'
