@@ -93,6 +93,15 @@ public
     raise BuildError.new(cmd) unless $? == 0
   end
 
+  # we don't have a std_autotools variant because autotools is a lot less
+  # consistent and the standard parameters are more memorable
+  # really Homebrew should determine what works inside brew() then
+  # we could add --disable-dependency-tracking when it will work
+  def std_cmake_parameters
+    # The None part makes cmake use the environment's CFLAGS etc. settings
+    "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None"
+  end
+
   # yields self with current working directory set to the uncompressed tarball
   def brew
     ohai "Downloading #{@url}"
@@ -105,7 +114,9 @@ public
         if @md5 and not @md5.empty?
           raise "MD5 mismatch: #{md5}" unless md5 == @md5.downcase
         else
-          opoo "Formula does not provide an MD5 hash."
+          opoo "Cannot verify package integrity"
+          puts "The formula did not provide a download checksum"
+          puts "For your reference the MD5 is: #{md5}"
         end
 
         # we make an additional subdirectory so know exactly what we are
