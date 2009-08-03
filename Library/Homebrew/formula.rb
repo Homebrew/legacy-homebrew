@@ -233,7 +233,7 @@ end
 
 class GithubGistFormula <ScriptFileFormula
   def initialize
-    super File.basename(url)
+    super File.basename(self.class.url)
     @version=File.basename(File.dirname(url))[0,6]
   end
 end
