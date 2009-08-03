@@ -20,6 +20,6 @@ require 'utils'
 
 # TODO if whoami == root then use /Library/Caches/Homebrew instead
 HOMEBREW_VERSION='0.3'
-HOMEBREW_CACHE=File.expand_path "~/Library/Caches/Homebrew"
+HOMEBREW_CACHE=Pathname.new("~/Library/Caches/Homebrew").expand_path
 HOMEBREW_PREFIX=Pathname.new(__FILE__).dirname.parent.parent.cleanpath
 HOMEBREW_CELLAR=HOMEBREW_PREFIX+'Cellar'
