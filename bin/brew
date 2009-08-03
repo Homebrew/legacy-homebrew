@@ -194,7 +194,7 @@ end
 begin
   case ARGV.shift
     when '--prefix' then puts prefix
-    when '--cache' then puts Homebrew::cache
+    when '--cache' then puts HOMEBREW_CACHE
     when '-h', '--help', '--usage', '-?' then puts usage
     when '-v', '--version' then puts HOMEBREW_VERSION
     when 'macports' then exec "open 'http://www.macports.org/ports.php?by=name&substr=#{ARGV.shift}'"
