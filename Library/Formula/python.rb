@@ -9,11 +9,18 @@ class Python <Formula
     # You can build Python without readline, but you really don't want to.
     LibraryDep.new 'readline'
   end
+  
+  def skip_clean? path
+    return path == bin+'python' or path == bin+'python2.6'
+  end
 
   def install
-    # Todo: Link against custom readline
-    system "./configure --prefix='#{prefix}'"
+    system "./configure --prefix='#{prefix}' --with-framework-name=/Developer/SDKs/MacOSX10.5.sdk"
     system "make"
     system "make install"
+    
+    # lib/python2.6/config contains a copy of libpython.a; make this a link instead
+    (lib+'python2.6/config/libpython2.6.a').unlink
+    (lib+'python2.6/config/libpython2.6.a').make_link lib+'libpython2.6.a'
   end
 end
