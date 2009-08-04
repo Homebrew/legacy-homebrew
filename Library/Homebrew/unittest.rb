@@ -15,7 +15,7 @@ HOMEBREW_CELLAR=HOMEBREW_PREFIX.parent+"cellar"
 
 HOMEBREW_CELLAR.mkpath
 raise "HOMEBREW_CELLAR couldn't be created!" unless HOMEBREW_CELLAR.directory?
-at_exit { HOMEBREW_CACHE.rmtree }
+at_exit { HOMEBREW_PREFIX.parent.rmtree }
 require 'test/unit' # must be after at_exit
 
 
