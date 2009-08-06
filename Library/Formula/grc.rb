@@ -1,35 +1,5 @@
 require 'brewkit'
 
-def profile_string
-  <<-sput
-################################################################## >> Homebrew
-GRC=`which grc`
-if [ "$TERM" != dumb ] && [ -n GRC ]
-then
-    alias colourify="$GRC -es --colour=auto"
-    alias configure='colourify ./configure'
-    alias diff='colourify diff'
-    alias make='colourify make'
-    alias gcc='colourify gcc'
-    alias g++='colourify g++'
-    alias as='colourify as'
-    alias gas='colourify gas'
-    alias ld='colourify ld'
-    alias netstat='colourify netstat'
-    alias ping='colourify ping'
-    alias traceroute='colourify /usr/sbin/traceroute'
-fi
-################################################################## << Homebrew
-  sput
-end
-
-######################################################################### ARGV
-case ARGV[0]
-  when '--profile' then
-    puts profile_string
-    exit 0
-end
-
 ######################################################################### cook
 class Grc <Formula
   @homepage='http://korpus.juls.savba.sk/~garabik/software/grc.html'
@@ -37,6 +7,11 @@ class Grc <Formula
   @md5='a4814dcee965c3ff67681f6b59e6378c'
 
   def install
+    if ARGV.include? '--profile'
+      puts DATA.read
+      exit
+    end
+    
     ohai "make"  
     #TODO we should deprefixify since it's python and thus possible
     inreplace 'grc', '/etc', prefix+'etc'
@@ -60,11 +35,31 @@ class Grc <Formula
   
   def caveats
     <<-EOS
-    grc won't work as is. One option is to add some aliases to your ~/.profile 
-    file. Homebrew can do that for you, just execute this command:
+grc won't work as is. One option is to add some aliases to your ~/.profile
+file. Homebrew can do that for you, just execute this command:
 
-        brew grc --profile >> ~/.profile
+    brew install grc --profile >> ~/.profile
 
     EOS
   end
 end
+
+__END__
+################################################################## >> Homebrew
+GRC=`which grc`
+if [ "$TERM" != dumb ] && [ -n GRC ]
+then
+    alias colourify="$GRC -es --colour=auto"
+    alias configure='colourify ./configure'
+    alias diff='colourify diff'
+    alias make='colourify make'
+    alias gcc='colourify gcc'
+    alias g++='colourify g++'
+    alias as='colourify as'
+    alias gas='colourify gas'
+    alias ld='colourify ld'
+    alias netstat='colourify netstat'
+    alias ping='colourify ping'
+    alias traceroute='colourify /usr/sbin/traceroute'
+fi
+################################################################## << Homebrew
