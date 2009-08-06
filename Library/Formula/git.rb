@@ -26,6 +26,7 @@ class Git <Formula
     # of libexec/git-core lets hard link them
     # I am assuming this is an overisght by the git devs
     %w[git-receive-pack git-upload-archive].each do |fn|
+      next unless (bin+'git').stat.size == (bin+fn).stat.size
       (bin+fn).unlink
       (bin+fn).make_link bin+'git'
     end
