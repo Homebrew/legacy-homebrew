@@ -6,7 +6,11 @@ class Gloox <Formula
   @md5='482bf5ed8e4c14f2788efdd9c39e9acf'
 
   def install
-    system "./configure --without-openssl --with-gnutls --with-zlib --disable-debug --prefix='#{prefix}'"
+    system "./configure", "--without-openssl", 
+                          "--with-gnutls",
+                          "--with-zlib",
+                          "--disable-debug",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

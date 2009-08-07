@@ -6,7 +6,7 @@ class Erlang <Formula
   @md5='6d8c256468a198458b9f08ba6aa1a384'
 
   def install
-    ENV['MAKEFLAGS']='' #parallel not work
+    ENV.deparallelize
     system "./configure --disable-debug --prefix='#{prefix}' --enable-kernel-poll --enable-threads --enable-dynamic-ssl-lib --enable-smp-support --enable-hipe"
     system "make"
     system "make install"

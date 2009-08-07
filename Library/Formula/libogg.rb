@@ -8,7 +8,7 @@ class Libogg <Formula
   def install
     system "./configure --disable-debug --disable-dependency-tracking --prefix='#{prefix}'"
     system "make"
-    ENV['MAKEFLAGS']=''
+    ENV.deparallelize
     system "make install"
   end
 end

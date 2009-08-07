@@ -10,8 +10,11 @@ class Imagemagick <Formula
   end
 
   def install
-    system "./configure --disable-debug --disable-dependency-tracking --without-maximum-compile-warnings --prefix='#{prefix}'"
-    ENV['MAKEFLAGS']=''
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--without-maximum-compile-warnings",
+                          "--prefix=#{prefix}"
+    ENV.deparallelize
     system "make install"
   end
 end

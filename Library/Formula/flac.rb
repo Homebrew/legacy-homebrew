@@ -14,7 +14,10 @@ class Flac <Formula
     # sadly the asm optimisations won't compile since Leopard, and nobody 
     # cares or knows how to fix it
     # TODO --enable-sse
-    system "./configure --disable-debug --disable-asm-optimizations --prefix='#{prefix}' --mandir='#{prefix}/share/man'"
+    system "./configure", "--disable-debug",
+                          "--disable-asm-optimizations",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{prefix}/share/man"
     ENV['OBJ_FORMAT']='macho'
     system "make install"
 

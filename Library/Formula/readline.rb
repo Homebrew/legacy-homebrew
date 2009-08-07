@@ -12,7 +12,6 @@ class Readline <Formula
 
   def install
     system "./configure --prefix='#{prefix}'"
-    system "make"
     system "make install"
   end
 end

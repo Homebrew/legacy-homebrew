@@ -12,17 +12,13 @@ class Qt <Formula
       makefiles.each { |makefile| `echo 'LIBS += -lsqlite3' >> src/#{makefile}` }
     end
 
-    configure=<<-EOS
-      ./configure -prefix '#{prefix}'
-               -system-sqlite -system-libpng -system-zlib
-               -nomake demos -nomake examples -no-qt3support
-               -release -cocoa -arch x86
-               -confirm-license -opensource
-               -I/usr/X11R6/include -L/usr/X11R6/lib
-               -fast
-               EOS
-
-    system configure.gsub("\n", '\\')
+    system "configure", "-prefix", prefix,
+                        "-system-sqlite", "-system-libpng", "-system-zlib",
+                        "-nomake", "demos", "-nomake", "examples", "-no-qt3support",
+                        "-release", "-cocoa", "-arch x86",
+                        "-confirm-license", "-opensource",
+                        "-I/usr/X11R6/include", "-L/usr/X11R6/lib",
+                        "-fast"
     system "make install"
 
     # fuck weird prl files
