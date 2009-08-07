@@ -17,7 +17,7 @@
 #
 module HomebrewArgvExtension
   def named
-    reject {|arg| arg[0..0] == '-'}
+    reject{|arg| arg[0..0] == '-'}.collect{|arg| arg.downcase}.uniq
   end
   def options
     select {|arg| arg[0..0] == '-'}

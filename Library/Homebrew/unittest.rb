@@ -255,4 +255,12 @@ class BeerTasting <Test::Unit::TestCase
     assert_raises(RuntimeError) { f.prefix }
     nostdout { assert_raises(ExecutionError) { f.brew } }
   end
+
+  def test_no_ARGV_dupes
+    ARGV.unshift'foo'
+    ARGV.unshift'foo'
+    n=0
+    ARGV.named.each{|arg| n+=1 if arg == 'foo'}
+    assert_equal 1, n
+  end
 end
