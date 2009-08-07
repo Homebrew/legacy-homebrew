@@ -10,7 +10,7 @@ class Yajl <Formula
   end
 
   def install
-    ENV['MAKEFLAGS']='' # can't do parallel builds
+    ENV.deparallelize
 
     # I have pushed this fix upstream
     inreplace 'configure', 'cmake \.\.', "cmake -DCMAKE_INSTALL_PREFIX='#{prefix}' \.\." if @version == "1.0.5"

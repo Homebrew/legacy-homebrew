@@ -6,8 +6,10 @@ class Wireshark <Formula
   @homepage='http://www.wireshark.org'
 
   def install
-    system "./configure --disable-debug --prefix='#{prefix}' --disable-dependency-tracking "+
-                       '--disable-wireshark'
+    system "./configure", "--disable-debug",
+                          "--prefix=#{prefix}",
+                          "--disable-dependency-tracking",
+                          "--disable-wireshark" # actually just disables the GTK GUI
     system "make install"
   end
   

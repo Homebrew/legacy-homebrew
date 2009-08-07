@@ -13,10 +13,11 @@ class Cmake <Formula
               "# Mention to the user what system libraries are being used.",
               "SET(CMAKE_USE_SYSTEM_XMLRPC 0)"
 
-    system "./bootstrap --prefix=#{prefix} --system-libs --datadir=/share/cmake --docdir=/share/cmake --mandir=/share/man"
+    system "./bootstrap", "--prefix=#{prefix}",
+                          "--system-libs",
+                          "--datadir=/share/cmake",
+                          "--docdir=/share/doc/cmake",
+                          "--mandir=/share/man"
     system "make install"
-
-    # txt sucks, welcome to 1990
-    Dir["#{prefix}/share/cmake/*.txt"].each {|f| File.unlink f}
   end
 end

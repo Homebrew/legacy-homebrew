@@ -10,6 +10,10 @@ class Taglib <Formula
   @md5='7b557dde7425c6deb7bbedd65b4f2717'
   @homepage='http://developer.kde.org/~wheeler/taglib.html'
 
+  def deps
+    BinaryDep.new 'cmake'
+  end
+
   def install
     system "./configure --disable-debug --prefix='#{prefix}'"
     system "make install"

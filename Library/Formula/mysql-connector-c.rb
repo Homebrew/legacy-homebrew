@@ -10,8 +10,7 @@ class MysqlConnectorC <Formula
   end
 
   def install
-    system "cmake -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX=#{prefix}"
-    system 'make'
+    system "cmake . #{std_cmake_parameters}"
     system 'make install'
   end
 end

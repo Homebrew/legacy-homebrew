@@ -12,7 +12,7 @@ class Grc <Formula
       exit
     end
     
-    ohai "make"  
+    ohai "make"
     #TODO we should deprefixify since it's python and thus possible
     inreplace 'grc', '/etc', prefix+'etc'
     inreplace 'grc.1', '/etc', prefix+'etc'
@@ -32,7 +32,7 @@ class Grc <Formula
     `cp -fv grc.conf #{prefix}/etc`
     `cp -fv grc.1 grcat.1 #{prefix}/share/man/man1`
   end
-  
+
   def caveats
     <<-EOS
 grc won't work as is. One option is to add some aliases to your ~/.profile

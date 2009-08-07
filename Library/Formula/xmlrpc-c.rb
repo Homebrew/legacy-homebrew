@@ -6,7 +6,7 @@ class XmlrpcC <Formula
   @homepage='http://xmlrpc-c.sourceforge.net/'
 
   def install
-    ENV['MAKEFLAGS']='' #parallel build doesn't work
+    ENV.deparallelize
     # choosing --enable-libxml2-backend to lose some weight and not statically
     # link in expat
     #NOTE seemingly it isn't possible to build dylibs with this thing

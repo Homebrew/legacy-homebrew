@@ -79,6 +79,13 @@ module HomebrewEnvExtension
   def generic_i386
      %w[-mfpmath=sse -msse3 -mmmx -march=\w+].each {|s| remove_from_cflags s}
   end
+  def libxml2
+    self['CXXFLAGS']=self['CFLAGS']+=' -I/usr/include/libxml2'
+  end
+  # we've seen some packages fail to build when warnings are disabled!
+  def enable_warnings
+    remove_from_cflags '-w'
+  end
 private
   def remove key, rx
     # sub! doesn't work as "the string is frozen"

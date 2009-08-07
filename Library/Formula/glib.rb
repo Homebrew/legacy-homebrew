@@ -6,8 +6,8 @@ class Glib <Formula
   @homepage='http://www.gtk.org'
 
   def install
-    # indeed, amazingly, -w causes gcc to emit spurious errors!
-    ENV['CFLAGS']=ENV['CFLAGS'].gsub '-w', ''
+    # indeed, amazingly, -w causes gcc to emit spurious errors for this package!
+    ENV.enable_warnings
 
     system "./configure --disable-debug --prefix='#{prefix}' --disable-dependency-tracking"
     system "make"
