@@ -116,13 +116,10 @@ ENV.extend HomebrewEnvExtension
 
 def inreplace(path, before, after)
   before=Regexp.escape before.to_s
-  after=Regexp.escape after.to_s
-  before.gsub! "/", "\\\/"
-  after.gsub! "/", "\\\/"
-  before.gsub! "'", '\''
-  after.gsub! "'", '\''
+  after.gsub! "\\", "\\\\"
+  after.gsub! "/", "\\/"
 
   # TODO this sucks
   # either use 'ed', or allow regexp and use a proper ruby function
-  `perl -pi -e $'s/#{before}/#{after}/g' "#{path}"`
+  Kernel.system "perl", "-pi", "-e", "s/#{before}/#{after}/g", path
 end
