@@ -151,6 +151,11 @@ class BeerTasting <Test::Unit::TestCase
     assert_equal '1.21', r.version
   end
 
+  def test_version_github
+    r=MockFormula.new "http://github.com/lloyd/yajl/tarball/1.0.5"
+    assert_equal '1.0.5', r.version
+  end
+
   def test_yet_another_version
     r=MockFormula.new "http://example.com/mad-0.15.1b.tar.gz"
     assert_equal '0.15.1b', r.version
