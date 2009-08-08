@@ -13,7 +13,7 @@ class Yajl <Formula
     ENV.deparallelize
 
     # I have pushed this fix upstream
-    inreplace 'configure', 'cmake \.\.', "cmake -DCMAKE_INSTALL_PREFIX='#{prefix}' \.\." if @version == "1.0.5"
+    inreplace 'configure', 'cmake ..', "cmake -DCMAKE_INSTALL_PREFIX='#{prefix}' .." if @version == "1.0.5"
 
     system "./configure --prefix '#{prefix}'"
     system "make install"
