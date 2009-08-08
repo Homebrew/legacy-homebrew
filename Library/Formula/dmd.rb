@@ -26,7 +26,7 @@ class Dmd <Formula
 
     (prefix+'src'+'dmd').rmtree # we don't need the dmd sources thanks
     (man+'man5').install man1+'dmd.conf.5' # oops
-    (prefix+'share'+'d'+'examples').install Dir['samples/d/*']
+    (prefix+'share'+'d'+'examples').install Dir['samples/d/*.d']
 
     (prefix+'bin'+'dmd.conf').open('w') do |f|
       f.puts "[Environment]"
