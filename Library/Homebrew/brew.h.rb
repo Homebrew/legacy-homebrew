@@ -147,7 +147,8 @@ def install f
       f.prefix.mkpath
       f.install
       %w[README ChangeLog COPYING LICENSE COPYRIGHT AUTHORS].each do |file|
-        f.prefix.install file if File.file? file
+        FileUtils.mv "#{file}.txt", file rescue nil
+        f.prefix.install file rescue nil
       end
     end
   end
