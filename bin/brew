@@ -58,11 +58,7 @@ begin
         start_time=Time.now
         begin
           install f
-          if f.caveats
-            ohai "Caveats"
-            puts f.caveats
-            puts
-          end
+          ohai "Caveats", f.caveats, ''
           ohai 'Finishing up'
           clean f
           raise "Nothing was installed to #{f.prefix}" unless f.installed?
