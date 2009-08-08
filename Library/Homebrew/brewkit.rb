@@ -82,12 +82,26 @@ module HomebrewEnvExtension
   def libxml2
     self['CXXFLAGS']=self['CFLAGS']+=' -I/usr/include/libxml2'
   end
+  def libpng
+    append 'CPPFLAGS', '-I/usr/X11R6/include'
+    append 'LDFLAGS', '-L/usr/X11R6/lib'
+  end
   # we've seen some packages fail to build when warnings are disabled!
   def enable_warnings
     remove_from_cflags '-w'
   end
+  
 private
+  def append key, value
+    ref=self[key]
+    if ref.nil? or ref.empty?
+      self[key]=value
+    else
+      self[key]=ref+' '+value
+    end
+  end
   def remove key, rx
+    return if self[key].nil?
     # sub! doesn't work as "the string is frozen"
     self[key]=self[key].sub rx, ''
     self[key]=nil if self[key].empty? # keep things clean
