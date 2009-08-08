@@ -52,23 +52,36 @@ begin
       end
 
     when 'install'
-      require 'keg'
+      # we need to ensure a pristine ENV for each process or the formula
+      # will start with the ENV from the previous build
       ARGV.formulae.each do |f|
-        raise "#{f.name} is already installed" if f.installed? unless ARGV.force?
-        start_time=Time.now
-        begin
-          install f
-          ohai "Caveats", f.caveats, ''
-          ohai 'Finishing up'
-          clean f
-          raise "Nothing was installed to #{f.prefix}" unless f.installed?
-          Keg.new(f.prefix).link
-        rescue
-          f.prefix.rmtree if f.prefix.directory?
-          raise
+        pid=fork
+        if pid.nil?
+          exec "brew", "install-just-one", f.name, *ARGV.options
+        else
+          Process.wait pid
         end
-        puts "#{f.prefix}: "+f.prefix.abv+", built in #{pretty_duration Time.now-start_time}"
+        exit! 1 if $? != 0 # exception in other brew will be visible on screen
       end
+
+    # this is an internal option, don't expose it to the user
+    when 'install-just-one'
+      require 'keg'
+      f=ARGV.formulae.shift
+      raise "#{f.name} is already installed" if f.installed? unless ARGV.force?
+      BEGINNING=Time.now
+      begin
+        install f
+        ohai "Caveats", f.caveats, ''
+        ohai 'Finishing up'
+        clean f
+        raise "Nothing was installed to #{f.prefix}" unless f.installed?
+        Keg.new(f.prefix).link
+      rescue Exception
+        f.prefix.rmtree if f.prefix.directory?
+        raise
+      end
+      puts "#{f.prefix}: #{f.prefix.abv}, built in #{pretty_duration Time.now-BEGINNING}"
 
     when 'ln', 'link'
       ARGV.kegs.each {|keg| puts "#{keg.link} links created for #{keg}"}

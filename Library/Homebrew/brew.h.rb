@@ -179,7 +179,7 @@ def prune
   else
     # always showing symlinks text is deliberate
     print "Pruned #{$n} symbolic links "
-    print "and #{$n} directories " if $d > 0
+    print "and #{$d} directories " if $d > 0
     puts  "from #{HOMEBREW_PREFIX}"
   end
 end
