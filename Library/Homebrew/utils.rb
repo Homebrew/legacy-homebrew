@@ -15,9 +15,15 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Homebrew.  If not, see <http://www.gnu.org/licenses/>.
 
-def ohai title
+# args are additional inputs to puts until a nil arg is encountered
+def ohai title, *args
+  return if args.length > 0 and args[0].nil?
   n=`tput cols`.strip.to_i-4
   puts "\033[0;34m==>\033[0;0;1m #{title[0,n]}\033[0;0m"
+  args.each do |arg|
+    return if arg.nil?
+    puts arg
+  end
 end
 
 # shows a warning in delicious pink
