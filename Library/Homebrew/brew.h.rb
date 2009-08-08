@@ -190,6 +190,10 @@ class Cleaner
   def initialize f
     @f=f
     [f.bin, f.lib].each {|d| clean_dir d}
+    
+    # you can read all of this shit online nowadays, save the space
+    (f.prefix+'share'+'doc').rmtree rescue nil
+    (f.prefix+'share'+'info').rmtree rescue nil
   end
 
 private
