@@ -7,7 +7,13 @@ class Erlang <Formula
 
   def install
     ENV.deparallelize
-    system "./configure --disable-debug --prefix='#{prefix}' --enable-kernel-poll --enable-threads --enable-dynamic-ssl-lib --enable-smp-support --enable-hipe"
+    system "./configure", "--disable-debug",
+                          "--prefix='#{prefix}'",
+                          "--enable-kernel-poll",
+                          "--enable-threads",
+                          "--enable-dynamic-ssl-lib",
+                          "--enable-smp-support",
+                          "--enable-hipe"
     system "make"
     system "make install"
   end
