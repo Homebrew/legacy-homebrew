@@ -68,6 +68,24 @@ class Pathname
     return File.basename(to_s, extname)
   end
 
+  # I don't trust the children.length == 0 check particularly, not to mention
+  # it is slow to enumerate the whole directory just to see if it is empty,
+  # instead rely on good ol' libc and the filesystem
+  def rmdir_if_possible
+    rmdir
+  rescue SystemCallError => e
+    raise unless e.errno == Errno::ENOTEMPTY::Errno
+  end
+  
+  def chmod_R perms
+    require 'fileutils'
+    FileUtils.chmod_R perms, to_s
+  end
+
+  def abv
+    `find #{to_s} -type f | wc -l`.strip+' files, '+`du -hd0 #{to_s} | cut -d"\t" -f1`.strip
+  end
+
   def version
     # eg. boost_1_39_0
     /((\d+_)+\d+)$/.match stem
@@ -100,3 +118,39 @@ class Pathname
     end
   end
 end
+
+# sets $n and $d so you can observe creation of stuff
+module ObserverPathnameExtension
+  def unlink
+    super
+    puts "rm #{to_s}" if ARGV.verbose?
+    $n+=1
+  end
+  def rmdir
+    super
+    puts "rmdir #{to_s}" if ARGV.verbose?
+    $d+=1
+  end
+  def resolved_path_exists?
+    (dirname+readlink).exist?
+  end
+  def mkpath
+    super
+    puts "mkpath #{to_s}" if ARGV.verbose?
+    $d+=1
+  end
+  def make_relative_symlink src
+    dirname.mkpath
+    Dir.chdir dirname do
+      # TODO use Ruby function so we get exceptions
+      # NOTE Ruby functions may work, but I had a lot of problems
+      rv=system 'ln', '-sf', src.relative_path_from(dirname)
+      raise "Could not create symlink #{to_s}" unless rv and $? == 0
+      puts "ln #{to_s}" if ARGV.verbose?
+      $n+=1
+    end
+  end
+end
+
+$n=0
+$d=0

@@ -15,30 +15,31 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Homebrew.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'utils'
 
-class BuildError <RuntimeError
-  def initialize cmd
-    super "Build failed during: #{cmd}"
+class ExecutionError <RuntimeError
+  def initialize cmd, args=[]
+    super "#{cmd} #{args*' '}"
   end
 end
 
-# the base class variety of formula, you don't get a prefix, so it's not really
+class BuildError <ExecutionError; end
+
+class FormulaUnavailableError <RuntimeError
+  def initialize name
+    super "No available formula for #{name}"
+  end
+end
+
+# the base class variety of formula, you don't get a prefix, so it's not
 # useful. See the derived classes for fun and games.
 class AbstractFormula
-  require 'find'
-  require 'fileutils'
-
-private
-  class <<self
-    attr_reader :url, :version, :md5, :url, :homepage, :sha1
-  end
-
-public
-  attr_reader :url, :version, :url, :homepage, :name
-  
-  # reimplement if your package has dependencies
-  def deps
+  def initialize noop=nil
+    @version=self.class.version unless @version
+    @url=self.class.url unless @url
+    @homepage=self.class.homepage unless @homepage
+    @md5=self.class.md5 unless @md5
+    @sha1=self.class.sha1 unless @sha1
+    raise "@url is nil" if @url.nil?
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -48,50 +49,167 @@ public
     return false
   end
 
-  def initialize name=nil
-    @name=name
-    @version=self.class.version unless @version
-    @url=self.class.url unless @url
-    @homepage=self.class.homepage unless @homepage
-    @md5=self.class.md5 unless @md5
-    @sha1=self.class.sha1 unless @sha1
-    raise "@url.nil?" if @url.nil?
-  end
-
   def prefix
-    raise "@name.nil!" if @name.nil?
-    raise "@version.nil?" if @version.nil?
+    raise "Invalid @name" if @name.nil? or @name.empty?
+    raise "Invalid @version" if @version.nil? or @version.empty?
     HOMEBREW_CELLAR+@name+@version
   end
 
-  def bin;  prefix+'bin' end
-  def doc;  prefix+'share'+'doc'+name end
-  def lib;  prefix+'lib' end
-  def man;  prefix+'share'+'man' end
+  def path
+    Formula.path name
+  end
+
+  attr_reader :url, :version, :url, :homepage, :name
+
+  def bin; prefix+'bin' end
+  def doc; prefix+'share'+'doc'+name end
+  def lib; prefix+'lib' end
+  def man; prefix+'share'+'man' end
   def man1; man+'man1' end
+  def info; prefix+'share'+'info' end
   def include; prefix+'include' end
 
-  def caveats
-    nil
+  # tell the user about any caveats regarding this package
+  def caveats; nil end
+  # patches are automatically applied after extracting the tarball
+  def patches; [] end
+  # reimplement and specify dependencies
+  def deps; end
+  # sometimes the clean process breaks things, return true to skip anything
+  def skip_clean? path; false end
+
+  # yields self with current working directory set to the uncompressed tarball
+  def brew
+    ohai "Downloading #{@url}"
+    tgz=HOMEBREW_CACHE+File.basename(@url)
+    unless tgz.exist?
+      HOMEBREW_CACHE.mkpath
+      curl @url, '-o', tgz
+    else
+      puts "File already downloaded and cached"
+    end
+
+    verify_download_integrity tgz
+
+    mktemp do
+      Dir.chdir uncompress(tgz)
+      begin
+        patch
+        yield self
+      rescue Interrupt, RuntimeError, SystemCallError => e
+        raise unless ARGV.debug?
+        onoe e.inspect
+        puts e.backtrace
+        ohai "Rescuing build..."
+        puts "Type `exit' and Homebrew will attempt to finalize the installation"
+        puts "If nothing is installed to #{prefix}, then Homebrew will abort"
+        interactive_shell
+      end
+    end
   end
-  
+
+protected
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
-  def system cmd
-    ohai cmd
-    if ARGV.include? '--verbose'
-      Kernel.system cmd
+  def system cmd, *args
+    full="#{cmd} #{args*' '}".strip
+    ohai full
+    if ARGV.verbose?
+      safe_system cmd, *args
     else
       out=''
-      IO.popen "#{cmd} 2>&1" do |f|
+      # TODO write a ruby extension that does a good popen :P
+      IO.popen "#{full} 2>&1" do |f|
         until f.eof?
           out+=f.gets
         end
       end
-      puts out unless $? == 0
+      unless $? == 0
+        puts out
+        raise
+      end
     end
+  rescue
+    raise BuildError.new(cmd, args)
+  end
 
-    raise BuildError.new(cmd) unless $? == 0
+private
+  def mktemp
+    tmp=Pathname.new `mktemp -dt #{File.basename @url}`.strip
+    raise if not tmp.directory? or $? != 0
+    begin
+      wd=Dir.pwd
+      Dir.chdir tmp
+      yield
+    ensure
+      Dir.chdir wd
+      tmp.rmtree
+    end
+  end
+
+  # Kernel.system but with exceptions
+  def safe_system cmd, *args
+    puts "#{cmd} #{args*' '}" if ARGV.verbose?
+    # stderr is shown, so hopefully that will explain the problem
+    raise ExecutionError.new(cmd, args) unless Kernel.system cmd, *args and $? == 0
+  end
+
+  def curl url, *args
+    safe_system 'curl', '-f#LA', HOMEBREW_USER_AGENT, url, *args
+  end
+
+  def verify_download_integrity fn
+    require 'digest'
+    type='MD5'
+    type='SHA1' if @sha1
+    supplied=eval "@#{type.downcase}"
+    hash=eval("Digest::#{type}").hexdigest(fn.read)
+
+    if supplied and not supplied.empty?
+      raise "#{type} mismatch: #{hash}" unless supplied.upcase == hash.upcase
+    else
+      opoo "Cannot verify package integrity"
+      puts "The formula did not provide a download checksum"
+      puts "For your reference the #{type} is: #{hash}"
+    end
+  end
+
+  def patch
+    unless patches.empty?
+      ohai "Patching"
+      ff=(1..patches.length).collect {|n| '%03d-homebrew.patch'%n}
+      curl *patches+ff.collect {|f|"-o#{f}"}
+      ff.each {|f| safe_system 'patch', '-p0', '-i', f}
+    end
+  end
+  
+  class <<self
+    attr_reader :url, :version, :md5, :url, :homepage, :sha1
+  end
+end
+
+# This is the meat. See the examples.
+class Formula <AbstractFormula
+  def initialize name=nil
+    super
+    @name=name
+    @version=Pathname.new(@url).version unless @version
+  end
+
+  def self.class name
+    #remove invalid characters and camelcase
+    name.capitalize.gsub(/[-_\s]([a-zA-Z0-9])/) { $1.upcase }
+  end
+
+  def self.factory name
+    require self.path(name)
+    return eval(self.class(name)).new(name)
+  rescue LoadError
+    raise FormulaUnavailableError.new(name)
+  end
+
+  def self.path name
+    HOMEBREW_PREFIX+'Library'+'Formula'+"#{name.downcase}.rb"
   end
 
   # we don't have a std_autotools variant because autotools is a lot less
@@ -102,108 +220,23 @@ public
     # The None part makes cmake use the environment's CFLAGS etc. settings
     "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None"
   end
-  
-  def verify_download_integrity fn
-    require 'digest'
-    type='MD5'
-    type='SHA1' if @sha1
-    supplied=eval "@#{type.downcase}"
-    hash=eval("Digest::#{type}").hexdigest(fn.read)
 
-    if supplied
-      raise "#{type} mismatch: #{hash}" unless supplied.upcase == hash.upcase
+private
+  def uncompress_args
+    rx=%r[http://(www.)?github.com/.*/(zip|tar)ball/]
+    if rx.match @url and $2 == '.zip' or Pathname.new(@url).extname == '.zip'
+      %w[unzip -qq]
     else
-      opoo "Cannot verify package integrity"
-      puts "The formula did not provide a download checksum"
-      puts "For your reference the #{type} is: #{hash}"
+      %w[tar xf]
     end
   end
 
-  # yields self with current working directory set to the uncompressed tarball
-  def brew
-    ohai "Downloading #{@url}"
-    HOMEBREW_CACHE.mkpath
-    Dir.chdir HOMEBREW_CACHE do
-      tmp=nil
-      tgz=Pathname.new(fetch()).realpath
-      begin
-        verify_download_integrity tgz
-
-        # we make an additional subdirectory so know exactly what we are
-        # recursively deleting later
-        # we use mktemp rather than appsupport/blah because some build scripts
-        # can't handle being built in a directory with spaces in it :P
-        tmp=`mktemp -dt #{File.basename @url}`.strip
-        Dir.chdir tmp do
-          Dir.chdir uncompress(tgz) do
-            yield self
-          end
-        end
-      rescue Interrupt, RuntimeError
-        if ARGV.include? '--debug'
-          # debug mode allows the packager to intercept a failed build and
-          # investigate the problems
-          puts "Rescued build at: #{tmp}"
-          exit! 1
-        else
-          raise
-        end
-      ensure
-        FileUtils.rm_rf tmp if tmp
-      end
-    end
-  end
-
-protected
-  # returns the directory where the archive was uncompressed
-  # in this Abstract case we assume there is no archive
   def uncompress path
-    path.dirname
-  end
-
-private
-  def fetch
-    %r[http://(www.)?github.com/.*/(zip|tar)ball/].match @url
-    if $2
-      # curl doesn't do the redirect magic that we would like, so we get a
-      # stupidly named file, this is why wget would be beter, but oh well
-      tgz="#{@name}-#{@version}.#{$2=='tar' ? 'tgz' : $2}"
-      oarg="-o #{tgz}"
-    else
-      oarg='-O' #use the filename that curl gets
-      tgz=File.expand_path File.basename(@url)
-    end
-
-    unless File.exists? tgz
-      `curl -#LA "#{HOMEBREW_USER_AGENT}" #{oarg} "#{@url}"`
-      raise "Download failed" unless $? == 0
-    else
-      puts "File already downloaded and cached"
-    end
-    return tgz
-  end
-end
-
-# somewhat useful, it'll raise if you call prefix, but it'll unpack a tar/zip
-# for you, check the md5, and allow you to yield from brew
-class UnidentifiedFormula <AbstractFormula
-  def initialize name=nil
-    super name
-  end
-
-private
-  def uncompress(path)
-    if path.extname == '.zip'
-      `unzip -qq "#{path}"`
-    else
-      `tar xf "#{path}"`
-    end
-
-    raise "Compression tool failed" if $? != 0
+    safe_system *uncompress_args<<path
 
     entries=Dir['*']
-    if entries.nil? or entries.length == 0
-      raise "Empty tarball!" 
+    if entries.length == 0
+      raise "Empty archive"
     elsif entries.length == 1
       # if one dir enter it as that will be where the build is
       entries.first
@@ -211,30 +244,6 @@ private
       # if there's more than one dir, then this is the build directory already
       Dir.pwd
     end
-  end  
-end
-
-# this is what you will mostly use, reimplement install, prefix won't raise
-class Formula <UnidentifiedFormula
-  def initialize name
-    super name
-    @version=Pathname.new(@url).version unless @version
-  end
-
-  def self.class name
-    #remove invalid characters and camelcase
-    name.capitalize.gsub(/[-_\s]([a-zA-Z0-9])/) { $1.upcase }
-  end
-
-  def self.path name
-    Pathname.new(HOMEBREW_PREFIX)+'Library'+'Formula'+(name.downcase+'.rb')
-  end
-
-  def self.create name
-    require Formula.path(name)
-    return eval(Formula.class(name)).new(name)
-  rescue LoadError
-    raise "No formula for #{name}"
   end
 
   def method_added method
@@ -243,16 +252,24 @@ class Formula <UnidentifiedFormula
 end
 
 # see ack.rb for an example usage
-# you need to set @version and @name
 class ScriptFileFormula <AbstractFormula
+  def initialize name=nil
+    super
+    @name=name
+  end
+  def uncompress path
+    path.dirname
+  end
   def install
-    bin.install name
+    bin.install File.basename(@url)
   end
 end
 
+# see flac.rb for example usage
 class GithubGistFormula <ScriptFileFormula
-  def initialize
-    super File.basename(self.class.url)
+  def initialize name=nil
+    super
+    @name=name
     @version=File.basename(File.dirname(url))[0,6]
   end
 end

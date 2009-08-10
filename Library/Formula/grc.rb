@@ -39,7 +39,6 @@ grc won't work as is. One option is to add some aliases to your ~/.profile
 file. Homebrew can do that for you, just execute this command:
 
     brew install grc --profile >> ~/.profile
-
     EOS
   end
 end

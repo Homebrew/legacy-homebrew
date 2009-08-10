@@ -35,7 +35,7 @@ _brew_to_completion()
             ;;
 
             # Commands that take an existing brew...
-            abv|info|list|link|ls|ln|rm|uninstall)
+            abv|info|list|link|ls|ln|rm|remove|uninstall)
                 cellar_contents=`ls ${brew_base}/Cellar/`
                 COMPREPLY=( $(compgen -W "${cellar_contents}" -- ${cur}) )
                 return 0

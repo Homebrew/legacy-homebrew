@@ -1,6 +1,6 @@
 require 'brewkit'
 
-class TaglibExtras <UnidentifiedFormula
+class TaglibExtras <Formula
   @url='http://kollide.net/~jefferai/taglib-extras-0.1.6.tar.gz'
   @md5='706a82fe4c25606f731faf4c14b5edb0'
 end
@@ -14,7 +14,7 @@ class Taglib <Formula
     system "./configure --disable-debug --prefix='#{prefix}'"
     system "make install"
     
-    TaglibExtras.new.brew do |f|
+    TaglibExtras.new.brew do
       system "cmake . #{std_cmake_parameters}"
       system "make install"
     end unless ARGV.include? '--no-extras'

@@ -1,306 +1,135 @@
 #!/usr/bin/ruby
-$:.unshift __FILE__+'/../../Library/Homebrew'
-require 'env'
-require 'find'
+$:.unshift ENV['RUBYLIB']=File.expand_path(__FILE__+'/../../Library/Homebrew')
 
-PRISTINE_ARGV=ARGV.dup
+require 'pathname+yeast'
+require 'ARGV+yeast'
+require 'utils'
+require 'brew.h'
+
+# TODO if whoami == root then use /Library/Caches/Homebrew instead
+HOMEBREW_CACHE=Pathname.new("~/Library/Caches/Homebrew").expand_path
+HOMEBREW_PREFIX=Pathname.new(__FILE__).dirname.parent.cleanpath
+HOMEBREW_CELLAR=HOMEBREW_PREFIX+'Cellar'
+HOMEBREW_VERSION='0.4'
+HOMEBREW_WWW='http://bit.ly/Homebrew'
 HOMEBREW_USER_AGENT="Homebrew #{HOMEBREW_VERSION} (Ruby #{VERSION}; Mac OS X 10.5 Leopard)"
 
-# often causes Ruby to throw exception ffs
+if %w[/ /usr].include? HOMEBREW_PREFIX.to_s then abort <<-troba
+You have placed Homebrew at the prefix: #{HOMEBREW_PREFIX}
+This is not currently supported. Voice your support for this feature at:
+#{HOMEBREW_WWW}
+troba
+end
+
+# Pathname often throws if CWD doesn't exist
 Dir.chdir '/' unless File.directory? ENV['PWD']
 
-######################################################################## funcs
-# remove symlinks that no longer point to files
-def prune
-  n=0
-  dirs=Array.new
-  HOMEBREW_PREFIX.find do |path|
-    if path.directory?
-      name=path.relative_path_from(HOMEBREW_PREFIX).to_s
-      if name == '.git' or name == 'Cellar' or name == 'Library'
-        Find.prune
-      else
-        dirs<<path
-      end
-    elsif path.symlink?
-      resolved_path=path.dirname+path.readlink
-      unless resolved_path.exist?
-        path.unlink
-        n+=1
-      end
-    end
-  end
-  dirs.sort.reverse_each do |d|
-    if d.children.length == 0
-      d.rmdir
-      n+=1
-    end
-  end
-  return n
-end
 
-# we actually remove formulae from ARGV so that any other analysis of ARGV
-# only includes relevent arguments
-# TODO require will throw if no formula, so we should catch no?
-def extract_named_args
-  args=Array.new
-  ARGV.delete_if do |arg|
-    if arg[0,1] == '-'
-      false
-    else
-      args<<arg
-      true
-    end
-  end
-  raise "Expecting the name of a keg or formula, eg:\n==> brew #{PRISTINE_ARGV.join ' '} wget" if args.empty?
-  return args
-end
-
-def extract_kegs
-  require 'keg'
-  kegs=extract_named_args.collect {|name| Keg.new name}
-  return kegs
-end
-
-def abv keg=nil
-  path=keg ? keg.path : HOMEBREW_CELLAR
-  if path.directory?
-    `find #{path} -type f | wc -l`.strip+' files, '+`du -hd0 #{path} | cut -d"\t" -f1`.strip
-  else
-    ''
-  end
-end
-
-def install formula
-  require 'keg'
-  
-  beginning = Time.now
-
-  formula.brew do
-    if ARGV.include? '--interactive'
-      ohai "Entering interactive mode"
-      puts "Type `exit' to return and finalize the installation"
-      puts "Install to this prefix: #{formula.prefix}"
-      pid=fork
-      if pid.nil?
-        exec 'bash'
-      else
-        Process.wait pid
-      end
-    elsif ARGV.include? '--help'
-      ohai './configure --help'
-      puts `./configure --help`
-      exit
-    else
-      formula.prefix.mkpath
-      formula.install
-      %w[README ChangeLog COPYING LICENSE COPYRIGHT AUTHORS].each do |file|
-        formula.prefix.install file if File.file? file
-      end
-    end
-  end
-  
-  raise "Nothing was installed to #{formula.prefix}" unless formula.installed?
-  
-  ohai 'Finishing up'
-  keg=Keg.new formula
-  keg.clean
-  keg.ln
-  if formula.caveats
-    ohai "Caveats"
-    puts formula.caveats
-    ohai "Summary"
-  end
-  puts "#{keg.path}: "+abv(keg)+", built in #{pretty_duration Time.now-beginning}"
-rescue Exception
-  formula.prefix.rmtree if formula.prefix.directory?
-  raise
-end
-
-def mk url, mode='make'
-  require 'formula'
-  path=Pathname.new(url)
-
-  /(.*?)[-_.]?#{path.version}/.match path.basename
-  raise "Couldn't parse name from #{url}" if $1.nil? or $1.empty?
-
-  path=Formula.path $1
-  raise "#{path} already exists!" if File.exist? path
-
-  f=File.new path, 'w'
-  f.puts "require 'brewkit'"
-  f.puts
-  f.puts "class #{Formula.class $1} <Formula"
-  f.puts "  @url='#{url}'"
-  f.puts "  @homepage=''" # second because you fill in these two first
-  f.puts "  @md5=''"
-  f.puts
-
-  if mode == "cmake"
-    f.puts "  def deps"
-    f.puts "    BinaryDep.new 'cmake'"
-    f.puts "  end"
-    f.puts
-  end
-
-  f.puts "  def install"
-  
-  if mode == "make"
-    f.puts "    system \"./configure --disable-debug --prefix='\#{prefix}'\""
-    f.puts "    system \"make install\""
-  elsif mode == "cmake"
-    f.puts "    system \"cmake -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX=\#{prefix}\""
-    f.puts "    system \"make\""
-    f.puts "    system \"make install\""
-  end
-  
-  f.puts "  end"
-  f.print "end"
-  f.close
-
-  return path
-end
-
-def prefix
-  Pathname.new(__FILE__).dirname.parent.expand_path
-end
-
-def usage
-  name=File.basename $0
-  <<-EOS
-Usage: #{name} command [formula] ...
-Usage: #{name} [--prefix] [--cache] [--version]
-Usage: #{name} [--verbose]
-
-Commands:
-  install formula ... [--debug] [--interactive]
-  rm formula ...
-  list formula ...
-  ln formula ...
-  info [formula]
-  mk url
-  prune
-EOS
-end
-
-
-######################################################################## utils
-def pretty_duration s
-  return "#{(s*1000).to_i} milliseconds" if s < 3
-  return "#{s.to_i} seconds" if s < 10*60
-  return "#{(s/60).to_i} minutes"
-end
-
-######################################################################### impl
 begin
   case ARGV.shift
-    when '--prefix' then puts prefix
+    when '--prefix' then puts HOMEBREW_PREFIX
     when '--cache' then puts HOMEBREW_CACHE
-    when '-h', '--help', '--usage', '-?' then puts usage
+    when '-h', '--help', '--usage', '-?' then puts ARGV.usage
     when '-v', '--version' then puts HOMEBREW_VERSION
-    when 'macports' then exec "open 'http://www.macports.org/ports.php?by=name&substr=#{ARGV.shift}'"
 
     when 'home', 'homepage'
-      require 'formula'
-      homepages=extract_named_args.collect {|name| Formula.create(name).homepage}
-      exec "open #{homepages.join' '}"
+      if ARGV.named.empty?
+        exec "open", HOMEBREW_WWW
+      else
+        exec "open", *ARGV.formulae.collect {|f| f.homepage}
+      end
 
     when 'ls', 'list'
-      dirs=extract_kegs.collect {|keg| keg.path}
-      exec "find #{dirs.join' '} -not -type d -print"
+      exec "find", *ARGV.kegs.concat(%w[-not -type d -print])
 
     when 'edit'
       if ARGV.empty?
-        d=HOMEBREW_PREFIX
-        exec "mate #{Dir["#{d}/Library/*"].join' '} #{d}/bin/brew #{d}/README"
+        exec "mate", *Dir["#{HOMEBREW_PREFIX}/Library/*"]<<
+                          "#{HOMEBREW_PREFIX}/bin/brew"<<
+                          "#{HOMEBREW_PREFIX}/README"
       else
-        require 'formula'
-        paths=extract_named_args.collect {|name| Formula.path(name).to_s.gsub ' ', '\\ '}
-        exec "mate #{paths.join ' '}"
+        exec "mate", *ARGV.formulae.collect {|f| f.path}
       end
 
     when 'install'
-      require 'formula'
-      extract_named_args.each do |name|
-        f=Formula.create(name)
-        raise "#{f.name} already installed!\n==> #{f.prefix}" if f.installed? unless ARGV.include? '--force'
-        install f
+      require 'keg'
+      ARGV.formulae.each do |f|
+        raise "#{f.name} is already installed" if f.installed? unless ARGV.force?
+        start_time=Time.now
+        begin
+          install f
+          if f.caveats
+            ohai "Caveats"
+            puts f.caveats
+            puts
+          end
+          ohai 'Finishing up'
+          clean f
+          raise "Nothing was installed to #{f.prefix}" unless f.installed?
+          Keg.new(f.prefix).link
+        rescue
+          f.prefix.rmtree if f.prefix.directory?
+          raise
+        end
+        puts "#{f.prefix}: "+f.prefix.abv+", built in #{pretty_duration Time.now-start_time}"
       end
 
     when 'ln', 'link'
-      n=0
-      (kegs=extract_kegs).each do |keg|
-        n+=nn=keg.ln
-        puts "Created #{nn} links for #{keg.name}" if kegs.length > 1
-      end
-      puts "Created #{n} links"
+      ARGV.kegs.each {|keg| puts "#{keg.link} links created for #{keg}"}
 
-    when 'rm', 'uninstall'
-      extract_kegs.each do |keg|
-        puts "Removing #{keg.name}..."
-        keg.rm
+    when 'unlink'
+      ARGV.kegs.each {|keg| puts "#{keg.unlink} links removed for #{keg}"}
+
+    when 'rm', 'uninstall', 'remove'
+      ARGV.kegs.each do |keg|
+        puts "Uninstalling #{keg}..."
+        keg.uninstall
       end
-      print "Pruning #{prefix}/..."
-      puts " #{prune} symbolic links pruned"
+      prune
+
+    when 'up', 'update'
+      puts "Reserved command"
 
     when 'prune'
-      puts "Pruned #{prune} symbolic links"
+      prune
 
     when 'mk', 'make'
-      mode = "make"
-      if ARGV.length > 0
-        if ARGV[0] == '--cmake'
-          ARGV.shift
-          mode = "cmake"
-        end
-      end
-      
-      paths=ARGV.collect {|arg| mk arg, mode}
-      if paths.empty?
-        raise "Invalid URL"
-      elsif Kernel.system "which mate > /dev/null" and $? == 0
-        paths=paths.collect {|path| path.to_s.gsub " ", "\\ "}
-        exec "mate #{paths.join ' '}"
+      if ARGV.include? '--macports'
+        exec "open", "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
       else
-        puts paths.join("\n")
+        exec "mate", *ARGV.named.collect {|name| make name}
       end
 
     when 'info', 'abv'
-      if ARGV.empty?
-        puts `ls #{HOMEBREW_CELLAR} | wc -l`.strip+" kegs, "+abv
+      if ARGV.named.empty?
+        puts `ls #{HOMEBREW_CELLAR} | wc -l`.strip+" kegs, "+HOMEBREW_CELLAR.abv
       elsif ARGV[0][0..6] == 'http://'
         puts Pathname.new(ARGV.shift).version
       else
-        require 'formula'
-        #TODO show outdated status and that
-        frm=Formula.create(extract_named_args[0])
-        puts "#{frm.name} #{frm.version}"
-        puts frm.homepage
-        if frm.installed?
-          require 'keg'
-          keg=Keg.new frm
-          puts "#{abv keg} (installed to #{keg.path})"
-        end
-        if frm.caveats
-          ohai 'Caveats'
-          puts frm.caveats
-        end
+        ARGV.named.each {|name| info name}
       end
 
     else
-      puts usage
+      puts ARGV.usage
   end
 
-rescue StandardError, Interrupt => e
-  if ARGV.include? '--verbose' or ENV['HOMEBREW_DEBUG']
-    raise
-  elsif e.kind_of? Interrupt
-    puts # seeimgly a newline is typical
-    exit 130
-  elsif e.kind_of? StandardError and not e.kind_of? NameError
-    puts "\033[1;31mError\033[0;0m: #{e}"
-    exit 1
+rescue SystemExit
+  ohai "Kernel.exit" if ARGV.verbose?
+rescue Interrupt => e
+  puts # seemingly a newline is typical
+  exit 130
+rescue SystemCallError, RuntimeError => e
+  if ARGV.verbose? or ARGV.debug?
+    onoe e.inspect
+    puts e.backtrace
   else
-    raise
+    onoe e
   end
+  exit 1
+rescue Exception => e
+  onoe "Homebrew has failed you :("
+  puts "Please report this bug at: #{HOMEBREW_WWW}"
+  puts "Please include this backtrace:"
+  ohai e.inspect
+  puts e.backtrace
 end
