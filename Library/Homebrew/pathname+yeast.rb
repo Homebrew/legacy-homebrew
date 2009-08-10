@@ -32,18 +32,19 @@ class Pathname
 
   def install src
     if src.is_a? Array
-      src.each {|src| install src }
+      src.collect {|src| install src }
     elsif File.exist? src
       mkpath
       if File.symlink? src
         # we use the BSD mv command because FileUtils copies the target and
         # not the link! I'm beginning to wish I'd used Python quite honestly!
-        `mv #{src} #{to_s}`
+        raise unless Kernel.system 'mv', src, to_s and $? == 0
       else
         # we mv when possible as it is faster and you should only be using
         # this function when installing from the temporary build directory
         FileUtils.mv src, to_s
       end
+      return self+src
     end
   end
 
