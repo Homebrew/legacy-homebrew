@@ -14,7 +14,7 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with Homebrew.  If not, see <http://www.gnu.org/licenses/>.
-
+#
 require 'pathname'
 
 # we enhance pathname to make our code more readable
@@ -23,9 +23,10 @@ class Pathname
     FileUtils.mv to_s, dst
   end
   
-  def rename dst
-    dst=Pathname.new dst
-    dst.unlink if dst.exist?
+  def rename newname
+    raise unless file?
+    dst=dirname+newname
+    dst.unlink rescue nil
     mv dst
   end
 
