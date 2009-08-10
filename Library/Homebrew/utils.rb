@@ -22,5 +22,24 @@ end
 
 # shows a warning in delicious pink
 def opoo warning
-  puts "WARNING \033[1;35m#{warning}\033[0;0m"
+  puts "\033[1;35m==>\033[0;0;1m Warning\033[0;0m: #{warning}"
+end
+
+def onoe error
+  puts "\033[1;31m==>\033[0;0;1m Error\033[0;0m: #{error}"
+end
+
+def pretty_duration s
+  return "#{(s*1000).to_i} milliseconds" if s < 3
+  return "#{s.to_i} seconds" if s < 10*60
+  return "#{(s/60).to_i} minutes"
+end
+
+def interactive_shell
+  pid=fork
+  if pid.nil?
+    exec ENV['SHELL']
+  else
+    Process.wait pid
+  end
 end

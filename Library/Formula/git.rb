@@ -1,6 +1,6 @@
 require 'brewkit'
 
-class GitManuals <UnidentifiedFormula
+class GitManuals <Formula
   @url='http://www.kernel.org/pub/software/scm/git/git-manpages-1.6.4.tar.bz2'
   @md5='851e1df833895c5046a994c28d3d8368'
 end

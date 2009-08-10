@@ -53,7 +53,10 @@ Here's why you may prefer Homebrew to the alternatives:
    We optimise for Leopard Intel, binaries are stripped, compile flags 
    tweaked. Nobody wants crappy, slow software. Apart from MacPorts and Fink.
 
-8. Integration with existing OS X technologies
+8. Making the most of OS X
+   Homebrew knows how many cores you have thanks to RubyCocoa, so it makes
+   sure when it builds it uses all of them, (unless you don't want it to of
+   course).
    Homebrew integrates with Ruby gems, CPAN and Python disttools. These tools
    exist already and do the job great. We don't reinvent the wheel, we just
    improve it by making these tools install with more management options.

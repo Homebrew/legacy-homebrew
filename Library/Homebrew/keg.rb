@@ -14,146 +14,61 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with Homebrew.  If not, see <http://www.gnu.org/licenses/>.
-
-require 'formula'
-
-class Keg
-  attr_reader :path, :version, :name
-  
-  def initialize formula
-    if formula.is_a? AbstractFormula
-      @path=formula.prefix
-      @name=formula.name
-      @version=formula.version
-    elsif formula.is_a? Pathname
-      # TODO
-    elsif formula.is_a? String
-      path=HOMEBREW_CELLAR+formula
-      kids=path.children
-      raise "Empty installation: #{path}" if kids.length < 1
-      raise "Multiple versions installed" if kids.length > 1
-      @path=kids[0]
-      @name=formula
-      @version=@path.basename
-    end
+#
+class Keg <Pathname
+  def initialize path
+    super path
+    raise "#{to_s} is not a valid keg" unless parent.parent == HOMEBREW_CELLAR
+    raise "#{to_s} is not a directory" unless directory?
   end
 
-  def clean
-    # TODO unset write permission more
-    %w[bin lib].each {|d| (Pathname.new(path)+d).find do |path|
-      if not path.file?
-        next
-      elsif path.extname == '.la'
-        # .la files are stupid
-        path.unlink
-      else
-        fo=`file -h #{path}`
-        args=nil
-        perms=0444
-        if fo =~ /Mach-O dynamically linked shared library/
-          args='-SxX'
-        elsif fo =~ /Mach-O [^ ]* ?executable/
-          args='' # use strip defaults
-          perms=0544
-        elsif fo =~ /script text executable/
-          perms=0544
-        end
-        if args
-          puts "Stripping: #{path}" if ARGV.include? '--verbose'
-          path.chmod 0644 # so we can strip
-          unless path.stat.nlink > 1
-            `strip #{args} #{path}`
-          else
-            # strip unlinks the file and recreates it, thus breaking hard links!
-            # is this expected behaviour? patch does it too… still,mktm this fixes it
-            tmp=`mktemp -t #{path.basename}`.strip
-            `strip -o #{tmp} #{path}`
-            `cat #{tmp} > #{path}`
-            File.unlink tmp
-          end
-        end
-        path.chmod perms
-      end
-    end}
-
-    # remove empty directories TODO Rubyize!
-    `perl -MFile::Find -e"finddepth(sub{rmdir},'#{path}')"`
+  def uninstall
+    chmod_R 0777 # ensure we have permission to delete
+    rmtree
+    parent.rmdir_if_possible
   end
 
-  def rm
-    # don't rmtree shit if we aren't positive about our location!
-    raise "Bad stuff!" unless path.parent.parent == HOMEBREW_CELLAR
+  def link
+    $n=0
+    $d=0
 
-    if path.directory?
-      FileUtils.chmod_R 0777, path # ensure we have permission to delete
-      path.rmtree # HOMEBREW_CELLAR/foo/1.2.0
-      path.parent.rmdir if path.parent.children.length == 0 # HOMEBREW_CELLAR/foo
-    end
+    mkpaths=(1..9).collect {|x| "man/man#{x}"} <<'man'<<'doc'<<'locale'<<'info'<<'aclocal'
+
+    # yeah indeed, you have to force anything you need in the main tree into
+    # these dirs REMEMBER that *NOT* everything needs to be in the main tree
+    link_dir('etc') {:mkpath}
+    link_dir('bin') {:link}
+    link_dir('lib') {|path| :mkpath if %w[pkgconfig php].include? path.to_s}
+    link_dir('include') {:link}
+    link_dir('share') {|path| :mkpath if mkpaths.include? path.to_s}
+
+    return $n+$d
   end
 
 private
-  def __symlink_relative_to from, to
-    tod=to.dirname
-    tod.mkpath
-    Dir.chdir(tod) do
-      #TODO use Ruby function so we get exceptions
-      #NOTE Ruby functions are fucked up!
-      `ln -sf "#{from.relative_path_from tod}"`
-      @n+=1
-    end
-  end
+  # symlinks the contents of self+foo recursively into /usr/local/foo
+  def link_dir foo
+    root=self+foo
 
-  # symlinks a directory recursively into our FHS tree
-  def __ln start
-    start=path+start
-    return unless start.directory?
+    root.find do |src|
+      next if src == root
 
-    root=Pathname.new HOMEBREW_PREFIX
-    start.find do |from|
-      next if from == start
+      dst=HOMEBREW_PREFIX+src.relative_path_from(self)
+      dst.extend ObserverPathnameExtension
 
-      prune=false
-
-      relative_path=from.relative_path_from path
-      to=root+relative_path
-
-      if from.file?
-        __symlink_relative_to from, to
-      elsif from.directory?
+      if src.file?
+        dst.make_relative_symlink src
+      elsif src.directory?
         # no need to put .app bundles in the path, the user can just use
         # spotlight, or the open command and actual mac apps use an equivalent
-        Find.prune if from.extname.to_s == '.app'
+        Find.prune if src.extname.to_s == '.app'
 
-        branch=from.relative_path_from start
-
-        case yield branch when :skip
-          Find.prune
-        when :mkpath
-          to.mkpath
-          @n+=1
-        else
-          __symlink_relative_to from, to
-          Find.prune
+        case yield src.relative_path_from(root)
+          when :skip then Find.prune
+          when :mkpath then dst.mkpath
+          else dst.make_relative_symlink src; Find.prune
         end
       end
     end
-  end
-
-public
-  def ln
-    # yeah indeed, you have to force anything you need in the main tree into
-    # these dirs REMEMBER that *NOT* everything needs to be in the main tree
-    # TODO consider using hardlinks
-    @n=0
-
-    __ln('etc') {:mkpath}
-    __ln('bin') {:link}
-    __ln('lib') {|path| :mkpath if ['pkgconfig','php'].include? path.to_s}
-    __ln('include') {:link}
-
-    mkpaths=(1..9).collect {|x| "man/man#{x}"} <<'man'<<'doc'<<'locale'<<'info'<<'aclocal'
-    __ln('share') {|path| :mkpath if mkpaths.include? path.to_s}
-
-    return @n
   end
 end

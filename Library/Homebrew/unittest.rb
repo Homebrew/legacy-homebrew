@@ -1,9 +1,8 @@
 #!/usr/bin/ruby
 $:.unshift File.dirname(__FILE__)
+require 'pathname+yeast'
 require 'formula'
 require 'keg'
-require 'pathname+yeast'
-require 'stringio'
 require 'utils'
 
 # these are defined in env.rb usually, but we don't want to break our actual
@@ -17,6 +16,7 @@ HOMEBREW_CELLAR.mkpath
 raise "HOMEBREW_CELLAR couldn't be created!" unless HOMEBREW_CELLAR.directory?
 at_exit { HOMEBREW_PREFIX.parent.rmtree }
 require 'test/unit' # must be after at_exit
+require 'ARGV+yeast' # needs to be after test/unit to avoid conflict with OptionsParser
 
 
 class MockFormula <Formula
@@ -26,12 +26,16 @@ class MockFormula <Formula
   end
 end
 
+class MostlyAbstractFormula <AbstractFormula
+  @url=''
+end
+
 class TestBall <Formula
   def initialize
     @url="file:///#{Pathname.new(__FILE__).parent.realpath}/testball-0.1.tbz"
     super "testball"
   end
-  
+
   def install
     prefix.install "bin"
     prefix.install "libexec"
@@ -51,16 +55,28 @@ class TestBallOverrideBrew <Formula
     super "foo"
   end
   def brew
-    puts "We can't override brew"
+    # We can't override brew
   end
 end
 
+class TestScriptFileFormula <ScriptFileFormula
+  @url="file:///#{Pathname.new(__FILE__).realpath}"
+  @version="1"
+  
+  def initialize
+    super
+    @name='test-script-formula'
+  end
+end
 
 def nostdout
-  tmp=$stdout
+  require 'stringio'
+  tmpo=$stdout
+  tmpe=$stderr
   $stdout=StringIO.new
   yield
-  $stdout=tmp
+ensure
+  $stdout=tmpo
 end
 
 
@@ -162,9 +178,10 @@ class BeerTasting <Test::Unit::TestCase
   def test_install
     f=TestBall.new
     
+    assert_equal Formula.path(f.name), f.path
     assert !f.installed?
     
-    nostdout do 
+    nostdout do
       f.brew do
         f.install
       end
@@ -180,17 +197,29 @@ class BeerTasting <Test::Unit::TestCase
     assert !(f.prefix+'main.c').exist?
     assert f.installed?
     
-    keg=Keg.new f
-    keg.ln
+    keg=Keg.new f.prefix
+    keg.link
     assert_equal 2, HOMEBREW_PREFIX.children.length
     assert (HOMEBREW_PREFIX+'bin').directory?
     assert_equal 3, (HOMEBREW_PREFIX+'bin').children.length
     
-    keg.rm
-    assert !keg.path.exist?
+    keg.uninstall
+    assert !keg.exist?
     assert !f.installed?
   end
   
+  def test_script_install
+    f=TestScriptFileFormula.new
+    
+    nostdout do
+      f.brew do
+        f.install
+      end
+    end
+    
+    assert_equal 1, f.bin.children.length
+  end
+
   def test_md5
     assert_nothing_raised { nostdout { TestBallValidMd5.new.brew {} } }
   end
@@ -213,10 +242,17 @@ class BeerTasting <Test::Unit::TestCase
     path.dirname.mkpath
     `echo "require 'brewkit'; class #{classname} <Formula; @url=''; end" > #{path}`
     
-    assert_not_nil Formula.create(FOOBAR)
+    assert_not_nil Formula.factory(FOOBAR)
   end
   
   def test_cant_override_brew
     assert_raises(RuntimeError) { TestBallOverrideBrew.new }
+  end
+  
+  def test_abstract_formula
+    f=MostlyAbstractFormula.new
+    assert_nil f.name
+    assert_raises(RuntimeError) { f.prefix }
+    nostdout { assert_raises(ExecutionError) { f.brew } }
   end
 end
