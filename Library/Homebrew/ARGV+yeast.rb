@@ -19,6 +19,7 @@ module HomebrewArgvExtension
   def named
     nn=namedp
     raise UsageError if nn.empty?
+    nn
   end
   def named_empty?
     namedp.empty?
