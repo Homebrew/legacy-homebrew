@@ -104,6 +104,7 @@ class AbstractFormula
         puts "Type `exit' and Homebrew will attempt to finalize the installation"
         puts "If nothing is installed to #{prefix}, then Homebrew will abort"
         interactive_shell
+        raise "Non-zero exit status, installation aborted" if $? != 0
       end
     end
   end
