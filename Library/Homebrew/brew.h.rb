@@ -189,11 +189,19 @@ end
 class Cleaner
   def initialize f
     @f=f
+    
+    # correct common issues
+    share=f.prefix+'share'
+    (f.prefix+'man').mv share rescue nil
+    
     [f.bin, f.lib].each {|d| clean_dir d}
     
     # you can read all of this shit online nowadays, save the space
+    # info pages are shit, everyone agrees apart from Richard Stallman
     (f.prefix+'share'+'doc').rmtree rescue nil
     (f.prefix+'share'+'info').rmtree rescue nil
+    (f.prefix+'doc').rmtree rescue nil
+    (f.prefix+'info').rmtree rescue nil
   end
 
 private
