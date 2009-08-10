@@ -35,10 +35,18 @@ class TestBall <Formula
     @url="file:///#{Pathname.new(__FILE__).parent.realpath}/testball-0.1.tbz"
     super "testball"
   end
-
   def install
     prefix.install "bin"
     prefix.install "libexec"
+  end
+end
+
+class TestZip <Formula
+  def initialize
+    path=HOMEBREW_CACHE.parent+'test-0.1.zip'
+    Kernel.system 'zip', '-0', path, __FILE__
+    @url="file://#{path}"
+    super 'testzip'
   end
 end
 
@@ -259,6 +267,10 @@ class BeerTasting <Test::Unit::TestCase
     assert_nil f.name
     assert_raises(RuntimeError) { f.prefix }
     nostdout { assert_raises(ExecutionError) { f.brew } }
+  end
+
+  def test_zip
+    nostdout { assert_nothing_raised { TestZip.new.brew {} } }
   end
 
   def test_no_ARGV_dupes
