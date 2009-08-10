@@ -26,7 +26,7 @@ class Pathname
   def rename newname
     raise unless file?
     dst=dirname+newname
-    dst.unlink rescue nil
+    dst.unlink if dst.exist?
     mv dst
   end
 
