@@ -151,8 +151,11 @@ private
   # Kernel.system but with exceptions
   def safe_system cmd, *args
     puts "#{cmd} #{args*' '}" if ARGV.verbose?
-    # stderr is shown, so hopefully that will explain the problem
-    raise ExecutionError.new(cmd, args) unless Kernel.system cmd, *args and $? == 0
+
+    execd=Kernel.system cmd, *args
+    # somehow Ruby doesn't handle the CTRL-C from another process -- WTF!?
+    raise Interrupt, cmd if $?.termsig == 2
+    raise ExecutionError.new(cmd, args) unless execd and $? == 0
   end
 
   def curl url, *args
