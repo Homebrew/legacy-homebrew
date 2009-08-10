@@ -46,6 +46,10 @@ def hw_model
         
       when "MacPro"
         $unknown_hw_model=true if major > 3
+        # 'Xeon' is a marketing term, not a specific CPU:
+        # http://en.wikipedia.org/wiki/Xeon
+        # adamv says: I have a Mac Pro at work (MacPro4,1) and will try
+        # some compiler options out.
         :xeon
 
       when "PowerBook", "PowerMac", "RackMac" then :ppc
