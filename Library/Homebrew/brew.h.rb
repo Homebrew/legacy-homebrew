@@ -238,7 +238,9 @@ private
 
   def clean_dir d
     d.find do |path|
-      if not path.file?
+      if path.directory?
+        Find.prune if @f.skip_clean? path
+      elsif not path.file?
         next
       elsif path.extname == '.la' and not @f.skip_clean? path
         # *.la files are stupid

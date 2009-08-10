@@ -11,7 +11,8 @@ class Python <Formula
   end
   
   def skip_clean? path
-    return path == bin+'python' or path == bin+'python2.6'
+    path == bin+'python' or path == bin+'python2.6' or # if you strip these, it can't load modules
+    path == lib+'python2.6' # save a lot of time
   end
 
   def install
