@@ -74,7 +74,7 @@ class Pathname
   def rmdir_if_possible
     rmdir
   rescue SystemCallError => e
-    raise unless e.errno == Errno::ENOTEMPTY::Errno
+    raise unless e.errno == Errno::ENOTEMPTY::Errno or e.errno == Errno::EACCES::Errno
   end
   
   def chmod_R perms
