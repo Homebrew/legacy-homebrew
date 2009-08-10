@@ -23,10 +23,7 @@ class Flac <Formula
 
     (doc.parent+"#{@name}-#{@version}").mv doc
 
-    Flac2Mp3.new.brew do |flac2mp3|
-      FileUtils.chmod 0544, flac2mp3.name
-      FileUtils.cp flac2mp3.name, bin
-    end
+    Flac2Mp3.new.brew {|f| bin.install 'flac2mp3'}
   end
 
   def caveats
