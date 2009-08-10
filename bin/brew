@@ -33,17 +33,17 @@ begin
     when '-v', '--version' then puts HOMEBREW_VERSION
 
     when 'home', 'homepage'
-      if ARGV.named.empty?
+      if ARGV.named_empty?
         exec "open", HOMEBREW_WWW
       else
         exec "open", *ARGV.formulae.collect {|f| f.homepage}
       end
 
     when 'ls', 'list'
-      exec "find", *ARGV.kegs.concat(%w[-not -type d -print])
+      exec "find", *ARGV.kegs+%w[-not -type d -print]
 
     when 'edit'
-      if ARGV.empty?
+      if ARGV.named_empty?
         exec "mate", *Dir["#{HOMEBREW_PREFIX}/Library/*"]<<
                           "#{HOMEBREW_PREFIX}/bin/brew"<<
                           "#{HOMEBREW_PREFIX}/README"
@@ -61,7 +61,7 @@ begin
         else
           Process.wait pid
         end
-        exit! 1 if $? != 0 # exception in other brew will be visible on screen
+        exit! $? if $? != 0 # exception in other brew will be visible on screen
       end
 
     # this is an internal option, don't expose it to the user
@@ -110,7 +110,7 @@ begin
       end
 
     when 'info', 'abv'
-      if ARGV.named.empty?
+      if ARGV.named_empty?
         puts `ls #{HOMEBREW_CELLAR} | wc -l`.strip+" kegs, "+HOMEBREW_CELLAR.abv
       elsif ARGV[0][0..6] == 'http://'
         puts Pathname.new(ARGV.shift).version
@@ -122,6 +122,9 @@ begin
       puts ARGV.usage
   end
 
+rescue UsageError
+  onoe "Invalid usage"
+  puts ARGV.usage
 rescue SystemExit
   ohai "Kernel.exit" if ARGV.verbose?
 rescue Interrupt => e
