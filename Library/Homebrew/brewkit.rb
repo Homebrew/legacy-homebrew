@@ -14,7 +14,7 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with Homebrew.  If not, see <http://www.gnu.org/licenses/>.
-
+#
 require 'osx/cocoa' # to get number of cores
 require 'formula'
 require 'hw.model'
@@ -57,10 +57,40 @@ ENV['CXX']='g++-4.2'
 ENV['MAKEFLAGS']="-j#{OSX::NSProcessInfo.processInfo.processorCount}"
 
 
-unless HOMEBREW_PREFIX == '/usr/local'
+unless HOMEBREW_PREFIX.to_s == '/usr/local'
   ENV['CPPFLAGS']="-I#{HOMEBREW_PREFIX}/include"
   ENV['LDFLAGS']="-L#{HOMEBREW_PREFIX}/lib"
 end
+
+
+# you can use these functions for packages that have build issues
+module HomebrewEnvExtension
+  def deparallelize
+    remove 'MAKEFLAGS', /-j\d+/
+  end
+  def gcc_4_0_1
+    self['CC']=nil
+    self['CXX']=nil
+  end
+  def osx_10_4
+    self['MACOSX_DEPLOYMENT_TARGET']=nil
+    remove_from_cflags(/ ?-mmacosx-version-min=10\.\d/)
+  end
+  def generic_i386
+     %w[-mfpmath=sse -msse3 -mmmx -march=\w+].each {|s| remove_from_cflags s}
+  end
+private
+  def remove key, rx
+    # sub! doesn't work as "the string is frozen"
+    self[key]=self[key].sub rx, ''
+    self[key]=nil if self[key].empty? # keep things clean
+  end
+  def remove_from_cflags rx
+    %w[CFLAGS CXXFLAGS].each {|key| remove key, rx}
+  end
+end
+
+ENV.extend HomebrewEnvExtension
 
 
 def inreplace(path, before, after)
