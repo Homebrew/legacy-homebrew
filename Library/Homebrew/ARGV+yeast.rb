@@ -17,7 +17,11 @@
 #
 module HomebrewArgvExtension
   def named
-    reject{|arg| arg[0..0] == '-'}.collect{|arg| arg.downcase}.uniq
+    nn=namedp
+    raise UsageError if nn.empty?
+  end
+  def named_empty?
+    namedp.empty?
   end
   def options
     select {|arg| arg[0..0] == '-'}
@@ -71,14 +75,22 @@ Usage: brew [--verbose]
 
 Commands:
   install formula ... [--debug] [--interactive]
-  rm formula ...
+  remove formula ...
   list formula ...
-  ln formula ...
+  link formula ...
+  home formula ...
   info [formula] [--github]
-  mk url
+  make url
   prune
   EOS
   end
+  
+private
+  def namedp
+    nn=reject{|arg| arg[0..0] == '-'}.collect{|arg| arg.downcase}.uniq
+  end
 end
+
+class UsageError <RuntimeError; end
 
 ARGV.extend HomebrewArgvExtension
