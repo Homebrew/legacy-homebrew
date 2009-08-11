@@ -43,9 +43,9 @@ end
 
 class TestZip <Formula
   def initialize
-    path=HOMEBREW_CACHE.parent+'test-0.1.zip'
-    Kernel.system 'zip', '-0', path, __FILE__
-    @url="file://#{path}"
+    zip=HOMEBREW_CACHE.parent+'test-0.1.zip'
+    Kernel.system 'zip', '-0', zip, __FILE__
+    @url="file://#{zip}"
     super 'testzip'
   end
 end
@@ -63,7 +63,6 @@ class TestBallOverrideBrew <Formula
     super "foo"
   end
   def brew
-    # We can't override brew
   end
 end
 
@@ -78,13 +77,18 @@ class TestScriptFileFormula <ScriptFileFormula
 end
 
 def nostdout
-  require 'stringio'
-  tmpo=$stdout
-  tmpe=$stderr
-  $stdout=StringIO.new
-  yield
-ensure
-  $stdout=tmpo
+  if ARGV.include? '-V'
+    yield
+  end
+  begin
+    require 'stringio'
+    tmpo=$stdout
+    tmpe=$stderr
+    $stdout=StringIO.new
+    yield
+  ensure
+    $stdout=tmpo
+  end
 end
 
 

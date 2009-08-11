@@ -49,3 +49,17 @@ def interactive_shell
     Process.wait pid
   end
 end
+
+# Kernel.system but with exceptions
+def safe_system cmd, *args
+  puts "#{cmd} #{args*' '}" if ARGV.verbose?
+
+  execd=Kernel.system cmd, *args
+  # somehow Ruby doesn't handle the CTRL-C from another process -- WTF!?
+  raise Interrupt, cmd if $?.termsig == 2
+  raise ExecutionError.new(cmd, args) unless execd and $? == 0
+end
+
+def curl url, *args
+  safe_system 'curl', '-f#LA', HOMEBREW_USER_AGENT, url, *args
+end
