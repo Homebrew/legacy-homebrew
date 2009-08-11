@@ -24,7 +24,7 @@ class Imagemagick <Formula
     system "make install"
 
     # We already copy these in
-    d=prefix+'share'+'ImageMagick'
+    d=prefix+'share'
     (d+'NEWS.txt').unlink
     (d+'LICENSE').unlink
     (d+'ChangeLog').unlink
