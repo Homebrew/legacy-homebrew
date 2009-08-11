@@ -72,6 +72,23 @@ private
   end
 end
 
+class SubversionDownloadStrategy <AbstractDownloadStrategy
+  def fetch
+    ohai "Checking out #{@url}"
+    @co=HOMEBREW_CACHE+@unique_token
+    unless @co.exist?
+      safe_system 'svn', 'checkout', @url, @co
+    else
+      # TODO svn up?
+      puts "Repository already checked out"
+    end
+  end
+  def stage
+    # Force the export, since the target directory will already exist
+    safe_system 'svn', 'export', '--force', @co, Dir.pwd
+  end
+end
+
 
 class ExecutionError <RuntimeError
   def initialize cmd, args=[]
