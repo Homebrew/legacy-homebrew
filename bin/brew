@@ -131,7 +131,7 @@ rescue Interrupt => e
   puts # seemingly a newline is typical
   exit 130
 rescue SystemCallError, RuntimeError => e
-  if ARGV.verbose? or ARGV.debug?
+  if ARGV.debug?
     onoe e.inspect
     puts e.backtrace
   else
