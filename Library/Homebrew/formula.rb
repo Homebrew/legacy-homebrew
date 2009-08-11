@@ -30,6 +30,7 @@ class FormulaUnavailableError <RuntimeError
   end
 end
 
+
 # the base class variety of formula, you don't get a prefix, so it's not
 # useful. See the derived classes for fun and games.
 class AbstractFormula
@@ -72,6 +73,13 @@ class AbstractFormula
   # tell the user about any caveats regarding this package
   def caveats; nil end
   # patches are automatically applied after extracting the tarball
+  # return an array of strings, or if you need a patch level other than -p0
+  # return a Hash eg.
+  #   {
+  #     :p0 => ['http://foo.com/patch1', 'http://foo.com/patch2'],
+  #     :p1 =>  'http://bar.com/patch2',
+  #     :p2 => ['http://moo.com/patch5', 'http://moo.com/patch6']
+  #   }
   def patches; [] end
   # reimplement and specify dependencies
   def deps; end
@@ -179,14 +187,33 @@ private
   end
 
   def patch
-    unless patches.empty?
-      ohai "Patching"
+    return if patches.empty?
+    ohai "Patching"
+    if patches.kind_of? Hash
+      patch_args=[]
+      curl_args=[]
+      n=0
+      patches.each do |arg, urls|
+        urls.each do |url|
+          dst='%03d-homebrew.patch' % n+=1
+          curl_args<<url<<'-o'<<dst
+          patch_args<<["-#{arg}",'-i',dst]
+        end
+      end
+      # downloading all at once is much more efficient, espeically for FTP
+      curl *curl_args
+      patch_args.each do |args|
+        # -f means it doesn't prompt the user if there are errors, if just
+        # exits with non-zero status
+        safe_system 'patch', '-f', *args
+      end
+    else
       ff=(1..patches.length).collect {|n| '%03d-homebrew.patch'%n}
       curl *patches+ff.collect {|f|"-o#{f}"}
       ff.each {|f| safe_system 'patch', '-p0', '-i', f}
     end
   end
-  
+
   class <<self
     attr_reader :url, :version, :md5, :url, :homepage, :sha1
   end
