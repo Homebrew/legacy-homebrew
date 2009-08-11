@@ -280,4 +280,18 @@ class BeerTasting <Test::Unit::TestCase
     ARGV.named.each{|arg| n+=1 if arg == 'foo'}
     assert_equal 1, n
   end
+  
+  def test_ARGV
+    assert_raises(UsageError) { ARGV.named }
+    assert_raises(UsageError) { ARGV.formulae }
+    assert_raises(UsageError) { ARGV.kegs }
+    assert ARGV.named_empty?
+    
+    (HOMEBREW_CELLAR+'foo'+'0.1').mkpath
+    
+    ARGV.unshift 'foo'
+    assert_equal 1, ARGV.named.length
+    assert_equal 1, ARGV.kegs.length
+    assert_raises(FormulaUnavailableError) { ARGV.formulae }
+  end
 end
