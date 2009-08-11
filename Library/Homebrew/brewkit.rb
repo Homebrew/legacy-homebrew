@@ -113,6 +113,14 @@ end
 
 ENV.extend HomebrewEnvExtension
 
+# remove MacPorts and Fink from the PATH, this prevents issues like:
+# http://github.com/mxcl/homebrew/issues/#issue/13
+paths=ENV['PATH'].split(':').reject do |p|
+  p.squeeze! '/'
+  p=~%r[^/opt/local] or p=~%r[^/sw]
+end
+ENV['PATH']=paths*':'
+
 
 def inreplace(path, before, after)
   before=Regexp.escape before.to_s
