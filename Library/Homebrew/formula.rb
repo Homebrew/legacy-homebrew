@@ -16,6 +16,63 @@
 #  along with Homebrew.  If not, see <http://www.gnu.org/licenses/>.
 
 
+class AbstractDownloadStrategy
+  def initialize url, name, version
+    @url=url
+    @unique_token="#{name}-#{version}"
+  end
+end
+
+class HttpDownloadStrategy <AbstractDownloadStrategy
+  def fetch
+    ohai "Downloading #{@url}"
+    @dl=HOMEBREW_CACHE+(@unique_token+ext)
+    unless @dl.exist?
+      curl @url, '-o', @dl
+    else
+      puts "File already downloaded and cached"
+    end
+    return @dl # thus performs checksum verification
+  end
+  def stage
+    case `file -b #{@dl}`
+      when /^Zip archive data/
+        safe_system 'unzip', '-qq', @dl
+        chdir
+      when /^(gzip|bzip2) compressed data/
+        # TODO do file -z now to see if it is in fact a tar
+        safe_system 'tar', 'xf', @dl
+        chdir
+      else
+        # we are assuming it is not an archive, use original filename
+        # this behaviour is due to ScriptFileFormula expectations
+        @dl.mv File.basename(@url)
+    end
+  end
+private
+  def chdir
+    entries=Dir['*']
+    case entries.length
+      when 0 then raise "Empty archive"
+      when 1 then Dir.chdir entries.first rescue nil
+    end
+  end
+  def ext
+    # GitHub uses odd URLs for zip files, so check for those
+    rx=%r[http://(www\.)?github\.com/.*/(zip|tar)ball/]
+    if rx.match @url
+      if $2 == 'zip'
+        '.zip'
+      else
+        '.tgz'
+      end
+    else
+      Pathname.new(@url).extname
+    end
+  end
+end
+
+
 class ExecutionError <RuntimeError
   def initialize cmd, args=[]
     super "#{cmd} #{args*' '}"
@@ -40,7 +97,9 @@ class AbstractFormula
     @homepage=self.class.homepage unless @homepage
     @md5=self.class.md5 unless @md5
     @sha1=self.class.sha1 unless @sha1
-    raise "@url is nil" if @url.nil?
+    raise if @url.nil?
+    raise if @name =~ /\s/
+    raise if @version =~ /\s/
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -60,7 +119,7 @@ class AbstractFormula
     Formula.path name
   end
 
-  attr_reader :url, :version, :url, :homepage, :name
+  attr_reader :url, :version, :homepage, :name
 
   def bin; prefix+'bin' end
   def sbin; prefix+'sbin' end
@@ -71,6 +130,15 @@ class AbstractFormula
   def info; prefix+'share'+'info' end
   def include; prefix+'include' end
 
+  # reimplement if we don't autodetect the download strategy you require
+  def download_strategy
+    case url
+      when %r[^svn://] then SubversionDownloadStrategy
+      when %r[^git://] then GitDownloadStrategy
+      when %r[^http://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
+      else HttpDownloadStrategy
+    end
+  end
   # tell the user about any caveats regarding this package
   def caveats; nil end
   # patches are automatically applied after extracting the tarball
@@ -89,19 +157,7 @@ class AbstractFormula
 
   # yields self with current working directory set to the uncompressed tarball
   def brew
-    ohai "Downloading #{@url}"
-    tgz=HOMEBREW_CACHE+File.basename(@url)
-    unless tgz.exist?
-      HOMEBREW_CACHE.mkpath
-      curl @url, '-o', tgz
-    else
-      puts "File already downloaded and cached"
-    end
-
-    verify_download_integrity tgz
-
-    mktemp do
-      Dir.chdir uncompress(tgz)
+    stage do
       begin
         patch
         yield self
@@ -144,8 +200,10 @@ protected
   end
 
 private
+  # creates a temporary directory then yields, when the block returns it
+  # recursively deletes the temporary directory
   def mktemp
-    tmp=Pathname.new `mktemp -dt #{File.basename @url}`.strip
+    tmp=Pathname.new `mktemp -dt #{name}-#{version}`.strip
     raise if not tmp.directory? or $? != 0
     begin
       wd=Dir.pwd
@@ -155,20 +213,6 @@ private
       Dir.chdir wd
       tmp.rmtree
     end
-  end
-
-  # Kernel.system but with exceptions
-  def safe_system cmd, *args
-    puts "#{cmd} #{args*' '}" if ARGV.verbose?
-
-    execd=Kernel.system cmd, *args
-    # somehow Ruby doesn't handle the CTRL-C from another process -- WTF!?
-    raise Interrupt, cmd if $?.termsig == 2
-    raise ExecutionError.new(cmd, args) unless execd and $? == 0
-  end
-
-  def curl url, *args
-    safe_system 'curl', '-f#LA', HOMEBREW_USER_AGENT, url, *args
   end
 
   def verify_download_integrity fn
@@ -183,7 +227,18 @@ private
     else
       opoo "Cannot verify package integrity"
       puts "The formula did not provide a download checksum"
-      puts "For your reference the #{type} is: #{hash}"
+      puts "For your reference the #{type} is: #{hash}"
+    end
+  end
+
+  def stage
+    ds=download_strategy.new url, name, version
+    HOMEBREW_CACHE.mkpath
+    dl=ds.fetch
+    verify_download_integrity dl if dl.kind_of? Pathname
+    mktemp do
+      ds.stage
+      yield
     end
   end
 
@@ -216,7 +271,7 @@ private
   end
 
   class <<self
-    attr_reader :url, :version, :md5, :url, :homepage, :sha1
+    attr_reader :url, :version, :homepage, :md5, :sha1
   end
 end
 
@@ -254,30 +309,6 @@ class Formula <AbstractFormula
   end
 
 private
-  def uncompress_args
-    rx=%r[http://(www.)?github.com/.*/(zip|tar)ball/]
-    if rx.match @url and $2 == '.zip' or Pathname.new(@url).extname == '.zip'
-      %w[unzip -qq]
-    else
-      %w[tar xf]
-    end
-  end
-
-  def uncompress path
-    safe_system *uncompress_args<<path
-
-    entries=Dir['*']
-    if entries.length == 0
-      raise "Empty archive"
-    elsif entries.length == 1
-      # if one dir enter it as that will be where the build is
-      entries.first
-    else
-      # if there's more than one dir, then this is the build directory already
-      Dir.pwd
-    end
-  end
-
   def method_added method
     raise 'You cannot override Formula.brew' if method == 'brew'
   end
@@ -289,11 +320,8 @@ class ScriptFileFormula <AbstractFormula
     super
     @name=name
   end
-  def uncompress path
-    path.dirname
-  end
   def install
-    bin.install File.basename(@url)
+    bin.install Dir['*']
   end
 end
 

@@ -22,11 +22,10 @@ class Pathname
   def mv dst    
     FileUtils.mv to_s, dst
   end
-  
+
   def rename newname
-    raise unless file?
     dst=dirname+newname
-    dst.unlink if dst.exist?
+    dst.unlink if dst.exist? and file?
     mv dst
   end
 
