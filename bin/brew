@@ -21,6 +21,11 @@ This is not currently supported. Voice your support for this feature at:
 troba
 end
 
+if `sw_vers -productVersion` =~ /10\.(\d)\.(\d+)/ and $1.to_i < 5
+  onoe "Homebrew requires Leopard or higher"
+  abort "But thanks for your interest anyway!"
+end
+
 # Pathname often throws if CWD doesn't exist
 Dir.chdir '/' unless File.directory? ENV['PWD']
 
