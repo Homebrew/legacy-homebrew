@@ -63,6 +63,7 @@ class AbstractFormula
   attr_reader :url, :version, :url, :homepage, :name
 
   def bin; prefix+'bin' end
+  def sbin; prefix+'sbin' end
   def doc; prefix+'share'+'doc'+name end
   def lib; prefix+'lib' end
   def man; prefix+'share'+'man' end

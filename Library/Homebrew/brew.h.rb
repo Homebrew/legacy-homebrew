@@ -160,7 +160,7 @@ def prune
   $d=0
 
   dirs=Array.new
-  paths=%w[bin etc lib include share].collect {|d| HOMEBREW_PREFIX+d}
+  paths=%w[bin sbin etc lib include share].collect {|d| HOMEBREW_PREFIX+d}
 
   paths.each do |path|
     path.find do |path|
@@ -213,7 +213,7 @@ class Cleaner
     share=f.prefix+'share'
     (f.prefix+'man').mv share rescue nil
     
-    [f.bin, f.lib].each {|d| clean_dir d}
+    [f.bin, f.sbin, f.lib].each {|d| clean_dir d}
     
     # you can read all of this shit online nowadays, save the space
     # info pages are shit, everyone agrees apart from Richard Stallman
