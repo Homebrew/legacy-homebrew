@@ -87,6 +87,13 @@ class Pathname
   end
 
   def version
+    if directory?
+      # directories don't have extnames
+      stem=basename.to_s
+    else
+      stem=self.stem
+    end
+
     # github tarballs are special
     # we only support numbered tagged downloads
     %r[github.com/.*/tarball/((\d\.)+\d)$].match to_s

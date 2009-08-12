@@ -294,4 +294,10 @@ class BeerTasting <Test::Unit::TestCase
     assert_equal 1, ARGV.kegs.length
     assert_raises(FormulaUnavailableError) { ARGV.formulae }
   end
+  
+  def test_version_dir
+    d=HOMEBREW_CELLAR+'foo-0.1.9'
+    d.mkpath
+    assert_equal '0.1.9', d.version
+  end
 end
