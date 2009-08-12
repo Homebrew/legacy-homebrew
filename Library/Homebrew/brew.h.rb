@@ -186,6 +186,24 @@ def prune
 end
 
 
+def diy
+  path=Pathname.getwd
+  version=path.version
+  path.basename.to_s =~ /(.*?)-?#{version}/
+  name=$1
+
+  raise "Couldn't determine version, try --set-version" if version.nil? or version.empty?
+  raise "Couldn't determine name, try --set-name" if name.nil? or name.empty?
+
+  prefix=HOMEBREW_CELLAR+name+version
+
+  if File.file? 'CMakeLists.txt'
+    "-DCMAKE_INSTALL_PREFIX=#{prefix}"
+  elsif File.file? 'Makefile.am'
+    "--prefix=#{prefix}"
+  end
+end
+
 ################################################################ class Cleaner
 class Cleaner
   def initialize f
