@@ -66,6 +66,7 @@ begin
         else
           Process.wait pid
         end
+        #FIXME I don't think $? represents the exit code from the child fork…
         exit! $? if $? != 0 # exception in other brew will be visible on screen
       end
 
@@ -113,6 +114,9 @@ begin
       else
         exec "mate", *ARGV.named.collect {|name| make name}
       end
+
+    when 'diy'
+      puts diy
 
     when 'info', 'abv'
       if ARGV.named_empty?

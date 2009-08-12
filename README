@@ -46,6 +46,11 @@ Here's why you may prefer Homebrew to the alternatives:
        make install
        brew ln wget
 
+   Or Homebrew can figure out the prefix:
+
+       ./configure `brew diy`
+       cmake . `brew diy`
+
    This means you can also install multiple versions of the same package and
    switch on demand.
 
@@ -150,7 +155,7 @@ Update package list:
     cd /usr/local && git pull origin masterbrew    [1]
 
 Delete a package:
-    brew rm wget      OR    rm -rf /usr/local/Cellar/wget && brew prune
+    brew rm wget    OR    rm -rf /usr/local/Cellar/wget && brew prune
 
 List all files in a package:
     brew list wget    OR    find /usr/local/Cellar/wget
@@ -168,7 +173,7 @@ Show expensive packages:
     du -md1 /usr/local/Cellar
     
 View the packages brew has downloaded and cached:
-    ls `brew --cache`   OR  ls ~/Library/Caches/Homebrew
+    ls `brew --cache`    OR    ls ~/Library/Caches/Homebrew
 
 With Homebrew this is all Ruby. If you want to improve the package 
 installation, amend the Ruby script. If you want to improve the brew command

@@ -15,7 +15,7 @@ _brew_to_completion()
     prev="${COMP_WORDS[COMP_CWORD-1]}"
     
     # We only complete unabbreviated commands...
-    actions="edit homepage info install list link make uninstall"
+    actions="diy edit homepage info install list link make uninstall"
     
     # Subcommand list
     if [[ ( ${COMP_CWORD} -eq 1 ) && ( ${COMP_WORDS[0]} == brew )  ]] ; then
