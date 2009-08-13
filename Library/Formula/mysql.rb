@@ -1,5 +1,3 @@
-# Builds MySQL 5.1, but only the client libraries and tools.
-# Does not install the mysqld server.
 require 'brewkit'
 
 class Mysql <Formula
@@ -12,37 +10,44 @@ class Mysql <Formula
     LibraryDep.new 'readline'
   end
 
+  def options
+    [
+      ['--with-tests', "Keep tests when installing."],
+      ['--with-bench', "Keep benchmark app when installing."],
+      ['--client-only', "Only install client tools, not the server."],
+    ]
+  end
+
   def install
     ENV['CXXFLAGS'] = ENV['CXXFLAGS'].gsub "-fomit-frame-pointer", ""
     ENV['CXXFLAGS'] += " -fno-omit-frame-pointer -felide-constructors"
 
-    # What about these options?
-    # --with-mysqld-ldflags=-all-static
-    # --enable-assembler
-    # --with-atomic-ops
+    configure_args = [
+      "--without-bench",
+      "--without-docs",
+      "--without-debug",
+      "--disable-dependency-tracking",
+      "--prefix=#{prefix}",
+      "--with-plugins=innobase,myisam",
+      "--with-extra-charsets=complex",
+      "--with-plugins=innobase,myisam",
+      "--with-ssl",
+      "--enable-assembler",
+      "--enable-thread-safe-client",
+      "--enable-local-infile",
+      "--enable-shared"]
 
-    system "./configure", "--without-readline", 
-                          "--without-server",
-                          "--without-bench",
-                          "--without-docs",
-                          "--without-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-extra-charsets=complex",
-                          "--enable-thread-safe-client",
-                          "--enable-local-infile",
-                          "--enable-shared"
+    if ARGV.include? '--client-only'
+      configure_args.push("--without-server")
+    end
+
+    system "./configure", *configure_args
     system "make install"
-    
-    # save 66MB :P
+
+    # Why does sql-bench still get built w/ above options?
+    (prefix+'sql-bench').rmtree unless ARGV.include? '--with-bench'
+
+    # save 66MB!
     (prefix+'mysql-test').rmtree unless ARGV.include? '--with-tests'
-  end
-  
-  def caveats
-    <<-EOS
-Currently we don't build the server (mysqld), however this should be the 
-default. So please amend this formula, and add a --client-tools-only option
-for installation for its existing state. Thanks.
-    EOS
   end
 end
