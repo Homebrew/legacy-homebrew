@@ -125,18 +125,20 @@ class FormulaUnavailableError <RuntimeError
 end
 
 
-# the base class variety of formula, you don't get a prefix, so it's not
-# useful. See the derived classes for fun and games.
-class AbstractFormula
-  def initialize noop=nil
-    @version=self.class.version unless @version
+# Derive and define at least @url, see Library/Formula for examples
+class Formula
+  # Homebrew determines the name
+  def initialize name=nil
     @url=self.class.url unless @url
+    raise if @url.nil?
+    @name=name
+    raise if @name =~ /\s/
+    @version=self.class.version unless @version
+    @version=Pathname.new(@url).version unless @version
+    raise if @version =~ /\s/
     @homepage=self.class.homepage unless @homepage
     @md5=self.class.md5 unless @md5
     @sha1=self.class.sha1 unless @sha1
-    raise if @url.nil?
-    raise if @name =~ /\s/
-    raise if @version =~ /\s/
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -153,7 +155,7 @@ class AbstractFormula
   end
 
   def path
-    Formula.path name
+    self.class.path name
   end
 
   attr_reader :url, :version, :homepage, :name
@@ -209,6 +211,31 @@ class AbstractFormula
         raise "Non-zero exit status, installation aborted" if $? != 0
       end
     end
+  end
+
+  # we don't have a std_autotools variant because autotools is a lot less
+  # consistent and the standard parameters are more memorable
+  # really Homebrew should determine what works inside brew() then
+  # we could add --disable-dependency-tracking when it will work
+  def std_cmake_parameters
+    # The None part makes cmake use the environment's CFLAGS etc. settings
+    "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None"
+  end
+
+  def self.class name
+    #remove invalid characters and camelcase
+    name.capitalize.gsub(/[-_\s]([a-zA-Z0-9])/) { $1.upcase }
+  end
+
+  def self.factory name
+    require self.path(name)
+    return eval(self.class(name)).new(name)
+  rescue LoadError
+    raise FormulaUnavailableError.new(name)
+  end
+
+  def self.path name
+    HOMEBREW_PREFIX+'Library'+'Formula'+"#{name.downcase}.rb"
   end
 
 protected
@@ -307,56 +334,17 @@ private
     end
   end
 
-  class <<self
-    attr_reader :url, :version, :homepage, :md5, :sha1
-  end
-end
-
-# This is the meat. See the examples.
-class Formula <AbstractFormula
-  def initialize name=nil
-    super
-    @name=name
-    @version=Pathname.new(@url).version unless @version
-  end
-
-  def self.class name
-    #remove invalid characters and camelcase
-    name.capitalize.gsub(/[-_\s]([a-zA-Z0-9])/) { $1.upcase }
-  end
-
-  def self.factory name
-    require self.path(name)
-    return eval(self.class(name)).new(name)
-  rescue LoadError
-    raise FormulaUnavailableError.new(name)
-  end
-
-  def self.path name
-    HOMEBREW_PREFIX+'Library'+'Formula'+"#{name.downcase}.rb"
-  end
-
-  # we don't have a std_autotools variant because autotools is a lot less
-  # consistent and the standard parameters are more memorable
-  # really Homebrew should determine what works inside brew() then
-  # we could add --disable-dependency-tracking when it will work
-  def std_cmake_parameters
-    # The None part makes cmake use the environment's CFLAGS etc. settings
-    "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None"
-  end
-
-private
   def method_added method
     raise 'You cannot override Formula.brew' if method == 'brew'
+  end
+
+  class <<self
+    attr_reader :url, :svnurl, :version, :homepage, :md5, :sha1
   end
 end
 
 # see ack.rb for an example usage
-class ScriptFileFormula <AbstractFormula
-  def initialize name=nil
-    super
-    @name=name
-  end
+class ScriptFileFormula <Formula
   def install
     bin.install Dir['*']
   end
@@ -365,8 +353,7 @@ end
 # see flac.rb for example usage
 class GithubGistFormula <ScriptFileFormula
   def initialize name=nil
-    super
-    @name=name
     @version=File.basename(File.dirname(url))[0,6]
+    super name
   end
 end
