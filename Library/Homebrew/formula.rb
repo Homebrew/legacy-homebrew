@@ -68,6 +68,7 @@ class Formula
   def sbin; prefix+'sbin' end
   def doc; prefix+'share'+'doc'+name end
   def lib; prefix+'lib' end
+  def libexec; prefix+'libexec' end
   def man; prefix+'share'+'man' end
   def man1; man+'man1' end
   def info; prefix+'share'+'info' end
