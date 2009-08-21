@@ -26,7 +26,7 @@ class MockFormula <Formula
   end
 end
 
-class MostlyAbstractFormula <AbstractFormula
+class MostlyAbstractFormula <Formula
   @url=''
 end
 
@@ -56,6 +56,10 @@ end
 
 class TestBallInvalidMd5 <TestBall
   @md5='61aa838a9e4050d1876a295a9e62cbe6'
+end
+
+class TestBadVersion <TestBall
+  @version="versions can't have spaces"
 end
 
 class TestBallOverrideBrew <Formula
@@ -192,6 +196,10 @@ class BeerTasting <Test::Unit::TestCase
     end
   end
   
+  def test_bad_version
+    assert_raises(RuntimeError) {f=TestBadVersion.new}
+  end
+  
   def test_install
     f=TestBall.new
     
@@ -267,8 +275,8 @@ class BeerTasting <Test::Unit::TestCase
   end
   
   def test_abstract_formula
-    f=MostlyAbstractFormula.new
-    assert_nil f.name
+    f=MostlyAbstractFormula.new ''
+    assert_equal '', f.name
     assert_raises(RuntimeError) { f.prefix }
     nostdout { assert_raises(ExecutionError) { f.brew } }
   end
