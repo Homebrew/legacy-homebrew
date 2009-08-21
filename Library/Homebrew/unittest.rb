@@ -2,6 +2,7 @@
 $:.unshift File.dirname(__FILE__)
 require 'pathname+yeast'
 require 'formula'
+require 'download_strategy'
 require 'keg'
 require 'utils'
 

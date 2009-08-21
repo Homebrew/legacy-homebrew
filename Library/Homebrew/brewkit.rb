@@ -17,6 +17,7 @@
 #
 require 'osx/cocoa' # to get number of cores
 require 'formula'
+require 'download_strategy'
 require 'hw.model'
 
 ENV['MACOSX_DEPLOYMENT_TARGET']='10.5'
