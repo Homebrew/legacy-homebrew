@@ -33,7 +33,8 @@ class Pathname
   def install src
     if src.is_a? Array
       src.collect {|src| install src }
-    elsif File.exist? src
+    else
+      raise "#{src} does not exist" unless File.exist? src
       mkpath
       if File.symlink? src
         # we use the BSD mv command because FileUtils copies the target and
