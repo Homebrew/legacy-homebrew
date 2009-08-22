@@ -32,14 +32,14 @@ end
 # Derive and define at least @url, see Library/Formula for examples
 class Formula
   # Homebrew determines the name
-  def initialize name=nil
+  def initialize name='__UNKNOWN__'
     @url=self.class.url unless @url
     raise if @url.nil?
     @name=name
-    raise if @name =~ /\s/
+    validate_variable :name
     @version=self.class.version unless @version
     @version=Pathname.new(@url).version unless @version
-    raise if @version =~ /\s/
+    validate_variable :version if @version
     @homepage=self.class.homepage unless @homepage
     @md5=self.class.md5 unless @md5
     @sha1=self.class.sha1 unless @sha1
@@ -53,8 +53,8 @@ class Formula
   end
 
   def prefix
-    raise "Invalid @name" if @name.nil? or @name.empty?
-    raise "Invalid @version" if @version.nil? or @version.empty?
+    validate_variable :name
+    validate_variable :version
     HOMEBREW_CELLAR+@name+@version
   end
 
@@ -100,6 +100,9 @@ class Formula
 
   # yields self with current working directory set to the uncompressed tarball
   def brew
+    validate_variable :name
+    validate_variable :version
+    
     stage do
       begin
         patch
@@ -236,6 +239,11 @@ private
       curl *patches+ff.collect {|f|"-o#{f}"}
       ff.each {|f| safe_system 'patch', '-p0', '-i', f}
     end
+  end
+
+  def validate_variable name
+    v=eval("@#{name}")
+    raise "Invalid @#{name}" if v.nil? or v.empty? or v =~ /\s/
   end
 
   def method_added method
