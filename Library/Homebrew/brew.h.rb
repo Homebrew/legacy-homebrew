@@ -188,12 +188,24 @@ end
 
 def diy
   path=Pathname.getwd
-  version=path.version
-  path.basename.to_s =~ /(.*?)-?#{version}/
-  name=$1
 
-  raise "Couldn't determine version, try --set-version" if version.nil? or version.empty?
-  raise "Couldn't determine name, try --set-name" if name.nil? or name.empty?
+  if ARGV.include? '--set-version'
+    version=ARGV.next
+  else
+    version=path.version
+    raise "Couldn't determine version, try --set-version" if version.nil? or version.empty?
+  end
+  
+  if ARGV.include? '--set-name'
+    name=ARGV.next
+  else
+    path.basename.to_s =~ /(.*?)-?#{version}/
+    if $1.nil? or $1.empty?
+      name=path.basename
+    else
+      name=$1
+    end
+  end
 
   prefix=HOMEBREW_CELLAR+name+version
 
