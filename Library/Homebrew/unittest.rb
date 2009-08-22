@@ -281,10 +281,10 @@ class BeerTasting <Test::Unit::TestCase
   end
   
   def test_abstract_formula
-    f=MostlyAbstractFormula.new ''
-    assert_equal '', f.name
+    f=MostlyAbstractFormula.new
+    assert_equal '__UNKNOWN__', f.name
     assert_raises(RuntimeError) { f.prefix }
-    nostdout { assert_raises(ExecutionError) { f.brew } }
+    nostdout { assert_raises(RuntimeError) { f.brew } }
   end
 
   def test_zip
