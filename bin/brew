@@ -115,7 +115,7 @@ begin
         exec "mate", *ARGV.named.collect {|name| make name}
       end
 
-    when 'diy'
+    when 'diy', 'configure'
       puts diy
 
     when 'info', 'abv'
