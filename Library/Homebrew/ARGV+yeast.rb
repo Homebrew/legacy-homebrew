@@ -83,6 +83,9 @@ Commands:
   info [formula] [--github]
   make url
   prune
+ 
+To visit the Homebrew homepage type:
+  brew home
   EOS
   end
   
