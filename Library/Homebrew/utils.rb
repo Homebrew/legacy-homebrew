@@ -43,11 +43,9 @@ end
 
 def interactive_shell
   pid=fork
-  if pid.nil?
-    exec ENV['SHELL']
-  else
-    Process.wait pid
-  end
+  exec ENV['SHELL'] if pid.nil?
+  Process.wait pid
+  raise SystemExit, "Aborting due to non-zero exit status" if $? != 0
 end
 
 # Kernel.system but with exceptions
