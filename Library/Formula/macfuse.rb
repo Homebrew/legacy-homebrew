@@ -58,7 +58,7 @@ class Macfuse <Formula
 
             ENV['CFLAGS']=save
 
-            Dir["#{lib}/libulockmgr*"].each {|f| File.unlink f}
+            (Dir["#{lib}/*ulockmgr*"]+Dir["#{include}/*ulockmgr*"]).each {|f| File.unlink f}
           end
         end
       end

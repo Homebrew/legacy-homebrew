@@ -1,6 +1,6 @@
 require 'brewkit'
 
-class SshfsFuse <Formula
+class Sshfs <Formula
   @url='http://downloads.sourceforge.net/project/fuse/sshfs-fuse/2.2/sshfs-fuse-2.2.tar.gz'
   # This is the original project homepage, but we link to something more useful for OS X users
   #@homepage='http://fuse.sourceforge.net/sshfs.html'
@@ -16,8 +16,7 @@ class SshfsFuse <Formula
   def deps
     BinaryDep.new 'pkg-config'
     LibraryDep.new 'glib'
-    #MacFuse is not compiling via brew yet...
-    #LibraryDep.new 'macfuse'
+    LibraryDep.new 'macfuse'
   end
 
   def install
