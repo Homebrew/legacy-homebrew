@@ -45,7 +45,12 @@ begin
       end
 
     when 'ls', 'list'
-      exec "find", *ARGV.kegs+%w[-not -type d -print]
+      if ARGV.named_empty?
+        ENV['CLICOLOR']=nil
+        exec 'ls', *ARGV.options<<HOMEBREW_CELLAR
+      else
+        exec "find", *ARGV.kegs+%w[-not -type d -print]
+      end
 
     when 'edit'
       if ARGV.named_empty?
