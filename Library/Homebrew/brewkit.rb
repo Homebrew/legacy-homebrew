@@ -132,5 +132,5 @@ def inreplace(path, before, after)
 
   # TODO this sucks
   # either use 'ed', or allow regexp and use a proper ruby function
-  Kernel.system "perl", "-pi", "-e", "s/#{before}/#{after}/g", path
+  safe_system "perl", "-pi", "-e", "s/#{before}/#{after}/g", path
 end
