@@ -34,6 +34,13 @@ class Formula
   # Homebrew determines the name
   def initialize name='__UNKNOWN__'
     @url=self.class.url unless @url
+
+    @head=self.class.head unless @head
+    if @head and (not @url or ARGV.flag? '--HEAD')
+      @url=@head
+      @version='HEAD'
+    end
+
     raise if @url.nil?
     @name=name
     validate_variable :name
@@ -116,7 +123,6 @@ class Formula
         puts "Type `exit' and Homebrew will attempt to finalize the installation"
         puts "If nothing is installed to #{prefix}, then Homebrew will abort"
         interactive_shell
-        raise "Non-zero exit status, installation aborted" if $? != 0
       end
     end
   end
@@ -175,8 +181,11 @@ private
   # creates a temporary directory then yields, when the block returns it
   # recursively deletes the temporary directory
   def mktemp
-    tmp=Pathname.new `mktemp -dt #{name}-#{version}`.strip
-    raise if not tmp.directory? or $? != 0
+    # I used /tmp rather than mktemp -td because that generates a directory
+    # name with exotic characters like + in it, and these break badly written
+    # scripts that don't escape strings before trying to regexp them :(
+    tmp=Pathname.new `mktemp -d /tmp/homebrew-#{name}-#{version}-XXXX`.strip
+    raise "Couldn't create build sandbox" if not tmp.directory? or $? != 0
     begin
       wd=Dir.pwd
       Dir.chdir tmp
@@ -252,7 +261,7 @@ private
   end
 
   class <<self
-    attr_reader :url, :svnurl, :version, :homepage, :md5, :sha1
+    attr_reader :url, :version, :homepage, :md5, :sha1, :head
   end
 end
 
