@@ -103,7 +103,7 @@ class GitDownloadStrategy <AbstractDownloadStrategy
     dst=Dir.getwd
     Dir.chdir @clone do
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
-      safe_system 'git', 'checkout-index', '-af', "--prefix=#{dst}"
+      safe_system 'git', 'checkout-index', '-af', "--prefix=#{dst}/"
     end
   end
 end
