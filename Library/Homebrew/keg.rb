@@ -37,7 +37,7 @@ class Keg <Pathname
     # yeah indeed, you have to force anything you need in the main tree into
     # these dirs REMEMBER that *NOT* everything needs to be in the main tree
     link_dir('etc') {:mkpath}
-    link_dir('bin') {:link}
+    link_dir('bin') {:skip}
     link_dir('sbin') {:link}
     link_dir('lib') {|path| :mkpath if %w[pkgconfig php perl5].include? path.to_s}
     link_dir('include') {:link}
