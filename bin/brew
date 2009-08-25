@@ -6,8 +6,14 @@ require 'ARGV+yeast'
 require 'utils'
 require 'brew.h'
 
-# TODO if whoami == root then use /Library/Caches/Homebrew instead
-HOMEBREW_CACHE=Pathname.new("~/Library/Caches/Homebrew").expand_path
+if Process.uid == 0
+  # technically this is not the correct place, this cache is for *all users*
+  # so in that case, maybe we should always use it, root or not?
+  HOMEBREW_CACHE=Pathname.new("/Library/Caches/Homebrew")
+else
+  HOMEBREW_CACHE=Pathname.new("~/Library/Caches/Homebrew").expand_path
+end
+
 HOMEBREW_PREFIX=Pathname.new(__FILE__).dirname.parent.cleanpath
 HOMEBREW_CELLAR=HOMEBREW_PREFIX+'Cellar'
 HOMEBREW_VERSION='0.4'
