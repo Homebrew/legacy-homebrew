@@ -120,8 +120,10 @@ class Formula
         onoe e.inspect
         puts e.backtrace
         ohai "Rescuing build..."
-        puts "Type `exit' and Homebrew will attempt to finalize the installation"
-        puts "If nothing is installed to #{prefix}, then Homebrew will abort"
+        puts "When you exit this shell Homebrew will attempt to finalise the installation."
+        puts "If nothing is installed or the shell exits with a non-zero error code,"
+        puts "Homebrew will abort. The installation prefix is:"
+        puts prefix
         interactive_shell
       end
     end
