@@ -68,6 +68,14 @@ begin
       end
 
     when 'install'
+      if ARGV.named_empty?
+        # TODO I tried to columnise it using the 'column' utility but it uses
+        # tabs rather than spaces and the output looked wrong
+        puts "Available formulae:"
+        (HOMEBREW_PREFIX+'Library'+'Formula').children.each {|f| puts f.basename('.rb') }
+        exit 0
+      end
+      
       # we need to ensure a pristine ENV for each process or the formula
       # will start with the ENV from the previous build
       ARGV.formulae.each do |f|
