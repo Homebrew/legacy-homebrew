@@ -114,6 +114,9 @@ begin
     when 'unlink'
       ARGV.kegs.each {|keg| puts "#{keg.unlink} links removed for #{keg}"}
 
+    when 'unlink'
+      ARGV.kegs.each {|keg| puts "#{keg.unlink} links removed for #{keg}"}
+
     when 'rm', 'uninstall', 'remove'
       ARGV.kegs.each do |keg|
         puts "Uninstalling #{keg}..."
