@@ -28,6 +28,19 @@ class Keg <Pathname
     parent.rmdir_if_possible
   end
 
+  def unlink
+    n=0
+    Pathname.new(self).find do |src|
+      next if src == self
+      dst=HOMEBREW_PREFIX+src.relative_path_from(self)
+      next unless dst.symlink?
+      dst.unlink
+      n+=1
+      Find.prune if src.directory?
+    end
+    n
+  end
+
   def link
     $n=0
     $d=0
