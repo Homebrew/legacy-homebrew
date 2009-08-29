@@ -2,8 +2,8 @@ require 'brewkit'
 
 class Boost <Formula
   @homepage='http://www.boost.org'
-  @url='http://kent.dl.sourceforge.net/sourceforge/boost/boost_1_39_0.tar.bz2'
-  @md5='a17281fd88c48e0d866e1a12deecbcc0'
+  @url='http://downloads.sourceforge.net/project/boost/boost/1.40.0/boost_1_40_0.tar.bz2'
+  @md5='ec3875caeac8c52c7c129802a8483bd7'
 
   def install
     # we specify libdir too because the script is apparently broken
