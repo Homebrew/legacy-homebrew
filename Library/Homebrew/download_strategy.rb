@@ -18,14 +18,18 @@
 class AbstractDownloadStrategy
   def initialize url, name, version
     @url=url
-    @unique_token="#{name}-#{version}"
+    @unique_token="#{name}-#{version}" unless name.to_s.empty? or name == '__UNKNOWN__'
   end
 end
 
 class HttpDownloadStrategy <AbstractDownloadStrategy
   def fetch
     ohai "Downloading #{@url}"
-    @dl=HOMEBREW_CACHE+(@unique_token+ext)
+    if @unique_token
+      @dl=HOMEBREW_CACHE+(@unique_token+ext)
+    else
+      @dl=HOMEBREW_CACHE+File.basename(@url)
+    end
     unless @dl.exist?
       curl @url, '-o', @dl
     else

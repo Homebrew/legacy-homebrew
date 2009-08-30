@@ -254,8 +254,8 @@ private
   end
 
   def validate_variable name
-    v=eval("@#{name}")
-    raise "Invalid @#{name}" if v.nil? or v.empty? or v =~ /\s/
+    v=eval "@#{name}"
+    raise "Invalid @#{name}" if v.to_s.empty? or v =~ /\s/
   end
 
   def method_added method
