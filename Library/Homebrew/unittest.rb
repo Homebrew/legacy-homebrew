@@ -318,4 +318,9 @@ class BeerTasting <Test::Unit::TestCase
     d.mkpath
     assert_equal '0.1.9', d.version
   end
+  
+  def test_ruby_version_style
+    f=MockFormula.new 'ftp://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.1-p243.tar.gz'
+    assert_equal '1.9.1-p243', f.version
+  end
 end

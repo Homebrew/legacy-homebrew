@@ -104,7 +104,8 @@ class Pathname
     return $1.gsub('_', '.') if $1
 
     # eg. foobar-4.5.1-1
-    /-((\d+\.)*\d+-\d+)$/.match stem
+    # eg. ruby-1.9.1-p243
+    /-((\d+\.)*\d\.\d+-p?\d+)$/.match stem
     return $1 if $1
 
     # eg. foobar-4.5.1
