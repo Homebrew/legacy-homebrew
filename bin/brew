@@ -134,7 +134,7 @@ begin
       if ARGV.include? '--macports'
         exec "open", "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
       else
-        exec "mate", *ARGV.named.collect {|name| make name}
+        exec "mate", *ARGV.collect {|name| make name}
       end
 
     when 'diy', 'configure'
