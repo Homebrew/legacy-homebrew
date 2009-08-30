@@ -276,8 +276,8 @@ end
 
 # see flac.rb for example usage
 class GithubGistFormula <ScriptFileFormula
-  def initialize name=nil
-    @version=File.basename(File.dirname(url))[0,6]
+  def initialize name='__UNKNOWN__'
     super name
+    @version=File.basename(File.dirname(url))[0,6]
   end
 end
