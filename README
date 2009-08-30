@@ -33,6 +33,8 @@ Here's why you may prefer Homebrew to the alternatives:
 
    Homebrew will automatically open it for you to tweak with TextMate or
    $EDITOR.
+   
+   It is also trivially easy to modify and customise existing formulae.
 
 6. DIY package installation
    MacPorts doesn't support the beta version? Need an older version? Need

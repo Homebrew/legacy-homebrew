@@ -11,10 +11,6 @@ class Git <Formula
   @homepage='http://git-scm.com'
 
   def install
-    # the manuals come separately, well sort of, it's easier this way though
-    man.mkpath
-    GitManuals.new.brew { FileUtils.mv Dir['*'], man }
-
     # if these things are installed, tell git build system to not use them
     ENV['NO_FINK']='1'
     ENV['NO_DARWIN_PORTS']='1'
@@ -30,5 +26,9 @@ class Git <Formula
       (bin+fn).unlink
       (bin+fn).make_link bin+'git'
     end
+    
+    # we could build the manpages ourselves, but the build process depends
+    # on many other packages, and is somewhat crazy, this way is easier
+    GitManuals.new.brew { man.install Dir['*'] }
   end
 end
