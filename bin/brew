@@ -81,7 +81,7 @@ begin
       ARGV.formulae.each do |f|
         pid=fork
         if pid.nil?
-          exec "brew", "install-just-one", f.name, *ARGV.options
+          exec __FILE__, "install-just-one", f.name, *ARGV.options
         else
           Process.wait pid
         end
