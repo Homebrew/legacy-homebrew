@@ -3,6 +3,7 @@
 /Cellar
 /lib
 /include
+/sbin
 /share
 /etc
 !/Library/
