@@ -80,7 +80,7 @@ class Macfuse <Formula
 We seriously recommend installing the official MacFuse binary package
 available here: http://code.google.com/p/macfuse/
 
-If you still want to use Homebrew's compile you need to do additional steps
+If you still want to use Homebrew's compile you need to do additional steps.
 And you absolutely should chown the kext files to root.
     EOS
   end
