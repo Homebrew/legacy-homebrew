@@ -1,4 +1,8 @@
 #!/usr/bin/ruby
+# This software is in the public domain, furnished "as is", without technical
+# support, and with no warranty, express or implied, as to its usefulness for
+# any purpose.
+
 $:.unshift File.dirname(__FILE__)
 require 'pathname+yeast'
 require 'formula'
