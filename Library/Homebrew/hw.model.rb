@@ -21,13 +21,12 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 #  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
+
+# The output of the command is in the form of: `MacBook2,1'
+# This yields: "MacBook", 2, 1
 def hw_model_output
-  require 'fileutils'
-  HOMEBREW_CACHE.mkpath
-  exe=HOMEBREW_CACHE+'hw.model'
-  Kernel.system "gcc -Os #{File.dirname __FILE__}/hw.model.c -o #{exe}" unless exe.file?
-  /(.*)(\d+),(\d+)/ =~ `#{exe}`
-  yield $1, $2.to_i, $3.to_i
+  model=`/usr/sbin/sysctl hw.model`.match /hw.model: (\w+)(\d+),(\d+)/
+  yield model[1], model[2].to_i, model[3].to_i
 end
 
 # http://support.apple.com/kb/HT3696
@@ -35,11 +34,11 @@ end
 def hw_model
   hw_model_output do |model, major, minor|
     case model
-      when "iMac" 
-        if major <=4
+      when "iMac"
+        if major <= 4
           :core1
         else
-          $unknown_hw_model=true if major >8
+          $unknown_hw_model=true if major > 8
           :core2
         end
 
