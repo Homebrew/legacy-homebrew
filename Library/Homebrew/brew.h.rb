@@ -94,8 +94,9 @@ end
 def info name
   require 'formula'
 
-  user=`cd #{HOMEBREW_PREFIX}; git remote -v show`.scan(/github.com:(.*)\/.*fetch/).to_s
+  user=`git config --global github.user`.chomp
   user='mxcl' if user.empty?
+  # FIXME it would be nice if we didn't assume the default branch is masterbrew
   history="http://github.com/#{user}/homebrew/commits/masterbrew/Library/Formula/#{Formula.path(name).basename}"
 
   exec 'open', history if ARGV.flag? '--github'
