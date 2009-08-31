@@ -246,6 +246,12 @@ TODO
 3. Formula revisions, to allow upgrades irrespective of the underlying package
 
 
+Licensing
+=========
+Homebrew is mostly BSD licensed although some parts are public domain.
+Individual formulae are licensed according to their authors wishes.
+
+
 FAQ
 ===
 Are you excessively interested in beer?
