@@ -45,7 +45,7 @@ def make url
   cmake       end
   cmake
               def install
-  autotools     system "./configure --prefix='\#{prefix}' --disable-debug --disable-dependency-tracking"
+  autotools     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
   cmake         system "cmake . \#{cmake_std_parameters}"
                 system "make install"
               end
