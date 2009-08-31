@@ -1,8 +1,8 @@
 require 'brewkit'
 
 class Glib <Formula
-  @url='http://ftp.gnome.org/pub/gnome/sources/glib/2.20/glib-2.20.3.tar.bz2'
-  @md5='1173688c58b4b62809c83bb07a2cf71a'
+  @url='http://ftp.acc.umu.se/pub/gnome/sources/glib/2.20/glib-2.20.5.tar.bz2'
+  @md5='4c178b91d82ef80a2da3c26b772569c0'
   @homepage='http://www.gtk.org'
 
   def deps
