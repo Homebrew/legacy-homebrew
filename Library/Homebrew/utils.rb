@@ -49,7 +49,13 @@ end
 
 def interactive_shell
   pid=fork
-  exec ENV['SHELL'] if pid.nil?
+  if pid.nil?
+    # TODO make the PS1 var change pls
+    #brown="\[\033[0;33m\]"
+    #reset="\[\033[0m\]"
+    #ENV['PS1']="Homebrew-#{HOMEBREW_VERSION} #{brown}\W#{reset}\$ "
+    exec ENV['SHELL']
+  end
   Process.wait pid
   raise SystemExit, "Aborting due to non-zero exit status" if $? != 0
 end

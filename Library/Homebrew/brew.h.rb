@@ -236,11 +236,13 @@ class Cleaner
     
     [f.bin, f.sbin, f.lib].each {|d| clean_dir d}
     
-    # you can read all of this shit online nowadays, save the space
-    # info pages are shit, everyone agrees apart from Richard Stallman
+    # you can read all of this stuff online nowadays, save the space
+    # info pages are pants, everyone agrees apart from Richard Stallman
+    # feel free to ask for build options though! http://bit.ly/Homebrew
     (f.prefix+'share'+'doc').rmtree rescue nil
     (f.prefix+'share'+'info').rmtree rescue nil
     (f.prefix+'doc').rmtree rescue nil
+    (f.prefix+'docs').rmtree rescue nil
     (f.prefix+'info').rmtree rescue nil
   end
 
