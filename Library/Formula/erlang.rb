@@ -1,9 +1,17 @@
 require 'brewkit'
 
-class Erlang <Formula
+class ErlangManuals <Formula
+  @version='5.7.2'
   @homepage='http://www.erlang.org'
-  @url='http://erlang.org/download/otp_src_R13B.tar.gz'
-  @md5='6d8c256468a198458b9f08ba6aa1a384'
+  @url='http://erlang.org/download/otp_doc_man_R13B01.tar.gz'
+  @md5='fa8f96159bd9a88aa2fb9e4d79d7affe'
+end
+
+class Erlang <Formula
+  @version='5.7.2'
+  @homepage='http://www.erlang.org'
+  @url='http://erlang.org/download/otp_src_R13B01.tar.gz'
+  @md5='b3db581de6c13e1ec93d74e54a7b4231'
 
   def install
     ENV.deparallelize
@@ -16,5 +24,7 @@ class Erlang <Formula
                           "--enable-hipe"
     system "make"
     system "make install"
+    
+    ErlangManuals.new.brew { man.install Dir['man/*'] }
   end
 end
