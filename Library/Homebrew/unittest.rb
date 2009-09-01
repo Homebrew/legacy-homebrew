@@ -477,4 +477,9 @@ class BeerTasting <Test::Unit::TestCase
     assert_equal Formula.class_s('pkg-config'), 'PkgConfig'
     assert_equal Formula.class_s('foo_bar'), 'FooBar'
   end
+  
+  def test_version_style_rc
+    f=MockFormula.new 'http://ftp.mozilla.org/pub/mozilla.org/js/js-1.8.0-rc1.tar.gz'
+    assert_equal '1.8.0-rc1', f.version
+  end
 end
