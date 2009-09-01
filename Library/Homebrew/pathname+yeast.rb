@@ -53,6 +53,13 @@ class Pathname
       return self+src
     end
   end
+  
+  # we assume this pathname object is a file obviously
+  def write content
+    raise "Will not overwrite #{f}" if exist? and not ARGV.force?
+    dirname.mkpath
+    File.open(self, 'w') {|f| f.write content }
+  end
 
   def cp dst
     if file?
