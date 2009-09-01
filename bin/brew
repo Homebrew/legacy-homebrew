@@ -32,9 +32,6 @@ if `sw_vers -productVersion` =~ /10\.(\d)\.(\d+)/ and $1.to_i < 5
   abort "But thanks for your interest anyway!"
 end
 
-# Pathname often throws if CWD doesn't exist
-Dir.chdir '/' unless File.directory? ENV['PWD']
-
 
 begin
   case ARGV.shift
