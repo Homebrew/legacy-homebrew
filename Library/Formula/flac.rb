@@ -21,8 +21,6 @@ class Flac <Formula
     ENV['OBJ_FORMAT']='macho'
     system "make install"
 
-    (doc.parent+"#{@name}-#{@version}").mv doc
-
     Flac2Mp3.new.brew {|f| bin.install 'flac2mp3'}
   end
 
