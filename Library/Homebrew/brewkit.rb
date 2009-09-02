@@ -22,13 +22,26 @@
 #  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 require 'osx/cocoa' # to get number of cores
+require 'fileutils'
 require 'formula'
 require 'download_strategy'
 require 'hw.model'
 
-ENV['MACOSX_DEPLOYMENT_TARGET']='10.5'
-ENV['CFLAGS']='-O3 -w -pipe -fomit-frame-pointer -mmacosx-version-min=10.5'
-ENV['LDFLAGS']='' # to be consistent, we ignore the environment usually already
+# TODO
+# 1. Indeed, there should be an option to build 32 or 64 bit binaries
+# 2. Homebrew will not support building 32 and 64 bit lipo'd binaries, I
+#    want to mind, but the simple fact is it is difficult to force most of the
+#    build systems we support to do it.
+
+
+`sw_vers -productVersion` =~ /(10\.\d+)(\.\d+)?/
+MACOS_VERSION=$1.to_f
+
+ENV['MACOSX_DEPLOYMENT_TARGET']=MACOS_VERSION.to_s
+ENV['LDFLAGS']='' # to be consistent, we ignore the existing environment
+
+# this is first, so when you see it in output, you notice it
+cflags='-O3'
 
 # optimise all the way to eleven, references:
 # http://en.gentoo-wiki.com/wiki/Safe_Cflags/Intel
@@ -37,17 +50,21 @@ ENV['LDFLAGS']='' # to be consistent, we ignore the environment usually already
 case hw_model
   when :core1
     # Core DUO is a 32 bit chip
-    ENV['CFLAGS']="#{ENV['CFLAGS']} -march=prescott -mfpmath=sse -msse3 -mmmx"
+    # NOTE technically we can do -msse4 with gcc 4.2, but I can't test it, so
+    # haven't tried it, if you have a core1 chip, then please test and commit --mxcl
+    cflags<<" -march=prescott -mfpmath=sse -msse3 -mmmx"
   when :core2
     # Core 2 DUO is a 64 bit chip
-    # GCC 4.3 will have a -march=core2, but for now nocona is correct
-    ENV['CFLAGS']="#{ENV['CFLAGS']} -march=nocona -mfpmath=sse -msse3 -mmmx"
-    
-    # OK so we're not doing 64 bit yet... but we will with Snow Leopard
-    # -mfpmath=sse defaults to on for the x64 compiler
-    #ENV['CFLAGS']="#{ENV['CFLAGS']} -march=nocona -msse3 -mmmx -m64"
-    #ENV['LDFLAGS']="-arch x86_64"
-
+    if MACOS_VERSION >= 10.6
+      # 64 bits baby! -mfpmath=sse is automatically switched on by -m64
+      # GCC 4.3 has a -march=core2, but this is 4.2 and nocona is correct
+      cflags<<" -m64 -march=nocona -msse4 -mmmx"
+      ENV['LDFLAGS']="-arch x86_64"
+    else
+      # We don't build 64 bit before 10.6 as nothing else is 64 bit, so any
+      # libraries we build would be unusable by 32 bit software
+      cflags<<" -march=nocona -mfpmath=sse -msse3 -mmmx"      
+    end
   when :xeon
     # TODO what optimisations for xeon?
 
@@ -55,15 +72,22 @@ case hw_model
   when :dunno then abort "Sorry, Homebrew cannot determine what kind of Mac this is!"
 end
 
+# -w: keep signal to noise high
+# -fomit-frame-pointer: we are not debugging this software, we are using it
+ENV['CFLAGS']="#{cflags} -w -pipe -fomit-frame-pointer -mmacosx-version-min=#{MACOS_VERSION}"
 ENV['CXXFLAGS']=ENV['CFLAGS']
 
 # lets use gcc 4.2, it is newer and "better", at least I believe so, mail me
 # if I'm wrong
-ENV['CC']='gcc-4.2'
-ENV['CXX']='g++-4.2'
+if MACOS_VERSION==10.5
+  ENV['CC']='gcc-4.2'
+  ENV['CXX']='g++-4.2'
+end
+# compile faster
 ENV['MAKEFLAGS']="-j#{OSX::NSProcessInfo.processInfo.processorCount}"
 
 
+# /usr/local is always in the build system path
 unless HOMEBREW_PREFIX.to_s == '/usr/local'
   ENV['CPPFLAGS']="-I#{HOMEBREW_PREFIX}/include"
   ENV['LDFLAGS']="-L#{HOMEBREW_PREFIX}/lib"
@@ -76,8 +100,14 @@ module HomebrewEnvExtension
     remove 'MAKEFLAGS', /-j\d+/
   end
   def gcc_4_0_1
-    self['CC']=nil
-    self['CXX']=nil
+    case MACOS_VERSION
+      when 10.5
+        self['CC']=nil
+        self['CXX']=nil
+      when 10.6..11.0
+        self['CC']='gcc-4.0'
+        self['CXX']='g++-4.0'
+    end
   end
   def osx_10_4
     self['MACOSX_DEPLOYMENT_TARGET']=nil
@@ -89,6 +119,7 @@ module HomebrewEnvExtension
   def libxml2
     self['CXXFLAGS']=self['CFLAGS']+=' -I/usr/include/libxml2'
   end
+  # TODO rename or alias to x11
   def libpng
     append 'CPPFLAGS', '-I/usr/X11R6/include'
     append 'LDFLAGS', '-L/usr/X11R6/lib'
@@ -119,6 +150,7 @@ private
 end
 
 ENV.extend HomebrewEnvExtension
+
 
 # remove MacPorts and Fink from the PATH, this prevents issues like:
 # http://github.com/mxcl/homebrew/issues/#issue/13
