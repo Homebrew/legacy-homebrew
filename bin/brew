@@ -72,7 +72,15 @@ begin
         (HOMEBREW_PREFIX+'Library'+'Formula').children.each {|f| puts f.basename('.rb') }
         exit 0
       end
-      
+
+      if ARGV.verbose?
+        require 'brewkit'
+        ohai "Build Environment"
+        %w[CFLAGS LDFLAGS CPPFLAGS MAKEFLAGS CC CXX].each do |f|
+          puts "#{f}: #{ENV[f]}" unless ENV[f].to_s.empty?
+        end
+      end
+
       # we need to ensure a pristine ENV for each process or the formula
       # will start with the ENV from the previous build
       ARGV.formulae.each do |f|

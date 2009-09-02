@@ -351,4 +351,15 @@ class BeerTasting <Test::Unit::TestCase
       end
     end
   end
+  
+  def test_my_float_assumptions
+    # this may look ridiculous but honestly there's code in brewit that depends on 
+    # this behaviour so I wanted to be certain Ruby floating points are behaving
+    f='10.6'.to_f
+    assert_equal 10.6, f
+    assert f >= 10.6
+    assert f <= 10.6
+    assert_equal 10.5, f-0.1
+    assert_equal 10.7, f+0.1
+  end
 end
