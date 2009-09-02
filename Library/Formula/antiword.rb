@@ -8,5 +8,6 @@ class Antiword <Formula
   def install
     system 'make'
     bin.install 'antiword'
+    man1.install 'Docs/antiword.1'
   end
 end
