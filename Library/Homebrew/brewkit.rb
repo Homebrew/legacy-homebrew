@@ -99,6 +99,7 @@ module HomebrewEnvExtension
   def deparallelize
     remove 'MAKEFLAGS', /-j\d+/
   end
+  alias_method :j1, :deparallelize
   def gcc_4_0_1
     case MACOS_VERSION
       when 10.5
