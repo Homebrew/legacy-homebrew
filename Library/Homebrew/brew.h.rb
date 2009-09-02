@@ -150,16 +150,19 @@ def install f
       puts "Type `exit' to return and finalize the installation"
       puts "Install to this prefix: #{f.prefix}"
       interactive_shell
+      nil
     elsif ARGV.include? '--help'
       system './configure --help'
       exit $?
     else
       f.prefix.mkpath
+      beginning=Time.now
       f.install
       %w[README ChangeLog COPYING LICENSE COPYRIGHT AUTHORS].each do |file|
         FileUtils.mv "#{file}.txt", file rescue nil
         f.prefix.install file rescue nil
       end
+      return Time.now-beginning
     end
   end
 end
