@@ -12,6 +12,7 @@ require 'download_strategy'
 require 'keg'
 require 'utils'
 require 'brew.h'
+require 'hardware.rb'
 
 # these are defined in bin/brew, but we don't want to break our actual
 # homebrew tree, and we do want to test everything :)
@@ -332,11 +333,16 @@ class BeerTasting <Test::Unit::TestCase
     assert_equal '1.9.1-p243', f.version
   end
   
-  def test_hw_model
-    require 'hw.model.rb'
-    # this will raise if we don't recognise your mac, but that prolly 
-    # indicates something went wrong rather than we don't know
-    assert %w[core1 core2 xeon ppc].include?(hw_model.to_s)
+  # these will raise if we don't recognise your mac, but that prolly 
+  # indicates something went wrong rather than we don't know
+  def test_hardware_cpu_type
+    assert [:intel, :ppc].include?(Hardware.cpu_type)
+  end
+  
+  def test_hardware_intel_family
+    if Hardware.cpu_type == :intel
+      assert [:core, :core2, :penryn, :nehalem].include?(Hardware.intel_family)
+    end
   end
   
   def test_brew_h
