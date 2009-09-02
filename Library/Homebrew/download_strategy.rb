@@ -42,6 +42,9 @@ class HttpDownloadStrategy <AbstractDownloadStrategy
       puts "File already downloaded and cached"
     end
     return @dl # thus performs checksum verification
+  rescue Exception
+    @dl.unlink
+    raise "There was an error downloading the file:\n#{@url}"
   end
   def stage
     case `file -b #{@dl}`
