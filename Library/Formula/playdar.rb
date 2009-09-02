@@ -2,7 +2,7 @@ require 'brewkit'
 
 class Playdar <Formula
   @homepage='http://www.playdar.org'
-  @head='git://github.com/RJ/playdar.git'
+  @head='git://github.com/mxcl/playdar.git'
 
   def deps
     LibraryDep.new 'taglib'
