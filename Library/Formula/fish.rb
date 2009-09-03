@@ -15,7 +15,7 @@ class Fish <Formula
   end
 
   def caveats
-    "You will need to add #{HOMEBREW_PREFIX}/bin/fish to /etc/shells"+
+    "You will need to add #{HOMEBREW_PREFIX}/bin/fish to /etc/shells\n"+
     "Run `chsh -s #{HOMEBREW_PREFIX}/bin/fish' to make fish your default shell."
   end
 end
