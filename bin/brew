@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+# -*- coding: utf-8 -*-
 $:.unshift ENV['RUBYLIB']=File.expand_path(__FILE__+'/../../Library/Homebrew')
 require 'pathname+yeast'
 require 'ARGV+yeast'
@@ -70,8 +71,10 @@ begin
       if ARGV.named_empty?
         # TODO I tried to columnise it using the 'column' utility but it uses
         # tabs rather than spaces and the output looked wrong
-        puts "Available formulae:"
-        (HOMEBREW_PREFIX+'Library'+'Formula').children.each {|f| puts f.basename('.rb') }
+        puts "You must specify a formula. The following are available:" unless ARGV.quieter?
+        (HOMEBREW_PREFIX+'Library'+'Formula').children.sort.each do |f|
+          puts f.basename('.rb')
+        end
         exit 0
       end
 
