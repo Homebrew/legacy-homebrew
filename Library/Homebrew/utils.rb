@@ -42,9 +42,9 @@ def onoe error
 end
 
 def pretty_duration s
-  return "#{(s*1000).to_i} milliseconds" if s < 3
-  return "#{s.to_i} seconds" if s < 10*60
-  return "#{(s/60).to_i} minutes"
+  return "2 seconds" if s < 3 # avoids the plural problem ;)
+  return "#{s.to_i} seconds" if s < 120
+  return "%.1f minutes" % (s/60)
 end
 
 def interactive_shell
