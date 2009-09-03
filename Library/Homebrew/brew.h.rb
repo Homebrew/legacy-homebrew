@@ -260,7 +260,7 @@ private
       `strip #{args} #{path}`
     else
       # strip unlinks the file and recreates it, thus breaking hard links!
-      # is this expected behaviour? patch does it too… still,mktm this fixes it
+      # is this expected behaviour? patch does it too… still, this fixes it
       tmp=`mktemp -t #{path.basename}`.strip
       `strip #{args} -o #{tmp} #{path}`
       `cat #{tmp} > #{path}`
@@ -271,13 +271,13 @@ private
   def clean_file path
     perms=0444
     case `file -h #{path}`
-      when /Mach-O dynamically linked shared library/
-        strip path, '-SxX'
-      when /Mach-O [^ ]* ?executable/
-        strip path
-        perms=0544
-      when /script text executable/
-        perms=0544
+    when /Mach-O dynamically linked shared library/
+      strip path, '-SxX'
+    when /Mach-O [^ ]* ?executable/
+      strip path
+      perms=0555
+    when /script text executable/
+      perms=0555
     end
     path.chmod perms
   end
