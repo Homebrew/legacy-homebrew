@@ -58,7 +58,7 @@ class Keg <Pathname
     link_dir('etc') {:mkpath}
     link_dir('bin') {:skip}
     link_dir('sbin') {:link}
-    link_dir('lib') {|path| :mkpath if %w[pkgconfig php perl5].include? path.to_s}
+    link_dir('lib') {|path| :mkpath if %w[pkgconfig php perl5 perl5/site_perl].include? path.to_s}
     link_dir('include') {:link}
     link_dir('share') {|path| :mkpath if mkpaths.include? path.to_s}
 
