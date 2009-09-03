@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
 $:.unshift ENV['RUBYLIB']=File.expand_path(__FILE__+'/../../Library/Homebrew')
-
 require 'pathname+yeast'
 require 'ARGV+yeast'
 require 'utils'
+require 'hardware'
 require 'brew.h'
 
 if Process.uid == 0
@@ -20,16 +20,18 @@ HOMEBREW_VERSION='0.4'
 HOMEBREW_WWW='http://bit.ly/Homebrew'
 HOMEBREW_USER_AGENT="Homebrew #{HOMEBREW_VERSION} (Ruby #{VERSION}; Mac OS X 10.5 Leopard)"
 
-if %w[/ /usr].include? HOMEBREW_PREFIX.to_s then abort <<-troba
-You have placed Homebrew at the prefix: #{HOMEBREW_PREFIX}
-This is not currently supported. Voice your support for this feature at:
-#{HOMEBREW_WWW}
-troba
+if %w[/ /usr].include? HOMEBREW_PREFIX.to_s then abort <<-EOS
+  You have placed Homebrew at the prefix: #{HOMEBREW_PREFIX}
+  This is not currently supported. Voice your support for this feature at:
+  #{HOMEBREW_WWW}
+  EOS
 end
-
 if `sw_vers -productVersion` =~ /10\.(\d)\.(\d+)/ and $1.to_i < 5
   onoe "Homebrew requires Leopard or higher"
   abort "But thanks for your interest anyway!"
+end
+if Hardware.cpu_type == :ppc or Hardware.cpu_type == :dunno
+  abort "Sorry, Homebrew does not support your computer's CPU architecture."
 end
 
 

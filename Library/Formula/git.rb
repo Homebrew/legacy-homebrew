@@ -15,7 +15,7 @@ class Git <Formula
     ENV['NO_FINK']='1'
     ENV['NO_DARWIN_PORTS']='1'
 
-    system "./configure --prefix='#{prefix}' --disable-debug"
+    system "./configure --prefix=#{prefix}"
     system "make install"
 
     # these files are exact copies of the git binary, so like the contents
@@ -26,7 +26,7 @@ class Git <Formula
       (bin+fn).unlink
       (bin+fn).make_link bin+'git'
     end
-    
+
     # we could build the manpages ourselves, but the build process depends
     # on many other packages, and is somewhat crazy, this way is easier
     GitManuals.new.brew { man.install Dir['*'] }

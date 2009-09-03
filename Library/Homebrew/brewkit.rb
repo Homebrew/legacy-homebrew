@@ -29,49 +29,55 @@ require 'hardware'
 # TODO
 # 1. Indeed, there should be an option to build 32 or 64 bit binaries
 # 2. Homebrew will not support building 32 and 64 bit lipo'd binaries, I
-#    want to mind, but the simple fact is it is difficult to force most of the
+#    want to, but the simple fact is it is difficult to force most of the
 #    build systems we support to do it.
 
 
 `/usr/bin/sw_vers -productVersion` =~ /(10\.\d+)(\.\d+)?/
 MACOS_VERSION=$1.to_f
+ENV['MACOSX_DEPLOYMENT_TARGET']=$1
 
-ENV['MACOSX_DEPLOYMENT_TARGET']=MACOS_VERSION.to_s
-ENV['LDFLAGS']='' # to be consistent, we ignore the existing environment
+cflags=%w[-O3]
 
-# this is first, so when you see it in output, you notice it
-cflags='-O3'
-
+# optimise all the way to eleven, references:
+# http://en.gentoo-wiki.com/wiki/Safe_Cflags/Intel
+# http://forums.mozillazine.org/viewtopic.php?f=12&t=577299
+# http://gcc.gnu.org/onlinedocs/gcc-4.2.1/gcc/i386-and-x86_002d64-Options.html
 if MACOS_VERSION >= 10.6
-  if Hardware.is_64bit?
-    # 64 bits baby!
-    cflags<<" -m64"
-    ENV['LDFLAGS']="-arch x86_64"
+  case Hardware.intel_family
+  when :penryn
+    cflags<<'-march=core2'<<'-msse4.1'
+  when :core2
+    cflags<<"-march=core2"<<'-msse4'
+  when :core1
+    cflags<<"-march=prescott"<<'-msse3'
   end
+  ENV['LDFLAGS']="-arch x86_64"
+  cflags<<'-m64'<<'-mmmx'
 else
-  # GCC 4.2.1 is smart and will figure out the right compile flags
-  # http://gcc.gnu.org/onlinedocs/gcc-4.2.1/gcc/i386-and-x86_002d64-Options.html
-  cflags<<"-march=native"
-end
-
-case Hardware.cpu_type
-when :ppc   then abort "Sorry, Homebrew does not support PowerPC architectures"
-when :dunno then abort "Sorry, Homebrew cannot determine what kind of Mac this is!"
+  case Hardware.intel_family
+  when :penryn
+    cflags<<"-march=nocona"<<'-msse4.1'
+  when :core2
+    cflags<<"-march=nocona"<<'-msse4'
+  when :core1
+    cflags<<"-march=prescott"<<'-msse3'
+  end
+  # to be consistent with cflags, we ignore the existing environment
+  ENV['LDFLAGS']=""
+  cflags<<'-mmmx'<<"-mfpmath=sse"
+  
+  # gcc 4.0 is the default on Leopard
+  ENV['CC']='gcc-4.2'
+  ENV['CXX']='g++-4.2'
 end
 
 # -w: keep signal to noise high
 # -fomit-frame-pointer: we are not debugging this software, we are using it
-ENV['CFLAGS']="#{cflags} -w -pipe -fomit-frame-pointer -mmacosx-version-min=#{MACOS_VERSION}"
-ENV['CXXFLAGS']=ENV['CFLAGS']
+ENV['CFLAGS']=ENV['CXXFLAGS']="#{cflags*' '} -w -pipe -fomit-frame-pointer -mmacosx-version-min=#{MACOS_VERSION}"
 
-# lets use gcc 4.2, Xcode does after all
-if MACOS_VERSION==10.5
-  ENV['CC']='gcc-4.2'
-  ENV['CXX']='g++-4.2'
-end
 # compile faster
 ENV['MAKEFLAGS']="-j#{Hardware.processor_count}"
-
 
 # /usr/local is always in the build system path
 unless HOMEBREW_PREFIX.to_s == '/usr/local'
@@ -88,23 +94,14 @@ module HomebrewEnvExtension
   alias_method :j1, :deparallelize
   def gcc_4_0_1
     case MACOS_VERSION
-      when 10.5
-        self['CC']=nil
-        self['CXX']=nil
-      when 10.6..11.0
-        self['CC']='gcc-4.0'
-        self['CXX']='g++-4.0'
+    when 10.5
+      self['CC']=nil
+      self['CXX']=nil
+    when 10.6..11.0
+      self['CC']='gcc-4.0'
+      self['CXX']='g++-4.0'
+      remove_from_cflags '-march=core2' # we *should* add back in stuff but meh for now
     end
-    
-    # argh, we have to figure out the compile options ourselves and get
-    # rid of -march=native, so we optimise all the way to eleven, references:
-    # http://en.gentoo-wiki.com/wiki/Safe_Cflags/Intel
-    # http://forums.mozillazine.org/viewtopic.php?f=12&t=577299
-    # http://gcc.gnu.org/onlinedocs/gcc-4.2.1/gcc/i386-and-x86_002d64-Options.html
-    remove_from_cflags '-march=native'
-    append_to_cflags Hardware.gcc_march
-    append_to_cflags Hardware.gcc_msse
-    append_to_cflags Hardware.gcc_mmx
   end
   def osx_10_4
     self['MACOSX_DEPLOYMENT_TARGET']=nil

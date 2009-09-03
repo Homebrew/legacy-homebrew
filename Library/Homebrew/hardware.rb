@@ -60,41 +60,6 @@ class Hardware
     @@processor_count ||= `/usr/sbin/sysctl -n hw.ncpu`.to_i
   end
 
-  def self.gcc_march # what to pass to gcc
-    @@gcc_march ||= if self.cpu_type == :intel
-      case self.intel_family
-      when :core
-        " -march=prescott"
-      when :core2, :penryn, :nehalem
-        # GCC 4.3 has a -march=core2, but this isn't 4.3 and nocona is correct
-        " -march=nocona"
-      end
-    else
-      ""
-    end
-  end
-
-  def self.gcc_msse # what to pass to gcc
-    # avoid sse4 for now in case it blows up
-    @@gcc_msse ||= if sysctl_bool("hw.optional.sse3")
-      " -msse3 -mfpmath=sse"
-    else
-      ""
-    end
-  end
-
-  def self.gcc_mmmx # what to pass to gcc
-    @@gcc_mmmx ||= if sysctl_bool("hw.optional.mmx")
-      " -mmmx"
-    else
-      ""
-    end
-  end
-
-  def self.is_64bit?
-    @@is_64bit ||= sysctl_bool("hw.cpu64bit_capable")
-  end
-
 protected
   def self.sysctl_bool(property)
     result = nil
