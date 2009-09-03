@@ -34,7 +34,7 @@ end
 
 # shows a warning in delicious pink
 def opoo warning
-  puts "\033[1;35m==>\033[0;0;1m Warning\033[0;0m: #{warning}"
+  puts "\033[1;35m==>\033[0;0;1m Warning!\033[0;0m #{warning}"
 end
 
 def onoe error

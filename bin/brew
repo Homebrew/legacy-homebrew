@@ -93,35 +93,60 @@ begin
         raise "We cannot find a c compiler, have you installed the latest Xcode?"
       end
 
-      # we need to ensure a pristine ENV for each process or the formula
-      # will start with the ENV from the previous build
-      ARGV.formulae.each do |f|
-        pid=fork
-        if pid.nil?
-          exec __FILE__, "install-just-one", f.name, *ARGV.options
-        else
-          Process.wait pid
+      require 'beer_events'
+      
+      watch_out_for_spill do
+        ARGV.formulae.each do |f|
+          if f.installed? and not ARGV.force?
+            message = "Formula already installed: #{f.prefix}"
+            if ARGV.formulae.count > 1
+              opoo message
+            else
+              puts message # if only one is being installed a warning looks severe
+            end
+            next
+          end
+
+          # we need to ensure a pristine ENV for each process or the formula
+          # will start with the ENV from the previous build
+          pid=fork
+          if pid.nil?
+            exec __FILE__, "install-just-one", f.name, *ARGV.options
+          else
+            Process.wait pid
+          end
+          #FIXME I don't think $? represents the exit code from the child fork…
+          exit! $? if $? != 0 # exception in other brew will be visible on screen
         end
-        #FIXME I don't think $? represents the exit code from the child fork…
-        exit! $? if $? != 0 # exception in other brew will be visible on screen
       end
 
     # this is an internal option, don't expose it to the user
     when 'install-just-one'
       require 'keg'
+
       f=ARGV.formulae.shift
-      raise "#{f.name} is already installed" if f.installed? unless ARGV.force?
+
       begin
         build_time=install f
         ohai "Caveats", f.caveats, ''
-        ohai 'Finishing up'
+        ohai 'Finishing up' if ARGV.verbose?
         clean f
         raise "Nothing was installed to #{f.prefix}" unless f.installed?
-        Keg.new(f.prefix).link
       rescue Exception
         f.prefix.rmtree if f.prefix.directory?
         raise
       end
+
+      begin
+        Keg.new(f.prefix).link
+      rescue Exception
+        onoe "The linking step did not complete successfully"
+        puts "The package built, but is not symlinked into #{HOMEBREW_PREFIX}"
+        puts "You can try again using `brew link #{f.name}'"
+        ohai "Summary" unless ARGV.verbose?
+      end
+
+      ohai "Summary" if ARGV.verbose?
       print "#{f.prefix}: #{f.prefix.abv}"
       print ", built in #{pretty_duration build_time}" if build_time
       puts
@@ -143,7 +168,10 @@ begin
       prune
 
     when 'up', 'update'
-      puts "Reserved command"
+      puts "You can't yet update :( But you can try:"
+      puts "    git pull"
+      puts "    brew rm foo"
+      puts "    brew install foo"
 
     when 'prune'
       prune
