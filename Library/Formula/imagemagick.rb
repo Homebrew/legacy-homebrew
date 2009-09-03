@@ -96,6 +96,6 @@ class Imagemagick <Formula
   end
 
   def caveats
-    "This package is a bit of a mess, lots of components don't get compiled."
+    "I'm not a heavy user of ImageMagick, so please check everything is installed."
   end
 end
