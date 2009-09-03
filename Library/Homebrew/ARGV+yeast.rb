@@ -64,6 +64,9 @@ module HomebrewArgvExtension
   def debug?
     flag? '--debug' or ENV['HOMEBREW_DEBUG']
   end
+  def quieter?
+    flag? '--quieter'
+  end
 
   def flag? flag
     options.each do |arg|
