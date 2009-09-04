@@ -45,31 +45,34 @@ cflags=%w[-O3]
 # http://gcc.gnu.org/onlinedocs/gcc-4.2.1/gcc/i386-and-x86_002d64-Options.html
 if MACOS_VERSION >= 10.6
   case Hardware.intel_family
-  when :penryn
-    cflags<<'-march=core2'<<'-msse4.1'
-  when :core2
-    cflags<<"-march=core2"<<'-msse4'
-  when :core1
-    cflags<<"-march=prescott"<<'-msse3'
+  when :penryn, :core2
+    cflags<<"-march=core2"
+  when :core
+    cflags<<"-march=prescott"
   end
   ENV['LDFLAGS']="-arch x86_64"
-  cflags<<'-m64'<<'-mmmx'
+  cflags<<"-m64"
 else
   case Hardware.intel_family
-  when :penryn
-    cflags<<"-march=nocona"<<'-msse4.1'
-  when :core2
-    cflags<<"-march=nocona"<<'-msse4'
-  when :core1
-    cflags<<"-march=prescott"<<'-msse3'
+  when :penryn, :core2
+    cflags<<"-march=nocona"
+  when :core
+    cflags<<"-march=prescott"
   end
   # to be consistent with cflags, we ignore the existing environment
   ENV['LDFLAGS']=""
-  cflags<<'-mmmx'<<"-mfpmath=sse"
-  
+  cflags<<"-mfpmath=sse"
   # gcc 4.0 is the default on Leopard
-  ENV['CC']='gcc-4.2'
-  ENV['CXX']='g++-4.2'
+  ENV['CC']="gcc-4.2"
+  ENV['CXX']="g++-4.2"
+end
+
+cflags<<"-mmmx"
+case Hardware.intel_family
+when :penryn
+  cflags<<"-msse4.1"
+when :core2, :core
+  cflags<<"-msse3"
 end
 
 # -w: keep signal to noise high
