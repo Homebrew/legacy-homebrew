@@ -60,6 +60,10 @@ begin
         exec "find", *ARGV.kegs+%w[-not -type d -print]
       end
 
+    when 'search', '-S'
+      formulae = (HOMEBREW_PREFIX+'Library'+'Formula').children.sort.map{|f| f.basename('.rb') }
+      puts_columns formulae.grep(Regexp.new(ARGV.first || ''))
+
     when 'edit'
       if ARGV.named_empty?
         exec "mate", *Dir["#{HOMEBREW_PREFIX}/Library/*"]<<
@@ -71,12 +75,7 @@ begin
 
     when 'install'
       if ARGV.named_empty?
-        # TODO I tried to columnise it using the 'column' utility but it uses
-        # tabs rather than spaces and the output looked wrong
-        puts "You must specify a formula. The following are available:" unless ARGV.quieter?
-        (HOMEBREW_PREFIX+'Library'+'Formula').children.sort.each do |f|
-          puts f.basename('.rb')
-        end
+        puts "You must specify a formula. Search for available formulae with `brew search'."
         exit 0
       end
 
@@ -88,7 +87,7 @@ begin
           puts "#{f}: #{ENV[f]}" unless ENV[f].to_s.empty?
         end
       end
-      
+
       unless system "which #{ENV['CC'] or 'cc'} &> /dev/null" and $?.success?
         raise "We cannot find a c compiler, have you installed the latest Xcode?"
       end

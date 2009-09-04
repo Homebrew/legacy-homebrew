@@ -74,3 +74,9 @@ end
 def curl url, *args
   safe_system 'curl', '-f#LA', HOMEBREW_USER_AGENT, url, *args
 end
+
+def puts_columns items, cols = 4
+  items = items.join("\n") if items.is_a?(Array)
+  width=`stty size`.chomp.split(" ").last
+  IO.popen("pr -#{cols} -t", "w"){|io| io.write(items) }
+end
