@@ -37,6 +37,9 @@ require 'hardware'
 MACOS_VERSION=$1.to_f
 ENV['MACOSX_DEPLOYMENT_TARGET']=$1
 
+# to be consistent with cflags, we ignore the existing environment
+ENV['LDFLAGS']=""
+
 cflags=%w[-O3]
 
 # optimise all the way to eleven, references:
@@ -46,12 +49,12 @@ cflags=%w[-O3]
 if MACOS_VERSION >= 10.6
   case Hardware.intel_family
   when :penryn, :core2
-    cflags<<"-march=core2"
+    # no need to add -mfpmath when you specify -m64
+    cflags<<"-march=core2"<<'-m64'
+    ENV['LDFLAGS']="-arch x86_64"
   when :core
-    cflags<<"-march=prescott"
+    cflags<<"-march=prescott"<<"-mfpmath=sse"
   end
-  ENV['LDFLAGS']="-arch x86_64"
-  cflags<<"-m64"
 else
   case Hardware.intel_family
   when :penryn, :core2
@@ -59,8 +62,6 @@ else
   when :core
     cflags<<"-march=prescott"
   end
-  # to be consistent with cflags, we ignore the existing environment
-  ENV['LDFLAGS']=""
   cflags<<"-mfpmath=sse"
   # gcc 4.0 is the default on Leopard
   ENV['CC']="gcc-4.2"
