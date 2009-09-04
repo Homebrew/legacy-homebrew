@@ -75,8 +75,8 @@ def safe_system cmd, *args
   end 
 end
 
-def curl url, *args
-  safe_system 'curl', '-f#LA', HOMEBREW_USER_AGENT, url, *args
+def curl *args
+  safe_system 'curl', '-f#LA', HOMEBREW_USER_AGENT, *args unless args.empty?
 end
 
 def puts_columns items, cols = 4

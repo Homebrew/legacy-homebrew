@@ -114,6 +114,8 @@ class Formula
   #     :p1 =>  'http://bar.com/patch2',
   #     :p2 => ['http://moo.com/patch5', 'http://moo.com/patch6']
   #   }
+  # The final option is to return DATA, then put a diff after __END__ and you
+  # can still return a Hash with DATA as the value for a patch level key.
   def patches; [] end
   # reimplement and specify dependencies
   def deps; end
@@ -128,6 +130,8 @@ class Formula
     stage do
       begin
         patch
+        # we allow formulas to do anything they want to the Ruby process
+        # so load any deps before this point! And exit asap afterwards
         yield self
       rescue Interrupt, RuntimeError, SystemCallError => e
         raise unless ARGV.debug?
@@ -158,7 +162,13 @@ class Formula
   end
 
   def self.factory name
-    require self.path(name)
+    path = Pathname.new(name)
+    if path.absolute?
+      require name
+      name = path.stem
+    else
+      require self.path(name)
+    end
     return eval(self.class_s(name)).new(name)
   rescue LoadError
     raise FormulaUnavailableError.new(name)
@@ -242,7 +252,7 @@ private
       yield
     end
   end
-
+  
   def patch
     return if patches.empty?
 
@@ -258,17 +268,20 @@ private
     n=0
     patch_defns.each do |arg, urls|
       urls.each do |url|
-        p = {:filename => '%03d-homebrew.patch' % n+=1, :compression => false}
+        p = {:filename => '%03d-homebrew.diff' % n+=1, :compression => false}
 
-        if url =~ %r[^\w+\://]
+        if defined? DATA and url == DATA
+          pn=Pathname.new p[:filename]
+          pn.write DATA.read
+        elsif url =~ %r[^\w+\://]
           out_fn = p[:filename]
           case url
           when /\.gz$/
             p[:compression] = :gzip
-            out_fn << '.gz'
+            out_fn += '.gz'
           when /\.bz2$/
             p[:compression] = :bzip2
-            out_fn << '.bz2'
+            out_fn += '.bz2'
           end
           p[:curl_args] = [url, '-o', out_fn]
         else
@@ -281,9 +294,11 @@ private
         patch_list << p
       end
     end
+    
+    return if patch_list.empty?
 
     # downloading all at once is much more efficient, espeically for FTP
-    curl *(patch_list.collect { |p| p[:curl_args] }).flatten
+    curl *(patch_list.collect{|p| p[:curl_args]}.select{|p| p}.flatten)
 
     patch_list.each do |p|
       case p[:compression]
