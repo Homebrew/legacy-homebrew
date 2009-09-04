@@ -64,15 +64,14 @@ else
   end
   cflags<<"-mfpmath=sse"
   
-  # use gcc 4.2 if available (Xcode 3.1 and above)
-  if system "which -s gcc-4.2" and $?.success?
-    ENV['CC']="gcc-4.2"
-    ENV['CXX']="g++-4.2"
-  end
+  ENV['CC']="gcc-4.2"
+  ENV['CXX']="g++-4.2"
 end
 
 cflags<<"-mmmx"
 case Hardware.intel_family
+when :nehalem
+  cflags<<"-msse4.2"
 when :penryn
   cflags<<"-msse4.1"
 when :core2, :core
@@ -107,8 +106,10 @@ module HomebrewEnvExtension
     when 10.6..11.0
       self['CC']='gcc-4.0'
       self['CXX']='g++-4.0'
-      remove_from_cflags '-march=core2' # we *should* add back in stuff but meh for now
+      remove_from_cflags '-march=core2'
     end
+    remove_from_cflags '-msse4.1'
+    remove_from_cflags '-msse4.2'
   end
   def osx_10_4
     self['MACOSX_DEPLOYMENT_TARGET']=nil

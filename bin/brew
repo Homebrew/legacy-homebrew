@@ -34,7 +34,9 @@ end
 if Hardware.cpu_type == :ppc or Hardware.cpu_type == :dunno
   abort "Sorry, Homebrew does not support your computer's CPU architecture."
 end
-
+unless system "which gcc-4.2 &> /dev/null" and $?.success?
+  abort "Sorry, Homebrew requires gcc 4.2, which is provided by Xcode 3.1"
+end
 
 begin
   case ARGV.shift
