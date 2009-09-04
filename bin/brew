@@ -1,25 +1,9 @@
 #!/usr/bin/ruby
 # -*- coding: utf-8 -*-
-$:.unshift ENV['RUBYLIB']=File.expand_path(__FILE__+'/../../Library/Homebrew')
-require 'pathname+yeast'
-require 'ARGV+yeast'
-require 'utils'
-require 'hardware'
+ENV['RUBYLIB']=HOMEBREW_RUBYLIB=File.expand_path(__FILE__+'/../../Library/Homebrew')
+$:.unshift HOMEBREW_RUBYLIB
+require 'global'
 require 'brew.h'
-
-if Process.uid == 0
-  # technically this is not the correct place, this cache is for *all users*
-  # so in that case, maybe we should always use it, root or not?
-  HOMEBREW_CACHE=Pathname.new("/Library/Caches/Homebrew")
-else
-  HOMEBREW_CACHE=Pathname.new("~/Library/Caches/Homebrew").expand_path
-end
-
-HOMEBREW_PREFIX=(Pathname.getwd+__FILE__).dirname.parent.cleanpath
-HOMEBREW_CELLAR=HOMEBREW_PREFIX+'Cellar'
-HOMEBREW_VERSION='0.4'
-HOMEBREW_WWW='http://bit.ly/Homebrew'
-HOMEBREW_USER_AGENT="Homebrew #{HOMEBREW_VERSION} (Ruby #{VERSION}; Mac OS X 10.5 Leopard)"
 
 if %w[/ /usr].include? HOMEBREW_PREFIX.to_s then abort <<-EOS
   You have placed Homebrew at the prefix: #{HOMEBREW_PREFIX}
@@ -109,11 +93,14 @@ begin
             next
           end
 
-          # we need to ensure a pristine ENV for each process or the formula
-          # will start with the ENV from the previous build
+          # 1. formulae can modify ENV, so we must ensure that each
+          #    installation has a pristine ENV when it starts, forking now is 
+          #    the easiest way to do this
+          # 2. formulae have access to __END__ the only way to allow this is
+          #    to make the formula script the executed script
           pid=fork
           if pid.nil?
-            exec __FILE__, "install-just-one", f.name, *ARGV.options
+            exec 'ruby', '-r', "#{HOMEBREW_RUBYLIB}/install", f.path, '--', *ARGV.options
           else
             Process.wait pid
           end
@@ -122,39 +109,6 @@ begin
         end
       end
 
-    # this is an internal option, don't expose it to the user
-    when 'install-just-one'
-      require 'keg'
-
-      f=ARGV.formulae.shift
-
-      begin
-        build_time=install f
-        ohai "Caveats", f.caveats, ''
-        ohai 'Finishing up' if ARGV.verbose?
-        clean f
-        raise "Nothing was installed to #{f.prefix}" unless f.installed?
-      rescue Exception
-        if f.prefix.directory?
-          f.prefix.rmtree
-          f.prefix.parent.rmdir_if_possible
-        end
-        raise
-      end
-
-      begin
-        Keg.new(f.prefix).link
-      rescue Exception
-        onoe "The linking step did not complete successfully"
-        puts "The package built, but is not symlinked into #{HOMEBREW_PREFIX}"
-        puts "You can try again using `brew link #{f.name}'"
-        ohai "Summary" unless ARGV.verbose?
-      end
-
-      ohai "Summary" if ARGV.verbose?
-      print "#{f.prefix}: #{f.prefix.abv}"
-      print ", built in #{pretty_duration build_time}" if build_time
-      puts
 
     when 'ln', 'link'
       ARGV.kegs.each {|keg| puts "#{keg.link} links created for #{keg}"}

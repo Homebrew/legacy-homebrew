@@ -1,0 +1,78 @@
+#!/usr/bin/ruby
+require 'global'
+require 'formula'
+require 'keg'
+require 'brew.h'
+
+def install f  
+  build_time=nil
+
+  begin
+    f.brew do
+      if ARGV.flag? '--interactive'
+        ohai "Entering interactive mode"
+        puts "Type `exit' to return and finalize the installation"
+        puts "Install to this prefix: #{f.prefix}"
+        interactive_shell
+        nil
+      elsif ARGV.include? '--help'
+        system './configure --help'
+        exit $?
+      else
+        f.prefix.mkpath
+        beginning=Time.now
+        f.install
+        %w[README ChangeLog COPYING LICENSE COPYRIGHT AUTHORS].each do |file|
+          FileUtils.mv "#{file}.txt", file rescue nil
+          f.prefix.install file rescue nil
+        end
+        build_time=Time.now-beginning
+      end
+    end
+  rescue Exception
+    if f.prefix.directory?
+      f.prefix.rmtree
+      f.prefix.parent.rmdir_if_possible
+    end
+    raise
+  end
+
+  ohai "Caveats", f.caveats, ''
+  ohai 'Finishing up' if ARGV.verbose?
+  
+  begin
+    clean f
+  rescue Exception => e
+    opoo "The cleaning step did not complete successfully"
+    puts "Still, the installation was successful, so we will link it into your prefix"
+    ohai e, e.inspect if ARGV.debug?
+  end
+
+  raise "Nothing was installed to #{f.prefix}" unless f.installed?
+
+  begin
+    Keg.new(f.prefix).link
+  rescue Exception
+    onoe "The linking step did not complete successfully"
+    puts "The package built, but is not symlinked into #{HOMEBREW_PREFIX}"
+    puts "You can try again using `brew link #{f.name}'"
+    ohai e, e.inspect if ARGV.debug?
+    ohai "Summary"
+  else
+    ohai "Summary" if ARGV.verbose?
+  end
+
+  print "#{f.prefix}: #{f.prefix.abv}"
+  print ", built in #{pretty_duration build_time}" if build_time
+  puts
+
+rescue Exception => e
+  #TODO propogate exception back to brew script
+  onoe e
+  puts e.backtrace
+end
+
+
+# I like this little at all, but see no alternative seeing as the formula
+# rb file has to be the running script to allow it to use __END__ and DATA
+at_exit { install(Formula.factory($0)) }

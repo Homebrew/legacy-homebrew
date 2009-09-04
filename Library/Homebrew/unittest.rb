@@ -14,7 +14,7 @@ require 'utils'
 require 'brew.h'
 require 'hardware.rb'
 
-# these are defined in bin/brew, but we don't want to break our actual
+# these are defined in global.rb, but we don't want to break our actual
 # homebrew tree, and we do want to test everything :)
 HOMEBREW_PREFIX=Pathname.new '/tmp/testbrew/prefix'
 HOMEBREW_CACHE=HOMEBREW_PREFIX.parent+"cache"
