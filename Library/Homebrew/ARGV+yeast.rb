@@ -45,7 +45,7 @@ module HomebrewArgvExtension
       Keg.new d.children[0]
     end
   end
-  
+
   # self documenting perhaps?
   def include? arg
     @n=index arg
@@ -75,7 +75,7 @@ module HomebrewArgvExtension
     end
     return false
   end
-  
+
   def usage
     <<-EOS
 Usage: brew command [formula] ...
@@ -88,15 +88,16 @@ Commands:
   list formula ...
   link formula ...
   home formula ...
+  available [formula or regex]
   info [formula] [--github]
   make url
   prune
- 
+
 To visit the Homebrew homepage type:
   brew home
   EOS
   end
-  
+
 private
   def _named
     @named ||= reject{|arg| arg[0..0] == '-'}.collect{|arg| arg.downcase}.uniq
