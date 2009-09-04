@@ -37,7 +37,7 @@ require 'hardware'
 MACOS_VERSION=$1.to_f
 ENV['MACOSX_DEPLOYMENT_TARGET']=$1
 
-# to be consistent with cflags, we ignore the existing environment
+# ignore existing build vars, thus we should have less bugs to deal with
 ENV['LDFLAGS']=""
 
 cflags=%w[-O3]
@@ -63,9 +63,12 @@ else
     cflags<<"-march=prescott"
   end
   cflags<<"-mfpmath=sse"
-  # gcc 4.0 is the default on Leopard
-  ENV['CC']="gcc-4.2"
-  ENV['CXX']="g++-4.2"
+  
+  # use gcc 4.2 if available (Xcode 3.1 and above)
+  if system "which -s gcc-4.2" and $?.success?
+    ENV['CC']="gcc-4.2"
+    ENV['CXX']="g++-4.2"
+  end
 end
 
 cflags<<"-mmmx"
