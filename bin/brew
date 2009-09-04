@@ -75,12 +75,17 @@ begin
         exit 0
       end
 
+      require 'brewkit'
+
       if ARGV.verbose?
-        require 'brewkit'
         ohai "Build Environment"
         %w[CFLAGS LDFLAGS CPPFLAGS MAKEFLAGS CC CXX].each do |f|
           puts "#{f}: #{ENV[f]}" unless ENV[f].to_s.empty?
         end
+      end
+      
+      unless system "which #{ENV['CC'] or 'cc'} &> /dev/null" and $?.success?
+        raise "We cannot find a c compiler, have you installed the latest Xcode?"
       end
 
       # we need to ensure a pristine ENV for each process or the formula
