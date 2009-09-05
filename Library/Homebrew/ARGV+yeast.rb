@@ -80,15 +80,15 @@ module HomebrewArgvExtension
     <<-EOS
 Usage: brew command [formula] ...
 Usage: brew [--prefix] [--cache] [--version]
-Usage: brew [--verbose]
+Usage: brew [--verbose|-v]
 
 Commands:
-  install formula ... [--debug] [--interactive]
+  install formula ... [--debug|-d] [--interactive|-i]
   remove formula ...
-  list formula ...
+  search [regex]
+  list [formula] ...
   link formula ...
   home formula ...
-  available [formula or regex]
   info [formula] [--github]
   make url
   prune
