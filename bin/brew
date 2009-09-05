@@ -210,7 +210,10 @@ rescue UsageError
 rescue SystemExit
   ohai "Kernel.exit" if ARGV.verbose?
 rescue Interrupt => e
-  puts # seemingly a newline is typical
+  # puts # seemingly a newline is typical
+  # Above is now commented out because the system() call forks and then forks
+  # again, so there are two of "us" so we get two exceptions raising and thus
+  # two newlines, which buggers up the shell. FIXME!
   exit 130
 rescue SystemCallError, RuntimeError => e
   if ARGV.debug?
