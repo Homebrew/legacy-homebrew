@@ -1,9 +1,7 @@
 # This script contains bash completions for brew.
+#
 # To use, edit your .bashrc and add the line:
 #   source `brew --prefix`/Library/Contributions/brew_bash_completion.sh
-#
-# Assuming you have brew installed in /usr/local, then you'll want:
-#   source /usr/local/Library/Contributions/brew_bash_completion.sh
 
 _brew_to_completion()
 {
