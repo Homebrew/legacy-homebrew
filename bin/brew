@@ -34,7 +34,7 @@ end
 if Hardware.cpu_type == :ppc or Hardware.cpu_type == :dunno
   abort "Sorry, Homebrew does not support your computer's CPU architecture."
 end
-unless system "which gcc-4.2 &> /dev/null" and $?.success?
+unless system "which -s gcc-4.2" and $?.success?
   abort "Sorry, Homebrew requires gcc 4.2, which is provided by Xcode 3.1"
 end
 
@@ -66,11 +66,14 @@ begin
 
     when 'edit'
       if ARGV.named_empty?
-        exec "mate", *Dir["#{HOMEBREW_PREFIX}/Library/*"]<<
+        # EDITOR isn't a good fit here, we need a GUI client that actually has
+        # a UI for projects, so apologies if this wasn't what you expected,
+        # please improve it! :)
+        exec 'mate', *Dir["#{HOMEBREW_PREFIX}/Library/*"]<<
                           "#{HOMEBREW_PREFIX}/bin/brew"<<
                           "#{HOMEBREW_PREFIX}/README"
       else
-        exec "mate", *ARGV.formulae.collect {|f| f.path}
+        exec_editor *ARGV.formulae.collect {|f| f.path}
       end
 
     when 'install'
@@ -179,7 +182,7 @@ begin
       if ARGV.include? '--macports'
         exec "open", "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
       else
-        exec "mate", *ARGV.collect {|name| make name}
+        exec_editor *ARGV.collect {|name| make name}
       end
 
     when 'diy', 'configure'
