@@ -25,6 +25,7 @@
 def ohai title, *args
   return if args.length > 0 and args[0].nil?
   n=`tput cols`.strip.to_i-4
+  n=title.length if ARGV.verbose?
   puts "\033[0;34m==>\033[0;0;1m #{title[0,n]}\033[0;0m"
   args.each do |arg|
     return if arg.nil?
