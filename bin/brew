@@ -135,7 +135,10 @@ begin
         clean f
         raise "Nothing was installed to #{f.prefix}" unless f.installed?
       rescue Exception
-        f.prefix.rmtree if f.prefix.directory?
+        if f.prefix.directory?
+          f.prefix.rmtree
+          f.prefix.parent.rmdir_if_possible
+        end
         raise
       end
 
