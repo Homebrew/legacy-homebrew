@@ -80,3 +80,15 @@ def puts_columns items, cols = 4
   width=`stty size`.chomp.split(" ").last
   IO.popen("pr -#{cols} -t", "w"){|io| io.write(items) }
 end
+
+def exec_editor *args
+  editor=ENV['EDITOR']
+  if editor.nil?
+    if system "which -s mate" and $?.success?
+      editor='mate'
+    else
+      editor='vim'
+    end
+  end
+  exec editor, *args
+end
