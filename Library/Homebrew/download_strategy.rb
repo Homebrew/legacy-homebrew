@@ -37,14 +37,16 @@ class HttpDownloadStrategy <AbstractDownloadStrategy
       @dl=HOMEBREW_CACHE+File.basename(@url)
     end
     unless @dl.exist?
-      curl @url, '-o', @dl
+      begin
+        curl @url, '-o', @dl
+      rescue
+        @dl.unlink
+        raise
+      end
     else
       puts "File already downloaded and cached"
     end
     return @dl # thus performs checksum verification
-  rescue Exception
-    @dl.unlink
-    raise "There was an error downloading the file:\n#{@url}"
   end
   def stage
     case `file -b #{@dl}`
