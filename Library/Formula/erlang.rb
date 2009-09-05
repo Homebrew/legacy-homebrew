@@ -2,8 +2,8 @@ require 'brewkit'
 
 class ErlangManuals <Formula
   @homepage='http://www.erlang.org'
-  @url='http://erlang.org/download/otp_doc_man_R13B01.tar.gz'
-  @md5='fa8f96159bd9a88aa2fb9e4d79d7affe'
+  @url='http://erlang.org/download/snapshots/otp_man_R13B02_2009-09-04_18.tar.gz'
+  @md5='853d01156d49f16b30ead8e0145f45ca'
 end
 
 class ErlangHtmlDocs <Formula
@@ -14,8 +14,8 @@ end
 
 class Erlang <Formula
   @homepage='http://www.erlang.org'
-  @url='http://erlang.org/download/otp_src_R13B01.tar.gz'
-  @md5='b3db581de6c13e1ec93d74e54a7b4231'
+  @url='http://erlang.org/download/otp_src_R13B02.tar.gz'
+  @md5='80048e589272db810f5d536f47050ab8'
 
   def deps
     LibraryDep.new 'icu4c'
@@ -46,12 +46,17 @@ class Erlang <Formula
                           "--enable-dynamic-ssl-lib",
                           "--enable-smp-support",
                           "--enable-hipe"]
-    config_flags << "--enable-darwin-64bit" if Hardware.intel_family == :core2 and MACOS_VERSION == 10.6
+
+    if Hardware.intel_family == :core2 and MACOS_VERSION == 10.6
+      config_flags << "--enable-darwin-64bit" 
+      config_flags << "--enable-m64-build"
+    end
 
     system "./configure", *config_flags
     system "make"
     system "make install"
 
     ErlangManuals.new.brew { man.install Dir['man/*'] }
+    ErlangHtmlDocs.new.brew { doc.install }
   end
 end
