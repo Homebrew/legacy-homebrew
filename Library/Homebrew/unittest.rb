@@ -105,6 +105,14 @@ def nostdout
   end
 end
 
+module ExtendArgvPlusYeast
+  def stick_an_arg_in_thar
+    @named=nil
+    unshift 'foo'
+  end
+end
+ARGV.extend ExtendArgvPlusYeast
+
 
 class BeerTasting <Test::Unit::TestCase
   def test_version_all_dots
@@ -316,7 +324,7 @@ class BeerTasting <Test::Unit::TestCase
     
     (HOMEBREW_CELLAR+'foo'+'0.1').mkpath
     
-    ARGV.unshift 'foo'
+    ARGV.stick_an_arg_in_thar
     assert_equal 1, ARGV.named.length
     assert_equal 1, ARGV.kegs.length
     assert_raises(FormulaUnavailableError) { ARGV.formulae }
