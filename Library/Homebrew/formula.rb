@@ -97,11 +97,11 @@ class Formula
   # reimplement if we don't autodetect the download strategy you require
   def download_strategy
     case url
-      when %r[^svn://] then SubversionDownloadStrategy
-      when %r[^git://] then GitDownloadStrategy
-      when %r[^http://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
-      when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
-      else HttpDownloadStrategy
+    when %r[^svn://] then SubversionDownloadStrategy
+    when %r[^git://] then GitDownloadStrategy
+    when %r[^http://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
+    when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
+    else HttpDownloadStrategy
     end
   end
   # tell the user about any caveats regarding this package
