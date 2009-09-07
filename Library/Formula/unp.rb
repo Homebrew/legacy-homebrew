@@ -6,7 +6,7 @@ class Unp <Formula
   @md5='ecea662bd7e7efe7f7e2213bf21d9646'
 
  def deps
-   BinaryDep.new 'p7zip'
+   'p7zip'
  end
 
   def install

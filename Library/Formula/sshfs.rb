@@ -14,9 +14,7 @@ class Sshfs <Formula
   end
 
   def deps
-    BinaryDep.new 'pkg-config'
-    LibraryDep.new 'glib'
-    LibraryDep.new 'macfuse'
+    %w[pkg-config glib macfuse]
   end
 
   def install

@@ -7,7 +7,7 @@ class Python <Formula
 
   def deps
     # You can build Python without readline, but you really don't want to.
-    LibraryDep.new 'readline'
+    'readline'
   end
   
   def skip_clean? path

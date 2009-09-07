@@ -6,7 +6,7 @@ class MysqlConnectorC <Formula
   @md5='348a869fa72957062ea4e7ad3865623c'
 
   def deps
-    BinaryDep.new 'cmake'
+    'cmake'
   end
 
   def install

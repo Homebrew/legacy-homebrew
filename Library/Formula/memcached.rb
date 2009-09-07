@@ -6,7 +6,7 @@ class Memcached <Formula
   @md5='d7651ecb8bf345144cb17900d9a46c85'
 
   def deps
-    LibraryDep.new 'libevent'
+    'libevent'
   end
 
   def install

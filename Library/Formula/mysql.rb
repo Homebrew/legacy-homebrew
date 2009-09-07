@@ -6,8 +6,7 @@ class Mysql <Formula
   @md5='7564d7759a8077b3a0e6190955422287'
 
   def deps
-    # --without-readline means use system's readline
-    LibraryDep.new 'readline'
+    'readline'
   end
 
   def options

@@ -5,9 +5,7 @@ class Playdar <Formula
   @head='git://github.com/mxcl/playdar.git'
 
   def deps
-    LibraryDep.new 'taglib'
-    LibraryDep.new 'boost'
-    BinaryDep.new 'cmake'
+    %w[taglib boost cmake]
   end
 
   def skip_clean? path
