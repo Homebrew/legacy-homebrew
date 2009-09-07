@@ -6,7 +6,7 @@ class Fish <Formula
   @md5='4b2436843e63bebba467cc4add11428a'
 
   def deps
-    LibraryDep.new 'readline'
+    'readline'
   end
 
   def install

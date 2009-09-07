@@ -6,8 +6,7 @@ class Libmusicbrainz <Formula
   @md5='648ecd43f7b80852419aaf73702bc23f'
 
   def deps
-    LibraryDep.new 'neon'
-    OptionalLibraryDep.new 'libdiscid'
+    { :required => 'neon', :optional => 'libdiscid' }
   end
 
   def install

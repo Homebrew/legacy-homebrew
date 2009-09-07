@@ -11,13 +11,13 @@ class Taglib <Formula
   @homepage='http://developer.kde.org/~wheeler/taglib.html'
 
   def deps
-    BinaryDep.new 'cmake'
+    'cmake'
   end
 
   def install
     system "./configure --disable-debug --prefix='#{prefix}'"
     system "make install"
-    
+
     TaglibExtras.new.brew do
       system "cmake . #{std_cmake_parameters}"
       system "make install"

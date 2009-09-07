@@ -123,7 +123,7 @@ class Formula
   def brew
     validate_variable :name
     validate_variable :version
-    
+
     stage do
       begin
         patch

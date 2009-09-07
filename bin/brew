@@ -95,20 +95,24 @@ begin
         raise "We cannot find a c compiler, have you installed the latest Xcode?"
       end
 
-      require 'beer_events'
-      
-      watch_out_for_spill do
-        ARGV.formulae.each do |f|
-          if f.installed? and not ARGV.force?
-            message = "Formula already installed: #{f.prefix}"
-            if ARGV.formulae.count > 1
-              opoo message
-            else
-              puts message # if only one is being installed a warning looks severe
-            end
-            next
+      fae = ARGV.formulae.reject do |f|
+        if f.installed? and not ARGV.force?
+          message = "Formula already installed: #{f.prefix}"
+          if ARGV.formulae.count > 1
+            opoo message
+          else
+            puts message # if only one is being installed a warning looks severe
           end
+          true
+        end
+      end
 
+      fae=expand_deps ARGV.formulae
+
+      require 'beer_events'
+
+      watch_out_for_spill do
+        fae.each do |f|
           # we need to ensure a pristine ENV for each process or the formula
           # will start with the ENV from the previous build
           pid=fork
@@ -158,9 +162,6 @@ begin
 
     when 'ln', 'link'
       ARGV.kegs.each {|keg| puts "#{keg.link} links created for #{keg}"}
-
-    when 'unlink'
-      ARGV.kegs.each {|keg| puts "#{keg.unlink} links removed for #{keg}"}
 
     when 'unlink'
       ARGV.kegs.each {|keg| puts "#{keg.unlink} links removed for #{keg}"}

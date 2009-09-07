@@ -6,7 +6,7 @@ class Libvorbis <Formula
   @homepage='http://vorbis.com'
 
   def deps
-    LibraryDep.new 'libogg'
+    'libogg'
   end
 
   def install

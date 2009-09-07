@@ -6,7 +6,7 @@ class Nginx <Formula
   @md5='6ebf89b9b00a3b82734e93c32da7df07'
 
   def deps
-    LibraryDep.new 'pcre'
+    'pcre'
   end
     
   def install

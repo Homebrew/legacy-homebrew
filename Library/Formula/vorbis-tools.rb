@@ -6,9 +6,7 @@ class VorbisTools <Formula
   @homepage='http://vorbis.com'
 
   def deps
-    LibraryDep.new 'ogg'
-    LibraryDep.new 'vorbis'
-    OptionalLibraryDep.new 'ao', 'ogg123'
+    { :required => %w[ogg vorbis], :optional => %w[ao ogg123] }
   end
 
   def install

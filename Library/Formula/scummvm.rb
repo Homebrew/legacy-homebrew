@@ -14,11 +14,7 @@ prefer to use theirs. If so type `brew home scummvm' to visit their site.
   end
 
   def deps
-    LibraryDep.new 'sdl'
-    # Optional, but you want them anyway.
-    OptionalLibraryDep.new 'flac'
-    OptionalLibraryDep.new 'libogg'
-    OptionalLibraryDep.new 'libvorbis'
+    { :required => 'sdl', :recommended => %w[flac libogg libvorbis] }
   end
 
   def install

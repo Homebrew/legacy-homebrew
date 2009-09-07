@@ -6,9 +6,7 @@ class Liblastfm <Formula
   @md5='3f73222ebc31635941832b01e7a494b6'
 
   def deps
-    BinaryDep.new 'qmake', 'qt'
-    LibraryDep.new 'fftw3f', 'fftw'
-    LibraryDep.new 'samplerate'
+    %w[qt fftw samplerate]
   end
 
   def install
