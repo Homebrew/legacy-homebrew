@@ -92,6 +92,7 @@ Commands:
   info [formula] [--github]
   gen url
   prune
+  update
 
 To visit the Homebrew homepage type:
   brew home
