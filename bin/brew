@@ -110,6 +110,17 @@ begin
       end
 
 
+    when 'up', 'update'
+      require 'refresh_brew'
+      updater = RefreshBrew.new
+      unless updater.update_from_masterbrew!
+        ohai "Already up-to-date."
+      else
+        ohai "Updated Homebrew to: #{updater.current_revision}"
+        ohai "No formulae were updated." unless updater.pending_formulae_changes?
+        ohai "The following formulae were updated: #{updater.updated_formulae.join(', ')}"
+      end
+
     when 'ln', 'link'
       ARGV.kegs.each {|keg| puts "#{keg.link} links created for #{keg}"}
 
