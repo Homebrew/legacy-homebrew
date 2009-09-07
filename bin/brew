@@ -181,7 +181,14 @@ begin
     when 'prune'
       prune
 
+    # 'make' supported until 0.7 for historic reasons
     when 'mk', 'make'
+      opoo "`brew make' has changed to `brew create'"
+      puts "This is because make can be confused with the `make' tool."
+      puts "brew make will continue working until Homebrew 0.7"
+      exec __FILE__, "create", *ARGV
+
+    when 'create'
       if ARGV.include? '--macports'
         exec "open", "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
       else

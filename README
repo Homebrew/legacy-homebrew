@@ -247,7 +247,7 @@ Contributing New Formulae
 =========================
 Formulae are simple Ruby scripts. Generate a formula with most bits filled-in:
 
-    brew mk http://foo.org/foobar-1.2.1.tar.bz2
+    brew create http://foo.org/foobar-1.2.1.tar.bz2
 
 Check it over and try to install it:
 
@@ -275,5 +275,8 @@ FAQ
 2. Was Homebrew devised under the influence of alcohol?  
    Yes.
 
+3. Can Homebrew replace MacPorts?  
+   Maybe. But remember, Homebrew is still incomplete. Be forgiving in your
+   approach and be willing to fork and contribute fixes. Thanks!
 
 [wiki]: http://wiki.github.com/mxcl/homebrew

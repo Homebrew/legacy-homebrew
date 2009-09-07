@@ -90,7 +90,7 @@ Commands:
   link formula ...
   home formula ...
   info [formula] [--github]
-  make url
+  gen url
   prune
 
 To visit the Homebrew homepage type:
