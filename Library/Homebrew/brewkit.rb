@@ -111,6 +111,14 @@ module HomebrewEnvExtension
     remove_from_cflags '-msse4.1'
     remove_from_cflags '-msse4.2'
   end
+  def llvm_gcc
+    if (10.6..11.0).include?(MACOS_VERSION)
+      self['CC']='/Developer/usr/llvm-gcc-4.2/bin/llvm-gcc-4.2'
+      self['CXX']='/Developer/usr/llvm-gcc-4.2/bin/llvm-g++-4.2'
+    else
+      raise "LLVM support is only available on 10.6+"
+    end
+  end
   def osx_10_4
     self['MACOSX_DEPLOYMENT_TARGET']=nil
     remove_from_cflags(/ ?-mmacosx-version-min=10\.\d/)
