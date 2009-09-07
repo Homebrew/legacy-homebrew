@@ -60,14 +60,6 @@ class TestZip <Formula
   end
 end
 
-class TestBallValidMd5 <TestBall
-  @md5='71aa838a9e4050d1876a295a9e62cbe6'
-end
-
-class TestBallInvalidMd5 <TestBall
-  @md5='61aa838a9e4050d1876a295a9e62cbe6'
-end
-
 class TestBadVersion <TestBall
   @version="versions can't have spaces"
 end
@@ -269,12 +261,38 @@ class BeerTasting <Test::Unit::TestCase
   end
 
   def test_md5
-    assert_nothing_raised { nostdout { TestBallValidMd5.new.brew {} } }
+    valid_md5 = Class.new(TestBall) do
+      @md5='71aa838a9e4050d1876a295a9e62cbe6'
+    end
+
+    assert_nothing_raised { nostdout { valid_md5.new.brew {} } }
   end
   
   def test_badmd5
+    invalid_md5 = Class.new(TestBall) do
+      @md5='61aa838a9e4050d1876a295a9e62cbe6'
+    end
+
     assert_raises RuntimeError do
-      nostdout { TestBallInvalidMd5.new.brew {} } 
+      nostdout { invalid_md5.new.brew {} }
+    end
+  end
+
+  def test_sha1
+    valid_sha1 = Class.new(TestBall) do
+      @sha1='6ea8a98acb8f918df723c2ae73fe67d5664bfd7e'
+    end
+
+    assert_nothing_raised { nostdout { valid_sha1.new.brew {} } }
+  end
+
+  def test_badsha1
+    invalid_sha1 = Class.new(TestBall) do
+      @sha1='7ea8a98acb8f918df723c2ae73fe67d5664bfd7e'
+    end
+
+    assert_raises RuntimeError do
+      nostdout { invalid_sha1.new.brew {} }
     end
   end
   
