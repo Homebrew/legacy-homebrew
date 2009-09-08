@@ -6,5 +6,6 @@
 /sbin
 /share
 /etc
+/man
 !/Library/
 !/bin/brew
