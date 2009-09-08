@@ -12,13 +12,13 @@ class Spidermonkey <Formula
   end
 
   def patches
-    DATA
+    [DATA]
   end
 
   def install
     ENV.j1
     Dir.chdir "src" do
-      system "make JS_DIST=#{HOMEBREW_PREFIX} JS_THREADSAFE=1 -f Makefile.ref"
+      system "make JS_DIST=#{HOMEBREW_PREFIX} JS_THREADSAFE=1 DEFINES=-DJS_C_STRINGS_ARE_UTF8 -f Makefile.ref"
       system "make JS_DIST=#{prefix} -f Makefile.ref export"
       system "ranlib #{prefix}/lib/libjs.a"
     end
