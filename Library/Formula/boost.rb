@@ -8,6 +8,6 @@ class Boost <Formula
   def install
     # we specify libdir too because the script is apparently broken
     system "./bootstrap.sh --prefix='#{prefix}' --libdir='#{lib}'"
-    system "./bjam --layout=system --prefix='#{prefix}' --libdir='#{lib}' install"
+    system "./bjam --layout=tagged --prefix='#{prefix}' --libdir='#{lib}' threading=multi install"
   end
 end
