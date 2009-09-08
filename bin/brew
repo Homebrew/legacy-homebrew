@@ -233,7 +233,9 @@ rescue SystemCallError, RuntimeError => e
 rescue Exception => e
   onoe "Homebrew has failed you :("
   puts "Please report this bug at: #{HOMEBREW_WWW}"
-  puts "Please include this backtrace:"
+  puts "Please include the following information:"
+  ohai "Environment"
+  puts "Mac OS X: "+`sw_vers -productVersion`
   ohai e.inspect
   puts e.backtrace
 end
