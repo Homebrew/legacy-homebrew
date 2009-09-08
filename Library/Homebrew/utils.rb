@@ -69,7 +69,10 @@ def safe_system cmd, *args
   # CTRL-C interrupt to us too, so execution continues, but the exit code os
   # still 2 so we raise our own interrupt
   raise Interrupt, cmd if $?.termsig == 2
-  raise ExecutionError.new(cmd, args) unless exec_success and $?.success?
+  unless exec_success and $?.success?
+    puts "Exit code: #{$?}"
+    raise ExecutionError.new(cmd, args)
+  end 
 end
 
 def curl url, *args

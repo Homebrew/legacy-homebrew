@@ -184,6 +184,7 @@ protected
         end
       end
       unless $? == 0
+        puts "Exit code: #{$?}"
         puts out
         raise
       end
