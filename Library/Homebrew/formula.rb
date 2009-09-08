@@ -91,6 +91,7 @@ class Formula
   def man1; man+'man1' end
   def info; prefix+'share'+'info' end
   def include; prefix+'include' end
+  def share; prefix+'share' end
 
   # reimplement if we don't autodetect the download strategy you require
   def download_strategy
