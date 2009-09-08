@@ -415,6 +415,15 @@ class BeerTasting <Test::Unit::TestCase
     assert_equal 10.7, f+0.1
   end
 
+  def test_arch_for_command
+    # NOTE only works on Snow Leopard I bet, pick a better file!
+    arches=arch_for_command '/usr/bin/svn'
+    assert_equal 3, arches.count
+    assert arches.include?(:x86_64)
+    assert arches.include?(:i386)
+    assert arches.include?(:ppc7400)
+  end
+
   def test_pathname_plus_yeast
     nostdout do
       assert_nothing_raised do
