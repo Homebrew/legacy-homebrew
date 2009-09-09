@@ -246,28 +246,50 @@ private
   def patch
     return if patches.empty?
     ohai "Patching"
-    if patches.kind_of? Hash
-      patch_args=[]
-      curl_args=[]
-      n=0
-      patches.each do |arg, urls|
-        urls.each do |url|
-          dst='%03d-homebrew.patch' % n+=1
-          curl_args<<url<<'-o'<<dst
-          patch_args<<["-#{arg}",'-i',dst]
-        end
-      end
-      # downloading all at once is much more efficient, espeically for FTP
-      curl *curl_args
-      patch_args.each do |args|
-        # -f means it doesn't prompt the user if there are errors, if just
-        # exits with non-zero status
-        safe_system 'patch', '-f', *args
-      end
+    if not patches.kind_of? Hash
+      # We assume -p0
+      patch_defns = { :p0 => patches }
     else
-      ff=(1..patches.length).collect {|n| '%03d-homebrew.patch'%n}
-      curl *patches+ff.collect {|f|"-o#{f}"}
-      ff.each {|f| safe_system 'patch', '-p0', '-i', f}
+      patch_defns = patches
+    end
+
+    patch_list=[]
+    n=0
+    patch_defns.each do |arg, urls|
+      urls.each do |url|
+        dst='%03d-homebrew.patch' % n+=1
+        compression = false
+        case url
+        when /\.gz$/
+          compression = :gzip
+        when /\.bz2$/
+          compression = :bzip2
+        end
+        patch_list << {
+          :curl_args => [url, '-o', dst],
+          :args => ["-#{arg}",'-i', dst],
+          :filename => dst,
+          :compression => compression
+        }
+      end
+    end
+    # downloading all at once is much more efficient, espeically for FTP
+    curl *(patch_list.collect { |p| p[:curl_args] }).flatten
+    patch_list.each do |p|
+      case p[:compression]
+      when :gzip
+        # We rename with a .gz since gunzip -S '' deletes the file mysteriously
+        FileUtils.mv p[:filename], p[:filename] + '.gz'
+        `gunzip #{p[:filename] + '.gz'}`
+      when :bzip2
+        # We rename with a .bz2 since bunzip2 can't guess the original filename
+        # without it
+        FileUtils.mv p[:filename], p[:filename] + '.bz2'
+        `bunzip2 #{p[:filename] + '.bz2'}`
+      end
+      # -f means it doesn't prompt the user if there are errors, if just
+      # exits with non-zero status
+      safe_system 'patch', '-f', *(p[:args])
     end
   end
 
