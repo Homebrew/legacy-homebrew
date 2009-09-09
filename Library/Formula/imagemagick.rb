@@ -2,7 +2,7 @@ require 'brewkit'
 
 # some credit to http://github.com/maddox/magick-installer
 
-class LibTIFF <Formula
+class Libtiff <Formula
   @url='ftp://ftp.remotesensing.org/libtiff/tiff-3.8.2.tar.gz'
   @homepage='http://www.libtiff.org/'
   @md5='fbb6f446ea4ed18955e2714934e5b698'
@@ -33,8 +33,8 @@ class GhostscriptFonts <Formula
 end
 
 class Imagemagick <Formula
-  @url='ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.5.5-4.tar.bz2'
-  @md5='8cb7471a50428e4892ee46aa404e54c2'
+  @url='ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.5.5-7.tar.bz2'
+  @md5='fa6530a56278b0e9b7babf83cdcee82c'
   @homepage='http://www.imagemagick.org'
 
   def deps
@@ -47,7 +47,7 @@ class Imagemagick <Formula
 
     # TODO eventually these will be external optional dependencies
     # but for now I am lazy
-    LibTIFF.new.brew do
+    Libtiff.new.brew do
       system "./configure", "--prefix=#{prefix}", "--disable-debug"
       system "make install"
     end
@@ -78,7 +78,11 @@ class Imagemagick <Formula
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
 
-    system "./configure", "--disable-dependency-tracking",
+    system "./configure", "--disable-static",
+                          "--with-modules",
+                          "--without-magick-plus-plus",
+                          "--disable-dependency-tracking",
+                          "--disable-shared",
                           "--without-maximum-compile-warnings",
                           "--prefix=#{prefix}",
                           "--disable-osx-universal-binary",
