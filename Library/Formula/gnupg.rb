@@ -12,8 +12,8 @@ class Gnupg <Formula
     system "make check"
 
     # amazingly even the GNU folks can bugger up their Makefiles, so we need
-    # to create this directories because the install target has the dependency
-    # order wrong
+    # to create these directories because the install target has the
+    # dependency order wrong
     bin.mkpath
     (libexec+'gnupg').mkpath
     system "make install"
