@@ -90,6 +90,15 @@ begin
           puts "#{f}: #{ENV[f]}" unless ENV[f].to_s.empty?
         end
       end
+      
+      if ARGV.interactive? and ARGV.formulae.count > 1
+        # the reason for this is interactive mode is a little tricky to do 
+        # with more than one formula, AND I can't think of a time where you'd
+        # want to do it anyway. If someone comes up with a legitimate use for
+        # this we will adapt the code. "But I might want it!" is not a
+        # legitimate use!
+        raise "Interactive mode can only be used with one formula argument"
+      end
 
       unless ARGV.force?
         unless system "which #{ENV['CC'] or 'cc'} &> /dev/null" and $?.success?

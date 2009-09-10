@@ -66,6 +66,9 @@ module HomebrewArgvExtension
   def quieter?
     flag? '--quieter'
   end
+  def interactive?
+    flag? '--interactive'
+  end
 
   def flag? flag
     options.each do |arg|
