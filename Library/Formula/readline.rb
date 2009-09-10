@@ -1,13 +1,9 @@
 require 'brewkit'
 
 class Readline <Formula
-  @url='ftp://ftp.gnu.org/gnu/readline/readline-5.2.tar.gz'
+  @url='ftp://ftp.cwru.edu/pub/bash/readline-6.0.tar.gz'
   @homepage='http://tiswww.case.edu/php/chet/readline/rltop.html'
-  @md5='e39331f32ad14009b9ff49cc10c5e751'
-
-  def patches
-    (1..14).collect {|n| "ftp://ftp.gnu.org/gnu/readline/readline-5.2-patches/readline52-%03d"%n}
-  end
+  @md5='b7f65a48add447693be6e86f04a63019'
 
   def install
     system "./configure", "--prefix=#{prefix}",
