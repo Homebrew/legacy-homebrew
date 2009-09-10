@@ -155,7 +155,7 @@ def expand_deps fae
       f.deps.each do |name|
         f = Formula.factory name
         deps << expand_deps(f) if f.deps # hideous inefficient
-        deps << f
+        deps << f unless f.installed?
       end
     when Hash
       # TODO implement optional and recommended
@@ -166,6 +166,7 @@ def expand_deps fae
     end
     deps << f
   end
+
   # TODO much more efficient to use a set and not recurse stuff already done
   return deps.flatten.uniq
 end
