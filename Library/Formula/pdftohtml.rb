@@ -7,7 +7,6 @@ class Pdftohtml <Formula
 
   def install
     system "make"
-    system "mkdir -p #{prefix}/bin"
-    system "cp src/pdftohtml #{prefix}/bin"
+    bin.install "src/pdftohtml"
   end
 end
