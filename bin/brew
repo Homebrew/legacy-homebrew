@@ -91,23 +91,28 @@ begin
         end
       end
 
-      unless system "which #{ENV['CC'] or 'cc'} &> /dev/null" and $?.success?
-        raise "We cannot find a c compiler, have you installed the latest Xcode?"
-      end
-
-      fae = ARGV.formulae.reject do |f|
-        if f.installed? and not ARGV.force?
-          message = "Formula already installed: #{f.prefix}"
-          if ARGV.formulae.count > 1
-            opoo message
-          else
-            puts message # if only one is being installed a warning looks severe
-          end
-          true
+      unless ARGV.force?
+        unless system "which #{ENV['CC'] or 'cc'} &> /dev/null" and $?.success?
+          raise "We cannot find a c compiler, have you installed the latest Xcode?"
         end
+        fae = ARGV.formulae.reject do |f|
+          if f.installed?
+            message = "Formula already installed: #{f.prefix}"
+            if ARGV.formulae.count > 1
+              opoo message
+            else
+              puts message # if only one is being installed a warning looks severe
+            end
+            true
+          end
+        end
+        exit 0 if fae.empty?
+      else
+        fae=ARGV.formulae
       end
 
-      fae=expand_deps ARGV.formulae
+      # the resulting order will be optimal for super-deps and deps
+      fae=expand_deps fae
 
       require 'beer_events'
 
