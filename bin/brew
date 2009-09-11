@@ -117,8 +117,11 @@ begin
         ohai "Already up-to-date."
       else
         ohai "Updated Homebrew to: #{updater.current_revision}"
-        ohai "No formulae were updated." unless updater.pending_formulae_changes?
-        ohai "The following formulae were updated: #{updater.updated_formulae.join(', ')}"
+        if updater.pending_formulae_changes?
+          ohai "The following formulae were updated: #{updater.updated_formulae.join(', ')}"
+        else
+          ohai "No formulae were updated." unless updater.pending_formulae_changes?
+        end
       end
 
     when 'ln', 'link'
