@@ -179,6 +179,8 @@ paths=ENV['PATH'].split(':').reject do |p|
 end
 ENV['PATH']=paths*':'
 
+# Clear CDPATH to avoid make issues that depend on changing directories
+ENV.delete('CDPATH')
 
 def inreplace(path, before, after)
   before=Regexp.escape before.to_s
