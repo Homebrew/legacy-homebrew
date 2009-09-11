@@ -137,12 +137,6 @@ begin
       end
       prune
 
-    when 'up', 'update'
-      puts "You can't yet update :( But you can try:"
-      puts "    git pull"
-      puts "    brew rm foo"
-      puts "    brew install foo"
-
     when 'prune'
       prune
 

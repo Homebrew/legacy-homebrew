@@ -11,7 +11,7 @@ class RefreshBrew
   end
   
   # Performs an update of the homebrew source. Returns +true+ if a newer
-  # version was availble, +false+ if already up-to-date.
+  # version was available, +false+ if already up-to-date.
   def update_from_masterbrew!
     output = git_pull!
     output.split("\n").each do |line|
