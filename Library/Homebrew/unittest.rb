@@ -318,7 +318,7 @@ class BeerTasting <Test::Unit::TestCase
   
   FOOBAR='foo-bar'
   def test_formula_funcs
-    classname=Formula.class(FOOBAR)
+    classname=Formula.class_s(FOOBAR)
     path=Formula.path(FOOBAR)
     
     assert_equal "FooBar", classname
@@ -470,5 +470,11 @@ class BeerTasting <Test::Unit::TestCase
     end
     
     assert_raises(RuntimeError) {Pathname.getwd.install 'non_existant_file'}
+  end
+  
+  def test_formula_class_func
+    assert_equal Formula.class_s('s-lang'), 'SLang'
+    assert_equal Formula.class_s('pkg-config'), 'PkgConfig'
+    assert_equal Formula.class_s('foo_bar'), 'FooBar'
   end
 end

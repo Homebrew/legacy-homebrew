@@ -35,7 +35,7 @@ def make url
   template=<<-EOS
             require 'brewkit'
 
-            class #{Formula.class $1} <Formula
+            class #{Formula.class_s $1} <Formula
               @url='#{url}'
               @homepage=''
               @md5=''
