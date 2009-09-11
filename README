@@ -17,7 +17,7 @@ Here's why you may prefer Homebrew to the alternatives:
 
 3.  The GoboLinux approach  
     Packages are installed into their own prefix (eg. /usr/local/Cellar/wget)
-    and then symlinked into the Homebrew prefox (eg. /usr/local).
+    and then symlinked into the Homebrew prefix (eg. /usr/local).
 
     This way packages can be managed with existing command line tools. You can
     uninstall with rm -rf, list with find, query with du. It also means you
@@ -114,9 +114,9 @@ so you need Xcode:
 
 <http://developer.apple.com/technology/xcode.html>
 
-Many build scripts assume MacPorts or Fink on OS X. Which isn't a problem
-until you uninstall them and stuff you built with Homebrew breaks. So
-uninstall them (if you prefer renaming their root folders is sufficient).
+Many build scripts assume MacPorts or Fink on OS X. Which isn't too much of a
+problem until you uninstall them and stuff you built with Homebrew breaks. So
+uninstall them (if you prefer, renaming their root folders is sufficient).
 
 <http://trac.macports.org/wiki/FAQ#uninstall>  
 <http://www.finkproject.org/faq/usage-fink.php#removing>
@@ -126,8 +126,12 @@ Now, download Homebrew:
     git clone git://github.com/mxcl/homebrew.git
 
 If this leaves you shaking your head because you are installing Homebrew
-*in order to* install git, then try this installer script:
-<http://gist.github.com/179275>
+*in order to* install git, then try [this installer script][sh] or [this
+.pkg installer][pkg]. Note these are somewhat new and are not stamped 
+"definitely works" yet.
+
+[sh]: http://demaree.me/x/7
+[pkg]: http://gist.github.com/179275
 
 Homebrew is self-contained so once you've put it somewhere, it's ready to go.
 Copy this directory anywhere you like. But we recommend installing to
@@ -280,5 +284,8 @@ FAQ
 3. Can Homebrew replace MacPorts?  
    Maybe. But remember, Homebrew is still incomplete. Be forgiving in your
    approach and be willing to fork and contribute fixes. Thanks!
+
+4. Is there an IRC channel?  
+   Yes, <irc://irc.freenode.net#machomebrew>.
 
 [wiki]: http://wiki.github.com/mxcl/homebrew
