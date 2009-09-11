@@ -25,12 +25,16 @@ class RefreshBrew
   end
   
   def current_revision
-    `#{REVISION_COMMAND}`.strip
+    in_prefix { `#{REVISION_COMMAND}`.strip }
   end
   
   private
   
+  def in_prefix
+    Dir.chdir(HOMEBREW_PREFIX) { yield }
+  end
+  
   def git_pull!
-    Dir.chdir(HOMEBREW_PREFIX) { `#{UPDATE_COMMAND}` }
+    in_prefix { `#{UPDATE_COMMAND}` }
   end
 end
