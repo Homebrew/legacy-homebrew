@@ -96,6 +96,9 @@ class Pathname
     out<<`du -hd0 #{to_s} | cut -d"\t" -f1`.strip
   end
 
+  # attempts to retrieve the version component of this path, so generally
+  # you'll call it on tarballs or extracted tarball directories, if you add
+  # to this please provide amend the unittest
   def version
     if directory?
       # directories don't have extnames
@@ -108,7 +111,7 @@ class Pathname
     # we only support numbered tagged downloads
     %r[github.com/.*/tarball/((\d\.)+\d)$].match to_s
     return $1 if $1
-        
+
     # eg. boost_1_39_0
     /((\d+_)+\d+)$/.match stem
     return $1.gsub('_', '.') if $1
@@ -116,6 +119,10 @@ class Pathname
     # eg. foobar-4.5.1-1
     # eg. ruby-1.9.1-p243
     /-((\d+\.)*\d\.\d+-p?\d+)$/.match stem
+    return $1 if $1
+    
+    # eg. lame-398-1
+    /-((\d)+-\d)/.match stem
     return $1 if $1
 
     # eg. foobar-4.5.1
