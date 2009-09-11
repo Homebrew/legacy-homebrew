@@ -84,16 +84,26 @@ class TestScriptFileFormula <ScriptFileFormula
 end
 
 class RefreshBrewMock < RefreshBrew
-  def in_prefix_expect(expect, returns)
-    @expect, @returns = expect, returns
+  def in_prefix_expect(expect, returns = '')
+    @expect ||= {}
+    @expect[expect] = returns
   end
   
   def `(cmd)
-    if Dir.pwd == HOMEBREW_PREFIX.to_s and cmd == @expect
-      @returns
+    if Dir.pwd == HOMEBREW_PREFIX.to_s and @expect.has_key?(cmd)
+      (@called ||= []) << cmd
+      @expect[cmd]
     else
-      raise "<#{inspect}> Called backticks in pwd `#{HOMEBREW_PREFIX}' and command `#{cmd}'"
+      raise "#{inspect} Unexpectedly called backticks in pwd `#{HOMEBREW_PREFIX}' and command `#{cmd}'"
     end
+  end
+  
+  def expectations_met?
+    @expect.keys == @called
+  end
+  
+  def inspect
+    "#<#{self.class.name} #{object_id}>"
   end
 end
 
@@ -504,9 +514,11 @@ class BeerTasting <Test::Unit::TestCase
   def test_updater_update_homebrew_without_any_changes
     outside_prefix do
       updater = RefreshBrewMock.new
+      updater.in_prefix_expect("git checkout masterbrew")
       updater.in_prefix_expect("git pull origin masterbrew", "Already up-to-date.\n")
       
       assert_equal false, updater.update_from_masterbrew!
+      assert updater.expectations_met?
       assert updater.updated_formulae.empty?
     end
   end
@@ -514,6 +526,7 @@ class BeerTasting <Test::Unit::TestCase
   def test_updater_update_homebrew_without_formulae_changes
     outside_prefix do
       updater = RefreshBrewMock.new
+      updater.in_prefix_expect("git checkout masterbrew")
       output = fixture('update_git_pull_output_without_formulae_changes')
       updater.in_prefix_expect("git pull origin masterbrew", output)
       
@@ -526,6 +539,7 @@ class BeerTasting <Test::Unit::TestCase
   def test_updater_update_homebrew_with_formulae_changes
     outside_prefix do
       updater = RefreshBrewMock.new
+      updater.in_prefix_expect("git checkout masterbrew")
       output = fixture('update_git_pull_output_with_formulae_changes')
       updater.in_prefix_expect("git pull origin masterbrew", output)
       

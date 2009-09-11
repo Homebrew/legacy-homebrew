@@ -1,4 +1,5 @@
 class RefreshBrew
+  CHECKOUT_COMMAND = 'git checkout masterbrew'
   UPDATE_COMMAND   = 'git pull origin masterbrew'
   REVISION_COMMAND = 'git log -l -1 --pretty=format:%H'
   GIT_UP_TO_DATE   = 'Already up-to-date.'
@@ -13,6 +14,7 @@ class RefreshBrew
   # Performs an update of the homebrew source. Returns +true+ if a newer
   # version was available, +false+ if already up-to-date.
   def update_from_masterbrew!
+    git_checkout_masterbrew!
     output = git_pull!
     output.split("\n").each do |line|
       @updated_formulae << $1 if line =~ UPDATED_FORMULA
@@ -32,6 +34,10 @@ class RefreshBrew
   
   def in_prefix
     Dir.chdir(HOMEBREW_PREFIX) { yield }
+  end
+  
+  def git_checkout_masterbrew!
+    in_prefix { `#{CHECKOUT_COMMAND}` }
   end
   
   def git_pull!
