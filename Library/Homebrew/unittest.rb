@@ -374,6 +374,11 @@ class BeerTasting <Test::Unit::TestCase
     assert_equal '0.1.9', d.version
   end
   
+  def test_lame_version_style
+    f=MockFormula.new 'http://kent.dl.sourceforge.net/sourceforge/lame/lame-398-2.tar.gz'
+    assert_equal '398-2', f.version
+  end
+  
   def test_ruby_version_style
     f=MockFormula.new 'ftp://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.1-p243.tar.gz'
     assert_equal '1.9.1-p243', f.version
