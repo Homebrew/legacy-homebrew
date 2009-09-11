@@ -502,40 +502,53 @@ class BeerTasting <Test::Unit::TestCase
   end
   
   def test_updater_update_homebrew_without_any_changes
-    updater = RefreshBrewMock.new
-    updater.in_prefix_expect("git pull origin masterbrew", "Already up-to-date.\n")
-    
-    assert_equal false, updater.update_from_masterbrew!
-    assert updater.updated_formulae.empty?
+    outside_prefix do
+      updater = RefreshBrewMock.new
+      updater.in_prefix_expect("git pull origin masterbrew", "Already up-to-date.\n")
+      
+      assert_equal false, updater.update_from_masterbrew!
+      assert updater.updated_formulae.empty?
+    end
   end
   
   def test_updater_update_homebrew_without_formulae_changes
-    updater = RefreshBrewMock.new
-    output = fixture('update_git_pull_output_without_formulae_changes')
-    updater.in_prefix_expect("git pull origin masterbrew", output)
-    
-    assert_equal true, updater.update_from_masterbrew!
-    assert !updater.pending_formulae_changes?
-    assert updater.updated_formulae.empty?
+    outside_prefix do
+      updater = RefreshBrewMock.new
+      output = fixture('update_git_pull_output_without_formulae_changes')
+      updater.in_prefix_expect("git pull origin masterbrew", output)
+      
+      assert_equal true, updater.update_from_masterbrew!
+      assert !updater.pending_formulae_changes?
+      assert updater.updated_formulae.empty?
+    end
   end
   
   def test_updater_update_homebrew_with_formulae_changes
-    updater = RefreshBrewMock.new
-    output = fixture('update_git_pull_output_with_formulae_changes')
-    updater.in_prefix_expect("git pull origin masterbrew", output)
-    
-    assert_equal true, updater.update_from_masterbrew!
-    assert updater.pending_formulae_changes?
-    assert_equal %w{ antiword bash-completion xar yajl }, updater.updated_formulae
+    outside_prefix do
+      updater = RefreshBrewMock.new
+      output = fixture('update_git_pull_output_with_formulae_changes')
+      updater.in_prefix_expect("git pull origin masterbrew", output)
+      
+      assert_equal true, updater.update_from_masterbrew!
+      assert updater.pending_formulae_changes?
+      assert_equal %w{ antiword bash-completion xar yajl }, updater.updated_formulae
+    end
   end
   
   def test_updater_returns_current_revision
-    updater = RefreshBrewMock.new
-    updater.in_prefix_expect('git log -l -1 --pretty=format:%H', 'the-revision-hash')
-    assert_equal 'the-revision-hash', updater.current_revision
+    outside_prefix do
+      updater = RefreshBrewMock.new
+      updater.in_prefix_expect('git log -l -1 --pretty=format:%H', 'the-revision-hash')
+      assert_equal 'the-revision-hash', updater.current_revision
+    end
   end
   
   private
+  
+  OUTSIDE_PREFIX = '/tmp'
+  def outside_prefix
+    Dir.chdir(OUTSIDE_PREFIX) { yield }
+  end
   
   def fixture(name)
     self.class.fixture_data[name]
