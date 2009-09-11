@@ -151,14 +151,14 @@ class Formula
     "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None"
   end
 
-  def self.class name
+  def self.class_s name
     #remove invalid characters and camelcase
     name.capitalize.gsub(/[-_\s]([a-zA-Z0-9])/) { $1.upcase }
   end
 
   def self.factory name
     require self.path(name)
-    return eval(self.class(name)).new(name)
+    return eval(self.class_s(name)).new(name)
   rescue LoadError
     raise FormulaUnavailableError.new(name)
   end
