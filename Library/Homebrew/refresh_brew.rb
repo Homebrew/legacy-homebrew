@@ -27,7 +27,7 @@ class RefreshBrew
   end
   
   def current_revision
-    in_prefix { `#{REVISION_COMMAND}`.strip }
+    in_prefix { execute(REVISION_COMMAND).strip }
   end
   
   private
@@ -36,11 +36,17 @@ class RefreshBrew
     Dir.chdir(HOMEBREW_PREFIX) { yield }
   end
   
+  def execute(cmd)
+    out = `#{cmd}`
+    ohai "#{cmd}: #{out}" if ARGV.verbose?
+    out
+  end
+  
   def git_checkout_masterbrew!
-    in_prefix { `#{CHECKOUT_COMMAND}` }
+    in_prefix { execute CHECKOUT_COMMAND }
   end
   
   def git_pull!
-    in_prefix { `#{UPDATE_COMMAND}` }
+    in_prefix { execute UPDATE_COMMAND }
   end
 end
