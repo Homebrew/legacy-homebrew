@@ -38,7 +38,10 @@ class RefreshBrew
   
   def execute(cmd)
     out = `#{cmd}`
-    ohai "#{cmd}: #{out}" if ARGV.verbose?
+    if ARGV.verbose?
+      ohai cmd
+      puts out
+    end
     out
   end
   
