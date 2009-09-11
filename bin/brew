@@ -113,10 +113,11 @@ begin
     when 'up', 'update'
       require 'refresh_brew'
       updater = RefreshBrew.new
+      old_revision = updater.current_revision
       unless updater.update_from_masterbrew!
         ohai "Already up-to-date."
       else
-        ohai "Updated Homebrew to: #{updater.current_revision}"
+        ohai "Updated Homebrew from #{old_revision} to #{updater.current_revision}."
         if updater.pending_formulae_changes?
           ohai "The following formulae were updated: #{updater.updated_formulae.join(', ')}"
         else
