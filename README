@@ -99,10 +99,19 @@ Here's why you may prefer Homebrew to the alternatives:
     There's no conclusive scientific evidence as yet, but I firmly believe
     it's just a matter of time and statistics.
 
+Why you might not want to use Homebrew:
+
+1.  It's a little more hands-on than the competition. For example, we don't
+    set up postgresql for you after installing it, but we do provide
+    instructions. This isn't apathy, it's by design -- Homebrew doesn't make
+    assumptions about how you want your software to run. You have to have some
+    knowledge or be willing to learn to use Homebrew for some tasks.
+
+2.  Dependency resolution and updates are basic or not working yet.
+
 I know I've made it sound so awesome you can hardly wait to rip MacPorts out
 and embrace the fresh, hoppy taste of Homebrew, but I should point out that it
-is really new and still under heavy development. Eg. *dependency resolution
-and updates are still manual*. Thanks!
+is really new and still under heavy development. Thanks!
 
 Max Howell -- <http://twitter.com/mxcl>
 
