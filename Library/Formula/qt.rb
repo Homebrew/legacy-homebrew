@@ -1,7 +1,7 @@
 require 'brewkit'
 
 class Qt <Formula
-  @url='http://get.qtsoftware.com/qt/source/qt-mac-opensource-src-4.5.2.tar.gz'
+  @url='http://get.qt.nokia.com/qt/source/qt-mac-opensource-src-4.5.2.tar.gz'
   @md5='c549d6c0c2e0723377cb955c78a1b680'
   @homepage='http://www.qtsoftware.com'
 
