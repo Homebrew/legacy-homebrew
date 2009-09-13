@@ -33,8 +33,8 @@ class GhostscriptFonts <Formula
 end
 
 class Imagemagick <Formula
-  @url='ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.5.5-7.tar.bz2'
-  @md5='fa6530a56278b0e9b7babf83cdcee82c'
+  @url='ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.5.5-10.tar.bz2'
+  @md5='36bcef67cae5d5fce2899acb9200213a'
   @homepage='http://www.imagemagick.org'
 
   def deps
