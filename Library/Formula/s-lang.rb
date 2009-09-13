@@ -1,9 +1,9 @@
 require 'brewkit'
 
 class SLang <Formula
-  @url='ftp://space.mit.edu/pub/davis/slang/v2.2/slang-2.2.0.tar.gz'
+  @url='ftp://space.mit.edu/pub/davis/slang/v2.2/slang-2.2.1.tar.gz'
   @homepage='http://www.s-lang.org/'
-  @md5='81cd7456c70a21937497f4b04b77433c'
+  @md5='9a72420df2aa7b1932a195c6e5a85465'
 
   def deps
     OptionalLibraryDep.new 'pcre'
