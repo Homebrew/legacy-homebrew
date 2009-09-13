@@ -421,10 +421,13 @@ class BeerTasting <Test::Unit::TestCase
   end
 
   def test_arch_for_command
-    # NOTE only works on Snow Leopard I bet, pick a better file!
     arches=arch_for_command '/usr/bin/svn'
-    assert_equal 3, arches.count
-    assert arches.include?(:x86_64)
+    if `sw_vers -productVersion` =~ /10\.(\d)\.(\d+)/ and $1.to_i >= 6
+      assert_equal 3, arches.count
+      assert arches.include?(:x86_64)
+    else
+      assert_equal 2, arches.count
+    end
     assert arches.include?(:i386)
     assert arches.include?(:ppc7400)
   end
