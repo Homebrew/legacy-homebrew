@@ -186,6 +186,7 @@ def inreplace(path, before, after)
   after=after.to_s
   after.gsub! "\\", "\\\\"
   after.gsub! "/", "\\/"
+  after.gsub! "$", "\\$"
 
   # FIXME use proper Ruby for teh exceptions!
   safe_system "perl", "-pi", "-e", "s/#{before}/#{after}/g", path
