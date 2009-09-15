@@ -7,7 +7,7 @@ class Icu4c <Formula
   @version = "4.3.1"
   
   def patches
-    ["http://pastie.org/603488.txt"]
+    DATA
   end
   
   def install
@@ -24,3 +24,21 @@ class Icu4c <Formula
     "ICU doesn't like to build on Snow Leopard with all the heavy CFLAG optimizations, primarily -O3. You may need to change your brewkit environment flags to get it to build on Snow Leopard."
   end
 end
+
+
+__END__
+--- ./source/configure	2009-07-02 03:51:26.000000000 +0900
++++ ./source/configure	2009-08-16 16:15:49.000000000 +0900
+@@ -7058,11 +7058,8 @@
+ 	 test ! -s conftest.err
+        } && test -s conftest.$ac_objext; then
+ 
+-	# Check for potential -arch flags.  It is not universal unless
+-	# there are some -arch flags.  Note that *ppc* also matches
+-	# ppc64.  This check is also rather less than ideal.
+ 	case "${CC} ${CFLAGS} ${CPPFLAGS} ${LDFLAGS}" in  #(
+-	  *-arch*ppc*|*-arch*i386*|*-arch*x86_64*) ac_cv_c_bigendian=universal;;
++	  *-arch*ppc*) ac_cv_c_bigendian=yes;;
+ 	esac
+ else
+   $as_echo "$as_me: failed program was:" >&5

@@ -12,7 +12,7 @@ class Spidermonkey <Formula
   end
 
   def patches
-    ["http://gist.github.com/raw/179415/eed70f1b4bae73fb92995eaf07870d40c0ceb03e/gistfile1.diff"]
+    DATA
   end
 
   def install
@@ -25,3 +25,16 @@ class Spidermonkey <Formula
   end
 end
 
+
+__END__
+--- src/jsprf.c	2009-07-26 12:32:01.000000000 -0700
++++ src/jsprf.c	2009-07-26 12:33:12.000000000 -0700
+@@ -58,6 +58,8 @@
+ */
+ #ifdef HAVE_VA_COPY
+ #define VARARGS_ASSIGN(foo, bar)        VA_COPY(foo,bar)
++#elif defined(va_copy)
++#define VARARGS_ASSIGN(foo, bar)        va_copy(foo,bar)
+ #elif defined(HAVE_VA_LIST_AS_ARRAY)
+ #define VARARGS_ASSIGN(foo, bar)        foo[0] = bar[0]
+ #else

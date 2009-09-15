@@ -6,9 +6,7 @@ class Xar <Formula
   @md5='8eabb055d3387b8edc30ecfb08d2e80d'
 
   def patches
-    {
-      :p1 => ["http://gist.github.com/raw/178912/fe729be5b2572fd8f09eb6b60c9203a35ef1e8c3/gistfile1.diff"]
-    }
+    { :p1 => DATA }
   end
 
   def install
@@ -17,3 +15,19 @@ class Xar <Formula
     system "make install"
   end
 end
+
+
+__END__
+diff -Naur old/lib/archive.c new/lib/archive.c
+--- old/lib/archive.c
++++ new/lib/archive.c
+@@ -79,6 +79,10 @@
+ #define LONG_MIN INT32_MIN
+ #endif
+ 
++#if LIBXML_VERSION < 20618
++#define xmlDictCleanup()        /* function doesn't exist in older API */
++#endif
++
+ static int32_t xar_unserialize(xar_t x);
+ void xar_serialize(xar_t x, const char *file);

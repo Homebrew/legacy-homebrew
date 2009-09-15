@@ -19,7 +19,7 @@ class Mysql <Formula
   end
 
   def patches
-    {:p1 => "http://gist.github.com/raw/179616/bcbc9f185bbd353934c9379a253d23269c65170e/Diff"}
+    {:p1 => DATA}
   end
 
   def install
@@ -87,3 +87,17 @@ class Mysql <Formula
     EOPLIST
   end
 end
+
+
+__END__
+--- old/scripts/mysqld_safe.sh	2009-09-02 04:10:39.000000000 -0400
++++ new/scripts/mysqld_safe.sh	2009-09-02 04:52:55.000000000 -0400
+@@ -383,7 +383,7 @@
+ fi
+ 
+ USER_OPTION=""
+-if test -w / -o "$USER" = "root"
++if test -w /sbin -o "$USER" = "root"
+ then
+   if test "$user" != "root" -o $SET_USER = 1
+   then
