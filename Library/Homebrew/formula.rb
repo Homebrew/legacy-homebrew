@@ -245,6 +245,7 @@ private
 
   def patch
     return if patches.empty?
+
     ohai "Patching"
     if not patches.kind_of? Hash
       # We assume -p0
@@ -257,35 +258,37 @@ private
     n=0
     patch_defns.each do |arg, urls|
       urls.each do |url|
-        dst='%03d-homebrew.patch' % n+=1
-        compression = false
-        case url
-        when /\.gz$/
-          compression = :gzip
-        when /\.bz2$/
-          compression = :bzip2
+        p = {:filename => '%03d-homebrew.patch' % n+=1, :compression => false}
+
+        if url =~ %r[^\w+\://]
+          out_fn = p[:filename]
+          case url
+          when /\.gz$/
+            p[:compression] = :gzip
+            out_fn << '.gz'
+          when /\.bz2$/
+            p[:compression] = :bzip2
+            out_fn << '.bz2'
+          end
+          p[:curl_args] = [url, '-o', out_fn]
+        else
+          # it's a file on the local filesystem
+          p[:filename] = url
         end
-        patch_list << {
-          :curl_args => [url, '-o', dst],
-          :args => ["-#{arg}",'-i', dst],
-          :filename => dst,
-          :compression => compression
-        }
+
+        p[:args] = ["-#{arg}", '-i', p[:filename]]
+
+        patch_list << p
       end
     end
+
     # downloading all at once is much more efficient, espeically for FTP
     curl *(patch_list.collect { |p| p[:curl_args] }).flatten
+
     patch_list.each do |p|
       case p[:compression]
-      when :gzip
-        # We rename with a .gz since gunzip -S '' deletes the file mysteriously
-        FileUtils.mv p[:filename], p[:filename] + '.gz'
-        `gunzip #{p[:filename] + '.gz'}`
-      when :bzip2
-        # We rename with a .bz2 since bunzip2 can't guess the original filename
-        # without it
-        FileUtils.mv p[:filename], p[:filename] + '.bz2'
-        `bunzip2 #{p[:filename] + '.bz2'}`
+        when :gzip  then safe_system "gunzip",  p[:filename]+'.gz'
+        when :bzip2 then safe_system "bunzip2", p[:filename]+'.bz2'
       end
       # -f means it doesn't prompt the user if there are errors, if just
       # exits with non-zero status
