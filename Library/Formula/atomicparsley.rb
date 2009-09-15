@@ -6,7 +6,7 @@ class Atomicparsley <Formula
   @md5='681e6ecec2921c98e07a9262bdcd6cf2'
 
   def patches
-    { :p0 => "http://pastie.org/609011.txt" }
+    { :p0 => DATA }
   end
 
   def install
@@ -15,3 +15,28 @@ class Atomicparsley <Formula
     bin.install "AtomicParsley"
   end
 end
+
+
+__END__
+diff -Naur AtomicParsley-source-0.9.0/AP_NSImage.mm AtomicParsley-source-0.9.0/AP_NSImage.mm
+--- AtomicParsley-source-0.9.0/AP_NSImage.mm	2006-09-02 05:25:32.000000000 -0600
++++ AtomicParsley-source-0.9.0/AP_NSImage.mm	2009-09-07 16:44:05.000000000 -0600
+@@ -26,8 +26,8 @@
+ #include <sys/time.h>
+ #include <string.h>
+ 
+-#include "AP_NSImage.h"
+ #include "AtomicParsley.h"
++#include "AP_NSImage.h"
+ 
+ bool isJPEG=false;
+ bool isPNG=false;
+@@ -201,7 +201,7 @@
+         
+ 		NSBitmapImageRep* bitmap = [ [NSBitmapImageRep alloc]
+ 																	initWithFocusedViewRect: destinationRect ];
+-		_NSBitmapImageFileType filetype;
++		NSBitmapImageFileType filetype;
+ 		NSDictionary *props;
+ 		
+ 		if ( (isPNG && !myPicPrefs.allJPEG) || myPicPrefs.allPNG) {
