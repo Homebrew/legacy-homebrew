@@ -33,9 +33,7 @@ require 'hardware'
 #    build systems we support to do it.
 
 
-`/usr/bin/sw_vers -productVersion` =~ /(10\.\d+)(\.\d+)?/
-MACOS_VERSION=$1.to_f
-ENV['MACOSX_DEPLOYMENT_TARGET']=$1
+ENV['MACOSX_DEPLOYMENT_TARGET']=MACOS_VERSION.to_s
 
 # ignore existing build vars, thus we should have less bugs to deal with
 ENV['LDFLAGS']=""
