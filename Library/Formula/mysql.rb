@@ -59,6 +59,8 @@ class Mysql <Formula
     puts "Set up databases with `mysql_install_db`"
     puts "Automatically load on login with "
     puts "  `launchctl load -w #{prefix}/com.mysql.mysqld.plist`"
+    puts "Or start manually with "
+    puts "  `#{prefix}/share/mysql/mysql.server start`"
   end
 
   def startup_plist
