@@ -8,9 +8,7 @@ class Sshfs <Formula
   @md5='26e9206eb5169e87e6f95f54bc005a4f'
 
   def patches
-    {
-      :p1 => ["http://macfuse.googlecode.com/svn/tags/macfuse-2.0.3|2/filesystems/sshfs/sshfs-fuse-2.2-macosx.patch"]
-    }
+    "http://macfuse.googlecode.com/svn/tags/macfuse-2.0.3|2/filesystems/sshfs/sshfs-fuse-2.2-macosx.patch"
   end
 
   def deps

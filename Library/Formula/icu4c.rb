@@ -27,8 +27,8 @@ end
 
 
 __END__
---- ./source/configure	2009-07-02 03:51:26.000000000 +0900
-+++ ./source/configure	2009-08-16 16:15:49.000000000 +0900
+--- a/source/configure	2009-07-02 03:51:26.000000000 +0900
++++ b/source/configure	2009-08-16 16:15:49.000000000 +0900
 @@ -7058,11 +7058,8 @@
  	 test ! -s conftest.err
         } && test -s conftest.$ac_objext; then
