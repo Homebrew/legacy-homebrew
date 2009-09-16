@@ -4,8 +4,10 @@ require 'formula'
 require 'keg'
 require 'brew.h'
 
+show_summary_heading = false
+
 def install f  
-  build_time=nil
+  build_time = nil
 
   begin
     f.brew do
@@ -26,7 +28,7 @@ def install f
           FileUtils.mv "#{file}.txt", file rescue nil
           f.prefix.install file rescue nil
         end
-        build_time=Time.now-beginning
+        build_time = Time.now-beginning
       end
     end
   rescue Exception
@@ -37,7 +39,11 @@ def install f
     raise
   end
 
-  ohai "Caveats", f.caveats, ''
+  if f.caveats
+    ohai "Caveats", f.caveats
+    show_summary_heading = true
+  end
+
   ohai 'Finishing up' if ARGV.verbose?
   
   begin
@@ -46,6 +52,7 @@ def install f
     opoo "The cleaning step did not complete successfully"
     puts "Still, the installation was successful, so we will link it into your prefix"
     ohai e, e.inspect if ARGV.debug?
+    show_summary_heading = true
   end
 
   raise "Nothing was installed to #{f.prefix}" unless f.installed?
@@ -59,6 +66,7 @@ def install f
       unless paths.include? rootbin
         opoo "#{rootbin} is not in your PATH"
         puts "You can amend this by altering your ~/.bashrc file"
+        show_summary_heading = true
       end
     end
   end
@@ -70,11 +78,10 @@ def install f
     puts "The package built, but is not symlinked into #{HOMEBREW_PREFIX}"
     puts "You can try again using `brew link #{f.name}'"
     ohai e, e.inspect if ARGV.debug?
-    ohai "Summary"
-  else
-    ohai "Summary" if ARGV.verbose?
+    show_summary_heading = true
   end
 
+  ohai "Summary" if ARGV.verbose? or show_summary_heading
   print "#{f.prefix}: #{f.prefix.abv}"
   print ", built in #{pretty_duration build_time}" if build_time
   puts

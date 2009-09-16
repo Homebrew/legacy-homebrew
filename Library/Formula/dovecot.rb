@@ -18,9 +18,7 @@ class Dovecot <Formula
     # TODO: automate some of the caveats?
   end
 
-  def caveats
-    puts <<-EOS
-==============================================================
+  def caveats; <<-EOS
 For Dovecot to work, you will need to do the following:
 
 1) create configuration in #{prefix}/etc
@@ -45,7 +43,6 @@ For Dovecot to work, you will need to do the following:
 </plist>
 
 4) start the server using: sudo launchctl load /Library/LaunchDaemons/org.dovecot.plist 
-==============================================================
     EOS
   end
 end
