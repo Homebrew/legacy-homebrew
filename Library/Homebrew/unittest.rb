@@ -447,7 +447,7 @@ class BeerTasting <Test::Unit::TestCase
 
   def test_arch_for_command
     arches=arch_for_command '/usr/bin/svn'
-    if `sw_vers -productVersion` =~ /10\.(\d)\.(\d+)/ and $1.to_i >= 6
+    if `sw_vers -productVersion` =~ /10\.(\d+)/ and $1.to_i >= 6
       assert_equal 3, arches.count
       assert arches.include?(:x86_64)
     else
