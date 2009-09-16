@@ -65,6 +65,8 @@ begin
         puts "You must specify a formula. Search for available formulae with `brew search'."
         exit 0
       end
+      
+      raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable?
 
       require 'brewkit'
 
