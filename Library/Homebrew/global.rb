@@ -34,8 +34,12 @@ else
   HOMEBREW_CACHE=Pathname.new("~/Library/Caches/Homebrew").expand_path
 end
 
-HOMEBREW_PREFIX=(Pathname.getwd+__FILE__).dirname.parent.parent.cleanpath
-HOMEBREW_CELLAR=HOMEBREW_PREFIX+'Cellar'
-HOMEBREW_VERSION='0.4'
-HOMEBREW_WWW='http://bit.ly/Homebrew'
-HOMEBREW_USER_AGENT="Homebrew #{HOMEBREW_VERSION} (Ruby #{VERSION}; Mac OS X 10.5 Leopard)"
+HOMEBREW_PREFIX = (Pathname.getwd+__FILE__).dirname.parent.parent.cleanpath
+HOMEBREW_CELLAR = HOMEBREW_PREFIX+'Cellar'
+HOMEBREW_VERSION = 0.4
+HOMEBREW_WWW = 'http://bit.ly/Homebrew'
+
+MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
+MACOS_VERSION = /(10\.\d+)(\.\d+)?/.match(MACOS_FULL_VERSION).captures.first.to_f
+
+HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; Mac OS X #{MACOS_FULL_VERSION})"

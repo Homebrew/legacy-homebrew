@@ -81,7 +81,7 @@ begin
 
       if ARGV.verbose?
         ohai "Build Environment"
-        %w[CFLAGS LDFLAGS CPPFLAGS MAKEFLAGS CC CXX].each do |f|
+        %w[CFLAGS LDFLAGS CPPFLAGS MAKEFLAGS CC CXX MACOSX_DEPLOYMENT_TARGET].each do |f|
           puts "#{f}: #{ENV[f]}" unless ENV[f].to_s.empty?
         end
       end
