@@ -4,6 +4,12 @@ class Gettext <Formula
   @url='http://ftp.gnu.org/pub/gnu/gettext/gettext-0.17.tar.gz'
   @md5='58a2bc6d39c0ba57823034d55d65d606'
   @homepage='http://www.gnu.org/software/gettext/'
+  
+  def patches
+    {
+      :p1 => ['http://gist.github.com/raw/186336/2fe65fab894f94a03aab2f03349ae7f1febcd301/mac-osx-105-environ.patch']
+    }
+  end
 
   def install
     ENV.libxml2
