@@ -25,11 +25,12 @@ class Logrotate <Formula
                     'create-388608.patch',
                     'nofollow.patch',
                     'security-388608.patch'].collect {|p| "debian/patches/#{p}"}
-    {
-      :p1 => [DATA,
-              "http://ftp.de.debian.org/debian/pool/main/l/logrotate/logrotate_3.7.8-4.diff.gz",
-              *debian_patches]
-    }
+
+    [
+      DATA,
+      "http://ftp.de.debian.org/debian/pool/main/l/logrotate/logrotate_3.7.8-4.diff.gz",
+      *debian_patches
+    ]
   end
 
   def install

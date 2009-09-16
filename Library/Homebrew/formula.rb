@@ -116,7 +116,7 @@ class Formula
   #   }
   # The final option is to return DATA, then put a diff after __END__ and you
   # can still return a Hash with DATA as the value for a patch level key.
-  def patches; [] end
+  def patches; end
   # reimplement and specify dependencies
   def deps; end
   # sometimes the clean process breaks things, return true to skip anything
@@ -254,12 +254,12 @@ private
   end
   
   def patch
-    return if patches.empty?
+    return if patches.nil?
 
     ohai "Patching"
     if not patches.kind_of? Hash
       # We assume -p0
-      patch_defns = { :p0 => patches }
+      patch_defns = { :p1 => patches }
     else
       patch_defns = patches
     end
@@ -267,6 +267,9 @@ private
     patch_list=[]
     n=0
     patch_defns.each do |arg, urls|
+      # DATA.each does each line, which doesn't work so great
+      urls = [urls] unless urls.kind_of? Array
+
       urls.each do |url|
         p = {:filename => '%03d-homebrew.diff' % n+=1, :compression => false}
 

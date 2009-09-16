@@ -19,7 +19,7 @@ class Mysql <Formula
   end
 
   def patches
-    {:p1 => DATA}
+    DATA
   end
 
   def install

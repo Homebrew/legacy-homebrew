@@ -7,7 +7,7 @@ class Mawk <Formula
   @version='1.3.3'
 
   def patches
-    { :p1 => DATA }
+    DATA
   end
 
   def install

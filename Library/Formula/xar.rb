@@ -6,7 +6,7 @@ class Xar <Formula
   @md5='8eabb055d3387b8edc30ecfb08d2e80d'
 
   def patches
-    { :p1 => DATA }
+    DATA
   end
 
   def install

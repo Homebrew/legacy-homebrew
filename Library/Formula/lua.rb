@@ -6,7 +6,7 @@ class Lua <Formula
   @md5='d0870f2de55d59c1c8419f36e8fac150'
   
   def patches
-    { :p1 => DATA }
+    DATA
   end
 
   def install
@@ -25,6 +25,8 @@ class Lua <Formula
 end
 
 
+# TODO honestly maybe this is better as it was before, ie. a gist. It's long
+# and potentially more useful to other people as a gist.
 __END__
 diff -Naur lua-5.1.4/Makefile lua-5.1.4-2/Makefile
 --- lua-5.1.4/Makefile	2008-08-11 18:40:48.000000000 -0600

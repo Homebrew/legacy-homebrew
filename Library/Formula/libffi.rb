@@ -8,7 +8,7 @@ class Libffi <Formula
   def patches
     host = "http://trac.macports.org"
     base = "export/57218/trunk/dports/devel/libffi/files"
-    ["#{host}/#{base}/patch-includedir.diff"]
+    { :p0 => "#{host}/#{base}/patch-includedir.diff" }
   end
 
   def install

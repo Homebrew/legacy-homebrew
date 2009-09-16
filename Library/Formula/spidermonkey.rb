@@ -12,7 +12,7 @@ class Spidermonkey <Formula
   end
 
   def patches
-    [DATA]
+    DATA
   end
 
   def install
@@ -27,8 +27,8 @@ end
 
 
 __END__
---- src/jsprf.c	2009-07-26 12:32:01.000000000 -0700
-+++ src/jsprf.c	2009-07-26 12:33:12.000000000 -0700
+--- a/src/jsprf.c	2009-07-26 12:32:01.000000000 -0700
++++ b/src/jsprf.c	2009-07-26 12:33:12.000000000 -0700
 @@ -58,6 +58,8 @@
  */
  #ifdef HAVE_VA_COPY
