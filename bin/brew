@@ -111,7 +111,7 @@ begin
 
 
     when 'up', 'update'
-      require 'refresh_brew'
+      require 'update'
       updater = RefreshBrew.new
       old_revision = updater.current_revision
       unless updater.update_from_masterbrew!

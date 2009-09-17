@@ -12,8 +12,8 @@ require 'download_strategy'
 require 'keg'
 require 'utils'
 require 'brew.h'
-require 'hardware.rb'
-require 'refresh_brew'
+require 'hardware'
+require 'update'
 
 # these are defined in global.rb, but we don't want to break our actual
 # homebrew tree, and we do want to test everything :)
