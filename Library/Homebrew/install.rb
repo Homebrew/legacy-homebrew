@@ -6,6 +6,21 @@ require 'brew.h'
 
 show_summary_heading = false
 
+def text_for_keg_only_formula f
+  <<-EOS
+#{f.name} is keg-only. This means it is not symlinked into Homebrew's
+prefix. The formula provides the following rationale:
+
+#{f.keg_only?}
+
+Generally there are no consequences of this for you, however if you build your
+own software and it requires this formula, you may want to run this command to
+link it into the Homebrew prefix:
+
+     brew link #{f.name}
+  EOS
+end
+
 def install f  
   build_time = nil
 
@@ -71,14 +86,19 @@ def install f
     end
   end
 
-  begin
-    Keg.new(f.prefix).link
-  rescue Exception
-    onoe "The linking step did not complete successfully"
-    puts "The package built, but is not symlinked into #{HOMEBREW_PREFIX}"
-    puts "You can try again using `brew link #{f.name}'"
-    ohai e, e.inspect if ARGV.debug?
+  if f.keg_only?
+    ohai 'Caveats', text_for_keg_only_formula(f)
     show_summary_heading = true
+  else
+    begin
+      Keg.new(f.prefix).link
+    rescue Exception
+      onoe "The linking step did not complete successfully"
+      puts "The package built, but is not symlinked into #{HOMEBREW_PREFIX}"
+      puts "You can try again using `brew link #{f.name}'"
+      ohai e, e.inspect if ARGV.debug?
+      show_summary_heading = true
+    end
   end
 
   ohai "Summary" if ARGV.verbose? or show_summary_heading

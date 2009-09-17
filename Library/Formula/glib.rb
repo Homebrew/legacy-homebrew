@@ -18,7 +18,8 @@ class Glib <Formula
   end
 
   def install
-    
+    ENV.gnu_gettext
+
     # Snow Leopard libiconv doesn't have a 64bit version of the libiconv_open
     # function, which breaks things for us, so we build our own
     # http://www.mail-archive.com/gtk-list@gnome.org/msg28747.html

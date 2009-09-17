@@ -143,6 +143,14 @@ module HomebrewEnvExtension
   def enable_warnings
     remove_from_cflags '-w'
   end
+  # so yeah, GNU gettext is a funny one, if you want to use it, you need to
+  # call this function, see gettext.rb for info.
+  def gnu_gettext
+    gettext = Formula.factory 'gettext'
+    ENV['LDFLAGS'] += " -L#{gettext.lib}"
+    ENV['CPPFLAGS'] = "#{ENV['CPPFLAGS']} -I#{gettext.include}"
+    ENV['PATH'] += ":#{gettext.bin}"
+  end
 
 private
   def append key, value
