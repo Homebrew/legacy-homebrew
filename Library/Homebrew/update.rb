@@ -68,7 +68,7 @@ class RefreshBrew
   private
   
   def in_prefix
-    Dir.chdir(HOMEBREW_PREFIX) { yield }
+    Dir.chdir(HOMEBREW_REPOSITORY) { yield }
   end
   
   def execute(cmd)
