@@ -90,7 +90,7 @@ Commands:
   link formula ...
   home formula ...
   info [formula] [--github]
-  gen url
+  create URL
   prune
   update
 
