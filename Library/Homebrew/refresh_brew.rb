@@ -38,10 +38,11 @@ class RefreshBrew
   
   def execute(cmd)
     out = `#{cmd}`
-    if ARGV.verbose?
-      ohai cmd
+    unless $?.success?
       puts out
+      raise "Failed while executing #{cmd}" 
     end
+    ohai(cmd, out) if ARGV.verbose?
     out
   end
   
