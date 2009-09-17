@@ -33,7 +33,7 @@ Here's why you may prefer Homebrew to the alternatives:
 5.  Easy package creation  
     Packages are just Ruby scripts. Generate a template with:
 
-       brew mk http://foo.com/tarball-0.8.9.tgz
+       brew create http://foo.com/tarball-0.8.9.tgz
 
     Homebrew will automatically open it for you to tweak with TextMate or
     $EDITOR.
