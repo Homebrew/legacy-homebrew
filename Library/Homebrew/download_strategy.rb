@@ -39,8 +39,8 @@ class HttpDownloadStrategy <AbstractDownloadStrategy
     unless @dl.exist?
       begin
         curl @url, '-o', @dl
-      rescue
-        @dl.unlink
+      rescue Exception
+        @dl.unlink if @dl.exist?
         raise
       end
     else
