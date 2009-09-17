@@ -1,13 +1,13 @@
 require 'brewkit'
 
 class GitManuals <Formula
-  @url='http://kernel.org/pub/software/scm/git/git-manpages-1.6.4.2.tar.bz2'
-  @md5='e2bc0cfadb3ba76daee69bfb6dd299ad'
+  @url='http://kernel.org/pub/software/scm/git/git-manpages-1.6.4.4.tar.bz2'
+  @md5='5ee880f408f1299d541c273fb7e3c1db'
 end
 
 class Git <Formula
-  @url='http://kernel.org/pub/software/scm/git/git-1.6.4.2.tar.bz2'
-  @md5='05c41dc84eae47e3d4fe5b3dee9cc73c'
+  @url='http://kernel.org/pub/software/scm/git/git-1.6.4.4.tar.bz2'
+  @md5='b150352782998ca1f84185e6af53ec26'
   @homepage='http://git-scm.com'
 
   def install
