@@ -64,16 +64,26 @@ index 6427465..f0614a8 100644
  #include <unistd.h>
  #include <glob.h>
 diff --git a/Makefile b/Makefile
-index f110ab5..8e17dea 100644
+index f110ab5..49e55f4 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -45,6 +45,14 @@ ifeq ($(OS_NAME),SunOS)
+@@ -1,7 +1,7 @@
+ VERSION = $(shell awk '/Version:/ { print $$2 }' logrotate.spec)
+ OS_NAME = $(shell uname -s)
+ LFS = $(shell echo `getconf LFS_CFLAGS 2>/dev/null`)
+-CFLAGS = -Wall -D_GNU_SOURCE -D$(OS_NAME) -DVERSION=\"$(VERSION)\" $(RPM_OPT_FLAGS) $(LFS)
++CFLAGS += -D_GNU_SOURCE -D$(OS_NAME) -DVERSION=\"$(VERSION)\" $(RPM_OPT_FLAGS) $(LFS)
+ PROG = logrotate
+ MAN = logrotate.8
+ LOADLIBES = -lpopt
+@@ -45,6 +45,15 @@ ifeq ($(OS_NAME),SunOS)
      endif
  endif
  
 +# Darwin
 +ifeq ($(OS_NAME),Darwin)
 +    INSTALL = install
++    CC = gcc
 +    ifeq ($(BASEDIR),)
 +        BASEDIR = /usr/local
 +    endif
@@ -82,3 +92,41 @@ index f110ab5..8e17dea 100644
  # Red Hat Linux
  ifeq ($(OS_NAME),Linux)
      INSTALL = install
+@@ -52,8 +61,8 @@ ifeq ($(OS_NAME),Linux)
+ endif
+ 
+ ifneq ($(POPT_DIR),)
+-    CFLAGS += -I$(POPT_DIR)
+-    LOADLIBES += -L$(POPT_DIR)
++    CFLAGS += -I$(POPT_DIR)/include
++    LOADLIBES += -L$(POPT_DIR)/lib
+ endif
+ 
+ ifneq ($(STATEFILE),)
+@@ -61,7 +70,7 @@ ifneq ($(STATEFILE),)
+ endif
+ 
+ BINDIR = $(BASEDIR)/sbin
+-MANDIR = $(BASEDIR)/man
++MANDIR = $(BASEDIR)/share/man
+ 
+ #--------------------------------------------------------------------------
+ 
+@@ -70,7 +79,7 @@ SOURCES = $(subst .o,.c,$(OBJS) $(LIBOBJS))
+ 
+ ifeq ($(RPM_OPT_FLAGS),)
+ CFLAGS += -g
+-LDFLAGS = -g
++LDFLAGS += -g
+ endif
+ 
+ ifeq (.depend,$(wildcard .depend))
+@@ -89,7 +98,7 @@ clean:
+ 	rm -f $(OBJS) $(PROG) core* .depend
+ 
+ depend:
+-	$(CPP) $(CFLAGS) -M $(SOURCES) > .depend
++	$(CPP) $(CPPFLAGS) $(CFLAGS) -M $(SOURCES) > .depend
+ 
+ .PHONY : test
+ test: $(TARGET)
