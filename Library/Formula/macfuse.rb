@@ -1,8 +1,7 @@
 require 'brewkit'
 
 def first_dir
-  Pathname.getwd.children.each {|d| return d if d.directory?}
-  nil
+  Pathname.getwd.children.find { |d| d.directory? }
 end
 
 class Macfuse <Formula
