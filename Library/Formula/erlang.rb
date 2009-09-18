@@ -45,7 +45,7 @@ class Erlang <Formula
                           "--enable-smp-support",
                           "--enable-hipe"]
 
-    if Hardware.intel_family == :core2 and MACOS_VERSION == 10.6
+    if Hardware.is_64_bit? and MACOS_VERSION == 10.6
       config_flags << "--enable-darwin-64bit" 
       config_flags << "--enable-m64-build"
     end

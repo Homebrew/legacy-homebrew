@@ -60,6 +60,10 @@ class Hardware
     @@processor_count ||= `/usr/sbin/sysctl -n hw.ncpu`.to_i
   end
 
+  def self.is_64_bit?
+    self.sysctl_bool("hw.cpu64bit_capable")
+  end
+
 protected
   def self.sysctl_bool(property)
     result = nil
