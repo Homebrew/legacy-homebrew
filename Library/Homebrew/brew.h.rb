@@ -144,31 +144,12 @@ def clean f
 end
 
 
-# NOTE this is ugly code, and inefficient too, and can have infinite cycles
-# I have no time currently to improve it, feel free to submit a more elegant
-# solution. Thanks! --mxcl
-def expand_deps fae
+def expand_deps ff
   deps = []
-  fae.each do |f|
-    case f.deps
-    when String, Array
-      f.deps.each do |name|
-        f = Formula.factory name
-        deps << expand_deps(f) if f.deps # hideous inefficient
-        deps << f unless f.installed?
-      end
-    when Hash
-      # TODO implement optional and recommended
-      names = []
-      f.deps.each_value {|v| names << v}
-      ff=names.flatten.collect {|name| Formula.factory name}
-      deps << expand_deps(ff)
-    end
-    deps << f
+  ff.deps.collect do |f|
+    deps += expand_deps(Formula.factory(f))
   end
-
-  # TODO much more efficient to use a set and not recurse stuff already done
-  return deps.flatten.uniq
+  deps << ff
 end
 
 

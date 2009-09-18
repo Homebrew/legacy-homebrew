@@ -13,9 +13,10 @@ prefer to use theirs. If so type `brew home scummvm' to visit their site.
     EOS
   end
 
-  def deps
-    { :required => 'sdl', :recommended => %w[flac libogg libvorbis] }
-  end
+  depends_on 'sdl'
+  depends_on 'flac' => :recommended
+  depends_on 'libvorbis' => :recommended
+  depends_on 'libogg' => :recommended
 
   def install
     system "./configure --prefix='#{prefix}' --disable-debug"

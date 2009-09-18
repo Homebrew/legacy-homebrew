@@ -13,9 +13,9 @@ class Sshfs <Formula
     }
   end
 
-  def deps
-    %w[pkg-config glib macfuse]
-  end
+  depends_on 'pkg-config'
+  depends_on 'glib'
+  depends_on 'macfuse'
 
   def install
     # Steal compile flags from macfuse_buildtool.sh
