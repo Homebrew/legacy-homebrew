@@ -13,6 +13,9 @@ class Erlang <Formula
   @url='http://erlang.org/download/otp_src_R13B01.tar.gz'
   @md5='b3db581de6c13e1ec93d74e54a7b4231'
 
+  depends_on 'icu4c'
+  depends_on 'openssl'
+
   def install
     ENV.deparallelize
     system "./configure", "--disable-debug",

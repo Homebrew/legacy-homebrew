@@ -114,8 +114,6 @@ class Formula
   #     :p2 => ['http://moo.com/patch5', 'http://moo.com/patch6']
   #   }
   def patches; [] end
-  # reimplement and specify dependencies
-  def deps; end
   # sometimes the clean process breaks things, return true to skip anything
   def skip_clean? path; false end
 
@@ -157,6 +155,7 @@ class Formula
   end
 
   def self.factory name
+    return name if name.kind_of? Formula
     require self.path(name)
     return eval(self.class(name)).new(name)
   rescue LoadError
@@ -165,6 +164,10 @@ class Formula
 
   def self.path name
     HOMEBREW_PREFIX+'Library'+'Formula'+"#{name.downcase}.rb"
+  end
+
+  def deps
+    self.class.deps or []
   end
 
 protected
@@ -280,9 +283,31 @@ private
   end
 
   class <<self
-    attr_reader :url, :version, :homepage, :head
+    attr_reader :url, :version, :homepage, :head, :deps
     attr_reader *CHECKSUM_TYPES
-  end
+
+    def depends_on name, *args
+      @deps ||= []
+
+      case name
+      when String
+        # noop
+      when Hash
+        name = name.keys.first # indeed, we only support one mapping
+      when Symbol
+        name = name.to_s
+      when Formula
+        @deps << name
+        return # we trust formula dev to not dupe their own instantiations
+      else
+        raise "Unsupported type #{name.class}"
+      end
+
+      # we get duplicates because every new fork of this process repeats this
+      # step for some reason I am not sure about
+      @deps << name unless @deps.include? name
+    end
+  end  
 end
 
 # see ack.rb for an example usage

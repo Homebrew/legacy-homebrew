@@ -7,9 +7,11 @@ class Imagemagick <Formula
   @md5='8cb7471a50428e4892ee46aa404e54c2'
   @homepage='http://www.imagemagick.org'
 
-  def deps
-    { :required => 'jpeg', :optional => %w[libwmf libtiff little-cms ghostscript] }
-  end
+  depends_on 'jpeg'
+  depends_on 'libwmf' => :optional
+  depends_on 'libtiff' => :optional
+  depends_on 'little-cms' => :optional
+  depends_on 'ghostscript' => :recommended
 
   def install
     ENV.libpng
@@ -25,15 +27,14 @@ class Imagemagick <Formula
                           "--without-maximum-compile-warnings",
                           "--prefix=#{prefix}",
                           "--disable-osx-universal-binary",
-                          "--with-gs-font-dir=#{prefix}/share/ghostscript/fonts",
+                          "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts",
                           "--without-perl" # I couldn't make this compile
     system "make install"
 
-    # We already copy these in
-    d=prefix+'share'
-    (d+'NEWS.txt').unlink
-    (d+'LICENSE').unlink
-    (d+'ChangeLog').unlink
+    # We already copy these into the keg root
+    (share+'NEWS.txt').unlink
+    (share+'LICENSE').unlink
+    (share+'ChangeLog').unlink
   end
 
   def caveats

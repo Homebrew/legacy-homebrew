@@ -38,6 +38,7 @@ unless system "which -s gcc-4.2" and $?.success?
   abort "Sorry, Homebrew requires gcc 4.2, which is provided by Xcode 3.1"
 end
 
+
 begin
   case ARGV.shift
     when '--prefix' then puts HOMEBREW_PREFIX
@@ -104,7 +105,7 @@ begin
         unless system "which #{ENV['CC'] or 'cc'} &> /dev/null" and $?.success?
           raise "We cannot find a c compiler, have you installed the latest Xcode?"
         end
-        fae = ARGV.formulae.reject do |f|
+        formulae = ARGV.formulae.reject do |f|
           if f.installed?
             message = "Formula already installed: #{f.prefix}"
             if ARGV.formulae.count > 1
@@ -115,20 +116,24 @@ begin
             true
           end
         end
-        exit 0 if fae.empty?
+        exit 0 if formulae.empty?
       else
-        fae=ARGV.formulae
+        formulae = ARGV.formulae
       end
 
-      # the resulting order will be optimal for super-deps and deps
-      fae=expand_deps fae
+      deps = []
+      formulae.each { |f| deps += expand_deps f }
+      formulae = deps.reject { |f| f.installed? }
+
+      require 'set'
+      done = Set.new
 
       require 'beer_events'
-
       watch_out_for_spill do
-        fae.each do |f|
-          # we need to ensure a pristine ENV for each process or the formula
-          # will start with the ENV from the previous build
+        formulae.each do |f|
+          next if done.include? f.class
+          done << f.class
+
           pid=fork
           if pid.nil?
             exec __FILE__, "install-just-one", f.name, *ARGV.options

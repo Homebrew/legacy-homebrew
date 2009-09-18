@@ -5,9 +5,7 @@ class Unp <Formula
   @homepage='http://packages.debian.org/de/etch/unp'
   @md5='ecea662bd7e7efe7f7e2213bf21d9646'
 
- def deps
-   'p7zip'
- end
+  depends_on 'p7zip'
 
   def install
     bin.install %w[unp ucat]
