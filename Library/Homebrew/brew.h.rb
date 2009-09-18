@@ -97,8 +97,8 @@ def info name
   user=''
   user=`git config --global github.user`.chomp if system "which git > /dev/null"
   user='mxcl' if user.empty?
-  # FIXME it would be nice if we didn't assume the default branch is masterbrew
-  history="http://github.com/#{user}/homebrew/commits/masterbrew/Library/Formula/#{Formula.path(name).basename}"
+  # FIXME it would be nice if we didn't assume the default branch is master
+  history="http://github.com/#{user}/homebrew/commits/master/Library/Formula/#{Formula.path(name).basename}"
 
   exec 'open', history if ARGV.flag? '--github'
 

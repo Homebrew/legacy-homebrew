@@ -22,8 +22,8 @@
 #  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 class RefreshBrew
-  CHECKOUT_COMMAND = 'git checkout masterbrew'
-  UPDATE_COMMAND   = 'git pull origin masterbrew'
+  CHECKOUT_COMMAND = 'git checkout master'
+  UPDATE_COMMAND   = 'git pull origin master'
   REVISION_COMMAND = 'git log -l -1 --pretty=format:%H'
   GIT_UP_TO_DATE   = 'Already up-to-date.'
   UPDATED_FORMULA  = %r{^\s+Library/Formula/(.+?)\.rb\s}
