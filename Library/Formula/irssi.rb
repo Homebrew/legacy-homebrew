@@ -9,7 +9,7 @@ class Irssi <Formula
   depends_on 'glib'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--with-modules", "--enable-ssl", "--enable-ipv6", "--with-perl=yes"
     system "make install"
   end
 end
