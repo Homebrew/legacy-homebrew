@@ -514,8 +514,8 @@ class BeerTasting <Test::Unit::TestCase
   def test_updater_update_homebrew_without_any_changes
     outside_prefix do
       updater = RefreshBrewMock.new
-      updater.in_prefix_expect("git checkout masterbrew")
-      updater.in_prefix_expect("git pull origin masterbrew", "Already up-to-date.\n")
+      updater.in_prefix_expect("git checkout master")
+      updater.in_prefix_expect("git pull origin master", "Already up-to-date.\n")
       
       assert_equal false, updater.update_from_masterbrew!
       assert updater.expectations_met?
@@ -526,9 +526,9 @@ class BeerTasting <Test::Unit::TestCase
   def test_updater_update_homebrew_without_formulae_changes
     outside_prefix do
       updater = RefreshBrewMock.new
-      updater.in_prefix_expect("git checkout masterbrew")
+      updater.in_prefix_expect("git checkout master")
       output = fixture('update_git_pull_output_without_formulae_changes')
-      updater.in_prefix_expect("git pull origin masterbrew", output)
+      updater.in_prefix_expect("git pull origin master", output)
       
       assert_equal true, updater.update_from_masterbrew!
       assert !updater.pending_formulae_changes?
@@ -539,9 +539,9 @@ class BeerTasting <Test::Unit::TestCase
   def test_updater_update_homebrew_with_formulae_changes
     outside_prefix do
       updater = RefreshBrewMock.new
-      updater.in_prefix_expect("git checkout masterbrew")
+      updater.in_prefix_expect("git checkout master")
       output = fixture('update_git_pull_output_with_formulae_changes')
-      updater.in_prefix_expect("git pull origin masterbrew", output)
+      updater.in_prefix_expect("git pull origin master", output)
       
       assert_equal true, updater.update_from_masterbrew!
       assert updater.pending_formulae_changes?
@@ -584,7 +584,7 @@ update_git_pull_output_without_formulae_changes: |
   remote: Total 39 (delta 20), reused 0 (delta 0)
   Unpacking objects: 100% (39/39), done.
   From git://github.com/mxcl/homebrew
-   * branch            masterbrew -> FETCH_HEAD
+   * branch            master -> FETCH_HEAD
   Updating 14ef7f9..f414bc8
   Fast forward
    Library/Homebrew/ARGV+yeast.rb                |   35 ++--
@@ -604,7 +604,7 @@ update_git_pull_output_with_formulae_changes: |
   remote: Total 39 (delta 20), reused 0 (delta 0)
   Unpacking objects: 100% (39/39), done.
   From git://github.com/mxcl/homebrew
-   * branch            masterbrew -> FETCH_HEAD
+   * branch            master -> FETCH_HEAD
   Updating 14ef7f9..f414bc8
   Fast forward
    Library/Contributions/brew_bash_completion.sh |    6 +-
