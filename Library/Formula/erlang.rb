@@ -1,21 +1,24 @@
 require 'brewkit'
 
 class ErlangManuals <Formula
+  @version='5.7.2'
   @homepage='http://www.erlang.org'
-  @url='http://erlang.org/download/snapshots/otp_man_R13B02_2009-09-04_18.tar.gz'
-  @md5='853d01156d49f16b30ead8e0145f45ca'
+  @url='http://www.csd.uu.se/ftp/mirror/erlang/download/otp_doc_man_R13B01.tar.gz'
+  @md5='fa8f96159bd9a88aa2fb9e4d79d7affe'
 end
 
 class ErlangHtmlDocs <Formula
+  @version='5.7.2'
   @homepage='http://www.erlang.org'
-  @url='http://erlang.org/download/otp_doc_html_R13B01.tar.gz'
+  @url='http://www.csd.uu.se/ftp/mirror/erlang/download/otp_doc_html_R13B01.tar.gz'
   @md5='42cb55bbfa5dc071fd56034615072f7a'
 end
 
 class Erlang <Formula
+  @version='5.7.2'
   @homepage='http://www.erlang.org'
-  @url='http://erlang.org/download/otp_src_R13B02.tar.gz'
-  @md5='80048e589272db810f5d536f47050ab8'
+  @url='http://www.csd.uu.se/ftp/mirror/erlang/download/otp_src_R13B01.tar.gz'
+  @md5='b3db581de6c13e1ec93d74e54a7b4231'
 
   # def patches
   #   [
@@ -55,6 +58,6 @@ class Erlang <Formula
     system "make install"
 
     ErlangManuals.new.brew { man.install Dir['man/*'] }
-    ErlangHtmlDocs.new.brew { doc.install }
+    ErlangHtmlDocs.new.brew { doc.install Dir['*'] }
   end
 end
