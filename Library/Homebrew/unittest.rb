@@ -101,7 +101,7 @@ class RefreshBrewMock < RefreshBrew
   end
   
   def expectations_met?
-    @expect.keys == @called
+    @expect.keys.sort == @called.sort
   end
   
   def inspect
@@ -533,6 +533,7 @@ class BeerTasting <Test::Unit::TestCase
       assert_equal false, updater.update_from_masterbrew!
       assert updater.expectations_met?
       assert updater.updated_formulae.empty?
+      assert updater.added_formulae.empty?
     end
   end
   
@@ -546,6 +547,7 @@ class BeerTasting <Test::Unit::TestCase
       assert_equal true, updater.update_from_masterbrew!
       assert !updater.pending_formulae_changes?
       assert updater.updated_formulae.empty?
+      assert updater.added_formulae.empty?
     end
   end
   
@@ -558,7 +560,8 @@ class BeerTasting <Test::Unit::TestCase
       
       assert_equal true, updater.update_from_masterbrew!
       assert updater.pending_formulae_changes?
-      assert_equal %w{ antiword bash-completion xar yajl }, updater.updated_formulae
+      assert_equal %w{ xar yajl }, updater.updated_formulae
+      assert_equal %w{ antiword bash-completion ddrescue dict lua }, updater.added_formulae
     end
   end
   
