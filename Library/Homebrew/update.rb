@@ -26,12 +26,15 @@ class RefreshBrew
   UPDATE_COMMAND   = 'git pull origin master'
   REVISION_COMMAND = 'git log -l -1 --pretty=format:%H'
   GIT_UP_TO_DATE   = 'Already up-to-date.'
-  UPDATED_FORMULA  = %r{^\s+Library/Formula/(.+?)\.rb\s}
   
-  attr_reader :updated_formulae
+  formula_regexp   = 'Library/Formula/(.+?)\.rb'
+  ADDED_FORMULA    = %r{^\s+create mode \d+ #{formula_regexp}$}
+  UPDATED_FORMULA  = %r{^\s+#{formula_regexp}\s}
+  
+  attr_reader :added_formulae, :updated_formulae
   
   def initialize
-    @updated_formulae = []
+    @added_formulae, @updated_formulae = [], []
   end
   
   # Performs an update of the homebrew source. Returns +true+ if a newer
@@ -39,9 +42,18 @@ class RefreshBrew
   def update_from_masterbrew!
     git_checkout_masterbrew!
     output = git_pull!
-    output.split("\n").each do |line|
-      @updated_formulae << $1 if line =~ UPDATED_FORMULA
+    
+    output.split("\n").reverse.each do |line|
+      case line
+      when ADDED_FORMULA
+        @added_formulae << $1
+      when UPDATED_FORMULA
+        @updated_formulae << $1 unless @added_formulae.include?($1)
+      end
     end
+    @added_formulae.sort!
+    @updated_formulae.sort!
+    
     output.strip != GIT_UP_TO_DATE
   end
   
@@ -63,7 +75,7 @@ class RefreshBrew
     out = `#{cmd}`
     unless $?.success?
       puts out
-      raise "Failed while executing #{cmd}" 
+      raise "Failed while executing #{cmd}"
     end
     ohai(cmd, out) if ARGV.verbose?
     out
