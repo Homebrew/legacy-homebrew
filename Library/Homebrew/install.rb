@@ -21,9 +21,27 @@ link it into the Homebrew prefix:
   EOS
 end
 
-def install f  
-  build_time = nil
 
+def ENV_append key, value, separator = ' '
+  if ENV[key] and not ENV[key].empty?
+    ENV[key] += separator+value
+  else
+    ENV[key] = value
+  end
+end
+
+
+def install f
+  f.deps.each do |dep|
+    dep = Formula.factory dep
+    if dep.keg_only?
+      ENV_append 'LDFLAGS', "-L#{dep.lib}"
+      ENV_append 'CPPFLAGS', "-I#{dep.include}"
+      ENV_append 'PATH', "#{dep.bin}", ':'
+    end
+  end
+
+  build_time = nil
   begin
     f.brew do
       if ARGV.flag? '--interactive'
@@ -87,7 +105,7 @@ def install f
   end
 
   if f.keg_only?
-    ohai 'Caveats', text_for_keg_only_formula(f)
+    ohai 'Caveats', text_for_keg_only_formula(f).chomp
     show_summary_heading = true
   else
     begin
