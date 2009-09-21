@@ -1,33 +1,12 @@
 require 'brewkit'
 
-class Readline <Formula
-  @url='ftp://ftp.gnu.org/gnu/readline/readline-5.2.tar.gz'
-  @homepage='http://tiswww.case.edu/php/chet/readline/rltop.html'
-  @md5='e39331f32ad14009b9ff49cc10c5e751'
- 
-  def patches
-    (1..14).collect {|n| "ftp://ftp.gnu.org/gnu/readline/readline-5.2-patches/readline52-%03d"%n}
-  end
-
-  def keg_only?
-    true
-  end
-
-  def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--mandir=#{man}",
-                          "--infodir=#{info}"
-    system "make install"
-  end
-end
-
 class Python <Formula
   @url='http://www.python.org/ftp/python/2.6.2/Python-2.6.2.tar.bz2'
   @homepage='http://www.python.org/'
   @md5='245db9f1e0f09ab7e0faaa0cf7301011'
 
   # You can build Python without readline, but you really don't want to.
-  depends_on Readline.new
+  depends_on 'readline' => :recommended
 
   def skip_clean? path
     path == bin+'python' or path == bin+'python2.6' or # if you strip these, it can't load modules
