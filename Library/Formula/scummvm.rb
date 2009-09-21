@@ -22,7 +22,6 @@ prefer to use theirs. If so type `brew home scummvm' to visit their site.
     system "./configure --prefix='#{prefix}' --disable-debug"
     system "make install"
     share=prefix+'share'
-    (share+'scummvm'+'scummmodern.zip').unlink
     (share+'pixmaps').rmtree
   end
 end
