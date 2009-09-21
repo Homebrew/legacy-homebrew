@@ -78,7 +78,7 @@ begin
         end
       end
       
-      if ARGV.interactive? and ARGV.formulae.count > 1
+      if ARGV.interactive? and ARGV.formulae.length > 1
         # the reason for this is interactive mode is a little tricky to do 
         # with more than one formula, AND I can't think of a time where you'd
         # want to do it anyway. If someone comes up with a legitimate use for
@@ -94,7 +94,7 @@ begin
         formulae = ARGV.formulae.reject do |f|
           if f.installed?
             message = "Formula already installed: #{f.prefix}"
-            if ARGV.formulae.count > 1
+            if ARGV.formulae.length > 1
               opoo message
             else
               puts message # if only one is being installed a warning looks severe
