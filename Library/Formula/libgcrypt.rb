@@ -5,9 +5,7 @@ class Libgcrypt <Formula
   @homepage='http://www.gnupg.org/'
   @sha1='3987f0efcbb7048c136d5c859e88eee1763a14f6'
 
-  def deps
-    'libgpg-error'
-  end
+  depends_on 'libgpg-error'
 
   def install
     ENV.j1

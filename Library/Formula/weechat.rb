@@ -5,9 +5,7 @@ class Weechat <Formula
   @homepage='http://www.weechat.org'
   @md5='c31cfc229e964ff9257cc9c7f9e6c9bc'
 
- def deps
-   BinaryDep.new 'cmake'
- end
+  depends_on 'cmake'
 
   def install
     system "cmake", "-DDISABLE_PERL=ON", std_cmake_parameters, "."

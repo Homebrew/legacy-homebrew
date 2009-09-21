@@ -5,10 +5,8 @@ class Strigi <Formula
   @homepage='http://strigi.sourceforge.net/'
   @md5='324fd9606ac77765501717ff92c04f9a'
 
-  def deps
-    BinaryDep.new('cmake')
-    LibraryDep.new('CLucene')
-  end
+  depends_on 'cmake'
+  depends_on 'CLucene'
 
   def install
     ENV['CLUCENE_HOME'] = HOMEBREW_PREFIX

@@ -5,10 +5,8 @@ class Irssi <Formula
   @homepage='http://irssi.org/'
   @md5='00efe7638dd596d5930dfa2aeae87b3a'
 
- def deps
-   BinaryDep.new 'pkg-config'
-   LibraryDep.new 'glib'
- end
+  depends_on 'pkg-config'
+  depends_on 'glib'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"

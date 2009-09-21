@@ -5,11 +5,9 @@ class Soprano <Formula
   @homepage='http://soprano.sourceforge.net/'
   @md5='c9a2c008b80cd5d76599e9d48139dfe9'
 
-  def deps
-    LibraryDep.new 'qt'
-    LibraryDep.new 'clucene'
-    LibraryDep.new 'redland'
-  end
+  depends_on 'qt'
+  depends_on 'clucene'
+  depends_on 'redland'
 
   def install
     ENV['CLUCENE_HOME'] = HOMEBREW_PREFIX

@@ -5,9 +5,7 @@ class Sphinx <Formula
   @homepage='http://www.sphinxsearch.com'
   @md5='428a14df41fb425e664d9e2d6178c037'
 
-  def deps
-    'mysql'
-  end
+  depends_on 'mysql'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"

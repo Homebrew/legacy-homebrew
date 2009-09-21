@@ -11,9 +11,7 @@ class Znc <Formula
   @homepage='http://en.znc.in/wiki/ZNC'
   @md5='378187acd114769f8f97ef2d4b19da25'
 
-  def deps
-    LibraryDep.new 'c-ares'
-  end
+  depends_on 'c-ares'
 
   def skip_clean? path
     path == bin+'znc'

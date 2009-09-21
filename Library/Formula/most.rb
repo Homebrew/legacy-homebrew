@@ -5,9 +5,7 @@ class Most <Formula
   @homepage='http://www.jedsoft.org/most/'
   @md5='4c42abfc8d3ace1b0e0062ea021a5917'
 
-  def deps
-    LibraryDep.new 's-lang'
-  end
+  depends_on 's-lang'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"

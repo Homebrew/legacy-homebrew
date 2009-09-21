@@ -5,10 +5,8 @@ class Wrangler <Formula
   @homepage='http://www.cs.kent.ac.uk/projects/forse/'
   @md5='0ddc9308eb82382d11d0a6df486050b5'
 
-  def deps
-    BinaryDep.new 'erlang'
-  end
-  
+  depends_on 'erlang'
+
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make"
