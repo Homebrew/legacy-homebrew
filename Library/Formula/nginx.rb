@@ -5,9 +5,7 @@ class Nginx <Formula
   @homepage='http://nginx.net/'
   @md5='6ebf89b9b00a3b82734e93c32da7df07'
 
-  def deps
-    LibraryDep.new 'pcre'
-  end
+  depends_on 'pcre'
     
   def install
     system "./configure", "--prefix=#{prefix}", "--with-http_ssl_module"

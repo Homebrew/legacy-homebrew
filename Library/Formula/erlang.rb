@@ -17,11 +17,6 @@ class Erlang <Formula
   @url='http://erlang.org/download/otp_src_R13B02.tar.gz'
   @md5='80048e589272db810f5d536f47050ab8'
 
-  def deps
-    LibraryDep.new 'icu4c'
-    LibraryDep.new 'openssl'
-  end
-
   # def patches
   #   [
   #     "http://pastie.org/603456.txt",
@@ -36,6 +31,9 @@ class Erlang <Formula
   #     "http://pastie.org/603485.txt"
   #   ]
   # end
+
+  depends_on 'icu4c'
+  depends_on 'openssl'
 
   def install
     ENV.deparallelize

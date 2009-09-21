@@ -42,7 +42,8 @@ class MostlyAbstractFormula <Formula
 end
 
 class TestBall <Formula
-  def initialize
+  # name parameter required for some Formula::factory
+  def initialize name=nil
     @url="file:///#{Pathname.new(ABS__FILE__).parent.realpath}/testball-0.1.tbz"
     super "testball"
   end
@@ -123,9 +124,13 @@ def nostdout
 end
 
 module ExtendArgvPlusYeast
-  def stick_an_arg_in_thar
+  def reset
     @named=nil
-    unshift 'foo'
+    @formulae=nil
+    @kegs=nil
+    while ARGV.count > 0
+      ARGV.shift
+    end
   end
 end
 ARGV.extend ExtendArgvPlusYeast
@@ -372,8 +377,9 @@ class BeerTasting <Test::Unit::TestCase
   end
 
   def test_no_ARGV_dupes
-    ARGV.unshift'foo'
-    ARGV.unshift'foo'
+    ARGV.reset
+    ARGV.unshift 'foo'
+    ARGV.unshift 'foo'
     n=0
     ARGV.named.each{|arg| n+=1 if arg == 'foo'}
     assert_equal 1, n
@@ -385,9 +391,10 @@ class BeerTasting <Test::Unit::TestCase
     assert_raises(UsageError) { ARGV.kegs }
     assert ARGV.named_empty?
     
-    (HOMEBREW_CELLAR+'foo'+'0.1').mkpath
+    (HOMEBREW_CELLAR+'mxcl'+'10.0').mkpath
     
-    ARGV.stick_an_arg_in_thar
+    ARGV.reset
+    ARGV.unshift 'mxcl'
     assert_equal 1, ARGV.named.length
     assert_equal 1, ARGV.kegs.length
     assert_raises(FormulaUnavailableError) { ARGV.formulae }
@@ -425,7 +432,7 @@ class BeerTasting <Test::Unit::TestCase
     nostdout do
       assert_nothing_raised do
         f=TestBall.new
-        make 'http://example.com/testball-0.1.tbz'
+        make f.url
         info f.name
         clean f
         prune

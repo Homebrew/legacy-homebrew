@@ -144,6 +144,15 @@ def clean f
 end
 
 
+def expand_deps ff
+  deps = []
+  ff.deps.collect do |f|
+    deps += expand_deps(Formula.factory(f))
+  end
+  deps << ff
+end
+
+
 def prune
   $n=0
   $d=0

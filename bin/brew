@@ -22,6 +22,7 @@ unless system "which -s gcc-4.2" and $?.success?
   abort "Sorry, Homebrew requires gcc 4.2, which is provided by Xcode 3.1"
 end
 
+
 begin
   case ARGV.shift
     when '--prefix' then puts HOMEBREW_PREFIX
@@ -76,24 +77,48 @@ begin
           puts "#{f}: #{ENV[f]}" unless ENV[f].to_s.empty?
         end
       end
-
-      unless system "which #{ENV['CC'] or 'cc'} &> /dev/null" and $?.success?
-        raise "We cannot find a c compiler, have you installed the latest Xcode?"
+      
+      if ARGV.interactive? and ARGV.formulae.count > 1
+        # the reason for this is interactive mode is a little tricky to do 
+        # with more than one formula, AND I can't think of a time where you'd
+        # want to do it anyway. If someone comes up with a legitimate use for
+        # this we will adapt the code. "But I might want it!" is not a
+        # legitimate use!
+        raise "Interactive mode can only be used with one formula argument"
       end
 
-      require 'beer_events'
-      
-      watch_out_for_spill do
-        ARGV.formulae.each do |f|
-          if f.installed? and not ARGV.force?
+      unless ARGV.force?
+        unless system "which #{ENV['CC'] or 'cc'} &> /dev/null" and $?.success?
+          raise "We cannot find a c compiler, have you installed the latest Xcode?"
+        end
+        formulae = ARGV.formulae.reject do |f|
+          if f.installed?
             message = "Formula already installed: #{f.prefix}"
             if ARGV.formulae.count > 1
               opoo message
             else
               puts message # if only one is being installed a warning looks severe
             end
-            next
+            true
           end
+        end
+        exit 0 if formulae.empty?
+      else
+        formulae = ARGV.formulae
+      end
+
+      deps = []
+      formulae.each { |f| deps += expand_deps f }
+      formulae = deps.reject { |f| f.installed? }
+
+      require 'set'
+      done = Set.new
+
+      require 'beer_events'
+      watch_out_for_spill do
+        formulae.each do |f|
+          next if done.include? f.class
+          done << f.class
 
           # 1. formulae can modify ENV, so we must ensure that each
           #    installation has a pristine ENV when it starts, forking now is 
@@ -129,9 +154,6 @@ begin
 
     when 'ln', 'link'
       ARGV.kegs.each {|keg| puts "#{keg.link} links created for #{keg}"}
-
-    when 'unlink'
-      ARGV.kegs.each {|keg| puts "#{keg.unlink} links removed for #{keg}"}
 
     when 'unlink'
       ARGV.kegs.each {|keg| puts "#{keg.unlink} links removed for #{keg}"}
