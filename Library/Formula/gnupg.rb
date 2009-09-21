@@ -1,12 +1,12 @@
 require 'brewkit'
 
 class Gnupg <Formula
-  @url='ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.9.tar.bz2'
+  @url='ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.10.tar.bz2'
   @homepage='http://www.gnupg.org/'
-  @sha1='826f4bef1effce61c3799c8f7d3cc8313b340b55'
+  @sha1='fd1b6a5f3b2dd836b598a1123ac257b8f105615d'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--disable-asm"
 
     system "make"
     system "make check"
