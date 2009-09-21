@@ -6,8 +6,7 @@ class Tree <Formula
   @md5='a7731a898e2c0d7e422a57a84ffbb06c'
 
   def install
-    gcc = ENV['CC'] || "gcc"
-    system "#{gcc} #{ENV['CFLAGS']} -o tree tree.c strverscmp.c"
+    system "#{ENV.cc} #{ENV['CFLAGS']} -o tree tree.c strverscmp.c"
 
     bin.install "tree"
     man1.install "man/tree.1"
