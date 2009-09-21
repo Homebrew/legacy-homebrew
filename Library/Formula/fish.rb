@@ -5,9 +5,7 @@ class Fish <Formula
   @homepage='http:://fishshell.org/'
   @md5='4b2436843e63bebba467cc4add11428a'
 
-  def deps
-    LibraryDep.new 'readline'
-  end
+  depends_on 'readline'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--without-xsel"

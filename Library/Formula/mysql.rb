@@ -5,10 +5,7 @@ class Mysql <Formula
   @homepage='http://dev.mysql.com/doc/refman/5.1/en/'
   @md5='7564d7759a8077b3a0e6190955422287'
 
-  def deps
-    # --without-readline means use system's readline
-    LibraryDep.new 'readline'
-  end
+  depends_on 'readline'
 
   def options
     [

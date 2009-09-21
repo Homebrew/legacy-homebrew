@@ -5,9 +5,7 @@ class Memcached <Formula
   @homepage='http://www.danga.com/memcached/'
   @md5='d7651ecb8bf345144cb17900d9a46c85'
 
-  def deps
-    LibraryDep.new 'libevent'
-  end
+  depends_on 'libevent'
 
   def install
     system "./configure --prefix='#{prefix}'"

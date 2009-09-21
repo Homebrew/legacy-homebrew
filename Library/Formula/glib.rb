@@ -12,10 +12,8 @@ class Glib <Formula
   @md5='4c178b91d82ef80a2da3c26b772569c0'
   @homepage='http://www.gtk.org'
 
-  def deps
-    BinaryDep.new 'pkg-config'
-    LibraryDep.new 'gettext'
-  end
+  depends_on 'pkg-config'
+  depends_on 'gettext'
 
   def install
     ENV.gnu_gettext

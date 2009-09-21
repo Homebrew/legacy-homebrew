@@ -5,9 +5,7 @@ class Yajl <Formula
   @url='http://github.com/lloyd/yajl/tarball/1.0.5'
   @md5='f4a3cbc764c43231ed1aedc54438b69b'
 
-  def deps
-    BinaryDep.new 'cmake'
-  end
+  depends_on 'cmake'
 
   def install
     ENV.deparallelize
