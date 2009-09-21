@@ -1,9 +1,9 @@
 require 'brewkit'
 
 class Scummvm <Formula
-  @url='http://downloads.sourceforge.net/project/scummvm/scummvm/0.13.1/scummvm-0.13.1.tar.bz2'
+  @url='http://downloads.sourceforge.net/project/scummvm/scummvm/1.0.0rc1/scummvm-1.0.0rc1.tar.bz2'
   @homepage='http://www.scummvm.org/'
-  @md5='843d9cd4470022bd3b269eb84298dc16'
+  @md5='f3fabedc7ff2424d6a4bc678229b22ce'
 
   def caveats
     <<-EOS
