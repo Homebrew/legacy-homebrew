@@ -204,7 +204,12 @@ Uninstallation
     rm -rf Cellar
     brew prune
     rm -rf Library .git
-    rm bin/brew .gitignore README
+    rm bin/brew .gitignore README.md
+
+It is worth noting that if you installed somewhere like /usr/local then these
+uninstallation steps will leave that directory exactly like it was before
+Homebrew was installed. Unless you manually added new stuff there, in which
+case those things will still be there too.
 
 
 Sample Usage
