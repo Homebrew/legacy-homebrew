@@ -143,6 +143,10 @@ module HomebrewEnvExtension
   def enable_warnings
     remove_from_cflags '-w'
   end
+  # returns the compiler we're using
+  def cc
+    ENV['CC'] or "gcc"
+  end
 
 private
   def append key, value
