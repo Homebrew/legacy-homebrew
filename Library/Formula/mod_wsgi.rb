@@ -15,10 +15,23 @@ class ModWsgi <Formula
     FileUtils.mv 'LICENCE', 'LICENSE'
     system "./configure --prefix='#{prefix}' --disable-debug --disable-dependency-tracking"
 
-    # Just build 32-bit Intel
     # The arch flags should match your Python's arch flags.
-    inreplace 'Makefile', "-Wc,'-arch ppc7400' -Wc,'-arch ppc64' -Wc,'-arch i386' -Wc,'-arch x86_64'", "-Wc,'-arch i386'"
-    inreplace 'Makefile', "-arch ppc7400 -arch ppc64 -arch i386 -arch x86_64", "-arch i386"
+    archs = arch_for_command "`which python`"
+    
+    comp_flags = ''
+    link_flags = ''
+    archs.each do |a|
+      comp_flags += " -Wc,'-arch #{a}'"
+      link_flags += " -arch #{a}"
+    end
+    
+    inreplace 'Makefile',
+      "-Wc,'-arch ppc7400' -Wc,'-arch ppc64' -Wc,'-arch i386' -Wc,'-arch x86_64'",
+      "#{comp_flags}"
+ 
+    inreplace 'Makefile',
+      "-arch ppc7400 -arch ppc64 -arch i386 -arch x86_64",
+      "#{link_flags}"
     
     # --libexecdir parameter to ./configure isn't changing this, so cram it in
     inreplace 'Makefile', "LIBEXECDIR = /usr/libexec/apache2", "LIBEXECDIR = #{libexec}"
