@@ -15,7 +15,7 @@ class BashCompletion <Formula
   def caveats
     puts <<-EOS
 ==============================================================
-Add the following lines to your ~/.profile file:
+Add the following lines to your ~/.bash_profile file:
 if [ -f `brew --prefix`/etc/bash_completion ]; then
   . `brew --prefix`/etc/bash_completion
 fi
