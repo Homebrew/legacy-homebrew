@@ -5,10 +5,8 @@ class SLang <Formula
   @homepage='http://www.s-lang.org/'
   @md5='9a72420df2aa7b1932a195c6e5a85465'
 
-  def deps
-    OptionalLibraryDep.new 'pcre'
-    OptionalLibraryDep.new 'oniguruma'
-  end
+  depends_on 'pcre' => :optional
+  depends_on 'oniguruma' => :optional
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--with-png=/usr/X11R6"

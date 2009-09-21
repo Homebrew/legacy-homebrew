@@ -5,9 +5,7 @@ class Lftp <Formula
   @homepage='http://lftp.yar.ru/'
   @md5='6c43ffdb59234ff0533cfdda0c3c305c'
 
-  def deps
-    LibraryDep.new 'readline'
-  end
+  depends_on 'readline'
 
   def install
     ENV['CXXFLAGS'] += " -fno-exceptions -fno-rtti -fno-implement-inlines"

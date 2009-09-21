@@ -5,9 +5,7 @@ class Rasqal <Formula
   @homepage='http://librdf.org/rasqal/'
   @md5='fca8706f2c4619e2fa3f8f42f8fc1e9d'
 
-  def deps
-    LibraryDep.new 'raptor'
-  end
+  depends_on 'raptor'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"

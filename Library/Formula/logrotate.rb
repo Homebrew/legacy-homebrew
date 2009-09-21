@@ -5,9 +5,7 @@ class Logrotate <Formula
   @homepage='http://packages.debian.org/testing/admin/logrotate'
   @md5='b3589bea6d8d5afc8a84134fddaae973'
 
-  def deps
-    LibraryDep.new 'popt'
-  end
+  depends_on 'popt'
 
   def patches
     # these patches emerge from the logrotate patch. Recursively nice!

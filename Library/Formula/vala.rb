@@ -5,9 +5,8 @@ class Vala <Formula
   @homepage='http://live.gnome.org/Vala'
   @md5='a102d582b2ac75b6bcdc5785683263fc'
 
-  def deps
-    LibraryDep.new 'glib'
-  end
+  depends_on 'glib'
+  depends_on 'gettext'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"

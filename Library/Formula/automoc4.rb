@@ -5,9 +5,7 @@ class Automoc4 <Formula
   @homepage='http://techbase.kde.org/Development/Tools/Automoc4'
   @md5='91bf517cb940109180ecd07bc90c69ec'
 
-  def deps
-    BinaryDep.new 'cmake'
-  end
+  depends_on 'cmake'
 
   def install
     system "cmake . #{std_cmake_parameters}"

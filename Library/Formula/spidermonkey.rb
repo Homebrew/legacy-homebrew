@@ -5,11 +5,8 @@ class Spidermonkey <Formula
   @homepage='https://developer.mozilla.org/en/SpiderMonkey'
   @md5='5571134c3863686b623ebe4e6b1f6fe6'
 
-  def deps
-    # You can build Python without readline, but you really don't want to.
-    LibraryDep.new 'readline'
-    LibraryDep.new 'nspr'
-  end
+  depends_on 'readline'
+  depends_on 'nspr'
 
   def patches
     DATA

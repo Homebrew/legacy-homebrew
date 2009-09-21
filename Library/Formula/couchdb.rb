@@ -5,11 +5,9 @@ class Couchdb <Formula
   @homepage='http://couchdb.apache.org/'
   @md5='9583efae5adfb3f9043e970fef825561'
 
-  def deps
-    LibraryDep.new 'spidermonkey'
-    LibraryDep.new 'icu4c'
-    BinaryDep.new 'erlang'
-  end
+  depends_on 'spidermonkey'
+  depends_on 'icu4c'
+  depends_on 'erlang'
 
   def install
     system "./configure", "--prefix=#{prefix}"

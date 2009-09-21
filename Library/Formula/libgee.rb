@@ -5,9 +5,7 @@ class Libgee <Formula
   @homepage='http://live.gnome.org/Libgee'
   @md5='1ca2b8a87950ef1b14342fb32db3e558'
 
-  def deps
-    BinaryDep.new 'valac'
-  end
+  depends_on 'vala'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
