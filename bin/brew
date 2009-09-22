@@ -107,9 +107,11 @@ begin
         formulae = ARGV.formulae
       end
 
-      deps = []
-      formulae.each { |f| deps += expand_deps f }
-      formulae = deps.reject { |f| f.installed? }
+      unless ARGV.include? '--ignore-dependencies'
+        deps = []
+        formulae.each { |f| deps += expand_deps f }
+        formulae = deps.reject { |f| f.installed? }
+      end
 
       require 'set'
       done = Set.new
