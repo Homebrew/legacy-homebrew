@@ -4,7 +4,6 @@ class Ec2ApiTools <Formula
   @homepage='http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351'
   @url='http://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.3-41620.zip'
   @md5='14734acff6ac8f6899de0398d3eeb0f6'
-  @version='1.3-41620'
   
   def install
     # Nothing to be done but copying things into place
