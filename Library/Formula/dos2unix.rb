@@ -1,9 +1,9 @@
 require 'brewkit'
 
 class Dos2unix <Formula
-  @url='http://www.sfr-fresh.com/linux/misc/old/dos2unix-3.1.tar.gz'
-  @md5='25ff56bab202de63ea6f6c211c416e96'
-  @homepage='http://www.sfr-fresh.com/linux/misc/'
+  url 'http://www.sfr-fresh.com/linux/misc/old/dos2unix-3.1.tar.gz'
+  md5 '25ff56bab202de63ea6f6c211c416e96'
+  homepage 'http://www.sfr-fresh.com/linux/misc/'
 
   def install
     File.unlink 'dos2unix'
