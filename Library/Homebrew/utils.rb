@@ -76,8 +76,13 @@ end
 
 def puts_columns items, cols = 4
   items = items.join("\n") if items.is_a?(Array)
-  width=`stty size`.chomp.split(" ").last
-  IO.popen("pr -#{cols} -t", "w"){|io| io.write(items) }
+  items.concat("\n") unless items.empty?
+  if $stdout.tty?
+    width=`stty size`.chomp.split(" ").last
+    IO.popen("pr -#{cols} -t", "w"){|io| io.write(items) }
+  else
+    items.each { |i| $stdout.write(i) }
+  end
 end
 
 def exec_editor *args
