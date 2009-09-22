@@ -133,12 +133,12 @@ module HomebrewEnvExtension
   def libxml2
     append_to_cflags ' -I/usr/include/libxml2'
   end
-  # TODO rename or alias to x11
-  def libpng
+  def x11
     # CPPFLAGS are the C-PreProcessor flags, *not* C++!
     append 'CPPFLAGS', '-I/usr/X11R6/include'
     append 'LDFLAGS', '-L/usr/X11R6/lib'
   end
+  alias_method :libpng, :x11
   # we've seen some packages fail to build when warnings are disabled!
   def enable_warnings
     remove_from_cflags '-w'
