@@ -36,9 +36,9 @@ class Imagemagick <Formula
     system "make install"
 
     # We already copy these into the keg root
-    (share+'NEWS.txt').unlink
-    (share+'LICENSE').unlink
-    (share+'ChangeLog').unlink
+    (share+'ImageMagick'+'NEWS.txt').unlink
+    (share+'ImageMagick'+'LICENSE').unlink
+    (share+'ImageMagick'+'ChangeLog').unlink
   end
 
   def caveats
