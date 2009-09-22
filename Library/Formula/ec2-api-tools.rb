@@ -14,8 +14,7 @@ class Ec2ApiTools <Formula
   end
   
   def caveats
-    puts <<-EOS
-==============================================================================
+    return <<-EOS
 Before you can utilize the EC2 API tools, you must export several environment
 variables to your $SHELL. The easiest way to do this is to add them to your
 dotfiles. If you’re running the `bash` shell (the default), you’ll want to add
@@ -39,7 +38,6 @@ directory, `~/.ec2`, and then add the following to your profile file:
     export EC2_PRIVATE_KEY="$(/bin/ls $HOME/.ec2/pk-*.pem)"
     export EC2_CERT="$(/bin/ls $HOME/.ec2/cert-*.pem)"
 
-==============================================================================
     EOS
   end
   
