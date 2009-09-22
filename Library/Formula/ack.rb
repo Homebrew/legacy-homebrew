@@ -5,7 +5,7 @@ class Ack <ScriptFileFormula
   # automatically by examination of the URL, however in this case our auto
   # determination magic is inadequete
   @version='1.90'
-  @url="http://ack.googlecode.com/svn/tags/#{@version}/ack"
+  @url="http://github.com/petdance/ack/raw/#{@version}/ack"
   @md5='d15d059166beff6103d2401aa2d783c7'
   @homepage='http://betterthangrep.com/'
 
