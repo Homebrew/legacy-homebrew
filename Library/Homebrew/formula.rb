@@ -330,9 +330,18 @@ private
   end
 
   class <<self
-    attr_reader :url, :version, :homepage, :head, :deps
-    attr_reader *CHECKSUM_TYPES
-
+    def self.attr_rw(*attrs)
+      attrs.each do |attr|
+        class_eval %Q{
+          def #{attr}(val=nil)
+            val.nil? ? @#{attr} : @#{attr} = val
+          end
+        }
+      end
+    end
+    
+    attr_rw :url, :version, :homepage, :head, :deps, *CHECKSUM_TYPES
+    
     def depends_on name, *args
       @deps ||= []
 

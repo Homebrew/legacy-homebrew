@@ -75,8 +75,8 @@ class TestBallOverrideBrew <Formula
 end
 
 class TestScriptFileFormula <ScriptFileFormula
-  @url="file:///#{Pathname.new(ABS__FILE__).realpath}"
-  @version="1"
+  url "file:///#{Pathname.new(ABS__FILE__).realpath}"
+  version "1"
   
   def initialize
     super
