@@ -22,13 +22,19 @@ class Nethack <Formula
 ["http://github.com/adamv/nethack-osx/raw/82992eb6e4d8c76b05037579126293d644ef971d/patches/nethack-osx-343.patch"]
     }
   end
-  
+
+  def skip_clean? path
+    path == libexec + "nethack/save"
+  end
+
   def install
+    # Build everything in-order; no multi builds.
+    ENV.deparallelize
+
     # Symlink makefiles
     system 'sh sys/unix/setup.sh'
     
     ## We are not using the default installer
-
     # Install to a sane location, geez.
     nethackdir = "#{prefix}/libexec/nethack"
     system "mkdir -p #{nethackdir}"
@@ -59,14 +65,5 @@ class Nethack <Formula
     
     bin.install 'src/nethack'
     system "mkdir #{prefix}/libexec/nethack/save"
-  end
-  
-  def caveats
-    <<-EOS
-In order to save your game, you need to create the save directory manually:
-  mkdir #{prefix}/libexec/nethack/save
-If you can get this build script to create this folder, please patch it.
-(Currently empty folders are nuked by a perl onliner.)
-    EOS
   end
 end
