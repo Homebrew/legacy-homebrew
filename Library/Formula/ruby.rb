@@ -11,8 +11,7 @@ class Ruby <Formula
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",
-                          "--enable-shared",
-                          "--enable-pthread"
+                          "--enable-shared"
     system "make"
     system "make install"
   end
