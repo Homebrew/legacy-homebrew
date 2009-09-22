@@ -82,11 +82,11 @@ module HomebrewArgvExtension
   def usage
     <<-EOS
 Usage: brew command [formula] ...
-Usage: brew [--prefix] [--cache] [--version]
+Usage: brew [--prefix] [--cache] [--version|-v]
 Usage: brew [--verbose|-v]
 
 Commands:
-  install formula ... [--debug|-d] [--interactive|-i]
+  install formula ... [--debug|-d] [--interactive|-i] [--ignore-dependencies]
   remove formula ...
   search [regex]
   list [formula] ...
