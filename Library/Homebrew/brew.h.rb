@@ -141,25 +141,19 @@ def clean f
   Cleaner.new f
  
   # Hunt for empty folders and nuke them unless they are
-  # protected in Formula.skip_clean?
- 
+  # protected by f.skip_clean?
   # We want post-order traversal, so put the dirs in a stack
   # and then pop them off later.
-  paths = Array.new
-  Find.find(f.prefix) do |path|
-    if FileTest.directory? path
-      paths.push path
-    end
-    next
+  paths = []
+  f.prefix.find do |path|
+    paths << path if path.directory?
   end
-  
+
   until paths.empty? do
-    path = paths.pop
-    next if f.skip_clean? Pathname.new(path)
-    entries = Dir.entries(path) - [".", ".."]
-    if entries.empty?
-      puts "Removing empty #{path}"
-      Dir.rmdir path
+    d = paths.pop
+    if d.children.empty? and not f.skip_clean? d
+      puts "rmdir: #{d} (empty)" if ARGV.verbose?
+      d.rmdir
     end
   end
 end
