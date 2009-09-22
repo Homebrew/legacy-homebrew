@@ -12,8 +12,7 @@ class Ruby <Formula
                           "--disable-debug",
                           "--disable-dependency-tracking",
                           "--enable-shared",
-                          "--enable-pthread",
-                          "CFLAGS=-D_XOPEN_SOURCE=1"
+                          "--enable-pthread"
     system "make"
     system "make install"
   end
