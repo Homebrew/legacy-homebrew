@@ -39,9 +39,9 @@ end
 class Formula
   # Homebrew determines the name
   def initialize name='__UNKNOWN__'
-    @url=self.class.url unless @url
+    set_instance_variable 'url'
+    set_instance_variable 'head'
 
-    @head=self.class.head unless @head
     if @head and (not @url or ARGV.flag? '--HEAD')
       @url=@head
       @version='HEAD'
@@ -50,15 +50,15 @@ class Formula
     raise if @url.nil?
     @name=name
     validate_variable :name
-    @version=self.class.version unless @version
-    @version=Pathname.new(@url).version unless @version
+
+    set_instance_variable 'version'
+    @version ||= Pathname.new(@url).version
     validate_variable :version if @version
-    @homepage=self.class.homepage unless @homepage
+    
+    set_instance_variable 'homepage'
+
     CHECKSUM_TYPES.each do |type|
-      if !instance_variable_defined?("@#{type}")
-        class_value = self.class.send(type)
-        instance_variable_set("@#{type}", class_value) if class_value
-      end
+      set_instance_variable type
     end
   end
 
@@ -323,6 +323,13 @@ private
   def validate_variable name
     v=eval "@#{name}"
     raise "Invalid @#{name}" if v.to_s.empty? or v =~ /\s/
+  end
+  
+  def set_instance_variable(type)
+    if !instance_variable_defined?("@#{type}")
+      class_value = self.class.send(type)
+      instance_variable_set("@#{type}", class_value) if class_value
+    end
   end
 
   def method_added method
