@@ -1,9 +1,9 @@
 require 'brewkit'
 
 class Mysql <Formula
-  @url='http://mysql.llarian.net/Downloads/MySQL-5.1/mysql-5.1.38.zip'
+  @url='http://mysql.llarian.net/Downloads/MySQL-5.1/mysql-5.1.39.zip'
   @homepage='http://dev.mysql.com/doc/refman/5.1/en/'
-  @md5='a76598b9fd2f82d21d6e5a4e837a99b9'
+  @md5='93972105209abdc72c450c0c60f0e404'
 
   depends_on 'readline'
 
