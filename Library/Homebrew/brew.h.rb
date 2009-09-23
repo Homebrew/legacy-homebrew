@@ -95,7 +95,7 @@ def info name
   require 'formula'
 
   user=''
-  user=`git config --global github.user`.chomp if system "which git > /dev/null"
+  user=`git config --global github.user`.chomp if system "/usr/bin/which -s git"
   user='mxcl' if user.empty?
   # FIXME it would be nice if we didn't assume the default branch is master
   history="http://github.com/#{user}/homebrew/commits/master/Library/Formula/#{Formula.path(name).basename}"

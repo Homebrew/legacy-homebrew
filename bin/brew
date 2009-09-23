@@ -11,20 +11,20 @@ if %w[/ /usr].include? HOMEBREW_PREFIX.to_s then abort <<-EOS
   #{HOMEBREW_WWW}
   EOS
 end
-if `sw_vers -productVersion` =~ /10\.(\d)\.(\d+)/ and $1.to_i < 5
 
 # remove MacPorts and Fink from the PATH, this prevents issues like:
 # http://github.com/mxcl/homebrew/issues/#issue/13
 # http://github.com/mxcl/homebrew/issues/#issue/48
 fix_PATH
 
+if `/usr/bin/sw_vers -productVersion` =~ /10\.(\d)\.(\d+)/ and $1.to_i < 5
   onoe "Homebrew requires Leopard or higher"
   abort "But thanks for your interest anyway!"
 end
 if Hardware.cpu_type == :ppc or Hardware.cpu_type == :dunno
   abort "Sorry, Homebrew does not support your computer's CPU architecture."
 end
-unless system "which -s gcc-4.2" and $?.success?
+unless system "/usr/bin/which -s gcc-4.2"
   abort "Sorry, Homebrew requires gcc 4.2, which is provided by Xcode 3.1"
 end
 
@@ -94,7 +94,7 @@ begin
       end
 
       unless ARGV.force?
-        unless system "which #{ENV['CC'] or 'cc'} &> /dev/null" and $?.success?
+        unless system "/usr/bin/which -s #{ENV.cc}"
           raise "We cannot find a c compiler, have you installed the latest Xcode?"
         end
         formulae = ARGV.formulae.reject do |f|

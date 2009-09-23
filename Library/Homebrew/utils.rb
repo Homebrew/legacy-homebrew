@@ -23,7 +23,7 @@
 
 # args are additional inputs to puts until a nil arg is encountered
 def ohai title, *sput
-  title = title[0, `tput cols`.strip.to_i-4] unless ARGV.verbose?
+  title = title[0, `/usr/bin/tput cols`.strip.to_i-4] unless ARGV.verbose?
   puts "\033[0;34m==>\033[0;0;1m #{title}\033[0;0m"
   puts *sput unless sput.empty?
 end
@@ -59,12 +59,12 @@ end
 # Kernel.system but with exceptions
 def safe_system cmd, *args
   puts "#{cmd} #{args*' '}" if ARGV.verbose?
-  exec_success=Kernel.system cmd, *args
+  exec_success = Kernel.system cmd, *args
   # some tools, eg. tar seem to confuse ruby and it doesn't propogate the
   # CTRL-C interrupt to us too, so execution continues, but the exit code os
   # still 2 so we raise our own interrupt
   raise Interrupt, cmd if $?.termsig == 2
-  unless exec_success and $?.success?
+  unless exec_success
     puts "Exit code: #{$?}"
     raise ExecutionError.new(cmd, args)
   end 
@@ -75,23 +75,23 @@ def curl *args
 end
 
 def puts_columns items, cols = 4
-  items = items.join("\n") if items.is_a?(Array)
-  items.concat("\n") unless items.empty?
   if $stdout.tty?
-    width=`stty size`.chomp.split(" ").last
-    IO.popen("pr -#{cols} -t", "w"){|io| io.write(items) }
+    items = items.join("\n") if items.is_a?(Array)
+    items.concat("\n") unless items.empty?
+    width=`/bin/stty size`.chomp.split(" ").last
+    IO.popen("/usr/bin/pr -#{cols} -t", "w"){|io| io.write(items) }
   else
-    items.each { |i| $stdout.write(i) }
+    puts *items
   end
 end
 
 def exec_editor *args
   editor=ENV['EDITOR']
   if editor.nil?
-    if system "which -s mate" and $?.success?
+    if system "/usr/bin/which -s mate"
       editor='mate'
     else
-      editor='vim'
+      editor='/usr/bin/vim'
     end
   end
   # we split the editor because especially on mac "mate -w" is common
@@ -103,9 +103,9 @@ end
 # provide an absolute path to a command or this function will search the PATH
 def arch_for_command cmd
     archs = []
-    cmd = `which #{cmd}` if not Pathname.new(cmd).absolute?
+    cmd = `/usr/bin/which #{cmd}` if not Pathname.new(cmd).absolute?
 
-    IO.popen("file #{cmd}").readlines.each do |line|
+    IO.popen("/usr/bin/file #{cmd}").readlines.each do |line|
       case line
       when /Mach-O executable ppc/
         archs << :ppc7400
