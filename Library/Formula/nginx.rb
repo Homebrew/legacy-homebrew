@@ -1,9 +1,9 @@
 require 'brewkit'
 
-class Nginx <Formula
-  @url='http://sysoev.ru/nginx/nginx-0.7.61.tar.gz'
+class Nginx < Formula
+  @url='http://sysoev.ru/nginx/nginx-0.7.2.tar.gz'
   @homepage='http://nginx.net/'
-  @md5='6ebf89b9b00a3b82734e93c32da7df07'
+  @md5='5d63188601cdd01f507161edc419ba0e'
 
   depends_on 'pcre'
     
