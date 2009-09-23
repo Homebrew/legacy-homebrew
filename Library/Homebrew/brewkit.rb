@@ -175,14 +175,6 @@ end
 ENV.extend HomebrewEnvExtension
 
 
-# remove MacPorts and Fink from the PATH, this prevents issues like:
-# http://github.com/mxcl/homebrew/issues/#issue/13
-paths=ENV['PATH'].split(':').reject do |p|
-  p.squeeze! '/'
-  p =~ %r[^/opt/local] or p =~ %r[^/sw]
-end
-ENV['PATH']=paths*':'
-
 # Clear CDPATH to avoid make issues that depend on changing directories
 ENV.delete('CDPATH')
 

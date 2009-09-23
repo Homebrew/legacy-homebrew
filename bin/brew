@@ -12,6 +12,12 @@ if %w[/ /usr].include? HOMEBREW_PREFIX.to_s then abort <<-EOS
   EOS
 end
 if `sw_vers -productVersion` =~ /10\.(\d)\.(\d+)/ and $1.to_i < 5
+
+# remove MacPorts and Fink from the PATH, this prevents issues like:
+# http://github.com/mxcl/homebrew/issues/#issue/13
+# http://github.com/mxcl/homebrew/issues/#issue/48
+fix_PATH
+
   onoe "Homebrew requires Leopard or higher"
   abort "But thanks for your interest anyway!"
 end

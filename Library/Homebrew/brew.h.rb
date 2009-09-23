@@ -229,6 +229,23 @@ def diy
   end
 end
 
+
+def fix_PATH
+  bad_paths  = `/usr/bin/which -a port`.split
+  bad_paths += `/usr/bin/which -a fink`.split
+
+  # don't remove standard paths!
+  bad_paths.delete_if do |pn|
+    %w[/usr/bin /bin /usr/sbin /sbin /usr/local/bin /usr/X11/bin].include? pn or pn.empty?
+  end
+  bad_paths += %w[/opt/local/bin /opt/local/sbin /sw/bin /sw/sbin]
+
+  paths = ENV['PATH'].split(':').reject do |p|
+    p.squeeze! '/'
+    bad_paths.find { |pn| p =~ /^#{pn}/ } and true
+  end
+  ENV['PATH'] = paths*':'
+end
 ################################################################ class Cleaner
 class Cleaner
   def initialize f
