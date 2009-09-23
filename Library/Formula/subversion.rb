@@ -8,6 +8,10 @@ class Subversion <Formula
   depends_on 'neon'
 
   def install
+    # Force LDFLAGS to load the HOMEBREW lib directory first. Necessary because SVN configure will
+    # otherwise link to OS X neon libs in /usr/lib (and ignore --with-neon anyway)
+    ENV['LDFLAGS'] += " -L#{Formula.factory('neon').lib}"
+
     # Use existing system zlib, dep-provided other libraries
     # Don't mess with Apache modules (since we're not sudo)
     system "./configure", "--disable-debug",
