@@ -204,8 +204,10 @@ begin
 rescue UsageError
   onoe "Invalid usage"
   puts ARGV.usage
+  exit 1
 rescue SystemExit
   ohai "Kernel.exit" if ARGV.verbose?
+  exit 1
 rescue Interrupt => e
   # puts # seemingly a newline is typical
   # Above is now commented out because the system() call forks and then forks
@@ -228,4 +230,5 @@ rescue Exception => e
   puts "Mac OS X: "+`sw_vers -productVersion`
   ohai e.inspect
   puts e.backtrace
+  exit 1
 end
