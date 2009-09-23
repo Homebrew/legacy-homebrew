@@ -30,8 +30,11 @@ class BuildError <ExecutionError
 end
 class FormulaUnavailableError <RuntimeError
   def initialize name
+    @name = name
     super "No available formula for #{name}"
   end
+  
+  attr_reader :name
 end
 
 
@@ -171,7 +174,17 @@ class Formula
     else
       require self.path(name)
     end
-    return eval(self.class_s(name)).new(name)
+    begin
+      klass_name =self.class_s(name)
+      klass = eval(klass_name)
+    rescue NameError
+      # TODO really this text should be encoded into the exception
+      # and only shown if the UI deems it correct to show it
+      onoe "class \"#{klass_name}\" expected but not found in #{name}.rb"
+      puts "Double-check the name of the class in that formula."
+      raise LoadError
+    end
+    return klass.new(name)
   rescue LoadError
     raise FormulaUnavailableError.new(name)
   end
