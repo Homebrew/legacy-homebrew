@@ -21,6 +21,7 @@ HOMEBREW_PREFIX=Pathname.new '/private/tmp/testbrew/prefix'
 HOMEBREW_CACHE=HOMEBREW_PREFIX.parent+"cache"
 HOMEBREW_CELLAR=HOMEBREW_PREFIX.parent+"cellar"
 HOMEBREW_USER_AGENT="Homebrew"
+MACOS_VERSION=10.6
 
 (HOMEBREW_PREFIX+'Library'+'Formula').mkpath
 Dir.chdir HOMEBREW_PREFIX
@@ -505,6 +506,11 @@ class BeerTasting <Test::Unit::TestCase
     end
     
     assert_raises(RuntimeError) {Pathname.getwd.install 'non_existant_file'}
+  end
+  
+  def test_omega_version_style
+    f=MockFormula.new 'http://www.alcyone.com/binaries/omega/omega-0.80.2-src.tar.gz'
+    assert_equal '0.80.2', f.version
   end
   
   def test_formula_class_func
