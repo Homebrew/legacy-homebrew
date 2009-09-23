@@ -56,7 +56,7 @@ end
 class TestZip <Formula
   def initialize
     zip=HOMEBREW_CACHE.parent+'test-0.1.zip'
-    Kernel.system 'zip', '-0', zip, ABS__FILE__
+    Kernel.system '/usr/bin/zip', '-0', zip, ABS__FILE__
     @url="file://#{zip}"
     super 'testzip'
   end

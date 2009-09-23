@@ -217,7 +217,7 @@ private
     # I used /tmp rather than mktemp -td because that generates a directory
     # name with exotic characters like + in it, and these break badly written
     # scripts that don't escape strings before trying to regexp them :(
-    tmp=Pathname.new `mktemp -d /tmp/homebrew-#{name}-#{version}-XXXX`.strip
+    tmp=Pathname.new `/usr/bin/mktemp -d /tmp/homebrew-#{name}-#{version}-XXXX`.strip
     raise "Couldn't create build sandbox" if not tmp.directory? or $? != 0
     begin
       wd=Dir.pwd
@@ -311,12 +311,12 @@ private
 
     patch_list.each do |p|
       case p[:compression]
-        when :gzip  then safe_system "gunzip",  p[:filename]+'.gz'
-        when :bzip2 then safe_system "bunzip2", p[:filename]+'.bz2'
+        when :gzip  then safe_system "/usr/bin/gunzip",  p[:filename]+'.gz'
+        when :bzip2 then safe_system "/usr/bin/bunzip2", p[:filename]+'.bz2'
       end
       # -f means it doesn't prompt the user if there are errors, if just
       # exits with non-zero status
-      safe_system 'patch', '-f', *(p[:args])
+      safe_system '/usr/bin/patch', '-f', *(p[:args])
     end
   end
 

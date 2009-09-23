@@ -51,11 +51,11 @@ class HttpDownloadStrategy <AbstractDownloadStrategy
   def stage
     case `file -b #{@dl}`
       when /^Zip archive data/
-        safe_system 'unzip', '-qq', @dl
+        safe_system '/usr/bin/unzip', '-qq', @dl
         chdir
       when /^(gzip|bzip2) compressed data/
         # TODO do file -z now to see if it is in fact a tar
-        safe_system 'tar', 'xf', @dl
+        safe_system '/usr/bin/tar', 'xf', @dl
         chdir
       else
         # we are assuming it is not an archive, use original filename
@@ -94,7 +94,7 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
     ohai "Checking out #{@url}"
     @co=HOMEBREW_CACHE+@unique_token
     unless @co.exist?
-      safe_system 'svn', 'checkout', @url, @co
+      safe_system '/usr/bin/svn', 'checkout', @url, @co
     else
       # TODO svn up?
       puts "Repository already checked out"
@@ -102,7 +102,7 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
   end
   def stage
     # Force the export, since the target directory will already exist
-    safe_system 'svn', 'export', '--force', @co, Dir.pwd
+    safe_system '/usr/bin/svn', 'export', '--force', @co, Dir.pwd
   end
 end
 

@@ -187,5 +187,5 @@ def inreplace(path, before, after)
   after.gsub! "$", "\\$"
 
   # FIXME use proper Ruby for teh exceptions!
-  safe_system "perl", "-pi", "-e", "s/#{before}/#{after}/g", path
+  safe_system "/usr/bin/perl", "-pi", "-e", "s/#{before}/#{after}/g", path
 end
