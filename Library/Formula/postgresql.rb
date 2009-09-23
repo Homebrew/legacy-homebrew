@@ -8,6 +8,7 @@ class Postgresql <Formula
   def install
 
     configure_args = [
+        "--enable-thread-safety",
         "--with-bonjour",
         "--with-python",
         "--with-perl",
@@ -21,14 +22,22 @@ class Postgresql <Formula
         "--disable-dependency-tracking"
     ]
 
+    if MACOS_VERSION >= 10.6
+      configure_args << "ARCHFLAGS='-arch x86_64'"
+    end
+
     system "./configure", *configure_args
     system "make install"
 
   end
 
-  def caveats
-    puts <<-EOS
-==============================================================
+  def skip_clean? path
+    # NOTE at some point someone should tweak this so it only skips clean
+    # for the bits that break the build otherwise
+    true
+  end
+
+  def caveats; <<-EOS
 Suggested next steps:
 
     * Create a user for postgresql (we'll name it "postgres"). 
@@ -50,7 +59,6 @@ Stopping:
     $ sudo su postgres -c "/usr/local/bin/pg_ctl -D /var/db/postgresql/defaultdb stop -s -m fast"
 
 Google around for org.postgresql.plist if you want launchd support.
-==============================================================
     EOS
   end
 end
