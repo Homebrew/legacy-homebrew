@@ -49,12 +49,15 @@ class HttpDownloadStrategy <AbstractDownloadStrategy
     return @dl # thus performs checksum verification
   end
   def stage
-    case `file -b #{@dl}`
-      when /^Zip archive data/
+    # magic numbers stolen from /usr/share/file/magic/
+    File.open(@dl) do |f|
+      # get the first four bytes
+      case f.read(4)
+      when /^PK\003\004/ # .zip archive
         safe_system '/usr/bin/unzip', '-qq', @dl
         chdir
-      when /^(gzip|bzip2) compressed data/
-        # TODO do file -z now to see if it is in fact a tar
+      when /^\037\213/, /^BZh/ # gzip/bz2 compressed
+        # TODO check if it's really a tar archive
         safe_system '/usr/bin/tar', 'xf', @dl
         chdir
       else
@@ -64,6 +67,7 @@ class HttpDownloadStrategy <AbstractDownloadStrategy
         # HOWEVER if this breaks some expectation you had we *will* change the
         # behaviour, just open an issue at github
         FileUtils.mv @dl, File.basename(@url)
+      end
     end
   end
 private
