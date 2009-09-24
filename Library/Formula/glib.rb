@@ -43,7 +43,18 @@ class Glib <Formula
                           "--with-libiconv=gnu"
     system "make"
     system "make install"
-    
+
+    # this sucks, basically gettext is Keg only to prevent conflicts with
+    # the wider system, but pkg-config or glib is not smart enough to
+    # have determined that libintl.dylib isn't in the DYLIB_PATH so we have
+    # to add it manually, we might have to do this a lot, so clearly we need
+    # to make it automatic or solve the BSD/GNU gettext conflict in another
+    # way
+    gettext = Formula.factory 'gettext'
+    inreplace lib+'pkgconfig'+'glib-2.0.pc',
+              'Libs: -L${libdir} -lglib-2.0 -lintl',
+              "Libs: -L${libdir} -lglib-2.0 -L#{gettext.lib} -lintl"
+
     (prefix+'share'+'gtk-doc').rmtree
   end
 end
