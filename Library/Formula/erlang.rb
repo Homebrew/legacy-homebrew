@@ -1,24 +1,24 @@
 require 'brewkit'
 
 class ErlangManuals <Formula
-  @version='5.7.2'
+  @version='R13B02-1'
   @homepage='http://www.erlang.org'
-  @url='http://www.csd.uu.se/ftp/mirror/erlang/download/otp_doc_man_R13B01.tar.gz'
-  @md5='fa8f96159bd9a88aa2fb9e4d79d7affe'
+  @url='http://www.erlang.org/download/otp_doc_man_R13B02-1.tar.gz'
+  @md5='b5f7b20faa049a8b6a753fc7a462d02d'
 end
 
 class ErlangHtmlDocs <Formula
-  @version='5.7.2'
+  @version='R13B02-1'
   @homepage='http://www.erlang.org'
-  @url='http://www.csd.uu.se/ftp/mirror/erlang/download/otp_doc_html_R13B01.tar.gz'
-  @md5='42cb55bbfa5dc071fd56034615072f7a'
+  @url='http://erlang.org/download/otp_doc_html_R13B02-1.tar.gz'
+  @md5='d48da533b49f7b32c94032f2a53c0073'
 end
 
 class Erlang <Formula
-  @version='5.7.2'
+  @version='R13B02-1'
   @homepage='http://www.erlang.org'
-  @url='http://www.csd.uu.se/ftp/mirror/erlang/download/otp_src_R13B01.tar.gz'
-  @md5='b3db581de6c13e1ec93d74e54a7b4231'
+  @url='http://erlang.org/download/otp_src_R13B02-1.tar.gz'
+  @md5='2593b9312eb1b15bf23a968743138c52'
 
   # def patches
   #   [
