@@ -8,5 +8,6 @@ class Maven <Formula
 
   def install
     prefix.install %w[bin conf boot lib]
+    FileUtils.rm_f Dir["#{bin}/*.bat"]
   end
 end
