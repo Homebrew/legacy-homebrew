@@ -36,17 +36,15 @@ def make url
             require 'brewkit'
 
             class #{Formula.class_s $1} <Formula
-              @url='#{url}'
-              @homepage=''
-              @md5=''
+              url '#{url}'
+              homepage ''
+              md5 ''
 
-  cmake       def deps
-  cmake         BinaryDep.new 'cmake'
-  cmake       end
-  cmake
+  cmake       depends_on 'cmake'
+
               def install
   autotools     system "./configure", "--prefix=\#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-  cmake         system "cmake . \#{cmake_std_parameters}"
+  cmake         system "cmake . \#{std_cmake_parameters}"
                 system "make install"
               end
             end
