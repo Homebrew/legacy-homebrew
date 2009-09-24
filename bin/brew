@@ -203,8 +203,12 @@ begin
         ARGV.named.each {|name| info name}
       end
 
-    else
-      puts ARGV.usage
+  when 'log'
+    Dir.chdir HOMEBREW_PREFIX
+    exec "git", "log", ARGV.formulae.first.path, *ARGV.options
+
+  else
+    puts ARGV.usage
   end
 
 rescue UsageError
