@@ -8,5 +8,7 @@ class Libtiff <Formula
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug"
     system "make install"
+
+    FileUtils.mv prefix+'man', share
   end
 end
