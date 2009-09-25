@@ -47,7 +47,7 @@ begin
       if ARGV.named_empty?
         ENV['CLICOLOR']=nil
         exec 'ls', *ARGV.options<<HOMEBREW_CELLAR
-      elsif ARGV.verbose?
+      elsif ARGV.verbose? or not $stdout.tty?
         exec "find", *ARGV.kegs+%w[-not -type d -print]
       else
         ARGV.kegs.each { |keg| PrettyListing.new keg }
