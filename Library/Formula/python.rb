@@ -14,7 +14,7 @@ class Python <Formula
   end
 
   def install
-    system "./configure --prefix='#{prefix}' --with-framework-name=/Developer/SDKs/MacOSX10.5.sdk"
+    system "./configure --prefix='#{prefix}' --with-framework-name=/Developer/SDKs/MacOSX#{MACOS_VERSION}.sdk"
     system "make"
     system "make install"
     
