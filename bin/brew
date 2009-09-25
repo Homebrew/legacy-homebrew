@@ -17,11 +17,11 @@ end
 # http://github.com/mxcl/homebrew/issues/#issue/48
 fix_PATH
 
-if `/usr/bin/sw_vers -productVersion` =~ /10\.(\d)\.(\d+)/ and $1.to_i < 5
-  onoe "Homebrew requires Leopard or higher"
-  abort "But thanks for your interest anyway!"
+if MACOS_VERSION < 10.5
+  onoe "Homebrew currently requires Leopard or higher"
+  abort "Sorry about that, but thanks for your interest anyway!"
 end
-if Hardware.cpu_type == :ppc or Hardware.cpu_type == :dunno
+case Hardware.cpu_type when :ppc, :dunno
   abort "Sorry, Homebrew does not support your computer's CPU architecture."
 end
 unless system "/usr/bin/which -s gcc-4.2"
