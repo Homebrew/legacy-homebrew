@@ -100,6 +100,7 @@ Commands:
 Commands useful when contributing:
   log formula
   create URL
+  edit [formula]
 
 To visit the Homebrew homepage type:
   brew home
