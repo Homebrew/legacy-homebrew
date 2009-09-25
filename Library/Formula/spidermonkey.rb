@@ -21,6 +21,10 @@ class Spidermonkey <Formula
     inreplace "src/config/Darwin.mk", 'CC = cc', "CC = #{ENV['CC']}"
     inreplace "src/config/Darwin.mk", 'CCC = g++', "CCC = #{ENV['CXX']}"
 
+    # aparently this flag causes the build to fail for ivanvc on 10.5 with a
+    # penryn (core 2 duo) CPU. So lets be cautious here and remove it.
+    ENV['CFLAGS'] = ENV['CFLAGS'].gsub(/-msse[^\s]+/, '')
+
     Dir.chdir "src" do
       system "make JS_DIST=#{HOMEBREW_PREFIX} JS_THREADSAFE=1 DEFINES=-DJS_C_STRINGS_ARE_UTF8 -f Makefile.ref"
       system "make JS_DIST=#{prefix} -f Makefile.ref export"
