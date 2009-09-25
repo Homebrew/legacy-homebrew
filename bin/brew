@@ -20,7 +20,7 @@ case Hardware.cpu_type when :ppc, :dunno
   abort "Sorry, Homebrew does not support your computer's CPU architecture."
 end
 unless system "/usr/bin/which -s gcc-4.2"
-  abort "Sorry, Homebrew requires gcc 4.2, which is provided by Xcode 3.1"
+  abort "Sorry, Homebrew requires gcc 4.2, which is provided by Xcode 3.1 and later."
 end
 
 
