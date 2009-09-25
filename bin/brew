@@ -39,7 +39,9 @@ begin
       end
 
     when 'ls', 'list'
-      if ARGV.named_empty?
+      if ARGV.flag? '--unbrewed'
+        puts unbrewed_files
+      elsif ARGV.named_empty?
         ENV['CLICOLOR']=nil
         exec 'ls', *ARGV.options<<HOMEBREW_CELLAR
       elsif ARGV.verbose? or not $stdout.tty?
