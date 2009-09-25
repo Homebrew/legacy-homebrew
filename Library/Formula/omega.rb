@@ -4,7 +4,6 @@ class Omega <Formula
   @url='http://www.alcyone.com/binaries/omega/omega-0.80.2-src.tar.gz'
   @homepage='http://www.alcyone.com/max/projects/omega/'
   @md5='6d65ec9e0cc87ccf89ab491533ec4b77'
-  @version='0.80.2'
 
   def install
     # 'make install' is weird, so we do it ourselves
