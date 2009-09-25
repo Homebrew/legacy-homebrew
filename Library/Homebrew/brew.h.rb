@@ -281,6 +281,17 @@ def warn_about_macports_or_fink
 end
 
 
+def versions_of(keg_name)
+  `ls #{HOMEBREW_CELLAR}/#{keg_name}`.collect { |version| version.strip }.reverse
+end
+
+
+# Taken from the homebrew wiki (http://wiki.github.com/mxcl/homebrew)
+def unbrewed_files
+  `cd #{HOMEBREW_PREFIX}; find bin etc include lib man share -type f \\( ! -iname ".ds_store" ! -iname "brew" \\)`
+end
+
+
 ########################################################## class PrettyListing
 class PrettyListing
   def initialize path
