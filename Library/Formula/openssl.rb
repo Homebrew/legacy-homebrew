@@ -9,7 +9,13 @@ class Openssl <Formula
 
   def install
     ENV.deparallelize
-    system "./Configure", "darwin64-x86_64-cc", "shared", "zlib-dynamic", "--prefix=#{prefix}"
+    config_flags = ["shared", "zlib-dynamic", "--prefix=#{prefix}"]
+    config_flags << if Hardware.is_64_bit? and MACOS_VERSION == 10.6
+      "darwin64-x86_64-cc" 
+    else
+      "darwin-i386-cc"
+    end
+    system "./Configure", *config_flags
     system "make"
     system "make install"
   end
