@@ -34,18 +34,21 @@ require 'ARGV+yeast' # needs to be after test/unit to avoid conflict with Option
 class MockFormula <Formula
   def initialize url
     @url=url
+    @homepage = 'http://example.com/'
     super 'test'
   end
 end
 
 class MostlyAbstractFormula <Formula
   @url=''
+  @homepage = 'http://example.com/'
 end
 
 class TestBall <Formula
   # name parameter required for some Formula::factory
   def initialize name=nil
     @url="file:///#{Pathname.new(ABS__FILE__).parent.realpath}/testball-0.1.tbz"
+    @homepage = 'http://example.com/'
     super "testball"
   end
   def install
@@ -59,6 +62,7 @@ class TestZip <Formula
     zip=HOMEBREW_CACHE.parent+'test-0.1.zip'
     Kernel.system '/usr/bin/zip', '-0', zip, ABS__FILE__
     @url="file://#{zip}"
+    @homepage = 'http://example.com/'
     super 'testzip'
   end
 end
@@ -80,8 +84,9 @@ class TestScriptFileFormula <ScriptFileFormula
   version "1"
   
   def initialize
-    super
     @name='test-script-formula'
+    @homepage = 'http://example.com/'
+    super
   end
 end
 
@@ -357,7 +362,18 @@ class BeerTasting <Test::Unit::TestCase
 
     path=HOMEBREW_PREFIX+'Library'+'Formula'+"#{FOOBAR}.rb"
     path.dirname.mkpath
-    `echo "require 'brewkit'; class #{classname} <Formula; @url=''; end" > #{path}`
+    File.open(path, 'w') do |f|
+      f << %{
+        require 'brewkit'
+        class #{classname} < Formula
+          @url=''
+          def initialize(*args)
+            @homepage = 'http://example.com/'
+            super
+          end
+        end
+      }
+    end
     
     assert_not_nil Formula.factory(FOOBAR)
   end
