@@ -6,7 +6,7 @@ class Pcre <Formula
   @md5='b6a9669d1863423f01ea46cdf00f93dc'
 
   def install
-    system "./configure", "--prefix='#{prefix}'", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end
 end

@@ -8,7 +8,7 @@ class Ctags <Formula
   @md5='c00f82ecdcc357434731913e5b48630d'
 
   def install
-    system "./configure", "--prefix='#{prefix}'",
+    system "./configure", "--prefix=#{prefix}",
                           "--enable-macro-patterns",
                           "--mandir='#{man}'",
                           "--with-readlib"
