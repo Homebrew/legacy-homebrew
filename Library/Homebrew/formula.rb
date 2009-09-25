@@ -59,6 +59,7 @@ class Formula
     validate_variable :version if @version
     
     set_instance_variable 'homepage'
+    raise if @homepage.nil?
 
     CHECKSUM_TYPES.each do |type|
       set_instance_variable type
