@@ -64,7 +64,7 @@ begin
         # please improve it! :)
         exec 'mate', *Dir["#{HOMEBREW_PREFIX}/Library/*"]<<
                           "#{HOMEBREW_PREFIX}/bin/brew"<<
-                          "#{HOMEBREW_PREFIX}/README*"
+                          "#{HOMEBREW_PREFIX}/README.md"
       else
         exec_editor *ARGV.formulae.collect {|f| f.path}
       end

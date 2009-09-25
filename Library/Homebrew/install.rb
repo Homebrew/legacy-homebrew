@@ -11,14 +11,14 @@ def text_for_keg_only_formula f
 #{f.name} is keg-only. This means it is not symlinked into Homebrew's
 prefix. The formula provides the following rationale:
 
-#{f.keg_only?}
+#{f.keg_only?.chomp}
 
 Generally there are no consequences of this for you, however if you build your
 own software and it requires this formula, you may want to run this command to
 link it into the Homebrew prefix:
 
      brew link #{f.name}
-  EOS
+EOS
 end
 
 
@@ -105,7 +105,7 @@ def install f
   end
 
   if f.keg_only?
-    ohai 'Caveats', text_for_keg_only_formula(f).chomp
+    ohai 'Caveats', text_for_keg_only_formula(f)
     show_summary_heading = true
   else
     begin
