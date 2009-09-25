@@ -14,6 +14,13 @@ class Spidermonkey <Formula
 
   def install
     ENV.j1
+
+    # Spidermonkey hardsets the CC and CCC environment variables to cc and g++
+    # but homebrew uses compiler flags that aren't available in Apple's default cc (version 4.0.1)
+    # instead use the compilers chosen by homebrew and set in the CC and CXX environment variables
+    inreplace "src/config/Darwin.mk", 'CC = cc', "CC = #{ENV['CC']}"
+    inreplace "src/config/Darwin.mk", 'CCC = g++', "CCC = #{ENV['CXX']}"
+
     Dir.chdir "src" do
       system "make JS_DIST=#{HOMEBREW_PREFIX} JS_THREADSAFE=1 DEFINES=-DJS_C_STRINGS_ARE_UTF8 -f Makefile.ref"
       system "make JS_DIST=#{prefix} -f Makefile.ref export"
