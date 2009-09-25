@@ -36,19 +36,28 @@ require 'hardware'
 ENV['MACOSX_DEPLOYMENT_TARGET']=MACOS_VERSION.to_s
 
 # ignore existing build vars, thus we should have less bugs to deal with
-ENV['LDFLAGS']=""
+ENV['LDFLAGS'] = ''
+ENV['CPPFLAGS'] = ''
+
+if MACOS_VERSION >= 10.6 or ENV['HOMEBREW_USE_LLVM']
+  ENV['CC']  = '/Developer/usr/llvm-gcc-4.2/bin/llvm-gcc-4.2'
+  ENV['CXX'] = '/Developer/usr/llvm-gcc-4.2/bin/llvm-g++-4.2'
+  cflags = ['-O4'] # O4 baby!
+else
+  ENV['CC']="gcc-4.2"
+  ENV['CXX']="g++-4.2"
+  cflags = ['-O3']
+end
 
 # optimise all the way to eleven, references:
 # http://en.gentoo-wiki.com/wiki/Safe_Cflags/Intel
 # http://forums.mozillazine.org/viewtopic.php?f=12&t=577299
 # http://gcc.gnu.org/onlinedocs/gcc-4.2.1/gcc/i386-and-x86_002d64-Options.html
-cflags=[]
 if MACOS_VERSION >= 10.6
   case Hardware.intel_family
   when :penryn, :core2
-    # no need to add -mfpmath when you specify -m64
-    cflags<<"-march=core2"<<'-m64'
-    ENV['LDFLAGS']="-arch x86_64"
+    # no need to add -mfpmath it happens automatically with 64 bit compiles
+    cflags << "-march=core2"
   when :core
     cflags<<"-march=prescott"<<"-mfpmath=sse"
   end
@@ -60,11 +69,7 @@ else
     cflags<<"-march=prescott"
   end
   cflags<<"-mfpmath=sse"
-  
-  ENV['CC']="gcc-4.2"
-  ENV['CXX']="g++-4.2"
 end
-
 cflags<<"-mmmx"
 case Hardware.intel_family
 when :nehalem
@@ -78,7 +83,7 @@ end
 # -w: keep signal to noise high
 # -fomit-frame-pointer: we are not debugging this software, we are using it
 BREWKIT_SAFE_FLAGS="-w -pipe -fomit-frame-pointer -mmacosx-version-min=#{MACOS_VERSION}"
-ENV['CFLAGS']=ENV['CXXFLAGS']="-O3 #{cflags*' '} #{BREWKIT_SAFE_FLAGS}"
+ENV['CFLAGS']=ENV['CXXFLAGS']="#{cflags*' '} #{BREWKIT_SAFE_FLAGS}"
 
 # compile faster
 ENV['MAKEFLAGS']="-j#{Hardware.processor_count}"
@@ -109,21 +114,12 @@ module HomebrewEnvExtension
     remove_from_cflags '-msse4.1'
     remove_from_cflags '-msse4.2'
   end
-  def llvm_gcc
-    if (10.6..11.0).include?(MACOS_VERSION)
-      self['CC']='/Developer/usr/llvm-gcc-4.2/bin/llvm-gcc-4.2'
-      self['CXX']='/Developer/usr/llvm-gcc-4.2/bin/llvm-g++-4.2'
-    else
-      raise "LLVM support is only available on 10.6+"
-    end
-  end
   def osx_10_4
     self['MACOSX_DEPLOYMENT_TARGET']=nil
     remove_from_cflags(/ ?-mmacosx-version-min=10\.\d/)
   end
   def minimal_optimization
     self['CFLAGS']=self['CXXFLAGS']="-Os #{BREWKIT_SAFE_FLAGS}"
-    
   end
   def no_optimization
     self['CFLAGS']=self['CXXFLAGS']=BREWKIT_SAFE_FLAGS
@@ -144,6 +140,14 @@ module HomebrewEnvExtension
   # returns the compiler we're using
   def cc
     ENV['CC'] or "gcc"
+  end
+  def cxx
+    ENV['cxx'] or "g++"
+  end
+  # in case you need it
+  def m64
+    append_to_cflags '-m64'
+    ENV['LDFLAGS'] += '-arch x86_64'
   end
 
 private
