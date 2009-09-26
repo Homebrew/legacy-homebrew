@@ -40,25 +40,35 @@ class Postgresql <Formula
   def caveats; <<-EOS
 Suggested next steps:
 
-    * Create a user for postgresql (we'll name it "postgres"). 
+    * Create a user for postgresql (we'll name it "postgres"). Do it via System preferences or by running:
+
+    $ sudo dscl . -create /Users/postgres
+    $ sudo dscl . -create /Users/postgres Usershell /bin/bash
+
     * Create a databse:
-    
+
     $ sudo mkdir -p /var/db/postgresql/defaultdb
     $ sudo chown postgres /var/db/postgresql/defaultdb
-    $ sudo su postgres -c '/usr/local/bin/initdb -D /var/db/postgresql/defaultdb'
+    $ sudo su postgres -c '#{HOMEBREW_PREFIX}/bin/initdb -D /var/db/postgresql/defaultdb'
 
     $ sudo touch /var/log/postgres.log
     $ sudo chown postgres /var/log/postgres.log
 
 Starting:
 
-    $ sudo su postgres -c "/usr/local/bin/pg_ctl -D /var/db/postgresql/defaultdb start -l /var/log/postgres.log"
+    $ sudo su postgres -c "#{HOMEBREW_PREFIX}/bin/pg_ctl -D /var/db/postgresql/defaultdb start -l /var/log/postgres.log"
 
 Stopping:
 
-    $ sudo su postgres -c "/usr/local/bin/pg_ctl -D /var/db/postgresql/defaultdb stop -s -m fast"
+    $ sudo su postgres -c "#{HOMEBREW_PREFIX}/bin/pg_ctl -D /var/db/postgresql/defaultdb stop -s -m fast"
+
+You can also alias the above commands in your bash profile to pg_start and pg_stop.
 
 Google around for org.postgresql.plist if you want launchd support.
+
+If you're wanting to install the postgres gem, include ARCHFLAGS in the gem install to avoid issues:
+
+sudo env ARCHFLAGS="-arch x86_64" gem install postgres
     EOS
   end
 end
