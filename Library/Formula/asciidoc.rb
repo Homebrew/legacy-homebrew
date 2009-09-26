@@ -1,8 +1,8 @@
 require 'brewkit'
 
 class Asciidoc <Formula
-  @url='http://www.methods.co.nz/asciidoc/asciidoc-8.4.4.tar.gz'
-  @md5='579bcd5762b177ee0ddccece8c34724b'
+  @url='http://downloads.sourceforge.net/project/asciidoc/asciidoc/8.4.5/asciidoc-8.4.5.tar.gz'
+  @md5='9f21d6e352b3ab668f9def3eb7497da2'
   @homepage='http://www.methods.co.nz/asciidoc'
 
   def install
