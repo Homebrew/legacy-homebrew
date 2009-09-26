@@ -25,7 +25,6 @@ class Imagemagick <Formula
                           "--with-modules",
                           "--without-magick-plus-plus",
                           "--disable-dependency-tracking",
-                          "--disable-shared",
                           "--without-maximum-compile-warnings",
                           "--prefix=#{prefix}",
                           "--disable-osx-universal-binary",
