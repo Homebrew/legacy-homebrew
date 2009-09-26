@@ -59,7 +59,7 @@ class Formula
     validate_variable :version if @version
     
     set_instance_variable 'homepage'
-    raise if @homepage.nil?
+#    raise if @homepage.nil? # not a good idea while we have eg GitManpages!
 
     CHECKSUM_TYPES.each do |type|
       set_instance_variable type
