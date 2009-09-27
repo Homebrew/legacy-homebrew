@@ -149,6 +149,11 @@ module HomebrewEnvExtension
   def enable_warnings
     remove_from_cflags '-w'
   end
+  # Snow Leopard defines an NCURSES value the opposite of most distros
+  # See: http://bugs.python.org/issue6848
+  def ncurses_define
+    append 'CPPFLAGS', "-DNCURSES_OPAQUE=0"
+  end
   # returns the compiler we're using
   def cc
     ENV['CC'] or "gcc"
