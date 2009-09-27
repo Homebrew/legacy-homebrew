@@ -74,13 +74,6 @@ begin
 
       require 'brewkit'
 
-      if ARGV.verbose?
-        ohai "Build Environment"
-        %w[CFLAGS LDFLAGS CPPFLAGS MAKEFLAGS CC CXX MACOSX_DEPLOYMENT_TARGET].each do |f|
-          puts "#{f}: #{ENV[f]}" unless ENV[f].to_s.empty?
-        end
-      end
-      
       if ARGV.interactive? and ARGV.formulae.length > 1
         # the reason for this is interactive mode is a little tricky to do 
         # with more than one formula, AND I can't think of a time where you'd
@@ -88,6 +81,13 @@ begin
         # this we will adapt the code. "But I might want it!" is not a
         # legitimate use!
         raise "Interactive mode can only be used with one formula argument"
+      end
+
+      if ARGV.verbose?
+        ohai "Build Environment"
+        %w[CFLAGS LDFLAGS CPPFLAGS MAKEFLAGS CC CXX MACOSX_DEPLOYMENT_TARGET].each do |f|
+          puts "#{f}: #{ENV[f]}" unless ENV[f].to_s.empty?
+        end
       end
 
       warn_about_macports_or_fink # keep warning before dependency resolution
