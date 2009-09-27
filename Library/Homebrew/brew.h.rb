@@ -247,6 +247,7 @@ end
 def warn_about_macports_or_fink
   # See these issues for some history:
   # http://github.com/mxcl/homebrew/issues/#issue/13
+  # http://github.com/mxcl/homebrew/issues/#issue/41
   # http://github.com/mxcl/homebrew/issues/#issue/48
   
   %w[port fink].each do |ponk|
