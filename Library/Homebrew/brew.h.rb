@@ -345,7 +345,7 @@ private
 
   def clean_file path
     perms=0444
-    case `file -h #{path}`
+    case `file -h '#{path}'`
     when /Mach-O dynamically linked shared library/
       strip path, '-SxX'
     when /Mach-O [^ ]* ?executable/
@@ -366,7 +366,7 @@ private
       elsif path.extname == '.la' and not @f.skip_clean? path
         # *.la files are stupid
         path.unlink
-      else
+      elsif not path.symlink?
         clean_file path
       end
     end
