@@ -5,6 +5,7 @@ class Soprano <Formula
   @homepage='http://soprano.sourceforge.net/'
   @md5='c9a2c008b80cd5d76599e9d48139dfe9'
 
+  depends_on 'cmake'
   depends_on 'qt'
   depends_on 'clucene'
   depends_on 'redland'
