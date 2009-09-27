@@ -228,21 +228,40 @@ def diy
 end
 
 
-def fix_PATH
-  bad_paths  = `/usr/bin/which -a port`.split
-  bad_paths += `/usr/bin/which -a fink`.split
-
-  # don't remove standard paths!
-  bad_paths.delete_if do |pn|
-    %w[/usr/bin /bin /usr/sbin /sbin /usr/local/bin /usr/X11/bin].include? pn or pn.empty?
+def warn_about_macports_or_fink
+  # See these issues for some history:
+  # http://github.com/mxcl/homebrew/issues/#issue/13
+  # http://github.com/mxcl/homebrew/issues/#issue/48
+  
+  %w[port fink].each do |ponk|
+    path = `/usr/bin/which -s #{ponk}`
+    unless path.empty?
+      opoo "It appears you have Macports or Fink in your PATH"
+      puts "If formula fail to build try renaming or uninstalling these tools."
+    end
   end
-  bad_paths += %w[/opt/local/bin /opt/local/sbin /sw/bin /sw/sbin]
-
-  paths = ENV['PATH'].split(':').reject do |p|
-    p.squeeze! '/'
-    bad_paths.find { |pn| p =~ /^#{pn}/ } and true
+  
+  # we do the above check because macports can be relocated and fink may be
+  # able to be relocated in the future. This following check is because if
+  # fink and macports are not in the PATH but are still installed it can
+  # *still* break the build -- because some build scripts hardcode these paths:
+  %w[/sw/bin/fink /opt/local/bin/port].each do |ponk|
+    if File.exist? ponk
+      opoo "It appears you have MacPorts or Fink installed"
+      puts "If formula fail to build, consider renaming: %s" % Pathname.new(ponk).dirname.parent
+    end
   end
-  ENV['PATH'] = paths*':'
+  
+  # finally sometimes people make their MacPorts or Fink read-only so they
+  # can quickly test Homebrew out, but still in theory obey the README's 
+  # advise to rename the root directory. This doesn't work, many build scripts
+  # error out when they try to read from these now unreadable directories.
+  %w[/sw /opt/local].each do |path|
+    if File.exist? path and not File.readable? path
+      opoo "It appears you have MacPorts or Fink installed"
+      puts "This has been known to cause build fails and other more subtle problems."
+    end
+  end
 end
 
 

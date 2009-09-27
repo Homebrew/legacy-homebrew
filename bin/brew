@@ -12,11 +12,6 @@ if %w[/ /usr].include? HOMEBREW_PREFIX.to_s then abort <<-EOS
   EOS
 end
 
-# remove MacPorts and Fink from the PATH, this prevents issues like:
-# http://github.com/mxcl/homebrew/issues/#issue/13
-# http://github.com/mxcl/homebrew/issues/#issue/48
-fix_PATH
-
 if MACOS_VERSION < 10.5
   onoe "Homebrew currently requires Leopard or higher"
   abort "Sorry about that, but thanks for your interest anyway!"
@@ -94,6 +89,8 @@ begin
         # legitimate use!
         raise "Interactive mode can only be used with one formula argument"
       end
+
+      warn_about_macports_or_fink # keep warning before dependency resolution
 
       unless ARGV.force?
         unless system "/usr/bin/which -s #{ENV.cc}"
