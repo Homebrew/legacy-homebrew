@@ -2,8 +2,8 @@ require 'brewkit'
 
 class Mawk <Formula
   @url='http://invisible-island.net/datafiles/release/mawk.tar.gz'
-  @homepage='http://www.gnu.org/software/gnugo/gnugo.html'
-  @md5='5d42d8c3fb9f54f3e35fe56d7b62887e'
+  @homepage='http://invisible-island.net/mawk/mawk.html'
+  @md5='0df02f5a07cdb065a13e56c5abcd008a'
   @version='1.3.3'
 
   def patches
