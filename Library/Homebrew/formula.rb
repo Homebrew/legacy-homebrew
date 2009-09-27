@@ -101,6 +101,8 @@ class Formula
   # reimplement if we don't autodetect the download strategy you require
   def download_strategy
     case url
+    when %r[^cvs://] then CVSDownloadStrategy
+    when %r[^hg://] then MercurialDownloadStrategy
     when %r[^svn://] then SubversionDownloadStrategy
     when %r[^git://] then GitDownloadStrategy
     when %r[^http://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
