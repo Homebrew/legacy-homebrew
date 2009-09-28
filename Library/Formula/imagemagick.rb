@@ -3,8 +3,8 @@ require 'brewkit'
 # some credit to http://github.com/maddox/magick-installer
 
 class Imagemagick <Formula
-  @url='ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.5.5-10.tar.bz2'
-  @md5='36bcef67cae5d5fce2899acb9200213a'
+  @url='ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.5.6-5.tar.gz'
+  @md5='668919a5a7912fb6778975bc55893004'
   @homepage='http://www.imagemagick.org'
 
   depends_on 'jpeg'
