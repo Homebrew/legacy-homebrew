@@ -1,15 +1,9 @@
 require 'brewkit'
 
-class ZncExtra <Formula
-  @url='http://downloads.sourceforge.net/project/znc/znc-extra/0.074/znc-extra-0.074.tar.gz'
-  @homepage='http://en.znc.in/wiki/ZNC'
-  @md5='34c0f43318c8c4a2cfb3a962e1740255'
-end
-
 class Znc <Formula
-  @url='http://downloads.sourceforge.net/project/znc/znc/0.074/znc-0.074.tar.gz'
-  @homepage='http://en.znc.in/wiki/ZNC'
-  @md5='378187acd114769f8f97ef2d4b19da25'
+  url 'http://downloads.sourceforge.net/project/znc/znc/0.076/znc-0.076.tar.gz'
+  homepage 'http://en.znc.in/wiki/ZNC'
+  md5 '03c2804b91225e83884f06078f6db568'
 
   depends_on 'c-ares'
 
@@ -22,13 +16,7 @@ class Znc <Formula
 
     # Apparently Snow Leopard's libperl is at /System/Library/Perl/lib/5.10/libperl.dylib
     # but I don't know how to tell znc that. Perl is only used for user plugins, anyway.
-    system "./configure", "--prefix=#{prefix}", "--disable-perl"
+    system "./configure", "--prefix=#{prefix}", "--enable-extra", "--disable-perl"
     system "make install"
-
-    # Extra modules that don't come in the base package -- add them to the znc.conf file to enable
-    ZncExtra.new.brew do
-      system "./configure", "--prefix=#{prefix}"
-      system "make install"
-    end
   end
 end
