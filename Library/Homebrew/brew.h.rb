@@ -21,21 +21,16 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 #  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-def make url
+def __make url, name
   require 'formula'
 
-  path=Pathname.new url
-
-  /(.*?)[-_.]?#{path.version}/.match path.basename
-  raise "Couldn't parse name from #{url}" if $1.nil? or $1.empty?
-
-  path=Formula.path $1
+  path = Formula.path name
   raise "#{path} already exists" if path.exist?
 
   template=<<-EOS
             require 'brewkit'
 
-            class #{Formula.class_s $1} <Formula
+            class #{Formula.class_s name} <Formula
               url '#{url}'
               homepage ''
               md5 ''
@@ -86,6 +81,27 @@ def make url
   f.close
 
   return path
+end
+
+
+def make url
+  path = Pathname.new url
+
+  /(.*?)[-_.]?#{path.version}/.match path.basename
+
+  unless $1.to_s.empty?
+    name = $1
+  else
+    print "Formula name [#{path.stem}]: "
+    gots = $stdin.gets.chomp
+    if gots.empty?
+      name = path.stem
+    else
+      name = gots
+    end
+  end
+  
+  __make url, name
 end
 
 
