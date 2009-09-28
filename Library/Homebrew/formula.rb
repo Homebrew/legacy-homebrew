@@ -335,10 +335,10 @@ private
   end
 
   def validate_variable name
-    v=eval "@#{name}"
+    v = instance_variable_get("@#{name}")
     raise "Invalid @#{name}" if v.to_s.empty? or v =~ /\s/
   end
-  
+
   def set_instance_variable(type)
     if !instance_variable_defined?("@#{type}")
       class_value = self.class.send(type)
