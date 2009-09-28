@@ -114,6 +114,11 @@ module HomebrewEnvExtension
     remove_from_cflags '-msse4.1'
     remove_from_cflags '-msse4.2'
   end
+  def O3
+    # Sometimes O4 just takes fucking forever
+    remove_from_cflags '-O4'
+    append_to_cflags '-O3'
+  end
   def osx_10_4
     self['MACOSX_DEPLOYMENT_TARGET']=nil
     remove_from_cflags(/ ?-mmacosx-version-min=10\.\d/)
