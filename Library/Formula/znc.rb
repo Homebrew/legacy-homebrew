@@ -13,9 +13,7 @@ class Znc <Formula
 
   depends_on 'c-ares'
 
-  def skip_clean? path
-    path == bin+'znc'
-  end
+  skip_clean 'bin/znc'
 
   def install
     # This is a 3rd-party module that handles push notifications for Colloquy on the iPhone

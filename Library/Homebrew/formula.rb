@@ -108,8 +108,10 @@ class Formula
     else HttpDownloadStrategy
     end
   end
-  # tell the user about any caveats regarding this package
+
+  # tell the user about any caveats regarding this package, return a string
   def caveats; nil end
+
   # patches are automatically applied after extracting the tarball
   # return an array of strings, or if you need a patch level other than -p0
   # return a Hash eg.
@@ -121,11 +123,19 @@ class Formula
   # The final option is to return DATA, then put a diff after __END__. You
   # can still return a Hash with DATA as the value for a patch level key.
   def patches; end
-  # sometimes the clean process breaks things, return true to skip anything
-  def skip_clean? path; false end
+
   # rarely, you don't want your library symlinked into the main prefix
   # see gettext.rb for an example
   def keg_only?; false end
+
+  # sometimes the clean process breaks things
+  # skip cleaning paths in a formula with a class method like this:
+  #   skip_clean [bin+"foo", lib+"bar"]
+  # redefining skip_clean? in formulas is now deprecated
+  def skip_clean? path
+    to_check = path.relative_path_from(prefix).to_s
+    self.class.skip_clean_paths.include?(to_check)
+  end
 
   # yields self with current working directory set to the uncompressed tarball
   def brew
@@ -350,7 +360,8 @@ private
     raise 'You cannot override Formula.brew' if method == 'brew'
   end
 
-  class <<self
+  class << self
+
     def self.attr_rw(*attrs)
       attrs.each do |attr|
         class_eval %Q{
@@ -360,9 +371,9 @@ private
         }
       end
     end
-    
-    attr_rw :url, :version, :homepage, :head, :deps, *CHECKSUM_TYPES
-    
+
+    attr_rw :url, :version, :homepage, :head, :deps, :skip_clean_paths, *CHECKSUM_TYPES
+
     def depends_on name, *args
       @deps ||= []
 
@@ -384,7 +395,14 @@ private
       # step for some reason I am not sure about
       @deps << name unless @deps.include? name
     end
-  end  
+
+    def skip_clean paths
+      @skip_clean_paths ||= []
+      [paths].flatten.each do |p|
+        @skip_clean_paths << p.to_s unless @skip_clean_paths.include? p.to_s
+      end
+    end
+  end
 end
 
 # see ack.rb for an example usage
