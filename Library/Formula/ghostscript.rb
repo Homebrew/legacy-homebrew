@@ -12,8 +12,11 @@ class Ghostscript <Formula
   @md5='526366f8cb4fda0d3d293597cc5b984b'
   
   def install
+    # O3 with ghostscript takes an ungodly amount of time
+    ENV.O3
     # ghostscript configure ignores LDFLAGs apparently
     ENV['LIBS']="-L/usr/X11/lib"
+
     system "./configure", "--prefix=#{prefix}", "--disable-debug", 
                           # the cups component adamantly installs to /usr so fuck it
                           "--disable-cups"
