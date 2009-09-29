@@ -372,7 +372,7 @@ private
       end
     end
 
-    attr_rw :url, :version, :homepage, :head, :deps, :skip_clean_paths, *CHECKSUM_TYPES
+    attr_rw :url, :version, :homepage, :head, :deps, *CHECKSUM_TYPES
 
     def depends_on name, *args
       @deps ||= []
@@ -401,6 +401,10 @@ private
       [paths].flatten.each do |p|
         @skip_clean_paths << p.to_s unless @skip_clean_paths.include? p.to_s
       end
+    end
+    
+    def skip_clean_paths
+      @skip_clean_paths or []
     end
   end
 end
