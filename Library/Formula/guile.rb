@@ -14,8 +14,6 @@ class Guile <Formula
   depends_on 'readline'
 
   def install
-    ENV['PKG_CONFIG_PATH'] = "#{HOMEBREW_PREFIX}/lib/pkgconfig"
-
     system "./configure",
         "--prefix=#{prefix}", 
         "--disable-debug", 
@@ -25,7 +23,7 @@ class Guile <Formula
         # /usr/lib to trump us, since it doesn't export
         # all the same symbols
         # --adamv
-        "--with-libreadline-prefix=#{HOMEBREW_PREFIX}"
+        "--with-libreadline-prefix=#{Formula.factory('readline').prefix}"
     system "make install"
   end
 end
