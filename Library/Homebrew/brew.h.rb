@@ -289,12 +289,6 @@ def versions_of(keg_name)
 end
 
 
-# Taken from the homebrew wiki (http://wiki.github.com/mxcl/homebrew)
-def unbrewed_files
-  `cd #{HOMEBREW_PREFIX}; find bin etc include lib man share -type f \\( ! -iname ".ds_store" ! -iname "brew" \\)`
-end
-
-
 ########################################################## class PrettyListing
 class PrettyListing
   def initialize path
