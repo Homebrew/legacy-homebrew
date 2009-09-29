@@ -14,9 +14,7 @@ class Angband <Formula
                           "--disable-sdltest",
                           "--with-libpath=#{angband_libexec}"
     system "make"
-    # I'm not really sure what install is installing, since
-    # it doesn't seem to install anything for me. --adamv
-    # system "make install"
+    # Install manually; 'make install' doesn't work.
     bin.install "src/angband"
     angband_libexec.install Dir['lib/*']
   end
