@@ -24,7 +24,6 @@ class Mysql <Formula
     ENV['CXXFLAGS'] += " -fno-omit-frame-pointer -felide-constructors"
 
     configure_args = [
-      "--without-bench",
       "--without-docs",
       "--without-debug",
       "--disable-dependency-tracking",
@@ -44,7 +43,6 @@ class Mysql <Formula
     system "./configure", *configure_args
     system "make install"
 
-    # Why does sql-bench still get built w/ above options?
     (prefix+'sql-bench').rmtree unless ARGV.include? '--with-bench'
 
     # save 66MB!
