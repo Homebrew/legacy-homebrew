@@ -186,10 +186,11 @@ Let this be the last sudo you do for quite some time:
 
 I already have a bunch of junk in /usr/local
 --------------------------------------------
-Yeah, that's typical. You can either just merge this folder into what is
-already there -- it's perfectly safe, Homebrew will never touch the other
-files. Or you can make a note of what is already there and reinstall those
-packages using Homebrew after deleting /usr/local.
+The easiest thing to do is just git clone into /usr/local. The files that are
+there can remain there, Homebrew will never touch them.
+
+Otherwise, delete everything and reinstall with Homebrew. Or merge it in by
+hand.
 
 How about mate and gitx and that?
 ---------------------------------
