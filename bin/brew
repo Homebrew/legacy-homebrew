@@ -40,7 +40,11 @@ begin
 
     when 'ls', 'list'
       if ARGV.flag? '--unbrewed'
-        puts unbrewed_files
+        # Taken from the homebrew wiki (http://wiki.github.com/mxcl/homebrew)
+        dirs = HOMEBREW_PREFIX.children.select { |pn| pn.directory? }.collect { |pn| pn.basename.to_s }
+        dirs -= ['Library', 'Cellar', '.git']
+        Dir.chdir HOMEBREW_PREFIX
+        exec 'find', *dirs + %w[-type f ( ! -iname .ds_store ! -iname brew )]
       elsif ARGV.named_empty?
         ENV['CLICOLOR']=nil
         exec 'ls', *ARGV.options<<HOMEBREW_CELLAR
