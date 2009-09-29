@@ -16,9 +16,7 @@ class Imagemagick <Formula
   def install
     ENV.libpng
     ENV.deparallelize
-
-    # TODO eventually these will be external optional dependencies
-    # but for now I am lazy
+    ENV.O3 # takes forever otherwise
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
