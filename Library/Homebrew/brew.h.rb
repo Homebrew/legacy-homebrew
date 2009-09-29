@@ -346,7 +346,7 @@ private
     when 1
       puts *files
     else
-      puts "#{root} (#{files.length} #{other}files)"
+      puts "#{root}/ (#{files.length} #{other}files)"
     end
   end
 end
