@@ -18,6 +18,7 @@ require 'update'
 # these are defined in global.rb, but we don't want to break our actual
 # homebrew tree, and we do want to test everything :)
 HOMEBREW_PREFIX=Pathname.new '/private/tmp/testbrew/prefix'
+HOMEBREW_REPOSITORY=HOMEBREW_PREFIX
 HOMEBREW_CACHE=HOMEBREW_PREFIX.parent+"cache"
 HOMEBREW_CELLAR=HOMEBREW_PREFIX.parent+"cellar"
 HOMEBREW_USER_AGENT="Homebrew"
@@ -589,6 +590,11 @@ class BeerTasting <Test::Unit::TestCase
     end
   end
   
+  def test_angband_version_style
+    f = MockFormula.new 'http://rephial.org/downloads/3.0/angband-3.0.9b-src.tar.gz'
+    assert_equal '3.0.9b', f.version
+  end
+  
   private
   
   OUTSIDE_PREFIX = '/tmp'
@@ -607,7 +613,7 @@ class BeerTasting <Test::Unit::TestCase
     end
     @fixture_data
   end
-  
+
   def test_ENV_options
     ENV.gcc_4_0_1
     ENV.gcc_4_2
