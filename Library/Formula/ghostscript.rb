@@ -22,7 +22,7 @@ class Ghostscript <Formula
     # move the included jpeg6 out of the way so we don't use it
     FileUtils.rm_rf 'jpeg'
 
-    build_dir = Dir.pwd
+    build_dir = Pathname.getwd
     # download jpeg7, extract it, and fool ghostscript into using it
     Formula.factory('jpeg').brew do
       FileUtils.ln Dir.pwd, build_dir+'jpeg'
