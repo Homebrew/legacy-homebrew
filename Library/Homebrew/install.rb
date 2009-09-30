@@ -7,11 +7,14 @@ require 'brew.h'
 show_summary_heading = false
 
 def text_for_keg_only_formula f
+  if f.keg_only?.kind_of? String
+    rationale = "The formula provides the following rationale:\n\n#{f.keg_only?.chomp}"
+  else
+    rationale = "The formula didn't provide any rationale for this."
+  end
   <<-EOS
 #{f.name} is keg-only. This means it is not symlinked into Homebrew's
-prefix. The formula provides the following rationale:
-
-#{f.keg_only?.chomp}
+prefix. #{rationale}
 
 Generally there are no consequences of this for you, however if you build your
 own software and it requires this formula, you may want to run this command to
