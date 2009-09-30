@@ -1,14 +1,15 @@
 require 'brewkit'
 
-# TODO common aliases: ant
+# TODO common aliases: 'apache ant'
 
-class ApacheAnt <Formula
+class Ant <Formula
   @url='http://www.ibiblio.org/pub/mirrors/apache/ant/binaries/apache-ant-1.7.1-bin.tar.gz'
   @homepage='http://ant.apache.org/'
   @md5='cc5777c57c4e8269be5f3d1dc515301c'
-  @version='1.7.1'
 
   def install
     prefix.install Dir['*']
+    File.unlink Dir['bin/*.cmd']
+    File.unlink Dir['bin/*.bat']
   end
 end
