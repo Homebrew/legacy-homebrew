@@ -8,11 +8,8 @@ class Omega <Formula
   def install
     # 'make install' is weird, so we do it ourselves
     
-    omega_libexec = libexec + "omega"
-    omega_libexec.mkpath
-
     # Set up our target folders
-    inreplace "defs.h", "#define OMEGALIB \"./omegalib/\"", "#define OMEGALIB \"#{omega_libexec}/\""
+    inreplace "defs.h", "#define OMEGALIB \"./omegalib/\"", "#define OMEGALIB \"#{libexec}/\""
 
     # Don't alias CC this way; also, don't need that ncurses include path
     inreplace "Makefile", "CC = gcc -I/usr/include/ncurses", ""
@@ -27,6 +24,6 @@ class Omega <Formula
     system "make"
 
     bin.install "omega"
-    omega_libexec.install Dir['omegalib/*']
+    libexec.install Dir['omegalib/*']
   end
 end
