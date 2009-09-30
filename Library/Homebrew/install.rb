@@ -60,7 +60,7 @@ def install f
         f.prefix.mkpath
         beginning=Time.now
         f.install
-        %w[README ChangeLog COPYING LICENSE COPYRIGHT AUTHORS].each do |file|
+        FORMULA_META_FILES.each do |file|
           FileUtils.mv "#{file}.txt", file rescue nil
           f.prefix.install file rescue nil
         end
