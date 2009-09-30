@@ -6,10 +6,10 @@ class ObjectiveCaml <Formula
   @md5='fe011781f37f6b41fe08e0706969a89e'
 
   def install
+    system "./configure --prefix #{prefix}"
+    system "make world"
     # 'world' can be built in parallel, but the other targets have problems
     ENV.deparallelize
-    system "./configure --prefix #{prefix}"
-    system "make -j#{Hardware.processor_count} world"
     system "make opt"
     system "make opt.opt"
     system "make install"
