@@ -17,14 +17,11 @@ class Nethack <Formula
   @md5='21479c95990eefe7650df582426457f9'
 
   def patches
-    {
-      :p1 =>
-["http://github.com/adamv/nethack-osx/raw/82992eb6e4d8c76b05037579126293d644ef971d/patches/nethack-osx-343.patch"]
-    }
+    "http://github.com/adamv/nethack-osx/raw/82992eb6e4d8c76b05037579126293d644ef971d/patches/nethack-osx-343.patch"
   end
 
   def skip_clean? path
-    path == libexec + "nethack/save"
+    path == libexec + "save"
   end
 
   def install
@@ -34,29 +31,22 @@ class Nethack <Formula
     # Symlink makefiles
     system 'sh sys/unix/setup.sh'
     
-    ## We are not using the default installer
-    # Install to a sane location, geez.
-    nethackdir = "#{prefix}/libexec/nethack"
-    system "mkdir -p #{nethackdir}"
-    
     inreplace "include/config.h",
       '#  define HACKDIR "/usr/games/lib/nethackdir"',
-      "#define HACKDIR \"#{nethackdir}\""
+      "#define HACKDIR \"#{libexec}\""
     
     # Make the data first, before we munge the CFLAGS
     system "cd dat;make"
     
     Dir.chdir 'dat' do
-      nethack_libexec = (libexec+'nethack')
-      
       %w(perm logfile).each do |f|
         system "touch #{f}"
-        nethack_libexec.install f
+        libexec.install f
       end
       
       # Stage the data
-      nethack_libexec.install %w(help hh cmdhelp history opthelp wizhelp dungeon license data oracles options rumors quest.dat)
-      nethack_libexec.install Dir['*.lev']
+      libexec.install %w(help hh cmdhelp history opthelp wizhelp dungeon license data oracles options rumors quest.dat)
+      libexec.install Dir['*.lev']
     end
     
     # Make the game
@@ -64,6 +54,6 @@ class Nethack <Formula
     system 'cd src;make'
     
     bin.install 'src/nethack'
-    system "mkdir #{prefix}/libexec/nethack/save"
+    FileUtils.mkdir libexec+'save'
   end
 end

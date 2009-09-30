@@ -6,16 +6,14 @@ class Angband <Formula
   @homepage='http://rephial.org/'
 
   def install
-    angband_libexec = libexec+"angband"
-
     system "./configure", "--prefix=#{prefix}",
                           "--enable-curses",
                           "--disable-x11",
                           "--disable-sdltest",
-                          "--with-libpath=#{angband_libexec}"
+                          "--with-libpath=#{libexec}"
     system "make"
     # Install manually; 'make install' doesn't work.
     bin.install "src/angband"
-    angband_libexec.install Dir['lib/*']
+    libexec.install Dir['lib/*']
   end
 end
