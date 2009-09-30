@@ -37,6 +37,19 @@ class Vice <Formula
     
     # We could trim down the .app sizes a bit more if we only kept
     # the proper .icns files in the proper .app bundles...
+    Pathname.glob libexec+'*.app' do |d|
+      appname = File.basename(d, '.app')
+  
+      Pathname.glob d+'Contents/Resources/x*.icns' do |g|
+        if File.basename(g, '.icns') != appname
+          File.unlink g
+        end
+      end
+    end
+    
+    # A better approach to the above would be to modify the
+    # make-bindist.sh script to not copy extraneous icons
+    # in the first place.
   end
   
   def caveats
