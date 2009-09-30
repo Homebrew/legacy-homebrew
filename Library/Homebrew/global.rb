@@ -35,8 +35,8 @@ else
 end
 
 HOMEBREW_PREFIX = (Pathname.getwd+__FILE__).dirname.parent.parent.cleanpath
+HOMEBREW_REPOSITORY = HOMEBREW_PREFIX.realpath
 HOMEBREW_CELLAR = HOMEBREW_PREFIX+'Cellar'
-HOMEBREW_REPOSITORY = HOMEBREW_CELLAR.realpath.parent
 HOMEBREW_VERSION = 0.4
 HOMEBREW_WWW = 'http://bit.ly/Homebrew'
 
