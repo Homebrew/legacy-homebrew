@@ -8,7 +8,7 @@ class Couchdb <Formula
   depends_on 'spidermonkey'
   depends_on 'icu4c'
   depends_on 'erlang'
-  
+
   def skip_clean? path
     path == prefix+"var/lib/couchdb" or
     path == prefix+"var/log/couchdb"
@@ -19,7 +19,7 @@ class Couchdb <Formula
     system "make"
     system "make install"
 
-    (prefix+"var/lib/couchdb").mkdir
-    (prefix+"var/log/couchdb").mkdir
+    (prefix+"var/lib/couchdb").mkpath
+    (prefix+"var/log/couchdb").mkpath
   end
 end
