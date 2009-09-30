@@ -2,7 +2,7 @@ require 'brewkit'
 
 class Tmux <Formula
   url 'http://downloads.sourceforge.net/tmux/tmux-1.0.tar.gz'
-  homepage 'tmux.sourceforge.net'
+  homepage 'http://tmux.sourceforge.net'
   md5 '716b12d9ea052f57d917bf2869d419df'
 
   def install
