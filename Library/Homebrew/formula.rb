@@ -96,7 +96,7 @@ class Formula
   def info; prefix+'share'+'info' end
   def include; prefix+'include' end
   def share; prefix+'share' end
-  def var; prefix.parent+'var' end
+  def var; prefix+'var' end
 
   # reimplement if we don't autodetect the download strategy you require
   def download_strategy
