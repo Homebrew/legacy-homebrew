@@ -48,6 +48,11 @@ else
   ENV['CXX']="g++-4.2"
   cflags = ['-O3']
 end
+# in rare cases this may break your builds, as the tool for some reason wants
+# to use a specific linker, however doing this in general causes formula to
+# build more successfully because we are changing CC and many build systems
+# don't react properly to that
+ENV['LD']=ENV['CC']
 
 # optimise all the way to eleven, references:
 # http://en.gentoo-wiki.com/wiki/Safe_Cflags/Intel
@@ -106,9 +111,11 @@ module HomebrewEnvExtension
     when 10.5
       self['CC']=nil
       self['CXX']=nil
+      self['LD']=nil
     when 10.6..11.0
       self['CC']='gcc-4.0'
       self['CXX']='g++-4.0'
+      self['LD']=self['CC']
       remove_from_cflags '-march=core2'
       self.O3
     end
@@ -124,6 +131,7 @@ module HomebrewEnvExtension
     # Sometimes you want to downgrade from LLVM to GCC 4.2
     self['CC']="gcc-4.2"
     self['CXX']="g++-4.2"
+    self['LD']=self['CC']
     self.O3
   end
   def osx_10_4
