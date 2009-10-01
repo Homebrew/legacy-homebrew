@@ -153,6 +153,10 @@ class Pathname
 
     nil
   end
+
+  if '1.9' <= RUBY_VERSION
+    alias_method :to_str, :to_s
+  end
 end
 
 # sets $n and $d so you can observe creation of stuff
