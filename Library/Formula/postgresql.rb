@@ -17,8 +17,7 @@ class Postgresql <Formula
         "--with-libxml",
         "--with-libxslt",
         "--prefix=#{prefix}",
-        "--disable-debug",
-        "--disable-dependency-tracking"
+        "--disable-debug"
     ]
 
     if MACOS_VERSION >= 10.6
