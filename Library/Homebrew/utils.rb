@@ -34,7 +34,9 @@ def opoo warning
 end
 
 def onoe error
-  puts "\033[1;31m==>\033[0;0;1m Error\033[0;0m: #{error}"
+  lines = error.to_s.split'\n'
+  puts "\033[1;31m==>\033[0;0;1m Error\033[0;0m: #{lines.shift}"
+  puts *lines unless lines.empty?
 end
 
 def pretty_duration s
