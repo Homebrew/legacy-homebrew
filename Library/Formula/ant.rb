@@ -9,7 +9,7 @@ class Ant <Formula
 
   def install
     prefix.install Dir['*']
-    File.unlink Dir['bin/*.cmd']
-    File.unlink Dir['bin/*.bat']
+    Dir['bin/*.cmd'].each { |file| File.unlink file }
+    Dir['bin/*.bat'].each { |file| File.unlink file }
   end
 end
