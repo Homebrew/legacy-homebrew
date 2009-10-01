@@ -1,12 +1,11 @@
 require 'brewkit'
 
 class Postgresql <Formula
-  @url='http://wwwmaster.postgresql.org/redir/198/h/source/v8.4.0/postgresql-8.4.0.tar.bz2'
   @homepage='http://www.postgresql.org/'
+  @url='http://wwwmaster.postgresql.org/redir/198/h/source/v8.4.0/postgresql-8.4.0.tar.bz2'
   @md5='1f172d5f60326e972837f58fa5acd130'
 
   def install
-
     configure_args = [
         "--enable-thread-safety",
         "--with-bonjour",
@@ -29,6 +28,8 @@ class Postgresql <Formula
     system "./configure", *configure_args
     system "make install"
 
+    (prefix+'org.postgresql.postgres.plist').write startup_plist
+
   end
 
   def skip_clean? path
@@ -38,37 +39,53 @@ class Postgresql <Formula
   end
 
   def caveats; <<-EOS
-Suggested next steps:
+If this is your first install, create a database with:
+    #{HOMEBREW_PREFIX}/bin/initdb #{HOMEBREW_PREFIX}/var/postgres
 
-    * Create a user for postgresql (we'll name it "postgres"). Do it via System preferences or by running:
+Automatically load on login with:
+    launchctl load -w #{prefix}/org.postgresql.postgres.plist
 
-    $ sudo dscl . -create /Users/postgres
-    $ sudo dscl . -create /Users/postgres Usershell /bin/bash
+Or start manually with:
+    #{HOMEBREW_PREFIX}/bin/pg_ctl -D #{HOMEBREW_PREFIX}/var/postgres -l #{HOMEBREW_PREFIX}/var/postgres/server.log start
 
-    * Create a databse:
+And stop with:
+    #{HOMEBREW_PREFIX}/bin/pg_ctl -D #{HOMEBREW_PREFIX}/var/postgres stop -s -m fast
 
-    $ sudo mkdir -p /var/db/postgresql/defaultdb
-    $ sudo chown postgres /var/db/postgresql/defaultdb
-    $ sudo su postgres -c '#{HOMEBREW_PREFIX}/bin/initdb -D /var/db/postgresql/defaultdb'
+If you want to install the postgres gem, include ARCHFLAGS in the gem install
+to avoid issues:
 
-    $ sudo touch /var/log/postgres.log
-    $ sudo chown postgres /var/log/postgres.log
+    env ARCHFLAGS="-arch x86_64" gem install postgres
 
-Starting:
-
-    $ sudo su postgres -c "#{HOMEBREW_PREFIX}/bin/pg_ctl -D /var/db/postgresql/defaultdb start -l /var/log/postgres.log"
-
-Stopping:
-
-    $ sudo su postgres -c "#{HOMEBREW_PREFIX}/bin/pg_ctl -D /var/db/postgresql/defaultdb stop -s -m fast"
-
-You can also alias the above commands in your bash profile to pg_start and pg_stop.
-
-Google around for org.postgresql.plist if you want launchd support.
-
-If you're wanting to install the postgres gem, include ARCHFLAGS in the gem install to avoid issues:
-
-sudo env ARCHFLAGS="-arch x86_64" gem install postgres
+To install gems without sudo, see the Homebrew wiki.
     EOS
+  end
+
+  def startup_plist
+    return <<-EOPLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>KeepAlive</key>
+  <true/>
+  <key>Label</key>
+  <string>org.postgresql.postgres</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>#{HOMEBREW_PREFIX}/bin/postgres</string>
+    <string>-D</string>
+    <string>#{HOMEBREW_PREFIX}/var/postgres</string>
+    <string>-r</string>
+    <string>#{HOMEBREW_PREFIX}/var/postgres/server.log</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>UserName</key>
+  <string>#{`whoami`}</string>
+  <key>WorkingDirectory</key>
+  <string>#{HOMEBREW_PREFIX}</string>
+</dict>
+</plist>
+    EOPLIST
   end
 end
