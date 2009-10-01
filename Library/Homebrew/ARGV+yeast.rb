@@ -58,7 +58,7 @@ module HomebrewArgvExtension
     flag? '--force'
   end
   def verbose?
-    flag? '--verbose'
+    flag? '--verbose' or ENV['HOMEBREW_VERBOSE']
   end
   def debug?
     flag? '--debug' or ENV['HOMEBREW_DEBUG']
