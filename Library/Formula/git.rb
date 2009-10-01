@@ -18,6 +18,9 @@ class Git <Formula
     system "./configure --prefix=#{prefix}"
     system "make install"
 
+    # Install the git bash completion file
+    etc.install 'contrib/completion/git-completion.bash'
+
     # these files are exact copies of the git binary, so like the contents
     # of libexec/git-core lets hard link them
     # I am assuming this is an overisght by the git devs
