@@ -20,6 +20,8 @@ class Mysql <Formula
   end
 
   def install
+    # See: http://dev.mysql.com/doc/refman/5.1/en/configure-options.html
+    # These flags may not apply to gcc 4+
     ENV['CXXFLAGS'] = ENV['CXXFLAGS'].gsub "-fomit-frame-pointer", ""
     ENV['CXXFLAGS'] += " -fno-omit-frame-pointer -felide-constructors"
 
@@ -28,7 +30,7 @@ class Mysql <Formula
       "--without-debug",
       "--disable-dependency-tracking",
       "--prefix=#{prefix}",
-      "--localstatedir=#{HOMEBREW_PREFIX}/var/mysql",
+      "--localstatedir=#{var}/mysql",
       "--with-plugins=innobase,myisam",
       "--with-extra-charsets=complex",
       "--with-ssl",
@@ -42,10 +44,8 @@ class Mysql <Formula
     system "./configure", *configure_args
     system "make install"
 
+    (prefix+'mysql-test').rmtree unless ARGV.include? '--with-tests' # save 66MB!
     (prefix+'sql-bench').rmtree unless ARGV.include? '--with-bench'
-
-    # save 66MB!
-    (prefix+'mysql-test').rmtree unless ARGV.include? '--with-tests'
 
     (prefix+'com.mysql.mysqld.plist').write startup_plist
   end
