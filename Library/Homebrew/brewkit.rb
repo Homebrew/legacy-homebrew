@@ -128,6 +128,12 @@ module HomebrewEnvExtension
     remove_from_cflags '-O4'
     append_to_cflags '-O3'
   end
+  def O2
+    # Sometimes O3 doesn't work or produces bad binaries
+    remove_from_cflags '-O4'
+    remove_from_cflags '-O3'
+    append_to_cflags '-O2'
+  end
   def gcc_4_2
     # Sometimes you want to downgrade from LLVM to GCC 4.2
     self['CC']="gcc-4.2"

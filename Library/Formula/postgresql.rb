@@ -20,15 +20,19 @@ class Postgresql <Formula
         "--disable-debug"
     ]
 
-    if MACOS_VERSION >= 10.6
-      configure_args << "ARCHFLAGS='-arch x86_64'"
+    if MACOS_VERSION >= 10.6 && Hardware.is_64_bit?
+        configure_args << "ARCHFLAGS='-arch x86_64'"
+    end
+
+    # Fails on Core Duo with O4 and O3
+    if Hardware.intel_family == :core
+      ENV.O2
     end
 
     system "./configure", *configure_args
     system "make install"
 
     (prefix+'org.postgresql.postgres.plist').write startup_plist
-
   end
 
   def skip_clean? path
