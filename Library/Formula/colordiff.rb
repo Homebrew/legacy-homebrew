@@ -16,7 +16,7 @@ end
 
 __END__
 --- a/Makefile	2009-04-21 11:55:47.000000000 -0700
-+++ b/Makefile	2009-09-30 12:55:43.000000000 -0700
++++ b/Makefile	2009-10-02 10:09:44.000000000 -0700
 @@ -1,5 +1,5 @@
 -INSTALL_DIR=/usr/local/bin
 -MAN_DIR=/usr/local/man/man1
@@ -25,7 +25,15 @@ __END__
  ETC_DIR=/etc
  VERSION=1.0.9
  DIST_FILES=COPYING INSTALL Makefile README \
-@@ -22,14 +22,16 @@
+@@ -8,6 +8,7 @@
+ TMPDIR=colordiff-${VERSION}
+ TARBALL=${TMPDIR}.tar.gz
+ 
++.PHONY: install
+ 
+ doc: colordiff.xml cdiff.xml
+ 	xmlto -vv man colordiff.xml
+@@ -22,14 +23,16 @@
  
  install:
  	install -d ${DESTDIR}${INSTALL_DIR}
