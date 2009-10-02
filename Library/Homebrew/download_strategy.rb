@@ -28,7 +28,7 @@ class AbstractDownloadStrategy
   end
 end
 
-class HttpDownloadStrategy <AbstractDownloadStrategy
+class CurlDownloadStrategy <AbstractDownloadStrategy
   def fetch
     ohai "Downloading #{@url}"
     if @unique_token
@@ -90,6 +90,15 @@ private
     else
       Pathname.new(@url).extname
     end
+  end
+end
+
+class HttpDownloadStrategy <CurlDownloadStrategy
+  def initialize url, name, version
+    opoo "HttpDownloadStrategy is deprecated"
+    puts "Please use CurlDownloadStrategy in future"
+    puts "HttpDownloadStrategy will be removed in version 0.5"
+    super url, name, version
   end
 end
 
