@@ -11,7 +11,10 @@ class Weechat <Formula
   def install
     #FIXME: Compiling perl module doesn't work
     #FIXME: GnuTLS support isn't detected
-    system "cmake", "-DDISABLE_PERL=ON", std_cmake_parameters, "."
+    #NOTE: -DPREFIX has to be specified because weechat devs enjoy being non-standard
+    system "cmake", "-DPREFIX=#{prefix}", 
+                    "-DDISABLE_PERL=ON",
+                    std_cmake_parameters, "."
     system "make install"
   end
 end
