@@ -15,7 +15,8 @@ class Emacs <Formula
 			  "--disable-debug",
 			  "--disable-dependency-tracking",
 			  "--without-x"
-    system "make; make install"
+    system "make"
+    system "make install"
   end
 end
 
