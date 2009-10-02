@@ -1,7 +1,20 @@
 #!/usr/bin/ruby
 # -*- coding: utf-8 -*-
-ENV['RUBYLIB']=HOMEBREW_RUBYLIB=File.expand_path(__FILE__+'/../../Library/Homebrew')
-$:.unshift HOMEBREW_RUBYLIB
+
+def homebrew_rubylib_path
+  lib_path = "/../../Library/Homebrew"
+  # we resolve off of Dir.getwd as otherwise the symlink gets resolved!
+  brew_path = if not File.symlink? __FILE__ or File.exist? Dir.getwd+'/'+__FILE__+lib_path
+    # standard 100% symlinked or non-symlinked installation
+    __FILE__
+  else
+    # non-standard installation -- just this script is symlinked
+    File.readlink(__FILE__)
+  end
+  return File.expand_path(brew_path+lib_path)
+end
+
+$:.unshift homebrew_rubylib_path
 require 'global'
 require 'brew.h'
 
@@ -11,10 +24,8 @@ if %w[/ /usr].include? HOMEBREW_PREFIX.to_s then abort <<-EOS
   #{HOMEBREW_WWW}
   EOS
 end
-
 if MACOS_VERSION < 10.5
-  onoe "Homebrew currently requires Leopard or higher"
-  abort "Sorry about that, but thanks for your interest anyway!"
+  abort "Homebrew requires Leopard or higher, but you could fork it and fix that..."
 end
 case Hardware.cpu_type when :ppc, :dunno
   abort "Sorry, Homebrew does not support your computer's CPU architecture."
@@ -144,7 +155,7 @@ begin
           #    to make the formula script the executed script
           pid=fork
           if pid.nil?
-            exec 'ruby', '-r', "#{HOMEBREW_RUBYLIB}/install", f.path, '--', *ARGV.options
+            exec 'ruby', '-I', homebrew_rubylib_path, '-rinstall', f.path, '--', *ARGV.options
           else
             Process.wait pid
           end
