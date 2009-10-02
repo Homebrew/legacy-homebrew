@@ -110,7 +110,7 @@ class Formula
     when %r[^http://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
     when %r[^http://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
     when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
-    else HttpDownloadStrategy
+    else CurlDownloadStrategy
     end
   end
 

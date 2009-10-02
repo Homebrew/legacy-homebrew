@@ -1,7 +1,7 @@
 require 'brewkit'
 
 # even though "file -b" reports this as a zip archive, it's just a binary
-class SbtHttpDownloadStrategy <HttpDownloadStrategy
+class SbtHttpDownloadStrategy <CurlDownloadStrategy
   def stage
     FileUtils.mv @dl, File.basename(@url)
   end
