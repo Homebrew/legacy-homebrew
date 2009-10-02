@@ -12,7 +12,7 @@ class Qt <Formula
       makefiles.each { |makefile| `echo 'LIBS += -lsqlite3' >> src/#{makefile}` }
     end
 
-    system "configure", "-prefix", prefix,
+    system "./configure", "-prefix", prefix,
                         "-system-sqlite", "-system-libpng", "-system-zlib",
                         "-nomake", "demos", "-nomake", "examples", "-no-qt3support",
                         "-release", "-cocoa", "-arch x86",
