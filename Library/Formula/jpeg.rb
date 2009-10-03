@@ -6,7 +6,7 @@ class Jpeg <Formula
   @homepage='http://www.ijg.org'
 
   def install
-    system "./configure --disable-debug --prefix='#{prefix}'"
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 end
