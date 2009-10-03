@@ -7,44 +7,31 @@ class Grc <Formula
   @md5='a4814dcee965c3ff67681f6b59e6378c'
 
   def install
-    if ARGV.include? '--profile'
-      puts DATA.read
-      exit
-    end
-    
-    ohai "make"
     #TODO we should deprefixify since it's python and thus possible
-    inreplace 'grc', '/etc', prefix+'etc'
-    inreplace 'grc.1', '/etc', prefix+'etc'
+    inreplace 'grc', '/etc', etc
+    inreplace 'grc.1', '/etc', etc
     inreplace 'grcat', '/usr/local', prefix
     inreplace 'grcat.1', '/usr/local', prefix
+    
+    etc.install 'grc.conf'
+    bin.install %w[grc grcat]
+    (share+'grc').install Dir['conf.*']
+    man1.install %w[grc.1 grcat.1]
 
-    FileUtils.mkpath prefix
-    Dir.chdir prefix do
-      FileUtils.mkpath 'bin'
-      FileUtils.mkpath 'share/grc'
-      FileUtils.mkpath 'share/man/man1'
-      FileUtils.mkpath 'etc'
-    end
-
-    `cp -fv grc grcat #{prefix}/bin`
-    `cp -fv conf.* #{prefix}/share/grc`
-    `cp -fv grc.conf #{prefix}/etc`
-    `cp -fv grc.1 grcat.1 #{prefix}/share/man/man1`
+    (etc+'grc.bashrc').write DATA.read rescue RuntimeError
   end
 
   def caveats
     <<-EOS
-grc won't work as is. One option is to add some aliases to your ~/.profile
-file. Homebrew can do that for you, just execute this command:
+New shell sessions will start using GRC after you run the following command:
 
-    brew install grc --profile >> ~/.profile
+    echo 'source "`brew --prefix`/etc/grc.bashrc"' >> ~/.bashrc
+
     EOS
   end
 end
 
 __END__
-################################################################## >> Homebrew
 GRC=`which grc`
 if [ "$TERM" != dumb ] && [ -n GRC ]
 then
@@ -61,4 +48,3 @@ then
     alias ping='colourify ping'
     alias traceroute='colourify /usr/sbin/traceroute'
 fi
-################################################################## << Homebrew

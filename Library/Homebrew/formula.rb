@@ -96,10 +96,11 @@ class Formula
   def include; prefix+'include' end
   def share; prefix+'share' end
 
-  # generally we don't want these to be inside the keg
+  # generally we don't want var stuff inside the keg
   def var; HOMEBREW_PREFIX+'var' end
+  # configuration needs to be preserved past upgrades
   def etc; HOMEBREW_PREFIX+'etc' end
-
+  
   # reimplement if we don't autodetect the download strategy you require
   def download_strategy
     case url
