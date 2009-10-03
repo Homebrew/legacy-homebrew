@@ -13,7 +13,6 @@ class SdlMixer <Formula
   end
 
   def install
-    ENV.gcc_4_2
     # We use a private include folder, and then
     # symlink the header file ourselves.
     # See: http://github.com/mxcl/homebrew/issues#issue/62
