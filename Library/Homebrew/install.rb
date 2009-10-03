@@ -25,9 +25,9 @@ EOS
 end
 
 
-def ENV_append key, value, separator = ' '
+def ENV_prepend key, value, separator = ' '
   if ENV[key] and not ENV[key].empty?
-    ENV[key] += separator+value
+    ENV[key] = value+separator+ENV[key]
   else
     ENV[key] = value
   end
@@ -38,9 +38,10 @@ def install f
   f.deps.each do |dep|
     dep = Formula.factory dep
     if dep.keg_only?
-      ENV_append 'LDFLAGS', "-L#{dep.lib}"
-      ENV_append 'CPPFLAGS', "-I#{dep.include}"
-      ENV_append 'PATH', "#{dep.bin}", ':'
+      ENV_prepend 'LDFLAGS', "-L#{dep.lib}"
+      ENV_prepend 'CPPFLAGS', "-I#{dep.include}"
+      ENV_prepend 'PATH', "#{dep.bin}", ':'
+      ENV_prepend 'PKG_CONFIG_PATH', dep.lib+'pkgconfig', ':'
     end
   end
 
