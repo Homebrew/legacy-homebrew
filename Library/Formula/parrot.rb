@@ -11,8 +11,10 @@ class Parrot <Formula
     system "perl Configure.pl --prefix=#{prefix} --debugging=0 --without-opengl --cc=#{ENV['CC']}"
     system "make install"
 
-    h = "#{HOMEBREW_PREFIX}/Cellar/parrot/1.6.0/bin/parrot"
-    l = %x{otool -L #{h}}[/\S*blib\/lib\S*/]
-    system "install_name_tool -change #{l} #{HOMEBREW_PREFIX}/lib/libparrot.dylib #{h}"
+    h = "#{HOMEBREW_PREFIX}/Cellar/parrot/1.6.0/bin/"
+    l = %x{otool -L #{h}parrot}[/\S*blib\/lib\S*/]
+    %w{parrot parrot_config parrot_debugger}.each do |f|
+      system "install_name_tool -change #{l} #{HOMEBREW_PREFIX}/lib/libparrot.dylib #{h}#{f}"
+    end
   end
 end
