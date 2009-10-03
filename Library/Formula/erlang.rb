@@ -36,7 +36,6 @@ class Erlang <Formula
   # end
 
   depends_on 'icu4c'
-  depends_on 'openssl'
 
   def install
     ENV.deparallelize
@@ -58,6 +57,6 @@ class Erlang <Formula
     system "make install"
 
     ErlangManuals.new.brew { man.install Dir['man/*'] }
-    ErlangHtmlDocs.new.brew { doc.install Dir['*'] }
+    #ErlangHtmlDocs.new.brew { doc.install Dir['*'] }
   end
 end
