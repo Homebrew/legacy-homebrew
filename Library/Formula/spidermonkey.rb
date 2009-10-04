@@ -1,12 +1,11 @@
 require 'brewkit'
 
 class Spidermonkey <Formula  
-  @url="http://ftp.mozilla.org/pub/mozilla.org/js/js-1.7.0.tar.gz"
-  @homepage='https://developer.mozilla.org/en/SpiderMonkey'
-  @md5='5571134c3863686b623ebe4e6b1f6fe6'
+  url "http://ftp.mozilla.org/pub/mozilla.org/js/js-1.7.0.tar.gz"
+  homepage 'https://developer.mozilla.org/en/SpiderMonkey'
+  md5 '5571134c3863686b623ebe4e6b1f6fe6'
 
   depends_on 'readline'
-  depends_on 'nspr'
 
   def patches
     DATA
@@ -26,9 +25,9 @@ class Spidermonkey <Formula
     ENV['CFLAGS'] = ENV['CFLAGS'].gsub(/-msse[^\s]+/, '')
 
     Dir.chdir "src" do
-      system "make JS_DIST=#{HOMEBREW_PREFIX} JS_THREADSAFE=1 DEFINES=-DJS_C_STRINGS_ARE_UTF8 -f Makefile.ref"
-      system "make JS_DIST=#{prefix} -f Makefile.ref export"
-      system "ranlib #{prefix}/lib/libjs.a"
+      system "make DEFINES=-DJS_C_STRINGS_ARE_UTF8 -f Makefile.ref"
+      system "make JS_DIST='#{prefix}' -f Makefile.ref export"
+      system "ranlib #{lib}/libjs.a"
     end
   end
 end
