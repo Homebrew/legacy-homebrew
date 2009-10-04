@@ -6,8 +6,8 @@ class Siege <Formula
   sha1 'f0514eefe4e024ee059b09ab50903bbced79f3b9'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--with-ssl"
-    system "make"
+    etc.mkpath
+    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--sysconfdir=#{etc}", "--with-ssl"
     system "make install"
   end
 
