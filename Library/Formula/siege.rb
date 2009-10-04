@@ -5,6 +5,14 @@ class Siege <Formula
   homepage 'http://www.joedog.org/index/siege-home'
   sha1 'f0514eefe4e024ee059b09ab50903bbced79f3b9'
 
+  def etc
+    # NOTE this is because line 101 in init.c in the source code of Siege
+    # ignores the --sysconfdir setting, and instead looks here. 
+    # So coupled with the fact the etc directory location is a little up in the
+    # air currently. This seems like the best solution for now.
+    prefix+'etc'
+  end
+
   def install
     etc.mkpath
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--sysconfdir=#{etc}", "--with-ssl"
