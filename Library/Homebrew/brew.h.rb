@@ -29,13 +29,15 @@ def __make url, name
   path = Formula.path name
   raise "#{path} already exists" if path.exist?
 
+  homepage = `osascript -e 'tell application "Safari" to if running then get URL of document of first window'`.chomp
+
   template=<<-EOS
             require 'brewkit'
 
             class #{Formula.class_s name} <Formula
               url '#{url}'
-              homepage ''
               md5 ''
+              homepage '#{homepage}'
 
   cmake       depends_on 'cmake'
 
