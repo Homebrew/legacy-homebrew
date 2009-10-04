@@ -51,14 +51,13 @@ begin
 
     when 'ls', 'list'
       if ARGV.flag? '--unbrewed'
-        # Taken from the homebrew wiki (http://wiki.github.com/mxcl/homebrew)
         dirs = HOMEBREW_PREFIX.children.select { |pn| pn.directory? }.collect { |pn| pn.basename.to_s }
         dirs -= ['Library', 'Cellar', '.git']
         Dir.chdir HOMEBREW_PREFIX
         exec 'find', *dirs + %w[-type f ( ! -iname .ds_store ! -iname brew )]
       elsif ARGV.named_empty?
         ENV['CLICOLOR']=nil
-        exec 'ls', *ARGV.options<<HOMEBREW_CELLAR
+        exec 'ls', *ARGV.options<<HOMEBREW_CELLAR if HOMEBREW_CELLAR.exist?
       elsif ARGV.verbose? or not $stdout.tty?
         exec "find", *ARGV.kegs+%w[-not -type d -print]
       else
