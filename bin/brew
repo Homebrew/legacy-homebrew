@@ -154,7 +154,7 @@ begin
           #    to make the formula script the executed script
           pid=fork
           if pid.nil?
-            exec 'ruby', '-I', homebrew_rubylib_path, '-rinstall', f.path, '--', *ARGV.options
+            exec '/usr/bin/ruby', '-I', homebrew_rubylib_path, '-rinstall', f.path, '--', *ARGV.options
           else
             Process.wait pid
           end
