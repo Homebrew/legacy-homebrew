@@ -9,17 +9,12 @@ class Couchdb <Formula
   depends_on 'icu4c'
   depends_on 'erlang'
 
-  def skip_clean? path
-    path == prefix+"var/lib/couchdb" or
-    path == prefix+"var/log/couchdb"
-  end
-
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--localstatedir=#{var}", "--sysconfdir=#{etc}"
     system "make"
     system "make install"
 
-    (prefix+"var/lib/couchdb").mkpath
-    (prefix+"var/log/couchdb").mkpath
+    (var+'lib'+'couchdb').mkpath
+    (var+'log'+'couchdb').mkpath
   end
 end
