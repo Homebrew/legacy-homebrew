@@ -1,14 +1,16 @@
 require 'brewkit'
 
-# See src/doc/xu4MacOSXcvs.txt in the tarball for some explanation
 class Xu4 <Formula
-  url 'http://downloads.sourceforge.net/project/xu4/xu4/1.0beta3/xu4-1.0beta3.tar.gz'
+  url 'cvs://:pserver:anonymous@xu4.cvs.sourceforge.net:/cvsroot/xu4:u4'
   homepage 'http://xu4.sourceforge.net/'
-  md5 'fa1abc27a2e77496109531bffc8cfe2b'
-  version '1.0beta3'
+  version '1.0beta4'
   
   depends_on 'sdl'
   depends_on 'sdl_mixer'
+
+  def patches
+    DATA
+  end
 
   def install
     ENV.libpng
@@ -24,55 +26,15 @@ class Xu4 <Formula
       # ...so we can copy the ObjC main files.
       `cp -R #{sdl_prefix}/libexec/* macosx`
       
-      # Use whatever compilers we want...
-      inreplace "Makefile.macosx", "CC=gcc", ""
-      inreplace "Makefile.macosx", "CXX=g++", ""
-      
-      # ...but fix an error from gcc >= 4.1
-      inreplace "imagemgr.h", 
-        "SubImage *ImageMgr::getSubImage(const std::string &name);",
-        "SubImage *getSubImage(const std::string &name);"
-      
-      # Set our prefix
-      # I don't think this is actually used in the mac build --adamv
-      inreplace "Makefile", "prefix=/usr/local", "prefix=#{prefix}"
-      
-      # Use libpng from the system X11 folder
-      # These next 2 replaces are pointless but
-      # I don't want to break the syntax of the Makefile
-      # by leaving it with trailing \ continuations.
-      inreplace "Makefile.macosx",
-        "LIBPNGDIR=../../libpng", "LIBPNGDIR=/usr/X11/lib"
-        
-      inreplace "Makefile.macosx",
-        "-I$(LIBPNGDIR)", "-I/usr/X11/include"
-        
-      # Use X11 provided libpng
-      inreplace "Makefile.macosx",
-        "$(LIBPNGDIR)/libpng.a", "-lpng"
-      
-      # Too bad xu4 doesn't just do #include <SDL/SDL.h>
-      # Slot in the SDL include path
-      inreplace "Makefile.macosx",
-        "-I/Library/Frameworks/SDL.framework/Headers",
-        "-I#{sdl_prefix}/include/SDL"
-        
-      # Use "lib" versions of SDL, not Frameworks
-      inreplace "Makefile.macosx",
-        "-framework SDL", "-lSDL"
-        
-      inreplace "Makefile.macosx",
-        "-framework SDL_mixer", "-lSDL_mixer"
-
-      # Fix the u4 zip location
-      inreplace "Makefile.macosx", "../../ultima4.zip", "../ultima4-1.01.zip"
-      inreplace "Makefile.macosx", "../../u4upgrad.zip", "../u4upgrad.zip"
-      
-      # Build the .app right in the source tree; we've moving it later anyway
+      inreplace "Makefile.macosx", "WHICH_FRAMEWORK=10.4u", "WHICH_FRAMEWORK=#{MACOS_VERSION}"
+      inreplace "Makefile.macosx", "ARCHES=-arch i386 -arch ppc", "ARCHES="
       inreplace "Makefile.macosx",
         "BUNDLE_CONTENTS=../../xu4.app/Contents",
         "BUNDLE_CONTENTS=xu4.app/Contents"
 
+      inreplace "Makefile.macosx", "../../ultima4.zip", "../ultima4-1.01.zip"
+      inreplace "Makefile.macosx", "../../u4upgrad.zip", "../u4upgrad.zip"
+      
       system "make -f Makefile.macosx"
       system "make -f Makefile.macosx install"
       
@@ -85,3 +47,51 @@ class Xu4 <Formula
     "xu4.app installed to #{libexec}"
   end
 end
+
+
+__END__
+diff --git a/src/Makefile.macosx b/src/Makefile.macosx
+index 4be9444..de85e99 100644
+--- a/src/Makefile.macosx
++++ b/src/Makefile.macosx
+@@ -2,20 +2,19 @@
+ # $Id: Makefile.macosx,v 1.40 2008/04/03 07:14:46 steven-j-s Exp $
+ #
+ 
++WHICH_FRAMEWORK=10.4u
++ARCHES=-arch i386 -arch ppc
++
+ BUNDLE_CONTENTS=../../xu4.app/Contents
+ 
+-CC=gcc
+-CXX=g++
+ UI=sdl
+-LIBPNGDIR=../../libpng
+ UILIBS=-L$(HOME)/Library/Frameworks \
+ 	-framework Cocoa \
+-	-framework SDL \
+-	-framework SDL_mixer
++	-lSDL \
++	-lSDL_mixer
+ UIFLAGS=-F/Library/Frameworks \
+-	-I/Library/Frameworks/SDL.framework/Headers \
+-	-I/Library/Frameworks/SDL_mixer.framework/Headers \
+-	-I$(LIBPNGDIR)
++	-I/usr/local/include/SDL \
++	-I/usr/X11/include
+ 
+ FEATURES=-DHAVE_BACKTRACE=0 -DHAVE_VARIADIC_MACROS=1
+ 
+@@ -24,9 +23,9 @@ DEBUGCXXFLAGS=-ggdb
+ # Optimising
+ #DEBUGCXXFLAGS=-O2 -mdynamic-no-pic
+ 
+-CXXFLAGS=$(FEATURES) -Wall -I. $(UIFLAGS) $(shell xml2-config --cflags) -DVERSION=\"$(VERSION)\" $(DEBUGCXXFLAGS) -DNPERF -DMACOSX -DMACOSX_USER_FILES_PATH=\"/Library/Application\ Support/xu4\" -no-cpp-precomp -L$(LIBPNGDIR) -isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch i386 -arch ppc
++CXXFLAGS=$(FEATURES) -Wall -I. $(UIFLAGS) $(shell xml2-config --cflags) -DVERSION=\"$(VERSION)\" $(DEBUGCXXFLAGS) -DNPERF -DMACOSX -DMACOSX_USER_FILES_PATH=\"/Library/Application\ Support/xu4\" -no-cpp-precomp -L/usr/X11/lib -isysroot /Developer/SDKs/MacOSX$(WHICH_FRAMEWORK).sdk $(ARCHES)
+ CFLAGS=$(CXXFLAGS)
+-LIBS=$(LIBPNGDIR)/libpng.a $(UILIBS) $(shell xml2-config --libs) -lobjc -lz -arch i386 -arch ppc
++LIBS=-lpng $(UILIBS) $(shell xml2-config --libs) -lobjc -lz $(ARCHES)
+ INSTALL=install
+ 
+ OBJS=macosx/SDLMain.o macosx/osxinit.o macosx/osxerror.o
+>>>>>>> eade584... Updated formula for xu4 (Ultima 4 engine)
