@@ -5,9 +5,11 @@ require 'brewkit'
 #
 
 class Thrift <Formula
-  @homepage='http://incubator.apache.org/thrift/'
-  @head='http://svn.apache.org/repos/asf/incubator/thrift/trunk'
+  homepage 'http://incubator.apache.org/thrift/'
+  head 'http://svn.apache.org/repos/asf/incubator/thrift/trunk'
 
+  depends_on 'boost'
+  
   def install
     FileUtils.cp "/usr/X11/share/aclocal/pkg.m4", "aclocal"
     system "./bootstrap.sh"
