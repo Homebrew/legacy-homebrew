@@ -11,14 +11,19 @@ class Mpg123 <Formula
   end
 
   def install
-    # otherwise the exe segfaults, I couldn't diagnose why
-    ENV.osx_10_4
-    ENV.gcc_4_0_1
+    if MACOS_VERSION < 10.6
+      # otherwise the exe segfaults, I couldn't diagnose why
+      ENV.osx_10_4
+      ENV.gcc_4_0_1
+    end
 
-    system "./configure", "--disable-debug",
-                          "--with-optimization=4",
-                          "--with-cpu=sse_alone",
-                          "--prefix=#{prefix}"
+    args = ["--disable-debug", "--with-optimization=4",
+                               "--with-cpu=sse_alone",
+                               "--prefix=#{prefix}"]
+
+    args << "--with-cpu=x86-64" if Hardware.is_64_bit?
+
+    system "./configure", *args
     system "make install"
   end
 end
