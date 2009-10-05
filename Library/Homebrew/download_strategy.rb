@@ -200,7 +200,6 @@ class MercurialDownloadStrategy <AbstractDownloadStrategy
   def stage
     dst=Dir.getwd
     Dir.chdir @clone do
-      # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
       safe_system 'hg', 'archive', '-y', '-t', 'files', dst
     end
   end
