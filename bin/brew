@@ -5,16 +5,14 @@
 # odd exceptions. Reduce our support burden by showing a user-friendly error.
 Dir.getwd rescue abort "The current working directory doesn't exist, cannot proceed."
 
+BREW_FILE = __FILE__
+
 def homebrew_rubylib_path
   lib_path = "/../../Library/Homebrew"
-  # we resolve off of Dir.getwd as otherwise the symlink gets resolved!
-  brew_path = if not File.symlink? __FILE__ or File.exist? Dir.getwd+'/'+__FILE__+lib_path
-    # standard 100% symlinked or non-symlinked installation
-    __FILE__
-  else
-    # non-standard installation -- just this script is symlinked
-    File.readlink(__FILE__)
-  end
+
+  # Library/Homebrew is relative to the real path of brew
+  brew_path = __FILE__
+  brew_path = File.readlink(brew_path) if File.symlink? brew_path
   return File.expand_path(brew_path+lib_path)
 end
 
@@ -53,12 +51,36 @@ case Hardware.cpu_type when :ppc, :dunno
   abort "Sorry, Homebrew does not support your computer's CPU architecture."
 end
 
+def dump_config
+  puts <<-EOS
+HOMEBREW_VERSION:    #{HOMEBREW_VERSION}
+
+HOMEBREW_PREFIX:     #{HOMEBREW_PREFIX}
+\tWhere do we symlink installs to?
+
+HOMEBREW_CELLAR:     #{HOMEBREW_CELLAR}
+\tWhere do we store our built products?
+
+HOMEBREW_CACHE:      #{HOMEBREW_CACHE}
+\tWhere do we cache our downloads?
+
+HOMEBREW_REPOSITORY: #{HOMEBREW_REPOSITORY}
+\tWhere is our .git?
+
+library path:        #{homebrew_rubylib_path}
+\tWhat do we put on the ruby path?
+EOS
+end
+
+
 begin
   require 'brew.h'
 
   case ARGV.shift
   when '--prefix'
     puts HOMEBREW_PREFIX
+  when '--config'
+    dump_config
 
     when 'home', 'homepage'
       if ARGV.named_empty?
@@ -83,7 +105,7 @@ begin
       end
 
     when 'search', '-S'
-      formulae = (HOMEBREW_PREFIX+'Library'+'Formula').children.sort.map{|f| f.basename('.rb') }
+      formulae = (HOMEBREW_REPOSITORY+'Library/Formula').children.sort.map{|f| f.basename('.rb') }
       if ARGV.first =~ /^\/(.*)\/$/
         puts_columns formulae.grep(Regexp.new($1))
       else
@@ -95,9 +117,9 @@ begin
         # EDITOR isn't a good fit here, we need a GUI client that actually has
         # a UI for projects, so apologies if this wasn't what you expected,
         # please improve it! :)
-        exec 'mate', *Dir["#{HOMEBREW_PREFIX}/Library/*"]<<
-                          "#{HOMEBREW_PREFIX}/bin/brew"<<
-                          "#{HOMEBREW_PREFIX}/README.md"
+        exec 'mate', *Dir["#{HOMEBREW_REPOSITORY}/Library/*"]<<
+                          "#{HOMEBREW_REPOSITORY}/bin/brew"<<
+                          "#{HOMEBREW_REPOSITORY}/README.md"
       else
         exec_editor *ARGV.formulae.collect {|f| f.path}
       end
@@ -108,6 +130,9 @@ begin
         exit 0
       end
       
+      # The Cellar lives under the repository
+      raise "Cannot write to #{HOMEBREW_REPOSITORY}" unless HOMEBREW_REPOSITORY.writable?
+      # The Prefix is where we symlink under
       raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable?
 
       if ARGV.interactive? and ARGV.formulae.length > 1

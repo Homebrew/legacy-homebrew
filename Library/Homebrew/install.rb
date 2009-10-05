@@ -1,4 +1,6 @@
 #!/usr/bin/ruby
+BREW_FILE = `which brew`.strip
+
 require 'global'
 
 require 'brew.h'
@@ -7,6 +9,7 @@ require 'fileutils'
 require 'formula'
 require 'hardware'
 require 'keg'
+
 
 show_summary_heading = false
 

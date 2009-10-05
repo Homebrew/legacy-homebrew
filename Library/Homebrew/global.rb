@@ -28,6 +28,8 @@ require 'hardware'
 
 ARGV.extend(HomebrewArgvExtension)
 
+HOMEBREW_VERSION = 0.4
+HOMEBREW_WWW = 'http://bit.ly/Homebrew'
 
 if Process.uid == 0
   # technically this is not the correct place, this cache is for *all users*
@@ -37,14 +39,9 @@ else
   HOMEBREW_CACHE=Pathname.new("~/Library/Caches/Homebrew").expand_path
 end
 
-HOMEBREW_PREFIX = (Pathname.getwd+__FILE__).dirname.parent.parent.cleanpath
-HOMEBREW_CELLAR = HOMEBREW_PREFIX+'Cellar'
-HOMEBREW_VERSION = 0.4
-HOMEBREW_WWW = 'http://bit.ly/Homebrew'
-
-# we use Library as we allow people to symlink their Homebrew into another
-# directory so they can hack in one place and use it in another
-HOMEBREW_REPOSITORY = (HOMEBREW_PREFIX+'Library').realpath.parent
+HOMEBREW_PREFIX = Pathname.new(BREW_FILE).dirname.parent # Where we link under
+HOMEBREW_REPOSITORY = Pathname.new(BREW_FILE).realpath.dirname.parent # Where .git is found
+HOMEBREW_CELLAR = HOMEBREW_REPOSITORY+'Cellar' # Where we build into
 
 MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
 MACOS_VERSION = /(10\.\d+)(\.\d+)?/.match(MACOS_FULL_VERSION).captures.first.to_f
