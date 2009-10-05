@@ -13,7 +13,9 @@ class BerkeleyDb <Formula
     Dir.chdir 'build_unix' do
       system "../dist/configure", "--disable-debug",
                           "--prefix=#{prefix}",
-                          "--mandir=#{prefix}/share/man"
+                          "--mandir=#{prefix}/share/man",
+                          "--enable-cxx",
+                          "--enable-java"
                           
       system "make install"
     end
