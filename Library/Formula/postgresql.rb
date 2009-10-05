@@ -4,6 +4,8 @@ class Postgresql <Formula
   @homepage='http://www.postgresql.org/'
   @url='http://wwwmaster.postgresql.org/redir/198/h/source/v8.4.0/postgresql-8.4.0.tar.bz2'
   @md5='1f172d5f60326e972837f58fa5acd130'
+  
+  depends_on 'readline'
 
   def install
     configure_args = [
@@ -17,7 +19,7 @@ class Postgresql <Formula
         "--with-libxml",
         "--with-libxslt",
         "--prefix=#{prefix}",
-        "--disable-debug"
+        "--disable-debug",
     ]
 
     if MACOS_VERSION >= 10.6 && Hardware.is_64_bit?
