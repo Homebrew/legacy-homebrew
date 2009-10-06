@@ -13,6 +13,10 @@ class Imagemagick <Formula
   depends_on 'little-cms' => :optional
   depends_on 'ghostscript' => :recommended
 
+  def skip_clean? path
+    path.extname == '.la'
+  end
+
   def install
     ENV.libpng
     ENV.deparallelize
