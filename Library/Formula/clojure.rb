@@ -11,19 +11,30 @@ class Clojure <Formula
 
     # create helpful scripts to start clojure
     bin.mkdir
-    clojure_exec = bin+'clj'
-    clojure_exec.write <<-EOS
-#!/bin/sh
-java -Xmx512M -cp #{prefix}/#{JAR} clojure.lang.Script "$@"
-EOS
+    clojure_exec = bin + 'clj'
+
+    script = DATA.read
+    script.sub! "CLOJURE_JAR_PATH_PLACEHOLDER", "#{prefix}/#{JAR}"
+
+    clojure_exec.write script
 
     File.chmod(0755, clojure_exec)
-
-    clojure_repl_exec = bin+'clj_repl'
-    clojure_repl_exec.write <<-EOS
-#!/bin/sh
-java -Xmx512M -cp #{prefix}/#{JAR} clojure.lang.Repl "$@"
-EOS
-    File.chmod(0755, clojure_repl_exec)
   end
 end
+
+__END__
+#!/bin/bash
+# Runs clojure.
+# With no arguments, runs Clojure's REPL.
+# With one or more arguments, the first is treated as a script name, the rest
+# passed as command-line arguments.
+
+# resolve links - $0 may be a softlink
+CLOJURE='CLOJURE_JAR_PATH_PLACEHOLDER'
+
+if [ -z "$1" ]; then
+	java -server -cp $CLOJURE clojure.lang.Repl
+else
+	scriptname=$1
+	java -server -cp $CLOJURE clojure.lang.Script $scriptname -- $*
+fi
