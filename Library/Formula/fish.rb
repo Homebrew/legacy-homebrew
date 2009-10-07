@@ -1,9 +1,9 @@
 require 'brewkit'
 
 class Fish <Formula
-  @url='http://fishshell.org/files/1.23.1/fish-1.23.1.tar.gz'
-  @homepage='http:://fishshell.org/'
-  @md5='4b2436843e63bebba467cc4add11428a'
+  url='http://downloads.sourceforge.net/project/fish/fish/1.23.1/fish-1.23.1.tar.bz2'
+  homepage='http://fishshell.org/'
+  md5='ead6b7c6cdb21f35a3d4aa1d5fa596f1'
 
   depends_on 'readline'
 
