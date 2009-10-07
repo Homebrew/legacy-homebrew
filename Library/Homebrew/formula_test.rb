@@ -41,3 +41,12 @@ class FormulaNames <Test::Unit::TestCase
     end
   end
 end
+
+class CommentedTemplateCode <Test::Unit::TestCase
+  def test_for_commented_out_cmake
+    Dir["#{HOMEBREW_PREFIX}/Library/Formula/*.rb"].each do |f|
+      result = `grep "# depends_on 'cmake'" "#{f}"`.strip
+      assert_equal('', result, "Commented template code still in #{f}")
+    end
+  end
+end
