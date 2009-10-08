@@ -139,7 +139,7 @@ If this leaves you shaking your head because you are installing Homebrew
 .pkg installer][pkg]. Note these are somewhat new and are not stamped 
 "definitely works" yet.
 
-[sh]: http://gist.github.com/179275
+[sh]: http://gist.github.com/203926
 [pkg]: http://demaree.me/x/7
 
 Homebrew is self-contained so once you've put it somewhere, it's ready to go.
