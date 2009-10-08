@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# This script links your clone into /usr/local, so you can keep the .git
+# directory out of the way.
 
 mode=$1
 if [[ -z $mode ]]; then
