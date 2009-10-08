@@ -1,9 +1,9 @@
 require 'brewkit'
 
 class Zebra <Formula
-  url 'http://ftp.indexdata.dk/pub/zebra/idzebra-2.0.41.tar.gz'
+  url 'http://ftp.indexdata.dk/pub/zebra/idzebra-2.0.42.tar.gz'
   homepage 'http://www.indexdata.com/zebra'
-  md5 'a96db171add2bfc0a38833df794069fb'
+  md5 '187545f515001ad4447cf5901bfc7d62'
 
   depends_on 'yaz'
 
