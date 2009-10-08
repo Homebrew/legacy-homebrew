@@ -46,7 +46,11 @@ else
 end
 
 if MACOS_VERSION >= 10.6 or ENV['HOMEBREW_USE_LLVM']
-  ENV['PATH'] = "/Developer/usr/llvm-gcc-4.2/bin:#{ENV['PATH']}"
+  # you can install Xcode wherever you like you know.
+  prefix = `/usr/bin/xcode-select -print-path`.chomp
+  prefix = "/Developer" if prefix.to_s.empty?
+
+  ENV['PATH'] = "#{prefix}/usr/llvm-gcc-4.2/bin:#{ENV['PATH']}"
   ENV['CC'] = 'llvm-gcc-4.2'
   ENV['CXX'] = 'llvm-g++-4.2'
   cflags = ['-O4'] # O4 baby!
