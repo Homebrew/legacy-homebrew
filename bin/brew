@@ -136,6 +136,11 @@ begin
         deps = []
         formulae.each { |f| deps += expand_deps f }
         formulae = deps.reject { |f| f.installed? }
+      
+        if formulae.length > 1 and ARGV.interactive?
+          # because current code is a mess
+          raise "Please install the formula's dependencies before entering interactive mode"
+        end
       end
 
       require 'set'
