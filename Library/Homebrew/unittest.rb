@@ -630,7 +630,7 @@ end
 
 __END__
 update_git_pull_output_without_formulae_changes: |
-  remote: lengthing objects: 58, done.
+  remote: counting objects: 58, done.
   remote: Compressing objects: 100% (35/35), done.
   remote: Total 39 (delta 20), reused 0 (delta 0)
   Unpacking objects: 100% (39/39), done.
@@ -650,7 +650,7 @@ update_git_pull_output_without_formulae_changes: |
    delete mode 100644 Library/Homebrew/hw.model.c
    delete mode 100644 Library/Homebrew/hw.model.rb
 update_git_pull_output_with_formulae_changes: |
-  remote: lengthing objects: 58, done.
+  remote: counting objects: 58, done.
   remote: Compressing objects: 100% (35/35), done.
   remote: Total 39 (delta 20), reused 0 (delta 0)
   Unpacking objects: 100% (39/39), done.
