@@ -5,8 +5,7 @@ require 'brewkit'
 # "a very long time" to bootstrap the image.
 
 class Factor <Formula
-  url 'git://github.com/slavapestov/factor.git'
-  version 'trunk'
+  head 'git://github.com/slavapestov/factor.git'
   homepage 'http://factorcode.org/'
 
   def install
@@ -16,7 +15,7 @@ class Factor <Formula
     libexec.install "Factor.app"
     libexec.install "factor.image"
   end
-  
+
   def caveats
     "Cocoa app installed to #{libexec}.\n\n"\
     "Makes use of 'factor.image' in the same folder."
