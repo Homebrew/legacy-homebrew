@@ -5,8 +5,6 @@ class Bchunk <Formula
   homepage 'http://he.fi/bchunk/'
   md5 '6a613da3f34f9a303f202d2e9731d231'
 
-# depends_on 'cmake'
-
   def install
     system "make"
     bin.install 'bchunk'
