@@ -33,7 +33,7 @@ Here's why you may prefer Homebrew to the alternatives:
 5.  Easy package creation  
     Packages are just Ruby scripts. Generate a template with:
 
-       brew create http://foo.com/tarball-0.8.9.tgz
+        brew create http://foo.com/tarball-0.8.9.tgz
 
     Homebrew will automatically open it for you to tweak with TextMate or
     $EDITOR.
@@ -44,10 +44,10 @@ Here's why you may prefer Homebrew to the alternatives:
 
 6.  DIY package installation  
     MacPorts doesn't support the beta version? Need an older version? Need
-    custom compile flags? The Homebrew toolchain is carefully segregated so
+    custom compile flags? The Homebrew tool-chain is carefully segregated so
     you can build stuff by hand but still end up with package management.
 
-    Just install to the Cellar and then call brew ln to symlink that
+    Just install to the Cellar and then call brew link to symlink that
     installation into your PATH, eg.
 
         ./configure --prefix=/usr/local/Cellar/wget/1.10
@@ -63,34 +63,32 @@ Here's why you may prefer Homebrew to the alternatives:
     switch on demand.
 
 7.  Optimization  
-    We optimise for (Snow) Leopard Intel, binaries are stripped, compile flags
-    tweaked. Slow software sucks.
+    We optimize for (Snow) Leopard Intel, binaries are stripped, compile flags
+    are tuned to your exact Mac model. Slow software sucks.
 
 8.  Making the most of OS X  
-    Homebrew knows how many cores you have thanks to RubyCocoa, so it makes
-    sure when it builds it uses all of them, (unless you don't want it to of
-    course).
+    A touch of RubyCocoa, a cheeky sysctl query or two and a smattering of
+    FSEvent monitoring. In these manic days of cross-platform development,
+    it's sometimes a welcome relieve to use something that is better because
+    it isn't too generalized.
 
-    Homebrew knows exactly which Mac you have, and optimizes the software it
-    builds as well as it possibly can.
+9.  No duplication  
+    MacPorts is an autarky -- you get a duplicate copy of zlib, OpenSSL,
+    Python, etc. Homebrew isn't, and as a result everything you install has
+    less dependencies and builds significantly faster.
 
-    Homebrew can integrate with Ruby gems, CPAN and Python disttools. These
+    Homebrew can integrate with Ruby gems, CPAN and Python EasyInstall. These
     tools exist already and do the job great. We don't duplicate packaging 
     effort, we just improve on it by making these tools install with more
     management options.
-
-9.  No duplication  
-    MacPorts is an autarky. You get a duplicate copy of zlib, OpenSSL, Python,
-    etc. To cut a long story short, Homebrew doesn't. As a result everything
-    you install has less dependencies and builds significantly faster.
 
 10. Fork with Git  
     The formula are all on git, so just fork to add new packages, or add extra
     remotes to get packages from more exotic maintainers.
 
 11. Surfing the cutting edge  
-    If the package provides a git:// or svn:// url you can choose to install
-    that instead and then update as often as you like.
+    If the package provides a git://, svn://, cvs:// or hg:// url you can
+    choose to install that instead and then update as often as you like.
 
 12. Homebrew has a beer theme  
     Beer goggles will help you to evangelise Homebrew more effectively.
@@ -189,8 +187,13 @@ I already have a bunch of junk in /usr/local
 The easiest thing to do is just git clone into /usr/local. The files that are
 there can remain there, Homebrew will never touch them.
 
-Otherwise, delete everything and reinstall with Homebrew. Or merge it in by
-hand.
+    cd /usr/local
+    git init
+    git remote add origin git://github.com/mxcl/homebrew.git
+    git pull origin master
+
+Otherwise, delete everything and reinstall with Homebrew. Or merge it in two
+steps by hand.
 
 How about mate and gitx and that?
 ---------------------------------
@@ -225,7 +228,7 @@ Update package list:
 
 Two ways to delete a package:
 
-    brew rm wget
+    brew uninstall wget
     rm -rf /usr/local/Cellar/wget && brew prune
 
 Two ways to list all files in a package:
@@ -233,12 +236,14 @@ Two ways to list all files in a package:
     brew list wget
     find /usr/local/Cellar/wget
 
-Search for a package to install:
+Two ways to search for a package to install:
 
+    brew search
     ls /usr/local/Library/Formula/
 
-Search for a package already installed:
+Two ways to see what is already installed:
 
+    brew list
     ls /usr/local/Cellar/
 
 Two ways to compute installed package sizes:
@@ -254,14 +259,16 @@ A more thorough exploration of the brew command is available at the [Homebrew
 wiki][wiki].
 
 
-CPAN, EasyInstall, RubyGems
-===========================
-Homebrew doesn't reinvent the wheel. These tools are already designed to make
-it easy to install Perl, Python and Ruby tools and libraries. So we insist
-that you use them. However we don't think you should have to sudo, or install
-to /usr, so we suggest you adapt the tools to install into Homebrew's prefix.
+RubyGems, Python EasyInstall and CPAN
+=====================================
+These tools are already designed to make it easy to install Ruby, Python and
+Perl stuff. So we resist the temptation to duplicate this packaging effort and
+thus avoid accepting such formula into the main tree (although sometimes it is
+necessary or prudent).
 
-There are preliminary instructions on the [wiki][].
+However it's a nice option to get these other packaging systems to install
+into Homebrew and there are work-in-progress instructions for how to do this
+on the [wiki][].
 
 
 Contributing New Formulae
@@ -274,18 +281,18 @@ Check it over and try to install it:
 
     brew install foobar
 
-Check the [wiki][] for more detailed information and tips about contribution.
+Check the [wiki][] for more detailed information and tips for contribution.
 
 If you want your formula to become part of this distribution, fork
-<http://github.com/mxcl/homebrew> and ask mxcl to pull. Alternatively maintain
-your own distribution. Maybe you want to support Tiger? Or use special compile
-flags? Go ahead that's what git is all about! :)
+<http://github.com/mxcl/homebrew> and send mxcl a pull-request. Alternatively
+maintain your own distribution. Maybe you want to support Tiger? Or use
+special compile flags? Go ahead that's what git is all about! :)
 
 
 Licensing
 =========
 Homebrew is mostly BSD licensed although you should refer to each file to
-confirm. Individual formulae are licensed according to their authors wishes.
+confirm. Individual formulae are licensed according to their authors' wishes.
 
 
 FAQ
@@ -302,5 +309,8 @@ FAQ
 
 4. Is there an IRC channel?  
    Yes, <irc://irc.freenode.net#machomebrew>.
+   
+5. And it's on Twitter?
+   Yes, <http://twitter.com/machomebrew>.
 
 [wiki]: http://wiki.github.com/mxcl/homebrew
