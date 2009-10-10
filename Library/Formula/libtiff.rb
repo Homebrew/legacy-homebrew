@@ -6,9 +6,7 @@ class Libtiff <Formula
   @md5='fbb6f446ea4ed18955e2714934e5b698'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug"
+    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--mandir=#{prefix}/share/man"
     system "make install"
-
-    FileUtils.mv prefix+'man', share
   end
 end
