@@ -1,18 +1,19 @@
 require 'brewkit'
 
 class Wine <Formula
-  url 'http://ibiblio.org/pub/linux/system/emulators/wine/wine-1.1.30.tar.bz2'
-  md5 '3b78497f71cf6f112bac6de74e5cb29f'
+  url 'http://ibiblio.org/pub/linux/system/emulators/wine/wine-1.1.31.tar.bz2'
+  md5 '87fb94c218e52dd67c75b4ae5ef50c0e'
   homepage 'http://www.winehq.org/'
-  
+
   depends_on 'jpeg'
-  #depends_on 'mpg123' => optional # doesn't yet compile on 10.6
+  depends_on 'mpg123' => :optional
 
   def install
-    ENV.gcc_4_2 # TODO: add a comment explaining why we do this
+    # Wine does not compile with LLVM yet
+    ENV.gcc_4_2
     ENV.x11
 
-    # Make sure we build 32bit version # TODO: add a comment explaining why we do this
+    # Make sure we build 32bit version, because Wine64 is not fully functional yet
     build32 = "-arch i386 -m32"
 
     ENV["LIBS"] = "-lGL -lGLU"
@@ -38,7 +39,7 @@ Get winetricks with:
   def wine_wrapper
     DATA
   end
-  
+
   def rename_binary
     (bin+'wine').rename(bin+'wine.bin')
   end
