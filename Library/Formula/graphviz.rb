@@ -6,7 +6,7 @@ class Graphviz <Formula
   md5 '806a30dbc3f8deb219216f35be0e7a40'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--with-qartz", "--disable-python"
+    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--with-qartz", "--disable-python", "--disable-perl"
     system "make install"
   end
 end
