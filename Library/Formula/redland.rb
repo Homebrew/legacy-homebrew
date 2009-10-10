@@ -7,9 +7,17 @@ class Redland <Formula
 
   depends_on 'raptor'
   depends_on 'rasqal'
+  depends_on 'pkg-config'
+  depends_on 'berkeley-db' => :optional
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    ENV.gcc_4_2
+
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--with-sqlite=yes",
+                          "--with-bdb=#{HOMEBREW_PREFIX}"
     system "make install"
   end
 end
