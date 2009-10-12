@@ -50,9 +50,8 @@ if MACOS_VERSION >= 10.6 or ENV['HOMEBREW_USE_LLVM']
   prefix = `/usr/bin/xcode-select -print-path`.chomp
   prefix = "/Developer" if prefix.to_s.empty?
 
-  ENV['PATH'] = "#{prefix}/usr/llvm-gcc-4.2/bin:#{ENV['PATH']}"
-  ENV['CC'] = 'llvm-gcc-4.2'
-  ENV['CXX'] = 'llvm-g++-4.2'
+  ENV['CC'] = "#{prefix}/usr/llvm-gcc-4.2/bin/llvm-gcc-4.2"
+  ENV['CXX'] = "#{prefix}/usr/llvm-gcc-4.2/bin/llvm-g++-4.2"
   cflags = ['-O4'] # O4 baby!
 else
   ENV['CC']="gcc-4.2"
