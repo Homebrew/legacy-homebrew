@@ -12,13 +12,21 @@ class Qt <Formula
       makefiles.each { |makefile| `echo 'LIBS += -lsqlite3' >> src/#{makefile}` }
     end
 
-    system "./configure", "-prefix", prefix,
-                        "-system-sqlite", "-system-libpng", "-system-zlib",
-                        "-nomake", "demos", "-nomake", "examples", "-no-qt3support",
-                        "-release", "-cocoa", "-arch x86",
-                        "-confirm-license", "-opensource",
-                        "-I/usr/X11R6/include", "-L/usr/X11R6/lib",
-                        "-fast"
+    conf_args = ["-prefix", prefix,
+                 "-system-sqlite", "-system-libpng", "-system-zlib",
+                 "-nomake", "demos", "-nomake", "examples", "-no-qt3support",
+                 "-release", "-cocoa",
+                 "-confirm-license", "-opensource",
+                 "-I/usr/X11R6/include", "-L/usr/X11R6/lib",
+                 "-fast"]
+    
+    if MACOS_VERSION >= 10.6
+      conf_args << '-arch' << 'x86_64'
+    else
+      conf_args << '-arch' << 'x86'
+    end
+    
+    system "./configure", *conf_args
     system "make install"
 
     # fuck weird prl files
