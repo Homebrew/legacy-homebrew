@@ -24,11 +24,11 @@ class Python <Formula
     args = ["--prefix=#{prefix}"]
 
     if ARGV.include? '--framework'
-      args << "--with-framework-name=/Developer/SDKs/MacOSX#{MACOS_VERSION}.sdk"
+      args << "--enable-framework"
     end
     
     if ARGV.include? '--intel'
-      args << "--with-universal-archs=intel"
+      args << "--with-universal-archs=intel --enable-universalsdk=/"
     end
     
     system "./configure", *args
