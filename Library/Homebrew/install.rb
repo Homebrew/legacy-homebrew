@@ -7,7 +7,9 @@ require 'brew.h'
 show_summary_heading = false
 
 def text_for_keg_only_formula f
-  if f.keg_only?.kind_of? String
+  if f.keg_only? == :provided_by_osx
+    rationale = "This because the formula is already provided by OS X."
+  elsif f.keg_only?.kind_of? String
     rationale = "The formula provides the following rationale:\n\n#{f.keg_only?.chomp}"
   else
     rationale = "The formula didn't provide any rationale for this."
