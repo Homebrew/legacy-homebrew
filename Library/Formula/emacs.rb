@@ -1,22 +1,47 @@
 require 'formula'
 
 class Emacs <Formula
-  head 'git://git.savannah.gnu.org/emacs.git'
-  url 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.1.tar.bz2'
+  if ARGV.include? "--cocoa"
+    head 'git://git.savannah.gnu.org/emacs.git'
+  else
+    url 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.1.tar.bz2'
+    head 'git://git.savannah.gnu.org/emacs.git'
+    md5 '17f7f0ba68a0432d58fa69d05a2225be'
+  end
   homepage 'http://www.gnu.org/software/emacs/'
-  md5 '17f7f0ba68a0432d58fa69d05a2225be'
+
+  def caveats
+    "Use --cocoa to build a Cocoa binary Emacs.app from HEAD.
+The git mirror will download the entire CVS history and is rather large."
+  end
   
   def patches
-    DATA
+    if ARGV.include? "--cocoa"
+      "http://dev.boris.com.au/emacs-23.1-CVS-Cocoa-homebrew.patch"
+    else
+      DATA
+    end
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-			  "--disable-debug",
-			  "--disable-dependency-tracking",
-			  "--without-x"
-    system "make"
-    system "make install"
+    if ARGV.include? "--cocoa"
+      system "./configure", "--prefix=#{prefix}",
+  			  "--disable-debug",
+  			  "--disable-dependency-tracking",
+  			  "--with-ns", "--disable-ns-self-contained"
+  		system "make bootstrap"
+  		system "make install"
+  		system "mkdir #{prefix}/bin"
+  		system "mv nextstep/Emacs.app #{prefix}/bin/"
+  		system "open #{prefix}/bin"
+    else
+      system "./configure", "--prefix=#{prefix}",
+  			  "--disable-debug",
+  			  "--disable-dependency-tracking",
+  			  "--without-x"
+  		system "make"
+  		system "make install"
+    end
   end
 end
 
