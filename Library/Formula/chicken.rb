@@ -1,9 +1,9 @@
 require 'brewkit'
 
 class Chicken <Formula
-  @url='http://www.call-with-current-continuation.org/chicken-4.1.0.tar.gz'
+  @url='http://www.call-with-current-continuation.org/chicken-4.2.0.tar.gz'
   @homepage='http://www.call-with-current-continuation.org/'
-  @md5='9a43b536408c271b0eaf802307e8c415'
+  @md5='4705b7634447a571ff083f435c110fe3'
 
   def install
     ENV.deparallelize
