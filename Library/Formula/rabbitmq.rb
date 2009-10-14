@@ -2,8 +2,8 @@ require 'brewkit'
 
 class Rabbitmq <Formula
   homepage 'http://rabbitmq.com'
-  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v1.6.0/rabbitmq-server-1.6.0.tar.gz'
-  md5 'af3b0d868d58e5aefb4f0837b82ca010'
+  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v1.7.0/rabbitmq-server-1.7.0.tar.gz'
+  md5 '4505ca0fd8718439bd6f5e2af2379e56'
 
   depends_on 'erlang'
 
