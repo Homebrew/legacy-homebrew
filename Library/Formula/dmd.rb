@@ -3,7 +3,7 @@ require 'brewkit'
 class Dmd <Formula
   @homepage='http://www.digitalmars.com/d/'
   @url='http://ftp.digitalmars.com/dmd.1.047.zip'
-  @md5='9ca82389e82e3f39185f999d7dda4617'
+  @md5='218c386c1d9363071b971614a988150d'
 
   def doc
     #use d and not dmd, rationale: meh
