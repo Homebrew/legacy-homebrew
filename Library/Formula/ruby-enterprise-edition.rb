@@ -5,6 +5,8 @@ class RubyEnterpriseEdition <Formula
   md5 'ae00018ce89d95419dfde370fcd485ac'
   homepage 'http://rubyenterpriseedition.com/'
 
+  skip_clean 'bin/ruby'
+
   def install
     ENV.gcc_4_2 # fails with LLVM
     system "./installer --auto #{prefix} --no-tcmalloc"
