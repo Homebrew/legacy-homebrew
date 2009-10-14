@@ -1,16 +1,19 @@
 require 'brewkit'
 
 class Couchdb <Formula
-  @url='http://apache.multihomed.net/couchdb/0.9.1/apache-couchdb-0.9.1.tar.gz'
+  @url='http://apache.multihomed.net/couchdb/0.10.0/apache-couchdb-0.10.0.tar.gz'
   @homepage='http://couchdb.apache.org/'
-  @md5='9583efae5adfb3f9043e970fef825561'
+  @md5='227886b5ecbb6bcbbdc538aac4592b0e'
 
   depends_on 'spidermonkey'
   depends_on 'icu4c'
   depends_on 'erlang'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--localstatedir=#{var}", "--sysconfdir=#{etc}"
+    system "./configure", "--prefix=#{prefix}",
+                          "--localstatedir=#{var}",
+                          "--sysconfdir=#{etc}",
+                          "--with-erlang=#{HOMEBREW_PREFIX}/lib/erlang/usr/include"
     system "make"
     system "make install"
 
