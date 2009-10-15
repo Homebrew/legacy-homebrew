@@ -104,9 +104,6 @@ begin
       warn_about_macports_or_fink # keep warning before dependency resolution
 
       unless ARGV.force?
-        unless system "/usr/bin/which -s #{ENV.cc}"
-          raise "We cannot find a c compiler, have you installed the latest Xcode?"
-        end
         formulae = ARGV.formulae.reject do |f|
           if f.installed?
             message = "Formula already installed: #{f.prefix}"

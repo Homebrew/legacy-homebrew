@@ -114,5 +114,3 @@ private
 end
 
 class UsageError <RuntimeError; end
-
-ARGV.extend HomebrewArgvExtension
