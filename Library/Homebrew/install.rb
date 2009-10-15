@@ -51,6 +51,13 @@ def install f
     end
   end
 
+  if ARGV.verbose?
+    ohai "Build Environment"
+    %w[PATH CFLAGS LDFLAGS CPPFLAGS MAKEFLAGS CC CXX MACOSX_DEPLOYMENT_TARGET].each do |f|
+      puts "#{f}: #{ENV[f]}" unless ENV[f].to_s.empty?
+    end
+  end
+
   build_time = nil
   begin
     f.brew do
