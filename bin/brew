@@ -16,13 +16,31 @@ end
 
 $:.unshift homebrew_rubylib_path
 require 'global'
-require 'brew.h'
 
-if %w[/ /usr].include? HOMEBREW_PREFIX.to_s then abort <<-EOS
-  You have placed Homebrew at the prefix: #{HOMEBREW_PREFIX}
-  This is not currently supported. Voice your support for this feature at:
-  #{HOMEBREW_WWW}
-  EOS
+case ARGV.first
+when '--cache'
+  puts HOMEBREW_CACHE
+  exit 0
+when '-h', '--help', '--usage', '-?' 
+  puts ARGV.usage
+  exit 0
+when '--version'
+  puts HOMEBREW_VERSION
+  exit 0
+when '-v'
+  if ARGV.length > 1
+    puts "Homebrew #{HOMEBREW_VERSION}"
+    # continue in verbose mode
+    ARGV << ARGV.shift
+  else
+    puts HOMEBREW_VERSION
+    exit 0
+  end
+end
+
+case HOMEBREW_PREFIX.to_s when '/', '/usr'
+  # it may work, but I only see pain this route and don't want to support it
+  abort "Cowardly refusing to continue at this prefix: #{HOMEBREW_PREFIX}"
 end
 if MACOS_VERSION < 10.5
   abort "Homebrew requires Leopard or higher, but you could fork it and fix that..."
@@ -36,11 +54,11 @@ end
 
 
 begin
+  require 'brew.h'
+
   case ARGV.shift
-    when '--prefix' then puts HOMEBREW_PREFIX
-    when '--cache' then puts HOMEBREW_CACHE
-    when '-h', '--help', '--usage', '-?' then puts ARGV.usage
-    when '-v', '--version' then puts HOMEBREW_VERSION
+  when '--prefix'
+    puts HOMEBREW_PREFIX
 
     when 'home', 'homepage'
       if ARGV.named_empty?
