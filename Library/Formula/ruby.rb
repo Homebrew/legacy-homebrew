@@ -6,6 +6,8 @@ class Ruby <Formula
   @url='ftp://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.1-p243.tar.gz'
   @homepage='http://www.ruby-lang.org/en/'
   @md5='515bfd965814e718c0943abf3dde5494'
+
+  depends_on 'readline'
   
   def install
     system "./configure", "--prefix=#{prefix}",
