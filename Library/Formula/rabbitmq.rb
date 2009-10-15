@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Rabbitmq <Formula
   homepage 'http://rabbitmq.com'

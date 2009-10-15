@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Libvorbis <Formula
   @url='http://downloads.xiph.org/releases/vorbis/libvorbis-1.2.3.tar.bz2'

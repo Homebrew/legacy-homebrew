@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Aspell <Formula
   url 'ftp://ftp.gnu.org/gnu/aspell/aspell-0.60.6.tar.gz'

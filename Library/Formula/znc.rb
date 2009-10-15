@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Znc <Formula
   url 'http://downloads.sourceforge.net/project/znc/znc/0.076/znc-0.076.tar.gz'

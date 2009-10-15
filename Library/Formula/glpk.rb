@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Glpk <Formula
   url 'http://ftp.gnu.org/gnu/glpk/glpk-4.39.tar.gz'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Fish <Formula
   url='http://downloads.sourceforge.net/project/fish/fish/1.23.1/fish-1.23.1.tar.bz2'

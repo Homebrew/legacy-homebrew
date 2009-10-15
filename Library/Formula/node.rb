@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Node <Formula
   url 'http://s3.amazonaws.com/four.livejournal/20091009/node-v0.1.14.tar.gz'

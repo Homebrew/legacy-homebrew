@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Libgcrypt <Formula
   @url='ftp://ftp.gnupg.org//gcrypt/libgcrypt/libgcrypt-1.4.4.tar.bz2'

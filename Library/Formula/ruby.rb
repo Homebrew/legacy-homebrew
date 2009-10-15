@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 # TODO de-version the include and lib directories
 

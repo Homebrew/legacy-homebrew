@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class LittleCms <Formula
   @url='http://www.littlecms.com/lcms-1.17.tar.gz'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Libpng <Formula
   @url='http://prdownloads.sourceforge.net/libpng/libpng-1.2.40.tar.gz'

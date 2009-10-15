@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Xu4 <Formula
   url 'cvs://:pserver:anonymous@xu4.cvs.sourceforge.net:/cvsroot/xu4:u4'

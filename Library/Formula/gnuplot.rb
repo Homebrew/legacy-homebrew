@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Gnuplot <Formula
   @url='http://downloads.sourceforge.net/project/gnuplot/gnuplot/4.2.6/gnuplot-4.2.6.tar.gz'

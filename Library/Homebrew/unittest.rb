@@ -365,7 +365,7 @@ class BeerTasting <Test::Unit::TestCase
     path.dirname.mkpath
     File.open(path, 'w') do |f|
       f << %{
-        require 'brewkit'
+        require 'formula'
         class #{classname} < Formula
           @url=''
           def initialize(*args)

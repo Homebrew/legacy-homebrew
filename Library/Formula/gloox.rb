@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Gloox <Formula
   @url='http://camaya.net/download/gloox-1.0-beta7.tar.bz2'

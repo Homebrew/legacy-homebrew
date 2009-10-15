@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Jpeg <Formula
   @url='http://www.ijg.org/files/jpegsrc.v7.tar.gz'

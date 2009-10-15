@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Libidn <Formula
   @url='http://ftp.gnu.org/gnu/libidn/libidn-1.9.tar.gz'

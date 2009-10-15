@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class AppEngineJavaSdk <Formula
   @url='http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.5.zip'

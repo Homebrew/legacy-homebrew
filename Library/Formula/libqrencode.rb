@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Libqrencode <Formula
   url 'http://megaui.net/fukuchi/works/qrencode/qrencode-3.1.0.tar.gz'

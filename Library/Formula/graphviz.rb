@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Graphviz <Formula
   url 'http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.24.0.tar.gz'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Theora <Formula
   url 'http://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.bz2'

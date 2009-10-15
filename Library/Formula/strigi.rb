@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Strigi <Formula
   @url='http://surfnet.dl.sourceforge.net/project/strigi/strigi/strigi-0.6.4/strigi-0.6.4.tar.bz2'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Litmus <Formula
   @url='http://www.webdav.org/neon/litmus/litmus-0.12.1.tar.gz'

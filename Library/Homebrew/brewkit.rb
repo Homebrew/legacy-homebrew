@@ -21,10 +21,6 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 #  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-require 'fileutils'
-require 'formula'
-require 'download_strategy'
-require 'hardware'
 
 # TODO
 # 1. Indeed, there should be an option to build 32 or 64 bit binaries

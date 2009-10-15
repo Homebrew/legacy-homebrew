@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Monit <Formula
   url 'http://mmonit.com/monit/dist/monit-5.0.3.tar.gz'

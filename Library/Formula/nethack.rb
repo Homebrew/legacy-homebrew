@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 # Nethack the way God intended it to be played: from a terminal.
 # This build script was created referencing:

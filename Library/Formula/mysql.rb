@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Mysql <Formula
   @homepage='http://dev.mysql.com/doc/refman/5.1/en/'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Bchunk <Formula
   url 'http://he.fi/bchunk/bchunk-1.2.0.tar.gz'

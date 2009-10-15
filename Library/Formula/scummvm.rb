@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Scummvm <Formula
   @url='http://downloads.sourceforge.net/project/scummvm/scummvm/1.0.0rc1/scummvm-1.0.0rc1.tar.bz2'

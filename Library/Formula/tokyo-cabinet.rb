@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class TokyoCabinet <Formula
   @url='http://1978th.net/tokyocabinet/tokyocabinet-1.4.33.tar.gz'

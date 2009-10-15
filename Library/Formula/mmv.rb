@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Mmv <Formula
   version '1.01b'

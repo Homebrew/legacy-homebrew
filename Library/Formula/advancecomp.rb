@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Advancecomp <Formula
   url 'http://prdownloads.sourceforge.net/advancemame/advancecomp-1.15.tar.gz'

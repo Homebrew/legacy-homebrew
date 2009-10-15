@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class MysqlConnectorC <Formula
   @homepage='http://dev.mysql.com/downloads/connector/c/6.0.html'

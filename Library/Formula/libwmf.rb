@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Libwmf <Formula
   @url='http://downloads.sourceforge.net/project/wvware/libwmf/0.2.8.4/libwmf-0.2.8.4.tar.gz'

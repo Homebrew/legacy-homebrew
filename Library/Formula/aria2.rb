@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Aria2 <Formula
   @url='http://kent.dl.sourceforge.net/project/aria2/stable/aria2-1.5.2/aria2-1.5.2.tar.bz2'

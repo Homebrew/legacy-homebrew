@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
  
 class Protobuf <Formula
   @url='http://protobuf.googlecode.com/files/protobuf-2.2.0.tar.bz2'

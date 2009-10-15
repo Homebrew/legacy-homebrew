@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Openexr <Formula
   url 'http://download.savannah.gnu.org/releases/openexr/openexr-1.6.1.tar.gz'

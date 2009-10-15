@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Apachetop <Formula
   url 'http://www.webta.org/apachetop/apachetop-0.12.6.tar.gz'

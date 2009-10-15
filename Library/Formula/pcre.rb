@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Pcre <Formula
   @url='ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-7.9.tar.bz2'

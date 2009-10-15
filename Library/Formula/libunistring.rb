@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Libunistring <Formula
   @url='http://www.de-mirrors.de/gnuftp/libunistring/libunistring-0.9.1.1.tar.gz'

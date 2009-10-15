@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Libtiff <Formula
   @url='ftp://ftp.remotesensing.org/libtiff/tiff-3.8.2.tar.gz'

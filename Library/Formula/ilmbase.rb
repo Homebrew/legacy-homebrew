@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Ilmbase <Formula
   url 'http://download.savannah.gnu.org/releases/openexr/ilmbase-1.0.1.tar.gz'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Scala <Formula
   @homepage='http://www.scala-lang.org/'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class SdlMixer <Formula
   url 'http://www.libsdl.org/projects/SDL_mixer/release/SDL_mixer-1.2.8.tar.gz'

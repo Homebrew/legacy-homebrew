@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class W3m <Formula
   url 'http://downloads.sourceforge.net/project/w3m/w3m/w3m-0.5.2/w3m-0.5.2.tar.gz'

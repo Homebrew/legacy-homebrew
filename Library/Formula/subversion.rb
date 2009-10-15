@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Subversion <Formula
   @url='http://subversion.tigris.org/downloads/subversion-1.6.5.tar.bz2'

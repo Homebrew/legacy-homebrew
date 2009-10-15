@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Tintin <Formula
   url 'http://downloads.sourceforge.net/project/tintin/TinTin%2B%2B%20Source%20Code/1.99.7/tintin-1.99.7.tar.gz'

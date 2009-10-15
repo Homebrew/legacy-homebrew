@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Gnupg <Formula
   @url='ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.10.tar.bz2'

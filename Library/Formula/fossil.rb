@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Fossil <Formula
   @url='http://www.fossil-scm.org/download/fossil-src-20090914165629.tar.gz'

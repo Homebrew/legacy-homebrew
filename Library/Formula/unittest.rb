@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Unittest <Formula
   @url='http://unittest.red-bean.com/tar/unittest-0.50-62.tar.gz'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class BashCompletion <Formula
   @url='http://bash-completion.alioth.debian.org/files/bash-completion-1.1.tar.bz2'

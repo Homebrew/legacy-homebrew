@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Libao <Formula
   @url='http://downloads.xiph.org/releases/ao/libao-0.8.8.tar.gz'

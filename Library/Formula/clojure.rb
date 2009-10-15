@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Clojure <Formula
   url 'http://clojure.googlecode.com/files/clojure_1.0.0.zip'

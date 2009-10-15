@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class RubyEnterpriseEdition <Formula
   url 'http://rubyforge.org/frs/download.php/64475/ruby-enterprise-1.8.7-20090928.tar.gz'

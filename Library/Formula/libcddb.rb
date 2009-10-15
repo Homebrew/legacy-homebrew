@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Libcddb <Formula
   url 'http://prdownloads.sourceforge.net/libcddb/libcddb-1.3.2.tar.bz2'

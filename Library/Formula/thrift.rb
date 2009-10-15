@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 # TODO Fix java support anyone?
 #

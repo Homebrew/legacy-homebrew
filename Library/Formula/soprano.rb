@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Soprano <Formula
   @url='http://surfnet.dl.sourceforge.net/project/soprano/Soprano/2.3.1/soprano-2.3.1.tar.bz2'

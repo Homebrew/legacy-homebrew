@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 # TODO alias: beanstalkd
 

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Libogg <Formula
   @homepage='http://www.xiph.org/ogg/'

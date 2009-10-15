@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Libdvbpsi <Formula
   url 'http://download.videolan.org/pub/libdvbpsi/0.1.6/libdvbpsi5-0.1.6.tar.bz2'

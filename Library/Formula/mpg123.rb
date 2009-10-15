@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Mpg123 <Formula
   @url='http://sourceforge.net/projects/mpg123/files/mpg123/mpg123-1.8.1.tar.bz2'

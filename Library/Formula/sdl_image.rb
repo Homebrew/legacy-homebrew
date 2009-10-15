@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class SdlImage <Formula
   url 'http://www.libsdl.org/projects/SDL_image/release/SDL_image-1.2.7.tar.gz'

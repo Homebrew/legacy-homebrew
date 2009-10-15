@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Mplayer <Formula
   @homepage='http://www.mplayerhq.hu/'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Ddrescue <Formula
   @url='http://ftp.gnu.org/gnu/ddrescue/ddrescue-1.11.tar.gz'

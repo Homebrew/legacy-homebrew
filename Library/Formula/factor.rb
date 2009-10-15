@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 # This formula installs Factor TRUNK, as there is no
 # good stable release. It also takes up to and including

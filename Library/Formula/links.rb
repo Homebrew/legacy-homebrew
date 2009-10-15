@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Links <Formula
   @url='http://links.twibright.com/download/links-2.2.tar.gz'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Ffmpeg <Formula
   head 'svn://svn.ffmpeg.org/ffmpeg/trunk'

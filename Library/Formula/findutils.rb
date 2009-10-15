@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Findutils <Formula
   @url='http://ftp.gnu.org/pub/gnu/findutils/findutils-4.4.2.tar.gz'

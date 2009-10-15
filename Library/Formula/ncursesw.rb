@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Ncursesw <Formula
   url 'http://ftp.gnu.org/pub/gnu/ncurses/ncurses-5.7.tar.gz'

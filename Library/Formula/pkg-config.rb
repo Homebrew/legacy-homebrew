@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class PkgConfig <Formula
   @homepage='http://pkgconfig.freedesktop.org'

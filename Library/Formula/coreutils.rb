@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 COREUTILS_ALIASES=<<-EOS
 brew_prefix=`brew --prefix`

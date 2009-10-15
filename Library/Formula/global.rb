@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Global <Formula
   @url='http://ftp.gnu.org/gnu/global/global-5.6.tar.gz'

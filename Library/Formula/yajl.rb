@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Yajl <Formula
   @homepage='http://lloyd.github.com/yajl/'

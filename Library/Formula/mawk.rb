@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Mawk <Formula
   @url='http://invisible-island.net/datafiles/release/mawk.tar.gz'

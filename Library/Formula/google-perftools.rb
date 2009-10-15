@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class GooglePerftools <Formula
   url 'http://google-perftools.googlecode.com/files/google-perftools-1.4.tar.gz'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Popt <Formula
   @url='http://rpm5.org/files/popt/popt-1.14.tar.gz'

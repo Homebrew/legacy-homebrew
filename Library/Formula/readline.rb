@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Readline <Formula
   @url='ftp://ftp.cwru.edu/pub/bash/readline-6.0.tar.gz'

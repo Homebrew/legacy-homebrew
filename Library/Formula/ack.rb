@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Ack <ScriptFileFormula
   # NOTE you don't need to specify the version, usually it is determined

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Spidermonkey <Formula  
   url "http://ftp.mozilla.org/pub/mozilla.org/js/js-1.7.0.tar.gz"

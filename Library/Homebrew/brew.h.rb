@@ -30,7 +30,7 @@ def __make url, name
   raise "#{path} already exists" if path.exist?
 
   template=<<-EOS
-            require 'brewkit'
+            require 'formula'
 
             class #{Formula.class_s name} <Formula
               url '#{url}'

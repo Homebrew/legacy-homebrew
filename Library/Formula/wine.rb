@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Wine <Formula
   url 'http://ibiblio.org/pub/linux/system/emulators/wine/wine-1.1.31.tar.bz2'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Wget <Formula
   homepage 'http://www.gnu.org/software/wget/'

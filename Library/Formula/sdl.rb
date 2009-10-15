@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Sdl <Formula
   @url='http://www.libsdl.org/release/SDL-1.2.13.tar.gz'

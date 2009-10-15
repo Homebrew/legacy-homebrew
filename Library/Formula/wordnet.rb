@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Wordnet <Formula
   url 'http://wordnetcode.princeton.edu/3.0/WordNet-3.0.tar.bz2'

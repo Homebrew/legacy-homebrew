@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Elinks <Formula
   @homepage='http://elinks.or.cz/'

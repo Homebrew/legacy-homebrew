@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Vala <Formula
   @url='http://download.gnome.org/sources/vala/0.7/vala-0.7.7.tar.bz2'

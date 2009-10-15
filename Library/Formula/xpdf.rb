@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Xpdf <Formula
   url 'ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.02.tar.gz'

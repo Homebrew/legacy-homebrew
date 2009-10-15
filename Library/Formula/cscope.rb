@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Cscope <Formula
   @url='http://downloads.sourceforge.net/sourceforge/cscope/cscope-15.7a.tar.bz2'

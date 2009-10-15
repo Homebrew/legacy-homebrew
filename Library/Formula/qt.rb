@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Qt <Formula
   @url='http://get.qt.nokia.com/qt/source/qt-mac-opensource-src-4.5.2.tar.gz'

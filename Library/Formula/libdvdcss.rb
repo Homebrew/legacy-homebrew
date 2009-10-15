@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Libdvdcss <Formula
   url 'http://download.videolan.org/pub/libdvdcss/1.2.9/libdvdcss-1.2.9.tar.bz2'

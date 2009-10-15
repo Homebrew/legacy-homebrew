@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Xdebug <Formula
   url 'http://xdebug.org/files/xdebug-2.0.5.tgz'

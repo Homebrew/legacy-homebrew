@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Oniguruma <Formula
   @url='http://www.geocities.jp/kosako3/oniguruma/archive/onig-5.9.1.tar.gz'

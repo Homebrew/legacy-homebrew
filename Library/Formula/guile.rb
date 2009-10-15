@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Guile <Formula
   @url='ftp://alpha.gnu.org/gnu/guile/guile-1.9.3.tar.gz'

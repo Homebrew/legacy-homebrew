@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Redland <Formula
   @url='http://download.librdf.org/source/redland-1.0.9.tar.gz'

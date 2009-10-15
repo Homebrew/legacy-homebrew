@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Vilistextum <Formula
   @url='http://bhaak.dyndns.org/vilistextum/vilistextum-2.6.9.tar.gz'

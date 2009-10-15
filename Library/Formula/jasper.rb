@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Jasper <Formula
   url 'http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-1.900.1.zip'

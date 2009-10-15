@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Swig <Formula
   url 'http://downloads.sourceforge.net/swig/swig-1.3.40.tar.gz'

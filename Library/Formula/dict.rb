@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 DICT_CONF=<<-EOS
 #  /etc/dict.conf Written by Bob Hilliard <hilliard@debian.org>

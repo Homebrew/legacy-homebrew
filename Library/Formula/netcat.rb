@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Netcat <Formula
   url 'http://downloads.sourceforge.net/sourceforge/netcat/netcat-0.7.1.tar.bz2'

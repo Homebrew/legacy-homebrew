@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Dirac <Formula
   url 'http://diracvideo.org/download/dirac-research/dirac-1.0.2.tar.gz'

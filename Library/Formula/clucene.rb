@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Clucene <Formula
   @url='http://kent.dl.sourceforge.net/project/clucene/clucene-core-stable/0.9.21/clucene-core-0.9.21.tar.bz2'

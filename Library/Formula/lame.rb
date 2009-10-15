@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Lame <Formula
   @homepage='http://lame.sourceforge.net/'

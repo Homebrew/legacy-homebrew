@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Emacs <Formula
   head 'git://git.savannah.gnu.org/emacs.git'

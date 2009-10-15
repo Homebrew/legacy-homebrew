@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Atomicparsley <Formula
   @url='http://downloads.sourceforge.net/project/atomicparsley/atomicparsley/AtomicParsley%20v0.9.0/AtomicParsley-source-0.9.0.zip'

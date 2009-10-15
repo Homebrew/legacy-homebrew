@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Fondu <Formula
   url 'http://fondu.sourceforge.net/fondu_src-060102.tgz'

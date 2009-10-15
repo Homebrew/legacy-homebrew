@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Lightning <Formula
   url 'http://ftp.gnu.org/gnu/lightning/lightning-1.2.tar.gz'

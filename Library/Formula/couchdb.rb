@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Couchdb <Formula
   @url='http://apache.multihomed.net/couchdb/0.10.0/apache-couchdb-0.10.0.tar.gz'

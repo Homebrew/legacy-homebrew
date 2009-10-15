@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Weechat <Formula
   @url='http://www.weechat.org/files/src/weechat-0.3.0.tar.bz2'

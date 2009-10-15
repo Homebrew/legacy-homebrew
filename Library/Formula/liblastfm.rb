@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Liblastfm <Formula
   @homepage='http://github.com/mxcl/liblastfm/'
