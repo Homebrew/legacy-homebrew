@@ -110,8 +110,8 @@ Apple distributes this library with OS X, you can find it in /usr/X11/lib.
 However not all build scripts look here, so you may need to call ENV.x11 or
 ENV.libxml2 in your formula's install function.
     EOS
-  when 'mercurial'
-    raise "Mercurial is blacklisted for creation because it is provided by easy_install"
+  when 'mercurial', 'scons'
+    raise "#{name} is blacklisted for creation because it is provided by easy_install"
   end
 
   __make url, name
