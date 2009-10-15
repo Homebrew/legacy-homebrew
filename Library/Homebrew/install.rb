@@ -2,7 +2,7 @@
 require 'global'
 
 require 'brew.h'
-require 'brewkit'
+require 'extend/ENV'
 require 'fileutils'
 require 'formula'
 require 'hardware'
@@ -31,30 +31,25 @@ EOS
 end
 
 
-def ENV_prepend key, value, separator = ' '
-  if ENV[key] and not ENV[key].empty?
-    ENV[key] = value+separator+ENV[key]
-  else
-    ENV[key] = value
-  end
-end
-
-
 def install f
+  # we deliberately only do this when install is run, although it may be the wrong decision…
+  ENV.extend(HomebrewEnvExtension)
+  ENV.setup_build_environment
+  
   f.deps.each do |dep|
     dep = Formula.factory dep
     if dep.keg_only?
-      ENV_prepend 'LDFLAGS', "-L#{dep.lib}"
-      ENV_prepend 'CPPFLAGS', "-I#{dep.include}"
-      ENV_prepend 'PATH', "#{dep.bin}", ':'
-      ENV_prepend 'PKG_CONFIG_PATH', dep.lib+'pkgconfig', ':'
+      ENV.prepend 'LDFLAGS', "-L#{dep.lib}"
+      ENV.prepend 'CPPFLAGS', "-I#{dep.include}"
+      ENV.prepend 'PATH', "#{dep.bin}", ':'
+      ENV.prepend 'PKG_CONFIG_PATH', dep.lib+'pkgconfig', ':'
     end
   end
 
   if ARGV.verbose?
     ohai "Build Environment"
-    %w[PATH CFLAGS LDFLAGS CPPFLAGS MAKEFLAGS CC CXX MACOSX_DEPLOYMENT_TARGET].each do |f|
-      puts "#{f}: #{ENV[f]}" unless ENV[f].to_s.empty?
+    %w[PATH CFLAGS LDFLAGS CPPFLAGS MAKEFLAGS CC CXX MACOSX_DEPLOYMENT_TARGET].each do |env|
+      puts "#{env}: #{ENV[env]}" unless ENV[env].to_s.empty?
     end
   end
 

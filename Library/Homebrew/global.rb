@@ -21,10 +21,13 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 #  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-require 'pathname+yeast'
-require 'ARGV+yeast'
+require 'extend/pathname'
+require 'extend/ARGV'
 require 'utils'
 require 'hardware'
+
+ARGV.extend(HomebrewArgvExtension)
+
 
 if Process.uid == 0
   # technically this is not the correct place, this cache is for *all users*

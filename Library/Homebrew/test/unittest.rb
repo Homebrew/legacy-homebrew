@@ -5,8 +5,10 @@
 
 ABS__FILE__=File.expand_path(__FILE__)
 
-$:.unshift File.dirname(ABS__FILE__)
-require 'pathname+yeast'
+$:.unshift File.dirname(ABS__FILE__)+'/..'
+require 'extend/pathname'
+require 'utils'
+require 'hardware'
 require 'formula'
 require 'download_strategy'
 require 'keg'
@@ -29,7 +31,8 @@ Dir.chdir HOMEBREW_PREFIX
 at_exit { HOMEBREW_PREFIX.parent.rmtree }
 
 require 'test/unit' # must be after at_exit
-require 'ARGV+yeast' # needs to be after test/unit to avoid conflict with OptionsParser
+require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
+ARGV.extend(HomebrewArgvExtension)
 
 
 class MockFormula <Formula

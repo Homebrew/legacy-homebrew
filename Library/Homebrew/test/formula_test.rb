@@ -3,14 +3,11 @@
 # support, and with no warranty, express or implied, as to its usefulness for
 # any purpose.
 
-$:.unshift File.dirname(__FILE__)
+$:.unshift File.dirname(__FILE__)+'/..'
 require 'test/unit'
 require 'global'
-require 'pathname+yeast'
 require 'formula'
 require 'utils'
-
-require 'ARGV+yeast' # needs to be after test/unit to avoid conflict with OptionsParser
 
 
 # NOTE duplicated in unittest.rb (we need to refactor the tests anyway)
