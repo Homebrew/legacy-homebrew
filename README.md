@@ -275,11 +275,11 @@ Contributing New Formulae
 =========================
 Formulae are simple Ruby scripts. Generate a formula with most bits filled-in:
 
-    brew create http://foo.org/foobar-1.2.1.tar.bz2
+    brew create http://example.com/foo-1.2.1.tar.bz2
 
 Check it over and try to install it:
 
-    brew install foobar
+    brew install foo
 
 Check the [wiki][] for more detailed information and tips for contribution.
 
@@ -287,6 +287,15 @@ If you want your formula to become part of this distribution, fork
 <http://github.com/mxcl/homebrew> and send mxcl a pull-request. Alternatively
 maintain your own distribution. Maybe you want to support Tiger? Or use
 special compile flags? Go ahead that's what git is all about! :)
+
+The easiest way to fork is with the [github-gem][], so potentially this is
+your workflow:
+
+    brew create http://example.com/foo-1.2.1.tar.bz2
+    git commit Library/Formula/foo.rb
+    github fork
+    git push myname master
+    github pull-request
 
 
 Licensing
@@ -297,20 +306,16 @@ confirm. Individual formulae are licensed according to their authors' wishes.
 
 FAQ
 ===
-1. Are you excessively interested in beer?  
-   Yes.
-
-2. Was Homebrew devised under the influence of alcohol?  
-   Yes.
-
-3. Can Homebrew replace MacPorts?  
+1. Can Homebrew replace MacPorts?  
    Maybe. But remember, Homebrew is still incomplete. Be forgiving in your
    approach and be willing to fork and contribute fixes. Thanks!
 
-4. Is there an IRC channel?  
+2. Is there an IRC channel?  
    Yes, <irc://irc.freenode.net#machomebrew>.
    
-5. And it's on Twitter?
+3. And it's on Twitter?  
    Yes, <http://twitter.com/machomebrew>.
 
+
 [wiki]: http://wiki.github.com/mxcl/homebrew
+[github-gem]: http://github.com/defunkt/github-gem
