@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Asterisk <Formula
   url 'http://downloads.asterisk.org/pub/telephony/asterisk/releases/asterisk-1.6.1.6.tar.gz'

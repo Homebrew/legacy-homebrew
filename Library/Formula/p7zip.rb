@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class P7zip <Formula
   @url='http://kent.dl.sourceforge.net/sourceforge/p7zip/p7zip_9.04_src_all.tar.bz2'

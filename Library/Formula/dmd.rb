@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Dmd <Formula
   @homepage='http://www.digitalmars.com/d/'

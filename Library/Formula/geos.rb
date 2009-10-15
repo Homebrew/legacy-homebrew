@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Geos <Formula
   url 'http://download.osgeo.org/geos/geos-3.1.1.tar.bz2'

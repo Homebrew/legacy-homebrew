@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Gawk <Formula
   @url='http://ftp.gnu.org/gnu/gawk/gawk-3.1.7.tar.bz2'

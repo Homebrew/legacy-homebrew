@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class GnuSed <Formula
   @url='http://ftp.gnu.org/gnu/sed/sed-4.2.1.tar.bz2'

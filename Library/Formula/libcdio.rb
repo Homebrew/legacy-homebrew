@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Libcdio <Formula
   url 'http://ftp.gnu.org/gnu/libcdio/libcdio-0.81.tar.gz'

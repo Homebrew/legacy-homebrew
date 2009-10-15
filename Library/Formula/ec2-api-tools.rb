@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Ec2ApiTools <Formula
   @homepage='http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351'

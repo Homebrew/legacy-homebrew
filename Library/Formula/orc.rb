@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Orc <Formula
   head 'git://code.entropywave.com/git/orc.git'

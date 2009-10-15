@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class BerkeleyDb <Formula
   @url='http://download.oracle.com/berkeley-db/db-4.8.24.tar.gz'

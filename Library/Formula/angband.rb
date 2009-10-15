@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Angband <Formula
   @url='http://rephial.org/downloads/3.0/angband-3.0.9b-src.tar.gz'

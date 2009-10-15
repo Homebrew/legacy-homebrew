@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Watch <Formula
   homepage 'http://procps.sourceforge.net/'

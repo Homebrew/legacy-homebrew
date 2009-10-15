@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Neon <Formula
   @url='http://www.webdav.org/neon/neon-0.29.0.tar.gz'

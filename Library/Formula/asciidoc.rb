@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Asciidoc <Formula
   @url='http://downloads.sourceforge.net/project/asciidoc/asciidoc/8.4.5/asciidoc-8.4.5.tar.gz'

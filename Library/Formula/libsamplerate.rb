@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Libsamplerate <Formula
   @homepage='http://www.mega-nerd.com/SRC'

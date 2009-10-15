@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Iperf <Formula
   @url='http://downloads.sourceforge.net/project/iperf/iperf/2.0.4%20source/iperf-2.0.4.tar.gz'

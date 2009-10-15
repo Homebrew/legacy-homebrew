@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Tree <Formula
   @url='ftp://mama.indstate.edu/linux/tree/tree-1.5.2.2.tgz'

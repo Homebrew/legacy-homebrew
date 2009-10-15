@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Icu4c <Formula
   @url='http://download.icu-project.org/files/icu4c/4.3.1/icu4c-4_3_1-src.tgz'

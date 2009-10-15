@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Pwgen <Formula
   url 'http://downloads.sourceforge.net/project/pwgen/pwgen/2.06/pwgen-2.06.tar.gz'

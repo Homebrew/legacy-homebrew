@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Wireshark <Formula
   @url='http://media-2.cacetech.com/wireshark/src/wireshark-1.0.8.tar.bz2'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Axel <Formula
   url 'http://alioth.debian.org/frs/download.php/3016/axel-2.4.tar.bz2'

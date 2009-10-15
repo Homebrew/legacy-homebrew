@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Postgis <Formula
   url 'http://postgis.refractions.net/download/postgis-1.4.0.tar.gz'

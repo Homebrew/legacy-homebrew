@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Sshfs <Formula
   @url='http://downloads.sourceforge.net/project/fuse/sshfs-fuse/2.2/sshfs-fuse-2.2.tar.gz'

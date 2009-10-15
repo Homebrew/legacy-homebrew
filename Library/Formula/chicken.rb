@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Chicken <Formula
   @url='http://www.call-with-current-continuation.org/chicken-4.2.0.tar.gz'

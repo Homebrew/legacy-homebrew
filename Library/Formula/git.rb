@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class GitManuals <Formula
   url 'http://kernel.org/pub/software/scm/git/git-manpages-1.6.5.tar.bz2'

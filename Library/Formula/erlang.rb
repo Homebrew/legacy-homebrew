@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class ErlangManuals <Formula
   url 'http://www.erlang.org/download/otp_doc_man_R13B02-1.tar.gz'

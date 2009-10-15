@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Zsh <Formula
   @url='http://downloads.sourceforge.net/project/zsh/zsh-dev/4.3.10/zsh-4.3.10.tar.gz'

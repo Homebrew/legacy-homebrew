@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Libiconv <Formula
   @url='http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.13.1.tar.gz'

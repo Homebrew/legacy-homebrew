@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Pdftohtml <Formula
   @url='http://downloads.sourceforge.net/project/pdftohtml/Experimental%20Versions/pdftohtml%200.40/pdftohtml-0.40a.tar.gz'

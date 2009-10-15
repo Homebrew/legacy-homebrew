@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Cmake <Formula
   @url='http://www.cmake.org/files/v2.6/cmake-2.6.4.tar.gz'

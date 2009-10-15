@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Vbindiff <Formula
   url 'http://www.cjmweb.net/vbindiff/vbindiff-3.0_beta4.tar.gz'

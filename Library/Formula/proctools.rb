@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Proctools <Formula
   @version='0.4pre1'

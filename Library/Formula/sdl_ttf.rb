@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class SdlTtf <Formula
   url 'http://www.libsdl.org/projects/SDL_ttf/release/SDL_ttf-2.0.9.tar.gz'

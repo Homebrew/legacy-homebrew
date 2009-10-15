@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Siege <Formula
   url "ftp://ftp.joedog.org/pub/siege/siege-2.69.tar.gz"

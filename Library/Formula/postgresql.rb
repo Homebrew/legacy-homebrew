@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Postgresql <Formula
   @homepage='http://www.postgresql.org/'

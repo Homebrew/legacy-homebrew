@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Fribidi <Formula
   url 'http://fribidi.org/download/fribidi-0.10.9.tar.gz'

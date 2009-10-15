@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Mhash <Formula
   @url='http://sourceforge.net/projects/mhash/files/mhash/0.9.9.9/mhash-0.9.9.9.tar.gz'

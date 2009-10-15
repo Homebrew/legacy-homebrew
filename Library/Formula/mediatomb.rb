@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Mediatomb <Formula
   @url='http://downloads.sourceforge.net/mediatomb/mediatomb-0.11.0.tar.gz'

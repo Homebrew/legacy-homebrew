@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class XmlrpcC <Formula
   @url='http://kent.dl.sourceforge.net/sourceforge/xmlrpc-c/xmlrpc-c-1.06.33.tgz'

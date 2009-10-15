@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Mrtg <Formula
   url 'http://oss.oetiker.ch/mrtg/pub/mrtg-2.16.2.zip'

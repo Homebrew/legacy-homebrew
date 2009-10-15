@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Sphinx <Formula
   @url='http://www.sphinxsearch.com/downloads/sphinx-0.9.8.1.tar.gz'

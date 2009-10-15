@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Quassel <Formula
   head 'git://git.quassel-irc.org/quassel.git'

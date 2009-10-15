@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Expat <Formula
   @url='http://softlayer.dl.sourceforge.net/project/expat/expat/2.0.1/expat-2.0.1.tar.gz'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Mad <Formula
   homepage 'http://www.underbit.com/products/mad/'

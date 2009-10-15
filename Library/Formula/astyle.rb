@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Astyle <Formula
   @url='http://kent.dl.sourceforge.net/sourceforge/astyle/astyle_1.23_macosx.tar.gz'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Rasqal <Formula
   @url='http://download.librdf.org/source/rasqal-0.9.16.tar.gz'

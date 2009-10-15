@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class DBus <Formula
   url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.2.16.tar.gz'

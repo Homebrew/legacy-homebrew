@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Lftp <Formula
   @url='http://ftp.yars.free.net/pub/source/lftp/lftp-3.7.15.tar.gz'

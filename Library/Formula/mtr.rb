@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Mtr <Formula
   @url='ftp://ftp.bitwizard.nl/mtr/mtr-0.75.tar.gz'

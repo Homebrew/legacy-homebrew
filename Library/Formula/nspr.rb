@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Nspr <Formula
   @url='https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.7.5/src/nspr-4.7.5.tar.gz'

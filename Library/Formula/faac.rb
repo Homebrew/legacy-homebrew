@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Faac <Formula
   url 'http://surfnet.dl.sourceforge.net/project/faac/faac-src/faac-1.28/faac-1.28.tar.gz'

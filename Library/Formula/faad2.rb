@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Faad2 <Formula
   url 'http://surfnet.dl.sourceforge.net/project/faac/faad2-src/faad2-2.7/faad2-2.7.tar.bz2'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Pngcrush <Formula
   homepage 'http://pmt.sourceforge.net/pngcrush/'

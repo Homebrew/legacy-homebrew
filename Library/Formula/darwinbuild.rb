@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Darwinbuild <Formula
   head 'http://svn.macosforge.org/repository/darwinbuild/trunk/'

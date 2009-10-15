@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Gd <Formula
   version "2.0.36RC1"

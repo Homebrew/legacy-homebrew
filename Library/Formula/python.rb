@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Python <Formula
   url 'http://python.org/ftp/python/2.6.3/Python-2.6.3.tar.bz2'

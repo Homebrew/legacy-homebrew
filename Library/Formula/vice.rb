@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Vice <Formula
   @url='http://www.zimmers.net/anonftp/pub/cbm/crossplatform/emulators/VICE/vice-2.1.tar.gz'

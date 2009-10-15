@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class GnuTar < Formula
   @url='ftp://ftp.gnu.org/gnu/tar/tar-1.22.tar.gz'

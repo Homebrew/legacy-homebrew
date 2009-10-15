@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Tmux <Formula
   url 'http://downloads.sourceforge.net/tmux/tmux-1.0.tar.gz'

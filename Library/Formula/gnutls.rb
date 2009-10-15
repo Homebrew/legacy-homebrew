@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Gnutls <Formula
   @url='http://ftp.gnu.org/pub/gnu/gnutls/gnutls-2.8.3.tar.bz2'

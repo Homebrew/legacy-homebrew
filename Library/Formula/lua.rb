@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Lua <Formula
   @url='http://www.lua.org/ftp/lua-5.1.4.tar.gz'

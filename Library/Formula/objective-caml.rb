@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class ObjectiveCaml <Formula
   @url='http://caml.inria.fr/pub/distrib/ocaml-3.11/ocaml-3.11.1.tar.bz2'

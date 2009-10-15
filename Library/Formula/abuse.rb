@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class AbuseGameData <Formula
   url 'http://abuse.zoy.org/raw/Downloads/abuse-data-2.00.tar.gz'

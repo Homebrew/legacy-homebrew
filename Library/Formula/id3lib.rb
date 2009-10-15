@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Id3lib <Formula
   @url='http://voxel.dl.sourceforge.net/project/id3lib/id3lib/3.8.3/id3lib-3.8.3.tar.gz'

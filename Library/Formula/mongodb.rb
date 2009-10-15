@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Mongodb <Formula
   url 'http://downloads.mongodb.org/osx/mongodb-osx-x86_64-1.1.1.tgz'

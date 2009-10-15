@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Lynx <Formula
   url 'http://lynx.isc.org/release/lynx2.8.7.tar.bz2'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Luarocks <Formula
   @url='http://luaforge.net/frs/download.php/3981/luarocks-1.0.1.tar.gz'

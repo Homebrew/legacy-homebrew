@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 # some credit to http://github.com/maddox/magick-installer
 

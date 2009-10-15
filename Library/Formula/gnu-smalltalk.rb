@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class GnuSmalltalk <Formula
   @url='ftp://ftp.gnu.org/gnu/smalltalk/smalltalk-3.1.tar.gz'

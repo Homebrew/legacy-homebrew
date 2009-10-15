@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Llvm <Formula
   @url='http://llvm.org/releases/2.5/llvm-2.5.tar.gz'

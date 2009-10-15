@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 REDIS_CONF=<<-EOS
 # Redis configuration file example

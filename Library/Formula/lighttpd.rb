@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Lighttpd <Formula
   @url='http://www.lighttpd.net/download/lighttpd-1.4.23.tar.bz2'

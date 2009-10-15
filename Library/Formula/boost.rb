@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Boost <Formula
   @homepage='http://www.boost.org'

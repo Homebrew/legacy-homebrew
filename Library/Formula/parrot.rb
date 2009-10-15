@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Parrot <Formula
   url 'ftp://ftp.parrot.org//pub/parrot/releases/devel/1.6.0/parrot-1.6.0.tar.gz'

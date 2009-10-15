@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Sloccount <Formula
   @url='http://www.dwheeler.com/sloccount/sloccount-2.26.tar.gz'

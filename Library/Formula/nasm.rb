@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Nasm <Formula
   @url='http://www.nasm.us/pub/nasm/releasebuilds/2.07/nasm-2.07.tar.bz2'

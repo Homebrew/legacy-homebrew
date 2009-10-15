@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Unp <Formula
   @url='http://ftp.de.debian.org/debian/pool/main/u/unp/unp_1.0.11.tar.gz'

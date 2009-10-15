@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Maven <Formula
   @url='http://apache.mirrors.timporter.net/maven/binaries/apache-maven-2.2.1-bin.tar.gz'

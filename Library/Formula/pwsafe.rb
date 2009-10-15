@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Pwsafe <Formula
   @url='http://downloads.sourceforge.net/project/pwsafe/pwsafe/0.2.0/pwsafe-0.2.0.tar.gz'

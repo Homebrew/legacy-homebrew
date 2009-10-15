@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 # My god! 20,000 files?!
 # TODO trim that a bit? Seems crazy.

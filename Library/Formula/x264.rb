@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class X264 <Formula
   head 'git://git.videolan.org/x264.git'

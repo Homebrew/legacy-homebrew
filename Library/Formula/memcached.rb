@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Memcached <Formula
   @url='http://memcached.googlecode.com/files/memcached-1.4.0.tar.gz'

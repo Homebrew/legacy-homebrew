@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Playdar <Formula
   @homepage='http://www.playdar.org'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Gccxml <Formula
   # NOTE you don't need to specify the version, usually it is determined

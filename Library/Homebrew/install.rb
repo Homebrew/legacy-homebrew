@@ -1,8 +1,12 @@
 #!/usr/bin/ruby
 require 'global'
-require 'formula'
-require 'keg'
+
 require 'brew.h'
+require 'brewkit'
+require 'fileutils'
+require 'formula'
+require 'hardware'
+require 'keg'
 
 show_summary_heading = false
 

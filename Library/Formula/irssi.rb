@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Irssi <Formula
   @url='http://irssi.org/files/irssi-0.8.14.tar.bz2'
