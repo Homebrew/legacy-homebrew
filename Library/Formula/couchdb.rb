@@ -19,7 +19,6 @@ class Couchdb <Formula
 
     couchjs = "#{prefix}/lib/couchdb/bin/couchjs"
     system "chmod 755 #{couchjs}"
-    system "install_name_tool -change Darwin_DBG.OBJ/libjs.dylib #{HOMEBREW_PREFIX}/lib/libjs.dylib #{couchjs}"
 
     (var+'lib'+'couchdb').mkpath
     (var+'log'+'couchdb').mkpath

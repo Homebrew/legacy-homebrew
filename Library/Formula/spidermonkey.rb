@@ -25,7 +25,7 @@ class Spidermonkey <Formula
     ENV['CFLAGS'] = ENV['CFLAGS'].gsub(/-msse[^\s]+/, '')
 
     Dir.chdir "src" do
-      system "make DEFINES=-DJS_C_STRINGS_ARE_UTF8 -f Makefile.ref"
+      system "make JS_DIST='#{prefix}' DEFINES=-DJS_C_STRINGS_ARE_UTF8 -f Makefile.ref"
       system "make JS_DIST='#{prefix}' -f Makefile.ref export"
       system "ranlib #{lib}/libjs.a"
     end
@@ -45,3 +45,14 @@ __END__
  #elif defined(HAVE_VA_LIST_AS_ARRAY)
  #define VARARGS_ASSIGN(foo, bar)        foo[0] = bar[0]
  #else
+
+--- a/src/rules.mk	2006-07-06 22:12:02.000000000 -0400
++++ b/src/rules.mk	2009-10-16 00:12:09.000000000 -0400
+@@ -115,7 +115,7 @@
+ 	$(RANLIB) $@
+ 
+ $(SHARED_LIBRARY): $(LIB_OBJS)
+-	$(MKSHLIB) -o $@ $(LIB_OBJS) $(LDFLAGS) $(OTHER_LIBS)
++	$(MKSHLIB) -o $@ $(LIB_OBJS) $(LDFLAGS) $(OTHER_LIBS) -install_name $(JS_DIST)/lib/$(notdir $@)
+ endif
+ endif
