@@ -2,6 +2,7 @@ require 'formula'
 
 class Clojure <Formula
   url 'http://clojure.googlecode.com/files/clojure_1.0.0.zip'
+  head 'git://github.com/richhickey/clojure.git'
   homepage 'http://clojure.org/'
   md5 'e7a50129040df7fe52287006988ecbb2'
   JAR = "clojure-1.0.0.jar"
