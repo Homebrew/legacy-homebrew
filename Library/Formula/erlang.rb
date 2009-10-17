@@ -35,6 +35,7 @@ class Erlang <Formula
     end
 
     system "./configure", *config_flags
+    system "touch lib/wx/SKIP"
     system "make"
     system "make install"
 
