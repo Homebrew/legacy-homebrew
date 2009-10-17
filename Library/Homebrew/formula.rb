@@ -46,6 +46,7 @@ class Formula
   def initialize name='__UNKNOWN__'
     set_instance_variable 'url'
     set_instance_variable 'head'
+    set_instance_variable 'specs'
 
     if @head and (not @url or ARGV.flag? '--HEAD')
       @url=@head
@@ -85,7 +86,7 @@ class Formula
     self.class.path name
   end
 
-  attr_reader :url, :version, :homepage, :name
+  attr_reader :url, :version, :homepage, :name, :specs
 
   def bin; prefix+'bin' end
   def sbin; prefix+'sbin' end
@@ -281,7 +282,7 @@ private
   end
 
   def stage
-    ds=download_strategy.new url, name, version
+    ds=download_strategy.new url, name, version, specs
     HOMEBREW_CACHE.mkpath
     dl=ds.fetch
     verify_download_integrity dl if dl.kind_of? Pathname
@@ -380,7 +381,14 @@ private
       end
     end
 
-    attr_rw :url, :version, :homepage, :head, :deps, *CHECKSUM_TYPES
+    attr_rw :url, :version, :homepage, :specs, :deps, *CHECKSUM_TYPES
+
+    def head val=nil, specs=nil
+      if specs
+        @specs = specs
+      end
+      val.nil? ? @head : @head = val
+    end
 
     def depends_on name, *args
       @deps ||= []
