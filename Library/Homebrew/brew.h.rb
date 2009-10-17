@@ -137,6 +137,10 @@ def info name
   puts "#{f.name} #{f.version}"
   puts f.homepage
 
+  if not f.deps.empty?
+    puts "Depends on: #{f.deps.join(', ')}"
+  end
+
   if f.prefix.parent.directory?
     kids=f.prefix.parent.children
     kids.each do |keg|
