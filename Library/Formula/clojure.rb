@@ -31,7 +31,7 @@ __END__
 # passed as command-line arguments.
 
 # resolve links - $0 may be a softlink
-CLOJURE='CLOJURE_JAR_PATH_PLACEHOLDER'
+CLOJURE=$CLASSPATH:CLOJURE_JAR_PATH_PLACEHOLDER
 
 if [ -z "$1" ]; then
 	java -server -cp $CLOJURE clojure.lang.Repl
