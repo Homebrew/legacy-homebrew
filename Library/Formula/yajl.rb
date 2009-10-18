@@ -2,8 +2,8 @@ require 'formula'
 
 class Yajl <Formula
   @homepage='http://lloyd.github.com/yajl/'
-  @url='http://github.com/lloyd/yajl/tarball/1.0.5'
-  @md5='f4a3cbc764c43231ed1aedc54438b69b'
+  @url='http://github.com/lloyd/yajl/tarball/1.0.6'
+  @md5='bb201150143352b117be702a1bc78405'
 
   depends_on 'cmake'
 
