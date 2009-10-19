@@ -181,7 +181,7 @@ class Formula
 
   def self.class_s name
     #remove invalid characters and camelcase
-    name.capitalize.gsub(/[-_\s]([a-zA-Z0-9])/) { $1.upcase }
+    name.capitalize.gsub(/[-_\s]([a-zA-Z0-9])/) { $1.upcase }.gsub('+', 'x')
   end
 
   def self.factory name
