@@ -24,12 +24,9 @@
 class AbstractDownloadStrategy
   def initialize url, name, version, specs
     @url=url
-    case specs
-    when Hash
+    case specs when Hash
       @spec = specs.keys.first # only use first spec
       @ref = specs.values.first
-    else
-      spec = nil
     end
     @unique_token="#{name}-#{version}" unless name.to_s.empty? or name == '__UNKNOWN__'
   end
