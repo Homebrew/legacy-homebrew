@@ -7,6 +7,9 @@ class Xdebug <Formula
 
   def install
     Dir.chdir 'xdebug-2.0.5' do
+      # See http://github.com/mxcl/homebrew/issues/#issue/69
+      ENV.universal_binary unless Hardware.is_64_bit?
+
       system "phpize"
       system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking",
                             "--enable-xdebug"
@@ -17,14 +20,14 @@ class Xdebug <Formula
 
   def caveats
       <<-END_CAVEATS
-      Add the following line to php.ini:
-           zend_extension="#{prefix}/xdebug.so"
+Add the following line to php.ini:
 
-      Restart your webserver.
+    zend_extension="#{prefix}/xdebug.so"
 
-      Write a PHP page that calls "phpinfo();" Load it in a browser and
-      look for the info on the xdebug module.  If you see it, you have been
-      successful!
+Restart your webserver.
+
+Write a PHP page that calls "phpinfo();" Load it in a browser and look for the
+info on the xdebug module.  If you see it, you have been successful!
       END_CAVEATS
   end
 end
