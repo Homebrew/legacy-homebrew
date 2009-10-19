@@ -98,11 +98,11 @@ private
 end
 
 class HttpDownloadStrategy <CurlDownloadStrategy
-  def initialize url, name, version
+  def initialize url, name, version, specs
     opoo "HttpDownloadStrategy is deprecated"
     puts "Please use CurlDownloadStrategy in future"
     puts "HttpDownloadStrategy will be removed in version 0.5"
-    super url, name, version
+    super url, name, version, specs
   end
 end
 
