@@ -1,9 +1,12 @@
 require 'formula'
 
 class Madplay <Formula
-  homepage 'http://www.underbit.com/products/mad/'
   url 'http://downloads.sourceforge.net/project/mad/madplay/0.15.2b/madplay-0.15.2b.tar.gz'
   md5 '6814b47ceaa99880c754c5195aa1aac1'
+
+  def homepage
+    Formula.factory('mad').homepage
+  end
 
   depends_on 'mad'
   depends_on 'libid3tag'
