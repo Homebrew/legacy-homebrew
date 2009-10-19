@@ -593,6 +593,11 @@ class BeerTasting <Test::Unit::TestCase
     end
   end
   
+  def test_class_names
+    assert_equal 'ShellFm', Formula.class_s('shell.fm')
+    assert_equal 'Fooxx', Formula.class_s('foo++')
+  end
+      
   def test_angband_version_style
     f = MockFormula.new 'http://rephial.org/downloads/3.0/angband-3.0.9b-src.tar.gz'
     assert_equal '3.0.9b', f.version
