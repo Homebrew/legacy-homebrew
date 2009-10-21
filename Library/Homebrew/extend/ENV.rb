@@ -192,12 +192,12 @@ module HomebrewEnvExtension
       self[key] = value
     end
   end
-  def append key, value
+  def append key, value, separator = ' '
     ref=self[key]
     if ref.nil? or ref.empty?
       self[key]=value
     else
-      self[key]=ref+' '+value
+      self[key]=ref + separator + value
     end
   end
   def append_to_cflags f
