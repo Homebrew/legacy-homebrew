@@ -31,6 +31,10 @@ class Python <Formula
       args << "--with-universal-archs=intel --enable-universalsdk=/"
     end
     
+    # Speed up creation of libpython.a, backported from Unladen Swallow:
+    # http://code.google.com/p/unladen-swallow/source/detail?r=856
+    inreplace "Makefile.pre.in", "$(AR) cr", "$(AR) cqS"
+    
     system "./configure", *args
     
     
