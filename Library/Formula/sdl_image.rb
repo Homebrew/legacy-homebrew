@@ -1,9 +1,9 @@
 require 'formula'
 
 class SdlImage <Formula
-  url 'http://www.libsdl.org/projects/SDL_image/release/SDL_image-1.2.7.tar.gz'
+  url 'http://www.libsdl.org/projects/SDL_image/release/SDL_image-1.2.8.tar.gz'
   homepage 'http://www.libsdl.org/projects/SDL_image'
-  md5 'a729ff61f74f0a45ec7fe36354cf938e'
+  md5 '2e7c3efa0ec2acc039c46960e27c0792'
 
   depends_on 'libpng'
   depends_on 'sdl'
