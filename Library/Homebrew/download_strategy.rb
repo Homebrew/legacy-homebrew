@@ -111,7 +111,16 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
     ohai "Checking out #{@url}"
     @co=HOMEBREW_CACHE+@unique_token
     unless @co.exist?
-      safe_system '/usr/bin/svn', 'checkout', @url, @co
+      checkout_args = ['/usr/bin/svn', 'checkout', @url]
+      
+      if (@spec == :revision) and @ref
+        checkout_args << '-r'
+        checkout_args << @ref
+      end
+
+      checkout_args << @co
+
+      safe_system *checkout_args
     else
       # TODO svn up?
       puts "Repository already checked out"
