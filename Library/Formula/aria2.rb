@@ -1,9 +1,9 @@
 require 'formula'
 
 class Aria2 <Formula
-  @url='http://kent.dl.sourceforge.net/project/aria2/stable/aria2-1.5.2/aria2-1.5.2.tar.bz2'
+  @url='http://downloads.sourceforge.net/project/aria2/stable/latest/aria2-1.6.2.tar.bz2'
   @homepage='http://aria2.sourceforge.net/'
-  @md5='13ffefebdc4df4956721801fe74e01df'
+  @md5='aa94152c01a11e75b77a6be6c15e81ff'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
