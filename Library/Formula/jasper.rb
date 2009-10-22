@@ -10,7 +10,7 @@ class Jasper <Formula
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
-                          "--disable-dependency-trackinga",
+                          "--disable-dependency-tracking",
                           "--enable-shared"
     system "make install"
   end
