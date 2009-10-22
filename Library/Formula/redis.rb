@@ -136,9 +136,9 @@ shareobjectspoolsize 1024
 EOS
 
 class Redis <Formula
-  @url='http://redis.googlecode.com/files/redis-1.0.tar.gz'
-  @homepage='http://code.google.com/p/redis/'
-  @md5='0bc1f0daca6abf92cdc4f00613ee1f2a'
+  url 'http://redis.googlecode.com/files/redis-1.02.tar.gz'
+  homepage 'http://code.google.com/p/redis/'
+  sha1 '1739e2529422b991b42d0b9e3fd8da2fadc24796'
 
   def install
     system "make"
