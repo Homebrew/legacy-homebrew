@@ -163,6 +163,12 @@ Let this be the last sudo you do for quite some time:
 
     sudo chown -R `whoami` /usr/local
 
+_NOTE_: Performing the above command *may* break some programs that are already
+installed in /usr/local. One specific example is mysql. Fixing mysql may be
+as simple as:
+
+    sudo chown -R mysql:mysql `brew --prefix`/mysql
+
 But! I already have a bunch of junk in /usr/local
 -------------------------------------------------
 Homebrew can co-exist with any software already installed in its prefix.
