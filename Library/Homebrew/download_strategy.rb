@@ -48,7 +48,7 @@ class CurlDownloadStrategy <AbstractDownloadStrategy
         raise
       end
     else
-      puts "File already downloaded and cached"
+      puts "File already downloaded and cached to #{HOMEBREW_CACHE}"
     end
     return @dl # thus performs checksum verification
   end
