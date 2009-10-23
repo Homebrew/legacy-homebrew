@@ -116,51 +116,32 @@ Max Howell -- <http://twitter.com/mxcl>
 
 Installation
 ============
-Homebrew requires no setup, but almost everything it installs is built from
-source; so you need Xcode:
+Homebrew is pretty flexible in how it can be installed and used. What follows
+are probably the simplest methods.
 
-<http://developer.apple.com/technology/xcode.html>
+Download
+--------
+    mkdir homebrew
+    curl -L http://github.com/mxcl/homebrew/tarball/master | tar xz --strip 1 -C homebrew
 
-Many build scripts assume MacPorts or Fink on OS X. Which isn't too much of a
-problem until you uninstall them and stuff you built with Homebrew breaks. So
-uninstall them (if you prefer, renaming their root folders is sufficient).
+Homebrew can already be used, try it:
 
-<http://trac.macports.org/wiki/FAQ#uninstall>  
-<http://www.finkproject.org/faq/usage-fink.php#removing>
+    homebrew/bin/brew install git
+    homebrew/bin/brew list git
 
-Now, download Homebrew:
+Notice how Homebrew installed Git to homebrew/bin/git. Homebrew never touches
+files outside its prefix.
 
-    git clone git://github.com/mxcl/homebrew.git
+Installing to /usr/local
+------------------------
+We think /usr/local is the best location for Homebrew because:
 
-If this leaves you shaking your head because you are installing Homebrew
-*in order to* install git, then try [this installer script][sh] or [this
-.pkg installer][pkg]. Note these are somewhat new and are not stamped 
-"definitely works" yet.
+1. It's already in your PATH
+2. Other software checks /usr/local for stuff (eg. RubyGems)
+3. Building your own software is easier when dependencies are in /usr/local
 
-[sh]: http://gist.github.com/203926
-[pkg]: http://demaree.me/x/7
-
-Homebrew is self-contained so once you've put it somewhere, it's ready to go.
-Copy this directory anywhere you like. But we recommend installing to
-/usr/local because:
-
-1.  It is already in your path
-2.  Build scripts always look in /usr/local for dependencies so it makes it
-    easier for you personally to build and install software
-
-You can move the location of Homebrew at a later time, although this *will*
-break some tools because they hardcode their installtion prefixes into their
-binaries. Homebrew does make more effort than competing solutions to prevent
-this though.
-
-Finally, if you don't install to /usr/local, you have to add the following to
-your ~/.profile file:
-
-    export PATH=`brew --prefix`/bin:$PATH
-    export MANPATH=`brew --prefix`/share/man:$MANPATH
-
-Don't sudo
-----------
+But… don't sudo!
+----------------
 Well clearly you can sudo if you like. Homebrew is all about you doing it your
 way. But the Homebrew recommendation is: don't sudo!
 
@@ -180,26 +161,39 @@ installing anything system-critical. Apple already did that.
 
 Let this be the last sudo you do for quite some time:
 
-    sudo chown -R `whoami`:staff `brew --prefix`
+    sudo chown -R `whoami` /usr/local
 
-I already have a bunch of junk in /usr/local
---------------------------------------------
-The easiest thing to do is just git clone into /usr/local. The files that are
-there can remain there, Homebrew will never touch them.
+But! I already have a bunch of junk in /usr/local
+-------------------------------------------------
+Homebrew can co-exist with any software already installed in its prefix.
+
+Installing to /usr/local
+------------------------
+    curl -L http://github.com/mxcl/homebrew/tarball/master | tar xz --strip 1 -C /usr/local
+
+You may prefer this third party [installer script][sh] or [.pkg installer][pkg].
+
+Using git to install
+--------------------
+If you already have git installed then this is the easiest way to install:
 
     cd /usr/local
     git init
     git remote add origin git://github.com/mxcl/homebrew.git
     git pull origin master
 
-Otherwise, delete everything and reinstall with Homebrew. Or merge it in two
-steps by hand.
+Building Stuff
+--------------
+Almost everything Homebrew installs is written in C, so you need Xcode:
 
-How about mate and gitx and that?
----------------------------------
-These tools install from TextMate and GitX into /usr/local/bin. They (and
-other similar tools) can co-exist with Homebrew without requiring further
-effort from yourself.
+<http://developer.apple.com/technology/xcode.html>
+
+Many build scripts assume MacPorts or Fink on OS X. Which isn't too much of a
+problem until you uninstall them and stuff you built with Homebrew breaks. So
+uninstall them (if you prefer, renaming their root folders is sufficient).
+
+<http://trac.macports.org/wiki/FAQ#uninstall>  
+<http://www.finkproject.org/faq/usage-fink.php#removing>
 
 
 Uninstallation
@@ -207,8 +201,7 @@ Uninstallation
     cd `brew --prefix`
     rm -rf Cellar
     brew prune
-    rm -rf Library .git
-    rm bin/brew .gitignore README.md
+    rm -rf Library .git* bin/brew README.md
 
 It is worth noting that if you installed somewhere like /usr/local then these
 uninstallation steps will leave that directory exactly like it was before
@@ -319,3 +312,5 @@ FAQ
 
 [wiki]: http://wiki.github.com/mxcl/homebrew
 [github-gem]: http://github.com/defunkt/github-gem
+[sh]: http://gist.github.com/203926
+[pkg]: http://demaree.me/x/7
