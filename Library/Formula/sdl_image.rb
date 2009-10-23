@@ -1,4 +1,5 @@
 require 'formula'
+require Formula.path('sdl')
 
 class SdlImage <Formula
   url 'http://www.libsdl.org/projects/SDL_image/release/SDL_image-1.2.8.tar.gz'
@@ -10,6 +11,7 @@ class SdlImage <Formula
 
   def install
     ENV.x11 # For Freetype
+    Sdl.use_homebrew_prefix 'SDL_image.pc.in'
 
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
