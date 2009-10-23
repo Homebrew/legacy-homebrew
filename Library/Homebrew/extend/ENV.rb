@@ -25,7 +25,7 @@
 module HomebrewEnvExtension
   # -w: keep signal to noise high
   # -fomit-frame-pointer: we are not debugging this software, we are using it
-  SAFE_CFLAGS_FLAGS = "-w -pipe -fomit-frame-pointer -mmacosx-version-min=#{MACOS_VERSION}"
+  SAFE_CFLAGS_FLAGS = "-w -pipe -fomit-frame-pointer"
 
   def setup_build_environment
     # Clear CDPATH to avoid make issues that depend on changing directories
@@ -94,13 +94,26 @@ module HomebrewEnvExtension
       cflags<<"-msse3"
     end
 
-    ENV['CFLAGS']=ENV['CXXFLAGS']="#{cflags*' '} #{SAFE_CFLAGS_FLAGS}"
+    ENV['CFLAGS']=ENV['CXXFLAGS']="#{cflags*' '} #{SAFE_CFLAGS_FLAGS} -mmacosx-version-min=#{MACOS_VERSION}"
   end
   
   def deparallelize
     remove 'MAKEFLAGS', /-j\d+/
   end
   alias_method :j1, :deparallelize
+
+  def O3
+    # Sometimes O4 just takes fucking forever
+    remove_from_cflags '-O4'
+    append_to_cflags '-O3'
+  end
+  def O2
+    # Sometimes O3 doesn't work or produces bad binaries
+    remove_from_cflags '-O4'
+    remove_from_cflags '-O3'
+    append_to_cflags '-O2'
+  end
+
   def gcc_4_0_1
     case MACOS_VERSION
     when 10.5
@@ -117,17 +130,6 @@ module HomebrewEnvExtension
     remove_from_cflags '-msse4.1'
     remove_from_cflags '-msse4.2'
   end
-  def O3
-    # Sometimes O4 just takes fucking forever
-    remove_from_cflags '-O4'
-    append_to_cflags '-O3'
-  end
-  def O2
-    # Sometimes O3 doesn't work or produces bad binaries
-    remove_from_cflags '-O4'
-    remove_from_cflags '-O3'
-    append_to_cflags '-O2'
-  end
   def gcc_4_2
     # Sometimes you want to downgrade from LLVM to GCC 4.2
     self['CC']="gcc-4.2"
@@ -135,10 +137,18 @@ module HomebrewEnvExtension
     self['LD']=self['CC']
     self.O3
   end
+
   def osx_10_4
-    self['MACOSX_DEPLOYMENT_TARGET']=nil
+    self['MACOSX_DEPLOYMENT_TARGET']="10.4"
     remove_from_cflags(/ ?-mmacosx-version-min=10\.\d/)
+    append_to_cflags('-mmacosx-version-min=10.4')
   end
+  def osx_10_5
+    self['MACOSX_DEPLOYMENT_TARGET']="10.5"
+    remove_from_cflags(/ ?-mmacosx-version-min=10\.\d/)
+    append_to_cflags('-mmacosx-version-min=10.5')
+  end
+
   def minimal_optimization
     self['CFLAGS']=self['CXXFLAGS']="-Os #{SAFE_CFLAGS_FLAGS}"
   end
