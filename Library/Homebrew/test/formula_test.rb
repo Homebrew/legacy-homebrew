@@ -3,7 +3,7 @@
 # support, and with no warranty, express or implied, as to its usefulness for
 # any purpose.
 
-$:.unshift File.dirname(__FILE__)+'/..'
+$:.push(File.expand_path(__FILE__+'/../..'))
 require 'test/unit'
 require 'global'
 require 'formula'

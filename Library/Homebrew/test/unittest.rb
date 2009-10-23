@@ -5,7 +5,7 @@
 
 ABS__FILE__=File.expand_path(__FILE__)
 
-$:.unshift File.dirname(ABS__FILE__)+'/..'
+$:.push(File.expand_path(__FILE__+'/../..'))
 require 'extend/pathname'
 require 'utils'
 require 'hardware'
