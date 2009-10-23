@@ -149,13 +149,8 @@ end
 
 # replaces before with after for the file path
 def inreplace path, before, after
-  before=Regexp.escape before.to_s
-  before.gsub! "/", "\\/" # I guess not escaped as delimiter varies
-  after=after.to_s
-  after.gsub! "\\", "\\\\"
-  after.gsub! "/", "\\/"
-  after.gsub! "$", "\\$"
-
-  # FIXME use proper Ruby for teh exceptions!
-  safe_system "/usr/bin/perl", "-pi", "-e", "s/#{before}/#{after}/g", path
+  f = File.open(path, 'r')
+  o = f.read.gsub(before, after)
+  f.reopen(path, 'w').write(o)
+  f.close
 end
