@@ -1,6 +1,10 @@
 #!/usr/bin/ruby
 # -*- coding: utf-8 -*-
 
+# Many Pathname operations use getwd when they shouldn't, and then throw 
+# odd exceptions. Reduce our support burden by showing a user-friendly error.
+Dir.getwd rescue abort "The current working directory doesn't exist, cannot proceed."
+
 def homebrew_rubylib_path
   lib_path = "/../../Library/Homebrew"
   # we resolve off of Dir.getwd as otherwise the symlink gets resolved!
