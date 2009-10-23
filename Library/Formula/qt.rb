@@ -1,12 +1,12 @@
 require 'formula'
 
 class Qt <Formula
-  @url='http://get.qt.nokia.com/qt/source/qt-mac-opensource-src-4.5.2.tar.gz'
-  @md5='c549d6c0c2e0723377cb955c78a1b680'
-  @homepage='http://www.qtsoftware.com'
+  url 'http://get.qt.nokia.com/qt/source/qt-mac-opensource-src-4.5.3.tar.gz'
+  md5 'c549d6c0c2e0723377cb955c78a1b680'
+  homepage 'http://www.qtsoftware.com'
 
   def install
-    if version == '4.5.2'
+    if version == '4.5.3'
       # Reported 6 months ago (at 4.5.0-rc1), still not fixed in the this release! :(
       makefiles=%w[plugins/sqldrivers/sqlite/sqlite.pro 3rdparty/webkit/WebCore/WebCore.pro]
       makefiles.each { |makefile| `echo 'LIBS += -lsqlite3' >> src/#{makefile}` }
