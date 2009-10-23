@@ -47,7 +47,7 @@ end
 
 # args are additional inputs to puts until a nil arg is encountered
 def ohai title, *sput
-  title = title[0, `/usr/bin/tput cols`.strip.to_i-4] unless ARGV.verbose?
+  title = title.to_s[0, `/usr/bin/tput cols`.strip.to_i-4] unless ARGV.verbose?
   puts "#{Tty.blue}==>#{Tty.white} #{title}#{Tty.reset}"
   puts *sput unless sput.empty?
 end
