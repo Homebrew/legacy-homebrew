@@ -1,4 +1,5 @@
 require 'formula'
+require Formula.path('sdl')
 
 class SdlMixer <Formula
   url 'http://www.libsdl.org/projects/SDL_mixer/release/SDL_mixer-1.2.9.tar.gz'
@@ -11,6 +12,8 @@ class SdlMixer <Formula
   #depends_on 'smpeg' => :optional  # http://icculus.org/smpeg/
   
   def install
+    Sdl.use_homebrew_prefix 'SDL_mixer.pc.in'
+
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking"
