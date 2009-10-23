@@ -1,5 +1,7 @@
 require 'formula'
 
+# TODO we shouldn't be installing .apps if there is an option
+
 class Exult <Formula
   # Use a specific revision that is known to compile (on Snow Leopard too.)
   head 'http://exult.svn.sourceforge.net/svnroot/exult/exult/trunk', :revision => '6128'
@@ -20,13 +22,13 @@ class Exult <Formula
                           
     system "make"
     system "make bundle"
-    libexec.install "Exult.app"
+    prefix.install "Exult.app"
   end
   
-  def caveats
-    "Cocoa app installed to #{libexec}\n\n"\
-    "Note that this includes only the game engine; you will need to supply\n"\
-    "your own legal copy of the Ultima 7 game files.\n\n"\
-    "Try here:\n\thttp://www.amazon.com/gp/product/B0002SKOEC?ie=UTF8&tag=adamvandesper-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=B0002SKOEC"
+  def caveats;
+    "Cocoa app installed to #{prefix}\n\n"\
+    "Note that this includes only the game engine; you will need to supply your own\n"\
+    "own legal copy of the Ultima 7 game files. Try here:\n\n"\
+    "http://www.amazon.com/gp/product/B0002SKOEC?ie=UTF8&tag=adamvandesper-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=B0002SKOEC"
   end
 end
