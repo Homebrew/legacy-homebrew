@@ -11,18 +11,9 @@ class SdlMixer <Formula
   #depends_on 'smpeg' => :optional  # http://icculus.org/smpeg/
   
   def install
-    # We use a private include folder, and then
-    # symlink the header file ourselves.
-    # See: http://github.com/mxcl/homebrew/issues#issue/62
     system "./configure", "--prefix=#{prefix}",
-                          "--includedir=#{prefix}/priv_include",
                           "--disable-debug",
                           "--disable-dependency-tracking"
     system "make install"
-
-    # Hack alert:
-    # Since SDL is installed as a dependency, we know it exists, so we
-    # symlink our new header file into its brewed location.
-    FileUtils.ln_s "#{prefix}/priv_include/SDL/SDL_mixer.h", "#{HOMEBREW_PREFIX}/include/SDL"
   end
 end
