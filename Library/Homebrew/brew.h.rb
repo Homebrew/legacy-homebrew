@@ -105,7 +105,7 @@ def make url
   force_text = "If you really want to make this formula use --force."
 
   case name.downcase
-  when /libxml/, /libxlst/, /freetype/, /libpng/
+  when /libxml/, /libxlst/, /freetype/, /libpng/, /wxwidgets/
     raise <<-EOS
 #{name} is blacklisted for creation
 Apple distributes this library with OS X, you can find it in /usr/X11/lib.
@@ -114,8 +114,6 @@ ENV.libxml2 in your formula's install function.
 
 #{force_text}
     EOS
-  when 'mercurial', 'scons'
-    raise "#{name} is blacklisted for creation because it is provided by easy_install.\n\n#{force_text}"
   end unless ARGV.force?
 
   __make url, name
