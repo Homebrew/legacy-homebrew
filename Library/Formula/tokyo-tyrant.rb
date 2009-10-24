@@ -5,7 +5,7 @@ class TokyoTyrant <Formula
   # Also it appears the Ruby (Rufus) bindings will only work with up to 1.1.33
   url 'http://1978th.net/tokyotyrant/tokyotyrant-1.1.33.tar.gz'
   homepage 'http://1978th.net/tokyotyrant/'
-  md5 '48b153ed85b5f7057eedd3ce304eca34'
+  md5 '880d6af48458bc04b993bdae6ecc543d'
 
   depends_on 'tokyo-cabinet'
   depends_on 'lua'
