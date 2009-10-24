@@ -31,9 +31,7 @@ The git mirror will download the entire CVS history and is rather large."
   			  "--with-ns", "--disable-ns-self-contained"
   		system "make bootstrap"
   		system "make install"
-  		system "mkdir #{prefix}/bin"
-  		system "mv nextstep/Emacs.app #{prefix}/bin/"
-  		system "open #{prefix}/bin"
+  		prefix.install "nextstep/Emacs.app"
     else
       system "./configure", "--prefix=#{prefix}",
   			  "--disable-debug",
