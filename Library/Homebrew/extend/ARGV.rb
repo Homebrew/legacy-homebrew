@@ -23,27 +23,31 @@
 #
 module HomebrewArgvExtension
   def named
-    raise UsageError if _named.empty?
-    _named
+    raise UsageError if private_named.empty?
+    private_named
   end
   def named_empty?
-    _named.empty?
+    private_named.empty?
   end
   def options
     select {|arg| arg[0..0] == '-'}
   end
   def formulae
     require 'formula'
-    @formulae ||= named.collect {|name| Formula.factory name}
+    @formulae ||= downcased_unique_named.collect {|name| Formula.factory name}
+    raise UsageError if @formulae.empty?
+    @formulae
   end
   def kegs
     require 'keg'
-    @kegs ||= named.collect do |name|
+    @kegs ||= downcased_unique_named.collect do |name|
       d=HOMEBREW_CELLAR+name
       raise "#{name} is not installed" if not d.directory? or d.children.length == 0
       raise "#{name} has multiple installed versions" if d.children.length > 1
       Keg.new d.children[0]
     end
+    raise UsageError if @kegs.empty?
+    @kegs
   end
 
   # self documenting perhaps?
@@ -108,8 +112,11 @@ To visit the Homebrew homepage type:
   end
 
 private
-  def _named
-    @named ||= reject{|arg| arg[0..0] == '-'}.collect{|arg| arg.downcase}.uniq
+  def private_named
+    @named ||= reject{|arg| arg[0..0] == '-'}
+  end
+  def downcased_unique_named
+    @downcased_unique_named ||= private_named.collect{|arg| arg.downcase}.uniq
   end
 end
 
