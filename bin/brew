@@ -163,17 +163,21 @@ begin
           #    the easiest way to do this
           # 2. formulae have access to __END__ the only way to allow this is
           #    to make the formula script the executed script
-          pid=fork
-          if pid.nil?
-            exec '/usr/bin/ruby', '-I', homebrew_rubylib_path, '-rinstall', f.path, '--', *ARGV.options
-          else
-            Process.wait pid
-          end
-          #FIXME I don't think $? represents the exit code from the child fork…
-          exit! $? if $? != 0 # exception in other brew will be visible on screen
+        read, write = IO.pipe
+        # I'm guessing this is not a good way to do this, but I'm no UNIX guru
+        ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
+
+        if not fork
+          read.close
+          exec '/usr/bin/ruby', '-I', homebrew_rubylib_path, '-rinstall', f.path, '--', *ARGV.options
+        else
+          write.close
+          data = read.read
+          raise Marshal.load(data) unless data.nil? or data.empty?
+          Process.wait
         end
       end
-
+    end
 
     when 'up', 'update'
       require 'update'

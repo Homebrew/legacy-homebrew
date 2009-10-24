@@ -137,9 +137,16 @@ def install f
   puts
 
 rescue Exception => e
-  #TODO propogate exception back to brew script
-  onoe e
-  puts e.backtrace
+  if ENV['HOMEBREW_ERROR_PIPE']
+    pipe = IO.new(ENV['HOMEBREW_ERROR_PIPE'].to_i, 'w')
+    Marshal.dump(e, pipe)
+    pipe.close
+    exit! 1
+  else
+    onoe e
+    puts e.backtrace
+    exit! 2
+  end
 end
 
 
