@@ -275,7 +275,7 @@ private
     hash=Digest.const_get(type).hexdigest(fn.read)
 
     if supplied and not supplied.empty?
-      raise "#{type} mismatch: #{hash}" unless supplied.upcase == hash.upcase
+      raise "#{type} mismatch\nExpected: #{hash}\nArchive: #{fn}" unless supplied.upcase == hash.upcase
     else
       opoo "Cannot verify package integrity"
       puts "The formula did not provide a download checksum"
