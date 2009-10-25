@@ -3,7 +3,7 @@ require 'formula'
 class Postgresql <Formula
   @homepage='http://www.postgresql.org/'
   @url='http://wwwmaster.postgresql.org/download/mirrors-ftp/source/v8.4.1/postgresql-8.4.1.tar.bz2'
-  @md5='1f172d5f60326e972837f58fa5acd130'
+  @md5='f2015af17bacbbfe140daf0d1067f9c9'
 
   depends_on 'readline'
 
