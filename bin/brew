@@ -80,7 +80,7 @@ begin
     dump_config
 
     when 'home', 'homepage'
-      if ARGV.named_empty?
+      if ARGV.named.empty?
         exec "open", HOMEBREW_WWW
       else
         exec "open", *ARGV.formulae.collect {|f| f.homepage}
@@ -92,7 +92,7 @@ begin
         dirs -= ['Library', 'Cellar', '.git']
         Dir.chdir HOMEBREW_PREFIX
         exec 'find', *dirs + %w[-type f ( ! -iname .ds_store ! -iname brew )]
-      elsif ARGV.named_empty?
+      elsif ARGV.named.empty?
         ENV['CLICOLOR']=nil
         exec 'ls', *ARGV.options<<HOMEBREW_CELLAR if HOMEBREW_CELLAR.exist?
       elsif ARGV.verbose? or not $stdout.tty?
@@ -110,7 +110,7 @@ begin
       end
 
     when 'edit'
-      if ARGV.named_empty?
+      if ARGV.named.empty?
         # EDITOR isn't a good fit here, we need a GUI client that actually has
         # a UI for projects, so apologies if this wasn't what you expected,
         # please improve it! :)
@@ -163,6 +163,8 @@ begin
     when 'create'
       if ARGV.include? '--macports'
         exec "open", "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
+      elsif ARGV.named.empty?
+        raise UsageError
       else
         exec_editor *ARGV.named.collect {|name| make name}
       end
@@ -171,7 +173,7 @@ begin
       puts diy
 
     when 'info', 'abv'
-      if ARGV.named_empty?
+      if ARGV.named.empty?
         puts `ls #{HOMEBREW_CELLAR} | wc -l`.strip+" kegs, "+HOMEBREW_CELLAR.abv
       elsif ARGV[0][0..6] == 'http://'
         puts Pathname.new(ARGV.shift).version
