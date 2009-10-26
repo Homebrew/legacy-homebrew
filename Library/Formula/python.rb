@@ -1,9 +1,9 @@
 require 'formula'
 
 class Python <Formula
-  url 'http://python.org/ftp/python/2.6.3/Python-2.6.3.tar.bz2'
+  url 'http://python.org/ftp/python/2.6.4/Python-2.6.4.tar.bz2'
   homepage 'http://www.python.org/'
-  md5 '8755fc03075b1701ca3f13932e6ade9f'
+  md5 'fee5408634a54e721a93531aba37f8c1'
 
   # You can build Python without readline, but you really don't want to.
   depends_on 'readline' => :recommended
