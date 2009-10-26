@@ -217,7 +217,7 @@ begin
     end
 
   when 'log'
-    Dir.chdir HOMEBREW_PREFIX
+    Dir.chdir HOMEBREW_REPOSITORY
     exec "git", "log", ARGV.formulae.first.path, *ARGV.options
 
   else
