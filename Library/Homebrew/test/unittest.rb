@@ -407,10 +407,9 @@ class BeerTasting <Test::Unit::TestCase
   end
   
   def test_ARGV
-    assert_raises(UsageError) { ARGV.named }
-    assert_raises(UsageError) { ARGV.formulae }
-    assert_raises(UsageError) { ARGV.kegs }
-    assert ARGV.named_empty?
+    assert_raises(FormulaUnspecifiedError) { ARGV.formulae }
+    assert_raises(KegUnspecifiedError) { ARGV.kegs }
+    assert ARGV.named.empty?
     
     (HOMEBREW_CELLAR+'mxcl'+'10.0').mkpath
     

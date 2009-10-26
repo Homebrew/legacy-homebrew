@@ -224,6 +224,12 @@ begin
     puts ARGV.usage
   end
 
+rescue FormulaUnspecifiedError
+  puts "This command requires a formula argument"
+  exit 1
+rescue KegUnspecifiedError
+  puts "This command requires a keg argument"
+  exit 1
 rescue UsageError
   onoe "Invalid usage"
   puts ARGV.usage
