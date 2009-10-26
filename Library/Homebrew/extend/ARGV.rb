@@ -90,7 +90,7 @@ Usage: brew [--prefix] [--cache] [--version|-v]
 Usage: brew [--verbose|-v]
 
 Commands:
-  install formula ... [--debug|-d] [--interactive|-i] [--ignore-dependencies]
+  install formula ... [--ignore-dependencies]
   remove formula ...
   search [/regex/] [substring]
   list [--brewed] [--unbrewed] [formula] ...
@@ -105,6 +105,7 @@ Commands useful when contributing:
   log formula
   create URL
   edit [formula]
+  install formula [--debug|-d] [--interactive|-i] [--verbose|-v]
 
 To visit the Homebrew homepage type:
   brew home
