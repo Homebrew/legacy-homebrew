@@ -16,9 +16,8 @@ class GambitScheme <Formula
     # Gambit Scheme currently fails to build with llvm-gcc
     # (ld crashes during the build process)
     ENV.gcc_4_2
-    # Gambit Scheme will not build with heavy optimizations. Disable all
-    # optimizations until safe values can be figured out.
-    ENV.no_optimization
+    # Gambit Scheme doesn't like full optimizations
+    ENV.O2
 
     configure_args = [
       "--prefix=#{prefix}",
