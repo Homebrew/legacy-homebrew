@@ -230,8 +230,8 @@ begin
       ARGV.kegs.each do |keg|
         puts "Uninstalling #{keg}..."
         keg.uninstall
+        keg.unlink
       end
-      prune
 
     when 'prune'
       prune
