@@ -21,6 +21,10 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 #  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
+class UsageError <RuntimeError; end
+class FormulaUnspecifiedError <UsageError; end
+class KegUnspecifiedError <UsageError; end
+
 module HomebrewArgvExtension
   def named
     @named ||= reject{|arg| arg[0..0] == '-'}
@@ -31,7 +35,7 @@ module HomebrewArgvExtension
   def formulae
     require 'formula'
     @formulae ||= downcased_unique_named.collect {|name| Formula.factory name}
-    raise UsageError if @formulae.empty?
+    raise FormulaUnspecifiedError if @formulae.empty?
     @formulae
   end
   def kegs
@@ -42,7 +46,7 @@ module HomebrewArgvExtension
       raise "#{name} has multiple installed versions" if d.children.length > 1
       Keg.new d.children[0]
     end
-    raise UsageError if @kegs.empty?
+    raise KegUnspecifiedError if @kegs.empty?
     @kegs
   end
 
@@ -113,5 +117,3 @@ To visit the Homebrew homepage type:
     @downcased_unique_named ||= named.collect{|arg| arg.downcase}.uniq
   end
 end
-
-class UsageError <RuntimeError; end
