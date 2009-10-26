@@ -23,11 +23,7 @@
 #
 module HomebrewArgvExtension
   def named
-    raise UsageError if private_named.empty?
-    private_named
-  end
-  def named_empty?
-    private_named.empty?
+    @named ||= reject{|arg| arg[0..0] == '-'}
   end
   def options
     select {|arg| arg[0..0] == '-'}
@@ -108,15 +104,13 @@ Commands useful when contributing:
 
 To visit the Homebrew homepage type:
   brew home
-  EOS
+    EOS
   end
 
-private
-  def private_named
-    @named ||= reject{|arg| arg[0..0] == '-'}
-  end
+  private
+
   def downcased_unique_named
-    @downcased_unique_named ||= private_named.collect{|arg| arg.downcase}.uniq
+    @downcased_unique_named ||= named.collect{|arg| arg.downcase}.uniq
   end
 end
 
