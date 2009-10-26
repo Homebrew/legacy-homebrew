@@ -47,9 +47,6 @@ end
 if MACOS_VERSION < 10.5
   abort "Homebrew requires Leopard or higher, but you could fork it and fix that..."
 end
-case Hardware.cpu_type when :ppc, :dunno
-  abort "Sorry, Homebrew does not support your computer's CPU architecture."
-end
 
 def dump_config
   puts <<-EOS
@@ -76,7 +73,7 @@ end
 begin
   require 'brew.h'
 
-  case ARGV.shift
+  case arg = ARGV.shift
   when '--prefix'
     puts HOMEBREW_PREFIX
   when '--config'
@@ -123,86 +120,6 @@ begin
       else
         exec_editor *ARGV.formulae.collect {|f| f.path}
       end
-
-    when 'install'
-      if ARGV.named_empty?
-        puts "You must specify a formula. Search for available formulae with `brew search'."
-        exit 0
-      end
-      
-      # The Cellar lives under the repository
-      raise "Cannot write to #{HOMEBREW_REPOSITORY}" unless HOMEBREW_REPOSITORY.writable?
-      # The Prefix is where we symlink under
-      raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable?
-
-      if ARGV.interactive? and ARGV.formulae.length > 1
-        # the reason for this is interactive mode is a little tricky to do 
-        # with more than one formula, AND I can't think of a time where you'd
-        # want to do it anyway. If someone comes up with a legitimate use for
-        # this we will adapt the code. "But I might want it!" is not a
-        # legitimate use!
-        raise "Interactive mode can only be used with one formula argument"
-      end
-
-      warn_about_macports_or_fink # keep warning before dependency resolution
-
-      unless ARGV.force?
-        formulae = ARGV.formulae.reject do |f|
-          if f.installed?
-            message = "Formula already installed: #{f.prefix}"
-            if ARGV.formulae.length > 1
-              opoo message
-            else
-              puts message # if only one is being installed a warning looks severe
-            end
-            true
-          end
-        end
-        exit 0 if formulae.empty?
-      else
-        formulae = ARGV.formulae
-      end
-
-      unless ARGV.include? '--ignore-dependencies'
-        deps = []
-        formulae.each { |f| deps += expand_deps f }
-        formulae = deps.reject { |f| f.installed? }
-      
-        if formulae.length > 1 and ARGV.interactive?
-          # because current code is a mess
-          raise "Please install the formula's dependencies before entering interactive mode"
-        end
-      end
-
-      require 'set'
-      done = Set.new
-
-      require 'beer_events'
-      watch_out_for_spill do
-        formulae.each do |f|
-          next if done.include? f.class
-          done << f.class
-
-          # 1. formulae can modify ENV, so we must ensure that each
-          #    installation has a pristine ENV when it starts, forking now is 
-          #    the easiest way to do this
-          # 2. formulae have access to __END__ the only way to allow this is
-          #    to make the formula script the executed script
-        read, write = IO.pipe
-        # I'm guessing this is not a good way to do this, but I'm no UNIX guru
-        ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
-
-        if not fork
-          read.close
-          exec '/usr/bin/ruby', '-I', homebrew_rubylib_path, '-rinstall', f.path, '--', *ARGV.options
-        else
-          write.close
-          data = read.read
-          raise Marshal.load(data) unless data.nil? or data.empty?
-          Process.wait
-        end
-      end
-    end
 
     when 'up', 'update'
       require 'update'
@@ -261,6 +178,41 @@ begin
       else
         ARGV.named.each {|name| info name}
       end
+
+  when 'install'
+    require 'formula_installer'
+
+    ############################################################ sanity checks
+    case Hardware.cpu_type when :ppc, :dunno
+      abort "Sorry, Homebrew does not support your computer's CPU architecture."
+    end
+
+    raise "Cannot write to #{HOMEBREW_CELLAR}" unless HOMEBREW_CELLAR.writable?
+    raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable?
+
+    ################################################################# warnings
+    if MACOS_VERSION >= 10.6
+      `/Developer/usr/bin/llvm-gcc-4.2 -v 2>&1` =~ /LLVM build (\d{4,})/
+      opoo "You should upgrade to Xcode 3.2.1" if $1.to_i < 2206
+    end
+
+    if macports_or_fink_installed?
+      opoo "It appears you have Macports or Fink installed"
+      puts "Although, unlikely, this can break builds or cause obscure runtime issues."
+      puts "If you experience problems try uninstalling these tools."
+    end
+
+    ################################################################# install!
+    installer = FormulaInstaller.new
+    installer.install_deps = !ARGV.include?('--ignore-dependencies')
+
+    ARGV.formulae.each do |f|
+      if not f.installed? or ARGV.force?
+        installer.install f
+      else
+        puts "Formula already installed: #{f.prefix}"
+      end
+    end
 
   when 'log'
     Dir.chdir HOMEBREW_PREFIX
