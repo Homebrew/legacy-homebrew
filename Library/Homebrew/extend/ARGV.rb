@@ -55,7 +55,7 @@ module HomebrewArgvExtension
     @n=index arg
   end
   def next
-    at @n+1
+    at @n+1 or raise UsageError
   end
 
   def force?
