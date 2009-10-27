@@ -1,8 +1,8 @@
 require 'formula'
 
 class RubyEnterpriseEdition <Formula
-  url 'http://rubyforge.org/frs/download.php/64475/ruby-enterprise-1.8.7-20090928.tar.gz'
-  md5 'ae00018ce89d95419dfde370fcd485ac'
+  url 'http://rubyforge.org/frs/download.php/66162/ruby-enterprise-1.8.7-2009.10.tar.gz'
+  md5 '3727eef7b6b1b2f31db7d091328d966e'
   homepage 'http://rubyenterpriseedition.com/'
 
   skip_clean 'bin/ruby'
