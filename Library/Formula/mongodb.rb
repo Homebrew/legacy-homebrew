@@ -1,9 +1,15 @@
 require 'formula'
 
 class Mongodb <Formula
-  url 'http://downloads.mongodb.org/osx/mongodb-osx-x86_64-1.1.1.tgz'
   homepage 'http://www.mongodb.org/'
-  md5 '8d22a1a5c7ae9d84ff6092e801fd5ebf'
+
+  if Hardware.is_64_bit?
+    url 'http://downloads.mongodb.org/osx/mongodb-osx-x86_64-1.1.2.tgz'
+    md5 '7fdcd8173fa975295b961e760eed1751'
+  else
+    url 'http://downloads.mongodb.org/osx/mongodb-osx-i386-1.1.2.tgz'
+    md5 '0e10467e2a0877d189e4d4c0783ebc4b'
+  end
 
   def install
     system "cp -prv * #{prefix}"
