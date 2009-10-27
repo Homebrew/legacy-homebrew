@@ -41,7 +41,15 @@ end
 
 HOMEBREW_PREFIX = Pathname.new(BREW_FILE).dirname.parent # Where we link under
 HOMEBREW_REPOSITORY = Pathname.new(BREW_FILE).realpath.dirname.parent # Where .git is found
-HOMEBREW_CELLAR = HOMEBREW_REPOSITORY+'Cellar' # Where we build into
+
+# Where should be build to? 
+# If /usr/local/Cellar exists, as a symlink or real folder, use that.
+# Otherwise, build into a Cellar in the Repo. folder.
+if (HOMEBREW_PREFIX+'Cellar').exist?
+  HOMEBREW_CELLAR = HOMEBREW_PREFIX+'Cellar'
+else
+  HOMEBREW_CELLAR = HOMEBREW_REPOSITORY+'Cellar'
+end
 
 MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
 MACOS_VERSION = /(10\.\d+)(\.\d+)?/.match(MACOS_FULL_VERSION).captures.first.to_f
