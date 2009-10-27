@@ -55,6 +55,7 @@ class Subversion <Formula
                           "--prefix=#{prefix}",
                           "--with-ssl",
                           "--with-zlib=/usr/lib",
+                          "--disable-neon-version-check",
                           "--disable-mod-activation",
                           "--without-apache-libexecdir",
                           "--without-berkeley-db"
