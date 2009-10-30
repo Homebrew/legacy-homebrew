@@ -19,6 +19,22 @@ class Erlang <Formula
   depends_on 'icu4c'
   skip_clean 'lib'
 
+  def patches
+    { :p0 => ["patch-toolbar.erl",
+              "patch-erts_emulator_Makefile.in",
+              "patch-erts_emulator_hipe_hipe_amd64_asm.m4.diff",
+              "patch-erts_emulator_hipe_hipe_amd64_bifs.m4.diff",
+              "patch-erts_emulator_hipe_hipe_amd64_glue.S.diff",
+              "patch-erts_emulator_hipe_hipe_amd64.c.diff",
+              "patch-erts_emulator_sys_unix_sys_float.c.diff",
+              "patch-erts_configure.diff",
+              "patch-lib_ssl_c_src_esock_openssl.c",
+              "patch-lib_wx_configure.in",
+              "patch-lib_wx_configure"
+            ].map { |file_name| "http://svn.macports.org/repository/macports/!svn/bc/60054/trunk/dports/lang/erlang/files/#{file_name}" }
+    }
+  end
+
   def install
     ENV.deparallelize
     config_flags = ["--disable-debug",
