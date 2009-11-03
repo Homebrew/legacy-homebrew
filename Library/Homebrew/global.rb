@@ -24,7 +24,6 @@
 require 'extend/pathname'
 require 'extend/ARGV'
 require 'utils'
-require 'hardware'
 
 ARGV.extend(HomebrewArgvExtension)
 
