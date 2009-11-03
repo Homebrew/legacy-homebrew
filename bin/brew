@@ -183,6 +183,7 @@ begin
 
   when 'install'
     require 'formula_installer'
+    require 'hardware'
 
     ############################################################ sanity checks
     case Hardware.cpu_type when :ppc, :dunno
