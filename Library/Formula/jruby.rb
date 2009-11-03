@@ -3,10 +3,10 @@ require 'formula'
 # My god! 20,000 files?!
 # TODO trim that a bit? Seems crazy.
 
-class Jruby <Formula
-  @url='http://dist.codehaus.org/jruby/1.3.1/jruby-src-1.3.1.tar.gz'
-  @homepage='http://jruby.org/'
-  @md5='c7e2aa4a3065db445a8b3e17ecff9fe0'
+class Jruby < Formula
+  url 'http://jruby.kenai.com/downloads/1.4.0/jruby-bin-1.4.0.tar.gz'
+  homepage 'http://www.jruby.org'
+  md5 'f37322c18e9134e91e064aebb4baa4c7'
 
   def install
     system "ant"
