@@ -69,7 +69,7 @@ Here's why you may prefer Homebrew to the alternatives:
 8.  Making the most of OS X  
     A touch of RubyCocoa, a cheeky sysctl query or two and a smattering of
     FSEvent monitoring. In these manic days of cross-platform development,
-    it's sometimes a welcome relieve to use something that is better because
+    it's sometimes a welcome relief to use something that is better because
     it isn't too generalized.
 
 9.  No duplication  
@@ -150,7 +150,7 @@ require sudo:
 
     cpan -i MP3::Info
 
-OS X is designed to minimise sudo use, you only need it for real-root-level
+OS X is designed to minimise sudo use, you only need it for real root-level
 stuff. You know your /System and /usr are as clean and pure as the day you
 bought your Mac because you didn't sudo. Sleep better at night!
 
