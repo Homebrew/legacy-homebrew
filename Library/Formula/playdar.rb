@@ -1,34 +1,28 @@
 require 'formula'
 
 class Playdar <Formula
-  @homepage='http://www.playdar.org'
-  @head='git://github.com/mxcl/playdar.git'
+  homepage 'http://www.playdar.org'
+  head 'git://github.com/RJ/playdar-core.git'
 
   depends_on 'taglib'
-  depends_on 'boost'
-  depends_on 'cmake'
-
-  def skip_clean? path
-    # for some reason stripping breaks it
-    path == bin+'playdar'
-  end
+  depends_on 'erlang'
 
   def install
-    # RJ does this with all his projects :P
-    inreplace 'CMakeLists.txt', 'SET(CMAKE_INSTALL_PREFIX "/usr/local")', ''
+    system "make all"
+    system "make scanner"
 
-    system "cmake . #{std_cmake_parameters}"
-    system "make install"
+    Dir['playdar_modules/*/src'].each{ |fn| FileUtils.rm_rf fn }
+    FileUtils.rm_rf 'playdar_modules/library/priv/taglib_driver/scanner_visual_studio_sln'
+    File.unlink 'playdar_modules/library/priv/taglib_driver/taglib_json_reader.cpp'
+
+    prefix.install 'ebin'
+    prefix.install 'playdar_modules'
+    prefix.install 'priv'
+    prefix.install 'etc' # otherwise playdar crashes
     
-    prefix.install 'www'
-    prefix.install 'plugins'
-    (prefix+'plugins'+'.gitignore').unlink
-  end
-  
-  def caveats
-    <<-EOS
-You have to execute playdar with its prefix as working directory, eg:
-    $ cd #{prefix} && bin/playdar
-    EOS
+    inreplace 'playdarctl', 'cd `dirname $0`', "cd #{prefix}"
+    inreplace 'playdarctl', 'EBIN=./ebin/', "EBIN=#{prefix}/ebin"
+    
+    bin.install 'playdarctl'
   end
 end
