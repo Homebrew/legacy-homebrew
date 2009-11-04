@@ -1,18 +1,15 @@
 require 'formula'
 
-# This formula is forked between 10.5 and 10.6.
-# On 10.6, we can make use of system-install deps.
-# (At least, until Subversion 1.7 comes out and the system deps break again.)
-#
-# On 10.5, the provided Subversion is too old, so we go ahead and
-# make the deps ourselves.
-
+# On 10.5 we need newer versions of apr, neon etc.
+# On 10.6 we only need a newer version of neon
 class SubversionDeps <Formula
   url 'http://subversion.tigris.org/downloads/subversion-deps-1.6.6.tar.bz2'
   md5 '8ec2a0daea27f86a75939d3ed09618a0'
-  
+
+  # Note because this formula is installed into the subversion prefix
+  # it is not in fact keg only
   def keg_only?
-    "Subversion dependencies needed on 10.5."
+    :provided_by_osx
   end
 end
 
@@ -27,12 +24,6 @@ class Subversion <Formula
     depends_on 'neon'
   end
 
-  def setup_snow_leopard
-    # Force LDFLAGS to load the HOMEBREW lib directory first. Necessary because SVN configure will
-    # otherwise link to OS X neon libs in /usr/lib (and ignore --with-neon anyway)
-    ENV['LDFLAGS'] += " -L#{Formula.factory('neon').lib}"
-  end
-  
   def setup_leopard
     # Slot dependencies into place
     d=Pathname.getwd
@@ -42,11 +33,7 @@ class Subversion <Formula
   end
 
   def install
-    if MACOS_VERSION >= 10.6
-      setup_snow_leopard
-    else
-      setup_leopard
-    end
+    setup_leopard if MACOS_VERSION < 10.6
 
     # Use existing system zlib
     # Use dep-provided other libraries
@@ -55,6 +42,7 @@ class Subversion <Formula
                           "--prefix=#{prefix}",
                           "--with-ssl",
                           "--with-zlib=/usr/lib",
+                          # use our neon, not OS X's 
                           "--disable-neon-version-check",
                           "--disable-mod-activation",
                           "--without-apache-libexecdir",
