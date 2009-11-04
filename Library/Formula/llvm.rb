@@ -6,6 +6,8 @@ class Llvm <Formula
   @md5='55df2ea8665c8094ad2ef85187b9fc74'
 
   def install
+    ENV.gcc_4_2 # llvm can't compile itself
+
     system "./configure", "--prefix=#{prefix}",
                           "--enable-targets=x86",
                           "--enable-optimized"
