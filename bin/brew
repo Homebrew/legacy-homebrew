@@ -69,6 +69,13 @@ library path:        #{homebrew_rubylib_path}
 EOS
 end
 
+def please_report_bug; <<-EOS
+Please report this bug to #{HOMEBREW_WWW} including the following information:
+Mac OS X: #{MACOS_VERSION}
+Ponk: #{macports_or_fink_installed?}
+  EOS
+end
+
 
 begin
   require 'brew.h'
@@ -247,16 +254,13 @@ rescue SystemCallError, RuntimeError => e
     puts e.backtrace
   else
     onoe e
+    puts please_report_bug if e.kind_of? BuildError
   end
   exit 1
 rescue Exception => e
   onoe "Homebrew has failed you :("
-  puts "Please report this bug at: #{HOMEBREW_WWW}"
-  puts "Please include the following information:"
-  ohai "Environment"
-  puts "Mac OS X #{MACOS_VERSION}"
-  puts "Macports or Fink? #{macports_or_fink_installed?}"
-  ohai e.inspect
+  puts please_report_bug
+  puts e.inspect
   puts e.backtrace
   exit 1
 end
