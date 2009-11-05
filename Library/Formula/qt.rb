@@ -5,6 +5,26 @@ class Qt <Formula
   md5 '484e3739fdc51540218ed92f4b732881'
   homepage 'http://www.qtsoftware.com'
 
+  def patches
+    # Give the option to use Qt3Support even when using Cocoa.
+    "http://qt.gitorious.org/+qt-iphone/qt/qt-iphone-clone/commit/106d7a210be1e6d52946b575a262e2c76c5e51e6.patch"
+  end
+
+  def options
+    [
+      ['--with-dbus', "Enable QtDBus module."],
+      ['--with-qt3support', "Enable deprecated Qt3Support module."],
+    ]
+  end
+
+  if ARGV.include? '--with-dbus'
+    depends_on "dbus"
+  end
+
+  if ARGV.include? '--with-qt3support'
+    depends_on "dbus"
+  end
+
   if not File.exist? "/usr/X11R6/lib"
     depends_on 'libpng'
   end
@@ -18,10 +38,23 @@ class Qt <Formula
 
     conf_args = ["-prefix", prefix,
                  "-system-sqlite", "-system-libpng", "-system-zlib",
-                 "-nomake", "demos", "-nomake", "examples", "-no-qt3support",
+                 "-nomake", "demos", "-nomake", "examples",
                  "-release", "-cocoa",
                  "-confirm-license", "-opensource",
                  "-fast"]
+
+    if ARGV.include? '--with-dbus'
+      conf_args << "-I#{Formula.factory('dbus').lib}/dbus-1.0/include"
+      conf_args << "-I#{Formula.factory('dbus').include}/dbus-1.0"
+      conf_args << "-ldbus-1"
+      conf_args << "-dbus-linked"
+    end
+
+    if ARGV.include? '--with-qt3support'
+      conf_args << "-qt3support"
+    else
+      conf_args << "-no-qt3support"
+    end
 
     if File.exist? "/usr/X11R6/lib"
       conf_args << "-L/usr/X11R6/lib"
