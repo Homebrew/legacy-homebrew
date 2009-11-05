@@ -28,7 +28,7 @@ class TexLive <Formula
   #url 'ftp://ftp.openbsd.org/pub/OpenBSD/distfiles/texlive-20080816-source.tar.lzma'
   homepage 'http://www.tug.org/texlive/'
   md5 '554287c3e458da776edd684506048d45'
-  @version='2008'
+  version '20080816'
 
   depends_on 'lzma'
   depends_on 'icu4c'
