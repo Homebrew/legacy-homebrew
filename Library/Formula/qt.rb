@@ -2,8 +2,12 @@ require 'formula'
 
 class Qt <Formula
   url 'http://get.qt.nokia.com/qt/source/qt-mac-opensource-src-4.5.3.tar.gz'
-  md5 'c549d6c0c2e0723377cb955c78a1b680'
+  md5 '484e3739fdc51540218ed92f4b732881'
   homepage 'http://www.qtsoftware.com'
+
+  if not File.exist? "/usr/X11R6/lib"
+    depends_on 'libpng'
+  end
 
   def install
     if version == '4.5.3'
@@ -17,9 +21,16 @@ class Qt <Formula
                  "-nomake", "demos", "-nomake", "examples", "-no-qt3support",
                  "-release", "-cocoa",
                  "-confirm-license", "-opensource",
-                 "-I/usr/X11R6/include", "-L/usr/X11R6/lib",
                  "-fast"]
-    
+
+    if File.exist? "/usr/X11R6/lib"
+      conf_args << "-L/usr/X11R6/lib"
+      conf_args << "-I/usr/X11R6/include"
+    else
+      conf_args << "-L#{Formula.factory('libpng').lib}"
+      conf_args << "-I#{Formula.factory('libpng').include}"
+    end
+
     if MACOS_VERSION >= 10.6
       conf_args << '-arch' << 'x86_64'
     else
@@ -36,7 +47,7 @@ class Qt <Formula
     # wtf are these anyway?
     `rm -r #{bin}/Assistant_adp.app #{bin}/pixeltool.app #{bin}/qhelpconverter.app`
     # we specified no debug already! :P
-    `rm #{lib}/libQtUiTools_debug.a`
+    `rm #{lib}/libQtUiTools_debug.a #{lib}/pkgconfig/QtUiTools_debug.pc`
     # meh
     `rm #{prefix}/q3porting.xml`
   end
