@@ -150,7 +150,7 @@ class GitDownloadStrategy <AbstractDownloadStrategy
         ohai "Checking out #{@spec} #{@ref}"
         case @spec
         when :branch
-          safe_system 'git', 'checkout', '-b', @ref, "origin/#{@ref}"
+          safe_system 'git', 'checkout', "origin/#{@ref}"
         when :tag
           safe_system 'git', 'checkout', @ref
         end
