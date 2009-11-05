@@ -1,7 +1,7 @@
 require 'formula'
 
 class Mpg123 <Formula
-  @url='http://sourceforge.net/projects/mpg123/files/mpg123/mpg123-1.8.1.tar.bz2'
+  @url='http://downloads.sourceforge.net/project/mpg123/mpg123/1.8.1/mpg123-1.8.1.tar.bz2'
   @homepage='http://www.mpg123.de/'
   @md5='856893f14b29b1cddf4aba32469860b4'
 

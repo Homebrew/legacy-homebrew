@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mhash <Formula
-  @url='http://sourceforge.net/projects/mhash/files/mhash/0.9.9.9/mhash-0.9.9.9.tar.gz'
+  @url='http://downloads.sourceforge.net/project/mhash/mhash/0.9.9.9/mhash-0.9.9.9.tar.gz'
   @homepage='http://mhash.sourceforge.net/'
-  @md5='ee66b7d5947deb760aeff3f028e27d25'
+  @md5='f91c74f9ccab2b574a98be5bc31eb280'
 
   def install
     system "./configure --prefix=#{prefix} --disable-debug --disable-dependency-tracking"
