@@ -15,8 +15,8 @@ class Solr <Formula
   md5 '23774b077598c6440d69016fed5cc810'
 
   def install
-    system "mkdir -p #{prefix}"
-    system "mv * #{prefix}"
+    prefix.mkpath
+    prefix.install Dir['*']
     (bin+'solr').write(SOLR_START_SCRIPT % prefix)
   end
 
