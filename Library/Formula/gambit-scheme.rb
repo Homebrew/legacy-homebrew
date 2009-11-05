@@ -32,6 +32,9 @@ class GambitScheme <Formula
     system "./configure", *configure_args
 
     system "make check" if ARGV.include? '--with-check'
+
+    ENV.j1
+    system "make"
     system "make install"
   end
 end
