@@ -23,13 +23,6 @@
 #
 require 'download_strategy'
 
-class ExecutionError <RuntimeError
-  def initialize cmd, args=[]
-    super "Failure while executing: #{cmd} #{args*' '}"
-  end
-end
-class BuildError <ExecutionError
-end
 class FormulaUnavailableError <RuntimeError
   def initialize name
     @name = name
