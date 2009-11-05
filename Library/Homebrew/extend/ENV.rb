@@ -183,11 +183,11 @@ module HomebrewEnvExtension
 
   def m64
     append_to_cflags '-m64'
-    ENV['LDFLAGS'] += '-arch x86_64'
+    ENV.append 'LDFLAGS', '-arch x86_64'
   end
   def m32
     append_to_cflags '-m32'
-    ENV['LDFLAGS'] += '-arch i386'
+    ENV.append 'LDFLAGS', '-arch i386'
   end
 
   # i386 and x86_64 only, no PPC
