@@ -150,3 +150,10 @@ def inreplace path, before, after
   f.reopen(path, 'w').write(o)
   f.close
 end
+
+def ignore_interrupts
+  std_trap = trap("INT") {}
+  yield
+ensure
+  trap("INT", std_trap)
+end
