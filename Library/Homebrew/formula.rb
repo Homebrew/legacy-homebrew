@@ -216,20 +216,24 @@ protected
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
-    full="#{cmd} #{args*' '}".strip
-    ohai full
+    ohai "#{cmd} #{args*' '}".strip
+
     if ARGV.verbose?
       safe_system cmd, *args
     else
-      out=''
-      # TODO write a ruby extension that does a good popen :P
-      IO.popen "#{full} 2>&1" do |f|
-        until f.eof?
-          out+=f.gets
-        end
+      rd, wr = IO.pipe
+      fork do
+        rd.close
+        $stdout.reopen wr
+        $stderr.reopen wr
+        exec cmd, *args
       end
-      unless $? == 0
-        puts "Exit code: #{$?}"
+      out = ''
+      ignore_interrupts do
+        wr.close
+        out << rd.read until rd.eof?
+      end
+      unless $?.success?
         puts out
         raise
       end

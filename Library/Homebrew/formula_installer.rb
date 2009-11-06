@@ -2,13 +2,6 @@ require 'beer_events'
 require 'formula'
 require 'set'
 
-def ignore_interrupts
-  std_trap = trap("INT") {}
-  yield
-ensure
-  trap("INT", std_trap)
-end
-
 class FormulaInstaller
   @@attempted = Set.new
 
