@@ -70,8 +70,8 @@ EOS
 end
 
 def please_report_bug; <<-EOS
-Please report this bug to #{HOMEBREW_WWW} including the following information:
-Mac OS X: #{MACOS_VERSION}
+Please report this bug to #{HOMEBREW_WWW}
+Mac OS X: #{MACOS_FULL_VERSION}
 Ponk: #{macports_or_fink_installed?}
   EOS
 end
@@ -263,7 +263,10 @@ rescue SystemCallError, RuntimeError => e
     puts e.backtrace
   else
     onoe e
-    puts please_report_bug if e.kind_of? BuildError
+    if e.kind_of? BuildError
+      puts please_report_bug
+      puts "Exit Status: #{e.status}"
+    end
   end
   exit 1
 rescue Exception => e

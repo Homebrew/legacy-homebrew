@@ -235,7 +235,7 @@ protected
       end
     end
   rescue
-    raise BuildError.new(cmd, args)
+    raise BuildError.new(cmd, args, $?)
   end
 
 private

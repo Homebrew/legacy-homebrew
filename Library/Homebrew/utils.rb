@@ -86,13 +86,10 @@ def safe_system cmd, *args
   puts "#{cmd} #{args*' '}" if ARGV.verbose?
   exec_success = Kernel.system cmd, *args
   # some tools, eg. tar seem to confuse ruby and it doesn't propogate the
-  # CTRL-C interrupt to us too, so execution continues, but the exit code os
+  # CTRL-C interrupt to us too, so execution continues, but the exit code is
   # still 2 so we raise our own interrupt
   raise Interrupt, cmd if $?.termsig == 2
-  unless exec_success
-    puts "Exit code: #{$?}"
-    raise ExecutionError.new(cmd, args)
-  end 
+  raise ExecutionError.new(cmd, args, $?) unless exec_success
 end
 
 def curl *args
@@ -145,7 +142,6 @@ def arch_for_command cmd
 
     return archs
 end
-
 
 # replaces before with after for the file path
 def inreplace path, before, after

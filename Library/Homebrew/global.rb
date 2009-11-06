@@ -57,8 +57,11 @@ HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY
 
 
 class ExecutionError <RuntimeError
-  def initialize cmd, args=[]
+  attr :status
+
+  def initialize cmd, args=[], status=nil
     super "Failure while executing: #{cmd} #{args*' '}"
+    @status = status
   end
 end
 
