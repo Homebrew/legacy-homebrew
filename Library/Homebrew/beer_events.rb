@@ -156,7 +156,7 @@ begin
   end
   
   # The complete BeerEvents API :)
-  HOMEBREW_KEEP_DRY = %w{ /System /usr /etc /sbin /bin /Applications }
+  HOMEBREW_KEEP_DRY = %w{ /System /usr /etc /sbin /bin /Applications /Library }
   
   def watch_out_for_spill
     # Disable the RubyCocoa thread hook as apparently Laurent did not apply the
