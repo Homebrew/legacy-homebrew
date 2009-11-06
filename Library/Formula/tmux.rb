@@ -1,9 +1,9 @@
 require 'formula'
 
 class Tmux <Formula
-  url 'http://downloads.sourceforge.net/tmux/tmux-1.0.tar.gz'
+  url 'http://downloads.sourceforge.net/tmux/tmux-1.1.tar.gz'
   homepage 'http://tmux.sourceforge.net'
-  md5 '716b12d9ea052f57d917bf2869d419df'
+  md5 'faf2fc52ac3ae63d899f6fece2c112cd'
 
   def install
     ENV['PREFIX'] = "#{prefix}"
