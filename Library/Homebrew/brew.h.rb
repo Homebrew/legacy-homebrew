@@ -114,6 +114,8 @@ ENV.libxml2 in your formula's install function.
 
 #{force_text}
     EOS
+  when /rubygem/
+    raise "Sorry RubyGems comes with OS X so we don't package it.\n\n#{force_text}"
   end unless ARGV.force?
 
   __make url, name
