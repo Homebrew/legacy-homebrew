@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-BREW_FILE = `which brew`.strip
+HOMEBREW_BREW_FILE = `which brew`.strip
 
 require 'global'
 
