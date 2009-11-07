@@ -1,6 +1,4 @@
 #!/usr/bin/ruby
-HOMEBREW_BREW_FILE = `which brew`.strip
-
 require 'global'
 
 def text_for_keg_only_formula f
