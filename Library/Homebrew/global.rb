@@ -38,8 +38,8 @@ else
   HOMEBREW_CACHE=Pathname.new("~/Library/Caches/Homebrew").expand_path
 end
 
-HOMEBREW_PREFIX = Pathname.new(BREW_FILE).dirname.parent # Where we link under
-HOMEBREW_REPOSITORY = Pathname.new(BREW_FILE).realpath.dirname.parent # Where .git is found
+HOMEBREW_PREFIX = Pathname.new(HOMEBREW_BREW_FILE).dirname.parent # Where we link under
+HOMEBREW_REPOSITORY = Pathname.new(HOMEBREW_BREW_FILE).realpath.dirname.parent # Where .git is found
 
 # Where should be build to? 
 # If /usr/local/Cellar exists, as a symlink or real folder, use that.
