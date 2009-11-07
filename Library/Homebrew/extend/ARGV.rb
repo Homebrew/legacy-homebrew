@@ -90,7 +90,7 @@ Usage: brew [--prefix] [--cache] [--version|-v]
 Usage: brew [--verbose|-v]
 
 Commands:
-  install formula ... [--ignore-dependencies]
+  install formula ... [--ignore-dependencies] [--HEAD|-H]
   remove formula ...
   search [/regex/] [substring]
   list [--brewed] [--unbrewed] [formula] ...
