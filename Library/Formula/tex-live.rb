@@ -14,7 +14,8 @@ class CurlXZDownloadStrategy < CurlDownloadStrategy
 end
 
 class Texmf <Formula
-  url 'http://students.dec.bournemouth.ac.uk/ebarrett/texlive/distfiles/texlive-20080822-texmf.tar.lzma'
+  version '20080822'
+  url "http://students.dec.bournemouth.ac.uk/ebarrett/texlive/distfiles/texlive-#{version}-texmf.tar.lzma"
   md5 'fa74072e1344e8390eb156bcda61a8b2'
 
   def download_strategy
@@ -23,12 +24,12 @@ class Texmf <Formula
 end
 
 class TexLive <Formula
-  url 'http://students.dec.bournemouth.ac.uk/ebarrett/texlive/distfiles/texlive-20080816-source.tar.lzma'
+  version '20080816'
+  url "http://students.dec.bournemouth.ac.uk/ebarrett/texlive/distfiles/texlive-#{version}-source.tar.lzma"
   #Alternatively (slower):
   #url 'ftp://ftp.openbsd.org/pub/OpenBSD/distfiles/texlive-20080816-source.tar.lzma'
   homepage 'http://www.tug.org/texlive/'
   md5 '554287c3e458da776edd684506048d45'
-  version '20080816'
 
   depends_on 'lzma'
   depends_on 'icu4c'
@@ -41,56 +42,56 @@ class TexLive <Formula
   def patches
     # Steal all the TexLive 2008 OpenBSD patches
     patches = [
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-configure?rev=1.1;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-libs_configure?rev=1.1;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-libs_graphite-engine_configure?rev=1.1;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-libs_icu-xetex_Makefile_in?rev=1.2;content-type=text%2Fplain",
+      "configure",
+      "libs_configure",
+      "libs_graphite-engine_configure",
+      "libs_icu-xetex_Makefile_in",
       # Hijacked: we needed to add a CFLAG to the patch, so I merged this and my change below
-      #{}"http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-libs_lua51_Makefile?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-libs_lua51_lcoco_c?rev=1.1;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-libs_lua51_lcoco_h?rev=1.1;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_afm2pl_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_bibtex8_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_cjkutils_conv_Makefile_in?rev=1.3;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_cjkutils_hbf2gf_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_cjkutils_scripts_Makefile_in?rev=1.3;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_dtl_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_dvidvi_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_dviljk_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_dvipdfm_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_dvipng_configure?rev=1.1;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_dvipos_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_dvipsk_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_gsftopk_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_kpathsea_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_kpathsea_texmf_cnf?rev=1.1;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_lacheck_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_make_man_mk?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_makeindexk_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_musixflx_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_ps2pkm_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_seetexk_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_tetex_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_tex4htk_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_texlive_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_texlive_linked_scripts_texdoc_tlu?rev=1.1;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_ttf2pk_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_web2c_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_web2c_alephdir_aleph_mk?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_web2c_configure?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_web2c_doc_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_web2c_luatexdir_luatex_mk?rev=1.1;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_web2c_mpware_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_web2c_omegadir_omega_mk?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_web2c_omegafonts_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_web2c_otps_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_web2c_pdftexdir_pdftex_mk?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_xdvik_Makefile_in?rev=1.2;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_xdvipdfmx_Makefile_in?rev=1.1;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-texk_xdvipdfmx_configure?rev=1.1;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-utils_dialog_Makefile_in?rev=1.3;content-type=text%2Fplain",
-      "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-utils_tpic2pdftex_Makefile_in?rev=1.1;content-type=text%2Fplain"
-    ]
+      #{}"libs_lua51_Makefile",
+      "libs_lua51_lcoco_c",
+      "libs_lua51_lcoco_h",
+      "texk_afm2pl_Makefile_in",
+      "texk_bibtex8_Makefile_in",
+      "texk_cjkutils_conv_Makefile_in",
+      "texk_cjkutils_hbf2gf_Makefile_in",
+      "texk_cjkutils_scripts_Makefile_in",
+      "texk_dtl_Makefile_in",
+      "texk_dvidvi_Makefile_in",
+      "texk_dviljk_Makefile_in",
+      "texk_dvipdfm_Makefile_in",
+      "texk_dvipng_configure",
+      "texk_dvipos_Makefile_in",
+      "texk_dvipsk_Makefile_in",
+      "texk_gsftopk_Makefile_in",
+      "texk_kpathsea_Makefile_in",
+      "texk_kpathsea_texmf_cnf",
+      "texk_lacheck_Makefile_in",
+      "texk_make_man_mk",
+      "texk_makeindexk_Makefile_in",
+      "texk_musixflx_Makefile_in",
+      "texk_ps2pkm_Makefile_in",
+      "texk_seetexk_Makefile_in",
+      "texk_tetex_Makefile_in",
+      "texk_tex4htk_Makefile_in",
+      "texk_texlive_Makefile_in",
+      "texk_texlive_linked_scripts_texdoc_tlu",
+      "texk_ttf2pk_Makefile_in",
+      "texk_web2c_Makefile_in",
+      "texk_web2c_alephdir_aleph_mk",
+      "texk_web2c_configure",
+      "texk_web2c_doc_Makefile_in",
+      "texk_web2c_luatexdir_luatex_mk",
+      "texk_web2c_mpware_Makefile_in",
+      "texk_web2c_omegadir_omega_mk",
+      "texk_web2c_omegafonts_Makefile_in",
+      "texk_web2c_otps_Makefile_in",
+      "texk_web2c_pdftexdir_pdftex_mk",
+      "texk_xdvik_Makefile_in",
+      "texk_xdvipdfmx_Makefile_in",
+      "texk_xdvipdfmx_configure",
+      "utils_dialog_Makefile_in",
+      "utils_tpic2pdftex_Makefile_in"
+    ].collect! {|middle| "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-#{middle}?rev=HEAD;content-type=text%2Fplain"}
     # Putting DATA in p0 seemed to cause trouble, so we put nonsense in the filenames and put it in p1
     { :p0 => patches, :p1 => DATA }
   end
