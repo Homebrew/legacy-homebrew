@@ -5,7 +5,7 @@
 # odd exceptions. Reduce our support burden by showing a user-friendly error.
 Dir.getwd rescue abort "The current working directory doesn't exist, cannot proceed."
 
-BREW_FILE = __FILE__
+BREW_FILE = File.expand_path __FILE__
 
 def homebrew_rubylib_path
   lib_path = "/../../Library/Homebrew"
