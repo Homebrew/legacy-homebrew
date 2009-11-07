@@ -5,19 +5,10 @@
 # odd exceptions. Reduce our support burden by showing a user-friendly error.
 Dir.getwd rescue abort "The current working directory doesn't exist, cannot proceed."
 
-HOMEBREW_BREW_FILE = File.expand_path __FILE__
-ENV['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE
+HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] = File.expand_path(__FILE__)
 
-def homebrew_rubylib_path
-  lib_path = "/../../Library/Homebrew"
-
-  # Library/Homebrew is relative to the real path of brew
-  brew_path = __FILE__
-  brew_path = File.readlink(brew_path) if File.symlink? brew_path
-  return File.expand_path(brew_path+lib_path)
-end
-
-$:.unshift homebrew_rubylib_path
+require 'pathname'
+$:.unshift((Pathname.new(__FILE__).realpath.dirname.parent+"Library"+"Homebrew").to_s)
 require 'global'
 
 case ARGV.first
@@ -65,7 +56,7 @@ HOMEBREW_CACHE:      #{HOMEBREW_CACHE}
 HOMEBREW_REPOSITORY: #{HOMEBREW_REPOSITORY}
 \tWhere is our .git?
 
-library path:        #{homebrew_rubylib_path}
+Library path:        #{$:.first}
 \tWhat do we put on the ruby path?
 EOS
 end
