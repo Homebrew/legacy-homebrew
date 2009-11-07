@@ -17,17 +17,9 @@ class Qt <Formula
     ]
   end
 
-  if ARGV.include? '--with-dbus'
-    depends_on "dbus"
-  end
-
-  if ARGV.include? '--with-qt3support'
-    depends_on "dbus"
-  end
-
-  if not File.exist? "/usr/X11R6/lib"
-    depends_on 'libpng'
-  end
+  depends_on "dbus" if ARGV.include? '--with-dbus'
+  depends_on "dbus" if ARGV.include? '--with-qt3support'
+  depends_on 'libpng' unless File.exist? "/usr/X11R6/lib"
 
   def install
     if version == '4.5.3'
@@ -76,13 +68,17 @@ class Qt <Formula
     # fuck weird prl files
     `find #{lib} -name \*.prl -delete`
     # fuck crazy disk usage
-    `rm -r #{prefix+'doc'+'html'} #{prefix+'doc'+'src'}`
+    (prefix+'doc'+'html').rmtree
+    (prefix+'doc'+'src').rmtree
     # wtf are these anyway?
-    `rm -r #{bin}/Assistant_adp.app #{bin}/pixeltool.app #{bin}/qhelpconverter.app`
+    (bin+'Assistant_adp.app').rmtree
+    (bin+'pixeltool.app').rmtree
+    (bin+'qhelpconverter.app').rmtree
     # we specified no debug already! :P
-    `rm #{lib}/libQtUiTools_debug.a #{lib}/pkgconfig/QtUiTools_debug.pc`
+    (lib+'libQtUiTools_debug.a').unlink
+    (lib+'pkgconfig/QtUiTools_debug.pc').unlink
     # meh
-    `rm #{prefix}/q3porting.xml`
+    (prefix+'q3porting.xml').unlink
   end
 
   def caveats
