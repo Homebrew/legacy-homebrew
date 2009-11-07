@@ -233,6 +233,7 @@ protected
         wr.close
         out << rd.read until rd.eof?
       end
+      Process.wait
       unless $?.success?
         puts out
         raise
