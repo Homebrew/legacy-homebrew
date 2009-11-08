@@ -41,23 +41,35 @@ if MACOS_VERSION < 10.5
 end
 
 def dump_config
+  require 'hardware'
+
+  `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
+  gcc_build = $1.to_i
+  
+  llvm_build = "None"
+  if MACOS_VERSION >= 10.6
+    `/Developer/usr/bin/llvm-gcc-4.2 -v 2>&1` =~ /LLVM build (\d{4,})/  
+    llvm_build = $1.to_i
+  end
+  
+  bits = Hardware.is_64_bit? ? 64 : 32
+  cores = Hardware.processor_count
+
   puts <<-EOS
-HOMEBREW_VERSION:    #{HOMEBREW_VERSION}
-
-HOMEBREW_PREFIX:     #{HOMEBREW_PREFIX}
-\tWhere do we symlink installs to?
-
-HOMEBREW_CELLAR:     #{HOMEBREW_CELLAR}
-\tWhere do we store our built products?
-
-HOMEBREW_CACHE:      #{HOMEBREW_CACHE}
-\tWhere do we cache our downloads?
-
+HOMEBREW_VERSION: #{HOMEBREW_VERSION}
+HOMEBREW_PREFIX:  #{HOMEBREW_PREFIX}
+HOMEBREW_CELLAR:  #{HOMEBREW_CELLAR}
+HOMEBREW_CACHE:   #{HOMEBREW_CACHE}
 HOMEBREW_REPOSITORY: #{HOMEBREW_REPOSITORY}
-\tWhere is our .git?
 
-Library path:        #{$:.first}
-\tWhat do we put on the ruby path?
+Library path: #{$:.first}
+  
+Hardware: #{Hardware.intel_family}, #{cores} cores, #{bits} bits
+
+OS X: #{MACOS_FULL_VERSION}
+Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
+GCC:  build #{gcc_build}
+LLVM: build #{llvm_build}
 EOS
 end
 
