@@ -205,6 +205,9 @@ begin
     if MACOS_VERSION >= 10.6
       `/Developer/usr/bin/llvm-gcc-4.2 -v 2>&1` =~ /LLVM build (\d{4,})/
       opoo "You should upgrade to Xcode 3.2.1" if $1.to_i < 2206
+    else
+      `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
+      opoo "You should upgrade to Xcode 3.1" if $1.to_i < 5577
     end
 
     if macports_or_fink_installed?
