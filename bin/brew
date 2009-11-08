@@ -198,7 +198,7 @@ begin
       abort "Sorry, Homebrew does not support your computer's CPU architecture."
     end
 
-    raise "Cannot write to #{HOMEBREW_CELLAR}" unless HOMEBREW_CELLAR.writable?
+    raise "Cannot write to #{HOMEBREW_CELLAR}" if HOMEBREW_CELLAR.exist? and not HOMEBREW_CELLAR.writable?
     raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable?
 
     ################################################################# warnings
