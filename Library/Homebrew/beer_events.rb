@@ -170,6 +170,9 @@ begin
       spill = events.map { |e| e.files }.flatten
       spill.reject! { |f| File.mtime(f) < start }
       spill.reject! { |path| path =~ /^#{HOMEBREW_PREFIX}/ }
+      # irrelevent files that change a lot
+      spill.reject! { |path| path == "/Library/Preferences/SystemConfiguration/com.apple.PowerManagement.plist-lock" }
+      spill.reject! { |path| path == "/System/Library/Caches/com.apple.Components2.SystemCache.Components" }
       unless spill.empty?
         opoo "Detected installation of files outside the Homebrew prefix:"
         puts *spill
