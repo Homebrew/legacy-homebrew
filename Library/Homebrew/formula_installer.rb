@@ -60,7 +60,7 @@ class FormulaInstaller
           exit! 1
         end
       end
-      ignore_interrupts do
+      ignore_interrupts do # because child proc will get it and marshall it back
         write.close
         Process.wait
         data = read.read

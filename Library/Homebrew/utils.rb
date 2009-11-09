@@ -69,27 +69,29 @@ def pretty_duration s
 end
 
 def interactive_shell
-  pid=fork
-  if pid.nil?
+  fork do
     # TODO make the PS1 var change pls
     #brown="\[\033[0;33m\]"
     #reset="\[\033[0m\]"
     #ENV['PS1']="Homebrew-#{HOMEBREW_VERSION} #{brown}\W#{reset}\$ "
     exec ENV['SHELL']
   end
-  Process.wait pid
-  raise SystemExit, "Aborting due to non-zero exit status" if $? != 0
+  Process.wait
+  unless $?.success?
+    puts "Aborting due to non-zero exit status"
+    exit $?
+  end
 end
 
 # Kernel.system but with exceptions
 def safe_system cmd, *args
   puts "#{cmd} #{args*' '}" if ARGV.verbose?
-  exec_success = Kernel.system cmd, *args
-  # some tools, eg. tar seem to confuse ruby and it doesn't propogate the
-  # CTRL-C interrupt to us too, so execution continues, but the exit code is
-  # still 2 so we raise our own interrupt
-  raise Interrupt, cmd if $?.termsig == 2
-  raise ExecutionError.new(cmd, args, $?) unless exec_success
+  fork do
+    trap("EXIT") {} # no bt on exit from this short-lived fork
+    exit! 1 unless exec(cmd, *args)
+  end
+  Process.wait
+  raise ExecutionError.new(cmd, args, $?) unless $?.success?
 end
 
 def curl *args

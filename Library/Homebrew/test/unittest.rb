@@ -30,6 +30,24 @@ MACOS_VERSION=10.6
 Dir.chdir HOMEBREW_PREFIX
 at_exit { HOMEBREW_PREFIX.parent.rmtree }
 
+# for some reason our utils.rb safe_system behaves completely differently 
+# during these tests. This is worrying for sure.
+def safe_system *args
+  Kernel.system *args
+end
+
+class ExecutionError <RuntimeError
+  attr :status
+
+  def initialize cmd, args=[], status=nil
+    super "Failure while executing: #{cmd} #{args*' '}"
+    @status = status
+  end
+end
+
+class BuildError <ExecutionError
+end
+
 require 'test/unit' # must be after at_exit
 require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
 ARGV.extend(HomebrewArgvExtension)
