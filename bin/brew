@@ -206,7 +206,7 @@ begin
     if MACOS_VERSION >= 10.6
       opoo "You should upgrade to Xcode 3.2.1" if llvm_build < 2206
     else
-      opoo "You should upgrade to Xcode 3.1" if gcc_build < 5577
+      opoo "You should upgrade to Xcode 3.1.4" if gcc_build < 5577
     end
 
     if macports_or_fink_installed?
