@@ -136,21 +136,6 @@ class RefreshBrewMock < RefreshBrew
   end
 end
 
-def nostdout
-  if ARGV.include? '-V'
-    yield
-  end
-  begin
-    require 'stringio'
-    tmpo=$stdout
-    tmpe=$stderr
-    $stdout=StringIO.new
-    yield
-  ensure
-    $stdout=tmpo
-  end
-end
-
 module ExtendArgvPlusYeast
   def reset
     @named = nil
