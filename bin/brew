@@ -42,16 +42,6 @@ end
 
 def dump_config
   require 'hardware'
-
-  `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
-  gcc_build = $1.to_i
-  
-  llvm_build = "None"
-  if MACOS_VERSION >= 10.6
-    `/Developer/usr/bin/llvm-gcc-4.2 -v 2>&1` =~ /LLVM build (\d{4,})/  
-    llvm_build = $1.to_i
-  end
-  
   bits = Hardware.is_64_bit? ? 64 : 32
   cores = Hardware.processor_count
 
@@ -215,11 +205,9 @@ begin
 
     ################################################################# warnings
     if MACOS_VERSION >= 10.6
-      `/Developer/usr/bin/llvm-gcc-4.2 -v 2>&1` =~ /LLVM build (\d{4,})/
-      opoo "You should upgrade to Xcode 3.2.1" if $1.to_i < 2206
+      opoo "You should upgrade to Xcode 3.2.1" if llvm_build < 2206
     else
-      `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
-      opoo "You should upgrade to Xcode 3.1" if $1.to_i < 5577
+      opoo "You should upgrade to Xcode 3.1" if gcc_build < 5577
     end
 
     if macports_or_fink_installed?
