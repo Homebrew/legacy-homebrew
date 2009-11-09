@@ -43,23 +43,27 @@ end
 def dump_config
   require 'hardware'
   bits = Hardware.is_64_bit? ? 64 : 32
-  cores = Hardware.processor_count
+  cores = case Hardware.processor_count
+  when 1 then 'single'
+  when 2 then 'dual'
+  when 4 then 'quad'
+  else
+    Hardware.processor_count
+  end
+  llvm = llvm_build
 
   puts <<-EOS
 HOMEBREW_VERSION: #{HOMEBREW_VERSION}
-HOMEBREW_PREFIX:  #{HOMEBREW_PREFIX}
-HOMEBREW_CELLAR:  #{HOMEBREW_CELLAR}
-HOMEBREW_CACHE:   #{HOMEBREW_CACHE}
+HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}
+HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}
+HOMEBREW_CACHE: #{HOMEBREW_CACHE}
 HOMEBREW_REPOSITORY: #{HOMEBREW_REPOSITORY}
-
 Library path: #{$:.first}
-  
-Hardware: #{Hardware.intel_family}, #{cores} cores, #{bits} bits
-
+Hardware: #{cores}-core #{bits}-bit #{Hardware.intel_family}
 OS X: #{MACOS_FULL_VERSION}
 Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
-GCC:  build #{gcc_build}
-LLVM: build #{llvm_build}
+GCC: build #{gcc_build}
+LLVM: #{llvm ? "build #{llvm}" : "N/A" }
 EOS
 end
 
