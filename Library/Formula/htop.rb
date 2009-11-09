@@ -9,7 +9,7 @@ class Htop <Formula
   def install
     system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-    system "make install"
+    system "make", "install", "DEFAULT_INCLUDES='-iquote .'"
   end
 
 end
