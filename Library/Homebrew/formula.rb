@@ -222,17 +222,15 @@ protected
       safe_system cmd, *args
     else
       rd, wr = IO.pipe
-      fork do
+      pid = fork do
         rd.close
         $stdout.reopen wr
         $stderr.reopen wr
         exec cmd, *args
       end
+      wr.close
       out = ''
-      ignore_interrupts do
-        wr.close
-        out << rd.read until rd.eof?
-      end
+      out << rd.read until rd.eof?
       Process.wait
       unless $?.success?
         puts out
