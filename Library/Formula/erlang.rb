@@ -37,13 +37,21 @@ class Erlang <Formula
 
   def install
     ENV.deparallelize
+    ENV.gcc_4_2 # see http://github.com/mxcl/homebrew/issues/#issue/120
+
     config_flags = ["--disable-debug",
                           "--prefix=#{prefix}",
                           "--enable-kernel-poll",
                           "--enable-threads",
                           "--enable-dynamic-ssl-lib",
-                          "--enable-smp-support",
-                          "--enable-hipe"]
+                          "--enable-smp-support"]
+
+    unless ARGV.include? '--disable-hipe'
+      # HIPE doesn't strike me as that reliable on OS X
+      # http://syntatic.wordpress.com/2008/06/12/macports-erlang-bus-error-due-to-mac-os-x-1053-update/
+      # http://www.erlang.org/pipermail/erlang-patches/2008-September/000293.html
+      config_flags << '--enable-hipe'
+    end
 
     if Hardware.is_64_bit? and MACOS_VERSION == 10.6
       config_flags << "--enable-darwin-64bit" 
