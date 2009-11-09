@@ -428,3 +428,15 @@ private
     end
   end
 end
+
+def gcc_build
+  `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
+  $1.to_i
+end
+
+def llvm_build
+  if MACOS_VERSION >= 10.6
+    `/Developer/usr/bin/llvm-gcc-4.2 -v 2>&1` =~ /LLVM build (\d{4,})/  
+    $1.to_i
+  end
+end
