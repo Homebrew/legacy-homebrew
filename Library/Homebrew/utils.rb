@@ -159,3 +159,18 @@ def ignore_interrupts
 ensure
   trap("INT", std_trap)
 end
+
+def nostdout
+  if ARGV.verbose?
+    yield
+  else
+    begin
+      require 'stringio'
+      real_stdout = $stdout
+      $stdout = StringIO.new
+      yield
+    ensure
+      $stdout = real_stdout
+    end
+  end
+end

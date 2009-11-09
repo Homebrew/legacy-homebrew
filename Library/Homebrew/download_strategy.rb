@@ -140,7 +140,7 @@ class GitDownloadStrategy <AbstractDownloadStrategy
       safe_system 'git', 'clone', @url, @clone
     else
       # TODO git pull?
-      puts "Repository already cloned"
+      puts "Repository already cloned to #{@clone}"
     end
   end
   def stage
@@ -150,9 +150,9 @@ class GitDownloadStrategy <AbstractDownloadStrategy
         ohai "Checking out #{@spec} #{@ref}"
         case @spec
         when :branch
-          safe_system 'git', 'checkout', "origin/#{@ref}"
+          nostdout { safe_system 'git', 'checkout', "origin/#{@ref}" }
         when :tag
-          safe_system 'git', 'checkout', @ref
+          nostdout { safe_system 'git', 'checkout', @ref }
         end
       end
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
