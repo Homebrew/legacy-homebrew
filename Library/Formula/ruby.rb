@@ -10,6 +10,7 @@ class Ruby <Formula
   depends_on 'readline'
   
   def install
+    ENV.gcc_4_2
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",
