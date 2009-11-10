@@ -1,9 +1,9 @@
 require 'formula'
 
 class Node <Formula
-  url 'http://s3.amazonaws.com/four.livejournal/20091009/node-v0.1.14.tar.gz'
+  url 'http://s3.amazonaws.com/four.livejournal/20091107/node-v0.1.17.tar.gz'
   homepage 'http://nodejs.org/'
-  md5 '7f73e4ca88ded4a9b102fdd4f6d18adf'
+  md5 '4e6c0427da7ff67cd475f28affb859e4'
 
   def install
     ENV.gcc_4_2
