@@ -52,6 +52,7 @@ def dump_config
   end
   llvm = llvm_build
   sha = `git rev-parse --verify HEAD`.chomp
+  kernel_arch = `uname -m`.chomp
 
   puts <<-EOS
 HOMEBREW_VERSION: #{HOMEBREW_VERSION}
@@ -60,9 +61,10 @@ HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}
 HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}
 HOMEBREW_CACHE: #{HOMEBREW_CACHE}
 HOMEBREW_REPOSITORY: #{HOMEBREW_REPOSITORY}
-Library path: #{$:.first}
+Library Path: #{$:.first}
 Hardware: #{cores}-core #{bits}-bit #{Hardware.intel_family}
 OS X: #{MACOS_FULL_VERSION}
+Kernel Architecture: #{kernel_arch}
 Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
 GCC: 4.2 build #{gcc_build}
 LLVM: #{llvm ? "build #{llvm}" : "N/A" }
