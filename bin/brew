@@ -244,6 +244,7 @@ rescue UsageError
   abort ARGV.usage
 rescue SystemExit
   puts "Kernel.exit" if ARGV.verbose?
+  raise
 rescue Interrupt => e
   puts # seemingly a newline is typical
   exit 130
