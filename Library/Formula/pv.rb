@@ -8,6 +8,8 @@ class Pv <Formula
   @md5='63033e090d61a040407bfd043aeb6d27'
 
   def install
+    ENV.gcc_4_2
+
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end
