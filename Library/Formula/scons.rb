@@ -6,6 +6,6 @@ class Scons <Formula
   md5 'd95c3749438e51db592b854683083965'
 
   def install
-    system "python setup.py install", "--prefix=#{prefix}", "--no-version-script", "--standalone-lib"
+    system "python", "setup.py", "install", "--prefix=#{prefix}", "--no-version-script", "--standalone-lib"
   end
 end
