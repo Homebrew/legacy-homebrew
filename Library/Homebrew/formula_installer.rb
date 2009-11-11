@@ -49,7 +49,7 @@ class FormulaInstaller
     # I'm guessing this is not a good way to do this, but I'm no UNIX guru
     ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
 
-    watch_out_for_spill do
+     begin #watch_out_for_spill do #disabled temporarily, see Issue #124
       fork do
         begin
           read.close
