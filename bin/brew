@@ -236,37 +236,27 @@ begin
   end
 
 rescue FormulaUnspecifiedError
-  puts "This command requires a formula argument"
-  exit 1
+  abort "This command requires a formula argument"
 rescue KegUnspecifiedError
-  puts "This command requires a keg argument"
-  exit 1
+  abort "This command requires a keg argument"
 rescue UsageError
   onoe "Invalid usage"
-  puts ARGV.usage
-  exit 1
+  abort ARGV.usage
 rescue SystemExit
   puts "Kernel.exit" if ARGV.verbose?
-  exit 1
 rescue Interrupt => e
   puts # seemingly a newline is typical
   exit 130
-rescue SystemCallError, RuntimeError => e
-  if ARGV.debug?
-    onoe e.inspect
-    puts e.backtrace
-  else
-    onoe e
-    if e.kind_of? BuildError
-      puts please_report_bug
-      puts "Exit Status: #{e.status}"
-    end
-  end
-  exit 1
 rescue Exception => e
-  onoe "Homebrew has failed you :("
-  puts please_report_bug
-  puts e.inspect
-  puts e.backtrace
+  fatal = !(RuntimeError === e or SystemCallError === e)
+
+  onoe e
+  if BuildError === e or fatal
+    puts "#{Tty.white}Please report this bug to #{Tty.em}#{HOMEBREW_WWW}#{Tty.reset}"
+    dump_config
+    puts "Exit status: #{e.status}" if BuildError === e
+  end
+  puts e.backtrace if fatal or ARGV.debug?
+
   exit 1
 end
