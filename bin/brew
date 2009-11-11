@@ -64,18 +64,11 @@ Library path: #{$:.first}
 Hardware: #{cores}-core #{bits}-bit #{Hardware.intel_family}
 OS X: #{MACOS_FULL_VERSION}
 Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
-GCC: build #{gcc_build}
+GCC: 4.2 build #{gcc_build}
 LLVM: #{llvm ? "build #{llvm}" : "N/A" }
+MacPorts or Fink? #{macports_or_fink_installed?}
 EOS
 end
-
-def please_report_bug; <<-EOS
-Please report this bug to #{HOMEBREW_WWW}
-Mac OS X: #{MACOS_FULL_VERSION}
-Ponk: #{macports_or_fink_installed?}
-  EOS
-end
-
 
 begin
   require 'brew.h'
