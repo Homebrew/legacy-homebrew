@@ -1,0 +1,47 @@
+require 'formula'
+
+class Go <Formula
+  head 'https://go.googlecode.com/hg/'
+  homepage 'http://golang.org'
+
+  skip_clean 'bin'
+
+  def download_strategy
+    MercurialDownloadStrategy
+  end
+
+  def cruft
+    %w[src include test doc]
+  end
+
+  def install
+    prefix.install cruft<<'misc'
+    Dir.chdir prefix
+    FileUtils.mkdir %w[pkg bin lib]
+
+    ENV['GOROOT'] = Dir.getwd
+    ENV['GOBIN'] = bin.to_s
+    ENV['GOARCH'] = Hardware.is_64_bit? ? 'amd64' : '386'
+    ENV['GOOS'] = 'darwin'
+
+    ENV.prepend 'PATH', ENV['GOBIN'], ':'
+
+    Dir.chdir 'src' do
+      system "./all.bash"
+    end
+
+    FileUtils.rm_rf cruft
+  end
+
+  def caveats; <<-EOS
+In order to use Go you need to set the following in your ~/.profile:
+
+    export GOROOT=`brew --prefix`/Cellar/go/#{version}
+    export GOARCH=#{ENV['GOARCH']}
+    export GOOS=#{ENV['GOOS']}
+
+Presumably at some point the Go developers won't require us to mutilate our
+shell environments in order to compile Go code...
+    EOS
+  end
+end
