@@ -51,9 +51,11 @@ def dump_config
     Hardware.processor_count
   end
   llvm = llvm_build
+  sha = `git rev-parse --verify HEAD`.chomp
 
   puts <<-EOS
 HOMEBREW_VERSION: #{HOMEBREW_VERSION}
+HEAD: #{sha}
 HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}
 HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}
 HOMEBREW_CACHE: #{HOMEBREW_CACHE}
