@@ -23,7 +23,7 @@ class Git <Formula
     system "make install"
 
     # Install the git bash completion file
-    etc.install 'contrib/completion/git-completion.bash'
+    (etc+'bash_completion.d').install 'contrib/completion/git-completion.bash'
 
     # these files are exact copies of the git binary, so like the contents
     # of libexec/git-core lets hard link them
