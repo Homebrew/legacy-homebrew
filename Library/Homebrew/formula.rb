@@ -226,7 +226,8 @@ protected
         rd.close
         $stdout.reopen wr
         $stderr.reopen wr
-        exec cmd, *args
+        exec(cmd, *args) rescue nil
+        exit! 1 # never gets here unless exec threw or failed
       end
       wr.close
       out = ''
