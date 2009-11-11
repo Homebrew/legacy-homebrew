@@ -88,8 +88,8 @@ end
 def safe_system cmd, *args
   puts "#{cmd} #{args*' '}" if ARGV.verbose?
   fork do
-    trap("EXIT") {} # no bt on exit from this short-lived fork
-    exit! 1 unless exec(cmd, *args)
+    exec(cmd, *args) rescue nil
+    exit! 1 # never gets here unless exec failed
   end
   Process.wait
   raise ExecutionError.new(cmd, args, $?) unless $?.success?
