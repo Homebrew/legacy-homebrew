@@ -11,10 +11,10 @@ class Rabbitmq <Formula
     erlang_libdir = lib + "rabbitmq" + "erlang" + "lib"
     target_dir = "#{erlang_libdir}/rabbitmq-#{version}"
     system "make"
-    system "TARGET_DIR=#{target_dir} \
-                MAN_DIR=#{man} \
-                SBIN_DIR=#{sbin} \
-                make install"
+    ENV['TARGET_DIR'] = target_dir
+    ENV['MAN_DIR'] = man
+    ENV['SBIN_DIR'] = sbin
+    system "make install"
 
     (etc + "rabbitmq").mkpath
     (var + "lib" + "rabbitmq").mkpath
