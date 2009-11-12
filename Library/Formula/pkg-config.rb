@@ -1,9 +1,9 @@
 require 'formula'
 
 class PkgConfig <Formula
-  @homepage='http://pkgconfig.freedesktop.org'
-  @url='http://pkgconfig.freedesktop.org/releases/pkg-config-0.23.tar.gz'
-  @md5='d922a88782b64441d06547632fd85744'
+  homepage 'http://pkgconfig.freedesktop.org'
+  url 'http://pkgconfig.freedesktop.org/releases/pkg-config-0.23.tar.gz'
+  md5 'd922a88782b64441d06547632fd85744'
 
   #TODO depend on our glib if available. --with-installed-glib
 
