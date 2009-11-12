@@ -1,7 +1,7 @@
 require 'formula'
 
 class Astyle <Formula
-  @url='http://kent.dl.sourceforge.net/sourceforge/astyle/astyle_1.23_macosx.tar.gz'
+  @url='http://downloads.sourceforge.net/sourceforge/astyle/astyle_1.23_macosx.tar.gz'
   @md5='9f7f3237996776d01bc6837cd445a442'
   @homepage='http://astyle.sourceforge.net/'
 

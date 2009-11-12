@@ -1,7 +1,7 @@
 require 'formula'
 
 class Soprano <Formula
-  @url='http://surfnet.dl.sourceforge.net/project/soprano/Soprano/2.3.1/soprano-2.3.1.tar.bz2'
+  @url='http://downloads.sourceforge.net/project/soprano/Soprano/2.3.1/soprano-2.3.1.tar.bz2'
   @homepage='http://soprano.sourceforge.net/'
   @md5='c9a2c008b80cd5d76599e9d48139dfe9'
 

@@ -1,7 +1,7 @@
 require 'formula'
 
 class P7zip <Formula
-  @url='http://kent.dl.sourceforge.net/sourceforge/p7zip/p7zip_9.04_src_all.tar.bz2'
+  @url='http://downloads.sourceforge.net/sourceforge/p7zip/p7zip_9.04_src_all.tar.bz2'
   @homepage='http://p7zip.sourceforge.net/'
   @md5='9194ebf9a2b3735d236aed001de5f6f8'
 
