@@ -250,16 +250,22 @@ rescue SystemExit
 rescue Interrupt => e
   puts # seemingly a newline is typical
   exit 130
-rescue Exception => e
-  fatal = !(RuntimeError === e or SystemCallError === e)
-
+rescue BuildError => e
+  ohai "Backtrace"
+  puts e.backtrace
+  ohai "Environment"
+  dump_config
+  puts "Exit status: #{e.status}"
   onoe e
-  if BuildError === e or fatal
-    puts "#{Tty.white}Please report this bug to #{Tty.em}#{HOMEBREW_WWW}#{Tty.reset}"
-    dump_config
-    puts "Exit status: #{e.status}" if BuildError === e
-  end
-  puts e.backtrace if fatal or ARGV.debug?
-
+  puts PLEASE_REPORT_BUG
+  exit 1
+rescue RuntimeError, SystemCallError => e
+  onoe e
+  puts e.backtrace if ARGV.debug?
+  exit 1
+rescue Exception => e
+  onoe e
+  puts PLEASE_REPORT_BUG
+  puts e.backtrace
   exit 1
 end

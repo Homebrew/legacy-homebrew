@@ -22,6 +22,7 @@
 #  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 FORMULA_META_FILES = %w[README ChangeLog COPYING LICENSE COPYRIGHT AUTHORS]
+PLEASE_REPORT_BUG = "#{Tty.white}Please report this bug to #{Tty.em}#{HOMEBREW_WWW}#{Tty.reset}"
 
 def __make url, name
   require 'formula'
