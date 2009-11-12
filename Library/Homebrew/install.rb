@@ -25,6 +25,8 @@ end
 # rb file has to be the running script to allow it to use __END__ and DATA
 at_exit do
   begin
+    raise $! if $! # an exception was already thrown when parsing the formula
+
     require 'extend/ENV'
     require 'fileutils'
     require 'hardware'
