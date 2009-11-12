@@ -132,7 +132,8 @@ begin
         exec_editor *paths
       end
 
-    when 'up', 'update'
+  when 'up', 'update'
+    if system "/usr/bin/which -s git"
       require 'update'
       updater = RefreshBrew.new
       old_revision = updater.current_revision
@@ -147,6 +148,9 @@ begin
           puts "No formulae were updated." unless updater.pending_formulae_changes?
         end
       end
+    else
+      abort "Please `brew install git' first."
+    end
 
     when 'ln', 'link'
       ARGV.kegs.each {|keg| puts "#{keg.link} links created for #{keg}"}
