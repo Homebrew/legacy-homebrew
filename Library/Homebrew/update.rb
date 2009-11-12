@@ -22,10 +22,11 @@
 #  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 class RefreshBrew
-  CHECKOUT_COMMAND = 'git checkout master'
-  UPDATE_COMMAND   = 'git pull origin master'
-  REVISION_COMMAND = 'git log -l -1 --pretty=format:%H'
-  GIT_UP_TO_DATE   = 'Already up-to-date.'
+  RESPOSITORY_URL  = 'git://github.com/mxcl/homebrew.git'
+  CHECKOUT_COMMAND = 'git checkout -q master'
+  UPDATE_COMMAND   = "git pull #{RESPOSITORY_URL} master"
+  REVISION_COMMAND = 'git log -l -1 --pretty=format:%H 2> /dev/null'
+  GIT_UP_TO_DATE   = 'Already up-to-date'
   
   formula_regexp   = 'Library/Formula/(.+?)\.rb'
   ADDED_FORMULA    = %r{^\s+create mode \d+ #{formula_regexp}$}
@@ -40,9 +41,16 @@ class RefreshBrew
   # Performs an update of the homebrew source. Returns +true+ if a newer
   # version was available, +false+ if already up-to-date.
   def update_from_masterbrew!
-    git_checkout_masterbrew!
-    output = git_pull!
-    
+    output = ''
+    in_prefix do
+      if File.directory? '.git'
+        safe_system CHECKOUT_COMMAND
+      else
+        safe_system "git init"
+      end
+      output = execute(UPDATE_COMMAND)
+    end
+
     output.split("\n").reverse.each do |line|
       case line
       when ADDED_FORMULA
@@ -63,6 +71,8 @@ class RefreshBrew
   
   def current_revision
     in_prefix { execute(REVISION_COMMAND).strip }
+  rescue
+    'TAIL'
   end
   
   private
@@ -79,13 +89,5 @@ class RefreshBrew
     end
     ohai(cmd, out) if ARGV.verbose?
     out
-  end
-  
-  def git_checkout_masterbrew!
-    in_prefix { execute CHECKOUT_COMMAND }
-  end
-  
-  def git_pull!
-    in_prefix { execute UPDATE_COMMAND }
   end
 end
