@@ -7,7 +7,7 @@ end
 
 class Flac <Formula
   @homepage='http://flac.sourceforge.net'
-  @url='http://kent.dl.sourceforge.net/sourceforge/flac/flac-1.2.1.tar.gz'
+  @url='http://downloads.sourceforge.net/sourceforge/flac/flac-1.2.1.tar.gz'
   @md5='153c8b15a54da428d1f0fadc756c22c7'
 
   def install

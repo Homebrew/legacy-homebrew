@@ -1,7 +1,7 @@
 require 'formula'
 
 class Strigi <Formula
-  @url='http://surfnet.dl.sourceforge.net/project/strigi/strigi/strigi-0.6.4/strigi-0.6.4.tar.bz2'
+  @url='http://downloads.sourceforge.net/project/strigi/strigi/strigi-0.6.4/strigi-0.6.4.tar.bz2'
   @homepage='http://strigi.sourceforge.net/'
   @md5='324fd9606ac77765501717ff92c04f9a'
 
