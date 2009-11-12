@@ -10,7 +10,7 @@ class Ctags <Formula
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--enable-macro-patterns",
-                          "--mandir='#{man}'",
+                          "--mandir=#{man}",
                           "--with-readlib"
     system "make install"
   end
