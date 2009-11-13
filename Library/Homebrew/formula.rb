@@ -176,7 +176,7 @@ class Formula
   def caveats; nil end
 
   # patches are automatically applied after extracting the tarball
-  # return an array of strings, or if you need a patch level other than -p0
+  # return an array of strings, or if you need a patch level other than -p1
   # return a Hash eg.
   #   {
   #     :p0 => ['http://foo.com/patch1', 'http://foo.com/patch2'],
@@ -380,7 +380,7 @@ private
 
     ohai "Patching"
     if not patches.kind_of? Hash
-      # We assume -p0
+      # We assume -p1
       patch_defns = { :p1 => patches }
     else
       patch_defns = patches
