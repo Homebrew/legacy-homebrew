@@ -13,6 +13,7 @@ class Irssi <Formula
   end
 
   def install
+    ENV.append 'ARCHFLAGS', ' '
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--with-modules", "--enable-ssl", "--enable-ipv6", "--with-perl=yes"
     system "make install"
   end
