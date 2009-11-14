@@ -104,8 +104,14 @@ def puts_columns items, cols = 4
   if $stdout.tty?
     items = items.join("\n") if items.is_a?(Array)
     items.concat("\n") unless items.empty?
-    width=`/bin/stty size`.chomp.split(" ").last
-    IO.popen("/usr/bin/pr -#{cols} -t", "w"){|io| io.write(items) }
+
+    # determine the best width to display for different console sizes
+    console_width = `/bin/stty size`.chomp.split(" ").last
+    longest = items.sort_by { |item| item.length }.last
+    optimal_col_width = (console_width.to_f / (longest.length + 2).to_f).floor
+    cols = optimal_col_width > 1 ? optimal_col_width : 1
+
+    IO.popen("/usr/bin/pr -#{cols} -t -w#{console_width}", "w"){|io| io.write(items) }
   else
     puts *items
   end
