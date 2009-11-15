@@ -11,26 +11,35 @@ class Ghostscript <Formula
   homepage 'http://www.ghostscript.com/'
   md5 '526366f8cb4fda0d3d293597cc5b984b'
 
+  depends_on 'jasper'
   depends_on 'jpeg'
 
+  def move_included_source_copies
+    # If the install version of any of these doesn't match
+    # the version included in ghostscript, we get errors
+    # Taken from the MacPorts portfile - http://bit.ly/ghostscript-portfile
+    %w{ jpeg libpng zlib }.each do |lib|
+      FileUtils.mv lib, "#{lib}_local"
+    end
+  end
+
   def install
+    ENV.libpng
+    ENV.deparallelize
     # O4 takes an ungodly amount of time
     ENV.O3
     # ghostscript configure ignores LDFLAGs apparently
     ENV['LIBS']="-L/usr/X11/lib"
 
-    # move the included jpeg6 out of the way so we don't use it
-    FileUtils.rm_rf 'jpeg'
+    move_included_source_copies
 
-    build_dir = Pathname.getwd
-    # download jpeg7, extract it, and fool ghostscript into using it
-    Formula.factory('jpeg').brew do
-      FileUtils.ln Dir.pwd, build_dir+'jpeg'
-    end
 
     system "./configure", "--prefix=#{prefix}", "--disable-debug",
                           # the cups component adamantly installs to /usr so fuck it
-                          "--disable-cups"
+                          "--disable-cups",
+                          "--disable-compile-inits",
+                          "--disable-gtk"
+
     # versioned stuff in main tree is pointless for us
     inreplace 'Makefile', '/$(GS_DOT_VERSION)', ''
     system "make install"
