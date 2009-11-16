@@ -42,14 +42,8 @@ end
 
 def dump_config
   require 'hardware'
-  bits = Hardware.is_64_bit? ? 64 : 32
-  cores = case Hardware.processor_count
-  when 1 then 'single'
-  when 2 then 'dual'
-  when 4 then 'quad'
-  else
-    Hardware.processor_count
-  end
+  bits = Hardware.bits
+  cores = Hardware.cores_as_words
   llvm = llvm_build
   sha = `git rev-parse --verify HEAD`.chomp
   kernel_arch = `uname -m`.chomp
