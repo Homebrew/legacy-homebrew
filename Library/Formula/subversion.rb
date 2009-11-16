@@ -17,6 +17,8 @@ class Subversion <Formula
   url 'http://subversion.tigris.org/downloads/subversion-1.6.6.tar.bz2'
   homepage 'http://subversion.tigris.org/'
   md5 'e5109da756d74c7d98f683f004a539af'
+  
+  aka :svn
 
   # Only need this on Snow Leopard; for Leopard the deps package 
   # builds it.
