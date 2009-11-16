@@ -15,7 +15,7 @@ case ARGV.first
 when '--cache'
   puts HOMEBREW_CACHE
   exit 0
-when '-h', '--help', '--usage', '-?', nil
+when '-h', '--help', '--usage', '-?', 'help', nil
   puts ARGV.usage
   exit 0
 when '--version'
