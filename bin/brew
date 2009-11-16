@@ -227,6 +227,9 @@ begin
     Dir.chdir HOMEBREW_REPOSITORY
     exec "git", "log", ARGV.formulae.first.path, *ARGV.options
 
+  when 'pull', 'push', 'checkout', 'branch'
+    onoe "Unknown command: #{arg} (did you mean 'git #{arg}'?)"
+    
   else
     onoe "Unknown command: #{arg}"
   end
