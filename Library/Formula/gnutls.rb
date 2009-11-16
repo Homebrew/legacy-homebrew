@@ -1,14 +1,16 @@
 require 'formula'
 
 class Gnutls <Formula
-  @url='http://ftp.gnu.org/pub/gnu/gnutls/gnutls-2.8.3.tar.bz2'
+  @url='http://ftp.gnu.org/pub/gnu/gnutls/gnutls-2.8.5.tar.bz2'
   @homepage='http://www.gnu.org/software/gnutls/gnutls.html'
-  @sha1='c25fb354258777f9ee34b79b08eb87c024cada75'
+  @sha1='5121c52efd4718ad3d8b641d28343b0c6abaa571'
 
   depends_on 'libgcrypt'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--disable-guile"
     system "make install"
   end
 end
