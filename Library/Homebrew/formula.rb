@@ -33,6 +33,28 @@ class FormulaUnavailableError <RuntimeError
 end
 
 
+# The Formulary is the collection of all Formulae, of course.
+class Formulary
+  # Returns all formula names as strings, with or without aliases
+  def self.names with_aliases=false
+    everything = (HOMEBREW_REPOSITORY+'Library/Formula').children.map{|f| f.basename('.rb').to_s }
+    everything.push *Formulary.get_aliases.keys if with_aliases
+    everything.sort
+  end
+  
+  # Loads all formula classes.
+  def self.read_all
+    Formulary.names.each do |name|
+      require Formula.path(name)
+      klass_name = Formula.class_s(name)
+      klass = eval(klass_name)
+      
+      yield name, klass
+    end
+  end
+end
+
+
 # Derive and define at least @url, see Library/Formula for examples
 class Formula
   # Homebrew determines the name
