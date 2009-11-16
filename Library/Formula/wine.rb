@@ -1,8 +1,8 @@
 require 'formula'
 
 class Wine <Formula
-  url 'http://ibiblio.org/pub/linux/system/emulators/wine/wine-1.1.31.tar.bz2'
-  md5 '87fb94c218e52dd67c75b4ae5ef50c0e'
+  url 'http://ibiblio.org/pub/linux/system/emulators/wine/wine-1.1.33.tar.bz2'
+  md5 'f9506864f5aef9318129d349ce9ded72'
   homepage 'http://www.winehq.org/'
 
   depends_on 'jpeg'
@@ -17,10 +17,10 @@ class Wine <Formula
     build32 = "-arch i386 -m32"
 
     ENV["LIBS"] = "-lGL -lGLU"
-    ENV["CFLAGS"] = [ENV["CFLAGS"], build32].join(' ')
-    ENV["CXXFLAGS"] = [ENV["CFLAGS"], "-D_DARWIN_NO_64_BIT_INODE"].join(' ')
-    ENV["LDFLAGS"] = [ENV["LDFLAGS"], build32, "-framework CoreServices", "-lz", "-lGL -lGLU"].join(' ')
-    ENV["DYLD_FALLBACK_LIBRARY_PATH"] = [ENV["DYLD_FALLBACK_LIBRARY_PATH"], "/usr/X11/lib"].join(' ')
+    ENV.append "CFLAGS", build32
+    ENV.append "CXXFLAGS", "-D_DARWIN_NO_64_BIT_INODE"
+    ENV.append "LDFLAGS", [build32, "-framework CoreServices", "-lz", "-lGL -lGLU"].join(' ')
+    ENV.append "DYLD_FALLBACK_LIBRARY_PATH", "/usr/X11/lib"
 
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--disable-win16"
     system "make install"
