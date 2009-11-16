@@ -29,6 +29,7 @@ _1st_arguments=(
   'log:git commit log for a formula'
   'create:create a new formula'
   'edit:edit a formula'
+  'uses:show formulas which depend on a formula'
 )
 
 local expl
@@ -56,7 +57,7 @@ case "$words[1]" in
         _brew_installed_formulae
         _requested installed_formulae expl 'installed formulae' compadd -a installed_formulae
       fi ;;
-  install|home|log|info)
+  install|home|log|info|uses)
     _brew_all_formulae
     _wanted formulae expl 'all formulae' compadd -a formulae ;;
   remove|edit|xo)
