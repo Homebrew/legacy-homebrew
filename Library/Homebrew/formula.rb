@@ -52,6 +52,22 @@ class Formulary
       yield name, klass
     end
   end
+
+  def self.get_aliases
+    aliases = {}
+    Formulary.read_all do |name, klass|
+      aka = klass.aliases
+      next if aka == nil
+
+      aka.each {|item| aliases[item.to_s] = name }
+    end
+    return aliases
+  end
+  
+  def self.find_alias name
+    aliases = Formulary.get_aliases
+    return aliases[name]
+  end
 end
 
 
@@ -225,7 +241,15 @@ class Formula
       require name
       name = path.stem
     else
-      require self.path(name)
+      begin
+        require self.path(name)
+      rescue LoadError => e
+        # Couldn't find formula 'name', so look for an alias.
+        real_name = Formulary.find_alias name
+        raise e if real_name == nil
+        puts "#{name} is an alias for #{real_name}"
+        name = real_name
+      end
     end
     begin
       klass_name =self.class_s(name)
@@ -418,13 +442,21 @@ private
       end
     end
 
-    attr_rw :url, :version, :homepage, :specs, :deps, *CHECKSUM_TYPES
+    attr_rw :url, :version, :homepage, :specs, :deps, :aliases, *CHECKSUM_TYPES
 
     def head val=nil, specs=nil
       if specs
         @specs = specs
       end
       val.nil? ? @head : @head = val
+    end
+    
+    def aka *args
+      @aliases ||= []
+
+      args.each do |item|
+        @aliases << item.to_s
+      end
     end
 
     def depends_on name, *args
