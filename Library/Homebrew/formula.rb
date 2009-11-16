@@ -201,6 +201,22 @@ class Formula
     name.capitalize.gsub(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase } \
                    .gsub('+', 'x')
   end
+  
+  def self.get_used_by
+    used_by = {}
+    Formulary.read_all do |name, klass|
+      deps = klass.deps
+      next if deps == nil
+
+      deps.each do |dep|
+        _deps = used_by[dep] || []
+        _deps << name unless _deps.include? name
+        used_by[dep] = _deps
+      end
+    end
+    
+    return used_by
+  end
 
   def self.factory name
     return name if name.kind_of? Formula

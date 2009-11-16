@@ -226,6 +226,24 @@ begin
   when 'log'
     Dir.chdir HOMEBREW_REPOSITORY
     exec "git", "log", ARGV.formulae.first.path, *ARGV.options
+    
+  when 'uses'
+    # For each formula given, show which other formulas depend on it.
+    # We only go one level up, direct dependencies.
+    require 'formula'
+    require 'utils'
+    
+    deps = Formula.get_used_by
+    
+    ARGV.formulae.each do |f|
+      name = f.name
+      our_deps = deps[name]
+      if our_deps == nil
+        puts "#{name} is not a dependency."
+      else
+        puts "#{name} is a dependency for #{our_deps.join(', ')}."
+      end
+    end
 
   when 'pull', 'push', 'checkout', 'branch'
     onoe "Unknown command: #{arg} (did you mean 'git #{arg}'?)"
