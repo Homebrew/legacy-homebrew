@@ -17,6 +17,13 @@ class Jruby <Formula
         FileUtils.mv file, "j#{file}" unless file.match /^[j_]/
       end
     end
+    
+    # Only keep the MacOSX native libraries
+    Dir.chdir 'lib/native' do
+      Dir['*'].each do |file|
+        FileUtils.rm_f file unless file == 'darwin'
+      end
+    end
 
     prefix.install Dir['*']
   end
