@@ -113,18 +113,18 @@ begin
         exec 'mate', *Dir["#{HOMEBREW_REPOSITORY}/Library/*"]<<
                           "#{HOMEBREW_REPOSITORY}/bin/brew"<<
                           "#{HOMEBREW_REPOSITORY}/README.md"
-    else
-      # we don't use ARGV.formulae as that will throw if the file doesn't parse
-      paths = ARGV.named.collect do |name|
-        unless File.exist? path = "#{HOMEBREW_REPOSITORY}/Library/Formula/#{name}.rb"
-          require 'formula'
-          raise FormulaUnavailableError, name
-        else
-          path
+      else
+        # we don't use ARGV.formulae as that will throw if the file doesn't parse
+        paths = ARGV.named.collect do |name|
+          unless File.exist? path = "#{HOMEBREW_REPOSITORY}/Library/Formula/#{name}.rb"
+            require 'formula'
+            raise FormulaUnavailableError, name
+          else
+            path
+          end
         end
+        exec_editor *paths
       end
-      exec_editor *paths
-    end
 
     when 'up', 'update'
       require 'update'
