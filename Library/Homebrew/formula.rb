@@ -38,8 +38,23 @@ class Formulary
   # Returns all formula names as strings, with or without aliases
   def self.names with_aliases=false
     everything = (HOMEBREW_REPOSITORY+'Library/Formula').children.map{|f| f.basename('.rb').to_s }
-    everything.push *Formulary.get_aliases.keys if with_aliases
+    if with_aliases
+      everything.push *Formulary.get_aliases.keys
+    end
     everything.sort
+  end
+  
+  def self.read name
+    Formulary.names.each do |f|
+      next if f != name
+
+      require Formula.path(name)
+      klass_name = Formula.class_s(name)
+      klass = eval(klass_name)
+      return klass        
+    end
+    
+    return nil
   end
   
   # Loads all formula classes.
