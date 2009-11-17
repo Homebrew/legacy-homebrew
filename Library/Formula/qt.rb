@@ -34,6 +34,7 @@ class Qt <Formula
 
     conf_args = ["-prefix", prefix,
                  "-system-sqlite", "-system-libpng", "-system-zlib",
+                 "-plugin-sql-mysql",
                  "-nomake", "demos", "-nomake", "examples",
                  "-release", "-cocoa",
                  "-confirm-license", "-opensource",
