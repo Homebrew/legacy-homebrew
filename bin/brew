@@ -246,6 +246,35 @@ begin
         puts "#{name} is a dependency for #{our_deps.join(', ')}."
       end
     end
+    
+  when 'deps'
+    require 'formula'
+
+    ARGV.formulae.each do |f|
+      name = f.name
+
+      our_deps = []
+      checked = {}
+      to_check = [name]
+
+      while ! to_check.empty?
+        item = to_check.pop
+        checked[item] = true
+        
+        formula = Formulary.read item
+        next if formula == nil || formula.deps == nil || formula.deps.empty?
+        
+        our_deps.push(*formula.deps)
+        to_check.push(*formula.deps.select{|g| !checked[g]})
+      end
+      
+      if our_deps.empty?
+        puts "#{name} has no dependencies."
+      else
+        our_deps.sort!
+        puts "#{name} depends on #{our_deps.join(", ")}"
+      end
+    end
 
   when 'pull', 'push', 'checkout', 'branch'
     onoe "Unknown command: #{arg} (did you mean 'git #{arg}'?)"
