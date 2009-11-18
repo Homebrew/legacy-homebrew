@@ -39,11 +39,22 @@ class FormulaNames <Test::Unit::TestCase
   end
 end
 
-class CommentedTemplateCode <Test::Unit::TestCase
+class WellKnownCodeIssues <Test::Unit::TestCase
   def test_for_commented_out_cmake
     Dir["#{HOMEBREW_PREFIX}/Library/Formula/*.rb"].each do |f|
       result = `grep "# depends_on 'cmake'" "#{f}"`.strip
       assert_equal('', result, "Commented template code still in #{f}")
     end
   end
+  
+  def test_for_misquoted_prefix
+    # Prefix should not have single quotes if the system args are already separated
+    target_string = "[\\\"]--prefix=[\\']"
+    
+    Dir["#{HOMEBREW_PREFIX}/Library/Formula/*.rb"].each do |f|
+      result = `grep -e "#{target_string}" "#{f}"`.strip
+      assert_equal('', result, "--prefix is incorrectly single-quoted in #{f}")
+    end
+  end
+    
 end
