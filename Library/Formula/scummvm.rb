@@ -1,9 +1,9 @@
 require 'formula'
 
 class Scummvm <Formula
-  @url='http://downloads.sourceforge.net/project/scummvm/scummvm/1.0.0rc1/scummvm-1.0.0rc1.tar.bz2'
-  @homepage='http://www.scummvm.org/'
-  @md5='f3fabedc7ff2424d6a4bc678229b22ce'
+  url 'http://downloads.sourceforge.net/project/scummvm/scummvm/1.0.0/scummvm-1.0.0.tar.bz2'
+  homepage 'http://www.scummvm.org/'
+  md5 '11b911937e0fc73c94a7bdc374ab617c'
 
   def caveats
     <<-EOS
