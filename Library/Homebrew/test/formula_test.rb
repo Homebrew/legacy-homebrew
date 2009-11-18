@@ -40,8 +40,13 @@ class FormulaNames <Test::Unit::TestCase
 end
 
 class WellKnownCodeIssues <Test::Unit::TestCase
+  def all_formulas
+    Dir["#{HOMEBREW_PREFIX}/Library/Formula/*.rb"].each {|f| yield f }
+  end
+  
   def test_for_commented_out_cmake
-    Dir["#{HOMEBREW_PREFIX}/Library/Formula/*.rb"].each do |f|
+    # Formulas shouldn't contain commented-out cmake code from the default template
+    all_formulas do |f|
       result = `grep "# depends_on 'cmake'" "#{f}"`.strip
       assert_equal('', result, "Commented template code still in #{f}")
     end
@@ -51,7 +56,7 @@ class WellKnownCodeIssues <Test::Unit::TestCase
     # Prefix should not have single quotes if the system args are already separated
     target_string = "[\\\"]--prefix=[\\']"
     
-    Dir["#{HOMEBREW_PREFIX}/Library/Formula/*.rb"].each do |f|
+    all_formulas do |f|
       result = `grep -e "#{target_string}" "#{f}"`.strip
       assert_equal('', result, "--prefix is incorrectly single-quoted in #{f}")
     end
