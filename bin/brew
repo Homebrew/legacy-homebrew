@@ -297,6 +297,10 @@ begin
   when 'branch', 'checkout', 'pull', 'push', 'reset'
     onoe "Unknown command: #{arg} (did you mean 'git #{arg}'?)"
     
+  when 'cat'
+    Dir.chdir HOMEBREW_REPOSITORY
+    exec "cat", ARGV.formulae.first.path, *ARGV.options
+
   else
     onoe "Unknown command: #{arg}"
   end
