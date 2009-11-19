@@ -181,7 +181,15 @@ begin
 
     when 'info', 'abv'
       if ARGV.named.empty?
-        puts `ls #{HOMEBREW_CELLAR} | wc -l`.strip+" kegs, "+HOMEBREW_CELLAR.abv
+        if ARGV.include? "--all"
+          require 'formula'
+          Formulary.names.each do |name|
+            info name
+            puts '---'
+          end
+        else
+          puts `ls #{HOMEBREW_CELLAR} | wc -l`.strip+" kegs, "+HOMEBREW_CELLAR.abv
+        end
       elsif ARGV[0][0..6] == 'http://'
         puts Pathname.new(ARGV.shift).version
       else
