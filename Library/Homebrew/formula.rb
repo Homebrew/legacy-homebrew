@@ -43,6 +43,10 @@ class Formulary
     end
     everything.sort
   end
+
+  def self.paths
+    Dir["#{HOMEBREW_REPOSITORY}/Library/Formula/*.rb"]
+  end
   
   def self.read name
     Formulary.names.each do |f|
