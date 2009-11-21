@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cscope <Formula
-  @url='http://downloads.sourceforge.net/sourceforge/cscope/cscope-15.7a.tar.bz2'
-  @homepage='http://cscope.sourceforge.net/'
-  @md5='da43987622ace8c36bbf14c15a350ec1'
+  url 'http://downloads.sourceforge.net/sourceforge/cscope/cscope-15.7a.tar.bz2'
+  homepage 'http://cscope.sourceforge.net/'
+  md5 'da43987622ace8c36bbf14c15a350ec1'
 
   def patches
 	  # Patch from http://bugs.gentoo.org/show_bug.cgi?ctype=html&id=111621
@@ -12,7 +12,7 @@ class Cscope <Formula
 
   def install
     system "./configure", "--prefix=#{prefix}",
-                          "--mandir='#{man}'"
+                          "--mandir=#{man}"
     system "make install"
   end
 end
