@@ -6,7 +6,6 @@ class Aspell <Formula
   md5 'bc80f0198773d5c05086522be67334eb'
 
   def install
-    ENV.gcc_4_2
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
