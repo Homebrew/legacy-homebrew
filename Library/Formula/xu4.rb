@@ -7,24 +7,27 @@ class Xu4 <Formula
   
   depends_on 'sdl'
   depends_on 'sdl_mixer'
+  
+  aka 'ultima4'
 
   def patches
     DATA
   end
 
   def install
+    # Get the SDL prefix so we can copy the ObjC main files.
+    sdl_libexec = Formula.factory('sdl').libexec
+
     ENV.libpng
     
-    # Download the resource zips
-    system "curl http://downloads.sourceforge.net/project/xu4/Ultima%20IV%20for%20DOS/1.01/ultima4-1.01.zip -O"
-    system "curl http://downloads.sourceforge.net/project/xu4/Ultima%204%20VGA%20Upgrade/1.3/u4upgrad.zip -O"
+    ultima_zips = [ 
+      "http://downloads.sourceforge.net/project/xu4/Ultima%20IV%20for%20DOS/1.01/ultima4-1.01.zip",
+      "http://downloads.sourceforge.net/project/xu4/Ultima%204%20VGA%20Upgrade/1.3/u4upgrad.zip"]
+    
+    ultima_zips.each { |f| curl f, "-O" }
     
     Dir.chdir 'src' do
-      # Get the SDL prefix...
-      sdl_prefix=(`sdl-config --prefix`).strip
-
-      # ...so we can copy the ObjC main files.
-      `cp -R #{sdl_prefix}/libexec/* macosx`
+      `cp -R #{sdl_libexec}/* macosx`
       
       inreplace "Makefile.macosx" do |s|
         s.change_make_var! "WHICH_FRAMEWORK", MACOS_VERSION
@@ -37,13 +40,12 @@ class Xu4 <Formula
       system "make -f Makefile.macosx"
       system "make -f Makefile.macosx install"
       
-      # Move the completed app bundle
-      libexec.install "xu4.app"
+      prefix.install "xu4.app"
     end
   end
   
   def caveats
-    "xu4.app installed to #{libexec}"
+    "xu4.app installed to #{prefix}"
   end
 end
 
@@ -93,4 +95,3 @@ index 4be9444..de85e99 100644
  INSTALL=install
  
  OBJS=macosx/SDLMain.o macosx/osxinit.o macosx/osxerror.o
->>>>>>> eade584... Updated formula for xu4 (Ultima 4 engine)
