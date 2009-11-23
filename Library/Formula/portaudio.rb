@@ -12,9 +12,7 @@ class Portaudio <Formula
 
     # remove arch flags else we get errors like:
     #   lipo: can't figure out the architecture type
-    ['-arch x86_64', '-arch ppc64', '-arch i386', '-arch ppc'].each do |arch|
-      inreplace "Makefile", arch, ""
-    end
+    inreplace "Makefile", /-arch (i386|x86_64|ppc|ppc64)/, ""
 
     system "make install"
   end
