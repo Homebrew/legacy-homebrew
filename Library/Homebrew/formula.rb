@@ -39,9 +39,7 @@ class Formulary
   # Returns all formula names as strings, with or without aliases
   def self.names with_aliases=false
     everything = (HOMEBREW_REPOSITORY+'Library/Formula').children.map{|f| f.basename('.rb').to_s }
-    if with_aliases
-      everything.push *Formulary.get_aliases.keys
-    end
+    everything.push *Formulary.get_aliases.keys if with_aliases
     everything.sort
   end
 
@@ -115,7 +113,6 @@ class Formula
     validate_variable :version if @version
     
     set_instance_variable 'homepage'
-#    raise if @homepage.nil? # not a good idea while we have eg GitManpages!
 
     CHECKSUM_TYPES.each do |type|
       set_instance_variable type
@@ -198,7 +195,7 @@ class Formula
   # redefining skip_clean? in formulas is now deprecated
   def skip_clean? path
     to_check = path.relative_path_from(prefix).to_s
-    self.class.skip_clean_paths.include?(to_check)
+    self.class.skip_clean_paths.include? to_check
   end
 
   # yields self with current working directory set to the uncompressed tarball
@@ -446,7 +443,7 @@ private
   end
 
   def set_instance_variable(type)
-    if !instance_variable_defined?("@#{type}")
+    unless instance_variable_defined? "@#{type}"
       class_value = self.class.send(type)
       instance_variable_set("@#{type}", class_value) if class_value
     end
@@ -479,10 +476,7 @@ private
     
     def aka *args
       @aliases ||= []
-
-      args.each do |item|
-        @aliases << item.to_s
-      end
+      args.each { |item| @aliases << item.to_s }
     end
 
     def depends_on name, *args
