@@ -275,7 +275,7 @@ begin
       checked = {}
       to_check = [name]
 
-      while ! to_check.empty?
+      until to_check.empty?
         item = to_check.pop
         checked[item] = true
         
