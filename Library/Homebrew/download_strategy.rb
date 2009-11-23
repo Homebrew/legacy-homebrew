@@ -220,7 +220,12 @@ class MercurialDownloadStrategy <AbstractDownloadStrategy
     url=@url.sub(%r[^hg://], '')
 
     unless @clone.exist?
-      safe_system 'hg', 'clone', url, @clone
+      checkout_args = []
+      if (@spec == :revision) and @ref
+        checkout_args << '-r' << @ref
+      end
+      checkout_args << url << @clone
+      safe_system 'hg', 'clone', *checkout_args
     else
       # TODO hg pull?
       puts "Repository already cloned"
