@@ -1,9 +1,9 @@
 require 'formula'
 
 class Boost <Formula
-  homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.40.0/boost_1_40_0.tar.bz2'
-  md5 'ec3875caeac8c52c7c129802a8483bd7'
+  @homepage='http://www.boost.org'
+  @url='http://downloads.sourceforge.net/project/boost/boost/1.41.0/boost_1_41_0.tar.bz2'
+  @md5='8bb65e133907db727a2a825c5400d0a6'
 
   def patches
     { :p2 => DATA }
