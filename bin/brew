@@ -294,7 +294,7 @@ begin
       end
     end
 
-  when 'pull', 'push', 'checkout', 'branch'
+  when 'branch', 'checkout', 'pull', 'push', 'reset'
     onoe "Unknown command: #{arg} (did you mean 'git #{arg}'?)"
     
   else
