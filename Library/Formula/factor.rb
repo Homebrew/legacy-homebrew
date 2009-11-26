@@ -10,7 +10,7 @@ class Factor <Formula
 
   def install
     system "make"
-    system "curl http://factorcode.org/images/latest/boot.unix-x86.64.image -O"
+    curl "http://factorcode.org/images/latest/boot.unix-x86.64.image", "-O"
     system "./factor -i=boot.unix-x86.64.image"
     libexec.install "Factor.app"
     libexec.install "factor.image"
