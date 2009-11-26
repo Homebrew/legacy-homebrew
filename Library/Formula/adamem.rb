@@ -19,10 +19,8 @@ END
       system "make -f Makefile.osx dist"
     end
     
-    # Put applications and ROMs in libexec
     libexec.install Dir["dist/*"]
   
-    # Put shim scripts in bin
     (bin+'adamem').write startup_script('adamem')
     (bin+'cvem').write startup_script('cvem')
   end
