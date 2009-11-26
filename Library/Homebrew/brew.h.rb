@@ -47,6 +47,9 @@ Mercurial can be install thusly:
   end
 end
 
+DEFAULT_USER = 'mxcl'
+DEFAULT_BRANCH = 'master'
+
 def __make url, name
   require 'formula'
 
@@ -152,25 +155,38 @@ ENV.libxml2 in your formula's install function.
   __make url, name
 end
 
+def github_info name
+  formula_name = Formula.path(name).basename
+  user = ''
+  branch = ''
+
+  if system "/usr/bin/which -s git"
+    user=`git config --global github.user`.chomp
+    all_branches = `git branch 2>/dev/null`
+     /^\*\s*(.*)/.match all_branches
+    branch = ($1 || '').chomp
+  end
+  
+  user = DEFAULT_USER if user.empty?
+  branch = DEFAULT_BRANCH if user.empty?
+
+  history="http://github.com/#{user}/homebrew/commits/#{branch}/Library/Formula/#{formula_name}"
+  exec 'open', history
+end
 
 def info name
   require 'formula'
 
-  user=''
-  user=`git config --global github.user`.chomp if system "/usr/bin/which -s git"
-  user='mxcl' if user.empty?
-  # FIXME it would be nice if we didn't assume the default branch is master
-  history="http://github.com/#{user}/homebrew/commits/master/Library/Formula/#{Formula.path(name).basename}"
-
-  exec 'open', history if ARGV.flag? '--github'
+  if ARGV.flag? '--github'
+    github_info name
+    return
+  end
 
   f=Formula.factory name
   puts "#{f.name} #{f.version}"
   puts f.homepage
 
-  if not f.deps.empty?
-    puts "Depends on: #{f.deps.join(', ')}"
-  end
+  puts "Depends on: #{f.deps.join(', ')}" unless f.deps.empty?
 
   if f.prefix.parent.directory?
     kids=f.prefix.parent.children
@@ -189,7 +205,7 @@ def info name
     puts
   end
 
-  puts history
+  puts history if history
 
 rescue FormulaUnavailableError
   # check for DIY installation
