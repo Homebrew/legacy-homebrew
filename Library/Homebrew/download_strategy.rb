@@ -97,15 +97,6 @@ private
   end
 end
 
-class HttpDownloadStrategy <CurlDownloadStrategy
-  def initialize url, name, version, specs
-    opoo "HttpDownloadStrategy is deprecated"
-    puts "Please use CurlDownloadStrategy in future"
-    puts "HttpDownloadStrategy will be removed in version 0.5"
-    super url, name, version, specs
-  end
-end
-
 # Use this strategy to download but not unzip a file.
 # Useful for installing jars.
 class NoUnzipCurlDownloadStrategy <CurlDownloadStrategy
