@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cmake <Formula
-  @url='http://www.cmake.org/files/v2.6/cmake-2.6.4.tar.gz'
-  @md5='50f387d0436696c4a68b5512a72c9cde'
-  @homepage='http://www.cmake.org/'
+  url 'http://www.cmake.org/files/v2.8/cmake-2.8.0.tar.gz'
+  md5 '3b3679b8a6afaedc38a8c15dd7ff4fcf'
+  homepage 'http://www.cmake.org/'
 
   def install
     # xmlrpc is a stupid little library, rather than waste our users' time
