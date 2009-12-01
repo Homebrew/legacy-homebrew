@@ -8,7 +8,8 @@ Dir.getwd rescue abort "The current working directory doesn't exist, cannot proc
 HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] = File.expand_path(__FILE__)
 
 require 'pathname'
-$:.unshift((Pathname.new(__FILE__).realpath.dirname.parent+"Library"+"Homebrew").to_s)
+HOMEBREW_LIBRARY_PATH = (Pathname.new(__FILE__).realpath.dirname.parent+"Library"+"Homebrew").to_s
+$:.unshift(HOMEBREW_LIBRARY_PATH)
 require 'global'
 
 case ARGV.first
@@ -56,7 +57,7 @@ HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}
 HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}
 HOMEBREW_CACHE: #{HOMEBREW_CACHE}
 HOMEBREW_REPOSITORY: #{HOMEBREW_REPOSITORY}
-Library Path: #{$:.first}
+HOMEBREW_LIBRARY_PATH: #{HOMEBREW_LIBRARY_PATH}
 Hardware: #{cores}-core #{bits}-bit #{Hardware.intel_family}
 OS X: #{MACOS_FULL_VERSION}
 Kernel Architecture: #{kernel_arch}
