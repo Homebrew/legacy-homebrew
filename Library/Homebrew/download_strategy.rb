@@ -106,6 +106,14 @@ class HttpDownloadStrategy <CurlDownloadStrategy
   end
 end
 
+# Use this strategy to download but not unzip a file.
+# Useful for installing jars.
+class NoUnzipCurlDownloadStrategy <CurlDownloadStrategy
+  def stage
+    FileUtils.mv @dl, File.basename(@url)
+  end
+end
+
 class SubversionDownloadStrategy <AbstractDownloadStrategy
   def fetch
     ohai "Checking out #{@url}"
