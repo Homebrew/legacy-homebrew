@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gprolog <Formula
+class GnuProlog <Formula
   url 'http://www.gprolog.org/gprolog-1.3.1.tar.gz'
   homepage 'http://www.gprolog.org/'
   md5 'cbae19c31e17bcfca4b57fe35ec4aba2'
