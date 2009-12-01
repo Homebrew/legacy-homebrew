@@ -35,8 +35,8 @@ module HomebrewEnvExtension
     ENV['MAKEFLAGS']="-j#{Hardware.processor_count}"
 
     unless HOMEBREW_PREFIX.to_s == '/usr/local'
-      # /usr/local is always in the build system path so only add other paths
-      ENV['CPPFLAGS'] = "-I#{HOMEBREW_PREFIX}/include"
+      # /usr/local is already an -isystem and -L directory so we skip it
+      ENV['CPPFLAGS'] = "-isystem #{HOMEBREW_PREFIX}/include"
       ENV['LDFLAGS'] = "-L#{HOMEBREW_PREFIX}/lib"
     else
       # ignore existing build vars, thus we should have less bugs to deal with
