@@ -439,7 +439,11 @@ end
 
 def gcc_build
   `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
-  $1.to_i
+  if $1
+    $1.to_i 
+  else
+    nil
+  end
 end
 
 def llvm_build
