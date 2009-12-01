@@ -45,6 +45,7 @@ def dump_config
   bits = Hardware.bits
   cores = Hardware.cores_as_words
   llvm = llvm_build
+  gcc = gcc_build
   sha = `git rev-parse --verify HEAD`.chomp
   kernel_arch = `uname -m`.chomp
 
@@ -60,7 +61,7 @@ Hardware: #{cores}-core #{bits}-bit #{Hardware.intel_family}
 OS X: #{MACOS_FULL_VERSION}
 Kernel Architecture: #{kernel_arch}
 Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
-GCC: 4.2 build #{gcc_build}
+GCC-4.2: #{gcc ? "build #{gcc}" : "N/A"}
 LLVM: #{llvm ? "build #{llvm}" : "N/A" }
 MacPorts or Fink? #{macports_or_fink_installed?}
 EOS
