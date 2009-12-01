@@ -1,14 +1,15 @@
 require 'formula'
 
 class Memcached <Formula
-  @url='http://memcached.googlecode.com/files/memcached-1.4.0.tar.gz'
-  @homepage='http://www.danga.com/memcached/'
-  @md5='d7651ecb8bf345144cb17900d9a46c85'
+  version '1.4.4'
+  url "http://memcached.googlecode.com/files/memcached-#{version}.tar.gz"
+  homepage 'http://www.danga.com/memcached/'
+  md5 '5ca5b24de347e97ac1f48f3785b4178a'
 
   depends_on 'libevent'
 
   def install
-    system "./configure --prefix='#{prefix}'"
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
 
     (prefix+'com.danga.memcached.plist').write startup_plist
