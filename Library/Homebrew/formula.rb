@@ -22,6 +22,7 @@
 #  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 require 'download_strategy'
+require 'fileutils'
 
 class FormulaUnavailableError <RuntimeError
   def initialize name
@@ -92,6 +93,8 @@ end
 
 # Derive and define at least @url, see Library/Formula for examples
 class Formula
+  include FileUtils
+  
   # Homebrew determines the name
   def initialize name='__UNKNOWN__'
     set_instance_variable 'url'
