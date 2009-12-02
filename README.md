@@ -315,6 +315,8 @@ FAQ
 3. And it's on Twitter?  
    Yes, <http://twitter.com/machomebrew>.
 
+4. And a mailing list?  
+   Yes, <homebrew@librelist.com>, <http://librelist.com>.
 
 [wiki]: http://wiki.github.com/mxcl/homebrew
 [github-gem]: http://github.com/defunkt/github-gem
