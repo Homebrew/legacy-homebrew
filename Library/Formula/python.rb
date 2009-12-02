@@ -22,22 +22,14 @@ class Python <Formula
 
   def install
     args = ["--prefix=#{prefix}"]
-
-    if ARGV.include? '--framework'
-      args << "--enable-framework"
-    end
-    
-    if ARGV.include? '--intel'
-      args << "--with-universal-archs=intel --enable-universalsdk=/"
-    end
+    args << "--enable-framework" if ARGV.include? '--framework'
+    args << "--with-universal-archs=intel --enable-universalsdk=/" if ARGV.include? '--intel'
     
     # Speed up creation of libpython.a, backported from Unladen Swallow:
     # http://code.google.com/p/unladen-swallow/source/detail?r=856
     inreplace "Makefile.pre.in", "$(AR) cr", "$(AR) cqS"
     
     system "./configure", *args
-    
-    
     system "make"
     system "make install"
     
