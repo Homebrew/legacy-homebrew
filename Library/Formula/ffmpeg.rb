@@ -1,7 +1,7 @@
 require 'formula'
 
 class Ffmpeg <Formula
-  head 'svn://svn.ffmpeg.org/ffmpeg/trunk'
+  head 'svn://svn.ffmpeg.org/ffmpeg/trunk', :revision => 20701
   homepage 'http://ffmpeg.org/'
 
   depends_on 'x264'
