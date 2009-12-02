@@ -307,8 +307,7 @@ rescue Interrupt => e
   puts # seemingly a newline is typical
   exit 130
 rescue BuildError => e
-  ohai "Backtrace"
-  puts e.backtrace
+  puts e.backtrace[1]
   ohai "Environment"
   dump_config
   puts "Exit status: #{e.status}"
