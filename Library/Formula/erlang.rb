@@ -11,12 +11,10 @@ class ErlangHtmlDocs <Formula
 end
 
 class Erlang <Formula
-  url 'http://erlang.org/download/otp_src_R13B03.tar.gz'
   version 'R13B03'
+  url "http://erlang.org/download/otp_src_#{version}.tar.gz"
   md5 '411fcb29f0819973f71e28f6b56d9948'
   homepage 'http://www.erlang.org'
-
-  depends_on 'icu4c'
 
   def skip_clean? path
     true if path =~ %r[#{lib}/erlang/erts-(\d+\.?)+/bin/beam(\.smp)?] # breaks crypto_drv.so loading
