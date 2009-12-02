@@ -130,6 +130,8 @@ module HomebrewEnvExtension
     remove_from_cflags '-msse4.1'
     remove_from_cflags '-msse4.2'
   end
+  alias_method :gcc_4_0, :gcc_4_0_1
+
   def gcc_4_2
     # Sometimes you want to downgrade from LLVM to GCC 4.2
     self['CC']="gcc-4.2"
