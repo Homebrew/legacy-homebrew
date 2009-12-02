@@ -2,7 +2,7 @@ require 'formula'
 
 class Emacs <Formula
   if ARGV.include? "--cocoa"
-    head 'git://git.savannah.gnu.org/emacs.git'
+    head 'git://git.savannah.gnu.org/emacs.git', :tag => 'db44e1e'
   else
     url 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.1.tar.bz2'
     head 'git://git.savannah.gnu.org/emacs.git'
