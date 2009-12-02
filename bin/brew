@@ -310,7 +310,7 @@ rescue BuildError => e
   puts e.backtrace[1]
   ohai "Environment"
   dump_config
-  puts "Exit status: #{e.status}"
+  puts "Exit status: #{e.status.exitstatus}"
   onoe e
   puts PLEASE_REPORT_BUG
   exit 1
