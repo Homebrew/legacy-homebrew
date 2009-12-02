@@ -47,7 +47,7 @@ def dump_config
   cores = Hardware.cores_as_words
   llvm = llvm_build
   gcc = gcc_build
-  sha = `git rev-parse --verify HEAD`.chomp
+  sha = `cd #{HOMEBREW_REPOSITORY} && git rev-parse --verify HEAD 2> /dev/null`.chomp
   kernel_arch = `uname -m`.chomp
 
   puts <<-EOS
