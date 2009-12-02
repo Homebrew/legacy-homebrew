@@ -53,7 +53,7 @@ class FormulaInstaller
       fork do
         begin
           read.close
-          exec '/usr/bin/ruby', '-I', File.dirname(__FILE__), '-rinstall', f.path, '--', *ARGV.options
+          exec '/usr/bin/nice', '/usr/bin/ruby', '-I', File.dirname(__FILE__), '-rinstall', f.path, '--', *ARGV.options
         rescue => e
           Marshal.dump(e, write)
           write.close
