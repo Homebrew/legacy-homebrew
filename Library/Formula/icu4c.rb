@@ -9,7 +9,11 @@ class Icu4c <Formula
   def patches
     DATA
   end
-  
+
+  def keg_only?
+    "conflicts (see http://github.com/mxcl/homebrew/issues/#issue/167)."
+  end
+
   def install
     config_flags = ["--prefix=#{prefix}", "--disable-samples", "--enable-static"]
     config_flags << "--with-library-bits=64" if Hardware.is_64_bit? and MACOS_VERSION == 10.6
