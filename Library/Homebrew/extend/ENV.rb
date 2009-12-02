@@ -24,14 +24,12 @@
 
 module HomebrewEnvExtension
   # -w: keep signal to noise high
-  # -fomit-frame-pointer: we are not debugging this software, we are using it
-  SAFE_CFLAGS_FLAGS = "-w -pipe -fomit-frame-pointer"
+  SAFE_CFLAGS_FLAGS = "-w -pipe"
 
   def setup_build_environment
     # Clear CDPATH to avoid make issues that depend on changing directories
     ENV.delete('CDPATH')
 
-    ENV['MACOSX_DEPLOYMENT_TARGET']=MACOS_VERSION.to_s
     ENV['MAKEFLAGS']="-j#{Hardware.processor_count}"
 
     unless HOMEBREW_PREFIX.to_s == '/usr/local'
@@ -51,7 +49,7 @@ module HomebrewEnvExtension
 
       ENV['CC'] = "#{prefix}/usr/llvm-gcc-4.2/bin/llvm-gcc-4.2"
       ENV['CXX'] = "#{prefix}/usr/llvm-gcc-4.2/bin/llvm-g++-4.2"
-      cflags = ['-O4'] # O4 baby!
+      cflags = %w{-O4} # link time optimisation baby!
     else
       ENV['CC']="gcc-4.2"
       ENV['CXX']="g++-4.2"
@@ -94,7 +92,7 @@ module HomebrewEnvExtension
       cflags<<"-msse3"
     end
 
-    ENV['CFLAGS']=ENV['CXXFLAGS']="#{cflags*' '} #{SAFE_CFLAGS_FLAGS} -mmacosx-version-min=#{MACOS_VERSION}"
+    ENV['CFLAGS'] = ENV['CXXFLAGS'] = "#{cflags*' '} #{SAFE_CFLAGS_FLAGS}"
   end
   
   def deparallelize
@@ -104,14 +102,18 @@ module HomebrewEnvExtension
 
   def O3
     # Sometimes O4 just takes fucking forever
-    remove_from_cflags '-O4'
+    remove_from_cflags /-O./
     append_to_cflags '-O3'
   end
   def O2
     # Sometimes O3 doesn't work or produces bad binaries
-    remove_from_cflags '-O4'
-    remove_from_cflags '-O3'
+    remove_from_cflags /-O./
     append_to_cflags '-O2'
+  end
+  def Os
+    # Sometimes you just want a small one
+    remove_from_cflags /-O./
+    append_to_cflags '-Os'
   end
 
   def gcc_4_0_1
@@ -157,6 +159,7 @@ module HomebrewEnvExtension
   def no_optimization
     self['CFLAGS']=self['CXXFLAGS'] = SAFE_CFLAGS_FLAGS
   end
+
   def libxml2
     append_to_cflags ' -I/usr/include/libxml2'
   end
@@ -195,11 +198,7 @@ module HomebrewEnvExtension
   # i386 and x86_64 only, no PPC
   def universal_binary
     append_to_cflags '-arch i386 -arch x86_64'
-    if self['CFLAGS'].include? '-O4'
-      # O4 seems to cause the build to fail
-      remove_from_cflags '-O4'
-      append_to_cflags '-O3'
-    end
+    ENV.O3 if self['CFLAGS'].include? '-O4' # O4 seems to cause the build to fail
   end
 
   def prepend key, value, separator = ' '
