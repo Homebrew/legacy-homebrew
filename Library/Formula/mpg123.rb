@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mpg123 <Formula
-  url 'http://downloads.sourceforge.net/project/mpg123/mpg123/1.9.1/mpg123-1.9.1.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/mpg123/mpg123/1.9.2/mpg123-1.9.2.tar.bz2'
   homepage 'http://www.mpg123.de/'
-  md5 '39aa4407b53fa8c86f7d963bfe0702c9'
+  md5 '5313b1bcc0274b4d7c394397c205bb20'
 
   def skip_clean? path
     # mpg123 can't find its plugins if there are no la files
