@@ -88,7 +88,7 @@ end
 def safe_system cmd, *args
   puts "#{cmd} #{args*' '}" if ARGV.verbose?
   fork do
-    exec(cmd, *args) rescue nil
+    exec(cmd, *args.map(&:to_s)) rescue nil
     exit! 1 # never gets here unless exec failed
   end
   Process.wait
