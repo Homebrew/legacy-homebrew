@@ -107,9 +107,12 @@ Why you might not want to use Homebrew:
 
 2.  Dependency resolution and updates are basic or not working yet.
 
-I know I've made it sound so awesome you can hardly wait to rip MacPorts out
-and embrace the fresh, hoppy taste of Homebrew, but I should point out that it
-is really new and still under heavy development. Thanks!
+3.  We don't support PowerPC or OS X less than Tiger (though you could always
+    maintain your own fork for such things if you like…)
+
+I know I've made it sound so awesome you can hardly wait to embrace the fresh,
+hoppy taste of Homebrew, but I should point out that it is really new and
+still under heavy development. Thanks!
 
 Max Howell -- <http://twitter.com/mxcl>
 
