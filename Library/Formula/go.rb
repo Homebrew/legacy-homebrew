@@ -4,6 +4,8 @@ class Go <Formula
   head 'https://go.googlecode.com/hg/'
   homepage 'http://golang.org'
 
+  aka 'google-go'
+
   skip_clean 'bin'
 
   def download_strategy

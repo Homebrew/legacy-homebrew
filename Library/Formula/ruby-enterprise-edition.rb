@@ -7,6 +7,8 @@ class RubyEnterpriseEdition <Formula
 
   skip_clean 'bin/ruby'
 
+  aka :ree
+
   def install
     ENV.gcc_4_2 # fails with LLVM
     system "./installer --auto #{prefix} --no-tcmalloc"
