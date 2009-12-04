@@ -111,16 +111,9 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
     ohai "Checking out #{@url}"
     @co=HOMEBREW_CACHE+@unique_token
     unless @co.exist?
-      checkout_args = ['/usr/bin/svn', 'checkout', @url]
-      
-      if (@spec == :revision) and @ref
-        checkout_args << '-r'
-        checkout_args << @ref
-      end
-
-      checkout_args << @co
-
-      safe_system *checkout_args
+      args = [svn, 'checkout', @url, @co]
+      args << '-q' unless ARGV.verbose?
+      safe_system *args
     else
       # TODO svn up?
       puts "Repository already checked out"
@@ -128,7 +121,10 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
   end
   def stage
     # Force the export, since the target directory will already exist
-    safe_system '/usr/bin/svn', 'export', '--force', @co, Dir.pwd
+    args = [svn, 'export', '--force', @co, Dir.pwd]
+    args << '-r' << @ref if @spec == :revision and @ref
+    args << '-q' unless ARGV.verbose?
+    safe_system *args
   end
 end
 
