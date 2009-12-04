@@ -7,6 +7,8 @@ class Postgresql <Formula
 
   depends_on 'readline'
 
+  aka 'postgres'
+
   def install
     configure_args = [
         "--enable-thread-safety",
