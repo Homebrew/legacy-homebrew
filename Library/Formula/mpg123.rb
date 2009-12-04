@@ -13,19 +13,21 @@ class Mpg123 <Formula
   def install
     args = ["--disable-debug", "--disable-dependency-tracking",
             "--with-optimization=4",
-            "--with-cpu=sse_alone",
             "--prefix=#{prefix}",
             "--with-audio=coreaudio",
             "--with-default-audio=coreaudio"]
 
-    # This option causes compilation failure on 10.5 nehalem MacPro.
-    # args << "--with-cpu=x86-64" if Hardware.is_64_bit?
+    if Hardware.is_64_bit?
+      # adamv got compile failure for these conditions
+      args << "--with-cpu=x86-64" unless MACOS_VERSION == 10.5 and Hardware.intel_family == :nehalem
+    else
+      # there are no Intel Mac computers without SSE
+      args << "--with-cpu=sse_alone"
+    end
 
     system "./configure", *args
     
-    # ./configure incorrectly detects 10.5 as 10.4
-    # Cut that crap out.
-    
+    # ./configure incorrectly detects 10.5 as 10.4. Cut that crap out.
     ['', 'src/', 'src/output/', 'src/libmpg123/'].each do |path|
       inreplace "#{path}Makefile", # CFLAGS
         "-mmacosx-version-min=10.4 -isysroot /Developer/SDKs/MacOSX10.4u.sdk", ""
