@@ -11,8 +11,16 @@ class Mplayer <Formula
 
   def install
     ENV.gcc_4_2   # llvm chokes on labels within mlp inline asm
-    system "./configure --prefix='#{prefix}'"
+    system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
+  end
+end
+
+if MACOS_VERSION < 10.6
+  class SubversionDownloadStrategy
+    def svn
+      Formula.factory('subversion').bin+'svn'
+    end
   end
 end

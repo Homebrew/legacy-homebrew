@@ -126,6 +126,11 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
     args << '-q' unless ARGV.verbose?
     safe_system *args
   end
+
+  # currently only used by mplayer.rb
+  def svn
+    '/usr/bin/svn'
+  end
 end
 
 class GitDownloadStrategy <AbstractDownloadStrategy
