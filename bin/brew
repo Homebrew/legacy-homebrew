@@ -307,7 +307,8 @@ rescue Interrupt => e
   puts # seemingly a newline is typical
   exit 130
 rescue BuildError => e
-  puts e.backtrace[1]
+  e.backtrace[1] =~ %r{Library/Formula/(.+)\.rb:(\d+)}
+  puts "http://github.com/mxcl/homebrew/blob/master/Library/Formula/#{$1}.rb#L#{$2}"
   ohai "Environment"
   dump_config
   puts "Exit status: #{e.status.exitstatus}"
