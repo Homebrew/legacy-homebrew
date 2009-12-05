@@ -100,6 +100,8 @@ begin
       end
 
     when 'search', '-S'
+      check_for_blacklisted_formula(ARGV.named)
+
       require "formula"
       formulae = Formulary.names with_aliases=true
 
@@ -199,6 +201,8 @@ begin
       end
 
   when 'install'
+    check_for_blacklisted_formula(ARGV.named)
+    
     require 'formula_installer'
     require 'hardware'
 
