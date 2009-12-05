@@ -24,6 +24,27 @@
 FORMULA_META_FILES = %w[README ChangeLog COPYING LICENSE COPYRIGHT AUTHORS]
 PLEASE_REPORT_BUG = "#{Tty.white}Please report this bug at #{Tty.em}http://github.com/mxcl/homebrew/issues#{Tty.reset}"
 
+def check_for_blacklisted_formula names
+  return if ARGV.force?
+
+  names.each do |name|
+    case name
+    when 'bazaar', 'bzr' then abort <<-EOS
+Bazaar can be installed thusly:
+
+    brew install pip && pip install bzr==2.0.1
+
+    EOS
+    when 'mercurial', 'hg' then abort <<-EOS
+Mercurial can be install thusly:
+
+    brew install pip && pip install mercurial
+
+    EOS
+    end
+  end
+end
+
 def __make url, name
   require 'formula'
 
