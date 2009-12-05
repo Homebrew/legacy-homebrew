@@ -88,7 +88,7 @@ Here's why you may prefer Homebrew to the alternatives:
 12. Homebrew has a beer theme  
     Beer goggles will help you to evangelise Homebrew more effectively.
 
-13. Homebrew can help hook you up  
+13. Homebrew can help you hook up  
     There's no conclusive scientific evidence as yet, but I firmly believe
     it's just a matter of time and statistics.
 
