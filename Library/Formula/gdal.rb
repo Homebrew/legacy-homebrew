@@ -6,7 +6,6 @@ class Gdal <Formula
   md5 'a8aade344a29ae4a92a0f17cc33f561a'
 
   depends_on 'libtiff'
-  depends_on 'libpng'
   depends_on 'giflib'
   depends_on 'proj'
   depends_on 'geos'
@@ -15,16 +14,9 @@ class Gdal <Formula
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",
-                          "--mandir=#{prefix}/share/man",
                           "--with-pthreads",
                           "--with-local=#{prefix}",
-                          "--with-libz=#{prefix}",
-                          #"--with-png=#{prefix}",
-                          "--with-libtiff=#{prefix}",
-                          #"--with-geotiff=#{prefix}",
-                          "--with-jpeg=#{prefix}",
-                          "--with-gif=#{prefix}",
-                          "--with-static-proj4=#{prefix}",
+                          "--with-png=/usr/X11",
                           "--without-pg",
                           "--without-grass",
                           "--without-libgrass",
@@ -64,7 +56,6 @@ class Gdal <Formula
                           #"--without-python",
                           "--without-ogpython",
                           "--without-xerces"
-
     system "make"
     system "make install"
   end
