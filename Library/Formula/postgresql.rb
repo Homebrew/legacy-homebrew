@@ -10,6 +10,8 @@ class Postgresql <Formula
   aka 'postgres'
 
   def install
+    ENV.libxml2 # wouldn't compile for justinlilly otherwise
+    
     configure_args = [
         "--enable-thread-safety",
         "--with-bonjour",
