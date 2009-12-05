@@ -19,30 +19,29 @@ Here's why you may prefer Homebrew to the alternatives:
     Packages are installed into their own prefix (eg. /usr/local/Cellar/wget)
     and then symlinked into the Homebrew prefix (eg. /usr/local).
 
-    This way packages can be managed with existing command line tools. You can
+    This way the filesystem is the package database and packages can be
+    managed with existing command line tools. For example, you can
     uninstall with rm -rf, list with find, query with du. It also means you
-    can easily install multiple versions of software or libraries and switch
+    can install multiple versions of software or libraries and switch
     on demand.
 
-    Of course you don't have to do anything by hand, we also provide a
+    Of course, you don't have to do anything by hand, we also provide a
     convenient and fully-featured four-letter tool called brew.
 
 4.  You don't have to sudo  
-    It's up to you. We recommend not--see the relevant later section.
+    It's up to you.
 
-5.  Easy package creation  
-    Packages are just Ruby scripts. Generate a template with:
+5.  Create new package descriptions in seconds  
+    Package descriptions (formula) are simple Ruby scripts. Generate a
+    template with:
 
         brew create http://foo.com/tarball-0.8.9.tgz
-
-    Homebrew will automatically open it for you to tweak with TextMate or
-    $EDITOR.
 
     Or edit an existing formula:
 
         brew edit foo
 
-6.  DIY package installation  
+6.  Package descriptions not required  
     MacPorts doesn't support the beta version? Need an older version? Need
     custom compile flags? The Homebrew tool-chain is carefully segregated so
     you can build stuff by hand but still end up with package management.
@@ -59,9 +58,6 @@ Here's why you may prefer Homebrew to the alternatives:
         ./configure `brew diy`
         cmake . `brew diy`
 
-    This means you can also install multiple versions of the same package and
-    switch on demand.
-
 7.  Optimization  
     We optimize for (Snow) Leopard Intel, binaries are stripped, compile flags
     are tuned to your exact Mac model. Slow software sucks.
@@ -74,13 +70,12 @@ Here's why you may prefer Homebrew to the alternatives:
 
 9.  No duplication  
     MacPorts is an autarky -- you get a duplicate copy of zlib, OpenSSL,
-    Python, etc. Homebrew isn't, and as a result everything you install has
-    less dependencies and builds significantly faster.
+    Python, etc. Homebrew uses what is already there, and consequently,
+    most stuff has zero dependencies and builds faster.
 
-    Homebrew can integrate with Ruby gems, CPAN and Python EasyInstall. These
-    tools exist already and do the job great. We don't duplicate packaging 
-    effort, we just improve on it by making these tools install with more
-    management options.
+    We resist packaging stuff that is already packaged. So we have a [wiki][]
+    page that describes how best to use RubyGems, Pip (or easy_install) and
+    CPAN with OS X and Homebrew.
 
 10. Fork with Git  
     The formula are all on git, so just fork to add new packages, or add extra
@@ -97,10 +92,12 @@ Here's why you may prefer Homebrew to the alternatives:
     There's no conclusive scientific evidence as yet, but I firmly believe
     it's just a matter of time and statistics.
 
-Why you might not want to use Homebrew:
+I know I've made it sound so awesome you can hardly wait to embrace the fresh,
+hoppy taste of Homebrew, but I should point out that it is really new and
+still under heavy development. Also:
 
 1.  It's a little more hands-on than the competition. For example, we don't
-    set up postgresql for you after installing it, but we do provide
+    set up PostgreSQL for you after installing it, but we do provide
     instructions. This isn't apathy, it's by design -- Homebrew doesn't make
     assumptions about how you want your software to run. You have to have some
     knowledge or be willing to learn to use Homebrew for some tasks.
@@ -110,20 +107,13 @@ Why you might not want to use Homebrew:
 3.  We don't support PowerPC or OS X less than Tiger (though you could always
     maintain your own fork for such things if you like…)
 
-I know I've made it sound so awesome you can hardly wait to embrace the fresh,
-hoppy taste of Homebrew, but I should point out that it is really new and
-still under heavy development. Thanks!
-
 Max Howell -- <http://twitter.com/mxcl>
 
 
 Installation
 ============
-Homebrew is pretty flexible in how it can be installed and used. What follows
-are probably the simplest methods.
+You can install Homebrew anywhere:
 
-Download
---------
     mkdir homebrew
     curl -L http://github.com/mxcl/homebrew/tarball/master | tar xz --strip 1 -C homebrew
 
@@ -135,74 +125,59 @@ Homebrew can already be used, try it:
 Notice how Homebrew installed Git to homebrew/bin/git. Homebrew never touches
 files outside its prefix.
 
-Installing to /usr/local
-------------------------
-We think /usr/local is the best location for Homebrew because:
-
+We recommend installing to /usr/local because:
+----------------------------------------------
 1. It's already in your PATH
-2. Other software checks /usr/local for stuff (eg. RubyGems)
-3. Building your own software is easier when dependencies are in /usr/local
+2. It makes it easy to install stuff like Ruby Gems
+
+Build tools all look to /usr/local for library dependencies they need. Thus
+it should be much less troublesome to build your own gems, etc.
 
 But… don't sudo!
 ----------------
-Well clearly you can sudo if you like. Homebrew is all about you doing it your
-way. But the Homebrew recommendation is: don't sudo!
-
-On OS X, this requires your user to be in the admin group, but it doesn't
-require sudo:
+Homebrew can be used with or without sudo, but, OS X was designed to
+minimise sudo use, you only need it occasionally. For example, as long as your
+user is in the admin group, this just works:
 
     cpan -i MP3::Info
 
-OS X is designed to minimise sudo use, you only need it for real root-level
-stuff. You know your /System and /usr are as clean and pure as the day you
-bought your Mac because you didn't sudo. Sleep better at night!
-
-If you are already the kind of guy who installed TextMate by dragging and
-dropping it to /Applications, then you won't mind if libflac and pngcrush are
-installed under your user privileges too. Lets face it; Homebrew is not
-installing anything system-critical. Apple already did that.
-
-Let this be the last sudo you do for quite some time:
+Using sudo all the time is annoying, but far worse — it conditions you to type
+in your root password without thinking about it. Homebrew compliments OS X
+so you are unlikely to install anything that really needs to be chown:root.
+Let this be your last sudo for some time:
 
     sudo chown -R `whoami` /usr/local
 
-_NOTE_: Performing the above command *may* break some programs that are already
-installed in /usr/local. One specific example is mysql. Fixing mysql may be
-as simple as:
+_NOTE_: If you already installed, eg. MySQL into /usr/local then the recursive
+chown _may_ break it. Fixing MySQL should be as simple as:
 
-    sudo chown -R mysql:mysql `brew --prefix`/mysql
-
-But! I already have a bunch of junk in /usr/local
--------------------------------------------------
-Homebrew can co-exist with any software already installed in its prefix.
+    sudo chown -R mysql:mysql /usr/local/mysql
 
 Installing to /usr/local
 ------------------------
     curl -L http://github.com/mxcl/homebrew/tarball/master | tar xz --strip 1 -C /usr/local
 
+Homebrew can co-exist with any software already installed in its prefix.
+
 You may prefer this third party [installer script][sh] or [.pkg installer][pkg].
 
-Using git to install
---------------------
-If you already have git installed then this is the easiest way to install:
+Updating
+--------
+To update you need git (brew install git). The following will soon be part of
+the brew update command, it merges with whatever is already there:
 
     cd /usr/local
     git init
     git remote add origin git://github.com/mxcl/homebrew.git
     git pull origin master
 
+Note the above steps can also be used to install Homebrew if you prefer.
+
 Building Stuff
 --------------
 Almost everything Homebrew installs is written in C, so you need Xcode:
 
 <http://developer.apple.com/technology/xcode.html>
-
-Many build scripts assume MacPorts or Fink on OS X. Which isn't too much of a
-problem until you uninstall them and stuff you built with Homebrew breaks. So
-uninstall them (if you prefer, renaming their root folders is sufficient).
-
-<http://trac.macports.org/wiki/FAQ#uninstall>  
-<http://www.finkproject.org/faq/usage-fink.php#removing>
 
 
 Uninstallation
@@ -257,47 +232,19 @@ Show expensive packages:
 
     du -md1 /usr/local/Cellar
 
-A more thorough exploration of the brew command is available at the [Homebrew
-wiki][wiki].
-
-
-RubyGems, Python EasyInstall and CPAN
-=====================================
-These tools are already designed to make it easy to install Ruby, Python and
-Perl stuff. So we resist the temptation to duplicate this packaging effort and
-thus avoid accepting such formula into the main tree (although sometimes it is
-necessary or prudent).
-
-However it's a nice option to get these other packaging systems to install
-into Homebrew and there are work-in-progress instructions for how to do this
-on the [wiki][].
-
 
 Contributing New Formulae
 =========================
-Formulae are simple Ruby scripts. Generate a formula with most bits filled-in:
+Create a formula thusly.
 
     brew create http://example.com/foo-1.2.1.tar.bz2
 
-Check it over and try to install it:
+Homebrew automatically opened Library/Formula/foo.rb in your $EDITOR. You can
+now install it:
 
-    brew install foo
+    brew install git
 
-Check the [wiki][] for more detailed information and tips for contribution.
-
-If you want your formula to become part of this distribution, fork
-<http://github.com/mxcl/homebrew> and send mxcl a pull-request. Alternatively
-maintain your own distribution. Maybe you want to support Tiger? Or use
-special compile flags? Go ahead that's what git is all about! :)
-
-The easiest way to fork is with the [github-gem][], so potentially this is
-your workflow:
-
-    brew create http://example.com/foo-1.2.1.tar.bz2
-    git commit Library/Formula/foo.rb
-    github fork
-    git push myname master
-    github pull-request
+Now check the [wiki][] for more information.
 
 
 Licensing
@@ -306,22 +253,8 @@ Homebrew is mostly BSD licensed although you should refer to each file to
 confirm. Individual formulae are licensed according to their authors' wishes.
 
 
-FAQ
-===
-1. Can Homebrew replace MacPorts?  
-   Maybe. But remember, Homebrew is still incomplete. Be forgiving in your
-   approach and be willing to fork and contribute fixes. Thanks!
+The Wiki
+========
+The [wiki][] has almost excessive detail on most topics.
 
-2. Is there an IRC channel?  
-   Yes, <irc://irc.freenode.net#machomebrew>.
-   
-3. And it's on Twitter?  
-   Yes, <http://twitter.com/machomebrew>.
-
-4. And a mailing list?  
-   Yes, <homebrew@librelist.com>, <http://librelist.com>.
-
-[wiki]: http://wiki.github.com/mxcl/homebrew
-[github-gem]: http://github.com/defunkt/github-gem
-[sh]: http://gist.github.com/203926
-[pkg]: http://demaree.me/x/7
+[wiki]:http://wiki.github.com/mxcl/homebrew
