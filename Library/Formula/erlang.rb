@@ -16,10 +16,14 @@ class Erlang <Formula
   md5 '411fcb29f0819973f71e28f6b56d9948'
   homepage 'http://www.erlang.org'
 
-  def skip_clean? path
-    true if path =~ %r[#{lib}/erlang/erts-(\d+\.?)+/bin/beam(\.smp)?] # breaks crypto_drv.so loading
-    true if path =~ %r[#{lib}/erlang/lib] # crypto_drv.so etc. can't be stripped as plugins
-  end
+  # we can't strip the beam executables or any plugins
+  # there isn't really anything else worth stripping and it takes a really
+  # long time to run `file` over everything in lib because there is almost
+  # 4000 files (and really erlang guys! what's with that?! Most of them should
+  # be in share/erlang!)
+  skip_clean 'lib'
+  # may as well skip this too, everything is just shell scripts
+  skip_clean 'bin'
 
   def patches
     { :p0 => ["patch-erts_emulator_Makefile.in",
