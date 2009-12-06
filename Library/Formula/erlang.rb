@@ -1,13 +1,8 @@
 require 'formula'
 
 class ErlangManuals <Formula
-  url 'http://www.erlang.org/download/otp_doc_man_R13B02-1.tar.gz'
-  md5 'b5f7b20faa049a8b6a753fc7a462d02d'
-end
-
-class ErlangHtmlDocs <Formula
-  url 'http://erlang.org/download/otp_doc_html_R13B02-1.tar.gz'
-  md5 'd48da533b49f7b32c94032f2a53c0073'
+  url 'http://www.erlang.org/download/otp_doc_man_R13B03.tar.gz'
+  md5 '1fe80b110061ef73614824fb06d4d6eb'
 end
 
 class Erlang <Formula
@@ -68,6 +63,5 @@ class Erlang <Formula
     system "make install"
 
     ErlangManuals.new.brew { man.install Dir['man/*'] }
-    #ErlangHtmlDocs.new.brew { doc.install Dir['*'] }
   end
 end
