@@ -1,4 +1,4 @@
-require 'Formula'
+require 'formula'
 
 class FreeimageHttpDownloadStrategy <CurlDownloadStrategy
   def stage
