@@ -64,4 +64,8 @@ class Erlang <Formula
 
     ErlangManuals.new.brew { man.install Dir['man/*'] }
   end
+
+  def test
+    "erl -noshell -eval 'crypto:start().' -s init stop"
+  end
 end
