@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class GnuGo <Formula
   @url='http://ftp.gnu.org/gnu/gnugo/gnugo-3.8.tar.gz'

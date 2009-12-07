@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Fastri <Formula
   @homepage='http://eigenclass.org/hiki/fastri'

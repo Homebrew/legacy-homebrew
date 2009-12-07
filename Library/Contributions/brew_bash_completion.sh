@@ -13,7 +13,7 @@ _brew_to_completion()
     prev="${COMP_WORDS[COMP_CWORD-1]}"
     
     # We only complete unabbreviated commands...
-    actions="configure create edit generate homepage info install list link options prune remove search unlink update"
+    actions="configure create edit generate homepage info install list link options prune remove search unlink update uses"
     
     # Subcommand list
     if [[ ( ${COMP_CWORD} -eq 1 ) && ( ${COMP_WORDS[0]} == brew )  ]] ; then
@@ -26,7 +26,7 @@ _brew_to_completion()
         
         case ${prev} in
             # Commands that take a formula...
-            edit|install|home|homepage)
+            edit|install|home|homepage|uses)
                 formulae=`ls ${brew_base}/Library/Formula/ | sed "s/\.rb//g"`
                 COMPREPLY=( $(compgen -W "${formulae}" -- ${cur}) )
                 return 0

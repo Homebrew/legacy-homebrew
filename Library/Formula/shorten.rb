@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Shorten <Formula
   @url='http://www.etree.org/shnutils/shorten/dist/src/shorten-3.6.1.tar.gz'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Taglib <Formula
   @url='http://developer.kde.org/~wheeler/files/src/taglib-1.6.tar.gz'

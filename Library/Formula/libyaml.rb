@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Libyaml <Formula
   url 'http://pyyaml.org/download/libyaml/yaml-0.1.3.tar.gz'

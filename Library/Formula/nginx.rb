@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Nginx < Formula
   @url='http://sysoev.ru/nginx/nginx-0.7.62.tar.gz'

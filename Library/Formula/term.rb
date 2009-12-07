@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Term <ScriptFileFormula
   @url='http://github.com/liyanage/macosx-shell-scripts/raw/e29f7eaa1eb13d78056dec85dc517626ab1d93e3/term'

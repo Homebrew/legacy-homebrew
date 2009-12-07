@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 ALL_CPP=<<-EOS
 #include "errhnd.cpp"

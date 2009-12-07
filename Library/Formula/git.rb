@@ -1,16 +1,20 @@
-require 'brewkit'
+require 'formula'
 
 class GitManuals <Formula
-  url 'http://kernel.org/pub/software/scm/git/git-manpages-1.6.4.4.tar.bz2'
-  md5 '5ee880f408f1299d541c273fb7e3c1db'
+  url 'http://kernel.org/pub/software/scm/git/git-manpages-1.6.5.3.tar.bz2'
+  md5 'dc2cf85cb1f29b586a1353307093bc62'
 end
 
 class Git <Formula
-  url 'http://kernel.org/pub/software/scm/git/git-1.6.4.4.tar.bz2'
-  md5 'b150352782998ca1f84185e6af53ec26'
+  url 'http://kernel.org/pub/software/scm/git/git-1.6.5.3.tar.bz2'
+  md5 'a1dbc3da46cbf33c4367db689853c142'
   homepage 'http://git-scm.com'
 
   def install
+    # sadly, there's a bug in LLVM:
+    # http://www.mail-archive.com/llvmbugs@cs.uiuc.edu/msg03791.html
+    ENV.gcc_4_2
+
     # if these things are installed, tell git build system to not use them
     ENV['NO_FINK']='1'
     ENV['NO_DARWIN_PORTS']='1'
@@ -19,7 +23,7 @@ class Git <Formula
     system "make install"
 
     # Install the git bash completion file
-    etc.install 'contrib/completion/git-completion.bash'
+    (etc+'bash_completion.d').install 'contrib/completion/git-completion.bash'
 
     # these files are exact copies of the git binary, so like the contents
     # of libexec/git-core lets hard link them

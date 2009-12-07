@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Colordiff <Formula
   url 'http://colordiff.sourceforge.net/colordiff-1.0.9.tar.gz'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Mcrypt <Formula
   @url='ftp://mirror.internode.on.net/pub/gentoo/distfiles/libmcrypt-2.5.8.tar.gz'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Sqlite <Formula
   @url='http://www.sqlite.org/sqlite-amalgamation-3.6.17.tar.gz'

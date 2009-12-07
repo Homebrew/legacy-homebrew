@@ -156,7 +156,7 @@ begin
   end
   
   # The complete BeerEvents API :)
-  HOMEBREW_KEEP_DRY = %w{ /System /usr /etc /sbin /bin /Applications }
+  HOMEBREW_KEEP_DRY = %w{ /System /usr /etc /sbin /bin /Applications /Library }
   
   def watch_out_for_spill
     # Disable the RubyCocoa thread hook as apparently Laurent did not apply the
@@ -170,6 +170,9 @@ begin
       spill = events.map { |e| e.files }.flatten
       spill.reject! { |f| File.mtime(f) < start }
       spill.reject! { |path| path =~ /^#{HOMEBREW_PREFIX}/ }
+      # irrelevent files that change a lot
+      spill.reject! { |path| path == "/Library/Preferences/SystemConfiguration/com.apple.PowerManagement.plist-lock" }
+      spill.reject! { |path| path =~ %r{^(/System)?/Library/Caches/} }
       unless spill.empty?
         opoo "Detected installation of files outside the Homebrew prefix:"
         puts *spill

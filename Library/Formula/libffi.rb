@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Libffi <Formula
   @url='ftp://sourceware.org/pub/libffi/libffi-3.0.8.tar.gz'

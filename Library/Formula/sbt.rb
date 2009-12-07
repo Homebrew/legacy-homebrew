@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 # even though "file -b" reports this as a zip archive, it's just a binary
 class SbtHttpDownloadStrategy <CurlDownloadStrategy

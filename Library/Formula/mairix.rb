@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Mairix <Formula
   homepage 'http://www.rpcurnow.force9.co.uk/mairix/'

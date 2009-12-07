@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Intltool <Formula
   @url='http://edge.launchpad.net/intltool/trunk/0.41.0/+download/intltool-0.41.0.tar.gz'

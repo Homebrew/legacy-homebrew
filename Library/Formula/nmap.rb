@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Nmap <Formula
   @url='http://nmap.org/dist/nmap-5.00.tar.bz2'

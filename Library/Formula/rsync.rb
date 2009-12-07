@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Rsync <Formula
   url 'http://rsync.samba.org/ftp/rsync/rsync-3.0.6.tar.gz'

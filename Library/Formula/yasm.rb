@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Yasm <Formula
   @url='http://www.tortall.net/projects/yasm/releases/yasm-0.8.0.tar.gz'

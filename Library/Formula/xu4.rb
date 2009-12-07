@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Xu4 <Formula
   url 'cvs://:pserver:anonymous@xu4.cvs.sourceforge.net:/cvsroot/xu4:u4'
@@ -16,8 +16,8 @@ class Xu4 <Formula
     ENV.libpng
     
     # Download the resource zips
-    system "curl http://softlayer.dl.sourceforge.net/project/xu4/Ultima%20IV%20for%20DOS/1.01/ultima4-1.01.zip -O"
-    system "curl http://softlayer.dl.sourceforge.net/project/xu4/Ultima%204%20VGA%20Upgrade/1.3/u4upgrad.zip -O"
+    system "curl http://downloads.sourceforge.net/project/xu4/Ultima%20IV%20for%20DOS/1.01/ultima4-1.01.zip -O"
+    system "curl http://downloads.sourceforge.net/project/xu4/Ultima%204%20VGA%20Upgrade/1.3/u4upgrad.zip -O"
     
     Dir.chdir 'src' do
       # Get the SDL prefix...

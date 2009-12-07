@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Mutt <Formula
   @url='ftp://ftp.mutt.org/mutt/devel/mutt-1.5.20.tar.gz'

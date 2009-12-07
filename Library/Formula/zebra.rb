@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Zebra <Formula
   url 'http://ftp.indexdata.dk/pub/zebra/idzebra-2.0.42.tar.gz'

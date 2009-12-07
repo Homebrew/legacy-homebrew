@@ -21,21 +21,45 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 #  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+class Tty
+  class <<self
+    def blue; bold 34; end
+    def white; bold 39; end
+    def red; underline 31; end
+    def yellow; underline 33 ; end
+    def reset; escape 0; end
+    def em; underline 39; end
+    
+  private
+    def color n
+      escape "0;#{n}"
+    end
+    def bold n
+      escape "1;#{n}"
+    end
+    def underline n
+      escape "4;#{n}"
+    end
+    def escape n
+      "\033[#{n}m" if $stdout.tty?
+    end
+  end
+end
+
 # args are additional inputs to puts until a nil arg is encountered
 def ohai title, *sput
-  title = title[0, `/usr/bin/tput cols`.strip.to_i-4] unless ARGV.verbose?
-  puts "\033[0;34m==>\033[0;0;1m #{title}\033[0;0m"
+  title = title.to_s[0, `/usr/bin/tput cols`.strip.to_i-4] unless ARGV.verbose?
+  puts "#{Tty.blue}==>#{Tty.white} #{title}#{Tty.reset}"
   puts *sput unless sput.empty?
 end
 
-# shows a warning in delicious pink
 def opoo warning
-  puts "\033[1;35m==>\033[0;0;1m Warning!\033[0;0m #{warning}"
+  puts "#{Tty.red}Warning#{Tty.reset}: #{warning}"
 end
 
 def onoe error
   lines = error.to_s.split'\n'
-  puts "\033[1;31m==>\033[0;0;1m Error\033[0;0m: #{lines.shift}"
+  puts "#{Tty.red}Error#{Tty.reset}: #{lines.shift}"
   puts *lines unless lines.empty?
 end
 
@@ -46,30 +70,30 @@ def pretty_duration s
 end
 
 def interactive_shell
-  pid=fork
-  if pid.nil?
+  fork do
     # TODO make the PS1 var change pls
     #brown="\[\033[0;33m\]"
     #reset="\[\033[0m\]"
     #ENV['PS1']="Homebrew-#{HOMEBREW_VERSION} #{brown}\W#{reset}\$ "
     exec ENV['SHELL']
   end
-  Process.wait pid
-  raise SystemExit, "Aborting due to non-zero exit status" if $? != 0
+  Process.wait
+  unless $?.success?
+    puts "Aborting due to non-zero exit status"
+    exit $?
+  end
 end
 
 # Kernel.system but with exceptions
 def safe_system cmd, *args
   puts "#{cmd} #{args*' '}" if ARGV.verbose?
-  exec_success = Kernel.system cmd, *args
-  # some tools, eg. tar seem to confuse ruby and it doesn't propogate the
-  # CTRL-C interrupt to us too, so execution continues, but the exit code os
-  # still 2 so we raise our own interrupt
-  raise Interrupt, cmd if $?.termsig == 2
-  unless exec_success
-    puts "Exit code: #{$?}"
-    raise ExecutionError.new(cmd, args)
-  end 
+  fork do
+    args.collect!{|arg| arg.to_s}
+    exec(cmd, *args) rescue nil
+    exit! 1 # never gets here unless exec failed
+  end
+  Process.wait
+  raise ExecutionError.new(cmd, args, $?) unless $?.success?
 end
 
 def curl *args
@@ -121,4 +145,34 @@ def arch_for_command cmd
     end
 
     return archs
+end
+
+# replaces before with after for the file path
+def inreplace path, before, after
+  f = File.open(path, 'r')
+  o = f.read.gsub(before, after)
+  f.reopen(path, 'w').write(o)
+  f.close
+end
+
+def ignore_interrupts
+  std_trap = trap("INT") {}
+  yield
+ensure
+  trap("INT", std_trap)
+end
+
+def nostdout
+  if ARGV.verbose?
+    yield
+  else
+    begin
+      require 'stringio'
+      real_stdout = $stdout
+      $stdout = StringIO.new
+      yield
+    ensure
+      $stdout = real_stdout
+    end
+  end
 end

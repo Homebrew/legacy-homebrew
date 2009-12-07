@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Lbdb <Formula
   url 'http://www.spinnaker.de/debian/lbdb_0.36.tar.gz'

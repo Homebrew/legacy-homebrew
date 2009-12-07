@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class ModWsgi <Formula
   @url='http://modwsgi.googlecode.com/files/mod_wsgi-2.5.tar.gz'

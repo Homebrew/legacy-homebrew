@@ -21,10 +21,14 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 #  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-require 'pathname+yeast'
-require 'ARGV+yeast'
+require 'extend/pathname'
+require 'extend/ARGV'
 require 'utils'
-require 'hardware'
+
+ARGV.extend(HomebrewArgvExtension)
+
+HOMEBREW_VERSION = 0.5
+HOMEBREW_WWW = 'http://bit.ly/Homebrew'
 
 if Process.uid == 0
   # technically this is not the correct place, this cache is for *all users*
@@ -34,16 +38,36 @@ else
   HOMEBREW_CACHE=Pathname.new("~/Library/Caches/Homebrew").expand_path
 end
 
-HOMEBREW_PREFIX = (Pathname.getwd+__FILE__).dirname.parent.parent.cleanpath
-HOMEBREW_CELLAR = HOMEBREW_PREFIX+'Cellar'
-HOMEBREW_VERSION = 0.4
-HOMEBREW_WWW = 'http://bit.ly/Homebrew'
+if not defined? HOMEBREW_BREW_FILE
+  HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] || `which brew`.chomp
+end
 
-# we use Library as we allow people to symlink their Homebrew into another
-# directory so they can hack in one place and use it in another
-HOMEBREW_REPOSITORY = (HOMEBREW_PREFIX+'Library').realpath.parent
+HOMEBREW_PREFIX = Pathname.new(HOMEBREW_BREW_FILE).dirname.parent # Where we link under
+HOMEBREW_REPOSITORY = Pathname.new(HOMEBREW_BREW_FILE).realpath.dirname.parent # Where .git is found
+
+# Where should be build to? 
+# If /usr/local/Cellar exists, as a symlink or real folder, use that.
+# Otherwise, build into a Cellar in the Repo. folder.
+if (HOMEBREW_PREFIX+'Cellar').exist?
+  HOMEBREW_CELLAR = HOMEBREW_PREFIX+'Cellar'
+else
+  HOMEBREW_CELLAR = HOMEBREW_REPOSITORY+'Cellar'
+end
 
 MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
 MACOS_VERSION = /(10\.\d+)(\.\d+)?/.match(MACOS_FULL_VERSION).captures.first.to_f
 
 HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; Mac OS X #{MACOS_FULL_VERSION})"
+
+
+class ExecutionError <RuntimeError
+  attr :status
+
+  def initialize cmd, args=[], status=nil
+    super "Failure while executing: #{cmd} #{args*' '}"
+    @status = status
+  end
+end
+
+class BuildError <ExecutionError
+end

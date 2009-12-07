@@ -21,29 +21,34 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 #  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
+class UsageError <RuntimeError; end
+class FormulaUnspecifiedError <UsageError; end
+class KegUnspecifiedError <UsageError; end
+
 module HomebrewArgvExtension
   def named
-    raise UsageError if _named.empty?
-    _named
-  end
-  def named_empty?
-    _named.empty?
+    @named ||= reject{|arg| arg[0..0] == '-'}
   end
   def options
     select {|arg| arg[0..0] == '-'}
   end
   def formulae
     require 'formula'
-    @formulae ||= named.collect {|name| Formula.factory name}
+    @formulae ||= downcased_unique_named.collect {|name| Formula.factory name}
+    raise FormulaUnspecifiedError if @formulae.empty?
+    @formulae
   end
   def kegs
     require 'keg'
-    @kegs ||= named.collect do |name|
+    @kegs ||= downcased_unique_named.collect do |name|
       d=HOMEBREW_CELLAR+name
-      raise "#{name} is not installed" if not d.directory? or d.children.length == 0
-      raise "#{name} has multiple installed versions" if d.children.length > 1
-      Keg.new d.children[0]
+      dirs = d.children.select{ |pn| pn.directory? } rescue []
+      raise "#{name} is not installed" if not d.directory? or dirs.length == 0
+      raise "#{name} has multiple installed versions" if dirs.length > 1
+      Keg.new dirs.first
     end
+    raise KegUnspecifiedError if @kegs.empty?
+    @kegs
   end
 
   # self documenting perhaps?
@@ -51,7 +56,7 @@ module HomebrewArgvExtension
     @n=index arg
   end
   def next
-    at @n+1
+    at @n+1 or raise UsageError
   end
 
   def force?
@@ -86,7 +91,7 @@ Usage: brew [--prefix] [--cache] [--version|-v]
 Usage: brew [--verbose|-v]
 
 Commands:
-  install formula ... [--debug|-d] [--interactive|-i] [--ignore-dependencies]
+  install formula ... [--ignore-dependencies] [--HEAD|-H]
   remove formula ...
   search [/regex/] [substring]
   list [--brewed] [--unbrewed] [formula] ...
@@ -101,18 +106,16 @@ Commands useful when contributing:
   log formula
   create URL
   edit [formula]
+  install formula [--debug|-d] [--interactive|-i] [--verbose|-v]
 
 To visit the Homebrew homepage type:
   brew home
-  EOS
+    EOS
   end
 
-private
-  def _named
-    @named ||= reject{|arg| arg[0..0] == '-'}.collect{|arg| arg.downcase}.uniq
+  private
+
+  def downcased_unique_named
+    @downcased_unique_named ||= named.collect{|arg| arg.downcase}.uniq
   end
 end
-
-class UsageError <RuntimeError; end
-
-ARGV.extend HomebrewArgvExtension

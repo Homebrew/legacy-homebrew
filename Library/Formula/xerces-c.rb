@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class XercesC <Formula
   @url='http://www.osnt.org/apache/xerces/c/3/sources/xerces-c-3.0.1.tar.gz'

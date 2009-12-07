@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class BdwGc <Formula
   @url='http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.1.tar.gz'

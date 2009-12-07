@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Omega <Formula
   @url='http://www.alcyone.com/binaries/omega/omega-0.80.2-src.tar.gz'

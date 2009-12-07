@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Ccache <Formula
   @url='http://samba.org/ftp/ccache/ccache-2.4.tar.gz'

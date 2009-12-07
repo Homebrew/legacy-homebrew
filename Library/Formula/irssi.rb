@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Irssi <Formula
   @url='http://irssi.org/files/irssi-0.8.14.tar.bz2'
@@ -8,7 +8,12 @@ class Irssi <Formula
   depends_on 'pkg-config'
   depends_on 'glib'
 
+  def skip_clean? path
+    path == bin+'irssi'
+  end
+
   def install
+    ENV.append 'ARCHFLAGS', ' '
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--with-modules", "--enable-ssl", "--enable-ipv6", "--with-perl=yes"
     system "make install"
   end

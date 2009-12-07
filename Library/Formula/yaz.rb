@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 # NOTE this formula conflicts with icu4c on Snow Leopard at the moment
 # if this is a problem for you then please fix it! Thanks.

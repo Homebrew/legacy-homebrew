@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Frotz <Formula
   @url='http://downloads.sourceforge.net/project/frotz/frotz/2.43/frotz-2.43.tar.gz'
