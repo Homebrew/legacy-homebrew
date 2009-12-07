@@ -53,7 +53,7 @@ class Qt <Formula
       conf_args << "-no-qt3support"
     end
 
-    if x11?
+    if Qt.x11?
       conf_args << "-L/usr/X11R6/lib"
       conf_args << "-I/usr/X11R6/include"
     else
