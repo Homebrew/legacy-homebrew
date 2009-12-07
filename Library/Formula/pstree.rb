@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Pstree <Formula
   @url='ftp://ftp.thp.uni-duisburg.de/pub/source/pstree-2.32.tar.gz'

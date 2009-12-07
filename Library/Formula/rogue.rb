@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Rogue <Formula
   url 'http://rogue.rogueforge.net/files/rogue5.4/rogue5.4.4-src.tar.gz'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 def first_dir
   Pathname.getwd.children.find { |d| d.directory? }

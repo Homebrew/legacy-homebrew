@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Gettext <Formula
   @url='http://ftp.gnu.org/pub/gnu/gettext/gettext-0.17.tar.gz'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Ircii <Formula
   url 'ftp://ircii.warped.com//pub/ircII//ircii-20081115.tar.bz2'

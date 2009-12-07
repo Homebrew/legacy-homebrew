@@ -22,8 +22,12 @@
 #  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 class AbstractDownloadStrategy
-  def initialize url, name, version
+  def initialize url, name, version, specs
     @url=url
+    case specs when Hash
+      @spec = specs.keys.first # only use first spec
+      @ref = specs.values.first
+    end
     @unique_token="#{name}-#{version}" unless name.to_s.empty? or name == '__UNKNOWN__'
   end
 end
@@ -40,11 +44,11 @@ class CurlDownloadStrategy <AbstractDownloadStrategy
       begin
         curl @url, '-o', @dl
       rescue Exception
-        @dl.unlink if @dl.exist?
+        ignore_interrupts { @dl.unlink if @dl.exist? }
         raise
       end
     else
-      puts "File already downloaded and cached"
+      puts "File already downloaded and cached to #{HOMEBREW_CACHE}"
     end
     return @dl # thus performs checksum verification
   end
@@ -94,11 +98,11 @@ private
 end
 
 class HttpDownloadStrategy <CurlDownloadStrategy
-  def initialize url, name, version
+  def initialize url, name, version, specs
     opoo "HttpDownloadStrategy is deprecated"
     puts "Please use CurlDownloadStrategy in future"
     puts "HttpDownloadStrategy will be removed in version 0.5"
-    super url, name, version
+    super url, name, version, specs
   end
 end
 
@@ -107,7 +111,9 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
     ohai "Checking out #{@url}"
     @co=HOMEBREW_CACHE+@unique_token
     unless @co.exist?
-      safe_system '/usr/bin/svn', 'checkout', @url, @co
+      args = [svn, 'checkout', @url, @co]
+      args << '-q' unless ARGV.verbose?
+      safe_system *args
     else
       # TODO svn up?
       puts "Repository already checked out"
@@ -115,7 +121,15 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
   end
   def stage
     # Force the export, since the target directory will already exist
-    safe_system '/usr/bin/svn', 'export', '--force', @co, Dir.pwd
+    args = [svn, 'export', '--force', @co, Dir.pwd]
+    args << '-r' << @ref if @spec == :revision and @ref
+    args << '-q' unless ARGV.verbose?
+    safe_system *args
+  end
+
+  # currently only used by mplayer.rb
+  def svn
+    '/usr/bin/svn'
   end
 end
 
@@ -127,12 +141,21 @@ class GitDownloadStrategy <AbstractDownloadStrategy
       safe_system 'git', 'clone', @url, @clone
     else
       # TODO git pull?
-      puts "Repository already cloned"
+      puts "Repository already cloned to #{@clone}"
     end
   end
   def stage
-    dst=Dir.getwd
+    dst = Dir.getwd
     Dir.chdir @clone do
+      if @spec and @ref
+        ohai "Checking out #{@spec} #{@ref}"
+        case @spec
+        when :branch
+          nostdout { safe_system 'git', 'checkout', "origin/#{@ref}" }
+        when :tag
+          nostdout { safe_system 'git', 'checkout', @ref }
+        end
+      end
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
       safe_system 'git', 'checkout-index', '-af', "--prefix=#{dst}/"
     end
@@ -185,6 +208,12 @@ end
 
 class MercurialDownloadStrategy <AbstractDownloadStrategy
   def fetch
+    raise "You must install mercurial, there are two options:\n\n"+
+          "    brew install pip && pip install mercurial\n"+
+          "    easy_install mercurial\n\n"+
+          "Homebrew recommends pip over the OS X provided easy_install." \
+          unless system "/usr/bin/which hg"
+
     ohai "Cloning #{@url}"
     @clone=HOMEBREW_CACHE+@unique_token
 
@@ -200,8 +229,14 @@ class MercurialDownloadStrategy <AbstractDownloadStrategy
   def stage
     dst=Dir.getwd
     Dir.chdir @clone do
-      # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
-      safe_system 'hg', 'archive', '-y', '-t', 'files', dst
+      if @spec and @ref
+        ohai "Checking out #{@spec} #{@ref}"
+        Dir.chdir @clone do
+          safe_system 'hg', 'archive', '-y', '-r', @ref, '-t', 'files', dst
+        end
+      else
+        safe_system 'hg', 'archive', '-y', '-t', 'files', dst
+      end
     end
   end
 end

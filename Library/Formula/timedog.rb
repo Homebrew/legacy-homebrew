@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Timedog <Formula
   url 'http://timedog.googlecode.com/files/timedog-1.2.zip'

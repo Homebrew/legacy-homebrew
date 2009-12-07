@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class ChocolateDoom <Formula
   url 'http://downloads.sourceforge.net/project/chocolate-doom/chocolate-doom/1.2.1/chocolate-doom-1.2.1.tar.gz'

@@ -1,9 +1,9 @@
-require 'brewkit'
+require 'formula'
 
 class Mysql <Formula
   @homepage='http://dev.mysql.com/doc/refman/5.1/en/'
-  @url='http://mysql.llarian.net/Downloads/MySQL-5.1/mysql-5.1.39.tar.gz'
-  @md5='55a398daeb69a778fc46573623143268'
+  @url='http://mysql.llarian.net/Downloads/MySQL-5.1/mysql-5.1.41.tar.gz'
+  @md5='b5d39e8789174753f3c782959729e68c'
 
   depends_on 'readline'
 
@@ -43,6 +43,8 @@ class Mysql <Formula
 
     system "./configure", *configure_args
     system "make install"
+
+    FileUtils.ln_s "#{prefix}/libexec/mysqld", "#{prefix}/bin/mysqld"
 
     (prefix+'mysql-test').rmtree unless ARGV.include? '--with-tests' # save 66MB!
     (prefix+'sql-bench').rmtree unless ARGV.include? '--with-bench'
@@ -99,3 +101,17 @@ __END__
  then
    if test "$user" != "root" -o $SET_USER = 1
    then
+diff --git a/scripts/mysql_config.sh b/scripts/mysql_config.sh
+index efc8254..8964b70 100644
+--- a/scripts/mysql_config.sh
++++ b/scripts/mysql_config.sh
+@@ -132,7 +132,8 @@ for remove in DDBUG_OFF DSAFEMALLOC USAFEMALLOC DSAFE_MUTEX \
+               DEXTRA_DEBUG DHAVE_purify O 'O[0-9]' 'xO[0-9]' 'W[-A-Za-z]*' \
+               'mtune=[-A-Za-z0-9]*' 'mcpu=[-A-Za-z0-9]*' 'march=[-A-Za-z0-9]*' \
+               Xa xstrconst "xc99=none" AC99 \
+-              unroll2 ip mp restrict
++              unroll2 ip mp restrict \
++              mmmx 'msse[0-9.]*' 'mfpmath=sse' w pipe 'fomit-frame-pointer' 'mmacosx-version-min=10.[0-9]'
+ do
+   # The first option we might strip will always have a space before it because
+   # we set -I$pkgincludedir as the first option

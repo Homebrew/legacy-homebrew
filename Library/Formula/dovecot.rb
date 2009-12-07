@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Dovecot <Formula
   @url='http://www.dovecot.org/releases/1.2/dovecot-1.2.4.tar.gz'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 ######################################################################### cook
 class Grc <Formula

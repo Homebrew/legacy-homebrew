@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Dos2unix <Formula
   url 'http://www.sfr-fresh.com/linux/misc/old/dos2unix-3.1.tar.gz'

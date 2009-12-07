@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Activemq <Formula
   @url='http://www.apache.org/dist/activemq/apache-activemq/5.2.0/apache-activemq-5.2.0-bin.tar.gz'

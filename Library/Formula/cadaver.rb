@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Cadaver <Formula
   @url='http://www.webdav.org/cadaver/cadaver-0.23.2.tar.gz'

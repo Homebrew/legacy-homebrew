@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Cksfv <Formula
   @url='http://zakalwe.fi/~shd/foss/cksfv/files/cksfv-1.3.14.tar.bz2'

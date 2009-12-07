@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Libmusicbrainz <Formula
   @url='http://ftp.musicbrainz.org/pub/musicbrainz/libmusicbrainz-3.0.2.tar.gz'

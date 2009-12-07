@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Par2 <Formula
   @url='http://downloads.sourceforge.net/project/parchive/par2cmdline/0.4/par2cmdline-0.4.tar.gz'

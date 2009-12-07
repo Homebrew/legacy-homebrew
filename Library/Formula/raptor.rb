@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Raptor <Formula
   @url='http://download.librdf.org/source/raptor-1.4.19.tar.gz'

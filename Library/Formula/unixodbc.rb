@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Unixodbc <Formula
   @url='http://www.unixodbc.org/unixODBC-2.2.14.tar.gz'

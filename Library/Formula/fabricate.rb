@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Fabricate <ScriptFileFormula
   @url='http://fabricate.googlecode.com/svn/trunk'

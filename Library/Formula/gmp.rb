@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Gmp <Formula
   url 'ftp://ftp.gnu.org/gnu/gmp/gmp-4.3.1.tar.bz2'

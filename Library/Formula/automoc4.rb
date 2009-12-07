@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Automoc4 <Formula
   @url='http://ftp-stud.fht-esslingen.de/Mirrors/ftp.kde.org/pub/kde/stable/automoc4/0.9.88/automoc4-0.9.88.tar.bz2'

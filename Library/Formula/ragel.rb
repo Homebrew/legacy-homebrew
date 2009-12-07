@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Ragel <Formula
   url 'http://www.complang.org/ragel/ragel-6.5.tar.gz'

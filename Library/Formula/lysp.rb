@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Lysp <Formula
   url 'http://www.piumarta.com/software/lysp/lysp-1.0.tar.gz'

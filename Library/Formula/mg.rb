@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Mg <Formula
   url 'http://www.dds.nl/~han/software/mg/mg-20090107.tar.gz'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Xar <Formula
   @url='http://xar.googlecode.com/files/xar-1.5.2.tar.gz'

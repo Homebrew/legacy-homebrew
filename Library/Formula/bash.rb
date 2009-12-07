@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Bash <Formula
   @url='http://ftp.gnu.org/gnu/bash/bash-4.0.tar.gz'

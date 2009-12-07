@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Dnsmasq <Formula
   @url='http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.50.tar.gz'

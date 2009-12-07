@@ -1,6 +1,7 @@
-require 'brewkit'
+require 'formula'
 
 # some credit to http://github.com/maddox/magick-installer
+# NOTE please be aware that the GraphicsMagick formula derives this formula
 
 class Imagemagick <Formula
   @url='http://image_magick.veidrodis.com/image_magick/ImageMagick-6.5.6-5.tar.gz'
@@ -11,10 +12,25 @@ class Imagemagick <Formula
   depends_on 'libwmf' => :optional
   depends_on 'libtiff' => :optional
   depends_on 'little-cms' => :optional
+  depends_on 'jasper' => :optional
   depends_on 'ghostscript' => :recommended
 
   def skip_clean? path
     path.extname == '.la'
+  end
+  
+  def fix_configure
+    # versioned stuff in main tree is pointless for us
+    inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
+  end
+  
+  def configure_args
+    ["--prefix=#{prefix}", 
+     "--disable-dependency-tracking",
+     "--enable-shared",
+     "--disable-static",
+     "--with-modules",
+     "--without-magick-plus-plus"]
   end
 
   def install
@@ -22,18 +38,13 @@ class Imagemagick <Formula
     ENV.deparallelize
     ENV.O3 # takes forever otherwise
 
-    # versioned stuff in main tree is pointless for us
-    inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
+    fix_configure
 
-    system "./configure", "--disable-static",
-                          "--with-modules",
-                          "--without-magick-plus-plus",
-                          "--disable-dependency-tracking",
-                          "--without-maximum-compile-warnings",
-                          "--prefix=#{prefix}",
+    system "./configure", "--without-maximum-compile-warnings",
                           "--disable-osx-universal-binary",
                           "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts",
-                          "--without-perl" # I couldn't make this compile
+                          "--without-perl", # I couldn't make this compile
+                          *configure_args
     system "make install"
 
     # We already copy these into the keg root

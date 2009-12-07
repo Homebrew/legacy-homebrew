@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class ProjDatumgrid <Formula
   url 'ftp://ftp.remotesensing.org/pub/proj/proj-datumgrid-1.5.zip'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class BerkeleyDb <Formula
   @url='http://download.oracle.com/berkeley-db/db-4.8.24.tar.gz'
@@ -13,7 +13,9 @@ class BerkeleyDb <Formula
     Dir.chdir 'build_unix' do
       system "../dist/configure", "--disable-debug",
                           "--prefix=#{prefix}",
-                          "--mandir=#{prefix}/share/man"
+                          "--mandir=#{prefix}/share/man",
+                          "--enable-cxx",
+                          "--enable-java"
                           
       system "make install"
     end

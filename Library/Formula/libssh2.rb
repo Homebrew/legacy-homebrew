@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Libssh2 <Formula
   url 'http://www.libssh2.org/download/libssh2-1.2.1.tar.gz'

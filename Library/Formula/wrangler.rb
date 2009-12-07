@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Wrangler <Formula
   @url='http://www.cs.kent.ac.uk/projects/forse/wrangler/wrangler-0.8/wrangler-0.8.1.tar.gz'

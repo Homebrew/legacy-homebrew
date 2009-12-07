@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Liblcms <Formula
   url 'http://www.littlecms.com/lcms-1.18a.tar.gz'

@@ -1,11 +1,9 @@
-require 'brewkit'
+require 'formula'
 
 class Bchunk <Formula
   url 'http://he.fi/bchunk/bchunk-1.2.0.tar.gz'
   homepage 'http://he.fi/bchunk/'
   md5 '6a613da3f34f9a303f202d2e9731d231'
-
-# depends_on 'cmake'
 
   def install
     system "make"

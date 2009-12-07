@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Znc <Formula
   url 'http://downloads.sourceforge.net/project/znc/znc/0.076/znc-0.076.tar.gz'
@@ -6,6 +6,7 @@ class Znc <Formula
   md5 '03c2804b91225e83884f06078f6db568'
 
   depends_on 'c-ares'
+  depends_on 'pkg-config' => :optional
 
   skip_clean 'bin/znc'
 

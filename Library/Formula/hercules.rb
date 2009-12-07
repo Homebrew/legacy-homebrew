@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Hercules <Formula
   url 'http://www.hercules-390.org/hercules-3.06.tar.gz'

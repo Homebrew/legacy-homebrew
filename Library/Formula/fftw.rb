@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Fftw <Formula
   @homepage='http://www.fftw.org'

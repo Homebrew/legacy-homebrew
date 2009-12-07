@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Most <Formula
   @url='ftp://space.mit.edu/pub/davis/most/most-5.0.0a.tar.bz2'

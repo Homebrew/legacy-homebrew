@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Antiword <Formula
   @url='http://www.winfield.demon.nl/linux/antiword-0.37.tar.gz'

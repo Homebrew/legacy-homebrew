@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class CAres <Formula
   @url='http://c-ares.haxx.se/c-ares-1.6.0.tar.gz'

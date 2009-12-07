@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Perforce <Formula
   @url='http://filehost.perforce.com/perforce/r09.1/bin.macosx104u/p4'

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class LibgpgError <Formula
   @url='ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.7.tar.bz2'

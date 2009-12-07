@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 require 'date'
 
 class Osm2pgsql <Formula

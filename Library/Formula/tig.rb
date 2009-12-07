@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Tig <Formula
   @url='http://jonas.nitro.dk/tig/releases/tig-0.14.1.tar.gz'

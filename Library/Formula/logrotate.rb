@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Logrotate <Formula
   url 'http://ftp.de.debian.org/debian/pool/main/l/logrotate/logrotate_3.7.8.orig.tar.gz'

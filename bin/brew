@@ -1,49 +1,84 @@
 #!/usr/bin/ruby
 # -*- coding: utf-8 -*-
 
-def homebrew_rubylib_path
-  lib_path = "/../../Library/Homebrew"
-  # we resolve off of Dir.getwd as otherwise the symlink gets resolved!
-  brew_path = if not File.symlink? __FILE__ or File.exist? Dir.getwd+'/'+__FILE__+lib_path
-    # standard 100% symlinked or non-symlinked installation
-    __FILE__
+# Many Pathname operations use getwd when they shouldn't, and then throw 
+# odd exceptions. Reduce our support burden by showing a user-friendly error.
+Dir.getwd rescue abort "The current working directory doesn't exist, cannot proceed."
+
+HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] = File.expand_path(__FILE__)
+
+require 'pathname'
+HOMEBREW_LIBRARY_PATH = (Pathname.new(__FILE__).realpath.dirname.parent+"Library"+"Homebrew").to_s
+$:.unshift(HOMEBREW_LIBRARY_PATH)
+require 'global'
+
+case ARGV.first
+when '--cache'
+  puts HOMEBREW_CACHE
+  exit 0
+when '-h', '--help', '--usage', '-?', 'help', nil
+  puts ARGV.usage
+  exit 0
+when '--version'
+  puts HOMEBREW_VERSION
+  exit 0
+when '-v'
+  if ARGV.length > 1
+    puts "Homebrew #{HOMEBREW_VERSION}"
+    # continue in verbose mode
+    ARGV << ARGV.shift
   else
-    # non-standard installation -- just this script is symlinked
-    File.readlink(__FILE__)
+    puts HOMEBREW_VERSION
+    exit 0
   end
-  return File.expand_path(brew_path+lib_path)
 end
 
-$:.unshift homebrew_rubylib_path
-require 'global'
-require 'brew.h'
-
-if %w[/ /usr].include? HOMEBREW_PREFIX.to_s then abort <<-EOS
-  You have placed Homebrew at the prefix: #{HOMEBREW_PREFIX}
-  This is not currently supported. Voice your support for this feature at:
-  #{HOMEBREW_WWW}
-  EOS
+case HOMEBREW_PREFIX.to_s when '/', '/usr'
+  # it may work, but I only see pain this route and don't want to support it
+  abort "Cowardly refusing to continue at this prefix: #{HOMEBREW_PREFIX}"
 end
 if MACOS_VERSION < 10.5
   abort "Homebrew requires Leopard or higher, but you could fork it and fix that..."
 end
-case Hardware.cpu_type when :ppc, :dunno
-  abort "Sorry, Homebrew does not support your computer's CPU architecture."
-end
-unless system "/usr/bin/which -s gcc-4.2"
-  abort "Sorry, Homebrew requires gcc 4.2, which is provided by Xcode 3.1 and later."
-end
 
+def dump_config
+  require 'hardware'
+  bits = Hardware.bits
+  cores = Hardware.cores_as_words
+  llvm = llvm_build
+  gcc = gcc_build
+  sha = `cd #{HOMEBREW_REPOSITORY} && git rev-parse --verify HEAD 2> /dev/null`.chomp
+  kernel_arch = `uname -m`.chomp
+
+  puts <<-EOS
+HOMEBREW_VERSION: #{HOMEBREW_VERSION}
+HEAD: #{sha}
+HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}
+HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}
+HOMEBREW_CACHE: #{HOMEBREW_CACHE}
+HOMEBREW_REPOSITORY: #{HOMEBREW_REPOSITORY}
+HOMEBREW_LIBRARY_PATH: #{HOMEBREW_LIBRARY_PATH}
+Hardware: #{cores}-core #{bits}-bit #{Hardware.intel_family}
+OS X: #{MACOS_FULL_VERSION}
+Kernel Architecture: #{kernel_arch}
+Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
+GCC-4.2: #{gcc ? "build #{gcc}" : "N/A"}
+LLVM: #{llvm ? "build #{llvm}" : "N/A" }
+MacPorts or Fink? #{macports_or_fink_installed?}
+EOS
+end
 
 begin
-  case ARGV.shift
-    when '--prefix' then puts HOMEBREW_PREFIX
-    when '--cache' then puts HOMEBREW_CACHE
-    when '-h', '--help', '--usage', '-?' then puts ARGV.usage
-    when '-v', '--version' then puts HOMEBREW_VERSION
+  require 'brew.h'
+
+  case arg = ARGV.shift
+  when '--prefix'
+    puts HOMEBREW_PREFIX
+  when '--config'
+    dump_config
 
     when 'home', 'homepage'
-      if ARGV.named_empty?
+      if ARGV.named.empty?
         exec "open", HOMEBREW_WWW
       else
         exec "open", *ARGV.formulae.collect {|f| f.homepage}
@@ -55,7 +90,7 @@ begin
         dirs -= ['Library', 'Cellar', '.git']
         Dir.chdir HOMEBREW_PREFIX
         exec 'find', *dirs + %w[-type f ( ! -iname .ds_store ! -iname brew )]
-      elsif ARGV.named_empty?
+      elsif ARGV.named.empty?
         ENV['CLICOLOR']=nil
         exec 'ls', *ARGV.options<<HOMEBREW_CELLAR if HOMEBREW_CELLAR.exist?
       elsif ARGV.verbose? or not $stdout.tty?
@@ -65,7 +100,11 @@ begin
       end
 
     when 'search', '-S'
-      formulae = (HOMEBREW_PREFIX+'Library'+'Formula').children.sort.map{|f| f.basename('.rb') }
+      check_for_blacklisted_formula(ARGV.named)
+
+      require "formula"
+      formulae = Formulary.names with_aliases=true
+
       if ARGV.first =~ /^\/(.*)\/$/
         puts_columns formulae.grep(Regexp.new($1))
       else
@@ -73,98 +112,28 @@ begin
       end
 
     when 'edit'
-      if ARGV.named_empty?
+      if ARGV.named.empty?
         # EDITOR isn't a good fit here, we need a GUI client that actually has
         # a UI for projects, so apologies if this wasn't what you expected,
         # please improve it! :)
-        exec 'mate', *Dir["#{HOMEBREW_PREFIX}/Library/*"]<<
-                          "#{HOMEBREW_PREFIX}/bin/brew"<<
-                          "#{HOMEBREW_PREFIX}/README.md"
+        exec 'mate', *Dir["#{HOMEBREW_REPOSITORY}/Library/*"]<<
+                          "#{HOMEBREW_REPOSITORY}/bin/brew"<<
+                          "#{HOMEBREW_REPOSITORY}/README.md"
       else
-        exec_editor *ARGV.formulae.collect {|f| f.path}
-      end
-
-    when 'install'
-      if ARGV.named_empty?
-        puts "You must specify a formula. Search for available formulae with `brew search'."
-        exit 0
-      end
-      
-      raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable?
-
-      require 'brewkit'
-
-      if ARGV.interactive? and ARGV.formulae.length > 1
-        # the reason for this is interactive mode is a little tricky to do 
-        # with more than one formula, AND I can't think of a time where you'd
-        # want to do it anyway. If someone comes up with a legitimate use for
-        # this we will adapt the code. "But I might want it!" is not a
-        # legitimate use!
-        raise "Interactive mode can only be used with one formula argument"
-      end
-
-      if ARGV.verbose?
-        ohai "Build Environment"
-        %w[PATH CFLAGS LDFLAGS CPPFLAGS MAKEFLAGS CC CXX MACOSX_DEPLOYMENT_TARGET].each do |f|
-          puts "#{f}: #{ENV[f]}" unless ENV[f].to_s.empty?
-        end
-      end
-
-      warn_about_macports_or_fink # keep warning before dependency resolution
-
-      unless ARGV.force?
-        unless system "/usr/bin/which -s #{ENV.cc}"
-          raise "We cannot find a c compiler, have you installed the latest Xcode?"
-        end
-        formulae = ARGV.formulae.reject do |f|
-          if f.installed?
-            message = "Formula already installed: #{f.prefix}"
-            if ARGV.formulae.length > 1
-              opoo message
-            else
-              puts message # if only one is being installed a warning looks severe
-            end
-            true
-          end
-        end
-        exit 0 if formulae.empty?
-      else
-        formulae = ARGV.formulae
-      end
-
-      unless ARGV.include? '--ignore-dependencies'
-        deps = []
-        formulae.each { |f| deps += expand_deps f }
-        formulae = deps.reject { |f| f.installed? }
-      end
-
-      require 'set'
-      done = Set.new
-
-      require 'beer_events'
-      watch_out_for_spill do
-        formulae.each do |f|
-          next if done.include? f.class
-          done << f.class
-
-          # 1. formulae can modify ENV, so we must ensure that each
-          #    installation has a pristine ENV when it starts, forking now is 
-          #    the easiest way to do this
-          # 2. formulae have access to __END__ the only way to allow this is
-          #    to make the formula script the executed script
-          pid=fork
-          if pid.nil?
-            exec '/usr/bin/ruby', '-I', homebrew_rubylib_path, '-rinstall', f.path, '--', *ARGV.options
+        # we don't use ARGV.formulae as that will throw if the file doesn't parse
+        paths = ARGV.named.collect do |name|
+          unless File.exist? path = "#{HOMEBREW_REPOSITORY}/Library/Formula/#{name}.rb"
+            require 'formula'
+            raise FormulaUnavailableError, name
           else
-            Process.wait pid
+            path
           end
-          #FIXME I don't think $? represents the exit code from the child fork…
-          exit! $? if $? != 0 # exception in other brew will be visible on screen
         end
+        exec_editor *paths
       end
 
-
-    when 'up', 'update'
+  when 'up', 'update'
+    if system "/usr/bin/which -s git"
       require 'update'
       updater = RefreshBrew.new
       old_revision = updater.current_revision
@@ -179,6 +148,9 @@ begin
           puts "No formulae were updated." unless updater.pending_formulae_changes?
         end
       end
+    else
+      abort "Please `brew install git' first."
+    end
 
     when 'ln', 'link'
       ARGV.kegs.each {|keg| puts "#{keg.link} links created for #{keg}"}
@@ -190,8 +162,8 @@ begin
       ARGV.kegs.each do |keg|
         puts "Uninstalling #{keg}..."
         keg.uninstall
+        keg.unlink
       end
-      prune
 
     when 'prune'
       prune
@@ -206,58 +178,158 @@ begin
     when 'create'
       if ARGV.include? '--macports'
         exec "open", "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
+      elsif ARGV.named.empty?
+        raise UsageError
       else
-        exec_editor *ARGV.collect {|name| make name}
+        exec_editor *ARGV.named.collect {|name| make name}
       end
 
     when 'diy', 'configure'
       puts diy
 
     when 'info', 'abv'
-      if ARGV.named_empty?
-        puts `ls #{HOMEBREW_CELLAR} | wc -l`.strip+" kegs, "+HOMEBREW_CELLAR.abv
+      if ARGV.named.empty?
+        if ARGV.include? "--all"
+          require 'formula'
+          Formulary.names.each do |name|
+            info name
+            puts '---'
+          end
+        else
+          puts `ls #{HOMEBREW_CELLAR} | wc -l`.strip+" kegs, "+HOMEBREW_CELLAR.abv
+        end
       elsif ARGV[0][0..6] == 'http://'
         puts Pathname.new(ARGV.shift).version
       else
         ARGV.named.each {|name| info name}
       end
 
-  when 'log'
-    Dir.chdir HOMEBREW_PREFIX
-    exec "git", "log", ARGV.formulae.first.path, *ARGV.options
+  when 'install'
+    check_for_blacklisted_formula(ARGV.named)
+    
+    require 'formula_installer'
+    require 'hardware'
 
+    ############################################################ sanity checks
+    case Hardware.cpu_type when :ppc, :dunno
+      abort "Sorry, Homebrew does not support your computer's CPU architecture."
+    end
+
+    raise "Cannot write to #{HOMEBREW_CELLAR}" if HOMEBREW_CELLAR.exist? and not HOMEBREW_CELLAR.writable?
+    raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable?
+
+    ################################################################# warnings
+    if MACOS_VERSION >= 10.6
+      opoo "You should upgrade to Xcode 3.2.1" if llvm_build < 2206
+    else
+      opoo "You should upgrade to Xcode 3.1.4" if gcc_build < 5577
+    end
+
+    if macports_or_fink_installed?
+      opoo "It appears you have Macports or Fink installed"
+      puts "Although, unlikely, this can break builds or cause obscure runtime issues."
+      puts "If you experience problems try uninstalling these tools."
+    end
+
+    ################################################################# install!
+    installer = FormulaInstaller.new
+    installer.install_deps = !ARGV.include?('--ignore-dependencies')
+
+    ARGV.formulae.each do |f|
+      if not f.installed? or ARGV.force?
+        installer.install f
+      else
+        puts "Formula already installed: #{f.prefix}"
+      end
+    end
+
+  when 'log'
+    Dir.chdir HOMEBREW_REPOSITORY
+    exec "git", "log", ARGV.formulae.first.path, *ARGV.options
+    
+  when 'uses'
+    # For each formula given, show which other formulas depend on it.
+    # We only go one level up, direct dependencies.
+    require 'formula'
+    require 'utils'
+    
+    deps = Formula.get_used_by
+    
+    ARGV.formulae.each do |f|
+      name = f.name
+      our_deps = deps[name]
+      if our_deps == nil
+        puts "#{name} is not a dependency."
+      else
+        puts "#{name} is a dependency for #{our_deps.join(', ')}."
+      end
+    end
+    
+  when 'deps'
+    require 'formula'
+
+    ARGV.formulae.each do |f|
+      name = f.name
+
+      our_deps = []
+      checked = {}
+      to_check = [name]
+
+      while ! to_check.empty?
+        item = to_check.pop
+        checked[item] = true
+        
+        formula = Formulary.read item
+        next if formula == nil || formula.deps == nil || formula.deps.empty?
+        
+        our_deps.push(*formula.deps)
+        to_check.push(*formula.deps.select{|g| !checked[g]})
+      end
+      
+      if our_deps.empty?
+        puts "#{name} has no dependencies."
+      else
+        our_deps.sort!
+        puts "#{name} depends on #{our_deps.join(", ")}"
+      end
+    end
+
+  when 'pull', 'push', 'checkout', 'branch'
+    onoe "Unknown command: #{arg} (did you mean 'git #{arg}'?)"
+    
   else
-    puts ARGV.usage
+    onoe "Unknown command: #{arg}"
   end
 
+rescue FormulaUnspecifiedError
+  abort "This command requires a formula argument"
+rescue KegUnspecifiedError
+  abort "This command requires a keg argument"
 rescue UsageError
   onoe "Invalid usage"
-  puts ARGV.usage
-  exit 1
+  abort ARGV.usage
 rescue SystemExit
-  ohai "Kernel.exit" if ARGV.verbose?
-  exit 1
+  puts "Kernel.exit" if ARGV.verbose?
+  raise
 rescue Interrupt => e
-  # puts # seemingly a newline is typical
-  # Above is now commented out because the system() call forks and then forks
-  # again, so there are two of "us" so we get two exceptions raising and thus
-  # two newlines, which buggers up the shell. FIXME!
+  puts # seemingly a newline is typical
   exit 130
-rescue SystemCallError, RuntimeError => e
-  if ARGV.debug?
-    onoe e.inspect
-    puts e.backtrace
-  else
-    onoe e
-  end
+rescue BuildError => e
+  e.backtrace[1] =~ %r{Library/Formula/(.+)\.rb:(\d+)}
+  puts "http://github.com/mxcl/homebrew/blob/master/Library/Formula/#{$1}.rb#L#{$2}"
+  ohai "Environment"
+  dump_config
+  puts "Exit status: #{e.status.exitstatus}"
+  onoe e
+  puts PLEASE_REPORT_BUG
+  exit 1
+rescue RuntimeError, SystemCallError => e
+  onoe e
+  puts e.backtrace if ARGV.debug?
   exit 1
 rescue Exception => e
-  onoe "Homebrew has failed you :("
-  puts "Please report this bug at: #{HOMEBREW_WWW}"
-  puts "Please include the following information:"
-  ohai "Environment"
-  puts "Mac OS X: "+`sw_vers -productVersion`
-  ohai e.inspect
+  onoe e
+  puts PLEASE_REPORT_BUG
   puts e.backtrace
   exit 1
 end

@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Dcraw <Formula
   head 'http://www.cybercom.net/~dcoffin/dcraw/dcraw.c'

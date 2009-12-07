@@ -1,4 +1,4 @@
-require 'brewkit'
+require 'formula'
 
 class Libevent <Formula
   @version='1.4.12'
