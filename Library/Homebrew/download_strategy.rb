@@ -44,7 +44,7 @@ class CurlDownloadStrategy <AbstractDownloadStrategy
       begin
         curl @url, '-o', @dl
       rescue Exception
-        @dl.unlink if @dl.exist?
+        ignore_interrupts { @dl.unlink if @dl.exist? }
         raise
       end
     else
