@@ -161,8 +161,8 @@ begin
     when 'rm', 'uninstall', 'remove'
       ARGV.kegs.each do |keg|
         puts "Uninstalling #{keg}..."
-        keg.uninstall
         keg.unlink
+        keg.uninstall
       end
 
     when 'prune'
