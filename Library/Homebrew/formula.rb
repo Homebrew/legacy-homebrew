@@ -224,7 +224,7 @@ class Formula
   # we could add --disable-dependency-tracking when it will work
   def std_cmake_parameters
     # The None part makes cmake use the environment's CFLAGS etc. settings
-    "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None"
+    "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None -Wno-dev"
   end
 
   def self.class_s name
