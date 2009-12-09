@@ -36,6 +36,8 @@ module HomebrewEnvExtension
       # /usr/local is already an -isystem and -L directory so we skip it
       ENV['CPPFLAGS'] = "-isystem #{HOMEBREW_PREFIX}/include"
       ENV['LDFLAGS'] = "-L#{HOMEBREW_PREFIX}/lib"
+      # CMake ignores the variables above
+      ENV['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
     else
       # ignore existing build vars, thus we should have less bugs to deal with
       ENV['CPPFLAGS'] = ''
@@ -169,6 +171,8 @@ module HomebrewEnvExtension
     # CPPFLAGS are the C-PreProcessor flags, *not* C++!
     append 'CPPFLAGS', '-I/usr/X11R6/include'
     append 'LDFLAGS', '-L/usr/X11R6/lib'
+    # CMake ignores the variables above
+    append 'CMAKE_PREFIX_PATH', '/usr/X11R6', ':'
   end
   alias_method :libpng, :x11
   # we've seen some packages fail to build when warnings are disabled!
