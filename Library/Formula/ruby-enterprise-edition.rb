@@ -11,7 +11,7 @@ class RubyEnterpriseEdition <Formula
 
   def install
     ENV.gcc_4_2 # fails with LLVM
-    args = ['./installer', "--auto #{prefix}", '--no-tcmalloc']
+    args = ['./installer', "--auto", prefix, '--no-tcmalloc']
     args.push('-c --enable-shared') if ARGV.include?('--enable-shared')
     system *args
   end
