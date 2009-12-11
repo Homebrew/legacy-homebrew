@@ -11,17 +11,21 @@ class Redis <Formula
 
     bin.install %w( redis-benchmark redis-cli redis-server )
 
+    %w( run db/redis log ).each do |path|
+      FileUtils.mkdir_p(var+path) unless File.directory?(var+path)
+    end
+
     # set up the conf file
     (etc+'redis.conf').write <<-REDIS_CONF
 # Redis configuration file example
 
 # By default Redis does not run as a daemon. Use 'yes' if you need it.
-# Note that Redis will write a pid file in /var/run/redis.pid when daemonized.
+# Note that Redis will write a pid file in #{var}/run/redis.pid when daemonized.
 daemonize no
 
-# When run as a daemon, Redis write a pid file in /var/run/redis.pid by default.
+# When run as a daemon, Redis write a pid file in #{var}/run/redis.pid by default.
 # You can specify a custom pid file location here.
-pidfile /var/run/redis.pid
+pidfile #{var}/run/redis.pid
 
 # Accept connections on the specified port, default is 6379
 port 6379
@@ -54,7 +58,7 @@ dbfilename dump.rdb
 
 # For default save/load DB in/from the working directory
 # Note that you must specify a directory not a file name.
-dir /var/db/redis/
+dir #{var}/db/redis/
 
 # Set server verbosity to 'debug'
 # it can be one of:
@@ -66,7 +70,7 @@ loglevel notice
 # Specify the log file name. Also 'stdout' can be used to force
 # the demon to log on the standard output. Note that if you use standard
 # output for logging but daemonize, logs will be sent to /dev/null
-logfile /var/log/redis.log
+logfile #{var}/log/redis.log
 
 # Set the number of databases. The default database is DB 0, you can select
 # a different one on a per-connection basis using SELECT <dbid> where
@@ -146,11 +150,6 @@ glueoutputbuf yes
 shareobjects no
 shareobjectspoolsize 1024
     REDIS_CONF
-    
-    # FIXME: You get “* Can't chdir to '/var/db/redis/': No such file or
-    #        directory” when running with this conf. We need to either make
-    #        that directory, or (better yet) stop breaking the rules, and work
-    #        inside the Homebrew prefix.
   end
 
   def caveats
