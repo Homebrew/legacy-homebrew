@@ -136,9 +136,10 @@ shareobjectspoolsize 1024
 EOS
 
 class Redis <Formula
-  url 'http://redis.googlecode.com/files/redis-1.02.tar.gz'
+  url 'http://redis.googlecode.com/files/redis-1.1.91-beta.tar.gz'
+  version '1.1.91-beta'
   homepage 'http://code.google.com/p/redis/'
-  sha1 '1739e2529422b991b42d0b9e3fd8da2fadc24796'
+  sha1 '9a5de92aa57c2c70e1d168a4e985ec7d79dae882'
 
   def install
     system "make"
@@ -146,8 +147,13 @@ class Redis <Formula
     (share+'redis').install %w( utils client-libraries doc )
     bin.install %w( redis-benchmark redis-cli redis-server )
 
-     # set up the conf file
+    # set up the conf file
     (etc+'redis.conf').write REDIS_CONF
+    
+    # FIXME: You get “* Can't chdir to '/var/db/redis/': No such file or
+    #        directory” when running with this conf. We need to either make
+    #        that directory, or (better yet) stop breaking the rules, and work
+    #        inside the Homebrew prefix.
   end
 
   def caveats
