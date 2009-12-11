@@ -22,6 +22,8 @@ class Lua <Formula
 
     system "make macosx"
     system "make install"
+    
+    (lib+"pkgconfig").install 'etc/lua.pc'
   end
 end
 
