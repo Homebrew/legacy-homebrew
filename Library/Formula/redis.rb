@@ -9,7 +9,6 @@ class Redis <Formula
   def install
     system "make"
 
-    (share+'redis').install %w( utils client-libraries doc )
     bin.install %w( redis-benchmark redis-cli redis-server )
 
     # set up the conf file
