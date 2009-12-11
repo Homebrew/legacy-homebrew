@@ -3,9 +3,9 @@ require 'formula'
 # TODO de-version the include and lib directories
 
 class Ruby <Formula
-  @url='ftp://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.1-p243.tar.gz'
+  @url='http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.1-p376.tar.gz'
   @homepage='http://www.ruby-lang.org/en/'
-  @md5='515bfd965814e718c0943abf3dde5494'
+  @md5='ebb20550a11e7f1a2fbd6fdec2a3e0a3'
 
   depends_on 'readline'
   
