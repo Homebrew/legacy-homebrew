@@ -7,13 +7,13 @@ class Redis <Formula
   sha1 '9a5de92aa57c2c70e1d168a4e985ec7d79dae882'
 
   def install
-    system "make"
-
-    bin.install %w( redis-benchmark redis-cli redis-server )
-
     %w( run db/redis log ).each do |path|
       FileUtils.mkdir_p(var+path) unless File.directory?(var+path)
     end
+
+    system "make"
+
+    bin.install %w( redis-benchmark redis-cli redis-server )
 
     # set up the conf file
     (etc+'redis.conf').write <<-REDIS_CONF
