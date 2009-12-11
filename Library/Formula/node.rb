@@ -1,9 +1,9 @@
 require 'formula'
 
 class Node <Formula
-  url 'http://s3.amazonaws.com/four.livejournal/20091128/node-v0.1.20.tar.gz'
+  url 'http://s3.amazonaws.com/four.livejournal/20091206/node-v0.1.21.tar.gz'
   homepage 'http://nodejs.org/'
-  md5 'ba906befa4cb6f36ef4a5200931d4853'
+  md5 'c72b29a803d9bb3aed0fce5245d8b03b'
 
   aka 'node.js'
 
