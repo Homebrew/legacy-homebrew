@@ -3,6 +3,10 @@ require 'formula'
 # some credit to http://github.com/maddox/magick-installer
 # NOTE please be aware that the GraphicsMagick formula derives this formula
 
+def ghostscript_srsly?
+  ARGV.include? '--with-ghostscript'
+end
+
 class Imagemagick <Formula
   @url='http://image_magick.veidrodis.com/image_magick/ImageMagick-6.5.6-5.tar.gz'
   @md5='668919a5a7912fb6778975bc55893004'
@@ -13,7 +17,7 @@ class Imagemagick <Formula
   depends_on 'libtiff' => :optional
   depends_on 'little-cms' => :optional
   depends_on 'jasper' => :optional
-  depends_on 'ghostscript' => :recommended
+  depends_on 'ghostscript' => :recommended if ghostscript_srsly?
 
   def skip_clean? path
     path.extname == '.la'
@@ -25,12 +29,14 @@ class Imagemagick <Formula
   end
   
   def configure_args
-    ["--prefix=#{prefix}", 
+    args = ["--prefix=#{prefix}", 
      "--disable-dependency-tracking",
      "--enable-shared",
      "--disable-static",
      "--with-modules",
      "--without-magick-plus-plus"]
+     args << '--without-ghostscript' unless ghostscript_srsly?
+     return args
   end
 
   def install
