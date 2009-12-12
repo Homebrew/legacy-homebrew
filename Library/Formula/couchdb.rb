@@ -1,9 +1,9 @@
 require 'formula'
 
 class Couchdb <Formula
-  @url='http://apache.multihomed.net/couchdb/0.10.0/apache-couchdb-0.10.0.tar.gz'
+  @url='http://apache.abdaal.com/couchdb/0.10.1/apache-couchdb-0.10.1.tar.gz'
   @homepage='http://couchdb.apache.org/'
-  @md5='227886b5ecbb6bcbbdc538aac4592b0e'
+  @md5='a34dae8bf402299e378d7e8c13b7ba46'
 
   depends_on 'spidermonkey'
   depends_on 'icu4c'
