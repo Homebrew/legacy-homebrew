@@ -1,9 +1,10 @@
 require 'formula'
 
 class Sphinx <Formula
-  @url='http://www.sphinxsearch.com/downloads/sphinx-0.9.8.1.tar.gz'
+  version '0.9.9'
+  @url='http://www.sphinxsearch.com/downloads/sphinx-0.9.9.tar.gz'
   @homepage='http://www.sphinxsearch.com'
-  @md5='428a14df41fb425e664d9e2d6178c037'
+  @md5='7b9b618cb9b378f949bb1b91ddcc4f54'
 
   depends_on 'mysql'
 
