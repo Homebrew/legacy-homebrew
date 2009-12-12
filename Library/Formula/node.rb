@@ -5,6 +5,8 @@ class Node <Formula
   homepage 'http://nodejs.org/'
   md5 'ba906befa4cb6f36ef4a5200931d4853'
 
+  aka 'node.js'
+
   def skip_clean? path
     # TODO: at some point someone should tweak this so it only skips clean
     # for the bits that break the build otherwise
