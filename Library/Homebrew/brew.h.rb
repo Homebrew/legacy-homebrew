@@ -198,7 +198,7 @@ def info name
     puts
   end
 
-  history = github_info
+  history = github_info(name)
   puts history if history
 
 rescue FormulaUnavailableError
