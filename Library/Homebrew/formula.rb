@@ -163,8 +163,8 @@ class Formula
     when %r[^svn+http://] then SubversionDownloadStrategy
     when %r[^git://] then GitDownloadStrategy
     when %r[^https?://(.+?\.)?googlecode\.com/hg] then MercurialDownloadStrategy
-    when %r[^http://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
-    when %r[^http://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
+    when %r[^https?://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
+    when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
     when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
     else CurlDownloadStrategy
     end
