@@ -7,6 +7,11 @@ class Python <Formula
 
   # You can build Python without readline, but you really don't want to.
   depends_on 'readline' => :recommended
+
+  def patches
+    # don't append space after completion
+    {:p0 => ["http://bugs.python.org/file14599/python-2.6-readline.patch"]}
+  end
   
   def options
     [
