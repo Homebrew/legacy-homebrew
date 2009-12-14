@@ -38,7 +38,20 @@ class Nginx < Formula
     
     system "./configure", *configure_args
     system "make install"
-  end 
+    
+    # FIXME: This fails, for an unknown reason
+    #(prefix+'logs').mkdir
+  end
+  
+  def caveats
+    <<-CAVEATS
+You need to create a logs folder before you can run NginX. Also, in the
+interest of allowing you to run `nginx` without `sudo`, the default port is
+set to localhost:8080; if you want to host pages on your local machine to the
+public, you should probably change that to localhost:80, and run `nginx` with
+`sudo`.
+    CAVEATS
+  end
 end
 
 __END__
@@ -67,4 +80,14 @@ __END__
          if [ $ngx_found = yes ]; then
              CORE_DEPS="$CORE_DEPS $REGEX_DEPS"
              CORE_SRCS="$CORE_SRCS $REGEX_SRCS"
-
+--- a/conf/nginx.conf
++++ b/conf/nginx.conf
+@@ -33,7 +33,7 @@
+     #gzip  on;
+ 
+     server {
+-        listen       80;
++        listen       8080;
+         server_name  localhost;
+ 
+         #charset koi8-r;
