@@ -287,7 +287,7 @@ class Formula
   end
 
   def self.path name
-    HOMEBREW_PREFIX+'Library'+'Formula'+"#{name.downcase}.rb"
+    HOMEBREW_REPOSITORY+"Library/Formula/#{name.downcase}.rb"
   end
 
   def deps
