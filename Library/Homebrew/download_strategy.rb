@@ -243,9 +243,6 @@ class MercurialDownloadStrategy <AbstractDownloadStrategy
 
     unless @clone.exist?
       checkout_args = []
-      if (@spec == :revision) and @ref
-        checkout_args << '-r' << @ref
-      end
       checkout_args << url << @clone
       safe_system 'hg', 'clone', *checkout_args
     else
