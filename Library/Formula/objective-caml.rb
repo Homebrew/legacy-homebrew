@@ -16,4 +16,6 @@ class ObjectiveCaml <Formula
     system "make opt.opt"
     system "make install"
   end
+
+  def skip_clean? path; true; end
 end
