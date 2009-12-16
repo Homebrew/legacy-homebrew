@@ -1,7 +1,7 @@
 require 'formula'
 
 class Go <Formula
-  head 'https://go.googlecode.com/hg/'
+  head 'https://go.googlecode.com/hg/', :revision => 'release'
   homepage 'http://golang.org'
 
   aka 'google-go'
