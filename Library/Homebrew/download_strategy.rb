@@ -135,8 +135,8 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
     unless @co.exist?
       quiet_safe_system svn, 'checkout', @url, @co
     else
-      # TODO svn up?
-      puts "Repository already checked out"
+      puts "Updating #{@co}"
+      quiet_safe_system svn, 'up', @co
     end
   end
 
@@ -162,8 +162,8 @@ class GitDownloadStrategy <AbstractDownloadStrategy
     unless @clone.exist?
       quiet_safe_system 'git', 'clone', @url, @clone
     else
-      # TODO git pull?
-      puts "Repository already cloned to #{@clone}"
+      puts "Updating #{@clone}"
+      Dir.chdir(@clone) { quiet_safe_system 'git', 'fetch', @url }
     end
   end
 
@@ -202,8 +202,9 @@ class CVSDownloadStrategy <AbstractDownloadStrategy
         safe_system '/usr/bin/cvs', '-d', url, 'checkout', '-d', @unique_token, mod
       end
     else
-      # TODO cvs up?
-      puts "Repository already checked out"
+      d = HOMEBREW_CACHE+@unique_token
+      puts "Updating #{d}"
+      Dir.chdir(d) { safe_system '/usr/bin/cvs', 'up' }
     end
   end
 
@@ -242,12 +243,10 @@ class MercurialDownloadStrategy <AbstractDownloadStrategy
     url=@url.sub(%r[^hg://], '')
 
     unless @clone.exist?
-      checkout_args = []
-      checkout_args << url << @clone
-      safe_system 'hg', 'clone', *checkout_args
+      safe_system 'hg', 'clone', url, @clone
     else
-      # TODO hg pull?
-      puts "Repository already cloned"
+      puts "Updating #{@clone}"
+      Dir.chdir(@clone) { safe_system 'hg', 'update' }
     end
   end
 
