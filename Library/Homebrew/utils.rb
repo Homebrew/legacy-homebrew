@@ -155,11 +155,31 @@ def archs_for_command cmd
     end
 end
 
-# replaces before with after for the file path
-def inreplace path, before, after
+module HomebrewInreplaceExtension
+  # Looks for Makefile style variable defintions and replaces the
+  # value with "new_value", or removes the definition entirely.
+  # See inreplace in utils.rb
+  def change_make_var! flag, new_value
+    new_value = "#{flag} = #{new_value}" unless new_value.to_s.empty?
+    gsub! Regexp.new("^#{flag}\\s*=.*$"), new_value.to_s
+  end
+  def remove_make_var! flags
+    flags.each { |flag| change_make_var! flag, "" }
+  end
+end
+
+def inreplace path, before=nil, after=nil
   f = File.open(path, 'r')
-  o = f.read.gsub(before, after)
-  f.reopen(path, 'w').write(o)
+  s = f.read
+
+  if before == nil and after == nil
+    s.extend(HomebrewInreplaceExtension)
+    yield s
+  else
+    s.gsub!(before, after)
+  end
+
+  f.reopen(path, 'w').write(s)
   f.close
 end
 
