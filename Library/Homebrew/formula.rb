@@ -99,7 +99,7 @@ class Formula
       @version='HEAD'
     end
 
-    raise if @url.nil?
+    raise "No url provided for formula #{name}" if @url.nil?
     @name=name
     validate_variable :name
 
