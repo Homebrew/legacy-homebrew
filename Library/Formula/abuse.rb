@@ -11,6 +11,7 @@ class Abuse <Formula
   version 'trunk'
   
   depends_on 'sdl'
+  depends_on 'libvorbis'
   
   def patches
     # * Add SDL.m4 to aclocal includes
@@ -27,6 +28,8 @@ END
   end
 
   def install
+    ENV.x11
+
     # Copy the data files
     d = libexec
     AbuseGameData.new.brew { d.install Dir["*"] }
