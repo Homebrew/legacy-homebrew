@@ -6,6 +6,7 @@ class Ncursesw <Formula
   homepage 'http://www.gnu.org/software/ncurses/ncurses.html'
 
   def install
+    ENV.gcc_4_2
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",
