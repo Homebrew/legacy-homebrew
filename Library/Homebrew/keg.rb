@@ -28,6 +28,8 @@ class Keg <Pathname
     raise "#{to_s} is not a directory" unless directory?
   end
 
+  class NotAKegError <RuntimeError; end
+
   # if path is a file in a keg then this will return the containing Keg object
   def self.for path
     path = path.realpath
@@ -35,7 +37,7 @@ class Keg <Pathname
       return Keg.new(path) if path.parent.parent == HOMEBREW_CELLAR.realpath
       path = path.parent.realpath # realpath() prevents root? failing
     end
-    raise "#{path} is not inside a keg"
+    raise NotAKegError, "#{path} is not inside a keg"
   end
 
   def uninstall
@@ -94,6 +96,8 @@ protected
       keg.link_dir(src) { :mkpath }
       return true
     end
+  rescue NotAKegError
+    puts "Won't resolve conflicts for symlink #{dst} as it doesn't resolve into the Cellar" if ARGV.verbose?
   end
 
   # symlinks the contents of self+foo recursively into /usr/local/foo
