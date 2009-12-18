@@ -1,9 +1,9 @@
 require 'formula'
 
 class Rlwrap <Formula
-  url 'http://utopia.knoware.nl/~hlub/uck/rlwrap/rlwrap-0.32.tar.gz'
-  homepage 'http://utopia.knoware.nl/~hlub/uck/rlwrap'
-  md5 '441282a9a65c1d516c1c9a6821184539'
+  url 'http://utopia.knoware.nl/~hlub/rlwrap/rlwrap-0.33.tar.gz'
+  md5 '831f375ca6c9d7ac77bebff616bd03a6'
+  homepage 'http://utopia.knoware.nl/~hlub/rlwrap/'
 
   depends_on 'readline'
 
