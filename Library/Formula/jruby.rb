@@ -9,10 +9,10 @@ class Jruby < Formula
   md5 'a363b6c2ea24f0ef8df478c93ac8cc59'
 
   def install
-    system "ant"
-
     Dir.chdir 'bin' do
       FileUtils.rm Dir['*.bat']
+      FileUtils.rm Dir['*.exe']
+      FileUtils.rm Dir['*.dll']
       Dir['*'].each do |file|
         FileUtils.mv file, "j#{file}" unless file.match /^[j_]/
       end
@@ -21,7 +21,7 @@ class Jruby < Formula
     # Only keep the MacOSX native libraries
     Dir.chdir 'lib/native' do
       Dir['*'].each do |file|
-        FileUtils.rm_f file unless file == 'darwin'
+        FileUtils.rm_rf file unless file == 'darwin'
       end
     end
 
