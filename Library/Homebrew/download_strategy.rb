@@ -160,7 +160,7 @@ class GitDownloadStrategy <AbstractDownloadStrategy
     ohai "Cloning #{@url}"
     @clone=HOMEBREW_CACHE+@unique_token
     unless @clone.exist?
-      quiet_safe_system 'git', 'clone', @url, @clone
+      safe_system 'git', 'clone', @url, @clone # indeed, leave it verbose
     else
       puts "Updating #{@clone}"
       Dir.chdir(@clone) { quiet_safe_system 'git', 'fetch', @url }
