@@ -101,6 +101,8 @@ def curl *args
 end
 
 def puts_columns items, cols = 4
+  return if items.empty?
+
   if $stdout.tty?
     items = items.join("\n") if items.is_a?(Array)
     items.concat("\n") unless items.empty?
