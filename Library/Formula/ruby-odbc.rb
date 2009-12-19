@@ -9,7 +9,7 @@ class RubyOdbc < Formula
   depends_on 'freetds'
 
   def install
-    system "ruby extconf.rb --enable-dlopen --with-odbc-dir=#{HOMEBREW_PREFIX}/lib"
+    system "ruby", "extconf.rb", "--enable-dlopen", "--with-odbc-dir=#{HOMEBREW_PREFIX}/lib"
 
     # extconf.rb assumes it will install ruby-odbc within a folder in your
     # current ruby installation.
@@ -23,16 +23,16 @@ class RubyOdbc < Formula
     system 'make install'
   end
 
-  def caveats
-<<EOS
-Installed ruby-odbc into #{prefix}/lib.
+  def caveats; <<-EOS
+Installed #{lib}/odbc.bundle
 
 You will need to add this to your RUBYLIB by adding the following line to
-.profile or .bashrc or equivalent
-    export RUBYLIB="#{prefix}/lib:$RUBYLIB"
+.profile or .bashrc or equivalent:
 
-You will need to edit freetds.conf,	odbcinst.ini and odbc.ini files to set up
+    export RUBYLIB="#{HOMEBREW_PREFIX}/lib:$RUBYLIB"
+
+You will need to edit freetds.conf, odbcinst.ini and odbc.ini files to set up
 access to your odbc databases.
-EOS
+    EOS
   end
 end
