@@ -27,4 +27,8 @@ class Jruby < Formula
 
     prefix.install Dir['*']
   end
+
+  def test
+    system "jruby -e ''"
+  end
 end
