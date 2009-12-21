@@ -17,6 +17,7 @@ class Go <Formula
   end
 
   def install
+    ENV.j1 # http://github.com/mxcl/homebrew/issues/#issue/237
     prefix.install cruft<<'misc'
     Dir.chdir prefix
     FileUtils.mkdir %w[pkg bin lib]
