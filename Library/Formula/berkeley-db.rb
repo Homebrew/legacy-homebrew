@@ -5,9 +5,12 @@ class BerkeleyDb <Formula
   @homepage='http://www.oracle.com/technology/products/berkeley-db/index.html'
   @md5='147afdecf438ff99ade105a5272db158'
 
+  aka 'db'
+
   def install
     # BerkeleyDB dislikes parallel builds
     ENV.deparallelize
+    ENV.O3 # takes an hour or more with link time optimisation
     
     # BerkeleyDB requires you to build everything from the build_unix subdirectory
     Dir.chdir 'build_unix' do
