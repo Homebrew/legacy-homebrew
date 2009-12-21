@@ -75,24 +75,30 @@ class CurlDownloadStrategy <AbstractDownloadStrategy
 
   def stage
     # magic numbers stolen from /usr/share/file/magic/
-    File.open(@dl) do |f|
+    if @dl.extname == '.jar'
+      magic_bytes = nil
+    else
       # get the first four bytes
-      case f.read(4)
-      when /^PK\003\004/ # .zip archive
-        quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @dl
-        chdir
-      when /^\037\213/, /^BZh/ # gzip/bz2 compressed
-        # TODO check if it's really a tar archive
-        safe_system '/usr/bin/tar', 'xf', @dl
-        chdir
-      else
-        # we are assuming it is not an archive, use original filename
-        # this behaviour is due to ScriptFileFormula expectations
-        # So I guess we should cp, but we mv, for this historic reason
-        # HOWEVER if this breaks some expectation you had we *will* change the
-        # behaviour, just open an issue at github
-        FileUtils.mv @dl, File.basename(@url)
-      end
+      File.open(@dl) { |f| magic_bytes = f.read(4) }
+    end
+
+    case magic_bytes
+    when /^PK\003\004/ # .zip archive
+      quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @dl
+      chdir
+    when /^\037\213/, /^BZh/ # gzip/bz2 compressed
+      # TODO check if it's really a tar archive
+      safe_system '/usr/bin/tar', 'xf', @dl
+      chdir
+    else
+      # we are assuming it is not an archive, use original filename
+      # this behaviour is due to ScriptFileFormula expectations
+      # So I guess we should cp, but we mv, for this historic reason
+      # HOWEVER if this breaks some expectation you had we *will* change the
+      # behaviour, just open an issue at github
+      # We also do this for jar files, as they are in fact zip files, but
+      # we don't want to unzip them
+      FileUtils.mv @dl, File.basename(@url)
     end
   end
 

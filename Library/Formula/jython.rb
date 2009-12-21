@@ -6,10 +6,6 @@ class Jython <Formula
   homepage 'http://www.jython.org'
   md5 '2ee978eff4306b23753b3fe9d7af5b37'
 
-  def download_strategy
-    NoUnzipCurlDownloadStrategy # Don't unzip jar.
-  end
-
   def install
     system "java", "-jar", JAR, "-s", "-d", prefix
   end
