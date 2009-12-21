@@ -21,6 +21,10 @@ class BerkeleyDb <Formula
                           "--enable-java"
                           
       system "make install"
+
+      # use the standard docs location
+      doc.parent.mkpath
+      mv prefix+'docs', doc
     end
   end
 end
