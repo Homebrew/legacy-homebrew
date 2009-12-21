@@ -6,10 +6,6 @@ class Sbt <Formula
   homepage 'http://code.google.com/p/simple-build-tool'
   md5 'e3593448b3be17ce1666c6241b8d2f90'
 
-  def download_strategy
-    NoUnzipCurlDownloadStrategy # Don't unzip jar.
-  end
-
   def install
     (bin+'sbt').write <<-EOS
 #!/bin/sh
