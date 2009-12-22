@@ -245,6 +245,22 @@ rescue
   []
 end
 
+def cleanup name
+  require 'formula'
+
+  f = Formula.factory name
+
+  if f.prefix.parent.directory?
+    kids = f.prefix.parent.children
+    kids.each do |keg|
+      next if f.prefix == keg
+      print "Uninstalling #{keg}..."
+      FileUtils.rm_rf keg
+      puts
+    end
+  end
+end
+
 def clean f
   Cleaner.new f
  
