@@ -207,6 +207,16 @@ begin
         ARGV.named.each {|name| info name}
       end
 
+  when 'cleanup'
+    if ARGV.named.empty?
+      require 'formula'
+      `ls #{HOMEBREW_CELLAR}`.each do |name|
+        cleanup name.strip
+      end
+    else
+      ARGV.named.each { |name| cleanup name}
+    end
+
   when 'install'
     check_for_blacklisted_formula(ARGV.named)
     
