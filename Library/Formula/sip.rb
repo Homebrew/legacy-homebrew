@@ -4,9 +4,9 @@ require 'formula'
 # currently easy_install doesn't seem to support it
 
 class Sip <Formula
-  url 'http://www.riverbankcomputing.co.uk/static/Downloads/sip4/sip-4.9.1.tar.gz'
+  url 'http://www.riverbankcomputing.co.uk/static/Downloads/sip4/sip-4.9.3.tar.gz'
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
-  md5 '4bd61529a956a08841bb3cc2f949e1c4'
+  md5 'd60ec6e87c0155df779fd8b529e80706'
 
   def install
     system "python", "configure.py", "--destdir=#{lib}/python",
