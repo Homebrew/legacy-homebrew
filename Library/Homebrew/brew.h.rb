@@ -33,8 +33,9 @@ end
 def __make url, name
   require 'formula'
   require 'digest'
+  require 'erb'
 
-  path = Formula.path name
+  path = Formula.path(name)
   raise "#{path} already exists" if path.exist?
 
   if Formula.aliases.include? name and not ARGV.force?
@@ -46,8 +47,16 @@ def __make url, name
           EOS
   end
 
+  if ARGV.include? '--cmake'
+    mode = :cmake
+  elsif ARGV.include? '--autotools'
+    mode = :autotools
+  else
+    mode = nil
+  end
+
   version = Pathname.new(url).version
-  if version == nil
+  if version.nil?
     opoo "Version cannot be determined from URL."
     puts "You'll need to add an explicit 'version' to the formula."
   else
@@ -67,59 +76,35 @@ def __make url, name
     end
   end
 
-  template=<<-EOS
-            require 'formula'
+  formula_template = <<-EOS
+require 'formula'
 
-            class #{Formula.class_s name} <Formula
-              url '#{url}'
-              homepage ''
-              md5 '#{md5}'
+class #{Formula.class_s name} <Formula
+  url '#{url}'
+  homepage ''
+  md5 '#{md5}'
 
-  cmake       depends_on 'cmake'
+<% if mode == :cmake %>
+  depends_on 'cmake'
+<% elsif mode == nil %>
+  # depends_on 'cmake'
+<% end %>
 
-              def install
-  autotools     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=\#{prefix}"
-  cmake         system "cmake . \#{std_cmake_parameters}"
-                system "make install"
-              end
-            end
+  def install
+  <% if mode == :cmake %>
+    system "cmake . \#{std_cmake_parameters}"
+  <% elsif mode == :autotools %>
+    system "./configure", "--prefix=\#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+  <% else %>
+    system "./configure", "--prefix=\#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    # system "cmake . \#{std_cmake_parameters}"
+  <% end %>
+    system "make install"
+  end
+end
   EOS
 
-  mode=nil
-  if ARGV.include? '--cmake'
-    mode= :cmake
-  elsif ARGV.include? '--autotools'
-    mode= :autotools
-  end
-
-  f=File.new path, 'w'
-  template.each_line do |s|
-    if s.strip.empty?
-      f.puts
-      next
-    end
-    cmd=s[0..11].strip
-    if cmd.empty?
-      cmd=nil
-    else
-      cmd=cmd.to_sym
-    end
-    out=s[12..-1] || ''
-
-    if mode.nil?
-      # we show both but comment out cmake as it is less common
-      # the implication being the pacakger should remove whichever is not needed
-      if cmd == :cmake and not out.empty?
-        f.print '#'
-        out = out[1..-1]
-      end
-    elsif cmd != mode and not cmd.nil?
-      next
-    end
-    f.puts out
-  end
-  f.close
-
+  path.write(ERB.new(formula_template, nil, '>').result(binding))
   return path
 end
 
