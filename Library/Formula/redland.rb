@@ -1,9 +1,9 @@
 require 'formula'
 
 class Redland <Formula
-  @url='http://download.librdf.org/source/redland-1.0.9.tar.gz'
-  @homepage='http://librdf.org/'
-  @md5='e5ef0c29c55b4f0f5aeed7955b4d383b'
+  url 'http://download.librdf.org/source/redland-1.0.10.tar.gz'
+  homepage 'http://librdf.org/'
+  md5 'bdbb9b8dc614fc09a14cd646079619e1'
 
   depends_on 'raptor'
   depends_on 'rasqal'
