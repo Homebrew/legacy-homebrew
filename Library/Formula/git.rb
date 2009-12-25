@@ -1,20 +1,16 @@
 require 'formula'
 
 class GitManuals <Formula
-  url 'http://kernel.org/pub/software/scm/git/git-manpages-1.6.5.7.tar.bz2'
-  md5 'bafa2e4b914df994ede6a5b401018ef5'
+  url 'http://kernel.org/pub/software/scm/git/git-manpages-1.6.6.tar.bz2'
+  md5 '2f31c767576fa693b5b45244a022fdd3'
 end
 
 class Git <Formula
-  url 'http://kernel.org/pub/software/scm/git/git-1.6.5.7.tar.bz2'
-  md5 '0c2eb426cf596755d6d57a83c9a78be7'
+  url 'http://kernel.org/pub/software/scm/git/git-1.6.6.tar.bz2'
+  md5 '25e4bcdc528b3ffadc6e59908a513881'
   homepage 'http://git-scm.com'
 
   def install
-    # sadly, there's a bug in LLVM:
-    # http://www.mail-archive.com/llvmbugs@cs.uiuc.edu/msg03791.html
-    ENV.gcc_4_2
-
     # if these things are installed, tell git build system to not use them
     ENV['NO_FINK']='1'
     ENV['NO_DARWIN_PORTS']='1'
