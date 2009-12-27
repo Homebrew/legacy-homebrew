@@ -86,7 +86,7 @@ class CurlDownloadStrategy <AbstractDownloadStrategy
     when /^PK\003\004/ # .zip archive
       quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @dl
       chdir
-    when /^\037\213/, /^BZh/ # gzip/bz2 compressed
+    when /^\037\213/, /^BZh/, /^\037\235/  # gzip/bz2/compress compressed
       # TODO check if it's really a tar archive
       safe_system '/usr/bin/tar', 'xf', @dl
       chdir
