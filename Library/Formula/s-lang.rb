@@ -5,6 +5,8 @@ class SLang <Formula
   @homepage='http://www.s-lang.org/'
   @md5='974437602a781cfe92ab61433dd16d03'
 
+  aka :slang
+
   depends_on 'pcre' => :optional
   depends_on 'oniguruma' => :optional
 
