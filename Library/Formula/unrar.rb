@@ -53,11 +53,14 @@ class Unrar <Formula
   @homepage='http://www.rarlab.com'
 
   def install
+    # No need to do LTO, we're combining all source files manually
+    ENV.O3
+
     # by compiling all in one unit, g++ optimises slightly better
     # be warned: this trick doesn't work very often! And I'd only do it for
     # very stable source trees as if they change stuff it sucks for you.
     File.open('all.cpp', 'w') {|f| f.write ALL_CPP}
-    system "g++ #{ENV['CXXFLAGS']} -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE all.cpp -o unrar"
+    system "#{ENV['CXX']} #{ENV['CXXFLAGS']} -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE all.cpp -o unrar"
     bin.install 'unrar'
     
     FileUtils.mv 'license.txt', 'COPYING'
