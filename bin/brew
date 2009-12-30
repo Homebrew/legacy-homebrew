@@ -219,10 +219,16 @@ begin
     raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable?
 
     ################################################################# warnings
-    if MACOS_VERSION >= 10.6
-      opoo "You should upgrade to Xcode 3.2.1" if llvm_build < 2206
-    else
-      opoo "You should upgrade to Xcode 3.1.4" if gcc_build < 5577
+    begin
+      if MACOS_VERSION >= 10.6
+        opoo "You should upgrade to Xcode 3.2.1" if llvm_build < 2206
+      else
+        opoo "You should upgrade to Xcode 3.1.4" if gcc_build < 5577
+      end
+    rescue
+      # the reason we don't abort is some formula don't require Xcode
+      # TODO allow formula to declare themselves as "not needing Xcode"
+      opoo "Xcode is not installed! Builds may fail!"
     end
 
     if macports_or_fink_installed?
