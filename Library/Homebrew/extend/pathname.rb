@@ -154,6 +154,11 @@ class Pathname
     nil
   end
 
+  def md5
+    require 'digest'
+    Digest::MD5.hexdigest(File.read(self))
+  end
+
   if '1.9' <= RUBY_VERSION
     alias_method :to_str, :to_s
   end
