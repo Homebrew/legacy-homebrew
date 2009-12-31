@@ -471,7 +471,34 @@ class BeerTasting <Test::Unit::TestCase
       end
     end
   end
-  
+
+  def test_brew_cleanup
+    f1=TestBall.new
+    f1.instance_eval { @version = "0.1" }
+    f2=TestBall.new
+    f2.instance_eval { @version = "0.2" }
+    f3=TestBall.new
+    f3.instance_eval { @version = "0.3" }
+
+    nostdout do
+      f1.brew { f1.install }
+      f2.brew { f2.install }
+      f3.brew { f3.install }
+    end
+
+    assert f1.installed?
+    assert f2.installed?
+    assert f3.installed?
+
+    nostdout do
+      cleanup f3
+    end
+
+    assert !f1.installed?
+    assert !f2.installed?
+    assert f3.installed?
+  end
+
   def test_my_float_assumptions
     # this may look ridiculous but honestly there's code in brewit that depends on 
     # this behaviour so I wanted to be certain Ruby floating points are behaving
