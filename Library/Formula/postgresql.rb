@@ -6,6 +6,7 @@ class Postgresql <Formula
   @md5='f2015af17bacbbfe140daf0d1067f9c9'
 
   depends_on 'readline'
+  depends_on 'libxml2' if MACOS_VERSION < 10.6
 
   aka 'postgres'
 
