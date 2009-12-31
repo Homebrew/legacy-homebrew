@@ -2,8 +2,8 @@ require 'formula'
 
 class Postgresql <Formula
   @homepage='http://www.postgresql.org/'
-  @url='http://ftp3.de.postgresql.org/pub/Mirrors/ftp.postgresql.org/source/v8.4.1/postgresql-8.4.1.tar.bz2'
-  @md5='f2015af17bacbbfe140daf0d1067f9c9'
+  @url='http://ftp2.uk.postgresql.org/sites/ftp.postgresql.org/source/v8.4.2/postgresql-8.4.2.tar.bz2'
+  @md5='d738227e2f1f742d2f2d4ab56496c5c6'
 
   depends_on 'readline'
   depends_on 'libxml2' if MACOS_VERSION < 10.6 #system libxml is too old
