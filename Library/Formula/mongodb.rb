@@ -38,7 +38,7 @@ You can enable mongodb to automatically load on login with:
     launchctl load -w #{prefix}/org.mongodb.mongod.plist
 
 Or start it manually:
-    #{bin}/mongod run --config #{prefix}/mongod.conf
+    mongod run --config #{prefix}/mongod.conf
 EOS
   end
 
