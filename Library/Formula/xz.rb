@@ -7,7 +7,8 @@ class Xz <Formula
   version '4.999.9beta' # *shrug*
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    # Disable the assembly CRC checks they use x86 rather than x86-64 asm and fail to build for x86-64.
+    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--disable-assembler"
     system "make install"
   end
 end
