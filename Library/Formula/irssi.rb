@@ -13,8 +13,19 @@ class Irssi <Formula
   end
 
   def install
-    ENV.append 'ARCHFLAGS', ' '
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--with-modules", "--enable-ssl", "--enable-ipv6", "--with-perl=yes"
+    ENV.append 'ARCHFLAGS', ' ' # wtf?
+
+    cargs = ["--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking",
+             "--with-modules", "--enable-ssl", "--enable-ipv6"]
+
+    # http://github.com/mxcl/homebrew/issues/#issue/367
+    if MACOS_VERSION > 10.5
+      cargs << "--with-perl=no"
+    else
+      cargs << "--with-perl=yes"
+    end
+
+    system "./configure", *cargs
     system "make install"
   end
 end
