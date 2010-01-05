@@ -9,6 +9,10 @@ class Sphinx <Formula
   depends_on 'mysql'
 
   def install
+    # fails with llvm-gcc:
+    # ld: rel32 out of range in _GetPrivateProfileString from /usr/lib/libodbc.a(SQLGetPrivateProfileString.o)
+    ENV.gcc_4_2
+
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end
