@@ -326,12 +326,18 @@ rescue Interrupt => e
   exit 130
 rescue BuildError => e
   e.backtrace[1] =~ %r{Library/Formula/(.+)\.rb:(\d+)}
-  puts "http://github.com/mxcl/homebrew/blob/master/Library/Formula/#{$1}.rb#L#{$2}"
+  formula_name = $1
+  puts "http://github.com/mxcl/homebrew/blob/master/Library/Formula/#{formula_name}.rb#L#{$2}"
   ohai "Environment"
   dump_config
   puts "Exit status: #{e.status.exitstatus}"
   onoe e
   puts PLEASE_REPORT_BUG
+  # this feature can be slow (depends on network conditions and if github is up)
+  # so ideally we'd show feedback, eg. "checking for existin issues..." and
+  # then replace that string with the following when the github api returns
+  issues = issues_for_formula(formula_name)
+  puts "These existing issues may help you:", *issues unless issues.empty?
   exit 1
 rescue RuntimeError, SystemCallError => e
   onoe e
