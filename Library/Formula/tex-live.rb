@@ -15,7 +15,7 @@ end
 
 class Texmf <Formula
   version '20080822'
-  url "http://students.dec.bournemouth.ac.uk/ebarrett/texlive/distfiles/texlive-#{version}-texmf.tar.lzma"
+  url "ftp://ftp.openbsd.org/pub/OpenBSD/distfiles/texlive-#{version}-texmf.tar.lzma"
   md5 'fa74072e1344e8390eb156bcda61a8b2'
 
   def download_strategy
@@ -25,14 +25,13 @@ end
 
 class TexLive <Formula
   version '20080816'
-  url "http://students.dec.bournemouth.ac.uk/ebarrett/texlive/distfiles/texlive-#{version}-source.tar.lzma"
-  #Alternatively (slower):
-  #url 'ftp://ftp.openbsd.org/pub/OpenBSD/distfiles/texlive-20080816-source.tar.lzma'
+  
+  # OpenBSD mirrors are slower but more reliable
+  url "ftp://ftp.openbsd.org/pub/OpenBSD/distfiles/texlive-#{version}-source.tar.lzma"
   homepage 'http://www.tug.org/texlive/'
   md5 '554287c3e458da776edd684506048d45'
 
   depends_on 'lzma'
-  depends_on 'icu4c'
   depends_on 'gd'
 
   def download_strategy
@@ -42,56 +41,57 @@ class TexLive <Formula
   def patches
     # Steal all the TexLive 2008 OpenBSD patches
     patches = [
-      "configure",
-      "libs_configure",
-      "libs_graphite-engine_configure",
-      "libs_icu-xetex_Makefile_in",
+      "configure?rev=1.1",
+      "libs_configure?rev=1.1",
+      "libs_graphite-engine_configure?rev=1.1",
+      "libs_icu-xetex_Makefile_in?rev=1.2",
       # Hijacked: we needed to add a CFLAG to the patch, so I merged this and my change below
       #{}"libs_lua51_Makefile",
-      "libs_lua51_lcoco_c",
-      "libs_lua51_lcoco_h",
-      "texk_afm2pl_Makefile_in",
-      "texk_bibtex8_Makefile_in",
-      "texk_cjkutils_conv_Makefile_in",
-      "texk_cjkutils_hbf2gf_Makefile_in",
-      "texk_cjkutils_scripts_Makefile_in",
-      "texk_dtl_Makefile_in",
-      "texk_dvidvi_Makefile_in",
-      "texk_dviljk_Makefile_in",
-      "texk_dvipdfm_Makefile_in",
-      "texk_dvipng_configure",
-      "texk_dvipos_Makefile_in",
-      "texk_dvipsk_Makefile_in",
-      "texk_gsftopk_Makefile_in",
-      "texk_kpathsea_Makefile_in",
-      "texk_kpathsea_texmf_cnf",
-      "texk_lacheck_Makefile_in",
-      "texk_make_man_mk",
-      "texk_makeindexk_Makefile_in",
-      "texk_musixflx_Makefile_in",
-      "texk_ps2pkm_Makefile_in",
-      "texk_seetexk_Makefile_in",
-      "texk_tetex_Makefile_in",
-      "texk_tex4htk_Makefile_in",
-      "texk_texlive_Makefile_in",
-      "texk_texlive_linked_scripts_texdoc_tlu",
-      "texk_ttf2pk_Makefile_in",
-      "texk_web2c_Makefile_in",
-      "texk_web2c_alephdir_aleph_mk",
-      "texk_web2c_configure",
-      "texk_web2c_doc_Makefile_in",
-      "texk_web2c_luatexdir_luatex_mk",
-      "texk_web2c_mpware_Makefile_in",
-      "texk_web2c_omegadir_omega_mk",
-      "texk_web2c_omegafonts_Makefile_in",
-      "texk_web2c_otps_Makefile_in",
-      "texk_web2c_pdftexdir_pdftex_mk",
-      "texk_xdvik_Makefile_in",
-      "texk_xdvipdfmx_Makefile_in",
-      "texk_xdvipdfmx_configure",
-      "utils_dialog_Makefile_in",
-      "utils_tpic2pdftex_Makefile_in"
-    ].collect! {|middle| "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-#{middle}?rev=HEAD;content-type=text%2Fplain"}
+      "libs_lua51_lcoco_c?rev=1.1",
+      "libs_lua51_lcoco_h?rev=1.1",
+      "texk_afm2pl_Makefile_in?rev=1.2",
+      "texk_bibtex8_Makefile_in?rev=1.2",
+      "texk_cjkutils_conv_Makefile_in?rev=1.3",
+      "texk_cjkutils_hbf2gf_Makefile_in?rev=1.2",
+      "texk_cjkutils_scripts_Makefile_in?rev=1.3",
+      "texk_dtl_Makefile_in?rev=1.2",
+      "texk_dvidvi_Makefile_in?rev=1.2",
+      "texk_dviljk_Makefile_in?rev=1.2",
+      "texk_dvipdfm_Makefile_in?rev=1.2",
+      "texk_dvipng_configure?rev=1.1",
+      "texk_dvipos_Makefile_in?rev=1.2",
+      "texk_dvipsk_Makefile_in?rev=1.2",
+      "texk_gsftopk_Makefile_in?rev=1.2",
+      "texk_kpathsea_Makefile_in?rev=1.2",
+      # Replaced with some ruby code below, we need a different approach
+      #"texk_kpathsea_texmf_cnf?rev=1.1",
+      "texk_lacheck_Makefile_in?rev=1.2",
+      "texk_make_man_mk?rev=1.2",
+      "texk_makeindexk_Makefile_in?rev=1.2",
+      "texk_musixflx_Makefile_in?rev=1.2",
+      "texk_ps2pkm_Makefile_in?rev=1.2",
+      "texk_seetexk_Makefile_in?rev=1.2",
+      "texk_tetex_Makefile_in?rev=1.2",
+      "texk_tex4htk_Makefile_in?rev=1.2",
+      "texk_texlive_Makefile_in?rev=1.2",
+      "texk_texlive_linked_scripts_texdoc_tlu?rev=1.1",
+      "texk_ttf2pk_Makefile_in?rev=1.2",
+      "texk_web2c_Makefile_in?rev=1.2", # not in OPENBSD_4_6_BASE
+      "texk_web2c_alephdir_aleph_mk?rev=1.2",
+      "texk_web2c_configure?rev=1.2",
+      "texk_web2c_doc_Makefile_in?rev=1.2",
+      "texk_web2c_luatexdir_luatex_mk?rev=1.1",
+      "texk_web2c_mpware_Makefile_in?rev=1.2",
+      "texk_web2c_omegadir_omega_mk?rev=1.2",
+      "texk_web2c_omegafonts_Makefile_in?rev=1.2",
+      "texk_web2c_otps_Makefile_in?rev=1.2",
+      "texk_web2c_pdftexdir_pdftex_mk?rev=1.2",
+      "texk_xdvik_Makefile_in?rev=1.2",
+      "texk_xdvipdfmx_Makefile_in?rev=1.1",
+      "texk_xdvipdfmx_configure?rev=1.1",
+      "utils_dialog_Makefile_in?rev=1.3",
+      "utils_tpic2pdftex_Makefile_in?rev=1.1"
+    ].collect! {|middle| "http://www.openbsd.org/cgi-bin/cvsweb/ports/print/texlive/base/patches/patch-#{middle};content-type=text%2Fplain"}
     # Putting DATA in p0 seemed to cause trouble, so we put nonsense in the filenames and put it in p1
     { :p0 => patches, :p1 => DATA }
   end
@@ -121,29 +121,38 @@ class TexLive <Formula
     # Actually, if compilation fails brew thinks that we succeeded because this directory exists. Maybe we should patch the makefiles...
     FileUtils.mkdir_p "#{prefix}/share/man/man5"
     
+    # Replaces the texk_kpathsea_texmf_cnf OpenBSD patch with our own version
+    inreplace "texk/kpathsea/texmf.cnf", "$SELFAUTOPARENT/", "#{prefix}/share/"
+    
     build_dir='Work'
+    
     FileUtils.mkdir build_dir
     Dir.chdir build_dir do
-      system "../configure", "--prefix=#{prefix}", "--datadir=#{prefix}", \
+      system "../configure", "--prefix=#{prefix}/", "--datadir=#{prefix}/", \
       "--with-xdvi-x-toolkit=xaw", "--disable-threads", "--with-old-mac-fonts", "--without-xindy", \
       "--x-libraries=#{x11_libdir}", "--x-includes=#{x11_includedir}", \
       "--with-freetype2-libdir=#{x11_libdir}", "--with-freetype2-include=#{x11_includedir}", \
       "--with-pnglib-libdir=#{x11_libdir}", "--with-pnglib-include=#{x11_includedir}", \
       "--with-system-ncurses", "--with-system-freetype2", "--with-system-pnglib", \
-      "--with-system-zlib", "--with-system-gd", "--with-system-icu", \
+      "--with-system-zlib", "--with-system-gd", \
       "--disable-multiplatform", "--without-texinfo", "--without-xdvipdfmx", \
       "--without-texi2html", "--without-psutils"
       
       system "make world"
     end
 
-    Texmf.new.brew{ share.install Dir['*'] }
+    # Installs texmf, which has necessary support files for tex-live
+    Texmf.new.brew{ 
+      # Update a conf file to use the proper directories, replaces OpenBSD patch
+      # Yes, this file exists in both tex-live and texmf. With this change they're identical, though.
+      inreplace "texmf/web2c/texmf.cnf", "$SELFAUTOPARENT/", "#{prefix}/share/"
+      share.install Dir['*']
+    }
 
     # The texlive makefiles are supposed to do this, I don't know why they don't...
-    Dir.chdir bin do
-      system "PATH=$PATH:#{bin} texlinks -f #{share}/texmf/web2c/fmtutil.cnf"
-      system "PATH=$PATH:#{bin} fmtutil-sys --all"
-    end
+    #We need this ugly path hack because texlinks and fmtutil-sys call other scripts in bin
+    system "PATH=$PATH:#{bin} texlinks -f #{share}/texmf/web2c/fmtutil.cnf"
+    system "PATH=$PATH:#{bin} fmtutil-sys --all"
   end
 end
 
