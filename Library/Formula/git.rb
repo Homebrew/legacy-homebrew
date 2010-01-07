@@ -14,6 +14,8 @@ class Git <Formula
     # if these things are installed, tell git build system to not use them
     ENV['NO_FINK']='1'
     ENV['NO_DARWIN_PORTS']='1'
+    # If local::lib is used you get a 'Only one of PREFIX or INSTALL_BASE can be given' error
+    ENV['PERL_MM_OPT']='';
 
     system "./configure --prefix=#{prefix}"
     system "make install"
