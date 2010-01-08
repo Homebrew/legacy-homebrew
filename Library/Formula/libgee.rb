@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libgee <Formula
-  @url='http://ftp.gnome.org/pub/GNOME/sources/libgee/0.3/libgee-0.3.0.tar.bz2'
-  @homepage='http://live.gnome.org/Libgee'
-  @md5='1ca2b8a87950ef1b14342fb32db3e558'
+  url 'http://download.gnome.org/sources/libgee/0.5/libgee-0.5.0.tar.bz2'
+  homepage 'http://live.gnome.org/Libgee'
+  md5 '45e3e069dc3488e4bfe0c8411b85b987'
 
   depends_on 'vala'
 
