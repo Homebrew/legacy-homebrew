@@ -4,6 +4,7 @@ class Wine <Formula
   url 'http://ibiblio.org/pub/linux/system/emulators/wine/wine-1.1.37.tar.bz2'
   md5 'a9144360723c8276dffdbcea9c1028d5'
   homepage 'http://www.winehq.org/'
+  head 'git://source.winehq.org/git/wine.git'
 
   depends_on 'jpeg'
   depends_on 'mpg123' => :optional
