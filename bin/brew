@@ -65,6 +65,7 @@ Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
 GCC-4.2: #{gcc ? "build #{gcc}" : "N/A"}
 LLVM: #{llvm ? "build #{llvm}" : "N/A" }
 MacPorts or Fink? #{macports_or_fink_installed?}
+X11 installed? #{x11_installed?}
 EOS
 end
 

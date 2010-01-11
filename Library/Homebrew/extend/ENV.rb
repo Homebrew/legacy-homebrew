@@ -164,6 +164,8 @@ module HomebrewEnvExtension
     append_to_cflags ' -I/usr/include/libxml2'
   end
   def x11
+    opoo "You do not have X11 installed, this formula may not build." if not x11_installed?
+    
     # CPPFLAGS are the C-PreProcessor flags, *not* C++!
     append 'CPPFLAGS', '-I/usr/X11R6/include'
     append 'LDFLAGS', '-L/usr/X11R6/lib'
