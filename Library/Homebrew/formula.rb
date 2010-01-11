@@ -38,7 +38,8 @@ end
 class Formulary
   # Returns all formula names as strings, with or without aliases
   def self.names with_aliases=false
-    everything = (HOMEBREW_REPOSITORY+'Library/Formula').children.map{|f| f.basename('.rb').to_s }
+    filenames = (HOMEBREW_REPOSITORY+'Library/Formula').children.select {|f| f.to_s =~ /\.rb$/ }
+    everything = filenames.map{|f| f.basename('.rb').to_s }
     everything.push *Formulary.get_aliases.keys if with_aliases
     everything.sort
   end
