@@ -6,6 +6,7 @@ class Geos <Formula
   md5 '196f4424aa4ef94476e6886d3a964fb6'
 
   def install
+    ENV.O3
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end
