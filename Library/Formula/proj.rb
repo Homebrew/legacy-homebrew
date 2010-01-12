@@ -11,6 +11,7 @@ class Proj <Formula
   md5 '927d34623b52e0209ba2bfcca18fe8cd'
 
   def install
+    ENV.gcc_4_2
 
     # The datum grid files are required to support datum shifting
     d = Dir.getwd
