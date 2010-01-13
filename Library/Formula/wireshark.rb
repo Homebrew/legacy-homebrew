@@ -5,6 +5,8 @@ class Wireshark <Formula
   @md5='facf1eef2f126a9d45e5c30702dae12b'
   @homepage='http://www.wireshark.org'
 
+  depends_on 'glib'
+
   def install
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
