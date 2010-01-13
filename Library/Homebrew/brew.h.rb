@@ -442,11 +442,13 @@ private
     puts "strip #{path}" if ARGV.verbose?
     path.chmod 0644 # so we can strip
     unless path.stat.nlink > 1
-      `strip #{args} #{path}`
+      system "strip", *(args+path)
     else
+      path = path.to_s.gsub ' ', '\\ '
+
       # strip unlinks the file and recreates it, thus breaking hard links!
       # is this expected behaviour? patch does it too… still, this fixes it
-      tmp = `/usr/bin/mktemp -t #{path.basename}`.chomp
+      tmp = `/usr/bin/mktemp -t homebrew_strip`.chomp
       `/usr/bin/strip #{args} -o #{tmp} #{path}`
       `/bin/cat #{tmp} > #{path}`
       File.unlink tmp
