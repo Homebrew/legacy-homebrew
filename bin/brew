@@ -293,6 +293,8 @@ begin
         to_check.push(*formula.deps.select{|g| !checked[g]})
       end
       
+      our_deps.uniq!
+      
       if our_deps.empty?
         puts "#{name} has no dependencies."
       else
