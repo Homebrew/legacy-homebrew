@@ -21,15 +21,14 @@ class Rabbitmq <Formula
     (var + "log" + "couchdb").mkpath
 
     %w{rabbitmq-server rabbitmq-multi rabbitmqctl rabbitmq-env}.each do |script|
-      inreplace sbin+script, '/etc/rabbitmq', "#{etc}/rabbitmq"
-      inreplace sbin+script, '/var/log/rabbitmq', "#{var}/log/rabbitmq"
-      inreplace sbin+script, '/var/lib/rabbitmq', "#{var}/lib/rabbitmq"
+      inreplace sbin+script do |contents|
+        contents.gsub! '/etc/rabbitmq', "#{etc}/rabbitmq"
+        contents.gsub! '/var/((log|lib)/rabbitmq)', "#{var}/\1"
+      end
     end
 
-    %w{rabbitmq-env}.each do |script|
-      # RabbitMQ Erlang binaries are installed in lib/rabbitmq/erlang/lib/rabbitmq-x.y.z/ebin
-      # therefore need to add this path for erl -pa
-      inreplace sbin+script, '${SCRIPT_DIR}/..', "#{target_dir}"
-    end
+    # RabbitMQ Erlang binaries are installed in lib/rabbitmq/erlang/lib/rabbitmq-x.y.z/ebin
+    # therefore need to add this path for erl -pa
+    inreplace sbin+'rabbitmq-env', '${SCRIPT_DIR}/..', "#{target_dir}"
   end
 end

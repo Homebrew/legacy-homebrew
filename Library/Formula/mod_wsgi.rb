@@ -12,29 +12,18 @@ class ModWsgi <Formula
   end
 
   def install
-    FileUtils.mv 'LICENCE', 'LICENSE'
-    system "./configure --prefix='#{prefix}' --disable-debug --disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
 
-    # The arch flags should match your Python's arch flags.
-    archs = arch_for_command "`which python`"
+    archs = archs_for_command("python").collect{ |arch| "-arch #{arch}" }
     
-    comp_flags = ''
-    link_flags = ''
-    archs.each do |a|
-      comp_flags += " -Wc,'-arch #{a}'"
-      link_flags += " -arch #{a}"
+    inreplace 'Makefile' do |s|
+      s.gsub! "-Wc,'-arch ppc7400' -Wc,'-arch ppc64' -Wc,'-arch i386' -Wc,'-arch x86_64'",
+              archs.collect{ |a| "-Wc,'#{a}'" }.join(' ')
+      s.gsub! "-arch ppc7400 -arch ppc64 -arch i386 -arch x86_64",
+              archs*' '
+      # --libexecdir parameter to ./configure isn't changing this, so cram it in
+      s.change_make_var! "LIBEXECDIR", libexec
     end
-    
-    inreplace 'Makefile',
-      "-Wc,'-arch ppc7400' -Wc,'-arch ppc64' -Wc,'-arch i386' -Wc,'-arch x86_64'",
-      "#{comp_flags}"
- 
-    inreplace 'Makefile',
-      "-arch ppc7400 -arch ppc64 -arch i386 -arch x86_64",
-      "#{link_flags}"
-    
-    # --libexecdir parameter to ./configure isn't changing this, so cram it in
-    inreplace 'Makefile', "LIBEXECDIR = /usr/libexec/apache2", "LIBEXECDIR = #{libexec}"
 
     system "make install"
   end

@@ -26,14 +26,13 @@ class Xu4 <Formula
       # ...so we can copy the ObjC main files.
       `cp -R #{sdl_prefix}/libexec/* macosx`
       
-      inreplace "Makefile.macosx", "WHICH_FRAMEWORK=10.4u", "WHICH_FRAMEWORK=#{MACOS_VERSION}"
-      inreplace "Makefile.macosx", "ARCHES=-arch i386 -arch ppc", "ARCHES="
-      inreplace "Makefile.macosx",
-        "BUNDLE_CONTENTS=../../xu4.app/Contents",
-        "BUNDLE_CONTENTS=xu4.app/Contents"
-
-      inreplace "Makefile.macosx", "../../ultima4.zip", "../ultima4-1.01.zip"
-      inreplace "Makefile.macosx", "../../u4upgrad.zip", "../u4upgrad.zip"
+      inreplace "Makefile.macosx" do |s|
+        s.change_make_var! "WHICH_FRAMEWORK", MACOS_VERSION
+        s.remove_make_var! "ARCHES"
+        s.change_make_var! "BUNDLE_CONTENTS", "xu4.app/Contents"
+        s.gsub! "../../ultima4.zip", "../ultima4-1.01.zip"
+        s.gsub! "../../u4upgrad.zip", "../u4upgrad.zip"
+      end
       
       system "make -f Makefile.macosx"
       system "make -f Makefile.macosx install"

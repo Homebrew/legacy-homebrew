@@ -5,19 +5,24 @@ class Uwsgi <Formula
   homepage 'http://projects.unbit.it/uwsgi/'
   md5 'dd72040daea5a9ee982f3b3b98946ed9'
 
+  def python_archs
+    archs_for_command("python").collect{ |arch| "-arch #{arch}" }.join(' ')
+  end
+
+  def python_version
+    `python -c "import sys; print '%s.%s' % sys.version_info[:2]"`.chomp
+  end
+
   def install
-    # Getting the current Python version to determine pythonX.Y-config
-    py_version = `python -c "import sys; print '%s.%s' % sys.version_info[:2]"`.chomp
-    # The arch flags should match your Python's arch flags.
-    archs = arch_for_command "`which python`"
-    arch_flags = ''
-    archs.each do |a|
-      arch_flags += " -arch #{a}"
+    mv 'Makefile.OSX.ub.Py25', 'Makefile'
+
+    inreplace "Makefile" do |s|
+      s.gsub! "python2.5-config", "python#{ python_version }-config"
+      # The arch flags should match your Python's arch flags
+      s.gsub! "-arch ppc -arch i386", python_archs
     end
-    FileUtils.mv 'Makefile.OSX.ub.Py25', 'Makefile.OSX'
-    inreplace "Makefile.OSX", "python2.5-config", "python#{py_version}-config"
-    inreplace "Makefile.OSX", "-arch ppc -arch i386", "#{arch_flags}"
-    system "make -f Makefile.OSX"
+
+    system "make all"
     bin.install "uwsgi"
   end
 end
