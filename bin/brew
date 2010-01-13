@@ -75,6 +75,8 @@ begin
   case arg = ARGV.shift
   when '--prefix'
     puts HOMEBREW_PREFIX
+  when '--repository'
+    puts HOMEBREW_REPOSITORY
   when '--config'
     dump_config
 

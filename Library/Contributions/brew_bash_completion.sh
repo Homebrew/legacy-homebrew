@@ -21,8 +21,7 @@ _brew_to_completion()
         return 0
     # Subcommands
     else
-        brew_base=`which brew`
-        brew_base=`dirname ${brew_base}`/..
+        brew_base=`brew --repository`
         
         case ${prev} in
             # Commands that take a formula...
