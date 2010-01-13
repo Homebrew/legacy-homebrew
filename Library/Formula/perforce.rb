@@ -1,10 +1,12 @@
 require 'formula'
 
 class Perforce <Formula
-  @url='http://filehost.perforce.com/perforce/r09.1/bin.macosx104u/p4'
-  @homepage='http://www.perforce.com/'
-  @md5='460d7604a2126bd63d6e202238ec58ef'
-  @version='2009.1.211694'
+  url 'http://filehost.perforce.com/perforce/r09.2/bin.macosx104u/p4'
+  homepage 'http://www.perforce.com/'
+  md5 'f0018978f6e62f4e045820918c4fb588'
+  version '2009.2.228098'
+  
+  aka 'p4'
 
   def install
     bin.install 'p4'
