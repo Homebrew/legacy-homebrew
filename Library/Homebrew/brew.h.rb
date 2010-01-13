@@ -449,9 +449,12 @@ private
       # strip unlinks the file and recreates it, thus breaking hard links!
       # is this expected behaviour? patch does it too… still, this fixes it
       tmp = `/usr/bin/mktemp -t homebrew_strip`.chomp
-      `/usr/bin/strip #{args} -o #{tmp} #{path}`
-      `/bin/cat #{tmp} > #{path}`
-      File.unlink tmp
+      begin
+        `/usr/bin/strip #{args} -o #{tmp} #{path}`
+        `/bin/cat #{tmp} > #{path}`
+      ensure
+        FileUtils.rm tmp
+      end
     end
   end
 
