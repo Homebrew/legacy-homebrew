@@ -350,7 +350,7 @@ def macports_or_fink_installed?
 end
 
 def versions_of(keg_name)
-  `ls #{HOMEBREW_CELLAR}/#{keg_name}`.collect { |version| version.strip }.reverse
+  `/bin/ls #{HOMEBREW_CELLAR}/#{keg_name}`.collect { |version| version.strip }.reverse
 end
 
 
@@ -446,9 +446,9 @@ private
     else
       # strip unlinks the file and recreates it, thus breaking hard links!
       # is this expected behaviour? patch does it too… still, this fixes it
-      tmp=`mktemp -t #{path.basename}`.strip
-      `strip #{args} -o #{tmp} #{path}`
-      `cat #{tmp} > #{path}`
+      tmp = `/usr/bin/mktemp -t #{path.basename}`.chomp
+      `/usr/bin/strip #{args} -o #{tmp} #{path}`
+      `/bin/cat #{tmp} > #{path}`
       File.unlink tmp
     end
   end
