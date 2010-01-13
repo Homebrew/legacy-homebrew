@@ -134,12 +134,12 @@ def exec_editor *args
   exec *(editor.split+args)
 end
 
-# provide an absolute path to a command or this function will search the PATH
-def arch_for_command cmd
-    archs = []
-    cmd = `/usr/bin/which #{cmd}` if not Pathname.new(cmd).absolute?
+# returns array of architectures suitable for -arch gcc flag
+def archs_for_command cmd
+    cmd = `/usr/bin/which #{cmd}` unless Pathname.new(cmd).absolute?
+    cmd.gsub! ' ', '\\ '
 
-    IO.popen("/usr/bin/file #{cmd}").readlines.each do |line|
+    IO.popen("/usr/bin/file #{cmd}").readlines.inject(%w[]) do |archs, line|
       case line
       when /Mach-O executable ppc/
         archs << :ppc7400
@@ -149,10 +149,10 @@ def arch_for_command cmd
         archs << :i386
       when /Mach-O 64-bit executable x86_64/
         archs << :x86_64
+      else
+        archs
       end
     end
-
-    return archs
 end
 
 # replaces before with after for the file path
