@@ -47,8 +47,8 @@ module HomebrewEnvExtension
       prefix = `/usr/bin/xcode-select -print-path`.chomp
       prefix = "/Developer" if prefix.to_s.empty?
 
-      ENV['CC'] = "#{prefix}/usr/llvm-gcc-4.2/bin/llvm-gcc-4.2"
-      ENV['CXX'] = "#{prefix}/usr/llvm-gcc-4.2/bin/llvm-g++-4.2"
+      ENV['CC'] = "#{prefix}/usr/bin/llvm-gcc"
+      ENV['CXX'] = "#{prefix}/usr/bin/llvm-g++"
       cflags = %w{-O4} # link time optimisation baby!
     else
       ENV['CC']="gcc-4.2"
