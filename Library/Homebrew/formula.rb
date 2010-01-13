@@ -53,8 +53,8 @@ class Formulary
     eval(klass_name)
   end
   
-  # Loads all formula classes.
   def self.read_all
+  # yields once for each
     Formulary.names.each do |name|
       require Formula.path(name)
       klass_name = Formula.class_s(name)
@@ -63,6 +63,8 @@ class Formulary
     end
   end
 
+  # returns a map of aliases to actual names
+  # eg { 'ocaml' => 'objective-caml' }
   def self.get_aliases
     aliases = {}
     Formulary.read_all do |name, klass|
@@ -225,7 +227,7 @@ class Formula
   end
 
   def self.class_s name
-    #remove invalid characters and camelcase
+    #remove invalid characters and then camelcase it
     name.capitalize.gsub(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase } \
                    .gsub('+', 'x')
   end
