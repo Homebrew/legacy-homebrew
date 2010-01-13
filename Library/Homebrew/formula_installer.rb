@@ -20,10 +20,27 @@ class FormulaInstaller
     end
     deps
   end
+  def pyerr dep
+    brew_pip = ' brew install pip &&' unless Formula.factory('pip').installed?
+    <<-EOS
+Unsatisfied dependency, #{dep}
+Homebrew does not provide formula for Python dependencies, pip does:
 
-  def install f    
+   #{brew_pip} pip install #{dep}
+
+    EOS
+  end
+
+  def check_external_deps f
+    f.external_deps[:python].each do |dep|
+      raise pyerr(dep) unless quiet_system "/usr/bin/python", "-c", "import #{dep}"
+    end if f.external_deps
+  end
+
+  def install f
     expand_deps(f).each do |dep|
       begin
+        check_external_deps f
         install_private dep unless dep.installed?
       rescue
         #TODO continue if this is an optional dep

@@ -6,6 +6,7 @@ class Rabbitmq <Formula
   md5 '4505ca0fd8718439bd6f5e2af2379e56'
 
   depends_on 'erlang'
+  depends_on 'simplejson' => :python if MACOS_VERSION < 10.6
 
   def install
     erlang_libdir = lib + "rabbitmq" + "erlang" + "lib"
