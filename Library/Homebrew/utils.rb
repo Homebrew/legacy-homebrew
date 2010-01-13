@@ -84,16 +84,31 @@ def interactive_shell
   end
 end
 
+module Homebrew
+  def self.system cmd, *args
+    puts "#{cmd} #{args*' '}" if ARGV.verbose?
+    fork do
+      yield if block_given?
+      args.collect!{|arg| arg.to_s}
+      exec(cmd, *args) rescue nil
+      exit! 1 # never gets here unless exec failed
+    end
+    Process.wait
+    $?.success?
+  end
+end
+
 # Kernel.system but with exceptions
 def safe_system cmd, *args
-  puts "#{cmd} #{args*' '}" if ARGV.verbose?
-  fork do
-    args.collect!{|arg| arg.to_s}
-    exec(cmd, *args) rescue nil
-    exit! 1 # never gets here unless exec failed
+  raise ExecutionError.new(cmd, args, $?) unless Homebrew.system(cmd, *args)
+end
+
+# prints no output
+def quiet_system cmd, *args
+  Homebrew.system(cmd, *args) do
+    $stdout.close
+    $stderr.close
   end
-  Process.wait
-  raise ExecutionError.new(cmd, args, $?) unless $?.success?
 end
 
 def curl *args
