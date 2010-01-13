@@ -14,14 +14,15 @@ class Fortune <Formula
   def install
     ENV.deparallelize
 
-    inreplace 'Makefile', 'FORTDIR=/usr/local/games', "FORTDIR=/usr/local/bin"
-    inreplace 'Makefile', '/usr/local', prefix
-    inreplace 'Makefile', 'CC=gcc', "CC=#{ENV.cc}"
-    # OS X only supports POSIX regexes
-    inreplace 'Makefile', 'REGEXDEFS=-DHAVE_REGEX_H -DBSD_REGEX', 'REGEXDEFS=-DHAVE_REGEX_H -DPOSIX_REGEX'
-
-    # Don't install offensive fortunes
-    inreplace 'Makefile', 'OFFENSIVE=1', 'OFFENSIVE=0' if ARGV.include? '--no-offensive'
+    inreplace 'Makefile' do |contents|
+      contents.change_make_var! 'FORTDIR', "/usr/local/bin" # indeed, correct
+      contents.gsub! '/usr/local', prefix
+      contents.change_make_var! 'CC', ENV.cc
+      # OS X only supports POSIX regexes
+      contents.change_make_var! 'REGEXDEFS', '-DHAVE_REGEX_H -DPOSIX_REGEX'
+      # Don't install offensive fortunes
+      contents.change_make_var! 'OFFENSIVE', '0' if ARGV.include? '--no-offensive'
+    end
 
     system "make install"
   end

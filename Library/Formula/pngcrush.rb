@@ -7,10 +7,9 @@ class Pngcrush <Formula
 
   def install
     # use our CFLAGS, LDFLAGS, CC, and LD
-    inreplace 'Makefile', 'CFLAGS = -I. -O3 -fomit-frame-pointer -Wall -Wshadow', ''
-    inreplace 'Makefile', 'LDFLAGS =', ''
-    inreplace 'Makefile', 'CC = gcc', ''
-    inreplace 'Makefile', 'LD = gcc', ''
+    inreplace 'Makefile' do |contents|
+      contents.remove_make_var! %w[CFLAGS LDFLAGS CC LD]
+    end
 
     system "make"
     bin.install 'pngcrush'

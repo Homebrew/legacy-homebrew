@@ -7,9 +7,11 @@ class Xmlstarlet <Formula
 
   def install
     # thanks, xmlstarlet but OS X doesn't have the static versions
-    inreplace 'configure', '${LIBXML_PREFIX}/lib/libxml2.a', '-lxml2'
-    inreplace 'configure', '${LIBXSLT_PREFIX}/lib/libxslt.a', '-lxslt'
-    inreplace 'configure', '${LIBXSLT_PREFIX}/lib/libexslt.a', '-lexslt'
+    inreplace 'configure' do |s|
+      s.gsub! '${LIBXML_PREFIX}/lib/libxml2.a', '-lxml2'
+      s.gsub! '${LIBXSLT_PREFIX}/lib/libxslt.a', '-lxslt'
+      s.gsub! '${LIBXSLT_PREFIX}/lib/libexslt.a', '-lexslt'
+    end
 
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make"
