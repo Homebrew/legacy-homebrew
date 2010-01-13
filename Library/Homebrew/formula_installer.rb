@@ -20,6 +20,7 @@ class FormulaInstaller
     end
     deps
   end
+  
   def pyerr dep
     brew_pip = ' brew install pip &&' unless Formula.factory('pip').installed?
     <<-EOS
@@ -30,11 +31,24 @@ Homebrew does not provide formula for Python dependencies, pip does:
 
     EOS
   end
+  def plerr dep; <<-EOS
+Unsatisfied dependency, #{dep}
+Homebrew does not provide formula for Perl dependencies, cpan does:
+
+    cpan -i #{dep}
+  
+    EOS
+  end
 
   def check_external_deps f
+    return unless f.external_deps
+
     f.external_deps[:python].each do |dep|
       raise pyerr(dep) unless quiet_system "/usr/bin/python", "-c", "import #{dep}"
-    end if f.external_deps
+    end
+    f.external_deps[:perl].each do |dep|
+      raise plerr(dep) unless quiet_system "/usr/bin/perl", "-e", "use #{dep}"
+    end
   end
 
   def install f
