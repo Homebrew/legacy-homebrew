@@ -331,7 +331,7 @@ rescue BuildError => e
   puts "http://github.com/mxcl/homebrew/blob/master/Library/Formula/#{formula_name}.rb#L#{$2}"
   ohai "Environment"
   dump_config
-  puts "Exit status: #{e.status.exitstatus}"
+  puts "Exit status: #{e.exit_status}"
   onoe e
   puts PLEASE_REPORT_BUG
   # this feature can be slow (depends on network conditions and if github is up)
