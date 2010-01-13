@@ -14,7 +14,7 @@ class Haproxy <Formula
     end
 
     # We build generic since the Makefile.osx doesn't appear to work
-    system "make", "TARGET=generic"
+    system "make", "TARGET=generic USE_KQUEUE=1 USE_POLL=1 USE_PCRE=1"
     system "make install"
   end
 end
