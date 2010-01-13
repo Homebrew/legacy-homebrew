@@ -289,6 +289,10 @@ class Formula
     self.class.deps or []
   end
 
+  def external_deps
+    self.class.external_deps
+  end
+
 protected
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
@@ -460,7 +464,7 @@ private
       end
     end
 
-    attr_rw :url, :version, :homepage, :specs, :deps, :aliases, *CHECKSUM_TYPES
+    attr_rw :url, :version, :homepage, :specs, :deps, :external_deps, :aliases, *CHECKSUM_TYPES
 
     def head val=nil, specs=nil
       if specs
@@ -474,26 +478,31 @@ private
       args.each { |item| @aliases << item.to_s }
     end
 
-    def depends_on name, *args
+    def depends_on name
       @deps ||= []
+      @external_deps ||= {:python => [], :ruby => [], :perl => []}
 
       case name
       when String
         # noop
       when Hash
-        name = name.keys.first # indeed, we only support one mapping
+        key, value = name.shift
+        case value
+        when :python, :ruby, :perl
+          @external_deps[value] << key
+          return
+        when :optional, :recommended
+          name = key
+        end
       when Symbol
         name = name.to_s
       when Formula
-        @deps << name
-        return # we trust formula dev to not dupe their own instantiations
+        # noop
       else
         raise "Unsupported type #{name.class}"
       end
 
-      # we get duplicates because every new fork of this process repeats this
-      # step for some reason I am not sure about
-      @deps << name unless @deps.include? name
+      @deps << name
     end
 
     def skip_clean paths
