@@ -6,7 +6,7 @@ class Postgresql <Formula
   @md5='f2015af17bacbbfe140daf0d1067f9c9'
 
   depends_on 'readline'
-  depends_on 'libxml2' if MACOS_VERSION < 10.6
+  depends_on 'libxml2' if MACOS_VERSION < 10.6 #system libxml is too old
 
   aka 'postgres'
 
@@ -27,9 +27,7 @@ class Postgresql <Formula
         "--disable-debug",
     ]
 
-    if MACOS_VERSION >= 10.6 && Hardware.is_64_bit?
-        configure_args << "ARCHFLAGS='-arch x86_64'"
-    end
+    configure_args << "ARCHFLAGS='-arch x86_64'" if bits_64?
 
     # Fails on Core Duo with O4 and O3
     if Hardware.intel_family == :core
@@ -48,26 +46,37 @@ class Postgresql <Formula
     true
   end
 
-  def caveats; <<-EOS
+  def bits_64?
+    MACOS_VERSION >= 10.6 && Hardware.is_64_bit?
+  end
+
+  def caveats
+    caveats = <<-EOS
 If this is your first install, create a database with:
-    #{HOMEBREW_PREFIX}/bin/initdb #{HOMEBREW_PREFIX}/var/postgres
+    initdb #{HOMEBREW_PREFIX}/var/postgres
 
 Automatically load on login with:
     launchctl load -w #{prefix}/org.postgresql.postgres.plist
 
 Or start manually with:
-    #{HOMEBREW_PREFIX}/bin/pg_ctl -D #{HOMEBREW_PREFIX}/var/postgres -l #{HOMEBREW_PREFIX}/var/postgres/server.log start
+    pg_ctl -D #{HOMEBREW_PREFIX}/var/postgres -l #{HOMEBREW_PREFIX}/var/postgres/server.log start
 
 And stop with:
-    #{HOMEBREW_PREFIX}/bin/pg_ctl -D #{HOMEBREW_PREFIX}/var/postgres stop -s -m fast
+    pg_ctl -D #{HOMEBREW_PREFIX}/var/postgres stop -s -m fast
+EOS
+    
+    if bits_64? then
+      caveats << <<-EOS
 
-If you want to install the postgres gem, include ARCHFLAGS in the gem install
-to avoid issues:
+If you want to install the postgres gem, including ARCHFLAGS is recommended:
 
     env ARCHFLAGS="-arch x86_64" gem install postgres
 
 To install gems without sudo, see the Homebrew wiki.
-    EOS
+      EOS
+    end
+
+    caveats
   end
 
   def startup_plist
