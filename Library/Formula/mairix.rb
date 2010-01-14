@@ -7,7 +7,7 @@ class Mairix <Formula
 
   def install
     ENV.j1
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make"
     system "make install"
   end
