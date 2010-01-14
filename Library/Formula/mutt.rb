@@ -5,6 +5,18 @@ class Mutt <Formula
   @homepage='http://www.mutt.org/'
   @md5='027cdd9959203de0c3c64149a7ee351c'
 
+  def options
+    [
+      ['--sidebar-patch', "Apply sidebar (folder list) patch"]
+    ]
+  end
+
+  def patches
+    if ARGV.include? '--sidebar-patch'
+      'http://lunar-linux.org/~tchan/mutt/patch-1.5.20.sidebar.20090619.txt'
+    end
+  end
+
   def install
       configure_args = [
           "--prefix=#{prefix}",
