@@ -37,28 +37,6 @@ port 6379
 # Close the connection after a client is idle for N seconds (0 to disable)
 timeout 300
 
-# Save the DB on disk:
-#
-#   save <seconds> <changes>
-#
-#   Will save the DB if both the given number of seconds and the given
-#   number of write operations against the DB occurred.
-#
-#   In the example below the behaviour will be to save:
-#   after 900 sec (15 min) if at least 1 key changed
-#   after 300 sec (5 min) if at least 10 keys changed
-#   after 60 sec if at least 10000 keys changed
-save 900 1
-save 300 10
-save 60 10000
-
-# The filename where to dump the DB
-dbfilename dump.rdb
-
-# For default save/load DB in/from the working directory
-# Note that you must specify a directory not a file name.
-dir #{var}/db/redis/
-
 # Set server verbosity to 'debug'
 # it can be one of:
 # debug (a lot of information, useful for development/testing)
@@ -76,14 +54,51 @@ logfile #{var}/log/redis.log
 # dbid is a number between 0 and 'databases'-1
 databases 16
 
+################################ SNAPSHOTTING  #################################
+#
+# Save the DB on disk:
+#
+#   save <seconds> <changes>
+#
+#   Will save the DB if both the given number of seconds and the given
+#   number of write operations against the DB occurred.
+#
+#   In the example below the behaviour will be to save:
+#   after 900 sec (15 min) if at least 1 key changed
+#   after 300 sec (5 min) if at least 10 keys changed
+#   after 60 sec if at least 10000 keys changed
+save 900 1
+save 300 10
+save 60 10000
+
+# Compress string objects using LZF when dump .rdb databases?
+# For default that's set to 'yes' as it's almost always a win.
+# If you want to save some CPU in the saving child set it to 'no' but
+# the dataset will likely be bigger if you have compressible values or keys.
+rdbcompression yes
+
+# The filename where to dump the DB
+dbfilename dump.rdb
+
+# For default save/load DB in/from the working directory
+# Note that you must specify a directory not a file name.
+dir #{var}/db/redis/
+
 ################################# REPLICATION #################################
 
 # Master-Slave replication. Use slaveof to make a Redis instance a copy of
 # another Redis server. Note that the configuration is local to the slave
 # so for example it is possible to configure the slave to save the DB with a
 # different interval, or to listen to another port, and so on.
-
+#
 # slaveof <masterip> <masterport>
+
+# If the master is password protected (using the "requirepass" configuration
+# directive below) it is possible to tell the slave to authenticate before
+# starting the replication synchronization process, otherwise the master will
+# refuse the slave request.
+#
+# masterauth <master-password>
 
 ################################## SECURITY ###################################
 
@@ -93,7 +108,7 @@ databases 16
 #
 # This should stay commented out for backward compatibility and because most
 # people do not need auth (e.g. they run their own servers).
-
+#
 # requirepass foobared
 
 ################################### LIMITS ####################################
@@ -103,7 +118,7 @@ databases 16
 # is able to open. The special value '0' means no limts.
 # Once the limit is reached Redis will close all the new connections sending
 # an error 'max number of clients reached'.
-
+#
 # maxclients 128
 
 # Don't use more memory than the specified amount of bytes.
@@ -122,8 +137,50 @@ databases 16
 # it is going to use too much memory in the long run, and you'll have the time
 # to upgrade. With maxmemory after the limit is reached you'll start to get
 # errors for write operations, and this may even lead to DB inconsistency.
-
+#
 # maxmemory <bytes>
+
+############################## APPEND ONLY MODE ###############################
+
+# By default Redis asynchronously dumps the dataset on disk. If you can live
+# with the idea that the latest records will be lost if something like a crash
+# happens this is the preferred way to run Redis. If instead you care a lot
+# about your data and don't want to that a single record can get lost you should
+# enable the append only mode: when this mode is enabled Redis will append
+# every write operation received in the file appendonly.log. This file will
+# be read on startup in order to rebuild the full dataset in memory.
+#
+# Note that you can have both the async dumps and the append only file if you
+# like (you have to comment the "save" statements above to disable the dumps).
+# Still if append only mode is enabled Redis will load the data from the
+# log file at startup ignoring the dump.rdb file.
+#
+# The name of the append only file is "appendonly.log"
+#
+# IMPORTANT: Check the BGREWRITEAOF to check how to rewrite the append
+# log file in background when it gets too big.
+
+appendonly no
+
+# The fsync() call tells the Operating System to actually write data on disk
+# instead to wait for more data in the output buffer. Some OS will really flush 
+# data on disk, some other OS will just try to do it ASAP.
+#
+# Redis supports three different modes:
+#
+# no: don't fsync, just let the OS flush the data when it wants. Faster.
+# always: fsync after every write to the append only log . Slow, Safest.
+# everysec: fsync only if one second passed since the last fsync. Compromise.
+#
+# The default is "always" that's the safer of the options. It's up to you to
+# understand if you can relax this to "everysec" that will fsync every second
+# or to "no" that will let the operating system flush the output buffer when
+# it want, for better performances (but if you can live with the idea of
+# some data loss consider the default persistence mode that's snapshotting).
+
+appendfsync always
+# appendfsync everysec
+# appendfsync no
 
 ############################### ADVANCED CONFIG ###############################
 
