@@ -93,7 +93,7 @@ class Pathname
     out=''
     n=`find #{to_s} -type f | wc -l`.to_i
     out<<"#{n} files, " if n > 1
-    out<<`du -hd0 #{to_s} | cut -d"\t" -f1`.strip
+    out<<`/usr/bin/du -hd0 #{to_s} | cut -d"\t" -f1`.strip
   end
 
   # attempts to retrieve the version component of this path, so generally
@@ -142,7 +142,7 @@ class Pathname
     return $1 if $1
 
     # eg foobar-4.5.0-bin
-    /-((\d+\.)+\d+[abc]?)[-.](bin|src|sources)$/.match stem
+    /-((\d+\.)+\d+[abc]?)[-.](bin|src|sources?)$/.match stem
     return $1 if $1
 
     # eg. otp_src_R13B (this is erlang's style)
@@ -152,6 +152,11 @@ class Pathname
     end
 
     nil
+  end
+
+  def md5
+    require 'digest'
+    Digest::MD5.hexdigest(File.read(self))
   end
 
   if '1.9' <= RUBY_VERSION

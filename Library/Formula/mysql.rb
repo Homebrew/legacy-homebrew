@@ -79,9 +79,9 @@ Or start manually with:
   <key>RunAtLoad</key>
   <true/>
   <key>UserName</key>
-  <string>#{`whoami`}</string>
+  <string>#{`whoami`.chomp}</string>
   <key>WorkingDirectory</key>
-  <string>#{HOMEBREW_PREFIX}</string>
+  <string>#{HOMEBREW_PREFIX}/var</string>
 </dict>
 </plist>
     EOPLIST

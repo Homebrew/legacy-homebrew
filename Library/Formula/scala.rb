@@ -8,6 +8,7 @@ class Scala <Formula
 
   def install
     prefix.install Dir['*']
+    FileUtils.rm_f Dir["#{bin}/*.bat"]
     FileUtils.mv prefix+'man', share
   end
 end

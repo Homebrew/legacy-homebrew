@@ -65,7 +65,7 @@ Here's why you may prefer Homebrew to the alternatives:
 8.  Making the most of OS X  
     A touch of RubyCocoa, a cheeky sysctl query or two and a smattering of
     FSEvent monitoring. In these manic days of cross-platform development,
-    it's sometimes a welcome relief to use something that is better because
+    it's can be a welcome relief to use something that is better because
     it isn't too generalized.
 
 9.  No duplication  
@@ -73,8 +73,8 @@ Here's why you may prefer Homebrew to the alternatives:
     Python, etc. Homebrew uses what is already there, and consequently,
     most stuff has zero dependencies and builds faster.
 
-    We resist packaging stuff that is already packaged. So we have a [wiki][]
-    page that describes how best to use RubyGems, Pip (or easy_install) and
+    We resist packaging stuff that is already packaged. So we have a [wiki page][wiki]
+    that describes how best to use RubyGems, Pip (or easy_install) and
     CPAN with OS X and Homebrew.
 
 10. Fork with Git  
@@ -107,7 +107,7 @@ still under heavy development. Also:
 3.  We don't support PowerPC or OS X less than Tiger (though you could always
     maintain your own fork for such things if you like…)
 
-Max Howell -- <http://twitter.com/mxcl>
+Max Howell — <http://twitter.com/mxcl>
 
 
 Installation
@@ -119,19 +119,20 @@ You can install Homebrew anywhere:
 
 Homebrew can already be used, try it:
 
-    homebrew/bin/brew install git
-    homebrew/bin/brew list git
+    homebrew/bin/brew install pip
+    homebrew/bin/brew list pip
 
-Notice how Homebrew installed Git to homebrew/bin/git. Homebrew never touches
-files outside its prefix.
+Notice how Pip was installed to homebrew/bin/pip — Homebrew never touches
+files outside of its prefix.
 
-We recommend installing to /usr/local because:
-----------------------------------------------
+But… we recommend installing to /usr/local because:
+---------------------------------------------------
 1. It's already in your PATH
-2. It makes it easy to install stuff like Ruby Gems
+2. It makes it easier to install other stuff like Ruby Gems
 
-Build tools all look to /usr/local for library dependencies they need. Thus
-it should be much less troublesome to build your own gems, etc.
+Build tools all look to /usr/local for library dependencies and thus you can
+get on with building your own gems and not worry about having to Google for
+unnecessary build assistance.
 
 But… don't sudo!
 ----------------
@@ -159,22 +160,15 @@ Installing to /usr/local
 
 Homebrew can co-exist with any software already installed in its prefix.
 
-You may prefer this third party [installer script][sh] or [.pkg installer][pkg].
-
-Updating
---------
-To update you need git (brew install git). The following will soon be part of
-the brew update command, it merges with whatever is already there:
-
+Installing with Git
+-------------------
     cd /usr/local
     git init
     git remote add origin git://github.com/mxcl/homebrew.git
     git pull origin master
 
-Note the above steps can also be used to install Homebrew if you prefer.
-
-Building Stuff
---------------
+One last important caveat
+-------------------------
 Almost everything Homebrew installs is written in C, so you need Xcode:
 
 <http://developer.apple.com/technology/xcode.html>
@@ -185,7 +179,7 @@ Uninstallation
     cd `brew --prefix`
     rm -rf Cellar
     brew prune
-    rm -rf Library .git* bin/brew README.md
+    rm -rf Library .git .gitignore bin/brew README.md
 
 It is worth noting that if you installed somewhere like /usr/local then these
 uninstallation steps will leave that directory exactly like it was before
@@ -199,8 +193,9 @@ Install wget:
 
     brew install wget
 
-Update package list:
+Two ways to update the package descriptions:
 
+    brew update
     cd /usr/local && git pull
 
 Two ways to delete a package:
@@ -235,16 +230,16 @@ Show expensive packages:
 
 Contributing New Formulae
 =========================
-Create a formula thusly.
+Create a new formula thusly:
 
     brew create http://example.com/foo-1.2.1.tar.bz2
 
-Homebrew automatically opened Library/Formula/foo.rb in your $EDITOR. You can
+Homebrew automatically opens Library/Formula/foo.rb in your $EDITOR. You can
 now install it:
 
-    brew install git
+    brew install foo
 
-Now check the [wiki][] for more information.
+The [wiki][] has more help and information.
 
 
 Licensing
@@ -255,6 +250,6 @@ confirm. Individual formulae are licensed according to their authors' wishes.
 
 The Wiki
 ========
-The [wiki][] has almost excessive detail on most topics.
+The [wiki][] probably has the answers to any other questions you may have.
 
 [wiki]:http://wiki.github.com/mxcl/homebrew

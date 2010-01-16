@@ -34,6 +34,7 @@ class Xapian <Formula
     XapianBindings.new.brew do
       if ARGV.include? '--ruby' or ARGV.include? '--python' or ARGV.include? '--java' or ARGV.include? '--php'
         args = [
+          "XAPIAN_CONFIG=#{bin}/xapian-config",
           "--prefix=#{prefix}",
           "--disable-debug",
           "--disable-dependency-tracking",

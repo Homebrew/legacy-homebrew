@@ -47,8 +47,7 @@ class ExecutionError <RuntimeError
   end
 end
 
-class BuildError <ExecutionError
-end
+class BuildError <ExecutionError; end
 
 require 'test/unit' # must be after at_exit
 require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
@@ -151,6 +150,13 @@ ARGV.extend ExtendArgvPlusYeast
 
 
 class BeerTasting <Test::Unit::TestCase
+  def test_put_columns_empty
+    assert_nothing_raised do
+      # Issue #217 put columns with new results fails.
+      puts_columns []
+    end
+  end
+  
   def test_version_all_dots
     r=MockFormula.new "http://example.com/foo.bar.la.1.14.zip"
     assert_equal '1.14', r.version

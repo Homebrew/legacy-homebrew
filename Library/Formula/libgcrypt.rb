@@ -1,15 +1,18 @@
 require 'formula'
 
 class Libgcrypt <Formula
-  @url='ftp://ftp.gnupg.org//gcrypt/libgcrypt/libgcrypt-1.4.4.tar.bz2'
-  @homepage='http://www.gnupg.org/'
-  @sha1='3987f0efcbb7048c136d5c859e88eee1763a14f6'
+  url 'ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.4.5.tar.bz2'
+  sha1 'ef7ecbd3a03a7978094366bcd1257b3654608d28'
+  homepage 'http://www.gnupg.org/'
 
   depends_on 'libgpg-error'
 
   def install
-    ENV.j1
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--disable-asm"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--disable-asm"
+    # Separate steps, or parallel builds fail
+    system "make"
     system "make install"
   end
 end

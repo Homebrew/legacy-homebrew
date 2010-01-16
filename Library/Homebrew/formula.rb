@@ -38,10 +38,9 @@ end
 class Formulary
   # Returns all formula names as strings, with or without aliases
   def self.names with_aliases=false
-    everything = (HOMEBREW_REPOSITORY+'Library/Formula').children.map{|f| f.basename('.rb').to_s }
-    if with_aliases
-      everything.push *Formulary.get_aliases.keys
-    end
+    filenames = (HOMEBREW_REPOSITORY+'Library/Formula').children.select {|f| f.to_s =~ /\.rb$/ }
+    everything = filenames.map{|f| f.basename('.rb').to_s }
+    everything.push *Formulary.get_aliases.keys if with_aliases
     everything.sort
   end
 
@@ -50,29 +49,23 @@ class Formulary
   end
   
   def self.read name
-    Formulary.names.each do |f|
-      next if f != name
-
-      require Formula.path(name)
-      klass_name = Formula.class_s(name)
-      klass = eval(klass_name)
-      return klass        
-    end
-    
-    return nil
+    require Formula.path(name) rescue return nil
+    klass_name = Formula.class_s(name)
+    eval(klass_name)
   end
   
-  # Loads all formula classes.
   def self.read_all
+  # yields once for each
     Formulary.names.each do |name|
       require Formula.path(name)
       klass_name = Formula.class_s(name)
       klass = eval(klass_name)
-      
       yield name, klass
     end
   end
 
+  # returns a map of aliases to actual names
+  # eg { 'ocaml' => 'objective-caml' }
   def self.get_aliases
     aliases = {}
     Formulary.read_all do |name, klass|
@@ -106,7 +99,7 @@ class Formula
       @version='HEAD'
     end
 
-    raise if @url.nil?
+    raise "No url provided for formula #{name}" if @url.nil?
     @name=name
     validate_variable :name
 
@@ -115,7 +108,6 @@ class Formula
     validate_variable :version if @version
     
     set_instance_variable 'homepage'
-#    raise if @homepage.nil? # not a good idea while we have eg GitManpages!
 
     CHECKSUM_TYPES.each do |type|
       set_instance_variable type
@@ -165,8 +157,9 @@ class Formula
     when %r[^svn://] then SubversionDownloadStrategy
     when %r[^svn+http://] then SubversionDownloadStrategy
     when %r[^git://] then GitDownloadStrategy
-    when %r[^http://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
-    when %r[^http://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
+    when %r[^https?://(.+?\.)?googlecode\.com/hg] then MercurialDownloadStrategy
+    when %r[^https?://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
+    when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
     when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
     else CurlDownloadStrategy
     end
@@ -197,7 +190,7 @@ class Formula
   # redefining skip_clean? in formulas is now deprecated
   def skip_clean? path
     to_check = path.relative_path_from(prefix).to_s
-    self.class.skip_clean_paths.include?(to_check)
+    self.class.skip_clean_paths.include? to_check
   end
 
   # yields self with current working directory set to the uncompressed tarball
@@ -231,11 +224,11 @@ class Formula
   # we could add --disable-dependency-tracking when it will work
   def std_cmake_parameters
     # The None part makes cmake use the environment's CFLAGS etc. settings
-    "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None"
+    "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None -Wno-dev"
   end
 
   def self.class_s name
-    #remove invalid characters and camelcase
+    #remove invalid characters and then camelcase it
     name.capitalize.gsub(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase } \
                    .gsub('+', 'x')
   end
@@ -289,11 +282,15 @@ class Formula
   end
 
   def self.path name
-    HOMEBREW_PREFIX+'Library'+'Formula'+"#{name.downcase}.rb"
+    HOMEBREW_REPOSITORY+"Library/Formula/#{name.downcase}.rb"
   end
 
   def deps
     self.class.deps or []
+  end
+
+  def external_deps
+    self.class.external_deps
   end
 
 protected
@@ -322,7 +319,10 @@ protected
         raise
       end
     end
-  rescue
+  rescue SystemCallError
+    # usually because exec could not be find the command that was requested
+    raise
+  rescue 
     raise BuildError.new(cmd, args, $?)
   end
 
@@ -442,7 +442,7 @@ private
   end
 
   def set_instance_variable(type)
-    if !instance_variable_defined?("@#{type}")
+    unless instance_variable_defined? "@#{type}"
       class_value = self.class.send(type)
       instance_variable_set("@#{type}", class_value) if class_value
     end
@@ -464,7 +464,7 @@ private
       end
     end
 
-    attr_rw :url, :version, :homepage, :specs, :deps, :aliases, *CHECKSUM_TYPES
+    attr_rw :url, :version, :homepage, :specs, :deps, :external_deps, :aliases, *CHECKSUM_TYPES
 
     def head val=nil, specs=nil
       if specs
@@ -475,32 +475,34 @@ private
     
     def aka *args
       @aliases ||= []
-
-      args.each do |item|
-        @aliases << item.to_s
-      end
+      args.each { |item| @aliases << item.to_s }
     end
 
-    def depends_on name, *args
+    def depends_on name
       @deps ||= []
+      @external_deps ||= {:python => [], :ruby => [], :perl => []}
 
       case name
       when String
         # noop
       when Hash
-        name = name.keys.first # indeed, we only support one mapping
+        key, value = name.shift
+        case value
+        when :python, :ruby, :perl
+          @external_deps[value] << key
+          return
+        when :optional, :recommended
+          name = key
+        end
       when Symbol
         name = name.to_s
       when Formula
-        @deps << name
-        return # we trust formula dev to not dupe their own instantiations
+        # noop
       else
         raise "Unsupported type #{name.class}"
       end
 
-      # we get duplicates because every new fork of this process repeats this
-      # step for some reason I am not sure about
-      @deps << name unless @deps.include? name
+      @deps << name
     end
 
     def skip_clean paths

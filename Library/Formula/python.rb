@@ -7,11 +7,16 @@ class Python <Formula
 
   # You can build Python without readline, but you really don't want to.
   depends_on 'readline' => :recommended
+
+  def patches
+    # don't append space after completion
+    {:p0 => ["http://bugs.python.org/file14599/python-2.6-readline.patch"]}
+  end
   
   def options
     [
       ["--framework", "Do a 'Framework' build instead of a UNIX-style build."],
-      ["--intel", "Build for both 32 & 64 bit Intel."]
+      ["--universal", "Build for both 32 & 64 bit Intel."]
     ]
   end
 
@@ -22,22 +27,15 @@ class Python <Formula
 
   def install
     args = ["--prefix=#{prefix}"]
-
-    if ARGV.include? '--framework'
-      args << "--enable-framework"
-    end
-    
-    if ARGV.include? '--intel'
-      args << "--with-universal-archs=intel --enable-universalsdk=/"
-    end
+    args << "--enable-framework" if ARGV.include? '--framework'
+    args << "--with-universal-archs=intel" << "--enable-universalsdk=/" if ARGV.include? '--universal' \
+            or ARGV.include? '--intel' # the old flag, preserved for back-compat
     
     # Speed up creation of libpython.a, backported from Unladen Swallow:
     # http://code.google.com/p/unladen-swallow/source/detail?r=856
     inreplace "Makefile.pre.in", "$(AR) cr", "$(AR) cqS"
     
     system "./configure", *args
-    
-    
     system "make"
     system "make install"
     

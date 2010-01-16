@@ -30,6 +30,26 @@ class AbstractDownloadStrategy
     end
     @unique_token="#{name}-#{version}" unless name.to_s.empty? or name == '__UNKNOWN__'
   end
+
+  def expand_safe_system_args args
+    args.each_with_index do |arg, ii|
+      if arg.is_a? Hash
+        unless ARGV.verbose?
+          args[ii] = arg[:quiet_flag]
+        else
+          args.delete_at ii
+        end
+        return args
+      end
+    end
+    # 2 as default because commands are eg. svn up, git pull
+    args.insert(2, '-q') unless ARGV.verbose?
+    return args
+  end
+
+  def quiet_safe_system *args
+    safe_system *expand_safe_system_args(args)
+  end
 end
 
 class CurlDownloadStrategy <AbstractDownloadStrategy
@@ -52,28 +72,36 @@ class CurlDownloadStrategy <AbstractDownloadStrategy
     end
     return @dl # thus performs checksum verification
   end
+
   def stage
     # magic numbers stolen from /usr/share/file/magic/
-    File.open(@dl) do |f|
+    if @dl.extname == '.jar'
+      magic_bytes = nil
+    else
       # get the first four bytes
-      case f.read(4)
-      when /^PK\003\004/ # .zip archive
-        safe_system '/usr/bin/unzip', '-qq', @dl
-        chdir
-      when /^\037\213/, /^BZh/ # gzip/bz2 compressed
-        # TODO check if it's really a tar archive
-        safe_system '/usr/bin/tar', 'xf', @dl
-        chdir
-      else
-        # we are assuming it is not an archive, use original filename
-        # this behaviour is due to ScriptFileFormula expectations
-        # So I guess we should cp, but we mv, for this historic reason
-        # HOWEVER if this breaks some expectation you had we *will* change the
-        # behaviour, just open an issue at github
-        FileUtils.mv @dl, File.basename(@url)
-      end
+      File.open(@dl) { |f| magic_bytes = f.read(4) }
+    end
+
+    case magic_bytes
+    when /^PK\003\004/ # .zip archive
+      quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @dl
+      chdir
+    when /^\037\213/, /^BZh/, /^\037\235/  # gzip/bz2/compress compressed
+      # TODO check if it's really a tar archive
+      safe_system '/usr/bin/tar', 'xf', @dl
+      chdir
+    else
+      # we are assuming it is not an archive, use original filename
+      # this behaviour is due to ScriptFileFormula expectations
+      # So I guess we should cp, but we mv, for this historic reason
+      # HOWEVER if this breaks some expectation you had we *will* change the
+      # behaviour, just open an issue at github
+      # We also do this for jar files, as they are in fact zip files, but
+      # we don't want to unzip them
+      FileUtils.mv @dl, File.basename(@url)
     end
   end
+
 private
   def chdir
     entries=Dir['*']
@@ -82,6 +110,7 @@ private
       when 1 then Dir.chdir entries.first rescue nil
     end
   end
+
   def ext
     # GitHub uses odd URLs for zip files, so check for those
     rx=%r[http://(www\.)?github\.com/.*/(zip|tar)ball/]
@@ -97,12 +126,11 @@ private
   end
 end
 
-class HttpDownloadStrategy <CurlDownloadStrategy
-  def initialize url, name, version, specs
-    opoo "HttpDownloadStrategy is deprecated"
-    puts "Please use CurlDownloadStrategy in future"
-    puts "HttpDownloadStrategy will be removed in version 0.5"
-    super url, name, version, specs
+# Use this strategy to download but not unzip a file.
+# Useful for installing jars.
+class NoUnzipCurlDownloadStrategy <CurlDownloadStrategy
+  def stage
+    FileUtils.mv @dl, File.basename(@url)
   end
 end
 
@@ -111,23 +139,23 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
     ohai "Checking out #{@url}"
     @co=HOMEBREW_CACHE+@unique_token
     unless @co.exist?
-      args = [svn, 'checkout', @url, @co]
-      args << '-q' unless ARGV.verbose?
-      safe_system *args
+      quiet_safe_system svn, 'checkout', @url, @co
     else
-      # TODO svn up?
-      puts "Repository already checked out"
+      puts "Updating #{@co}"
+      quiet_safe_system svn, 'up', @co
     end
   end
+
   def stage
     # Force the export, since the target directory will already exist
     args = [svn, 'export', '--force', @co, Dir.pwd]
     args << '-r' << @ref if @spec == :revision and @ref
-    args << '-q' unless ARGV.verbose?
-    safe_system *args
+    quiet_safe_system *args
   end
 
-  # currently only used by mplayer.rb
+  # Override this method in a DownloadStrategy to force the use of a non-
+  # sysetm svn binary. mplayer.rb uses this to require a svn that
+  # understands externals.
   def svn
     '/usr/bin/svn'
   end
@@ -138,12 +166,13 @@ class GitDownloadStrategy <AbstractDownloadStrategy
     ohai "Cloning #{@url}"
     @clone=HOMEBREW_CACHE+@unique_token
     unless @clone.exist?
-      safe_system 'git', 'clone', @url, @clone
+      safe_system 'git', 'clone', @url, @clone # indeed, leave it verbose
     else
-      # TODO git pull?
-      puts "Repository already cloned to #{@clone}"
+      puts "Updating #{@clone}"
+      Dir.chdir(@clone) { quiet_safe_system 'git', 'fetch', @url }
     end
   end
+
   def stage
     dst = Dir.getwd
     Dir.chdir @clone do
@@ -151,9 +180,9 @@ class GitDownloadStrategy <AbstractDownloadStrategy
         ohai "Checking out #{@spec} #{@ref}"
         case @spec
         when :branch
-          nostdout { safe_system 'git', 'checkout', "origin/#{@ref}" }
+          nostdout { quiet_safe_system 'git', 'checkout', "origin/#{@ref}" }
         when :tag
-          nostdout { safe_system 'git', 'checkout', @ref }
+          nostdout { quiet_safe_system 'git', 'checkout', @ref }
         end
       end
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
@@ -179,8 +208,9 @@ class CVSDownloadStrategy <AbstractDownloadStrategy
         safe_system '/usr/bin/cvs', '-d', url, 'checkout', '-d', @unique_token, mod
       end
     else
-      # TODO cvs up?
-      puts "Repository already checked out"
+      d = HOMEBREW_CACHE+@unique_token
+      puts "Updating #{d}"
+      Dir.chdir(d) { safe_system '/usr/bin/cvs', 'up' }
     end
   end
 
@@ -188,7 +218,6 @@ class CVSDownloadStrategy <AbstractDownloadStrategy
     FileUtils.cp_r(Dir[HOMEBREW_CACHE+@unique_token+"*"], Dir.pwd)
 
     require 'find'
-
     Find.find(Dir.pwd) do |path|
       if FileTest.directory?(path) && File.basename(path) == "CVS"
         Find.prune
@@ -222,10 +251,11 @@ class MercurialDownloadStrategy <AbstractDownloadStrategy
     unless @clone.exist?
       safe_system 'hg', 'clone', url, @clone
     else
-      # TODO hg pull?
-      puts "Repository already cloned"
+      puts "Updating #{@clone}"
+      Dir.chdir(@clone) { safe_system 'hg', 'update' }
     end
   end
+
   def stage
     dst=Dir.getwd
     Dir.chdir @clone do

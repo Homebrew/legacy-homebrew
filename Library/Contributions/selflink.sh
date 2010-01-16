@@ -17,23 +17,18 @@ source_base=`pwd`
 if [[ $mode == install ]]; then
     # Ensure that the Cellar exists -- otherwise Homebrew breaks
     if [[ ! -e "$source_base/Cellar" ]] ; then
-        mkdir -p "$source_base/Cellar"
+        mkdir -p "$install_base/Cellar"
     fi
     
-    if [[ ! -e "$install_base/bin" ]] ; then
+    if [[ ! -e "$source_base/bin" ]] ; then
         mkdir -p $install_base/bin
     fi
     
     ln -s "$source_base/bin/brew" "$install_base/bin/brew";
-    ln -s "$source_base/Library" "$install_base/Library";
     ln -s "$source_base/Cellar" "$install_base/Cellar";
 elif [[ $mode == undo ]]; then
     if [[ -h "$install_base/bin/brew" ]] ; then
         rm "$install_base/bin/brew"
-    fi
-
-    if [[ -h "$install_base/Library" ]] ; then
-        rm "$install_base/Library"
     fi
 
     if [[ -h "$install_base/Cellar" ]] ; then
@@ -41,6 +36,6 @@ elif [[ $mode == undo ]]; then
     fi
 else
     echo "Unknown command: $mode";
-    echo "\tselflink.sh [install] >> symlinks to $install_base"
-    echo "\tselflink.sh undo >> removes symlinks from $install_base"
+    echo "  selflink.sh [install] >> symlinks to $install_base"
+    echo "  selflink.sh undo >> removes symlinks from $install_base"
 fi

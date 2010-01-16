@@ -16,4 +16,8 @@ class ObjectiveCaml <Formula
     system "make opt.opt"
     system "make install"
   end
+
+  # note it indeed seems necessary to clean everything
+  # see http://github.com/mxcl/homebrew/issues#issue/188
+  def skip_clean? path; true; end
 end

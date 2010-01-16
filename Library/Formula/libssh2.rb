@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libssh2 <Formula
-  url 'http://www.libssh2.org/download/libssh2-1.2.1.tar.gz'
+  url 'http://www.libssh2.org/download/libssh2-1.2.2.tar.gz'
   homepage 'http://www.libssh2.org/'
-  md5 '4ee0197947a3b8a4472328c346e1a0e4'
+  md5 'fa8d9cd425bdd62f57244fc61fb54da7'
 
   def install
     system "./configure", "--prefix=#{prefix}",

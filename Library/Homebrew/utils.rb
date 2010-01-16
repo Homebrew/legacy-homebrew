@@ -84,16 +84,31 @@ def interactive_shell
   end
 end
 
+module Homebrew
+  def self.system cmd, *args
+    puts "#{cmd} #{args*' '}" if ARGV.verbose?
+    fork do
+      yield if block_given?
+      args.collect!{|arg| arg.to_s}
+      exec(cmd, *args) rescue nil
+      exit! 1 # never gets here unless exec failed
+    end
+    Process.wait
+    $?.success?
+  end
+end
+
 # Kernel.system but with exceptions
 def safe_system cmd, *args
-  puts "#{cmd} #{args*' '}" if ARGV.verbose?
-  fork do
-    args.collect!{|arg| arg.to_s}
-    exec(cmd, *args) rescue nil
-    exit! 1 # never gets here unless exec failed
+  raise ExecutionError.new(cmd, args, $?) unless Homebrew.system(cmd, *args)
+end
+
+# prints no output
+def quiet_system cmd, *args
+  Homebrew.system(cmd, *args) do
+    $stdout.close
+    $stderr.close
   end
-  Process.wait
-  raise ExecutionError.new(cmd, args, $?) unless $?.success?
 end
 
 def curl *args
@@ -101,11 +116,19 @@ def curl *args
 end
 
 def puts_columns items, cols = 4
+  return if items.empty?
+
   if $stdout.tty?
     items = items.join("\n") if items.is_a?(Array)
     items.concat("\n") unless items.empty?
-    width=`/bin/stty size`.chomp.split(" ").last
-    IO.popen("/usr/bin/pr -#{cols} -t", "w"){|io| io.write(items) }
+
+    # determine the best width to display for different console sizes
+    console_width = `/bin/stty size`.chomp.split(" ").last
+    longest = items.sort_by { |item| item.length }.last
+    optimal_col_width = (console_width.to_f / (longest.length + 2).to_f).floor
+    cols = optimal_col_width > 1 ? optimal_col_width : 1
+
+    IO.popen("/usr/bin/pr -#{cols} -t -w#{console_width}", "w"){|io| io.write(items) }
   else
     puts *items
   end
@@ -126,12 +149,12 @@ def exec_editor *args
   exec *(editor.split+args)
 end
 
-# provide an absolute path to a command or this function will search the PATH
-def arch_for_command cmd
-    archs = []
-    cmd = `/usr/bin/which #{cmd}` if not Pathname.new(cmd).absolute?
+# returns array of architectures suitable for -arch gcc flag
+def archs_for_command cmd
+    cmd = `/usr/bin/which #{cmd}` unless Pathname.new(cmd).absolute?
+    cmd.gsub! ' ', '\\ '
 
-    IO.popen("/usr/bin/file #{cmd}").readlines.each do |line|
+    IO.popen("/usr/bin/file #{cmd}").readlines.inject(%w[]) do |archs, line|
       case line
       when /Mach-O executable ppc/
         archs << :ppc7400
@@ -141,17 +164,37 @@ def arch_for_command cmd
         archs << :i386
       when /Mach-O 64-bit executable x86_64/
         archs << :x86_64
+      else
+        archs
       end
     end
-
-    return archs
 end
 
-# replaces before with after for the file path
-def inreplace path, before, after
+module HomebrewInreplaceExtension
+  # Looks for Makefile style variable defintions and replaces the
+  # value with "new_value", or removes the definition entirely.
+  # See inreplace in utils.rb
+  def change_make_var! flag, new_value
+    new_value = "#{flag} = #{new_value}" unless new_value.to_s.empty?
+    gsub! Regexp.new("^#{flag}\\s*=.*$"), new_value.to_s
+  end
+  def remove_make_var! flags
+    flags.each { |flag| change_make_var! flag, "" }
+  end
+end
+
+def inreplace path, before=nil, after=nil
   f = File.open(path, 'r')
-  o = f.read.gsub(before, after)
-  f.reopen(path, 'w').write(o)
+  s = f.read
+
+  if before == nil and after == nil
+    s.extend(HomebrewInreplaceExtension)
+    yield s
+  else
+    s.gsub!(before, after)
+  end
+
+  f.reopen(path, 'w').write(s)
   f.close
 end
 

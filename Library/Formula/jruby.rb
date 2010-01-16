@@ -4,15 +4,15 @@ require 'formula'
 # TODO trim that a bit? Seems crazy.
 
 class Jruby < Formula
-  url 'http://jruby.kenai.com/downloads/1.4.0/jruby-src-1.4.0.tar.gz'
+  url 'http://jruby.kenai.com/downloads/1.4.0/jruby-bin-1.4.0.tar.gz'
   homepage 'http://www.jruby.org'
-  md5 'a363b6c2ea24f0ef8df478c93ac8cc59'
+  md5 'f37322c18e9134e91e064aebb4baa4c7'
 
   def install
-    system "ant"
-
     Dir.chdir 'bin' do
       FileUtils.rm Dir['*.bat']
+      FileUtils.rm Dir['*.exe']
+      FileUtils.rm Dir['*.dll']
       Dir['*'].each do |file|
         FileUtils.mv file, "j#{file}" unless file.match /^[j_]/
       end
@@ -21,10 +21,14 @@ class Jruby < Formula
     # Only keep the MacOSX native libraries
     Dir.chdir 'lib/native' do
       Dir['*'].each do |file|
-        FileUtils.rm_f file unless file == 'darwin'
+        FileUtils.rm_rf file unless file == 'darwin'
       end
     end
 
     prefix.install Dir['*']
+  end
+
+  def test
+    system "jruby -e ''"
   end
 end

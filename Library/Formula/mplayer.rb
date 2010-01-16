@@ -15,7 +15,7 @@ class Mplayer <Formula
     ENV['CC'] = ''
     ENV['LD'] = ''
     # any kind of optimisation breaks the build
-    ENV['CFLAGS'] = HOMEBREW_SAFE_CFLAGS
+    ENV['CFLAGS'] = '-w -pipe'
 
     args = ['./configure', "--prefix=#{prefix}"]
     args << "--target=x86_64-Darwin" if Hardware.is_64_bit? and MACOS_VERSION >= 10.6

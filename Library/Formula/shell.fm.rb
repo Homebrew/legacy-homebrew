@@ -12,6 +12,7 @@ class ShellFm <Formula
   # to build without it…
   depends_on 'libao'
   depends_on 'mad'
+  depends_on 'pkg-config'
 
   def install
     system "make"

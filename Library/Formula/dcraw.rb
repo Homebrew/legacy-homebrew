@@ -9,8 +9,7 @@ class Dcraw <Formula
   depends_on 'liblcms'
 
   def install
-    cc = ENV['CC'] || 'gcc'
-    system "#{cc} -o dcraw #{ENV['CFLAGS']} dcraw.c -lm -ljpeg -llcms"
+    system "#{ENV.cc} -o dcraw #{ENV['CFLAGS']} dcraw.c -lm -ljpeg -llcms"
     bin.install 'dcraw'
   end
 end

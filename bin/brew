@@ -65,6 +65,7 @@ Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
 GCC-4.2: #{gcc ? "build #{gcc}" : "N/A"}
 LLVM: #{llvm ? "build #{llvm}" : "N/A" }
 MacPorts or Fink? #{macports_or_fink_installed?}
+X11 installed? #{x11_installed?}
 EOS
 end
 
@@ -161,8 +162,8 @@ begin
     when 'rm', 'uninstall', 'remove'
       ARGV.kegs.each do |keg|
         puts "Uninstalling #{keg}..."
-        keg.uninstall
         keg.unlink
+        keg.uninstall
       end
 
     when 'prune'
@@ -219,10 +220,16 @@ begin
     raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable?
 
     ################################################################# warnings
-    if MACOS_VERSION >= 10.6
-      opoo "You should upgrade to Xcode 3.2.1" if llvm_build < 2206
-    else
-      opoo "You should upgrade to Xcode 3.1.4" if gcc_build < 5577
+    begin
+      if MACOS_VERSION >= 10.6
+        opoo "You should upgrade to Xcode 3.2.1" if llvm_build < 2206
+      else
+        opoo "You should upgrade to Xcode 3.1.4" if gcc_build < 5577
+      end
+    rescue
+      # the reason we don't abort is some formula don't require Xcode
+      # TODO allow formula to declare themselves as "not needing Xcode"
+      opoo "Xcode is not installed! Builds may fail!"
     end
 
     if macports_or_fink_installed?
@@ -275,7 +282,7 @@ begin
       checked = {}
       to_check = [name]
 
-      while ! to_check.empty?
+      until to_check.empty?
         item = to_check.pop
         checked[item] = true
         
@@ -294,9 +301,13 @@ begin
       end
     end
 
-  when 'pull', 'push', 'checkout', 'branch'
+  when 'branch', 'checkout', 'pull', 'push', 'reset'
     onoe "Unknown command: #{arg} (did you mean 'git #{arg}'?)"
     
+  when 'cat'
+    Dir.chdir HOMEBREW_REPOSITORY
+    exec "cat", ARGV.formulae.first.path, *ARGV.options
+
   else
     onoe "Unknown command: #{arg}"
   end
@@ -316,12 +327,18 @@ rescue Interrupt => e
   exit 130
 rescue BuildError => e
   e.backtrace[1] =~ %r{Library/Formula/(.+)\.rb:(\d+)}
-  puts "http://github.com/mxcl/homebrew/blob/master/Library/Formula/#{$1}.rb#L#{$2}"
+  formula_name = $1
+  puts "http://github.com/mxcl/homebrew/blob/master/Library/Formula/#{formula_name}.rb#L#{$2}"
   ohai "Environment"
   dump_config
-  puts "Exit status: #{e.status.exitstatus}"
+  puts "Exit status: #{e.exit_status}"
   onoe e
   puts PLEASE_REPORT_BUG
+  # this feature can be slow (depends on network conditions and if github is up)
+  # so ideally we'd show feedback, eg. "checking for existin issues..." and
+  # then replace that string with the following when the github api returns
+  issues = issues_for_formula(formula_name)
+  puts "These existing issues may help you:", *issues unless issues.empty?
   exit 1
 rescue RuntimeError, SystemCallError => e
   onoe e

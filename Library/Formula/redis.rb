@@ -1,15 +1,30 @@
 require 'formula'
 
-REDIS_CONF=<<-EOS
+class Redis <Formula
+  url 'http://redis.googlecode.com/files/redis-1.2.0.tar.gz'
+  homepage 'http://code.google.com/p/redis/'
+  sha1 '187dbb3d7e34b73bf15a20cab7fd9687435ee6bf'
+
+  def install
+    %w( run db/redis log ).each do |path|
+      FileUtils.mkdir_p(var+path) unless File.directory?(var+path)
+    end
+
+    system "make"
+
+    bin.install %w( redis-benchmark redis-cli redis-server )
+
+    # set up the conf file
+    (etc+'redis.conf').write <<-REDIS_CONF
 # Redis configuration file example
 
 # By default Redis does not run as a daemon. Use 'yes' if you need it.
-# Note that Redis will write a pid file in /var/run/redis.pid when daemonized.
+# Note that Redis will write a pid file in #{var}/run/redis.pid when daemonized.
 daemonize no
 
-# When run as a daemon, Redis write a pid file in /var/run/redis.pid by default.
+# When run as a daemon, Redis write a pid file in #{var}/run/redis.pid by default.
 # You can specify a custom pid file location here.
-pidfile /var/run/redis.pid
+pidfile #{var}/run/redis.pid
 
 # Accept connections on the specified port, default is 6379
 port 6379
@@ -42,7 +57,7 @@ dbfilename dump.rdb
 
 # For default save/load DB in/from the working directory
 # Note that you must specify a directory not a file name.
-dir /var/db/redis/
+dir #{var}/db/redis/
 
 # Set server verbosity to 'debug'
 # it can be one of:
@@ -54,7 +69,7 @@ loglevel notice
 # Specify the log file name. Also 'stdout' can be used to force
 # the demon to log on the standard output. Note that if you use standard
 # output for logging but daemonize, logs will be sent to /dev/null
-logfile /var/log/redis.log
+logfile #{var}/log/redis.log
 
 # Set the number of databases. The default database is DB 0, you can select
 # a different one on a per-connection basis using SELECT <dbid> where
@@ -133,21 +148,7 @@ glueoutputbuf yes
 # your development environment so that we can test it better.
 shareobjects no
 shareobjectspoolsize 1024
-EOS
-
-class Redis <Formula
-  url 'http://redis.googlecode.com/files/redis-1.02.tar.gz'
-  homepage 'http://code.google.com/p/redis/'
-  sha1 '1739e2529422b991b42d0b9e3fd8da2fadc24796'
-
-  def install
-    system "make"
-
-    (share+'redis').install %w( utils client-libraries doc )
-    bin.install %w( redis-benchmark redis-cli redis-server )
-
-     # set up the conf file
-    (etc+'redis.conf').write REDIS_CONF
+    REDIS_CONF
   end
 
   def caveats

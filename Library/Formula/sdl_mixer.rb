@@ -15,7 +15,6 @@ class SdlMixer <Formula
     Sdl.use_homebrew_prefix 'SDL_mixer.pc.in'
 
     system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
                           "--disable-dependency-tracking"
     system "make install"
   end
