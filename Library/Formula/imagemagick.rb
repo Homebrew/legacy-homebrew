@@ -13,11 +13,11 @@ class Imagemagick <Formula
   @homepage='http://www.imagemagick.org'
 
   depends_on 'jpeg'
-  depends_on 'libwmf' => :optional
+  depends_on 'libwmf' => :optional if x11?
   depends_on 'libtiff' => :optional
   depends_on 'little-cms' => :optional
   depends_on 'jasper' => :optional
-  depends_on 'ghostscript' => :recommended if ghostscript_srsly?
+  depends_on 'ghostscript' => :recommended if ghostscript_srsly? and x11?
 
   def skip_clean? path
     path.extname == '.la'
@@ -35,7 +35,9 @@ class Imagemagick <Formula
      "--disable-static",
      "--with-modules",
      "--without-magick-plus-plus"]
-     args << '--without-ghostscript' unless ghostscript_srsly?
+     args << '--without-ghostscript' \
+          << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
+             unless ghostscript_srsly?
      return args
   end
 
@@ -48,7 +50,6 @@ class Imagemagick <Formula
 
     system "./configure", "--without-maximum-compile-warnings",
                           "--disable-osx-universal-binary",
-                          "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts",
                           "--without-perl", # I couldn't make this compile
                           *configure_args
     system "make install"
@@ -60,6 +61,10 @@ class Imagemagick <Formula
   end
 
   def caveats
-    "If there is something missing that you need with this formula, please create an issue at #{HOMEBREW_WWW}"
+    "You don't have X11 from the Xcode DMG installed. Consequently Imagemagick is less fully featured." unless x11?
+  end
+
+  def self.x11?
+    File.file? '/usr/X11/include/ft2build.h'
   end
 end
