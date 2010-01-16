@@ -7,10 +7,17 @@ def ghostscript_srsly?
   ARGV.include? '--with-ghostscript'
 end
 
+def x11?
+  # I used this file because old Xcode seems to lack it, and its that old
+  # Xcode that loads of people seem to have installed still
+  File.file? '/usr/X11/include/ft2build.h'
+end
+
 class Imagemagick <Formula
   @url='http://image_magick.veidrodis.com/image_magick/ImageMagick-6.5.6-5.tar.gz'
   @md5='668919a5a7912fb6778975bc55893004'
   @homepage='http://www.imagemagick.org'
+
 
   depends_on 'jpeg'
   depends_on 'libwmf' => :optional if x11?
@@ -62,9 +69,5 @@ class Imagemagick <Formula
 
   def caveats
     "You don't have X11 from the Xcode DMG installed. Consequently Imagemagick is less fully featured." unless x11?
-  end
-
-  def self.x11?
-    File.file? '/usr/X11/include/ft2build.h'
   end
 end
