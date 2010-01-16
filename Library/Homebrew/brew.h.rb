@@ -147,6 +147,16 @@ ENV.libxml2 in your formula's install function.
     EOS
   when /rubygem/
     raise "Sorry RubyGems comes with OS X so we don't package it.\n\n#{force_text}"
+  when /wxwidgets/
+    raise <<-EOS
+#{name} is blacklisted for creation
+An older version of wxWidgets is provided by Apple with OS X, but
+a formula for wxWidgets 2.8.10 is provided:
+
+    brew install wxmac
+
+  #{force_text}
+    EOS
   end unless ARGV.force?
 
   __make url, name
