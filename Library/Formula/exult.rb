@@ -10,6 +10,8 @@ class Exult <Formula
   depends_on 'sdl'
   depends_on 'sdl_mixer'
   
+  aka 'ultima7'
+  
   def install
     # Yes, really. Goddamnit.
     inreplace "autogen.sh", "libtoolize", "glibtoolize"
@@ -28,7 +30,7 @@ class Exult <Formula
   def caveats;
     "Cocoa app installed to #{prefix}\n\n"\
     "Note that this includes only the game engine; you will need to supply your own\n"\
-    "own legal copy of the Ultima 7 game files. Try here:\n\n"\
-    "http://www.amazon.com/gp/product/B0002SKOEC?ie=UTF8&tag=adamvandesper-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=B0002SKOEC"
+    "own legal copy of the Ultima 7 game files. Try here (Amazon.com):\n\n"\
+    "http://bit.ly/8JzovU"
   end
 end
