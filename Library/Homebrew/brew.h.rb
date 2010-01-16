@@ -472,7 +472,10 @@ private
     perms=0444
     case `file -h '#{path}'`
     when /Mach-O dynamically linked shared library/
-      strip path, '-SxX'
+      # Stripping libraries is causing no end of trouble
+      # Lets just give up, and try to do it manually in instances where it
+      # makes sense
+      #strip path, '-SxX'
     when /Mach-O [^ ]* ?executable/
       strip path
       perms=0555
