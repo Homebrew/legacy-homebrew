@@ -44,7 +44,7 @@ Add "-d" to start it as a daemon.
   <key>RunAtLoad</key>
   <true/>
   <key>UserName</key>
-  <string>#{`whoami`}</string>
+  <string>#{`whoami`.chomp}</string>
   <key>WorkingDirectory</key>
   <string>#{HOMEBREW_PREFIX}</string>
 </dict>
