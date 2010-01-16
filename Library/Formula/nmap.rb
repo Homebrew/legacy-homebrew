@@ -6,6 +6,7 @@ class Nmap <Formula
   @md5='32d27de32166c02d670bb4a086185886'
 
   def install
+    ENV.gcc_4_2
     ENV.deparallelize
     system "./configure", "--prefix=#{prefix}", 
                           "--without-zenmap"
