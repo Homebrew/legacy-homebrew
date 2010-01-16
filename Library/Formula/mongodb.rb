@@ -72,7 +72,7 @@ EOS
   <key>KeepAlive</key>
   <true/>
   <key>UserName</key>
-  <string>#{`whoami`}</string>
+  <string>#{`whoami`.chomp}</string>
   <key>WorkingDirectory</key>
   <string>#{HOMEBREW_PREFIX}</string>
   <key>StandardErrorPath</key>
