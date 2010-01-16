@@ -72,7 +72,7 @@ class ExecutionError <RuntimeError
 
   def pretty args
     args.collect do |arg|
-      if arg.include? ' '
+      if arg.to_s.include? ' '
         "'#{ arg.gsub "'", "\\'" }'"
       else
         arg
