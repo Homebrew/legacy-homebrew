@@ -14,6 +14,7 @@ class Rtorrent <Formula
   end
 
   def install
+    ENV.O3
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make"
     system "make install"
