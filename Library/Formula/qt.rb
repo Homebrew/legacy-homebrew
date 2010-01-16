@@ -34,11 +34,12 @@ class Qt <Formula
 
     conf_args = ["-prefix", prefix,
                  "-system-sqlite", "-system-libpng", "-system-zlib",
-                 "-plugin-sql-mysql",
                  "-nomake", "demos", "-nomake", "examples",
                  "-release", "-cocoa",
                  "-confirm-license", "-opensource",
                  "-fast"]
+
+    conf_args << "-plugin-sql-mysql" if (HOMEBREW_CELLAR+"mysql").directory?
 
     if ARGV.include? '--with-dbus'
       conf_args << "-I#{Formula.factory('dbus').lib}/dbus-1.0/include"
