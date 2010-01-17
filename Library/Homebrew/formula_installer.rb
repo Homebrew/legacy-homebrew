@@ -1,4 +1,3 @@
-require 'beer_events'
 require 'formula'
 require 'set'
 
