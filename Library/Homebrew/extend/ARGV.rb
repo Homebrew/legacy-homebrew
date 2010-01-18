@@ -99,6 +99,7 @@ Commands:
   unlink formula ...
   home formula ...
   info [formula] [--github]
+  cleanup [formula]
   prune
   update
 
