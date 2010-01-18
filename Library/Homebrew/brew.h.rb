@@ -250,6 +250,9 @@ def cleanup name
 
   f = Formula.factory name
 
+  # we can't tell which one to keep in this circumstance
+  raise "The most recent version of #{name} is not installed" unless f.installed?
+
   if f.prefix.parent.directory?
     kids = f.prefix.parent.children
     kids.each do |keg|
