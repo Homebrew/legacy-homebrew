@@ -262,6 +262,8 @@ def cleanup name
       puts
     end
   end
+
+  prune # seems like a good time to do some additional cleanup
 end
 
 def clean f
