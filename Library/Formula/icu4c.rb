@@ -23,12 +23,6 @@ class Icu4c <Formula
       system "make install"
     end
   end
-  
-  def caveats; <<-EOS
-ICU doesn't like to build on Snow Leopard with all the heavy CFLAG
-optimizations, primarily -O4. Try ENV.O3 in the install function
-    EOS
-  end
 end
 
 
