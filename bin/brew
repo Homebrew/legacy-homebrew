@@ -210,8 +210,8 @@ begin
   when 'cleanup'
     if ARGV.named.empty?
       require 'formula'
-      `ls #{HOMEBREW_CELLAR}`.each do |name|
-        cleanup name.strip
+      HOMEBREW_CELLAR.children.each do |rack|
+        cleanup(rack.basename.to_s)
       end
     else
       ARGV.named.each { |name| cleanup name}
