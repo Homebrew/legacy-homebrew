@@ -211,7 +211,7 @@ begin
     if ARGV.named.empty?
       require 'formula'
       HOMEBREW_CELLAR.children.each do |rack|
-        cleanup(rack.basename.to_s)
+        cleanup(rack.basename.to_s) if rack.directory?
       end
     else
       ARGV.named.each { |name| cleanup name}
