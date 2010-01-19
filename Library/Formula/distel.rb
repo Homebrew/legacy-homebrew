@@ -17,11 +17,23 @@ class Distel <Formula
   end
   
   def caveats; <<-EOS
+Use a --dev option to install the trunk version of distel.
+
+Ensure that you've set up the erlang elisp package:
+
+  (add-to-list 'load-path "#{HOMEBREW_PREFIX}/lib/erlang/lib/tools-2.6.5/emacs")
+  (setq erlang-root-dir "#{HOMEBREW_PREFIX}")
+  (require 'erlang-start)
+
 Add the following to your emacs initialization file to set up distel:
     
   (add-to-list 'load-path "#{HOMEBREW_PREFIX}/share/distel/elisp")
   (require 'distel)
   (distel-setup)
+
+
+
+
   
     EOS
   end
