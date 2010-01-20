@@ -5,6 +5,8 @@ class Bazaar <Formula
   md5 '60758e61b3fd3686966d7ab0ea17fa64'
   homepage 'http://bazaar-vcs.org/'
   
+  aka :bzr
+
   def install
     ENV.minimal_optimization
     system "python", "setup.py", "build"
