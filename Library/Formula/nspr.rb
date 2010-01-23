@@ -8,7 +8,13 @@ class Nspr <Formula
   def install
     ENV.deparallelize
     Dir.chdir "mozilla/nsprpub" do
-      system "./configure", "--prefix=#{prefix}", "--disable-debug", "--enable-strip"
+      inreplace "pr/src/Makefile.in", "-framework CoreServices -framework CoreFoundation", ""
+      system "./configure", "--prefix=#{prefix}",
+                            "--disable-debug",
+                            "--enable-strip",
+                            "--enable-optimize",
+                            "--enable-64bit"
+      inreplace "config/autoconf.mk", "-install_name @executable_path/$@ ", ""
       system "make"
       system "make install"
     end
