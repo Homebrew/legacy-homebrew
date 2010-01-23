@@ -373,4 +373,12 @@ class Aspell <Formula
       end
     end
   end
+  
+  # TODO remove when options works properly
+  def caveats
+    "To install dictionaries, eg:
+    
+    brew install aspell --lang=en
+
+"
 end
