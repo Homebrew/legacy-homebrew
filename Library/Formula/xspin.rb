@@ -4,6 +4,7 @@ class Xspin <Formula
   url 'http://spinroot.com/spin/Src/xspin523.tcl'
   homepage 'http://spinroot.com/spin/Src/index.html'
   md5 '893eb05798802cea4f281daaf34ce190'
+  version '5.2.3'
 
   depends_on 'spin'
 
@@ -22,6 +23,8 @@ class Xspin <Formula
     bin.install "xspin"
   end
 end
+
+# manual patching is required by the spin install process
 __END__
 diff --git a/xspin523.tcl b/xspin523.tcl
 old mode 100644
