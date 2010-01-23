@@ -13,7 +13,7 @@ class Dtach <Formula
     
     inreplace "Makefile" do |f|
       # Use our own flags, thanks.
-      %w[CC CFLAGS LIBS].each { |flag| f.gsub_make_var! flag, "" }
+      %w[CC CFLAGS LIBS].each { |flag| f.change_make_var! flag, "" }
     end
     
     system "make"
