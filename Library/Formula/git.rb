@@ -17,7 +17,7 @@ class Git <Formula
     # If local::lib is used you get a 'Only one of PREFIX or INSTALL_BASE can be given' error
     ENV['PERL_MM_OPT']='';
 
-    system "make prefix=#{prefix} install"
+    system "make", "prefix=#{prefix}", "install"
 
     # Install the git bash completion file
     (etc+'bash_completion.d').install 'contrib/completion/git-completion.bash'
