@@ -14,6 +14,8 @@ class Ghostscript <Formula
   depends_on 'jasper'
   depends_on 'jpeg'
 
+  aka :gs
+
   def move_included_source_copies
     # If the install version of any of these doesn't match
     # the version included in ghostscript, we get errors
@@ -50,5 +52,13 @@ class Ghostscript <Formula
     end
     
     (man+'de').rmtree
+  end
+  
+  def caveats; "\
+There have been reports that installing Ghostscript can break printing on OS X
+
+http://github.com/mxcl/homebrew/issues/issue/528
+
+If your printing doesn't break, please comment on the issue! Thanks."
   end
 end
