@@ -5,6 +5,8 @@ class Diction <Formula
   homepage 'http://www.gnu.org/software/diction/'
   md5 '4cbdb115c976d7141f54b223df28012e'
 
+  aka 'style'
+
   def install
       configure_args = [
           "--prefix=#{prefix}",
