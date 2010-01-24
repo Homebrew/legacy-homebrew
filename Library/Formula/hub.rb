@@ -12,6 +12,6 @@ class Hub <Formula
   end
 
   def install
-    system "rake install prefix=#{prefix}"
+    system "rake", "install", "prefix=#{prefix}"
   end
 end
