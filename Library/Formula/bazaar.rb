@@ -9,6 +9,7 @@ class Bazaar <Formula
 
   def install
     ENV.minimal_optimization
+    inreplace 'setup.py', 'man/man1', 'share/man/man1'
     system "python", "setup.py", "build"
     system "python", "setup.py", "install", "--prefix=#{prefix}"
   end
