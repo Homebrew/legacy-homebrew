@@ -381,4 +381,5 @@ class Aspell <Formula
     brew install aspell --lang=en
 
 "
+  end
 end
