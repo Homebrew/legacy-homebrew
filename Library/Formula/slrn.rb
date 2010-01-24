@@ -19,6 +19,7 @@ class Slrn <Formula
     system "make all slrnpull"
     bin.mkpath()
     man1.mkpath()
+    ENV.j1 # yep, install is broken
     system "make install"
   end
 end
