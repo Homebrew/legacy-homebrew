@@ -10,6 +10,7 @@ class Doxygen <Formula
   end
   
   def install
+    inreplace 'Makefile.in', 'MAN1DIR = man/man1', 'MAN1DIR = share/man/man1'
     system "./configure", "--prefix", "#{prefix}"
     system "make"
     system "make", "install"

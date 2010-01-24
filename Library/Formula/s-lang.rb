@@ -1,9 +1,11 @@
 require 'formula'
 
 class SLang <Formula
-  @url='ftp://space.mit.edu/pub/davis/slang/v2.2/slang-2.2.1.tar.gz'
+  @url='ftp://space.mit.edu/pub/davis/slang/v2.2/slang-2.2.2.tar.bz2'
   @homepage='http://www.s-lang.org/'
-  @md5='9a72420df2aa7b1932a195c6e5a85465'
+  @md5='974437602a781cfe92ab61433dd16d03'
+
+  aka :slang
 
   depends_on 'pcre' => :optional
   depends_on 'oniguruma' => :optional

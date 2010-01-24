@@ -13,6 +13,7 @@ class Spidermonkey <Formula
   head 'hg://http://hg.mozilla.org/tracemonkey'
 
   depends_on 'readline'
+  depends_on 'nspr'
   depends_on 'autoconf213'
 
   def install
@@ -25,6 +26,9 @@ class Spidermonkey <Formula
     end
 
     Dir.chdir "js/src" do
+      # Fixes a bug with linking against CoreFoundation. Tests all pass after
+      # building like this. See: http://openradar.appspot.com/7209349
+      inreplace "configure.in", "LDFLAGS=\"$LDFLAGS -framework Cocoa\"", ""
       system "autoconf213"
       # Remove the broken *(for anyone but FF) install_name
       inreplace "config/rules.mk", "-install_name @executable_path/$(SHARED_LIBRARY) ", ""
@@ -34,7 +38,9 @@ class Spidermonkey <Formula
 
     Dir.chdir "brew-build" do
       system "../js/src/configure", "--prefix=#{prefix}",
-                                    "--enable-readline"
+                                    "--enable-readline",
+                                    "--enable-threadsafe",
+                                    "--with-system-nspr"
 
       inreplace "js-config", /JS_CONFIG_LIBS=.*?$/, "JS_CONFIG_LIBS=''"
 

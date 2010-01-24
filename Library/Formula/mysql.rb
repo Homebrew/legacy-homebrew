@@ -31,6 +31,7 @@ class Mysql <Formula
       "--disable-dependency-tracking",
       "--prefix=#{prefix}",
       "--localstatedir=#{var}/mysql",
+      "--sysconfdir=#{etc}",
       "--with-plugins=innobase,myisam",
       "--with-extra-charsets=complex",
       "--with-ssl",
