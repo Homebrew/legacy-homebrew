@@ -8,6 +8,7 @@ class Aqbanking <Formula
   depends_on 'gmp'
   depends_on 'gwenhywfar'
   depends_on 'ktoblzcheck' => :optional
+  depends_on 'gettext'
  #depends_on 'qt3' # for gui frontends
 
   def install
