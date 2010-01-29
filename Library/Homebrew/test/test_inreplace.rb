@@ -1,0 +1,33 @@
+class InreplaceTest < Test::Unit::TestCase
+  def test_change_make_var
+    # Replace flag
+    s1="FLAG = abc"
+    s1.extend(HomebrewInreplaceExtension)
+    s1.change_make_var! "FLAG", "def"
+    assert_equal "FLAG=def", s1
+  end
+    
+  def test_change_make_var_append
+    # Append to flag
+    s1="FLAG = abc"
+    s1.extend(HomebrewInreplaceExtension)
+    s1.change_make_var! "FLAG", "\\1 def"
+    assert_equal "FLAG=abc def", s1
+  end
+
+  def test_remove_make_var
+    # Replace flag
+    s1="FLAG = abc\nFLAG2 = def"
+    s1.extend(HomebrewInreplaceExtension)
+    s1.remove_make_var! "FLAG"
+    assert_equal "FLAG=\nFLAG2 = def", s1
+  end
+
+  def test_remove_make_vars
+    # Replace flag
+    s1="FLAG = abc\nFLAG2 = def"
+    s1.extend(HomebrewInreplaceExtension)
+    s1.remove_make_var! ["FLAG", "FLAG2"]
+    assert_equal "FLAG=\nFLAG2=", s1
+  end
+end
