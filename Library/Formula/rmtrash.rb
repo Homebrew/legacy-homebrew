@@ -8,8 +8,7 @@ class Rmtrash <Formula
 
   def install
     system "make LDFLAGS='-framework Foundation -prebind' all"
-    system "gzip #{name}.1"
-    man1.install "#{name}.1.gz"
-    bin.install "#{name}"
+    man1.install gzip("rmtrash.1")
+    bin.install "rmtrash"
   end
 end
