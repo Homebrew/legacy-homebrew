@@ -1,13 +1,11 @@
 require 'formula'
 
 class Repl < Formula
-  head 'git://github.com/defunkt/repl.git', :tag => 'v0.1.0'
+  url 'http://github.com/defunkt/repl/tarball/v0.2.1'
   homepage 'http://github.com/defunkt/repl'
-
-  def initialize(*args)
-    super
-    @version = '0.1.0'
-  end
+  md5 '5b9d43038f1b561bd3215a01ee3cb766'
+  
+  depends_on 'rlwrap' => :optional
 
   def install
     bin.install 'bin/repl'
