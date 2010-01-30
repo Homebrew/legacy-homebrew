@@ -12,7 +12,11 @@ class Emacs <Formula
 
   def caveats
     "Use --cocoa to build a Cocoa binary Emacs.app from HEAD.
-The git mirror will download the entire CVS history and is rather large."
+The git mirror will download the entire CVS history and is rather large.
+
+To access texinfo documentation, set your INFOPATH to:
+#{info}
+"
   end
   
   def patches
