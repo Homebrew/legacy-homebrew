@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mpd <Formula
-  url 'http://downloads.sourceforge.net/project/musicpd/mpd/0.15.7/mpd-0.15.7.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/musicpd/mpd/0.15.8/mpd-0.15.8.tar.bz2'
   homepage 'http://mpd.wikia.com'
-  md5 'ecec7f0bdfe8024cc4daa53e4cc476a4'
+  md5 '824e1ce46c0f468865d9e5e403cdaf5d'
 
   depends_on 'glib'
   depends_on 'libid3tag'
@@ -11,7 +11,15 @@ class Mpd <Formula
   depends_on 'flac'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--disable-curl", "--enable-flac"
+    configure_args = [
+      "--prefix=#{prefix}",
+      "--disable-debug",
+      "--disable-dependency-tracking",
+      "--enable-flac",
+    ]
+    configure_args << "--disable-curl" if MACOS_VERSION <= 10.5
+
+    system "./configure", *configure_args
     system "make install"
   end
 end
