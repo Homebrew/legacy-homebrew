@@ -1,8 +1,8 @@
 require 'formula'
 
 class Wine <Formula
-  url 'http://ibiblio.org/pub/linux/system/emulators/wine/wine-1.1.33.tar.bz2'
-  md5 'f9506864f5aef9318129d349ce9ded72'
+  url 'http://ibiblio.org/pub/linux/system/emulators/wine/wine-1.1.37.tar.bz2'
+  md5 'a9144360723c8276dffdbcea9c1028d5'
   homepage 'http://www.winehq.org/'
 
   depends_on 'jpeg'
