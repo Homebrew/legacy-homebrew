@@ -182,7 +182,7 @@ module HomebrewInreplaceExtension
   # value with "new_value", or removes the definition entirely.
   # See inreplace in utils.rb
   def change_make_var! flag, new_value
-    new_value = "#{flag} = #{new_value}" unless new_value.to_s.empty?
+    new_value = "#{flag}=#{new_value}" unless new_value.to_s.empty?
     gsub! Regexp.new("^#{flag}\\s*=.*$"), new_value.to_s
   end
   def remove_make_var! flags
