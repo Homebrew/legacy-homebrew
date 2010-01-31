@@ -14,11 +14,13 @@ class Tesseract <Formula
   depends_on 'libtiff'
 
   def install
+    # Executable 'tesseract' segfaults on 10.6 when compiled with llvm-gcc (LLVM build 2206)
+    ENV.gcc_4_2
+
     # 'make install' expects the language data files in the build directory
     d = Dir.getwd
     TesseractEnglishData.new.brew { FileUtils.cp Dir["*"], "#{d}/tessdata/" }
 
-    ENV.O3
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end
