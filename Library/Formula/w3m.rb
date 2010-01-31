@@ -8,6 +8,7 @@ class W3m <Formula
   depends_on 'bdw-gc'
 
   def install
+    ENV.gcc_4_2
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end
