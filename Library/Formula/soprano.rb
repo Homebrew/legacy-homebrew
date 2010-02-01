@@ -8,6 +8,7 @@ class Soprano <Formula
   depends_on 'cmake'
   depends_on 'd-bus'
   depends_on 'qt'
+  depends_on 'clucene'
   depends_on 'redland'
 
   def install
