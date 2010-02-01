@@ -19,7 +19,7 @@ end
 # most looks in a few set directories for slang, so at least add our prefix
 __END__
 diff --git a/configure b/configure
-index f24b2f1..1cb7eb1 100755
+index f24b2f1..9ac109c 100755
 --- a/configure
 +++ b/configure
 @@ -9936,13 +9936,8 @@ echo "$as_me: error: --with-slanginc requres a value" >&2;}
@@ -33,8 +33,22 @@ index f24b2f1..1cb7eb1 100755
 -  	  /opt/include/slang \
 -  	  /opt/slang/include \
 -  	  /opt/include"
-+            /usr/local/include \
-+            `brew --prefix`"
++	  /usr/local/include \
++	  `brew --prefix`/include"
  
         for X in $lib_include_dirs
         do
+@@ -9965,12 +9960,7 @@ echo "$as_me: error: --with-slanginc requres a value" >&2;}
+             /usr/local/lib \
+             /usr/local/lib/slang \
+             /usr/local/slang/lib \
+-  	  /usr/lib \
+-  	  /usr/lib/slang \
+-  	  /usr/slang/lib \
+-  	  /opt/lib \
+-  	  /opt/lib/slang \
+-  	  /opt/slang/lib"
++	  `brew --prefix`/lib"
+ 
+        case "$host_os" in
+          *darwin* )

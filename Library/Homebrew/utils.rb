@@ -150,6 +150,12 @@ def exec_editor *args
   exec *(editor.split+args)
 end
 
+# GZips the given path, and returns the gzipped file
+def gzip path
+  system "/usr/bin/gzip", path
+  return Pathname.new(path+".gz")
+end
+
 # returns array of architectures suitable for -arch gcc flag
 def archs_for_command cmd
     cmd = `/usr/bin/which #{cmd}` unless Pathname.new(cmd).absolute?
@@ -176,7 +182,7 @@ module HomebrewInreplaceExtension
   # value with "new_value", or removes the definition entirely.
   # See inreplace in utils.rb
   def change_make_var! flag, new_value
-    new_value = "#{flag} = #{new_value}" unless new_value.to_s.empty?
+    new_value = "#{flag}=#{new_value}" unless new_value.to_s.empty?
     gsub! Regexp.new("^#{flag}\\s*=.*$"), new_value.to_s
   end
   def remove_make_var! flags
