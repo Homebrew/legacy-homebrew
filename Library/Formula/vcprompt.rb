@@ -2,7 +2,7 @@ require 'formula'
 
 class Vcprompt < Formula
 
-  head 'git://github.com/simple/vcprompt.git'
+  head 'hg://http://vc.gerg.ca/hg/vcprompt/'
   homepage 'http://vc.gerg.ca/hg/vcprompt/'
 
   def install
