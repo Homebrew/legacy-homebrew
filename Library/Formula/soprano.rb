@@ -6,10 +6,10 @@ class Soprano <Formula
   @md5='de5cf230a95fc7218425aafdfb4a5e47'
 
   depends_on 'cmake'
-  depends_on 'd-bus'
   depends_on 'qt'
-  depends_on 'clucene'
-  depends_on 'redland'
+  depends_on 'clucene' => :optional
+  depends_on 'raptor' => :optional
+  depends_on 'redland' => :optional
 
   def install
     ENV['CLUCENE_HOME'] = HOMEBREW_PREFIX
