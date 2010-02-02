@@ -6,13 +6,13 @@ class Strigi <Formula
   @md5='324fd9606ac77765501717ff92c04f9a'
 
   depends_on 'cmake'
-  depends_on 'CLucene'
+  depends_on 'clucene'
 
   def install
     ENV['CLUCENE_HOME'] = HOMEBREW_PREFIX
     ENV['EXPAT_HOME'] = '/usr/'
 
-    system "cmake . #{std_cmake_parameters} -DENABLE_EXPAT:BOOL=ON"
+    system "cmake . #{std_cmake_parameters} -DENABLE_EXPAT:BOOL=ON -DENABLE_DBUS:BOOL=OFF"
     system "make install"
   end
 end
