@@ -274,3 +274,37 @@ class MercurialDownloadStrategy <AbstractDownloadStrategy
     end
   end
 end
+
+class BazaarDownloadStrategy <AbstractDownloadStrategy
+  def fetch
+    raise "You must install bazaar first" \
+          unless system "/usr/bin/which bzr"
+
+    ohai "Cloning #{@url}"
+    @clone=HOMEBREW_CACHE+@unique_token
+
+    url=@url.sub(%r[^bzr://], '')
+
+    unless @clone.exist?
+      # 'lightweight' means history-less
+      safe_system 'bzr', 'checkout', '--lightweight', url, @clone
+    else
+      puts "Updating #{@clone}"
+      Dir.chdir(@clone) { safe_system 'bzr', 'update' }
+    end
+  end
+
+  def stage
+    dst=Dir.getwd
+    Dir.chdir @clone do
+      if @spec and @ref
+        ohai "Checking out #{@spec} #{@ref}"
+        Dir.chdir @clone do
+          safe_system 'bzr', 'export', '-r', @ref, dst
+        end
+      else
+        safe_system 'bzr', 'export', dst
+      end
+    end
+  end
+end
