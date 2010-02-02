@@ -9,7 +9,7 @@ class Ogmtools <Formula
   depends_on 'libvorbis'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--mandir=#{prefix}/share"
     system "make install"
   end
 end
