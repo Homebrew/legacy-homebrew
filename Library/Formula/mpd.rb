@@ -9,13 +9,22 @@ class Mpd <Formula
   depends_on 'libid3tag'
   depends_on 'pkg-config'
   depends_on 'flac'
+  depends_on 'libshout'
+  depends_on 'fluid-synth'
+  depends_on 'libcue' => :optional
+  depends_on 'libmms' => :optional
+  depends_on 'libzzip' => :optional
 
   def install
     configure_args = [
       "--prefix=#{prefix}",
       "--disable-debug",
       "--disable-dependency-tracking",
+      "--enable-bzip2",
       "--enable-flac",
+      "--enable-shout",
+      "--enable-fluidsynth",
+      "--enable-zip",
     ]
     configure_args << "--disable-curl" if MACOS_VERSION <= 10.5
 
