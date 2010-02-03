@@ -126,7 +126,8 @@ end
 class SubversionDownloadStrategy <AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
-    @co=HOMEBREW_CACHE+@unique_token
+    @name = name
+    @export = HOMEBREW_CACHE+@unique_token
   end
 
   def cached_location
@@ -134,20 +135,47 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
   end
 
   def fetch
+    # Looks like `svn up` is pretty cool, as it will save on bandwidth (makes
+    # cache actually a cache) and will have a similar effect to verifying the
+    # cache as it will make any changes to get the right revision.
     ohai "Checking out #{@url}"
-    unless @co.exist?
-      quiet_safe_system svn, 'checkout', @url, @co
+    if @spec == :revision
+      svncommand = @export.exist? ? 'up' : 'checkout';
+      args = [svn, svncommand, '--force', @url, @export]
+      args << '-r' << @ref if @ref
+      quiet_safe_system *args
+    elsif @spec == :revisions
+      externals = Hash.new
+      # Oh god escaping shell args.
+      # See http://notetoself.vrensk.com/2008/08/escaping-single-quotes-in-ruby-harder-than-expected/
+      `'#{svn.gsub(/\\|'/) { |c| "\\#{c}" }}' propget svn:externals \
+      '#{@url.gsub(/\\|'/) { |c| "\\#{c}" }}'`.each_line do |external_line|
+        key, value = external_line.split /\s+/
+        externals[key] = value
+      end
+      fetch_repo = lambda do |external, uri|
+        if external.to_s == @name
+          path = ''
+        else
+          path = external.to_s
+        end
+        svncommand = (@export+path).exist? ? 'up' : 'checkout';
+        args = [svn, svncommand, '--force', '--ignore-externals', uri, @export+path]
+        args << '-r' << @ref[external] if @ref[external]
+        quiet_safe_system *args
+      end
+      fetch_repo.call @name, @url
+      externals.each_pair &fetch_repo
     else
-      puts "Updating #{@co}"
-      quiet_safe_system svn, 'up', @co
+      svncommand = @export.exist? ? 'up' : 'checkout';
+      args = [svn, svncommand, '--force', @url, @export]
+      quiet_safe_system *args
     end
   end
 
   def stage
-    # Force the export, since the target directory will already exist
-    args = [svn, 'export', '--force', @co, Dir.pwd]
-    args << '-r' << @ref if @spec == :revision and @ref
-    quiet_safe_system *args
+    # `svn export PATH1 PATH2` doesn't need network when no revision is given.
+    quiet_safe_system svn, 'export', '--force', @export, Dir.pwd
   end
 
   # Override this method in a DownloadStrategy to force the use of a non-
