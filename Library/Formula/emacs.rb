@@ -2,27 +2,32 @@ require 'formula'
 
 class Emacs <Formula
   if ARGV.include? "--cocoa"
-    head 'git://git.savannah.gnu.org/emacs.git', :tag => 'db44e1e'
+    # 98643 is the same bzr rev as the old git sha db44e1e
+    # but both bzr@98643 and bzr@trunk fail with 'digest-doc' not found
+    head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk', :tag => '98643'
   else
     url 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.1.tar.bz2'
-    head 'git://git.savannah.gnu.org/emacs.git'
+    head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
     md5 '17f7f0ba68a0432d58fa69d05a2225be'
   end
   homepage 'http://www.gnu.org/software/emacs/'
 
   def caveats
     "Use --cocoa to build a Cocoa binary Emacs.app from HEAD.
-The git mirror will download the entire CVS history and is rather large.
 
 To access texinfo documentation, set your INFOPATH to:
 #{info}
+
+Emacs recently changed to bazaar, so you may have to delete the
+cached git directory before you can update. This should be somewhere like
+$HOME/Library/Caches/Homebrew/emacs-HEAD/
 "
   end
   
   def patches
     if ARGV.include? "--cocoa"
       "http://dev.boris.com.au/emacs-23.1-CVS-Cocoa-homebrew.patch"
-    else
+    elsif not ARGV.include? "--HEAD"
       DATA
     end
   end
