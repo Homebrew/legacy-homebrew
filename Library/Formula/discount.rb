@@ -6,11 +6,10 @@ class Discount <Formula
   md5 'b7a4900bedd2d75147b0b708fb6e16ed'
 
   def install
-    system "./configure.sh", "--prefix=#{prefix}"
-    system "make"
-    system "mkdir -p #{prefix}/bin"
-    system "mkdir -p #{prefix}/lib"
-    system "mkdir -p #{prefix}/include"
-    system "make install"
+    system "./configure.sh", "--prefix=#{prefix}", "--mandir=#{share}"
+    bin.mkdir
+    lib.mkdir
+    include.mkdir
+    system "make install.everything"
   end
 end
