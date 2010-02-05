@@ -12,7 +12,7 @@ class Yajl <Formula
   def install
     ENV.deparallelize
 
-    system "./configure --prefix '#{prefix}'"
+    system "./configure", "--prefix#{prefix}"
     system "make install"
   end
 end
