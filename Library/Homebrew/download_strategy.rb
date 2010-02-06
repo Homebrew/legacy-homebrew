@@ -53,42 +53,46 @@ class AbstractDownloadStrategy
 end
 
 class CurlDownloadStrategy <AbstractDownloadStrategy
+  def initialize url, name, version, specs
+    super
+    if @unique_token
+      @tarball_path=HOMEBREW_CACHE+(@unique_token+ext)
+    else
+      @tarball_path=HOMEBREW_CACHE+File.basename(@url)
+    end
+  end
+  
   def fetch
     ohai "Downloading #{@url}"
-    if @unique_token
-      @dl=HOMEBREW_CACHE+(@unique_token+ext)
-    else
-      @dl=HOMEBREW_CACHE+File.basename(@url)
-    end
-    unless @dl.exist?
+    unless @tarball_path.exist?
       begin
-        curl @url, '-o', @dl
+        curl @url, '-o', @tarball_path
       rescue Exception
-        ignore_interrupts { @dl.unlink if @dl.exist? }
+        ignore_interrupts { @tarball_path.unlink if @tarball_path.exist? }
         raise
       end
     else
       puts "File already downloaded and cached to #{HOMEBREW_CACHE}"
     end
-    return @dl # thus performs checksum verification
+    return @tarball_path # thus performs checksum verification
   end
 
   def stage
-    # magic numbers stolen from /usr/share/file/magic/
-    if @dl.extname == '.jar'
+    if @tarball_path.extname == '.jar'
       magic_bytes = nil
     else
       # get the first four bytes
-      File.open(@dl) { |f| magic_bytes = f.read(4) }
+      File.open(@tarball_path) { |f| magic_bytes = f.read(4) }
     end
 
+    # magic numbers stolen from /usr/share/file/magic/
     case magic_bytes
     when /^PK\003\004/ # .zip archive
-      quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @dl
+      quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @tarball_path
       chdir
     when /^\037\213/, /^BZh/, /^\037\235/  # gzip/bz2/compress compressed
       # TODO check if it's really a tar archive
-      safe_system '/usr/bin/tar', 'xf', @dl
+      safe_system '/usr/bin/tar', 'xf', @tarball_path
       chdir
     else
       # we are assuming it is not an archive, use original filename
@@ -98,7 +102,7 @@ class CurlDownloadStrategy <AbstractDownloadStrategy
       # behaviour, just open an issue at github
       # We also do this for jar files, as they are in fact zip files, but
       # we don't want to unzip them
-      FileUtils.mv @dl, File.basename(@url)
+      FileUtils.mv @tarball_path, File.basename(@url)
     end
   end
 
@@ -130,7 +134,7 @@ end
 # Useful for installing jars.
 class NoUnzipCurlDownloadStrategy <CurlDownloadStrategy
   def stage
-    FileUtils.mv @dl, File.basename(@url)
+    FileUtils.mv @tarball_path, File.basename(@url)
   end
 end
 
@@ -266,6 +270,40 @@ class MercurialDownloadStrategy <AbstractDownloadStrategy
         end
       else
         safe_system 'hg', 'archive', '-y', '-t', 'files', dst
+      end
+    end
+  end
+end
+
+class BazaarDownloadStrategy <AbstractDownloadStrategy
+  def fetch
+    raise "You must install bazaar first" \
+          unless system "/usr/bin/which bzr"
+
+    ohai "Cloning #{@url}"
+    @clone=HOMEBREW_CACHE+@unique_token
+
+    url=@url.sub(%r[^bzr://], '')
+
+    unless @clone.exist?
+      # 'lightweight' means history-less
+      safe_system 'bzr', 'checkout', '--lightweight', url, @clone
+    else
+      puts "Updating #{@clone}"
+      Dir.chdir(@clone) { safe_system 'bzr', 'update' }
+    end
+  end
+
+  def stage
+    dst=Dir.getwd
+    Dir.chdir @clone do
+      if @spec and @ref
+        ohai "Checking out #{@spec} #{@ref}"
+        Dir.chdir @clone do
+          safe_system 'bzr', 'export', '-r', @ref, dst
+        end
+      else
+        safe_system 'bzr', 'export', dst
       end
     end
   end

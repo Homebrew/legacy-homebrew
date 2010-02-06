@@ -3,7 +3,7 @@ require 'hardware'
 
 class Qt <Formula
   url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.6.1.tar.gz'
-  md5 '2a7b5126f2450d8525af355fc4c12ad6'
+  md5 '0542a4be6425451ab5f668c6899cac36'
   homepage 'http://www.qtsoftware.com'
 
   def options
@@ -37,8 +37,8 @@ class Qt <Formula
     conf_args << "-plugin-sql-mysql" if (HOMEBREW_CELLAR+"mysql").directory?
 
     if ARGV.include? '--with-qtdbus'
-      conf_args << "-I#{Formula.factory('dbus').lib}/dbus-1.0/include"
-      conf_args << "-I#{Formula.factory('dbus').include}/dbus-1.0"
+      conf_args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
+      conf_args << "-I#{Formula.factory('d-bus').include}/dbus-1.0"
       conf_args << "-ldbus-1"
       conf_args << "-dbus-linked"
     end

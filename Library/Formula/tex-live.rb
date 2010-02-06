@@ -4,11 +4,11 @@ class CurlXZDownloadStrategy < CurlDownloadStrategy
   def stage
     # As far as I can tell, the LZMA format does not have any magic header bits that we could use to
     # identify LZMA archives in the CurlDownloadStrategy, so use this awesome hack
-    safe_system "lzma -k --force --stdout --decompress #{@dl} | /usr/bin/tar x"
+    safe_system "lzma -k --force --stdout --decompress #{@tarball_path} | /usr/bin/tar x"
    
     # You could also do this, but it leaves the tar file lying around...
-    #safe_system '/usr/local/bin/lzma', '-k', '--force', '--decompress', @dl
-    #safe_system '/usr/bin/tar', 'xf', @dl.to_s.gsub( ".lzma", "" )
+    #safe_system '/usr/local/bin/lzma', '-k', '--force', '--decompress', @tarball_path
+    #safe_system '/usr/bin/tar', 'xf', @tarball_path.to_s.gsub( ".lzma", "" )
     chdir
   end
 end

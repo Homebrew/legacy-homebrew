@@ -112,6 +112,8 @@ class Formula
     CHECKSUM_TYPES.each do |type|
       set_instance_variable type
     end
+
+    @downloader=download_strategy.new url, name, version, specs
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -157,6 +159,7 @@ class Formula
     when %r[^svn://] then SubversionDownloadStrategy
     when %r[^svn+http://] then SubversionDownloadStrategy
     when %r[^git://] then GitDownloadStrategy
+    when %r[^bzr://] then BazaarDownloadStrategy
     when %r[^https?://(.+?\.)?googlecode\.com/hg] then MercurialDownloadStrategy
     when %r[^https?://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
     when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
@@ -365,12 +368,15 @@ private
   end
 
   def stage
-    ds=download_strategy.new url, name, version, specs
     HOMEBREW_CACHE.mkpath
-    dl=ds.fetch
-    verify_download_integrity dl if dl.kind_of? Pathname
+
+    downloaded_tarball = @downloader.fetch
+    if downloaded_tarball.kind_of? Pathname
+      verify_download_integrity downloaded_tarball
+    end
+  
     mktemp do
-      ds.stage
+      @downloader.stage
       yield
     end
   end

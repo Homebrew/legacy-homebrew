@@ -5,10 +5,11 @@ class ClojureContrib <Formula
   homepage 'http://github.com/richhickey/clojure-contrib'
 
   depends_on 'clojure'
+  depends_on 'maven'
 
   def install
-    system "ant"
-    prefix.install "clojure-contrib.jar"
+    system "mvn package"
+    prefix.install Dir["target/clojure-contrib-*.jar"]
   end
 
   def caveats

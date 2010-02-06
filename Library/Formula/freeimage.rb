@@ -3,7 +3,7 @@ require 'formula'
 class FreeimageHttpDownloadStrategy <CurlDownloadStrategy
   def stage
     # need to convert newlines or patch chokes
-    safe_system '/usr/bin/unzip', '-aqq', @dl
+    safe_system '/usr/bin/unzip', '-aqq', @tarball_path
     chdir
   end
 end
