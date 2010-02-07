@@ -1,9 +1,10 @@
 require 'formula'
 
 class Parrot <Formula
-  url 'ftp://ftp.parrot.org//pub/parrot/releases/devel/1.8.0/parrot-1.8.0.tar.gz'
+  head 'bzr://https://launchpad.net/parrot/trunk'
+  url 'ftp://ftp.parrot.org//pub/parrot/releases/stable/2.0.0/parrot-2.0.0.tar.gz'
   homepage 'http://www.parrot.org/'
-  md5 'a61fd27bf5033eeb0792da3686cd5af7'
+  md5 'a28e09358a31ed93601deb8e5000a5f5'
 
   depends_on 'pcre'
 
@@ -17,7 +18,8 @@ class Parrot <Formula
     system "make install"
 
     l = %x{otool -L #{bin}/parrot}[/\S*blib\/lib\S*/]
-    %w{parrot parrot_config parrot_debugger}.each do |fn|
+    %w{parrot parrot-nqp parrot_config parrot_debugger pbc_disassemble
+      pbc_dump pbc_merge pbc_to_exe}.each do |fn|
       system "install_name_tool -change #{l} #{lib}/libparrot.dylib #{bin+fn}"
     end
   end
