@@ -1,8 +1,8 @@
 require 'formula'
 
 class Nginx < Formula
-  url 'http://sysoev.ru/nginx/nginx-0.7.64.tar.gz'
-  md5 'cfa97c0f784532820110b5eee57fef6d'
+  url 'http://sysoev.ru/nginx/nginx-0.7.65.tar.gz'
+  md5 'abc4f76af450eedeb063158bd963feaa'
   homepage 'http://nginx.net/'
 
   depends_on 'pcre'
