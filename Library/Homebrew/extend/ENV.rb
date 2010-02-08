@@ -189,7 +189,7 @@ module HomebrewEnvExtension
     ENV['CC'] or "gcc"
   end
   def cxx
-    ENV['cxx'] or "g++"
+    ENV['CXX'] or "g++"
   end
 
   def m64
