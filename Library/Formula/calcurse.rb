@@ -15,7 +15,9 @@ class Calcurse <Formula
     ENV.append 'CFLAGS', "-I#{prefix}/include -fnested-functions"
     ENV.append 'LDFLAGS', "-lintl"
     ENV.O3
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make"
     system "make install"
   end
