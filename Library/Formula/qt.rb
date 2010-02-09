@@ -39,6 +39,7 @@ class Qt <Formula
     if ARGV.include? '--with-qtdbus'
       conf_args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
       conf_args << "-I#{Formula.factory('d-bus').include}/dbus-1.0"
+      conf_args << "-L#{Formula.factory('d-bus').lib}"
       conf_args << "-ldbus-1"
       conf_args << "-dbus-linked"
     end
