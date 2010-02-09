@@ -177,16 +177,20 @@ def archs_for_command cmd
     end
 end
 
+# String extensions added by inreplace below.
 module HomebrewInreplaceExtension
   # Looks for Makefile style variable defintions and replaces the
   # value with "new_value", or removes the definition entirely.
-  # See inreplace in utils.rb
-  def change_make_var! flag, new_value=nil
-    new_value = "#{flag}=#{new_value}" unless new_value == nil
+  def change_make_var! flag, new_value
+    new_value = "#{flag}=#{new_value}"
     gsub! Regexp.new("^#{flag}\\s*=\\s*(.*)$"), new_value
   end
+  # Removes variable assignments completely.
   def remove_make_var! flags
-    flags.each { |flag| change_make_var! flag, "" }
+    flags.each do |flag|
+      # Also remove trailing \n, if present.
+      gsub! Regexp.new("^#{flag}\\s*=(.*)$\n?"), ""
+    end
   end
 end
 
