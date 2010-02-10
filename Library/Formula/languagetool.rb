@@ -1,19 +1,19 @@
 require 'formula'
 
-EXEC=<<EOS
-#!/bin/bash
-java -jar xxx/LanguageTool.jar $*
-EOS
-
 class Languagetool <Formula
   url 'http://www.languagetool.org/download/LanguageTool-1.0.0.oxt'
   homepage 'http://www.languagetool.org/'
   md5 '979b1a1f2ce3a9100d7aa7b1ef245734'
+  
+  def startup_script
+    <<-EOS
+#!/bin/bash
+java -jar #{libexec}/LanguageTool.jar $*
+EOS
+  end
 
   def install
-    File.open("languagetool", 'w') {|f| f.write EXEC}
-    inreplace "languagetool", "xxx", "#{share}"
-    bin.install "languagetool"
-    Dir["*"].each {|f| share.install f}
+    (bin+"languagetool").write startup_script
+    libexec.install Dir["*"]
   end
 end
