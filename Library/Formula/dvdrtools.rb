@@ -18,13 +18,11 @@ class Dvdrtools < Formula
 
     system "./configure",
       "--prefix=#{prefix}",
-      "--mandir=#{prefix}/share/man",
+      "--mandir=#{man}",
       '--disable-debug',
       '--disable-dependency-tracking'
 
     system 'make install'
-
-    man.install Dir['man/*']
   end
 
   private
