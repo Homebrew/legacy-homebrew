@@ -6,7 +6,8 @@ class Htmldoc <Formula
   md5 '35589e7b8fe9c54e11be87cd5aec4dcc'
   
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}", "--mandir=#{man}"
     system "make install"
   end
 end
