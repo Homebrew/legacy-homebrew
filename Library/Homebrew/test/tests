@@ -8,3 +8,9 @@
 
 # Bulk of the tests
 ruby unittest.rb $*
+
+# Patching tests
+ruby test_patching.rb $*
+
+# External dependency tests
+ruby test_external_deps.rb $*
