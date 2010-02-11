@@ -8,6 +8,7 @@ class Ncursesw <Formula
   def install
     ENV.gcc_4_2
     system "./configure", "--prefix=#{prefix}",
+                          "--mandir=#{man}",
                           "--disable-debug",
                           "--disable-dependency-tracking",
                           "--enable-widec",
