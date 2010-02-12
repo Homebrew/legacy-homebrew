@@ -30,7 +30,6 @@ require 'keg'
 require 'utils'
 require 'brew.h'
 require 'hardware'
-require 'update'
 
 # for some reason our utils.rb safe_system behaves completely differently 
 # during these tests. This is worrying for sure.
@@ -113,30 +112,6 @@ class TestScriptFileFormula <ScriptFileFormula
   end
 end
 
-class RefreshBrewMock < RefreshBrew
-  def in_prefix_expect(expect, returns = '')
-    @expect ||= {}
-    @expect[expect] = returns
-  end
-  
-  def `(cmd)
-    if Dir.pwd == HOMEBREW_PREFIX.to_s and @expect.has_key?(cmd)
-      (@called ||= []) << cmd
-      @expect[cmd]
-    else
-      raise "#{inspect} Unexpectedly called backticks in pwd `#{HOMEBREW_PREFIX}' and command `#{cmd}'"
-    end
-  end
-  
-  def expectations_met?
-    @expect.keys.sort == @called.sort
-  end
-  
-  def inspect
-    "#<#{self.class.name} #{object_id}>"
-  end
-end
-
 module ExtendArgvPlusYeast
   def reset
     @named = nil
@@ -150,6 +125,5 @@ ARGV.extend ExtendArgvPlusYeast
 
 require 'test/test_versions'
 require 'test/test_checksums'
-require 'test/test_updater' unless ARGV.include? "--skip-update"
 require 'test/test_bucket'
 require 'test/test_inreplace'

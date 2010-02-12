@@ -9,6 +9,9 @@
 # Bulk of the tests
 ruby unittest.rb $*
 
+# Update tests (only seem to work for mxcl)
+ruby test_updater.rb $*
+
 # Patching tests
 ruby test_patching.rb $*
 
