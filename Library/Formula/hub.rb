@@ -1,15 +1,9 @@
 require 'formula'
 
 class Hub <Formula
-  head 'git://github.com/defunkt/hub.git', :tag => 'v0.3.0'
+  url 'http://github.com/defunkt/hub/tarball/v0.3.0'
   homepage 'http://github.com/defunkt/hub'
-
-  def initialize(*args)
-    super
-
-    # Force version instead of HEAD
-    @version = '0.3.0'
-  end
+  md5 'f77c39cc69c5e9e909608a7580b0feaf'
 
   def install
     system "rake", "install", "prefix=#{prefix}"
