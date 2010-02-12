@@ -211,7 +211,11 @@ begin
     if ARGV.named.empty?
       require 'formula'
       HOMEBREW_CELLAR.children.each do |rack|
-        cleanup(rack.basename.to_s) if rack.directory?
+        begin
+          cleanup(rack.basename.to_s) if rack.directory?
+        rescue FormulaUnavailableError => e
+          opoo "Formula not found for #{e.name}"
+        end
       end
     else
       ARGV.named.each { |name| cleanup name}

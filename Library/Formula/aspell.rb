@@ -3,8 +3,8 @@ require 'formula'
 class AspellLang <Formula
   def install
     aspell = Formula.factory 'aspell'
-    system "./configure --vars ASPELL=#{aspell.prefix}/bin/aspell"
-    system "make install"
+    system "./configure --vars ASPELL=#{aspell.prefix}/bin/aspell PREZIP=#{aspell.prefix}/bin/prezip"
+    system "PATH=$PATH:#{aspell.prefix}/bin; make install"
   end
 end
 
@@ -363,7 +363,7 @@ class Aspell <Formula
     system "make install"
 
     langopt = ARGV.options.select { |v| v =~ /--lang=/ }
-    langopt.each do |opt|
+    langopt.uniq.each do |opt|
       languages = opt.split('=')[1].split(',')
       languages.each() do |lang|
         classname = "Aspell" + lang.capitalize

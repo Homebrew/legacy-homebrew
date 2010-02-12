@@ -5,7 +5,9 @@ class Libgsf <Formula
   homepage 'http://directory.fsf.org/project/libgsf/'
   md5 '8478d83fda0b6e57f36550c11a693ee1'
 
+  depends_on 'pkg-config'
   depends_on 'gettext'
+  depends_on "intltool"
 
   def install
     configure_args = [

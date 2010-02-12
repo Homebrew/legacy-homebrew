@@ -10,6 +10,9 @@ class Lftp <Formula
   depends_on 'gnutls'
 
   def install
+    # Bus error
+    ENV.no_optimization if MACOS_VERSION == 10.5
+
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
