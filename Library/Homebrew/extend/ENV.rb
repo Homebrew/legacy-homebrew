@@ -29,6 +29,10 @@ module HomebrewEnvExtension
   def setup_build_environment
     # Clear CDPATH to avoid make issues that depend on changing directories
     ENV.delete('CDPATH')
+    ENV.delete('CPPFLAGS')
+    ENV.delete('LDFLAGS')
+    ENV.delete('CC')
+    ENV.delete('CXX')
 
     ENV['MAKEFLAGS']="-j#{Hardware.processor_count}"
 
@@ -38,13 +42,9 @@ module HomebrewEnvExtension
       ENV['LDFLAGS'] = "-L#{HOMEBREW_PREFIX}/lib"
       # CMake ignores the variables above
       ENV['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
-    else
-      # ignore existing build vars, thus we should have less bugs to deal with
-      ENV['CPPFLAGS'] = ''
-      ENV['LDFLAGS'] = ''
     end
 
-    if MACOS_VERSION >= 10.6 or ENV['HOMEBREW_USE_LLVM']
+    if MACOS_VERSION >= 10.6 and (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
       # you can install Xcode wherever you like you know.
       prefix = `/usr/bin/xcode-select -print-path`.chomp
       prefix = "/Developer" if prefix.to_s.empty?
@@ -53,45 +53,45 @@ module HomebrewEnvExtension
       ENV['CXX'] = "#{prefix}/usr/bin/llvm-g++"
       cflags = %w{-O4} # link time optimisation baby!
     else
-      ENV['CC']="gcc-4.2"
-      ENV['CXX']="g++-4.2"
       cflags = ['-O3']
     end
+
     # in rare cases this may break your builds, as the tool for some reason wants
     # to use a specific linker, however doing this in general causes formula to
     # build more successfully because we are changing CC and many build systems
     # don't react properly to that
-    ENV['LD']=ENV['CC']
+    ENV['LD'] = ENV['CC'] if ENV['CC']
 
     # optimise all the way to eleven, references:
     # http://en.gentoo-wiki.com/wiki/Safe_Cflags/Intel
     # http://forums.mozillazine.org/viewtopic.php?f=12&t=577299
     # http://gcc.gnu.org/onlinedocs/gcc-4.2.1/gcc/i386-and-x86_002d64-Options.html
+    # we don't set, eg. -msse3 because the march flag does that for us
+    #   http://gcc.gnu.org/onlinedocs/gcc-4.3.3/gcc/i386-and-x86_002d64-Options.html
     if MACOS_VERSION >= 10.6
       case Hardware.intel_family
-      when :penryn, :core2
-        # no need to add -mfpmath it happens automatically with 64 bit compiles
+      when :nehalem, :penryn, :core2
+        # the 64 bit compiler adds -mfpmath=sse for us
         cflags << "-march=core2"
       when :core
         cflags<<"-march=prescott"<<"-mfpmath=sse"
       end
-    else
+      # gcc doesn't auto add msse4 or above (based on march flag) yet
       case Hardware.intel_family
-      when :penryn, :core2
+      when :nehalem
+        cflags << "-msse4" # means msse4.2 and msse4.1
+      when :penryn
+        cflags << "-msse4.1"
+      end
+    else
+      # gcc 4.0 didn't support msse4
+      case Hardware.intel_family
+      when :nehalem, :penryn, :core2
         cflags<<"-march=nocona"
       when :core
         cflags<<"-march=prescott"
       end
       cflags<<"-mfpmath=sse"
-    end
-    cflags<<"-mmmx"
-    case Hardware.intel_family
-    when :nehalem
-      cflags<<"-msse4.2"
-    when :penryn
-      cflags<<"-msse4.1"
-    when :core2, :core
-      cflags<<"-msse3"
     end
 
     ENV['CFLAGS'] = ENV['CXXFLAGS'] = "#{cflags*' '} #{SAFE_CFLAGS_FLAGS}"
@@ -102,6 +102,11 @@ module HomebrewEnvExtension
   end
   alias_method :j1, :deparallelize
 
+  # recommended by Apple, but, eg. wget won't compile with this flag, so…
+  def fast
+    remove_from_cflags /-O./
+    append_to_cflags '-fast'
+  end
   def O3
     # Sometimes O4 just takes fucking forever
     remove_from_cflags /-O./
@@ -119,27 +124,18 @@ module HomebrewEnvExtension
   end
 
   def gcc_4_0_1
-    case MACOS_VERSION
-    when 10.5
-      self['CC']=nil
-      self['CXX']=nil
-      self['LD']=nil
-    when 10.6..11.0
-      self['CC']='gcc-4.0'
-      self['CXX']='g++-4.0'
-      self['LD']=self['CC']
-      remove_from_cflags '-march=core2'
-      self.O3
-    end
-    remove_from_cflags '-msse4.1'
-    remove_from_cflags '-msse4.2'
+    self['CC'] = self['LD'] = '/usr/bin/gcc-4.0'
+    self['CXX'] = '/usr/bin/g++-4.0'
+    self.O3
+    remove_from_cflags '-march=core2'
+    remove_from_cflags %r{-msse4(\.\d)?/}
   end
   alias_method :gcc_4_0, :gcc_4_0_1
 
   def gcc_4_2
     # Sometimes you want to downgrade from LLVM to GCC 4.2
-    self['CC']="gcc-4.2"
-    self['CXX']="g++-4.2"
+    self['CC']="/usr/bin/gcc-4.2"
+    self['CXX']="/usr/bin/g++-4.2"
     self['LD']=self['CC']
     self.O3
   end
