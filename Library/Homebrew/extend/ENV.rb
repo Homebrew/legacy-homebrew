@@ -205,6 +205,7 @@ module HomebrewEnvExtension
   def universal_binary
     append_to_cflags '-arch i386 -arch x86_64'
     ENV.O3 if self['CFLAGS'].include? '-O4' # O4 seems to cause the build to fail
+    ENV.append 'LDFLAGS', '-arch i386 -arch x86_64'
   end
 
   def prepend key, value, separator = ' '
