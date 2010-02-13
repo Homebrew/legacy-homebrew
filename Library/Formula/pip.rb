@@ -19,9 +19,15 @@ class Pip <Formula
     (bin+'pip').write script
   end
 
-  def caveats
+  def two_line_instructions
     "pip installs packages. Python packages.\n"+
     "Run 'pip help' to see a list of commands."
+  end
+
+  # http://github.com/mxcl/homebrew/issues/issue/711
+  def caveats
+    cfg = '~/.pydistutils.cfg'
+    "pip will break unless you delete your #{cfg} file!" if File.exist?(File.expand_path(cfg))
   end
 end
 
