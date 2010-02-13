@@ -26,7 +26,7 @@ class RefreshBrew
   CHECKOUT_COMMAND = 'git checkout -q master'
   UPDATE_COMMAND   = "git pull #{RESPOSITORY_URL} master"
   REVISION_COMMAND = 'git log -l -1 --pretty=format:%H 2> /dev/null'
-  GIT_UP_TO_DATE   = 'Already up-to-date'
+  GIT_UP_TO_DATE   = 'Already up-to-date.'
   
   formula_regexp   = 'Library/Formula/(.+?)\.rb'
   ADDED_FORMULA    = %r{^\s+create mode \d+ #{formula_regexp}$}
