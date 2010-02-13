@@ -14,8 +14,8 @@ def x11?
 end
 
 class Imagemagick <Formula
-  @url='http://image_magick.veidrodis.com/image_magick/ImageMagick-6.5.6-5.tar.gz'
-  @md5='668919a5a7912fb6778975bc55893004'
+  @url='http://image_magick.veidrodis.com/image_magick/ImageMagick-6.5.9-3.tar.bz2'
+  @md5='052fee2a6f1d5fb67664c67b2489be91'
   @homepage='http://www.imagemagick.org'
 
 
@@ -42,6 +42,8 @@ class Imagemagick <Formula
      "--disable-static",
      "--with-modules",
      "--without-magick-plus-plus"]
+     
+     args << "--disable-openmp" if MACOS_VERSION < 10.6   # libgomp unavailable
      args << '--without-ghostscript' \
           << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
              unless ghostscript_srsly?
