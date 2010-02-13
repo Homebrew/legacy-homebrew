@@ -17,6 +17,7 @@ class Aqbanking <Formula
         "--disable-debug",
         "--disable-dependency-tracking",
         "--with-frontends=cli",
+        "--with-gwen-dir=#{HOMEBREW_PREFIX}",
     ]
     system "./configure", *configure_args
     ENV.j1
