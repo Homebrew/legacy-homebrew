@@ -31,5 +31,5 @@ if [ -z "$1" ]; then
   java -server -cp $CLOJURE clojure.main
 else
   scriptname=$1
-  java -server -cp $CLOJURE clojure.main -i $scriptname $*
+  java -server -cp $CLOJURE clojure.main $scriptname $*
 fi
