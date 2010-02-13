@@ -8,7 +8,7 @@ class Clojure <Formula
   JAR = "clojure.jar"
 
   def script
-    DATA.read.gsub 'CLOJURE_JAR_PATH_PLACEHOLDER', prefix+JAR
+    DATA.read.gsub 'CLOJURE_JAR_PATH_PLACEHOLDER', "$(brew --prefix)/Cellar/#{name}/#{version}/"+JAR
   end
 
   def install
