@@ -7,8 +7,7 @@ class Growlnotify <Formula
   homepage 'http://growl.info/extras.php#growlnotify'
 
   def install
-    puts @version
-    bin.install("growlnotify")
-    man1.install("growlnotify.1")
+    bin.install "growlnotify"
+    man1.install gzip("growlnotify.1")
   end
 end
