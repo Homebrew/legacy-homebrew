@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# This shell script runs Homebrew's test suite.
+#
+# Note: "formula_test" is omitted; these aren't unit tests but sanity checks
+# on the real formulae.
+#
+
+# Bulk of the tests
+ruby unittest.rb $*
