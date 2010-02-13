@@ -20,6 +20,8 @@ class Mysql <Formula
   end
 
   def install
+    ENV.gcc_4_2 # http://github.com/mxcl/homebrew/issues/#issue/144
+
     # See: http://dev.mysql.com/doc/refman/5.1/en/configure-options.html
     # These flags may not apply to gcc 4+
     ENV['CXXFLAGS'] = ENV['CXXFLAGS'].gsub "-fomit-frame-pointer", ""
