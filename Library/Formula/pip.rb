@@ -8,15 +8,18 @@ class Pip <Formula
   depends_on 'setuptools'
 
   def install
-    dest = "#{prefix}/lib/pip"
-    system "python", "setup.py", "install", "--prefix=#{prefix}",
-                                            "--install-purelib=#{dest}"
+    dest = prefix+"lib/pip"
+
     # make sure we use the right python (distutils rewrites the shebang)
     # also adds the pip lib path to the PYTHONPATH
-    script = DATA.read
-    script.sub! "HOMEBREW_PIP_PATH", dest
-    (bin+'pip').unlink
-    (bin+'pip').write script
+    (bin+'pip').write(DATA.read.sub("HOMEBREW_PIP_PATH", dest))
+
+    # FIXME? If we use /usr/bin/env python in the pip script
+    # then should we be hardcoding this version? I dunno.
+    python_version = `python -V 2>&1`.match('Python (\d+\.\d+)').captures.at(0)
+
+    dest.install('pip')
+    cp 'pip.egg-info/PKG-INFO', "#{dest}/pip-#{version}-py#{python_version}.egg-info"
   end
 
   def two_line_instructions
@@ -24,10 +27,9 @@ class Pip <Formula
     "Run 'pip help' to see a list of commands."
   end
 
-  # http://github.com/mxcl/homebrew/issues/issue/711
   def caveats
-    cfg = '~/.pydistutils.cfg'
-    "pip will break unless you delete your #{cfg} file!" if File.exist?(File.expand_path(cfg))
+    # I'm going to add a proper two_line_instructions formula function at some point
+    two_line_instructions
   end
 end
 
