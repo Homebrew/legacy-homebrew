@@ -9,7 +9,7 @@ class Bmon <Formula
   depends_on 'ncursesw'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{prefix}/share/man", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}", "--disable-debug", "--disable-dependency-tracking"
     system "make" # two steps to prevent blowing up
     system "make install"
   end
