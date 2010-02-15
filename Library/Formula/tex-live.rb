@@ -119,7 +119,7 @@ class TexLive <Formula
     # The build scripts don't create this directory for no apparent reason...
     # It's easier to just do it here than it is to patch the Makefiles
     # Actually, if compilation fails brew thinks that we succeeded because this directory exists. Maybe we should patch the makefiles...
-    FileUtils.mkdir_p "#{prefix}/share/man/man5"
+    FileUtils.mkdir_p "#{man}/man5"
     
     # Replaces the texk_kpathsea_texmf_cnf OpenBSD patch with our own version
     inreplace "texk/kpathsea/texmf.cnf", "$SELFAUTOPARENT/", "#{prefix}/share/"

@@ -17,7 +17,7 @@ class Flac <Formula
     system "./configure", "--disable-debug",
                           "--disable-asm-optimizations",
                           "--prefix=#{prefix}",
-                          "--mandir=#{prefix}/share/man"
+                          "--mandir=#{man}"
     ENV['OBJ_FORMAT']='macho'
     system "make install"
 

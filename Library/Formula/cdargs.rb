@@ -6,7 +6,7 @@ class Cdargs <Formula
   md5 '50be618d67f0b9f2439526193c69c567'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{prefix}/share/man"
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make"
     system "make install-strip"
 
