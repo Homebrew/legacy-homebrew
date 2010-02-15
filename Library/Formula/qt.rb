@@ -2,8 +2,8 @@ require 'formula'
 require 'hardware'
 
 class Qt <Formula
-  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.6.1.tar.gz'
-  md5 '0542a4be6425451ab5f668c6899cac36'
+  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.6.2.tar.gz'
+  md5 'eb651ee4b157c01696aa56777fc6e0e5'
   homepage 'http://www.qtsoftware.com'
 
   def options
@@ -21,7 +21,7 @@ class Qt <Formula
   depends_on 'libpng' unless x11?
 
   def install
-    if version == '4.6.1' # being specific so needs reconfirmed each version
+    if version == '4.6.2' # being specific so needs reconfirmed each version
       # Bug reported here: http://bugreports.qt.nokia.com/browse/QTBUG-7630
       makefiles=%w[plugins/sqldrivers/sqlite/sqlite.pro 3rdparty/webkit/WebCore/WebCore.pro]
       makefiles.each { |makefile| `echo 'LIBS += -lsqlite3' >> src/#{makefile}` }
