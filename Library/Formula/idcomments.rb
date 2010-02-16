@@ -6,7 +6,8 @@ class Idcomments <Formula
   md5 '6ceb271af37754657c7f81b3dba334de'
 
   def install
-    bin.install "idcomments"
+    inreplace 'idcomments', '$(tempfile)', '$(mktemp /tmp/idcomments.XXXXXXXX)'
+    bin.install 'idcomments'
     doc.install %w(about changelog copyright todo)
   end
 end
