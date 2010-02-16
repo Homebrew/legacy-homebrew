@@ -85,6 +85,13 @@ class Qt <Formula
     (lib+'pkgconfig/QtUiTools_debug.pc').unlink
     # remove porting file for non-humans
     (prefix+'q3porting.xml').unlink
+    
+    # Some config scripts will only find QT in a "Frameworks" folder
+    # VirtualBox is an example of where this is needed
+    # See: http://github.com/mxcl/homebrew/issues/issue/745
+    cd prefix do
+      ln_s lib, "Frameworks"
+    end
   end
 
   def caveats
