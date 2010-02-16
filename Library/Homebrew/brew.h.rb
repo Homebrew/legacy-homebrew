@@ -250,10 +250,7 @@ def cleanup name
 
   f = Formula.factory name
 
-  # we can't tell which one to keep in this circumstance
-  raise "The most recent version of #{name} is not installed" unless f.installed?
-
-  if f.prefix.parent.directory?
+  if f.installed? and f.prefix.parent.directory?
     kids = f.prefix.parent.children
     kids.each do |keg|
       next if f.prefix == keg
@@ -261,6 +258,9 @@ def cleanup name
       FileUtils.rm_rf keg
       puts
     end
+  else
+    # we can't tell which one to keep in this circumstance
+    opoo "Skipping #{name}: most recent version #{f.version} not installed"
   end
 end
 
