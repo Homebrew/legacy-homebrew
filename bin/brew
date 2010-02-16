@@ -217,6 +217,7 @@ begin
           opoo "Formula not found for #{e.name}"
         end
       end
+      prune # seems like a good time to do some additional cleanup
     else
       ARGV.named.each { |name| cleanup name}
     end
