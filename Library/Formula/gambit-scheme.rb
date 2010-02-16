@@ -1,9 +1,9 @@
 require 'formula'
 
 class GambitScheme <Formula
-  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.5/source/gambc-v4_5_3.tgz'
+  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.6/source/gambc-v4_6_0.tgz'
   homepage 'http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page'
-  md5 '716ed47b7a73d90c9426a240e9536f67'
+  md5 '4f0e8b3e90a96f2203cbaf1e1cc1388a'
 
   def options
     [
@@ -21,6 +21,7 @@ class GambitScheme <Formula
 
     configure_args = [
       "--prefix=#{prefix}",
+      "--infodir=#{info}",
       "--disable-debug",
       # Recommended to improve the execution speed and compactness
       # of the generated executables. Increases compilation times.
