@@ -21,10 +21,12 @@ class Nethack <Formula
   end
 
   def skip_clean? path
+    # Keep the empty save folder
     path == libexec + "save"
   end
 
   def install
+    ENV.gcc_4_2
     # Build everything in-order; no multi builds.
     ENV.deparallelize
 
@@ -32,7 +34,7 @@ class Nethack <Formula
     system 'sh sys/unix/setup.sh'
     
     inreplace "include/config.h",
-      '#  define HACKDIR "/usr/games/lib/nethackdir"',
+      /^#\s*define HACKDIR.*$/,
       "#define HACKDIR \"#{libexec}\""
     
     # Make the data first, before we munge the CFLAGS
@@ -40,7 +42,7 @@ class Nethack <Formula
     
     Dir.chdir 'dat' do
       %w(perm logfile).each do |f|
-        system "touch #{f}"
+        system "touch", f
         libexec.install f
       end
       
@@ -50,10 +52,10 @@ class Nethack <Formula
     end
     
     # Make the game
-    ENV['CFLAGS'] = ENV['CFLAGS'] + " -I../include"
+    ENV.append_to_cflags "-I../include"
     system 'cd src;make'
     
     bin.install 'src/nethack'
-    FileUtils.mkdir libexec+'save'
+    (libexec+'save').mkpath
   end
 end
