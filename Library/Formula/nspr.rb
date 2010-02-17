@@ -10,7 +10,7 @@ class Nspr <Formula
 
     ENV.deparallelize
     Dir.chdir "mozilla/nsprpub" do
-      inreplace "pr/src/Makefile.in", "-framework CoreServices -framework CoreFoundation", ""
+      inreplace "pr/src/Makefile.in", "-framework CoreServices -framework CoreFoundation", "-framework Carbon"
 
       conf = %W[--prefix=#{prefix} --disable-debug --enable-strip --enable-optimize]
       conf << "--enable-64bit" if Hardware.is_64_bit? and MACOS_VERSION >= 10.6
