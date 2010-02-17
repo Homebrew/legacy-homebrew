@@ -1,9 +1,9 @@
 require 'formula'
 
 class Dnsmasq <Formula
-  @url='http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.50.tar.gz'
+  @url='http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.52.tar.gz'
   @homepage='http://www.thekelleys.org.uk/dnsmasq/doc.html'
-  @md5='f7b1e17c590e493039537434c57c9de7'
+  @md5='1bb32fffdb4f977ead607802b5d701d0'
 
   def install
     ENV.deparallelize
