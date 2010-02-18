@@ -9,6 +9,9 @@
 # Bulk of the tests
 ruby unittest.rb $*
 
+# Test formula installs
+ruby test_formula_install.rb $*
+
 # Update tests (only seem to work for mxcl)
 ruby test_updater.rb $*
 

@@ -101,17 +101,6 @@ class TestBallOverrideBrew <Formula
   end
 end
 
-class TestScriptFileFormula <ScriptFileFormula
-  url "file:///#{Pathname.new(ABS__FILE__).realpath}"
-  version "1"
-  
-  def initialize
-    @name='test-script-formula'
-    @homepage = 'http://example.com/'
-    super
-  end
-end
-
 module ExtendArgvPlusYeast
   def reset
     @named = nil

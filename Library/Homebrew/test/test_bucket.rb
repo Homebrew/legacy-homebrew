@@ -37,51 +37,6 @@ class BeerTasting < Test::Unit::TestCase
     assert_raises(RuntimeError) {f=TestBadVersion.new}
   end
   
-  def test_install
-    f=TestBall.new
-    
-    assert_equal Formula.path(f.name), f.path
-    assert !f.installed?
-    
-    nostdout do
-      f.brew do
-        f.install
-      end
-    end
-    
-    assert_match Regexp.new("^#{HOMEBREW_CELLAR}/"), f.prefix.to_s
-    
-    assert f.bin.directory?
-    assert_equal 3, f.bin.children.length
-    libexec=f.prefix+'libexec'
-    assert libexec.directory?
-    assert_equal 1, libexec.children.length
-    assert !(f.prefix+'main.c').exist?
-    assert f.installed?
-    
-    keg=Keg.new f.prefix
-    keg.link
-    assert_equal 2, HOMEBREW_PREFIX.children.length
-    assert (HOMEBREW_PREFIX+'bin').directory?
-    assert_equal 3, (HOMEBREW_PREFIX+'bin').children.length
-    
-    keg.uninstall
-    assert !keg.exist?
-    assert !f.installed?
-  end
-  
-  def test_script_install
-    f=TestScriptFileFormula.new
-    
-    nostdout do
-      f.brew do
-        f.install
-      end
-    end
-    
-    assert_equal 1, f.bin.children.length
-  end
-
   FOOBAR='foo-bar'
   def test_formula_funcs
     classname=Formula.class_s(FOOBAR)
