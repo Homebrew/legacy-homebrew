@@ -39,7 +39,7 @@ class Go <Formula
   def caveats; <<-EOS
 In order to use Go you need to set the following in your ~/.profile:
 
-    export GOROOT=`brew --prefix`/Cellar/go/#{version}
+    export GOROOT=`brew --cellar`/go/#{version}
     export GOARCH=#{ENV['GOARCH']}
     export GOOS=#{ENV['GOOS']}
 
