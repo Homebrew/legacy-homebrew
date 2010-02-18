@@ -24,9 +24,7 @@ at_exit { HOMEBREW_PREFIX.parent.rmtree }
 
 require 'utils'
 require 'formula'
-require 'download_strategy'
 require 'keg'
-require 'utils'
 require 'brew.h'
 
 # for some reason our utils.rb safe_system behaves completely differently 
