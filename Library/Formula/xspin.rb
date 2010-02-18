@@ -13,14 +13,8 @@ class Xspin <Formula
   end
 
   def install
-    version='523'
-
-    fname = "xspin#{version}.tcl"
-
-    inreplace fname, "CELLAR", prefix
-
-    FileUtils.mv fname, "xspin"
-    bin.install "xspin"
+    inreplace "xspin523.tcl", "CELLAR", prefix
+    bin.install "xspin523.tcl" => "xspin"
   end
 end
 
