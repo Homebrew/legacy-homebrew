@@ -109,7 +109,7 @@ class Pathname
 
     # github tarballs are special
     # we only support numbered tagged downloads
-    %r[github.com/.*/tarball/((\d\.)+\d)$].match to_s
+    %r[github.com/.*/tarball/v?((\d\.)+\d)$].match to_s
     return $1 if $1
 
     # eg. boost_1_39_0
