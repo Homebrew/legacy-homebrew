@@ -29,7 +29,12 @@ class Pathname
     if src.is_a? Array
       src.collect {|src| install src }
     else
-      raise "#{src} does not exist" unless File.exist? src
+      # if it's a symlink, don't resolve it to a file because if we are moving
+      # files one by one, it's likely we will break the symlink by moving what
+      # it points to before we move it
+      # and also broken symlinks are not the end of the world
+      raise "#{src} does not exist" unless File.symlink? src or File.exist? src
+
       mkpath
       if File.symlink? src
         # we use the BSD mv command because FileUtils copies the target and
