@@ -5,6 +5,11 @@ class Pathname
   def install src
     if src.is_a? Array
       src.collect {|src| install src }
+    elsif src.is_a? Hash
+      src.each_pair do |name, new_name|
+        FileUtils.mv name, new_name
+        install new_name
+      end
     else
       # if it's a symlink, don't resolve it to a file because if we are moving
       # files one by one, it's likely we will break the symlink by moving what
