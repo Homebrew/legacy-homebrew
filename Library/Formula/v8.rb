@@ -22,9 +22,7 @@ class V8 <Formula
 
     include.install(Dir['include/*'])
     lib.install(Dir['libv8.*'])
-
-    mv('shell', 'v8')
-    bin.install('v8')
+    bin.install 'shell' => 'v8'
 
     system "install_name_tool -change libv8.dylib #{lib}/libv8.dylib #{bin+'v8'}"
   end
