@@ -7,8 +7,8 @@ class Scala <Formula
   @md5='5d2294d5aab72fec869c0ba666d28b7e'
 
   def install
+    man1.install Dir['man/man1/*']
+    FileUtils.rm_f Dir["bin/*.bat"]
     prefix.install Dir['*']
-    FileUtils.rm_f Dir["#{bin}/*.bat"]
-    FileUtils.mv prefix+'man', share
   end
 end
