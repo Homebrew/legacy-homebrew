@@ -77,6 +77,8 @@ begin
     puts HOMEBREW_PREFIX
   when '--repository'
     puts HOMEBREW_REPOSITORY
+  when '--cellar'
+    puts HOMEBREW_CELLAR
   when '--config'
     dump_config
 
