@@ -23,13 +23,11 @@ Dir.chdir HOMEBREW_PREFIX
 at_exit { HOMEBREW_PREFIX.parent.rmtree }
 
 require 'utils'
-require 'hardware'
 require 'formula'
 require 'download_strategy'
 require 'keg'
 require 'utils'
 require 'brew.h'
-require 'hardware'
 
 # for some reason our utils.rb safe_system behaves completely differently 
 # during these tests. This is worrying for sure.
