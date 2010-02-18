@@ -8,16 +8,7 @@ class Clojure <Formula
   JAR = "clojure.jar"
 
   def script
-    DATA.read.gsub 'CLOJURE_JAR_PATH_PLACEHOLDER', "$(brew --prefix)/Cellar/#{name}/#{version}/"+JAR
-  end
-
-  def install
-    prefix.install JAR
-    (bin+'clj').write(script)
-  end
-end
-
-__END__
+<<-EOS
 #!/bin/bash
 # Runs clojure.
 # With no arguments, runs Clojure's REPL.
@@ -25,7 +16,7 @@ __END__
 # passed as command-line arguments.
 
 # resolve links - $0 may be a softlink
-CLOJURE=$CLASSPATH:CLOJURE_JAR_PATH_PLACEHOLDER
+CLOJURE=$CLASSPATH:$(brew --cellar)/#{name}/#{version}/#{JAR}
 
 if [ -z "$1" ]; then
   java -server -cp $CLOJURE clojure.main
@@ -33,3 +24,11 @@ else
   scriptname=$1
   java -server -cp $CLOJURE clojure.main $scriptname $*
 fi
+EOS
+  end
+
+  def install
+    prefix.install JAR
+    (bin+'clj').write script
+  end
+end
