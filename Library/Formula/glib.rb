@@ -54,6 +54,9 @@ class Glib <Formula
     inreplace lib+'pkgconfig'+'glib-2.0.pc',
               'Libs: -L${libdir} -lglib-2.0 -lintl',
               "Libs: -L${libdir} -lglib-2.0 -L#{gettext.lib} -lintl"
+    inreplace lib+'pkgconfig'+'glib-2.0.pc',
+              'Cflags: -I${includedir}/glib-2.0 -I${libdir}/glib-2.0/include',
+              "Cflags: -I${includedir}/glib-2.0 -I${libdir}/glib-2.0/include -I#{gettext.include}"
 
     (prefix+'share'+'gtk-doc').rmtree
   end
