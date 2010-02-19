@@ -13,9 +13,8 @@ class Fsh <Formula
     system "make install"
     
     cd bin do
-      inreplace "fsh", "#! /usr/local/bin/python", "#!/usr/bin/env python"
-      inreplace "fshd", "#! /usr/local/bin/python", "#!/usr/bin/env python"
-      inreplace "in.fshd", "#! /usr/local/bin/python", "#!/usr/bin/env python"
+      inreplace ["fsh", "fshd", "in.fshd"],
+        "#! /usr/local/bin/python", "#!/usr/bin/env python"
     end
   end
 end

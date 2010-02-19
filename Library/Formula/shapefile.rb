@@ -8,7 +8,9 @@ class Shapefile <Formula
   def install
     dylib = lib+"libshp.#{version}.dylib"
 
-    inreplace 'Makefile', /CFLAGS\s+=\s+-g/, "CFLAGS = #{ENV['CFLAGS']}"
+    inreplace 'Makefile' do |s|
+      s.change_make_var! "CFLAGS", ENV['CFLAGS']
+    end
 
     system "make all"
     system "make shptree.o"
@@ -22,8 +24,9 @@ class Shapefile <Formula
 
     include.install 'shapefil.h'
 
-    Dir.chdir lib
-    FileUtils.ln_s "libshp.#{version}.dylib", "libshp.#{version.split('.').first}.dylib"
-    FileUtils.ln_s "libshp.#{version}.dylib", "libshp.dylib"
+    Dir.chdir lib do
+      FileUtils.ln_s "libshp.#{version}.dylib", "libshp.#{version.split('.').first}.dylib"
+      FileUtils.ln_s "libshp.#{version}.dylib", "libshp.dylib"
+    end
   end
 end
