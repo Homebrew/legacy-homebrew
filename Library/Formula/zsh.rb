@@ -13,10 +13,9 @@ class Zsh <Formula
                           "--enable-fndir=#{share}/zsh/functions",
                           "--enable-scriptdir=#{share}/zsh/scripts"
 
-    # again don't version installation directories
-    [".", "Src"].each do |f|
-      inreplace "#{f}/Makefile", "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
-    end
+    # Again, don't version installation directories
+    inreplace ["Makefile", "Src/Makefile"],
+      "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
     system "make install"
   end
