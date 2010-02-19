@@ -3,35 +3,47 @@ require 'pathname'
 # we enhance pathname to make our code more readable
 class Pathname
   def install src
-    if src.is_a? Array
-      src.collect {|src| install src }
-    elsif src.is_a? Hash
-      src.each_pair do |name, new_name|
-        FileUtils.mv name, new_name
-        install new_name
-      end
+    case src
+    when Array
+      src.collect {|src| install_p(src) }
+    when Hash
+      src.collect {|src, new_basename| install_p(src, new_basename) }
     else
-      # if it's a symlink, don't resolve it to a file because if we are moving
-      # files one by one, it's likely we will break the symlink by moving what
-      # it points to before we move it
-      # and also broken symlinks are not the end of the world
-      raise "#{src} does not exist" unless File.symlink? src or File.exist? src
-
-      mkpath
-      if File.symlink? src
-        # we use the BSD mv command because FileUtils copies the target and
-        # not the link! I'm beginning to wish I'd used Python quite honestly!
-        raise unless Kernel.system 'mv', src, to_s and $? == 0
-      else
-        # we mv when possible as it is faster and you should only be using
-        # this function when installing from the temporary build directory
-        FileUtils.mv src, to_s
-      end
-      src=Pathname.new src
-      return self+src.basename
+      install_p(src)
     end
   end
-  
+
+  def install_p src, new_basename = nil
+    if new_basename
+      new_basename = File.basename(new_basename) # rationale: see Pathname.+
+      dst = self+new_basename
+    else
+      dst = self
+    end
+
+    src = src.to_s
+    dst = dst.to_s
+
+    # if it's a symlink, don't resolve it to a file because if we are moving
+    # files one by one, it's likely we will break the symlink by moving what
+    # it points to before we move it
+    # and also broken symlinks are not the end of the world
+    raise "#{src} does not exist" unless File.symlink? src or File.exist? src
+
+    mkpath
+    if File.symlink? src
+      # we use the BSD mv command because FileUtils copies the target and
+      # not the link! I'm beginning to wish I'd used Python quite honestly!
+      raise unless Kernel.system 'mv', src, dst
+    else
+      # we mv when possible as it is faster and you should only be using
+      # this function when installing from the temporary build directory
+      FileUtils.mv src, dst
+    end
+
+    return Pathname.new(dst)
+  end
+
   # we assume this pathname object is a file obviously
   def write content
     raise "Will not overwrite #{to_s}" if exist? and not ARGV.force?
