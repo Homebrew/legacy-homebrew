@@ -17,6 +17,10 @@ class Node <Formula
   end
 
   def install
+    inreplace %w{wscript configure} do |wscript|
+      wscript.gsub! '/usr/local', HOMEBREW_PREFIX
+      wscript.gsub! '/opt/local/lib', '/usr/lib'
+    end
     ENV.gcc_4_2
     system "./configure", "--prefix=#{prefix}"
     system "make install"
