@@ -9,7 +9,7 @@ class Pango <Formula
   depends_on 'pkg-config'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--with-x", "--with-fontconfig"
+    system "./configure", "--prefix=#{prefix}", "--with-x"
     system "make install"
   end
 end
