@@ -195,7 +195,7 @@ module HomebrewInreplaceExtension
 end
 
 def inreplace path, before=nil, after=nil
-  path.each do |path|
+  [*path].each do |path|
     f = File.open(path, 'r')
     s = f.read
 
