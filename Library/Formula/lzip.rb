@@ -6,7 +6,7 @@ class Lzip <Formula
   md5 '9e1d7f4db5b953e9f75b8500ebe0d4c0'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "CXX=#{ENV['CXX']}"
+    system "./configure", "--prefix=#{prefix}", "CXX=#{ENV.cxx}"
     system "make check"
     system "make install"
   end

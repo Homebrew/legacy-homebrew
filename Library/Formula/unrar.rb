@@ -60,7 +60,7 @@ class Unrar <Formula
     # be warned: this trick doesn't work very often! And I'd only do it for
     # very stable source trees as if they change stuff it sucks for you.
     File.open('all.cpp', 'w') {|f| f.write ALL_CPP}
-    system "#{ENV['CXX']} #{ENV['CXXFLAGS']} -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE all.cpp -o unrar"
+    system "#{ENV.cxx} #{ENV['CXXFLAGS']} -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE all.cpp -o unrar"
     bin.install 'unrar'
     
     FileUtils.mv 'license.txt', 'COPYING'
