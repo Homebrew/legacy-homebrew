@@ -14,7 +14,14 @@ require 'global'
 
 case ARGV.first
 when '--cache'
-  puts HOMEBREW_CACHE
+  if ARGV.named.empty?
+    puts HOMEBREW_CACHE
+  else
+    require 'formula'
+    ARGV.named.each do |name|
+      puts Formula.factory(name).cached_download rescue '(built from source control)'
+    end
+  end
   exit 0
 when '-h', '--help', '--usage', '-?', 'help', nil
   puts ARGV.usage

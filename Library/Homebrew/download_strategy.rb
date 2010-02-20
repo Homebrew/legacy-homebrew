@@ -53,6 +53,8 @@ class AbstractDownloadStrategy
 end
 
 class CurlDownloadStrategy <AbstractDownloadStrategy
+  attr_reader :tarball_path
+  
   def initialize url, name, version, specs
     super
     if @unique_token

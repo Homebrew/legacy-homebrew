@@ -133,6 +133,10 @@ class Formula
     self.class.path name
   end
 
+  def cached_download
+    @downloader.tarball_path
+  end
+
   attr_reader :url, :version, :homepage, :name, :specs
 
   def bin; prefix+'bin' end
