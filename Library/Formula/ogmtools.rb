@@ -7,9 +7,10 @@ class Ogmtools <Formula
 
   depends_on 'libogg'
   depends_on 'libvorbis'
+  depends_on 'libdvdread'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--mandir=#{prefix}/share"
+    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--mandir=#{prefix}/share/man"
     system "make install"
   end
 end
