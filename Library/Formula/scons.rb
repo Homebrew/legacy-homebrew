@@ -6,6 +6,13 @@ class Scons <Formula
   md5 'd95c3749438e51db592b854683083965'
 
   def install
-    system "python", "setup.py", "install", "--prefix=#{prefix}", "--no-version-script", "--standalone-lib"
+    man1.install gzip('scons-time.1')
+    man1.install gzip('scons.1')
+    man1.install gzip('sconsign.1')
+
+    system "python", "setup.py", "install",
+                    "--prefix=#{prefix}",
+                    "--standalone-lib",
+                    "--no-version-script", "--no-install-man"
   end
 end
