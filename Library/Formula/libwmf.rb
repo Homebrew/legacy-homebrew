@@ -7,7 +7,9 @@ class Libwmf <Formula
 
   def install
     ENV.libpng
-    system "./configure", "--prefix=#{prefix}", "--disable-debug"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-freetype=/usr/X11"
     system "make"
 
     ENV.j1 # yet another rubbish Makefile
