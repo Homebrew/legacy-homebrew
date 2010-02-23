@@ -10,6 +10,8 @@ class Autoconf213 <Formula
   end
 
   def install
+    inreplace 'configure', 'for ac_prog in mawk gawk nawk awk', 'for ac_prog in awk'
+
     system "./configure", "--disable-debug", 
                           "--program-suffix=213",
                           "--prefix=#{prefix}",
