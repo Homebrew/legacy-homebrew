@@ -14,10 +14,8 @@ class Spidermonkey <Formula
 
   depends_on 'readline'
   depends_on 'nspr'
-  depends_on 'autoconf213'
 
   def install
-
     if MACOS_VERSION == 10.5
       # aparently this flag causes the build to fail for ivanvc on 10.5 with a
       # penryn (core 2 duo) CPU. So lets be cautious here and remove it.
@@ -25,11 +23,23 @@ class Spidermonkey <Formula
       ENV['CFLAGS'] = ENV['CFLAGS'].gsub(/-msse[^\s]+/, '')
     end
 
+    # For some reason SpiderMonkey requires Autoconf-2.13
+    ac213_prefix = Pathname.pwd.join('ac213').to_s
+    Autoconf213.new.brew do |f|
+      # probably no longer required, see issue #751
+      inreplace 'configure', 'for ac_prog in mawk gawk nawk awk', 'for ac_prog in awk'
+
+      system "./configure", "--disable-debug", 
+                            "--program-suffix=213",
+                            "--prefix=#{ac213_prefix}"
+      system "make install"
+    end
+
     Dir.chdir "js/src" do
       # Fixes a bug with linking against CoreFoundation. Tests all pass after
       # building like this. See: http://openradar.appspot.com/7209349
       inreplace "configure.in", "LDFLAGS=\"$LDFLAGS -framework Cocoa\"", ""
-      system "autoconf213"
+      system "#{ac213_prefix}/bin/autoconf213"
       # Remove the broken *(for anyone but FF) install_name
       inreplace "config/rules.mk", "-install_name @executable_path/$(SHARED_LIBRARY) ", ""
     end
@@ -53,4 +63,11 @@ class Spidermonkey <Formula
     end
 
   end
+end
+
+
+class Autoconf213 <Formula
+  url 'http://ftp.gnu.org/pub/gnu/autoconf/autoconf-2.13.tar.gz'
+  md5 '9de56d4a161a723228220b0f425dc711'
+  homepage 'http://www.gnu.org/software/autoconf/'
 end
