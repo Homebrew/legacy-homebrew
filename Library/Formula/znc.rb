@@ -1,7 +1,8 @@
 require 'formula'
 
 class Znc <Formula
-  head 'https://znc.svn.sourceforge.net/svnroot/znc/trunk'
+  url 'http://downloads.sourceforge.net/project/znc/znc/0.080/znc-0.080.tar.gz'
+  md5 '4f8b64705315dd5733f2a47a70c89ffa'
   homepage 'http://en.znc.in/wiki/ZNC'
   
   depends_on 'c-ares'
