@@ -2,13 +2,13 @@ require 'formula'
 
 class ErlangManuals <Formula
   url 'http://www.erlang.org/download/otp_doc_man_R13B04.tar.gz'
-  md5 'ca6da4921e438891967900aa6a084341'
+  md5 '681aaef70affc64743f4e8c0675034af'
 end
 
 class Erlang <Formula
   version 'R13B04'
   url "http://erlang.org/download/otp_src_#{version}.tar.gz"
-  md5 '681aaef70affc64743f4e8c0675034af'
+  md5 'ca6da4921e438891967900aa6a084341'
   homepage 'http://www.erlang.org'
 
   # we can't strip the beam executables or any plugins
