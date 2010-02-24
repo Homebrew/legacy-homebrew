@@ -2,8 +2,8 @@ require 'formula'
 
 class Fftw <Formula
   @homepage='http://www.fftw.org'
-  @url='http://www.fftw.org/fftw-3.2.1.tar.gz'
-  @md5='712d3f33625a0a76f5758648d4b925f7'
+  @url='http://www.fftw.org/fftw-3.2.2.tar.gz'
+  @md5='b616e5c91218cc778b5aa735fefb61ae'
 
   def install
     system "./configure", "--enable-shared",
