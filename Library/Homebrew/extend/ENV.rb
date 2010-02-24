@@ -31,8 +31,6 @@ module HomebrewEnvExtension
     ENV.delete('CDPATH')
     ENV.delete('CPPFLAGS')
     ENV.delete('LDFLAGS')
-    ENV.delete('CC')
-    ENV.delete('CXX')
 
     ENV['MAKEFLAGS']="-j#{Hardware.processor_count}"
 
@@ -53,6 +51,9 @@ module HomebrewEnvExtension
       ENV['CXX'] = "#{prefix}/usr/bin/llvm-g++"
       cflags = %w{-O4} # link time optimisation baby!
     else
+      # if we don't set these, many formula fail to build
+      ENV['CC'] = '/usr/bin/cc'
+      ENV['CXX'] = '/usr/bin/c++'
       cflags = ['-O3']
     end
 
@@ -60,7 +61,7 @@ module HomebrewEnvExtension
     # to use a specific linker, however doing this in general causes formula to
     # build more successfully because we are changing CC and many build systems
     # don't react properly to that
-    ENV['LD'] = ENV['CC'] if ENV['CC']
+    ENV['LD'] = ENV['CC']
 
     # optimise all the way to eleven, references:
     # http://en.gentoo-wiki.com/wiki/Safe_Cflags/Intel
