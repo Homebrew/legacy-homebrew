@@ -1,10 +1,10 @@
 require 'formula'
 
 class Node <Formula
-  url 'http://nodejs.org/dist/node-v0.1.29.tar.gz'
+  url 'http://nodejs.org/dist/node-v0.1.30.tar.gz'
   head 'git://github.com/ry/node.git'
   homepage 'http://nodejs.org/'
-  md5 '0932e11b9eb91c466146ca05cf6e34c1'
+  md5 '479204b564aa1b956d9c28c3969dd545'
 
   aka 'node.js'
   
