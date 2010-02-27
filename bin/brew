@@ -338,7 +338,7 @@ begin
 
   when 'outdated'
     require 'formula'
-    HOMEBREW_CELLAR.children.each do |keg|
+    HOMEBREW_CELLAR.subdirs.each do |keg|
       if keg.subdirs.length > 0
         name = keg.basename('.rb').to_s
         if (not (f = Formula.factory(name)).installed? rescue nil)
