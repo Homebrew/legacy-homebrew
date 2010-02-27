@@ -16,18 +16,18 @@ class RubyEnterpriseEdition <Formula
     system *args
   end
 
-  def caveats; <<-EOS
-By default we don't compile REE as a shared library. From their documentation:
+  def caveats; <<-EOS.undent
+    By default we don't compile REE as a shared library. From their documentation:
 
-  Please note that enabling --enable-shared will make the Ruby interpreter
-  about 20% slower.
+        Please note that enabling --enable-shared will make the Ruby interpreter
+        about 20% slower.
 
-For desktop environments (particularly ones requiring RubyCocoa) this is
-acceptable and even desirable.
+    For desktop environments (particularly ones requiring RubyCocoa) this is
+    acceptable and even desirable.
 
-If you need REE to be compiled as a shared library, you can re-compile like so:
+    If you need REE to be compiled as a shared library, you can re-compile like so:
 
-    brew install ruby-enterprise-edition --force --enable-shared
+        brew install ruby-enterprise-edition --force --enable-shared
     EOS
   end
 end

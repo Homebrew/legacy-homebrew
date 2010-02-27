@@ -23,10 +23,10 @@ class Thrift <Formula
     system "make install"
   end
   
-  def caveats; <<-EOS
-We didn't install the python bindings, to do that:
+  def caveats; <<-EOS.undent
+    We didn't install the python bindings, to do that:
 
-    easy_install thrift
+        easy_install thrift
     EOS
   end
 end

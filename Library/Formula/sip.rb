@@ -15,14 +15,13 @@ class Sip <Formula
     system "make install"
   end
 
-  def caveats; <<-EOS
-This formula won't function until you add the following to your PYTHONPATH
-environment variable:
+  def caveats; <<-EOS.undent
+    This formula won't function until you amend your PYTHONPATH like so:
 
-#{HOMEBREW_PREFIX}/lib/python
+        export PYTHON_PATH=#{HOMEBREW_PREFIX}/lib/python:$PYTHON_PATH
 
-This is why you would ideally install sip using pip or easy_install. But this
-can't work because this package doesn't support Python's disttools.
+    This is why you would ideally install sip using pip or easy_install. But this
+    can't work because this package doesn't support Python's disttools.
     EOS
   end
 end
