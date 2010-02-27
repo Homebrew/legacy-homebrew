@@ -1,5 +1,6 @@
 require 'extend/pathname'
 require 'extend/ARGV'
+require 'extend/string'
 require 'utils'
 
 ARGV.extend(HomebrewArgvExtension)
