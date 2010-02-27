@@ -81,7 +81,12 @@ begin
 
   case arg = ARGV.shift
   when '--prefix'
-    puts HOMEBREW_PREFIX
+    if ARGV.named.empty?
+      puts HOMEBREW_PREFIX
+    else
+      puts *ARGV.formulae.collect {|f| f.prefix}
+    end
+
   when '--repository'
     puts HOMEBREW_REPOSITORY
   when '--cellar'
