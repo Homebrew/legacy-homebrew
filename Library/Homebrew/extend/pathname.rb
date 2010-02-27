@@ -167,6 +167,14 @@ class Pathname
   if '1.9' <= RUBY_VERSION
     alias_method :to_str, :to_s
   end
+
+  def cd
+    Dir.chdir(self){ yield }
+  end
+
+  def subdirs
+    children.select{ |child| child.directory? }
+  end
 end
 
 # sets $n and $d so you can observe creation of stuff
