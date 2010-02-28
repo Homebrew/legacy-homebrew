@@ -28,15 +28,6 @@ class BeerTasting < Test::Unit::TestCase
     end
   end
   
-  def test_no_version
-    assert_nil Pathname.new("http://example.com/blah.tar").version
-    assert_nil Pathname.new("arse").version
-  end
-  
-  def test_bad_version
-    assert_raises(RuntimeError) {f=TestBadVersion.new}
-  end
-  
   FOOBAR='foo-bar'
   def test_formula_funcs
     classname=Formula.class_s(FOOBAR)

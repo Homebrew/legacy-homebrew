@@ -85,10 +85,6 @@ class TestZip <Formula
   end
 end
 
-class TestBadVersion <TestBall
-  @version="versions can't have spaces"
-end
-
 class TestBallOverrideBrew <Formula
   def initialize
     super "foo"
@@ -108,6 +104,5 @@ module ExtendArgvPlusYeast
 end
 ARGV.extend ExtendArgvPlusYeast
 
-require 'test/test_versions'
 require 'test/test_checksums'
 require 'test/test_bucket'
