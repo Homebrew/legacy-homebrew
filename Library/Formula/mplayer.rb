@@ -5,22 +5,27 @@ class Mplayer <Formula
   head 'svn://svn.mplayerhq.hu/mplayer/trunk'
 
   depends_on 'pkg-config' => :recommended
+  depends_on 'yasm' => :optional
 
   # http://github.com/mxcl/homebrew/issues/#issue/87
   depends_on :subversion if MACOS_VERSION < 10.6
 
   def install
-    # LLVM-2206 can't handle some of the assembly
-    # Using gcc_4_2 doesn't work, failing mysteriously (check this again)
+    # Do not use pipes, per bug report
+    # http://github.com/mxcl/homebrew/issues#issue/622
+    # and MacPorts
+    # http://trac.macports.org/browser/trunk/dports/multimedia/mplayer-devel/Portfile
+    # any kind of optimisation breaks the build
+    ENV.gcc_4_2
     ENV['CC'] = ''
     ENV['LD'] = ''
-    # any kind of optimisation breaks the build
-    ENV['CFLAGS'] = '-w -pipe'
+    ENV['CFLAGS'] = ''
+    ENV['CXXFLAGS'] = ''
 
-    args = ['./configure', "--prefix=#{prefix}"]
+    args = ["--prefix=#{prefix}", "--enable-largefiles", "--enable-apple-remote"]
     args << "--target=x86_64-Darwin" if Hardware.is_64_bit? and MACOS_VERSION >= 10.6
 
-    system *args 
+    system './configure', *args 
     system "make"
     system "make install"
   end

@@ -1,7 +1,7 @@
 require 'formula'
 
 class AbuseGameData <Formula
-  url 'http://abuse.zoy.org/raw/Downloads/abuse-data-2.00.tar.gz'
+  url 'http://abuse.zoy.org/raw-attachment/wiki/Downloads/abuse-data-2.00.tar.gz'
   md5 '2b857668849b2dc7cd29cdd84a33c19e'
 end
 
@@ -28,8 +28,6 @@ END
   end
 
   def install
-    ENV.x11
-
     # Copy the data files
     d = libexec
     AbuseGameData.new.brew { d.install Dir["*"] }
@@ -37,21 +35,13 @@ END
 
     system "./bootstrap"
     system "./configure", "--prefix=#{prefix}", "--disable-debug", 
-                          "--disable-dependency-tracking"
+                          "--disable-dependency-tracking",
+                          "--disable-sdltest",
+                          "--with-sdl-prefix=#{HOMEBREW_PREFIX}"
     
     # Use Framework OpenGL, not libGl
-    inreplace "Makefile",
-      "LIBS =  -lm -L/usr/local/Cellar/sdl/1.2.13/lib -lSDLmain -lSDL -Wl,-framework,Cocoa  -lGL -lpthread",
-      "LIBS =  -lm -L/usr/local/Cellar/sdl/1.2.13/lib -lSDLmain -lSDL -Wl,-framework,Cocoa -framework OpenGL -lpthread"
-    
-    inreplace "src/Makefile",
-      "LIBS =  -lm -L/usr/local/Cellar/sdl/1.2.13/lib -lSDLmain -lSDL -Wl,-framework,Cocoa  -lGL -lpthread",
-      "LIBS =  -lm -L/usr/local/Cellar/sdl/1.2.13/lib -lSDLmain -lSDL -Wl,-framework,Cocoa -framework OpenGL -lpthread"
-    
-    %w[imlib lisp net sdlport].each do |p|
-      inreplace "src/#{p}/Makefile",
-        "LIBS =  -lm -L/usr/local/Cellar/sdl/1.2.13/lib -lSDLmain -lSDL -Wl,-framework,Cocoa  -lGL -lpthread",
-        "LIBS =  -lm -L/usr/local/Cellar/sdl/1.2.13/lib -lSDLmain -lSDL -Wl,-framework,Cocoa -framework OpenGL -lpthread"
+    %w[ . src src/imlib src/lisp src/net src/sdlport ].each do |p|
+      inreplace "#{p}/Makefile", '-lGL', '-framework OpenGL'
     end
     
     system "make"

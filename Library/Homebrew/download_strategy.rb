@@ -53,6 +53,8 @@ class AbstractDownloadStrategy
 end
 
 class CurlDownloadStrategy <AbstractDownloadStrategy
+  attr_reader :tarball_path
+  
   def initialize url, name, version, specs
     super
     if @unique_token
@@ -190,7 +192,7 @@ class GitDownloadStrategy <AbstractDownloadStrategy
         end
       end
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
-      safe_system 'git', 'checkout-index', '-af', "--prefix=#{dst}/"
+      safe_system 'git', 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
     end
   end
 end

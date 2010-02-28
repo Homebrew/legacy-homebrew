@@ -11,7 +11,7 @@ class Minicom <Formula
     
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
-                          "--mandir=#{prefix}/share/man"
+                          "--mandir=#{man}"
     system "make install"
 
     (prefix + 'etc').mkdir

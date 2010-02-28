@@ -195,18 +195,20 @@ module HomebrewInreplaceExtension
 end
 
 def inreplace path, before=nil, after=nil
-  f = File.open(path, 'r')
-  s = f.read
+  [*path].each do |path|
+    f = File.open(path, 'r')
+    s = f.read
 
-  if before == nil and after == nil
-    s.extend(HomebrewInreplaceExtension)
-    yield s
-  else
-    s.gsub!(before, after)
+    if before == nil and after == nil
+      s.extend(HomebrewInreplaceExtension)
+      yield s
+    else
+      s.gsub!(before, after)
+    end
+
+    f.reopen(path, 'w').write(s)
+    f.close
   end
-
-  f.reopen(path, 'w').write(s)
-  f.close
 end
 
 def ignore_interrupts

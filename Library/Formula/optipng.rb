@@ -6,8 +6,10 @@ class Optipng <Formula
   md5 '6cef405197a878acff4c6216cf38e871'
 
   def install
-    inreplace 'src/scripts/gcc.mak.in', '/usr/local', prefix
-    inreplace 'src/scripts/gcc.mak.in', 'mandir=$(prefix)/man', 'mandir=$(prefix)/share/man'
+    inreplace 'src/scripts/gcc.mak.in' do |s|
+      s.gsub! '/usr/local', prefix
+      s.change_make_var! 'mandir', man
+    end
     system "./configure", "-with-system-zlib"
     system "make install"
   end

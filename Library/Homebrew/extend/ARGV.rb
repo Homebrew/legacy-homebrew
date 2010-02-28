@@ -90,23 +90,26 @@ Usage: brew command [formula] ...
 Usage: brew [--prefix] [--cache] [--version|-v]
 Usage: brew [--verbose|-v]
 
-Commands:
+Principle Commands:
   install formula ... [--ignore-dependencies] [--HEAD|-H]
-  remove formula ...
-  search [/regex/] [substring]
   list [--unbrewed] [formula] ...
-  link formula ...
-  unlink formula ...
-  home formula ...
-  info [formula] [--github]
-  cleanup [formula]
-  prune
+  search [/regex/] [substring]
+  uninstall formula ...
   update
 
+Other Commands:
+  cleanup [formula]
+  home formula ...
+  info [formula] [--github]
+  link formula ...
+  outdated
+  prune
+  unlink formula ...
+
 Commands useful when contributing:
-  log formula
   create URL
   edit [formula]
+  log formula
   install formula [--debug|-d] [--interactive|-i] [--verbose|-v]
 
 To visit the Homebrew homepage type:

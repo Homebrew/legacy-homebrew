@@ -6,7 +6,11 @@ class Netcat <Formula
   homepage 'http://netcat.sourceforge.net/'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}",
+                          "--mandir=#{man}",
+                          "--infodir=#{info}",
+                          "--disable-debug",
+                          "--disable-dependency-tracking"
     system "make install"
   end
 end

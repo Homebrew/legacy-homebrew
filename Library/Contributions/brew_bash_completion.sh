@@ -5,27 +5,35 @@
 
 _brew_to_completion()
 {
-    local actions cur prev
+    local actions cur prev prev_index
     local cellar_contents formulae which_cellar brew_base
 
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
-    prev="${COMP_WORDS[COMP_CWORD-1]}"
     
     # We only complete unabbreviated commands...
-    actions="cleanup configure create deps edit generate homepage info install list link options prune remove search unlink update uses"
+    actions="cat cleanup configure create deps edit generate homepage info install list link outdated prune remove search unlink update uses"
     
-    # Subcommand list
     if [[ ( ${COMP_CWORD} -eq 1 ) && ( ${COMP_WORDS[0]} == brew )  ]] ; then
+        # Subcommand list
         COMPREPLY=( $(compgen -W "${actions}" -- ${cur}) )
         return 0
-    # Subcommands
     else
+        # Subcommands
         brew_base=`brew --repository`
+        
+        # We want the non-switch previous word
+        prev_index=$((COMP_CWORD - 1))
+        prev="${COMP_WORDS[prev_index]}"
+        while [[ $prev == -* ]]
+        do
+            prev_index=$((prev_index - 1))
+            prev="${COMP_WORDS[prev_index]}"
+        done
         
         case ${prev} in
             # Commands that take a formula...
-            deps|edit|install|home|homepage|uses)
+            cat|deps|edit|install|home|homepage|uses)
                 formulae=`ls ${brew_base}/Library/Formula/ | sed "s/\.rb//g"`
                 COMPREPLY=( $(compgen -W "${formulae}" -- ${cur}) )
                 return 0

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gwenhywfar <Formula
-  url 'http://www2.aquamaniac.de/sites/download/download.php?package=01&release=29&file=01&dummy=gwenhywfar-3.11.1.tar.gz'
+  url 'http://www2.aquamaniac.de/sites/download/download.php?package=01&release=31&file=01&dummy=gwenhywfar-3.11.3.tar.gz'
   homepage 'http://gwenhywfar.sourceforge.net/'
-  md5 '0e339c07b5141caa616157061f78796d'
+  md5 '9ab62d881a0f39d4b07ea0badff7201f'
 
  depends_on 'pkg-config'
  depends_on 'gettext'

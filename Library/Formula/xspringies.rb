@@ -7,8 +7,10 @@ class Xspringies <Formula
   version '1.12'
 
   def install
-    inreplace 'Makefile.std', 'LIBS = -lm -lX11', 'LIBS = -L/usr/X11/lib -lm -lX11'
-    inreplace 'Makefile.std', 'mkdirhier', 'mkdir -p'
+    inreplace 'Makefile.std' do |s|
+      s.change_make_var! "LIBS", '-L/usr/X11/lib -lm -lX11'
+      s.gsub! 'mkdirhier', 'mkdir -p'
+    end
     system "make -f Makefile.std DDIR=#{prefix}/ install"
   end
 end

@@ -10,7 +10,8 @@ class Libgcrypt <Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--disable-asm"
+                          "--disable-asm",
+                          "--with-gpg-error-prefix=#{HOMEBREW_PREFIX}"
     # Separate steps, or parallel builds fail
     system "make"
     system "make install"

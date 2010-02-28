@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mysql <Formula
-  @homepage='http://dev.mysql.com/doc/refman/5.1/en/'
-  @url='http://mysql.llarian.net/Downloads/MySQL-5.1/mysql-5.1.41.tar.gz'
-  @md5='b5d39e8789174753f3c782959729e68c'
+  homepage 'http://dev.mysql.com/doc/refman/5.1/en/'
+  url 'http://mysql.llarian.net/Downloads/MySQL-5.1/mysql-5.1.43.tar.gz'
+  md5 '451fd3e8c55eecdf4c3ed109dce62f01'
 
   depends_on 'readline'
 
@@ -20,6 +20,8 @@ class Mysql <Formula
   end
 
   def install
+    ENV.gcc_4_2 # http://github.com/mxcl/homebrew/issues/#issue/144
+
     # See: http://dev.mysql.com/doc/refman/5.1/en/configure-options.html
     # These flags may not apply to gcc 4+
     ENV['CXXFLAGS'] = ENV['CXXFLAGS'].gsub "-fomit-frame-pointer", ""

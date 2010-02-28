@@ -7,9 +7,8 @@ class Iodine <Formula
 
   def install
     if MACOS_VERSION >= 10.6
-      ["src/common.c", "src/dns.c", "src/iodine.c", "src/iodined.c"].each do |filename|
-        inreplace filename, "arpa/nameser8_compat", "arpa/nameser_compat"
-      end
+      inreplace ["src/common.c", "src/dns.c", "src/iodine.c", "src/iodined.c"],
+        "arpa/nameser8_compat", "arpa/nameser_compat"
     end
 
     system "make install prefix=#{prefix}"

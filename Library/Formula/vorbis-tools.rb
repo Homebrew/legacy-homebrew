@@ -11,7 +11,8 @@ class VorbisTools <Formula
   #depends_on 'ogg123' => :optional
 
   def install
-    system "./configure --disable-debug --disable-nls --disable-dependency-tracking --prefix='#{prefix}'"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--disable-nls", "--prefix=#{prefix}"
     # wtf?!
     inreplace 'ogg123/Makefile', '-arch ppc ppc64 i386 x86_64', '-arch i386'
     system "make install"

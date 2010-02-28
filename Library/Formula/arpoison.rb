@@ -9,7 +9,6 @@ class Arpoison <Formula
 
   def install
     system "make"
-    system "mkdir #{prefix}/bin"
-    system "install arpoison #{prefix}/bin"
+    bin.install "arpoison"
   end
 end

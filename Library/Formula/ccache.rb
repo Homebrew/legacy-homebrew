@@ -6,7 +6,7 @@ class Ccache <Formula
   md5 '73c1ed1e767c1752dd0f548ec1e66ce7'
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make"
     system "make install"
   end

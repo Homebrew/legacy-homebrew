@@ -6,8 +6,10 @@ class Gd <Formula
   homepage "http://www.libgd.org"
   md5 "39ac48e6d5e0012a3bd2248a0102f209"
 
+  aka :libgd
+
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--with-freetype=/usr/X11"
     system "make install"
   end
 end

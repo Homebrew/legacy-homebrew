@@ -8,8 +8,8 @@ end
 
 
 class Glib <Formula
-  @url='http://ftp.acc.umu.se/pub/gnome/sources/glib/2.20/glib-2.20.5.tar.bz2'
-  @md5='4c178b91d82ef80a2da3c26b772569c0'
+  @url='http://ftp.gnome.org/pub/gnome/sources/glib/2.22/glib-2.22.4.tar.bz2'
+  @md5='d91bcbe27556430ddecce65086355708'
   @homepage='http://www.gtk.org'
 
   depends_on 'pkg-config'
@@ -44,17 +44,19 @@ class Glib <Formula
     system "make"
     system "make install"
 
-    # this sucks, basically gettext is Keg only to prevent conflicts with
-    # the wider system, but pkg-config or glib is not smart enough to
-    # have determined that libintl.dylib isn't in the DYLIB_PATH so we have
-    # to add it manually, we might have to do this a lot, so clearly we need
-    # to make it automatic or solve the BSD/GNU gettext conflict in another
-    # way
-    gettext = Formula.factory 'gettext'
-    inreplace lib+'pkgconfig'+'glib-2.0.pc',
-              'Libs: -L${libdir} -lglib-2.0 -lintl',
+    # This sucks; gettext is Keg only to prevent conflicts with the wider
+    # system, but pkg-config or glib is not smart enough to have determined
+    # that libintl.dylib isn't in the DYLIB_PATH so we have to add it
+    # manually.
+    gettext = Formula.factory('gettext')
+    inreplace lib+'pkgconfig/glib-2.0.pc' do |s|
+      s.gsub! 'Libs: -L${libdir} -lglib-2.0 -lintl',
               "Libs: -L${libdir} -lglib-2.0 -L#{gettext.lib} -lintl"
+      
+      s.gsub! 'Cflags: -I${includedir}/glib-2.0 -I${libdir}/glib-2.0/include',
+              "Cflags: -I${includedir}/glib-2.0 -I${libdir}/glib-2.0/include -I#{gettext.include}"
+    end
 
-    (prefix+'share'+'gtk-doc').rmtree
+    (prefix+'share/gtk-doc').rmtree
   end
 end
