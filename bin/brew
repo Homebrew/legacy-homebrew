@@ -328,9 +328,6 @@ begin
         puts "#{name} depends on #{our_deps.join(", ")}"
       end
     end
-
-  when 'branch', 'checkout', 'pull', 'push', 'reset'
-    onoe "Unknown command: #{arg} (did you mean 'git #{arg}'?)"
     
   when 'cat'
     Dir.chdir HOMEBREW_REPOSITORY
@@ -351,6 +348,9 @@ begin
         end
       end
     end
+
+  when 'branch', 'checkout', 'pull', 'push', 'rebase', 'reset'
+    onoe "Unknown command: #{arg} (did you mean 'git #{arg}'?)"
 
   else
     onoe "Unknown command: #{arg}"
