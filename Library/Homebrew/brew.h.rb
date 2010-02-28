@@ -301,7 +301,7 @@ def diy
     version=ARGV.next
   else
     version=path.version
-    raise "Couldn't determine version, try --set-version" if version.nil? or version.empty?
+    raise "Couldn't determine version, try --set-version" if version.to_s.empty?
   end
   
   if ARGV.include? '--set-name'
@@ -321,6 +321,8 @@ def diy
     "-DCMAKE_INSTALL_PREFIX=#{prefix}"
   elsif File.file? 'Makefile.am'
     "--prefix=#{prefix}"
+  else
+    raise "Couldn't determine build system"
   end
 end
 
