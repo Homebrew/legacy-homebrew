@@ -5,6 +5,8 @@ class Gist <Formula
   homepage 'http://github.com/defunkt/gist'
   md5 'b1ee3a40dfe3c4fff2a98f2c525cb64a'
 
+  depends_on 'mg' => :ruby
+
   def install
     system "rake", "install", "prefix=#{prefix}"
   end
