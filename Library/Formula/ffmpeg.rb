@@ -1,7 +1,8 @@
 require 'formula'
 
 class Ffmpeg <Formula
-  head 'svn://svn.ffmpeg.org/ffmpeg/trunk', :revision => 22585
+  head 'svn://svn.ffmpeg.org/ffmpeg/trunk',
+    :revisions => { :trunk => 22916, 'libswscale' => 31045 }
   homepage 'http://ffmpeg.org/'
 
   depends_on 'x264' => :optional

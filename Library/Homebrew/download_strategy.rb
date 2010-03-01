@@ -126,8 +126,7 @@ end
 class SubversionDownloadStrategy <AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
-    @name = name
-    @export = HOMEBREW_CACHE+@unique_token
+    @co=HOMEBREW_CACHE+@unique_token
   end
 
   def cached_location
@@ -135,52 +134,53 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
   end
 
   def fetch
-    # Looks like `svn up` is pretty cool, as it will save on bandwidth (makes
-    # cache actually a cache) and will have a similar effect to verifying the
-    # cache as it will make any changes to get the right revision.
     ohai "Checking out #{@url}"
     if @spec == :revision
-      svncommand = @export.exist? ? 'up' : 'checkout';
-      args = [svn, svncommand, '--force', @url, @export]
-      args << '-r' << @ref if @ref
-      quiet_safe_system *args
+      fetch_repo @co, @url, @ref
     elsif @spec == :revisions
-      externals = Hash.new
-      # Oh god escaping shell args.
-      # See http://notetoself.vrensk.com/2008/08/escaping-single-quotes-in-ruby-harder-than-expected/
-      `'#{svn.gsub(/\\|'/) { |c| "\\#{c}" }}' propget svn:externals \
-      '#{@url.gsub(/\\|'/) { |c| "\\#{c}" }}'`.each_line do |external_line|
-        key, value = external_line.split /\s+/
-        externals[key] = value
+      # nil is OK for main_revision, as fetch_repo will then get latest
+      main_revision = @ref.delete :trunk
+      fetch_repo @co, @url, main_revision, true
+
+      get_externals do |external_name, external_url|
+        fetch_repo @co+external_name, external_url, @ref[external_name], true
       end
-      fetch_repo = lambda do |external, uri|
-        if external.to_s == @name
-          path = ''
-        else
-          path = external.to_s
-        end
-        svncommand = (@export+path).exist? ? 'up' : 'checkout';
-        args = [svn, svncommand, '--force', '--ignore-externals', uri, @export+path]
-        args << '-r' << @ref[external] if @ref[external]
-        quiet_safe_system *args
-      end
-      fetch_repo.call @name, @url
-      externals.each_pair &fetch_repo
     else
-      svncommand = @export.exist? ? 'up' : 'checkout';
-      args = [svn, svncommand, '--force', @url, @export]
-      quiet_safe_system *args
+      fetch_repo @co, @url
     end
   end
 
   def stage
-    # `svn export PATH1 PATH2` doesn't need network when no revision is given.
-    quiet_safe_system svn, 'export', '--force', @export, Dir.pwd
+    quiet_safe_system svn, 'export', '--force', @co, Dir.pwd
+  end
+
+  def shell_quote str
+    # Oh god escaping shell args.
+    # See http://notetoself.vrensk.com/2008/08/escaping-single-quotes-in-ruby-harder-than-expected/
+    str.gsub(/\\|'/) { |c| "\\#{c}" }
+  end
+
+  def get_externals
+    `'#{shell_quote(svn)}' propget svn:externals '#{shell_quote(@url)}'`.chomp.each_line do |line|
+      name, url = line.split /\s+/
+      yield name, url
+    end
+  end
+
+  def fetch_repo target, url, revision=nil, ignore_externals=false
+    # Use "svn up" when the repository already exists locally.
+    # This saves on bandwidth and will have a similar effect to verifying the
+    # cache as it will make any changes to get the right revision.
+    svncommand = target.exist? ? 'up' : 'checkout'
+    args = [svn, svncommand, '--force', url, target]
+    args << '-r' << revision if revision
+    args << '--ignore-externals' if ignore_externals
+    quiet_safe_system *args
   end
 
   # Override this method in a DownloadStrategy to force the use of a non-
-  # sysetm svn binary. mplayer.rb uses this to require a svn that
-  # understands externals.
+  # system svn binary. mplayer.rb uses this to require a svn new enough to
+  # understand its externals.
   def svn
     '/usr/bin/svn'
   end
