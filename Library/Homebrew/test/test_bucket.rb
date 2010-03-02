@@ -204,15 +204,12 @@ class BeerTasting < Test::Unit::TestCase
     assert_raises(RuntimeError) {Pathname.getwd.install 'non_existant_file'}
   end
   
-  def test_formula_class_func
-    assert_equal Formula.class_s('s-lang'), 'SLang'
-    assert_equal Formula.class_s('pkg-config'), 'PkgConfig'
-    assert_equal Formula.class_s('foo_bar'), 'FooBar'
-  end
-  
-  def test_class_names
+  def test_class_naming
     assert_equal 'ShellFm', Formula.class_s('shell.fm')
     assert_equal 'Fooxx', Formula.class_s('foo++')
+    assert_equal 'SLang', Formula.class_s('s-lang')
+    assert_equal 'PkgConfig', Formula.class_s('pkg-config')
+    assert_equal 'FooBar', Formula.class_s('foo_bar')
   end
       
   def test_ENV_options
