@@ -3,8 +3,8 @@ require 'formula'
 # On 10.5 we need newer versions of apr, neon etc.
 # On 10.6 we only need a newer version of neon
 class SubversionDeps <Formula
-  url 'http://subversion.tigris.org/downloads/subversion-deps-1.6.6.tar.bz2'
-  md5 '8ec2a0daea27f86a75939d3ed09618a0'
+  url 'http://subversion.tigris.org/downloads/subversion-deps-1.6.9.tar.bz2'
+  md5 'c480173d939a5a6d0c71c717ab71e392'
 
   # Note because this formula is installed into the subversion prefix
   # it is not in fact keg only
@@ -14,17 +14,15 @@ class SubversionDeps <Formula
 end
 
 class Subversion <Formula
-  url 'http://subversion.tigris.org/downloads/subversion-1.6.6.tar.bz2'
-  homepage 'http://subversion.tigris.org/'
-  md5 'e5109da756d74c7d98f683f004a539af'
+  url 'http://subversion.tigris.org/downloads/subversion-1.6.9.tar.bz2'
+  md5 '9c30a47b1d48664e7afef68bb4834c53'
+  homepage 'http://subversion.apache.org/'
   
   aka :svn
 
   # Only need this on Snow Leopard; for Leopard the deps package 
   # builds it.
-  if MACOS_VERSION >= 10.6
-    depends_on 'neon'
-  end
+  depends_on 'neon' if MACOS_VERSION >= 10.6
 
   def setup_leopard
     # Slot dependencies into place
