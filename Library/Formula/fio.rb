@@ -1,10 +1,9 @@
 require 'formula'
 
 class Fio <Formula
-  url 'http://download.github.com/caius-fio-4ceb30d.tar.gz'
+  url 'http://brick.kernel.dk/snaps/fio-1.37.tar.bz2'
   homepage 'http://freshmeat.net/projects/fio/'
-  md5 '1a85a1b492fecd44d0185bd24f01a973'
-  version "1.37"
+  md5 'a6b64ffef21c0c9e3dc3c36e87f988a5'
 
   def install
     make_cmd = "make -f Makefile.mac prefix=#{prefix}"
