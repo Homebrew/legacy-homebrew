@@ -13,16 +13,6 @@ $:.unshift(HOMEBREW_LIBRARY_PATH)
 require 'global'
 
 case ARGV.first
-when '--cache'
-  if ARGV.named.empty?
-    puts HOMEBREW_CACHE
-  else
-    require 'formula'
-    ARGV.named.each do |name|
-      puts Formula.factory(name).cached_download rescue '(built from source control)'
-    end
-  end
-  exit 0
 when '-h', '--help', '--usage', '-?', 'help', nil
   puts ARGV.usage
   exit 0
@@ -80,13 +70,18 @@ begin
   require 'brew.h'
 
   case arg = ARGV.shift
+  when '--cache'
+    if ARGV.named.empty?
+      puts HOMEBREW_CACHE
+    else
+      puts *ARGV.formulae.collect {|f| f.cached_download rescue '(built from source control)'}
+    end
   when '--prefix'
     if ARGV.named.empty?
       puts HOMEBREW_PREFIX
     else
       puts *ARGV.formulae.collect {|f| f.prefix}
     end
-
   when '--repository'
     puts HOMEBREW_REPOSITORY
   when '--cellar'
