@@ -10,10 +10,10 @@ class Lout <Formula
       s.change_make_var! "PREFIX", prefix
       s.change_make_var! "LOUTLIBDIR", lib
       s.change_make_var! "LOUTDOCDIR", doc
-      s.change_make_var! "MANDIR", man
+      s.change_make_var! "MANDIR", man1
     end
     bin.mkpath
-    man.mkpath
+    man1.mkpath
     (doc + 'lout').mkpath
     system "make allinstall"
   end
