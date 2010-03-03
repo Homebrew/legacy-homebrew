@@ -29,3 +29,6 @@ ruby test_patching.rb $*
 
 # External dependency tests
 ruby test_external_deps.rb $*
+
+# Test Pathname.install
+ruby test_pathname_install.rb $*
