@@ -3,19 +3,8 @@ require 'testing_env'
 require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
 ARGV.extend(HomebrewArgvExtension)
 
-require 'formula'
+require 'test/testball'
 require 'utils'
-
-
-class TestBall <Formula
-  def initialize name
-    @url="file:///#{TEST_FOLDER}/testball-0.1.tbz"
-    @homepage = 'http://example.com/'
-    @md5='71aa838a9e4050d1876a295a9e62cbe6'
-    super name
-  end
-  def install ; end
-end
 
 
 class DefaultPatchBall <TestBall

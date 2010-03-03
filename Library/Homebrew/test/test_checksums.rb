@@ -3,22 +3,8 @@ require 'testing_env'
 require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
 ARGV.extend(HomebrewArgvExtension)
 
-require 'formula'
+require 'test/testball'
 require 'utils'
-
-
-class TestBall <Formula
-  # name parameter required for some Formula::factory
-  def initialize name=nil
-    @url="file:///#{TEST_FOLDER}/testball-0.1.tbz"
-    @homepage = 'http://example.com/'
-    super "testball"
-  end
-  def install
-    prefix.install "bin"
-    prefix.install "libexec"
-  end
-end
 
 
 class ChecksumTests < Test::Unit::TestCase
