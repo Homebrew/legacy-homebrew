@@ -200,8 +200,6 @@ class BeerTasting < Test::Unit::TestCase
         HOMEBREW_CACHE.chmod_R 0777
       end
     end
-    
-    assert_raises(RuntimeError) {Pathname.getwd.install 'non_existant_file'}
   end
   
   def test_class_naming
