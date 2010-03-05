@@ -30,6 +30,10 @@ _1st_arguments=(
   'create:create a new formula'
   'edit:edit a formula'
   'uses:show formulas which depend on a formula'
+  'outdated:list formulas for which a newer version is available'
+  'cleanup:uninstall unused and old versions of packages'
+  'deps:list dependencies and dependants of a formula'
+  'cat:display formula file for a formula'
 )
 
 local expl
@@ -57,7 +61,7 @@ case "$words[1]" in
         _brew_installed_formulae
         _requested installed_formulae expl 'installed formulae' compadd -a installed_formulae
       fi ;;
-  install|home|log|info|uses)
+  install|home|log|info|uses|cat|deps)
     _brew_all_formulae
     _wanted formulae expl 'all formulae' compadd -a formulae ;;
   remove|edit|xo)
