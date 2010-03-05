@@ -7,7 +7,10 @@ class SpringRoo <Formula
   md5 '31d4444700311b14388a29139f4ea9bc'
 
   def install
-    prefix.install %w[bin dist docs legal lib]
+    inreplace 'bin/roo.sh', '$ROO_HOME/lib', '$ROO_HOME/java/lib'
+
+    prefix.install %w[bin dist docs legal]
+    (prefix+'java').install 'lib'
     FileUtils.rm_f Dir["#{bin}/*.bat"]
   end
 end
