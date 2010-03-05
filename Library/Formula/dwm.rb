@@ -17,12 +17,12 @@ class Dwm <Formula
   end
 
   def caveats
-    <<EOF
-    In order to use the Mac OS X command key '⌘' for dwm commands
+    <<-EOS
+    In order to use the Mac OS X command key for dwm commands,
     change the X11 keyboard modifier map using xmodmap (1).
 
     e.g. by running the following command from $HOME/.xinitrc
     xmodmap -e 'remove Mod2 = Meta_L' -e 'add Mod1 = Meta_L'&
-EOF
+    EOS
   end
 end
