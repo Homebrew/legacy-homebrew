@@ -47,7 +47,7 @@ class Mysql <Formula
     system "./configure", *configure_args
     system "make install"
 
-    FileUtils.ln_s "#{prefix}/libexec/mysqld", "#{prefix}/bin/mysqld"
+    ln_s "#{libexec}/mysqld", "#{bin}/mysqld"
 
     (prefix+'mysql-test').rmtree unless ARGV.include? '--with-tests' # save 66MB!
     (prefix+'sql-bench').rmtree unless ARGV.include? '--with-bench'
