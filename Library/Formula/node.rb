@@ -1,10 +1,10 @@
 require 'formula'
 
 class Node <Formula
-  url 'http://nodejs.org/dist/node-v0.1.30.tar.gz'
+  url 'http://nodejs.org/dist/node-v0.1.31.tar.gz'
   head 'git://github.com/ry/node.git'
   homepage 'http://nodejs.org/'
-  md5 '479204b564aa1b956d9c28c3969dd545'
+  md5 'a9e0ba08539edbdc8e5611e7550f1c47'
 
   aka 'node.js'
   
@@ -17,9 +17,9 @@ class Node <Formula
   end
 
   def install
-    inreplace %w{wscript configure} do |wscript|
-      wscript.gsub! '/usr/local', HOMEBREW_PREFIX
-      wscript.gsub! '/opt/local/lib', '/usr/lib'
+    inreplace %w{wscript configure} do |s|
+      s.gsub! '/usr/local', HOMEBREW_PREFIX
+      s.gsub! '/opt/local/lib', '/usr/lib'
     end
     ENV.gcc_4_2
     system "./configure", "--prefix=#{prefix}"
