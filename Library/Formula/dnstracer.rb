@@ -6,7 +6,7 @@ class Dnstracer <Formula
   md5 '7db73ce3070119c98049a617fe52ea84'
 
   def install
-    ENV["LDFLAGS"] += " -lresolv"
+    ENV.append 'LDFLAGS', '-lresolv'
 
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
