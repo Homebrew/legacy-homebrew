@@ -90,7 +90,7 @@ class BeerTasting < Test::Unit::TestCase
     assert_equal "FooBar", classname
     assert_match Regexp.new("^#{HOMEBREW_PREFIX}/Library/Formula"), path.to_s
 
-    path=HOMEBREW_PREFIX+'Library'+'Formula'+"#{FOOBAR}.rb"
+    path=HOMEBREW_PREFIX+"Library/Formula/#{FOOBAR}.rb"
     path.dirname.mkpath
     File.open(path, 'w') do |f|
       f << %{
@@ -137,7 +137,7 @@ class BeerTasting < Test::Unit::TestCase
     assert_raises(KegUnspecifiedError) { ARGV.kegs }
     assert ARGV.named.empty?
     
-    (HOMEBREW_CELLAR+'mxcl'+'10.0').mkpath
+    (HOMEBREW_CELLAR+'mxcl/10.0').mkpath
     
     ARGV.reset
     ARGV.unshift 'mxcl'
