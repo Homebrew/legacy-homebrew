@@ -96,9 +96,6 @@ def puts_columns items, cols = 4
   return if items.empty?
 
   if $stdout.tty?
-    items = items.join("\n") if items.is_a?(Array)
-    items.concat("\n") unless items.empty?
-
     # determine the best width to display for different console sizes
     console_width = `/bin/stty size`.chomp.split(" ").last.to_i
     console_width = 80 if console_width <= 0
@@ -106,7 +103,7 @@ def puts_columns items, cols = 4
     optimal_col_width = (console_width.to_f / (longest.length + 2).to_f).floor
     cols = optimal_col_width > 1 ? optimal_col_width : 1
 
-    IO.popen("/usr/bin/pr -#{cols} -t -w#{console_width}", "w"){|io| io.write(items) }
+    IO.popen("/usr/bin/pr -#{cols} -t -w#{console_width}", "w"){|io| io.puts(items) }
   else
     puts *items
   end
