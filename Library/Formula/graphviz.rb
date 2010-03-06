@@ -8,7 +8,8 @@ class Graphviz <Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-qartz",
+                          "--disable-quartz",
+                          "--disable-php",
                           "--disable-python", "--disable-perl"
     system "make install"
   end
