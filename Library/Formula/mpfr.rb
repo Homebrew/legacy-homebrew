@@ -7,6 +7,10 @@ class Mpfr <Formula
 
   depends_on 'gmp'
 
+  def patches
+    {:p1 => ['http://www.mpfr.org/mpfr-current/allpatches']}
+  end
+
   def install
       configure_args = [
           "--prefix=#{prefix}",
