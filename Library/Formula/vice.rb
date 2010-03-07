@@ -1,10 +1,9 @@
 require 'formula'
 
 class Vice <Formula
-  head 'http://vice-emu.svn.sourceforge.net/svnroot/vice-emu/trunk/vice/', 
-          :revision => '21722'
+  url "http://www.zimmers.net/anonftp/pub/cbm/crossplatform/emulators/VICE/vice-2.2.tar.gz"
+  md5 "6737f540806205384e9129026898b0a1"
   homepage 'http://www.viceteam.org/'
-  version '2.1.22'
   
   def remove_unused_icons
     Pathname.glob libexec+'*.app' do |d|
@@ -21,7 +20,6 @@ class Vice <Formula
     # Cannot build with LLVM
     ENV.gcc_4_2
 
-    system "./autogen.sh"
     # Disable the zlibtest, we know we have it.
     # Use Cocoa instead of X
     system "./configure", "--prefix=#{prefix}", 
