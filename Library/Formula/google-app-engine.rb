@@ -7,8 +7,7 @@ class GoogleAppEngine <Formula
 
   def install
     cd '..'
-    mkdir share
-    mv 'google_appengine', share+name
+    share.install 'google_appengine' => name
     mkdir bin
     %w[appcfg.py bulkload_client.py bulkloader.py dev_appserver.py remote_api_shell.py].each do |fn|
       ln_s share+name+fn, bin+fn
