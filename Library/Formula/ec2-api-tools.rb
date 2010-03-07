@@ -30,7 +30,7 @@ a terminal to edit said file. zsh users will want to edit `~/.zprofile`
 instead.
 
     export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Home/"
-    export EC2_HOME="#{prefix.to_s}/"
+    export EC2_HOME="#{prefix}/"
 
 However, you're still not ready to use the tools. You need to download your
 X.509 certificate and private key from Amazon Web Services. These files are

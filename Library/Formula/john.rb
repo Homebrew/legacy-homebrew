@@ -20,8 +20,8 @@ class John <Formula
     
     FileUtils.rm 'README'
     # using mv over bin.install due to problem moving sym links
-    FileUtils.mv 'run', "#{bin}"
-    FileUtils.chmod_R 0755, "#{bin}"
+    FileUtils.mv 'run', bin
+    FileUtils.chmod_R 0755, bin
   end
 end
 

@@ -6,7 +6,7 @@ class Doxygen <Formula
   md5 '2d6ea20a9d850d94321cee78bab7bb87'
 
   def install
-    system "./configure", "--prefix", "#{prefix}"
+    system "./configure", "--prefix", prefix
     inreplace "Makefile" do |s|
       # Path of man1 relative to already given prefix
       s.change_make_var! 'MAN1DIR', man1
