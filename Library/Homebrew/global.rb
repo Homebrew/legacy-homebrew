@@ -5,7 +5,7 @@ require 'utils'
 
 ARGV.extend(HomebrewArgvExtension)
 
-HOMEBREW_VERSION = 0.5
+HOMEBREW_VERSION = 0.6
 HOMEBREW_WWW = 'http://bit.ly/Homebrew'
 
 if Process.uid == 0
