@@ -7,6 +7,7 @@ class Lynx <Formula
 
   def install
     system "./configure", "--prefix=#{prefix}", 
+                          "--mandir=#{man}",
                           "--disable-debug", 
                           "--disable-dependency-tracking",
                           "--disable-echo",
