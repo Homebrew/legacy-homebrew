@@ -36,12 +36,14 @@ def __make url, name
 
   path = Formula.path name
   raise "#{path} already exists" if path.exist?
-  
-  # Check if a formula aliased to this name exists.
-  already_aka = Formulary.find_alias name
-  if already_aka != nil
-    opoo "Formula #{already_aka} is aliased to #{name}."
-    puts "Please check if you are creating a duplicate."
+
+  if Formula.aliases.include? name and not ARGV.force?
+    realname = HOMEBREW_REPOSITORY.join("Library/Aliases/#{name}").realpath.basename('.rb')
+    raise <<-EOS.undent
+          The formula #{realname} is already aliased to #{name}
+          Please check that you are not creating a duplicate.
+          To force creation use --force.
+          EOS
   end
 
   version = Pathname.new(url).version
