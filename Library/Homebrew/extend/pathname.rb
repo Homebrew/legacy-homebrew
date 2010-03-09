@@ -17,8 +17,10 @@ class Pathname
     if new_basename
       new_basename = File.basename(new_basename) # rationale: see Pathname.+
       dst = self+new_basename
+      return_value =Pathname.new(dst)
     else
       dst = self
+      return_value = self+File.basename(src)
     end
 
     src = src.to_s
@@ -41,7 +43,7 @@ class Pathname
       FileUtils.mv src, dst
     end
 
-    return Pathname.new(dst)
+    return return_value
   end
 
   # we assume this pathname object is a file obviously
