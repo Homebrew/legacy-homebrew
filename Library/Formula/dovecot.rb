@@ -1,9 +1,9 @@
 require 'formula'
 
 class Dovecot <Formula
-  @url='http://www.dovecot.org/releases/1.2/dovecot-1.2.4.tar.gz'
-  @homepage='http://dovecot.org/'
-  @md5='3e5717d13e3d6b32d3f4b809df397dbf'
+  url 'http://www.dovecot.org/releases/1.2/dovecot-1.2.11.tar.gz'
+  homepage 'http://dovecot.org/'
+  md5 'bdac013fd57aa616ea4bdd9ac34557c6'
 
   def install
     system "./configure", "--prefix=#{prefix}",
