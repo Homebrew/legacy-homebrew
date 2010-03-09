@@ -11,61 +11,6 @@ class FormulaUnavailableError <RuntimeError
 end
 
 
-# The Formulary is the collection of all Formulae, of course.
-class Formulary
-  # Returns all formula names as strings, with or without aliases
-  def self.names with_aliases=false
-    filenames = (HOMEBREW_REPOSITORY+'Library/Formula').children.select {|f| f.to_s =~ /\.rb$/ }
-    everything = filenames.map{|f| f.basename('.rb').to_s }
-    everything.push *Formulary.get_aliases.keys if with_aliases
-    everything.sort
-  end
-
-  def self.paths
-    Dir["#{HOMEBREW_REPOSITORY}/Library/Formula/*.rb"]
-  end
-  
-  def self.read name
-    require Formula.path(name) rescue return nil
-    klass_name = Formula.class_s(name)
-    eval(klass_name)
-  end
-  
-  def self.read_all
-  # yields once for each
-    Formulary.names.each do |name|
-      begin
-        require Formula.path(name)
-        klass_name = Formula.class_s(name)
-        klass = eval(klass_name)
-        yield name, klass
-      rescue Exception=>e
-        opoo "Error importing #{name}:"
-        puts "#{e}"
-      end
-    end
-  end
-
-  # returns a map of aliases to actual names
-  # eg { 'ocaml' => 'objective-caml' }
-  def self.get_aliases
-    aliases = {}
-    Formulary.read_all do |name, klass|
-      aka = klass.aliases
-      next if aka == nil
-
-      aka.each {|item| aliases[item.to_s] = name }
-    end
-    return aliases
-  end
-  
-  def self.find_alias name
-    aliases = Formulary.get_aliases
-    return aliases[name]
-  end
-end
-
-
 # Derive and define at least @url, see Library/Formula for examples
 class Formula
   include FileUtils
@@ -235,21 +180,19 @@ class Formula
     name.capitalize.gsub(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase } \
                    .gsub('+', 'x')
   end
-  
-  def self.get_used_by
-    used_by = {}
-    Formulary.read_all do |name, klass|
-      deps = klass.deps
-      next if deps == nil
 
-      deps.each do |dep|
-        _deps = used_by[dep] || []
-        _deps << name unless _deps.include? name
-        used_by[dep] = _deps
-      end
-    end
-    
-    return used_by
+  # an array of all Formula names
+  def self.names
+    Dir["#{HOMEBREW_REPOSITORY}/Library/Formula/*.rb"].map{ |f| File.basename f, '.rb' }.sort
+  end
+
+  # an array of all Formula, instantiated
+  def self.all
+    names.map{ |fn| Formula.factory(fn) }
+  end
+
+  def self.aliases
+    Dir["#{HOMEBREW_REPOSITORY}/Library/Aliases/*"].map{ |f| File.basename f }.sort
   end
 
   def self.factory name
@@ -259,15 +202,7 @@ class Formula
       require name
       name = path.stem
     else
-      begin
-        require self.path(name)
-      rescue LoadError => e
-        # Couldn't find formula 'name', so look for an alias.
-        real_name = Formulary.find_alias name
-        raise e if real_name == nil
-        puts "#{name} is an alias for #{real_name}"
-        name = real_name
-      end
+      require self.path(name)
     end
     begin
       klass_name =self.class_s(name)
@@ -495,18 +430,13 @@ EOF
       end
     end
 
-    attr_rw :url, :version, :homepage, :specs, :deps, :external_deps, :aliases, *CHECKSUM_TYPES
+    attr_rw :url, :version, :homepage, :specs, :deps, :external_deps, *CHECKSUM_TYPES
 
     def head val=nil, specs=nil
       if specs
         @specs = specs
       end
       val.nil? ? @head : @head = val
-    end
-    
-    def aka *args
-      @aliases ||= []
-      args.each { |item| @aliases << item.to_s }
     end
 
     def depends_on name
