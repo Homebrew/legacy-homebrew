@@ -22,25 +22,25 @@ class FormulaInstaller
   
   def pyerr dep
     brew_pip = ' brew install pip &&' unless Formula.factory('pip').installed?
-    <<-EOS
-Unsatisfied dependency, #{dep}
-Homebrew does not provide formula for Python dependencies, pip does:
+    <<-EOS.dedent
+    Unsatisfied dependency, #{dep}
+    Homebrew does not provide formula for Python dependencies, pip does:
 
-   #{brew_pip} pip install #{dep}
+        #{brew_pip} pip install #{dep}
     EOS
   end
-  def plerr dep; <<-EOS
-Unsatisfied dependency, #{dep}
-Homebrew does not provide formula for Perl dependencies, cpan does:
+  def plerr dep; <<-EOS.dedent
+    Unsatisfied dependency, #{dep}
+    Homebrew does not provide formula for Perl dependencies, cpan does:
 
-    cpan -i #{dep}
+        cpan -i #{dep}
     EOS
   end
-  def rberr dep; <<-EOS
-Unsatisfied dependency "#{dep}"
-Homebrew does not provide formulae for Ruby dependencies, rubygems does:
+  def rberr dep; <<-EOS.dedent
+    Unsatisfied dependency "#{dep}"
+    Homebrew does not provide formulae for Ruby dependencies, rubygems does:
 
-    gem install #{dep}
+        gem install #{dep}
     EOS
   end
   def jrberr dep; <<-EOS
