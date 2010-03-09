@@ -35,3 +35,6 @@ ruby test_pathname_install.rb $*
 
 # Test utility functions
 ruby test_utils.rb $*
+
+# Test ARGV extensions
+ruby test_ARGV.rb $*

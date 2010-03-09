@@ -93,15 +93,4 @@ class TestBallOverrideBrew <Formula
   end
 end
 
-module ExtendArgvPlusYeast
-  def reset
-    @named = nil
-    @downcased_unique_named = nil
-    @formulae = nil
-    @kegs = nil
-    ARGV.shift while ARGV.length > 0
-  end
-end
-ARGV.extend ExtendArgvPlusYeast
-
 require 'test/test_bucket'
