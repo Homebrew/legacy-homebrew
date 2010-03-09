@@ -32,3 +32,6 @@ ruby test_external_deps.rb $*
 
 # Test Pathname.install
 ruby test_pathname_install.rb $*
+
+# Test utility functions
+ruby test_utils.rb $*
