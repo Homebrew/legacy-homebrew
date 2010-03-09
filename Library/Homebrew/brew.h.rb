@@ -410,18 +410,24 @@ end
 
 def search_brews text
   require "formula"
-  formulae = Formulary.names with_aliases=true
-  if text =~ /^\/(.*)\/$/
-    results = formulae.grep(Regexp.new($1))
+
+  return Formula.names if text.to_s.empty?
+
+  rx = if text =~ %r{^/(.*)/$}
+    Regexp.new($1)
   else
-    search_term = Regexp.escape(text || "")
-    results = formulae.grep(/.*#{search_term}.*/)
+    /.*#{Regexp.escape text}.*/i
   end
 
+  aliases = Formula.aliases
+  results = (Formula.names+aliases).grep rx
+
   # Filter out aliases when the full name was also found
-  aliases = Formulary.get_aliases
-  return results.select do |r|
-    aliases[r] == nil or not (results.include? aliases[r])
+  results.reject do |alias_name|
+    if aliases.include? alias_name
+      resolved_name = (HOMEBREW_REPOSITORY+"Library/Aliases/#{alias_name}").readlink.basename('.rb').to_s
+      results.include? resolved_name
+    end
   end
 end
 
