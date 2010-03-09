@@ -1,3 +1,6 @@
+require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
+ARGV.extend(HomebrewArgvExtension)
+
 # All other tests so far -- feel free to break them out into
 # separate TestCase classes.
 
@@ -70,20 +73,6 @@ class BeerTasting < Test::Unit::TestCase
   #   ARGV.named.each{|f| n+=1 if f == 'foo'}
   #   assert_equal 1, n
   # end
-  
-  def test_ARGV
-    assert_raises(FormulaUnspecifiedError) { ARGV.formulae }
-    assert_raises(KegUnspecifiedError) { ARGV.kegs }
-    assert ARGV.named.empty?
-    
-    (HOMEBREW_CELLAR+'mxcl/10.0').mkpath
-    
-    ARGV.reset
-    ARGV.unshift 'mxcl'
-    assert_equal 1, ARGV.named.length
-    assert_equal 1, ARGV.kegs.length
-    assert_raises(FormulaUnavailableError) { ARGV.formulae }
-  end
   
   def test_brew_h
     nostdout do
