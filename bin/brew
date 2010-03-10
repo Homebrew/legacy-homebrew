@@ -278,7 +278,9 @@ begin
 
   when 'log'
     Dir.chdir HOMEBREW_REPOSITORY
-    exec "git", "log", ARGV.formulae.first.path, *ARGV.options
+    args = ARGV.options
+    args.unshift ARGV.formulae.first.path unless ARGV.named.empty?
+    exec "git", "log", *args
     
   when 'uses'
     # For each formula given, show which other formulas depend on it.
