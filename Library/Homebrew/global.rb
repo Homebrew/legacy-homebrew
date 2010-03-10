@@ -60,4 +60,10 @@ class ExecutionError <RuntimeError
 end
 
 class BuildError <ExecutionError
+  attr :env
+
+  def initialize cmd, args = [], es = nil
+    super
+    @env = ENV.to_hash
+  end
 end
