@@ -66,6 +66,12 @@ X11 installed? #{x11_installed?}
 EOS
 end
 
+def dump_build_env env
+  %w[CC CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS MAKEFLAGS].each do |k|
+    puts "#{k}: #{env[k]}"
+  end
+end
+
 begin
   require 'brew.h'
 
@@ -374,10 +380,16 @@ rescue Interrupt => e
 rescue BuildError => e
   e.backtrace[1] =~ %r{Library/Formula/(.+)\.rb:(\d+)}
   formula_name = $1
-  puts "http://github.com/mxcl/homebrew/blob/master/Library/Formula/#{formula_name}.rb#L#{$2}"
+  error_line = $2
+  puts "Exit status: #{e.exit_status}"
+  puts
+  puts "http://github.com/mxcl/homebrew/blob/master/Library/Formula/#{formula_name}.rb#L#{error_line}"
+  puts
   ohai "Environment"
   dump_config
-  puts "Exit status: #{e.exit_status}"
+  puts
+  ohai "Build Flags"
+  dump_build_env e.env
   onoe e
   puts PLEASE_REPORT_BUG
   # this feature can be slow (depends on network conditions and if github is up)
