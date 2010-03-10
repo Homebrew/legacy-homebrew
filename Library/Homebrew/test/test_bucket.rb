@@ -159,17 +159,17 @@ class BeerTasting < Test::Unit::TestCase
         abcd.cp HOMEBREW_CACHE
         assert orig_abcd.exist?
 
-        foo1=HOMEBREW_CACHE+'foo-0.1.tar.gz'
-        FileUtils.cp ABS__FILE__, foo1
-        assert foo1.file?
-        
-        assert_equal '.tar.gz', foo1.extname
-        assert_equal 'foo-0.1', foo1.stem
-        assert_equal '0.1', foo1.version
-        
         HOMEBREW_CACHE.chmod_R 0777
       end
     end
+  end
+  
+  def test_pathname_properties
+    foo1=HOMEBREW_CACHE+'foo-0.1.tar.gz'
+    
+    assert_equal '.tar.gz', foo1.extname
+    assert_equal 'foo-0.1', foo1.stem
+    assert_equal '0.1', foo1.version
   end
   
   def test_class_naming
