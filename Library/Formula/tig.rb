@@ -8,5 +8,6 @@ class Tig <Formula
   def install
     system "./configure", "--disable-debug", "--prefix=#{prefix}"
     system "make install"
+    system "make install-doc-man"
   end
 end
