@@ -17,7 +17,7 @@ Alright then… as long as you're sure:
 
     cd /usr/local
     sudo chown -R $USER .
-    curl -sf http://github.com/mxcl/homebrew/tarball/master | tar xz --strip 1
+    curl -Lsf http://github.com/mxcl/homebrew/tarball/master | tar xz --strip 1
 
 
 The Wiki
