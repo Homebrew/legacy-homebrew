@@ -6,6 +6,14 @@ class InreplaceTest < Test::Unit::TestCase
     s1.change_make_var! "FLAG", "def"
     assert_equal "FLAG=def", s1
   end
+
+  def test_change_make_var_empty
+    # Replace empty flag
+    s1="FLAG = \nFLAG2=abc"
+    s1.extend(HomebrewInreplaceExtension)
+    s1.change_make_var! "FLAG", "def"
+    assert_equal "FLAG=def\nFLAG2=abc", s1
+  end
     
   def test_change_make_var_append
     # Append to flag

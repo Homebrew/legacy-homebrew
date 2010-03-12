@@ -157,7 +157,7 @@ module HomebrewInreplaceExtension
   # value with "new_value", or removes the definition entirely.
   def change_make_var! flag, new_value
     new_value = "#{flag}=#{new_value}"
-    gsub! Regexp.new("^#{flag}\\s*=\\s*(.*)$"), new_value
+    gsub! Regexp.new("^#{flag}\\s*=[ \\t]*(.*)$"), new_value
   end
   # Removes variable assignments completely.
   def remove_make_var! flags
