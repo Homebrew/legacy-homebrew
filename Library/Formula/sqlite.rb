@@ -1,13 +1,12 @@
 require 'formula'
 
 class Sqlite <Formula
-  url 'http://www.sqlite.org/sqlite-amalgamation-3.6.22.tar.gz'
-  md5 'b683b3903e79ab8a6d928dc9d4a56937'
+  url 'http://www.sqlite.org/sqlite-amalgamation-3.6.23.tar.gz'
+  md5 '8f1e86b3909a27f8122b0981afd16fcd'
   homepage 'http://www.sqlite.org/'
 
   def install
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
+    system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking"
     system "make install"
   end
