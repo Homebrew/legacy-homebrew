@@ -31,9 +31,7 @@ class Postgresql <Formula
     configure_args << "ARCHFLAGS='-arch x86_64'" if bits_64?
 
     # Fails on Core Duo with O4 and O3
-    if Hardware.intel_family == :core
-      ENV.O2
-    end
+    ENV.O2 if Hardware.intel_family == :core
 
     system "./configure", *configure_args
     system "make install"
@@ -54,16 +52,16 @@ class Postgresql <Formula
   def caveats
     caveats = <<-EOS
 If this is your first install, create a database with:
-    initdb #{HOMEBREW_PREFIX}/var/postgres
+    initdb #{var}/postgres
 
 Automatically load on login with:
     launchctl load -w #{prefix}/org.postgresql.postgres.plist
 
 Or start manually with:
-    pg_ctl -D #{HOMEBREW_PREFIX}/var/postgres -l #{HOMEBREW_PREFIX}/var/postgres/server.log start
+    pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start
 
 And stop with:
-    pg_ctl -D #{HOMEBREW_PREFIX}/var/postgres stop -s -m fast
+    pg_ctl -D #{var}/postgres stop -s -m fast
 EOS
     
     if bits_64? then
@@ -92,11 +90,11 @@ To install gems without sudo, see the Homebrew wiki.
   <string>org.postgresql.postgres</string>
   <key>ProgramArguments</key>
   <array>
-    <string>#{HOMEBREW_PREFIX}/bin/postgres</string>
+    <string>#{bin}/postgres</string>
     <string>-D</string>
-    <string>#{HOMEBREW_PREFIX}/var/postgres</string>
+    <string>#{var}/postgres</string>
     <string>-r</string>
-    <string>#{HOMEBREW_PREFIX}/var/postgres/server.log</string>
+    <string>#{var}/postgres/server.log</string>
   </array>
   <key>RunAtLoad</key>
   <true/>
