@@ -85,7 +85,7 @@ pre {
 	border-radius: 0.4em;
 	-moz-border-radius: 0.4em;
 	-webkit-border-radius: 0.4em;
-	overflow-x: auto;
+	overflow-x: hidden;
 }
 
 pre code {
