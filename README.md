@@ -1,6 +1,7 @@
 Homebrew
 ========
-Homebrew helps you install the UNIX tools that didn't come with OS X.
+Homebrew is the easiest and most flexible way to install the UNIX tools Apple
+didn't include with OS X.
 
 
 Requirements
@@ -12,7 +13,7 @@ Quick Install
 -------------
 Install [Xcode][] and then run this script: <http://gist.github.com/323731>
 
-If you want to install Homebrew somewhere other than /usr/local see the
+If you want to install Homebrew somewhere other than `/usr/local` see the
 [installation instructions][install].
 
 
@@ -41,7 +42,7 @@ I'm [Max Howell][mxcl] and I'm a splendid chap.
 
 
 [wiki]:http://wiki.github.com/mxcl/homebrew
-[install]:http://wiki.github.com/mxcl/homebrew/Installation
+[install]:http://wiki.github.com/mxcl/homebrew/installation
 [Xcode]:http://developer.apple.com/technology/xcode.html
 [mxcl]:http://twitter.com/mxcl
 [homepage]:http://mxcl.github.com/homebrew
