@@ -3,6 +3,11 @@ Homebrew
 Homebrew helps you install the UNIX tools that didn't come with OS X.
 
 
+Requirements
+------------
+Almost all formula require OS X 10.5 or above and an Intel processor.
+
+
 Quick Install
 -------------
 Install [Xcode][] and then run this script: <http://gist.github.com/323731>
