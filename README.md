@@ -10,16 +10,15 @@ Run <http://gist.github.com/323731> and afterwards, [install Xcode][xcode].
 
 Umm… I thought I could install it anywhere?
 -------------------------------------------
-Indeed, you can. Please read our [complete installation instructions][install].
+Indeed, you can. Refer to our [complete installation instructions][install].
 
 
-Dude! Just give me a three-liner!
---------------------------------------
+Dude! Just give me a two-liner!
+-------------------------------
 Alright then… as long as you know what you are doing:
 
-    cd /usr/local
-    sudo chown -R $USER .
-    curl -Lsf http://github.com/mxcl/homebrew/tarball/master | tar xz --strip 1
+    sudo chown -R $USER /usr/local
+    curl -Lsf http://github.com/mxcl/homebrew/tarball/master | tar xvz -C/usr/local --strip 1
 
 
 More Documentation
