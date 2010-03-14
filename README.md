@@ -1,20 +1,19 @@
 Homebrew
 ========
-[Homebrew][homepage] is the easiest and most flexible way to install the UNIX
-tools Apple didn't include with OS X.
+Features and usage are [summarized on the homepage][homepage].
 
 
-Quick Install
--------------
-[Install Xcode][xcode] and then run this script: <http://gist.github.com/323731>
+Quick Install to /usr/local
+---------------------------
+Run <http://gist.github.com/323731> and afterwards, [install Xcode][xcode].
 
 
 Umm… I thought I could install it anywhere?
 -------------------------------------------
-[Detailed installation instructions][install].
+Indeed, you can. Please read our [complete installation instructions][install].
 
 
-Look dude, just give me a three-liner!
+Dude! Just give me a three-liner!
 --------------------------------------
 Alright then… as long as you know what you are doing:
 
@@ -23,18 +22,13 @@ Alright then… as long as you know what you are doing:
     curl -Lsf http://github.com/mxcl/homebrew/tarball/master | tar xz --strip 1
 
 
-Example Usage
--------------
-There's an overview on the [homepage][].
-
-
-The Wiki
---------
-Everything else is in the [wiki][].
+More Documentation
+==================
+The [wiki][] is your friend.
 
 
 Who Are You?
-------------
+============
 I'm [Max Howell][mxcl] and I'm a splendid chap.
 
 
