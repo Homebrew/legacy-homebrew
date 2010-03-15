@@ -67,7 +67,7 @@ EOS
 end
 
 def dump_build_env env
-  %w[CC CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS MAKEFLAGS].each do |k|
+  %w[CC CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS MAKEFLAGS HOMEBREW_USE_LLVM].each do |k|
     puts "#{k}: #{env[k]}"
   end
 end
