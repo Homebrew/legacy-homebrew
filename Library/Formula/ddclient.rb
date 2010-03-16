@@ -1,8 +1,7 @@
 require 'formula'
 
 class Ddclient <Formula
-  url 'http://sourceforge.net/projects/ddclient/files/ddclient/ddclient-3.8.0/ddclient-3.8.0.tar.bz2/download'
-  version '3.8.0'
+  url 'http://downloads.sourceforge.net/project/ddclient/ddclient/ddclient-3.8.0/ddclient-3.8.0.tar.bz2'
   homepage 'http://sourceforge.net/apps/trac/ddclient'
   md5 '6cac7a5eb1da781bfd4d98cef0b21f8e'
 
