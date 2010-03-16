@@ -1,9 +1,9 @@
 require 'formula'
 
 class Global <Formula
-  url 'http://tamacom.com/global/global-5.8.tar.gz'
+  url 'http://tamacom.com/global/global-5.8.1.tar.gz'
   homepage 'http://www.gnu.org/software/global/'
-  md5 'f6015f420614dd02082abecd49a4d666'
+  md5 '9c357098e42c9ba32776ccd6b549d85d'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
