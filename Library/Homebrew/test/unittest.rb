@@ -104,5 +104,4 @@ module ExtendArgvPlusYeast
 end
 ARGV.extend ExtendArgvPlusYeast
 
-require 'test/test_checksums'
 require 'test/test_bucket'
