@@ -11,6 +11,8 @@ ruby unittest.rb $*
 
 ruby test_versions.rb $*
 
+ruby test_checksums.rb $*
+
 ruby test_inreplace.rb $*
 
 # Test hardware sniffers
