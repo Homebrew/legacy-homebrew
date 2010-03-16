@@ -1,10 +1,10 @@
 require 'formula'
 
 class CoffeeScript <Formula
-  url "http://github.com/jashkenas/coffee-script/tarball/0.5.4"
+  url "http://github.com/jashkenas/coffee-script/tarball/0.5.5"
   head "git://github.com/jashkenas/coffee-script.git"
   homepage "http://jashkenas.github.com/coffee-script/"
-  md5 '837f2ae60d4cfb90f6cb30968cc12f15'
+  md5 'b7a0dc8b5a2458a4dcb276fa23e71a82'
 
   # head coffee-script usually depends on head node and
   # since there isn't a way to specify that just remove
