@@ -9,6 +9,8 @@
 # Bulk of the tests
 ruby unittest.rb $*
 
+ruby test_inreplace.rb $*
+
 # Test hardware sniffers
 ruby test_hardware.rb $*
 

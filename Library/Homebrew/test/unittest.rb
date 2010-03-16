@@ -111,4 +111,3 @@ ARGV.extend ExtendArgvPlusYeast
 require 'test/test_versions'
 require 'test/test_checksums'
 require 'test/test_bucket'
-require 'test/test_inreplace'
