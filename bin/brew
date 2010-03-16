@@ -43,7 +43,8 @@ def dump_config
   bits = Hardware.bits
   cores = Hardware.cores_as_words
   llvm = llvm_build
-  gcc = gcc_build
+  gcc_42 = gcc_42_build
+  gcc_40 = gcc_40_build
   sha = `cd #{HOMEBREW_REPOSITORY} && git rev-parse --verify HEAD 2> /dev/null`.chomp
   kernel_arch = `uname -m`.chomp
 
@@ -59,7 +60,8 @@ Hardware: #{cores}-core #{bits}-bit #{Hardware.intel_family}
 OS X: #{MACOS_FULL_VERSION}
 Kernel Architecture: #{kernel_arch}
 Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
-GCC-4.2: #{gcc ? "build #{gcc}" : "N/A"} (5577 or newer recommended)
+GCC-4.0: #{gcc_40 ? "build #{gcc_40}" : "N/A"} (5493 or newer recommended)
+GCC-4.2: #{gcc_42 ? "build #{gcc_42}" : "N/A"} (5577 or newer recommended)
 LLVM: #{llvm ? "build #{llvm}" : "N/A" } #{llvm ? "(2206 or newer recommended)" : "" }
 MacPorts or Fink? #{macports_or_fink_installed?}
 X11 installed? #{x11_installed?}
@@ -256,7 +258,7 @@ begin
       if MACOS_VERSION >= 10.6
         opoo "You should upgrade to Xcode 3.2.1" if llvm_build < 2206
       else
-        opoo "You should upgrade to Xcode 3.1.4" if gcc_build < 5577
+        opoo "You should upgrade to Xcode 3.1.4" if (gcc_40_build < 5493) or (gcc_42_build < 5577)
       end
     rescue
       # the reason we don't abort is some formula don't require Xcode
