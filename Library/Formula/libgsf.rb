@@ -1,13 +1,14 @@
 require 'formula'
 
 class Libgsf <Formula
-  url 'http://ftp.acc.umu.se/pub/GNOME/sources/libgsf/1.14/libgsf-1.14.16.tar.bz2'
+  url 'http://ftp.acc.umu.se/pub/GNOME/sources/libgsf/1.14/libgsf-1.14.17.tar.bz2'
   homepage 'http://directory.fsf.org/project/libgsf/'
-  md5 '8478d83fda0b6e57f36550c11a693ee1'
+  sha256 '10c6b69149e424ac5f325eb247fdf640ddd949952f21b99a890e73f9d4276876'
 
   depends_on 'pkg-config'
   depends_on 'gettext'
-  depends_on "intltool"
+  depends_on 'intltool'
+  depends_on 'glib'
 
   def install
     configure_args = [

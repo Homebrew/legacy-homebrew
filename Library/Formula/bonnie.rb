@@ -9,7 +9,6 @@ class Bonnie <Formula
 
   def install
     system "make"
-    system "mkdir -p #{prefix}/bin"
-    system "cp Bonnie #{prefix}/bin/bonnie"
+    bin.install "Bonnie" => "bonnie"
   end
 end

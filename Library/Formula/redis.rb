@@ -1,9 +1,9 @@
 require 'formula'
 
 class Redis <Formula
-  url 'http://redis.googlecode.com/files/redis-1.2.2.tar.gz'
+  url 'http://redis.googlecode.com/files/redis-1.2.5.tar.gz'
   homepage 'http://code.google.com/p/redis/'
-  sha1 '66b65a12cbc6968b9375c861d8ddb4d74abfa79d'
+  sha1 'f28d840d8100586796cab02ccd8e91545a92179d'
 
   def install
     %w( run db/redis log ).each do |path|

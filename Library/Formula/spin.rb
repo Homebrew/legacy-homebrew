@@ -11,8 +11,6 @@ class Spin <Formula
   end
 
   def install
-    
-
     ENV.gcc_4_2
     ENV.deparallelize
 
@@ -23,7 +21,7 @@ class Spin <Formula
     end
 
     # Copy the man page.
-    FileUtils.cd("Man") { man1.install "spin.1" }
+    man1.install "Man/spin.1"
   end
 end
 

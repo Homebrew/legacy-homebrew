@@ -21,7 +21,6 @@ class Io <Formula
     addons/TagDB/build.io
     build/AddonBuilder.io
     docs/IoGuide.html
-    docs/IoReference.html
     extras/osx/osx.xcodeproj/project.pbxproj
     extras/osxmain/osxmain.xcodeproj/project.pbxproj
     libs/basekit/source/Hash_fnv.c

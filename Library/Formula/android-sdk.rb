@@ -25,13 +25,14 @@ class AndroidSdk <Formula
     end
   end
 
-  def caveats; <<-EOS
-We agreed to the Android SDK License Agreement for you by downloading the SDK.
-If this is unacceptable you should uninstall.
-You can read the license at: http://developer.android.com/sdk/terms.html
+  def caveats; <<-EOS.undent
+    We agreed to the Android SDK License Agreement for you when we downloaded the
+    SDK. If this is unacceptable you should uninstall. You can read the license
+    at: http://developer.android.com/sdk/terms.html
 
-Please add this line to your .bash_profile:
-  export ANDROID_SDK_ROOT=#{prefix}
-EOS
+    Please add this line to your .bash_profile:
+
+        export ANDROID_SDK_ROOT=#{prefix}
+    EOS
   end
 end

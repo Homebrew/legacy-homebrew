@@ -9,8 +9,7 @@ class Libvorbis <Formula
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--enable-docs"
+                          "--disable-dependency-tracking"
     system "make install"
   end
 end

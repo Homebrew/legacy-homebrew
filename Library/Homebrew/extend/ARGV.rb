@@ -1,26 +1,3 @@
-#  Copyright 2009 Max Howell and other contributors.
-#
-#  Redistribution and use in source and binary forms, with or without
-#  modification, are permitted provided that the following conditions
-#  are met:
-#
-#  1. Redistributions of source code must retain the above copyright
-#     notice, this list of conditions and the following disclaimer.
-#  2. Redistributions in binary form must reproduce the above copyright
-#     notice, this list of conditions and the following disclaimer in the
-#     documentation and/or other materials provided with the distribution.
-#
-#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-#  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-#  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-#  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-#  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-#  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-#  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-#  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-#  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-#  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
 class UsageError <RuntimeError; end
 class FormulaUnspecifiedError <UsageError; end
 class KegUnspecifiedError <UsageError; end
@@ -84,36 +61,35 @@ module HomebrewArgvExtension
     return false
   end
 
-  def usage
-    <<-EOS
-Usage: brew command [formula] ...
-Usage: brew [--prefix] [--cache] [--version|-v]
-Usage: brew [--verbose|-v]
+  def usage; <<-EOS.undent
+    Usage: brew command [formula] ...
+    Usage: brew [--prefix] [--cache] [--version|-v]
+    Usage: brew [--verbose|-v]
 
-Principle Commands:
-  install formula ... [--ignore-dependencies] [--HEAD|-H]
-  list [--unbrewed] [formula] ...
-  search [/regex/] [substring]
-  uninstall formula ...
-  update
+    Principle Commands:
+      install formula ... [--ignore-dependencies] [--HEAD|-H]
+      list [--unbrewed] [formula] ...
+      search [/regex/] [substring]
+      uninstall formula ...
+      update
 
-Other Commands:
-  cleanup [formula]
-  home formula ...
-  info [formula] [--github]
-  link formula ...
-  outdated
-  prune
-  unlink formula ...
+    Other Commands:
+      cleanup [formula]
+      home formula ...
+      info [formula] [--github]
+      link formula ...
+      outdated
+      prune
+      unlink formula ...
 
-Commands useful when contributing:
-  create URL
-  edit [formula]
-  log formula
-  install formula [--debug|-d] [--interactive|-i] [--verbose|-v]
+    Commands useful when contributing:
+      create URL
+      edit [formula]
+      log formula
+      install formula [--debug|-d] [--interactive|-i] [--verbose|-v]
 
-To visit the Homebrew homepage type:
-  brew home
+    To visit the Homebrew homepage type:
+      brew home
     EOS
   end
 
