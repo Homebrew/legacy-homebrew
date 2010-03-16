@@ -1,10 +1,10 @@
 require 'formula'
 
 class Sbt <Formula
-  JAR = 'sbt-launcher-0.5.5.jar'
+  JAR = 'sbt-launch-0.7.0.jar'
   url "http://simple-build-tool.googlecode.com/files/#{JAR}"
   homepage 'http://code.google.com/p/simple-build-tool'
-  md5 'e3593448b3be17ce1666c6241b8d2f90'
+  md5 '19275aa32369683c6a92de9394da822b'
 
   def install
     (bin+'sbt').write <<-EOS

@@ -7,17 +7,25 @@ def ghostscript_srsly?
   ARGV.include? '--with-ghostscript'
 end
 
+def x11?
+  # I used this file because old Xcode seems to lack it, and its that old
+  # Xcode that loads of people seem to have installed still
+  File.file? '/usr/X11/include/ft2build.h'
+end
+
 class Imagemagick <Formula
-  @url='http://image_magick.veidrodis.com/image_magick/ImageMagick-6.5.6-5.tar.gz'
-  @md5='668919a5a7912fb6778975bc55893004'
+  @url='http://image_magick.veidrodis.com/image_magick/ImageMagick-6.5.9-8.tar.bz2'
+  @md5='89892e250e81fad51b4b2a1f816987e6'
   @homepage='http://www.imagemagick.org'
 
+
   depends_on 'jpeg'
-  depends_on 'libwmf' => :optional
+  depends_on 'libwmf' => :optional if x11?
   depends_on 'libtiff' => :optional
   depends_on 'little-cms' => :optional
   depends_on 'jasper' => :optional
-  depends_on 'ghostscript' => :recommended if ghostscript_srsly?
+  depends_on 'ghostscript' => :recommended if ghostscript_srsly? and x11?
+  depends_on 'libpng' unless x11?
 
   def skip_clean? path
     path.extname == '.la'
@@ -35,7 +43,11 @@ class Imagemagick <Formula
      "--disable-static",
      "--with-modules",
      "--without-magick-plus-plus"]
-     args << '--without-ghostscript' unless ghostscript_srsly?
+     
+     args << "--disable-openmp" if MACOS_VERSION < 10.6   # libgomp unavailable
+     args << '--without-ghostscript' \
+          << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
+             unless ghostscript_srsly?
      return args
   end
 
@@ -48,18 +60,17 @@ class Imagemagick <Formula
 
     system "./configure", "--without-maximum-compile-warnings",
                           "--disable-osx-universal-binary",
-                          "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts",
                           "--without-perl", # I couldn't make this compile
                           *configure_args
     system "make install"
 
     # We already copy these into the keg root
-    (share+'ImageMagick'+'NEWS.txt').unlink
-    (share+'ImageMagick'+'LICENSE').unlink
-    (share+'ImageMagick'+'ChangeLog').unlink
+    (share+"ImageMagick/NEWS.txt").unlink
+    (share+"ImageMagick/LICENSE").unlink
+    (share+"ImageMagick/ChangeLog").unlink
   end
 
   def caveats
-    "If there is something missing that you need with this formula, please create an issue at #{HOMEBREW_WWW}"
+    "You don't have X11 from the Xcode DMG installed. Consequently Imagemagick is less fully featured." unless x11?
   end
 end

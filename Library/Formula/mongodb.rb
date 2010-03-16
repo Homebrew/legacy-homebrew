@@ -7,13 +7,13 @@ class Mongodb <Formula
   aka :mongo
 
   if Hardware.is_64_bit? and not ARGV.include? '--32bit'
-    url 'http://downloads.mongodb.org/osx/mongodb-osx-x86_64-1.2.0.tgz'
-    md5 'e2d6f7b7f1c0ab71fd629c015ced033c'
-    version '1.2.0-x86_64'
+    url 'http://downloads.mongodb.org/osx/mongodb-osx-x86_64-1.2.4.tgz'
+    md5 '775835b5038b6724a27bb7d804acb079'
+    version '1.2.4-x86_64'
   else
-    url 'http://downloads.mongodb.org/osx/mongodb-osx-i386-1.2.0.tgz'
-    md5 'e85c3e4bdf910ece0e47f85885b78219'
-    version '1.2.0-i386'
+    url 'http://downloads.mongodb.org/osx/mongodb-osx-i386-1.2.4.tgz'
+    md5 '330d211bdc2c69e27a19049bd35fd04d'
+    version '1.2.4-i386'
   end
 
   def skip_clean? path
@@ -72,7 +72,7 @@ EOS
   <key>KeepAlive</key>
   <true/>
   <key>UserName</key>
-  <string>#{`whoami`}</string>
+  <string>#{`whoami`.chomp}</string>
   <key>WorkingDirectory</key>
   <string>#{HOMEBREW_PREFIX}</string>
   <key>StandardErrorPath</key>

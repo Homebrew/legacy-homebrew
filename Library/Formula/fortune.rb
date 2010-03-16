@@ -16,6 +16,7 @@ class Fortune <Formula
 
     inreplace 'Makefile' do |contents|
       contents.change_make_var! 'FORTDIR', "/usr/local/bin" # indeed, correct
+      contents.gsub! '/usr/local/man', '/usr/local/share/man'
       contents.gsub! '/usr/local', prefix
       contents.change_make_var! 'CC', ENV.cc
       # OS X only supports POSIX regexes

@@ -132,7 +132,7 @@ def install f
         show_summary_heading = true
       end
     end
-  end
+  end unless f.keg_only?
 
   if f.keg_only?
     ohai 'Caveats', text_for_keg_only_formula(f)

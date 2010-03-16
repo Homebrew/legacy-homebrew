@@ -5,6 +5,8 @@ class Cadaver <Formula
   homepage 'http://www.webdav.org/cadaver/'
   md5 '5ac79e41f3b7b4f68bf4003beed5dc26'
 
+  depends_on 'gettext'
+
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug",
                           "--disable-dependency-tracking",

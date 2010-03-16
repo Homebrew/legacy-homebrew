@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libtorrent <Formula
-  url 'http://libtorrent.rakshasa.no/downloads/libtorrent-0.12.5.tar.gz'
+  url 'http://libtorrent.rakshasa.no/downloads/libtorrent-0.12.6.tar.gz'
   homepage 'http://libtorrent.rakshasa.no/'
-  md5 'fe8155d364b220713074423100d4bf29'
+  md5 '037499ed708aaf72988cee60e5a8d96b'
 
   depends_on 'pkg-config'
   depends_on 'libsigc++'

@@ -15,6 +15,8 @@ class Gettext <Formula
 
   def install
     ENV.libxml2
+    ENV.O3 # Issues with LLVM & O4 on Mac Pro 10.6
+
     # TODO seems like this package needs more optmisation
     # maybe someone can tell me how glib depends on gettext, but gettext 
     # depends on glib and thus includes its own?!

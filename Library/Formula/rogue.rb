@@ -11,9 +11,7 @@ class Rogue <Formula
   end
   
   def install
-    if MACOS_VERSION == 10.6
-      ENV.ncurses_define
-    end
+    ENV.ncurses_define if MACOS_VERSION == 10.6
 
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
@@ -21,7 +19,14 @@ class Rogue <Formula
 
     inreplace "config.h", "rogue.scr", "#{libexec}/rogue.scr"
     
+    inreplace "Makefile" do |s|
+      # Take out weird man install script and DIY below
+      s.gsub! "-if test -d $(man6dir) ; then $(INSTALL) -m 0644 rogue.6 $(DESTDIR)$(man6dir)/$(PROGRAM).6 ; fi", ""
+      s.gsub! "-if test ! -d $(man6dir) ; then $(INSTALL) -m 0644 rogue.6 $(DESTDIR)$(mandir)/$(PROGRAM).6 ; fi", ""
+    end
+
     system "make install"
+    (man+'man6').install gzip("rogue.6")
     libexec.mkdir
   end
 end

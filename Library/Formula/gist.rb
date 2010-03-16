@@ -1,13 +1,11 @@
 require 'formula'
 
 class Gist <Formula
-  url 'http://github.com/defunkt/gist/raw/595bddc77386b46f30dcae83748d4e2cc9d1b219/gist.rb'
-  homepage 'http://github.com/defunkt/gist/'
-  version '20091019'
-  md5 '61ada08a5871b7011c1682be38e51da1'
+  url 'http://github.com/defunkt/gist/tarball/v1.0.3'
+  homepage 'http://github.com/defunkt/gist'
+  md5 'e0b9eb913c46ad49e5d6072c420b2a17'
 
   def install
-    mv 'gist.rb', 'gist'
-    bin.install "gist"
+    system "rake", "install", "prefix=#{prefix}"
   end
 end

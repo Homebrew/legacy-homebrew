@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mysql <Formula
-  @homepage='http://dev.mysql.com/doc/refman/5.1/en/'
-  @url='http://mysql.llarian.net/Downloads/MySQL-5.1/mysql-5.1.41.tar.gz'
-  @md5='b5d39e8789174753f3c782959729e68c'
+  homepage 'http://dev.mysql.com/doc/refman/5.1/en/'
+  url 'http://mysql.llarian.net/Downloads/MySQL-5.1/mysql-5.1.43.tar.gz'
+  md5 '451fd3e8c55eecdf4c3ed109dce62f01'
 
   depends_on 'readline'
 
@@ -20,6 +20,8 @@ class Mysql <Formula
   end
 
   def install
+    ENV.gcc_4_2 # http://github.com/mxcl/homebrew/issues/#issue/144
+
     # See: http://dev.mysql.com/doc/refman/5.1/en/configure-options.html
     # These flags may not apply to gcc 4+
     ENV['CXXFLAGS'] = ENV['CXXFLAGS'].gsub "-fomit-frame-pointer", ""
@@ -31,6 +33,7 @@ class Mysql <Formula
       "--disable-dependency-tracking",
       "--prefix=#{prefix}",
       "--localstatedir=#{var}/mysql",
+      "--sysconfdir=#{etc}",
       "--with-plugins=innobase,myisam",
       "--with-extra-charsets=complex",
       "--with-ssl",
@@ -44,7 +47,7 @@ class Mysql <Formula
     system "./configure", *configure_args
     system "make install"
 
-    FileUtils.ln_s "#{prefix}/libexec/mysqld", "#{prefix}/bin/mysqld"
+    ln_s "#{libexec}/mysqld", "#{bin}/mysqld"
 
     (prefix+'mysql-test').rmtree unless ARGV.include? '--with-tests' # save 66MB!
     (prefix+'sql-bench').rmtree unless ARGV.include? '--with-bench'
@@ -52,38 +55,37 @@ class Mysql <Formula
     (prefix+'com.mysql.mysqld.plist').write startup_plist
   end
 
-  def caveats; <<-EOS
-Set up databases with:
-    mysql_install_db
+  def caveats; <<-EOS.undent
+    Set up databases with:
+        mysql_install_db
 
-Automatically load on login with:
-    launchctl load -w #{prefix}/com.mysql.mysqld.plist
+    Automatically load on login with:
+        launchctl load -w #{prefix}/com.mysql.mysqld.plist
 
-Or start manually with:
-    #{prefix}/share/mysql/mysql.server start
+    Or start manually with:
+        #{prefix}/share/mysql/mysql.server start
     EOS
   end
 
-  def startup_plist
-    return <<-EOPLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>KeepAlive</key>
-  <true/>
-  <key>Label</key>
-  <string>com.mysql.mysqld</string>
-  <key>Program</key>
-  <string>#{bin}/mysqld_safe</string>
-  <key>RunAtLoad</key>
-  <true/>
-  <key>UserName</key>
-  <string>#{`whoami`.chomp}</string>
-  <key>WorkingDirectory</key>
-  <string>#{HOMEBREW_PREFIX}/var</string>
-</dict>
-</plist>
+  def startup_plist; <<-EOPLIST.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>KeepAlive</key>
+      <true/>
+      <key>Label</key>
+      <string>com.mysql.mysqld</string>
+      <key>Program</key>
+      <string>#{bin}/mysqld_safe</string>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>UserName</key>
+      <string>#{`whoami`.chomp}</string>
+      <key>WorkingDirectory</key>
+      <string>#{HOMEBREW_PREFIX}/var</string>
+    </dict>
+    </plist>
     EOPLIST
   end
 end

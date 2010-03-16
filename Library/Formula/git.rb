@@ -1,13 +1,18 @@
 require 'formula'
 
-class GitManuals <Formula
-  url 'http://kernel.org/pub/software/scm/git/git-manpages-1.6.6.tar.bz2'
-  md5 '2f31c767576fa693b5b45244a022fdd3'
+class GitManuals < Formula
+  url 'http://kernel.org/pub/software/scm/git/git-manpages-1.7.0.2.tar.bz2'
+  md5 '58e0c6b194d989de8f7c4c7193315287'
 end
 
-class Git <Formula
-  url 'http://kernel.org/pub/software/scm/git/git-1.6.6.tar.bz2'
-  md5 '25e4bcdc528b3ffadc6e59908a513881'
+class GitHtmldocs < Formula
+  url 'http://kernel.org/pub/software/scm/git/git-htmldocs-1.7.0.2.tar.bz2'
+  md5 'a33cd464d4c31e3ef0440e7e8d367f02'
+end
+
+class Git < Formula
+  url 'http://kernel.org/pub/software/scm/git/git-1.7.0.2.tar.bz2'
+  md5 '76518fa774b36de81d160b85fa4f19c1'
   homepage 'http://git-scm.com'
 
   def install
@@ -16,9 +21,14 @@ class Git <Formula
     ENV['NO_DARWIN_PORTS']='1'
     # If local::lib is used you get a 'Only one of PREFIX or INSTALL_BASE can be given' error
     ENV['PERL_MM_OPT']='';
+    # build verbosely so we can debug better
+    ENV['V'] = '1'
 
-    system "./configure --prefix=#{prefix}"
-    system "make install"
+    inreplace "Makefile" do |s|
+      s.remove_make_var! %w{CFLAGS LDFLAGS}
+    end
+
+    system "make", "prefix=#{prefix}", "install"
 
     # Install the git bash completion file
     (etc+'bash_completion.d').install 'contrib/completion/git-completion.bash'
@@ -37,5 +47,7 @@ class Git <Formula
     # we could build the manpages ourselves, but the build process depends
     # on many other packages, and is somewhat crazy, this way is easier
     GitManuals.new.brew { man.install Dir['*'] }
+    doc = share+'doc/git-doc'
+    GitHtmldocs.new.brew { doc.install Dir['*'] }
   end
 end

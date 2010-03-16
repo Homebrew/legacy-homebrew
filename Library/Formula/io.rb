@@ -21,7 +21,6 @@ class Io <Formula
     addons/TagDB/build.io
     build/AddonBuilder.io
     docs/IoGuide.html
-    docs/IoReference.html
     extras/osx/osx.xcodeproj/project.pbxproj
     extras/osxmain/osxmain.xcodeproj/project.pbxproj
     libs/basekit/source/Hash_fnv.c
@@ -33,10 +32,10 @@ class Io <Formula
   end
 
   def install
-    inreplace 'addons/SGML/build.io', 'sudo ', ''
-    inreplace 'addons/TagDB/build.io', 'sudo ', ''
+    inreplace ['addons/SGML/build.io', 'addons/TagDB/build.io'],
+      'sudo ', ''
 
-    hardcoded_prefixes.each{ |fn| inreplace fn, '/usr/local', prefix }
+    inreplace hardcoded_prefixes, '/usr/local', prefix
 
     system "make vm"
     system "make"

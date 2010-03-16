@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gdal <Formula
-  url 'http://download.osgeo.org/gdal/gdal-1.6.3.tar.gz'
+  url 'http://download.osgeo.org/gdal/gdal-1.7.1.tar.gz'
   homepage 'http://www.gdal.org/'
-  md5 'a8aade344a29ae4a92a0f17cc33f561a'
+  md5 '5a90be385613730cc12fcf3f59b89de6'
 
   depends_on 'libtiff'
   depends_on 'giflib'

@@ -16,7 +16,8 @@ class DBus <Formula
     # Fix the TMPDIR to one D-Bus doesn't reject due to odd symbols
     ENV["TMPDIR"] = "/tmp"
     system "./configure", "--prefix=#{prefix}", "--disable-xml-docs",
-           "--disable-doxygen-docs", "--disable-dependency-tracking"
+           "--disable-doxygen-docs", "--disable-dependency-tracking",
+	   "--without-x"
     system "make install"
 
     # Generate D-Bus's UUID for this machine

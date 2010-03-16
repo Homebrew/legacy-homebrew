@@ -113,19 +113,27 @@ class Coreutils <Formula
       puts COREUTILS_ALIASES
       exit 0
     end
-    
-    system "./configure --prefix=#{prefix} --program-prefix=g"
+
+    args = [ "--prefix=#{prefix}" ]
+
+    unless ARGV.include? '--default-names'
+      args << "--program-prefix=g"
+    end
+
+    system "./configure", *args
     system "make install"
   end
 
-  def caveats; <<-EOS
+  def caveats
+    unless ARGV.include? '--default-names'; <<-EOS
 All commands have been installed with the prefix 'g'. In order to use these
 commands by default you can put some aliases in your bashrc. You can
 accomplish this like so:
 
     brew install coreutils --aliases >> ~/.bashrc
-    
+
 Please note the manpages are still referenced with the g-prefix.
     EOS
+    end
   end
 end

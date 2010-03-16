@@ -7,6 +7,7 @@ class ChocolateDoom <Formula
 
   depends_on 'sdl'
   depends_on 'sdl_net'
+  depends_on 'sdl_mixer'
 
   def install
     system "./configure", "--prefix=#{prefix}",

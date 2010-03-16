@@ -1,26 +1,3 @@
-#  Copyright 2009 Max Howell and other contributors.
-#
-#  Redistribution and use in source and binary forms, with or without
-#  modification, are permitted provided that the following conditions
-#  are met:
-#
-#  1. Redistributions of source code must retain the above copyright
-#     notice, this list of conditions and the following disclaimer.
-#  2. Redistributions in binary form must reproduce the above copyright
-#     notice, this list of conditions and the following disclaimer in the
-#     documentation and/or other materials provided with the distribution.
-#
-#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-#  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-#  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-#  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-#  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-#  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-#  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-#  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-#  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-#  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
 FORMULA_META_FILES = %w[README README.md ChangeLog COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
 PLEASE_REPORT_BUG = "#{Tty.white}Please report this bug at #{Tty.em}http://github.com/mxcl/homebrew/issues#{Tty.reset}"
 
@@ -147,6 +124,16 @@ ENV.libxml2 in your formula's install function.
     EOS
   when /rubygem/
     raise "Sorry RubyGems comes with OS X so we don't package it.\n\n#{force_text}"
+  when /wxwidgets/
+    raise <<-EOS
+#{name} is blacklisted for creation
+An older version of wxWidgets is provided by Apple with OS X, but
+a formula for wxWidgets 2.8.10 is provided:
+
+    brew install wxmac
+
+  #{force_text}
+    EOS
   end unless ARGV.force?
 
   __make url, name
@@ -235,6 +222,25 @@ rescue
   []
 end
 
+def cleanup name
+  require 'formula'
+
+  f = Formula.factory name
+
+  if f.installed? and f.prefix.parent.directory?
+    kids = f.prefix.parent.children
+    kids.each do |keg|
+      next if f.prefix == keg
+      print "Uninstalling #{keg}..."
+      FileUtils.rm_rf keg
+      puts
+    end
+  else
+    # we can't tell which one to keep in this circumstance
+    opoo "Skipping #{name}: most recent version #{f.version} not installed"
+  end
+end
+
 def clean f
   Cleaner.new f
  
@@ -295,7 +301,7 @@ def diy
     version=ARGV.next
   else
     version=path.version
-    raise "Couldn't determine version, try --set-version" if version.nil? or version.empty?
+    raise "Couldn't determine version, try --set-version" if version.to_s.empty?
   end
   
   if ARGV.include? '--set-name'
@@ -315,6 +321,8 @@ def diy
     "-DCMAKE_INSTALL_PREFIX=#{prefix}"
   elsif File.file? 'Makefile.am'
     "--prefix=#{prefix}"
+  else
+    raise "Couldn't determine build system"
   end
 end
 
@@ -426,14 +434,9 @@ class Cleaner
     
     [f.bin, f.sbin, f.lib].each {|d| clean_dir d}
     
-    # you can read all of this stuff online nowadays, save the space
-    # info pages are pants, everyone agrees apart from Richard Stallman
-    # feel free to ask for build options though! http://bit.ly/Homebrew
-    unlink = Proc.new{ |path| path.unlink unless f.skip_clean? path rescue nil }
-    %w[doc docs info].each do |fn|
-      unlink.call(f.share+fn)
-      unlink.call(f.prefix+fn)
-    end
+    # info pages suck
+    info = f.share+'info'
+    info.rmtree if info.directory? and not f.skip_clean? info
   end
 
 private
@@ -462,7 +465,10 @@ private
     perms=0444
     case `file -h '#{path}'`
     when /Mach-O dynamically linked shared library/
-      strip path, '-SxX'
+      # Stripping libraries is causing no end of trouble
+      # Lets just give up, and try to do it manually in instances where it
+      # makes sense
+      #strip path, '-SxX'
     when /Mach-O [^ ]* ?executable/
       strip path
       perms=0555

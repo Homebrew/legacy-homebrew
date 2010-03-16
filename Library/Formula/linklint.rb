@@ -7,8 +7,6 @@ class Linklint <Formula
 
   def install
     FileUtils.mv 'READ_ME.txt', 'README'
-    bin.install 'linklint-2.3.5'
-    Dir.chdir bin
-    FileUtils.mv 'linklint-2.3.5', 'linklint'
+    bin.install 'linklint-2.3.5' => 'linklint'
   end
 end

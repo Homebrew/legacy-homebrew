@@ -5,6 +5,9 @@ class Scheme48 <Formula
   homepage 'http://groups.csail.mit.edu/mac/projects/s48/'
   md5 'f1c0a515039d4df4e07721f21940ad6d'
 
+  skip_clean 'lib'
+  skip_clean 'bin'
+
   def install
     ENV.deparallelize
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--enable-gc=bibop"

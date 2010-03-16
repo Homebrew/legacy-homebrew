@@ -8,7 +8,7 @@ class Id3v2 <Formula
   depends_on 'id3lib'
 
   def install
-    inreplace 'Makefile', 'c++', ENV['CXX']
+    inreplace 'Makefile', 'c++', ENV.cxx
     inreplace 'Makefile', '/man/man1', '/share/man/man1'
     
     bin.mkpath

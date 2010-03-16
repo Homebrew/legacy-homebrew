@@ -6,13 +6,15 @@ class Lynx <Formula
   md5 '493af4c77ef6761e3f0157cd1be033a0'
 
   def install
-    system "./configure", "--silent",
-                          "--prefix=#{prefix}", 
+    system "./configure", "--prefix=#{prefix}", 
+                          "--mandir=#{man}",
                           "--disable-debug", 
                           "--disable-dependency-tracking",
                           "--disable-echo",
                           "--with-zlib",
-                          "--with-bzlib"
+                          "--with-bzlib",
+                          "--with-ssl",
+                          "--enable-ipv6"
     system "make install"
   end
 end
