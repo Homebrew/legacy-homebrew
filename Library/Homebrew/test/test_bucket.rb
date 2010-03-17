@@ -1,5 +1,42 @@
+require 'testing_env'
+
 require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
 ARGV.extend(HomebrewArgvExtension)
+
+require 'test/testball'
+require 'utils'
+require 'brew.h'
+
+class MockFormula <Formula
+  def initialize url
+    @url=url
+    @homepage = 'http://example.com/'
+    super 'test'
+  end
+end
+
+class MostlyAbstractFormula <Formula
+  @url=''
+  @homepage = 'http://example.com/'
+end
+
+class TestZip <Formula
+  def initialize
+    zip=HOMEBREW_CACHE.parent+'test-0.1.zip'
+    Kernel.system '/usr/bin/zip', '-0', zip, ABS__FILE__
+    @url="file://#{zip}"
+    @homepage = 'http://example.com/'
+    super 'testzip'
+  end
+end
+
+class TestBallOverrideBrew <Formula
+  def initialize
+    super "foo"
+  end
+  def brew
+  end
+end
 
 # All other tests so far -- feel free to break them out into
 # separate TestCase classes.
