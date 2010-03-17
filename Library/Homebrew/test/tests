@@ -12,7 +12,7 @@
 
 # Feel free to split out test_bucket
 ruby test_bucket.rb $*
-
+ruby test_formula.rb $*
 ruby test_versions.rb $*
 ruby test_checksums.rb $*
 ruby test_inreplace.rb $*
