@@ -134,6 +134,23 @@ class Formula
   
   # reimplement if we don't autodetect the download strategy you require
   def download_strategy
+    vcs = @specs.delete :using
+    if vcs != nil
+      # If a class is passed, assume it is a download strategy
+      return vcs if vcs.kind_of? Class
+
+      case vcs
+      when :bzr then return BazaarDownloadStrategy
+      when :curl then return CurlDownloadStrategy
+      when :cvs then return CVSDownloadStrategy
+      when :git then return GitDownloadStrategy
+      when :hg then return MercurialDownloadStrategy
+      when :svn then return SubversionDownloadStrategy
+      end
+
+      raise "Unknown strategy #{vcs} was requested."
+    end
+
     detect_download_strategy url
   end
 
