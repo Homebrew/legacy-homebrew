@@ -12,7 +12,7 @@ class Kdepimlibs <Formula
   depends_on 'kdelibs'
 
   def install
-    system "cmake . #{std_cmake_parameters}"
+    system "cmake . #{std_cmake_parameters} -DBUNDLE_INSTALL_DIR=#{bin}"
     system "make install"
   end
 end
