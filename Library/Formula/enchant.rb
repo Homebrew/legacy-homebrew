@@ -5,6 +5,7 @@ class Enchant <Formula
   homepage 'http://www.abisource.com/projects/enchant/'
   md5 '7dfaed14e142b4a0004b770c9568ed02'
 
+  depends_on 'glib'
   depends_on 'aspell' => :optional
 
   def install

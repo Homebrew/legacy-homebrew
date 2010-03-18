@@ -494,7 +494,7 @@ private
   end
 end
 
-def gcc_build
+def gcc_42_build
   `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
   if $1
     $1.to_i 
@@ -504,6 +504,16 @@ def gcc_build
     # are different and thus, not useful.
     # FIXME I bet you 20 quid this causes a side effect — magic values tend to
     401
+  else
+    nil
+  end
+end
+alias :gcc_build :gcc_42_build # For compatibility
+
+def gcc_40_build
+  `/usr/bin/gcc-4.0 -v 2>&1` =~ /build (\d{4,})/
+  if $1
+    $1.to_i 
   else
     nil
   end

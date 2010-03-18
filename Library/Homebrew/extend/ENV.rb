@@ -105,7 +105,7 @@ module HomebrewEnvExtension
     self['CXX'] = '/usr/bin/g++-4.0'
     self.O3
     remove_from_cflags '-march=core2'
-    remove_from_cflags %r{-msse4(\.\d)?/}
+    remove_from_cflags %r{-msse4(\.\d)?}
   end
   alias_method :gcc_4_0, :gcc_4_0_1
 

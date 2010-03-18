@@ -7,7 +7,7 @@ class Ec2ApiTools <Formula
   
   def patches
     # (From http://gist.github.com/200283) Gets rid of the
-    # “[Deprecated] Xalan: org.apache.xml.res.XMLErrorResources_en_US”
+    # "[Deprecated] Xalan: org.apache.xml.res.XMLErrorResources_en_US"
     # messages that the tools spew on 1.3-41620 under Snow Leopard
     DATA
   end
