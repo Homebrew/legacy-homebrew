@@ -10,7 +10,11 @@ class Sphinx <Formula
     # ld: rel32 out of range in _GetPrivateProfileString from /usr/lib/libodbc.a(SQLGetPrivateProfileString.o)
     ENV.gcc_4_2
 
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    config_args = ["--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"]
+    # configure script won't auto-select PostgreSQL
+    config_args << ["--with-pgsql"] if `/usr/bin/which pg_config`.size > 0
+
+    system "./configure", *config_args
     system "make install"
   end
 
