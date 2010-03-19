@@ -25,4 +25,17 @@ class Kdelibs <Formula
     system "cmake .. #{std_cmake_parameters} -DCMAKE_PREFIX_PATH=#{gettext.prefix} -DBUNDLE_INSTALL_DIR=#{bin}"
     system "make install"
   end
+
+  def caveats
+    <<-END_CAVEATS
+    WARNING: this doesn't actually work for running KDE applications yet!
+
+    Please don't just add the Macports patches and expect them to be pulled.
+    I'm avoiding adding patches that haven't been committed to KDE upstream
+    (which I have commit access to). Instead of requesting I add these,
+    consider writing and testing an upstream-suitable patch.
+
+    Thanks for your patience!
+    END_CAVEATS
+  end
 end
