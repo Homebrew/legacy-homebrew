@@ -43,7 +43,8 @@ def dump_config
   bits = Hardware.bits
   cores = Hardware.cores_as_words
   llvm = llvm_build
-  gcc = gcc_build
+  gcc_42 = gcc_42_build
+  gcc_40 = gcc_40_build
   sha = `cd #{HOMEBREW_REPOSITORY} && git rev-parse --verify HEAD 2> /dev/null`.chomp
   kernel_arch = `uname -m`.chomp
 
@@ -59,14 +60,17 @@ Hardware: #{cores}-core #{bits}-bit #{Hardware.intel_family}
 OS X: #{MACOS_FULL_VERSION}
 Kernel Architecture: #{kernel_arch}
 Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
-GCC-4.2: #{gcc ? "build #{gcc}" : "N/A"} (5577 or newer recommended)
-LLVM: #{llvm ? "build #{llvm}" : "N/A" } #{llvm ? "(2206 or newer recommended)" : "" }
+GCC-4.0: #{gcc_40 ? "build #{gcc_40}" : "N/A"} (#{RECOMMENDED_GCC_40} or newer recommended)
+GCC-4.2: #{gcc_42 ? "build #{gcc_42}" : "N/A"} (#{RECOMMENDED_GCC_42} or newer recommended)
+LLVM: #{llvm ? "build #{llvm}" : "N/A" } #{llvm ? "(#{RECOMMENDED_LLVM} or newer recommended)" : "" }
 MacPorts or Fink? #{macports_or_fink_installed?}
 X11 installed? #{x11_installed?}
 EOS
 end
 
 def dump_build_env env
+  puts "\"--use-llvm\" was specified" if ARGV.include? '--use-llvm'
+
   %w[CC CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS MAKEFLAGS HOMEBREW_USE_LLVM].each do |k|
     puts "#{k}: #{env[k]}"
   end
@@ -254,9 +258,9 @@ begin
     ################################################################# warnings
     begin
       if MACOS_VERSION >= 10.6
-        opoo "You should upgrade to Xcode 3.2.1" if llvm_build < 2206
+        opoo "You should upgrade to Xcode 3.2.1" if llvm_build < RECOMMENDED_LLVM
       else
-        opoo "You should upgrade to Xcode 3.1.4" if gcc_build < 5577
+        opoo "You should upgrade to Xcode 3.1.4" if (gcc_40_build < RECOMMENDED_GCC_40) or (gcc_42_build < RECOMMENDED_GCC_42)
       end
     rescue
       # the reason we don't abort is some formula don't require Xcode

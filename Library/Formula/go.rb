@@ -8,10 +8,6 @@ class Go <Formula
 
   skip_clean 'bin'
 
-  def download_strategy
-    MercurialDownloadStrategy
-  end
-
   def cruft
     %w[src include test doc]
   end

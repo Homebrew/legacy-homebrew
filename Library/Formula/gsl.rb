@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gsl <Formula
-  url 'ftp://ftp.gnu.org/gnu/gsl/gsl-1.13.tar.gz'
+  url 'ftp://ftp.gnu.org/gnu/gsl/gsl-1.14.tar.gz'
   homepage 'http://www.gnu.org/software/gsl/'
-  md5 'd9fcfa367c44ab68a25b4edf34c3c5f7'
+  md5 'd55e7b141815412a072a3f0e12442042'
   aka 'gnu-scientific-library'
 
   def install

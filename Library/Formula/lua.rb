@@ -13,9 +13,6 @@ class Lua <Formula
     inreplace ['Makefile', 'src/luaconf.h', 'etc/lua.pc'],
       '/usr/local', prefix
 
-    inreplace ['Makefile', 'etc/lua.pc'],
-      'man/man1', 'share/man/man1'
-
     inreplace 'src/luaconf.h', '/usr/local', HOMEBREW_PREFIX
 
     ENV.append "CFLAGS", "-DLUA_USE_LINUX"
