@@ -23,6 +23,7 @@ ruby test_external_deps.rb $*
 ruby test_pathname_install.rb $*
 ruby test_utils.rb $*
 ruby test_ARGV.rb $*
+ruby test_ENV.rb $*
 
 # Update tests (only seem to work for mxcl)
 ruby test_updater.rb $*
