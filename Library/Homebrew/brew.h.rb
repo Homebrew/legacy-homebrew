@@ -37,6 +37,14 @@ def __make url, name
     puts "Please check if you are creating a duplicate."
   end
 
+  version = Pathname.new(url).version
+  if version == nil
+    opoo "Version cannot be determined from URL."
+    puts "You'll need to add an explicit 'version' to the formula."
+  else
+    puts "Version detected as #{version}."
+  end
+
   template=<<-EOS
             require 'formula'
 
@@ -48,7 +56,7 @@ def __make url, name
   cmake       depends_on 'cmake'
 
               def install
-  autotools     system "./configure", "--prefix=\#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+  autotools     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=\#{prefix}"
   cmake         system "cmake . \#{std_cmake_parameters}"
                 system "make install"
               end
