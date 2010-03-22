@@ -10,6 +10,7 @@ class Postgis <Formula
   depends_on 'geos'
 
   def install
+    ENV.deparallelize
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--with-projdir=#{HOMEBREW_PREFIX}"
     system "make install"
 
