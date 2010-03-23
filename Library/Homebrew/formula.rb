@@ -34,10 +34,15 @@ class Formulary
   def self.read_all
   # yields once for each
     Formulary.names.each do |name|
-      require Formula.path(name)
-      klass_name = Formula.class_s(name)
-      klass = eval(klass_name)
-      yield name, klass
+      begin
+        require Formula.path(name)
+        klass_name = Formula.class_s(name)
+        klass = eval(klass_name)
+        yield name, klass
+      rescue Exception=>e
+        opoo "Error importing #{name}:"
+        puts "#{e}"
+      end
     end
   end
 
