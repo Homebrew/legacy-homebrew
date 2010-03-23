@@ -26,6 +26,7 @@ end
 
 def __make url, name
   require 'formula'
+  require 'digest'
 
   path = Formula.path name
   raise "#{path} already exists" if path.exist?
@@ -45,13 +46,26 @@ def __make url, name
     puts "Version detected as #{version}."
   end
 
+  md5 = ''
+  if ARGV.include? "--cache" and version != nil
+    strategy = detect_download_strategy url
+    if strategy == CurlDownloadStrategy
+      d = strategy.new url, name, version, nil
+      the_tarball = d.fetch
+      md5 = Digest::MD5.hexdigest(the_tarball.read)
+      puts "MD5 is #{md5}"
+    else
+      puts "--cache requested, but we can only cache formulas that use Curl."
+    end
+  end
+
   template=<<-EOS
             require 'formula'
 
             class #{Formula.class_s name} <Formula
               url '#{url}'
               homepage ''
-              md5 ''
+              md5 '#{md5}'
 
   cmake       depends_on 'cmake'
 

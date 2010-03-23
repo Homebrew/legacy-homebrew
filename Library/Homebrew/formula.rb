@@ -134,19 +134,7 @@ class Formula
   
   # reimplement if we don't autodetect the download strategy you require
   def download_strategy
-    case url
-    when %r[^cvs://] then CVSDownloadStrategy
-    when %r[^hg://] then MercurialDownloadStrategy
-    when %r[^svn://] then SubversionDownloadStrategy
-    when %r[^svn+http://] then SubversionDownloadStrategy
-    when %r[^git://] then GitDownloadStrategy
-    when %r[^bzr://] then BazaarDownloadStrategy
-    when %r[^https?://(.+?\.)?googlecode\.com/hg] then MercurialDownloadStrategy
-    when %r[^https?://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
-    when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
-    when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
-    else CurlDownloadStrategy
-    end
+    detect_download_strategy url
   end
 
   # tell the user about any caveats regarding this package, return a string

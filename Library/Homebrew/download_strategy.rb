@@ -287,3 +287,19 @@ class BazaarDownloadStrategy <AbstractDownloadStrategy
     end
   end
 end
+
+def detect_download_strategy url
+  case url
+  when %r[^cvs://] then CVSDownloadStrategy
+  when %r[^hg://] then MercurialDownloadStrategy
+  when %r[^svn://] then SubversionDownloadStrategy
+  when %r[^svn+http://] then SubversionDownloadStrategy
+  when %r[^git://] then GitDownloadStrategy
+  when %r[^bzr://] then BazaarDownloadStrategy
+  when %r[^https?://(.+?\.)?googlecode\.com/hg] then MercurialDownloadStrategy
+  when %r[^https?://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
+  when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
+  when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
+  else CurlDownloadStrategy
+  end
+end
