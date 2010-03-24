@@ -10,7 +10,7 @@ class Postgis <Formula
   depends_on 'geos'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", , "--with-projdir=#{HOMEBREW_PREFIX}"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--with-projdir=#{HOMEBREW_PREFIX}"
     system "make install"
 
     # Copy some of the generated files to the share folder
