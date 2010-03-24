@@ -325,7 +325,14 @@ private
     type ||= :md5
     supplied=instance_variable_get("@#{type}")
     type=type.to_s.upcase
-    hash=Digest.const_get(type).hexdigest(fn.read)
+    hasher = Digest.const_get(type)
+
+    # Most are MD5 and it should be efficient.
+    if hasher == Digest::MD5
+      hash = fn.md5
+    else
+      hash = hasher.hexdigest(fn.read)
+    end
 
     if supplied and not supplied.empty?
       raise "#{type} mismatch\nExpected: #{hash}\nArchive: #{fn}" unless supplied.upcase == hash.upcase

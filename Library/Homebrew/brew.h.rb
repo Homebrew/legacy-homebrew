@@ -52,7 +52,7 @@ def __make url, name
     if strategy == CurlDownloadStrategy
       d = strategy.new url, name, version, nil
       the_tarball = d.fetch
-      md5 = Digest::MD5.hexdigest(the_tarball.read)
+      md5 = the_tarball.md5
       puts "MD5 is #{md5}"
     else
       puts "--cache requested, but we can only cache formulas that use Curl."
