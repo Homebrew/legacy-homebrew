@@ -1,14 +1,14 @@
 require 'formula'
 
 class Tor <Formula
-  url 'https://www.torproject.org/dist/tor-0.2.1.22.tar.gz'
+  url 'https://www.torproject.org/dist/tor-0.2.1.25.tar.gz'
   homepage 'https://www.torproject.org/'
-  md5 '583501a989ed0c39e209b604c3671ecd'
+  md5 'f58540b3c5835ac4f5de1b02bbddc703'
   
   depends_on 'libevent'
   
   def patches
-    {:p0 => 'http://gist.github.com/raw/268813/bba4403191b4aa382eff0671afb4ed7f97748c6f/config.guess-x86_64fix.diff' }
+    {:p0 => 'http://gist.github.com/raw/344132/d27d1cd3042d7c58120688d79ed25a2fc959a2de/config.guess-x86_64patch.diff' }
   end
   
   def install
