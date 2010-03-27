@@ -154,16 +154,30 @@ class Pathname
 
     nil
   end
-
-  def md5
-    require 'digest'
-    incr_md5 = Digest::MD5.new
+  
+  def incremental_hash(hasher)
+    incr_hash = hasher.new
     self.open('r') do |f|
-      f.each_line do |line|
-        incr_md5 << line
+      while(buf = f.read(1024))
+        incr_hash << buf
       end
     end
-    incr_md5.hexdigest
+    incr_hash.hexdigest
+  end
+
+  def md5
+    require 'digest/md5'
+    incremental_hash(Digest::MD5)
+  end
+  
+  def sha1
+    require 'digest/sha1'
+    incremental_hash(Digest::SHA1)
+  end
+  
+  def sha2
+    require 'digest/sha2'
+    incremental_hash(Digest::SHA2)
   end
 
   if '1.9' <= RUBY_VERSION
