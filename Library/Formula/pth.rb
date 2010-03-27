@@ -9,7 +9,8 @@ class Pth <Formula
     ENV.deparallelize
     system "./configure",
             "--prefix=#{prefix}",
-            "--disable-debug",
+# Shared library will not be build with disable debug
+#           "--disable-debug",
             "--disable-dependency-tracking"
     system "make install"
   end
