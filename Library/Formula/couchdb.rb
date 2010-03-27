@@ -17,14 +17,14 @@ class Couchdb <Formula
     system "./configure", "--prefix=#{prefix}",
                           "--localstatedir=#{var}",
                           "--sysconfdir=#{etc}",
-                          "--with-erlang=#{erlang.prefix}/lib/erlang/usr/include",
-                          "--with-js-include=#{js.prefix}/include",
-                          "--with-js-lib=#{js.prefix}/lib"
+                          "--with-erlang=#{erlang.lib}/erlang/usr/include",
+                          "--with-js-include=#{js.include}",
+                          "--with-js-lib=#{js.lib}"
     system "make"
     system "make install"
 
-    (prefix+"lib/couchdb/bin/couchjs").chmod 0755
-    (var+'lib'+'couchdb').mkpath
-    (var+'log'+'couchdb').mkpath
+    (lib+'couchdb/bin/couchjs').chmod 0755
+    (var+'lib/couchdb').mkpath
+    (var+'log/couchdb').mkpath
   end
 end
