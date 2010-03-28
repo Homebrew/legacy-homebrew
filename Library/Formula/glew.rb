@@ -5,10 +5,7 @@ class Glew <Formula
   homepage 'http://glew.sourceforge.net/'
   md5 '77bb3782128350df2d7ca45f088f0b4b'
 
-# depends_on 'cmake'
-
   def install
-#   system "cmake . #{std_cmake_parameters}"
     system "mkdir -p #{prefix}/lib/pkgconfig"
     system "make GLEW_DEST=#{prefix}"
     system "make GLEW_DEST=#{prefix} install"
