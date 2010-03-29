@@ -16,7 +16,7 @@ class Ec2ApiTools <Formula
     # Nothing to be done but copying things into place
     FileUtils.rm Dir['bin/*\.cmd']
     
-    (prefix+bin).install Dir['bin/ec2-*']
+    (prefix+bin).install Dir['bin/ec2*']
     prefix.install 'lib'
   end
   
