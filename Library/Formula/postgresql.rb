@@ -11,24 +11,41 @@ class Postgresql <Formula
 
   aka 'postgres'
 
+  def options
+    [
+      ['--no-python', 'Build without Python support.'],
+      ['--no-perl', 'Build without Perl support.']
+    ]
+  end
+
   def install
     ENV.libxml2 # wouldn't compile for justinlilly otherwise
     
     configure_args = [
         "--enable-thread-safety",
         "--with-bonjour",
-        "--with-python",
-        "--with-perl",
         "--with-gssapi",
         "--with-krb5",
         "--with-openssl",
         "--with-libxml",
         "--with-libxslt",
         "--prefix=#{prefix}",
-        "--disable-debug",
+        "--disable-debug"
     ]
 
-    configure_args << "ARCHFLAGS='-arch x86_64'" if bits_64?
+    configure_args << "--with-python" unless ARGV.include? '--no-python'
+    configure_args << "--with-perl" unless ARGV.include? '--no-perl'
+
+    if bits_64? and not ARGV.include? '--no-python'
+      configure_args << "ARCHFLAGS='-arch x86_64'"
+
+      framework_python = Pathname.new "/Library/Frameworks/Python.framework/Versions/Current/Python"
+      if framework_python.exist? and not (archs_for_command framework_python).include? :x86_64
+        opoo "Detected a framework Python that does not have 64-bit support."
+        puts "You may experience linker problems. See:"
+        puts "http://osdir.com/ml/pgsql-general/2009-09/msg00160.html"
+      end
+    end
 
     # Fails on Core Duo with O4 and O3
     ENV.O2 if Hardware.intel_family == :core
