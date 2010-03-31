@@ -103,6 +103,44 @@ def check_homebrew_prefix
   end
 end
 
+def check_user_path
+  seen_prefix_bin = false
+  seen_prefix_sbin = false
+  seen_usr_bin = false
+  
+  paths = ENV['PATH'].split(":")
+  
+  paths.each do |p|
+    if p == '/usr/bin'
+      seen_usr_bin = true
+      unless seen_prefix_bin
+        puts <<-EOS.undent
+          /usr/bin is in your PATH before Homebrew's bin. This means that system-
+          provided programs will be used before Homebrew-provided ones. This is an
+          issue if you install, for instance, Python.
+          Consider editing your .bashrc to put:
+            #{HOMEBREW_PREFIX}/bin
+          ahead of /usr/bin.
+
+        EOS
+      end
+    end
+    
+    seen_prefix_bin = true if p == "#{HOMEBREW_PREFIX}/bin"
+    seen_prefix_sbin = true if p == "#{HOMEBREW_PREFIX}/sbin"
+  end
+  
+  unless seen_prefix_sbin
+    puts <<-EOS.undent
+      Some brews install binaries to sbin instead of bin, but Homebrew's
+      sbin was not found in your path.
+      Consider editing your .bashrc to add sbin to PATH:
+        #{HOMEBREW_PREFIX}/sbin
+
+      EOS
+  end
+end
+
 def brew_doctor
   read, write = IO.pipe
 
@@ -117,6 +155,7 @@ def brew_doctor
     check_for_other_package_managers
     check_for_x11
     check_share_locale
+    check_user_path
 
     exit! 0
   else
