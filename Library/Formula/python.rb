@@ -1,22 +1,18 @@
 require 'formula'
 
 class Python <Formula
-  url 'http://python.org/ftp/python/2.6.4/Python-2.6.4.tar.bz2'
+  url 'http://www.python.org/ftp/python/2.6.5/Python-2.6.5.tar.bz2'
   homepage 'http://www.python.org/'
-  md5 'fee5408634a54e721a93531aba37f8c1'
+  md5 '6bef0417e71a1a1737ccf5750420fdb3'
 
-  # You can build Python 2.6.4 without GNU readline, but you really don't want to.
-  depends_on 'readline' => :recommended
+  # Python 2.6.5 will build against OS X's libedit,
+  # but let's keep using GNU readline.
+  depends_on 'readline' => :optional
   # http://docs.python.org/library/gdbm.html
   depends_on 'gdbm' => :optional
   # http://docs.python.org/library/sqlite3.html
   depends_on 'sqlite' => :optional
 
-  def patches
-    # don't append space after completion
-    {:p0 => ["http://bugs.python.org/file14599/python-2.6-readline.patch"]}
-  end
-  
   def options
     [
       ["--framework", "Do a 'Framework' build instead of a UNIX-style build."],
@@ -33,9 +29,9 @@ class Python <Formula
     args = ["--prefix=#{prefix}"]
     args << "--enable-framework" if ARGV.include? '--framework'
     
-    # Note --intel is an old flag, supported here for back compat. but not documented in options.
+    # Note --intel is an old flag, supported here for back compat.
     if ARGV.include? '--universal' or ARGV.include? '--intel'
-      args << "--with-universal-archs=intel" << "--enable-universalsdk=/" << "--enable-universal-archs=all"
+      args.push "--enable-universalsdk=/", "--with-universal-archs=intel"
     end
     
     # Speed up creation of libpython.a, backported from Unladen Swallow:
