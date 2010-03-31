@@ -12,7 +12,7 @@ _brew_to_completion()
     cur="${COMP_WORDS[COMP_CWORD]}"
     
     # We only complete unabbreviated commands...
-    actions="cat cleanup configure create deps edit generate homepage info install list link log outdated prune remove search unlink update uses"
+    actions="cat cleanup configure create deps doctor edit generate homepage info install list link log outdated prune remove search unlink update uses"
     
     if [[ ( ${COMP_CWORD} -eq 1 ) && ( ${COMP_WORDS[0]} == brew )  ]] ; then
         # Subcommand list
