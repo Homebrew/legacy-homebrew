@@ -36,8 +36,17 @@ def brew_doctor
     
     check_for_stray_dylibs
     
-    if gcc_build < HOMEBREW_RECOMMENDED_GCC
-      puts "Your GCC version is older than the recommended version. It may be advisable"
+    gcc_42 = gcc_42_build
+    gcc_40 = gcc_40_build
+
+    if gcc_42 < RECOMMENDED_GCC_42
+      puts "Your gcc 4.2.x version is older than the recommended version. It may be advisable"
+      puts "to upgrade to the latest release of Xcode."
+      puts
+    end
+
+    if gcc_40 < RECOMMENDED_GCC_40
+      puts "Your gcc 4.0.x version is older than the recommended version. It may be advisable"
       puts "to upgrade to the latest release of Xcode."
       puts
     end
