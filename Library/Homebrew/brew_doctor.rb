@@ -1,3 +1,14 @@
+def check_for_stray_dylibs
+  bad_dylibs = Dir['/usr/local/lib/*.dylib'].select { |f| File.file? f and not File.symlink? f }
+  if bad_dylibs.count > 0
+    puts "You have unbrewed dylibs in /usr/local/lib. These could cause build problems"
+    puts "when building Homebrew formula. If you no longer need them, delete them:"
+    puts
+    puts *bad_dylibs.collect { |f| "    #{f}" }
+    puts
+  end
+end
+
 def brew_doctor
   read, write = IO.pipe
 
@@ -5,15 +16,8 @@ def brew_doctor
     read.close
     $stdout.reopen write
     
-    bad_dylibs = Dir['/usr/local/lib/*.dylib'].select { |f| File.file? f and not File.symlink? f }
-    if bad_dylibs.count > 0
-      puts "You have unbrewed dylibs in /usr/local/lib. These could cause build problems"
-      puts "when building Homebrew formula. If you no longer need them, delete them:"
-      puts
-      puts *bad_dylibs.collect { |f| "    #{f}" }
-      puts
-    end
-
+    check_for_stray_dylibs
+    
     if gcc_build < HOMEBREW_RECOMMENDED_GCC
       puts "Your GCC version is older than the recommended version. It may be advisable"
       puts "to upgrade to the latest release of Xcode."
