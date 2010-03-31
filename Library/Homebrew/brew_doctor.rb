@@ -59,6 +59,13 @@ def check_usr_bin_ruby
 end
 
 def check_homebrew_prefix
+  unless HOMEBREW_PREFIX.to_s == '/usr/local'
+    puts <<-EOS.undent
+      You can install Homebrew anywhere you want, but some brews may not work
+      correctly if you're not installing to /usr/local.
+
+    EOS
+  end
 end
 
 def brew_doctor
@@ -69,6 +76,7 @@ def brew_doctor
     $stdout.reopen write
     
     check_usr_bin_ruby
+    check_homebrew_prefix
     check_for_stray_dylibs
     check_gcc_versions
     check_for_other_package_managers
