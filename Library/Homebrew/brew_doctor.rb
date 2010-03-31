@@ -54,6 +54,32 @@ def check_gcc_versions
 end
 
 def check_share_locale
+  # If PREFIX/share/locale already exists, "sudo make install" of
+  # non-brew installed software may cause installation failures.
+  locale = HOMEBREW_PREFIX+'share/locale'
+  return unless locale.exist?
+
+  cant_read = []
+
+  locale.find do |d|
+    next unless d.directory?
+    cant_read << d unless d.writable?
+  end
+
+  cant_read.sort!
+  if cant_read.count > 0
+    puts <<-EOS.undent
+    Some folders in #{locale} aren't writable.
+    This can happen if you "sudo make install" software that isn't managed
+    by Homebrew. If a brew tries to add locale information to one of these
+    folders, then the install will fail during the link step.
+    You should probably `chown` them:
+
+    EOS
+    puts *cant_read.collect { |f| "    #{f}" }
+    puts
+  end
+
 end
 
 def check_usr_bin_ruby
@@ -90,6 +116,7 @@ def brew_doctor
     check_gcc_versions
     check_for_other_package_managers
     check_for_x11
+    check_share_locale
 
     exit! 0
   else
