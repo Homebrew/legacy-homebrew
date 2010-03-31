@@ -9,6 +9,13 @@ def check_for_stray_dylibs
   end
 end
 
+def check_for_x11
+  unless File.exists? '/usr/X11/lib/libpng.dylib'
+    puts "You don't have X11 installed as part of your Xcode installation."
+    puts "This isn't required for all formula. But it is expected by some."
+  end
+end
+
 def brew_doctor
   read, write = IO.pipe
 
@@ -33,10 +40,7 @@ def brew_doctor
       puts
     end
 
-    unless File.exists? '/usr/X11/lib/libpng.dylib'
-      puts "You don't have X11 installed as part of your Xcode installation."
-      puts "This isn't required for all formula. But it is expected by some."
-    end
+    check_for_x11
 
     exit! 0
   else
