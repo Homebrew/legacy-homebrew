@@ -11,19 +11,24 @@ end
 
 def check_for_x11
   unless File.exists? '/usr/X11/lib/libpng.dylib'
-    puts "You don't have X11 installed as part of your Xcode installation."
-    puts "This isn't required for all formula. But it is expected by some."
+    puts <<-EOS.undent
+      You don't have X11 installed as part of your Xcode installation.
+      This isn't required for all formula. But it is expected by some.
+
+    EOS
   end
 end
 
 def check_for_other_package_managers
   if macports_or_fink_installed?
-    puts "You have Macports or Fink installed. This can cause trouble."
-    puts "You don't have to uninstall them, but you may like to try temporarily"
-    puts "moving them away, eg."
-    puts
-    puts "    sudo mv /opt/local ~/macports"
-    puts
+    puts <<-EOS.undent
+      You have Macports or Fink installed. This can cause trouble.
+      You don't have to uninstall them, but you may like to try temporarily
+      moving them away, eg.
+
+        sudo mv /opt/local ~/macports
+
+    EOS
   end
 end
 
@@ -32,15 +37,19 @@ def check_gcc_versions
   gcc_40 = gcc_40_build
 
   if gcc_42 < RECOMMENDED_GCC_42
-    puts "Your gcc 4.2.x version is older than the recommended version. It may be advisable"
-    puts "to upgrade to the latest release of Xcode."
-    puts
+    puts <<-EOS.undent
+      Your gcc 4.2.x version is older than the recommended version. It may be advisable
+      to upgrade to the latest release of Xcode.
+
+    EOS
   end
 
   if gcc_40 < RECOMMENDED_GCC_40
-    puts "Your gcc 4.0.x version is older than the recommended version. It may be advisable"
-    puts "to upgrade to the latest release of Xcode."
-    puts
+    puts <<-EOS.undent
+      Your gcc 4.0.x version is older than the recommended version. It may be advisable
+      to upgrade to the latest release of Xcode.
+
+    EOS
   end
 end
 
