@@ -27,6 +27,23 @@ def check_for_other_package_managers
   end
 end
 
+def check_gcc_versions
+  gcc_42 = gcc_42_build
+  gcc_40 = gcc_40_build
+
+  if gcc_42 < RECOMMENDED_GCC_42
+    puts "Your gcc 4.2.x version is older than the recommended version. It may be advisable"
+    puts "to upgrade to the latest release of Xcode."
+    puts
+  end
+
+  if gcc_40 < RECOMMENDED_GCC_40
+    puts "Your gcc 4.0.x version is older than the recommended version. It may be advisable"
+    puts "to upgrade to the latest release of Xcode."
+    puts
+  end
+end
+
 def brew_doctor
   read, write = IO.pipe
 
@@ -35,22 +52,7 @@ def brew_doctor
     $stdout.reopen write
     
     check_for_stray_dylibs
-    
-    gcc_42 = gcc_42_build
-    gcc_40 = gcc_40_build
-
-    if gcc_42 < RECOMMENDED_GCC_42
-      puts "Your gcc 4.2.x version is older than the recommended version. It may be advisable"
-      puts "to upgrade to the latest release of Xcode."
-      puts
-    end
-
-    if gcc_40 < RECOMMENDED_GCC_40
-      puts "Your gcc 4.0.x version is older than the recommended version. It may be advisable"
-      puts "to upgrade to the latest release of Xcode."
-      puts
-    end
-
+    check_gcc_versions
     check_for_other_package_managers
     check_for_x11
 
