@@ -48,6 +48,14 @@ def check_share_locale
 end
 
 def check_usr_bin_ruby
+  if /^1\.9/.match RUBY_VERSION
+    puts <<-EOS.undent
+      Ruby version #{RUBY_VERSION} is unsupported.
+      Homebrew is developed and tested on Ruby 1.8.x, and may not work correctly
+      on Ruby 1.9.x. Patches are accepted as long as they don't break on 1.8.x.
+
+    EOS
+  end
 end
 
 def check_homebrew_prefix
@@ -60,6 +68,7 @@ def brew_doctor
     read.close
     $stdout.reopen write
     
+    check_usr_bin_ruby
     check_for_stray_dylibs
     check_gcc_versions
     check_for_other_package_managers
