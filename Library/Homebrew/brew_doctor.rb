@@ -16,6 +16,17 @@ def check_for_x11
   end
 end
 
+def check_for_other_package_managers
+  if macports_or_fink_installed?
+    puts "You have Macports or Fink installed. This can cause trouble."
+    puts "You don't have to uninstall them, but you may like to try temporarily"
+    puts "moving them away, eg."
+    puts
+    puts "    sudo mv /opt/local ~/macports"
+    puts
+  end
+end
+
 def brew_doctor
   read, write = IO.pipe
 
@@ -31,15 +42,7 @@ def brew_doctor
       puts
     end
 
-    if macports_or_fink_installed?
-      puts "You have Macports or Fink installed. This can cause trouble."
-      puts "You don't have to uninstall them, but you may like to try temporarily"
-      puts "moving them away, eg."
-      puts
-      puts "    sudo mv /opt/local ~/macports"
-      puts
-    end
-
+    check_for_other_package_managers
     check_for_x11
 
     exit! 0
