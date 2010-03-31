@@ -26,6 +26,7 @@ end
 
 def __make url, name
   require 'formula'
+  require 'digest'
 
   path = Formula.path name
   raise "#{path} already exists" if path.exist?
@@ -37,18 +38,39 @@ def __make url, name
     puts "Please check if you are creating a duplicate."
   end
 
+  version = Pathname.new(url).version
+  if version == nil
+    opoo "Version cannot be determined from URL."
+    puts "You'll need to add an explicit 'version' to the formula."
+  else
+    puts "Version detected as #{version}."
+  end
+
+  md5 = ''
+  if ARGV.include? "--cache" and version != nil
+    strategy = detect_download_strategy url
+    if strategy == CurlDownloadStrategy
+      d = strategy.new url, name, version, nil
+      the_tarball = d.fetch
+      md5 = the_tarball.md5
+      puts "MD5 is #{md5}"
+    else
+      puts "--cache requested, but we can only cache formulas that use Curl."
+    end
+  end
+
   template=<<-EOS
             require 'formula'
 
             class #{Formula.class_s name} <Formula
               url '#{url}'
               homepage ''
-              md5 ''
+              md5 '#{md5}'
 
   cmake       depends_on 'cmake'
 
               def install
-  autotools     system "./configure", "--prefix=\#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+  autotools     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=\#{prefix}"
   cmake         system "cmake . \#{std_cmake_parameters}"
                 system "make install"
               end

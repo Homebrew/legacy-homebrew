@@ -1,9 +1,9 @@
 require 'formula'
 
 class Redis <Formula
-  url 'http://redis.googlecode.com/files/redis-1.2.5.tar.gz'
+  url 'http://redis.googlecode.com/files/redis-1.2.6.tar.gz'
   homepage 'http://code.google.com/p/redis/'
-  sha1 'f28d840d8100586796cab02ccd8e91545a92179d'
+  sha1 'c71aef0b3f31acb66353d86ba57dd321b541043f'
 
   def install
     %w( run db/redis log ).each do |path|
@@ -12,7 +12,7 @@ class Redis <Formula
 
     ENV.gcc_4_2
     system "make"
-    bin.install %w( redis-benchmark redis-cli redis-server )
+    bin.install %w( redis-benchmark redis-cli redis-server redis-stat )
     
     # Fix up default conf file to match our paths
     inreplace "redis.conf" do |s|

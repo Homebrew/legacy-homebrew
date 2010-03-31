@@ -10,7 +10,7 @@ class Graphviz <Formula
                           "--prefix=#{prefix}",
                           "--disable-quartz",
                           "--disable-php",
-                          "--disable-python", "--disable-perl"
+                          "--disable-perl"
     system "make install"
   end
 end

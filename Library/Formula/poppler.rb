@@ -1,12 +1,14 @@
 require 'formula'
 
 class Poppler <Formula
-  url 'http://poppler.freedesktop.org/poppler-0.12.2.tar.gz'
+  url 'http://poppler.freedesktop.org/poppler-0.12.4.tar.gz'
   homepage 'http://poppler.freedesktop.org/'
-  md5 '60c00b55acf7dd389bf256d178af70bf'
+  md5 '4155346f9369b192569ce9184ff73e43'
+
+  depends_on 'pkg-config'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
 end

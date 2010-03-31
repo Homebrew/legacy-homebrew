@@ -1,16 +1,17 @@
 require 'formula'
 
 class Postgis <Formula
-  url 'http://postgis.refractions.net/download/postgis-1.5.0.tar.gz'
+  url 'http://postgis.refractions.net/download/postgis-1.5.1.tar.gz'
   homepage 'http://postgis.refractions.net/'
-  md5 '8c0d291296033deee4d7f545e5d8218f'
+  md5 '8353b38c38282b2192f01693f71b8d28'
 
   depends_on 'postgresql'
   depends_on 'proj'
   depends_on 'geos'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    ENV.deparallelize
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--with-projdir=#{HOMEBREW_PREFIX}"
     system "make install"
 
     # Copy some of the generated files to the share folder

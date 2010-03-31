@@ -2,9 +2,9 @@ require 'formula'
 require "#{File.dirname __FILE__}/imagemagick.rb"
 
 class Graphicsmagick < Imagemagick
-  url 'http://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.10/GraphicsMagick-1.3.10.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.12/GraphicsMagick-1.3.12.tar.bz2'
   homepage 'http://www.graphicsmagick.org/'
-  md5 '09137f1180edc6d99834e8a7b1e620e3'
+  md5 '55182f371f82d5f9367bce04e59bbf25'
 
   def deps
     # well this was an unexpected consequence of the DSL syntax, the dependencies

@@ -1,21 +1,26 @@
 require 'formula'
 
 class Mpd <Formula
-  url 'http://downloads.sourceforge.net/project/musicpd/mpd/0.15.8/mpd-0.15.8.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/musicpd/mpd/0.15.9/mpd-0.15.9.tar.bz2'
   homepage 'http://mpd.wikia.com'
-  md5 '824e1ce46c0f468865d9e5e403cdaf5d'
+  md5 '88f7bc0b17eac81d03b24929d12b8aa1'
 
   depends_on 'glib'
   depends_on 'libid3tag'
   depends_on 'pkg-config'
   depends_on 'flac'
   depends_on 'libshout'
+  depends_on 'mad' => :optional
+  depends_on 'faad2' => :optional
   depends_on 'fluid-synth'
   depends_on 'libcue' => :optional
   depends_on 'libmms' => :optional
   depends_on 'libzzip' => :optional
 
   def install
+    # make faad.h findable (when brew is used elsewhere than /usr/local/)
+    ENV.append 'CFLAGS', "-I#{HOMEBREW_PREFIX}/include"
+
     configure_args = [
       "--prefix=#{prefix}",
       "--disable-debug",
