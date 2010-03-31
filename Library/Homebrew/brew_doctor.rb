@@ -44,6 +44,15 @@ def check_gcc_versions
   end
 end
 
+def check_share_locale
+end
+
+def check_usr_bin_ruby
+end
+
+def check_homebrew_prefix
+end
+
 def brew_doctor
   read, write = IO.pipe
 
