@@ -7,7 +7,7 @@ class Ec2ApiTools <Formula
   
   def patches
     # (From http://gist.github.com/200283) Gets rid of the
-    # “[Deprecated] Xalan: org.apache.xml.res.XMLErrorResources_en_US”
+    # "[Deprecated] Xalan: org.apache.xml.res.XMLErrorResources_en_US"
     # messages that the tools spew on 1.3-41620 under Snow Leopard
     DATA
   end
@@ -24,7 +24,7 @@ class Ec2ApiTools <Formula
     return <<-EOS
 Before you can utilize the EC2 API tools, you must export several environment
 variables to your $SHELL. The easiest way to do this is to add them to your
-dotfiles. If you’re running the `bash` shell (the default), you’ll want to add
+dotfiles. If you're running the `bash` shell (the default), you'll want to add
 them to `~/.bash_profile`. If this is the case, run `nano ~/.bash_profile` at
 a terminal to edit said file. zsh users will want to edit `~/.zprofile`
 instead.
@@ -32,7 +32,7 @@ instead.
     export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Home/"
     export EC2_HOME="#{prefix.to_s}/"
 
-However, you’re still not ready to use the tools. You need to download your
+However, you're still not ready to use the tools. You need to download your
 X.509 certificate and private key from Amazon Web Services. These files are
 available at the following URL:
 

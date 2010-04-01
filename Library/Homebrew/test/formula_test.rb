@@ -39,4 +39,12 @@ class WellKnownCodeIssues <Test::Unit::TestCase
       assert_equal('', result, "--prefix is incorrectly single-quoted in #{f}")
     end
   end
+  
+  def test_for_crufy_sourceforge_url
+    # Don't specify mirror for SourceForge downloads
+    Formulary.paths.each do |f|
+      result = `grep "\?use_mirror=" "#{f}"`.strip
+      assert_equal('', result, "Remove 'use_mirror' from url for #{f}")
+    end
+  end
 end

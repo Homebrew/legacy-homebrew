@@ -14,8 +14,8 @@ def x11?
 end
 
 class Imagemagick <Formula
-  @url='http://image_magick.veidrodis.com/image_magick/ImageMagick-6.5.6-5.tar.gz'
-  @md5='668919a5a7912fb6778975bc55893004'
+  @url='http://image_magick.veidrodis.com/image_magick/ImageMagick-6.5.9-8.tar.bz2'
+  @md5='89892e250e81fad51b4b2a1f816987e6'
   @homepage='http://www.imagemagick.org'
 
 
@@ -25,6 +25,7 @@ class Imagemagick <Formula
   depends_on 'little-cms' => :optional
   depends_on 'jasper' => :optional
   depends_on 'ghostscript' => :recommended if ghostscript_srsly? and x11?
+  depends_on 'libpng' unless x11?
 
   def skip_clean? path
     path.extname == '.la'
@@ -42,6 +43,8 @@ class Imagemagick <Formula
      "--disable-static",
      "--with-modules",
      "--without-magick-plus-plus"]
+     
+     args << "--disable-openmp" if MACOS_VERSION < 10.6   # libgomp unavailable
      args << '--without-ghostscript' \
           << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
              unless ghostscript_srsly?
@@ -62,9 +65,9 @@ class Imagemagick <Formula
     system "make install"
 
     # We already copy these into the keg root
-    (share+'ImageMagick'+'NEWS.txt').unlink
-    (share+'ImageMagick'+'LICENSE').unlink
-    (share+'ImageMagick'+'ChangeLog').unlink
+    (share+"ImageMagick/NEWS.txt").unlink
+    (share+"ImageMagick/LICENSE").unlink
+    (share+"ImageMagick/ChangeLog").unlink
   end
 
   def caveats

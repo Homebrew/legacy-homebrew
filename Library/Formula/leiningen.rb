@@ -10,7 +10,6 @@ class Leiningen <Formula
     prefix.install 'bin'
 
     # Install the lein bash completion file
-    mv 'bash_completion.bash', 'lein-completion.bash'
-    (etc+'bash_completion.d').install 'lein-completion.bash'
+    (etc+'bash_completion.d').install 'bash_completion.bash' => 'lein-completion.bash'
   end
 end

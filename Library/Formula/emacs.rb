@@ -1,44 +1,76 @@
 require 'formula'
 
+class Magit <Formula
+  url 'http://zagadka.vm.bytemark.co.uk/magit/magit-0.7.tar.gz'
+  md5 '1ea442bd6f83f7ac82967059754c8c87'
+  homepage 'http://zagadka.vm.bytemark.co.uk/magit/'
+end
+
 class Emacs <Formula
   if ARGV.include? "--cocoa"
-    head 'git://git.savannah.gnu.org/emacs.git', :tag => 'db44e1e'
+    # tested bazaar revision: 99478
+    head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
   else
     url 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.1.tar.bz2'
-    head 'git://git.savannah.gnu.org/emacs.git'
+    head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
     md5 '17f7f0ba68a0432d58fa69d05a2225be'
   end
   homepage 'http://www.gnu.org/software/emacs/'
 
+  def options
+    [
+      ["--cocoa", "Build a cocoa version of emacs"],
+    ]
+  end
+
   def caveats
     "Use --cocoa to build a Cocoa binary Emacs.app from HEAD.
-The git mirror will download the entire CVS history and is rather large."
+
+To access texinfo documentation, set your INFOPATH to:
+#{info}
+
+Emacs recently changed to bazaar, so you may have to delete the
+cached git directory before you can update. This should be somewhere like
+$HOME/Library/Caches/Homebrew/emacs-HEAD/
+"
   end
   
   def patches
     if ARGV.include? "--cocoa"
       "http://dev.boris.com.au/emacs-23.1-CVS-Cocoa-homebrew.patch"
-    else
+    elsif not ARGV.include? "--HEAD"
       DATA
     end
   end
 
   def install
+    configure_args = [
+      "--prefix=#{prefix}",
+      "--disable-debug",
+      "--disable-dependency-tracking",
+      "--without-dbus",
+      "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
+    ]
+
+    # segfault in --cocoa
+    ENV.gcc_4_2
+
     if ARGV.include? "--cocoa"
-      system "./configure", "--prefix=#{prefix}",
-  			  "--disable-debug",
-  			  "--disable-dependency-tracking",
-  			  "--with-ns", "--disable-ns-self-contained"
-  		system "make bootstrap"
-  		system "make install"
-  		prefix.install "nextstep/Emacs.app"
+      configure_args << "--with-ns" << "--disable-ns-self-contained"
+      system "./configure", *configure_args
+      system "make bootstrap"
+      system "make install"
+      prefix.install "nextstep/Emacs.app"
     else
-      system "./configure", "--prefix=#{prefix}",
-  			  "--disable-debug",
-  			  "--disable-dependency-tracking",
-  			  "--without-x"
-  		system "make"
-  		system "make install"
+      configure_args << "--without-x"
+      system "./configure", *configure_args
+      system "make"
+      system "make install"
+    end
+
+    Magit.new.brew do
+      system "./configure", "--prefix=#{prefix}"
+      system "make install"
     end
   end
 end

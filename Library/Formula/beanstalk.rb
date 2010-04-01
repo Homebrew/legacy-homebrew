@@ -5,11 +5,14 @@ class Beanstalk <Formula
   md5 'eea47c86c722c4448087fb28be7357cd'
   homepage 'http://xph.us/software/beanstalkd/'
 
-  aka 'beanstalkd'
   depends_on 'libevent'
 
+  aka 'beanstalkd'
+
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}", "--with-event=#{HOMEBREW_PREFIX}"
+
     system "make install"
   end
 end

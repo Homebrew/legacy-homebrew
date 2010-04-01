@@ -13,9 +13,6 @@ $:.unshift(HOMEBREW_LIBRARY_PATH)
 require 'global'
 
 case ARGV.first
-when '--cache'
-  puts HOMEBREW_CACHE
-  exit 0
 when '-h', '--help', '--usage', '-?', 'help', nil
   puts ARGV.usage
   exit 0
@@ -46,7 +43,8 @@ def dump_config
   bits = Hardware.bits
   cores = Hardware.cores_as_words
   llvm = llvm_build
-  gcc = gcc_build
+  gcc_42 = gcc_42_build
+  gcc_40 = gcc_40_build
   sha = `cd #{HOMEBREW_REPOSITORY} && git rev-parse --verify HEAD 2> /dev/null`.chomp
   kernel_arch = `uname -m`.chomp
 
@@ -62,21 +60,42 @@ Hardware: #{cores}-core #{bits}-bit #{Hardware.intel_family}
 OS X: #{MACOS_FULL_VERSION}
 Kernel Architecture: #{kernel_arch}
 Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
-GCC-4.2: #{gcc ? "build #{gcc}" : "N/A"} (5577 or newer recommended)
-LLVM: #{llvm ? "build #{llvm}" : "N/A" } #{llvm ? "(2206 or newer recommended)" : "" }
+GCC-4.0: #{gcc_40 ? "build #{gcc_40}" : "N/A"} (#{RECOMMENDED_GCC_40} or newer recommended)
+GCC-4.2: #{gcc_42 ? "build #{gcc_42}" : "N/A"} (#{RECOMMENDED_GCC_42} or newer recommended)
+LLVM: #{llvm ? "build #{llvm}" : "N/A" } #{llvm ? "(#{RECOMMENDED_LLVM} or newer recommended)" : "" }
 MacPorts or Fink? #{macports_or_fink_installed?}
 X11 installed? #{x11_installed?}
 EOS
+end
+
+def dump_build_env env
+  puts "\"--use-llvm\" was specified" if ARGV.include? '--use-llvm'
+
+  %w[CC CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS MAKEFLAGS HOMEBREW_USE_LLVM].each do |k|
+    puts "#{k}: #{env[k]}"
+  end
 end
 
 begin
   require 'brew.h'
 
   case arg = ARGV.shift
+  when '--cache'
+    if ARGV.named.empty?
+      puts HOMEBREW_CACHE
+    else
+      puts *ARGV.formulae.collect {|f| f.cached_download rescue '(built from source control)'}
+    end
   when '--prefix'
-    puts HOMEBREW_PREFIX
+    if ARGV.named.empty?
+      puts HOMEBREW_PREFIX
+    else
+      puts *ARGV.formulae.collect {|f| f.prefix}
+    end
   when '--repository'
     puts HOMEBREW_REPOSITORY
+  when '--cellar'
+    puts HOMEBREW_CELLAR
   when '--config'
     dump_config
 
@@ -211,8 +230,13 @@ begin
     if ARGV.named.empty?
       require 'formula'
       HOMEBREW_CELLAR.children.each do |rack|
-        cleanup(rack.basename.to_s) if rack.directory?
+        begin
+          cleanup(rack.basename.to_s) if rack.directory?
+        rescue FormulaUnavailableError => e
+          opoo "Formula not found for #{e.name}"
+        end
       end
+      prune # seems like a good time to do some additional cleanup
     else
       ARGV.named.each { |name| cleanup name}
     end
@@ -234,9 +258,9 @@ begin
     ################################################################# warnings
     begin
       if MACOS_VERSION >= 10.6
-        opoo "You should upgrade to Xcode 3.2.1" if llvm_build < 2206
+        opoo "You should upgrade to Xcode 3.2.1" if llvm_build < RECOMMENDED_LLVM
       else
-        opoo "You should upgrade to Xcode 3.1.4" if gcc_build < 5577
+        opoo "You should upgrade to Xcode 3.1.4" if (gcc_40_build < RECOMMENDED_GCC_40) or (gcc_42_build < RECOMMENDED_GCC_42)
       end
     rescue
       # the reason we don't abort is some formula don't require Xcode
@@ -264,7 +288,9 @@ begin
 
   when 'log'
     Dir.chdir HOMEBREW_REPOSITORY
-    exec "git", "log", ARGV.formulae.first.path, *ARGV.options
+    args = ARGV.options
+    args.unshift ARGV.formulae.first.path unless ARGV.named.empty?
+    exec "git", "log", *args
     
   when 'uses'
     # For each formula given, show which other formulas depend on it.
@@ -314,13 +340,29 @@ begin
         puts "#{name} depends on #{our_deps.join(", ")}"
       end
     end
-
-  when 'branch', 'checkout', 'pull', 'push', 'reset'
-    onoe "Unknown command: #{arg} (did you mean 'git #{arg}'?)"
     
   when 'cat'
     Dir.chdir HOMEBREW_REPOSITORY
     exec "cat", ARGV.formulae.first.path, *ARGV.options
+
+  when 'outdated'
+    require 'formula'
+    HOMEBREW_CELLAR.subdirs.each do |keg|
+      if keg.subdirs.length > 0
+        name = keg.basename('.rb').to_s
+        if (not (f = Formula.factory(name)).installed? rescue nil)
+          if $stdout.tty? and not ARGV.flag? '--quiet'
+            versions = keg.cd{ Dir['*'] }.join(', ')
+            puts "#{name} (#{versions} < #{f.version})"
+          else
+            puts name
+          end
+        end
+      end
+    end
+
+  when 'branch', 'checkout', 'pull', 'push', 'rebase', 'reset'
+    onoe "Unknown command: #{arg} (did you mean 'git #{arg}'?)"
 
   else
     onoe "Unknown command: #{arg}"
@@ -342,10 +384,16 @@ rescue Interrupt => e
 rescue BuildError => e
   e.backtrace[1] =~ %r{Library/Formula/(.+)\.rb:(\d+)}
   formula_name = $1
-  puts "http://github.com/mxcl/homebrew/blob/master/Library/Formula/#{formula_name}.rb#L#{$2}"
+  error_line = $2
+  puts "Exit status: #{e.exit_status}"
+  puts
+  puts "http://github.com/mxcl/homebrew/blob/master/Library/Formula/#{formula_name}.rb#L#{error_line}"
+  puts
   ohai "Environment"
   dump_config
-  puts "Exit status: #{e.exit_status}"
+  puts
+  ohai "Build Flags"
+  dump_build_env e.env
   onoe e
   puts PLEASE_REPORT_BUG
   # this feature can be slow (depends on network conditions and if github is up)

@@ -15,7 +15,7 @@ class Gmp <Formula
     # On OS X 10.6, some tests fail under LLVM
     ENV.gcc_4_2
     
-    args = ["--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--enable-cxx"]
+    args = ["--prefix=#{prefix}", "--infodir=#{info}", "--disable-debug", "--disable-dependency-tracking", "--enable-cxx"]
 
     # Doesn't compile correctly on 10.5 MacPro in 64 bit mode
     if MACOS_VERSION == 10.5 and Hardware.intel_family == :nehalem

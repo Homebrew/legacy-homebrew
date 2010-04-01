@@ -10,12 +10,9 @@ class Lua <Formula
   end
 
   def install
-    inreplace 'Makefile', '/usr/local', prefix
-    inreplace 'src/luaconf.h', '/usr/local', prefix
-    inreplace 'etc/lua.pc', '/usr/local', prefix
+    inreplace ['Makefile', 'src/luaconf.h', 'etc/lua.pc'],
+      '/usr/local', prefix
 
-    inreplace 'Makefile', 'man/man1', 'share/man/man1'
-    inreplace 'etc/lua.pc', 'man/man1', 'share/man/man1'
     inreplace 'src/luaconf.h', '/usr/local', HOMEBREW_PREFIX
 
     ENV.append "CFLAGS", "-DLUA_USE_LINUX"

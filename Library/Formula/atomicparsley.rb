@@ -1,42 +1,16 @@
 require 'formula'
 
 class Atomicparsley <Formula
-  @url='http://downloads.sourceforge.net/project/atomicparsley/atomicparsley/AtomicParsley%20v0.9.0/AtomicParsley-source-0.9.0.zip'
-  @homepage='http://atomicparsley.sourceforge.net/'
-  @md5='681e6ecec2921c98e07a9262bdcd6cf2'
-
-  def patches
-    DATA
-  end
+  url 'http://bitbucket.org/wez/atomicparsley/get/0.9.3.tar.bz2'
+  homepage 'http://bitbucket.org/wez/atomicparsley/overview/'
+  md5 'a405fc4b7029ad1ea104dba82dff4b63'
 
   def install
-    Dir.chdir("AtomicParsley-source-0.9.0")
-    system "g++ #{ENV['CXXFLAGS']} -o AtomicParsley -framework Cocoa -DDARWIN_PLATFORM *.mm *.cpp"
-    bin.install "AtomicParsley"
+    system "./autogen.sh"
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-debug",
+                          "--disable-universal"
+    system "make install"
   end
 end
 
-
-__END__
-diff -Naur a/AtomicParsley-source-0.9.0/AP_NSImage.mm b/AtomicParsley-source-0.9.0/AP_NSImage.mm
---- a/AtomicParsley-source-0.9.0/AP_NSImage.mm	2006-09-02 05:25:32.000000000 -0600
-+++ b/AtomicParsley-source-0.9.0/AP_NSImage.mm	2009-09-07 16:44:05.000000000 -0600
-@@ -26,8 +26,8 @@
- #include <sys/time.h>
- #include <string.h>
- 
--#include "AP_NSImage.h"
- #include "AtomicParsley.h"
-+#include "AP_NSImage.h"
- 
- bool isJPEG=false;
- bool isPNG=false;
-@@ -201,7 +201,7 @@
-         
- 		NSBitmapImageRep* bitmap = [ [NSBitmapImageRep alloc]
- 																	initWithFocusedViewRect: destinationRect ];
--		_NSBitmapImageFileType filetype;
-+		NSBitmapImageFileType filetype;
- 		NSDictionary *props;
- 		
- 		if ( (isPNG && !myPicPrefs.allJPEG) || myPicPrefs.allPNG) {

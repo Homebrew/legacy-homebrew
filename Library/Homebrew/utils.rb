@@ -1,26 +1,3 @@
-#  Copyright 2009 Max Howell and other contributors.
-#
-#  Redistribution and use in source and binary forms, with or without
-#  modification, are permitted provided that the following conditions
-#  are met:
-#
-#  1. Redistributions of source code must retain the above copyright
-#     notice, this list of conditions and the following disclaimer.
-#  2. Redistributions in binary form must reproduce the above copyright
-#     notice, this list of conditions and the following disclaimer in the
-#     documentation and/or other materials provided with the distribution.
-#
-#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-#  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-#  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-#  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-#  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-#  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-#  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-#  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-#  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-#  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
 class Tty
   class <<self
     def blue; bold 34; end
@@ -119,9 +96,6 @@ def puts_columns items, cols = 4
   return if items.empty?
 
   if $stdout.tty?
-    items = items.join("\n") if items.is_a?(Array)
-    items.concat("\n") unless items.empty?
-
     # determine the best width to display for different console sizes
     console_width = `/bin/stty size`.chomp.split(" ").last.to_i
     console_width = 80 if console_width <= 0
@@ -129,7 +103,7 @@ def puts_columns items, cols = 4
     optimal_col_width = (console_width.to_f / (longest.length + 2).to_f).floor
     cols = optimal_col_width > 1 ? optimal_col_width : 1
 
-    IO.popen("/usr/bin/pr -#{cols} -t -w#{console_width}", "w"){|io| io.write(items) }
+    IO.popen("/usr/bin/pr -#{cols} -t -w#{console_width}", "w"){|io| io.puts(items) }
   else
     puts *items
   end
@@ -148,6 +122,12 @@ def exec_editor *args
   # but we still want to use the comma-delimited version of exec because then
   # we don't have to escape args, and escaping 100% is tricky
   exec *(editor.split+args)
+end
+
+# GZips the given path, and returns the gzipped file
+def gzip path
+  system "/usr/bin/gzip", path
+  return Pathname.new(path+".gz")
 end
 
 # returns array of architectures suitable for -arch gcc flag
@@ -171,32 +151,38 @@ def archs_for_command cmd
     end
 end
 
+# String extensions added by inreplace below.
 module HomebrewInreplaceExtension
   # Looks for Makefile style variable defintions and replaces the
   # value with "new_value", or removes the definition entirely.
-  # See inreplace in utils.rb
   def change_make_var! flag, new_value
-    new_value = "#{flag} = #{new_value}" unless new_value.to_s.empty?
-    gsub! Regexp.new("^#{flag}\\s*=.*$"), new_value.to_s
+    new_value = "#{flag}=#{new_value}"
+    gsub! Regexp.new("^#{flag}[ \\t]*=[ \\t]*(.*)$"), new_value
   end
+  # Removes variable assignments completely.
   def remove_make_var! flags
-    flags.each { |flag| change_make_var! flag, "" }
+    flags.each do |flag|
+      # Also remove trailing \n, if present.
+      gsub! Regexp.new("^#{flag}[ \\t]*=(.*)$\n?"), ""
+    end
   end
 end
 
 def inreplace path, before=nil, after=nil
-  f = File.open(path, 'r')
-  s = f.read
+  [*path].each do |path|
+    f = File.open(path, 'r')
+    s = f.read
 
-  if before == nil and after == nil
-    s.extend(HomebrewInreplaceExtension)
-    yield s
-  else
-    s.gsub!(before, after)
+    if before == nil and after == nil
+      s.extend(HomebrewInreplaceExtension)
+      yield s
+    else
+      s.gsub!(before, after)
+    end
+
+    f.reopen(path, 'w').write(s)
+    f.close
   end
-
-  f.reopen(path, 'w').write(s)
-  f.close
 end
 
 def ignore_interrupts

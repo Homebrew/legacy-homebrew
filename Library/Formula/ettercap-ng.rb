@@ -32,7 +32,7 @@ class EttercapNg < Formula
   def install
     configure_args = [
      "--prefix=#{prefix}",
-     "--mandir=#{prefix}/share/man",
+     "--mandir=#{man}",
      "--infodir=#{prefix}/share/info",
      '--disable-dependency-tracking',
      "--disable-gtk",

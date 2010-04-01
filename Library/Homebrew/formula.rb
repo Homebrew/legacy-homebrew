@@ -1,26 +1,3 @@
-#  Copyright 2009 Max Howell and other contributors.
-#
-#  Redistribution and use in source and binary forms, with or without
-#  modification, are permitted provided that the following conditions
-#  are met:
-#
-#  1. Redistributions of source code must retain the above copyright
-#     notice, this list of conditions and the following disclaimer.
-#  2. Redistributions in binary form must reproduce the above copyright
-#     notice, this list of conditions and the following disclaimer in the
-#     documentation and/or other materials provided with the distribution.
-#
-#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-#  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-#  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-#  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-#  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-#  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-#  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-#  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-#  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-#  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
 require 'download_strategy'
 require 'fileutils'
 
@@ -112,6 +89,8 @@ class Formula
     CHECKSUM_TYPES.each do |type|
       set_instance_variable type
     end
+
+    @downloader=download_strategy.new url, name, version, specs
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -129,6 +108,10 @@ class Formula
 
   def path
     self.class.path name
+  end
+
+  def cached_download
+    @downloader.tarball_path
   end
 
   attr_reader :url, :version, :homepage, :name, :specs
@@ -151,18 +134,7 @@ class Formula
   
   # reimplement if we don't autodetect the download strategy you require
   def download_strategy
-    case url
-    when %r[^cvs://] then CVSDownloadStrategy
-    when %r[^hg://] then MercurialDownloadStrategy
-    when %r[^svn://] then SubversionDownloadStrategy
-    when %r[^svn+http://] then SubversionDownloadStrategy
-    when %r[^git://] then GitDownloadStrategy
-    when %r[^https?://(.+?\.)?googlecode\.com/hg] then MercurialDownloadStrategy
-    when %r[^https?://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
-    when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
-    when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
-    else CurlDownloadStrategy
-    end
+    detect_download_strategy url
   end
 
   # tell the user about any caveats regarding this package, return a string
@@ -353,7 +325,8 @@ private
     type ||= :md5
     supplied=instance_variable_get("@#{type}")
     type=type.to_s.upcase
-    hash=Digest.const_get(type).hexdigest(fn.read)
+    hasher = Digest.const_get(type)
+    hash = fn.incremental_hash(hasher)
 
     if supplied and not supplied.empty?
       raise "#{type} mismatch\nExpected: #{hash}\nArchive: #{fn}" unless supplied.upcase == hash.upcase
@@ -365,12 +338,15 @@ private
   end
 
   def stage
-    ds=download_strategy.new url, name, version, specs
     HOMEBREW_CACHE.mkpath
-    dl=ds.fetch
-    verify_download_integrity dl if dl.kind_of? Pathname
+
+    downloaded_tarball = @downloader.fetch
+    if downloaded_tarball.kind_of? Pathname
+      verify_download_integrity downloaded_tarball
+    end
+  
     mktemp do
-      ds.stage
+      @downloader.stage
       yield
     end
   end

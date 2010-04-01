@@ -28,13 +28,11 @@ class Mpg123 <Formula
     system "./configure", *args
     
     # ./configure incorrectly detects 10.5 as 10.4. Cut that crap out.
-    ['', 'src/', 'src/output/', 'src/libmpg123/'].each do |path|
-      inreplace "#{path}Makefile", # CFLAGS
-        "-mmacosx-version-min=10.4 -isysroot /Developer/SDKs/MacOSX10.4u.sdk", ""
-
-      inreplace "#{path}Makefile", # LDFLAGS
-        "LDFLAGS =  -Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk -Wl,-classic_linker -Wl,-read_only_relocs,suppress", 
-        "LDFLAGS =  -Wl,-read_only_relocs,suppress"
+    ['.', 'src', 'src/output', 'src/libmpg123'].each do |path|
+      inreplace "#{path}/Makefile" do |s|
+        s.gsub! "-mmacosx-version-min=10.4 -isysroot /Developer/SDKs/MacOSX10.4u.sdk", ""
+        s.change_make_var! "LDFLAGS", "-Wl,-read_only_relocs,suppress"
+      end
     end
     
     system "make install"

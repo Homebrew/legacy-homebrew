@@ -1,9 +1,9 @@
 require 'formula'
 
 class Rsync <Formula
-  url 'http://rsync.samba.org/ftp/rsync/rsync-3.0.6.tar.gz'
+  url 'http://rsync.samba.org/ftp/rsync/rsync-3.0.7.tar.gz'
   homepage 'http://rsync.samba.org/'
-  md5 'e9865d093a18e4668b9d31b635dc8e99'
+  md5 'b53525900817cf1ba7ad3a516ab5bfe9'
 
   def install
     system "./configure", "--prefix=#{prefix}",

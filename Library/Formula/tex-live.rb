@@ -4,11 +4,11 @@ class CurlXZDownloadStrategy < CurlDownloadStrategy
   def stage
     # As far as I can tell, the LZMA format does not have any magic header bits that we could use to
     # identify LZMA archives in the CurlDownloadStrategy, so use this awesome hack
-    safe_system "lzma -k --force --stdout --decompress #{@dl} | /usr/bin/tar x"
+    safe_system "lzma -k --force --stdout --decompress #{@tarball_path} | /usr/bin/tar x"
    
     # You could also do this, but it leaves the tar file lying around...
-    #safe_system '/usr/local/bin/lzma', '-k', '--force', '--decompress', @dl
-    #safe_system '/usr/bin/tar', 'xf', @dl.to_s.gsub( ".lzma", "" )
+    #safe_system '/usr/local/bin/lzma', '-k', '--force', '--decompress', @tarball_path
+    #safe_system '/usr/bin/tar', 'xf', @tarball_path.to_s.gsub( ".lzma", "" )
     chdir
   end
 end
@@ -119,7 +119,7 @@ class TexLive <Formula
     # The build scripts don't create this directory for no apparent reason...
     # It's easier to just do it here than it is to patch the Makefiles
     # Actually, if compilation fails brew thinks that we succeeded because this directory exists. Maybe we should patch the makefiles...
-    FileUtils.mkdir_p "#{prefix}/share/man/man5"
+    FileUtils.mkdir_p "#{man}/man5"
     
     # Replaces the texk_kpathsea_texmf_cnf OpenBSD patch with our own version
     inreplace "texk/kpathsea/texmf.cnf", "$SELFAUTOPARENT/", "#{prefix}/share/"

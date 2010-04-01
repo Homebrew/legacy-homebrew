@@ -7,7 +7,8 @@ class Cvsps <Formula
   version '2.2b1'
 
   def install
-    system "make"
-    system "prefix=#{prefix} make install"
+    system "make cvsps"
+    bin.install "cvsps"
+    man1.install gzip("cvsps.1")
   end
 end

@@ -1,9 +1,10 @@
 require 'formula'
 
 class Vala <Formula
-  url 'http://download.gnome.org/sources/vala/0.7/vala-0.7.8.tar.bz2'
+  head 'git://git.gnome.org/vala'
+  url 'http://download.gnome.org/sources/vala/0.7/vala-0.7.10.tar.bz2'
   homepage 'http://live.gnome.org/Vala'
-  md5 'accd0d350c6d6de7527a0a65c40f8be2'
+  md5 '6e807644f500d6605a5ee4e1612dd187'
 
   depends_on 'glib'
   depends_on 'gettext'

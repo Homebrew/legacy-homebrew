@@ -11,7 +11,7 @@ class Binutils <Formula
                           "--disable-debug",
                           "--disable-dependency-tracking",
                           "--infodir=#{prefix}/share/info",
-                          "--mandir=#{prefix}/share/man",
+                          "--mandir=#{man}",
                           "--disable-werror",
                           "--program-prefix=g"
     system "make"

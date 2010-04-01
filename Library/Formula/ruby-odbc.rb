@@ -16,8 +16,10 @@ class RubyOdbc < Formula
     #
     # The following modifications to the Makefile ensure that it is installed
     # within your homebrew directories.
-    inreplace 'Makefile', /^prefix = .*$/, "prefix = #{prefix}"
-    inreplace 'Makefile', /^sitearchdir = .*$/, "sitearchdir = #{prefix}/lib"
+    inreplace 'Makefile' do |s|
+      s.change_make_var! "prefix", prefix
+      s.change_make_var! "sitearchdir", lib
+    end
 
     system 'make'
     system 'make install'

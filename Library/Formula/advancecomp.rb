@@ -6,7 +6,7 @@ class Advancecomp <Formula
   homepage 'http://advancemame.sourceforge.net/comp-readme.html'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end
 end
