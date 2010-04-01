@@ -30,7 +30,9 @@ EOS
     ENV.append "LDFLAGS", [build32, "-framework CoreServices", "-lz", "-lGL -lGLU"].join(' ')
     ENV.append "DYLD_FALLBACK_LIBRARY_PATH", "/usr/X11/lib"
 
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--disable-win16"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--disable-win16"
     system "make install"
 
     # Use a wrapper script, so rename wine to wine.bin
@@ -39,11 +41,10 @@ EOS
     (bin+'wine').write(wine_wrapper)
   end
 
-  def caveats; <<-EOS
-Get winetricks with:
-    wget http://www.kegel.com/wine/winetricks > #{prefix}/bin/winetricks
-    chmod +x #{prefix}/bin/winetricks
-    brew link wine
+  def caveats
+    <<-EOS.undent
+      You may also want to get winetricks:
+        brew install winetricks
     EOS
   end
 end
