@@ -6,7 +6,9 @@ class Rsnapshot <Formula
   sha1 'a3aa3560dc389e1b00155a5869558522c4a29e05'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make install"
   end
 end
