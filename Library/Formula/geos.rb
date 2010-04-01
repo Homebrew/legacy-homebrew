@@ -1,9 +1,13 @@
 require 'formula'
 
 class Geos <Formula
-  url 'http://download.osgeo.org/geos/geos-3.2.0.tar.bz2'
+  url 'http://download.osgeo.org/geos/geos-3.2.1.tar.bz2'
   homepage 'http://trac.osgeo.org/geos/'
-  md5 'bfad7129680f0107b6ca9a2b92a2c440'
+  md5 '01f01943bdf598977cee40905c9abfbf'
+
+  def skip_clean? path
+    path.extname == '.la'
+  end
 
   def install
     ENV.O3
