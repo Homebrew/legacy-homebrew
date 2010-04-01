@@ -134,19 +134,7 @@ class Formula
   
   # reimplement if we don't autodetect the download strategy you require
   def download_strategy
-    case url
-    when %r[^cvs://] then CVSDownloadStrategy
-    when %r[^hg://] then MercurialDownloadStrategy
-    when %r[^svn://] then SubversionDownloadStrategy
-    when %r[^svn+http://] then SubversionDownloadStrategy
-    when %r[^git://] then GitDownloadStrategy
-    when %r[^bzr://] then BazaarDownloadStrategy
-    when %r[^https?://(.+?\.)?googlecode\.com/hg] then MercurialDownloadStrategy
-    when %r[^https?://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
-    when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
-    when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
-    else CurlDownloadStrategy
-    end
+    detect_download_strategy url
   end
 
   # tell the user about any caveats regarding this package, return a string
@@ -337,7 +325,8 @@ private
     type ||= :md5
     supplied=instance_variable_get("@#{type}")
     type=type.to_s.upcase
-    hash=Digest.const_get(type).hexdigest(fn.read)
+    hasher = Digest.const_get(type)
+    hash = fn.incremental_hash(hasher)
 
     if supplied and not supplied.empty?
       raise "#{type} mismatch\nExpected: #{hash}\nArchive: #{fn}" unless supplied.upcase == hash.upcase
