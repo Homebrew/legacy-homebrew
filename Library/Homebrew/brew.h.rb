@@ -14,11 +14,6 @@ def check_for_blacklisted_formula names
         http://www.tug.org/mactex/
     EOS
 
-    when 'mercurial', 'hg' then abort <<-EOS.undent
-      Mercurial can be install thusly:
-        brew install pip && pip install mercurial
-    EOS
-
     when 'setuptools' then abort <<-EOS.undent
       When working with a Homebrew-built Python, distribute is preferred
       over setuptools, and can be used as the prerequisite for pip.

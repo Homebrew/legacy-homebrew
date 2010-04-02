@@ -364,10 +364,8 @@ class MercurialDownloadStrategy <AbstractDownloadStrategy
   def cached_location; @clone; end
 
   def fetch
-    raise "You must install mercurial, there are two options:\n\n"+
-          "    brew install pip && pip install mercurial\n"+
-          "    easy_install mercurial\n\n"+
-          "Homebrew recommends pip over the OS X provided easy_install." \
+    raise "You must install mercurial:\n"+
+          "    brew install mercurial" \
           unless system "/usr/bin/which hg"
 
     ohai "Cloning #{@url}"
