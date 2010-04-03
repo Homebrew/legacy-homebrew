@@ -141,6 +141,21 @@ def check_user_path
   end
 end
 
+def check_pkg_config
+  binary = `which pkg-config`.chomp
+  return if binary.empty?
+
+  unless binary == "#{HOMEBREW_PREFIX}/bin/pkg-config"
+    puts <<-EOS.undent
+      You have a non-brew 'pkg-config' in your PATH:
+        #{binary}
+
+      `./configure` may have problems finding brew-installed packages using
+      this other pkg-config.
+    EOS
+  end
+end
+
 def brew_doctor
   read, write = IO.pipe
 
@@ -156,6 +171,7 @@ def brew_doctor
     check_for_x11
     check_share_locale
     check_user_path
+    check_pkg_config
 
     exit! 0
   else
