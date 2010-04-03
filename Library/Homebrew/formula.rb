@@ -205,6 +205,12 @@ class Formula
         onoe e.inspect
         puts e.backtrace
         ohai "Rescuing build..."
+        if (e.was_running_configure? rescue false) and File.exist? 'config.log'
+          puts "It looks like an autotools configure failed."
+          puts "Gist 'config.log' and any error output when reporting an issue."
+          puts
+        end
+
         puts "When you exit this shell Homebrew will attempt to finalise the installation."
         puts "If nothing is installed or the shell exits with a non-zero error code,"
         puts "Homebrew will abort. The installation prefix is:"
