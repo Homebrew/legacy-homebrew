@@ -1,9 +1,9 @@
 require 'formula'
 
 class AppEngineJavaSdk <Formula
-  @url='http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.5.zip'
+  @url='http://googleappengine.googlecode.com/files/appengine-java-sdk-1.3.2.zip'
   @homepage='http://code.google.com/appengine/docs/java/overview.html'
-  @sha1='f0ef8454f72b550791ac856849e322054c4bc8f4'
+  @sha1='175612837051384870dca591b9c61863714ffafc'
 
   def install
     prefix.install Dir['*']
