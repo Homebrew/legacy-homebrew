@@ -167,6 +167,12 @@ module HomebrewInreplaceExtension
       gsub! Regexp.new("^#{flag}[ \\t]*=(.*)$\n?"), ""
     end
   end
+  # Finds the specified variable
+  def get_make_var flag
+    m = match Regexp.new("^#{flag}[ \\t]*=[ \\t]*(.*)$")
+    return m[1] if m
+    return nil
+  end
 end
 
 def inreplace path, before=nil, after=nil
