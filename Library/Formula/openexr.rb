@@ -5,8 +5,8 @@ class Openexr <Formula
   homepage 'http://www.openexr.com/'
   md5 '11951f164f9c872b183df75e66de145a'
 
-  depends_on 'ilmbase'
   depends_on 'pkg-config'
+  depends_on 'ilmbase'
 
   def patches
     DATA
@@ -31,5 +31,3 @@ __END__
 +  CXXFLAGS="$CXXFLAGS"
    ;;
  esac
- 
-
