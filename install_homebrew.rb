@@ -76,6 +76,10 @@ end
 abort "/usr/local/.git already exists!" if File.directory? "/usr/local/.git"
 abort "Don't run this as root!" if Process.uid == 0
 
+unless `groups`.split.include?("staff")
+  ohai "The user #{`whoami`.strip} will be added to the staff group."
+end
+
 ohai "This script will install:"
 puts "/usr/local/bin/brew"
 puts "/usr/local/Library/Formula/..."
@@ -85,10 +89,6 @@ chmods = %w(bin etc include lib sbin share var . share/locale share/man share/in
             map{ |d| "/usr/local/#{d}" }.
             select{ |d| File.directory? d and not File.writable? d }
 chgrps = chmods.reject{ |d| File.stat(d).grpowned? }
-
-unless `groups`.split.include?("staff")
-  ohai "The user #{`whoami`.strip} will be added to the staff group."
-end
 
 unless chmods.empty?
   ohai "The following directories will be made group writable:"
