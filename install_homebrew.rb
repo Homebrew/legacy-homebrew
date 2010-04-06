@@ -1,5 +1,10 @@
 #!/usr/bin/ruby
 #
+# Download and execute this script in one-line with no temporary files:
+#
+#     ruby -e "$(curl http://gist.github.com/raw/323731/install_homebrew.rb)"
+#
+#
 # I deliberately didn't DRY /usr/local references into a variable as this
 # script will not "just work" if you change the destination directory. However
 # please feel free to fork it and make that possible.
@@ -75,10 +80,14 @@ end
 ####################################################################### script
 abort "/usr/local/.git already exists!" if File.directory? "/usr/local/.git"
 abort "Don't run this as root!" if Process.uid == 0
+abort <<-EOABORT unless `groups`.split.include? "staff"
+This script requires the user #{ENV['USER']} to be in the staff group. If this
+sucks for you then you can install Homebrew in your home directory or however
+you please; please refer to the website. If you still want to use this script
+the following command should work:
 
-unless `groups`.split.include?("staff")
-  ohai "The user #{`whoami`.strip} will be added to the staff group."
-end
+    dscl /Local/Default -append /Groups/staff GroupMembership $USER
+EOABORT
 
 ohai "This script will install:"
 puts "/usr/local/bin/brew"
@@ -102,10 +111,6 @@ end
 puts
 puts "Press enter to continue"
 abort unless getc == 13
-
-unless `groups`.split.include?("staff")
-  sudo "dscl /Local/Default -append /Groups/staff GroupMembership #{`whoami`.strip}"
-end
 
 if File.directory? "/usr/local"
   sudo "/bin/chmod", "g+w", *chmods unless chmods.empty?
