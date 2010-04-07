@@ -32,8 +32,8 @@ class Git < Formula
 
     # Install the git bash completion file
     (etc+'bash_completion.d').install 'contrib/completion/git-completion.bash'
-    
-    # Install git-p4 
+
+    # Install git-p4
     bin.install 'contrib/fast-import/git-p4'
 
     # these files are exact copies of the git binary, so like the contents
@@ -50,7 +50,6 @@ class Git < Formula
     # we could build the manpages ourselves, but the build process depends
     # on many other packages, and is somewhat crazy, this way is easier
     GitManuals.new.brew { man.install Dir['*'] }
-    doc = share+'doc/git-doc'
-    GitHtmldocs.new.brew { doc.install Dir['*'] }
+    GitHtmldocs.new.brew { (share+'doc/git-doc').install Dir['*'] }
   end
 end

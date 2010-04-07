@@ -7,7 +7,7 @@ class Siege <Formula
 
   def etc
     # NOTE this is because line 101 in init.c in the source code of Siege
-    # ignores the --sysconfdir setting, and instead looks here. 
+    # ignores the --sysconfdir setting, and instead looks here.
     # So coupled with the fact the etc directory location is a little up in the
     # air currently. This seems like the best solution for now.
     prefix+'etc'
@@ -20,10 +20,10 @@ class Siege <Formula
   end
 
   def caveats; <<-EOS
-You should know that macOSX has only 16K port available that won't be
-released until socket TIME_WAIT is passed. Default timeout for TIME_WAIT is
-15s consider reducing in case of available port bottleneck. You can check
-whether there is a problem with netstat.
+Mac OS X has only 16K ports available that won't be released until socket
+TIME_WAIT is passed. The default timeout for TIME_WAIT is 15 seconds. Consider
+reducing in case of available port bottleneck. You can check whether tis is a
+problem with netstat.
 
     $ sysctl net.inet.tcp.msl
     net.inet.tcp.msl: 15000

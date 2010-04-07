@@ -8,11 +8,9 @@ class Libfixbuf <Formula
   depends_on 'glib'
 
   def install
-    system "./configure",
-        "--disable-debug",
-        "--disable-dependency-tracking",
-        "--prefix=#{prefix}",
-        "--mandir=#{man}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make"
     system "make install"
   end

@@ -11,11 +11,10 @@ class Openexr <Formula
   def patches
     DATA
   end
-  
+
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
-                          "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

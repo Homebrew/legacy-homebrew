@@ -13,7 +13,7 @@ class Dos2unix <Formula
 
     # make install is broken due to INSTALL file, but also it sucks so we'll do it
     # also Ruby 1.8 is broken, it won't allow you to move a symlink that's
-    # target is invalid. FFS very dissapointed with dependability of 
+    # target is invalid. FFS very dissapointed with dependability of
     # fundamental Ruby functions. Maybe we shouldn't use them?
     # Anyway, that is why the symlink is installed first.
     bin.install %w[mac2unix dos2unix]

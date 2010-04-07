@@ -44,7 +44,5 @@ provide support for any issues that arise during
 compilation when Fortran is enabled until a Fortran
 compiler is officially supported.
     EOS
-    
   end
-
 end

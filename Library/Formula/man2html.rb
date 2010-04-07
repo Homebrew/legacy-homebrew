@@ -9,7 +9,7 @@ class Man2html <Formula
     bin.mkpath
     man1.mkpath
     system "/usr/bin/perl", "install.me", "-batch",
-      "-binpath", bin,
-      "-manpath", man
+                            "-binpath", bin,
+                            "-manpath", man
   end
 end

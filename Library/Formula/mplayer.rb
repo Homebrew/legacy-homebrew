@@ -23,7 +23,7 @@ class Mplayer <Formula
     args = ["--prefix=#{prefix}", "--enable-largefiles", "--enable-apple-remote"]
     args << "--target=x86_64-Darwin" if Hardware.is_64_bit? and MACOS_VERSION >= 10.6
 
-    system './configure', *args 
+    system './configure', *args
     system "make"
     system "make install"
   end

@@ -9,7 +9,7 @@ class SpringRoo <Formula
   def install
     inreplace 'bin/roo.sh', '$ROO_HOME/lib', '$ROO_HOME/java/lib'
 
-    FileUtils.rm_f Dir["bin/*.bat"]
+    rm_f Dir["bin/*.bat"]
     prefix.install %w[bin dist docs legal]
     (prefix+'java').install 'lib'
   end

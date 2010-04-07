@@ -26,7 +26,7 @@ class Mpg123 <Formula
     end
 
     system "./configure", *args
-    
+
     # ./configure incorrectly detects 10.5 as 10.4. Cut that crap out.
     ['.', 'src', 'src/output', 'src/libmpg123'].each do |path|
       inreplace "#{path}/Makefile" do |s|
@@ -34,7 +34,7 @@ class Mpg123 <Formula
         s.change_make_var! "LDFLAGS", "-Wl,-read_only_relocs,suppress"
       end
     end
-    
+
     system "make install"
   end
 end

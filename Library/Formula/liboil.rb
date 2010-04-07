@@ -17,9 +17,9 @@ class Liboil <Formula
   end
 
   def patches
-    {
-      :p0 => "http://svn.macports.org/repository/macports/trunk/dports/devel/liboil/files/patch-liboil_liboilcpu-x86.c.diff",
-      :p0 => "http://svn.macports.org/repository/macports/trunk/dports/devel/liboil/files/host_cpu.diff"
-    }
+    {:p0 => [
+      "http://svn.macports.org/repository/macports/trunk/dports/devel/liboil/files/patch-liboil_liboilcpu-x86.c.diff",
+      "http://svn.macports.org/repository/macports/trunk/dports/devel/liboil/files/host_cpu.diff"
+    ]}
   end
 end

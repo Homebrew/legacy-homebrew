@@ -6,12 +6,8 @@ class Diction <Formula
   md5 '4cbdb115c976d7141f54b223df28012e'
 
   def install
-      configure_args = [
-          "--prefix=#{prefix}",
-          "--disable-debug",
-          "--disable-dependency-tracking",
-      ]
-    system "./configure", *configure_args
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

@@ -1,8 +1,7 @@
 require 'formula'
 
 class Ejabberd <Formula
-  version "2.1.3"
-  url "http://www.process-one.net/downloads/ejabberd/#{version}/ejabberd-#{version}.tar.gz"
+  url "http://www.process-one.net/downloads/ejabberd/2.1.3/ejabberd-2.1.3.tar.gz"
   homepage 'http://www.ejabberd.im'
   md5 'e5c87eda5312a6e8a53df0f9b4844b69'
 

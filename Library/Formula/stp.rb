@@ -5,15 +5,13 @@ class Stp < Formula
   homepage 'http://sites.google.com/site/stpfastprover/'
 
   def options
-    [
-      ["--32-bit", "Force 32-bit."]
-    ]
+    [["--32-bit", "Force 32-bit."]]
   end
 
   def install
     unless ARGV.include? "--32-bit"
       inreplace "./scripts/Makefile.common" do |s|
-        s.change_make_var! "CFLAGS_M32", ""
+        s.remove_make_var! "CFLAGS_M32"
       end
     end
 

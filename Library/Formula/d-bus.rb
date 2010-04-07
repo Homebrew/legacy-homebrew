@@ -13,13 +13,15 @@ class DBus <Formula
   def install
     # Fix the TMPDIR to one D-Bus doesn't reject due to odd symbols
     ENV["TMPDIR"] = "/tmp"
-    system "./configure", "--prefix=#{prefix}", "--disable-xml-docs",
-           "--disable-doxygen-docs", "--disable-dependency-tracking",
-	   "--without-x"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--disable-xml-docs",
+                          "--disable-doxygen-docs",
+	                        "--without-x"
     system "make install"
 
     # Generate D-Bus's UUID for this machine
-    system "#{prefix}/bin/dbus-uuidgen", 
+    system "#{prefix}/bin/dbus-uuidgen",
            "--ensure=#{prefix}/var/lib/dbus/machine-id"
   end
 end

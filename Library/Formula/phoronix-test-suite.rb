@@ -7,7 +7,7 @@ class PhoronixTestSuite <Formula
   def patches
     DATA
   end
-  
+
   def install
     system "./install-sh #{prefix}"
   end

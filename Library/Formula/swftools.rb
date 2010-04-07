@@ -9,22 +9,18 @@ class Swftools <Formula
   depends_on 'lame' => :optional
 
   def install
+    ENV.x11 # Add to PATH for freetype-config on Snow Leopard
     ENV.minimal_optimization
-
-    # Add to PATH for freetype-config on Snow Leopard
-    ENV.prepend 'PATH', '/usr/X11/bin', ':'
-    ENV.x11
 
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
   end
 
-  def caveats
-    <<-EOS.undent
-      swfc segfaults under Snow Leopard. Please persue this issue
-      with the softare vendor:
-        http://lists.nongnu.org/mailman/listinfo/swftools-common
+  def caveats; <<-EOS.undent
+    `swfc` segfaults under Snow Leopard.
+    Please persue this issue with the softare vendor:
+      http://lists.nongnu.org/mailman/listinfo/swftools-common
     EOS
   end
 end
