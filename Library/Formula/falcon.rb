@@ -27,19 +27,14 @@ class Falcon <Formula
     system "./build.sh", "-p", "#{prefix}", "-int", "-el"
     system "./build.sh", "-i"
     # install the htmldocs for the core and standard modules (feathers)
-    FalconHtmldocs.new.brew {
-      (doc+'core-doc').install Dir['*']
-    }
-    FalconFeathersHtmldocs.new.brew {
-      (doc+'feathers-doc').install Dir['*']
-    }
+    FalconHtmldocs.new.brew { (doc+'core-doc').install Dir['*'] }
+    FalconFeathersHtmldocs.new.brew { (doc+'feathers-doc').install Dir['*'] }
   end
 
   def caveats; <<-EOS.undent
-    HTML docs for the core and standard libraries (feathers) are 
-    installed in #{doc}/core-doc and 
+    HTML docs for the core and standard libraries (feathers) are
+    installed in #{doc}/core-doc and
     #{doc}/feathers-doc respectively.
-
     EOS
   end
 end

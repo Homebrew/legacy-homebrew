@@ -6,7 +6,7 @@ class Yaws < Formula
   md5 '950f8199592c6490556632e20e59a353'
 
   depends_on 'erlang'
- 
+
   def options
     [["--with-yapp", "Build and install yaws applications"]]
   end
@@ -24,12 +24,11 @@ class Yaws < Formula
       end
     end
   end
-  
-  def caveats
-    <<-EOS.undent
-      Usually you want to build yapp (yaws applications) as well.
-      To do so, use:
-        brew install yaws --with-yapp
+
+  def caveats; <<-EOS.undent
+    Usually you want to build yapp (yaws applications) as well.
+    To do so, use:
+      brew install yaws --with-yapp
     EOS
   end
 end

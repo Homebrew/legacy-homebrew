@@ -24,14 +24,10 @@ class Poppler <Formula
       ENV['POPPLER_QT4_CFLAGS'] = qt4Flags
     end
 
-    configureArgs = [
-      "--prefix=#{prefix}",
-      "--disable-dependency-tracking"
-    ]
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+    args << "--disable-poppler-qt4" unless ARGV.include? "--with-qt4"
 
-    configureArgs << "--disable-poppler-qt4" unless ARGV.include? "--with-qt4"
-
-    system "./configure", *configureArgs
+    system "./configure", *args
     system "make install"
 
     # Install poppler font data.

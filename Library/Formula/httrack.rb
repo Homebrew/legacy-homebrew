@@ -13,7 +13,7 @@ class Httrack <Formula
                           "--enable-shared=no"
     system "make install"
     # Don't need Gnome integration
-    rm_rf (share+'applications')
-    rm_rf (share+'pixmaps')
+    rm_rf share+'applications'
+    rm_rf share+'pixmaps'
   end
 end

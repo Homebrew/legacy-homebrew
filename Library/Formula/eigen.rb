@@ -8,7 +8,7 @@ class Eigen <Formula
   depends_on 'cmake'
 
   def install
-   system "cmake . #{std_cmake_parameters}"
+    system "cmake . #{std_cmake_parameters}"
     system "make install"
   end
 end

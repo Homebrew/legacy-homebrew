@@ -5,8 +5,8 @@ class Greg <Formula
   homepage 'http://github.com/nddrylliog/greg'
 
   def install
-    inreplace 'Makefile' do |contents|
-      contents.change_make_var! "PREFIX", prefix
+    inreplace 'Makefile' do |s|
+      s.change_make_var! "PREFIX", prefix
     end
 
     bin.mkdir

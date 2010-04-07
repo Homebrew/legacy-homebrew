@@ -13,16 +13,13 @@ class Mcabber <Formula
   depends_on 'libgcrypt' => :optional
 
   def install
-    configure_args = [
-        "--prefix=#{prefix}",
-        "--disable-debug",
-        "--disable-dependency-tracking",
-        "--enable-aspell",
-        "--enable-enchant",
-        "--enable-otr",
-        "--with-ssl"
-    ]
-    system "./configure", *configure_args
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--enable-aspell",
+                          "--enable-enchant",
+                          "--enable-otr",
+                          "--with-ssl"
     system "make install"
   end
 end

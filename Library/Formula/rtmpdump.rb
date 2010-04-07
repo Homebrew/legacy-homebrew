@@ -2,7 +2,6 @@ require 'formula'
 
 class Rtmpdump <Formula
   url 'http://rtmpdump.mplayerhq.hu/download/rtmpdump-2.3.tgz'
-  version '2.3'
   homepage 'http://rtmpdump.mplayerhq.hu'
   md5 'eb961f31cd55f0acf5aad1a7b900ef59'
 
@@ -12,7 +11,7 @@ class Rtmpdump <Formula
 
   def install
     ENV.j1
-    system "make prefix=#{prefix} MANDIR=#{man} SYS=posix install"
+    system "make", "prefix=#{prefix}", "MANDIR=#{man}", "SYS=posix install"
   end
 end
 __END__

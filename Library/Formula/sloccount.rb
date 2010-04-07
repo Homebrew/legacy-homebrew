@@ -5,11 +5,11 @@ class Sloccount <Formula
   url 'http://www.dwheeler.com/sloccount/sloccount-2.26.tar.gz'
   md5 '09abd6e2a016ebaf7552068a1dba1249'
 
-  def patches
-      DATA
-  end
-
   depends_on 'md5sha1sum'
+
+  def patches
+    DATA
+  end
 
   def install
     rm "makefile.orig" # Delete makefile.orig or patch falls over

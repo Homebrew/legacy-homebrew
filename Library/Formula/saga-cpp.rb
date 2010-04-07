@@ -20,7 +20,6 @@ class SagaCpp <Formula
 
     system "./configure", "--prefix=#{prefix}",
                           "--with-boost=#{HOMEBREW_PREFIX}",
-                          # "--with-postgresql=#{HOMEBREW_PREFIX}",
                           "--with-sqlite3=#{HOMEBREW_PREFIX}"
     system "make install"
   end

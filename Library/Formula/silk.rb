@@ -10,12 +10,11 @@ class Silk <Formula
   depends_on 'yaf'
 
   def install
-    system "./configure",
-        "--disable-dependency-tracking",
-        "--prefix=#{prefix}",
-        "--mandir=#{man}",
-        "--enable-ipv6",
-        "--enable-data-rootdir=#{var}/silk"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}",
+                          "--enable-ipv6",
+                          "--enable-data-rootdir=#{var}/silk"
     system "make"
     system "make install"
 

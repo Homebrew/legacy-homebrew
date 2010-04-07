@@ -12,7 +12,7 @@ class Weechat <Formula
   def install
     #FIXME: Compiling perl module doesn't work
     #NOTE: -DPREFIX has to be specified because weechat devs enjoy being non-standard
-    system "cmake", "-DPREFIX=#{prefix}", 
+    system "cmake", "-DPREFIX=#{prefix}",
                     "-DDISABLE_PERL=ON",
                     "-DDISABLE_RUBY:BOOL=ON",
                     std_cmake_parameters, "."

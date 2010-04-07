@@ -13,7 +13,7 @@ class GnuTar < Formula
     args = [ "--prefix=#{prefix}" , "--mandir=#{man}" ]
     args << "--program-prefix=g" unless ARGV.include? '--default-names'
 
-    system "./configure", *args                      
+    system "./configure", *args
     system "make install"
   end
 end

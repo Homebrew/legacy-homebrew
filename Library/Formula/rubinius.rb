@@ -8,7 +8,7 @@ class Rubinius < Formula
   head 'git://github.com/evanphx/rubinius.git'
 
   # Do not strip binaries, or else it fails to run.
-  def skip_clean?(path); true end
+  skip_clean :all
 
   def install
     # Let Rubinius define its own flags; messing with these causes build breaks.

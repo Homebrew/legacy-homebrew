@@ -6,14 +6,9 @@ class Qdbm <Formula
   md5 '084e07824e231969356ec7cefac97985'
 
   def install
-    configure_args = [
-		"--prefix=#{prefix}",
-		"--disable-debug",
-		"--disable-dependency-tracking",
-		"--mandir=#{man}",
-    ]
-
-    system "./configure", *configure_args
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                      		"--prefix=#{prefix}",
+                      		"--mandir=#{man}"
     system "make mac"
     system "make install-mac"
   end

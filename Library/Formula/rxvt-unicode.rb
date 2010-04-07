@@ -11,18 +11,15 @@ class RxvtUnicode < Formula
   end
 
   def install
-    system "./configure",
-           "--prefix=#{prefix}",
-           "--disable-afterimage",
-           "--enable-perl",
-           "--enable-256-color",
-           "--with-term=rxvt-256color",
-           "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--disable-afterimage",
+                          "--enable-perl",
+                          "--enable-256-color",
+                          "--with-term=rxvt-256color"
     system "make"
-
     # `make` won't work unless we rename this
     system "mv INSTALL README.install"
-
     system "make install"
   end
 

@@ -9,7 +9,7 @@ class Ilmbase <Formula
     DATA
   end
 
-  def install    
+  def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end

@@ -9,10 +9,9 @@ class Sbt <Formula
   def install
     (bin+'sbt').write <<-EOS
 #!/bin/sh
-
-java -Xmx512M -jar #{prefix}/#{JAR} "$@"
+java -Xmx512M -jar #{libexec}/#{JAR} "$@"
 EOS
 
-    prefix.install Dir['*']
+    libexec.install Dir['*']
   end
 end

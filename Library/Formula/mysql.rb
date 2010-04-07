@@ -69,16 +69,16 @@ class Mysql <Formula
         cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents
         launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
 
-    If this is an upgrade and you already have the com.mysql.mysqld.plist loaded: 
+    If this is an upgrade and you already have the com.mysql.mysqld.plist loaded:
         launchctl unload -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
         cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents
         launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
 
-    Note on upgrading: 
-        We overwrite any existing com.mysql.mysqld.plist in ~/Library/LaunchAgents 
-        if we are upgrading because previous versions of this brew created the 
+    Note on upgrading:
+        We overwrite any existing com.mysql.mysqld.plist in ~/Library/LaunchAgents
+        if we are upgrading because previous versions of this brew created the
         plist with a version specific program argument.
-    
+
     Or start manually with:
         #{prefix}/share/mysql/mysql.server start
     EOS

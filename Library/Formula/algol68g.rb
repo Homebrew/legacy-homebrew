@@ -9,9 +9,8 @@ class Algol68g <Formula
   def install
     # These folders need to exist for configure to work. Lame.
     bin.mkpath
-  
-    system "./configure",
-      "-O3", "--threads", "--bindir=#{bin}", "--cc=#{ENV.cc}"
+
+    system "./configure", "-O3", "--threads", "--bindir=#{bin}", "--cc=#{ENV.cc}"
 
     # Don't make the docs, they appear to be missing.
     inreplace 'makefile', '@install -m 644 doc/man1/a68g.1 $(man_dir)', ''

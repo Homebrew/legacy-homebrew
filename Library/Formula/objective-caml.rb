@@ -7,7 +7,7 @@ class ObjectiveCaml <Formula
 
   # note it indeed seems necessary to skip cleaning everything
   # see http://github.com/mxcl/homebrew/issues/issue/188
-  def skip_clean? path; true; end
+  skip_clean :all
 
   def install
     system "./configure", "--prefix", prefix, "--mandir", man

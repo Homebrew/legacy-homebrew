@@ -8,15 +8,11 @@ class Sox <Formula
   depends_on 'libvorbis' => :optional
 
   def install
-    configure_args = [
-      "--prefix=#{prefix}",
-      "--disable-debug",
-      "--disable-dependency-tracking",
-    ]
     # Linking error 'symbol not found' on 10.6 64-bit '"_gomp_thread_attr", referenced from:'
-    configure_args << "--disable-gomp"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--disable-gomp"
 
-    system "./configure", *configure_args
     system "make install"
   end
 end

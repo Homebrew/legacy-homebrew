@@ -7,6 +7,6 @@ class Ski <Formula
 
   def install
     bin.install "ski"
-    (man+"man6").install "ski.6"
+    man6.install "ski.6"
   end
 end

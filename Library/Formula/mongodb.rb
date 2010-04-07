@@ -14,13 +14,11 @@ class Mongodb <Formula
     version '1.6.0-i386'
   end
 
-  def skip_clean? path
-    true
-  end
+  skip_clean :all
 
   def install
     # Copy the prebuilt binaries to prefix
-    system "cp -prv * #{prefix}"
+    prefix.install Dir['*']
 
     # Create the data and log directories under /var
     (var+'mongodb').mkpath

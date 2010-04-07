@@ -33,16 +33,14 @@ class GnuChess <Formula
     doc.install ['TODO', 'book_1.01.pgn.gz', 'book']
   end
 
-  def caveats
-    <<-EOS.undent
-      The README file contains a manual for use:
-      
-        #{doc}/README
-      
-      This formula also downloads the additional opening book.  The opening
-      book is a gzipped PGN file that can be added using gnuchess commands.
-      The book_*.pgn.gz file is located in the same directory as the README.
-      See the README for using the `book add' command.
+  def caveats; <<-EOS.undent
+    The README file contains a manual for use:
+      #{doc}/README
+
+    This formula also downloads the additional opening book.  The opening
+    book is a gzipped PGN file that can be added using gnuchess commands.
+    The book_*.pgn.gz file is located in the same directory as the README.
+    See the README for using the `book add' command.
     EOS
   end
 end

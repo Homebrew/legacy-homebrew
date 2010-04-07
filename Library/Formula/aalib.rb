@@ -11,7 +11,8 @@ class Aalib <Formula
 
   def install
     ENV.ncurses_define
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--mandir=#{man}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--mandir=#{man}", "--prefix=#{prefix}"
     system "make install"
   end
 end
