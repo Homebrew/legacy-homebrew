@@ -1,8 +1,8 @@
 require 'formula'
 
 class Libvorbis <Formula
-  url 'http://downloads.xiph.org/releases/vorbis/libvorbis-1.2.3.tar.bz2'
-  md5 '67beb237faf97d74782ec7071756b2b6'
+  url 'http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.1.tar.bz2'
+  md5 '90b1eb86e6d57694ffdfc2e4d8c7a64e'
   homepage 'http://vorbis.com'
 
   depends_on 'libogg'

@@ -12,19 +12,14 @@ to keg-only.
     EOS
   end
 
-  def options
-    [
-      ["--universal", "Build both i386 and x86_64."]
-    ]
-  end
-
   def patches
     patches = (1..4).collect { |n| "ftp://ftp.gnu.org/gnu/readline/readline-6.0-patches/readline60-%03d"%n }
     { :p0 => patches }
   end
 
   def install
-    ENV.universal_binary if ARGV.include? "--universal"
+    # Always build universal, per http://github.com/mxcl/homebrew/issues/issue/899
+    ENV.universal_binary
     system "./configure", "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--infodir=#{info}",

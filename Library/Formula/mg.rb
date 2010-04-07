@@ -1,12 +1,11 @@
 require 'formula'
 
-class Mg <Formula
-  url 'http://www.dds.nl/~han/software/mg/mg-20090107.tar.gz'
-  homepage 'http://www.han.dds.nl/software/mg'
-  md5 'f25a139da44c3a2f760ffec531bd996e'
+class Mg < Formula
+  url 'http://pintday.org/hack/mg/mg-p-080818.tgz'
+  homepage 'http://pintday.org/hack/mg/'
+  md5 '5cdd46b226586306bde2dd5d47920d66'
 
   def install
-    system "./configure"
     system "make prefix=#{prefix}"
     system "make install prefix=#{prefix}"
   end

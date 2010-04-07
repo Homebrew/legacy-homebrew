@@ -10,6 +10,10 @@ class Proj <Formula
   homepage 'http://trac.osgeo.org/proj/'
   md5 '927d34623b52e0209ba2bfcca18fe8cd'
 
+  def skip_clean? path
+    path.extname == '.la'
+  end
+
   def install
     ENV.gcc_4_2
 

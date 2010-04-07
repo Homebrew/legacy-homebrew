@@ -80,6 +80,7 @@ protected
   # symlinks the contents of self+foo recursively into /usr/local/foo
   def link_dir foo
     root = self+foo
+    return unless root.exist?
 
     root.find do |src|
       next if src == root

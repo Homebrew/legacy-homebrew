@@ -6,7 +6,7 @@ require 'utils'
 ARGV.extend(HomebrewArgvExtension)
 
 HOMEBREW_VERSION = 0.6
-HOMEBREW_WWW = 'http://bit.ly/Homebrew'
+HOMEBREW_WWW = 'http://mxcl.github.com/homebrew/'
 
 if Process.uid == 0
   # technically this is not the correct place, this cache is for *all users*

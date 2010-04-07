@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# This shell script runs Homebrew's test suite.
+#
+# Note: "formula_test" is omitted; these aren't unit tests but sanity checks
+# on the real formulae.
+#
+# Run as:
+#  ./tests -- --skip-update
+# to omit the update tests which only seem to work for mxcl
+#
+
+# Feel free to split out test_bucket
+ruby test_bucket.rb $*
+ruby test_formula.rb $*
+ruby test_versions.rb $*
+ruby test_checksums.rb $*
+ruby test_inreplace.rb $*
+ruby test_hardware.rb $*
+ruby test_formula_install.rb $*
+ruby test_patching.rb $*
+ruby test_external_deps.rb $*
+ruby test_pathname_install.rb $*
+ruby test_utils.rb $*
+ruby test_ARGV.rb $*
+ruby test_ENV.rb $*
+
+# Update tests (only seem to work for mxcl)
+ruby test_updater.rb $*

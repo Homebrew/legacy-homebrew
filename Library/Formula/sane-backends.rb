@@ -7,19 +7,16 @@ class SaneBackends <Formula
 
   depends_on 'jpeg'
   depends_on 'libtiff'
-  depends_on 'libusb'
+  depends_on 'libusb-compat'
 
   def install
-      configure_args = [
-          "--prefix=#{prefix}",
-          "--disable-debug",
-          "--disable-dependency-tracking",
-          "--without-gphoto2",
-          "--enable-local-backends",
-          "--enable-libusb",
-          "--disable-latex",
-      ]
-    system "./configure", *configure_args
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-debug",
+                          "--prefix=#{prefix}",
+                          "--without-gphoto2",
+                          "--enable-local-backends",
+                          "--enable-libusb",
+                          "--disable-latex"
     system "make"
     system "make install"
   end

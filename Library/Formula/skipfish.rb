@@ -1,9 +1,9 @@
 require 'formula'
 
 class Skipfish <Formula
-  url 'http://skipfish.googlecode.com/files/skipfish-1.25b.tgz'
+  url 'http://skipfish.googlecode.com/files/skipfish-1.29b.tgz'
   homepage 'http://code.google.com/p/skipfish/'
-  md5 '6563633524e58592081b169fdbb28d47'
+  md5 '84544ad46472d1f5eb22987aaa06333e'
 
   depends_on 'libidn'
 
@@ -12,23 +12,23 @@ class Skipfish <Formula
     ENV.append "LDFLAGS", "-L#{HOMEBREW_PREFIX}/lib"
     inreplace "config.h",
       "#define ASSETS_DIR              \"assets\"",
-      "#define ASSETS_DIR		 \"#{prefix}/share/skipfish/assets\""
+      "#define ASSETS_DIR	       \"#{libexec}/assets\""
     system "make"
     bin.install "skipfish"
-    (share+"skipfish/dictionaries").install Dir["dictionaries/*"]
-    (share+"skipfish/assets").install Dir["assets/*"]
+    (libexec+"dictionaries").install Dir["dictionaries/*"]
+    (libexec+"assets").install Dir["assets/*"]
   end
 
   def caveats; <<-EOS.undent
 
-    NOTE: Skipfish uses dictionary-based probes and will not run until you
-    have selected and made a copy of a dictionary for it to use.
+    NOTE: Skipfish uses dictionary-based probes and will not run until 
+    you have specified a dictionary for it to use.
 
-    Please read consult dictionaries/README-FIRST carefully to make the right
-    choice. This step has a profound impact on the quality of scan results
-    later on.
+    Please read #{libexec}/dictionaries/README-FIRST
+    carefully to make the right choice. This step has a profound impact
+    on the quality of results later on.
 
-    #{HOMEBREW_PREFIX}/lib/skipfish/dictionaries/README-FIRST
+    "skipfish -h" prints out usage information.
 
     EOS
   end
