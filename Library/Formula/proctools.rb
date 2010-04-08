@@ -20,7 +20,7 @@ class Proctools <Formula
   end
   
   def install
-    system "bsdmake"
+    system "/usr/bin/bsdmake"
     
     ["pgrep/pgrep", "pkill/pkill", "pfind/pfind"].each do |prog|
       bin.install prog
