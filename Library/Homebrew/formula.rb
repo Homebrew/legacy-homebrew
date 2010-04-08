@@ -475,7 +475,7 @@ private
 
     def depends_on name
       @deps ||= []
-      @external_deps ||= {:python => [], :ruby => [], :perl => []}
+      @external_deps ||= {:python => [], :perl => [], :ruby => [], :jruby => []}
 
       case name
       when String
@@ -483,7 +483,7 @@ private
       when Hash
         key, value = name.shift
         case value
-        when :python, :ruby, :perl
+        when :python, :perl, :ruby, :jruby
           @external_deps[value] << key
           return
         when :optional, :recommended

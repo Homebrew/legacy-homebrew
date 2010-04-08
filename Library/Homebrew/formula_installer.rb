@@ -43,6 +43,13 @@ Homebrew does not provide formulae for Ruby dependencies, rubygems does:
     gem install #{dep}
     EOS
   end
+  def jrberr dep; <<-EOS
+Unsatisfied dependency "#{dep}"
+Homebrew does not provide formulae for JRuby dependencies, rubygems does:
+
+    jruby -S gem install #{dep}
+    EOS
+  end
 
   def check_external_deps f
     return unless f.external_deps
@@ -55,6 +62,9 @@ Homebrew does not provide formulae for Ruby dependencies, rubygems does:
     end
     f.external_deps[:ruby].each do |dep|
       raise rberr(dep) unless quiet_system "/usr/bin/env", "ruby", "-rubygems", "-e", "require '#{dep}'"
+    end
+    f.external_deps[:jruby].each do |dep|
+      raise rberr(dep) unless quiet_system "/usr/bin/env", "jruby", "-rubygems", "-e", "require '#{dep}'"
     end
   end
 
