@@ -107,9 +107,9 @@ def check_user_path
   seen_prefix_bin = false
   seen_prefix_sbin = false
   seen_usr_bin = false
-  
-  paths = ENV['PATH'].split(":")
-  
+
+  paths = ENV['PATH'].split(':').collect{|p| File.expand_path p}
+
   paths.each do |p|
     if p == '/usr/bin'
       seen_usr_bin = true
@@ -118,24 +118,39 @@ def check_user_path
           /usr/bin is in your PATH before Homebrew's bin. This means that system-
           provided programs will be used before Homebrew-provided ones. This is an
           issue if you install, for instance, Python.
+
           Consider editing your .bashrc to put:
             #{HOMEBREW_PREFIX}/bin
-          ahead of /usr/bin.
+          ahead of /usr/bin in your $PATH.
 
         EOS
       end
     end
-    
-    seen_prefix_bin = true if p == "#{HOMEBREW_PREFIX}/bin"
+
+    seen_prefix_bin  = true if p == "#{HOMEBREW_PREFIX}/bin"
     seen_prefix_sbin = true if p == "#{HOMEBREW_PREFIX}/sbin"
   end
-  
+
+  unless seen_prefix_bin
+    puts <<-EOS.undent
+      Homebrew's bin was not found in your path. Some brews depend
+      on other brews that install tools to bin.
+
+      You should edit your .bashrc to add:
+        #{HOMEBREW_PREFIX}/bin
+      to $PATH.
+
+      EOS
+  end
+
   unless seen_prefix_sbin
     puts <<-EOS.undent
       Some brews install binaries to sbin instead of bin, but Homebrew's
       sbin was not found in your path.
-      Consider editing your .bashrc to add sbin to PATH:
+
+      Consider editing your .bashrc to add:
         #{HOMEBREW_PREFIX}/sbin
+      to $PATH.
 
       EOS
   end
@@ -152,6 +167,7 @@ def check_pkg_config
 
       `./configure` may have problems finding brew-installed packages using
       this other pkg-config.
+
     EOS
   end
 end
