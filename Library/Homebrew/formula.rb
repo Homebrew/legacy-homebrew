@@ -134,7 +134,7 @@ class Formula
   
   # reimplement if we don't autodetect the download strategy you require
   def download_strategy
-    if @specs
+    if @specs and @url == @head
       vcs = @specs.delete :using
       if vcs != nil
         # If a class is passed, assume it is a download strategy
