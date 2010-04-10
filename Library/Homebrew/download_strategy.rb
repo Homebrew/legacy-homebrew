@@ -384,16 +384,20 @@ end
 
 def detect_download_strategy url
   case url
+    # We use a special URL pattern for cvs
   when %r[^cvs://] then CVSDownloadStrategy
+    # Standard URLs
+  when %r[^bzr://] then BazaarDownloadStrategy
+  when %r[^git://] then GitDownloadStrategy
   when %r[^hg://] then MercurialDownloadStrategy
   when %r[^svn://] then SubversionDownloadStrategy
   when %r[^svn+http://] then SubversionDownloadStrategy
-  when %r[^git://] then GitDownloadStrategy
-  when %r[^bzr://] then BazaarDownloadStrategy
+    # Some well-known source hosts
   when %r[^https?://(.+?\.)?googlecode\.com/hg] then MercurialDownloadStrategy
   when %r[^https?://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
   when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
   when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
+    # Otherwise just try to download
   else CurlDownloadStrategy
   end
 end
