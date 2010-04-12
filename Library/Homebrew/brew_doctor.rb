@@ -1,6 +1,6 @@
 def check_for_stray_dylibs
   bad_dylibs = Dir['/usr/local/lib/*.dylib'].select { |f| File.file? f and not File.symlink? f }
-  if bad_dylibs.count > 0
+  if bad_dylibs.length > 0
     puts "You have unbrewed dylibs in /usr/local/lib. These could cause build problems"
     puts "when building Homebrew formula. If you no longer need them, delete them:"
     puts
@@ -67,7 +67,7 @@ def check_share_locale
   end
 
   cant_read.sort!
-  if cant_read.count > 0
+  if cant_read.length > 0
     puts <<-EOS.undent
     Some folders in #{locale} aren't writable.
     This can happen if you "sudo make install" software that isn't managed
