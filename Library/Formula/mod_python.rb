@@ -20,12 +20,9 @@ class ModPython <Formula
     # Explicitly set the arch in CFLAGS so the PSPModule will build against system Python
     # We remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
     archs = archs_for_command("python")
-
-    arch_flags = ""
-    arch_flags += " -arch i386" if archs.include?(:i386)
-    arch_flags += " -arch x86_64" if archs.include?(:x86_64)
-
-    ENV.append_to_cflags arch_flags
+    archs.delete :ppc7400
+    archs.delete :ppc64
+    ENV.append_to_cflags archs.collect{ |a| "-arch #{a}" }.join(' ')
 
     inreplace 'Makefile' do |s|
       # Don't install to the system Apache libexec folder
