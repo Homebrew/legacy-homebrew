@@ -20,15 +20,16 @@ class ModWsgi <Formula
 
     # Find the archs of the Python we are building against.
     # We remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
-    archs = archs_for_command("python").collect{ |arch| "-arch #{arch}" }
+    archs = archs_for_command("python")
     archs.delete :ppc7400
     archs.delete :ppc64
     
     inreplace 'Makefile' do |s|
       s.gsub! "-Wc,'-arch x86_64' -Wc,'-arch i386' -Wc,'-arch ppc7400'",
-              archs.collect{ |a| "-Wc,'#{a}'" }.join(' ')
+              archs.collect{ |a| "-Wc,'-arch #{a}'" }.join(' ')
 
-      s.gsub! "-arch x86_64 -arch i386 -arch ppc7400", archs*' '
+      s.gsub! "-arch x86_64 -arch i386 -arch ppc7400",
+              archs.collect{ |a| "-arch #{a}" }.join(' ')
 
       # --libexecdir parameter to ./configure isn't changing this, so cram it in
       # This will be where the Apache module ends up, and we don't want to touch
