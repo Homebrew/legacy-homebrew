@@ -130,7 +130,7 @@ def gzip path
   return Pathname.new(path+".gz")
 end
 
-# returns array of architectures suitable for -arch gcc flag
+# Returns array of architectures that the given command is built for.
 def archs_for_command cmd
   cmd = cmd.to_s # If we were passed a Pathname, turn it into a string.
   cmd = `/usr/bin/which #{cmd}` unless Pathname.new(cmd).absolute?
