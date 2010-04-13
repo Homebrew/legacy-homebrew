@@ -7,6 +7,7 @@ class Strigi <Formula
 
   depends_on 'cmake'
   depends_on 'clucene'
+  depends_on 'exiv2' => :optional
 
   def install
     ENV['CLUCENE_HOME'] = HOMEBREW_PREFIX

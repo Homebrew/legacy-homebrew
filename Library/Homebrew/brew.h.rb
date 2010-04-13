@@ -1,5 +1,6 @@
 FORMULA_META_FILES = %w[README README.md ChangeLog COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
 PLEASE_REPORT_BUG = "#{Tty.white}Please report this bug at #{Tty.em}http://github.com/mxcl/homebrew/issues#{Tty.reset}"
+HOMEBREW_RECOMMENDED_GCC = 5577
 
 def check_for_blacklisted_formula names
   return if ARGV.force?

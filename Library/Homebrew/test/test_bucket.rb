@@ -1,14 +1,34 @@
+require 'testing_env'
+
+require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
+ARGV.extend(HomebrewArgvExtension)
+
+require 'test/testball'
+require 'utils'
+require 'brew.h'
+
+class MockFormula <Formula
+  def initialize url
+    @url=url
+    @homepage = 'http://example.com/'
+    super 'test'
+  end
+end
+
+class TestZip <Formula
+  def initialize
+    zip=HOMEBREW_CACHE.parent+'test-0.1.zip'
+    Kernel.system '/usr/bin/zip', '-0', zip, ABS__FILE__
+    @url="file://#{zip}"
+    @homepage = 'http://example.com/'
+    super 'testzip'
+  end
+end
+
 # All other tests so far -- feel free to break them out into
 # separate TestCase classes.
 
 class BeerTasting < Test::Unit::TestCase
-  def test_put_columns_empty
-    assert_nothing_raised do
-      # Issue #217 put columns with new results fails.
-      puts_columns []
-    end
-  end
-
   def test_supported_compressed_types
     assert_nothing_raised do
       MockFormula.new 'test-0.1.tar.gz'
@@ -19,69 +39,6 @@ class BeerTasting < Test::Unit::TestCase
     end
   end
 
-  def test_prefix
-    nostdout do
-      TestBall.new.brew do |f|
-        assert_equal File.expand_path(f.prefix), (HOMEBREW_CELLAR+f.name+'0.1').to_s
-        assert_kind_of Pathname, f.prefix
-      end
-    end
-  end
-  
-  def test_no_version
-    assert_nil Pathname.new("http://example.com/blah.tar").version
-    assert_nil Pathname.new("arse").version
-  end
-  
-  def test_bad_version
-    assert_raises(RuntimeError) {f=TestBadVersion.new}
-  end
-  
-  def test_install
-    f=TestBall.new
-    
-    assert_equal Formula.path(f.name), f.path
-    assert !f.installed?
-    
-    nostdout do
-      f.brew do
-        f.install
-      end
-    end
-    
-    assert_match Regexp.new("^#{HOMEBREW_CELLAR}/"), f.prefix.to_s
-    
-    assert f.bin.directory?
-    assert_equal 3, f.bin.children.length
-    libexec=f.prefix+'libexec'
-    assert libexec.directory?
-    assert_equal 1, libexec.children.length
-    assert !(f.prefix+'main.c').exist?
-    assert f.installed?
-    
-    keg=Keg.new f.prefix
-    keg.link
-    assert_equal 2, HOMEBREW_PREFIX.children.length
-    assert (HOMEBREW_PREFIX+'bin').directory?
-    assert_equal 3, (HOMEBREW_PREFIX+'bin').children.length
-    
-    keg.uninstall
-    assert !keg.exist?
-    assert !f.installed?
-  end
-  
-  def test_script_install
-    f=TestScriptFileFormula.new
-    
-    nostdout do
-      f.brew do
-        f.install
-      end
-    end
-    
-    assert_equal 1, f.bin.children.length
-  end
-
   FOOBAR='foo-bar'
   def test_formula_funcs
     classname=Formula.class_s(FOOBAR)
@@ -90,7 +47,7 @@ class BeerTasting < Test::Unit::TestCase
     assert_equal "FooBar", classname
     assert_match Regexp.new("^#{HOMEBREW_PREFIX}/Library/Formula"), path.to_s
 
-    path=HOMEBREW_PREFIX+'Library'+'Formula'+"#{FOOBAR}.rb"
+    path=HOMEBREW_PREFIX+"Library/Formula/#{FOOBAR}.rb"
     path.dirname.mkpath
     File.open(path, 'w') do |f|
       f << %{
@@ -108,17 +65,6 @@ class BeerTasting < Test::Unit::TestCase
     assert_not_nil Formula.factory(FOOBAR)
   end
   
-  def test_cant_override_brew
-    assert_raises(RuntimeError) { TestBallOverrideBrew.new }
-  end
-  
-  def test_abstract_formula
-    f=MostlyAbstractFormula.new
-    assert_equal '__UNKNOWN__', f.name
-    assert_raises(RuntimeError) { f.prefix }
-    nostdout { assert_raises(RuntimeError) { f.brew } }
-  end
-
   def test_zip
     nostdout { assert_nothing_raised { TestZip.new.brew {} } }
   end
@@ -131,32 +77,6 @@ class BeerTasting < Test::Unit::TestCase
   #   ARGV.named.each{|f| n+=1 if f == 'foo'}
   #   assert_equal 1, n
   # end
-  
-  def test_ARGV
-    assert_raises(FormulaUnspecifiedError) { ARGV.formulae }
-    assert_raises(KegUnspecifiedError) { ARGV.kegs }
-    assert ARGV.named.empty?
-    
-    (HOMEBREW_CELLAR+'mxcl'+'10.0').mkpath
-    
-    ARGV.reset
-    ARGV.unshift 'mxcl'
-    assert_equal 1, ARGV.named.length
-    assert_equal 1, ARGV.kegs.length
-    assert_raises(FormulaUnavailableError) { ARGV.formulae }
-  end
-  
-  # these will raise if we don't recognise your mac, but that prolly 
-  # indicates something went wrong rather than we don't know
-  def test_hardware_cpu_type
-    assert [:intel, :ppc].include?(Hardware.cpu_type)
-  end
-  
-  def test_hardware_intel_family
-    if Hardware.cpu_type == :intel
-      assert [:core, :core2, :penryn, :nehalem].include?(Hardware.intel_family)
-    end
-  end
   
   def test_brew_h
     nostdout do
@@ -209,18 +129,6 @@ class BeerTasting < Test::Unit::TestCase
     assert_equal 10.7, f+0.1
   end
 
-  def test_arch_for_command
-    arches=archs_for_command '/usr/bin/svn'
-    if `sw_vers -productVersion` =~ /10\.(\d+)/ and $1.to_i >= 6
-      assert_equal 3, arches.length
-      assert arches.include?(:x86_64)
-    else
-      assert_equal 2, arches.length
-    end
-    assert arches.include?(:i386)
-    assert arches.include?(:ppc7400)
-  end
-
   def test_pathname_version
     d=HOMEBREW_CELLAR+'foo-0.1.9'
     d.mkpath
@@ -255,45 +163,16 @@ class BeerTasting < Test::Unit::TestCase
         abcd.cp HOMEBREW_CACHE
         assert orig_abcd.exist?
 
-        foo1=HOMEBREW_CACHE+'foo-0.1.tar.gz'
-        FileUtils.cp ABS__FILE__, foo1
-        assert foo1.file?
-        
-        assert_equal '.tar.gz', foo1.extname
-        assert_equal 'foo-0.1', foo1.stem
-        assert_equal '0.1', foo1.version
-        
         HOMEBREW_CACHE.chmod_R 0777
       end
     end
+  end
+  
+  def test_pathname_properties
+    foo1=HOMEBREW_CACHE+'foo-0.1.tar.gz'
     
-    assert_raises(RuntimeError) {Pathname.getwd.install 'non_existant_file'}
-  end
-  
-  def test_formula_class_func
-    assert_equal Formula.class_s('s-lang'), 'SLang'
-    assert_equal Formula.class_s('pkg-config'), 'PkgConfig'
-    assert_equal Formula.class_s('foo_bar'), 'FooBar'
-  end
-  
-  def test_class_names
-    assert_equal 'ShellFm', Formula.class_s('shell.fm')
-    assert_equal 'Fooxx', Formula.class_s('foo++')
-  end
-      
-  def test_ENV_options
-    require 'extend/ENV'
-    ENV.extend(HomebrewEnvExtension)
-
-    ENV.gcc_4_0
-    ENV.gcc_4_2
-    ENV.O3
-    ENV.minimal_optimization
-    ENV.no_optimization
-    ENV.libxml2
-    ENV.x11
-    ENV.enable_warnings
-    assert !ENV.cc.empty?
-    assert !ENV.cxx.empty?
+    assert_equal '.tar.gz', foo1.extname
+    assert_equal 'foo-0.1', foo1.stem
+    assert_equal '0.1', foo1.version
   end
 end

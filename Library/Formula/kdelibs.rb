@@ -1,9 +1,9 @@
 require 'formula'
 
 class Kdelibs <Formula
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.4.1/src/kdelibs-4.4.1.tar.bz2'
+  url 'ftp://ftp.kde.org/pub/kde/stable/4.4.2/src/kdelibs-4.4.2.tar.bz2'
   homepage 'http://www.kde.org/'
-  md5 '5057908fb9dcf7997a87fe27a382bfc9'
+  md5 '44ddba0e31ee3d78da09f0176d3c66db'
 
   depends_on 'cmake'
   depends_on 'qt'
@@ -15,6 +15,8 @@ class Kdelibs <Formula
   depends_on 'soprano'
   depends_on 'shared-desktop-ontologies'
   depends_on 'gettext'
+  depends_on 'shared-mime-info'
+  depends_on 'attica'
 
   depends_on 'libpng' unless File.exist? "/usr/X11R6/lib"
 

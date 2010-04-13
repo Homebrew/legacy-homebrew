@@ -172,6 +172,13 @@ class GitDownloadStrategy <AbstractDownloadStrategy
       end
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
       safe_system 'git', 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
+      # check for submodules
+      if File.exist?('.gitmodules')
+        safe_system 'git', 'submodule', 'init'
+        safe_system 'git', 'submodule', 'update'
+        sub_cmd = "git checkout-index -a -f \"--prefix=#{dst}/$path/\""
+        safe_system 'git', 'submodule', '--quiet', 'foreach', '--recursive', sub_cmd
+      end
     end
   end
 end

@@ -90,6 +90,7 @@ def install f
         FORMULA_META_FILES.each do |file|
           FileUtils.mv "#{file}.txt", file rescue nil
           f.prefix.install file rescue nil
+          (f.prefix+file).chmod 0644 rescue nil
         end
         build_time = Time.now-beginning
       end
