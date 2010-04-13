@@ -3,7 +3,7 @@ require 'formula'
 class Libdlna <Formula
   url 'http://libdlna.geexbox.org/releases/libdlna-0.2.3.tar.bz2'
   homepage 'http://libdlna.geexbox.org/'
-  md5 ''
+  md5 '2c974f95b711e5fd07f78fc4ebfcca66'
 
   def patches
     # fixes ffmpeg locations
