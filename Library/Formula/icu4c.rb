@@ -40,7 +40,7 @@ class Icu4c <Formula
     ENV['HOMEBREW_PN'] = pn.to_s
     rx = /\t(.*) \(compatibility version (\d+\.)*\d+, current version (\d+\.)*\d+\)/
     dylibs = `otool -L "$HOMEBREW_PN"`.split "\n"
-    dylibs = dylibs.map{ |fn| rx =~ fn && $1 }.compact.reject{ |fn| fn[0].chr == '/' }.map{ |fn| p fn; Pathname.new fn }
+    dylibs = dylibs.map{ |fn| rx =~ fn && $1 }.compact.reject{ |fn| fn[0].chr == '/' }.map{ |fn| Pathname.new fn }
     yield dylibs.shift, dylibs
   end
 end
