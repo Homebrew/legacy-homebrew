@@ -41,9 +41,14 @@ class Postgresql <Formula
 
       framework_python = Pathname.new "/Library/Frameworks/Python.framework/Versions/Current/Python"
       if framework_python.exist? and not (archs_for_command framework_python).include? :x86_64
-        opoo "Detected a framework Python that does not have 64-bit support."
+        opoo "Detected a framework Python that does not have 64-bit support:"
+        puts "  #{framework_python}"
         puts "You may experience linker problems. See:"
         puts "http://osdir.com/ml/pgsql-general/2009-09/msg00160.html"
+        puts
+        puts "To build plpython against a specific Python, set PYTHON prior to brewing:"
+        puts "  PYTHON=/usr/local/bin/python  brew install postgresql"
+        puts "See: http://www.postgresql.org/docs/8.4/static/install-procedure.html"
       end
     end
 
@@ -68,6 +73,12 @@ class Postgresql <Formula
 
   def caveats
     caveats = <<-EOS
+To build plpython against a specific Python, set PYTHON prior to brewing:
+  PYTHON=/usr/local/bin/python  brew install postgresql
+See:
+  http://www.postgresql.org/docs/8.4/static/install-procedure.html
+
+
 If this is your first install, create a database with:
     initdb #{var}/postgres
 
