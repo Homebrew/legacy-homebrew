@@ -65,13 +65,14 @@ GCC-4.2: #{gcc_42 ? "build #{gcc_42}" : "N/A"} (#{RECOMMENDED_GCC_42} or newer r
 LLVM: #{llvm ? "build #{llvm}" : "N/A" } #{llvm ? "(#{RECOMMENDED_LLVM} or newer recommended)" : "" }
 MacPorts or Fink? #{macports_or_fink_installed?}
 X11 installed? #{x11_installed?}
+PATH: #{ENV['PATH']}
 EOS
 end
 
 def dump_build_env env
   puts "\"--use-llvm\" was specified" if ARGV.include? '--use-llvm'
 
-  %w[CC CXX LD CFLAGS CXXFLAGS CPPFLAGS LDFLAGS MAKEFLAGS PKG_CONFIG_PATH HOMEBREW_USE_LLVM].each do |k|
+  %w[CC CXX LD CFLAGS CXXFLAGS CPPFLAGS LDFLAGS MAKEFLAGS PATH PKG_CONFIG_PATH HOMEBREW_USE_LLVM].each do |k|
     value = env[k]
     puts "#{k}: #{value}" if value
   end
