@@ -544,7 +544,9 @@ end
 
 def llvm_build
   if MACOS_VERSION >= 10.6
-    `/Developer/usr/bin/llvm-gcc-4.2 -v 2>&1` =~ /LLVM build (\d{4,})/  
+    xcode_path = `/usr/bin/xcode-select -print-path`.chomp
+    return nil if xcode_path.empty?
+    `#{xcode_path}/usr/bin/llvm-gcc-4.2 -v 2>&1` =~ /LLVM build (\d{4,})/
     $1.to_i
   end
 end
