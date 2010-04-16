@@ -9,6 +9,6 @@ class Idnits <Formula
 
   def install
     bin.install "idnits"
-    doc.install %w(about changelog copyright todo)
+    prefix.install %w(about todo)
   end
 end
