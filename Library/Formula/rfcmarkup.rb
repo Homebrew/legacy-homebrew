@@ -8,6 +8,6 @@ class Rfcmarkup <Formula
   def install
     inreplace "rfcmarkup", "/usr/local/bin/python", "/usr/bin/env python"
     bin.install "rfcmarkup"
-    doc.install %w(changelog copyright todo)
+    prefix.install 'todo'
   end
 end
