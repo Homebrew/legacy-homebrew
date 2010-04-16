@@ -7,7 +7,7 @@ class Xml2rfc <Formula
   homepage 'http://xml.resource.org/'
 
   # http://github.com/mxcl/homebrew/issues/#issue/87
-  depends_on :subversion if MACOS_VERSION < 10.6
+  depends_on :subversion if MACOS_VERSION < 10.6 and ARGV.include? '--HEAD'
 
   def download_strategy
     if ARGV.include? '--HEAD'
