@@ -6,7 +6,7 @@ class Rfcmarkup <Formula
   md5 '092b483eba45facf28f78adfa15d42a0'
 
   def install
-    inreplace "rfcmarkup", "/usr/local/bin/python", "/usr/bin/python"    
+    inreplace "rfcmarkup", "/usr/local/bin/python", "/usr/bin/env python"
     bin.install "rfcmarkup"
     doc.install %w(changelog copyright todo)
   end
