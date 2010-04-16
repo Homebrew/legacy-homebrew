@@ -19,12 +19,13 @@ class Xml2rfc <Formula
 
   def install
     %w[xml2rfc xml2sgml].each do |f|
-      FileUtils.mv f+'.tcl', f
-      bin.install f
+      bin.install f+'.tcl' => f
     end
+
     %w[xml2txt xml2html xml2nroff].each do |f|
-      FileUtils.ln "#{prefix}/bin/xml2rfc", "#{prefix}/bin/"+f
-    end    
-    Dir["*"].each {|f| doc.install f}    
+      ln_s "#{bin}/xml2rfc", "#{bin}/#{f}"
+    end
+
+    doc.install Dir["*"]
   end
 end
