@@ -6,7 +6,7 @@ class Grails <Formula
   md5 'dcfe25c2425ec86e47dea7722b44c744'
 
   def install
-    FileUtils.rm_f Dir["bin/*.bat"]
+    rm_f Dir["bin/*.bat"]
     prefix.install Dir['*']
   end
 end

@@ -10,7 +10,7 @@ class Ioke <Formula
       s.change_make_var! 'IOKE_HOME', HOMEBREW_PREFIX
     end
 
+    rm_f Dir["bin/*.bat"]
     prefix.install %w[bin lib share]
-    FileUtils.rm_f Dir["#{bin}/*.bat"]
   end
 end
