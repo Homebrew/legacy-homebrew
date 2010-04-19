@@ -3,7 +3,7 @@ require 'formula'
 class Task <Formula
   @url='http://www.taskwarrior.org/download/task-1.9.0.tar.gz'
   @homepage='http://www.taskwarrior.org/'
-  @md5='0e9f5b6ffdf15509eb5657ae3cc6fe2ef029f8e1'
+  @md5='b9c12f60ff509c1ce5c6292041789baa'
 
   def install
     system "./configure", "--disable-debug",
