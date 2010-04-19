@@ -10,10 +10,8 @@ class Pig < Formula
   end
 
   def install
-    rm_f Dir["#{bin}/*.bat"]
-    prefix.install 'bin'
-    prefix.install 'lib/hadoop20.jar'
-    prefix.install "pig-#{version}-core.jar"
+    rm_f Dir["bin/*.bat"]
+    prefix.install ['bin', 'lib/hadoop20.jar', "pig-#{version}-core.jar"]
   end
   
 end
