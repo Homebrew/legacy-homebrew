@@ -9,6 +9,9 @@ class Erlang <Formula
   version 'R13B04'
   url "http://erlang.org/download/otp_src_#{version}.tar.gz"
   md5 'ca6da4921e438891967900aa6a084341'
+
+  # Use `brew install erlang --HEAD` to download from (faster than tarball) GitHub repo.
+  head "git://github.com/erlang/otp.git", :tag => "OTP_R13B04"
   homepage 'http://www.erlang.org'
 
   # we can't strip the beam executables or any plugins
@@ -24,12 +27,15 @@ class Erlang <Formula
     ENV.deparallelize
     ENV.gcc_4_2 # see http://github.com/mxcl/homebrew/issues/#issue/120
 
+    # If building from GitHub, this step is required (but not for tarball downloads.)
+    system "./otp_build autoconf" if File.exist? "otp_build"
+
     config_flags = ["--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--enable-kernel-poll",
-                          "--enable-threads",
-                          "--enable-dynamic-ssl-lib",
-                          "--enable-smp-support"]
+                    "--prefix=#{prefix}",
+                    "--enable-kernel-poll",
+                    "--enable-threads",
+                    "--enable-dynamic-ssl-lib",
+                    "--enable-smp-support"]
 
     unless ARGV.include? '--disable-hipe'
       # HIPE doesn't strike me as that reliable on OS X
