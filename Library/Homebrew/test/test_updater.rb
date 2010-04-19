@@ -1,3 +1,38 @@
+abort if ARGV.include? "--skip-update"
+
+require 'testing_env'
+
+require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
+ARGV.extend(HomebrewArgvExtension)
+
+require 'formula'
+require 'utils'
+require 'update'
+
+class RefreshBrewMock < RefreshBrew
+  def in_prefix_expect(expect, returns = '')
+    @expect ||= {}
+    @expect[expect] = returns
+  end
+  
+  def `(cmd)
+    if Dir.pwd == HOMEBREW_PREFIX.to_s and @expect.has_key?(cmd)
+      (@called ||= []) << cmd
+      @expect[cmd]
+    else
+      raise "#{inspect} Unexpectedly called backticks in pwd `#{HOMEBREW_PREFIX}' and command `#{cmd}'"
+    end
+  end
+  
+  def expectations_met?
+    @expect.keys.sort == @called.sort
+  end
+  
+  def inspect
+    "#<#{self.class.name} #{object_id}>"
+  end
+end
+
 class UpdaterTests < Test::Unit::TestCase
   OUTSIDE_PREFIX = '/tmp'
   def outside_prefix

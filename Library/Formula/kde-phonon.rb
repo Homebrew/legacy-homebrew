@@ -1,6 +1,6 @@
 require 'formula'
 
-class Phonon <Formula
+class KdePhonon <Formula
   url 'ftp://ftp.kde.org/pub/kde/stable/phonon/4.4.0/phonon-4.4.0.tgz'
   homepage 'http://phonon.kde.org/'
   md5 '80544b876cf0e0af05f2303b3f534351'
@@ -8,6 +8,10 @@ class Phonon <Formula
   depends_on 'cmake'
   depends_on 'qt'
   depends_on 'automoc4'
+
+  def keg_only?
+    "This package is already supplied by Qt and is only needed by KDE packages."
+  end
 
   def patches
     "http://gitorious.org/phonon/phonon/commit/9556b819b089da67290691f53ce7c1550ed23705.patch"

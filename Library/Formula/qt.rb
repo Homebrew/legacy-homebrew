@@ -71,11 +71,9 @@ class Qt <Formula
     system "./configure", *conf_args
     system "make install"
 
-    # remove unneeded files
-    `find #{lib} -name \*.prl -delete`
     # stop crazy disk usage
-    (prefix+'doc'+'html').rmtree
-    (prefix+'doc'+'src').rmtree
+    (prefix+'doc/html').rmtree
+    (prefix+'doc/src').rmtree
     # what are these anyway?
     (bin+'Assistant_adp.app').rmtree
     (bin+'pixeltool.app').rmtree

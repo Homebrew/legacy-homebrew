@@ -59,9 +59,20 @@ class Mysql <Formula
     Set up databases with:
         mysql_install_db
 
-    Automatically load on login with:
-        launchctl load -w #{prefix}/com.mysql.mysqld.plist
+    If this is your first install, automatically load on login with:
+        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents
+        launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
 
+    If this is an upgrade and you already have the com.mysql.mysqld.plist loaded: 
+        launchctl unload -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents
+        launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+
+    Note on upgrading: 
+        We overwrite any existing com.mysql.mysqld.plist in ~/Library/LaunchAgents 
+        if we are upgrading becuase previous versions of this brew created the 
+        plist with a version specific program argument.
+    
     Or start manually with:
         #{prefix}/share/mysql/mysql.server start
     EOS

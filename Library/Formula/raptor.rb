@@ -1,9 +1,9 @@
 require 'formula'
 
 class Raptor <Formula
-  url 'http://download.librdf.org/source/raptor-1.4.20.tar.gz'
+  url 'http://download.librdf.org/source/raptor-1.4.21.tar.gz'
   homepage 'http://librdf.org/raptor/'
-  md5 '4d9c950ea794d3e141ff60875b0a2bbc'
+  md5 '992061488af7a9e2d933df6b694bb876'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"

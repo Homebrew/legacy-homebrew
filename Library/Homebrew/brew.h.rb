@@ -1,5 +1,6 @@
 FORMULA_META_FILES = %w[README README.md ChangeLog COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
 PLEASE_REPORT_BUG = "#{Tty.white}Please report this bug at #{Tty.em}http://github.com/mxcl/homebrew/issues#{Tty.reset}"
+HOMEBREW_RECOMMENDED_GCC = 5577
 
 def check_for_blacklisted_formula names
   return if ARGV.force?
@@ -543,7 +544,9 @@ end
 
 def llvm_build
   if MACOS_VERSION >= 10.6
-    `/Developer/usr/bin/llvm-gcc-4.2 -v 2>&1` =~ /LLVM build (\d{4,})/  
+    xcode_path = `/usr/bin/xcode-select -print-path`.chomp
+    return nil if xcode_path.empty?
+    `#{xcode_path}/usr/bin/llvm-gcc-4.2 -v 2>&1` =~ /LLVM build (\d{4,})/
     $1.to_i
   end
 end

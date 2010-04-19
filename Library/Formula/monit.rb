@@ -1,9 +1,9 @@
 require 'formula'
 
 class Monit <Formula
-  url 'http://mmonit.com/monit/dist/monit-5.0.3.tar.gz'
+  url 'http://mmonit.com/monit/dist/monit-5.1.1.tar.gz'
   homepage 'http://mmonit.com/monit/'
-  md5 'dae7859ec10551fc941daeae60dee9d3'
+  md5 '4bbd3845ae1cbab13ec211824e0486dc'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"

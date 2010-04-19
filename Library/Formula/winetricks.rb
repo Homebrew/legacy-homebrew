@@ -1,15 +1,20 @@
 require 'formula'
 
 class Winetricks < ScriptFileFormula
-  url 'http://winezeug.googlecode.com/svn-history/r969/trunk/winetricks'
-  version 'r969'
-  md5 '1b8187bd3735cf36e486a28526650d4a'
+  url 'http://winezeug.googlecode.com/svn-history/r1019/trunk/winetricks'
+  version '20100316'
+  md5 '79ab153ae51289ec7c25c7b7ed5d68ff'
+  homepage 'http://wiki.winehq.org/winetricks'
 
   head 'http://winezeug.googlecode.com/svn/trunk/winetricks'
 
-  homepage 'http://wiki.winehq.org/winetricks'
-  
-  # depends_on 'wine' # Don't actually force Wine to install first!
+
+  def caveats
+    <<-EOS.undent
+    winetricks is a set of utilities for wine, which is installed separately:
+      brew install wine
+    EOS
+  end
 
   def download_strategy
     CurlDownloadStrategy

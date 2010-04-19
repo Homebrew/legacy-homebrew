@@ -8,7 +8,7 @@ class Tmux <Formula
   depends_on 'libevent'
 
   def install
-    ENV['PREFIX'] = "#{prefix}"
+    ENV['PREFIX'] = prefix
     system "./configure"
 
     inreplace "GNUmakefile" do |f|

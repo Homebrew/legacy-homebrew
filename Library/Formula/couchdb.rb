@@ -3,8 +3,8 @@ require 'formula'
 class Couchdb <Formula
   url 'git://github.com/apache/couchdb.git'
   homepage='http://couchdb.apache.org/'
-  version "0.10.1"
-  @specs = {:tag => "tags/0.10.1"}
+  version "0.11.0"
+  @specs = {:tag => "origin/tags/0.11.0"}
 
   depends_on 'spidermonkey'
   depends_on 'icu4c'
