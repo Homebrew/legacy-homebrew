@@ -5,6 +5,8 @@ class Zsh <Formula
   @homepage='http://www.zsh.org/'
   @md5='031efc8c8efb9778ffa8afbcd75f0152'
 
+  depends_on 'gdbm' => :optional
+
   def install
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
