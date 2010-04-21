@@ -24,6 +24,12 @@ class Ffmpeg <Formula
     configure_flags << "--enable-libfaad" if Formula.factory('faad2').installed?
     configure_flags << "--enable-libmp3lame" if Formula.factory('lame').installed?
 
+    # For 32-bit compilation under gcc 4.2, see:
+    # http://trac.macports.org/ticket/20938#comment:22
+    if MACOS_VERSION >= 10.6 and not Hardware.is_64_bit?
+      ENV.append_to_cflags "-mdynamic-no-pic"
+    end
+
     system "./configure", *configure_flags
 
     inreplace 'config.mak' do |s|
