@@ -179,6 +179,9 @@ module HomebrewEnvExtension
     append_to_cflags '-arch i386 -arch x86_64'
     ENV.O3 if self['CFLAGS'].include? '-O4' # O4 seems to cause the build to fail
     ENV.append 'LDFLAGS', '-arch i386 -arch x86_64'
+
+    # Can't mix "-march" for a 32-bit CPU  with "-arch x86_64"
+    remove_from_cflags(/-march=\S*/) if Hardware.is_32_bit?
   end
 
   def prepend key, value, separator = ' '
