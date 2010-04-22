@@ -27,6 +27,8 @@ class Hardware
       :penryn
     when 0x6b5a4cd2 # Nehalem
       :nehalem
+    when 0x573B5EEC # Arrandale
+      :arrandale
     else
       :dunno
     end
