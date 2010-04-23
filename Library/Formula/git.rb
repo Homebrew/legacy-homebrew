@@ -2,12 +2,12 @@ require 'formula'
 
 class GitManuals < Formula
   url 'http://kernel.org/pub/software/scm/git/git-manpages-1.7.0.6.tar.bz2'
-  md5 'a674816c97495ffce58cd2cdda6b1fc5'
+  md5 'bfd2744698e3cfbed42feb08525630b4'
 end
 
 class GitHtmldocs < Formula
   url 'http://kernel.org/pub/software/scm/git/git-htmldocs-1.7.0.6.tar.bz2'
-  md5 'bfd2744698e3cfbed42feb08525630b4'
+  md5 'a674816c97495ffce58cd2cdda6b1fc5'
 end
 
 class Git < Formula
