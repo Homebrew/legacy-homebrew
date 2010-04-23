@@ -8,7 +8,7 @@ class Libarchive <Formula
 # depends_on 'cmake'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
 #   system "cmake . #{std_cmake_parameters}"
     system "make install"
   end
