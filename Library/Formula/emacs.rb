@@ -7,19 +7,22 @@ class Magit <Formula
 end
 
 class Emacs <Formula
-  if ARGV.include? "--cocoa"
-    # tested bazaar revision: 99478
-    head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
-  else
+  # --cocoa implies --HEAD
+  if not ARGV.include? "--cocoa"
     url 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.1.tar.bz2'
-    head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
     md5 '17f7f0ba68a0432d58fa69d05a2225be'
+  end
+  if ARGV.include? "--use-git-head"
+    head 'git://repo.or.cz/emacs.git'
+  else
+    head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
   end
   homepage 'http://www.gnu.org/software/emacs/'
 
   def options
     [
-      ["--cocoa", "Build a cocoa version of emacs"],
+      ["--cocoa", "Build a cocoa version of emacs (implies --HEAD)"],
+      ["--use-git-head", "Use repo.or.cz git mirror for HEAD builds"],
     ]
   end
 
@@ -29,9 +32,26 @@ class Emacs <Formula
 To access texinfo documentation, set your INFOPATH to:
 #{info}
 
-Emacs recently changed to bazaar, so you may have to delete the
-cached git directory before you can update. This should be somewhere like
-$HOME/Library/Caches/Homebrew/emacs-HEAD/
+The Emacs project now uses bazaar for source code versioning. If you
+last built the Homebrew emacs formula from HEAD (or with --cocoa)
+prior to their switch from CVS to bazaar, you will have to remove your
+emacs formula cache directory before building from HEAD again. The
+Homebrew emacs cache directory can be found at
+$HOME/Library/Caches/Homebrew/emacs-HEAD.
+
+The initial checkout of the bazaar Emacs repository might take a long
+time. You might find that using the repo.or.cz git mirror is faster,
+even after the initial checkout. To use the repo.or.cz git mirror for
+HEAD (or --cocoa) builds, use the --use-git-head option in addition to
+--HEAD or --cocoa. Note that there is inevitably some lag between
+checkins made to the official Emacs bazaar repository and their
+appearance on the repo.or.cz mirror. See http://repo.or.cz/w/emacs.git
+for the mirror's status. The Emacs devs do not provide support for the
+git mirror, and they might reject bug reports filed with git version
+information. Use it at your own risk.
+
+If you switch between repositories, you'll have to remove the Homebrew
+emacs cache directory (see above).
 "
   end
   
