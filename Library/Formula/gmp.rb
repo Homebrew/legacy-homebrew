@@ -7,7 +7,8 @@ class Gmp <Formula
 
   def options
     [
-      ["--skip-check", "Do not run 'make check' to verify libraries. (Not recommended.)"]
+      ["--skip-check", "Do not run 'make check' to verify libraries. (Not recommended.)"],
+      ["--32-bit", "Force 32-bit on Leopard on 64-bit machines."]
     ]
   end
 
@@ -15,12 +16,15 @@ class Gmp <Formula
     # On OS X 10.6, some tests fail under LLVM
     ENV.gcc_4_2
 
-    args = ["--prefix=#{prefix}", "--infodir=#{info}", "--disable-debug", "--disable-dependency-tracking", "--enable-cxx"]
+    args = ["--prefix=#{prefix}", "--infodir=#{info}", "--enable-cxx"]
 
-    # Doesn't compile correctly on 10.5 MacPro in 64 bit mode
-    if MACOS_VERSION == 10.5 and Hardware.intel_family == :nehalem
-      ENV.m32
-      args << "--host=none-apple-darwin"
+    if MACOS_VERSION == 10.5
+      if Hardware.is_32_bit? or ARGV.include? "--32-bit"
+        ENV.m32
+        args << "--host=none-apple-darwin"
+      else
+        ENV.m64
+      end
     end
 
     system "./configure", *args
