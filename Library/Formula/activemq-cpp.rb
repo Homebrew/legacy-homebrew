@@ -6,6 +6,7 @@ class ActivemqCpp <Formula
   md5 '1222f0d6c5f86ef3ed5a558a533c7564'
 
  depends_on 'apr-util'
+ depends_on 'boost'
 
   def install
     system "bash autogen.sh"

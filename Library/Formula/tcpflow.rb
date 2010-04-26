@@ -5,16 +5,17 @@ class Tcpflow <Formula
   homepage 'http://www.circlemud.org/~jelson/software/tcpflow/'
   md5 '45a5aef6f043312315b7f342afc4a9c5'
 
-  depends_on 'libpcap'
-
   def patches
+    # Patch from MacPorts
     DATA
   end
 
   def install
-    FileUtils.cp "/Developer/usr/share/libtool/config/config.guess", "config.guess"
-    FileUtils.cp "/Developer/usr/share/libtool/config/config.sub", "config.sub"
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--mandir=#{man}"
+    where = `xcode-select --print-path`.chomp
+    cp Dir["#{where}/usr/share/libtool/config/config.*"], "."
+
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}", "--mandir=#{man}"
     system "make install"
   end
 end

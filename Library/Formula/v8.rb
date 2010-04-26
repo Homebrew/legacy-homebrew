@@ -1,5 +1,4 @@
 require 'formula'
-require 'hardware'
 
 class V8 <Formula
   head 'http://v8.googlecode.com/svn/trunk/'
@@ -20,10 +19,10 @@ class V8 <Formula
             "console=readline",
             "sample=shell"
 
-    include.install(Dir['include/*'])
-    lib.install(Dir['libv8.*'])
+    include.install Dir['include/*']
+    lib.install Dir['libv8.*']
     bin.install 'shell' => 'v8'
 
-    system "install_name_tool -change libv8.dylib #{lib}/libv8.dylib #{bin+'v8'}"
+    system "install_name_tool -change libv8.dylib #{lib}/libv8.dylib #{bin}/v8"
   end
 end

@@ -1,10 +1,10 @@
 require 'formula'
 
 class Pwnat <Formula
-  url 'http://samy.pl/pwnat/pwnat-0.2-beta.tgz'
+  url 'http://samy.pl/pwnat/pwnat-0.3-beta.tgz'
   homepage 'http://samy.pl/pwnat/'
-  md5 '55e2109e5237927336dfe128718097d7'
-  version '0.2-beta'
+  md5 'd1f2b556a32669484f0358d009a20feb'
+  version '0.3-beta'
 
   def install
     inreplace "Makefile" do |s|

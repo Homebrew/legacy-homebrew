@@ -1,9 +1,9 @@
 require 'formula'
 
 class Uncrustify <Formula
-  url 'http://downloads.sourceforge.net/project/uncrustify/uncrustify/uncrustify-0.55/uncrustify-0.55.tar.gz'
+  url 'http://downloads.sourceforge.net/project/uncrustify/uncrustify/uncrustify-0.56/uncrustify-0.56.tar.gz'
   homepage 'http://uncrustify.sourceforge.net/'
-  md5 'ecf61c26d5206bbc81367468827b55ac'
+  md5 '991ee882a265fa28f23f747737bce740'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"

@@ -11,9 +11,9 @@ class Spim <Formula
     Dir.chdir 'spim'
 
     inreplace "Makefile" do |s|
-      s.change_make_var! "BIN_DIR", "#{bin}"
-      s.change_make_var! "EXCEPTION_DIR", "#{libexec}"
-      s.change_make_var! "MAN_DIR", "#{man1}"
+      s.change_make_var! "BIN_DIR", bin
+      s.change_make_var! "EXCEPTION_DIR", libexec
+      s.change_make_var! "MAN_DIR", man1
     end
 
     system "make"

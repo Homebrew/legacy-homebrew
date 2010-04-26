@@ -8,18 +8,29 @@ class Bazaar <Formula
   aka :bzr
 
   def install
-    ENV.minimal_optimization
-    inreplace 'setup.py', 'man/man1', 'share/man/man1'
-    system "python", "setup.py", "build"
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
+    # Find the archs of the Python we are building against.
+    # If the python includes PPC support, then don't use Intel-
+    # specific compiler flags
+    archs = archs_for_command("python")
+    ENV.minimal_optimization if archs.include? :ppc64 or archs.include? :ppc7400
+
+    # Make the manual before we install (mv) bzrlib
+    system "make man1/bzr.1"
+    man1.install gzip('man1/bzr.1')
+
+    system "make"
+    libexec.install ['bzr', 'bzrlib']
+
+    bin.mkpath
+    ln_s libexec+'bzr', bin+'bzr'
   end
 
-  def caveats; <<-EOS
-Really Bazaar should be installed by easy_install or pip, but currently this
-doesn't work properly. As a result you need to set PYTHONPATH:
+  def caveats
+    <<-EOS.undent
+    We've built a "standalone" version of bazaar and installed its libraries to:
+      #{libexec}
 
-    export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/python2.6/site-packages
-
+    We've specifically kept it out of your Python's "site-packages" folder.
     EOS
   end
 end

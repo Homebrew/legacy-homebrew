@@ -46,6 +46,10 @@ class Hardware
     end
   end
 
+  def self.is_32_bit?
+    not self.is_64_bit?
+  end
+
   def self.is_64_bit?
     self.sysctl_bool("hw.cpu64bit_capable")
   end

@@ -2,8 +2,7 @@ require 'formula'
 
 class MysqlClient <Formula
   homepage 'http://dev.mysql.com/doc/refman/5.1/en/'
-  url 'http://mysql.llarian.net/Downloads/MySQL-5.1/mysql-5.1.43.tar.gz'
-  md5 '451fd3e8c55eecdf4c3ed109dce62f01'
+  url 'http://mysql.llarian.net/Downloads/MySQL-5.1/mysql-5.1.46.tar.gz'
 
   depends_on 'readline'
 

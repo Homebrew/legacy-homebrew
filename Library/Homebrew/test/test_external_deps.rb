@@ -27,6 +27,10 @@ class DontActuallyInstall < FormulaInstaller
   def rberr dep
     "Ruby module install message."
   end
+
+  def jrberr dep
+    "JRuby module install message."
+  end
 end
 
 
@@ -79,6 +83,22 @@ class GoodRubyBall <TestBall
   end
 end
 
+class BadJRubyBall <TestBall
+  depends_on "notapackage" => :jruby
+
+  def initialize name=nil
+    super "uses_jruby_ball"
+  end
+end
+
+class GoodJRubyBall <TestBall
+  depends_on "date" => :jruby
+
+  def initialize name=nil
+    super "uses_jruby_ball"
+  end
+end
+
 
 class ExternalDepsTests < Test::Unit::TestCase
   def check_deps_fail f
@@ -116,5 +136,14 @@ class ExternalDepsTests < Test::Unit::TestCase
 
   def test_good_ruby_deps
     check_deps_pass GoodRubyBall
+  end
+
+  # Only run these next two tests if jruby is installed.
+  def test_bad_jruby_deps
+    check_deps_fail BadJRubyBall unless `/usr/bin/which jruby`.chomp.empty?
+  end
+
+  def test_good_jruby_deps
+    check_deps_pass GoodJRubyBall unless `/usr/bin/which jruby`.chomp.empty?
   end
 end

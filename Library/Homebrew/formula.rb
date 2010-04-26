@@ -34,10 +34,15 @@ class Formulary
   def self.read_all
   # yields once for each
     Formulary.names.each do |name|
-      require Formula.path(name)
-      klass_name = Formula.class_s(name)
-      klass = eval(klass_name)
-      yield name, klass
+      begin
+        require Formula.path(name)
+        klass_name = Formula.class_s(name)
+        klass = eval(klass_name)
+        yield name, klass
+      rescue Exception=>e
+        opoo "Error importing #{name}:"
+        puts "#{e}"
+      end
     end
   end
 
@@ -134,7 +139,7 @@ class Formula
   
   # reimplement if we don't autodetect the download strategy you require
   def download_strategy
-    if @specs
+    if @specs and @url == @head
       vcs = @specs.delete :using
       if vcs != nil
         # If a class is passed, assume it is a download strategy
@@ -475,7 +480,7 @@ private
 
     def depends_on name
       @deps ||= []
-      @external_deps ||= {:python => [], :ruby => [], :perl => []}
+      @external_deps ||= {:python => [], :perl => [], :ruby => [], :jruby => []}
 
       case name
       when String
@@ -483,7 +488,7 @@ private
       when Hash
         key, value = name.shift
         case value
-        when :python, :ruby, :perl
+        when :python, :perl, :ruby, :jruby
           @external_deps[value] << key
           return
         when :optional, :recommended

@@ -1,8 +1,8 @@
 require 'formula'
 
 class Wine <Formula
-  url 'http://ibiblio.org/pub/linux/system/emulators/wine/wine-1.1.37.tar.bz2'
-  md5 'a9144360723c8276dffdbcea9c1028d5'
+  url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.1.42.tar.bz2'
+  sha1 'ea932f19528a22eacc49f16100dbf2251cb4ad5c'
   homepage 'http://www.winehq.org/'
   head 'git://source.winehq.org/git/wine.git'
 

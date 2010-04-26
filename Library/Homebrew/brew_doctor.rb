@@ -1,6 +1,6 @@
 def check_for_stray_dylibs
   bad_dylibs = Dir['/usr/local/lib/*.dylib'].select { |f| File.file? f and not File.symlink? f }
-  if bad_dylibs.count > 0
+  if bad_dylibs.length > 0
     puts "You have unbrewed dylibs in /usr/local/lib. These could cause build problems"
     puts "when building Homebrew formula. If you no longer need them, delete them:"
     puts
@@ -67,7 +67,7 @@ def check_share_locale
   end
 
   cant_read.sort!
-  if cant_read.count > 0
+  if cant_read.length > 0
     puts <<-EOS.undent
     Some folders in #{locale} aren't writable.
     This can happen if you "sudo make install" software that isn't managed
@@ -107,9 +107,9 @@ def check_user_path
   seen_prefix_bin = false
   seen_prefix_sbin = false
   seen_usr_bin = false
-  
-  paths = ENV['PATH'].split(":")
-  
+
+  paths = ENV['PATH'].split(':').collect{|p| File.expand_path p}
+
   paths.each do |p|
     if p == '/usr/bin'
       seen_usr_bin = true
@@ -118,30 +118,45 @@ def check_user_path
           /usr/bin is in your PATH before Homebrew's bin. This means that system-
           provided programs will be used before Homebrew-provided ones. This is an
           issue if you install, for instance, Python.
+
           Consider editing your .bashrc to put:
             #{HOMEBREW_PREFIX}/bin
-          ahead of /usr/bin.
+          ahead of /usr/bin in your $PATH.
 
         EOS
       end
     end
-    
-    seen_prefix_bin = true if p == "#{HOMEBREW_PREFIX}/bin"
+
+    seen_prefix_bin  = true if p == "#{HOMEBREW_PREFIX}/bin"
     seen_prefix_sbin = true if p == "#{HOMEBREW_PREFIX}/sbin"
   end
-  
+
+  unless seen_prefix_bin
+    puts <<-EOS.undent
+      Homebrew's bin was not found in your path. Some brews depend
+      on other brews that install tools to bin.
+
+      You should edit your .bashrc to add:
+        #{HOMEBREW_PREFIX}/bin
+      to $PATH.
+
+      EOS
+  end
+
   unless seen_prefix_sbin
     puts <<-EOS.undent
       Some brews install binaries to sbin instead of bin, but Homebrew's
       sbin was not found in your path.
-      Consider editing your .bashrc to add sbin to PATH:
+
+      Consider editing your .bashrc to add:
         #{HOMEBREW_PREFIX}/sbin
+      to $PATH.
 
       EOS
   end
 end
 
-def check_pkg_config
+def check_which_pkg_config
   binary = `which pkg-config`.chomp
   return if binary.empty?
 
@@ -152,6 +167,34 @@ def check_pkg_config
 
       `./configure` may have problems finding brew-installed packages using
       this other pkg-config.
+
+    EOS
+  end
+end
+
+def check_pkg_config_paths
+  binary = `which pkg-config`.chomp
+  return if binary.empty?
+
+  # Use the debug output to determine which paths are searched
+  pkg_config_paths = []
+
+  debug_output = `pkg-config --debug 2>&1`
+  debug_output.split("\n").each do |line|
+    line =~ /Scanning directory '(.*)'/
+    pkg_config_paths << $1 if $1
+  end
+
+  # Check that all expected paths are being searched
+  unless pkg_config_paths.include? "/usr/X11/lib/pkgconfig"
+    puts <<-EOS.undent
+      Your pkg-config is not checking "/usr/X11/lib/pkgconfig" for packages.
+      Earlier versions of the pkg-config formula did not add this path
+      to the search path, which means that other formula may not be able
+      to find certain dependencies.
+
+      To resolve this issue, re-brew pkg-config with:
+        brew rm pkg-config && brew install pkg-config
     EOS
   end
 end
@@ -171,7 +214,8 @@ def brew_doctor
     check_for_x11
     check_share_locale
     check_user_path
-    check_pkg_config
+    check_which_pkg_config
+    check_pkg_config_paths
 
     exit! 0
   else
