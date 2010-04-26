@@ -4,7 +4,7 @@ class CoffeeScript <Formula
   url "http://github.com/jashkenas/coffee-script/tarball/0.6.1"
   head "git://github.com/jashkenas/coffee-script.git"
   homepage "http://jashkenas.github.com/coffee-script/"
-  md5 '51908902682375ff21c8953858fa7978'
+  md5 '07abd7e549d9c1bf4f3ded776cc19b9e'
 
   # head coffee-script usually depends on head node and
   # since there isn't a way to specify that just remove
