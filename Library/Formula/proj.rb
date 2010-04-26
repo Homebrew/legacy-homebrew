@@ -1,7 +1,7 @@
 require 'formula'
 
 class ProjDatumgrid <Formula
-  url 'ftp://ftp.remotesensing.org/pub/proj/proj-datumgrid-1.5.zip'
+  url 'http://download.osgeo.org/proj/proj-datumgrid-1.5.zip'
   md5 'f5bf28a2a9c6afe9a3f670f0c0adb783'
 end
 
