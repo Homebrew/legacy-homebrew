@@ -5,6 +5,9 @@ class Libmpc < Formula
   homepage 'http://multiprecision.org'
   md5 '5b34aa804d514cc295414a963aedb6bf'
 
+  depends_on 'gmp'
+  depends_on 'mpfr'
+
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make"
