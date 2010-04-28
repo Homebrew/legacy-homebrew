@@ -1,15 +1,15 @@
 require 'formula'
 
 class Clang <Formula
-  url       'http://llvm.org/releases/2.6/clang-2.6.tar.gz'
+  url       'http://llvm.org/releases/2.7/clang-2.7.tgz'
   homepage  'http://llvm.org/'
-  md5       '09d696bf23bb4a3cf6af3c7341cdd946'
+  md5       'b83260aa8c13494adf8978b5f238bf1b'
 end
 
 class Llvm <Formula
-  url       'http://llvm.org/releases/2.6/llvm-2.6.tar.gz'
+  url       'http://llvm.org/releases/2.7/llvm-2.7.tgz'
   homepage  'http://llvm.org/'
-  md5       '34a11e807add0f4555f691944e1a404a'
+  md5       'ac322661f20e7d6c810b1869f886ad9b'
 
   def options
     [
