@@ -407,6 +407,7 @@ rescue BuildError => e
   # then replace that string with the following when the github api returns
   issues = issues_for_formula(formula_name)
   puts "These existing issues may help you:", *issues unless issues.empty?
+  puts "Consider running `brew doctor` if a large number of installs are failing."
   exit 1
 rescue RuntimeError, SystemCallError => e
   onoe e
