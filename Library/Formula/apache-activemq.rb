@@ -1,9 +1,9 @@
 require 'formula'
 
 class ApacheActivemq <Formula
-  url 'http://www.gossipcheck.com/mirrors/apache/activemq/apache-activemq/5.3.0/apache-activemq-5.3.0-bin.tar.gz'
+  url 'http://www.gossipcheck.com/mirrors/apache/activemq/apache-activemq/5.3.1/apache-activemq-5.3.1-bin.tar.gz'
   homepage 'http://activemq.apache.org/'
-  md5 'f4b88a2b4ffd21cb804cdbd4f2e0152f'
+  md5 '6c75db75987bfab40724d41f6a6373c7'
   
   def skip_clean? path
     path == libexec + 'webapps/admin/WEB-INF/jsp'
