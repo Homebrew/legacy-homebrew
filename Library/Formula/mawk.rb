@@ -3,7 +3,7 @@ require 'formula'
 class Mawk <Formula
   url 'http://invisible-island.net/datafiles/release/mawk.tar.gz'
   homepage 'http://invisible-island.net/mawk/mawk.html'
-  md5 '8a075ba568a30bd9286984c721fe82d9'
+  md5 'b9cbddeb91d60f7183e9d46d8835ae9b'
   version '1.3.4'
 
   def install

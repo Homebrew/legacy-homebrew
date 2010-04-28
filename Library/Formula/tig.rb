@@ -6,7 +6,7 @@ class Tig <Formula
   md5 '8f373a99823f6db241b66642075657d3'
 
   def install
-    system "./configure", "--disable-debug", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
     system "make install-doc-man"
   end

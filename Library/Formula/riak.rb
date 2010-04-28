@@ -3,24 +3,30 @@ require 'formula'
 class Riak <Formula
   depends_on 'erlang'
   
-  url 'http://downloads.basho.com/riak/riak-0.9/riak-0.9.1.tar.gz'
+  url 'http://downloads.basho.com/riak/riak-0.10/riak-0.10.1.tar.gz'
   homepage 'http://riak.basho.com'
-  md5 '1f78bb838ae6ded568486b0b56655613'
+  md5 'ec9ba12c3573af5ce8f6b33f56227252'
   
-  skip_clean 'log'
-  skip_clean 'log/sasl'
-  skip_clean 'data'
-  skip_clean 'data/dets'
-  skip_clean 'data/ring'
+  skip_clean 'libexec/log'
+  skip_clean 'libexec/log/sasl'
+  skip_clean 'libexec/data'
+  skip_clean 'libexec/data/dets'
+  skip_clean 'libexec/data/ring'
   
   def install
     ENV.deparallelize
     system "make all rel"
     %w(riak riak-admin).each do |file|
       inreplace "rel/riak/bin/#{file}", /^RUNNER_SCRIPT_DIR.+$/, ""
-      inreplace "rel/riak/bin/#{file}", /^RUNNER_BASE_DIR=.+$/, "RUNNER_BASE_DIR=#{prefix}"
+      inreplace "rel/riak/bin/#{file}", /^RUNNER_BASE_DIR=.+$/, "RUNNER_BASE_DIR=#{libexec}"
     end
-    system "mv rel/riak/* #{prefix}"
+
+    # Install most files to private libexec, and link in the binaries.
+    libexec.install Dir["rel/riak/*"]
+    bin.mkpath
+    ln_s libexec+'bin/riak', bin
+    ln_s libexec+'bin/riak-admin', bin
+
     (prefix + 'data/ring').mkpath
     (prefix + 'data/dets').mkpath
   end
