@@ -114,6 +114,16 @@ begin
         dirs -= ['Library', 'Cellar', '.git']
         Dir.chdir HOMEBREW_PREFIX
         exec 'find', *dirs + %w[-type f ( ! -iname .ds_store ! -iname brew )]
+      elsif ARGV.flag? '--versions'
+        if ARGV.named.empty?
+          to_list = HOMEBREW_CELLAR.children.select { |pn| pn.directory? }
+        else
+          to_list = ARGV.named.collect { |n| HOMEBREW_CELLAR+n }.select { |pn| pn.exist? }
+        end
+        to_list.each do |d|
+          versions = d.children.select { |pn| pn.directory? }.collect { |pn| pn.basename.to_s }
+          puts "#{d.basename} #{versions *' '}"
+        end
       elsif ARGV.named.empty?
         ENV['CLICOLOR']=nil
         exec 'ls', *ARGV.options<<HOMEBREW_CELLAR if HOMEBREW_CELLAR.exist?
