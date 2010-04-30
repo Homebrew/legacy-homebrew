@@ -70,7 +70,7 @@ class Mysql <Formula
 
     Note on upgrading: 
         We overwrite any existing com.mysql.mysqld.plist in ~/Library/LaunchAgents 
-        if we are upgrading becuase previous versions of this brew created the 
+        if we are upgrading because previous versions of this brew created the 
         plist with a version specific program argument.
     
     Or start manually with:
