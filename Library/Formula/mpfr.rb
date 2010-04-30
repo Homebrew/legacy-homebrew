@@ -12,12 +12,7 @@ class Mpfr <Formula
   end
 
   def install
-      configure_args = [
-          "--prefix=#{prefix}",
-          "--disable-debug",
-          "--disable-dependency-tracking",
-      ]
-    system "./configure", *configure_args
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end
