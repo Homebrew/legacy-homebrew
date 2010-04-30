@@ -9,8 +9,9 @@ class Darwinbuild <Formula
   end
 
   def install
-    ENV.no_optimization
-    system "make install PREFIX=#{prefix}"
+    ENV.delete('CC')
+    ENV.delete('LD')
+    system "xcodebuild -configuration Release install DSTROOT=/ PREFIX=#{prefix}"
   end
 end
 
