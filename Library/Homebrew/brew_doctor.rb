@@ -353,17 +353,13 @@ def check_for_multiple_volumes
 
   unless where_cellar == where_temp
     puts <<-EOS.undent
-      Your Cellar and TMP folders are on different volumes.
+      Your Cellar and /tmp folders are on different volumes.
 
       Putting your Cellar and TMP folders on different volumes causes problems
       for brews that install symlinks, such as Git.
 
-      Please post the details of your setup to this existing issue, if the comments
-      there don't already capture them:
-        http://github.com/mxcl/homebrew/issues/issue/1238
-
-      A work-around is available in this branch:
-        http://github.com/adamv/homebrew/tree/temp
+      You should set the "HOMEBREW_TEMP" environmental variable to a suitable
+      folder on the same volume as your Cellar.
 
     EOS
   end
