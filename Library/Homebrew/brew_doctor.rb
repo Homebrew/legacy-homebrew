@@ -209,6 +209,22 @@ def check_pkg_config_paths
   end
 end
 
+def check_for_gettext
+  if File.exist? "#{HOMEBREW_PREFIX}/lib/libgettextlib.dylib" or
+     File.exist? "#{HOMEBREW_PREFIX}/lib/libintl.dylib"
+    puts <<-EOS.undent
+      gettext was detected in your PREFIX.
+
+      The gettext provided by Homebrew is "keg-only", meaning it does not
+      get linked into your PREFIX by default.
+
+      If you `brew link gettext` then a large number of brews that don't
+      otherwise have a `depends_on 'gettext'` will pick up gettext anyway
+      during the `./configure` step.
+    EOS
+  end
+end
+
 def brew_doctor
   read, write = IO.pipe
 
@@ -226,6 +242,7 @@ def brew_doctor
     check_user_path
     check_which_pkg_config
     check_pkg_config_paths
+    check_for_gettext
 
     exit! 0
   else
