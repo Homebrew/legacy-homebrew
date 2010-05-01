@@ -36,7 +36,12 @@ def check_gcc_versions
   gcc_42 = gcc_42_build
   gcc_40 = gcc_40_build
 
-  if gcc_42 < RECOMMENDED_GCC_42
+  if gcc_42 == nil
+    puts <<-EOS.undent
+      We couldn't detect gcc 4.2.x. Some formulas require this compiler.
+
+    EOS
+  elsif gcc_42 < RECOMMENDED_GCC_42
     puts <<-EOS.undent
       Your gcc 4.2.x version is older than the recommended version. It may be advisable
       to upgrade to the latest release of Xcode.
@@ -44,7 +49,12 @@ def check_gcc_versions
     EOS
   end
 
-  if gcc_40 < RECOMMENDED_GCC_40
+  if gcc_40 == nil
+    puts <<-EOS.undent
+      We couldn't detect gcc 4.0.x. Some formulas require this compiler.
+
+    EOS
+  elsif gcc_40 < RECOMMENDED_GCC_40
     puts <<-EOS.undent
       Your gcc 4.0.x version is older than the recommended version. It may be advisable
       to upgrade to the latest release of Xcode.
