@@ -8,7 +8,7 @@ class Pwsafe <Formula
   depends_on 'readline'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--mandir=#{man}"
     system "make install"
   end
 end
