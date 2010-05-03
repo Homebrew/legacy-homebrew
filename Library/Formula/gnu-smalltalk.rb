@@ -4,9 +4,9 @@ require 'formula'
 # * http://smalltalk.gnu.org/wiki/building-gst-guides
 
 class GnuSmalltalk <Formula
-  url 'ftp://ftp.gnu.org/gnu/smalltalk/smalltalk-3.1.tar.gz'
+  url 'ftp://ftp.gnu.org/gnu/smalltalk/smalltalk-3.2.tar.gz'
   homepage 'http://smalltalk.gnu.org/'
-  md5 'fb4630a86fc47c893cf9eb9adccd4851'
+  sha1 'd951714c4fc7d91d06bdc33c20905885e5d2b25f'
 
   # gmp is an optional dep, but doesn't compile on 10.5
   # depends_on 'gmp' => :optional
