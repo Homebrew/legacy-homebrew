@@ -130,24 +130,25 @@ def install f
 
   raise "Nothing was installed to #{f.prefix}" unless f.installed?
 
-  # warn the user if stuff was installed outside of their PATH
-  paths = ENV['PATH'].split(':').collect{|p| File.expand_path p}
-  [f.bin, f.sbin].each do |bin|
-    if bin.directory?
-      rootbin = (HOMEBREW_PREFIX+bin.basename).to_s
-      bin = File.expand_path bin
-      unless paths.include? rootbin
-        opoo "#{rootbin} is not in your PATH"
-        puts "You can amend this by altering your ~/.bashrc file"
-        show_summary_heading = true
-      end
-    end
-  end unless f.keg_only?
-
   if f.keg_only?
     ohai 'Caveats', text_for_keg_only_formula(f)
     show_summary_heading = true
   else
+    # warn the user if stuff was installed outside of their PATH
+    paths = ENV['PATH'].split(':').collect{|p| File.expand_path p}
+    [f.bin, f.sbin].each do |bin|
+      if bin.directory?
+        rootbin = (HOMEBREW_PREFIX+bin.basename).to_s
+        bin = File.expand_path bin
+        unless paths.include? rootbin
+          opoo "#{rootbin} is not in your PATH"
+          puts "You can amend this by altering your ~/.bashrc file"
+          show_summary_heading = true
+        end
+      end
+    end
+
+    # link from Cellar to Prefix
     begin
       Keg.new(f.prefix).link
     rescue Exception => e
