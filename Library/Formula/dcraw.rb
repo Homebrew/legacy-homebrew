@@ -1,9 +1,15 @@
 require 'formula'
 
 class Dcraw <Formula
-  head 'http://www.cybercom.net/~dcoffin/dcraw/dcraw.c'
+  # Note that the file is versioned, but not in source control,
+  # so updates are random and break the MD5. If you try to install
+  # and get an MD5 mismatch, check for a newer version number on
+  # http://www.cybercom.net/~dcoffin/dcraw/RCS/dcraw.c,v
+  # and update the version and MD5 in a patch. Thanks.
   homepage 'http://www.cybercom.net/~dcoffin/dcraw/'
-  md5 'cd5cb6e56d5b925c59680abe24b9b03a'
+  url 'http://www.cybercom.net/~dcoffin/dcraw/dcraw.c'
+  version '1.432'
+  md5 '122ae8772398a764012e09d15fb9eabc'
 
   depends_on 'jpeg'
   depends_on 'liblcms'
