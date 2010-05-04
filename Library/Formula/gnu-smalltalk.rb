@@ -14,7 +14,6 @@ class GnuSmalltalk <Formula
   homepage 'http://smalltalk.gnu.org/'
   sha1 'd951714c4fc7d91d06bdc33c20905885e5d2b25f'
 
-  depends_on 'gawk' # Needed to build
   # depends_on 'gmp' => :optional # 32/64 built build problems
 
   def install
@@ -23,6 +22,12 @@ class GnuSmalltalk <Formula
 
     # 64-bit version doesn't build, so force 32 bits.
     ENV.m32
+
+    # GNU Smalltalk thinks it needs GNU awk, but it works fine
+    # with OS X awk, so let's trick configure.
+    here = Dir.pwd
+    system "ln -s /usr/bin/awk #{here}/gawk"
+    ENV['AWK'] = "#{here}/gawk"
 
     ENV['FFI_CFLAGS'] = '-I/usr/include/ffi'
     system "./configure", "--prefix=#{prefix}", "--disable-debug", 
