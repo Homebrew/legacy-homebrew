@@ -8,9 +8,9 @@ class Pygments <Formula
   md5 '54be67c04834f13d7e255e1797d629a5'
 end
 
-# Build against Adam V's branch until the change is taken upstream
 class Shocco <Formula
-  head 'git://github.com/adamv/shocco.git', :branch => 'homebrew'
+  head 'git://github.com/rtomayko/shocco.git',
+          :commit => '06ab9ecebd713a1a6ae695b190a775ca6dfeb7b2'
   homepage 'http://rtomayko.github.com/shocco/'
 
   depends_on 'markdown'
