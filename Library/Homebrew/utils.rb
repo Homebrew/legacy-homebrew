@@ -213,3 +213,12 @@ def nostdout
     end
   end
 end
+
+def dump_build_env env
+  puts "\"--use-llvm\" was specified" if ARGV.include? '--use-llvm'
+
+  %w[CC CXX LD CFLAGS CXXFLAGS CPPFLAGS LDFLAGS MACOSX_DEPLOYMENT_TARGET MAKEFLAGS PATH PKG_CONFIG_PATH HOMEBREW_USE_LLVM].each do |k|
+    value = env[k]
+    puts "#{k}: #{value}" if value
+  end
+end

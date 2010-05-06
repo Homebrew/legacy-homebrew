@@ -41,6 +41,10 @@ class CurlDownloadStrategy <AbstractDownloadStrategy
     end
   end
   
+  def cached_location
+    @tarball_path
+  end
+
   def fetch
     ohai "Downloading #{@url}"
     unless @tarball_path.exist?
@@ -147,9 +151,17 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
 end
 
 class GitDownloadStrategy <AbstractDownloadStrategy
+  def initialize url, name, version, specs
+    super
+    @clone=HOMEBREW_CACHE+@unique_token
+  end
+
+  def cached_location
+    @clone
+  end
+
   def fetch
     ohai "Cloning #{@url}"
-    @clone=HOMEBREW_CACHE+@unique_token
     unless @clone.exist?
       safe_system 'git', 'clone', @url, @clone # indeed, leave it verbose
     else
