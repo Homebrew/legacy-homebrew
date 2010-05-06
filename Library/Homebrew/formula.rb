@@ -116,7 +116,7 @@ class Formula
   end
 
   def cached_download
-    @downloader.tarball_path
+    @downloader.cached_location
   end
 
   attr_reader :url, :version, :homepage, :name, :specs

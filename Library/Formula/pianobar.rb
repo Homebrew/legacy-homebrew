@@ -1,6 +1,7 @@
 require 'formula'
 
 class Pianobar <Formula
+  head 'git://github.com/PromyLOPh/pianobar.git'
   url 'http://download.github.com/PromyLOPh-pianobar-3072c5a.tar.gz'
   version '3072c5a'
   homepage 'http://github.com/PromyLOPh/pianobar/'

@@ -9,8 +9,9 @@ class FreeimageHttpDownloadStrategy <CurlDownloadStrategy
 end
 
 class Freeimage <Formula
-  url 'http://downloads.sourceforge.net/project/freeimage/Source%20Distribution/3.13.0/FreeImage3130.zip'
-  md5 '5f64fd50ce18833edc27cf55d90c12c3'
+  url 'http://downloads.sourceforge.net/project/freeimage/Source%20Distribution/3.13.1/FreeImage3131.zip'
+  version '3.13.1'
+  md5 'a2e20b223a2cf6a5791cc47686364e99'
   homepage 'http://sf.net/projects/freeimage'
 
   def download_strategy
