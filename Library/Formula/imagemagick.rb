@@ -14,10 +14,9 @@ def x11?
 end
 
 class Imagemagick <Formula
-  @url='http://image_magick.veidrodis.com/image_magick/ImageMagick-6.5.9-8.tar.bz2'
-  @md5='89892e250e81fad51b4b2a1f816987e6'
-  @homepage='http://www.imagemagick.org'
-
+  url 'http://image_magick.veidrodis.com/image_magick/ImageMagick-6.6.1-5.tar.bz2'
+  md5 '2594432500e8c718c8f07ed2e663261d'
+  homepage 'http://www.imagemagick.org'
 
   depends_on 'jpeg'
   depends_on 'libwmf' => :optional if x11?
