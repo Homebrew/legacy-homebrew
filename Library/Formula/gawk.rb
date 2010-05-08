@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gawk <Formula
-  url 'http://ftp.gnu.org/gnu/gawk/gawk-3.1.7.tar.bz2'
+  url 'http://ftp.gnu.org/gnu/gawk/gawk-3.1.8.tar.bz2'
   homepage 'http://www.gnu.org/software/gawk/'
-  md5 '674cc5875714315c490b26293d36dfcf'
+  md5 '52b41c6c4418b3226dfb8f82076193bb'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug"
