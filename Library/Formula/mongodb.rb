@@ -34,8 +34,14 @@ class Mongodb <Formula
   end
 
   def caveats; <<-EOS
-You can enable mongodb to automatically load on login with:
-    launchctl load -w #{prefix}/org.mongodb.mongod.plist
+If this is your first install, automatically load on login with:
+    cp #{prefix}/org.mongodb.mongod.plist ~/Library/LaunchAgents
+    launchctl load -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
+
+If this is an upgrade and you already have the org.mongodb.mongod.plist loaded:
+    launchctl unload -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
+    cp #{prefix}/org.mongodb.mongod.plist ~/Library/LaunchAgents
+    launchctl load -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
 
 Or start it manually:
     mongod run --config #{prefix}/mongod.conf
