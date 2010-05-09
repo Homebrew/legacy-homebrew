@@ -120,6 +120,18 @@ def install f
 
   ohai 'Finishing up' if ARGV.verbose?
 
+  keg = Keg.new f.prefix
+
+  begin
+    keg.fix_install_names
+  rescue Exception => e
+    onoe "Failed to fix install names"
+    puts "The formula built, but you may encounter issues using it or linking other"
+    puts "formula against it."
+    ohai e, e.backtrace if ARGV.debug?
+    show_summary_heading = true
+  end
+
   begin
     require 'cleaner'
     Cleaner.new f
@@ -177,10 +189,10 @@ def install f
 
     # link from Cellar to Prefix
     begin
-      Keg.new(f.prefix).link
+      keg.link
     rescue Exception => e
       onoe "The linking step did not complete successfully"
-      puts "The package built, but is not symlinked into #{HOMEBREW_PREFIX}"
+      puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
       puts "You can try again using `brew link #{f.name}'"
       if ARGV.debug?
         ohai e, e.backtrace
