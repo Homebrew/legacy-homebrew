@@ -122,3 +122,5 @@ protected
     end
   end
 end
+
+require 'keg_fix_install_names'
