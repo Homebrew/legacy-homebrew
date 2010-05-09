@@ -12,7 +12,7 @@ class Subversion <Formula
   md5 '75419159b50661092c4137449940b5cc'
   homepage 'http://subversion.apache.org/'
   
-  aka :svn
+  aka 'svn'
 
   # Only need this on Snow Leopard; for Leopard the deps package 
   # builds it.
@@ -30,16 +30,29 @@ class Subversion <Formula
     # Use existing system zlib
     # Use dep-provided other libraries
     # Don't mess with Apache modules (since we're not sudo)
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--with-ssl",
-                          "--with-zlib=/usr/lib",
-                          # use our neon, not OS X's 
-                          "--disable-neon-version-check",
-                          "--disable-mod-activation",
-                          "--without-apache-libexecdir",
-                          "--without-berkeley-db"
+    args = ["--disable-debug",
+            "--prefix=#{prefix}",
+            "--with-ssl",
+            "--with-zlib=/usr/lib",
+            # use our neon, not OS X's
+            "--disable-neon-version-check",
+            "--disable-mod-activation",
+            "--without-apache-libexecdir",
+            "--without-berkeley-db"]
+
+    if ARGV.include? "--java"
+      args << "--enable-javalhl" << "--without-jikes"
+    end
+
+    system "./configure", *args
+
     system "make"
     system "make install"
+
+    if ARGV.include? "--java"
+      ENV.j1
+      system "make javahl"
+      system "make install-javahl"
+    end
   end
 end

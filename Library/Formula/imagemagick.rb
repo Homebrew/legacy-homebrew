@@ -7,6 +7,10 @@ def ghostscript_srsly?
   ARGV.include? '--with-ghostscript'
 end
 
+def ghostscript_fonts?
+  File.directory? "#{HOMEBREW_PREFIX}/share/ghostscript/fonts"
+end
+
 def x11?
   # I used this file because old Xcode seems to lack it, and its that old
   # Xcode that loads of people seem to have installed still
@@ -14,10 +18,9 @@ def x11?
 end
 
 class Imagemagick <Formula
-  @url='http://image_magick.veidrodis.com/image_magick/ImageMagick-6.5.9-8.tar.bz2'
-  @md5='89892e250e81fad51b4b2a1f816987e6'
-  @homepage='http://www.imagemagick.org'
-
+  url 'http://image_magick.veidrodis.com/image_magick/ImageMagick-6.6.1-5.tar.bz2'
+  md5 '2594432500e8c718c8f07ed2e663261d'
+  homepage 'http://www.imagemagick.org'
 
   depends_on 'jpeg'
   depends_on 'libwmf' => :optional if x11?
@@ -31,23 +34,19 @@ class Imagemagick <Formula
     path.extname == '.la'
   end
   
-  def fix_configure
-    # versioned stuff in main tree is pointless for us
-    inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
-  end
-  
   def configure_args
-    args = ["--prefix=#{prefix}", 
-     "--disable-dependency-tracking",
-     "--enable-shared",
-     "--disable-static",
-     "--with-modules",
-     "--without-magick-plus-plus"]
+    args = [ "--prefix=#{prefix}",
+             "--disable-dependency-tracking",
+             "--enable-shared",
+             "--disable-static",
+             "--with-modules",
+             "--without-magick-plus-plus" ]
      
      args << "--disable-openmp" if MACOS_VERSION < 10.6   # libgomp unavailable
-     args << '--without-ghostscript' \
-          << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
-             unless ghostscript_srsly?
+
+     args << '--without-ghostscript' unless ghostscript_srsly?
+     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
+                unless ghostscript_srsly? or ghostscript_fonts?
      return args
   end
 
@@ -56,7 +55,8 @@ class Imagemagick <Formula
     ENV.deparallelize
     ENV.O3 # takes forever otherwise
 
-    fix_configure
+    # versioned stuff in main tree is pointless for us
+    inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
 
     system "./configure", "--without-maximum-compile-warnings",
                           "--disable-osx-universal-binary",
@@ -71,6 +71,10 @@ class Imagemagick <Formula
   end
 
   def caveats
-    "You don't have X11 from the Xcode DMG installed. Consequently Imagemagick is less fully featured." unless x11?
+    s = ""
+    s += "You don't have X11 from the Xcode DMG installed. Consequently Imagemagick is less fully featured.\n" unless x11?
+    s += "Some tools will complain if the ghostscript fonts are not installed in:\n\t#{HOMEBREW_PREFIX}/share/ghostscript/fonts\n" \
+            unless ghostscript_fonts? or ghostscript_srsly?
+    return s
   end
 end

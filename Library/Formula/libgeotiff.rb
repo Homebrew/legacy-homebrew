@@ -10,7 +10,7 @@ class Libgeotiff <Formula
   depends_on 'proj' => :optional
 
   def install
-    system "./configure", "--disable-debug", "--prefix=#{prefix}"
+    system "./configure", "--disable-debug", "--prefix=#{prefix}", "--with-libtiff=#{HOMEBREW_PREFIX}"
     system "make" # Separate steps or install fails
     system "make install"
   end
