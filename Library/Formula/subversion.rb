@@ -41,7 +41,7 @@ class Subversion <Formula
             "--without-berkeley-db"]
 
     if ARGV.include? "--java"
-      args << "--enable-javalhl" << "--without-jikes"
+      args << "--enable-javahl" << "--without-jikes"
     end
 
     system "./configure", *args
