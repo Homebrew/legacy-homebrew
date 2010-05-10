@@ -2,7 +2,7 @@ require 'formula'
 
 class Gnuplot <Formula
   url 'http://downloads.sourceforge.net/project/gnuplot/gnuplot/4.4.0/gnuplot-4.4.0.tar.gz'
-  homepage 'www.gnuplot.info'
+  homepage 'http://www.gnuplot.info'
   md5 'e708665bd512153ad5c35252fe499059'
 
   depends_on 'readline'
