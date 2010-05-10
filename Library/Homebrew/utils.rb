@@ -130,26 +130,33 @@ def gzip path
   return Pathname.new(path+".gz")
 end
 
-# Returns array of architectures that the given command is built for.
+module ArchitectureListExtension
+  def universal?
+    self.include? :i386 and self.include? :x86_64
+  end
+end
+
+# Returns array of architectures that the given command or library is built for.
 def archs_for_command cmd
   cmd = cmd.to_s # If we were passed a Pathname, turn it into a string.
   cmd = `/usr/bin/which #{cmd}` unless Pathname.new(cmd).absolute?
   cmd.gsub! ' ', '\\ '  # Escape spaces in the filename.
 
-  IO.popen("/usr/bin/file #{cmd}").readlines.inject(%w[]) do |archs, line|
+  archs = IO.popen("/usr/bin/file #{cmd}").readlines.inject([]) do |archs, line|
     case line
-    when /Mach-O executable ppc/
+    when /Mach-O (executable|dynamically linked shared library) ppc/
       archs << :ppc7400
-    when /Mach-O 64-bit executable ppc64/
+    when /Mach-O 64-bit (executable|dynamically linked shared library) ppc64/
       archs << :ppc64
-    when /Mach-O executable i386/
+    when /Mach-O (executable|dynamically linked shared library) i386/
       archs << :i386
-    when /Mach-O 64-bit executable x86_64/
+    when /Mach-O 64-bit (executable|dynamically linked shared library) x86_64/
       archs << :x86_64
     else
       archs
     end
   end
+  archs.extend(ArchitectureListExtension)
 end
 
 # String extensions added by inreplace below.
