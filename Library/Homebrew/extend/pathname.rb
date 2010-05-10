@@ -238,6 +238,16 @@ class Pathname
   def / that
     join that.to_s
   end
+
+  def ensure_writable
+    saved_perms = unless writable?
+      chmod 0644
+      stat.mode
+    end
+    yield
+  ensure
+    chmod saved_perms if saved_perms
+  end
 end
 
 # sets $n and $d so you can observe creation of stuff
