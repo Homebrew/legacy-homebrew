@@ -378,7 +378,6 @@ private
   def patch
     return if patches.nil?
 
-    ohai "Patching"
     if not patches.kind_of? Hash
       # We assume -p1
       patch_defns = { :p1 => patches }
@@ -422,9 +421,11 @@ private
     
     return if patch_list.empty?
 
+    ohai "Downloading patches"
     # downloading all at once is much more efficient, espeically for FTP
     curl *(patch_list.collect{|p| p[:curl_args]}.select{|p| p}.flatten)
 
+    ohai "Patching"
     patch_list.each do |p|
       case p[:compression]
         when :gzip  then safe_system "/usr/bin/gunzip",  p[:filename]+'.gz'
