@@ -24,38 +24,51 @@ class Emacs <Formula
   end
 
   def caveats
-    "Use --cocoa to build a Cocoa-specific Emacs.app.
+    s = ""
+    if ARGV.include? "--cocoa"
+      s += <<-EOS.undent
+        Emacs.app was installed to:
+          #{prefix}
 
-To access texinfo documentation, set your INFOPATH to:
-#{info}
+      EOS
+    else
+      s += <<-EOS.undent
+        Use --cocoa to build a Cocoa-specific Emacs.app.
 
-The Emacs project now uses bazaar for source code versioning. If you
-last built the Homebrew emacs formula from HEAD prior to their switch
-from CVS to bazaar, you will have to remove your emacs formula cache
-directory before building from HEAD again. The Homebrew emacs cache
-directory can be found at $HOME/Library/Caches/Homebrew/emacs-HEAD.
+      EOS
+    end
 
-The initial checkout of the bazaar Emacs repository might take a long
-time. You might find that using the repo.or.cz git mirror is faster,
-even after the initial checkout. To use the repo.or.cz git mirror for
-HEAD builds, use the --use-git-head option in addition to --HEAD. Note
-that there is inevitably some lag between checkins made to the
-official Emacs bazaar repository and their appearance on the
-repo.or.cz mirror. See http://repo.or.cz/w/emacs.git for the mirror's
-status. The Emacs devs do not provide support for the git mirror, and
-they might reject bug reports filed with git version information. Use
-it at your own risk.
+    s += <<-EOS.undent
+      To access texinfo documentation, set your INFOPATH to:
+        #{info}
 
-If you switch between repositories, you'll have to remove the Homebrew
-emacs cache directory (see above).
-"
+      The Emacs project now uses bazaar for source code versioning. If you
+      last built the Homebrew emacs formula from HEAD prior to their switch
+      from CVS to bazaar, you will have to remove Homebrew's cached download
+      before building from HEAD again:
+        #{HOMEBREW_CACHE}/emacs-HEAD
+
+      The initial checkout of the bazaar Emacs repository might take a long
+      time. You might find that using the repo.or.cz git mirror is faster,
+      even after the initial checkout. To use the repo.or.cz git mirror for
+      HEAD builds, use the --use-git-head option in addition to --HEAD. Note
+      that there is inevitably some lag between checkins made to the
+      official Emacs bazaar repository and their appearance on the
+      repo.or.cz mirror. See http://repo.or.cz/w/emacs.git for the mirror's
+      status. The Emacs devs do not provide support for the git mirror, and
+      they might reject bug reports filed with git version information. Use
+      it at your own risk.
+
+      If you switch between repositories, you'll have to remove the Homebrew
+      emacs cache directory (see above).
+    EOS
+
+    return s
   end
   
   def install
     configure_args = [
       "--prefix=#{prefix}",
-      "--disable-debug",
-      "--disable-dependency-tracking",
       "--without-dbus",
       "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
     ]
