@@ -20,11 +20,11 @@ class Platypus <Formula
       end
 
       # Build binary
-      system "xcodebuild", "-target", "platypus", "-configuration", "Deployment", "ONLY_ACTIVE_ARCH=YES"
+      system "xcodebuild", "-target", "platypus", "-configuration", "Deployment", "ONLY_ACTIVE_ARCH=YES", "SDKROOT=", "MACOSX_DEPLOYMENT_TARGET="
     end
     # Build application sub-binary needed by command-line utility
     Dir.chdir('Script_Exec') do
-      system "xcodebuild", "-target", "ScriptExec", "-configuration", "Release", "ONLY_ACTIVE_ARCH=YES"
+      system "xcodebuild", "-target", "ScriptExec", "-configuration", "Release", "ONLY_ACTIVE_ARCH=YES", "SDKROOT=", "MACOSX_DEPLOYMENT_TARGET="
     end
 
     # Install binary and man page
