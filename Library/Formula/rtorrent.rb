@@ -8,9 +8,12 @@ class Rtorrent <Formula
   depends_on 'pkg-config'
   depends_on 'libsigc++'
   depends_on 'libtorrent'
+  depends_on 'xmlrpc-c' => :optional
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    args = ["--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"]
+    args << "--with-xmlrpc-c" if Formula.factory("xmlrpc-c").installed?
+    system "./configure", *args
     system "make"
     system "make install"
   end
