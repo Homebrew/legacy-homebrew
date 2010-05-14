@@ -116,7 +116,7 @@ class Formula
   end
 
   def cached_download
-    @downloader.tarball_path
+    @downloader.cached_location
   end
 
   attr_reader :url, :version, :homepage, :name, :specs
@@ -353,7 +353,7 @@ private
     hash = fn.incremental_hash(hasher)
 
     if supplied and not supplied.empty?
-      raise "#{type} mismatch\nExpected: #{hash}\nArchive: #{fn}" unless supplied.upcase == hash.upcase
+      raise "#{type} mismatch\nExpected: #{supplied}\nGot: #{hash}\nArchive: #{fn}" unless supplied.upcase == hash.upcase
     else
       opoo "Cannot verify package integrity"
       puts "The formula did not provide a download checksum"

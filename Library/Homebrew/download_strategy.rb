@@ -41,6 +41,10 @@ class CurlDownloadStrategy <AbstractDownloadStrategy
     end
   end
   
+  def cached_location
+    @tarball_path
+  end
+
   def fetch
     ohai "Downloading #{@url}"
     unless @tarball_path.exist?
@@ -120,9 +124,17 @@ class NoUnzipCurlDownloadStrategy <CurlDownloadStrategy
 end
 
 class SubversionDownloadStrategy <AbstractDownloadStrategy
+  def initialize url, name, version, specs
+    super
+    @co=HOMEBREW_CACHE+@unique_token
+  end
+
+  def cached_location
+    @co
+  end
+
   def fetch
     ohai "Checking out #{@url}"
-    @co=HOMEBREW_CACHE+@unique_token
     unless @co.exist?
       quiet_safe_system svn, 'checkout', @url, @co
     else
@@ -147,9 +159,17 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
 end
 
 class GitDownloadStrategy <AbstractDownloadStrategy
+  def initialize url, name, version, specs
+    super
+    @clone=HOMEBREW_CACHE+@unique_token
+  end
+
+  def cached_location
+    @clone
+  end
+
   def fetch
     ohai "Cloning #{@url}"
-    @clone=HOMEBREW_CACHE+@unique_token
     unless @clone.exist?
       safe_system 'git', 'clone', @url, @clone # indeed, leave it verbose
     else
