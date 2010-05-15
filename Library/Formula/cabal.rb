@@ -1,10 +1,11 @@
 require 'formula'
 
-class CabalInstall <Formula
+class Cabal <Formula
   url 'http://www.haskell.org/cabal/release/cabal-install-0.8.2/cabal-install-0.8.2.tar.gz'
   homepage 'http://www.haskell.org/cabal/'
   md5 '4abd0933dff361ff69ee9288a211e4e1'
 
+  aka 'cabal-install'
   depends_on :ghc
 
   def install
@@ -20,7 +21,7 @@ class CabalInstall <Formula
     bin.install cabal_wrapper
 
     ohai "Updating cabal package list..."
-    system "#{bin}/cabal", "update"
+#    system "#{bin}/cabal", "update"
   end
 
   def unregister_broken_packages
@@ -42,6 +43,7 @@ export CABAL_CONFIG=#{var}/cabal/config
 
   def cabal_config
     File.open("config", "w") {|config| config.write <<-CONFIG}
+remote-repo: hackage.haskell.org:http://hackage.haskell.org/packages/archive
 remote-repo-cache: #{var}/cabal/packages
 user-install: False
 documentation: True
