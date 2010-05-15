@@ -5,7 +5,7 @@ class Darcs <Formula
   homepage 'http://darcs.net/'
   md5 '7263a8578f2a1f4e57ad90f3ad5bfe04'
 
-  depends_on 'cabal-install'
+  depends_on 'cabal'
 
   def install
     system "cabal", "update"
