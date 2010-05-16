@@ -1,9 +1,9 @@
 require 'formula'
 
 class Qemu <Formula
-  url 'http://download.savannah.gnu.org/releases/qemu/qemu-0.12.3.tar.gz'
+  url 'http://download.savannah.gnu.org/releases/qemu/qemu-0.12.4.tar.gz'
   homepage 'http://www.qemu.org/'
-  md5 'd215e4568650e8019816397174c090e1'
+  md5 '93e6b134dff89b2799f57b7d9e0e0fc5'
 
   def install
     system "./configure", "--prefix=#{prefix}",
