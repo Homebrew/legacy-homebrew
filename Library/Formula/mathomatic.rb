@@ -8,7 +8,7 @@ class Mathomatic <Formula
 
   def install
     ENV['prefix'] = "#{prefix}"
-    system "make"
+    system "make READLINE=1"
     system "make install"
   end
 end
