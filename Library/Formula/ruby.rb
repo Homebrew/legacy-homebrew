@@ -12,6 +12,7 @@ class Ruby <Formula
   def options
     [
       ["--with-suffix", "Add a 19 suffix to commands"],
+      ["--with-doc", "Install with the Ruby documentation"],
     ]
   end
   
@@ -28,6 +29,8 @@ class Ruby <Formula
     system "./configure", *args
     system "make"
     system "make install"
+
+    system "make install-doc" if ARGV.include? "--with-doc"
   end
   
   def caveats; <<-EOS
