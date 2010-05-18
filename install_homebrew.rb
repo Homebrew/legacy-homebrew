@@ -72,7 +72,7 @@ end
 
 def getc  # NOTE only tested on OS X
   system "/bin/stty raw -echo"
-  STDIN.getc
+  STDIN.getbyte
 ensure
   system "/bin/stty -raw echo"
 end
