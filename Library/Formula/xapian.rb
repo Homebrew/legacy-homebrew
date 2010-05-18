@@ -24,6 +24,14 @@ class Xapian <Formula
     path.extname == '.la'
   end
 
+  def build_any_bindings?
+    ARGV.include? '--ruby' or ARGV.include? '--python' or ARGV.include? '--java' or ARGV.include? '--php'
+  end
+
+  def arg_for_lang lang
+    (ARGV.include? "--#{lang}") ? "--with-#{lang}" : "--without-#{lang}"
+  end
+
   def install
     ENV.O3 # takes forever otherwise
 
@@ -31,8 +39,8 @@ class Xapian <Formula
                           "--disable-dependency-tracking"
     system "make install"
 
-    XapianBindings.new.brew do
-      if ARGV.include? '--ruby' or ARGV.include? '--python' or ARGV.include? '--java' or ARGV.include? '--php'
+    if build_any_bindings?
+      XapianBindings.new.brew do
         args = [
           "XAPIAN_CONFIG=#{bin}/xapian-config",
           "--prefix=#{prefix}",
@@ -41,29 +49,19 @@ class Xapian <Formula
           "--without-csharp",
           "--without-tcl"
         ]
-        if ARGV.include? '--ruby'
-          args << "--with-ruby"
-        else
-          args << "--without-ruby"
-        end
-        if ARGV.include? '--python'
-          args << "--with-python"
-        else
-          args << "--without-python"
-        end
+
+        args << arg_for_lang('ruby')
+        args << arg_for_lang('python')
+        args << arg_for_lang('java')
+
         if ARGV.include? '--php'
-          lib.mkdir
-          extension_dir = (lib+'php'+'extensions')
-          extension_dir.mkdir
+          extension_dir = lib+'php/extensions'
+          extension_dir.mkpath
           args << "--with-php PHP_EXTENSION_DIR=#{extension_dir}"
         else
           args << "--without-php"
         end
-        if ARGV.include? '--java'
-          args << "--with-java"
-        else
-          args << "--without-java"
-        end
+
         system "./configure", *args
         system "make install"
       end
