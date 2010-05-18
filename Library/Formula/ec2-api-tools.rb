@@ -2,8 +2,8 @@ require 'formula'
 
 class Ec2ApiTools <Formula
   @homepage='http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351'
-  @url='http://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.3-46266.zip'
-  @md5='075b511e07575927c39ca6478b283597'
+  @url='http://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.3-51254.zip'
+  @md5='4644d3984009f576b1c34c6d60086e60'
   
   def patches
     # (From http://gist.github.com/200283) Gets rid of the

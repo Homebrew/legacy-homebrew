@@ -124,9 +124,17 @@ class NoUnzipCurlDownloadStrategy <CurlDownloadStrategy
 end
 
 class SubversionDownloadStrategy <AbstractDownloadStrategy
+  def initialize url, name, version, specs
+    super
+    @co=HOMEBREW_CACHE+@unique_token
+  end
+
+  def cached_location
+    @co
+  end
+
   def fetch
     ohai "Checking out #{@url}"
-    @co=HOMEBREW_CACHE+@unique_token
     unless @co.exist?
       quiet_safe_system svn, 'checkout', @url, @co
     else

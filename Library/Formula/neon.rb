@@ -9,7 +9,15 @@ class Neon <Formula
     :provided_by_osx
   end
 
+  def options
+    [
+      ['--universal', 'Build as a Universal Intel binary.']
+    ]
+  end
+
   def install
+    ENV.universal_binary if ARGV.include? '--universal'
+
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--enable-shared",
