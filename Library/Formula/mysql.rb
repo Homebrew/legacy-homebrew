@@ -37,6 +37,7 @@ class Mysql <Formula
       "--with-plugins=innobase,myisam",
       "--with-extra-charsets=complex",
       "--with-ssl",
+      "--with-readline",
       "--enable-assembler",
       "--enable-thread-safe-client",
       "--enable-local-infile",
