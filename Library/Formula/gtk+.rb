@@ -10,6 +10,8 @@ class Gtkx <Formula
   depends_on 'pkg-config'
   depends_on 'glib'
   depends_on 'jpeg'
+  depends_on 'libtiff'
+  depends_on 'pango'
   depends_on 'jasper' => :optional
   depends_on 'atk' => :optional
 
