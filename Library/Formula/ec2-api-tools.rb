@@ -1,24 +1,21 @@
 require 'formula'
 
-class Ec2ApiTools <Formula
-  homepage 'http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351'
-  url 'http://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.3-51254.zip'
-  md5 '4644d3984009f576b1c34c6d60086e60'
+# This formula serves as the base class for several very similar
+# formulae for Amazon Web Services related tools.
 
-  def patches
-    # (From http://gist.github.com/200283) Gets rid of the
-    # "[Deprecated] Xalan: org.apache.xml.res.XMLErrorResources_en_US"
-    # messages that the tools spew on 1.3-41620 under Snow Leopard
-    DATA
-  end
-
-  def install
+class AmazonWebServicesFormula <Formula
+  # Use this method to peform a standard install for Java-based tools,
+  # keeping the .jars out of HOMEBREW_PREFIX/lib
+  def standard_install
     rm Dir['bin/*.cmd'] # Remove Windows versions
-    bin.install Dir['bin/ec2-*'] # Install commands to bin
-    prefix.install 'lib' # Put the .jars in prefix/lib
+    prefix.install "bin"
+    # Put the .jars in prefix/jars/lib, which isn't linked to the Cellar
+    # This will prevent conflicts with other versions of these jars.
+    (prefix+'jars').install 'lib'
   end
 
-  def caveats
+  # Use this method to generate standard caveats.
+  def standard_instructions var_name, var_value=prefix+'jars'
     <<-EOS.undent
       Before you can use these tools you must export some variables to your $SHELL
       and download your X.509 certificate and private key from Amazon Web Services.
@@ -33,11 +30,32 @@ class Ec2ApiTools <Formula
        * On Bash, add them to `~/.bash_profile`.
        * On Zsh, add them to `~/.zprofile` instead.
 
-      export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Home/"
-      export EC2_HOME="#{prefix}/"
+      export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Home"
       export EC2_PRIVATE_KEY="$(/bin/ls $HOME/.ec2/pk-*.pem)"
       export EC2_CERT="$(/bin/ls $HOME/.ec2/cert-*.pem)"
+      export #{var_name}="#{var_value}"
     EOS
+  end
+end
+
+class Ec2ApiTools <AmazonWebServicesFormula
+  homepage 'http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351'
+  url 'http://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.3-51254.zip'
+  md5 '4644d3984009f576b1c34c6d60086e60'
+
+  def patches
+    # Gets rid of the "[Deprecated] Xalan: org.apache.xml.res.XMLErrorResources_en_US"
+    # messages that the tools spew on 1.3-41620 under Snow Leopard
+    # See: http://gist.github.com/200283
+    DATA
+  end
+
+  def install
+    standard_install
+  end
+
+  def caveats
+    standard_instructions "EC2_HOME"
   end
 end
 
