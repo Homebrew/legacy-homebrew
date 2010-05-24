@@ -2,38 +2,12 @@ require 'formula'
 
 class Boost <Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.42.0/boost_1_42_0.tar.bz2'
-  md5 '7bf3b4eb841b62ffb0ade2b82218ebe6'
-
-  def patches
-    { :p0 => DATA }
-  end
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.43.0/boost_1_43_0.tar.bz2'
+  md5 'dd49767bfb726b0c774f7db0cef91ed1'
 
   def install
     fails_with_llvm "the standard llvm-gcc causes errors with dropped arugments "+
                     "to functions when linking with the boost library"
-
-    # Not sure about this, but added since macports has it
-    mkdir 'libs/random/build'
-    open("libs/random/build/Jamfile.v2", "w") do |file|
-      file.write <<-EOF.gsub(/^\s+/, '')
-        # Copyright (c) 2006 Tiziano Mueller
-        #
-        # Use, modification and distribution of the file is subject to the
-        # Boost Software License, Version 1.0.
-        # (See at http://www.boost.org/LICENSE_1_0.txt)
-
-
-        project boost/random
-        	: source-location ../ ;
-
-        SOURCES = random_device ;
-
-        lib boost_random
-        	: $(SOURCES).cpp
-        	: <link>shared:<define>BOOST_RANDOM_DYN_LINK=1 ;
-      EOF
-    end
 
     # Adjust the name the libs are installed under to include the path to the
     # Homebrew lib directory.  It has the following effect:
@@ -81,17 +55,3 @@ class Boost <Formula
     system "./bjam -j#{Hardware.processor_count} --layout=tagged --prefix='#{prefix}' --libdir='#{lib}' --user-config=user-config.jam threading=multi install"
   end
 end
-
-__END__
-===================================================================
---- libs/random/random_device.cpp.orig	2009-06-11 15:27:21.000000000 +0200
-+++ libs/random/random_device.cpp	2009-06-11 15:28:01.000000000 +0200
-@@ -22,7 +22,7 @@
- #endif
-
-
--#if defined(__linux__) || defined (__FreeBSD__)
-+#if defined(__linux__) || defined (__FreeBSD__) || defined(__APPLE__)
-
- // the default is the unlimited capacity device, using some secure hash
- // try "/dev/random" for blocking when the entropy pool has drained
