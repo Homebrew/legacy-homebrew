@@ -6,7 +6,10 @@ class Sitecopy <Formula
   md5 'b3aeb5a5f00af3db90b408e8c32a6c01'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-libxml2",
+                          "--with-ssl"
     system "make install"
   end
 end
