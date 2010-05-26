@@ -10,5 +10,7 @@ class Metis <Formula
     bin.install ['pmetis', 'kmetis', 'oemetis', 'onmetis', 'partnmesh', 
       'partdmesh', 'mesh2nodal', 'mesh2dual', 'graphchk', 'Graphs/mtest']
     lib.install 'libmetis.a'
+    include.install ['Lib/metis.h', 'Lib/defs.h', 'Lib/macros.h', 'Lib/rename.h',
+      'Lib/proto.h', 'Lib/struct.h']
   end
 end
