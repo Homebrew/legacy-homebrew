@@ -203,6 +203,8 @@ begin
     when 'create'
       if ARGV.include? '--macports'
         exec "open", "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
+      elsif ARGV.include? '--fink'
+        exec "open", "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
       elsif ARGV.named.empty?
         raise UsageError
       else
