@@ -131,11 +131,5 @@ end
 
 ohai "Installation successful!"
 
-if ENV['PATH'].split(':').include? '/usr/local/bin'
-  puts "Yay! Now learn to brew:"
-  puts
-  puts "    brew help"
-  puts
-else
-  warn "/usr/local/bin is not in your PATH"
-end
+warn "/usr/local/bin is not in your PATH." unless ENV['PATH'].split(':').include? '/usr/local/bin'
+warn "Now install Xcode." unless system "/usr/bin/which gcc"
