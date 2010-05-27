@@ -40,6 +40,7 @@ class Python <Formula
     
     system "./configure", *args
     system "make"
+    ENV.j1 # Framework builds need to be installed serialized
     system "make install"
   end
 end
