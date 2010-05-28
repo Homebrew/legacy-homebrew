@@ -1,9 +1,9 @@
 require 'formula'
 
 class Spatialindex <Formula
-  url 'http://download.osgeo.org/libspatialindex/spatialindex-1.4.0.tar.gz'
+  url 'http://download.osgeo.org/libspatialindex/spatialindex-src-1.5.0.tar.gz'
   homepage 'http://trac.gispython.org/spatialindex/'
-  md5 '2cda512ca12c1a0d52172bb7f82a88f0'
+  md5 '5d409794d860505b93f8935d98a6d173'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug"

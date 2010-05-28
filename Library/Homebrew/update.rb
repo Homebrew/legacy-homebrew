@@ -1,5 +1,6 @@
 class RefreshBrew
   RESPOSITORY_URL  = 'git://github.com/mxcl/homebrew.git'
+  INIT_COMMAND     = "git init"
   CHECKOUT_COMMAND = 'git checkout -q master'
   UPDATE_COMMAND   = "git pull #{RESPOSITORY_URL} master"
   REVISION_COMMAND = 'git log -l -1 --pretty=format:%H 2> /dev/null'
@@ -60,7 +61,7 @@ class RefreshBrew
   
   def execute(cmd)
     out = `#{cmd}`
-    unless $?.success?
+    if $? && !$?.success?
       puts out
       raise "Failed while executing #{cmd}"
     end

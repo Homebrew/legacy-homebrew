@@ -34,7 +34,7 @@ class Redis <Formula
         redis-server #{etc}/redis.conf
 
       To access the server:
-        redis-client
+        redis-cli
     EOS
   end
 end

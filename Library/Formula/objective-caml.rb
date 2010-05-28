@@ -1,10 +1,10 @@
 require 'formula'
 
 class ObjectiveCaml <Formula
-  @url='http://caml.inria.fr/pub/distrib/ocaml-3.11/ocaml-3.11.1.tar.bz2'
-  @homepage='http://caml.inria.fr/ocaml/index.en.html'
-  @md5='fe011781f37f6b41fe08e0706969a89e'
-  
+  url 'http://caml.inria.fr/pub/distrib/ocaml-3.11/ocaml-3.11.2.tar.bz2'
+  homepage 'http://caml.inria.fr/ocaml/index.en.html'
+  md5 '4601a7aea66444d61704de8de46c52c6'
+
   aka :ocaml, 'o-caml'
 
   def install
