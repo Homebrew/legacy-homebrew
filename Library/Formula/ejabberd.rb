@@ -24,8 +24,6 @@ class Ejabberd <Formula
     (etc+"ejabberd").mkpath
     (var+"lib/ejabberd").mkpath
     (var+"spool/ejabberd").mkpath
-
-    sbin.install 'tools/ejabberdctl'
   end
 
   def caveats; <<-EOS
