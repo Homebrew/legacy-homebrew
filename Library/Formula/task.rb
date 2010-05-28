@@ -1,19 +1,21 @@
 require 'formula'
 
 class Task <Formula
-  @url='http://www.taskwarrior.org/download/task-1.9.0.tar.gz'
-  @homepage='http://www.taskwarrior.org/'
-  @md5='b9c12f60ff509c1ce5c6292041789baa'
+  url 'http://www.taskwarrior.org/download/task-1.9.1.tar.gz'
+  homepage 'http://www.taskwarrior.org/'
+  md5 'f486d06a9440a7034516de2a31659d3a'
+
+  def skip_clean? path
+    true
+  end
 
   def install
     system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--disable-dependency-tracking"
-
+                          "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
-  end
-  
-  def skip_clean? path
-    true
+
+    # Install the bash completion file
+    (etc+'bash_completion.d').install 'scripts/bash/task_completion.sh'
   end
 end

@@ -1,14 +1,14 @@
 require 'formula'
 
 class TokyoDystopia <Formula
-  url 'http://1978th.net/tokyodystopia/tokyodystopia-0.9.13.tar.gz'
+  url 'http://1978th.net/tokyodystopia/tokyodystopia-0.9.14.tar.gz'
   homepage 'http://1978th.net/tokyodystopia/'
-  sha1 '073b2edd6a74e2ae1bbdc7faea42a8a219bdf169'
+  sha1 '51bf7e9320ed8fc5e20a110135ea36b0305aa7a5'
 
   depends_on 'tokyo-cabinet'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--libdir=#{lib}", "--includedir=#{include}"
+    system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
   end
