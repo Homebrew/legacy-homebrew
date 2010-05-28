@@ -1,9 +1,9 @@
 require 'formula'
 
 class Wdiff <Formula
-  url 'http://ftp.gnu.org/gnu/wdiff/wdiff-0.6.1.tar.gz'
+  url 'http://ftp.gnu.org/gnu/wdiff/wdiff-0.6.2.tar.gz'
   homepage 'http://www.gnu.org/software/wdiff/'
-  md5 'cb8ed3569f9c020edbfbc145df6ba602'
+  md5 'bf8474129a47b3a002af969a77612593'
 
   depends_on 'gettext' => :optional
 
