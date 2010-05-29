@@ -62,7 +62,7 @@ class Imagemagick <Formula
     system "make install"
 
     # We already copy these into the keg root
-    %w[News.txt LICENSE ChangeLog].each {|f| (share+"ImageMagick/#{f}").unlink}
+    %w[NEWS.txt LICENSE ChangeLog].each {|f| (share+"ImageMagick/#{f}").unlink}
   end
 
   def caveats
