@@ -88,7 +88,11 @@ begin
   when '--repository'
     puts HOMEBREW_REPOSITORY
   when '--cellar'
-    puts HOMEBREW_CELLAR
+    if ARGV.named.empty?
+      puts HOMEBREW_CELLAR
+    else
+      puts *ARGV.formulae.collect {|f| HOMEBREW_CELLAR+f.name}
+    end
   when '--config'
     dump_config
 
