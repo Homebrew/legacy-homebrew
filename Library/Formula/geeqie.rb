@@ -5,17 +5,20 @@ class Geeqie <Formula
   homepage 'http://geeqie.sourceforge.net/'
   md5 '1d67ef990390224c5052697d93bb49c0'
 
-
-  depends_on 'gtk+'
-  depends_on 'intltool'
-  depends_on 'gettext'
   depends_on 'pkg-config'
+  depends_on 'gettext'
+  depends_on 'intltool'
+  depends_on 'gtk+'
+  depends_on 'imagemagick' => :recommended
   depends_on 'exiv2' => :recommended
   depends_on 'little-cms' => :recommended
-  depends_on 'imagemagick' => :recommended
+  depends_on 'fbida' => :recommended
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--disable-glibtest",
+		                      "--disable-gtktest"
     system "make install"
   end
 end
