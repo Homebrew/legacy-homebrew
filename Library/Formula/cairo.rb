@@ -11,7 +11,7 @@ class Cairo <Formula
 
   # Comes with Snow Leopard, but not Leopard
   def keg_only?
-    :provied_by_osx
+    :provided_by_osx
   end
 
   def install

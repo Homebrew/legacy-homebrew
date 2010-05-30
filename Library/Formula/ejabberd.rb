@@ -1,10 +1,10 @@
 require 'formula'
 
 class Ejabberd <Formula
-  version "2.1.2"
+  version "2.1.3"
   url "http://www.process-one.net/downloads/ejabberd/#{version}/ejabberd-#{version}.tar.gz"
   homepage 'http://www.ejabberd.im'
-  md5 '9102802ae19312c26f85ceb977b519aa'
+  md5 'e5c87eda5312a6e8a53df0f9b4844b69'
 
   depends_on "erlang"
 
@@ -24,8 +24,6 @@ class Ejabberd <Formula
     (etc+"ejabberd").mkpath
     (var+"lib/ejabberd").mkpath
     (var+"spool/ejabberd").mkpath
-
-    sbin.install 'tools/ejabberdctl'
   end
 
   def caveats; <<-EOS
