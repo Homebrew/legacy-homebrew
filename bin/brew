@@ -35,7 +35,7 @@ case HOMEBREW_PREFIX.to_s when '/', '/usr'
   abort "Cowardly refusing to continue at this prefix: #{HOMEBREW_PREFIX}"
 end
 if MACOS_VERSION < 10.5
-  abort "Homebrew requires Leopard or higher, but you could fork it and fix that..."
+  abort "Homebrew requires Leopard or higher. For Tiger support, see:\nhttp://github.com/sceaga/homebrew/tree/tiger"
 end
 
 def dump_config
@@ -254,7 +254,8 @@ begin
 
     ############################################################ sanity checks
     case Hardware.cpu_type when :ppc, :dunno
-      abort "Sorry, Homebrew does not support your computer's CPU architecture."
+      abort "Sorry, Homebrew does not support your computer's CPU architecture.\n"+
+            "For PPC support, see: http://github.com/sceaga/homebrew/tree/powerpc"
     end
 
     raise "Cannot write to #{HOMEBREW_CELLAR}" if HOMEBREW_CELLAR.exist? and not HOMEBREW_CELLAR.writable?
