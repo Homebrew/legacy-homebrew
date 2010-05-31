@@ -163,11 +163,10 @@ begin
 
     require 'update'
     updater = RefreshBrew.new
-    old_revision = updater.current_revision
     unless updater.update_from_masterbrew!
       puts "Already up-to-date."
     else
-      puts "Updated Homebrew from #{old_revision[0,8]} to #{updater.current_revision[0,8]}."
+      puts "Updated Homebrew from #{updater.initial_revision[0,8]} to #{updater.current_revision[0,8]}."
       ## New Formulae
       if updater.pending_new_formulae?
         ohai "The following formulae are new:"
