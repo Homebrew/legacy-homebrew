@@ -1,7 +1,5 @@
-require 'formula'
-
 # some credit to http://github.com/maddox/magick-installer
-# NOTE please be aware that the GraphicsMagick formula derives this formula
+require 'formula'
 
 def ghostscript_srsly?
   ARGV.include? '--with-ghostscript'
@@ -11,6 +9,10 @@ def ghostscript_fonts?
   File.directory? "#{HOMEBREW_PREFIX}/share/ghostscript/fonts"
 end
 
+def use_wmf?
+  ARGV.include? '--use-wmf'
+end
+
 def x11?
   # I used this file because old Xcode seems to lack it, and its that old
   # Xcode that loads of people seem to have installed still
@@ -18,56 +20,53 @@ def x11?
 end
 
 class Imagemagick <Formula
-  url 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.6.1-10.tar.bz2'
-  md5 '97cc92d9e8dd418052cbb2e10bcc4136'
+  url 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.6.2-0.tar.bz2'
+  md5 '0249d0d289392d597895f21bd0c8742a'
   homepage 'http://www.imagemagick.org'
 
   depends_on 'jpeg'
-  depends_on 'libwmf' => :optional if x11?
+  depends_on 'libpng' unless x11?
+
+  depends_on 'ghostscript' => :recommended if ghostscript_srsly? and x11?
+
   depends_on 'libtiff' => :optional
   depends_on 'little-cms' => :optional
   depends_on 'jasper' => :optional
-  depends_on 'ghostscript' => :recommended if ghostscript_srsly? and x11?
-  depends_on 'libpng' unless x11?
+
+  depends_on 'libwmf' if use_wmf?
 
   def skip_clean? path
     path.extname == '.la'
   end
-  
-  def configure_args
-    args = [ "--prefix=#{prefix}",
+
+  def install
+    # Add to PATH for freetype-config on Snow Leopard
+    ENV.append 'PATH', '/usr/x11/bin', ':'
+
+    ENV.libpng
+    ENV.O3 # takes forever otherwise
+
+    args = [ "--disable-osx-universal-binary",
+             "--without-perl", # I couldn't make this compile
+             "--prefix=#{prefix}",
              "--disable-dependency-tracking",
              "--enable-shared",
              "--disable-static",
              "--with-modules",
              "--without-magick-plus-plus" ]
-     
-     args << "--disable-openmp" if MACOS_VERSION < 10.6   # libgomp unavailable
 
-     args << '--without-ghostscript' unless ghostscript_srsly?
+     args << "--disable-openmp" if MACOS_VERSION < 10.6 # libgomp unavailable
+     args << "--without-gslib" unless ghostscript_srsly?
      args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
                 unless ghostscript_srsly? or ghostscript_fonts?
-     return args
-  end
-
-  def install
-    ENV.libpng
-    ENV.deparallelize
-    ENV.O3 # takes forever otherwise
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
-
-    system "./configure", "--without-maximum-compile-warnings",
-                          "--disable-osx-universal-binary",
-                          "--without-perl", # I couldn't make this compile
-                          *configure_args
+    system "./configure", *args
     system "make install"
 
     # We already copy these into the keg root
-    (share+"ImageMagick/NEWS.txt").unlink
-    (share+"ImageMagick/LICENSE").unlink
-    (share+"ImageMagick/ChangeLog").unlink
+    %w[NEWS.txt LICENSE ChangeLog].each {|f| (share+"ImageMagick/#{f}").unlink}
   end
 
   def caveats

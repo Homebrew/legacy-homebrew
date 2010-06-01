@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libidn <Formula
-  url 'http://ftp.gnu.org/gnu/libidn/libidn-1.18.tar.gz'
+  url 'http://ftp.gnu.org/gnu/libidn/libidn-1.19.tar.gz'
   homepage 'http://www.gnu.org/software/libidn/'
-  sha1 '0b81360368e5100d1ec5261dea58fc72ef39ab6b'
+  sha1 '2b6dcb500e8135a9444a250d7df76f545915f25f'
 
   depends_on 'gettext'
 
