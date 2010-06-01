@@ -61,6 +61,10 @@ class Redis <Formula
     <string>#{`whoami`.chomp}</string>
     <key>WorkingDirectory</key>
     <string>#{var}</string>
+    <key>StandardErrorPath</key>
+    <string>#{var}/log/redis.log</string>
+    <key>StandardOutPath</key>
+    <string>#{var}/log/redis.log</string>
   </dict>
 </plist>
     EOPLIST
