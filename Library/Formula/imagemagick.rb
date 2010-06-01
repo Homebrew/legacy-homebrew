@@ -9,6 +9,10 @@ def ghostscript_fonts?
   File.directory? "#{HOMEBREW_PREFIX}/share/ghostscript/fonts"
 end
 
+def use_wmf?
+  ARGV.include? '--use-wmf'
+end
+
 def x11?
   # I used this file because old Xcode seems to lack it, and its that old
   # Xcode that loads of people seem to have installed still
@@ -29,7 +33,7 @@ class Imagemagick <Formula
   depends_on 'little-cms' => :optional
   depends_on 'jasper' => :optional
 
-  depends_on 'libwmf' => :optional if x11?
+  depends_on 'libwmf' if use_wmf?
 
   def skip_clean? path
     path.extname == '.la'
@@ -62,7 +66,7 @@ class Imagemagick <Formula
     system "make install"
 
     # We already copy these into the keg root
-    %w[News.txt LICENSE ChangeLog].each {|f| (share+"ImageMagick/#{f}").unlink}
+    %w[NEWS.txt LICENSE ChangeLog].each {|f| (share+"ImageMagick/#{f}").unlink}
   end
 
   def caveats

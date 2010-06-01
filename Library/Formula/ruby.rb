@@ -3,9 +3,10 @@ require 'formula'
 # TODO de-version the include and lib directories
 
 class Ruby <Formula
-  @url='http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.1-p378.tar.gz'
-  @homepage='http://www.ruby-lang.org/en/'
-  @md5='9fc5941bda150ac0a33b299e1e53654c'
+  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.1-p378.tar.gz'
+  homepage 'http://www.ruby-lang.org/en/'
+  head 'http://svn.ruby-lang.org/repos/ruby/branches/ruby_1_9_2/', :using => :svn
+  md5 '9fc5941bda150ac0a33b299e1e53654c' unless ARGV.include? '--HEAD'
 
   depends_on 'readline'
   
@@ -25,6 +26,8 @@ class Ruby <Formula
             "--enable-shared" ]
 
     args << "--program-suffix=19" if ARGV.include? "--with-suffix"
+
+    system "autoconf" unless File.exists? 'configure'
 
     system "./configure", *args
     system "make"
