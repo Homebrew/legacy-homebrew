@@ -11,7 +11,8 @@ class Usbmuxd <Formula
   aka 'usb-multiplex-daemon'
 
   def install
-    system "cmake . #{std_cmake_parameters}"
+    inreplace 'Modules/VersionTag.cmake', '"sh"', '"bash"'
+    system "cmake . #{std_cmake_parameters} -DLIB_SUFFIX=''"
     system "make install"
   end
 end
