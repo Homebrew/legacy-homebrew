@@ -49,6 +49,6 @@ class Fftw <Formula
     system "make install"
 
     #wtf file?
-    (prefix+'share'+'info'+'dir').unlink
+    (prefix+'share/info/dir').unlink
   end
 end
