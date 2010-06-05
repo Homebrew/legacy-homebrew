@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pip <Formula
-  url 'http://pypi.python.org/packages/source/p/pip/pip-0.6.3.tar.gz'
+  url 'http://pypi.python.org/packages/source/p/pip/pip-0.7.2.tar.gz'
   homepage 'http://pip.openplans.org/'
-  md5 '0602fa9179cfaa98e41565d4a581d98c'
+  md5 'cfe73090aaa0d3b0c104179a627859d1'
 
   depends_on 'setuptools'
 
@@ -62,8 +62,8 @@ index 149c52d..82ffa46 100755
      '--local-log', '--log-file',
      dest='log_file',
      metavar='FILENAME',
--    default='./pip-log.txt',
-+    default=os.getenv('HOME')+'/Library/Logs/pip.log',
+-    default=default_log_file,
++    default=os.path.expanduser(os.path.join('~', 'Library', 'Logs', 'pip.log')),
      help=optparse.SUPPRESS_HELP)
  
  parser.add_option(
