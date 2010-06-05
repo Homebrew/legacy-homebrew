@@ -8,14 +8,9 @@ class Ppl <Formula
   depends_on 'gmp'
 
   def install
-    configure_args = [
-		"--prefix=#{prefix}",
-		"--disable-debug",
-		"--disable-dependency-tracking",
-		"--enable-optimization=sspeed",
-    ]
-
-    system "./configure", *args
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--enable-optimization=sspeed"
     system "make install"
   end
 end
