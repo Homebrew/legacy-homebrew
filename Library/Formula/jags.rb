@@ -8,12 +8,10 @@ class Jags <Formula
   
 
   def install
-    # FIXME hard coded to x86_64 arch. The build only works with the arch is specified, but I don't know
-    # how to get that param from the build environment. In Bash it's $HOSTTYPE but that's not in ENV[].
-    ENV['CFLAGS']="-mmacosx-version-min=10.5 -isysroot /Developer/SDKs/MacOSX10.5.sdk -arch x86_64"
-    ENV['CXXFLAGS']="-mmacosx-version-min=10.5 -isysroot /Developer/SDKs/MacOSX10.5.sdk -arch x86_64"
-    ENV['FFLAGS']="-mmacosx-version-min=10.5 -isysroot /Developer/SDKs/MacOSX10.5.sdk -arch x86_64"
-    ENV['LDFLAGS']="-mmacosx-version-min=10.5 -isysroot /Developer/SDKs/MacOSX10.5.sdk -arch x86_64"
+    ENV['CFLAGS']="-mmacosx-version-min=10.5 -isysroot /Developer/SDKs/MacOSX10.5.sdk -arch ppc -arch i386 -arch x86_64"
+    ENV['CXXFLAGS']="-mmacosx-version-min=10.5 -isysroot /Developer/SDKs/MacOSX10.5.sdk -arch ppc -arch i386 -arch x86_64"
+    ENV['FFLAGS']="-mmacosx-version-min=10.5 -isysroot /Developer/SDKs/MacOSX10.5.sdk -arch ppc -arch i386 -arch x86_64"
+    ENV['LDFLAGS']="-mmacosx-version-min=10.5 -isysroot /Developer/SDKs/MacOSX10.5.sdk -arch ppc -arch i386 -arch x86_64"
     
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
