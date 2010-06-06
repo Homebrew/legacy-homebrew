@@ -35,7 +35,7 @@ case HOMEBREW_PREFIX.to_s when '/', '/usr'
   abort "Cowardly refusing to continue at this prefix: #{HOMEBREW_PREFIX}"
 end
 if MACOS_VERSION < 10.5
-  abort "Homebrew requires Leopard or higher, but you could fork it and fix that..."
+  abort "Homebrew requires Leopard or higher. For Tiger support, see:\nhttp://github.com/sceaga/homebrew/tree/tiger"
 end
 
 def dump_config
@@ -88,7 +88,11 @@ begin
   when '--repository'
     puts HOMEBREW_REPOSITORY
   when '--cellar'
-    puts HOMEBREW_CELLAR
+    if ARGV.named.empty?
+      puts HOMEBREW_CELLAR
+    else
+      puts *ARGV.formulae.collect {|f| HOMEBREW_CELLAR+f.name}
+    end
   when '--config'
     dump_config
 
@@ -133,7 +137,8 @@ begin
       if ARGV.first =~ /^\/(.*)\/$/
         puts_columns formulae.grep(Regexp.new($1))
       else
-        puts_columns formulae.grep(/.*#{ARGV.first}.*/)
+        search_term = Regexp.escape(ARGV.first || "")
+        puts_columns formulae.grep(/.*#{search_term}.*/)
       end
 
     when 'edit'
@@ -254,7 +259,8 @@ begin
 
     ############################################################ sanity checks
     case Hardware.cpu_type when :ppc, :dunno
-      abort "Sorry, Homebrew does not support your computer's CPU architecture."
+      abort "Sorry, Homebrew does not support your computer's CPU architecture.\n"+
+            "For PPC support, see: http://github.com/sceaga/homebrew/tree/powerpc"
     end
 
     raise "Cannot write to #{HOMEBREW_CELLAR}" if HOMEBREW_CELLAR.exist? and not HOMEBREW_CELLAR.writable?
@@ -406,7 +412,7 @@ rescue BuildError => e
   onoe e
   puts PLEASE_REPORT_BUG
   # this feature can be slow (depends on network conditions and if github is up)
-  # so ideally we'd show feedback, eg. "checking for existin issues..." and
+  # so ideally we'd show feedback, eg. "checking for existing issues..." and
   # then replace that string with the following when the github api returns
   issues = issues_for_formula(formula_name)
   puts "These existing issues may help you:", *issues unless issues.empty?

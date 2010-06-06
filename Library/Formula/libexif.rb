@@ -9,7 +9,7 @@ class Libexif <Formula
     # segfault with llvm
     ENV.gcc_4_2
     
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
 end
