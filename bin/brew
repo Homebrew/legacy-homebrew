@@ -372,15 +372,16 @@ begin
       end
     end
 
-  when 'branch', 'checkout', 'pull', 'push', 'rebase', 'reset'
-    onoe "Unknown command: #{arg} (did you mean 'git #{arg}'?)"
-
   when 'doctor'
     require 'brew_doctor'
     brew_doctor
 
   else
-    onoe "Unknown command: #{arg}"
+    if ['branch', 'checkout', 'pull', 'push', 'rebase', 'reset'].include? arg
+      onoe "Unknown command: #{arg} (did you mean 'git #{arg}'?)"
+    else
+      onoe "Unknown command: #{arg}"
+    end
   end
 
 rescue FormulaUnspecifiedError
