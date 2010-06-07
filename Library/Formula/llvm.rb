@@ -1,5 +1,7 @@
 require 'formula'
 
+def build_clang?; ARGV.include? '--with-clang'; end
+
 class Clang <Formula
   url       'http://llvm.org/releases/2.7/clang-2.7.tgz'
   homepage  'http://llvm.org/'
@@ -17,20 +19,14 @@ class Llvm <Formula
     ]
   end
 
-  def clang?
-    ARGV.include? '--with-clang'
-  end
-
   def install
     ENV.gcc_4_2 # llvm can't compile itself
 
-    if clang?
-      clang_dir = File.join(Dir.pwd, 'tools', 'clang')
-
-      Clang.new.brew {
-        FileUtils.mkdir_p clang_dir
-        FileUtils.mv Dir['*'], clang_dir
-      }
+    if build_clang?
+      clang_dir = Pathname.new(Dir.pwd)+'tools/clang'
+      Clang.new.brew do
+        clang_dir.install Dir['*']
+      end
     end
 
     system "./configure", "--prefix=#{prefix}",
@@ -39,7 +35,7 @@ class Llvm <Formula
     system "make"
     system "make install" # seperate steps required, otherwise the build fails
 
-    if clang?
+    if build_clang?
       Dir.chdir clang_dir do
         system "make install"
       end

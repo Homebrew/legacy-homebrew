@@ -17,6 +17,7 @@ class Gource <Formula
 
   def install
     # Put freetype-config in path
+    ENV.x11
     ENV.prepend 'PATH', "/usr/X11/bin", ":"
 
     system "autoreconf -f -i" unless File.exist? "configure"
