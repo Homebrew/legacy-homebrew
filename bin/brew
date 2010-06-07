@@ -377,6 +377,23 @@ begin
     brew_doctor
 
   else
+    # Check for an external shell command
+    if system "/usr/bin/which -s brew-#{arg}"
+      # Add some Homebrew vars to the ENV
+      ['CACHE', 'CELLAR', 'LIBRARY_PATH', 'PREFIX', 'REPOSITORY'].each do |e|
+        ENV["HOMEBREW_#{e}"] = eval("HOMEBREW_#{e}")
+      end
+      exec("brew-#{arg}", *ARGV)
+    end
+
+    # Check for an external ruby command
+    external_rb = `/usr/bin/which brew-#{arg}.rb`.chomp
+    unless external_rb.empty?
+      require external_rb
+      exit 0
+    end
+
+    # Check for git commands
     if ['branch', 'checkout', 'pull', 'push', 'rebase', 'reset'].include? arg
       onoe "Unknown command: #{arg} (did you mean 'git #{arg}'?)"
     else
