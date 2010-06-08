@@ -366,18 +366,12 @@ begin
     exec "cat", ARGV.formulae.first.path, *ARGV.options
 
   when 'outdated'
-    require 'formula'
-    HOMEBREW_CELLAR.subdirs.each do |keg|
-      if keg.subdirs.length > 0
-        name = keg.basename('.rb').to_s
-        if (not (f = Formula.factory(name)).installed? rescue nil)
-          if $stdout.tty? and not ARGV.flag? '--quiet'
-            versions = keg.cd{ Dir['*'] }.join(', ')
-            puts "#{name} (#{versions} < #{f.version})"
-          else
-            puts name
-          end
-        end
+    outdated_brews.each do |keg, name, version|
+      if $stdout.tty? and not ARGV.flag? '--quiet'
+        versions = keg.cd{ Dir['*'] }.join(', ')
+        puts "#{name} (#{versions} < #{version})"
+      else
+        puts name
       end
     end
 

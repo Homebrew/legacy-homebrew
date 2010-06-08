@@ -385,6 +385,20 @@ def versions_of(keg_name)
 end
 
 
+def outdated_brews
+  require 'formula'
+
+  results = []
+  HOMEBREW_CELLAR.subdirs.each do |keg|
+    next unless keg.subdirs
+    name = keg.basename.to_s
+    if (not (f = Formula.factory(name)).installed? rescue nil)
+      results << [keg, name, f.version]
+    end
+  end
+  return results
+end
+
 ########################################################## class PrettyListing
 class PrettyListing
   def initialize path
