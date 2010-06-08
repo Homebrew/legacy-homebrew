@@ -204,9 +204,15 @@ class GitDownloadStrategy <AbstractDownloadStrategy
 end
 
 class CVSDownloadStrategy <AbstractDownloadStrategy
+  def initialize url, name, version, specs
+    super
+    @co=HOMEBREW_CACHE+@unique_token
+  end
+
+  def cached_location; @co; end
+
   def fetch
     ohai "Checking out #{@url}"
-    @co=HOMEBREW_CACHE+@unique_token
 
     # URL of cvs cvs://:pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML:gccxml
     # will become:
@@ -220,14 +226,13 @@ class CVSDownloadStrategy <AbstractDownloadStrategy
         safe_system '/usr/bin/cvs', '-d', url, 'checkout', '-d', @unique_token, mod
       end
     else
-      d = HOMEBREW_CACHE+@unique_token
-      puts "Updating #{d}"
-      Dir.chdir(d) { safe_system '/usr/bin/cvs', 'up' }
+      puts "Updating #{@co}"
+      Dir.chdir(@co) { safe_system '/usr/bin/cvs', 'up' }
     end
   end
 
   def stage
-    FileUtils.cp_r(Dir[HOMEBREW_CACHE+@unique_token+"*"], Dir.pwd)
+    FileUtils.cp_r Dir[@co+"*"], Dir.pwd
 
     require 'find'
     Find.find(Dir.pwd) do |path|
@@ -248,6 +253,13 @@ private
 end
 
 class MercurialDownloadStrategy <AbstractDownloadStrategy
+  def initialize url, name, version, specs
+    super
+    @clone=HOMEBREW_CACHE+@unique_token
+  end
+
+  def cached_location; @clone; end
+
   def fetch
     raise "You must install mercurial, there are two options:\n\n"+
           "    brew install pip && pip install mercurial\n"+
@@ -256,11 +268,9 @@ class MercurialDownloadStrategy <AbstractDownloadStrategy
           unless system "/usr/bin/which hg"
 
     ohai "Cloning #{@url}"
-    @clone=HOMEBREW_CACHE+@unique_token
-
-    url=@url.sub(%r[^hg://], '')
 
     unless @clone.exist?
+      url=@url.sub(%r[^hg://], '')
       safe_system 'hg', 'clone', url, @clone
     else
       puts "Updating #{@clone}"
@@ -284,16 +294,20 @@ class MercurialDownloadStrategy <AbstractDownloadStrategy
 end
 
 class BazaarDownloadStrategy <AbstractDownloadStrategy
+  def initialize url, name, version, specs
+    super
+    @clone=HOMEBREW_CACHE+@unique_token
+  end
+
+  def cached_location; @clone; end
+
   def fetch
     raise "You must install bazaar first" \
           unless system "/usr/bin/which bzr"
 
     ohai "Cloning #{@url}"
-    @clone=HOMEBREW_CACHE+@unique_token
-
-    url=@url.sub(%r[^bzr://], '')
-
     unless @clone.exist?
+      url=@url.sub(%r[^bzr://], '')
       # 'lightweight' means history-less
       safe_system 'bzr', 'checkout', '--lightweight', url, @clone
     else
