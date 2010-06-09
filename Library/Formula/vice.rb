@@ -31,12 +31,12 @@ class Vice <Formula
     system "make"
     system "make bindist"
     
-    libexec.install Dir['vice-macosx-*/*']
+    prefix.install Dir['vice-macosx-*/*']
     
     remove_unused_icons
   end
   
   def caveats
-    "Cocoa apps for these emulators have been installed to #{libexec}."
+    "Cocoa apps for these emulators have been installed to #{prefix}."
   end
 end
