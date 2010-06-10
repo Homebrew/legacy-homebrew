@@ -9,14 +9,13 @@ class Libplist <Formula
   depends_on 'glib'
   depends_on 'libxml2'
 
-  def keg_only?
-    "This brew provides libmagic, but also installs a 'file' command which shadows the OS X-provided command."
-  end
-
   def install
     # Disable Python bindings.
     inreplace "CMakeLists.txt", 'OPTION(ENABLE_PYTHON "Enable Python bindings (needs Swig)" ON)', '# Disabled Python Bindings'
     system "cmake . #{std_cmake_parameters}"
     system "make install"
+
+    # Remove 'plutil', which duplicates the system-provided one. Leave the versioned one, though.
+    rm (bin+'plutil')
   end
 end
