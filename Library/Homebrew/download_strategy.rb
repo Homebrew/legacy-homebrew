@@ -302,7 +302,7 @@ class MercurialDownloadStrategy <AbstractDownloadStrategy
       safe_system 'hg', 'clone', url, @clone
     else
       puts "Updating #{@clone}"
-      Dir.chdir(@clone) { safe_system 'hg', 'update' }
+      Dir.chdir(@clone) { safe_system 'hg', 'pull', '-u' }
     end
   end
 
