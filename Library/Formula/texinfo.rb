@@ -10,7 +10,7 @@ class Texinfo <Formula
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--disable-install-warnings",
                           "--prefix=#{prefix}"
     system "make install"
