@@ -29,7 +29,7 @@ class Ddclient <Formula
     inreplace 'sample-etc_ddclient.conf' do |s|
       s.gsub! "/var/run/ddclient.pid", (var + 'run/ddclient/pid')
     end
-    (share + 'doc' + 'ddclient').install ['sample-ddclient-wrapper.sh',\
+    (share + 'doc/ddclient').install ['sample-ddclient-wrapper.sh',\
                                           'sample-etc_cron.d_ddclient',\
                                           'sample-etc_ddclient.conf']
 

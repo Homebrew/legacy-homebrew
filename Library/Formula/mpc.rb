@@ -5,6 +5,7 @@ class Mpc <Formula
   homepage 'http://mpd.wikia.com/wiki/Client:Mpc'
   md5 '9ab2967d9ec719b06a86f3b4121be654'
 
+  depends_on 'pkg-config'
   depends_on 'libmpdclient'
 
   def install

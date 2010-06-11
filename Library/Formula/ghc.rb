@@ -38,6 +38,7 @@ class Ghc <Formula
     # Fix paths
     replace_all "/Library/Frameworks/GHC.framework/Versions/#{short_version}/usr/lib/ghc-#{version}", "#{lib}/ghc"
     replace_all "/Library/Frameworks/GHC.framework/Versions/#{short_version}/usr", prefix
+    inreplace "lib/ghc-#{version}/ghc-asm", "#!/opt/local/bin/perl", "#!/usr/bin/env perl"
     mv "lib/ghc-#{version}", 'lib/ghc'
 
     prefix.install ['bin', 'lib', 'share']

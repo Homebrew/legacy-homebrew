@@ -10,7 +10,8 @@ class SdlMixer <Formula
   depends_on 'flac' => :optional
   depends_on 'libmikmod' => :optional
   #depends_on 'smpeg' => :optional  # http://icculus.org/smpeg/
-  
+  depends_on 'libvorbis' => :optional
+ 
   def install
     Sdl.use_homebrew_prefix 'SDL_mixer.pc.in'
 

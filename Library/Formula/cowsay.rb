@@ -9,5 +9,6 @@ class Cowsay <Formula
 
   def install
     system "/bin/sh", "install.sh", prefix
+    FileUtils.mv prefix+'man', share
   end
 end
