@@ -7,9 +7,12 @@ class Poco <Formula
   version '1.3.6p2'
 
   def install
+    arch = Hardware.is_64_bit? ? 'Darwin_x86_64': 'Darwin'
+
     system "./configure",
         "--disable-debug",
         "--disable-dependency-tracking",
+        "--config=#{arch}",
         "--omit=Data/MySQL,Data/ODBC",
         "--prefix=#{prefix}"
     system "make"
