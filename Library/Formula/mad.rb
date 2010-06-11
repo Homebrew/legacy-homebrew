@@ -28,6 +28,6 @@ Cflags: -I${includedir}
     system "./configure --disable-debugging --enable-fpm=intel --prefix='#{prefix}'"
     system "make install"
 
-    (lib+'pkgconfig'+'mad.pc').write mad_pc
+    (lib+'pkgconfig/mad.pc').write mad_pc
   end
 end

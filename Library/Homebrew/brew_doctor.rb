@@ -225,13 +225,47 @@ def check_for_gettext
   end
 end
 
+def check_for_config_scripts
+  real_cellar = HOMEBREW_CELLAR.realpath
+
+  config_scripts = []
+
+  paths = ENV['PATH'].split(':').collect{|p| File.expand_path p}
+  paths.each do |p|
+    next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin"].include? p
+    next if %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] =~ p
+
+    configs = Dir["#{p}/*-config"]
+    # puts "#{p}\n    #{configs * ' '}" unless configs.empty?
+    config_scripts << [p, configs.collect {|p| File.basename(p)}] unless configs.empty?
+  end
+
+  unless config_scripts.empty?
+    puts <<-EOS.undent
+      Some "config" scripts were found in your path, but not in system or Homebrew folders.
+
+      `./configure` scripts often look for *-config scripts to determine if software packages
+      are installed, and what additional flags to use when compiling and linking.
+
+      Having additional scripts in your path can confuse software installed via Homebrew if
+      the config script overrides a system or Homebrew provided script of the same name.
+
+    EOS
+
+    config_scripts.each do |pair|
+      puts pair[0]
+      puts "    " + pair[1] * " "
+    end
+  end
+end
+
 def brew_doctor
   read, write = IO.pipe
 
   if fork == nil
     read.close
     $stdout.reopen write
-    
+
     check_usr_bin_ruby
     check_homebrew_prefix
     check_for_stray_dylibs
@@ -243,6 +277,7 @@ def brew_doctor
     check_which_pkg_config
     check_pkg_config_paths
     check_for_gettext
+    check_for_config_scripts
 
     exit! 0
   else

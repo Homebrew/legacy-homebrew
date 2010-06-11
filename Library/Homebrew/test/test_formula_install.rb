@@ -21,6 +21,18 @@ class TestScriptFileFormula <ScriptFileFormula
 end
 
 
+class ConfigureTests < Test::Unit::TestCase
+  def test_detect_failed_configure
+    f=ConfigureFails.new
+    begin
+      f.brew { f.install }
+    rescue ExecutionError => e
+      assert e.was_running_configure?
+    end
+  end
+end
+
+
 class InstallTests < Test::Unit::TestCase
   def temporary_install f
     # Brew and install the given formula

@@ -17,12 +17,11 @@ class Mkvtoolnix <Formula
       %q!sed -e 's:\\.\\(o\\|gch\\)$:.d:'!,
       %q!sed -E -e 's:\\.(o|gch)$:.d:'!
 
-    boost_flag = "--with-boost-libdir=#{HOMEBREW_PREFIX}/lib"
     flac_flag = Formula.factory('flac').installed? ? "--with-flac" : "--without-flac"
 
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
-                          boost_flag,
+                          "--with-boost-libdir=#{HOMEBREW_PREFIX}/lib", # For non-/usr/local prefix
                           "--with-boost-regex=boost_regex-mt", # via macports
                           flac_flag,
                           "--disable-gui", "--disable-wxwidgets"

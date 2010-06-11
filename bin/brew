@@ -8,7 +8,7 @@ Dir.getwd rescue abort "The current working directory doesn't exist, cannot proc
 HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] = File.expand_path(__FILE__)
 
 require 'pathname'
-HOMEBREW_LIBRARY_PATH = (Pathname.new(__FILE__).realpath.dirname.parent+"Library"+"Homebrew").to_s
+HOMEBREW_LIBRARY_PATH = (Pathname.new(__FILE__).realpath.dirname.parent+"Library/Homebrew").to_s
 $:.unshift(HOMEBREW_LIBRARY_PATH)
 require 'global'
 
@@ -372,15 +372,33 @@ begin
       end
     end
 
-  when 'branch', 'checkout', 'pull', 'push', 'rebase', 'reset'
-    onoe "Unknown command: #{arg} (did you mean 'git #{arg}'?)"
-
   when 'doctor'
     require 'brew_doctor'
     brew_doctor
 
   else
-    onoe "Unknown command: #{arg}"
+    # Check for an external shell command
+    if system "/usr/bin/which -s brew-#{arg}"
+      # Add some Homebrew vars to the ENV
+      ['CACHE', 'CELLAR', 'LIBRARY_PATH', 'PREFIX', 'REPOSITORY'].each do |e|
+        ENV["HOMEBREW_#{e}"] = eval("HOMEBREW_#{e}")
+      end
+      exec("brew-#{arg}", *ARGV)
+    end
+
+    # Check for an external ruby command
+    external_rb = `/usr/bin/which brew-#{arg}.rb`.chomp
+    unless external_rb.empty?
+      require external_rb
+      exit 0
+    end
+
+    # Check for git commands
+    if ['branch', 'checkout', 'pull', 'push', 'rebase', 'reset'].include? arg
+      onoe "Unknown command: #{arg} (did you mean 'git #{arg}'?)"
+    else
+      onoe "Unknown command: #{arg}"
+    end
   end
 
 rescue FormulaUnspecifiedError
@@ -416,6 +434,13 @@ rescue BuildError => e
   # then replace that string with the following when the github api returns
   issues = issues_for_formula(formula_name)
   puts "These existing issues may help you:", *issues unless issues.empty?
+  if e.was_running_configure?
+    puts "It looks like an autotools configure failed."
+    puts "Consider re-running the install with '-vd' to keep 'config.log' around:"
+    puts "    brew install -vd formula_name"
+    puts "Gist 'config.log' and any error output when reporting an issue."
+  end
+  puts
   puts "Consider running `brew doctor` if a large number of installs are failing."
   exit 1
 rescue RuntimeError, SystemCallError => e

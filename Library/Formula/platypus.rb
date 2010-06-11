@@ -35,13 +35,13 @@ class Platypus <Formula
     # Install sub-binary parts to share
     Dir.chdir('Script_Exec/build/Release/ScriptExec.app/Contents') do
       (share + 'platypus').install "MacOS/ScriptExec"
-      (share + 'platypus' + 'MainMenu.nib').install "Resources/English.lproj/MainMenu.nib/keyedobjects.nib"
+      (share + 'platypus/MainMenu.nib').install "Resources/English.lproj/MainMenu.nib/keyedobjects.nib"
     end
 
     # Install icons to share
     (share + 'platypus').install 'Icons/PlatypusDefault.icns'
 
     # Write version info to share
-    (share + 'platypus' + 'Version').write version
+    (share + 'platypus/Version').write version
   end
 end

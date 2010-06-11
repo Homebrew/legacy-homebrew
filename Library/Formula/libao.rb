@@ -10,4 +10,11 @@ class Libao <Formula
                           "--prefix=#{prefix}", "--disable-x"
     system "make install"
   end
+
+  def patches
+    [
+        # Fix build on OS X 10.4 and 10.5 (included in upcoming 1.0.1)
+        "https://trac.xiph.org/raw-attachment/ticket/1667/libao.patch"
+    ]
+  end
 end
