@@ -29,7 +29,8 @@ TEST_FOLDER = Pathname.new(ABS__FILE__).parent.realpath
 # Note: These exceptions duplicate those defined in globals.
 # Perhaps the same definitions should be used in both places.
 class ExecutionError <RuntimeError
-  attr :exit_status, :command
+  attr :exit_status
+  attr :command
 
   def initialize cmd, args = [], es = nil
     @command = cmd
