@@ -4,6 +4,7 @@ def build_java?; ARGV.include? "--java"; end
 def build_perl?; ARGV.include? "--perl"; end
 def build_python?; ARGV.include? "--python"; end
 def build_universal?; ARGV.include? '--universal'; end
+def with_unicode_path?; ARGV.include? '--unicode-path'; end
 
 # On 10.5 we need newer versions of apr, neon etc.
 # On 10.6 we only need a newer version of neon
@@ -79,6 +80,7 @@ class Subversion <Formula
             "--without-berkeley-db"]
 
     args << "--enable-javahl" << "--without-jikes" if build_java?
+    args << "--with-unicode-path" if with_unicode_path?
 
     system "./configure", *args
     system "make"
@@ -113,8 +115,27 @@ class Subversion <Formula
     end
   end
 
+  def patches
+    if with_unicode_path?
+      # Patch that modify subversion paths handling to manage unicode paths issues
+      "http://gist.github.com/raw/434424/subversion-unicode-path.patch"
+    end
+  end
+
   def caveats
     s = ""
+
+    if with_unicode_path?
+      s += <<-EOS.undent
+        This unicode-path version implements a hack to deal with composed/decomposed
+        unicode handling on Mac OS X which is different from linux and windows.
+        It is an implementation of solution 1 from
+        http://svn.collab.net/repos/svn/trunk/notes/unicode-composition-for-filenames
+        which _WILL_ break some setups. Please be sure you understand what you
+        are asking for when you install this version.
+
+      EOS
+    end
 
     if build_python?
       s += <<-EOS.undent
