@@ -85,6 +85,7 @@ def install f
           puts "to copy the diff to the clipboard."
         end
 
+        ENV['HOMEBREW_DEBUG_INSTALL'] = f.name
         interactive_shell
         nil
       elsif ARGV.include? '--help'
