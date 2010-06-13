@@ -9,10 +9,10 @@ class Hllib <Formula
   def install
     # Library
     cd 'HLLib' do
-      # Set prefix correctly
-      inreplace 'Makefile', '/usr/local', prefix
       # Set perms so we can replace the strings
       chmod 0777, 'Makefile'
+      # Set prefix correctly
+      inreplace 'Makefile', '/usr/local', prefix
       #  Remove -soname directive
       inreplace 'Makefile', '-shared -Wl,-soname,libhl.so.2', '-shared -Wl'
       # Ownership isn't needed here
@@ -36,7 +36,7 @@ class Hllib <Formula
       inreplace 'Main.c', 'HLExtract.exe', 'hlextract'
       # Make the binary build path and build
       bin.mkpath
-      system ENV['CC'], 'Main.c', '-lhl', '-o', bin+'hlextract'
+      system ENV['CC'], 'Main.c', "-I#{include}", "-L#{lib}", '-lhl', '-o', bin+'hlextract'
     end
   end
 end
