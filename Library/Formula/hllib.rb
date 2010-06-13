@@ -11,18 +11,18 @@ class Hllib <Formula
     cd 'HLLib' do
       # Set perms so we can replace the strings
       chmod 0777, 'Makefile'
-      # Set prefix correctly
-      inreplace 'Makefile', '/usr/local', prefix
-      #  Remove -soname directive
-      inreplace 'Makefile', '-shared -Wl,-soname,libhl.so.2', '-shared -Wl'
-      # Ownership isn't needed here
-      inreplace 'Makefile', ' -g root', ''
-      inreplace 'Makefile', ' -o root', ''
-      # .dylib is the OS X equivalent of .so
-      inreplace 'Makefile', 'libhl.so.$(HLLIB_VERS)', 'libhl.$(HLLIB_VERS).dylib'
-      inreplace 'Makefile', 'rm -f \#* *~ *.o *.so.*', 'rm -f \#* *~ *.o *.dylib'
-      inreplace 'Makefile', '$(PREFIX)/lib/libhl.so.2', '$(PREFIX)/lib/libhl.2.dylib'
-      inreplace 'Makefile', '$(PREFIX)/lib/libhl.so', '$(PREFIX)/lib/libhl.dylib'
+      inreplace 'Makefile' do |s|
+        # Set prefix correctly
+        s.gsub! '/usr/local', prefix
+        # Remove -soname directive
+        s.gsub! '-shared -Wl,-soname,libhl.so.2', '-shared -Wl'
+        # Ownership isn't needed here
+        s.gsub! %r{ -[og] root}, ''
+        # .dylib is the OS X equivalent of .so
+        s.gsub! 'libhl.so.$(HLLIB_VERS)', 'libhl.$(HLLIB_VERS).dylib'
+        s.gsub! '$(PREFIX)/lib/libhl.so.2', '$(PREFIX)/lib/libhl.2.dylib'
+        s.gsub! '$(PREFIX)/lib/libhl.so', '$(PREFIX)/lib/libhl.dylib'
+      end
       # Install
       system "make install"
     end
