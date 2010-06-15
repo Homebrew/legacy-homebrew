@@ -1,14 +1,14 @@
 require 'formula'
 
 class Nginx < Formula
-  url 'http://nginx.org/download/nginx-0.7.65.tar.gz'
-  head 'http://nginx.org/download/nginx-0.8.39.tar.gz'
+  url 'http://nginx.org/download/nginx-0.7.67.tar.gz'
+  head 'http://nginx.org/download/nginx-0.8.41.tar.gz'
   homepage 'http://nginx.org/'
 
   if ARGV.include? '--HEAD'
-    @md5='87e88c68b7651ab6aa879b6a563c3bd0'
+    @md5='b32dd29c10acede70f5ac81911f48707'
   else
-    @md5='abc4f76af450eedeb063158bd963feaa'
+    @md5='b6e175f969d03a4d3c5643aaabc6a5ff'
   end
 
   depends_on 'pcre'
