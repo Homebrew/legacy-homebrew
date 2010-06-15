@@ -70,6 +70,8 @@ end
 class Formula
   include FileUtils
   
+  attr_reader :url, :version, :homepage, :name, :specs, :downloader
+
   # Homebrew determines the name
   def initialize name='__UNKNOWN__'
     set_instance_variable 'url'
@@ -118,8 +120,6 @@ class Formula
   def cached_download
     @downloader.cached_location
   end
-
-  attr_reader :url, :version, :homepage, :name, :specs
 
   def bin; prefix+'bin' end
   def sbin; prefix+'sbin' end
