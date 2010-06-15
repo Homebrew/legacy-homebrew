@@ -1,16 +1,8 @@
 #!/usr/bin/ruby
 #
-# Download and execute this script in one-line with no temporary files:
+# This script installs to /usr/local only. To install elsewhere you can just
+# untar http://github.com/mxcl/homebrew/tarball/master anywhere you like.
 #
-#     ruby -e "$(curl http://gist.github.com/raw/323731/install_homebrew.rb)"
-#
-#
-# I deliberately didn't DRY /usr/local references into a variable as this
-# script will not "just work" if you change the destination directory. However
-# please feel free to fork it and make that possible.
-#
-# If you do fork, please ensure you add a comment here that explains what the
-# changes are intended to do and how well you tested them.
 #
 # 30th March 2010:
 #   Added a check to make sure user is in the staff group. This was a problem
@@ -130,7 +122,7 @@ end
 Dir.chdir "/usr/local" do
   ohai "Downloading and Installing Homebrew..."
   # -m to stop tar erroring out if it can't modify the mtime for root owned directories
-  system "/usr/bin/curl -sfL http://github.com/mxcl/homebrew/tarball/master | /usr/bin/tar xz -m --strip 1"
+  system "/usr/bin/curl -sSfL http://github.com/mxcl/homebrew/tarball/master | /usr/bin/tar xz -m --strip 1"
 end
 
 ohai "Installation successful!"
