@@ -12,7 +12,7 @@ class Flusspferd <Formula
   depends_on 'spidermonkey'
 
   def install
-    ENV.gcc_4_2
+    fails_with_llvm
     system "cmake -H. -Bbuild #{std_cmake_parameters}"
     system "make install"
   end

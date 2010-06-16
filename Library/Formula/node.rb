@@ -15,7 +15,7 @@ class Node <Formula
   end
 
   def install
-    ENV.gcc_4_2
+    fails_with_llvm
     inreplace %w{wscript configure} do |s|
       s.gsub! '/usr/local', HOMEBREW_PREFIX
       s.gsub! '/opt/local/lib', '/usr/lib'

@@ -7,8 +7,7 @@ class PdflibLite <Formula
   version "7.0.4p4"
 
   def install
-    # SL 10.6.1 LLVM crashes with an internal compiler error on this version.
-    ENV.gcc_4_2
+    fails_with_llvm "SL 10.6.1 LLVM crashes with an internal compiler error on this version."
 
     # Without the following substituion, pdflib-lite runs into weird
     # build errors due to bad interactions with the TIFF headers.
