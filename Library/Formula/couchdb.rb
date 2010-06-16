@@ -2,7 +2,7 @@ require 'formula'
 
 class Couchdb <Formula
   url 'git://github.com/apache/couchdb.git'
-  homepage='http://couchdb.apache.org/'
+  homepage "http://couchdb.apache.org/"
   version "0.11.0"
   @specs = {:tag => "origin/tags/0.11.0"}
 

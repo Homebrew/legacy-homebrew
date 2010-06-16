@@ -17,8 +17,7 @@ EOS
   end
 
   def install
-    # Wine does not compile with LLVM yet
-    ENV.gcc_4_2
+    fails_with_llvm
     ENV.x11
 
     # Make sure we build 32bit version, because Wine64 is not fully functional yet

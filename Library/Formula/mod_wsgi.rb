@@ -7,6 +7,10 @@ class ModWsgi <Formula
 
   def caveats
     <<-EOS.undent
+    NOTE: "brew install -v mod_wsgi" will fail! You must install
+    in non-verbose mode for this to succeed. Patches to fix this
+    are welcome (and should be sent upstream too.)
+
     * You must manually edit /etc/apache2/httpd.conf to load
       #{libexec}/mod_wsgi.so
 
@@ -16,6 +20,10 @@ class ModWsgi <Formula
   end
 
   def install
+    # Remove a flag added when homebrew isn't in /usr/local
+    # causes apxs to fail with unknown flags s,y,s,t,m
+    ENV.remove 'CPPFLAGS', "-isystem #{HOMEBREW_PREFIX}/include"
+
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
 
     # Find the archs of the Python we are building against.

@@ -14,9 +14,11 @@ class Gource <Formula
   depends_on 'jpeg'
   depends_on 'libpng'
   depends_on 'pcre'
+  depends_on 'glew'
 
   def install
     # Put freetype-config in path
+    ENV.x11
     ENV.prepend 'PATH', "/usr/X11/bin", ":"
 
     system "autoreconf -f -i" unless File.exist? "configure"

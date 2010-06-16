@@ -1,6 +1,8 @@
 require 'formula'
 
 def build_java?; ARGV.include? "--java"; end
+def build_perl?; ARGV.include? "--perl"; end
+def build_python?; ARGV.include? "--python"; end
 def build_universal?; ARGV.include? '--universal'; end
 
 # On 10.5 we need newer versions of apr, neon etc.
@@ -14,7 +16,7 @@ class Subversion <Formula
   url 'http://subversion.tigris.org/downloads/subversion-1.6.11.tar.bz2'
   md5 '75419159b50661092c4137449940b5cc'
   homepage 'http://subversion.apache.org/'
-  
+
   aka 'svn'
 
   # On Snow Leopard, build a new neon. For Leopard, the deps above include this.
@@ -23,6 +25,8 @@ class Subversion <Formula
   def options
     [
       ['--java', 'Build Java bindings.'],
+      ['--perl', 'Build Perl bindings.'],
+      ['--python', 'Build Python bindings.'],
       ['--universal', 'Build as a Universal Intel binary.']
     ]
   end
@@ -79,6 +83,28 @@ class Subversion <Formula
     system "make"
     system "make install"
 
+    if build_python?
+      system "make swig-py"
+      system "make install-swig-py"
+    end
+
+    if build_perl?
+      # Remove hard-coded ppc target, add appropriate ones
+      if build_universal?
+        arches = "-arch x86_64 -arch i386"
+      elsif MACOS_VERSION < 10.6
+        arches = "-arch i386"
+      else
+        arches = "-arch x86_64"
+      end
+
+      inreplace "Makefile" do |s|
+        s.change_make_var! "SWIG_PL_INCLUDES", "$(SWIG_INCLUDES) #{arches} -g -pipe -fno-common -DPERL_DARWIN -fno-strict-aliasing -I/usr/local/include  -I/System/Library/Perl/5.10.0/darwin-thread-multi-2level/CORE"
+      end
+      system "make swig-pl"
+      system "make install-swig-pl"
+    end
+
     if build_java?
       ENV.j1 # This build isn't parallel safe
       system "make javahl"
@@ -87,11 +113,24 @@ class Subversion <Formula
   end
 
   def caveats
-    if build_java?
-      <<-EOS.undent
-        You may need to link the Java bindings into the Java Extensions folder:
-          sudo ln -s #{HOMEBREW_PREFIX}/lib/libsvnjavahl-1.dylib /Library/Java/Extensions
+    s = ""
+
+    if build_python?
+      s += <<-EOS.undent
+        You may need to add the Python bindings to your PYTHONPATH from:
+          #{HOMEBREW_PREFIX}/lib/svn-python
+
       EOS
     end
+
+    if build_java?
+      s += <<-EOS.undent
+        You may need to link the Java bindings into the Java Extensions folder:
+          sudo ln -s #{HOMEBREW_PREFIX}/lib/libsvnjavahl-1.dylib /Library/Java/Extensions
+
+      EOS
+    end
+
+    return s.empty? ? nil : s
   end
 end

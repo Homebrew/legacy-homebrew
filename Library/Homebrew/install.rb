@@ -85,6 +85,7 @@ def install f
           puts "to copy the diff to the clipboard."
         end
 
+        ENV['HOMEBREW_DEBUG_INSTALL'] = f.name
         interactive_shell
         nil
       elsif ARGV.include? '--help'
@@ -144,6 +145,14 @@ def install f
           show_summary_heading = true
         end
       end
+    end
+
+    # Check for possibly misplaced folders
+    if (f.prefix+'man').exist?
+      opoo 'A top-level "man" folder was found.'
+      puts "Homebrew requires that man pages live under share."
+      puts 'This can often be fixed by passing "--mandir=#{man}" to configure,'
+      puts 'or by installing manually with "man1.install \'mymanpage.1\'".'
     end
 
     # link from Cellar to Prefix

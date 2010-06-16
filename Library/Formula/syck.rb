@@ -6,7 +6,7 @@ class Syck <Formula
   md5 '198f925b4ed7fe04a182c35014498634'
 
   def install
-    ENV.gcc_4_2
+    fails_with_llvm
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end
