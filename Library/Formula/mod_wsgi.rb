@@ -7,6 +7,10 @@ class ModWsgi <Formula
 
   def caveats
     <<-EOS.undent
+    NOTE: "brew install -v mod_wsgi" will fail! You must install
+    in non-verbose mode for this to succeed. Patches to fix this
+    are welcome (and should be sent upstream too.)
+
     * You must manually edit /etc/apache2/httpd.conf to load
       #{libexec}/mod_wsgi.so
 
