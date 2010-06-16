@@ -163,34 +163,32 @@ begin
       end
 
   when 'up', 'update'
-    if system "/usr/bin/which -s git"
-      require 'update'
-      updater = RefreshBrew.new
-      old_revision = updater.current_revision
-      unless updater.update_from_masterbrew!
-        puts "Already up-to-date."
-      else
-        puts "Updated Homebrew from #{old_revision[0,8]} to #{updater.current_revision[0,8]}."
-        ## New Formulae
-        if updater.pending_new_formulae?
-          ohai "The following formulae are new:"
-          puts_columns updater.added_formulae
-        end
-        ## Deleted Formulae
-        if updater.deleted_formulae?
-          ohai "The following formulae were removed:"
-          puts_columns updater.deleted_formulae
-        end
-        ## Updated Formulae
-        if updater.pending_formulae_changes?
-          ohai "The following formulae were updated:"
-          puts_columns updater.updated_formulae
-        else
-          puts "No formulae were updated." unless updater.pending_formulae_changes?
-        end
-      end
+    abort "Please `brew install git' first." unless system "/usr/bin/which -s git"
+
+    require 'update'
+    updater = RefreshBrew.new
+    old_revision = updater.current_revision
+    unless updater.update_from_masterbrew!
+      puts "Already up-to-date."
     else
-      abort "Please `brew install git' first."
+      puts "Updated Homebrew from #{old_revision[0,8]} to #{updater.current_revision[0,8]}."
+      ## New Formulae
+      if updater.pending_new_formulae?
+        ohai "The following formulae are new:"
+        puts_columns updater.added_formulae
+      end
+      ## Deleted Formulae
+      if updater.deleted_formulae?
+        ohai "The following formulae were removed:"
+        puts_columns updater.deleted_formulae
+      end
+      ## Updated Formulae
+      if updater.pending_formulae_changes?
+        ohai "The following formulae were updated:"
+        puts_columns updater.updated_formulae
+      else
+        puts "No formulae were updated." unless updater.pending_formulae_changes?
+      end
     end
 
     when 'ln', 'link'
