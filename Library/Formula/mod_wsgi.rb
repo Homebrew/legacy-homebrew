@@ -16,6 +16,10 @@ class ModWsgi <Formula
   end
 
   def install
+    # Remove a flag added when homebrew isn't in /usr/local
+    # causes apxs to fail with unknown flags s,y,s,t,m
+    ENV.remove 'CPPFLAGS', "-isystem #{HOMEBREW_PREFIX}/include"
+
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
 
     # Find the archs of the Python we are building against.
