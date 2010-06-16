@@ -45,10 +45,16 @@ RECOMMENDED_GCC_42 = (MACOS_VERSION >= 10.6) ? 5646 : 5577
 
 class ExecutionError <RuntimeError
   attr :exit_status
+  attr :command
 
   def initialize cmd, args = [], es = nil
+    @command = cmd
     super "Failure while executing: #{cmd} #{pretty(args)*' '}"
     @exit_status = es.exitstatus rescue 1
+  end
+
+  def was_running_configure?
+    @command == './configure'
   end
 
   private

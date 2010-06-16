@@ -70,6 +70,8 @@ end
 class Formula
   include FileUtils
   
+  attr_reader :url, :version, :homepage, :name, :specs, :downloader
+
   # Homebrew determines the name
   def initialize name='__UNKNOWN__'
     set_instance_variable 'url'
@@ -118,8 +120,6 @@ class Formula
   def cached_download
     @downloader.cached_location
   end
-
-  attr_reader :url, :version, :homepage, :name, :specs
 
   def bin; prefix+'bin' end
   def sbin; prefix+'sbin' end
@@ -205,10 +205,17 @@ class Formula
         onoe e.inspect
         puts e.backtrace
         ohai "Rescuing build..."
+        if (e.was_running_configure? rescue false) and File.exist? 'config.log'
+          puts "It looks like an autotools configure failed."
+          puts "Gist 'config.log' and any error output when reporting an issue."
+          puts
+        end
+
         puts "When you exit this shell Homebrew will attempt to finalise the installation."
         puts "If nothing is installed or the shell exits with a non-zero error code,"
         puts "Homebrew will abort. The installation prefix is:"
         puts prefix
+        ENV['HOMEBREW_DEBUG_INSTALL'] = name
         interactive_shell
       end
     end
