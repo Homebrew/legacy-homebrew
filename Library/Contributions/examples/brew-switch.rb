@@ -2,7 +2,7 @@ require 'formula'
 require 'keg'
 
 if ARGV.named.length != 2
-  onoe "Two parameters are expected, the formula name and version to link."
+  onoe "Usage: brew switch formula version"
   exit 1
 end
 
