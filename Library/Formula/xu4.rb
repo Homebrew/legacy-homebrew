@@ -4,10 +4,10 @@ class Xu4 <Formula
   head 'http://xu4.svn.sourceforge.net/svnroot/xu4/trunk/u4',
           :revision => '2725'
   homepage 'http://xu4.sourceforge.net/'
-  
+
   depends_on 'sdl'
   depends_on 'sdl_mixer'
-  
+
   aka 'ultima4'
 
   def patches
@@ -16,17 +16,18 @@ class Xu4 <Formula
 
   def install
     ENV.libpng
-    
+
     ultima_zips = [ 
       "Ultima%20IV%20for%20DOS/1.01/ultima4-1.01.zip",
       "Ultima%204%20VGA%20Upgrade/1.3/u4upgrad.zip"]
-    
+
+    ohai "Downloading support files"
     ultima_zips.each { |f| curl "http://downloads.sourceforge.net/project/xu4/#{f}", "-O" }
-    
+
     Dir.chdir 'src' do
       # Copy over SDL's ObjC main files
       `cp -R #{Formula.factory('sdl').libexec}/* macosx`
-      
+
       inreplace "Makefile.macosx" do |s|
         s.remove_make_var! "WHICH_ARCH"
         s.change_make_var! "WHICH_FRAMEWORK", "MacOSX#{MACOS_VERSION}.sdk"
@@ -34,14 +35,14 @@ class Xu4 <Formula
         s.gsub! "../../ultima4.zip", "../ultima4-1.01.zip"
         s.gsub! "../../u4upgrad.zip", "../u4upgrad.zip"
       end
-      
+
       system "make -f Makefile.macosx"
       system "make -f Makefile.macosx install"
-      
+
       prefix.install "xu4.app"
     end
   end
-  
+
   def caveats
     "xu4.app installed to #{prefix}"
   end

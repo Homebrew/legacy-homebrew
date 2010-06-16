@@ -5,7 +5,12 @@ Features and usage are [summarized on the homepage][homepage].
 
 Quick Install to /usr/local
 ---------------------------
-Run <http://gist.github.com/323731> and afterwards, [install Xcode][xcode].
+[The script](http://gist.github.com/323731) will prompt for confirmation
+before it does anything:
+
+    curl http://gist.github.com/raw/323731/install_homebrew.rb | ruby
+
+Afterwards, [install Xcode][xcode].
 
 
 Umm… I thought I could install it anywhere?

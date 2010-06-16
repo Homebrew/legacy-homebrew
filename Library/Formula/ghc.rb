@@ -10,9 +10,9 @@ end
 # Remember to update the formula for Cabal when updating this formula
 class Ghc <Formula
   homepage 'http://haskell.org/ghc/'
-  version '6.12.2'
-  url "http://haskell.org/ghc/dist/#{version}/GHC-#{version}-i386.pkg"
-  md5 '52c79e7a1a29f0e385e23b3023ef6bbc'
+  version '6.12.3'
+  url "http://darcs.haskell.org/download/dist/#{version}/GHC-#{version}-i386.pkg"
+  md5 '58399e3af68f50a23a847bdfe3de5aca'
 
   # Avoid stripping the Haskell binaries AND libraries; http://hackage.haskell.org/trac/ghc/ticket/2458
   skip_clean ['bin', 'lib']

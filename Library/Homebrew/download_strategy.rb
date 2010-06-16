@@ -135,24 +135,52 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
 
   def fetch
     ohai "Checking out #{@url}"
-    unless @co.exist?
-      quiet_safe_system svn, 'checkout', @url, @co
+    if @spec == :revision
+      fetch_repo @co, @url, @ref
+    elsif @spec == :revisions
+      # nil is OK for main_revision, as fetch_repo will then get latest
+      main_revision = @ref.delete :trunk
+      fetch_repo @co, @url, main_revision, true
+
+      get_externals do |external_name, external_url|
+        fetch_repo @co+external_name, external_url, @ref[external_name], true
+      end
     else
-      puts "Updating #{@co}"
-      quiet_safe_system svn, 'up', @co
+      fetch_repo @co, @url
     end
   end
 
   def stage
-    # Force the export, since the target directory will already exist
-    args = [svn, 'export', '--force', @co, Dir.pwd]
-    args << '-r' << @ref if @spec == :revision and @ref
+    quiet_safe_system svn, 'export', '--force', @co, Dir.pwd
+  end
+
+  def shell_quote str
+    # Oh god escaping shell args.
+    # See http://notetoself.vrensk.com/2008/08/escaping-single-quotes-in-ruby-harder-than-expected/
+    str.gsub(/\\|'/) { |c| "\\#{c}" }
+  end
+
+  def get_externals
+    `'#{shell_quote(svn)}' propget svn:externals '#{shell_quote(@url)}'`.chomp.each_line do |line|
+      name, url = line.split /\s+/
+      yield name, url
+    end
+  end
+
+  def fetch_repo target, url, revision=nil, ignore_externals=false
+    # Use "svn up" when the repository already exists locally.
+    # This saves on bandwidth and will have a similar effect to verifying the
+    # cache as it will make any changes to get the right revision.
+    svncommand = target.exist? ? 'up' : 'checkout'
+    args = [svn, svncommand, '--force', url, target]
+    args << '-r' << revision if revision
+    args << '--ignore-externals' if ignore_externals
     quiet_safe_system *args
   end
 
   # Override this method in a DownloadStrategy to force the use of a non-
-  # sysetm svn binary. mplayer.rb uses this to require a svn that
-  # understands externals.
+  # system svn binary. mplayer.rb uses this to require a svn new enough to
+  # understand its externals.
   def svn
     '/usr/bin/svn'
   end
@@ -274,7 +302,10 @@ class MercurialDownloadStrategy <AbstractDownloadStrategy
       safe_system 'hg', 'clone', url, @clone
     else
       puts "Updating #{@clone}"
-      Dir.chdir(@clone) { safe_system 'hg', 'update' }
+      Dir.chdir(@clone) do
+        safe_system 'hg', 'pull'
+        safe_system 'hg', 'update'
+      end
     end
   end
 
