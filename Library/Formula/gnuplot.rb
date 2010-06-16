@@ -11,10 +11,13 @@ class Gnuplot <Formula
 
   def install
     ENV.x11
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-readline=#{prefix}",
-                          "--disable-wxwidgets"
+    args = ["--disable-debug", "--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--with-readline=#{prefix}",
+            "--disable-wxwidgets"]
+    args << "--without-lua" if ARGV.include? "--without-lua"
+
+    system "./configure", *args
     system "make install"
   end
 end
