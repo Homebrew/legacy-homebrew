@@ -1,6 +1,8 @@
 require 'formula'
 
 class Ffmpeg <Formula
+  url 'http://ffmpeg.org/releases/ffmpeg-0.6.tar.bz2'
+  sha1 'c130e3bc368251b9130ce6eafb44fe8c3993ff5c'
   head 'svn://svn.ffmpeg.org/ffmpeg/trunk',
     :revisions => { :trunk => 22916, 'libswscale' => 31045 }
   homepage 'http://ffmpeg.org/'
