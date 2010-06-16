@@ -1,7 +1,8 @@
 require 'formula'
 
-def build_python?; ARGV.include? "--python"; end
 def build_java?; ARGV.include? "--java"; end
+def build_perl?; ARGV.include? "--perl"; end
+def build_python?; ARGV.include? "--python"; end
 def build_universal?; ARGV.include? '--universal'; end
 
 # On 10.5 we need newer versions of apr, neon etc.
@@ -24,6 +25,7 @@ class Subversion <Formula
   def options
     [
       ['--java', 'Build Java bindings.'],
+      ['--perl', 'Build Perl bindings.'],
       ['--python', 'Build Python bindings.'],
       ['--universal', 'Build as a Universal Intel binary.']
     ]
@@ -86,6 +88,23 @@ class Subversion <Formula
       system "make install-swig-py"
     end
 
+    if build_perl?
+      # Remove hard-coded ppc target, add appropriate ones
+      if build_universal?
+        arches = "-arch x86_64 -arch i386"
+      elsif MACOS_VERSION < 10.6
+        arches = "-arch i386"
+      else
+        arches = "-arch x86_64"
+      end
+
+      inreplace "Makefile" do |s|
+        s.change_make_var! "SWIG_PL_INCLUDES", "$(SWIG_INCLUDES) #{arches} -g -pipe -fno-common -DPERL_DARWIN -fno-strict-aliasing -I/usr/local/include  -I/System/Library/Perl/5.10.0/darwin-thread-multi-2level/CORE"
+      end
+      system "make swig-pl"
+      system "make install-swig-pl"
+    end
+
     if build_java?
       ENV.j1 # This build isn't parallel safe
       system "make javahl"
@@ -111,6 +130,7 @@ class Subversion <Formula
 
       EOS
     end
-    return s
+
+    return s.empty? ? nil : s
   end
 end
