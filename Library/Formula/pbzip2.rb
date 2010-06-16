@@ -6,8 +6,7 @@ class Pbzip2 <Formula
   md5 'b354422759da7113da366aad1876ed5d'
 
   def install
-    # Won't compile with LLVM
-    ENV.gcc_4_2
+    fails_with_llvm
     
     inreplace "Makefile" do |s|
       s.change_make_var! 'PREFIX', prefix

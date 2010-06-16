@@ -12,8 +12,7 @@ class Aqbanking <Formula
  #depends_on 'qt3' # for gui frontends
 
   def install
-    # llvm results in a sigsegfault during compile
-    ENV.gcc_4_2
+    fails_with_llvm "llvm results in a sigsegfault during compile"
     configure_args = [
         "--prefix=#{prefix}",
         "--disable-debug",

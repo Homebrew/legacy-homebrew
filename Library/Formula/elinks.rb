@@ -7,7 +7,7 @@ class Elinks <Formula
 
   def install
     ENV.deparallelize
-    ENV.gcc_4_2
+    fails_with_llvm
     ENV.delete('LD')
     system "./configure --prefix='#{prefix}'"
     system "make install"
