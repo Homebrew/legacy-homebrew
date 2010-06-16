@@ -8,7 +8,7 @@ Quick Install to /usr/local
 [The script](http://gist.github.com/323731) will prompt for confirmation
 before it does anything:
 
-    curl http://gist.github.com/raw/323731/install_homebrew.rb | ruby
+    ruby -e "$(curl -fsS http://gist.github.com/raw/436471/install_homebrew.rb)"
 
 Afterwards, [install Xcode][xcode].
 
