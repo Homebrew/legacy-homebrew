@@ -45,11 +45,9 @@ end
 def warn warning
   puts "#{Tty.red}Warning#{Tty.reset}: #{warning.chomp}"
 end
-
-alias :system_orig :system
  
 def system *args
-  abort "Failed during: #{args.shell_s}" unless system_orig *args
+  abort "Failed during: #{args.shell_s}" unless Kernel.system *args
 end
 
 def sudo *args
@@ -128,4 +126,4 @@ end
 ohai "Installation successful!"
 
 warn "/usr/local/bin is not in your PATH." unless ENV['PATH'].split(':').include? '/usr/local/bin'
-warn "Now install Xcode." unless system "/usr/bin/which gcc"
+warn "Now install Xcode." unless Kernel.system "/usr/bin/which -s gcc"
