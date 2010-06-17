@@ -399,6 +399,17 @@ def outdated_brews
   return results
 end
 
+def search_brews text
+  require "formula"
+  formulae = Formulary.names with_aliases=true
+  if text =~ /^\/(.*)\/$/
+    return formulae.grep(Regexp.new($1))
+  else
+    search_term = Regexp.escape(text || "")
+    return formulae.grep(/.*#{search_term}.*/)
+  end
+end
+
 ########################################################## class PrettyListing
 class PrettyListing
   def initialize path

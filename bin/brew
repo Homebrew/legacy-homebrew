@@ -130,16 +130,7 @@ begin
 
     when 'search', '-S'
       check_for_blacklisted_formula(ARGV.named)
-
-      require "formula"
-      formulae = Formulary.names with_aliases=true
-
-      if ARGV.first =~ /^\/(.*)\/$/
-        puts_columns formulae.grep(Regexp.new($1))
-      else
-        search_term = Regexp.escape(ARGV.first || "")
-        puts_columns formulae.grep(/.*#{search_term}.*/)
-      end
+      puts_columns search_brews(ARGV.first)
 
     when 'edit'
       if ARGV.named.empty?
