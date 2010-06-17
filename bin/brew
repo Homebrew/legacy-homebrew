@@ -163,23 +163,32 @@ begin
       end
 
   when 'up', 'update'
-    if system "/usr/bin/which -s git"
-      require 'update'
-      updater = RefreshBrew.new
-      old_revision = updater.current_revision
-      unless updater.update_from_masterbrew!
-        puts "Already up-to-date."
-      else
-        puts "Updated Homebrew from #{old_revision[0,8]} to #{updater.current_revision[0,8]}."
-        if updater.pending_formulae_changes?
-          ohai "The following formulae were updated:"
-          puts_columns updater.updated_formulae
-        else
-          puts "No formulae were updated." unless updater.pending_formulae_changes?
-        end
-      end
+    abort "Please `brew install git' first." unless system "/usr/bin/which -s git"
+
+    require 'update'
+    updater = RefreshBrew.new
+    old_revision = updater.current_revision
+    unless updater.update_from_masterbrew!
+      puts "Already up-to-date."
     else
-      abort "Please `brew install git' first."
+      puts "Updated Homebrew from #{old_revision[0,8]} to #{updater.current_revision[0,8]}."
+      ## New Formulae
+      if updater.pending_new_formulae?
+        ohai "The following formulae are new:"
+        puts_columns updater.added_formulae
+      end
+      ## Deleted Formulae
+      if updater.deleted_formulae?
+        ohai "The following formulae were removed:"
+        puts_columns updater.deleted_formulae
+      end
+      ## Updated Formulae
+      if updater.pending_formulae_changes?
+        ohai "The following formulae were updated:"
+        puts_columns updater.updated_formulae
+      else
+        puts "No formulae were updated." unless updater.pending_formulae_changes?
+      end
     end
 
     when 'ln', 'link'
@@ -357,18 +366,12 @@ begin
     exec "cat", ARGV.formulae.first.path, *ARGV.options
 
   when 'outdated'
-    require 'formula'
-    HOMEBREW_CELLAR.subdirs.each do |keg|
-      if keg.subdirs.length > 0
-        name = keg.basename('.rb').to_s
-        if (not (f = Formula.factory(name)).installed? rescue nil)
-          if $stdout.tty? and not ARGV.flag? '--quiet'
-            versions = keg.cd{ Dir['*'] }.join(', ')
-            puts "#{name} (#{versions} < #{f.version})"
-          else
-            puts name
-          end
-        end
+    outdated_brews.each do |keg, name, version|
+      if $stdout.tty? and not ARGV.flag? '--quiet'
+        versions = keg.cd{ Dir['*'] }.join(', ')
+        puts "#{name} (#{versions} < #{version})"
+      else
+        puts name
       end
     end
 

@@ -11,8 +11,7 @@ class Redland <Formula
   depends_on 'berkeley-db' => :optional
 
   def install
-    ENV.gcc_4_2
-
+    fails_with_llvm
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",

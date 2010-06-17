@@ -6,7 +6,7 @@ class Libsigcxx <Formula
   md5 '1198425eab9fd605721a278c651b8dd8'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make"
     system "make install"
   end

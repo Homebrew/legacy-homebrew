@@ -385,6 +385,20 @@ def versions_of(keg_name)
 end
 
 
+def outdated_brews
+  require 'formula'
+
+  results = []
+  HOMEBREW_CELLAR.subdirs.each do |keg|
+    next unless keg.subdirs
+    name = keg.basename.to_s
+    if (not (f = Formula.factory(name)).installed? rescue nil)
+      results << [keg, name, f.version]
+    end
+  end
+  return results
+end
+
 ########################################################## class PrettyListing
 class PrettyListing
   def initialize path
@@ -546,7 +560,7 @@ def llvm_build
   if MACOS_VERSION >= 10.6
     xcode_path = `/usr/bin/xcode-select -print-path`.chomp
     return nil if xcode_path.empty?
-    `#{xcode_path}/usr/bin/llvm-gcc-4.2 -v 2>&1` =~ /LLVM build (\d{4,})/
+    `#{xcode_path}/usr/bin/llvm-gcc -v 2>&1` =~ /LLVM build (\d{4,})/
     $1.to_i
   end
 end

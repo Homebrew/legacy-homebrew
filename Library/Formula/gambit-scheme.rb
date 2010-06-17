@@ -13,9 +13,7 @@ class GambitScheme <Formula
   end
 
   def install
-    # Gambit Scheme currently fails to build with llvm-gcc
-    # (ld crashes during the build process)
-    ENV.gcc_4_2
+    fails_with_llvm "ld crashes during the build process"
     # Gambit Scheme doesn't like full optimizations
     ENV.O2
 

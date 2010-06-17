@@ -296,6 +296,17 @@ class Formula
     self.class.external_deps
   end
 
+  def fails_with_llvm msg="", data=nil
+    return unless (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
+
+    build = data.delete :build rescue nil
+    msg = "(No specific reason was given)" if msg.empty?
+
+    opoo "LLVM was requested, but this formula is reported as not working with LLVM:"
+    puts msg
+    puts "Tested with LLVM build #{build}" unless build == nil
+  end
+
 protected
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error

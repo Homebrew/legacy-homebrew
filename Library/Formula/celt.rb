@@ -8,9 +8,7 @@ class Celt <Formula
   depends_on 'libogg' => :optional
 
   def install
-    # 1 Test failed with llvm-gcc
-    ENV.gcc_4_2
-
+    fails_with_llvm "1 test failed with llvm-gcc"
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--enable-new-plc"
     system "make check"
     system "make install"

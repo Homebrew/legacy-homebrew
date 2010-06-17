@@ -13,8 +13,7 @@ class Gmp <Formula
   end
 
   def install
-    # On OS X 10.6, some tests fail under LLVM
-    ENV.gcc_4_2
+    fails_with_llvm "On OS X 10.6, some tests fail under LLVM"
 
     args = ["--prefix=#{prefix}", "--infodir=#{info}", "--enable-cxx"]
 

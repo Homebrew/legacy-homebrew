@@ -100,8 +100,7 @@ class TexLive <Formula
     # Notes:
     # Several OSX-specific files (texk/web2c/xetexdir/XeTeXFontMgr_Mac.mm and others) can't build in 
     # 64 bit mode on OSX, since they use deprecated functions only available when building in 32bit.
-    
-    ENV.gcc_4_2
+    fails_with_llvm
     ENV.m32
     ENV.deparallelize
     
