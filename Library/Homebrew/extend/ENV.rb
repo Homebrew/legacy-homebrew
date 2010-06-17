@@ -21,7 +21,7 @@ module HomebrewEnvExtension
     if MACOS_VERSION >= 10.6 and (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
       # you can install Xcode wherever you like you know.
       xcode_path = `/usr/bin/xcode-select -print-path`.chomp
-      xcode_path = "/Developer" if xcode_prefix.to_s.empty?
+      xcode_path = "/Developer" if xcode_path.to_s.empty?
 
       ENV['CC'] = "#{xcode_path}/usr/bin/llvm-gcc"
       ENV['CXX'] = "#{xcode_path}/usr/bin/llvm-g++"
