@@ -9,14 +9,16 @@ class Io <Formula
 
   def install
     ENV.j1
-    FileUtils.mkdir 'io-build'
+    mkdir 'io-build'
 
     Dir.chdir 'io-build' do
       system "cmake .. #{std_cmake_parameters}"
       system "make install"
     end
 
-    FileUtils.rm_f Dir['docs/*.pdf']
+    rm_f Dir['docs/*.pdf']
     doc.install Dir['docs/*']
+
+    prefix.install 'license/bsd_license.txt' => 'LICENSE'
   end
 end
