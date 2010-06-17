@@ -481,13 +481,9 @@ end
 class Cleaner
   def initialize f
     @f=f
-    
-    # correct common issues
-    share=f.prefix+'share'
-    (f.prefix+'man').mv share rescue nil
-    
+
     [f.bin, f.sbin, f.lib].each {|d| clean_dir d}
-    
+
     # info pages suck
     info = f.share+'info'
     info.rmtree if info.directory? and not f.skip_clean? info
