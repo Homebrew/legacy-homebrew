@@ -12,6 +12,7 @@ class Mysql <Formula
       ['--with-tests', "Keep tests when installing."],
       ['--with-bench', "Keep benchmark app when installing."],
       ['--client-only', "Only install client tools, not the server."],
+      ['--universal', "Make mysql a universal binary"]
     ]
   end
 
@@ -26,6 +27,9 @@ class Mysql <Formula
     # These flags may not apply to gcc 4+
     ENV['CXXFLAGS'] = ENV['CXXFLAGS'].gsub "-fomit-frame-pointer", ""
     ENV['CXXFLAGS'] += " -fno-omit-frame-pointer -felide-constructors"
+
+    # Make universal for bindings to universal applications
+    ENV.universal_binary if ARGV.include? '--universal'
 
     configure_args = [
       "--without-docs",
