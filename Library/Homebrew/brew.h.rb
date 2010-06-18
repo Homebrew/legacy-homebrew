@@ -6,19 +6,17 @@ def check_for_blacklisted_formula names
 
   names.each do |name|
     case name
-      # bazaar don't maintain their PyPi entry properly yet
-      # when they do we'll remove our formula and use that
-#    when 'bazaar', 'bzr' then abort <<-EOS
-#Bazaar can be installed thusly:
-#
-#    brew install pip && pip install bzr==2.0.1
-#
-#    EOS
-    when 'mercurial', 'hg' then abort <<-EOS
-Mercurial can be install thusly:
+    when 'tex', 'tex-live', 'texlive' then abort <<-EOS.undent
+      Installing TeX from source is weird and gross, requires a lot of patches,
+      and only builds 32-bit (and thus can't use Homebrew deps on Snow Leopard.)
 
-    brew install pip && pip install mercurial
+      We recommend using a MacTeX distribution:
+        http://www.tug.org/mactex/
+    EOS
 
+    when 'mercurial', 'hg' then abort <<-EOS.undent
+      Mercurial can be install thusly:
+        brew install pip && pip install mercurial
     EOS
     end
   end
