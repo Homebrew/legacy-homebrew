@@ -5,7 +5,13 @@ class Graphviz <Formula
   md5 '6f45946fa622770c45609778c0a982ee'
   homepage 'http://graphviz.org/'
 
+  depends_on 'pkg-config'
+
   def install
+    # Put freetype-config in path
+    ENV.x11
+    ENV.prepend 'PATH', "/usr/X11/bin", ":"
+
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-quartz",
