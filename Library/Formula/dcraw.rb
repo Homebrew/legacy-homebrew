@@ -8,8 +8,8 @@ class Dcraw <Formula
   # and update the version and MD5 in a patch. Thanks.
   homepage 'http://www.cybercom.net/~dcoffin/dcraw/'
   url 'http://www.cybercom.net/~dcoffin/dcraw/dcraw.c'
-  version '1.432'
-  md5 '122ae8772398a764012e09d15fb9eabc'
+  version '1.436'
+  md5 'd680b17ce75ab1c791fe92b467f1005d'
 
   depends_on 'jpeg'
   depends_on 'liblcms'
