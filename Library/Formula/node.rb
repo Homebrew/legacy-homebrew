@@ -23,13 +23,4 @@ class Node <Formula
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
-  
-  def caveats; <<-EOS.undent
-    If you:
-      brew install rlwrap
-    then you can:
-      rlwrap node-repl
-    for a nicer command-line interface.
-    EOS
-  end
 end

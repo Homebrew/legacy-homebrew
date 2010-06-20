@@ -371,7 +371,14 @@ private
     hash = fn.incremental_hash(hasher)
 
     if supplied and not supplied.empty?
-      raise "#{type} mismatch\nExpected: #{supplied}\nGot: #{hash}\nArchive: #{fn}" unless supplied.upcase == hash.upcase
+      message = <<-EOF
+#{type} mismatch
+Expected: #{supplied}
+Got: #{hash}
+Archive: #{fn}
+(To retry an incomplete download, remove the file above.)
+EOF
+      raise message unless supplied.upcase == hash.upcase
     else
       opoo "Cannot verify package integrity"
       puts "The formula did not provide a download checksum"

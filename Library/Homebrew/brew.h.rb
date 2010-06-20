@@ -1,25 +1,22 @@
 FORMULA_META_FILES = %w[README README.md ChangeLog COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
 PLEASE_REPORT_BUG = "#{Tty.white}Please report this bug at #{Tty.em}http://github.com/mxcl/homebrew/issues#{Tty.reset}"
-HOMEBREW_RECOMMENDED_GCC = 5577
 
 def check_for_blacklisted_formula names
   return if ARGV.force?
 
   names.each do |name|
     case name
-      # bazaar don't maintain their PyPi entry properly yet
-      # when they do we'll remove our formula and use that
-#    when 'bazaar', 'bzr' then abort <<-EOS
-#Bazaar can be installed thusly:
-#
-#    brew install pip && pip install bzr==2.0.1
-#
-#    EOS
-    when 'mercurial', 'hg' then abort <<-EOS
-Mercurial can be install thusly:
+    when 'tex', 'tex-live', 'texlive' then abort <<-EOS.undent
+      Installing TeX from source is weird and gross, requires a lot of patches,
+      and only builds 32-bit (and thus can't use Homebrew deps on Snow Leopard.)
 
-    brew install pip && pip install mercurial
+      We recommend using a MacTeX distribution:
+        http://www.tug.org/mactex/
+    EOS
 
+    when 'mercurial', 'hg' then abort <<-EOS.undent
+      Mercurial can be install thusly:
+        brew install pip && pip install mercurial
     EOS
     end
   end
@@ -399,6 +396,23 @@ def outdated_brews
   return results
 end
 
+def search_brews text
+  require "formula"
+  formulae = Formulary.names with_aliases=true
+  if text =~ /^\/(.*)\/$/
+    results = formulae.grep(Regexp.new($1))
+  else
+    search_term = Regexp.escape(text || "")
+    results = formulae.grep(/.*#{search_term}.*/)
+  end
+
+  # Filter out aliases when the full name was also found
+  aliases = Formulary.get_aliases
+  return results.select do |r|
+    aliases[r] == nil or not (results.include? aliases[r])
+  end
+end
+
 ########################################################## class PrettyListing
 class PrettyListing
   def initialize path
@@ -464,13 +478,7 @@ end
 class Cleaner
   def initialize f
     @f=f
-    
-    # correct common issues
-    share=f.prefix+'share'
-    (f.prefix+'man').mv share rescue nil
-    
-    [f.bin, f.sbin, f.lib].each {|d| clean_dir d}
-    
+    [f.bin, f.sbin, f.lib].select{|d|d.exist?}.each{|d|clean_dir d}
     # info pages suck
     info = f.share+'info'
     info.rmtree if info.directory? and not f.skip_clean? info

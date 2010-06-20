@@ -75,16 +75,10 @@ get '/' do
 end
 
 get '/search' do
+  require 'brew.h'
   q = params['q']
+  results = search_brews(q)
 
-  formulae = Formulary.names with_aliases=true
-
-  if q =~ /^\/(.*)\/$/
-    results = formulae.grep(Regexp.new($1))
-  else
-    search_term = Regexp.escape(q || "")
-    results = formulae.grep(/.*#{search_term}.*/)
-  end
   s = <<-HTML
     <html>
     <head>
