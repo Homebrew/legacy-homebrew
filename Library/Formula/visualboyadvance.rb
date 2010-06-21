@@ -14,8 +14,8 @@ class Visualboyadvance <Formula
   end
 
   def install
+    fails_with_llvm "Video scalers don't link right w/ LLVM"
     ENV.x11 # for libpng
-    ENV.gcc_4_2 # Video scalers don't link right w/ LLVM
     
     system "./configure", "--prefix=#{prefix}", "--disable-debug",
                           "--disable-dependency-tracking",

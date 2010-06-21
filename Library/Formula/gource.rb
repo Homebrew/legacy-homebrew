@@ -14,6 +14,7 @@ class Gource <Formula
   depends_on 'jpeg'
   depends_on 'libpng'
   depends_on 'pcre'
+  depends_on 'glew'
 
   def install
     # Put freetype-config in path

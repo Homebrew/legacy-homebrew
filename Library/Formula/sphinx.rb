@@ -6,9 +6,7 @@ class Sphinx <Formula
   md5 '7b9b618cb9b378f949bb1b91ddcc4f54'
 
   def install
-    # fails with llvm-gcc:
-    # ld: rel32 out of range in _GetPrivateProfileString from /usr/lib/libodbc.a(SQLGetPrivateProfileString.o)
-    ENV.gcc_4_2
+    fails_with_llvm "fails with: ld: rel32 out of range in _GetPrivateProfileString from /usr/lib/libodbc.a(SQLGetPrivateProfileString.o)"
 
     config_args = ["--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"]
     # configure script won't auto-select PostgreSQL

@@ -12,7 +12,7 @@ class RubyEnterpriseEdition <Formula
   aka :ree
 
   def install
-    ENV.gcc_4_2 # fails with LLVM
+    fails_with_llvm "fails with LLVM"
     args = ['./installer', "--auto", prefix, '--no-tcmalloc']
     args << '-c' << '--enable-shared' if ARGV.include?('--enable-shared')
     system *args

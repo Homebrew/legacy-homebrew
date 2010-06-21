@@ -296,6 +296,17 @@ class Formula
     self.class.external_deps
   end
 
+  def fails_with_llvm msg="", data=nil
+    return unless (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
+
+    build = data.delete :build rescue nil
+    msg = "(No specific reason was given)" if msg.empty?
+
+    opoo "LLVM was requested, but this formula is reported as not working with LLVM:"
+    puts msg
+    puts "Tested with LLVM build #{build}" unless build == nil
+  end
+
 protected
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
@@ -360,7 +371,14 @@ private
     hash = fn.incremental_hash(hasher)
 
     if supplied and not supplied.empty?
-      raise "#{type} mismatch\nExpected: #{supplied}\nGot: #{hash}\nArchive: #{fn}" unless supplied.upcase == hash.upcase
+      message = <<-EOF
+#{type} mismatch
+Expected: #{supplied}
+Got: #{hash}
+Archive: #{fn}
+(To retry an incomplete download, remove the file above.)
+EOF
+      raise message unless supplied.upcase == hash.upcase
     else
       opoo "Cannot verify package integrity"
       puts "The formula did not provide a download checksum"

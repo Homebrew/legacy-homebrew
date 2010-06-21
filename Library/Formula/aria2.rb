@@ -6,7 +6,7 @@ class Aria2 <Formula
   homepage 'http://aria2.sourceforge.net/'
 
   def install
-    ENV.gcc_4_2 # 1.8.2 didn't work w/ LLVM
+    fails_with_llvm "1.8.2 didn't work w/ LLVM"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

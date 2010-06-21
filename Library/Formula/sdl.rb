@@ -13,7 +13,7 @@ class Sdl <Formula
   end
 
   def install
-    ENV.gcc_4_2
+    fails_with_llvm
     Sdl.use_homebrew_prefix %w[sdl.pc.in sdl-config.in]
 
     system "./configure", "--prefix=#{prefix}", "--disable-debug",
