@@ -16,9 +16,8 @@ class Vice <Formula
   end
   
   def install
+    fails_with_llvm "Cannot build with LLVM"
     ENV.libpng
-    # Cannot build with LLVM
-    ENV.gcc_4_2
 
     # Disable the zlibtest, we know we have it.
     # Use Cocoa instead of X
@@ -31,12 +30,12 @@ class Vice <Formula
     system "make"
     system "make bindist"
     
-    libexec.install Dir['vice-macosx-*/*']
+    prefix.install Dir['vice-macosx-*/*']
     
     remove_unused_icons
   end
   
   def caveats
-    "Cocoa apps for these emulators have been installed to #{libexec}."
+    "Cocoa apps for these emulators have been installed to #{prefix}."
   end
 end

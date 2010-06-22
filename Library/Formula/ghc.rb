@@ -10,9 +10,9 @@ end
 # Remember to update the formula for Cabal when updating this formula
 class Ghc <Formula
   homepage 'http://haskell.org/ghc/'
-  version '6.12.1'
-  url "http://haskell.org/ghc/dist/#{version}/GHC-#{version}-i386.pkg"
-  md5 '7f50698a6f34b978027a43fd836443e7'
+  version '6.12.3'
+  url "http://darcs.haskell.org/download/dist/#{version}/GHC-#{version}-i386.pkg"
+  md5 '58399e3af68f50a23a847bdfe3de5aca'
 
   # Avoid stripping the Haskell binaries AND libraries; http://hackage.haskell.org/trac/ghc/ticket/2458
   skip_clean ['bin', 'lib']
@@ -38,6 +38,7 @@ class Ghc <Formula
     # Fix paths
     replace_all "/Library/Frameworks/GHC.framework/Versions/#{short_version}/usr/lib/ghc-#{version}", "#{lib}/ghc"
     replace_all "/Library/Frameworks/GHC.framework/Versions/#{short_version}/usr", prefix
+    inreplace "lib/ghc-#{version}/ghc-asm", "#!/opt/local/bin/perl", "#!/usr/bin/env perl"
     mv "lib/ghc-#{version}", 'lib/ghc'
 
     prefix.install ['bin', 'lib', 'share']

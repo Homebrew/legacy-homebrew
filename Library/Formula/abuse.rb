@@ -10,6 +10,7 @@ class Abuse <Formula
   homepage 'http://abuse.zoy.org/'
   version 'trunk'
   
+  depends_on 'pkg-config'
   depends_on 'sdl'
   depends_on 'libvorbis'
   

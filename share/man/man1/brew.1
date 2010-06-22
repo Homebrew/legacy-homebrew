@@ -1,0 +1,175 @@
+.\" generated with Ronn/v0.6.6
+.\" http://github.com/rtomayko/ronn/
+.
+.TH "BREW" "1" "June 2010" "Homebrew" "brew"
+.
+.SH "NAME"
+\fBbrew\fR \- The missing package manager for OS X
+.
+.SH "SYNOPSIS"
+\fBbrew\fR [\-\-verbose|\-v] command [options] [formula] \.\.\.
+.
+.br
+\fBbrew\fR [\-\-version|\-v]
+.
+.SH "DESCRIPTION"
+Homebrew is the easiest and most flexible way to install the UNIX tools Apple didn\'t include with OS X\.
+.
+.SH "OPTIONS"
+.
+.TP
+\fB\-v\fR, \fB\-\-verbose\fR command [options] [formula] \.\.\.
+Prints extra, comand\-specific debugging information\. Note that \fBbrew \-v\fR by itself is the same as \fBbrew \-\-version\fR\.
+.
+.SH "COMMANDS"
+.
+.TP
+\fB\-v\fR, \fB\-\-version\fR
+Prints the version number of brew to standard error and exits\.
+.
+.TP
+\fB\-\-prefix\fR [\fIformula\fR]
+Displays the install path for Homebrew\. If \fIformula\fR is given, display location in the cellar where that package is or would be installed\.
+.
+.TP
+\fB\-\-cache\fR [\fIformula\fR]
+Displays the path Homebrew uses to cache downloads\. If \fIformula\fR is given, display the file or folder used to cache that specific package\.
+.
+.TP
+\fB\-\-config\fR
+Shows Homebrew and system configuration useful for debugging\. If you file a bug report, you will likely be asked for this information if you do not provide it\.
+.
+.TP
+\fB\-S\fR, \fBsearch\fR \fItext\fR|/\fItext\fR/
+Performs a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. If no search term is given, all available formula are displayed\.
+.
+.TP
+\fBinstall [\-\-debug]\fR \fIformula\fR
+Installs \fIformula\fR\.
+.
+.IP
+If \fB\-\-debug\fR is passed and brewing fails, opens a shell inside the temporary folder used for compiling\.
+.
+.TP
+\fBinstall \-\-interactive [\-\-git]\fR \fIformula\fR
+Downloads and patches \fIformula\fR, and then opens a shell\. This allows the user to run \fB\./configure \-\-help\fR and otherwise determine how to turn the software package into a Homebrew formula\.
+.
+.IP
+If \fB\-\-git\fR is passed, Homebrew will create a Git repository, useful for creating patches to the software\.
+.
+.TP
+\fBlist\fR
+Lists all installed formulae\.
+.
+.TP
+\fBlist\fR \fIformula\fR
+Lists the installed files for \fIformula\fR\.
+.
+.TP
+\fBinfo\fR \fIformula\fR
+Gives all available information for \fIformula\fR\.
+.
+.TP
+\fBinfo \-\-github\fR \fIformula\fR
+Opens a browser to the GitHub History page for formula \fIformula\fR\.
+.
+.TP
+\fBinfo \-\-all\fR
+Summarises all installed packages; this is inteded to be used by higher\-level tools\.
+.
+.TP
+\fBhome\fR
+Opens a browser to Homebrew\'s own homepage\.
+.
+.TP
+\fBhome\fR \fIformula\fR
+Opens a browser to \fIformula\fR\'s homepage\.
+.
+.TP
+\fBrm\fR, \fBremove\fR \fIformula\fR
+Uninstalls \fIformula\fR\.
+.
+.TP
+\fBcreate [\-\-cache]\fR \fIURL\fR
+Generates a formula for the downloadable file at \fIURL\fR and opens it in $EDITOR\. Homebrew will attempt to automatically derive the formula name and version, if it fails, you\'ll have to make your own template\. I suggest copying wget\'s\.
+.
+.IP
+If \fB\-\-cache\fR is passed, Homebrew will download the \fIURL\fR to the cache and add the MD5 to the formula for you\.
+.
+.TP
+\fBcreate \-\-macports\fR|\fB\-\-fink\fR \fIformula\fR
+Opens a browser to the MacPorts or Fink package search page, so you can see how they do \fIformula\fR\.
+.
+.TP
+\fBedit\fR \fIformula\fR
+Opens the formula in $EDITOR\.
+.
+.TP
+\fBedit\fR
+Opens all of Homebrew for editing in TextMate\.
+.
+.TP
+\fBlink\fR \fIformula\fR
+Symlinks all of \fIformula\fR\'s installed files into the Homebrew prefix\. This is done automatically when you install formula\. It is useful for DIY installation, or in cases where you want to swap out different versions of the same package that you have installed at the same time\.
+.
+.TP
+\fBunlink\fR \fIformula\fR
+Unsymlinks \fIformula\fR from the Homebrew prefix\.
+.
+.TP
+\fBprune\fR
+Removes dead symlinks from the Homebrew prefix\. This is generally not needed\. However, it can be useful if you are doing DIY installations\.
+.
+.TP
+\fBoutdated\fR
+Shows formula that have an updated version available\.
+.
+.TP
+\fBdeps\fR \fIformula\fR
+Shows \fIformula\fR\'s dependencies\.
+.
+.TP
+\fBuses\fR \fIformula\fR
+Shows the formulas that specify \fIformula\fR as a dependency\. The list is not recursive; only one level of dependencies is resolved\.
+.
+.TP
+\fBdoctor\fR
+Audits your system for potential problems\.
+.
+.TP
+\fBcat\fR \fIformula\fR
+Displays the source to \fIformula\fR\.
+.
+.TP
+\fBcleanup\fR [\fIformula\fR]
+For all installed or specific formulae, remove any older versions from the cellar\.
+.
+.TP
+\fBupdate\fR
+Using Git, fetches the newest version of Homebrew from the GitHub repository\.
+.
+.SH "ENVIRONMENT"
+.
+.TP
+HOMEBREW_DEBUG
+If set, instructs Homebrew to always assume \fB\-\-debug\fR when running commands\.
+.
+.TP
+HOMEBREW_USE_LLVM
+If set, instructs Homebrew to use the LLVM front\-ends to the GCC compilers\.
+.
+.br
+\fINOTE\fR: Not all formulae will build correctly under LLVM\.
+.
+.TP
+HOMEBREW_VERBOSE
+If set, instructs Homebrew to always assume \fB\-\-verbose\fR when running commands\.
+.
+.SH "SEE ALSO"
+Homebrew Wiki: http://wiki\.github\.com/mxcl/homebrew/
+.
+.SH "AUTHORS"
+Max Howell, a splendid chap\.
+.
+.SH "BUGS"
+See Issues on GitHub: http://github\.com/mxcl/homebrew/issues

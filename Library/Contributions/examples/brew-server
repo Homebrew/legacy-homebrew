@@ -1,0 +1,167 @@
+#!/usr/bin/ruby
+
+## brew server: Run a local webserver for browsing available and installed brews.
+# Note: this external command is ruby, but set up as a shell script, so that it gets exec'd.
+# This is required for sinatra's run-loop to take over.
+
+puts "View our tasting menu at http://localhost:4567/\nUse \"Control-C\" to exit.\n\n"
+$:.unshift(ENV['HOMEBREW_LIBRARY_PATH'])
+
+require 'rubygems'
+require 'sinatra'
+
+require 'cgi'
+
+require 'global'
+require 'formula'
+
+def link_to_formula name
+  "<a href=\"/formula/#{CGI.escape(name)}\">#{name}</a>"
+end
+
+def css_style
+  "" # No CSS defined yet.
+end
+
+def search_form
+  <<-EOS
+    <form action="/search">
+      Search: <input name="q" type="text"> <input type="submit">
+    </form>
+  EOS
+end
+
+def html_page
+  body = <<-HTML
+  <html>
+    <head>
+      <title>Homebrew Menu</title>
+      #{css_style}
+    </head>
+    <body>
+      <div id="wrap">
+  			<div id="header">
+  				<h1><a href="./">Homebrew</a></h1>
+  				<p id="subtitle"><strong>The missing package manager for OS X</strong></p>
+  			</div>
+
+  			<div id="informations">
+  HTML
+  yield body
+  body += <<-HTML
+        </div>
+      </div>
+    </body>
+  </html>
+  HTML
+  return body
+end
+
+get '/' do
+  return html_page do |s|
+    s << <<-HTML
+    <div class="row">#{search_form}</div>
+    <div class="row">
+      <ul>
+    HTML
+    Formulary.read_all do |name, klass|
+      s << "<li>#{link_to_formula(name)}</li>"
+    end
+    s << <<-HTML
+      </ul>
+    </div>
+    HTML
+  end
+end
+
+get '/search' do
+  require 'brew.h'
+  q = params['q']
+  results = search_brews(q)
+
+  s = <<-HTML
+    <html>
+    <head>
+      <title>Search Results</title>
+      #{css_style}
+    </head>
+    <body>
+    <h1>Results</h1>
+    #{search_form}
+    <h4>Searched for &ldquo;#{q}&rdquo;</h4>
+    <ul>
+  HTML
+
+  results.each do |name|
+    s << "<li>#{link_to_formula(name)}</li>"
+  end
+
+  s += <<-HTML
+    </ul>
+    </body>
+  </html>
+  HTML
+
+  return s
+end
+
+get '/formula/:name' do
+  # klass = Formulary.read params[:name]
+  klass = Formula.factory(params[:name])
+
+  installed = klass.installed? ? "Installed at" : "Not installed."
+  installed_dd = klass.installed? ? "<a href=\"file://#{klass.prefix}\">#{klass.prefix}</a>" : ""
+
+  s = ""
+  s << <<-HTML
+    <html>
+      <head>
+        <title>Formula: #{klass.name}</title>
+        #{css_style}
+      </head>
+      <body>
+        <div>&larr; <a href="/">Back to menu</a></div>
+        <h1>#{klass.name}</h1>
+        <dl>
+          <dt>Version</dt>
+            <dd>#{klass.version}</dd>
+
+          <dt>Homepage</dt>
+            <dd><a href="#{klass.homepage}">#{klass.homepage}</a></dd>
+
+          <dt>Download</dt>
+            <dd><a href="#{klass.url}">#{klass.url}</a></dd>
+
+          <dt>#{installed}</dt>
+            <dd>#{installed_dd}</dd>
+  HTML
+
+  unless klass.deps.count == 0
+    s << <<-HTML
+            <dt>Depends on</td>
+    HTML
+    klass.deps.each do |name|
+      s << "<dd>#{link_to_formula(name)}</dd>"
+    end
+  end
+
+  used_by = Formula.get_used_by()[klass.name]
+  unless used_by == nil
+    s << <<-HTML
+            <dt>Used by</td>
+    HTML
+    if used_by != nil
+      used_by.each do |name|
+        s << "<dd>#{link_to_formula(name)}</dd>"
+      end
+    end
+  end
+
+  s += <<-HTML
+        </dl>
+      </body>
+    </html>
+  HTML
+
+  return s
+end

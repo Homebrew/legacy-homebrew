@@ -15,7 +15,7 @@ class Proj <Formula
   end
 
   def install
-    ENV.gcc_4_2
+    fails_with_llvm
 
     # The datum grid files are required to support datum shifting
     d = Dir.getwd

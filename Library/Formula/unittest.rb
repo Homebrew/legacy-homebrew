@@ -6,7 +6,7 @@ class Unittest <Formula
   @md5='6eaa2823620c2e21fc745bd8da6a26b2'
 
   def install
-    ENV.gcc_4_2
+    fails_with_llvm
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end

@@ -23,6 +23,8 @@ class RefreshBrewMock < RefreshBrew
       raise "#{inspect} Unexpectedly called backticks in pwd `#{HOMEBREW_PREFIX}' and command `#{cmd}'"
     end
   end
+
+  alias safe_system `
   
   def expectations_met?
     @expect.keys.sort == @called.sort
@@ -54,8 +56,8 @@ class UpdaterTests < Test::Unit::TestCase
   def test_update_homebrew_without_any_changes
     outside_prefix do
       updater = RefreshBrewMock.new
-      updater.in_prefix_expect("git checkout master")
-      updater.in_prefix_expect("git pull origin master", "Already up-to-date.\n")
+      updater.in_prefix_expect(RefreshBrew::INIT_COMMAND)
+      updater.in_prefix_expect(RefreshBrew::UPDATE_COMMAND, "Already up-to-date.\n")
       
       assert_equal false, updater.update_from_masterbrew!
       assert updater.expectations_met?
@@ -67,9 +69,9 @@ class UpdaterTests < Test::Unit::TestCase
   def test_update_homebrew_without_formulae_changes
     outside_prefix do
       updater = RefreshBrewMock.new
-      updater.in_prefix_expect("git checkout master")
+      updater.in_prefix_expect(RefreshBrew::INIT_COMMAND)
       output = fixture('update_git_pull_output_without_formulae_changes')
-      updater.in_prefix_expect("git pull origin master", output)
+      updater.in_prefix_expect(RefreshBrew::UPDATE_COMMAND, output)
       
       assert_equal true, updater.update_from_masterbrew!
       assert !updater.pending_formulae_changes?
@@ -81,9 +83,9 @@ class UpdaterTests < Test::Unit::TestCase
   def test_update_homebrew_with_formulae_changes
     outside_prefix do
       updater = RefreshBrewMock.new
-      updater.in_prefix_expect("git checkout master")
+      updater.in_prefix_expect(RefreshBrew::INIT_COMMAND)
       output = fixture('update_git_pull_output_with_formulae_changes')
-      updater.in_prefix_expect("git pull origin master", output)
+      updater.in_prefix_expect(RefreshBrew::UPDATE_COMMAND, output)
       
       assert_equal true, updater.update_from_masterbrew!
       assert updater.pending_formulae_changes?
@@ -95,7 +97,7 @@ class UpdaterTests < Test::Unit::TestCase
   def test_updater_returns_current_revision
     outside_prefix do
       updater = RefreshBrewMock.new
-      updater.in_prefix_expect('git log -l -1 --pretty=format:%H', 'the-revision-hash')
+      updater.in_prefix_expect(RefreshBrew::REVISION_COMMAND, 'the-revision-hash')
       assert_equal 'the-revision-hash', updater.current_revision
     end
   end

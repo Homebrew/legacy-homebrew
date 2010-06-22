@@ -2,8 +2,8 @@ require 'formula'
 
 class Mysql <Formula
   homepage 'http://dev.mysql.com/doc/refman/5.1/en/'
-  url 'http://mysql.llarian.net/Downloads/MySQL-5.1/mysql-5.1.46.tar.gz'
-  md5 '04f7c1422199c73a88a3d408b9161b63'
+  url 'http://mysql.llarian.net/Downloads/MySQL-5.1/mysql-5.1.48.tar.gz'
+  md5 'd04c54d1cfbd8c6c8650c8d078f885b2'
 
   depends_on 'readline'
 
@@ -12,6 +12,7 @@ class Mysql <Formula
       ['--with-tests', "Keep tests when installing."],
       ['--with-bench', "Keep benchmark app when installing."],
       ['--client-only', "Only install client tools, not the server."],
+      ['--universal', "Make mysql a universal binary"]
     ]
   end
 
@@ -20,12 +21,15 @@ class Mysql <Formula
   end
 
   def install
-    ENV.gcc_4_2 # http://github.com/mxcl/homebrew/issues/#issue/144
+    fails_with_llvm "http://github.com/mxcl/homebrew/issues/issue/144"
 
     # See: http://dev.mysql.com/doc/refman/5.1/en/configure-options.html
     # These flags may not apply to gcc 4+
     ENV['CXXFLAGS'] = ENV['CXXFLAGS'].gsub "-fomit-frame-pointer", ""
     ENV['CXXFLAGS'] += " -fno-omit-frame-pointer -felide-constructors"
+
+    # Make universal for bindings to universal applications
+    ENV.universal_binary if ARGV.include? '--universal'
 
     configure_args = [
       "--without-docs",
@@ -37,6 +41,7 @@ class Mysql <Formula
       "--with-plugins=innobase,myisam",
       "--with-extra-charsets=complex",
       "--with-ssl",
+      "--with-readline",
       "--enable-assembler",
       "--enable-thread-safe-client",
       "--enable-local-infile",

@@ -16,7 +16,8 @@ class Memcached <Formula
 
   def caveats; <<-EOS
 You can enabled memcached to automatically load on login with:
-    launchctl load -w #{prefix}/com.danga.memcached.plist
+    cp #{prefix}/com.danga.memcached.plist ~/Library/LaunchAgents/
+    launchctl load -w ~/Library/LaunchAgents/com.danga.memcached.plist 
 
 Or start it manually:
     #{HOMEBREW_PREFIX}/bin/memcached
@@ -38,7 +39,8 @@ Add "-d" to start it as a daemon.
   <key>ProgramArguments</key>
   <array>
     <string>#{HOMEBREW_PREFIX}/bin/memcached</string>
-    <string>-l 127.0.0.1</string>
+    <string>-l</string>
+    <string>127.0.0.1</string>
   </array>
   <key>RunAtLoad</key>
   <true/>

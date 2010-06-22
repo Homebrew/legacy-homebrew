@@ -21,10 +21,10 @@ class Swftools <Formula
   end
 
   def caveats
-    <<-EOS
-    swfc segfaults under Snow Leopard. Please persue this issue
-    with the softare vendor:
-      http://lists.nongnu.org/mailman/listinfo/swftools-common
+    <<-EOS.undent
+      swfc segfaults under Snow Leopard. Please persue this issue
+      with the softare vendor:
+        http://lists.nongnu.org/mailman/listinfo/swftools-common
     EOS
   end
 end

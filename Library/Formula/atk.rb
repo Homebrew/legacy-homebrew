@@ -1,15 +1,17 @@
 require 'formula'
 
 class Atk <Formula
-  url 'ftp://ftp.gnome.org/pub/gnome/sources/atk/1.28/atk-1.28.0.tar.bz2'
+  url 'ftp://ftp.gnome.org/pub/gnome/sources/atk/1.30/atk-1.30.0.tar.bz2'
   homepage 'http://library.gnome.org/devel/atk/'
-  md5 '010a85478adc053c016a0a5c9bb52004'
+  sha256 '92b9b1213cafc68fe9c3806273b968c26423237d7b1f631dd83dc5270b8c268c'
 
   depends_on 'pkg-config'
   depends_on 'glib'
   
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--disable-glibtest"
     system "make install"
   end
 end

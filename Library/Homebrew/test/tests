@@ -5,10 +5,6 @@
 # Note: "formula_test" is omitted; these aren't unit tests but sanity checks
 # on the real formulae.
 #
-# Run as:
-#  ./tests -- --skip-update
-# to omit the update tests which only seem to work for mxcl
-#
 
 # Feel free to split out test_bucket
 ruby test_bucket.rb $*
@@ -24,6 +20,4 @@ ruby test_pathname_install.rb $*
 ruby test_utils.rb $*
 ruby test_ARGV.rb $*
 ruby test_ENV.rb $*
-
-# Update tests (only seem to work for mxcl)
 ruby test_updater.rb $*

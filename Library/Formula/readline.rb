@@ -13,7 +13,7 @@ to keg-only.
   end
 
   def patches
-    patches = (1..4).collect { |n| "ftp://ftp.gnu.org/gnu/readline/readline-6.0-patches/readline60-%03d"%n }
+    patches = (1..5).collect { |n| "ftp://ftp.gnu.org/gnu/readline/readline-6.0-patches/readline60-%03d"%n }
     { :p0 => patches }
   end
 
