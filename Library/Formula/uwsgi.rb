@@ -17,5 +17,12 @@ class Uwsgi <Formula
     system "CFLAGS='#{flags}' LDFLAGS='#{flags}' python uwsgiconfig.py --build"
     bin.install "uwsgi"
   end
-end
 
+  def caveats
+    <<-EOS.undent
+      NOTE: "brew install -v uwsgi" will fail!
+      You must install in non-verbose mode for this to succeed.
+      Patches to fix this are welcome.
+    EOS
+  end
+end
