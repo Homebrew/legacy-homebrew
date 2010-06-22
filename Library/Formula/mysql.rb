@@ -41,7 +41,7 @@ class Mysql <Formula
       "--with-plugins=innobase,myisam",
       "--with-extra-charsets=complex",
       "--with-ssl",
-      "--with-readline",
+      "--without-readline", # Confusingly, means "use detected readline instead of included readline"
       "--enable-assembler",
       "--enable-thread-safe-client",
       "--enable-local-infile",
