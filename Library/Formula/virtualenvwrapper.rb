@@ -1,9 +1,9 @@
 require 'formula'
 
 class Virtualenvwrapper <Formula
-  url 'http://www.doughellmann.com/downloads/virtualenvwrapper-2.1.1.tar.gz'
+  url 'http://www.doughellmann.com/downloads/virtualenvwrapper-2.2.1.tar.gz'
   homepage 'http://www.doughellmann.com/projects/virtualenvwrapper/'
-  md5 '1c6543b1dc69574aa8fe973b07f3ec16'
+  md5 '2a221f0a0d6df3267b69073013949310'
 
   def install
     libexec.install ['virtualenvwrapper.sh', 'virtualenvwrapper']
