@@ -102,9 +102,11 @@ unless chgrps.empty?
   puts *chgrps
 end
 
-puts
-puts "Press enter to continue"
-abort unless getc == 13
+if STDIN.tty?
+  puts
+  puts "Press enter to continue"
+  abort unless getc == 13
+end
 
 if File.directory? "/usr/local"
   sudo "/bin/chmod", "g+w", *chmods unless chmods.empty?
