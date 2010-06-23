@@ -6,9 +6,14 @@ class Luarocks <Formula
   @md5='e6fad9ddecf79808fda7fd257bfbde06'
 
   depends_on 'lua'
+  # wget or curl can be used as the downloader...
+  # depends_on 'wget' => :optional
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    # Install to the Cellar, but direct modules to HOMEBREW_PREFIX
+    system "./configure", "--prefix=#{prefix}",
+                          "--rocks-tree=#{HOMEBREW_PREFIX}/lib/luarocks",
+                          "--sysconfdir=#{etc}/luarocks"
     system "make"
     system "make install"
   end
