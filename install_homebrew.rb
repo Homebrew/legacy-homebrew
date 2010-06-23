@@ -128,4 +128,4 @@ end
 ohai "Installation successful!"
 
 warn "/usr/local/bin is not in your PATH." unless ENV['PATH'].split(':').include? '/usr/local/bin'
-warn "Now install Xcode." unless Kernel.system "/usr/bin/which -s gcc"
+warn "Now install Xcode: http://developer.apple.com/technologies/xcode.html" unless Kernel.system "/usr/bin/which -s gcc"
