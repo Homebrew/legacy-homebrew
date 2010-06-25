@@ -5,7 +5,6 @@ class Gloox <Formula
   homepage 'http://camaya.net/glooxdownload'
   md5 'f8eacf1c6476e0a309b453fd04f90e31'
 
-  depends_on 'gnutls'
   depends_on 'pkg-config'
 
   def patches
@@ -15,8 +14,8 @@ class Gloox <Formula
   end
 
   def install
-    system "./configure", "--without-openssl", 
-                          "--with-gnutls",
+    system "./configure", "--with-openssl", 
+                          "--without-gnutls",
                           "--with-zlib",
                           "--disable-debug",
                           "--prefix=#{prefix}"

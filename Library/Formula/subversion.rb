@@ -8,13 +8,13 @@ def build_universal?; ARGV.include? '--universal'; end
 # On 10.5 we need newer versions of apr, neon etc.
 # On 10.6 we only need a newer version of neon
 class SubversionDeps <Formula
-  url 'http://subversion.tigris.org/downloads/subversion-deps-1.6.11.tar.bz2'
-  md5 'da1bcdd39c34d91e434407f72b844f2f'
+  url 'http://subversion.tigris.org/downloads/subversion-deps-1.6.12.tar.bz2'
+  md5 '41a91aa26980236958ec508807003203'
 end
 
 class Subversion <Formula
-  url 'http://subversion.tigris.org/downloads/subversion-1.6.11.tar.bz2'
-  md5 '75419159b50661092c4137449940b5cc'
+  url 'http://subversion.tigris.org/downloads/subversion-1.6.12.tar.bz2'
+  md5 'a4b1d0d7f3a4587c59da9c1acf9dedd0'
   homepage 'http://subversion.apache.org/'
 
   aka 'svn'
