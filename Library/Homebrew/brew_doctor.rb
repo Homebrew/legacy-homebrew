@@ -272,6 +272,25 @@ def check_for_dyld_vars
   end
 end
 
+def check_for_symlinked_cellar
+  if HOMEBREW_CELLAR.symlink?
+    puts <<-EOS.undent
+      Symlinked Cellars can cause problems.
+      Your Homebrew Cellar is a symlink: #{HOMEBREW_CELLAR}
+                      which resolves to: #{HOMEBREW_CELLAR.realpath}
+
+      The recommended Homebrew installations are either:
+      (A) Have Cellar be a real folder inside of your HOMEBREW_PREFIX
+      (B) Symlink "bin/brew" into your prefix, but don't symlink "Cellar".
+
+      Older installations of Homebrew may have created a symlinked Cellar, but this can
+      cause problems when two formula install to locations that are mapped on top of each
+      other during the linking step.
+
+    EOS
+  end
+end
+
 def brew_doctor
   read, write = IO.pipe
 
@@ -292,6 +311,7 @@ def brew_doctor
     check_for_gettext
     check_for_config_scripts
     check_for_dyld_vars
+    check_for_symlinked_cellar
 
     exit! 0
   else
