@@ -1,9 +1,9 @@
 require 'formula'
 
 class Tig <Formula
-  url 'http://jonas.nitro.dk/tig/releases/tig-0.15.tar.gz'
+  url 'http://jonas.nitro.dk/tig/releases/tig-0.16.tar.gz'
   homepage 'http://jonas.nitro.dk/tig/'
-  md5 '8f373a99823f6db241b66642075657d3'
+  md5 '684572d93033d6cbfc5ee71cffe02935'
 
   def install
     system "./configure", "--prefix=#{prefix}"
