@@ -1,12 +1,13 @@
 require 'formula'
 
 class Spidermonkey <Formula
-  # Use a 3rd party tarball, since Mozilla hasn't made a stable one since version 1.7
-  # Use 1.9.3 for proper x64 support on OS X.
-  url 'http://packaging-spidermonkey.googlecode.com/files/libmozjs-1.9.3-1.5.tar.bz2'
+  # There are no proper releases of spidermonkey, so pick a version that's known
+  # to work (especially with CouchDB).
+  # revision: r35345
+  url 'http://hg.mozilla.org/tracemonkey/archive/57a6ad20eae9.tar.gz'
   homepage 'https://developer.mozilla.org/en/SpiderMonkey'
-  sha1 '6ab671497497da12f0a17790b19a1d2d487d3c63'
-  version '1.9.3'
+  md5 '2d8cf22da82b30c36f47675a8486a3f3'
+  version '1.8.5'
 
   depends_on 'readline'
   depends_on 'nspr'
@@ -19,18 +20,36 @@ class Spidermonkey <Formula
       ENV['CFLAGS'] = ENV['CFLAGS'].gsub(/-msse[^\s]+/, '')
     end
 
-    # Remove the broken *(for anyone but FF) install_name
-    inreplace "config/rules.mk", "-install_name @executable_path/$(SHARED_LIBRARY) ", ""
+    # For some reason SpiderMonkey requires Autoconf-2.13
+    ac213_prefix = Pathname.pwd.join('ac213')
+    Autoconf213.new.brew do |f|
+      # probably no longer required, see issue #751
+      inreplace 'configure', 'for ac_prog in mawk gawk nawk awk', 'for ac_prog in awk'
 
-    mkdir "brew-build"
+      system "./configure", "--disable-debug",
+                            "--program-suffix=213",
+                            "--prefix=#{ac213_prefix}"
+      system "make install"
+    end
+
+    Dir.chdir "js/src" do
+      # Fixes a bug with linking against CoreFoundation. Tests all pass after
+      # building like this. See: http://openradar.appspot.com/7209349
+      inreplace "configure.in", "LDFLAGS=\"$LDFLAGS -framework Cocoa\"", ""
+      system "#{ac213_prefix}/bin/autoconf213"
+      # Remove the broken *(for anyone but FF) install_name
+      inreplace "config/rules.mk", "-install_name @executable_path/$(SHARED_LIBRARY) ", ""
+    end
+
+    FileUtils.mkdir "brew-build"
+
     Dir.chdir "brew-build" do
-      system "../configure", "--prefix=#{prefix}",
-                             "--enable-readline",
-                             "--enable-threadsafe",
-                             "--with-system-nspr",
-                             "--enable-macos-target=#{MACOS_VERSION}"
-      inreplace "js-config", /JS_CONFIG_LIBS=.*?$/, "JS_CONFIG_LIBS=''"
+      system "../js/src/configure", "--prefix=#{prefix}",
+                                    "--enable-readline",
+                                    "--enable-threadsafe",
+                                    "--with-system-nspr"
 
+      inreplace "js-config", /JS_CONFIG_LIBS=.*?$/, "JS_CONFIG_LIBS=''"
       # Can't do `make install` right off the bat sadly
       system "make"
       system "make install"
@@ -39,4 +58,11 @@ class Spidermonkey <Formula
       bin.install "shell/js"
     end
   end
+end
+
+
+class Autoconf213 <Formula
+  url 'http://ftp.gnu.org/pub/gnu/autoconf/autoconf-2.13.tar.gz'
+  md5 '9de56d4a161a723228220b0f425dc711'
+  homepage 'http://www.gnu.org/software/autoconf/'
 end
