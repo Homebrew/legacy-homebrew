@@ -205,6 +205,7 @@ def check_pkg_config_paths
 
       To resolve this issue, re-brew pkg-config with:
         brew rm pkg-config && brew install pkg-config
+
     EOS
   end
 end
@@ -221,6 +222,7 @@ def check_for_gettext
       If you `brew link gettext` then a large number of brews that don't
       otherwise have a `depends_on 'gettext'` will pick up gettext anyway
       during the `./configure` step.
+
     EOS
   end
 end
@@ -256,6 +258,7 @@ def check_for_config_scripts
       puts pair[0]
       puts "    " + pair[1] * " "
     end
+    puts
   end
 end
 
