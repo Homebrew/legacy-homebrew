@@ -20,13 +20,13 @@ class Cherokee <Formula
       for logging and runtime files.
 
        If this is your first install, automatically load on startup with:
-          cp #{prefix}/org.cherokee.webserver.plist ~/Library/LaunchDaemons
-          launchctl load -w ~/Library/LaunchDaemons/org.cherokee.webserver.plist
+          sudo cp #{prefix}/org.cherokee.webserver.plist /Library/LaunchDaemons
+          sudo launchctl load -w /Library/LaunchDaemons/org.cherokee.webserver.plist
 
       If this is an upgrade and you already have the plist loaded:
-          launchctl unload -w ~/Library/LaunchDaemons/org.cherokee.webserver.plist
-          cp #{prefix}/org.cherokee.webserver.plist ~/Library/LaunchDaemons
-          launchctl load -w ~/Library/LaunchDaemons/org.cherokee.webserver.plist
+          sudo launchctl unload -w /Library/LaunchDaemons/org.cherokee.webserver.plist
+          sudo cp #{prefix}/org.cherokee.webserver.plist /Library/LaunchDaemons
+          sudo launchctl load -w /Library/LaunchDaemons/org.cherokee.webserver.plist
     EOS
   end
 
