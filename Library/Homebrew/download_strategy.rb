@@ -136,7 +136,7 @@ end
 # Useful for installing jars.
 class NoUnzipCurlDownloadStrategy <CurlDownloadStrategy
   def stage
-    FileUtils.mv @tarball_path, File.basename(@url)
+    FileUtils.cp @tarball_path, File.basename(@url)
   end
 end
 
