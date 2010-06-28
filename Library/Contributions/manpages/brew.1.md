@@ -163,6 +163,12 @@ didn't include with OS X.
     If set, instructs Homebrew to always assume `--verbose` when running
     commands.
 
+  * HOMEBREW\_SVN:
+    When exporting from Subversion, Homebrew will use `HOMEBREW_SVN` if set,
+    a Homebrew-built Subversion if installed, or the system-provided binary.
+
+    Set this to force Homebrew to use a particular svn binary.
+
 ## SEE ALSO
 
  Homebrew Wiki: http://wiki.github.com/mxcl/homebrew/

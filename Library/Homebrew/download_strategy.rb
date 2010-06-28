@@ -198,11 +198,30 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
     quiet_safe_system *args
   end
 
-  # Override this method in a DownloadStrategy to force the use of a non-
-  # system svn binary. mplayer.rb uses this to require a svn new enough to
-  # understand its externals.
+  # Try HOMEBREW_SVN, a Homebrew-built svn, and finally the OS X system svn.
+  # Not all features are available in the 10.5 system-provided svn.
   def svn
-    '/usr/bin/svn'
+    return ENV['HOMEBREW_SVN'] if ENV['HOMEBREW_SVN']
+    return "#{HOMEBREW_PREFIX}/bin/svn" if File.exist? "#{HOMEBREW_PREFIX}/bin/svn"
+    return '/usr/bin/svn'
+  end
+end
+
+# Require a newer version of Subversion than 1.4.x (Leopard-provided version)
+class StrictSubversionDownloadStrategy <SubversionDownloadStrategy
+  def svn
+    exe = super
+    `#{exe} --version` =~ /version (\d+\.\d+(\.\d+)*)/
+    svn_version = $1
+    version_tuple=svn_version.split(".").collect {|v|Integer(v)}
+
+    if version_tuple[0] == 1 and version_tuple[1] <= 4
+      onoe "Detected Subversion (#{exe}, version #{svn_version}) is too old."
+      puts "Subversion 1.4.x will not export externals correctly for this formula."
+      puts "You must either `brew install subversion` or set HOMEBREW_SVN to the path"
+      puts "of a newer svn binary."
+    end
+    return exe
   end
 end
 
