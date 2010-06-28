@@ -259,6 +259,16 @@ def check_for_config_scripts
   end
 end
 
+def check_for_dyld_vars
+  if ENV['DYLD_LIBRARY_PATH']
+    puts <<-EOS.undent
+      Setting DYLD_LIBARY_PATH can break dynamic linking.
+      You should probably unset it.
+
+    EOS
+  end
+end
+
 def brew_doctor
   read, write = IO.pipe
 
@@ -278,6 +288,7 @@ def brew_doctor
     check_pkg_config_paths
     check_for_gettext
     check_for_config_scripts
+    check_for_dyld_vars
 
     exit! 0
   else
