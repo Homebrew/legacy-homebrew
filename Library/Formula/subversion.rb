@@ -41,7 +41,7 @@ class Subversion <Formula
   def check_neon_arch
     # Check that Neon was built universal if we are building w/ --universal
     neon = Formula.factory('neon')
-    unless neon.installed?
+    if neon.installed?
       neon_arch = archs_for_command(neon.lib+'libneon.dylib')
       unless neon_arch.universal?
         opoo "A universal build was requested, but neon was already built for a single arch."
