@@ -19,6 +19,7 @@ class Subversion <Formula
 
   aka 'svn'
 
+  depends_on 'pkg-config'
   # On Snow Leopard, build a new neon. For Leopard, the deps above include this.
   depends_on 'neon' if MACOS_VERSION >= 10.6
 
