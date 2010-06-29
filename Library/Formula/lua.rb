@@ -5,11 +5,8 @@ class Lua <Formula
   homepage 'http://www.lua.org/'
   md5 'd0870f2de55d59c1c8419f36e8fac150'
 
-  # Don't skip share and lib folders; that's where
-  # lua modules will get installed to.
-  def skip_clean? path
-    [share+'lua', share+'lua/5.1', lib+'lua', lib+'lua/5.1'].include? path
-  end
+  # Skip cleaning both empty folders and bin/libs so external symbols still work.
+  def skip_clean? path; true; end
 
   def install
     # Use our CC/CFLAGS to compile.
@@ -24,7 +21,7 @@ class Lua <Formula
     # Fix paths in the .pc
     inreplace 'etc/lua.pc' do |s|
       s.gsub! "prefix= /usr/local", "prefix=#{HOMEBREW_PREFIX}"
-      s.gsub! "INSTALL_MAN= ${prefix}/man/man1", "INSTALL_MAN= ${prefix}/share/man/man1"
+      s.gsub! "INSTALL_MAN= ${prefix}/man/man1", "INSTALL_MAN= ${man1}"
     end
 
     # Apply patch-level 2
