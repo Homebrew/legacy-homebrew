@@ -172,7 +172,7 @@ def github_info name
   end
   
   user = 'mxcl' if user.empty?
-  branch = 'master' if user.empty?
+  branch = 'master' if branch.empty?
 
   return "http://github.com/#{user}/homebrew/commits/#{branch}/Library/Formula/#{formula_name}"
 end
