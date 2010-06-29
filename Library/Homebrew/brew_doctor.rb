@@ -54,10 +54,11 @@ def check_for_stray_dylibs
 end
 
 def check_for_x11
-  unless File.exists? '/usr/X11/lib/libpng.dylib'
+  unless x11_installed?
+    opoo "X11 not installed."
     puts <<-EOS.undent
       You don't have X11 installed as part of your Xcode installation.
-      This isn't required for all formula, but is expected by some.
+      This isn't required for all formulae, but is expected by some.
 
     EOS
   end
