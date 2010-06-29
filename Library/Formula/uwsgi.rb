@@ -1,9 +1,9 @@
 require 'formula'
 
 class Uwsgi <Formula
-  url 'http://projects.unbit.it/downloads/uwsgi-0.9.5.1.tar.gz'
+  url 'http://projects.unbit.it/downloads/uwsgi-0.9.5.3.tar.gz'
   homepage 'http://projects.unbit.it/uwsgi/'
-  md5 'cc032e0f0e987a848606d3bc90241756'
+  md5 'f4835859bc87080a58289b980b7ae15c'
 
   def install
     # Find the archs of the Python we are building against.
@@ -14,7 +14,12 @@ class Uwsgi <Formula
 
     flags = archs.collect{ |a| "-arch #{a}" }.join(' ')
 
-    system "CFLAGS='#{flags}' LDFLAGS='#{flags}' python uwsgiconfig.py --build"
+    ENV.append 'CFLAGS', flags
+    ENV.append 'LDFLAGS', flags
+
+    inreplace 'uwsgiconfig.py', "PYLIB_PATH = ''", "PYLIB_PATH = '#{%x[python-config --ldflags].chomp[/-L(.*?) -l/, 1]}'"
+
+    system "python uwsgiconfig.py --build"
     bin.install "uwsgi"
   end
 
