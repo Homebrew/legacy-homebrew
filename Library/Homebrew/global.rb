@@ -23,9 +23,8 @@ end
 HOMEBREW_PREFIX = Pathname.new(HOMEBREW_BREW_FILE).dirname.parent # Where we link under
 HOMEBREW_REPOSITORY = Pathname.new(HOMEBREW_BREW_FILE).realpath.dirname.parent # Where .git is found
 
-# Where should be build to? 
-# If /usr/local/Cellar exists, as a symlink or real folder, use that.
-# Otherwise, build into a Cellar in the Repo. folder.
+# Where we store built products; /usr/local/Cellar if it exists,
+# otherwise a Cellar relative to the Repository.
 if (HOMEBREW_PREFIX+'Cellar').exist?
   HOMEBREW_CELLAR = HOMEBREW_PREFIX+'Cellar'
 else
