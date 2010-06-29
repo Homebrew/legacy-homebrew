@@ -30,14 +30,27 @@ end
 
 
 def check_for_stray_dylibs
-  bad_dylibs = Dir['/usr/local/lib/*.dylib'].select { |f| File.file? f and not File.symlink? f }
-  if bad_dylibs.length > 0
-    puts "You have unbrewed dylibs in /usr/local/lib. These could cause build problems"
-    puts "when building Homebrew formula. If you no longer need them, delete them:"
-    puts
-    puts *bad_dylibs.collect { |f| "    #{f}" }
-    puts
-  end
+  unbrewed_dylibs = Dir['/usr/local/lib/*.dylib'].select { |f| File.file? f and not File.symlink? f }
+
+  # Dylibs which are generally OK should be added to this list,
+  # with a short description of the software they come with.
+  white_list = {
+    "libfuse.2.dylib" => "MacFuse",
+    "libfuse_ino64.2.dylib" => "MacFuse"
+  }
+
+  bad_dylibs = unbrewed_dylibs.reject {|d| white_list.key? File.basename(d) }
+  return if bad_dylibs.empty?
+
+  opoo "Unbrewed dylibs were found in /usr/local/lib"
+  puts <<-EOS.undent
+    You have unbrewed dylibs in /usr/local/lib. If you didn't put them there on purpose,
+    they could cause problems when building Homebrew formulae.
+
+    Unexpected dylibs (delete if they are no longer needed):
+  EOS
+  puts *bad_dylibs.collect { |f| "    #{f}" }
+  puts
 end
 
 def check_for_x11
