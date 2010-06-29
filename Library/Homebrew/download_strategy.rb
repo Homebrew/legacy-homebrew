@@ -45,11 +45,16 @@ class CurlDownloadStrategy <AbstractDownloadStrategy
     @tarball_path
   end
 
+  # Private method, can be overridden if needed.
+  def _fetch
+    curl @url, '-o', @tarball_path
+  end
+
   def fetch
     ohai "Downloading #{@url}"
     unless @tarball_path.exist?
       begin
-        curl @url, '-o', @tarball_path
+        _fetch
       rescue Exception
         ignore_interrupts { @tarball_path.unlink if @tarball_path.exist? }
         raise
@@ -115,11 +120,23 @@ private
   end
 end
 
+# Download via an HTTP POST.
+class CurlPostDownloadStrategy <CurlDownloadStrategy
+  def initialize url, name, version, specs
+    super
+  end
+
+  def _fetch
+    base_url,data = @url.split('?')
+    curl base_url, '-d', data, '-o', @tarball_path
+  end
+end
+
 # Use this strategy to download but not unzip a file.
 # Useful for installing jars.
 class NoUnzipCurlDownloadStrategy <CurlDownloadStrategy
   def stage
-    FileUtils.mv @tarball_path, File.basename(@url)
+    FileUtils.cp @tarball_path, File.basename(@url)
   end
 end
 
