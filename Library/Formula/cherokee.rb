@@ -40,5 +40,6 @@ class Cherokee <Formula
     system "make install"
 
     prefix.install "org.cherokee.webserver.plist"
+    (share+'cherokee/admin/server.py').chmod 0755
   end
 end
