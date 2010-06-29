@@ -25,7 +25,7 @@ class Openimageio <Formula
   depends_on 'tbb' => :optional
 
   def install
-    system "make USE_QT=0"
+    system "cmake src/ #{std_cmake_parameters} -DUSE_QT:BOOL=OFF -DEMBEDPLUGINS:BOOL=ON -DUPDATE_TYPE:STRING=svn"
     system "make install"
   end
 end

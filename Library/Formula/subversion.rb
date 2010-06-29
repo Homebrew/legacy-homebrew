@@ -19,6 +19,7 @@ class Subversion <Formula
 
   aka 'svn'
 
+  depends_on 'pkg-config'
   # On Snow Leopard, build a new neon. For Leopard, the deps above include this.
   depends_on 'neon' if MACOS_VERSION >= 10.6
 
@@ -40,7 +41,7 @@ class Subversion <Formula
   def check_neon_arch
     # Check that Neon was built universal if we are building w/ --universal
     neon = Formula.factory('neon')
-    unless neon.installed?
+    if neon.installed?
       neon_arch = archs_for_command(neon.lib+'libneon.dylib')
       unless neon_arch.universal?
         opoo "A universal build was requested, but neon was already built for a single arch."
@@ -70,7 +71,7 @@ class Subversion <Formula
     args = ["--disable-debug",
             "--prefix=#{prefix}",
             "--with-ssl",
-            "--with-zlib=/usr/lib",
+            "--with-zlib=/usr",
             # use our neon, not OS X's
             "--disable-neon-version-check",
             "--disable-mod-activation",
