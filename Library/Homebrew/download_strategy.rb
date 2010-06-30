@@ -127,11 +127,8 @@ private
 end
 
 # Download via an HTTP POST.
+# Query parameters on the URL are converted into POST parameters
 class CurlPostDownloadStrategy <CurlDownloadStrategy
-  def initialize url, name, version, specs
-    super
-  end
-
   def _fetch
     base_url,data = @url.split('?')
     curl base_url, '-d', data, '-o', @tarball_path
