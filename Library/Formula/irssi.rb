@@ -19,8 +19,9 @@ class Irssi <Formula
   def install
     ENV.append 'ARCHFLAGS', ' ' # wtf?
 
-    args = ["--prefix=#{prefix}", "--disable-dependency-tracking",
-            "--with-modules", "--enable-ssl", "--enable-ipv6", "--with-perl=yes"]
+    args = ["--prefix=#{prefix}", "--with-perl-lib=site",
+            "--with-bot", "--with-proxy", "--enable-ssl",
+            "--enable-ipv6", "--with-perl=yes"]
 
     system "./configure", *args
     system "make install"
