@@ -7,7 +7,7 @@ class Redis <Formula
   sha1 'c71aef0b3f31acb66353d86ba57dd321b541043f'
 
   def install
-    ENV.gcc_4_2 # Breaks with LLVM
+    fails_with_llvm "Breaks with LLVM"
     system "make"
 
     %w( redis-benchmark redis-cli redis-server redis-stat redis-check-dump ).each { |p|

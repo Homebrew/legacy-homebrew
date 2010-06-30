@@ -1,10 +1,10 @@
 require 'formula'
 
 class Pypy <Formula
-  url 'http://pypy.org/download/pypy-1.2-osx.tar.bz2'
+  url 'http://pypy.org/download/pypy-1.3-osx.tar.bz2'
   homepage 'http://pypy.org/'
-  md5 'b5f693d7add487c5c5c16c0603fc1e5f'
-  version '1.2'
+  md5 'eb34325767bef243dc642252ffb1005a'
+  version '1.3'
 
   def install
     prefix.install 'bin'

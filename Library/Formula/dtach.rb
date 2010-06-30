@@ -8,10 +8,11 @@ class Dtach <Formula
   def install
     # Includes <config.h> instead of "config.h", so "." needs to be in the include path.
     ENV.append "CFLAGS", "-I."
-    
+
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-    
+
     system "make"
     bin.install "dtach"
+    man1.install gzip("dtach.1")
   end
 end

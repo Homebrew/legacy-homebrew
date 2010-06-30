@@ -16,9 +16,8 @@ class Vice <Formula
   end
   
   def install
+    fails_with_llvm "Cannot build with LLVM"
     ENV.libpng
-    # Cannot build with LLVM
-    ENV.gcc_4_2
 
     # Disable the zlibtest, we know we have it.
     # Use Cocoa instead of X

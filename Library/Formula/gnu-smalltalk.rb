@@ -17,8 +17,7 @@ class GnuSmalltalk <Formula
   # depends_on 'gmp' => :optional # 32/64 built build problems
 
   def install
-    # Codegen problems with LLVM
-    ENV.gcc_4_2
+    fails_with_llvm "Codegen problems with LLVM"
 
     # 64-bit version doesn't build, so force 32 bits.
     ENV.m32

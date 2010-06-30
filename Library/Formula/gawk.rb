@@ -6,7 +6,7 @@ class Gawk <Formula
   md5 '52b41c6c4418b3226dfb8f82076193bb'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug"
+    system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
   end

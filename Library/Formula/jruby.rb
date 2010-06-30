@@ -19,11 +19,16 @@ class Jruby < Formula
     # Only keep the OS X native libraries
     Dir.chdir 'lib/native' do
       Dir['*'].each do |file|
-        rm_rf file unless file == 'darwin'
+        rm_rf file unless file.downcase == 'darwin'
       end
     end
 
-    prefix.install Dir['*']
+    (prefix+'jruby').install Dir['*']
+
+    bin.mkpath
+    Dir["#{prefix}/jruby/bin/*"].each do |f|
+      ln_s f, bin+File.basename(f)
+    end
   end
 
   def test

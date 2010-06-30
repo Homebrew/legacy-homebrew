@@ -9,11 +9,12 @@ class RefreshBrew
   formula_regexp   = 'Library/Formula/(.+?)\.rb'
   ADDED_FORMULA    = %r{^\s+create mode \d+ #{formula_regexp}$}
   UPDATED_FORMULA  = %r{^\s+#{formula_regexp}\s}
+  DELETED_FORMULA  = %r{^\s+delete mode \d+ #{formula_regexp}$}
   
-  attr_reader :added_formulae, :updated_formulae
+  attr_reader :added_formulae, :updated_formulae, :deleted_formulae
   
   def initialize
-    @added_formulae, @updated_formulae = [], []
+    @added_formulae, @updated_formulae, @deleted_formulae = [], [], []
   end
   
   # Performs an update of the homebrew source. Returns +true+ if a newer
@@ -33,12 +34,15 @@ class RefreshBrew
       case line
       when ADDED_FORMULA
         @added_formulae << $1
+      when DELETED_FORMULA
+        @deleted_formulae << $1
       when UPDATED_FORMULA
-        @updated_formulae << $1 unless @added_formulae.include?($1)
+        @updated_formulae << $1 unless @added_formulae.include?($1) or @deleted_formulae.include?($1)
       end
     end
     @added_formulae.sort!
     @updated_formulae.sort!
+    @deleted_formulae.sort!
     
     output.strip != GIT_UP_TO_DATE
   end
@@ -47,6 +51,14 @@ class RefreshBrew
     !@updated_formulae.empty?
   end
   
+  def pending_new_formulae?
+    !@added_formulae.empty?
+  end
+
+  def deleted_formulae?
+    !@deleted_formulae.empty?
+  end
+
   def current_revision
     in_prefix { execute(REVISION_COMMAND).strip }
   rescue

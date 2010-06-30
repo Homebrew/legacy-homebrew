@@ -70,6 +70,8 @@ end
 class Formula
   include FileUtils
   
+  attr_reader :url, :version, :homepage, :name, :specs, :downloader
+
   # Homebrew determines the name
   def initialize name='__UNKNOWN__'
     set_instance_variable 'url'
@@ -118,8 +120,6 @@ class Formula
   def cached_download
     @downloader.cached_location
   end
-
-  attr_reader :url, :version, :homepage, :name, :specs
 
   def bin; prefix+'bin' end
   def sbin; prefix+'sbin' end
@@ -215,6 +215,7 @@ class Formula
         puts "If nothing is installed or the shell exits with a non-zero error code,"
         puts "Homebrew will abort. The installation prefix is:"
         puts prefix
+        ENV['HOMEBREW_DEBUG_INSTALL'] = name
         interactive_shell
       end
     end
@@ -295,6 +296,17 @@ class Formula
     self.class.external_deps
   end
 
+  def fails_with_llvm msg="", data=nil
+    return unless (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
+
+    build = data.delete :build rescue nil
+    msg = "(No specific reason was given)" if msg.empty?
+
+    opoo "LLVM was requested, but this formula is reported as not working with LLVM:"
+    puts msg
+    puts "Tested with LLVM build #{build}" unless build == nil
+  end
+
 protected
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
@@ -359,7 +371,14 @@ private
     hash = fn.incremental_hash(hasher)
 
     if supplied and not supplied.empty?
-      raise "#{type} mismatch\nExpected: #{supplied}\nGot: #{hash}\nArchive: #{fn}" unless supplied.upcase == hash.upcase
+      message = <<-EOF
+#{type} mismatch
+Expected: #{supplied}
+Got: #{hash}
+Archive: #{fn}
+(To retry an incomplete download, remove the file above.)
+EOF
+      raise message unless supplied.upcase == hash.upcase
     else
       opoo "Cannot verify package integrity"
       puts "The formula did not provide a download checksum"
