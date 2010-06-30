@@ -17,4 +17,10 @@ class Luarocks <Formula
     system "make"
     system "make install"
   end
+
+  def test
+    opoo "Luarocks test script installs 'lpeg'"
+    system "luarocks install lpeg"
+    system "lua", "-lluarocks.loader", "-llpeg", "-e", 'print ("Hello World!")'
+  end
 end
