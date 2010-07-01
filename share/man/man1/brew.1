@@ -1,5 +1,5 @@
-.\" generated with Ronn/v0.6.6
-.\" http://github.com/rtomayko/ronn/
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
 .TH "BREW" "1" "June 2010" "Homebrew" "brew"
 .
@@ -44,11 +44,17 @@ Shows Homebrew and system configuration useful for debugging\. If you file a bug
 Performs a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. If no search term is given, all available formula are displayed\.
 .
 .TP
-\fBinstall [\-\-debug]\fR \fIformula\fR
+\fBinstall [\-\-debug] [\-\-use\-llvm] [\-\-ignore\-dependencies]\fR \fIformula\fR
 Installs \fIformula\fR\.
 .
 .IP
 If \fB\-\-debug\fR is passed and brewing fails, opens a shell inside the temporary folder used for compiling\.
+.
+.IP
+If \fB\-\-use\-llvm\fR is passed, attempt to compile using the LLVM front\-end to GCC\. \fINOTE\fR: Not all formulae are compatible with LLVM, especially C++\-based ones\.
+.
+.IP
+If \fB\-\-ignore\-dependencies\fR is passed, skip installing any dependencies of any kind\. If they are not already present, the formula will probably fail to install\.
 .
 .TP
 \fBinstall \-\-interactive [\-\-git]\fR \fIformula\fR
