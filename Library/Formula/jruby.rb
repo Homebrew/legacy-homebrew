@@ -32,6 +32,6 @@ class Jruby < Formula
   end
 
   def test
-    system "jruby -e ''"
+    system "jruby -e 'puts \"hello\"'"
   end
 end
