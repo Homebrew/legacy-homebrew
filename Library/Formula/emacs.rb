@@ -5,12 +5,13 @@ require 'formula'
 class Emacs <Formula
   url 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.2.tar.bz2'
   md5 '057a0379f2f6b85fb114d8c723c79ce2'
+  homepage 'http://www.gnu.org/software/emacs/'
+
   if ARGV.include? "--use-git-head"
     head 'git://repo.or.cz/emacs.git'
   else
     head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
   end
-  homepage 'http://www.gnu.org/software/emacs/'
 
   def options
     [
@@ -18,6 +19,10 @@ class Emacs <Formula
       ["--with-x", "Include X11 support"],
       ["--use-git-head", "Use repo.or.cz git mirror for HEAD builds"],
     ]
+  end
+
+  def patches
+    "http://github.com/downloads/typester/emacs/feature-fullscreen.patch" if ARGV.include? "--cocoa"
   end
 
   def caveats
