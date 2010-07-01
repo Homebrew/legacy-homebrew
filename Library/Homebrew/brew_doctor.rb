@@ -94,7 +94,7 @@ def check_gcc_versions
   end
 end
 
-def check_share_locale
+def check_access_share_locale
   # If PREFIX/share/locale already exists, "sudo make install" of
   # non-brew installed software may cause installation failures.
   locale = HOMEBREW_PREFIX+'share/locale'
@@ -120,7 +120,25 @@ def check_share_locale
     puts *cant_read.collect { |f| "    #{f}" }
     puts
   end
+end
 
+def check_access_pkgconfig
+  # If PREFIX/lib/pkgconfig already exists, "sudo make install" of
+  # non-brew installed software may cause installation failures.
+  pkgconfig = HOMEBREW_PREFIX+'lib/pkgconfig'
+  return unless pkgconfig.exist?
+
+  unless pkgconfig.writable?
+    puts <<-EOS.undent
+      #{pkgconfig} isn't writable.
+      This can happen if you "sudo make install" software that isn't managed
+      by Homebrew. If a brew tries to write a .pc file to this folder, the
+      install will fail during the link step.
+
+      You should probably `chown` #{pkgconfig}
+
+    EOS
+  end
 end
 
 def check_usr_bin_ruby
@@ -364,10 +382,11 @@ def brew_doctor
     check_gcc_versions
     check_for_other_package_managers
     check_for_x11
-    check_share_locale
+    check_access_share_locale
     check_user_path
     check_which_pkg_config
     check_pkg_config_paths
+    check_access_pkgconfig
     check_for_gettext
     check_for_config_scripts
     check_for_dyld_vars
