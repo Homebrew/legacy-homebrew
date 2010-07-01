@@ -6,7 +6,7 @@ class Msgpack <Formula
   md5 'ae55b5a48221fabc587a9ff2b0b6106e'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end
