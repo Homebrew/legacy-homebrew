@@ -68,6 +68,9 @@ class CurlDownloadStrategy <AbstractDownloadStrategy
   def stage
     if @tarball_path.extname == '.jar'
       magic_bytes = nil
+    elsif @tarball_path.extname == '.pkg'
+      # Use more than 4 characters to not clash with magicbytes
+      magic_bytes = "____pkg"
     else
       # get the first four bytes
       File.open(@tarball_path) { |f| magic_bytes = f.read(4) }
@@ -81,6 +84,9 @@ class CurlDownloadStrategy <AbstractDownloadStrategy
     when /^\037\213/, /^BZh/, /^\037\235/  # gzip/bz2/compress compressed
       # TODO check if it's really a tar archive
       safe_system '/usr/bin/tar', 'xf', @tarball_path
+      chdir
+    when '____pkg'
+      safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, File.basename(@url)
       chdir
     when 'Rar!'
       quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, @tarball_path
@@ -121,11 +127,8 @@ private
 end
 
 # Download via an HTTP POST.
+# Query parameters on the URL are converted into POST parameters
 class CurlPostDownloadStrategy <CurlDownloadStrategy
-  def initialize url, name, version, specs
-    super
-  end
-
   def _fetch
     base_url,data = @url.split('?')
     curl base_url, '-d', data, '-o', @tarball_path
@@ -136,7 +139,7 @@ end
 # Useful for installing jars.
 class NoUnzipCurlDownloadStrategy <CurlDownloadStrategy
   def stage
-    FileUtils.mv @tarball_path, File.basename(@url)
+    FileUtils.cp @tarball_path, File.basename(@url)
   end
 end
 

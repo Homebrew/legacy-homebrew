@@ -8,21 +8,24 @@ class Irssi <Formula
   depends_on 'pkg-config'
   depends_on 'glib'
 
-  def skip_clean? path
-    path == bin+'irssi'
-  end
+  # Don't strip, to allow dynamic loading of modules
+  skip_clean 'bin'
 
   def patches
+    # Fix Perl path
     DATA
   end
 
   def install
     ENV.append 'ARCHFLAGS', ' ' # wtf?
 
-    args = ["--prefix=#{prefix}", "--disable-dependency-tracking",
-            "--with-modules", "--enable-ssl", "--enable-ipv6", "--with-perl=yes"]
-
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}",
+                          "--with-perl=yes",
+                          "--with-perl-lib=site",
+                          "--with-bot",
+                          "--with-proxy",
+                          "--enable-ssl",
+                          "--enable-ipv6"
     system "make install"
   end
 end

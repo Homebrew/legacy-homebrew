@@ -7,10 +7,10 @@ class Quvi <Formula
 
   depends_on 'pkg-config'
   depends_on 'pcre'
+  depends_on 'lua'
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-smut",
                           "--enable-broken"
