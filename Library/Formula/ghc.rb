@@ -1,26 +1,14 @@
 require 'formula'
 
-class PkgCurlDownloadStrategy <CurlDownloadStrategy
-  def stage
-    safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, File.basename(@url)
-    chdir
-  end
-end
-
-# Remember to update the formula for Cabal when updating this formula
 class Ghc <Formula
   homepage 'http://haskell.org/ghc/'
   version '6.12.3'
   url "http://darcs.haskell.org/download/dist/#{version}/GHC-#{version}-i386.pkg"
   md5 '58399e3af68f50a23a847bdfe3de5aca'
 
-  # Avoid stripping the Haskell binaries AND libraries; http://hackage.haskell.org/trac/ghc/ticket/2458
+  # Avoid stripping the Haskell binaries & libraries.
+  # See: http://hackage.haskell.org/trac/ghc/ticket/2458
   skip_clean ['bin', 'lib']
-
-  def download_strategy
-    # Extract files from .pkg while caching the .pkg
-    PkgCurlDownloadStrategy
-  end
 
   def replace_all foo, bar
     # Find all text files containing foo and replace it with bar
@@ -38,10 +26,14 @@ class Ghc <Formula
     # Fix paths
     replace_all "/Library/Frameworks/GHC.framework/Versions/#{short_version}/usr/lib/ghc-#{version}", "#{lib}/ghc"
     replace_all "/Library/Frameworks/GHC.framework/Versions/#{short_version}/usr", prefix
-    inreplace "lib/ghc-#{version}/ghc-asm", "#!/opt/local/bin/perl", "#!/usr/bin/env perl"
-    mv "lib/ghc-#{version}", 'lib/ghc'
 
-    prefix.install ['bin', 'lib', 'share']
+    prefix.install ['bin', 'share']
+
+    # Remove version from lib folder
+    lib.install "lib/ghc-#{version}" => 'ghc'
+
+    # Fix ghc-asm Perl reference
+    inreplace "#{lib}/ghc/ghc-asm", "#!/opt/local/bin/perl", "#!/usr/bin/env perl"
 
     # Regenerate GHC package cache
     rm "#{lib}/ghc/package.conf.d/package.cache"
