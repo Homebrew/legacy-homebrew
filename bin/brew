@@ -349,6 +349,9 @@ begin
     brew_doctor
 
   else
+    # Add example external commands to PATH before checking.
+    ENV['PATH'] += ":#{HOMEBREW_REPOSITORY}/Library/Contributions/examples"
+
     # Check for an external shell command
     if system "/usr/bin/which -s brew-#{arg}"
       # Add some Homebrew vars to the ENV
