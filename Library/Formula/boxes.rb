@@ -8,15 +8,14 @@ class Boxes <Formula
   def install
     # distro uses /usr/share/boxes change to prefix
     inreplace 'Makefile' do |contents| 
-      contents.change_make_var! "GLOBALCONF", "#{prefix}/share/boxes"
+      contents.change_make_var! "GLOBALCONF", "#{share}/boxes-config"
     end
 
-    # No autoconf system
     system "make"
 
     # No make install have to manually copy files
-    man.install 'doc/boxes.1'
-    share.install 'boxes-config' => 'boxes'
     bin.install 'src/boxes'
+    man1.install 'doc/boxes.1'
+    share.install 'boxes-config'
   end
 end
