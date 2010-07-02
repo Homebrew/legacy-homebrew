@@ -13,6 +13,7 @@ class Macvim <Formula
     ENV['CXXFLAGS'] = nil
 
     system "./configure",
+           "--with-macsdk=#{MACOS_VERSION}",
            # Add some features
            "--with-features=huge",
            "--enable-perlinterp",

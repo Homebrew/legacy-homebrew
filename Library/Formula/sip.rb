@@ -9,19 +9,19 @@ class Sip <Formula
   md5 '52d11ca9c1a0d0cddc9b89268bff5929'
 
   def install
-    system "python", "configure.py", "--destdir=#{lib}/python",
-                                     "--bindir=#{bin}",
-                                     "--incdir=#{include}"
+    # Force building against System python, because we need a Framework build.
+    # See: http://github.com/mxcl/homebrew/issues/issue/930
+    system "/usr/bin/python", "configure.py",
+                              "--destdir=#{lib}/python",
+                              "--bindir=#{bin}",
+                              "--incdir=#{include}"
     system "make install"
   end
 
-  def caveats; <<-EOS.undent
+  def caveats; <<-EOS
     This formula won't function until you amend your PYTHONPATH like so:
 
         export PYTHON_PATH=#{HOMEBREW_PREFIX}/lib/python:$PYTHON_PATH
-
-    This is why you would ideally install sip using pip or easy_install. But this
-    can't work because this package doesn't support Python's disttools.
     EOS
   end
 end

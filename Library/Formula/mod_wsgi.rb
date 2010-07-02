@@ -4,6 +4,7 @@ class ModWsgi <Formula
   url 'http://modwsgi.googlecode.com/files/mod_wsgi-3.2.tar.gz'
   sha1 '227123f679f280d45639420fe2eeaa820f6a1cbc'
   homepage 'http://code.google.com/p/modwsgi/'
+  head "http://modwsgi.googlecode.com/svn/trunk/mod_wsgi"
 
   def caveats
     <<-EOS.undent

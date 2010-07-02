@@ -1,9 +1,9 @@
 require 'formula'
 
 class Doxygen <Formula
-  url 'http://ftp.stack.nl/pub/users/dimitri/doxygen-1.6.3.src.tar.gz'
+  url 'http://ftp.stack.nl/pub/users/dimitri/doxygen-1.7.1.src.tar.gz'
   homepage 'http://www.doxygen.org/'
-  md5 '2d6ea20a9d850d94321cee78bab7bb87'
+  md5 '13e76e10fb55581a16ee04de35c264f0'
 
   def install
     system "./configure", "--prefix", prefix

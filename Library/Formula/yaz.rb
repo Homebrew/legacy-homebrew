@@ -4,9 +4,9 @@ require 'formula'
 # if this is a problem for you then please fix it! Thanks.
 
 class Yaz <Formula
-  url 'http://ftp.indexdata.dk/pub/yaz/yaz-3.0.49.tar.gz'
+  url 'http://ftp.indexdata.dk/pub/yaz/yaz-4.0.10.tar.gz'
   homepage 'http://www.indexdata.com/yaz'
-  md5 '7402c6444386dc7db6be8bb9617e1e4d'
+  md5 'e72edf163640a6a61fd41c12f2c01d2d'
 
   # depends_on 'openssl'   # we can suffice with the os x default for now
 

@@ -2,8 +2,8 @@ require 'formula'
 require 'hardware'
 
 class Qt <Formula
-  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.6.2.tar.gz'
-  md5 'eb651ee4b157c01696aa56777fc6e0e5'
+  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.6.3.tar.gz'
+  md5 '5c69f16d452b0bb3d44bc3c10556c072'
   homepage 'http://www.qtsoftware.com'
 
   def options
@@ -22,12 +22,6 @@ class Qt <Formula
   depends_on 'sqlite' if MACOS_VERSION <= 10.5
 
   def install
-    if version == '4.6.2' # being specific so needs reconfirmed each version
-      # Bug reported here: http://bugreports.qt.nokia.com/browse/QTBUG-7630
-      makefiles=%w[plugins/sqldrivers/sqlite/sqlite.pro 3rdparty/webkit/WebCore/WebCore.pro]
-      makefiles.each { |makefile| `echo 'LIBS += -lsqlite3' >> src/#{makefile}` }
-    end
-
     conf_args = ["-prefix", prefix,
                  "-system-libpng", "-system-zlib",
                  "-nomake", "demos", "-nomake", "examples",
@@ -84,7 +78,7 @@ class Qt <Formula
     # remove porting file for non-humans
     (prefix+'q3porting.xml').unlink
     
-    # Some config scripts will only find QT in a "Frameworks" folder
+    # Some config scripts will only find Qt in a "Frameworks" folder
     # VirtualBox is an example of where this is needed
     # See: http://github.com/mxcl/homebrew/issues/issue/745
     cd prefix do

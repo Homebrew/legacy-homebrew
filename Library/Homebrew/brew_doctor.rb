@@ -1,3 +1,34 @@
+class Volumes
+  def initialize
+    @volumes = []
+    raw_mounts=`mount`
+    raw_mounts.split("\n").each do |line|
+      case line
+      when /^(.+) on (\S+) \(/
+        @volumes << [$1, $2]
+      end
+    end
+    # Sort volumes by longest path prefix first
+    @volumes.sort! {|a,b| b[1].length <=> a[1].length}
+  end
+
+  def which path
+    @volumes.each_index do |i|
+      vol = @volumes[i]
+      return i if is_prefix?(vol[1], path)
+    end
+
+    return -1
+  end
+end
+
+
+def is_prefix? prefix, longer_string
+  p = prefix.to_s
+  longer_string.to_s[0,p.length] == p
+end
+
+
 def check_for_stray_dylibs
   bad_dylibs = Dir['/usr/local/lib/*.dylib'].select { |f| File.file? f and not File.symlink? f }
   if bad_dylibs.length > 0
@@ -63,7 +94,7 @@ def check_gcc_versions
   end
 end
 
-def check_share_locale
+def check_access_share_locale
   # If PREFIX/share/locale already exists, "sudo make install" of
   # non-brew installed software may cause installation failures.
   locale = HOMEBREW_PREFIX+'share/locale'
@@ -89,7 +120,25 @@ def check_share_locale
     puts *cant_read.collect { |f| "    #{f}" }
     puts
   end
+end
 
+def check_access_pkgconfig
+  # If PREFIX/lib/pkgconfig already exists, "sudo make install" of
+  # non-brew installed software may cause installation failures.
+  pkgconfig = HOMEBREW_PREFIX+'lib/pkgconfig'
+  return unless pkgconfig.exist?
+
+  unless pkgconfig.writable?
+    puts <<-EOS.undent
+      #{pkgconfig} isn't writable.
+      This can happen if you "sudo make install" software that isn't managed
+      by Homebrew. If a brew tries to write a .pc file to this folder, the
+      install will fail during the link step.
+
+      You should probably `chown` #{pkgconfig}
+
+    EOS
+  end
 end
 
 def check_usr_bin_ruby
@@ -205,6 +254,7 @@ def check_pkg_config_paths
 
       To resolve this issue, re-brew pkg-config with:
         brew rm pkg-config && brew install pkg-config
+
     EOS
   end
 end
@@ -221,6 +271,7 @@ def check_for_gettext
       If you `brew link gettext` then a large number of brews that don't
       otherwise have a `depends_on 'gettext'` will pick up gettext anyway
       during the `./configure` step.
+
     EOS
   end
 end
@@ -256,6 +307,65 @@ def check_for_config_scripts
       puts pair[0]
       puts "    " + pair[1] * " "
     end
+    puts
+  end
+end
+
+def check_for_dyld_vars
+  if ENV['DYLD_LIBRARY_PATH']
+    puts <<-EOS.undent
+      Setting DYLD_LIBARY_PATH can break dynamic linking.
+      You should probably unset it.
+
+    EOS
+  end
+end
+
+def check_for_symlinked_cellar
+  if HOMEBREW_CELLAR.symlink?
+    puts <<-EOS.undent
+      Symlinked Cellars can cause problems.
+      Your Homebrew Cellar is a symlink: #{HOMEBREW_CELLAR}
+                      which resolves to: #{HOMEBREW_CELLAR.realpath}
+
+      The recommended Homebrew installations are either:
+      (A) Have Cellar be a real folder inside of your HOMEBREW_PREFIX
+      (B) Symlink "bin/brew" into your prefix, but don't symlink "Cellar".
+
+      Older installations of Homebrew may have created a symlinked Cellar, but this can
+      cause problems when two formula install to locations that are mapped on top of each
+      other during the linking step.
+
+    EOS
+  end
+end
+
+def check_for_multiple_volumes
+  volumes = Volumes.new
+
+  # Find the volumes for the TMP folder & HOMEBREW_CELLAR
+  real_cellar = HOMEBREW_CELLAR.realpath
+  tmp=Pathname.new `/usr/bin/mktemp -d /tmp/homebrew-brew-doctor-XXXX`.strip
+  real_temp = tmp.realpath.parent
+
+  where_cellar = volumes.which real_cellar
+  where_temp = volumes.which real_temp
+
+  unless where_cellar == where_temp
+    puts <<-EOS.undent
+      Your Cellar and TMP folders are on different volumes.
+
+      Putting your Cellar and TMP folders on different volumes causes problems
+      for brews that install symlinks, such as Git.
+
+      Please post the details of your setup to this existing issue, if the comments
+      there don't already capture them:
+        http://github.com/mxcl/homebrew/issues/issue/1238
+
+      A work-around is available in this branch:
+        http://github.com/adamv/homebrew/tree/temp
+
+    EOS
   end
 end
 
@@ -272,12 +382,16 @@ def brew_doctor
     check_gcc_versions
     check_for_other_package_managers
     check_for_x11
-    check_share_locale
+    check_access_share_locale
     check_user_path
     check_which_pkg_config
     check_pkg_config_paths
+    check_access_pkgconfig
     check_for_gettext
     check_for_config_scripts
+    check_for_dyld_vars
+    check_for_symlinked_cellar
+    check_for_multiple_volumes
 
     exit! 0
   else
