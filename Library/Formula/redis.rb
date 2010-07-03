@@ -8,11 +8,14 @@ class Redis <Formula
 
   def install
     fails_with_llvm "Breaks with LLVM"
-    system "make"
+
+    # Head and stable have different code layouts
+    src = File.exists?('src/Makefile') ? 'src' : '.'
+    system "make -C #{src}"
 
     %w( redis-benchmark redis-cli redis-server redis-stat redis-check-dump ).each { |p|
       # Some of these commands are only in 1.2.x, some only in head
-      bin.install p rescue nil
+      bin.install "#{src}/#{p}" rescue nil
     }
 
     %w( run db/redis log ).each { |p| (var+p).mkpath }

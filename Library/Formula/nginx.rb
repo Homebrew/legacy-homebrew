@@ -2,11 +2,11 @@ require 'formula'
 
 class Nginx < Formula
   url 'http://nginx.org/download/nginx-0.7.67.tar.gz'
-  head 'http://nginx.org/download/nginx-0.8.42.tar.gz'
+  head 'http://nginx.org/download/nginx-0.8.43.tar.gz'
   homepage 'http://nginx.org/'
 
   if ARGV.include? '--HEAD'
-    @md5='2818e8b03512b239f1238d702703bcf3'
+    @md5='db13a36e5b6d1766e65d658eb1429803'
   else
     @md5='b6e175f969d03a4d3c5643aaabc6a5ff'
   end
@@ -38,7 +38,7 @@ class Nginx < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}", "--with-http_ssl_module"]
+    args = ["--prefix=#{prefix}", "--with-http_ssl_module", "--with-pcre"]
     args << passenger_config_args if ARGV.include? '--with-passenger'
 
     system "./configure", *args

@@ -2,8 +2,8 @@ require 'formula'
 
 class Irssi <Formula
   homepage 'http://irssi.org/'
-  url 'http://irssi.org/files/irssi-0.8.14.tar.bz2'
-  md5 '00efe7638dd596d5930dfa2aeae87b3a'
+  url 'http://irssi.org/files/irssi-0.8.15.tar.bz2'
+  md5 '1dcb3f511b88df94b0c996f36668c7da'
 
   depends_on 'pkg-config'
   depends_on 'glib'
