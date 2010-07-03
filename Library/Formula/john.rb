@@ -11,7 +11,7 @@ class John <Formula
   
   def install
     ENV.deparallelize
-    ENV.gcc_4_2
+    fails_with_llvm
     arch = Hardware.is_64_bit? ? '64' : 'sse2'
     
     Dir.chdir 'src' do

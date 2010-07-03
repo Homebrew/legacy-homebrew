@@ -17,6 +17,7 @@ class Nspr <Formula
       conf << "--enable-64bit" if Hardware.is_64_bit? and MACOS_VERSION >= 10.6
       system "./configure", *conf
 
+      # Remove the broken *(for anyone but FF) install_name
       inreplace "config/autoconf.mk", "-install_name @executable_path/$@ ", ""
 
       system "make"

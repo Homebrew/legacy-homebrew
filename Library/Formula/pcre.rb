@@ -6,17 +6,12 @@ class Pcre <Formula
   md5 '27948c1b5f5c1eabc23cba1ebe4c316f'
 
   def install
-    configure_args = [
-      "--prefix=#{prefix}",
-      "--disable-debug",
-      "--disable-dependency-tracking",
-      "--enable-utf8",
-      "--enable-unicode-properties",
-      "--enable-pcregrep-libz",
-      "--enable-pcregrep-libbz2",
-    ]
-
-    system "./configure", *configure_args
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--enable-utf8",
+                          "--enable-unicode-properties",
+                          "--enable-pcregrep-libz",
+                          "--enable-pcregrep-libbz2"
     system "make install"
   end
 end

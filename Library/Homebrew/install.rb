@@ -85,6 +85,7 @@ def install f
           puts "to copy the diff to the clipboard."
         end
 
+        ENV['HOMEBREW_DEBUG_INSTALL'] = f.name
         interactive_shell
         nil
       elsif ARGV.include? '--help'
@@ -95,6 +96,7 @@ def install f
         beginning=Time.now
         f.install
         FORMULA_META_FILES.each do |file|
+          next if File.directory? file
           FileUtils.mv "#{file}.txt", file rescue nil
           f.prefix.install file rescue nil
           (f.prefix+file).chmod 0644 rescue nil

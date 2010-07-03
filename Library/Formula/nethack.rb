@@ -26,7 +26,7 @@ class Nethack <Formula
   end
 
   def install
-    ENV.gcc_4_2
+    fails_with_llvm
     # Build everything in-order; no multi builds.
     ENV.deparallelize
 

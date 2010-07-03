@@ -19,13 +19,12 @@ module HomebrewEnvExtension
     end
 
     if MACOS_VERSION >= 10.6 and (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
-      # you can install Xcode wherever you like you know.
-      prefix = `/usr/bin/xcode-select -print-path`.chomp
-      prefix = "/Developer" if prefix.to_s.empty?
-
-      ENV['CC'] = "#{prefix}/usr/bin/llvm-gcc"
-      ENV['CXX'] = "#{prefix}/usr/bin/llvm-g++"
-      cflags = %w{-O4} # link time optimisation baby!
+      xcode_path = `/usr/bin/xcode-select -print-path`.chomp
+      xcode_path = "/Developer" if xcode_path.to_s.empty?
+      ENV['CC'] = "#{xcode_path}/usr/bin/llvm-gcc"
+      ENV['CXX'] = "#{xcode_path}/usr/bin/llvm-g++"
+      ENV['LD'] = ENV['CC']
+      cflags = ['-O4'] # link time optimisation baby!
     else
       # if we don't set these, many formula fail to build
       ENV['CC'] = '/usr/bin/cc'
@@ -84,6 +83,11 @@ module HomebrewEnvExtension
     remove_from_cflags /-O./
     append_to_cflags '-fast'
   end
+  def O4
+    # LLVM link-time optimization
+    remove_from_cflags /-O./
+    append_to_cflags '-O4'
+  end
   def O3
     # Sometimes O4 just takes fucking forever
     remove_from_cflags /-O./
@@ -115,6 +119,15 @@ module HomebrewEnvExtension
     self['CXX']="/usr/bin/g++-4.2"
     self['LD']=self['CC']
     self.O3
+  end
+
+  def llvm
+    xcode_path = `/usr/bin/xcode-select -print-path`.chomp
+    xcode_path = "/Developer" if xcode_path.to_s.empty?
+    self['CC'] = "#{xcode_path}/usr/bin/llvm-gcc"
+    self['CXX'] = "#{xcode_path}/usr/bin/llvm-g++"
+    self['LD'] = self['CC']
+    self.O4
   end
 
   def osx_10_4

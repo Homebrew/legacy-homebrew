@@ -1,9 +1,9 @@
 require 'formula'
 
 class Zeromq <Formula
-  url 'http://www.zeromq.org/local--files/area:download/zeromq-2.0.6.tar.gz'
+  url 'http://www.zeromq.org/local--files/area:download/zeromq-2.0.7.tar.gz'
   homepage 'http://www.zeromq.org/'
-  md5 'ffb5d724d1400550a12c81dd81874892'
+  md5 'c9cb3ee4499df1781f8ddc03c20d656b'
   
   aka '0mq'
   aka 'zmq'

@@ -3,4 +3,5 @@
 !/Library/
 !/README.md
 !/bin/brew
+!/share/man/man1/brew.1
 .DS_Store
