@@ -43,7 +43,7 @@ class Pip <Formula
       s.gsub! '#BUILD_PREFIX#', "'#{var}/pip/build'"
       s.gsub! '#SRC_PREFIX#', "'#{var}/pip/src'"
       s.gsub! '#STORAGE_DIR#', "'#{var}/pip/pip.log'"
-      s.gsub! '#CONFIG_FILE#', "'#{etc}/pip.ini'"
+      s.gsub! '#CONFIG_FILE#', "'#{etc}/pip.conf'"
       s.gsub! '#LOG_FILE#', "'#{var}/pip/pip.log'"
     end
 
@@ -64,7 +64,7 @@ EOF
       It will install itself directly into Python's location in the Cellar.
 
       Pip's configuration file lives at:
-        #{etc}/pip.ini
+        #{etc}/pip.conf
     EOS
   end
 end
