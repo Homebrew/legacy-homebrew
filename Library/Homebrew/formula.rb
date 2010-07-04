@@ -6,26 +6,81 @@ class FormulaUnavailableError <RuntimeError
     @name = name
     super "No available formula for #{name}"
   end
-  
+
   attr_reader :name
+end
+
+
+class SoftwareSpecification
+  attr_reader :url, :specs, :using
+
+  VCS_SYMBOLS = {
+    :bzr,     BazaarDownloadStrategy,
+    :curl,    CurlDownloadStrategy,
+    :cvs,     CVSDownloadStrategy,
+    :git,     GitDownloadStrategy,
+    :hg,      MercurialDownloadStrategy,
+    :nounzip, NoUnzipCurlDownloadStrategy,
+    :post,    CurlPostDownloadStrategy,
+    :svn,     SubversionDownloadStrategy,
+  }
+
+  def initialize url, specs=nil
+    raise "No url provided" if url.nil?
+    @url = url
+    unless specs.nil?
+      # Get download strategy hint, if any
+      @using = specs.delete :using
+      # The rest of the specs are for source control
+      @specs = specs
+    end
+  end
+
+  # Returns a suitable DownloadStrategy class that can be
+  # used to retreive this software package.
+  def download_strategy
+    return detect_download_strategy @url if @using.nil?
+
+    # If a class is passed, assume it is a download strategy
+    return @using if @using.kind_of? Class
+
+    detected = VCS_SYMBOLS[@using]
+    raise "Unknown strategy #{@using} was requested." unless detected
+    return detected
+  end
+
+  def detect_version
+    Pathname.new(@url).version
+  end
 end
 
 
 # Derive and define at least @url, see Library/Formula for examples
 class Formula
   include FileUtils
-  
+
   attr_reader :url, :version, :homepage, :name, :specs, :downloader
 
   # Homebrew determines the name
   def initialize name='__UNKNOWN__'
+    set_instance_variable 'homepage'
     set_instance_variable 'url'
     set_instance_variable 'head'
     set_instance_variable 'specs'
 
+    set_instance_variable 'stable'
+    set_instance_variable 'unstable'
+
     if @head and (not @url or ARGV.build_head?)
-      @url=@head
-      @version='HEAD'
+      @url = @head
+      @version = 'HEAD'
+      @spec_to_use = @unstable
+    else
+      if @stable.nil?
+        @spec_to_use = SoftwareSpecification.new(@url, @specs)
+      else
+        @spec_to_use = @stable
+      end
     end
 
     raise "No url provided for formula #{name}" if @url.nil?
@@ -33,16 +88,12 @@ class Formula
     validate_variable :name
 
     set_instance_variable 'version'
-    @version ||= Pathname.new(@url).version
+    @version ||= @spec_to_use.detect_version
     validate_variable :version if @version
-    
-    set_instance_variable 'homepage'
 
-    CHECKSUM_TYPES.each do |type|
-      set_instance_variable type
-    end
+    CHECKSUM_TYPES.each { |type| set_instance_variable type }
 
-    @downloader=download_strategy.new url, name, version, specs
+    @downloader=download_strategy.new @spec_to_use.url, name, version, @spec_to_use.specs
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -52,18 +103,14 @@ class Formula
     return false
   end
 
-  def prefix
-    validate_variable :name
-    validate_variable :version
-    HOMEBREW_CELLAR+@name+@version
-  end
-
   def path
     self.class.path name
   end
 
-  def cached_download
-    @downloader.cached_location
+  def prefix
+    validate_variable :name
+    validate_variable :version
+    HOMEBREW_CELLAR+@name+@version
   end
 
   def bin; prefix+'bin' end
@@ -77,33 +124,19 @@ class Formula
   def include; prefix+'include' end
   def share; prefix+'share' end
 
-  # generally we don't want var stuff inside the keg
-  def var; HOMEBREW_PREFIX+'var' end
   # configuration needs to be preserved past upgrades
   def etc; HOMEBREW_PREFIX+'etc' end
-  
-  # reimplement if we don't autodetect the download strategy you require
+  # generally we don't want var stuff inside the keg
+  def var; HOMEBREW_PREFIX+'var' end
+
+  # Use the @spec_to_use to detect the download strategy.
+  # Can be overriden to force a custom download strategy
   def download_strategy
-    if @specs and @url == @head
-      vcs = @specs.delete :using
-      if vcs != nil
-        # If a class is passed, assume it is a download strategy
-        return vcs if vcs.kind_of? Class
+    @spec_to_use.download_strategy
+  end
 
-        case vcs
-        when :bzr then return BazaarDownloadStrategy
-        when :curl then return CurlDownloadStrategy
-        when :cvs then return CVSDownloadStrategy
-        when :git then return GitDownloadStrategy
-        when :hg then return MercurialDownloadStrategy
-        when :svn then return SubversionDownloadStrategy
-        end
-
-        raise "Unknown strategy #{vcs} was requested."
-      end
-    end
-
-    detect_download_strategy url
+  def cached_download
+    @downloader.cached_location
   end
 
   # tell the user about any caveats regarding this package, return a string
@@ -213,7 +246,7 @@ class Formula
       require self.path(name)
     end
     begin
-      klass_name =self.class_s(name)
+      klass_name = self.class_s(name)
       klass = eval(klass_name)
     rescue NameError
       # TODO really this text should be encoded into the exception
@@ -279,15 +312,15 @@ protected
   rescue SystemCallError
     # usually because exec could not be find the command that was requested
     raise
-  rescue 
+  rescue
     raise BuildError.new(cmd, args, $?)
   end
 
 private
-  # creates a temporary directory then yields, when the block returns it
-  # recursively deletes the temporary directory
+  # Create a temporary directory then yield. When the block returns,
+  # recursively delete the temporary directory.
   def mktemp
-    # I used /tmp rather than mktemp -td because that generates a directory
+    # I used /tmp rather than `mktemp -td` because that generates a directory
     # name with exotic characters like + in it, and these break badly written
     # scripts that don't escape strings before trying to regexp them :(
 
@@ -336,18 +369,15 @@ EOF
 
   def stage
     HOMEBREW_CACHE.mkpath
+    fetched = @downloader.fetch
+    verify_download_integrity fetched if fetched.kind_of? Pathname
 
-    downloaded_tarball = @downloader.fetch
-    if downloaded_tarball.kind_of? Pathname
-      verify_download_integrity downloaded_tarball
-    end
-  
     mktemp do
       @downloader.stage
       yield
     end
   end
-  
+
   def patch
     return if patches.nil?
 
@@ -391,7 +421,7 @@ EOF
         patch_list << p
       end
     end
-    
+
     return if patch_list.empty?
 
     ohai "Downloading patches"
@@ -427,6 +457,8 @@ EOF
   end
 
   class << self
+    # The methods below define the formula DSL.
+    attr_reader :stable, :unstable
 
     def self.attr_rw(*attrs)
       attrs.each do |attr|
@@ -438,13 +470,21 @@ EOF
       end
     end
 
-    attr_rw :url, :version, :homepage, :specs, :deps, :external_deps, *CHECKSUM_TYPES
+    attr_rw :version, :homepage, :specs, :deps, :external_deps
+    attr_rw *CHECKSUM_TYPES
 
     def head val=nil, specs=nil
-      if specs
-        @specs = specs
-      end
-      val.nil? ? @head : @head = val
+      return @head if val.nil?
+      @unstable = SoftwareSpecification.new(val, specs)
+      @head = val
+      @specs = specs
+    end
+
+    def url val=nil, specs=nil
+      return @url if val.nil?
+      @stable = SoftwareSpecification.new(val, specs)
+      @url = val
+      @specs = specs
     end
 
     def depends_on name
@@ -480,7 +520,7 @@ EOF
         @skip_clean_paths << p.to_s unless @skip_clean_paths.include? p.to_s
       end
     end
-    
+
     def skip_clean_paths
       @skip_clean_paths or []
     end
