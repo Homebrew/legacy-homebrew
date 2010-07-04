@@ -119,7 +119,7 @@ class Pathname
 
     # eg. foobar-4.5.1-1
     # eg. ruby-1.9.1-p243
-    /-((\d+\.)*\d\.\d+-(p|rc)?\d+)$/.match stem
+    /-((\d+\.)*\d\.\d+-(p|rc|RC)?\d+)$/.match stem
     return $1 if $1
     
     # eg. lame-398-1
@@ -131,7 +131,7 @@ class Pathname
     return $1 if $1
 
     # eg. foobar-4.5.1b
-    /-((\d+\.)*\d+([abc]|rc|RC\d))$/.match stem
+    /-((\d+\.)*\d+([abc]|rc|RC)\d*)$/.match stem
     return $1 if $1
 
     # eg foobar-4.5.0-beta1
