@@ -65,7 +65,6 @@ GCC-4.2: #{gcc_42 ? "build #{gcc_42}" : "N/A"} (#{RECOMMENDED_GCC_42} or newer r
 LLVM: #{llvm ? "build #{llvm}" : "N/A" } #{llvm ? "(#{RECOMMENDED_LLVM} or newer recommended)" : "" }
 MacPorts or Fink? #{macports_or_fink_installed?}
 X11 installed? #{x11_installed?}
-PATH: #{ENV['PATH']}
 EOS
 end
 
@@ -164,11 +163,10 @@ begin
 
     require 'update'
     updater = RefreshBrew.new
-    old_revision = updater.current_revision
     unless updater.update_from_masterbrew!
       puts "Already up-to-date."
     else
-      puts "Updated Homebrew from #{old_revision[0,8]} to #{updater.current_revision[0,8]}."
+      puts "Updated Homebrew from #{updater.initial_revision[0,8]} to #{updater.current_revision[0,8]}."
       ## New Formulae
       if updater.pending_new_formulae?
         ohai "The following formulae are new:"

@@ -18,6 +18,14 @@ def check_for_blacklisted_formula names
       Mercurial can be install thusly:
         brew install pip && pip install mercurial
     EOS
+
+    when 'setuptools' then abort <<-EOS.undent
+      When working with a Homebrew-built Python, distribute is preferred
+      over setuptools, and can be used as the prequisite for pip.
+
+      Install distribute using:
+        brew install distribute
+    EOS
     end
   end
 end
@@ -172,7 +180,7 @@ def github_info name
   end
   
   user = 'mxcl' if user.empty?
-  branch = 'master' if user.empty?
+  branch = 'master' if branch.empty?
 
   return "http://github.com/#{user}/homebrew/commits/#{branch}/Library/Formula/#{formula_name}"
 end

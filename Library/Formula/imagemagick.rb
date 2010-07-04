@@ -20,8 +20,8 @@ def x11?
 end
 
 class Imagemagick <Formula
-  url 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.6.2-7.tar.bz2'
-  md5 '50c58eb75876189ec80d39b1d62189c6'
+  url 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.6.2-10.tar.bz2'
+  md5 '5eb2b6e2752d5420bd8789936d1eabcd'
   homepage 'http://www.imagemagick.org'
 
   depends_on 'jpeg'
@@ -76,5 +76,9 @@ class Imagemagick <Formula
             unless ghostscript_fonts? or ghostscript_srsly?
     return nil if s.empty?
     return s
+  end
+
+  def test
+    system "identify", "/Library/Application Support/Apple/iChat Icons/Flags/Argentina.gif"
   end
 end
