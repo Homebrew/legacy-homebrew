@@ -113,16 +113,16 @@ class Formula
     HOMEBREW_CELLAR+@name+@version
   end
 
-  def bin; prefix+'bin' end
-  def sbin; prefix+'sbin' end
-  def doc; prefix+'share/doc'+name end
-  def lib; prefix+'lib' end
-  def libexec; prefix+'libexec' end
-  def man; prefix+'share/man' end
-  def man1; man+'man1' end
-  def info; prefix+'share/info' end
-  def include; prefix+'include' end
-  def share; prefix+'share' end
+  def bin;     prefix+'bin'            end
+  def doc;     prefix+'share/doc'+name end
+  def include; prefix+'include'        end
+  def info;    prefix+'share/info'     end
+  def lib;     prefix+'lib'            end
+  def libexec; prefix+'libexec'        end
+  def man;     prefix+'share/man'      end
+  def man1;    man+'man1'              end
+  def sbin;    prefix+'sbin'           end
+  def share;   prefix+'share'          end
 
   # configuration needs to be preserved past upgrades
   def etc; HOMEBREW_PREFIX+'etc' end
