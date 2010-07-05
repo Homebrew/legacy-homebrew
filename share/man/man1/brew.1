@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "June 2010" "Homebrew" "brew"
+.TH "BREW" "1" "July 2010" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -159,6 +159,13 @@ Using Git, fetches the newest version of Homebrew from the GitHub repository\.
 .TP
 HOMEBREW_DEBUG
 If set, instructs Homebrew to always assume \fB\-\-debug\fR when running commands\.
+.
+.TP
+HOMEBREW_TEMP
+If set, instructs Homebrew to use \fBHOMEBREW_TEMP\fR as the temporary folder for building packages\. This may be needed if your system temp folder and Homebrew Prefix are on different volumes, as OS X has trouble moving symlinks across volumes when the target does not yet exist\.
+.
+.IP
+This issue typically occurs when using FileVault (or certain custom SSD configurations\.)
 .
 .TP
 HOMEBREW_USE_LLVM

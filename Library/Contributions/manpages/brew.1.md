@@ -146,6 +146,15 @@ didn't include with OS X.
   * HOMEBREW\_DEBUG:
     If set, instructs Homebrew to always assume `--debug` when running commands.
 
+  * HOMEBREW\_TEMP:
+    If set, instructs Homebrew to use `HOMEBREW_TEMP` as the temporary folder
+    for building packages. This may be needed if your system temp folder and
+    Homebrew Prefix are on different volumes, as OS X has trouble moving
+    symlinks across volumes when the target does not yet exist.
+
+    This issue typically occurs when using FileVault (or certain custom SSD
+    configurations.)
+
   * HOMEBREW\_USE\_LLVM:
     If set, instructs Homebrew to use the LLVM front-ends to the GCC compilers.  
     *NOTE*: Not all formulae will build correctly under LLVM.
