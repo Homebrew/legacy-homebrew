@@ -1,8 +1,8 @@
 require 'formula'
 
 class SpringRoo <Formula
+  url 'http://s3.amazonaws.com/dist.springframework.org/release/ROO/spring-roo-1.0.2.RELEASE.zip'
   version '1.0.2'
-  url 'http://s3.amazonaws.com/dist.springframework.org/release/ROO/spring-roo-#{version}.RELEASE.zip'
   homepage 'http://www.springsource.org/roo'
   md5 '31d4444700311b14388a29139f4ea9bc'
 
