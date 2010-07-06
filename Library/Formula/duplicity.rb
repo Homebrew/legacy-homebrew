@@ -11,4 +11,13 @@ class Duplicity <Formula
     ENV.universal_binary
     system "python", "setup.py", "install", "--prefix=#{prefix}"
   end
+
+  def caveats
+    <<-EOS.undent
+      If you are using a non-Homebrew-built Python, you may need to add:
+        #{HOMEBREW_PREFIX}/lib/pythonX.Y/site-packages
+      to your PYTHONPATH, where "X.Y" was the version of Python this
+      formula was built against.
+    EOS
+  end
 end

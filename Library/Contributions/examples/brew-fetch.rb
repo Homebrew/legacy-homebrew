@@ -9,5 +9,7 @@ ARGV.formulae.each do |f|
     FileUtils.rm_rf where_to unless where_to.empty?
   end
 
-  f.downloader.fetch
+  the_tarball = f.downloader.fetch
+  md5 = the_tarball.md5
+  puts "MD5 is #{md5}"
 end
