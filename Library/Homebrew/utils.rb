@@ -1,3 +1,39 @@
+class ExecutionError <RuntimeError
+  attr :exit_status
+  attr :command
+
+  def initialize cmd, args = [], es = nil
+    @command = cmd
+    super "Failure while executing: #{cmd} #{pretty(args)*' '}"
+    @exit_status = es.exitstatus rescue 1
+  end
+
+  def was_running_configure?
+    @command == './configure'
+  end
+
+  private
+
+  def pretty args
+    args.collect do |arg|
+      if arg.to_s.include? ' '
+        "'#{ arg.gsub "'", "\\'" }'"
+      else
+        arg
+      end
+    end
+  end
+end
+
+class BuildError <ExecutionError
+  attr :env
+
+  def initialize cmd, args = [], es = nil
+    super
+    @env = ENV.to_hash
+  end
+end
+
 class Tty
   class <<self
     def blue; bold 34; end
