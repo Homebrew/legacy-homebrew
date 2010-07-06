@@ -1,11 +1,5 @@
 require 'formula'
 
-class Magit <Formula
-  url 'http://zagadka.vm.bytemark.co.uk/magit/magit-0.7.tar.gz'
-  md5 '1ea442bd6f83f7ac82967059754c8c87'
-  homepage 'http://zagadka.vm.bytemark.co.uk/magit/'
-end
-
 class Emacs <Formula
   url 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.2.tar.bz2'
   md5 '057a0379f2f6b85fb114d8c723c79ce2'
@@ -83,11 +77,6 @@ class Emacs <Formula
       configure_args << "--without-x"
       system "./configure", *configure_args
       system "make"
-      system "make install"
-    end
-
-    Magit.new.brew do
-      system "./configure", "--prefix=#{prefix}"
       system "make install"
     end
   end

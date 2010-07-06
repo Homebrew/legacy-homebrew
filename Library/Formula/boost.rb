@@ -10,9 +10,8 @@ class Boost <Formula
   end
 
   def install
-    # Use GCC 4.2 because the standard llvm-gcc causes errors with dropped arugments
-    # to functions when linking with the boost library
-    ENV.gcc_4_2
+    fails_with_llvm "the standard llvm-gcc causes errors with dropped arugments "+
+                    "to functions when linking with the boost library"
 
     # Not sure about this, but added since macports has it
     mkdir 'libs/random/build'

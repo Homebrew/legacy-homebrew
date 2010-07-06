@@ -1,15 +1,14 @@
 require 'formula'
 
 class AppEngineJavaSdk <Formula
-  url 'http://googleappengine.googlecode.com/files/appengine-java-sdk-1.3.3.1.zip'
+  url 'http://googleappengine.googlecode.com/files/appengine-java-sdk-1.3.5.zip'
   homepage 'http://code.google.com/appengine/docs/java/overview.html'
-  sha1 '679779193bd6760d356ff6790f31b77af7109e69'
+  sha1 '9629b22bdf35975fa2c4f8d6704c66cfbd2fff7d'
 
   def shim_script target
     <<-EOS.undent
       #!/usr/bin/env bash
-      cd #{libexec}/bin
-      ./#{target} $*
+      #{libexec}/bin/#{target} $*
     EOS
   end
 

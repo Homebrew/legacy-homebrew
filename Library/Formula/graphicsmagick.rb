@@ -34,7 +34,7 @@ class Graphicsmagick <Formula
   end
 
   def install
-    ENV.gcc_4_2
+    fails_with_llvm
     ENV.libpng
     ENV.O3
 

@@ -19,7 +19,7 @@ class Vpnc <Formula
   end
 
   def install
-    ENV.gcc_4_2
+    fails_with_llvm
     ENV.no_optimization 
     ENV.deparallelize
 

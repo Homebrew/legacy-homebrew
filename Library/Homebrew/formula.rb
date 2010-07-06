@@ -70,6 +70,8 @@ end
 class Formula
   include FileUtils
   
+  attr_reader :url, :version, :homepage, :name, :specs, :downloader
+
   # Homebrew determines the name
   def initialize name='__UNKNOWN__'
     set_instance_variable 'url'
@@ -118,8 +120,6 @@ class Formula
   def cached_download
     @downloader.cached_location
   end
-
-  attr_reader :url, :version, :homepage, :name, :specs
 
   def bin; prefix+'bin' end
   def sbin; prefix+'sbin' end
@@ -205,10 +205,17 @@ class Formula
         onoe e.inspect
         puts e.backtrace
         ohai "Rescuing build..."
+        if (e.was_running_configure? rescue false) and File.exist? 'config.log'
+          puts "It looks like an autotools configure failed."
+          puts "Gist 'config.log' and any error output when reporting an issue."
+          puts
+        end
+
         puts "When you exit this shell Homebrew will attempt to finalise the installation."
         puts "If nothing is installed or the shell exits with a non-zero error code,"
         puts "Homebrew will abort. The installation prefix is:"
         puts prefix
+        ENV['HOMEBREW_DEBUG_INSTALL'] = name
         interactive_shell
       end
     end
@@ -289,6 +296,17 @@ class Formula
     self.class.external_deps
   end
 
+  def fails_with_llvm msg="", data=nil
+    return unless (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
+
+    build = data.delete :build rescue nil
+    msg = "(No specific reason was given)" if msg.empty?
+
+    opoo "LLVM was requested, but this formula is reported as not working with LLVM:"
+    puts msg
+    puts "Tested with LLVM build #{build}" unless build == nil
+  end
+
 protected
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
@@ -329,7 +347,12 @@ private
     # I used /tmp rather than mktemp -td because that generates a directory
     # name with exotic characters like + in it, and these break badly written
     # scripts that don't escape strings before trying to regexp them :(
-    tmp=Pathname.new `/usr/bin/mktemp -d /tmp/homebrew-#{name}-#{version}-XXXX`.strip
+
+    # If the user has FileVault enabled, then we can't mv symlinks from the
+    # /tmp volume to the other volume. So we let the user override the tmp
+    # prefix if they need to.
+    tmp_prefix = ENV['HOMEBREW_TEMP'] || '/tmp'
+    tmp=Pathname.new `/usr/bin/mktemp -d #{tmp_prefix}/homebrew-#{name}-#{version}-XXXX`.strip
     raise "Couldn't create build sandbox" if not tmp.directory? or $? != 0
     begin
       wd=Dir.pwd
@@ -353,7 +376,14 @@ private
     hash = fn.incremental_hash(hasher)
 
     if supplied and not supplied.empty?
-      raise "#{type} mismatch\nExpected: #{supplied}\nGot: #{hash}\nArchive: #{fn}" unless supplied.upcase == hash.upcase
+      message = <<-EOF
+#{type} mismatch
+Expected: #{supplied}
+Got: #{hash}
+Archive: #{fn}
+(To retry an incomplete download, remove the file above.)
+EOF
+      raise message unless supplied.upcase == hash.upcase
     else
       opoo "Cannot verify package integrity"
       puts "The formula did not provide a download checksum"

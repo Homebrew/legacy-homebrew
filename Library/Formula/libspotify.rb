@@ -10,7 +10,7 @@ class Libspotify <Formula
     include + 'libspotify'
   end
   def pc
-    lib+'pkgconfig'+'libspotify.pc'
+    lib+'pkgconfig/libspotify.pc'
   end
 
   def install

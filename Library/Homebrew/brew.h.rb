@@ -1,25 +1,30 @@
 FORMULA_META_FILES = %w[README README.md ChangeLog COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
 PLEASE_REPORT_BUG = "#{Tty.white}Please report this bug at #{Tty.em}http://github.com/mxcl/homebrew/issues#{Tty.reset}"
-HOMEBREW_RECOMMENDED_GCC = 5577
 
 def check_for_blacklisted_formula names
   return if ARGV.force?
 
   names.each do |name|
     case name
-      # bazaar don't maintain their PyPi entry properly yet
-      # when they do we'll remove our formula and use that
-#    when 'bazaar', 'bzr' then abort <<-EOS
-#Bazaar can be installed thusly:
-#
-#    brew install pip && pip install bzr==2.0.1
-#
-#    EOS
-    when 'mercurial', 'hg' then abort <<-EOS
-Mercurial can be install thusly:
+    when 'tex', 'tex-live', 'texlive' then abort <<-EOS.undent
+      Installing TeX from source is weird and gross, requires a lot of patches,
+      and only builds 32-bit (and thus can't use Homebrew deps on Snow Leopard.)
 
-    brew install pip && pip install mercurial
+      We recommend using a MacTeX distribution:
+        http://www.tug.org/mactex/
+    EOS
 
+    when 'mercurial', 'hg' then abort <<-EOS.undent
+      Mercurial can be install thusly:
+        brew install pip && pip install mercurial
+    EOS
+
+    when 'setuptools' then abort <<-EOS.undent
+      When working with a Homebrew-built Python, distribute is preferred
+      over setuptools, and can be used as the prequisite for pip.
+
+      Install distribute using:
+        brew install distribute
     EOS
     end
   end
@@ -136,7 +141,7 @@ def make url
   force_text = "If you really want to make this formula use --force."
 
   case name.downcase
-  when /libxml/, /libxlst/, /freetype/, /libpng/, /wxwidgets/
+  when /libxml/, /libxlst/, /freetype/, /libpng/
     raise <<-EOS
 #{name} is blacklisted for creation
 Apple distributes this library with OS X, you can find it in /usr/X11/lib.
@@ -175,7 +180,7 @@ def github_info name
   end
   
   user = 'mxcl' if user.empty?
-  branch = 'master' if user.empty?
+  branch = 'master' if branch.empty?
 
   return "http://github.com/#{user}/homebrew/commits/#{branch}/Library/Formula/#{formula_name}"
 end
@@ -385,6 +390,87 @@ def versions_of(keg_name)
 end
 
 
+def outdated_brews
+  require 'formula'
+
+  results = []
+  HOMEBREW_CELLAR.subdirs.each do |keg|
+    # Skip kegs with no versions installed
+    next unless keg.subdirs
+
+    # Skip HEAD formulae, consider them "evergreen"
+    next if keg.subdirs.collect{|p|p.basename.to_s}.include? "HEAD"
+
+    name = keg.basename.to_s
+    if (not (f = Formula.factory(name)).installed? rescue nil)
+      results << [keg, name, f.version]
+    end
+  end
+  return results
+end
+
+def search_brews text
+  require "formula"
+  formulae = Formulary.names with_aliases=true
+  if text =~ /^\/(.*)\/$/
+    results = formulae.grep(Regexp.new($1))
+  else
+    search_term = Regexp.escape(text || "")
+    results = formulae.grep(/.*#{search_term}.*/)
+  end
+
+  # Filter out aliases when the full name was also found
+  aliases = Formulary.get_aliases
+  return results.select do |r|
+    aliases[r] == nil or not (results.include? aliases[r])
+  end
+end
+
+def brew_install
+  require 'formula_installer'
+  require 'hardware'
+
+  ############################################################ sanity checks
+  case Hardware.cpu_type when :ppc, :dunno
+    abort "Sorry, Homebrew does not support your computer's CPU architecture.\n"+
+          "For PPC support, see: http://github.com/sceaga/homebrew/tree/powerpc"
+  end
+
+  raise "Cannot write to #{HOMEBREW_CELLAR}" if HOMEBREW_CELLAR.exist? and not HOMEBREW_CELLAR.writable?
+  raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable?
+
+  ################################################################# warnings
+  begin
+    if MACOS_VERSION >= 10.6
+      opoo "You should upgrade to Xcode 3.2.1" if llvm_build < RECOMMENDED_LLVM
+    else
+      opoo "You should upgrade to Xcode 3.1.4" if (gcc_40_build < RECOMMENDED_GCC_40) or (gcc_42_build < RECOMMENDED_GCC_42)
+    end
+  rescue
+    # the reason we don't abort is some formula don't require Xcode
+    # TODO allow formula to declare themselves as "not needing Xcode"
+    opoo "Xcode is not installed! Builds may fail!"
+  end
+
+  if macports_or_fink_installed?
+    opoo "It appears you have Macports or Fink installed"
+    puts "Although, unlikely, this can break builds or cause obscure runtime issues."
+    puts "If you experience problems try uninstalling these tools."
+  end
+
+  ################################################################# install!
+  installer = FormulaInstaller.new
+  installer.install_deps = !ARGV.include?('--ignore-dependencies')
+
+  ARGV.formulae.each do |f|
+    if not f.installed? or ARGV.force?
+      installer.install f
+    else
+      puts "Formula already installed: #{f.prefix}"
+    end
+  end
+end
+
 ########################################################## class PrettyListing
 class PrettyListing
   def initialize path
@@ -450,13 +536,7 @@ end
 class Cleaner
   def initialize f
     @f=f
-    
-    # correct common issues
-    share=f.prefix+'share'
-    (f.prefix+'man').mv share rescue nil
-    
-    [f.bin, f.sbin, f.lib].each {|d| clean_dir d}
-    
+    [f.bin, f.sbin, f.lib].select{|d|d.exist?}.each{|d|clean_dir d}
     # info pages suck
     info = f.share+'info'
     info.rmtree if info.directory? and not f.skip_clean? info
@@ -546,7 +626,7 @@ def llvm_build
   if MACOS_VERSION >= 10.6
     xcode_path = `/usr/bin/xcode-select -print-path`.chomp
     return nil if xcode_path.empty?
-    `#{xcode_path}/usr/bin/llvm-gcc-4.2 -v 2>&1` =~ /LLVM build (\d{4,})/
+    `#{xcode_path}/usr/bin/llvm-gcc -v 2>&1` =~ /LLVM build (\d{4,})/
     $1.to_i
   end
 end

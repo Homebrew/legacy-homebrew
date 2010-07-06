@@ -1,9 +1,9 @@
 require 'formula'
 
 class Newlisp <Formula
-  url 'http://www.newlisp.org/downloads/newlisp-10.2.1.tgz'
+  url 'http://www.newlisp.org/downloads/newlisp-10.2.8.tgz'
   homepage 'http://www.newlisp.org/'
-  md5 '27c51c0b95bdf0433e82eeff6010e93a'
+  md5 '4b728ce4d25cc6cbb4f53f8c98a02733'
 
   depends_on 'readline'
 

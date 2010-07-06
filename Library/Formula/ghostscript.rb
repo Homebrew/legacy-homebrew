@@ -12,8 +12,8 @@ class Ghostscript <Formula
   md5 '51a522a5b4818bd3dc7c1c0e9dd22bad'
 
   depends_on 'pkg-config'
-  depends_on 'jasper'
   depends_on 'jpeg'
+  depends_on 'libtiff'
 
   aka 'gs'
 
@@ -50,10 +50,10 @@ class Ghostscript <Formula
       Dir.chdir '..'
       (prefix+'share/ghostscript').install 'fonts'
     end
-    
+
     (man+'de').rmtree
   end
-  
+
   def caveats
       <<-EOS.undent
         There have been reports that installing Ghostscript can break printing on OS X:

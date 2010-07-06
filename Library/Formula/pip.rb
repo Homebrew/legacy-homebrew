@@ -5,94 +5,104 @@ class Pip <Formula
   homepage 'http://pip.openplans.org/'
   md5 'cfe73090aaa0d3b0c104179a627859d1'
 
-  depends_on 'setuptools'
-
-  def script lib_path
-    <<-EOS
-#!/usr/bin/env python
-"""
-This is the Homebrew pip wrapper
-"""
-import sys
-sys.path.insert(0, '#{lib_path}')
-from pip import main
-
-if __name__ == '__main__':
-    main()
-    EOS
-  end
+  depends_on 'distribute'
 
   def patches
-    # better default paths for build, source-cache and log locations
+    # Create a locations branch for darwin with placeholders
     DATA
   end
 
   def install
-    dest = prefix+"lib/pip"
+    python = Formula.factory("python")
+    unless python.installed?
+      onoe "The \"pip\" brew is only meant to be used against a Homebrew-built Python."
+      puts <<-EOS
+        Homebrew's "pip" formula is only meant to be installed against a Homebrew-
+        built version of Python, but we couldn't find such a version.
 
-    # make sure we use the right python (distutils rewrites the shebang)
-    # also adds the pip lib path to the PYTHONPATH
-    (bin+'pip').write(script(dest))
+        The system-provided Python comes with "easy_install" already installed, with the
+        caveat that some Python packages don't install cleanly against Apple's customized
+        versions of Python.
 
-    # FIXME? If we use /usr/bin/env python in the pip script
-    # then should we be hardcoding this version? I dunno.
-    python_version = `python -V 2>&1`.match('Python (\d+\.\d+)').captures.at(0)
+        To install pip against a custom Python:
+        First download distribute from:
+          http://pypi.python.org/pypi/distribute
+        unzip, and run:
+          /path/to/custom/python setup.py install
 
-    dest.install('pip')
-    cp 'pip.egg-info/PKG-INFO', "#{dest}/pip-#{version}-py#{python_version}.egg-info"
-  end
+        Then download pip from:
+          http://pypi.python.org/pypi/pip
+        unzip, and run:
+          /path/to/custom/python setup.py install
+      EOS
+      exit 99
+    end
 
-  def two_line_instructions
-    "pip installs packages. Python packages.\n"+
-    "Run 'pip help' to see a list of commands."
+    inreplace 'pip/locations.py' do |s|
+      # Replace placeholders with HOMEBREW paths
+      s.gsub! '#BUILD_PREFIX#', "'#{var}/pip/build'"
+      s.gsub! '#SRC_PREFIX#', "'#{var}/pip/src'"
+      s.gsub! '#STORAGE_DIR#', "'#{var}/pip/pip.log'"
+      s.gsub! '#CONFIG_FILE#', "'#{etc}/pip.conf'"
+      s.gsub! '#LOG_FILE#', "'#{var}/pip/pip.log'"
+    end
+
+    system "#{python.bin}/python", "setup.py", "install",
+              "--install-scripts", bin,
+              "--install-purelib", python.site_packages,
+              "--install-platlib", python.site_packages
+
+    (prefix+"README.homebrew").write <<-EOF
+pip's libraries were installed directly into:
+  #{python.site_packages}
+EOF
   end
 
   def caveats
-    # I'm going to add a proper two_line_instructions formula function at some point
-    two_line_instructions
+    <<-EOS.undent
+      This formula is only meant to be used against a Homebrew-built Python.
+      It will install itself directly into Python's location in the Cellar.
+
+      Pip's configuration file lives at:
+        #{etc}/pip.conf
+    EOS
   end
 end
 
+
 __END__
-diff --git a/pip/baseparser.py b/pip/baseparser.py
-index 149c52d..82ffa46 100755
---- a/pip/baseparser.py
-+++ b/pip/baseparser.py
-@@ -186,7 +186,7 @@ parser.add_option(
-     '--local-log', '--log-file',
-     dest='log_file',
-     metavar='FILENAME',
--    default=default_log_file,
-+    default=os.path.expanduser(os.path.join('~', 'Library', 'Logs', 'pip.log')),
-     help=optparse.SUPPRESS_HELP)
- 
- parser.add_option(
 diff --git a/pip/locations.py b/pip/locations.py
-index bd70d92..e517292 100755
+index 292020c..2372314 100644
 --- a/pip/locations.py
 +++ b/pip/locations.py
-@@ -4,19 +4,20 @@ import sys
- import os
- from distutils import sysconfig
- 
-+user_dir = os.path.expanduser('~')
-+
- if getattr(sys, 'real_prefix', None):
-     ## FIXME: is build/ a good name?
-     build_prefix = os.path.join(sys.prefix, 'build')
+@@ -10,8 +10,8 @@ if getattr(sys, 'real_prefix', None):
      src_prefix = os.path.join(sys.prefix, 'src')
  else:
--    ## FIXME: this isn't a very good default
+     ## FIXME: this isn't a very good default
 -    build_prefix = os.path.join(os.getcwd(), 'build')
 -    src_prefix = os.path.join(os.getcwd(), 'src')
-+    build_prefix = user_dir + '/.pip/build'
-+    src_prefix = user_dir + '/.pip/sources'
++    build_prefix = #BUILD_PREFIX#
++    src_prefix = #SRC_PREFIX#
  
  # FIXME doesn't account for venv linked to global site-packages
  
- site_packages = sysconfig.get_python_lib()
--user_dir = os.path.expanduser('~')
-+
- if sys.platform == 'win32':
-     bin_py = os.path.join(sys.prefix, 'Scripts')
-     # buildout uses 'bin' on Windows too?
+@@ -26,11 +26,16 @@ if sys.platform == 'win32':
+     default_storage_dir = os.path.join(user_dir, 'pip')
+     default_config_file = os.path.join(default_storage_dir, 'pip.ini')
+     default_log_file = os.path.join(default_storage_dir, 'pip.log')
++elif sys.platform[:6] == 'darwin':
++    bin_py = os.path.join(sys.prefix, 'bin')
++    default_storage_dir = #STORAGE_DIR#
++    default_config_file = #CONFIG_FILE#
++    default_log_file = #LOG_FILE#
++    # Forcing to use /usr/local/bin for standard Mac OS X framework installs
++    if sys.prefix[:16] == '/System/Library/':
++        bin_py = '/usr/local/bin'
+ else:
+     bin_py = os.path.join(sys.prefix, 'bin')
+     default_storage_dir = os.path.join(user_dir, '.pip')
+     default_config_file = os.path.join(default_storage_dir, 'pip.conf')
+     default_log_file = os.path.join(default_storage_dir, 'pip.log')
+-    # Forcing to use /usr/local/bin for standard Mac OS X framework installs
+-    if sys.platform[:6] == 'darwin' and sys.prefix[:16] == '/System/Library/':
+-        bin_py = '/usr/local/bin'

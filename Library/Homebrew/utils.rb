@@ -47,13 +47,7 @@ def pretty_duration s
 end
 
 def interactive_shell
-  fork do
-    # TODO make the PS1 var change pls
-    #brown="\[\033[0;33m\]"
-    #reset="\[\033[0m\]"
-    #ENV['PS1']="Homebrew-#{HOMEBREW_VERSION} #{brown}\W#{reset}\$ "
-    exec ENV['SHELL']
-  end
+  fork {exec ENV['SHELL'] }
   Process.wait
   unless $?.success?
     puts "Aborting due to non-zero exit status"
@@ -224,7 +218,7 @@ end
 def dump_build_env env
   puts "\"--use-llvm\" was specified" if ARGV.include? '--use-llvm'
 
-  %w[CC CXX LD CFLAGS CXXFLAGS CPPFLAGS LDFLAGS MACOSX_DEPLOYMENT_TARGET MAKEFLAGS PATH PKG_CONFIG_PATH HOMEBREW_USE_LLVM].each do |k|
+  %w[CC CXX LD CFLAGS CXXFLAGS CPPFLAGS LDFLAGS MACOSX_DEPLOYMENT_TARGET MAKEFLAGS PKG_CONFIG_PATH HOMEBREW_USE_LLVM].each do |k|
     value = env[k]
     puts "#{k}: #{value}" if value
   end

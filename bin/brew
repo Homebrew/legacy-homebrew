@@ -8,7 +8,7 @@ Dir.getwd rescue abort "The current working directory doesn't exist, cannot proc
 HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] = File.expand_path(__FILE__)
 
 require 'pathname'
-HOMEBREW_LIBRARY_PATH = (Pathname.new(__FILE__).realpath.dirname.parent+"Library"+"Homebrew").to_s
+HOMEBREW_LIBRARY_PATH = (Pathname.new(__FILE__).realpath.dirname.parent+"Library/Homebrew").to_s
 $:.unshift(HOMEBREW_LIBRARY_PATH)
 require 'global'
 
@@ -65,7 +65,6 @@ GCC-4.2: #{gcc_42 ? "build #{gcc_42}" : "N/A"} (#{RECOMMENDED_GCC_42} or newer r
 LLVM: #{llvm ? "build #{llvm}" : "N/A" } #{llvm ? "(#{RECOMMENDED_LLVM} or newer recommended)" : "" }
 MacPorts or Fink? #{macports_or_fink_installed?}
 X11 installed? #{x11_installed?}
-PATH: #{ENV['PATH']}
 EOS
 end
 
@@ -129,17 +128,14 @@ begin
       end
 
     when 'search', '-S'
-      check_for_blacklisted_formula(ARGV.named)
-
-      require "formula"
-      formulae = Formulary.names with_aliases=true
-
-      if ARGV.first =~ /^\/(.*)\/$/
-        puts_columns formulae.grep(Regexp.new($1))
-      else
-        search_term = Regexp.escape(ARGV.first || "")
-        puts_columns formulae.grep(/.*#{search_term}.*/)
+      if ARGV.include? '--macports'
+        exec "open", "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
+      elsif ARGV.include? '--fink'
+        exec "open", "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
       end
+
+      check_for_blacklisted_formula(ARGV.named)
+      puts_columns search_brews(ARGV.first)
 
     when 'edit'
       if ARGV.named.empty?
@@ -163,23 +159,31 @@ begin
       end
 
   when 'up', 'update'
-    if system "/usr/bin/which -s git"
-      require 'update'
-      updater = RefreshBrew.new
-      old_revision = updater.current_revision
-      unless updater.update_from_masterbrew!
-        puts "Already up-to-date."
-      else
-        puts "Updated Homebrew from #{old_revision[0,8]} to #{updater.current_revision[0,8]}."
-        if updater.pending_formulae_changes?
-          ohai "The following formulae were updated:"
-          puts_columns updater.updated_formulae
-        else
-          puts "No formulae were updated." unless updater.pending_formulae_changes?
-        end
-      end
+    abort "Please `brew install git' first." unless system "/usr/bin/which -s git"
+
+    require 'update'
+    updater = RefreshBrew.new
+    unless updater.update_from_masterbrew!
+      puts "Already up-to-date."
     else
-      abort "Please `brew install git' first."
+      puts "Updated Homebrew from #{updater.initial_revision[0,8]} to #{updater.current_revision[0,8]}."
+      ## New Formulae
+      if updater.pending_new_formulae?
+        ohai "The following formulae are new:"
+        puts_columns updater.added_formulae
+      end
+      ## Deleted Formulae
+      if updater.deleted_formulae?
+        ohai "The following formulae were removed:"
+        puts_columns updater.deleted_formulae
+      end
+      ## Updated Formulae
+      if updater.pending_formulae_changes?
+        ohai "The following formulae were updated:"
+        puts_columns updater.updated_formulae
+      else
+        puts "No formulae were updated." unless updater.pending_formulae_changes?
+      end
     end
 
     when 'ln', 'link'
@@ -253,49 +257,7 @@ begin
 
   when 'install'
     check_for_blacklisted_formula(ARGV.named)
-    
-    require 'formula_installer'
-    require 'hardware'
-
-    ############################################################ sanity checks
-    case Hardware.cpu_type when :ppc, :dunno
-      abort "Sorry, Homebrew does not support your computer's CPU architecture.\n"+
-            "For PPC support, see: http://github.com/sceaga/homebrew/tree/powerpc"
-    end
-
-    raise "Cannot write to #{HOMEBREW_CELLAR}" if HOMEBREW_CELLAR.exist? and not HOMEBREW_CELLAR.writable?
-    raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable?
-
-    ################################################################# warnings
-    begin
-      if MACOS_VERSION >= 10.6
-        opoo "You should upgrade to Xcode 3.2.1" if llvm_build < RECOMMENDED_LLVM
-      else
-        opoo "You should upgrade to Xcode 3.1.4" if (gcc_40_build < RECOMMENDED_GCC_40) or (gcc_42_build < RECOMMENDED_GCC_42)
-      end
-    rescue
-      # the reason we don't abort is some formula don't require Xcode
-      # TODO allow formula to declare themselves as "not needing Xcode"
-      opoo "Xcode is not installed! Builds may fail!"
-    end
-
-    if macports_or_fink_installed?
-      opoo "It appears you have Macports or Fink installed"
-      puts "Although, unlikely, this can break builds or cause obscure runtime issues."
-      puts "If you experience problems try uninstalling these tools."
-    end
-
-    ################################################################# install!
-    installer = FormulaInstaller.new
-    installer.install_deps = !ARGV.include?('--ignore-dependencies')
-
-    ARGV.formulae.each do |f|
-      if not f.installed? or ARGV.force?
-        installer.install f
-      else
-        puts "Formula already installed: #{f.prefix}"
-      end
-    end
+    brew_install
 
   when 'log'
     Dir.chdir HOMEBREW_REPOSITORY
@@ -357,30 +319,42 @@ begin
     exec "cat", ARGV.formulae.first.path, *ARGV.options
 
   when 'outdated'
-    require 'formula'
-    HOMEBREW_CELLAR.subdirs.each do |keg|
-      if keg.subdirs.length > 0
-        name = keg.basename('.rb').to_s
-        if (not (f = Formula.factory(name)).installed? rescue nil)
-          if $stdout.tty? and not ARGV.flag? '--quiet'
-            versions = keg.cd{ Dir['*'] }.join(', ')
-            puts "#{name} (#{versions} < #{f.version})"
-          else
-            puts name
-          end
-        end
+    outdated_brews.each do |keg, name, version|
+      if $stdout.tty? and not ARGV.flag? '--quiet'
+        versions = keg.cd{ Dir['*'] }.join(', ')
+        puts "#{name} (#{versions} < #{version})"
+      else
+        puts name
       end
     end
-
-  when 'branch', 'checkout', 'pull', 'push', 'rebase', 'reset'
-    onoe "Unknown command: #{arg} (did you mean 'git #{arg}'?)"
 
   when 'doctor'
     require 'brew_doctor'
     brew_doctor
 
   else
-    onoe "Unknown command: #{arg}"
+    # Check for an external shell command
+    if system "/usr/bin/which -s brew-#{arg}"
+      # Add some Homebrew vars to the ENV
+      ['CACHE', 'CELLAR', 'LIBRARY_PATH', 'PREFIX', 'REPOSITORY'].each do |e|
+        ENV["HOMEBREW_#{e}"] = eval("HOMEBREW_#{e}")
+      end
+      exec("brew-#{arg}", *ARGV)
+    end
+
+    # Check for an external ruby command
+    external_rb = `/usr/bin/which brew-#{arg}.rb`.chomp
+    unless external_rb.empty?
+      require external_rb
+      exit 0
+    end
+
+    # Check for git commands
+    if ['branch', 'checkout', 'pull', 'push', 'rebase', 'reset'].include? arg
+      onoe "Unknown command: #{arg} (did you mean 'git #{arg}'?)"
+    else
+      onoe "Unknown command: #{arg}"
+    end
   end
 
 rescue FormulaUnspecifiedError
@@ -416,6 +390,13 @@ rescue BuildError => e
   # then replace that string with the following when the github api returns
   issues = issues_for_formula(formula_name)
   puts "These existing issues may help you:", *issues unless issues.empty?
+  if e.was_running_configure?
+    puts "It looks like an autotools configure failed."
+    puts "Consider re-running the install with '-vd' to keep 'config.log' around:"
+    puts "    brew install -vd formula_name"
+    puts "Gist 'config.log' and any error output when reporting an issue."
+  end
+  puts
   puts "Consider running `brew doctor` if a large number of installs are failing."
   exit 1
 rescue RuntimeError, SystemCallError => e
