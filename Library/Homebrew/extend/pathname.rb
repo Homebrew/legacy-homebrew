@@ -146,6 +146,10 @@ class Pathname
     /-((\d+\.)+\d+[abc]?)[-.](bin|stable|src|sources?)$/.match stem
     return $1 if $1
 
+    # Debian style eg dash_0.5.5.1.orig.tar.gz
+    /_((\d+\.)+\d+[abc]?)[.]orig$/.match stem
+    return $1 if $1
+
     # eg. otp_src_R13B (this is erlang's style)
     # eg. astyle_1.23_macosx.tar.gz
     stem.scan /_([^_]+)/ do |match|

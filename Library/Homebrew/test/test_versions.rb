@@ -140,4 +140,14 @@ class VersionTests < Test::Unit::TestCase
     check 'http://www.monkey.org/~provos/libevent-1.4.14b-stable.tar.gz',
       '1.4.14b'
   end
+
+  def test_debian_style_1
+    check 'http://ftp.de.debian.org/debian/pool/main/s/sl/sl_3.03.orig.tar.gz',
+      '3.03'
+  end
+
+  def test_debian_style_2
+    check 'http://ftp.de.debian.org/debian/pool/main/m/mmv/mmv_1.01b.orig.tar.gz',
+      '1.01b'
+  end
 end
