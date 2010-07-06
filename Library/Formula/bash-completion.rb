@@ -7,8 +7,8 @@ class BashCompletion <Formula
   head 'git://git.debian.org/git/bash-completion/bash-completion.git'
 
   def install
-    inreplace "./bash_completion", '/etc/bash_completion',
-              "#{etc}/bash_completion"
+    inreplace "bash_completion", '/etc/bash_completion', "#{etc}/bash_completion"
+    inreplace "bash_completion", 'readlink -f', "readlink"
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
