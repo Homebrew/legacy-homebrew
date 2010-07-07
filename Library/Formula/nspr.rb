@@ -8,16 +8,16 @@ class Nspr <Formula
   def install
     ENV.deparallelize
     Dir.chdir "mozilla/nsprpub" do
-      # Fixes a bug with linking against CoreFoundation.
+      # Fixes a bug with linking against CoreFoundation, needed to work with SpiderMonkey
       # See: http://openradar.appspot.com/7209349
-      # Needed to work with SpiderMonkey
-      inreplace "pr/src/Makefile.in", "-framework CoreServices -framework CoreFoundation", ""
+      target_frameworks = Hardware.is_32_bit? ? "-framework Carbon" : ""
+      inreplace "pr/src/Makefile.in", "-framework CoreServices -framework CoreFoundation", target_frameworks
 
       conf = ["--prefix=#{prefix}", "--disable-debug", "--enable-strip", "--enable-optimize"]
       conf << "--enable-64bit" if Hardware.is_64_bit? and MACOS_VERSION >= 10.6
       system "./configure", *conf
 
-      # Remove the broken *(for anyone but FF) install_name
+      # Remove the broken (for anyone but Firefox) install_name
       inreplace "config/autoconf.mk", "-install_name @executable_path/$@ ", ""
 
       system "make"
