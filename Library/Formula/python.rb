@@ -1,16 +1,12 @@
 require 'formula'
 
 <<-COMMENTS
-
-This is the Homebrew formula for Python.
-
 Versions
 --------
 This formula is currently tracking version 2.7.x.
 
-If you are looking for newer versions of Python, check out these forks:
-  2.7.x: http://github.com/mxcl/homebrew/issues/issue/1773
-  3.1.x: http://github.com/mxcl/homebrew/issues/issue/1188
+Python 3.x is available as a separate formula:
+  brew install python3
 
 Options
 -------
@@ -56,9 +52,9 @@ class Python <Formula
   homepage 'http://www.python.org/'
   md5 '0e8c9ec32abf5b732bea7d91b38c3339'
 
-  depends_on 'sqlite' => :optional    # Prefer over OS X's older version
   depends_on 'readline' => :optional  # Prefer over OS X's libedit
-  depends_on 'gdbm' => :optional
+  depends_on 'sqlite'   => :optional  # Prefer over OS X's older version
+  depends_on 'gdbm'     => :optional
 
   def options
     [
@@ -111,7 +107,7 @@ class Python <Formula
 
     system "./configure", *args
     system "make"
-    ENV.j1 # Some kinds of installs must be serialized.
+    ENV.j1 # Installs must be serialized
     system "make install"
 
     # Add the Homebrew prefix path to site-packages via a .pth
