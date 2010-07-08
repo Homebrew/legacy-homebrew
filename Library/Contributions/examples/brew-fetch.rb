@@ -10,6 +10,8 @@ ARGV.formulae.each do |f|
   end
 
   the_tarball = f.downloader.fetch
-  md5 = the_tarball.md5
-  puts "MD5 is #{md5}"
+  if the_tarball.kind_of? Pathname
+    md5 = the_tarball.md5
+    puts "MD5 is #{md5}"
+  end
 end
