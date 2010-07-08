@@ -11,6 +11,11 @@ class Nginx < Formula
     @md5='b6e175f969d03a4d3c5643aaabc6a5ff'
   end
 
+  # Nginx sometimes needs to find PCRE in /usr/local/lib even though
+  # it links against the system library in /usr/lib. The upstream
+  # configure scripts really ought to be fixed.
+  depends_on 'pcre' if ARGV.flag? "--hack"
+
   skip_clean 'logs'
 
   def patches
