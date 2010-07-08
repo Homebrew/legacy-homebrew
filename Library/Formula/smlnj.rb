@@ -34,6 +34,7 @@ EOS
     # there.
     Dir.chdir '..'
     libexec.install 'config'
+    rm (libexec+'config/targets') # Rewrite targets list
     (libexec+'config/targets').write targets
     Dir.chdir libexec
     system 'config/install.sh'
