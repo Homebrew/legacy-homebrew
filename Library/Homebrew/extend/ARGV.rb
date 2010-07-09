@@ -88,6 +88,9 @@ module HomebrewArgvExtension
       log formula
       install formula [--debug|-d] [--interactive|-i] [--verbose|-v]
 
+    For more information:
+      man brew
+
     To visit the Homebrew homepage type:
       brew home
     EOS
