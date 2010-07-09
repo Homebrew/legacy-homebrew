@@ -1,7 +1,7 @@
 require 'formula'
 
 class GitFlow <Formula
-  if ARGV.include? "--HEAD"
+  if ARGV.build_head?
     head 'git://github.com/nvie/gitflow.git', :branch => 'develop'
   else
     head 'git://github.com/nvie/gitflow.git', :tag => '0.2.1'

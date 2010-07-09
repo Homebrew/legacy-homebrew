@@ -7,7 +7,7 @@ class Libevent <Formula
   head 'git://levent.git.sourceforge.net/gitroot/levent/levent'
 
   def install
-    system "./autogen.sh" if ARGV.include? '--HEAD'
+    system "./autogen.sh" if ARGV.build_head?
 
     ENV.j1 # Needed for Mac Pro compilation
     system "./configure", "--prefix=#{prefix}"
