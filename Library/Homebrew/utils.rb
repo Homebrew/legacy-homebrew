@@ -1,3 +1,39 @@
+class ExecutionError <RuntimeError
+  attr :exit_status
+  attr :command
+
+  def initialize cmd, args = [], es = nil
+    @command = cmd
+    super "Failure while executing: #{cmd} #{pretty(args)*' '}"
+    @exit_status = es.exitstatus rescue 1
+  end
+
+  def was_running_configure?
+    @command == './configure'
+  end
+
+  private
+
+  def pretty args
+    args.collect do |arg|
+      if arg.to_s.include? ' '
+        "'#{ arg.gsub "'", "\\'" }'"
+      else
+        arg
+      end
+    end
+  end
+end
+
+class BuildError <ExecutionError
+  attr :env
+
+  def initialize cmd, args = [], es = nil
+    super
+    @env = ENV.to_hash
+  end
+end
+
 class Tty
   class <<self
     def blue; bold 34; end
@@ -218,7 +254,8 @@ end
 def dump_build_env env
   puts "\"--use-llvm\" was specified" if ARGV.include? '--use-llvm'
 
-  %w[CC CXX LD CFLAGS CXXFLAGS CPPFLAGS LDFLAGS MACOSX_DEPLOYMENT_TARGET MAKEFLAGS PKG_CONFIG_PATH HOMEBREW_USE_LLVM].each do |k|
+  %w[ CC CXX LD CFLAGS CXXFLAGS CPPFLAGS LDFLAGS MACOSX_DEPLOYMENT_TARGET MAKEFLAGS PKG_CONFIG_PATH
+      HOMEBREW_DEBUG HOMEBREW_VERBOSE HOMEBREW_USE_LLVM HOMEBREW_SVN ].each do |k|
     value = env[k]
     puts "#{k}: #{value}" if value
   end
