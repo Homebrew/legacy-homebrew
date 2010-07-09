@@ -236,6 +236,10 @@ class GitDownloadStrategy <AbstractDownloadStrategy
   end
 
   def fetch
+    raise "You must install Git:\n\n"+
+          "  brew install git\n" \
+          unless system "/usr/bin/which git"
+
     ohai "Cloning #{@url}"
     unless @clone.exist?
       safe_system 'git', 'clone', @url, @clone # indeed, leave it verbose
