@@ -5,10 +5,10 @@ class Nginx < Formula
   head 'http://nginx.org/download/nginx-0.8.44.tar.gz'
   homepage 'http://nginx.org/'
 
-  unless (ARGV & ['--HEAD', '-H']).empty?
-    @md5='7158c67ba2697f7d469aa7b17bef202f'
+  if ARGV.build_head?
+    md5 'b6e175f969d03a4d3c5643aaabc6a5ff'
   else
-    @md5='b6e175f969d03a4d3c5643aaabc6a5ff'
+    md5 '7158c67ba2697f7d469aa7b17bef202f'
   end
 
   depends_on 'pcre'

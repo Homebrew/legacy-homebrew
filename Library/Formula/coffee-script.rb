@@ -9,7 +9,7 @@ class CoffeeScript <Formula
   # head coffee-script usually depends on head node and
   # since there isn't a way to specify that just remove
   # the depends_on
-  depends_on :node unless ARGV.flag? '--HEAD'
+  depends_on :node unless ARGV.build_head?
 
   def caveats
     <<-EOS.undent
@@ -20,7 +20,7 @@ class CoffeeScript <Formula
         brew uninstall node
         brew install node --HEAD
     EOS
-  end if ARGV.flag? '--HEAD'
+  end if ARGV.build_head?
 
   def install
     bin.mkpath
