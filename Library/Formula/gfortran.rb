@@ -2,7 +2,6 @@ require 'formula'
 require 'brew.h'
 
 class GfortranPkgDownloadStrategy <CurlDownloadStrategy
-
   def stage
     # The 4.2.4 compiler is distributed as a OS X 10.5
     # package- a single flat xar archive instead of a
@@ -14,13 +13,11 @@ class GfortranPkgDownloadStrategy <CurlDownloadStrategy
     safe_system "mv *.pkg/Payload Payload.gz"
     safe_system "ls | grep -v Payload | xargs rm -r"
   end
-
 end
 
 class Gfortran <Formula
 
   case gcc_42_build
-
   when 5577
     url 'http://r.research.att.com/gfortran-42-5577.pkg'
     md5 '30fb495c93cf514003cdfcb7846dc701'
@@ -47,10 +44,9 @@ class Gfortran <Formula
   end
 
   # Shouldn't strip compiler binaries.
-  skip_clean [ 'bin', 'lib', 'libexec' ] 
+  skip_clean [ 'bin', 'lib', 'libexec' ]
 
   def install
-
     # The version of pax jumped 16 years in development between OS X 10.5
     # and OS X 10.6. In that time it became security concious. Additionally,
     # there are some slight variations in the packaging- because of this
@@ -60,10 +56,12 @@ class Gfortran <Formula
       ohai "Installing gfortran 4.2.4 for XCode 3.1.4 (build 5577)"
       safe_system "pax -rz -f Payload.gz -s ',./usr,#{prefix},'"
       # The 5577 package does not contain the gfortran->gfortran-4.2 symlink
-      safe_system "ln -sf #{bin + 'gfortran-4.2'} #{bin + 'gfortran'}"
+      safe_system "ln -sf #{bin}/gfortran-4.2 #{bin}/gfortran"
+      safe_system "ln -sf #{man1}/gfortran-4.2.1 #{man1}/gfortran.1"
     when 5659
       ohai "Installing gfortran 4.2.4 for XCode 3.2.2 (build 5659)"
       safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
+      safe_system "ln -sf #{man1}/gfortran-4.2.1 #{man1}/gfortran.1"
     end
   end
 
