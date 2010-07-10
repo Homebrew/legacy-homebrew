@@ -182,7 +182,7 @@ begin
         ohai "The following formulae were updated:"
         puts_columns updater.updated_formulae
       else
-        puts "No formulae were updated." unless updater.pending_formulae_changes?
+        puts "No formulae were updated."
       end
     end
 
