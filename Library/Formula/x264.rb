@@ -9,6 +9,7 @@ class X264 <Formula
 
 
   def install
+    system "./version.sh"
     system "./configure", "--prefix=#{prefix}",
                           "--enable-shared"
 
