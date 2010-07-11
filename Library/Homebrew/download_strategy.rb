@@ -143,6 +143,16 @@ class NoUnzipCurlDownloadStrategy <CurlDownloadStrategy
   end
 end
 
+# This Download Strategy is provided for use with sites that
+# only provide HTTPS and also have a broken cert.
+# Try not to need this, as we probably won't accept the forulae
+# into trunk.
+class CurlUnsafeDownloadStrategy <CurlDownloadStrategy
+  def _fetch
+    curl @url, '--insecure', '-o', @tarball_path
+  end
+end
+
 class SubversionDownloadStrategy <AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
@@ -236,6 +246,10 @@ class GitDownloadStrategy <AbstractDownloadStrategy
   end
 
   def fetch
+    raise "You must install Git:\n\n"+
+          "  brew install git\n" \
+          unless system "/usr/bin/which git"
+
     ohai "Cloning #{@url}"
     unless @clone.exist?
       safe_system 'git', 'clone', @url, @clone # indeed, leave it verbose
