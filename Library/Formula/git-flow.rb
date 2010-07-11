@@ -10,13 +10,7 @@ class GitFlow <Formula
 
   homepage 'http://github.com/nvie/gitflow'
 
-  # You need git to install, since we install from a git repo
-  # You also need git to run the scripts.
-  # But we're not going to mark it as a dependency just yet:
-  #   The user may have a non-brew git installed already.
-  # depends_on 'git'
-
   def install
-    system "make",  "prefix=#{prefix}", "install"
+    system "make", "prefix=#{prefix}", "install"
   end
 end

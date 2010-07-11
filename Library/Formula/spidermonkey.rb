@@ -2,8 +2,7 @@ require 'formula'
 
 class Spidermonkey <Formula
   # There are no proper releases of spidermonkey, so pick a version that's known
-  # to work (especially with CouchDB).
-  # revision: r35345
+  # to work (especially with CouchDB), revision r35345.
   url 'http://hg.mozilla.org/tracemonkey/archive/57a6ad20eae9.tar.gz'
   homepage 'https://developer.mozilla.org/en/SpiderMonkey'
   md5 '2d8cf22da82b30c36f47675a8486a3f3'
@@ -11,6 +10,12 @@ class Spidermonkey <Formula
 
   depends_on 'readline'
   depends_on 'nspr'
+
+  def patches
+    # Export date functions needed by manually-compiled MongoDB.
+    # Is it just me or is the version-to-version stable API of SpiderMonkey kind of a mess?
+    "http://gist.github.com/raw/426476/a98a15a94ca4efd3aeafb3b5cd943491b53cbf81/001-Properly-export-js_DateClass-and-js_RegExpClass.patch"
+  end
 
   def install
     if MACOS_VERSION == 10.5
