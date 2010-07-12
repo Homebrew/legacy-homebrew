@@ -41,7 +41,9 @@ class Nginx < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}", "--with-http_ssl_module", "--with-pcre"]
+    args = ["--prefix=#{prefix}", "--with-http_ssl_module", "--with-pcre",
+            "--conf-path=#{etc}/nginx/nginx.conf", "--pid-path=#{var}/run/nginx.pid",
+            "--lock-path=#{var}/nginx/nginx.lock"]
     args << passenger_config_args if ARGV.include? '--with-passenger'
 
     system "./configure", *args
