@@ -20,7 +20,7 @@ class Mutt <Formula
       patches << 'http://lunar-linux.org/~tchan/mutt/patch-1.5.20.sidebar.20090619.txt'
     end
     if ARGV.include? '--trash-patch'
-      patches << 'http://trac.macports.org/raw-attachment/ticket/20412/patch-1.5.20.cd.trash_folder.diff'
+      patches << 'http://trac.macports.org/export/69644/trunk/dports/mail/mutt-devel/files/patch-1.5.20.bk.trash_folder-purge_message.1'
     end
     patches
   end
