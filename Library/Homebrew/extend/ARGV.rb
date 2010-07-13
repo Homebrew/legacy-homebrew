@@ -7,7 +7,7 @@ module HomebrewArgvExtension
     @named ||= reject{|arg| arg[0..0] == '-'}
   end
 
-  def options
+  def options_only
     select {|arg| arg[0..0] == '-'}
   end
 
@@ -59,7 +59,7 @@ module HomebrewArgvExtension
   end
 
   def flag? flag
-    options.each do |arg|
+    options_only.each do |arg|
       return true if arg == flag
       next if arg[1..1] == '-'
       return true if arg.include? flag[2..2]
