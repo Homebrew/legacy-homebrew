@@ -94,6 +94,12 @@ begin
     end
   when '--config'
     dump_config
+  when '--env'
+    require 'hardware'
+    require 'extend/ENV'
+    ENV.extend(HomebrewEnvExtension)
+    ENV.setup_build_environment
+    dump_build_env ENV
 
     when 'home', 'homepage'
       if ARGV.named.empty?
