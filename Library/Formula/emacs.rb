@@ -60,7 +60,7 @@ class Emacs <Formula
 
     return s
   end
-  
+
   def install
     configure_args = [
       "--prefix=#{prefix}",
@@ -74,6 +74,8 @@ class Emacs <Formula
       system "make bootstrap"
       system "make install"
       prefix.install "nextstep/Emacs.app"
+      bin.mkpath
+      ln_s prefix+"Emacs.app/Contents/MacOS/Emacs", bin+"emacs"
     else
       if ARGV.include? "--with-x"
         configure_args << "--with-x"
