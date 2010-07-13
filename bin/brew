@@ -126,7 +126,7 @@ begin
         end
       elsif ARGV.named.empty?
         ENV['CLICOLOR']=nil
-        exec 'ls', *ARGV.options<<HOMEBREW_CELLAR if HOMEBREW_CELLAR.exist?
+        exec 'ls', *ARGV.options_only<<HOMEBREW_CELLAR if HOMEBREW_CELLAR.exist?
       elsif ARGV.verbose? or not $stdout.tty?
         exec "find", *ARGV.kegs+%w[-not -type d -print]
       else
@@ -257,7 +257,7 @@ begin
 
   when 'log'
     Dir.chdir HOMEBREW_REPOSITORY
-    args = ARGV.options
+    args = ARGV.options_only
     args.unshift ARGV.formulae.first.path unless ARGV.named.empty?
     exec "git", "log", *args
 
@@ -276,7 +276,7 @@ begin
 
   when 'cat'
     Dir.chdir HOMEBREW_REPOSITORY
-    exec "cat", ARGV.formulae.first.path, *ARGV.options
+    exec "cat", ARGV.formulae.first.path, *ARGV.options_only
 
   when 'outdated'
     outdated_brews.each do |keg, name, version|
