@@ -4,7 +4,7 @@ class Npm <Formula
   url 'http://github.com/isaacs/npm/tarball/v0.1.19'
   head 'git://github.com/isaacs/npm.git'
   homepage 'http://github.com/isaacs/npm'
-  md5 '5592f63214edbb848e443859ce6093d3'
+  md5 '886e78f5937ff3409c062cf8fd305f7c'
 
   depends_on 'node'
 
