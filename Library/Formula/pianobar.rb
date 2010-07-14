@@ -1,10 +1,11 @@
 require 'formula'
 
 class Pianobar <Formula
-  url 'http://github.com/PromyLOPh/pianobar/tarball/d38167c27597a8a114fde0f1fef2a73b3277ba36'
-  version 'd38167c'
+  head 'git://github.com/PromyLOPh/pianobar.git'
+  url 'http://github.com/PromyLOPh/pianobar/tarball/master'
+  version '2a1e81927ef6fbf0d9c5'
   homepage 'http://github.com/PromyLOPh/pianobar/'
-  md5 'e0922b871404269b73fc295c5468727e'
+  md5 '889c659210f89b5467c655449f09100b'
 
  depends_on 'cmake'
  depends_on 'libao'

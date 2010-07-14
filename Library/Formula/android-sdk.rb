@@ -1,10 +1,10 @@
 require 'formula'
 
 class AndroidSdk <Formula
-  url 'http://dl.google.com/android/android-sdk_r04-mac_86.zip'
+  url 'http://dl.google.com/android/android-sdk_r06-mac_86.zip'
   homepage 'http://developer.android.com/index.html'
-  md5 'b08512765aa9b0369bb9b8fecdf763e3'
-  version 'r4'
+  md5 'c92abf66a82c7a3f2b8493ebe025dd22'
+  version 'r6'
 
   skip_clean 'add-ons'
   skip_clean 'platforms'
@@ -25,13 +25,14 @@ class AndroidSdk <Formula
     end
   end
 
-  def caveats; <<-EOS
-We agreed to the Android SDK License Agreement for you by downloading the SDK.
-If this is unacceptable you should uninstall.
-You can read the license at: http://developer.android.com/sdk/terms.html
+  def caveats; <<-EOS.undent
+    We agreed to the Android SDK License Agreement for you when we downloaded the
+    SDK. If this is unacceptable you should uninstall. You can read the license
+    at: http://developer.android.com/sdk/terms.html
 
-Please add this line to your .bash_profile:
-  export ANDROID_SDK_ROOT=#{prefix}
-EOS
+    Please add this line to your .bash_profile:
+
+        export ANDROID_SDK_ROOT=#{prefix}
+    EOS
   end
 end

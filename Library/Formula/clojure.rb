@@ -5,30 +5,27 @@ class Clojure <Formula
   md5 '9c9e92f85351721b76f40578f5c1a94a'
   head 'git://github.com/richhickey/clojure.git'
   homepage 'http://clojure.org/'
-  JAR = "clojure.jar"
+
+  def jar
+    'clojure.jar'
+  end
 
   def script
 <<-EOS
-#!/bin/bash
+#!/bin/sh
 # Runs clojure.
 # With no arguments, runs Clojure's REPL.
-# With one or more arguments, the first is treated as a script name, the rest
-# passed as command-line arguments.
 
 # resolve links - $0 may be a softlink
-CLOJURE=$CLASSPATH:$(brew --cellar)/#{name}/#{version}/#{JAR}
+CLOJURE=$CLASSPATH:$(brew --cellar)/#{name}/#{version}/#{jar}
 
-if [ -z "$1" ]; then
-  java -server -cp $CLOJURE clojure.main
-else
-  scriptname=$1
-  java -server -cp $CLOJURE clojure.main $scriptname $*
-fi
+java -cp $CLOJURE clojure.main "$@"
 EOS
   end
 
   def install
-    prefix.install JAR
+    system "ant" if ARGV.include? '--HEAD'
+    prefix.install jar
     (bin+'clj').write script
   end
 end

@@ -1,14 +1,16 @@
 require 'formula'
 
 class Jpeg <Formula
-  @url='http://www.ijg.org/files/jpegsrc.v7.tar.gz'
-  @md5='382ef33b339c299b56baf1296cda9785'
-  @homepage='http://www.ijg.org'
-  
+  url 'http://www.ijg.org/files/jpegsrc.v8b.tar.gz'
+  version '8b'
+  md5 'e022acbc5b36cd2cb70785f5b575661e'
+  homepage 'http://www.ijg.org'
+
   aka :libjpeg, :libjpg
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    ENV.universal_binary
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
 end

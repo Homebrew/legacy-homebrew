@@ -1,10 +1,9 @@
 require 'formula'
 
 class Memcached <Formula
-  version '1.4.4'
-  url "http://memcached.googlecode.com/files/memcached-#{version}.tar.gz"
+  url "http://memcached.googlecode.com/files/memcached-1.4.5.tar.gz"
   homepage 'http://www.danga.com/memcached/'
-  md5 '5ca5b24de347e97ac1f48f3785b4178a'
+  sha1 'c7d6517764b82d23ae2de76b56c2494343c53f02'
 
   depends_on 'libevent'
 
@@ -17,7 +16,8 @@ class Memcached <Formula
 
   def caveats; <<-EOS
 You can enabled memcached to automatically load on login with:
-    launchctl load -w #{prefix}/com.danga.memcached.plist
+    cp #{prefix}/com.danga.memcached.plist ~/Library/LaunchAgents/
+    launchctl load -w ~/Library/LaunchAgents/com.danga.memcached.plist 
 
 Or start it manually:
     #{HOMEBREW_PREFIX}/bin/memcached
@@ -39,12 +39,11 @@ Add "-d" to start it as a daemon.
   <key>ProgramArguments</key>
   <array>
     <string>#{HOMEBREW_PREFIX}/bin/memcached</string>
-    <string>-d</string>
+    <string>-l</string>
+    <string>127.0.0.1</string>
   </array>
   <key>RunAtLoad</key>
   <true/>
-  <key>UserName</key>
-  <string>#{`whoami`.chomp}</string>
   <key>WorkingDirectory</key>
   <string>#{HOMEBREW_PREFIX}</string>
 </dict>

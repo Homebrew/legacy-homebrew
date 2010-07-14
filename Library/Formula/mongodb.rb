@@ -7,13 +7,13 @@ class Mongodb <Formula
   aka :mongo
 
   if Hardware.is_64_bit? and not ARGV.include? '--32bit'
-    url 'http://downloads.mongodb.org/osx/mongodb-osx-x86_64-1.2.2.tgz'
-    md5 '8e2076038cd269bc89dbd7cbb3a9afcd'
-    version '1.2.2-x86_64'
+    url 'http://downloads.mongodb.org/osx/mongodb-osx-x86_64-1.4.4.tgz'
+    md5 '8791c484c1580d563f1a071e5eed9fa5'
+    version '1.4.4-x86_64'
   else
-    url 'http://downloads.mongodb.org/osx/mongodb-osx-i386-1.2.2.tgz'
-    md5 '8654ad8e1da9d055d17352e0066a363a'
-    version '1.2.2-i386'
+    url 'http://downloads.mongodb.org/osx/mongodb-osx-i386-1.4.4.tgz'
+    md5 '8e31cc8b8f4879812cad217ce5b49b20'
+    version '1.4.4-i386'
   end
 
   def skip_clean? path
@@ -34,8 +34,14 @@ class Mongodb <Formula
   end
 
   def caveats; <<-EOS
-You can enable mongodb to automatically load on login with:
-    launchctl load -w #{prefix}/org.mongodb.mongod.plist
+If this is your first install, automatically load on login with:
+    cp #{prefix}/org.mongodb.mongod.plist ~/Library/LaunchAgents
+    launchctl load -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
+
+If this is an upgrade and you already have the org.mongodb.mongod.plist loaded:
+    launchctl unload -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
+    cp #{prefix}/org.mongodb.mongod.plist ~/Library/LaunchAgents
+    launchctl load -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
 
 Or start it manually:
     mongod run --config #{prefix}/mongod.conf

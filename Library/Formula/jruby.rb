@@ -1,34 +1,37 @@
 require 'formula'
 
-# My god! 20,000 files?!
-# TODO trim that a bit? Seems crazy.
-
 class Jruby < Formula
-  url 'http://jruby.kenai.com/downloads/1.4.0/jruby-bin-1.4.0.tar.gz'
+  url 'http://jruby.org.s3.amazonaws.com/downloads/1.5.1/jruby-bin-1.5.1.tar.gz'
   homepage 'http://www.jruby.org'
-  md5 'f37322c18e9134e91e064aebb4baa4c7'
+  md5 '74251383e08e8c339cacc35a7900d3af'
 
   def install
+    # Remove Windows files
+    rm Dir['bin/*.{bat,dll,exe}']
+
+    # Prefix a 'j' on some commands
     Dir.chdir 'bin' do
-      FileUtils.rm Dir['*.bat']
-      FileUtils.rm Dir['*.exe']
-      FileUtils.rm Dir['*.dll']
       Dir['*'].each do |file|
-        FileUtils.mv file, "j#{file}" unless file.match /^[j_]/
-      end
-    end
-    
-    # Only keep the MacOSX native libraries
-    Dir.chdir 'lib/native' do
-      Dir['*'].each do |file|
-        FileUtils.rm_rf file unless file == 'darwin'
+        mv file, "j#{file}" unless file.match /^[j_]/
       end
     end
 
-    prefix.install Dir['*']
+    # Only keep the OS X native libraries
+    Dir.chdir 'lib/native' do
+      Dir['*'].each do |file|
+        rm_rf file unless file.downcase == 'darwin'
+      end
+    end
+
+    (prefix+'jruby').install Dir['*']
+
+    bin.mkpath
+    Dir["#{prefix}/jruby/bin/*"].each do |f|
+      ln_s f, bin+File.basename(f)
+    end
   end
 
   def test
-    system "jruby -e ''"
+    system "jruby -e 'puts \"hello\"'"
   end
 end

@@ -12,8 +12,13 @@ class Xpdf <Formula
   end
   
   def patches
-    # latest security patch
-    ["ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.02pl3.patch"]
+    # security patches, applied sequentially
+    [
+      "ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.02pl1.patch", 
+      "ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.02pl2.patch", 
+      "ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.02pl3.patch", 
+      "ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.02pl4.patch"
+    ]
   end
   
 end

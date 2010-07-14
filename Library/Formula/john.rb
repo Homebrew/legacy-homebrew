@@ -11,7 +11,7 @@ class John <Formula
   
   def install
     ENV.deparallelize
-    ENV.gcc_4_2
+    fails_with_llvm
     arch = Hardware.is_64_bit? ? '64' : 'sse2'
     
     Dir.chdir 'src' do
@@ -20,8 +20,8 @@ class John <Formula
     
     FileUtils.rm 'README'
     # using mv over bin.install due to problem moving sym links
-    FileUtils.mv 'run', "#{bin}"
-    FileUtils.chmod_R 0755, "#{bin}"
+    FileUtils.mv 'run', bin
+    FileUtils.chmod_R 0755, bin
   end
 end
 

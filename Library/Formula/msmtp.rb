@@ -1,9 +1,9 @@
 require 'formula'
 
 class Msmtp <Formula
-  url 'http://downloads.sourceforge.net/project/msmtp/msmtp/1.4.19/msmtp-1.4.19.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/msmtp/msmtp/1.4.20/msmtp-1.4.20.tar.bz2'
   homepage 'http://msmtp.sourceforge.net'
-  md5 'f0afdc943bf7c8a3a3bf3fe1a73072c4'
+  md5 '065042eaaee40c2779cf0bcfffe72aae'
 
   def options
     [

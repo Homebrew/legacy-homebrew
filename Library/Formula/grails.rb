@@ -1,13 +1,12 @@
 require 'formula'
 
 class Grails <Formula
-  url 'http://dist.codehaus.org/grails/grails-1.2.1.zip'
+  url 'http://dist.codehaus.org/grails/grails-1.3.3.zip'
   homepage 'http://grails.org'
-  version '1.2.1'
-  md5 'd82553956c8249906d247172cfea9e55'
+  md5 '2573fcd2a50d9f2f4b07450638c56b7c'
 
   def install
+    rm_f Dir["bin/*.bat"]
     prefix.install Dir['*']
-    FileUtils.rm_f Dir["#{bin}/*.bat"]
   end
 end

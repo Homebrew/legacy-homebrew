@@ -8,10 +8,8 @@ class Grc <Formula
 
   def install
     #TODO we should deprefixify since it's python and thus possible
-    inreplace 'grc', '/etc', etc
-    inreplace 'grc.1', '/etc', etc
-    inreplace 'grcat', '/usr/local', prefix
-    inreplace 'grcat.1', '/usr/local', prefix
+    inreplace ['grc', 'grc.1'], '/etc', etc
+    inreplace ['grcat', 'grcat.1'], '/usr/local', prefix
     
     etc.install 'grc.conf'
     bin.install %w[grc grcat]

@@ -1,49 +1,37 @@
 require 'formula'
 
 class ErlangManuals <Formula
-  url 'http://www.erlang.org/download/otp_doc_man_R13B03.tar.gz'
-  md5 '1fe80b110061ef73614824fb06d4d6eb'
+  url 'http://www.erlang.org/download/otp_doc_man_R13B04.tar.gz'
+  md5 '681aaef70affc64743f4e8c0675034af'
 end
 
 class Erlang <Formula
-  version 'R13B03'
-  url "http://erlang.org/download/otp_src_#{version}.tar.gz"
-  md5 '411fcb29f0819973f71e28f6b56d9948'
+  # Download from  GitHub repo, which is much faster than using the official tarball
+  url "git://github.com/erlang/otp.git"
   homepage 'http://www.erlang.org'
+  version 'R13B04'
+  @specs = {:tag => "OTP_R13B04"}
 
-  # we can't strip the beam executables or any plugins
-  # there isn't really anything else worth stripping and it takes a really
-  # long time to run `file` over everything in lib because there is almost
-  # 4000 files (and really erlang guys! what's with that?! Most of them should
-  # be in share/erlang!)
-  skip_clean 'lib'
-  # may as well skip this too, everything is just shell scripts
-  skip_clean 'bin'
-
-  def patches
-    { :p0 => ["patch-erts_emulator_Makefile.in",
-              "patch-erts_emulator_hipe_hipe_amd64_asm.m4.diff",
-              "patch-erts_emulator_hipe_hipe_amd64_bifs.m4.diff",
-              "patch-erts_emulator_hipe_hipe_amd64_glue.S.diff",
-              "patch-erts_emulator_hipe_hipe_amd64.c.diff",
-              "patch-erts_emulator_sys_unix_sys_float.c.diff",
-              "patch-lib_ssl_c_src_esock_openssl.c",
-              "patch-lib_wx_configure.in",
-              "patch-lib_wx_configure"
-            ].map { |file_name| "http://svn.macports.org/repository/macports/!svn/bc/60054/trunk/dports/lang/erlang/files/#{file_name}" }
-    }
-  end
+  # We can't strip the beam executables or any plugins, there isn't really
+  # anything else worth stripping and it takes a really, long time to run
+  # `file` over everything in lib because there is almost 4000 files (and
+  # really erlang guys! what's with that?! Most of them should be in share/erlang!)
+  # may as well skip bin too, everything is just shell scripts
+  skip_clean ['lib', 'bin']
 
   def install
     ENV.deparallelize
-    ENV.gcc_4_2 # see http://github.com/mxcl/homebrew/issues/#issue/120
+    fails_with_llvm "see http://github.com/mxcl/homebrew/issues/issue/120"
+
+    # If building from GitHub, this step is required (but not for tarball downloads.)
+    system "./otp_build autoconf" if File.exist? "otp_build"
 
     config_flags = ["--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--enable-kernel-poll",
-                          "--enable-threads",
-                          "--enable-dynamic-ssl-lib",
-                          "--enable-smp-support"]
+                    "--prefix=#{prefix}",
+                    "--enable-kernel-poll",
+                    "--enable-threads",
+                    "--enable-dynamic-ssl-lib",
+                    "--enable-smp-support"]
 
     unless ARGV.include? '--disable-hipe'
       # HIPE doesn't strike me as that reliable on OS X
@@ -53,8 +41,7 @@ class Erlang <Formula
     end
 
     if Hardware.is_64_bit? and MACOS_VERSION >= 10.6
-      config_flags << "--enable-darwin-64bit" 
-      config_flags << "--enable-m64-build"
+      config_flags << "--enable-darwin-64bit"
     end
 
     system "./configure", *config_flags
@@ -63,9 +50,12 @@ class Erlang <Formula
     system "make install"
 
     ErlangManuals.new.brew { man.install Dir['man/*'] }
+
+    # See: http://github.com/mxcl/homebrew/issues/issue/1317
+    (lib+"erlang/lib/tools-2.6.5.1/emacs").install "lib/tools/emacs/erlang-skels.el"
   end
 
   def test
-    "erl -noshell -eval 'crypto:start().' -s init stop"
+    `erl -noshell -eval 'crypto:start().' -s init stop`
   end
 end

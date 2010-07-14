@@ -6,23 +6,21 @@ class Omega <Formula
   @md5='6d65ec9e0cc87ccf89ab491533ec4b77'
 
   def install
-    # 'make install' is weird, so we do it ourselves
-    
     # Set up our target folders
     inreplace "defs.h", "#define OMEGALIB \"./omegalib/\"", "#define OMEGALIB \"#{libexec}/\""
 
-    # Don't alias CC this way; also, don't need that ncurses include path
-    inreplace "Makefile", "CC = gcc -I/usr/include/ncurses", ""
-
+    # Don't alias CC; also, don't need that ncurses include path
     # Set the system type in CFLAGS, not in makefile
-    inreplace "Makefile", "CFLAGS = -DUNIX -DSYSV -O", ""
-    ENV['CFLAGS'] = ENV['CFLAGS'] + " -DUNIX -DSYSV"
-
     # Remove an obsolete flag
-    inreplace "Makefile", "LDFLAGS = -s", ""
+    inreplace "Makefile" do |s|
+      s.remove_make_var! ['CC', 'CFLAGS', 'LDFLAGS']
+    end
     
+    ENV.append_to_cflags "-DUNIX -DSYSV"
+
     system "make"
 
+    # 'make install' is weird, so we do it ourselves
     bin.install "omega"
     libexec.install Dir['omegalib/*']
   end

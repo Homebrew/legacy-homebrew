@@ -1,25 +1,28 @@
 require 'formula'
 
 class Uwsgi <Formula
-  url 'http://projects.unbit.it/downloads/uwsgi-0.9.4.tar.gz'
+  url 'http://projects.unbit.it/downloads/uwsgi-0.9.5.1.tar.gz'
   homepage 'http://projects.unbit.it/uwsgi/'
-  md5 '07c633072b48c9790fa5d4030c7c9aa3'
-
-  def python_version
-    `python -c "import sys; print '%s.%s' % sys.version_info[:2]"`.chomp
-  end
+  md5 'cc032e0f0e987a848606d3bc90241756'
 
   def install
-    case python_version
-    when '2.5'
-      makefile = "Makefile"
-      program = "uwsgi"
-    when '2.6'
-      makefile = "Makefile.Py26"
-      program = "uwsgi26"
-    end
-    
-    system "make -f #{makefile}"
-    bin.install program
+    # Find the archs of the Python we are building against.
+    # We remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
+    archs = archs_for_command("python")
+    archs.delete :ppc7400
+    archs.delete :ppc64
+
+    flags = archs.collect{ |a| "-arch #{a}" }.join(' ')
+
+    system "CFLAGS='#{flags}' LDFLAGS='#{flags}' python uwsgiconfig.py --build"
+    bin.install "uwsgi"
+  end
+
+  def caveats
+    <<-EOS.undent
+      NOTE: "brew install -v uwsgi" will fail!
+      You must install in non-verbose mode for this to succeed.
+      Patches to fix this are welcome.
+    EOS
   end
 end

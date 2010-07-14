@@ -1,26 +1,3 @@
-#  Copyright 2009 Max Howell and other contributors.
-#
-#  Redistribution and use in source and binary forms, with or without
-#  modification, are permitted provided that the following conditions
-#  are met:
-#
-#  1. Redistributions of source code must retain the above copyright
-#     notice, this list of conditions and the following disclaimer.
-#  2. Redistributions in binary form must reproduce the above copyright
-#     notice, this list of conditions and the following disclaimer in the
-#     documentation and/or other materials provided with the distribution.
-#
-#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-#  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-#  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-#  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-#  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-#  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-#  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-#  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-#  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-#  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
 require 'download_strategy'
 require 'fileutils'
 
@@ -57,10 +34,15 @@ class Formulary
   def self.read_all
   # yields once for each
     Formulary.names.each do |name|
-      require Formula.path(name)
-      klass_name = Formula.class_s(name)
-      klass = eval(klass_name)
-      yield name, klass
+      begin
+        require Formula.path(name)
+        klass_name = Formula.class_s(name)
+        klass = eval(klass_name)
+        yield name, klass
+      rescue Exception=>e
+        opoo "Error importing #{name}:"
+        puts "#{e}"
+      end
     end
   end
 
@@ -88,6 +70,8 @@ end
 class Formula
   include FileUtils
   
+  attr_reader :url, :version, :homepage, :name, :specs, :downloader
+
   # Homebrew determines the name
   def initialize name='__UNKNOWN__'
     set_instance_variable 'url'
@@ -133,16 +117,18 @@ class Formula
     self.class.path name
   end
 
-  attr_reader :url, :version, :homepage, :name, :specs
+  def cached_download
+    @downloader.cached_location
+  end
 
   def bin; prefix+'bin' end
   def sbin; prefix+'sbin' end
-  def doc; prefix+'share'+'doc'+name end
+  def doc; prefix+'share/doc'+name end
   def lib; prefix+'lib' end
   def libexec; prefix+'libexec' end
-  def man; prefix+'share'+'man' end
+  def man; prefix+'share/man' end
   def man1; man+'man1' end
-  def info; prefix+'share'+'info' end
+  def info; prefix+'share/info' end
   def include; prefix+'include' end
   def share; prefix+'share' end
 
@@ -153,19 +139,26 @@ class Formula
   
   # reimplement if we don't autodetect the download strategy you require
   def download_strategy
-    case url
-    when %r[^cvs://] then CVSDownloadStrategy
-    when %r[^hg://] then MercurialDownloadStrategy
-    when %r[^svn://] then SubversionDownloadStrategy
-    when %r[^svn+http://] then SubversionDownloadStrategy
-    when %r[^git://] then GitDownloadStrategy
-    when %r[^bzr://] then BazaarDownloadStrategy
-    when %r[^https?://(.+?\.)?googlecode\.com/hg] then MercurialDownloadStrategy
-    when %r[^https?://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
-    when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
-    when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
-    else CurlDownloadStrategy
+    if @specs and @url == @head
+      vcs = @specs.delete :using
+      if vcs != nil
+        # If a class is passed, assume it is a download strategy
+        return vcs if vcs.kind_of? Class
+
+        case vcs
+        when :bzr then return BazaarDownloadStrategy
+        when :curl then return CurlDownloadStrategy
+        when :cvs then return CVSDownloadStrategy
+        when :git then return GitDownloadStrategy
+        when :hg then return MercurialDownloadStrategy
+        when :svn then return SubversionDownloadStrategy
+        end
+
+        raise "Unknown strategy #{vcs} was requested."
+      end
     end
+
+    detect_download_strategy url
   end
 
   # tell the user about any caveats regarding this package, return a string
@@ -212,10 +205,17 @@ class Formula
         onoe e.inspect
         puts e.backtrace
         ohai "Rescuing build..."
+        if (e.was_running_configure? rescue false) and File.exist? 'config.log'
+          puts "It looks like an autotools configure failed."
+          puts "Gist 'config.log' and any error output when reporting an issue."
+          puts
+        end
+
         puts "When you exit this shell Homebrew will attempt to finalise the installation."
         puts "If nothing is installed or the shell exits with a non-zero error code,"
         puts "Homebrew will abort. The installation prefix is:"
         puts prefix
+        ENV['HOMEBREW_DEBUG_INSTALL'] = name
         interactive_shell
       end
     end
@@ -296,6 +296,17 @@ class Formula
     self.class.external_deps
   end
 
+  def fails_with_llvm msg="", data=nil
+    return unless (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
+
+    build = data.delete :build rescue nil
+    msg = "(No specific reason was given)" if msg.empty?
+
+    opoo "LLVM was requested, but this formula is reported as not working with LLVM:"
+    puts msg
+    puts "Tested with LLVM build #{build}" unless build == nil
+  end
+
 protected
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
@@ -336,7 +347,12 @@ private
     # I used /tmp rather than mktemp -td because that generates a directory
     # name with exotic characters like + in it, and these break badly written
     # scripts that don't escape strings before trying to regexp them :(
-    tmp=Pathname.new `/usr/bin/mktemp -d /tmp/homebrew-#{name}-#{version}-XXXX`.strip
+
+    # If the user has FileVault enabled, then we can't mv symlinks from the
+    # /tmp volume to the other volume. So we let the user override the tmp
+    # prefix if they need to.
+    tmp_prefix = ENV['HOMEBREW_TEMP'] || '/tmp'
+    tmp=Pathname.new `/usr/bin/mktemp -d #{tmp_prefix}/homebrew-#{name}-#{version}-XXXX`.strip
     raise "Couldn't create build sandbox" if not tmp.directory? or $? != 0
     begin
       wd=Dir.pwd
@@ -356,10 +372,18 @@ private
     type ||= :md5
     supplied=instance_variable_get("@#{type}")
     type=type.to_s.upcase
-    hash=Digest.const_get(type).hexdigest(fn.read)
+    hasher = Digest.const_get(type)
+    hash = fn.incremental_hash(hasher)
 
     if supplied and not supplied.empty?
-      raise "#{type} mismatch\nExpected: #{hash}\nArchive: #{fn}" unless supplied.upcase == hash.upcase
+      message = <<-EOF
+#{type} mismatch
+Expected: #{supplied}
+Got: #{hash}
+Archive: #{fn}
+(To retry an incomplete download, remove the file above.)
+EOF
+      raise message unless supplied.upcase == hash.upcase
     else
       opoo "Cannot verify package integrity"
       puts "The formula did not provide a download checksum"
@@ -384,7 +408,6 @@ private
   def patch
     return if patches.nil?
 
-    ohai "Patching"
     if not patches.kind_of? Hash
       # We assume -p1
       patch_defns = { :p1 => patches }
@@ -428,9 +451,11 @@ private
     
     return if patch_list.empty?
 
+    ohai "Downloading patches"
     # downloading all at once is much more efficient, espeically for FTP
     curl *(patch_list.collect{|p| p[:curl_args]}.select{|p| p}.flatten)
 
+    ohai "Patching"
     patch_list.each do |p|
       case p[:compression]
         when :gzip  then safe_system "/usr/bin/gunzip",  p[:filename]+'.gz'
@@ -486,7 +511,7 @@ private
 
     def depends_on name
       @deps ||= []
-      @external_deps ||= {:python => [], :ruby => [], :perl => []}
+      @external_deps ||= {:python => [], :perl => [], :ruby => [], :jruby => []}
 
       case name
       when String
@@ -494,7 +519,7 @@ private
       when Hash
         key, value = name.shift
         case value
-        when :python, :ruby, :perl
+        when :python, :perl, :ruby, :jruby
           @external_deps[value] << key
           return
         when :optional, :recommended

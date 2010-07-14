@@ -13,11 +13,13 @@ to keg-only.
   end
 
   def patches
-    patches = (1..4).collect { |n| "ftp://ftp.gnu.org/gnu/readline/readline-6.0-patches/readline60-%03d"%n }
+    patches = (1..5).collect { |n| "ftp://ftp.gnu.org/gnu/readline/readline-6.0-patches/readline60-%03d"%n }
     { :p0 => patches }
   end
 
   def install
+    # Always build universal, per http://github.com/mxcl/homebrew/issues/issue/899
+    ENV.universal_binary
     system "./configure", "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--infodir=#{info}",

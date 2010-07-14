@@ -5,6 +5,8 @@ class Zsh <Formula
   @homepage='http://www.zsh.org/'
   @md5='031efc8c8efb9778ffa8afbcd75f0152'
 
+  depends_on 'gdbm' => :optional
+
   def install
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
@@ -13,10 +15,9 @@ class Zsh <Formula
                           "--enable-fndir=#{share}/zsh/functions",
                           "--enable-scriptdir=#{share}/zsh/scripts"
 
-    # again don't version installation directories
-    [".", "Src"].each do |f|
-      inreplace "#{f}/Makefile", "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
-    end
+    # Again, don't version installation directories
+    inreplace ["Makefile", "Src/Makefile"],
+      "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
     system "make install"
   end

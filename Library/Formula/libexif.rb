@@ -6,10 +6,8 @@ class Libexif <Formula
   md5 '56144a030a4c875c600b1ccf713f69f7'
 
   def install
-    # segfault with llvm
-    ENV.gcc_4_2
-    
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    fails_with_llvm "segfault with llvm"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
 end

@@ -5,39 +5,43 @@
 
 _brew_to_completion()
 {
-    local actions cur prev
-    local cellar_contents formulae which_cellar brew_base
+    local actions cur prev prev_index
+    local cellar_contents formulae
 
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
-    prev="${COMP_WORDS[COMP_CWORD-1]}"
-    
-    # We only complete unabbreviated commands...
-    actions="cleanup configure create deps edit generate homepage info install list link options prune remove search unlink update uses"
-    
-    # Subcommand list
-    if [[ ( ${COMP_CWORD} -eq 1 ) && ( ${COMP_WORDS[0]} == brew )  ]] ; then
+
+    # We usually only complete unabbreviated commands.
+    actions="--cache --config --prefix cat cleanup configure create deps doctor edit home info install link list log outdated prune remove search unlink update uses"
+
+    if [[ ( ${COMP_CWORD} -eq 1 ) && ( ${COMP_WORDS[0]} == brew ) ]]; then
+        # Subcommand list.
         COMPREPLY=( $(compgen -W "${actions}" -- ${cur}) )
         return 0
-    # Subcommands
     else
-        brew_base=`brew --repository`
-        
+        # Find the previous non-switch word
+        prev_index=$((COMP_CWORD - 1))
+        prev="${COMP_WORDS[prev_index]}"
+        while [[ $prev == -* ]]; do
+            prev_index=$((prev_index - 1))
+            prev="${COMP_WORDS[prev_index]}"
+        done
+
         case ${prev} in
-            # Commands that take a formula...
-            deps|edit|install|home|homepage|uses)
-                formulae=`ls ${brew_base}/Library/Formula/ | sed "s/\.rb//g"`
+            # Commands that take a formula.
+            cat|deps|edit|home|homepage|info|install|log|uses)
+                formulae=$(ls $(brew --repository)/Library/Formula/ | sed "s/\.rb//g")
                 COMPREPLY=( $(compgen -W "${formulae}" -- ${cur}) )
                 return 0
             ;;
 
-            # Commands that take an existing brew...
-            abv|cleanup|info|list|link|ls|ln|rm|remove|uninstall|unlink)
-                cellar_contents=`ls ${brew_base}/Cellar/`
+            # Commands that take an existing brew.
+            abv|cleanup|link|list|ln|ls|remove|rm|uninstall|unlink)
+                cellar_contents=$(ls $(brew --cellar))
                 COMPREPLY=( $(compgen -W "${cellar_contents}" -- ${cur}) )
                 return 0
             ;;
-            
+
         esac
     fi
 }

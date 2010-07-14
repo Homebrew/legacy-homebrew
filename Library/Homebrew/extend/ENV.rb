@@ -1,27 +1,3 @@
-#  Copyright 2009 Max Howell and other contributors.
-#
-#  Redistribution and use in source and binary forms, with or without
-#  modification, are permitted provided that the following conditions
-#  are met:
-#
-#  1. Redistributions of source code must retain the above copyright
-#     notice, this list of conditions and the following disclaimer.
-#  2. Redistributions in binary form must reproduce the above copyright
-#     notice, this list of conditions and the following disclaimer in the
-#     documentation and/or other materials provided with the distribution.
-#
-#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-#  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-#  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-#  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-#  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-#  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-#  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-#  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-#  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-#  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-
 module HomebrewEnvExtension
   # -w: keep signal to noise high
   SAFE_CFLAGS_FLAGS = "-w -pipe"
@@ -31,8 +7,6 @@ module HomebrewEnvExtension
     ENV.delete('CDPATH')
     ENV.delete('CPPFLAGS')
     ENV.delete('LDFLAGS')
-    ENV.delete('CC')
-    ENV.delete('CXX')
 
     ENV['MAKEFLAGS']="-j#{Hardware.processor_count}"
 
@@ -45,14 +19,16 @@ module HomebrewEnvExtension
     end
 
     if MACOS_VERSION >= 10.6 and (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
-      # you can install Xcode wherever you like you know.
-      prefix = `/usr/bin/xcode-select -print-path`.chomp
-      prefix = "/Developer" if prefix.to_s.empty?
-
-      ENV['CC'] = "#{prefix}/usr/bin/llvm-gcc"
-      ENV['CXX'] = "#{prefix}/usr/bin/llvm-g++"
-      cflags = %w{-O4} # link time optimisation baby!
+      xcode_path = `/usr/bin/xcode-select -print-path`.chomp
+      xcode_path = "/Developer" if xcode_path.to_s.empty?
+      ENV['CC'] = "#{xcode_path}/usr/bin/llvm-gcc"
+      ENV['CXX'] = "#{xcode_path}/usr/bin/llvm-g++"
+      ENV['LD'] = ENV['CC']
+      cflags = ['-O4'] # link time optimisation baby!
     else
+      # if we don't set these, many formula fail to build
+      ENV['CC'] = '/usr/bin/cc'
+      ENV['CXX'] = '/usr/bin/c++'
       cflags = ['-O3']
     end
 
@@ -60,7 +36,7 @@ module HomebrewEnvExtension
     # to use a specific linker, however doing this in general causes formula to
     # build more successfully because we are changing CC and many build systems
     # don't react properly to that
-    ENV['LD'] = ENV['CC'] if ENV['CC']
+    ENV['LD'] = ENV['CC']
 
     # optimise all the way to eleven, references:
     # http://en.gentoo-wiki.com/wiki/Safe_Cflags/Intel
@@ -107,6 +83,11 @@ module HomebrewEnvExtension
     remove_from_cflags /-O./
     append_to_cflags '-fast'
   end
+  def O4
+    # LLVM link-time optimization
+    remove_from_cflags /-O./
+    append_to_cflags '-O4'
+  end
   def O3
     # Sometimes O4 just takes fucking forever
     remove_from_cflags /-O./
@@ -128,7 +109,7 @@ module HomebrewEnvExtension
     self['CXX'] = '/usr/bin/g++-4.0'
     self.O3
     remove_from_cflags '-march=core2'
-    remove_from_cflags %r{-msse4(\.\d)?/}
+    remove_from_cflags %r{-msse4(\.\d)?}
   end
   alias_method :gcc_4_0, :gcc_4_0_1
 
@@ -138,6 +119,15 @@ module HomebrewEnvExtension
     self['CXX']="/usr/bin/g++-4.2"
     self['LD']=self['CC']
     self.O3
+  end
+
+  def llvm
+    xcode_path = `/usr/bin/xcode-select -print-path`.chomp
+    xcode_path = "/Developer" if xcode_path.to_s.empty?
+    self['CC'] = "#{xcode_path}/usr/bin/llvm-gcc"
+    self['CXX'] = "#{xcode_path}/usr/bin/llvm-g++"
+    self['LD'] = self['CC']
+    self.O4
   end
 
   def osx_10_4
@@ -202,6 +192,9 @@ module HomebrewEnvExtension
     append_to_cflags '-arch i386 -arch x86_64'
     ENV.O3 if self['CFLAGS'].include? '-O4' # O4 seems to cause the build to fail
     ENV.append 'LDFLAGS', '-arch i386 -arch x86_64'
+
+    # Can't mix "-march" for a 32-bit CPU  with "-arch x86_64"
+    remove_from_cflags(/-march=\S*/) if Hardware.is_32_bit?
   end
 
   def prepend key, value, separator = ' '

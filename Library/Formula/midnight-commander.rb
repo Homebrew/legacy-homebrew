@@ -1,9 +1,10 @@
 require 'formula'
 
 class MidnightCommander <Formula
-  url 'http://mirror.anl.gov/pub/gnu/mc/mc-4.6.1.tar.gz'
+  url 'http://www.midnight-commander.org/downloads/40'
   homepage 'http://www.midnight-commander.org/'
-  md5 '18b20db6e40480a53bac2870c56fc3c4'
+  sha256 '9f75d9f73ef3398d1ccea273997f37d0271fc171619a65b76c01fd0b30298d8a'
+  version '4.7.0.4'
 
   depends_on 'glib'
   depends_on 'pkg-config'

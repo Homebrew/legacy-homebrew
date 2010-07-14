@@ -1,9 +1,9 @@
 require 'formula'
 
 class Chicken <Formula
-  url 'http://www.call-with-current-continuation.org/chicken-4.3.0.tar.gz'
+  url 'http://www.call-with-current-continuation.org/chicken-4.4.0.tar.gz'
   homepage 'http://www.call-with-current-continuation.org/'
-  md5 '4c8e0b8100ca6537c1198a5c2555c8c0'
+  md5 '598e7ea036807a67297c3e2bf4a454c4'
 
   def install
     ENV.deparallelize

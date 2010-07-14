@@ -8,10 +8,11 @@ class Jasper <Formula
   depends_on 'jpeg'
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
+    system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
-                          "--enable-shared"
+                          "--enable-shared",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make install"
   end
 end

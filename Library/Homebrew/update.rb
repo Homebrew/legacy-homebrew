@@ -1,28 +1,6 @@
-#  Copyright 2009 Max Howell and other contributors.
-#
-#  Redistribution and use in source and binary forms, with or without
-#  modification, are permitted provided that the following conditions
-#  are met:
-#
-#  1. Redistributions of source code must retain the above copyright
-#     notice, this list of conditions and the following disclaimer.
-#  2. Redistributions in binary form must reproduce the above copyright
-#     notice, this list of conditions and the following disclaimer in the
-#     documentation and/or other materials provided with the distribution.
-#
-#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-#  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-#  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-#  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-#  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-#  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-#  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-#  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-#  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-#  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
 class RefreshBrew
-  RESPOSITORY_URL  = 'git://github.com/mxcl/homebrew.git'
+  RESPOSITORY_URL  = 'http://github.com/mxcl/homebrew.git'
+  INIT_COMMAND     = "git init"
   CHECKOUT_COMMAND = 'git checkout -q master'
   UPDATE_COMMAND   = "git pull #{RESPOSITORY_URL} master"
   REVISION_COMMAND = 'git log -l -1 --pretty=format:%H 2> /dev/null'
@@ -31,11 +9,13 @@ class RefreshBrew
   formula_regexp   = 'Library/Formula/(.+?)\.rb'
   ADDED_FORMULA    = %r{^\s+create mode \d+ #{formula_regexp}$}
   UPDATED_FORMULA  = %r{^\s+#{formula_regexp}\s}
+  DELETED_FORMULA  = %r{^\s+delete mode \d+ #{formula_regexp}$}
   
-  attr_reader :added_formulae, :updated_formulae
+  attr_reader :added_formulae, :updated_formulae, :deleted_formulae, :initial_revision
   
   def initialize
-    @added_formulae, @updated_formulae = [], []
+    @added_formulae, @updated_formulae, @deleted_formulae = [], [], []
+    @initial_revision = self.current_revision
   end
   
   # Performs an update of the homebrew source. Returns +true+ if a newer
@@ -55,12 +35,15 @@ class RefreshBrew
       case line
       when ADDED_FORMULA
         @added_formulae << $1
+      when DELETED_FORMULA
+        @deleted_formulae << $1
       when UPDATED_FORMULA
-        @updated_formulae << $1 unless @added_formulae.include?($1)
+        @updated_formulae << $1 unless @added_formulae.include?($1) or @deleted_formulae.include?($1)
       end
     end
     @added_formulae.sort!
     @updated_formulae.sort!
+    @deleted_formulae.sort!
     
     output.strip != GIT_UP_TO_DATE
   end
@@ -69,6 +52,14 @@ class RefreshBrew
     !@updated_formulae.empty?
   end
   
+  def pending_new_formulae?
+    !@added_formulae.empty?
+  end
+
+  def deleted_formulae?
+    !@deleted_formulae.empty?
+  end
+
   def current_revision
     in_prefix { execute(REVISION_COMMAND).strip }
   rescue
@@ -83,7 +74,7 @@ class RefreshBrew
   
   def execute(cmd)
     out = `#{cmd}`
-    unless $?.success?
+    if $? && !$?.success?
       puts out
       raise "Failed while executing #{cmd}"
     end

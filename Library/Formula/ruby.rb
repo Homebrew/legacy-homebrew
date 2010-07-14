@@ -3,20 +3,22 @@ require 'formula'
 # TODO de-version the include and lib directories
 
 class Ruby <Formula
-  @url='http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.1-p378.tar.gz'
-  @homepage='http://www.ruby-lang.org/en/'
-  @md5='9fc5941bda150ac0a33b299e1e53654c'
+  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.1-p378.tar.gz'
+  homepage 'http://www.ruby-lang.org/en/'
+  head 'http://svn.ruby-lang.org/repos/ruby/branches/ruby_1_9_2/', :using => :svn
+  md5 '9fc5941bda150ac0a33b299e1e53654c' unless ARGV.include? '--HEAD'
 
   depends_on 'readline'
   
   def options
     [
       ["--with-suffix", "Add a 19 suffix to commands"],
+      ["--with-doc", "Install with the Ruby documentation"],
     ]
   end
   
   def install
-    ENV.gcc_4_2
+    fails_with_llvm
 
     args = [ "--prefix=#{prefix}",
             "--disable-debug",
@@ -25,9 +27,13 @@ class Ruby <Formula
 
     args << "--program-suffix=19" if ARGV.include? "--with-suffix"
 
+    system "autoconf" unless File.exists? 'configure'
+
     system "./configure", *args
     system "make"
     system "make install"
+
+    system "make install-doc" if ARGV.include? "--with-doc"
   end
   
   def caveats; <<-EOS

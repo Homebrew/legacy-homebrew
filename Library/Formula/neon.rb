@@ -1,18 +1,27 @@
 require 'formula'
 
 class Neon <Formula
-  @url='http://www.webdav.org/neon/neon-0.29.0.tar.gz'
-  @homepage='http://www.webdav.org/neon/'
-  @md5='18a3764b70f9317f8b61509fd90d9e7a'
+  url 'http://www.webdav.org/neon/neon-0.29.3.tar.gz'
+  md5 'ba1015b59c112d44d7797b62fe7bee51'
+  homepage 'http://www.webdav.org/neon/'
+
+  depends_on 'pkg-config'
 
   def keg_only?
     :provided_by_osx
   end
 
+  def options
+    [
+      ['--universal', 'Build as a Universal Intel binary.']
+    ]
+  end
+
   def install
+    ENV.universal_binary if ARGV.include? '--universal'
+
     system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug", 
-                          "--disable-dependency-tracking",
+                          "--disable-debug",
                           "--enable-shared",
                           "--disable-static",
                           "--with-ssl"
