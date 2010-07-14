@@ -23,21 +23,26 @@ For Dovecot to work, you will need to do the following:
 
 3) possibly create a launchd item in /Library/LaunchDaemons/org.dovecot.plist, like so:
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
-        "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
         <key>Label</key>
         <string>org.dovecot</string>
+        <key>OnDemand</key>
+        <false/>
         <key>ProgramArguments</key>
         <array>
                 <string>#{sbin}/dovecot</string>
+                <string>-F</string>
         </array>
         <key>RunAtLoad</key>
         <true/>
+        <key>ServiceDescription</key>
+        <string>Dovecot mail server</string>
 </dict>
 </plist>
 
+Source: http://wiki.dovecot.org/LaunchdInstall
 4) start the server using: sudo launchctl load /Library/LaunchDaemons/org.dovecot.plist 
     EOS
   end
