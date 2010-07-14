@@ -229,7 +229,7 @@ def check_user_path
 end
 
 def check_which_pkg_config
-  binary = `which pkg-config`.chomp
+  binary = `/usr/bin/which pkg-config`.chomp
   return if binary.empty?
 
   unless binary == "#{HOMEBREW_PREFIX}/bin/pkg-config"
@@ -245,7 +245,7 @@ def check_which_pkg_config
 end
 
 def check_pkg_config_paths
-  binary = `which pkg-config`.chomp
+  binary = `/usr/bin/which pkg-config`.chomp
   return if binary.empty?
 
   # Use the debug output to determine which paths are searched
@@ -378,6 +378,22 @@ def check_for_multiple_volumes
   end
 end
 
+def check_for_git
+  git = `/usr/bin/which git`.chomp
+  if git.empty?
+    puts <<-EOS.undent
+      "Git" was not found in your path.
+
+      Homebrew uses Git for several internal functions, and some formulae
+      (Erlang in particular) use Git checkouts instead of stable tarballs.
+
+      You may want to do:
+        brew install git
+
+    EOS
+  end
+end
+
 def brew_doctor
   read, write = IO.pipe
 
@@ -401,6 +417,7 @@ def brew_doctor
     check_for_dyld_vars
     check_for_symlinked_cellar
     check_for_multiple_volumes
+    check_for_git
 
     exit! 0
   else

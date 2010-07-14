@@ -17,7 +17,7 @@ class RdiffBackup <Formula
     bin.mkpath
     Dir.chdir libexec do
       Dir['rdiff-backup*'].each do |f|
-        ln_s (libexec+f), bin
+        ln_s((libexec+f), bin)
       end
     end
 

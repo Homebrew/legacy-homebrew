@@ -26,42 +26,4 @@ at_exit { HOMEBREW_PREFIX.parent.rmtree }
 # Test fixtures and files can be found relative to this path
 TEST_FOLDER = Pathname.new(ABS__FILE__).parent.realpath
 
-# Note: These exceptions duplicate those defined in globals.
-# Perhaps the same definitions should be used in both places.
-class ExecutionError <RuntimeError
-  attr :exit_status
-  attr :command
-
-  def initialize cmd, args = [], es = nil
-    @command = cmd
-    super "Failure while executing: #{cmd} #{pretty(args)*' '}"
-    @exit_status = es.exitstatus rescue 1
-  end
-
-  def was_running_configure?
-    @command == './configure'
-  end
-
-  private
-
-  def pretty args
-    args.collect do |arg|
-      if arg.to_s.include? ' '
-        "'#{ arg.gsub "'", "\\'" }'"
-      else
-        arg
-      end
-    end
-  end
-end
-
-class BuildError <ExecutionError
-  attr :env
-
-  def initialize cmd, args = [], es = nil
-    super
-    @env = ENV.to_hash
-  end
-end
-
 require 'test/unit' # must be after at_exit

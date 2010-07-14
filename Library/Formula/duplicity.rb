@@ -6,6 +6,7 @@ class Duplicity <Formula
   md5 'abbbbcde4af24efffbc218583d581453'
 
   depends_on 'librsync'
+  depends_on 'gnupg'
 
   def install
     ENV.universal_binary
