@@ -31,14 +31,14 @@ Cflags: -I${includedir}
       fpm = 'intel'
     end
 
+    system "./configure", "--disable-debugging", "--enable-fpm=#{fpm}", "--prefix=#{prefix}"
+
     # See: http://github.com/mxcl/homebrew/issues/issue/1263
-    if Hardware.intel_family == 'arrandale'
-      inreplace "Makefile" do |s|
-        s.remove_make_var! %w{CFLAGS LDFLAGS}
-      end
+    inreplace "Makefile" do |s|
+      s.change_make_var! "CFLAGS", ENV['CFLAGS']
+      s.change_make_var! "LDFLAGS", ENV['LDFLAGS']
     end
 
-    system "./configure", "--disable-debugging", "--enable-fpm=#{fpm}", "--prefix=#{prefix}"
     system "make install"
 
     (lib+'pkgconfig/mad.pc').write mad_pc
