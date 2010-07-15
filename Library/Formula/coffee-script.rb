@@ -1,10 +1,10 @@
 require 'formula'
 
 class CoffeeScript <Formula
-  url "http://github.com/jashkenas/coffee-script/tarball/0.6.2"
-  head "git://github.com/jashkenas/coffee-script.git"
-  homepage "http://jashkenas.github.com/coffee-script/"
-  md5 'c5a148d7ea5ef8e1b2bb8e6231559331'
+  url 'http://github.com/jashkenas/coffee-script/tarball/0.7.2'
+  head 'git://github.com/jashkenas/coffee-script.git'
+  homepage 'http://jashkenas.github.com/coffee-script/'
+  md5 'cfccf25272d329bc78349771b18fe4e0'
 
   # head coffee-script usually depends on head node and
   # since there isn't a way to specify that just remove
@@ -24,6 +24,6 @@ class CoffeeScript <Formula
 
   def install
     bin.mkpath
-    system "./bin/cake", "install", "--prefix", prefix
+    system "./bin/cake", "--prefix", prefix, "install"
   end
 end

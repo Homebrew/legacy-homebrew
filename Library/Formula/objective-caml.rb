@@ -7,9 +7,8 @@ class ObjectiveCaml <Formula
 
   aka 'ocaml', 'o-caml'
 
-
-  # note it indeed seems necessary to clean everything
-  # see http://github.com/mxcl/homebrew/issues#issue/188
+  # note it indeed seems necessary to skip cleaning everything
+  # see http://github.com/mxcl/homebrew/issues/issue/188
   def skip_clean? path; true; end
 
   def install
@@ -20,5 +19,9 @@ class ObjectiveCaml <Formula
     system "make opt"
     system "make opt.opt"
     system "make install"
+
+    # site-lib in the Cellar will be a symlink to the HOMEBREW_PREFIX location
+    (HOMEBREW_PREFIX+"lib/ocaml/site-lib").mkpath
+    ln_s HOMEBREW_PREFIX+"lib/ocaml/site-lib", lib+"ocaml/site-lib"
   end
 end

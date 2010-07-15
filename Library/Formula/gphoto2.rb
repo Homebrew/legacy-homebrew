@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gphoto2 <Formula
-  url 'http://downloads.sourceforge.net/project/gphoto/gphoto/2.4.8/gphoto2-2.4.8.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/gphoto/gphoto/2.4.9/gphoto2-2.4.9.tar.bz2'
   homepage 'http://gphoto.org/'
-  md5 '401e403ea6e8301d6c87cbe7cd892b8b'
+  md5 'a08a93a425cde03ca8f9bade83bbd26a'
 
   depends_on 'pkg-config'
   depends_on 'jpeg'

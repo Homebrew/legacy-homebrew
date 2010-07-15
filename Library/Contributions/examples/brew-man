@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -e
+
+man1_suffix="share/man/man1/brew.1"
+source_path="$HOMEBREW_REPOSITORY/Library/Contributions/manpages"
+target_file="$HOMEBREW_REPOSITORY/$man1_suffix"
+
+
+die (){
+    echo $1
+    exit 1
+}
+
+test "$1" = '--link' || \
+test "$1" = '-l' && {
+  ln -s "$target_file" "$HOMEBREW_PREFIX/$man1_suffix"
+  exit 0
+}
+
+/usr/bin/which -s ronn || die "You need to \"gem install ronn\" and put it in your path."
+
+test "$1" = '--server' || \
+test "$1" = '-s' && {
+  echo "Manpage test server: http://localhost:1207/"
+  echo "Control-C to exit."
+  ronn --server $source_path/*
+  exit 0
+}
+
+echo "Writing manpage to $target_file"
+ronn --roff --pipe --organization='Homebrew' --manual='brew' $source_path/brew.1.md > $target_file
+
+test "$1" = '--verbose' || \
+test "$1" = '-v' && {
+  man brew
+}

@@ -25,8 +25,7 @@ class Tesseract <Formula
   end
 
   def install
-    # Executable 'tesseract' segfaults on 10.6 when compiled with llvm-gcc (LLVM build 2206)
-    ENV.gcc_4_2
+    fails_with_llvm "Executable 'tesseract' segfaults on 10.6 when compiled with llvm-gcc", :build => "2206"
 
     # 'make install' expects the language data files in the build directory
     d = Dir.getwd

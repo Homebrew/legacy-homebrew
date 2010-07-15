@@ -2,27 +2,30 @@ require 'formula'
 
 class Irssi <Formula
   homepage 'http://irssi.org/'
-  url 'http://irssi.org/files/irssi-0.8.14.tar.bz2'
-  md5 '00efe7638dd596d5930dfa2aeae87b3a'
+  url 'http://irssi.org/files/irssi-0.8.15.tar.bz2'
+  md5 '1dcb3f511b88df94b0c996f36668c7da'
 
   depends_on 'pkg-config'
   depends_on 'glib'
 
-  def skip_clean? path
-    path == bin+'irssi'
-  end
+  # Don't strip, to allow dynamic loading of modules
+  skip_clean 'bin'
 
   def patches
+    # Fix Perl path
     DATA
   end
 
   def install
     ENV.append 'ARCHFLAGS', ' ' # wtf?
 
-    args = ["--prefix=#{prefix}", "--disable-dependency-tracking",
-            "--with-modules", "--enable-ssl", "--enable-ipv6", "--with-perl=yes"]
-
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}",
+                          "--with-perl=yes",
+                          "--with-perl-lib=site",
+                          "--with-bot",
+                          "--with-proxy",
+                          "--enable-ssl",
+                          "--enable-ipv6"
     system "make install"
   end
 end

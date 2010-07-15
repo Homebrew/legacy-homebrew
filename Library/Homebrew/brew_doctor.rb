@@ -1,12 +1,56 @@
-def check_for_stray_dylibs
-  bad_dylibs = Dir['/usr/local/lib/*.dylib'].select { |f| File.file? f and not File.symlink? f }
-  if bad_dylibs.length > 0
-    puts "You have unbrewed dylibs in /usr/local/lib. These could cause build problems"
-    puts "when building Homebrew formula. If you no longer need them, delete them:"
-    puts
-    puts *bad_dylibs.collect { |f| "    #{f}" }
-    puts
+class Volumes
+  def initialize
+    @volumes = []
+    raw_mounts=`mount`
+    raw_mounts.split("\n").each do |line|
+      case line
+      when /^(.+) on (\S+) \(/
+        @volumes << [$1, $2]
+      end
+    end
+    # Sort volumes by longest path prefix first
+    @volumes.sort! {|a,b| b[1].length <=> a[1].length}
   end
+
+  def which path
+    @volumes.each_index do |i|
+      vol = @volumes[i]
+      return i if is_prefix?(vol[1], path)
+    end
+
+    return -1
+  end
+end
+
+
+def is_prefix? prefix, longer_string
+  p = prefix.to_s
+  longer_string.to_s[0,p.length] == p
+end
+
+
+def check_for_stray_dylibs
+  unbrewed_dylibs = Dir['/usr/local/lib/*.dylib'].select { |f| File.file? f and not File.symlink? f }
+
+  # Dylibs which are generally OK should be added to this list,
+  # with a short description of the software they come with.
+  white_list = {
+    "libfuse.2.dylib" => "MacFuse",
+    "libfuse_ino64.2.dylib" => "MacFuse"
+  }
+
+  bad_dylibs = unbrewed_dylibs.reject {|d| white_list.key? File.basename(d) }
+  return if bad_dylibs.empty?
+
+  opoo "Unbrewed dylibs were found in /usr/local/lib"
+  puts <<-EOS.undent
+    You have unbrewed dylibs in /usr/local/lib. If you didn't put them there on purpose,
+    they could cause problems when building Homebrew formulae.
+
+    Unexpected dylibs (delete if they are no longer needed):
+  EOS
+  puts *bad_dylibs.collect { |f| "    #{f}" }
+  puts
 end
 
 def check_for_x11
@@ -63,7 +107,7 @@ def check_gcc_versions
   end
 end
 
-def check_share_locale
+def check_access_share_locale
   # If PREFIX/share/locale already exists, "sudo make install" of
   # non-brew installed software may cause installation failures.
   locale = HOMEBREW_PREFIX+'share/locale'
@@ -89,7 +133,25 @@ def check_share_locale
     puts *cant_read.collect { |f| "    #{f}" }
     puts
   end
+end
 
+def check_access_pkgconfig
+  # If PREFIX/lib/pkgconfig already exists, "sudo make install" of
+  # non-brew installed software may cause installation failures.
+  pkgconfig = HOMEBREW_PREFIX+'lib/pkgconfig'
+  return unless pkgconfig.exist?
+
+  unless pkgconfig.writable?
+    puts <<-EOS.undent
+      #{pkgconfig} isn't writable.
+      This can happen if you "sudo make install" software that isn't managed
+      by Homebrew. If a brew tries to write a .pc file to this folder, the
+      install will fail during the link step.
+
+      You should probably `chown` #{pkgconfig}
+
+    EOS
+  end
 end
 
 def check_usr_bin_ruby
@@ -167,7 +229,7 @@ def check_user_path
 end
 
 def check_which_pkg_config
-  binary = `which pkg-config`.chomp
+  binary = `/usr/bin/which pkg-config`.chomp
   return if binary.empty?
 
   unless binary == "#{HOMEBREW_PREFIX}/bin/pkg-config"
@@ -183,7 +245,7 @@ def check_which_pkg_config
 end
 
 def check_pkg_config_paths
-  binary = `which pkg-config`.chomp
+  binary = `/usr/bin/which pkg-config`.chomp
   return if binary.empty?
 
   # Use the debug output to determine which paths are searched
@@ -205,6 +267,7 @@ def check_pkg_config_paths
 
       To resolve this issue, re-brew pkg-config with:
         brew rm pkg-config && brew install pkg-config
+
     EOS
   end
 end
@@ -221,6 +284,112 @@ def check_for_gettext
       If you `brew link gettext` then a large number of brews that don't
       otherwise have a `depends_on 'gettext'` will pick up gettext anyway
       during the `./configure` step.
+
+    EOS
+  end
+end
+
+def check_for_config_scripts
+  real_cellar = HOMEBREW_CELLAR.realpath
+
+  config_scripts = []
+
+  paths = ENV['PATH'].split(':').collect{|p| File.expand_path p}
+  paths.each do |p|
+    next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin"].include? p
+    next if %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] =~ p
+
+    configs = Dir["#{p}/*-config"]
+    # puts "#{p}\n    #{configs * ' '}" unless configs.empty?
+    config_scripts << [p, configs.collect {|p| File.basename(p)}] unless configs.empty?
+  end
+
+  unless config_scripts.empty?
+    puts <<-EOS.undent
+      Some "config" scripts were found in your path, but not in system or Homebrew folders.
+
+      `./configure` scripts often look for *-config scripts to determine if software packages
+      are installed, and what additional flags to use when compiling and linking.
+
+      Having additional scripts in your path can confuse software installed via Homebrew if
+      the config script overrides a system or Homebrew provided script of the same name.
+
+    EOS
+
+    config_scripts.each do |pair|
+      puts pair[0]
+      puts "    " + pair[1] * " "
+    end
+    puts
+  end
+end
+
+def check_for_dyld_vars
+  if ENV['DYLD_LIBRARY_PATH']
+    puts <<-EOS.undent
+      Setting DYLD_LIBARY_PATH can break dynamic linking.
+      You should probably unset it.
+
+    EOS
+  end
+end
+
+def check_for_symlinked_cellar
+  if HOMEBREW_CELLAR.symlink?
+    puts <<-EOS.undent
+      Symlinked Cellars can cause problems.
+      Your Homebrew Cellar is a symlink: #{HOMEBREW_CELLAR}
+                      which resolves to: #{HOMEBREW_CELLAR.realpath}
+
+      The recommended Homebrew installations are either:
+      (A) Have Cellar be a real folder inside of your HOMEBREW_PREFIX
+      (B) Symlink "bin/brew" into your prefix, but don't symlink "Cellar".
+
+      Older installations of Homebrew may have created a symlinked Cellar, but this can
+      cause problems when two formula install to locations that are mapped on top of each
+      other during the linking step.
+
+    EOS
+  end
+end
+
+def check_for_multiple_volumes
+  volumes = Volumes.new
+
+  # Find the volumes for the TMP folder & HOMEBREW_CELLAR
+  real_cellar = HOMEBREW_CELLAR.realpath
+  tmp=Pathname.new `/usr/bin/mktemp -d /tmp/homebrew-brew-doctor-XXXX`.strip
+  real_temp = tmp.realpath.parent
+
+  where_cellar = volumes.which real_cellar
+  where_temp = volumes.which real_temp
+
+  unless where_cellar == where_temp
+    puts <<-EOS.undent
+      Your Cellar and /tmp folders are on different volumes.
+
+      Putting your Cellar and TMP folders on different volumes causes problems
+      for brews that install symlinks, such as Git.
+
+      You should set the "HOMEBREW_TEMP" environmental variable to a suitable
+      folder on the same volume as your Cellar.
+
+    EOS
+  end
+end
+
+def check_for_git
+  git = `/usr/bin/which git`.chomp
+  if git.empty?
+    puts <<-EOS.undent
+      "Git" was not found in your path.
+
+      Homebrew uses Git for several internal functions, and some formulae
+      (Erlang in particular) use Git checkouts instead of stable tarballs.
+
+      You may want to do:
+        brew install git
+
     EOS
   end
 end
@@ -231,18 +400,24 @@ def brew_doctor
   if fork == nil
     read.close
     $stdout.reopen write
-    
+
     check_usr_bin_ruby
     check_homebrew_prefix
     check_for_stray_dylibs
     check_gcc_versions
     check_for_other_package_managers
     check_for_x11
-    check_share_locale
+    check_access_share_locale
     check_user_path
     check_which_pkg_config
     check_pkg_config_paths
+    check_access_pkgconfig
     check_for_gettext
+    check_for_config_scripts
+    check_for_dyld_vars
+    check_for_symlinked_cellar
+    check_for_multiple_volumes
+    check_for_git
 
     exit! 0
   else

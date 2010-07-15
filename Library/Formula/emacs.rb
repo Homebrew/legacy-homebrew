@@ -1,11 +1,5 @@
 require 'formula'
 
-class Magit <Formula
-  url 'http://zagadka.vm.bytemark.co.uk/magit/magit-0.7.tar.gz'
-  md5 '1ea442bd6f83f7ac82967059754c8c87'
-  homepage 'http://zagadka.vm.bytemark.co.uk/magit/'
-end
-
 class Emacs <Formula
   url 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.2.tar.bz2'
   md5 '057a0379f2f6b85fb114d8c723c79ce2'
@@ -19,6 +13,7 @@ class Emacs <Formula
   def options
     [
       ["--cocoa", "Build a Cocoa version of emacs"],
+      ["--with-x", "Include X11 support"],
       ["--use-git-head", "Use repo.or.cz git mirror for HEAD builds"],
     ]
   end
@@ -65,7 +60,7 @@ class Emacs <Formula
 
     return s
   end
-  
+
   def install
     configure_args = [
       "--prefix=#{prefix}",
@@ -79,15 +74,19 @@ class Emacs <Formula
       system "make bootstrap"
       system "make install"
       prefix.install "nextstep/Emacs.app"
+      bin.mkpath
+      ln_s prefix+"Emacs.app/Contents/MacOS/Emacs", bin+"emacs"
     else
-      configure_args << "--without-x"
+      if ARGV.include? "--with-x"
+        configure_args << "--with-x"
+        configure_args << "--with-gif=no"
+        configure_args << "--with-tiff=no"
+        configure_args << "--with-jpeg=no"
+      else
+        configure_args << "--without-x"
+      end
       system "./configure", *configure_args
       system "make"
-      system "make install"
-    end
-
-    Magit.new.brew do
-      system "./configure", "--prefix=#{prefix}"
       system "make install"
     end
   end

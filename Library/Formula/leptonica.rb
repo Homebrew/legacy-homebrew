@@ -5,6 +5,9 @@ class Leptonica < Formula
   homepage 'http://code.google.com/p/leptonica/'
   md5 '5dd42b2337834cc796b8f8de7ab532cd'
 
+  depends_on 'jpeg'
+  depends_on 'libtiff'
+
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"

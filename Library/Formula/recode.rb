@@ -15,7 +15,10 @@ class Recode <Formula
   def install
     cp "/usr/share/libtool/config/config.guess", "."
     cp "/usr/share/libtool/config/config.sub", "."
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--without-included-gettext"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--without-included-gettext",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make install"
   end
 end

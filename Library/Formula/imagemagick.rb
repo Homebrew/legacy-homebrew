@@ -20,8 +20,8 @@ def x11?
 end
 
 class Imagemagick <Formula
-  url 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.6.2-2.tar.bz2'
-  md5 'cb5e997e3f9e8b67155684c38cbd5403'
+  url 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.6.3-0.tar.bz2'
+  md5 '7f07e873873d3e9afb4126ce4594f556'
   homepage 'http://www.imagemagick.org'
 
   depends_on 'jpeg'
@@ -74,6 +74,11 @@ class Imagemagick <Formula
     s += "You don't have X11 from the Xcode DMG installed. Consequently Imagemagick is less fully featured.\n" unless x11?
     s += "Some tools will complain if the ghostscript fonts are not installed in:\n\t#{HOMEBREW_PREFIX}/share/ghostscript/fonts\n" \
             unless ghostscript_fonts? or ghostscript_srsly?
+    return nil if s.empty?
     return s
+  end
+
+  def test
+    system "identify", "/Library/Application Support/Apple/iChat Icons/Flags/Argentina.gif"
   end
 end

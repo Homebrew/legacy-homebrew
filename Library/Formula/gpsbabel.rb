@@ -1,12 +1,16 @@
 require 'formula'
 
 class Gpsbabel <Formula
-  url 'http://www.gpsbabel.org/plan9.php?dl=gpsbabel-1.3.6.tar.gz'
+  url 'http://www.gpsbabel.org/plan9.php?token=2f5b506e&dl=gpsbabel-1.4.1.tar.gz'
   homepage 'http://www.gpsbabel.org'
-  md5 '1571b31f8f06f722995449dbff01ca49'
+  md5 '512c4acfb12e20102fa5ceacef45a356'
 
   depends_on 'libusb'
   depends_on 'expat'
+
+  def download_strategy
+    CurlPostDownloadStrategy
+  end
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
