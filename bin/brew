@@ -399,7 +399,7 @@ rescue BuildError => e
   if e.was_running_configure?
     puts "It looks like an autotools configure failed."
     puts "Consider re-running the install with '-vd' to keep 'config.log' around:"
-    puts "    brew install -vd formula_name"
+    puts "    brew install -vd #{formula_name}"
     puts "Gist 'config.log' and any error output when reporting an issue."
   end
   puts
