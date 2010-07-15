@@ -9,10 +9,9 @@ class Avanor <Formula
     inreplace 'Makefile' do |contents|
       contents.gsub! "CC = gpp", "CC = cpp"
       contents.gsub! "LD = gpp", "LD = cpp"
-      contents.gsub! "$(DATA_DIR)", (share+"avanor")
     end
 
-    system "make"
+    system "make DATA_DIR=#{share}/avanor/"
     bin.install "avanor"
     (share+"avanor").install "manual"
   end
