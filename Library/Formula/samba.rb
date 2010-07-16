@@ -12,4 +12,3 @@ class Samba <Formula
     end
   end
 end
-
