@@ -24,7 +24,7 @@ EOS
   end
 
   def install
-    system "ant" if ARGV.include? '--HEAD'
+    system "ant" if ARGV.build_head?
     prefix.install jar
     (bin+'clj').write script
   end

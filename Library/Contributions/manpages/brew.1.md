@@ -40,7 +40,7 @@ didn't include with OS X.
     surrounded with slashes, then it is interpreted as a regular expression.
     If no search term is given, all available formula are displayed.
 
-  * `install [--debug] [--use-llvm] [--ignore-dependencies]` <formula>:
+  * `install [--debug] [--use-llvm] [--ignore-dependencies] [--HEAD]` <formula>:
     Installs <formula>.
 
     If `--debug` is passed and brewing fails, opens a shell inside the
@@ -52,6 +52,9 @@ didn't include with OS X.
     If `--ignore-dependencies` is passed, skip installing any dependencies of
     any kind. If they are not already present, the formula will probably fail to
     install.
+
+    If `--HEAD` is passed, and <formula> defines it, install the HEAD version,
+    aka master, trunk, unstable, dev.
 
   * `install --interactive [--git]` <formula>:
     Downloads and patches <formula>, and then opens a shell. This allows the
@@ -145,6 +148,21 @@ didn't include with OS X.
 
   * HOMEBREW\_DEBUG:
     If set, instructs Homebrew to always assume `--debug` when running commands.
+
+  * HOMEBREW\_SVN:
+    When exporting from Subversion, Homebrew will use `HOMEBREW_SVN` if set,
+    a Homebrew-built Subversion if installed, or the system-provided binary.
+
+    Set this to force Homebrew to use a particular svn binary.
+
+  * HOMEBREW\_TEMP:
+    If set, instructs Homebrew to use `HOMEBREW_TEMP` as the temporary folder
+    for building packages. This may be needed if your system temp folder and
+    Homebrew Prefix are on different volumes, as OS X has trouble moving
+    symlinks across volumes when the target does not yet exist.
+
+    This issue typically occurs when using FileVault (or certain custom SSD
+    configurations.)
 
   * HOMEBREW\_USE\_LLVM:
     If set, instructs Homebrew to use the LLVM front-ends to the GCC compilers.  

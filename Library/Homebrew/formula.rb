@@ -347,7 +347,12 @@ private
     # I used /tmp rather than mktemp -td because that generates a directory
     # name with exotic characters like + in it, and these break badly written
     # scripts that don't escape strings before trying to regexp them :(
-    tmp=Pathname.new `/usr/bin/mktemp -d /tmp/homebrew-#{name}-#{version}-XXXX`.strip
+
+    # If the user has FileVault enabled, then we can't mv symlinks from the
+    # /tmp volume to the other volume. So we let the user override the tmp
+    # prefix if they need to.
+    tmp_prefix = ENV['HOMEBREW_TEMP'] || '/tmp'
+    tmp=Pathname.new `/usr/bin/mktemp -d #{tmp_prefix}/homebrew-#{name}-#{version}-XXXX`.strip
     raise "Couldn't create build sandbox" if not tmp.directory? or $? != 0
     begin
       wd=Dir.pwd

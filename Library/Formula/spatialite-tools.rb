@@ -10,7 +10,7 @@ class SpatialiteTools <Formula
   def install
     system "./configure", "--prefix=#{prefix}", 
                           "--disable-debug",
-                          "--target=macosx"
+                          "--target=macosx",
                           "--disable-dependency-tracking"
     system "make install"
   end

@@ -14,18 +14,25 @@ def ff
 end
 
 ff.each do |f|
+  text = ""
+  File.open(f.path, "r") { |afile| text = afile.read }
+
   problems = []
-  unless `grep "# depends_on 'cmake'" "#{f.path}"`.strip.empty?
-    problems << " * Commented cmake support still in #{f.name}"
+  if /# depends_on 'cmake'/ =~ text
+    problems << " * Commented cmake support found."
   end
 
-  unless `grep "\?use_mirror=" "#{f.path}"`.strip.empty?
-    problems << " * Remove 'use_mirror' from url for #{f.name}"
+  if /\?use_mirror=/ =~ text
+    problems << " * Remove 'use_mirror' from url."
+  end
+
+  if /(#\{\w+\s*\+\s*['"][^}]+\})/ =~ text
+    problems << " * Try not to concatenate paths in string interpolation:\n   #{$1}"
   end
 
   unless problems.empty?
     puts "#{f.name}:"
-    puts problems * '\n'
+    puts problems * "\n"
     puts
   end
 end
