@@ -30,14 +30,27 @@ end
 
 
 def check_for_stray_dylibs
-  bad_dylibs = Dir['/usr/local/lib/*.dylib'].select { |f| File.file? f and not File.symlink? f }
-  if bad_dylibs.length > 0
-    puts "You have unbrewed dylibs in /usr/local/lib. These could cause build problems"
-    puts "when building Homebrew formula. If you no longer need them, delete them:"
-    puts
-    puts *bad_dylibs.collect { |f| "    #{f}" }
-    puts
-  end
+  unbrewed_dylibs = Dir['/usr/local/lib/*.dylib'].select { |f| File.file? f and not File.symlink? f }
+
+  # Dylibs which are generally OK should be added to this list,
+  # with a short description of the software they come with.
+  white_list = {
+    "libfuse.2.dylib" => "MacFuse",
+    "libfuse_ino64.2.dylib" => "MacFuse"
+  }
+
+  bad_dylibs = unbrewed_dylibs.reject {|d| white_list.key? File.basename(d) }
+  return if bad_dylibs.empty?
+
+  opoo "Unbrewed dylibs were found in /usr/local/lib"
+  puts <<-EOS.undent
+    You have unbrewed dylibs in /usr/local/lib. If you didn't put them there on purpose,
+    they could cause problems when building Homebrew formulae.
+
+    Unexpected dylibs (delete if they are no longer needed):
+  EOS
+  puts *bad_dylibs.collect { |f| "    #{f}" }
+  puts
 end
 
 def check_for_x11
@@ -216,7 +229,7 @@ def check_user_path
 end
 
 def check_which_pkg_config
-  binary = `which pkg-config`.chomp
+  binary = `/usr/bin/which pkg-config`.chomp
   return if binary.empty?
 
   unless binary == "#{HOMEBREW_PREFIX}/bin/pkg-config"
@@ -232,7 +245,7 @@ def check_which_pkg_config
 end
 
 def check_pkg_config_paths
-  binary = `which pkg-config`.chomp
+  binary = `/usr/bin/which pkg-config`.chomp
   return if binary.empty?
 
   # Use the debug output to determine which paths are searched
@@ -353,17 +366,29 @@ def check_for_multiple_volumes
 
   unless where_cellar == where_temp
     puts <<-EOS.undent
-      Your Cellar and TMP folders are on different volumes.
+      Your Cellar and /tmp folders are on different volumes.
 
       Putting your Cellar and TMP folders on different volumes causes problems
       for brews that install symlinks, such as Git.
 
-      Please post the details of your setup to this existing issue, if the comments
-      there don't already capture them:
-        http://github.com/mxcl/homebrew/issues/issue/1238
+      You should set the "HOMEBREW_TEMP" environmental variable to a suitable
+      folder on the same volume as your Cellar.
 
-      A work-around is available in this branch:
-        http://github.com/adamv/homebrew/tree/temp
+    EOS
+  end
+end
+
+def check_for_git
+  git = `/usr/bin/which git`.chomp
+  if git.empty?
+    puts <<-EOS.undent
+      "Git" was not found in your path.
+
+      Homebrew uses Git for several internal functions, and some formulae
+      (Erlang in particular) use Git checkouts instead of stable tarballs.
+
+      You may want to do:
+        brew install git
 
     EOS
   end
@@ -392,6 +417,7 @@ def brew_doctor
     check_for_dyld_vars
     check_for_symlinked_cellar
     check_for_multiple_volumes
+    check_for_git
 
     exit! 0
   else

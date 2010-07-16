@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gpsbabel <Formula
-  url 'http://www.gpsbabel.org/plan9.php?token=e3947850&dl=gpsbabel-1.4.0.tar.gz'
+  url 'http://www.gpsbabel.org/plan9.php?token=2f5b506e&dl=gpsbabel-1.4.1.tar.gz'
   homepage 'http://www.gpsbabel.org'
-  md5 'c3f76c9e7582c2ec3a24e34e5346d8f9'
+  md5 '512c4acfb12e20102fa5ceacef45a356'
 
   depends_on 'libusb'
   depends_on 'expat'
