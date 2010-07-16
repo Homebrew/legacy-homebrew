@@ -33,8 +33,7 @@ class Gfortran <Formula
       Currently the gfortran compiler provided by this brew is only supported
       for XCode 3.1.4 on OS X 10.5.x and XCode 3.2.2 on OS X 10.6.x
     EOS
-    exit
-
+    # exit
   end
 
   homepage 'http://r.research.att.com/tools/'
