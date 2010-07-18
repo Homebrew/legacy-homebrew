@@ -2,15 +2,8 @@ require 'formula'
 require 'utils'
 
 def ff
-  if ARGV.named.empty?
-    stuff = []
-    Formulary.read_all do |name,k|
-      stuff << Formula.factory(name)
-    end
-    return stuff
-  else
-    return ARGV.formulae
-  end
+  return Formula.all if ARGV.named.empty?
+  return ARGV.formulae
 end
 
 ff.each do |f|
