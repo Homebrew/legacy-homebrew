@@ -188,7 +188,15 @@ class Formula
 
   # an array of all Formula, instantiated
   def self.all
-    names.map{ |fn| Formula.factory(fn) }
+    all = []
+    names.each do |n|
+      begin
+        all << Formula.factory(n)
+      rescue
+        # Don't let one broken formula break commands.
+      end
+    end
+    return all
   end
 
   def self.aliases
