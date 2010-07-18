@@ -78,7 +78,7 @@ class Formula
     set_instance_variable 'head'
     set_instance_variable 'specs'
 
-    if @head and (not @url or ARGV.flag? '--HEAD')
+    if @head and (not @url or ARGV.build_head?)
       @url=@head
       @version='HEAD'
     end
