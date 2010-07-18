@@ -5,8 +5,6 @@ class RxvtUnicode < Formula
   homepage 'http://software.schmorp.de/pkg/rxvt-unicode.html'
   md5 '49bb52c99e002bf85eb41d8385d903b5'
 
-  aka :urxvt
-
   def patches
     # Add 256 color support
     {:p1 => ["doc/urxvt-8.2-256color.patch", DATA]}

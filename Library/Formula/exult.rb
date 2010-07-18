@@ -9,8 +9,6 @@ class Exult <Formula
   depends_on 'sdl_mixer'
   depends_on 'libvorbis'
 
-  aka 'ultima7'
-
   def install
     # Yes, really. Goddamnit.
     inreplace "autogen.sh", "libtoolize", "glibtoolize"

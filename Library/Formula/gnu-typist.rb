@@ -5,8 +5,6 @@ class GnuTypist <Formula
   homepage 'http://www.gnu.org/software/gtypist/'
   md5 '43be4b69315a202cccfed0efd011d66c'
 
-  aka 'gtypist'
-
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"

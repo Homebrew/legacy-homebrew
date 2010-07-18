@@ -6,8 +6,6 @@ class Node <Formula
   homepage 'http://nodejs.org/'
   md5 '378307512e380e279969b0936e5ec5cc'
 
-  aka 'node.js'
-
   # Stripping breaks dynamic loading
   def skip_clean? path
     true

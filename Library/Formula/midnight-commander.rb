@@ -9,8 +9,6 @@ class MidnightCommander <Formula
   depends_on 'pkg-config'
   depends_on 'glib'
 
-  aka 'mc'
-
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

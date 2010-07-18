@@ -5,8 +5,6 @@ class ObjectiveCaml <Formula
   homepage 'http://caml.inria.fr/ocaml/index.en.html'
   md5 '4601a7aea66444d61704de8de46c52c6'
 
-  aka 'ocaml', 'o-caml'
-
   # note it indeed seems necessary to skip cleaning everything
   # see http://github.com/mxcl/homebrew/issues/issue/188
   def skip_clean? path; true; end
