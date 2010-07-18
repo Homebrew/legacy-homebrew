@@ -7,14 +7,14 @@ class ClojureContrib <Formula
   homepage 'http://richhickey.github.com/clojure-contrib/branch-1.1.x/index.html'
 
   depends_on 'clojure'
-  depends_on 'maven' if ARGV.include? '--HEAD'
+  depends_on 'maven' if ARGV.build_head?
 
   def jar
     'clojure-contrib.jar'
   end
 
   def install
-    if ARGV.include? '--HEAD'
+    if ARGV.build_head?
       system "mvn package -Dclojure.jar=#{HOMEBREW_PREFIX}/Cellar/clojure/HEAD/clojure.jar"
       system "mv target/clojure-contrib-*.jar #{jar}"
     end
