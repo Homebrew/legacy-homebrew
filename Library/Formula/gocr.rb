@@ -4,8 +4,6 @@ class Gocr <Formula
   url 'http://www-e.uni-magdeburg.de/jschulen/ocr/gocr-0.48.tar.gz'
   homepage 'http://jocr.sourceforge.net/'
   md5 '9882ba9a93fcb18ab704a10da80c228c'
-  
-  aka :jocr
 
   def install
     system "./configure", "--disable-debug",

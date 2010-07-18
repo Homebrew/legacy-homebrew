@@ -10,8 +10,6 @@ class AndroidSdk <Formula
   skip_clean 'platforms'
   skip_clean 'temp'
 
-  aka :android
-
   def install
     mkdir %w[temp docs] << bin
 

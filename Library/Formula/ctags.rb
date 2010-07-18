@@ -5,8 +5,6 @@ class Ctags <Formula
   @homepage='http://ctags.sourceforge.net/'
   @md5='c00f82ecdcc357434731913e5b48630d'
 
-  aka 'ctags-exuberant'
-
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--enable-macro-patterns",

@@ -5,8 +5,6 @@ class Activemq <Formula
   homepage 'http://activemq.apache.org/'
   md5 '17574ad1ee6cc3727bf7447c2421097b'
 
-  aka 'apache-activemq'
-
   def skip_clean? path
     path == libexec + 'webapps/admin/WEB-INF/jsp'
   end

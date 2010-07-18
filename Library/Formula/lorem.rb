@@ -6,8 +6,6 @@ class Lorem < Formula
   homepage 'http://code.google.com/p/lorem/'
   md5 '1246debbcb718aa56935e52136df17e8'
 
-  aka 'ipsum'
-  
   def download_strategy; CurlDownloadStrategy; end
   
   def install

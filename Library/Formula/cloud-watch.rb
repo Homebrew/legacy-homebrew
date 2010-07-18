@@ -8,8 +8,7 @@ class CloudWatch <AmazonWebServicesFormula
   homepage 'http://developer.amazonwebservices.com/connect/entry.jspa?externalID=2534&categoryID=251'
   url      'http://ec2-downloads.s3.amazonaws.com/CloudWatch-2009-05-15.zip'
   md5      '25cd175dca3e5fb51d970a2beb040dd4'
-  aka      'aws-mon'
-  
+
   def install
     standard_install
   end

@@ -8,8 +8,6 @@ class Xu4 <Formula
   depends_on 'sdl'
   depends_on 'sdl_mixer'
 
-  aka 'ultima4'
-
   def patches
     DATA
   end

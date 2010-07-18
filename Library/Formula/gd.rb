@@ -6,8 +6,6 @@ class Gd <Formula
   homepage "http://www.libgd.org"
   md5 "39ac48e6d5e0012a3bd2248a0102f209"
 
-  aka :libgd
-
   depends_on 'jpeg' => :recommended
 
   def install
