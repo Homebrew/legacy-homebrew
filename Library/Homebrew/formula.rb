@@ -163,7 +163,9 @@ class Formula
 
   # rarely, you don't want your library symlinked into the main prefix
   # see gettext.rb for an example
-  def keg_only?; false end
+  def keg_only?
+    self.class.keg_only_reason || false
+  end
 
   # sometimes the clean process breaks things
   # skip cleaning paths in a formula with a class method like this:
@@ -477,7 +479,7 @@ EOF
       end
     end
 
-    attr_rw :version, :homepage, :specs, :deps, :external_deps
+    attr_rw :version, :homepage, :specs, :deps, :external_deps, :keg_only_reason
     attr_rw *CHECKSUM_TYPES
 
     def head val=nil, specs=nil
@@ -537,6 +539,10 @@ EOF
       puts "To define an alias, create a relative symlink from"
       puts "Aliases to Formula. The name of the symlink will be"
       puts "detected as an alias for the target formula."
+    end
+
+    def keg_only reason
+      @keg_only_reason = reason
     end
   end
 end
