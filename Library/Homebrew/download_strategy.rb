@@ -426,6 +426,7 @@ def detect_download_strategy url
   when %r[^svn://] then SubversionDownloadStrategy
   when %r[^svn+http://] then SubversionDownloadStrategy
     # Some well-known source hosts
+  when %r[^http://github\.com/.+\.git$] then GitDownloadStrategy
   when %r[^https?://(.+?\.)?googlecode\.com/hg] then MercurialDownloadStrategy
   when %r[^https?://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
   when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
