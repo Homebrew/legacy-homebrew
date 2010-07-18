@@ -484,6 +484,17 @@ EOF
     def skip_clean_paths
       @skip_clean_paths or []
     end
+
+    # 'aka' is no longer used to define aliases, so have it print out
+    # a notice about the change. This will alert people with private
+    # formulae that they need to update.
+    # This notice will be removed in version 0.9
+    def aka args
+      onoe "#{name}: 'aka' is no longer used to define aliases"
+      puts "To define an alias, create a relative symlink from"
+      puts "Aliases to Formula. The name of the symlink will be"
+      puts "detected as an alias for the target formula."
+    end
   end
 end
 
