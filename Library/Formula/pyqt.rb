@@ -24,7 +24,7 @@ class Pyqt <Formula
 
   def caveats; <<-EOS
 This formula won't function until you amend your PYTHONPATH like so:
-    export PYTHON_PATH=#{HOMEBREW_PREFIX}/lib/python:$PYTHON_PATH
+    export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/python:$PYTHONPATH
 EOS
   end
 end
