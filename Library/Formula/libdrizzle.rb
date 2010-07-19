@@ -7,7 +7,7 @@ class Libdrizzle <Formula
   md5 '9b2f0ed5d9f63d0f0b9253d03c817d55'
 
   def install
-    system "./config/autorun.sh" if ARGV.include? '--HEAD'
+    system "./config/autorun.sh" if ARGV.build_head?
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end
