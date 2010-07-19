@@ -94,6 +94,12 @@ begin
     end
   when '--config'
     dump_config
+  when '--env'
+    require 'hardware'
+    require 'extend/ENV'
+    ENV.extend(HomebrewEnvExtension)
+    ENV.setup_build_environment
+    dump_build_env ENV
 
     when 'home', 'homepage'
       if ARGV.named.empty?
@@ -182,7 +188,7 @@ begin
         ohai "The following formulae were updated:"
         puts_columns updater.updated_formulae
       else
-        puts "No formulae were updated." unless updater.pending_formulae_changes?
+        puts "No formulae were updated."
       end
     end
 
@@ -237,7 +243,7 @@ begin
       elsif ARGV[0][0..6] == 'http://'
         puts Pathname.new(ARGV.shift).version
       else
-        ARGV.named.each {|name| info name}
+        ARGV.formulae.each{ |f| info f }
       end
 
   when 'cleanup'
@@ -393,7 +399,7 @@ rescue BuildError => e
   if e.was_running_configure?
     puts "It looks like an autotools configure failed."
     puts "Consider re-running the install with '-vd' to keep 'config.log' around:"
-    puts "    brew install -vd formula_name"
+    puts "    brew install -vd #{formula_name}"
     puts "Gist 'config.log' and any error output when reporting an issue."
   end
   puts

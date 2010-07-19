@@ -51,6 +51,9 @@ module HomebrewArgvExtension
   def interactive?
     flag? '--interactive'
   end
+  def build_head?
+    flag? '--HEAD'
+  end
 
   def flag? flag
     options.each do |arg|
@@ -87,6 +90,9 @@ module HomebrewArgvExtension
       edit [formula]
       log formula
       install formula [--debug|-d] [--interactive|-i] [--verbose|-v]
+
+    For more information:
+      man brew
 
     To visit the Homebrew homepage type:
       brew home

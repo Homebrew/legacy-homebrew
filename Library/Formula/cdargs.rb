@@ -10,17 +10,17 @@ class Cdargs <Formula
     system "make"
     system "make install-strip"
 
-    FileUtils.rm Dir.glob('contrib/Makefile*')
+    rm Dir.glob('contrib/Makefile*')
     prefix.install 'contrib'
 
     bash_completion_dir = etc+'bash_completion.d'
     bash_completion_dir.mkpath
-    FileUtils.ln_sf prefix+'contrib/cdargs-bash.sh', bash_completion_dir+'cdargs-bash.sh'
+    ln_sf prefix+'contrib/cdargs-bash.sh', bash_completion_dir+'cdargs-bash.sh'
   end
 
   def caveats; <<-EOS
 Support files for bash, tcsh and emacs are located in #{prefix}/contrib.
-The file for bash is also symlinked to #{etc+'bash_completion.d/cdargs-bash.sh'}. Source it from
+The file for bash is also symlinked to #{etc}/bash_completion.d/cdargs-bash.sh. Source it from
 your .bash_profile or .bashrc to get nice aliases and bash completion.
 
 Consult the cdargs man page for more details and instructions.

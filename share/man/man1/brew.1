@@ -44,7 +44,7 @@ Shows Homebrew and system configuration useful for debugging\. If you file a bug
 Performs a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. If no search term is given, all available formula are displayed\.
 .
 .TP
-\fBinstall [\-\-debug] [\-\-use\-llvm] [\-\-ignore\-dependencies]\fR \fIformula\fR
+\fBinstall [\-\-debug] [\-\-use\-llvm] [\-\-ignore\-dependencies] [\-\-HEAD]\fR \fIformula\fR
 Installs \fIformula\fR\.
 .
 .IP
@@ -55,6 +55,9 @@ If \fB\-\-use\-llvm\fR is passed, attempt to compile using the LLVM front\-end t
 .
 .IP
 If \fB\-\-ignore\-dependencies\fR is passed, skip installing any dependencies of any kind\. If they are not already present, the formula will probably fail to install\.
+.
+.IP
+If \fB\-\-HEAD\fR is passed, and \fIformula\fR defines it, install the HEAD version, aka master, trunk, unstable, dev\.
 .
 .TP
 \fBinstall \-\-interactive [\-\-git]\fR \fIformula\fR
@@ -159,6 +162,13 @@ Using Git, fetches the newest version of Homebrew from the GitHub repository\.
 .TP
 HOMEBREW_DEBUG
 If set, instructs Homebrew to always assume \fB\-\-debug\fR when running commands\.
+.
+.TP
+HOMEBREW_SVN
+When exporting from Subversion, Homebrew will use \fBHOMEBREW_SVN\fR if set, a Homebrew\-built Subversion if installed, or the system\-provided binary\.
+.
+.IP
+Set this to force Homebrew to use a particular svn binary\.
 .
 .TP
 HOMEBREW_TEMP
