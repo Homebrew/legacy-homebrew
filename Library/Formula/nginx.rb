@@ -2,13 +2,13 @@ require 'formula'
 
 class Nginx < Formula
   url 'http://nginx.org/download/nginx-0.7.67.tar.gz'
-  head 'http://nginx.org/download/nginx-0.8.44.tar.gz'
+  head 'http://nginx.org/download/nginx-0.8.45.tar.gz'
   homepage 'http://nginx.org/'
 
   unless ARGV.build_head?
     md5 'b6e175f969d03a4d3c5643aaabc6a5ff'
   else
-    md5 '7158c67ba2697f7d469aa7b17bef202f'
+    md5 '26002367ee17d8be0b8b31e6cde95126'
   end
 
   depends_on 'pcre'

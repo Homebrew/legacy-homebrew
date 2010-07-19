@@ -243,7 +243,7 @@ begin
       elsif ARGV[0][0..6] == 'http://'
         puts Pathname.new(ARGV.shift).version
       else
-        ARGV.named.each {|name| info name}
+        ARGV.formulae.each{ |f| info f }
       end
 
   when 'cleanup'

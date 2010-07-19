@@ -185,12 +185,9 @@ def github_info name
   return "http://github.com/#{user}/homebrew/commits/#{branch}/Library/Formula/#{formula_name}"
 end
 
-def info name
-  require 'formula'
-
+def info f
   exec 'open', github_info(name) if ARGV.flag? '--github'
 
-  f=Formula.factory name
   puts "#{f.name} #{f.version}"
   puts f.homepage
 
@@ -213,7 +210,7 @@ def info name
     puts
   end
 
-  history = github_info(name)
+  history = github_info(f.name)
   puts history if history
 
 rescue FormulaUnavailableError
