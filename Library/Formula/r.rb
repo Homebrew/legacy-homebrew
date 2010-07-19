@@ -20,6 +20,8 @@ class R <Formula
     ENV.j1 # Serialized installs, please
     system "make install"
 
+    # Link binaries and manpages from the Framework
+    # into the normal locations
     bin.mkpath
     man1.mkpath
 
@@ -27,5 +29,13 @@ class R <Formula
     ln_s prefix+"R.framework/Resources/bin/Rscript", bin
     ln_s prefix+"R.framework/Resources/man1/R.1", man1
     ln_s prefix+"R.framework/Resources/man1/Rscript.1", man1
+  end
+
+  def caveats; <<-EOS.undent
+    R requires a fortran compiler to install.
+    You can install gfortran using Homebrew:
+        brew install gfortran
+
+    EOS
   end
 end
