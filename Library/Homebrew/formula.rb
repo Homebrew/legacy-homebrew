@@ -492,26 +492,22 @@ EOF
       @external_deps ||= {:python => [], :perl => [], :ruby => [], :jruby => []}
 
       case name
-      when String
-        # noop
+      when String, Formula
+        @deps << name
       when Hash
         key, value = name.shift
         case value
         when :python, :perl, :ruby, :jruby
           @external_deps[value] << key
-          return
         when :optional, :recommended
-          name = key
+          @deps << key
         end
       when Symbol
-        name = name.to_s
-      when Formula
-        # noop
+        opoo "#{self.name} -- #{name}: Using symbols for deps is deprecated; use a string instead"
+        @deps << name.to_s
       else
         raise "Unsupported type #{name.class}"
       end
-
-      @deps << name
     end
 
     def skip_clean paths
