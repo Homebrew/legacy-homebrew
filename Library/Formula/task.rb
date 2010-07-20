@@ -1,9 +1,9 @@
 require 'formula'
 
 class Task <Formula
-  url 'http://www.taskwarrior.org/download/task-1.9.1.tar.gz'
+  url 'http://www.taskwarrior.org/download/task-1.9.2.tar.gz'
   homepage 'http://www.taskwarrior.org/'
-  md5 'f486d06a9440a7034516de2a31659d3a'
+  md5 'be98cc74fe03b8336250e0b7ed3cd8c7'
 
   def skip_clean? path
     true

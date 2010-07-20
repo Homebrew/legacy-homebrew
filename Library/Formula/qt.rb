@@ -72,9 +72,6 @@ class Qt <Formula
     (bin+'Assistant_adp.app').rmtree
     (bin+'pixeltool.app').rmtree
     (bin+'qhelpconverter.app').rmtree
-    # remove debugging files that slipped through
-    (lib+'libQtUiTools_debug.a').unlink
-    (lib+'pkgconfig/QtUiTools_debug.pc').unlink
     # remove porting file for non-humans
     (prefix+'q3porting.xml').unlink
     

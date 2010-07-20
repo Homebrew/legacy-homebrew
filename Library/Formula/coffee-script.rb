@@ -1,15 +1,15 @@
 require 'formula'
 
 class CoffeeScript <Formula
-  url 'http://github.com/jashkenas/coffee-script/tarball/0.7.0'
+  url 'http://github.com/jashkenas/coffee-script/tarball/0.7.2'
   head 'git://github.com/jashkenas/coffee-script.git'
   homepage 'http://jashkenas.github.com/coffee-script/'
-  md5 'e2164dd80b70bd335118a8fa1a3ce1f4'
+  md5 'cfccf25272d329bc78349771b18fe4e0'
 
   # head coffee-script usually depends on head node and
   # since there isn't a way to specify that just remove
   # the depends_on
-  depends_on :node unless ARGV.flag? '--HEAD'
+  depends_on :node unless ARGV.build_head?
 
   def caveats
     <<-EOS.undent
@@ -20,10 +20,10 @@ class CoffeeScript <Formula
         brew uninstall node
         brew install node --HEAD
     EOS
-  end if ARGV.flag? '--HEAD'
+  end if ARGV.build_head?
 
   def install
     bin.mkpath
-    system "./bin/cake", "install", "--prefix", prefix
+    system "./bin/cake", "--prefix", prefix, "install"
   end
 end

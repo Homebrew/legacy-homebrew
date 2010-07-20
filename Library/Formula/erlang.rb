@@ -21,7 +21,7 @@ class Erlang <Formula
 
   def install
     ENV.deparallelize
-    fails_with_llvm "see http://github.com/mxcl/homebrew/issues/#issue/120"
+    fails_with_llvm "see http://github.com/mxcl/homebrew/issues/issue/120"
 
     # If building from GitHub, this step is required (but not for tarball downloads.)
     system "./otp_build autoconf" if File.exist? "otp_build"
@@ -56,6 +56,6 @@ class Erlang <Formula
   end
 
   def test
-    "erl -noshell -eval 'crypto:start().' -s init stop"
+    `erl -noshell -eval 'crypto:start().' -s init stop`
   end
 end

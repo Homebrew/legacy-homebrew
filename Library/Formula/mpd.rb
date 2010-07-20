@@ -17,6 +17,10 @@ class Mpd <Formula
   depends_on 'libmms' => :optional
   depends_on 'libzzip' => :optional
 
+  def options
+    [["--lastfm", "Compile with experimental support for Last.fm radio"]]
+  end
+
   def install
     # make faad.h findable (when brew is used elsewhere than /usr/local/)
     ENV.append 'CFLAGS', "-I#{HOMEBREW_PREFIX}/include"
@@ -32,6 +36,7 @@ class Mpd <Formula
       "--enable-zip",
     ]
     configure_args << "--disable-curl" if MACOS_VERSION <= 10.5
+    configure_args << "--enable-lastfm" if ARGV.include?("--lastfm")
 
     system "./configure", *configure_args
     system "make install"

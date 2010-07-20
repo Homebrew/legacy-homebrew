@@ -1,10 +1,9 @@
 require 'formula'
 
 class CouchdbLucene <Formula
-  version '0.5.0'
-  url 'http://github.com/rnewson/couchdb-lucene/tarball/v' + version
+  url 'http://github.com/rnewson/couchdb-lucene/tarball/v0.5.3'
   homepage 'http://github.com/rnewson/couchdb-lucene'
-  md5 '85de8220ad8dd038775c59d222644675'
+  md5 '1b9be17eb59b6b2839e50eb222bc7e7e'
 
   depends_on 'couchdb'
   depends_on 'maven'
@@ -19,19 +18,17 @@ class CouchdbLucene <Formula
     system "mv couchdb-lucene-#{version}/* #{prefix}"
 
     (etc + "couchdb/local.d/couchdb-lucene.ini").write ini_file
-
     (prefix + "couchdb-lucene.plist").write plist_file
   end
 
   def caveats; <<-EOS
 You can enable couchdb-lucene to automatically load on login with:
 
-    sudo cp #{prefix + "couchdb-lucene.plist"} /Library/LaunchDaemons/
-    sudo launchctl load -w /Library/LaunchDaemons/couchdb-lucene.plist
+  sudo cp "#{prefix}/couchdb-lucene.plist" /Library/LaunchDaemons/
+  sudo launchctl load -w /Library/LaunchDaemons/couchdb-lucene.plist
 
 Or start it manually with:
-
-    #{prefix}/bin/run
+  #{prefix}/bin/run
 EOS
   end
 
