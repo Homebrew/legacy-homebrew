@@ -9,6 +9,12 @@ class Lua <Formula
   def skip_clean? path; true; end
 
   def install
+    # Apply patch-level 2
+    cd 'src' do
+      curl "http://www.lua.org/ftp/patch-lua-5.1.4-2", "-O"
+      `patch < patch-lua-5.1.4-2`
+    end
+
     # Use our CC/CFLAGS to compile.
     inreplace 'src/Makefile' do |s|
       s.remove_make_var! 'CC'
@@ -21,13 +27,7 @@ class Lua <Formula
     # Fix paths in the .pc
     inreplace 'etc/lua.pc' do |s|
       s.gsub! "prefix= /usr/local", "prefix=#{HOMEBREW_PREFIX}"
-      s.gsub! "INSTALL_MAN= ${prefix}/man/man1", "INSTALL_MAN= ${man1}"
-    end
-
-    # Apply patch-level 2
-    cd 'src' do
-      curl "http://www.lua.org/ftp/patch-lua-5.1.4-2", "-O"
-      `patch < patch-lua-5.1.4-2`
+      s.gsub! "INSTALL_MAN= ${prefix}/man/man1", "INSTALL_MAN= ${prefix}/share/man/man1"
     end
 
     system "make", "macosx", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"

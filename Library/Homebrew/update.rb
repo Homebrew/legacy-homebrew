@@ -11,10 +11,11 @@ class RefreshBrew
   UPDATED_FORMULA  = %r{^\s+#{formula_regexp}\s}
   DELETED_FORMULA  = %r{^\s+delete mode \d+ #{formula_regexp}$}
   
-  attr_reader :added_formulae, :updated_formulae, :deleted_formulae
+  attr_reader :added_formulae, :updated_formulae, :deleted_formulae, :initial_revision
   
   def initialize
     @added_formulae, @updated_formulae, @deleted_formulae = [], [], []
+    @initial_revision = self.current_revision
   end
   
   # Performs an update of the homebrew source. Returns +true+ if a newer
