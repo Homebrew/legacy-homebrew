@@ -54,7 +54,7 @@ end
 def install f
   show_summary_heading = false
 
-  f.deps.each do |dep|
+  f.deps.uniq.each do |dep|
     dep = Formula.factory dep
     if dep.keg_only?
       ENV.prepend 'LDFLAGS', "-L#{dep.lib}"
