@@ -5,7 +5,7 @@ class Maven <Formula
   head 'http://www.apache.org/dist/maven/binaries/apache-maven-3.0-beta-1-bin.tar.gz'
   homepage 'http://maven.apache.org/'
 
-  if ARGV.include? "--HEAD"
+  if ARGV.build_head?
     md5 '82d43745cf2f2d1d939f1139a09d6654'
   else
     md5 '3f829ed854cbacdaca8f809e4954c916'

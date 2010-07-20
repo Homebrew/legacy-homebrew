@@ -10,7 +10,7 @@ class Schroedinger <Formula
   depends_on 'orc'
 
   def install
-    system "autoreconf -i -f" if ARGV.include? '--HEAD'
+    system "autoreconf -i -f" if ARGV.build_head?
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end

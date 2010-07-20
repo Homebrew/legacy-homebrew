@@ -3,9 +3,9 @@ require 'formula'
 class Riak <Formula
   depends_on 'erlang'
   
-  url 'http://downloads.basho.com/riak/riak-0.11/riak-0.11.0.tar.gz'
+  url 'http://downloads.basho.com/riak/riak-0.12/riak-0.12.0.tar.gz'
   homepage 'http://riak.basho.com'
-  md5 '5792ac2b91ad71ccaee91d1ef9632348'
+  md5 'b5bbc7aaf115bc6ba518137b733ad8a2'
   
   skip_clean 'libexec/log'
   skip_clean 'libexec/log/sasl'
@@ -17,7 +17,6 @@ class Riak <Formula
     ENV.deparallelize
     system "make all rel"
     %w(riak riak-admin).each do |file|
-      inreplace "rel/riak/bin/#{file}", /^RUNNER_SCRIPT_DIR.+$/, ""
       inreplace "rel/riak/bin/#{file}", /^RUNNER_BASE_DIR=.+$/, "RUNNER_BASE_DIR=#{libexec}"
     end
 
