@@ -36,10 +36,14 @@ class Ruby <Formula
     system "make install-doc" if ARGV.include? "--with-doc"
   end
 
-  def caveats; <<-EOS
-If you install gems with the RubyGems installed with this formula they will
-be installed to this formula's prefix. This needs to be fixed, as for example,
-upgrading Ruby will lose all your gems.
+  def caveats; <<-EOS.undent
+    Consider using RVM or Cider to manage Ruby environments:
+      * RVM: http://rvm.beginrescueend.com/
+      * Cider: http://www.atmos.org/cider/intro.html
+
+    If you install gems with the RubyGems installed with this formula they will
+    be installed to this formula's prefix. This needs to be fixed, as for example,
+    upgrading Ruby will lose all your gems.
     EOS
   end
 
