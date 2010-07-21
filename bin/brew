@@ -260,59 +260,20 @@ begin
     args = ARGV.options
     args.unshift ARGV.formulae.first.path unless ARGV.named.empty?
     exec "git", "log", *args
-    
+
+  # For each formula given, show which other formulas depend on it.
+  # We only go one level up, ie. direct dependencies.
   when 'uses'
-    # For each formula given, show which other formulas depend on it.
-    # We only go one level up, direct dependencies.
-    require 'formula'
-    require 'utils'
-    
-    deps = Formula.get_used_by
-    
-    ARGV.formulae.each do |f|
-      name = f.name
-      our_deps = deps[name]
-      if our_deps == nil
-        puts "#{name} is not a dependency."
-      else
-        puts "#{name} is a dependency for #{our_deps.join(', ')}."
-      end
-    end
-    
+    puts *ARGV.formulae.map{ |f| Formula.all.select{ |ff| ff.deps.include? f.name }.map(&:name) }.flatten.uniq.sort
+
   when 'deps'
-    require 'formula'
-
-    ARGV.formulae.each do |f|
-      name = f.name
-
-      our_deps = []
-      checked = {}
-      to_check = [name]
-      stop_early = false
-
-      until to_check.empty? or stop_early
-        stop_early = ARGV.include?("-1") or ARGV.include?("--1")
-
-        item = to_check.pop
-        checked[item] = true
-        
-        formula = Formulary.read item
-        next if formula == nil || formula.deps == nil || formula.deps.empty?
-        
-        our_deps.push(*formula.deps)
-        to_check.push(*formula.deps.select{|g| !checked[g]})
-      end
-      
-      our_deps.uniq!
-      
-      if our_deps.empty?
-        puts "#{name} has no dependencies."
-      else
-        our_deps.sort!
-        puts "#{name} depends on #{our_deps.join(", ")}"
-      end
+    require 'formula_installer'
+    if ARGV.include?("-1") or ARGV.include?("--1")
+      puts *ARGV.formulae.map{ |f| f.deps or [] }.flatten.uniq.sort
+    else
+      puts *ARGV.formulae.map{ |f| FormulaInstaller.expand_deps(f).map(&:name) }.flatten.uniq.sort
     end
-    
+
   when 'cat'
     Dir.chdir HOMEBREW_REPOSITORY
     exec "cat", ARGV.formulae.first.path, *ARGV.options
