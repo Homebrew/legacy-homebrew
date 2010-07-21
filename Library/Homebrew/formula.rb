@@ -121,6 +121,13 @@ class Formula
   def libexec; prefix+'libexec'        end
   def man;     prefix+'share/man'      end
   def man1;    man+'man1'              end
+  def man2;    man+'man2'              end
+  def man3;    man+'man3'              end
+  def man4;    man+'man4'              end
+  def man5;    man+'man5'              end
+  def man6;    man+'man6'              end
+  def man7;    man+'man7'              end
+  def man8;    man+'man8'              end
   def sbin;    prefix+'sbin'           end
   def share;   prefix+'share'          end
 
