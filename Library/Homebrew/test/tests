@@ -1,23 +1,17 @@
-#!/usr/bin/env bash
-
+#!/bin/bash
 # This shell script runs Homebrew's test suite.
-#
-# Note: "formula_test" is omitted; these aren't unit tests but sanity checks
-# on the real formulae.
-#
 
-# Feel free to split out test_bucket
-ruby test_bucket.rb $*
-ruby test_formula.rb $*
-ruby test_versions.rb $*
-ruby test_checksums.rb $*
-ruby test_inreplace.rb $*
-ruby test_hardware.rb $*
-ruby test_formula_install.rb $*
-ruby test_patching.rb $*
-ruby test_external_deps.rb $*
-ruby test_pathname_install.rb $*
-ruby test_utils.rb $*
-ruby test_ARGV.rb $*
-ruby test_ENV.rb $*
-ruby test_updater.rb $*
+/usr/bin/ruby test_bucket.rb $*
+/usr/bin/ruby test_formula.rb $*
+/usr/bin/ruby test_versions.rb $*
+/usr/bin/ruby test_checksums.rb $*
+/usr/bin/ruby test_inreplace.rb $*
+/usr/bin/ruby test_hardware.rb $*
+/usr/bin/ruby test_formula_install.rb $*
+/usr/bin/ruby test_patching.rb $*
+/usr/bin/ruby test_external_deps.rb $*
+/usr/bin/ruby test_pathname_install.rb $*
+/usr/bin/ruby test_utils.rb $*
+/usr/bin/ruby test_ARGV.rb $*
+/usr/bin/ruby test_ENV.rb $*
+/usr/bin/ruby test_updater.rb $*
