@@ -19,6 +19,10 @@ class RubyEnterpriseEdition <Formula
   end
 
   def caveats; <<-EOS.undent
+    Consider using RVM or Cider to manage Ruby environments:
+      * RVM: http://rvm.beginrescueend.com/
+      * Cider: http://www.atmos.org/cider/intro.html
+
     By default we don't compile REE as a shared library. From their documentation:
         Please note that enabling --enable-shared will make the Ruby interpreter
         about 20% slower.

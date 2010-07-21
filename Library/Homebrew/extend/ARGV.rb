@@ -51,6 +51,9 @@ module HomebrewArgvExtension
   def interactive?
     flag? '--interactive'
   end
+  def build_head?
+    flag? '--HEAD'
+  end
 
   def flag? flag
     options.each do |arg|
