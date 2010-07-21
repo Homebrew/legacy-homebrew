@@ -18,6 +18,7 @@ class Postgresql <Formula
     [
       ['--no-python', 'Build without Python support.'],
       ['--no-perl', 'Build without Perl support.'],
+      ['--fuzzystrmatch', 'Build with fuzzystrmatch functions']
       ['--ossp-uuid', 'Build with UUID generation functions']
     ]
   end
@@ -87,6 +88,7 @@ class Postgresql <Formula
     system "make install"
 
     system "cd contrib/uuid-ossp; make install" if ARGV.include? '--ossp-uuid'
+    system "cd contrib/fuzzystrmatch ; make install" if ARGV.include? '--fuzzystrmatch'
 
     (prefix+'org.postgresql.postgres.plist').write startup_plist
   end
