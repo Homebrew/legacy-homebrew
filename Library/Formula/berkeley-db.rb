@@ -1,9 +1,9 @@
 require 'formula'
 
 class BerkeleyDb <Formula
-  @url='http://download.oracle.com/berkeley-db/db-5.0.21.tar.gz'
-  @homepage='http://www.oracle.com/technology/products/berkeley-db/index.html'
-  @md5='9a749fd2e98fe15840493ddc34cc66d8'
+  url 'http://download.oracle.com/berkeley-db/db-5.0.26.tar.gz'
+  homepage 'http://www.oracle.com/technology/products/berkeley-db/index.html'
+  md5 '8723c97c03d12c3afc8333df92d5089a'
 
   aka 'db'
 
