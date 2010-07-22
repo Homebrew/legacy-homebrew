@@ -298,8 +298,11 @@ begin
       our_deps = []
       checked = {}
       to_check = [name]
+      stop_early = false
 
-      until to_check.empty?
+      until to_check.empty? or stop_early
+        stop_early = ARGV.include?("-1") or ARGV.include?("--1")
+
         item = to_check.pop
         checked[item] = true
         

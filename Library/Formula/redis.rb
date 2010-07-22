@@ -26,6 +26,7 @@ class Redis <Formula
       s.gsub! "dir ./", "dir #{var}/db/redis/"
     end
 
+    doc.install Dir["doc/*"]
     etc.install "redis.conf"
     (prefix+'io.redis.redis-server.plist').write startup_plist
   end
