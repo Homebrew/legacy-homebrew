@@ -57,6 +57,7 @@ class Keg <Pathname
       # lib/language folders also get explicitly created
       when 'ghc' then :mkpath
       when 'lua' then :mkpath
+      when 'node' then :mkpath
       when 'ocaml' then :mkpath
       when /^perl5/ then :mkpath
       when 'php' then :mkpath
