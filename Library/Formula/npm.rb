@@ -15,9 +15,24 @@ exec "#{libexec}/cli.js" "$@"
     EOS
   end
 
+  def node_lib
+    HOMEBREW_PREFIX+"lib/node"
+  end
+
+  def share_bin
+    HOMEBREW_PREFIX+"share/npm/bin"
+  end
+
   def install
-    doc.install Dir["doc/*"]
+    # Set a root & binroot that won't get wiped between updates
+    share_bin.mkpath
+    inreplace 'lib/utils/default-config.js' do |s|
+      s.gsub! /, binroot.*$/, ", binroot : \"#{share_bin}\""
+      s.gsub! /, root.*$/,    ", root : \"#{node_lib}\""
+    end
+
     prefix.install ["LICENSE", "README.md"]
+    doc.install Dir["doc/*"]
 
     # install all the required libs in libexec so `npm help` will work
     libexec.install Dir["*"]
@@ -36,5 +51,17 @@ exec "#{libexec}/cli.js" "$@"
 
     # install the wrapper executable
     (bin+"npm").write executable
+  end
+
+  def caveats; <<-EOS
+    npm will install binaries to:
+      #{share_bin}
+    You may want to add this to your PATH.
+
+    npm will install libraries to:
+      #{node_lib}/.npm
+
+    To manually remove libraries installed by npm, delete this (hidden!) folder.
+    EOS
   end
 end
