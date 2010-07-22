@@ -8,18 +8,19 @@ class Node <Formula
 
   aka 'node.js'
 
+  # Stripping breaks dynamic loading
   def skip_clean? path
-    # TODO: at some point someone should tweak this so it only skips clean
-    # for the bits that break the build otherwise
     true
   end
 
   def install
     fails_with_llvm
+
     inreplace %w{wscript configure} do |s|
       s.gsub! '/usr/local', HOMEBREW_PREFIX
       s.gsub! '/opt/local/lib', '/usr/lib'
     end
+
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
