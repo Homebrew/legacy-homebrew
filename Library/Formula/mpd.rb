@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mpd <Formula
-  url 'http://downloads.sourceforge.net/project/musicpd/mpd/0.15.9/mpd-0.15.9.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/musicpd/mpd/0.15.12/mpd-0.15.12.tar.bz2'
   homepage 'http://mpd.wikia.com'
-  md5 '88f7bc0b17eac81d03b24929d12b8aa1'
+  md5 'b00b289a20ecd9accfd4972d6395135c'
 
   depends_on 'glib'
   depends_on 'libid3tag'
