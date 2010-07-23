@@ -1,18 +1,18 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://kernel.org/pub/software/scm/git/git-manpages-1.7.1.1.tar.bz2'
-  md5 'd56a2b79e76efa7b207335f562fbefbe'
+  url 'http://kernel.org/pub/software/scm/git/git-manpages-1.7.2.tar.bz2'
+  md5 '0ea16b997dea4aec1f2f3d9c6a74abb8'
 end
 
 class GitHtmldocs < Formula
-  url 'http://kernel.org/pub/software/scm/git/git-htmldocs-1.7.1.1.tar.bz2'
-  md5 '642edbab5bcf66694c07e0929c0ca223'
+  url 'http://kernel.org/pub/software/scm/git/git-htmldocs-1.7.2.tar.bz2'
+  md5 '31b3d0c142709d5a4faafe52d962d435'
 end
 
 class Git < Formula
-  url 'http://kernel.org/pub/software/scm/git/git-1.7.1.1.tar.bz2'
-  md5 '1b116a3e2ecce46a89e4272abf0de955'
+  url 'http://kernel.org/pub/software/scm/git/git-1.7.2.tar.bz2'
+  md5 '652f861ae161e48979ef834707e2dc4c'
   homepage 'http://git-scm.com'
 
   def install
@@ -22,7 +22,7 @@ class Git < Formula
     # If local::lib is used you get a 'Only one of PREFIX or INSTALL_BASE can be given' error
     ENV['PERL_MM_OPT']='';
     # build verbosely so we can debug better
-    ENV['V'] = '1'
+    ENV['V']='1'
 
     inreplace "Makefile" do |s|
       s.remove_make_var! %w{CFLAGS LDFLAGS}
