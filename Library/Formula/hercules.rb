@@ -5,7 +5,7 @@ class Hercules <Formula
   homepage 'http://www.hercules-390.org/'
   md5 '3a356b251e2b7fc49ac2b7244d12d50b'
 
- depends_on 'gawk'
+  depends_on 'gawk'
 
   def install
     # Since Homebrew optimizes for us, tell Hercules not to.
