@@ -16,7 +16,7 @@ class Node <Formula
   def install
     fails_with_llvm
 
-    inreplace %w{wscript configure} do |s|
+    inreplace 'wscript' do |s|
       s.gsub! '/usr/local', HOMEBREW_PREFIX
       s.gsub! '/opt/local/lib', '/usr/lib'
     end
