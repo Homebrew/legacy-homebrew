@@ -15,7 +15,8 @@ class Hadoop < Formula
 
   def install
     rm_f Dir["bin/*.bat"]
-    libexec.install %w[bin conf contrib lib webapps *.jar]
+    libexec.install %w[bin conf contrib lib webapps]
+    libexec.install Dir['*.jar']
     bin.mkpath
     Dir["#{libexec}/bin/*"].each do |b|
       n = Pathname.new(b).basename
