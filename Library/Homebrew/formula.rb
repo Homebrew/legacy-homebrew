@@ -172,6 +172,7 @@ class Formula
   #   skip_clean [bin+"foo", lib+"bar"]
   # redefining skip_clean? in formulas is now deprecated
   def skip_clean? path
+    return true if @skip_clean_all
     to_check = path.relative_path_from(prefix).to_s
     self.class.skip_clean_paths.include? to_check
   end
@@ -479,7 +480,8 @@ EOF
       end
     end
 
-    attr_rw :version, :homepage, :specs, :deps, :external_deps, :keg_only_reason
+    attr_rw :version, :homepage, :specs, :deps, :external_deps
+    attr_rw :keg_only_reason, :skip_clean_all
     attr_rw *CHECKSUM_TYPES
 
     def head val=nil, specs=nil
@@ -520,6 +522,10 @@ EOF
     end
 
     def skip_clean paths
+      if paths == :all
+        @skip_clean_all = true
+        return
+      end
       @skip_clean_paths ||= []
       [paths].flatten.each do |p|
         @skip_clean_paths << p.to_s unless @skip_clean_paths.include? p.to_s
