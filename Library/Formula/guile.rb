@@ -5,7 +5,7 @@ class Guile <Formula
   head 'ftp://alpha.gnu.org/gnu/guile/guile-1.9.11.tar.gz'
   homepage 'http://www.gnu.org/software/guile/'
 
-  if ARGV.include? "--HEAD"
+  if ARGV.build_head?
     sha1 'abd1424a927302db31395db828d4d14fa68d13f9'
   else
     sha1 '24cd2f06439c76d41d982a7384fe8a0fe5313b54'
@@ -27,6 +27,6 @@ class Guile <Formula
     system "make install"
 
     # A really messed up workaround required on OS X --mkhl
-    lib.cd { Dir["*.dylib"].each {|p| ln_sf p, "#{File.basename(p, ".dylib")}.so" }}
+    lib.cd { Dir["*.dylib"].each {|p| ln_sf p, File.basename(p, ".dylib")+".so" }}
   end
 end

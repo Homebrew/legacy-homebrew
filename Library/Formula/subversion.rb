@@ -92,6 +92,7 @@ class Subversion <Formula
     end
 
     if build_perl?
+      ENV.j1 # This build isn't parallel safe
       # Remove hard-coded ppc target, add appropriate ones
       if build_universal?
         arches = "-arch x86_64 -arch i386"
