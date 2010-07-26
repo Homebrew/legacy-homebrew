@@ -149,6 +149,14 @@ didn't include with OS X.
   * HOMEBREW\_DEBUG:
     If set, instructs Homebrew to always assume `--debug` when running commands.
 
+  * HOMEBREW\_EDITOR:
+    If set, Homebrew will use this editor when editing a single formula, or
+    several formulae in the same folder.
+
+    *NOTE*: `brew edit` will open all of Homebrew as discontinuous files and
+    folders. TextMate can handle this correctly in project mode, but many
+    editors will do strange things in this case.
+
   * HOMEBREW\_SVN:
     When exporting from Subversion, Homebrew will use `HOMEBREW_SVN` if set,
     a Homebrew-built Subversion if installed, or the system-provided binary.
@@ -165,7 +173,8 @@ didn't include with OS X.
     configurations.)
 
   * HOMEBREW\_USE\_LLVM:
-    If set, instructs Homebrew to use the LLVM front-ends to the GCC compilers.  
+    If set, instructs Homebrew to use the LLVM front-ends to the GCC compilers.
+
     *NOTE*: Not all formulae will build correctly under LLVM.
 
   * HOMEBREW\_VERBOSE:

@@ -164,6 +164,13 @@ HOMEBREW_DEBUG
 If set, instructs Homebrew to always assume \fB\-\-debug\fR when running commands\.
 .
 .TP
+HOMEBREW_EDITOR
+If set, Homebrew will use this editor when editing a single formula, or several formulae in the same folder\.
+.
+.IP
+\fINOTE\fR: \fBbrew edit\fR will open all of Homebrew as discontinuous files and folders\. TextMate can handle this correctly in project mode, but many editors will do strange things in this case\.
+.
+.TP
 HOMEBREW_SVN
 When exporting from Subversion, Homebrew will use \fBHOMEBREW_SVN\fR if set, a Homebrew\-built Subversion if installed, or the system\-provided binary\.
 .
@@ -181,7 +188,7 @@ This issue typically occurs when using FileVault (or certain custom SSD configur
 HOMEBREW_USE_LLVM
 If set, instructs Homebrew to use the LLVM front\-ends to the GCC compilers\.
 .
-.br
+.IP
 \fINOTE\fR: Not all formulae will build correctly under LLVM\.
 .
 .TP

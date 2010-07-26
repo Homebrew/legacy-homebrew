@@ -10,7 +10,8 @@ class Mpd <Formula
   depends_on 'pkg-config'
   depends_on 'flac'
   depends_on 'libshout'
-  depends_on 'mad' => :optional
+  depends_on 'mad'
+  depends_on 'lame'
   depends_on 'faad2' => :optional
   depends_on 'fluid-synth'
   depends_on 'libcue' => :optional
@@ -34,6 +35,7 @@ class Mpd <Formula
       "--enable-shout",
       "--enable-fluidsynth",
       "--enable-zip",
+      "--enable-lame-encoder",
     ]
     configure_args << "--disable-curl" if MACOS_VERSION <= 10.5
     configure_args << "--enable-lastfm" if ARGV.include?("--lastfm")
