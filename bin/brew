@@ -234,7 +234,7 @@ begin
         if ARGV.include? "--all"
           require 'formula'
           Formulary.names.each do |name|
-            info name
+            info Formula.factory(name)
             puts '---'
           end
         else

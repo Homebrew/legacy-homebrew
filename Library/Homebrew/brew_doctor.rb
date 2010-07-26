@@ -63,6 +63,24 @@ def check_for_x11
   end
 end
 
+def check_for_nonstandard_x11
+  return unless File.exists? '/usr/X11'
+  x11 = Pathname.new('/usr/X11')
+  if x11.symlink?
+    puts <<-EOS.undent
+      "/usr/X11" was found, but it is a symlink to:
+        #{x11.resolved_path}
+
+      Homebrew's X11 support has only be tested with Apple's X11,
+      preferably any updates from the latest Xcode package.
+
+      In particular, "XQuartz" is not known to allow Homebrew
+      software require X11 to compile.
+
+    EOS
+  end
+end
+
 def check_for_other_package_managers
   if macports_or_fink_installed?
     puts <<-EOS.undent
@@ -407,6 +425,7 @@ def brew_doctor
     check_gcc_versions
     check_for_other_package_managers
     check_for_x11
+    check_for_nonstandard_x11
     check_access_share_locale
     check_user_path
     check_which_pkg_config

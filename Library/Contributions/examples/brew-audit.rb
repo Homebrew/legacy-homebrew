@@ -26,6 +26,11 @@ ff.each do |f|
     problems << " * Remove 'use_mirror' from url."
   end
 
+  # 2 (or more, if in an if block) spaces before depends_on, please
+  if /^\ ?depends_on/ =~ text
+    problems << " * Check indentation of 'depends_on'."
+  end
+
   if /(#\{\w+\s*\+\s*['"][^}]+\})/ =~ text
     problems << " * Try not to concatenate paths in string interpolation:\n   #{$1}"
   end
