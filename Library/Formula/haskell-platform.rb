@@ -15,7 +15,13 @@ class HaskellPlatform <Formula
     system %Q(EXTRA_CONFIGURE_OPTS="--libdir=#{lib}/ghc" make install)
   end
 
-  def caveats
-    "Run `cabal update` to initialize the package list."
+  def caveats; <<-EOS.undent
+    Run `cabal update` to initialize the package list.
+
+    If you are trying to upgrade from a previous version of haskell-platform,
+    you may need to delete .conf files from:
+      ~/.ghc/i386-darwin-6.12.3/package.conf.d
+    that reference the previous version of haskell-platform first!
+    EOS
   end
 end
