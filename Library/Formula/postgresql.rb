@@ -102,8 +102,14 @@ See:
 If this is your first install, create a database with:
     initdb #{var}/postgres
 
-Automatically load on login with:
-    launchctl load -w #{prefix}/org.postgresql.postgres.plist
+If this is your first install, automatically load on login with:
+    cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents
+    launchctl load -w ~/Library/LaunchAgents/com.postgresql.postgres.plist
+
+If this is an upgrade and you already have the com.mysql.mysqld.plist loaded: 
+    launchctl unload -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
+    cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents
+    launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
 
 Or start manually with:
     pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start

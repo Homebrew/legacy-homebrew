@@ -10,6 +10,10 @@ class Wget <Formula
 
   depends_on "libidn" if ARGV.include? "--enable-iri"
 
+  def options
+    [["--enable-iri", "Enable iri support (which pulls in libidn and gettext.)"]]
+  end
+
   def install
     args = ["--disable-debug", "--prefix=#{prefix}"]
     args << "--disable-iri" unless ARGV.include? "--enable-iri"

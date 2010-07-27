@@ -140,11 +140,16 @@ def puts_columns items, cols = 4
 end
 
 def exec_editor *args
-  editor=ENV['EDITOR']
+  editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
   if editor.nil?
     if system "/usr/bin/which -s mate"
+      # TextMate
       editor='mate'
+    elsif system "/usr/bin/which -s edit"
+      # BBEdit / TextWrangler
+      editor='edit'
     else
+      # Default to vim
       editor='/usr/bin/vim'
     end
   end
