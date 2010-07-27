@@ -63,6 +63,24 @@ def check_for_x11
   end
 end
 
+def check_for_nonstandard_x11
+  return unless File.exists? '/usr/X11'
+  x11 = Pathname.new('/usr/X11')
+  if x11.symlink?
+    puts <<-EOS.undent
+      "/usr/X11" was found, but it is a symlink to:
+        #{x11.resolved_path}
+
+      Homebrew's X11 support has only be tested with Apple's X11,
+      preferably any updates from the latest Xcode package.
+
+      In particular, "XQuartz" is not known to allow Homebrew
+      software require X11 to compile.
+
+    EOS
+  end
+end
+
 def check_for_other_package_managers
   if macports_or_fink_installed?
     puts <<-EOS.undent
@@ -229,7 +247,7 @@ def check_user_path
 end
 
 def check_which_pkg_config
-  binary = `which pkg-config`.chomp
+  binary = `/usr/bin/which pkg-config`.chomp
   return if binary.empty?
 
   unless binary == "#{HOMEBREW_PREFIX}/bin/pkg-config"
@@ -245,7 +263,7 @@ def check_which_pkg_config
 end
 
 def check_pkg_config_paths
-  binary = `which pkg-config`.chomp
+  binary = `/usr/bin/which pkg-config`.chomp
   return if binary.empty?
 
   # Use the debug output to determine which paths are searched
@@ -378,6 +396,22 @@ def check_for_multiple_volumes
   end
 end
 
+def check_for_git
+  git = `/usr/bin/which git`.chomp
+  if git.empty?
+    puts <<-EOS.undent
+      "Git" was not found in your path.
+
+      Homebrew uses Git for several internal functions, and some formulae
+      (Erlang in particular) use Git checkouts instead of stable tarballs.
+
+      You may want to do:
+        brew install git
+
+    EOS
+  end
+end
+
 def brew_doctor
   read, write = IO.pipe
 
@@ -391,6 +425,7 @@ def brew_doctor
     check_gcc_versions
     check_for_other_package_managers
     check_for_x11
+    check_for_nonstandard_x11
     check_access_share_locale
     check_user_path
     check_which_pkg_config
@@ -401,6 +436,7 @@ def brew_doctor
     check_for_dyld_vars
     check_for_symlinked_cellar
     check_for_multiple_volumes
+    check_for_git
 
     exit! 0
   else

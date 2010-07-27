@@ -1,28 +1,39 @@
 require 'formula'
 
 class RubyOdbc < Formula
-  url 'http://www.ch-werner.de/rubyodbc/ruby-odbc-0.9997.tar.gz'
+  url 'http://www.ch-werner.de/rubyodbc/ruby-odbc-0.99991.tar.gz'
   homepage 'http://www.ch-werner.de/rubyodbc/'
-  md5 '36d21519795c3edc8bc63b1ec6682b99'
+  md5 '64eaf6089e7ca17eeff54c4fe052ac96'
 
   depends_on 'unixodbc'
   depends_on 'freetds'
 
   def install
-    system "ruby", "extconf.rb", "--enable-dlopen", "--with-odbc-dir=#{HOMEBREW_PREFIX}/lib"
-
     # extconf.rb assumes it will install ruby-odbc within a folder in your
     # current ruby installation.
-    #
+    system "ruby", "-Cext", "extconf.rb", "--enable-dlopen", "--with-odbc-dir=#{HOMEBREW_PREFIX}/lib"
+
     # The following modifications to the Makefile ensure that it is installed
     # within your homebrew directories.
-    inreplace 'Makefile' do |s|
+    inreplace 'ext/Makefile' do |s|
       s.change_make_var! "prefix", prefix
       s.change_make_var! "sitearchdir", lib
+
+      if Hardware.is_64_bit? and MACOS_VERSION >= 10.6
+        # ruby-odbc still chooses iODBC over unixODBC (even with --with-odbc-dir)
+        # apparently because unixODBC is compiled for only x86_64 and ruby-odbc
+        # and iODBC are both i386 and x86_64. The solution (which works for me on Snow Leopard)
+        # is to remove i386 references from ruby-odbc's makefile. YMMV.
+        s.change_make_var! "CFLAGS", "-fno-common -arch x86_64 -g -Os -pipe -DENABLE_DTRACE $(cflags)"
+        s.change_make_var! "ldflags", "-L. -arch x86_64"
+        s.change_make_var! "LDSHARED", "cc -arch x86_64 -pipe -bundle -undefined dynamic_lookup"
+        s.change_make_var! "LIBS", "$(LIBRUBYARG_SHARED) -lodbcinst -lodbc  -lpthread -ldl"
+      end
     end
 
-    system 'make'
-    system 'make install'
+    lib.mkpath
+    system 'make -C ext'
+    system 'make -C ext install'
   end
 
   def caveats; <<-EOS

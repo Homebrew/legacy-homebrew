@@ -1,16 +1,12 @@
 require 'formula'
 
 <<-COMMENTS
-
-This is the Homebrew formula for Python.
-
 Versions
 --------
-This formula is currently tracking version 2.6.x.
+This formula is currently tracking version 2.7.x.
 
-If you are looking for newer versions of Python, check out these forks:
-  2.7.x: http://github.com/mxcl/homebrew/issues/issue/1773
-  3.1.x: http://github.com/mxcl/homebrew/issues/issue/1188
+Python 3.x is available as a separate formula:
+  brew install python3
 
 Options
 -------
@@ -25,7 +21,7 @@ The "site-packages" folder lives in the Cellar, under the "lib" folder
 for normal builds, and under the "Frameworks" folder for Framework builds.
 
 A .pth file is added to the Cellar site-packages that adds the corresponding
-HOMEBREW_PREFIX folder (/usr/local/lib/python2.6/site-packages by default)
+HOMEBREW_PREFIX folder (/usr/local/lib/python2.7/site-packages by default)
 to sys.path. Note that this alternate folder doesn't itself support .pth files.
 
 pip / distribute
@@ -52,13 +48,13 @@ def as_framework?
 end
 
 class Python <Formula
-  url 'http://www.python.org/ftp/python/2.6.5/Python-2.6.5.tar.bz2'
+  url 'http://www.python.org/ftp/python/2.7/Python-2.7.tar.bz2'
   homepage 'http://www.python.org/'
-  md5 '6bef0417e71a1a1737ccf5750420fdb3'
+  md5 '0e8c9ec32abf5b732bea7d91b38c3339'
 
-  depends_on 'sqlite' => :optional    # Prefer over OS X's older version
   depends_on 'readline' => :optional  # Prefer over OS X's libedit
-  depends_on 'gdbm' => :optional
+  depends_on 'sqlite'   => :optional  # Prefer over OS X's older version
+  depends_on 'gdbm'     => :optional
 
   def options
     [
@@ -75,16 +71,16 @@ class Python <Formula
     # The Cellar location of site-packages
     if as_framework?
       # If we're installed or installing as a Framework, then use that location.
-      return prefix+"Frameworks/Python.framework/Versions/2.6/lib/python2.6/site-packages"
+      return prefix+"Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages"
     else
       # Otherwise, use just the lib path.
-      return lib+"python2.6/site-packages"
+      return lib+"python2.7/site-packages"
     end
   end
 
   def prefix_site_packages
     # The HOMEBREW_PREFIX location of site-packages
-    HOMEBREW_PREFIX+"lib/python2.6/site-packages"
+    HOMEBREW_PREFIX+"lib/python2.7/site-packages"
   end
 
   def validate_options
@@ -111,7 +107,7 @@ class Python <Formula
 
     system "./configure", *args
     system "make"
-    ENV.j1 # Some kinds of installs must be serialized.
+    ENV.j1 # Installs must be serialized
     system "make install"
 
     # Add the Homebrew prefix path to site-packages via a .pth

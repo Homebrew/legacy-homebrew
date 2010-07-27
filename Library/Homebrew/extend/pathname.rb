@@ -195,6 +195,14 @@ class Pathname
   def subdirs
     children.select{ |child| child.directory? }
   end
+
+  def resolved_path
+    self.symlink? ? dirname+readlink : self
+  end
+
+  def resolved_path_exists?
+    (dirname+readlink).exist?
+  end
 end
 
 # sets $n and $d so you can observe creation of stuff
@@ -208,9 +216,6 @@ module ObserverPathnameExtension
     super
     puts "rmdir #{to_s}" if ARGV.verbose?
     $d+=1
-  end
-  def resolved_path_exists?
-    (dirname+readlink).exist?
   end
   def mkpath
     super
