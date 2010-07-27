@@ -7,7 +7,7 @@ class Openssh <Formula
   version '5.4p1'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--with-libedit", "--prefix=#{prefix}"
     system "make"
     system "make install"
   end
