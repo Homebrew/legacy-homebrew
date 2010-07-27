@@ -156,18 +156,17 @@ end
 
 def github_info name
   formula_name = Formula.path(name).basename
-  user = ''
-  branch = ''
+  user = 'mxcl'
+  branch = 'master'
 
   if system "/usr/bin/which -s git"
-    user=`git config --global github.user`.chomp
-    all_branches = `git branch 2>/dev/null`
-     /^\*\s*(.*)/.match all_branches
-    branch = ($1 || '').chomp
+    gh_user=`git config --global github.user 2>/dev/null`.chomp
+    /^\*\s*(.*)/.match(`git --work-tree=#{HOMEBREW_REPOSITORY} branch 2>/dev/null`)
+    unless $1.nil? || $1.empty? || gh_user.empty?
+      branch = $1.chomp
+      user = gh_user
+    end
   end
-  
-  user = 'mxcl' if user.empty?
-  branch = 'master' if branch.empty?
 
   return "http://github.com/#{user}/homebrew/commits/#{branch}/Library/Formula/#{formula_name}"
 end
