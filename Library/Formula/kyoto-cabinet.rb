@@ -1,9 +1,9 @@
 require 'formula'
 
 class KyotoCabinet <Formula
-  url 'http://1978th.net/kyotocabinet/kyotocabinet-1.0.0.tar.gz'
+  url 'http://1978th.net/kyotocabinet/kyotocabinet-1.2.0.tar.gz'
   homepage 'http://1978th.net/kyotocabinet/'
-  md5 'b655bf60a16be81019362fe26fff9a6f'
+  md5 'c690b932afdb7c0c6051c180d6307f3d'
 
   def install
     system "./configure", "--disable-debug", "--prefix=#{prefix}"
