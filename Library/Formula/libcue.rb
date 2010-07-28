@@ -6,7 +6,7 @@ class Libcue <Formula
   md5 'afd94427ff1e59f093a1b8b29aea2ecf'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
 end

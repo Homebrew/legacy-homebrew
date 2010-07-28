@@ -196,6 +196,10 @@ class Pathname
     children.select{ |child| child.directory? }
   end
 
+  def resolved_path
+    self.symlink? ? dirname+readlink : self
+  end
+
   def resolved_path_exists?
     (dirname+readlink).exist?
   end
