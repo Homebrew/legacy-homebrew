@@ -30,4 +30,11 @@ class Rubinius < Formula
 
     system "/usr/bin/ruby", "-S", "rake", "install"
   end
+
+  def caveats; <<-EOS.undent
+    Consider using RVM or Cider to manage Ruby environments:
+      * RVM: http://rvm.beginrescueend.com/
+      * Cider: http://www.atmos.org/cider/intro.html
+    EOS
+  end
 end

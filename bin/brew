@@ -234,7 +234,7 @@ begin
         if ARGV.include? "--all"
           require 'formula'
           Formulary.names.each do |name|
-            info name
+            info Formula.factory(name)
             puts '---'
           end
         else
@@ -243,7 +243,7 @@ begin
       elsif ARGV[0][0..6] == 'http://'
         puts Pathname.new(ARGV.shift).version
       else
-        ARGV.named.each {|name| info name}
+        ARGV.formulae.each{ |f| info f }
       end
 
   when 'cleanup'
@@ -298,8 +298,11 @@ begin
       our_deps = []
       checked = {}
       to_check = [name]
+      stop_early = false
 
-      until to_check.empty?
+      until to_check.empty? or stop_early
+        stop_early = ARGV.include?("-1") or ARGV.include?("--1")
+
         item = to_check.pop
         checked[item] = true
         
