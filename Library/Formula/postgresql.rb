@@ -9,27 +9,24 @@ class Postgresql <Formula
   md5 '4bf2448ad965bca3940df648c02194df'
 
   depends_on 'readline'
-  depends_on 'libxml2' if MACOS_VERSION < 10.6 #system libxml is too old
-  depends_on 'ossp-uuid' if ARGV.include? '--ossp-uuid'
+  depends_on 'libxml2' if MACOS_VERSION < 10.6 # Leopard libxml is too old
+  depends_on 'ossp-uuid'
 
   aka 'postgres'
 
   def options
     [
       ['--no-python', 'Build without Python support.'],
-      ['--no-perl', 'Build without Perl support.'],
-      ['--ossp-uuid', 'Build with UUID generation functions']
+      ['--no-perl', 'Build without Perl support.']
     ]
   end
 
   def skip_clean? path
-    # NOTE at some point someone should tweak this so it only skips clean
-    # for the bits that break the build otherwise
     true
   end
 
   def install
-    ENV.libxml2 # wouldn't compile for justinlilly otherwise
+    ENV.libxml2 if MACOS_VERSION >= 10.6
 
     configure_args = [
         "--enable-thread-safety",
@@ -46,38 +43,14 @@ class Postgresql <Formula
     configure_args << "--with-python" unless ARGV.include? '--no-python'
     configure_args << "--with-perl" unless ARGV.include? '--no-perl'
 
-    if ARGV.include? '--ossp-uuid'
-      configure_args << "--with-ossp-uuid"
-      ENV.append 'CFLAGS', `uuid-config --cflags`.strip
-      ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
-      ENV.append 'LIBS', `uuid-config --libs`.strip
-    end
+    configure_args << "--with-ossp-uuid"
+    ENV.append 'CFLAGS', `uuid-config --cflags`.strip
+    ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
+    ENV.append 'LIBS', `uuid-config --libs`.strip
 
     if bits_64? and not ARGV.include? '--no-python'
       configure_args << "ARCHFLAGS='-arch x86_64'"
-
-      # On 64-bit systems, we need to look for a 32-bit Framework Python.
-      # The configure script prefers this Python version, and if it doesn't
-      # have 64-bit support then linking will fail.
-
-      framework_python = Pathname.new "/Library/Frameworks/Python.framework/Versions/Current/Python"
-      if framework_python.exist? and not (archs_for_command framework_python).include? :x86_64
-        opoo "Detected a framework Python that does not have 64-bit support in:"
-        puts <<-EOS.undent
-            #{framework_python}
-
-          The configure script seems to prefer this version of Python over any others,
-          so you may experience linker problems as described in:
-            http://osdir.com/ml/pgsql-general/2009-09/msg00160.html
-
-          To fix this issue, you may need to either delete the version of Python
-          shown above, or move it out of the way before brewing PostgreSQL.
-
-          Note that a framework Python in /Library/Frameworks/Python.framework is
-          the "MacPython" verison, and not the system-provided version which is in:
-            /System/Library/Frameworks/Python.framework
-        EOS
-      end
+      check_python_arch
     end
 
     # Fails on Core Duo with O4 and O3
@@ -86,13 +59,41 @@ class Postgresql <Formula
     system "./configure", *configure_args
     system "make install"
 
-    system "cd contrib/uuid-ossp; make install" if ARGV.include? '--ossp-uuid'
+    %w[ adminpack dblink fuzzystrmatch lo uuid-ossp pg_buffercache pg_trgm
+        pgcrypto tsearch2 vacuumlo xml2 ].each do |a|
+      system "cd contrib/#{a}; make install"
+    end
 
     (prefix+'org.postgresql.postgres.plist').write startup_plist
   end
 
+  def check_python_arch
+    # On 64-bit systems, we need to look for a 32-bit Framework Python.
+    # The configure script prefers this Python version, and if it doesn't
+    # have 64-bit support then linking will fail.
+    framework_python = Pathname.new "/Library/Frameworks/Python.framework/Versions/Current/Python"
+    return unless framework_python.exist?
+    unless (archs_for_command framework_python).include? :x86_64
+      opoo "Detected a framework Python that does not have 64-bit support in:"
+      puts <<-EOS.undent
+          #{framework_python}
+
+        The configure script seems to prefer this version of Python over any others,
+        so you may experience linker problems as described in:
+          http://osdir.com/ml/pgsql-general/2009-09/msg00160.html
+
+        To fix this issue, you may need to either delete the version of Python
+        shown above, or move it out of the way before brewing PostgreSQL.
+
+        Note that a framework Python in /Library/Frameworks/Python.framework is
+        the "MacPython" verison, and not the system-provided version which is in:
+          /System/Library/Frameworks/Python.framework
+      EOS
+    end
+  end
+
   def caveats
-    caveats = <<-EOS
+    s = <<-EOS
 To build plpython against a specific Python, set PYTHON prior to brewing:
   PYTHON=/usr/local/bin/python  brew install postgresql
 See:
@@ -106,7 +107,7 @@ If this is your first install, automatically load on login with:
     cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents
     launchctl load -w ~/Library/LaunchAgents/com.postgresql.postgres.plist
 
-If this is an upgrade and you already have the com.mysql.mysqld.plist loaded: 
+If this is an upgrade and you already have the com.mysql.mysqld.plist loaded:
     launchctl unload -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
     cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents
     launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
@@ -119,7 +120,7 @@ And stop with:
 EOS
 
     if bits_64? then
-      caveats << <<-EOS
+      s << <<-EOS
 
 If you want to install the postgres gem, including ARCHFLAGS is recommended:
     env ARCHFLAGS="-arch x86_64" gem install postgres
@@ -128,7 +129,7 @@ To install gems without sudo, see the Homebrew wiki.
       EOS
     end
 
-    caveats
+    return s
   end
 
   def startup_plist
