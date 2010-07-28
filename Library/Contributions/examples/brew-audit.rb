@@ -28,6 +28,11 @@ ff.each do |f|
     problems << " * Try not to concatenate paths in string interpolation:\n   #{$1}"
   end
 
+  aliases = Formula.aliases
+  f.deps.select {|d| aliases.include? d}.each do |d|
+    problems << " * Dep #{d} is an alias; switch to the real name."
+  end
+
   unless problems.empty?
     puts "#{f.name}:"
     puts problems * "\n"
