@@ -16,14 +16,16 @@ class GfortranPkgDownloadStrategy <CurlDownloadStrategy
 end
 
 class Gfortran <Formula
-  if MACOS_VERSION >= 10.6
-    url 'http://r.research.att.com/gfortran-42-5659.pkg'
-    md5 '71bd546baa45c9c0fb4943cdd72ee274'
-    version "4.2.4-5659"
-  else
+  if MACOS_VERSION < 10.6
+    # Leopard
     url 'http://r.research.att.com/gfortran-42-5577.pkg'
     md5 '30fb495c93cf514003cdfcb7846dc701'
     version "4.2.4-5577"
+  else
+    # Snow Leopard
+    url 'http://r.research.att.com/gfortran-42-5659.pkg'
+    md5 '71bd546baa45c9c0fb4943cdd72ee274'
+    version "4.2.4-5659"
   end
 
   homepage 'http://r.research.att.com/tools/'
@@ -51,6 +53,17 @@ class Gfortran <Formula
       ohai "Installing gfortran 4.2.4 for XCode 3.2.2 (build 5659)"
       safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
       safe_system "ln -sf #{man1}/gfortran-4.2.1 #{man1}/gfortran.1"
+    when 5664
+      if ARGV.force?
+        opoo "XCode 3.2.3 detected, but using gfortran 4.2.4 for XCode 3.2.2"
+        ohai "Installing gfortran 4.2.4 for XCode 3.2.2 (build 5659)"
+        safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
+        safe_system "ln -sf #{man1}/gfortran-4.2.1 #{man1}/gfortran.1"
+      else
+        onoe "XCode 3.2.3 detected, but not supported"
+        puts "To force installation on XCode 3.2.3 use:"
+        puts "\tbrew install --force gfortran"
+      end
     else
       onoe <<-EOS.undent
         Currently the gfortran compiler provided by this brew is only supported
