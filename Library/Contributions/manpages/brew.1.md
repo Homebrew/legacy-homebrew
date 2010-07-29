@@ -137,7 +137,7 @@ didn't include with OS X.
     recursive; only one level of dependencies is resolved.
 
   * `doctor`:
-    Audits your system for potential problems.
+    Checks your system for potential problems.
 
   * `cat` <formula>:
     Displays the source to <formula>.
@@ -153,6 +153,9 @@ didn't include with OS X.
   * `fetch` <formula>:
     Downloads the tarball or checks out from VCS for the given <formula>. For
     tarballs, also prints MD5 and SHA1 checksums.
+
+  * `audit`:
+    Checks all formulae for Homebrew coding style violations.
 
 ## ENVIRONMENT
 
