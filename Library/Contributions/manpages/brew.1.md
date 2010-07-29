@@ -47,8 +47,8 @@ didn't include with OS X.
     If `--debug` is passed and brewing fails, opens a shell inside the
     temporary folder used for compiling.
 
-    If `--use-llvm` is passed, attempt to compile using the LLVM front-end to GCC.
-    *NOTE*: Not all formulae are compatible with LLVM, especially C++-based ones.
+    If `--use-llvm` is passed, attempt to compile using the LLVM front-end to GCC.  
+    *NOTE*: Not all formulae will build with LLVM.
 
     If `--ignore-dependencies` is passed, skip installing any dependencies of
     any kind. If they are not already present, the formula will probably fail to
