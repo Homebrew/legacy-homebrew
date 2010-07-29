@@ -80,6 +80,10 @@ didn't include with OS X.
     Summarises all installed packages; this is inteded to be used by
     higher-level tools.
 
+  * `info` <URL>:
+    Prints the name and version that will be detected for <URL>; only http://
+    URLs supported for now.
+
   * `home`:
     Opens a browser to Homebrew's own homepage.
 
