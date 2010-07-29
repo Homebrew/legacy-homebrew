@@ -157,6 +157,14 @@ didn't include with OS X.
   * `audit`:
     Checks all formulae for Homebrew coding style violations.
 
+## EXTERNAL COMMANDS
+
+Homebrew allows external commands to be defined by putting a +x file named
+`brew-<cmdname>` or `brew-<cmdname>.rb` on the PATH. This will cause Homebrew
+to recognize `brew cmdname`.
+
+Some external commands are shipped with Homebrew, and enabled by default.
+
 ## ENVIRONMENT
 
   * HOMEBREW\_DEBUG:
