@@ -164,6 +164,12 @@ For all installed or specific formulae, remove any older versions from the cella
 \fBupdate\fR
 Using Git, fetches the newest version of Homebrew from the GitHub repository\.
 .
+.SH "EXTERNAL COMMANDS"
+Homebrew allows external commands to be defined by putting a +x file named \fBbrew\-<cmdname>\fR or \fBbrew\-<cmdname>\.rb\fR on the PATH\. This will cause Homebrew to recognize \fBbrew cmdname\fR\.
+.
+.P
+Some external commands are shipped with Homebrew, and enabled by default\.
+.
 .TP
 \fBfetch\fR \fIformula\fR
 Downloads the tarball or checks out from VCS for the given \fIformula\fR\. For tarballs, also prints MD5 and SHA1 checksums\.
@@ -171,12 +177,6 @@ Downloads the tarball or checks out from VCS for the given \fIformula\fR\. For t
 .TP
 \fBaudit\fR
 Checks all formulae for Homebrew coding style violations\.
-.
-.SH "EXTERNAL COMMANDS"
-Homebrew allows external commands to be defined by putting a +x file named \fBbrew\-<cmdname>\fR or \fBbrew\-<cmdname>\.rb\fR on the PATH\. This will cause Homebrew to recognize \fBbrew cmdname\fR\.
-.
-.P
-Some external commands are shipped with Homebrew, and enabled by default\.
 .
 .SH "ENVIRONMENT"
 .

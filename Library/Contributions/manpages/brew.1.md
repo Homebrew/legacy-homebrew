@@ -150,13 +150,6 @@ didn't include with OS X.
     Using Git, fetches the newest version of Homebrew from the GitHub
     repository.
 
-  * `fetch` <formula>:
-    Downloads the tarball or checks out from VCS for the given <formula>. For
-    tarballs, also prints MD5 and SHA1 checksums.
-
-  * `audit`:
-    Checks all formulae for Homebrew coding style violations.
-
 ## EXTERNAL COMMANDS
 
 Homebrew allows external commands to be defined by putting a +x file named
@@ -164,6 +157,13 @@ Homebrew allows external commands to be defined by putting a +x file named
 to recognize `brew cmdname`.
 
 Some external commands are shipped with Homebrew, and enabled by default.
+
+  * `fetch` <formula>:
+    Downloads the tarball or checks out from VCS for the given <formula>. For
+    tarballs, also prints MD5 and SHA1 checksums.
+
+  * `audit`:
+    Checks all formulae for Homebrew coding style violations.
 
 ## ENVIRONMENT
 
