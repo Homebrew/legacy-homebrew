@@ -20,8 +20,8 @@ def x11?
 end
 
 class Imagemagick <Formula
-  url 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.6.3-0.tar.bz2'
-  md5 '7f07e873873d3e9afb4126ce4594f556'
+  url 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.6.3-1.tar.bz2'
+  md5 '42c18236534ed45df0007c3eb3a62d78'
   homepage 'http://www.imagemagick.org'
 
   depends_on 'jpeg'
@@ -32,6 +32,7 @@ class Imagemagick <Formula
   depends_on 'libtiff' => :optional
   depends_on 'little-cms' => :optional
   depends_on 'jasper' => :optional
+  depends_on 'little-cms' => :optional
 
   depends_on 'libwmf' if use_wmf?
 
@@ -55,9 +56,9 @@ class Imagemagick <Formula
              "--with-modules",
              "--without-magick-plus-plus" ]
 
-     args << "--disable-openmp" if MACOS_VERSION < 10.6 # libgomp unavailable
-     args << "--without-gslib" unless ghostscript_srsly?
-     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
+    args << "--disable-openmp" if MACOS_VERSION < 10.6 # libgomp unavailable
+    args << "--without-gslib" unless ghostscript_srsly?
+    args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
                 unless ghostscript_srsly? or ghostscript_fonts?
 
     # versioned stuff in main tree is pointless for us
