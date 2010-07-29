@@ -7,6 +7,7 @@ class Httrack <Formula
   version '3.43-9C'
 
   def install
+    ENV.deparallelize
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-shared=no"
