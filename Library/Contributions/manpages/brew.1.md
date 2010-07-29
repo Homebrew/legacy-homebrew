@@ -28,7 +28,8 @@ didn't include with OS X.
 
   * `--cache` [<formula>]:
     Displays the path Homebrew uses to cache downloads.
-    If <formula> is given, display the file or folder used to cache that specific package.
+    If <formula> is given, display the file or folder used to cache that
+    specific package.
 
   * `--config`:
     Shows Homebrew and system configuration useful for debugging. If you file
@@ -146,7 +147,12 @@ didn't include with OS X.
     cellar.
 
   * `update`:
-    Using Git, fetches the newest version of Homebrew from the GitHub repository.
+    Using Git, fetches the newest version of Homebrew from the GitHub
+    repository.
+
+  * `fetch` <formula>:
+    Downloads the tarball or checks out from VCS for the given <formula>. For
+    tarballs, also prints MD5 and SHA1 checksums.
 
 ## ENVIRONMENT
 
