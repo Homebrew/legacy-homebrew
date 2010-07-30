@@ -9,6 +9,12 @@ class Nmap <Formula
     fails_with_llvm
     ENV.deparallelize
 
+    # There are reports that this is needed for sudo. See:
+    # http://github.com/mxcl/homebrew/issues/issue/1270
+    ENV['CFLAGS']   = "-m32 -O2"
+    ENV['LDFLAGS']  = "-m32 -O2"
+    ENV['CXXFLAGS'] = "-m32 -O2"
+
     system "./configure", "--prefix=#{prefix}", "--without-zenmap"
     system "make"                      
     system "make install" # seperate steps required otherwise the build fails

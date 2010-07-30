@@ -2,10 +2,11 @@ require 'formula'
 
 class Parrot <Formula
   head 'bzr://https://launchpad.net/parrot/trunk'
-  url 'ftp://ftp.parrot.org/pub/parrot/releases/devel/2.5.0/parrot-2.5.0.tar.gz'
+  url 'http://ftp.parrot.org/releases/supported/2.6.0/parrot-2.6.0.tar.bz2'
   homepage 'http://www.parrot.org/'
-  md5 'c64fe3a619afbda92e92d8df93b0d05d'
+  md5 'bae6db3abbf690a9b2f135136bb7cfd5'
 
+  depends_on 'gmp' => :optional
   depends_on 'icu4c' => :optional
   depends_on 'pcre' => :optional
 
