@@ -21,6 +21,9 @@ class Gource <Formula
     ENV.x11
     ENV.prepend 'PATH', "/usr/X11/bin", ":"
 
+    # For non-/usr/local installs
+    ENV.append "CXXFLAGS", "-I#{HOMEBREW_PREFIX}/include"
+
     system "autoreconf -f -i" unless File.exist? "configure"
 
     system "./configure", "--disable-dependency-tracking",
