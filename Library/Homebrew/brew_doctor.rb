@@ -125,15 +125,13 @@ def check_gcc_versions
   end
 end
 
-def check_access_share_locale
-  # If PREFIX/share/locale already exists, "sudo make install" of
-  # non-brew installed software may cause installation failures.
-  locale = HOMEBREW_PREFIX+'share/locale'
-  return unless locale.exist?
+def __check_subdir_access base
+  target = HOMEBREW_PREFIX+base
+  return unless target.exist?
 
   cant_read = []
 
-  locale.find do |d|
+  target.find do |d|
     next unless d.directory?
     cant_read << d unless d.writable?
   end
@@ -141,7 +139,7 @@ def check_access_share_locale
   cant_read.sort!
   if cant_read.length > 0
     puts <<-EOS.undent
-    Some folders in #{locale} aren't writable.
+    Some folders in #{target} aren't writable.
     This can happen if you "sudo make install" software that isn't managed
     by Homebrew. If a brew tries to add locale information to one of these
     folders, then the install will fail during the link step.
@@ -151,6 +149,14 @@ def check_access_share_locale
     puts *cant_read.collect { |f| "    #{f}" }
     puts
   end
+end
+
+def check_access_share_locale
+  __check_subdir_access 'share/locale'
+end
+
+def check_access_share_man
+  __check_subdir_access 'share/man'
 end
 
 def check_access_pkgconfig
@@ -427,6 +433,7 @@ def brew_doctor
     check_for_x11
     check_for_nonstandard_x11
     check_access_share_locale
+    check_access_share_man
     check_user_path
     check_which_pkg_config
     check_pkg_config_paths

@@ -1,10 +1,10 @@
 require 'formula'
 
 class Scalate <Formula
-  url 'http://repo1.maven.org/maven2/org/fusesource/scalate/scalate-distro/1.1/scalate-distro-1.1-unix-bin.tar.gz'
-  version '1.1'
+  url 'http://repo1.maven.org/maven2/org/fusesource/scalate/scalate-distro/1.2/scalate-distro-1.2-unix-bin.tar.gz'
+  version '1.2'
   homepage 'http://scalate.fusesource.org/'
-  md5 'fbbca51775da58464e1eddd30c736596'
+  md5 '20b8c3922f24043ae5118aa35efb5791'
 
   def startup_script
     <<-EOS.undent

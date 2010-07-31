@@ -9,6 +9,8 @@ class Sloccount <Formula
       DATA
   end
 
+  depends_on 'md5sha1sum'
+
   def install
     rm "makefile.orig" # Delete makefile.orig or patch falls over
     bin.mkpath # Create the install dir or install falls over
