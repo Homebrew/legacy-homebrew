@@ -7,7 +7,13 @@ class Bazaar <Formula
   
   aka :bzr
 
+  def options
+    [["--system", "Install using the OS X system Python."]]
+  end
+
   def install
+    ENV.prepend "PATH", "/System/Library/Frameworks/Python.framework/Versions/Current/bin", ":" if ARGV.include? "--system"
+    
     # Find the archs of the Python we are building against.
     # If the python includes PPC support, then don't use Intel-
     # specific compiler flags
