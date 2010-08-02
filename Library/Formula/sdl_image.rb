@@ -14,7 +14,6 @@ class SdlImage <Formula
     Sdl.use_homebrew_prefix 'SDL_image.pc.in'
 
     system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-sdltest",
                           "--with-freetype-exec-prefix=/usr/X11"

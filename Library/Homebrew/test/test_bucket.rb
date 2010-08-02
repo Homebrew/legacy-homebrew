@@ -83,7 +83,7 @@ class BeerTasting < Test::Unit::TestCase
       assert_nothing_raised do
         f=TestBall.new
         make f.url
-        info f.name
+        info f
         clean f
         prune
         #TODO test diy function too

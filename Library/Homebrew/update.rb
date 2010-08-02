@@ -22,7 +22,7 @@ class RefreshBrew
   # version was available, +false+ if already up-to-date.
   def update_from_masterbrew!
     output = ''
-    in_prefix do
+    HOMEBREW_REPOSITORY.cd do
       if File.directory? '.git'
         safe_system CHECKOUT_COMMAND
       else
@@ -61,17 +61,13 @@ class RefreshBrew
   end
 
   def current_revision
-    in_prefix { execute(REVISION_COMMAND).strip }
+    HOMEBREW_REPOSITORY.cd { execute(REVISION_COMMAND).strip }
   rescue
     'TAIL'
   end
   
   private
-  
-  def in_prefix
-    Dir.chdir(HOMEBREW_REPOSITORY) { yield }
-  end
-  
+
   def execute(cmd)
     out = `#{cmd}`
     if $? && !$?.success?

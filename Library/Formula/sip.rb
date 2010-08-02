@@ -4,9 +4,9 @@ require 'formula'
 # downloads disappear.
 
 class Sip <Formula
-  url 'http://www.riverbankcomputing.co.uk/static/Downloads/sip4/sip-4.10.3.tar.gz'
+  url 'http://www.riverbankcomputing.co.uk/static/Downloads/sip4/sip-4.10.5.tar.gz'
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
-  md5 'cb0922b5d12add2d36061e43be64f5ce'
+  md5 '0a591ef6e59aa16e56822d3eb9fe21b8'
 
   def install
     # Force building against System python, because we need a Framework build.

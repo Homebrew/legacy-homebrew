@@ -1,9 +1,9 @@
 require 'formula'
 
 class Usbmuxd <Formula
-  url 'http://marcansoft.com/uploads/usbmuxd/usbmuxd-1.0.4.tar.bz2'
+  url 'http://marcansoft.com/uploads/usbmuxd/usbmuxd-1.0.5.tar.bz2'
   homepage 'http://marcansoft.com/blog/iphonelinux/usbmuxd/'
-  md5 '450c72273dd1dcc1d0fcfc7138122d54'
+  md5 '484970632a739206afe86802c6169300'
 
   depends_on 'libusb'
   depends_on 'cmake'
