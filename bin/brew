@@ -241,7 +241,14 @@ begin
           puts `ls #{HOMEBREW_CELLAR} | wc -l`.strip+" kegs, "+HOMEBREW_CELLAR.abv
         end
       elsif ARGV[0][0..6] == 'http://'
-        puts Pathname.new(ARGV.shift).version
+        path = Pathname.new(ARGV.shift)
+        /(.*?)[-_.]?#{path.version}/.match path.basename
+        unless $1.to_s.empty?
+          name = $1
+        else
+          name = path.stem
+        end
+        puts "#{name} #{path.version}"
       else
         ARGV.formulae.each{ |f| info f }
       end

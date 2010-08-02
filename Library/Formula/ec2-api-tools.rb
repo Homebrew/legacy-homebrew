@@ -12,6 +12,7 @@ class AmazonWebServicesFormula <Formula
     # Put the .jars in prefix/jars/lib, which isn't linked to the Cellar
     # This will prevent conflicts with other versions of these jars.
     (prefix+'jars').install 'lib'
+    (prefix+'jars/bin').make_symlink '../bin'
   end
 
   # Use this method to generate standard caveats.
