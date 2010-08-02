@@ -105,7 +105,7 @@ If this is your first install, create a database with:
 
 If this is your first install, automatically load on login with:
     cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents
-    launchctl load -w ~/Library/LaunchAgents/com.postgresql.postgres.plist
+    launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
 
 If this is an upgrade and you already have the com.mysql.mysqld.plist loaded:
     launchctl unload -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
