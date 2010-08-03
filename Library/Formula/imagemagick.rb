@@ -42,7 +42,7 @@ class Imagemagick <Formula
 
   def install
     # Add to PATH for freetype-config on Snow Leopard
-    ENV.append 'PATH', '/usr/x11/bin', ':'
+    ENV.prepend 'PATH', '/usr/X11/bin', ':'
 
     ENV.libpng
     ENV.O3 # takes forever otherwise

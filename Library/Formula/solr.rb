@@ -10,9 +10,9 @@ fi
 end_script
 
 class Solr <Formula
-  url 'http://apache.deathculture.net/lucene/solr/1.4.0/apache-solr-1.4.0.tgz'
+  url 'http://apache.deathculture.net/lucene/solr/1.4.1/apache-solr-1.4.1.tgz'
   homepage 'http://lucene.apache.org/solr/'
-  md5 '1cc3783316aa1f95ba5e250a4c1d0451'
+  md5 '258a020ed8c3f44e13b09e8ae46a1c84'
 
   def install
     prefix.mkpath
