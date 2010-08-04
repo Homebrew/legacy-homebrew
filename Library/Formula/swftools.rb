@@ -11,9 +11,9 @@ class Swftools <Formula
   def install
     ENV.minimal_optimization
 
-    # Need to add freetype-config and other X11 utils to the path
+    # Add to PATH for freetype-config on Snow Leopard
+    ENV.prepend 'PATH', '/usr/X11/bin', ':'
     ENV.x11
-    ENV.append 'PATH', '/usr/x11/bin', ':'
 
     system "./configure", "--prefix=#{prefix}"
     system "make"
