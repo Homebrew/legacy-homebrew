@@ -17,6 +17,7 @@ class Kdelibs <Formula
   depends_on 'gettext'
   depends_on 'shared-mime-info'
   depends_on 'attica'
+  depends_on 'd-bus'
 
   depends_on 'libpng' unless File.exist? "/usr/X11R6/lib"
 
