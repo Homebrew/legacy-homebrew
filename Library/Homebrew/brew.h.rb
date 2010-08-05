@@ -186,7 +186,7 @@ def github_info name
 end
 
 def info f
-  exec 'open', github_info(name) if ARGV.flag? '--github'
+  exec 'open', github_info(f.name) if ARGV.flag? '--github'
 
   puts "#{f.name} #{f.version}"
   puts f.homepage

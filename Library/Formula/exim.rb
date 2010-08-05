@@ -21,17 +21,20 @@ class Exim <Formula
       s << "LOOKUP_INCLUDE=-I#{HOMEBREW_PREFIX}/include\n"
       s << "LOOKUP_LIBS=-L#{HOMEBREW_PREFIX}/lib\n"
    end
-     
+
     inreplace 'OS/Makefile-Darwin' do |s|
       s.remove_make_var! %w{CC CFLAGS}
     end
-    
+
+    # The compile script ignores CPPFLAGS
+    ENV.append "CFLAGS", ENV['CPPFLAGS']
+
     system "make"
     system "make INSTALL_ARG=-no_chown install"
     (man + 'man8').install 'doc/exim.8'
     (bin + 'exim_ctl').write startup_script
   end
-  
+
   #inspired from macports startup script, but with fixed restart issue due to missing setuid
   def startup_script
     return <<-END
@@ -57,7 +60,7 @@ stop)
 esac
 END
   end
-  
+
   def caveats
     <<-EOS.undent
       Start with:

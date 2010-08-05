@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mutt <Formula
-  @url='ftp://ftp.mutt.org/mutt/devel/mutt-1.5.20.tar.gz'
-  @homepage='http://www.mutt.org/'
-  @md5='027cdd9959203de0c3c64149a7ee351c'
+  url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.20.tar.gz'
+  homepage 'http://www.mutt.org/'
+  md5 '027cdd9959203de0c3c64149a7ee351c'
   
   depends_on 'tokyo-cabinet'
 
@@ -20,7 +20,7 @@ class Mutt <Formula
       patches << 'http://lunar-linux.org/~tchan/mutt/patch-1.5.20.sidebar.20090619.txt'
     end
     if ARGV.include? '--trash-patch'
-      patches << 'http://trac.macports.org/raw-attachment/ticket/20412/patch-1.5.20.cd.trash_folder.diff'
+      patches << 'http://trac.macports.org/export/69644/trunk/dports/mail/mutt-devel/files/patch-1.5.20.bk.trash_folder-purge_message.1'
     end
     patches
   end
@@ -39,6 +39,7 @@ class Mutt <Formula
           "--enable-smtp",
           "--enable-pop",
           "--enable-hcache",
+          "--with-tokyocabinet",
 
           # This is just a trick to keep 'make install' from trying to chgrp
           # the mutt_dotlock file (which we can't do if we're running as an
