@@ -42,6 +42,7 @@ class Glib <Formula
                           "--disable-rebuilds",
                           "--with-libiconv=gnu"
     system "make"
+    ENV.j1 # Supress a folder already exists warning
     system "make install"
 
     # This sucks; gettext is Keg only to prevent conflicts with the wider

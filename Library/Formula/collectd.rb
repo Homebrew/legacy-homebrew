@@ -1,9 +1,9 @@
 require 'formula'
 
 class Collectd <Formula
-  url 'http://collectd.org/files/collectd-4.10.0.tar.bz2'
+  url 'http://collectd.org/files/collectd-4.10.1.tar.bz2'
   homepage 'http://collectd.org/'
-  md5 '2f671d267bf6cb1a9d385107ba7b734d'
+  md5 '8cd79b4ebdb9dbeb51ba52d3463a06ef'
 
   def skip_clean? path
     true

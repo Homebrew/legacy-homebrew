@@ -140,11 +140,16 @@ def puts_columns items, cols = 4
 end
 
 def exec_editor *args
-  editor=ENV['EDITOR']
+  editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
   if editor.nil?
     if system "/usr/bin/which -s mate"
+      # TextMate
       editor='mate'
+    elsif system "/usr/bin/which -s edit"
+      # BBEdit / TextWrangler
+      editor='edit'
     else
+      # Default to vim
       editor='/usr/bin/vim'
     end
   end
@@ -172,7 +177,7 @@ def archs_for_command cmd
   cmd = `/usr/bin/which #{cmd}` unless Pathname.new(cmd).absolute?
   cmd.gsub! ' ', '\\ '  # Escape spaces in the filename.
 
-  archs = IO.popen("/usr/bin/file #{cmd}").readlines.inject([]) do |archs, line|
+  archs = IO.popen("/usr/bin/file -L #{cmd}").readlines.inject([]) do |archs, line|
     case line
     when /Mach-O (executable|dynamically linked shared library) ppc/
       archs << :ppc7400
