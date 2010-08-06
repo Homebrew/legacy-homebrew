@@ -1,8 +1,8 @@
 require 'formula'
 
 class Sqlite <Formula
-  url 'http://www.sqlite.org/sqlite-amalgamation-3.7.0.tar.gz'
-  md5 '61b85f108760f91b79afc7833e6e6cb4'
+  url 'http://www.sqlite.org/sqlite-amalgamation-3.7.0.1.tar.gz'
+  md5 '24b589eb1522b4d9a179a621d0729dfa'
   homepage 'http://www.sqlite.org/'
 
   def options
