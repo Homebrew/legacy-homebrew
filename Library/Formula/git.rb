@@ -32,6 +32,9 @@ class Git < Formula
 
     # Install the git bash completion file
     (etc+'bash_completion.d').install 'contrib/completion/git-completion.bash'
+    
+    # Install git-p4 
+    bin.install 'contrib/fast-import/git-p4'
 
     # these files are exact copies of the git binary, so like the contents
     # of libexec/git-core lets hard link them
