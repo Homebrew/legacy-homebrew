@@ -318,7 +318,7 @@ def check_for_config_scripts
   paths = ENV['PATH'].split(':').collect{|p| File.expand_path p}
   paths.each do |p|
     next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin"].include? p
-    next if %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] =~ p
+    next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})]
 
     configs = Dir["#{p}/*-config"]
     # puts "#{p}\n    #{configs * ' '}" unless configs.empty?
