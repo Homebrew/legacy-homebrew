@@ -57,7 +57,7 @@ def check_for_x11
   unless File.exists? '/usr/X11/lib/libpng.dylib'
     puts <<-EOS.undent
       You don't have X11 installed as part of your Xcode installation.
-      This isn't required for all formula. But it is expected by some.
+      This isn't required for all formula, but is expected by some.
 
     EOS
   end
@@ -71,11 +71,8 @@ def check_for_nonstandard_x11
       "/usr/X11" was found, but it is a symlink to:
         #{x11.resolved_path}
 
-      Homebrew's X11 support has only be tested with Apple's X11,
-      preferably any updates from the latest Xcode package.
-
-      In particular, "XQuartz" is not known to allow Homebrew
-      software require X11 to compile.
+      Homebrew's X11 support has only be tested with Apple's X11.
+      In particular, "XQuartz" and "XDarwin" are not known to be compatible.
 
     EOS
   end
