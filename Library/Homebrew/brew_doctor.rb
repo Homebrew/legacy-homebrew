@@ -452,8 +452,8 @@ def brew_doctor
     unless (out = read.read).chomp.empty?
       puts out
     else
-      puts "Your OS X is ripe for brewing. Any troubles you may be experiencing are"
-      puts "likely purely psychosomatic."
+      puts "Your OS X is ripe for brewing."
+      puts "Any troubles you may be experiencing are likely purely psychosomatic."
     end
   end
 end
