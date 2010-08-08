@@ -10,7 +10,7 @@ class P7zip <Formula
   end
 
   def build_32bit?
-    ARGV.include? '--32-bit' or !Hardware.is_64_bit?
+    ARGV.include? '--32-bit' or Hardware.is_32_bit?
   end
 
   def install
