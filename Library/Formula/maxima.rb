@@ -12,8 +12,9 @@ class Maxima <Formula
 
   def install
     ENV.deparallelize
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}",
-           "--enable-cmucl", "--enable-gettext"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--enable-cmucl", "--enable-gettext"
     system "make install"
   end
 end

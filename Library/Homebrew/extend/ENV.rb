@@ -151,9 +151,12 @@ module HomebrewEnvExtension
   def libxml2
     append_to_cflags ' -I/usr/include/libxml2'
   end
+
   def x11
     opoo "You do not have X11 installed, this formula may not build." if not x11_installed?
-    
+
+    # There are some config scripts (e.g. freetype) here that should go in the path
+    ENV.prepend 'PATH', '/usr/X11/bin', ':'
     # CPPFLAGS are the C-PreProcessor flags, *not* C++!
     append 'CPPFLAGS', '-I/usr/X11R6/include'
     append 'LDFLAGS', '-L/usr/X11R6/lib'
@@ -161,6 +164,7 @@ module HomebrewEnvExtension
     append 'CMAKE_PREFIX_PATH', '/usr/X11R6', ':'
   end
   alias_method :libpng, :x11
+
   # we've seen some packages fail to build when warnings are disabled!
   def enable_warnings
     remove_from_cflags '-w'

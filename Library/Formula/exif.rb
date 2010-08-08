@@ -8,7 +8,7 @@ class Exif <Formula
   depends_on 'popt'
   depends_on 'libexif'
   depends_on 'gettext'
-  
+
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"

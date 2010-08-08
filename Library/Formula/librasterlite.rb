@@ -9,10 +9,8 @@ class Librasterlite <Formula
   depends_on "libspatialite"
 
   def install
-    # For PNG support
-    ENV.x11
-    system "./configure", "--disable-debug", 
-                          "--disable-dependency-tracking", 
+    ENV.libpng
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end

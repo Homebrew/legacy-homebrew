@@ -11,7 +11,8 @@ class Libplist <Formula
 
   def install
     # Disable Python bindings.
-    inreplace "CMakeLists.txt", 'OPTION(ENABLE_PYTHON "Enable Python bindings (needs Swig)" ON)', '# Disabled Python Bindings'
+    inreplace "CMakeLists.txt", 'OPTION(ENABLE_PYTHON "Enable Python bindings (needs Swig)" ON)',
+                                '# Disabled Python Bindings'
     system "cmake . #{std_cmake_parameters}"
     system "make install"
 

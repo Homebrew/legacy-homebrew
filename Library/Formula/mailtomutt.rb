@@ -10,14 +10,13 @@ class Mailtomutt <Formula
     prefix.install "build/Default/MailtoMutt.app"
   end
 
-  def caveats
-    <<-EOS
-      MaitoMutt.app was installed in:
-        #{prefix}
+  def caveats; <<-EOS.undent
+    MaitoMutt.app was installed in:
+      #{prefix}
 
-      If you have external command enabled, you can do:
-        brew linkapps
-      to symlink into ~/Applications
+    If you have external command enabled, you can do:
+      brew linkapps
+    to symlink into ~/Applications
     EOS
   end
 end

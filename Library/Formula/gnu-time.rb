@@ -6,10 +6,9 @@ class GnuTime <Formula
   md5 'e38d2b8b34b1ca259cf7b053caac32b3'
 
   def install
-    system "./configure",
-    "--prefix=#{prefix}",
-    "--program-prefix=g",
-    "--mandir=#{man}"
+    system "./configure", "--program-prefix=g",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make install"
   end
 end

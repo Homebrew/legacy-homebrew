@@ -7,13 +7,10 @@ class Scons <Formula
   version '2.0.0'
 
   def install
-    man1.install gzip('scons-time.1')
-    man1.install gzip('scons.1')
-    man1.install gzip('sconsign.1')
-
+    man1.install [gzip('scons-time.1'), gzip('scons.1'), gzip('sconsign.1')]
     system "python", "setup.py", "install",
-                    "--prefix=#{prefix}",
-                    "--standalone-lib",
-                    "--no-version-script", "--no-install-man"
+                     "--prefix=#{prefix}",
+                     "--standalone-lib",
+                     "--no-version-script", "--no-install-man"
   end
 end

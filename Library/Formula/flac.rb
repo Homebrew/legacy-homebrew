@@ -13,7 +13,7 @@ class Flac <Formula
   depends_on 'lame'
 
   def install
-    # sadly the asm optimisations won't compile since Leopard, and nobody 
+    # sadly the asm optimisations won't compile since Leopard, and nobody
     # cares or knows how to fix it
     system "./configure", "--disable-debug",
                           "--disable-asm-optimizations",

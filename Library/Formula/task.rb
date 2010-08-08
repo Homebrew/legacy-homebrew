@@ -5,13 +5,10 @@ class Task <Formula
   homepage 'http://www.taskwarrior.org/'
   md5 'be98cc74fe03b8336250e0b7ed3cd8c7'
 
-  def skip_clean? path
-    true
-  end
+  skip_clean :all
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
 

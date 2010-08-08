@@ -16,7 +16,7 @@ class Nmap <Formula
     ENV['CXXFLAGS'] = "-m32 -O2"
 
     system "./configure", "--prefix=#{prefix}", "--without-zenmap"
-    system "make"                      
-    system "make install" # seperate steps required otherwise the build fails
+    system "make" # seperate steps required otherwise the build fails
+    system "make install"
   end
 end

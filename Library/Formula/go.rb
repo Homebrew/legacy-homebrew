@@ -5,8 +5,6 @@ class Go <Formula
   head 'http://go.googlecode.com/hg/', :revision => 'release'
   homepage 'http://golang.org'
 
-  aka 'google-go'
-
   skip_clean 'bin'
 
   def cruft

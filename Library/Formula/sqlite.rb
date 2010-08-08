@@ -6,9 +6,7 @@ class Sqlite <Formula
   homepage 'http://www.sqlite.org/'
 
   def options
-    [
-      ["--with-rtree", "Enables the R*Tree index module"]
-    ]
+    [["--with-rtree", "Enables the R*Tree index module"]]
   end
 
   def install
