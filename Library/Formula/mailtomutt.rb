@@ -14,9 +14,8 @@ class Mailtomutt <Formula
     MaitoMutt.app was installed in:
       #{prefix}
 
-    If you have external command enabled, you can do:
+    To symlink into ~/Applications:
       brew linkapps
-    to symlink into ~/Applications
     EOS
   end
 end
