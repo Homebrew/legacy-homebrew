@@ -10,9 +10,7 @@ class Cairo <Formula
   depends_on 'pixman'
 
   # Comes with Snow Leopard, but not Leopard
-  def keg_only?
-    :provided_by_osx
-  end
+  keg_only :provided_by_osx
 
   def install
     system "./configure", "--disable-dependency-tracking",

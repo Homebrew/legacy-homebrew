@@ -32,7 +32,7 @@ class ModWsgi <Formula
     archs = archs_for_command("python")
     archs.delete :ppc7400
     archs.delete :ppc64
-    
+
     inreplace 'Makefile' do |s|
       s.gsub! "-Wc,'-arch x86_64' -Wc,'-arch i386' -Wc,'-arch ppc7400'",
               archs.collect{ |a| "-Wc,'-arch #{a}'" }.join(' ')

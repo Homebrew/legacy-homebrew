@@ -5,9 +5,7 @@ class Libpng <Formula
   homepage 'http://www.libpng.org/pub/png/libpng.html'
   md5 '976909556e6613804d810405c1f72ce6'
 
-  def keg_only?
-    :provided_by_osx
-  end
+  keg_only :provided_by_osx
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"

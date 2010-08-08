@@ -1,0 +1,1 @@
+../Formula/auto-scaling.rb

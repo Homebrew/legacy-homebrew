@@ -6,7 +6,7 @@ class Libpano <Formula
   homepage 'http://panotools.sourceforge.net/'
   md5 'd3708c6c29f6a19b69c74232853e73ae'
 
-  depends_on 'libjpeg'
+  depends_on 'jpeg'
   depends_on 'libtiff'
   depends_on 'libpng'
 

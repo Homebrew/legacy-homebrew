@@ -8,10 +8,10 @@ class Exiftool <Formula
   def install
     system "perl", "Makefile.PL"
     system "make", "test"
-    
+
     # Install privately to the Cellar
     libexec.install ["exiftool", "lib"]
-    
+
     # Link the executable script into "bin"
     bin.mkpath
     (bin + 'exiftool').write <<-EOBIN

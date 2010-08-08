@@ -9,7 +9,7 @@ class Ptunnel <Formula
   def install
     system "make"
     bin.install "ptunnel"
-    (man+'man8').install "ptunnel.8"
+    man8.install "ptunnel.8"
   end
 
   def caveats

@@ -15,7 +15,7 @@ class Newlisp <Formula
     bin.install 'newlisp'
   end
 
-  def caveats; <<-EOS
+  def caveats; <<-EOS.undent
     Because of hardcoded paths in the newLISP source,
     this formula does not install the Java-based IDE.
     EOS

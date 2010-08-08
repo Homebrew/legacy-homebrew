@@ -9,7 +9,7 @@ class Unix2dos < Formula
     # we don't use the Makefile as it doesn't optimize
     system "#{ENV.cc} #{ENV['CFLAGS']} unix2dos.c -o unix2dos"
 
-    bin.install %w[unix2dos]
-    man1.install %w[unix2dos.1]
+    bin.install "unix2dos"
+    man1.install "unix2dos.1"
   end
 end

@@ -11,7 +11,7 @@ class Bcrypt <Formula
       s.change_make_var! "CFLAGS", ENV['CFLAGS']
       s.change_make_var! "LDFLAGS", "-lz"
     end
-    
+
     system "make"
     bin.install "bcrypt"
     man1.install gzip("bcrypt.1")

@@ -27,9 +27,7 @@ class Fftw <Formula
 
     # double precision
     # enable-sse2 only works with double precision (default)
-    system "./configure", "--enable-sse2",
-                          *args
-
+    system "./configure", "--enable-sse2", *args
     system "make install"
 
     # clean up so we can compile the long-double precision variant
@@ -37,12 +35,10 @@ class Fftw <Formula
 
     # long-double precision
     # no SIMD optimization available
-    system "./configure", "--enable-long-double",
-                          *args
-
+    system "./configure", "--enable-long-double", *args
     system "make install"
 
     #wtf file?
-    (prefix+'share/info/dir').unlink
+    (info+'dir').unlink
   end
 end

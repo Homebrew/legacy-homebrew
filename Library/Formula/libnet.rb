@@ -10,8 +10,8 @@ class Libnet < Formula
     cd 'libnet'
     inreplace "autogen.sh", "libtoolize", "glibtoolize"
     system "./autogen.sh"
-    system "cp", "/usr/share/automake-1.10/config.sub", "."
-    system "cp", "/usr/share/automake-1.10/config.guess", "."
+    cp "/usr/share/libtool/config/config.guess", "."
+    cp "/usr/share/libtool/config/config.sub", "."
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     touch 'doc/man/man3/libnet.3'
     system "make install"

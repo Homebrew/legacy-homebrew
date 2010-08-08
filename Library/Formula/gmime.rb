@@ -8,7 +8,8 @@ class Gmime <Formula
   depends_on 'glib'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--enable-largefile"
     system "make install"
   end
