@@ -11,7 +11,11 @@ class Gphoto2 <Formula
   depends_on 'popt'
 
   def install
-    system "./configure", "--without-readline", "--without-cdk", "--without-aalib", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--without-readline",
+                          "--without-cdk",
+                          "--without-aalib"
     system "make install"
   end
 end

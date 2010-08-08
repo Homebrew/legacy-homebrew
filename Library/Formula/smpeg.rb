@@ -3,7 +3,7 @@ require 'formula'
 class Smpeg <Formula
   head 'svn://svn.icculus.org/smpeg/trunk'
   homepage 'http://icculus.org/smpeg/'
-  
+
   depends_on 'sdl'
 
   def install

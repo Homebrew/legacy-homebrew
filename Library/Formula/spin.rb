@@ -15,7 +15,7 @@ class Spin <Formula
     ENV.deparallelize
 
     # Compile and install the binary.
-    FileUtils.cd("Src#{version}") do
+    cd("Src#{version}") do
       system "make"
       bin.install "spin"
     end

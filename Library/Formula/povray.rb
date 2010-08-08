@@ -8,7 +8,9 @@ class Povray <Formula
   def install
     fails_with_llvm "llvm-gcc: povray fails with 'terminate called after throwing an instance of int'"
 
-    system "./configure", "COMPILED_BY=homebrew", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "COMPILED_BY=homebrew",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

@@ -203,6 +203,11 @@ class Pathname
   def resolved_path_exists?
     (dirname+readlink).exist?
   end
+
+  def starts_with? prefix
+    prefix = prefix.to_s
+    self.to_s[0, prefix.length] == prefix
+  end
 end
 
 # sets $n and $d so you can observe creation of stuff

@@ -7,9 +7,7 @@ class Ecl <Formula
 
   def install
     ENV.deparallelize
-    system "./configure",
-      "--prefix=#{prefix}",
-      "--enable-unicode"
+    system "./configure", "--prefix=#{prefix}", "--enable-unicode"
     system "make"
     system "make install"
   end

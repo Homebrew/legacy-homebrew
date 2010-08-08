@@ -13,7 +13,7 @@ class Pyqt <Formula
 
   def install
     ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/python", ':'
-    
+
     system "python", "./configure.py", "--confirm-license",
                                        "--bindir=#{bin}",
                                        "--destdir=#{lib}/python",

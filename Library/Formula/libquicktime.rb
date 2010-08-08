@@ -23,7 +23,10 @@ class Libquicktime <Formula
   depends_on 'libvorbis' => :optional
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}", "--enable-gpl", "--without-doxygen"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--enable-gpl",
+                          "--without-doxygen"
     system "make"
     system "make install"
   end

@@ -15,7 +15,7 @@ class Foremost <Formula
     system "make mac"
 
     bin.install "foremost"
-    (man+"man8").install "foremost.8.gz"
+    man8.install "foremost.8.gz"
     etc.install "foremost.conf" => "foremost.conf.sample"
   end
 end

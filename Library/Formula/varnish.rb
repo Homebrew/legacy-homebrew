@@ -8,10 +8,8 @@ class Varnish <Formula
   depends_on 'pkg-config'
   depends_on 'pcre'
 
-  def skip_clean? path
-    # Do not strip varnish binaries: Otherwise, the magic string end pointer isn't found.
-    true
-  end
+  # Do not strip varnish binaries: Otherwise, the magic string end pointer isn't found.
+  skip_clean :all
 
   def install
     system "./configure", "--disable-dependency-tracking",

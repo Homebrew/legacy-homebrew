@@ -17,8 +17,8 @@ class Wireshark <Formula
     ENV.j1 # Install failed otherwise.
     system "make install"
   end
-  
+
   def caveats
-    "We don't build the X11 enabled GUI by default"
+    "We don't build the X11-enabled GUI by default"
   end
 end

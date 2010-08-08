@@ -8,9 +8,7 @@ class Fondu <Formula
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make"
-    bin.install 'fondu'
-    bin.install 'ufond'
-    man1.install 'fondu.1'
-    man1.install 'ufond.1'
+    bin.install ['fondu', 'ufond']
+    man1.install ['fondu.1', 'ufond.1']
   end
 end

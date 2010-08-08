@@ -6,8 +6,6 @@ class Jpeg <Formula
   md5 'e022acbc5b36cd2cb70785f5b575661e'
   homepage 'http://www.ijg.org'
 
-  aka :libjpeg, :libjpg
-
   def install
     ENV.universal_binary
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"

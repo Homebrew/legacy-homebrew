@@ -5,8 +5,8 @@ class Macvim <Formula
   homepage 'http://code.google.com/p/macvim'
 
   def install
-    # MacVim's Xcode project gets confused by $CC, disable it until someone
-    # figures out why it fails.
+    # MacVim's Xcode project gets confused by $CC
+    # Disable it until someone figures out why it fails.
     ENV['CC'] = nil
     ENV['CFLAGS'] = nil
     ENV['CXX'] = nil
