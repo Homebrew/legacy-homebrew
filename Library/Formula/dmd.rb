@@ -26,11 +26,11 @@ class Dmd <Formula
 
     (prefix+'src/dmd').rmtree # we don't need the dmd sources thanks
     man5.install man1+'dmd.conf.5' # oops
-    (prefix+'share/d/examples').install Dir['samples/d/*.d']
+    (share+'d/examples').install Dir['samples/d/*.d']
 
-    (prefix+'bin/dmd.conf').open('w') do |f|
+    (bin+'dmd.conf').open('w') do |f|
       f.puts "[Environment]"
-      f.puts "DFLAGS=-I#{prefix}/src/phobos -L-L#{prefix}/lib"
+      f.puts "DFLAGS=-I#{prefix}/src/phobos -L#{lib}"
     end
   end
 end

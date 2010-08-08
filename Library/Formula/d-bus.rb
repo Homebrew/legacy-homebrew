@@ -21,7 +21,6 @@ class DBus <Formula
     system "make install"
 
     # Generate D-Bus's UUID for this machine
-    system "#{prefix}/bin/dbus-uuidgen",
-           "--ensure=#{prefix}/var/lib/dbus/machine-id"
+    system "#{bin}/dbus-uuidgen", "--ensure=#{prefix}/var/lib/dbus/machine-id"
   end
 end
