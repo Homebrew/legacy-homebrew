@@ -13,9 +13,9 @@ class Nspr <Formula
       target_frameworks = Hardware.is_32_bit? ? "-framework Carbon" : ""
       inreplace "pr/src/Makefile.in", "-framework CoreServices -framework CoreFoundation", target_frameworks
 
-      conf = ["--prefix=#{prefix}", "--disable-debug", "--enable-strip", "--enable-optimize"]
-      conf << "--enable-64bit" if Hardware.is_64_bit? and MACOS_VERSION >= 10.6
-      system "./configure", *conf
+      args = ["--prefix=#{prefix}", "--disable-debug", "--enable-strip", "--enable-optimize"]
+      args << "--enable-64bit" if snow_leopard_64?
+      system "./configure", *args
 
       # Remove the broken (for anyone but Firefox) install_name
       inreplace "config/autoconf.mk", "-install_name @executable_path/$@ ", ""
