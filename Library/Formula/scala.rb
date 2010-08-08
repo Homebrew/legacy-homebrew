@@ -8,7 +8,10 @@ class Scala <Formula
 
   def install
     rm_f Dir["bin/*.bat"]
+    doc.install Dir['doc/*']
     man1.install Dir['man/man1/*']
-    prefix.install Dir['*']
+    libexec.install Dir['*']
+    bin.mkpath
+    Dir["#{libexec}/bin/*"].each { |f| ln_s f, bin }
   end
 end

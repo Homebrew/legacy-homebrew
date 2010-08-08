@@ -58,6 +58,6 @@ class Glib <Formula
               "Cflags: -I${includedir}/glib-2.0 -I${libdir}/glib-2.0/include -I#{gettext.include}"
     end
 
-    (prefix+'share/gtk-doc').rmtree
+    (share+'gtk-doc').rmtree
   end
 end

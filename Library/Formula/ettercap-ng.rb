@@ -33,7 +33,7 @@ class EttercapNg < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
-                          "--infodir=#{prefix}/share/info",
+                          "--infodir=#{info}",
                           "--disable-gtk",
                           "--disable-plugins",
                           "--with-openssl=/usr",

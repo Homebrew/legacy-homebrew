@@ -80,7 +80,7 @@ class Mysql <Formula
         plist with a version specific program argument.
 
     Or start manually with:
-        #{prefix}/share/mysql/mysql.server start
+        mysql.server start
     EOS
   end
 
