@@ -23,12 +23,7 @@ Cflags: -I${includedir}
   end
 
   def install
-    if MACOS_VERSION >= 10.6 and Hardware.is_64_bit?
-      fpm = '64bit'
-    else
-      fpm = 'intel'
-    end
-
+    fpm = snow_leopard_64? ? '64bit': 'intel'
     system "./configure", "--disable-debugging", "--enable-fpm=#{fpm}", "--prefix=#{prefix}"
 
     # See: http://github.com/mxcl/homebrew/issues/issue/1263

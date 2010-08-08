@@ -1,8 +1,6 @@
 require 'formula'
 require 'hardware'
 
-def bits_64?; MACOS_VERSION >= 10.6 && Hardware.is_64_bit?; end
-
 class Postgresql <Formula
   homepage 'http://www.postgresql.org/'
   url 'http://ftp2.uk.postgresql.org/sites/ftp.postgresql.org/source/v8.4.4/postgresql-8.4.4.tar.bz2'
@@ -41,7 +39,7 @@ class Postgresql <Formula
     ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
     ENV.append 'LIBS', `uuid-config --libs`.strip
 
-    if bits_64? and not ARGV.include? '--no-python'
+    if snow_leopard_64? and not ARGV.include? '--no-python'
       args << "ARCHFLAGS='-arch x86_64'"
       check_python_arch
     end
@@ -112,7 +110,7 @@ And stop with:
     pg_ctl -D #{var}/postgres stop -s -m fast
 EOS
 
-    if bits_64? then
+    if snow_leopard_64? then
       s << <<-EOS
 
 If you want to install the postgres gem, including ARCHFLAGS is recommended:
