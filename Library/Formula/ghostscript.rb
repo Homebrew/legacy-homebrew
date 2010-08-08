@@ -46,7 +46,7 @@ class Ghostscript <Formula
 
     GhostscriptFonts.new.brew do
       Dir.chdir '..'
-      (prefix+'share/ghostscript').install 'fonts'
+      (share+'ghostscript').install 'fonts'
     end
 
     (man+'de').rmtree

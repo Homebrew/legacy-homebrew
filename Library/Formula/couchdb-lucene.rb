@@ -28,7 +28,7 @@ You can enable couchdb-lucene to automatically load on login with:
   sudo launchctl load -w /Library/LaunchDaemons/couchdb-lucene.plist
 
 Or start it manually with:
-  #{prefix}/bin/run
+  #{bin}/run
 EOS
   end
 
@@ -63,7 +63,7 @@ EOS
     </dict>
     <key>ProgramArguments</key>
     <array>
-      <string>#{prefix}/bin/run</string>
+      <string>#{bin}/run</string>
     </array>
     <key>UserName</key>
     <string>#{`whoami`.chomp}</string>
