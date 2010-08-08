@@ -102,12 +102,6 @@ module HomebrewArgvExtension
     EOS
   end
 
-  private
-
-  def downcased_unique_named
-    @downcased_unique_named ||= named.map(&:downcase).uniq
-  end
-
   def resolve_alias name
     aka = HOMEBREW_REPOSITORY+"Library/Aliases/#{name}"
     if aka.file?
@@ -115,5 +109,11 @@ module HomebrewArgvExtension
     else
       name
     end
+  end
+
+  private
+
+  def downcased_unique_named
+    @downcased_unique_named ||= named.map(&:downcase).uniq
   end
 end
