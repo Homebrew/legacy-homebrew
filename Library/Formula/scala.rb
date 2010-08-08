@@ -7,8 +7,11 @@ class Scala <Formula
   md5 'f250015d178f05b08bd53baba55c5d46'
 
   def install
+    rm_f Dir["bin/*.bat"]
+    doc.install Dir['doc/*']
     man1.install Dir['man/man1/*']
-    FileUtils.rm_f Dir["bin/*.bat"]
-    prefix.install Dir['*']
+    libexec.install Dir['*']
+    bin.mkpath
+    Dir["#{libexec}/bin/*"].each { |f| ln_s f, bin }
   end
 end

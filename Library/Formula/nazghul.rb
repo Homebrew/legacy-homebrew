@@ -19,9 +19,10 @@ class Nazghul <Formula
     system "make install"
   end
 
-  def caveats
-    "The built-in game for this engine is called \"Haxima\".\n"+
-    "To run:\n"+
-    "   haxima.sh"
+  def caveats; <<-EOS.undent
+    The built-in game for this engine is called "Haxima".
+    To run:
+      haxima.sh"
+    EOS
   end
 end

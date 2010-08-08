@@ -12,10 +12,10 @@ class Dwdiff <Formula
   depends_on 'icu4c'
 
   def install
-    gettext_prefix = Formula.factory('gettext').prefix
-    icu4c_prefix = Formula.factory('icu4c').prefix
-    ENV.append "CFLAGS", "-I#{gettext_prefix}/include -I#{icu4c_prefix}/include"
-    ENV.append "LDFLAGS", "-L#{gettext_prefix}/lib -L#{icu4c_prefix}/lib"
+    gettext = Formula.factory('gettext')
+    icu4c = Formula.factory('icu4c')
+    ENV.append "CFLAGS", "-I#{gettext.include} -I#{icu4c.include}"
+    ENV.append "LDFLAGS", "-L#{gettext.lib} -L#{icu4c.lib}"
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end

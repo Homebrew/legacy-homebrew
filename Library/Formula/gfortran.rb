@@ -16,14 +16,25 @@ class GfortranPkgDownloadStrategy <CurlDownloadStrategy
 end
 
 class Gfortran <Formula
-  if MACOS_VERSION >= 10.6
-    url 'http://r.research.att.com/gfortran-42-5659.pkg'
-    md5 '71bd546baa45c9c0fb4943cdd72ee274'
-    version "4.2.4-5659"
-  else
+  if MACOS_VERSION < 10.6
+    # Leopard
     url 'http://r.research.att.com/gfortran-42-5577.pkg'
     md5 '30fb495c93cf514003cdfcb7846dc701'
     version "4.2.4-5577"
+  else
+    # Snow Leopard
+    case gcc_42_build
+    when 5659
+      url 'http://r.research.att.com/gfortran-42-5659.pkg'
+      md5 '71bd546baa45c9c0fb4943cdd72ee274'
+      version "4.2.4-5659"
+    else
+      # These links should be updated to point to gfortran
+      # binaries for XCode build 5664 when they appear.
+      url 'http://r.research.att.com/gfortran-42-5659.pkg'
+      md5 '71bd546baa45c9c0fb4943cdd72ee274'
+      version "4.2.4-5659"
+    end
   end
 
   homepage 'http://r.research.att.com/tools/'
@@ -51,10 +62,15 @@ class Gfortran <Formula
       ohai "Installing gfortran 4.2.4 for XCode 3.2.2 (build 5659)"
       safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
       safe_system "ln -sf #{man1}/gfortran-4.2.1 #{man1}/gfortran.1"
+    when 5664
+      # This section should be updated when binaries for 5664 appear.
+      ohai "Installing gfortran 4.2.4 for XCode 3.2.2 (build 5659)"
+      safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
+      safe_system "ln -sf #{man1}/gfortran-4.2.1 #{man1}/gfortran.1"
     else
       onoe <<-EOS.undent
         Currently the gfortran compiler provided by this brew is only supported
-        for XCode 3.1.4 on OS X 10.5.x and XCode 3.2.2 on OS X 10.6.x
+        for XCode 3.1.4 on OS X 10.5.x and XCode 3.2.2/3.2.3 on OS X 10.6.x
       EOS
     end
   end

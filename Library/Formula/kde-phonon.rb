@@ -9,14 +9,12 @@ class KdePhonon <Formula
   depends_on 'qt'
   depends_on 'automoc4'
 
-  def keg_only?
-    "This package is already supplied by Qt and is only needed by KDE packages."
-  end
+  keg_only "This package is already supplied by Qt and is only needed by KDE packages."
 
   def patches
     "http://gitorious.org/phonon/phonon/commit/9556b819b089da67290691f53ce7c1550ed23705.patch"
   end
-  
+
   def install
     system "cmake . #{std_cmake_parameters}"
     system "make install"

@@ -8,5 +8,6 @@ class Faad2 <Formula
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
+    man1.install man+'manm/faad.man' => 'faad.1'
   end
 end

@@ -5,7 +5,7 @@ require 'utils'
 
 ARGV.extend(HomebrewArgvExtension)
 
-HOMEBREW_VERSION = 0.6
+HOMEBREW_VERSION = 0.7
 HOMEBREW_WWW = 'http://mxcl.github.com/homebrew/'
 
 if Process.uid == 0

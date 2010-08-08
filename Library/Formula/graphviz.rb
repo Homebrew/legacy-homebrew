@@ -8,9 +8,7 @@ class Graphviz <Formula
   depends_on 'pkg-config'
 
   def install
-    # Put freetype-config in path
-    ENV.x11
-    ENV.prepend 'PATH', "/usr/X11/bin", ":"
+    ENV.x11 # Put freetype-config in path
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

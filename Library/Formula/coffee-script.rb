@@ -9,7 +9,7 @@ class CoffeeScript <Formula
   # head coffee-script usually depends on head node and
   # since there isn't a way to specify that just remove
   # the depends_on
-  depends_on :node unless ARGV.build_head?
+  depends_on 'node' unless ARGV.build_head?
 
   def caveats
     <<-EOS.undent

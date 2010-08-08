@@ -13,7 +13,7 @@ class Devtodo <Formula
 
   def install
     # Rename Regex.h to Regex.hh to avoid case-sensitivity confusion with regex.h
-    FileUtils.mv "util/Regex.h", "util/Regex.hh"
+    mv "util/Regex.h", "util/Regex.hh"
     inreplace ["util/Lexer.h", "util/Makefile.in", "util/Regex.cc"],
       "Regex.h", "Regex.hh"
 

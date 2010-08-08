@@ -9,8 +9,6 @@ class RubyEnterpriseEdition <Formula
 
   skip_clean 'bin/ruby'
 
-  aka :ree
-
   def install
     fails_with_llvm "fails with LLVM"
     args = ['./installer', "--auto", prefix, '--no-tcmalloc']

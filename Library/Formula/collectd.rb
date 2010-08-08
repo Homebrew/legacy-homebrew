@@ -5,9 +5,7 @@ class Collectd <Formula
   homepage 'http://collectd.org/'
   md5 '8cd79b4ebdb9dbeb51ba52d3463a06ef'
 
-  def skip_clean? path
-    true
-  end
+  skip_clean :all
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"

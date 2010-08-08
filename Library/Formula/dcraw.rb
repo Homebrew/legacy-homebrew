@@ -12,7 +12,7 @@ class Dcraw <Formula
   md5 'd680b17ce75ab1c791fe92b467f1005d'
 
   depends_on 'jpeg'
-  depends_on 'liblcms'
+  depends_on 'little-cms'
 
   def install
     system "#{ENV.cc} -o dcraw #{ENV['CFLAGS']} dcraw.c -lm -ljpeg -llcms"

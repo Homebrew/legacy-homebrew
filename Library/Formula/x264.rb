@@ -2,11 +2,10 @@ require 'formula'
 
 class X264 <Formula
   homepage 'http://www.videolan.org/developers/x264.html'
-  head 'git://git.videolan.org/x264.git',
+  url 'git://git.videolan.org/x264.git',
         :tag => '20fa784d2d9e0d5e524d4e3834699e9ff9b57511'
 
   depends_on 'yasm'
-
 
   def install
     system "./version.sh"

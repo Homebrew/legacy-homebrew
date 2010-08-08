@@ -57,7 +57,7 @@ def check_for_x11
   unless File.exists? '/usr/X11/lib/libpng.dylib'
     puts <<-EOS.undent
       You don't have X11 installed as part of your Xcode installation.
-      This isn't required for all formula. But it is expected by some.
+      This isn't required for all formula, but is expected by some.
 
     EOS
   end
@@ -71,11 +71,8 @@ def check_for_nonstandard_x11
       "/usr/X11" was found, but it is a symlink to:
         #{x11.resolved_path}
 
-      Homebrew's X11 support has only be tested with Apple's X11,
-      preferably any updates from the latest Xcode package.
-
-      In particular, "XQuartz" is not known to allow Homebrew
-      software require X11 to compile.
+      Homebrew's X11 support has only be tested with Apple's X11.
+      In particular, "XQuartz" and "XDarwin" are not known to be compatible.
 
     EOS
   end
@@ -125,15 +122,13 @@ def check_gcc_versions
   end
 end
 
-def check_access_share_locale
-  # If PREFIX/share/locale already exists, "sudo make install" of
-  # non-brew installed software may cause installation failures.
-  locale = HOMEBREW_PREFIX+'share/locale'
-  return unless locale.exist?
+def __check_subdir_access base
+  target = HOMEBREW_PREFIX+base
+  return unless target.exist?
 
   cant_read = []
 
-  locale.find do |d|
+  target.find do |d|
     next unless d.directory?
     cant_read << d unless d.writable?
   end
@@ -141,7 +136,7 @@ def check_access_share_locale
   cant_read.sort!
   if cant_read.length > 0
     puts <<-EOS.undent
-    Some folders in #{locale} aren't writable.
+    Some folders in #{target} aren't writable.
     This can happen if you "sudo make install" software that isn't managed
     by Homebrew. If a brew tries to add locale information to one of these
     folders, then the install will fail during the link step.
@@ -151,6 +146,14 @@ def check_access_share_locale
     puts *cant_read.collect { |f| "    #{f}" }
     puts
   end
+end
+
+def check_access_share_locale
+  __check_subdir_access 'share/locale'
+end
+
+def check_access_share_man
+  __check_subdir_access 'share/man'
 end
 
 def check_access_pkgconfig
@@ -315,7 +318,7 @@ def check_for_config_scripts
   paths = ENV['PATH'].split(':').collect{|p| File.expand_path p}
   paths.each do |p|
     next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin"].include? p
-    next if %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] =~ p
+    next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})]
 
     configs = Dir["#{p}/*-config"]
     # puts "#{p}\n    #{configs * ' '}" unless configs.empty?
@@ -427,6 +430,7 @@ def brew_doctor
     check_for_x11
     check_for_nonstandard_x11
     check_access_share_locale
+    check_access_share_man
     check_user_path
     check_which_pkg_config
     check_pkg_config_paths
@@ -445,8 +449,8 @@ def brew_doctor
     unless (out = read.read).chomp.empty?
       puts out
     else
-      puts "Your OS X is ripe for brewing. Any troubles you may be experiencing are"
-      puts "likely purely psychosomatic."
+      puts "Your OS X is ripe for brewing."
+      puts "Any troubles you may be experiencing are likely purely psychosomatic."
     end
   end
 end

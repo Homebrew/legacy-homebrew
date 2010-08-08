@@ -7,7 +7,7 @@ class AppEngineJavaSdk <Formula
 
   def shim_script target
     <<-EOS.undent
-      #!/usr/bin/env bash
+      #!/bin/bash
       #{libexec}/bin/#{target} $*
     EOS
   end
