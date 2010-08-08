@@ -7,8 +7,6 @@ class Beanstalk <Formula
 
   depends_on 'libevent'
 
-  aka 'beanstalkd'
-
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--with-event=#{HOMEBREW_PREFIX}"

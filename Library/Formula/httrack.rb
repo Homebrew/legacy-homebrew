@@ -7,12 +7,13 @@ class Httrack <Formula
   version '3.43-9C'
 
   def install
+    ENV.deparallelize
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-shared=no"
     system "make install"
     # Don't need Gnome integration
-    rm_rf (share+'applications')
-    rm_rf (share+'pixmaps')
+    rm_rf share+'applications'
+    rm_rf share+'pixmaps'
   end
 end

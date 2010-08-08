@@ -24,11 +24,11 @@ class Plowshare <Formula
 end
 
 
-#This patch makes sure GNUtools are used on OSX. 
+#This patch makes sure GNUtools are used on OSX.
 #gnu-getopt is keg-only hence the backtick expansion.
 #These aliases only exist for the duration of plowshare,
 #inside the plowshare shells. Normal operation of bash is
-#unaffected - getopt will still find the version supplied 
+#unaffected - getopt will still find the version supplied
 #by OSX in other shells, for example.
 __END__
 --- a/src/lib.sh

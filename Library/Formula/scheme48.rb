@@ -10,7 +10,9 @@ class Scheme48 <Formula
 
   def install
     ENV.deparallelize
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--enable-gc=bibop"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--enable-gc=bibop"
     system "make"
     system "make install"
   end

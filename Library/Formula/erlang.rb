@@ -7,10 +7,9 @@ end
 
 class Erlang <Formula
   # Download from  GitHub repo, which is much faster than using the official tarball
-  url "git://github.com/erlang/otp.git"
+  url "git://github.com/erlang/otp.git", :tag => "OTP_R13B04"
   homepage 'http://www.erlang.org'
   version 'R13B04'
-  @specs = {:tag => "OTP_R13B04"}
 
   # We can't strip the beam executables or any plugins, there isn't really
   # anything else worth stripping and it takes a really, long time to run

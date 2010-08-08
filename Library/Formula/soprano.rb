@@ -13,7 +13,7 @@ class Soprano <Formula
 
   def install
     ENV['CLUCENE_HOME'] = HOMEBREW_PREFIX
-    
+
     system "cmake . #{std_cmake_parameters}"
     system "make install"
   end

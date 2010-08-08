@@ -6,9 +6,7 @@ class Fontconfig <Formula
   md5 '77e15a92006ddc2adbb06f840d591c0e'
 
   # Leopard comes with 2.4.x, which is too old for many packages.
-  def keg_only?
-    :provided_by_osx
-  end
+  keg_only :provided_by_osx
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"

@@ -1,18 +1,17 @@
 require 'formula'
 
 class Wine <Formula
-  url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.1.44.tar.bz2'
-  sha1 '60f11693161b28ff9814949f2b6bbccee1d07a2c'
+  url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.tar.bz2'
+  sha1 'dc37a32edb274167990ca7820f92c2d85962e37d'
   homepage 'http://www.winehq.org/'
   head 'git://source.winehq.org/git/wine.git'
 
   depends_on 'jpeg'
-  depends_on 'mpg123' => :optional
 
+  # This is required for using 3D applications.
   def wine_wrapper; <<-EOS
 #!/bin/sh
-DYLD_FALLBACK_LIBRARY_PATH="/usr/X11/lib" \
-"#{bin}/wine.bin" "$@"
+DYLD_FALLBACK_LIBRARY_PATH="/usr/X11/lib" "#{bin}/wine.bin" "$@"
 EOS
   end
 
@@ -27,12 +26,10 @@ EOS
     ENV.append "CFLAGS", build32
     ENV.append "CXXFLAGS", "-D_DARWIN_NO_64_BIT_INODE"
     ENV.append "LDFLAGS", "#{build32} -framework CoreServices -lz -lGL -lGLU"
-    ENV.append "DYLD_FALLBACK_LIBRARY_PATH", "/usr/X11/lib"
 
-    args = [ "--prefix=#{prefix}", "--disable-win16" ]
-
-    # Building a universal mpg123 is non-trivial, so skip for now.
-    args << "--without-mpg123" if Hardware.is_64_bit? and MACOS_VERSION >= 10.6
+    args = ["--prefix=#{prefix}", "--x-include=/usr/X11/include/", "--x-lib=/usr/X11/lib/"]
+    args << "--without-freetype" if MACOS_VERSION >= 10.6 and Hardware.is_64_bit?
+    args << "--disable-win16" if MACOS_VERSION < 10.6
 
     system "./configure", *args
     system "make install"
@@ -46,10 +43,15 @@ EOS
     (bin+'wine').write(wine_wrapper)
   end
 
-  def caveats
-    <<-EOS.undent
-      You may also want to get winetricks:
-        brew install winetricks
+  def caveats; <<-EOS.undent
+    For a more full-featured install, try:
+      http://code.google.com/p/osxwinebuilder/
+
+    You may also want to get winetricks:
+      brew install winetricks
+
+    If you plan to use 3D applications, like games, you will need
+    to check "Emulate a virtual desktop" in winecfg's "Graphics" tab.
     EOS
   end
 end

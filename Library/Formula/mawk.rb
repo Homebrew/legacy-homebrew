@@ -7,7 +7,9 @@ class Mawk <Formula
   version '1.3.4'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--with-readline=/usr/lib"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-readline=/usr/lib"
     system "make install"
   end
 end

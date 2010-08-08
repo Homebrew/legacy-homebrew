@@ -8,7 +8,7 @@ class Unyaffs <Formula
       cc_args = ENV['CFLAGS'].split(' ')
       (cc_args << ['-o', 'unyaffs', 'unyaffs.c']).flatten!
       system ENV.cc, *cc_args
-      
+
       bin.install 'unyaffs'
   end
 end
