@@ -39,7 +39,7 @@ class SoftwareSpecification
   # Returns a suitable DownloadStrategy class that can be
   # used to retreive this software package.
   def download_strategy
-    return detect_download_strategy @url if @using.nil?
+    return detect_download_strategy(@url) if @using.nil?
 
     # If a class is passed, assume it is a download strategy
     return @using if @using.kind_of? Class
