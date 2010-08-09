@@ -114,6 +114,6 @@ module HomebrewArgvExtension
   private
 
   def downcased_unique_named
-    @downcased_unique_named ||= named.map(&:downcase).uniq
+    @downcased_unique_named ||= named.map{|arg| arg.downcase}.uniq
   end
 end
