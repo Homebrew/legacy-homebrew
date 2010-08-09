@@ -55,6 +55,11 @@ ff.each do |f|
     problems << " * md5 is empty"
   end
 
+  # DATA with no __END__
+  if (text =~ /\bDATA\b/) and not (text =~ /^\s*__END__\s*$/)
+    problems << " * 'DATA' was found, but no '__END__'"
+  end
+
   # Don't complain about spaces in patches
   split_patch = (text.split("__END__")[0]).strip()
   if split_patch =~ /[ ]+$/
