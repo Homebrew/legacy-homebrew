@@ -6,11 +6,8 @@ def ff
   return ARGV.formulae
 end
 
-ff.each do |f|
-  text = ""
+def audit_formula_text text
   problems = []
-
-  File.open(f.path, "r") { |afile| text = afile.read }
 
   # Commented-out cmake support from default template
   if text =~ /# depends_on 'cmake'/
@@ -42,8 +39,8 @@ ff.each do |f|
     problems << " * \"#{$1}\" should be \"\#{#{$2}}\""
   end
 
-  if text =~ %r[(\#\{prefix\}/share/man/(man[1-8]))]
-    problems << " * \"#{$1}\" should be \"\#{#{$2}}\""
+  if text =~ %r[((\#\{prefix\}/share/man/|\#\{man\}/)(man[1-8]))]
+    problems << " * \"#{$1}\" should be \"\#{#{$3}}\""
   end
 
   if text =~ %r[(\#\{prefix\}/share/(info|man))]
@@ -66,15 +63,30 @@ ff.each do |f|
     problems << " * Trailing whitespace was found."
   end
 
-  # Don't depend_on aliases; use full name
-  aliases = Formula.aliases
-  f.deps.select {|d| aliases.include? d}.each do |d|
-    problems << " * Dep #{d} is an alias; switch to the real name."
-  end
+  return problems
+end
 
-  unless problems.empty?
-    puts "#{f.name}:"
-    puts problems * "\n"
-    puts
+def audit_some_formulae
+  ff.each do |f|
+    problems = []
+
+    # Don't depend_on aliases; use full name
+    aliases = Formula.aliases
+    f.deps.select {|d| aliases.include? d}.each do |d|
+      problems << " * Dep #{d} is an alias; switch to the real name."
+    end
+
+    text = ""
+    File.open(f.path, "r") { |afile| text = afile.read }
+
+    problems += audit_formula_text(text)
+
+    unless problems.empty?
+      puts "#{f.name}:"
+      puts problems * "\n"
+      puts
+    end
   end
 end
+
+audit_some_formulae
