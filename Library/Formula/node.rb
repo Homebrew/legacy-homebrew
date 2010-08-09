@@ -9,6 +9,10 @@ class Node <Formula
   # Stripping breaks dynamic loading
   skip_clean :all
 
+  def options
+    [["--debug", "Build with debugger hooks."]]
+  end
+
   def install
     fails_with_llvm
 
@@ -17,7 +21,10 @@ class Node <Formula
       s.gsub! '/opt/local/lib', '/usr/lib'
     end
 
-    system "./configure", "--prefix=#{prefix}"
+    args = ["--prefix=#{prefix}"]
+    args << "--debug" if ARGV.include? '--debug'
+
+    system "./configure", *args
     system "make install"
   end
 end
