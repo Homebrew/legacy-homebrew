@@ -50,6 +50,11 @@ ff.each do |f|
     problems << " * \"#{$1}\" should be \"\#{#{$2}}\""
   end
 
+  # Empty checksums
+  if text =~ /md5\s+\'\'/
+    problems << " * md5 is empty"
+  end
+
   # Don't complain about spaces in patches
   split_patch = (text.split("__END__")[0]).strip()
   if split_patch =~ /[ ]+$/
