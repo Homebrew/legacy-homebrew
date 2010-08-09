@@ -172,7 +172,7 @@ class Formula
   #   skip_clean [bin+"foo", lib+"bar"]
   # redefining skip_clean? in formulas is now deprecated
   def skip_clean? path
-    return true if @skip_clean_all
+    return true if self.class.skip_clean_all?
     to_check = path.relative_path_from(prefix).to_s
     self.class.skip_clean_paths.include? to_check
   end
@@ -530,6 +530,10 @@ EOF
       [paths].flatten.each do |p|
         @skip_clean_paths << p.to_s unless @skip_clean_paths.include? p.to_s
       end
+    end
+
+    def skip_clean_all?
+      @skip_clean_all
     end
 
     def skip_clean_paths
