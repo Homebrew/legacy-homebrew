@@ -361,7 +361,7 @@ class Aspell <Formula
     system "./configure", "--prefix=#{prefix}"
     system "make install"
 
-    ARGV.options.select { |v| v =~ /--lang=/ }.uniq.each do |opt|
+    ARGV.options_only.select { |v| v =~ /--lang=/ }.uniq.each do |opt|
       languages = opt.split('=')[1].split(',')
       languages.each do |lang|
         formula = Object.const_get("Aspell" + lang.capitalize).new
