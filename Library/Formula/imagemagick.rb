@@ -40,6 +40,13 @@ class Imagemagick <Formula
     path.extname == '.la'
   end
 
+  def options
+    [
+      ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
+      ['--use-wmf', 'Compile with libwmf support.']
+    ]
+  end
+
   def install
     ENV.x11 # Add to PATH for freetype-config on Snow Leopard
     ENV.O3 # takes forever otherwise
