@@ -431,6 +431,20 @@ def check_for_git
   end
 end
 
+def check_for_autoconf
+  which_autoconf = `/usr/bin/which autoconf`.chomp
+  if which_autoconf != '/usr/bin/autoconf'
+    puts <<-EOS.undent
+      You have an "autoconf" in your path blocking the system version at:
+        #{which_autoconf}
+
+      Custom autoconf in general and autoconf 2.66 in particular has issues
+      and will cause some Homebrew formulae to fail.
+
+    EOS
+  end
+end
+
 def brew_doctor
   read, write = IO.pipe
 
@@ -458,6 +472,7 @@ def brew_doctor
     check_for_symlinked_cellar
     check_for_multiple_volumes
     check_for_git
+    check_for_autoconf
 
     exit! 0
   else
