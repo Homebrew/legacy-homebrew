@@ -52,14 +52,8 @@ def audit_formula_text text
     problems << " * md5 is empty"
   end
 
-  # DATA with no __END__
-  if (text =~ /\bDATA\b/) and not (text =~ /^\s*__END__\s*$/)
-    problems << " * 'DATA' was found, but no '__END__'"
-  end
-
-  # Don't complain about spaces in patches
-  split_patch = (text.split("__END__")[0]).strip()
-  if split_patch =~ /[ ]+$/
+  # No trailing whitespace, please
+  if text =~ /[ ]+$/
     problems << " * Trailing whitespace was found."
   end
 
@@ -79,7 +73,15 @@ def audit_some_formulae
     text = ""
     File.open(f.path, "r") { |afile| text = afile.read }
 
-    problems += audit_formula_text(text)
+    # DATA with no __END__
+    if (text =~ /\bDATA\b/) and not (text =~ /^\s*__END__\s*$/)
+      problems << " * 'DATA' was found, but no '__END__'"
+    end
+
+    # Don't try remaining audits on text in __END__
+    text_without_patch = (text.split("__END__")[0]).strip()
+
+    problems += audit_formula_text(text_without_patch)
 
     unless problems.empty?
       puts "#{f.name}:"
