@@ -60,6 +60,40 @@ def audit_formula_text text
   return problems
 end
 
+def audit_formula_options f, text
+  problems = []
+
+  # Find possible options
+  options = []
+  text.scan(/ARGV\.include\?[ ]*\(?(['"])(.+?)\1/) { |m| options << m[1] }
+  options.reject! {|o| o.include? "#"}
+  options.uniq!
+
+  # Find documented options
+  begin
+    opts = f.options
+    documented_options = []
+    opts.each{ |o| documented_options << o[0] }
+    documented_options.reject! {|o| o.include? "="}
+  rescue
+    documented_options = []
+  end
+
+  if options.length > 0
+    options.each do |o|
+      problems << " * Option #{o} is not documented" unless documented_options.include? o
+    end
+  end
+
+  if documented_options.length > 0
+    documented_options.each do |o|
+      problems << " * Option #{o} is unused" unless options.include? o
+    end
+  end
+
+  return problems
+end
+
 def audit_some_formulae
   ff.each do |f|
     problems = []
@@ -82,6 +116,7 @@ def audit_some_formulae
     text_without_patch = (text.split("__END__")[0]).strip()
 
     problems += audit_formula_text(text_without_patch)
+    problems += audit_formula_options(f, text_without_patch)
 
     unless problems.empty?
       puts "#{f.name}:"
