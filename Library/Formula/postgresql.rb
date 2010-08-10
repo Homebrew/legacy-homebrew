@@ -12,8 +12,6 @@ class Postgresql <Formula
   depends_on 'libxml2' if MACOS_VERSION < 10.6 # Leopard libxml is too old
   depends_on 'ossp-uuid'
 
-  aka 'postgres'
-
   def options
     [
       ['--no-python', 'Build without Python support.'],
@@ -21,42 +19,37 @@ class Postgresql <Formula
     ]
   end
 
-  def skip_clean? path
-    true
-  end
+  skip_clean :all
 
   def install
     ENV.libxml2 if MACOS_VERSION >= 10.6
 
-    configure_args = [
-        "--enable-thread-safety",
-        "--with-bonjour",
-        "--with-gssapi",
-        "--with-krb5",
-        "--with-openssl",
-        "--with-libxml",
-        "--with-libxslt",
-        "--prefix=#{prefix}",
-        "--disable-debug"
-    ]
+    args = ["--disable-debug",
+            "--prefix=#{prefix}",
+            "--enable-thread-safety",
+            "--with-bonjour",
+            "--with-gssapi",
+            "--with-krb5",
+            "--with-openssl",
+            "--with-libxml", "--with-libxslt"]
 
-    configure_args << "--with-python" unless ARGV.include? '--no-python'
-    configure_args << "--with-perl" unless ARGV.include? '--no-perl'
+    args << "--with-python" unless ARGV.include? '--no-python'
+    args << "--with-perl" unless ARGV.include? '--no-perl'
 
-    configure_args << "--with-ossp-uuid"
+    args << "--with-ossp-uuid"
     ENV.append 'CFLAGS', `uuid-config --cflags`.strip
     ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
     ENV.append 'LIBS', `uuid-config --libs`.strip
 
     if bits_64? and not ARGV.include? '--no-python'
-      configure_args << "ARCHFLAGS='-arch x86_64'"
+      args << "ARCHFLAGS='-arch x86_64'"
       check_python_arch
     end
 
     # Fails on Core Duo with O4 and O3
     ENV.O2 if Hardware.intel_family == :core
 
-    system "./configure", *configure_args
+    system "./configure", *args
     system "make install"
 
     %w[ adminpack dblink fuzzystrmatch lo uuid-ossp pg_buffercache pg_trgm
@@ -105,7 +98,7 @@ If this is your first install, create a database with:
 
 If this is your first install, automatically load on login with:
     cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents
-    launchctl load -w ~/Library/LaunchAgents/com.postgresql.postgres.plist
+    launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
 
 If this is an upgrade and you already have the com.mysql.mysqld.plist loaded:
     launchctl unload -w ~/Library/LaunchAgents/org.postgresql.postgres.plist

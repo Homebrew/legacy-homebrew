@@ -4,10 +4,25 @@ class Bazaar <Formula
   url 'http://launchpadlibrarian.net/41811693/bzr-2.1.1.tar.gz'
   md5 'ab6b5e0cc449b27abac2b4d717afe09d'
   homepage 'http://bazaar-vcs.org/'
-  
-  aka :bzr
+
+  def options
+    [["--system", "Install using the OS X system Python."]]
+  end
 
   def install
+    if ARGV.include? "--system"
+      ENV.prepend "PATH", "/System/Library/Frameworks/Python.framework/Versions/Current/bin", ":"
+    else
+      python_version = `python -c "import sys;print sys.version"`
+      if python_version[0,4] == "2.7."
+        opoo <<-EOS
+Bazaar might not yet work with Python 2.7.
+You can force an installation using the system Python by doing:
+  brew install bazaar --system
+EOS
+      end
+    end
+
     # Find the archs of the Python we are building against.
     # If the python includes PPC support, then don't use Intel-
     # specific compiler flags
@@ -19,6 +34,7 @@ class Bazaar <Formula
     man1.install gzip('man1/bzr.1')
 
     system "make"
+    inreplace "bzr", "#! /usr/bin/env python", "#!/usr/bin/python" if ARGV.include? "--system"
     libexec.install ['bzr', 'bzrlib']
 
     bin.mkpath

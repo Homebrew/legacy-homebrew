@@ -19,7 +19,7 @@ prefer to use theirs. If so type `brew home scummvm' to visit their site.
   depends_on 'libogg' => :recommended
 
   def install
-    system "./configure --prefix='#{prefix}' --disable-debug"
+    system "./configure", "--prefix=#{prefix}", "--disable-debug"
     system "make install"
     (share+'pixmaps').rmtree
   end

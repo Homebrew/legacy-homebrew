@@ -12,7 +12,7 @@ class Qt <Formula
       ['--with-qt3support', "Enable deprecated Qt3Support module."],
     ]
   end
-  
+
   def self.x11?
     File.exist? "/usr/X11R6/lib"
   end
@@ -31,7 +31,6 @@ class Qt <Formula
 
     # See: http://github.com/mxcl/homebrew/issues/issue/744
     conf_args << "-system-sqlite" if MACOS_VERSION <= 10.5
-
     conf_args << "-plugin-sql-mysql" if (HOMEBREW_CELLAR+"mysql").directory?
 
     if ARGV.include? '--with-qtdbus'
@@ -61,7 +60,7 @@ class Qt <Formula
     else
       conf_args << '-arch' << 'x86'
     end
-    
+
     system "./configure", *conf_args
     system "make install"
 
@@ -74,7 +73,7 @@ class Qt <Formula
     (bin+'qhelpconverter.app').rmtree
     # remove porting file for non-humans
     (prefix+'q3porting.xml').unlink
-    
+
     # Some config scripts will only find Qt in a "Frameworks" folder
     # VirtualBox is an example of where this is needed
     # See: http://github.com/mxcl/homebrew/issues/issue/745

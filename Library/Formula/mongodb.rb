@@ -4,37 +4,21 @@ require 'hardware'
 class Mongodb <Formula
   homepage 'http://www.mongodb.org/'
 
-  aka :mongo
-
   if Hardware.is_64_bit? and not ARGV.include? '--32bit'
-    url 'http://downloads.mongodb.org/osx/mongodb-osx-x86_64-1.4.4.tgz'
-    head 'http://downloads.mongodb.org/osx/mongodb-osx-x86_64-1.5.6.tgz'
-    if ARGV.build_head?
-      md5 'efb6948f51eb57ba411ff0ec44442485'
-      version '1.5.6-x86_64'
-    else
-      md5 '8791c484c1580d563f1a071e5eed9fa5'
-      version '1.4.4-x86_64'
-    end
+    url 'http://downloads.mongodb.org/osx/mongodb-osx-x86_64-1.6.0.tgz'
+    md5 '27792d91ec26c554e88f4a894d93abf7'
+    version '1.6.0-x86_64'
   else
-    url 'http://downloads.mongodb.org/osx/mongodb-osx-i386-1.4.4.tgz'
-    head 'http://downloads.mongodb.org/osx/mongodb-osx-i386-1.5.6.tgz'
-    if ARGV.build_head?
-      md5 '6c8fd4b5d48d867e17d9701c935f26ea'
-      version '1.5.6-i386'
-    else
-      md5 '8e31cc8b8f4879812cad217ce5b49b20'
-      version '1.4.4-i386'
-    end
+    url 'http://downloads.mongodb.org/osx/mongodb-osx-i386-1.6.0.tgz'
+    md5 '868ada98eeb04bb4197bd3726307035d'
+    version '1.6.0-i386'
   end
 
-  def skip_clean? path
-    true
-  end
+  skip_clean :all
 
   def install
     # Copy the prebuilt binaries to prefix
-    system "cp -prv * #{prefix}"
+    prefix.install Dir['*']
 
     # Create the data and log directories under /var
     (var+'mongodb').mkpath

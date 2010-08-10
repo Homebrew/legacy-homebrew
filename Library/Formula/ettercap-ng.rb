@@ -11,7 +11,7 @@ class EttercapNg < Formula
   #
   # Include various macports patches: http://trac.macports.org/export/61709/trunk/dports/net/ettercap-ng/files/
   # I didn't write the macports patches, but they seem to be necessary.
-  # Associated discussions: 
+  # Associated discussions:
   #   http://thnetos.wordpress.com/2007/08/10/how-to-compile-ettercap-ng-073-on-mac-osx-when-you-get-that-annoying-pthread-error/
   #   http://thnetos.wordpress.com/2007/11/15/compile-ettercap-ng-073-natively-on-leopard-fix/
   #   http://trac.macports.org/ticket/3031
@@ -30,23 +30,17 @@ class EttercapNg < Formula
   end
 
   def install
-    configure_args = [
-     "--prefix=#{prefix}",
-     "--mandir=#{man}",
-     "--infodir=#{prefix}/share/info",
-     '--disable-dependency-tracking',
-     "--disable-gtk",
-     "--disable-debug",
-     "--disable-plugins",
-     "--with-openssl=/usr",
-     "--with-libpcap=/usr",
-     "--with-libncurses=/usr",
-     "--with-libpcre=#{HOMEBREW_PREFIX}",
-     "--with-libnet=#{HOMEBREW_PREFIX}",
-    ]
-
-    system "./configure", *configure_args
-
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}",
+                          "--infodir=#{info}",
+                          "--disable-gtk",
+                          "--disable-plugins",
+                          "--with-openssl=/usr",
+                          "--with-libpcap=/usr",
+                          "--with-libncurses=/usr",
+                          "--with-libpcre=#{HOMEBREW_PREFIX}",
+                          "--with-libnet=#{HOMEBREW_PREFIX}"
     system "make install"
   end
 end

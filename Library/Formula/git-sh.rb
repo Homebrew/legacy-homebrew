@@ -7,7 +7,8 @@ class GitSh < Formula
   version '20100401'
   head 'git://github.com/rtomayko/git-sh.git'
 
-  depends_on 'git'
+  # Not depending on git because people might have it
+  # installed through another means
 
   def install
     system "make"

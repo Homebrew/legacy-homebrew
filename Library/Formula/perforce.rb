@@ -6,8 +6,6 @@ class Perforce <Formula
   md5 '4170d202a4bda079e334c7dc5c37c417'
   version '2010.1.251161'
 
-  aka 'p4'
-
   def install
     bin.install 'p4'
   end

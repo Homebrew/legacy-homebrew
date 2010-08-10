@@ -7,7 +7,7 @@ class Atk <Formula
 
   depends_on 'pkg-config'
   depends_on 'glib'
-  
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

@@ -5,7 +5,7 @@ class Libassuan <Formula
   homepage 'http://www.gnupg.org/related_software/libassuan/index.en.html'
   md5 '59bc0ae7194c412d7a522029005684b2'
 
-  depends_on 'libgpg-error'
+	depends_on 'libgpg-error'
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"

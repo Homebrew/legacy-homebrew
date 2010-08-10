@@ -6,7 +6,7 @@ class Lua <Formula
   md5 'd0870f2de55d59c1c8419f36e8fac150'
 
   # Skip cleaning both empty folders and bin/libs so external symbols still work.
-  def skip_clean? path; true; end
+  skip_clean :all
 
   def install
     # Apply patch-level 2

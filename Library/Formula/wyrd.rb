@@ -9,13 +9,9 @@ class Wyrd <Formula
   depends_on 'objective-caml'
 
   def install
-      configure_args = [
-          "--prefix=#{prefix}",
-          "--disable-debug",
-          "--disable-dependency-tracking",
-          "--enable-utf8",
-      ]
-    system "./configure", *configure_args
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--enable-utf8"
     system "make"
     system "make install"
   end

@@ -5,11 +5,10 @@ class GnuProlog <Formula
   homepage 'http://www.gprolog.org/'
   md5 '3a0c9994927c8ff9e0a9c6edac0b2e69'
 
-  def skip_clean? path; true; end
+  skip_clean :all
 
   def install
-    # make won't run in parallel
-    ENV.j1
+    ENV.j1 # make won't run in parallel
 
     Dir.chdir 'src' do
       system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
