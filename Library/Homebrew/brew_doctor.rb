@@ -98,7 +98,7 @@ def check_gcc_versions
 
   if gcc_42 == nil
     puts <<-EOS.undent
-      We couldn't detect gcc 4.2.x. Some formulas require this compiler.
+      We couldn't detect gcc 4.2.x. Some formulae require this compiler.
 
     EOS
   elsif gcc_42 < RECOMMENDED_GCC_42
@@ -111,7 +111,7 @@ def check_gcc_versions
 
   if gcc_40 == nil
     puts <<-EOS.undent
-      We couldn't detect gcc 4.0.x. Some formulas require this compiler.
+      We couldn't detect gcc 4.0.x. Some formulae require this compiler.
 
     EOS
   elsif gcc_40 < RECOMMENDED_GCC_40
@@ -121,6 +121,21 @@ def check_gcc_versions
 
     EOS
   end
+end
+
+def check_cc_symlink
+    which_cc = Pathname.new('/usr/bin/cc').realpath.basename.to_s
+    if which_cc == "llvm-gcc-4.2"
+      puts <<-EOS.undent
+        You changed your cc to symlink to llvm.
+        This bypasses LLVM checks, and some formulae may mysteriously fail to work.
+        You may want to change /usr/bin/cc to point back at gcc.
+
+        To force Homebrew to use LLVM, you can set the "HOMEBREW_LLVM" environmental
+        variable, or pass "--use-lvm" to "brew install".
+
+      EOS
+    end
 end
 
 def __check_subdir_access base
@@ -427,6 +442,7 @@ def brew_doctor
     check_homebrew_prefix
     check_for_stray_dylibs
     check_gcc_versions
+    check_cc_symlink
     check_for_other_package_managers
     check_for_x11
     check_for_nonstandard_x11
