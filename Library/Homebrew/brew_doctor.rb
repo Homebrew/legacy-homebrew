@@ -445,6 +445,49 @@ def check_for_autoconf
   end
 end
 
+def __check_linked_brew f
+  links_found = []
+
+  Pathname.new(f.prefix).find do |src|
+    dst=HOMEBREW_PREFIX+src.relative_path_from(f.prefix)
+    next unless dst.symlink?
+    links_found << dst unless src.directory?
+    Find.prune if src.directory?
+  end
+
+  return links_found
+end
+
+def check_for_linked_kegonly_brews
+  require 'formula'
+
+  warnings = Hash.new
+
+  Formula.all.each do |f|
+    next unless f.keg_only? and f.installed?
+    links = __check_linked_brew f
+    warnings[f.name] = links unless links.empty?
+  end
+
+  unless warnings.empty?
+    puts <<-EOS.undent
+    Some keg-only formula are linked into the Cellar.
+
+    Linking a keg-only formula, such as gettext, into the cellar with
+    `brew link f` will cause other formulae to detect them during the
+    `./configure` step. This may cause problems when compiling those
+    other formulae.
+
+    Binaries provided by keg-only formulae may override system binaries
+    with other strange results.
+
+    You may wish to `brew unlink` these brews:
+    EOS
+
+    puts *warnings.keys.collect { |f| "    #{f}" }
+  end
+end
+
 def brew_doctor
   read, write = IO.pipe
 
@@ -473,6 +516,7 @@ def brew_doctor
     check_for_multiple_volumes
     check_for_git
     check_for_autoconf
+    check_for_linked_kegonly_brews
 
     exit! 0
   else
