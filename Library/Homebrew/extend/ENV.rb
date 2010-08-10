@@ -23,19 +23,18 @@ module HomebrewEnvExtension
       xcode_path = "/Developer" if xcode_path.to_s.empty?
       ENV['CC'] = "#{xcode_path}/usr/bin/llvm-gcc"
       ENV['CXX'] = "#{xcode_path}/usr/bin/llvm-g++"
-      ENV['LD'] = ENV['CC']
       cflags = ['-O4'] # link time optimisation baby!
     else
-      # if we don't set these, many formula fail to build
+      # If these aren't set, many formulae fail to build
       ENV['CC'] = '/usr/bin/cc'
       ENV['CXX'] = '/usr/bin/c++'
       cflags = ['-O3']
     end
 
-    # in rare cases this may break your builds, as the tool for some reason wants
-    # to use a specific linker, however doing this in general causes formula to
+    # In rare cases this may break your builds, as the tool for some reason wants
+    # to use a specific linker. However doing this in general causes formula to
     # build more successfully because we are changing CC and many build systems
-    # don't react properly to that
+    # don't react properly to that.
     ENV['LD'] = ENV['CC']
 
     # optimise all the way to eleven, references:
@@ -72,7 +71,7 @@ module HomebrewEnvExtension
 
     ENV['CFLAGS'] = ENV['CXXFLAGS'] = "#{cflags*' '} #{SAFE_CFLAGS_FLAGS}"
   end
-  
+
   def deparallelize
     remove 'MAKEFLAGS', /-j\d+/
   end

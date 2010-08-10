@@ -18,6 +18,10 @@ class Erlang <Formula
   # may as well skip bin too, everything is just shell scripts
   skip_clean ['lib', 'bin']
 
+  def options
+    [['--disable-hipe', "Disable building hipe; fails on various OS X systems."]]
+  end
+
   def install
     ENV.deparallelize
     fails_with_llvm "see http://github.com/mxcl/homebrew/issues/issue/120"
