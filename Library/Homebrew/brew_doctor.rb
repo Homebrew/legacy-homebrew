@@ -310,8 +310,9 @@ def check_pkg_config_paths
 end
 
 def check_for_gettext
-  if File.exist? "#{HOMEBREW_PREFIX}/lib/libgettextlib.dylib" or
-     File.exist? "#{HOMEBREW_PREFIX}/lib/libintl.dylib"
+  if %w[lib/libgettextlib.dylib
+        lib/libintl.dylib
+        include/libintl.h ].any? { |f| File.exist? "#{HOMEBREW_PREFIX}/#{f}" }
     puts <<-EOS.undent
       gettext was detected in your PREFIX.
 
@@ -321,6 +322,26 @@ def check_for_gettext
       If you `brew link gettext` then a large number of brews that don't
       otherwise have a `depends_on 'gettext'` will pick up gettext anyway
       during the `./configure` step.
+
+      If you have a non-Homebrew provided gettext, other problems will happen
+      especially if it wasn't compiled with the proper architectures.
+
+    EOS
+  end
+end
+
+def check_for_iconv
+  if %w[lib/libiconv.dylib
+        include/iconv.h ].any? { |f| File.exist? "#{HOMEBREW_PREFIX}/#{f}" }
+    puts <<-EOS.undent
+      libiconv was detected in your PREFIX.
+
+      Homebrew doesn't provide a libiconv formula, and expects to link against
+      the system version in /usr/lib.
+
+      If you have a non-Homebrew provided libiconv, many formulae will fail
+      to compile or link, especially if it wasn't compiled with the proper
+      architectures.
 
     EOS
   end
