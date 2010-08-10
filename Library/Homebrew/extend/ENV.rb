@@ -4,30 +4,30 @@ module HomebrewEnvExtension
 
   def setup_build_environment
     # Clear CDPATH to avoid make issues that depend on changing directories
-    ENV.delete('CDPATH')
-    ENV.delete('CPPFLAGS')
-    ENV.delete('LDFLAGS')
+    delete('CDPATH')
+    delete('CPPFLAGS')
+    delete('LDFLAGS')
 
-    ENV['MAKEFLAGS']="-j#{Hardware.processor_count}"
+    self['MAKEFLAGS']="-j#{Hardware.processor_count}"
 
     unless HOMEBREW_PREFIX.to_s == '/usr/local'
       # /usr/local is already an -isystem and -L directory so we skip it
-      ENV['CPPFLAGS'] = "-isystem #{HOMEBREW_PREFIX}/include"
-      ENV['LDFLAGS'] = "-L#{HOMEBREW_PREFIX}/lib"
+      self['CPPFLAGS'] = "-isystem #{HOMEBREW_PREFIX}/include"
+      self['LDFLAGS'] = "-L#{HOMEBREW_PREFIX}/lib"
       # CMake ignores the variables above
-      ENV['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
+      self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
     end
 
-    if MACOS_VERSION >= 10.6 and (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
+    if MACOS_VERSION >= 10.6 and (self['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
       xcode_path = `/usr/bin/xcode-select -print-path`.chomp
       xcode_path = "/Developer" if xcode_path.to_s.empty?
-      ENV['CC'] = "#{xcode_path}/usr/bin/llvm-gcc"
-      ENV['CXX'] = "#{xcode_path}/usr/bin/llvm-g++"
+      self['CC'] = "#{xcode_path}/usr/bin/llvm-gcc"
+      self['CXX'] = "#{xcode_path}/usr/bin/llvm-g++"
       cflags = ['-O4'] # link time optimisation baby!
     else
       # If these aren't set, many formulae fail to build
-      ENV['CC'] = '/usr/bin/cc'
-      ENV['CXX'] = '/usr/bin/c++'
+      self['CC'] = '/usr/bin/cc'
+      self['CXX'] = '/usr/bin/c++'
       cflags = ['-O3']
     end
 
@@ -35,7 +35,7 @@ module HomebrewEnvExtension
     # to use a specific linker. However doing this in general causes formula to
     # build more successfully because we are changing CC and many build systems
     # don't react properly to that.
-    ENV['LD'] = ENV['CC']
+    self['LD'] = self['CC']
 
     # optimise all the way to eleven, references:
     # http://en.gentoo-wiki.com/wiki/Safe_Cflags/Intel
@@ -69,7 +69,7 @@ module HomebrewEnvExtension
       cflags<<"-mfpmath=sse"
     end
 
-    ENV['CFLAGS'] = ENV['CXXFLAGS'] = "#{cflags*' '} #{SAFE_CFLAGS_FLAGS}"
+    self['CFLAGS'] = self['CXXFLAGS'] = "#{cflags*' '} #{SAFE_CFLAGS_FLAGS}"
   end
 
   def deparallelize
@@ -141,10 +141,10 @@ module HomebrewEnvExtension
   end
 
   def minimal_optimization
-    self['CFLAGS']=self['CXXFLAGS']="-Os #{SAFE_CFLAGS_FLAGS}"
+    self['CFLAGS'] = self['CXXFLAGS'] = "-Os #{SAFE_CFLAGS_FLAGS}"
   end
   def no_optimization
-    self['CFLAGS']=self['CXXFLAGS'] = SAFE_CFLAGS_FLAGS
+    self['CFLAGS'] = self['CXXFLAGS'] = SAFE_CFLAGS_FLAGS
   end
 
   def libxml2
@@ -155,7 +155,7 @@ module HomebrewEnvExtension
     opoo "You do not have X11 installed, this formula may not build." if not x11_installed?
 
     # There are some config scripts (e.g. freetype) here that should go in the path
-    ENV.prepend 'PATH', '/usr/X11/bin', ':'
+    prepend 'PATH', '/usr/X11/bin', ':'
     # CPPFLAGS are the C-PreProcessor flags, *not* C++!
     append 'CPPFLAGS', '-I/usr/X11R6/include'
     append 'LDFLAGS', '-L/usr/X11R6/lib'
@@ -175,26 +175,26 @@ module HomebrewEnvExtension
   end
   # returns the compiler we're using
   def cc
-    ENV['CC'] or "gcc"
+    self['CC'] or "gcc"
   end
   def cxx
-    ENV['CXX'] or "g++"
+    self['CXX'] or "g++"
   end
 
   def m64
     append_to_cflags '-m64'
-    ENV.append 'LDFLAGS', '-arch x86_64'
+    append 'LDFLAGS', '-arch x86_64'
   end
   def m32
     append_to_cflags '-m32'
-    ENV.append 'LDFLAGS', '-arch i386'
+    append 'LDFLAGS', '-arch i386'
   end
 
   # i386 and x86_64 only, no PPC
   def universal_binary
     append_to_cflags '-arch i386 -arch x86_64'
-    ENV.O3 if self['CFLAGS'].include? '-O4' # O4 seems to cause the build to fail
-    ENV.append 'LDFLAGS', '-arch i386 -arch x86_64'
+    self.O3 if self['CFLAGS'].include? '-O4' # O4 seems to cause the build to fail
+    append 'LDFLAGS', '-arch i386 -arch x86_64'
 
     # Can't mix "-march" for a 32-bit CPU  with "-arch x86_64"
     remove_from_cflags(/-march=\S*/) if Hardware.is_32_bit?
@@ -208,21 +208,22 @@ module HomebrewEnvExtension
     end
   end
   def append key, value, separator = ' '
-    ref=self[key]
+    ref = self[key]
     if ref.nil? or ref.empty?
-      self[key]=value
+      self[key] = value
     else
-      self[key]=ref + separator + value
+      self[key] = ref + separator + value
     end
   end
+
   def append_to_cflags f
     append 'CFLAGS', f
     append 'CXXFLAGS', f
   end
   def remove key, value
     return if self[key].nil?
-    self[key]=self[key].sub value, '' # can't use sub! on ENV
-    self[key]=nil if self[key].empty? # keep things clean
+    self[key] = self[key].sub value, '' # can't use sub! on ENV
+    self[key] = nil if self[key].empty? # keep things clean
   end
   def remove_from_cflags f
     remove 'CFLAGS', f
