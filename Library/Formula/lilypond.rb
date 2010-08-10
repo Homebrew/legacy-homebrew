@@ -15,7 +15,7 @@ class Lilypond <Formula
   depends_on 'fontforge'
   depends_on 'texinfo'
 
-  def skip_clean? path; true; end
+  skip_clean :all
 
   def install
     system "./configure", "--prefix=#{prefix}",

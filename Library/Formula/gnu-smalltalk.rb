@@ -10,9 +10,9 @@ require 'formula'
 # * gdbm
 
 class GnuSmalltalk <Formula
-  url 'ftp://ftp.gnu.org/gnu/smalltalk/smalltalk-3.2.tar.gz'
+  url 'ftp://ftp.gnu.org/gnu/smalltalk/smalltalk-3.2.2.tar.gz'
   homepage 'http://smalltalk.gnu.org/'
-  sha1 'd951714c4fc7d91d06bdc33c20905885e5d2b25f'
+  sha1 'a985d69e4760420614c9dfe4d3605e47c5eb8faa'
 
   # depends_on 'gmp' => :optional # 32/64 built build problems
 
@@ -29,8 +29,8 @@ class GnuSmalltalk <Formula
     ENV['AWK'] = "#{here}/gawk"
 
     ENV['FFI_CFLAGS'] = '-I/usr/include/ffi'
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", 
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--with-readline=/usr/lib"
     system "make"
     ENV.j1 # Parallel install doesn't work

@@ -28,7 +28,8 @@ didn't include with OS X.
 
   * `--cache` [<formula>]:
     Displays the path Homebrew uses to cache downloads.
-    If <formula> is given, display the file or folder used to cache that specific package.
+    If <formula> is given, display the file or folder used to cache that
+    specific package.
 
   * `--config`:
     Shows Homebrew and system configuration useful for debugging. If you file
@@ -46,8 +47,8 @@ didn't include with OS X.
     If `--debug` is passed and brewing fails, opens a shell inside the
     temporary folder used for compiling.
 
-    If `--use-llvm` is passed, attempt to compile using the LLVM front-end to GCC.
-    *NOTE*: Not all formulae are compatible with LLVM, especially C++-based ones.
+    If `--use-llvm` is passed, attempt to compile using the LLVM front-end to GCC.  
+    *NOTE*: Not all formulae will build with LLVM.
 
     If `--ignore-dependencies` is passed, skip installing any dependencies of
     any kind. If they are not already present, the formula will probably fail to
@@ -79,6 +80,10 @@ didn't include with OS X.
   * `info --all`:
     Summarises all installed packages; this is inteded to be used by
     higher-level tools.
+
+  * `info` <URL>:
+    Prints the name and version that will be detected for <URL>; only http://
+    URLs supported for now.
 
   * `home`:
     Opens a browser to Homebrew's own homepage.
@@ -132,7 +137,7 @@ didn't include with OS X.
     recursive; only one level of dependencies is resolved.
 
   * `doctor`:
-    Audits your system for potential problems.
+    Checks your system for potential problems.
 
   * `cat` <formula>:
     Displays the source to <formula>.
@@ -142,7 +147,23 @@ didn't include with OS X.
     cellar.
 
   * `update`:
-    Using Git, fetches the newest version of Homebrew from the GitHub repository.
+    Using Git, fetches the newest version of Homebrew from the GitHub
+    repository.
+
+## EXTERNAL COMMANDS
+
+Homebrew allows external commands to be defined by putting a +x file named
+`brew-<cmdname>` or `brew-<cmdname>.rb` on the PATH. This will cause Homebrew
+to recognize `brew cmdname`.
+
+Some external commands are shipped with Homebrew, and enabled by default.
+
+  * `fetch` <formula>:
+    Downloads the tarball or checks out from VCS for the given <formula>. For
+    tarballs, also prints MD5 and SHA1 checksums.
+
+  * `audit`:
+    Checks all formulae for Homebrew coding style violations.
 
 ## ENVIRONMENT
 

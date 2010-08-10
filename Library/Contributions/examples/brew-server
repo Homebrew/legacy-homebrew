@@ -64,7 +64,7 @@ get '/' do
     <div class="row">
       <ul>
     HTML
-    Formulary.read_all do |name, klass|
+    Formula.names do |name|
       s << "<li>#{link_to_formula(name)}</li>"
     end
     s << <<-HTML
@@ -106,7 +106,6 @@ get '/search' do
 end
 
 get '/formula/:name' do
-  # klass = Formulary.read params[:name]
   klass = Formula.factory(params[:name])
 
   installed = klass.installed? ? "Installed at" : "Not installed."

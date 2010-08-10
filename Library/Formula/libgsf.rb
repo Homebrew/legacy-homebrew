@@ -11,13 +11,8 @@ class Libgsf <Formula
   depends_on 'glib'
 
   def install
-    configure_args = [
-      "--prefix=#{prefix}",
-      "--disable-debug",
-      "--disable-dependency-tracking",
-      ]
-
-    system "./configure", *configure_args
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

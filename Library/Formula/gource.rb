@@ -2,9 +2,8 @@ require 'formula'
 
 class Gource <Formula
   homepage 'http://code.google.com/p/gource/'
-  # Stable version doesn't work on 10.6.3
-  # url 'http://gource.googlecode.com/files/gource-0.26.tar.gz'
-  # sha1 'f2e92a5f806264790f61a988d58dd488d1dc169a'
+  url 'git://github.com/acaudwell/Gource.git', :tag => "24feaee4"
+  version "0.27"
   head 'git://github.com/acaudwell/Gource.git'
 
   depends_on 'pkg-config'
@@ -17,9 +16,10 @@ class Gource <Formula
   depends_on 'glew'
 
   def install
-    # Put freetype-config in path
-    ENV.x11
-    ENV.prepend 'PATH', "/usr/X11/bin", ":"
+    ENV.x11 # Put freetype-config in path
+
+    # For non-/usr/local installs
+    ENV.append "CXXFLAGS", "-I#{HOMEBREW_PREFIX}/include"
 
     system "autoreconf -f -i" unless File.exist? "configure"
 

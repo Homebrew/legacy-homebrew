@@ -4,27 +4,26 @@ class Gmediaserver < Formula
   url 'http://download.savannah.gnu.org/releases/gmediaserver/gmediaserver-0.13.0.tar.gz'
   homepage 'http://www.gnu.org/software/gmediaserver/'
   md5 'c422de386331e2a1a859d45f6fa270a3'
-  
+
   depends_on 'pkg-config'
   depends_on 'libupnp'
   depends_on 'libmagic'
   depends_on 'id3lib' => :optional
   depends_on 'taglib' => :optional
-  
+
   def patches
     # patching gmediaserver because sigwaitinfo is not available on
     # mac os x snow leopard, using sigwait instead
     DATA
   end
 
-  def install    
-    system "./configure", "--prefix=#{prefix}", 
-                          "--disable-debug", 
-                          "--disable-dependency-tracking"
+  def install
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make"
     system "make install"
   end
-end  
+end
 
 __END__
 --- gmediaserver-0.13.0 CHANGED/src/metadata.c	2007-10-20 11:41:32.000000000 +0200

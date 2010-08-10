@@ -5,8 +5,6 @@ class BerkeleyDb <Formula
   homepage 'http://www.oracle.com/technology/products/berkeley-db/index.html'
   md5 '8723c97c03d12c3afc8333df92d5089a'
 
-  aka 'db'
-
   def install
     # BerkeleyDB dislikes parallel builds
     ENV.deparallelize

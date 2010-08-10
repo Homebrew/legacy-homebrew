@@ -9,18 +9,18 @@ class Abuse <Formula
   url 'svn://svn.zoy.org/abuse/abuse/trunk'
   homepage 'http://abuse.zoy.org/'
   version 'trunk'
-  
+
   depends_on 'pkg-config'
   depends_on 'sdl'
   depends_on 'libvorbis'
-  
+
   def patches
     # * Add SDL.m4 to aclocal includes
     # * Re-enable OpenGL detection
     # * Don't try to include malloc.h
     DATA
   end
-  
+
   def startup_script
       return <<-END
 #!/bin/bash
@@ -30,27 +30,25 @@ END
 
   def install
     # Copy the data files
-    d = libexec
-    AbuseGameData.new.brew { d.install Dir["*"] }
-    
+    AbuseGameData.new.brew { libexec.install Dir["*"] }
 
     system "./bootstrap"
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", 
+    system "./configure", "--prefix=#{prefix}", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-sdltest",
                           "--with-sdl-prefix=#{HOMEBREW_PREFIX}"
-    
+
     # Use Framework OpenGL, not libGl
     %w[ . src src/imlib src/lisp src/net src/sdlport ].each do |p|
       inreplace "#{p}/Makefile", '-lGL', '-framework OpenGL'
     end
-    
+
     system "make"
     libexec.install "src/abuse"
     # Use a startup script to find the game data
     (bin+'abuse').write startup_script
   end
-  
+
   def caveats
     "Game settings and saves will be written to the ~/.abuse folder."
   end

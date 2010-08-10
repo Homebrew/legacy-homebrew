@@ -6,9 +6,7 @@ class Fortune <Formula
   md5 '81a87a44f9d94b0809dfc2b7b140a379'
 
   def options
-    [
-      ['--no-offensive', "Don't install potentially offenive fortune files"]
-    ]
+    [['--no-offensive', "Don't install potentially offenive fortune files"]]
   end
 
   def install

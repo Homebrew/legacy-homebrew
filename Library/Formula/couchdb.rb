@@ -1,10 +1,9 @@
 require 'formula'
 
 class Couchdb <Formula
-  url 'git://github.com/apache/couchdb.git'
+  url 'git://github.com/apache/couchdb.git', :tag => "origin/tags/1.0.0"
   homepage "http://couchdb.apache.org/"
   version "1.0.0"
-  @specs = {:tag => "origin/tags/1.0.0"}
 
   depends_on 'spidermonkey'
   depends_on 'icu4c'

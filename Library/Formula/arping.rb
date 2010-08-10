@@ -8,6 +8,11 @@ class Arping <Formula
 
   depends_on 'libnet'
 
+  def patches
+    # Patch removes header conflict with libpcap; arping 2.x uses libnet
+    DATA
+  end
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
 
@@ -15,15 +20,9 @@ class Arping <Formula
     inreplace 'Makefile' do |s|
       s.change_make_var! "LIBS", " -lnet"
     end
-  
+
     system "make"
     system "make install"
-  end
-
-  def patches
-    # Patch removes header conflict with libpcap
-    # arping 2.x uses libnet
-    DATA
   end
 end
 

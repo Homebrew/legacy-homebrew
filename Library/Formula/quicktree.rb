@@ -8,6 +8,6 @@ class Quicktree <Formula
 
   def install
     system "make"
-    bin.install("bin/quicktree")
+    bin.install "bin/quicktree"
   end
 end

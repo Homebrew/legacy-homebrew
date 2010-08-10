@@ -6,7 +6,7 @@ class Raptor <Formula
   md5 '992061488af7a9e2d933df6b694bb876'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end

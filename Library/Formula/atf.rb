@@ -6,11 +6,10 @@ class Atf <Formula
   md5 'ec5b2cbbc70b0ced4b46e77c9f0b2a1b'
 
   def install
-    system "./configure",
-           "--disable-dependency-tracking",
-           "--prefix=#{prefix}",
-           "--sysconfdir=#{etc}",
-           "--mandir=#{man}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}",
+                          "--mandir=#{man}"
     system "make install"
   end
 end

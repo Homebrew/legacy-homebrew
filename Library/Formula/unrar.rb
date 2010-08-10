@@ -8,7 +8,7 @@ class Unrar <Formula
   def install
     system "make --makefile makefile.unix"
     bin.install 'unrar'
-    
+
     mv 'license.txt', 'COPYING'
     mv 'readme.txt', 'README'
   end
