@@ -9,7 +9,7 @@ class Foremost <Formula
     inreplace "Makefile" do |s|
       s.gsub! "/usr/", "#{prefix}/"
       s.change_make_var! "RAW_CC", ENV.cc
-      s.change_make_var! "RAW_FLAGS", ENV['CFLAGS']
+      s.change_make_var! "RAW_FLAGS", ENV.cflags
     end
 
     system "make mac"

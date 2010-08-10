@@ -15,7 +15,7 @@ class Dcraw <Formula
   depends_on 'little-cms'
 
   def install
-    system "#{ENV.cc} -o dcraw #{ENV['CFLAGS']} dcraw.c -lm -ljpeg -llcms"
+    system "#{ENV.cc} -o dcraw #{ENV.cflags} dcraw.c -lm -ljpeg -llcms"
     bin.install 'dcraw'
   end
 end
