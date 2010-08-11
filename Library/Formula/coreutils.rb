@@ -1,5 +1,9 @@
 require 'formula'
 
+def use_default_names?
+  ARGV.include? '--default-names'
+end
+
 def coreutils_aliases
   s = "brew_prefix=`brew --prefix`\n"
 
@@ -27,26 +31,27 @@ class Coreutils <Formula
   homepage 'http://www.gnu.org/software/coreutils'
 
   def options
-    [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
+    [
+      ['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."],
+      ['--aliases', "Dump an aliases file instead of doing the install."]
+    ]
   end
 
   def install
-    # Note this doesn't work right now as I have broken the install process
-    # slightly so it errors out.
     if ARGV.include? '--aliases'
       puts coreutils_aliases
       exit 0
     end
 
     args = [ "--prefix=#{prefix}" ]
-    args << "--program-prefix=g" unless ARGV.include? '--default-names'
+    args << "--program-prefix=g" unless use_default_names?
 
     system "./configure", *args
     system "make install"
   end
 
   def caveats
-    unless ARGV.include? '--default-names'; <<-EOS
+    unless use_default_names?; <<-EOS
 All commands have been installed with the prefix 'g'. In order to use these
 commands by default you can put some aliases in your bashrc. You can
 accomplish this like so:

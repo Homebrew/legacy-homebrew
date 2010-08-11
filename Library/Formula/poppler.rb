@@ -17,6 +17,10 @@ class Poppler <Formula
     DATA
   end
 
+  def options
+    [["--with-qt4", "Include Qt4 support (which compiles all of Qt4!)"]]
+  end
+
   def install
     if ARGV.include? "--with-qt4"
       qt4Flags = `pkg-config QtCore --libs` + `pkg-config QtGui --libs`

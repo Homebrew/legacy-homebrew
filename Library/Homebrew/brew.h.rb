@@ -619,7 +619,3 @@ def llvm_build
     $1.to_i
   end
 end
-
-def x11_installed?
-  Pathname.new('/usr/X11/lib/libpng.dylib').exist?
-end

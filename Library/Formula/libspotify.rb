@@ -9,14 +9,13 @@ class Libspotify <Formula
   def install
     prefix.install 'share'
     (include+'libspotify').install "libspotify.framework/Versions/#{version}/Headers/api.h"
-    (include+'libspotify').install "libspotify.framework/Versions/#{version}/libspotify" => 'libspotify.0.0.4.dylib'
+    lib.install "libspotify.framework/Versions/#{version}/libspotify" => 'libspotify.0.0.4.dylib'
     doc.install Dir['doc/*']
 
     cd lib
     ln_s "libspotify.0.0.4.dylib", "libspotify.dylib"
 
-    system "install_name_tool",
-           "-id",
+    system "install_name_tool", "-id",
            "#{HOMEBREW_PREFIX}/lib/libspotify.#{version}.dylib",
            "libspotify.dylib"
 

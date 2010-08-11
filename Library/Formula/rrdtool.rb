@@ -21,6 +21,10 @@ class Rrdtool <Formula
     DATA # Ha-ha, but sleeping is annoying when running configure a lot
   end
 
+  def options
+    [["--lua", "Compile with lua support."]]
+  end
+
   def install
     which_perl = `/usr/bin/which perl`.chomp
     which_ruby = `/usr/bin/which ruby`.chomp

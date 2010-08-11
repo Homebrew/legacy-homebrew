@@ -5,7 +5,6 @@ class Opencv <Formula
   # https://code.ros.org/trac/opencv/ticket/253
   head 'https://code.ros.org/svn/opencv/trunk/opencv', :using => :svn
   homepage 'http://opencv.willowgarage.com/wiki/'
-  md5 ''
 
   depends_on 'cmake'
   depends_on 'pkg-config'

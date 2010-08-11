@@ -23,5 +23,15 @@ class Couchdb <Formula
     (lib+'couchdb/bin/couchjs').chmod 0755
     (var+'lib/couchdb').mkpath
     (var+'log/couchdb').mkpath
+    (etc + "couchdb/local.d/delayed_commits.ini").write ini_file
+
   end
+
+  def ini_file
+    return <<-EOS
+[couchdb]
+  delayed_commits = false ; See http://couchdb.apache.org/notice/1.0.1.html for details.
+EOS
+  end
+
 end

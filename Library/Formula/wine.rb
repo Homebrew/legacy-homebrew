@@ -31,6 +31,15 @@ EOS
     args << "--without-freetype" if MACOS_VERSION >= 10.6 and Hardware.is_64_bit?
     args << "--disable-win16" if MACOS_VERSION < 10.6
 
+    if Hardware.is_64_bit? and Formula.factory('mpg123').installed?
+      opoo "A 64-bit mpg123 causes this formula to fail"
+      puts <<-EOS.undent
+        Because Wine builds 32-bit, a 64-bit mpg123 will cause this formula to fail.
+        You can get around this by doing `brew unlink mpg123` before installing Wine
+        and then `brew link mpg123` afterwards.
+      EOS
+    end
+
     system "./configure", *args
     system "make install"
 
