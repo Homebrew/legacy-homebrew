@@ -6,11 +6,8 @@ def ff
   return ARGV.formulae
 end
 
-ff.each do |f|
-  text = ""
+def audit_formula_text text
   problems = []
-
-  File.open(f.path, "r") { |afile| text = afile.read }
 
   # Commented-out cmake support from default template
   if text =~ /# depends_on 'cmake'/
@@ -42,8 +39,8 @@ ff.each do |f|
     problems << " * \"#{$1}\" should be \"\#{#{$2}}\""
   end
 
-  if text =~ %r[(\#\{prefix\}/share/man/(man[1-8]))]
-    problems << " * \"#{$1}\" should be \"\#{#{$2}}\""
+  if text =~ %r[((\#\{prefix\}/share/man/|\#\{man\}/)(man[1-8]))]
+    problems << " * \"#{$1}\" should be \"\#{#{$3}}\""
   end
 
   if text =~ %r[(\#\{prefix\}/share/(info|man))]
@@ -55,21 +52,78 @@ ff.each do |f|
     problems << " * md5 is empty"
   end
 
-  # Don't complain about spaces in patches
-  split_patch = (text.split("__END__")[0]).strip()
-  if split_patch =~ /[ ]+$/
+  # No trailing whitespace, please
+  if text =~ /[ ]+$/
     problems << " * Trailing whitespace was found."
   end
 
-  # Don't depend_on aliases; use full name
-  aliases = Formula.aliases
-  f.deps.select {|d| aliases.include? d}.each do |d|
-    problems << " * Dep #{d} is an alias; switch to the real name."
+  return problems
+end
+
+def audit_formula_options f, text
+  problems = []
+
+  # Find possible options
+  options = []
+  text.scan(/ARGV\.include\?[ ]*\(?(['"])(.+?)\1/) { |m| options << m[1] }
+  options.reject! {|o| o.include? "#"}
+  options.uniq!
+
+  # Find documented options
+  begin
+    opts = f.options
+    documented_options = []
+    opts.each{ |o| documented_options << o[0] }
+    documented_options.reject! {|o| o.include? "="}
+  rescue
+    documented_options = []
   end
 
-  unless problems.empty?
-    puts "#{f.name}:"
-    puts problems * "\n"
-    puts
+  if options.length > 0
+    options.each do |o|
+      problems << " * Option #{o} is not documented" unless documented_options.include? o
+    end
+  end
+
+  if documented_options.length > 0
+    documented_options.each do |o|
+      problems << " * Option #{o} is unused" unless options.include? o
+    end
+  end
+
+  return problems
+end
+
+def audit_some_formulae
+  ff.each do |f|
+    problems = []
+
+    # Don't depend_on aliases; use full name
+    aliases = Formula.aliases
+    f.deps.select {|d| aliases.include? d}.each do |d|
+      problems << " * Dep #{d} is an alias; switch to the real name."
+    end
+
+    text = ""
+    File.open(f.path, "r") { |afile| text = afile.read }
+
+    # DATA with no __END__
+    if (text =~ /\bDATA\b/) and not (text =~ /^\s*__END__\s*$/)
+      problems << " * 'DATA' was found, but no '__END__'"
+    end
+
+    # Don't try remaining audits on text in __END__
+    text_without_patch = (text.split("__END__")[0]).strip()
+
+    problems += audit_formula_text(text_without_patch)
+    problems += audit_formula_options(f, text_without_patch)
+
+    unless problems.empty?
+      puts "#{f.name}:"
+      puts problems * "\n"
+      puts
+    end
   end
 end
+
+audit_some_formulae

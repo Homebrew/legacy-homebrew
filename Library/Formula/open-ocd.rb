@@ -8,6 +8,10 @@ class OpenOcd <Formula
   depends_on 'libusb-compat'
   depends_on 'libftdi' if ARGV.include? "--enable-ft2232_libftdi"
 
+  def options
+    [["--enable-ft2232_libftdi", "Compile against libftdi."]]
+  end
+
   def install
     args = ["--enable-maintainer-mode", "--prefix=#{prefix}"]
     args << "--enable-ft2232_libftdi" if ARGV.include? "--enable-ft2232_libftdi"

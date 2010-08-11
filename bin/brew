@@ -282,7 +282,7 @@ begin
       end
     end
 
-  when 'doctor'
+  when 'doctor', 'dr'
     require 'brew_doctor'
     brew_doctor
 
