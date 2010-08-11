@@ -12,8 +12,10 @@ class Kumofs <Formula
   depends_on 'msgpack' => :ruby
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}",
-                          "--with-msgpack=#{prefix}", "--with-tokyocabinet=#{prefix}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-msgpack=#{prefix}",
+                          "--with-tokyocabinet=#{prefix}"
     system "make install"
   end
 end

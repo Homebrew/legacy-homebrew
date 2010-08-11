@@ -7,7 +7,7 @@ class Gant <Formula
   md5 '646f29f42793520a3702b1f356f5d4a6'
 
   depends_on 'groovy'
-  
+
   def install
     rm_f Dir["bin/*.bat"]
     # gant-starter.conf is found relative to bin

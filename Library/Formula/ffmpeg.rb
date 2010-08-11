@@ -15,6 +15,9 @@ class Ffmpeg <Formula
   depends_on 'faac' => :optional
   depends_on 'faad2' => :optional
   depends_on 'lame' => :optional
+  depends_on 'theora' => :optional
+  depends_on 'libvorbis' => :optional
+  depends_on 'libogg' => :optional
 
   def install
     configure_flags = [
@@ -30,10 +33,12 @@ class Ffmpeg <Formula
     configure_flags << "--enable-libfaac" if Formula.factory('faac').installed?
     configure_flags << "--enable-libfaad" if Formula.factory('faad2').installed?
     configure_flags << "--enable-libmp3lame" if Formula.factory('lame').installed?
+    configure_flags << "--enable-libtheora" if Formula.factory('theora').installed?
+    configure_flags << "--enable-libvorbis" if Formula.factory('libvorbis').installed?
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
-    if MACOS_VERSION >= 10.6 and not Hardware.is_64_bit?
+    if MACOS_VERSION >= 10.6 and Hardware.is_32_bit?
       ENV.append_to_cflags "-mdynamic-no-pic"
     end
 

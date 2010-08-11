@@ -6,7 +6,6 @@ class Gearman <Formula
   md5 '6e88a6bfb26e50d5aed37d143184e7f2'
 
   depends_on 'libevent'
-  aka 'gearmand'
 
   def install
     system "./configure", "--prefix=#{prefix}"

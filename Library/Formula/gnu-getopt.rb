@@ -7,9 +7,7 @@ class GnuGetopt <Formula
 
   depends_on 'gettext'
 
-  def keg_only?
-    :provided_by_osx
-  end
+  keg_only :provided_by_osx
 
   def install
     inreplace 'Makefile' do |s|

@@ -10,7 +10,7 @@ class Cdargs <Formula
     system "make"
     system "make install-strip"
 
-    rm Dir.glob('contrib/Makefile*')
+    rm Dir['contrib/Makefile*']
     prefix.install 'contrib'
 
     bash_completion_dir = etc+'bash_completion.d'

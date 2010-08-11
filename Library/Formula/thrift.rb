@@ -1,18 +1,14 @@
 require 'formula'
 
-# TODO Fix java support anyone?
-#
-#
-
 class Thrift <Formula
   homepage 'http://incubator.apache.org/thrift/'
-  head 'http://svn.apache.org/repos/asf/incubator/thrift/trunk'
-  version '0.2.0'
   url 'http://apache.dataphone.se/incubator/thrift/0.2.0-incubating/thrift-0.2.0-incubating.tar.gz'
+  version '0.2.0'
   md5 '9958c57c402c02171ba0bcc96183505c'
+  head 'http://svn.apache.org/repos/asf/incubator/thrift/trunk'
 
   depends_on 'boost'
-  
+
   def install
     cp "/usr/X11/share/aclocal/pkg.m4", "aclocal"
     system "./bootstrap.sh" if version == 'HEAD'

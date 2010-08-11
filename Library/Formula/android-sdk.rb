@@ -10,15 +10,13 @@ class AndroidSdk <Formula
   skip_clean 'platforms'
   skip_clean 'temp'
 
-  aka :android
-
   def install
     mkdir %w[temp docs] << bin
 
     mv 'SDK Readme.txt', 'README'
     prefix.install Dir['*']
 
-    %w[adb android apkbuilder ddms dmtracedump draw9patch emulator 
+    %w[adb android apkbuilder ddms dmtracedump draw9patch emulator
            hierarchyviewer hprof-conv layoutopt mksdcard traceview
            zipalign].each do |tool|
       (bin+tool).make_link(prefix+'tools'+tool)

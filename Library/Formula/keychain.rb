@@ -8,7 +8,6 @@ class Keychain <Formula
   def install
     bin.install "keychain"
     man1.install "keychain.1"
-    doc.install "ChangeLog"
-    doc.install "README.rst"
+    doc.install ["ChangeLog", "README.rst"]
   end
 end

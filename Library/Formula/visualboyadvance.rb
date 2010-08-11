@@ -4,11 +4,11 @@ class Visualboyadvance <Formula
   url "http://downloads.sourceforge.net/project/vba/VisualBoyAdvance/1.7.2/VisualBoyAdvance-src-1.7.2.tar.gz"
   homepage 'http://vba.ngemu.com/' # This homepage is sketchy
   md5 'cc02339e3fd8efd9f23121b0a2f81fd8'
-  
+
   depends_on 'pkg-config'
   depends_on 'libpng'
   depends_on 'sdl'
-  
+
   def patches
     DATA
   end
@@ -16,9 +16,9 @@ class Visualboyadvance <Formula
   def install
     fails_with_llvm "Video scalers don't link right w/ LLVM"
     ENV.x11 # for libpng
-    
-    system "./configure", "--prefix=#{prefix}", "--disable-debug",
-                          "--disable-dependency-tracking",
+
+    system "./configure", "--disable-dependency-tracking", "--disable-debug",
+                          "--prefix=#{prefix}",
                           # Use straight C, and don't get fancy
                           "--enable-c-core",
                           "--without-mmx",

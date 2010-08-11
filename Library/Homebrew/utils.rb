@@ -177,7 +177,7 @@ def archs_for_command cmd
   cmd = `/usr/bin/which #{cmd}` unless Pathname.new(cmd).absolute?
   cmd.gsub! ' ', '\\ '  # Escape spaces in the filename.
 
-  archs = IO.popen("/usr/bin/file #{cmd}").readlines.inject([]) do |archs, line|
+  archs = IO.popen("/usr/bin/file -L #{cmd}").readlines.inject([]) do |archs, line|
     case line
     when /Mach-O (executable|dynamically linked shared library) ppc/
       archs << :ppc7400
@@ -276,4 +276,8 @@ def dump_build_env env
     value = env[k]
     puts "#{k}: #{value}" if value
   end
+end
+
+def x11_installed?
+  Pathname.new('/usr/X11/lib/libpng.dylib').exist?
 end

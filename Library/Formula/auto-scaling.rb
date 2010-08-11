@@ -8,7 +8,6 @@ class AutoScaling <AmazonWebServicesFormula
   homepage 'http://developer.amazonwebservices.com/connect/entry.jspa?externalID=2535&categoryID=251'
   url      'http://ec2-downloads.s3.amazonaws.com/AutoScaling-2009-05-15.zip'
   md5      'a8410272127432d01d5f1a90d976b822'
-  aka      'aws-as'
 
   def install
     standard_install

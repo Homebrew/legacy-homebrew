@@ -8,10 +8,10 @@ class Bcrypt <Formula
   def install
     inreplace "Makefile" do |s|
       s.change_make_var! "CC", ENV.cc
-      s.change_make_var! "CFLAGS", ENV['CFLAGS']
+      s.change_make_var! "CFLAGS", ENV.cflags
       s.change_make_var! "LDFLAGS", "-lz"
     end
-    
+
     system "make"
     bin.install "bcrypt"
     man1.install gzip("bcrypt.1")

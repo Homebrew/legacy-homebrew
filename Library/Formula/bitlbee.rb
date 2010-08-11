@@ -1,9 +1,9 @@
 require 'formula'
 
 class Bitlbee <Formula
-  url 'http://get.bitlbee.org/src/bitlbee-1.2.7.tar.gz'
+  url 'http://get.bitlbee.org/src/bitlbee-1.2.8.tar.gz'
   homepage 'http://www.bitlbee.org/'
-  md5 '46cb8c0a930970cccd09dce4b3155cae'
+  md5 'e1fbbd9d96ec7c2377b1b286689c1b83'
 
   depends_on 'glib'
   depends_on 'gnutls'
@@ -16,9 +16,14 @@ class Bitlbee <Formula
     # magician will know).
     ENV['LD'] = '/usr/bin/ld'
 
-    # Homebrew should handlle the stripping.
+    # Homebrew should handle the stripping.
     # Should we use --config=/usr/local/var/lib/bitlbee/ ?
-    system "./configure", "--debug=0", "--strip=0", "--ssl=gnutls", "--pidfile=#{var}/bitlbee/run/bitlbee.pid", "--config=#{var}/bitlbee/lib/", "--ipsocket=#{var}/bitlbee/run/bitlbee.sock", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}",
+                          "--debug=0", "--strip=0",
+                          "--ssl=gnutls",
+                          "--pidfile=#{var}/bitlbee/run/bitlbee.pid",
+                          "--config=#{var}/bitlbee/lib/",
+                          "--ipsocket=#{var}/bitlbee/run/bitlbee.sock"
     # This build depends on make running first.
     system "make"
     system "make install"
@@ -26,7 +31,7 @@ class Bitlbee <Formula
     system "make install-etc"
 
     (var+"bitlbee").mkpath
-    (var+"bitlbee"+"run").mkpath
-    (var+"bitlbee"+"lib").mkpath
+    (var+"bitlbee/run").mkpath
+    (var+"bitlbee/lib").mkpath
   end
 end
