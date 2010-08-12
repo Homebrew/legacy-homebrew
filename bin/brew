@@ -258,7 +258,9 @@ begin
   # For each formula given, show which other formulas depend on it.
   # We only go one level up, ie. direct dependencies.
   when 'uses'
-    puts *ARGV.formulae.map{ |f| Formula.all.select{ |ff| ff.deps.include? f.name }.map{|f| f.name} }.flatten.uniq.sort
+    uses = ARGV.formulae.map{ |f| Formula.all.select{ |ff| ff.deps.include? f.name }.map{|f| f.name} }.flatten.uniq
+    uses = uses.select { |f| Formula.factory(f).installed? } if ARGV.include? "--installed"
+    puts *uses.sort
 
   when 'deps'
     require 'formula_installer'

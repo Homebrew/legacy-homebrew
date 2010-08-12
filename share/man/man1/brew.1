@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "July 2010" "Homebrew" "brew"
+.TH "BREW" "1" "August 2010" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -141,12 +141,18 @@ Removes dead symlinks from the Homebrew prefix\. This is generally not needed\. 
 Shows formula that have an updated version available\.
 .
 .TP
-\fBdeps\fR \fIformula\fR
+\fBdeps [\-\-1]\fR \fIformula\fR
 Shows \fIformula\fR\'s dependencies\.
 .
+.IP
+If \fB\-\-1\fR is passed, only show dependencies one level down, instead of recursing\.
+.
 .TP
-\fBuses\fR \fIformula\fR
+\fBuses [\-\-installed]\fR \fIformula\fR
 Shows the formulas that specify \fIformula\fR as a dependency\. The list is not recursive; only one level of dependencies is resolved\.
+.
+.IP
+If \fB\-\-installed\fR is passed, the list only shows formulae you have installed\.
 .
 .TP
 \fBdoctor\fR
