@@ -91,14 +91,16 @@ class #{Formula.class_s name} <Formula
 <% end %>
 
   def install
-  <% if mode == :cmake %>
+<% if mode == :cmake %>
     system "cmake . \#{std_cmake_parameters}"
-  <% elsif mode == :autotools %>
-    system "./configure", "--prefix=\#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-  <% else %>
-    system "./configure", "--prefix=\#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+<% elsif mode == :autotools %>
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=\#{prefix}"
+<% else %>
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=\#{prefix}"
     # system "cmake . \#{std_cmake_parameters}"
-  <% end %>
+<% end %>
     system "make install"
   end
 end
