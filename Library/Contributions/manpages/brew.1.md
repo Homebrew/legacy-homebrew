@@ -4,7 +4,7 @@ brew(1) -- The missing package manager for OS X
 ## SYNOPSIS
 
 `brew` [--verbose|-v] command [options] [formula] ...  
-`brew` [--version|-v]  
+`brew` [--version|-v]
 
 ## DESCRIPTION
 
@@ -47,12 +47,12 @@ didn't include with OS X.
     If `--debug` is passed and brewing fails, opens a shell inside the
     temporary folder used for compiling.
 
-    If `--use-llvm` is passed, attempt to compile using the LLVM front-end to GCC.  
+    If `--use-llvm` is passed, attempt to compile using the LLVM front-end to GCC.
     *NOTE*: Not all formulae will build with LLVM.
 
     If `--ignore-dependencies` is passed, skip installing any dependencies of
-    any kind. If they are not already present, the formula will probably fail to
-    install.
+    any kind. If they are not already present, the formula will probably fail
+    to install.
 
     If `--HEAD` is passed, and <formula> defines it, install the HEAD version,
     aka master, trunk, unstable, dev.
@@ -174,7 +174,8 @@ Some external commands are shipped with Homebrew, and enabled by default.
 ## ENVIRONMENT
 
   * HOMEBREW\_DEBUG:
-    If set, instructs Homebrew to always assume `--debug` when running commands.
+    If set, instructs Homebrew to always assume `--debug` when running
+    commands.
 
   * HOMEBREW\_EDITOR:
     If set, Homebrew will use this editor when editing a single formula, or
@@ -200,7 +201,8 @@ Some external commands are shipped with Homebrew, and enabled by default.
     configurations.)
 
   * HOMEBREW\_USE\_LLVM:
-    If set, instructs Homebrew to use the LLVM front-ends to the GCC compilers.
+    If set, instructs Homebrew to use the LLVM front-ends to the GCC
+    compilers.
 
     *NOTE*: Not all formulae will build correctly under LLVM.
 
