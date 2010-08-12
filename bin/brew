@@ -258,14 +258,14 @@ begin
   # For each formula given, show which other formulas depend on it.
   # We only go one level up, ie. direct dependencies.
   when 'uses'
-    puts *ARGV.formulae.map{ |f| Formula.all.select{ |ff| ff.deps.include? f.name }.map(&:name) }.flatten.uniq.sort
+    puts *ARGV.formulae.map{ |f| Formula.all.select{ |ff| ff.deps.include? f.name }.map{|f| f.name} }.flatten.uniq.sort
 
   when 'deps'
     require 'formula_installer'
     if ARGV.include?("-1") or ARGV.include?("--1")
       puts *ARGV.formulae.map{ |f| f.deps or [] }.flatten.uniq.sort
     else
-      puts *ARGV.formulae.map{ |f| FormulaInstaller.expand_deps(f).map(&:name) }.flatten.uniq.sort
+      puts *ARGV.formulae.map{ |f| FormulaInstaller.expand_deps(f).map{|f| f.name} }.flatten.uniq.sort
     end
 
   when 'cat'
