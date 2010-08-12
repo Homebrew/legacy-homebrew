@@ -129,12 +129,18 @@ didn't include with OS X.
   * `outdated`:
     Shows formula that have an updated version available.
 
-  * `deps` <formula>:
+  * `deps [--1]` <formula>:
     Shows <formula>'s dependencies.
 
-  * `uses` <formula>:
-    Shows the formulas that specify <formula> as a dependency. The list is not
-    recursive; only one level of dependencies is resolved.
+    If `--1` is passed, only show dependencies one level down, instead of
+    recursing.
+
+  * `uses [--installed]` <formula>:
+    Shows the formulas that specify <formula> as a dependency. The list is
+    not recursive; only one level of dependencies is resolved.
+
+    If `--installed` is passed, the list only shows formulae you have
+    installed.
 
   * `doctor`:
     Checks your system for potential problems.
