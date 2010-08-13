@@ -11,6 +11,10 @@ class Gant <Formula
   def install
     rm_f Dir["bin/*.bat"]
     # gant-starter.conf is found relative to bin
-    prefix.install %w[bin lib conf]
+    libexec.install %w[bin lib conf]
+    (bin+'gant').write <<-EOS.undent
+      #!/bin/bash
+      exec #{libexec}/bin/gant
+    EOS
   end
 end
