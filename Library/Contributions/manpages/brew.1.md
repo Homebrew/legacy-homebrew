@@ -4,7 +4,7 @@ brew(1) -- The missing package manager for OS X
 ## SYNOPSIS
 
 `brew` [--verbose|-v] command [options] [formula] ...  
-`brew` [--version|-v]  
+`brew` [--version|-v]
 
 ## DESCRIPTION
 
@@ -28,7 +28,8 @@ didn't include with OS X.
 
   * `--cache` [<formula>]:
     Displays the path Homebrew uses to cache downloads.
-    If <formula> is given, display the file or folder used to cache that specific package.
+    If <formula> is given, display the file or folder used to cache that
+    specific package.
 
   * `--config`:
     Shows Homebrew and system configuration useful for debugging. If you file
@@ -47,11 +48,11 @@ didn't include with OS X.
     temporary folder used for compiling.
 
     If `--use-llvm` is passed, attempt to compile using the LLVM front-end to GCC.
-    *NOTE*: Not all formulae are compatible with LLVM, especially C++-based ones.
+    *NOTE*: Not all formulae will build with LLVM.
 
     If `--ignore-dependencies` is passed, skip installing any dependencies of
-    any kind. If they are not already present, the formula will probably fail to
-    install.
+    any kind. If they are not already present, the formula will probably fail
+    to install.
 
     If `--HEAD` is passed, and <formula> defines it, install the HEAD version,
     aka master, trunk, unstable, dev.
@@ -128,15 +129,21 @@ didn't include with OS X.
   * `outdated`:
     Shows formula that have an updated version available.
 
-  * `deps` <formula>:
+  * `deps [--1]` <formula>:
     Shows <formula>'s dependencies.
 
-  * `uses` <formula>:
-    Shows the formulas that specify <formula> as a dependency. The list is not
-    recursive; only one level of dependencies is resolved.
+    If `--1` is passed, only show dependencies one level down, instead of
+    recursing.
+
+  * `uses [--installed]` <formula>:
+    Shows the formulas that specify <formula> as a dependency. The list is
+    not recursive; only one level of dependencies is resolved.
+
+    If `--installed` is passed, the list only shows formulae you have
+    installed.
 
   * `doctor`:
-    Audits your system for potential problems.
+    Checks your system for potential problems.
 
   * `cat` <formula>:
     Displays the source to <formula>.
@@ -146,12 +153,29 @@ didn't include with OS X.
     cellar.
 
   * `update`:
-    Using Git, fetches the newest version of Homebrew from the GitHub repository.
+    Using Git, fetches the newest version of Homebrew from the GitHub
+    repository.
+
+## EXTERNAL COMMANDS
+
+Homebrew allows external commands to be defined by putting a +x file named
+`brew-<cmdname>` or `brew-<cmdname>.rb` on the PATH. This will cause Homebrew
+to recognize `brew cmdname`.
+
+Some external commands are shipped with Homebrew, and enabled by default.
+
+  * `fetch` <formula>:
+    Downloads the tarball or checks out from VCS for the given <formula>. For
+    tarballs, also prints MD5 and SHA1 checksums.
+
+  * `audit`:
+    Checks all formulae for Homebrew coding style violations.
 
 ## ENVIRONMENT
 
   * HOMEBREW\_DEBUG:
-    If set, instructs Homebrew to always assume `--debug` when running commands.
+    If set, instructs Homebrew to always assume `--debug` when running
+    commands.
 
   * HOMEBREW\_EDITOR:
     If set, Homebrew will use this editor when editing a single formula, or
@@ -177,7 +201,8 @@ didn't include with OS X.
     configurations.)
 
   * HOMEBREW\_USE\_LLVM:
-    If set, instructs Homebrew to use the LLVM front-ends to the GCC compilers.
+    If set, instructs Homebrew to use the LLVM front-ends to the GCC
+    compilers.
 
     *NOTE*: Not all formulae will build correctly under LLVM.
 

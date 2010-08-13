@@ -46,7 +46,7 @@ class Spidermonkey <Formula
       inreplace "config/rules.mk", "-install_name @executable_path/$(SHARED_LIBRARY) ", ""
     end
 
-    FileUtils.mkdir "brew-build"
+    mkdir "brew-build"
 
     Dir.chdir "brew-build" do
       system "../js/src/configure", "--prefix=#{prefix}",

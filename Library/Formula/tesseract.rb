@@ -13,25 +13,24 @@ class Tesseract <Formula
 
   depends_on 'libtiff'
 
-  def about
-    <<-EOF
-    Tesseract is an OCR (Optical Character Recognition) engine.
-
-    The easiest way to use it is to convert the source to a Grayscale tiff:
-    `convert source.png -type Grayscale terre_input.tif`
-    then run tesseract:
-    `tesseract terre_input.tif output`
-    EOF
-  end
-
   def install
     fails_with_llvm "Executable 'tesseract' segfaults on 10.6 when compiled with llvm-gcc", :build => "2206"
 
     # 'make install' expects the language data files in the build directory
     d = Dir.getwd
-    TesseractEnglishData.new.brew { FileUtils.cp Dir["*"], "#{d}/tessdata/" }
+    TesseractEnglishData.new.brew { cp Dir["*"], "#{d}/tessdata/" }
 
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
+  end
+
+  def caveats; <<-EOF.undent
+    Tesseract is an OCR (Optical Character Recognition) engine.
+
+    The easiest way to use it is to convert the source to a Grayscale tiff:
+      `convert source.png -type Grayscale terre_input.tif`
+    then run tesseract:
+      `tesseract terre_input.tif output`
+    EOF
   end
 end

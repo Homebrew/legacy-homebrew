@@ -1,16 +1,16 @@
 require 'formula'
 
 class Node <Formula
-  url 'http://nodejs.org/dist/node-v0.1.102.tar.gz'
+  url 'http://nodejs.org/dist/node-v0.1.104.tar.gz'
   head 'git://github.com/ry/node.git'
   homepage 'http://nodejs.org/'
-  md5 '93279f1e4595558dacb45a78259b7739'
-
-  aka 'node.js'
+  md5 '907fa1e0a2f1f0c3df5efc97fd05a7d2'
 
   # Stripping breaks dynamic loading
-  def skip_clean? path
-    true
+  skip_clean :all
+
+  def options
+    [["--debug", "Build with debugger hooks."]]
   end
 
   def install
@@ -21,7 +21,10 @@ class Node <Formula
       s.gsub! '/opt/local/lib', '/usr/lib'
     end
 
-    system "./configure", "--prefix=#{prefix}"
+    args = ["--prefix=#{prefix}"]
+    args << "--debug" if ARGV.include? '--debug'
+
+    system "./configure", *args
     system "make install"
   end
 end

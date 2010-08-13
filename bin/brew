@@ -126,7 +126,7 @@ begin
         end
       elsif ARGV.named.empty?
         ENV['CLICOLOR']=nil
-        exec 'ls', *ARGV.options<<HOMEBREW_CELLAR if HOMEBREW_CELLAR.exist?
+        exec 'ls', *ARGV.options_only<<HOMEBREW_CELLAR if HOMEBREW_CELLAR.exist?
       elsif ARGV.verbose? or not $stdout.tty?
         exec "find", *ARGV.kegs+%w[-not -type d -print]
       else
@@ -152,9 +152,10 @@ begin
                           "#{HOMEBREW_REPOSITORY}/bin/brew"<<
                           "#{HOMEBREW_REPOSITORY}/README.md"
       else
-        # we don't use ARGV.formulae as that will throw if the file doesn't parse
+        # Don't use ARGV.formulae as that will throw if the file doesn't parse
         paths = ARGV.named.collect do |name|
-          unless File.exist? path = "#{HOMEBREW_REPOSITORY}/Library/Formula/#{name}.rb"
+          path = "#{HOMEBREW_REPOSITORY}/Library/Formula/#{ARGV.resolve_alias(name)}.rb"
+          unless File.exist? path
             require 'formula'
             raise FormulaUnavailableError, name
           else
@@ -172,24 +173,7 @@ begin
     unless updater.update_from_masterbrew!
       puts "Already up-to-date."
     else
-      puts "Updated Homebrew from #{updater.initial_revision[0,8]} to #{updater.current_revision[0,8]}."
-      ## New Formulae
-      if updater.pending_new_formulae?
-        ohai "The following formulae are new:"
-        puts_columns updater.added_formulae
-      end
-      ## Deleted Formulae
-      if updater.deleted_formulae?
-        ohai "The following formulae were removed:"
-        puts_columns updater.deleted_formulae
-      end
-      ## Updated Formulae
-      if updater.pending_formulae_changes?
-        ohai "The following formulae were updated:"
-        puts_columns updater.updated_formulae
-      else
-        puts "No formulae were updated."
-      end
+      updater.report
     end
 
     when 'ln', 'link'
@@ -207,13 +191,6 @@ begin
 
     when 'prune'
       prune
-
-    # 'make' supported until 0.7 for historic reasons
-    when 'mk', 'make'
-      opoo "`brew make' has changed to `brew create'"
-      puts "This is because make can be confused with the `make' tool."
-      puts "brew make will continue working until Homebrew 0.7"
-      exec __FILE__, "create", *ARGV
 
     when 'create'
       if ARGV.include? '--macports'
@@ -233,14 +210,14 @@ begin
       if ARGV.named.empty?
         if ARGV.include? "--all"
           require 'formula'
-          Formulary.names.each do |name|
-            info Formula.factory(name)
+          Formula.all.each do |f|
+            info f
             puts '---'
           end
         else
           puts `ls #{HOMEBREW_CELLAR} | wc -l`.strip+" kegs, "+HOMEBREW_CELLAR.abv
         end
-      elsif ARGV[0][0..6] == 'http://'
+      elsif ARGV[0][0..6] == 'http://' or ARGV[0][0..7] == 'https://' or ARGV[0][0..5] == 'ftp://'
         path = Pathname.new(ARGV.shift)
         /(.*?)[-_.]?#{path.version}/.match path.basename
         unless $1.to_s.empty?
@@ -274,65 +251,33 @@ begin
 
   when 'log'
     Dir.chdir HOMEBREW_REPOSITORY
-    args = ARGV.options
+    args = ARGV.options_only
     args.unshift ARGV.formulae.first.path unless ARGV.named.empty?
     exec "git", "log", *args
-    
+
+  # For each formula given, show which other formulas depend on it.
+  # We only go one level up, ie. direct dependencies.
   when 'uses'
-    # For each formula given, show which other formulas depend on it.
-    # We only go one level up, direct dependencies.
-    require 'formula'
-    require 'utils'
-    
-    deps = Formula.get_used_by
-    
-    ARGV.formulae.each do |f|
-      name = f.name
-      our_deps = deps[name]
-      if our_deps == nil
-        puts "#{name} is not a dependency."
-      else
-        puts "#{name} is a dependency for #{our_deps.join(', ')}."
-      end
-    end
-    
+    uses = ARGV.formulae.map{ |f| Formula.all.select{ |ff| ff.deps.include? f.name }.map{|f| f.name} }.flatten.uniq
+    uses = uses.select { |f| Formula.factory(f).installed? } if ARGV.include? "--installed"
+    puts *uses.sort
+
   when 'deps'
-    require 'formula'
-
-    ARGV.formulae.each do |f|
-      name = f.name
-
-      our_deps = []
-      checked = {}
-      to_check = [name]
-      stop_early = false
-
-      until to_check.empty? or stop_early
-        stop_early = ARGV.include?("-1") or ARGV.include?("--1")
-
-        item = to_check.pop
-        checked[item] = true
-        
-        formula = Formulary.read item
-        next if formula == nil || formula.deps == nil || formula.deps.empty?
-        
-        our_deps.push(*formula.deps)
-        to_check.push(*formula.deps.select{|g| !checked[g]})
+    if ARGV.include?('--all')
+      require 'formula'
+      Formula.all.each do |f|
+        puts "#{f.name}:#{f.deps.join(' ')}"
       end
-      
-      our_deps.uniq!
-      
-      if our_deps.empty?
-        puts "#{name} has no dependencies."
-      else
-        our_deps.sort!
-        puts "#{name} depends on #{our_deps.join(", ")}"
-      end
+    elsif ARGV.include?("-1") or ARGV.include?("--1")
+      puts *ARGV.formulae.map{ |f| f.deps or [] }.flatten.uniq.sort
+    else
+      require 'formula_installer'
+      puts *ARGV.formulae.map{ |f| FormulaInstaller.expand_deps(f).map{|f| f.name} }.flatten.uniq.sort
     end
-    
+
   when 'cat'
     Dir.chdir HOMEBREW_REPOSITORY
-    exec "cat", ARGV.formulae.first.path, *ARGV.options
+    exec "cat", ARGV.formulae.first.path, *ARGV.options_only
 
   when 'outdated'
     outdated_brews.each do |keg, name, version|
@@ -344,11 +289,14 @@ begin
       end
     end
 
-  when 'doctor'
+  when 'doctor', 'dr'
     require 'brew_doctor'
     brew_doctor
 
   else
+    # Add example external commands to PATH before checking.
+    ENV['PATH'] += ":#{HOMEBREW_REPOSITORY}/Library/Contributions/examples"
+
     # Check for an external shell command
     if system "/usr/bin/which -s brew-#{arg}"
       # Add some Homebrew vars to the ENV

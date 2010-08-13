@@ -17,6 +17,9 @@ class Ruby <Formula
     ]
   end
 
+  # Stripping breaks dynamic linking
+  skip_clean :all
+
   def install
     fails_with_llvm
 
@@ -45,12 +48,5 @@ class Ruby <Formula
     be installed to this formula's prefix. This needs to be fixed, as for example,
     upgrading Ruby will lose all your gems.
     EOS
-  end
-
-  def skip_clean? path
-    # TODO only skip the clean for the files that need it, we didn't get a
-    # comment about why we're skipping the clean, so you'll need to figure
-    # that out first --mxcl
-    true
   end
 end

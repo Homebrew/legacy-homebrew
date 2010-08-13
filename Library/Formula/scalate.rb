@@ -8,7 +8,7 @@ class Scalate <Formula
 
   def startup_script
     <<-EOS.undent
-    #!/usr/bin/env bash
+    #!/bin/bash
     # This startup script for Scalate calls the real startup script installed
     # to Homebrew's cellar. This avoids issues with local vs. absolute symlinks.
 

@@ -9,11 +9,9 @@ class Yaf <Formula
   depends_on 'libfixbuf'
 
   def install
-    system "./configure",
-        "--disable-debug",
-        "--disable-dependency-tracking",
-        "--prefix=#{prefix}",
-        "--mandir=#{man}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make"
     system "make install"
   end

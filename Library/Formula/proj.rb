@@ -19,7 +19,7 @@ class Proj <Formula
 
     # The datum grid files are required to support datum shifting
     d = Dir.getwd
-    ProjDatumgrid.new.brew { FileUtils.cp Dir["*"], "#{d}/nad/" }
+    ProjDatumgrid.new.brew { cp Dir["*"], "#{d}/nad/" }
 
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"

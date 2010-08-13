@@ -5,9 +5,8 @@ class Ddclient <Formula
   homepage 'http://sourceforge.net/apps/trac/ddclient'
   md5 '6cac7a5eb1da781bfd4d98cef0b21f8e'
 
-  def skip_clean? path
-    path == etc or path == var
-  end
+  skip_clean 'etc'
+  skip_clean 'var'
 
   def install
     # Adjust default paths in script

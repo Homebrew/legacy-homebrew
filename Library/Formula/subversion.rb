@@ -18,8 +18,6 @@ class Subversion <Formula
   md5 'a4b1d0d7f3a4587c59da9c1acf9dedd0'
   homepage 'http://subversion.apache.org/'
 
-  aka 'svn'
-
   depends_on 'pkg-config'
   # On Snow Leopard, build a new neon. For Leopard, the deps above include this.
   depends_on 'neon' if MACOS_VERSION >= 10.6
@@ -29,7 +27,8 @@ class Subversion <Formula
       ['--java', 'Build Java bindings.'],
       ['--perl', 'Build Perl bindings.'],
       ['--python', 'Build Python bindings.'],
-      ['--universal', 'Build as a Universal Intel binary.']
+      ['--universal', 'Build as a Universal Intel binary.'],
+      ['--unicode-path', 'Include support for OS X unicode (but see caveats!)']
     ]
   end
 

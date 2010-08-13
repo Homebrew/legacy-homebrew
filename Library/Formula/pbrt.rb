@@ -27,7 +27,7 @@ class Pbrt <Formula
       contents.change_make_var! "EXR_LIBDIR", "-L#{openexr.lib} -L#{ilmbase.lib}"
 
       # Change settings if we are using a 32bit system
-      if MACOS_VERSION <= 10.5 or not Hardware.is_64_bit?
+      if MACOS_VERSION <= 10.5 or Hardware.is_32_bit?
         contents.change_make_var! "MARCH", "-m32 -msse2 -mfpmath=sse"
       end
     end

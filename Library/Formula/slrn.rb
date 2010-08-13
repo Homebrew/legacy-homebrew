@@ -9,17 +9,13 @@ class Slrn <Formula
   depends_on 's-lang'
 
   def install
-    configure_args = [
-        "--prefix=#{prefix}",
-        "--disable-debug",
-        "--disable-dependency-tracking",
-        "--with-ssl",
-        "--with-slang=#{HOMEBREW_PREFIX}",
-    ]
-    system "./configure", *configure_args
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-ssl",
+                          "--with-slang=#{HOMEBREW_PREFIX}"
     system "make all slrnpull"
-    bin.mkpath()
-    man1.mkpath()
+    bin.mkpath
+    man1.mkpath
     ENV.j1 # yep, install is broken
     system "make install"
   end

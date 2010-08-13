@@ -20,8 +20,8 @@ def x11?
 end
 
 class Imagemagick <Formula
-  url 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.6.3-2.tar.bz2'
-  md5 '8327600f7caae5a4fa438aba50a41e0d'
+  url 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.6.3-4.tar.bz2'
+  md5 '94b9d2379c870e9d216955e338d214f2'
   homepage 'http://www.imagemagick.org'
 
   depends_on 'jpeg'
@@ -40,11 +40,15 @@ class Imagemagick <Formula
     path.extname == '.la'
   end
 
-  def install
-    # Add to PATH for freetype-config on Snow Leopard
-    ENV.prepend 'PATH', '/usr/X11/bin', ':'
+  def options
+    [
+      ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
+      ['--use-wmf', 'Compile with libwmf support.']
+    ]
+  end
 
-    ENV.libpng
+  def install
+    ENV.x11 # Add to PATH for freetype-config on Snow Leopard
     ENV.O3 # takes forever otherwise
 
     args = [ "--disable-osx-universal-binary",

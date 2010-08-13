@@ -7,7 +7,6 @@ class Pigz <Formula
 
   def install
     system "make"
-    bin.install "pigz"
-    bin.install "unpigz"
+    bin.install ["pigz", "unpigz"]
   end
 end

@@ -5,6 +5,6 @@ class GerritTools <Formula
   homepage 'http://github.com/indirect/gerrit-tools'
 
   def install
-    bin.install(Dir["bin/*"])
+    prefix.install 'bin'
   end
 end

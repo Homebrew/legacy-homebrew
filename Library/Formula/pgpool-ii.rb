@@ -10,7 +10,7 @@ class PgpoolIi <Formula
       opoo "No PostgreSQL was detected."
       puts <<-EOS.undent
         This formula uses `pg_config` to detect an installed PostgreSQL instead
-        of \"depends_on 'postgresql'\" so you can use a non-Homebrew version.
+        of "depends_on 'postgresql'" so you can use a non-Homebrew version.
         You may want to `brew install postgresql` if you don't have another
         version already installed.
       EOS

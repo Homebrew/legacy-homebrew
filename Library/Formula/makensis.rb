@@ -12,9 +12,6 @@ class Makensis <Formula
 
   depends_on 'scons'
 
-  # Note, this is not a full nsis package, but allow it to be found this way.
-  aka 'nsis'
-
   def install
     system "scons makensis"
     bin.install "build/release/makensis/makensis"

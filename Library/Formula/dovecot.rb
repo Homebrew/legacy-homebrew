@@ -43,7 +43,7 @@ For Dovecot to work, you will need to do the following:
 </plist>
 
 Source: http://wiki.dovecot.org/LaunchdInstall
-4) start the server using: sudo launchctl load /Library/LaunchDaemons/org.dovecot.plist 
+4) start the server using: sudo launchctl load /Library/LaunchDaemons/org.dovecot.plist
     EOS
   end
 end
