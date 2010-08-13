@@ -8,6 +8,8 @@ class GitExtras <Formula
   homepage 'http://github.com/visionmedia/git-extras'
 
   def install
-    system "make", "prefix=#{prefix}", "install"
+    inreplace 'Makefile', '/usr/local', prefix
+    bin.mkpath
+    system "make", "install"
   end
 end
