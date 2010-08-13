@@ -1,9 +1,9 @@
 require 'formula'
 
 class Dwdiff <Formula
-  url 'http://os.ghalkes.nl/dist/dwdiff-1.8.1.tgz'
+  url 'http://os.ghalkes.nl/dist/dwdiff-1.8.2.tgz'
   homepage 'http://os.ghalkes.nl/dwdiff.html'
-  md5 '37971be9e905aa3eeb4d494ad40a6318'
+  md5 '3217486292ab4771f9bbc1097201a4e0'
 
   # TODO: possibly set command line arguments to compile without the below
   # dependencies. Or set arguments to compile with and compile without by
