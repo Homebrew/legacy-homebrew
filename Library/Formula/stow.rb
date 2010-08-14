@@ -6,7 +6,8 @@ class Stow <Formula
   md5 '59a078c7056dd9dd97fb707063b69d03'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}", "--infodir=#{prefix}/share/info", "--mandir=#{prefix}/share/man"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}", "--infodir=#{info}", "--mandir=#{man}"
     system "make install"
   end
 end
