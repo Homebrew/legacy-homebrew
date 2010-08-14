@@ -8,13 +8,20 @@ class Graphviz <Formula
   depends_on 'pkg-config'
 
   def install
-    ENV.x11 # Put freetype-config in path
-
+    ENV.x11
+    # Various language bindings fail with 32/64 issues.
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-quartz",
+                          "--disable-java",
+                          "--disable-ocaml",
+                          "--disable-perl",
                           "--disable-php",
-                          "--disable-perl"
+                          "--disable-python",
+                          "--disable-r",
+                          "--disable-ruby",
+                          "--disable-sharp",
+                          "--disable-swig"
     system "make install"
   end
 end
