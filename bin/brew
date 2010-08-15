@@ -359,9 +359,12 @@ rescue BuildError => e
     puts "Consider re-running the install with '-vd' to keep 'config.log' around:"
     puts "    brew install -vd #{formula_name}"
     puts "Gist 'config.log' and any error output when reporting an issue."
+    puts "Remember to include your config information: brew --config"
   end
   puts
-  puts "Consider running `brew doctor` if a large number of installs are failing."
+  puts "Also try:"
+  puts "  `brew doctor` to check your setup for common problems."
+  puts "  `brew missing` to check installed packages for missing deps."
   exit 1
 rescue RuntimeError, SystemCallError => e
   onoe e
