@@ -1,7 +1,7 @@
 require 'formula'
 
 class Macvim <Formula
-  head 'git://repo.or.cz/MacVim.git'
+  head 'git://github.com/b4winckler/macvim.git'
   homepage 'http://code.google.com/p/macvim'
 
   def options
