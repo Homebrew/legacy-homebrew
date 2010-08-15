@@ -164,15 +164,24 @@ to recognize `brew cmdname`.
 
 Some external commands are shipped with Homebrew, and enabled by default.
 
+  * `audit`:
+    Checks all formulae for Homebrew coding style violations. This should be
+    run before submitting a new formula for inclusion.
+
   * `fetch` <formula>:
     Downloads the tarball or checks out from VCS for the given <formula>. For
     tarballs, also prints MD5 and SHA1 checksums.
 
-  * `audit`:
-    Checks all formulae for Homebrew coding style violations.
-
   * `missing`:
     Checks all installed formuale for missing dependencies.
+
+  * `test` <formula>:
+    A few formulae provide a test method. `brew test <formula>` runs this
+    test method. There is no standard output or return code, but it should
+    generally indicate to the user if something is wrong with the installed
+    formula.
+
+    Example: `brew install jruby && brew test jruby`
 
 ## ENVIRONMENT
 
