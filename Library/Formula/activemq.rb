@@ -7,10 +7,10 @@ class Activemq <Formula
 
   skip_clean 'libexec/webapps/admin/WEB-INF/jsp'
 
-  def startup_script
+  def startup_script name
     <<-EOS.undent
       #!/bin/bash
-      exec #{libexec}/bin/activemq
+      exec #{libexec}/bin/#{name} $@
     EOS
   end
 
@@ -19,16 +19,7 @@ class Activemq <Formula
 
     prefix.install %w{ LICENSE NOTICE README.txt }
     libexec.install Dir['*']
-    (bin+'activemq').write startup_script
-  end
 
-  def caveats
-    <<-EOS.undent
-    ActiveMQ was installed to:
-      #{libexec}
-
-    `activemq` is a startup script that will run the server
-    from its installed location.
-    EOS
+    (bin+'activemq-admin').write startup_script('activemq-admin')
   end
 end
