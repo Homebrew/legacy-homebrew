@@ -1,7 +1,7 @@
 require 'formula'
 
 class Stp < Formula
-  head 'http://stp-fast-prover.svn.sourceforge.net/svnroot/stp-fast-prover/trunk/stp', :revision => '842'
+  head 'http://stp-fast-prover.svn.sourceforge.net/svnroot/stp-fast-prover/trunk/stp', :revision => '986'
   homepage 'http://sites.google.com/site/stpfastprover/'
 
   def options

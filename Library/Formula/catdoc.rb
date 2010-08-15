@@ -6,6 +6,8 @@ class Catdoc <Formula
   sha1 '50ce9d7cb24ad6b10a856c9c24183e2b0a11ca04'
 
   def install
+    # catdoc configure says it respects --mandir=, but does not.
+    ENV['man1dir'] = man1
     system "./configure --disable-debug --disable-dependency-tracking --prefix=#{prefix}"
     # The INSTALL file confuses make on case insensitive filesystems.
     system "mv INSTALL INSTALL.txt"

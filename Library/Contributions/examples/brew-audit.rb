@@ -34,6 +34,10 @@ def audit_formula_text text
     problems << " * \"(#{$1}...#{$2})\" should be \"(#{$3}+...)\""
   end
 
+  if text =~ %r[((man)\s*\+\s*(['"])(man[1-8])(['"]))]
+    problems << " * \"#{$1}\" should be \"#{$4}\""
+  end
+
   # Prefer formula path shortcuts in strings
   if text =~ %r[(\#\{prefix\}/(bin|include|lib|libexec|sbin|share))]
     problems << " * \"#{$1}\" should be \"\#{#{$2}}\""
