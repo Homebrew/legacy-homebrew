@@ -78,7 +78,7 @@ didn't include with OS X.
     Opens a browser to the GitHub History page for formula <formula>.
 
   * `info --all`:
-    Summarises all installed packages; this is inteded to be used by
+    Summarises all installed packages; this is intended to be used by
     higher-level tools.
 
   * `info` <URL>:
