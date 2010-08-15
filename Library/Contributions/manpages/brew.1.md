@@ -171,6 +171,9 @@ Some external commands are shipped with Homebrew, and enabled by default.
   * `audit`:
     Checks all formulae for Homebrew coding style violations.
 
+  * `missing`:
+    Checks all installed formuale for missing dependencies.
+
 ## ENVIRONMENT
 
   * HOMEBREW\_DEBUG:
