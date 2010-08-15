@@ -24,6 +24,11 @@ def audit_formula_text text
     problems << " * Check indentation of 'depends_on'."
   end
 
+  # FileUtils is included in Formula
+  if text =~ /FileUtils\.(\w+)/
+    problems << " * Don't need 'FileUtils.' before #{$1}."
+  end
+
   # Check for string concatenation; prefer interpolation
   if text =~ /(#\{\w+\s*\+\s*['"][^}]+\})/
     problems << " * Try not to concatenate paths in string interpolation:\n   #{$1}"
