@@ -24,6 +24,11 @@ def audit_formula_text text
     problems << " * Check indentation of 'depends_on'."
   end
 
+  # FileUtils is included in Formula
+  if text =~ /FileUtils\.(\w+)/
+    problems << " * Don't need 'FileUtils.' before #{$1}."
+  end
+
   # Check for string concatenation; prefer interpolation
   if text =~ /(#\{\w+\s*\+\s*['"][^}]+\})/
     problems << " * Try not to concatenate paths in string interpolation:\n   #{$1}"
@@ -32,6 +37,10 @@ def audit_formula_text text
   # Prefer formula path shortcuts in Pathname+
   if text =~ %r{\(\s*(prefix\s*\+\s*(['"])(bin|include|lib|libexec|sbin|share))}
     problems << " * \"(#{$1}...#{$2})\" should be \"(#{$3}+...)\""
+  end
+
+  if text =~ %r[((man)\s*\+\s*(['"])(man[1-8])(['"]))]
+    problems << " * \"#{$1}\" should be \"#{$4}\""
   end
 
   # Prefer formula path shortcuts in strings
