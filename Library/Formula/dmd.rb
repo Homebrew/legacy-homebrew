@@ -1,7 +1,7 @@
 require 'formula'
 
 class Dmd <Formula
-  homepage='http://www.digitalmars.com/d/'
+  homepage 'http://www.digitalmars.com/d/'
   url 'http://ftp.digitalmars.com/dmd.1.063.zip'
   md5 'e779e3cf670846115966036b0b0bf410'
 
