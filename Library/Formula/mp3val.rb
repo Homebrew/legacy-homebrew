@@ -6,8 +6,7 @@ class Mp3val <Formula
   md5 'dc8adad909d0b8734ed22029b2de2cb4'
 
   def install
-    system "gnumake -f Makefile.gcc"    # builds "mp3val.exe" by default
-    system "/bin/mkdir -p #{bin}"
-    system "/bin/mv mp3val.exe #{bin}/mp3val"
+    system "gnumake -f Makefile.gcc"
+    bin.install "mp3val.exe" => "mp3val"
   end
 end
