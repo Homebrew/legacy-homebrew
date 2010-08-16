@@ -15,14 +15,14 @@ class SoftwareSpecification
   attr_reader :url, :specs, :using
 
   VCS_SYMBOLS = {
-    :bzr,     BazaarDownloadStrategy,
-    :curl,    CurlDownloadStrategy,
-    :cvs,     CVSDownloadStrategy,
-    :git,     GitDownloadStrategy,
-    :hg,      MercurialDownloadStrategy,
-    :nounzip, NoUnzipCurlDownloadStrategy,
-    :post,    CurlPostDownloadStrategy,
-    :svn,     SubversionDownloadStrategy,
+    :bzr     => BazaarDownloadStrategy,
+    :curl    => CurlDownloadStrategy,
+    :cvs     => CVSDownloadStrategy,
+    :git     => GitDownloadStrategy,
+    :hg      => MercurialDownloadStrategy,
+    :nounzip => NoUnzipCurlDownloadStrategy,
+    :post    => CurlPostDownloadStrategy,
+    :svn     => SubversionDownloadStrategy,
   }
 
   def initialize url, specs=nil
