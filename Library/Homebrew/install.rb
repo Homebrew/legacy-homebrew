@@ -162,7 +162,11 @@ def install f
       onoe "The linking step did not complete successfully"
       puts "The package built, but is not symlinked into #{HOMEBREW_PREFIX}"
       puts "You can try again using `brew link #{f.name}'"
-      ohai e, e.backtrace if ARGV.debug?
+      if ARGV.debug?
+        ohai e, e.backtrace
+      else
+        onoe e
+      end
       show_summary_heading = true
     end
   end

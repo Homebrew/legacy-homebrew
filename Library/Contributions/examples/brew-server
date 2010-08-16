@@ -144,7 +144,7 @@ get '/formula/:name' do
     end
   end
 
-  used_by = Formula.get_used_by()[klass.name]
+  used_by = Formula.all.select{|ff| ff.deps.include?(klass.name)}.map{|f| f.name}.flatten.uniq.sort
   unless used_by == nil
     s << <<-HTML
             <dt>Used by</td>
