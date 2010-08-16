@@ -175,6 +175,10 @@ Some external commands are shipped with Homebrew, and enabled by default.
   * `missing`:
     Checks all installed formuale for missing dependencies.
 
+  * `server`:
+    Starts a local webserver with an app that lets you browse available
+    formulae, similar to `gem server`.
+
   * `test` <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
     test method. There is no standard output or return code, but it should
