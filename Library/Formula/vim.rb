@@ -1,12 +1,11 @@
 require 'formula'
 
 class Vim <Formula
-  # Get patch-level 411 from Subversion, because downloading and applying 411 separate patches
-  # is completely ridiculous.
-  head 'http://vim.svn.sourceforge.net/svnroot/vim/branches/vim7.2/', :revision => '1827'
-  version '7.2.411'
+  url 'ftp://ftp.vim.org/pub/vim/unix/vim-7.3.tar.bz2'
+  version '7.3'
   homepage 'http://www.vim.org/'
-  
+  md5 '5b9510a17074e2b37d8bb38ae09edbf2'
+
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--mandir=#{man}",
