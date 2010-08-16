@@ -193,6 +193,11 @@ Some external commands are shipped with Homebrew, and enabled by default.
     If set, instructs Homebrew to always assume `--debug` when running
     commands.
 
+  * HOMEBREW\_DEBUG\_INSTALL:
+    When a `brew install -d` or `brew install -i` drops into a shell,
+    `HOMEBREW_DEBUG_INSTALL` will be set to the name of the formula being
+    tried.
+
   * HOMEBREW\_EDITOR:
     If set, Homebrew will use this editor when editing a single formula, or
     several formulae in the same folder.
