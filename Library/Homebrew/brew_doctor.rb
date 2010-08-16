@@ -416,7 +416,9 @@ def check_for_multiple_volumes
 
   # Find the volumes for the TMP folder & HOMEBREW_CELLAR
   real_cellar = HOMEBREW_CELLAR.realpath
-  tmp=Pathname.new `/usr/bin/mktemp -d /tmp/homebrew-brew-doctor-XXXX`.strip
+
+  tmp_prefix = ENV['HOMEBREW_TEMP'] || '/tmp'
+  tmp=Pathname.new `/usr/bin/mktemp -d #{tmp_prefix}/homebrew-brew-doctor-XXXX`.strip
   real_temp = tmp.realpath.parent
 
   where_cellar = volumes.which real_cellar
@@ -424,10 +426,12 @@ def check_for_multiple_volumes
 
   unless where_cellar == where_temp
     puts <<-EOS.undent
-      Your Cellar and /tmp folders are on different volumes.
+      Your Cellar & TEMP folders are on different volumes.
 
-      Putting your Cellar and TMP folders on different volumes causes problems
-      for brews that install symlinks, such as Git.
+      OS X won't move relative symlinks across volumes unless the target file
+      already exists.
+
+      Brews known to be affected by this are Git and Narwhal.
 
       You should set the "HOMEBREW_TEMP" environmental variable to a suitable
       folder on the same volume as your Cellar.
