@@ -175,6 +175,10 @@ Some external commands are shipped with Homebrew, and enabled by default.
   * `missing`:
     Checks all installed formuale for missing dependencies.
 
+  * `server`:
+    Starts a local webserver with an app that lets you browse available
+    formulae, similar to `gem server`.
+
   * `test` <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
     test method. There is no standard output or return code, but it should
@@ -188,6 +192,11 @@ Some external commands are shipped with Homebrew, and enabled by default.
   * HOMEBREW\_DEBUG:
     If set, instructs Homebrew to always assume `--debug` when running
     commands.
+
+  * HOMEBREW\_DEBUG\_INSTALL:
+    When a `brew install -d` or `brew install -i` drops into a shell,
+    `HOMEBREW_DEBUG_INSTALL` will be set to the name of the formula being
+    tried.
 
   * HOMEBREW\_EDITOR:
     If set, Homebrew will use this editor when editing a single formula, or

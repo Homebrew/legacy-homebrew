@@ -186,6 +186,10 @@ Downloads the tarball or checks out from VCS for the given \fIformula\fR\. For t
 Checks all installed formuale for missing dependencies\.
 .
 .TP
+\fBserver\fR
+Starts a local webserver with an app that lets you browse available formulae, similar to \fBgem server\fR\.
+.
+.TP
 \fBtest\fR \fIformula\fR
 A few formulae provide a test method\. \fBbrew test <formula>\fR runs this test method\. There is no standard output or return code, but it should generally indicate to the user if something is wrong with the installed formula\.
 .
@@ -197,6 +201,10 @@ Example: \fBbrew install jruby && brew test jruby\fR
 .TP
 HOMEBREW_DEBUG
 If set, instructs Homebrew to always assume \fB\-\-debug\fR when running commands\.
+.
+.TP
+HOMEBREW_DEBUG_INSTALL
+When a \fBbrew install \-d\fR or \fBbrew install \-i\fR drops into a shell, \fBHOMEBREW_DEBUG_INSTALL\fR will be set to the name of the formula being tried\.
 .
 .TP
 HOMEBREW_EDITOR
