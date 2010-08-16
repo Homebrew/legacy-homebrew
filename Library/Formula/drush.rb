@@ -11,10 +11,10 @@ class DrushMake <Formula
 end
 
 class Drush <Formula
-  url 'http://ftp.drupal.org/files/projects/drush-6.x-3.1.tar.gz'
+  url 'http://ftp.drupal.org/files/projects/drush-6.x-3.3.tar.gz'
   homepage 'http://drupal.org/project/drush'
-  version '3.1' # 3.1 is detected, but lets be explicit here
-  md5 'e768e504674428879a047d8cfdd4926f'
+  version '3.3' # 3.3 is detected, but lets be explicit here
+  md5 'ed7ee13415548c643358a8a870534a5e'
 
   def install
     prefix.install Dir['*'] # No lib folder, so this is OK for now.

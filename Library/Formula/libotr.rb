@@ -8,7 +8,7 @@ class Libotr <Formula
   depends_on 'libgcrypt'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--mandir=#{man}"
     system "make install"
   end
 end

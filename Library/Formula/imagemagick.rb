@@ -20,8 +20,8 @@ def x11?
 end
 
 class Imagemagick <Formula
-  url 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.6.3-4.tar.bz2'
-  md5 '94b9d2379c870e9d216955e338d214f2'
+  url 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.6.3-6.tar.bz2'
+  md5 'b4f468b427ad615cfb0fdb4cfcd50743'
   homepage 'http://www.imagemagick.org'
 
   depends_on 'jpeg'

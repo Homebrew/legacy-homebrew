@@ -1,9 +1,9 @@
 require 'formula'
 
 class Npm <Formula
-  url 'http://github.com/isaacs/npm/tarball/v0.1.23'
+  url 'http://github.com/isaacs/npm/tarball/v0.1.25'
   homepage 'http://github.com/isaacs/npm'
-  md5 '8f1b08567985f90028492803785f2092'
+  md5 '14910efa963893691406cc761f7c473a'
   head 'git://github.com/isaacs/npm.git'
 
   depends_on 'node'
@@ -58,7 +58,7 @@ EOS
     You may want to add this to your PATH.
 
     npm will install libraries to:
-      #{node_lib}/.npm
+      #{node_lib}/.node_libraries
 
     To manually remove libraries installed by npm, delete this (hidden!) folder.
     EOS
