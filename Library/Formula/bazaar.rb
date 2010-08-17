@@ -5,8 +5,6 @@ class Bazaar <Formula
   md5 'ab6b5e0cc449b27abac2b4d717afe09d'
   homepage 'http://bazaar-vcs.org/'
 
-  aka :bzr
-
   def options
     [["--system", "Install using the OS X system Python."]]
   end

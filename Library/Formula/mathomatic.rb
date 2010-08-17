@@ -5,9 +5,8 @@ class Mathomatic <Formula
   homepage 'http://www.mathomatic.org/'
   md5 '24f8c4f80318215f2190daefc1f0e106'
 
-
   def install
-    ENV['prefix'] = "#{prefix}"
+    ENV['prefix'] = prefix
     system "make READLINE=1"
     system "make install"
   end

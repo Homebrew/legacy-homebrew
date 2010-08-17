@@ -9,7 +9,7 @@ class Shapefile <Formula
     dylib = lib+"libshp.#{version}.dylib"
 
     inreplace 'Makefile' do |s|
-      s.change_make_var! "CFLAGS", ENV['CFLAGS']
+      s.change_make_var! "CFLAGS", ENV.cflags
     end
 
     system "make all"
@@ -25,8 +25,8 @@ class Shapefile <Formula
     include.install 'shapefil.h'
 
     Dir.chdir lib do
-      FileUtils.ln_s "libshp.#{version}.dylib", "libshp.#{version.split('.').first}.dylib"
-      FileUtils.ln_s "libshp.#{version}.dylib", "libshp.dylib"
+      ln_s "libshp.#{version}.dylib", "libshp.#{version.split('.').first}.dylib"
+      ln_s "libshp.#{version}.dylib", "libshp.dylib"
     end
   end
 end

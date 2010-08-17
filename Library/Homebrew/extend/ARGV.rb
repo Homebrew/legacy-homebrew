@@ -6,21 +6,24 @@ module HomebrewArgvExtension
   def named
     @named ||= reject{|arg| arg[0..0] == '-'}
   end
-  def options
+
+  def options_only
     select {|arg| arg[0..0] == '-'}
   end
+
   def formulae
     require 'formula'
-    @formulae ||= downcased_unique_named.collect {|name| Formula.factory name}
+    @formulae ||= downcased_unique_named.map{ |name| Formula.factory(resolve_alias(name)) }
     raise FormulaUnspecifiedError if @formulae.empty?
     @formulae
   end
+
   def kegs
     require 'keg'
     @kegs ||= downcased_unique_named.collect do |name|
-      d=HOMEBREW_CELLAR+name
+      d = HOMEBREW_CELLAR + resolve_alias(name)
       dirs = d.children.select{ |pn| pn.directory? } rescue []
-      raise "#{name} is not installed" if not d.directory? or dirs.length == 0
+      raise "No such keg: #{HOMEBREW_CELLAR}/#{name}" if not d.directory? or dirs.length == 0
       raise "#{name} has multiple installed versions" if dirs.length > 1
       Keg.new dirs.first
     end
@@ -56,7 +59,7 @@ module HomebrewArgvExtension
   end
 
   def flag? flag
-    options.each do |arg|
+    options_only.each do |arg|
       return true if arg == flag
       next if arg[1..1] == '-'
       return true if arg.include? flag[2..2]
@@ -66,30 +69,38 @@ module HomebrewArgvExtension
 
   def usage; <<-EOS.undent
     Usage: brew command [formula] ...
-    Usage: brew [--prefix] [--cache] [--version|-v]
-    Usage: brew [--verbose|-v]
 
     Principle Commands:
-      install formula ... [--ignore-dependencies] [--HEAD|-H]
-      list [--unbrewed] [formula] ...
+      install formula ... [--ignore-dependencies] [--HEAD]
+      list [--unbrewed|--versions] [formula] ...
       search [/regex/] [substring]
       uninstall formula ...
       update
 
     Other Commands:
-      cleanup [formula]
+      info formula [--github]
+      deps formula
+      uses formula [--installed]
       home formula ...
-      info [formula] [--github]
+      cleanup [formula]
       link formula ...
+      unlink formula ...
       outdated
       prune
-      unlink formula ...
+      doctor
+
+    Informational:
+      --version
+      --config
+      --prefix [formula]
+      --cache [formula]
 
     Commands useful when contributing:
       create URL
       edit [formula]
+      audit [formula]
       log formula
-      install formula [--debug|-d] [--interactive|-i] [--verbose|-v]
+      install formula [-vd|-i]
 
     For more information:
       man brew
@@ -99,9 +110,18 @@ module HomebrewArgvExtension
     EOS
   end
 
+  def resolve_alias name
+    aka = HOMEBREW_REPOSITORY+"Library/Aliases/#{name}"
+    if aka.file?
+      aka.realpath.basename('.rb').to_s
+    else
+      name
+    end
+  end
+
   private
 
   def downcased_unique_named
-    @downcased_unique_named ||= named.collect{|arg| arg.downcase}.uniq
+    @downcased_unique_named ||= named.map{|arg| arg.downcase}.uniq
   end
 end

@@ -5,7 +5,6 @@ class Rock <Formula
   homepage 'http://ooc-lang.org'
   md5 '66c35a7d9271732790f08a4839cee287'
   head 'git://github.com/nddrylliog/rock.git'
-  aka 'ooc'
 
   def install
       # make rock using provided bootstrap

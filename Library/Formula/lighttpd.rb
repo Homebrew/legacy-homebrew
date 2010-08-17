@@ -9,9 +9,9 @@ class Lighttpd <Formula
   depends_on 'pcre'
 
   def install
-    args = ["--prefix=#{prefix}", "--disable-dependency-tracking", 
-            "--with-openssl", "--with-ldap"]
-    system "./configure", *args
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-openssl", "--with-ldap"
     system "make install"
   end
 end

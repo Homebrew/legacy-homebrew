@@ -19,7 +19,7 @@ class Libspatialite <Formula
                           "--prefix=#{prefix}",
                           "--target=macosx"
     system "make install"
-    
+
     InitSpatialite.new.brew do
       (share+'spatialite').install 'init_spatialite-2.4.sql'
     end

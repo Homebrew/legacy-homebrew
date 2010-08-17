@@ -9,16 +9,15 @@ class CoffeeScript <Formula
   # head coffee-script usually depends on head node and
   # since there isn't a way to specify that just remove
   # the depends_on
-  depends_on :node unless ARGV.build_head?
+  depends_on 'node' unless ARGV.build_head?
 
-  def caveats
-    <<-EOS.undent
-    Coffee is a continually evolving language and as such uses new features of
-    Node.js as they are added.  To take advantage of these features while using
-    HEAD make sure to install the HEAD version of node and keep it updated.
+  def caveats; <<-EOS.undent
+    coffee-script can also be installed via `npm install coffee-script`.
+    This has the advantage of supporting multiple versions (of any Node libs)
+    at the same time. Since coffee-script syntax changed pretty drastically
+    between 0.7.2 and 0.9, you may want to install it via npm instead.
 
-        brew uninstall node
-        brew install node --HEAD
+    This formula may be retired from a future version of Homebrew.
     EOS
   end if ARGV.build_head?
 

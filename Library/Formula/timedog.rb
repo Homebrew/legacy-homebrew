@@ -6,6 +6,6 @@ class Timedog <Formula
   homepage 'http://timedog.googlecode.com/'
 
   def install
-    bin.install Dir['timedog']
+    bin.install 'timedog'
   end
 end

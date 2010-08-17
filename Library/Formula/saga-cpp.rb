@@ -10,8 +10,6 @@ class SagaCpp <Formula
   depends_on 'sqlite'
   depends_on 'xmlrpc-c'
 
-  aka :saga
-
   def install
     # Don't depend on a Homebrew-built PostgreSQL; users can
     # install the database however they like.
@@ -22,7 +20,6 @@ class SagaCpp <Formula
 
     system "./configure", "--prefix=#{prefix}",
                           "--with-boost=#{HOMEBREW_PREFIX}",
-                          # "--with-postgresql=#{HOMEBREW_PREFIX}",
                           "--with-sqlite3=#{HOMEBREW_PREFIX}"
     system "make install"
   end

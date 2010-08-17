@@ -7,15 +7,15 @@ class Pbzip2 <Formula
 
   def install
     fails_with_llvm
-    
+
     inreplace "Makefile" do |s|
       s.change_make_var! 'PREFIX', prefix
       s.gsub! "/man/", "/share/man/"
-      
+
       # Per fink and macport:
       s.gsub! "-pthread -lpthread", ""
     end
-    
+
     system "make install"
   end
 end

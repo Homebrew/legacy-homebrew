@@ -6,8 +6,6 @@ class PerforceServer <Formula
   md5 '3fb8036d8e545e0840a3b3302aca05a5'
   version '2010.1.251161'
 
-  aka 'p4d'
-
   def install
     bin.install 'p4d'
   end

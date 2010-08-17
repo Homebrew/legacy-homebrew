@@ -20,13 +20,14 @@ server dict.org
 EOS
 
 class Dict <Formula
-  @url='ftp://ftp.dict.org/dict/dictd-1.9.15.tar.gz'
-  @homepage='http://www.dict.org/'
-  @md5='68c1cffa952012ba85a7271311de55e9'
+  url 'ftp://ftp.dict.org/dict/dictd-1.9.15.tar.gz'
+  homepage 'http://www.dict.org/'
+  md5 '68c1cffa952012ba85a7271311de55e9'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--sysconfdir=#{prefix}/etc"
-
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}"
     # install the client
     system "make install.dict"
 

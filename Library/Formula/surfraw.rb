@@ -7,8 +7,8 @@ class Surfraw <Formula
 
   def install
     system "./configure", "--prefix=#{prefix}",
-      "--sysconfdir=#{etc}",
-      "--with-graphical-browser=open"
+                          "--sysconfdir=#{etc}",
+                          "--with-graphical-browser=open"
     system "make"
     ENV.j1 # Install using 1 job, or fails on Mac Pro
     system "make install"

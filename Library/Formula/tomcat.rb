@@ -5,7 +5,7 @@ class Tomcat <Formula
   homepage 'http://tomcat.apache.org/'
   md5 'f9eafa9bfd620324d1270ae8f09a8c89'
 
-  def skip_clean?(path); true; end
+  skip_clean :all
 
   def install
     rm_rf Dir['bin/*.{cmd,bat]}']
@@ -15,15 +15,14 @@ class Tomcat <Formula
     Dir["#{libexec}/bin/*.sh"].each { |f| ln_s f, bin }
   end
 
-  def caveats
-    <<-EOS.undent
-      Note: Some of the support scripts used by Tomcat have very generic names.
-      These are likely to conflict with support scripts used by other Java-based
-      server software.
+  def caveats; <<-EOS.undent
+    Note: Some of the support scripts used by Tomcat have very generic names.
+    These are likely to conflict with support scripts used by other Java-based
+    server software.
 
-      You may want to `brew unlink tomcat` and add:
-        #{bin}
-      to your PATH instead.
+    You may want to `brew unlink tomcat` and add:
+      #{bin}
+    to your PATH instead.
     EOS
   end
 end

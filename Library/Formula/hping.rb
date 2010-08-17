@@ -28,7 +28,7 @@ class Hping <Formula
 
     # Target folders need to exist before installing
     sbin.mkpath
-    (man+"man8").mkpath
+    man8.mkpath
     system "make install"
   end
 end

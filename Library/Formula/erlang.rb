@@ -7,10 +7,9 @@ end
 
 class Erlang <Formula
   # Download from  GitHub repo, which is much faster than using the official tarball
-  url "git://github.com/erlang/otp.git"
+  url "git://github.com/erlang/otp.git", :tag => "OTP_R13B04"
   homepage 'http://www.erlang.org'
   version 'R13B04'
-  @specs = {:tag => "OTP_R13B04"}
 
   # We can't strip the beam executables or any plugins, there isn't really
   # anything else worth stripping and it takes a really, long time to run
@@ -18,6 +17,10 @@ class Erlang <Formula
   # really erlang guys! what's with that?! Most of them should be in share/erlang!)
   # may as well skip bin too, everything is just shell scripts
   skip_clean ['lib', 'bin']
+
+  def options
+    [['--disable-hipe', "Disable building hipe; fails on various OS X systems."]]
+  end
 
   def install
     ENV.deparallelize

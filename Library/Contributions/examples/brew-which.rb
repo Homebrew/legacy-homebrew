@@ -3,16 +3,9 @@ require 'extend/pathname'
 REAL_CELLAR = HOMEBREW_CELLAR.realpath
 
 class String
-  def starts_with?(prefix)
+  def starts_with? prefix
     prefix = prefix.to_s
     self[0, prefix.length] == prefix
-  end
-end
-
-class Pathname
-  def starts_with?(prefix)
-    prefix = prefix.to_s
-    self.to_s[0, prefix.length] == prefix
   end
 end
 
