@@ -5,6 +5,7 @@ class Kdelibs <Formula
   homepage 'http://www.kde.org/'
   md5 '44ddba0e31ee3d78da09f0176d3c66db'
 
+  depends_on 'gettext'
   depends_on 'cmake'
   depends_on 'qt'
   depends_on 'automoc4'
@@ -14,9 +15,9 @@ class Kdelibs <Formula
   depends_on 'strigi'
   depends_on 'soprano'
   depends_on 'shared-desktop-ontologies'
-  depends_on 'gettext'
   depends_on 'shared-mime-info'
   depends_on 'attica'
+  depends_on 'd-bus'
 
   depends_on 'libpng' unless File.exist? "/usr/X11R6/lib"
 
@@ -26,8 +27,8 @@ class Kdelibs <Formula
 
   def install
     gettext = Formula.factory 'gettext'
-    FileUtils.mkdir('build')
-    FileUtils.cd('build')
+    mkdir('build')
+    cd('build')
     system "cmake .. #{std_cmake_parameters} -DCMAKE_PREFIX_PATH=#{gettext.prefix} -DBUNDLE_INSTALL_DIR=#{bin}"
     system "make install"
   end

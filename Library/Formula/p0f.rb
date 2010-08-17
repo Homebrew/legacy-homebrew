@@ -7,7 +7,6 @@ class P0f <Formula
   homepage 'http://github.com/skord/p0f'
   md5 '1ccbcd8d4c95ef6dae841120d23c56a5'
 
-
   def install
     inreplace "config.h", "/etc/p0f", "#{etc}/p0f"
     system "make"

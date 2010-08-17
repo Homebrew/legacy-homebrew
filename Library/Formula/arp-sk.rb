@@ -8,7 +8,9 @@ class ArpSk <Formula
   depends_on 'libnet'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--with-libnet=#{HOMEBREW_PREFIX}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-libnet=#{HOMEBREW_PREFIX}"
     system "make install"
   end
 end

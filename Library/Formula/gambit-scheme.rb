@@ -29,7 +29,6 @@ class GambitScheme <Formula
     configure_args << "--enable-shared" if ARGV.include? '--enable-shared'
 
     system "./configure", *configure_args
-
     system "make check" if ARGV.include? '--with-check'
 
     ENV.j1

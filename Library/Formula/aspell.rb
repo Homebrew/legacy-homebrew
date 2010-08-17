@@ -352,9 +352,8 @@ class Aspell <Formula
   md5 'bc80f0198773d5c05086522be67334eb'
 
   def options
-    [
-      ['--lang=XX,...', 'Install dictionary for language XX where language is the 2 or 3 letter country code, e.g.: --lang=en,es'],
-    ]
+    [['--lang=XX,...',
+    'Install dictionary for language XX where language is the 2 or 3 letter country code, e.g.: --lang=en,es']]
   end
 
   def install
@@ -362,24 +361,19 @@ class Aspell <Formula
     system "./configure", "--prefix=#{prefix}"
     system "make install"
 
-    langopt = ARGV.options.select { |v| v =~ /--lang=/ }
-    langopt.uniq.each do |opt|
+    ARGV.options_only.select { |v| v =~ /--lang=/ }.uniq.each do |opt|
       languages = opt.split('=')[1].split(',')
-      languages.each() do |lang|
-        classname = "Aspell" + lang.capitalize
-        clazz = Object.const_get(classname)
-        formula = clazz.new
+      languages.each do |lang|
+        formula = Object.const_get("Aspell" + lang.capitalize).new
         formula.brew { formula.install }
       end
     end
   end
-  
-  # TODO remove when options works properly
-  def caveats
-    "To install dictionaries, eg:
-    
-    brew install aspell --lang=en
 
-"
+  # TODO remove when options works properly
+  def caveats; <<-EOS
+    To install dictionaries, eg:
+      brew install aspell --lang=en
+    EOS
   end
 end

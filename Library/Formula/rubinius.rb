@@ -7,10 +7,8 @@ class Rubinius < Formula
   md5 'eb185703c7ae0c0210e8dcb7f783ee8e'
   head 'git://github.com/evanphx/rubinius.git'
 
-  aka "rbx"
-
   # Do not strip binaries, or else it fails to run.
-  def skip_clean?(path); true end
+  skip_clean :all
 
   def install
     # Let Rubinius define its own flags; messing with these causes build breaks.
@@ -29,5 +27,12 @@ class Rubinius < Formula
     ohai "config.rb", File.open('config.rb').to_a if ARGV.debug? or ARGV.verbose?
 
     system "/usr/bin/ruby", "-S", "rake", "install"
+  end
+
+  def caveats; <<-EOS.undent
+    Consider using RVM or Cider to manage Ruby environments:
+      * RVM: http://rvm.beginrescueend.com/
+      * Cider: http://www.atmos.org/cider/intro.html
+    EOS
   end
 end

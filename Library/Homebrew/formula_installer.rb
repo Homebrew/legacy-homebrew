@@ -10,7 +10,7 @@ class FormulaInstaller
 
   attr_writer :install_deps
 
-  def expand_deps f
+  def self.expand_deps f
     deps = []
     f.deps.collect do |dep|
       dep = Formula.factory dep
@@ -19,35 +19,35 @@ class FormulaInstaller
     end
     deps
   end
-  
+
   def pyerr dep
     brew_pip = ' brew install pip &&' unless Formula.factory('pip').installed?
-    <<-EOS
-Unsatisfied dependency, #{dep}
-Homebrew does not provide formula for Python dependencies, pip does:
+    <<-EOS.undent
+    Unsatisfied dependency, #{dep}
+    Homebrew does not provide Python dependencies, pip does:
 
-   #{brew_pip} pip install #{dep}
+        #{brew_pip} pip install #{dep}
     EOS
   end
-  def plerr dep; <<-EOS
-Unsatisfied dependency, #{dep}
-Homebrew does not provide formula for Perl dependencies, cpan does:
+  def plerr dep; <<-EOS.undent
+    Unsatisfied dependency, #{dep}
+    Homebrew does not provide Perl dependencies, cpan does:
 
-    cpan -i #{dep}
+        cpan -i #{dep}
     EOS
   end
-  def rberr dep; <<-EOS
-Unsatisfied dependency "#{dep}"
-Homebrew does not provide formulae for Ruby dependencies, rubygems does:
+  def rberr dep; <<-EOS.undent
+    Unsatisfied dependency "#{dep}"
+    Homebrew does not provide Ruby dependencies, rubygems does:
 
-    gem install #{dep}
+        gem install #{dep}
     EOS
   end
-  def jrberr dep; <<-EOS
-Unsatisfied dependency "#{dep}"
-Homebrew does not provide formulae for JRuby dependencies, rubygems does:
+  def jrberr dep; <<-EOS.undent
+    Unsatisfied dependency "#{dep}"
+    Homebrew does not provide JRuby dependencies, rubygems does:
 
-    jruby -S gem install #{dep}
+        jruby -S gem install #{dep}
     EOS
   end
 
@@ -69,7 +69,7 @@ Homebrew does not provide formulae for JRuby dependencies, rubygems does:
   end
 
   def check_formula_deps f
-    expand_deps(f).each do |dep|
+    FormulaInstaller.expand_deps(f).each do |dep|
       begin
         install_private dep unless dep.installed?
       rescue
@@ -86,7 +86,7 @@ Homebrew does not provide formulae for JRuby dependencies, rubygems does:
     end
     install_private f
   end
-  
+
   private
 
   def install_private f
@@ -106,7 +106,7 @@ Homebrew does not provide formulae for JRuby dependencies, rubygems does:
       fork do
         begin
           read.close
-          exec '/usr/bin/nice', '/usr/bin/ruby', '-I', File.dirname(__FILE__), '-rinstall', f.path, '--', *ARGV.options
+          exec '/usr/bin/nice', '/usr/bin/ruby', '-I', File.dirname(__FILE__), '-rinstall', f.path, '--', *ARGV.options_only
         rescue => e
           Marshal.dump(e, write)
           write.close

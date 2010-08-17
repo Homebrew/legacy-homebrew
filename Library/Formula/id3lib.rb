@@ -8,7 +8,7 @@ class Id3lib <Formula
 
   def patches
     {:p1 => DATA }
-  end unless ARGV.include? "--HEAD"
+  end unless ARGV.build_head?
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"

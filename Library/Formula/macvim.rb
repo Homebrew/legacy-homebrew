@@ -1,12 +1,16 @@
 require 'formula'
 
 class Macvim <Formula
-  head 'git://repo.or.cz/MacVim.git'
+  head 'git://github.com/b4winckler/macvim.git'
   homepage 'http://code.google.com/p/macvim'
 
+  def options
+    [["--no-icons", "Does not generate custom document icons."]]
+  end
+
   def install
-    # MacVim's Xcode project gets confused by $CC, disable it until someone
-    # figures out why it fails.
+    # MacVim's Xcode project gets confused by $CC
+    # Disable it until someone figures out why it fails.
     ENV['CC'] = nil
     ENV['CFLAGS'] = nil
     ENV['CXX'] = nil
@@ -20,6 +24,12 @@ class Macvim <Formula
            "--enable-pythoninterp",
            "--enable-rubyinterp",
            "--enable-tclinterp"
+
+    if ARGV.include? "--no-icons"
+      inreplace "src/MacVim/icons/Makefile", "$(MAKE) -C makeicns", ""
+      inreplace "src/MacVim/icons/make_icons.py", "dont_create = False", "dont_create = True"
+    end
+
     system "make"
 
     prefix.install "src/MacVim/build/Release/MacVim.app"

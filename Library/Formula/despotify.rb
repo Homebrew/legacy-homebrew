@@ -10,8 +10,7 @@ class Despotify <Formula
 
   def install
     system "make Makefile.local.mk"
-    inreplace "Makefile.local.mk",
-      "# INSTALL_PREFIX = /usr", "INSTALL_PREFIX = #{prefix}"
+    inreplace "Makefile.local.mk", "# INSTALL_PREFIX = /usr", "INSTALL_PREFIX = #{prefix}"
     system "make"
     system "make install"
   end

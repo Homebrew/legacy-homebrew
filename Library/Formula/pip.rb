@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pip <Formula
-  url 'http://pypi.python.org/packages/source/p/pip/pip-0.7.2.tar.gz'
+  url 'http://pypi.python.org/packages/source/p/pip/pip-0.8.tar.gz'
   homepage 'http://pip.openplans.org/'
-  md5 'cfe73090aaa0d3b0c104179a627859d1'
+  md5 '468d9adc309f33ad51cee38f0d455429'
 
   depends_on 'distribute'
 
@@ -42,7 +42,7 @@ class Pip <Formula
       # Replace placeholders with HOMEBREW paths
       s.gsub! '#BUILD_PREFIX#', "'#{var}/pip/build'"
       s.gsub! '#SRC_PREFIX#', "'#{var}/pip/src'"
-      s.gsub! '#STORAGE_DIR#', "'#{var}/pip/pip.log'"
+      s.gsub! '#STORAGE_DIR#', "'#{var}/pip'"
       s.gsub! '#CONFIG_FILE#', "'#{etc}/pip.conf'"
       s.gsub! '#LOG_FILE#', "'#{var}/pip/pip.log'"
     end

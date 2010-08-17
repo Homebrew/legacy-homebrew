@@ -5,10 +5,12 @@ class Tarsnap <Formula
   homepage 'http://www.tarsnap.com/'
   sha256 'e26dc7c2aa64c17d8063bc61462d1a0f546b56e33b41fbd2fd6925e506c6914f'
 
- depends_on 'lzma' => :optional
+  depends_on 'lzma' => :optional
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--enable-sse2"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--enable-sse2"
     system "make install"
   end
 end

@@ -196,8 +196,32 @@ class Pathname
     children.select{ |child| child.directory? }
   end
 
+  def resolved_path
+    self.symlink? ? dirname+readlink : self
+  end
+
   def resolved_path_exists?
     (dirname+readlink).exist?
+  end
+
+  def starts_with? prefix
+    prefix = prefix.to_s
+    self.to_s[0, prefix.length] == prefix
+  end
+
+  def make_relative_symlink src
+    self.dirname.mkpath
+    Dir.chdir self.dirname do
+      # TODO use Ruby function so we get exceptions
+      # NOTE Ruby functions may work, but I had a lot of problems
+      rv=system 'ln', '-sf', src.relative_path_from(self.dirname)
+      unless rv and $? == 0
+        raise <<-EOS
+Could not create symlink #{to_s}.
+Check that you have permssions on #{self.dirname}
+        EOS
+      end
+    end
   end
 end
 
@@ -219,15 +243,9 @@ module ObserverPathnameExtension
     $d+=1
   end
   def make_relative_symlink src
-    dirname.mkpath
-    Dir.chdir dirname do
-      # TODO use Ruby function so we get exceptions
-      # NOTE Ruby functions may work, but I had a lot of problems
-      rv=system 'ln', '-sf', src.relative_path_from(dirname)
-      raise "Could not create symlink #{to_s}" unless rv and $? == 0
-      puts "ln #{to_s}" if ARGV.verbose?
-      $n+=1
-    end
+    super
+    puts "ln #{to_s}" if ARGV.verbose?
+    $n+=1
   end
 end
 

@@ -5,8 +5,6 @@ class Cryptopp <Formula
   homepage 'http://www.cryptopp.com/'
   sha1 'b836783ebd72d5bc6a916620ab2b1ecec316fef1'
   version '5.6.0'
-  
-  aka 'libcryptopp'
 
   def install
     system "make"

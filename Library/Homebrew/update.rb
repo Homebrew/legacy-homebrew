@@ -5,24 +5,31 @@ class RefreshBrew
   UPDATE_COMMAND   = "git pull #{RESPOSITORY_URL} master"
   REVISION_COMMAND = 'git log -l -1 --pretty=format:%H 2> /dev/null'
   GIT_UP_TO_DATE   = 'Already up-to-date.'
-  
+
   formula_regexp   = 'Library/Formula/(.+?)\.rb'
   ADDED_FORMULA    = %r{^\s+create mode \d+ #{formula_regexp}$}
   UPDATED_FORMULA  = %r{^\s+#{formula_regexp}\s}
   DELETED_FORMULA  = %r{^\s+delete mode \d+ #{formula_regexp}$}
-  
+
+  example_regexp   = 'Library/Contributions/examples/([^.\s]+).*'
+  ADDED_EXAMPLE    = %r{^\s+create mode \d+ #{example_regexp}$}
+  UPDATED_EXAMPLE  = %r{^\s+#{example_regexp}}
+  DELETED_EXAMPLE  = %r{^\s+delete mode \d+ #{example_regexp}$}
+
   attr_reader :added_formulae, :updated_formulae, :deleted_formulae, :initial_revision
-  
+  attr_reader :added_examples, :updated_examples, :deleted_examples
+
   def initialize
     @added_formulae, @updated_formulae, @deleted_formulae = [], [], []
+    @added_examples, @updated_examples, @deleted_examples = [], [], []
     @initial_revision = self.current_revision
   end
-  
+
   # Performs an update of the homebrew source. Returns +true+ if a newer
   # version was available, +false+ if already up-to-date.
   def update_from_masterbrew!
     output = ''
-    in_prefix do
+    HOMEBREW_REPOSITORY.cd do
       if File.directory? '.git'
         safe_system CHECKOUT_COMMAND
       else
@@ -39,19 +46,28 @@ class RefreshBrew
         @deleted_formulae << $1
       when UPDATED_FORMULA
         @updated_formulae << $1 unless @added_formulae.include?($1) or @deleted_formulae.include?($1)
+      when ADDED_EXAMPLE
+        @added_examples << $1
+      when DELETED_EXAMPLE
+        @deleted_examples << $1
+      when UPDATED_EXAMPLE
+        @updated_examples << $1 unless @added_examples.include?($1) or @deleted_examples.include?($1)
       end
     end
     @added_formulae.sort!
     @updated_formulae.sort!
     @deleted_formulae.sort!
-    
+    @added_examples.sort!
+    @updated_examples.sort!
+    @deleted_examples.sort!
+
     output.strip != GIT_UP_TO_DATE
   end
-  
+
   def pending_formulae_changes?
     !@updated_formulae.empty?
   end
-  
+
   def pending_new_formulae?
     !@added_formulae.empty?
   end
@@ -60,18 +76,64 @@ class RefreshBrew
     !@deleted_formulae.empty?
   end
 
+  def pending_examples_changes?
+    !@updated_examples.empty?
+  end
+
+  def pending_new_examples?
+    !@added_examples.empty?
+  end
+
+  def deleted_examples?
+    !@deleted_examples.empty?
+  end
+
   def current_revision
-    in_prefix { execute(REVISION_COMMAND).strip }
+    HOMEBREW_REPOSITORY.cd { execute(REVISION_COMMAND).strip }
   rescue
     'TAIL'
   end
-  
-  private
-  
-  def in_prefix
-    Dir.chdir(HOMEBREW_REPOSITORY) { yield }
+
+  def report
+    puts "Updated Homebrew from #{initial_revision[0,8]} to #{current_revision[0,8]}."
+    ## New Formulae
+    if pending_new_formulae?
+      ohai "The following formulae are new:"
+      puts_columns added_formulae
+    end
+    ## Deleted Formulae
+    if deleted_formulae?
+      ohai "The following formulae were removed:"
+      puts_columns deleted_formulae
+    end
+    ## Updated Formulae
+    if pending_formulae_changes?
+      ohai "The following formulae were updated:"
+      puts_columns updated_formulae
+    else
+      puts "No formulae were updated."
+    end
+    ## New examples
+    if pending_new_examples?
+      ohai "The following external commands are new:"
+      puts_columns added_examples
+    end
+    ## Deleted examples
+    if deleted_examples?
+      ohai "The following external commands were removed:"
+      puts_columns deleted_examples
+    end
+    ## Updated Formulae
+    if pending_examples_changes?
+      ohai "The following external commands were updated:"
+      puts_columns updated_examples
+    else
+      puts "No external commands were updated."
+    end
   end
-  
+
+  private
+
   def execute(cmd)
     out = `#{cmd}`
     if $? && !$?.success?

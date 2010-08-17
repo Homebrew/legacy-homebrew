@@ -5,7 +5,6 @@ class HtmlXmlUtils <Formula
   homepage 'http://www.w3.org/Tools/HTML-XML-utils/'
   md5 '28c58add86e35a60e602a029c8e2f04b'
 
-
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make"

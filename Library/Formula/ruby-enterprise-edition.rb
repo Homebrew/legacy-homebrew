@@ -9,16 +9,22 @@ class RubyEnterpriseEdition <Formula
 
   skip_clean 'bin/ruby'
 
-  aka :ree
+  def options
+    [['--enable-shared', "Compile shared, but see caveats."]]
+  end
 
   def install
     fails_with_llvm "fails with LLVM"
     args = ['./installer', "--auto", prefix, '--no-tcmalloc']
-    args << '-c' << '--enable-shared' if ARGV.include?('--enable-shared')
+    args << '-c' << '--enable-shared' if ARGV.include? '--enable-shared'
     system *args
   end
 
   def caveats; <<-EOS.undent
+    Consider using RVM or Cider to manage Ruby environments:
+      * RVM: http://rvm.beginrescueend.com/
+      * Cider: http://www.atmos.org/cider/intro.html
+
     By default we don't compile REE as a shared library. From their documentation:
         Please note that enabling --enable-shared will make the Ruby interpreter
         about 20% slower.

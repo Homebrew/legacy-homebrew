@@ -13,6 +13,7 @@ class Emacs <Formula
   def options
     [
       ["--cocoa", "Build a Cocoa version of emacs"],
+      ["--with-x", "Include X11 support"],
       ["--use-git-head", "Use repo.or.cz git mirror for HEAD builds"],
     ]
   end
@@ -36,12 +37,6 @@ class Emacs <Formula
       To access texinfo documentation, set your INFOPATH to:
         #{info}
 
-      The Emacs project now uses bazaar for source code versioning. If you
-      last built the Homebrew emacs formula from HEAD prior to their switch
-      from CVS to bazaar, you will have to remove Homebrew's cached download
-      before building from HEAD again:
-        #{HOMEBREW_CACHE}/emacs-HEAD
-
       The initial checkout of the bazaar Emacs repository might take a long
       time. You might find that using the repo.or.cz git mirror is faster,
       even after the initial checkout. To use the repo.or.cz git mirror for
@@ -52,14 +47,11 @@ class Emacs <Formula
       status. The Emacs devs do not provide support for the git mirror, and
       they might reject bug reports filed with git version information. Use
       it at your own risk.
-
-      If you switch between repositories, you'll have to remove the Homebrew
-      emacs cache directory (see above).
     EOS
 
     return s
   end
-  
+
   def install
     configure_args = [
       "--prefix=#{prefix}",
@@ -73,8 +65,17 @@ class Emacs <Formula
       system "make bootstrap"
       system "make install"
       prefix.install "nextstep/Emacs.app"
+      bin.mkpath
+      ln_s prefix+"Emacs.app/Contents/MacOS/Emacs", bin+"emacs"
     else
-      configure_args << "--without-x"
+      if ARGV.include? "--with-x"
+        configure_args << "--with-x"
+        configure_args << "--with-gif=no"
+        configure_args << "--with-tiff=no"
+        configure_args << "--with-jpeg=no"
+      else
+        configure_args << "--without-x"
+      end
       system "./configure", *configure_args
       system "make"
       system "make install"

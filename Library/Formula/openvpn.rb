@@ -7,9 +7,8 @@ class Openvpn <Formula
 
   depends_on 'lzo' => :recommended
 
-  def skip_clean? path
-    path == etc or path == var
-  end
+  skip_clean 'etc'
+  skip_clean 'var'
 
   def install
     # Build and install binary
