@@ -84,7 +84,7 @@ Opens a browser to the GitHub History page for formula \fIformula\fR\.
 .
 .TP
 \fBinfo \-\-all\fR
-Summarises all installed packages; this is inteded to be used by higher\-level tools\.
+Summarises all installed packages; this is intended to be used by higher\-level tools\.
 .
 .TP
 \fBinfo\fR \fIURL\fR
@@ -174,18 +174,37 @@ Homebrew allows external commands to be defined by putting a +x file named \fBbr
 Some external commands are shipped with Homebrew, and enabled by default\.
 .
 .TP
+\fBaudit\fR
+Checks all formulae for Homebrew coding style violations\. This should be run before submitting a new formula for inclusion\.
+.
+.TP
 \fBfetch\fR \fIformula\fR
 Downloads the tarball or checks out from VCS for the given \fIformula\fR\. For tarballs, also prints MD5 and SHA1 checksums\.
 .
 .TP
-\fBaudit\fR
-Checks all formulae for Homebrew coding style violations\.
+\fBmissing\fR
+Checks all installed formuale for missing dependencies\.
+.
+.TP
+\fBserver\fR
+Starts a local webserver with an app that lets you browse available formulae, similar to \fBgem server\fR\.
+.
+.TP
+\fBtest\fR \fIformula\fR
+A few formulae provide a test method\. \fBbrew test <formula>\fR runs this test method\. There is no standard output or return code, but it should generally indicate to the user if something is wrong with the installed formula\.
+.
+.IP
+Example: \fBbrew install jruby && brew test jruby\fR
 .
 .SH "ENVIRONMENT"
 .
 .TP
 HOMEBREW_DEBUG
 If set, instructs Homebrew to always assume \fB\-\-debug\fR when running commands\.
+.
+.TP
+HOMEBREW_DEBUG_INSTALL
+When a \fBbrew install \-d\fR or \fBbrew install \-i\fR drops into a shell, \fBHOMEBREW_DEBUG_INSTALL\fR will be set to the name of the formula being tried\.
 .
 .TP
 HOMEBREW_EDITOR

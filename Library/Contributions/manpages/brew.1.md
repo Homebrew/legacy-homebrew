@@ -78,7 +78,7 @@ didn't include with OS X.
     Opens a browser to the GitHub History page for formula <formula>.
 
   * `info --all`:
-    Summarises all installed packages; this is inteded to be used by
+    Summarises all installed packages; this is intended to be used by
     higher-level tools.
 
   * `info` <URL>:
@@ -164,18 +164,39 @@ to recognize `brew cmdname`.
 
 Some external commands are shipped with Homebrew, and enabled by default.
 
+  * `audit`:
+    Checks all formulae for Homebrew coding style violations. This should be
+    run before submitting a new formula for inclusion.
+
   * `fetch` <formula>:
     Downloads the tarball or checks out from VCS for the given <formula>. For
     tarballs, also prints MD5 and SHA1 checksums.
 
-  * `audit`:
-    Checks all formulae for Homebrew coding style violations.
+  * `missing`:
+    Checks all installed formuale for missing dependencies.
+
+  * `server`:
+    Starts a local webserver with an app that lets you browse available
+    formulae, similar to `gem server`.
+
+  * `test` <formula>:
+    A few formulae provide a test method. `brew test <formula>` runs this
+    test method. There is no standard output or return code, but it should
+    generally indicate to the user if something is wrong with the installed
+    formula.
+
+    Example: `brew install jruby && brew test jruby`
 
 ## ENVIRONMENT
 
   * HOMEBREW\_DEBUG:
     If set, instructs Homebrew to always assume `--debug` when running
     commands.
+
+  * HOMEBREW\_DEBUG\_INSTALL:
+    When a `brew install -d` or `brew install -i` drops into a shell,
+    `HOMEBREW_DEBUG_INSTALL` will be set to the name of the formula being
+    tried.
 
   * HOMEBREW\_EDITOR:
     If set, Homebrew will use this editor when editing a single formula, or
