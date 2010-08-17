@@ -6,6 +6,6 @@ class Cdrtools < Formula
   md5 'bb21cefefcfbb76cf249120e8978ffdd'
 
   def install
-    system "make INS_BASE=#{prefix} INS_RBASE=#{prefix} install"
+    system "make", "GMAKE_NOWARN=true", "INS_BASE=#{prefix}", "INS_RBASE=#{prefix}", "install"
   end
 end
