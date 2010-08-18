@@ -5,7 +5,7 @@ require 'formula'
 class Ruby <Formula
   url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p0.tar.bz2'
   homepage 'http://www.ruby-lang.org/en/'
-  head 'http://svn.ruby-lang.org/repos/ruby/branches/ruby_1_9_2/', :using => :svn
+  head 'http://svn.ruby-lang.org/repos/ruby/trunk/', :using => :svn
   md5 'd8a02cadf57d2571cd4250e248ea7e4b'
 
   depends_on 'readline'
