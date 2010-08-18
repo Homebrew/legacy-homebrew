@@ -53,6 +53,8 @@ class Emacs <Formula
   end
 
   def install
+    fails_with_llvm "Duplicate symbol errors while linking."
+
     configure_args = [
       "--prefix=#{prefix}",
       "--without-dbus",
