@@ -2,8 +2,8 @@ require 'formula'
 
 class Boost <Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.43.0/boost_1_43_0.tar.bz2'
-  md5 'dd49767bfb726b0c774f7db0cef91ed1'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.44.0/boost_1_44_0.tar.bz2'
+  md5 'f02578f5218f217a9f20e9c30e119c6a'
 
   def install
     fails_with_llvm "the standard llvm-gcc causes errors with dropped arguments "+
