@@ -1,8 +1,8 @@
 require 'formula'
 
 class Clojure <Formula
-  url 'http://clojure.googlecode.com/files/clojure-1.1.0.zip'
-  md5 '9c9e92f85351721b76f40578f5c1a94a'
+  url 'http://github.com/downloads/clojure/clojure/clojure-1.2.0.zip'
+  md5 'da0cc71378f56491d6ee70dee356831f'
   head 'git://github.com/richhickey/clojure.git'
   homepage 'http://clojure.org/'
 
