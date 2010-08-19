@@ -2,18 +2,33 @@ require 'formula'
 
 class Sqsh <Formula
   depends_on 'freetds'
+  depends_on "readline"
 
   url 'http://downloads.sourceforge.net/sourceforge/sqsh/sqsh-2.1.7.tar.gz'
   homepage 'http://www.sqsh.org/'
   md5 'ce929dc8e23cedccac98288d24785e2d'
   version '2.1.7'
 
+  def options
+    [
+      ["--with-x", "Enable X windows support."]
+    ]
+  end
 
   def install
-    args = ["--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"]
+    args = ["--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}" ]
+    args << "--with-readline"
 
-    ENV['SYBASE']   = Freetds.new("freetds").prefix
+    ENV['LIBDIRS'] = Readline.new('readline').lib
+    ENV['INCDIRS'] = Readline.new('readline').include
 
+    if ARGV.include? "--with-x"
+      args << "--with-x"
+      args << "--x-libraries=/usr/X11/lib"
+      args << "--x-includes=/usr/X11/includes"
+    end
+
+    ENV['SYBASE'] = Freetds.new("freetds").prefix
     system "./configure", *args
 
     system "make install"
