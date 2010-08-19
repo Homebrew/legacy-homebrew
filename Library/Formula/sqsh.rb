@@ -17,6 +17,7 @@ class Sqsh <Formula
 
   def install
     args = ["--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}" ]
+    args << "--mandir=#{man}"
     args << "--with-readline"
 
     ENV['LIBDIRS'] = Readline.new('readline').lib
@@ -31,6 +32,7 @@ class Sqsh <Formula
     ENV['SYBASE'] = Freetds.new("freetds").prefix
     system "./configure", *args
 
-    system "make install"
+    system "make", "install"
+    system "make", "install.man"
   end
 end
