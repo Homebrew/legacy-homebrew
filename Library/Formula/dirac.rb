@@ -6,8 +6,7 @@ class Dirac <Formula
   homepage 'http://diracvideo.org/'
 
   def install
-    ENV.gcc_4_2
-
+    fails_with_llvm
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end

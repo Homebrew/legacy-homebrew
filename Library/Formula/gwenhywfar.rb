@@ -5,14 +5,12 @@ class Gwenhywfar <Formula
   homepage 'http://gwenhywfar.sourceforge.net/'
   md5 '9ab62d881a0f39d4b07ea0badff7201f'
 
- depends_on 'pkg-config'
- depends_on 'gettext'
- depends_on 'gnutls'
+  depends_on 'pkg-config'
+  depends_on 'gettext'
+  depends_on 'gnutls'
 
-  
   def install
-    # llvm results in a sigsegfault during compile
-    ENV.gcc_4_2
+    fails_with_llvm "llvm results in a sigsegfault during compile"
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end

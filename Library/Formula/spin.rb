@@ -11,11 +11,11 @@ class Spin <Formula
   end
 
   def install
-    ENV.gcc_4_2
+    fails_with_llvm
     ENV.deparallelize
 
     # Compile and install the binary.
-    FileUtils.cd("Src#{version}") do
+    cd("Src#{version}") do
       system "make"
       bin.install "spin"
     end

@@ -1,14 +1,14 @@
 require 'formula'
 
 class Tmux <Formula
-  url 'http://downloads.sourceforge.net/tmux/tmux-1.2.tar.gz'
-  md5 '748fbe7bb5f86812e19bd6005ff21a5a'
+  url 'http://downloads.sourceforge.net/tmux/tmux-1.3.tar.gz'
+  md5 '96e60cb206de2db0610b9fb6a64c2251'
   homepage 'http://tmux.sourceforge.net'
 
   depends_on 'libevent'
 
   def install
-    ENV['PREFIX'] = "#{prefix}"
+    ENV['PREFIX'] = prefix
     system "./configure"
 
     inreplace "GNUmakefile" do |f|

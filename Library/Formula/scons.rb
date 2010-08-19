@@ -1,18 +1,16 @@
 require 'formula'
 
 class Scons <Formula
-  url 'http://prdownloads.sourceforge.net/scons/scons-1.2.0.d20090919.tar.gz'
+  url 'http://prdownloads.sourceforge.net/scons/scons-2.0.0.final.0.tar.gz'
   homepage 'http://www.scons.org'
-  md5 'd95c3749438e51db592b854683083965'
+  md5 'c2e4c2700cac507caa93d4a3adbbf56f'
+  version '2.0.0'
 
   def install
-    man1.install gzip('scons-time.1')
-    man1.install gzip('scons.1')
-    man1.install gzip('sconsign.1')
-
+    man1.install [gzip('scons-time.1'), gzip('scons.1'), gzip('sconsign.1')]
     system "python", "setup.py", "install",
-                    "--prefix=#{prefix}",
-                    "--standalone-lib",
-                    "--no-version-script", "--no-install-man"
+                     "--prefix=#{prefix}",
+                     "--standalone-lib",
+                     "--no-version-script", "--no-install-man"
   end
 end

@@ -54,7 +54,7 @@ end
 def install f
   show_summary_heading = false
 
-  f.deps.each do |dep|
+  f.deps.uniq.each do |dep|
     dep = Formula.factory dep
     if dep.keg_only?
       ENV.prepend 'LDFLAGS', "-L#{dep.lib}"
@@ -66,9 +66,7 @@ def install f
 
   if ARGV.verbose?
     ohai "Build Environment"
-    %w[PATH CFLAGS LDFLAGS CPPFLAGS MAKEFLAGS CC CXX MACOSX_DEPLOYMENT_TARGET PKG_CONFIG_PATH].each do |env|
-      puts "#{env}: #{ENV[env]}" unless ENV[env].to_s.empty?
-    end
+    dump_build_env ENV
   end
 
   build_time = nil
@@ -78,6 +76,16 @@ def install f
         ohai "Entering interactive mode"
         puts "Type `exit' to return and finalize the installation"
         puts "Install to this prefix: #{f.prefix}"
+
+        if ARGV.flag? '--git'
+          system "git init"
+          system "git add -A"
+          puts "This folder is now a git repo. Make your changes and then use:"
+          puts "  git diff | pbcopy"
+          puts "to copy the diff to the clipboard."
+        end
+
+        ENV['HOMEBREW_DEBUG_INSTALL'] = f.name
         interactive_shell
         nil
       elsif ARGV.include? '--help'
@@ -88,8 +96,10 @@ def install f
         beginning=Time.now
         f.install
         FORMULA_META_FILES.each do |file|
+          next if File.directory? file
           FileUtils.mv "#{file}.txt", file rescue nil
           f.prefix.install file rescue nil
+          (f.prefix+file).chmod 0644 rescue nil
         end
         build_time = Time.now-beginning
       end
@@ -120,31 +130,43 @@ def install f
 
   raise "Nothing was installed to #{f.prefix}" unless f.installed?
 
-  # warn the user if stuff was installed outside of their PATH
-  paths = ENV['PATH'].split(':').collect{|p| File.expand_path p}
-  [f.bin, f.sbin].each do |bin|
-    if bin.directory?
-      rootbin = (HOMEBREW_PREFIX+bin.basename).to_s
-      bin = File.expand_path bin
-      unless paths.include? rootbin
-        opoo "#{rootbin} is not in your PATH"
-        puts "You can amend this by altering your ~/.bashrc file"
-        show_summary_heading = true
-      end
-    end
-  end unless f.keg_only?
-
   if f.keg_only?
     ohai 'Caveats', text_for_keg_only_formula(f)
     show_summary_heading = true
   else
+    # warn the user if stuff was installed outside of their PATH
+    paths = ENV['PATH'].split(':').collect{|p| File.expand_path p}
+    [f.bin, f.sbin].each do |bin|
+      if bin.directory?
+        rootbin = (HOMEBREW_PREFIX+bin.basename).to_s
+        bin = File.expand_path bin
+        unless paths.include? rootbin
+          opoo "#{rootbin} is not in your PATH"
+          puts "You can amend this by altering your ~/.bashrc file"
+          show_summary_heading = true
+        end
+      end
+    end
+
+    # Check for possibly misplaced folders
+    if (f.prefix+'man').exist?
+      opoo 'A top-level "man" folder was found.'
+      puts "Homebrew requires that man pages live under share."
+      puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
+    end
+
+    # link from Cellar to Prefix
     begin
       Keg.new(f.prefix).link
     rescue Exception => e
       onoe "The linking step did not complete successfully"
       puts "The package built, but is not symlinked into #{HOMEBREW_PREFIX}"
       puts "You can try again using `brew link #{f.name}'"
-      ohai e, e.backtrace if ARGV.debug?
+      if ARGV.debug?
+        ohai e, e.backtrace
+      else
+        onoe e
+      end
       show_summary_heading = true
     end
   end

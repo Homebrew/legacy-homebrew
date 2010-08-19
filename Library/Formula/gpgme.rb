@@ -5,10 +5,11 @@ class Gpgme < Formula
   homepage 'http://www.gnupg.org'
   sha1 'e56da614f3e6acc1cb51af767c77f4a95b05b1e8'
 
+  depends_on 'gnupg'
   depends_on 'libgpg-error'
 
   def install
-    ENV.gcc_4_2
+    fails_with_llvm
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-asm"

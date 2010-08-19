@@ -1,18 +1,19 @@
 require 'formula'
 
 class MidnightCommander <Formula
-  url 'http://www.midnight-commander.org/downloads/31'
+  url 'http://www.midnight-commander.org/downloads/59'
   homepage 'http://www.midnight-commander.org/'
-  sha256 '71caeaf00606c45228362fb6a4d2f1b6d47b6c1056db46b975255aac5af45ef7'
-  version '4.7.0.3'
+  sha256 '1b8e9650f092d4554eb08f137142bd203b5cef74b5000f3e228f0261fd92a039'
+  version '4.7.0.8'
 
-  depends_on 'glib'
   depends_on 'pkg-config'
-
-  aka 'mc'
+  depends_on 'glib'
 
   def install
-    system "./configure", "--prefix=#{prefix}","--without-x","--with-screen=ncurses", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--without-x",
+                          "--with-screen=ncurses"
     system "make install"
   end
 end

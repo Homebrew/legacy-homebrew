@@ -2,13 +2,11 @@ require 'formula'
 
 class Mplayer <Formula
   homepage 'http://www.mplayerhq.hu/'
-  head 'svn://svn.mplayerhq.hu/mplayer/trunk'
+  # http://github.com/mxcl/homebrew/issues/issue/87
+  head 'svn://svn.mplayerhq.hu/mplayer/trunk', :using => StrictSubversionDownloadStrategy
 
   depends_on 'pkg-config' => :recommended
   depends_on 'yasm' => :optional
-
-  # http://github.com/mxcl/homebrew/issues/#issue/87
-  depends_on :subversion if MACOS_VERSION < 10.6
 
   def install
     # Do not use pipes, per bug report
@@ -25,16 +23,8 @@ class Mplayer <Formula
     args = ["--prefix=#{prefix}", "--enable-largefiles", "--enable-apple-remote"]
     args << "--target=x86_64-Darwin" if Hardware.is_64_bit? and MACOS_VERSION >= 10.6
 
-    system './configure', *args 
+    system './configure', *args
     system "make"
     system "make install"
-  end
-end
-
-if MACOS_VERSION < 10.6
-  class SubversionDownloadStrategy
-    def svn
-      Formula.factory('subversion').bin+'svn'
-    end
   end
 end

@@ -1,36 +1,37 @@
 require 'formula'
 
-# TODO we shouldn't be installing .apps if there is an option
-
 class Exult <Formula
-  # Use a specific revision that is known to compile (on Snow Leopard too.)
-  head 'http://exult.svn.sourceforge.net/svnroot/exult/exult/trunk', :revision => '6128'
+  url 'http://exult.svn.sourceforge.net/svnroot/exult/exult/trunk', :revision => '6317'
   homepage 'http://exult.sourceforge.net/'
-  
+  version '1.4pre'
+  head 'http://exult.svn.sourceforge.net/svnroot/exult/exult/trunk'
+
   depends_on 'sdl'
   depends_on 'sdl_mixer'
-  
-  aka 'ultima7'
-  
+  depends_on 'libvorbis'
+
   def install
     # Yes, really. Goddamnit.
     inreplace "autogen.sh", "libtoolize", "glibtoolize"
-    
+
     system "./autogen.sh"
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--disable-sdltest"
-                          
+
     system "make"
     system "make bundle"
     prefix.install "Exult.app"
   end
-  
-  def caveats;
-    "Cocoa app installed to #{prefix}\n\n"\
-    "Note that this includes only the game engine; you will need to supply your own\n"\
-    "own legal copy of the Ultima 7 game files. Try here (Amazon.com):\n\n"\
-    "http://bit.ly/8JzovU"
+
+  def caveats
+    <<-EOS.undent
+      Cocoa app installed to:
+        #{prefix}
+
+      Note that this includes only the game engine; you will need to supply your own
+      own legal copy of the Ultima 7 game files. Try here (Amazon.com):
+        http://bit.ly/8JzovU
+    EOS
   end
 end

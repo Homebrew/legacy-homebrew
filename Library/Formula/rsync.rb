@@ -5,9 +5,16 @@ class Rsync <Formula
   homepage 'http://rsync.samba.org/'
   md5 'b53525900817cf1ba7ad3a516ab5bfe9'
 
+  def patches
+    base = "http://trac.macports.org/export/65950/trunk/dports/net/rsync/files"
+    {
+      :p1 => ["#{base}/patch-fileflags.diff", "#{base}/patch-crtimes.diff"]
+    }
+  end
+
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
+    system "./configure", "--disable-debug",
+                          "--prefix=#{prefix}",
                           "--with-rsyncd-conf=#{prefix}/etc/rsyncd.conf",
                           "--enable-ipv6"
     system "make install"

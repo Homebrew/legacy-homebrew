@@ -13,12 +13,10 @@ class Sdl <Formula
   end
 
   def install
-    ENV.gcc_4_2
+    fails_with_llvm
     Sdl.use_homebrew_prefix %w[sdl.pc.in sdl-config.in]
 
-    system "./configure", "--prefix=#{prefix}", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-nasm"
+    system "./configure", "--prefix=#{prefix}", "--disable-nasm"
     system "make install"
 
     # Copy source files needed for Ojective-C support.

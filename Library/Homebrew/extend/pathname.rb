@@ -119,7 +119,7 @@ class Pathname
 
     # eg. foobar-4.5.1-1
     # eg. ruby-1.9.1-p243
-    /-((\d+\.)*\d\.\d+-(p|rc)?\d+)$/.match stem
+    /-((\d+\.)*\d\.\d+-(p|rc|RC)?\d+)$/.match stem
     return $1 if $1
     
     # eg. lame-398-1
@@ -131,7 +131,7 @@ class Pathname
     return $1 if $1
 
     # eg. foobar-4.5.1b
-    /-((\d+\.)*\d+([abc]|rc\d))$/.match stem
+    /-((\d+\.)*\d+([abc]|rc|RC)\d*)$/.match stem
     return $1 if $1
 
     # eg foobar-4.5.0-beta1
@@ -143,7 +143,11 @@ class Pathname
     return $1 if $1
 
     # eg foobar-4.5.0-bin
-    /-((\d+\.)+\d+[abc]?)[-.](bin|src|sources?)$/.match stem
+    /-((\d+\.)+\d+[abc]?)[-.](bin|stable|src|sources?)$/.match stem
+    return $1 if $1
+
+    # Debian style eg dash_0.5.5.1.orig.tar.gz
+    /_((\d+\.)+\d+[abc]?)[.]orig$/.match stem
     return $1 if $1
 
     # eg. otp_src_R13B (this is erlang's style)
@@ -154,16 +158,30 @@ class Pathname
 
     nil
   end
-
-  def md5
-    require 'digest'
-    incr_md5 = Digest::MD5.new
+  
+  def incremental_hash(hasher)
+    incr_hash = hasher.new
     self.open('r') do |f|
-      f.each_line do |line|
-        incr_md5 << line
+      while(buf = f.read(1024))
+        incr_hash << buf
       end
     end
-    incr_md5.hexdigest
+    incr_hash.hexdigest
+  end
+
+  def md5
+    require 'digest/md5'
+    incremental_hash(Digest::MD5)
+  end
+  
+  def sha1
+    require 'digest/sha1'
+    incremental_hash(Digest::SHA1)
+  end
+  
+  def sha2
+    require 'digest/sha2'
+    incremental_hash(Digest::SHA2)
   end
 
   if '1.9' <= RUBY_VERSION
@@ -176,6 +194,34 @@ class Pathname
 
   def subdirs
     children.select{ |child| child.directory? }
+  end
+
+  def resolved_path
+    self.symlink? ? dirname+readlink : self
+  end
+
+  def resolved_path_exists?
+    (dirname+readlink).exist?
+  end
+
+  def starts_with? prefix
+    prefix = prefix.to_s
+    self.to_s[0, prefix.length] == prefix
+  end
+
+  def make_relative_symlink src
+    self.dirname.mkpath
+    Dir.chdir self.dirname do
+      # TODO use Ruby function so we get exceptions
+      # NOTE Ruby functions may work, but I had a lot of problems
+      rv=system 'ln', '-sf', src.relative_path_from(self.dirname)
+      unless rv and $? == 0
+        raise <<-EOS
+Could not create symlink #{to_s}.
+Check that you have permssions on #{self.dirname}
+        EOS
+      end
+    end
   end
 end
 
@@ -191,24 +237,15 @@ module ObserverPathnameExtension
     puts "rmdir #{to_s}" if ARGV.verbose?
     $d+=1
   end
-  def resolved_path_exists?
-    (dirname+readlink).exist?
-  end
   def mkpath
     super
     puts "mkpath #{to_s}" if ARGV.verbose?
     $d+=1
   end
   def make_relative_symlink src
-    dirname.mkpath
-    Dir.chdir dirname do
-      # TODO use Ruby function so we get exceptions
-      # NOTE Ruby functions may work, but I had a lot of problems
-      rv=system 'ln', '-sf', src.relative_path_from(dirname)
-      raise "Could not create symlink #{to_s}" unless rv and $? == 0
-      puts "ln #{to_s}" if ARGV.verbose?
-      $n+=1
-    end
+    super
+    puts "ln #{to_s}" if ARGV.verbose?
+    $n+=1
   end
 end
 

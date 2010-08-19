@@ -1,9 +1,9 @@
 require 'formula'
 
 class Jruby < Formula
-  url 'http://jruby.kenai.com/downloads/1.4.0/jruby-bin-1.4.0.tar.gz'
+  url 'http://jruby.org.s3.amazonaws.com/downloads/1.5.1/jruby-bin-1.5.1.tar.gz'
   homepage 'http://www.jruby.org'
-  md5 'f37322c18e9134e91e064aebb4baa4c7'
+  md5 '74251383e08e8c339cacc35a7900d3af'
 
   def install
     # Remove Windows files
@@ -19,14 +19,26 @@ class Jruby < Formula
     # Only keep the OS X native libraries
     Dir.chdir 'lib/native' do
       Dir['*'].each do |file|
-        rm_rf file unless file == 'darwin'
+        rm_rf file unless file.downcase == 'darwin'
       end
     end
 
-    prefix.install Dir['*']
+    (prefix+'jruby').install Dir['*']
+
+    bin.mkpath
+    Dir["#{prefix}/jruby/bin/*"].each do |f|
+      ln_s f, bin+File.basename(f)
+    end
+  end
+
+  def caveats; <<-EOS.undent
+    Consider using RVM or Cider to manage Ruby environments:
+      * RVM: http://rvm.beginrescueend.com/
+      * Cider: http://www.atmos.org/cider/intro.html
+    EOS
   end
 
   def test
-    system "jruby -e ''"
+    system "jruby -e 'puts \"hello\"'"
   end
 end

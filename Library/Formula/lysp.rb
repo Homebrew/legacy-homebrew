@@ -13,9 +13,7 @@ class Lysp <Formula
 
   def install
     system "make"
-
-    bin.install "lysp"
-    bin.install "gclysp"
+    bin.install ["lysp", "gclysp"]
   end
 end
 

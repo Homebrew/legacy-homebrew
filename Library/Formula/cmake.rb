@@ -1,8 +1,8 @@
 require 'formula'
 
 class Cmake <Formula
-  url 'http://www.cmake.org/files/v2.8/cmake-2.8.0.tar.gz'
-  md5 '3b3679b8a6afaedc38a8c15dd7ff4fcf'
+  url 'http://www.cmake.org/files/v2.8/cmake-2.8.2.tar.gz'
+  md5 '8c967d5264657a798f22ee23976ff0d9'
   homepage 'http://www.cmake.org/'
 
   def install
@@ -18,6 +18,8 @@ class Cmake <Formula
                           "--datadir=/share/cmake",
                           "--docdir=/share/doc/cmake",
                           "--mandir=/share/man"
+    ENV.j1 # There appear to be parallelism issues.
+    system "make"
     system "make install"
   end
 end

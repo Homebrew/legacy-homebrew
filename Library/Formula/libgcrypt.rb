@@ -3,7 +3,7 @@ require 'formula'
 class Libgcrypt <Formula
   url 'ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.4.5.tar.bz2'
   sha1 'ef7ecbd3a03a7978094366bcd1257b3654608d28'
-  homepage 'http://www.gnupg.org/'
+  homepage 'http://directory.fsf.org/project/libgcrypt/'
 
   depends_on 'libgpg-error'
 

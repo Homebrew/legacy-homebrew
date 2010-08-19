@@ -6,7 +6,7 @@ class Exiv2 <Formula
   md5 'f52fb75a2cb7512f1484deab76473e13'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
 end
