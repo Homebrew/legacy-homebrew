@@ -204,7 +204,11 @@ If set, instructs Homebrew to always assume \fB\-\-debug\fR when running command
 .
 .TP
 HOMEBREW_DEBUG_INSTALL
-When a \fBbrew install \-d\fR or \fBbrew install \-i\fR drops into a shell, \fBHOMEBREW_DEBUG_INSTALL\fR will be set to the name of the formula being tried\.
+When \fBbrew install \-d\fR or \fBbrew install \-i\fR drops into a shell, \fBHOMEBREW_DEBUG_INSTALL\fR will be set to the name of the formula being brewed\.
+.
+.TP
+HOMEBREW_DEBUG_PREFIX
+When \fBbrew install \-d\fR or \fBbrew install \-i\fR drops into a shell, \fBHOMEBREW_DEBUG__PREFIX\fR will be set to the target prefix in the Cellar of the formula being brewed\.
 .
 .TP
 HOMEBREW_EDITOR
