@@ -2,7 +2,7 @@ require 'formula'
 
 class A2ps <Formula
   url 'http://ftp.gnu.org/gnu/a2ps/a2ps-4.14.tar.gz'
-  homepage ''
+  homepage 'http://www.gnu.org/software/a2ps/'
   md5 '781ac3d9b213fa3e1ed0d79f986dc8c7'
 
   def patches
@@ -12,7 +12,6 @@ class A2ps <Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    # system "cmake . #{std_cmake_parameters}"
     system "make install"
   end
 end
