@@ -1,7 +1,5 @@
 require 'formula'
 
-# TODO de-version the include and lib directories
-
 class Ruby <Formula
   url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p0.tar.bz2'
   homepage 'http://www.ruby-lang.org/en/'
@@ -24,31 +22,58 @@ class Ruby <Formula
   def install
     fails_with_llvm
 
-    args = [ "--prefix=#{prefix}",
+    ruby_lib = HOMEBREW_PREFIX+"lib/ruby"
+
+    if File.exist? ruby_lib and File.symlink? ruby_lib
+      opoo "#{ruby_lib} exists as a symlink"
+      puts <<-EOS.undent
+        The previous Ruby formula symlinked #{ruby_lib} into Ruby's Cellar.
+
+        This version creates this as a "real folder" in HOMEBREW_PREFIX
+        so that installed gems will survive between Ruby updates.
+
+        Please remove this existing symlink before continuing:
+          rm #{ruby_lib}
+      EOS
+      exit 1
+    end
+
+    system "autoconf" unless File.exists? 'configure'
+
+    # Configure claims that "--with-readline-dir" is unused, but it works.
+    args = ["--prefix=#{prefix}",
             "--with-readline-dir=#{Formula.factory('readline').prefix}",
             "--disable-debug",
             "--disable-dependency-tracking",
-            "--enable-shared" ]
+            "--enable-shared",
+            "--with-sitedir=#{ruby_lib}/site",
+            "--with-vendordir=#{ruby_lib}/vendor"]
 
     args << "--program-suffix=19" if ARGV.include? "--with-suffix"
 
-    system "autoconf" unless File.exists? 'configure'
+    # Put gem, site and vendor folders in the HOMEBREW_PREFIX
+    (ruby_lib+'site').mkpath
+    (ruby_lib+'vendor').mkpath
+    (ruby_lib+'gems').mkpath
 
     system "./configure", *args
     system "make"
     system "make install"
-
     system "make install-doc" if ARGV.include? "--with-doc"
+
+    # Symlink HOMEBREW_PREFIX gems to Ruby in the Cellar
+    ln_s (ruby_lib+'gems'), (lib+"ruby/gems")
   end
 
   def caveats; <<-EOS.undent
     Consider using RVM or Cider to manage Ruby environments:
-      * RVM: http://rvm.beginrescueend.com/
+      * RVM:   http://rvm.beginrescueend.com/
       * Cider: http://www.atmos.org/cider/intro.html
 
-    If you install gems with the RubyGems installed with this formula they will
-    be installed to this formula's prefix. This needs to be fixed, as for example,
-    upgrading Ruby will lose all your gems.
+    NOTE: By default, gem installed binaries will be placed into:
+      #{bin}
+
+    You may want to add this to your PATH.
     EOS
   end
 end
