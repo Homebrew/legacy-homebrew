@@ -1,8 +1,8 @@
 require 'formula'
 
 class ClojureContrib <Formula
-  url 'http://clojure-contrib.googlecode.com/files/clojure-contrib-1.1.0.zip'
-  md5 'ffaa8d5ea72abd9547186ec38f37c198'
+  url 'http://github.com/downloads/clojure/clojure-contrib/clojure-contrib-1.2.0.zip'
+  md5 '83cc86fd2929ca417a9ab9f2a0dedadb'
   head 'git://github.com/richhickey/clojure-contrib.git'
   homepage 'http://richhickey.github.com/clojure-contrib/branch-1.1.x/index.html'
 
@@ -16,8 +16,8 @@ class ClojureContrib <Formula
   def install
     if ARGV.build_head?
       system "mvn package -Dclojure.jar=#{HOMEBREW_PREFIX}/Cellar/clojure/HEAD/clojure.jar"
-      system "mv target/clojure-contrib-*.jar #{jar}"
     end
+    system "mv target/clojure-contrib-*.jar #{jar}"
     prefix.install jar
   end
 
