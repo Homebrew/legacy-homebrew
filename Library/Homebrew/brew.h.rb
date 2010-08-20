@@ -239,8 +239,9 @@ def cleanup name
   require 'formula'
 
   f = Formula.factory name
+  formula_cellar = f.prefix.parent
 
-  if f.installed? and f.prefix.parent.directory?
+  if f.installed? and formula_cellar.directory?
     kids = f.prefix.parent.children
     kids.each do |keg|
       next if f.prefix == keg
@@ -249,8 +250,11 @@ def cleanup name
       puts
     end
   else
-    # we can't tell which one to keep in this circumstance
-    opoo "Skipping #{name}: most recent version #{f.version} not installed"
+    # If the cellar only has one version installed, don't complain
+    # that we can't tell which one to keep.
+    if formula_cellar.children.length > 1
+      opoo "Skipping #{name}: most recent version #{f.version} not installed"
+    end
   end
 end
 
