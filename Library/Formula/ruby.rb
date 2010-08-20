@@ -3,12 +3,13 @@ require 'formula'
 # TODO de-version the include and lib directories
 
 class Ruby <Formula
-  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.1-p378.tar.gz'
+  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p0.tar.gz'
   homepage 'http://www.ruby-lang.org/en/'
   head 'http://svn.ruby-lang.org/repos/ruby/branches/ruby_1_9_2/', :using => :svn
-  md5 '9fc5941bda150ac0a33b299e1e53654c'
+  md5 '755aba44607c580fddc25e7c89260460'
 
   depends_on 'readline'
+  depends_on 'libyaml'
 
   def options
     [
@@ -24,6 +25,7 @@ class Ruby <Formula
     fails_with_llvm
 
     args = [ "--prefix=#{prefix}",
+            "--with-readline-dir=#{Formula.factory('readline').prefix}",
             "--disable-debug",
             "--disable-dependency-tracking",
             "--enable-shared" ]
