@@ -45,24 +45,26 @@ class Ruby <Formula
             "--with-readline-dir=#{Formula.factory('readline').prefix}",
             "--disable-debug",
             "--disable-dependency-tracking",
-            "--enable-shared",
-            "--with-sitedir=#{ruby_lib}/site",
-            "--with-vendordir=#{ruby_lib}/vendor"]
+            "--enable-shared"]
 
     args << "--program-suffix=19" if ARGV.include? "--with-suffix"
 
     # Put gem, site and vendor folders in the HOMEBREW_PREFIX
-    (ruby_lib+'site').mkpath
-    (ruby_lib+'vendor').mkpath
+
+    (ruby_lib+'site_ruby').mkpath
+    (ruby_lib+'vendor_ruby').mkpath
     (ruby_lib+'gems').mkpath
+
+    (lib+'ruby').mkpath
+    ln_s (ruby_lib+'site_ruby'), (lib+'ruby')
+    ln_s (ruby_lib+'vendor_ruby'), (lib+'ruby')
+    ln_s (ruby_lib+'gems'), (lib+'ruby')
 
     system "./configure", *args
     system "make"
     system "make install"
     system "make install-doc" if ARGV.include? "--with-doc"
 
-    # Symlink HOMEBREW_PREFIX gems to Ruby in the Cellar
-    ln_s (ruby_lib+'gems'), (lib+"ruby/gems")
   end
 
   def caveats; <<-EOS.undent
