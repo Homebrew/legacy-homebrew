@@ -40,7 +40,7 @@ class Keg <Pathname
     $n=0
     $d=0
 
-    share_mkpaths=%w[aclocal doc info locale man]+(1..9).collect{|x|"man/man#{x}"}
+    share_mkpaths=%w[aclocal doc info locale man]+(1..8).collect{|x|"man/man#{x}"}
 
     # yeah indeed, you have to force anything you need in the main tree into
     # these dirs REMEMBER that *NOT* everything needs to be in the main tree
