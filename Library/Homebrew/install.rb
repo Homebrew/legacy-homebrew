@@ -158,12 +158,14 @@ def install f
     end
 
     # Check for Jars in lib
-    unless f.lib.children.select{|g| g.to_s =~ /\.jar$/}.empty?
-      opoo 'JARs where installed to "lib".'
-      puts "Installing JARs to \"lib\" can cause conflicts between packages."
-      puts "For Java software, it is typically better for the formula to"
-      puts "install to \"libexec\" and then symlink or wrap binaries into \"bin\"."
-      puts "See \"activemq\", \"jruby\", etc. for examples."
+    if File.exist?(f.lib)
+      unless f.lib.children.select{|g| g.to_s =~ /\.jar$/}.empty?
+        opoo 'JARs were installed to "lib".'
+        puts "Installing JARs to \"lib\" can cause conflicts between packages."
+        puts "For Java software, it is typically better for the formula to"
+        puts "install to \"libexec\" and then symlink or wrap binaries into \"bin\"."
+        puts "See \"activemq\", \"jruby\", etc. for examples."
+      end
     end
 
     # link from Cellar to Prefix
