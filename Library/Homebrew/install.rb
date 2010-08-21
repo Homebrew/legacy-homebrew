@@ -150,11 +150,20 @@ def install f
       end
     end
 
-    # Check for possibly misplaced folders
+    # Check for man pages that aren't in share/man
     if (f.prefix+'man').exist?
       opoo 'A top-level "man" folder was found.'
       puts "Homebrew requires that man pages live under share."
       puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
+    end
+
+    # Check for Jars in lib
+    unless f.lib.children.select{|g| g.to_s =~ /\.jar$/}.empty?
+      opoo 'JARs where installed to "lib".'
+      puts "Installing JARs to \"lib\" can cause conflicts between packages."
+      puts "For Java software, it is typically better for the formula to"
+      puts "install to \"libexec\" and then symlink or wrap binaries into \"bin\"."
+      puts "See \"activemq\", \"jruby\", etc. for examples."
     end
 
     # link from Cellar to Prefix
