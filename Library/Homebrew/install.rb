@@ -94,10 +94,13 @@ def install f
         f.prefix.mkpath
         beginning=Time.now
         f.install
-        FORMULA_META_FILES.each do |file|
-          next if File.directory? file
-          FileUtils.mv "#{file}.txt", file rescue nil
-          f.prefix.install file rescue nil
+        FORMULA_META_FILES.each do |filename|
+          next if File.directory? filename
+          target_file = filename
+          target_file = "#{filename}.txt" if File.exists? "#{filename}.txt"
+          # Some software symlinks these files (see help2man.rb)
+          target_file = Pathname.new(target_file).resolved_path
+          f.prefix.install target_file => filename rescue nil
           (f.prefix+file).chmod 0644 rescue nil
         end
         build_time = Time.now-beginning
