@@ -2,8 +2,10 @@ class Cleaner
   def initialize f
     @f=f
     [f.bin, f.sbin, f.lib].select{|d|d.exist?}.each{|d|clean_dir d}
-    # info pages suck
-    f.info.rmtree if f.info.directory? and not f.skip_clean? f.info
+
+    unless ENV['HOMEBREW_KEEP_INFO'].nil?
+      f.info.rmtree if f.info.directory? and not f.skip_clean? f.info
+    end
   end
 
 private
