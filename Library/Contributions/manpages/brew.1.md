@@ -225,6 +225,10 @@ Some external commands are shipped with Homebrew, and enabled by default.
     folders. TextMate can handle this correctly in project mode, but many
     editors will do strange things in this case.
 
+  * HOMEBREW\_KEEP\_INFO:
+    If set, Homebrew will not remove files from share/info, allowing them to
+    be linked from the Cellar.
+
   * HOMEBREW\_SVN:
     When exporting from Subversion, Homebrew will use `HOMEBREW_SVN` if set,
     a Homebrew-built Subversion if installed, or the system-provided binary.
