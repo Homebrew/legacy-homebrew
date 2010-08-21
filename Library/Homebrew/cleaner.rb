@@ -3,8 +3,7 @@ class Cleaner
     @f=f
     [f.bin, f.sbin, f.lib].select{|d|d.exist?}.each{|d|clean_dir d}
     # info pages suck
-    info = f.share+'info'
-    info.rmtree if info.directory? and not f.skip_clean? info
+    f.info.rmtree if f.info.directory? and not f.skip_clean? f.info
   end
 
 private
