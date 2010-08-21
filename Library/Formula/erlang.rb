@@ -5,11 +5,18 @@ class ErlangManuals <Formula
   md5 '681aaef70affc64743f4e8c0675034af'
 end
 
+class ErlangHeadManuals <Formula
+  url 'http://www.erlang.org/download/otp_doc_man_R14A.tar.gz'
+  md5 'b57a7846818ad144b1b6ecc0a54de2ae'
+end
+
 class Erlang <Formula
-  # Download from  GitHub repo, which is much faster than using the official tarball
+  # Download from GitHub. Much faster than official tarball.
   url "git://github.com/erlang/otp.git", :tag => "OTP_R13B04"
-  homepage 'http://www.erlang.org'
   version 'R13B04'
+  homepage 'http://www.erlang.org'
+
+  head "git://github.com/erlang/otp.git", :tag => "OTP_R14A"
 
   # We can't strip the beam executables or any plugins, there isn't really
   # anything else worth stripping and it takes a really, long time to run
@@ -52,7 +59,8 @@ class Erlang <Formula
     system "make"
     system "make install"
 
-    ErlangManuals.new.brew { man.install Dir['man/*'] }
+    manuals = ARGV.build_head? ? ErlangHeadManuals : ErlangManuals
+    manuals.new.brew { man.install Dir['man/*'] }
 
     # See: http://github.com/mxcl/homebrew/issues/issue/1317
     (lib+"erlang/lib/tools-2.6.5.1/emacs").install "lib/tools/emacs/erlang-skels.el"
