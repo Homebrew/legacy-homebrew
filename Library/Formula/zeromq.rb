@@ -6,6 +6,7 @@ class Zeromq <Formula
   md5 'c9cb3ee4499df1781f8ddc03c20d656b'
 
   def install
+    fails_with_llvm "Compiling with LLVM gives a segfault while linking."
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
