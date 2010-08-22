@@ -10,7 +10,8 @@ class Gmime <Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--enable-largefile"
+                          "--enable-largefile",
+                          "--disable-mono"
     system "make install"
   end
 end

@@ -6,7 +6,7 @@ class Help2man <Formula
   md5 '371b5cc74fe9c2ea3ee1ca23c19b19a8'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}"
 
     # Skip making the "info" files.
     system "make help2man man"

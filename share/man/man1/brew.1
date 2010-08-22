@@ -182,12 +182,22 @@ Checks all formulae for Homebrew coding style violations\. This should be run be
 Downloads the tarball or checks out from VCS for the given \fIformula\fR\. For tarballs, also prints MD5 and SHA1 checksums\.
 .
 .TP
+\fBman\fR
+Regenerates this man page from source\.
+.
+.IP
+\fINOTE\fR: Requires \fBronn\fR \fIhttp://rtomayko\.github\.com/ronn/\fR\.
+.
+.TP
 \fBmissing\fR
 Checks all installed formuale for missing dependencies\.
 .
 .TP
 \fBserver\fR
 Starts a local webserver with an app that lets you browse available formulae, similar to \fBgem server\fR\.
+.
+.IP
+\fINOTE\fR: Requires \fBsinatra\fR \fIhttp://www\.sinatrarb\.com/\fR\.
 .
 .TP
 \fBtest\fR \fIformula\fR
@@ -204,7 +214,11 @@ If set, instructs Homebrew to always assume \fB\-\-debug\fR when running command
 .
 .TP
 HOMEBREW_DEBUG_INSTALL
-When a \fBbrew install \-d\fR or \fBbrew install \-i\fR drops into a shell, \fBHOMEBREW_DEBUG_INSTALL\fR will be set to the name of the formula being tried\.
+When \fBbrew install \-d\fR or \fBbrew install \-i\fR drops into a shell, \fBHOMEBREW_DEBUG_INSTALL\fR will be set to the name of the formula being brewed\.
+.
+.TP
+HOMEBREW_DEBUG_PREFIX
+When \fBbrew install \-d\fR or \fBbrew install \-i\fR drops into a shell, \fBHOMEBREW_DEBUG__PREFIX\fR will be set to the target prefix in the Cellar of the formula being brewed\.
 .
 .TP
 HOMEBREW_EDITOR
@@ -212,6 +226,10 @@ If set, Homebrew will use this editor when editing a single formula, or several 
 .
 .IP
 \fINOTE\fR: \fBbrew edit\fR will open all of Homebrew as discontinuous files and folders\. TextMate can handle this correctly in project mode, but many editors will do strange things in this case\.
+.
+.TP
+HOMEBREW_KEEP_INFO
+If set, Homebrew will not remove files from share/info, allowing them to be linked from the Cellar\.
 .
 .TP
 HOMEBREW_SVN
