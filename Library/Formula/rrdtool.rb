@@ -39,11 +39,7 @@ class Rrdtool <Formula
     system "./configure", *args
 
     # Needed to build proper Ruby bundle
-    if Hardware.is_64_bit? and MACOS_VERSION >= 10.6
-      ENV["ARCHFLAGS"] = "-arch x86_64"
-    else
-      ENV["ARCHFLAGS"] = "-arch i386"
-    end
+    ENV["ARCHFLAGS"] = snow_leopard_64? ? "-arch x86_64" : "-arch i386"
 
     system "make install"
     prefix.install "bindings/ruby/test.rb"

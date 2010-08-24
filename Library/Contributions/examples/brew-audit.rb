@@ -24,6 +24,11 @@ def audit_formula_text text
     problems << " * Check indentation of 'depends_on'."
   end
 
+  # FileUtils is included in Formula
+  if text =~ /FileUtils\.(\w+)/
+    problems << " * Don't need 'FileUtils.' before #{$1}."
+  end
+
   # Check for string concatenation; prefer interpolation
   if text =~ /(#\{\w+\s*\+\s*['"][^}]+\})/
     problems << " * Try not to concatenate paths in string interpolation:\n   #{$1}"
@@ -32,6 +37,10 @@ def audit_formula_text text
   # Prefer formula path shortcuts in Pathname+
   if text =~ %r{\(\s*(prefix\s*\+\s*(['"])(bin|include|lib|libexec|sbin|share))}
     problems << " * \"(#{$1}...#{$2})\" should be \"(#{$3}+...)\""
+  end
+
+  if text =~ %r[((man)\s*\+\s*(['"])(man[1-8])(['"]))]
+    problems << " * \"#{$1}\" should be \"#{$4}\""
   end
 
   # Prefer formula path shortcuts in strings
@@ -94,15 +103,28 @@ def audit_formula_options f, text
   return problems
 end
 
+def audit_formula_instance f
+  problems = []
+
+  # Don't depend_on aliases; use full name
+  aliases = Formula.aliases
+  f.deps.select {|d| aliases.include? d}.each do |d|
+    problems << " * Dep #{d} is an alias; switch to the real name."
+  end
+
+  # Google Code homepages should end in a slash
+  if f.homepage =~ %r[^https?://code\.google\.com/p/[^/]+[^/]$]
+    problems << " * Google Code homepage should end with a slash."
+  end
+
+  return problems
+end
+
 def audit_some_formulae
   ff.each do |f|
     problems = []
 
-    # Don't depend_on aliases; use full name
-    aliases = Formula.aliases
-    f.deps.select {|d| aliases.include? d}.each do |d|
-      problems << " * Dep #{d} is an alias; switch to the real name."
-    end
+    problems += audit_formula_instance f
 
     text = ""
     File.open(f.path, "r") { |afile| text = afile.read }

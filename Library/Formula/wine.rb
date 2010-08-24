@@ -28,7 +28,7 @@ EOS
     ENV.append "LDFLAGS", "#{build32} -framework CoreServices -lz -lGL -lGLU"
 
     args = ["--prefix=#{prefix}", "--x-include=/usr/X11/include/", "--x-lib=/usr/X11/lib/"]
-    args << "--without-freetype" if MACOS_VERSION >= 10.6 and Hardware.is_64_bit?
+    args << "--without-freetype" if snow_leopard_64?
     args << "--disable-win16" if MACOS_VERSION < 10.6
 
     if Hardware.is_64_bit? and Formula.factory('mpg123').installed?

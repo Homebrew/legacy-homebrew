@@ -5,6 +5,8 @@ class Rtmpdump <Formula
   homepage 'http://rtmpdump.mplayerhq.hu'
   md5 'eb961f31cd55f0acf5aad1a7b900ef59'
 
+  depends_on 'openssl' if MACOS_VERSION < 10.6
+
   def patches
     DATA
   end

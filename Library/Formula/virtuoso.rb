@@ -11,7 +11,7 @@ class Virtuoso <Formula
   skip_clean :all
 
   def install
-    ENV.m64 if MACOS_VERSION >= 10.6 and Hardware.is_64_bit?
+    ENV.m64 if snow_leopard_64?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end

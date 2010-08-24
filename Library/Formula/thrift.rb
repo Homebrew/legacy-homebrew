@@ -2,10 +2,10 @@ require 'formula'
 
 class Thrift <Formula
   homepage 'http://incubator.apache.org/thrift/'
-  url 'http://apache.dataphone.se/incubator/thrift/0.2.0-incubating/thrift-0.2.0-incubating.tar.gz'
-  version '0.2.0'
-  md5 '9958c57c402c02171ba0bcc96183505c'
   head 'http://svn.apache.org/repos/asf/incubator/thrift/trunk'
+  version '0.3.0'
+  url 'http://www.apache.org/dist/incubator/thrift/0.3.0-incubating/thrift-0.3.0.tar.gz'
+  md5 'a6c80ab3d8c7827365a9b40f5c9d66a3'
 
   depends_on 'boost'
 
@@ -20,7 +20,9 @@ class Thrift <Formula
                          "--without-py",
                          # again, use gem
                          "--without-ruby",
-                         "--without-perl"
+                         "--without-perl",
+                         # this wants to alter the system wide autoloads file
+                         "--without-php"
     system "make"
     system "make install"
   end
@@ -31,7 +33,7 @@ class Thrift <Formula
         gem install thrift
         easy_install thrift
 
-    Perl bindings are a mystery someone should solve.
+    Perl and PHP bindings are a mystery someone should solve.
     EOS
   end
 end

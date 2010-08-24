@@ -12,7 +12,7 @@ class Asterisk <Formula
   def install
     configure_flags = [ "--prefix=#{prefix}", "--localstatedir=#{var}", "--sysconfdir=#{etc}" ]
     # Avoid "src/add.c:1: error: CPU you selected does not support x86-64 instruction set"
-    configure_flags << "--host=x86_64-darwin" if Hardware.is_64_bit? and MACOS_VERSION >= 10.6
+    configure_flags << "--host=x86_64-darwin" if snow_leopard_64?
     system "./configure", *configure_flags
     system "make"
     system "make install"
