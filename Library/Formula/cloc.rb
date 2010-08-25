@@ -1,8 +1,8 @@
 require 'formula'
 
 class Cloc <ScriptFileFormula
-  version '1.08'
-  url "http://cloc.svn.sourceforge.net/viewvc/cloc/tags/1.08/cloc"
-  md5 'e4fc0800cb0d6eae390037903a975a2d'
+  url "http://cloc.svn.sourceforge.net/viewvc/cloc/tags/1.51/cloc"
+  md5 'c491922de2bad911fbc2047b336c91b5'
+  version '1.51'
   homepage 'http://cloc.sourceforge.net/'
 end

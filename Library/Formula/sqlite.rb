@@ -1,14 +1,12 @@
 require 'formula'
 
 class Sqlite <Formula
-  url 'http://www.sqlite.org/sqlite-amalgamation-3.6.23.1.tar.gz'
-  md5 'ed585bb3d4e5c643843ebb1e318644ce'
+  url 'http://www.sqlite.org/sqlite-amalgamation-3.7.0.1.tar.gz'
+  md5 '24b589eb1522b4d9a179a621d0729dfa'
   homepage 'http://www.sqlite.org/'
 
   def options
-    [
-      ["--with-rtree", "Enables the R*Tree index module"]
-    ]
+    [["--with-rtree", "Enables the R*Tree index module"]]
   end
 
   def install

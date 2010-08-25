@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "July 2010" "Homebrew" "brew"
+.TH "BREW" "1" "August 2010" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -51,7 +51,7 @@ Installs \fIformula\fR\.
 If \fB\-\-debug\fR is passed and brewing fails, opens a shell inside the temporary folder used for compiling\.
 .
 .IP
-If \fB\-\-use\-llvm\fR is passed, attempt to compile using the LLVM front\-end to GCC\. \fINOTE\fR: Not all formulae are compatible with LLVM, especially C++\-based ones\.
+If \fB\-\-use\-llvm\fR is passed, attempt to compile using the LLVM front\-end to GCC\. \fINOTE\fR: Not all formulae will build with LLVM\.
 .
 .IP
 If \fB\-\-ignore\-dependencies\fR is passed, skip installing any dependencies of any kind\. If they are not already present, the formula will probably fail to install\.
@@ -84,7 +84,11 @@ Opens a browser to the GitHub History page for formula \fIformula\fR\.
 .
 .TP
 \fBinfo \-\-all\fR
-Summarises all installed packages; this is inteded to be used by higher\-level tools\.
+Summarises all installed packages; this is intended to be used by higher\-level tools\.
+.
+.TP
+\fBinfo\fR \fIURL\fR
+Prints the name and version that will be detected for \fIURL\fR; only http:// URLs supported for now\.
 .
 .TP
 \fBhome\fR
@@ -134,16 +138,22 @@ Removes dead symlinks from the Homebrew prefix\. This is generally not needed\. 
 Shows formula that have an updated version available\.
 .
 .TP
-\fBdeps\fR \fIformula\fR
+\fBdeps [\-\-1]\fR \fIformula\fR
 Shows \fIformula\fR\'s dependencies\.
 .
+.IP
+If \fB\-\-1\fR is passed, only show dependencies one level down, instead of recursing\.
+.
 .TP
-\fBuses\fR \fIformula\fR
+\fBuses [\-\-installed]\fR \fIformula\fR
 Shows the formulas that specify \fIformula\fR as a dependency\. The list is not recursive; only one level of dependencies is resolved\.
+.
+.IP
+If \fB\-\-installed\fR is passed, the list only shows formulae you have installed\.
 .
 .TP
 \fBdoctor\fR
-Audits your system for potential problems\.
+Checks your system for potential problems\.
 .
 .TP
 \fBcat\fR \fIformula\fR
@@ -157,11 +167,69 @@ For all installed or specific formulae, remove any older versions from the cella
 \fBupdate\fR
 Using Git, fetches the newest version of Homebrew from the GitHub repository\.
 .
+.SH "EXTERNAL COMMANDS"
+Homebrew allows external commands to be defined by putting a +x file named \fBbrew\-<cmdname>\fR or \fBbrew\-<cmdname>\.rb\fR on the PATH\. This will cause Homebrew to recognize \fBbrew cmdname\fR\.
+.
+.P
+Some external commands are shipped with Homebrew, and enabled by default\.
+.
+.TP
+\fBaudit\fR
+Checks all formulae for Homebrew coding style violations\. This should be run before submitting a new formula for inclusion\.
+.
+.TP
+\fBfetch\fR \fIformula\fR
+Downloads the tarball or checks out from VCS for the given \fIformula\fR\. For tarballs, also prints MD5 and SHA1 checksums\.
+.
+.TP
+\fBman\fR
+Regenerates this man page from source\.
+.
+.IP
+\fINOTE\fR: Requires \fBronn\fR \fIhttp://rtomayko\.github\.com/ronn/\fR\.
+.
+.TP
+\fBmissing\fR
+Checks all installed formuale for missing dependencies\.
+.
+.TP
+\fBserver\fR
+Starts a local webserver with an app that lets you browse available formulae, similar to \fBgem server\fR\.
+.
+.IP
+\fINOTE\fR: Requires \fBsinatra\fR \fIhttp://www\.sinatrarb\.com/\fR\.
+.
+.TP
+\fBtest\fR \fIformula\fR
+A few formulae provide a test method\. \fBbrew test <formula>\fR runs this test method\. There is no standard output or return code, but it should generally indicate to the user if something is wrong with the installed formula\.
+.
+.IP
+Example: \fBbrew install jruby && brew test jruby\fR
+.
 .SH "ENVIRONMENT"
 .
 .TP
 HOMEBREW_DEBUG
 If set, instructs Homebrew to always assume \fB\-\-debug\fR when running commands\.
+.
+.TP
+HOMEBREW_DEBUG_INSTALL
+When \fBbrew install \-d\fR or \fBbrew install \-i\fR drops into a shell, \fBHOMEBREW_DEBUG_INSTALL\fR will be set to the name of the formula being brewed\.
+.
+.TP
+HOMEBREW_DEBUG_PREFIX
+When \fBbrew install \-d\fR or \fBbrew install \-i\fR drops into a shell, \fBHOMEBREW_DEBUG__PREFIX\fR will be set to the target prefix in the Cellar of the formula being brewed\.
+.
+.TP
+HOMEBREW_EDITOR
+If set, Homebrew will use this editor when editing a single formula, or several formulae in the same folder\.
+.
+.IP
+\fINOTE\fR: \fBbrew edit\fR will open all of Homebrew as discontinuous files and folders\. TextMate can handle this correctly in project mode, but many editors will do strange things in this case\.
+.
+.TP
+HOMEBREW_KEEP_INFO
+If set, Homebrew will not remove files from share/info, allowing them to be linked from the Cellar\.
 .
 .TP
 HOMEBREW_SVN
@@ -181,7 +249,7 @@ This issue typically occurs when using FileVault (or certain custom SSD configur
 HOMEBREW_USE_LLVM
 If set, instructs Homebrew to use the LLVM front\-ends to the GCC compilers\.
 .
-.br
+.IP
 \fINOTE\fR: Not all formulae will build correctly under LLVM\.
 .
 .TP

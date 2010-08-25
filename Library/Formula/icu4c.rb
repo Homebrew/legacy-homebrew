@@ -1,22 +1,21 @@
 require 'formula'
 
 class Icu4c <Formula
-  @url='http://download.icu-project.org/files/icu4c/4.3.1/icu4c-4_3_1-src.tgz'
-  @homepage='http://site.icu-project.org/'
-  @md5='10d1cdc843f8e047fc308ec49d3d0543'
-  @version = "4.3.1"
-  
+  url 'http://download.icu-project.org/files/icu4c/4.4.1/icu4c-4_4_1-src.tgz'
+  homepage 'http://site.icu-project.org/'
+  md5 'b6bc0a1153540b2088f8b03e0ba625d3'
+  version "4.4.1"
+
   def patches
     DATA
   end
 
-  def keg_only?
-    "conflicts (see http://github.com/mxcl/homebrew/issues/#issue/167)."
-  end
+  keg_only "Conflicts; see: http://github.com/mxcl/homebrew/issues/issue/167"
 
   def install
+    ENV.append "LDFLAGS", "-headerpad_max_install_names"
     config_flags = ["--prefix=#{prefix}", "--disable-samples", "--enable-static"]
-    config_flags << "--with-library-bits=64" if Hardware.is_64_bit? and MACOS_VERSION == 10.6
+    config_flags << "--with-library-bits=64" if snow_leopard_64?
     Dir.chdir "source" do
       system "./configure", *config_flags
       system "make"
@@ -52,7 +51,7 @@ __END__
 @@ -7058,11 +7058,8 @@
  	 test ! -s conftest.err
         } && test -s conftest.$ac_objext; then
- 
+
 -	# Check for potential -arch flags.  It is not universal unless
 -	# there are some -arch flags.  Note that *ppc* also matches
 -	# ppc64.  This check is also rather less than ideal.

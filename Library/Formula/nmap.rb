@@ -1,16 +1,17 @@
 require 'formula'
 
 class Nmap <Formula
-  url 'http://nmap.org/dist/nmap-5.21.tar.bz2'
+  url 'http://nmap.org/dist/nmap-5.35DC1.tar.bz2'
   homepage 'http://nmap.org/5/'
-  md5 'f77fa51d89ab27d35e5cd87bb086b858'
+  md5 '5bc2f8629f26716aa78d4bfe474a5d3a'
+  version '5.35DC1'
 
   def install
     fails_with_llvm
     ENV.deparallelize
 
     system "./configure", "--prefix=#{prefix}", "--without-zenmap"
-    system "make"                      
-    system "make install" # seperate steps required otherwise the build fails
+    system "make" # seperate steps required otherwise the build fails
+    system "make install"
   end
 end

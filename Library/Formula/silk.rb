@@ -10,12 +10,13 @@ class Silk <Formula
   depends_on 'yaf'
 
   def install
-    system "./configure",
-        "--disable-dependency-tracking",
-        "--prefix=#{prefix}",
-        "--mandir=#{man}",
-        "--enable-ipv6",
-        "--enable-data-rootdir=#{var}/silk"
+    fails_with_llvm "Please see http://github.com/mxcl/homebrew/issues/issue/2215 for details."
+
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}",
+                          "--enable-ipv6",
+                          "--enable-data-rootdir=#{var}/silk"
     system "make"
     system "make install"
 

@@ -7,15 +7,15 @@ class Hadoop < Formula
 
   def shim_script target
     <<-EOS.undent
-      #!/usr/bin/env bash
-      cd #{libexec}/bin
-      ./#{target} $*
+    #!/bin/bash
+    exec #{libexec}/bin/#{target} $*
     EOS
   end
 
   def install
     rm_f Dir["bin/*.bat"]
-    libexec.install %w[bin conf contrib lib]
+    libexec.install %w[bin conf contrib lib webapps]
+    libexec.install Dir['*.jar']
     bin.mkpath
     Dir["#{libexec}/bin/*"].each do |b|
       n = Pathname.new(b).basename

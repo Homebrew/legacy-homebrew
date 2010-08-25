@@ -9,10 +9,12 @@ class MzScheme <Formula
   def install
     cd "src"
 
-    options = ["--disable-pthread", "--disable-mred", "--enable-xonx", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"]
-    options << "--enable-mac64" if Hardware.is_64_bit? && MACOS_VERSION >= 10.6
-    system "./configure", *options
+    args = ["--disable-debug", "--disable-dependency-tracking",
+            "--disable-pthread", "--disable-mred", "--enable-xonx",
+            "--prefix=#{prefix}"]
+    args << "--enable-mac64" if snow_leopard_64?
 
+    system "./configure", *args
     system "make"
     system "make install"
   end

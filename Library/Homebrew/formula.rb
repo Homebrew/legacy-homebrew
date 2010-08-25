@@ -6,62 +6,51 @@ class FormulaUnavailableError <RuntimeError
     @name = name
     super "No available formula for #{name}"
   end
-  
+
   attr_reader :name
 end
 
 
-# The Formulary is the collection of all Formulae, of course.
-class Formulary
-  # Returns all formula names as strings, with or without aliases
-  def self.names with_aliases=false
-    filenames = (HOMEBREW_REPOSITORY+'Library/Formula').children.select {|f| f.to_s =~ /\.rb$/ }
-    everything = filenames.map{|f| f.basename('.rb').to_s }
-    everything.push *Formulary.get_aliases.keys if with_aliases
-    everything.sort
-  end
+class SoftwareSpecification
+  attr_reader :url, :specs, :using
 
-  def self.paths
-    Dir["#{HOMEBREW_REPOSITORY}/Library/Formula/*.rb"]
-  end
-  
-  def self.read name
-    require Formula.path(name) rescue return nil
-    klass_name = Formula.class_s(name)
-    eval(klass_name)
-  end
-  
-  def self.read_all
-  # yields once for each
-    Formulary.names.each do |name|
-      begin
-        require Formula.path(name)
-        klass_name = Formula.class_s(name)
-        klass = eval(klass_name)
-        yield name, klass
-      rescue Exception=>e
-        opoo "Error importing #{name}:"
-        puts "#{e}"
-      end
+  VCS_SYMBOLS = {
+    :bzr     => BazaarDownloadStrategy,
+    :curl    => CurlDownloadStrategy,
+    :cvs     => CVSDownloadStrategy,
+    :git     => GitDownloadStrategy,
+    :hg      => MercurialDownloadStrategy,
+    :nounzip => NoUnzipCurlDownloadStrategy,
+    :post    => CurlPostDownloadStrategy,
+    :svn     => SubversionDownloadStrategy,
+  }
+
+  def initialize url, specs=nil
+    raise "No url provided" if url.nil?
+    @url = url
+    unless specs.nil?
+      # Get download strategy hint, if any
+      @using = specs.delete :using
+      # The rest of the specs are for source control
+      @specs = specs
     end
   end
 
-  # returns a map of aliases to actual names
-  # eg { 'ocaml' => 'objective-caml' }
-  def self.get_aliases
-    aliases = {}
-    Formulary.read_all do |name, klass|
-      aka = klass.aliases
-      next if aka == nil
+  # Returns a suitable DownloadStrategy class that can be
+  # used to retreive this software package.
+  def download_strategy
+    return detect_download_strategy(@url) if @using.nil?
 
-      aka.each {|item| aliases[item.to_s] = name }
-    end
-    return aliases
+    # If a class is passed, assume it is a download strategy
+    return @using if @using.kind_of? Class
+
+    detected = VCS_SYMBOLS[@using]
+    raise "Unknown strategy #{@using} was requested." unless detected
+    return detected
   end
-  
-  def self.find_alias name
-    aliases = Formulary.get_aliases
-    return aliases[name]
+
+  def detect_version
+    Pathname.new(@url).version
   end
 end
 
@@ -69,18 +58,29 @@ end
 # Derive and define at least @url, see Library/Formula for examples
 class Formula
   include FileUtils
-  
+
   attr_reader :url, :version, :homepage, :name, :specs, :downloader
 
   # Homebrew determines the name
   def initialize name='__UNKNOWN__'
+    set_instance_variable 'homepage'
     set_instance_variable 'url'
     set_instance_variable 'head'
     set_instance_variable 'specs'
 
+    set_instance_variable 'stable'
+    set_instance_variable 'unstable'
+
     if @head and (not @url or ARGV.build_head?)
-      @url=@head
-      @version='HEAD'
+      @url = @head
+      @version = 'HEAD'
+      @spec_to_use = @unstable
+    else
+      if @stable.nil?
+        @spec_to_use = SoftwareSpecification.new(@url, @specs)
+      else
+        @spec_to_use = @stable
+      end
     end
 
     raise "No url provided for formula #{name}" if @url.nil?
@@ -88,16 +88,12 @@ class Formula
     validate_variable :name
 
     set_instance_variable 'version'
-    @version ||= Pathname.new(@url).version
+    @version ||= @spec_to_use.detect_version
     validate_variable :version if @version
-    
-    set_instance_variable 'homepage'
 
-    CHECKSUM_TYPES.each do |type|
-      set_instance_variable type
-    end
+    CHECKSUM_TYPES.each { |type| set_instance_variable type }
 
-    @downloader=download_strategy.new url, name, version, specs
+    @downloader=download_strategy.new @spec_to_use.url, name, version, @spec_to_use.specs
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -107,58 +103,47 @@ class Formula
     return false
   end
 
+  def path
+    self.class.path name
+  end
+
   def prefix
     validate_variable :name
     validate_variable :version
     HOMEBREW_CELLAR+@name+@version
   end
 
-  def path
-    self.class.path name
+  def bin;     prefix+'bin'            end
+  def doc;     prefix+'share/doc'+name end
+  def include; prefix+'include'        end
+  def info;    prefix+'share/info'     end
+  def lib;     prefix+'lib'            end
+  def libexec; prefix+'libexec'        end
+  def man;     prefix+'share/man'      end
+  def man1;    man+'man1'              end
+  def man2;    man+'man2'              end
+  def man3;    man+'man3'              end
+  def man4;    man+'man4'              end
+  def man5;    man+'man5'              end
+  def man6;    man+'man6'              end
+  def man7;    man+'man7'              end
+  def man8;    man+'man8'              end
+  def sbin;    prefix+'sbin'           end
+  def share;   prefix+'share'          end
+
+  # configuration needs to be preserved past upgrades
+  def etc; HOMEBREW_PREFIX+'etc' end
+  # generally we don't want var stuff inside the keg
+  def var; HOMEBREW_PREFIX+'var' end
+
+  # Use the @spec_to_use to detect the download strategy.
+  # Can be overriden to force a custom download strategy
+  def download_strategy
+    @spec_to_use.download_strategy
   end
 
   def cached_download
     @downloader.cached_location
-  end
-
-  def bin; prefix+'bin' end
-  def sbin; prefix+'sbin' end
-  def doc; prefix+'share/doc'+name end
-  def lib; prefix+'lib' end
-  def libexec; prefix+'libexec' end
-  def man; prefix+'share/man' end
-  def man1; man+'man1' end
-  def info; prefix+'share/info' end
-  def include; prefix+'include' end
-  def share; prefix+'share' end
-
-  # generally we don't want var stuff inside the keg
-  def var; HOMEBREW_PREFIX+'var' end
-  # configuration needs to be preserved past upgrades
-  def etc; HOMEBREW_PREFIX+'etc' end
-  
-  # reimplement if we don't autodetect the download strategy you require
-  def download_strategy
-    if @specs and @url == @head
-      vcs = @specs.delete :using
-      if vcs != nil
-        # If a class is passed, assume it is a download strategy
-        return vcs if vcs.kind_of? Class
-
-        case vcs
-        when :bzr then return BazaarDownloadStrategy
-        when :curl then return CurlDownloadStrategy
-        when :cvs then return CVSDownloadStrategy
-        when :git then return GitDownloadStrategy
-        when :hg then return MercurialDownloadStrategy
-        when :svn then return SubversionDownloadStrategy
-        end
-
-        raise "Unknown strategy #{vcs} was requested."
-      end
-    end
-
-    detect_download_strategy url
   end
 
   # tell the user about any caveats regarding this package, return a string
@@ -178,13 +163,16 @@ class Formula
 
   # rarely, you don't want your library symlinked into the main prefix
   # see gettext.rb for an example
-  def keg_only?; false end
+  def keg_only?
+    self.class.keg_only_reason || false
+  end
 
   # sometimes the clean process breaks things
   # skip cleaning paths in a formula with a class method like this:
   #   skip_clean [bin+"foo", lib+"bar"]
   # redefining skip_clean? in formulas is now deprecated
   def skip_clean? path
+    return true if self.class.skip_clean_all?
     to_check = path.relative_path_from(prefix).to_s
     self.class.skip_clean_paths.include? to_check
   end
@@ -215,8 +203,7 @@ class Formula
         puts "If nothing is installed or the shell exits with a non-zero error code,"
         puts "Homebrew will abort. The installation prefix is:"
         puts prefix
-        ENV['HOMEBREW_DEBUG_INSTALL'] = name
-        interactive_shell
+        interactive_shell self
       end
     end
   end
@@ -235,21 +222,27 @@ class Formula
     name.capitalize.gsub(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase } \
                    .gsub('+', 'x')
   end
-  
-  def self.get_used_by
-    used_by = {}
-    Formulary.read_all do |name, klass|
-      deps = klass.deps
-      next if deps == nil
 
-      deps.each do |dep|
-        _deps = used_by[dep] || []
-        _deps << name unless _deps.include? name
-        used_by[dep] = _deps
+  # an array of all Formula names
+  def self.names
+    Dir["#{HOMEBREW_REPOSITORY}/Library/Formula/*.rb"].map{ |f| File.basename f, '.rb' }.sort
+  end
+
+  # an array of all Formula, instantiated
+  def self.all
+    all = []
+    names.each do |n|
+      begin
+        all << Formula.factory(n)
+      rescue
+        # Don't let one broken formula break commands.
       end
     end
-    
-    return used_by
+    return all
+  end
+
+  def self.aliases
+    Dir["#{HOMEBREW_REPOSITORY}/Library/Aliases/*"].map{ |f| File.basename f }.sort
   end
 
   def self.factory name
@@ -259,18 +252,10 @@ class Formula
       require name
       name = path.stem
     else
-      begin
-        require self.path(name)
-      rescue LoadError => e
-        # Couldn't find formula 'name', so look for an alias.
-        real_name = Formulary.find_alias name
-        raise e if real_name == nil
-        puts "#{name} is an alias for #{real_name}"
-        name = real_name
-      end
+      require self.path(name)
     end
     begin
-      klass_name =self.class_s(name)
+      klass_name = self.class_s(name)
       klass = eval(klass_name)
     rescue NameError
       # TODO really this text should be encoded into the exception
@@ -305,6 +290,16 @@ class Formula
     opoo "LLVM was requested, but this formula is reported as not working with LLVM:"
     puts msg
     puts "Tested with LLVM build #{build}" unless build == nil
+    puts
+
+    if ARGV.force?
+      puts "Continuing anyway. If this works, let us know so we can update the\n"+
+           "formula to remove the warning."
+    else
+      puts "Continuing with GCC 4.2 instead.\n"+
+           "(Use `brew install --force ...` to force use of LLVM.)"
+      ENV.gcc_4_2
+    end
   end
 
 protected
@@ -336,15 +331,15 @@ protected
   rescue SystemCallError
     # usually because exec could not be find the command that was requested
     raise
-  rescue 
+  rescue
     raise BuildError.new(cmd, args, $?)
   end
 
 private
-  # creates a temporary directory then yields, when the block returns it
-  # recursively deletes the temporary directory
+  # Create a temporary directory then yield. When the block returns,
+  # recursively delete the temporary directory.
   def mktemp
-    # I used /tmp rather than mktemp -td because that generates a directory
+    # I used /tmp rather than `mktemp -td` because that generates a directory
     # name with exotic characters like + in it, and these break badly written
     # scripts that don't escape strings before trying to regexp them :(
 
@@ -393,18 +388,15 @@ EOF
 
   def stage
     HOMEBREW_CACHE.mkpath
+    fetched = @downloader.fetch
+    verify_download_integrity fetched if fetched.kind_of? Pathname
 
-    downloaded_tarball = @downloader.fetch
-    if downloaded_tarball.kind_of? Pathname
-      verify_download_integrity downloaded_tarball
-    end
-  
     mktemp do
       @downloader.stage
       yield
     end
   end
-  
+
   def patch
     return if patches.nil?
 
@@ -448,7 +440,7 @@ EOF
         patch_list << p
       end
     end
-    
+
     return if patch_list.empty?
 
     ohai "Downloading patches"
@@ -484,6 +476,8 @@ EOF
   end
 
   class << self
+    # The methods below define the formula DSL.
+    attr_reader :stable, :unstable
 
     def self.attr_rw(*attrs)
       attrs.each do |attr|
@@ -495,18 +489,22 @@ EOF
       end
     end
 
-    attr_rw :url, :version, :homepage, :specs, :deps, :external_deps, :aliases, *CHECKSUM_TYPES
+    attr_rw :version, :homepage, :specs, :deps, :external_deps
+    attr_rw :keg_only_reason, :skip_clean_all
+    attr_rw *CHECKSUM_TYPES
 
     def head val=nil, specs=nil
-      if specs
-        @specs = specs
-      end
-      val.nil? ? @head : @head = val
+      return @head if val.nil?
+      @unstable = SoftwareSpecification.new(val, specs)
+      @head = val
+      @specs = specs
     end
-    
-    def aka *args
-      @aliases ||= []
-      args.each { |item| @aliases << item.to_s }
+
+    def url val=nil, specs=nil
+      return @url if val.nil?
+      @stable = SoftwareSpecification.new(val, specs)
+      @url = val
+      @specs = specs
     end
 
     def depends_on name
@@ -514,37 +512,56 @@ EOF
       @external_deps ||= {:python => [], :perl => [], :ruby => [], :jruby => []}
 
       case name
-      when String
-        # noop
+      when String, Formula
+        @deps << name
       when Hash
         key, value = name.shift
         case value
         when :python, :perl, :ruby, :jruby
           @external_deps[value] << key
-          return
         when :optional, :recommended
-          name = key
+          @deps << key
         end
       when Symbol
-        name = name.to_s
-      when Formula
-        # noop
+        opoo "#{self.name} -- #{name}: Using symbols for deps is deprecated; use a string instead"
+        @deps << name.to_s
       else
         raise "Unsupported type #{name.class}"
       end
-
-      @deps << name
     end
 
     def skip_clean paths
+      if paths == :all
+        @skip_clean_all = true
+        return
+      end
       @skip_clean_paths ||= []
       [paths].flatten.each do |p|
         @skip_clean_paths << p.to_s unless @skip_clean_paths.include? p.to_s
       end
     end
-    
+
+    def skip_clean_all?
+      @skip_clean_all
+    end
+
     def skip_clean_paths
       @skip_clean_paths or []
+    end
+
+    # 'aka' is no longer used to define aliases, so have it print out
+    # a notice about the change. This will alert people with private
+    # formulae that they need to update.
+    # This notice will be removed in version 0.9
+    def aka args
+      onoe "#{name}: 'aka' is no longer used to define aliases"
+      puts "To define an alias, create a relative symlink from"
+      puts "Aliases to Formula. The name of the symlink will be"
+      puts "detected as an alias for the target formula."
+    end
+
+    def keg_only reason
+      @keg_only_reason = reason
     end
   end
 end

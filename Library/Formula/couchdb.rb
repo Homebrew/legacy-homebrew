@@ -1,10 +1,9 @@
 require 'formula'
 
 class Couchdb <Formula
-  url 'git://github.com/apache/couchdb.git'
+  url 'git://github.com/apache/couchdb.git', :tag => "origin/tags/1.0.1"
   homepage "http://couchdb.apache.org/"
-  version "1.0.0"
-  @specs = {:tag => "origin/tags/1.0.0"}
+  version "1.0.1"
 
   depends_on 'spidermonkey'
   depends_on 'icu4c'
@@ -24,5 +23,7 @@ class Couchdb <Formula
     (lib+'couchdb/bin/couchjs').chmod 0755
     (var+'lib/couchdb').mkpath
     (var+'log/couchdb').mkpath
+
   end
+
 end

@@ -2,8 +2,8 @@ require 'formula'
 
 class Mysql <Formula
   homepage 'http://dev.mysql.com/doc/refman/5.1/en/'
-  url 'http://mysql.llarian.net/Downloads/MySQL-5.1/mysql-5.1.48.tar.gz'
-  md5 'd04c54d1cfbd8c6c8650c8d078f885b2'
+  url 'http://mysql.llarian.net/Downloads/MySQL-5.1/mysql-5.1.49.tar.gz'
+  md5 'a90d87a71fa3c23dff6d78afc8e3184c'
 
   depends_on 'readline'
 
@@ -52,7 +52,8 @@ class Mysql <Formula
     system "./configure", *configure_args
     system "make install"
 
-    ln_s "#{libexec}/mysqld", "#{bin}/mysqld"
+    ln_s "#{libexec}/mysqld", bin
+    ln_s "#{share}/mysql/mysql.server", bin
 
     (prefix+'mysql-test').rmtree unless ARGV.include? '--with-tests' # save 66MB!
     (prefix+'sql-bench').rmtree unless ARGV.include? '--with-bench'
@@ -68,18 +69,18 @@ class Mysql <Formula
         cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents
         launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
 
-    If this is an upgrade and you already have the com.mysql.mysqld.plist loaded: 
+    If this is an upgrade and you already have the com.mysql.mysqld.plist loaded:
         launchctl unload -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
         cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents
         launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
 
-    Note on upgrading: 
-        We overwrite any existing com.mysql.mysqld.plist in ~/Library/LaunchAgents 
-        if we are upgrading because previous versions of this brew created the 
+    Note on upgrading:
+        We overwrite any existing com.mysql.mysqld.plist in ~/Library/LaunchAgents
+        if we are upgrading because previous versions of this brew created the
         plist with a version specific program argument.
-    
+
     Or start manually with:
-        #{prefix}/share/mysql/mysql.server start
+        mysql.server start
     EOS
   end
 

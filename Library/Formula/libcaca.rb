@@ -8,13 +8,16 @@ class Libcaca <Formula
   depends_on 'gettext'
 
   def install
+    # Some people can't compile when Java is enabled. See:
+    # http://github.com/mxcl/homebrew/issues/issue/2049
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--disable-imlib2",
                           "--disable-doc",
-                          "--disable-slang"
+                          "--disable-slang",
+                          "--disable-java"
     system "make install"
   end
 end

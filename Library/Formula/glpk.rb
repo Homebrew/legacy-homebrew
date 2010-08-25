@@ -6,7 +6,7 @@ class Glpk <Formula
   md5 '9091a60c4c44a16a149375f7a6cce158'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end

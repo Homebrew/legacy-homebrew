@@ -10,6 +10,14 @@ class Gnuplot <Formula
   depends_on 'gd' unless ARGV.include? "--nogd"
   depends_on 'pdflib-lite' if ARGV.include? "--pdf"
 
+  def options
+    [
+      ["--pdf", "Build with pdf support."],
+      ["--without-lua", "Build without lua support."],
+      ["--nogd", "Build without gd support."]
+    ]
+  end
+
   def install
     ENV.x11
     args = ["--disable-debug", "--disable-dependency-tracking",

@@ -1,23 +1,37 @@
 require 'formula'
 
 class Npm <Formula
-  url 'http://github.com/isaacs/npm/tarball/v0.1.19'
-  head 'git://github.com/isaacs/npm.git'
+  url 'http://github.com/isaacs/npm/tarball/v0.1.25'
   homepage 'http://github.com/isaacs/npm'
-  md5 '886e78f5937ff3409c062cf8fd305f7c'
+  md5 '14910efa963893691406cc761f7c473a'
+  head 'git://github.com/isaacs/npm.git'
 
   depends_on 'node'
 
-  def executable
-    <<-EOS
+  def executable; <<-EOS
 #!/bin/sh
 exec "#{libexec}/cli.js" "$@"
-    EOS
+EOS
+  end
+
+  def node_lib
+    HOMEBREW_PREFIX+"lib/node"
+  end
+
+  def share_bin
+    HOMEBREW_PREFIX+"share/npm/bin"
   end
 
   def install
-    doc.install Dir["doc/*"]
+    # Set a root & binroot that won't get wiped between updates
+    share_bin.mkpath
+    inreplace 'lib/utils/default-config.js' do |s|
+      s.gsub! /, binroot.*$/, ", binroot : \"#{share_bin}\""
+      s.gsub! /, root.*$/,    ", root : \"#{node_lib}\""
+    end
+
     prefix.install ["LICENSE", "README.md"]
+    doc.install Dir["doc/*"]
 
     # install all the required libs in libexec so `npm help` will work
     libexec.install Dir["*"]
@@ -36,5 +50,24 @@ exec "#{libexec}/cli.js" "$@"
 
     # install the wrapper executable
     (bin+"npm").write executable
+  end
+
+  def caveats; <<-EOS.undent
+    npm will install binaries to:
+      #{share_bin}
+
+    You may want to add this to your PATH.
+
+    npm will install libraries to:
+      #{node_lib}/.npm
+
+    To manually remove libraries installed by npm, delete this (hidden!) folder.
+
+    npm will also symlink libraries to:
+      #{node_lib}
+
+    You will want to add this to your NODE_PATH if you wish to
+    require libraries without a path.
+    EOS
   end
 end

@@ -16,10 +16,12 @@ class Glib <Formula
   depends_on 'gettext'
 
   def install
+    fails_with_llvm "Undefined symbol errors while linking"
+
     # Snow Leopard libiconv doesn't have a 64bit version of the libiconv_open
     # function, which breaks things for us, so we build our own
     # http://www.mail-archive.com/gtk-list@gnome.org/msg28747.html
-    
+
     iconvd = Pathname.getwd+'iconv'
     iconvd.mkpath
 
@@ -42,6 +44,7 @@ class Glib <Formula
                           "--disable-rebuilds",
                           "--with-libiconv=gnu"
     system "make"
+    ENV.j1 # Supress a folder already exists warning
     system "make install"
 
     # This sucks; gettext is Keg only to prevent conflicts with the wider
@@ -52,11 +55,11 @@ class Glib <Formula
     inreplace lib+'pkgconfig/glib-2.0.pc' do |s|
       s.gsub! 'Libs: -L${libdir} -lglib-2.0 -lintl',
               "Libs: -L${libdir} -lglib-2.0 -L#{gettext.lib} -lintl"
-      
+
       s.gsub! 'Cflags: -I${includedir}/glib-2.0 -I${libdir}/glib-2.0/include',
               "Cflags: -I${includedir}/glib-2.0 -I${libdir}/glib-2.0/include -I#{gettext.include}"
     end
 
-    (prefix+'share/gtk-doc').rmtree
+    (share+'gtk-doc').rmtree
   end
 end

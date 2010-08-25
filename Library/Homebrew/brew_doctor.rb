@@ -28,6 +28,18 @@ def is_prefix? prefix, longer_string
   longer_string.to_s[0,p.length] == p
 end
 
+# Installing MacGPG2 interferes with Homebrew in a big way
+# http://sourceforge.net/projects/macgpg2/files/
+def check_for_macgpg2
+  if File.exist? "/Applications/start-gpg-agent.app"
+    puts <<-EOS.undent
+      If you have installed MacGPG2 via the package installer, several other
+      checks in this script will turn up problems, such as stray .dylibs in
+      /usr/local and permissions issues with share and man in /usr/local/.
+
+    EOS
+  end
+end
 
 def check_for_stray_dylibs
   unbrewed_dylibs = Dir['/usr/local/lib/*.dylib'].select { |f| File.file? f and not File.symlink? f }
@@ -54,10 +66,26 @@ def check_for_stray_dylibs
 end
 
 def check_for_x11
-  unless File.exists? '/usr/X11/lib/libpng.dylib'
+  unless x11_installed?
+    opoo "X11 not installed."
     puts <<-EOS.undent
       You don't have X11 installed as part of your Xcode installation.
-      This isn't required for all formula. But it is expected by some.
+      This isn't required for all formulae, but is expected by some.
+
+    EOS
+  end
+end
+
+def check_for_nonstandard_x11
+  return unless File.exists? '/usr/X11'
+  x11 = Pathname.new('/usr/X11')
+  if x11.symlink?
+    puts <<-EOS.undent
+      "/usr/X11" was found, but it is a symlink to:
+        #{x11.resolved_path}
+
+      Homebrew's X11 support has only be tested with Apple's X11.
+      In particular, "XQuartz" and "XDarwin" are not known to be compatible.
 
     EOS
   end
@@ -82,7 +110,7 @@ def check_gcc_versions
 
   if gcc_42 == nil
     puts <<-EOS.undent
-      We couldn't detect gcc 4.2.x. Some formulas require this compiler.
+      We couldn't detect gcc 4.2.x. Some formulae require this compiler.
 
     EOS
   elsif gcc_42 < RECOMMENDED_GCC_42
@@ -95,7 +123,7 @@ def check_gcc_versions
 
   if gcc_40 == nil
     puts <<-EOS.undent
-      We couldn't detect gcc 4.0.x. Some formulas require this compiler.
+      We couldn't detect gcc 4.0.x. Some formulae require this compiler.
 
     EOS
   elsif gcc_40 < RECOMMENDED_GCC_40
@@ -107,15 +135,28 @@ def check_gcc_versions
   end
 end
 
-def check_access_share_locale
-  # If PREFIX/share/locale already exists, "sudo make install" of
-  # non-brew installed software may cause installation failures.
-  locale = HOMEBREW_PREFIX+'share/locale'
-  return unless locale.exist?
+def check_cc_symlink
+    which_cc = Pathname.new('/usr/bin/cc').realpath.basename.to_s
+    if which_cc == "llvm-gcc-4.2"
+      puts <<-EOS.undent
+        You changed your cc to symlink to llvm.
+        This bypasses LLVM checks, and some formulae may mysteriously fail to work.
+        You may want to change /usr/bin/cc to point back at gcc.
+
+        To force Homebrew to use LLVM, you can set the "HOMEBREW_LLVM" environmental
+        variable, or pass "--use-lvm" to "brew install".
+
+      EOS
+    end
+end
+
+def __check_subdir_access base
+  target = HOMEBREW_PREFIX+base
+  return unless target.exist?
 
   cant_read = []
 
-  locale.find do |d|
+  target.find do |d|
     next unless d.directory?
     cant_read << d unless d.writable?
   end
@@ -123,7 +164,7 @@ def check_access_share_locale
   cant_read.sort!
   if cant_read.length > 0
     puts <<-EOS.undent
-    Some folders in #{locale} aren't writable.
+    Some folders in #{target} aren't writable.
     This can happen if you "sudo make install" software that isn't managed
     by Homebrew. If a brew tries to add locale information to one of these
     folders, then the install will fail during the link step.
@@ -133,6 +174,14 @@ def check_access_share_locale
     puts *cant_read.collect { |f| "    #{f}" }
     puts
   end
+end
+
+def check_access_share_locale
+  __check_subdir_access 'share/locale'
+end
+
+def check_access_share_man
+  __check_subdir_access 'share/man'
 end
 
 def check_access_pkgconfig
@@ -273,8 +322,9 @@ def check_pkg_config_paths
 end
 
 def check_for_gettext
-  if File.exist? "#{HOMEBREW_PREFIX}/lib/libgettextlib.dylib" or
-     File.exist? "#{HOMEBREW_PREFIX}/lib/libintl.dylib"
+  if %w[lib/libgettextlib.dylib
+        lib/libintl.dylib
+        include/libintl.h ].any? { |f| File.exist? "#{HOMEBREW_PREFIX}/#{f}" }
     puts <<-EOS.undent
       gettext was detected in your PREFIX.
 
@@ -284,6 +334,26 @@ def check_for_gettext
       If you `brew link gettext` then a large number of brews that don't
       otherwise have a `depends_on 'gettext'` will pick up gettext anyway
       during the `./configure` step.
+
+      If you have a non-Homebrew provided gettext, other problems will happen
+      especially if it wasn't compiled with the proper architectures.
+
+    EOS
+  end
+end
+
+def check_for_iconv
+  if %w[lib/libiconv.dylib
+        include/iconv.h ].any? { |f| File.exist? "#{HOMEBREW_PREFIX}/#{f}" }
+    puts <<-EOS.undent
+      libiconv was detected in your PREFIX.
+
+      Homebrew doesn't provide a libiconv formula, and expects to link against
+      the system version in /usr/lib.
+
+      If you have a non-Homebrew provided libiconv, many formulae will fail
+      to compile or link, especially if it wasn't compiled with the proper
+      architectures.
 
     EOS
   end
@@ -297,7 +367,7 @@ def check_for_config_scripts
   paths = ENV['PATH'].split(':').collect{|p| File.expand_path p}
   paths.each do |p|
     next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin"].include? p
-    next if %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] =~ p
+    next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})]
 
     configs = Dir["#{p}/*-config"]
     # puts "#{p}\n    #{configs * ' '}" unless configs.empty?
@@ -358,7 +428,9 @@ def check_for_multiple_volumes
 
   # Find the volumes for the TMP folder & HOMEBREW_CELLAR
   real_cellar = HOMEBREW_CELLAR.realpath
-  tmp=Pathname.new `/usr/bin/mktemp -d /tmp/homebrew-brew-doctor-XXXX`.strip
+
+  tmp_prefix = ENV['HOMEBREW_TEMP'] || '/tmp'
+  tmp=Pathname.new `/usr/bin/mktemp -d #{tmp_prefix}/homebrew-brew-doctor-XXXX`.strip
   real_temp = tmp.realpath.parent
 
   where_cellar = volumes.which real_cellar
@@ -366,10 +438,12 @@ def check_for_multiple_volumes
 
   unless where_cellar == where_temp
     puts <<-EOS.undent
-      Your Cellar and /tmp folders are on different volumes.
+      Your Cellar & TEMP folders are on different volumes.
 
-      Putting your Cellar and TMP folders on different volumes causes problems
-      for brews that install symlinks, such as Git.
+      OS X won't move relative symlinks across volumes unless the target file
+      already exists.
+
+      Brews known to be affected by this are Git and Narwhal.
 
       You should set the "HOMEBREW_TEMP" environmental variable to a suitable
       folder on the same volume as your Cellar.
@@ -394,6 +468,63 @@ def check_for_git
   end
 end
 
+def check_for_autoconf
+  which_autoconf = `/usr/bin/which autoconf`.chomp
+  if which_autoconf != '/usr/bin/autoconf'
+    puts <<-EOS.undent
+      You have an "autoconf" in your path blocking the system version at:
+        #{which_autoconf}
+
+      Custom autoconf in general and autoconf 2.66 in particular has issues
+      and will cause some Homebrew formulae to fail.
+
+    EOS
+  end
+end
+
+def __check_linked_brew f
+  links_found = []
+
+  Pathname.new(f.prefix).find do |src|
+    dst=HOMEBREW_PREFIX+src.relative_path_from(f.prefix)
+    next unless dst.symlink?
+    links_found << dst unless src.directory?
+    Find.prune if src.directory?
+  end
+
+  return links_found
+end
+
+def check_for_linked_kegonly_brews
+  require 'formula'
+
+  warnings = Hash.new
+
+  Formula.all.each do |f|
+    next unless f.keg_only? and f.installed?
+    links = __check_linked_brew f
+    warnings[f.name] = links unless links.empty?
+  end
+
+  unless warnings.empty?
+    puts <<-EOS.undent
+    Some keg-only formula are linked into the Cellar.
+
+    Linking a keg-only formula, such as gettext, into the cellar with
+    `brew link f` will cause other formulae to detect them during the
+    `./configure` step. This may cause problems when compiling those
+    other formulae.
+
+    Binaries provided by keg-only formulae may override system binaries
+    with other strange results.
+
+    You may wish to `brew unlink` these brews:
+    EOS
+
+    puts *warnings.keys.collect { |f| "    #{f}" }
+  end
+end
+
 def brew_doctor
   read, write = IO.pipe
 
@@ -403,11 +534,15 @@ def brew_doctor
 
     check_usr_bin_ruby
     check_homebrew_prefix
+    check_for_macgpg2
     check_for_stray_dylibs
     check_gcc_versions
+    check_cc_symlink
     check_for_other_package_managers
     check_for_x11
+    check_for_nonstandard_x11
     check_access_share_locale
+    check_access_share_man
     check_user_path
     check_which_pkg_config
     check_pkg_config_paths
@@ -418,6 +553,8 @@ def brew_doctor
     check_for_symlinked_cellar
     check_for_multiple_volumes
     check_for_git
+    check_for_autoconf
+    check_for_linked_kegonly_brews
 
     exit! 0
   else
@@ -426,8 +563,8 @@ def brew_doctor
     unless (out = read.read).chomp.empty?
       puts out
     else
-      puts "Your OS X is ripe for brewing. Any troubles you may be experiencing are"
-      puts "likely purely psychosomatic."
+      puts "Your OS X is ripe for brewing."
+      puts "Any troubles you may be experiencing are likely purely psychosomatic."
     end
   end
 end

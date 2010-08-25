@@ -37,12 +37,6 @@ class Emacs <Formula
       To access texinfo documentation, set your INFOPATH to:
         #{info}
 
-      The Emacs project now uses bazaar for source code versioning. If you
-      last built the Homebrew emacs formula from HEAD prior to their switch
-      from CVS to bazaar, you will have to remove Homebrew's cached download
-      before building from HEAD again:
-        #{HOMEBREW_CACHE}/emacs-HEAD
-
       The initial checkout of the bazaar Emacs repository might take a long
       time. You might find that using the repo.or.cz git mirror is faster,
       even after the initial checkout. To use the repo.or.cz git mirror for
@@ -53,15 +47,14 @@ class Emacs <Formula
       status. The Emacs devs do not provide support for the git mirror, and
       they might reject bug reports filed with git version information. Use
       it at your own risk.
-
-      If you switch between repositories, you'll have to remove the Homebrew
-      emacs cache directory (see above).
     EOS
 
     return s
   end
 
   def install
+    fails_with_llvm "Duplicate symbol errors while linking."
+
     configure_args = [
       "--prefix=#{prefix}",
       "--without-dbus",

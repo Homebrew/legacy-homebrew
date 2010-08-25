@@ -5,7 +5,6 @@ class AbstractDownloadStrategy
       @spec = specs.keys.first # only use first spec
       @ref = specs.values.first
     end
-    @unique_token="#{name}-#{version}" unless name.to_s.empty? or name == '__UNKNOWN__'
   end
 
   def expand_safe_system_args args
@@ -31,16 +30,17 @@ end
 
 class CurlDownloadStrategy <AbstractDownloadStrategy
   attr_reader :tarball_path
-  
+
   def initialize url, name, version, specs
     super
+    @unique_token="#{name}-#{version}" unless name.to_s.empty? or name == '__UNKNOWN__'
     if @unique_token
       @tarball_path=HOMEBREW_CACHE+(@unique_token+ext)
     else
       @tarball_path=HOMEBREW_CACHE+File.basename(@url)
     end
   end
-  
+
   def cached_location
     @tarball_path
   end
@@ -156,6 +156,7 @@ end
 class SubversionDownloadStrategy <AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
+    @unique_token="#{name}--svn" unless name.to_s.empty? or name == '__UNKNOWN__'
     @co=HOMEBREW_CACHE+@unique_token
   end
 
@@ -238,6 +239,7 @@ end
 class GitDownloadStrategy <AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
+    @unique_token="#{name}--git" unless name.to_s.empty? or name == '__UNKNOWN__'
     @clone=HOMEBREW_CACHE+@unique_token
   end
 
@@ -287,6 +289,7 @@ end
 class CVSDownloadStrategy <AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
+    @unique_token="#{name}--cvs" unless name.to_s.empty? or name == '__UNKNOWN__'
     @co=HOMEBREW_CACHE+@unique_token
   end
 
@@ -336,6 +339,7 @@ end
 class MercurialDownloadStrategy <AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
+    @unique_token="#{name}--hg" unless name.to_s.empty? or name == '__UNKNOWN__'
     @clone=HOMEBREW_CACHE+@unique_token
   end
 
@@ -380,6 +384,7 @@ end
 class BazaarDownloadStrategy <AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
+    @unique_token="#{name}--bzr" unless name.to_s.empty? or name == '__UNKNOWN__'
     @clone=HOMEBREW_CACHE+@unique_token
   end
 
@@ -426,6 +431,7 @@ def detect_download_strategy url
   when %r[^svn://] then SubversionDownloadStrategy
   when %r[^svn+http://] then SubversionDownloadStrategy
     # Some well-known source hosts
+  when %r[^http://github\.com/.+\.git$] then GitDownloadStrategy
   when %r[^https?://(.+?\.)?googlecode\.com/hg] then MercurialDownloadStrategy
   when %r[^https?://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
   when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy

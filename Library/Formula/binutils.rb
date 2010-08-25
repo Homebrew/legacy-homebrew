@@ -5,15 +5,22 @@ class Binutils <Formula
   homepage 'http://www.gnu.org/software/binutils/binutils.html'
   md5 'e99487e0c4343d6fa68b7c464ff4a962'
 
+  def options
+    [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
+  end
+
   def install
-    ENV.append 'CPPFLAGS', "-I#{prefix}/include"
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--infodir=#{prefix}/share/info",
-                          "--mandir=#{man}",
-                          "--disable-werror",
-                          "--program-prefix=g"
+    ENV.append 'CPPFLAGS', "-I#{include}"
+
+    args = ["--prefix=#{prefix}",
+            "--disable-debug",
+            "--disable-dependency-tracking",
+            "--infodir=#{info}",
+            "--mandir=#{man}",
+            "--disable-werror" ]
+    args << "--program-prefix=g" unless ARGV.include? '--default-names'
+
+    system "./configure", *args
     system "make"
     system "make install"
   end

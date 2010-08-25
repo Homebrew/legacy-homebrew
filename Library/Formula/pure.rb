@@ -10,7 +10,9 @@ class Pure < Formula
   depends_on 'readline'
 
   def install
-    system "./configure", "--enable-release", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--enable-release"
     system "make"
     system "make install"
   end

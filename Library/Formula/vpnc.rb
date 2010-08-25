@@ -8,19 +8,16 @@ class Vpnc <Formula
   depends_on 'libgcrypt'
   depends_on 'libgpg-error'
 
-  def skip_clean? path
-    path == etc or path == var
-  end
+  skip_clean 'etc'
+  skip_clean 'var'
 
   def options
-    [
-      ["--hybrid", "Use vpnc hybrid authentication."]
-    ]
+    [["--hybrid", "Use vpnc hybrid authentication."]]
   end
 
   def install
     fails_with_llvm
-    ENV.no_optimization 
+    ENV.no_optimization
     ENV.deparallelize
 
     inreplace ["vpnc-script.in", "vpnc-disconnect"] do |s|
@@ -48,11 +45,9 @@ class Vpnc <Formula
     system "make install"
   end
 
-  def caveats
-    <<-END_CAVEATS
-    Formula contribute hybrid option for vpnc hybrid authentification.
-    To install use:
+  def caveats; <<-EOS
+    To use vpnc hybrid authentification:
       brew install vpnc --hybrid
-    END_CAVEATS
+    EOS
   end
 end

@@ -20,8 +20,8 @@ def x11?
 end
 
 class Imagemagick <Formula
-  url 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.6.3-0.tar.bz2'
-  md5 '7f07e873873d3e9afb4126ce4594f556'
+  url 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.6.3-9.tar.bz2'
+  md5 'd97ea8010f0a46ee9d057a5e006e651b'
   homepage 'http://www.imagemagick.org'
 
   depends_on 'jpeg'
@@ -32,6 +32,7 @@ class Imagemagick <Formula
   depends_on 'libtiff' => :optional
   depends_on 'little-cms' => :optional
   depends_on 'jasper' => :optional
+  depends_on 'little-cms' => :optional
 
   depends_on 'libwmf' if use_wmf?
 
@@ -39,11 +40,15 @@ class Imagemagick <Formula
     path.extname == '.la'
   end
 
-  def install
-    # Add to PATH for freetype-config on Snow Leopard
-    ENV.append 'PATH', '/usr/x11/bin', ':'
+  def options
+    [
+      ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
+      ['--use-wmf', 'Compile with libwmf support.']
+    ]
+  end
 
-    ENV.libpng
+  def install
+    ENV.x11 # Add to PATH for freetype-config on Snow Leopard
     ENV.O3 # takes forever otherwise
 
     args = [ "--disable-osx-universal-binary",
@@ -55,9 +60,9 @@ class Imagemagick <Formula
              "--with-modules",
              "--without-magick-plus-plus" ]
 
-     args << "--disable-openmp" if MACOS_VERSION < 10.6 # libgomp unavailable
-     args << "--without-gslib" unless ghostscript_srsly?
-     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
+    args << "--disable-openmp" if MACOS_VERSION < 10.6 # libgomp unavailable
+    args << "--without-gslib" unless ghostscript_srsly?
+    args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
                 unless ghostscript_srsly? or ghostscript_fonts?
 
     # versioned stuff in main tree is pointless for us

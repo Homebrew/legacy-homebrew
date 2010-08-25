@@ -6,11 +6,11 @@ class Haproxy <Formula
   homepage 'http://haproxy.1wt.eu'
 
   def install
-    inreplace 'Makefile' do |contents|
-      contents.change_make_var! 'PREFIX', prefix
-      contents.change_make_var! 'DOCDIR', doc
+    inreplace 'Makefile' do |s|
+      s.change_make_var! 'PREFIX', prefix
+      s.change_make_var! 'DOCDIR', doc
       # use our CC, CFLAGS and LDFLAGS
-      contents.remove_make_var! %w[LDFLAGS CFLAGS CC]
+      s.remove_make_var! %w[LDFLAGS CFLAGS CC]
     end
 
     # We build generic since the Makefile.osx doesn't appear to work
