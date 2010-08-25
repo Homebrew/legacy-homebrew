@@ -16,7 +16,10 @@ class Madplay <Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    configure_flags = ["--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"]
+    # Avoid "error: CPU you selected does not support x86-64 instruction set"
+    configure_flags << "--build=x86_64" if Hardware.is_64_bit? and MACOS_VERSION >= 10.6
+    system "./configure", *configure_flags
     system "make install"
   end
 end
