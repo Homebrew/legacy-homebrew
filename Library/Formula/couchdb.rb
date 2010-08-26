@@ -1,7 +1,7 @@
 require 'formula'
 
 class Couchdb <Formula
-  url 'git://github.com/apache/couchdb.git', :tag => "origin/tags/1.0.1"
+  url 'git://github.com/apache/couchdb.git', :tag => "1.0.1"
   homepage "http://couchdb.apache.org/"
   version "1.0.1"
 
