@@ -5,10 +5,6 @@ class Ffmpeg <Formula
   homepage 'http://ffmpeg.org/'
   sha1 'c130e3bc368251b9130ce6eafb44fe8c3993ff5c'
 
-  # Before 0.6, the head version was:
-  # head 'svn://svn.ffmpeg.org/ffmpeg/trunk',
-  #   :revisions => { :trunk => 22916, 'libswscale' => 31045 }
-  # We probably need new revisions specified here:
   head 'svn://svn.ffmpeg.org/ffmpeg/trunk'
 
   depends_on 'x264' => :optional
@@ -26,7 +22,7 @@ class Ffmpeg <Formula
             "--enable-pthreads",
             "--enable-nonfree",
             "--enable-gpl",
-            "--disable-indev=jack" ]
+            "--disable-indev=jack"]
 
     args << "--enable-libx264" if Formula.factory('x264').installed?
     args << "--enable-libfaac" if Formula.factory('faac').installed?
@@ -43,8 +39,8 @@ class Ffmpeg <Formula
 
     system "./configure", *args
 
-    inreplace 'config.mak' do |s|
-      if MACOS_VERSION >= 10.6 and Hardware.is_64_bit?
+    if snow_leopard_64?
+      inreplace 'config.mak' do |s|
         shflags = s.get_make_var 'SHFLAGS'
         s.change_make_var! 'SHFLAGS', shflags.gsub!(' -Wl,-read_only_relocs,suppress', '')
       end

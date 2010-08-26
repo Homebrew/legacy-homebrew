@@ -1,9 +1,9 @@
 require 'formula'
 
 class Zeromq <Formula
-  url 'http://www.zeromq.org/local--files/area:download/zeromq-2.0.7.tar.gz'
+  url 'http://www.zeromq.org/local--files/area:download/zeromq-2.0.8.tar.gz'
   homepage 'http://www.zeromq.org/'
-  md5 'c9cb3ee4499df1781f8ddc03c20d656b'
+  md5 '6a5c362deaaa24e0e94b42e13f68da51'
 
   def install
     fails_with_llvm "Compiling with LLVM gives a segfault while linking."

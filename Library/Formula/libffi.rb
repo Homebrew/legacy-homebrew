@@ -14,6 +14,7 @@ class Libffi <Formula
   end
 
   def install
+    ENV.universal_binary
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end
