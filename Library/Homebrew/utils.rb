@@ -82,7 +82,12 @@ def pretty_duration s
   return "%.1f minutes" % (s/60)
 end
 
-def interactive_shell
+def interactive_shell f=nil
+  unless f.nil?
+    ENV['HOMEBREW_DEBUG_PREFIX'] = f.prefix
+    ENV['HOMEBREW_DEBUG_INSTALL'] = f.name
+  end
+
   fork {exec ENV['SHELL'] }
   Process.wait
   unless $?.success?

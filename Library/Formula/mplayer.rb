@@ -21,7 +21,7 @@ class Mplayer <Formula
     ENV['CXXFLAGS'] = ''
 
     args = ["--prefix=#{prefix}", "--enable-largefiles", "--enable-apple-remote"]
-    args << "--target=x86_64-Darwin" if Hardware.is_64_bit? and MACOS_VERSION >= 10.6
+    args << "--target=x86_64-Darwin" if snow_leopard_64?
 
     system './configure', *args
     system "make"
