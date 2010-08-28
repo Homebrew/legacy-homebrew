@@ -3,9 +3,8 @@ require 'formula'
 class Thrift <Formula
   homepage 'http://incubator.apache.org/thrift/'
   head 'http://svn.apache.org/repos/asf/incubator/thrift/trunk'
-  version '0.3.0'
-  url 'http://www.apache.org/dist/incubator/thrift/0.3.0-incubating/thrift-0.3.0.tar.gz'
-  md5 'a6c80ab3d8c7827365a9b40f5c9d66a3'
+  url 'http://www.apache.org/dist/incubator/thrift/0.4.0-incubating/thrift-0.4.0.tar.gz'
+  md5 'bb8466e5b884e9edef862a64f57abe38'
 
   depends_on 'boost'
 
