@@ -30,8 +30,12 @@ class Git < Formula
 
     system "make", "prefix=#{prefix}", "install"
 
-    # Install the git bash completion file
-    (etc+'bash_completion.d').install 'contrib/completion/git-completion.bash'
+    # Install the git bash completion file.  Put it into the Cellar so
+    # that it gets upgraded along with git upgrades.  (Normally, etc
+    # files go directly into HOMEBREW_PREFIX so that they don't get
+    # clobbered on upgrade.)
+
+    (prefix+'etc/bash_completion.d').install 'contrib/completion/git-completion.bash'
 
     # Install git-p4
     bin.install 'contrib/fast-import/git-p4'

@@ -29,11 +29,9 @@ class Gfortran <Formula
       md5 '71bd546baa45c9c0fb4943cdd72ee274'
       version "4.2.4-5659"
     else
-      # These links should be updated to point to gfortran
-      # binaries for XCode build 5664 when they appear.
-      url 'http://r.research.att.com/gfortran-42-5659.pkg'
-      md5 '71bd546baa45c9c0fb4943cdd72ee274'
-      version "4.2.4-5659"
+      url 'http://r.research.att.com/gfortran-42-5664.pkg'
+      md5 'eb64ba9f8507da22e582814a69fbb7ca'
+      version "4.2.4-5664"
     end
   end
 
@@ -63,14 +61,18 @@ class Gfortran <Formula
       safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
       safe_system "ln -sf #{man1}/gfortran-4.2.1 #{man1}/gfortran.1"
     when 5664
-      # This section should be updated when binaries for 5664 appear.
-      ohai "Installing gfortran 4.2.4 for XCode 3.2.2 (build 5659)"
+      ohai "Installing gfortran 4.2.4 for XCode 3.2.3 (build 5664)"
       safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
       safe_system "ln -sf #{man1}/gfortran-4.2.1 #{man1}/gfortran.1"
     else
       onoe <<-EOS.undent
         Currently the gfortran compiler provided by this brew is only supported
         for XCode 3.1.4 on OS X 10.5.x and XCode 3.2.2/3.2.3 on OS X 10.6.x
+
+        Software update can help upgrade your copy of XCode.  The latest version
+        of XCode is also available from:
+
+            http://developer.apple.com/technologies/xcode.html
       EOS
     end
   end
