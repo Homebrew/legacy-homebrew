@@ -1,8 +1,8 @@
 require 'formula'
 
 class Readline <Formula
-  url 'ftp://ftp.cwru.edu/pub/bash/readline-6.0.tar.gz'
-  md5 'b7f65a48add447693be6e86f04a63019'
+  url 'ftp://ftp.cwru.edu/pub/bash/readline-6.1.tar.gz'
+  md5 'fc2f7e714fe792db1ce6ddc4c9fb4ef3'
   homepage 'http://tiswww.case.edu/php/chet/readline/rltop.html'
 
   keg_only <<-EOS
@@ -12,7 +12,7 @@ to keg-only.
 EOS
 
   def patches
-    patches = (1..5).collect { |n| "ftp://ftp.gnu.org/gnu/readline/readline-6.0-patches/readline60-%03d"%n }
+    patches = (1..2).collect { |n| "ftp://ftp.gnu.org/gnu/readline/readline-6.1-patches/readline61-%03d"%n }
     { :p0 => patches }
   end
 
