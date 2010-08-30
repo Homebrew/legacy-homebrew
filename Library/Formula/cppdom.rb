@@ -10,7 +10,7 @@ class Cppdom <Formula
 
   def install
     args = ["prefix=#{prefix}", "build_test=no", "var_type=optimized",
-            "BoostBaseDir=#{Formula.factory('boost').prefix}/"]
+      "BoostBaseDir=#{HOMEBREW_PREFIX}/"]
 
     if snow_leopard_64?
       args << 'var_arch=x64'
@@ -18,6 +18,28 @@ class Cppdom <Formula
       args << 'var_arch=ia32'
     end
 
-    system "scons", "install", *args
+    system "#{HOMEBREW_PREFIX}/bin/scons", "install", *args
+  end
+
+  def patches
+	# Don't install to prefix/lib64
+	DATA
   end
 end
+
+__END__
+diff --git a/SConstruct b/SConstruct
+index ef38778..97a9ea3 100644
+--- a/SConstruct
++++ b/SConstruct
+@@ -170,9 +170,6 @@ if not SConsAddons.Util.hasHelpFlag():
+
+       inst_paths = copy.copy(base_inst_paths)
+       inst_paths['libPrefix'] = pj(inst_paths['flagpollPrefix'], 'lib')
+-      if "x64" == combo["arch"]:
+-         inst_paths['lib'] = inst_paths['lib'] + '64'
+-         inst_paths['libPrefix'] = inst_paths['libPrefix'] + '64'
+       if "debug" == combo["type"]:
+          inst_paths["lib"] = pj(inst_paths["lib"],"debug")
+          inst_paths['libPrefix'] = pj(inst_paths['libPrefix'],'debug')
+
