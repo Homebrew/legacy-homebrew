@@ -13,6 +13,10 @@ def use_wmf?
   ARGV.include? '--use-wmf'
 end
 
+def disable_openmp?
+  ARGV.include? '--disable-openmp'
+end
+
 def x11?
   # I used this file because old Xcode seems to lack it, and its that old
   # Xcode that loads of people seem to have installed still
@@ -43,7 +47,8 @@ class Imagemagick <Formula
   def options
     [
       ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
-      ['--use-wmf', 'Compile with libwmf support.']
+      ['--use-wmf', 'Compile with libwmf support.'],
+      ['--disable-openmp', 'Disable OpenMP.']
     ]
   end
 
@@ -60,7 +65,7 @@ class Imagemagick <Formula
              "--with-modules",
              "--without-magick-plus-plus" ]
 
-    args << "--disable-openmp" if MACOS_VERSION < 10.6 # libgomp unavailable
+    args << "--disable-openmp" if MACOS_VERSION < 10.6 or disable_openmp?
     args << "--without-gslib" unless ghostscript_srsly?
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
                 unless ghostscript_srsly? or ghostscript_fonts?
