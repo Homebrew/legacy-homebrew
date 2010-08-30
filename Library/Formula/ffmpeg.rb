@@ -14,6 +14,7 @@ class Ffmpeg <Formula
   depends_on 'theora' => :optional
   depends_on 'libvorbis' => :optional
   depends_on 'libogg' => :optional
+  depends_on 'libvpx' => :optional
 
   def install
     args = ["--disable-debug",
@@ -30,6 +31,7 @@ class Ffmpeg <Formula
     args << "--enable-libmp3lame" if Formula.factory('lame').installed?
     args << "--enable-libtheora" if Formula.factory('theora').installed?
     args << "--enable-libvorbis" if Formula.factory('libvorbis').installed?
+    args << "--enable-libvpx" if Formula.factory('libvpx').installed?
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
