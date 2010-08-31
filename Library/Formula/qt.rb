@@ -22,46 +22,46 @@ class Qt <Formula
   depends_on 'sqlite' if MACOS_VERSION <= 10.5
 
   def install
-    conf_args = ["-prefix", prefix,
-                 "-system-libpng", "-system-zlib",
-                 "-nomake", "demos", "-nomake", "examples",
-                 "-release", "-cocoa",
-                 "-confirm-license", "-opensource",
-                 "-fast"]
+    args = ["-prefix", prefix,
+            "-system-libpng", "-system-zlib",
+            "-nomake", "demos", "-nomake", "examples",
+            "-release", "-cocoa",
+            "-confirm-license", "-opensource",
+            "-fast"]
 
     # See: http://github.com/mxcl/homebrew/issues/issue/744
-    conf_args << "-system-sqlite" if MACOS_VERSION <= 10.5
-    conf_args << "-plugin-sql-mysql" if (HOMEBREW_CELLAR+"mysql").directory?
+    args << "-system-sqlite" if MACOS_VERSION <= 10.5
+    args << "-plugin-sql-mysql" if (HOMEBREW_CELLAR+"mysql").directory?
 
     if ARGV.include? '--with-qtdbus'
-      conf_args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
-      conf_args << "-I#{Formula.factory('d-bus').include}/dbus-1.0"
-      conf_args << "-L#{Formula.factory('d-bus').lib}"
-      conf_args << "-ldbus-1"
-      conf_args << "-dbus-linked"
+      args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
+      args << "-I#{Formula.factory('d-bus').include}/dbus-1.0"
+      args << "-L#{Formula.factory('d-bus').lib}"
+      args << "-ldbus-1"
+      args << "-dbus-linked"
     end
 
     if ARGV.include? '--with-qt3support'
-      conf_args << "-qt3support"
+      args << "-qt3support"
     else
-      conf_args << "-no-qt3support"
+      args << "-no-qt3support"
     end
 
     if Qt.x11?
-      conf_args << "-L/usr/X11R6/lib"
-      conf_args << "-I/usr/X11R6/include"
+      args << "-L/usr/X11R6/lib"
+      args << "-I/usr/X11R6/include"
     else
-      conf_args << "-L#{Formula.factory('libpng').lib}"
-      conf_args << "-I#{Formula.factory('libpng').include}"
+      args << "-L#{Formula.factory('libpng').lib}"
+      args << "-I#{Formula.factory('libpng').include}"
     end
 
-    if MACOS_VERSION >= 10.6 and Hardware.is_64_bit?
-      conf_args << '-arch' << 'x86_64'
+    if snow_leopard_64?
+      args << '-arch' << 'x86_64'
     else
-      conf_args << '-arch' << 'x86'
+      args << '-arch' << 'x86'
     end
 
-    system "./configure", *conf_args
+    system "./configure", *args
     system "make install"
 
     # stop crazy disk usage

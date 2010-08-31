@@ -55,12 +55,19 @@ EOS
   def caveats; <<-EOS.undent
     npm will install binaries to:
       #{share_bin}
+
     You may want to add this to your PATH.
 
     npm will install libraries to:
-      #{node_lib}/.node_libraries
+      #{node_lib}/.npm
 
     To manually remove libraries installed by npm, delete this (hidden!) folder.
+
+    npm will also symlink libraries to:
+      #{node_lib}
+
+    You will want to add this to your NODE_PATH if you wish to
+    require libraries without a path.
     EOS
   end
 end

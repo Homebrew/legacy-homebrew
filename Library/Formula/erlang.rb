@@ -36,25 +36,23 @@ class Erlang <Formula
     # If building from GitHub, this step is required (but not for tarball downloads.)
     system "./otp_build autoconf" if File.exist? "otp_build"
 
-    config_flags = ["--disable-debug",
-                    "--prefix=#{prefix}",
-                    "--enable-kernel-poll",
-                    "--enable-threads",
-                    "--enable-dynamic-ssl-lib",
-                    "--enable-smp-support"]
+    args = ["--disable-debug",
+            "--prefix=#{prefix}",
+            "--enable-kernel-poll",
+            "--enable-threads",
+            "--enable-dynamic-ssl-lib",
+            "--enable-smp-support"]
 
     unless ARGV.include? '--disable-hipe'
       # HIPE doesn't strike me as that reliable on OS X
       # http://syntatic.wordpress.com/2008/06/12/macports-erlang-bus-error-due-to-mac-os-x-1053-update/
       # http://www.erlang.org/pipermail/erlang-patches/2008-September/000293.html
-      config_flags << '--enable-hipe'
+      args << '--enable-hipe'
     end
 
-    if Hardware.is_64_bit? and MACOS_VERSION >= 10.6
-      config_flags << "--enable-darwin-64bit"
-    end
+    args << "--enable-darwin-64bit" if snow_leopard_64?
 
-    system "./configure", *config_flags
+    system "./configure", *args
     system "touch lib/wx/SKIP" if MACOS_VERSION >= 10.6
     system "make"
     system "make install"
