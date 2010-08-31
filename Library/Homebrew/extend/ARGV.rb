@@ -69,30 +69,38 @@ module HomebrewArgvExtension
 
   def usage; <<-EOS.undent
     Usage: brew command [formula] ...
-    Usage: brew [--prefix] [--cache] [--version|-v]
-    Usage: brew [--verbose|-v]
 
     Principle Commands:
-      install formula ... [--ignore-dependencies] [--HEAD|-H]
-      list [--unbrewed] [formula] ...
+      install formula ... [--ignore-dependencies] [--HEAD]
+      list [--unbrewed|--versions] [formula] ...
       search [/regex/] [substring]
       uninstall formula ...
       update
 
     Other Commands:
-      cleanup [formula]
+      info formula [--github]
+      deps formula
+      uses formula [--installed]
       home formula ...
-      info [formula] [--github]
+      cleanup [formula]
       link formula ...
+      unlink formula ...
       outdated
       prune
-      unlink formula ...
+      doctor
+
+    Informational:
+      --version
+      --config
+      --prefix [formula]
+      --cache [formula]
 
     Commands useful when contributing:
       create URL
       edit [formula]
+      audit [formula]
       log formula
-      install formula [--debug|-d] [--interactive|-i] [--verbose|-v]
+      install formula [-vd|-i]
 
     For more information:
       man brew
@@ -102,12 +110,6 @@ module HomebrewArgvExtension
     EOS
   end
 
-  private
-
-  def downcased_unique_named
-    @downcased_unique_named ||= named.map(&:downcase).uniq
-  end
-
   def resolve_alias name
     aka = HOMEBREW_REPOSITORY+"Library/Aliases/#{name}"
     if aka.file?
@@ -115,5 +117,11 @@ module HomebrewArgvExtension
     else
       name
     end
+  end
+
+  private
+
+  def downcased_unique_named
+    @downcased_unique_named ||= named.map{|arg| arg.downcase}.uniq
   end
 end

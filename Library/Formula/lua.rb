@@ -18,7 +18,7 @@ class Lua <Formula
     # Use our CC/CFLAGS to compile.
     inreplace 'src/Makefile' do |s|
       s.remove_make_var! 'CC'
-      s.change_make_var! 'CFLAGS', "#{ENV['CFLAGS']} $(MYCFLAGS)"
+      s.change_make_var! 'CFLAGS', "#{ENV.cflags} $(MYCFLAGS)"
     end
 
     # Fix path in the config header

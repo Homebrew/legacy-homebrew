@@ -1,8 +1,5 @@
 require 'formula'
 
-# iri support requires libidn, which pulls in getteext, so we
-# disable this by default.
-
 class Wget <Formula
   homepage 'http://www.gnu.org/software/wget/'
   url 'http://ftp.gnu.org/gnu/wget/wget-1.12.tar.bz2'
@@ -11,7 +8,7 @@ class Wget <Formula
   depends_on "libidn" if ARGV.include? "--enable-iri"
 
   def options
-    [["--enable-iri", "Enable iri support (which pulls in libidn and gettext.)"]]
+    [["--enable-iri", "Enable iri support."]]
   end
 
   def install

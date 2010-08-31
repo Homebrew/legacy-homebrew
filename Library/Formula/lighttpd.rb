@@ -1,8 +1,8 @@
 require 'formula'
 
 class Lighttpd <Formula
-  url 'http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.26.tar.bz2'
-  md5 'a682c8efce47a2f4263a247ba0813c9b'
+  url 'http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.28.tar.bz2'
+  md5 '586eb535d31ac299652495b058dd87c4'
   homepage 'http://www.lighttpd.net/'
 
   depends_on 'pkg-config'

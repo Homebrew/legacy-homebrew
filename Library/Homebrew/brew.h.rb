@@ -91,14 +91,16 @@ class #{Formula.class_s name} <Formula
 <% end %>
 
   def install
-  <% if mode == :cmake %>
+<% if mode == :cmake %>
     system "cmake . \#{std_cmake_parameters}"
-  <% elsif mode == :autotools %>
-    system "./configure", "--prefix=\#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-  <% else %>
-    system "./configure", "--prefix=\#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+<% elsif mode == :autotools %>
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=\#{prefix}"
+<% else %>
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=\#{prefix}"
     # system "cmake . \#{std_cmake_parameters}"
-  <% end %>
+<% end %>
     system "make install"
   end
 end
@@ -128,6 +130,20 @@ def make url
   force_text = "If you really want to make this formula use --force."
 
   case name.downcase
+  when /vim/, /screen/
+    raise <<-EOS
+#{name} is blacklisted for creation
+Apple distributes this program with OS X.
+
+#{force_text}
+    EOS
+  when /libarchive/
+    raise <<-EOS
+#{name} is blacklisted for creation
+Apple distributes this library with OS X, you can find it in /usr/lib.
+
+#{force_text}
+    EOS
   when /libxml/, /libxlst/, /freetype/, /libpng/
     raise <<-EOS
 #{name} is blacklisted for creation
@@ -156,18 +172,17 @@ end
 
 def github_info name
   formula_name = Formula.path(name).basename
-  user = ''
-  branch = ''
+  user = 'mxcl'
+  branch = 'master'
 
   if system "/usr/bin/which -s git"
-    user=`git config --global github.user`.chomp
-    all_branches = `git branch 2>/dev/null`
-     /^\*\s*(.*)/.match all_branches
-    branch = ($1 || '').chomp
+    gh_user=`git config --global github.user 2>/dev/null`.chomp
+    /^\*\s*(.*)/.match(`git --work-tree=#{HOMEBREW_REPOSITORY} branch 2>/dev/null`)
+    unless $1.nil? || $1.empty? || gh_user.empty?
+      branch = $1.chomp
+      user = gh_user
+    end
   end
-  
-  user = 'mxcl' if user.empty?
-  branch = 'master' if branch.empty?
 
   return "http://github.com/#{user}/homebrew/commits/#{branch}/Library/Formula/#{formula_name}"
 end
@@ -238,8 +253,9 @@ def cleanup name
   require 'formula'
 
   f = Formula.factory name
+  formula_cellar = f.prefix.parent
 
-  if f.installed? and f.prefix.parent.directory?
+  if f.installed? and formula_cellar.directory?
     kids = f.prefix.parent.children
     kids.each do |keg|
       next if f.prefix == keg
@@ -248,12 +264,16 @@ def cleanup name
       puts
     end
   else
-    # we can't tell which one to keep in this circumstance
-    opoo "Skipping #{name}: most recent version #{f.version} not installed"
+    # If the cellar only has one version installed, don't complain
+    # that we can't tell which one to keep.
+    if formula_cellar.children.length > 1
+      opoo "Skipping #{name}: most recent version #{f.version} not installed"
+    end
   end
 end
 
 def clean f
+  require 'cleaner'
   Cleaner.new f
  
   # Hunt for empty folders and nuke them unless they are
@@ -522,71 +542,6 @@ private
 end
 
 
-################################################################ class Cleaner
-class Cleaner
-  def initialize f
-    @f=f
-    [f.bin, f.sbin, f.lib].select{|d|d.exist?}.each{|d|clean_dir d}
-    # info pages suck
-    info = f.share+'info'
-    info.rmtree if info.directory? and not f.skip_clean? info
-  end
-
-private
-  def strip path, args=''
-    return if @f.skip_clean? path
-    puts "strip #{path}" if ARGV.verbose?
-    path.chmod 0644 # so we can strip
-    unless path.stat.nlink > 1
-      system "strip", *(args+path)
-    else
-      path = path.to_s.gsub ' ', '\\ '
-
-      # strip unlinks the file and recreates it, thus breaking hard links!
-      # is this expected behaviour? patch does it too… still, this fixes it
-      tmp = `/usr/bin/mktemp -t homebrew_strip`.chomp
-      begin
-        `/usr/bin/strip #{args} -o #{tmp} #{path}`
-        `/bin/cat #{tmp} > #{path}`
-      ensure
-        FileUtils.rm tmp
-      end
-    end
-  end
-
-  def clean_file path
-    perms=0444
-    case `file -h '#{path}'`
-    when /Mach-O dynamically linked shared library/
-      # Stripping libraries is causing no end of trouble
-      # Lets just give up, and try to do it manually in instances where it
-      # makes sense
-      #strip path, '-SxX'
-    when /Mach-O [^ ]* ?executable/
-      strip path
-      perms=0555
-    when /script text executable/
-      perms=0555
-    end
-    path.chmod perms
-  end
-
-  def clean_dir d
-    d.find do |path|
-      if path.directory?
-        Find.prune if @f.skip_clean? path
-      elsif not path.file?
-        next
-      elsif path.extname == '.la' and not @f.skip_clean? path
-        # *.la files are stupid
-        path.unlink
-      elsif not path.symlink?
-        clean_file path
-      end
-    end
-  end
-end
-
 def gcc_42_build
   `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
   if $1
@@ -619,8 +574,4 @@ def llvm_build
     `#{xcode_path}/usr/bin/llvm-gcc -v 2>&1` =~ /LLVM build (\d{4,})/
     $1.to_i
   end
-end
-
-def x11_installed?
-  Pathname.new('/usr/X11/lib/libpng.dylib').exist?
 end

@@ -22,7 +22,7 @@ class Falcon <Formula
   depends_on 'pcre'
 
   def install
-    cmake_opts = "-DCMAKE_INSTALL_NAME_DIR=#{prefix}/lib"
+    cmake_opts = "-DCMAKE_INSTALL_NAME_DIR=#{lib}"
     ENV.append "EXTRA_CMAKE", cmake_opts
     system "./build.sh", "-p", "#{prefix}", "-int", "-el"
     system "./build.sh", "-i"

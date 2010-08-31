@@ -16,7 +16,7 @@ class Simh <Formula
 
       # Use our compiler & flags, and don't create dSYMs.
       s.gsub! "CC = gcc -std=c99 -U__STRICT_ANSI__ -g $(OS_CCDEFS) -I .",
-              "CC = #{ENV.cc} #{ENV['CFLAGS']} -std=c99 -U__STRICT_ANSI__ $(OS_CCDEFS) -I ."
+              "CC = #{ENV.cc} #{ENV.cflags} -std=c99 -U__STRICT_ANSI__ $(OS_CCDEFS) -I ."
     end
     system "make USE_NETWORK=1 all"
     bin.install Dir['BIN/*']

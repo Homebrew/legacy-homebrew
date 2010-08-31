@@ -10,12 +10,7 @@ class Tbb <Formula
     # Override build prefix so we can copy the dylibs out of the same place
     # no matter what system we're on
     args = ['tbb_build_prefix=BUILDPREFIX']
-
-    if MACOS_VERSION >= 10.6 and Hardware.is_64_bit?
-      args << "arch=intel64"
-    else
-      args << "arch=ia32"
-    end
+    args << (snow_leopard_64? ? "arch=intel64" : "arch=ia32")
 
     system "make", *args
     lib.install Dir['build/BUILDPREFIX_release/*.dylib']
