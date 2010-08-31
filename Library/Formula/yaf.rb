@@ -9,6 +9,8 @@ class Yaf <Formula
   depends_on 'libfixbuf'
 
   def install
+    fails_with_llvm "Please see http://github.com/mxcl/homebrew/issues/issue/2215 for details."
+
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"

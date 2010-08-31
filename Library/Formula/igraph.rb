@@ -9,6 +9,8 @@ class Igraph <Formula
   depends_on 'gmp'
 
   def install
+    fails_with_llvm "Segfault while compiling."
+
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end

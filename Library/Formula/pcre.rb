@@ -6,6 +6,8 @@ class Pcre <Formula
   md5 '780867a700e9d4e4b9cb47aa5453e4b2'
 
   def install
+    fails_with_llvm "Bus error in ld on SL 10.6.4"
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-utf8",

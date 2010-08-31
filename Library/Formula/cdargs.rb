@@ -6,6 +6,8 @@ class Cdargs <Formula
   md5 '50be618d67f0b9f2439526193c69c567'
 
   def install
+    fails_with_llvm "Bus error in ld on SL 10.6.4"
+
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make"
     system "make install-strip"

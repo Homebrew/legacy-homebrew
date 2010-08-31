@@ -1,9 +1,9 @@
 require 'formula'
 
 class Scummvm <Formula
-  url 'http://downloads.sourceforge.net/project/scummvm/scummvm/1.0.0/scummvm-1.0.0.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/scummvm/scummvm/1.1.1/scummvm-1.1.1.tar.bz2'
   homepage 'http://www.scummvm.org/'
-  md5 '11b911937e0fc73c94a7bdc374ab617c'
+  md5 'ed9098a78022d07fa1482f14325e3ab8'
 
   def caveats
     <<-EOS
@@ -17,6 +17,7 @@ prefer to use theirs. If so type `brew home scummvm' to visit their site.
   depends_on 'flac' => :recommended
   depends_on 'libvorbis' => :recommended
   depends_on 'libogg' => :recommended
+  depends_on 'fluid-synth' => :optional
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug"

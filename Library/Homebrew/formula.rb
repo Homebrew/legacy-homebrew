@@ -15,14 +15,14 @@ class SoftwareSpecification
   attr_reader :url, :specs, :using
 
   VCS_SYMBOLS = {
-    :bzr,     BazaarDownloadStrategy,
-    :curl,    CurlDownloadStrategy,
-    :cvs,     CVSDownloadStrategy,
-    :git,     GitDownloadStrategy,
-    :hg,      MercurialDownloadStrategy,
-    :nounzip, NoUnzipCurlDownloadStrategy,
-    :post,    CurlPostDownloadStrategy,
-    :svn,     SubversionDownloadStrategy,
+    :bzr     => BazaarDownloadStrategy,
+    :curl    => CurlDownloadStrategy,
+    :cvs     => CVSDownloadStrategy,
+    :git     => GitDownloadStrategy,
+    :hg      => MercurialDownloadStrategy,
+    :nounzip => NoUnzipCurlDownloadStrategy,
+    :post    => CurlPostDownloadStrategy,
+    :svn     => SubversionDownloadStrategy,
   }
 
   def initialize url, specs=nil
@@ -203,8 +203,7 @@ class Formula
         puts "If nothing is installed or the shell exits with a non-zero error code,"
         puts "Homebrew will abort. The installation prefix is:"
         puts prefix
-        ENV['HOMEBREW_DEBUG_INSTALL'] = name
-        interactive_shell
+        interactive_shell self
       end
     end
   end

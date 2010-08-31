@@ -13,6 +13,10 @@ def use_wmf?
   ARGV.include? '--use-wmf'
 end
 
+def disable_openmp?
+  ARGV.include? '--disable-openmp'
+end
+
 def x11?
   # I used this file because old Xcode seems to lack it, and its that old
   # Xcode that loads of people seem to have installed still
@@ -20,8 +24,8 @@ def x11?
 end
 
 class Imagemagick <Formula
-  url 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.6.3-4.tar.bz2'
-  md5 '94b9d2379c870e9d216955e338d214f2'
+  url 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.6.3-9.tar.bz2'
+  md5 'd97ea8010f0a46ee9d057a5e006e651b'
   homepage 'http://www.imagemagick.org'
 
   depends_on 'jpeg'
@@ -40,6 +44,14 @@ class Imagemagick <Formula
     path.extname == '.la'
   end
 
+  def options
+    [
+      ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
+      ['--use-wmf', 'Compile with libwmf support.'],
+      ['--disable-openmp', 'Disable OpenMP.']
+    ]
+  end
+
   def install
     ENV.x11 # Add to PATH for freetype-config on Snow Leopard
     ENV.O3 # takes forever otherwise
@@ -53,7 +65,7 @@ class Imagemagick <Formula
              "--with-modules",
              "--without-magick-plus-plus" ]
 
-    args << "--disable-openmp" if MACOS_VERSION < 10.6 # libgomp unavailable
+    args << "--disable-openmp" if MACOS_VERSION < 10.6 or disable_openmp?
     args << "--without-gslib" unless ghostscript_srsly?
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
                 unless ghostscript_srsly? or ghostscript_fonts?

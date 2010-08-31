@@ -4,7 +4,7 @@ brew(1) -- The missing package manager for OS X
 ## SYNOPSIS
 
 `brew` [--verbose|-v] command [options] [formula] ...  
-`brew` [--version|-v]  
+`brew` [--version|-v]
 
 ## DESCRIPTION
 
@@ -47,12 +47,12 @@ didn't include with OS X.
     If `--debug` is passed and brewing fails, opens a shell inside the
     temporary folder used for compiling.
 
-    If `--use-llvm` is passed, attempt to compile using the LLVM front-end to GCC.  
+    If `--use-llvm` is passed, attempt to compile using the LLVM front-end to GCC.
     *NOTE*: Not all formulae will build with LLVM.
 
     If `--ignore-dependencies` is passed, skip installing any dependencies of
-    any kind. If they are not already present, the formula will probably fail to
-    install.
+    any kind. If they are not already present, the formula will probably fail
+    to install.
 
     If `--HEAD` is passed, and <formula> defines it, install the HEAD version,
     aka master, trunk, unstable, dev.
@@ -78,7 +78,7 @@ didn't include with OS X.
     Opens a browser to the GitHub History page for formula <formula>.
 
   * `info --all`:
-    Summarises all installed packages; this is inteded to be used by
+    Summarises all installed packages; this is intended to be used by
     higher-level tools.
 
   * `info` <URL>:
@@ -129,12 +129,18 @@ didn't include with OS X.
   * `outdated`:
     Shows formula that have an updated version available.
 
-  * `deps` <formula>:
+  * `deps [--1]` <formula>:
     Shows <formula>'s dependencies.
 
-  * `uses` <formula>:
-    Shows the formulas that specify <formula> as a dependency. The list is not
-    recursive; only one level of dependencies is resolved.
+    If `--1` is passed, only show dependencies one level down, instead of
+    recursing.
+
+  * `uses [--installed]` <formula>:
+    Shows the formulas that specify <formula> as a dependency. The list is
+    not recursive; only one level of dependencies is resolved.
+
+    If `--installed` is passed, the list only shows formulae you have
+    installed.
 
   * `doctor`:
     Checks your system for potential problems.
@@ -158,17 +164,58 @@ to recognize `brew cmdname`.
 
 Some external commands are shipped with Homebrew, and enabled by default.
 
+  * `audit`:
+    Checks all formulae for Homebrew coding style violations. This should be
+    run before submitting a new formula for inclusion.
+
   * `fetch` <formula>:
     Downloads the tarball or checks out from VCS for the given <formula>. For
     tarballs, also prints MD5 and SHA1 checksums.
 
-  * `audit`:
-    Checks all formulae for Homebrew coding style violations.
+  * `man`:
+    Regenerates this man page from source.
+
+    *NOTE*: Requires [`ronn`][ronn].
+
+  * `missing`:
+    Checks all installed formuale for missing dependencies.
+
+  * `server`:
+    Starts a local webserver with an app that lets you browse available
+    formulae, similar to `gem server`.
+
+    *NOTE*: Requires [`sinatra`][sinatra].
+
+  * `test` <formula>:
+    A few formulae provide a test method. `brew test <formula>` runs this
+    test method. There is no standard output or return code, but it should
+    generally indicate to the user if something is wrong with the installed
+    formula.
+
+    Example: `brew install jruby && brew test jruby`
+
+[ronn]: http://rtomayko.github.com/ronn/
+        "Ronn"
+
+[sinatra]: http://www.sinatrarb.com/
+           "Sinatra"
+
 
 ## ENVIRONMENT
 
   * HOMEBREW\_DEBUG:
-    If set, instructs Homebrew to always assume `--debug` when running commands.
+    If set, instructs Homebrew to always assume `--debug` when running
+    commands.
+
+  * HOMEBREW\_DEBUG\_INSTALL:
+    When `brew install -d` or `brew install -i` drops into a shell,
+    `HOMEBREW_DEBUG_INSTALL` will be set to the name of the formula being
+    brewed.
+
+  * HOMEBREW\_DEBUG\_PREFIX:
+    When `brew install -d` or `brew install -i` drops into a shell,
+    `HOMEBREW_DEBUG__PREFIX` will be set to the target prefix in the Cellar
+    of the formula being brewed.
 
   * HOMEBREW\_EDITOR:
     If set, Homebrew will use this editor when editing a single formula, or
@@ -177,6 +224,10 @@ Some external commands are shipped with Homebrew, and enabled by default.
     *NOTE*: `brew edit` will open all of Homebrew as discontinuous files and
     folders. TextMate can handle this correctly in project mode, but many
     editors will do strange things in this case.
+
+  * HOMEBREW\_KEEP\_INFO:
+    If set, Homebrew will not remove files from share/info, allowing them to
+    be linked from the Cellar.
 
   * HOMEBREW\_SVN:
     When exporting from Subversion, Homebrew will use `HOMEBREW_SVN` if set,
@@ -194,7 +245,8 @@ Some external commands are shipped with Homebrew, and enabled by default.
     configurations.)
 
   * HOMEBREW\_USE\_LLVM:
-    If set, instructs Homebrew to use the LLVM front-ends to the GCC compilers.
+    If set, instructs Homebrew to use the LLVM front-ends to the GCC
+    compilers.
 
     *NOTE*: Not all formulae will build correctly under LLVM.
 
@@ -204,7 +256,7 @@ Some external commands are shipped with Homebrew, and enabled by default.
 
 ## SEE ALSO
 
- Homebrew Wiki: http://wiki.github.com/mxcl/homebrew/
+Homebrew Wiki: http://wiki.github.com/mxcl/homebrew/
 
 ## AUTHORS
 

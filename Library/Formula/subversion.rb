@@ -27,7 +27,8 @@ class Subversion <Formula
       ['--java', 'Build Java bindings.'],
       ['--perl', 'Build Perl bindings.'],
       ['--python', 'Build Python bindings.'],
-      ['--universal', 'Build as a Universal Intel binary.']
+      ['--universal', 'Build as a Universal Intel binary.'],
+      ['--unicode-path', 'Include support for OS X unicode (but see caveats!)']
     ]
   end
 

@@ -5,10 +5,6 @@ class Ffmpeg <Formula
   homepage 'http://ffmpeg.org/'
   sha1 'c130e3bc368251b9130ce6eafb44fe8c3993ff5c'
 
-  # Before 0.6, the head version was:
-  # head 'svn://svn.ffmpeg.org/ffmpeg/trunk',
-  #   :revisions => { :trunk => 22916, 'libswscale' => 31045 }
-  # We probably need new revisions specified here:
   head 'svn://svn.ffmpeg.org/ffmpeg/trunk'
 
   depends_on 'x264' => :optional
@@ -18,23 +14,24 @@ class Ffmpeg <Formula
   depends_on 'theora' => :optional
   depends_on 'libvorbis' => :optional
   depends_on 'libogg' => :optional
+  depends_on 'libvpx' => :optional
 
   def install
-    configure_flags = [
-      "--prefix=#{prefix}",
-      "--disable-debug",
-      "--enable-shared",
-      "--enable-pthreads",
-      "--enable-nonfree",
-      "--enable-gpl"
-    ]
+    args = ["--disable-debug",
+            "--prefix=#{prefix}",
+            "--enable-shared",
+            "--enable-pthreads",
+            "--enable-nonfree",
+            "--enable-gpl",
+            "--disable-indev=jack"]
 
-    configure_flags << "--enable-libx264" if Formula.factory('x264').installed?
-    configure_flags << "--enable-libfaac" if Formula.factory('faac').installed?
-    configure_flags << "--enable-libfaad" if Formula.factory('faad2').installed?
-    configure_flags << "--enable-libmp3lame" if Formula.factory('lame').installed?
-    configure_flags << "--enable-libtheora" if Formula.factory('theora').installed?
-    configure_flags << "--enable-libvorbis" if Formula.factory('libvorbis').installed?
+    args << "--enable-libx264" if Formula.factory('x264').installed?
+    args << "--enable-libfaac" if Formula.factory('faac').installed?
+    args << "--enable-libfaad" if Formula.factory('faad2').installed?
+    args << "--enable-libmp3lame" if Formula.factory('lame').installed?
+    args << "--enable-libtheora" if Formula.factory('theora').installed?
+    args << "--enable-libvorbis" if Formula.factory('libvorbis').installed?
+    args << "--enable-libvpx" if Formula.factory('libvpx').installed?
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
@@ -42,10 +39,10 @@ class Ffmpeg <Formula
       ENV.append_to_cflags "-mdynamic-no-pic"
     end
 
-    system "./configure", *configure_flags
+    system "./configure", *args
 
-    inreplace 'config.mak' do |s|
-      if MACOS_VERSION >= 10.6 and Hardware.is_64_bit?
+    if snow_leopard_64?
+      inreplace 'config.mak' do |s|
         shflags = s.get_make_var 'SHFLAGS'
         s.change_make_var! 'SHFLAGS', shflags.gsub!(' -Wl,-read_only_relocs,suppress', '')
       end

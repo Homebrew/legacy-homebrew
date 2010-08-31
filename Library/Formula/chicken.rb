@@ -8,7 +8,7 @@ class Chicken <Formula
   def install
     ENV.deparallelize
     settings = "PREFIX=#{prefix} PLATFORM=macosx"
-    settings << " ARCH=x86-64" if Hardware.is_64_bit? and MACOS_VERSION >= 10.6
+    settings << " ARCH=x86-64" if snow_leopard_64?
     system "make #{settings}"
     system "make install #{settings}"
   end

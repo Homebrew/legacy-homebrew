@@ -16,7 +16,7 @@ class X264 <Formula
       ldflags = s.get_make_var 'LDFLAGS'
       s.change_make_var! 'LDFLAGS', ldflags.gsub!(' -s', '')
 
-      if MACOS_VERSION >= 10.6 and Hardware.is_64_bit?
+      if snow_leopard_64?
         soflags = s.get_make_var 'SOFLAGS'
         s.change_make_var! 'SOFLAGS', soflags.gsub!(' -Wl,-read_only_relocs,suppress', '')
       end
