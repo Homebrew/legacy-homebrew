@@ -76,7 +76,7 @@ class Docbookxsl <Formula
   homepage 'http://docbook.sourceforge.net/'
   def install
     doc_files = %w[AUTHORS BUGS README RELEASE-NOTES.txt TODO VERSION NEWS COPYING]
-    xsl_files = %w[catalog.xml common eclipse extensions fo highlighting html htmlhelp images javahelp lib manpages params profiling roundtrip slides template tools website xhtml xhtml-1_1]
+    xsl_files = %w[catalog.xml common eclipse epub extensions fo highlighting html htmlhelp images javahelp lib manpages params profiling roundtrip slides template tools website xhtml xhtml-1_1]
     docbook = Formula.factory 'docbook'
     (docbook.prefix+'docbook/xsl'+version).install xsl_files + doc_files
   end
