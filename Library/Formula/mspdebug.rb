@@ -11,10 +11,9 @@ class Mspdebug <Formula
   depends_on 'libelf'
 
   def install
-    inreplace 'Makefile' do |contents|
-      contents.change_make_var! "DARWIN_CFLAGS", "-I/usr/local/include"
-      contents.change_make_var! "DARWIN_LDFLAGS", "-L/usr/local/lib"
-    end
-    system "PREFIX=#{prefix} make install"
+    ENV["PREFIX"] = prefix
+    # Don't assume MacPorts:
+    inreplace "Makefile", "/opt", "/usr"
+    system "make install"
   end
 end
