@@ -12,7 +12,17 @@ class Maven <Formula
   end
 
   def install
+    # Remove windows files
     rm_f Dir["bin/*.bat"]
-    prefix.install %w[bin conf boot lib]
+
+    # Install jars in libexec to avoid conflicts
+    prefix.install %w{ NOTICE.txt LICENSE.txt README.txt }
+    libexec.install Dir['*']
+
+    # Symlink binaries
+    bin.mkpath
+    Dir["#{libexec}/bin/*"].each do |f|
+      ln_s f, bin+File.basename(f)
+    end
   end
 end
