@@ -17,24 +17,15 @@ class LlvmMsp430 <Formula
 
   def install
     system "make all"
-    man.mkpath
-    Dir.chdir 'build' do
-      man.install Dir['man/*']
-      man.install Dir['share/man/*']
-      prefix.install %w['include', 'lib'] # lib from libcompiler_rt
-      lib.install Dir['msp430/lib/*'] # lib from mspgcc's libc
-      bin.install Dir['bin/*'] 
-    end
+    prefix.install Dir['build/*']
   end
 
   def caveats
     <<-EOS.undent
-      MSPGCC's libc and compiler-rt's libcompiler_rt.[Generic/Optimized].a were both installed into #{prefix}/lib/msp430.
-
       To build your MSP430 project, use commands like this:
 
         #{prefix}/bin/clang -ccc-host-triple msp430-elf -c foo.c
-        #{prefix}/bin/clang -ccc-host-triple msp430-elf -L#{prefix}/lib/msp430 -o foo.msp foo.o
+        #{prefix}/bin/clang -ccc-host-triple msp430-elf -L#{prefix}/msp430/lib -L#{prefix}/lib/msp430 -o foo.msp foo.o
 
       For more details, visit https://www.fooe.net/trac/llvm-msp430
     EOS
