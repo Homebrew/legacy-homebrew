@@ -11,7 +11,6 @@ class LlvmMsp430 <Formula
   KEG
   
   def download_strategy
-    ohai "The source tree is about 1 GB, but will be removed after the build is complete."
     SubversionDownloadStrategy
   end
 
@@ -22,12 +21,20 @@ class LlvmMsp430 <Formula
 
   def caveats
     <<-EOS.undent
-      To build your MSP430 project, use commands like this:
+      Since this package is keg-only, you must run build commands using something like:
 
-        #{prefix}/bin/clang -ccc-host-triple msp430-elf -c foo.c
-        #{prefix}/bin/clang -ccc-host-triple msp430-elf -L#{prefix}/msp430/lib -L#{prefix}/lib/msp430 -o foo.msp foo.o
+        PATH=#{prefix}/bin:$PATH make
 
-      For more details, visit https://www.fooe.net/trac/llvm-msp430
+      You may use:
+
+        PATH=`brew --prefix llvm-msp430`/bin
+
+      to get the appropiate PATH that will continue to work if versions change.
+
+      The following websites may be helpful for building your project:
+
+        http://processors.wiki.ti.com/index.php/MSP430_LaunchPad_Mac_OS_X
+        https://www.fooe.net/trac/llvm-msp430
     EOS
   end
 end
