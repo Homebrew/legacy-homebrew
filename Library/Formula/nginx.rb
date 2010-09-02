@@ -48,6 +48,8 @@ class Nginx < Formula
 
     system "./configure", *args
     system "make install"
+
+    (prefix+'org.nginx.plist').write startup_plist
   end
 
   def caveats
@@ -58,7 +60,39 @@ port is set to localhost:8080.
 If you want to host pages on your local machine to the public, you should
 change that to localhost:80, and run `sudo nginx`. You'll need to turn off
 any other web servers running port 80, of course.
+
+You can start nginx automatically on login with:
+    cp #{prefix}/org.nginx.plist ~/Library/LaunchAgents
+    launchctl load -w ~/Library/LaunchAgents/org.nginx.plist
+
     CAVEATS
+  end
+
+  def startup_plist
+    return <<-EOPLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>org.nginx</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>UserName</key>
+    <string>#{`whoami`.chomp}</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>#{sbin}/nginx</string>
+        <string>-g</string>
+        <string>daemon off;</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>#{HOMEBREW_PREFIX}</string>
+  </dict>
+</plist>
+    EOPLIST
   end
 end
 
