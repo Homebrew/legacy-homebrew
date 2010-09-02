@@ -9,6 +9,7 @@ class Sox <Formula
   depends_on 'libvorbis' => :optional
   depends_on 'flac' => :optional
   depends_on 'libao' => :optional
+  depends_on 'mad' # see commit message
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
