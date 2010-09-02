@@ -9,7 +9,7 @@ class LlvmMsp430 <Formula
     This brew builds its own 'clang' and 'llvm',
     which conflict with XCode and the llvm formula.
   KEG
-  
+
   def download_strategy
     SubversionDownloadStrategy
   end
@@ -23,7 +23,7 @@ class LlvmMsp430 <Formula
     <<-EOS.undent
       Since this package is keg-only, you must run build commands using something like:
 
-        PATH=#{prefix}/bin:$PATH make
+        PATH=#{bin}:$PATH make
 
       You may use:
 
