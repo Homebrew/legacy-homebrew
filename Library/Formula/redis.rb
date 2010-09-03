@@ -1,10 +1,10 @@
 require 'formula'
 
 class Redis <Formula
-  url 'http://redis.googlecode.com/files/redis-1.2.6.tar.gz'
+  url 'http://redis.googlecode.com/files/redis-2.0.0.tar.gz'
   head 'git://github.com/antirez/redis.git'
   homepage 'http://code.google.com/p/redis/'
-  sha1 'c71aef0b3f31acb66353d86ba57dd321b541043f'
+  sha1 '078601a2ee6d900f938709c9b40526646a449453'
 
   def install
     fails_with_llvm "Breaks with LLVM"
@@ -13,9 +13,8 @@ class Redis <Formula
     src = File.exists?('src/Makefile') ? 'src' : '.'
     system "make -C #{src}"
 
-    %w( redis-benchmark redis-cli redis-server redis-stat redis-check-dump ).each { |p|
-      # Some of these commands are only in 1.2.x, some only in head
-      bin.install "#{src}/#{p}" rescue nil
+    %w( redis-benchmark redis-cli redis-server redis-check-dump ).each { |p|
+      bin.install "#{src}/#{p}"
     }
 
     %w( run db/redis log ).each { |p| (var+p).mkpath }
