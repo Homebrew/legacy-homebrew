@@ -1,9 +1,9 @@
 require 'formula'
 
 class Bitlbee <Formula
-  url 'http://get.bitlbee.org/src/bitlbee-1.2.7.tar.gz'
+  url 'http://get.bitlbee.org/src/bitlbee-1.2.8.tar.gz'
   homepage 'http://www.bitlbee.org/'
-  md5 '46cb8c0a930970cccd09dce4b3155cae'
+  md5 'e1fbbd9d96ec7c2377b1b286689c1b83'
 
   depends_on 'glib'
   depends_on 'gnutls'

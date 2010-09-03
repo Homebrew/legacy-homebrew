@@ -15,14 +15,14 @@ class SoftwareSpecification
   attr_reader :url, :specs, :using
 
   VCS_SYMBOLS = {
-    :bzr,     BazaarDownloadStrategy,
-    :curl,    CurlDownloadStrategy,
-    :cvs,     CVSDownloadStrategy,
-    :git,     GitDownloadStrategy,
-    :hg,      MercurialDownloadStrategy,
-    :nounzip, NoUnzipCurlDownloadStrategy,
-    :post,    CurlPostDownloadStrategy,
-    :svn,     SubversionDownloadStrategy,
+    :bzr     => BazaarDownloadStrategy,
+    :curl    => CurlDownloadStrategy,
+    :cvs     => CVSDownloadStrategy,
+    :git     => GitDownloadStrategy,
+    :hg      => MercurialDownloadStrategy,
+    :nounzip => NoUnzipCurlDownloadStrategy,
+    :post    => CurlPostDownloadStrategy,
+    :svn     => SubversionDownloadStrategy,
   }
 
   def initialize url, specs=nil
@@ -172,7 +172,7 @@ class Formula
   #   skip_clean [bin+"foo", lib+"bar"]
   # redefining skip_clean? in formulas is now deprecated
   def skip_clean? path
-    return true if @skip_clean_all
+    return true if self.class.skip_clean_all?
     to_check = path.relative_path_from(prefix).to_s
     self.class.skip_clean_paths.include? to_check
   end
@@ -203,8 +203,7 @@ class Formula
         puts "If nothing is installed or the shell exits with a non-zero error code,"
         puts "Homebrew will abort. The installation prefix is:"
         puts prefix
-        ENV['HOMEBREW_DEBUG_INSTALL'] = name
-        interactive_shell
+        interactive_shell self
       end
     end
   end
@@ -291,6 +290,16 @@ class Formula
     opoo "LLVM was requested, but this formula is reported as not working with LLVM:"
     puts msg
     puts "Tested with LLVM build #{build}" unless build == nil
+    puts
+
+    if ARGV.force?
+      puts "Continuing anyway. If this works, let us know so we can update the\n"+
+           "formula to remove the warning."
+    else
+      puts "Continuing with GCC 4.2 instead.\n"+
+           "(Use `brew install --force ...` to force use of LLVM.)"
+      ENV.gcc_4_2
+    end
   end
 
 protected
@@ -530,6 +539,10 @@ EOF
       [paths].flatten.each do |p|
         @skip_clean_paths << p.to_s unless @skip_clean_paths.include? p.to_s
       end
+    end
+
+    def skip_clean_all?
+      @skip_clean_all
     end
 
     def skip_clean_paths

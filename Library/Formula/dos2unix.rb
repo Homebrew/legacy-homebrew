@@ -9,7 +9,7 @@ class Dos2unix <Formula
     File.unlink 'dos2unix'
 
     # we don't use the Makefile as it doesn't optimize
-    system "#{ENV.cc} #{ENV['CFLAGS']} dos2unix.c -o dos2unix"
+    system "#{ENV.cc} #{ENV.cflags} dos2unix.c -o dos2unix"
 
     # make install is broken due to INSTALL file, but also it sucks so we'll do it
     # also Ruby 1.8 is broken, it won't allow you to move a symlink that's

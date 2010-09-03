@@ -11,6 +11,7 @@ class Flac <Formula
   md5 '153c8b15a54da428d1f0fadc756c22c7'
 
   depends_on 'lame'
+  depends_on 'libogg' => :optional
 
   def install
     # sadly the asm optimisations won't compile since Leopard, and nobody

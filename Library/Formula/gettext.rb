@@ -5,11 +5,15 @@ class Gettext <Formula
   md5 '58a2bc6d39c0ba57823034d55d65d606'
   homepage 'http://www.gnu.org/software/gettext/'
 
+  keg_only "OS X provides the BSD gettext library and some software gets confused if both are in the library path."
+
   def patches
     'http://gist.github.com/raw/186336/2fe65fab894f94a03aab2f03349ae7f1febcd301/mac-osx-105-environ.patch'
   end
 
-  keg_only "OS X provides the BSD gettext library and some software gets confused if both are in the library path."
+  def options
+    [['--with-examples', 'Keep example files.']]
+  end
 
   def install
     ENV.libxml2

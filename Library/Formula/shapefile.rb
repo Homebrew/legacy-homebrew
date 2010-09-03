@@ -9,7 +9,7 @@ class Shapefile <Formula
     dylib = lib+"libshp.#{version}.dylib"
 
     inreplace 'Makefile' do |s|
-      s.change_make_var! "CFLAGS", ENV['CFLAGS']
+      s.change_make_var! "CFLAGS", ENV.cflags
     end
 
     system "make all"

@@ -82,7 +82,12 @@ def pretty_duration s
   return "%.1f minutes" % (s/60)
 end
 
-def interactive_shell
+def interactive_shell f=nil
+  unless f.nil?
+    ENV['HOMEBREW_DEBUG_PREFIX'] = f.prefix
+    ENV['HOMEBREW_DEBUG_INSTALL'] = f.name
+  end
+
   fork {exec ENV['SHELL'] }
   Process.wait
   unless $?.success?
@@ -276,4 +281,8 @@ def dump_build_env env
     value = env[k]
     puts "#{k}: #{value}" if value
   end
+end
+
+def x11_installed?
+  Pathname.new('/usr/X11/lib/libpng.dylib').exist?
 end
