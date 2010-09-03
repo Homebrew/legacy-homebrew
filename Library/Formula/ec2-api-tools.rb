@@ -41,15 +41,8 @@ end
 
 class Ec2ApiTools <AmazonWebServicesFormula
   homepage 'http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351'
-  url 'http://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.3-51254.zip'
-  md5 '4644d3984009f576b1c34c6d60086e60'
-
-  def patches
-    # Gets rid of the "[Deprecated] Xalan: org.apache.xml.res.XMLErrorResources_en_US"
-    # messages that the tools spew on 1.3-41620 under Snow Leopard
-    # See: http://gist.github.com/200283
-    DATA
-  end
+  url 'http://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.3-53907.zip'
+  md5 'ae07fe9e46423d57ab43a121750f0067'
 
   def install
     standard_install
@@ -59,24 +52,3 @@ class Ec2ApiTools <AmazonWebServicesFormula
     standard_instructions "EC2_HOME"
   end
 end
-
-__END__
-diff --git i/bin/ec2-cmd w/bin/ec2-cmd
-index 57051eb..edc2aae 100755
---- i/bin/ec2-cmd
-+++ w/bin/ec2-cmd
-@@ -58,4 +58,13 @@ fi
- 
- CMD=$1
- shift
--"$JAVA_HOME/bin/java" $EC2_JVM_ARGS $cygprop -classpath "$CP" com.amazon.aes.webservices.client.cmd.$CMD "$@"
-+
-+# to filter out the "deprecated" warnings introduced by Snow Leopard...
-+exec 3>&1   # ... redirect fd3 to stdout
-+exec 4>&2   # ... redirect fd4 to stderr
-+
-+# ... execute the java, sending stderr to stdout (so it gets grepped), 
-+#     but stdout goes to fd3 (the preserved real stdout)
-+#     and the grepped output goes to fd4 (the preserved stderr)
-+"$JAVA_HOME/bin/java" $EC2_JVM_ARGS $cygprop -classpath "$CP" com.amazon.aes.webservices.client.cmd.$CMD "$@" \
-+    2>&1 >&3 | grep -v '^\[Deprecated\] Xalan' >&4
