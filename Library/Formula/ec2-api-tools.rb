@@ -41,8 +41,8 @@ end
 
 class Ec2ApiTools <AmazonWebServicesFormula
   homepage 'http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351'
-  url 'http://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.3-51254.zip'
-  md5 '4644d3984009f576b1c34c6d60086e60'
+  url 'http://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.3-53907.zip'
+  md5 'ae07fe9e46423d57ab43a121750f0067'
 
   def patches
     # Gets rid of the "[Deprecated] Xalan: org.apache.xml.res.XMLErrorResources_en_US"
