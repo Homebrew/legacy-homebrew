@@ -7,7 +7,7 @@ class Cppcheck < Formula
   head 'git://github.com/danmar/cppcheck.git'
 
   # Do not strip binaries, or else it fails to run.
-  def skip_clean?(path); true end
+  skip_clean :all
 
   def install
     # Pass to make variables.

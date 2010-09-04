@@ -6,15 +6,6 @@ class Docbook <Formula
   version '5.0'
   homepage 'http://docbook.sourceforge.net/'
 
-  def caveats
-    <<-EOS.undent
-      To use the DocBook package in your XML toolchain, you need to
-      register it with the global XML catalog with this command:
-      
-        sudo docbook-register
-    EOS
-  end
-
   def packages; [
     Docbookxml412,
     Docbookxml42,
@@ -30,6 +21,14 @@ class Docbook <Formula
     packages.each do |pkg|
       pkg.new.brew { |formula| formula.install }
     end
+  end
+
+  def caveats; <<-EOS.undent
+    To use the DocBook package in your XML toolchain, you need to
+    register it with the global XML catalog with this command:
+
+      sudo docbook-register
+    EOS
   end
 end
 
@@ -77,7 +76,7 @@ class Docbookxsl <Formula
   homepage 'http://docbook.sourceforge.net/'
   def install
     doc_files = %w[AUTHORS BUGS README RELEASE-NOTES.txt TODO VERSION NEWS COPYING]
-    xsl_files = %w[catalog.xml common eclipse extensions fo highlighting html htmlhelp images javahelp lib manpages params profiling roundtrip slides template tools website xhtml xhtml-1_1]
+    xsl_files = %w[catalog.xml common eclipse epub extensions fo highlighting html htmlhelp images javahelp lib manpages params profiling roundtrip slides template tools website xhtml xhtml-1_1]
     docbook = Formula.factory 'docbook'
     (docbook.prefix+'docbook/xsl'+version).install xsl_files + doc_files
   end

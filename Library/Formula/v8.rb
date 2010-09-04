@@ -9,15 +9,14 @@ class V8 <Formula
   def install
     arch = Hardware.is_64_bit? ? 'x64' : 'ia32'
 
-    system "scons",
-            "-j #{Hardware.processor_count}",
-            "arch=#{arch}",
-            "mode=release",
-            "snapshot=on",
-            "library=shared",
-            "visibility=default",
-            "console=readline",
-            "sample=shell"
+    system "scons", "-j #{Hardware.processor_count}",
+                    "arch=#{arch}",
+                    "mode=release",
+                    "snapshot=on",
+                    "library=shared",
+                    "visibility=default",
+                    "console=readline",
+                    "sample=shell"
 
     include.install Dir['include/*']
     lib.install Dir['libv8.*']

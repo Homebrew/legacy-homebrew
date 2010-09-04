@@ -5,8 +5,6 @@ class Mad <Formula
   url 'http://downloads.sourceforge.net/project/mad/libmad/0.15.1b/libmad-0.15.1b.tar.gz'
   md5 '1be543bc30c56fb6bea1d7bf6a64e66c'
 
-  aka 'libmad'
-
   def mad_pc
     return <<-EOS
 prefix=#{HOMEBREW_PREFIX}
@@ -25,12 +23,7 @@ Cflags: -I${includedir}
   end
 
   def install
-    if MACOS_VERSION >= 10.6 and Hardware.is_64_bit?
-      fpm = '64bit'
-    else
-      fpm = 'intel'
-    end
-
+    fpm = snow_leopard_64? ? '64bit': 'intel'
     system "./configure", "--disable-debugging", "--enable-fpm=#{fpm}", "--prefix=#{prefix}"
 
     # See: http://github.com/mxcl/homebrew/issues/issue/1263

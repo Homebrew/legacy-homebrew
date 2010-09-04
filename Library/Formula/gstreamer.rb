@@ -2,8 +2,8 @@ require 'formula'
 
 class Gstreamer <Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-0.10.29.tar.bz2'
-  md5 'c92d6bce4fc65fa9d5a3ad35cdd1a466'
+  url 'http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-0.10.30.tar.bz2'
+  md5 'de01f73f71d97c5854badd363ca06509'
 
   depends_on 'pkg-config'
   depends_on 'gettext'

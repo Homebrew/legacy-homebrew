@@ -4,9 +4,9 @@ require 'formula'
 # downloads disappear.
 
 class Sip <Formula
-  url 'http://www.riverbankcomputing.co.uk/static/Downloads/sip4/sip-4.10.5.tar.gz'
+  url 'http://www.riverbankcomputing.co.uk/static/Downloads/sip4/sip-4.11.tar.gz'
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
-  md5 '0a591ef6e59aa16e56822d3eb9fe21b8'
+  md5 '810f0cb0da327e0120fd87b7194ddf7e'
 
   def install
     # Force building against System python, because we need a Framework build.
@@ -20,7 +20,7 @@ class Sip <Formula
 
   def caveats; <<-EOS
 This formula won't function until you amend your PYTHONPATH like so:
-    export PYTHON_PATH=#{HOMEBREW_PREFIX}/lib/python:$PYTHON_PATH
+    export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/python:$PYTHONPATH
 EOS
   end
 end

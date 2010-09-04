@@ -10,14 +10,12 @@ class Icu4c <Formula
     DATA
   end
 
-  def keg_only?
-    "conflicts; see: http://github.com/mxcl/homebrew/issues/issue/167"
-  end
+  keg_only "Conflicts; see: http://github.com/mxcl/homebrew/issues/issue/167"
 
   def install
     ENV.append "LDFLAGS", "-headerpad_max_install_names"
     config_flags = ["--prefix=#{prefix}", "--disable-samples", "--enable-static"]
-    config_flags << "--with-library-bits=64" if Hardware.is_64_bit? and MACOS_VERSION == 10.6
+    config_flags << "--with-library-bits=64" if snow_leopard_64?
     Dir.chdir "source" do
       system "./configure", *config_flags
       system "make"

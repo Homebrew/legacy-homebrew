@@ -5,8 +5,6 @@ class EyeD3 <Formula
   homepage 'http://eyed3.nicfit.net/'
   md5 '7bc175d0eb1e0152753b2aca80df6fde'
 
-  aka "eyeD3"
-
   def install
     man1.install "doc/eyeD3.1.in" => "eyeD3.1"
     libexec.install "src/eyeD3"

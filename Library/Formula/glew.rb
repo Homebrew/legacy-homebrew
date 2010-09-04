@@ -6,8 +6,8 @@ class Glew <Formula
   md5 '3621f27cfd3e33d5dbcc1111ecb5b762'
 
   def install
-    system "mkdir -p #{prefix}/lib/pkgconfig"
-    system "make GLEW_DEST=#{prefix}"
-    system "make GLEW_DEST=#{prefix} install"
+    (lib+'pkgconfig').mkpath
+    system "make", "GLEW_DEST=#{prefix}"
+    system "make", "GLEW_DEST=#{prefix}", "install"
   end
 end

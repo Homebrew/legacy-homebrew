@@ -7,14 +7,10 @@ class Neon <Formula
 
   depends_on 'pkg-config'
 
-  def keg_only?
-    :provided_by_osx
-  end
+  keg_only :provided_by_osx
 
   def options
-    [
-      ['--universal', 'Build as a Universal Intel binary.']
-    ]
+    [['--universal', 'Builds a universal binary.']]
   end
 
   def install

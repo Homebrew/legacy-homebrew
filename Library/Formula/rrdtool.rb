@@ -21,6 +21,10 @@ class Rrdtool <Formula
     DATA # Ha-ha, but sleeping is annoying when running configure a lot
   end
 
+  def options
+    [["--lua", "Compile with lua support."]]
+  end
+
   def install
     which_perl = `/usr/bin/which perl`.chomp
     which_ruby = `/usr/bin/which ruby`.chomp
@@ -35,11 +39,7 @@ class Rrdtool <Formula
     system "./configure", *args
 
     # Needed to build proper Ruby bundle
-    if Hardware.is_64_bit? and MACOS_VERSION >= 10.6
-      ENV["ARCHFLAGS"] = "-arch x86_64"
-    else
-      ENV["ARCHFLAGS"] = "-arch i386"
-    end
+    ENV["ARCHFLAGS"] = snow_leopard_64? ? "-arch x86_64" : "-arch i386"
 
     system "make install"
     prefix.install "bindings/ruby/test.rb"

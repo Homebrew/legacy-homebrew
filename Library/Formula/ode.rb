@@ -2,7 +2,7 @@ require 'formula'
 
 class Ode <Formula
   # Build from svn to get Snow Leopard fixes.
-  head 'https://opende.svn.sourceforge.net/svnroot/opende/trunk', :revision => '1728'
+  url 'https://opende.svn.sourceforge.net/svnroot/opende/trunk', :revision => '1728'
   homepage 'http://www.ode.org/'
 
   def install

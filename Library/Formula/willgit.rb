@@ -6,7 +6,7 @@ class Willgit <Formula
 
   def install
     Dir.chdir 'bin' do
-        bin.install %w[git-publish-branch git-rank-contributors git-show-merges git-wtf]
+      bin.install %w[git-publish-branch git-rank-contributors git-show-merges git-wtf]
     end
   end
 end

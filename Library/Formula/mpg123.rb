@@ -17,24 +17,22 @@ class Mpg123 <Formula
             "--with-audio=coreaudio",
             "--with-default-audio=coreaudio"]
 
-    # Don't build 64-bit on Leopard
-    if MACOS_VERSION >= 10.6 and Hardware.is_64_bit?
+    if snow_leopard_64?
       args << "--with-cpu=x86-64"
     else
-      # there are no Intel Mac computers without SSE
       args << "--with-cpu=sse_alone"
     end
 
     system "./configure", *args
-    
-    # ./configure incorrectly detects 10.5 as 10.4. Cut that crap out.
+
+    # ./configure incorrectly detects 10.5 as 10.4; fix it.
     ['.', 'src', 'src/output', 'src/libmpg123'].each do |path|
       inreplace "#{path}/Makefile" do |s|
         s.gsub! "-mmacosx-version-min=10.4 -isysroot /Developer/SDKs/MacOSX10.4u.sdk", ""
         s.change_make_var! "LDFLAGS", "-Wl,-read_only_relocs,suppress"
       end
     end
-    
+
     system "make install"
   end
 end

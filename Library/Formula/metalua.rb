@@ -11,8 +11,8 @@ class Metalua <Formula
 
   def install
     Dir.chdir "src"
-    ENV["INSTALL_BIN"] = "#{prefix}/bin"
-    ENV["INSTALL_LIB"] = "#{prefix}/lib"
+    ENV["INSTALL_BIN"] = bin
+    ENV["INSTALL_LIB"] = lib
 
     system "./make.sh"
     system "./make-install.sh"

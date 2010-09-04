@@ -14,11 +14,11 @@ class Gloox <Formula
   end
 
   def install
-    system "./configure", "--with-openssl", 
+    system "./configure", "--disable-debug",
+                          "--prefix=#{prefix}",
+                          "--with-openssl",
                           "--without-gnutls",
-                          "--with-zlib",
-                          "--disable-debug",
-                          "--prefix=#{prefix}"
+                          "--with-zlib"
     system "make install"
   end
 end
