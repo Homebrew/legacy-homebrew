@@ -13,8 +13,8 @@ class Redis <Formula
     src = File.exists?('src/Makefile') ? 'src' : '.'
     system "make -C #{src}"
 
-    %w( redis-benchmark redis-cli redis-server redis-check-dump ).each { |p|
-      bin.install "#{src}/#{p}"
+    %w( redis-benchmark redis-cli redis-server redis-check-dump redis-check-aof ).each { |p|
+      bin.install "#{src}/#{p}" rescue nil
     }
 
     %w( run db/redis log ).each { |p| (var+p).mkpath }
