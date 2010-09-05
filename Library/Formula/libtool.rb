@@ -1,7 +1,7 @@
 require 'formula'
 
 class Libtool <Formula
-  url 'http://ftp.gnu.org/gnu/libtool/libtool-2.2.tar.gz'
+  url 'http://ftp.gnu.org/gnu/libtool/libtool-2.2.8.tar.gz'
   homepage 'http://www.gnu.org/software/libtool/'
   md5 '217e9ec3e3cbdf891cbd4772140964a1'
 
