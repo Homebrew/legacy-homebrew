@@ -5,9 +5,9 @@ require "#{File.dirname __FILE__}/ec2-api-tools.rb"
 
 class RdsCommandLineTools <AmazonWebServicesFormula
   homepage 'http://developer.amazonwebservices.com/connect/entry.jspa?externalID=2928'
-  url      'http://s3.amazonaws.com/rds-downloads/RDSCli.zip'
-  md5      'a4c7f9efca4c19b9f9073945a5bbc7b9'
-  version  '1.1.005'
+  url      'http://s3.amazonaws.com/rds-downloads/RDSCli-1.2.006.zip'
+  md5      '72c5b14b049c874b59b8a44657d4dc60'
+  version  '1.2.006'
 
   def install
     standard_install
