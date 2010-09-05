@@ -68,7 +68,9 @@ module HomebrewArgvExtension
   end
 
   def usage; <<-EOS.undent
-    Usage: brew command [formula] ...
+    Usage: brew [-v|--version] [--prefix [formula]] [--cache [formula]]
+                [--cellar [formula]] [--config] [--env] [--repository]
+                [-h|--help] COMMAND [formula] ...
 
     Principle Commands:
       install formula ... [--ignore-dependencies] [--HEAD]
