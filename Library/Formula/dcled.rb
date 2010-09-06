@@ -1,20 +1,21 @@
 require 'formula'
 
 class Dcled <Formula
-  url 'http://www.jeffrika.com/~malakai/dcled/dcled-1.8.tgz'
+  url 'http://www.jeffrika.com/~malakai/dcled/dcled-1.9.tgz'
   homepage 'http://www.jeffrika.com/~malakai/dcled/index.html'
-  md5 '1f0c32964ff521c2f39156cca5ef7a29'
+  md5 '7cffd6585a5d355626d60e2127599dd0'
 
   depends_on 'libhid'
 
   def install
     inreplace 'makefile' do |s|
-      s.change_make_var! 'INSTALLDIR', prefix + 'bin'
-      s.change_make_var! 'CC', ENV['CC']
-      s.change_make_var! 'CFLAGS', ENV['CFLAGS'] + " -I#{HOMEBREW_PREFIX}/include"
-      s.change_make_var! 'LDFLAGS', ENV['LDFLAGS'] + ' -lm -lhid'
+      s.change_make_var! 'INSTALLDIR', bin
+      s.change_make_var! 'CC', ENV.cc
+      s.change_make_var! 'CFLAGS', "#{ENV.cflags} -I#{HOMEBREW_PREFIX}/include"
+      s.change_make_var! 'LDFLAGS', ENV.ldflags + ' -lm -lhid' unless ENV.ldflags.nil?
     end
 
-    system "make && make install"
+    system "make"
+    system "make install"
   end
 end
