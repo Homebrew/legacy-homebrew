@@ -181,6 +181,7 @@ module HomebrewEnvExtension
 
   # CFLAGS are read quite a bit
   def cflags; ENV['CFLAGS']; end
+  def ldflags; ENV['LDFLAGS']; end
 
   def m64
     append_to_cflags '-m64'
