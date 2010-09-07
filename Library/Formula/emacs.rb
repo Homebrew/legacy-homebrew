@@ -1,5 +1,7 @@
 require 'formula'
 
+# For tips on Cocoa Emacs, see:
+# * http://superuser.com/questions/73500/on-os-x-how-do-i-start-cocoa-emacs-and-bring-it-to-front
 class Emacs <Formula
   url 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.2.tar.bz2'
   md5 '057a0379f2f6b85fb114d8c723c79ce2'
@@ -52,33 +54,36 @@ class Emacs <Formula
     return s
   end
 
+  def cocoa_startup_script; <<-EOS.undent
+    #!/bin/bash
+    open -a #{prefix}/Emacs.app/Contents/MacOS/Emacs --args $@
+    EOS
+  end
+
   def install
     fails_with_llvm "Duplicate symbol errors while linking."
 
-    configure_args = [
+    args = [
       "--prefix=#{prefix}",
       "--without-dbus",
       "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
     ]
 
     if ARGV.include? "--cocoa"
-      configure_args << "--with-ns" << "--disable-ns-self-contained"
-      system "./configure", *configure_args
+      args << "--with-ns" << "--disable-ns-self-contained"
+      system "./configure", *args
       system "make bootstrap"
       system "make install"
       prefix.install "nextstep/Emacs.app"
-      bin.mkpath
-      ln_s prefix+"Emacs.app/Contents/MacOS/Emacs", bin+"emacs"
+      (bin+"emacs").write cocoa_startup_script
     else
       if ARGV.include? "--with-x"
-        configure_args << "--with-x"
-        configure_args << "--with-gif=no"
-        configure_args << "--with-tiff=no"
-        configure_args << "--with-jpeg=no"
+        args << "--with-x"
+        args << "--with-gif=no" << "--with-tiff=no" << "--with-jpeg=no"
       else
-        configure_args << "--without-x"
+        args << "--without-x"
       end
-      system "./configure", *configure_args
+      system "./configure", *args
       system "make"
       system "make install"
     end
