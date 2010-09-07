@@ -35,7 +35,7 @@ class Rabbitmq <Formula
 
     # RabbitMQ Erlang binaries are installed in lib/rabbitmq/erlang/lib/rabbitmq-x.y.z/ebin
     # therefore need to add this path for erl -pa
-    inreplace sbin+'rabbitmq-env', '${SCRIPT_DIR}/..', "#{target_dir}"
+    inreplace sbin+'rabbitmq-env', '${SCRIPT_DIR}/..', target_dir
   end
 end
 
