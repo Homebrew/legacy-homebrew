@@ -54,8 +54,11 @@ module HomebrewArgvExtension
   def interactive?
     flag? '--interactive'
   end
-  def build_head?
+   def build_head?
     flag? '--HEAD'
+  end
+  def universal?
+    flag? '--universal'
   end
 
   def flag? flag
@@ -71,7 +74,7 @@ module HomebrewArgvExtension
     Usage: brew command [formula] ...
 
     Principle Commands:
-      install formula ... [--ignore-dependencies] [--HEAD]
+      install formula ... [--ignore-dependencies] [--HEAD] [-universal]
       list [--unbrewed|--versions] [formula] ...
       search [/regex/] [substring]
       uninstall formula ...

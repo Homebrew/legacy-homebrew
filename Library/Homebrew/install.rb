@@ -64,6 +64,8 @@ def install f
     end
   end
 
+  ENV.universal_binary if ARGV.universal?
+
   if ARGV.verbose?
     ohai "Build Environment"
     dump_build_env ENV

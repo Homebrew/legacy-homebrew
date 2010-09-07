@@ -27,7 +27,6 @@ class Subversion <Formula
       ['--java', 'Build Java bindings.'],
       ['--perl', 'Build Perl bindings.'],
       ['--python', 'Build Python bindings.'],
-      ['--universal', 'Build as a Universal Intel binary.'],
       ['--unicode-path', 'Include support for OS X unicode (but see caveats!)']
     ]
   end
@@ -56,8 +55,6 @@ class Subversion <Formula
       puts "To use Java bindings with various Java IDEs, you might need a universal build:"
       puts "  brew install --universal --java subversion"
     end
-
-    ENV.universal_binary if build_universal?
 
     if MACOS_VERSION < 10.6
       setup_leopard

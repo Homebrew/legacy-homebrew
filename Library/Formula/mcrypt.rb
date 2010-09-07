@@ -5,12 +5,7 @@ class Mcrypt <Formula
   homepage 'http://mcrypt.sourceforge.net'
   md5 '0821830d930a86a5c69110837c55b7da'
 
-  def options
-    [["--universal", "Build a universal binary."]]
-  end
-
   def install
-    ENV.universal_binary if ARGV.include? "--universal"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--mandir=#{man}"
     system "make install"

@@ -41,7 +41,7 @@ didn't include with OS X.
     surrounded with slashes, then it is interpreted as a regular expression.
     If no search term is given, all available formula are displayed.
 
-  * `install [--debug] [--use-llvm] [--ignore-dependencies] [--HEAD]` <formula>:
+  * `install [--debug] [--use-llvm] [--ignore-dependencies] [--HEAD] [--universal]` <formula>:
     Installs <formula>.
 
     If `--debug` is passed and brewing fails, opens a shell inside the
@@ -56,6 +56,9 @@ didn't include with OS X.
 
     If `--HEAD` is passed, and <formula> defines it, install the HEAD version,
     aka master, trunk, unstable, dev.
+
+    If `--universal` is passed, a binary with both 32bit and 64bit is built.
+
 
   * `install --interactive [--git]` <formula>:
     Downloads and patches <formula>, and then opens a shell. This allows the

@@ -9,13 +9,7 @@ class Neon <Formula
 
   keg_only :provided_by_osx
 
-  def options
-    [['--universal', 'Builds a universal binary.']]
-  end
-
   def install
-    ENV.universal_binary if ARGV.include? '--universal'
-
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--enable-shared",
