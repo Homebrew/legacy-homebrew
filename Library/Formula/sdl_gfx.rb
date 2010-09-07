@@ -12,6 +12,7 @@ class SdlGfx <Formula
                           "--prefix=#{prefix}",
                           "--enable-static=no",
                           "--enable-shared=yes",
+                          "--disable-sdltest",
                           "--disable-mmx"
     system "make install"
   end
