@@ -144,7 +144,7 @@ def check_cc_symlink
         You may want to change /usr/bin/cc to point back at gcc.
 
         To force Homebrew to use LLVM, you can set the "HOMEBREW_LLVM" environmental
-        variable, or pass "--use-lvm" to "brew install".
+        variable, or pass "--use-llvm" to "brew install".
 
       EOS
     end

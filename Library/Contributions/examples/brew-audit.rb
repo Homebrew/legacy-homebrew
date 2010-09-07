@@ -112,6 +112,15 @@ def audit_formula_instance f
     problems << " * Dep #{d} is an alias; switch to the real name."
   end
 
+  # Check for things we don't like to depend on.
+  # We allow non-Homebrew installs whenenever possible.
+  f.deps.each do |d|
+    case d
+    when "git"
+      problems << " * Don't use Git as a dependency; we allow non-Homebrew git installs."
+    end
+  end
+
   # Google Code homepages should end in a slash
   if f.homepage =~ %r[^https?://code\.google\.com/p/[^/]+[^/]$]
     problems << " * Google Code homepage should end with a slash."
