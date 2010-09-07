@@ -6,7 +6,7 @@ class Cdb <Formula
   md5 '81fed54d0bde51b147dd6c20cdb92d51'
 
   def install
-    inreplace "conf-home", "/usr/local", "#{prefix}"
+    inreplace "conf-home", "/usr/local", prefix
     system "make setup"
   end
 end

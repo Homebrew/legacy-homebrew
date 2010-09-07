@@ -19,7 +19,7 @@ def audit_formula_text text
     problems << " * Remove 'use_mirror' from url."
   end
 
-  # 2 (or more, if in an if block) spaces before depends_on, please
+  # 2 (or more in an if block) spaces before depends_on, please
   if text =~ /^\ ?depends_on/
     problems << " * Check indentation of 'depends_on'."
   end
@@ -27,6 +27,11 @@ def audit_formula_text text
   # FileUtils is included in Formula
   if text =~ /FileUtils\.(\w+)/
     problems << " * Don't need 'FileUtils.' before #{$1}."
+  end
+
+  # Check for string interpolation of single values.
+  if text =~ /(system|inreplace|gsub!|change_make_var!) .* ['"]#\{(\w+)\}['"]/
+    problems << " * Don't need to interpolate \"#{$2}\" with #{$1}"
   end
 
   # Check for string concatenation; prefer interpolation
