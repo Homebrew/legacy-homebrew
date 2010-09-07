@@ -88,6 +88,7 @@ module HomebrewArgvExtension
       cleanup [formula]
       link formula ...
       unlink formula ...
+      options formula
       outdated
       prune
       doctor

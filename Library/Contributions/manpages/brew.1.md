@@ -145,6 +145,9 @@ didn't include with OS X.
     If `--installed` is passed, the list only shows formulae you have
     installed.
 
+  * `options` <formula>:
+    Displays build options specific for a formula.
+
   * `doctor`:
     Checks your system for potential problems.
 
