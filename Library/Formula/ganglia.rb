@@ -21,8 +21,7 @@ class Ganglia <Formula
     # ENV var needed to confirm putting the config in the prefix until 3.2
     ENV['GANGLIA_ACK_SYSCONFDIR'] = '1'
 
-    # Grab the standard autogen.sh and run it twice,
-    # to update libtool
+    # Grab the standard autogen.sh and run it twice, to update libtool
     curl "http://buildconf.git.sourceforge.net/git/gitweb.cgi?p=buildconf/buildconf;a=blob_plain;f=autogen.sh;hb=HEAD", "-o", "autogen.sh"
     ENV['LIBTOOLIZE'] = "/usr/bin/glibtoolize"
 
@@ -34,21 +33,12 @@ class Ganglia <Formula
       system "/bin/sh ../autogen.sh --download"
     end
 
-    # Regenerate libtool, etc - now using the autogen.sh script above
-    #system "autoreconf -fiv"
-    #Dir.chdir "libmetrics" do
-    #  system "autoreconf -fiv"
-    #end
-
-    # configure
-    system "./configure",
-      "--disable-debug",
-      "--disable-dependency-tracking",
-      "--prefix=#{prefix}",
-      "--sbindir=#{bin}", # brew doesn't do things with prefix/sbin
-      "--sysconfdir=#{HOMEBREW_PREFIX}/etc",
-      "--with-gexec",
-      "--with-gmetad"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--sbindir=#{bin}",
+                          "--sysconfdir=#{etc}",
+                          "--with-gexec",
+                          "--with-gmetad"
 
     # build and install
     system "make install"
@@ -61,25 +51,21 @@ class Ganglia <Formula
     end
 
     # Generate the default config file
-    Dir.chdir "#{prefix}" do
-      system "bin/gmond -t > #{HOMEBREW_PREFIX}/etc/gmond.conf" unless File.exists? "#{HOMEBREW_PREFIX}/etc/gmond.conf"
-    end
+    system "#{bin}/gmond -t > #{etc}/gmond.conf" unless File.exists? "#{etc}/gmond.conf"
 
     # Install the web files
-    (share + "ganglia").install "web"
+    (share+"ganglia").install "web"
 
     # Install man pages
     man1.install Dir['mans/*']
   end
 
   def caveats; <<-EOS.undent
-    If you did not have the config file
-    #{HOMEBREW_PREFIX}/etc/gmond.conf
-    one was created for you.
+    If you didn't have a default config file, one was created here:
+      #{etc}/gmond.conf
 
-    You might want to copy
-    #{prefix}/share/ganglia/web/* to someplace
-    served by a PHP-capable web server.
+    You might want to copy these someplace served by a PHP-capable web server:
+      #{share}/ganglia/web/* to someplace
     EOS
   end
 end
