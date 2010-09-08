@@ -29,6 +29,11 @@ def audit_formula_text text
     problems << " * Don't need 'FileUtils.' before #{$1}."
   end
 
+  # Check for long inreplace block vars
+  if text =~ /inreplace .* do \|(.{2,})\|/
+    problems << " * \"inreplace <filenames> do |s|\" is preferred over \"|#{$1}|\"."
+  end
+
   # Check for string interpolation of single values.
   if text =~ /(system|inreplace|gsub!|change_make_var!) .* ['"]#\{(\w+)\}['"]/
     problems << " * Don't need to interpolate \"#{$2}\" with #{$1}"
