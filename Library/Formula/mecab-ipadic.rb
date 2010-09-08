@@ -10,7 +10,7 @@ class MecabIpadic <Formula
   def install
     args = ["--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"]
     args << ARGV.find(Proc.new {"--with-charset=utf8"}) { |arg| /^--with-charset/.match(arg) }
-    
+
     system "./configure", *args
     system "make install"
   end
