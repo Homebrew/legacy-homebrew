@@ -62,6 +62,10 @@ def audit_formula_text text
     problems << " * \"#{$1}\" should be \"\#{#{$3}}\""
   end
 
+  if text =~ %r[((\#\{share\}/(man)))[/'"]]
+    problems << " * \"#{$1}\" should be \"\#{#{$3}}\""
+  end
+
   if text =~ %r[(\#\{prefix\}/share/(info|man))]
     problems << " * \"#{$1}\" should be \"\#{#{$2}}\""
   end
