@@ -8,7 +8,7 @@ class Collectd <Formula
   skip_clean :all
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--localstatedir=#{var}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end
 end

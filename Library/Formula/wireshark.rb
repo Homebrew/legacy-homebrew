@@ -1,8 +1,8 @@
 require 'formula'
 
 class Wireshark <Formula
-  url 'http://media-2.cacetech.com/wireshark/src/wireshark-1.2.9.tar.bz2'
-  md5 'a4240c36f1e668d85b703eacb7c0a95e'
+  url 'http://media-2.cacetech.com/wireshark/src/wireshark-1.4.0.tar.bz2'
+  md5 '13b188baea23cdad40b7a55921384a77'
   homepage 'http://www.wireshark.org'
 
   depends_on 'gnutls' => :optional

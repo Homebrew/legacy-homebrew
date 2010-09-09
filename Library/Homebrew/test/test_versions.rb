@@ -65,6 +65,10 @@ class VersionTests < Test::Unit::TestCase
     check "http://camaya.net/download/gloox-1.0-beta7.tar.bz2", '1.0-beta7'
   end
 
+  def test_sphinx_beta_style
+    check 'http://sphinxsearch.com/downloads/sphinx-1.10-beta.tar.gz', '1.10-beta'
+  end
+
   def test_astyle_verson_style
     check "http://kent.dl.sourceforge.net/sourceforge/astyle/astyle_1.23_macosx.tar.gz",
       '1.23'

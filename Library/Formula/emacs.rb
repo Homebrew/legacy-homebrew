@@ -3,12 +3,13 @@ require 'formula'
 class Emacs <Formula
   url 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.2.tar.bz2'
   md5 '057a0379f2f6b85fb114d8c723c79ce2'
+  homepage 'http://www.gnu.org/software/emacs/'
+
   if ARGV.include? "--use-git-head"
     head 'git://repo.or.cz/emacs.git'
   else
     head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
   end
-  homepage 'http://www.gnu.org/software/emacs/'
 
   def options
     [
@@ -16,6 +17,10 @@ class Emacs <Formula
       ["--with-x", "Include X11 support"],
       ["--use-git-head", "Use repo.or.cz git mirror for HEAD builds"],
     ]
+  end
+
+  def patches
+    "http://github.com/downloads/typester/emacs/feature-fullscreen.patch" if ARGV.include? "--cocoa"
   end
 
   def caveats
@@ -53,30 +58,33 @@ class Emacs <Formula
   end
 
   def install
-    configure_args = [
+    fails_with_llvm "Duplicate symbol errors while linking."
+
+    args = [
       "--prefix=#{prefix}",
       "--without-dbus",
       "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
     ]
 
     if ARGV.include? "--cocoa"
-      configure_args << "--with-ns" << "--disable-ns-self-contained"
-      system "./configure", *configure_args
+      args << "--with-ns" << "--disable-ns-self-contained"
+      system "./configure", *args
       system "make bootstrap"
       system "make install"
       prefix.install "nextstep/Emacs.app"
+
       bin.mkpath
-      ln_s prefix+"Emacs.app/Contents/MacOS/Emacs", bin+"emacs"
+      ln_s prefix+'Emacs.app/Contents/MacOS/Emacs', bin+'emacs'
+      ln_s prefix+'Emacs.app/Contents/MacOS/bin/emacsclient', bin
     else
       if ARGV.include? "--with-x"
-        configure_args << "--with-x"
-        configure_args << "--with-gif=no"
-        configure_args << "--with-tiff=no"
-        configure_args << "--with-jpeg=no"
+        args << "--with-x"
+        args << "--with-gif=no" << "--with-tiff=no" << "--with-jpeg=no"
       else
-        configure_args << "--without-x"
+        args << "--without-x"
       end
-      system "./configure", *configure_args
+
+      system "./configure", *args
       system "make"
       system "make install"
     end

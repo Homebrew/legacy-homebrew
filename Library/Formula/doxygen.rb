@@ -9,7 +9,7 @@ class Doxygen <Formula
     system "./configure", "--prefix", prefix
     inreplace "Makefile" do |s|
       # Path of man1 relative to already given prefix
-      s.change_make_var! 'MAN1DIR', man1
+      s.change_make_var! 'MAN1DIR', 'share/man/man1'
     end
     system "make"
     system "make install"

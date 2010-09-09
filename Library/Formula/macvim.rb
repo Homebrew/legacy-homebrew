@@ -2,10 +2,11 @@ require 'formula'
 
 class Macvim <Formula
   head 'git://github.com/b4winckler/macvim.git'
-  homepage 'http://code.google.com/p/macvim'
+  homepage 'http://code.google.com/p/macvim/'
 
   def options
-    [["--no-icons", "Does not generate custom document icons."]]
+    # Occassional reports of this brew failing during the icon step
+    [["--no-icons", "Don't generate custom document icons."]]
   end
 
   def install
@@ -38,9 +39,7 @@ class Macvim <Formula
     bin.install "src/MacVim/mvim"
 
     # Create MacVim vimdiff, view, ex equivalents
-    %w[mvimdiff mview mvimex].each do |f|
-      (bin + f).make_symlink("#{bin}/mvim")
-    end
+    %w[mvimdiff mview mvimex].each {|f| ln_s bin+'mvim', bin+f}
   end
 
   def caveats

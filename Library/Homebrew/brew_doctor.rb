@@ -28,6 +28,18 @@ def is_prefix? prefix, longer_string
   longer_string.to_s[0,p.length] == p
 end
 
+# Installing MacGPG2 interferes with Homebrew in a big way
+# http://sourceforge.net/projects/macgpg2/files/
+def check_for_macgpg2
+  if File.exist? "/Applications/start-gpg-agent.app"
+    puts <<-EOS.undent
+      If you have installed MacGPG2 via the package installer, several other
+      checks in this script will turn up problems, such as stray .dylibs in
+      /usr/local and permissions issues with share and man in /usr/local/.
+
+    EOS
+  end
+end
 
 def check_for_stray_dylibs
   unbrewed_dylibs = Dir['/usr/local/lib/*.dylib'].select { |f| File.file? f and not File.symlink? f }
@@ -132,7 +144,7 @@ def check_cc_symlink
         You may want to change /usr/bin/cc to point back at gcc.
 
         To force Homebrew to use LLVM, you can set the "HOMEBREW_LLVM" environmental
-        variable, or pass "--use-lvm" to "brew install".
+        variable, or pass "--use-llvm" to "brew install".
 
       EOS
     end
@@ -522,6 +534,7 @@ def brew_doctor
 
     check_usr_bin_ruby
     check_homebrew_prefix
+    check_for_macgpg2
     check_for_stray_dylibs
     check_gcc_versions
     check_cc_symlink
