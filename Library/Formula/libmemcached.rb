@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libmemcached <Formula
-  url 'http://download.tangent.org/libmemcached-0.34.tar.gz'
-  homepage 'http://tangent.org/552/libmemcached.html'
-  md5 '5b2026bc0c324066f5175543306d941b'
+  url 'http://download.tangent.org/libmemcached-0.43.tar.gz'
+  homepage 'http://libmemcached.org'
+  md5 'f6940255a1889871ef3a29f430370950'
 
   depends_on 'memcached'
 

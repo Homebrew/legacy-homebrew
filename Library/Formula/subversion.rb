@@ -81,7 +81,7 @@ class Subversion <Formula
             "--without-berkeley-db"]
 
     args << "--enable-javahl" << "--without-jikes" if build_java?
-    args << "--with-ruby-sitedir=#{prefix}/lib/ruby" if build_ruby?
+    args << "--with-ruby-sitedir=#{lib}/ruby" if build_ruby?
     args << "--with-unicode-path" if with_unicode_path?
 
     system "./configure", *args

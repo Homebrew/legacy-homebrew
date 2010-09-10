@@ -14,11 +14,11 @@ class Rubinius < Formula
     # Let Rubinius define its own flags; messing with these causes build breaks.
     %w{CC CXX LD CFLAGS CXXFLAGS CPPFLAGS LDFLAGS}.each { |e| ENV.delete(e) }
 
-    ENV['RELEASE'] = "#{version}" # to fix issues with "path already exists"
+    ENV['RELEASE'] = version # to fix issues with "path already exists"
 
     # "--skip-system" means to use the included LLVM
     system "./configure", "--skip-system",
-                          "--prefix", "#{prefix}",
+                          "--prefix", prefix,
                           "--includedir", "#{include}/rubinius",
                           "--libdir", lib,
                           "--mandir", man, # For completeness; no manpages exist yet.
