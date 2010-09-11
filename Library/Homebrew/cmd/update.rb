@@ -1,3 +1,16 @@
+module Homebrew extend self
+  def update
+    abort "Please `brew install git' first." unless system "/usr/bin/which -s git"
+
+    updater = RefreshBrew.new
+    if updater.update_from_masterbrew!
+      updater.report
+    else
+      puts "Already up-to-date."
+    end
+  end
+end
+
 class RefreshBrew
   REPOSITORY_URL   = "http://github.com/mxcl/homebrew.git"
   INIT_COMMAND     = "git init"

@@ -6,6 +6,21 @@ class Cleaner
     unless ENV['HOMEBREW_KEEP_INFO'].nil?
       f.info.rmtree if f.info.directory? and not f.skip_clean? f.info
     end
+
+    # Hunt for empty folders and nuke them unless they are protected by
+    # f.skip_clean? We want post-order traversal, so put the dirs in a stack
+    # and then pop them off later.
+    paths = []
+    f.prefix.find do |path|
+      paths << path if path.directory?
+    end
+
+    paths.each do |d|
+      if d.children.empty? and not f.skip_clean? d
+        puts "rmdir: #{d} (empty)" if ARGV.verbose?
+        d.rmdir
+      end
+    end
   end
 
 private
