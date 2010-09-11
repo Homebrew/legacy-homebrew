@@ -152,7 +152,7 @@ module HomebrewEnvExtension
   end
 
   def x11
-    opoo "You do not have X11 installed, this formula may not build." if not x11_installed?
+    opoo "You do not have X11 installed, this formula may not build." if not MacOS.x11_installed?
 
     # There are some config scripts (e.g. freetype) here that should go in the path
     prepend 'PATH', '/usr/X11/bin', ':'
