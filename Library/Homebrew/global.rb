@@ -2,6 +2,8 @@ require 'extend/pathname'
 require 'extend/ARGV'
 require 'extend/string'
 require 'utils'
+require 'exceptions'
+require 'compatibility'
 
 ARGV.extend(HomebrewArgvExtension)
 
@@ -40,3 +42,11 @@ HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY
 RECOMMENDED_LLVM = 2326
 RECOMMENDED_GCC_40 = (MACOS_VERSION >= 10.6) ? 5494 : 5493
 RECOMMENDED_GCC_42 = (MACOS_VERSION >= 10.6) ? 5664 : 5577
+
+require 'fileutils'
+module Homebrew extend self
+  include FileUtils
+end
+
+FORMULA_META_FILES = %w[README README.md ChangeLog COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
+PLEASE_REPORT_BUG = "#{Tty.white}Please report this bug at #{Tty.em}http://github.com/mxcl/homebrew/issues#{Tty.reset}"

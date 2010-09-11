@@ -82,7 +82,6 @@ get '/' do
 end
 
 get '/search' do
-  require 'brew.h'
   q = params['q']
   results = search_brews(q)
 

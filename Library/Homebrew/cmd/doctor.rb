@@ -583,7 +583,8 @@ def check_for_other_vars
   end
 end
 
-def brew_doctor
+module Homebrew extend self
+def doctor
   read, write = IO.pipe
 
   if fork == nil
@@ -628,4 +629,5 @@ def brew_doctor
       puts "Any troubles you may be experiencing are likely purely psychosomatic."
     end
   end
+end
 end
