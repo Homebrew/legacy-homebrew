@@ -30,7 +30,7 @@ at_exit do
     require 'fileutils'
     require 'hardware'
     require 'keg'
-    require 'brew.h.rb'
+    require 'compatibility'
 
     ENV.extend(HomebrewEnvExtension)
     ENV.setup_build_environment
@@ -121,7 +121,8 @@ def install f
   ohai 'Finishing up' if ARGV.verbose?
 
   begin
-    clean f
+    require 'cleaner'
+    Cleaner.new f
   rescue Exception => e
     opoo "The cleaning step did not complete successfully"
     puts "Still, the installation was successful, so we will link it into your prefix"

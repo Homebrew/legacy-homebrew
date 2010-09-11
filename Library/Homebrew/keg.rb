@@ -1,11 +1,11 @@
+require 'extend/pathname'
+
 class Keg <Pathname
   def initialize path
     super path
     raise "#{to_s} is not a valid keg" unless parent.parent.realpath == HOMEBREW_CELLAR.realpath
     raise "#{to_s} is not a directory" unless directory?
   end
-
-  class NotAKegError <RuntimeError; end
 
   # if path is a file in a keg then this will return the containing Keg object
   def self.for path
