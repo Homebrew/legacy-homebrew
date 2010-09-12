@@ -17,4 +17,15 @@ class Bash <Formula
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end
+
+  def caveats
+    puts <<-EOS
+==============================================================
+To use this bash as your standard shell:
+
+    sudo sh -c 'echo `brew --prefix`/bin/bash >> /etc/shells'
+    chsh -s "`brew --prefix`/bin/bash"
+==============================================================
+    EOS
+  end  
 end
