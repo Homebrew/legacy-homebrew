@@ -14,11 +14,6 @@ def audit_formula_text text
     problems << " * Commented cmake support found."
   end
 
-  # SourceForge URL madness
-  if text =~ /\?use_mirror=/
-    problems << " * Remove 'use_mirror' from url."
-  end
-
   # 2 (or more in an if block) spaces before depends_on, please
   if text =~ /^\ ?depends_on/
     problems << " * Check indentation of 'depends_on'."
@@ -117,6 +112,39 @@ def audit_formula_options f, text
   return problems
 end
 
+def audit_formula_urls f
+  problems = []
+
+  # Check SourceForge urls
+  [(f.url rescue nil), (f.head rescue nil)].each do |p|
+    next if p.nil?
+    # Is it a filedownload (instead of svnroot)
+    next if p =~ %r[/svnroot/]
+    next if p =~ %r[svn\.sourceforge]
+
+    # Is it a sourceforge http(s) URL?
+    next unless p =~ %r[^http?://.*\bsourceforge\.]
+
+    if p =~ /\?use_mirror=/
+      problems << " * Update this url (don't use ?use_mirror)."
+    end
+
+    if p =~ /\/download$/
+      problems << " * Update this url (don't use /download)."
+    end
+
+    if p =~ %r[^http://prdownloads\.]
+      problems << " * Update this url (don't use prdownloads)."
+    end
+
+    if p =~ %r[^http://\w+\.dl\.]
+      problems << " * Update this url (don't use specific dl mirrors)."
+    end
+  end
+
+  return problems
+end
+
 def audit_formula_instance f
   problems = []
 
@@ -148,6 +176,7 @@ def audit_some_formulae
     problems = []
 
     problems += audit_formula_instance f
+    problems += audit_formula_urls f
 
     text = ""
     File.open(f.path, "r") { |afile| text = afile.read }
