@@ -10,4 +10,10 @@ class Zeromq <Formula
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
+
+  def caveats; <<-EOS.undent
+    To install the zmq gem on Snow Leopard, on a 64-bit machine:
+      $ ARCHFLAGS="-arch x86_64" gem install zmq -- --with-zmq-dir=#{HOMEBREW_PREFIX}
+    EOS
+  end
 end
