@@ -1,10 +1,10 @@
 require 'formula'
 
 class AndroidSdk <Formula
-  url 'http://dl.google.com/android/android-sdk_r06-mac_86.zip'
+  url 'http://dl.google.com/android/android-sdk_r07-mac_x86.zip'
   homepage 'http://developer.android.com/index.html'
-  md5 'c92abf66a82c7a3f2b8493ebe025dd22'
-  version 'r6'
+  md5 '0f330ed3ebb36786faf6dc72b8acf819'
+  version 'r7'
 
   skip_clean 'add-ons'
   skip_clean 'platforms'
