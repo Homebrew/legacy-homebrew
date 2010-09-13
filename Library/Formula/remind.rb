@@ -12,7 +12,7 @@ class Remind <Formula
   if ARGV.include?("--whatever")
     def patches
       # Remove unnecessary sleeps and anti-Apple messages
-      { :p1 => "http://gist.github.com/raw/577720/2e893e41e2a780c72d23fc7d72caf0f    364c4b088/gistfile1.diff"}
+      { :p1 => "http://gist.github.com/raw/577720/2e893e41e2a780c72d23fc7d72caf0f364c4b088/gistfile1.diff"}
     end
   end
 
