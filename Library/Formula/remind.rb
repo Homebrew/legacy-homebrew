@@ -8,7 +8,10 @@ class Remind <Formula
   def install
     # Remove unnecessary sleeps when running on Apple
     inreplace "configure", "sleep 1", "true"
-    inreplace "src/init.c", "sleep(5);", ""
+    inreplace "src/init.c" do |s|
+      s.gsub! "sleep(5);", ""
+      s.gsub! /rkrphgvba\(.\);/, ""
+    end
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
