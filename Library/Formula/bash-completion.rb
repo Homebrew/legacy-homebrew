@@ -9,7 +9,7 @@ class BashCompletion <Formula
   def install
     inreplace "bash_completion" do |s|
       s.gsub! '/etc/bash_completion', "#{etc}/bash_completion"
-      s.gsub! "bash_completion", 'readlink -f', "readlink"
+      s.gsub! 'readlink -f', "readlink"
     end
 
     system "./configure", "--prefix=#{prefix}"
