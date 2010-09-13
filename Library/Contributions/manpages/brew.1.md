@@ -172,6 +172,9 @@ Some external commands are shipped with Homebrew, and enabled by default.
     Downloads the tarball or checks out from VCS for the given <formula>. For
     tarballs, also prints MD5 and SHA1 checksums.
 
+  * `options` <formula>:
+    Displays install options specific to <formula>.
+
   * `man`:
     Regenerates this man page from source.
 

@@ -1,7 +1,7 @@
 require 'formula'
 
 class Tomcat <Formula
-  url 'http://www.fightrice.com/mirrors/apache/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.tar.gz'
+  url 'http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.tar.gz'
   homepage 'http://tomcat.apache.org/'
   md5 'f9eafa9bfd620324d1270ae8f09a8c89'
 
