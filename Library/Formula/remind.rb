@@ -5,6 +5,17 @@ class Remind <Formula
   homepage 'http://www.roaringpenguin.com/products/remind'
   md5 '261a5fb774a1d671cc71e36fd0ea02b3'
 
+  def options
+    [[ "--whatever", "Remove anti-Apple nonsense"]]
+  end
+
+  if ARGV.include?("--whatever")
+    def patches
+      # Remove unnecessary sleeps and anti-Apple messages
+      { :p1 => "http://gist.github.com/raw/577720/2e893e41e2a780c72d23fc7d72caf0f    364c4b088/gistfile1.diff"}
+    end
+  end
+
   def install
     # Remove unnecessary sleeps when running on Apple
     inreplace "configure", "sleep 1", "true"
