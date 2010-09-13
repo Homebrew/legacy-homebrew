@@ -14,7 +14,8 @@ class GnuSmalltalk <Formula
   homepage 'http://smalltalk.gnu.org/'
   sha1 'a985d69e4760420614c9dfe4d3605e47c5eb8faa'
 
-  # depends_on 'gmp' => :optional # 32/64 built build problems
+  # 'gmp' is an optional dep, it is built 64-bit on Snow Leopard
+  # (and this brew is forced to build in 32-bit mode.)
 
   def install
     fails_with_llvm "Codegen problems with LLVM"
