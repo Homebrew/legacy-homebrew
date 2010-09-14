@@ -5,7 +5,6 @@ class Mono <Formula
   head "git://github.com/mono/mono.git"
   homepage "http://mono-project.com/"
   version "2.6.7"
-  md5 ""
 
   depends_on "pkg-config"
 
