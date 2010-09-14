@@ -257,7 +257,11 @@ class GitDownloadStrategy <AbstractDownloadStrategy
       safe_system 'git', 'clone', @url, @clone # indeed, leave it verbose
     else
       puts "Updating #{@clone}"
-      Dir.chdir(@clone) { quiet_safe_system 'git', 'fetch', @url }
+      Dir.chdir(@clone) do
+        quiet_safe_system 'git', 'fetch', @url
+        # If we're going to checkout a tag, then we need to fetch new tags too.
+        quiet_safe_system 'git', 'fetch', '--tags' if @spec == :tag
+      end
     end
   end
 

@@ -70,6 +70,11 @@ def audit_formula_text text
     problems << " * md5 is empty"
   end
 
+  # Commented-out depends_on
+  if text =~ /#\s*depends_on\s+(.+)\s*$/
+    problems << " * Commented-out dep #{$1}."
+  end
+
   # No trailing whitespace, please
   if text =~ /[ ]+$/
     problems << " * Trailing whitespace was found."
