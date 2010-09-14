@@ -1,9 +1,9 @@
 require 'formula'
 
 class Npm <Formula
-  url 'http://github.com/isaacs/npm/tarball/v0.1.25'
+  url 'http://github.com/isaacs/npm/tarball/v0.1.27'
   homepage 'http://github.com/isaacs/npm'
-  md5 '14910efa963893691406cc761f7c473a'
+  md5 '65a9ba6e46299f213145b90248cbcc20'
   head 'git://github.com/isaacs/npm.git'
 
   depends_on 'node'
@@ -55,12 +55,19 @@ EOS
   def caveats; <<-EOS.undent
     npm will install binaries to:
       #{share_bin}
+
     You may want to add this to your PATH.
 
     npm will install libraries to:
-      #{node_lib}/.node_libraries
+      #{node_lib}/.npm
 
     To manually remove libraries installed by npm, delete this (hidden!) folder.
+
+    npm will also symlink libraries to:
+      #{node_lib}
+
+    You will want to add this to your NODE_PATH if you wish to
+    require libraries without a path.
     EOS
   end
 end

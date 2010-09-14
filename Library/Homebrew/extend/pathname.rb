@@ -134,8 +134,8 @@ class Pathname
     /-((\d+\.)*\d+([abc]|rc|RC)\d*)$/.match stem
     return $1 if $1
 
-    # eg foobar-4.5.0-beta1
-    /-((\d+\.)*\d+-beta\d+)$/.match stem
+    # eg foobar-4.5.0-beta1, or foobar-4.50-beta
+    /-((\d+\.)*\d+-beta(\d+)?)$/.match stem
     return $1 if $1
 
     # eg. foobar4.5.1
@@ -209,19 +209,25 @@ class Pathname
     self.to_s[0, prefix.length] == prefix
   end
 
+  # perhaps confusingly, this Pathname object becomes the symlink pointing to
+  # the src paramter.
   def make_relative_symlink src
     self.dirname.mkpath
     Dir.chdir self.dirname do
       # TODO use Ruby function so we get exceptions
       # NOTE Ruby functions may work, but I had a lot of problems
-      rv=system 'ln', '-sf', src.relative_path_from(self.dirname)
+      rv = system 'ln', '-sf', src.relative_path_from(self.dirname)
       unless rv and $? == 0
-        raise <<-EOS
-Could not create symlink #{to_s}.
-Check that you have permssions on #{self.dirname}
-        EOS
+        raise <<-EOS.undent
+          Could not create symlink #{to_s}.
+          Check that you have permssions on #{self.dirname}
+          EOS
       end
     end
+  end
+
+  def / that
+    join that.to_s
   end
 end
 
