@@ -24,9 +24,12 @@ class Mono <Formula
     After installation, if you want to make it the default installation to the system, you
     can do this by:
         cd /Library/Frameworks/Mono.framework/Versions
-        sudo ln -s /usr/local/Cellar/mono/#{version} brew
+        sudo ln -s #{prefix} brew
         sudo rm Current
-        sudo ln -s brew Current 
+        sudo ln -s brew Current
+    
+    And finally, you need to make this:
+        sudo ln -s /Library/Frameworks/Mono.framework/Libraries/mono /usr/lib/mono
     EOS
   end
 end
