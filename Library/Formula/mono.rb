@@ -17,12 +17,12 @@ class Mono <Formula
   end
 
   def caveats; <<-EOS.undent
-    In order to build and install Mono you need to have a regular Mono instalation. You can
-    get this from:
+    In order to build and install Mono you need to have a regular Mono instalation. You can get
+    this from:
         http://www.go-mono.com/mono-downloads/download.html
 
-    After installation, if you want to make it the default installation to the system, you
-    can do this by setting these environment variables:
+    After installation, if you want to make it the default installation to the system, you can do
+    this by setting these environment variables:
       MONO_PREFIX=#{prefix}
       GNOME_PREFIX=/usr
       export LD_LIBRARY_PATH=$MONO_PREFIX/lib:$LD_LIBRARY_PATH
@@ -31,7 +31,7 @@ class Mono <Formula
       export PKG_CONFIG_PATH=$MONO_PREFIX/lib/pkgconfig:$GNOME_PREFIX/lib/pkgconfig
       export PATH=$MONO_PREFIX/bin:$PATH
       
-    It doesn't affect you system. When you want rollback to previous Mono, just remove (or change)
+    It doesn't affect your system. When you want rollback to previous Mono, just remove (or change)
     these environment variables.
     EOS
   end
