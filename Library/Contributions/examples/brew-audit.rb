@@ -66,8 +66,17 @@ def audit_formula_text text
   end
 
   # Empty checksums
-  if text =~ /md5\s+\'\'/
+  if text =~ /md5\s+(\'\'|\"\")/
     problems << " * md5 is empty"
+  end
+
+  if text =~ /sha1\s+(\'\'|\"\")/
+    problems << " * sha1 is empty"
+  end
+
+  # Commented-out depends_on
+  if text =~ /#\s*depends_on\s+(.+)\s*$/
+    problems << " * Commented-out dep #{$1}."
   end
 
   # No trailing whitespace, please

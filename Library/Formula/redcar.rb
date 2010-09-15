@@ -5,9 +5,6 @@ class Redcar <Formula
   homepage 'http://github.com/danlucraft/redcar'
 
   depends_on 'jruby'
-
-  # rspec doesn't provide an 'rspec' module, so our test fails.
-  # depends_on 'rspec' => :jruby
   depends_on 'cucumber' => :jruby
 
   def install
