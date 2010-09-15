@@ -22,7 +22,7 @@ class ModWsgi <Formula
 
   def install
     # Remove a flag added when homebrew isn't in /usr/local
-    # causes apxs to fail with unknown flags s,y,s,t,m
+    # causes apxs to fail with "unknown flags" error
     ENV.remove 'CPPFLAGS', "-isystem #{HOMEBREW_PREFIX}/include"
 
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
@@ -32,6 +32,7 @@ class ModWsgi <Formula
     archs = archs_for_command("python")
     archs.delete :ppc7400
     archs.delete :ppc64
+    archs.delete :x86_64 if Hardware.is_32_bit?
 
     inreplace 'Makefile' do |s|
       s.gsub! "-Wc,'-arch x86_64' -Wc,'-arch i386' -Wc,'-arch ppc7400'",

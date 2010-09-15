@@ -3,7 +3,7 @@ require 'global'
 
 def text_for_keg_only_formula f
   if f.keg_only? == :provided_by_osx
-    rationale = "This is because the formula is already provided by OS X."
+    rationale = "Mac OS X already provides this program and installing another version in parallel can cause all kinds of trouble."
   elsif f.keg_only?.kind_of? String
     rationale = "The formula provides the following rationale:\n\n#{f.keg_only?.chomp}"
   else

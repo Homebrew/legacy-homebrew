@@ -1,8 +1,8 @@
 require 'formula'
 
 class GitExtras <Formula
-  url 'git://github.com/visionmedia/git-extras.git', :tag => '0.0.1'
-  version '0.0.1'
+  url 'git://github.com/visionmedia/git-extras.git', :tag => '0.0.4'
+  version '0.0.4'
   head 'git://github.com/visionmedia/git-extras.git', :branch => 'master'
 
   homepage 'http://github.com/visionmedia/git-extras'

@@ -10,8 +10,8 @@ class Calc <Formula
   def install
     ENV.deparallelize
 
-    ENV['EXTRA_LDFLAGS'] = ENV['LDFLAGS']
-    ENV['EXTRA_CFLAGS'] = ENV['CFLAGS']
+    ENV['EXTRA_CFLAGS'] = ENV.cflags
+    ENV['EXTRA_LDFLAGS'] = ENV.ldflags
 
     readline = Formula.factory('readline')
     inreplace "Makefile" do |s|

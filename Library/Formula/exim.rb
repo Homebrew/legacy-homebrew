@@ -1,9 +1,9 @@
 require 'formula'
 
 class Exim <Formula
-  url 'http://ftp.exim.org/pub/exim/exim4/exim-4.71.tar.gz'
+  url 'http://ftp.exim.org/pub/exim/exim4/exim-4.72.tar.gz'
   homepage 'http://exim.org'
-  sha1 '8198c70892ba8ce1a1c550b0d19bc7590814c535'
+  sha1 '261c02c95b4d3aada73840b01f836e6874841c44'
 
   depends_on 'pcre'
 
