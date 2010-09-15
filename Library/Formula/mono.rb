@@ -27,8 +27,6 @@ class Mono <Formula
         sudo ln -s #{prefix} brew
         sudo rm Current
         sudo ln -s brew Current
-    
-    And finally, you need to make this:
         sudo ln -s /Library/Frameworks/Mono.framework/Libraries/mono /usr/lib/mono
     EOS
   end
