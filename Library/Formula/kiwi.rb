@@ -8,7 +8,7 @@ class Kiwi <Formula
   depends_on 'rlwrap' => :recommended
 
   def install
-    inreplace "Makefile", "/usr/local", "#{prefix}"
+    inreplace "Makefile", "/usr/local", prefix
     system "make install"
   end
 

@@ -1,16 +1,12 @@
 require 'formula'
 
 class Libvpx <Formula
-  head 'git://review.webmproject.org/libvpx.git', :tag => 'v0.9.0'
+  url 'http://webm.googlecode.com/files/libvpx-0.9.1.tar.bz2'
+  sha1 'a18acb7a1a2fd62268e63aab860b43ff04669b9e'
   homepage 'http://www.webmproject.org/code/'
 
-  depends_on 'yasm'
-
   def install
-    system "./configure"
-    system "make"
-
-    include.install Dir["vp8/*.h", "vpx_codec/*.h", "vpx_ports/*.h"]
-    lib.install "libvpx.a"
+    system "./configure", "--prefix=#{prefix}"
+    system "make install"
   end
 end
