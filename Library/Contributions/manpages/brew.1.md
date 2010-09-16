@@ -45,8 +45,8 @@ didn't include with OS X.
     Installs <formula>.
 
     If `--force` is passed, will install <formula> even if it is already
-    installed. This can be used to re-install the same version of a formuale
-    without removing it first.
+    installed. This can be used to re-install a formula without removing
+    it first.
 
     If `--debug` is passed and brewing fails, opens a shell inside the
     temporary folder used for compiling.
