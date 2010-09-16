@@ -40,13 +40,20 @@ end
 
 def dump_config
   require 'hardware'
+  sha = `cd #{HOMEBREW_REPOSITORY} && git rev-parse --verify HEAD 2> /dev/null`.chomp
   bits = Hardware.bits
   cores = Hardware.cores_as_words
-  llvm = llvm_build
-  gcc_42 = gcc_42_build
-  gcc_40 = gcc_40_build
-  sha = `cd #{HOMEBREW_REPOSITORY} && git rev-parse --verify HEAD 2> /dev/null`.chomp
   kernel_arch = `uname -m`.chomp
+  system_ruby = Pathname.new("/usr/bin/ruby")
+
+  llvm = llvm_build
+  llvm_recommendation = (!llvm.nil? && llvm < RECOMMENDED_LLVM) ? "(#{RECOMMENDED_LLVM} or newer recommended)" : ""
+
+  gcc_42 = gcc_42_build
+  gcc_42_recommendation = (!gcc_42.nil? && gcc_42 < RECOMMENDED_GCC_42) ? "(#{RECOMMENDED_GCC_42} or newer recommended)" : ""
+
+  gcc_40 = gcc_40_build
+  gcc_40_recommendation = (!gcc_40.nil? && gcc_40 < RECOMMENDED_GCC_40) ? "(#{RECOMMENDED_GCC_40} or newer recommended)" : ""
 
   puts <<-EOS
 HOMEBREW_VERSION: #{HOMEBREW_VERSION}
@@ -59,9 +66,10 @@ Hardware: #{cores}-core #{bits}-bit #{Hardware.intel_family}
 OS X: #{MACOS_FULL_VERSION}
 Kernel Architecture: #{kernel_arch}
 Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
-GCC-4.0: #{gcc_40 ? "build #{gcc_40}" : "N/A"} (#{RECOMMENDED_GCC_40} or newer recommended)
-GCC-4.2: #{gcc_42 ? "build #{gcc_42}" : "N/A"} (#{RECOMMENDED_GCC_42} or newer recommended)
-LLVM: #{llvm ? "build #{llvm}" : "N/A" } #{llvm ? "(#{RECOMMENDED_LLVM} or newer recommended)" : "" }
+/usr/bin/ruby => #{system_ruby.realpath}
+GCC-4.0: #{gcc_40 ? "build #{gcc_40}" : "N/A"} #{gcc_42_recommendation}
+GCC-4.2: #{gcc_42 ? "build #{gcc_42}" : "N/A"} #{gcc_40_recommendation}
+LLVM: #{llvm ? "build #{llvm}" : "N/A" } #{llvm_recommendation}
 MacPorts or Fink? #{macports_or_fink_installed?}
 X11 installed? #{x11_installed?}
 EOS
