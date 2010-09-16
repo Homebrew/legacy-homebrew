@@ -24,8 +24,8 @@ class CouchdbLucene <Formula
   def caveats; <<-EOS
 You can enable couchdb-lucene to automatically load on login with:
 
-  sudo cp "#{prefix}/couchdb-lucene.plist" /Library/LaunchDaemons/
-  sudo launchctl load -w /Library/LaunchDaemons/couchdb-lucene.plist
+  cp "#{prefix}/couchdb-lucene.plist" ~/Library/LaunchAgents/
+  launchctl load -w ~/Library/LaunchAgents/couchdb-lucene.plist
 
 Or start it manually with:
   #{bin}/run

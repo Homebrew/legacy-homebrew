@@ -3,6 +3,7 @@ require 'formula'
 def build_java?; ARGV.include? "--java"; end
 def build_perl?; ARGV.include? "--perl"; end
 def build_python?; ARGV.include? "--python"; end
+def build_ruby?; ARGV.include? "--ruby"; end
 def build_universal?; ARGV.include? '--universal'; end
 def with_unicode_path?; ARGV.include? '--unicode-path'; end
 
@@ -27,6 +28,7 @@ class Subversion <Formula
       ['--java', 'Build Java bindings.'],
       ['--perl', 'Build Perl bindings.'],
       ['--python', 'Build Python bindings.'],
+      ['--ruby', 'Build Ruby bindings.'],
       ['--universal', 'Build as a Universal Intel binary.'],
       ['--unicode-path', 'Include support for OS X unicode (but see caveats!)']
     ]
@@ -79,6 +81,7 @@ class Subversion <Formula
             "--without-berkeley-db"]
 
     args << "--enable-javahl" << "--without-jikes" if build_java?
+    args << "--with-ruby-sitedir=#{lib}/ruby" if build_ruby?
     args << "--with-unicode-path" if with_unicode_path?
 
     system "./configure", *args
@@ -113,6 +116,12 @@ class Subversion <Formula
       system "make javahl"
       system "make install-javahl"
     end
+
+    if build_ruby?
+      ENV.j1
+      system "make swig-rb"
+      system "make install-swig-rb"
+    end
   end
 
   def patches
@@ -141,6 +150,14 @@ class Subversion <Formula
       s += <<-EOS.undent
         You may need to add the Python bindings to your PYTHONPATH from:
           #{HOMEBREW_PREFIX}/lib/svn-python
+
+      EOS
+    end
+
+    if build_ruby?
+      s += <<-EOS.undent
+        You may need to add the Ruby bindings to your RUBYLIB from:
+          #{HOMEBREW_PREFIX}/lib/ruby
 
       EOS
     end

@@ -68,7 +68,9 @@ module HomebrewArgvExtension
   end
 
   def usage; <<-EOS.undent
-    Usage: brew command [formula] ...
+    Usage: brew [-v|--version] [--prefix [formula]] [--cache [formula]]
+                [--cellar [formula]] [--config] [--env] [--repository]
+                [-h|--help] COMMAND [formula] ...
 
     Principle Commands:
       install formula ... [--ignore-dependencies] [--HEAD]
@@ -79,6 +81,7 @@ module HomebrewArgvExtension
 
     Other Commands:
       info formula [--github]
+      options formula
       deps formula
       uses formula [--installed]
       home formula ...
@@ -86,6 +89,7 @@ module HomebrewArgvExtension
       link formula ...
       unlink formula ...
       outdated
+      missing
       prune
       doctor
 
