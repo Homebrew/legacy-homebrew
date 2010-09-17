@@ -14,8 +14,10 @@ class Aspell <Formula
   md5 'bc80f0198773d5c05086522be67334eb'
 
   def options
-    [['--lang=XX,...',
-    "Install dictionary for language XX where XX is the country code, e.g.: --lang=en,es\n\tAvailable country codes: #{available_languages.join(', ')} "]]
+    [
+      ['--lang=XX,...', "Install dictionary for language XX where XX is the country code, e.g.: --lang=en,es\n\tAvailable country codes: #{available_languages.join(', ')}"],
+      ['--all', "Install all available dictionaries"]
+    ]
   end
 
   def install
@@ -23,12 +25,17 @@ class Aspell <Formula
     system "./configure", "--prefix=#{prefix}"
     system "make install"
 
-    ARGV.options_only.select { |v| v =~ /--lang=/ }.uniq.each do |opt|
-      languages = opt.split('=')[1].split(',')
-      languages.each do |lang|
-        formula = Object.const_get("Aspell_" + lang).new
-        formula.brew { formula.install }
+    languages = []
+    if ARGV.include?('--all')
+      languages << available_languages.to_a - broken_dictionaries.to_a
+    else
+      ARGV.options_only.select { |v| v =~ /--lang=/ }.uniq.each do |opt|
+        languages << opt.split('=')[1].split(',')
       end
+    end
+    languages.flatten.each do |lang|
+      formula = Object.const_get("Aspell_" + lang).new
+      formula.brew { formula.install }
     end
   end
 
@@ -40,8 +47,15 @@ class Aspell <Formula
 
     For the following languages aspell dictionaries are available:
     #{available_languages.join(', ')}
+
+    The dictionaries for the following languages seem to be broken:
+    #{broken_dictionaries.join(', ')}
     EOS
   end
+end
+
+def broken_dictionaries
+  %w( br cy el fr gv nl tr wa)
 end
 
 # BEGIN generated with brew-aspell-dictionaries
