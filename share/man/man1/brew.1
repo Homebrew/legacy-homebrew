@@ -44,8 +44,11 @@ Shows Homebrew and system configuration useful for debugging\. If you file a bug
 Performs a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. If no search term is given, all available formula are displayed\.
 .
 .TP
-\fBinstall [\-\-debug] [\-\-use\-llvm] [\-\-ignore\-dependencies] [\-\-HEAD]\fR \fIformula\fR
+\fBinstall [\-\-force] [\-\-debug] [\-\-use\-llvm] [\-\-ignore\-dependencies] [\-\-HEAD]\fR \fIformula\fR
 Installs \fIformula\fR\.
+.
+.IP
+If \fB\-\-force\fR is passed, will install \fIformula\fR even if it is already installed\. This can be used to re\-install a formula without removing it first\.
 .
 .IP
 If \fB\-\-debug\fR is passed and brewing fails, opens a shell inside the temporary folder used for compiling\.
