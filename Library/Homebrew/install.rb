@@ -3,7 +3,7 @@ require 'global'
 
 def text_for_keg_only_formula f
   if f.keg_only? == :provided_by_osx
-    rationale = "This is because the formula is already provided by OS X."
+    rationale = "Mac OS X already provides this program and installing another version in parallel can cause all kinds of trouble."
   elsif f.keg_only?.kind_of? String
     rationale = "The formula provides the following rationale:\n\n#{f.keg_only?.chomp}"
   else
@@ -85,8 +85,7 @@ def install f
           puts "to copy the diff to the clipboard."
         end
 
-        ENV['HOMEBREW_DEBUG_INSTALL'] = f.name
-        interactive_shell
+        interactive_shell f
         nil
       elsif ARGV.include? '--help'
         system './configure --help'
@@ -95,10 +94,13 @@ def install f
         f.prefix.mkpath
         beginning=Time.now
         f.install
-        FORMULA_META_FILES.each do |file|
-          next if File.directory? file
-          FileUtils.mv "#{file}.txt", file rescue nil
-          f.prefix.install file rescue nil
+        FORMULA_META_FILES.each do |filename|
+          next if File.directory? filename
+          target_file = filename
+          target_file = "#{filename}.txt" if File.exists? "#{filename}.txt"
+          # Some software symlinks these files (see help2man.rb)
+          target_file = Pathname.new(target_file).resolved_path
+          f.prefix.install target_file => filename rescue nil
           (f.prefix+file).chmod 0644 rescue nil
         end
         build_time = Time.now-beginning
@@ -148,11 +150,22 @@ def install f
       end
     end
 
-    # Check for possibly misplaced folders
+    # Check for man pages that aren't in share/man
     if (f.prefix+'man').exist?
       opoo 'A top-level "man" folder was found.'
       puts "Homebrew requires that man pages live under share."
       puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
+    end
+
+    # Check for Jars in lib
+    if File.exist?(f.lib)
+      unless f.lib.children.select{|g| g.to_s =~ /\.jar$/}.empty?
+        opoo 'JARs were installed to "lib".'
+        puts "Installing JARs to \"lib\" can cause conflicts between packages."
+        puts "For Java software, it is typically better for the formula to"
+        puts "install to \"libexec\" and then symlink or wrap binaries into \"bin\"."
+        puts "See \"activemq\", \"jruby\", etc. for examples."
+      end
     end
 
     # link from Cellar to Prefix

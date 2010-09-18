@@ -41,8 +41,12 @@ didn't include with OS X.
     surrounded with slashes, then it is interpreted as a regular expression.
     If no search term is given, all available formula are displayed.
 
-  * `install [--debug] [--use-llvm] [--ignore-dependencies] [--HEAD]` <formula>:
+  * `install [--force] [--debug] [--use-llvm] [--ignore-dependencies] [--HEAD]` <formula>:
     Installs <formula>.
+
+    If `--force` is passed, will install <formula> even if it is already
+    installed. This can be used to re-install a formula without removing
+    it first.
 
     If `--debug` is passed and brewing fails, opens a shell inside the
     temporary folder used for compiling.
@@ -172,12 +176,22 @@ Some external commands are shipped with Homebrew, and enabled by default.
     Downloads the tarball or checks out from VCS for the given <formula>. For
     tarballs, also prints MD5 and SHA1 checksums.
 
+  * `options` <formula>:
+    Displays install options specific to <formula>.
+
+  * `man`:
+    Regenerates this man page from source.
+
+    *NOTE*: Requires [`ronn`][ronn].
+
   * `missing`:
     Checks all installed formuale for missing dependencies.
 
   * `server`:
     Starts a local webserver with an app that lets you browse available
     formulae, similar to `gem server`.
+
+    *NOTE*: Requires [`sinatra`][sinatra].
 
   * `test` <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
@@ -187,6 +201,13 @@ Some external commands are shipped with Homebrew, and enabled by default.
 
     Example: `brew install jruby && brew test jruby`
 
+[ronn]: http://rtomayko.github.com/ronn/
+        "Ronn"
+
+[sinatra]: http://www.sinatrarb.com/
+           "Sinatra"
+
+
 ## ENVIRONMENT
 
   * HOMEBREW\_DEBUG:
@@ -194,9 +215,14 @@ Some external commands are shipped with Homebrew, and enabled by default.
     commands.
 
   * HOMEBREW\_DEBUG\_INSTALL:
-    When a `brew install -d` or `brew install -i` drops into a shell,
+    When `brew install -d` or `brew install -i` drops into a shell,
     `HOMEBREW_DEBUG_INSTALL` will be set to the name of the formula being
-    tried.
+    brewed.
+
+  * HOMEBREW\_DEBUG\_PREFIX:
+    When `brew install -d` or `brew install -i` drops into a shell,
+    `HOMEBREW_DEBUG__PREFIX` will be set to the target prefix in the Cellar
+    of the formula being brewed.
 
   * HOMEBREW\_EDITOR:
     If set, Homebrew will use this editor when editing a single formula, or
@@ -205,6 +231,10 @@ Some external commands are shipped with Homebrew, and enabled by default.
     *NOTE*: `brew edit` will open all of Homebrew as discontinuous files and
     folders. TextMate can handle this correctly in project mode, but many
     editors will do strange things in this case.
+
+  * HOMEBREW\_KEEP\_INFO:
+    If set, Homebrew will not remove files from share/info, allowing them to
+    be linked from the Cellar.
 
   * HOMEBREW\_SVN:
     When exporting from Subversion, Homebrew will use `HOMEBREW_SVN` if set,
@@ -233,7 +263,7 @@ Some external commands are shipped with Homebrew, and enabled by default.
 
 ## SEE ALSO
 
- Homebrew Wiki: http://wiki.github.com/mxcl/homebrew/
+Homebrew Wiki: http://wiki.github.com/mxcl/homebrew/
 
 ## AUTHORS
 

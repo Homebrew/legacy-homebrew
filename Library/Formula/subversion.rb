@@ -3,6 +3,7 @@ require 'formula'
 def build_java?; ARGV.include? "--java"; end
 def build_perl?; ARGV.include? "--perl"; end
 def build_python?; ARGV.include? "--python"; end
+def build_ruby?; ARGV.include? "--ruby"; end
 def build_universal?; ARGV.include? '--universal'; end
 def with_unicode_path?; ARGV.include? '--unicode-path'; end
 
@@ -27,6 +28,7 @@ class Subversion <Formula
       ['--java', 'Build Java bindings.'],
       ['--perl', 'Build Perl bindings.'],
       ['--python', 'Build Python bindings.'],
+      ['--ruby', 'Build Ruby bindings.'],
       ['--universal', 'Build as a Universal Intel binary.'],
       ['--unicode-path', 'Include support for OS X unicode (but see caveats!)']
     ]
@@ -79,6 +81,7 @@ class Subversion <Formula
             "--without-berkeley-db"]
 
     args << "--enable-javahl" << "--without-jikes" if build_java?
+    args << "--with-ruby-sitedir=#{lib}/ruby" if build_ruby?
     args << "--with-unicode-path" if with_unicode_path?
 
     system "./configure", *args
@@ -101,8 +104,15 @@ class Subversion <Formula
         arches = "-arch x86_64"
       end
 
+      # Use verison-appropriate system Perl
+      if MACOS_VERSION < 10.6
+        perl_version = "5.8.8"
+      else
+        perl_version = "5.10.0"
+      end
+
       inreplace "Makefile" do |s|
-        s.change_make_var! "SWIG_PL_INCLUDES", "$(SWIG_INCLUDES) #{arches} -g -pipe -fno-common -DPERL_DARWIN -fno-strict-aliasing -I/usr/local/include  -I/System/Library/Perl/5.10.0/darwin-thread-multi-2level/CORE"
+        s.change_make_var! "SWIG_PL_INCLUDES", "$(SWIG_INCLUDES) #{arches} -g -pipe -fno-common -DPERL_DARWIN -fno-strict-aliasing -I/usr/local/include  -I/System/Library/Perl/#{perl_version}/darwin-thread-multi-2level/CORE"
       end
       system "make swig-pl"
       system "make install-swig-pl"
@@ -112,6 +122,12 @@ class Subversion <Formula
       ENV.j1 # This build isn't parallel safe
       system "make javahl"
       system "make install-javahl"
+    end
+
+    if build_ruby?
+      ENV.j1 # This build isn't parallel safe
+      system "make swig-rb"
+      system "make install-swig-rb"
     end
   end
 
@@ -141,6 +157,14 @@ class Subversion <Formula
       s += <<-EOS.undent
         You may need to add the Python bindings to your PYTHONPATH from:
           #{HOMEBREW_PREFIX}/lib/svn-python
+
+      EOS
+    end
+
+    if build_ruby?
+      s += <<-EOS.undent
+        You may need to add the Ruby bindings to your RUBYLIB from:
+          #{HOMEBREW_PREFIX}/lib/ruby
 
       EOS
     end

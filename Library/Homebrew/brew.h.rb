@@ -130,6 +130,20 @@ def make url
   force_text = "If you really want to make this formula use --force."
 
   case name.downcase
+  when /vim/, /screen/
+    raise <<-EOS
+#{name} is blacklisted for creation
+Apple distributes this program with OS X.
+
+#{force_text}
+    EOS
+  when /libarchive/
+    raise <<-EOS
+#{name} is blacklisted for creation
+Apple distributes this library with OS X, you can find it in /usr/lib.
+
+#{force_text}
+    EOS
   when /libxml/, /libxlst/, /freetype/, /libpng/
     raise <<-EOS
 #{name} is blacklisted for creation
@@ -239,8 +253,9 @@ def cleanup name
   require 'formula'
 
   f = Formula.factory name
+  formula_cellar = f.prefix.parent
 
-  if f.installed? and f.prefix.parent.directory?
+  if f.installed? and formula_cellar.directory?
     kids = f.prefix.parent.children
     kids.each do |keg|
       next if f.prefix == keg
@@ -249,12 +264,16 @@ def cleanup name
       puts
     end
   else
-    # we can't tell which one to keep in this circumstance
-    opoo "Skipping #{name}: most recent version #{f.version} not installed"
+    # If the cellar only has one version installed, don't complain
+    # that we can't tell which one to keep.
+    if formula_cellar.children.length > 1
+      opoo "Skipping #{name}: most recent version #{f.version} not installed"
+    end
   end
 end
 
 def clean f
+  require 'cleaner'
   Cleaner.new f
  
   # Hunt for empty folders and nuke them unless they are
@@ -433,7 +452,7 @@ def brew_install
   ################################################################# warnings
   begin
     if MACOS_VERSION >= 10.6
-      opoo "You should upgrade to Xcode 3.2.2" if llvm_build < RECOMMENDED_LLVM
+      opoo "You should upgrade to Xcode 3.2.3" if llvm_build < RECOMMENDED_LLVM
     else
       opoo "You should upgrade to Xcode 3.1.4" if (gcc_40_build < RECOMMENDED_GCC_40) or (gcc_42_build < RECOMMENDED_GCC_42)
     end
@@ -476,7 +495,11 @@ class PrettyListing
         end
       else
         if pn.directory?
-          print_dir pn
+          if pn.symlink?
+            puts "#{pn} -> #{pn.readlink}"
+          else
+            print_dir pn
+          end
         elsif not FORMULA_META_FILES.include? pn.basename.to_s
           puts pn
         end
@@ -522,71 +545,6 @@ private
   end
 end
 
-
-################################################################ class Cleaner
-class Cleaner
-  def initialize f
-    @f=f
-    [f.bin, f.sbin, f.lib].select{|d|d.exist?}.each{|d|clean_dir d}
-    # info pages suck
-    info = f.share+'info'
-    info.rmtree if info.directory? and not f.skip_clean? info
-  end
-
-private
-  def strip path, args=''
-    return if @f.skip_clean? path
-    puts "strip #{path}" if ARGV.verbose?
-    path.chmod 0644 # so we can strip
-    unless path.stat.nlink > 1
-      system "strip", *(args+path)
-    else
-      path = path.to_s.gsub ' ', '\\ '
-
-      # strip unlinks the file and recreates it, thus breaking hard links!
-      # is this expected behaviour? patch does it too… still, this fixes it
-      tmp = `/usr/bin/mktemp -t homebrew_strip`.chomp
-      begin
-        `/usr/bin/strip #{args} -o #{tmp} #{path}`
-        `/bin/cat #{tmp} > #{path}`
-      ensure
-        FileUtils.rm tmp
-      end
-    end
-  end
-
-  def clean_file path
-    perms=0444
-    case `file -h '#{path}'`
-    when /Mach-O dynamically linked shared library/
-      # Stripping libraries is causing no end of trouble
-      # Lets just give up, and try to do it manually in instances where it
-      # makes sense
-      #strip path, '-SxX'
-    when /Mach-O [^ ]* ?executable/
-      strip path
-      perms=0555
-    when /script text executable/
-      perms=0555
-    end
-    path.chmod perms
-  end
-
-  def clean_dir d
-    d.find do |path|
-      if path.directory?
-        Find.prune if @f.skip_clean? path
-      elsif not path.file?
-        next
-      elsif path.extname == '.la' and not @f.skip_clean? path
-        # *.la files are stupid
-        path.unlink
-      elsif not path.symlink?
-        clean_file path
-      end
-    end
-  end
-end
 
 def gcc_42_build
   `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
