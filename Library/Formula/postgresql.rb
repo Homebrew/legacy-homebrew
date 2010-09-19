@@ -3,8 +3,8 @@ require 'hardware'
 
 class Postgresql <Formula
   homepage 'http://www.postgresql.org/'
-  url 'http://ftp2.uk.postgresql.org/sites/ftp.postgresql.org/source/v8.4.4/postgresql-8.4.4.tar.bz2'
-  md5 '4bf2448ad965bca3940df648c02194df'
+  url 'http://ftp9.us.postgresql.org/pub/mirrors/postgresql/source/v9.0.0/postgresql-9.0.0.tar.bz2'
+  md5 '14c2122cc322e69ab2ab702ed7714bbe'
 
   depends_on 'readline'
   depends_on 'libxml2' if MACOS_VERSION < 10.6 # Leopard libxml is too old
@@ -88,7 +88,7 @@ class Postgresql <Formula
 To build plpython against a specific Python, set PYTHON prior to brewing:
   PYTHON=/usr/local/bin/python  brew install postgresql
 See:
-  http://www.postgresql.org/docs/8.4/static/install-procedure.html
+  http://www.postgresql.org/docs/9.0/static/install-procedure.html
 
 
 If this is your first install, create a database with:
