@@ -104,8 +104,15 @@ class Subversion <Formula
         arches = "-arch x86_64"
       end
 
+      # Use verison-appropriate system Perl
+      if MACOS_VERSION < 10.6
+        perl_version = "5.8.8"
+      else
+        perl_version = "5.10.0"
+      end
+
       inreplace "Makefile" do |s|
-        s.change_make_var! "SWIG_PL_INCLUDES", "$(SWIG_INCLUDES) #{arches} -g -pipe -fno-common -DPERL_DARWIN -fno-strict-aliasing -I/usr/local/include  -I/System/Library/Perl/5.10.0/darwin-thread-multi-2level/CORE"
+        s.change_make_var! "SWIG_PL_INCLUDES", "$(SWIG_INCLUDES) #{arches} -g -pipe -fno-common -DPERL_DARWIN -fno-strict-aliasing -I/usr/local/include  -I/System/Library/Perl/#{perl_version}/darwin-thread-multi-2level/CORE"
       end
       system "make swig-pl"
       system "make install-swig-pl"
@@ -118,7 +125,7 @@ class Subversion <Formula
     end
 
     if build_ruby?
-      ENV.j1
+      ENV.j1 # This build isn't parallel safe
       system "make swig-rb"
       system "make install-swig-rb"
     end
