@@ -8,7 +8,7 @@ class Mr <Formula
   def install
     system "make"
     bin.install ['mr', 'webcheckout']
-    man1.install [gzip('mr.1'), gzip('webcheckout.1')]
+    man1.install gzip('mr.1', 'webcheckout.1')
     (share+'mr').install Dir['lib/*']
   end
 end
