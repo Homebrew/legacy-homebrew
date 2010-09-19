@@ -1,7 +1,5 @@
 require 'formula'
 
-# For tips on Cocoa Emacs, see:
-# * http://superuser.com/questions/73500/on-os-x-how-do-i-start-cocoa-emacs-and-bring-it-to-front
 class Emacs <Formula
   url 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.2.tar.bz2'
   md5 '057a0379f2f6b85fb114d8c723c79ce2'
@@ -59,12 +57,6 @@ class Emacs <Formula
     return s
   end
 
-  def cocoa_startup_script; <<-EOS.undent
-    #!/bin/bash
-    open -a #{prefix}/Emacs.app/Contents/MacOS/Emacs --args $@
-    EOS
-  end
-
   def install
     fails_with_llvm "Duplicate symbol errors while linking."
 
@@ -80,7 +72,10 @@ class Emacs <Formula
       system "make bootstrap"
       system "make install"
       prefix.install "nextstep/Emacs.app"
-      (bin+"emacs").write cocoa_startup_script
+
+      bin.mkpath
+      ln_s prefix+'Emacs.app/Contents/MacOS/Emacs', bin+'emacs'
+      ln_s prefix+'Emacs.app/Contents/MacOS/bin/emacsclient', bin
     else
       if ARGV.include? "--with-x"
         args << "--with-x"
@@ -88,6 +83,7 @@ class Emacs <Formula
       else
         args << "--without-x"
       end
+
       system "./configure", *args
       system "make"
       system "make install"

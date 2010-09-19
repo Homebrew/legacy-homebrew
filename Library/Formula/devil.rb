@@ -1,7 +1,7 @@
 require 'formula'
 
 class Devil <Formula
-  url 'http://prdownloads.sourceforge.net/openil/1.7.8/DevIL-1.7.8.tar.gz'
+  url 'http://downloads.sourceforge.net/openil/1.7.8/DevIL-1.7.8.tar.gz'
   homepage 'http://sourceforge.net/projects/openil/'
   md5 '7918f215524589435e5ec2e8736d5e1d'
 

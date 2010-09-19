@@ -495,7 +495,11 @@ class PrettyListing
         end
       else
         if pn.directory?
-          print_dir pn
+          if pn.symlink?
+            puts "#{pn} -> #{pn.readlink}"
+          else
+            print_dir pn
+          end
         elsif not FORMULA_META_FILES.include? pn.basename.to_s
           puts pn
         end

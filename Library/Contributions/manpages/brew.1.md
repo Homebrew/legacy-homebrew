@@ -41,8 +41,12 @@ didn't include with OS X.
     surrounded with slashes, then it is interpreted as a regular expression.
     If no search term is given, all available formula are displayed.
 
-  * `install [--debug] [--use-llvm] [--ignore-dependencies] [--HEAD]` <formula>:
+  * `install [--force] [--debug] [--use-llvm] [--ignore-dependencies] [--HEAD]` <formula>:
     Installs <formula>.
+
+    If `--force` is passed, will install <formula> even if it is already
+    installed. This can be used to re-install a formula without removing
+    it first.
 
     If `--debug` is passed and brewing fails, opens a shell inside the
     temporary folder used for compiling.
@@ -171,6 +175,9 @@ Some external commands are shipped with Homebrew, and enabled by default.
   * `fetch` <formula>:
     Downloads the tarball or checks out from VCS for the given <formula>. For
     tarballs, also prints MD5 and SHA1 checksums.
+
+  * `options` <formula>:
+    Displays install options specific to <formula>.
 
   * `man`:
     Regenerates this man page from source.

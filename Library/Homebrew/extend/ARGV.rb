@@ -81,6 +81,7 @@ module HomebrewArgvExtension
 
     Other Commands:
       info formula [--github]
+      options formula
       deps formula
       uses formula [--installed]
       home formula ...
@@ -88,6 +89,7 @@ module HomebrewArgvExtension
       link formula ...
       unlink formula ...
       outdated
+      missing
       prune
       doctor
 
