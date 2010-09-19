@@ -5,9 +5,6 @@ class Abnfgen <Formula
   homepage 'http://www.quut.com/abnfgen/'
   md5 '2184310e276e15e65f8f477ca3719e08'
 
-  depends_on 'ragel'
-  depends_on 'man2html'
-
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--mandir=#{man}"
