@@ -175,12 +175,11 @@ module HomebrewEnvExtension
     append 'CPPFLAGS', "-DNCURSES_OPAQUE=0"
   end
 
-  # returns the compiler we're using
-  def cc;  self['CC'] or "gcc";  end
-  def cxx; self['CXX'] or "g++"; end
-
-  # CFLAGS are read quite a bit
-  def cflags; ENV['CFLAGS']; end
+  # Shortcuts for reading common flags
+  def cc;      self['CC'] or "gcc";  end
+  def cxx;     self['CXX'] or "g++"; end
+  def cflags;  self['CFLAGS'];       end
+  def ldflags; self['LDFLAGS'];      end
 
   def m64
     append_to_cflags '-m64'

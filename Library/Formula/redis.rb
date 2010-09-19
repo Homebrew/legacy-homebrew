@@ -1,10 +1,10 @@
 require 'formula'
 
 class Redis <Formula
-  url 'http://redis.googlecode.com/files/redis-2.0.0.tar.gz'
+  url 'http://redis.googlecode.com/files/redis-2.0.1.tar.gz'
   head 'git://github.com/antirez/redis.git'
   homepage 'http://code.google.com/p/redis/'
-  sha1 '078601a2ee6d900f938709c9b40526646a449453'
+  sha1 '364665c966c90eb5ab7d16065734a2b713d4b8eb'
 
   def install
     fails_with_llvm "Breaks with LLVM"
@@ -13,8 +13,8 @@ class Redis <Formula
     src = File.exists?('src/Makefile') ? 'src' : '.'
     system "make -C #{src}"
 
-    %w( redis-benchmark redis-cli redis-server redis-check-dump ).each { |p|
-      bin.install "#{src}/#{p}"
+    %w( redis-benchmark redis-cli redis-server redis-check-dump redis-check-aof ).each { |p|
+      bin.install "#{src}/#{p}" rescue nil
     }
 
     %w( run db/redis log ).each { |p| (var+p).mkpath }
@@ -32,8 +32,14 @@ class Redis <Formula
 
   def caveats
     <<-EOS.undent
-      Automatically load on login with:
-        launchctl load -w #{prefix}/io.redis.redis-server.plist
+    If this is your first install, automatically load on login with:
+        cp #{prefix}/io.redis.redis-server.plist ~/Library/LaunchAgents
+        launchctl load -w ~/Library/LaunchAgents/io.redis.redis-server.plist
+
+    If this is an upgrade and you already have the io.redis.redis-server.plist loaded:
+        launchctl unload -w ~/Library/LaunchAgents/io.redis.redis-server.plist
+        cp #{prefix}/io.redis.redis-server.plist ~/Library/LaunchAgents
+        launchctl load -w ~/Library/LaunchAgents/io.redis.redis-server.plist
 
       To start redis manually:
         redis-server #{etc}/redis.conf
