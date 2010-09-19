@@ -5,7 +5,7 @@ class Fontforge <Formula
   homepage 'http://fontforge.sourceforge.net'
   md5 '5f3d20d645ec1aa2b7b4876386df8717'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'pango'
   depends_on 'potrace'

@@ -5,7 +5,7 @@ class Lighttpd <Formula
   md5 '586eb535d31ac299652495b058dd87c4'
   homepage 'http://www.lighttpd.net/'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'pcre'
 
   def install

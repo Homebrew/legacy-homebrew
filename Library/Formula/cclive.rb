@@ -5,7 +5,7 @@ class Cclive <Formula
   homepage 'http://code.google.com/p/cclive/'
   md5 'c3d50c05ca332b01286f9f3b6dd21841'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'quvi'
 
   def install

@@ -6,7 +6,7 @@ class Gource <Formula
   version "0.28"
   head 'git://github.com/acaudwell/Gource.git'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'sdl'
   depends_on 'sdl_image'
   depends_on 'ftgl'

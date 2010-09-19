@@ -5,7 +5,7 @@ class Kdepimlibs <Formula
   homepage 'http://www.kde.org/'
   md5 'ebe6e0bbac211ae9cada13cc6efbd161'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'gpgme'
   depends_on 'akonadi'
   depends_on 'libical'

@@ -5,7 +5,7 @@ class Gmtl <Formula
   homepage 'http://ggt.sourceforge.net/'
   md5 '018c2cce3c87ad63509481b1eb144387'
 
-  depends_on 'scons'
+  depends_on 'scons' => :build
 
   def install
     system "scons", "install", "prefix=#{prefix}"

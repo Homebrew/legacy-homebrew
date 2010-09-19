@@ -5,7 +5,7 @@ class Ufraw <Formula
   homepage 'http://ufraw.sourceforge.net'
   md5 '61e100e42f17e3a7fcfae64506eebd14'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'libtiff'
   depends_on 'jpeg'

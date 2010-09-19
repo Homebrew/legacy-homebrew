@@ -5,7 +5,7 @@ class Atk <Formula
   homepage 'http://library.gnome.org/devel/atk/'
   sha256 '92b9b1213cafc68fe9c3806273b968c26423237d7b1f631dd83dc5270b8c268c'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
 
   def install
