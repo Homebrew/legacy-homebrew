@@ -5,7 +5,7 @@ class Gphoto2 <Formula
   homepage 'http://gphoto.org/'
   md5 '3c86c9824b9bfc57a52be5f84ad205f7'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'jpeg'
   depends_on 'libgphoto2'
   depends_on 'popt'

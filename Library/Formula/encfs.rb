@@ -5,7 +5,7 @@ class Encfs <Formula
   homepage 'http://www.arg0.net/encfs'
   md5 '3a3fef640c7c9f020104304392cd1836'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'boost'
   depends_on 'rlog'

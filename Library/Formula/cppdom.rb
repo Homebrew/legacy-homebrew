@@ -5,7 +5,7 @@ class Cppdom <Formula
   homepage 'http://sourceforge.net/projects/xml-cppdom/'
   md5 'ab30e45eb8129e14040020edc5b0b130'
 
-  depends_on 'scons'
+  depends_on 'scons' => :build
   depends_on 'boost'
 
   def install

@@ -5,7 +5,7 @@ class LibusbCompat <Formula
   homepage 'http://www.libusb.org/'
   md5 '570ac2ea085b80d1f74ddc7c6a93c0eb'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'libusb'
 
   def install

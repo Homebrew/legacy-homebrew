@@ -6,7 +6,7 @@ class Weechat <Formula
   homepage 'http://www.weechat.org'
   md5 '01648f8717ab1ea5233f9818d45a7c24'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'gnutls'
 
   def install

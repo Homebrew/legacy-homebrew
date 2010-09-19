@@ -5,7 +5,7 @@ class Eigen <Formula
   homepage 'http://eigen.tuxfamily.org/'
   md5 'd0195ac20bcd91602db8ca967a21e9ec'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
 
   def install
     system "cmake . #{std_cmake_parameters}"
