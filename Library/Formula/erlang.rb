@@ -66,5 +66,11 @@ class Erlang <Formula
 
   def test
     `erl -noshell -eval 'crypto:start().' -s init stop`
+
+    # This test takes some time to run, but per bug #120 should finish in
+    # "less than 20 minutes". It takes a few minutes on a Mac Pro (2009).
+    if ARGV.include? "--time"
+      `dialyzer --build_plt -r #{lib}/erlang/lib/kernel-2.14.1/ebin/`
+    end
   end
 end
