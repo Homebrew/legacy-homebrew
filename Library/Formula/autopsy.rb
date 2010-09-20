@@ -41,7 +41,7 @@ class Autopsy <Formula
 
 
     # Directories
-    $TSKDIR = '/usr/local/bin/';
+    $TSKDIR = '#{HOMEBREW_PREFIX}/bin';
 
     # Homebrew users can install NSRL database and change this variable later
     $NSRLDB = '';
