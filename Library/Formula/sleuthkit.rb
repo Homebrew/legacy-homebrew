@@ -9,8 +9,7 @@ class Sleuthkit <Formula
   depends_on 'libewf' => :optional
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end

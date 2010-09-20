@@ -7,7 +7,7 @@ class Libewf <Formula
 
   def install
     ENV['LIBTOOLIZE'] = "/usr/bin/glibtoolize"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end
