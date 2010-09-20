@@ -11,14 +11,27 @@ class Fontforge <Formula
   depends_on 'potrace'
 
   def install
-    system "./configure", "--enable-double",
-                          "--without-freetype-bytecode", "--without-python",
-                          "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}",
+                          "--enable-double",
+                          "--without-freetype-bytecode",
+                          "--without-python"
+
+    inreplace "Makefile" do |s|
+      s.gsub! "/Applications", "$(prefix)"
+      s.gsub! "/usr/local/bin", "$(bindir)"
+    end
+
     system "make"
     system "make install"
   end
 
-  def caveats
-    "'fontforge' is an X11 application."
+  def caveats; <<-EOS.undent
+    fontforge is an X11 application.
+
+    To install the Mac OS X wrapper application run:
+      $ brew linkapps
+    or:
+      $ sudo ln -s #{prefix}/FontForge.app /Applications
+    EOS
   end
 end

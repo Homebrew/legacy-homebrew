@@ -1,7 +1,7 @@
 require 'formula'
 
 class Htop <Formula
-  head 'git://github.com/AndyA/htop-osx.git', :branch => 'osx'
+  head 'git://github.com/cynthia/htop-osx.git'
   homepage 'http://htop.sourceforge.net/'
 
   def install
