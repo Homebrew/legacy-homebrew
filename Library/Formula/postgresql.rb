@@ -51,7 +51,7 @@ class Postgresql <Formula
     system "make install"
 
     %w[ adminpack dblink fuzzystrmatch lo uuid-ossp pg_buffercache pg_trgm
-        pgcrypto tsearch2 vacuumlo xml2 intarray ].each do |a|
+        pgcrypto tsearch2 vacuumlo xml2 intarray pg_upgrade pg_upgrade_support ].each do |a|
       system "cd contrib/#{a}; make install"
     end
 
