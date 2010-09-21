@@ -13,6 +13,7 @@ class Postgis <Formula
 
   def install
     ENV.deparallelize
+    system "./autogen.sh" if ARGV.build_head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-projdir=#{HOMEBREW_PREFIX}"
