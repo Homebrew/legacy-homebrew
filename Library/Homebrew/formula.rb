@@ -266,6 +266,15 @@ class Formula
     Dir["#{HOMEBREW_REPOSITORY}/Library/Aliases/*"].map{ |f| File.basename f }.sort
   end
 
+  def self.resolve_alias name
+    aka = HOMEBREW_REPOSITORY+"Library/Aliases/#{name}"
+    if aka.file?
+      aka.realpath.basename('.rb').to_s
+    else
+      name
+    end
+  end
+
   def self.factory name
     return name if name.kind_of? Formula
     path = Pathname.new(name)
