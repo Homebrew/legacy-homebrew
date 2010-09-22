@@ -208,12 +208,12 @@ class Formula
     end
   end
 
-  # we don't have a std_autotools variant because autotools is a lot less
-  # consistent and the standard parameters are more memorable
-  # really Homebrew should determine what works inside brew() then
-  # we could add --disable-dependency-tracking when it will work
+  # Standard parameters for CMake builds.
+  # Using Build Type "None" tells cmake to use our CFLAGS,etc. settings.
+  # Setting it to Release would ignore our flags.
+  # Note: there isn't a std_autotools variant because autotools is a lot
+  # less consistent and the standard parameters are more memorable.
   def std_cmake_parameters
-    # The None part makes cmake use the environment's CFLAGS etc. settings
     "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None -Wno-dev"
   end
 
