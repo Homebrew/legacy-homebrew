@@ -6,13 +6,14 @@ class Fits <Formula
   md5 'd5a2aba74c701d7c91e6f69bcb72a8f2'
 
   def install
+    inreplace 'fits.sh' do |s|
+      s.gsub!  "FITS_HOME=`echo \"$0\" | sed 's,/[^/]*$,,'`", "FITS_HOME=#{prefix}"
+      s.gsub! "${FITS_HOME}/lib", libexec
+    end
+
     prefix.install %w{ COPYING COPYING.LESSER tools xml }
     prefix.install Dir['*.txt']
     libexec.install Dir['lib/*']
-    inreplace 'fits.sh', "FITS_HOME=`echo \"$0\" | sed 's,/[^/]*$,,'`", "FITS_HOME=#{prefix}"
-    inreplace 'fits.sh' do |s|
-      s.gsub! "${FITS_HOME}/lib", libexec
-    end
     bin.install 'fits.sh' => 'fits'
   end
 end
