@@ -302,7 +302,7 @@ begin
     # Check for an external shell command
     if system "/usr/bin/which -s brew-#{arg}"
       # Add some Homebrew vars to the ENV
-      ['CACHE', 'CELLAR', 'LIBRARY_PATH', 'PREFIX', 'REPOSITORY'].each do |e|
+      %w(CACHE CELLAR LIBRARY_PATH PREFIX REPOSITORY).each do |e|
         ENV["HOMEBREW_#{e}"] = eval("HOMEBREW_#{e}")
       end
       exec("brew-#{arg}", *ARGV)
