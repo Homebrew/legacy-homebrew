@@ -26,7 +26,10 @@ class Erlang <Formula
   skip_clean ['lib', 'bin']
 
   def options
-    [['--disable-hipe', "Disable building hipe; fails on various OS X systems."]]
+    [
+      ['--disable-hipe', "Disable building hipe; fails on various OS X systems."],
+      ['--time', '"brew test --time" to include a time-consuming test.']
+    ]
   end
 
   def install
