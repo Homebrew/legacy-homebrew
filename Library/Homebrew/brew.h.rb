@@ -579,3 +579,8 @@ def llvm_build
     $1.to_i
   end
 end
+
+def _compiler_recommendation build, recommended
+  message = (!build.nil? && build < recommended) ? "(#{recommended} or newer recommended)" : ""
+  return build, message
+end
