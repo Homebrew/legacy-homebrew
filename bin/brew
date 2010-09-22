@@ -316,10 +316,10 @@ begin
     end
 
     # Check for git commands
-    if ['branch', 'checkout', 'pull', 'push', 'rebase', 'reset'].include? arg
-      onoe "Unknown command: #{arg} (did you mean 'git #{arg}'?)"
+    if %w(branch checkout pull push rebase reset).include? arg
+      onoe "Unknown command '#{arg}' (did you mean 'git #{arg}'?)"
     else
-      onoe "Unknown command: #{arg}"
+      onoe "Unknown command '#{arg}'"
     end
   end
 
