@@ -34,7 +34,7 @@ class Erlang <Formula
 
   def install
     ENV.deparallelize
-    fails_with_llvm "see http://github.com/mxcl/homebrew/issues/issue/120"
+    fails_with_llvm "See http://github.com/mxcl/homebrew/issues/issue/120", :build => 2326
 
     # If building from GitHub, this step is required (but not for tarball downloads.)
     system "./otp_build autoconf" if File.exist? "otp_build"
