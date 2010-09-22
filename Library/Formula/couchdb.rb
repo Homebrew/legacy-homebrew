@@ -32,7 +32,7 @@ class Couchdb <Formula
         cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist ~/Library/LaunchAgents
         launchctl load -w ~/Library/LaunchAgents/org.apache.couchdb.plist
 
-    If this is an upgrade and you already have the com.mysql.mysqld.plist loaded:
+    If this is an upgrade and you already have the org.apache.couchdb.plist loaded:
         launchctl unload -w ~/Library/LaunchAgents/org.apache.couchdb.plist
         cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist ~/Library/LaunchAgents
         launchctl load -w ~/Library/LaunchAgents/org.apache.couchdb.plist
