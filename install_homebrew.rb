@@ -125,7 +125,8 @@ end
 Dir.chdir "/usr/local" do
   ohai "Downloading and Installing Homebrew..."
   # -m to stop tar erroring out if it can't modify the mtime for root owned directories
-  system "/usr/bin/curl -sSfL http://github.com/mxcl/homebrew/tarball/master | /usr/bin/tar xz -m --strip 1"
+  # pipefail to cause the exit status from curl to propogate if it fails
+  system "/bin/bash -o pipefail -c '/usr/bin/curl -sSfL http://github.com/mxcl/homebrew/tarball/master | /usr/bin/tar xz -m --strip 1'"
 end
 
 ohai "Installation successful!"
