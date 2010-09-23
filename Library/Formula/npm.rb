@@ -1,9 +1,9 @@
 require 'formula'
 
 class Npm <Formula
-  url 'http://github.com/isaacs/npm/tarball/v0.2.0'
+  url 'http://github.com/isaacs/npm/tarball/v0.2.1'
   homepage 'http://github.com/isaacs/npm'
-  md5 '6bcbe033d026a4be6b5a8c963733da0c'
+  md5 '345410d5d2ad3fb85316649b0d731144'
   head 'git://github.com/isaacs/npm.git'
 
   depends_on 'node'
