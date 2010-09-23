@@ -1,9 +1,9 @@
 require 'formula'
 
 class Npm <Formula
-  url 'http://github.com/isaacs/npm/tarball/v0.2.1'
+  url 'http://github.com/isaacs/npm/tarball/v0.2.2'
   homepage 'http://github.com/isaacs/npm'
-  md5 '345410d5d2ad3fb85316649b0d731144'
+  md5 'c61aaff07b6b66c3f4db26076dc0ec2d'
   head 'git://github.com/isaacs/npm.git'
 
   depends_on 'node'
@@ -38,12 +38,12 @@ EOS
 
     # add "npm-" prefix to man pages link them into the libexec man pages
     man1.mkpath
-    Dir.chdir libexec+"man" do
+    Dir.chdir libexec+"man1" do
       Dir["*"].each do |file|
         if file == "npm.1"
-          ln_s "#{libexec}/man/#{file}", man1
+          ln_s "#{libexec}/man1/#{file}", man1
         else
-          ln_s "#{libexec}/man/#{file}", "#{man1}/npm-#{file}"
+          ln_s "#{libexec}/man1/#{file}", "#{man1}/npm-#{file}"
         end
       end
     end
