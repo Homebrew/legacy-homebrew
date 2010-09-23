@@ -6,6 +6,7 @@ class Libusb <Formula
   md5 '37d34e6eaa69a4b645a19ff4ca63ceef'
 
   def install
+    ENV['CFLAGS']='-m32'
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
