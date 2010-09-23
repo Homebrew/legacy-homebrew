@@ -15,11 +15,11 @@ EOS
   end
 
   def node_lib
-    HOMEBREW_PREFIX+"lib/node"
+    lib + "node"
   end
 
   def share_bin
-    HOMEBREW_PREFIX+"share/npm/bin"
+    share + "npm/bin"
   end
 
   def install
@@ -38,12 +38,12 @@ EOS
 
     # add "npm-" prefix to man pages link them into the libexec man pages
     man1.mkpath
-    Dir.chdir libexec+"man1" do
+    Dir.chdir libexec + "man1" do
       Dir["*"].each do |file|
         if file == "npm.1"
-          ln_s "#{libexec}/man1/#{file}", man1
+          ln_s "#{Dir.pwd}/#{file}", man1
         else
-          ln_s "#{libexec}/man1/#{file}", "#{man1}/npm-#{file}"
+          ln_s "#{Dir.pwd}/#{file}", "#{man1}/npm-#{file}"
         end
       end
     end
