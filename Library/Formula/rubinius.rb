@@ -16,6 +16,11 @@ class Rubinius < Formula
 
     ENV['RELEASE'] = version # to fix issues with "path already exists"
 
+    # The configure script uses "#!/usr/bin/env ruby" but complains if you
+    # aren't using 1.8, so replace it with the path to the OS X system ruby.
+    # (If the user has replaces their system ruby, well, don't do that.)
+    inreplace 'configure', "#!/usr/bin/env ruby", "#!/usr/bin/ruby"
+
     # "--skip-system" means to use the included LLVM
     system "./configure", "--skip-system",
                           "--prefix", prefix,
