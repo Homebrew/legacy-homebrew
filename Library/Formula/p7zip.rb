@@ -20,10 +20,12 @@ class P7zip <Formula
       mv 'makefile.macosx_64bits', 'makefile.machine'
     end
 
-    mv 'DOCS/copying.txt', 'COPYING'
-    system "make"
-    # we do our own install because theirs sucks
-    bin.install 'bin/7za'
-    man.install 'man1'
+    # make 7z, 7za and 7zr
+    system "make all3"
+
+    system "make",
+           "DEST_HOME=#{prefix}",
+           "DEST_MAN=#{man}",
+           "install"
   end
 end
