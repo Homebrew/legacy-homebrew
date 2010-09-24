@@ -98,9 +98,18 @@ class Formula
 
   # if the dir is there, but it's empty we consider it not installed
   def installed?
-    return prefix.children.length > 0
+    return installed_prefix.children.length > 0
   rescue
     return false
+  end
+
+  def installed_prefix
+    head_prefix = HOMEBREW_CELLAR+@name+'HEAD'
+    if @version == 'HEAD' || head_prefix.directory?
+      head_prefix
+    else
+      prefix
+    end
   end
 
   def path

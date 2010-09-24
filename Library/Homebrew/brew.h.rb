@@ -199,7 +199,7 @@ def info f
     kids=f.prefix.parent.children
     kids.each do |keg|
       print "#{keg} (#{keg.abv})"
-      print " *" if f.prefix == keg and kids.length > 1
+      print " *" if f.installed_prefix == keg and kids.length > 1
       puts
     end
   else
@@ -258,7 +258,7 @@ def cleanup name
   if f.installed? and formula_cellar.directory?
     kids = f.prefix.parent.children
     kids.each do |keg|
-      next if f.prefix == keg
+      next if f.installed_prefix == keg
       print "Uninstalling #{keg}..."
       FileUtils.rm_rf keg
       puts
