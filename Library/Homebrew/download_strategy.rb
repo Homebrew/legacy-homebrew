@@ -257,6 +257,17 @@ class GitDownloadStrategy <AbstractDownloadStrategy
           unless system "/usr/bin/which git"
 
     ohai "Cloning #{@url}"
+
+    if @clone.exist?
+      Dir.chdir(@clone) do
+        # Check for interupted clone from a previous install
+        unless system 'git', 'status', '-s'
+          ohai "Removing invalid .git repo from cache"
+          FileUtils.rm_rf @clone
+        end
+      end
+    end
+
     unless @clone.exist?
       safe_system 'git', 'clone', @url, @clone # indeed, leave it verbose
     else

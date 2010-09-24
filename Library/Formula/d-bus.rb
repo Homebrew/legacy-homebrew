@@ -1,9 +1,9 @@
 require 'formula'
 
 class DBus <Formula
-  url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.2.16.tar.gz'
+  url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.4.0.tar.gz'
   homepage 'http://www.freedesktop.org/wiki/Software/dbus'
-  md5 'c7a47b851ebe02f6726b65b78d1b730b'
+  md5 'f59618b18d2fb2bd1fce9e1c5a2a3282'
 
   # Don't clean the empty directories that D-Bus needs
   skip_clean "etc/dbus-1/session.d"
