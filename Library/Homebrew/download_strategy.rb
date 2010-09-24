@@ -198,12 +198,16 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
     end
   end
 
+  def _fetch_command svncommand, url, target
+    [svn, svncommand, '--force', url, target]
+  end
+
   def fetch_repo target, url, revision=nil, ignore_externals=false
     # Use "svn up" when the repository already exists locally.
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
     svncommand = target.exist? ? 'up' : 'checkout'
-    args = [svn, svncommand, '--force', url, target]
+    args = _fetch_command svncommand, url, target
     args << '-r' << revision if revision
     args << '--ignore-externals' if ignore_externals
     quiet_safe_system *args
@@ -253,6 +257,17 @@ class GitDownloadStrategy <AbstractDownloadStrategy
           unless system "/usr/bin/which git"
 
     ohai "Cloning #{@url}"
+
+    if @clone.exist?
+      Dir.chdir(@clone) do
+        # Check for interupted clone from a previous install
+        unless system 'git', 'status', '-s'
+          ohai "Removing invalid .git repo from cache"
+          FileUtils.rm_rf @clone
+        end
+      end
+    end
+
     unless @clone.exist?
       safe_system 'git', 'clone', @url, @clone # indeed, leave it verbose
     else

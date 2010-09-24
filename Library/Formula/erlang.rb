@@ -26,7 +26,10 @@ class Erlang <Formula
   skip_clean ['lib', 'bin']
 
   def options
-    [['--disable-hipe', "Disable building hipe; fails on various OS X systems."]]
+    [
+      ['--disable-hipe', "Disable building hipe; fails on various OS X systems."],
+      ['--time', '"brew test --time" to include a time-consuming test.']
+    ]
   end
 
   def install
@@ -66,5 +69,11 @@ class Erlang <Formula
 
   def test
     `erl -noshell -eval 'crypto:start().' -s init stop`
+
+    # This test takes some time to run, but per bug #120 should finish in
+    # "less than 20 minutes". It takes a few minutes on a Mac Pro (2009).
+    if ARGV.include? "--time"
+      `dialyzer --build_plt -r #{lib}/erlang/lib/kernel-2.14.1/ebin/`
+    end
   end
 end
