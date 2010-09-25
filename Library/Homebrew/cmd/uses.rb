@@ -1,3 +1,5 @@
+require 'formula'
+
 module Homebrew extend self
   def uses
     uses = Formula.all.select do |f|
