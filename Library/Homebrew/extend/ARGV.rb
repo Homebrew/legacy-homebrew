@@ -54,6 +54,9 @@ module HomebrewArgvExtension
   def build_head?
     flag? '--HEAD'
   end
+  def one?
+    flag? "--1"
+  end
 
   def flag? flag
     options_only.each do |arg|
