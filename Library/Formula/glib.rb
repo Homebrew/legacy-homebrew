@@ -8,8 +8,8 @@ end
 
 
 class Glib <Formula
-  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.24/glib-2.24.1.tar.bz2'
-  sha256 '014c3da960bf17117371075c16495f05f36501db990851ceea658f15d2ea6d04'
+  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.24/glib-2.24.2.tar.bz2'
+  sha256 '3aeb521abd3642dd1224379f0e54915957e5010f888a4ae74afa0ad54da0160c'
   homepage 'http://www.gtk.org'
 
   depends_on 'pkg-config'

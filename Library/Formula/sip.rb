@@ -1,16 +1,15 @@
 require 'formula'
 
-# Note: this project doesn't save old releases, so it breaks often as
-# downloads disappear.
-
 class Sip <Formula
-  url 'http://www.riverbankcomputing.co.uk/static/Downloads/sip4/sip-4.11.tar.gz'
+  url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.11.1.tar.gz'
+  md5 'dbafd7101a4e7caee6f529912a1356e5'
+  head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
-  md5 '810f0cb0da327e0120fd87b7194ddf7e'
 
   def install
     # Force building against System python, because we need a Framework build.
     # See: http://github.com/mxcl/homebrew/issues/issue/930
+    system "/usr/bin/python", "build.py", "prepare"
     system "/usr/bin/python", "configure.py",
                               "--destdir=#{lib}/python",
                               "--bindir=#{bin}",
@@ -18,9 +17,9 @@ class Sip <Formula
     system "make install"
   end
 
-  def caveats; <<-EOS
-This formula won't function until you amend your PYTHONPATH like so:
-    export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/python:$PYTHONPATH
-EOS
+  def caveats; <<-EOS.undent
+    This formula won't function until you amend your PYTHONPATH like so:
+      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/python:$PYTHONPATH
+    EOS
   end
 end
