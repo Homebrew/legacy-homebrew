@@ -12,6 +12,11 @@ class Riak <Formula
   skip_clean 'libexec/data/ring'
 
   depends_on 'erlang'
+  
+  def patches
+    # Having issues with the integer_to_list/2 BIF
+    DATA
+  end
 
   def install
     ENV.deparallelize
@@ -30,3 +35,18 @@ class Riak <Formula
     (prefix + 'data/dets').mkpath
   end
 end
+
+__END__
+diff --git a/apps/riak_core/src/riak_core_util.erl b/apps/riak_core/src/riak_core_util.erl
+index 4c5d73c..e03a95a 100644
+--- a/apps/riak_core/src/riak_core_util.erl
++++ b/apps/riak_core/src/riak_core_util.erl
+@@ -22,7 +22,7 @@
+ 
+ %% @doc Various functions that are useful throughout Riak.
+ -module(riak_core_util).
+-
++-compile({no_auto_import,[integer_to_list/2]}).
+ -export([moment/0,
+          make_tmp_dir/0,
+          compare_dates/2,
