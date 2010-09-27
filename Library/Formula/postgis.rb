@@ -1,9 +1,9 @@
 require 'formula'
 
 class Postgis <Formula
-  url 'http://postgis.refractions.net/download/postgis-1.5.1.tar.gz'
+  url 'http://postgis.refractions.net/download/postgis-1.5.2.tar.gz'
   homepage 'http://postgis.refractions.net/'
-  md5 '8353b38c38282b2192f01693f71b8d28'
+  md5 '772ec1d0f04d6800cd7e2420a97a7483'
 
   head 'http://svn.osgeo.org/postgis/trunk/', :using => :svn
 
@@ -35,12 +35,8 @@ class Postgis <Formula
   end
 
   def caveats; <<-EOS.undent
-    Postgresql 9.0 support fixed in upcoming 1.5.2 release.
-    Until then, you may want to try:
-      brew install --HEAD postgis
-
     To create a spatially-enabled database, see the documentation:
-      http://postgis.refractions.net/documentation/manual-1.5/ch02.html#id2786223
+      http://postgis.refractions.net/documentation/manual-1.5.2/ch02.html#id2786223
     EOS
   end
 end
