@@ -143,8 +143,7 @@ didn't include with OS X.
     Shows the formulas that specify <formula> as a dependency. The list is
     not recursive; only one level of dependencies is resolved.
 
-    If `--installed` is passed, the list only shows formulae you have
-    installed.
+    If `--installed` is passed, only lists installed formulae.
 
   * `doctor`:
     Checks your system for potential problems.
