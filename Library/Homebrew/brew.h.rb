@@ -21,7 +21,7 @@ def check_for_blacklisted_formula names
 
     when 'setuptools' then abort <<-EOS.undent
       When working with a Homebrew-built Python, distribute is preferred
-      over setuptools, and can be used as the prequisite for pip.
+      over setuptools, and can be used as the prerequisite for pip.
 
       Install distribute using:
         brew install distribute
@@ -495,7 +495,11 @@ class PrettyListing
         end
       else
         if pn.directory?
-          print_dir pn
+          if pn.symlink?
+            puts "#{pn} -> #{pn.readlink}"
+          else
+            print_dir pn
+          end
         elsif not FORMULA_META_FILES.include? pn.basename.to_s
           puts pn
         end
