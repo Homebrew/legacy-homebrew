@@ -1,5 +1,7 @@
 require 'formula'
 
+def TeX_installed?; return `which latex` != ''; end
+
 class Asymptote <Formula
   url 'http://downloads.sourceforge.net/asymptote/asymptote-2.04.src.tgz'
   homepage 'http://asymptote.sourceforge.net/'
@@ -8,21 +10,9 @@ class Asymptote <Formula
   depends_on 'readline'
   depends_on 'bdw-gc'
 
-  def TeX_installed?
-    texbin = `which latex`
-    if texbin==''
-      return false
-    else
-      return true
-    end
-  end
-
   def link_asy_texmfhome
-
-    texmfhome = `kpsewhich -var-value=TEXMFHOME`
-    texmflocl = `kpsewhich -var-value=TEXMFLOCAL`
-    texmfhome.chop!
-    texmflocl.chop!
+    texmfhome = `kpsewhich -var-value=TEXMFHOME`.chop
+    texmflocl = `kpsewhich -var-value=TEXMFLOCAL`.chop
 
     asyhome = "#{texmfhome}/tex/latex/asymptote-brew"
     asylocl = "#{texmflocl}/tex/latex/asymptote"
@@ -31,28 +21,23 @@ class Asymptote <Formula
     for asyfile in ['asycolors.sty','asymptote.sty','ocg.sty','latexmkrc']
       system "ln -s -f #{asylocl}/#{asyfile} #{asyhome}/#{asyfile}"
     end
-
   end
 
   def install
-    if TeX_installed?
-      system "./configure",
-        "--prefix=#{prefix}",
-        "--enable-gc=#{HOMEBREW_PREFIX}",
-        "--disable-fftw", "--disable-gsl" # follow TeX Live
-
-      system "make install"
-
-      link_asy_texmfhome
-
-    else
+    unless TeX_installed?
       onoe <<-EOS.undent
         Asymptote requires a TeX/LaTeX installation; aborting now.
         You can obtain the TeX distribution for Mac OS X from
             http://www.tug.org/mactex/
       EOS
+      exit 1
     end
 
+    system "./configure", "--prefix=#{prefix}",
+                          "--enable-gc=#{HOMEBREW_PREFIX}",
+                          "--disable-fftw", "--disable-gsl" # follow TeX Live
+    system "make install"
+    link_asy_texmfhome
   end
 
   def caveats
@@ -87,5 +72,4 @@ class Asymptote <Formula
 
     EOS
   end
-
 end
