@@ -130,21 +130,21 @@ def make url
   force_text = "If you really want to make this formula use --force."
 
   case name.downcase
-  when /vim/, /screen/
+  when 'vim', 'screen'
     raise <<-EOS
 #{name} is blacklisted for creation
 Apple distributes this program with OS X.
 
 #{force_text}
     EOS
-  when /libarchive/
+  when 'libarchive', 'libpcap'
     raise <<-EOS
 #{name} is blacklisted for creation
 Apple distributes this library with OS X, you can find it in /usr/lib.
 
 #{force_text}
     EOS
-  when /libxml/, /libxlst/, /freetype/, /libpng/
+  when 'libxml', 'libxlst', 'freetype', 'libpng'
     raise <<-EOS
 #{name} is blacklisted for creation
 Apple distributes this library with OS X, you can find it in /usr/X11/lib.
@@ -153,9 +153,9 @@ ENV.libxml2 in your formula's install function.
 
 #{force_text}
     EOS
-  when /rubygem/
+  when 'rubygem'
     raise "Sorry RubyGems comes with OS X so we don't package it.\n\n#{force_text}"
-  when /wxwidgets/
+  when 'wxwidgets'
     raise <<-EOS
 #{name} is blacklisted for creation
 An older version of wxWidgets is provided by Apple with OS X, but
