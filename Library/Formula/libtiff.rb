@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libtiff <Formula
-  url 'http://download.osgeo.org/libtiff/tiff-3.9.2.tar.gz'
+  url 'http://download.osgeo.org/libtiff/tiff-3.9.4.zip'
   homepage 'http://www.remotesensing.org/libtiff/'
-  md5 '93e56e421679c591de7552db13384cb8'
+  md5 '95b112997641096d97344b1a5dc61e71'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"

@@ -1,10 +1,10 @@
 require 'formula'
 
 class Winetricks < ScriptFileFormula
-  url 'http://winezeug.googlecode.com/svn-history/r1019/trunk/winetricks',
+  url 'http://www.kegel.com/wine/winetricks',
         :using => :curl
-  version '20100316'
-  md5 '79ab153ae51289ec7c25c7b7ed5d68ff'
+  version '20100917'
+  md5 'f5823c765572a90df2b52b476915cd59'
   homepage 'http://wiki.winehq.org/winetricks'
 
   head 'http://winezeug.googlecode.com/svn/trunk/winetricks',
