@@ -17,9 +17,9 @@ class Opencv <Formula
   depends_on 'jasper'  => :optional
   depends_on 'tbb'     => :optional
 
-  # Can also depend on ffmpeg, but this pulls in a lot of extra stuff that you don't
-  # need unless you're doing video analysis, and some of it isn't in Homebrew anyway.
-  # depends_on 'ffmpeg'
+  # Can also depend on ffmpeg, but this pulls in a lot of extra stuff that
+  # you don't need unless you're doing video analysis, and some of it isn't
+  # in Homebrew anyway.
 
   def install
     system "cmake -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX:PATH=#{prefix} ."

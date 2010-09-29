@@ -9,7 +9,7 @@ class Svg2png <Formula
   depends_on 'libsvg-cairo'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--mandir=#{man}"
     system "make install"
   end
 end
