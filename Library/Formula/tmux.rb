@@ -11,11 +11,11 @@ class Tmux <Formula
     ENV['PREFIX'] = prefix
     system "./configure"
 
-    inreplace "GNUmakefile" do |f|
+    inreplace "GNUmakefile" do |s|
       # Fix 'install' flags
-      f.gsub! " -g bin -o root", ""
+      s.gsub! " -g bin -o root", ""
       # Put docs in the right place
-      f.gsub! "man/man1", "share/man/man1"
+      s.gsub! "man/man1", "share/man/man1"
     end
 
     system "make install"

@@ -11,7 +11,7 @@ class Ioke <Formula
 
     # Point IOKE_HOME to libexec
     inreplace 'bin/ioke' do |s|
-      s.change_make_var! 'IOKE_HOME', "#{libexec}"
+      s.change_make_var! 'IOKE_HOME', libexec
     end
 
     # Install jars in libexec to avoid conflicts

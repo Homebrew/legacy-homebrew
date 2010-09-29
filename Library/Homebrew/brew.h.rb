@@ -21,7 +21,7 @@ def check_for_blacklisted_formula names
 
     when 'setuptools' then abort <<-EOS.undent
       When working with a Homebrew-built Python, distribute is preferred
-      over setuptools, and can be used as the prequisite for pip.
+      over setuptools, and can be used as the prerequisite for pip.
 
       Install distribute using:
         brew install distribute
@@ -130,21 +130,21 @@ def make url
   force_text = "If you really want to make this formula use --force."
 
   case name.downcase
-  when /vim/, /screen/
+  when 'vim', 'screen'
     raise <<-EOS
 #{name} is blacklisted for creation
 Apple distributes this program with OS X.
 
 #{force_text}
     EOS
-  when /libarchive/
+  when 'libarchive', 'libpcap'
     raise <<-EOS
 #{name} is blacklisted for creation
 Apple distributes this library with OS X, you can find it in /usr/lib.
 
 #{force_text}
     EOS
-  when /libxml/, /libxlst/, /freetype/, /libpng/
+  when 'libxml', 'libxlst', 'freetype', 'libpng'
     raise <<-EOS
 #{name} is blacklisted for creation
 Apple distributes this library with OS X, you can find it in /usr/X11/lib.
@@ -153,9 +153,9 @@ ENV.libxml2 in your formula's install function.
 
 #{force_text}
     EOS
-  when /rubygem/
+  when 'rubygem'
     raise "Sorry RubyGems comes with OS X so we don't package it.\n\n#{force_text}"
-  when /wxwidgets/
+  when 'wxwidgets'
     raise <<-EOS
 #{name} is blacklisted for creation
 An older version of wxWidgets is provided by Apple with OS X, but
@@ -452,7 +452,7 @@ def brew_install
   ################################################################# warnings
   begin
     if MACOS_VERSION >= 10.6
-      opoo "You should upgrade to Xcode 3.2.2" if llvm_build < RECOMMENDED_LLVM
+      opoo "You should upgrade to Xcode 3.2.3" if llvm_build < RECOMMENDED_LLVM
     else
       opoo "You should upgrade to Xcode 3.1.4" if (gcc_40_build < RECOMMENDED_GCC_40) or (gcc_42_build < RECOMMENDED_GCC_42)
     end
@@ -495,7 +495,11 @@ class PrettyListing
         end
       else
         if pn.directory?
-          print_dir pn
+          if pn.symlink?
+            puts "#{pn} -> #{pn.readlink}"
+          else
+            print_dir pn
+          end
         elsif not FORMULA_META_FILES.include? pn.basename.to_s
           puts pn
         end

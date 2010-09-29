@@ -24,7 +24,7 @@ class Falcon <Formula
   def install
     cmake_opts = "-DCMAKE_INSTALL_NAME_DIR=#{lib}"
     ENV.append "EXTRA_CMAKE", cmake_opts
-    system "./build.sh", "-p", "#{prefix}", "-int", "-el"
+    system "./build.sh", "-p", prefix, "-int", "-el"
     system "./build.sh", "-i"
     # install the htmldocs for the core and standard modules (feathers)
     FalconHtmldocs.new.brew { (doc+'core-doc').install Dir['*'] }

@@ -5,6 +5,7 @@ class Oggz <Formula
   md5 '57359f6f0824b3e9bad85b49a6418514'
   homepage 'http://www.xiph.org/oggz/'
 
+  depends_on 'pkg-config'
   depends_on 'libogg'
 
   def install
