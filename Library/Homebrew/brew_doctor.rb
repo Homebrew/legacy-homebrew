@@ -31,7 +31,8 @@ end
 # Installing MacGPG2 interferes with Homebrew in a big way
 # http://sourceforge.net/projects/macgpg2/files/
 def check_for_macgpg2
-  if File.exist? "/Applications/start-gpg-agent.app"
+  if File.exist? "/Applications/start-gpg-agent.app" or
+     File.exist? "/Library/Receipts/libiconv1.pkg"
     puts <<-EOS.undent
       If you have installed MacGPG2 via the package installer, several other
       checks in this script will turn up problems, such as stray .dylibs in
@@ -198,6 +199,24 @@ def check_access_pkgconfig
       install will fail during the link step.
 
       You should probably `chown` #{pkgconfig}
+
+    EOS
+  end
+end
+
+def check_access_include
+  # Installing MySQL manually (for instance) can chown include to root.
+  include_folder = HOMEBREW_PREFIX+'include'
+  return unless include_folder.exist?
+
+  unless include_folder.writable?
+    puts <<-EOS.undent
+      #{include_folder} isn't writable.
+      This can happen if you "sudo make install" software that isn't managed
+      by Homebrew. If a brew tries to write a header file to this folder, the
+      install will fail during the link step.
+
+      You should probably `chown` #{include_folder}
 
     EOS
   end
@@ -543,6 +562,7 @@ def brew_doctor
     check_for_nonstandard_x11
     check_access_share_locale
     check_access_share_man
+    check_access_include
     check_user_path
     check_which_pkg_config
     check_pkg_config_paths

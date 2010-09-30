@@ -5,6 +5,7 @@ class Exif <Formula
   homepage 'http://libexif.sourceforge.net/'
   md5 '75f0dd6f9f2d128261721c0896e0b324'
 
+  depends_on 'pkg-config'
   depends_on 'popt'
   depends_on 'libexif'
   depends_on 'gettext'

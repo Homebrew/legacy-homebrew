@@ -1,9 +1,9 @@
 require 'formula'
 
 class Skipfish <Formula
-  url 'http://skipfish.googlecode.com/files/skipfish-1.64b.tgz'
+  url 'http://skipfish.googlecode.com/files/skipfish-1.67b.tgz'
   homepage 'http://code.google.com/p/skipfish/'
-  md5 'fc55e0f4867fea0a2bf573a8a1f7f979'
+  md5 '0815d59fa7cd5cf6050374561b6370b4'
   depends_on 'libidn'
 
   def install

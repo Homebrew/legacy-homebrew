@@ -41,8 +41,12 @@ didn't include with OS X.
     surrounded with slashes, then it is interpreted as a regular expression.
     If no search term is given, all available formula are displayed.
 
-  * `install [--debug] [--use-llvm] [--ignore-dependencies] [--HEAD] [--universal]` <formula>:
+  * `install [--force] [--debug] [--use-llvm] [--ignore-dependencies] [--HEAD] [--universal]` <formula>:
     Installs <formula>.
+
+    If `--force` is passed, will install <formula> even if it is already
+    installed. This can be used to re-install a formula without removing
+    it first.
 
     If `--debug` is passed and brewing fails, opens a shell inside the
     temporary folder used for compiling.
@@ -142,8 +146,7 @@ didn't include with OS X.
     Shows the formulas that specify <formula> as a dependency. The list is
     not recursive; only one level of dependencies is resolved.
 
-    If `--installed` is passed, the list only shows formulae you have
-    installed.
+    If `--installed` is passed, only lists installed formulae.
 
   * `options` <formula>:
     Displays build options specific for a formula.
