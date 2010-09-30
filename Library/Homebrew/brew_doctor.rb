@@ -204,6 +204,24 @@ def check_access_pkgconfig
   end
 end
 
+def check_access_include
+  # Installing MySQL manually (for instance) can chown include to root.
+  include_folder = HOMEBREW_PREFIX+'include'
+  return unless include_folder.exist?
+
+  unless include_folder.writable?
+    puts <<-EOS.undent
+      #{include_folder} isn't writable.
+      This can happen if you "sudo make install" software that isn't managed
+      by Homebrew. If a brew tries to write a header file to this folder, the
+      install will fail during the link step.
+
+      You should probably `chown` #{include_folder}
+
+    EOS
+  end
+end
+
 def check_usr_bin_ruby
   if /^1\.9/.match RUBY_VERSION
     puts <<-EOS.undent
@@ -544,6 +562,7 @@ def brew_doctor
     check_for_nonstandard_x11
     check_access_share_locale
     check_access_share_man
+    check_access_include
     check_user_path
     check_which_pkg_config
     check_pkg_config_paths

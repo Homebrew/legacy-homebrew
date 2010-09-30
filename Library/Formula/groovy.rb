@@ -7,6 +7,14 @@ class Groovy <Formula
 
   def install
     rm_f Dir["bin/*.bat"]
-    prefix.install %w[bin conf lib]
+
+    prefix.install %w{ LICENSE.txt NOTICE.txt }
+    libexec.install %w[bin conf lib]
+
+    bin.mkpath
+    Dir["#{libexec}/bin/*"].each do |f|
+      next unless File.extname(f).empty?
+      ln_s f, bin+File.basename(f)
+    end
   end
 end

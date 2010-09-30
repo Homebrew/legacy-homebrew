@@ -1,9 +1,9 @@
 require 'formula'
 
 class Swftools <Formula
-  url 'http://www.swftools.org/swftools-0.9.0.tar.gz'
+  url 'http://www.swftools.org/swftools-0.9.1.tar.gz'
   homepage 'http://www.swftools.org'
-  md5 '946e7c692301a332745d29140bc74e55'
+  md5 '72dc4a7bf5cdf98c28f9cf9b1d8f5d7a'
 
   depends_on 'jpeg'
   depends_on 'lame' => :optional
