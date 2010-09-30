@@ -154,11 +154,11 @@ begin
                           "#{HOMEBREW_REPOSITORY}/bin/brew"<<
                           "#{HOMEBREW_REPOSITORY}/README.md"
       else
+        require 'formula'
         # Don't use ARGV.formulae as that will throw if the file doesn't parse
         paths = ARGV.named.collect do |name|
-          path = "#{HOMEBREW_REPOSITORY}/Library/Formula/#{ARGV.resolve_alias(name)}.rb"
+          path = Formula.path(Formula.resolve_alias(name))
           unless File.exist? path
-            require 'formula'
             raise FormulaUnavailableError, name
           else
             path
