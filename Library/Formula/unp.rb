@@ -1,7 +1,7 @@
 require 'formula'
 
 class Unp <Formula
-  url 'http://ftp.de.debian.org/debian/pool/main/u/unp/unp_1.0.11.tar.gz'
+  url 'http://mirrors.kernel.org/debian/pool/main/u/unp/unp_1.0.11.tar.gz'
   homepage 'http://packages.debian.org/de/etch/unp'
   md5 'ecea662bd7e7efe7f7e2213bf21d9646'
 
