@@ -46,14 +46,9 @@ def dump_config
   kernel_arch = `uname -m`.chomp
   system_ruby = Pathname.new("/usr/bin/ruby")
 
-  llvm = llvm_build
-  llvm_recommendation = (!llvm.nil? && llvm < RECOMMENDED_LLVM) ? "(#{RECOMMENDED_LLVM} or newer recommended)" : ""
-
-  gcc_42 = gcc_42_build
-  gcc_42_recommendation = (!gcc_42.nil? && gcc_42 < RECOMMENDED_GCC_42) ? "(#{RECOMMENDED_GCC_42} or newer recommended)" : ""
-
-  gcc_40 = gcc_40_build
-  gcc_40_recommendation = (!gcc_40.nil? && gcc_40 < RECOMMENDED_GCC_40) ? "(#{RECOMMENDED_GCC_40} or newer recommended)" : ""
+  llvm,   llvm_msg   = _compiler_recommendation llvm_build,   RECOMMENDED_LLVM
+  gcc_42, gcc_42_msg = _compiler_recommendation gcc_42_build, RECOMMENDED_GCC_42
+  gcc_40, gcc_40_msg = _compiler_recommendation gcc_40_build, RECOMMENDED_GCC_40
 
   puts <<-EOS
 HOMEBREW_VERSION: #{HOMEBREW_VERSION}
@@ -67,9 +62,9 @@ OS X: #{MACOS_FULL_VERSION}
 Kernel Architecture: #{kernel_arch}
 Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
 /usr/bin/ruby => #{system_ruby.realpath}
-GCC-4.0: #{gcc_40 ? "build #{gcc_40}" : "N/A"} #{gcc_42_recommendation}
-GCC-4.2: #{gcc_42 ? "build #{gcc_42}" : "N/A"} #{gcc_40_recommendation}
-LLVM: #{llvm ? "build #{llvm}" : "N/A" } #{llvm_recommendation}
+GCC-4.0: #{gcc_40 ? "build #{gcc_40}" : "N/A"} #{gcc_42_msg}
+GCC-4.2: #{gcc_42 ? "build #{gcc_42}" : "N/A"} #{gcc_40_msg}
+LLVM: #{llvm ? "build #{llvm}" : "N/A" } #{llvm_msg}
 MacPorts or Fink? #{macports_or_fink_installed?}
 X11 installed? #{x11_installed?}
 EOS
@@ -159,11 +154,11 @@ begin
                           "#{HOMEBREW_REPOSITORY}/bin/brew"<<
                           "#{HOMEBREW_REPOSITORY}/README.md"
       else
+        require 'formula'
         # Don't use ARGV.formulae as that will throw if the file doesn't parse
         paths = ARGV.named.collect do |name|
-          path = "#{HOMEBREW_REPOSITORY}/Library/Formula/#{ARGV.resolve_alias(name)}.rb"
+          path = Formula.path(Formula.resolve_alias(name))
           unless File.exist? path
-            require 'formula'
             raise FormulaUnavailableError, name
           else
             path
@@ -307,7 +302,7 @@ begin
     # Check for an external shell command
     if system "/usr/bin/which -s brew-#{arg}"
       # Add some Homebrew vars to the ENV
-      ['CACHE', 'CELLAR', 'LIBRARY_PATH', 'PREFIX', 'REPOSITORY'].each do |e|
+      %w(CACHE CELLAR LIBRARY_PATH PREFIX REPOSITORY).each do |e|
         ENV["HOMEBREW_#{e}"] = eval("HOMEBREW_#{e}")
       end
       exec("brew-#{arg}", *ARGV)
@@ -321,10 +316,10 @@ begin
     end
 
     # Check for git commands
-    if ['branch', 'checkout', 'pull', 'push', 'rebase', 'reset'].include? arg
-      onoe "Unknown command: #{arg} (did you mean 'git #{arg}'?)"
+    if %w(branch checkout pull push rebase reset).include? arg
+      onoe "Unknown command '#{arg}' (did you mean 'git #{arg}'?)"
     else
-      onoe "Unknown command: #{arg}"
+      onoe "Unknown command '#{arg}'"
     end
   end
 
