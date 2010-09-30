@@ -521,6 +521,8 @@ EOF
           @external_deps[value] << key
         when :optional, :recommended
           @deps << key
+        else
+          raise "Unsupported dependency type #{value}"
         end
       when Symbol
         opoo "#{self.name} -- #{name}: Using symbols for deps is deprecated; use a string instead"
