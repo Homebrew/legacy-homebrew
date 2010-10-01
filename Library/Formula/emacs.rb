@@ -39,9 +39,6 @@ class Emacs <Formula
     end
 
     s += <<-EOS.undent
-      To access texinfo documentation, set your INFOPATH to:
-        #{info}
-
       The initial checkout of the bazaar Emacs repository might take a long
       time. You might find that using the repo.or.cz git mirror is faster,
       even after the initial checkout. To use the repo.or.cz git mirror for
@@ -60,11 +57,10 @@ class Emacs <Formula
   def install
     fails_with_llvm "Duplicate symbol errors while linking."
 
-    args = [
-      "--prefix=#{prefix}",
-      "--without-dbus",
-      "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
-    ]
+    args = ["--prefix=#{prefix}",
+            "--without-dbus",
+            "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
+            "--infodir=#{info}/emacs"]
 
     if ARGV.include? "--cocoa"
       args << "--with-ns" << "--disable-ns-self-contained"
