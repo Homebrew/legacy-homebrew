@@ -2,7 +2,7 @@ require 'formula'
 
 class Unp <Formula
   url 'http://mirrors.kernel.org/debian/pool/main/u/unp/unp_1.0.11.tar.gz'
-  homepage 'http://packages.debian.org/de/etch/unp'
+  homepage 'http://packages.debian.org/source/stable/unp'
   md5 'ecea662bd7e7efe7f7e2213bf21d9646'
 
   depends_on 'p7zip'
