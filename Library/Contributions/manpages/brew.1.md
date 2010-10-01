@@ -275,6 +275,10 @@ Some sample commands ship with Homebrew and are enabled by default.
     This issue typically occurs when using FileVault or custom SSD
     configurations.
 
+  * HOMEBREW\_USE\_GCC:
+    If set, instructs Homebrew to use gcc, even if the system default
+    is currently set to LLVM.
+
   * HOMEBREW\_USE\_LLVM:
     If set, instructs Homebrew to use the LLVM front-ends to the GCC
     compilers.
