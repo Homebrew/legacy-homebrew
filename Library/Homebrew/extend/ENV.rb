@@ -24,6 +24,10 @@ module HomebrewEnvExtension
       self['CC'] = "#{xcode_path}/usr/bin/llvm-gcc"
       self['CXX'] = "#{xcode_path}/usr/bin/llvm-g++"
       cflags = ['-O4'] # link time optimisation baby!
+    elsif MACOS_VERSION >= 10.6 and (self['HOMEBREW_USE_GCC'] or ARGV.include? '--use-gcc')
+      self['CC'] = '/usr/bin/gcc'
+      self['CXX'] = '/usr/bin/g++'
+      cflags = ['-O3']
     else
       # If these aren't set, many formulae fail to build
       self['CC'] = '/usr/bin/cc'
