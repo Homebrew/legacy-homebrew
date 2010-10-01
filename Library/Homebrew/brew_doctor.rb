@@ -147,6 +147,9 @@ def check_cc_symlink
         To force Homebrew to use LLVM, you can set the "HOMEBREW_LLVM" environmental
         variable, or pass "--use-llvm" to "brew install".
 
+        To force Homebrew to use gcc, you can set the "HOMEBREW_GCC" environmental
+        variable, or pass "--use-gcc" to "brew install".
+
       EOS
     end
 end
