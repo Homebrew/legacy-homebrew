@@ -146,7 +146,8 @@ didn't include with OS X.
     Shows the formulas that specify <formula> as a dependency. The list is
     not recursive; only one level of dependencies is resolved.
 
-    If `--installed` is passed, only lists installed formulae.
+    If `--installed` is passed, the list only shows formulae you have
+    installed.
 
   * `options` <formula>:
     Displays build options specific for a formula.
