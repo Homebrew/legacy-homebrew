@@ -21,7 +21,7 @@ def check_for_blacklisted_formula names
 
     when 'setuptools' then abort <<-EOS.undent
       When working with a Homebrew-built Python, distribute is preferred
-      over setuptools, and can be used as the prequisite for pip.
+      over setuptools, and can be used as the prerequisite for pip.
 
       Install distribute using:
         brew install distribute
@@ -39,9 +39,9 @@ def __make url, name
   raise "#{path} already exists" if path.exist?
 
   if Formula.aliases.include? name and not ARGV.force?
-    realname = HOMEBREW_REPOSITORY.join("Library/Aliases/#{name}").realpath.basename('.rb')
+    realname = Formula.resolve_alias(name)
     raise <<-EOS.undent
-          The formula #{realname} is already aliased to #{name}
+          "#{name}" is an alias for formula "#{realname}".
           Please check that you are not creating a duplicate.
           To force creation use --force.
           EOS
@@ -130,21 +130,21 @@ def make url
   force_text = "If you really want to make this formula use --force."
 
   case name.downcase
-  when /vim/, /screen/
+  when 'vim', 'screen'
     raise <<-EOS
 #{name} is blacklisted for creation
 Apple distributes this program with OS X.
 
 #{force_text}
     EOS
-  when /libarchive/
+  when 'libarchive', 'libpcap'
     raise <<-EOS
 #{name} is blacklisted for creation
 Apple distributes this library with OS X, you can find it in /usr/lib.
 
 #{force_text}
     EOS
-  when /libxml/, /libxlst/, /freetype/, /libpng/
+  when 'libxml', 'libxlst', 'freetype', 'libpng'
     raise <<-EOS
 #{name} is blacklisted for creation
 Apple distributes this library with OS X, you can find it in /usr/X11/lib.
@@ -153,9 +153,9 @@ ENV.libxml2 in your formula's install function.
 
 #{force_text}
     EOS
-  when /rubygem/
+  when 'rubygem'
     raise "Sorry RubyGems comes with OS X so we don't package it.\n\n#{force_text}"
-  when /wxwidgets/
+  when 'wxwidgets'
     raise <<-EOS
 #{name} is blacklisted for creation
 An older version of wxWidgets is provided by Apple with OS X, but
@@ -430,8 +430,7 @@ def search_brews text
   # Filter out aliases when the full name was also found
   results.reject do |alias_name|
     if aliases.include? alias_name
-      resolved_name = (HOMEBREW_REPOSITORY+"Library/Aliases/#{alias_name}").readlink.basename('.rb').to_s
-      results.include? resolved_name
+      results.include? Formula.resolve_alias(alias_name)
     end
   end
 end
@@ -578,4 +577,14 @@ def llvm_build
     `#{xcode_path}/usr/bin/llvm-gcc -v 2>&1` =~ /LLVM build (\d{4,})/
     $1.to_i
   end
+end
+
+def xcode_version
+  `xcodebuild -version 2>&1` =~ /Xcode (\d(\.\d)*)/
+  return $1 ? $1 : nil
+end
+
+def _compiler_recommendation build, recommended
+  message = (!build.nil? && build < recommended) ? "(#{recommended} or newer recommended)" : ""
+  return build, message
 end

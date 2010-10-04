@@ -13,15 +13,16 @@ module HomebrewArgvExtension
 
   def formulae
     require 'formula'
-    @formulae ||= downcased_unique_named.map{ |name| Formula.factory(resolve_alias(name)) }
+    @formulae ||= downcased_unique_named.map{ |name| Formula.factory(Formula.resolve_alias(name)) }
     raise FormulaUnspecifiedError if @formulae.empty?
     @formulae
   end
 
   def kegs
     require 'keg'
+    require 'formula'
     @kegs ||= downcased_unique_named.collect do |name|
-      d = HOMEBREW_CELLAR + resolve_alias(name)
+      d = HOMEBREW_CELLAR + Formula.resolve_alias(name)
       dirs = d.children.select{ |pn| pn.directory? } rescue []
       raise "No such keg: #{HOMEBREW_CELLAR}/#{name}" if not d.directory? or dirs.length == 0
       raise "#{name} has multiple installed versions" if dirs.length > 1
@@ -112,15 +113,6 @@ module HomebrewArgvExtension
     To visit the Homebrew homepage type:
       brew home
     EOS
-  end
-
-  def resolve_alias name
-    aka = HOMEBREW_REPOSITORY+"Library/Aliases/#{name}"
-    if aka.file?
-      aka.realpath.basename('.rb').to_s
-    else
-      name
-    end
   end
 
   private

@@ -7,6 +7,8 @@ class Libevent <Formula
   head 'git://levent.git.sourceforge.net/gitroot/levent/levent'
 
   def install
+    fails_with_llvm "Undefined symbol '_current_base' reported during linking.", :build => 2326
+
     ENV.j1 # Needed for Mac Pro compilation
     system "./autogen.sh" if ARGV.build_head?
     system "./configure", "--prefix=#{prefix}"

@@ -257,6 +257,17 @@ class GitDownloadStrategy <AbstractDownloadStrategy
           unless system "/usr/bin/which git"
 
     ohai "Cloning #{@url}"
+
+    if @clone.exist?
+      Dir.chdir(@clone) do
+        # Check for interupted clone from a previous install
+        unless system 'git', 'status', '-s'
+          ohai "Removing invalid .git repo from cache"
+          FileUtils.rm_rf @clone
+        end
+      end
+    end
+
     unless @clone.exist?
       safe_system 'git', 'clone', @url, @clone # indeed, leave it verbose
     else
@@ -428,6 +439,39 @@ class BazaarDownloadStrategy <AbstractDownloadStrategy
   end
 end
 
+class FossilDownloadStrategy < AbstractDownloadStrategy
+  def initialize url, name, version, specs
+    super
+    @unique_token="#{name}--fossil" unless name.to_s.empty? or name == '__UNKNOWN__'
+    @clone=HOMEBREW_CACHE+@unique_token
+  end
+
+  def cached_location; @clone; end
+
+  def fetch
+    raise "You must install fossil first" \
+          unless system "/usr/bin/which fossil"
+
+    ohai "Cloning #{@url}"
+    unless @clone.exist?
+      url=@url.sub(%r[^fossil://], '')
+      safe_system 'fossil', 'clone', url, @clone
+    else
+      puts "Updating #{@clone}"
+      safe_system 'fossil', 'pull', '-R', @clone
+    end
+  end
+
+  def stage
+    # TODO: The 'open' and 'checkout' commands are very noisy and have no '-q' option.
+    safe_system 'fossil', 'open', @clone
+    if @spec and @ref
+      ohai "Checking out #{@spec} #{@ref}"
+      safe_system 'fossil', 'checkout', @ref
+    end
+  end
+end
+
 def detect_download_strategy url
   case url
     # We use a special URL pattern for cvs
@@ -438,6 +482,7 @@ def detect_download_strategy url
   when %r[^hg://] then MercurialDownloadStrategy
   when %r[^svn://] then SubversionDownloadStrategy
   when %r[^svn+http://] then SubversionDownloadStrategy
+  when %r[^fossil://] then FossilDownloadStrategy
     # Some well-known source hosts
   when %r[^http://github\.com/.+\.git$] then GitDownloadStrategy
   when %r[^https?://(.+?\.)?googlecode\.com/hg] then MercurialDownloadStrategy
