@@ -157,6 +157,13 @@ def install f
       puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
     end
 
+    # Check for info pages that aren't in share/info
+    if (f.prefix+'info').exist?
+      opoo 'A top-level "info" folder was found.'
+      puts "Homebrew suggests that info pages live under share."
+      puts 'This can often be fixed by passing "--infodir=#{info}" to configure.'
+    end
+
     # Check for Jars in lib
     if File.exist?(f.lib)
       unless f.lib.children.select{|g| g.to_s =~ /\.jar$/}.empty?
