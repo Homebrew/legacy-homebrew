@@ -579,6 +579,11 @@ def llvm_build
   end
 end
 
+def xcode_version
+  `xcodebuild -version 2>&1` =~ /Xcode (\d(\.\d)*)/
+  return $1 ? $1 : nil
+end
+
 def _compiler_recommendation build, recommended
   message = (!build.nil? && build < recommended) ? "(#{recommended} or newer recommended)" : ""
   return build, message
