@@ -2,6 +2,7 @@ require 'formula'
 
 class Libcaca <Formula
   url 'http://caca.zoy.org/files/libcaca/libcaca-0.99.beta17.tar.gz'
+  version '0.99b17'
   homepage 'http://caca.zoy.org/wiki/libcaca'
   md5 '790d6e26b7950e15909fdbeb23a7ea87'
 
