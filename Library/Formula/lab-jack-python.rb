@@ -6,7 +6,7 @@ class LabJackPython <Formula
   version '2010-09-20'
   homepage 'http://labjack.com/support/labjackpython'
   head 'http://github.com/labjack/LabJackPython.git', :using => :git
-  
+
   depends_on 'exodriver'
 
   def caveats
