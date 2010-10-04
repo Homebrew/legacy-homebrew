@@ -13,8 +13,13 @@ class Clojure <Formula
   def script
 <<-EOS
 #!/bin/sh
-# Run Clojure.
-exec java -cp "#{prefix}/#{jar}" clojure.main "$@"
+# Runs clojure.
+# With no arguments, runs Clojure's REPL.
+
+# resolve links - $0 may be a softlink
+CLOJURE=$CLASSPATH:$(brew --cellar)/#{name}/#{version}/#{jar}
+
+java -cp $CLOJURE clojure.main "$@"
 EOS
   end
 
