@@ -14,6 +14,7 @@ class Maxima <Formula
     ENV.deparallelize
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--mandir=#{man}", "--infodir=#{info}",
                           "--enable-cmucl", "--enable-gettext"
     system "make install"
   end
