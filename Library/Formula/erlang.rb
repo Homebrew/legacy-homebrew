@@ -62,9 +62,6 @@ class Erlang <Formula
 
     manuals = ARGV.build_head? ? ErlangHeadManuals : ErlangManuals
     manuals.new.brew { man.install Dir['man/*'] }
-
-    # See: http://github.com/mxcl/homebrew/issues/issue/1317
-    (lib+"erlang/lib/tools-2.6.5.1/emacs").install "lib/tools/emacs/erlang-skels.el"
   end
 
   def test
