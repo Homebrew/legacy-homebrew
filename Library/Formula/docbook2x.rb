@@ -6,6 +6,10 @@ class Docbook2x <Formula
   homepage 'http://docbook2x.sourceforge.net/'
 
   depends_on 'docbook'
+  depends_on 'XML::NamespaceSupport' => :perl
+  depends_on 'XML::SAX' => :perl
+  depends_on 'XML::Parser' => :perl
+  depends_on 'XML::SAX::Expat' => :perl
 
   def install
     inreplace "perl/db2x_xsltproc.pl", "http://docbook2x.sf.net/latest/xslt", "#{share}/docbook2X/xslt"
