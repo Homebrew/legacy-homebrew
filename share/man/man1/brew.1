@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "September 2010" "Homebrew" "brew"
+.TH "BREW" "1" "October 2010" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -169,6 +169,10 @@ For all installed or specific formulae, remove any older versions from the cella
 .TP
 \fBupdate\fR
 Using Git, fetches the newest version of Homebrew from the GitHub repository\.
+.
+.TP
+\fBlog [git\-options]\fR \fIformula\fR \.\.\.
+Shows the git log for the given formulae\. Options that \fBgit log\fR recognizes can be passed before the formula list\.
 .
 .SH "EXTERNAL COMMANDS"
 Homebrew allows external commands to be defined by putting a +x file named \fBbrew\-<cmdname>\fR or \fBbrew\-<cmdname>\.rb\fR on the PATH\. This will cause Homebrew to recognize \fBbrew cmdname\fR\.
