@@ -8,16 +8,22 @@ class Newlisp <Formula
   depends_on 'readline'
 
   def install
-    # Minimal install as describe in the README
-    system "./configure"
+    ENV.append_to_cflags "-DNEWCONFIG -c" # this is required to use our own configuration
+    system "./configure-alt", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make"
 
-    bin.install 'newlisp'
+    # Many .lsp files assume the interpreter will be installed in /usr/bin
+    Dir.glob("**/*.lsp") do |file|
+      inreplace file, "!#/usr/bin/newlisp", "!#/usr/bin/env newlisp"
+      inreplace file, "/usr/bin/newlisp", "#{bin}/newlisp"
+    end
+
+    system "make check"
+    system "make install"
   end
 
-  def caveats; <<-EOS.undent
-    Because of hardcoded paths in the newLISP source,
-    this formula does not install the Java-based IDE.
-    EOS
+  # Use the IDE to test a complete installation
+  def test
+    system "newlisp-edit"
   end
 end
