@@ -14,6 +14,7 @@ class Ufraw <Formula
   depends_on 'exiv2' => :optional
 
   def install
+    fails_with_llvm "Compiling with LLVM gives a segfault while linking."
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-gtk",

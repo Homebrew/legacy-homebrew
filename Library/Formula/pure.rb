@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pure < Formula
-  url 'http://pure-lang.googlecode.com/files/pure-0.43.tar.gz'
+  url 'http://pure-lang.googlecode.com/files/pure-0.44.tar.gz'
   homepage 'http://code.google.com/p/pure-lang/'
-  md5 'f15b77eb6bb15e78c69e94a4ac1d9bd9'
+  md5 '1b857543f0574e7ffff243bbea9fa712'
 
   depends_on 'llvm'
   depends_on 'gmp'

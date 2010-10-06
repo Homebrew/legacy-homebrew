@@ -3,7 +3,7 @@ require 'global'
 
 def text_for_keg_only_formula f
   if f.keg_only? == :provided_by_osx
-    rationale = "This is because the formula is already provided by OS X."
+    rationale = "Mac OS X already provides this program and installing another version in parallel can cause all kinds of trouble."
   elsif f.keg_only?.kind_of? String
     rationale = "The formula provides the following rationale:\n\n#{f.keg_only?.chomp}"
   else
@@ -155,6 +155,13 @@ def install f
       opoo 'A top-level "man" folder was found.'
       puts "Homebrew requires that man pages live under share."
       puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
+    end
+
+    # Check for info pages that aren't in share/info
+    if (f.prefix+'info').exist?
+      opoo 'A top-level "info" folder was found.'
+      puts "Homebrew suggests that info pages live under share."
+      puts 'This can often be fixed by passing "--infodir=#{info}" to configure.'
     end
 
     # Check for Jars in lib

@@ -165,9 +165,11 @@ def exec_editor *args
 end
 
 # GZips the given path, and returns the gzipped file
-def gzip path
-  system "/usr/bin/gzip", path
-  return Pathname.new(path+".gz")
+def gzip *paths
+  paths.collect do |path|
+    system "/usr/bin/gzip", path
+    Pathname.new(path+".gz")
+  end
 end
 
 module ArchitectureListExtension
@@ -270,7 +272,7 @@ def dump_build_env env
       results = value
       if File.exists? value and File.symlink? value
         target = Pathname.new(value)
-        results += " => #{target.dirname+target.readlink}"
+        results += " => #{target.realpath}"
       end
       puts "#{k}: #{results}"
     end
