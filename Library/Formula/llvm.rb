@@ -3,15 +3,15 @@ require 'formula'
 def build_clang?; ARGV.include? '--with-clang'; end
 
 class Clang <Formula
-  url       'http://llvm.org/releases/2.7/clang-2.7.tgz'
+  url       'http://llvm.org/releases/2.8/clang-2.8.tgz'
   homepage  'http://llvm.org/'
-  md5       'b83260aa8c13494adf8978b5f238bf1b'
+  md5       '10e14c901fc3728eecbd5b829e011b59'
 end
 
 class Llvm <Formula
-  url       'http://llvm.org/releases/2.7/llvm-2.7.tgz'
+  url       'http://llvm.org/releases/2.8/llvm-2.8.tgz'
   homepage  'http://llvm.org/'
-  md5       'ac322661f20e7d6c810b1869f886ad9b'
+  md5       '6b13c504c718385fa0a4d375275e7a05'
 
   def options
     [['--with-clang', 'Also build & install clang']]
