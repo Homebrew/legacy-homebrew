@@ -6,6 +6,7 @@ class Libiconv <Formula
   homepage 'http://www.gnu.org/software/libiconv/'
 end
 
+def build_tests?; ARGV.include? '--test'; end
 
 class Glib <Formula
   url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.24/glib-2.24.2.tar.bz2'
@@ -14,6 +15,20 @@ class Glib <Formula
 
   depends_on 'pkg-config'
   depends_on 'gettext'
+
+  def patches
+    mp = "http://trac.macports.org/export/69965/trunk/dports/devel/glib2/files/"
+    {
+      :p0 => [
+        mp+"patch-configure.in.diff",
+        mp+"patch-child-test.c.diff"
+      ]
+    }
+  end
+
+  def options
+    [['--test', 'Build a debug build and run tests. NOTE: Tests may hang on "unix-streams".']]
+  end
 
   def install
     fails_with_llvm "Undefined symbol errors while linking"
@@ -26,7 +41,8 @@ class Glib <Formula
     iconvd.mkpath
 
     Libiconv.new.brew do
-      system "./configure", "--prefix=#{iconvd}", "--disable-debug", "--disable-dependency-tracking",
+      system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                            "--prefix=#{iconvd}",
                             "--enable-static", "--disable-shared"
       system "make install"
     end
@@ -34,17 +50,26 @@ class Glib <Formula
     # indeed, amazingly, -w causes gcc to emit spurious errors for this package!
     ENV.enable_warnings
 
-    # basically we are going to statically link to the symbols that glib doesn't
-    # find in the bugged GNU libiconv that ships with 10.6
+    # Statically link to libiconv so glib doesn't use the bugged version in 10.6
     ENV['LDFLAGS'] += " #{iconvd}/lib/libiconv.a"
 
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--disable-dependency-tracking",
-                          "--disable-rebuilds",
-                          "--with-libiconv=gnu"
+    args = ["--disable-dependency-tracking", "--disable-rebuilds",
+            "--prefix=#{prefix}",
+            "--with-libiconv=gnu"]
+
+    args << "--disable-debug" unless build_tests?
+
+    system "./configure", *args
+
+    # Fix for 64-bit support, from MacPorts
+    curl "http://trac.macports.org/export/69965/trunk/dports/devel/glib2/files/config.h.ed", "-O"
+    system "ed - config.h < config.h.ed"
+
     system "make"
-    ENV.j1 # Supress a folder already exists warning
+    # Supress a folder already exists warning during install
+    # Also needed for running tests
+    ENV.j1
+    system "make test" if build_tests?
     system "make install"
 
     # This sucks; gettext is Keg only to prevent conflicts with the wider

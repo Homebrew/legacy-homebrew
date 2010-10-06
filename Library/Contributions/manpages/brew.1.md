@@ -159,6 +159,10 @@ didn't include with OS X.
     Using Git, fetches the newest version of Homebrew from the GitHub
     repository.
 
+  * `log [git-options]` <formula> ...:
+    Shows the git log for the given formulae. Options that `git log`
+    recognizes can be passed before the formula list.
+
 ## EXTERNAL COMMANDS
 
 Homebrew allows external commands to be defined by putting a +x file named
