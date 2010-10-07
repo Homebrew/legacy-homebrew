@@ -41,6 +41,7 @@ end
 def dump_config
   require 'hardware'
   sha = `cd #{HOMEBREW_REPOSITORY} && git rev-parse --verify HEAD 2> /dev/null`.chomp
+  sha = "(none)" if sha.empty?
   bits = Hardware.bits
   cores = Hardware.cores_as_words
   kernel_arch = `uname -m`.chomp
