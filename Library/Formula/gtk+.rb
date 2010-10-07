@@ -14,6 +14,7 @@ class Gtkx <Formula
   depends_on 'atk' => :optional
 
   def install
+    fails_with_llvm "Undefined symbols when linking", :build => "2326"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-glibtest"
