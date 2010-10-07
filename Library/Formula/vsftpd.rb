@@ -5,18 +5,16 @@ class Vsftpd <Formula
   md5 'bad7b117d737a738738836041edc00db'
   homepage 'http://vsftpd.beasts.org/'
 
-  def patches
-    # Patch so vsftpd doesn't depend on UTMPX, and can't find OS X's PAM library.
-    DATA
-  end
-  
+  # Patch so vsftpd doesn't depend on UTMPX, and can't find OS X's PAM library.
+  def patches; DATA; end
+
   def install
     inreplace "defs.h", "/etc/vsftpd.conf", "#{etc}/vsftpd.conf"
     inreplace "tunables.c", "/etc", etc
     inreplace "tunables.c", "/var", var
     system "make"
 
-    # make install has all the paths hardcoded, so it's simpler to do this by hand:
+    # make install has all the paths hardcoded; this is easier:
     sbin.install "vsftpd"
     man5.install "vsftpd.conf.5"
     man8.install "vsftpd.8"
