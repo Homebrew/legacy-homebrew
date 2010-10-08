@@ -29,10 +29,24 @@ class Falcon <Formula
             "-DFALCON_WITH_INTERNAL_ZLIB=ON",
             "-DFALCON_WITH_INTERNAL=ON"]
 
-        configure_args << "-DFALCON_WITH_MANPAGES=ON" if ARGV.include? '--manpages'
-        configure_args << "-DFALCON_MAN_DIR=#{prefix}/share/man/man1" if ARGV.include? '--manpages'
-        configure_args << "-DFALCON_WITH_EDITLINE=ON" if ARGV.include? '--editline'
-        configure_args << "-DFALCON_WITH_FEATHERS=feathers" if ARGV.include? '--feathers'
+        if ARGV.include? '--manpages'
+            onfigure_args << "-DFALCON_WITH_MANPAGES=ON"
+        else 
+            configure_args << "-DFALCON_WITH_MANPAGES=OFF"
+            configure_args << "-DFALCON_MAN_DIR=#{prefix}/share/man/man1"
+        end
+        
+        if ARGV.include? '--editline'
+            configure_args << "-DFALCON_WITH_EDITLINE=ON"
+        else
+            configure_args << "-DFALCON_WITH_EDITLINE=OFF"
+        end
+            
+        if ARGV.include? '--feathers'
+            configure_args << "-DFALCON_WITH_FEATHERS=feathers"
+        else
+            configure_args << "-DFALCON_WITH_FEATHERS=NO"
+        end
 
         system "cmake", *configure_args
         system "make"
