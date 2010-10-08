@@ -1,10 +1,10 @@
 require 'formula'
 
 class Spin <Formula
-  url 'http://spinroot.com/spin/Src/spin524.tar.gz'
+  url 'http://spinroot.com/spin/Src/spin525.tar.gz'
   homepage 'http://spinroot.com/spin/whatispin.html'
-  md5 'c869e7bd83c70be6565cf77c6a98b72c'
-  version '5.2.4'
+  md5 '03345f9713e7b4f82d2d8ec319802b9c'
+  version '5.2.5'
 
   def patches
     DATA
@@ -27,10 +27,10 @@ end
 
 # manual patching is required by the spin install process
 __END__
-diff --git a/Src5.2.4/makefile b/Src5.2.4/makefile
+diff --git a/Src5.2.5/makefile b/Src5.2.5/makefile
 index 67f22aa..596c893 100755
---- a/Src5.2.4/makefile
-+++ b/Src5.2.4/makefile
+--- a/Src5.2.5/makefile
++++ b/Src5.2.5/makefile
 @@ -12,10 +12,10 @@
  
  CC=gcc -DNXT 		# -DNXT enables the X operator in LTL
