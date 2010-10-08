@@ -8,8 +8,8 @@ class Cmake <Formula
   def patches
     # CMAKE_OSX_ARCHITECTURES quoting bug. See: http://www.vtk.org/Bug/view.php?id=11244
     # Not needed with CMake 2.8.3 and above.
-    "http://cmake.org/gitweb?p=cmake.git;a=patch;h=a8ded533"
-    "http://cmake.org/gitweb?p=cmake.git;a=patch;h=0790af3b"
+    [ "http://cmake.org/gitweb?p=cmake.git;a=patch;h=a8ded533",
+      "http://cmake.org/gitweb?p=cmake.git;a=patch;h=0790af3b" ]
   end
 
   def install
