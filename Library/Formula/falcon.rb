@@ -3,6 +3,7 @@ require 'formula'
 class Falcon <Formula
     url 'http://falconpl.org/project_dl/_official_rel/Falcon-0.9.6.6.tgz'
     version '0.9.6.6'
+    md5 '50ea7d97ec7599d6e75a6b8b5b8c685a'
 
     head 'http://git.falconpl.org/falcon.git', :branch => 'master', :using => :git
     homepage 'http://www.falconpl.org/'
