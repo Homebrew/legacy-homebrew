@@ -8,7 +8,7 @@ class Libxml2 <Formula
   keg_only :provided_by_osx
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--with-threads"
     system "make"
     ENV.j1
     system "make install"
