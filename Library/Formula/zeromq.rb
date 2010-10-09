@@ -31,9 +31,7 @@ class Zeromq <Formula
   def install
     fails_with_llvm "Compiling with LLVM gives a segfault while linking."
 
-    if ARGV.include? '--HEAD'
-      system "./autogen.sh"
-    end
+    system "./autogen.sh" if ARGV.build_head?
 
     if ARGV.include? '--universal'
       build_fat
