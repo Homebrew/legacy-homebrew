@@ -14,6 +14,7 @@ class Pango <Formula
   end
 
   def install
+    fails_with_llvm "Undefined symbols when linking", :build => "2326"
     system "./configure", "--prefix=#{prefix}", "--with-x"
     system "make install"
   end

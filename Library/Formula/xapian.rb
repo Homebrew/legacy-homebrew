@@ -1,15 +1,15 @@
 require 'formula'
 
 class XapianBindings <Formula
-  url 'http://oligarchy.co.uk/xapian/1.0.21/xapian-bindings-1.0.21.tar.gz'
+  url 'http://oligarchy.co.uk/xapian/1.2.3/xapian-bindings-1.2.3.tar.gz'
   homepage 'http://xapian.org'
-  sha1 '041a6f083db99c4e01cb9d1da5d06e698131f9b8'
+  sha1 'c320a15be7d1dcf5fc22a46b3ada7cbd75de3823'
 end
 
 class Xapian <Formula
-  url 'http://oligarchy.co.uk/xapian/1.0.21/xapian-core-1.0.21.tar.gz'
+  url 'http://oligarchy.co.uk/xapian/1.2.3/xapian-core-1.2.3.tar.gz'
   homepage 'http://xapian.org'
-  sha1 'e687e105a245794b011064bd93d8662e35b2d192'
+  sha1 'abc0c5d22e6f77c757976719a590580c068ae894'
 
   def options
     [
