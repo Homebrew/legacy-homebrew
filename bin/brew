@@ -41,6 +41,7 @@ end
 def dump_config
   require 'hardware'
   sha = `cd #{HOMEBREW_REPOSITORY} && git rev-parse --verify HEAD 2> /dev/null`.chomp
+  sha = "(none)" if sha.empty?
   bits = Hardware.bits
   cores = Hardware.cores_as_words
   kernel_arch = `uname -m`.chomp
@@ -263,7 +264,9 @@ begin
   # We only go one level up, ie. direct dependencies.
   when 'uses'
     uses = ARGV.formulae.map{ |f| Formula.all.select{ |ff| ff.deps.include? f.name }.map{|f| f.name} }.flatten.uniq
-    uses = uses.select { |f| Formula.factory(f).installed? } if ARGV.include? "--installed"
+    if ARGV.include? "--installed"
+      uses = uses.select { |f| f = HOMEBREW_CELLAR+f; f.directory? and not f.subdirs.empty? }
+    end
     puts *uses.sort
 
   when 'deps'
