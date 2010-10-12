@@ -6,7 +6,7 @@ class Schroedinger <Formula
   md5	'd67ec48b7c506db8c8b49156bf409e60'
   homepage 'http://diracvideo.org/'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'orc'
 
   def install

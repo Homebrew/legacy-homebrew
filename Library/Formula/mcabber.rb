@@ -6,7 +6,7 @@ class Mcabber <Formula
   md5 '97faad2154a87da9329d51db957f9024'
   head 'http://mcabber.com/hg/'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'loudmouth'
   depends_on 'gpgme'

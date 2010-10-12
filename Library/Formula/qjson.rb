@@ -5,7 +5,7 @@ class Qjson <Formula
   homepage 'http://qjson.sourceforge.net'
   md5 '5a833ad606c164ed8aa69f0873366ace'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'qt'
 
   def install

@@ -5,7 +5,7 @@ class Libshout <Formula
   homepage 'http://www.icecast.org/'
   md5 '4f75fc9901c724b712c371c9a1e782d3'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'libogg'
   depends_on 'libvorbis'
 

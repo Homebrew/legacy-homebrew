@@ -6,7 +6,7 @@ class Usbmuxd <Formula
   md5 '484970632a739206afe86802c6169300'
 
   depends_on 'libusb'
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
 
   def install
     inreplace 'Modules/VersionTag.cmake', '"sh"', '"bash"'
