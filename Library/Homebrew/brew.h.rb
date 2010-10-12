@@ -499,7 +499,7 @@ class PrettyListing
           else
             print_dir pn
           end
-        elsif not FORMULA_META_FILES.include? pn.basename.to_s
+        elsif not (FORMULA_META_FILES.include? pn.basename.to_s or pn.basename.to_s == '.DS_Store')
           puts pn
         end
       end
@@ -519,7 +519,7 @@ private
         puts pn
         other = 'other '
       else
-        remaining_root_files << pn 
+        remaining_root_files << pn unless pn.basename.to_s == '.DS_Store'
       end
     end
 
