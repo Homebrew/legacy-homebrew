@@ -7,8 +7,9 @@ require 'formula'
 
 class Libvirt <Formula
   homepage 'http://www.libvirt.org'
-  url 'http://justinclift.fedorapeople.org/libvirt_experimental/libvirt-0.8.4-6.tar.gz'
-  md5 '88c00d745d18159e5a05a5d49a571bc7'
+  url 'http://mitchellh.github.com/libvirt/libvirt-git-43c2c61f689948aaf18ecbd48b3fd71f3275695a.tar.gz'
+  version '0.8.4-43c2c61f'
+  md5 '00900bf644239693369a0cc0512129b7'
 
   depends_on "gawk"
   depends_on "gnutls"
@@ -27,10 +28,10 @@ class Libvirt <Formula
 
     args << "--without-libvirtd" if ARGV.include? '--without-libvirtd'
 
-    system "./configure", *args
-
-    # Compilation of docs doesn't get done if we jump straight to "make install"
-    system "make"
+    # There is a bug with the current regular autotools style build which
+    # doesn't allow the normal "./configure; make; make install" sequence.
+    # For now, we regenerate the files and make install manually.
+    system "./autogen.sh", *args
     system "make install"
 
     # Update the SASL config file with the Homebrew prefix
