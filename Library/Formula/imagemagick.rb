@@ -46,7 +46,6 @@ class Imagemagick <Formula
   depends_on 'libtiff' => :optional
   depends_on 'little-cms' => :optional
   depends_on 'jasper' => :optional
-  depends_on 'little-cms' => :optional
 
   depends_on 'libwmf' if use_wmf?
 

@@ -8,13 +8,11 @@ class Ftgl <Formula
   depends_on 'pkg-config'
 
   def install
-    if Formula.factory("doxygen").installed?
-      puts "If doxygen is installed, the docs may still fail to build."
-      puts "Try \"brew unlink doxygen\" before installing ftgl, and then"
-      puts "use \"brew link doxygen\" afterwards to reactivate it."
-    end
-
     ENV.x11 # Put freetype-config in path
+
+    # If doxygen is installed, the docs may still fail to build.
+    # So we disable building docs.
+    inreplace "configure", "set dummy doxygen;", "set dummy no_doxygen;"
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

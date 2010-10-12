@@ -1,10 +1,10 @@
 require 'formula'
 
 class Rubinius < Formula
-  url 'http://asset.rubini.us/rubinius-1.0.1-20100603.tar.gz'
-  version '1.0.1'
+  url 'http://asset.rubini.us/rubinius-1.1.0-20100923.tar.gz'
+  version '1.1.0'
   homepage 'http://rubini.us/'
-  md5 'eb185703c7ae0c0210e8dcb7f783ee8e'
+  md5 'e2ae16238b201de09975abe19da09ea9'
   head 'git://github.com/evanphx/rubinius.git'
 
   # Do not strip binaries, or else it fails to run.

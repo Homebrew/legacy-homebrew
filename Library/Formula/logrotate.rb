@@ -26,7 +26,7 @@ class Logrotate <Formula
 
     [
       DATA,
-      "http://ftp.de.debian.org/debian/pool/main/l/logrotate/logrotate_3.7.8-4.diff.gz",
+      "https://www.securehost.com/mirror/debian/pool/main/l/logrotate/logrotate_3.7.8-4.diff.gz",
       *debian_patches
     ]
   end

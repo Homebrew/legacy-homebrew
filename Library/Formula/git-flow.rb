@@ -2,8 +2,8 @@
 require 'formula'
 
 class GitFlowCompletion <Formula
-  url 'git://github.com/bobthecow/git-flow-completion.git', :tag => '0.3'
-  version '0.3'
+  url 'git://github.com/bobthecow/git-flow-completion.git', :tag => '0.3.3'
+  version '0.3.3'
   head 'git://github.com/bobthecow/git-flow-completion.git', :branch => 'develop'
 
   def initialize
