@@ -5,7 +5,7 @@ class KdebaseRuntime <Formula
   homepage ''
   md5 'd46fca58103624c28fcdf3fbd63262eb'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'kde-phonon'
   depends_on 'oxygen-icons'
 

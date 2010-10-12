@@ -5,10 +5,10 @@ class Akonadi <Formula
   homepage 'http://pim.kde.org/akonadi/'
   md5 'e6eef3ed5c28d55f4b6530544e379413'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
+  depends_on 'automoc4' => :build
   depends_on 'shared-mime-info'
   depends_on 'mysql'
-  depends_on 'automoc4'
   depends_on 'soprano'
   depends_on 'boost'
   depends_on 'qt'

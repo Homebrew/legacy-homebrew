@@ -4,9 +4,9 @@ require 'formula'
 # downloads disappear.
 
 class Pyqt <Formula
-  url 'http://www.riverbankcomputing.co.uk/static/Downloads/PyQt4/PyQt-mac-gpl-4.7.6.tar.gz'
+  url 'http://www.riverbankcomputing.co.uk/static/Downloads/PyQt4/PyQt-mac-gpl-4.7.7.tar.gz'
   homepage 'http://www.riverbankcomputing.co.uk/software/pyqt'
-  md5 'abe74162df98e771d3770af77a1561d4'
+  md5 '18213126857b7c6e6da6f7a1720d4870'
 
   depends_on 'sip'
   depends_on 'qt'
@@ -14,7 +14,8 @@ class Pyqt <Formula
   def install
     ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/python", ':'
 
-    system "python", "./configure.py", "--confirm-license",
+    # SIP gets built against system python, so PyQt should as well.
+    system "/usr/bin/python", "./configure.py", "--confirm-license",
                                        "--bindir=#{bin}",
                                        "--destdir=#{lib}/python",
                                        "--sipdir=#{share}/sip"

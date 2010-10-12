@@ -5,7 +5,7 @@ class S3Backer <Formula
   homepage 'http://code.google.com/p/s3backer/'
   md5 '98907b98424c867a6e52ffdfbbdafce4'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
 
   def install
     system "./configure", "--prefix=#{prefix}"

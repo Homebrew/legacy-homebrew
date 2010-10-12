@@ -5,11 +5,11 @@ class Clutter <Formula
   homepage 'http://www.clutter-project.org/'
   md5 '687f9699ea5590091282034a936c6dc7'
 
-  depends_on 'pango'
-  depends_on 'glib'
-  depends_on 'pkg-config'
-  depends_on 'intltool'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
+  depends_on 'glib'
+  depends_on 'intltool'
+  depends_on 'pango'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--with-flavour=osx", "--with-imagebackend=quartz"

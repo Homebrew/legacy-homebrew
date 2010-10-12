@@ -84,6 +84,10 @@ def audit_formula_text text
     problems << " * Trailing whitespace was found."
   end
 
+  if text =~ /if\s+ARGV\.include\?\s+'--HEAD'/
+    problems << " * Use \"if ARGV.build_head?\" instead"
+  end
+
   return problems
 end
 
@@ -108,6 +112,7 @@ def audit_formula_options f, text
 
   if options.length > 0
     options.each do |o|
+      next if o == '--HEAD'
       problems << " * Option #{o} is not documented" unless documented_options.include? o
     end
   end

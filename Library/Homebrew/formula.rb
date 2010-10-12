@@ -528,7 +528,7 @@ EOF
         case value
         when :python, :perl, :ruby, :jruby
           @external_deps[value] << key
-        when :optional, :recommended
+        when :optional, :recommended, :build
           @deps << key
         else
           raise "Unsupported dependency type #{value}"
