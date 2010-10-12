@@ -7,7 +7,7 @@ class Yajl <Formula
 
   # Configure uses cmake, even though it looks like we're
   # just using autotools below.
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
 
   def install
     ENV.deparallelize
