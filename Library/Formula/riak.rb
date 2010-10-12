@@ -12,7 +12,7 @@ class Riak <Formula
   skip_clean 'libexec/data/ring'
 
   depends_on 'erlang'
-  
+
   def install
     ENV.deparallelize
     system "make all rel"
