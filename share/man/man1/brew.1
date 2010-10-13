@@ -60,7 +60,7 @@ If \fB\-\-use\-llvm\fR is passed, attempt to compile using the LLVM front\-end t
 If \fB\-\-ignore\-dependencies\fR is passed, skip installing any dependencies of any kind\. If they are not already present, the formula will probably fail to install\.
 .
 .IP
-If \fB\-\-HEAD\fR is passed, and \fIformula\fR defines it, install the HEAD version, aka master, trunk, unstable, dev\.
+If \fB\-\-HEAD\fR is passed, and \fIformula\fR defines it, install the HEAD version, aka master, trunk, unstable, dev\. To install a newer version of HEAD, either \fBbrew rm <foo> && brew install \-\-HEAD <foo>\fR or \fBbrew \-\-force \-\-HEAD <foo>\fR\.
 .
 .TP
 \fBinstall \-\-interactive [\-\-git]\fR \fIformula\fR
