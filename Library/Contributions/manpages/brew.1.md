@@ -61,6 +61,10 @@ didn't include with OS X.
     If `--HEAD` is passed, and <formula> defines it, install the HEAD version,
     aka master, trunk, unstable, dev.
 
+    To install a newer version of HEAD use
+    `brew rm <foo> && brew install --HEAD <foo>`
+    or `brew --force --HEAD <foo>`.
+
   * `install --interactive [--git]` <formula>:
     Downloads and patches <formula>, and then opens a shell. This allows the
     user to run `./configure --help` and otherwise determine how to turn the
