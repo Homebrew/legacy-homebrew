@@ -5,7 +5,7 @@ class Kdepim <Formula
   homepage ''
   md5 'db74243fb2192b64bb613027e1c0cc23'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'kdebase-runtime'
 
   def install
