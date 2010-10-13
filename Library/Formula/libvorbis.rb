@@ -5,7 +5,7 @@ class Libvorbis <Formula
   md5 '90b1eb86e6d57694ffdfc2e4d8c7a64e'
   homepage 'http://vorbis.com'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'libogg'
 
   def install

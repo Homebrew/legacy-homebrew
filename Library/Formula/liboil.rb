@@ -5,7 +5,7 @@ class Liboil <Formula
   url 'http://liboil.freedesktop.org/download/liboil-0.3.17.tar.gz'
   md5 '47dc734f82faeb2964d97771cfd2e701'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
 
   def install

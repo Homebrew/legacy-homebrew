@@ -5,7 +5,7 @@ class Libimobiledevice <Formula
   homepage 'http://www.libimobiledevice.org/'
   md5 '684edcf0946f5a8db95bfcced7626dbe'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'libtasn1'
   depends_on 'usbmuxd'
   depends_on 'libplist'

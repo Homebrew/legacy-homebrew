@@ -6,7 +6,7 @@ class MidnightCommander <Formula
   sha256 '1b8e9650f092d4554eb08f137142bd203b5cef74b5000f3e228f0261fd92a039'
   version '4.7.0.8'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
 
   def install

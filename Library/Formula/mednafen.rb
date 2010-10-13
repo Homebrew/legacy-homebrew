@@ -6,7 +6,7 @@ class Mednafen <Formula
   md5 'f50882095931a44df828e1254ed1a461'
   version '0.8.D-rc1'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'sdl'
   depends_on 'sdl_net'
   depends_on 'libcdio'

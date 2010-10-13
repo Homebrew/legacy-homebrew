@@ -7,7 +7,7 @@ class Falcon <Formula
 
   head 'http://git.falconpl.org/falcon.git', :branch => 'master', :using => :git
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'pcre'
 
   def options

@@ -5,9 +5,9 @@ class Mpd <Formula
   homepage 'http://mpd.wikia.com'
   md5 'b00b289a20ecd9accfd4972d6395135c'
 
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'libid3tag'
-  depends_on 'pkg-config'
   depends_on 'flac'
   depends_on 'libshout'
   depends_on 'mad'

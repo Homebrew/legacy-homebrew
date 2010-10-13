@@ -5,6 +5,8 @@ class Doxygen <Formula
   homepage 'http://www.doxygen.org/'
   md5 '13e76e10fb55581a16ee04de35c264f0'
 
+  head 'https://doxygen.svn.sourceforge.net/svnroot/doxygen/trunk'
+
   def install
     system "./configure", "--prefix", prefix
     inreplace "Makefile" do |s|

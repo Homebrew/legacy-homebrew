@@ -5,7 +5,7 @@ class SharedDesktopOntologies <Formula
   homepage 'http://sourceforge.net/apps/trac/oscaf/'
   md5 '6c004e1c377f768cae5b321bc111876b'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
 
   def install
     system "cmake . #{std_cmake_parameters}"
