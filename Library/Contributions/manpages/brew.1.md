@@ -167,6 +167,14 @@ didn't include with OS X.
     Shows the git log for the given formulae. Options that `git log`
     recognizes can be passed before the formula list.
 
+  * `fetch [-v] [--HEAD]` <formula>:
+    Downloads the tarball or checks out from VCS for the given <formula>. For
+    tarballs, also prints MD5 and SHA1 checksums.
+
+    If `--HEAD` is passed, download the HEAD version of <formula> instead. `-v`
+    may also be passed to make the VCS checkout verbose, useful for seeing if
+    an existing HEAD cache has been updated.
+
 ## EXTERNAL COMMANDS
 
 Homebrew allows external commands to be defined by putting a +x file named
@@ -178,10 +186,6 @@ Some external commands are shipped with Homebrew, and enabled by default.
   * `audit`:
     Checks all formulae for Homebrew coding style violations. This should be
     run before submitting a new formula for inclusion.
-
-  * `fetch` <formula>:
-    Downloads the tarball or checks out from VCS for the given <formula>. For
-    tarballs, also prints MD5 and SHA1 checksums.
 
   * `options` <formula>:
     Displays install options specific to <formula>.
