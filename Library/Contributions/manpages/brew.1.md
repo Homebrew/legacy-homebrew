@@ -167,13 +167,15 @@ didn't include with OS X.
     Shows the git log for the given formulae. Options that `git log`
     recognizes can be passed before the formula list.
 
-  * `fetch [-v] [--HEAD]` <formula>:
+  * `fetch [--force] [-v] [--HEAD]` <formula>:
     Downloads the tarball or checks out from VCS for the given <formula>. For
     tarballs, also prints MD5 and SHA1 checksums.
 
     If `--HEAD` is passed, download the HEAD version of <formula> instead. `-v`
     may also be passed to make the VCS checkout verbose, useful for seeing if
     an existing HEAD cache has been updated.
+
+    If `--force` is passed, remove a previously cached version and re-fetch.
 
 ## EXTERNAL COMMANDS
 
