@@ -1,18 +1,18 @@
 require 'formula'
 
 class Kdepimlibs <Formula
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.4.0/src/kdepimlibs-4.4.0.tar.bz2'
+  url 'ftp://ftp.kde.org/pub/kde/stable/4.4.2/src/kdepimlibs-4.4.2.tar.bz2'
   homepage 'http://www.kde.org/'
-  md5 '2eb04e5ae39a25009f036ec333eb118a'
+  md5 'ebe6e0bbac211ae9cada13cc6efbd161'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'gpgme'
   depends_on 'akonadi'
   depends_on 'libical'
   depends_on 'kdelibs'
 
   def install
-    system "cmake . #{std_cmake_parameters}"
+    system "cmake . #{std_cmake_parameters} -DBUNDLE_INSTALL_DIR=#{bin}"
     system "make install"
   end
 end

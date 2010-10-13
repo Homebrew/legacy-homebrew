@@ -7,23 +7,26 @@ class PdflibLite <Formula
   version "7.0.4p4"
 
   def install
-    # SL 10.6.1 LLVM crashes with an internal compiler error on this version.
-    ENV.gcc_4_2
+    fails_with_llvm "SL 10.6.1 LLVM crashes with an internal compiler error on this version."
 
     # Without the following substituion, pdflib-lite runs into weird
     # build errors due to bad interactions with the TIFF headers.
     # This workaround comes from the MacPorts.org portfile for pdflib.
     ENV['CPPFLAGS'] = "-isystem#{prefix}"
 
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking",
-           "--without-java", "--without-perl", "--without-py", "--without-tcl",
-           "--without-ruby"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--without-java",
+                          "--without-perl",
+                          "--without-py",
+                          "--without-tcl",
+                          "--without-ruby"
     system "make"
     system "make install"
-    
+
     def caveats; <<-EOM
-pdflib-lite is not open source software; usage restrictions apply! Be sure to
-understand and obey the license terms, which can be found at:
+pdflib-lite is not open source software; usage restrictions apply!
+Be sure to understand and obey the license terms, which can be found at:
 http://www.pdflib.com/products/pdflib-family/pdflib-lite/pdflib-lite-licensing/
       EOM
     end

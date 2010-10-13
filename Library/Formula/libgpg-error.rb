@@ -1,13 +1,14 @@
 require 'formula'
 
 class LibgpgError <Formula
-  @url='ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.7.tar.bz2'
-  @homepage='http://www.gnupg.org/'
-  @sha1='bf8c6babe1e28cae7dd6374ca24ddcc42d57e902'
+  url 'ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.9.tar.bz2'
+  homepage 'http://www.gnupg.org/'
+  sha1 '6836579e42320b057a2372bbcd0325130fe2561e'
 
   def install
     ENV.j1
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

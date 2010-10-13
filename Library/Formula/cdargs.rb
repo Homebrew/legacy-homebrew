@@ -6,21 +6,23 @@ class Cdargs <Formula
   md5 '50be618d67f0b9f2439526193c69c567'
 
   def install
+    fails_with_llvm "Bus error in ld on SL 10.6.4"
+
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make"
     system "make install-strip"
 
-    FileUtils.rm Dir.glob('contrib/Makefile*')
+    rm Dir['contrib/Makefile*']
     prefix.install 'contrib'
 
     bash_completion_dir = etc+'bash_completion.d'
     bash_completion_dir.mkpath
-    FileUtils.ln_sf prefix+'contrib/cdargs-bash.sh', bash_completion_dir+'cdargs-bash.sh'
+    ln_sf prefix+'contrib/cdargs-bash.sh', bash_completion_dir+'cdargs-bash.sh'
   end
 
   def caveats; <<-EOS
 Support files for bash, tcsh and emacs are located in #{prefix}/contrib.
-The file for bash is also symlinked to #{etc+'bash_completion.d/cdargs-bash.sh'}. Source it from
+The file for bash is also symlinked to #{etc}/bash_completion.d/cdargs-bash.sh. Source it from
 your .bash_profile or .bashrc to get nice aliases and bash completion.
 
 Consult the cdargs man page for more details and instructions.

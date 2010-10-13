@@ -4,25 +4,25 @@ require 'hardware'
 class Mongodb <Formula
   homepage 'http://www.mongodb.org/'
 
-  aka :mongo
-
   if Hardware.is_64_bit? and not ARGV.include? '--32bit'
-    url 'http://downloads.mongodb.org/osx/mongodb-osx-x86_64-1.2.4.tgz'
-    md5 '775835b5038b6724a27bb7d804acb079'
-    version '1.2.4-x86_64'
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-1.6.3.tgz'
+    md5 'da6a3a1e52e2ec7134a75b857ad540e8'
+    version '1.6.3-x86_64'
   else
-    url 'http://downloads.mongodb.org/osx/mongodb-osx-i386-1.2.4.tgz'
-    md5 '330d211bdc2c69e27a19049bd35fd04d'
-    version '1.2.4-i386'
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-1.6.3.tgz'
+    md5 '6f8244f0bc3a842d16f92e5f7fa33e98'
+    version '1.6.3-i386'
   end
 
-  def skip_clean? path
-    true
+  skip_clean :all
+
+  def options
+    [['--32bit', 'Install the 32-bit version.']]
   end
 
   def install
     # Copy the prebuilt binaries to prefix
-    system "cp -prv * #{prefix}"
+    prefix.install Dir['*']
 
     # Create the data and log directories under /var
     (var+'mongodb').mkpath
@@ -34,8 +34,14 @@ class Mongodb <Formula
   end
 
   def caveats; <<-EOS
-You can enable mongodb to automatically load on login with:
-    launchctl load -w #{prefix}/org.mongodb.mongod.plist
+If this is your first install, automatically load on login with:
+    cp #{prefix}/org.mongodb.mongod.plist ~/Library/LaunchAgents
+    launchctl load -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
+
+If this is an upgrade and you already have the org.mongodb.mongod.plist loaded:
+    launchctl unload -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
+    cp #{prefix}/org.mongodb.mongod.plist ~/Library/LaunchAgents
+    launchctl load -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
 
 Or start it manually:
     mongod run --config #{prefix}/mongod.conf

@@ -1,25 +1,14 @@
 require 'formula'
 
-class PkgCurlDownloadStrategy <CurlDownloadStrategy
-  def stage
-    safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, File.basename(@url)
-    chdir
-  end
-end
-
-# Remember to update the formula for Cabal when updating this formula
 class Ghc <Formula
   homepage 'http://haskell.org/ghc/'
-  version '6.12.1'
-  url "http://haskell.org/ghc/dist/6.12.1/GHC-#{version}-i386.pkg"
-  md5 '7f50698a6f34b978027a43fd836443e7'
+  url "http://darcs.haskell.org/download/dist/6.12.3/GHC-6.12.3-i386.pkg"
+  version '6.12.3'
+  md5 '58399e3af68f50a23a847bdfe3de5aca'
 
-  skip_clean :bin #http://hackage.haskell.org/trac/ghc/ticket/2458
-
-  def download_strategy
-    # Extract files from .pkg while caching the .pkg
-    PkgCurlDownloadStrategy
-  end
+  # Avoid stripping the Haskell binaries & libraries.
+  # See: http://hackage.haskell.org/trac/ghc/ticket/2458
+  skip_clean ['bin', 'lib']
 
   def replace_all foo, bar
     # Find all text files containing foo and replace it with bar
@@ -28,16 +17,23 @@ class Ghc <Formula
   end
 
   def install
+    short_version = version.split('.').first(2).join('')
+
     # Extract files from .pax.gz
     system '/bin/pax -f ghc.pkg/Payload -p p -rz'
-    cd 'GHC.framework/Versions/612/usr'
+    cd "GHC.framework/Versions/#{short_version}/usr"
 
     # Fix paths
-    replace_all '/Library/Frameworks/GHC.framework/Versions/612/usr/lib/ghc-6.12.1', "#{lib}/ghc"
-    replace_all '/Library/Frameworks/GHC.framework/Versions/612/usr', prefix
-    mv 'lib/ghc-6.12.1', 'lib/ghc'
+    replace_all "/Library/Frameworks/GHC.framework/Versions/#{short_version}/usr/lib/ghc-#{version}", "#{lib}/ghc"
+    replace_all "/Library/Frameworks/GHC.framework/Versions/#{short_version}/usr", prefix
 
-    prefix.install ['bin', 'lib', 'share']
+    prefix.install ['bin', 'share']
+
+    # Remove version from lib folder
+    lib.install "lib/ghc-#{version}" => 'ghc'
+
+    # Fix ghc-asm Perl reference
+    inreplace "#{lib}/ghc/ghc-asm", "#!/opt/local/bin/perl", "#!/usr/bin/env perl"
 
     # Regenerate GHC package cache
     rm "#{lib}/ghc/package.conf.d/package.cache"

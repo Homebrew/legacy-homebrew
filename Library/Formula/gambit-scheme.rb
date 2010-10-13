@@ -13,9 +13,7 @@ class GambitScheme <Formula
   end
 
   def install
-    # Gambit Scheme currently fails to build with llvm-gcc
-    # (ld crashes during the build process)
-    ENV.gcc_4_2
+    fails_with_llvm "ld crashes during the build process"
     # Gambit Scheme doesn't like full optimizations
     ENV.O2
 
@@ -31,7 +29,6 @@ class GambitScheme <Formula
     configure_args << "--enable-shared" if ARGV.include? '--enable-shared'
 
     system "./configure", *configure_args
-
     system "make check" if ARGV.include? '--with-check'
 
     ENV.j1

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Omega <Formula
-  @url='http://www.alcyone.com/binaries/omega/omega-0.80.2-src.tar.gz'
-  @homepage='http://www.alcyone.com/max/projects/omega/'
-  @md5='6d65ec9e0cc87ccf89ab491533ec4b77'
+  url 'http://www.alcyone.com/binaries/omega/omega-0.80.2-src.tar.gz'
+  homepage 'http://www.alcyone.com/max/projects/omega/'
+  md5 '6d65ec9e0cc87ccf89ab491533ec4b77'
 
   def install
     # Set up our target folders
@@ -15,7 +15,7 @@ class Omega <Formula
     inreplace "Makefile" do |s|
       s.remove_make_var! ['CC', 'CFLAGS', 'LDFLAGS']
     end
-    
+
     ENV.append_to_cflags "-DUNIX -DSYSV"
 
     system "make"

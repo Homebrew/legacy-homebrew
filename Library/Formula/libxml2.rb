@@ -1,16 +1,15 @@
 require 'formula'
 
 class Libxml2 <Formula
-  url 'ftp://xmlsoft.org/libxml2/libxml2-2.7.6.tar.gz'
+  url 'ftp://xmlsoft.org/libxml2/libxml2-2.7.7.tar.gz'
   homepage 'http://xmlsoft.org'
-  md5 '7740a8ec23878a2f50120e1faa2730f2'
+  md5 '9abc9959823ca9ff904f1fbcf21df066'
 
-  def keg_only?
-    :provided_by_osx
-  end
+  keg_only :provided_by_osx
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    fails_with_llvm "Undefined symbols when linking", :build => "2326"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make"
     ENV.j1
     system "make install"

@@ -1,12 +1,12 @@
 require 'formula'
 
 class Libusb <Formula
-  url 'http://downloads.sourceforge.net/project/libusb/libusb-0.1%20%28LEGACY%29/0.1.12/libusb-0.1.12.tar.gz'
-  homepage 'http://libusb.sourceforge.net'
-  md5 'caf182cbc7565dac0fd72155919672e6'
+  url 'http://downloads.sourceforge.net/project/libusb/libusb-1.0/libusb-1.0.8/libusb-1.0.8.tar.bz2'
+  homepage 'http://www.libusb.org/'
+  md5 '37d34e6eaa69a4b645a19ff4ca63ceef'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
 end

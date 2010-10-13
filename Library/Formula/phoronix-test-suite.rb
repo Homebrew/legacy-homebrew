@@ -1,17 +1,13 @@
 require 'formula'
 
 class PhoronixTestSuite <Formula
-  head 'http://www.phorogit.com/repo/phoronix-test-suite.git'
+  head 'http://www.phorogit.com/repo/phoronix-test-suite.git', :using => :git
   homepage 'http://www.phoronix-test-suite.com/'
 
-  def download_strategy
-    GitDownloadStrategy
-  end
-  
   def patches
     DATA
   end
-  
+
   def install
     system "./install-sh #{prefix}"
   end

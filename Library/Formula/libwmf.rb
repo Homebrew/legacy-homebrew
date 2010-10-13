@@ -5,13 +5,15 @@ class Libwmf <Formula
   homepage 'http://wvware.sourceforge.net/libwmf.html'
   md5 'd1177739bf1ceb07f57421f0cee191e0'
 
+  depends_on 'pkg-config' => :build
+  depends_on 'gd'
+
   def install
     ENV.libpng
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-freetype=/usr/X11"
     system "make"
-
     ENV.j1 # yet another rubbish Makefile
     system "make install"
   end

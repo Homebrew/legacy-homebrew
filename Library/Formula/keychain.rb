@@ -1,15 +1,13 @@
 require 'formula'
 
 class Keychain <Formula
-  url 'http://www.funtoo.org/archive/keychain/keychain-2.7.0.tar.bz2'
+  url 'http://www.funtoo.org/archive/keychain/keychain-2.7.1.tar.bz2'
   homepage 'http://www.funtoo.org/en/security/keychain/intro/'
-  md5 'c5eecd36130d9e8617a77f96b746982d'
+  md5 '07c622833192189f483cbaec287f9704'
 
   def install
-    system "make"
     bin.install "keychain"
-    man1.install "keychain.1.gz"
-    doc.install "ChangeLog"
-    doc.install "README.rst"
+    man1.install "keychain.1"
+    doc.install ["ChangeLog", "README.rst"]
   end
 end

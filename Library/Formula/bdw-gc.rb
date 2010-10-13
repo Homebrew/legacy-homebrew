@@ -6,10 +6,9 @@ class BdwGc <Formula
   md5 '2ff9924c7249ef7f736ecfe6f08f3f9b'
 
   def install
+    fails_with_llvm "LLVM gives an unsupported inline asm error"
+
     if MACOS_VERSION == 10.6
-      # LLVM gives an unsupported inline asm error
-      ENV.gcc_4_2
-      
       # ucontext has been deprecated in 10.6
       # use this flag to force the header to compile
       ENV.append 'CPPFLAGS', "-D_XOPEN_SOURCE"
