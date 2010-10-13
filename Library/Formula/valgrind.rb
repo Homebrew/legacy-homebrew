@@ -17,6 +17,8 @@ class Valgrind <Formula
   depends_on 'pkg-config' => :build
   depends_on 'boost'
 
+  skip_clean 'lib'
+
   def install
     system "./autogen.sh" if File.exists? "autogen.sh"
 
