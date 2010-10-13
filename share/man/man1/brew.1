@@ -178,11 +178,14 @@ Using Git, fetches the newest version of Homebrew from the GitHub repository\.
 Shows the git log for the given formulae\. Options that \fBgit log\fR recognizes can be passed before the formula list\.
 .
 .TP
-\fBfetch [\-v] [\-\-HEAD]\fR \fIformula\fR
+\fBfetch [\-\-force] [\-v] [\-\-HEAD]\fR \fIformula\fR
 Downloads the tarball or checks out from VCS for the given \fIformula\fR\. For tarballs, also prints MD5 and SHA1 checksums\.
 .
 .IP
 If \fB\-\-HEAD\fR is passed, download the HEAD version of \fIformula\fR instead\. \fB\-v\fR may also be passed to make the VCS checkout verbose, useful for seeing if an existing HEAD cache has been updated\.
+.
+.IP
+If \fB\-\-force\fR is passed, remove a previously cached version and re\-fetch\.
 .
 .SH "EXTERNAL COMMANDS"
 Homebrew allows external commands to be defined by putting a +x file named \fBbrew\-<cmdname>\fR or \fBbrew\-<cmdname>\.rb\fR on the PATH\. This will cause Homebrew to recognize \fBbrew cmdname\fR\.
