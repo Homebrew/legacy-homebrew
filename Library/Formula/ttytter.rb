@@ -7,12 +7,12 @@ class Ttytter <ScriptFileFormula
 
   def install
     bin.install '1.1.06.txt' => 'ttytter'
-  end  
+  end
 
   def caveats; <<-EOS.undent
       To take full advantage of readline features you must install readline:
         $ brew install readline
-      and the Perl Module Term::ReadLine::TTYtter 
+      and the Perl Module Term::ReadLine::TTYtter
         $ cpan -i Term::ReadLine::TTYtter
       Or if you have cpanminus:
         $ cpanm Term::ReadLine::TTYtter
