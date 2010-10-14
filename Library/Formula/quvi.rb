@@ -5,7 +5,7 @@ class Quvi <Formula
   sha1 'cfeacf4c0a9958ba42ecab65098d71ecdcdd02f4'
   homepage 'http://code.google.com/p/quvi/'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'pcre'
   depends_on 'lua'
 

@@ -201,18 +201,22 @@ module HomebrewEnvExtension
   end
 
   def prepend key, value, separator = ' '
+    # Value should be a string, but if it is a pathname then coerce it.
+    value = value.to_s
     unless self[key].to_s.empty?
       self[key] = value + separator + self[key]
     else
       self[key] = value
     end
   end
+
   def append key, value, separator = ' '
-    ref = self[key]
-    if ref.nil? or ref.empty?
-      self[key] = value
+    # Value should be a string, but if it is a pathname then coerce it.
+    value = value.to_s
+    unless self[key].to_s.empty?
+      self[key] = self[key] + separator + value
     else
-      self[key] = ref + separator + value
+      self[key] = value
     end
   end
 

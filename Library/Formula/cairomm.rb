@@ -9,7 +9,7 @@ class Cairomm <Formula
     { :p0 => DATA }
   end
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'libsigc++'
   # cairo is available on 10.6 via X11 but not on 10.5
   depends_on 'cairo' if MACOS_VERSION == 10.5

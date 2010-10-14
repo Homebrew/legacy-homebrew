@@ -5,7 +5,7 @@ class Attica <Formula
   homepage 'http://www.kde.org/'
   md5 '8b4207dbc0a826d422632bdb9c50d51a'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
 
   def install
     system "cmake . #{std_cmake_parameters}"
