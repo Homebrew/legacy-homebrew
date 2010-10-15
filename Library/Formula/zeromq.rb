@@ -2,6 +2,7 @@ require 'formula'
 
 class Zeromq <Formula
   url 'http://www.zeromq.org/local--files/area:download/zeromq-2.0.9.tar.gz'
+  head 'git://github.com/zeromq/zeromq2.git'
   homepage 'http://www.zeromq.org/'
   md5 'eadda72ecc5bcfa50a521436e6d92252'
 
@@ -29,6 +30,8 @@ class Zeromq <Formula
 
   def install
     fails_with_llvm "Compiling with LLVM gives a segfault while linking."
+
+    system "./autogen.sh" if ARGV.build_head?
 
     if ARGV.include? '--universal'
       build_fat
