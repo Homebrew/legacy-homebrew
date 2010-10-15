@@ -5,7 +5,7 @@ class OxygenIcons <Formula
   homepage 'http://www.oxygen-icons.org/'
   md5 '86e655d909f743cea6a2fc6dd90f0e52'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
 
   def install
     system "cmake . #{std_cmake_parameters}"
