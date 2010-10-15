@@ -1,9 +1,9 @@
 require 'formula'
 
 class Npm <Formula
-  url 'http://github.com/isaacs/npm/tarball/v0.2.2'
+  url 'http://github.com/isaacs/npm/tarball/v0.2.3-6'
   homepage 'http://github.com/isaacs/npm'
-  md5 'c61aaff07b6b66c3f4db26076dc0ec2d'
+  md5 '91e9f070ea62214812737d1cbb304039'
   head 'git://github.com/isaacs/npm.git'
 
   depends_on 'node'
@@ -17,11 +17,11 @@ EOS
   end
 
   def node_lib
-    lib + "node"
+    HOMEBREW_PREFIX+"lib/node"
   end
 
   def share_bin
-    share + "npm/bin"
+    HOMEBREW_PREFIX+"share/npm/bin"
   end
 
   def install

@@ -61,6 +61,10 @@ didn't include with OS X.
     If `--HEAD` is passed, and <formula> defines it, install the HEAD version,
     aka master, trunk, unstable, dev.
 
+    To install a newer version of HEAD use
+    `brew rm <foo> && brew install --HEAD <foo>`
+    or `brew --force --HEAD <foo>`.
+
   * `install --interactive [--git]` <formula>:
     Downloads and patches <formula>, and then opens a shell. This allows the
     user to run `./configure --help` and otherwise determine how to turn the
@@ -159,6 +163,20 @@ didn't include with OS X.
     Using Git, fetches the newest version of Homebrew from the GitHub
     repository.
 
+  * `log [git-options]` <formula> ...:
+    Shows the git log for the given formulae. Options that `git log`
+    recognizes can be passed before the formula list.
+
+  * `fetch [--force] [-v] [--HEAD]` <formula>:
+    Downloads the tarball or checks out from VCS for the given <formula>. For
+    tarballs, also prints MD5 and SHA1 checksums.
+
+    If `--HEAD` is passed, download the HEAD version of <formula> instead. `-v`
+    may also be passed to make the VCS checkout verbose, useful for seeing if
+    an existing HEAD cache has been updated.
+
+    If `--force` is passed, remove a previously cached version and re-fetch.
+
 ## EXTERNAL COMMANDS
 
 Homebrew allows external commands to be defined by putting a +x file named
@@ -170,10 +188,6 @@ Some external commands are shipped with Homebrew, and enabled by default.
   * `audit`:
     Checks all formulae for Homebrew coding style violations. This should be
     run before submitting a new formula for inclusion.
-
-  * `fetch` <formula>:
-    Downloads the tarball or checks out from VCS for the given <formula>. For
-    tarballs, also prints MD5 and SHA1 checksums.
 
   * `options` <formula>:
     Displays install options specific to <formula>.

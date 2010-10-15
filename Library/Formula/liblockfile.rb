@@ -1,7 +1,7 @@
 require 'formula'
 
 class Liblockfile <Formula
-  url 'http://ftp.debian.org/debian/pool/main/libl/liblockfile/liblockfile_1.08.orig.tar.gz'
+  url 'http://mirrors.kernel.org/debian/pool/main/libl/liblockfile/liblockfile_1.08.orig.tar.gz'
   homepage 'http://packages.qa.debian.org/libl/liblockfile.html'
   md5 'c24e2dfb4a2aab0263fe5ac1564d305e'
 

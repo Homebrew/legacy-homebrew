@@ -5,7 +5,7 @@ class Ufraw <Formula
   homepage 'http://ufraw.sourceforge.net'
   md5 '61e100e42f17e3a7fcfae64506eebd14'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'libtiff'
   depends_on 'jpeg'
@@ -14,6 +14,7 @@ class Ufraw <Formula
   depends_on 'exiv2' => :optional
 
   def install
+    fails_with_llvm "Compiling with LLVM gives a segfault while linking."
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-gtk",
