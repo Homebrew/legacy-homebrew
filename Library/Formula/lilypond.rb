@@ -1,9 +1,9 @@
 require 'formula'
 
 class Lilypond <Formula
-  url 'http://download.linuxaudio.org/lilypond/sources/v2.13/lilypond-2.13.23.tar.gz'
+  url 'http://download.linuxaudio.org/lilypond/sources/v2.13/lilypond-2.13.35.tar.gz'
   homepage 'http://lilypond.org/'
-  md5 '741190abdd2217cf9f4ea6abff66accf'
+  md5 '92c49f1b78a50bf5da57126d0a1cd140'
 
   depends_on 'pkg-config' => :build
   # The guile version must be < 1.9
