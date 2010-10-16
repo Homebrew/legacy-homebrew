@@ -9,7 +9,6 @@ class SwiProlog <Formula
   depends_on 'jpeg'
   depends_on 'pkg-config'
   depends_on 'fontconfig'
-  depends_on 'ncursesw'
   depends_on 'mcrypt'
   depends_on 'gawk'
 
