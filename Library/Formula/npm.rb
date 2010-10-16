@@ -1,12 +1,14 @@
 require 'formula'
 
 class Npm <Formula
-  url 'http://github.com/isaacs/npm/tarball/v0.1.25'
+  url 'http://github.com/isaacs/npm/tarball/v0.2.4'
   homepage 'http://github.com/isaacs/npm'
-  md5 '14910efa963893691406cc761f7c473a'
+  md5 '0a43e65bef7ebecd6c2072d803e23512'
   head 'git://github.com/isaacs/npm.git'
 
   depends_on 'node'
+
+  skip_clean 'share/npm/bin'
 
   def executable; <<-EOS
 #!/bin/sh
@@ -38,12 +40,12 @@ EOS
 
     # add "npm-" prefix to man pages link them into the libexec man pages
     man1.mkpath
-    Dir.chdir libexec+"man" do
+    Dir.chdir libexec + "man1" do
       Dir["*"].each do |file|
         if file == "npm.1"
-          ln_s "#{libexec}/man/#{file}", man1
+          ln_s "#{Dir.pwd}/#{file}", man1
         else
-          ln_s "#{libexec}/man/#{file}", "#{man1}/npm-#{file}"
+          ln_s "#{Dir.pwd}/#{file}", "#{man1}/npm-#{file}"
         end
       end
     end

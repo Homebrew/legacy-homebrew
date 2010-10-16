@@ -3,22 +3,23 @@ require 'formula'
 def build_java?; ARGV.include? "--java"; end
 def build_perl?; ARGV.include? "--perl"; end
 def build_python?; ARGV.include? "--python"; end
+def build_ruby?; ARGV.include? "--ruby"; end
 def build_universal?; ARGV.include? '--universal'; end
 def with_unicode_path?; ARGV.include? '--unicode-path'; end
 
 # On 10.5 we need newer versions of apr, neon etc.
 # On 10.6 we only need a newer version of neon
 class SubversionDeps <Formula
-  url 'http://subversion.tigris.org/downloads/subversion-deps-1.6.12.tar.bz2'
-  md5 '41a91aa26980236958ec508807003203'
+  url 'http://subversion.tigris.org/downloads/subversion-deps-1.6.13.tar.bz2'
+  md5 '2a7d662bac872c61a5e11c89263d7f07'
 end
 
 class Subversion <Formula
-  url 'http://subversion.tigris.org/downloads/subversion-1.6.12.tar.bz2'
-  md5 'a4b1d0d7f3a4587c59da9c1acf9dedd0'
+  url 'http://subversion.tigris.org/downloads/subversion-1.6.13.tar.bz2'
+  md5 '7ae1c827689f21cf975804005be30aeb'
   homepage 'http://subversion.apache.org/'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   # On Snow Leopard, build a new neon. For Leopard, the deps above include this.
   depends_on 'neon' if MACOS_VERSION >= 10.6
 
@@ -27,6 +28,7 @@ class Subversion <Formula
       ['--java', 'Build Java bindings.'],
       ['--perl', 'Build Perl bindings.'],
       ['--python', 'Build Python bindings.'],
+      ['--ruby', 'Build Ruby bindings.'],
       ['--universal', 'Build as a Universal Intel binary.'],
       ['--unicode-path', 'Include support for OS X unicode (but see caveats!)']
     ]
@@ -79,6 +81,7 @@ class Subversion <Formula
             "--without-berkeley-db"]
 
     args << "--enable-javahl" << "--without-jikes" if build_java?
+    args << "--with-ruby-sitedir=#{lib}/ruby" if build_ruby?
     args << "--with-unicode-path" if with_unicode_path?
 
     system "./configure", *args
@@ -101,8 +104,15 @@ class Subversion <Formula
         arches = "-arch x86_64"
       end
 
+      # Use verison-appropriate system Perl
+      if MACOS_VERSION < 10.6
+        perl_version = "5.8.8"
+      else
+        perl_version = "5.10.0"
+      end
+
       inreplace "Makefile" do |s|
-        s.change_make_var! "SWIG_PL_INCLUDES", "$(SWIG_INCLUDES) #{arches} -g -pipe -fno-common -DPERL_DARWIN -fno-strict-aliasing -I/usr/local/include  -I/System/Library/Perl/5.10.0/darwin-thread-multi-2level/CORE"
+        s.change_make_var! "SWIG_PL_INCLUDES", "$(SWIG_INCLUDES) #{arches} -g -pipe -fno-common -DPERL_DARWIN -fno-strict-aliasing -I/usr/local/include  -I/System/Library/Perl/#{perl_version}/darwin-thread-multi-2level/CORE"
       end
       system "make swig-pl"
       system "make install-swig-pl"
@@ -112,6 +122,12 @@ class Subversion <Formula
       ENV.j1 # This build isn't parallel safe
       system "make javahl"
       system "make install-javahl"
+    end
+
+    if build_ruby?
+      ENV.j1 # This build isn't parallel safe
+      system "make swig-rb"
+      system "make install-swig-rb"
     end
   end
 
@@ -141,6 +157,14 @@ class Subversion <Formula
       s += <<-EOS.undent
         You may need to add the Python bindings to your PYTHONPATH from:
           #{HOMEBREW_PREFIX}/lib/svn-python
+
+      EOS
+    end
+
+    if build_ruby?
+      s += <<-EOS.undent
+        You may need to add the Ruby bindings to your RUBYLIB from:
+          #{HOMEBREW_PREFIX}/lib/ruby
 
       EOS
     end

@@ -5,17 +5,22 @@ class Splint <Formula
   homepage 'http://www.splint.org/'
   md5 '25f47d70bd9c8bdddf6b03de5949c4fd'
 
-  def install
-    system "./configure", "--disable-debug", "--prefix=#{prefix}", "--infodir=#{info}", "--mandir=#{share}/man"
-    system "make"
-    system "make install"
-  end
-
   def patches
     # fix compiling error of osd.c
     DATA
   end
+
+  def install
+    system "./configure", "--disable-debug",
+                          "--prefix=#{prefix}",
+                          "--infodir=#{info}", "--mandir=#{man}"
+    system "make"
+    ENV.j1 # Install fails on 8-core without this.
+    system "make install"
+  end
 end
+
+
 __END__
 diff --git a/src/osd.c b/src/osd.c
 index ebe214a..4ba81d5 100644

@@ -5,7 +5,7 @@ class Geeqie <Formula
   homepage 'http://geeqie.sourceforge.net/'
   md5 '1d67ef990390224c5052697d93bb49c0'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'intltool'
   depends_on 'gtk+'

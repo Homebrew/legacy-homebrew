@@ -5,7 +5,7 @@ class Cairo <Formula
   homepage 'http://cairographics.org/'
   md5 'b60a82f405f9400bbfdcf850b1728d25'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'libpng'
   depends_on 'pixman'
 

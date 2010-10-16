@@ -5,7 +5,7 @@ class Geany <Formula
   homepage 'http://www.geany.org/Main/HomePage'
   md5 '727cec2936846850bb088b476faad5f2'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'intltool'
   depends_on 'gtk+'

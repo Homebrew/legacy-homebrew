@@ -5,7 +5,7 @@ class Cgal <Formula
   md5 '78dbaf85df0a53ca0e87308d9cbf671e'
   homepage 'http://www.cgal.org/'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'boost'
   depends_on 'gmp'
   depends_on 'mpfr'

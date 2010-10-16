@@ -5,7 +5,7 @@ class GstPluginsGood <Formula
   url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-0.10.24.tar.bz2'
   md5 'dc0de606e3e303cf378327b72a4d281f'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'gst-plugins-base'
   depends_on 'aalib' => :optional

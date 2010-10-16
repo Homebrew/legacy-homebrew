@@ -2,11 +2,11 @@ require 'formula'
 
 class Gource <Formula
   homepage 'http://code.google.com/p/gource/'
-  url 'git://github.com/acaudwell/Gource.git', :tag => "24feaee4"
-  version "0.27"
+  url 'git://github.com/acaudwell/Gource.git', :tag => "e1cb95e41e0026dcc90c"
+  version "0.28"
   head 'git://github.com/acaudwell/Gource.git'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'sdl'
   depends_on 'sdl_image'
   depends_on 'ftgl'
@@ -28,5 +28,11 @@ class Gource <Formula
                           "--disable-sdltest",
                           "--disable-freetypetest"
     system "make install"
+  end
+
+  def test
+    Dir.chdir HOMEBREW_REPOSITORY do
+      system "gource"
+    end
   end
 end

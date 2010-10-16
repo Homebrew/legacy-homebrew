@@ -47,10 +47,6 @@ update_git_pull_output_with_formulae_changes: |
    create mode 100644 Library/Formula/ddrescue.rb
    create mode 100644 Library/Formula/dict.rb
    create mode 100644 Library/Formula/lua.rb
-   delete mode 100644 Library/Formula/antiword.rb
-   delete mode 100644 Library/Formula/bash-completion.rb
-   delete mode 100644 Library/Formula/xar.rb
-   delete mode 100644 Library/Formula/yajl.rb
    create mode 100644 Library/Homebrew/beer_events.rb
    create mode 100644 Library/Homebrew/hardware.rb
    delete mode 100644 Library/Homebrew/hw.model.c

@@ -175,12 +175,11 @@ module HomebrewEnvExtension
     append 'CPPFLAGS', "-DNCURSES_OPAQUE=0"
   end
 
-  # returns the compiler we're using
-  def cc;  self['CC'] or "gcc";  end
-  def cxx; self['CXX'] or "g++"; end
-
-  # CFLAGS are read quite a bit
-  def cflags; ENV['CFLAGS']; end
+  # Shortcuts for reading common flags
+  def cc;      self['CC'] or "gcc";  end
+  def cxx;     self['CXX'] or "g++"; end
+  def cflags;  self['CFLAGS'];       end
+  def ldflags; self['LDFLAGS'];      end
 
   def m64
     append_to_cflags '-m64'
@@ -202,18 +201,22 @@ module HomebrewEnvExtension
   end
 
   def prepend key, value, separator = ' '
+    # Value should be a string, but if it is a pathname then coerce it.
+    value = value.to_s
     unless self[key].to_s.empty?
       self[key] = value + separator + self[key]
     else
       self[key] = value
     end
   end
+
   def append key, value, separator = ' '
-    ref = self[key]
-    if ref.nil? or ref.empty?
-      self[key] = value
+    # Value should be a string, but if it is a pathname then coerce it.
+    value = value.to_s
+    unless self[key].to_s.empty?
+      self[key] = self[key] + separator + value
     else
-      self[key] = ref + separator + value
+      self[key] = value
     end
   end
 
