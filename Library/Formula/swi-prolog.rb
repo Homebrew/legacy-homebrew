@@ -10,17 +10,26 @@ class SwiProlog <Formula
   depends_on 'pkg-config'
   depends_on 'fontconfig'
   depends_on 'ncursesw'
-  depends_on 'libmcrypt'
+  depends_on 'mcrypt'
   depends_on 'gawk'
 
-  # depends_on 'cmake'
+  def options
+    [
+      ['--lite', "Don't install any packages"]
+    ]
+  end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--with-world", "--x-includes=/usr/X11/include",
+    ENV['CIFLAGS'] = ENV['CPPFLAGS']
+    if ARGV.include? '--lite'
+      world = ''
+    else
+      world = '--with-world'
+    end
+    
+    system "./configure", "--prefix=#{prefix}", world, "--x-includes=/usr/X11/include",
                           "--x-libraries=/usr/X11/lib", "--mandir=#{man}"
     system "make"
-    system "make check"
     system "make install"
   end
 end
