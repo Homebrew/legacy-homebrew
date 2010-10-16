@@ -1,9 +1,9 @@
 require 'formula'
 
 class Glpk <Formula
-  url 'http://ftp.gnu.org/gnu/glpk/glpk-4.42.tar.gz'
+  url 'http://ftp.gnu.org/gnu/glpk/glpk-4.44.tar.gz'
   homepage 'http://www.gnu.org/software/glpk/'
-  md5 '9091a60c4c44a16a149375f7a6cce158'
+  md5 'f2ac7013bc0420d730d052e7ba24bdb1'
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"

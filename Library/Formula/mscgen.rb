@@ -5,7 +5,7 @@ class Mscgen <Formula
   homepage 'http://www.mcternan.me.uk/mscgen/'
   md5 'b3a084a31070a0db2e0bb40a35825fac'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gd' => :recommended
 
   def install
