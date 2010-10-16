@@ -1,10 +1,10 @@
 class RefreshBrew
-  REPOSITORY_URL   = 'http://github.com/mxcl/homebrew.git'
+  REPOSITORY_URL   = "http://github.com/mxcl/homebrew.git"
   INIT_COMMAND     = "git init"
-  CHECKOUT_COMMAND = 'git checkout -q master'
+  CHECKOUT_COMMAND = "git checkout -q master"
   UPDATE_COMMAND   = "git pull #{REPOSITORY_URL} master"
-  REVISION_COMMAND = 'git log -l -1 --pretty=format:%H 2> /dev/null'
-  GIT_UP_TO_DATE   = 'Already up-to-date.'
+  REVISION_COMMAND = "git log -l -1 --pretty=format:%H 2> /dev/null"
+  GIT_UP_TO_DATE   = "Already up-to-date."
 
   formula_regexp   = 'Library/Formula/(.+?)\.rb'
   ADDED_FORMULA    = %r{^\s+create mode \d+ #{formula_regexp}$}
@@ -33,7 +33,7 @@ class RefreshBrew
       if File.directory? '.git'
         safe_system CHECKOUT_COMMAND
       else
-        safe_system "git init"
+        safe_system INIT_COMMAND
       end
       output = execute(UPDATE_COMMAND)
     end
