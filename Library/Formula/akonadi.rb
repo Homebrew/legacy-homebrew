@@ -1,9 +1,9 @@
 require 'formula'
 
 class Akonadi <Formula
-  url 'http://download.akonadi-project.org/akonadi-1.3.1.tar.bz2'
+  url 'http://download.akonadi-project.org/akonadi-1.4.0.tar.bz2'
   homepage 'http://pim.kde.org/akonadi/'
-  md5 'e6eef3ed5c28d55f4b6530544e379413'
+  md5 'ed19efb982f7debd7e109cf1397d0588'
 
   depends_on 'cmake' => :build
   depends_on 'automoc4' => :build
