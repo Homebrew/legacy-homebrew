@@ -20,7 +20,7 @@ def coreutils_aliases
     s += "alias #{g}=\"$brew_prefix/bin/g#{g}\"\n"
   end
 
-  s += "alias '['=\"$brew_prefix/bin/g[\""
+  s += "alias '['=\"$brew_prefix/bin/g[\"\n"
 
   return s
 end
@@ -31,34 +31,27 @@ class Coreutils <Formula
   homepage 'http://www.gnu.org/software/coreutils'
 
   def options
-    [
-      ['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."],
-      ['--aliases', "Dump an aliases file instead of doing the install."]
-    ]
+    [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
   end
 
   def install
-    if ARGV.include? '--aliases'
-      puts coreutils_aliases
-      exit 0
-    end
-
-    args = [ "--prefix=#{prefix}" ]
+    args = ["--prefix=#{prefix}"]
     args << "--program-prefix=g" unless use_default_names?
 
     system "./configure", *args
     system "make install"
+
+    (prefix+'aliases').write(coreutils_aliases)
   end
 
   def caveats
     unless use_default_names?; <<-EOS
 All commands have been installed with the prefix 'g'. In order to use these
-commands by default you can put some aliases in your bashrc. You can
-accomplish this like so:
+commands by default you can put add aliases to your bashrc:
 
-    brew install coreutils --aliases >> ~/.bashrc
+  $ cat #{prefix}/aliases >> ~/.bashrc
 
-Please note the manpages are still referenced with the g-prefix.
+NOTE: Manpages are still referenced with the g-prefix.
     EOS
     end
   end
