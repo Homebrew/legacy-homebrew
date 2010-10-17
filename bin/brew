@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-# -*- coding: utf-8 -*-
 
 # Many Pathname operations use getwd when they shouldn't, and then throw 
 # odd exceptions. Reduce our support burden by showing a user-friendly error.
