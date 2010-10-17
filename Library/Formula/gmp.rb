@@ -17,7 +17,7 @@ class Gmp <Formula
 
     args = ["--prefix=#{prefix}", "--infodir=#{info}", "--enable-cxx"]
 
-    if MACOS_VERSION == 10.5
+    if MACOS_VERSION >= 10.5
       if Hardware.is_32_bit? or ARGV.include? "--32-bit"
         ENV.m32
         args << "--host=none-apple-darwin"
