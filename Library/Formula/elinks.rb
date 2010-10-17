@@ -9,7 +9,7 @@ class Elinks <Formula
     fails_with_llvm
     ENV.deparallelize
     ENV.delete('LD')
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--without-spidermonkey"
     system "make install"
   end
 end
