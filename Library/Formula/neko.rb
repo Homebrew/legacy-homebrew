@@ -9,8 +9,6 @@ class Neko <Formula
 
   def install
     system "yes s | /usr/bin/gnumake -j1 MACOSX=1 INSTALL_PREFIX=#{prefix}"
-    prefix.install 'bin'
-    prefix.install 'libs'
-    prefix.install 'src'
+    prefix.install %w{bin libs src}
   end
 end
