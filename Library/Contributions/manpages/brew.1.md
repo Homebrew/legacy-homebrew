@@ -124,7 +124,7 @@ didn't include with OS X.
   * `edit`:
     Opens all of Homebrew for editing in TextMate.
 
-  * `link` <formula>:
+  * `ln`, `link` <formula>:
     Symlinks all of <formula>'s installed files into the Homebrew prefix. This
     is done automatically when you install formula. It is useful for DIY
     installation, or in cases where you want to swap out different versions of
