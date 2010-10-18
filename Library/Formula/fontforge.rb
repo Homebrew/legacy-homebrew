@@ -11,10 +11,7 @@ class Fontforge <Formula
   depends_on 'potrace'
 
   def install
-    # otherwise, configure can't find libpng
-    ENV.append 'CPPFLAGS', "-I/usr/X11/include"
-    ENV.append 'LDFLAGS',  "-L/usr/X11/lib"
-
+    ENV.x11
     system "./configure", "--prefix=#{prefix}",
                           "--enable-double",
                           "--without-freetype-bytecode",
