@@ -6,10 +6,11 @@ class Fox <Formula
   md5 'ee8430d6480d3289d54b847f47405670'
 
   def install
-    ENV["CFLAGS"] = "-I/usr/X11/include -I/usr/X11/include/freetype2"
-    ENV["CPPFLAGS"] = "-I/usr/X11/include -I/usr/X11/include/freetype2"
-    ENV["CXXFLAGS"] = "-I/usr/X11/include -I/usr/X11/include/freetype2"
-    ENV["LDFLAGS"] = "-I/usr/X11/lib -I/usr/X11/include/freetype2"
+    ENV.x11
+    ENV.append "CFLAGS", "-I/usr/X11/include/freetype2"
+    ENV.append "CPPFLAGS", "-I/usr/X11/include/freetype2"
+    ENV.append "CXXFLAGS", "-I/usr/X11/include/freetype2"
+    ENV.append "LDFLAGS", "-I/usr/X11/include/freetype2"
     system "./configure", "--with-x", "--with-opengl", "--enable-release", "--prefix=#{prefix}"
     system "make install"
   end
