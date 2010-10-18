@@ -112,6 +112,7 @@ def audit_formula_options f, text
 
   if options.length > 0
     options.each do |o|
+      next if o == '--HEAD'
       problems << " * Option #{o} is not documented" unless documented_options.include? o
     end
   end

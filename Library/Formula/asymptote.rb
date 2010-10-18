@@ -3,9 +3,9 @@ require 'formula'
 def TeX_installed?; return `which latex` != ''; end
 
 class Asymptote <Formula
-  url 'http://downloads.sourceforge.net/asymptote/asymptote-2.04.src.tgz'
+  url 'http://downloads.sourceforge.net/asymptote/asymptote-2.05.src.tgz'
   homepage 'http://asymptote.sourceforge.net/'
-  md5 '6adb5d7714b662152b6f6f16c24f5751'
+  md5 '9194e477a47869f3039ad9ac917924d3'
 
   depends_on 'readline'
   depends_on 'bdw-gc'
@@ -34,8 +34,7 @@ class Asymptote <Formula
     end
 
     system "./configure", "--prefix=#{prefix}",
-                          "--enable-gc=#{HOMEBREW_PREFIX}",
-                          "--disable-fftw", "--disable-gsl" # follow TeX Live
+                          "--enable-gc=#{HOMEBREW_PREFIX}"
     system "make install"
     link_asy_texmfhome
   end
@@ -65,8 +64,20 @@ class Asymptote <Formula
    but you get the idea.
 
 
-2) If you wish to use xasy, run the following command to install the Python
-   Imaging Library (PIL):
+2) If you want to have Asymptote compiled with support for fftw or gsl
+   (fast fourier transforms or the GNU Scientific Library) they must be
+   manually installed first:
+
+       brew install fftw
+       brew install gsl
+
+   They are not compiled by default because they take a long time to compile
+   and they are not required by most users. (And they're not included in the
+   TeX Live build of Asymptote.)
+
+
+3) If you wish to use xasy, you must first install the Python Imaging
+   Library (PIL):
 
        easy_install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
 
