@@ -188,10 +188,15 @@ begin
       ARGV.kegs.each {|keg| puts "#{keg.unlink} links removed for #{keg}"}
 
     when 'rm', 'uninstall', 'remove'
-      ARGV.kegs.each do |keg|
-        puts "Uninstalling #{keg}..."
-        keg.unlink
-        keg.uninstall
+      begin
+        ARGV.kegs.each do |keg|
+          puts "Uninstalling #{keg}..."
+          keg.unlink
+          keg.uninstall
+        end
+      rescue MultipleVersionsInstalledError => e
+        onoe e
+        puts "Use `brew remove --force #{e.name}` to remove all versions."
       end
 
     when 'prune'
