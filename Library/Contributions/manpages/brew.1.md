@@ -99,8 +99,11 @@ didn't include with OS X.
   * `home` <formula>:
     Opens a browser to <formula>'s homepage.
 
-  * `rm`, `remove` <formula>:
+  * `rm`, `remove [--force]` <formula>:
     Uninstalls <formula>.
+
+    If `--force` is passed, and there are multiple versions of <formula>
+    installed, deletes all installed versions.
 
   * `create [--cache]` <URL>:
     Generates a formula for the downloadable file at <URL> and opens it in
