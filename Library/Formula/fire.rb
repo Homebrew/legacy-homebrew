@@ -1,8 +1,8 @@
 require 'formula'
 
 class Fire <Formula
-  head 'http://bitbucket.org/azizlight/fire', :using => :hg
-  homepage 'http://bitbucket.org/azizlight/fire/src'
+  head 'git://github.com/AzizLight/fire.git'
+  homepage 'http://github.com/AzizLight/fire'
 
   def install
     bin.install "fire"
