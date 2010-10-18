@@ -5,8 +5,6 @@ class Lcov < Formula
   homepage 'http://ltp.sourceforge.net/coverage/lcov.php'
   md5 '8b88cfc0200a8c176b879ac115a31379'
 
-  depends_on 'coreutils'
-
   def install
     %w(bin/gendesc bin/genhtml bin/geninfo bin/genpng bin/lcov).each do |file|
       inreplace file, '/etc/lcovrc', "#{prefix}/etc/lcovrc"
@@ -22,12 +20,13 @@ end
 __END__
 --- lcov-1.8/bin/install.sh~	2010-01-29 19:14:46.000000000 +0900
 +++ lcov-1.8/bin/install.sh	2010-04-16 21:40:57.000000000 +0900
-@@ -34,7 +34,7 @@
+@@ -34,7 +34,8 @@
    local TARGET=$2
    local PARAMS=$3
  
 -  install -p -D $PARAMS $SOURCE $TARGET
-+  ginstall -p -D $PARAMS $SOURCE $TARGET
++  mkdir -p `dirname $TARGET`
++  install -p $PARAMS $SOURCE $TARGET
  }
  
  
