@@ -1,9 +1,9 @@
 require 'formula'
 
 class Lcov < Formula
-  url 'http://downloads.sourceforge.net/ltp/lcov-1.8.tar.gz'
+  url 'http://downloads.sourceforge.net/ltp/lcov-1.9.tar.gz'
   homepage 'http://ltp.sourceforge.net/coverage/lcov.php'
-  md5 'a909d9145111c6133c65b9dce007d7a1'
+  md5 '8b88cfc0200a8c176b879ac115a31379'
 
   depends_on 'coreutils'
 
