@@ -105,8 +105,11 @@ Opens a browser to Homebrew\'s own homepage\.
 Opens a browser to \fIformula\fR\'s homepage\.
 .
 .TP
-\fBrm\fR, \fBremove\fR \fIformula\fR
+\fBrm\fR, \fBremove [\-\-force]\fR \fIformula\fR
 Uninstalls \fIformula\fR\.
+.
+.IP
+If \fB\-\-force\fR is passed, and there are multiple versions of \fIformula\fR installed, deletes all installed versions\.
 .
 .TP
 \fBcreate [\-\-cache]\fR \fIURL\fR
