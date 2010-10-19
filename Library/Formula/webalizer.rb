@@ -8,9 +8,11 @@ class Webalizer <Formula
 
   depends_on 'libpng'
   depends_on 'gd'
+  depends_on 'berkeley-db' # Enables reverse DNS support
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end
