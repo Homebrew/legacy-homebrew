@@ -2,6 +2,35 @@
 # extend/ARGV.rb - Interprets arguments passed to brew.
 #
 
+# An error resulting from incorrect use of the brew command. 
+class UsageError <RuntimeError; end
+
+# Raised if no formula is specified if the action requires one.
+class FormulaUnspecifiedError <UsageError; end
+
+# Raised if no keg is specified if the action requires one.
+class KegUnspecifiedError <UsageError; end
+
+# Homebrew cannot yet handle multiple installed versions.
+class MultipleVersionsInstalledError <RuntimeError
+  attr :name
+
+  def initialize name
+    @name = name
+    super "#{name} has multiple installed versions"
+  end
+end
+
+# Raised if a specified keg does not exist.
+class NoSuchKegError <RuntimeError
+  attr :name
+
+  def initialize name
+    @name = name
+    super "No such keg: #{HOMEBREW_CELLAR}/#{name}"
+  end
+end
+
 module HomebrewArgvExtension
   #
   # Return all of the named arguments (not beginning with '-').
@@ -38,9 +67,8 @@ module HomebrewArgvExtension
     @kegs ||= downcased_unique_named.collect do |name|
       d = HOMEBREW_CELLAR + Formula.resolve_alias(name)
       dirs = d.children.select{|pn| pn.directory? } rescue []
-      raise "No such keg: #{HOMEBREW_CELLAR}/#{name}" if not d.directory? or dirs.length == 0
-      # TODO: multiple version handling
-      raise "#{name} has multiple installed versions" if dirs.length > 1
+      raise NoSuchKegError.new(name) if not d.directory? or dirs.length == 0
+      raise MultipleVersionsInstalledError.new(name) if dirs.length > 1
       Keg.new dirs.first
     end
     raise KegUnspecifiedError if @kegs.empty?
@@ -111,20 +139,20 @@ module HomebrewArgvExtension
 
   #
   # True if the flag was passed. Works with long flags (e.g. --force) and 
-  # abbreviated flags (-f). Each expected flag must have a unique first letter.
+  # abbreviated flags (-f).
   #
   def flag? flag
     options_only.each do |arg|
       return true if arg == flag
       next if arg[1..1] == '-'
-      return true if arg.include? flag[2..2]
+      return true if arg.include? flag[2..2] # flags have unique first letters
     end
     return false
   end
-
-  # 
-  # Return the usage string for brew.
-  # 
+  
+  #
+  # The usage string for brew.
+  #
   def usage
     <<-EOS.undent
     Usage: brew [-v|--version] [--prefix [formula]] [--cache [formula]]
@@ -181,22 +209,3 @@ module HomebrewArgvExtension
     @downcased_unique_named ||= named.map{|arg| arg.downcase}.uniq
   end
 end
-
-#
-# An error resulting from incorrect use of the brew command.
-# 
-class UsageError <RuntimeError
-end
-
-#
-# For actions that require a formula, thrown if no forumla is specified.
-# 
-class FormulaUnspecifiedError <UsageError
-end
-
-#
-# For actions that require a keg, thrown if none is specified.
-# 
-class KegUnspecifiedError <UsageError
-end
-
