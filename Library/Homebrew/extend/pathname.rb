@@ -132,64 +132,57 @@ class Pathname
   #   (Used to find the version of a tarball.)
   #
   #   NOTE: When adding to this method, please amend the unit test in
-  #   ../tests/test_pathname.rb
+  #   ../tests/test_versions.rb
   #
   def version
     if directory?
-      # directories don't have extnames (e.g. ruby/1.9.1)
+      # Directories don't have extnames (e.g. kegs).
       stem = basename.to_s
     else
       stem = self.stem
     end
     
-    # github tarballs are special
-    # we only support numbered tagged downloads
-    %r[github.com/.*/tarball/v?((\d\.)+\d+)$].match to_s
-    return $1 if $1
-
-    # eg. boost_1_39_0
-    /((\d+_)+\d+)$/.match stem
-    return $1.gsub('_', '.') if $1
-
-    # eg. foobar-4.5.1-1
-    # eg. ruby-1.9.1-p243
-    /-((\d+\.)*\d\.\d+-(p|rc|RC)?\d+)$/.match stem
-    return $1 if $1
+    # Only GitHub tarballs with a numbered tag are supported.
+                          # .../tarball/v?1.2.33 => 1.2.33
+    return $1 if %r[github.com/.*/tarball/v?((\d\.)+\d+)$] === to_s
     
-    # eg. lame-398-1
-    /-((\d)+-\d)/.match stem
-    return $1 if $1
+    case stem
+         # boost_1_39_0 => 1.39.0
+    when /((\d+_)+\d+)$/
+      return $1.gsub('_', '.')
+      
+         # ruby-1.9.1-p1 => 1.9.1-p1
+    when /-((\d+\.)*\d\.\d+-(p|rc|RC)?\d+)$/,
 
-    # eg. foobar-4.5.1
-    /-((\d+\.)*\d+)$/.match stem
-    return $1 if $1
+         # lame-398-1 => 398-1
+         /-((\d)+-\d)/,
 
-    # eg. foobar-4.5.1b
-    /-((\d+\.)*\d+([abc]|rc|RC)\d*)$/.match stem
-    return $1 if $1
-
-    # eg foobar-4.5.0-beta1, or foobar-4.50-beta
-    /-((\d+\.)*\d+-beta(\d+)?)$/.match stem
-    return $1 if $1
-
-    # eg. foobar4.5.1
-    /((\d+\.)*\d+)$/.match stem
-    return $1 if $1
-
-    # eg foobar-4.5.0-bin
-    /-((\d+\.)+\d+[abc]?)[-.](bin|stable|src|sources?)$/.match stem
-    return $1 if $1
-
-    # Debian style eg dash_0.5.5.1.orig.tar.gz
-    /_((\d+\.)+\d+[abc]?)[.]orig$/.match stem
-    return $1 if $1
-
-    # eg. otp_src_R13B (this is erlang's style)
-    # eg. astyle_1.23_macosx.tar.gz
-    stem.scan /_([^_]+)/ do |match|
-      return match.first if /\d/.match $1
+         # foobar-4.5.1 => 4.5.1
+         /-((\d+\.)*\d+)$/, #foobar-4.5.1
+         
+         # foobar-4.5.1b2 => 4.5.1b2
+         /-((\d+\.)*\d+([abc]|rc|RC)\d*)$/,
+         
+         # foobar-4.5.0-beta1 => 4.5.0-beta1
+         /-((\d+\.)*\d+-beta(\d+)?)$/,
+         
+         # foobar4.5.1 => 4.5.1
+         /((\d+\.)*\d+)$/, #foobar4.5.1
+         
+         # foobar-4.5.0-bin => 4.5.0
+         /-((\d+\.)+\d+[abc]?)[-.](bin|stable|src|sources?)$/,
+         
+         # dash_0.5.5.1.orig => 0.5.5.1 (Debian style)
+         /_((\d+\.)+\d+[abc]?)[.]orig$/
+      return $1 # when will stop evaluating once a match is found
     end
 
+    # otp_src_R13B => R13B (Erlang style)
+    # astyle_1.23_macosx => 1.23
+    stem.scan /_([^_]+)/ do |match|
+      return match.first if /\d/ === $1
+    end
+    
     nil
   end
   
