@@ -5,7 +5,7 @@ class Libass <Formula
   homepage 'http://code.google.com/p/libass/'
   md5 '6f545089d838d524c4f3b12e8ef6ed38'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"

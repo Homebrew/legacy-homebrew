@@ -2,8 +2,10 @@ require 'formula'
 
 class Ode <Formula
   # Build from svn to get Snow Leopard fixes.
-  url 'https://opende.svn.sourceforge.net/svnroot/opende/trunk', :revision => '1728'
+  url 'https://opende.svn.sourceforge.net/svnroot/opende/trunk', :revision => 1760
+  version 'r1760'
   homepage 'http://www.ode.org/'
+  head 'https://opende.svn.sourceforge.net/svnroot/opende/trunk'
 
   def install
     ENV.j1

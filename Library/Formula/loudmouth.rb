@@ -8,7 +8,7 @@ class Loudmouth <Formula
 
   head 'git://github.com/engineyard/loudmouth.git'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'gnutls' => :optional
 
