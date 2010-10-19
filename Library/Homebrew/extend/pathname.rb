@@ -1,7 +1,16 @@
+#
+# extend/pathname.rb - Extensions to Pathname for use with Homebrew.
+#
+
 require 'pathname'
 
-# we enhance pathname to make our code more readable
 class Pathname
+  #
+  # Move the specified source file to this path.
+  # - Multiple source files or directories can be passed as an array.
+  # - If installing to a subdirectory of this path, sources are passed as a
+  #   hash with source => subdir_name.
+  #
   def install src
     case src
     when Array
@@ -13,14 +22,18 @@ class Pathname
     end
   end
 
+  #
+  # Backend for install. Moves the source file into the new_basename
+  # subdirectory of this path.
+  #
   def install_p src, new_basename = nil
     if new_basename
       new_basename = File.basename(new_basename) # rationale: see Pathname.+
-      dst = self+new_basename
-      return_value =Pathname.new(dst)
+      dst = self + new_basename
+      return_value = Pathname.new(dst)
     else
       dst = self
-      return_value = self+File.basename(src)
+      return_value = self + File.basename(src)
     end
 
     src = src.to_s
@@ -43,40 +56,51 @@ class Pathname
       FileUtils.mv src, dst
     end
 
-    return return_value
+    return_value
   end
 
-  # we assume this pathname object is a file obviously
+  #
+  # Writes the given content to the file at this pathname.
+  #
   def write content
     raise "Will not overwrite #{to_s}" if exist? and not ARGV.force?
     dirname.mkpath
     File.open(self, 'w') {|f| f.write content }
   end
 
+  #
+  # Copy this file or directory to the specified destination path.
+  #
   def cp dst
     if file?
       FileUtils.cp to_s, dst
     else
       FileUtils.cp_r to_s, dst
     end
-    return dst
+    dst
   end
 
-  # extended to support the double extensions .tar.gz and .tar.bz2
+  #
+  # Extend extname to work with supported double-extensions.
+  #
   def extname
     /(\.tar\.(gz|bz2))$/.match to_s
     return $1 if $1
-    return File.extname(to_s)
+    File.extname(to_s)
   end
 
-  # for filetypes we support, basename without extension
+  #
+  # For supported filetypes, returns the basename without extension.
+  #
   def stem
-    return File.basename(to_s, extname)
+    File.basename(to_s, extname)
   end
 
-  # I don't trust the children.length == 0 check particularly, not to mention
-  # it is slow to enumerate the whole directory just to see if it is empty,
-  # instead rely on good ol' libc and the filesystem
+  #
+  # Removes this directory if it is empty.
+  #   This also avoids the children.length == 0 check, which is slow and
+  #   possibly unreliable.
+  #
   def rmdir_if_possible
     rmdir
     true
@@ -85,11 +109,17 @@ class Pathname
     false
   end
   
+  #
+  # Recursively change this pathname's permissions to the given permissions.
+  #
   def chmod_R perms
     require 'fileutils'
     FileUtils.chmod_R perms, to_s
   end
 
+  #
+  # Output the number of files and the human-readable size for this path.
+  #
   def abv
     out=''
     n=`find #{to_s} -type f | wc -l`.to_i
@@ -97,17 +127,21 @@ class Pathname
     out<<`/usr/bin/du -hd0 #{to_s} | cut -d"\t" -f1`.strip
   end
 
-  # attempts to retrieve the version component of this path, so generally
-  # you'll call it on tarballs or extracted tarball directories, if you add
-  # to this please provide amend the unittest
+  #
+  # Attempt to retrieve the version component of this path.
+  #   (Used to find the version of a tarball.)
+  #
+  #   NOTE: When adding to this method, please amend the unit test in
+  #   ../tests/test_pathname.rb
+  #
   def version
     if directory?
-      # directories don't have extnames
-      stem=basename.to_s
+      # directories don't have extnames (e.g. ruby/1.9.1)
+      stem = basename.to_s
     else
-      stem=self.stem
+      stem = self.stem
     end
-
+    
     # github tarballs are special
     # we only support numbered tagged downloads
     %r[github.com/.*/tarball/v?((\d\.)+\d+)$].match to_s
@@ -159,58 +193,88 @@ class Pathname
     nil
   end
   
-  def incremental_hash(hasher)
+  #
+  # Calculate the hash of this file using the specified digest method.
+  #
+  def incremental_hash hasher
     incr_hash = hasher.new
     self.open('r') do |f|
-      while(buf = f.read(1024))
+      while (buf = f.read(1024))
         incr_hash << buf
       end
     end
     incr_hash.hexdigest
   end
 
+  #
+  # Calculate the md5 hash of this file.
+  #
   def md5
     require 'digest/md5'
     incremental_hash(Digest::MD5)
   end
   
+  #
+  # Calculate the sha1 sum of this file.
+  #
   def sha1
     require 'digest/sha1'
     incremental_hash(Digest::SHA1)
   end
   
+  #
+  # Calculate the sha2 sum of this file.
+  #
   def sha2
     require 'digest/sha2'
     incremental_hash(Digest::SHA2)
   end
 
+  # The method to_str has been removed from ruby 1.9.
   if '1.9' <= RUBY_VERSION
     alias_method :to_str, :to_s
   end
 
-  def cd
-    Dir.chdir(self){ yield }
+  #
+  # Change the working directory to this path (and do work).
+  #
+  def cd &work
+    Dir.chdir(self, &work)
   end
 
+  #
+  # The subdirectories of this path.
+  #
   def subdirs
-    children.select{ |child| child.directory? }
+    children.select {|child| child.directory? }
   end
 
+  #
+  # If this path references a symlink, the path to the file it describes.
+  # Otherwise, this path.
+  #
   def resolved_path
-    self.symlink? ? dirname+readlink : self
+    self.symlink? ? dirname + readlink : self
   end
-
+  
+  #
+  # True if this path (directly or indirectly) references a file that exists.
+  #
   def resolved_path_exists?
-    (dirname+readlink).exist?
+    resolved_path.exist?
   end
 
+  #
+  # True if this pathname begin with the specified prefix, such as /usr/local.
+  #
   def starts_with? prefix
     prefix = prefix.to_s
     self.to_s[0, prefix.length] == prefix
   end
 
-  # perhaps confusingly, this Pathname object becomes the symlink pointing to
-  # the src paramter.
+  #
+  # Create a relative symlink at this location that points to the given path.
+  #
   def make_relative_symlink src
     self.dirname.mkpath
     Dir.chdir self.dirname do
@@ -226,34 +290,38 @@ class Pathname
     end
   end
 
-  def / that
-    join that.to_s
-  end
+  # Using '/' also sense when appending to a pathname.
+  alias_method :/, :+
 end
 
-# sets $n and $d so you can observe creation of stuff
+#
+# Extends a pathname to allow observation. Uses global variables $d and $n.
+#   $n: the number of symlinks added or removed.
+#   $d: the number of directories added or removed.
+#
 module ObserverPathnameExtension
   def unlink
     super
     puts "rm #{to_s}" if ARGV.verbose?
-    $n+=1
+    $n += 1
   end
   def rmdir
     super
     puts "rmdir #{to_s}" if ARGV.verbose?
-    $d+=1
+    $d += 1
   end
   def mkpath
     super
     puts "mkpath #{to_s}" if ARGV.verbose?
-    $d+=1
+    $d += 1
   end
   def make_relative_symlink src
     super
     puts "ln #{to_s}" if ARGV.verbose?
-    $n+=1
+    $n += 1
   end
 end
 
-$n=0
-$d=0
+# These should by the observing routine.
+$n ||= 0
+$d ||= 0
