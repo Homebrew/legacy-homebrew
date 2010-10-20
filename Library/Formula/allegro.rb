@@ -5,7 +5,7 @@ class Allegro <Formula
   homepage 'http://www.allegro.cc'
   md5 '0f1cfff8f2cf88e5c91a667d9fd386ec'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'libvorbis' => :optional
 
   def install

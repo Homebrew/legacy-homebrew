@@ -5,7 +5,7 @@ class Graphviz <Formula
   md5 '6f45946fa622770c45609778c0a982ee'
   homepage 'http://graphviz.org/'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
 
   def install
     ENV.x11

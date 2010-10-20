@@ -105,6 +105,11 @@ class Python <Formula
       args << "--enable-shared" unless ARGV.include? '--static'
     end
 
+    # allow sqlite3 module to load extensions
+    inreplace "setup.py",
+      'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))',
+      '#sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))'
+
     system "./configure", *args
     system "make"
     ENV.j1 # Installs must be serialized
