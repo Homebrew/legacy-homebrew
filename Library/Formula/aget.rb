@@ -3,7 +3,6 @@ require 'formula'
 class Aget <Formula
   url 'http://www.enderunix.org/aget/aget-0.4.1.tar.gz'
   homepage 'http://www.enderunix.org/aget/'
-	version '0.4.1'
   md5 'ddee95ad1d394a4751ebde24fcb36fa1'
 
 	def patches
