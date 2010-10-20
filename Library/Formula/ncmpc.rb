@@ -5,7 +5,7 @@ class Ncmpc <Formula
   homepage 'http://mpd.wikia.com/wiki/Client:Ncmpc'
   md5 'f3e53a379bd0bc82d315aa111bfdd17a'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'libmpdclient'

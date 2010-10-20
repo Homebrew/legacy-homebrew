@@ -37,7 +37,7 @@ I'm [Max Howell][mxcl] and I'm a splendid chap.
 
 [homepage]:http://mxcl.github.com/homebrew
 [gist]:http://gist.github.com/323731
-[xcode]:http://developer.apple.com/technology/xcode.html
+[xcode]:http://developer.apple.com/technologies/xcode.html
 [install]:http://wiki.github.com/mxcl/homebrew/installation
 [sudo]:http://wiki.github.com/mxcl/homebrew/installation#sudo
 [wiki]:http://wiki.github.com/mxcl/homebrew

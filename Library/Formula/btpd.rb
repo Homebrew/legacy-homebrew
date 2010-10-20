@@ -1,9 +1,9 @@
 require 'formula'
 
 class Btpd <Formula
-  url 'http://www.murmeldjur.se/btpd/btpd-0.15.tar.gz'
-  homepage 'http://www.murmeldjur.se/btpd/'
-  md5 'b64e2e8b9936e99685bc1e7246655561'
+  url 'http://github.com/downloads/btpd/btpd/btpd-0.16.tar.gz'
+  homepage 'http://github.com/btpd/btpd'
+  md5 'fe042aae8d7c515ecd855673d1c2b33e'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"

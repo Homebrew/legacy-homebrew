@@ -1,18 +1,19 @@
 require 'formula'
 
 class KdePhonon <Formula
-  url 'ftp://ftp.kde.org/pub/kde/stable/phonon/4.4.0/phonon-4.4.0.tgz'
+  url 'ftp://ftp.kde.org/pub/kde/stable/phonon/4.4.2/phonon-4.4.2.tar.bz2'
   homepage 'http://phonon.kde.org/'
-  md5 '80544b876cf0e0af05f2303b3f534351'
+  md5 'd9eab28383783261254f1cef3b92a3fa'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
+  depends_on 'automoc4' => :build
   depends_on 'qt'
-  depends_on 'automoc4'
 
   keg_only "This package is already supplied by Qt and is only needed by KDE packages."
 
   def patches
-    "http://gitorious.org/phonon/phonon/commit/9556b819b089da67290691f53ce7c1550ed23705.patch"
+    # Add missing QUuid include; committed upstream.
+    "http://gitorious.org/phonon/phonon/commit/8e96bbfb1ab4b1c75e4c417549fcc0d3ae9e2183.patch"
   end
 
   def install
