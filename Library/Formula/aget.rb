@@ -10,7 +10,8 @@ class Aget <Formula
 	end
 
   def install
-    system "make && make strip"
+    system "make"
+		systen "make strip"
 		bin.install ["aget"]
   end
 end
