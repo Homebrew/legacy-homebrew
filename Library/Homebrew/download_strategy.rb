@@ -145,8 +145,7 @@ end
 
 # This Download Strategy is provided for use with sites that
 # only provide HTTPS and also have a broken cert.
-# Try not to need this, as we probably won't accept the forulae
-# into trunk.
+# Try not to need this, as we probably won't accept the formula.
 class CurlUnsafeDownloadStrategy <CurlDownloadStrategy
   def _fetch
     curl @url, '--insecure', '-o', @tarball_path

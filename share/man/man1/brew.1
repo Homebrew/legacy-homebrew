@@ -105,8 +105,11 @@ Opens a browser to Homebrew\'s own homepage\.
 Opens a browser to \fIformula\fR\'s homepage\.
 .
 .TP
-\fBrm\fR, \fBremove\fR \fIformula\fR
+\fBrm\fR, \fBremove [\-\-force]\fR \fIformula\fR
 Uninstalls \fIformula\fR\.
+.
+.IP
+If \fB\-\-force\fR is passed, and there are multiple versions of \fIformula\fR installed, deletes all installed versions\.
 .
 .TP
 \fBcreate [\-\-cache]\fR \fIURL\fR
@@ -128,7 +131,7 @@ Opens the formula in $EDITOR\.
 Opens all of Homebrew for editing in TextMate\.
 .
 .TP
-\fBlink\fR \fIformula\fR
+\fBln\fR, \fBlink\fR \fIformula\fR
 Symlinks all of \fIformula\fR\'s installed files into the Homebrew prefix\. This is done automatically when you install formula\. It is useful for DIY installation, or in cases where you want to swap out different versions of the same package that you have installed at the same time\.
 .
 .TP
