@@ -1,0 +1,19 @@
+require 'formula'
+
+class Aget <Formula
+  url 'http://www.enderunix.org/aget/aget-0.4.1.tar.gz'
+  homepage 'http://www.enderunix.org/aget/'
+	version '0.4.1'
+  md5 'ddee95ad1d394a4751ebde24fcb36fa1'
+
+  # depends_on 'cmake'
+
+	def patches
+		{ :p0 => "http://gist.github.com/raw/636606/aget0.4.1.patch" }
+	end
+
+  def install
+    system "make && make strip"
+		bin.install ["aget"]
+  end
+end
