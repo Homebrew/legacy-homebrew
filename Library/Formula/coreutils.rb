@@ -46,12 +46,19 @@ class Coreutils <Formula
 
   def caveats
     unless use_default_names?; <<-EOS
-All commands have been installed with the prefix 'g'. In order to use these
-commands by default you can put add aliases to your bashrc:
+All commands have been installed with the prefix 'g'.
 
-  $ cat #{prefix}/aliases >> ~/.bashrc
+A file that aliases these commands to their normal names is available
+and may be used in your bashrc like:
 
-NOTE: Manpages are still referenced with the g-prefix.
+    source #{prefix}/aliases
+
+But note that sourcing these aliases will cause them to be used instead
+of Bash built-in commands, which may cause problems in shell scripts.
+The Bash "printf" built-in behaves differently than gprintf, for instance,
+which is known to cause problems with "bash-completion".
+
+The man pages are still referenced with the g-prefix.
     EOS
     end
   end
