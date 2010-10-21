@@ -114,7 +114,7 @@ EOS
       s << <<-EOS
 
 If you want to install the postgres gem, including ARCHFLAGS is recommended:
-    env ARCHFLAGS="-arch x86_64" gem install postgres
+    env ARCHFLAGS="-arch x86_64" gem install pg
 
 To install gems without sudo, see the Homebrew wiki.
       EOS

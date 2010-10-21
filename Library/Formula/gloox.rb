@@ -5,7 +5,7 @@ class Gloox <Formula
   homepage 'http://camaya.net/glooxdownload'
   md5 'f8eacf1c6476e0a309b453fd04f90e31'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
 
   def patches
     # Fix memory leak

@@ -5,8 +5,8 @@ class Openimageio <Formula
   version "0.8"
   homepage 'http://openimageio.org'
 
-  depends_on 'pkg-config'
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
+  depends_on 'pkg-config' => :build
   depends_on 'ilmbase'
   depends_on 'openexr'
   depends_on 'boost'

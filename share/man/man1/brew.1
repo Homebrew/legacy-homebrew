@@ -62,6 +62,9 @@ If \fB\-\-ignore\-dependencies\fR is passed, skip installing any dependencies of
 .IP
 If \fB\-\-HEAD\fR is passed, and \fIformula\fR defines it, install the HEAD version, aka master, trunk, unstable, dev\.
 .
+.IP
+To install a newer version of HEAD use \fBbrew rm <foo> && brew install \-\-HEAD <foo>\fR or \fBbrew \-\-force \-\-HEAD <foo>\fR\.
+.
 .TP
 \fBinstall \-\-interactive [\-\-git]\fR \fIformula\fR
 Downloads and patches \fIformula\fR, and then opens a shell\. This allows the user to run \fB\./configure \-\-help\fR and otherwise determine how to turn the software package into a Homebrew formula\.
@@ -102,8 +105,11 @@ Opens a browser to Homebrew\'s own homepage\.
 Opens a browser to \fIformula\fR\'s homepage\.
 .
 .TP
-\fBrm\fR, \fBremove\fR \fIformula\fR
+\fBrm\fR, \fBremove [\-\-force]\fR \fIformula\fR
 Uninstalls \fIformula\fR\.
+.
+.IP
+If \fB\-\-force\fR is passed, and there are multiple versions of \fIformula\fR installed, deletes all installed versions\.
 .
 .TP
 \fBcreate [\-\-cache]\fR \fIURL\fR
@@ -125,7 +131,7 @@ Opens the formula in $EDITOR\.
 Opens all of Homebrew for editing in TextMate\.
 .
 .TP
-\fBlink\fR \fIformula\fR
+\fBln\fR, \fBlink\fR \fIformula\fR
 Symlinks all of \fIformula\fR\'s installed files into the Homebrew prefix\. This is done automatically when you install formula\. It is useful for DIY installation, or in cases where you want to swap out different versions of the same package that you have installed at the same time\.
 .
 .TP
@@ -174,6 +180,16 @@ Using Git, fetches the newest version of Homebrew from the GitHub repository\.
 \fBlog [git\-options]\fR \fIformula\fR \.\.\.
 Shows the git log for the given formulae\. Options that \fBgit log\fR recognizes can be passed before the formula list\.
 .
+.TP
+\fBfetch [\-\-force] [\-v] [\-\-HEAD]\fR \fIformula\fR
+Downloads the tarball or checks out from VCS for the given \fIformula\fR\. For tarballs, also prints MD5 and SHA1 checksums\.
+.
+.IP
+If \fB\-\-HEAD\fR is passed, download the HEAD version of \fIformula\fR instead\. \fB\-v\fR may also be passed to make the VCS checkout verbose, useful for seeing if an existing HEAD cache has been updated\.
+.
+.IP
+If \fB\-\-force\fR is passed, remove a previously cached version and re\-fetch\.
+.
 .SH "EXTERNAL COMMANDS"
 Homebrew allows external commands to be defined by putting a +x file named \fBbrew\-<cmdname>\fR or \fBbrew\-<cmdname>\.rb\fR on the PATH\. This will cause Homebrew to recognize \fBbrew cmdname\fR\.
 .
@@ -183,10 +199,6 @@ Some external commands are shipped with Homebrew, and enabled by default\.
 .TP
 \fBaudit\fR
 Checks all formulae for Homebrew coding style violations\. This should be run before submitting a new formula for inclusion\.
-.
-.TP
-\fBfetch\fR \fIformula\fR
-Downloads the tarball or checks out from VCS for the given \fIformula\fR\. For tarballs, also prints MD5 and SHA1 checksums\.
 .
 .TP
 \fBoptions\fR \fIformula\fR

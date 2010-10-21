@@ -5,7 +5,7 @@ class Xchat <Formula
   homepage 'http://xchat.org'
   md5 '6775c44f38e84d06c06c336b32c4a452'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'gtk+'
 

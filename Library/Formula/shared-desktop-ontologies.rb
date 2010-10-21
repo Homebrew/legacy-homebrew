@@ -1,11 +1,11 @@
 require 'formula'
 
 class SharedDesktopOntologies <Formula
-  url 'http://downloads.sourceforge.net/project/oscaf/shared-desktop-ontologies/0.2/shared-desktop-ontologies-0.2.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/oscaf/shared-desktop-ontologies/0.5/shared-desktop-ontologies-0.5.tar.bz2'
   homepage 'http://sourceforge.net/apps/trac/oscaf/'
-  md5 '6c004e1c377f768cae5b321bc111876b'
+  md5 '067ec9023c4a48e0d53fb15484d78971'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
 
   def install
     system "cmake . #{std_cmake_parameters}"

@@ -6,7 +6,7 @@ class Vala <Formula
   homepage 'http://live.gnome.org/Vala'
   md5 '1e38cdc951d2b43e49084a6d5ad19e9d'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'glib'
 
