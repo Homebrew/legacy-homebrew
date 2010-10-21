@@ -5,14 +5,14 @@ class Freealut <Formula
   homepage 'http://connect.creativelabs.com/openal/Documentation/The%20OpenAL%20Utility%20Toolkit.htm'
   md5 'e089b28a0267faabdb6c079ee173664a'
 
-  def patches
-    # Adds the OpenAL frameworks to the library list so linking succeeds
-    DATA
-  end
+  # Adds the OpenAL frameworks to the library list so linking succeeds
+  def patches; DATA; end
 
   def install
-  	system "./autogen.sh"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}",  "--mandir=#{man}"
+    system "./autogen.sh"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make install"
   end
 end
