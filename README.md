@@ -25,6 +25,15 @@ Okay then, but please note this installs Homebrew as root and
     curl -LsSf http://github.com/mxcl/homebrew/tarball/master | sudo tar xvz -C/usr/local --strip 1
 
 
+But what packages are available?
+--------------------------------
+Before installing you can
+[browse the Formula folder on GitHub][browse-formulae].
+
+After installing, you can use `brew search` to find packages or `brew server`
+to browse packages off of a local web server.
+
+
 More Documentation
 ==================
 The [wiki][] is your friend.
@@ -42,3 +51,4 @@ I'm [Max Howell][mxcl] and I'm a splendid chap.
 [sudo]:http://wiki.github.com/mxcl/homebrew/installation#sudo
 [wiki]:http://wiki.github.com/mxcl/homebrew
 [mxcl]:http://twitter.com/mxcl
+[browse-formulae]:http://github.com/mxcl/homebrew/tree/master/Library/Formula/
