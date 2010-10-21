@@ -197,8 +197,11 @@ Homebrew allows external commands to be defined by putting a +x file named \fBbr
 Some external commands are shipped with Homebrew, and enabled by default\.
 .
 .TP
-\fBaudit\fR
+\fBaudit [\-\-warn]\fR
 Checks all formulae for Homebrew coding style violations\. This should be run before submitting a new formula for inclusion\.
+.
+.IP
+If \fB\-\-warn\fR is passed, performs additional stricter checks that may not need to be fixed before submitting\.
 .
 .TP
 \fBoptions\fR \fIformula\fR
