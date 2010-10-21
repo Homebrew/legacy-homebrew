@@ -495,7 +495,7 @@ def check_for_git
       "Git" was not found in your path.
 
       Homebrew uses Git for several internal functions, and some formulae
-      (Erlang in particular) use Git checkouts instead of stable tarballs.
+      use Git checkouts instead of stable tarballs.
 
       You may want to do:
         brew install git
