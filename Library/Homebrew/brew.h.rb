@@ -462,9 +462,9 @@ def brew_install
   end
 
   if macports_or_fink_installed?
-    opoo "It appears you have Macports or Fink installed"
-    puts "Although, unlikely, this can break builds or cause obscure runtime issues."
-    puts "If you experience problems try uninstalling these tools."
+    opoo "It appears you have MacPorts or Fink installed."
+    puts "Software installed with MacPorts and Fink are known to cause problems."
+    puts "If you experience issues try uninstalling these tools."
   end
 
   ################################################################# install!

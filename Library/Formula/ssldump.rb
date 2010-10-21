@@ -6,22 +6,22 @@ class Ssldump <Formula
   md5 'ac8c28fe87508d6bfb06344ec496b1dd'
 
   def install
-		ENV["LIBS"] = "-lssl -lcrypto"
+    ENV["LIBS"] = "-lssl -lcrypto"
 
-		# .dylib, not .a
-		inreplace "configure", "if test -f $dir/libpcap.a; then", "if test -f $dir/libpcap.dylib; then"
+    # .dylib, not .a
+    inreplace "configure", "if test -f $dir/libpcap.a; then", "if test -f $dir/libpcap.dylib; then"
 
     system "./configure", "osx", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-		system "make"
+    system "make"
     bin.install "ssldump"
-		man1.install "ssldump.1"
+    man1.install "ssldump.1"
   end
 
-	def patches
-		# reorder include files
-		# => http://sourceforge.net/tracker/index.php?func=detail&aid=1622854&group_id=68993&atid=523055
-		DATA
-	end
+  def patches
+    # reorder include files
+    # => http://sourceforge.net/tracker/index.php?func=detail&aid=1622854&group_id=68993&atid=523055
+    DATA
+  end
 end
 
 __END__
