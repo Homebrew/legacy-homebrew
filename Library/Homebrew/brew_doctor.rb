@@ -524,8 +524,15 @@ def __check_linked_brew f
   Pathname.new(f.prefix).find do |src|
     dst=HOMEBREW_PREFIX+src.relative_path_from(f.prefix)
     next unless dst.symlink?
-    links_found << dst unless src.directory?
-    Find.prune if src.directory?
+
+    dst_points_to = dst.realpath()
+    next unless dst_points_to.to_s == src.to_s
+
+    if src.directory?
+      Find.prune
+    else
+      links_found << dst
+    end
   end
 
   return links_found
