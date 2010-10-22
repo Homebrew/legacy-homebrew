@@ -188,9 +188,12 @@ to recognize `brew cmdname`.
 
 Some external commands are shipped with Homebrew, and enabled by default.
 
-  * `audit`:
+  * `audit [--warn]`:
     Checks all formulae for Homebrew coding style violations. This should be
     run before submitting a new formula for inclusion.
+
+    If `--warn` is passed, performs additional stricter checks that may not need
+    to be fixed before submitting.
 
   * `options` <formula>:
     Displays install options specific to <formula>.
