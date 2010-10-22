@@ -5,7 +5,7 @@ class Libgtop <Formula
   homepage 'http://library.gnome.org/devel/libgtop/stable/'
   md5 'a035abf8cf7877a9950b6483aa7b96fd'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'intltool'

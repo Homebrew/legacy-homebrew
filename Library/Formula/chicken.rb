@@ -1,8 +1,8 @@
 require 'formula'
 
 class Chicken <Formula
-  url 'http://code.call-cc.org/releases/4.5.0/chicken-4.5.0.tar.gz'
-  md5 '753aea676a18c8dc0161dfb4d1717e20'
+  url 'http://code.call-cc.org/releases/4.6.0/chicken-4.6.0.tar.gz'
+  md5 '538a93e786e550ad848a040bcd902184'
   homepage 'http://www.call-cc.org/'
 
   def install

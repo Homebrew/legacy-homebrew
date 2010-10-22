@@ -31,7 +31,8 @@ end
 # Installing MacGPG2 interferes with Homebrew in a big way
 # http://sourceforge.net/projects/macgpg2/files/
 def check_for_macgpg2
-  if File.exist? "/Applications/start-gpg-agent.app"
+  if File.exist? "/Applications/start-gpg-agent.app" or
+     File.exist? "/Library/Receipts/libiconv1.pkg"
     puts <<-EOS.undent
       If you have installed MacGPG2 via the package installer, several other
       checks in this script will turn up problems, such as stray .dylibs in
@@ -203,6 +204,41 @@ def check_access_pkgconfig
   end
 end
 
+def check_access_include
+  # Installing MySQL manually (for instance) can chown include to root.
+  include_folder = HOMEBREW_PREFIX+'include'
+  return unless include_folder.exist?
+
+  unless include_folder.writable?
+    puts <<-EOS.undent
+      #{include_folder} isn't writable.
+      This can happen if you "sudo make install" software that isn't managed
+      by Homebrew. If a brew tries to write a header file to this folder, the
+      install will fail during the link step.
+
+      You should probably `chown` #{include_folder}
+
+    EOS
+  end
+end
+
+def check_access_etc
+  etc_folder = HOMEBREW_PREFIX+'etc'
+  return unless etc_folder.exist?
+
+  unless etc_folder.writable?
+    puts <<-EOS.undent
+      #{etc_folder} isn't writable.
+      This can happen if you "sudo make install" software that isn't managed
+      by Homebrew. If a brew tries to write a file to this folder, the install
+      will fail during the link step.
+
+      You should probably `chown` #{etc_folder}
+
+    EOS
+  end
+end
+
 def check_usr_bin_ruby
   if /^1\.9/.match RUBY_VERSION
     puts <<-EOS.undent
@@ -217,8 +253,8 @@ end
 def check_homebrew_prefix
   unless HOMEBREW_PREFIX.to_s == '/usr/local'
     puts <<-EOS.undent
-      You can install Homebrew anywhere you want, but some brews may not work
-      correctly if you're not installing to /usr/local.
+      You can install Homebrew anywhere you want, but some brews may only work
+      correctly if you install to /usr/local.
 
     EOS
   end
@@ -459,7 +495,7 @@ def check_for_git
       "Git" was not found in your path.
 
       Homebrew uses Git for several internal functions, and some formulae
-      (Erlang in particular) use Git checkouts instead of stable tarballs.
+      use Git checkouts instead of stable tarballs.
 
       You may want to do:
         brew install git
@@ -488,8 +524,15 @@ def __check_linked_brew f
   Pathname.new(f.prefix).find do |src|
     dst=HOMEBREW_PREFIX+src.relative_path_from(f.prefix)
     next unless dst.symlink?
-    links_found << dst unless src.directory?
-    Find.prune if src.directory?
+
+    dst_points_to = dst.realpath()
+    next unless dst_points_to.to_s == src.to_s
+
+    if src.directory?
+      Find.prune
+    else
+      links_found << dst
+    end
   end
 
   return links_found
@@ -543,6 +586,8 @@ def brew_doctor
     check_for_nonstandard_x11
     check_access_share_locale
     check_access_share_man
+    check_access_include
+    check_access_etc
     check_user_path
     check_which_pkg_config
     check_pkg_config_paths

@@ -5,7 +5,7 @@ class Lilypond <Formula
   homepage 'http://lilypond.org/'
   md5 '741190abdd2217cf9f4ea6abff66accf'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   # The guile version must be < 1.9
   depends_on 'guile'
   depends_on 'gettext'

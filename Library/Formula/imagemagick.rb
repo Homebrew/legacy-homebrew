@@ -1,6 +1,12 @@
 # some credit to http://github.com/maddox/magick-installer
 require 'formula'
 
+class UnsafeSvn <SubversionDownloadStrategy
+  def _fetch_command svncommand, url, target
+    [svn, '--non-interactive', '--trust-server-cert', svncommand, '--force', url, target]
+  end
+end
+
 def ghostscript_srsly?
   ARGV.include? '--with-ghostscript'
 end
@@ -24,9 +30,13 @@ def x11?
 end
 
 class Imagemagick <Formula
-  url 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.6.4-2.tar.bz2'
-  md5 'a7e9bbbc84fee362e04bb7c32ea46689'
+  url 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
+        :using => UnsafeSvn, :revision => '2715'
+  version '6.6.4-5'
   homepage 'http://www.imagemagick.org'
+
+  head 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
+        :using => UnsafeSvn
 
   depends_on 'jpeg'
   depends_on 'libpng' unless x11?
@@ -36,7 +46,6 @@ class Imagemagick <Formula
   depends_on 'libtiff' => :optional
   depends_on 'little-cms' => :optional
   depends_on 'jasper' => :optional
-  depends_on 'little-cms' => :optional
 
   depends_on 'libwmf' if use_wmf?
 
@@ -80,11 +89,27 @@ class Imagemagick <Formula
   end
 
   def caveats
-    s = ""
-    s += "You don't have X11 from the Xcode DMG installed. Consequently Imagemagick is less fully featured.\n" unless x11?
-    s += "Some tools will complain if the ghostscript fonts are not installed in:\n\t#{HOMEBREW_PREFIX}/share/ghostscript/fonts\n" \
-            unless ghostscript_fonts? or ghostscript_srsly?
-    return nil if s.empty?
+    s = <<-EOS.undent
+    Because ImageMagick likes to remove tarballs, we're downloading their
+    stable release from their SVN repo instead. But they only serve the
+    repo over HTTPS, and have an untrusted certificate, so we auto-accept
+    this certificate for you.
+
+    If this bothers you, open a ticket with ImageMagick to fix their cert.
+
+    EOS
+    unless x11?
+      s += <<-EOS.undent
+      You don't have X11 from the Xcode DMG installed. Consequently Imagemagick is less fully featured.
+
+      EOS
+    end
+    unless ghostscript_fonts? or ghostscript_srsly?
+      s += <<-EOS.undent
+      Some tools will complain if the ghostscript fonts are not installed in:
+        #{HOMEBREW_PREFIX}/share/ghostscript/fonts
+      EOS
+    end
     return s
   end
 

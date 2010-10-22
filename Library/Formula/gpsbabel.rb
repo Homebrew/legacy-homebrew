@@ -1,8 +1,7 @@
 require 'formula'
 
 class Gpsbabel <Formula
-  url 'http://www.gpsbabel.org/plan9.php?token=2f4fd3fe&dl=gpsbabel-1.4.1.tar.gz',
-        :using => :post
+  url 'http://ee.archive.ubuntu.com/pub/pkgsrc/distfiles/gpsbabel-1.4.1.tar.gz'
   homepage 'http://www.gpsbabel.org'
   md5 '512c4acfb12e20102fa5ceacef45a356'
 

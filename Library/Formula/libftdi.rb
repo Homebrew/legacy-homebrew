@@ -5,7 +5,7 @@ class Libftdi <Formula
   homepage 'http://www.intra2net.com/en/developer/libftdi'
   md5 '810c69cfaa078b49795c224ef9b6b851'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'libusb-compat'
 
   def patches
