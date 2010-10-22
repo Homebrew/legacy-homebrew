@@ -222,6 +222,23 @@ def check_access_include
   end
 end
 
+def check_access_etc
+  etc_folder = HOMEBREW_PREFIX+'etc'
+  return unless etc_folder.exist?
+
+  unless etc_folder.writable?
+    puts <<-EOS.undent
+      #{etc_folder} isn't writable.
+      This can happen if you "sudo make install" software that isn't managed
+      by Homebrew. If a brew tries to write a file to this folder, the install
+      will fail during the link step.
+
+      You should probably `chown` #{etc_folder}
+
+    EOS
+  end
+end
+
 def check_usr_bin_ruby
   if /^1\.9/.match RUBY_VERSION
     puts <<-EOS.undent
@@ -478,7 +495,7 @@ def check_for_git
       "Git" was not found in your path.
 
       Homebrew uses Git for several internal functions, and some formulae
-      (Erlang in particular) use Git checkouts instead of stable tarballs.
+      use Git checkouts instead of stable tarballs.
 
       You may want to do:
         brew install git
@@ -507,8 +524,15 @@ def __check_linked_brew f
   Pathname.new(f.prefix).find do |src|
     dst=HOMEBREW_PREFIX+src.relative_path_from(f.prefix)
     next unless dst.symlink?
-    links_found << dst unless src.directory?
-    Find.prune if src.directory?
+
+    dst_points_to = dst.realpath()
+    next unless dst_points_to.to_s == src.to_s
+
+    if src.directory?
+      Find.prune
+    else
+      links_found << dst
+    end
   end
 
   return links_found
@@ -563,6 +587,7 @@ def brew_doctor
     check_access_share_locale
     check_access_share_man
     check_access_include
+    check_access_etc
     check_user_path
     check_which_pkg_config
     check_pkg_config_paths

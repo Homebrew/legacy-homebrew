@@ -8,6 +8,9 @@ class Cppdom <Formula
   depends_on 'scons' => :build
   depends_on 'boost'
 
+  # Don't install to prefix/lib64
+  def patches; DATA; end
+
   def install
     args = ["prefix=#{prefix}", "build_test=no", "var_type=optimized",
       "BoostBaseDir=#{HOMEBREW_PREFIX}/"]
@@ -19,11 +22,6 @@ class Cppdom <Formula
     end
 
     system "#{HOMEBREW_PREFIX}/bin/scons", "install", *args
-  end
-
-  def patches
-	# Don't install to prefix/lib64
-	DATA
   end
 end
 

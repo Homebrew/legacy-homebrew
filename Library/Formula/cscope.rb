@@ -5,10 +5,8 @@ class Cscope <Formula
   homepage 'http://cscope.sourceforge.net/'
   md5 'da43987622ace8c36bbf14c15a350ec1'
 
-  def patches
-	  # Patch from http://bugs.gentoo.org/show_bug.cgi?ctype=html&id=111621
-	  DATA
-  end
+  # Patch from http://bugs.gentoo.org/show_bug.cgi?ctype=html&id=111621
+  def patches; DATA; end
 
   def install
     system "./configure", "--prefix=#{prefix}",
