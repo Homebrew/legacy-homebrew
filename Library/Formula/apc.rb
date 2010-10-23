@@ -5,7 +5,7 @@ class Apc <Formula
   homepage 'http://pecl.php.net/package/apc'
   md5 '1f7a58f850e795b0958a3f99ae8c2cc4'
 
-  # depends_on 'pcre'
+  depends_on 'pcre'
 
   def install
     Dir.chdir "APC-#{version}" do
@@ -13,8 +13,7 @@ class Apc <Formula
       system "./configure", "--prefix=#{prefix}"
       system "make"
 
-      prefix.install "modules/apc.so"
-      prefix.install "apc.php"
+      prefix.install ["modules/apc.so", "apc.php"]
     end
   end
 
