@@ -5,6 +5,7 @@ class Speex <Formula
   homepage 'http://speex.org'
   md5 'c4438b22c08e5811ff10e2b06ee9b9ae'
 
+  depends_on 'pkg-config' => :build
   depends_on 'libogg' => :optional
 
   def install

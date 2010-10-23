@@ -9,7 +9,6 @@ class Squirrel <Formula
     system "make"
 
     prefix.install %w[bin include lib]
-	
     doc.install Dir['doc/*.pdf']
     doc.install %w[etc samples]
   end
