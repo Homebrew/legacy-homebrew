@@ -26,21 +26,18 @@ class Mpd <Formula
     # make faad.h findable (when brew is used elsewhere than /usr/local/)
     ENV.append 'CFLAGS', "-I#{HOMEBREW_PREFIX}/include"
 
-    configure_args = [
-      "--prefix=#{prefix}",
-      "--disable-debug",
-      "--disable-dependency-tracking",
-      "--enable-bzip2",
-      "--enable-flac",
-      "--enable-shout",
-      "--enable-fluidsynth",
-      "--enable-zip",
-      "--enable-lame-encoder",
-    ]
-    configure_args << "--disable-curl" if MACOS_VERSION <= 10.5
-    configure_args << "--enable-lastfm" if ARGV.include?("--lastfm")
+    args = ["--disable-debug", "--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--enable-bzip2",
+            "--enable-flac",
+            "--enable-shout",
+            "--enable-fluidsynth",
+            "--enable-zip",
+            "--enable-lame-encoder"]
+    args << "--disable-curl" if MACOS_VERSION <= 10.5
+    args << "--enable-lastfm" if ARGV.include?("--lastfm")
 
-    system "./configure", *configure_args
+    system "./configure", *args
     system "make install"
   end
 end
