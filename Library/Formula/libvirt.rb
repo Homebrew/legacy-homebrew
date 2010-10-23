@@ -7,8 +7,8 @@ require 'formula'
 
 class Libvirt <Formula
   homepage 'http://www.libvirt.org'
-  url 'http://justinclift.fedorapeople.org/libvirt_experimental/libvirt-0.8.4-6.tar.gz'
-  md5 '88c00d745d18159e5a05a5d49a571bc7'
+  url 'http://justinclift.fedorapeople.org/libvirt_experimental/libvirt-0.8.4-7.tar.gz'
+  md5 '2b8948e336070c94c5278ccd36495709'
 
   depends_on "gawk"
   depends_on "gnutls"
