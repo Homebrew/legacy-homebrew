@@ -10,13 +10,13 @@ class Solr <Formula
     if [ -z "$1" ]; then
       echo "Usage: $ solr path/to/config/dir"
     else
-      cd #{prefix}/example && java -Dsolr.solr.home=$1 -jar start.jar
+      cd #{libexec}/example && java -Dsolr.solr.home=$1 -jar start.jar
     fi
     EOS
   end
 
   def install
-    prefix.install Dir['*']
+    libexec.install Dir['*']
     (bin+'solr').write script
   end
 

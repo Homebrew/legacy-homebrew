@@ -28,4 +28,11 @@ EOS
     prefix.install jar
     (bin+'clj').write script
   end
+
+  def caveats; <<-EOS.undent
+    If you `brew install repl` then you may find this wrapper script from
+    MacPorts useful:
+      http://trac.macports.org/browser/trunk/dports/lang/clojure/files/clj-rlwrap.sh?format=txt
+    EOS
+  end
 end

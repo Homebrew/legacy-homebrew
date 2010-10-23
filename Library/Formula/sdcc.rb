@@ -7,7 +7,7 @@ class Sdcc <Formula
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make"
+    system "make all"
     system "make install"
   end
 end

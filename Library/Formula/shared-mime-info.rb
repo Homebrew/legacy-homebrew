@@ -5,7 +5,7 @@ class SharedMimeInfo <Formula
   homepage 'http://www.freedesktop.org/wiki/Software/shared-mime-info'
   md5 '9032d98f14b8e13e0fea4bf45ca23401'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'intltool'
   depends_on 'glib'

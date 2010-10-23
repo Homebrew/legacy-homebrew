@@ -6,11 +6,12 @@ class Boost <Formula
   md5 'f02578f5218f217a9f20e9c30e119c6a'
 
   def install
-    fails_with_llvm "the standard llvm-gcc causes errors with dropped arguments "+
-                    "to functions when linking with the boost library"
+    fails_with_llvm "LLVM-GCC causes errors with dropped arguments to "+
+                    "functions when linking with boost"
 
     # Adjust the name the libs are installed under to include the path to the
-    # Homebrew lib directory so executables will work when isntalled to a non-/usr/local location.
+    # Homebrew lib directory so executables will work when installed to a
+    # non-/usr/local location.
     #
     # otool -L `which mkvmerge`
     # /usr/local/bin/mkvmerge:

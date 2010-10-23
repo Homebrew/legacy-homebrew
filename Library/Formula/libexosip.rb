@@ -5,7 +5,7 @@ class Libexosip <Formula
   homepage 'http://www.antisip.com/as/'
   md5 'a2739067b51c1e417c5aef9606b285b2'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'libosip'
 
   def install

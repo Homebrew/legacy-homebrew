@@ -6,7 +6,7 @@ class MediaInfo <Formula
   version '0.7.8'
   md5 '9df4cf265802bae929450954f15a46d1'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
 
   def install
     root_dir = Dir.pwd
