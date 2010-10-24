@@ -1,8 +1,8 @@
 require 'formula'
 
 class Sip <Formula
-  url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.11.1.tar.gz'
-  md5 'dbafd7101a4e7caee6f529912a1356e5'
+  url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.11.2.tar.gz'
+  md5 '06b12c0b36bb31b4d30185d7ab512a69'
   head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
 
@@ -51,7 +51,7 @@ index 927d7f1..fdf13a3 100755
      # Format the results.
      if version is None:
 -        version = (0, 1, 0)
-+        version = (4, 11, 1)
++        version = (4, 11, 2)
  
      major, minor, micro = version
  
