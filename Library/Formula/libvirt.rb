@@ -13,6 +13,14 @@ class Libvirt <Formula
   depends_on "gawk"
   depends_on "gnutls"
 
+  if MACOS_VERSION < 10.6
+    # Definitely needed on Leopard, but definitely not Snow Leopard.
+    # Likely also needed on earlier OSX releases, though that hasn't
+    # been tested yet.
+    depends_on "readline"
+    depends_on "libxml2"
+  end
+
   def options
     [['--without-libvirtd', 'Build only the virsh client and development libraries.']]
   end
