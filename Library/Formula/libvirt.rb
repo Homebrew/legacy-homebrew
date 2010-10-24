@@ -7,11 +7,12 @@ require 'formula'
 
 class Libvirt <Formula
   homepage 'http://www.libvirt.org'
-  url 'http://justinclift.fedorapeople.org/libvirt_experimental/libvirt-0.8.4-7.tar.gz'
-  md5 '2b8948e336070c94c5278ccd36495709'
+  url 'http://justinclift.fedorapeople.org/libvirt_experimental/libvirt-0.8.4-10.tar.gz'
+  sha256 'a878049469ca523aa3109218336fe68073473dca08bd3b16a3487a4de9a049b1'
 
   depends_on "gawk"
   depends_on "gnutls"
+  depends_on "xhtml1-dtds"
 
   if MACOS_VERSION < 10.6
     # Definitely needed on Leopard, but definitely not Snow Leopard.
@@ -31,14 +32,15 @@ class Libvirt <Formula
     args = ["--prefix=#{prefix}",
             "--localstatedir=#{var}",
             "--mandir=#{man}",
-            "--sysconfdir=#{etc}"]
+            "--sysconfdir=#{etc}",
+            "--with-xml-catalog-file=#{HOMEBREW_PREFIX}/share/xhtml1-dtds-1.0/catalog.xml"]
 
     args << "--without-libvirtd" if ARGV.include? '--without-libvirtd'
 
+    # Configure libvirt
     system "./configure", *args
 
-    # Compilation of docs doesn't get done if we jump straight to "make install"
-    system "make"
+    # Compile and install libvirt
     system "make install"
 
     # Update the SASL config file with the Homebrew prefix
