@@ -1,7 +1,7 @@
 require 'formula'
 
 class Fluxus <Formula
-  head 'git://git.savannah.nongnu.org/fluxus.git', :branch => 'master'
+  head 'git://git.savannah.nongnu.org/fluxus.git'
   homepage 'http://www.pawfal.org/fluxus/'
 
   depends_on 'scons' => :build
@@ -16,13 +16,11 @@ class Fluxus <Formula
   depends_on 'jpeg'
   depends_on 'libtiff'
 
-  def patches
-    # fix SCons build - fluxus assumes binary install of plt-racket by default
-    "http://gist.github.com/raw/631352/fluxus_homebrew.patch"
-  end
-
   def install
     racket_prefix = Formula.factory("plt-racket").prefix
-    system "scons RacketPrefix=#{racket_prefix} Prefix=#{prefix} install"
+    system 'scons', "Prefix=#{prefix}", "RacketLib=#{racket_prefix}/lib/racket",
+      "RacketCollects=#{racket_prefix}/lib/racket/collects",
+      "RacketInclude=#{racket_prefix}/include/racket", "RACKET_FRAMEWORK=0", "ADDONS=0",
+      "install"
   end
 end
