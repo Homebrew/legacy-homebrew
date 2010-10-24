@@ -17,7 +17,7 @@ class DBus <Formula
                           "--prefix=#{prefix}",
                           "--disable-xml-docs",
                           "--disable-doxygen-docs",
-	                        "--without-x"
+                          "--without-x"
     system "make install"
 
     # Generate D-Bus's UUID for this machine

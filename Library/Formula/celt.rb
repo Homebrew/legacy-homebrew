@@ -9,7 +9,9 @@ class Celt <Formula
 
   def install
     fails_with_llvm "1 test failed with llvm-gcc"
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--enable-new-plc"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--enable-new-plc"
     system "make check"
     system "make install"
   end
