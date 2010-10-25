@@ -6,8 +6,7 @@ class Ragel <Formula
   md5 '5c4366369f4934adc02bd71dc1a4ee1f'
 
   def install
-    system "./configure", "--disable-dependency-tracking"
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end
