@@ -14,8 +14,7 @@ class Pyqt <Formula
   def install
     ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/python", ':'
 
-    # SIP gets built against system python, so PyQt should as well.
-    system "/usr/bin/python", "./configure.py", "--confirm-license",
+    system "python", "./configure.py", "--confirm-license",
                                        "--bindir=#{bin}",
                                        "--destdir=#{lib}/python",
                                        "--sipdir=#{share}/sip"
