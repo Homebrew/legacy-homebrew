@@ -5,7 +5,7 @@ class Visualboyadvance <Formula
   homepage 'http://vba.ngemu.com/' # This homepage is sketchy
   md5 'cc02339e3fd8efd9f23121b0a2f81fd8'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'libpng'
   depends_on 'sdl'
 

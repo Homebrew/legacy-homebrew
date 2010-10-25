@@ -5,8 +5,8 @@ class Znc <Formula
   md5 'e800a70c932dd13bc09b63569b49db3a'
   homepage 'http://en.znc.in/wiki/ZNC'
 
+  depends_on 'pkg-config' => :build
   depends_on 'c-ares'
-  depends_on 'pkg-config' => :optional
 
   skip_clean 'bin/znc'
   skip_clean 'bin/znc-config'

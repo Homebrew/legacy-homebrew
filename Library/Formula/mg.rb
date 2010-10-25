@@ -6,7 +6,8 @@ class Mg < Formula
   md5 '5cdd46b226586306bde2dd5d47920d66'
 
   def install
-    system "make prefix=#{prefix}"
-    system "make install prefix=#{prefix}"
+    system "make PREFIX=#{prefix}"
+    bin.mkpath # otherwise install copies 'mg' to 'bin'
+    system "make install PREFIX=#{prefix}"
   end
 end

@@ -5,8 +5,11 @@ class Cppdom <Formula
   homepage 'http://sourceforge.net/projects/xml-cppdom/'
   md5 'ab30e45eb8129e14040020edc5b0b130'
 
-  depends_on 'scons'
+  depends_on 'scons' => :build
   depends_on 'boost'
+
+  # Don't install to prefix/lib64
+  def patches; DATA; end
 
   def install
     args = ["prefix=#{prefix}", "build_test=no", "var_type=optimized",
@@ -19,11 +22,6 @@ class Cppdom <Formula
     end
 
     system "#{HOMEBREW_PREFIX}/bin/scons", "install", *args
-  end
-
-  def patches
-	# Don't install to prefix/lib64
-	DATA
   end
 end
 

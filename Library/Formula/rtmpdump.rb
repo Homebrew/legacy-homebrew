@@ -13,7 +13,7 @@ class Rtmpdump <Formula
 
   def install
     ENV.j1
-    system "make", "prefix=#{prefix}", "MANDIR=#{man}", "SYS=posix install"
+    system "make", "prefix=#{prefix}", "MANDIR=#{man}", "SYS=posix", "install"
   end
 end
 __END__
