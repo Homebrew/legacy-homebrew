@@ -21,8 +21,7 @@ class Octave <Formula
   depends_on 'readline'
 
   def options
-    [
-      "--enable-shared",
+    [ "--enable-shared",
       "--enable-dl",
       "--with-hdf5",
       "--with-fftw",
@@ -41,6 +40,15 @@ class Octave <Formula
   end
 
   def install
+    unless TeX_installed?
+      onoe <<-EOS.undent
+        Octave requires a TeX/LaTeX installation; aborting now.
+        You can obtain the TeX distribution for Mac OS X from
+            http://www.tug.org/mactex/
+      EOS
+      exit 1
+    end
+
     set_env
     system "./configure", "--prefix=#{prefix}", *options
     system "make -j 1 doc"
@@ -49,13 +57,19 @@ class Octave <Formula
   end
 
   def set_env
-    ENV.append_to_cflags "-m64"
-    ENV.append_to_cflags "-O2"
+    ENV.m64 if Hardware.is_64_bit?
+    ENV.O2
     ENV.append_to_cflags "-D_REENTRANT"
     ENV.x11
   end
 
   def caveats
     "Set GNUTERM=x11 before running octave for graphing with gnuplot."
+  end
+
+  private
+
+  def TeX_installed?
+    `which tex` != ''
   end
 end
