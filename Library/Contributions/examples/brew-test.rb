@@ -1,3 +1,6 @@
+require 'extend/ENV'
+ENV.extend(HomebrewEnvExtension)
+
 ARGV.formulae.each do |f|
   # Cannot test uninstalled formulae
   unless f.installed?
