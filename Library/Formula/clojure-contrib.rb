@@ -3,7 +3,7 @@ require 'formula'
 class ClojureContrib <Formula
   url 'http://github.com/downloads/clojure/clojure-contrib/clojure-contrib-1.2.0.zip'
   md5 '83cc86fd2929ca417a9ab9f2a0dedadb'
-  head 'git://github.com/richhickey/clojure-contrib.git'
+  head 'git://github.com/clojure/clojure-contrib.git'
   homepage 'http://richhickey.github.com/clojure-contrib/branch-1.1.x/index.html'
 
   depends_on 'clojure'

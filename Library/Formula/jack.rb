@@ -14,8 +14,9 @@ class Jack <Formula
   end
 
   def install
-    system "./waf configure --prefix=#{prefix}"
-    system "./waf build"
-    system "./waf install"
+    ENV['LINKFLAGS'] = ENV['LDFLAGS']
+    system "./waf","configure","--prefix=#{prefix}"
+    system "./waf","build"
+    system "./waf","install"
   end
 end
