@@ -7,7 +7,10 @@ class Kindlegen <Formula
   version '1.1'
 
   def install
+    mkdir bin
+    
     prefix.install Dir['*']
+    (bin/'kindlegen').make_link(prefix/'kindlegen')
   end
 
   def caveats; <<-EOS
