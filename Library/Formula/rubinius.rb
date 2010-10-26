@@ -35,9 +35,9 @@ class Rubinius < Formula
   end
 
   def caveats; <<-EOS.undent
-    Consider using RVM or Cider to manage Ruby environments:
+    Consider using RVM or Cinderella to manage Ruby environments:
       * RVM: http://rvm.beginrescueend.com/
-      * Cider: http://www.atmos.org/cider/intro.html
+      * Cinderella: http://www.atmos.org/cinderella/
     EOS
   end
 end
