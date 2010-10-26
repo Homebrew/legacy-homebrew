@@ -1,9 +1,9 @@
 require 'formula'
 
 class Openvpn <Formula
-  url 'http://openvpn.net/release/openvpn-2.1.1.tar.gz'
+  url 'http://openvpn.net/release/openvpn-2.1.3.tar.gz'
   homepage 'http://openvpn.net/'
-  md5 'b273ed2b5ec8616fb9834cde8634bce7'
+  md5 '7486d3e270ba4b033e311d3e022a0ad7'
 
   depends_on 'lzo' => :recommended
 
