@@ -63,7 +63,7 @@ end
 def ohai title, *sput
   title = title.to_s[0, `/usr/bin/tput cols`.strip.to_i-4] unless ARGV.verbose?
   puts "#{Tty.blue}==>#{Tty.white} #{title}#{Tty.reset}"
-  puts *sput unless sput.empty?
+  puts sput unless sput.empty?
 end
 
 def opoo warning
@@ -73,7 +73,7 @@ end
 def onoe error
   lines = error.to_s.split'\n'
   puts "#{Tty.red}Error#{Tty.reset}: #{lines.shift}"
-  puts *lines unless lines.empty?
+  puts lines unless lines.empty?
 end
 
 def pretty_duration s
@@ -140,7 +140,7 @@ def puts_columns items, cols = 4
 
     IO.popen("/usr/bin/pr -#{cols} -t -w#{console_width}", "w"){|io| io.puts(items) }
   else
-    puts *items
+    puts items
   end
 end
 
