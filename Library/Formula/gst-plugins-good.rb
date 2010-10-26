@@ -2,8 +2,8 @@ require 'formula'
 
 class GstPluginsGood <Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-0.10.24.tar.bz2'
-  md5 'dc0de606e3e303cf378327b72a4d281f'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-0.10.25.tar.bz2'
+  md5 'd734bc866788d1d6fc74c4ff1318926c'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
@@ -13,6 +13,7 @@ class GstPluginsGood <Formula
   depends_on 'flac' => :optional
   depends_on 'libcaca' => :optional
   depends_on 'libcdio' => :optional
+  depends_on 'libdv' => :optional
   depends_on 'libshout' => :optional
   depends_on 'orc' => :optional
   depends_on 'speex' => :optional

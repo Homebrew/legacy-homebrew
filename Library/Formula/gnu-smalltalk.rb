@@ -23,6 +23,17 @@ class GnuSmalltalk <Formula
     # 64-bit version doesn't build, so force 32 bits.
     ENV.m32
 
+    if snow_leopard_64? and Formula.factory('gdbm').installed?
+      onoe "A 64-bit gdbm will cause linker errors"
+      puts <<-EOS.undent
+        GNU Smalltak doesn't compile 64-bit clean on OS X, so having a
+        64-bit gdbm installed will break linking you may want to do:
+          $ brew unlink gdbm
+          $ brew install gnu-smalltalk
+          $ brew link gdbm
+      EOS
+    end
+
     # GNU Smalltalk thinks it needs GNU awk, but it works fine
     # with OS X awk, so let's trick configure.
     here = Dir.pwd
