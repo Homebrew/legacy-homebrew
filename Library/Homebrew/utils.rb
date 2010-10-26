@@ -161,7 +161,7 @@ def exec_editor *args
   # we split the editor because especially on mac "mate -w" is common
   # but we still want to use the comma-delimited version of exec because then
   # we don't have to escape args, and escaping 100% is tricky
-  exec *(editor.split+args)
+  exec(*(editor.split+args))
 end
 
 # GZips the given path, and returns the gzipped file

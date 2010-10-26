@@ -496,8 +496,9 @@ EOF
     return if patch_list.empty?
 
     ohai "Downloading patches"
-    # downloading all at once is much more efficient, espeically for FTP
-    curl *(patch_list.collect{|p| p[:curl_args]}.select{|p| p}.flatten)
+    # downloading all at once is much more efficient, especially for FTP
+    patches = patch_list.collect{|p| p[:curl_args]}.select{|p| p}.flatten
+    curl(*patches)
 
     ohai "Patching"
     patch_list.each do |p|
@@ -543,7 +544,7 @@ EOF
 
     attr_rw :version, :homepage, :specs, :deps, :external_deps
     attr_rw :keg_only_reason, :skip_clean_all
-    attr_rw *CHECKSUM_TYPES
+    attr_rw(*CHECKSUM_TYPES)
 
     def head val=nil, specs=nil
       return @head if val.nil?
