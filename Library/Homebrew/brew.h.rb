@@ -537,7 +537,7 @@ private
     when 0
       # noop
     when 1
-      puts *files
+      puts files
     else
       puts "#{root}/ (#{files.length} #{other}files)"
     end
