@@ -79,27 +79,27 @@ module HomebrewEnvExtension
 
   # recommended by Apple, but, eg. wget won't compile with this flag, so…
   def fast
-    remove_from_cflags /-O./
+    remove_from_cflags(/-O./)
     append_to_cflags '-fast'
   end
   def O4
     # LLVM link-time optimization
-    remove_from_cflags /-O./
+    remove_from_cflags(/-O./)
     append_to_cflags '-O4'
   end
   def O3
     # Sometimes O4 just takes fucking forever
-    remove_from_cflags /-O./
+    remove_from_cflags(/-O./)
     append_to_cflags '-O3'
   end
   def O2
     # Sometimes O3 doesn't work or produces bad binaries
-    remove_from_cflags /-O./
+    remove_from_cflags(/-O./)
     append_to_cflags '-O2'
   end
   def Os
     # Sometimes you just want a small one
-    remove_from_cflags /-O./
+    remove_from_cflags(/-O./)
     append_to_cflags '-Os'
   end
 
