@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gocr <Formula
-  url 'http://www-e.uni-magdeburg.de/jschulen/ocr/gocr-0.48.tar.gz'
+  url 'http://www-e.uni-magdeburg.de/jschulen/ocr/gocr-0.49.tar.gz'
   homepage 'http://jocr.sourceforge.net/'
-  md5 '9882ba9a93fcb18ab704a10da80c228c'
+  md5 '4e527bc4bdd97c2be15fdd818857507f'
 
   def install
     system "./configure", "--disable-debug",
