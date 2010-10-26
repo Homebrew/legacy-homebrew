@@ -192,7 +192,7 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
 
   def get_externals
     `'#{shell_quote(svn)}' propget svn:externals '#{shell_quote(@url)}'`.chomp.each_line do |line|
-      name, url = line.split /\s+/
+      name, url = line.split(/\s+/)
       yield name, url
     end
   end
