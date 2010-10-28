@@ -1,7 +1,7 @@
 require 'formula'
 
 class Hive <Formula
-  url 'http://www.bizdirusa.com/mirrors/apache//hadoop/hive/hive-0.5.0/hive-0.5.0-bin.tar.gz'
+  url 'http://www.bizdirusa.com/mirrors/apache/hadoop/hive/hive-0.5.0/hive-0.5.0-bin.tar.gz'
   homepage 'http://hive.apache.org'
   version '0.5.0'
   md5 'f7b7c2c51bdaca813d0bb60c691f532d'
