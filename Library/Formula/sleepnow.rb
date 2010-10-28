@@ -11,7 +11,7 @@ class Sleepnow <Formula
       # Remove unneeded SDK reference
       inreplace "SleepNow.xcodeproj/project.pbxproj", /SDKROOT.*$/, ''
 
-	    # Build binary
+      # Build binary
       system "xcodebuild", "-target", "SleepNow", "-configuration", "Release", "ONLY_ACTIVE_ARCH=YES"
 
       # Install binary and rename to lowercase
