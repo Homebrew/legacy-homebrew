@@ -2,8 +2,16 @@ require 'formula'
 require 'hardware'
 
 class Go <Formula
-  head 'http://go.googlecode.com/hg/', :revision => 'release'
+  if ARGV.include? "--use-git-head"
+    head 'http://github.com/tav/go.git', :tag => 'release'
+  else
+    head 'http://go.googlecode.com/hg/', :revision => 'release'
+  end
   homepage 'http://golang.org'
+
+  def options
+    [["--use-git-head", "Use git mirror instead of official hg repository"]]
+  end
 
   skip_clean 'bin'
 
@@ -35,6 +43,10 @@ class Go <Formula
 
   def caveats
     <<-EOS.undent
+      The official Go code repository uses mercurial, but a reasonably
+      up-to-date git mirror is available at http://github.com/tav/go.git.
+      To use the git mirror for Go builds, use the --use-git-head option.
+
       In order to use Go, set the following in your ~/.profile:
 
         export GOROOT=`brew --cellar go`

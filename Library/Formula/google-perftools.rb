@@ -1,9 +1,9 @@
 require 'formula'
 
 class GooglePerftools <Formula
-  url 'http://google-perftools.googlecode.com/files/google-perftools-1.5.tar.gz'
+  url 'http://google-perftools.googlecode.com/files/google-perftools-1.6.tar.gz'
   homepage 'http://code.google.com/p/google-perftools/'
-  md5 'cab3841f23fb93f8c69aedf60afcc43f'
+  md5 '7acfee8d3e2ba968d20684e9f7033015'
 
   def install
     ENV.append_to_cflags '-D_XOPEN_SOURCE'
