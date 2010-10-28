@@ -80,13 +80,19 @@ def audit_formula_text text
   end
 
   # No trailing whitespace, please
-  if text =~ /[ ]+$/
+  if text =~ /(\t|[ ])+$/
     problems << " * Trailing whitespace was found."
   end
 
   if text =~ /if\s+ARGV\.include\?\s+'--HEAD'/
     problems << " * Use \"if ARGV.build_head?\" instead"
   end
+
+	if ARGV.include? "--warn"
+	  if text =~ /^\t/
+	    problems << " * Use spaces instead of tabs for indentation"
+	  end
+	end
 
   return problems
 end

@@ -6,9 +6,9 @@ class CdDiscid <Formula
   md5 '04cb368e3f1ce17e656ac6691ca0b687'
 
   def patches
-	{ :p0 =>
-	  "http://trac.macports.org/export/70630/trunk/dports/audio/cd-discid/files/patch-cd-discid.c.diff"
-	}
+  { :p0 =>
+    "http://trac.macports.org/export/70630/trunk/dports/audio/cd-discid/files/patch-cd-discid.c.diff"
+  }
   end
 
   def install
