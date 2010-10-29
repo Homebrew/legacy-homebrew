@@ -6,7 +6,6 @@ class Fdupes <Formula
   md5 '11de9ab4466089b6acbb62816b30b189'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make fdupes"
     system "make install"
   end
