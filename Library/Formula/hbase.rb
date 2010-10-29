@@ -7,8 +7,7 @@ class Hbase <Formula
 
   depends_on 'hadoop'
 
-  def install
-    def shim_script target
+  def shim_script target
     <<-EOS.undent
     #!/bin/bash
     exec #{libexec}/bin/#{target} $*
@@ -25,5 +24,14 @@ class Hbase <Formula
       (bin+n).write shim_script(n)
     end
   end
+
+  def caveats; <<-EOS.undent
+    Requires Java 1.6.0 or greater
+    $JAVA_HOME must be set before use
+    You must also edit the configs in #{libexec}/conf to reflect your environment.
+    See http://hbase.apache.org/docs/current/api/overview-summary.html for more details.
+    EOS
   end
+
+
 end
