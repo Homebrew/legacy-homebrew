@@ -5,7 +5,7 @@ class Rrdtool <Formula
   homepage 'http://oss.oetiker.ch/rrdtool/index.en.html'
   md5 '93ad2fc2e9ddcd7d99c611fe30284a54'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'libxml2'

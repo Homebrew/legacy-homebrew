@@ -5,7 +5,7 @@ class Portmidi <Formula
   homepage 'http://sourceforge.net/apps/trac/portmedia/wiki/portmidi'
   md5 '26053a105d938395227bb6ae1d78643b'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
 
   def caveats
     <<-EOS.undent

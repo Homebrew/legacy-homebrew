@@ -6,9 +6,9 @@ class GnupgIdea <Formula
 end
 
 class Gnupg <Formula
-  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.10.tar.bz2'
+  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.11.tar.bz2'
   homepage 'http://www.gnupg.org/'
-  sha1 'fd1b6a5f3b2dd836b598a1123ac257b8f105615d'
+  sha1 '78e22f5cca88514ee71034aafff539c33f3c6676'
 
   def options
     [["--idea", "Build with (patented) IDEA cipher"]]
@@ -22,7 +22,7 @@ class Gnupg <Formula
       system 'gunzip', 'cipher/idea.c.gz'
     end
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-asm"
     system "make"

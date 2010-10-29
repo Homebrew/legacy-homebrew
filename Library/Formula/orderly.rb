@@ -7,7 +7,7 @@ class Orderly <Formula
   version '0.0.1'
 
   depends_on 'yajl'
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
 
   def install
     system "cmake . #{std_cmake_parameters}"

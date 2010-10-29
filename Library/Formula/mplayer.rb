@@ -5,7 +5,7 @@ class Mplayer <Formula
   # http://github.com/mxcl/homebrew/issues/issue/87
   head 'svn://svn.mplayerhq.hu/mplayer/trunk', :using => StrictSubversionDownloadStrategy
 
-  depends_on 'pkg-config' => :recommended
+  depends_on 'pkg-config' => :build
   depends_on 'yasm' => :optional
 
   def install

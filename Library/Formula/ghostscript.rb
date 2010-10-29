@@ -11,7 +11,7 @@ class Ghostscript <Formula
   homepage 'http://www.ghostscript.com/'
   md5 '177c33b796ed28d3d568e230a6dbdba5'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'jpeg'
   depends_on 'libtiff'
 

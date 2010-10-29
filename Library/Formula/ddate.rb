@@ -7,7 +7,7 @@ class Ddate <Formula
   version '0.1.0'
 
   def install
-	system "#{ENV['CC']}", "ddate.c", "-o", "ddate"
+    system ENV.cc, "ddate.c", "-o", "ddate"
     bin.install 'ddate'
   end
 end

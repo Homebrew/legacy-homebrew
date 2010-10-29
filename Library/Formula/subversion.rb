@@ -19,7 +19,7 @@ class Subversion <Formula
   md5 '7ae1c827689f21cf975804005be30aeb'
   homepage 'http://subversion.apache.org/'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   # On Snow Leopard, build a new neon. For Leopard, the deps above include this.
   depends_on 'neon' if MACOS_VERSION >= 10.6
 

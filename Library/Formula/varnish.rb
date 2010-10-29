@@ -5,7 +5,7 @@ class Varnish <Formula
   homepage 'http://varnish.projects.linpro.no/'
   md5 '357d99a760de173d841ac37bf2052be8'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'pcre'
 
   # Do not strip varnish binaries: Otherwise, the magic string end pointer isn't found.

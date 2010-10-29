@@ -6,8 +6,8 @@ class ShellFm <Formula
   md5 '3f83866622a892ee89685f1ed079eefd'
 
   # homepage says that libao is optional, but it doesn't seem
-  # to build without it…
-  depends_on 'pkg-config'
+  # to build without it
+  depends_on 'pkg-config' => :build
   depends_on 'libao'
   depends_on 'mad'
 

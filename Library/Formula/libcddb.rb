@@ -5,7 +5,7 @@ class Libcddb <Formula
   md5 '8bb4a6f542197e8e9648ae597cd6bc8a'
   homepage 'http://libcddb.sourceforge.net/'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'libcdio'
 
   def install

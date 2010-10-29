@@ -6,7 +6,7 @@ class Lastfmfpclient <Formula
   homepage 'http://github.com/lastfm/Fingerprinter'
   md5 'ab909b4d6dcc6182afae616749ce0fdc'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'taglib'
   depends_on 'fftw'
   depends_on 'mad'

@@ -5,7 +5,7 @@ class Svg2png <Formula
   homepage 'http://cairographics.org/'
   md5 'ba266c00486ffd93b8a46d59028aaef9'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'libsvg-cairo'
 
   def install

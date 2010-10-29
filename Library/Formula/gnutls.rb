@@ -5,7 +5,7 @@ class Gnutls <Formula
   homepage 'http://www.gnu.org/software/gnutls/gnutls.html'
   sha1 '507ff8ad7c1e042f8ecaa4314f32777e74caf0d3'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'libgcrypt'
   depends_on 'libtasn1' => :optional
 

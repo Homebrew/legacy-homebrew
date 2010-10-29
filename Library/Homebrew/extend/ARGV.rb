@@ -2,6 +2,24 @@ class UsageError <RuntimeError; end
 class FormulaUnspecifiedError <UsageError; end
 class KegUnspecifiedError <UsageError; end
 
+class MultipleVersionsInstalledError <RuntimeError
+  attr :name
+
+  def initialize name
+    @name = name
+    super "#{name} has multiple installed versions"
+  end
+end
+
+class NoSuchKegError <RuntimeError
+  attr :name
+
+  def initialize name
+    @name = name
+    super "No such keg: #{HOMEBREW_CELLAR}/#{name}"
+  end
+end
+
 module HomebrewArgvExtension
   def named
     @named ||= reject{|arg| arg[0..0] == '-'}
@@ -24,8 +42,8 @@ module HomebrewArgvExtension
     @kegs ||= downcased_unique_named.collect do |name|
       d = HOMEBREW_CELLAR + Formula.resolve_alias(name)
       dirs = d.children.select{ |pn| pn.directory? } rescue []
-      raise "No such keg: #{HOMEBREW_CELLAR}/#{name}" if not d.directory? or dirs.length == 0
-      raise "#{name} has multiple installed versions" if dirs.length > 1
+      raise NoSuchKegError.new(name) if not d.directory? or dirs.length == 0
+      raise MultipleVersionsInstalledError.new(name) if dirs.length > 1
       Keg.new dirs.first
     end
     raise KegUnspecifiedError if @kegs.empty?

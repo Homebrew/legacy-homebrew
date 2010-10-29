@@ -1,38 +1,40 @@
 require 'formula'
 
 class Kdelibs <Formula
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.4.2/src/kdelibs-4.4.2.tar.bz2'
+  url 'ftp://ftp.kde.org/pub/kde/stable/4.5.2/src/kdelibs-4.5.2.tar.bz2'
   homepage 'http://www.kde.org/'
-  md5 '44ddba0e31ee3d78da09f0176d3c66db'
+  md5 '9f2ad67a40f233a72d374800e1c2d2e2'
 
+  depends_on 'cmake' => :build
+  depends_on 'automoc4' => :build
   depends_on 'gettext'
-  depends_on 'cmake'
-  depends_on 'qt'
-  depends_on 'automoc4'
   depends_on 'pcre'
   depends_on 'jpeg'
   depends_on 'giflib'
+  depends_on 'libpng' unless File.exist? "/usr/X11R6/lib"
   depends_on 'strigi'
   depends_on 'soprano'
   depends_on 'shared-desktop-ontologies'
   depends_on 'shared-mime-info'
   depends_on 'attica'
+  depends_on 'docbook'
   depends_on 'd-bus'
-
-  depends_on 'libpng' unless File.exist? "/usr/X11R6/lib"
+  depends_on 'qt'
 
   def patches
     DATA
   end
 
   def install
-    gettext = Formula.factory 'gettext'
-    mkdir('build')
-    cd('build')
-    system "cmake .. #{std_cmake_parameters} -DCMAKE_PREFIX_PATH=#{gettext.prefix} -DBUNDLE_INSTALL_DIR=#{bin}"
+    gettext_prefix = Formula.factory('gettext').prefix
+    docbook_prefix = Formula.factory('docbook').prefix
+    mkdir 'build'
+    cd 'build'
+    system "cmake .. #{std_cmake_parameters} -DCMAKE_PREFIX_PATH=#{gettext_prefix} -DDOCBOOKXML_CURRENTDTD_DIR=#{docbook_prefix}/docbook/xml/4.5 -DDOCBOOKXSL_DIR=#{docbook_prefix} -DBUNDLE_INSTALL_DIR=#{bin}"
     system "make install"
   end
 end
+
 
 __END__
 

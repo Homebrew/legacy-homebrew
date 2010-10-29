@@ -4,9 +4,9 @@ class Despotify <Formula
   head 'https://despotify.svn.sourceforge.net/svnroot/despotify/src'
   homepage 'http://despotify.se/'
 
+  depends_on 'pkg-config' => :build
   depends_on 'libao'
   depends_on 'libvorbis'
-  depends_on 'pkg-config'
 
   def install
     system "make Makefile.local.mk"

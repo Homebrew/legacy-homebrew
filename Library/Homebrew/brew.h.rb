@@ -199,7 +199,7 @@ def info f
     kids=f.prefix.parent.children
     kids.each do |keg|
       print "#{keg} (#{keg.abv})"
-      print " *" if f.prefix == keg and kids.length > 1
+      print " *" if f.installed_prefix == keg and kids.length > 1
       puts
     end
   else
@@ -258,7 +258,7 @@ def cleanup name
   if f.installed? and formula_cellar.directory?
     kids = f.prefix.parent.children
     kids.each do |keg|
-      next if f.prefix == keg
+      next if f.installed_prefix == keg
       print "Uninstalling #{keg}..."
       FileUtils.rm_rf keg
       puts
@@ -462,9 +462,9 @@ def brew_install
   end
 
   if macports_or_fink_installed?
-    opoo "It appears you have Macports or Fink installed"
-    puts "Although, unlikely, this can break builds or cause obscure runtime issues."
-    puts "If you experience problems try uninstalling these tools."
+    opoo "It appears you have MacPorts or Fink installed."
+    puts "Software installed with MacPorts and Fink are known to cause problems."
+    puts "If you experience issues try uninstalling these tools."
   end
 
   ################################################################# install!

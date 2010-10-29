@@ -5,7 +5,7 @@ class Gnuplot <Formula
   homepage 'http://www.gnuplot.info'
   md5 'e708665bd512153ad5c35252fe499059'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'readline'
   depends_on 'gd' unless ARGV.include? "--nogd"
   depends_on 'pdflib-lite' if ARGV.include? "--pdf"
