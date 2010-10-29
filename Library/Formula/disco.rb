@@ -27,6 +27,16 @@ class Disco <Formula
     system "make"
     system "make install"
     ENV.delete('CC')
+    # Explicitly set arch in CFLAGS so modules build against system Python
+    # We remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
+    archs = archs_for_command("python")
+
+    arch_flags = ""
+    arch_flags += " -arch i386" if archs.include?(:i386)
+    arch_flags += " -arch x86_64" if archs.include?(:x86_64)
+
+    ENV.append_to_cflags arch_flags
+
     system "make install-discodb install-discodex"
     bin.install('contrib/discodex/bin/discodex')
     bin.install('contrib/discodex/bin/discodexcli.py')
