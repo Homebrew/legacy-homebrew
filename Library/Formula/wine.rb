@@ -1,8 +1,8 @@
 require 'formula'
 
 class Wine <Formula
-  url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.tar.bz2'
-  sha1 'dc37a32edb274167990ca7820f92c2d85962e37d'
+  url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.1.tar.bz2'
+  sha1 '02df427698de8a6d937e722923c8ac1cf886ca27'
   homepage 'http://www.winehq.org/'
   head 'git://source.winehq.org/git/wine.git'
 
@@ -59,8 +59,8 @@ EOS
     You may also want to get winetricks:
       brew install winetricks
 
-    If you plan to use 3D applications, like games, you will need
-    to check "Emulate a virtual desktop" in winecfg's "Graphics" tab.
+    To use 3D applications, like games, check "Emulate a virtual desktop" in
+    winecfg's "Graphics" tab.
     EOS
   end
 end
