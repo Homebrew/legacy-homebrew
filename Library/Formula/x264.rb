@@ -3,7 +3,8 @@ require 'formula'
 class X264 <Formula
   homepage 'http://www.videolan.org/developers/x264.html'
   url 'git://git.videolan.org/x264.git',
-        :tag => '20fa784d2d9e0d5e524d4e3834699e9ff9b57511'
+        :branch => 'stable'
+  head 'git://git.videolan.org/x264.git'
 
   depends_on 'yasm'
 
