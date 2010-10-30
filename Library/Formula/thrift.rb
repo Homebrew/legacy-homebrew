@@ -16,7 +16,7 @@ class Thrift <Formula
                          # rationale: this can be installed with easy_install
                          # and when you do that, it installs properly, we
                          # can't install it properly without leaving Homebrew's prefix
-                         "--without-py",
+                         "--without-python",
                          # again, use gem
                          "--without-ruby",
                          "--without-perl",
