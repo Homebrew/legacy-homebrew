@@ -5,8 +5,11 @@ class Mediatomb <Formula
   homepage 'http://mediatomb.cc'
   md5 'e927dd5dc52d3cfcebd8ca1af6f0d3c2'
 
+  depends_on 'ffmpegthumbnailer'
+
   def install
     system "./configure", "--disable-dependency-tracking",
+                          "--enable-ffmpegthumbnailer",
                           "--prefix=#{prefix}"
     system "make install"
   end
