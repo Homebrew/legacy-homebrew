@@ -11,7 +11,6 @@ class Ffmpegthumbnailer <Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--enable-jpeg", "--with-jpeg",
                           "--prefix=#{prefix}"
-    # system "cmake . #{std_cmake_parameters}"
     system "make install"
   end
 end
