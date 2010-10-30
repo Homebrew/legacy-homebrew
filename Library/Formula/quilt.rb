@@ -6,9 +6,10 @@ class Quilt <Formula
   md5 'f77adda60039ffa753f3c584a286f12b'
 
   depends_on 'gnu-sed'
+  depends_on 'coreutils'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--with-sed=gsed",
+    system "./configure", "--prefix=#{prefix}", "--with-sed=#{HOMEBREW_PREFIX}/bin/gsed",
                           "--without-getopt"
     system "make && make install"
   end
