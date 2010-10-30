@@ -506,7 +506,7 @@ end
 
 def check_for_autoconf
   which_autoconf = `/usr/bin/which autoconf`.chomp
-  if which_autoconf != '/usr/bin/autoconf'
+  unless (which_autoconf == '/usr/bin/autoconf' or which_autoconf == '/Developer/usr/bin/autoconf')
     puts <<-EOS.undent
       You have an "autoconf" in your path blocking the system version at:
         #{which_autoconf}
