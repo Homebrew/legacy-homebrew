@@ -48,6 +48,9 @@ Performs a substring search of formula names for \fItext\fR\. If \fItext\fR is s
 Installs \fIformula\fR\.
 .
 .IP
+\fIformula\fR is usually the name of the formula to install, but may also be the URL for an arbitrary formula\.
+.
+.IP
 If \fB\-\-force\fR is passed, will install \fIformula\fR even if it is already installed\. This can be used to re\-install a formula without removing it first\.
 .
 .IP
@@ -67,7 +70,7 @@ To install a newer version of HEAD use \fBbrew rm <foo> && brew install \-\-HEAD
 .
 .TP
 \fBinstall \-\-interactive [\-\-git]\fR \fIformula\fR
-Downloads and patches \fIformula\fR, and then opens a shell\. This allows the user to run \fB\./configure \-\-help\fR and otherwise determine how to turn the software package into a Homebrew formula\.
+Downloads and patches \fIformula\fR, then opens a shell\. This allows the user to run \fB\./configure \-\-help\fR and otherwise determine how to turn the software package into a Homebrew formula\.
 .
 .IP
 If \fB\-\-git\fR is passed, Homebrew will create a Git repository, useful for creating patches to the software\.

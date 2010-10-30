@@ -44,6 +44,9 @@ didn't include with OS X.
   * `install [--force] [--debug] [--use-llvm] [--ignore-dependencies] [--HEAD]` <formula>:
     Installs <formula>.
 
+    <formula> is usually the name of the formula to install, but may also be
+    the URL for an arbitrary formula.
+
     If `--force` is passed, will install <formula> even if it is already
     installed. This can be used to re-install a formula without removing
     it first.
@@ -66,8 +69,8 @@ didn't include with OS X.
     or `brew --force --HEAD <foo>`.
 
   * `install --interactive [--git]` <formula>:
-    Downloads and patches <formula>, and then opens a shell. This allows the
-    user to run `./configure --help` and otherwise determine how to turn the
+    Downloads and patches <formula>, then opens a shell. This allows the user
+    to run `./configure --help` and otherwise determine how to turn the
     software package into a Homebrew formula.
 
     If `--git` is passed, Homebrew will create a Git repository, useful for
