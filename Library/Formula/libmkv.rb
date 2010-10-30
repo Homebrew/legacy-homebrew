@@ -6,13 +6,11 @@ class Libmkv <Formula
   version '0.6.4.1'
   md5 '4b4e7e401fe571db500d70551e9e19d2'
 
-  # depends_on 'cmake'
 
   def install
     system "./bootstrap.sh"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    # system "cmake . #{std_cmake_parameters}"
     system "make install"
   end
 end
