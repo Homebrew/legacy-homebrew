@@ -113,6 +113,10 @@ class Pathname
     %r[github.com/.*/tarball/v?((\d\.)+\d+)$].match to_s
     return $1 if $1
 
+    # eg. github.com/isaacs/npm/tarball/v0.2.5-1
+    %r[github.com/.*/tarball/v?((\d\.)+\d+-(\d+))$].match to_s
+    return $1 if $1
+
     # eg. boost_1_39_0
     /((\d+_)+\d+)$/.match stem
     return $1.gsub('_', '.') if $1
