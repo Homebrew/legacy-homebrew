@@ -10,15 +10,21 @@ class ClojureContrib <Formula
   depends_on 'maven' if ARGV.build_head?
 
   def jar
-    'clojure-contrib.jar'
+    return ARGV.build_head? ? "*" : 'clojure-contrib.jar'
   end
 
   def install
     if ARGV.build_head?
-      system "mvn package -Dclojure.jar=#{HOMEBREW_PREFIX}/Cellar/clojure/HEAD/clojure.jar"
+      system "mvn package -Dclojure.jar=#{prefix}/clojure.jar"
+      Dir.glob("**/target/*.jar").each do |f|
+        new_file = File.basename(f).gsub(/\-\d\.\d\.\d\-SNAPSHOT/,'')
+        mv f, new_file
+        prefix.install(new_file)
+      end
+    else
+      system "mv target/clojure-contrib-*.jar clojure-contrib.jar"
+      prefix.install jar
     end
-    system "mv target/clojure-contrib-*.jar #{jar}"
-    prefix.install jar
   end
 
   def caveats

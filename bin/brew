@@ -277,7 +277,7 @@ begin
   when 'log'
     Dir.chdir HOMEBREW_REPOSITORY
     args = ARGV.options_only
-    args += ARGV.formulae.map{ |formula| formula.path }
+    args += ARGV.formulae.map{ |formula| formula.path } unless ARGV.named.empty?
     exec "git", "log", *args
 
   # For each formula given, show which other formulas depend on it.
