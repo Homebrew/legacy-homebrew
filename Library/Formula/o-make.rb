@@ -31,3 +31,16 @@ index 8c034b5..7e40b35 100644
  module Exec =
  struct
     (*
+diff --git a/OMakefile b/OMakefile
+index 9b77a25..1d61d70 100644
+--- a/OMakefile
++++ b/OMakefile
+@@ -57,7 +57,7 @@ if $(not $(defined CAMLLIB))
+ #
+ # OCaml options
+ #
+-OCAMLFLAGS[] += -w Ae$(if $(OCAML_ACCEPTS_Z_WARNING), z)
++OCAMLFLAGS[] += -w Ae$(if $(OCAML_ACCEPTS_Z_WARNING), z)-9-27..29
+ if $(THREADS_ENABLED)
+     OCAMLFLAGS += -thread
+     export
