@@ -9,10 +9,14 @@ class Gerbv <Formula
   depends_on 'gtk+'
   depends_on 'cairo' if MACOS_VERSION < 10.6
 
-
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                  "--disable-update-desktop-database", "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--disable-update-desktop-database"
     system "make install"
+  end
+
+  def caveats
+    "Note: gerbv is an X11 application."
   end
 end
