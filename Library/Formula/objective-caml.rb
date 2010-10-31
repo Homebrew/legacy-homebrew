@@ -1,9 +1,9 @@
 require 'formula'
 
 class ObjectiveCaml <Formula
-  url 'http://caml.inria.fr/pub/distrib/ocaml-3.11/ocaml-3.11.2.tar.bz2'
+  url 'http://caml.inria.fr/pub/distrib/ocaml-3.12/ocaml-3.12.0.tar.bz2'
   homepage 'http://caml.inria.fr/ocaml/index.en.html'
-  md5 '4601a7aea66444d61704de8de46c52c6'
+  md5 'bd92c8970767f412bc1e9a6c625b5ccf'
 
   # note it indeed seems necessary to skip cleaning everything
   # see http://github.com/mxcl/homebrew/issues/issue/188
