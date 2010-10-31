@@ -14,30 +14,9 @@ class Octave <Formula
   depends_on 'ftgl'
   depends_on 'ghostscript'
   depends_on 'glpk'
-  depends_on 'gnuplot'
   depends_on 'hdf5'
   depends_on 'metis'
   depends_on 'pcre'
-  depends_on 'readline'
-
-  def options
-    [ "--enable-shared",
-      "--enable-dl",
-      "--with-hdf5",
-      "--with-fftw",
-      "--enable-static",
-      "--enable-readline",
-      "--with-zlib",
-      "--with-glpk",
-      "--with-curl",
-      "--with-lapack",
-      "--with-umfpack",
-      "--with-colamd",
-      "--with-ccolamd",
-      "--with-cholmod",
-      "--with-cxsparse"
-      ]
-  end
 
   def install
     unless TeX_installed?
@@ -49,18 +28,20 @@ class Octave <Formula
       exit 1
     end
 
-    set_env
-    system "./configure", "--prefix=#{prefix}", *options
-    system "make -j 1 doc"
-    system "make all"
-    system "make install"
-  end
-
-  def set_env
     ENV.m64 if Hardware.is_64_bit?
     ENV.O2
     ENV.append_to_cflags "-D_REENTRANT"
     ENV.x11
+
+    system "./configure", "--prefix=#{prefix}", "--enable-shared",
+      "--enable-dl", "--with-hdf5", "--with-fftw",
+      "--enable-static", "--enable-readline",
+      "--with-zlib", "--with-glpk", "--with-curl",
+      "--with-lapack", "--with-umfpack", "--with-colamd", "--with-ccolamd",
+      "--with-cholmod", "--with-cxsparse"
+    system "make -j 1 doc"
+    system "make all"
+    system "make install"
   end
 
   def caveats
