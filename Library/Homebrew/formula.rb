@@ -441,7 +441,8 @@ EOF
   def stage
     HOMEBREW_CACHE.mkpath
     fetched = @downloader.fetch
-    verify_download_integrity fetched if fetched.kind_of? Pathname
+    # Skip MD5 checks for HEAD brews as the archive will change often. 
+    verify_download_integrity fetched if fetched.kind_of? Pathname and not ARGV.include? "--HEAD"
 
     mktemp do
       @downloader.stage
