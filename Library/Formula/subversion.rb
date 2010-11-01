@@ -20,6 +20,7 @@ class Subversion <Formula
   homepage 'http://subversion.apache.org/'
 
   depends_on 'pkg-config' => :build
+
   # On Snow Leopard, build a new neon. For Leopard, the deps above include this.
   depends_on 'neon' if MACOS_VERSION >= 10.6
 
@@ -32,6 +33,20 @@ class Subversion <Formula
       ['--universal', 'Build as a Universal Intel binary.'],
       ['--unicode-path', 'Include support for OS X unicode (but see caveats!)']
     ]
+  end
+
+  def patches
+    # Patch to find Java headers
+    p = { :p0 =>
+      "http://trac.macports.org/export/73004/trunk/dports/devel/subversion-javahlbindings/files/patch-configure.diff"
+    }
+
+    # Patch for subversion handling of OS X Unicode paths (see caveats)
+    if with_unicode_path?
+      p[:p1] = "http://gist.github.com/raw/434424/subversion-unicode-path.patch"
+    end
+
+    return p
   end
 
   def setup_leopard
@@ -84,6 +99,9 @@ class Subversion <Formula
     args << "--with-ruby-sitedir=#{lib}/ruby" if build_ruby?
     args << "--with-unicode-path" if with_unicode_path?
 
+    # Undo a bit of the MacPorts patch
+    inreplace "configure", "@@DESTROOT@@/", ""
+
     system "./configure", *args
     system "make"
     system "make install"
@@ -112,7 +130,8 @@ class Subversion <Formula
       end
 
       inreplace "Makefile" do |s|
-        s.change_make_var! "SWIG_PL_INCLUDES", "$(SWIG_INCLUDES) #{arches} -g -pipe -fno-common -DPERL_DARWIN -fno-strict-aliasing -I/usr/local/include  -I/System/Library/Perl/#{perl_version}/darwin-thread-multi-2level/CORE"
+        s.change_make_var! "SWIG_PL_INCLUDES",
+          "$(SWIG_INCLUDES) #{arches} -g -pipe -fno-common -DPERL_DARWIN -fno-strict-aliasing -I/usr/local/include -I/System/Library/Perl/#{perl_version}/darwin-thread-multi-2level/CORE"
       end
       system "make swig-pl"
       system "make install-swig-pl"
@@ -128,13 +147,6 @@ class Subversion <Formula
       ENV.j1 # This build isn't parallel safe
       system "make swig-rb"
       system "make install-swig-rb"
-    end
-  end
-
-  def patches
-    if with_unicode_path?
-      # Patch that modify subversion paths handling to manage unicode paths issues
-      "http://gist.github.com/raw/434424/subversion-unicode-path.patch"
     end
   end
 
