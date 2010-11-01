@@ -283,6 +283,21 @@ Some external commands are shipped with Homebrew, and enabled by default.
     If set, instructs Homebrew to always assume `--verbose` when running
     commands.
 
+## USING HOMEBREW BEHIND A PROXY
+
+Homebrew uses several commands for downloading files (e.g. curl, git, svn).
+Many of these tools can download via a proxy. It's common for these tools
+to read proxy parameters from environment variables.
+
+For the majority of cases setting `http_proxy` is enough. You can set this in
+your shell profile, or you can use it before a brew command:
+
+    http_proxy=http://<host>:<port> brew install foo
+
+If your proxy requires authentication:
+
+    http_proxy=http://<user>:<password>@<host>:<port> brew install foo
+
 ## SEE ALSO
 
 Homebrew Wiki: http://wiki.github.com/mxcl/homebrew/
