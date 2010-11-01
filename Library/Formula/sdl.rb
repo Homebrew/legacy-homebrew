@@ -17,6 +17,8 @@ class Sdl <Formula
     fails_with_llvm
     Sdl.use_homebrew_prefix %w[sdl.pc.in sdl-config.in]
 
+    # Sdl assumes X11 is present on UNIX
+    ENV.x11
     system "./autogen.sh" if ARGV.build_head?
     system "./configure", "--prefix=#{prefix}", "--disable-nasm"
     system "make install"

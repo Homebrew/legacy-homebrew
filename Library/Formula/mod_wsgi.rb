@@ -27,19 +27,12 @@ class ModWsgi <Formula
 
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
 
-    # Find the archs of the Python we are building against.
-    # We remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
-    archs = archs_for_command("python")
-    archs.delete :ppc7400
-    archs.delete :ppc64
-    archs.delete :x86_64 if Hardware.is_32_bit?
-
     inreplace 'Makefile' do |s|
-      s.gsub! "-Wc,'-arch x86_64' -Wc,'-arch i386' -Wc,'-arch ppc7400'",
-              archs.collect{ |a| "-Wc,'-arch #{a}'" }.join(' ')
-
-      s.gsub! "-arch x86_64 -arch i386 -arch ppc7400",
-              archs.collect{ |a| "-arch #{a}" }.join(' ')
+      # Remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
+      cflags = s.get_make_var("CFLAGS")
+      cflags.gsub! "-Wc,'-arch ppc7400'", ""
+      cflags.gsub! "-Wc,'-arch ppc64'", ""
+      s.change_make_var! "CFLAGS", cflags
 
       # --libexecdir parameter to ./configure isn't changing this, so cram it in
       # This will be where the Apache module ends up, and we don't want to touch

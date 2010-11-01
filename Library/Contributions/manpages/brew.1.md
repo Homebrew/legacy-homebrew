@@ -44,6 +44,9 @@ didn't include with OS X.
   * `install [--force] [--debug] [--use-llvm] [--ignore-dependencies] [--HEAD]` <formula>:
     Installs <formula>.
 
+    <formula> is usually the name of the formula to install, but may also be
+    the URL for an arbitrary formula.
+
     If `--force` is passed, will install <formula> even if it is already
     installed. This can be used to re-install a formula without removing
     it first.
@@ -66,8 +69,8 @@ didn't include with OS X.
     or `brew --force --HEAD <foo>`.
 
   * `install --interactive [--git]` <formula>:
-    Downloads and patches <formula>, and then opens a shell. This allows the
-    user to run `./configure --help` and otherwise determine how to turn the
+    Downloads and patches <formula>, then opens a shell. This allows the user
+    to run `./configure --help` and otherwise determine how to turn the
     software package into a Homebrew formula.
 
     If `--git` is passed, Homebrew will create a Git repository, useful for
@@ -279,6 +282,21 @@ Some external commands are shipped with Homebrew, and enabled by default.
   * HOMEBREW\_VERBOSE:
     If set, instructs Homebrew to always assume `--verbose` when running
     commands.
+
+## USING HOMEBREW BEHIND A PROXY
+
+Homebrew uses several commands for downloading files (e.g. curl, git, svn).
+Many of these tools can download via a proxy. It's common for these tools
+to read proxy parameters from environment variables.
+
+For the majority of cases setting `http_proxy` is enough. You can set this in
+your shell profile, or you can use it before a brew command:
+
+    http_proxy=http://<host>:<port> brew install foo
+
+If your proxy requires authentication:
+
+    http_proxy=http://<user>:<password>@<host>:<port> brew install foo
 
 ## SEE ALSO
 
