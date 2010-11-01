@@ -10,6 +10,11 @@ class Gnupg <Formula
   homepage 'http://www.gnupg.org/'
   sha1 '78e22f5cca88514ee71034aafff539c33f3c6676'
 
+  def patches
+    # Fix for DNS resolution
+    { :p0 => "https://bugs.g10code.com/gnupg/file313/stable-1-4.diff" }
+  end
+
   def options
     [["--idea", "Build with (patented) IDEA cipher"]]
   end
@@ -21,6 +26,8 @@ class Gnupg <Formula
       GnupgIdea.new.brew { (d+'cipher').install Dir['*'] }
       system 'gunzip', 'cipher/idea.c.gz'
     end
+    
+    system "/usr/bin/autoconf"    
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
