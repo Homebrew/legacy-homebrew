@@ -81,13 +81,13 @@ begin
     if ARGV.named.empty?
       puts HOMEBREW_CACHE
     else
-      puts *ARGV.formulae.collect {|f| f.cached_download}
+      puts ARGV.formulae.collect {|f| f.cached_download}
     end
   when '--prefix'
     if ARGV.named.empty?
       puts HOMEBREW_PREFIX
     else
-      puts *ARGV.formulae.collect {|f| f.prefix}
+      puts ARGV.formulae.collect {|f| f.prefix}
     end
   when '--repository'
     puts HOMEBREW_REPOSITORY
@@ -95,7 +95,7 @@ begin
     if ARGV.named.empty?
       puts HOMEBREW_CELLAR
     else
-      puts *ARGV.formulae.collect {|f| HOMEBREW_CELLAR+f.name}
+      puts ARGV.formulae.collect {|f| HOMEBREW_CELLAR+f.name}
     end
   when '--config'
     dump_config
@@ -167,7 +167,7 @@ begin
             path
           end
         end
-        exec_editor *paths
+        exec_editor(*paths)
       end
 
   when 'up', 'update'
@@ -225,7 +225,7 @@ begin
       elsif ARGV.named.empty?
         raise UsageError
       else
-        exec_editor *ARGV.named.collect {|name| make name}
+        exec_editor(*ARGV.named.collect {|name| make name})
       end
 
     when 'diy', 'configure'
@@ -277,7 +277,7 @@ begin
   when 'log'
     Dir.chdir HOMEBREW_REPOSITORY
     args = ARGV.options_only
-    args += ARGV.formulae.map{ |formula| formula.path }
+    args += ARGV.formulae.map{ |formula| formula.path } unless ARGV.named.empty?
     exec "git", "log", *args
 
   # For each formula given, show which other formulas depend on it.
@@ -287,7 +287,7 @@ begin
     if ARGV.include? "--installed"
       uses = uses.select { |f| f = HOMEBREW_CELLAR+f; f.directory? and not f.subdirs.empty? }
     end
-    puts *uses.sort
+    puts uses.sort
 
   when 'deps'
     if ARGV.include?('--all')
@@ -296,10 +296,10 @@ begin
         puts "#{f.name}:#{f.deps.join(' ')}"
       end
     elsif ARGV.include?("-1") or ARGV.include?("--1")
-      puts *ARGV.formulae.map{ |f| f.deps or [] }.flatten.uniq.sort
+      puts ARGV.formulae.map {|f| f.deps or []}.flatten.uniq.sort
     else
       require 'formula_installer'
-      puts *ARGV.formulae.map{ |f| FormulaInstaller.expand_deps(f).map{|f| f.name} }.flatten.uniq.sort
+      puts ARGV.formulae.map {|f| FormulaInstaller.expand_deps(f).map {|f| f.name} }.flatten.uniq.sort
     end
 
   when 'cat'
