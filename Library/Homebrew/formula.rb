@@ -481,7 +481,7 @@ EOF
             p[:compression] = :bzip2
             out_fn += '.bz2'
           end
-          p[:curl_args] = [url, '-o', out_fn]
+          p[:curl_args] = ['-k', url, '-o', out_fn]
         else
           # it's a file on the local filesystem
           p[:filename] = url
