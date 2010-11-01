@@ -1,15 +1,10 @@
 require 'formula'
 
 class Nginx < Formula
-  url 'http://nginx.org/download/nginx-0.7.67.tar.gz'
-  head 'http://nginx.org/download/nginx-0.8.49.tar.gz'
+  url 'http://nginx.org/download/nginx-0.8.53.tar.gz'
   homepage 'http://nginx.org/'
 
-  unless ARGV.build_head?
-    md5 'b6e175f969d03a4d3c5643aaabc6a5ff'
-  else
-    md5 '1d335c28f35b0517211e4284a32fb2d5'
-  end
+  md5 '717eaea1b34e8663849f64b9aa05a9da'
 
   depends_on 'pcre'
 
@@ -102,7 +97,7 @@ __END__
 @@ -155,6 +155,22 @@ else
              . auto/feature
          fi
- 
+
 +        if [ $ngx_found = no ]; then
 +
 +            # Homebrew

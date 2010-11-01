@@ -3,7 +3,7 @@ require 'formula_installer'
 
 def main
   # Names of outdated brews; they count as installed.
-  outdated = outdated_brews.select {|b| b[1]}
+  outdated = outdated_brews.collect {|b| b[1]}
 
   HOMEBREW_CELLAR.subdirs.each do |keg|
     next unless keg.subdirs

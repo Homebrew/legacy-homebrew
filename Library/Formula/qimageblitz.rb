@@ -5,7 +5,7 @@ class Qimageblitz <Formula
   version '0.0.6'
   homepage 'http://www.kde.org'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'qt'
 
   def install

@@ -10,7 +10,7 @@ class Poppler <Formula
   homepage 'http://poppler.freedesktop.org/'
   md5 '1d27cb8a09aaa373660fd608b258022a'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on "qt" if ARGV.include? "--with-qt4"
 
   def patches

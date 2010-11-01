@@ -1,9 +1,12 @@
 require 'formula'
 
 class Pianobar <Formula
-  head 'git://github.com/PromyLOPh/pianobar.git', :revison => '8ac0b9532a34383d22b76ff7e274e32780891dc1'
-  version '2a1e81927ef6fbf0d9c5'
+  url 'git://github.com/PromyLOPh/pianobar.git',
+    :tag => '2010.10.07'
+  version '2010.10.07'
   homepage 'http://github.com/PromyLOPh/pianobar/'
+
+  head 'git://github.com/PromyLOPh/pianobar.git'
 
   depends_on 'libao'
   depends_on 'mad'

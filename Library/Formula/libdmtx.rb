@@ -5,7 +5,7 @@ class Libdmtx <Formula
   homepage 'http://www.libdmtx.org'
   md5 '0684cf3857591e777b57248d652444ae'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'imagemagick'
 
   def install

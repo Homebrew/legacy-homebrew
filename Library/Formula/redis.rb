@@ -1,10 +1,10 @@
 require 'formula'
 
 class Redis <Formula
-  url 'http://redis.googlecode.com/files/redis-2.0.1.tar.gz'
+  url 'http://redis.googlecode.com/files/redis-2.0.3.tar.gz'
   head 'git://github.com/antirez/redis.git'
   homepage 'http://code.google.com/p/redis/'
-  sha1 '364665c966c90eb5ab7d16065734a2b713d4b8eb'
+  sha1 '306687159ee7cd2327da22593f1065d39583a997'
 
   def install
     fails_with_llvm "Breaks with LLVM"

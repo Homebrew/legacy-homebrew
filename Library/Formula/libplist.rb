@@ -5,7 +5,7 @@ class Libplist <Formula
   homepage 'http://github.com/JonathanBeck/libplist'
   md5 '0f48f4da8ddba5d7e186307622bf2c62'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'glib'
   depends_on 'libxml2'
 

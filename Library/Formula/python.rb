@@ -73,8 +73,18 @@ class Python <Formula
       # If we're installed or installing as a Framework, then use that location.
       return prefix+"Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages"
     else
-      # Otherwise, use just the lib path.
+      # Otherwise use just 'lib'
       return lib+"python2.7/site-packages"
+    end
+  end
+
+  def exec_prefix
+    if as_framework?
+      # If we're installed or installing as a Framework, then use that location.
+      return prefix+"Frameworks/Python.framework/Versions/2.7/bin"
+    else
+      # Otherwise just use 'bin'
+      return bin
     end
   end
 
@@ -104,6 +114,11 @@ class Python <Formula
     else
       args << "--enable-shared" unless ARGV.include? '--static'
     end
+
+    # allow sqlite3 module to load extensions
+    inreplace "setup.py",
+      'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))',
+      '#sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))'
 
     system "./configure", *args
     system "make"
@@ -144,7 +159,7 @@ class Python <Formula
       If you install Python packages via pip, binaries will be installed under
       Python's cellar but not automatically linked into the Homebrew prefix.
       You may want to add Python's bin folder to your PATH as well:
-        #{bin}
+        #{exec_prefix}
     EOS
 
     s = site_caveats+general_caveats

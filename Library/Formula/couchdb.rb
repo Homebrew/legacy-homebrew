@@ -3,7 +3,6 @@ require 'formula'
 class Couchdb <Formula
   url 'http://github.com/apache/couchdb/tarball/1.0.1'
   homepage "http://couchdb.apache.org/"
-  version "1.0.1"
   md5 'f2ea23caacff482afe44e29a3f8b7685'
 
   depends_on 'spidermonkey'
@@ -24,7 +23,6 @@ class Couchdb <Formula
     (lib+'couchdb/bin/couchjs').chmod 0755
     (var+'lib/couchdb').mkpath
     (var+'log/couchdb').mkpath
-
   end
 
   def caveats; <<-EOS.undent
@@ -32,7 +30,7 @@ class Couchdb <Formula
         cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist ~/Library/LaunchAgents
         launchctl load -w ~/Library/LaunchAgents/org.apache.couchdb.plist
 
-    If this is an upgrade and you already have the com.mysql.mysqld.plist loaded:
+    If this is an upgrade and you already have the org.apache.couchdb.plist loaded:
         launchctl unload -w ~/Library/LaunchAgents/org.apache.couchdb.plist
         cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist ~/Library/LaunchAgents
         launchctl load -w ~/Library/LaunchAgents/org.apache.couchdb.plist
@@ -41,5 +39,4 @@ class Couchdb <Formula
         couchdb
     EOS
   end
-
 end

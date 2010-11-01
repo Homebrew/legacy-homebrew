@@ -2,9 +2,9 @@ require 'formula'
 require 'hardware'
 
 class Qt <Formula
-  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.6.3.tar.gz'
-  md5 '5c69f16d452b0bb3d44bc3c10556c072'
-  homepage 'http://www.qtsoftware.com'
+  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.0.tar.gz'
+  md5 '3a2f25b9b115037277f4fb759194a7a5'
+  homepage 'http://qt.nokia.com/'
 
   def options
     [
@@ -62,13 +62,13 @@ class Qt <Formula
     end
 
     system "./configure", *args
+    system "make"
     system "make install"
 
     # stop crazy disk usage
     (prefix+'doc/html').rmtree
     (prefix+'doc/src').rmtree
     # what are these anyway?
-    (bin+'Assistant_adp.app').rmtree
     (bin+'pixeltool.app').rmtree
     (bin+'qhelpconverter.app').rmtree
     # remove porting file for non-humans

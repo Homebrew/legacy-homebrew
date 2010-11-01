@@ -7,8 +7,8 @@ class Qdbm <Formula
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                      		"--prefix=#{prefix}",
-                      		"--mandir=#{man}"
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make mac"
     system "make install-mac"
   end

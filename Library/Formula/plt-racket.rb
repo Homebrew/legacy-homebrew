@@ -1,20 +1,19 @@
 require 'formula'
 
 class PltRacket <Formula
-  # There are source packages but the OSX package is a .dmg and the Unix
-  # tarball doesn't have everything needed for building on OSX
+  # Use GitHub; tarball doesn't have everything needed for building on OS X
   url 'git://github.com/plt/racket.git', :tag => 'v5.0.1'
   homepage 'http://racket-lang.org/'
   version '5.0.1'
 
-  # executables work fine until clean step calls strip on them
+  # Don't sttip symbols; need them for dynamic linking.
   skip_clean 'bin'
 
   def install
     Dir.chdir 'src' do
-
-      args = [ "--disable-debug", "--disable-dependency-tracking",
+      args = ["--disable-debug", "--disable-dependency-tracking",
               "--enable-xonx",
+              "--enable-shared",
               "--prefix=#{prefix}" ]
 
       if snow_leopard_64?
@@ -23,6 +22,7 @@ class PltRacket <Formula
 
       system "./configure", *args
       system "make"
+      ohai   "Installing might take a long time (~40 minutes)"
       system "make install"
     end
   end

@@ -2,8 +2,8 @@ require 'formula'
 
 class Rabbitmq <Formula
   homepage 'http://rabbitmq.com'
-  url 'http://mirror.rabbitmq.com/releases/rabbitmq-server/v2.0.0/rabbitmq-server-2.0.0.tar.gz'
-  md5 '04b99018085d4156b404d56377fc1c62'
+  url 'http://rabbitmq.com/releases/rabbitmq-server/v2.1.1/rabbitmq-server-2.1.1.tar.gz'
+  md5 '2359d4b90431925e971726a6e0274bf8'
 
   depends_on 'erlang'
   depends_on 'simplejson' => :python if MACOS_VERSION < 10.6

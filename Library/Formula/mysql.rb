@@ -2,8 +2,8 @@ require 'formula'
 
 class Mysql <Formula
   homepage 'http://dev.mysql.com/doc/refman/5.1/en/'
-  url 'http://mysql.llarian.net/Downloads/MySQL-5.1/mysql-5.1.49.tar.gz'
-  md5 'a90d87a71fa3c23dff6d78afc8e3184c'
+  url 'http://mysql.mirrors.pair.com/Downloads/MySQL-5.1/mysql-5.1.51.tar.gz'
+  md5 'c12bf24493688c51c6cff5e8c6563830'
 
   depends_on 'readline'
 

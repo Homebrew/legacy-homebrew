@@ -5,7 +5,7 @@ class Dia <Formula
   homepage 'http://live.gnome.org/Dia'
   md5 '3d11f9aaa5a4923f0a5533962c87bdfb'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'intltool'
   depends_on 'gettext'
   depends_on 'pango'

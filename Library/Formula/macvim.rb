@@ -1,7 +1,9 @@
 require 'formula'
 
 class Macvim <Formula
-  head 'git://github.com/b4winckler/macvim.git'
+  url 'git://github.com/b4winckler/macvim.git', :tag => 'v7.3-53'
+  version 'v7.3-53'
+  head 'git://github.com/b4winckler/macvim.git', :branch => 'master'
   homepage 'http://code.google.com/p/macvim/'
 
   def options

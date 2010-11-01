@@ -5,8 +5,8 @@ class Lftp <Formula
   homepage 'http://lftp.yar.ru/'
   md5 '028f14ef845403e6f76acb41f51e908c'
 
+  depends_on 'pkg-config' => :build
   depends_on 'readline'
-  depends_on 'pkg-config'
   depends_on 'gnutls'
 
   def install

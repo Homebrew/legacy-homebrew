@@ -56,11 +56,12 @@ case "$words[1]" in
   list)
     _arguments \
       '(--unbrewed)--unbrewed[files in brew --prefix not controlled by brew]' \
+      '(--versions)--versions[list all installed versions of a formula]' \
       '1: :->forms' &&  return 0
 
       if [[ "$state" == forms ]]; then
         _brew_installed_formulae
-        _requested installed_formulae expl 'installed formulae' compadd -a installed_formulae
+        _wanted installed_formulae expl 'installed formulae' compadd -a installed_formulae
       fi ;;
   install|home|log|info|uses|cat|deps)
     _brew_all_formulae

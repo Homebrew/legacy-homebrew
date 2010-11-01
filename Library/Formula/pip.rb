@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pip <Formula
-  url 'http://pypi.python.org/packages/source/p/pip/pip-0.8.tar.gz'
+  url 'http://pypi.python.org/packages/source/p/pip/pip-0.8.1.tar.gz'
   homepage 'http://pip.openplans.org/'
-  md5 '468d9adc309f33ad51cee38f0d455429'
+  md5 '5d40614774781b118dd3f10c0d038cbc'
 
   depends_on 'distribute'
 
@@ -72,10 +72,10 @@ end
 
 __END__
 diff --git a/pip/locations.py b/pip/locations.py
-index 292020c..2372314 100644
+index 4254ef2..0a31cc2 100644
 --- a/pip/locations.py
 +++ b/pip/locations.py
-@@ -10,8 +10,8 @@ if getattr(sys, 'real_prefix', None):
+@@ -19,8 +19,8 @@ if running_under_virtualenv():
      src_prefix = os.path.join(sys.prefix, 'src')
  else:
      ## FIXME: this isn't a very good default
@@ -86,7 +86,7 @@ index 292020c..2372314 100644
  
  # FIXME doesn't account for venv linked to global site-packages
  
-@@ -26,11 +26,16 @@ if sys.platform == 'win32':
+@@ -35,11 +35,16 @@ if sys.platform == 'win32':
      default_storage_dir = os.path.join(user_dir, 'pip')
      default_config_file = os.path.join(default_storage_dir, 'pip.ini')
      default_log_file = os.path.join(default_storage_dir, 'pip.log')

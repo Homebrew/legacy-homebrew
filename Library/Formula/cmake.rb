@@ -5,6 +5,13 @@ class Cmake <Formula
   md5 '8c967d5264657a798f22ee23976ff0d9'
   homepage 'http://www.cmake.org/'
 
+  def patches
+    # CMAKE_OSX_ARCHITECTURES quoting bug. See: http://www.vtk.org/Bug/view.php?id=11244
+    # Not needed with CMake 2.8.3 and above.
+    [ "http://cmake.org/gitweb?p=cmake.git;a=patch;h=a8ded533",
+      "http://cmake.org/gitweb?p=cmake.git;a=patch;h=0790af3b" ]
+  end
+
   def install
     # xmlrpc is a stupid little library, rather than waste our users' time
     # just let cmake use its own copy. God knows why something like cmake

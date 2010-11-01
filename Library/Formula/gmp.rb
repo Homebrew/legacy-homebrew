@@ -7,23 +7,25 @@ class Gmp <Formula
 
   def options
     [
-      ["--skip-check", "Do not run 'make check' to verify libraries. (Not recommended.)"],
-      ["--32-bit", "Force 32-bit on Leopard on 64-bit machines."]
+      ["--32-bit", "Force 32-bit."],
+      ["--skip-check", "Do not run 'make check' to verify libraries."]
     ]
   end
 
   def install
-    fails_with_llvm "On OS X 10.6, some tests fail under LLVM"
+    # Reports of problems using gcc 4.0 on Leopard
+    # http://github.com/mxcl/homebrew/issues/issue/2302
+    ENV.gcc_4_2 if MACOS_VERSION < 10.6
+
+    fails_with_llvm "Tests fail to compile; missing references in 'llvm bitcode in libtests.a(misc.o)'."
 
     args = ["--prefix=#{prefix}", "--infodir=#{info}", "--enable-cxx"]
 
-    if MACOS_VERSION == 10.5
-      if Hardware.is_32_bit? or ARGV.include? "--32-bit"
-        ENV.m32
-        args << "--host=none-apple-darwin"
-      else
-        ENV.m64
-      end
+    if Hardware.is_32_bit? or ARGV.include? "--32-bit"
+      ENV.m32
+      args << "--host=none-apple-darwin"
+    else
+      ENV.m64
     end
 
     system "./configure", *args

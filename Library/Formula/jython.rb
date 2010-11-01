@@ -5,7 +5,7 @@ class Jython <Formula
     :using => :nounzip
   md5 '2ee978eff4306b23753b3fe9d7af5b37'
   homepage 'http://www.jython.org'
-  head "http://downloads.sourceforge.net/project/jython/jython-dev/2.5.2b1/jython_installer-2.5.2b1.jar",
+  head "http://downloads.sourceforge.net/project/jython/jython-dev/2.5.2b2/jython_installer-2.5.2b2.jar",
     :using => :nounzip
 
   def install
