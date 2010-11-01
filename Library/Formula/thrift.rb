@@ -3,25 +3,26 @@ require 'formula'
 class Thrift <Formula
   homepage 'http://incubator.apache.org/thrift/'
   head 'http://svn.apache.org/repos/asf/incubator/thrift/trunk'
-  url 'http://www.apache.org/dist/incubator/thrift/0.4.0-incubating/thrift-0.4.0.tar.gz'
-  md5 'bb8466e5b884e9edef862a64f57abe38'
+  url 'http://www.apache.org/dist/incubator/thrift/0.5.0-incubating/thrift-0.5.0.tar.gz'
+  md5 '14c97adefb4efc209285f63b4c7f51f2'
 
   depends_on 'boost'
 
   def install
     cp "/usr/X11/share/aclocal/pkg.m4", "aclocal"
     system "./bootstrap.sh" if version == 'HEAD'
-    system "./configure","--disable-debug","--without-java",
-                         "--prefix=#{prefix}","--libdir=#{lib}",
-                         # rationale: this can be installed with easy_install
-                         # and when you do that, it installs properly, we
-                         # can't install it properly without leaving Homebrew's prefix
-                         "--without-py",
-                         # again, use gem
-                         "--without-ruby",
-                         "--without-perl",
-                         # this wants to alter the system wide autoloads file
-                         "--without-php"
+
+    # Language bindings try to install outside of Homebrew's prefix, so
+    # omit them here. For ruby you can install the gem, and for Python
+    # you can use pip or easy_install.
+    system "./configure", "--disable-debug",
+                          "--prefix=#{prefix}",
+                          "--libdir=#{lib}",
+                          "--without-java",
+                          "--without-python",
+                          "--without-ruby",
+                          "--without-perl",
+                          "--without-php"
     system "make"
     system "make install"
   end

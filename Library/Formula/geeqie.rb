@@ -18,7 +18,7 @@ class Geeqie <Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-glibtest",
-		                      "--disable-gtktest"
+                          "--disable-gtktest"
     system "make install"
   end
 end

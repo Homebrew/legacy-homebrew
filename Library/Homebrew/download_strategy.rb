@@ -24,7 +24,7 @@ class AbstractDownloadStrategy
   end
 
   def quiet_safe_system *args
-    safe_system *expand_safe_system_args(args)
+    safe_system(*expand_safe_system_args(args))
   end
 end
 
@@ -192,7 +192,7 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
 
   def get_externals
     `'#{shell_quote(svn)}' propget svn:externals '#{shell_quote(@url)}'`.chomp.each_line do |line|
-      name, url = line.split /\s+/
+      name, url = line.split(/\s+/)
       yield name, url
     end
   end
@@ -209,7 +209,7 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
     args = _fetch_command svncommand, url, target
     args << '-r' << revision if revision
     args << '--ignore-externals' if ignore_externals
-    quiet_safe_system *args
+    quiet_safe_system(*args)
   end
 
   # Try HOMEBREW_SVN, a Homebrew-built svn, and finally the OS X system svn.
