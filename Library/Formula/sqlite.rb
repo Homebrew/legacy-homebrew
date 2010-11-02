@@ -6,8 +6,10 @@ class Sqlite <Formula
   homepage 'http://www.sqlite.org/'
 
   def options
-    [["--with-rtree", "Enables the R*Tree index module"]]
-    [["--universal", "Build a universal binary."]]
+  [
+    ["--with-rtree", "Enables the R*Tree index module"],
+    ["--universal", "Build a universal binary."]
+  ]
   end
 
   def install
