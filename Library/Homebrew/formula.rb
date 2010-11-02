@@ -59,10 +59,10 @@ end
 class Formula
   include FileUtils
 
-  attr_reader :url, :version, :homepage, :name, :specs, :downloader
+  attr_reader :name, :path, :url, :version, :homepage, :specs, :downloader
 
   # Homebrew determines the name
-  def initialize name='__UNKNOWN__'
+  def initialize name='__UNKNOWN__', path=nil
     set_instance_variable 'homepage'
     set_instance_variable 'url'
     set_instance_variable 'head'
@@ -86,6 +86,8 @@ class Formula
     raise "No url provided for formula #{name}" if @url.nil?
     @name=name
     validate_variable :name
+
+    @path=path
 
     set_instance_variable 'version'
     @version ||= @spec_to_use.detect_version
@@ -113,7 +115,11 @@ class Formula
   end
 
   def path
-    self.class.path name
+    if @path.nil?
+      return self.class.path name
+    else
+      return @path
+    end
   end
 
   def prefix
@@ -276,6 +282,9 @@ class Formula
   end
 
   def self.resolve_alias name
+    # Don't resolve paths or URLs
+    return name if name.include?("/")
+
     aka = HOMEBREW_REPOSITORY+"Library/Aliases/#{name}"
     if aka.file?
       aka.realpath.basename('.rb').to_s
@@ -285,14 +294,37 @@ class Formula
   end
 
   def self.factory name
+    # If an instance of Formula is passed, just return it
     return name if name.kind_of? Formula
-    path = Pathname.new(name)
-    if path.absolute?
-      require name
-      name = path.stem
+
+    # If a URL is passed, download to the cache and install
+    if name =~ %r[(https?|ftp)://]
+      url = name
+      name = Pathname.new(name).basename
+      target_file = (HOMEBREW_CACHE+"Formula"+name)
+      name = name.basename(".rb").to_s
+
+      (HOMEBREW_CACHE+"Formula").mkpath
+      FileUtils.rm target_file, :force => true
+      curl url, '-o', target_file
+
+      require target_file
+      install_type = :from_url
     else
-      require self.path(name)
+      # Check if this is a name or pathname
+      path = Pathname.new(name)
+      if path.absolute?
+        # For absolute paths, just require the path
+        require name
+        name = path.stem
+        install_type = :from_path
+      else
+        # For names, map to the path and then require
+        require self.path(name)
+        install_type = :from_name
+      end
     end
+
     begin
       klass_name = self.class_s(name)
       klass = eval(klass_name)
@@ -303,7 +335,9 @@ class Formula
       puts "Double-check the name of the class in that formula."
       raise LoadError
     end
-    return klass.new(name)
+
+    return klass.new(name) if install_type == :from_name
+    return klass.new(name, target_file)
   rescue LoadError
     raise FormulaUnavailableError.new(name)
   end
@@ -462,8 +496,9 @@ EOF
     return if patch_list.empty?
 
     ohai "Downloading patches"
-    # downloading all at once is much more efficient, espeically for FTP
-    curl *(patch_list.collect{|p| p[:curl_args]}.select{|p| p}.flatten)
+    # downloading all at once is much more efficient, especially for FTP
+    patches = patch_list.collect{|p| p[:curl_args]}.select{|p| p}.flatten
+    curl(*patches)
 
     ohai "Patching"
     patch_list.each do |p|
@@ -509,7 +544,7 @@ EOF
 
     attr_rw :version, :homepage, :specs, :deps, :external_deps
     attr_rw :keg_only_reason, :skip_clean_all
-    attr_rw *CHECKSUM_TYPES
+    attr_rw(*CHECKSUM_TYPES)
 
     def head val=nil, specs=nil
       return @head if val.nil?

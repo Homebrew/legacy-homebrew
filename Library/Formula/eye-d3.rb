@@ -7,6 +7,14 @@ class EyeD3 <Formula
 
   def install
     man1.install "doc/eyeD3.1.in" => "eyeD3.1"
+
+    # Manually process this file
+    inreplace "src/eyeD3/__init__.py.in" do |s|
+      s.change_make_var! "eyeD3Version", "\"#{version}\""
+      s.change_make_var! "eyeD3Maintainer", "\"Pacakaged by Homebrew\""
+    end
+    mv "src/eyeD3/__init__.py.in", "src/eyeD3/__init__.py"
+
     libexec.install "src/eyeD3"
     libexec.install "bin/eyeD3" => "eyeD3_script"
     bin.mkpath
