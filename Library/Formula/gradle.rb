@@ -3,11 +3,11 @@ require 'formula'
 class Gradle <Formula
   homepage 'http://www.gradle.org/'
   url 'http://dist.codehaus.org/gradle/gradle-0.8-all.zip'
-  head 'http://dist.codehaus.org/gradle/gradle-0.9-rc-1-all.zip'
+  head 'http://dist.codehaus.org/gradle/gradle-0.9-rc-2-all.zip'
 
   if ARGV.build_head?
-    version '0.9-rc-1'
-    md5 'f216f7a76ca097a310ab653d839980c0'
+    version '0.9-rc-2'
+    md5 '0fc5dcd67c826f136087f52c2692b5ac'
   else
     version '0.8'
     md5 '73a0ed51b6ec00a7d3a9d242d51aae60'

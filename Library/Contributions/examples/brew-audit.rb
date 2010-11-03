@@ -88,6 +88,10 @@ def audit_formula_text text
     problems << " * Use \"if ARGV.build_head?\" instead"
   end
 
+  if text =~ /make && make/
+    problems << " * Use separate make calls."
+  end
+
 	if ARGV.include? "--warn"
 	  if text =~ /^\t/
 	    problems << " * Use spaces instead of tabs for indentation"
