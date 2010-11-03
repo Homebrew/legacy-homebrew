@@ -116,7 +116,7 @@ class Formula
 
   def path
     if @path.nil?
-      return self.class.path name
+      return self.class.path(name)
     else
       return @path
     end
