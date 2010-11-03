@@ -15,7 +15,7 @@ class Coq < Formula
       exit 1
     end
     arch = Hardware.is_64_bit? ? "x86_64" : "i386"
-    camlp5_lib = Formula.factory('camlp5').lib+'ocaml'+'camlp5'
+    camlp5_lib = Formula.factory('camlp5').lib+'ocaml/camlp5'
     system "./configure", "-prefix", prefix,
                           "-mandir", man,
                           "-camlp5dir", camlp5_lib,
