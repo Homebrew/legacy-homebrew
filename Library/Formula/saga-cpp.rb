@@ -2,7 +2,7 @@ require 'formula'
 
 class SagaCpp <Formula
   url 'http://static.saga.cct.lsu.edu/software/saga-core/saga-core-1.5.2.tgz'
-  head 'https://svn.cct.lsu.edu/repos/saga/trunk/', :using => :svn
+  head 'https://svn.cct.lsu.edu/repos/saga/core/trunk/', :using => :svn
   homepage 'http://saga.cct.lsu.edu'
   md5 'd018e17c03db7821f6e3ab30c281067d'
 
