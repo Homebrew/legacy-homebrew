@@ -9,7 +9,7 @@ class Libxml2 <Formula
 
   def install
     fails_with_llvm "Undefined symbols when linking", :build => "2326"
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--with-threads"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make"
     ENV.j1
     system "make install"
