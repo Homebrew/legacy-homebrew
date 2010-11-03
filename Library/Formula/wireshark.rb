@@ -9,16 +9,29 @@ class Wireshark <Formula
   depends_on 'pcre' => :optional
   depends_on 'glib'
 
+  if ARGV.include? "--with-x"
+    depends_on 'gtk+'
+  end
+
+  def options
+    [
+      ["--with-x", "Include X11 support"],
+    ]
+  end
+
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-dependency-tracking",
-                          "--disable-wireshark" # actually just disables the GTK GUI
+    args = [
+      "--prefix=#{prefix}",
+      "--disable-dependency-tracking",
+    ]
+
+    if not ARGV.include? "--with-x"
+      args << "--disable-wireshark" # actually just disables the GTK GUI
+    end
+
+    system "./configure", *args
     system "make"
     ENV.j1 # Install failed otherwise.
     system "make install"
-  end
-
-  def caveats
-    "We don't build the X11-enabled GUI by default"
   end
 end
