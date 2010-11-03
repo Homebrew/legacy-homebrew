@@ -35,6 +35,16 @@ class Openvpn <Formula
   end
 
   def caveats; <<-EOS
+You may also wish to install tuntap:
+
+  The TunTap project provides kernel extensions for Mac OS X that allow
+  creation of virtual network interfaces.
+
+  http://tuntaposx.sourceforge.net/
+
+Because these are kernel extensions, there is no Homebrew formula for tuntap.
+
+
 For OpenVPN to work as a server, you will need to do the following:
 
 1) Create configuration file in #{etc}/openvpn, samples can be

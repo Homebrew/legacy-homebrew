@@ -8,7 +8,12 @@ class Openssl <Formula
 
   keg_only :provided_by_osx
 
+  def options
+    [["--universal", "Build a universal binary."]]
+  end
+
   def install
+    ENV.universal_binary if ARGV.include? "--universal"
     ENV.j1 # Breaks on Mac Pro
     system "./config", "--prefix=#{prefix}",
                        "--openssldir=#{etc}",

@@ -10,6 +10,12 @@ class Gnupg <Formula
   homepage 'http://www.gnupg.org/'
   sha1 '78e22f5cca88514ee71034aafff539c33f3c6676'
 
+  # Fix from https://bugs.g10code.com/gnupg/issue1292
+  # Inline because it is being served w/ a broken cert.
+  def patches
+    {:p0 => DATA}
+  end
+
   def options
     [["--idea", "Build with (patented) IDEA cipher"]]
   end
@@ -21,6 +27,8 @@ class Gnupg <Formula
       GnupgIdea.new.brew { (d+'cipher').install Dir['*'] }
       system 'gunzip', 'cipher/idea.c.gz'
     end
+
+    system "/usr/bin/autoconf"
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -46,3 +54,40 @@ class Gnupg <Formula
     end
   end
 end
+
+
+__END__
+Index: configure.ac
+===================================================================
+--- configure.ac	(revision 5458)
++++ configure.ac	(working copy)
+@@ -730,6 +730,17 @@
+ [[unsigned char answer[PACKETSZ]; res_query("foo.bar",C_IN,T_A,answer,PACKETSZ); dn_skipname(0,0); dn_expand(0,0,0,0,0);]])],[have_resolver=yes ; need_compat=yes])
+        AC_MSG_RESULT($have_resolver)
+     fi
++    if test x"$have_resolver" != xyes ; then
++       AC_MSG_CHECKING([whether I can make the resolver usable by linking -lresolv])
++       LIBS="-lresolv $LIBS"
++       AC_LINK_IFELSE([AC_LANG_PROGRAM([#define BIND_8_COMPAT
++#include <sys/types.h>
++#include <netinet/in.h>
++#include <arpa/nameser.h>
++#include <resolv.h>],
++[[unsigned char answer[PACKETSZ]; res_query("foo.bar",C_IN,T_A,answer,PACKETSZ); dn_skipname(0,0); dn_expand(0,0,0,0,0);]])],[have_resolver=yes ; need_compat=yes])
++       AC_MSG_RESULT($have_resolver)
++    fi
+   fi
+
+   if test x"$have_resolver" = xyes ; then
+Index: ChangeLog
+===================================================================
+--- ChangeLog	(revision 5458)
++++ ChangeLog	(working copy)
+@@ -1,3 +1,7 @@
++2010-10-19  Peter Gerdes <gerdes@invariant.org>
++
++	* configure.ac: Add test to see if -lresolv needs to be added to DNSLIBS to enable DNS resolution on OS X
++
+ 2010-10-18  Werner Koch  <wk@g10code.com>
+
+ 	Release 1.4.11.
