@@ -1,14 +1,15 @@
 require 'formula'
 
 class Wyrd <Formula
-  url 'http://pessimization.com/software/wyrd/wyrd-1.4.4.tar.gz'
+  url 'http://pessimization.com/software/wyrd/wyrd-1.4.5.tar.gz'
   homepage 'http://pessimization.com/software/wyrd/'
-  md5 'a376c05ba614625da06082d850c742c7'
+  md5 '3f39fa83a54d2d890823094aba9ca3cc'
 
   depends_on 'remind'
   depends_on 'objective-caml'
 
   def install
+    ENV.deparallelize
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-utf8"
