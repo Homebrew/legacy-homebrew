@@ -1,9 +1,9 @@
 require 'formula'
 
 class Play <Formula
-  url 'http://download.playframework.org/releases/play-1.0.3.1.zip'
+  url 'http://download.playframework.org/releases/play-1.1.zip'
   homepage 'http://www.playframework.org/'
-  md5 'b704cef8f2d8a68088ed0f80a4c4abe9'
+  md5 '54513b11dc4eacd68d01f5c59bb8ec97'
 
   def install
     rm Dir['*.bat']
