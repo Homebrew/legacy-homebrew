@@ -34,7 +34,10 @@ class Graphicsmagick <Formula
   end
 
   def options
-    [['--with-ghostscript', 'Compile against ghostscript (not recommended.)']]
+    [
+      ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
+      ['--with-magick-plus-plus', 'With C++ library.'],
+    ]
   end
 
   def install
@@ -45,23 +48,22 @@ class Graphicsmagick <Formula
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
 
-    args = [ "--prefix=#{prefix}",
-             "--disable-dependency-tracking",
-             "--enable-shared",
-             "--disable-static",
-             "--with-modules",
-             "--without-magick-plus-plus" ]
-
-     args << "--disable-openmp" if MACOS_VERSION < 10.6   # libgomp unavailable
-     args << "--with-gslib" if ghostscript_srsly?
-     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
+    args = ["--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--enable-shared", "--disable-static"]
+    args << "--without-magick-plus-plus" unless ARGV.include? '--with-magick-plus-plus'
+    args << "--disable-openmp" if MACOS_VERSION < 10.6   # libgomp unavailable
+    args << "--with-gslib" if ghostscript_srsly?
+    args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
               unless ghostscript_fonts?
 
     system "./configure", *args
     system "make install"
   end
 
-  def caveats
-    "You don't have X11 from the Xcode DMG installed. Consequently GraphicsMagick is less fully featured." unless x11?
-  end
+  def caveats; <<-EOS.undent
+    You don't have X11 from the Xcode DMG installed. Consequently GraphicsMagick
+    is less fully featured.
+    EOS
+  end unless x11?
 end
