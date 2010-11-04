@@ -13,7 +13,7 @@ class Wireshark <Formula
   def options
     [["--with-x", "Include X11 support"]]
   end
-  
+
   def patches
     # Fix a crash on launch bug in 1.4.1 as fixed in wireshark SVN revision 34494
     DATA
