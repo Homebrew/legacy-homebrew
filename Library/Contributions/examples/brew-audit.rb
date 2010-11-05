@@ -10,7 +10,7 @@ def audit_formula_text text
   problems = []
 
   # Commented-out cmake support from default template
-  if text =~ /# depends_on 'cmake'/
+  if (text =~ /# depends_on 'cmake'/) or (text =~ /# system "cmake/)
     problems << " * Commented cmake support found."
   end
 
@@ -86,6 +86,10 @@ def audit_formula_text text
 
   if text =~ /if\s+ARGV\.include\?\s+'--HEAD'/
     problems << " * Use \"if ARGV.build_head?\" instead"
+  end
+
+  if text =~ /make && make/
+    problems << " * Use separate make calls."
   end
 
 	if ARGV.include? "--warn"
