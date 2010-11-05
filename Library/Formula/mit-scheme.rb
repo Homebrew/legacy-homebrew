@@ -12,16 +12,16 @@ class MitScheme <Formula
     # The build breaks __HORRIBLY__ with parallel make -- one target will erase something
     # before another target gets it, so it's easier to change the environment than to
     # change_make_var, because there are Makefiles littered everywhere
-    ENV["MAKEFLAGS"] = "-j1"
+    ENV.j1
 
     # Liarc builds must launch within the src dir, not using the top-level Makefile
     cd "src"
 
     # Take care of some hard-coded paths
-    inreplace ["6001/edextra.scm", "6001/floppy.scm", "compiler/etc/disload.scm", "configure",
-    "edwin/techinfo.scm", "edwin/unix.scm", "lib/include/configure", "lib/include/option.c", "swat/c/tk3.2-custom/Makefile",
-    "swat/c/tk3.2-custom/tcl/Makefile", "swat/scheme/other/btest.scm"] do |s|
-      s.gsub! /\/usr\/local/, prefix
+    inreplace %w(6001/edextra.scm 6001/floppy.scm compiler/etc/disload.scm configure 
+    edwin/techinfo.scm edwin/unix.scm lib/include/configure lib/include/option.c 
+    swat/c/tk3.2-custom/Makefile swat/c/tk3.2-custom/tcl/Makefile swat/scheme/other/btest.scm) do |s|
+      s.gsub! "/usr/local", prefix
     end
 
     system "etc/make-liarc.sh", "--disable-debug", "--prefix=#{prefix}", "--mandir=#{man}"
