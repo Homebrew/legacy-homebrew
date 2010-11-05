@@ -3,13 +3,13 @@ require 'hardware'
 
 class Sbcl <Formula
   if snow_leopard_64?
-    url 'http://homepage.mac.com/jafingerhut/files/sbcl/sbcl-1.0.42-x86-64-darwin-binary.tar.bz2'
-    md5 'c203b1c9f51d8984edbc85cee956ce16'
+    url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.29/sbcl-1.0.29-x86_64-darwin-binary-r2.tar.bz2'
+    md5 '47c99c60ec44e57070807c0890ba1c90'
   else
-    url 'http://homepage.mac.com/jafingerhut/files/sbcl/sbcl-1.0.42-x86-darwin-binary.tar.bz2'
-    md5 'b8868d668ea6e636c1f153471e4dd24f'
+    url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.29/sbcl-1.0.29-x86-darwin-binary-r2.tar.bz2'
+    md5 '6e6b027a5fd05ef0c8faee30d89ffe54'
   end
-  version '1.0.42'
+  version '1.0.29'
   homepage 'http://www.sbcl.org/'
 
   skip_clean 'bin'
