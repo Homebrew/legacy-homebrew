@@ -22,7 +22,7 @@ Dude! Just give me a one-liner!
 Okay then, but please note this installs Homebrew as root and
 [we recommend against that][sudo].
 
-    curl -LsSf http://github.com/mxcl/homebrew/tarball/master | sudo tar xvz -C/usr/local --strip 1
+    curl -LsSf http://github.com/mxcl/homebrew/tarball/master | sudo /usr/bin/tar xvz -C/usr/local --strip 1
 
 
 But what packages are available?

@@ -10,7 +10,7 @@ def audit_formula_text text
   problems = []
 
   # Commented-out cmake support from default template
-  if text =~ /# depends_on 'cmake'/
+  if (text =~ /# depends_on 'cmake'/) or (text =~ /# system "cmake/)
     problems << " * Commented cmake support found."
   end
 

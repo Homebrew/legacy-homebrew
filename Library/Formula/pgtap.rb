@@ -8,7 +8,7 @@ class Pgtap <Formula
   depends_on 'postgresql'
 
   skip_clean :all
-  
+
   def install
     system "make install"
     bin.install %w(bbin/pg_prove bbin/pg_tapgen)
