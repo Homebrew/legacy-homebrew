@@ -45,3 +45,20 @@ def search_brews text
   require 'cmd/search'
   Homebrew.search_brews text
 end
+
+class Formula
+  # in compatability because the naming is somewhat confusing
+  def self.resolve_alias name
+    opoo 'Formula.resolve_alias is deprecated and will eventually be removed'
+
+    # Don't resolve paths or URLs
+    return name if name.include?("/")
+
+    aka = HOMEBREW_REPOSITORY/:Library/:Aliases/name
+    if aka.file?
+      aka.realpath.basename('.rb').to_s
+    else
+      name
+    end
+  end
+end
