@@ -298,13 +298,16 @@ class Formula
     Dir["#{HOMEBREW_REPOSITORY}/Library/Aliases/*"].map{ |f| File.basename f }.sort
   end
 
-  def self.resolve_alias name
-    # Don't resolve paths or URLs
-    return name if name.include?("/")
-
-    aka = HOMEBREW_REPOSITORY+"Library/Aliases/#{name}"
-    if aka.file?
-      aka.realpath.basename('.rb').to_s
+  def self.caniconical_name name
+    formula_with_that_name = HOMEBREW_REPOSITORY/"Library/Formula/#{name}.rb"
+    possible_alias = HOMEBREW_REPOSITORY/"Library/Aliases"/name
+    if name.include? "/"
+      # Don't resolve paths or URLs
+      name
+    elsif formula_with_that_name.file? and formula_with_that_name.readable?
+      name
+    elsif possible_alias.file?
+      possible_alias.realpath.basename('.rb').to_s
     else
       name
     end
