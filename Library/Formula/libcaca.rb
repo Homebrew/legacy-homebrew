@@ -6,19 +6,26 @@ class Libcaca <Formula
   homepage 'http://caca.zoy.org/wiki/libcaca'
   md5 '790d6e26b7950e15909fdbeb23a7ea87'
 
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
 
   def install
     # Some people can't compile when Java is enabled. See:
     # http://github.com/mxcl/homebrew/issues/issue/2049
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+
+    # Don't build csharp bindings
+    # Don't build ruby bindings; fails for adamv w/ Homebrew Ruby 1.9.2
+
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--disable-imlib2",
                           "--disable-doc",
                           "--disable-slang",
-                          "--disable-java"
+                          "--disable-java",
+                          "--disable-csharp",
+                          "--disable-ruby"
+    ENV.j1 # Or install can fail making the same folder at the same time
     system "make install"
   end
 end
