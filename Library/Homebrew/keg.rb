@@ -98,7 +98,7 @@ protected
       dst.extend ObserverPathnameExtension
 
       if src.file?
-        dst.make_relative_symlink src
+        dst.make_relative_symlink src unless File.basename(src) == '.DS_Store'
       elsif src.directory?
         # if the dst dir already exists, then great! walk the rest of the tree tho
         next if dst.directory? and not dst.symlink?
