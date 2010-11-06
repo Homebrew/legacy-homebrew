@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "October 2010" "Homebrew" "brew"
+.TH "BREW" "1" "November 2010" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -284,6 +284,35 @@ If set, instructs Homebrew to use the LLVM front\-ends to the GCC compilers\.
 .TP
 HOMEBREW_VERBOSE
 If set, instructs Homebrew to always assume \fB\-\-verbose\fR when running commands\.
+.
+.SH "USING HOMEBREW BEHIND A PROXY"
+Homebrew uses several commands for downloading files (e\.g\. curl, git, svn)\. Many of these tools can download via a proxy\. It\'s common for these tools to read proxy parameters from environment variables\.
+.
+.P
+For the majority of cases setting \fBhttp_proxy\fR is enough\. You can set this in your shell profile, or you can use it before a brew command:
+.
+.IP "" 4
+.
+.nf
+
+http_proxy=http://<host>:<port> brew install foo
+.
+.fi
+.
+.IP "" 0
+.
+.P
+If your proxy requires authentication:
+.
+.IP "" 4
+.
+.nf
+
+http_proxy=http://<user>:<password>@<host>:<port> brew install foo
+.
+.fi
+.
+.IP "" 0
 .
 .SH "SEE ALSO"
 Homebrew Wiki: http://wiki\.github\.com/mxcl/homebrew/

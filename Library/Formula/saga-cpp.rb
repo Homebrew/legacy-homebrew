@@ -1,10 +1,10 @@
 require 'formula'
 
 class SagaCpp <Formula
-  url 'http://downloads.sourceforge.net/project/saga/SAGA%20C%2B%2B%20Implementation/1.4.1/saga-cpp-1.4.1.src.tar.gz'
-  head 'https://svn.cct.lsu.edu/repos/saga/trunk/', :using => :svn
+  url 'http://static.saga.cct.lsu.edu/software/saga-core/saga-core-1.5.2.tgz'
+  head 'https://svn.cct.lsu.edu/repos/saga/core/trunk/', :using => :svn
   homepage 'http://saga.cct.lsu.edu'
-  md5 'b05c76761f79d64df1af834986e095a8'
+  md5 'd018e17c03db7821f6e3ab30c281067d'
 
   depends_on 'boost'
   depends_on 'sqlite'
