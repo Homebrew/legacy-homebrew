@@ -1,16 +1,17 @@
 require 'formula'
 
 class Silk <Formula
-  url 'http://tools.netsa.cert.org/releases/silk-2.3.1.tar.gz'
+  url 'http://tools.netsa.cert.org/releases/silk-2.4.0.tar.gz'
   homepage 'http://tools.netsa.cert.org/silk/'
-  md5 'f49ca6da333e5d579347af858e6a1b83'
+  md5 '3c12579712e2f49b07e56055a209d20a'
 
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'libfixbuf'
   depends_on 'yaf'
 
   def install
-    fails_with_llvm "Please see http://github.com/mxcl/homebrew/issues/issue/2215 for details."
+    fails_with_llvm "Undefined symbols during compile"
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
