@@ -52,6 +52,9 @@ EOS
 
     # install the wrapper executable
     (bin+"npm").write executable
+
+    # bash-completion
+    (prefix+'etc/bash_completion.d').install libexec+'npm-completion.sh'
   end
 
   def caveats; <<-EOS.undent
