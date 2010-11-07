@@ -7,7 +7,7 @@ class Xdebug <Formula
 
   def install
     Dir.chdir "xdebug-#{version}" do
-      # See http://github.com/mxcl/homebrew/issues/#issue/69
+      # See https://github.com/mxcl/homebrew/issues/issue/69
       ENV.universal_binary unless Hardware.is_64_bit?
 
       system "phpize"
