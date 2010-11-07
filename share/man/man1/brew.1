@@ -69,7 +69,7 @@ Search for \fItext\fR on the MacPorts or Fink package search page\.
 .
 .TP
 \fBupdate\fR
-Using \fBgit\fR(1), fetch the newest version of Homebrew from GitHub\.
+Fetch the newest version of Homebrew from GitHub using \fBgit\fR(1)\.
 .
 .TP
 \fBlist\fR
@@ -81,11 +81,14 @@ List the installed files for \fIformula\fR\.
 .
 .TP
 \fBinfo\fR \fIformula\fR
-Give all available information for \fIformula\fR\.
+Display information about \fIformula\fR\.
 .
 .TP
 \fBinfo \-\-github\fR \fIformula\fR
 Open a browser to the GitHub History page for formula \fIformula\fR\.
+.
+.IP
+To view formula history locally: \fBbrew log \-p <formula>\fR\.
 .
 .TP
 \fBinfo\fR \fIURL\fR
@@ -104,7 +107,7 @@ Open \fIformula\fR\'s homepage in a browser\.
 Uninstall \fIformula\fR\.
 .
 .IP
-If \fB\-\-force\fR is passed, and there are multiple versions of \fIformula\fR installed, deletes all installed versions\.
+If \fB\-\-force\fR is passed, and there are multiple versions of \fIformula\fR installed, delete all installed versions\.
 .
 .TP
 \fBcreate [\-\-cache]\fR \fIURL\fR
@@ -178,6 +181,36 @@ If \fB\-\-HEAD\fR is passed, download the HEAD version of \fIformula\fR instead\
 If \fB\-\-force\fR is passed, remove a previously cached version and re\-fetch\.
 .
 .TP
+\fBaudit [\-\-warn]\fR
+Check formulae for Homebrew coding style violations\. This should be run before submitting a new formula for inclusion\.
+.
+.IP
+If \fB\-\-warn\fR is passed, perform additional stricter checks that may not need to be fixed before submitting\.
+.
+.TP
+\fBoptions\fR \fIformula\fR
+Display install options specific to \fIformula\fR\.
+.
+.TP
+\fBmissing\fR
+Check all installed formuale for missing dependencies\.
+.
+.TP
+\fBserver\fR
+Start a local web app that lets you browse available formulae, similar to \fBgem server\fR\. Requires \fBsinatra\fR \fIhttp://www\.sinatrarb\.com/\fR\.
+.
+.TP
+\fBtest\fR \fIformula\fR
+A few formulae provide a test method\. \fBbrew test <formula>\fR runs this test method\. There is no standard output or return code, but it should generally indicate to the user if something is wrong with the installed formula\.
+.
+.IP
+Example: \fBbrew install jruby && brew test jruby\fR
+.
+.TP
+\fBman\fR
+Regenerate this man page using \fBronn\fR \fIhttp://rtomayko\.github\.com/ronn/\fR\. See \fBman brew\-man\fR for details\.
+.
+.TP
 \fB\-\-config\fR
 Show Homebrew and system configuration useful for debugging\. If you file a bug report, you will likely be asked for this information if you do not provide it\.
 .
@@ -213,37 +246,17 @@ Display where Homebrew\'s \fB\.git\fR folder is located\. For standard installs,
 Homebrew allows external commands to be defined by putting a +x file named \fBbrew\-<cmdname>\fR or \fBbrew\-<cmdname>\.rb\fR on the PATH\. This will cause Homebrew to recognize \fBbrew cmdname\fR\.
 .
 .P
-These external commands are shipped with Homebrew\.
+Some sample commands ship with Homebrew and are enabled by default\.
 .
-.TP
-\fBaudit [\-\-warn]\fR
-Check all formulae for Homebrew coding style violations\. This should be run before submitting a new formula for inclusion\.
+.IP "" 4
 .
-.IP
-If \fB\-\-warn\fR is passed, perform additional stricter checks that may not need to be fixed before submitting\.
+.nf
+
+$ ls `brew \-\-repository`/Lirary/Contributes/examples
 .
-.TP
-\fBoptions\fR \fIformula\fR
-Display install options specific to \fIformula\fR\.
+.fi
 .
-.TP
-\fBman\fR
-Regenerate this man page using \fBronn\fR \fIhttp://rtomayko\.github\.com/ronn/\fR\. See \fBman brew\-man\fR for details\.
-.
-.TP
-\fBmissing\fR
-Check all installed formuale for missing dependencies\.
-.
-.TP
-\fBserver\fR
-Start a local web app that lets you browse available formulae, similar to \fBgem server\fR\. Requires \fBsinatra\fR \fIhttp://www\.sinatrarb\.com/\fR\.
-.
-.TP
-\fBtest\fR \fIformula\fR
-A few formulae provide a test method\. \fBbrew test <formula>\fR runs this test method\. There is no standard output or return code, but it should generally indicate to the user if something is wrong with the installed formula\.
-.
-.IP
-Example: \fBbrew install jruby && brew test jruby\fR
+.IP "" 0
 .
 .SH "ENVIRONMENT"
 .
