@@ -113,6 +113,8 @@ def puts_columns items, cols = 4
 end
 
 def exec_editor *args
+  return if args.to_s.empty?
+
   editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
   if editor.nil?
     editor = if system "/usr/bin/which -s mate"
