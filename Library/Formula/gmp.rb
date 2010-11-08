@@ -6,10 +6,7 @@ class Gmp <Formula
   sha1 '6340edc7ceb95f9015a758c7c0d196eb0f441d49'
 
   def options
-    [
-      ["--32-bit", "Force 32-bit."],
-      ["--skip-check", "Do not run 'make check' to verify libraries."]
-    ]
+    [["--skip-check", "Do not run 'make check' to verify libraries."]]
   end
 
   def install
@@ -21,11 +18,11 @@ class Gmp <Formula
 
     args = ["--prefix=#{prefix}", "--infodir=#{info}", "--enable-cxx"]
 
-    if Hardware.is_32_bit? or ARGV.include? "--32-bit"
+    if snow_leopard_64?
+      ENV.m64
+    else
       ENV.m32
       args << "--host=none-apple-darwin"
-    else
-      ENV.m64
     end
 
     system "./configure", *args
