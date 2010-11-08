@@ -2,7 +2,7 @@ require 'formula'
 
 class Resty <Formula
   head 'git://github.com/micha/resty.git'
-  homepage 'http://github.com/micha/resty'
+  homepage 'https://github.com/micha/resty'
 
   # Don't take +x off these files
   skip_clean 'bin'

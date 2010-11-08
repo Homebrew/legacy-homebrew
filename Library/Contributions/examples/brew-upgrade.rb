@@ -1,5 +1,5 @@
 # Updates all outdated brews
-# See: http://github.com/mxcl/homebrew/issues/issue/1324
+# See: https://github.com/mxcl/homebrew/issues/issue/1324
 
 # patch ARGV to use all of the outdated packages as the names passed in
 module HomebrewArgvExtension

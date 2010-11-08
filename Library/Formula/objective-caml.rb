@@ -6,7 +6,7 @@ class ObjectiveCaml <Formula
   md5 'bd92c8970767f412bc1e9a6c625b5ccf'
 
   # note it indeed seems necessary to skip cleaning everything
-  # see http://github.com/mxcl/homebrew/issues/issue/188
+  # see https://github.com/mxcl/homebrew/issues/issue/188
   skip_clean :all
 
   def install

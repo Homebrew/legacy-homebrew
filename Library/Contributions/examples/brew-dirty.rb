@@ -1,4 +1,4 @@
-# See: http://github.com/mxcl/homebrew/issues/issue/1359
+# See: https://github.com/mxcl/homebrew/issues/issue/1359
 
 to_list = HOMEBREW_CELLAR.children.select { |pn| pn.directory? }
 to_list.each do |d|

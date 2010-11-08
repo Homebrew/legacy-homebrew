@@ -40,4 +40,4 @@ With `--server`, starts ronn's dev server.
 
 ## BUGS
 
-See Issues on GitHub: <http://github.com/mxcl/homebrew/issues>
+See Issues on GitHub: <https://github.com/mxcl/homebrew/issues>

@@ -1,4 +1,4 @@
-# Vendored from Rucola: http://github.com/alloy/rucola/tree/master
+# Vendored from Rucola: https://github.com/alloy/rucola/tree/master
 #
 # Copyright (c) 2007, 2008, 2009 Eloy Duran <eloy.de.enige@gmail.com>
 #
@@ -186,7 +186,7 @@ rescue LoadError => e
   onoe "RubyCocoa could not be loaded, therefore checking for spill is disabled."
   puts "When using a custom Ruby installation, you'll need to install RubyCocoa."
   puts "If this is not the case, see if the following ticket applies, or create one."
-  puts "  http://github.com/mxcl/homebrew/issues#issue/37"
+  puts "  https://github.com/mxcl/homebrew/issues#issue/37"
   
   if ARGV.verbose?
     onoe e.message

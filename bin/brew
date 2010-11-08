@@ -35,7 +35,7 @@ case HOMEBREW_PREFIX.to_s when '/', '/usr'
   abort "Cowardly refusing to continue at this prefix: #{HOMEBREW_PREFIX}"
 end
 if MACOS_VERSION < 10.5
-  abort "Homebrew requires Leopard or higher. For Tiger support, see:\nhttp://github.com/sceaga/homebrew/tree/tiger"
+  abort "Homebrew requires Leopard or higher. For Tiger support, see:\nhttps://github.com/sceaga/homebrew/tree/tiger"
 end
 
 def dump_config
@@ -367,7 +367,7 @@ rescue BuildError => e
   error_line = $2
   puts "Exit status: #{e.exit_status}"
   puts
-  puts "http://github.com/mxcl/homebrew/blob/master/Library/Formula/#{formula_name}.rb#L#{error_line}"
+  puts "https://github.com/mxcl/homebrew/blob/master/Library/Formula/#{formula_name}.rb#L#{error_line}"
   puts
   ohai "Environment"
   dump_config

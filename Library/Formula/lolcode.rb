@@ -2,7 +2,7 @@ require 'formula'
 
 class Lolcode <Formula
   homepage 'http://www.icanhaslolcode.org/'
-  url 'http://github.com/justinmeza/lci/tarball/v0.9.2'
+  url 'https://github.com/justinmeza/lci/tarball/v0.9.2'
   head 'git://github.com/justinmeza/lolcode.git'
   md5 '04493a3e491723d2928eb37cd90bbf54'
 

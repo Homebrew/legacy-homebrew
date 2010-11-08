@@ -11,7 +11,7 @@ class Libcaca <Formula
 
   def install
     # Some people can't compile when Java is enabled. See:
-    # http://github.com/mxcl/homebrew/issues/issue/2049
+    # https://github.com/mxcl/homebrew/issues/issue/2049
 
     # Don't build csharp bindings
     # Don't build ruby bindings; fails for adamv w/ Homebrew Ruby 1.9.2

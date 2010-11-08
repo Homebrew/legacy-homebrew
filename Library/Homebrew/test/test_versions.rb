@@ -99,11 +99,11 @@ class VersionTests < Test::Unit::TestCase
   end
 
   def test_version_github
-    check "http://github.com/lloyd/yajl/tarball/1.0.5", '1.0.5'
+    check "https://github.com/lloyd/yajl/tarball/1.0.5", '1.0.5'
   end
 
   def test_version_github_with_high_patch_number
-    check "http://github.com/lloyd/yajl/tarball/v1.2.34", '1.2.34'
+    check "https://github.com/lloyd/yajl/tarball/v1.2.34", '1.2.34'
   end
 
   def test_yet_another_version

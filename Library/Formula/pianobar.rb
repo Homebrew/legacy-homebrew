@@ -4,7 +4,7 @@ class Pianobar <Formula
   url 'git://github.com/PromyLOPh/pianobar.git',
     :tag => '2010.10.07'
   version '2010.10.07'
-  homepage 'http://github.com/PromyLOPh/pianobar/'
+  homepage 'https://github.com/PromyLOPh/pianobar/'
 
   head 'git://github.com/PromyLOPh/pianobar.git'
 
