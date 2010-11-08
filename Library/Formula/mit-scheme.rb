@@ -24,6 +24,9 @@ class MitScheme <Formula
       s.gsub! "/usr/local", prefix
     end
 
+    # The configure script will add '-isysroot' to CPPFLAGS, so it didn't check .h here by default even Homebrew is installed in /usr/local. This breaks things when gdbm or other optional dependencies was installed using Homebrew
+    ENV.prepend 'CPPFLAGS', "-I#{HOMEBREW_PREFIX}/include"
+
     system "etc/make-liarc.sh", "--disable-debug", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make install"
   end
