@@ -198,6 +198,7 @@ def info f
   if f.prefix.parent.directory?
     kids=f.prefix.parent.children
     kids.each do |keg|
+      next if keg.basename.to_s == '.DS_Store'
       print "#{keg} (#{keg.abv})"
       print " *" if f.installed_prefix == keg and kids.length > 1
       puts

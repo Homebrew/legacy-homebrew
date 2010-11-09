@@ -6,7 +6,7 @@ class Xcache <Formula
   md5 'aa78eec93ce9684dfd99010f62ad6720'
 
   def install
-    # See http://github.com/mxcl/homebrew/issues/issue/69
+    # See https://github.com/mxcl/homebrew/issues/issue/69
     ENV.universal_binary unless Hardware.is_64_bit?
 
     system "phpize"

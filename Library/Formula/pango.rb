@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pango <Formula
-  url 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.28/pango-1.28.1.tar.bz2'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.28/pango-1.28.3.tar.bz2'
   homepage 'http://www.pango.org/'
-  sha256 '8f3eaab506f613dd25bb1fa65ea87a145d523d066d90c227bdb3016523451bc2'
+  sha256 '5e278bc9430cc7bb00270f183360d262c5006b51248e8b537ea904573f200632'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
