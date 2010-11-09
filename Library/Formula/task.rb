@@ -1,9 +1,9 @@
 require 'formula'
 
 class Task <Formula
-  url 'http://www.taskwarrior.org/download/task-1.9.2.tar.gz'
+  url 'http://www.taskwarrior.org/download/task-1.9.3.tar.gz'
   homepage 'http://www.taskwarrior.org/'
-  md5 'be98cc74fe03b8336250e0b7ed3cd8c7'
+  md5 '1eb9cf957a3abf60e148208e587909c2'
 
   skip_clean :all
 
