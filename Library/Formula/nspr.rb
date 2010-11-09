@@ -10,7 +10,7 @@ class Nspr <Formula
     Dir.chdir "mozilla/nsprpub" do
       # Fixes a bug with linking against CoreFoundation, needed to work with SpiderMonkey
       # See: http://openradar.appspot.com/7209349
-      target_frameworks = Hardware.is_32_bit? ? "-framework Carbon" : ""
+      target_frameworks = (Hardware.is_32_bit? or MACOS_VERSION == 10.5) ? "-framework Carbon" : ""
       inreplace "pr/src/Makefile.in", "-framework CoreServices -framework CoreFoundation", target_frameworks
 
       args = ["--prefix=#{prefix}", "--disable-debug", "--enable-strip", "--enable-optimize"]
