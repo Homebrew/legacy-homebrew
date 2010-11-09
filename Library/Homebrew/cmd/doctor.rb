@@ -584,50 +584,50 @@ def check_for_other_vars
 end
 
 module Homebrew extend self
-def doctor
-  read, write = IO.pipe
+  def doctor
+    read, write = IO.pipe
 
-  if fork == nil
-    read.close
-    $stdout.reopen write
+    if fork == nil
+      read.close
+      $stdout.reopen write
 
-    check_usr_bin_ruby
-    check_homebrew_prefix
-    check_for_macgpg2
-    check_for_stray_dylibs
-    check_gcc_versions
-    check_cc_symlink
-    check_for_other_package_managers
-    check_for_x11
-    check_for_nonstandard_x11
-    check_access_share_locale
-    check_access_share_man
-    check_access_include
-    check_access_etc
-    check_user_path
-    check_which_pkg_config
-    check_pkg_config_paths
-    check_access_pkgconfig
-    check_for_gettext
-    check_for_config_scripts
-    check_for_dyld_vars
-    check_for_other_vars
-    check_for_symlinked_cellar
-    check_for_multiple_volumes
-    check_for_git
-    check_for_autoconf
-    check_for_linked_kegonly_brews
+      check_usr_bin_ruby
+      check_homebrew_prefix
+      check_for_macgpg2
+      check_for_stray_dylibs
+      check_gcc_versions
+      check_cc_symlink
+      check_for_other_package_managers
+      check_for_x11
+      check_for_nonstandard_x11
+      check_access_share_locale
+      check_access_share_man
+      check_access_include
+      check_access_etc
+      check_user_path
+      check_which_pkg_config
+      check_pkg_config_paths
+      check_access_pkgconfig
+      check_for_gettext
+      check_for_config_scripts
+      check_for_dyld_vars
+      check_for_other_vars
+      check_for_symlinked_cellar
+      check_for_multiple_volumes
+      check_for_git
+      check_for_autoconf
+      check_for_linked_kegonly_brews
 
-    exit! 0
-  else
-    write.close
-
-    unless (out = read.read).chomp.empty?
-      puts out
+      exit! 0
     else
-      puts "Your OS X is ripe for brewing."
-      puts "Any troubles you may be experiencing are likely purely psychosomatic."
+      write.close
+
+      unless (out = read.read).chomp.empty?
+        puts out
+      else
+        puts "Your OS X is ripe for brewing."
+        puts "Any troubles you may be experiencing are likely purely psychosomatic."
+      end
     end
   end
-end
 end
