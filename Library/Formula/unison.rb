@@ -12,9 +12,8 @@ class Unison < Formula
     ENV.j1
     ENV.delete "CFLAGS" # ocamlopt reads CFLAGS but doesn't understand common options
     system "make UISTYLE=text"
-    %w(unison fsmonitor.py).each do |f|
-      bin.install f if File.exist? f
-    end
+    bin.install 'unison'
+    bin.install 'fsmonitor.py' if File.exist? 'fsmonitor.py'
   end
 
   def patches
