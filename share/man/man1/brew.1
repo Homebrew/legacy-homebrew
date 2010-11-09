@@ -25,27 +25,11 @@ Prints extra, comand\-specific debugging information\. Note that \fBbrew \-v\fR 
 .
 .TP
 \fB\-v\fR, \fB\-\-version\fR
-Prints the version number of brew to standard error and exits\.
-.
-.TP
-\fB\-\-prefix\fR [\fIformula\fR]
-Displays the install path for Homebrew\. If \fIformula\fR is given, display location in the cellar where that package is or would be installed\.
-.
-.TP
-\fB\-\-cache\fR [\fIformula\fR]
-Displays the path Homebrew uses to cache downloads\. If \fIformula\fR is given, display the file or folder used to cache that specific package\.
-.
-.TP
-\fB\-\-config\fR
-Shows Homebrew and system configuration useful for debugging\. If you file a bug report, you will likely be asked for this information if you do not provide it\.
-.
-.TP
-\fB\-S\fR, \fBsearch\fR \fItext\fR|/\fItext\fR/
-Performs a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. If no search term is given, all available formula are displayed\.
+Print the version number of brew to standard error and exit\.
 .
 .TP
 \fBinstall [\-\-force] [\-\-debug] [\-\-use\-llvm] [\-\-ignore\-dependencies] [\-\-HEAD]\fR \fIformula\fR
-Installs \fIformula\fR\.
+Install \fIformula\fR\.
 .
 .IP
 \fIformula\fR is usually the name of the formula to install, but may also be the URL for an arbitrary formula\.
@@ -54,7 +38,7 @@ Installs \fIformula\fR\.
 If \fB\-\-force\fR is passed, will install \fIformula\fR even if it is already installed\. This can be used to re\-install a formula without removing it first\.
 .
 .IP
-If \fB\-\-debug\fR is passed and brewing fails, opens a shell inside the temporary folder used for compiling\.
+If \fB\-\-debug\fR is passed and brewing fails, open a shell inside the temporary folder used for compiling\.
 .
 .IP
 If \fB\-\-use\-llvm\fR is passed, attempt to compile using the LLVM front\-end to GCC\. \fINOTE\fR: Not all formulae will build with LLVM\.
@@ -70,122 +54,125 @@ To install a newer version of HEAD use \fBbrew rm <foo> && brew install \-\-HEAD
 .
 .TP
 \fBinstall \-\-interactive [\-\-git]\fR \fIformula\fR
-Downloads and patches \fIformula\fR, then opens a shell\. This allows the user to run \fB\./configure \-\-help\fR and otherwise determine how to turn the software package into a Homebrew formula\.
+Download and patch \fIformula\fR, then open a shell\. This allows the user to run \fB\./configure \-\-help\fR and otherwise determine how to turn the software package into a Homebrew formula\.
 .
 .IP
 If \fB\-\-git\fR is passed, Homebrew will create a Git repository, useful for creating patches to the software\.
 .
 .TP
+\fB\-S\fR, \fBsearch\fR \fItext\fR|/\fItext\fR/
+Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. If no search term is given, all available formula are displayed\.
+.
+.TP
+\fB\-S \-\-macports\fR|\fB\-\-fink\fR \fItext\fR
+Search for \fItext\fR on the MacPorts or Fink package search page\.
+.
+.TP
+\fBupdate\fR
+Fetch the newest version of Homebrew from GitHub using \fBgit\fR(1)\.
+.
+.TP
 \fBlist\fR
-Lists all installed formulae\.
+List all installed formulae\.
 .
 .TP
 \fBlist\fR \fIformula\fR
-Lists the installed files for \fIformula\fR\.
+List the installed files for \fIformula\fR\.
 .
 .TP
 \fBinfo\fR \fIformula\fR
-Gives all available information for \fIformula\fR\.
+Display information about \fIformula\fR\.
 .
 .TP
 \fBinfo \-\-github\fR \fIformula\fR
-Opens a browser to the GitHub History page for formula \fIformula\fR\.
+Open a browser to the GitHub History page for formula \fIformula\fR\.
 .
-.TP
-\fBinfo \-\-all\fR
-Summarises all installed packages; this is intended to be used by higher\-level tools\.
+.IP
+To view formula history locally: \fBbrew log \-p <formula>\fR\.
 .
 .TP
 \fBinfo\fR \fIURL\fR
-Prints the name and version that will be detected for \fIURL\fR; only http:// URLs supported for now\.
+Print the name and version that will be detected for \fIURL\fR\.
 .
 .TP
 \fBhome\fR
-Opens a browser to Homebrew\'s own homepage\.
+Open Homebrew\'s own homepage in a browser\.
 .
 .TP
 \fBhome\fR \fIformula\fR
-Opens a browser to \fIformula\fR\'s homepage\.
+Open \fIformula\fR\'s homepage in a browser\.
 .
 .TP
-\fBrm\fR, \fBremove [\-\-force]\fR \fIformula\fR
-Uninstalls \fIformula\fR\.
+\fBrm\fR, \fBremove\fR, \fBuninstall [\-\-force]\fR \fIformula\fR
+Uninstall \fIformula\fR\.
 .
 .IP
-If \fB\-\-force\fR is passed, and there are multiple versions of \fIformula\fR installed, deletes all installed versions\.
+If \fB\-\-force\fR is passed, and there are multiple versions of \fIformula\fR installed, delete all installed versions\.
 .
 .TP
 \fBcreate [\-\-cache]\fR \fIURL\fR
-Generates a formula for the downloadable file at \fIURL\fR and opens it in $EDITOR\. Homebrew will attempt to automatically derive the formula name and version, if it fails, you\'ll have to make your own template\. I suggest copying wget\'s\.
+Generate a formula for the downloadable file at \fIURL\fR and opens it in $EDITOR\. Homebrew will attempt to automatically derive the formula name and version, if it fails, you\'ll have to make your own template\. I suggest copying wget\'s\.
 .
 .IP
 If \fB\-\-cache\fR is passed, Homebrew will download the \fIURL\fR to the cache and add the MD5 to the formula for you\.
 .
 .TP
-\fBcreate \-\-macports\fR|\fB\-\-fink\fR \fIformula\fR
-Opens a browser to the MacPorts or Fink package search page, so you can see how they do \fIformula\fR\.
-.
-.TP
 \fBedit\fR \fIformula\fR
-Opens the formula in $EDITOR\.
+Open \fIformula\fR in $EDITOR\.
 .
 .TP
 \fBedit\fR
-Opens all of Homebrew for editing in TextMate\.
+Open all of Homebrew for editing in TextMate\.
 .
 .TP
 \fBln\fR, \fBlink\fR \fIformula\fR
-Symlinks all of \fIformula\fR\'s installed files into the Homebrew prefix\. This is done automatically when you install formula\. It is useful for DIY installation, or in cases where you want to swap out different versions of the same package that you have installed at the same time\.
+Symlink all of \fIformula\fR\'s installed files into the Homebrew prefix\. This is done automatically when you install formula\. It is useful for DIY installation, or in cases where you want to swap out different versions of the same package that you have installed at the same time\.
 .
 .TP
 \fBunlink\fR \fIformula\fR
-Unsymlinks \fIformula\fR from the Homebrew prefix\.
+Unsymlink \fIformula\fR from the Homebrew prefix\. This can be useful for temporarily disabling a formula: \fBbrew unlink foo && commands && brew link foo\fR\.
 .
 .TP
 \fBprune\fR
-Removes dead symlinks from the Homebrew prefix\. This is generally not needed\. However, it can be useful if you are doing DIY installations\.
+Remove dead symlinks from the Homebrew prefix\. This is generally not needed, but can be useful when doing DIY installations\.
 .
 .TP
 \fBoutdated\fR
-Shows formula that have an updated version available\.
+Show formula that have an updated version available\.
 .
 .TP
 \fBdeps [\-\-1]\fR \fIformula\fR
-Shows \fIformula\fR\'s dependencies\.
+Show \fIformula\fR\'s dependencies\.
 .
 .IP
 If \fB\-\-1\fR is passed, only show dependencies one level down, instead of recursing\.
 .
 .TP
 \fBuses [\-\-installed]\fR \fIformula\fR
-Shows the formulas that specify \fIformula\fR as a dependency\. The list is not recursive; only one level of dependencies is resolved\.
+Show the formulas that specify \fIformula\fR as a dependency\. The list is not recursive; only one level of dependencies is resolved\.
 .
 .IP
 If \fB\-\-installed\fR is passed, only lists installed formulae\.
 .
 .TP
 \fBdoctor\fR
-Checks your system for potential problems\.
+Check your system for potential problems\.
 .
 .TP
 \fBcat\fR \fIformula\fR
-Displays the source to \fIformula\fR\.
+Display the source to \fIformula\fR\.
 .
 .TP
 \fBcleanup\fR [\fIformula\fR]
 For all installed or specific formulae, remove any older versions from the cellar\.
 .
 .TP
-\fBupdate\fR
-Using Git, fetches the newest version of Homebrew from the GitHub repository\.
-.
-.TP
-\fBlog [git\-options]\fR \fIformula\fR \.\.\.
-Shows the git log for the given formulae\. Options that \fBgit log\fR recognizes can be passed before the formula list\.
+\fBlog [git\-log\-options]\fR \fIformula\fR \.\.\.
+Show the git log for the given formulae\. Options that \fBgit\-log\fR(1) recognizes can be passed before the formula list\.
 .
 .TP
 \fBfetch [\-\-force] [\-v] [\-\-HEAD]\fR \fIformula\fR
-Downloads the tarball or checks out from VCS for the given \fIformula\fR\. For tarballs, also prints MD5 and SHA1 checksums\.
+Download the source package for the given \fIformula\fR\. For tarballs, also prints MD5 and SHA1 checksums\.
 .
 .IP
 If \fB\-\-HEAD\fR is passed, download the HEAD version of \fIformula\fR instead\. \fB\-v\fR may also be passed to make the VCS checkout verbose, useful for seeing if an existing HEAD cache has been updated\.
@@ -193,40 +180,24 @@ If \fB\-\-HEAD\fR is passed, download the HEAD version of \fIformula\fR instead\
 .IP
 If \fB\-\-force\fR is passed, remove a previously cached version and re\-fetch\.
 .
-.SH "EXTERNAL COMMANDS"
-Homebrew allows external commands to be defined by putting a +x file named \fBbrew\-<cmdname>\fR or \fBbrew\-<cmdname>\.rb\fR on the PATH\. This will cause Homebrew to recognize \fBbrew cmdname\fR\.
-.
-.P
-Some external commands are shipped with Homebrew, and enabled by default\.
-.
 .TP
 \fBaudit [\-\-warn]\fR
-Checks all formulae for Homebrew coding style violations\. This should be run before submitting a new formula for inclusion\.
+Check formulae for Homebrew coding style violations\. This should be run before submitting a new formula for inclusion\.
 .
 .IP
-If \fB\-\-warn\fR is passed, performs additional stricter checks that may not need to be fixed before submitting\.
+If \fB\-\-warn\fR is passed, perform additional stricter checks that may not need to be fixed before submitting\.
 .
 .TP
 \fBoptions\fR \fIformula\fR
-Displays install options specific to \fIformula\fR\.
-.
-.TP
-\fBman\fR
-Regenerates this man page from source\.
-.
-.IP
-\fINOTE\fR: Requires \fBronn\fR \fIhttp://rtomayko\.github\.com/ronn/\fR\.
+Display install options specific to \fIformula\fR\.
 .
 .TP
 \fBmissing\fR
-Checks all installed formuale for missing dependencies\.
+Check all installed formuale for missing dependencies\.
 .
 .TP
 \fBserver\fR
-Starts a local webserver with an app that lets you browse available formulae, similar to \fBgem server\fR\.
-.
-.IP
-\fINOTE\fR: Requires \fBsinatra\fR \fIhttp://www\.sinatrarb\.com/\fR\.
+Start a local web app that lets you browse available formulae, similar to \fBgem server\fR\. Requires \fBsinatra\fR \fIhttp://www\.sinatrarb\.com/\fR\.
 .
 .TP
 \fBtest\fR \fIformula\fR
@@ -234,6 +205,58 @@ A few formulae provide a test method\. \fBbrew test <formula>\fR runs this test 
 .
 .IP
 Example: \fBbrew install jruby && brew test jruby\fR
+.
+.TP
+\fBman\fR
+Regenerate this man page using \fBronn\fR \fIhttp://rtomayko\.github\.com/ronn/\fR\. See \fBman brew\-man\fR for details\.
+.
+.TP
+\fB\-\-config\fR
+Show Homebrew and system configuration useful for debugging\. If you file a bug report, you will likely be asked for this information if you do not provide it\.
+.
+.TP
+\fB\-\-prefix\fR
+Display Homebrew\'s install path\. \fIDefault:\fR \fB/usr/local\fR
+.
+.TP
+\fB\-\-prefix\fR \fIformula\fR
+Display the location in the cellar where \fIformula\fR is or would be installed\.
+.
+.TP
+\fB\-\-cellar\fR
+Display Homebrew\'s Cellar path\. \fIDefault:\fR \fB/usr/local/Cellar\fR
+.
+.TP
+\fB\-\-cellar\fR
+Display the location in the cellar where \fIformula\fR would be installed, without any sort of versioned folder as the last path\.
+.
+.TP
+\fB\-\-cache\fR
+Display Homebrew\'s download cache\. \fIDefault:\fR \fB~/Library/Cache/Homebrew\fR
+.
+.TP
+\fB\-\-cache\fR \fIformula\fR
+Display the file or folder used to cache \fIformula\fR\.
+.
+.TP
+\fB\-\-repository\fR
+Display where Homebrew\'s \fB\.git\fR folder is located\. For standard installs, the \fBprefix\fR and \fBrepository\fR are the same folder\.
+.
+.SH "EXTERNAL COMMANDS"
+Homebrew allows external commands to be defined by putting a +x file named \fBbrew\-<cmdname>\fR or \fBbrew\-<cmdname>\.rb\fR on the PATH\. This will cause Homebrew to recognize \fBbrew cmdname\fR\.
+.
+.P
+Some sample commands ship with Homebrew and are enabled by default\.
+.
+.IP "" 4
+.
+.nf
+
+$ ls `brew \-\-repository`/Lirary/Contributes/examples
+.
+.fi
+.
+.IP "" 0
 .
 .SH "ENVIRONMENT"
 .
@@ -247,7 +270,7 @@ When \fBbrew install \-d\fR or \fBbrew install \-i\fR drops into a shell, \fBHOM
 .
 .TP
 HOMEBREW_DEBUG_PREFIX
-When \fBbrew install \-d\fR or \fBbrew install \-i\fR drops into a shell, \fBHOMEBREW_DEBUG__PREFIX\fR will be set to the target prefix in the Cellar of the formula being brewed\.
+When \fBbrew install \-d\fR or \fBbrew install \-i\fR drops into a shell, \fBHOMEBREW_DEBUG_PREFIX\fR will be set to the target prefix in the Cellar of the formula being brewed\.
 .
 .TP
 HOMEBREW_EDITOR
@@ -258,7 +281,7 @@ If set, Homebrew will use this editor when editing a single formula, or several 
 .
 .TP
 HOMEBREW_KEEP_INFO
-If set, Homebrew will not remove files from share/info, allowing them to be linked from the Cellar\.
+If set, Homebrew will not remove files from \fBshare/info\fR, allowing them to be linked from the Cellar\.
 .
 .TP
 HOMEBREW_SVN
@@ -272,14 +295,14 @@ HOMEBREW_TEMP
 If set, instructs Homebrew to use \fBHOMEBREW_TEMP\fR as the temporary folder for building packages\. This may be needed if your system temp folder and Homebrew Prefix are on different volumes, as OS X has trouble moving symlinks across volumes when the target does not yet exist\.
 .
 .IP
-This issue typically occurs when using FileVault (or certain custom SSD configurations\.)
+This issue typically occurs when using FileVault or custom SSD configurations\.
 .
 .TP
 HOMEBREW_USE_LLVM
 If set, instructs Homebrew to use the LLVM front\-ends to the GCC compilers\.
 .
 .IP
-\fINOTE\fR: Not all formulae will build correctly under LLVM\.
+\fINOTE\fR: Not all formulae build correctly with LLVM\.
 .
 .TP
 HOMEBREW_VERBOSE
@@ -315,10 +338,13 @@ http_proxy=http://<user>:<password>@<host>:<port> brew install foo
 .IP "" 0
 .
 .SH "SEE ALSO"
-Homebrew Wiki: http://wiki\.github\.com/mxcl/homebrew/
+Homebrew Wiki: \fIhttp://wiki\.github\.com/mxcl/homebrew/\fR
+.
+.P
+\fBgit\fR(1), \fBgit\-log\fR(1)
 .
 .SH "AUTHORS"
 Max Howell, a splendid chap\.
 .
 .SH "BUGS"
-See Issues on GitHub: http://github\.com/mxcl/homebrew/issues
+See Issues on GitHub: \fIhttp://github\.com/mxcl/homebrew/issues\fR

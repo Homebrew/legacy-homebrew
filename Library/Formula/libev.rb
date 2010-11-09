@@ -1,16 +1,15 @@
 require 'formula'
 
 class Libev <Formula
-  url 'http://dist.schmorp.de/libev/libev-4.00.tar.gz'
+  url 'http://dist.schmorp.de/libev/libev-4.01.tar.gz'
   homepage 'http://software.schmorp.de/pkg/libev.html'
-  md5 '7b8fb956152e55b3b12795dff18f99f8'
+  md5 '2a6e0d3d7eda7d54b39f3800b8279707'
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--enable-shared",
-                          "--mandir=#{man}"
+                          "--mandir=#{man}",
+                          "--enable-shared"
     system "make install"
   end
 end
