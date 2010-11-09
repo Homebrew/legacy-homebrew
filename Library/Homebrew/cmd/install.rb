@@ -13,15 +13,17 @@ module Homebrew extend self
   end
 
   def check_ppc
-  case Hardware.cpu_type when :ppc, :dunno
-    abort "Sorry, Homebrew does not support your computer's CPU architecture.\n"+
-          "For PPC support, see: http://github.com/sceaga/homebrew/tree/powerpc"
-  end
+    case Hardware.cpu_type when :ppc, :dunno
+      abort <<-EOS.undent
+        Sorry, Homebrew does not support your computer's CPU architecture.
+        For PPC support, see: http://github.com/sceaga/homebrew/tree/powerpc
+        EOS
+    end
   end
 
   def check_writable_install_location
-  raise "Cannot write to #{HOMEBREW_CELLAR}" if HOMEBREW_CELLAR.exist? and not HOMEBREW_CELLAR.writable?
-  raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable?
+    raise "Cannot write to #{HOMEBREW_CELLAR}" if HOMEBREW_CELLAR.exist? and not HOMEBREW_CELLAR.writable?
+    raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable?
   end
 
   def check_cc

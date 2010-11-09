@@ -10,7 +10,7 @@ def text_for_keg_only_formula f
     rationale = "The formula didn't provide any rationale for this."
   end
   <<-EOS
-This formula is keg-only, so it is not symlinked into Homebrew's prefix.
+This formula is keg-only. This means it is not symlinked into #{HOMEBREW_PREFIX}.
 #{rationale}
 
 Generally there are no consequences of this for you, however if you build
@@ -137,10 +137,10 @@ def install f
     show_summary_heading = true
   else
     # warn the user if stuff was installed outside of their PATH
-    paths = ENV['PATH'].split(':').collect{|p| File.expand_path p}
+    paths = ENV['PATH'].split(':').map{ |p| File.expand_path p }
     [f.bin, f.sbin].each do |bin|
       if bin.directory?
-        rootbin = (HOMEBREW_PREFIX+bin.basename).to_s
+        rootbin = (HOMEBREW_PREFIX/bin.basename).to_s
         bin = File.expand_path bin
         unless paths.include? rootbin
           opoo "#{rootbin} is not in your PATH"
@@ -151,7 +151,7 @@ def install f
     end
 
     # Check for man pages that aren't in share/man
-    if (f.prefix+'man').exist?
+    if (f.prefix/:man).exist?
       opoo 'A top-level "man" folder was found.'
       puts "Homebrew requires that man pages live under share."
       puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
