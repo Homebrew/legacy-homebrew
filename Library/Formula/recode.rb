@@ -18,7 +18,7 @@ class Recode <Formula
     else
       libtool_config = "/usr/share/libtool"
     end
-    
+
     cp "#{libtool_config}/config.guess", "."
     cp "#{libtool_config}/config.sub", "."
 
