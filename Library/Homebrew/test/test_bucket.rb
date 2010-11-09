@@ -173,7 +173,7 @@ class BeerTasting < Test::Unit::TestCase
   end
   
   def test_pathname_properties
-    foo1=HOMEBREW_CACHE+'foo-0.1.tar.gz'
+    foo1 = HOMEBREW_CACHE/'foo-0.1.tar.gz'
     
     assert_equal '.tar.gz', foo1.extname
     assert_equal 'foo-0.1', foo1.stem
