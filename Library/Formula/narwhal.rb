@@ -1,7 +1,7 @@
 require 'formula'
 
 class Narwhal <Formula
-  head 'git://github.com/tlrobinson/narwhal.git'
+  head 'git://github.com/280north/narwhal.git'
   homepage 'http://www.narwhaljs.org/'
 
   def install
