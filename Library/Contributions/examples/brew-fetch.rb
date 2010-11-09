@@ -17,7 +17,6 @@ ARGV.formulae.each do |f|
 
   puts "MD5:  #{the_tarball.md5}"
   puts "SHA1: #{the_tarball.sha1}"
-  puts
 
   unless previous_md5.nil? or the_tarball.md5 == previous_md5
     opoo "Formula reports different MD5: #{previous_md5}"
