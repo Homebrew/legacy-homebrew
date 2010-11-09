@@ -108,13 +108,18 @@ class Pathname
       stem=self.stem
     end
 
-    # github tarballs are special
-    # we only support numbered tagged downloads
+    # github tarballs, like v1.2.3
     %r[github.com/.*/tarball/v?((\d\.)+\d+)$].match to_s
     return $1 if $1
 
+    # dashed version
     # eg. github.com/isaacs/npm/tarball/v0.2.5-1
     %r[github.com/.*/tarball/v?((\d\.)+\d+-(\d+))$].match to_s
+    return $1 if $1
+
+    # underscore version
+    # eg. github.com/petdance/ack/tarball/1.93_02
+    %r[github.com/.*/tarball/v?((\d\.)+\d+_(\d+))$].match to_s
     return $1 if $1
 
     # eg. boost_1_39_0

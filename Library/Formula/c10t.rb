@@ -3,9 +3,9 @@ require 'formula'
 # Minecraft cartography tool
 
 class C10t <Formula
-  url 'http://github.com/udoprog/c10t/tarball/1.1'
+  url 'http://github.com/udoprog/c10t/tarball/1.3'
   homepage 'http://github.com/udoprog/c10t'
-  md5 'e03316bd5554a32a65979ff8785b8a44'
+  md5 '8e5dba0375275cf6f2ce56ee052db7d2'
 
   depends_on 'cmake' => :build
   depends_on 'libpng'

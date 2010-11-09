@@ -5,15 +5,13 @@ class ObjectiveCaml <Formula
   homepage 'http://caml.inria.fr/ocaml/index.en.html'
   md5 'bd92c8970767f412bc1e9a6c625b5ccf'
 
-  # note it indeed seems necessary to skip cleaning everything
-  # see http://github.com/mxcl/homebrew/issues/issue/188
+  # Don't strip symbols, so dynamic linking doesn't break.
   skip_clean :all
 
   def install
     system "./configure", "--prefix", prefix, "--mandir", man
+    ENV.deparallelize # Builds are not parallel-safe, esp. with many cores
     system "make world"
-    # 'world' can be built in parallel, but the other targets have problems
-    ENV.deparallelize
     system "make opt"
     system "make opt.opt"
     system "make install"
