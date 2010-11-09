@@ -8,7 +8,7 @@ Dir.getwd rescue abort "The current working directory doesn't exist, cannot proc
 HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] = File.expand_path(__FILE__)
 
 require 'pathname'
-HOMEBREW_LIBRARY_PATH = (Pathname.new(__FILE__).realpath.dirname.parent+"Library/Homebrew").to_s
+HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.dirname.parent.join("Library/Homebrew").to_s
 $:.unshift(HOMEBREW_LIBRARY_PATH)
 require 'global'
 
@@ -35,7 +35,10 @@ case HOMEBREW_PREFIX.to_s when '/', '/usr'
   abort "Cowardly refusing to continue at this prefix: #{HOMEBREW_PREFIX}"
 end
 if MACOS_VERSION < 10.5
-  abort "Homebrew requires Leopard or higher. For Tiger support, see:\nhttp://github.com/sceaga/homebrew/tree/tiger"
+  abort <<-EOABORT.undent
+    Homebrew requires Leopard or higher. For Tiger support, see:
+    http://github.com/sceaga/homebrew/tree/tiger
+  EOABORT
 end
 
 def require? path
@@ -104,15 +107,13 @@ rescue BuildError => e
   formula_name = $1
   error_line = $2
 
-  puts "Exit status: #{e.exit_status}"
-  puts
+  ohai "Exit Status: #{e.exit_status}"
   puts "http://github.com/mxcl/homebrew/blob/master/Library/Formula/#{formula_name}.rb#L#{error_line}"
-  puts
   ohai "Environment"
   puts Homebrew.config_s
-  puts
   ohai "Build Flags"
   Homebrew.dump_build_env e.env
+  puts
   onoe e
   puts PLEASE_REPORT_BUG
   # this feature can be slow (depends on network conditions and if github is up)
