@@ -18,7 +18,7 @@ class Unison < Formula
 
   def patches
     # fixes Unison 2.32.52 to compile with OCaml 3.12 (because of changes in
-    # Map). This was merged into Unison 3.40 at
+    # Map). This was merged into Unison 2.40 at
     # https://webdav.seas.upenn.edu/viewvc/unison/branches/2.40/src/update.mli?r1=435&r2=457&pathrev=457
     DATA unless ARGV.build_head?
   end
