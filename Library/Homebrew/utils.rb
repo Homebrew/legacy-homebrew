@@ -1,4 +1,3 @@
-
 class Tty
   class <<self
     def blue; bold 34; end
@@ -40,6 +39,7 @@ def onoe error
   puts "#{Tty.red}Error#{Tty.reset}: #{lines.shift}"
   puts lines unless lines.empty?
 end
+
 
 def pretty_duration s
   return "2 seconds" if s < 3 # avoids the plural problem ;)
@@ -115,28 +115,25 @@ end
 def exec_editor *args
   editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
   if editor.nil?
-    if system "/usr/bin/which -s mate"
-      # TextMate
-      editor='mate'
+    editor = if system "/usr/bin/which -s mate"
+      'mate'
     elsif system "/usr/bin/which -s edit"
-      # BBEdit / TextWrangler
-      editor='edit'
+      'edit' # BBEdit / TextWrangler
     else
-      # Default to vim
-      editor='/usr/bin/vim'
+      '/usr/bin/vim' # Default to vim
     end
   end
   # we split the editor because especially on mac "mate -w" is common
   # but we still want to use the comma-delimited version of exec because then
   # we don't have to escape args, and escaping 100% is tricky
-  exec(*(editor.split+args))
+  exec *(editor.split + args) unless args.empty?
 end
 
-# GZips the given path, and returns the gzipped file
+# GZips the given paths, and returns the gzipped paths
 def gzip *paths
   paths.collect do |path|
     system "/usr/bin/gzip", path
-    Pathname.new(path+".gz")
+    Pathname.new("#{path}.gz")
   end
 end
 
@@ -242,9 +239,9 @@ module MacOS extend self
     end
   end
 
-def x11_installed?
-  Pathname.new('/usr/X11/lib/libpng.dylib').exist?
-end
+  def x11_installed?
+    Pathname.new('/usr/X11/lib/libpng.dylib').exist?
+  end
 
   def macports_or_fink_installed?
     # See these issues for some history:

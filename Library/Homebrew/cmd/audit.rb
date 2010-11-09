@@ -206,31 +206,31 @@ def audit_formula_instance f
 end
 
 module Homebrew extend self
-def audit
-  ff.each do |f|
-    problems = []
-    problems += audit_formula_instance f
-    problems += audit_formula_urls f
+  def audit
+    ff.each do |f|
+      problems = []
+      problems += audit_formula_instance f
+      problems += audit_formula_urls f
 
-    text = ""
-    File.open(f.path, "r") { |afile| text = afile.read }
+      text = ""
+      File.open(f.path, "r") { |afile| text = afile.read }
 
-    # DATA with no __END__
-    if (text =~ /\bDATA\b/) and not (text =~ /^\s*__END__\s*$/)
-      problems << " * 'DATA' was found, but no '__END__'"
-    end
+      # DATA with no __END__
+      if (text =~ /\bDATA\b/) and not (text =~ /^\s*__END__\s*$/)
+        problems << " * 'DATA' was found, but no '__END__'"
+      end
 
-    # Don't try remaining audits on text in __END__
-    text_without_patch = (text.split("__END__")[0]).strip()
+      # Don't try remaining audits on text in __END__
+      text_without_patch = (text.split("__END__")[0]).strip()
 
-    problems += audit_formula_text(text_without_patch)
-    problems += audit_formula_options(f, text_without_patch)
+      problems += audit_formula_text(text_without_patch)
+      problems += audit_formula_options(f, text_without_patch)
 
-    unless problems.empty?
-      puts "#{f.name}:"
-      puts problems * "\n"
-      puts
+      unless problems.empty?
+        puts "#{f.name}:"
+        puts problems * "\n"
+        puts
+      end
     end
   end
-end
 end
