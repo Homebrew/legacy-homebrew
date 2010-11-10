@@ -1,12 +1,12 @@
 require 'formula'
 
 class Exodriver <Formula
-  url  'http://github.com/labjack/exodriver/tarball/98cf1f83ff65ab7a317f4310d46081a476ae939c'
+  url  'https://github.com/labjack/exodriver/tarball/98cf1f83ff65ab7a317f4310d46081a476ae939c'
   homepage 'http://labjack.com/support/linux-and-mac-os-x-drivers'
   md5 'ec227347ccaf0772d175d3a2cf557105'
   version '2.0-0-98cf1f8'
 
-  head 'http://github.com/labjack/exodriver.git', :using => :git
+  head 'https://github.com/labjack/exodriver.git', :using => :git
 
   depends_on 'libusb'
 

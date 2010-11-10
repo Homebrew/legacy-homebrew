@@ -1,7 +1,7 @@
 require 'formula'
 
 class Orderly <Formula
-  url 'http://github.com/lloyd/orderly/tarball/cdf140170b987a27826ba146b31890b0ae1506bd'
+  url 'https://github.com/lloyd/orderly/tarball/cdf140170b987a27826ba146b31890b0ae1506bd'
   homepage 'http://orderly-json.org/'
   md5 'b416de7d7e90088a7c842cc26ae393ec'
   version '0.0.1'

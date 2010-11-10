@@ -2,7 +2,7 @@ require 'formula'
 
 class Autojump <Formula
   url 'https://github.com/downloads/joelthelion/autojump/autojump_v13.tar.gz'
-  homepage 'http://github.com/joelthelion/autojump/wiki'
+  homepage 'https://github.com/joelthelion/autojump/wiki'
   md5 '13e4e6173f4ed63b8babb00fcd95f600'
   version '13'
 

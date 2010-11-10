@@ -2,7 +2,7 @@ require 'formula'
 
 class Mplayer <Formula
   homepage 'http://www.mplayerhq.hu/'
-  # http://github.com/mxcl/homebrew/issues/issue/87
+  # https://github.com/mxcl/homebrew/issues/issue/87
   head 'svn://svn.mplayerhq.hu/mplayer/trunk', :using => StrictSubversionDownloadStrategy
 
   depends_on 'pkg-config' => :build
@@ -10,7 +10,7 @@ class Mplayer <Formula
 
   def install
     # Do not use pipes, per bug report
-    # http://github.com/mxcl/homebrew/issues#issue/622
+    # https://github.com/mxcl/homebrew/issues#issue/622
     # and MacPorts
     # http://trac.macports.org/browser/trunk/dports/multimedia/mplayer-devel/Portfile
     # any kind of optimisation breaks the build
