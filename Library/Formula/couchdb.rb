@@ -1,7 +1,7 @@
 require 'formula'
 
 class Couchdb <Formula
-  url 'http://github.com/apache/couchdb/tarball/1.0.1'
+  url 'https://github.com/apache/couchdb/tarball/1.0.1'
   homepage "http://couchdb.apache.org/"
   md5 'f2ea23caacff482afe44e29a3f8b7685'
 

@@ -87,7 +87,7 @@ class Postgresql <Formula
     s = <<-EOS
 If builds of Postgresl 9 are failing and you have version 8.x installed,
 you may need to remove the previous version first. See:
-  http://github.com/mxcl/homebrew/issues/issue/2510
+  https://github.com/mxcl/homebrew/issues/issue/2510
 
 To build plpython against a specific Python, set PYTHON prior to brewing:
   PYTHON=/usr/local/bin/python  brew install postgresql

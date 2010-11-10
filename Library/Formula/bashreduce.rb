@@ -2,7 +2,7 @@ require 'formula'
 
 class Bashreduce <Formula
   head 'git://github.com/erikfrey/bashreduce.git'
-  homepage 'http://github.com/erikfrey/bashreduce'
+  homepage 'https://github.com/erikfrey/bashreduce'
 
   def install
     Dir.chdir 'brutils' do

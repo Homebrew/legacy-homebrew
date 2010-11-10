@@ -1,7 +1,7 @@
 require 'formula'
 
 class Docbook <Formula
-  url 'http://gist.github.com/raw/462528/098ccc609b039cf5b6d11fcd9c8ef333c3861b65/docbook-register'
+  url 'https://gist.github.com/raw/462528/098ccc609b039cf5b6d11fcd9c8ef333c3861b65/docbook-register'
   md5 '0fbc35a136190050de3598354655fd82'
   version '5.0'
   homepage 'http://docbook.sourceforge.net/'

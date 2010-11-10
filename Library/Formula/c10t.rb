@@ -3,8 +3,8 @@ require 'formula'
 # Minecraft cartography tool
 
 class C10t <Formula
-  url 'http://github.com/udoprog/c10t/tarball/1.3'
-  homepage 'http://github.com/udoprog/c10t'
+  url 'https://github.com/udoprog/c10t/tarball/1.3'
+  homepage 'https://github.com/udoprog/c10t'
   md5 '8e5dba0375275cf6f2ce56ee052db7d2'
 
   depends_on 'cmake' => :build
