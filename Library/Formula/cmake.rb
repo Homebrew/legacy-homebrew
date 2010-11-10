@@ -22,7 +22,6 @@ class Cmake <Formula
                           "--datadir=/share/cmake",
                           "--docdir=/share/doc/cmake",
                           "--mandir=/share/man"
-    ENV.j1 # There appear to be parallelism issues.
     system "make"
     system "make install"
   end
