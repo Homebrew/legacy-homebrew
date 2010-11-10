@@ -15,6 +15,7 @@ class RubyEnterpriseEdition <Formula
 
   def install
     fails_with_llvm "fails with LLVM"
+    ENV['CFLAGS'] = "-I#{Formula.factory('readline').prefix}/include"
     args = ['./installer', "--auto", prefix, '--no-tcmalloc']
     args << '-c' << '--enable-shared' if ARGV.include? '--enable-shared'
     system *args
