@@ -363,6 +363,7 @@ def diy
 end
 
 def macports_or_fink_installed?
+  return false if SystemCommand.platform == :linux
   # See these issues for some history:
   # http://github.com/mxcl/homebrew/issues/#issue/13
   # http://github.com/mxcl/homebrew/issues/#issue/41
