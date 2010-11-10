@@ -1,6 +1,3 @@
-require "#{File.expand_path(File.dirname(__FILE__))}/system_command.rb"
-include Homebrew
-
 class Hardware
   # These methods use info spewed out by sysctl.
   # Look in <mach/machine.h> for decoding info.

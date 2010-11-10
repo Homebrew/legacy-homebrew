@@ -1,6 +1,3 @@
-require "#{File.expand_path(File.dirname(__FILE__))}/system_command.rb"
-include Homebrew
-
 class Cleaner
   def initialize f
     @f=f

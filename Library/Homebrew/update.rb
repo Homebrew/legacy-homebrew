@@ -1,5 +1,5 @@
 class RefreshBrew
-  REPOSITORY_URL   = "http://github.com/mxcl/homebrew.git"
+  REPOSITORY_URL   = "http://github.com/rubiojr/homebrew.git"
   INIT_COMMAND     = "git init"
   CHECKOUT_COMMAND = "git checkout -q master"
   UPDATE_COMMAND   = "git pull #{REPOSITORY_URL} master"

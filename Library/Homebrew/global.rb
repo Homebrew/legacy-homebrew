@@ -2,8 +2,7 @@ require 'extend/pathname'
 require 'extend/ARGV'
 require 'extend/string'
 require 'utils'
-require "#{File.expand_path(File.dirname(__FILE__))}/system_command.rb"
-include Homebrew
+require 'system_command'
 
 ARGV.extend(HomebrewArgvExtension)
 

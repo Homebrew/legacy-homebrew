@@ -1,6 +1,4 @@
 #!/usr/bin/ruby
-require "#{File.expand_path(File.dirname(__FILE__))}/../Library/Homebrew/system_command.rb"
-include Homebrew
 # -*- coding: utf-8 -*-
 
 # Many Pathname operations use getwd when they shouldn't, and then throw 
@@ -13,6 +11,7 @@ require 'pathname'
 HOMEBREW_LIBRARY_PATH = (Pathname.new(__FILE__).realpath.dirname.parent+"Library/Homebrew").to_s
 $:.unshift(HOMEBREW_LIBRARY_PATH)
 require 'global'
+include Homebrew
 
 case ARGV.first
 when '-h', '--help', '--usage', '-?', 'help', nil

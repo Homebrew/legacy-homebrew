@@ -1,6 +1,3 @@
-require "#{File.expand_path(File.dirname(__FILE__))}/system_command.rb"
-include Homebrew
-
 FORMULA_META_FILES = %w[README README.md ChangeLog COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
 PLEASE_REPORT_BUG = "#{Tty.white}Please report this bug at #{Tty.em}http://github.com/mxcl/homebrew/issues#{Tty.reset}"
 
