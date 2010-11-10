@@ -5,6 +5,8 @@ class Boost <Formula
   url 'http://downloads.sourceforge.net/project/boost/boost/1.44.0/boost_1_44_0.tar.bz2'
   md5 'f02578f5218f217a9f20e9c30e119c6a'
 
+  depends_on 'icu4c'
+
   def options
     [['--with-mpi', "Enables MPI support"]]
   end
@@ -37,6 +39,8 @@ class Boost <Formula
       file.write "using mpi ;\n" if ARGV.include? '--with-mpi'
     end
 
+    icu = Formula.factory "icu4c"
+
     # we specify libdir too because the script is apparently broken
     system "./bootstrap.sh", "--prefix=#{prefix}", "--libdir=#{lib}"
     system "./bjam", "--prefix=#{prefix}",
@@ -44,6 +48,8 @@ class Boost <Formula
                      "-j#{Hardware.processor_count}",
                      "--layout=tagged",
                      "--user-config=user-config.jam",
+                     "-sHAVE_ICU=1",
+                     "-sICU_PATH='#{icu.prefix}'",
                      "threading=multi",
                      "install"
   end
