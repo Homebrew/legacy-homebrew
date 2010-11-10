@@ -2,18 +2,24 @@ require 'extend/pathname'
 require 'extend/ARGV'
 require 'extend/string'
 require 'utils'
+require "#{File.expand_path(File.dirname(__FILE__))}/system_command.rb"
+include Homebrew
 
 ARGV.extend(HomebrewArgvExtension)
 
 HOMEBREW_VERSION = '0.7.1'
 HOMEBREW_WWW = 'http://mxcl.github.com/homebrew/'
 
-if Process.uid == 0
-  # technically this is not the correct place, this cache is for *all users*
-  # so in that case, maybe we should always use it, root or not?
-  HOMEBREW_CACHE=Pathname.new("/Library/Caches/Homebrew")
+if SystemCommand.platform == :mac
+  if Process.uid == 0
+    # technically this is not the correct place, this cache is for *all users*
+    # so in that case, maybe we should always use it, root or not?
+    HOMEBREW_CACHE=Pathname.new("/Library/Caches/Homebrew")
+  else
+    HOMEBREW_CACHE=Pathname.new("~/Library/Caches/Homebrew").expand_path
+  end
 else
-  HOMEBREW_CACHE=Pathname.new("~/Library/Caches/Homebrew").expand_path
+  HOMEBREW_CACHE = Pathname.new("#{ENV['HOME']}/.homebrew/cache")
 end
 
 if not defined? HOMEBREW_BREW_FILE
@@ -31,12 +37,25 @@ else
   HOMEBREW_CELLAR = HOMEBREW_REPOSITORY+'Cellar'
 end
 
-MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
-MACOS_VERSION = /(10\.\d+)(\.\d+)?/.match(MACOS_FULL_VERSION).captures.first.to_f
+if SystemCommand.platform == :mac
+  MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
+  MACOS_VERSION = /(10\.\d+)(\.\d+)?/.match(MACOS_FULL_VERSION).captures.first.to_f
+else
+  MACOS_FULL_VERSION = "#{SystemCommand.uname} -r"
+  MACOS_VERSION = '2.6'
+end
 
-HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; Mac OS X #{MACOS_FULL_VERSION})"
-
+if SystemCommand.platform == :mac
+  HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; Mac OS X #{MACOS_FULL_VERSION})"
+else
+  HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; Linux)"
+end
 
 RECOMMENDED_LLVM = 2326
-RECOMMENDED_GCC_40 = (MACOS_VERSION >= 10.6) ? 5494 : 5493
-RECOMMENDED_GCC_42 = (MACOS_VERSION >= 10.6) ? 5664 : 5577
+if SystemCommand.platform == :mac
+  RECOMMENDED_GCC_40 = (MACOS_VERSION >= 10.6) ? 5494 : 5493
+  RECOMMENDED_GCC_42 = (MACOS_VERSION >= 10.6) ? 5664 : 5577
+else
+  RECOMMENDED_GCC_40 = 4
+  RECOMMENDED_GCC_42 = 4
+end

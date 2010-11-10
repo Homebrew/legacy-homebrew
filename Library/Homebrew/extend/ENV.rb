@@ -1,3 +1,6 @@
+require "#{File.expand_path(File.dirname(__FILE__))}/../system_command.rb"
+include Homebrew
+
 module HomebrewEnvExtension
   # -w: keep signal to noise high
   SAFE_CFLAGS_FLAGS = "-w -pipe"
@@ -18,17 +21,23 @@ module HomebrewEnvExtension
       self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
     end
 
-    if MACOS_VERSION >= 10.6 and (self['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
-      xcode_path = `/usr/bin/xcode-select -print-path`.chomp
-      xcode_path = "/Developer" if xcode_path.to_s.empty?
-      self['CC'] = "#{xcode_path}/usr/bin/llvm-gcc"
-      self['CXX'] = "#{xcode_path}/usr/bin/llvm-g++"
-      cflags = ['-O4'] # link time optimisation baby!
-    else
-      # If these aren't set, many formulae fail to build
+    if SystemCommand.platform == :linux
       self['CC'] = '/usr/bin/cc'
       self['CXX'] = '/usr/bin/c++'
       cflags = ['-O3']
+    else
+      if MACOS_VERSION >= 10.6 and (self['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
+        xcode_path = `/usr/bin/xcode-select -print-path`.chomp
+        xcode_path = "/Developer" if xcode_path.to_s.empty?
+        self['CC'] = "#{xcode_path}/usr/bin/llvm-gcc"
+        self['CXX'] = "#{xcode_path}/usr/bin/llvm-g++"
+        cflags = ['-O4'] # link time optimisation baby!
+      else
+        # If these aren't set, many formulae fail to build
+        self['CC'] = '/usr/bin/cc'
+        self['CXX'] = '/usr/bin/c++'
+        cflags = ['-O3']
+      end
     end
 
     # In rare cases this may break your builds, as the tool for some reason wants
@@ -43,29 +52,33 @@ module HomebrewEnvExtension
     # http://gcc.gnu.org/onlinedocs/gcc-4.2.1/gcc/i386-and-x86_002d64-Options.html
     # we don't set, eg. -msse3 because the march flag does that for us
     #   http://gcc.gnu.org/onlinedocs/gcc-4.3.3/gcc/i386-and-x86_002d64-Options.html
-    if MACOS_VERSION >= 10.6
-      case Hardware.intel_family
-      when :nehalem, :penryn, :core2
-        # the 64 bit compiler adds -mfpmath=sse for us
-        cflags << "-march=core2"
-      when :core
-        cflags<<"-march=prescott"<<"-mfpmath=sse"
-      end
-      # gcc doesn't auto add msse4 or above (based on march flag) yet
-      case Hardware.intel_family
-      when :nehalem
-        cflags << "-msse4" # means msse4.2 and msse4.1
-      when :penryn
-        cflags << "-msse4.1"
+    if SystemCommand.platform == :mac
+      if MACOS_VERSION >= 10.6
+        case Hardware.intel_family
+        when :nehalem, :penryn, :core2
+          # the 64 bit compiler adds -mfpmath=sse for us
+          cflags << "-march=core2"
+        when :core
+          cflags<<"-march=prescott"<<"-mfpmath=sse"
+        end
+        # gcc doesn't auto add msse4 or above (based on march flag) yet
+        case Hardware.intel_family
+        when :nehalem
+          cflags << "-msse4" # means msse4.2 and msse4.1
+        when :penryn
+          cflags << "-msse4.1"
+        end
+      else
+        # gcc 4.0 didn't support msse4
+        case Hardware.intel_family
+        when :nehalem, :penryn, :core2
+          cflags<<"-march=nocona"
+        when :core
+          cflags<<"-march=prescott"
+        end
+        cflags<<"-mfpmath=sse"
       end
     else
-      # gcc 4.0 didn't support msse4
-      case Hardware.intel_family
-      when :nehalem, :penryn, :core2
-        cflags<<"-march=nocona"
-      when :core
-        cflags<<"-march=prescott"
-      end
       cflags<<"-mfpmath=sse"
     end
 
@@ -192,12 +205,14 @@ module HomebrewEnvExtension
 
   # i386 and x86_64 only, no PPC
   def universal_binary
-    append_to_cflags '-arch i386 -arch x86_64'
-    self.O3 if self['CFLAGS'].include? '-O4' # O4 seems to cause the build to fail
-    append 'LDFLAGS', '-arch i386 -arch x86_64'
+    if SystemCommand.platform == :mac
+      append_to_cflags '-arch i386 -arch x86_64'
+      self.O3 if self['CFLAGS'].include? '-O4' # O4 seems to cause the build to fail
+      append 'LDFLAGS', '-arch i386 -arch x86_64'
 
-    # Can't mix "-march" for a 32-bit CPU  with "-arch x86_64"
-    remove_from_cflags(/-march=\S*/) if Hardware.is_32_bit?
+      # Can't mix "-march" for a 32-bit CPU  with "-arch x86_64"
+      remove_from_cflags(/-march=\S*/) if Hardware.is_32_bit?
+    end
   end
 
   def prepend key, value, separator = ' '

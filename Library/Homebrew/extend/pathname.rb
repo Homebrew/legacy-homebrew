@@ -1,4 +1,6 @@
 require 'pathname'
+require "#{File.expand_path(File.dirname(__FILE__))}/../system_command.rb"
+include Homebrew
 
 # we enhance pathname to make our code more readable
 class Pathname
@@ -94,7 +96,7 @@ class Pathname
     out=''
     n=`find #{to_s} -type f ! -name .DS_Store | wc -l`.to_i
     out<<"#{n} files, " if n > 1
-    out<<`/usr/bin/du -hd0 #{to_s} | cut -d"\t" -f1`.strip
+    out<<`#{SystemCommand.du_h_depth} #{to_s} | cut -d"\t" -f1`.strip
   end
 
   # attempts to retrieve the version component of this path, so generally

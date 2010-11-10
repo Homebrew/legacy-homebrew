@@ -1,3 +1,6 @@
+require "#{File.expand_path(File.dirname(__FILE__))}/system_command.rb"
+include Homebrew
+
 class ExecutionError <RuntimeError
   attr :exit_status
   attr :command
@@ -61,7 +64,7 @@ end
 
 # args are additional inputs to puts until a nil arg is encountered
 def ohai title, *sput
-  title = title.to_s[0, `/usr/bin/tput cols`.strip.to_i-4] unless ARGV.verbose?
+  title = title.to_s[0, `#{SystemCommand.tput} cols`.strip.to_i-4] unless ARGV.verbose?
   puts "#{Tty.blue}==>#{Tty.white} #{title}#{Tty.reset}"
   puts sput unless sput.empty?
 end
@@ -138,7 +141,7 @@ def puts_columns items, cols = 4
     optimal_col_width = (console_width.to_f / (longest.length + 2).to_f).floor
     cols = optimal_col_width > 1 ? optimal_col_width : 1
 
-    IO.popen("/usr/bin/pr -#{cols} -t -w#{console_width}", "w"){|io| io.puts(items) }
+    IO.popen("#{SystemCommand.pr} -#{cols} -t -w#{console_width}", "w"){|io| io.puts(items) }
   else
     puts items
   end
@@ -147,15 +150,15 @@ end
 def exec_editor *args
   editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
   if editor.nil?
-    if system "/usr/bin/which -s mate"
+    if system "#{SystemCommand.which_s} mate"
       # TextMate
       editor='mate'
-    elsif system "/usr/bin/which -s edit"
+    elsif system "#{SystemCommand.which_s} edit"
       # BBEdit / TextWrangler
       editor='edit'
     else
       # Default to vim
-      editor='/usr/bin/vim'
+      editor= SystemCommand.vim
     end
   end
   # we split the editor because especially on mac "mate -w" is common
@@ -167,7 +170,7 @@ end
 # GZips the given path, and returns the gzipped file
 def gzip *paths
   paths.collect do |path|
-    system "/usr/bin/gzip", path
+    system SystemCommand.gzip, path
     Pathname.new(path+".gz")
   end
 end
@@ -181,10 +184,10 @@ end
 # Returns array of architectures that the given command or library is built for.
 def archs_for_command cmd
   cmd = cmd.to_s # If we were passed a Pathname, turn it into a string.
-  cmd = `/usr/bin/which #{cmd}` unless Pathname.new(cmd).absolute?
+  cmd = `#{SystemCommand.which} #{cmd}` unless Pathname.new(cmd).absolute?
   cmd.gsub! ' ', '\\ '  # Escape spaces in the filename.
 
-  archs = IO.popen("/usr/bin/file -L #{cmd}").readlines.inject([]) do |archs, line|
+  archs = IO.popen("#{SystemCommand.file} -L #{cmd}").readlines.inject([]) do |archs, line|
     case line
     when /Mach-O (executable|dynamically linked shared library) ppc/
       archs << :ppc7400
@@ -286,5 +289,5 @@ def dump_build_env env
 end
 
 def x11_installed?
-  Pathname.new('/usr/X11/lib/libpng.dylib').exist?
+  File.exist?(SystemCommand.which 'X')
 end

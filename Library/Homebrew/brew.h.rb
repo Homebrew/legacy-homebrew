@@ -1,3 +1,6 @@
+require "#{File.expand_path(File.dirname(__FILE__))}/system_command.rb"
+include Homebrew
+
 FORMULA_META_FILES = %w[README README.md ChangeLog COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
 PLEASE_REPORT_BUG = "#{Tty.white}Please report this bug at #{Tty.em}http://github.com/mxcl/homebrew/issues#{Tty.reset}"
 
@@ -175,7 +178,7 @@ def github_info name
   user = 'mxcl'
   branch = 'master'
 
-  if system "/usr/bin/which -s git"
+  if system "#{SystemCommand.which_s} git"
     gh_user=`git config --global github.user 2>/dev/null`.chomp
     /^\*\s*(.*)/.match(`git --work-tree=#{HOMEBREW_REPOSITORY} branch 2>/dev/null`)
     unless $1.nil? || $1.empty? || gh_user.empty?
@@ -366,7 +369,7 @@ def macports_or_fink_installed?
   # http://github.com/mxcl/homebrew/issues/#issue/48
 
   %w[port fink].each do |ponk|
-    path = `/usr/bin/which -s #{ponk}`
+    path = `#{SystemCommand.which_s} #{ponk}`
     return ponk unless path.empty?
   end
 
@@ -451,10 +454,12 @@ def brew_install
 
   ################################################################# warnings
   begin
-    if MACOS_VERSION >= 10.6
-      opoo "You should upgrade to Xcode 3.2.3" if llvm_build < RECOMMENDED_LLVM
-    else
-      opoo "You should upgrade to Xcode 3.1.4" if (gcc_40_build < RECOMMENDED_GCC_40) or (gcc_42_build < RECOMMENDED_GCC_42)
+    if SystemCommand.platform == :mac
+      if MACOS_VERSION >= 10.6
+        opoo "You should upgrade to Xcode 3.2.3" if llvm_build < RECOMMENDED_LLVM
+      else
+        opoo "You should upgrade to Xcode 3.1.4" if (gcc_40_build < RECOMMENDED_GCC_40) or (gcc_42_build < RECOMMENDED_GCC_42)
+      end
     end
   rescue
     # the reason we don't abort is some formula don't require Xcode
@@ -547,15 +552,23 @@ end
 
 
 def gcc_42_build
-  `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
-  if $1
-    $1.to_i 
-  elsif system "/usr/bin/which gcc"
-    # Xcode 3.0 didn't come with gcc-4.2
-    # We can't change the above regex to use gcc because the version numbers
-    # are different and thus, not useful.
-    # FIXME I bet you 20 quid this causes a side effect — magic values tend to
-    401
+  plat = SystemCommand.platform
+  case plat
+  when :linux
+    5664
+  when :mac
+    `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
+    if $1
+      $1.to_i 
+    elsif system "/usr/bin/which gcc"
+      # Xcode 3.0 didn't come with gcc-4.2
+      # We can't change the above regex to use gcc because the version numbers
+      # are different and thus, not useful.
+      # FIXME I bet you 20 quid this causes a side effect — magic values tend to
+      401
+    else
+      nil
+    end
   else
     nil
   end
@@ -563,20 +576,30 @@ end
 alias :gcc_build :gcc_42_build # For compatibility
 
 def gcc_40_build
-  `/usr/bin/gcc-4.0 -v 2>&1` =~ /build (\d{4,})/
-  if $1
-    $1.to_i 
+  plat = SystemCommand.platform
+  case plat
+  when :linux
+    5664
+  when :mac
+    `/usr/bin/gcc-4.0 -v 2>&1` =~ /build (\d{4,})/
+    if $1
+      $1.to_i 
+    else
+      nil
+    end
   else
     nil
   end
 end
 
 def llvm_build
-  if MACOS_VERSION >= 10.6
-    xcode_path = `/usr/bin/xcode-select -print-path`.chomp
-    return nil if xcode_path.empty?
-    `#{xcode_path}/usr/bin/llvm-gcc -v 2>&1` =~ /LLVM build (\d{4,})/
-    $1.to_i
+  if SystemCommand.platform == :mac
+    if MACOS_VERSION >= 10.6
+      xcode_path = `/usr/bin/xcode-select -print-path`.chomp
+      return nil if xcode_path.empty?
+      `#{xcode_path}/usr/bin/llvm-gcc -v 2>&1` =~ /LLVM build (\d{4,})/
+      $1.to_i
+    end
   end
 end
 

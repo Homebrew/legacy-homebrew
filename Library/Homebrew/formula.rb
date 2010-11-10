@@ -400,7 +400,7 @@ private
     # /tmp volume to the other volume. So we let the user override the tmp
     # prefix if they need to.
     tmp_prefix = ENV['HOMEBREW_TEMP'] || '/tmp'
-    tmp=Pathname.new `/usr/bin/mktemp -d #{tmp_prefix}/homebrew-#{name}-#{version}-XXXX`.strip
+    tmp=Pathname.new `#{SystemCommand.mktemp} -d #{tmp_prefix}/homebrew-#{name}-#{version}-XXXX`.strip
     raise "Couldn't create build sandbox" if not tmp.directory? or $? != 0
     begin
       wd=Dir.pwd
@@ -504,12 +504,12 @@ EOF
     ohai "Patching"
     patch_list.each do |p|
       case p[:compression]
-        when :gzip  then safe_system "/usr/bin/gunzip",  p[:filename]+'.gz'
-        when :bzip2 then safe_system "/usr/bin/bunzip2", p[:filename]+'.bz2'
+        when :gzip  then safe_system SystemCommand.gunzip,  p[:filename]+'.gz'
+        when :bzip2 then safe_system SystemCommand.bunzip2, p[:filename]+'.bz2'
       end
       # -f means it doesn't prompt the user if there are errors, if just
       # exits with non-zero status
-      safe_system '/usr/bin/patch', '-f', *(p[:args])
+      safe_system SystemCommand.patch, '-f', *(p[:args])
     end
   end
 

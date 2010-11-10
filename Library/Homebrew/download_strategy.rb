@@ -1,3 +1,6 @@
+require "#{File.expand_path(File.dirname(__FILE__))}/system_command.rb"
+include Homebrew
+
 class AbstractDownloadStrategy
   def initialize url, name, version, specs
     @url=url
@@ -79,14 +82,14 @@ class CurlDownloadStrategy <AbstractDownloadStrategy
     # magic numbers stolen from /usr/share/file/magic/
     case magic_bytes
     when /^PK\003\004/ # .zip archive
-      quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @tarball_path
+      quiet_safe_system SystemCommand.unzip, {:quiet_flag => '-qq'}, @tarball_path
       chdir
     when /^\037\213/, /^BZh/, /^\037\235/  # gzip/bz2/compress compressed
       # TODO check if it's really a tar archive
-      safe_system '/usr/bin/tar', 'xf', @tarball_path
+      safe_system SystemCommand.tar, 'xf', @tarball_path
       chdir
     when '____pkg'
-      safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, File.basename(@url)
+      safe_system SystemCommand.pkgutil, '--expand', @tarball_path, File.basename(@url)
       chdir
     when 'Rar!'
       quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, @tarball_path
@@ -217,7 +220,7 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
   def svn
     return ENV['HOMEBREW_SVN'] if ENV['HOMEBREW_SVN']
     return "#{HOMEBREW_PREFIX}/bin/svn" if File.exist? "#{HOMEBREW_PREFIX}/bin/svn"
-    return '/usr/bin/svn'
+    return SystemCommand.svn
   end
 end
 
@@ -253,7 +256,7 @@ class GitDownloadStrategy <AbstractDownloadStrategy
   def fetch
     raise "You must install Git:\n\n"+
           "  brew install git\n" \
-          unless system "/usr/bin/which git"
+          unless system "#{SystemCommand.which} git"
 
     ohai "Cloning #{@url}"
 
@@ -324,12 +327,12 @@ class CVSDownloadStrategy <AbstractDownloadStrategy
 
     unless @co.exist?
       Dir.chdir HOMEBREW_CACHE do
-        safe_system '/usr/bin/cvs', '-d', url, 'login'
-        safe_system '/usr/bin/cvs', '-d', url, 'checkout', '-d', @unique_token, mod
+        safe_system SystemCommand.cvs, '-d', url, 'login'
+        safe_system SystemCommand.cvs, '-d', url, 'checkout', '-d', @unique_token, mod
       end
     else
       puts "Updating #{@co}"
-      Dir.chdir(@co) { safe_system '/usr/bin/cvs', 'up' }
+      Dir.chdir(@co) { safe_system SystemCommand.cvs, 'up' }
     end
   end
 
@@ -368,7 +371,7 @@ class MercurialDownloadStrategy <AbstractDownloadStrategy
           "    brew install pip && pip install mercurial\n"+
           "    easy_install mercurial\n\n"+
           "Homebrew recommends pip over the OS X provided easy_install." \
-          unless system "/usr/bin/which hg"
+          unless system "#{SystemCommand.which} hg"
 
     ohai "Cloning #{@url}"
 
@@ -410,7 +413,7 @@ class BazaarDownloadStrategy <AbstractDownloadStrategy
 
   def fetch
     raise "You must install bazaar first" \
-          unless system "/usr/bin/which bzr"
+          unless system "#{SystemCommand.which} brz" 
 
     ohai "Cloning #{@url}"
     unless @clone.exist?
@@ -449,7 +452,7 @@ class FossilDownloadStrategy < AbstractDownloadStrategy
 
   def fetch
     raise "You must install fossil first" \
-          unless system "/usr/bin/which fossil"
+          unless system "#{SystemCommand.which} fossil"
 
     ohai "Cloning #{@url}"
     unless @clone.exist?
