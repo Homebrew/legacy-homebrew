@@ -55,16 +55,16 @@ class FormulaInstaller
     return unless f.external_deps
 
     f.external_deps[:python].each do |dep|
-      raise pyerr(dep) unless quiet_system "/usr/bin/env", "python", "-c", "import #{dep}"
+      raise pyerr(dep) unless quiet_system SystemCommand.env, "python", "-c", "import #{dep}"
     end
     f.external_deps[:perl].each do |dep|
-      raise plerr(dep) unless quiet_system "/usr/bin/env", "perl", "-e", "use #{dep}"
+      raise plerr(dep) unless quiet_system SystemCommand.env, "perl", "-e", "use #{dep}"
     end
     f.external_deps[:ruby].each do |dep|
-      raise rberr(dep) unless quiet_system "/usr/bin/env", "ruby", "-rubygems", "-e", "require '#{dep}'"
+      raise rberr(dep) unless quiet_system SystemCommand.env, "ruby", "-rubygems", "-e", "require '#{dep}'"
     end
     f.external_deps[:jruby].each do |dep|
-      raise jrberr(dep) unless quiet_system "/usr/bin/env", "jruby", "-rubygems", "-e", "require '#{dep}'"
+      raise jrberr(dep) unless quiet_system SystemCommand.env, "jruby", "-rubygems", "-e", "require '#{dep}'"
     end
   end
 
@@ -106,7 +106,7 @@ class FormulaInstaller
       fork do
         begin
           read.close
-          exec '/usr/bin/nice', '/usr/bin/ruby', '-I', File.dirname(__FILE__), '-rinstall', f.path, '--', *ARGV.options_only
+          exec SystemCommand.nice, SystemCommand.ruby, '-I', File.dirname(__FILE__), '-rinstall', f.path, '--', *ARGV.options_only
         rescue => e
           Marshal.dump(e, write)
           write.close
