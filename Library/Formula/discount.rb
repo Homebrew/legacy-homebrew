@@ -1,7 +1,7 @@
 require 'formula'
 
 class Discount <Formula
-  url 'http://github.com/Orc/discount/tarball/v2.0.1'
+  url 'https://github.com/Orc/discount/tarball/v2.0.1'
   homepage 'http://www.pell.portland.or.us/~orc/Code/markdown/'
   md5 '2495811dd9f68550a1464e4b6b00ac25'
 

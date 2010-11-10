@@ -2,9 +2,9 @@ require 'formula'
 
 class Pianobar <Formula
   url 'git://github.com/PromyLOPh/pianobar.git',
-    :tag => '2010.11.06'
-  version '2010.11.06'
-  homepage 'http://github.com/PromyLOPh/pianobar/'
+    :tag => '2010.10.07'
+  version '2010.10.07'
+  homepage 'https://github.com/PromyLOPh/pianobar/'
 
   head 'git://github.com/PromyLOPh/pianobar.git'
 

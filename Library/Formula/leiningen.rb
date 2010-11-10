@@ -1,9 +1,9 @@
 require 'formula'
 
 class Leiningen <Formula
-  url 'http://github.com/technomancy/leiningen/tarball/1.3.1'
-  head 'http://github.com/technomancy/leiningen.git', :using => :git
-  homepage 'http://github.com/technomancy/leiningen'
+  url 'https://github.com/technomancy/leiningen/tarball/1.3.1'
+  head 'https://github.com/technomancy/leiningen.git', :using => :git
+  homepage 'https://github.com/technomancy/leiningen'
   md5 '707fb0da7b89b44d9d37a9bac2bf3b3f'
 
   def install

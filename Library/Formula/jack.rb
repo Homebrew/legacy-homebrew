@@ -10,7 +10,7 @@ class Jack <Formula
 
   def patches
     # default build assumes ppc+i386, changed to i386+x86_64
-    "http://gist.github.com/raw/636194/jack-1.9.6_homebrew.patch"
+    "https://gist.github.com/raw/636194/jack-1.9.6_homebrew.patch"
   end
 
   def install

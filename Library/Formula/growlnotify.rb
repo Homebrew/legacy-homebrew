@@ -1,7 +1,7 @@
 require 'formula'
 
 class Growlnotify <Formula
-  url 'http://github.com/indirect/growlnotify/tarball/v1.2'
+  url 'https://github.com/indirect/growlnotify/tarball/v1.2'
   md5 '9941d5c49862f5391877023fc3baec49'
   homepage 'http://growl.info/extras.php#growlnotify'
 
