@@ -1,9 +1,9 @@
 require 'formula'
 
 class SwiProlog <Formula
-  url 'http://www.swi-prolog.org/download/stable/src/pl-5.10.1.tar.gz'
+  url 'http://www.swi-prolog.org/download/stable/src/pl-5.10.2.tar.gz'
   homepage 'http://www.swi-prolog.org/'
-  md5 '9168a2c872d2130467c3e74b80ed3ee0'
+  md5 '7973bcfd3854ae0cb647cc62f2faabcf'
 
   depends_on 'pkg-config'
   depends_on 'readline'
