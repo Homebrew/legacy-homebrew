@@ -5,12 +5,16 @@ class Povray <Formula
   homepage 'http://www.povray.org/'
   md5 'b5789bb7eeaed0809c5c82d0efda571d'
 
+  depends_on 'libtiff' => :optional
+  depends_on 'jpeg' => :optional
+
   def install
     fails_with_llvm "llvm-gcc: povray fails with 'terminate called after throwing an instance of int'"
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "COMPILED_BY=homebrew",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make install"
   end
 end
