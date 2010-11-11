@@ -18,6 +18,8 @@ class Erlang <Formula
 
   head "git://github.com/erlang/otp.git", :branch => "dev"
 
+  depends_on 'wxmac'
+
   # We can't strip the beam executables or any plugins, there isn't really
   # anything else worth stripping and it takes a really, long time to run
   # `file` over everything in lib because there is almost 4000 files (and
@@ -53,10 +55,16 @@ class Erlang <Formula
       args << '--enable-hipe'
     end
 
-    args << "--enable-darwin-64bit" if snow_leopard_64?
+    #args << "--enable-darwin-64bit" if snow_leopard_64?
+
+    # Force i386
+    %w{ CFLAGS CXXFLAGS LDFLAGS OBJCFLAGS OBJCXXFLAGS }.each do |compiler_flag|
+      ENV.remove compiler_flag, "-arch x86_64"
+      ENV.append compiler_flag, "-arch i386"
+    end
 
     system "./configure", *args
-    system "touch lib/wx/SKIP" if MACOS_VERSION >= 10.6
+    #system "touch lib/wx/SKIP" if MACOS_VERSION >= 10.6
     system "make"
     system "make install"
 

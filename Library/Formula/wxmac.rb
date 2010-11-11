@@ -19,6 +19,9 @@ class Wxmac <Formula
     end
 
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+                "--with-opengl", "--enable-unicode", "--enable-gnomeprint",
+                "--enable-graphics_ctx", "--disable-shared"
     system "make install"
+    system "cd contrib/src/stc/ && make && make install"
   end
 end
