@@ -5,8 +5,6 @@ class Tidyp <Formula
   homepage 'http://tidyp.com/'
   md5 '00a6b804f6625221391d010ca37178e1'
 
-  # depends_on 'cmake'
-
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
