@@ -14,8 +14,7 @@ class Cmake <Formula
     # http://www.cmake.org/Bug/view.php?id=11431
     inreplace 'CMakeLists.txt',
               "# Mention to the user what system libraries are being used.",
-              "SET(CMAKE_USE_SYSTEM_XMLRPC 0)
-               SET(CMAKE_USE_SYSTEM_LIBARCHIVE 0)"
+              "SET(CMAKE_USE_SYSTEM_LIBARCHIVE 0)"
 
     system "./bootstrap", "--prefix=#{prefix}",
                           "--system-libs",
