@@ -14,7 +14,7 @@ class Gdal <Formula
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",
-                          "--with-pthreads",
+                          "--with-threads",
                           "--with-local=#{prefix}",
                           "--with-png=/usr/X11",
                           "--without-pg",
