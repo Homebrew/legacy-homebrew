@@ -1,10 +1,10 @@
 require 'formula'
 
 class Clay <Formula
-  url 'http://tachyon.in/clay/binaries/clay-macosx64-2010.06.24.zip'
+  url 'http://tachyon.in/clay/binaries/clay-macosx64-2010.07.29.zip'
   homepage 'http://claylanguage.org'
-  version '2010.06.24'
-  md5 '4c22d1dbb45174e322d12cbb839f2025'
+  version '2010.07.29'
+  md5 '6c7e318915e65f6db0ac65cb0aca0fdd'
 
   def install
     libexec.install Dir['*']
