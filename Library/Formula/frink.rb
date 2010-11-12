@@ -7,13 +7,9 @@ class Frink <Formula
   md5 '00ce4fa06744f052cca11f3f1c88ca9f'
   depends_on 'rlwrap'
 
-  def jar
-    'frink.jar'
-  end
-
   def install
-    prefix.install "frink.jar"
+    prefix.install 'frink.jar'
     # Add an executable shell-script
-    (bin + "frink").write "#!/bin/sh\nrlwrap java -cp #{prefix}/#{jar} frink.parser.Frink \"$@\""
+    (bin + "frink").write "#!/bin/sh\nrlwrap java -cp #{prefix}/frink.jar frink.parser.Frink \"$@\""
   end
 end
