@@ -22,7 +22,7 @@ class Screen <Formula
       system "autoheader"
     end
 
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}",
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}", "--infodir=#{info}",
                           "--enable-colors256"
     system "make"
     system "make install"
