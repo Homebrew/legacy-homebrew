@@ -1,26 +1,20 @@
 require 'formula'
 
 class Dcmtk <Formula
-  url 'ftp://dicom.offis.de/pub/dicom/offis/software/dcmtk/dcmtk354/dcmtk-3.5.4.tar.gz'
   homepage 'http://dicom.offis.de/dcmtk.php.en'
-  md5 '0afd971cdf976a5b336722ef2f68e6d7'
+  url 'http://dicom.offis.de/download/dcmtk/snapshot/old/dcmtk-3.5.5_20100903.tar.gz'
+  md5 '15a8f05a8035bcf7d18ab475b95c9163'
+  version '3.5.5_20100903'
 
-  depends_on 'jpeg'
-  depends_on 'libpng'
   depends_on 'libtiff'
-  depends_on 'libxml2'
 
   def install
     ENV.deparallelize
     ENV.m64 if snow_leopard_64?
-
+    ENV.x11
     system "./configure", "--disable-dependency-tracking", "--disable-debug",
                           "--prefix=#{prefix}",
-                          "--mandir=#{man}",
-                          "--disable-threads",
-                          "--with-libtiffinc",
-                          "--with-libpnginc",
-                          "--with-libxmlinc"
+                          "--disable-threads"
     system "make all"
     system "make install"
   end
