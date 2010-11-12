@@ -39,7 +39,7 @@ class Gdal <Formula
                           "--without-mysql",
                           "--without-ingres",
                           "--without-xerces",
-                          "--without-expat",
+                          "--with-expat",
                           "--without-odbc",
                           "--with-dods-support=no",
                           "--without-curl",
