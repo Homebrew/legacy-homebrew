@@ -1,10 +1,10 @@
 require 'formula'
 
 class Zeromq <Formula
-  url 'http://www.zeromq.org/local--files/area:download/zeromq-2.0.9.tar.gz'
+  url 'http://www.zeromq.org/local--files/area:download/zeromq-2.0.10.tar.gz'
   head 'git://github.com/zeromq/zeromq2.git'
   homepage 'http://www.zeromq.org/'
-  md5 'eadda72ecc5bcfa50a521436e6d92252'
+  md5 'ab794a174210b9e8096a4efd1d1a4d42'
 
   def options
     [['--universal', 'Build as a Universal Intel binary.']]
@@ -46,6 +46,10 @@ class Zeromq <Formula
     To install the zmq gem on 10.6 with the system Ruby on a 64-bit machine,
     you may need to do:
       $ ARCHFLAGS="-arch x86_64" gem install zmq -- --with-zmq-dir=#{HOMEBREW_PREFIX}
+    
+    If you want to later build the Java bindings from https://github.com/zeromq/jzmq,
+    you will need to obtain the Java Developer Package from Apple ADC
+    at http://connect.apple.com/.
     EOS
   end
 end
