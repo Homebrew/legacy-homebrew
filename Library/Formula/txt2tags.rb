@@ -6,8 +6,7 @@ class Txt2tags <Formula
   md5 'ac09fd624f1e3a553d5f0e01271cc0ee'
 
   def install
-    bin.install('txt2tags')
-    prefix.install Dir['*']
-    # TODO - install man files in the correct path
+    bin.install 'txt2tags'
+    man1.install "doc/manpage.man" => "txt2tags.1"
   end
 end

@@ -65,7 +65,7 @@ didn't include with OS X.
     Search for <text> on the MacPorts or Fink package search page.
 
   * `update`:
-    Using `git`(1), fetch the newest version of Homebrew from GitHub.
+    Fetch the newest version of Homebrew from GitHub using `git`(1).
 
   * `list`:
     List all installed formulae.
@@ -74,10 +74,12 @@ didn't include with OS X.
     List the installed files for <formula>.
 
   * `info` <formula>:
-    Give all available information for <formula>.
+    Display information about <formula>.
 
   * `info --github` <formula>:
     Open a browser to the GitHub History page for formula <formula>.
+
+    To view formula history locally: `brew log -p <formula>`.
 
   * `info` <URL>:
     Print the name and version that will be detected for <URL>.
@@ -92,7 +94,7 @@ didn't include with OS X.
     Uninstall <formula>.
 
     If `--force` is passed, and there are multiple versions of <formula>
-    installed, deletes all installed versions.
+    installed, delete all installed versions.
 
   * `create [--cache]` <URL>:
     Generate a formula for the downloadable file at <URL> and opens it in
@@ -162,6 +164,34 @@ didn't include with OS X.
 
     If `--force` is passed, remove a previously cached version and re-fetch.
 
+  * `audit [--warn]`:
+    Check formulae for Homebrew coding style violations. This should be
+    run before submitting a new formula for inclusion.
+
+    If `--warn` is passed, perform additional stricter checks that may not need
+    to be fixed before submitting.
+
+  * `options` <formula>:
+    Display install options specific to <formula>.
+
+  * `missing`:
+    Check all installed formuale for missing dependencies.
+
+  * `server`:
+    Start a local web app that lets you browse available formulae, similar
+    to `gem server`. Requires [`sinatra`][sinatra].
+
+  * `test` <formula>:
+    A few formulae provide a test method. `brew test <formula>` runs this
+    test method. There is no standard output or return code, but it should
+    generally indicate to the user if something is wrong with the installed
+    formula.
+
+    Example: `brew install jruby && brew test jruby`
+
+  * `man`:
+    Regenerate this man page using [`ronn`][ronn]. See `man brew-man` for details.
+
   * `--config`:
     Show Homebrew and system configuration useful for debugging. If you file
     a bug report, you will likely be asked for this information if you do not
@@ -196,41 +226,10 @@ Homebrew allows external commands to be defined by putting a +x file named
 `brew-<cmdname>` or `brew-<cmdname>.rb` on the PATH. This will cause Homebrew
 to recognize `brew cmdname`.
 
-These external commands are shipped with Homebrew.
+Some sample commands ship with Homebrew and are enabled by default.
 
-  * `audit [--warn]`:
-    Check all formulae for Homebrew coding style violations. This should be
-    run before submitting a new formula for inclusion.
+    $ ls `brew --repository`/Lirary/Contributes/examples
 
-    If `--warn` is passed, perform additional stricter checks that may not need
-    to be fixed before submitting.
-
-  * `options` <formula>:
-    Display install options specific to <formula>.
-
-  * `man`:
-    Regenerate this man page using [`ronn`][ronn]. See `man brew-man` for details.
-
-  * `missing`:
-    Check all installed formuale for missing dependencies.
-
-  * `server`:
-    Start a local web app that lets you browse available formulae, similar
-    to `gem server`. Requires [`sinatra`][sinatra].
-
-  * `test` <formula>:
-    A few formulae provide a test method. `brew test <formula>` runs this
-    test method. There is no standard output or return code, but it should
-    generally indicate to the user if something is wrong with the installed
-    formula.
-
-    Example: `brew install jruby && brew test jruby`
-
-[ronn]: http://rtomayko.github.com/ronn/
-        "Ronn"
-
-[sinatra]: http://www.sinatrarb.com/
-           "Sinatra"
 
 
 ## ENVIRONMENT
@@ -314,3 +313,10 @@ Max Howell, a splendid chap.
 ## BUGS
 
 See Issues on GitHub: <http://github.com/mxcl/homebrew/issues>
+
+
+[ronn]: http://rtomayko.github.com/ronn/
+        "Ronn"
+
+[sinatra]: http://www.sinatrarb.com/
+           "Sinatra"
