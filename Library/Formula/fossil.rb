@@ -1,10 +1,10 @@
 require 'formula'
 
 class Fossil <Formula
-  url 'http://www.fossil-scm.org/download/fossil-src-20101110014319.tar.gz'
+  url 'http://www.fossil-scm.org/download/fossil-src-20101111133638.tar.gz'
   head 'fossil://http://www.fossil-scm.org/'
   homepage 'http://www.fossil-scm.org/'
-  md5 '1d290490ecbebebc4875fc882b82498d'
+  md5 '0393025ea0f5ca5ece7d632753123e77'
 
   def install
     system "make"
