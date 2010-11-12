@@ -46,7 +46,7 @@ class Zeromq <Formula
     To install the zmq gem on 10.6 with the system Ruby on a 64-bit machine,
     you may need to do:
       $ ARCHFLAGS="-arch x86_64" gem install zmq -- --with-zmq-dir=#{HOMEBREW_PREFIX}
-    
+
     If you want to later build the Java bindings from https://github.com/zeromq/jzmq,
     you will need to obtain the Java Developer Package from Apple ADC
     at http://connect.apple.com/.
