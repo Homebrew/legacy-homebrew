@@ -11,8 +11,7 @@ class Tcpflow <Formula
   end
 
   def install
-    where = `xcode-select --print-path`.chomp
-    cp Dir["#{where}/usr/share/libtool/config/config.*"], "."
+    cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config/config.*"], "."
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--mandir=#{man}"
