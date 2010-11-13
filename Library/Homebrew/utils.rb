@@ -232,12 +232,31 @@ module MacOS extend self
     end
   end
 
+  # usually /Developer
+  def xcode_prefix
+    @xcode_prefix ||= begin
+      path = `/usr/bin/xcode-select -print-path 2>&1`.chomp
+      path = Pathname.new path
+      if path.directory? and path.absolute?
+        path
+      elsif File.directory? '/Developer'
+        # we do this to support cowboys who insist on installing
+        # only a subset of Xcode
+        '/Developer'
+      else
+        nil
+      end
+    end
+  end
+
   def llvm_build_version
-    if MACOS_VERSION >= 10.6
-      xcode_path = `/usr/bin/xcode-select -print-path`.chomp
-      return nil if xcode_path.empty?
-      `#{xcode_path}/usr/bin/llvm-gcc -v 2>&1` =~ /LLVM build (\d{4,})/
-      $1.to_i
+    unless xcode_prefix.to_s.empty?
+      llvm_gcc_path = xcode_prefix/"usr/bin/llvm-gcc"
+      # for Xcode 3 on OS X 10.5 this will not exist
+      if llvm_gcc_path.file?
+        `#{llvm_gcc_path} -v 2>&1` =~ /LLVM build (\d{4,})/
+        $1.to_i # if nil this raises and then you fix the regex
+      end
     end
   end
 
