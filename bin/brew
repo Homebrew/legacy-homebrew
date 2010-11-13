@@ -55,6 +55,7 @@ begin
              '-S' => :search,
              'up' => :update,
              'ln' => :link,
+             'instal' => :install, # gem does the same
              'rm' => :uninstall,
              'remove' => :uninstall,
              'configure' => :diy,
