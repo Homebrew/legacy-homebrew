@@ -1,9 +1,30 @@
+class UsageError <RuntimeError; end
+class FormulaUnspecifiedError <UsageError; end
+class KegUnspecifiedError <UsageError; end
 
-class NotAKegError < RuntimeError
+class MultipleVersionsInstalledError <RuntimeError
+  attr :name
+
+  def initialize name
+    @name = name
+    super "#{name} has multiple installed versions"
+  end
+end
+
+class NotAKegError < RuntimeError; end
+
+class NoSuchKegError <RuntimeError
+  attr :name
+
+  def initialize name
+    @name = name
+    super "No such keg: #{HOMEBREW_CELLAR}/#{name}"
+  end
 end
 
 class FormulaUnavailableError < RuntimeError
   attr :name
+
   def initialize name
     @name = name
     super "No available formula for #{name}"
@@ -13,6 +34,7 @@ end
 module Homebrew
   class InstallationError < RuntimeError
     attr :formula
+
     def initialize formula
       @formula = formula
     end
