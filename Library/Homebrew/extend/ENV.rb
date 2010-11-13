@@ -121,10 +121,8 @@ module HomebrewEnvExtension
   end
 
   def llvm
-    xcode_path = `/usr/bin/xcode-select -print-path`.chomp
-    xcode_path = "/Developer" if xcode_path.to_s.empty?
-    self['CC'] = "#{xcode_path}/usr/bin/llvm-gcc"
-    self['CXX'] = "#{xcode_path}/usr/bin/llvm-g++"
+    self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
+    self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
     self['LD'] = self['CC']
     self.O4
   end
