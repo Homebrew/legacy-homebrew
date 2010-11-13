@@ -1,8 +1,8 @@
 require 'formula'
 
 class Sip <Formula
-  url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.11.1.tar.gz'
-  md5 'dbafd7101a4e7caee6f529912a1356e5'
+  url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.11.2.tar.gz'
+  md5 '06b12c0b36bb31b4d30185d7ab512a69'
   head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
 
@@ -13,10 +13,8 @@ class Sip <Formula
   end
 
   def install
-    # Force building against System python, because we need a Framework build.
-    # See: http://github.com/mxcl/homebrew/issues/issue/930
-    system "/usr/bin/python", "build.py", "prepare"
-    system "/usr/bin/python", "configure.py",
+    system "python", "build.py", "prepare"
+    system "python", "configure.py",
                               "--destdir=#{lib}/python",
                               "--bindir=#{bin}",
                               "--incdir=#{include}"
@@ -51,7 +49,24 @@ index 927d7f1..fdf13a3 100755
      # Format the results.
      if version is None:
 -        version = (0, 1, 0)
-+        version = (4, 11, 1)
++        version = (4, 11, 2)
  
      major, minor, micro = version
+ 
+
+Another patch to remove the seemingly unnecessary framework build requirement
+diff --git a/siputils.py b/siputils.py
+index 57e8911..1af6152 100644
+--- a/siputils.py
++++ b/siputils.py
+@@ -1423,8 +1423,8 @@ class ModuleMakefile(Makefile):
+             # 'real_prefix' exists if virtualenv is being used.
+             dl = getattr(sys, 'real_prefix', sys.exec_prefix).split(os.sep)
+ 
+-            if "Python.framework" not in dl:
+-                error("SIP requires Python to be built as a framework")
++            # if "Python.framework" not in dl:
++                # error("SIP requires Python to be built as a framework")
+ 
+             self.LFLAGS.append("-undefined dynamic_lookup")
  
