@@ -1,18 +1,16 @@
 require 'formula'
 
-class AwsIamTools < Formula
+# Require ec2-api-tools to get the base class
+require "#{File.dirname __FILE__}/ec2-api-tools.rb"
+
+class AwsIamTools < AmazonWebServicesFormula
   # No stable build yet
   head 'http://awsiammedia.s3.amazonaws.com/public/tools/cli/latest/IAMCli.zip'
   homepage 'http://developer.amazonwebservices.com/connect/entry.jspa?externalID=4143&categoryID=322'
   md5 'ee3d6d5ec0be8a68044973289211f14c'
 
   def install
-    # Remove Windows files
-    rm Dir['*.cmd']
-
-    bin.install Dir['iam-*']
-    # Follow same pratices as AmazonWebServicesFormula
-    (prefix+'jars').install 'lib'
+    standard_install
   end
 
   def caveats
