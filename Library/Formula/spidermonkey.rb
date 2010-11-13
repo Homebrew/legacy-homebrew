@@ -42,8 +42,11 @@ class Spidermonkey <Formula
       # building like this. See: http://openradar.appspot.com/7209349
       inreplace "configure.in", "LDFLAGS=\"$LDFLAGS -framework Cocoa\"", ""
       system "#{ac213_prefix}/bin/autoconf213"
+
       # Remove the broken *(for anyone but FF) install_name
-      inreplace "config/rules.mk", "-install_name @executable_path/$(SHARED_LIBRARY) ", "-install_name #{lib}/$(SHARED_LIBRARY) "
+      inreplace "config/rules.mk",
+        "-install_name @executable_path/$(SHARED_LIBRARY) ",
+        "-install_name #{lib}/$(SHARED_LIBRARY) "
     end
 
     mkdir "brew-build"
