@@ -139,10 +139,6 @@ end
 def audit_formula_urls f
   problems = []
 
-  # To do:
-  # Grab URLs out of patches as well
-  # urls = ((f.patches rescue []) || [])
-
   urls = [(f.url rescue nil), (f.head rescue nil)].reject {|p| p.nil?}
 
   # Check SourceForge urls
@@ -209,10 +205,10 @@ def audit_formula_instance f
   return problems
 end
 
-def audit_some_formulae
+module Homebrew extend self
+def audit
   ff.each do |f|
     problems = []
-
     problems += audit_formula_instance f
     problems += audit_formula_urls f
 
@@ -237,5 +233,4 @@ def audit_some_formulae
     end
   end
 end
-
-audit_some_formulae
+end
