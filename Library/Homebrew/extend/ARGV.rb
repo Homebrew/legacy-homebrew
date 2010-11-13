@@ -1,25 +1,3 @@
-class UsageError <RuntimeError; end
-class FormulaUnspecifiedError <UsageError; end
-class KegUnspecifiedError <UsageError; end
-
-class MultipleVersionsInstalledError <RuntimeError
-  attr :name
-
-  def initialize name
-    @name = name
-    super "#{name} has multiple installed versions"
-  end
-end
-
-class NoSuchKegError <RuntimeError
-  attr :name
-
-  def initialize name
-    @name = name
-    super "No such keg: #{HOMEBREW_CELLAR}/#{name}"
-  end
-end
-
 module HomebrewArgvExtension
   def named
     @named ||= reject{|arg| arg[0..0] == '-'}
