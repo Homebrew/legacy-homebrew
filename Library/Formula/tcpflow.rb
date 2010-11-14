@@ -11,7 +11,11 @@ class Tcpflow <Formula
   end
 
   def install
-    cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config/config.*"], "."
+    if MACOS_VERSION >= 10.6
+      cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config/config.*"], "."
+    else
+      cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config.*"], "."
+    end
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--mandir=#{man}"
