@@ -17,10 +17,10 @@ def no_python?
 end
 
 class Gdal <Formula
-  url 'http://download.osgeo.org/gdal/gdal-1.7.2.tar.gz'
+  url 'http://download.osgeo.org/gdal/gdal-1.7.3.tar.gz'
   head 'https://svn.osgeo.org/gdal/trunk/gdal', :using => :svn
   homepage 'http://www.gdal.org/'
-  md5 '05351f8cb61761ae579667e24a297fe6'
+  md5 'c4673970bd2285032de9ae9bbd82754a'
 
   depends_on 'jpeg'
   depends_on 'giflib'
