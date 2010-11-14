@@ -1,10 +1,12 @@
 require 'formula_installer'
 require 'hardware'
+require 'blacklist'
 
 module Homebrew extend self
   def install
-    blacklisted? ARGV.named do |msg, name|
-      abort msg
+    ARGV.named.each do |name|
+      msg = blacklisted? name
+      raise "No available formula for #{name}\n#{msg}" if msg
     end unless ARGV.force?
 
     install_formulae ARGV.formulae
@@ -60,43 +62,6 @@ module Homebrew extend self
       rescue FormulaAlreadyInstalledError => e
         opoo e.message
       end
-    end
-  end
-
-  def blacklisted? names
-    names.each do |name|
-      msg = blacklisted_reason name
-      yield msg.undent, name if msg
-    end
-  end
-
-  def blacklisted_reason name
-    case name
-    when 'tex', 'tex-live', 'texlive' then <<-EOS
-      Installing TeX from source is weird and gross, requires a lot of patches,
-      and only builds 32-bit (and thus can't use Homebrew deps on Snow Leopard.)
-
-      We recommend using a MacTeX distribution:
-        http://www.tug.org/mactex/
-      EOS
-    when 'mercurial', 'hg' then <<-EOS
-      Mercurial can be install thusly:
-        brew install pip && pip install mercurial
-      EOS
-    when 'npm' then abort <<-EOS.undent
-      npm can be installed thusly by following the instructions at
-        http://npmjs.org/
-
-      To do it in one line, use this command:
-        curl http://npmjs.org/install.sh | sudo sh
-      EOS
-    when 'setuptools' then abort <<-EOS.undent
-      When working with a Homebrew-built Python, distribute is preferred
-      over setuptools, and can be used as the prerequisite for pip.
-
-      Install distribute using:
-        brew install distribute
-      EOS
     end
   end
 end
