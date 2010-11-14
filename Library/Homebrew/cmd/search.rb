@@ -1,4 +1,5 @@
 require "formula"
+require "blacklist"
 
 module Homebrew extend self
   def search
@@ -6,14 +7,20 @@ module Homebrew extend self
       exec "open", "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
     elsif ARGV.include? '--fink'
       exec "open", "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
+    else
+      query = ARGV.first
+      search_results = search_brews query
+      puts_columns search_results
+
+      if $stdout.tty? and msg = blacklisted?(query)
+        unless search_results.empty?
+          puts
+          puts "If you meant `#{query}' precisely:"
+          puts
+        end
+        puts msg
+      end
     end
-
-    require 'cmd/install' # for blacklisted? function
-    blacklisted? ARGV.named do |msg, _|
-      abort msg
-    end unless ARGV.force?
-
-    puts_columns search_brews(ARGV.first)
   end
 
   def search_brews text
