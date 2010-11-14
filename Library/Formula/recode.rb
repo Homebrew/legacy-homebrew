@@ -14,9 +14,9 @@ class Recode <Formula
 
   def install
     if MACOS_VERSION >= 10.6
-      libtool_config = "/usr/share/libtool/config"
+      cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config/config.*"], "."
     else
-      libtool_config = "/usr/share/libtool"
+      cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config.*"], "."
     end
 
     cp "#{libtool_config}/config.guess", "."
