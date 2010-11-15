@@ -8,6 +8,7 @@ class Couchdb <Formula
   depends_on 'spidermonkey'
   depends_on 'icu4c'
   depends_on 'erlang'
+  depends_on 'curl' if MACOS_VERSION < 10.6
 
   def install
     system "./bootstrap" if File.exists? "bootstrap"
