@@ -9,22 +9,12 @@ end
 def build_tests?; ARGV.include? '--test'; end
 
 class Glib <Formula
-  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.24/glib-2.24.2.tar.bz2'
-  sha256 '3aeb521abd3642dd1224379f0e54915957e5010f888a4ae74afa0ad54da0160c'
+  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.25/glib-2.25.17.tar.bz2'
+  sha256 'ba2543fa9dceb7dbcfbf00dcc3773cd649ef1698d7f7ad401f136e980559777d'
   homepage 'http://www.gtk.org'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
-
-  def patches
-    mp = "http://trac.macports.org/export/69965/trunk/dports/devel/glib2/files/"
-    {
-      :p0 => [
-        mp+"patch-configure.in.diff",
-        mp+"patch-child-test.c.diff"
-      ]
-    }
-  end
 
   def options
     [['--test', 'Build a debug build and run tests. NOTE: Tests may hang on "unix-streams".']]
