@@ -14,11 +14,6 @@ class Kismet <Formula
     inreplace "Makefile", "-o $(INSTUSR) -g $(MANGRP)", ""
 
     system "make install"
-    
-    # Configure the interface for your systems, requires small plist gem
-    require 'rubygems'
-    system "gem install plist" if not Gem.available?('plist')
-    addInterfacesToConfig()
   end
 
   def caveats
@@ -27,21 +22,7 @@ class Kismet <Formula
 
       - SUID Root functionality does not work, you will have to run this as root, e.g. via `sudo`. Do so at your own risk.
       - This version can be configured interactively when it is run (listen interface, etc).
-      - Automatically configured to use first AirPort interface found
+      - You may add the line 'ncsource=en1:name=AirPort' to kismet.conf to avoid prompting at startup (assuming en1 is your AirPort card).
     EOS
-  end
-  
-  def addInterfacesToConfig
-    Gem.clear_paths
-    require 'plist'
-    file = IO.popen('/usr/sbin/system_profiler -detailLevel mini -xml SPNetworkDataType', mode='r')
-    sysprof_data = Plist::parse_xml(file)
-    airport_interface = sysprof_data[0]['_items'].find_all { |item| item['_name'] == 'AirPort' }[0]['interface']
-
-    kismet_ncsources = "ncsource=%s:name=AirPort" % airport_interface
-    open("#{etc}/kismet.conf", 'a') { |f|
-      f.puts "# Source interface (auto-added via homebrew installation)"
-      f.puts kismet_ncsources
-    }
   end
 end
