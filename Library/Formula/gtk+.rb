@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gtkx <Formula
-  url 'ftp://ftp.gnome.org/pub/gnome/sources/gtk+/2.20/gtk+-2.20.1.tar.bz2'
+  url 'ftp://ftp.gnome.org/pub/gnome/sources/gtk+/2.22/gtk+-2.22.0.tar.bz2'
   homepage 'http://www.gtk.org/'
-  sha256 '0e081731d21e34ff45c82199490c2889504fa8b3c7e117c043e82ababaec0f65'
+  sha256 'd9522c80d4b8a954f7474e32bd5a99ba3051996f1c4681426db5f79a1c1b4602'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
@@ -15,6 +15,7 @@ class Gtkx <Formula
   depends_on 'cairo' if MACOS_VERSION < 10.6
 
   depends_on 'pango'
+  depends_on 'gdk-pixbuf2'
   depends_on 'jasper' => :optional
   depends_on 'atk' => :optional
 
