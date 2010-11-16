@@ -2,9 +2,9 @@ require 'formula'
 
 class Ghc <Formula
   homepage 'http://haskell.org/ghc/'
-  url "http://darcs.haskell.org/download/dist/6.12.3/GHC-6.12.3-i386.pkg"
-  version '6.12.3'
-  md5 '58399e3af68f50a23a847bdfe3de5aca'
+  url "http://new-www.haskell.org/ghc/dist/7.0.1/GHC-7.0.1-i386.pkg"
+  version '7.0.1'
+  md5 '0ec6e4aee49a156714cd37d5d5636b24'
 
   # Avoid stripping the Haskell binaries & libraries.
   # See: http://hackage.haskell.org/trac/ghc/ticket/2458
@@ -16,9 +16,11 @@ class Ghc <Formula
     inreplace files, foo, bar
   end
 
-  def install
-    short_version = version.split('.').first(2).join('')
+  def short_version
+    "#{version}-i386"
+  end
 
+  def install
     # Extract files from .pax.gz
     system '/bin/pax -f ghc.pkg/Payload -p p -rz'
     cd "GHC.framework/Versions/#{short_version}/usr"
