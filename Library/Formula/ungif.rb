@@ -6,14 +6,9 @@ class Ungif < Formula
   md5 '76865bc1bed90ecb5992a1edcc4d6c15'
   homepage 'http://sourceforge.net/projects/giflib/'
   def install
-    # does not build with universal_binary engaged
-    # ENV.universal_binary
+    ENV.j1
     system "./configure", "--prefix=#{prefix}"
     system "make all"
-    # their install system is screwed up
-    # mkdir: /usr/local/Cellar/ungif/4.1.4/bin: File exists
-    # so we call this twice
-    system "make -k install"
     system "make install"
   end
 end
