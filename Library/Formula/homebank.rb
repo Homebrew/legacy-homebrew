@@ -9,6 +9,7 @@ class Homebank <Formula
   depends_on 'gettext'
   depends_on 'gtk+'
   depends_on 'hicolor-icon-theme'
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
