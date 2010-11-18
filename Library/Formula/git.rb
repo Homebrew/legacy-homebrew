@@ -39,6 +39,10 @@ class Git < Formula
 
     # Install git-p4
     bin.install 'contrib/fast-import/git-p4'
+    # Install git-new-workdir
+    # see http://finik.net/2010/10/24/multiple-working-folders-with-single-git-repository/
+    # for the idea behind it
+    bin.install 'contrib/workdir/git-new-workdir'
 
     # these files are exact copies of the git binary, so like the contents
     # of libexec/git-core lets hard link them
