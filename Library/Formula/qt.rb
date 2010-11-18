@@ -10,6 +10,7 @@ class Qt <Formula
     [
       ['--with-qtdbus', "Enable QtDBus module."],
       ['--with-qt3support', "Enable deprecated Qt3Support module."],
+      ['--with-demos-examples', "Enable Qt demos and examples."],
     ]
   end
 
@@ -24,7 +25,6 @@ class Qt <Formula
   def install
     args = ["-prefix", prefix,
             "-system-libpng", "-system-zlib",
-            "-nomake", "demos", "-nomake", "examples",
             "-release", "-cocoa",
             "-confirm-license", "-opensource",
             "-fast"]
@@ -45,6 +45,10 @@ class Qt <Formula
       args << "-qt3support"
     else
       args << "-no-qt3support"
+    end
+
+    unless ARGV.include? '--with-demos-examples'
+      args << "-nomake" << "demos" << "-nomake" << "examples"
     end
 
     if Qt.x11?
