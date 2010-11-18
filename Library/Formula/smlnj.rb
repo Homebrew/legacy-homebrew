@@ -38,20 +38,9 @@ EOS
     (libexec+'config/targets').write targets
     Dir.chdir libexec
     system 'config/install.sh'
+    # make all the executables available from end user
+    bin.mkpath
+    Dir["#{libexec}/bin/*"].each { |f| ln_s f, bin }
   end
 
-  def caveats
-    <<-EOS.undent
-    This formula spews ML files all over lib, and puts hidden subfolders in bin.
-    Because of this, we've installed it to:
-      #{libexec}
-    and we haven't linked it into #{HOMEBREW_PREFIX}
-
-    You'll need to add:
-      #{libexec}/bin
-    to your PATH.
-
-    Improvements are welcome.
-    EOS
-  end
 end
