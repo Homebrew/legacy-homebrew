@@ -9,6 +9,6 @@ class Treeline <Formula
 
   def install
     ENV.prepend "PYTHONPATH", "#{HOMEBREW_PREFIX}/lib/python"
-    system "./install.py", "-p" "#{prefix}"
+    system "./install.py", "-p#{prefix}"
   end
 end

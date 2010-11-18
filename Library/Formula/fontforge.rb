@@ -11,6 +11,7 @@ class Fontforge <Formula
   depends_on 'potrace'
 
   def install
+    ENV.x11
     system "./configure", "--prefix=#{prefix}",
                           "--enable-double",
                           "--without-freetype-bytecode",

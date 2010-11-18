@@ -5,6 +5,10 @@ class Boost <Formula
   url 'http://downloads.sourceforge.net/project/boost/boost/1.44.0/boost_1_44_0.tar.bz2'
   md5 'f02578f5218f217a9f20e9c30e119c6a'
 
+  def options
+    [['--with-mpi', "Enables MPI support"]]
+  end
+
   def install
     fails_with_llvm "LLVM-GCC causes errors with dropped arguments to "+
                     "functions when linking with boost"
@@ -30,6 +34,7 @@ class Boost <Formula
     # Force boost to compile using the GCC 4.2 compiler
     open("user-config.jam", "a") do |file|
       file.write "using darwin : : #{ENV['CXX']} ;\n"
+      file.write "using mpi ;\n" if ARGV.include? '--with-mpi'
     end
 
     # we specify libdir too because the script is apparently broken

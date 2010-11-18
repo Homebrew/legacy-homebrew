@@ -10,9 +10,9 @@ class Bsdiff <Formula
   end
 
   def install
-  	system "/usr/bin/bsdmake"
-  	bin.install "bsdiff"
-  	man1.install "bsdiff.1"
+    system "/usr/bin/bsdmake"
+    bin.install "bsdiff"
+    man1.install "bsdiff.1"
   end
 end
 
