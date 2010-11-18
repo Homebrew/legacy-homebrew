@@ -6,6 +6,11 @@ class Qt <Formula
   md5 '6f88d96507c84e9fea5bf3a71ebeb6d7'
   homepage 'http://qt.nokia.com/'
 
+  def patches
+    # To fix http://bugreports.qt.nokia.com/browse/QTBUG-13623. Patch sent upstream.
+    "http://qt.gitorious.org/~mikemcquaid/qt/mikemcquaid-qt/commit/ca2e8b6dc176576f7217f4b7209994eddad1a358.patch"
+  end
+
   def options
     [
       ['--with-qtdbus', "Enable QtDBus module."],
