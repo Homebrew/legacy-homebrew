@@ -7,6 +7,7 @@ class Ircii <Formula
 
   def install
     system "./configure", "--prefix=#{prefix}",
+                          "--mandir=#{man}",
                           "--disable-debug",
                           "--disable-dependency-tracking",
                           "--with-default-server=irc.freenode.net",
