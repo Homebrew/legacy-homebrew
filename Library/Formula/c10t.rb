@@ -12,7 +12,7 @@ class C10t <Formula
   depends_on 'boost'
 
   def install
-    inreplace 'src/global.h', "font.ttf", "#{prefix}/font.ttf"
+    inreplace 'src/global.hpp', "font.ttf", "#{prefix}/font.ttf"
     inreplace 'CMakeLists.txt', 'boost_thread', 'boost_thread-mt'
     inreplace 'test/CMakeLists.txt', 'boost_unit_test_framework', 'boost_unit_test_framework-mt'
     system "cmake . #{std_cmake_parameters}"
