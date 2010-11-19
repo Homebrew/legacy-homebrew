@@ -1,11 +1,12 @@
 require 'formula'
 
 class Libmusicbrainz <Formula
-  url 'http://ftp.musicbrainz.org/pub/musicbrainz/libmusicbrainz-3.0.2.tar.gz'
+  url 'http://ftp.musicbrainz.org/pub/musicbrainz/libmusicbrainz-3.0.3.tar.gz'
   homepage 'http://musicbrainz.org'
-  md5 '648ecd43f7b80852419aaf73702bc23f'
+  md5 'f4824d0a75bdeeef1e45cc88de7bb58a'
 
   depends_on 'neon'
+  depends_on 'cmake' => :build
 
   def install
     neon = Formula.factory("neon")

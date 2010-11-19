@@ -1,10 +1,10 @@
 require 'formula'
 
 class Libnet < Formula
-  url "http://github.com/sam-github/libnet/tarball/libnet-1.1.4"
+  url "https://github.com/sam-github/libnet/tarball/libnet-1.1.4"
   md5 "0cb6c04063c1db37c91af08c76d25134"
   head 'git://github.com/sam-github/libnet.git'
-  homepage 'http://github.com/sam-github/libnet'
+  homepage 'https://github.com/sam-github/libnet'
 
   def install
     cd 'libnet'

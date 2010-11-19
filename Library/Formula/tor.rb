@@ -8,7 +8,7 @@ class Tor <Formula
   depends_on 'libevent'
 
   def patches
-    {:p0 => 'http://gist.github.com/raw/344132/d27d1cd3042d7c58120688d79ed25a2fc959a2de/config.guess-x86_64patch.diff' }
+    {:p0 => 'https://gist.github.com/raw/344132/d27d1cd3042d7c58120688d79ed25a2fc959a2de/config.guess-x86_64patch.diff' }
   end
 
   def install

@@ -1,7 +1,7 @@
 require 'formula'
 
 class Voldemort <Formula
-  url 'http://github.com/downloads/voldemort/voldemort/voldemort-0.81.tar.gz'
+  url 'https://github.com/downloads/voldemort/voldemort/voldemort-0.81.tar.gz'
   homepage 'http://project-voldemort.com/'
   md5 '38da11626c6704f2bda17d6461cd2928'
 

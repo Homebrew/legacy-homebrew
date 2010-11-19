@@ -1,7 +1,7 @@
 require 'formula'
 
 class ShellFm <Formula
-  url 'http://github.com/jkramer/shell-fm/tarball/v0.7'
+  url 'https://github.com/jkramer/shell-fm/tarball/v0.7'
   homepage 'http://nex.scrapping.cc/shell-fm/'
   md5 '3f83866622a892ee89685f1ed079eefd'
 

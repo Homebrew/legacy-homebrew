@@ -34,7 +34,7 @@ class Qt <Formula
             "-confirm-license", "-opensource",
             "-fast"]
 
-    # See: http://github.com/mxcl/homebrew/issues/issue/744
+    # See: https://github.com/mxcl/homebrew/issues/issue/744
     args << "-system-sqlite" if MACOS_VERSION <= 10.5
     args << "-plugin-sql-mysql" if (HOMEBREW_CELLAR+"mysql").directory?
 
@@ -85,7 +85,7 @@ class Qt <Formula
 
     # Some config scripts will only find Qt in a "Frameworks" folder
     # VirtualBox is an example of where this is needed
-    # See: http://github.com/mxcl/homebrew/issues/issue/745
+    # See: https://github.com/mxcl/homebrew/issues/issue/745
     cd prefix do
       ln_s lib, "Frameworks"
     end
