@@ -1,4 +1,4 @@
-# some credit to http://github.com/maddox/magick-installer
+# some credit to https://github.com/maddox/magick-installer
 require 'formula'
 
 class UnsafeSvn <SubversionDownloadStrategy
