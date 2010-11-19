@@ -7,6 +7,7 @@ class Princexml <Formula
   version '7.1'
 
   def patches
+    # Drop the user input since we're providing the prefix
     DATA
   end
 
