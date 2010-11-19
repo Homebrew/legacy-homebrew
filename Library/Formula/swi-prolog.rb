@@ -2,6 +2,7 @@ require 'formula'
 
 class SwiProlog <Formula
   url 'http://www.swi-prolog.org/download/stable/src/pl-5.10.2.tar.gz'
+  head 'git://www.swi-prolog.org/home/pl/git/pl.git'
   homepage 'http://www.swi-prolog.org/'
   md5 '7973bcfd3854ae0cb647cc62f2faabcf'
 
@@ -49,6 +50,10 @@ class SwiProlog <Formula
     # Build the packages unless --lite option specified
     args << "--with-world" unless ARGV.include? "--lite"
 
+    # './prepare' prompts the user to build documentation
+    # (which requires other modules). '3' is the option
+    # to ignore documentation.
+    system "echo '3' | ./prepare" if ARGV.build_head?
     system "./configure", *args
     system "make"
     system "make install"
