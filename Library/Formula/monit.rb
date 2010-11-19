@@ -6,7 +6,9 @@ class Monit <Formula
   sha256 '31b37dd4a6f6b48e6d6926d97bfe5ad998a2a0611af0586525a5dd1b5847e41e'
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}",
+                          "--localstatedir=#{var}/monit",
+                          "--sysconfdir=#{etc}/monit"
     system "make install"
   end
 end

@@ -136,6 +136,9 @@ module HomebrewArgvExtension
   private
 
   def downcased_unique_named
-    @downcased_unique_named ||= named.map{|arg| arg.downcase}.uniq
+    # Only lowercase names, not paths or URLs
+    @downcased_unique_named ||= named.map do |arg|
+      arg.include?("/") ? arg : arg.downcase
+    end.uniq
   end
 end
