@@ -1,8 +1,8 @@
 require 'formula'
 
 class Greg <Formula
-  head 'http://github.com/nddrylliog/greg.git'
-  homepage 'http://github.com/nddrylliog/greg'
+  head 'https://github.com/nddrylliog/greg.git'
+  homepage 'https://github.com/nddrylliog/greg'
 
   def install
     inreplace 'Makefile' do |s|
