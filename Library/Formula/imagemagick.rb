@@ -3,7 +3,7 @@ require 'formula'
 
 class UnsafeSvn <SubversionDownloadStrategy
   def _fetch_command svncommand, url, target
-    [svn, '--non-interactive', '--trust-server-cert', svncommand, '--force', url, target]
+    [svn, svncommand, url, target]
   end
 end
 
