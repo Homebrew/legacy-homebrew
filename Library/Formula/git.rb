@@ -36,6 +36,7 @@ class Git < Formula
     # clobbered on upgrade.)
 
     (prefix+'etc/bash_completion.d').install 'contrib/completion/git-completion.bash'
+    (prefix+'share/doc/git-core/contrib').install 'contrib/emacs'
 
     # Install git-p4
     bin.install 'contrib/fast-import/git-p4'
