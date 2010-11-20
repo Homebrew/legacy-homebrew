@@ -16,7 +16,7 @@ end
 HOMEBREW_REPOSITORY.cd do
   ARGV.each do|arg|
     # This regex should work, if it's too precise, feel free to fix it.
-    if !arg.match 'https:\/\/github.com\/\w+\/homebrew\/(pull\/\d+|commit\/\w{40})'
+    if !arg.match 'https:\/\/github.com\/\w+\/homebrew\/(pull\/\d+|commit\/\w{4,40})'
       ohai 'Ignoring URL:', "Not a GitHub pull request or commit: #{arg}"
       next
     end
