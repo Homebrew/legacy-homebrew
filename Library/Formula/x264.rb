@@ -4,7 +4,8 @@ class X264 <Formula
   homepage 'http://www.videolan.org/developers/x264.html'
   url 'git://git.videolan.org/x264.git',
         :branch => 'stable'
-  head 'git://git.videolan.org/x264.git'
+  head 'git://git.videolan.org/x264.git',
+        :branch => 'master'
 
   depends_on 'yasm'
 
