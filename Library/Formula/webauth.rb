@@ -7,9 +7,8 @@ class Webauth <Formula
 
   def install
     (prefix+'krb5.conf').write krb5_conf
-    system './configure', "--prefix=#{prefix}", "--libexecdir=#{prefix}/lib", "KRB5_CONFIG=#{prefix}/krb5.conf", "--disable-dependency-tracking"
+    system './configure', "--prefix=#{prefix}", "--libexecdir=#{lib}", "KRB5_CONFIG=#{prefix}/krb5.conf", "--disable-dependency-tracking"
     system 'make install'
-    
   end
   
   def caveats; <<-EOS
