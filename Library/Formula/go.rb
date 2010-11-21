@@ -3,7 +3,7 @@ require 'hardware'
 
 class Go <Formula
   if ARGV.include? "--use-git-head"
-    head 'http://github.com/tav/go.git', :tag => 'release'
+    head 'https://github.com/tav/go.git', :tag => 'release'
   else
     head 'http://go.googlecode.com/hg/', :revision => 'release'
   end
@@ -20,7 +20,7 @@ class Go <Formula
   end
 
   def install
-    ENV.j1 # http://github.com/mxcl/homebrew/issues/#issue/237
+    ENV.j1 # https://github.com/mxcl/homebrew/issues/#issue/237
     prefix.install %w[src include test doc misc lib favicon.ico]
     Dir.chdir prefix
     mkdir %w[pkg bin]
@@ -34,7 +34,7 @@ class Go <Formula
 
     Dir.chdir 'src' do
       system "./all.bash"
-      # Keep the makefiles - http://github.com/mxcl/homebrew/issues/issue/1404
+      # Keep the makefiles - https://github.com/mxcl/homebrew/issues/issue/1404
     end
 
     Dir['src/*'].each{|f| rm_rf f unless f.match(/^src\/(pkg|Make)/) }
@@ -44,7 +44,7 @@ class Go <Formula
   def caveats
     <<-EOS.undent
       The official Go code repository uses mercurial, but a reasonably
-      up-to-date git mirror is available at http://github.com/tav/go.git.
+      up-to-date git mirror is available at https://github.com/tav/go.git.
       To use the git mirror for Go builds, use the --use-git-head option.
 
       In order to use Go, set the following in your ~/.profile:

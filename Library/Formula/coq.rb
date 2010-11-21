@@ -1,10 +1,10 @@
 require 'formula'
 
 class Coq < Formula
-  url 'http://coq.inria.fr/distrib/V8.2pl2/files/coq-8.2pl2.tar.gz'
+  url 'http://coq.inria.fr/distrib/V8.3/files/coq-8.3.tar.gz'
+  head 'svn://scm.gforge.inria.fr/svn/coq/trunk'
   homepage 'http://coq.inria.fr/'
-  md5 '0fa1bcce3ab83d95571d2094f5091e6b'
-  version '8.2'
+  md5 '14b80e6b7075adf1516ab931202be8df'
 
   depends_on 'objective-caml'
   depends_on 'camlp5'
