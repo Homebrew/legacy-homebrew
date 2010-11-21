@@ -5,6 +5,8 @@ class Rsync <Formula
   homepage 'http://rsync.samba.org/'
   md5 'b53525900817cf1ba7ad3a516ab5bfe9'
 
+  depends_on 'libiconv'
+
   def patches
     base = "http://trac.macports.org/export/65950/trunk/dports/net/rsync/files"
     {
