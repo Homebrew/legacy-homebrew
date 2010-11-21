@@ -49,7 +49,7 @@ class Go <Formula
 
       In order to use Go, set the following in your ~/.profile:
 
-        export GOROOT=`brew --cellar go`
+        export GOROOT=`brew --prefix go`
         export GOBIN=#{HOMEBREW_PREFIX}/bin
         export GOARCH=#{which_arch}
         export GOOS=darwin
