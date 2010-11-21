@@ -7,7 +7,7 @@ class Libbs2b <Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'libsndfile'
-  
+
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--disable-static",
