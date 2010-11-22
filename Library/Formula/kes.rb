@@ -2,7 +2,7 @@ require 'formula'
 
 class Kes <Formula
   head 'git://github.com/epilnivek/kes.git'
-  homepage 'http://github.com/epilnivek/kes'
+  homepage 'https://github.com/epilnivek/kes'
 
   def install
     system "make"

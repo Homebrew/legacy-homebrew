@@ -5,7 +5,7 @@ class Monotone <Formula
   homepage 'http://www.monotone.ca/'
   md5 '330a1fe1d92c899d1ad539606f85a9f8'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'botan'
   depends_on 'boost'

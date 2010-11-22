@@ -13,7 +13,7 @@ class Glib <Formula
   sha256 '3aeb521abd3642dd1224379f0e54915957e5010f888a4ae74afa0ad54da0160c'
   homepage 'http://www.gtk.org'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
 
   def patches

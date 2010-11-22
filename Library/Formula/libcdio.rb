@@ -6,7 +6,7 @@ class Libcdio <Formula
   homepage 'http://www.gnu.org/software/libcdio/'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
 end

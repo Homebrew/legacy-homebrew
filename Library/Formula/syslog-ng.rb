@@ -5,7 +5,7 @@ class SyslogNg <Formula
   homepage 'http://www.balabit.com/network-security/syslog-ng/'
   md5 '7107f5758dec4b774136f0f827b35258'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'pcre'
   depends_on 'eventlog'
 

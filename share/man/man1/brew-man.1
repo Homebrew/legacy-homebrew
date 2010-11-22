@@ -1,0 +1,48 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "BREW\-MAN" "1" "November 2010" "Homebrew" "brew"
+.
+.SH "NAME"
+\fBbrew\-man\fR \- Generate man pages for Homebrew
+.
+.SH "SYNOPSIS"
+\fBbrew man\fR [\-\-verbose]
+.
+.br
+\fBbrew man\fR \-\-link
+.
+.br
+\fBbrew man\fR \-\-server
+.
+.SH "DESCRIPTION"
+Generates man pages for Homebrew using \fBronn\fR \fIhttp://rtomayko\.github\.com/ronn/\fR\.
+.
+.P
+\fBbrew man\fR by itself updates the man pages from the source files\.
+.
+.P
+With \fB\-\-link\fR, symlinks generated man pages to \fBshare/man\fR under the Homebrew Prefix\.
+.
+.P
+With \fB\-\-server\fR, starts ronn\'s dev server\.
+.
+.SH "OPTIONS"
+.
+.TP
+\fB\-v\fR, \fB\-\-verbose\fR
+Run \fBman brew\fR after generating man pages\.
+.
+.TP
+\fB\-l\fR, \fB\-\-link\fR
+Creates symlinks from the generated man pages to the Homebrew Prefix, typically \fB/usr/local\fR\. Useful when Homebrew itself is not installed directly into \fB/usr/local\fR\.
+.
+.TP
+\fB\-s\fR, \fB\-\-server\fR
+Starts ronn\'s test server\.
+.
+.SH "SEE ALSO"
+\fBbrew\fR(1)
+.
+.SH "BUGS"
+See Issues on GitHub: \fIhttp://github\.com/mxcl/homebrew/issues\fR

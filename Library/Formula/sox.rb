@@ -5,7 +5,7 @@ class Sox <Formula
   homepage 'http://sox.sourceforge.net/'
   md5 'b99871c7bbae84feac9d0d1f010331ba'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'libvorbis' => :optional
   depends_on 'flac' => :optional
   depends_on 'libao' => :optional

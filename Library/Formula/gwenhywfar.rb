@@ -5,14 +5,15 @@ class Gwenhywfar <Formula
   homepage 'http://gwenhywfar.sourceforge.net/'
   md5 '513ea7b5b22edf512fa7d825ef544954'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'gnutls'
 
   def options
-    [
-      ['--with-gui=XX,...', "Install gui support XX where XX is the name of the gui toolkit\n\te.g.: --with-gui=gtk\n\tAvailable gui toolkits are: qt, gtk"],
-    ]
+    [[
+      "--with-gui=XX,...",
+      "Install gui support XX where XX is the name of the gui toolkit\n\te.g.: --with-gui=gtk\n\tAvailable gui toolkits are: qt, gtk"
+    ]]
   end
 
 

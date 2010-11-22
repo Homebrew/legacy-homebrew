@@ -26,7 +26,7 @@ Cflags: -I${includedir}
     fpm = snow_leopard_64? ? '64bit': 'intel'
     system "./configure", "--disable-debugging", "--enable-fpm=#{fpm}", "--prefix=#{prefix}"
 
-    # See: http://github.com/mxcl/homebrew/issues/issue/1263
+    # See: https://github.com/mxcl/homebrew/issues/issue/1263
     inreplace "Makefile" do |s|
       s.change_make_var! "CFLAGS", ENV.cflags
       s.change_make_var! "LDFLAGS", ENV.ldflags

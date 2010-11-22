@@ -5,10 +5,15 @@ class Gtkx <Formula
   homepage 'http://www.gtk.org/'
   sha256 '0e081731d21e34ff45c82199490c2889504fa8b3c7e117c043e82ababaec0f65'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'jpeg'
   depends_on 'libtiff'
+
+  # Used by pango, but keg-only, so needs to be added to
+  # the flags for gtk+ explicitly.
+  depends_on 'cairo' if MACOS_VERSION < 10.6
+
   depends_on 'pango'
   depends_on 'jasper' => :optional
   depends_on 'atk' => :optional
@@ -19,5 +24,9 @@ class Gtkx <Formula
                           "--prefix=#{prefix}",
                           "--disable-glibtest"
     system "make install"
+  end
+
+  def test
+    system "gtk-demo"
   end
 end

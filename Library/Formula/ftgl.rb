@@ -5,7 +5,7 @@ class Ftgl <Formula
   homepage 'http://sourceforge.net/projects/ftgl/'
   md5 'fcf4d0567b7de9875d4e99a9f7423633'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
 
   def install
     ENV.x11 # Put freetype-config in path

@@ -7,7 +7,8 @@ class Libmikmod <Formula
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--mandir=#{man}"
+                          "--prefix=#{prefix}", "--mandir=#{man}",
+                          "--infodir=#{info}"
     system "make install"
   end
 end

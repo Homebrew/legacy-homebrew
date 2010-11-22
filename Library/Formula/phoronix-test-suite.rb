@@ -1,17 +1,18 @@
 require 'formula'
 
 class PhoronixTestSuite <Formula
-  head 'http://www.phorogit.com/repo/phoronix-test-suite.git', :using => :git
   homepage 'http://www.phoronix-test-suite.com/'
+  url "http://www.phoronix-test-suite.com/download.php?file=phoronix-test-suite-2.8.1"
+  md5 "623d0ea01963df438f738ec50e90afc6"
 
-  def patches
-    DATA
-  end
+  def patches; DATA; end
 
   def install
     system "./install-sh #{prefix}"
   end
 end
+
+
 __END__
 diff --git a/install-sh b/install-sh
 index 596dfae..c83ebe2 100755

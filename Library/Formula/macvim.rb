@@ -1,8 +1,9 @@
 require 'formula'
 
 class Macvim <Formula
-  url 'git://github.com/b4winckler/macvim.git', :tag => 'v7.3-53'
+  url 'https://github.com/b4winckler/macvim/tarball/v7.3-53'
   version 'v7.3-53'
+  md5 '35fb942c45109a2cbdbe7c1a3e02d59d'
   head 'git://github.com/b4winckler/macvim.git', :branch => 'master'
   homepage 'http://code.google.com/p/macvim/'
 
@@ -45,6 +46,6 @@ class Macvim <Formula
   end
 
   def caveats
-    "MacVim.app installed to #{prefix}."
+    "MacVim.app installed to:\n#{prefix}"
   end
 end

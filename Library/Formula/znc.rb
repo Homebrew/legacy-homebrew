@@ -1,12 +1,12 @@
 require 'formula'
 
 class Znc <Formula
-  url 'http://downloads.sourceforge.net/project/znc/znc/0.092/znc-0.092.tar.gz'
-  md5 'e800a70c932dd13bc09b63569b49db3a'
+  url 'http://downloads.sourceforge.net/project/znc/znc/0.094/znc-0.094.tar.gz'
+  md5 'db101f7a7756285d824b59e3b33e3ad5'
   homepage 'http://en.znc.in/wiki/ZNC'
 
+  depends_on 'pkg-config' => :build
   depends_on 'c-ares'
-  depends_on 'pkg-config' => :optional
 
   skip_clean 'bin/znc'
   skip_clean 'bin/znc-config'

@@ -7,8 +7,20 @@ class Camlp5 <Formula
 
   depends_on 'objective-caml'
 
+  def options
+    [['--strict', "Compile in strict mode"]]
+  end
+
   def install
-    system "./configure -strict -prefix #{prefix} -mandir #{man}"
+
+    # compile for strict or transitional
+    if ARGV.include? '--strict'
+      strictness = "-strict"
+    else
+      strictness = "-transitional"
+    end
+
+    system "./configure -prefix #{prefix} -mandir #{man} #{strictness}"
     # this build fails if jobs are parallelized
     system "make -j 1 world.opt"
     system "make install"

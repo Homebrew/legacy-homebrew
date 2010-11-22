@@ -5,7 +5,7 @@ class Ifuse <Formula
   homepage 'http://www.libimobiledevice.org/'
   md5 '325d58abe182afa95187e6c55f2bba5f'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'libimobiledevice'
 
