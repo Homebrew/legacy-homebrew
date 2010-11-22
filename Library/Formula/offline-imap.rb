@@ -1,8 +1,8 @@
 require 'formula'
 
 class OfflineImap < Formula
-  url "http://github.com/downloads/rue/offlineimap/offlineimap-6.2.0.tar.gz"
-  homepage "http://github.com/rue/offlineimap"
+  url "https://github.com/downloads/rue/offlineimap/offlineimap-6.2.0.tar.gz"
+  homepage "https://github.com/rue/offlineimap"
   md5 "919ad6f71b8437ad0a08a5fdeae9cb67"
 
   def install
