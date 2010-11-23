@@ -8,6 +8,10 @@ class Jstalk <Formula
   md5 '405ffbb0f37b8244461b3872cc8d76fa'
 
   def install
+    if MACOS_VERSION < 10.6
+      onoe "jstalk requires Mac OS X 10.6+" 
+      exit 1
+    end
 
     if ARGV.build_head?
       ENV.delete 'CC'
