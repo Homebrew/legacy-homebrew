@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pixman <Formula
-  url 'http://www.cairographics.org/releases/pixman-0.18.0.tar.gz'
+  url 'http://www.cairographics.org/releases/pixman-0.21.2.tar.gz'
   homepage 'http://www.cairographics.org/'
-  md5 'a4fb870fc325be258089f1683642e976'
+  sha1 'c0ff07d7e4877dd4d0d369ca09e50ca956e3386e'
 
   depends_on 'pkg-config' => :build
   depends_on 'libpng'
