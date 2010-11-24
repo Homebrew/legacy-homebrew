@@ -5,6 +5,8 @@ class Qt <Formula
   url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.1.tar.gz'
   md5 '6f88d96507c84e9fea5bf3a71ebeb6d7'
   homepage 'http://qt.nokia.com/'
+  bottle 'https://downloads.sourceforge.net/project/machomebrew/qt-4.7.1.tar.gz'
+  bottle_sha1 '226c62995ccb4fd2761d183098bc1aa60fe39f3a'
 
   def patches
     # To fix http://bugreports.qt.nokia.com/browse/QTBUG-13623. Patch sent upstream.
