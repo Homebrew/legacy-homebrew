@@ -45,17 +45,26 @@ class SoftwareSpecification
   end
 end
 
+class BottleSoftwareSpecification <SoftwareSpecification
+  def download_strategy
+    return CurlBottleDownloadStrategy if @using.nil?
+    raise "Strategies cannot be used with bottles."
+  end
+end
+
 
 # Derive and define at least @url, see Library/Formula for examples
 class Formula
   include FileUtils
 
-  attr_reader :name, :path, :url, :version, :homepage, :specs, :downloader
+  attr_reader :name, :path, :url, :bottle, :bottle_sha1, :version, :homepage, :specs, :downloader
 
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
     set_instance_variable 'homepage'
     set_instance_variable 'url'
+    set_instance_variable 'bottle'
+    set_instance_variable 'bottle_sha1'
     set_instance_variable 'head'
     set_instance_variable 'specs'
 
@@ -66,6 +75,8 @@ class Formula
       @url = @head
       @version = 'HEAD'
       @spec_to_use = @unstable
+    elsif pouring
+      @spec_to_use = BottleSoftwareSpecification.new(@bottle, @specs)
     else
       if @stable.nil?
         @spec_to_use = SoftwareSpecification.new(@url, @specs)
@@ -389,6 +400,10 @@ class Formula
     end
   end
 
+  def pouring
+    return (@bottle or ARGV.build_from_source?)
+  end
+
 protected
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
@@ -447,10 +462,16 @@ private
 
   def verify_download_integrity fn
     require 'digest'
-    type=CHECKSUM_TYPES.detect { |type| instance_variable_defined?("@#{type}") }
-    type ||= :md5
-    supplied=instance_variable_get("@#{type}")
-    type=type.to_s.upcase
+    if not pouring
+      type=CHECKSUM_TYPES.detect { |type| instance_variable_defined?("@#{type}") }
+      type ||= :md5
+      supplied=instance_variable_get("@#{type}")
+      type=type.to_s.upcase
+    else
+      supplied=instance_variable_get("@bottle_sha1")
+      type="SHA1"
+    end
+
     hasher = Digest.const_get(type)
     hash = fn.incremental_hash(hasher)
 
@@ -475,14 +496,21 @@ EOF
     fetched = @downloader.fetch
     verify_download_integrity fetched if fetched.kind_of? Pathname
 
-    mktemp do
-      @downloader.stage
-      yield
+    if not pouring
+      mktemp do
+        @downloader.stage
+        yield
+      end
+    else
+      HOMEBREW_CELLAR.cd do
+        @downloader.stage
+        yield
+      end
     end
   end
 
   def patch
-    return if patches.nil?
+    return if patches.nil? or pouring
 
     if not patches.kind_of? Hash
       # We assume -p1
@@ -575,7 +603,7 @@ EOF
     end
 
     attr_rw :version, :homepage, :specs, :deps, :external_deps
-    attr_rw :keg_only_reason, :skip_clean_all
+    attr_rw :keg_only_reason, :skip_clean_all, :bottle, :bottle_sha1
     attr_rw(*CHECKSUM_TYPES)
 
     def head val=nil, specs=nil
