@@ -11,8 +11,6 @@ class Jnethack <Formula
   version '3.4.3'
   md5 '21479c95990eefe7650df582426457f9'
 
-  # depends_on 'cocot'
-
   # Don't remove save folder
   skip_clean 'libexec/save'
 
