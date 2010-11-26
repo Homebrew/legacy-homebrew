@@ -1,7 +1,7 @@
 require 'formula'
 
 class GitSubtree <Formula
-  homepage 'http://github.com/apenwarr/git-subtree'
+  homepage 'https://github.com/apenwarr/git-subtree'
   head 'git://github.com/apenwarr/git-subtree.git',
         :tag => 'v0.3'
 

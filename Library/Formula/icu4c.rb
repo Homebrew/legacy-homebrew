@@ -10,7 +10,7 @@ class Icu4c <Formula
     DATA
   end
 
-  keg_only "Conflicts; see: http://github.com/mxcl/homebrew/issues/issue/167"
+  keg_only "Conflicts; see: https://github.com/mxcl/homebrew/issues/issue/167"
 
   def install
     ENV.append "LDFLAGS", "-headerpad_max_install_names"

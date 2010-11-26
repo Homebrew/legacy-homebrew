@@ -16,6 +16,9 @@ class Nethack <Formula
   version '3.4.3'
   md5 '21479c95990eefe7650df582426457f9'
 
+  # Don't remove save folder
+  skip_clean 'libexec/save'
+
   def patches
     DATA
   end
@@ -51,6 +54,7 @@ class Nethack <Formula
     system 'cd src;make'
 
     bin.install 'src/nethack'
+    (libexec+'save').mkpath
   end
 end
 

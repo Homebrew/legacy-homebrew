@@ -1,9 +1,9 @@
 require 'formula'
 
 class PgpoolIi <Formula
-  url 'http://pgfoundry.org/frs/download.php/2798/pgpool-II-3.0.tar.gz'
+  url 'http://pgfoundry.org/frs/download.php/2841/pgpool-II-3.0.1.tar.gz'
   homepage 'http://pgpool.projects.postgresql.org/'
-  md5 'd93a896ce185bff7920d4b603a4e9111'
+  md5 '86d8beff0396d11b6753dd2be31bcad7'
 
   def install
      if `/usr/bin/which pg_config`.chomp.empty?
