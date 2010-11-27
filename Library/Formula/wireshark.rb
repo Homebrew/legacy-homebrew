@@ -1,8 +1,8 @@
 require 'formula'
 
 class Wireshark <Formula
-  url 'http://media-2.cacetech.com/wireshark/src/wireshark-1.4.1.tar.bz2'
-  md5 '1719d20a10990e7c2cb261df7021aab6'
+  url 'http://media-2.cacetech.com/wireshark/src/wireshark-1.4.2.tar.bz2'
+  md5 '5429561935ea0d1ee572793b55446918'
   homepage 'http://www.wireshark.org'
 
   depends_on 'gnutls' => :optional
@@ -12,11 +12,6 @@ class Wireshark <Formula
 
   def options
     [["--with-x", "Include X11 support"]]
-  end
-
-  def patches
-    # Fix a crash on launch bug in 1.4.1 as fixed in wireshark SVN revision 34494
-    DATA
   end
 
   def install
@@ -32,23 +27,3 @@ class Wireshark <Formula
   end
 end
 
-
-__END__
---- trunk-1.4/gtk/main.c	2010/10/12 21:33:08	34493
-+++ trunk-1.4/gtk/main.c	2010/10/13 00:50:07	34494
-@@ -2787,7 +2787,6 @@
-      changed either from one of the preferences file or from the command
-      line that their preferences have changed. */
-   prefs_apply_all();
--  macros_post_update();
- 
-   /* disabled protocols as per configuration file */
-   if (gdp_path == NULL && dp_path == NULL) {
-@@ -3731,6 +3730,7 @@
- 
-    prefs_to_capture_opts();
-    prefs_apply_all();
-+   macros_post_update();
- 
-    /* Update window view and redraw the toolbar */
-    update_main_window_name();

@@ -2,8 +2,8 @@ require 'formula'
 
 class Mysql <Formula
   homepage 'http://dev.mysql.com/doc/refman/5.1/en/'
-  url 'http://mysql.mirrors.pair.com/Downloads/MySQL-5.1/mysql-5.1.51.tar.gz'
-  md5 'c12bf24493688c51c6cff5e8c6563830'
+  url 'http://mysql.mirrors.pair.com/Downloads/MySQL-5.1/mysql-5.1.52.tar.gz'
+  md5 '43c11ad3dded693393c4815d24e2b0a5'
 
   depends_on 'readline'
 
@@ -21,7 +21,7 @@ class Mysql <Formula
   end
 
   def install
-    fails_with_llvm "http://github.com/mxcl/homebrew/issues/issue/144"
+    fails_with_llvm "https://github.com/mxcl/homebrew/issues/issue/144"
 
     # See: http://dev.mysql.com/doc/refman/5.1/en/configure-options.html
     # These flags may not apply to gcc 4+
@@ -63,6 +63,7 @@ class Mysql <Formula
 
   def caveats; <<-EOS.undent
     Set up databases with:
+        unset TMPDIR
         mysql_install_db
 
     If this is your first install, automatically load on login with:
