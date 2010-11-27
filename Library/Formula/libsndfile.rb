@@ -2,8 +2,8 @@ require 'formula'
 
 class Libsndfile <Formula
   homepage 'http://www.mega-nerd.com/libsndfile/'
-  url 'http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.21.tar.gz'
-  md5 '880a40ec636ab2185b97f8927299b292'
+  url 'http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.23.tar.gz'
+  md5 'd0e22b5ff2ef945615db33960376d733'
 
   depends_on 'pkg-config' => :build
 
