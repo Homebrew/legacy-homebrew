@@ -13,6 +13,14 @@ class Pypy <Formula
   version '1.4'
 
   def install
+
     prefix.install ["bin", "lib-python", "lib_pypy"]
+
+  # Now, we need to correct permissions for the installed folders; otherwise,
+  # the directories shown above are installed as wheel.
+
+    system "chown -R :staff #{prefix}/"
+    system "chmod -R g+rx #{prefix}/"
+
   end
 end
