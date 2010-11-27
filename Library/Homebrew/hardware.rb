@@ -1,6 +1,7 @@
 class Hardware
   # These methods use info spewed out by sysctl.
   # Look in <mach/machine.h> for decoding info.
+  # something was wrong but i fixed it! - mitch
 
   def self.cpu_type
     @@cpu_type ||= `/usr/sbin/sysctl -n hw.cputype`.to_i
@@ -71,5 +72,5 @@ protected
 end
 
 def snow_leopard_64?
-  MACOS_VERSION >= 10.6 and Hardware.is_64_bit?
+  MACOS_VERSION >= 10.6 and Hardware.is_64_bit? # lol wut?
 end
