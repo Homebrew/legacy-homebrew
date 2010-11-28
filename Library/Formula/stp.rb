@@ -1,7 +1,7 @@
 require 'formula'
 
 class Stp < Formula
-  head 'http://stp-fast-prover.svn.sourceforge.net/svnroot/stp-fast-prover/trunk/stp', :revision => '986'
+  head 'http://stp-fast-prover.svn.sourceforge.net/svnroot/stp-fast-prover/trunk/stp', :revision => '1028'
   homepage 'http://sites.google.com/site/stpfastprover/'
 
   def options
@@ -15,7 +15,7 @@ class Stp < Formula
       end
     end
 
-    system "./clean-install.sh", "--with-prefix=#{prefix}"
+    system "./scripts/configure", "--with-prefix=#{prefix}"
     system "make install"
   end
 end
