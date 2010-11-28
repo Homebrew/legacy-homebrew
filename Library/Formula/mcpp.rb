@@ -7,7 +7,7 @@ class Mcpp <Formula
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}", "--enable-mcpplib"
     system "make install"
   end
 
