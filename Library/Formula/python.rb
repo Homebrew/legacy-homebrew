@@ -40,17 +40,17 @@ COMMENTS
 
 
 # Was a Framework build requested?
-def build_framework?; ARGV.include? '--framework'; end
+def build_unix?; ARGV.include? '--unix'; end
 
 # Are we installed or installing as a Framework?
 def as_framework?
-  (self.installed? and File.exists? prefix+"Frameworks/Python.framework") or build_framework?
+  (self.installed? and File.exists? prefix+"Frameworks/Python.framework") or !build_framework?
 end
 
 class Python <Formula
-  url 'http://www.python.org/ftp/python/2.7/Python-2.7.tar.bz2'
+  url 'http://www.python.org/ftp/python/2.7.1/Python-2.7.1.tgz'
   homepage 'http://www.python.org/'
-  md5 '0e8c9ec32abf5b732bea7d91b38c3339'
+  md5 '15ed56733655e3fab785e49a7278d2fb'
 
   depends_on 'readline' => :optional  # Prefer over OS X's libedit
   depends_on 'sqlite'   => :optional  # Prefer over OS X's older version
@@ -58,7 +58,7 @@ class Python <Formula
 
   def options
     [
-      ["--framework", "Do a 'Framework' build instead of a UNIX-style build."],
+      ["--unix", "Do a UNIX-style build instead of a 'Framework' build."],
       ["--universal", "Build for both 32 & 64 bit Intel."],
       ["--static", "Build static libraries."]
     ]
@@ -94,9 +94,8 @@ class Python <Formula
   end
 
   def validate_options
-    if build_framework? and ARGV.include? "--static"
-      onoe "Cannot specify both framework and static."
-      exit 99
+    if !build_unix? and ARGV.include? "--static"
+      onoe "Only UNIX-style builds can be static."
     end
   end
 
@@ -109,10 +108,10 @@ class Python <Formula
       args << "--enable-universalsdk=/" << "--with-universal-archs=intel"
     end
 
-    if build_framework?
-      args << "--enable-framework=#{prefix}/Frameworks"
-    else
+    if build_unix?
       args << "--enable-shared" unless ARGV.include? '--static'
+    else
+      args << "--enable-framework=#{prefix}/Frameworks"
     end
 
     # allow sqlite3 module to load extensions
@@ -167,3 +166,5 @@ class Python <Formula
     return s
   end
 end
+
+
