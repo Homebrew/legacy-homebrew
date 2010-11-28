@@ -5,6 +5,10 @@ class Pngnq <Formula
   homepage 'http://pngnq.sourceforge.net/'
   md5 '2d2cdacf0284477c662fee888c8092d5'
 
+  def patches
+    "https://github.com/thebeansgroup/smush.py/raw/master/contrib/pngnq.diff"
+  end
+
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
