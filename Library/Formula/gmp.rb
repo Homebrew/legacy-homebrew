@@ -14,7 +14,7 @@ class Gmp <Formula
 
   def install
     # Reports of problems using gcc 4.0 on Leopard
-    # http://github.com/mxcl/homebrew/issues/issue/2302
+    # https://github.com/mxcl/homebrew/issues/issue/2302
     ENV.gcc_4_2 if MACOS_VERSION < 10.6
 
     fails_with_llvm "Tests fail to compile; missing references in 'llvm bitcode in libtests.a(misc.o)'."

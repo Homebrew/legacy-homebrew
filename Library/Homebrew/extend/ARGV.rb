@@ -91,7 +91,7 @@ module HomebrewArgvExtension
                 [--cellar [formula]] [--config] [--env] [--repository]
                 [-h|--help] COMMAND [formula] ...
 
-    Principle Commands:
+    Principal Commands:
       install formula ... [--ignore-dependencies] [--HEAD]
       list [--unbrewed|--versions] [formula] ...
       search [/regex/] [substring]

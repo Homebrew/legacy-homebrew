@@ -6,6 +6,7 @@ class Play <Formula
   md5 '54513b11dc4eacd68d01f5c59bb8ec97'
 
   def install
+    rm_rf 'python' # we don't need the bundled Python for windows
     rm Dir['*.bat']
     libexec.install Dir['*']
     bin.mkpath

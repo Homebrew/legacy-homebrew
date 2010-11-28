@@ -14,7 +14,7 @@ class Spidermonkey <Formula
   def patches
     # Export date functions needed by manually-compiled MongoDB.
     # Is it just me or is the version-to-version stable API of SpiderMonkey kind of a mess?
-    "http://gist.github.com/raw/426476/a98a15a94ca4efd3aeafb3b5cd943491b53cbf81/001-Properly-export-js_DateClass-and-js_RegExpClass.patch"
+    "https://gist.github.com/raw/426476/a98a15a94ca4efd3aeafb3b5cd943491b53cbf81/001-Properly-export-js_DateClass-and-js_RegExpClass.patch"
   end
 
   def install
