@@ -37,6 +37,6 @@ class Python24 <Formula
     system "make oldsharedinstall"
     # Add the Homebrew prefix path to site-packages via a .pth
     prefix_site_packages.mkpath
-    (lib + "python2.4/site-pacakges/homebrew.pth").write prefix_site_packages
+    (lib + "python2.4/site-packages/homebrew.pth").write prefix_site_packages
   end
 end
