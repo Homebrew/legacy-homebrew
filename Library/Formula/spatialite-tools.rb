@@ -9,6 +9,7 @@ class SpatialiteTools <Formula
   depends_on 'libspatialite'
 
   def install
+    ENV.append 'LDFLAGS', '-liconv' # Fixes 3328 should be removed with next version
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--target=macosx"
