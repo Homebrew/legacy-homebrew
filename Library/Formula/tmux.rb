@@ -8,6 +8,9 @@ class Tmux <Formula
   depends_on 'libevent'
 
   def patches
+    # Patch originally from Macports ticket #18357
+    # Committed in Macports rev 58563
+    # https://trac.macports.org/changeset/58563
     { :p1 => DATA }
   end
 
