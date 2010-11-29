@@ -15,4 +15,14 @@ class Sntop <Formula
     bin.mkpath
     system "make install"
   end
+
+  def caveats
+    <<-EOS.undent
+    sntop uses fping by default. fping can only be run by root by default so
+    either use sudo to run sntop or setuid root fping.
+
+    Alternatively, run sntop using standard ping (sntop -p).
+
+    EOS
+  end
 end
