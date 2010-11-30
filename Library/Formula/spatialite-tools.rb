@@ -6,6 +6,7 @@ class SpatialiteTools <Formula
   homepage 'http://www.gaia-gis.it/spatialite/'
   md5 'e161e774a26e874d7d92d428ae2ad685'
 
+  depends_on 'pkg-config' => :build
   depends_on 'libspatialite'
 
   def install
