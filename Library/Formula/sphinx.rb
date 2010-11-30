@@ -12,7 +12,7 @@ class Sphinx <Formula
     config_args = ["--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"]
     # configure script won't auto-select PostgreSQL
     config_args << "--with-pgsql" if `/usr/bin/which pg_config`.size > 0
-    config_args << "--without-mysql" if `/usr/bin/which mysqld`.size <= 0
+    config_args << "--without-mysql" if `/usr/bin/which mysql`.size <= 0
 
     system "./configure", *config_args
     system "make install"

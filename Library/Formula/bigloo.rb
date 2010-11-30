@@ -12,7 +12,7 @@ class Bigloo <Formula
   def install
     args = [ "--disable-debug", "--disable-dependency-tracking",
              "--prefix=#{prefix}",
-             "--mandir=#{man}/man1",
+             "--mandir=#{man1}", # This is correct for this brew
              "--infodir=#{info}",
              "--customgc=yes",
              "--os-macosx" ]

@@ -91,7 +91,7 @@ module HomebrewArgvExtension
                 [--cellar [formula]] [--config] [--env] [--repository]
                 [-h|--help] COMMAND [formula] ...
 
-    Principle Commands:
+    Principal Commands:
       install formula ... [--ignore-dependencies] [--HEAD]
       list [--unbrewed|--versions] [formula] ...
       search [/regex/] [substring]
@@ -136,6 +136,9 @@ module HomebrewArgvExtension
   private
 
   def downcased_unique_named
-    @downcased_unique_named ||= named.map{|arg| arg.downcase}.uniq
+    # Only lowercase names, not paths or URLs
+    @downcased_unique_named ||= named.map do |arg|
+      arg.include?("/") ? arg : arg.downcase
+    end.uniq
   end
 end

@@ -1,15 +1,19 @@
 require 'formula'
 
 class Macvim <Formula
-  url 'git://github.com/b4winckler/macvim.git', :tag => 'v7.3-53'
+  url 'https://github.com/b4winckler/macvim/tarball/v7.3-53'
   version 'v7.3-53'
+  md5 '35fb942c45109a2cbdbe7c1a3e02d59d'
   head 'git://github.com/b4winckler/macvim.git', :branch => 'master'
   homepage 'http://code.google.com/p/macvim/'
 
   def options
     # Occassional reports of this brew failing during the icon step
-    [["--no-icons", "Don't generate custom document icons."]]
+    [["--no-icons", "Don't generate custom document icons."],
+     ["--with-cscope", "Build with Cscope support."]]
   end
+
+  depends_on 'cscope' if ARGV.include? '--with-cscope'
 
   def install
     # MacVim's Xcode project gets confused by $CC
@@ -19,14 +23,19 @@ class Macvim <Formula
     ENV['CXX'] = nil
     ENV['CXXFLAGS'] = nil
 
-    system "./configure",
-           "--with-macsdk=#{MACOS_VERSION}",
+    args = ["--with-macsdk=#{MACOS_VERSION}",
            # Add some features
            "--with-features=huge",
            "--enable-perlinterp",
            "--enable-pythoninterp",
            "--enable-rubyinterp",
-           "--enable-tclinterp"
+           "--enable-tclinterp"]
+
+    if ARGV.include? "--with-cscope"
+      args << "--enable-cscope"
+    end
+
+    system "./configure", *args
 
     if ARGV.include? "--no-icons"
       inreplace "src/MacVim/icons/Makefile", "$(MAKE) -C makeicns", ""
@@ -45,6 +54,6 @@ class Macvim <Formula
   end
 
   def caveats
-    "MacVim.app installed to #{prefix}."
+    "MacVim.app installed to:\n#{prefix}"
   end
 end

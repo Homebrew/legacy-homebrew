@@ -2,7 +2,7 @@ require 'formula'
 
 class Libopenspotify <Formula
   head 'git://github.com/noahwilliamsson/openspotify.git'
-  homepage 'http://github.com/noahwilliamsson/openspotify'
+  homepage 'https://github.com/noahwilliamsson/openspotify'
 
   depends_on 'libogg'
   depends_on 'libvorbis'

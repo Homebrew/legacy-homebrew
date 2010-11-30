@@ -1,7 +1,7 @@
 require 'formula'
 
 class Liblastfm <Formula
-  homepage 'http://github.com/mxcl/liblastfm/'
+  homepage 'https://github.com/mxcl/liblastfm/'
   url 'http://static.last.fm/src/liblastfm-0.3.0.tar.bz2'
   md5 '3f73222ebc31635941832b01e7a494b6'
 
