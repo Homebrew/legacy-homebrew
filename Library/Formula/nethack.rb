@@ -2,8 +2,8 @@ require 'formula'
 
 # Nethack the way God intended it to be played: from a terminal.
 # This build script was created referencing:
-# * http://nethack.wikia.com/wiki/Compiling#On_Mac_OS_X
-# * http://nethack.wikia.com/wiki/Pkgsrc#patch-ac_.28system.h.29
+# * http://nethackwiki.com/wiki/Compiling#On_Mac_OS_X
+# * http://nethackwiki.com/wiki/Pkgsrc#patch-ac_.28system.h.29
 # and copious hacking until things compiled.
 #
 # The patch applied incorporates the patch-ac above, the OS X
