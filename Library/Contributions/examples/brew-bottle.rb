@@ -15,7 +15,7 @@ ARGV.each do|formula|
   HOMEBREW_CELLAR.cd do
     # Use gzip, much faster than bzip2 and hardly any file size difference
     # when compressing binaries.
-    safe_system "tar czf #{destination}/#{filename} #{formula}/#{version}"
+    safe_system 'tar', 'czf', "#{destination}/#{filename}", "#{formula}/#{version}"
   end
   ohai "Bottled #{filename}"
 end
