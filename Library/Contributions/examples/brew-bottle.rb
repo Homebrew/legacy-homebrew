@@ -13,8 +13,8 @@ ARGV.each do|formula|
   filename = formula + '-' + version + '.tar.gz'
   ohai "Bottling #{formula} #{version}..."
   HOMEBREW_CELLAR.cd do
-    # Use gzip, much faster than bzip2 and hardly any file size difference
-    # when compressing binaries.
+    # Use gzip, faster to compress than bzip2, faster to uncompress than bzip2
+    # or an uncompressed tarball (and more bandwidth friendly).
     safe_system 'tar', 'czf', "#{destination}/#{filename}", "#{formula}/#{version}"
   end
   ohai "Bottled #{filename}"
