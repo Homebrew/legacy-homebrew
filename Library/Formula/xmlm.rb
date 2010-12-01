@@ -6,6 +6,7 @@ class Xmlm <Formula
   md5 '8c891f84b6e64892445071b7706ba1a2'
 
   depends_on 'objective-caml'
+  depends_on 'findlib'
 
   def install
     ENV.deparallelize
