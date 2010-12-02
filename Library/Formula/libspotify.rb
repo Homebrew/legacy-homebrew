@@ -1,19 +1,19 @@
 require 'formula'
 
 class Libspotify <Formula
-  url 'http://developer.spotify.com/download/libspotify/libspotify-0.0.4-darwin.zip'
-  version '0.0.4'
+  url 'http://developer.spotify.com/download/libspotify/libspotify-0.0.6-Darwin.zip'
+  version '0.0.6'
   homepage 'http://developer.spotify.com/en/libspotify/overview/'
-  md5 'a97552130df26b1aa2228adcf8d4210b'
+  md5 'c4bbddf8a4e5e2ba3127728212228622'
 
   def install
     prefix.install 'share'
     (include+'libspotify').install "libspotify.framework/Versions/#{version}/Headers/api.h"
-    lib.install "libspotify.framework/Versions/#{version}/libspotify" => 'libspotify.0.0.4.dylib'
+    lib.install "libspotify.framework/Versions/#{version}/libspotify" => 'libspotify.0.0.6.dylib'
     doc.install Dir['doc/*']
 
     cd lib
-    ln_s "libspotify.0.0.4.dylib", "libspotify.dylib"
+    ln_s "libspotify.0.0.6.dylib", "libspotify.dylib"
 
     system "install_name_tool", "-id",
            "#{HOMEBREW_PREFIX}/lib/libspotify.#{version}.dylib",
