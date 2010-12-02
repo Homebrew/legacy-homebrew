@@ -9,10 +9,9 @@ class Ncmpcpp <Formula
   depends_on 'libmpdclient'
 
   def install
-    args = ["--with-taglib", "--with-curl", "--enable-unicode", "LDFLAGS=-liconv",
-            "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"]
-
-    system "./configure", *args
+    system "./configure", "--with-taglib", "--with-curl", "--enable-unicode",
+                          "--disable-debug", "--disable-dependency-tracking",
+                          "LDFLAGS=-liconv", "--prefix=#{prefix}"
     system "make install"
   end
 end
