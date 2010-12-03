@@ -7,7 +7,7 @@ class Owfs <Formula
   md5 'beccd8765184b2abea0a3f28dc466ea3'
 
   depends_on 'libusb-compat'
-  
+
   def install
     system "autoreconf -ivf"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
