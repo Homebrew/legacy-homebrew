@@ -14,6 +14,7 @@ class Tbb <Formula
 
     system "make", *args
     lib.install Dir['build/BUILDPREFIX_release/*.dylib']
+    lib.install Dir['build/BUILDPREFIX_debug/*.dylib']
     include.install 'include/tbb'
   end
 end
