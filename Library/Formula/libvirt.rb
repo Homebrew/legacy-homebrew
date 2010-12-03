@@ -10,7 +10,6 @@ class Libvirt <Formula
   url 'http://libvirt.org/sources/libvirt-0.8.6.tar.gz'
   sha256 '99d5f6f6890eaa78887832e218c01c79c410b6e76d8d526980906808e2487220'
 
-  depends_on "gawk"
   depends_on "gnutls"
 
   if MACOS_VERSION < 10.6
