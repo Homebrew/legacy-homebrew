@@ -130,3 +130,17 @@ index f110ab5..49e55f4 100644
  
  .PHONY : test
  test: $(TARGET)
+diff --git a/config.c b/config.c
+index 4e650f1..9e9dc1c 100644
+--- a/config.c
++++ b/config.c
+@@ -93,7 +93,7 @@ static char *readPath(const char *configFile, int lineNum, char *key,
+
+	chptr = start;
+
+-	while( (len = mbrtowc(&pwc, chptr, strlen(chptr), NULL)) != 0 ) {
++	while( (len = strlen(chptr)) != 0 && (len = mbrtowc(&pwc, chptr, len, NULL)) != 0 ) {
+		if( len == (size_t)(-1) || len == (size_t)(-2) || !iswprint(pwc) || iswblank(pwc) ) {
+		    message(MESS_ERROR, "%s:%d bad %s path %s\n",
+			    configFile, lineNum, key, start);
+/usr/local/src/logrotate-3.7.8

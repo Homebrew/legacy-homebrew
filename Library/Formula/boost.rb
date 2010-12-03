@@ -2,8 +2,8 @@ require 'formula'
 
 class Boost <Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.44.0/boost_1_44_0.tar.bz2'
-  md5 'f02578f5218f217a9f20e9c30e119c6a'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.45.0/boost_1_45_0.tar.bz2'
+  md5 'd405c606354789d0426bc07bea617e58'
 
   def options
     [['--with-mpi', "Enables MPI support"]]

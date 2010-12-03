@@ -2,8 +2,8 @@ require 'formula'
 
 # Nethack the way God intended it to be played: from a terminal.
 # This build script was created referencing:
-# * http://nethack.wikia.com/wiki/Compiling#On_Mac_OS_X
-# * http://nethack.wikia.com/wiki/Pkgsrc#patch-ac_.28system.h.29
+# * http://nethackwiki.com/wiki/Compiling#On_Mac_OS_X
+# * http://nethackwiki.com/wiki/Pkgsrc#patch-ac_.28system.h.29
 # and copious hacking until things compiled.
 #
 # The patch applied incorporates the patch-ac above, the OS X
@@ -15,6 +15,9 @@ class Nethack <Formula
   homepage 'http://www.nethack.org/index.html'
   version '3.4.3'
   md5 '21479c95990eefe7650df582426457f9'
+
+  # Don't remove save folder
+  skip_clean 'libexec/save'
 
   def patches
     DATA
@@ -51,6 +54,7 @@ class Nethack <Formula
     system 'cd src;make'
 
     bin.install 'src/nethack'
+    (libexec+'save').mkpath
   end
 end
 

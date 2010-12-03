@@ -124,7 +124,7 @@ def quiet_system cmd, *args
 end
 
 def curl *args
-  safe_system 'curl', '-f#LA', HOMEBREW_USER_AGENT, *args unless args.empty?
+  safe_system '/usr/bin/curl', '-f#LA', HOMEBREW_USER_AGENT, *args unless args.empty?
 end
 
 def puts_columns items, cols = 4

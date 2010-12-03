@@ -43,7 +43,7 @@ class Subversion <Formula
 
     # Patch for subversion handling of OS X Unicode paths (see caveats)
     if with_unicode_path?
-      p[:p1] = "http://gist.github.com/raw/434424/subversion-unicode-path.patch"
+      p[:p1] = "https://gist.github.com/raw/434424/subversion-unicode-path.patch"
     end
 
     return p
