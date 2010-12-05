@@ -1,10 +1,9 @@
 require 'formula'
 
 class OrgMode <Formula
-  url 'http://orgmode.org/org-7.01h.tar.gz'
-  version '7.01h'
+  url 'http://orgmode.org/org-7.3.tar.gz'
   homepage 'http://orgmode.org/'
-  sha1 '0fc8b62e1a2582b9af6238c847ff1fd50522904f'
+  sha1 'c4b87790f308b99b47a503d9a6ceb51889cc48c4'
   head 'git://repo.or.cz/org-mode.git'
 
   def options
