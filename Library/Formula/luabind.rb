@@ -5,6 +5,7 @@ class Luabind <Formula
   homepage 'http://www.rasterbar.com/products/luabind.html'
 
   depends_on 'lua'
+  depends_on 'boost'
 
   def install
     system "mkdir build; cd build; cmake .. #{std_cmake_parameters}"
