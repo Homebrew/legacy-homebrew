@@ -48,9 +48,9 @@ def as_framework?
 end
 
 class Python <Formula
-  url 'http://www.python.org/ftp/python/2.7/Python-2.7.tar.bz2'
+  url 'http://www.python.org/ftp/python/2.7.1/Python-2.7.1.tar.bz2'
   homepage 'http://www.python.org/'
-  md5 '0e8c9ec32abf5b732bea7d91b38c3339'
+  md5 'aa27bc25725137ba155910bd8e5ddc4f'
 
   depends_on 'readline' => :optional  # Prefer over OS X's libedit
   depends_on 'sqlite'   => :optional  # Prefer over OS X's older version
