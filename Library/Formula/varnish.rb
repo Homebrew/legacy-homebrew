@@ -18,4 +18,18 @@ class Varnish <Formula
     system "make install"
     (var+'varnish').mkpath
   end
+
+  def patches
+    if ARGV.include? '--esis'
+      # Adds a helpful vcl variable for accessing esi nest level. See http://varnish-cache.org/trac/ticket/782
+      "https://gist.github.com/raw/730589/02a10291c55fef152e7023e9fd1cff8bfe388ef4/varnish-2.1.4-req.esis.patch"
+    end
+  end
+
+  def options
+    [
+      ['--esis', 'Add req.esis to vcl. req.esis return esi nest level for request.']
+    ]
+  end
+
 end
