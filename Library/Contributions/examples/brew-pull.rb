@@ -33,10 +33,10 @@ HOMEBREW_REPOSITORY.cd do
     safe_system 'git', 'am', '--signoff', '--whitespace=fix', patchpath
     
     ohai 'Patch changed:'
-    safe_system 'git', 'diff', 'HEAD~1', '--stat'
+    safe_system 'git', 'diff', 'HEAD^..HEAD', '--stat'
     
     if install
-      status, filename = `git diff HEAD~1 --name-status`.split()
+      status, filename = `git diff HEAD^..HEAD --name-status`.split()
       # Don't try and do anything to removed files.
       if (status == 'A' or status == 'M') and filename.include? '/Formula/'
         formula = File.basename(filename, '.rb')
