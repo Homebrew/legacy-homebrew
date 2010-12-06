@@ -10,13 +10,13 @@ def with_unicode_path?; ARGV.include? '--unicode-path'; end
 # On 10.5 we need newer versions of apr, neon etc.
 # On 10.6 we only need a newer version of neon
 class SubversionDeps <Formula
-  url 'http://subversion.tigris.org/downloads/subversion-deps-1.6.13.tar.bz2'
-  md5 '2a7d662bac872c61a5e11c89263d7f07'
+  url 'http://subversion.tigris.org/downloads/subversion-deps-1.6.15.tar.bz2'
+  md5 '4aeb48233e62cf4afe9f5700ebed9150'
 end
 
 class Subversion <Formula
-  url 'http://subversion.tigris.org/downloads/subversion-1.6.13.tar.bz2'
-  md5 '7ae1c827689f21cf975804005be30aeb'
+  url 'http://subversion.tigris.org/downloads/subversion-1.6.15.tar.bz2'
+  md5 '113fca1d9e4aa389d7dc2b210010fa69'
   homepage 'http://subversion.apache.org/'
 
   depends_on 'pkg-config' => :build

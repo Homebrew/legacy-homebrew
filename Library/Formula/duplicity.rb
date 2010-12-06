@@ -1,9 +1,9 @@
 require 'formula'
 
 class Duplicity <Formula
-  url 'http://code.launchpad.net/duplicity/0.6-series/0.6.10/+download/duplicity-0.6.10.tar.gz'
+  url 'http://code.launchpad.net/duplicity/0.6-series/0.6.11/+download/duplicity-0.6.11.tar.gz'
   homepage 'http://www.nongnu.org/duplicity/'
-  md5 '8878d3b63fcba1b7233e11c5829b969c'
+  md5 '1116be7aababa467336eac2092f66ab7'
 
   depends_on 'librsync'
   depends_on 'gnupg'
