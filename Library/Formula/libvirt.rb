@@ -7,10 +7,9 @@ require 'formula'
 
 class Libvirt <Formula
   homepage 'http://www.libvirt.org'
-  url 'http://libvirt.org/sources/libvirt-0.8.5.tar.gz'
-  sha256 '0d4e6aa61ecbfccd3f3289a9821742d599db546eb3f37fe05036a616b3a9df8d'
+  url 'http://libvirt.org/sources/libvirt-0.8.6.tar.gz'
+  sha256 '99d5f6f6890eaa78887832e218c01c79c410b6e76d8d526980906808e2487220'
 
-  depends_on "gawk"
   depends_on "gnutls"
 
   if MACOS_VERSION < 10.6
