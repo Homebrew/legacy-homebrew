@@ -7,7 +7,7 @@ Quick Install to /usr/local
 ---------------------------
 [This script][gist] will prompt for confirmation before it does anything:
 
-    ruby -e "$(curl -fsS http://gist.github.com/raw/323731/install_homebrew.rb)"
+    ruby -e "$(curl -fsSL https://gist.github.com/raw/323731/install_homebrew.rb)"
 
 Afterwards, [install Xcode][xcode].
 
@@ -22,7 +22,7 @@ Dude! Just give me a one-liner!
 Okay then, but please note this installs Homebrew as root and
 [we recommend against that][sudo].
 
-    curl -LsSf http://github.com/mxcl/homebrew/tarball/master | sudo tar xvz -C/usr/local --strip 1
+    curl -LsSf http://github.com/mxcl/homebrew/tarball/master | sudo /usr/bin/tar xvz -C/usr/local --strip 1
 
 
 But what packages are available?

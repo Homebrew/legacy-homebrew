@@ -7,7 +7,6 @@ class Valgrind <Formula
   md5 "b289c5f4ab8e39741602445f1dd09b34"
 
   depends_on 'pkg-config' => :build
-  depends_on 'boost'
 
   skip_clean 'lib'
 
