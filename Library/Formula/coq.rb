@@ -6,6 +6,8 @@ class Coq < Formula
   homepage 'http://coq.inria.fr/'
   md5 '14b80e6b7075adf1516ab931202be8df'
 
+  skip_clean :all
+
   depends_on 'objective-caml'
   depends_on 'camlp5'
 
