@@ -8,7 +8,7 @@ class Lsof <Formula
 
   def install
     system "tar xf lsof_4.84_src.tar"
-    Dir.chdir "lsof_4.83_src" do
+    Dir.chdir "lsof_4.84_src" do
       mv "00README", "../README"
       system "./Configure -n darwin"
       system "make"
