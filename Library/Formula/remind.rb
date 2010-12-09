@@ -1,9 +1,13 @@
 require 'formula'
 
+
 class Remind <Formula
-  url 'http://www.roaringpenguin.com/files/download/remind-03.01.09.tar.gz'
+  url 'http://www.roaringpenguin.com/files/download/remind-03.01.10.tar.gz'
   homepage 'http://www.roaringpenguin.com/products/remind'
-  md5 '261a5fb774a1d671cc71e36fd0ea02b3'
+  md5 'f6f7829d3ac92e0d6d463c59b5e6ce3f'
+
+# roaringpenguin.com returns a 403 when the user agent contains Mac OS X :(
+  HOMEBREW_USER_AGENT.delete!("; Mac OS X #{MACOS_FULL_VERSION}")
 
   def install
     # Remove unnecessary sleeps when running on Apple

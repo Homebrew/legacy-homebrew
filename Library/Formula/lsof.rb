@@ -2,13 +2,13 @@ require 'formula'
 
 class Lsof <Formula
   url 'ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/lsof.tar.bz2'
-  version '4.83'
-  md5 '8f731a6251b8c0143d585df0d5ca779e'
+  version '4.84'
+  md5 'a09326df500ef7e4550af546868338d6'
   homepage 'http://people.freebsd.org/~abe/'
 
   def install
-    system "tar xf lsof_4.83_src.tar"
-    Dir.chdir "lsof_4.83_src" do
+    system "tar xf lsof_4.84_src.tar"
+    Dir.chdir "lsof_4.84_src" do
       mv "00README", "../README"
       system "./Configure -n darwin"
       system "make"

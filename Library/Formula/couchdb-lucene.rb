@@ -1,8 +1,8 @@
 require 'formula'
 
 class CouchdbLucene <Formula
-  url 'http://github.com/rnewson/couchdb-lucene/tarball/v0.5.3'
-  homepage 'http://github.com/rnewson/couchdb-lucene'
+  url 'https://github.com/rnewson/couchdb-lucene/tarball/v0.5.3'
+  homepage 'https://github.com/rnewson/couchdb-lucene'
   md5 '1b9be17eb59b6b2839e50eb222bc7e7e'
 
   depends_on 'couchdb'

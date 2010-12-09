@@ -1,9 +1,9 @@
 require 'formula'
 
 class Varnish <Formula
-  url 'http://downloads.sourceforge.net/project/varnish/varnish/2.1.3/varnish-2.1.3.tar.gz'
-  homepage 'http://varnish.projects.linpro.no/'
-  md5 '357d99a760de173d841ac37bf2052be8'
+  url 'http://www.varnish-software.com/sites/default/files/varnish-2.1.4.tar.gz'
+  homepage 'http://www.varnish-cache.org/'
+  md5 'e794a37b6fbb786a083c0946103ae103'
 
   depends_on 'pkg-config' => :build
   depends_on 'pcre'

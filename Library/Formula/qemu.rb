@@ -5,6 +5,9 @@ class Qemu <Formula
   homepage 'http://www.qemu.org/'
   md5 '397a0d665da8ba9d3b9583629f3d6421'
 
+  depends_on 'jpeg'
+  depends_on 'gnutls'
+
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--disable-darwin-user",

@@ -116,7 +116,7 @@ class Formula
 
   def path
     if @path.nil?
-      return self.class.path name
+      return self.class.path(name)
     else
       return @path
     end
@@ -318,6 +318,7 @@ class Formula
         require name
         name = path.stem
         install_type = :from_path
+        target_file = path.to_s
       else
         # For names, map to the path and then require
         require self.path(name)

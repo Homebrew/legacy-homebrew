@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ffmpeg <Formula
-  url 'http://ffmpeg.org/releases/ffmpeg-0.6.tar.bz2'
+  url 'http://ffmpeg.org/releases/ffmpeg-0.6.1.tar.bz2'
   homepage 'http://ffmpeg.org/'
-  sha1 'c130e3bc368251b9130ce6eafb44fe8c3993ff5c'
+  sha1 '24ada1d35fc000980090e773101e101ca45f85e5'
 
   head 'svn://svn.ffmpeg.org/ffmpeg/trunk'
 
@@ -28,12 +28,15 @@ class Ffmpeg <Formula
 
     args << "--enable-libx264" if Formula.factory('x264').installed?
     args << "--enable-libfaac" if Formula.factory('faac').installed?
-    args << "--enable-libfaad" if Formula.factory('faad2').installed?
     args << "--enable-libmp3lame" if Formula.factory('lame').installed?
     args << "--enable-libtheora" if Formula.factory('theora').installed?
     args << "--enable-libvorbis" if Formula.factory('libvorbis').installed?
     args << "--enable-libvpx" if Formula.factory('libvpx').installed?
     args << "--enable-libxvid" if Formula.factory('xvid').installed?
+
+    unless ARGV.build_head?
+      args << "--enable-libfaad" if Formula.factory('faad2').installed?
+    end
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
