@@ -12,6 +12,7 @@ class Slrn <Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-ssl",
+                          "--with-slrnpull",
                           "--with-slang=#{HOMEBREW_PREFIX}"
     system "make all slrnpull"
     bin.mkpath
