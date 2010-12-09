@@ -8,8 +8,8 @@ class Detox <Formula
   def install
     system "./configure", "--mandir=#{man}", "--prefix=#{prefix}"
     system "make"
-    FileUtils.mkdir(prefix + "etc")
-    FileUtils.mkdir_p(prefix + "share/detox")
+    (prefix + "etc").mkpath
+    (share + "detox").mkpath
     system "make install"
   end
 end
