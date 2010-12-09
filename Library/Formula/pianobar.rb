@@ -28,5 +28,6 @@ class Pianobar <Formula
 
     system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"
+    prefix.install Dir['contrib']
   end
 end
