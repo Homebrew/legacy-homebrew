@@ -1,14 +1,16 @@
 require 'formula'
 
 class AndroidSdk <Formula
-  url 'http://dl.google.com/android/android-sdk_r07-mac_x86.zip'
+  url 'http://dl.google.com/android/android-sdk_r08-mac_86.zip'
   homepage 'http://developer.android.com/index.html'
-  md5 '0f330ed3ebb36786faf6dc72b8acf819'
-  version 'r7'
+  md5 'd2e392c4e4680cbf2dfd6dbf82b662c7'
+  version 'r8'
 
-  VAR_DIRS = %w[platforms docs samples temp add-ons]
+  def self.var_dirs
+    %w[platforms docs samples temp add-ons]
+  end
 
-  skip_clean VAR_DIRS
+  skip_clean var_dirs
 
   def install
     mkdir bin
@@ -16,7 +18,7 @@ class AndroidSdk <Formula
     mv 'SDK Readme.txt', prefix/'README'
     mv 'tools', prefix
 
-    %w[adb android apkbuilder ddms dmtracedump draw9patch emulator
+    %w[android apkbuilder ddms dmtracedump draw9patch emulator
            hierarchyviewer hprof-conv layoutopt mksdcard traceview
            zipalign].each do |tool|
       (bin/tool).make_link(prefix/'tools'/tool)
@@ -24,7 +26,7 @@ class AndroidSdk <Formula
 
     # this is data that should be preserved across upgrades, but the Android
     # SDK isn't too smart, so we still have to symlink it back into its tree.
-    VAR_DIRS.each do |d|
+    AndroidSdk.var_dirs.each do |d|
       dst = prefix/d
       src = var/'lib/android-sdk'/d
       src.mkpath unless src.directory?
@@ -32,7 +34,7 @@ class AndroidSdk <Formula
     end
   end
 
-  def caveats; <<-EOS
+  def caveats; <<-EOS.undent
     We put the useful tools in the PATH. Like the `android` tool. You probably
     want to run that now.
     EOS
