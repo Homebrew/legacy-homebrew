@@ -8,9 +8,11 @@ class Macvim <Formula
   homepage 'http://code.google.com/p/macvim/'
 
   def options
-    # Occassional reports of this brew failing during the icon step
-    [["--no-icons", "Don't generate custom document icons."],
-     ["--with-cscope", "Build with Cscope support."]]
+  [
+    # Building custom icons fails for many users, so off by default.
+    ["--custom-icons", "Try to generate custom document icons."],
+    ["--with-cscope", "Build with Cscope support."]
+  ]
   end
 
   depends_on 'cscope' if ARGV.include? '--with-cscope'
@@ -37,7 +39,7 @@ class Macvim <Formula
 
     system "./configure", *args
 
-    if ARGV.include? "--no-icons"
+    unless ARGV.include? "--custom-icons"
       inreplace "src/MacVim/icons/Makefile", "$(MAKE) -C makeicns", ""
       inreplace "src/MacVim/icons/make_icons.py", "dont_create = False", "dont_create = True"
     end
