@@ -50,9 +50,10 @@ class Postgresql <Formula
     system "./configure", *args
     system "make install"
 
-    %w[ adminpack dblink fuzzystrmatch lo uuid-ossp pg_buffercache pg_trgm
-        pgcrypto tsearch2 vacuumlo xml2 intarray pg_upgrade pg_upgrade_support hstore ].each do |a|
-      system "cd contrib/#{a}; make install"
+    contrib_directories = Dir.glob("contrib/*").select{ |path| File.directory?(path) } - ['contrib/start-scripts']
+
+    contrib_directories.each do |contrib_directory|
+      system "cd #{contrib_directory}; make install"
     end
 
     (prefix+'org.postgresql.postgres.plist').write startup_plist
