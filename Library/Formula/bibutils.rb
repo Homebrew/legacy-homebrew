@@ -1,9 +1,9 @@
 require 'formula'
 
 class Bibutils <Formula
-  url 'http://www.scripps.edu/~cdputnam/software/bibutils/bibutils_4.9_src.tgz'
+  url 'http://www.scripps.edu/~cdputnam/software/bibutils/bibutils_4.12_src.tgz'
   homepage 'http://www.scripps.edu/~cdputnam/software/bibutils/'
-  md5 '1cc0724b821ae9749b91a267207105dc'
+  md5 '395f46393eca8e184652c5e8e1ae83b6'
 
   def install
     system "./configure --install-dir #{prefix}"
