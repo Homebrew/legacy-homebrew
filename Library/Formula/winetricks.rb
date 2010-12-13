@@ -7,6 +7,8 @@ class Winetricks < ScriptFileFormula
 
   head 'http://winezeug.googlecode.com/svn/trunk/winetricks', :using => :curl
 
+  depends_on 'cabextract'
+
   # Don't provide an md5 for the HEAD build
   unless ARGV.build_head?
     md5 '5a6986df670e093381ee007f0c0c0e1f'
