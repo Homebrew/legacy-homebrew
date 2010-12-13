@@ -45,7 +45,8 @@ class Mysql <Formula
       "--enable-assembler",
       "--enable-thread-safe-client",
       "--enable-local-infile",
-      "--enable-shared"]
+      "--enable-shared",
+      "--with-partition"]
 
     configure_args << "--without-server" if ARGV.include? '--client-only'
 
