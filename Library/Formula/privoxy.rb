@@ -8,7 +8,9 @@ class Privoxy <Formula
 
   def install
     system "autoreconf -i"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}/privoxy"
     system "make"
     system "make install"
   end
