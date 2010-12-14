@@ -18,6 +18,10 @@ class Macvim <Formula
   depends_on 'cscope' if ARGV.include? '--with-cscope'
 
   def install
+    if "4.0" == xcode_version
+      opoo "MacVim may not compile under the Xcode 4 preview."
+    end
+
     # MacVim's Xcode project gets confused by $CC
     # Disable it until someone figures out why it fails.
     ENV['CC'] = nil
