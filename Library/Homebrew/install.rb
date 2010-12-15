@@ -53,6 +53,12 @@ end
 def install f
   show_summary_heading = false
 
+  paths = ENV['PATH'].split(':').map{ |p| File.expand_path p }
+  rootbin = (HOMEBREW_PREFIX+'bin').to_s
+  unless paths.include? rootbin
+    ENV.prepend 'PATH', rootbin, ':'
+  end
+
   f.deps.uniq.each do |dep|
     dep = Formula.factory dep
     if dep.keg_only?
@@ -149,7 +155,6 @@ def install f
     show_summary_heading = true
   else
     # warn the user if stuff was installed outside of their PATH
-    paths = ENV['PATH'].split(':').map{ |p| File.expand_path p }
     [f.bin, f.sbin].each do |bin|
       if bin.directory?
         rootbin = (HOMEBREW_PREFIX/bin.basename).to_s
