@@ -23,6 +23,10 @@ def disable_openmp?
   ARGV.include? '--disable-openmp'
 end
 
+def with_lqr?
+  ARGV.include? '--with-lqr'
+end
+
 def x11?
   # I used this file because old Xcode seems to lack it, and its that old
   # Xcode that loads of people seem to have installed still
@@ -48,6 +52,8 @@ class Imagemagick <Formula
   depends_on 'jasper' => :optional
 
   depends_on 'libwmf' if use_wmf?
+  
+  depends_on 'liblqr' if with_lqr?
 
   def skip_clean? path
     path.extname == '.la'
@@ -57,7 +63,8 @@ class Imagemagick <Formula
     [
       ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
       ['--use-wmf', 'Compile with libwmf support.'],
-      ['--disable-openmp', 'Disable OpenMP.']
+      ['--disable-openmp', 'Disable OpenMP.'],
+      ['--with-lqr', 'Enable Liquid Rescale. Depends on liblqr.']
     ]
   end
 
@@ -78,7 +85,8 @@ class Imagemagick <Formula
     args << "--without-gslib" unless ghostscript_srsly?
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
                 unless ghostscript_srsly? or ghostscript_fonts?
-
+    args << "--with-lqr" if with_lqr?
+    
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
     system "./configure", *args
