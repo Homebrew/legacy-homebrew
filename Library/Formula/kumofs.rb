@@ -1,7 +1,7 @@
 require 'formula'
 
 class Kumofs <Formula
-  url 'http://github.com/downloads/etolabo/kumofs/kumofs-0.4.12.tar.gz'
+  url 'https://github.com/downloads/etolabo/kumofs/kumofs-0.4.12.tar.gz'
   head 'git://github.com/etolabo/kumofs.git'
   homepage 'http://kumofs.sourceforge.net/'
   md5 '70fc53a332fb2b76ae6a3aad7aa59aad'

@@ -1,10 +1,10 @@
 require 'formula'
 
 class Rubinius < Formula
-  url 'http://asset.rubini.us/rubinius-1.1.0-20100923.tar.gz'
-  version '1.1.0'
+  url 'http://asset.rubini.us/rubinius-1.1.1-20101116.tar.gz'
+  version '1.1.1'
   homepage 'http://rubini.us/'
-  md5 'e2ae16238b201de09975abe19da09ea9'
+  md5 'b39f618eeba37c3aff215da8bca55fd7'
   head 'git://github.com/evanphx/rubinius.git'
 
   # Do not strip binaries, or else it fails to run.
@@ -14,15 +14,8 @@ class Rubinius < Formula
     # Let Rubinius define its own flags; messing with these causes build breaks.
     %w{CC CXX LD CFLAGS CXXFLAGS CPPFLAGS LDFLAGS}.each { |e| ENV.delete(e) }
 
-    ENV['RELEASE'] = version # to fix issues with "path already exists"
-
-    # The configure script uses "#!/usr/bin/env ruby" but complains if you
-    # aren't using 1.8, so replace it with the path to the OS X system ruby.
-    # (If the user has replaces their system ruby, well, don't do that.)
-    inreplace 'configure', "#!/usr/bin/env ruby", "#!/usr/bin/ruby"
-
-    # "--skip-system" means to use the included LLVM
-    system "./configure", "--skip-system",
+    system "/usr/bin/ruby", "./configure",
+                          "--skip-system", # download and use the prebuilt LLVM
                           "--prefix", prefix,
                           "--includedir", "#{include}/rubinius",
                           "--libdir", lib,

@@ -55,7 +55,7 @@ class Ghostscript <Formula
   def caveats
       <<-EOS.undent
         There have been reports that installing Ghostscript can break printing on OS X:
-          http://github.com/mxcl/homebrew/issues/issue/528
+          https://github.com/mxcl/homebrew/issues/issue/528
 
         If your printing doesn't break, please comment on the issue! Thanks.
       EOS

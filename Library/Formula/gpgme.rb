@@ -2,7 +2,7 @@ require 'formula'
 
 class Gpgme < Formula
   url 'ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-1.1.8.tar.bz2'
-  homepage 'http://www.gnupg.org'
+  homepage 'http://www.gnupg.org/gpgme.html'
   sha1 'e56da614f3e6acc1cb51af767c77f4a95b05b1e8'
 
   depends_on 'gnupg'

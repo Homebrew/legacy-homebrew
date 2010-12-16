@@ -8,7 +8,7 @@ class Rubber <Formula
   def patches
     # Creates missing .in files and adds them to the configure phase
     # otherwise rubber modules are not found after install
-    "http://gist.github.com/raw/370408/484d76d042e936053de41fbbe48f5dbdbd1b71b8/fix_rubber_configure.patch"
+    "https://gist.github.com/raw/370408/484d76d042e936053de41fbbe48f5dbdbd1b71b8/fix_rubber_configure.patch"
   end
 
   def install
