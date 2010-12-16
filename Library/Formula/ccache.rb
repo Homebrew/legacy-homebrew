@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ccache <Formula
-  url 'http://samba.org/ftp/ccache/ccache-2.4.tar.gz'
+  url 'http://samba.org/ftp/ccache/ccache-3.1.tar.bz2'
   homepage 'http://ccache.samba.org/'
-  md5 '73c1ed1e767c1752dd0f548ec1e66ce7'
+  md5 '7961852e1e36f11559039c32142f58df'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"

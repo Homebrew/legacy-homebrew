@@ -10,9 +10,8 @@ class SdlTtf <Formula
   def install
     ENV.x11 # For Freetype
 
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--disable-sdltest",
                           "--with-freetype-exec-prefix=/usr/X11"
     system "make install"

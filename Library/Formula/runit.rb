@@ -27,8 +27,6 @@ class Runit <Formula
     (var + "service").mkpath
   end
 
-  def man8; man+'man8' end
-
   def caveats
     <<-END_CAVEATS
 This formula does not install runit as a replacement for init.

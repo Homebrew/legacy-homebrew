@@ -10,9 +10,8 @@ class Hercules <Formula
   def install
     # Since Homebrew optimizes for us, tell Hercules not to.
     # (It gets it wrong anyway.)
-    system "./configure", "--prefix=#{prefix}", 
-                          "--disable-debug", 
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--enable-optimization=no"
     system "make"
     system "make install"

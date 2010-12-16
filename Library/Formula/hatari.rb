@@ -5,7 +5,7 @@ class Hatari <Formula
   homepage 'http://hatari.berlios.de/'
   md5 '2f30e5c9e146ee92e3f2f5ae1cef3673'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'sdl'
 
   def install

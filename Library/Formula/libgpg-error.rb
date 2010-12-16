@@ -1,9 +1,9 @@
 require 'formula'
 
 class LibgpgError <Formula
-  url 'ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.8.tar.bz2'
+  url 'ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.9.tar.bz2'
   homepage 'http://www.gnupg.org/'
-  sha1 'f5cf677a7cd684645feaa9704d09eb5cd6d97e8a'
+  sha1 '6836579e42320b057a2372bbcd0325130fe2561e'
 
   def install
     ENV.j1

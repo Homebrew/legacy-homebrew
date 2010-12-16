@@ -5,9 +5,7 @@ class Antiword <Formula
   homepage 'http://www.winfield.demon.nl/'
   md5 'f868e2a269edcbc06bf77e89a55898d1'
 
-  def skip_clean? path
-    path == share+'antiword'
-  end
+  skip_clean 'share/antiword'
 
   def install
     inreplace "Makefile" do |s|

@@ -13,7 +13,6 @@ class Pig < Formula
     rm_f Dir["bin/*.bat"]
     prefix.install ['bin', 'lib/hadoop20.jar', "pig-#{version}-core.jar"]
   end
-  
 end
 
 # There's something weird with Pig's launch script, it doesn't find the correct

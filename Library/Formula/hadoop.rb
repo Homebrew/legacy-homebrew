@@ -7,9 +7,8 @@ class Hadoop < Formula
 
   def shim_script target
     <<-EOS.undent
-      #!/usr/bin/env bash
-      cd #{libexec}/bin
-      ./#{target} $*
+    #!/bin/bash
+    exec #{libexec}/bin/#{target} $*
     EOS
   end
 

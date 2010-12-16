@@ -9,7 +9,9 @@ class W3m <Formula
 
   def install
     fails_with_llvm
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--disable-image"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--disable-image"
     system "make install"
   end
 end

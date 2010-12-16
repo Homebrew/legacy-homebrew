@@ -1,9 +1,27 @@
+# Outputs formulas that are installed but are not a dependency for
+# any other installed formula.
 # See: http://github.com/mxcl/homebrew/issues/issue/1438
 
 require 'formula'
-deps_graph = Formula.get_used_by
-formulas = HOMEBREW_CELLAR.children.select { |pn| pn.directory? }.collect { |pn| pn.basename.to_s }
-formulas.each do |name|
+
+def get_used_by
+  used_by = {}
+  Formula.all.each do |f|
+    next if f.deps == nil
+
+    f.deps.each do |dep|
+      _deps = used_by[dep] || []
+      _deps << f.name unless _deps.include? f.name
+      used_by[dep] = _deps
+    end
+  end
+
+  return used_by
+end
+
+deps_graph = get_used_by()
+installed = HOMEBREW_CELLAR.children.select { |pn| pn.directory? }.collect { |pn| pn.basename.to_s }
+installed.each do |name|
   deps = deps_graph[name] || []
-  puts name if !deps.any? { |dep| formulas.include?(dep) }
+  puts name unless deps.any? { |dep| installed.include? dep }
 end

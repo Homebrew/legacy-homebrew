@@ -5,16 +5,12 @@ class Neon <Formula
   md5 'ba1015b59c112d44d7797b62fe7bee51'
   homepage 'http://www.webdav.org/neon/'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
 
-  def keg_only?
-    :provided_by_osx
-  end
+  keg_only :provided_by_osx
 
   def options
-    [
-      ['--universal', 'Build as a Universal Intel binary.']
-    ]
+    [['--universal', 'Builds a universal binary.']]
   end
 
   def install

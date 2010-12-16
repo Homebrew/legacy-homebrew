@@ -6,7 +6,9 @@ class Orc <Formula
   md5 'e26e59428b13ec251916f34bea96eee5'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--disable-gtk-doc"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--disable-gtk-doc"
     system "make install"
   end
 end

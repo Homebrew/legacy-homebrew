@@ -7,8 +7,8 @@ class Boxes <Formula
 
   def install
     # distro uses /usr/share/boxes change to prefix
-    inreplace 'Makefile' do |contents| 
-      contents.change_make_var! "GLOBALCONF", "#{share}/boxes-config"
+    inreplace 'Makefile' do |s|
+      s.change_make_var! "GLOBALCONF", "#{share}/boxes-config"
     end
 
     system "make"

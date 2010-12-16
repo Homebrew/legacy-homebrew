@@ -14,7 +14,7 @@ class Spidermonkey <Formula
   def patches
     # Export date functions needed by manually-compiled MongoDB.
     # Is it just me or is the version-to-version stable API of SpiderMonkey kind of a mess?
-    "http://gist.github.com/raw/426476/a98a15a94ca4efd3aeafb3b5cd943491b53cbf81/001-Properly-export-js_DateClass-and-js_RegExpClass.patch"
+    "https://gist.github.com/raw/426476/a98a15a94ca4efd3aeafb3b5cd943491b53cbf81/001-Properly-export-js_DateClass-and-js_RegExpClass.patch"
   end
 
   def install
@@ -42,11 +42,14 @@ class Spidermonkey <Formula
       # building like this. See: http://openradar.appspot.com/7209349
       inreplace "configure.in", "LDFLAGS=\"$LDFLAGS -framework Cocoa\"", ""
       system "#{ac213_prefix}/bin/autoconf213"
+
       # Remove the broken *(for anyone but FF) install_name
-      inreplace "config/rules.mk", "-install_name @executable_path/$(SHARED_LIBRARY) ", ""
+      inreplace "config/rules.mk",
+        "-install_name @executable_path/$(SHARED_LIBRARY) ",
+        "-install_name #{lib}/$(SHARED_LIBRARY) "
     end
 
-    FileUtils.mkdir "brew-build"
+    mkdir "brew-build"
 
     Dir.chdir "brew-build" do
       system "../js/src/configure", "--prefix=#{prefix}",

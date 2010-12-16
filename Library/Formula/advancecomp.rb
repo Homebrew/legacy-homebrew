@@ -1,7 +1,7 @@
 require 'formula'
 
 class Advancecomp <Formula
-  url 'http://prdownloads.sourceforge.net/advancemame/advancecomp-1.15.tar.gz'
+  url 'http://downloads.sourceforge.net/advancemame/advancecomp-1.15.tar.gz'
   md5 'bb236d8bee6fa473d34108cda1e09076'
   homepage 'http://advancemame.sourceforge.net/comp-readme.html'
 

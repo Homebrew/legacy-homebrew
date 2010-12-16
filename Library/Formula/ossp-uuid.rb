@@ -6,7 +6,7 @@ class OsspUuid <Formula
   md5 '5db0d43a9022a6ebbbc25337ae28942f'
 
   def install
-    system "./configure", "--disable-debug", 
+    system "./configure", "--disable-debug",
                           "--without-perl",
                           "--without-php",
                           "--without-pgsql",

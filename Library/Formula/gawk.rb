@@ -6,6 +6,7 @@ class Gawk <Formula
   md5 '52b41c6c4418b3226dfb8f82076193bb'
 
   def install
+    fails_with_llvm "Undefined symbols when linking", :build => "2326"
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"

@@ -15,7 +15,7 @@ class Rlog <Formula
   end
 end
 
-# This patch solves an OSX build issue, should not be necessary for the next release according to 
+# This patch solves an OSX build issue, should not be necessary for the next release according to
 # http://code.google.com/p/rlog/issues/detail?id=7
 __END__
 --- orig/rlog/common.h.in	2008-06-14 20:10:13.000000000 -0700

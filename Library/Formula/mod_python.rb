@@ -23,7 +23,7 @@ class ModPython <Formula
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-    
+
     # Explicitly set the arch in CFLAGS so the PSPModule will build against system Python
     # We remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
     archs = archs_for_command("python")

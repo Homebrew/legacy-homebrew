@@ -22,10 +22,6 @@ class Figlet <Formula
     share + "figlet/fonts"
   end
 
-  def man6
-    share + 'man/man6'
-  end
-
   def patches
     DATA
   end

@@ -1,25 +1,53 @@
 require 'formula'
 
 class Macvim <Formula
-  head 'git://repo.or.cz/MacVim.git'
-  homepage 'http://code.google.com/p/macvim'
+  url 'https://github.com/b4winckler/macvim/tarball/v7.3-53'
+  version 'v7.3-53'
+  md5 '35fb942c45109a2cbdbe7c1a3e02d59d'
+  head 'git://github.com/b4winckler/macvim.git', :branch => 'master'
+  homepage 'http://code.google.com/p/macvim/'
+
+  def options
+  [
+    # Building custom icons fails for many users, so off by default.
+    ["--custom-icons", "Try to generate custom document icons."],
+    ["--with-cscope", "Build with Cscope support."]
+  ]
+  end
+
+  depends_on 'cscope' if ARGV.include? '--with-cscope'
 
   def install
-    # MacVim's Xcode project gets confused by $CC, disable it until someone
-    # figures out why it fails.
+    if "4.0" == xcode_version
+      opoo "MacVim may not compile under the Xcode 4 preview."
+    end
+
+    # MacVim's Xcode project gets confused by $CC
+    # Disable it until someone figures out why it fails.
     ENV['CC'] = nil
     ENV['CFLAGS'] = nil
     ENV['CXX'] = nil
     ENV['CXXFLAGS'] = nil
 
-    system "./configure",
-           "--with-macsdk=#{MACOS_VERSION}",
+    args = ["--with-macsdk=#{MACOS_VERSION}",
            # Add some features
            "--with-features=huge",
            "--enable-perlinterp",
            "--enable-pythoninterp",
            "--enable-rubyinterp",
-           "--enable-tclinterp"
+           "--enable-tclinterp"]
+
+    if ARGV.include? "--with-cscope"
+      args << "--enable-cscope"
+    end
+
+    system "./configure", *args
+
+    unless ARGV.include? "--custom-icons"
+      inreplace "src/MacVim/icons/Makefile", "$(MAKE) -C makeicns", ""
+      inreplace "src/MacVim/icons/make_icons.py", "dont_create = False", "dont_create = True"
+    end
+
     system "make"
 
     prefix.install "src/MacVim/build/Release/MacVim.app"
@@ -28,12 +56,10 @@ class Macvim <Formula
     bin.install "src/MacVim/mvim"
 
     # Create MacVim vimdiff, view, ex equivalents
-    %w[mvimdiff mview mvimex].each do |f|
-      (bin + f).make_symlink("#{bin}/mvim")
-    end
+    %w[mvimdiff mview mvimex].each {|f| ln_s bin+'mvim', bin+f}
   end
 
   def caveats
-    "MacVim.app installed to #{prefix}."
+    "MacVim.app installed to:\n#{prefix}"
   end
 end

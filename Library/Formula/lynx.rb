@@ -6,10 +6,9 @@ class Lynx <Formula
   md5 'cb936aef812e4e463ab86cbbe14d4db9'
 
   def install
-    system "./configure", "--prefix=#{prefix}", 
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--mandir=#{man}",
-                          "--disable-debug", 
-                          "--disable-dependency-tracking",
                           "--disable-echo",
                           "--with-zlib",
                           "--with-bzlib",

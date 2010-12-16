@@ -5,7 +5,7 @@ class Opensaml <Formula
   homepage 'https://spaces.internet2.edu/display/OpenSAML/'
   md5 '9695d40cb28519c2cde8211cd1c3dc69'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'log4shib'
   depends_on 'xerces-c'
   depends_on 'xml-security-c'

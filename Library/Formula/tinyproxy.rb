@@ -9,8 +9,8 @@ class Tinyproxy <Formula
 
   def install
     inreplace 'doc/tinyproxy.conf' do |s|
-      s.gsub! '/var', "#{var}"
-      s.gsub! '/usr/share', "#{share}"
+      s.gsub! '/var', var
+      s.gsub! '/usr/share', share
     end
 
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"

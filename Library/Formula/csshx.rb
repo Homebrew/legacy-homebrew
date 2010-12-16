@@ -7,6 +7,6 @@ class Csshx < Formula
   head 'http://csshx.googlecode.com/svn/trunk/'
 
   def install
-    bin.install 'csshX' 
+    bin.install 'csshX'
   end
 end

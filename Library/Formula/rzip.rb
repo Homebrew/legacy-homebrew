@@ -6,8 +6,8 @@ class Rzip <Formula
   md5 '0a3ba55085661647c12f2b014c51c406'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", 
-           "--prefix=#{prefix}", "--mandir=#{man}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}", "--mandir=#{man}"
 
     # --mandir doesn't seem to do anything, so we need to modify the
     # Makefile ourselves

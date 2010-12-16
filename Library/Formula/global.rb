@@ -8,10 +8,10 @@ class Global <Formula
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
-    
+
     # we copy these in already
     Dir.chdir(share+'gtags') do
-      FileUtils.rm %w[README COPYING LICENSE INSTALL ChangeLog AUTHORS]
+      rm %w[README COPYING LICENSE INSTALL ChangeLog AUTHORS]
     end
   end
 end

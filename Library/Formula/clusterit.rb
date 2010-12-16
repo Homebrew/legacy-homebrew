@@ -4,16 +4,18 @@ class Clusterit <Formula
   url 'http://downloads.sourceforge.net/project/clusterit/clusterit/clusterit-2.5/clusterit-2.5.tar.gz'
   homepage 'http://www.garbled.net/clusterit.html'
   md5 'f0e772e07122e388de629fb57f7237ab'
-  
-  def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-    system "make install"
-  end
 
   def patches
       DATA
   end
+
+  def install
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
+    system "make install"
+  end
 end
+
 
 __END__
 diff --git a/Makefile.am b/Makefile.am

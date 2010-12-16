@@ -4,16 +4,23 @@
 # Note: this external command is ruby, but set up as a shell script, so that it gets exec'd.
 # This is required for sinatra's run-loop to take over.
 
-puts "View our tasting menu at http://localhost:4567/\nUse \"Control-C\" to exit.\n\n"
 $:.unshift(ENV['HOMEBREW_LIBRARY_PATH'])
-
-require 'rubygems'
-require 'sinatra'
-
-require 'cgi'
 
 require 'global'
 require 'formula'
+
+require 'rubygems'
+
+begin
+  require 'sinatra'
+rescue LoadError
+  onoe 'Sinatra required but not found'
+  puts 'To install: gem install sinatra'
+  exit 1
+end
+
+require 'cgi'
+
 
 def link_to_formula name
   "<a href=\"/formula/#{CGI.escape(name)}\">#{name}</a>"
@@ -64,7 +71,7 @@ get '/' do
     <div class="row">
       <ul>
     HTML
-    Formulary.read_all do |name, klass|
+    Formula.names do |name|
       s << "<li>#{link_to_formula(name)}</li>"
     end
     s << <<-HTML
@@ -106,7 +113,6 @@ get '/search' do
 end
 
 get '/formula/:name' do
-  # klass = Formulary.read params[:name]
   klass = Formula.factory(params[:name])
 
   installed = klass.installed? ? "Installed at" : "Not installed."
@@ -145,8 +151,8 @@ get '/formula/:name' do
     end
   end
 
-  used_by = Formula.get_used_by()[klass.name]
-  unless used_by == nil
+  used_by = Formula.all.select{|ff| ff.deps.include?(klass.name)}.map{|f| f.name}.flatten.uniq.sort
+  unless used_by.empty?
     s << <<-HTML
             <dt>Used by</td>
     HTML
@@ -165,3 +171,5 @@ get '/formula/:name' do
 
   return s
 end
+
+puts "View our tasting menu at http://localhost:4567/\nUse \"Control-C\" to exit.\n\n"

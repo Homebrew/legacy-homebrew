@@ -6,7 +6,6 @@ class Spim <Formula
   md5 '146558e8256f2b7577fb825fdc76a04f'
   version '8.0'
 
-
   def install
     Dir.chdir 'spim'
 
@@ -20,7 +19,7 @@ class Spim <Formula
     system "make install"
     system "make install-man"
     system "make test"
-    
+
     mv "#{man1}/spim.man", "#{man1}/spim.1"
   end
 end

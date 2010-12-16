@@ -1,17 +1,19 @@
 require 'formula'
 
 class SpatialiteTools <Formula
-  url 'http://www.gaia-gis.it/spatialite-2.4.0/spatialite-tools-2.4.0.tar.gz'
+  url 'http://www.gaia-gis.it/spatialite-2.4.0-4/spatialite-tools-2.4.0.tar.gz'
+  version '2.4.0-rc4'
   homepage 'http://www.gaia-gis.it/spatialite/'
-  md5 'ea508c0d7c7a58d4b75fe82ee62d8591'
+  md5 'e161e774a26e874d7d92d428ae2ad685'
 
+  depends_on 'pkg-config' => :build
   depends_on 'libspatialite'
 
   def install
-    system "./configure", "--prefix=#{prefix}", 
-                          "--disable-debug",
-                          "--target=macosx",
-                          "--disable-dependency-tracking"
+    ENV.append 'LDFLAGS', '-liconv' # Fixes 3328 should be removed with next version
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--target=macosx"
     system "make install"
   end
 end

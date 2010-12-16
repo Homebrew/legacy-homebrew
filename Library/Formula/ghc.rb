@@ -2,8 +2,8 @@ require 'formula'
 
 class Ghc <Formula
   homepage 'http://haskell.org/ghc/'
+  url "http://darcs.haskell.org/download/dist/6.12.3/GHC-6.12.3-i386.pkg"
   version '6.12.3'
-  url "http://darcs.haskell.org/download/dist/#{version}/GHC-#{version}-i386.pkg"
   md5 '58399e3af68f50a23a847bdfe3de5aca'
 
   # Avoid stripping the Haskell binaries & libraries.

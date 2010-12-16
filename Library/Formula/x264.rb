@@ -1,12 +1,14 @@
 require 'formula'
 
 class X264 <Formula
+  url "http://download.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20100903-2245.tar.bz2"
   homepage 'http://www.videolan.org/developers/x264.html'
-  head 'git://git.videolan.org/x264.git',
-        :tag => '20fa784d2d9e0d5e524d4e3834699e9ff9b57511'
+  md5 '79d13e0fd56a73c65f75940d70e9c450'
+  version 'r1713M-c276662'
+
+  head 'git://git.videolan.org/x264.git'
 
   depends_on 'yasm'
-
 
   def install
     system "./version.sh"
@@ -17,7 +19,7 @@ class X264 <Formula
       ldflags = s.get_make_var 'LDFLAGS'
       s.change_make_var! 'LDFLAGS', ldflags.gsub!(' -s', '')
 
-      if MACOS_VERSION >= 10.6 and Hardware.is_64_bit?
+      if snow_leopard_64?
         soflags = s.get_make_var 'SOFLAGS'
         s.change_make_var! 'SOFLAGS', soflags.gsub!(' -Wl,-read_only_relocs,suppress', '')
       end

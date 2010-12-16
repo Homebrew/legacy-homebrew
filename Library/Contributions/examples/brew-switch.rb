@@ -2,7 +2,7 @@ require 'formula'
 require 'keg'
 
 if ARGV.named.length != 2
-  onoe "Usage: brew switch formula version"
+  onoe "Usage: brew switch <formula> <version>"
   exit 1
 end
 
@@ -19,7 +19,7 @@ end
 
 # Does the target version exist?
 unless (cellar+version).directory?
-  onoe "#{name} does not have a version #{version} in the Cellar."
+  onoe "#{name} does not have a version \"#{version}\" in the Cellar."
 
   versions = cellar.children.select { |pn| pn.directory? }.collect { |pn| pn.basename.to_s }
   puts "Versions available: #{versions.join(', ')}"

@@ -15,3 +15,4 @@
 /usr/bin/ruby test_ARGV.rb $*
 /usr/bin/ruby test_ENV.rb $*
 /usr/bin/ruby test_updater.rb $*
+/usr/bin/ruby test_string.rb $*

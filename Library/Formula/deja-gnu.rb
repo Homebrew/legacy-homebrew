@@ -5,8 +5,6 @@ class DejaGnu <Formula
   homepage 'http://www.gnu.org/software/dejagnu/'
   md5 '053f18fd5d00873de365413cab17a666'
 
-  aka 'dejagnu'
-
   def install
     ENV.j1 # Or fails on Mac Pro
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

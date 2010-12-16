@@ -5,7 +5,7 @@ class Moxi <Formula
   homepage 'http://labs.northscale.com/moxi/'
   md5 'ec73c7521324321eb4c8b4f51f9d7373'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'check'
   depends_on 'libevent'
 

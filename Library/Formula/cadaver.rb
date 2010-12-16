@@ -8,8 +8,9 @@ class Cadaver <Formula
   depends_on 'gettext'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug",
+    system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--with-ssl"
     system "(cd lib/intl; make)"
     system "make install"

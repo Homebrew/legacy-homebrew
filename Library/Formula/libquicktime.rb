@@ -14,7 +14,7 @@ class Libquicktime <Formula
       DATA
   end
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'jpeg' => :optional
   depends_on 'lame' => :optional
@@ -23,7 +23,10 @@ class Libquicktime <Formula
   depends_on 'libvorbis' => :optional
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}", "--enable-gpl", "--without-doxygen"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--enable-gpl",
+                          "--without-doxygen"
     system "make"
     system "make install"
   end

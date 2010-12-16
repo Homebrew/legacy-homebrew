@@ -6,10 +6,9 @@ class Sgrep <Formula
   md5 '99eb1ed515648f653fc7be45e0896378'
 
   def install
-    system "./configure",
-      "--prefix=#{prefix}",
-      "--mandir=#{man}",
-      "--datadir=#{share}/sgrep"
+    system "./configure", "--prefix=#{prefix}",
+                          "--mandir=#{man}",
+                          "--datadir=#{share}/sgrep"
     system "make install"
   end
 end

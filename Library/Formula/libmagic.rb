@@ -5,9 +5,9 @@ class Libmagic < Formula
   homepage 'http://www.darwinsys.com/file/'
   md5 'accade81ff1cc774904b47c72c8aeea0'
 
-  def keg_only?
-    "This brew provides 'libmagic', but also installs a 'file' command which shadows the OS X-provided one."
-  end
+  keg_only <<-KEG.undent
+    This brew provides 'libmagic', but also installs a 'file' command which shadows the OS X-provided one.
+  KEG
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"

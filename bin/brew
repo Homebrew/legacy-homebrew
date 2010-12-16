@@ -40,29 +40,34 @@ end
 
 def dump_config
   require 'hardware'
+  sha = `cd #{HOMEBREW_REPOSITORY} && git rev-parse --verify HEAD 2> /dev/null`.chomp
+  sha = "(none)" if sha.empty?
   bits = Hardware.bits
   cores = Hardware.cores_as_words
-  llvm = llvm_build
-  gcc_42 = gcc_42_build
-  gcc_40 = gcc_40_build
-  sha = `cd #{HOMEBREW_REPOSITORY} && git rev-parse --verify HEAD 2> /dev/null`.chomp
   kernel_arch = `uname -m`.chomp
+  system_ruby = Pathname.new("/usr/bin/ruby")
+
+  llvm,   llvm_msg   = _compiler_recommendation llvm_build,   RECOMMENDED_LLVM
+  gcc_42, gcc_42_msg = _compiler_recommendation gcc_42_build, RECOMMENDED_GCC_42
+  gcc_40, gcc_40_msg = _compiler_recommendation gcc_40_build, RECOMMENDED_GCC_40
+  xcode = xcode_version || "?"
 
   puts <<-EOS
 HOMEBREW_VERSION: #{HOMEBREW_VERSION}
 HEAD: #{sha}
 HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}
 HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}
-HOMEBREW_CACHE: #{HOMEBREW_CACHE}
 HOMEBREW_REPOSITORY: #{HOMEBREW_REPOSITORY}
 HOMEBREW_LIBRARY_PATH: #{HOMEBREW_LIBRARY_PATH}
 Hardware: #{cores}-core #{bits}-bit #{Hardware.intel_family}
 OS X: #{MACOS_FULL_VERSION}
 Kernel Architecture: #{kernel_arch}
 Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
-GCC-4.0: #{gcc_40 ? "build #{gcc_40}" : "N/A"} (#{RECOMMENDED_GCC_40} or newer recommended)
-GCC-4.2: #{gcc_42 ? "build #{gcc_42}" : "N/A"} (#{RECOMMENDED_GCC_42} or newer recommended)
-LLVM: #{llvm ? "build #{llvm}" : "N/A" } #{llvm ? "(#{RECOMMENDED_LLVM} or newer recommended)" : "" }
+/usr/bin/ruby => #{system_ruby.realpath}
+Xcode: #{xcode}
+GCC-4.0: #{gcc_40 ? "build #{gcc_40}" : "N/A"} #{gcc_42_msg}
+GCC-4.2: #{gcc_42 ? "build #{gcc_42}" : "N/A"} #{gcc_40_msg}
+LLVM: #{llvm ? "build #{llvm}" : "N/A" } #{llvm_msg}
 MacPorts or Fink? #{macports_or_fink_installed?}
 X11 installed? #{x11_installed?}
 EOS
@@ -76,13 +81,13 @@ begin
     if ARGV.named.empty?
       puts HOMEBREW_CACHE
     else
-      puts *ARGV.formulae.collect {|f| f.cached_download rescue '(built from source control)'}
+      puts ARGV.formulae.collect {|f| f.cached_download}
     end
   when '--prefix'
     if ARGV.named.empty?
       puts HOMEBREW_PREFIX
     else
-      puts *ARGV.formulae.collect {|f| f.prefix}
+      puts ARGV.formulae.collect {|f| f.prefix}
     end
   when '--repository'
     puts HOMEBREW_REPOSITORY
@@ -90,7 +95,7 @@ begin
     if ARGV.named.empty?
       puts HOMEBREW_CELLAR
     else
-      puts *ARGV.formulae.collect {|f| HOMEBREW_CELLAR+f.name}
+      puts ARGV.formulae.collect {|f| HOMEBREW_CELLAR+f.name}
     end
   when '--config'
     dump_config
@@ -126,7 +131,7 @@ begin
         end
       elsif ARGV.named.empty?
         ENV['CLICOLOR']=nil
-        exec 'ls', *ARGV.options<<HOMEBREW_CELLAR if HOMEBREW_CELLAR.exist?
+        exec 'ls', *ARGV.options_only<<HOMEBREW_CELLAR if HOMEBREW_CELLAR.exist?
       elsif ARGV.verbose? or not $stdout.tty?
         exec "find", *ARGV.kegs+%w[-not -type d -print]
       else
@@ -152,16 +157,17 @@ begin
                           "#{HOMEBREW_REPOSITORY}/bin/brew"<<
                           "#{HOMEBREW_REPOSITORY}/README.md"
       else
-        # we don't use ARGV.formulae as that will throw if the file doesn't parse
+        require 'formula'
+        # Don't use ARGV.formulae as that will throw if the file doesn't parse
         paths = ARGV.named.collect do |name|
-          unless File.exist? path = "#{HOMEBREW_REPOSITORY}/Library/Formula/#{name}.rb"
-            require 'formula'
+          path = Formula.path(Formula.resolve_alias(name))
+          unless File.exist? path
             raise FormulaUnavailableError, name
           else
             path
           end
         end
-        exec_editor *paths
+        exec_editor(*paths)
       end
 
   when 'up', 'update'
@@ -172,24 +178,7 @@ begin
     unless updater.update_from_masterbrew!
       puts "Already up-to-date."
     else
-      puts "Updated Homebrew from #{updater.initial_revision[0,8]} to #{updater.current_revision[0,8]}."
-      ## New Formulae
-      if updater.pending_new_formulae?
-        ohai "The following formulae are new:"
-        puts_columns updater.added_formulae
-      end
-      ## Deleted Formulae
-      if updater.deleted_formulae?
-        ohai "The following formulae were removed:"
-        puts_columns updater.deleted_formulae
-      end
-      ## Updated Formulae
-      if updater.pending_formulae_changes?
-        ohai "The following formulae were updated:"
-        puts_columns updater.updated_formulae
-      else
-        puts "No formulae were updated."
-      end
+      updater.report
     end
 
     when 'ln', 'link'
@@ -199,21 +188,34 @@ begin
       ARGV.kegs.each {|keg| puts "#{keg.unlink} links removed for #{keg}"}
 
     when 'rm', 'uninstall', 'remove'
-      ARGV.kegs.each do |keg|
-        puts "Uninstalling #{keg}..."
-        keg.unlink
-        keg.uninstall
+      if ARGV.flag? "--force"
+        require 'formula'
+        ARGV.formulae.each do |f|
+          formula_cellar = f.prefix.parent
+          next unless File.exist? formula_cellar
+          puts "Uninstalling #{f.name}..."
+          formula_cellar.children do |k|
+            keg = Keg.new(k)
+            keg.unlink
+          end
+
+          formula_cellar.rmtree
+        end
+      else
+        begin
+          ARGV.kegs.each do |keg|
+            puts "Uninstalling #{keg}..."
+            keg.unlink
+            keg.uninstall
+          end
+        rescue MultipleVersionsInstalledError => e
+          onoe e
+          puts "Use `brew remove --force #{e.name}` to remove all versions."
+        end
       end
 
     when 'prune'
       prune
-
-    # 'make' supported until 0.7 for historic reasons
-    when 'mk', 'make'
-      opoo "`brew make' has changed to `brew create'"
-      puts "This is because make can be confused with the `make' tool."
-      puts "brew make will continue working until Homebrew 0.7"
-      exec __FILE__, "create", *ARGV
 
     when 'create'
       if ARGV.include? '--macports'
@@ -223,7 +225,7 @@ begin
       elsif ARGV.named.empty?
         raise UsageError
       else
-        exec_editor *ARGV.named.collect {|name| make name}
+        exec_editor(*ARGV.named.collect {|name| make name})
       end
 
     when 'diy', 'configure'
@@ -233,15 +235,22 @@ begin
       if ARGV.named.empty?
         if ARGV.include? "--all"
           require 'formula'
-          Formulary.names.each do |name|
-            info Formula.factory(name)
+          Formula.all.each do |f|
+            info f
             puts '---'
           end
         else
           puts `ls #{HOMEBREW_CELLAR} | wc -l`.strip+" kegs, "+HOMEBREW_CELLAR.abv
         end
-      elsif ARGV[0][0..6] == 'http://'
-        puts Pathname.new(ARGV.shift).version
+      elsif ARGV[0][0..6] == 'http://' or ARGV[0][0..7] == 'https://' or ARGV[0][0..5] == 'ftp://'
+        path = Pathname.new(ARGV.shift)
+        /(.*?)[-_.]?#{path.version}/.match path.basename
+        unless $1.to_s.empty?
+          name = $1
+        else
+          name = path.stem
+        end
+        puts "#{name} #{path.version}"
       else
         ARGV.formulae.each{ |f| info f }
       end
@@ -267,65 +276,35 @@ begin
 
   when 'log'
     Dir.chdir HOMEBREW_REPOSITORY
-    args = ARGV.options
-    args.unshift ARGV.formulae.first.path unless ARGV.named.empty?
+    args = ARGV.options_only
+    args += ARGV.formulae.map{ |formula| formula.path } unless ARGV.named.empty?
     exec "git", "log", *args
-    
+
+  # For each formula given, show which other formulas depend on it.
+  # We only go one level up, ie. direct dependencies.
   when 'uses'
-    # For each formula given, show which other formulas depend on it.
-    # We only go one level up, direct dependencies.
-    require 'formula'
-    require 'utils'
-    
-    deps = Formula.get_used_by
-    
-    ARGV.formulae.each do |f|
-      name = f.name
-      our_deps = deps[name]
-      if our_deps == nil
-        puts "#{name} is not a dependency."
-      else
-        puts "#{name} is a dependency for #{our_deps.join(', ')}."
-      end
+    uses = ARGV.formulae.map{ |f| Formula.all.select{ |ff| ff.deps.include? f.name }.map{|f| f.name} }.flatten.uniq
+    if ARGV.include? "--installed"
+      uses = uses.select { |f| f = HOMEBREW_CELLAR+f; f.directory? and not f.subdirs.empty? }
     end
-    
+    puts uses.sort
+
   when 'deps'
-    require 'formula'
-
-    ARGV.formulae.each do |f|
-      name = f.name
-
-      our_deps = []
-      checked = {}
-      to_check = [name]
-      stop_early = false
-
-      until to_check.empty? or stop_early
-        stop_early = ARGV.include?("-1") or ARGV.include?("--1")
-
-        item = to_check.pop
-        checked[item] = true
-        
-        formula = Formulary.read item
-        next if formula == nil || formula.deps == nil || formula.deps.empty?
-        
-        our_deps.push(*formula.deps)
-        to_check.push(*formula.deps.select{|g| !checked[g]})
+    if ARGV.include?('--all')
+      require 'formula'
+      Formula.all.each do |f|
+        puts "#{f.name}:#{f.deps.join(' ')}"
       end
-      
-      our_deps.uniq!
-      
-      if our_deps.empty?
-        puts "#{name} has no dependencies."
-      else
-        our_deps.sort!
-        puts "#{name} depends on #{our_deps.join(", ")}"
-      end
+    elsif ARGV.include?("-1") or ARGV.include?("--1")
+      puts ARGV.formulae.map {|f| f.deps or []}.flatten.uniq.sort
+    else
+      require 'formula_installer'
+      puts ARGV.formulae.map {|f| FormulaInstaller.expand_deps(f).map {|f| f.name} }.flatten.uniq.sort
     end
-    
+
   when 'cat'
     Dir.chdir HOMEBREW_REPOSITORY
-    exec "cat", ARGV.formulae.first.path, *ARGV.options
+    exec "cat", ARGV.formulae.first.path, *ARGV.options_only
 
   when 'outdated'
     outdated_brews.each do |keg, name, version|
@@ -337,15 +316,18 @@ begin
       end
     end
 
-  when 'doctor'
+  when 'doctor', 'dr'
     require 'brew_doctor'
     brew_doctor
 
   else
+    # Add example external commands to PATH before checking.
+    ENV['PATH'] += ":#{HOMEBREW_REPOSITORY}/Library/Contributions/examples"
+
     # Check for an external shell command
     if system "/usr/bin/which -s brew-#{arg}"
       # Add some Homebrew vars to the ENV
-      ['CACHE', 'CELLAR', 'LIBRARY_PATH', 'PREFIX', 'REPOSITORY'].each do |e|
+      %w(CACHE CELLAR LIBRARY_PATH PREFIX REPOSITORY).each do |e|
         ENV["HOMEBREW_#{e}"] = eval("HOMEBREW_#{e}")
       end
       exec("brew-#{arg}", *ARGV)
@@ -359,10 +341,10 @@ begin
     end
 
     # Check for git commands
-    if ['branch', 'checkout', 'pull', 'push', 'rebase', 'reset'].include? arg
-      onoe "Unknown command: #{arg} (did you mean 'git #{arg}'?)"
+    if %w(branch checkout pull push rebase reset).include? arg
+      onoe "Unknown command '#{arg}' (did you mean 'git #{arg}'?)"
     else
-      onoe "Unknown command: #{arg}"
+      onoe "Unknown command '#{arg}'"
     end
   end
 
@@ -404,9 +386,12 @@ rescue BuildError => e
     puts "Consider re-running the install with '-vd' to keep 'config.log' around:"
     puts "    brew install -vd #{formula_name}"
     puts "Gist 'config.log' and any error output when reporting an issue."
+    puts "Remember to include your config information: brew --config"
   end
   puts
-  puts "Consider running `brew doctor` if a large number of installs are failing."
+  puts "Also try:"
+  puts "  `brew doctor` to check your setup for common problems."
+  puts "  `brew missing` to check installed packages for missing deps."
   exit 1
 rescue RuntimeError, SystemCallError => e
   onoe e

@@ -1,17 +1,20 @@
 require 'formula'
 
 class Parrot <Formula
-  head 'bzr://https://launchpad.net/parrot/trunk'
-  url 'ftp://ftp.parrot.org/pub/parrot/releases/devel/2.5.0/parrot-2.5.0.tar.gz'
+  head 'git://github.com/parrot/parrot.git'
+  url 'ftp://ftp.parrot.org/pub/parrot/releases/supported/2.9.1/parrot-2.9.1.tar.gz'
   homepage 'http://www.parrot.org/'
-  md5 'c64fe3a619afbda92e92d8df93b0d05d'
+  md5 '5f68803d2a9f7488459337f0628ad8fc'
 
+  depends_on 'gmp' => :optional
   depends_on 'icu4c' => :optional
   depends_on 'pcre' => :optional
 
   def install
-    system "perl", "Configure.pl", "--prefix=#{prefix}", "--debugging=0",
-                                   "--without-opengl", "--cc=#{ENV.cc}"
+    system "perl", "Configure.pl", "--prefix=#{prefix}",
+                                   "--debugging=0",
+                                   "--without-opengl",
+                                   "--cc=#{ENV.cc}"
 
     system "make"
     system "make install"
