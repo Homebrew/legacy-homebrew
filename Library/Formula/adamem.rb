@@ -13,20 +13,18 @@ class Adamem <Formula
 #{libexec}/#{app} -os7 "#{libexec}/OS7.rom" -eos "#{libexec}/EOS.rom" -wp "#{libexec}/WP.rom" $*
 END
   end
-  
+
   def install
     Dir.chdir 'src' do
       system "make -f Makefile.osx dist"
     end
-    
-    # Put applications and ROMs in libexec
+
     libexec.install Dir["dist/*"]
-  
-    # Put shim scripts in bin
+
     (bin+'adamem').write startup_script('adamem')
     (bin+'cvem').write startup_script('cvem')
   end
-  
+
   def caveats
     "Note that AdamEm is an X11 app, and does not support sound."
   end

@@ -1,16 +1,15 @@
 require 'formula'
 
 class GnuProlog <Formula
-  url 'http://www.gprolog.org/gprolog-1.3.1.tar.gz'
+  url 'http://gprolog.univ-paris1.fr/unstable/gprolog-20100713.tgz'
   homepage 'http://www.gprolog.org/'
-  md5 'cbae19c31e17bcfca4b57fe35ec4aba2'
+  md5 '0f882e352b886a5ddb59bcab457fa78e'
 
-  def skip_clean? path; true; end
+  skip_clean :all
 
   def install
-    # make won't run in parallel
-    ENV.j1
-    
+    ENV.j1 # make won't run in parallel
+
     Dir.chdir 'src' do
       system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
       system "make"

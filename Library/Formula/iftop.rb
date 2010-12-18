@@ -6,7 +6,8 @@ class Iftop <Formula
   md5 '062bc8fb3856580319857326e0b8752d'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--mandir=#{man}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}", "--mandir=#{man}"
     system "make install"
   end
 end

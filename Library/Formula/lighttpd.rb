@@ -1,14 +1,17 @@
 require 'formula'
 
 class Lighttpd <Formula
-  @url='http://www.lighttpd.net/download/lighttpd-1.4.23.tar.bz2'
-  @homepage='http://www.lighttpd.net/'
-  @md5='0ab6bb7b17bf0f515ce7dce68e5e215a'
+  url 'http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.28.tar.bz2'
+  md5 '586eb535d31ac299652495b058dd87c4'
+  homepage 'http://www.lighttpd.net/'
 
-  depends_on :pcre
+  depends_on 'pkg-config' => :build
+  depends_on 'pcre'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--with-openssl", "--with-ldap"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-openssl", "--with-ldap"
     system "make install"
   end
 end

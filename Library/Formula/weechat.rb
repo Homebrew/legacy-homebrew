@@ -1,54 +1,31 @@
 require 'formula'
 
 class Weechat <Formula
-  @url='http://www.weechat.org/files/src/weechat-0.3.0.tar.bz2'
-  @homepage='http://www.weechat.org'
-  @md5='c31cfc229e964ff9257cc9c7f9e6c9bc'
+  head 'git://git.sv.gnu.org/weechat.git'
+  url 'http://www.weechat.org/files/src/weechat-0.3.3.tar.bz2'
+  homepage 'http://www.weechat.org'
+  md5 '01648f8717ab1ea5233f9818d45a7c24'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'gnutls'
 
-  def patches
-    DATA
-  end
-
   def install
+
+    # Remove all arch flags from the PERL_*FLAGS as we specify them ourselves.
+    # This messes up because the system perl is a fat binary with 32,64 and PPC
+    # compiles, but our deps don't have that.
+    archs = ['-arch ppc', '-arch i386', '-arch x86_64']
+    inreplace  "src/plugins/scripts/perl/CMakeLists.txt",
+      'IF(PERL_FOUND)',
+      'IF(PERL_FOUND)' +
+      %Q{\n  STRING(REGEX REPLACE "#{archs.join '|'}" "" PERL_CFLAGS "${PERL_CFLAGS}")} +
+      %Q{\n  STRING(REGEX REPLACE "#{archs.join '|'}" "" PERL_LFLAGS "${PERL_LFLAGS}")}
+
     #FIXME: Compiling perl module doesn't work
     #NOTE: -DPREFIX has to be specified because weechat devs enjoy being non-standard
-    system "cmake", "-DPREFIX=#{prefix}", 
-                    "-DDISABLE_PERL=ON",
+    system "cmake", "-DPREFIX=#{prefix}",
+                    "-DDISABLE_RUBY:BOOL=ON",
                     std_cmake_parameters, "."
     system "make install"
   end
 end
-
-__END__
-diff --git a/cmake/FindIconv.cmake b/cmake/FindIconv.cmake
-index a7b2d24..371d630 100644
---- a/cmake/FindIconv.cmake
-+++ b/cmake/FindIconv.cmake
-@@ -43,10 +43,7 @@ FIND_LIBRARY(ICONV_LIBRARY
- IF(ICONV_INCLUDE_PATH)
-   IF(ICONV_LIBRARY)
-     STRING(REGEX REPLACE "/[^/]*$" "" ICONV_LIB_PATH "${ICONV_LIBRARY}")
--    CHECK_LIBRARY_EXISTS(iconv libiconv_open ${ICONV_LIB_PATH} ICONV_FOUND)
--    IF(NOT ICONV_FOUND)
--      CHECK_LIBRARY_EXISTS(iconv iconv_open ${ICONV_LIB_PATH} ICONV_FOUND)
--    ENDIF(NOT ICONV_FOUND)
-+    CHECK_LIBRARY_EXISTS(iconv iconv_open ${ICONV_LIB_PATH} ICONV_FOUND)
-   ELSE(ICONV_LIBRARY)
-     CHECK_FUNCTION_EXISTS(iconv_open ICONV_FOUND)
-   ENDIF(ICONV_LIBRARY)
-diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index 50d2f01..f812c74 100644
---- a/src/CMakeLists.txt
-+++ b/src/CMakeLists.txt
-@@ -92,6 +92,7 @@ ENDIF(NOT DISABLE_GNUTLS)
- FIND_PACKAGE(Iconv)
- IF(ICONV_FOUND)
-   ADD_DEFINITIONS( -DHAVE_ICONV )
-+  LIST(APPEND EXTRA_LIBS iconv)
- ENDIF(ICONV_FOUND)
- 
- FIND_LIBRARY(DL_LIBRARY
-

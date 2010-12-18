@@ -1,41 +1,60 @@
 require 'formula'
 
-class GitManuals <Formula
-  url 'http://kernel.org/pub/software/scm/git/git-manpages-1.6.5.3.tar.bz2'
-  md5 'dc2cf85cb1f29b586a1353307093bc62'
+class GitManuals < Formula
+  url 'http://kernel.org/pub/software/scm/git/git-manpages-1.7.3.4.tar.bz2'
+  md5 'ec0883134fa00628d9057d1551d9c739'
 end
 
-class Git <Formula
-  url 'http://kernel.org/pub/software/scm/git/git-1.6.5.3.tar.bz2'
-  md5 'a1dbc3da46cbf33c4367db689853c142'
+class GitHtmldocs < Formula
+  url 'http://kernel.org/pub/software/scm/git/git-htmldocs-1.7.3.4.tar.bz2'
+  md5 '2adbb534b28be52145ddd9bb5cca2f93'
+end
+
+class Git < Formula
+  url 'http://kernel.org/pub/software/scm/git/git-1.7.3.4.tar.bz2'
+  md5 '3a2602016f98c529cda7b9fad1a6e216'
   homepage 'http://git-scm.com'
 
   def install
-    # sadly, there's a bug in LLVM:
-    # http://www.mail-archive.com/llvmbugs@cs.uiuc.edu/msg03791.html
-    ENV.gcc_4_2
-
     # if these things are installed, tell git build system to not use them
     ENV['NO_FINK']='1'
     ENV['NO_DARWIN_PORTS']='1'
+    # If local::lib is used you get a 'Only one of PREFIX or INSTALL_BASE can be given' error
+    ENV['PERL_MM_OPT']='';
+    # build verbosely so we can debug better
+    ENV['V']='1'
 
-    system "./configure --prefix=#{prefix}"
-    system "make install"
+    inreplace "Makefile" do |s|
+      s.remove_make_var! %w{CFLAGS LDFLAGS}
+    end
 
-    # Install the git bash completion file
-    (etc+'bash_completion.d').install 'contrib/completion/git-completion.bash'
+    system "make", "prefix=#{prefix}", "install"
+
+    # Install the git bash completion file.  Put it into the Cellar so
+    # that it gets upgraded along with git upgrades.  (Normally, etc
+    # files go directly into HOMEBREW_PREFIX so that they don't get
+    # clobbered on upgrade.)
+
+    (prefix+'etc/bash_completion.d').install 'contrib/completion/git-completion.bash'
+    (share+'doc/git-core/contrib').install 'contrib/emacs'
+
+    # Install git-p4
+    bin.install 'contrib/fast-import/git-p4'
 
     # these files are exact copies of the git binary, so like the contents
     # of libexec/git-core lets hard link them
     # I am assuming this is an overisght by the git devs
+    git_md5 = (bin+'git').md5
     %w[git-receive-pack git-upload-archive].each do |fn|
-      next unless (bin+'git').stat.size == (bin+fn).stat.size
-      (bin+fn).unlink
-      (bin+fn).make_link bin+'git'
+      fn = bin + fn
+      next unless git_md5 == fn.md5
+      fn.unlink
+      fn.make_link bin+'git'
     end
 
     # we could build the manpages ourselves, but the build process depends
     # on many other packages, and is somewhat crazy, this way is easier
     GitManuals.new.brew { man.install Dir['*'] }
+    GitHtmldocs.new.brew { (share+'doc/git-doc').install Dir['*'] }
   end
 end

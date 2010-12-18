@@ -1,73 +1,54 @@
 require 'formula'
 
-class Ec2ApiTools <Formula
-  @homepage='http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351'
-  @url='http://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.3-41620.zip'
-  @md5='14734acff6ac8f6899de0398d3eeb0f6'
-  
-  def patches
-    # (From http://gist.github.com/200283) Gets rid of the
-    # “[Deprecated] Xalan: org.apache.xml.res.XMLErrorResources_en_US”
-    # messages that the tools spew on 1.3-41620 under Snow Leopard
-    DATA
+# This formula serves as the base class for several very similar
+# formulae for Amazon Web Services related tools.
+
+class AmazonWebServicesFormula <Formula
+  # Use this method to peform a standard install for Java-based tools,
+  # keeping the .jars out of HOMEBREW_PREFIX/lib
+  def standard_install
+    rm Dir['bin/*.cmd'] # Remove Windows versions
+    prefix.install "bin"
+    # Put the .jars in prefix/jars/lib, which isn't linked to the Cellar
+    # This will prevent conflicts with other versions of these jars.
+    (prefix+'jars').install 'lib'
+    (prefix+'jars/bin').make_symlink '../bin'
   end
-  
-  def install
-    # Nothing to be done but copying things into place
-    FileUtils.rm Dir['bin/*\.cmd']
-    
-    (prefix+bin).install Dir['bin/ec2-*']
-    prefix.install 'lib'
-  end
-  
-  def caveats
-    return <<-EOS
-Before you can utilize the EC2 API tools, you must export several environment
-variables to your $SHELL. The easiest way to do this is to add them to your
-dotfiles. If you’re running the `bash` shell (the default), you’ll want to add
-them to `~/.bash_profile`. If this is the case, run `nano ~/.bash_profile` at
-a terminal to edit said file. zsh users will want to edit `~/.zprofile`
-instead.
 
-    export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Home/"
-    export EC2_HOME="#{prefix.to_s}/"
+  # Use this method to generate standard caveats.
+  def standard_instructions var_name, var_value=prefix+'jars'
+    <<-EOS.undent
+      Before you can use these tools you must export some variables to your $SHELL
+      and download your X.509 certificate and private key from Amazon Web Services.
 
-However, you’re still not ready to use the tools. You need to download your
-X.509 certificate and private key from Amazon Web Services. These files are
-available at the following URL:
+      Your certificate and private key are available at:
+      http://aws-portal.amazon.com/gp/aws/developer/account/index.html?action=access-key
 
-http://aws-portal.amazon.com/gp/aws/developer/account/index.html?action=access-key
+      Download two ".pem" files, one starting with `pk-`, and one starting with `cert-`.
+      You need to put both into a folder in your home directory, `~/.ec2`.
 
-You should download two `.pem` files, one starting with `pk-`, and one
-starting with `cert-`. You need to put both into a folder in your home
-directory, `~/.ec2`, and then add the following to your profile file:
+      To export the needed variables, add them to your dotfiles.
+       * On Bash, add them to `~/.bash_profile`.
+       * On Zsh, add them to `~/.zprofile` instead.
 
-    export EC2_PRIVATE_KEY="$(/bin/ls $HOME/.ec2/pk-*.pem)"
-    export EC2_CERT="$(/bin/ls $HOME/.ec2/cert-*.pem)"
-
+      export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Home"
+      export EC2_PRIVATE_KEY="$(/bin/ls $HOME/.ec2/pk-*.pem)"
+      export EC2_CERT="$(/bin/ls $HOME/.ec2/cert-*.pem)"
+      export #{var_name}="#{var_value}"
     EOS
   end
-  
 end
 
+class Ec2ApiTools <AmazonWebServicesFormula
+  homepage 'http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351'
+  url 'http://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.3-57419.zip'
+  md5 'edf10b4eb06e161c03c3ca06152e11f2'
 
-__END__
-diff --git i/bin/ec2-cmd w/bin/ec2-cmd
-index 57051eb..edc2aae 100755
---- i/bin/ec2-cmd
-+++ w/bin/ec2-cmd
-@@ -58,4 +58,13 @@ fi
- 
- CMD=$1
- shift
--"$JAVA_HOME/bin/java" $EC2_JVM_ARGS $cygprop -classpath "$CP" com.amazon.aes.webservices.client.cmd.$CMD "$@"
-+
-+# to filter out the "deprecated" warnings introduced by Snow Leopard...
-+exec 3>&1   # ... redirect fd3 to stdout
-+exec 4>&2   # ... redirect fd4 to stderr
-+
-+# ... execute the java, sending stderr to stdout (so it gets grepped), 
-+#     but stdout goes to fd3 (the preserved real stdout)
-+#     and the grepped output goes to fd4 (the preserved stderr)
-+"$JAVA_HOME/bin/java" $EC2_JVM_ARGS $cygprop -classpath "$CP" com.amazon.aes.webservices.client.cmd.$CMD "$@" \
-+    2>&1 >&3 | grep -v '^\[Deprecated\] Xalan' >&4
+  def install
+    standard_install
+  end
+
+  def caveats
+    standard_instructions "EC2_HOME"
+  end
+end

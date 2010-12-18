@@ -1,18 +1,17 @@
 require 'formula'
 
 class Hercules <Formula
-  url 'http://www.hercules-390.org/hercules-3.06.tar.gz'
+  url 'http://www.hercules-390.org/hercules-3.07.tar.gz'
   homepage 'http://www.hercules-390.org/'
-  md5 '3a356b251e2b7fc49ac2b7244d12d50b'
+  md5 'a12aa1645b0695b25b7fc0c9a3ccab3a'
 
- depends_on 'gawk'
+  depends_on 'gawk'
 
   def install
     # Since Homebrew optimizes for us, tell Hercules not to.
     # (It gets it wrong anyway.)
-    system "./configure", "--prefix=#{prefix}", 
-                          "--disable-debug", 
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--enable-optimization=no"
     system "make"
     system "make install"

@@ -1,13 +1,22 @@
 require 'formula'
 
 class Maven <Formula
-  @url='http://apache.mirrors.timporter.net/maven/binaries/apache-maven-2.2.1-bin.tar.gz'
-  @version="2.2.1"
-  @homepage='http://maven.apache.org/'
-  @md5='3f829ed854cbacdaca8f809e4954c916'
+  url 'http://www.apache.org/dist/maven/binaries/apache-maven-3.0.1-bin.tar.gz'
+  homepage 'http://maven.apache.org/'
+  md5 '98379efcef6b07bc44c27ec8382ad366'
 
   def install
-    prefix.install %w[bin conf boot lib]
-    FileUtils.rm_f Dir["#{bin}/*.bat"]
+    # Remove windows files
+    rm_f Dir["bin/*.bat"]
+
+    # Install jars in libexec to avoid conflicts
+    prefix.install %w{ NOTICE.txt LICENSE.txt README.txt }
+    libexec.install Dir['*']
+
+    # Symlink binaries
+    bin.mkpath
+    Dir["#{libexec}/bin/*"].each do |f|
+      ln_s f, bin+File.basename(f)
+    end
   end
 end

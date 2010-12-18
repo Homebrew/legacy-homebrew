@@ -39,7 +39,8 @@ __END__
  	install -d ${DESTDIR}${INSTALL_DIR}
 +	install -d ${DESTDIR}${MAN_DIR}
 +	install -d ${DESTDIR}${ETC_DIR}
- 	sed -e "s%/etc%${ETC_DIR}%g" colordiff.pl > \
+-	sed -e "s%/etc%${ETC_DIR}%g" colordiff.pl > \
++	sed -e "s%/etc%${DESTDIR}${ETC_DIR}%g" colordiff.pl > \
  	  ${DESTDIR}${INSTALL_DIR}/colordiff
  	chmod +x ${DESTDIR}${INSTALL_DIR}/colordiff
  	if [ ! -f ${DESTDIR}${INSTALL_DIR}/cdiff ] ; then \

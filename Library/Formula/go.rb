@@ -1,49 +1,61 @@
 require 'formula'
+require 'hardware'
 
 class Go <Formula
-  head 'https://go.googlecode.com/hg/'
+  if ARGV.include? "--use-git-head"
+    head 'https://github.com/tav/go.git', :tag => 'release'
+  else
+    head 'http://go.googlecode.com/hg/', :revision => 'release'
+  end
   homepage 'http://golang.org'
 
-  aka 'google-go'
+  def options
+    [["--use-git-head", "Use git mirror instead of official hg repository"]]
+  end
 
   skip_clean 'bin'
 
-  def download_strategy
-    MercurialDownloadStrategy
-  end
-
-  def cruft
-    %w[src include test doc]
+  def which_arch
+    Hardware.is_64_bit? ? 'amd64' : '386'
   end
 
   def install
-    prefix.install cruft<<'misc'
+    ENV.j1 # https://github.com/mxcl/homebrew/issues/#issue/237
+    prefix.install %w[src include test doc misc lib favicon.ico]
     Dir.chdir prefix
-    FileUtils.mkdir %w[pkg bin lib]
+    mkdir %w[pkg bin]
 
     ENV['GOROOT'] = Dir.getwd
-    ENV['GOBIN'] = bin.to_s
-    ENV['GOARCH'] = Hardware.is_64_bit? ? 'amd64' : '386'
+    ENV['GOBIN'] = bin
+    ENV['GOARCH'] = which_arch
     ENV['GOOS'] = 'darwin'
 
     ENV.prepend 'PATH', ENV['GOBIN'], ':'
 
     Dir.chdir 'src' do
       system "./all.bash"
+      # Keep the makefiles - https://github.com/mxcl/homebrew/issues/issue/1404
     end
 
-    FileUtils.rm_rf cruft
+    Dir['src/*'].each{|f| rm_rf f unless f.match(/^src\/(pkg|Make)/) }
+    rm_rf %w[include test]
   end
 
-  def caveats; <<-EOS
-In order to use Go you need to set the following in your ~/.profile:
+  def caveats
+    <<-EOS.undent
+      The official Go code repository uses mercurial, but a reasonably
+      up-to-date git mirror is available at https://github.com/tav/go.git.
+      To use the git mirror for Go builds, use the --use-git-head option.
 
-    export GOROOT=`brew --prefix`/Cellar/go/#{version}
-    export GOARCH=#{ENV['GOARCH']}
-    export GOOS=#{ENV['GOOS']}
+      In order to use Go, set the following in your ~/.profile:
 
-Presumably at some point the Go developers won't require us to mutilate our
-shell environments in order to compile Go code...
+        export GOROOT=`brew --prefix go`
+        export GOBIN=#{HOMEBREW_PREFIX}/bin
+        export GOARCH=#{which_arch}
+        export GOOS=darwin
+
+      Presumably at some point the Go developers won't require us to
+      mutilate our shell environments in order to compile Go code...
     EOS
   end
 end

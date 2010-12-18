@@ -2,34 +2,29 @@ require 'formula'
 
 class Mplayer <Formula
   homepage 'http://www.mplayerhq.hu/'
-  head 'svn://svn.mplayerhq.hu/mplayer/trunk'
+  # https://github.com/mxcl/homebrew/issues/issue/87
+  head 'svn://svn.mplayerhq.hu/mplayer/trunk', :using => StrictSubversionDownloadStrategy
 
-  depends_on 'pkg-config' => :recommended
-
-  # http://github.com/mxcl/homebrew/issues/#issue/87
-  depends_on :subversion if MACOS_VERSION < 10.6
+  depends_on 'pkg-config' => :build
+  depends_on 'yasm' => :optional
 
   def install
-    # LLVM-2206 can't handle some of the assembly
-    # Using gcc_4_2 doesn't work, failing mysteriously (check this again)
+    # Do not use pipes, per bug report
+    # https://github.com/mxcl/homebrew/issues#issue/622
+    # and MacPorts
+    # http://trac.macports.org/browser/trunk/dports/multimedia/mplayer-devel/Portfile
+    # any kind of optimisation breaks the build
+    ENV.gcc_4_2
     ENV['CC'] = ''
     ENV['LD'] = ''
-    # any kind of optimisation breaks the build
-    ENV['CFLAGS'] = HOMEBREW_SAFE_CFLAGS
+    ENV['CFLAGS'] = ''
+    ENV['CXXFLAGS'] = ''
 
-    args = ['./configure', "--prefix=#{prefix}"]
-    args << "--target=x86_64-Darwin" if Hardware.is_64_bit? and MACOS_VERSION >= 10.6
+    args = ["--prefix=#{prefix}", "--enable-largefiles", "--enable-apple-remote"]
+    args << "--target=x86_64-Darwin" if snow_leopard_64?
 
-    system *args 
+    system './configure', *args
     system "make"
     system "make install"
-  end
-end
-
-if MACOS_VERSION < 10.6
-  class SubversionDownloadStrategy
-    def svn
-      Formula.factory('subversion').bin+'svn'
-    end
   end
 end

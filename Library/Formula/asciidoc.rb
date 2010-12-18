@@ -1,12 +1,12 @@
 require 'formula'
 
 class Asciidoc <Formula
-  @url='http://downloads.sourceforge.net/project/asciidoc/asciidoc/8.4.5/asciidoc-8.4.5.tar.gz'
-  @md5='9f21d6e352b3ab668f9def3eb7497da2'
-  @homepage='http://www.methods.co.nz/asciidoc'
+  url 'http://downloads.sourceforge.net/project/asciidoc/asciidoc/8.6.1/asciidoc-8.6.1.tar.gz'
+  md5 '3d16b16a953c0c2d00b6a6d089882d0e'
+  homepage 'http://www.methods.co.nz/asciidoc'
 
   def install
-    system "./configure --disable-debug --prefix='#{prefix}'"
+    system "./configure", "--disable-debug", "--prefix=#{prefix}"
     system "make install"
   end
 end

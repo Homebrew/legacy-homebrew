@@ -1,8 +1,8 @@
 require 'formula'
 
 class Woof <ScriptFileFormula
-  version '20090227'
   url "http://www.home.unix-ag.org/simon/woof"
-  md5 '87d71978789e3444c115048dd686d418'
+  version '20091227'
+  md5 '4df770eedef7b011fc37d42015c801b9'
   homepage 'http://www.home.unix-ag.org/simon/woof.html'
 end

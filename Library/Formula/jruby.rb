@@ -1,30 +1,43 @@
 require 'formula'
 
-# My god! 20,000 files?!
-# TODO trim that a bit? Seems crazy.
-
 class Jruby < Formula
-  url 'http://jruby.kenai.com/downloads/1.4.0/jruby-src-1.4.0.tar.gz'
+  url 'http://jruby.org.s3.amazonaws.com/downloads/1.5.6/jruby-bin-1.5.6.tar.gz'
   homepage 'http://www.jruby.org'
-  md5 'a363b6c2ea24f0ef8df478c93ac8cc59'
+  md5 '94033a36517645b7a7ec781a3507c654'
 
   def install
-    system "ant"
+    # Remove Windows files
+    rm Dir['bin/*.{bat,dll,exe}']
 
+    # Prefix a 'j' on some commands
     Dir.chdir 'bin' do
-      FileUtils.rm Dir['*.bat']
       Dir['*'].each do |file|
-        FileUtils.mv file, "j#{file}" unless file.match /^[j_]/
+        mv file, "j#{file}" unless file.match /^[j_]/
       end
     end
-    
-    # Only keep the MacOSX native libraries
+
+    # Only keep the OS X native libraries
     Dir.chdir 'lib/native' do
       Dir['*'].each do |file|
-        FileUtils.rm_f file unless file == 'darwin'
+        rm_rf file unless file.downcase == 'darwin'
       end
     end
 
-    prefix.install Dir['*']
+    (prefix+'jruby').install Dir['*']
+
+    bin.mkpath
+    Dir["#{prefix}/jruby/bin/*"].each do |f|
+      ln_s f, bin+File.basename(f)
+    end
+  end
+
+  def caveats; <<-EOS.undent
+    Consider using RVM to manage Ruby environments:
+      * RVM: http://rvm.beginrescueend.com/
+    EOS
+  end
+
+  def test
+    system "jruby -e 'puts \"hello\"'"
   end
 end

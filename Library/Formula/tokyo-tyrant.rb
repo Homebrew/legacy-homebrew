@@ -1,17 +1,22 @@
 require 'formula'
 
 class TokyoTyrant <Formula
-  # For some reason TT-1.1.36 wouldn't compile against TC-1.4.33
-  # Also it appears the Ruby (Rufus) bindings will only work with up to 1.1.33
-  url 'http://1978th.net/tokyotyrant/tokyotyrant-1.1.33.tar.gz'
-  homepage 'http://1978th.net/tokyotyrant/'
-  md5 '880d6af48458bc04b993bdae6ecc543d'
+  url 'http://fallabs.com/tokyotyrant/tokyotyrant-1.1.41.tar.gz'
+  homepage 'http://fallabs.com/tokyotyrant/'
+  md5 'a47e58897bd1cbbac173d5a66cc32ae3'
 
   depends_on 'tokyo-cabinet'
-  depends_on 'lua'
+  depends_on 'lua' unless ARGV.include? "--no-lua"
+
+  def options
+    [["--no-lua", "Disable Lua support (and don't force Lua install.)"]]
+  end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--with-lua", "--enable-lua"
+    args = ["--prefix=#{prefix}"]
+    args << "--enable-lua" unless ARGV.include? "--no-lua"
+
+    system "./configure", *args
     system "make"
     system "make install"
   end

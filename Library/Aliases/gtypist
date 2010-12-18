@@ -1,0 +1,1 @@
+../Formula/gnu-typist.rb

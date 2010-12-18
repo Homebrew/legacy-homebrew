@@ -8,9 +8,8 @@ class SdlNet <Formula
   depends_on 'sdl'
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--disable-sdltest"
     system "make install"
   end

@@ -6,7 +6,9 @@ class Ncursesw <Formula
   homepage 'http://www.gnu.org/software/ncurses/ncurses.html'
 
   def install
+    fails_with_llvm
     system "./configure", "--prefix=#{prefix}",
+                          "--mandir=#{man}",
                           "--disable-debug",
                           "--disable-dependency-tracking",
                           "--enable-widec",

@@ -3,21 +3,20 @@ require 'global'
 
 def text_for_keg_only_formula f
   if f.keg_only? == :provided_by_osx
-    rationale = "This is because the formula is already provided by OS X."
+    rationale = "Mac OS X already provides this program and installing another version in\nparallel can cause all kinds of trouble."
   elsif f.keg_only?.kind_of? String
     rationale = "The formula provides the following rationale:\n\n#{f.keg_only?.chomp}"
   else
     rationale = "The formula didn't provide any rationale for this."
   end
   <<-EOS
-#{f.name} is keg-only. This means it is not symlinked into Homebrew's
-prefix. #{rationale}
+This formula is keg-only, so it is not symlinked into Homebrew's prefix.
+#{rationale}
 
-Generally there are no consequences of this for you, however if you build your
-own software and it requires this formula, you may want to run this command to
-link it into the Homebrew prefix:
-
-    brew link #{f.name}
+Generally there are no consequences of this for you, however if you build
+your own software and it requires this formula, you may want to run this
+command to link it into the Homebrew prefix:
+    $ brew link #{f.name}
   EOS
 end
 
@@ -54,7 +53,7 @@ end
 def install f
   show_summary_heading = false
 
-  f.deps.each do |dep|
+  f.deps.uniq.each do |dep|
     dep = Formula.factory dep
     if dep.keg_only?
       ENV.prepend 'LDFLAGS', "-L#{dep.lib}"
@@ -66,9 +65,7 @@ def install f
 
   if ARGV.verbose?
     ohai "Build Environment"
-    %w[PATH CFLAGS LDFLAGS CPPFLAGS MAKEFLAGS CC CXX MACOSX_DEPLOYMENT_TARGET PKG_CONFIG_PATH].each do |env|
-      puts "#{env}: #{ENV[env]}" unless ENV[env].to_s.empty?
-    end
+    dump_build_env ENV
   end
 
   build_time = nil
@@ -78,7 +75,16 @@ def install f
         ohai "Entering interactive mode"
         puts "Type `exit' to return and finalize the installation"
         puts "Install to this prefix: #{f.prefix}"
-        interactive_shell
+
+        if ARGV.flag? '--git'
+          system "git init"
+          system "git add -A"
+          puts "This folder is now a git repo. Make your changes and then use:"
+          puts "  git diff | pbcopy"
+          puts "to copy the diff to the clipboard."
+        end
+
+        interactive_shell f
         nil
       elsif ARGV.include? '--help'
         system './configure --help'
@@ -87,9 +93,14 @@ def install f
         f.prefix.mkpath
         beginning=Time.now
         f.install
-        FORMULA_META_FILES.each do |file|
-          FileUtils.mv "#{file}.txt", file rescue nil
-          f.prefix.install file rescue nil
+        FORMULA_META_FILES.each do |filename|
+          next if File.directory? filename
+          target_file = filename
+          target_file = "#{filename}.txt" if File.exists? "#{filename}.txt"
+          # Some software symlinks these files (see help2man.rb)
+          target_file = Pathname.new(target_file).resolved_path
+          f.prefix.install target_file => filename rescue nil
+          (f.prefix+file).chmod 0644 rescue nil
         end
         build_time = Time.now-beginning
       end
@@ -120,31 +131,61 @@ def install f
 
   raise "Nothing was installed to #{f.prefix}" unless f.installed?
 
-  # warn the user if stuff was installed outside of their PATH
-  paths = ENV['PATH'].split(':').collect{|p| File.expand_path p}
-  [f.bin, f.sbin].each do |bin|
-    if bin.directory?
-      rootbin = (HOMEBREW_PREFIX+bin.basename).to_s
-      bin = File.expand_path bin
-      unless paths.include? rootbin
-        opoo "#{rootbin} is not in your PATH"
-        puts "You can amend this by altering your ~/.bashrc file"
-        show_summary_heading = true
-      end
-    end
-  end
-
   if f.keg_only?
     ohai 'Caveats', text_for_keg_only_formula(f)
     show_summary_heading = true
   else
+    # warn the user if stuff was installed outside of their PATH
+    paths = ENV['PATH'].split(':').collect{|p| File.expand_path p}
+    [f.bin, f.sbin].each do |bin|
+      if bin.directory?
+        rootbin = (HOMEBREW_PREFIX+bin.basename).to_s
+        bin = File.expand_path bin
+        unless paths.include? rootbin
+          opoo "#{rootbin} is not in your PATH"
+          puts "You can amend this by altering your ~/.bashrc file"
+          show_summary_heading = true
+        end
+      end
+    end
+
+    # Check for man pages that aren't in share/man
+    if (f.prefix+'man').exist?
+      opoo 'A top-level "man" folder was found.'
+      puts "Homebrew requires that man pages live under share."
+      puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
+    end
+
+    # Check for info pages that aren't in share/info
+    if (f.prefix+'info').exist?
+      opoo 'A top-level "info" folder was found.'
+      puts "Homebrew suggests that info pages live under share."
+      puts 'This can often be fixed by passing "--infodir=#{info}" to configure.'
+    end
+
+    # Check for Jars in lib
+    if File.exist?(f.lib)
+      unless f.lib.children.select{|g| g.to_s =~ /\.jar$/}.empty?
+        opoo 'JARs were installed to "lib".'
+        puts "Installing JARs to \"lib\" can cause conflicts between packages."
+        puts "For Java software, it is typically better for the formula to"
+        puts "install to \"libexec\" and then symlink or wrap binaries into \"bin\"."
+        puts "See \"activemq\", \"jruby\", etc. for examples."
+      end
+    end
+
+    # link from Cellar to Prefix
     begin
       Keg.new(f.prefix).link
     rescue Exception => e
       onoe "The linking step did not complete successfully"
       puts "The package built, but is not symlinked into #{HOMEBREW_PREFIX}"
       puts "You can try again using `brew link #{f.name}'"
-      ohai e, e.backtrace if ARGV.debug?
+      if ARGV.debug?
+        ohai e, e.backtrace
+      else
+        onoe e
+      end
       show_summary_heading = true
     end
   end

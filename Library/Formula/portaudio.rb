@@ -6,7 +6,7 @@ class Portaudio <Formula
   md5 'd2943e4469834b25afe62cc51adc025f'
 
   def install
-    ENV.gcc_4_2
+    fails_with_llvm
 
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
 
