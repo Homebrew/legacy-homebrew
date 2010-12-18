@@ -6,13 +6,32 @@ class Graphviz <Formula
   homepage 'http://graphviz.org/'
 
   depends_on 'pkg-config' => :build
+  depends_on 'pango'
 
   def install
     ENV.x11
     # Various language bindings fail with 32/64 issues.
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--disable-quartz",
+                          "--with-codegens",
+                          "--with-x",
+                          "--without-devil",
+                          "--without-smyrna",
+                          "--with-digcola",
+                          "--with-ipsepcola",
+                          "--without-rsvg",
+                          "--with-pangocairo",
+                          "--without-glitz",
+                          "--with-freetype2",
+                          "--with-fontconfig",
+                          "--without-gdk-pixbuf",
+                          "--without-gtk",
+                          "--without-gtkgl",
+                          "--without-gtkglext",
+                          "--without-glade",
+                          "--without-gnomeui",
+                          "--without-ming",
+                          "--without-quartz",
                           "--disable-java",
                           "--disable-ocaml",
                           "--disable-perl",
