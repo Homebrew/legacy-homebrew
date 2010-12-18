@@ -1,9 +1,9 @@
 require 'formula'
 
 class Nspr <Formula
-  url 'http://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.8.4/src/nspr-4.8.4.tar.gz'
+  url 'http://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.8.6/src/nspr-4.8.6.tar.gz'
   homepage 'http://www.mozilla.org/projects/nspr/'
-  md5 'a85bdbe1eb646aa32c785a37d8e3a2f5'
+  md5 '592c275728c29d193fdba8009165990b'
 
   def install
     ENV.deparallelize
