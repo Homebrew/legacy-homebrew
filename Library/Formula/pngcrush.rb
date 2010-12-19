@@ -2,8 +2,8 @@ require 'formula'
 
 class Pngcrush <Formula
   homepage 'http://pmt.sourceforge.net/pngcrush/'
-  url 'http://downloads.sourceforge.net/project/pmt/pngcrush/00-1.7.12/pngcrush-1.7.12.tar.bz2'
-  md5 '16d2eab491a13c1bc32d763e3d21e85b'
+  url 'http://downloads.sourceforge.net/project/pmt/pngcrush/00-1.7.13/pngcrush-1.7.13.tar.bz2'
+  md5 'c0816dfc9318d7325008608d321a9228'
 
   def install
     # use our CFLAGS, LDFLAGS, CC, and LD
