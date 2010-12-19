@@ -71,8 +71,7 @@ class Imagemagick <Formula
              "--disable-dependency-tracking",
              "--enable-shared",
              "--disable-static",
-             "--with-modules",
-             "--without-magick-plus-plus" ]
+             "--with-modules" ]
 
     args << "--disable-openmp" if MACOS_VERSION < 10.6 or disable_openmp?
     args << "--without-gslib" unless ghostscript_srsly?
