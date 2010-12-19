@@ -2,6 +2,7 @@ require 'formula'
 
 class CouchdbLucene <Formula
   url 'https://github.com/rnewson/couchdb-lucene/tarball/v0.5.3'
+  head 'git://github.com/rnewson/couchdb-lucene.git'
   homepage 'https://github.com/rnewson/couchdb-lucene'
   md5 '1b9be17eb59b6b2839e50eb222bc7e7e'
 
@@ -13,9 +14,14 @@ class CouchdbLucene <Formula
     # has been integrated with a local couchdb instance. Not sure if there's a
     # way to only disable the integration test.
     system "mvn", "-DskipTests=true"
-
-    system "tar -xzf target/couchdb-lucene-#{version}-dist.tar.gz"
-    system "mv couchdb-lucene-#{version}/* #{prefix}"
+    if ARGV.build_head?
+      ohai   "Installing HEAD (0.6-SNAPSHOT)"
+      system "tar -xzf target/couchdb-lucene-0.6-SNAPSHOT-dist.tar.gz"
+      system "mv couchdb-lucene-0.6-SNAPSHOT/* #{prefix}"
+    else
+      system "tar -xzf target/couchdb-lucene-#{version}-dist.tar.gz"
+      system "mv couchdb-lucene-#{version}/* #{prefix}"
+    end
 
     (etc + "couchdb/local.d/couchdb-lucene.ini").write ini_file
     (prefix + "couchdb-lucene.plist").write plist_file
