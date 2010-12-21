@@ -14,8 +14,12 @@ class Rubinius < Formula
     # Let Rubinius define its own flags; messing with these causes build breaks.
     %w{CC CXX LD CFLAGS CXXFLAGS CPPFLAGS LDFLAGS}.each { |e| ENV.delete(e) }
 
+    # Set to stop Rubinius messing with our prefix.
+    ENV["RELEASE"] = "1"
+
     system "/usr/bin/ruby", "./configure",
                           "--skip-system", # download and use the prebuilt LLVM
+                          "--bindir", bin,
                           "--prefix", prefix,
                           "--includedir", "#{include}/rubinius",
                           "--libdir", lib,
