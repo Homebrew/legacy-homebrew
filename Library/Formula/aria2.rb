@@ -1,8 +1,8 @@
 require 'formula'
 
 class Aria2 <Formula
-  url 'http://downloads.sourceforge.net/project/aria2/stable/aria2-1.10.6/aria2-1.10.6.tar.bz2'
-  md5 '34029f86d9355872cf4b86267d3513c7'
+  url 'http://downloads.sourceforge.net/project/aria2/stable/aria2-1.10.8/aria2-1.10.8.tar.bz2'
+  md5 'cffc58c796e51cb4fea1a02deee2a750'
   homepage 'http://aria2.sourceforge.net/'
 
   def install
