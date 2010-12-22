@@ -20,7 +20,7 @@ def coreutils_aliases
     s += "alias #{g}=\"$brew_prefix/bin/g#{g}\"\n"
   end
 
-  s += "alias '['=\"$brew_prefix/bin/g[\"\n"
+  s += "alias '['=\"$brew_prefix/bin/g\\[\"\n"
 
   return s
 end
