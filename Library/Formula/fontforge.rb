@@ -9,6 +9,7 @@ class Fontforge <Formula
   depends_on 'gettext'
   depends_on 'pango'
   depends_on 'potrace'
+  depends_on 'libpng'
 
   def install
     ENV.x11
