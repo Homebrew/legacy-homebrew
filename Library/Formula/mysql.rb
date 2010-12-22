@@ -2,8 +2,8 @@ require 'formula'
 
 class Mysql <Formula
   homepage 'http://dev.mysql.com/doc/refman/5.1/en/'
-  url 'http://mysql.mirrors.pair.com/Downloads/MySQL-5.1/mysql-5.1.53.tar.gz'
-  md5 'e5e7c5b0b5c382489e6a66778703bc46'
+  url 'http://mysql.mirrors.pair.com/Downloads/MySQL-5.1/mysql-5.1.54.tar.gz'
+  md5 '2a0f45a2f8b5a043b95ce7575796a30b'
 
   depends_on 'readline'
 
@@ -45,7 +45,8 @@ class Mysql <Formula
       "--enable-assembler",
       "--enable-thread-safe-client",
       "--enable-local-infile",
-      "--enable-shared"]
+      "--enable-shared",
+      "--with-partition"]
 
     configure_args << "--without-server" if ARGV.include? '--client-only'
 

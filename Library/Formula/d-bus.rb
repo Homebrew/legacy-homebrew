@@ -15,7 +15,8 @@ class DBus <Formula
     # See http://bugs.freedesktop.org/show_bug.cgi?id=14259
     [ 'http://cgit.freedesktop.org/dbus/dbus/patch/?id=5125fc165454e81849a5b20c1e75b4f74bdbcd2c',
       'http://cgit.freedesktop.org/dbus/dbus/patch/?id=eb66c0a9c001ea08793b38470d12611ffaafa436',
-      'http://cgit.freedesktop.org/dbus/dbus/patch/?id=f1b9aac417d8fb716d6ed19128fe429e8a41adba' ]
+      'http://cgit.freedesktop.org/dbus/dbus/patch/?id=f1b9aac417d8fb716d6ed19128fe429e8a41adba',
+      'http://cgit.freedesktop.org/dbus/dbus/patch/?id=5232faad4039041ee178287eb528d8db13aa0f66' ]
   end
 
   def install
