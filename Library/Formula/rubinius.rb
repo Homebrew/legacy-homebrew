@@ -14,6 +14,9 @@ class Rubinius < Formula
     # Let Rubinius define its own flags; messing with these causes build breaks.
     %w{CC CXX LD CFLAGS CXXFLAGS CPPFLAGS LDFLAGS}.each { |e| ENV.delete(e) }
 
+    # Unset RUBYLIB to configure Rubinius
+    ENV.delete("RUBYLIB")
+
     # Set to stop Rubinius messing with our prefix.
     ENV["RELEASE"] = "1"
 
