@@ -29,6 +29,9 @@ class Rubinius < Formula
     ohai "config.rb", File.open('config.rb').to_a if ARGV.debug? or ARGV.verbose?
 
     system "/usr/bin/ruby", "-S", "rake", "install"
+
+    # Remove conflicting command aliases
+    bin.children.select(&:symlink?).each(&:unlink)
   end
 
   def caveats; <<-EOS.undent
