@@ -9,6 +9,8 @@ class Djview4 <Formula
   depends_on 'qt'
 
   def install
+    # Added bug upstream to fix this:
+    # https://sourceforge.net/tracker/?func=detail&aid=3146507&group_id=32953&atid=406583
     inreplace "Makefile.in" do |s|
        s.gsub! '${INSTALL_PROGRAM} src/djview ${DESTDIR}${bindir}/djview4', '/bin/cp -r src/djview.app ${DESTDIR}${prefix}'
     end
