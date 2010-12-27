@@ -20,14 +20,14 @@ def coreutils_aliases
     s += "alias #{g}=\"$brew_prefix/bin/g#{g}\"\n"
   end
 
-  s += "alias '['=\"$brew_prefix/bin/g[\"\n"
+  s += "alias '['=\"$brew_prefix/bin/g\\[\"\n"
 
   return s
 end
 
 class Coreutils <Formula
-  url "http://ftp.gnu.org/gnu/coreutils/coreutils-8.5.tar.gz"
-  md5 'c1ffe586d001e87d66cd80c4536ee823'
+  url "http://ftp.gnu.org/gnu/coreutils/coreutils-8.7.tar.gz"
+  md5 '3c1ae9531159447083ae8f25ae554b81'
   homepage 'http://www.gnu.org/software/coreutils'
 
   def options

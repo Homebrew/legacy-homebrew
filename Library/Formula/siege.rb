@@ -1,21 +1,18 @@
 require 'formula'
 
 class Siege <Formula
-  url "ftp://ftp.joedog.org/pub/siege/siege-2.69.tar.gz"
+  url "ftp://ftp.joedog.org/pub/siege/siege-2.70.tar.gz"
   homepage 'http://www.joedog.org/index/siege-home'
-  sha1 'f0514eefe4e024ee059b09ab50903bbced79f3b9'
-
-  def etc
-    # NOTE this is because line 101 in init.c in the source code of Siege
-    # ignores the --sysconfdir setting, and instead looks here.
-    # So coupled with the fact the etc directory location is a little up in the
-    # air currently. This seems like the best solution for now.
-    prefix+'etc'
-  end
+  sha1 'ee0a0c3a9e6559cf8cbaf717649f6684b0d9643a'
 
   def install
-    etc.mkpath
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--sysconfdir=#{etc}", "--with-ssl"
+    #to avoid unnecessary warning due to hardcoded path
+    (prefix+'etc').mkdir
+    system  "./configure",
+            "--prefix=#{prefix}",
+            "--mandir=#{man}",
+            "--localstatedir=#{var}",
+            "--with-ssl"
     system "make install"
   end
 
