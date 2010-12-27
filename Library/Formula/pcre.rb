@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pcre <Formula
-  url 'ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.10.tar.bz2'
+  url 'ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.11.tar.bz2'
   homepage 'http://www.pcre.org/'
-  md5 '780867a700e9d4e4b9cb47aa5453e4b2'
+  md5 'ef907b8792ec7f90f0dcd773848f0b3b'
 
   def options
     [["--universal", "Build a universal binary."]]

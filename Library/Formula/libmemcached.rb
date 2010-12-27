@@ -8,6 +8,10 @@ class Libmemcached <Formula
   depends_on 'memcached'
 
   def install
+    if MACOS_VERSION < 10.6
+      ENV.append_to_cflags "-undefined dynamic_lookup"
+    end
+
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end

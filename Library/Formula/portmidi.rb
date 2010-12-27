@@ -15,7 +15,7 @@ class Portmidi <Formula
   end
 
   def install
-    # PATCH for Snow Leopard, see http://github.com/halfbyte/portmidi
+    # PATCH for Snow Leopard, see https://github.com/halfbyte/portmidi
     # hopefully not needed anymymore in the next version of portmidi
     architectures = archs_for_command('/bin/sh').join(' ')
     inreplace 'CMakeLists.txt',

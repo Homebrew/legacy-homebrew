@@ -9,7 +9,7 @@ class Libdlna <Formula
 
   def patches
     # fixes ffmpeg locations
-    "http://gist.github.com/raw/356431/fbddfeee80d9224f6c67886b119fbd813f3c0ffa/libdlna.patch"
+    "https://gist.github.com/raw/356431/fbddfeee80d9224f6c67886b119fbd813f3c0ffa/libdlna.patch"
   end
 
   def install
