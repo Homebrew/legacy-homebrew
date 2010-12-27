@@ -29,6 +29,11 @@ class Opencv <Formula
     system "make install"
   end
 
+  def patches
+      # fixes bug 731, link against highgui fails
+      DATA
+  end
+
   def caveats; <<-EOS.undent
     The OpenCV Python module will not work until you edit your PYTHONPATH like so:
       export PYTHONPATH="#{HOMEBREW_PREFIX}/lib/python2.6/site-packages/:$PYTHONPATH"
@@ -37,3 +42,23 @@ class Opencv <Formula
     EOS
   end
 end
+
+
+__END__
+diff --git a/modules/highgui/src/cap.cpp b/modules/highgui/src/cap.cpp
+index 63e9052..6c2b082 100644
+--- a/modules/highgui/src/cap.cpp
++++ b/modules/highgui/src/cap.cpp
+@@ -52,10 +52,10 @@
+ namespace cv
+ {
+ 
+-template<> inline void Ptr<CvCapture>::delete_obj()
++template<> void Ptr<CvCapture>::delete_obj()
+ { cvReleaseCapture(&obj); }
+ 
+-template<> inline void Ptr<CvVideoWriter>::delete_obj()
++template<> void Ptr<CvVideoWriter>::delete_obj()
+ { cvReleaseVideoWriter(&obj); }
+ 
+ }
