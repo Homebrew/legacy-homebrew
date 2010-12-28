@@ -14,6 +14,9 @@ class Rubinius < Formula
     # Let Rubinius define its own flags; messing with these causes build breaks.
     %w{CC CXX LD CFLAGS CXXFLAGS CPPFLAGS LDFLAGS}.each { |e| ENV.delete(e) }
 
+    # Unset RUBYLIB to configure Rubinius
+    ENV.delete("RUBYLIB")
+
     # Set to stop Rubinius messing with our prefix.
     ENV["RELEASE"] = "1"
 
@@ -29,6 +32,9 @@ class Rubinius < Formula
     ohai "config.rb", File.open('config.rb').to_a if ARGV.debug? or ARGV.verbose?
 
     system "/usr/bin/ruby", "-S", "rake", "install"
+
+    # Remove conflicting command aliases
+    bin.children.select(&:symlink?).each(&:unlink)
   end
 
   def caveats; <<-EOS.undent

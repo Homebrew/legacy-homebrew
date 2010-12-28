@@ -1,7 +1,7 @@
 require 'formula'
 
 class Ranger <Formula
-  url 'http://nongnu.org/ranger/ranger-stable.tar.gz'
+  url 'http://download.savannah.gnu.org/releases/ranger/releases/ranger-1.2.3.tar.gz'
   version '1.2.3'
   homepage 'http://ranger.nongnu.org/'
   md5 '11fda1144d85532786ddc59221147884'
