@@ -1,8 +1,8 @@
 require 'formula'
 
 class Sip <Formula
-  url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.11.2.tar.gz'
-  md5 '06b12c0b36bb31b4d30185d7ab512a69'
+  url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.12.tar.gz'
+  md5 'a9fa74162d65a813aa35a452f8e6ec36'
   head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
 
@@ -27,6 +27,8 @@ class Sip <Formula
     EOS
   end
 end
+
+
 __END__
 Patch to allow the SIP build.py script to generate a reasonable version number
 without the .hg directory from the Mercurial repository.
