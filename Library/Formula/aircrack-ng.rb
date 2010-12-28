@@ -14,6 +14,11 @@ class AircrackNg <Formula
       ENV.append compiler_flag, "-arch i386"
     end
 
+    # Fix incorrect OUI url
+    inreplace "scripts/airodump-ng-oui-update",
+      "http://standards.ieee.org/regauth/oui/oui.txt",
+      "http://standards.ieee.org/develop/regauth/oui/oui.txt"
+
     system "make"
     system "make", "prefix=#{prefix}", "mandir=#{man1}", "install"
   end

@@ -48,9 +48,9 @@ def as_framework?
 end
 
 class Python <Formula
-  url 'http://www.python.org/ftp/python/2.7/Python-2.7.tar.bz2'
+  url 'http://www.python.org/ftp/python/2.7.1/Python-2.7.1.tar.bz2'
   homepage 'http://www.python.org/'
-  md5 '0e8c9ec32abf5b732bea7d91b38c3339'
+  md5 'aa27bc25725137ba155910bd8e5ddc4f'
 
   depends_on 'readline' => :optional  # Prefer over OS X's libedit
   depends_on 'sqlite'   => :optional  # Prefer over OS X's older version
@@ -73,8 +73,18 @@ class Python <Formula
       # If we're installed or installing as a Framework, then use that location.
       return prefix+"Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages"
     else
-      # Otherwise, use just the lib path.
+      # Otherwise use just 'lib'
       return lib+"python2.7/site-packages"
+    end
+  end
+
+  def exec_prefix
+    if as_framework?
+      # If we're installed or installing as a Framework, then use that location.
+      return prefix+"Frameworks/Python.framework/Versions/2.7/bin"
+    else
+      # Otherwise just use 'bin'
+      return bin
     end
   end
 
@@ -149,7 +159,7 @@ class Python <Formula
       If you install Python packages via pip, binaries will be installed under
       Python's cellar but not automatically linked into the Homebrew prefix.
       You may want to add Python's bin folder to your PATH as well:
-        #{bin}
+        #{exec_prefix}
     EOS
 
     s = site_caveats+general_caveats

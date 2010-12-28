@@ -1,5 +1,5 @@
 FORMULA_META_FILES = %w[README README.md ChangeLog COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
-PLEASE_REPORT_BUG = "#{Tty.white}Please report this bug at #{Tty.em}http://github.com/mxcl/homebrew/issues#{Tty.reset}"
+PLEASE_REPORT_BUG = "#{Tty.white}Please follow the instructions to report this bug at #{Tty.em}https://github.com/mxcl/homebrew/wiki/new-issue#{Tty.reset}"
 
 def check_for_blacklisted_formula names
   return if ARGV.force?
@@ -198,6 +198,7 @@ def info f
   if f.prefix.parent.directory?
     kids=f.prefix.parent.children
     kids.each do |keg|
+      next if keg.basename.to_s == '.DS_Store'
       print "#{keg} (#{keg.abv})"
       print " *" if f.installed_prefix == keg and kids.length > 1
       puts
@@ -499,7 +500,7 @@ class PrettyListing
           else
             print_dir pn
           end
-        elsif not FORMULA_META_FILES.include? pn.basename.to_s
+        elsif not (FORMULA_META_FILES.include? pn.basename.to_s or pn.basename.to_s == '.DS_Store')
           puts pn
         end
       end
@@ -519,7 +520,7 @@ private
         puts pn
         other = 'other '
       else
-        remaining_root_files << pn 
+        remaining_root_files << pn unless pn.basename.to_s == '.DS_Store'
       end
     end
 
@@ -537,7 +538,7 @@ private
     when 0
       # noop
     when 1
-      puts *files
+      puts files
     else
       puts "#{root}/ (#{files.length} #{other}files)"
     end

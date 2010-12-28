@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pip <Formula
-  url 'http://pypi.python.org/packages/source/p/pip/pip-0.8.1.tar.gz'
+  url 'http://pypi.python.org/packages/source/p/pip/pip-0.8.2.tar.gz'
   homepage 'http://pip.openplans.org/'
-  md5 '5d40614774781b118dd3f10c0d038cbc'
+  md5 'df1eca0abe7643d92b5222240bed15f6'
 
   depends_on 'distribute'
 

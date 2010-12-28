@@ -2,7 +2,7 @@ require 'formula'
 
 class Pincaster <Formula
   url 'http://download.pureftpd.org/pincaster/releases/pincaster-0.5.tar.gz'
-  homepage 'http://github.com/jedisct1/Pincaster'
+  homepage 'https://github.com/jedisct1/Pincaster'
   md5 'd2cba33470c1d23d381a2003b3986efe'
 
   def install

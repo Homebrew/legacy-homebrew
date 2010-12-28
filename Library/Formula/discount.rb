@@ -1,9 +1,9 @@
 require 'formula'
 
 class Discount <Formula
-  url 'http://github.com/Orc/discount/tarball/v2.0'
+  url 'https://github.com/Orc/discount/tarball/v2.0.3'
   homepage 'http://www.pell.portland.or.us/~orc/Code/markdown/'
-  md5 'd911db94ba31a292940a80fdf0982302'
+  md5 '80e304710fa8806d48770342853f35b6'
 
   def install
     system "./configure.sh", "--prefix=#{prefix}", "--mandir=#{man}",
