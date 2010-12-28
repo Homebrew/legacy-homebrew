@@ -1,10 +1,11 @@
 require 'formula'
 
 class Opencv <Formula
-  url 'http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/2.2/OpenCV-2.2.0.tar.bz2'
-  version "2.2"
+  # use 2.2.1-pre since some critical bugs are fixed:
+  # https://code.ros.org/trac/opencv/log/branches/2.2/opencv
+  url 'https://code.ros.org/svn/opencv/branches/2.2/opencv', :using => :svn, :revision => '4437'
+  version "2.2.1-svn4437"
   homepage 'http://opencv.willowgarage.com/wiki/'
-  md5 '122c9ac793a46854ef2819fedbbd6b1b'
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
@@ -29,11 +30,6 @@ class Opencv <Formula
     system "make install"
   end
 
-  def patches
-      # fixes bug 731, link against highgui fails
-      DATA
-  end
-
   def caveats; <<-EOS.undent
     The OpenCV Python module will not work until you edit your PYTHONPATH like so:
       export PYTHONPATH="#{HOMEBREW_PREFIX}/lib/python2.6/site-packages/:$PYTHONPATH"
@@ -42,23 +38,3 @@ class Opencv <Formula
     EOS
   end
 end
-
-
-__END__
-diff --git a/modules/highgui/src/cap.cpp b/modules/highgui/src/cap.cpp
-index 63e9052..6c2b082 100644
---- a/modules/highgui/src/cap.cpp
-+++ b/modules/highgui/src/cap.cpp
-@@ -52,10 +52,10 @@
- namespace cv
- {
- 
--template<> inline void Ptr<CvCapture>::delete_obj()
-+template<> void Ptr<CvCapture>::delete_obj()
- { cvReleaseCapture(&obj); }
- 
--template<> inline void Ptr<CvVideoWriter>::delete_obj()
-+template<> void Ptr<CvVideoWriter>::delete_obj()
- { cvReleaseVideoWriter(&obj); }
- 
- }
