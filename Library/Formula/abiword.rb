@@ -14,6 +14,7 @@ class Abiword <Formula
   depends_on 'pango'
   depends_on 'imagemagick'
   depends_on 'libpng'
+  depends_on 'fontconfig'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
