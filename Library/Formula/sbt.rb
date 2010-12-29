@@ -9,7 +9,10 @@ class Sbt <Formula
   def install
     (bin+'sbt').write <<-EOS
 #!/bin/sh
-java -Xmx512M -jar #{libexec}/#{JAR} "$@"
+if test -f ~/.sbtconfig; then
+  . ~/.sbtconfig
+fi
+exec java -Xmx512M ${SBT_OPTS} -jar #{libexec}/#{JAR} "$@"
 EOS
 
     libexec.install Dir['*']
