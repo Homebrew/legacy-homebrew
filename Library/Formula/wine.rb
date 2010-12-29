@@ -2,8 +2,8 @@ require 'formula'
 
 class Wine <Formula
   if ARGV.flag? '--devel'
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.9.tar.bz2'
-    sha1 '68f2172b3cd7674e0f7bb746eae065a7b542db9f'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.10.tar.bz2'
+    sha1 '90de64bb15cdb83aac3af9258a95730a114030ed'
   else
     url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.2.tar.bz2'
     sha1 '8b37c8e0230dd6a665d310054f4e36dcbdab7330'
@@ -13,13 +13,15 @@ class Wine <Formula
 
   depends_on 'jpeg'
   depends_on 'libicns'
+  depends_on 'gnutls'
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
-  # configure: libgnutls, libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
+  # configure: libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
 
-  # This is required for using 3D applications.
+  # Wine loads many libraries lazily using dlopen calls, so it needs these paths
+  # to be searched by dyld.
   def wine_wrapper; <<-EOS
 #!/bin/sh
-DYLD_FALLBACK_LIBRARY_PATH="/usr/X11/lib" "#{bin}/wine.bin" "$@"
+DYLD_FALLBACK_LIBRARY_PATH="/usr/X11/lib:#{HOMEBREW_PREFIX+'lib'}" "#{bin}/wine.bin" "$@"
 EOS
   end
 
