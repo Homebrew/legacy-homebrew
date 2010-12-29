@@ -1,6 +1,6 @@
 require 'formula'
 
-class Fmscripts <Formula
+class Fmdiff <Formula
   homepage 'http://www.defraine.net/~brunod/fmdiff/'
   url 'http://www.defraine.net/~brunod/fmdiff/fmscripts-20100225.tar.gz'
   md5 'e47366579126d95a8d36b60a9b55127b'
