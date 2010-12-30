@@ -23,7 +23,7 @@ HOMEBREW_REPOSITORY.cd do
     end
 
     # GitHub provides commits'/pull-requests' raw patches using this URL.
-    url = arg + '.patch'
+    url = urlmatch[0] + '.patch'
 
     # The cache directory seems like a good place to put patches.
     patchpath = (HOMEBREW_CACHE+File.basename(url))
