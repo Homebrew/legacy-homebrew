@@ -6,13 +6,10 @@ class Openconnect <Formula
   md5 'e3c7605fed128efe39c2eb9400af6765'
 
   def install
-	inreplace 'Makefile' do |s|
-	  s.gsub! '$(DESTDIR)/usr/bin', '$(DESTDIR)/bin'
-	  s.gsub! '$(DESTDIR)/usr/libexec', '$(DESTDIR)/libexec'
-	end
-    system "make openconnect"
-	ENV['DESTDIR']="#{prefix}"
-	system "make install"
-	#bin.install 'openconnect'
+    inreplace 'Makefile' do |s|
+      s.gsub! '$(DESTDIR)/usr/bin', "$(DESTDIR)#{bin}"
+      s.gsub! '$(DESTDIR)/usr/libexec', "$(DESTDIR)#{libexec}"
+    end
+    system "make install"
   end
 end
