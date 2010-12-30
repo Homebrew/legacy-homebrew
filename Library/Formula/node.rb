@@ -27,4 +27,8 @@ class Node <Formula
     system "./configure", *args
     system "make install"
   end
+
+  def caveats
+    "Please add #{HOMEBREW_PREFIX}/lib/node to your NODE_PATH environment variable to have node libraries picked up."
+  end
 end

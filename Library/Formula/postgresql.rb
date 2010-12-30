@@ -85,7 +85,7 @@ class Postgresql <Formula
 
   def caveats
     s = <<-EOS
-If builds of Postgresl 9 are failing and you have version 8.x installed,
+If builds of PostgreSQL 9 are failing and you have version 8.x installed,
 you may need to remove the previous version first. See:
   https://github.com/mxcl/homebrew/issues/issue/2510
 
