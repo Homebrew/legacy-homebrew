@@ -586,6 +586,20 @@ def check_for_other_vars
   end
 end
 
+def check_for_other_frameworks
+  # Other frameworks that are known to cause problems when present
+  if File.exist? "/Library/Frameworks/expat.framework"
+    puts <<-EOS.undent
+      /Library/Frameworks/expat.framework detected
+
+      This will be picked up by Cmake's build system and likey cause the
+      build to fail, trying to link to a 32-bit version of expat.
+      You may need to move this file out of the way to compile Cmake.
+
+    EOS
+  end
+end
+
 module Homebrew extend self
   def doctor
     read, write = IO.pipe
@@ -620,6 +634,7 @@ module Homebrew extend self
       check_for_git
       check_for_autoconf
       check_for_linked_kegonly_brews
+      check_for_other_frameworks
 
       exit! 0
     else
