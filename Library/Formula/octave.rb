@@ -51,6 +51,7 @@ class Octave <Formula
                           "--without-cxsparse",
                           "--without-arpack"
 
+    system "make"
     system "make install"
   end
 end
