@@ -14,8 +14,12 @@ class Octave <Formula
   depends_on 'gfortran'
 
   def patches
-    # A bug in lo-specfun.cc prevents it from compiling
-    # apply patch from Macports
+    # patch to configure:
+    # configure would link X even if --without-x is given leading to a 
+    # failure during compilation
+    # patch lo-specfun.cc:
+    # lo-specfun does not compile without this patch (add missing header)
+    # both patches from Macports
     DATA
   end
 
@@ -52,6 +56,20 @@ class Octave <Formula
 end
 
 __END__
+
+diff --git a/configure b/configure
+index ccc1f7f..2174ade 100755
+--- a/configure
++++ b/configure
+@@ -6848,7 +6848,7 @@ else
+ $as_echo "libraries $x_libraries, headers $x_includes" >&6; }
+ fi
+ 
+-if test "$have_x"; then
++if test "$have_x" == yes; then
+ 
+ $as_echo "#define HAVE_X_WINDOWS 1" >>confdefs.h
+ 
 diff --git a/liboctave/lo-specfun.cc b/liboctave/lo-specfun.cc
 index 6f16d2b..78d9236 100644
 --- a/liboctave/lo-specfun.cc
