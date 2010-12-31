@@ -1,8 +1,8 @@
 require 'formula'
 
 class Gettext <Formula
-  url 'http://ftp.gnu.org/pub/gnu/gettext/gettext-0.17.tar.gz'
-  md5 '58a2bc6d39c0ba57823034d55d65d606'
+  url 'http://ftp.gnu.org/pub/gnu/gettext/gettext-0.18.1.1.tar.gz'
+  sha1 '5009deb02f67fc3c59c8ce6b82408d1d35d4e38f'
   homepage 'http://www.gnu.org/software/gettext/'
 
   keg_only "OS X provides the BSD gettext library and some software gets confused if both are in the library path."
