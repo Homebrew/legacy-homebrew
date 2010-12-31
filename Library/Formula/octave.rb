@@ -7,14 +7,15 @@ class Octave <Formula
 
   depends_on 'gnu-sed'
   #depends_on 'gawk'
-  depends_on 'readline'
+  #depends_on 'readline'
   #depends_on 'hdf5'
   #depends_on 'fftw'
   #depends_on 'curl'
   depends_on 'gfortran'
 
   def patches
-    # comment
+    # A bug in lo-specfun.cc prevents it from compiling
+    # apply patch from Macports
     DATA
   end
 
@@ -45,14 +46,11 @@ class Octave <Formula
     ENV["F77"] = "#{HOMEBREW_PREFIX}/bin/gfortran"
     ENV["FFLAGS"] = ENV["CFLAGS"]
     # append -ff2c to FFLAGS if using blas
-    # There is a bug in lo-specfun.cc which prevents from compiling, 
-    # a patch is available from Macports
     system "make install"
   end
 end
 
 __END__
-
 --- liboctave/lo-specfun.cc
 +++ liboctave/lo-specfun.cc
 @@ -25,6 +25,12 @@
