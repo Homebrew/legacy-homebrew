@@ -24,7 +24,6 @@ class Octave <Formula
   end
 
   def install
-    ENV.deparallelize
     ENV["F77"] = "#{HOMEBREW_PREFIX}/bin/gfortran"
     ENV["FFLAGS"] = ENV["CFLAGS"]
     # configure asks for -ff2c to include blas
