@@ -54,7 +54,7 @@ class Formula
     # Don't resolve paths or URLs
     return name if name.include?("/")
 
-    aka = HOMEBREW_REPOSITORY/:Library/:Aliases/name
+    aka = HOMEBREW_REPOSITORY+"Library/Aliases"+name
     if aka.file?
       aka.realpath.basename('.rb').to_s
     else

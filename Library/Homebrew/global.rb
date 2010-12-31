@@ -27,10 +27,10 @@ HOMEBREW_REPOSITORY = Pathname.new(HOMEBREW_BREW_FILE).realpath.dirname.parent #
 
 # Where we store built products; /usr/local/Cellar if it exists,
 # otherwise a Cellar relative to the Repository.
-HOMEBREW_CELLAR = if (HOMEBREW_PREFIX/"Cellar").exist?
-  HOMEBREW_PREFIX/"Cellar"
+HOMEBREW_CELLAR = if (HOMEBREW_PREFIX+"Cellar").exist?
+  HOMEBREW_PREFIX+"Cellar"
 else
-  HOMEBREW_REPOSITORY/"Cellar"
+  HOMEBREW_REPOSITORY+"Cellar"
 end
 
 MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
