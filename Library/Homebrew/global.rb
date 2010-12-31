@@ -7,7 +7,7 @@ require 'compatibility'
 
 ARGV.extend(HomebrewArgvExtension)
 
-HOMEBREW_VERSION = '0.7.1'
+HOMEBREW_VERSION = '0.8'
 HOMEBREW_WWW = 'http://mxcl.github.com/homebrew/'
 
 HOMEBREW_CACHE = if Process.uid == 0
