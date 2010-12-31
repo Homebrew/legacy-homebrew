@@ -39,7 +39,7 @@ module Homebrew extend self
       # Filter out aliases when the full name was also found
       results.reject do |alias_name|
         if aliases.include? alias_name
-          resolved_name = (HOMEBREW_REPOSITORY/"Library/Aliases"/alias_name).readlink.basename('.rb').to_s
+          resolved_name = (HOMEBREW_REPOSITORY+"Library/Aliases"+alias_name).readlink.basename('.rb').to_s
           results.include? resolved_name
         end
       end

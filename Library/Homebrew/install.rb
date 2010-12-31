@@ -167,7 +167,7 @@ def install f
     end
 
     # Check for man pages that aren't in share/man
-    if (f.prefix/:man).exist?
+    if (f.prefix+'man').exist?
       opoo 'A top-level "man" folder was found.'
       puts "Homebrew requires that man pages live under share."
       puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'

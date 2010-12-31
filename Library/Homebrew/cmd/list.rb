@@ -9,7 +9,7 @@ module Homebrew extend self
       if ARGV.named.empty?
         HOMEBREW_CELLAR.children.select{ |pn| pn.directory? }
       else
-        ARGV.named.map{ |n| HOMEBREW_CELLAR/n }.select{ |pn| pn.exist? }
+        ARGV.named.map{ |n| HOMEBREW_CELLAR+n }.select{ |pn| pn.exist? }
       end.each do |d|
         versions = d.children.select{ |pn| pn.directory? }.map{ |pn| pn.basename.to_s }
         puts "#{d.basename} #{versions*' '}"

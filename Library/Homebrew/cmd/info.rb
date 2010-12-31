@@ -74,7 +74,7 @@ module Homebrew extend self
 
   rescue FormulaUnavailableError
     # check for DIY installation
-    d = HOMEBREW_PREFIX/name
+    d = HOMEBREW_PREFIX+name
     if d.directory?
       ohai "DIY Installation"
       d.children.each{ |keg| puts "#{keg} (#{keg.abv})" }
