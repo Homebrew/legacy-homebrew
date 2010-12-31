@@ -17,4 +17,13 @@ EOS
 
     libexec.install Dir['*']
   end
+  
+  def caveats
+    <<-EOS.undent
+      You can use environment variable SBT_OPTS to pass additional Java VM options
+      when running SBT. For convenience, this can specified in ~/.sbtconfig.      
+      For example, SBT_OPTS="-XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=256M"
+    EOS
+  end
+
 end
