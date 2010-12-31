@@ -6,11 +6,7 @@ class Octave <Formula
   md5 '90c39fa9e241ad2e978bcee4682a2ba9'
 
   depends_on 'gnu-sed'
-  #depends_on 'gawk'
   depends_on 'readline'
-  #depends_on 'hdf5'
-  #depends_on 'fftw'
-  #depends_on 'curl'
   depends_on 'gfortran'
 
   def patches
