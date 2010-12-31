@@ -7,7 +7,7 @@ class Octave <Formula
 
   depends_on 'gnu-sed'
   #depends_on 'gawk'
-  #depends_on 'readline'
+  depends_on 'readline'
   #depends_on 'hdf5'
   #depends_on 'fftw'
   #depends_on 'curl'
@@ -20,6 +20,11 @@ class Octave <Formula
   end
 
   def install
+    ENV.deparallelize
+    ENV["F77"] = "#{HOMEBREW_PREFIX}/bin/gfortran"
+    ENV["FFLAGS"] = ENV["CFLAGS"]
+    # configure asks for -ff2c to include blas
+    ENV.append 'FFLAGS', "-ff2c"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-x",
@@ -42,18 +47,16 @@ class Octave <Formula
                           "--without-cxsparse",
                           "--without-arpack"
 
-    ENV.deparallelize
-    ENV["F77"] = "#{HOMEBREW_PREFIX}/bin/gfortran"
-    ENV["FFLAGS"] = ENV["CFLAGS"]
-    # append -ff2c to FFLAGS if using blas
     system "make install"
   end
 end
 
 __END__
---- liboctave/lo-specfun.cc
-+++ liboctave/lo-specfun.cc
-@@ -25,6 +25,12 @@
+diff --git a/liboctave/lo-specfun.cc b/liboctave/lo-specfun.cc
+index 6f16d2b..78d9236 100644
+--- a/liboctave/lo-specfun.cc
++++ b/liboctave/lo-specfun.cc
+@@ -25,6 +25,12 @@ along with Octave; see the file COPYING.  If not, see
  #include <config.h>
  #endif
  
@@ -66,3 +69,4 @@ __END__
  #include "Range.h"
  #include "CColVector.h"
  #include "CMatrix.h"
+
