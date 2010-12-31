@@ -299,8 +299,8 @@ class Formula
   end
 
   def self.caniconical_name name
-    formula_with_that_name = HOMEBREW_REPOSITORY/"Library/Formula/#{name}.rb"
-    possible_alias = HOMEBREW_REPOSITORY/"Library/Aliases"/name
+    formula_with_that_name = HOMEBREW_REPOSITORY+"Library/Formula/#{name}.rb"
+    possible_alias = HOMEBREW_REPOSITORY+"Library/Aliases"+name
     if name.include? "/"
       # Don't resolve paths or URLs
       name
@@ -365,7 +365,7 @@ class Formula
   end
 
   def self.path name
-    HOMEBREW_REPOSITORY/"Library/Formula/#{name.downcase}.rb"
+    HOMEBREW_REPOSITORY+"Library/Formula/#{name.downcase}.rb"
   end
 
   def deps
