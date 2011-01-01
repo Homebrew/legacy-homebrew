@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cairo <Formula
-  url 'http://cairographics.org/releases/cairo-1.8.10.tar.gz'
+  url 'http://cairographics.org/releases/cairo-1.10.0.tar.gz'
   homepage 'http://cairographics.org/'
-  md5 'b60a82f405f9400bbfdcf850b1728d25'
+  md5 '70a2ece66cf473d976e2db0f75bf199e'
 
   depends_on 'pkg-config' => :build
   depends_on 'libpng'
