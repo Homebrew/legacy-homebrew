@@ -18,4 +18,19 @@ class Cairo <Formula
                           "--with-x"
     system "make install"
   end
+  
+  def caveats; <<-EOS.undent
+    To get the python bindings using pip:
+       brew link cairo
+       pip install http://cairographics.org/releases/py2cairo-1.8.10.tar.gz
+      
+    To update your existing python bindings, first remove the old version(s)
+    from #{HOMEBREW_PREFIX}/Cellar/#{name}
+    leaving only #{prefix}
+    then run:
+       brew link cairo
+       pip uninstall pycairo
+       pip install http://cairographics.org/releases/py2cairo-1.8.10.tar.gz
+    EOS
+  end
 end
