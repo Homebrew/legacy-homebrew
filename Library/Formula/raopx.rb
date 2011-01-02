@@ -11,6 +11,14 @@ class Raopx <Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make && make install"
+    system "make"
+    system "make install"
+  end
+
+  def caveats; <<-EOS.undent
+    Soundflower (http://cycling74.com/products/soundflower/) should be installed to make this
+    really useful - Set 'Soundflower (2ch)' as default input and output device in
+    System Preferences.
+    EOS
   end
 end
