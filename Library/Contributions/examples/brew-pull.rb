@@ -38,7 +38,7 @@ HOMEBREW_REPOSITORY.cd do
     issue = urlmatch[2]
     if issue
       ohai "Patch closes issue ##{issue}"
-      message = `git log #{revision}.. --format=%B`
+      message = `git log HEAD^.. --format=%B`
       
       # If this is a pull request, append a close message.
       if !message.include? 'Closes #'
