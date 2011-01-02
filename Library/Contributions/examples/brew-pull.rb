@@ -9,8 +9,7 @@ if ARGV.include? '--install'
 end
 
 if ARGV.empty?
-  puts 'This command requires at least one URL argument'
-  exit 1
+  onoe 'This command requires at least one URL argument'
 end
 
 HOMEBREW_REPOSITORY.cd do
@@ -29,6 +28,9 @@ HOMEBREW_REPOSITORY.cd do
     patchpath = (HOMEBREW_CACHE+File.basename(url))
     curl url, '-o', patchpath
 
+    # Store current revision
+    revision = `git log -n1 --format=%H`.strip()
+
     # Makes sense to squash whitespace errors, we don't want them.
     ohai 'Applying patch'
     safe_system 'git', 'am', '--signoff', '--whitespace=fix', patchpath
@@ -36,7 +38,7 @@ HOMEBREW_REPOSITORY.cd do
     issue = urlmatch[2]
     if issue
       ohai "Patch closes issue ##{issue}"
-      message = `git log HEAD^..HEAD --format=%B`
+      message = `git log #{revision}.. --format=%B`
       
       # If this is a pull request, append a close message.
       if !message.include? 'Closes #'
@@ -48,16 +50,18 @@ HOMEBREW_REPOSITORY.cd do
     end
 
     ohai 'Patch changed:'
-    safe_system 'git', 'diff', 'HEAD^..HEAD', '--stat'
+    safe_system 'git', 'diff', "#{revision}..", '--stat'
 
     if install
-      status, filename = `git diff HEAD^..HEAD --name-status`.split()
-      # Don't try and do anything to removed files.
-      if (status == 'A' or status == 'M') and filename.include? '/Formula/'
-        formula = File.basename(filename, '.rb')
-        ohai "Installing #{formula}"
-        # Not sure if this is the best way to install?
-        safe_system 'brew', 'install', '--force', formula
+      `git diff #{revision}.. --name-status`.each_line do |line|
+        status, filename = line.split()
+        # Don't try and do anything to removed files.
+        if (status == 'A' or status == 'M') and filename.include? '/Formula/'
+          formula = File.basename(filename, '.rb')
+          ohai "Installing #{formula}"
+          # Not sure if this is the best way to install?
+          safe_system 'brew', 'install', '--force', formula
+        end
       end
     end
   end
