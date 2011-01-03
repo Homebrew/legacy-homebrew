@@ -228,7 +228,7 @@ to recognize `brew cmdname`.
 
 Some sample commands ship with Homebrew and are enabled by default.
 
-    $ ls `brew --repository`/Lirary/Contributes/examples
+    $ ls `brew --repository`/Library/Contributions/examples
 
 
 
