@@ -3,8 +3,8 @@ require 'hardware'
 
 class Postgresql <Formula
   homepage 'http://www.postgresql.org/'
-  url 'http://ftp9.us.postgresql.org/pub/mirrors/postgresql/source/v9.0.1/postgresql-9.0.1.tar.bz2'
-  md5 '57ba57e43cfe29e16dacbf5789be98d1'
+  url 'http://ftp9.us.postgresql.org/pub/mirrors/postgresql/source/v9.0.2/postgresql-9.0.2.tar.bz2'
+  md5 'fc79ef32b602f75f2ccd37647bc008e9'
 
   depends_on 'readline'
   depends_on 'libxml2' if MACOS_VERSION < 10.6 # Leopard libxml is too old
@@ -85,7 +85,7 @@ class Postgresql <Formula
 
   def caveats
     s = <<-EOS
-If builds of Postgresl 9 are failing and you have version 8.x installed,
+If builds of PostgreSQL 9 are failing and you have version 8.x installed,
 you may need to remove the previous version first. See:
   https://github.com/mxcl/homebrew/issues/issue/2510
 
