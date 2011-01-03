@@ -1,9 +1,9 @@
 require 'formula'
 
 class Socat <Formula
-  url 'http://www.dest-unreach.org/socat/download/socat-1.7.1.2.tar.bz2'
+  url 'http://www.dest-unreach.org/socat/download/socat-1.7.1.3.tar.bz2'
   homepage 'http://www.dest-unreach.org/socat/'
-  md5 '9c0c5e83ce665f38d4d3aababad275eb'
+  sha1 '60ecce880ac424e03b37ae297242b303a2afce39'
 
   def install
     ENV.enable_warnings # -wall causes build to fail
