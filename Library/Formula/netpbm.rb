@@ -38,5 +38,12 @@ class Netpbm <Formula
       share.install Dir['man']
       lib.install Dir['link/*.a']
     end
+
+    # Links for old libraries
+    %w{ pbm pgm pnm ppm }.each do |old|
+      dst = lib/"lib#{old}.dylib"
+      src = lib/'libnetpbm.10.35.dylib'
+      system "ln", "-svf", src, dst
+    end
   end
 end
