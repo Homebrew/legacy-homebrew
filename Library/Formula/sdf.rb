@@ -10,9 +10,9 @@ class Sdf <Formula
   def install
     system "./configure", "--prefix=#{prefix}"
 
-    # Man pages are distributed as 0B files, need to clean,
-    # otherwise they won't be made properly
-    FileUtils.rm %w(pgen/src/sdf2table.1 sglr/doc/sglr.1 sglr/doc/sglr-api.3)
+    # Man pages are distributed as 0B files.
+    # Delete them so they'll get recreated properly
+    rm %w(pgen/src/sdf2table.1 sglr/doc/sglr.1 sglr/doc/sglr-api.3)
 
     system "make install"
   end
