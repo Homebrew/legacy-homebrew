@@ -11,6 +11,13 @@ class Wget <Formula
     [["--enable-iri", "Enable iri support."]]
   end
 
+  def patches
+    # Fixes annoying TLS Subject Alternative Name bug encountered especially when using GitHub
+    # Remove when 1.12.1 is released.
+    # See https://savannah.gnu.org/bugs/?23934
+    "http://savannah.gnu.org/file/wget-1.12-subjectAltNames.diff?file_id=18828"
+  end
+
   def install
     args = ["--disable-debug", "--prefix=#{prefix}"]
     args << "--disable-iri" unless ARGV.include? "--enable-iri"
