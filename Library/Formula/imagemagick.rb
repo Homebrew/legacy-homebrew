@@ -19,6 +19,10 @@ def use_wmf?
   ARGV.include? '--use-wmf'
 end
 
+def use_lqr?
+  ARGV.include? '--use-lqr'
+end
+
 def disable_openmp?
   ARGV.include? '--disable-openmp'
 end
@@ -50,9 +54,9 @@ class Imagemagick <Formula
   depends_on 'libtiff' => :optional
   depends_on 'little-cms' => :optional
   depends_on 'jasper' => :optional
-  depends_on 'liblqr' => :optional
 
   depends_on 'libwmf' if use_wmf?
+  depends_on 'liblqr' if use_lqr?
 
   def skip_clean? path
     path.extname == '.la'
@@ -62,6 +66,7 @@ class Imagemagick <Formula
     [
       ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
       ['--use-wmf', 'Compile with libwmf support.'],
+      ['--use-lqr', 'Compile with liblqr support.'],
       ['--disable-openmp', 'Disable OpenMP.'],
       ['--with-magick-plus-plus', 'Compile with C++ interface.']
     ]
