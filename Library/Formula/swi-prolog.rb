@@ -10,28 +10,21 @@ class SwiProlog <Formula
   depends_on 'readline'
   depends_on 'gmp'
   depends_on 'jpeg'
-  depends_on 'fontconfig' if MACOS_VERSION < 10.6
   depends_on 'mcrypt'
   depends_on 'gawk'
 
+  # 10.5 versions of these are too old
+  depends_on 'fontconfig' if MACOS_VERSION < 10.6
+  depends_on 'expat' if MACOS_VERSION < 10.6
+
   def options
     [['--lite', "Don't install any packages; overrides --with-jpl"],
-     ['--with-jpl', "Include JPL, the Java-Prolog Bridge"]]
+     ['--without-jpl', "Include JPL, the Java-Prolog Bridge"]]
   end
 
   def install
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
-
-    # It looks like Apple has borked the Java JNI headers in Java 1.6.0_22-b04-37.
-    # Will not install the JPL bridge by default, which depends on them.
-    unless ARGV.include? "--with-jpl"
-      ohai <<-EOS.undent
-        JPL, the Java-Prolog bridge, is not installed by this formula by default.
-        If you want to indclude the Java-Prolog bridge, add the --with-jpl option.
-      EOS
-
-      ENV.append 'DISABLE_PKGS', "jpl"
-    end
+    ENV.append 'DISABLE_PKGS', "jpl" if ARGV.include? "--without-jpl"
 
     if x11_installed?
       # SWI-Prolog requires X11 for XPCE
@@ -57,5 +50,14 @@ class SwiProlog <Formula
     system "./configure", *args
     system "make"
     system "make install"
+  end
+
+  def caveats; <<-EOS.undent
+    By default, this formula installs the JPL bridge.
+    On 10.6, this requires the "Java Developer Update" from Apple:
+     * https://github.com/mxcl/homebrew/wiki/new-issue
+
+    Use the "--without-jpl" switch to skip installing this component.
+    EOS
   end
 end
