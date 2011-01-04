@@ -21,9 +21,9 @@ class Exodriver <Formula
     inreplace 'Makefile' do |s|
       s.change_make_var! 'DESTINATION', lib
       s.change_make_var! 'HEADER_DESTINATION', include
-      ENV.universal_binary if ARGV.include? "--universal"
     end
 
+    ENV.universal_binary if ARGV.include? "--universal"
     system "make"
     system "make install"
   end
