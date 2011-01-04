@@ -10,6 +10,10 @@ class Exodriver <Formula
 
   depends_on 'libusb'
 
+  def options
+    [["--universal", "Build a universal binary."]]
+  end
+
   def install
     cd 'liblabjackusb'
     mv 'Makefile.MacOSX', 'Makefile'
@@ -17,6 +21,7 @@ class Exodriver <Formula
     inreplace 'Makefile' do |s|
       s.change_make_var! 'DESTINATION', lib
       s.change_make_var! 'HEADER_DESTINATION', include
+      ENV.universal_binary if ARGV.include? "--universal"
     end
 
     system "make"
