@@ -1,12 +1,20 @@
 require 'formula'
 
 class Wine <Formula
-  url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.2.tar.bz2'
-  sha1 '8b37c8e0230dd6a665d310054f4e36dcbdab7330'
+  if ARGV.flag? '--devel'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.9.tar.bz2'
+    sha1 '68f2172b3cd7674e0f7bb746eae065a7b542db9f'
+  else
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.2.tar.bz2'
+    sha1 '8b37c8e0230dd6a665d310054f4e36dcbdab7330'
+  end
   homepage 'http://www.winehq.org/'
   head 'git://source.winehq.org/git/wine.git'
 
   depends_on 'jpeg'
+  depends_on 'libicns'
+  # the following libraries are currently not specified as dependencies, or not built as 32-bit:
+  # configure: libgnutls, libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
 
   # This is required for using 3D applications.
   def wine_wrapper; <<-EOS
@@ -33,17 +41,10 @@ EOS
             "--with-x",
             "--with-coreaudio",
             "--with-opengl"]
-    args << "--without-freetype" if snow_leopard_64?
     args << "--disable-win16" if MACOS_VERSION < 10.6
 
-    if Hardware.is_64_bit? and Formula.factory('mpg123').installed?
-      opoo "A 64-bit mpg123 causes this formula to fail"
-      puts <<-EOS.undent
-        Because Wine builds 32-bit, a 64-bit mpg123 will cause this formula to fail.
-        You can get around this by doing `brew unlink mpg123` before installing Wine
-        and then `brew link mpg123` afterwards.
-      EOS
-    end
+    args << "--without-mpg123" if Hardware.is_64_bit?
+    # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
 
     system "./configure", *args
     system "make install"
