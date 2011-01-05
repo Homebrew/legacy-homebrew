@@ -14,18 +14,12 @@ class Mlton < Formula
 
   depends_on 'gmp'
 
-  def replace_all foo, bar
-    # Find all text files containing foo and replace it with bar
-    files = `/usr/bin/grep -lsIR #{foo} .`.split
-    inreplace files, foo, bar
-  end
-
   def install
     # We end up in usr/ for some reason
     cd 'local'
 
     # Do we need to replace all the different dirs (e.g. lib) separately here?
-    replace_all '/usr/local', prefix
+    inreplace 'bin/mlton', '/usr/local', prefix
 
     prefix.install ['bin', 'lib']
     man.install Dir['man/*']
