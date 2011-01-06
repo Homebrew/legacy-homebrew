@@ -1,9 +1,9 @@
 require 'formula'
 
 class S3cmd <Formula
-  url 'http://downloads.sourceforge.net/project/s3tools/s3cmd/0.9.9.91/s3cmd-0.9.9.91.tar.gz'
+  url 'http://downloads.sourceforge.net/project/s3tools/s3cmd/1.0.0-rc1/s3cmd-1.0.0-rc1.tar.gz'
   homepage 'http://s3tools.org/s3cmd'
-  md5 '0b8334ab4ffb1e09d6964861dc001e0f'
+  md5 '05797719da0d57712a3137c966225a9d'
 
   def install
     libexec.install Dir['s3cmd', 'S3']
