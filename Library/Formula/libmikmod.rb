@@ -6,7 +6,9 @@ class Libmikmod <Formula
   md5 '5b05f3b1167eba7855b8e38bde2b8070'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}", "--mandir=#{man}",
+                          "--infodir=#{info}"
     system "make install"
   end
 end

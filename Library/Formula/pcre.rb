@@ -1,12 +1,25 @@
 require 'formula'
 
 class Pcre <Formula
-  @url='ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-7.9.tar.bz2'
-  @homepage='http://www.pcre.org/'
-  @md5='b6a9669d1863423f01ea46cdf00f93dc'
+  url 'ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.11.tar.bz2'
+  homepage 'http://www.pcre.org/'
+  md5 'ef907b8792ec7f90f0dcd773848f0b3b'
+
+  def options
+    [["--universal", "Build a universal binary."]]
+  end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    fails_with_llvm "Bus error in ld on SL 10.6.4"
+    ENV.universal_binary if ARGV.include? "--universal"
+
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--enable-utf8",
+                          "--enable-unicode-properties",
+                          "--enable-pcregrep-libz",
+                          "--enable-pcregrep-libbz2"
+    system "make test"
     system "make install"
   end
 end

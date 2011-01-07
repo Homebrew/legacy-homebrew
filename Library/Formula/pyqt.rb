@@ -1,36 +1,72 @@
 require 'formula'
 
-# NOTE this should be provided by pip eventually
-# currently easy_install doesn't seem to support it
+# Note: this project doesn't save old releases, so it breaks often as
+# downloads disappear.
 
 class Pyqt <Formula
-  url 'http://www.riverbankcomputing.co.uk/static/Downloads/PyQt4/PyQt-mac-gpl-4.6.1.tar.gz'
+  url 'http://www.riverbankcomputing.co.uk/static/Downloads/PyQt4/PyQt-mac-gpl-4.8.2.tar.gz'
   homepage 'http://www.riverbankcomputing.co.uk/software/pyqt'
-  md5 'c04aade8b63795f30ee7da2d3405d7e7'
+  md5 'bbb21ddda3d681847e42d20f1c883fbb'
 
   depends_on 'sip'
   depends_on 'qt'
 
   def install
     ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/python", ':'
-    
-    system "python", "./configure.py", "-g", "--confirm-license",
+
+    system "python", "./configure.py", "--confirm-license",
                                        "--bindir=#{bin}",
                                        "--destdir=#{lib}/python",
                                        "--sipdir=#{share}/sip"
     system "make"
     system "make install"
   end
-  
+
   def caveats; <<-EOS
-This formula won't function until you add the following to your PYTHONPATH
-environment variable:
+This formula won't function until you amend your PYTHONPATH like so:
+    export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/python:$PYTHONPATH
+EOS
+  end
 
-#{HOMEBREW_PREFIX}/lib/python
+  def test
+    test_program = <<-EOS
+#!/usr/bin/env python
+# Taken from: http://zetcode.com/tutorials/pyqt4/firstprograms/
 
-Installing with easy_install would be ideal; then the libraries are installed
-to /Library/Python which is in the default OS X Python library path. However
-easy_install does not support this formula.
+import sys
+from PyQt4 import QtGui, QtCore
+
+
+class QuitButton(QtGui.QWidget):
+    def __init__(self, parent=None):
+        QtGui.QWidget.__init__(self, parent)
+
+        self.setGeometry(300, 300, 250, 150)
+        self.setWindowTitle('Quit button')
+
+        quit = QtGui.QPushButton('Close', self)
+        quit.setGeometry(10, 10, 60, 35)
+
+        self.connect(quit, QtCore.SIGNAL('clicked()'),
+            QtGui.qApp, QtCore.SLOT('quit()'))
+
+
+app = QtGui.QApplication(sys.argv)
+qb = QuitButton()
+qb.show()
+app.exec_()
+sys.exit(0)
     EOS
+
+    ohai "Writing test script 'test_pyqt.py'."
+    open("test_pyqt.py", "w+") do |file|
+      file.write test_program
+    end
+
+    ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/python", ':'
+    system "python test_pyqt.py"
+
+    ohai "Removing test script 'test_pyqt.py'."
+    rm "test_pyqt.py"
   end
 end

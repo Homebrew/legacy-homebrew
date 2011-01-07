@@ -7,39 +7,57 @@ class GhostscriptFonts <Formula
 end
 
 class Ghostscript <Formula
-  url 'http://downloads.sourceforge.net/project/ghostscript/GPL%20Ghostscript/8.70/ghostscript-8.70.tar.bz2'
+  url 'http://ghostscript.com/releases/ghostscript-9.00.tar.bz2'
   homepage 'http://www.ghostscript.com/'
-  md5 '526366f8cb4fda0d3d293597cc5b984b'
+  md5 '177c33b796ed28d3d568e230a6dbdba5'
 
+  depends_on 'pkg-config' => :build
   depends_on 'jpeg'
+  depends_on 'libtiff'
+
+  def move_included_source_copies
+    # If the install version of any of these doesn't match
+    # the version included in ghostscript, we get errors
+    # Taken from the MacPorts portfile - http://bit.ly/ghostscript-portfile
+    %w{ jpeg libpng zlib }.each do |lib|
+      mv lib, "#{lib}_local"
+    end
+  end
 
   def install
+    ENV.libpng
+    ENV.deparallelize
     # O4 takes an ungodly amount of time
     ENV.O3
     # ghostscript configure ignores LDFLAGs apparently
     ENV['LIBS']="-L/usr/X11/lib"
 
-    # move the included jpeg6 out of the way so we don't use it
-    FileUtils.rm_rf 'jpeg'
-
-    build_dir = Pathname.getwd
-    # download jpeg7, extract it, and fool ghostscript into using it
-    Formula.factory('jpeg').brew do
-      FileUtils.ln Dir.pwd, build_dir+'jpeg'
-    end
+    move_included_source_copies
 
     system "./configure", "--prefix=#{prefix}", "--disable-debug",
                           # the cups component adamantly installs to /usr so fuck it
-                          "--disable-cups"
+                          "--disable-cups",
+                          "--disable-compile-inits",
+                          "--disable-gtk"
+
     # versioned stuff in main tree is pointless for us
     inreplace 'Makefile', '/$(GS_DOT_VERSION)', ''
     system "make install"
 
     GhostscriptFonts.new.brew do
       Dir.chdir '..'
-      (prefix+'share'+'ghostscript').install 'fonts'
+      (share+'ghostscript').install 'fonts'
     end
-    
+
     (man+'de').rmtree
+  end
+
+  def caveats
+      <<-EOS.undent
+        There have been reports that installing Ghostscript can break printing on OS X:
+          https://github.com/mxcl/homebrew/issues/issue/528
+
+        If your printing doesn't break, please comment on the issue! Thanks.
+      EOS
   end
 end

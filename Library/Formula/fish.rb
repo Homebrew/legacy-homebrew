@@ -6,6 +6,7 @@ class Fish <Formula
   md5 'ead6b7c6cdb21f35a3d4aa1d5fa596f1'
 
   depends_on 'readline'
+  skip_clean 'share/doc'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--without-xsel"

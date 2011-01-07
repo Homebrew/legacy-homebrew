@@ -1,18 +1,17 @@
 require 'formula'
 
 class Redland <Formula
-  @url='http://download.librdf.org/source/redland-1.0.9.tar.gz'
-  @homepage='http://librdf.org/'
-  @md5='e5ef0c29c55b4f0f5aeed7955b4d383b'
+  url 'http://download.librdf.org/source/redland-1.0.12.tar.gz'
+  homepage 'http://librdf.org/'
+  md5 '40f37a5ad97fdfbf984f78dcea0c6115'
 
+  depends_on 'pkg-config' => :build
   depends_on 'raptor'
   depends_on 'rasqal'
-  depends_on 'pkg-config'
   depends_on 'berkeley-db' => :optional
 
   def install
-    ENV.gcc_4_2
-
+    fails_with_llvm
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",

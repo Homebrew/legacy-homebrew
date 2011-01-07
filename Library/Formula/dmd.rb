@@ -1,13 +1,13 @@
 require 'formula'
 
 class Dmd <Formula
-  @homepage='http://www.digitalmars.com/d/'
-  @url='http://ftp.digitalmars.com/dmd.1.047.zip'
-  @md5='218c386c1d9363071b971614a988150d'
+  homepage 'http://www.digitalmars.com/d/'
+  url 'http://ftp.digitalmars.com/dmd.1.065.zip'
+  md5 '10e39569dee0ea6c95806b370f837bc7'
 
   def doc
     #use d and not dmd, rationale: meh
-    prefix+'share'+'doc'+'d'
+    prefix+'share/doc/d'
   end
 
   def install
@@ -15,22 +15,22 @@ class Dmd <Formula
 
     # clean it up a little first
     Dir['src/*.mak'].each {|f| File.unlink f}
-    FileUtils.mv 'license.txt', 'COPYING'
-    FileUtils.mv 'README.TXT', 'README'
-    FileUtils.mv 'src/phobos/phoboslicense.txt', 'src/phobos/COPYING.phobos'
+    mv 'license.txt', 'COPYING'
+    mv 'README.TXT', 'README'
+    mv 'src/phobos/phoboslicense.txt', 'src/phobos/COPYING.phobos'
 
     prefix.install 'osx/lib'
     prefix.install 'osx/bin'
     prefix.install 'src'
     man.install 'man/man1'
 
-    (prefix+'src'+'dmd').rmtree # we don't need the dmd sources thanks
-    (man+'man5').install man1+'dmd.conf.5' # oops
-    (prefix+'share'+'d'+'examples').install Dir['samples/d/*.d']
+    (prefix+'src/dmd').rmtree # we don't need the dmd sources thanks
+    man5.install man1+'dmd.conf.5' # oops
+    (share+'d/examples').install Dir['samples/d/*.d']
 
-    (prefix+'bin'+'dmd.conf').open('w') do |f|
+    (bin+'dmd.conf').open('w') do |f|
       f.puts "[Environment]"
-      f.puts "DFLAGS=-I#{prefix}/src/phobos -L-L#{prefix}/lib"
+      f.puts "DFLAGS=-I#{prefix}/src/phobos -L#{lib}"
     end
   end
 end

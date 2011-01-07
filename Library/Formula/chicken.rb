@@ -1,14 +1,15 @@
 require 'formula'
 
 class Chicken <Formula
-  @url='http://www.call-with-current-continuation.org/chicken-4.2.0.tar.gz'
-  @homepage='http://www.call-with-current-continuation.org/'
-  @md5='4705b7634447a571ff083f435c110fe3'
+  url 'http://code.call-cc.org/releases/4.6.0/chicken-4.6.0.tar.gz'
+  md5 '538a93e786e550ad848a040bcd902184'
+  homepage 'http://www.call-cc.org/'
 
   def install
     ENV.deparallelize
-    settings = "PREFIX=#{prefix} PLATFORM=macosx ARCH=x86-64"
-    system "make #{settings}"
-    system "make install #{settings}"
+    args = ["PREFIX=#{prefix}", "PLATFORM=macosx"]
+    args << "ARCH=x86-64" if snow_leopard_64?
+    system "make", *args
+    system "make", "install", *args
   end
 end

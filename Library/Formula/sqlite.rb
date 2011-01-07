@@ -1,13 +1,24 @@
 require 'formula'
 
 class Sqlite <Formula
-  @url='http://www.sqlite.org/sqlite-amalgamation-3.6.17.tar.gz'
-  @md5='3172f8a23e7e7f0e5b295062e339a149'
-  @homepage='http://www.sqlite.org/'
+  url 'http://sqlite.org/sqlite-autoconf-3070400.tar.gz'
+  md5 '8f0c690bfb33c3cbbc2471c3d9ba0158'
+  version '3.7.4'
+  homepage 'http://www.sqlite.org/'
+
+  def options
+  [
+    ["--with-rtree", "Enables the R*Tree index module"],
+    ["--with-fts", "Enables the FTS Module"],
+    ["--universal", "Build a universal binary."]
+  ]
+  end
 
   def install
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
+    ENV.append "CFLAGS", "-DSQLITE_ENABLE_RTREE=1" if ARGV.include? "--with-rtree"
+    ENV.append "CPPFLAGS","-DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS" if ARGV.include? "--with-fts"
+    ENV.universal_binary if ARGV.include? "--universal"
+    system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking"
     system "make install"
   end

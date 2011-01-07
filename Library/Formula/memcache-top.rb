@@ -7,7 +7,6 @@ class MemcacheTop <Formula
   version '0.6'
 
   def install
-    FileUtils.mv 'memcache-top-v0.6', 'memcache-top'
-    bin.install 'memcache-top'
+    bin.install 'memcache-top-v0.6' => 'memcache-top'
   end
 end

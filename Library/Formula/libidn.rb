@@ -1,12 +1,14 @@
 require 'formula'
 
 class Libidn <Formula
-  @url='http://ftp.gnu.org/gnu/libidn/libidn-1.9.tar.gz'
-  @homepage='http://www.gnu.org/software/libidn/'
-  @md5='f4d794639564256a367566302611224e'
+  url 'http://ftp.gnu.org/gnu/libidn/libidn-1.19.tar.gz'
+  homepage 'http://www.gnu.org/software/libidn/'
+  sha1 '2b6dcb500e8135a9444a250d7df76f545915f25f'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--disable-csharp"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--disable-csharp"
     system "make install"
   end
 end

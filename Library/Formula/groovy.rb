@@ -1,13 +1,20 @@
 require 'formula'
 
 class Groovy <Formula
-  @url='http://dist.groovy.codehaus.org/distributions/groovy-binary-1.6.5.zip'
-  @homepage='http://groovy.codehaus.org/'
-  @version='1.6.5'
-  @sha256='db3d4c08ad76392ae94eba830e8c9072fda9e5774c9e7d220c90d0f91a5d7aaf'
+  url 'http://dist.groovy.codehaus.org/distributions/groovy-binary-1.7.6.zip'
+  md5 '86501574f90bff65660dec72f7741bb6'
+  homepage 'http://groovy.codehaus.org/'
 
   def install
-    prefix.install %w[bin conf lib]
-    FileUtils.rm_f Dir["#{bin}/*.bat"]
+    rm_f Dir["bin/*.bat"]
+
+    prefix.install %w{ LICENSE.txt NOTICE.txt }
+    libexec.install %w[bin conf lib]
+
+    bin.mkpath
+    Dir["#{libexec}/bin/*"].each do |f|
+      next unless File.extname(f).empty?
+      ln_s f, bin+File.basename(f)
+    end
   end
 end

@@ -1,50 +1,49 @@
-#  Copyright 2009 Max Howell and other contributors.
-#
-#  Redistribution and use in source and binary forms, with or without
-#  modification, are permitted provided that the following conditions
-#  are met:
-#
-#  1. Redistributions of source code must retain the above copyright
-#     notice, this list of conditions and the following disclaimer.
-#  2. Redistributions in binary form must reproduce the above copyright
-#     notice, this list of conditions and the following disclaimer in the
-#     documentation and/or other materials provided with the distribution.
-#
-#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-#  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-#  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-#  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-#  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-#  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-#  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-#  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-#  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-#  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
 class UsageError <RuntimeError; end
 class FormulaUnspecifiedError <UsageError; end
 class KegUnspecifiedError <UsageError; end
+
+class MultipleVersionsInstalledError <RuntimeError
+  attr :name
+
+  def initialize name
+    @name = name
+    super "#{name} has multiple installed versions"
+  end
+end
+
+class NoSuchKegError <RuntimeError
+  attr :name
+
+  def initialize name
+    @name = name
+    super "No such keg: #{HOMEBREW_CELLAR}/#{name}"
+  end
+end
 
 module HomebrewArgvExtension
   def named
     @named ||= reject{|arg| arg[0..0] == '-'}
   end
-  def options
+
+  def options_only
     select {|arg| arg[0..0] == '-'}
   end
+
   def formulae
     require 'formula'
-    @formulae ||= downcased_unique_named.collect {|name| Formula.factory name}
+    @formulae ||= downcased_unique_named.map{ |name| Formula.factory(Formula.resolve_alias(name)) }
     raise FormulaUnspecifiedError if @formulae.empty?
     @formulae
   end
+
   def kegs
     require 'keg'
+    require 'formula'
     @kegs ||= downcased_unique_named.collect do |name|
-      d=HOMEBREW_CELLAR+name
+      d = HOMEBREW_CELLAR + Formula.resolve_alias(name)
       dirs = d.children.select{ |pn| pn.directory? } rescue []
-      raise "#{name} is not installed" if not d.directory? or dirs.length == 0
-      raise "#{name} has multiple installed versions" if dirs.length > 1
+      raise NoSuchKegError.new(name) if not d.directory? or dirs.length == 0
+      raise MultipleVersionsInstalledError.new(name) if dirs.length > 1
       Keg.new dirs.first
     end
     raise KegUnspecifiedError if @kegs.empty?
@@ -74,9 +73,12 @@ module HomebrewArgvExtension
   def interactive?
     flag? '--interactive'
   end
+  def build_head?
+    flag? '--HEAD'
+  end
 
   def flag? flag
-    options.each do |arg|
+    options_only.each do |arg|
       return true if arg == flag
       next if arg[1..1] == '-'
       return true if arg.include? flag[2..2]
@@ -84,38 +86,59 @@ module HomebrewArgvExtension
     return false
   end
 
-  def usage
-    <<-EOS
-Usage: brew command [formula] ...
-Usage: brew [--prefix] [--cache] [--version|-v]
-Usage: brew [--verbose|-v]
+  def usage; <<-EOS.undent
+    Usage: brew [-v|--version] [--prefix [formula]] [--cache [formula]]
+                [--cellar [formula]] [--config] [--env] [--repository]
+                [-h|--help] COMMAND [formula] ...
 
-Commands:
-  install formula ... [--ignore-dependencies] [--HEAD|-H]
-  remove formula ...
-  search [/regex/] [substring]
-  list [--brewed] [--unbrewed] [formula] ...
-  link formula ...
-  unlink formula ...
-  home formula ...
-  info [formula] [--github]
-  prune
-  update
+    Principal Commands:
+      install formula ... [--ignore-dependencies] [--HEAD]
+      list [--unbrewed|--versions] [formula] ...
+      search [/regex/] [substring]
+      uninstall formula ...
+      update
 
-Commands useful when contributing:
-  log formula
-  create URL
-  edit [formula]
-  install formula [--debug|-d] [--interactive|-i] [--verbose|-v]
+    Other Commands:
+      info formula [--github]
+      options formula
+      deps formula
+      uses formula [--installed]
+      home formula ...
+      cleanup [formula]
+      link formula ...
+      unlink formula ...
+      outdated
+      missing
+      prune
+      doctor
 
-To visit the Homebrew homepage type:
-  brew home
+    Informational:
+      --version
+      --config
+      --prefix [formula]
+      --cache [formula]
+
+    Commands useful when contributing:
+      create URL
+      edit [formula]
+      audit [formula]
+      log formula
+      install formula [-vd|-i]
+
+    For more information:
+      man brew
+
+    To visit the Homebrew homepage type:
+      brew home
     EOS
   end
 
   private
 
   def downcased_unique_named
-    @downcased_unique_named ||= named.collect{|arg| arg.downcase}.uniq
+    # Only lowercase names, not paths or URLs
+    @downcased_unique_named ||= named.map do |arg|
+      arg.include?("/") ? arg : arg.downcase
+    end.uniq
   end
 end

@@ -1,16 +1,14 @@
 require 'formula'
 
 class Libpng <Formula
-  @url='http://prdownloads.sourceforge.net/libpng/libpng-1.2.40.tar.gz'
-  @homepage='http://www.libpng.org/pub/png/libpng.html'
-  @md5='a2f6808735bf404967f81519a967fb2a'
+  url 'http://downloads.sourceforge.net/project/libpng/libpng12/1.2.44/libpng-1.2.44.tar.bz2'
+  homepage 'http://www.libpng.org/pub/png/libpng.html'
+  md5 'e3ac7879d62ad166a6f0c7441390d12b'
 
-  def keg_only?
-    :provided_by_osx
-  end
+  keg_only :provided_by_osx
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mysql <Formula
-  @homepage='http://dev.mysql.com/doc/refman/5.1/en/'
-  @url='http://mysql.llarian.net/Downloads/MySQL-5.1/mysql-5.1.39.tar.gz'
-  @md5='55a398daeb69a778fc46573623143268'
+  homepage 'http://dev.mysql.com/doc/refman/5.1/en/'
+  url 'http://mysql.mirrors.pair.com/Downloads/MySQL-5.1/mysql-5.1.54.tar.gz'
+  md5 '2a0f45a2f8b5a043b95ce7575796a30b'
 
   depends_on 'readline'
 
@@ -12,6 +12,7 @@ class Mysql <Formula
       ['--with-tests', "Keep tests when installing."],
       ['--with-bench', "Keep benchmark app when installing."],
       ['--client-only', "Only install client tools, not the server."],
+      ['--universal', "Make mysql a universal binary"]
     ]
   end
 
@@ -20,10 +21,15 @@ class Mysql <Formula
   end
 
   def install
+    fails_with_llvm "https://github.com/mxcl/homebrew/issues/issue/144"
+
     # See: http://dev.mysql.com/doc/refman/5.1/en/configure-options.html
     # These flags may not apply to gcc 4+
     ENV['CXXFLAGS'] = ENV['CXXFLAGS'].gsub "-fomit-frame-pointer", ""
     ENV['CXXFLAGS'] += " -fno-omit-frame-pointer -felide-constructors"
+
+    # Make universal for bindings to universal applications
+    ENV.universal_binary if ARGV.include? '--universal'
 
     configure_args = [
       "--without-docs",
@@ -31,18 +37,24 @@ class Mysql <Formula
       "--disable-dependency-tracking",
       "--prefix=#{prefix}",
       "--localstatedir=#{var}/mysql",
+      "--sysconfdir=#{etc}",
       "--with-plugins=innobase,myisam",
       "--with-extra-charsets=complex",
       "--with-ssl",
+      "--without-readline", # Confusingly, means "use detected readline instead of included readline"
       "--enable-assembler",
       "--enable-thread-safe-client",
       "--enable-local-infile",
-      "--enable-shared"]
+      "--enable-shared",
+      "--with-partition"]
 
     configure_args << "--without-server" if ARGV.include? '--client-only'
 
     system "./configure", *configure_args
     system "make install"
+
+    ln_s "#{libexec}/mysqld", bin
+    ln_s "#{share}/mysql/mysql.server", bin
 
     (prefix+'mysql-test').rmtree unless ARGV.include? '--with-tests' # save 66MB!
     (prefix+'sql-bench').rmtree unless ARGV.include? '--with-bench'
@@ -50,38 +62,49 @@ class Mysql <Formula
     (prefix+'com.mysql.mysqld.plist').write startup_plist
   end
 
-  def caveats; <<-EOS
-Set up databases with:
-    mysql_install_db
+  def caveats; <<-EOS.undent
+    Set up databases with:
+        unset TMPDIR
+        mysql_install_db
 
-Automatically load on login with:
-    launchctl load -w #{prefix}/com.mysql.mysqld.plist
+    If this is your first install, automatically load on login with:
+        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents
+        launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
 
-Or start manually with:
-    #{prefix}/share/mysql/mysql.server start
+    If this is an upgrade and you already have the com.mysql.mysqld.plist loaded:
+        launchctl unload -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents
+        launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+
+    Note on upgrading:
+        We overwrite any existing com.mysql.mysqld.plist in ~/Library/LaunchAgents
+        if we are upgrading because previous versions of this brew created the
+        plist with a version specific program argument.
+
+    Or start manually with:
+        mysql.server start
     EOS
   end
 
-  def startup_plist
-    return <<-EOPLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>KeepAlive</key>
-  <true/>
-  <key>Label</key>
-  <string>com.mysql.mysqld</string>
-  <key>Program</key>
-  <string>#{bin}/mysqld_safe</string>
-  <key>RunAtLoad</key>
-  <true/>
-  <key>UserName</key>
-  <string>#{`whoami`}</string>
-  <key>WorkingDirectory</key>
-  <string>#{HOMEBREW_PREFIX}</string>
-</dict>
-</plist>
+  def startup_plist; <<-EOPLIST.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>KeepAlive</key>
+      <true/>
+      <key>Label</key>
+      <string>com.mysql.mysqld</string>
+      <key>Program</key>
+      <string>#{bin}/mysqld_safe</string>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>UserName</key>
+      <string>#{`whoami`.chomp}</string>
+      <key>WorkingDirectory</key>
+      <string>#{var}</string>
+    </dict>
+    </plist>
     EOPLIST
   end
 end

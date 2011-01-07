@@ -23,9 +23,17 @@ Cflags: -I${includedir}
   end
 
   def install
-    system "./configure --disable-debugging --enable-fpm=intel --prefix='#{prefix}'"
+    fpm = snow_leopard_64? ? '64bit': 'intel'
+    system "./configure", "--disable-debugging", "--enable-fpm=#{fpm}", "--prefix=#{prefix}"
+
+    # See: https://github.com/mxcl/homebrew/issues/issue/1263
+    inreplace "Makefile" do |s|
+      s.change_make_var! "CFLAGS", ENV.cflags
+      s.change_make_var! "LDFLAGS", ENV.ldflags
+    end
+
     system "make install"
 
-    (lib+'pkgconfig'+'mad.pc').write mad_pc
+    (lib+'pkgconfig/mad.pc').write mad_pc
   end
 end

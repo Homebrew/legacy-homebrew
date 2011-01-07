@@ -1,40 +1,20 @@
-#  Copyright 2009 Max Howell and other contributors.
-#
-#  Redistribution and use in source and binary forms, with or without
-#  modification, are permitted provided that the following conditions
-#  are met:
-#
-#  1. Redistributions of source code must retain the above copyright
-#     notice, this list of conditions and the following disclaimer.
-#  2. Redistributions in binary form must reproduce the above copyright
-#     notice, this list of conditions and the following disclaimer in the
-#     documentation and/or other materials provided with the distribution.
-#
-#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-#  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-#  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-#  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-#  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-#  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-#  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-#  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-#  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-#  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
 class Keg <Pathname
   def initialize path
     super path
-    raise "#{to_s} is not a valid keg" unless parent.parent == HOMEBREW_CELLAR
+    raise "#{to_s} is not a valid keg" unless parent.parent.realpath == HOMEBREW_CELLAR.realpath
     raise "#{to_s} is not a directory" unless directory?
   end
 
+  class NotAKegError <RuntimeError; end
+
   # if path is a file in a keg then this will return the containing Keg object
   def self.for path
+    path = path.realpath
     while not path.root?
-      return Keg.new(path) if path.parent.parent == HOMEBREW_CELLAR
+      return Keg.new(path) if path.parent.parent == HOMEBREW_CELLAR.realpath
       path = path.parent.realpath # realpath() prevents root? failing
     end
-    raise "#{path} is not inside a keg"
+    raise NotAKegError, "#{path} is not inside a keg"
   end
 
   def uninstall
@@ -60,7 +40,7 @@ class Keg <Pathname
     $n=0
     $d=0
 
-    mkpaths=(1..9).collect {|x| "man/man#{x}"} <<'man'<<'doc'<<'locale'<<'info'<<'aclocal'
+    share_mkpaths=%w[aclocal doc info locale man]+(1..8).collect{|x|"man/man#{x}"}
 
     # yeah indeed, you have to force anything you need in the main tree into
     # these dirs REMEMBER that *NOT* everything needs to be in the main tree
@@ -68,13 +48,22 @@ class Keg <Pathname
     link_dir('bin') {:skip}
     link_dir('sbin') {:link}
     link_dir('include') {:link}
-    link_dir('share') {|path| :mkpath if mkpaths.include? path.to_s}
+    link_dir('share') {|path| :mkpath if share_mkpaths.include? path.to_s}
 
     link_dir('lib') do |path|
       case path.to_s
-      when /^pkgconfig/ then :mkpath
-      when /^php/ then :mkpath
+      # pkg-config database gets explicitly created
+      when 'pkgconfig' then :mkpath
+      # lib/language folders also get explicitly created
+      when 'ghc' then :mkpath
+      when 'lua' then :mkpath
+      when 'node' then :mkpath
+      when 'ocaml' then :mkpath
       when /^perl5/ then :mkpath
+      when 'php' then :mkpath
+      when /^python[23]\.\d$/ then :mkpath
+      # Everything else is symlinked to the cellar
+      else :link
       end
     end
 
@@ -93,11 +82,14 @@ protected
       keg.link_dir(src) { :mkpath }
       return true
     end
+  rescue NotAKegError
+    puts "Won't resolve conflicts for symlink #{dst} as it doesn't resolve into the Cellar" if ARGV.verbose?
   end
 
   # symlinks the contents of self+foo recursively into /usr/local/foo
   def link_dir foo
     root = self+foo
+    return unless root.exist?
 
     root.find do |src|
       next if src == root
@@ -106,7 +98,7 @@ protected
       dst.extend ObserverPathnameExtension
 
       if src.file?
-        dst.make_relative_symlink src
+        dst.make_relative_symlink src unless File.basename(src) == '.DS_Store'
       elsif src.directory?
         # if the dst dir already exists, then great! walk the rest of the tree tho
         next if dst.directory? and not dst.symlink?

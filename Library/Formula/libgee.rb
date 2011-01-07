@@ -1,14 +1,14 @@
 require 'formula'
 
 class Libgee <Formula
-  @url='http://ftp.gnome.org/pub/GNOME/sources/libgee/0.3/libgee-0.3.0.tar.bz2'
-  @homepage='http://live.gnome.org/Libgee'
-  @md5='1ca2b8a87950ef1b14342fb32db3e558'
+  url 'http://download.gnome.org/sources/libgee/0.6/libgee-0.6.0.tar.bz2'
+  homepage 'http://live.gnome.org/Libgee'
+  md5 '4eb513b23ab6ea78884989518a4acf6f'
 
   depends_on 'vala'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
 end

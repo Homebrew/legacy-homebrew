@@ -1,12 +1,27 @@
 require 'formula'
 
 class Graphviz <Formula
-  url 'http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.24.0.tar.gz'
+  url 'http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.26.3.tar.gz'
+  md5 '6f45946fa622770c45609778c0a982ee'
   homepage 'http://graphviz.org/'
-  md5 '806a30dbc3f8deb219216f35be0e7a40'
+
+  depends_on 'pkg-config' => :build
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--with-qartz", "--disable-python", "--disable-perl"
+    ENV.x11
+    # Various language bindings fail with 32/64 issues.
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--disable-quartz",
+                          "--disable-java",
+                          "--disable-ocaml",
+                          "--disable-perl",
+                          "--disable-php",
+                          "--disable-python",
+                          "--disable-r",
+                          "--disable-ruby",
+                          "--disable-sharp",
+                          "--disable-swig"
     system "make install"
   end
 end

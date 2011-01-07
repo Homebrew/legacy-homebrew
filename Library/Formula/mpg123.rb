@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mpg123 <Formula
-  @url='http://downloads.sourceforge.net/project/mpg123/mpg123/1.8.1/mpg123-1.8.1.tar.bz2'
-  @homepage='http://www.mpg123.de/'
-  @md5='856893f14b29b1cddf4aba32469860b4'
+  url 'http://downloads.sourceforge.net/project/mpg123/mpg123/1.12.5/mpg123-1.12.5.tar.bz2'
+  homepage 'http://www.mpg123.de/'
+  md5 '01fa64533cade452c2b22a3ce14a2fcd'
 
   def skip_clean? path
     # mpg123 can't find its plugins if there are no la files
@@ -11,19 +11,28 @@ class Mpg123 <Formula
   end
 
   def install
-    if MACOS_VERSION < 10.6
-      # otherwise the exe segfaults, I couldn't diagnose why
-      ENV.osx_10_4
-      ENV.gcc_4_0_1
+    args = ["--disable-debug", "--disable-dependency-tracking",
+            "--with-optimization=4",
+            "--prefix=#{prefix}",
+            "--with-audio=coreaudio",
+            "--with-default-audio=coreaudio"]
+
+    if snow_leopard_64?
+      args << "--with-cpu=x86-64"
+    else
+      args << "--with-cpu=sse_alone"
     end
 
-    args = ["--disable-debug", "--with-optimization=4",
-                               "--with-cpu=sse_alone",
-                               "--prefix=#{prefix}"]
-
-    args << "--with-cpu=x86-64" if Hardware.is_64_bit?
-
     system "./configure", *args
+
+    # ./configure incorrectly detects 10.5 as 10.4; fix it.
+    ['.', 'src', 'src/output', 'src/libmpg123'].each do |path|
+      inreplace "#{path}/Makefile" do |s|
+        s.gsub! "-mmacosx-version-min=10.4 -isysroot /Developer/SDKs/MacOSX10.4u.sdk", ""
+        s.change_make_var! "LDFLAGS", "-Wl,-read_only_relocs,suppress"
+      end
+    end
+
     system "make install"
   end
 end

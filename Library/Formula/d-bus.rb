@@ -1,87 +1,50 @@
 require 'formula'
 
 class DBus <Formula
-  url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.2.16.tar.gz'
+  url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.4.1.tar.gz'
   homepage 'http://www.freedesktop.org/wiki/Software/dbus'
-  md5 'c7a47b851ebe02f6726b65b78d1b730b'
+  md5 '99cb057700c0455fb68f8d57902f77ac'
+
+  # Don't clean the empty directories that D-Bus needs
+  skip_clean "etc/dbus-1/session.d"
+  skip_clean "etc/dbus-1/system.d"
+  skip_clean "var/run/dbus"
 
   def patches
-    'http://gist.github.com/raw/201422/a53c062bc9e1396138de9f0bbddcba31de441d16/dbus-launchd-integration-1.2.16.patch'
+    # Last-minute build breakages for 1.4.1
+    [ 'http://cgit.freedesktop.org/dbus/dbus/patch/?id=88004d6b66f80d72e97e9b6b024842d692e5748a',
+      'http://cgit.freedesktop.org/dbus/dbus/patch/?id=56d8d4f58ee60cd4f860a99a2dd47b3f636321b8' ]
   end
 
   def install
-    system "autoreconf -fvi"
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-doxygen-docs",
+    # Fix the TMPDIR to one D-Bus doesn't reject due to odd symbols
+    ENV["TMPDIR"] = "/tmp"
+
+
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--disable-xml-docs",
-                          "--without-x",
+                          "--disable-doxygen-docs",
                           "--enable-launchd",
-                          "--with-dbus-user=messagebus",
-                          "--with-launchd-agent-dir=#{prefix}/Library/LaunchAgents",
-                          "--with-dbus-daemondir=#{bin}"
-
-    inreplace "dbus/dbus-sysdeps-unix.c", "/usr/local", "#{prefix}"
-    inreplace "configure", "broken_poll=\"no (cross compiling)\"", "broken_poll=yes"
-    # don't want /g, so call it ourselves
-
+                          "--with-launchd-agent-dir=#{prefix}",
+                          "--without-x"
+    system "make"
+    ENV.deparallelize
     system "make install"
 
-    (etc + "dbus-1" + "session.d").mkpath
-    (prefix + "Library" + "LaunchDaemons" + "org.freedesktop.dbus-system.plist").write plist
+    # Generate D-Bus's UUID for this machine
+    system "#{bin}/dbus-uuidgen", "--ensure=#{prefix}/var/lib/dbus/machine-id"
   end
 
-  def plist; <<-EOS
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version='1.0'>
-<dict>
-  <key>Label</key>
-  <string>org.freedesktop.dbus-system</string>
-  <key>ProgramArguments</key>
-  <array>
-    <string>#{bin}/dbus-daemon</string>
-    <string>--system</string>
-    <string>--nofork</string>
-  </array>
-  <key>OnDemand</key>
-  <false/>
-  <key>Disabled</key>
-  <true/>
-</dict>
-</plist>
-    EOS
-  end
-  
-  def caveats; <<-EOS
-The dbus system bus can auto-start with OS X, but it requires a symlink in
-your system library dir. Run the next two commands to hook things up:
+  def caveats; <<-EOS.undent
+    If this is your first install, automatically load on login with:
+        cp #{prefix}/org.freedesktop.dbus-session.plist ~/Library/LaunchAgents
+        launchctl load -w ~/Library/LaunchAgents/org.freedesktop.dbus-session.plist
 
-    sudo ln -s #{prefix}/Library/LaunchAgents/org.freedesktop.dbus-session.plist /Library/LaunchAgents/org.freedesktop.dbus-session.plist
-    sudo ln -s #{prefix}/Library/LaunchDaemons/org.freedesktop.dbus-system.plist /Library/LaunchDaemons/org.freedesktop.dbus-system.plist
-
-You will also need to make the two launchd files owned by root, otherwise OS X
-will complain:
-
-    sudo chown root:admin #{prefix}/Library/LaunchAgents/org.freedesktop.dbus-session.plist
-    sudo chown root:admin #{prefix}/Library/LaunchDaemons/org.freedesktop.dbus-system.plist
-
-Note that you will have to change them back to a user ownership, as well as
-remove the symlinks when uninstalling, as homebrew won't be able to erase
-them.
-
-If you want dbus to auto-start, run the following two commands:
-
-    sudo launchctl load -w /Library/LaunchDaemons/org.freedesktop.dbus-system.plist
-    launchctl load /Library/LaunchAgents/org.freedesktop.dbus-session.plist
-
-Then it will autostart when needed from the next reboot.
-
-Also, if programs are having trouble connecting to the dbus session, add this
-to your /etc/profile:
-
-    export DBUS_SESSION_BUS_ADDRESS="launchd:env=DBUS_LAUNCHD_SESSION_BUS_SOCKET" 
+    If this is an upgrade and you already have the org.freedesktop.dbus-session.plist loaded:
+        launchctl unload -w ~/Library/LaunchAgents/org.freedesktop.dbus-session.plist
+        cp #{prefix}/org.freedesktop.dbus-session.plist ~/Library/LaunchAgents
+        launchctl load -w ~/Library/LaunchAgents/org.freedesktop.dbus-session.plist
     EOS
   end
 end
