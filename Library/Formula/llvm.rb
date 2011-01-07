@@ -1,6 +1,7 @@
 require 'formula'
 
 def build_clang?; ARGV.include? '--with-clang'; end
+def build_universal?; ARGV.include? '--universal'; end
 
 class Clang <Formula
   url       'http://llvm.org/releases/2.8/clang-2.8.tgz'
@@ -14,7 +15,8 @@ class Llvm <Formula
   md5       '220d361b4d17051ff4bb21c64abe05ba'
 
   def options
-    [['--with-clang', 'Also build & install clang']]
+    [['--with-clang', 'Also build & install clang'],
+     ['--universal', 'Build both i386 and x86_64 architectures']]
   end
 
   def install
@@ -23,6 +25,11 @@ class Llvm <Formula
     if build_clang?
       clang_dir = Pathname.new(Dir.pwd)+'tools/clang'
       Clang.new.brew { clang_dir.install Dir['*'] }
+    end
+
+    if build_universal?
+      ENV['UNIVERSAL'] = '1'
+      ENV['UNIVERSAL_ARCH'] = 'i386 x86_64'
     end
 
     system "./configure", "--prefix=#{prefix}",
