@@ -12,8 +12,8 @@ class Avrdude <Formula
   end
 
   def install
-    ENV.j1
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "make"
     system "make install"
   end
 end
