@@ -6,13 +6,14 @@ class Mosquitto <Formula
   md5 '8923b814441aa2c0646203920dcf3e1b'
 
   depends_on 'cmake'
-  depends_on 'sqlite'
+
+  def patches
+    {:p1 => 'https://gist.github.com/raw/771217/f946d3e4c7326066f36c0411287a0f8a1e820a00/mosquitto-cmake-man.patch' }
+  end
 
   def install
     ENV.deparallelize
-    ENV.no_optimization
     system "cmake . #{std_cmake_parameters}"
-    system "make"
     system "make install"
   end
 end
