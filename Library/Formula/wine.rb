@@ -12,9 +12,14 @@ class Wine <Formula
   head 'git://source.winehq.org/git/wine.git'
 
   depends_on 'jpeg'
+  depends_on 'mpg123' => :optional
+  depends_on 'gnutls-32' => :optional
+  depends_on 'libgcrypt-32' => :optional
+  depends_on 'libgpg-error-32' => :optional
   depends_on 'libicns'
+
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
-  # configure: libgnutls, libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
+  # configure: libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
 
   # This is required for using 3D applications.
   def wine_wrapper; <<-EOS
@@ -67,6 +72,9 @@ EOS
 
     To use 3D applications, like games, check "Emulate a virtual desktop" in
     winecfg's "Graphics" tab.
+    
+    If you want the developement version, please specify --devel as a
+    parameter.
     EOS
   end
 end
