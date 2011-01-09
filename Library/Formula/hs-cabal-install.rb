@@ -5,9 +5,6 @@ class HsCabalInstall <Formula
   homepage 'http://hackage.haskell.org/package/cabal-install'
   md5 '4abd0933dff361ff69ee9288a211e4e1'
 
-  aka 'cabal'
-  aka 'hs-cabal'
-
   depends_on 'ghc'
   depends_on 'hs-http'
   depends_on 'hs-network'
