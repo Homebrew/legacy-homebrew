@@ -11,7 +11,7 @@ class HsHttp <Formula
   depends_on 'hs-mtl'
 
   def install
-    system "runhaskell Setup.hs configure --prefix #{prefix} --libdir #{prefix}/lib/haskell"
+    system "runhaskell Setup.lhs configure --prefix #{prefix} --libdir #{prefix}/lib/haskell"
     system "runhaskell Setup.lhs build"
     system "runhaskell Setup.lhs install"
   end
