@@ -1,7 +1,8 @@
 require 'formula'
 
 class Libevent <Formula
-  url "http://www.monkey.org/~provos/libevent-1.4.14b-stable.tar.gz"
+  version '1.4.14b'
+  url "http://sourceforge.net/projects/levent/files/libevent/libevent-1.4/libevent-1.4.14b-stable.tar.gz/download"
   homepage 'http://www.monkey.org/~provos/libevent/'
   md5 'a00e037e4d3f9e4fe9893e8a2d27918c'
   head 'git://levent.git.sourceforge.net/gitroot/levent/levent'
