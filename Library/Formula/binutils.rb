@@ -6,7 +6,8 @@ class Binutils <Formula
   md5 'f11e10f312a58d82f14bf571dd9ff91c'
 
   def options
-    [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
+    [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."],
+     ['--all-targets', 'Build with support for all implemented targets.']]
   end
 
   def install
@@ -19,8 +20,8 @@ class Binutils <Formula
             "--mandir=#{man}",
             "--disable-werror",
             "--enable-interwork",
-            "--enable-multilib",
-            "--enable-targets=arm-none-eabi" ]
+            "--enable-multilib" ]
+    args << if ARGV.include? '--all-targets' then "--enable-targets=all" else "--enable-targets=arm-none-eabi" end
     args << "--program-prefix=g" unless ARGV.include? '--default-names'
 
     system "./configure", *args
