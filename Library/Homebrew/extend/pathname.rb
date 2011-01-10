@@ -105,7 +105,12 @@ class Pathname
       # directories don't have extnames
       stem=basename.to_s
     else
-      stem=self.stem
+      # sourceforge /download
+      if %r[((?:sourceforge.net|sf.net)/.*)/download$].match to_s
+        stem=Pathname.new(dirname).stem
+      else
+        stem=self.stem
+      end
     end
 
     # github tarballs, like v1.2.3
