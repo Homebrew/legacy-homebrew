@@ -8,8 +8,8 @@ class Unpaper <Formula
   def install
     # Fix make.sh to take CFLAGS/LDFLAGS from environment
     inreplace "make.sh" do |s|
-      s.change_make_var! "CFLAGS", ENV['CFLAGS']
-      s.change_make_var! "LDFLAGS", ENV['LDFLAGS']
+      s.change_make_var! "CFLAGS", ENV.cflags
+      s.change_make_var! "LDFLAGS", ENV.ldflags
     end
     system 'bash make.sh'
     bin.install 'unpaper'

@@ -8,11 +8,13 @@ class Nu <Formula
   depends_on 'pcre'
 
   def install
-    ENV['PREFIX']="#{prefix}"
+    ENV['PREFIX'] = prefix
+
     inreplace "Makefile" do |s|
       cflags = s.get_make_var "CFLAGS"
       s.change_make_var! "CFLAGS", "#{cflags} #{ENV["CPPFLAGS"]}"
     end
+
     inreplace "Nukefile" do |s|
       case Hardware.cpu_type
       when :intel

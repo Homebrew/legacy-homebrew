@@ -2,7 +2,7 @@ require 'formula'
 
 class Plowshare <Formula
   head 'http://plowshare.googlecode.com/svn/trunk/'
-  homepage 'http://code.google.com/p/plowshare'
+  homepage 'http://code.google.com/p/plowshare/'
 
   depends_on 'recode'
   depends_on 'imagemagick'

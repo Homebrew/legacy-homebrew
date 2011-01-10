@@ -24,7 +24,7 @@ class AbstractDownloadStrategy
   end
 
   def quiet_safe_system *args
-    safe_system *expand_safe_system_args(args)
+    safe_system(*expand_safe_system_args(args))
   end
 end
 
@@ -145,8 +145,7 @@ end
 
 # This Download Strategy is provided for use with sites that
 # only provide HTTPS and also have a broken cert.
-# Try not to need this, as we probably won't accept the forulae
-# into trunk.
+# Try not to need this, as we probably won't accept the formula.
 class CurlUnsafeDownloadStrategy <CurlDownloadStrategy
   def _fetch
     curl @url, '--insecure', '-o', @tarball_path
@@ -193,9 +192,13 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
 
   def get_externals
     `'#{shell_quote(svn)}' propget svn:externals '#{shell_quote(@url)}'`.chomp.each_line do |line|
-      name, url = line.split /\s+/
+      name, url = line.split(/\s+/)
       yield name, url
     end
+  end
+
+  def _fetch_command svncommand, url, target
+    [svn, svncommand, '--force', url, target]
   end
 
   def fetch_repo target, url, revision=nil, ignore_externals=false
@@ -203,10 +206,10 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
     svncommand = target.exist? ? 'up' : 'checkout'
-    args = [svn, svncommand, '--force', url, target]
+    args = _fetch_command svncommand, url, target
     args << '-r' << revision if revision
     args << '--ignore-externals' if ignore_externals
-    quiet_safe_system *args
+    quiet_safe_system(*args)
   end
 
   # Try HOMEBREW_SVN, a Homebrew-built svn, and finally the OS X system svn.
@@ -253,11 +256,26 @@ class GitDownloadStrategy <AbstractDownloadStrategy
           unless system "/usr/bin/which git"
 
     ohai "Cloning #{@url}"
+
+    if @clone.exist?
+      Dir.chdir(@clone) do
+        # Check for interupted clone from a previous install
+        unless system 'git', 'status', '-s'
+          ohai "Removing invalid .git repo from cache"
+          FileUtils.rm_rf @clone
+        end
+      end
+    end
+
     unless @clone.exist?
       safe_system 'git', 'clone', @url, @clone # indeed, leave it verbose
     else
       puts "Updating #{@clone}"
-      Dir.chdir(@clone) { quiet_safe_system 'git', 'fetch', @url }
+      Dir.chdir(@clone) do
+        quiet_safe_system 'git', 'fetch', @url
+        # If we're going to checkout a tag, then we need to fetch new tags too.
+        quiet_safe_system 'git', 'fetch', '--tags' if @spec == :tag
+      end
     end
   end
 
@@ -420,6 +438,39 @@ class BazaarDownloadStrategy <AbstractDownloadStrategy
   end
 end
 
+class FossilDownloadStrategy < AbstractDownloadStrategy
+  def initialize url, name, version, specs
+    super
+    @unique_token="#{name}--fossil" unless name.to_s.empty? or name == '__UNKNOWN__'
+    @clone=HOMEBREW_CACHE+@unique_token
+  end
+
+  def cached_location; @clone; end
+
+  def fetch
+    raise "You must install fossil first" \
+          unless system "/usr/bin/which fossil"
+
+    ohai "Cloning #{@url}"
+    unless @clone.exist?
+      url=@url.sub(%r[^fossil://], '')
+      safe_system 'fossil', 'clone', url, @clone
+    else
+      puts "Updating #{@clone}"
+      safe_system 'fossil', 'pull', '-R', @clone
+    end
+  end
+
+  def stage
+    # TODO: The 'open' and 'checkout' commands are very noisy and have no '-q' option.
+    safe_system 'fossil', 'open', @clone
+    if @spec and @ref
+      ohai "Checking out #{@spec} #{@ref}"
+      safe_system 'fossil', 'checkout', @ref
+    end
+  end
+end
+
 def detect_download_strategy url
   case url
     # We use a special URL pattern for cvs
@@ -430,6 +481,7 @@ def detect_download_strategy url
   when %r[^hg://] then MercurialDownloadStrategy
   when %r[^svn://] then SubversionDownloadStrategy
   when %r[^svn+http://] then SubversionDownloadStrategy
+  when %r[^fossil://] then FossilDownloadStrategy
     # Some well-known source hosts
   when %r[^http://github\.com/.+\.git$] then GitDownloadStrategy
   when %r[^https?://(.+?\.)?googlecode\.com/hg] then MercurialDownloadStrategy

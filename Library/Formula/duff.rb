@@ -1,7 +1,7 @@
 require 'formula'
 
 class Duff <Formula
-  url 'http://prdownloads.sourceforge.net/duff/duff-0.4.tar.bz2'
+  url 'http://downloads.sourceforge.net/duff/duff-0.4.tar.bz2'
   homepage 'http://duff.sourceforge.net/'
   md5 '9767e471232c1b4ee553ae40dbe60464'
 

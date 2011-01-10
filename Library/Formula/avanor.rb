@@ -6,9 +6,9 @@ class Avanor <Formula
   md5 '20067962b9635b1789933ddd7933d142'
 
   def install
-    inreplace 'Makefile' do |contents|
-      contents.gsub! "CC = gpp", "CC = cpp"
-      contents.gsub! "LD = gpp", "LD = cpp"
+    inreplace 'Makefile' do |s|
+      s.gsub! "CC = gpp", "CC = cpp"
+      s.gsub! "LD = gpp", "LD = cpp"
     end
 
     system "make DATA_DIR=#{share}/avanor/"

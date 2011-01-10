@@ -28,10 +28,12 @@ _1st_arguments=(
   'link:link a formula'
   'list:list files in a formula or not-installed formulae'
   'log:git commit log for a formula'
+  'missing:check all installed formuale for missing dependencies.'
   'outdated:list formulas for which a newer version is available'
   'prune:remove dead links'
   'remove:remove a formula'
   'search:search for a formula (/regex/ or string)'
+  'server:start a local web app that lets you browse formulae (requires Sinatra)'
   'unlink:unlink a formula'
   'update:freshen up links'
   'uses:show formulas which depend on a formula'
@@ -56,11 +58,12 @@ case "$words[1]" in
   list)
     _arguments \
       '(--unbrewed)--unbrewed[files in brew --prefix not controlled by brew]' \
+      '(--versions)--versions[list all installed versions of a formula]' \
       '1: :->forms' &&  return 0
 
       if [[ "$state" == forms ]]; then
         _brew_installed_formulae
-        _requested installed_formulae expl 'installed formulae' compadd -a installed_formulae
+        _wanted installed_formulae expl 'installed formulae' compadd -a installed_formulae
       fi ;;
   install|home|log|info|uses|cat|deps)
     _brew_all_formulae

@@ -2,15 +2,20 @@ require 'formula'
 
 class Boost <Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.43.0/boost_1_43_0.tar.bz2'
-  md5 'dd49767bfb726b0c774f7db0cef91ed1'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.45.0/boost_1_45_0.tar.bz2'
+  md5 'd405c606354789d0426bc07bea617e58'
+
+  def options
+    [['--with-mpi', "Enables MPI support"]]
+  end
 
   def install
-    fails_with_llvm "the standard llvm-gcc causes errors with dropped arguments "+
-                    "to functions when linking with the boost library"
+    fails_with_llvm "LLVM-GCC causes errors with dropped arguments to "+
+                    "functions when linking with boost"
 
     # Adjust the name the libs are installed under to include the path to the
-    # Homebrew lib directory so executables will work when isntalled to a non-/usr/local location.
+    # Homebrew lib directory so executables will work when installed to a
+    # non-/usr/local location.
     #
     # otool -L `which mkvmerge`
     # /usr/local/bin/mkvmerge:
@@ -29,6 +34,7 @@ class Boost <Formula
     # Force boost to compile using the GCC 4.2 compiler
     open("user-config.jam", "a") do |file|
       file.write "using darwin : : #{ENV['CXX']} ;\n"
+      file.write "using mpi ;\n" if ARGV.include? '--with-mpi'
     end
 
     # we specify libdir too because the script is apparently broken

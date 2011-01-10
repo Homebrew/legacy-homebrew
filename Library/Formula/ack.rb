@@ -1,8 +1,12 @@
 require 'formula'
 
-class Ack <ScriptFileFormula
-  url "http://github.com/petdance/ack/raw/079b049b7240c2960a8ff811b2857eba462ad803/ack"
-  version '1.92'
-  md5 '7db577145ceba9f6cc5fddc3e8198342'
+class Ack < Formula
+  url "https://github.com/petdance/ack/tarball/1.94"
+  md5 '6c75e25bb29e24f89f77f2ee6deb29e8'
   homepage 'http://betterthangrep.com/'
+
+  def install
+    bin.install 'ack'
+    (prefix+'etc/bash_completion.d').install 'etc/ack.bash_completion.sh'
+  end
 end

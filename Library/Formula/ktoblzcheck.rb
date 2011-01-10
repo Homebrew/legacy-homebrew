@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ktoblzcheck <Formula
-  url 'http://freefr.dl.sourceforge.net/project/ktoblzcheck/ktoblzcheck/ktoblzcheck-1.24.tar.gz'
+  url 'http://downloads.sourceforge.net/project/ktoblzcheck/ktoblzcheck-1.29.tar.gz'
   homepage 'http://ktoblzcheck.sourceforge.net/'
-  md5 '6385d5eca2db5f7eb3bd49312166eaf7'
+  md5 '49b3d70f8c735bfb6060edec349565c0'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"

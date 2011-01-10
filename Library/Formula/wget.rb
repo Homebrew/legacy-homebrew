@@ -1,8 +1,5 @@
 require 'formula'
 
-# iri support requires libidn, which pulls in getteext, so we
-# disable this by default.
-
 class Wget <Formula
   homepage 'http://www.gnu.org/software/wget/'
   url 'http://ftp.gnu.org/gnu/wget/wget-1.12.tar.bz2'
@@ -11,7 +8,14 @@ class Wget <Formula
   depends_on "libidn" if ARGV.include? "--enable-iri"
 
   def options
-    [["--enable-iri", "Enable iri support (which pulls in libidn and gettext.)"]]
+    [["--enable-iri", "Enable iri support."]]
+  end
+
+  def patches
+    # Fixes annoying TLS Subject Alternative Name bug encountered especially when using GitHub
+    # Remove when 1.12.1 is released.
+    # See https://savannah.gnu.org/bugs/?23934
+    "http://savannah.gnu.org/file/wget-1.12-subjectAltNames.diff?file_id=18828"
   end
 
   def install

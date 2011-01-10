@@ -1,11 +1,11 @@
 require 'formula'
 
 class Monotone <Formula
-  url 'http://www.monotone.ca/downloads/0.47/monotone-0.47.tar.gz'
+  url 'http://www.monotone.ca/downloads/0.48.1/monotone-0.48.1.tar.gz'
   homepage 'http://www.monotone.ca/'
-  md5 '21da9c44a197f2e5e379a5bb4e42797e'
+  md5 'b5fa9e3b02ca3dcaf58fb7a2519ef956'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'botan'
   depends_on 'boost'

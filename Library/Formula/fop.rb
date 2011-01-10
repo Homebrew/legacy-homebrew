@@ -2,8 +2,8 @@ require 'formula'
 
 class Fop <Formula
   homepage "http://xmlgraphics.apache.org/fop/index.html"
-  url "http://mirrors.ibiblio.org/pub/mirrors/apache/xmlgraphics/fop/binaries/fop-0.95-bin.tar.gz"
-  md5 "7af50bf58924dd22d71d22d8ad90b268"
+  url "http://mirrors.ibiblio.org/pub/mirrors/apache/xmlgraphics/fop/binaries/fop-1.0-bin.tar.gz"
+  md5 "3186f93a314bdcb710bd7cb02d80404c"
 
   def shim_script target
     <<-EOS.undent

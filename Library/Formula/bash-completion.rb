@@ -7,20 +7,20 @@ class BashCompletion <Formula
   head 'git://git.debian.org/git/bash-completion/bash-completion.git'
 
   def install
-    inreplace "bash_completion", '/etc/bash_completion', "#{etc}/bash_completion"
-    inreplace "bash_completion", 'readlink -f', "readlink"
+    inreplace "bash_completion" do |s|
+      s.gsub! '/etc/bash_completion', "#{etc}/bash_completion"
+      s.gsub! 'readlink -f', "readlink"
+    end
+
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 
-  def caveats
-    puts <<-EOS
-==============================================================
+  def caveats; <<-EOS
 Add the following lines to your ~/.bash_profile file:
 if [ -f `brew --prefix`/etc/bash_completion ]; then
   . `brew --prefix`/etc/bash_completion
 fi
-==============================================================
     EOS
   end
 end

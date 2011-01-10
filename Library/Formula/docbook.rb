@@ -1,7 +1,7 @@
 require 'formula'
 
 class Docbook <Formula
-  url 'http://gist.github.com/raw/462528/098ccc609b039cf5b6d11fcd9c8ef333c3861b65/docbook-register'
+  url 'https://gist.github.com/raw/462528/098ccc609b039cf5b6d11fcd9c8ef333c3861b65/docbook-register'
   md5 '0fbc35a136190050de3598354655fd82'
   version '5.0'
   homepage 'http://docbook.sourceforge.net/'
@@ -76,7 +76,7 @@ class Docbookxsl <Formula
   homepage 'http://docbook.sourceforge.net/'
   def install
     doc_files = %w[AUTHORS BUGS README RELEASE-NOTES.txt TODO VERSION NEWS COPYING]
-    xsl_files = %w[catalog.xml common eclipse extensions fo highlighting html htmlhelp images javahelp lib manpages params profiling roundtrip slides template tools website xhtml xhtml-1_1]
+    xsl_files = %w[catalog.xml common eclipse epub extensions fo highlighting html htmlhelp images javahelp lib manpages params profiling roundtrip slides template tools website xhtml xhtml-1_1]
     docbook = Formula.factory 'docbook'
     (docbook.prefix+'docbook/xsl'+version).install xsl_files + doc_files
   end

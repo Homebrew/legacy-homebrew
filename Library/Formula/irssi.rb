@@ -5,7 +5,7 @@ class Irssi <Formula
   url 'http://irssi.org/files/irssi-0.8.15.tar.bz2'
   md5 '1dcb3f511b88df94b0c996f36668c7da'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
 
   # Don't strip, to allow dynamic loading of modules

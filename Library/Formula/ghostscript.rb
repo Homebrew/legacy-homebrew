@@ -7,11 +7,11 @@ class GhostscriptFonts <Formula
 end
 
 class Ghostscript <Formula
-  url 'http://downloads.sourceforge.net/project/ghostscript/GPL%20Ghostscript/8.71/ghostscript-8.71.tar.gz'
+  url 'http://ghostscript.com/releases/ghostscript-9.00.tar.bz2'
   homepage 'http://www.ghostscript.com/'
-  md5 '51a522a5b4818bd3dc7c1c0e9dd22bad'
+  md5 '177c33b796ed28d3d568e230a6dbdba5'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'jpeg'
   depends_on 'libtiff'
 
@@ -55,7 +55,7 @@ class Ghostscript <Formula
   def caveats
       <<-EOS.undent
         There have been reports that installing Ghostscript can break printing on OS X:
-          http://github.com/mxcl/homebrew/issues/issue/528
+          https://github.com/mxcl/homebrew/issues/issue/528
 
         If your printing doesn't break, please comment on the issue! Thanks.
       EOS

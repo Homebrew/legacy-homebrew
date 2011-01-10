@@ -1,7 +1,7 @@
 require 'formula'
 
 class EttercapNg < Formula
-  url 'http://prdownloads.sourceforge.net/ettercap/ettercap-NG-0.7.3.tar.gz'
+  url 'http://downloads.sourceforge.net/ettercap/ettercap-NG-0.7.3.tar.gz'
   homepage 'http://ettercap.sourceforge.net/'
   md5 '28fb15cd024162c55249888fe1b97820'
 

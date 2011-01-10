@@ -1,13 +1,14 @@
 require 'formula'
 
 class Couchdb <Formula
-  url 'git://github.com/apache/couchdb.git', :tag => "origin/tags/1.0.0"
+  url 'https://github.com/apache/couchdb/tarball/1.0.1'
   homepage "http://couchdb.apache.org/"
-  version "1.0.0"
+  md5 'f2ea23caacff482afe44e29a3f8b7685'
 
   depends_on 'spidermonkey'
   depends_on 'icu4c'
   depends_on 'erlang'
+  depends_on 'curl' if MACOS_VERSION < 10.6
 
   def install
     system "./bootstrap" if File.exists? "bootstrap"
@@ -23,15 +24,20 @@ class Couchdb <Formula
     (lib+'couchdb/bin/couchjs').chmod 0755
     (var+'lib/couchdb').mkpath
     (var+'log/couchdb').mkpath
-    (etc + "couchdb/local.d/delayed_commits.ini").write ini_file
-
   end
 
-  def ini_file
-    return <<-EOS
-[couchdb]
-  delayed_commits = false ; See http://couchdb.apache.org/notice/1.0.1.html for details.
-EOS
-  end
+  def caveats; <<-EOS.undent
+    If this is your first install, automatically load on login with:
+        cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist ~/Library/LaunchAgents
+        launchctl load -w ~/Library/LaunchAgents/org.apache.couchdb.plist
 
+    If this is an upgrade and you already have the org.apache.couchdb.plist loaded:
+        launchctl unload -w ~/Library/LaunchAgents/org.apache.couchdb.plist
+        cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist ~/Library/LaunchAgents
+        launchctl load -w ~/Library/LaunchAgents/org.apache.couchdb.plist
+
+    Or start manually with:
+        couchdb
+    EOS
+  end
 end

@@ -1,12 +1,14 @@
 require 'formula'
 
 class Npm <Formula
-  url 'http://github.com/isaacs/npm/tarball/v0.1.23'
-  homepage 'http://github.com/isaacs/npm'
-  md5 '8f1b08567985f90028492803785f2092'
+  url 'https://github.com/isaacs/npm/tarball/v0.2.11-5'
+  homepage 'http://npmjs.org/'
+  md5 '7f62aa24794a805d8d61da93786e3d05'
   head 'git://github.com/isaacs/npm.git'
 
   depends_on 'node'
+
+  skip_clean 'share/npm/bin'
 
   def executable; <<-EOS
 #!/bin/sh
@@ -38,29 +40,39 @@ EOS
 
     # add "npm-" prefix to man pages link them into the libexec man pages
     man1.mkpath
-    Dir.chdir libexec+"man" do
+    Dir.chdir libexec + "man1" do
       Dir["*"].each do |file|
         if file == "npm.1"
-          ln_s "#{libexec}/man/#{file}", man1
+          ln_s "#{Dir.pwd}/#{file}", man1
         else
-          ln_s "#{libexec}/man/#{file}", "#{man1}/npm-#{file}"
+          ln_s "#{Dir.pwd}/#{file}", "#{man1}/npm-#{file}"
         end
       end
     end
 
     # install the wrapper executable
     (bin+"npm").write executable
+
+    # bash-completion
+    (prefix+'etc/bash_completion.d').install libexec+'npm-completion.sh'
   end
 
   def caveats; <<-EOS.undent
     npm will install binaries to:
       #{share_bin}
+
     You may want to add this to your PATH.
 
     npm will install libraries to:
       #{node_lib}/.npm
 
     To manually remove libraries installed by npm, delete this (hidden!) folder.
+
+    npm will also symlink libraries to:
+      #{node_lib}
+
+    You will want to add this to your NODE_PATH if you wish to
+    require libraries without a path.
     EOS
   end
 end

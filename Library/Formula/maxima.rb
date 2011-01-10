@@ -1,12 +1,12 @@
 require 'formula'
 
 class Maxima <Formula
-  url 'http://downloads.sourceforge.net/project/maxima/Maxima-source/5.21.1-source/maxima-5.21.1.tar.gz'
+  url 'http://sourceforge.net/projects/maxima/files/Maxima-source/5.22.1-source/maxima-5.22.1.tar.gz'
   homepage 'http://maxima.sourceforge.net/'
-  md5 'e08ed533f3059cec52788ef35198bdcc'
+  md5 '160ea8be39127d6636b934a85e407c9b'
 
   depends_on 'gettext'
-  depends_on 'cmucl'
+  depends_on 'sbcl'
   depends_on 'gnuplot'
   depends_on 'rlwrap'
 
@@ -14,7 +14,8 @@ class Maxima <Formula
     ENV.deparallelize
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--enable-cmucl", "--enable-gettext"
+                          "--mandir=#{man}", "--infodir=#{info}",
+                          "--enable-sbcl", "--enable-gettext"
     system "make install"
   end
 end

@@ -6,7 +6,7 @@ class Gsl <Formula
   md5 'd55e7b141815412a072a3f0e12442042'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make" # A GNU tool which doesn't support just make install! Shameful!
     system "make install"
   end
