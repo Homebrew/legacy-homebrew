@@ -4,10 +4,10 @@ require 'formula'
 require "#{File.dirname __FILE__}/ec2-api-tools.rb"
 
 class AutoScaling <AmazonWebServicesFormula
-  version  '1.0.9.0'
+  version  '1.0.33.1'
   homepage 'http://developer.amazonwebservices.com/connect/entry.jspa?externalID=2535&categoryID=251'
-  url      'http://ec2-downloads.s3.amazonaws.com/AutoScaling-2009-05-15.zip'
-  md5      'a8410272127432d01d5f1a90d976b822'
+  url      'http://ec2-downloads.s3.amazonaws.com/AutoScaling-2010-08-01.zip'
+  md5      'e2cfe8820cd5906bf520cf6069d9b95d'
 
   def install
     standard_install

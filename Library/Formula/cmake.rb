@@ -6,6 +6,16 @@ class Cmake <Formula
   homepage 'http://www.cmake.org/'
 
   def install
+    # A framework-installed expat will be detected and mess things up.
+    if File.exist? "/Library/Frameworks/expat.framework"
+      opoo "/Library/Frameworks/expat.framework detected"
+      puts <<-EOS.undent
+        This will be picked up by Cmake's build system and likey cause the
+        build to fail, trying to link to a 32-bit version of expat.
+        You may need to move this file out of the way for this brew to work.
+      EOS
+    end
+
     # If we specify to CMake to use the system libraries by passing
     # --system-libs to bootstrap then it insists on finding them all
     # or erroring out, as that's what other Linux/OSX distributions
