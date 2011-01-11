@@ -1,8 +1,13 @@
 require 'formula'
 
+#
+# NOTE: You must also change the version in the patch below, as the upstream
+# build figures out the version number from the hg checkout.
+#
+
 class Sip <Formula
-  url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.11.2.tar.gz'
-  md5 '06b12c0b36bb31b4d30185d7ab512a69'
+  url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.12.tar.gz'
+  md5 'a9fa74162d65a813aa35a452f8e6ec36'
   head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
 
@@ -27,6 +32,8 @@ class Sip <Formula
     EOS
   end
 end
+
+
 __END__
 Patch to allow the SIP build.py script to generate a reasonable version number
 without the .hg directory from the Mercurial repository.
@@ -49,7 +56,7 @@ index 927d7f1..fdf13a3 100755
      # Format the results.
      if version is None:
 -        version = (0, 1, 0)
-+        version = (4, 11, 2)
++        version = (4, 12, 0)
  
      major, minor, micro = version
  
