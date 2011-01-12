@@ -17,6 +17,12 @@ class Mutt <Formula
   def patches
     p = []
 
+    # Mutt ssl fix
+    p <<  'http://trac.macports.org/export/70157/trunk/dports/mail/mutt-devel/files/patch-1.5.20.mutt_ssl.diff'
+
+    # Fix imap unsubscribe
+    p <<  'http://trac.macports.org/export/70158/trunk/dports/mail/mutt-devel/files/patch-1.5.20.unmailboxes.diff?rev=70158'
+
     if ARGV.include? '--sidebar-patch'
       p << 'http://lunar-linux.org/~tchan/mutt/patch-1.5.20.sidebar.20090619.txt'
     end
