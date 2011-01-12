@@ -29,5 +29,8 @@ class Riak <Formula
 
     (prefix + 'data/ring').mkpath
     (prefix + 'data/dets').mkpath
+
+    # Install man pages
+    man1.install Dir["doc/man/man1/*"]
   end
 end
