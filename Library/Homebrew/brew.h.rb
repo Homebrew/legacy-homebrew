@@ -111,6 +111,21 @@ end
 end
 
 def make url
+  # Redirect Sourceforge URLs to geolocated destination and ensure consistency
+  # Strip query parameters
+  sourceforge = url.match '(http:\/\/downloads.sourceforge.net\/project\/\w+\/\w+\/\S+\/\S+)\?\S+'
+  if sourceforge
+    url = sourceforge[1]
+  else
+    # Create new URL from /download URL
+    sourceforge = url.match 'http:\/\/sourceforge\.net\/projects\/(\w+)\/files\/(\w+\/\S+\/\S+)\/download'
+    if sourceforge
+      project = sourceforge[1]
+      path = sourceforge[2]
+      url = "http://downloads.sourceforge.net/project/#{project}/#{path}"
+    end
+  end
+
   path = Pathname.new url
 
   /(.*?)[-_.]?#{path.version}/.match path.basename
