@@ -9,9 +9,10 @@ _brew_to_completion()
 
     # Subcommand list
     [[ ${COMP_CWORD} -eq 1 ]] && {
-        local actions="--cache --config --prefix cat cleanup configure create
-            deps doctor edit home info install link list log outdated prune
-            remove search unlink update uses"
+        local actions="--cache --cellar --config --help --env --prefix
+            --repository --version -h cat cleanup configure create deps doctor
+            edit home info install link list log outdated prune remove search
+            uninstall unlink update uses"
         local ext=$(\ls $(brew --repository)/Library/Contributions/examples |
                     sed -e "s/\.rb//g" -e "s/brew-//g")
         COMPREPLY=( $(compgen -W "${actions} ${ext}" -- ${cur}) )
@@ -22,7 +23,7 @@ _brew_to_completion()
 
     case "$action" in
     # Commands that take formulae
-    cat|deps|edit|fetch|home|homepage|info|install|log|options|uses)
+    --cache|--cellar|--prefix|cat|deps|edit|fetch|home|homepage|info|install|log|options|uses)
         local ff=$(\ls $(brew --repository)/Library/Formula | sed "s/\.rb//g")
         local af=$(\ls $(brew --repository)/Library/Aliases 2> /dev/null | sed "s/\.rb//g")
         COMPREPLY=( $(compgen -W "${ff} ${af}" -- ${cur}) )
