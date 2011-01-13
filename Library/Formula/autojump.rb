@@ -1,10 +1,10 @@
 require 'formula'
 
 class Autojump <Formula
-  url 'https://github.com/downloads/joelthelion/autojump/autojump_v13.tar.gz'
+  url 'https://github.com/downloads/joelthelion/autojump/autojump_v14.tar.gz'
   homepage 'https://github.com/joelthelion/autojump/wiki'
-  md5 '13e4e6173f4ed63b8babb00fcd95f600'
-  version '13'
+  md5 '7c0a41a2d33aee11a844dc17f7825dc9'
+  version '14'
 
   def install
     bin.install "autojump"
