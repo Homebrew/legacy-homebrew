@@ -18,23 +18,17 @@ _brew_to_completion()
         return
     }
 
-    # Find the previous non-switch word
-    local prev_index=$((COMP_CWORD - 1))
-    local prev="${COMP_WORDS[prev_index]}"
-    while [[ $prev == -* ]]; do
-        prev_index=$((--prev_index))
-        prev="${COMP_WORDS[prev_index]}"
-    done
+    local action="${COMP_WORDS[1]}"
 
-    case "$prev" in
-    # Commands that take a formula
+    case "$action" in
+    # Commands that take formulae
     cat|deps|edit|fetch|home|homepage|info|install|log|options|uses)
         local ff=$(\ls $(brew --repository)/Library/Formula | sed "s/\.rb//g")
         local af=$(\ls $(brew --repository)/Library/Aliases 2> /dev/null | sed "s/\.rb//g")
         COMPREPLY=( $(compgen -W "${ff} ${af}" -- ${cur}) )
         return
         ;;
-    # Commands that take an existing brew
+    # Commands that take existing brews
     abv|cleanup|link|list|ln|ls|remove|rm|test|uninstall|unlink)
         COMPREPLY=( $(compgen -W "$(\ls $(brew --cellar))" -- ${cur}) )
         return
