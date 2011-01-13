@@ -2,8 +2,8 @@
 require 'formula'
 
 class GitFlowCompletion <Formula
-  url 'git://github.com/bobthecow/git-flow-completion.git', :tag => '0.4.0'
-  version '0.4.0'
+  url 'git://github.com/bobthecow/git-flow-completion.git', :tag => '0.4.0.1'
+  version '0.4.0.1'
   head 'git://github.com/bobthecow/git-flow-completion.git', :branch => 'develop'
 
   def initialize
@@ -14,7 +14,7 @@ class GitFlowCompletion <Formula
     super "git-flow-completion"
   end
 
-  homepage 'http://github.com/bobthecow/git-flow-completion'
+  homepage 'https://github.com/bobthecow/git-flow-completion'
 end
 
 class GitFlow <Formula
@@ -22,7 +22,7 @@ class GitFlow <Formula
   version '0.4'
   head 'git://github.com/nvie/gitflow.git', :branch => 'develop'
 
-  homepage 'http://github.com/nvie/gitflow'
+  homepage 'https://github.com/nvie/gitflow'
 
   def install
     system "make", "prefix=#{prefix}", "install"

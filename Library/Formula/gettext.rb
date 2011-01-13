@@ -8,7 +8,7 @@ class Gettext <Formula
   keg_only "OS X provides the BSD gettext library and some software gets confused if both are in the library path."
 
   def patches
-    'http://gist.github.com/raw/186336/2fe65fab894f94a03aab2f03349ae7f1febcd301/mac-osx-105-environ.patch'
+    'https://gist.github.com/raw/186336/2fe65fab894f94a03aab2f03349ae7f1febcd301/mac-osx-105-environ.patch'
   end
 
   def options

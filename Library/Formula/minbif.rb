@@ -18,8 +18,8 @@ class Minbif <Formula
       s.gsub! "motd = /etc", "motd = #{etc}"
     end
 
-    system "make"
-    system "make install"
+    system "make", "PREFIX=#{prefix}"
+    system "make", "PREFIX=#{prefix}", "install"
 
     (var + "lib/minbif/users").mkpath
   end
