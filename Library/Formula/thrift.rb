@@ -18,12 +18,14 @@ class Thrift <Formula
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--libdir=#{lib}",
-                          "--without-java",
                           "--without-python",
                           "--without-ruby",
                           "--without-perl",
-                          "--without-php"
-    system "make"
+                          "--without-php",
+                          ## haskell requires some dependencies that I'm not qualified to figure out
+                          "--without-haskell"
+    ## there is a bug with dependency specification in the makefile in 0.5.0 the '-j 1' works around the issue
+    system "make -j 1"
     system "make install"
   end
 
