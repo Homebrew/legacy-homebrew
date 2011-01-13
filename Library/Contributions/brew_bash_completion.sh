@@ -24,9 +24,22 @@ _brew_to_completion()
     case "$action" in
     # Commands that take formulae
     --cache|--cellar|--prefix|cat|deps|edit|fetch|home|homepage|info|install|log|options|uses)
+        local opts=""
+        case "$action" in
+        # Commands that take formulae options
+        deps|fetch|install)
+            if [[ ${COMP_CWORD} > 2 ]]; then
+                for word in ${COMP_WORDS[@]:2:$((COMP_CWORD - 2))}; do
+                    if [[ -n "${word%%-*}" ]]; then
+                        opts="${opts} $(brew options "${word}" | grep ^-)"
+                    fi
+                done
+            fi
+            ;;
+        esac
         local ff=$(\ls $(brew --repository)/Library/Formula | sed "s/\.rb//g")
         local af=$(\ls $(brew --repository)/Library/Aliases 2> /dev/null | sed "s/\.rb//g")
-        COMPREPLY=( $(compgen -W "${ff} ${af}" -- ${cur}) )
+        COMPREPLY=( $(compgen -W "${opts} ${ff} ${af}" -- ${cur}) )
         return
         ;;
     # Commands that take existing brews
