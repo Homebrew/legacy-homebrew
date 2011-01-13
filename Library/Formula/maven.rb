@@ -1,9 +1,9 @@
 require 'formula'
 
 class Maven <Formula
-  url 'http://www.apache.org/dist/maven/binaries/apache-maven-3.0.1-bin.tar.gz'
+  url 'http://www.apache.org/dist/maven/binaries/apache-maven-3.0.2-bin.tar.gz'
   homepage 'http://maven.apache.org/'
-  md5 '98379efcef6b07bc44c27ec8382ad366'
+  md5 '01496e49c1fae860cdf573c6316f85c4'
 
   def install
     # Remove windows files
