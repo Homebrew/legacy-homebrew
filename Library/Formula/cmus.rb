@@ -1,10 +1,9 @@
 require 'formula'
 
 class Cmus <Formula
-  url 'https://sourceforge.net/projects/cmus/files/cmus-v2.3.3.tar.bz2/download'
+  url 'http://downloads.sourceforge.net/project/cmus/cmus-v2.3.3.tar.bz2'
   homepage 'http://cmus.sourceforge.net/'
   md5 '220e875e4210a6b54882114ef7094a79'
-  version '2.3.3'
 
   depends_on 'libao'
   depends_on 'mad'
