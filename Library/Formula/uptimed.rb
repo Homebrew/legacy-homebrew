@@ -5,6 +5,9 @@ class Uptimed <Formula
   homepage 'http://podgorny.cz/moin/Uptimed'
   md5 'c523d6434b672107ea00559bb38eb050'
 
+  # Stripping symbols breaks uptimed
+  skip_clean :all
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
