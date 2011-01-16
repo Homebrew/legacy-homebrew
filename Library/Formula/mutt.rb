@@ -10,6 +10,7 @@ class Mutt <Formula
   def options
     [
       ['--sidebar-patch', "Apply sidebar (folder list) patch"],
+      ['--enable-debug', "Build with debug option enabled"],
       ['--trash-patch', "Apply trash folder patch"]
     ]
   end
@@ -31,7 +32,13 @@ class Mutt <Formula
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    if ARGV.include? '--enable-debug'
+      debug = "--enable-debug"
+    else
+      debug = "--disable-debug"
+    end
+
+    system "./configure", "#{debug}", "--disable-dependency-tracking",
                           "--disable-warnings",
                           "--prefix=#{prefix}",
                           "--with-ssl",
