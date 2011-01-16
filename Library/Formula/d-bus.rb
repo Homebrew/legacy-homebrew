@@ -1,9 +1,9 @@
 require 'formula'
 
 class DBus <Formula
-  url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.4.0.tar.gz'
+  url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.4.1.tar.gz'
   homepage 'http://www.freedesktop.org/wiki/Software/dbus'
-  md5 'f59618b18d2fb2bd1fce9e1c5a2a3282'
+  md5 '99cb057700c0455fb68f8d57902f77ac'
 
   # Don't clean the empty directories that D-Bus needs
   skip_clean "etc/dbus-1/session.d"
@@ -11,20 +11,15 @@ class DBus <Formula
   skip_clean "var/run/dbus"
 
   def patches
-    # Patches merged upstream for launchd support.
-    # See http://bugs.freedesktop.org/show_bug.cgi?id=14259
-    [ 'http://cgit.freedesktop.org/dbus/dbus/patch/?id=5125fc165454e81849a5b20c1e75b4f74bdbcd2c',
-      'http://cgit.freedesktop.org/dbus/dbus/patch/?id=eb66c0a9c001ea08793b38470d12611ffaafa436',
-      'http://cgit.freedesktop.org/dbus/dbus/patch/?id=f1b9aac417d8fb716d6ed19128fe429e8a41adba',
-      'http://cgit.freedesktop.org/dbus/dbus/patch/?id=5232faad4039041ee178287eb528d8db13aa0f66' ]
+    # Last-minute build breakages for 1.4.1
+    [ 'http://cgit.freedesktop.org/dbus/dbus/patch/?id=88004d6b66f80d72e97e9b6b024842d692e5748a',
+      'http://cgit.freedesktop.org/dbus/dbus/patch/?id=56d8d4f58ee60cd4f860a99a2dd47b3f636321b8' ]
   end
 
   def install
     # Fix the TMPDIR to one D-Bus doesn't reject due to odd symbols
     ENV["TMPDIR"] = "/tmp"
 
-    # Needed to regenerate configure for the patches to work
-    system "autoreconf -ivf"
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -33,6 +28,8 @@ class DBus <Formula
                           "--enable-launchd",
                           "--with-launchd-agent-dir=#{prefix}",
                           "--without-x"
+    system "make"
+    ENV.deparallelize
     system "make install"
 
     # Generate D-Bus's UUID for this machine

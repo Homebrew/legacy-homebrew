@@ -10,12 +10,15 @@ class Mutt <Formula
   def options
     [
       ['--sidebar-patch', "Apply sidebar (folder list) patch"],
+      ['--enable-debug', "Build with debug option enabled"],
       ['--trash-patch', "Apply trash folder patch"]
     ]
   end
 
   def patches
-    p = []
+    # Fix unsubscribe malformed folder
+    # See: http://dev.mutt.org/trac/ticket/3389
+    p = [ 'http://dev.mutt.org/hg/mutt/raw-rev/25e46aad362b' ]
 
     if ARGV.include? '--sidebar-patch'
       p << 'http://lunar-linux.org/~tchan/mutt/patch-1.5.20.sidebar.20090619.txt'
@@ -29,7 +32,13 @@ class Mutt <Formula
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    if ARGV.include? '--enable-debug'
+      debug = "--enable-debug"
+    else
+      debug = "--disable-debug"
+    end
+
+    system "./configure", "#{debug}", "--disable-dependency-tracking",
                           "--disable-warnings",
                           "--prefix=#{prefix}",
                           "--with-ssl",

@@ -1,16 +1,16 @@
 require 'formula'
 
-class Findutils <Formula
-  url 'http://ftp.gnu.org/pub/gnu/findutils/findutils-4.4.2.tar.gz'
-  homepage 'http://www.gnu.org/software/findutils/'
-  md5 '351cc4adb07d54877fa15f75fb77d39f'
+class GnuUnits <Formula
+  url 'http://ftp.gnu.org/gnu/units/units-1.88.tar.gz'
+  homepage 'http://www.gnu.org/software/units/'
+  md5 '9b2ee6e7e0e9c62741944cf33fc8a656'
 
   def options
     [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
   end
 
   def install
-    args = ["--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"]
+    args = ["--prefix=#{prefix}"]
     args << "--program-prefix=g" unless ARGV.include? '--default-names'
 
     system "./configure", *args
