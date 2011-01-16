@@ -9,6 +9,10 @@ class Boost <Formula
     [['--with-mpi', "Enables MPI support"]]
   end
 
+  def options
+    [["--universal", "Build universal binaries."]]
+  end
+
   def install
     fails_with_llvm "LLVM-GCC causes errors with dropped arguments to "+
                     "functions when linking with boost"
@@ -37,6 +41,9 @@ class Boost <Formula
       file.write "using mpi ;\n" if ARGV.include? '--with-mpi'
     end
 
+    additional_jam_args = []
+    additional_jam_args << "address-model=32_64" << "pch=off" if ARGV.include? "--universal"
+
     # we specify libdir too because the script is apparently broken
     system "./bootstrap.sh", "--prefix=#{prefix}", "--libdir=#{lib}"
     system "./bjam", "--prefix=#{prefix}",
@@ -45,6 +52,7 @@ class Boost <Formula
                      "--layout=tagged",
                      "--user-config=user-config.jam",
                      "threading=multi",
-                     "install"
+                     "install",
+                     *additional_jam_args
   end
 end
