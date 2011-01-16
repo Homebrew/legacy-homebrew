@@ -9,7 +9,7 @@ class Dar <Formula
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--mandir=#{man1}",
+                          "--prefix=#{prefix}", "--mandir=#{man}",
                           "--disable-build-html"
     system "make install"
   end
