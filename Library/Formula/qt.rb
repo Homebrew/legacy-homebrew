@@ -16,6 +16,9 @@ class Qt <Formula
       ['--with-qtdbus', "Enable QtDBus module."],
       ['--with-qt3support', "Enable deprecated Qt3Support module."],
       ['--with-demos-examples', "Enable Qt demos and examples."],
+      ['--universal', "Builds the Qt libraries as universal binaries."],
+      ['--no-framework', "Builds the Qt libraries as Unix-style libraries instead of OS X frameworks."],
+      ['--debug', "Additionally build and install debug versions of the Qt libraries."],
     ]
   end
 
@@ -30,7 +33,7 @@ class Qt <Formula
   def install
     args = ["-prefix", prefix,
             "-system-libpng", "-system-zlib",
-            "-release", "-cocoa",
+            "-cocoa",
             "-confirm-license", "-opensource",
             "-fast"]
 
@@ -52,6 +55,12 @@ class Qt <Formula
       args << "-no-qt3support"
     end
 
+    if ARGV.include? '--debug'
+      args << "-debug-and-release"
+    else
+      args << "-release"
+    end
+
     unless ARGV.include? '--with-demos-examples'
       args << "-nomake" << "demos" << "-nomake" << "examples"
     end
@@ -66,9 +75,12 @@ class Qt <Formula
 
     if snow_leopard_64?
       args << '-arch' << 'x86_64'
+      args << '-arch' << 'x86' if ARGV.include? '--universal'
     else
       args << '-arch' << 'x86'
     end
+
+    args << '-no-framework' if ARGV.include? '--no-framework'
 
     system "./configure", *args
     system "make"
