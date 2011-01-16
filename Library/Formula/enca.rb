@@ -1,11 +1,11 @@
 require 'formula'
 
-class Afflib <Formula
-  url 'http://afflib.org/downloads/afflib-3.6.6.tar.gz'
-  homepage 'http://afflib.org'
-  md5 'b7ff4d2945882018eb1536cad182ad01'
+class Enca <Formula
+  url 'http://dl.cihar.com/enca/enca-1.13.tar.gz'
+  homepage 'http://freshmeat.net/projects/enca'
+  md5 '58fcf1fea7eeab70b64a2d61e14a967d'
 
-  depends_on 'expat' => :optional
+  depends_on 'libiconv'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
