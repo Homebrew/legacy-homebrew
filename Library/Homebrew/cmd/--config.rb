@@ -31,7 +31,7 @@ module Homebrew extend self
   end
 
   def gcc_40_recommendation
-    "(#{RECOMMENDED_GCC_40} or newer recommended)" if gcc_40.nil? and gcc_40 < RECOMMENDED_GCC_40
+    "(#{RECOMMENDED_GCC_40} or newer recommended)" if gcc_40 and gcc_40 < RECOMMENDED_GCC_40
   end
 
   def sha
