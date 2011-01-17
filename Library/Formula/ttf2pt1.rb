@@ -6,8 +6,7 @@ class Ttf2pt1 < Formula
   md5 'cb143c07cc83167875ca09ea720d4932'
 
   def patches
-    # Enables freetype2 support correcting sources
-    # in ft.c and Makefile
+    # Enables freetype2 support patching ft.c and Makefile
     DATA
   end
 
