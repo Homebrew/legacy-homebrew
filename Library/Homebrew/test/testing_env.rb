@@ -1,6 +1,7 @@
 # This software is in the public domain, furnished "as is", without technical
 # support, and with no warranty, express or implied, as to its usefulness for
 # any purpose.
+require 'tmpdir'
 
 # Require this file to build a testing environment.
 
@@ -11,7 +12,7 @@ require 'extend/pathname'
 
 # these are defined in global.rb, but we don't want to break our actual
 # homebrew tree, and we do want to test everything :)
-HOMEBREW_PREFIX=Pathname.new '/private/tmp/testbrew/prefix'
+HOMEBREW_PREFIX=Pathname.new File.join(Dir.tmpdir, 'testbrew/prefix')
 HOMEBREW_REPOSITORY=HOMEBREW_PREFIX
 HOMEBREW_CACHE=HOMEBREW_PREFIX.parent+"cache"
 HOMEBREW_CELLAR=HOMEBREW_PREFIX.parent+"cellar"
