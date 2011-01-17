@@ -1,14 +1,14 @@
+require 'rbconfig'
+
 class Hardware
   # These methods use info spewed out by sysctl.
   # Look in <mach/machine.h> for decoding info.
 
   def self.cpu_type
-    @@cpu_type = 7
-
-    case @@cpu_type
-    when 7
+    case RbConfig::CONFIG['host_cpu']
+    when 'x86', 'x86_64'
       :intel
-    when 18
+    when 'powerpc'
       :ppc
     else
       :dunno
