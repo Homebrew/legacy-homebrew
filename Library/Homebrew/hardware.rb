@@ -3,7 +3,7 @@ class Hardware
   # Look in <mach/machine.h> for decoding info.
 
   def self.cpu_type
-    @@cpu_type ||= `/usr/sbin/sysctl -n hw.cputype`.to_i
+    @@cpu_type = 7
 
     case @@cpu_type
     when 7
@@ -16,7 +16,7 @@ class Hardware
   end
 
   def self.intel_family
-    @@intel_family ||= `/usr/sbin/sysctl -n hw.cpufamily`.to_i
+    @@intel_family = 0x426f69ef
 
     case @@intel_family
     when 0x73d67300 # Yonah: Core Solo/Duo
@@ -35,7 +35,7 @@ class Hardware
   end
 
   def self.processor_count
-    @@processor_count ||= `/usr/sbin/sysctl -n hw.ncpu`.to_i
+    @@processor_count = 2
   end
   
   def self.cores_as_words
@@ -53,7 +53,7 @@ class Hardware
   end
 
   def self.is_64_bit?
-    self.sysctl_bool("hw.cpu64bit_capable")
+    true
   end
   
   def self.bits
@@ -63,7 +63,7 @@ class Hardware
 protected
   def self.sysctl_bool(property)
     result = nil
-    IO.popen("/usr/sbin/sysctl -n #{property} 2>/dev/null") do |f|
+    IO.popen("/sbin/sysctl -n #{property} 2>/dev/null") do |f|
       result = f.gets.to_i # should be 0 or 1
     end
     $?.success? && result == 1 # sysctl call succeded and printed 1
