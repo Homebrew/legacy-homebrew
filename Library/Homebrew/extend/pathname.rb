@@ -1,4 +1,5 @@
 require 'pathname'
+require 'find'
 
 # we enhance pathname to make our code more readable
 class Pathname
@@ -90,11 +91,33 @@ class Pathname
     FileUtils.chmod_R perms, to_s
   end
 
+  def num_of_files
+    num_of_files = 0
+    Find.find(to_s) do |f|
+      if File.ftype(f) == 'file'
+        num_of_files += 1
+      end
+    end
+    num_of_files
+  end
+
+  #TODO: For some reason this gives wrong result 
+  def du
+    du = 0
+    Find.find(to_s) do |f|
+      if File.ftype(f) == 'file'
+        du += File.stat(f).size
+      end
+    end
+    du / (1024 * 1024)
+  end
+
   def abv
     out=''
-    n=`find #{to_s} -type f ! -name .DS_Store | wc -l`.to_i
+    n=num_of_files
     out<<"#{n} files, " if n > 1
-    out<<`/usr/bin/du -hd0 #{to_s} | cut -d"\t" -f1`.strip
+    d=du
+    out<<"#{d}M"
   end
 
   # attempts to retrieve the version component of this path, so generally
