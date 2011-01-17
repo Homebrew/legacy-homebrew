@@ -3,21 +3,20 @@ require 'global'
 
 def text_for_keg_only_formula f
   if f.keg_only? == :provided_by_osx
-    rationale = "Mac OS X already provides this program and installing another version in parallel can cause all kinds of trouble."
+    rationale = "Mac OS X already provides this program and installing another version in\nparallel can cause all kinds of trouble."
   elsif f.keg_only?.kind_of? String
     rationale = "The formula provides the following rationale:\n\n#{f.keg_only?.chomp}"
   else
     rationale = "The formula didn't provide any rationale for this."
   end
   <<-EOS
-#{f.name} is keg-only. This means it is not symlinked into Homebrew's
-prefix. #{rationale}
+This formula is keg-only, so it is not symlinked into Homebrew's prefix.
+#{rationale}
 
-Generally there are no consequences of this for you, however if you build your
-own software and it requires this formula, you may want to run this command to
-link it into the Homebrew prefix:
-
-    brew link #{f.name}
+Generally there are no consequences of this for you, however if you build
+your own software and it requires this formula, you may want to run this
+command to link it into the Homebrew prefix:
+    $ brew link #{f.name}
   EOS
 end
 
@@ -155,6 +154,13 @@ def install f
       opoo 'A top-level "man" folder was found.'
       puts "Homebrew requires that man pages live under share."
       puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
+    end
+
+    # Check for info pages that aren't in share/info
+    if (f.prefix+'info').exist?
+      opoo 'A top-level "info" folder was found.'
+      puts "Homebrew suggests that info pages live under share."
+      puts 'This can often be fixed by passing "--infodir=#{info}" to configure.'
     end
 
     # Check for Jars in lib

@@ -4,9 +4,9 @@ require 'formula'
 # if this is a problem for you then please fix it! Thanks.
 
 class Yaz <Formula
-  url 'http://ftp.indexdata.dk/pub/yaz/yaz-4.0.12.tar.gz'
+  url 'http://ftp.indexdata.dk/pub/yaz/yaz-4.1.2.tar.gz'
   homepage 'http://www.indexdata.com/yaz'
-  md5 '64896765604f53dcc7f8bdea921af6b3'
+  md5 '54e76ff8ee6f460d68678df298e7da71'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"

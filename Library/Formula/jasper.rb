@@ -8,6 +8,7 @@ class Jasper <Formula
   depends_on 'jpeg'
 
   def install
+    fails_with_llvm "Undefined symbols when linking", :build => "2326"
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--enable-shared",

@@ -5,7 +5,7 @@ class Automoc4 <Formula
   homepage 'http://techbase.kde.org/Development/Tools/Automoc4'
   md5 '91bf517cb940109180ecd07bc90c69ec'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'qt'
 
   def install

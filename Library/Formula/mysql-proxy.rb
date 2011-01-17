@@ -5,7 +5,7 @@ class MysqlProxy <Formula
   homepage 'https://launchpad.net/mysql-proxy'
   md5 'b6a9748d72e8db7fe3789fbdd60ff451'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'libevent'
   depends_on 'lua'

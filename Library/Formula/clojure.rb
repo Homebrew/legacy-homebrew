@@ -1,9 +1,9 @@
 require 'formula'
 
 class Clojure <Formula
-  url 'http://github.com/downloads/clojure/clojure/clojure-1.2.0.zip'
+  url 'https://github.com/downloads/clojure/clojure/clojure-1.2.0.zip'
   md5 'da0cc71378f56491d6ee70dee356831f'
-  head 'git://github.com/richhickey/clojure.git'
+  head 'git://github.com/clojure/clojure.git'
   homepage 'http://clojure.org/'
 
   def jar
@@ -27,5 +27,12 @@ EOS
     system "ant" if ARGV.build_head?
     prefix.install jar
     (bin+'clj').write script
+  end
+
+  def caveats; <<-EOS.undent
+    If you `brew install repl` then you may find this wrapper script from
+    MacPorts useful:
+      http://trac.macports.org/browser/trunk/dports/lang/clojure/files/clj-rlwrap.sh?format=txt
+    EOS
   end
 end

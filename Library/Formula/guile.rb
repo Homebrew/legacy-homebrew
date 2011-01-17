@@ -11,7 +11,7 @@ class Guile <Formula
     sha1 '24cd2f06439c76d41d982a7384fe8a0fe5313b54'
   end
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'libffi'
   depends_on 'libunistring'
   depends_on 'bdw-gc'

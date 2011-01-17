@@ -2,14 +2,14 @@ require 'formula'
 
 class UtCache <Formula
   head 'git://github.com/tanj/Unreal-Tournament-Cache.git'
-  homepage 'http://github.com/tanj/Unreal-Tournament-Cache'
+  homepage 'https://github.com/tanj/Unreal-Tournament-Cache'
 
   def patches
     DATA
   end
 
   def install
-    system "curl -o getdelim.c http://gist.github.com/raw/278167/26eae93b355d443693c1e8922a328d4a61b4a176/getdelim.c"
+    system "curl -o getdelim.c https://gist.github.com/raw/278167/26eae93b355d443693c1e8922a328d4a61b4a176/getdelim.c"
     bin.mkpath
     ENV['HOME'] = prefix
     system "make"

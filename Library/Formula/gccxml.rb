@@ -5,7 +5,7 @@ class Gccxml <Formula
   version 'HEAD'
   homepage 'http://www.gccxml.org/HTML/Index.html'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
 
   def install
     mkdir 'gccxml-build'

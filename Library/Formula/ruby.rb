@@ -1,10 +1,10 @@
 require 'formula'
 
 class Ruby <Formula
-  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p0.tar.bz2'
+  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p136.tar.bz2'
   homepage 'http://www.ruby-lang.org/en/'
   head 'http://svn.ruby-lang.org/repos/ruby/trunk/', :using => :svn
-  md5 'd8a02cadf57d2571cd4250e248ea7e4b'
+  md5 '52958d35d1b437f5d9d225690de94c13'
 
   depends_on 'readline'
   depends_on 'libyaml'
@@ -68,9 +68,9 @@ class Ruby <Formula
   end
 
   def caveats; <<-EOS.undent
-    Consider using RVM or Cider to manage Ruby environments:
-      * RVM:   http://rvm.beginrescueend.com/
-      * Cider: http://www.atmos.org/cider/intro.html
+    Consider using RVM or Cinderella to manage Ruby environments:
+      * RVM: http://rvm.beginrescueend.com/
+      * Cinderella: http://www.atmos.org/cinderella/
 
     NOTE: By default, gem installed binaries will be placed into:
       #{bin}

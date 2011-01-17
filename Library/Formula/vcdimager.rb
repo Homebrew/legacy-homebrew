@@ -5,7 +5,7 @@ class Vcdimager <Formula
   homepage 'http://www.gnu.org/software/vcdimager/'
   md5 '5e7d80fdbf0037ad20e438f2a9573253'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'libcdio'
   depends_on 'popt'
 

@@ -5,7 +5,7 @@ class Qrencode <Formula
   homepage 'http://megaui.net/fukuchi/works/qrencode/index.en.html'
   md5 'd97f67cbefaf577e6c15923f3cc57b6a'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'libpng'
 
   def install

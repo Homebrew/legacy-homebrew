@@ -5,7 +5,7 @@ class Libcroco <Formula
   md5 '1429c597aa4b75fc610ab3a542c99209'
   homepage 'http://www.freespiders.org/projects/libcroco/'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'intltool'
 

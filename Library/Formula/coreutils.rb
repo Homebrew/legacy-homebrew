@@ -20,45 +20,45 @@ def coreutils_aliases
     s += "alias #{g}=\"$brew_prefix/bin/g#{g}\"\n"
   end
 
-  s += "alias '['=\"$brew_prefix/bin/g[\""
+  s += "alias '['=\"$brew_prefix/bin/g\\[\"\n"
 
   return s
 end
 
 class Coreutils <Formula
-  url "http://ftp.gnu.org/gnu/coreutils/coreutils-8.5.tar.gz"
-  md5 'c1ffe586d001e87d66cd80c4536ee823'
+  url "http://ftp.gnu.org/gnu/coreutils/coreutils-8.7.tar.gz"
+  md5 '3c1ae9531159447083ae8f25ae554b81'
   homepage 'http://www.gnu.org/software/coreutils'
 
   def options
-    [
-      ['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."],
-      ['--aliases', "Dump an aliases file instead of doing the install."]
-    ]
+    [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
   end
 
   def install
-    if ARGV.include? '--aliases'
-      puts coreutils_aliases
-      exit 0
-    end
-
-    args = [ "--prefix=#{prefix}" ]
+    args = ["--prefix=#{prefix}"]
     args << "--program-prefix=g" unless use_default_names?
 
     system "./configure", *args
     system "make install"
+
+    (prefix+'aliases').write(coreutils_aliases)
   end
 
   def caveats
     unless use_default_names?; <<-EOS
-All commands have been installed with the prefix 'g'. In order to use these
-commands by default you can put some aliases in your bashrc. You can
-accomplish this like so:
+All commands have been installed with the prefix 'g'.
 
-    brew install coreutils --aliases >> ~/.bashrc
+A file that aliases these commands to their normal names is available
+and may be used in your bashrc like:
 
-Please note the manpages are still referenced with the g-prefix.
+    source #{prefix}/aliases
+
+But note that sourcing these aliases will cause them to be used instead
+of Bash built-in commands, which may cause problems in shell scripts.
+The Bash "printf" built-in behaves differently than gprintf, for instance,
+which is known to cause problems with "bash-completion".
+
+The man pages are still referenced with the g-prefix.
     EOS
     end
   end

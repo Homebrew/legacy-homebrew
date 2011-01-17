@@ -4,7 +4,7 @@ class V8 <Formula
   head 'http://v8.googlecode.com/svn/trunk/'
   homepage 'http://code.google.com/p/v8/'
 
-  depends_on 'scons'
+  depends_on 'scons' => :build
 
   def install
     arch = Hardware.is_64_bit? ? 'x64' : 'ia32'

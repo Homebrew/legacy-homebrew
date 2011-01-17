@@ -11,6 +11,7 @@ class Pdnsd <Formula
                           "--prefix=#{prefix}",
                           "--localstatedir=#{var}",
                           "--sysconfdir=#{etc}",
+                          "--mandir=#{man}",
                           "--with-cachedir=#{var}/cache/pdnsd"
     system "make install"
   end

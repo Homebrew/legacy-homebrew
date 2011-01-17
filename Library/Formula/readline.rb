@@ -12,12 +12,14 @@ to keg-only.
 EOS
 
   def patches
-    patches = (1..2).collect { |n| "ftp://ftp.gnu.org/gnu/readline/readline-6.1-patches/readline61-%03d"%n }
-    { :p0 => patches }
+    {:p0 => [
+        "ftp://ftp.gnu.org/gnu/readline/readline-6.1-patches/readline61-001",
+        "ftp://ftp.gnu.org/gnu/readline/readline-6.1-patches/readline61-002",
+      ]}
   end
 
   def install
-    # Always build universal, per http://github.com/mxcl/homebrew/issues/issue/899
+    # Always build universal, per https://github.com/mxcl/homebrew/issues/issue/899
     ENV.universal_binary
     system "./configure", "--prefix=#{prefix}",
                           "--mandir=#{man}",

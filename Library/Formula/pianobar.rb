@@ -1,13 +1,18 @@
 require 'formula'
 
 class Pianobar <Formula
-  head 'git://github.com/PromyLOPh/pianobar.git', :revison => '8ac0b9532a34383d22b76ff7e274e32780891dc1'
-  version '2a1e81927ef6fbf0d9c5'
-  homepage 'http://github.com/PromyLOPh/pianobar/'
+  url 'https://github.com/PromyLOPh/pianobar/tarball/2010.11.06'
+  version '2010.11.06'
+  homepage 'https://github.com/PromyLOPh/pianobar/'
+  md5 '7a43df6abed644a35a43274eb350eb33'
+
+  head 'git://github.com/PromyLOPh/pianobar.git'
 
   depends_on 'libao'
   depends_on 'mad'
   depends_on 'faad2'
+
+  skip_clean :bin
 
   def install
     ENV.delete "CFLAGS"

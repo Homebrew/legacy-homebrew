@@ -8,7 +8,11 @@ class Collectd <Formula
   skip_clean :all
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--localstatedir=#{var}", "--disable-debug", "--disable-dependency-tracking"
+    args = ["--disable-debug", "--disable-dependency-tracking",
+            "--prefix=#{prefix}", "--localstatedir=#{var}"]
+    args << "--disable-embedded-perl" if MACOS_VERSION < 10.6
+
+    system "./configure", *args
     system "make install"
   end
 end

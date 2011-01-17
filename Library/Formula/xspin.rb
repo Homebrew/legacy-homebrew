@@ -1,10 +1,10 @@
 require 'formula'
 
 class Xspin <Formula
-  url 'http://spinroot.com/spin/Src/xspin523.tcl'
+  url 'http://spinroot.com/spin/Src/xspin525.tcl'
   homepage 'http://spinroot.com/spin/Src/index.html'
-  md5 '893eb05798802cea4f281daaf34ce190'
-  version '5.2.3'
+  md5 '4b41ff53c1834168aa183def9036bbb7'
+  version '5.2.5'
 
   depends_on 'spin'
 
@@ -13,19 +13,19 @@ class Xspin <Formula
   end
 
   def install
-    inreplace "xspin523.tcl", "CELLAR", prefix
-    bin.install "xspin523.tcl" => "xspin"
+    inreplace "xspin525.tcl", "CELLAR", prefix
+    bin.install "xspin525.tcl" => "xspin"
   end
 end
 
 # manual patching is required by the spin install process
 __END__
-diff --git a/xspin523.tcl b/xspin523.tcl
+diff --git a/xspin525.tcl b/xspin525.tcl
 old mode 100644
 new mode 100755
 index 73fc6bf..444b0ad
---- a/xspin523.tcl
-+++ b/xspin523.tcl
+--- a/xspin525.tcl
++++ b/xspin525.tcl
 @@ -1,8 +1,9 @@
 -#!/bin/sh
 +#!/usr/bin/wish -f

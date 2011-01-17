@@ -4,7 +4,7 @@ class Openjpeg <Formula
   head 'http://openjpeg.googlecode.com/svn/trunk/'
   homepage 'http://www.openjpeg.org/'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'libtiff'
 
   def install
