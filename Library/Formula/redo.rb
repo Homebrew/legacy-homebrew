@@ -1,10 +1,10 @@
 require 'formula'
 
 class Redo <Formula
-  version '0.04'
+  version '0.05'
   url "https://github.com/apenwarr/redo/zipball/redo-#{version}"
   homepage 'https://github.com/apenwarr/redo'
-  md5 'c4f276f1434d41f1423e25d1fa96e4b8'
+  md5 'e96fe6dbdb75f8512a2ebf62b064186b'
 
   def install
     ENV['PREFIX'] = prefix
