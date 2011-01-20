@@ -1,5 +1,13 @@
 require 'formula'
 
+def raster?
+  ARGV.include? '--with-raster'
+end
+
+def topology?
+  ARGV.include? '--with-topology'
+end
+
 class Postgis <Formula
   url 'http://postgis.refractions.net/download/postgis-1.5.2.tar.gz'
   homepage 'http://postgis.refractions.net/'
@@ -11,12 +19,34 @@ class Postgis <Formula
   depends_on 'proj'
   depends_on 'geos'
 
+  # For libintl
+  depends_on 'gettext' if ARGV.build_head?
+
+  def options
+    [
+      ['--with-raster', 'Enable PostGIS Raster extension (HEAD builds only).'],
+      ['--with-topology', 'Enable PostGIS Topology extension (HEAD builds only).']
+    ]
+  end
+
   def install
     ENV.deparallelize
-    system "./autogen.sh" if ARGV.build_head?
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-projdir=#{HOMEBREW_PREFIX}"
+
+    args = [
+      "--disable-dependency-tracking",
+      "--prefix=#{prefix}",
+      "--with-projdir=#{HOMEBREW_PREFIX}"
+    ]
+
+    if ARGV.build_head?
+      system "./autogen.sh"
+      gettext = Formula.factory('gettext')
+      args << "--with-gettext=#{gettext.prefix}"
+      args << "--with-raster" if raster?
+      args << "--with-topology" if topology?
+    end
+
+    system "./configure", *args
     system "make install"
 
     # Copy some of the generated files to the share folder
