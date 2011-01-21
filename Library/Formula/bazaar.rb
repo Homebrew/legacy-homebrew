@@ -10,6 +10,12 @@ class Bazaar <Formula
   end
 
   def install
+    ENV.j1 # Builds aren't parallel-safe
+
+    # Make and install man page first
+    system "make man1/bzr.1"
+    man1.install "man1/bzr.1"
+
     if ARGV.include? "--system"
       ENV.prepend "PATH", "/System/Library/Frameworks/Python.framework/Versions/Current/bin", ":"
     else
@@ -28,10 +34,6 @@ EOS
     # specific compiler flags
     archs = archs_for_command("python")
     ENV.minimal_optimization if archs.include? :ppc64 or archs.include? :ppc7400
-
-    # Make the manual before we install (mv) bzrlib
-    system "make man1/bzr.1"
-    man1.install gzip('man1/bzr.1')
 
     system "make"
     inreplace "bzr", "#! /usr/bin/env python", "#!/usr/bin/python" if ARGV.include? "--system"
