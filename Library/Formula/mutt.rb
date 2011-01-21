@@ -78,8 +78,20 @@ class Mutt <Formula
   def options
     [
       ['--sidebar-patch', "Apply sidebar (folder list) patch"],
-      ['--enable-debug', "Build with debug option enabled"],
-      ['--trash-patch', "Apply trash folder patch"]
+      ['--trash-patch', "Apply trash folder patch"],
+      ['--enable-debug', "Enable debugging support"],
+      ['--enable-pop', "Enable POP3 support"],
+      ['--enable-imap', "Enable IMAP support"],
+      ['--enable-smtp', "Include internal SMTP relay support"],
+      ['--enable-hcache', "Enable header caching"],
+      ['--with-regex', "Use regex as db backend"],
+      ['--with-gnutls', "Enable TLS support using gnutls"],
+      ['--with-sasl', "Use SASL network security library"],
+      ['--with-ssl', "Enable TLS support using OpenSSL"],
+      ['--with-gss', "Compile in GSSAPI authentication for IMAP"],
+      ['--with-tokyocabinet', "Use tokyocabinet as db backend"],
+      ['--with-gdbm', "Use gdbm as db backend"],
+      ['--with-qdbm', "Use qdbm as db backend"]
     ]
   end
 
