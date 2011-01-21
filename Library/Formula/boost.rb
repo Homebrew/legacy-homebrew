@@ -6,11 +6,10 @@ class Boost <Formula
   md5 'd405c606354789d0426bc07bea617e58'
 
   def options
-    [['--with-mpi', "Enables MPI support"]]
-  end
-
-  def options
-    [["--universal", "Build universal binaries."]]
+    [
+      ['--with-mpi', "Enables MPI support"],
+      ["--universal", "Build universal binaries."]
+    ]
   end
 
   def install
