@@ -13,17 +13,17 @@ class Raster3d <Formula
 
   def install
 
-	# brew does not decompress this archive and does not find cached copies
-	system 'tar', '-xf', 'Raster3D_2.9-2.tar.gz' if File.exists? 'Raster3D_2.9-2.tar.gz'
+    # brew does not decompress this archive and does not find cached copies
+    system 'tar', '-xf', 'Raster3D_2.9-2.tar.gz' if File.exists? 'Raster3D_2.9-2.tar.gz'
 
     Dir.chdir 'Raster3D_2.9-2' do
 
       system 'make', 'linux-gfortran'
 
-	  inreplace 'Makefile.incl' do |s|
+      inreplace 'Makefile.incl' do |s|
         s.change_make_var! 'INCDIRS', '-I/usr/include -I/usr/local/include -I/usr/X11/include'
         s.change_make_var! 'LIBDIRS', '-L/usr/local/lib -L/usr/X11/lib'
- 	  end
+      end
 
       system 'make'
 
