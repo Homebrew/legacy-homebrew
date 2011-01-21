@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ttytter <ScriptFileFormula
-  url 'http://www.floodgap.com/software/ttytter/dist1/1.1.09.txt'
+  url 'http://www.floodgap.com/software/ttytter/dist1/1.1.10.txt'
   homepage 'http://www.floodgap.com/software/ttytter/'
-  md5 '5b19f500f391661d0b4d245f674f817d'
+  md5 'aa194cf650414299ff5b9eb08b9d6b71'
 
   def install
     bin.install '1.1.09.txt' => 'ttytter'
