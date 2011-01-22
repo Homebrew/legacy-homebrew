@@ -8,5 +8,6 @@ class IntellijIdea <Formula
 
   def install
     system 'ant'
+    raise
   end
 end
