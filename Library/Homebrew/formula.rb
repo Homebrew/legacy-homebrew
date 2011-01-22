@@ -54,6 +54,49 @@ class SoftwareSpecification
   end
 end
 
+class TempSandboxBuilder
+  # Create a temporary directory then yield. When the block returns,
+  # recursively delete the temporary directory.
+  def mksandbox f
+    # I used /tmp rather than `mktemp -td` because that generates a directory
+    # name with exotic characters like + in it, and these break badly written
+    # scripts that don't escape strings before trying to regexp them :(
+
+    # If the user has FileVault enabled, then we can't mv symlinks from the
+    # /tmp volume to the other volume. So we let the user override the tmp
+    # prefix if they need to.
+    tmp_prefix = ENV['HOMEBREW_TEMP'] || '/tmp'
+    tmp=Pathname.new `mktemp -d #{tmp_prefix}/homebrew-#{f.name}-#{f.version}-XXXX`.strip
+    raise "Couldn't create build sandbox" if not tmp.directory? or $? != 0
+    begin
+      wd=Dir.pwd
+      Dir.chdir tmp
+      yield
+    ensure
+      Dir.chdir wd
+      tmp.rmtree
+    end
+  end
+end
+
+class CachedSandboxBuilder
+  def mksandbox f
+    tmp = HOMEBREW_CACHE / (f.name + '-' + f.one_checksum.values.first)
+    Dir.mkdir tmp unless tmp.exist?
+    tmp = Pathname.new tmp
+    raise "Couldn't create build sandbox" if not tmp.directory?
+    begin
+      wd=Dir.pwd
+      Dir.chdir tmp
+      yield
+    ensure
+      Dir.chdir wd
+    end
+  end
+end
+
+#TODO: make cofigurable
+SandboxBuilder = CachedSandboxBuilder
 
 # Derive and define at least @url, see Library/Formula for examples
 class Formula
@@ -150,6 +193,12 @@ class Formula
   def etc; HOMEBREW_PREFIX+'etc' end
   # generally we don't want var stuff inside the keg
   def var; HOMEBREW_PREFIX+'var' end
+
+  def one_checksum
+    type=CHECKSUM_TYPES.detect { |type| instance_variable_defined?("@#{type}") }
+    type ||= :md5
+    { type => instance_variable_get("@#{type}") }
+  end
 
   # Use the @spec_to_use to detect the download strategy.
   # Can be overriden to force a custom download strategy
@@ -388,38 +437,12 @@ protected
     raise BuildError.new(cmd, args, $?)
   end
 
-private
-  # Create a temporary directory then yield. When the block returns,
-  # recursively delete the temporary directory.
-  def mktemp
-    # I used /tmp rather than `mktemp -td` because that generates a directory
-    # name with exotic characters like + in it, and these break badly written
-    # scripts that don't escape strings before trying to regexp them :(
-
-    # If the user has FileVault enabled, then we can't mv symlinks from the
-    # /tmp volume to the other volume. So we let the user override the tmp
-    # prefix if they need to.
-    tmp_prefix = ENV['HOMEBREW_TEMP'] || '/tmp'
-    tmp=Pathname.new `mktemp -d #{tmp_prefix}/homebrew-#{name}-#{version}-XXXX`.strip
-    raise "Couldn't create build sandbox" if not tmp.directory? or $? != 0
-    begin
-      wd=Dir.pwd
-      Dir.chdir tmp
-      yield
-    ensure
-      Dir.chdir wd
-      tmp.rmtree
-    end
-  end
-
   CHECKSUM_TYPES=[:md5, :sha1, :sha256].freeze
 
   def verify_download_integrity fn
     require 'digest'
-    type=CHECKSUM_TYPES.detect { |type| instance_variable_defined?("@#{type}") }
-    type ||= :md5
-    supplied=instance_variable_get("@#{type}")
-    type=type.to_s.upcase
+    supplied = one_checksum().values.first
+    type = one_checksum().keys.first.to_s.upcase
     hasher = Digest.const_get(type)
     hash = fn.incremental_hash(hasher)
 
@@ -436,6 +459,7 @@ EOF
       opoo "Cannot verify package integrity"
       puts "The formula did not provide a download checksum"
       puts "For your reference the #{type} is: #{hash}"
+      instance_variable_set("@#{type}", hash)
     end
   end
 
@@ -444,7 +468,7 @@ EOF
     fetched = @downloader.fetch
     verify_download_integrity fetched if fetched.kind_of? Pathname
 
-    mktemp do
+    SandboxBuilder.new.mksandbox self do
       @downloader.stage
       yield
     end
