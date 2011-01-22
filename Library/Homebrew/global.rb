@@ -8,19 +8,43 @@ ARGV.extend(HomebrewArgvExtension)
 HOMEBREW_VERSION = '0.7.1'
 HOMEBREW_WWW = 'http://mxcl.github.com/homebrew/'
 
-if Process.uid == 0
-  # technically this is not the correct place, this cache is for *all users*
-  # so in that case, maybe we should always use it, root or not?
-  HOMEBREW_CACHE=Pathname.new("/Library/Caches/Homebrew")
+if ENV['HOMEBREW_CACHE']
+  HOMEBREW_CACHE = Pathname.new(ENV['HOMEBREW_CACHE'])
 else
-  HOMEBREW_CACHE=Pathname.new("~/Library/Caches/Homebrew").expand_path
+  if Process.uid == 0
+    # technically this is not the correct place, this cache is for *all users*
+    # so in that case, maybe we should always use it, root or not?
+    HOMEBREW_CACHE=Pathname.new("/Library/Caches/Homebrew")
+  else
+    HOMEBREW_CACHE=Pathname.new("~/Library/Caches/Homebrew").expand_path
+  end
 end
 
 if not defined? HOMEBREW_BREW_FILE
   HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] || `which brew`.chomp
 end
 
-HOMEBREW_PREFIX = Pathname.new(HOMEBREW_BREW_FILE).dirname.parent # Where we link under
+# Introduce ConfigurableVariable class
+# class ConfigurableVariable
+#   def initialize name
+#     @name = name
+#   end
+#
+#   def get
+#     if ENV[@name]
+#       return ENV[@name]
+#     else
+#       return eval
+#     end
+#   end
+# end
+
+if ENV['HOMEBREW_PREFIX']
+  HOMEBREW_PREFIX = Pathname.new(ENV['HOMEBREW_PREFIX'])
+else
+  HOMEBREW_PREFIX = Pathname.new(HOMEBREW_BREW_FILE).dirname.parent # Where we link under
+end
+
 HOMEBREW_REPOSITORY = Pathname.new(HOMEBREW_BREW_FILE).realpath.dirname.parent # Where .git is found
 
 # Where we store built products; /usr/local/Cellar if it exists,
