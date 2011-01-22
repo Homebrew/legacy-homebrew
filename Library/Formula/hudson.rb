@@ -1,9 +1,9 @@
 require 'formula'
 
 class Hudson <Formula
-  url 'http://ftp.osuosl.org/pub/hudson/war/1.394/hudson.war', :using => :nounzip
-  version '1.394'
-  md5 'be0f2246315dc0964a5f1ba519371230'
+  url 'http://updates.hudson-labs.org/download/war/1.395/hudson.war', :using => :nounzip
+  version '1.395'
+  md5 '6af0fb753a099616c74104c60d6b26dd'
   homepage 'http://hudson-ci.org'
 
   def install
