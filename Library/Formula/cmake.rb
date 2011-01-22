@@ -5,6 +5,13 @@ class Cmake <Formula
   md5 'a76a44b93acf5e3badda9de111385921'
   homepage 'http://www.cmake.org/'
 
+  def patches
+    # Adds support for enabling/disabling specific system libraries
+    # http://public.kitware.com/Bug/view.php?id=11431
+    # Shouldn't be needed in 2.8.4
+    "http://cmake.org/gitweb?p=cmake.git;a=patch;h=60d72b56"
+  end
+
   def install
     # A framework-installed expat will be detected and mess things up.
     if File.exist? "/Library/Frameworks/expat.framework"
@@ -16,18 +23,9 @@ class Cmake <Formula
       EOS
     end
 
-    # If we specify to CMake to use the system libraries by passing
-    # --system-libs to bootstrap then it insists on finding them all
-    # or erroring out, as that's what other Linux/OSX distributions
-    # would want. I've requested that they either fix this or let us
-    # submit a patch to do so on their bug tracker:
-    # http://www.cmake.org/Bug/view.php?id=11431
-    inreplace 'CMakeLists.txt',
-              "# Mention to the user what system libraries are being used.",
-              "SET(CMAKE_USE_SYSTEM_LIBARCHIVE 0)"
-
     system "./bootstrap", "--prefix=#{prefix}",
                           "--system-libs",
+                          "--no-system-libarchive",
                           "--datadir=/share/cmake",
                           "--docdir=/share/doc/cmake",
                           "--mandir=/share/man"
