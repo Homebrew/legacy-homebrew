@@ -10,7 +10,6 @@ class Weechat <Formula
   depends_on 'gnutls'
 
   def install
-
     # Remove all arch flags from the PERL_*FLAGS as we specify them ourselves.
     # This messes up because the system perl is a fat binary with 32,64 and PPC
     # compiles, but our deps don't have that.
@@ -25,6 +24,7 @@ class Weechat <Formula
     #NOTE: -DPREFIX has to be specified because weechat devs enjoy being non-standard
     system "cmake", "-DPREFIX=#{prefix}",
                     "-DENABLE_RUBY=OFF",
+                    "-DENABLE_PERL=OFF",
                     std_cmake_parameters, "."
     system "make install"
   end
