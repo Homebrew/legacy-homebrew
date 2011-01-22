@@ -212,6 +212,11 @@ module Homebrew extend self
       problems += audit_formula_instance f
       problems += audit_formula_urls f
 
+      perms = File.stat(f.path).mode
+      if perms.to_s(8) != "100644"
+        problems << " * permissions wrong; chmod 644 #{f.path}"
+      end
+
       text = ""
       File.open(f.path, "r") { |afile| text = afile.read }
 
