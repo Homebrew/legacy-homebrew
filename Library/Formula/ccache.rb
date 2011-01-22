@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ccache <Formula
-  url 'http://samba.org/ftp/ccache/ccache-3.1.tar.bz2'
+  url 'http://samba.org/ftp/ccache/ccache-3.1.4.tar.bz2'
   homepage 'http://ccache.samba.org/'
-  md5 '7961852e1e36f11559039c32142f58df'
+  md5 '676fda8a9a5e02574435c32b22942abd'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
@@ -33,6 +33,10 @@ class Ccache <Formula
       To install symlinks for compilers that will automatically use
       ccache, add this folder to the front of your PATH:
         #{libexec}
+
+      If this is an upgrade and you have previously added the symlinks to
+      your PATH, you will need to modify it to the path specified above so
+      it points to the new version.
 
       NOTE: ccache can prevent some software from compiling.
     EOS
