@@ -38,7 +38,6 @@ class Mysql <Formula
       "--prefix=#{prefix}",
       "--localstatedir=#{var}/mysql",
       "--sysconfdir=#{etc}",
-      "--with-unix-socket-path=#{var}/run/mysqld.sock",
       "--with-plugins=innobase,myisam",
       "--with-extra-charsets=complex",
       "--with-ssl",
