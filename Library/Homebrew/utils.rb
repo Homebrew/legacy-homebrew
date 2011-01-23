@@ -78,7 +78,7 @@ end
 # Kernel.system but with exceptions
 def safe_system cmd, *args
   unless Homebrew.system cmd, *args
-    args = args.map{ |arg| arg.gsub " ", "\\ " } * " "
+    args = args.map{ |arg| arg.to_s.gsub " ", "\\ " } * " "
     raise "Failure while executing: #{cmd} #{args}"
   end
 end
