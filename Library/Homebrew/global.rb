@@ -57,7 +57,7 @@ else
   HOMEBREW_REPOSITORY/"Cellar"
 end
 
-#MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
+#MACOS_FULL_VERSION = `sw_vers -productVersion`.chomp
 #MACOS_VERSION = /(10\.\d+)(\.\d+)?/.match(MACOS_FULL_VERSION).captures.first.to_f
 MACOS_FULL_VERSION = "10"
 MACOS_VERSION = 11.0

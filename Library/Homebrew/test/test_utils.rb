@@ -16,7 +16,7 @@ class UtilTests < Test::Unit::TestCase
   end
 
   def test_arch_for_command
-    arches=archs_for_command '/usr/bin/svn'
+    arches=archs_for_command 'svn'
     if `sw_vers -productVersion` =~ /10\.(\d+)/ and $1.to_i >= 6
       assert_equal 3, arches.length
       assert arches.include?(:x86_64)

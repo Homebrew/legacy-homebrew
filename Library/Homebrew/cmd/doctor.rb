@@ -137,12 +137,12 @@ def check_gcc_versions
 end
 
 def check_cc_symlink
-    which_cc = Pathname.new('/usr/bin/cc').realpath.basename.to_s
+    which_cc = Pathname.new('cc').realpath.basename.to_s
     if which_cc == "llvm-gcc-4.2"
       puts <<-EOS.undent
         You changed your cc to symlink to llvm.
         This bypasses LLVM checks, and some formulae may mysteriously fail to work.
-        You may want to change /usr/bin/cc to point back at gcc.
+        You may want to change cc to point back at gcc.
 
         To force Homebrew to use LLVM, you can set the "HOMEBREW_LLVM" environmental
         variable, or pass "--use-llvm" to "brew install".
@@ -466,7 +466,7 @@ def check_for_multiple_volumes
   real_cellar = HOMEBREW_CELLAR.realpath
 
   tmp_prefix = ENV['HOMEBREW_TEMP'] || '/tmp'
-  tmp=Pathname.new `/usr/bin/mktemp -d #{tmp_prefix}/homebrew-brew-doctor-XXXX`.strip
+  tmp=Pathname.new `mktemp -d #{tmp_prefix}/homebrew-brew-doctor-XXXX`.strip
   real_temp = tmp.realpath.parent
 
   where_cellar = volumes.which real_cellar
@@ -506,7 +506,7 @@ end
 
 def check_for_autoconf
   which_autoconf = `which autoconf`.chomp
-  unless (which_autoconf == '/usr/bin/autoconf' or which_autoconf == '/Developer/usr/bin/autoconf')
+  unless (which_autoconf == 'autoconf' or which_autoconf == '/Developerautoconf')
     puts <<-EOS.undent
       You have an "autoconf" in your path blocking the system version at:
         #{which_autoconf}

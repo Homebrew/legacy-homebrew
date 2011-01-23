@@ -36,10 +36,10 @@ class FormulaInstaller
 
   def self.external_dep_check dep, type
     case type
-      when :python then %W{/usr/bin/env python -c import\ #{dep}}
-      when :jruby then %W{/usr/bin/env jruby -rubygems -e require\ '#{dep}'}
-      when :ruby then %W{/usr/bin/env ruby -rubygems -e require\ '#{dep}'}
-      when :perl then %W{/usr/bin/env perl -e use\ #{dep}}
+      when :python then %W{env python -c import\ #{dep}}
+      when :jruby then %W{env jruby -rubygems -e require\ '#{dep}'}
+      when :ruby then %W{env ruby -rubygems -e require\ '#{dep}'}
+      when :perl then %W{env perl -e use\ #{dep}}
     end
   end
 
@@ -62,8 +62,8 @@ class FormulaInstaller
     fork do
       begin
         read.close
-        exec '/usr/bin/nice',
-             '/usr/bin/ruby',
+        exec 'nice',
+             'ruby',
              '-I', Pathname.new(__FILE__).dirname,
              '-rinstall',
              f.path,

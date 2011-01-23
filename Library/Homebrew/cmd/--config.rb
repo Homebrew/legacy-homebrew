@@ -40,7 +40,7 @@ module Homebrew extend self
   end
 
   def system_ruby
-    Pathname.new('/usr/bin/ruby').realpath.to_s
+    Pathname.new('ruby').realpath.to_s
   end
 
   def config_s; <<-EOS.undent
@@ -54,7 +54,7 @@ module Homebrew extend self
     OS X: #{MACOS_FULL_VERSION}
     Kernel Architecture: #{`uname -m`.chomp}
     Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
-    /usr/bin/ruby => #{system_ruby}
+    ruby => #{system_ruby}
     Xcode: #{xcode_version}
     GCC-4.0: #{gcc_40 ? "build #{gcc_40}" : "N/A"} #{gcc_40_recommendation}
     GCC-4.2: #{gcc_42 ? "build #{gcc_42}" : "N/A"} #{gcc_42_recommendation}

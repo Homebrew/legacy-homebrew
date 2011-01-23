@@ -559,12 +559,12 @@ EOF
     ohai "Patching"
     patch_list.each do |p|
       case p[:compression]
-        when :gzip  then safe_system "/usr/bin/gunzip",  p[:filename]+'.gz'
-        when :bzip2 then safe_system "/usr/bin/bunzip2", p[:filename]+'.bz2'
+        when :gzip  then safe_system "gunzip",  p[:filename]+'.gz'
+        when :bzip2 then safe_system "bunzip2", p[:filename]+'.bz2'
       end
       # -f means it doesn't prompt the user if there are errors, if just
       # exits with non-zero status
-      safe_system '/usr/bin/patch', '-f', *(p[:args])
+      safe_system 'patch', '-f', *(p[:args])
     end
   end
 

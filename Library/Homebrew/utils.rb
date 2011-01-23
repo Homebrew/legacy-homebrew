@@ -25,7 +25,7 @@ end
 
 # args are additional inputs to puts until a nil arg is encountered
 def ohai title, *sput
-  title = title.to_s[0, `/usr/bin/tput cols`.strip.to_i-4] unless ARGV.verbose?
+  title = title.to_s[0, `tput cols`.strip.to_i-4] unless ARGV.verbose?
   puts "#{Tty.blue}==>#{Tty.white} #{title}#{Tty.reset}"
   puts sput unless sput.empty?
 end
@@ -92,7 +92,7 @@ def quiet_system cmd, *args
 end
 
 def curl *args
-  safe_system '/usr/bin/curl', '-f#LA', HOMEBREW_USER_AGENT, *args unless args.empty?
+  safe_system 'curl', '-f#LA', HOMEBREW_USER_AGENT, *args unless args.empty?
 end
 
 def puts_columns items, cols = 4
@@ -106,7 +106,7 @@ def puts_columns items, cols = 4
     optimal_col_width = (console_width.to_f / (longest.length + 2).to_f).floor
     cols = optimal_col_width > 1 ? optimal_col_width : 1
 
-    IO.popen("/usr/bin/pr -#{cols} -t -w#{console_width}", "w"){|io| io.puts(items) }
+    IO.popen("pr -#{cols} -t -w#{console_width}", "w"){|io| io.puts(items) }
   else
     puts items
   end
@@ -122,7 +122,7 @@ def exec_editor *args
     elsif system "which -s edit"
       'edit' # BBEdit / TextWrangler
     else
-      '/usr/bin/vim' # Default to vim
+      'vim' # Default to vim
     end
   end
   # we split the editor because especially on mac "mate -w" is common
@@ -134,7 +134,7 @@ end
 # GZips the given paths, and returns the gzipped paths
 def gzip *paths
   paths.collect do |path|
-    system "/usr/bin/gzip", path
+    system "gzip", path
     Pathname.new("#{path}.gz")
   end
 end
@@ -151,7 +151,7 @@ def archs_for_command cmd
   cmd = `which #{cmd}` unless Pathname.new(cmd).absolute?
   cmd.gsub! ' ', '\\ '  # Escape spaces in the filename.
 
-  archs = IO.popen("/usr/bin/file -L #{cmd}").readlines.inject([]) do |archs, line|
+  archs = IO.popen("file -L #{cmd}").readlines.inject([]) do |archs, line|
     case line
     when /Mach-O (executable|dynamically linked shared library) ppc/
       archs << :ppc7400
@@ -209,7 +209,7 @@ end
 
 module MacOS extend self
   def gcc_42_build_version
-    `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
+    `gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
     if $1
       $1.to_i
     elsif system "which gcc"
@@ -224,7 +224,7 @@ module MacOS extend self
   end
 
   def gcc_40_build_version
-    `/usr/bin/gcc-4.0 -v 2>&1` =~ /build (\d{4,})/
+    `gcc-4.0 -v 2>&1` =~ /build (\d{4,})/
     if $1
       $1.to_i
     else
@@ -235,7 +235,7 @@ module MacOS extend self
   # usually /Developer
   def xcode_prefix
     @xcode_prefix ||= begin
-      path = `/usr/bin/xcode-select -print-path 2>&1`.chomp
+      path = `xcode-select -print-path 2>&1`.chomp
       path = Pathname.new path
       if path.directory? and path.absolute?
         path

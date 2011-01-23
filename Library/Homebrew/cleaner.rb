@@ -38,7 +38,7 @@ class Cleaner
       # is this expected behaviour? patch does it too… still, this fixes it
       tmp = `mktemp -t homebrew_strip`.chomp
       begin
-        `/usr/bin/strip #{args} -o #{tmp} #{path}`
+        `strip #{args} -o #{tmp} #{path}`
         `/bin/cat #{tmp} > #{path}`
       ensure
         FileUtils.rm tmp

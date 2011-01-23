@@ -19,15 +19,15 @@ module HomebrewEnvExtension
     end
 
     if MACOS_VERSION >= 10.6 and (self['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
-      xcode_path = `/usr/bin/xcode-select -print-path`.chomp
+      xcode_path = `xcode-select -print-path`.chomp
       xcode_path = "/Developer" if xcode_path.to_s.empty?
-      self['CC'] = "#{xcode_path}/usr/bin/llvm-gcc"
-      self['CXX'] = "#{xcode_path}/usr/bin/llvm-g++"
+      self['CC'] = "#{xcode_path}llvm-gcc"
+      self['CXX'] = "#{xcode_path}llvm-g++"
       cflags = ['-O4'] # link time optimisation baby!
     else
       # If these aren't set, many formulae fail to build
-      self['CC'] = '/usr/bin/cc'
-      self['CXX'] = '/usr/bin/c++'
+      self['CC'] = 'cc'
+      self['CXX'] = 'c++'
       cflags = ['-O3']
     end
 
@@ -104,8 +104,8 @@ module HomebrewEnvExtension
   end
 
   def gcc_4_0_1
-    self['CC'] = self['LD'] = '/usr/bin/gcc-4.0'
-    self['CXX'] = '/usr/bin/g++-4.0'
+    self['CC'] = self['LD'] = 'gcc-4.0'
+    self['CXX'] = 'g++-4.0'
     self.O3
     remove_from_cflags '-march=core2'
     remove_from_cflags %r{-msse4(\.\d)?}
@@ -114,15 +114,15 @@ module HomebrewEnvExtension
 
   def gcc_4_2
     # Sometimes you want to downgrade from LLVM to GCC 4.2
-    self['CC']="/usr/bin/gcc-4.2"
-    self['CXX']="/usr/bin/g++-4.2"
+    self['CC']="gcc-4.2"
+    self['CXX']="g++-4.2"
     self['LD']=self['CC']
     self.O3
   end
 
   def llvm
-    self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
-    self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
+    self['CC'] = "#{MacOS.xcode_prefix}llvm-gcc"
+    self['CXX'] = "#{MacOS.xcode_prefix}llvm-g++"
     self['LD'] = self['CC']
     self.O4
   end

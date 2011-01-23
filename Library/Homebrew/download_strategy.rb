@@ -79,7 +79,7 @@ class CurlDownloadStrategy <AbstractDownloadStrategy
     # magic numbers stolen from /usr/share/file/magic/
     case magic_bytes
     when /^PK\003\004/ # .zip archive
-      quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @tarball_path
+      quiet_safe_system 'unzip', {:quiet_flag => '-qq'}, @tarball_path
       chdir
     when /^\037\213/, /^BZh/, /^\037\235/  # gzip/bz2/compress compressed
       # TODO check if it's really a tar archive
@@ -217,7 +217,7 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
   def svn
     return ENV['HOMEBREW_SVN'] if ENV['HOMEBREW_SVN']
     return "#{HOMEBREW_PREFIX}/bin/svn" if File.exist? "#{HOMEBREW_PREFIX}/bin/svn"
-    return '/usr/bin/svn'
+    return 'svn'
   end
 end
 
@@ -324,12 +324,12 @@ class CVSDownloadStrategy <AbstractDownloadStrategy
 
     unless @co.exist?
       Dir.chdir HOMEBREW_CACHE do
-        safe_system '/usr/bin/cvs', '-d', url, 'login'
-        safe_system '/usr/bin/cvs', '-d', url, 'checkout', '-d', @unique_token, mod
+        safe_system 'cvs', '-d', url, 'login'
+        safe_system 'cvs', '-d', url, 'checkout', '-d', @unique_token, mod
       end
     else
       puts "Updating #{@co}"
-      Dir.chdir(@co) { safe_system '/usr/bin/cvs', 'up' }
+      Dir.chdir(@co) { safe_system 'cvs', 'up' }
     end
   end
 
