@@ -314,7 +314,7 @@ def check_user_path
 end
 
 def check_which_pkg_config
-  binary = `/usr/bin/which pkg-config`.chomp
+  binary = `which pkg-config`.chomp
   return if binary.empty?
 
   unless binary == "#{HOMEBREW_PREFIX}/bin/pkg-config"
@@ -330,7 +330,7 @@ def check_which_pkg_config
 end
 
 def check_pkg_config_paths
-  binary = `/usr/bin/which pkg-config`.chomp
+  binary = `which pkg-config`.chomp
   return if binary.empty?
 
   # Use the debug output to determine which paths are searched
@@ -489,7 +489,7 @@ def check_for_multiple_volumes
 end
 
 def check_for_git
-  git = `/usr/bin/which git`.chomp
+  git = `which git`.chomp
   if git.empty?
     puts <<-EOS.undent
       "Git" was not found in your path.
@@ -505,7 +505,7 @@ def check_for_git
 end
 
 def check_for_autoconf
-  which_autoconf = `/usr/bin/which autoconf`.chomp
+  which_autoconf = `which autoconf`.chomp
   unless (which_autoconf == '/usr/bin/autoconf' or which_autoconf == '/Developer/usr/bin/autoconf')
     puts <<-EOS.undent
       You have an "autoconf" in your path blocking the system version at:

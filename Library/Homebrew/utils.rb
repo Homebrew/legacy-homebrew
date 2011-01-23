@@ -117,9 +117,9 @@ def exec_editor *args
 
   editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
   if editor.nil?
-    editor = if system "/usr/bin/which -s mate"
+    editor = if system "which -s mate"
       'mate'
-    elsif system "/usr/bin/which -s edit"
+    elsif system "which -s edit"
       'edit' # BBEdit / TextWrangler
     else
       '/usr/bin/vim' # Default to vim
@@ -148,7 +148,7 @@ end
 # Returns array of architectures that the given command or library is built for.
 def archs_for_command cmd
   cmd = cmd.to_s # If we were passed a Pathname, turn it into a string.
-  cmd = `/usr/bin/which #{cmd}` unless Pathname.new(cmd).absolute?
+  cmd = `which #{cmd}` unless Pathname.new(cmd).absolute?
   cmd.gsub! ' ', '\\ '  # Escape spaces in the filename.
 
   archs = IO.popen("/usr/bin/file -L #{cmd}").readlines.inject([]) do |archs, line|
@@ -212,7 +212,7 @@ module MacOS extend self
     `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
     if $1
       $1.to_i
-    elsif system "/usr/bin/which gcc"
+    elsif system "which gcc"
       # Xcode 3.0 didn't come with gcc-4.2
       # We can't change the above regex to use gcc because the version numbers
       # are different and thus, not useful.
@@ -271,7 +271,7 @@ module MacOS extend self
     # http://github.com/mxcl/homebrew/issues/#issue/48
 
     %w[port fink].each do |ponk|
-      path = `/usr/bin/which -s #{ponk}`
+      path = `which -s #{ponk}`
       return ponk unless path.empty?
     end
 

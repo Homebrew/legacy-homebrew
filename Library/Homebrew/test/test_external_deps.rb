@@ -114,10 +114,10 @@ class ExternalDepsTests < Test::Unit::TestCase
 
   # Only run these next two tests if jruby is installed.
   def test_bad_jruby_deps
-    check_deps_fail BadJRubyBall unless `/usr/bin/which jruby`.chomp.empty?
+    check_deps_fail BadJRubyBall unless `which jruby`.chomp.empty?
   end
 
   def test_good_jruby_deps
-    check_deps_pass GoodJRubyBall unless `/usr/bin/which jruby`.chomp.empty?
+    check_deps_pass GoodJRubyBall unless `which jruby`.chomp.empty?
   end
 end

@@ -30,7 +30,7 @@ module Homebrew extend self
     user = 'mxcl'
     branch = 'master'
 
-    if system "/usr/bin/which -s git"
+    if system "which -s git"
       gh_user=`git config --global github.user 2>/dev/null`.chomp
       /^\*\s*(.*)/.match(`git --work-tree=#{HOMEBREW_REPOSITORY} branch 2>/dev/null`)
       unless $1.nil? || $1.empty? || gh_user.empty?

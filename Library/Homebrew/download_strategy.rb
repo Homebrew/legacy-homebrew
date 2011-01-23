@@ -253,7 +253,7 @@ class GitDownloadStrategy <AbstractDownloadStrategy
   def fetch
     raise "You must install Git:\n\n"+
           "  brew install git\n" \
-          unless system "/usr/bin/which git"
+          unless system "which git"
 
     ohai "Cloning #{@url}"
 
@@ -368,7 +368,7 @@ class MercurialDownloadStrategy <AbstractDownloadStrategy
           "    brew install pip && pip install mercurial\n"+
           "    easy_install mercurial\n\n"+
           "Homebrew recommends pip over the OS X provided easy_install." \
-          unless system "/usr/bin/which hg"
+          unless system "which hg"
 
     ohai "Cloning #{@url}"
 
@@ -410,7 +410,7 @@ class BazaarDownloadStrategy <AbstractDownloadStrategy
 
   def fetch
     raise "You must install bazaar first" \
-          unless system "/usr/bin/which bzr"
+          unless system "which bzr"
 
     ohai "Cloning #{@url}"
     unless @clone.exist?
@@ -449,7 +449,7 @@ class FossilDownloadStrategy < AbstractDownloadStrategy
 
   def fetch
     raise "You must install fossil first" \
-          unless system "/usr/bin/which fossil"
+          unless system "which fossil"
 
     ohai "Cloning #{@url}"
     unless @clone.exist?
