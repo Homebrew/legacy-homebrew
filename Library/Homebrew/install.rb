@@ -10,7 +10,7 @@ def text_for_keg_only_formula f
     rationale = "The formula didn't provide any rationale for this."
   end
   <<-EOS
-This formula is keg-only, so it is not symlinked into Homebrew's prefix.
+This formula is keg-only. This means it is not symlinked into #{HOMEBREW_PREFIX}.
 #{rationale}
 
 Generally there are no consequences of this for you, however if you build
@@ -30,7 +30,7 @@ at_exit do
     require 'fileutils'
     require 'hardware'
     require 'keg'
-    require 'brew.h.rb'
+    require 'compatibility'
 
     ENV.extend(HomebrewEnvExtension)
     ENV.setup_build_environment
@@ -120,8 +120,21 @@ def install f
 
   ohai 'Finishing up' if ARGV.verbose?
 
+  keg = Keg.new f.prefix
+
   begin
-    clean f
+    keg.fix_install_names
+  rescue Exception => e
+    onoe "Failed to fix install names"
+    puts "The formula built, but you may encounter issues using it or linking other"
+    puts "formula against it."
+    ohai e, e.backtrace if ARGV.debug?
+    show_summary_heading = true
+  end
+
+  begin
+    require 'cleaner'
+    Cleaner.new f
   rescue Exception => e
     opoo "The cleaning step did not complete successfully"
     puts "Still, the installation was successful, so we will link it into your prefix"
@@ -136,10 +149,10 @@ def install f
     show_summary_heading = true
   else
     # warn the user if stuff was installed outside of their PATH
-    paths = ENV['PATH'].split(':').collect{|p| File.expand_path p}
+    paths = ENV['PATH'].split(':').map{ |p| File.expand_path p }
     [f.bin, f.sbin].each do |bin|
       if bin.directory?
-        rootbin = (HOMEBREW_PREFIX+bin.basename).to_s
+        rootbin = (HOMEBREW_PREFIX/bin.basename).to_s
         bin = File.expand_path bin
         unless paths.include? rootbin
           opoo "#{rootbin} is not in your PATH"
@@ -150,7 +163,7 @@ def install f
     end
 
     # Check for man pages that aren't in share/man
-    if (f.prefix+'man').exist?
+    if (f.prefix/:man).exist?
       opoo 'A top-level "man" folder was found.'
       puts "Homebrew requires that man pages live under share."
       puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
@@ -176,10 +189,10 @@ def install f
 
     # link from Cellar to Prefix
     begin
-      Keg.new(f.prefix).link
+      keg.link
     rescue Exception => e
       onoe "The linking step did not complete successfully"
-      puts "The package built, but is not symlinked into #{HOMEBREW_PREFIX}"
+      puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
       puts "You can try again using `brew link #{f.name}'"
       if ARGV.debug?
         ohai e, e.backtrace

@@ -3,36 +3,10 @@ require 'testing_env'
 require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
 ARGV.extend(HomebrewArgvExtension)
 
+require 'extend/string'
 require 'test/testball'
 require 'formula_installer'
 require 'utils'
-
-
-# Custom formula installer that checks deps but does not
-# run the install code. We also override the external dep
-# install messages, so for instance the Python check doesnt
-# look for the pip formula (which isn't avaialble in test
-# mode.)
-class DontActuallyInstall < FormulaInstaller
-  def install_private f ; end
-  
-  def pyerr dep
-    "Python module install message."
-  end
-  
-  def plerr dep
-    "Perl module install message."
-  end
-  
-  def rberr dep
-    "Ruby module install message."
-  end
-
-  def jrberr dep
-    "JRuby module install message."
-  end
-end
-
 
 
 class BadPerlBall <TestBall
@@ -102,14 +76,14 @@ end
 
 class ExternalDepsTests < Test::Unit::TestCase
   def check_deps_fail f
-    assert_raises(RuntimeError) do
-      DontActuallyInstall.new.install f.new
+    assert_raises(UnsatisfiedExternalDependencyError) do
+      FormulaInstaller.check_external_deps f.new
     end
   end
 
   def check_deps_pass f
     assert_nothing_raised do
-      DontActuallyInstall.new.install f.new
+      FormulaInstaller.check_external_deps f.new
     end
   end
 

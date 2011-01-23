@@ -139,10 +139,6 @@ end
 def audit_formula_urls f
   problems = []
 
-  # To do:
-  # Grab URLs out of patches as well
-  # urls = ((f.patches rescue []) || [])
-
   urls = [(f.url rescue nil), (f.head rescue nil)].reject {|p| p.nil?}
 
   # Check SourceForge urls
@@ -209,33 +205,32 @@ def audit_formula_instance f
   return problems
 end
 
-def audit_some_formulae
-  ff.each do |f|
-    problems = []
+module Homebrew extend self
+  def audit
+    ff.each do |f|
+      problems = []
+      problems += audit_formula_instance f
+      problems += audit_formula_urls f
 
-    problems += audit_formula_instance f
-    problems += audit_formula_urls f
+      text = ""
+      File.open(f.path, "r") { |afile| text = afile.read }
 
-    text = ""
-    File.open(f.path, "r") { |afile| text = afile.read }
+      # DATA with no __END__
+      if (text =~ /\bDATA\b/) and not (text =~ /^\s*__END__\s*$/)
+        problems << " * 'DATA' was found, but no '__END__'"
+      end
 
-    # DATA with no __END__
-    if (text =~ /\bDATA\b/) and not (text =~ /^\s*__END__\s*$/)
-      problems << " * 'DATA' was found, but no '__END__'"
-    end
+      # Don't try remaining audits on text in __END__
+      text_without_patch = (text.split("__END__")[0]).strip()
 
-    # Don't try remaining audits on text in __END__
-    text_without_patch = (text.split("__END__")[0]).strip()
+      problems += audit_formula_text(text_without_patch)
+      problems += audit_formula_options(f, text_without_patch)
 
-    problems += audit_formula_text(text_without_patch)
-    problems += audit_formula_options(f, text_without_patch)
-
-    unless problems.empty?
-      puts "#{f.name}:"
-      puts problems * "\n"
-      puts
+      unless problems.empty?
+        puts "#{f.name}:"
+        puts problems * "\n"
+        puts
+      end
     end
   end
 end
-
-audit_some_formulae

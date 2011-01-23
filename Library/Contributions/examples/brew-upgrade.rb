@@ -1,11 +1,7 @@
 # Updates all outdated brews
 # See: http://github.com/mxcl/homebrew/issues/issue/1324
 
-# patch ARGV to use all of the outdated packages as the names passed in
-module HomebrewArgvExtension
-  def formulae
-    @formulae = outdated_brews.map {|_keg, name, _version| Formula.factory name}
-  end
-end
+require 'cmd/outdated'
+require 'cmd/install'
 
-brew_install
+Homebrew.install_formulae Homebrew.outdated_brews.map{ |_keg, name, _version| Formula.factory name }

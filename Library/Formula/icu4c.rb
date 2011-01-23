@@ -21,26 +21,6 @@ class Icu4c <Formula
       system "make"
       system "make install"
     end
-
-    # fix install_names
-    lib.children.reject{ |pn| pn.symlink? or pn.extname != '.dylib' }.each do |dylib|
-      bad_names(dylib) do |id, bad_names|
-        cd lib do
-          system "install_name_tool", "-id", (lib+id).realpath, dylib.basename
-          bad_names.each do |bad|
-            system "install_name_tool", "-change", bad, (lib+bad.basename).realpath, dylib.basename
-          end
-        end
-      end
-    end
-  end
-
-  def bad_names pn
-    ENV['HOMEBREW_PN'] = pn.to_s
-    rx = /\t(.*) \(compatibility version (\d+\.)*\d+, current version (\d+\.)*\d+\)/
-    dylibs = `otool -L "$HOMEBREW_PN"`.split "\n"
-    dylibs = dylibs.map{ |fn| rx =~ fn && $1 }.compact.reject{ |fn| fn[0].chr == '/' }.map{ |fn| Pathname.new fn }
-    yield dylibs.shift, dylibs
   end
 end
 
