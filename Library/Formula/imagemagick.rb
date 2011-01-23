@@ -39,8 +39,8 @@ end
 
 class Imagemagick <Formula
   url 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
-        :using => UnsafeSvn, :revision => '2715'
-  version '6.6.4-5'
+        :using => UnsafeSvn, :revision => '3445'
+  version '6.6.7-1'
   homepage 'http://www.imagemagick.org'
 
   head 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
