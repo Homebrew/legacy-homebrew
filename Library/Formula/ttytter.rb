@@ -6,7 +6,7 @@ class Ttytter <ScriptFileFormula
   md5 'a6c46fca7bd6657ec60f8d94a6f40173'
 
   def install
-    bin.install '1.1.09.txt' => 'ttytter'
+    bin.install '1.1.10.txt' => 'ttytter'
   end
 
   def caveats; <<-EOS.undent
