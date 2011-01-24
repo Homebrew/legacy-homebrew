@@ -12,14 +12,50 @@ class Sbcl <Formula
   homepage 'http://www.sbcl.org/'
   head 'git://sbcl.boinkor.net/sbcl.git'
 
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.44/sbcl-1.0.44-source.tar.bz2'
-  md5 'f34a3995db6e12439996096fd437f878'
-  version '1.0.44'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.46/sbcl-1.0.46-source.tar.bz2'
+  md5 '83f094aa36edce2d69214330890f05e5'
+  version '1.0.46'
 
   skip_clean 'bin'
   skip_clean 'lib'
 
+  def options
+    [
+     ["--without-threads", 
+      "Build SBCL without support for native threads"],
+     ["--with-ldb", 
+      "Include low-level debugger in the build"],
+     ["--with-internal-xref", 
+      "Include XREF information for SBCL internals (increases core size by 5-6MB)"]
+    ]
+  end
+  
+  def keywordize(name)
+    if name.start_with?(":")
+      name
+    else
+      ":#{name}"
+    end
+  end
+
+  def write_features
+    features = []
+    features << ":sb-thread" unless ARGV.include?("--without-threads")
+    features << ":sb-ldb" if ARGV.include?("--with-ldb")
+    features << ":sb-xref-for-internals" if ARGV.include?("--with-internal-xref")
+    
+    File.open("customize-target-features.lisp", "w") do |file|
+      file.puts "(lambda (list)"
+      features.each do |feature|
+        file.puts "  (pushnew #{keywordize(feature)} list)"
+      end
+      file.puts "  list)"
+    end
+  end
+
   def install
+    write_features
+
     build_directory = Dir.pwd
     SbclBootstrapBinaries.new.brew {
       # We only need the binaries for bootstrapping, so don't install
