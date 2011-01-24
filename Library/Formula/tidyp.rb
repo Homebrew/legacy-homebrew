@@ -1,10 +1,9 @@
 require 'formula'
 
-class Lzlib <Formula
-  url 'http://download.savannah.gnu.org/releases/lzip/lzlib-1.1.tar.gz'
-  homepage 'http://www.nongnu.org/lzip/lzlib.html'
-  md5 '3e57ebb510b6343e93f56724cfa16510'
-
+class Tidyp <Formula
+  url 'http://github.com/downloads/petdance/tidyp/tidyp-1.04.tar.gz'
+  homepage 'http://tidyp.com/'
+  md5 '00a6b804f6625221391d010ca37178e1'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

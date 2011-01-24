@@ -1,10 +1,9 @@
 require 'formula'
 
 class Exodriver <Formula
-  url  'https://github.com/labjack/exodriver/tarball/98cf1f83ff65ab7a317f4310d46081a476ae939c'
+  url 'https://github.com/labjack/exodriver/tarball/v2.0.4'
   homepage 'http://labjack.com/support/linux-and-mac-os-x-drivers'
-  md5 'ec227347ccaf0772d175d3a2cf557105'
-  version '2.0-0-98cf1f8'
+  md5 '9208085ee8a9166898dc812b9d7e1905'
 
   head 'https://github.com/labjack/exodriver.git', :using => :git
 
