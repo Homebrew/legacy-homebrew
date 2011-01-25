@@ -11,6 +11,7 @@ class Mysql <Formula
     [
       ['--with-tests', "Keep tests when installing."],
       ['--with-bench', "Keep benchmark app when installing."],
+      ['--with-embedded', "Also build the embedded server."],
       ['--client-only', "Only install client tools, not the server."],
       ['--universal', "Make mysql a universal binary"]
     ]
@@ -49,6 +50,7 @@ class Mysql <Formula
       "--with-partition"]
 
     configure_args << "--without-server" if ARGV.include? '--client-only'
+    configure_args << "--with-embedded-server" if ARGV.include? '--with-embedded'
 
     system "./configure", *configure_args
     system "make install"
@@ -115,7 +117,7 @@ __END__
 +++ new/scripts/mysqld_safe.sh	2009-09-02 04:52:55.000000000 -0400
 @@ -383,7 +383,7 @@
  fi
- 
+
  USER_OPTION=""
 -if test -w / -o "$USER" = "root"
 +if test -w /sbin -o "$USER" = "root"
