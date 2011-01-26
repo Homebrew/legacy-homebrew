@@ -101,6 +101,9 @@ class Imagemagick <Formula
 
   def caveats
     s = <<-EOS.undent
+    If you get "repository moved" errors, try deleting the folder:
+      ~/Library/Caches/Homebrew/imagemagick--svn
+
     Because ImageMagick likes to remove tarballs, we're downloading their
     stable release from their SVN repo instead. But they only serve the
     repo over HTTPS, and have an untrusted certificate, so we auto-accept
