@@ -9,8 +9,8 @@ class Bsdsfv <Formula
     bin.mkpath
 
     inreplace 'Makefile' do |s|
-      s.gsub! 'INSTALL_PREFIX = /usr/local', "INSTALL_PREFIX = #{prefix}"
-      s.gsub! 'INDENT = /usr/local/bin/gindent', 'INDENT = indent'
+      s.change_make_var! "INSTALL_PREFIX", prefix
+      s.change_make_var! "INDENT", "indent"
       s.gsub! '	${INSTALL_PROGRAM} bsdsfv ${INSTALL_PREFIX}/bin', "	${INSTALL_PROGRAM} bsdsfv #{bin}/"
     end
 
