@@ -34,8 +34,23 @@ end
 MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
 MACOS_VERSION = /(10\.\d+)(\.\d+)?/.match(MACOS_FULL_VERSION).captures.first.to_f
 
-HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; Mac OS X #{MACOS_FULL_VERSION})"
+def _get_patchlevel
+  begin; RUBY_PATCHLEVEL; rescue; 0; end
+end
 
+HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{_get_patchlevel()}; Mac OS X #{MACOS_FULL_VERSION})"
+
+# Ruby 1.8.2 on 10.4 is missing the Object method instance_variable_defined?,
+# so we need to define one for later use by formula.rb code.
+if RUBY_VERSION == '1.8.2'
+  if not Object.method_defined?(:instance_variable_defined?)
+    class Object
+      def instance_variable_defined?(variable)
+        instance_variables.include?(variable.to_s)
+      end
+    end
+  end
+end
 
 RECOMMENDED_LLVM = 2326
 RECOMMENDED_GCC_40 = (MACOS_VERSION >= 10.6) ? 5494 : 5493

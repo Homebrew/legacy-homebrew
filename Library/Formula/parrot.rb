@@ -1,7 +1,7 @@
 require 'formula'
 
 class Parrot <Formula
-  head 'git://github.com/parrot/parrot.git'
+  head 'bzr://https://launchpad.net/parrot/trunk'
   url 'ftp://ftp.parrot.org/pub/parrot/releases/supported/2.9.1/parrot-2.9.1.tar.gz'
   homepage 'http://www.parrot.org/'
   md5 '5f68803d2a9f7488459337f0628ad8fc'

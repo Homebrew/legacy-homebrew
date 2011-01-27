@@ -3,7 +3,7 @@ class Hardware
   # Look in <mach/machine.h> for decoding info.
 
   def self.cpu_type
-    @@cpu_type ||= `/usr/sbin/sysctl -n hw.cputype`.to_i
+    @@cpu_type ||= self.sysctl_int('hw.cputype')
 
     case @@cpu_type
     when 7
@@ -14,9 +14,35 @@ class Hardware
       :dunno
     end
   end
+  
+  def self.ppc_family
+    # Note: This list is defined in: /usr/include/mach/machine.h
+    types = ['POWERPC_ALL',
+      'POWERPC_601',
+      'POWERPC_602',
+      'POWERPC_603',
+      'POWERPC_603e',
+      'POWERPC_603ev',
+      'POWERPC_604',
+      'POWERPC_604e',
+      'POWERPC_620',
+      'POWERPC_750',
+      'POWERPC_7400',
+      'POWERPC_7450']
+    type100 = 'POWERPC_970'
+    
+    @@ppc_family ||= self.sysctl_int('hw.cpusubtype')
+    if @@ppc_family == 100
+      type100.downcase.to_sym
+    elsif @@ppc_family <= 0 or @@ppc_family > types.length
+      :dunno
+    else
+      types[@@ppc_family].downcase.to_sym
+    end
+  end
 
   def self.intel_family
-    @@intel_family ||= `/usr/sbin/sysctl -n hw.cpufamily`.to_i
+    @@intel_family ||=  self.sysctl_int('hw.cpufamily')
 
     case @@intel_family
     when 0x73d67300 # Yonah: Core Solo/Duo
@@ -33,9 +59,20 @@ class Hardware
       :dunno
     end
   end
+  
+  def self.any_family
+    case self.cpu_type
+    when :intel
+      Hardware.intel_family
+    when :ppc
+      Hardware.ppc_family
+    else
+      :dunno
+    end
+  end
 
   def self.processor_count
-    @@processor_count ||= `/usr/sbin/sysctl -n hw.ncpu`.to_i
+    @@processor_count ||= self.sysctl_int('hw.ncpu')
   end
   
   def self.cores_as_words
@@ -61,6 +98,14 @@ class Hardware
   end
 
 protected
+  def self.sysctl_int(property)
+    result = nil
+    IO.popen("/usr/sbin/sysctl -n #{property} 2>/dev/null") do |f|
+      result = f.gets.to_i
+    end
+    return result
+  end
+
   def self.sysctl_bool(property)
     result = nil
     IO.popen("/usr/sbin/sysctl -n #{property} 2>/dev/null") do |f|

@@ -7,12 +7,11 @@ class Valgrind <Formula
   md5 "b289c5f4ab8e39741602445f1dd09b34"
 
   depends_on 'pkg-config' => :build
+  depends_on 'boost'
 
   skip_clean 'lib'
 
   def install
-    fails_with_llvm "Undefined symbols when linking", :build => 2326
-
     system "./autogen.sh" if File.exists? "autogen.sh"
 
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]

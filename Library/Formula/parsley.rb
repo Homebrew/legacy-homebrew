@@ -2,7 +2,7 @@ require 'formula'
 
 class Parsley <Formula
   head 'git://github.com/fizx/parsley.git'
-  homepage 'https://github.com/fizx/parsley'
+  homepage 'http://github.com/fizx/parsley'
 
   depends_on 'json-c'
   depends_on 'pcre'

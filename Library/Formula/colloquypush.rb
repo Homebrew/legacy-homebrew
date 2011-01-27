@@ -2,7 +2,7 @@ require 'formula'
 
 class Colloquypush <Formula
   head 'git://github.com/wired/colloquypush.git'
-  homepage 'https://github.com/wired/colloquypush'
+  homepage 'http://github.com/wired/colloquypush'
 
   depends_on 'znc'
 

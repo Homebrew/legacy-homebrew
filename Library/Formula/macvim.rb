@@ -8,21 +8,11 @@ class Macvim <Formula
   homepage 'http://code.google.com/p/macvim/'
 
   def options
-  [
-    # Building custom icons fails for many users, so off by default.
-    ["--custom-icons", "Try to generate custom document icons."],
-    ["--with-cscope", "Build with Cscope support."],
-    ["--with-envycoder", "Build with Envy Code R Bold font."]
-  ]
+    # Occassional reports of this brew failing during the icon step
+    [["--no-icons", "Don't generate custom document icons."]]
   end
 
-  depends_on 'cscope' if ARGV.include? '--with-cscope'
-
   def install
-    if "4.0" == xcode_version
-      opoo "MacVim may not compile under the Xcode 4 preview."
-    end
-
     # MacVim's Xcode project gets confused by $CC
     # Disable it until someone figures out why it fails.
     ENV['CC'] = nil
@@ -30,28 +20,18 @@ class Macvim <Formula
     ENV['CXX'] = nil
     ENV['CXXFLAGS'] = nil
 
-    args = ["--with-macsdk=#{MACOS_VERSION}",
+    system "./configure",
+           "--with-macsdk=#{MACOS_VERSION}",
            # Add some features
            "--with-features=huge",
            "--enable-perlinterp",
            "--enable-pythoninterp",
            "--enable-rubyinterp",
-           "--enable-tclinterp"]
+           "--enable-tclinterp"
 
-    if ARGV.include? "--with-cscope"
-      args << "--enable-cscope"
-    end
-
-    system "./configure", *args
-
-    unless ARGV.include? "--custom-icons"
+    if ARGV.include? "--no-icons"
       inreplace "src/MacVim/icons/Makefile", "$(MAKE) -C makeicns", ""
       inreplace "src/MacVim/icons/make_icons.py", "dont_create = False", "dont_create = True"
-    end
-
-    unless ARGV.include? "--with-envycoder"
-      inreplace "src/MacVim/icons/Makefile", '$(OUTDIR)/MacVim-generic.icns: make_icons.py vim-noshadow-512.png loadfont.so Envy\ Code\ R\ Bold.ttf',
-                                             "$(OUTDIR)/MacVim-generic.icns: make_icons.py vim-noshadow-512.png loadfont.so"
     end
 
     system "make"

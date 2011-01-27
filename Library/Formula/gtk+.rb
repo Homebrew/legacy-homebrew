@@ -9,11 +9,6 @@ class Gtkx <Formula
   depends_on 'glib'
   depends_on 'jpeg'
   depends_on 'libtiff'
-
-  # Used by pango, but keg-only, so needs to be added to
-  # the flags for gtk+ explicitly.
-  depends_on 'cairo' if MACOS_VERSION < 10.6
-
   depends_on 'pango'
   depends_on 'jasper' => :optional
   depends_on 'atk' => :optional
@@ -24,9 +19,5 @@ class Gtkx <Formula
                           "--prefix=#{prefix}",
                           "--disable-glibtest"
     system "make install"
-  end
-
-  def test
-    system "gtk-demo"
   end
 end

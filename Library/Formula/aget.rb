@@ -13,7 +13,6 @@ class Aget <Formula
     system "make"
     # system "make strip"
     bin.install "aget"
-    man1.install "aget.1"
   end
 end
 

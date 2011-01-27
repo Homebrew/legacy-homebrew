@@ -87,7 +87,13 @@ class Pathname
   
   def chmod_R perms
     require 'fileutils'
-    FileUtils.chmod_R perms, to_s
+    # FileUtils in Ruby 1.8.2 on 10.4 does not support chmod_R,
+    # use system chmod command instead as work-around.
+    if not FileUtils.respond_to?(:chmod_R)
+      safe_system "chmod", "-R", "0%o" % perms, to_s
+    else
+      FileUtils.chmod_R perms, to_s
+    end
   end
 
   def abv
@@ -237,6 +243,22 @@ class Pathname
 
   def / that
     join that.to_s
+  end
+
+  # The Pathname class in Ruby 1.8.2 on 10.4 does not properly handle
+  # unlink of symlinks that point to directories, so we need to override
+  # the unlink method here, otherwise you get a 'not a directory' error
+  # during brew link/unlink.
+  if RUBY_VERSION == '1.8.2'
+    # Removes a file or directory, using <tt>File.unlink</tt> or
+    # <tt>Dir.unlink</tt> as necessary.
+    def unlink()
+      begin
+        Dir.unlink @path
+      rescue Errno::ENOTDIR
+        File.unlink @path
+      end
+    end
   end
 end
 

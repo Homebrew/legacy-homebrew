@@ -124,7 +124,7 @@ def quiet_system cmd, *args
 end
 
 def curl *args
-  safe_system '/usr/bin/curl', '-f#LA', HOMEBREW_USER_AGENT, *args unless args.empty?
+  safe_system 'curl', '-f#LA', HOMEBREW_USER_AGENT, *args unless args.empty?
 end
 
 def puts_columns items, cols = 4
@@ -144,10 +144,28 @@ def puts_columns items, cols = 4
   end
 end
 
+# Basic command "which" check that works for 10.4 and later.
+# The 10.4 version of which does not support -s, but 10.5 and
+# later does.
+def command_exists cmd
+  result = false
+  if MACOS_VERSION == 10.4
+    path = `/usr/bin/which #{cmd}`
+    if /^no /.match(path) or path.empty?
+      result = false
+    else
+      result = true
+    end
+  else
+    result = system "/usr/bin/which -s #{cmd}"
+  end
+  return result
+end
+
 def exec_editor *args
   editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
   if editor.nil?
-    if system "/usr/bin/which -s mate"
+    if command_exists "mate"
       # TextMate
       editor='mate'
     elsif system "/usr/bin/which -s edit"

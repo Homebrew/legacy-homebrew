@@ -43,30 +43,55 @@ module HomebrewEnvExtension
     # http://gcc.gnu.org/onlinedocs/gcc-4.2.1/gcc/i386-and-x86_002d64-Options.html
     # we don't set, eg. -msse3 because the march flag does that for us
     #   http://gcc.gnu.org/onlinedocs/gcc-4.3.3/gcc/i386-and-x86_002d64-Options.html
-    if MACOS_VERSION >= 10.6
-      case Hardware.intel_family
-      when :nehalem, :penryn, :core2
-        # the 64 bit compiler adds -mfpmath=sse for us
-        cflags << "-march=core2"
-      when :core
-        cflags<<"-march=prescott"<<"-mfpmath=sse"
-      end
-      # gcc doesn't auto add msse4 or above (based on march flag) yet
-      case Hardware.intel_family
-      when :nehalem
-        cflags << "-msse4" # means msse4.2 and msse4.1
-      when :penryn
-        cflags << "-msse4.1"
+    if Hardware.cpu_type == :intel
+      if MACOS_VERSION >= 10.6
+        case Hardware.intel_family
+        when :nehalem, :penryn, :core2
+          # the 64 bit compiler adds -mfpmath=sse for us
+          cflags << "-march=core2"
+        when :core
+          cflags<<"-march=prescott"<<"-mfpmath=sse"
+        end
+        # gcc doesn't auto add msse4 or above (based on march flag) yet
+        case Hardware.intel_family
+        when :nehalem
+          cflags << "-msse4" # means msse4.2 and msse4.1
+        when :penryn
+          cflags << "-msse4.1"
+        end
+      else
+        # gcc 4.0 didn't support msse4
+        case Hardware.intel_family
+        when :nehalem, :penryn, :core2
+          cflags<<"-march=nocona"
+        when :core
+          cflags<<"-march=prescott"
+        end
+        cflags<<"-mfpmath=sse"
       end
     else
-      # gcc 4.0 didn't support msse4
-      case Hardware.intel_family
-      when :nehalem, :penryn, :core2
-        cflags<<"-march=nocona"
-      when :core
-        cflags<<"-march=prescott"
+      # PPC optimizations go here
+      # For instace, Altivec and PPC64 flags
+      case Hardware.ppc_family
+      when :powerpc_603ev
+        cflags<<'-mcpu=603e'<<'-mtune=603e'
+      else
+        cpu_type = Hardware.ppc_family.to_s.split('_').last
+        cflags<<"-mcpu=#{cpu_type}"<<"-mtune=#{cpu_type}"
       end
-      cflags<<"-mfpmath=sse"
+    end
+
+    # For 10.4 we need to add system paths for /usr/X11R6 since some
+    # non-X libraries have been installed there that are normally found
+    # in /usr on 10.5 and later systems (e.g. expat)
+    if MACOS_VERSION == 10.4
+      cflags<<'-isystem'<<'/usr/X11R6/include'
+      cppflags = self['CPPFLAGS'].nil? ? [] : [self['CPPFLAGS']]
+      ldflags = self['LDFLAGS'].nil? ? [] : [self['LDFLAGS']]
+      cppflags<<'-isystem'<<'/usr/X11R6/include'
+      ldflags<<'-L/usr/X11R6/lib'
+      self['CPPFLAGS'] = "#{cppflags*' '}"
+      self['LDFLAGS'] = "#{ldflags*' '}"
     end
 
     self['CFLAGS'] = self['CXXFLAGS'] = "#{cflags*' '} #{SAFE_CFLAGS_FLAGS}"
@@ -114,10 +139,12 @@ module HomebrewEnvExtension
 
   def gcc_4_2
     # Sometimes you want to downgrade from LLVM to GCC 4.2
-    self['CC']="/usr/bin/gcc-4.2"
-    self['CXX']="/usr/bin/g++-4.2"
-    self['LD']=self['CC']
-    self.O3
+    if MACOS_VERSION >= 10.5
+      self['CC']="/usr/bin/gcc-4.2"
+      self['CXX']="/usr/bin/g++-4.2"
+      self['LD']=self['CC']
+      self.O3
+    end
   end
 
   def llvm
@@ -179,7 +206,6 @@ module HomebrewEnvExtension
   def cc;      self['CC'] or "gcc";  end
   def cxx;     self['CXX'] or "g++"; end
   def cflags;  self['CFLAGS'];       end
-  def cppflags;self['CPPLAGS'];      end
   def ldflags; self['LDFLAGS'];      end
 
   def m64

@@ -402,6 +402,13 @@ private
     tmp_prefix = ENV['HOMEBREW_TEMP'] || '/tmp'
     tmp=Pathname.new `/usr/bin/mktemp -d #{tmp_prefix}/homebrew-#{name}-#{version}-XXXX`.strip
     raise "Couldn't create build sandbox" if not tmp.directory? or $? != 0
+    # Ensure group of temporary directory matches the user running the
+    # build on 10.4 systems, as commands like "tar xof ..." will fail trying
+    # to set the group to "wheel" which is the default for new dirs in /tmp.
+    # Maybe this should be done all the time?
+    if MACOS_VERSION == 10.4
+      safe_system "chgrp", Process.gid, tmp
+    end
     begin
       wd=Dir.pwd
       Dir.chdir tmp
@@ -416,6 +423,19 @@ private
 
   def verify_download_integrity fn
     require 'digest'
+    # Ruby 1.8.2 on 10.4 has Digest that does not auto-require the
+    # submodules it supports, so we need to require them explicitly.
+    if RUBY_VERSION == '1.8.2'
+      if not defined?(Digest::MD5)
+        require 'digest/md5'
+      end
+      if not defined?(Digest::SHA1)
+        require 'digest/sha1'
+      end
+      if not defined?(Digest::SHA256)
+        require 'digest/sha2'
+      end
+    end
     type=CHECKSUM_TYPES.detect { |type| instance_variable_defined?("@#{type}") }
     type ||= :md5
     supplied=instance_variable_get("@#{type}")
@@ -631,7 +651,7 @@ end
 
 # see flac.rb for example usage
 class GithubGistFormula <ScriptFileFormula
-  def initialize name='__UNKNOWN__', path=nil
+  def initialize name='__UNKNOWN__'
     super name
     @version=File.basename(File.dirname(url))[0,6]
   end

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Apc <Formula
-  url 'http://pecl.php.net/get/APC-3.1.6.tgz'
+  url 'http://pecl.php.net/get/APC-3.1.4.tgz'
   homepage 'http://pecl.php.net/package/apc'
-  md5 '624b8030254f897face30789d64e6b7e'
+  md5 '1f7a58f850e795b0958a3f99ae8c2cc4'
 
   depends_on 'pcre'
 

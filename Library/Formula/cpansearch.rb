@@ -1,8 +1,8 @@
 require 'formula'
 
 class Cpansearch <Formula
-  head 'https://github.com/c9s/cpansearch.git', :using => :git
-  homepage 'https://github.com/c9s/cpansearch'
+  head 'http://github.com/c9s/cpansearch.git', :using => :git
+  homepage 'http://github.com/c9s/cpansearch'
 
   depends_on 'glib'
 

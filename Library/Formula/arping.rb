@@ -1,9 +1,9 @@
 require 'formula'
 
 class Arping <Formula
-  url 'https://github.com/ThomasHabets/arping/tarball/arping-2.09'
+  url 'http://github.com/ThomasHabets/arping/tarball/arping-2.09'
   version '2.09'
-  homepage 'https://github.com/ThomasHabets/arping'
+  homepage 'http://github.com/ThomasHabets/arping'
   md5 '8a10b23655ffbe93667691fb881afbf4'
 
   depends_on 'libnet'

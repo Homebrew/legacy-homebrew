@@ -1,9 +1,9 @@
 require 'formula'
 
 class GitSubtree <Formula
-  homepage 'https://github.com/apenwarr/git-subtree'
-  url 'https://github.com/apenwarr/git-subtree/zipball/v0.3'
-  head 'git://github.com/apenwarr/git-subtree.git'
+  homepage 'http://github.com/apenwarr/git-subtree'
+  head 'git://github.com/apenwarr/git-subtree.git',
+        :tag => 'v0.3'
 
   def options
     [

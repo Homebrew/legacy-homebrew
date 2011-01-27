@@ -23,7 +23,6 @@ class Thrift <Formula
                           "--without-ruby",
                           "--without-perl",
                           "--without-php"
-    ENV.j1
     system "make"
     system "make install"
   end

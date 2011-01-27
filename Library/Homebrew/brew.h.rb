@@ -1,5 +1,5 @@
 FORMULA_META_FILES = %w[README README.md ChangeLog COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
-PLEASE_REPORT_BUG = "#{Tty.white}Please follow the instructions to report this bug at: #{Tty.em}\nhttps://github.com/mxcl/homebrew/wiki/new-issue#{Tty.reset}"
+PLEASE_REPORT_BUG = "#{Tty.white}Please report this bug at #{Tty.em}http://github.com/mxcl/homebrew/issues#{Tty.reset}"
 
 def check_for_blacklisted_formula names
   return if ARGV.force?
@@ -175,7 +175,7 @@ def github_info name
   user = 'mxcl'
   branch = 'master'
 
-  if system "/usr/bin/which -s git"
+  if command_exists "git"
     gh_user=`git config --global github.user 2>/dev/null`.chomp
     /^\*\s*(.*)/.match(`git --work-tree=#{HOMEBREW_REPOSITORY} branch 2>/dev/null`)
     unless $1.nil? || $1.empty? || gh_user.empty?
@@ -366,8 +366,7 @@ def macports_or_fink_installed?
   # http://github.com/mxcl/homebrew/issues/#issue/48
 
   %w[port fink].each do |ponk|
-    path = `/usr/bin/which -s #{ponk}`
-    return ponk unless path.empty?
+    return ponk if command_exists ponk
   end
 
   # we do the above check because macports can be relocated and fink may be
@@ -441,7 +440,7 @@ def brew_install
   require 'hardware'
 
   ############################################################ sanity checks
-  case Hardware.cpu_type when :ppc, :dunno
+  case Hardware.cpu_type when :dunno
     abort "Sorry, Homebrew does not support your computer's CPU architecture.\n"+
           "For PPC support, see: http://github.com/sceaga/homebrew/tree/powerpc"
   end
@@ -545,6 +544,78 @@ private
   end
 end
 
+
+################################################################ class Cleaner
+class Cleaner
+  def initialize f
+    @f=f
+    [f.bin, f.sbin, f.lib].select{|d|d.exist?}.each{|d|clean_dir d}
+    # info pages suck
+    info = f.share+'info'
+    info.rmtree if info.directory? and not f.skip_clean? info
+  end
+
+private
+  def strip path, args=''
+    return if @f.skip_clean? path
+    puts "strip #{path}" if ARGV.verbose?
+    path.chmod 0644 # so we can strip
+    unless path.stat.nlink > 1
+      system "strip", *(args+path)
+    else
+      path = path.to_s.gsub ' ', '\\ '
+
+      # strip unlinks the file and recreates it, thus breaking hard links!
+      # is this expected behaviour? patch does it too… still, this fixes it
+      tmp = `/usr/bin/mktemp -t homebrew_strip`.chomp
+      begin
+        `/usr/bin/strip #{args} -o #{tmp} #{path}`
+        `/bin/cat #{tmp} > #{path}`
+      ensure
+        FileUtils.rm tmp
+      end
+    end
+  end
+
+  def clean_file path
+    perms=0444
+    # File on 10.4 does not support the -h option because it does not
+    # dereference symlinks by default like 10.5 and later does.
+    if MACOS_VERSION == 10.4
+      filetype=`file '#{path}'`
+    else
+      filetype=`file -h '#{path}'`
+    end
+    case filetype
+    when /Mach-O dynamically linked shared library/
+      # Stripping libraries is causing no end of trouble
+      # Lets just give up, and try to do it manually in instances where it
+      # makes sense
+      #strip path, '-SxX'
+    when /Mach-O [^ ]* ?executable/
+      strip path
+      perms=0555
+    when /script text executable/
+      perms=0555
+    end
+    path.chmod perms
+  end
+
+  def clean_dir d
+    d.find do |path|
+      if path.directory?
+        Find.prune if @f.skip_clean? path
+      elsif not path.file?
+        next
+      elsif path.extname == '.la' and not @f.skip_clean? path
+        # *.la files are stupid
+        path.unlink
+      elsif not path.symlink?
+        clean_file path
+      end
+    end
+  end
+end
 
 def gcc_42_build
   `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/

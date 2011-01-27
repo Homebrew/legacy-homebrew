@@ -17,8 +17,5 @@ class Portaudio <Formula
     end
 
     system "make install"
-
-    # Need 'pa_mac_core.h' to compile PyAudio
-    include.install "include/pa_mac_core.h"
   end
 end

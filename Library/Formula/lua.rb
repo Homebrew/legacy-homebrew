@@ -10,9 +10,10 @@ class Lua <Formula
 
   def install
     # Apply patch-level 2
-    curl "http://www.lua.org/ftp/patch-lua-5.1.4-2", "-O"
-    safe_system '/usr/bin/patch', '-d', 'src', '-i', '../patch-lua-5.1.4-2'
-    # we could use the patches method if it supported additional arguments (-d in our case)
+    cd 'src' do
+      curl "http://www.lua.org/ftp/patch-lua-5.1.4-2", "-O"
+      `patch < patch-lua-5.1.4-2`
+    end
 
     # Use our CC/CFLAGS to compile.
     inreplace 'src/Makefile' do |s|

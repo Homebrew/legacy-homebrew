@@ -7,17 +7,8 @@ class Memcached <Formula
 
   depends_on 'libevent'
 
-  def options
-    [
-      ["--enable-sasl", "Enable SASL support -- disables ASCII protocol!"],
-    ]
-  end
-
   def install
-    args = ["--prefix=#{prefix}"]
-    args << "--enable-sasl" if ARGV.include? "--enable-sasl"
-
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
 
     (prefix+'com.danga.memcached.plist').write startup_plist

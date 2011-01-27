@@ -2,7 +2,7 @@ require 'formula'
 
 class Redcar <Formula
   head 'git://github.com/danlucraft/redcar.git'
-  homepage 'https://github.com/danlucraft/redcar'
+  homepage 'http://github.com/danlucraft/redcar'
 
   depends_on 'jruby'
   depends_on 'cucumber' => :jruby

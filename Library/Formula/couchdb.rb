@@ -1,14 +1,13 @@
 require 'formula'
 
 class Couchdb <Formula
-  url 'https://github.com/apache/couchdb/tarball/1.0.1'
+  url 'http://github.com/apache/couchdb/tarball/1.0.1'
   homepage "http://couchdb.apache.org/"
   md5 'f2ea23caacff482afe44e29a3f8b7685'
 
   depends_on 'spidermonkey'
   depends_on 'icu4c'
   depends_on 'erlang'
-  depends_on 'curl' if MACOS_VERSION < 10.6
 
   def install
     system "./bootstrap" if File.exists? "bootstrap"

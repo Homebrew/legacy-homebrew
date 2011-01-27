@@ -82,8 +82,20 @@ class CurlDownloadStrategy <AbstractDownloadStrategy
       quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @tarball_path
       chdir
     when /^\037\213/, /^BZh/, /^\037\235/  # gzip/bz2/compress compressed
-      # TODO check if it's really a tar archive
-      safe_system '/usr/bin/tar', 'xf', @tarball_path
+      # Tar on 10.4 does not auto-decompress like 10.5 and later
+      if MACOS_VERSION == 10.4
+        case magic_bytes
+        when /^\037\213/  # gzip compressed
+          safe_system '/usr/bin/tar', 'xfz', @tarball_path
+        when /^BZh/       # bz2 compressed
+          safe_system '/usr/bin/tar', 'xfj', @tarball_path
+        when /^\037\235/  # compress compressed
+          safe_system '/usr/bin/tar', 'xfZ', @tarball_path
+        end
+      else
+        # TODO check if it's really a tar archive
+        safe_system '/usr/bin/tar', 'xf', @tarball_path
+      end
       chdir
     when '____pkg'
       safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, File.basename(@url)
@@ -368,7 +380,7 @@ class MercurialDownloadStrategy <AbstractDownloadStrategy
           "    brew install pip && pip install mercurial\n"+
           "    easy_install mercurial\n\n"+
           "Homebrew recommends pip over the OS X provided easy_install." \
-          unless system "/usr/bin/which hg"
+          unless command_exists "hg"
 
     ohai "Cloning #{@url}"
 
