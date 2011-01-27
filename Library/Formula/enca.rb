@@ -1,10 +1,11 @@
 require 'formula'
 
-class Lzlib <Formula
-  url 'http://download.savannah.gnu.org/releases/lzip/lzlib-1.1.tar.gz'
-  homepage 'http://www.nongnu.org/lzip/lzlib.html'
-  md5 '3e57ebb510b6343e93f56724cfa16510'
+class Enca <Formula
+  url 'http://dl.cihar.com/enca/enca-1.13.tar.gz'
+  homepage 'http://freshmeat.net/projects/enca'
+  md5 '58fcf1fea7eeab70b64a2d61e14a967d'
 
+  depends_on 'libiconv'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
