@@ -18,7 +18,8 @@ class Nginx < Formula
 
   def options
     [
-      ['--with-passenger', "Compile with support for Phusion Passenger module"]
+      ['--with-passenger', "Compile with support for Phusion Passenger module"],
+      ['--with-webdav',    "Compile with support for WebDAV module"]
     ]
   end
 
@@ -40,6 +41,7 @@ class Nginx < Formula
             "--conf-path=#{etc}/nginx/nginx.conf", "--pid-path=#{var}/run/nginx.pid",
             "--lock-path=#{var}/nginx/nginx.lock"]
     args << passenger_config_args if ARGV.include? '--with-passenger'
+    args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
 
     system "./configure", *args
     system "make install"
