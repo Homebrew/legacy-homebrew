@@ -1,9 +1,9 @@
 require 'formula'
 
 class Lastfmfpclient <Formula
-  url 'http://github.com/lastfm/Fingerprinter/tarball/9ee83a51ac9058ff53c9'
+  url 'https://github.com/lastfm/Fingerprinter/tarball/9ee83a51ac9058ff53c9'
   version '1.6'
-  homepage 'http://github.com/lastfm/Fingerprinter'
+  homepage 'https://github.com/lastfm/Fingerprinter'
   md5 'ab909b4d6dcc6182afae616749ce0fdc'
 
   depends_on 'cmake' => :build
