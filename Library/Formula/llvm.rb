@@ -16,6 +16,13 @@ class Llvm <Formula
   homepage  'http://llvm.org/'
   md5       '220d361b4d17051ff4bb21c64abe05ba'
 
+  def patches
+    # changes the link options for the shared library build
+    # to use the preferred way to build libraries in Mac OS X
+    # Reported upstream: http://llvm.org/bugs/show_bug.cgi?id=8985
+    DATA if build_shared?
+  end
+
   def options
     [['--with-clang', 'Also build & install clang'],
      ['--shared', 'Build shared library'],
@@ -69,3 +76,18 @@ class Llvm <Formula
     EOS
   end
 end
+
+__END__
+diff --git a/Makefile.rules b/Makefile.rules
+index 9cff105..44d5b2d 100644
+--- a/Makefile.rules
++++ b/Makefile.rules
+@@ -497,7 +497,7 @@ ifeq ($(HOST_OS),Darwin)
+   # Get "4" out of 10.4 for later pieces in the makefile.
+   DARWIN_MAJVERS := $(shell echo $(DARWIN_VERSION)| sed -E 's/10.([0-9]).*/\1/')
+
+-  SharedLinkOptions=-Wl,-flat_namespace -Wl,-undefined,suppress \
++  SharedLinkOptions=-Wl,-undefined,dynamic_lookup \
+                     -dynamiclib
+   ifneq ($(ARCH),ARM)
+     SharedLinkOptions += -mmacosx-version-min=$(DARWIN_VERSION)
