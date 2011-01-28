@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libxml2 <Formula
-  url 'ftp://xmlsoft.org/libxml2/libxml2-2.7.7.tar.gz'
+  url 'ftp://xmlsoft.org/libxml2/libxml2-2.7.8.tar.gz'
   homepage 'http://xmlsoft.org'
-  md5 '9abc9959823ca9ff904f1fbcf21df066'
+  md5 '8127a65e8c3b08856093099b52599c86'
 
   keg_only :provided_by_osx
 
