@@ -9,11 +9,9 @@ class Jslint4java <Formula
   def install
   	prefix.install Dir['*']
   	bin.mkpath
-	File.open(bin.to_s + '/jslint4java', 'w') do |f|
-	  f << <<-BASH
+	(bin + 'jslint4java').write <<-EOF
 #!/bin/bash
-java -jar #{prefix}/jslint4java-#{version}.jar $1 $2 $3 $4 $5 $6 $7 $8 $9
-BASH
-	end
+java -jar #{prefix}/jslint4java-#{version}.jar "$@"
+EOF
   end
 end
