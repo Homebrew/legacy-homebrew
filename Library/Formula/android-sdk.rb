@@ -1,13 +1,15 @@
 require 'formula'
 
 class AndroidSdk <Formula
-  url 'http://dl.google.com/android/android-sdk_r08-mac_86.zip'
+  url 'http://dl.google.com/android/android-sdk_r09-mac_x86.zip'
   homepage 'http://developer.android.com/index.html'
-  md5 'd2e392c4e4680cbf2dfd6dbf82b662c7'
-  version 'r8'
+  md5 'ef3102fdbbbbd9bf4d9b572624aa9dc1'
+  version 'r9'
 
   def self.var_dirs
-    %w[platforms docs samples temp add-ons]
+    %w[platforms samples temp add-ons ]
+    # TODO docs, google-market_licensing and platform-tools
+    # See the long comment below for the associated problems
   end
 
   skip_clean var_dirs
@@ -32,11 +34,30 @@ class AndroidSdk <Formula
       src.mkpath unless src.directory?
       dst.make_relative_symlink src
     end
+
+    (bin/:adb).write <<-EOS.undent
+      #!/bin/sh
+      ADB="#{prefix}/platform-tools/adb"
+      test -f "$ADB" && exec "$ADB" $@
+      echo Use the \\`android\\' tool to install adb.
+      EOS
   end
 
   def caveats; <<-EOS.undent
-    We put the useful tools in the PATH. Like the `android` tool. You probably
-    want to run that now.
+    Now run the `android' tool to install the actual SDK stuff.
+    You will have to install the platform-tools EVERY time this formula updates.
+    If you want to try and fix this then see the comment in this formula.
     EOS
   end
+
+  # The `android' tool insists on deleting /usr/local/Cellar/android-sdl/rx/platform-tools
+  # and then installing the new one. So it is impossible for us to redirect
+  # the SDK location to var so that the platform-tools don't have to be
+  # freshly installed EVERY FUCKING time the base SDK updates.
+  # My disgust at Google's ineptitude here knows NO bounds. I can only LOL.
+  # And I do LOL. A lot. In Google's general direction. I can't stop LOLing.
+  # In fact, I may have LOLd myself into insanity.
+
+  # Ideas: make android a script that calls the actual android tool, but after
+  # that tool exits it repairs the directory locations?
 end
