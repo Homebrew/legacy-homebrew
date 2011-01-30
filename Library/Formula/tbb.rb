@@ -1,7 +1,7 @@
 require 'formula'
 
 class Tbb <Formula
-  url 'http://www.threadingbuildingblocks.org/uploads/78/162/3.0%20update%204/tbb30_127oss_src.tgz'
+  url 'https://github.com/downloads/gmanley/homebrew/tbb-30_127.tgz'
   version '30_127'
   homepage 'http://www.threadingbuildingblocks.org/'
   md5 'c911f74f3d207358bb5554614b276c39'
