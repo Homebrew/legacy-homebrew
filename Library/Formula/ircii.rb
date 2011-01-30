@@ -10,7 +10,8 @@ class Ircii <Formula
                           "--disable-debug",
                           "--disable-dependency-tracking",
                           "--with-default-server=irc.freenode.net",
+                          "--mandir=#{prefix}/share/man",
                           "--enable-ipv6"
-    system "make install"
+    system "make install -j1" # makefile is not multi-job safe
   end
 end
