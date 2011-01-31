@@ -1,10 +1,9 @@
 require 'formula'
 
 class Nmap <Formula
-  url 'http://nmap.org/dist/nmap-5.35DC1.tar.bz2'
+  url 'http://nmap.org/dist/nmap-5.50.tar.bz2'
   homepage 'http://nmap.org/5/'
-  md5 '5bc2f8629f26716aa78d4bfe474a5d3a'
-  version '5.35DC1'
+  md5 'a4df96e52cb52a1bbe76caace5f21388'
 
   def install
     fails_with_llvm
