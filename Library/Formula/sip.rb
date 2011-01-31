@@ -1,13 +1,8 @@
 require 'formula'
 
-#
-# NOTE: You must also change the version in the patch below, as the upstream
-# build figures out the version number from the hg checkout.
-#
-
 class Sip <Formula
-  url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.12.tar.gz'
-  md5 'a9fa74162d65a813aa35a452f8e6ec36'
+  url 'http://www.riverbankcomputing.com/static/Downloads/sip4/sip-4.12.1.tar.gz'
+  md5 '0f8e8305b14c1812191de2e0ee22fea9'
   head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
 
@@ -18,7 +13,6 @@ class Sip <Formula
   end
 
   def install
-    system "python", "build.py", "prepare"
     system "python", "configure.py",
                               "--destdir=#{lib}/python",
                               "--bindir=#{bin}",
@@ -35,32 +29,6 @@ end
 
 
 __END__
-Patch to allow the SIP build.py script to generate a reasonable version number
-without the .hg directory from the Mercurial repository.
-
-diff --git a/build.py b/build.py
-index 927d7f1..fdf13a3 100755
---- a/build.py
-+++ b/build.py
-@@ -179,7 +179,7 @@ def _get_release():
-         changelog = None
-         name = os.path.basename(_RootDir)
- 
--        release_suffix = "-unknown"
-+        release_suffix = ""
-         version = None
- 
-         parts = name.split('-')
-@@ -192,7 +192,7 @@ def _get_release():
- 
-     # Format the results.
-     if version is None:
--        version = (0, 1, 0)
-+        version = (4, 12, 0)
- 
-     major, minor, micro = version
- 
-
 Another patch to remove the seemingly unnecessary framework build requirement
 diff --git a/siputils.py b/siputils.py
 index 57e8911..1af6152 100644
