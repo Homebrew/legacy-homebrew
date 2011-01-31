@@ -62,7 +62,7 @@ class Macvim <Formula
     bin.install "src/MacVim/mvim"
 
     # Create MacVim vimdiff, view, ex equivalents
-    %w[mvimdiff mview mvimex].each {|f| ln_s bin+'mvim', bin+f}
+    %w[mvimdiff mview mvimex vim].each {|f| ln_s bin+'mvim', bin+f}
   end
 
   def caveats
