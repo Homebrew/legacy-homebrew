@@ -5,6 +5,8 @@ class Sdcc <Formula
   homepage 'http://sdcc.sourceforge.net/'
   md5 '20fbd49a3421e09fe65577c45524c89e'
 
+  depends_on 'gputils'
+
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--enable-avr-port",
