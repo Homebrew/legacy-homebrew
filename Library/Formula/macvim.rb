@@ -63,9 +63,17 @@ class Macvim <Formula
 
     # Create MacVim vimdiff, view, ex equivalents
     %w[mvimdiff mview mvimex].each {|f| ln_s bin+'mvim', bin+f}
+
   end
 
   def caveats
-    "MacVim.app installed to:\n#{prefix}"
+    <<-EOS.undent
+      MacVim.app installed to:
+      #{prefix}
+
+      To use this version of vim from the shell, set the symlink below:
+        ln -s #{bin}/mvim #{bin}/vim
+
+    EOS
   end
 end
