@@ -1,9 +1,9 @@
 require 'formula'
 
 class OxygenIcons <Formula
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.5.2/src/oxygen-icons-4.5.2.tar.bz2'
+  url 'ftp://ftp.kde.org/pub/kde/stable/4.6.0/src/oxygen-icons-4.6.0.tar.bz2'
   homepage 'http://www.oxygen-icons.org/'
-  md5 '64cd34251378251d56b9e56a9d4d7bf6'
+  md5 '47b943e1b8bc2c1cef10fd791ac70091'
 
   depends_on 'cmake' => :build
 
