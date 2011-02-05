@@ -171,8 +171,11 @@ didn't include with OS X.
     If `--warn` is passed, perform additional stricter checks that may not need
     to be fixed before submitting.
 
-  * `options` <formula>:
+  * `options [--compact]` <formula>:
     Display install options specific to <formula>.
+
+    If `--compact` is passed, show all options on a single line separated by
+    spaces.
 
   * `missing`:
     Check all installed formuale for missing dependencies.
