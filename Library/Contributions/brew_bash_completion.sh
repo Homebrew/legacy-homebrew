@@ -39,6 +39,13 @@ _brew_to_completion()
         COMPREPLY=( $(compgen -W "$(\ls $(brew --cellar))" -- ${cur}) )
         return
         ;;
+    # Complete --options for selected brew
+    *)
+        [[ ${COMP_WORDS[1]} == "install" ]] && [[ "$cur" == --* ]] && {
+            COMPREPLY=( $(compgen -W "$(brew options --compact "$prev")" -- ${cur}) )
+            return
+        }
+        ;;
     esac
 }
 
