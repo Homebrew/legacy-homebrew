@@ -42,7 +42,7 @@ _brew_to_completion()
     # Complete --options for selected brew
     *)
         [[ ${COMP_WORDS[1]} == "install" ]] && [[ "$cur" == --* ]] && {
-            COMPREPLY=( $(compgen -W "$(brew options "$prev" | grep -P "^--")" -- ${cur}) )
+            COMPREPLY=( $(compgen -W "$(brew options --compact "$prev")" -- ${cur}) )
             return
         }
         ;;
