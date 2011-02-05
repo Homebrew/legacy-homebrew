@@ -1,9 +1,9 @@
 require 'formula'
 
 class Swfmill <Formula
-  url 'http://swfmill.org/releases/swfmill-0.2.12.tar.gz'
+  url 'http://swfmill.org/releases/swfmill-0.3.1.tar.gz'
   homepage 'http://swfmill.org'
-  md5 '88a634cad4d8d025c84c6e8916a8b1c4'
+  md5 '63c0b16eab55c385a47afe3ec5b917b9'
 
   depends_on 'pkg-config' => :build
 
