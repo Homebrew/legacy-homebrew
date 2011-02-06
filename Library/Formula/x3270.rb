@@ -7,11 +7,11 @@ class X3270 <Formula
   version '3.3.11ga6'
 
   def install
-  	system "rm -rf c3270-3.3; rm -rf pr3287-3.3; rm -rf s3270-3.3; rm -rf tcl3270-3.3; rm -rf wc3270-3.3; rm -rf wpr3287-3.3; rm -rf ws3270-3.3;"
-    system "mv x3270-3.3/* .; rm -rf x3270-3.3/"
-    system "./configure", 	"--prefix=#{prefix}"
-    system "make"
-    system "make install"
+    Dir.chdir 'x3270-3.3' do
+      system "./configure", 	"--prefix=#{prefix}"
+      system "make"
+      system "make install"
+    end
   end
 end
 
