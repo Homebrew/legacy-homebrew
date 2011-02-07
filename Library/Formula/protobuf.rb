@@ -10,6 +10,14 @@ class Protobuf <Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-zlib"
+
+    ['Makefile', 'src/Makefile'].each do |mk|
+      inreplace mk do |s|
+        existing = s.get_make_var 'CXXFLAGS'
+        s.change_make_var! 'CXXFLAGS', existing + ' -arch i386 -arch x86_64'
+      end
+    end
+
     system "make"
     system "make install"
   end
