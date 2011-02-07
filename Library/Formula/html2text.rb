@@ -10,14 +10,13 @@ class Html2text <Formula
     inreplace 'configure',
               'for i in "CC" "g++" "cc" "$CC"; do',
               'for i in "g++"; do'
-    # Configure...
+
     system "./configure"
-    # Build...
+
     system "make all"
-    # Install...
-    system "/usr/bin/install", "-d", bin, man1, man5
-    system "/usr/bin/install", "-m", "755", "html2text", bin
-    system "/usr/bin/install", "-m", "644", "html2text.1.gz", man1
-    system "/usr/bin/install", "-m", "644", "html2textrc.5.gz", man5
+
+    bin.install "html2text"
+    man1.install "html2text.1.gz"
+    man5.install "html2textrc.5.gz"
   end
 end
