@@ -13,6 +13,7 @@ class Ruby <Formula
     [
       ["--with-suffix", "Add a 19 suffix to commands"],
       ["--with-doc", "Install with the Ruby documentation"],
+      ["--universal", "Compile a universal binary (arch=x86_64,i386)"],
     ]
   end
 
@@ -48,6 +49,7 @@ class Ruby <Formula
             "--enable-shared"]
 
     args << "--program-suffix=19" if ARGV.include? "--with-suffix"
+    args << "--with-arch=x86_64,i386" if ARGV.include? "--universal"
 
     # Put gem, site and vendor folders in the HOMEBREW_PREFIX
 
