@@ -3,7 +3,7 @@ require 'formula'
 class Redis <Formula
   url 'https://github.com/antirez/redis/tarball/v2.0.4-stable'
   head 'git://github.com/antirez/redis.git'
-  homepage 'http://code.google.com/p/redis/'
+  homepage 'http://redis.io/'
   sha1 '48300996d3d34cccf076330859f37248fa5f6c1b'
   version '2.0.4'
 
