@@ -9,5 +9,9 @@ class Robotfindskitten <Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
+
+    # This project installs to 'games', but we want it in 'bin' so it symlinks in.
+    # Can't find a ./configure switch, so just rename it.
+    (prefix+"games").rename bin
   end
 end
