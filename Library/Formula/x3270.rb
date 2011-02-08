@@ -5,7 +5,7 @@ class X3270 <Formula
   homepage 'http://x3270.bgp.nu/'
   md5 '01d6d3809a457e6f6bd3731642e0c02d'
   version '3.3.11ga6'
-  
+
   def options
     [
       ["--with-c3270",   "Include c3270, which is a curses-based version of x3270"],
@@ -14,8 +14,7 @@ class X3270 <Formula
       ["--with-pr3287",  "Include pr3287, which is for printer emulation"]
     ]
   end
-  
-  
+
   def install
   	ohai 'x3270'
     Dir.chdir 'x3270-3.3' do
