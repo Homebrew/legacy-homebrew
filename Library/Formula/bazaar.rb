@@ -1,8 +1,8 @@
 require 'formula'
 
 class Bazaar <Formula
-  url 'http://launchpadlibrarian.net/59616932/bzr-2.2.2.tar.gz'
-  md5 'd1bfa2fd1aad282c423c78d62ebacb21'
+  url 'http://launchpad.net/bzr/2.3/2.3.0/+download/bzr-2.3.0.tar.gz'
+  md5 '2d8bc55d43209189a209361178d9d372'
   homepage 'http://bazaar-vcs.org/'
 
   def options
@@ -11,6 +11,7 @@ class Bazaar <Formula
 
   def install
     ENV.j1 # Builds aren't parallel-safe
+    system 'touch README'
 
     # Make and install man page first
     system "make man1/bzr.1"
