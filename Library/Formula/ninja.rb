@@ -7,6 +7,7 @@ class Ninja <Formula
 
   def install
     system "./bootstrap.sh"
-    system "mkdir -p #{prefix}/bin ; cp ninja #{prefix}/bin/ninja"
+    bin.mkpath
+    bin.install "ninha"
   end
 end
