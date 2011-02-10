@@ -29,6 +29,17 @@ _brew_to_completion()
     case "$prev" in
     # Commands that take a formula
     cat|deps|edit|fetch|home|homepage|info|install|log|options|uses)
+        # handle standard --options
+        if [[ "$prev" == "install" && "$cur" == --* ]]; then
+            local opts=$(
+                local opts=( --force --debug --use-llvm --ignore-dependencies --HEAD )
+                for o in ${opts[*]}; do
+                    [[ " ${COMP_WORDS[*]} " =~ " $o " ]] || echo "$o"
+                done
+            )
+            COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
+            return
+        fi
         local ff=$(\ls $(brew --repository)/Library/Formula | sed "s/\.rb//g")
         local af=$(\ls $(brew --repository)/Library/Aliases 2> /dev/null | sed "s/\.rb//g")
         COMPREPLY=( $(compgen -W "${ff} ${af}" -- ${cur}) )
@@ -41,10 +52,16 @@ _brew_to_completion()
         ;;
     # Complete --options for selected brew
     *)
-        [[ ${COMP_WORDS[1]} == "install" ]] && [[ "$cur" == --* ]] && {
-            COMPREPLY=( $(compgen -W "$(brew options --compact "$prev")" -- ${cur}) )
+        if [[ ${COMP_WORDS[1]} == "install" && "$cur" == --* ]]; then
+            local opts=$(
+                local opts=( $(brew options --compact "$prev") )
+                for o in ${opts[*]}; do
+                    [[ " ${COMP_WORDS[*]} " =~ " $o " ]] || echo "$o"
+                done
+            )
+            COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
             return
-        }
+        fi
         ;;
     esac
 }
