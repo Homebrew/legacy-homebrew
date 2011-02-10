@@ -1,9 +1,9 @@
 require 'formula'
 
-class Xz <Formula
-  url 'http://tukaani.org/xz/xz-5.0.1.tar.bz2'
-  homepage 'http://tukaani.org/xz/'
-  md5 'cb6c7a58cec4d663a395c54d186ca0c6'
+class Recutils <Formula
+  url 'http://ftp.gnu.org/gnu/recutils/recutils-1.2.tar.gz'
+  homepage 'http://www.gnu.org/software/recutils/'
+  md5 '4cd6244a129f7318c4ee4a7461ff9050'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
