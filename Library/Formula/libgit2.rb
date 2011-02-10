@@ -5,7 +5,7 @@ class Libgit2 <Formula
   md5 'ae156dfa1db98ca046b23542e91d0f27'
   homepage 'http://libgit2.github.com/'
 
-  head 'https://github.com/libgit2/libgit2.git'
+  head 'git://github.com/libgit2/libgit2.git', :branch => 'master'
 
   def install
     system "./waf", "configure", "--prefix=#{prefix}"
