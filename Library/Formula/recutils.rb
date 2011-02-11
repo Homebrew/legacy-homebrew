@@ -5,8 +5,6 @@ class Recutils <Formula
   homepage 'http://www.gnu.org/software/recutils/'
   md5 '4cd6244a129f7318c4ee4a7461ff9050'
 
-  # depends_on 'cmake'
-
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
