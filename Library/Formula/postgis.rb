@@ -59,8 +59,8 @@ class Postgis <Formula
     )
 
     if ARGV.build_head?
-      (share+'postgis').install %w(raster/rt_pg/rtpostgis.sql) if raster?
-      (share+'postgis').install %w(topology/topology.sql) if topology?
+      (share+'postgis').install 'raster/rt_pg/rtpostgis.sql' if raster?
+      (share+'postgis').install 'topology/topology.sql' if topology?
     end
 
     # Copy loader and utils binaries to bin folder
