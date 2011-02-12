@@ -21,7 +21,7 @@ class Wine <Formula
   # to be searched by dyld.
   def wine_wrapper; <<-EOS
 #!/bin/sh
-DYLD_FALLBACK_LIBRARY_PATH="/usr/X11/lib:#{HOMEBREW_PREFIX+'lib'}" "#{bin}/wine.bin" "$@"
+DYLD_FALLBACK_LIBRARY_PATH="/usr/X11/lib:#{HOMEBREW_PREFIX}/lib" "#{bin}/wine.bin" "$@"
 EOS
   end
 
@@ -45,8 +45,8 @@ EOS
             "--with-opengl"]
     args << "--disable-win16" if MACOS_VERSION < 10.6
 
-    args << "--without-mpg123" if Hardware.is_64_bit?
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
+    args << "--without-mpg123" if Hardware.is_64_bit?
 
     system "./configure", *args
     system "make install"
