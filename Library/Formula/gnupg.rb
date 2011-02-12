@@ -17,7 +17,7 @@ class Gnupg <Formula
   end
 
   def options
-    [["--idea", "Build with (patented) IDEA cipher"]]
+    [["--idea", "Build with (patented) IDEA cipher"],["--8192", "Build with support for private keys up to 8192 bits."]]
   end
 
   def install
@@ -26,6 +26,11 @@ class Gnupg <Formula
       d=Pathname.getwd
       GnupgIdea.new.brew { (d+'cipher').install Dir['*'] }
       system 'gunzip', 'cipher/idea.c.gz'
+    end
+
+    if ARGV.include? '--8192'
+      ohai "You are building with support for private keys up to 8192 bits."
+      inreplace 'g10/keygen.c', 'max=4096', 'max=8192'
     end
 
     system "/usr/bin/autoconf"
@@ -91,15 +96,3 @@ Index: ChangeLog
  2010-10-18  Werner Koch  <wk@g10code.com>
 
  	Release 1.4.11.
-Index: g10/keygen.c
-===================================================================
---- g10/keygen.c (release 1.4.11)
-+++ g10/keygen.c (working copy)
-@@ -1577,7 +1577,7 @@ ask_algo (int addmode, int *r_subkey_algo, unsigned int *r_usage)
- static unsigned int
- ask_keysize (int algo, unsigned int primary_keysize)
- {
--  unsigned nbits, min, def=2048, max=4096;
-+  unsigned nbits, min, def=2048, max=8192;
-   int for_subkey = !!primary_keysize;
-   int autocomp = 0;
