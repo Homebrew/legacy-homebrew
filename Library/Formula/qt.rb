@@ -28,6 +28,7 @@ class Qt <Formula
   depends_on 'sqlite' if MACOS_VERSION <= 10.5
 
   def install
+    ENV.append "CXXFLAGS", "-fvisibility=hidden"
     args = ["-prefix", prefix,
             "-system-libpng", "-system-zlib",
             "-release", "-cocoa",
