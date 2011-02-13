@@ -1,9 +1,9 @@
 require 'formula'
 
-class Recutils <Formula
-  url 'http://ftp.gnu.org/gnu/recutils/recutils-1.2.tar.gz'
-  homepage 'http://www.gnu.org/software/recutils/'
-  md5 '4cd6244a129f7318c4ee4a7461ff9050'
+class Ecasound <Formula
+  url 'http://ecasound.seul.org/download/ecasound-2.7.2.tar.gz'
+  homepage 'http://www.eca.cx/ecasound/'
+  md5 '40498ceed9cc7622ee969c427f13921c'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
