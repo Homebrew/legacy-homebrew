@@ -26,7 +26,7 @@ def blacklisted? name
   when 'mercurial', 'hg' then <<-EOS.undent
     Install Mercurial with pip:
 
-        brew install pip && pip install mercurial
+        easy_install pip && pip install mercurial
 
     Or easy_install:
 
