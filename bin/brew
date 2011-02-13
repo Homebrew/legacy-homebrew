@@ -295,6 +295,11 @@ begin
       Formula.all.each do |f|
         puts "#{f.name}:#{f.deps.join(' ')}"
       end
+    elsif ARGV.include?('--installed')
+      require 'formula'
+      Formula.all.each do |f|
+        puts "#{f.name}:#{f.deps.join(' ')}" if f.installed?
+      end
     elsif ARGV.include?("-1") or ARGV.include?("--1")
       puts ARGV.formulae.map {|f| f.deps or []}.flatten.uniq.sort
     else
