@@ -50,14 +50,14 @@ at_exit do
   end
 end
 
+ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| File.expand_path p }
+HOMEBREW_BIN = (HOMEBREW_PREFIX+'bin').to_s
+
 def install f
   show_summary_heading = false
 
-  paths = ENV['PATH'].split(':').map{ |p| File.expand_path p }
-  rootbin = (HOMEBREW_PREFIX+'bin').to_s
-  unless paths.include? rootbin
-    ENV.prepend 'PATH', rootbin, ':'
-  end
+  # we must do this or tools like pkg-config won't get found by configure scripts etc.
+  ENV.prepend 'PATH', HOMEBREW_BIN, ':' unless ORIGINAL_PATHS.include? HOMEBREW_BIN
 
   f.deps.uniq.each do |dep|
     dep = Formula.factory dep
@@ -157,10 +157,9 @@ def install f
     # warn the user if stuff was installed outside of their PATH
     [f.bin, f.sbin].each do |bin|
       if bin.directory?
-        rootbin = (HOMEBREW_PREFIX/bin.basename).to_s
         bin = File.expand_path bin
-        unless paths.include? rootbin
-          opoo "#{rootbin} is not in your PATH"
+        unless ORIGINAL_PATHS.include? HOMEBREW_BIN
+          opoo "#{HOMEBREW_BIN} is not in your PATH"
           puts "You can amend this by altering your ~/.bashrc file"
           show_summary_heading = true
         end
