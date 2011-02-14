@@ -29,7 +29,7 @@ class Cmigemo <Formula
     mkdir "#{prefix}/share/migemo/utf-8"
 
     system "make osx-install"
-    system "chmod 755 #{prefix}/bin/cmigemo"
+    File.chmod(0755, "#{prefix}/bin/cmigemo")
     system "install_name_tool -change libmigemo.1.dylib #{prefix}/lib/libmigemo.1.dylib #{prefix}/bin/cmigemo"
   end
 end
