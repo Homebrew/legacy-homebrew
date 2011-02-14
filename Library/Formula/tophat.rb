@@ -14,7 +14,7 @@ class Tophat <Formula
     ENV['MAKEFLAGS'] = nil
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--with-bam=`brew --prefix samtools`"
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end
