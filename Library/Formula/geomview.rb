@@ -8,8 +8,7 @@ class Geomview <Formula
   depends_on 'lesstif'
 
   def install
-    ENV["CFLAGS"] = "-I/usr/X11/include"
-    ENV["LDFLAGS"] = "-L/usr/X11/lib"
+    ENV.x11
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
