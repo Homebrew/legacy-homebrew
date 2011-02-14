@@ -12,7 +12,8 @@ class Macvim <Formula
     # Building custom icons fails for many users, so off by default.
     ["--custom-icons", "Try to generate custom document icons."],
     ["--with-cscope", "Build with Cscope support."],
-    ["--with-envycoder", "Build with Envy Code R Bold font."]
+    ["--with-envycoder", "Build with Envy Code R Bold font."],
+    ["--override-system-vim", "Override system vim"]
   ]
   end
 
@@ -62,7 +63,9 @@ class Macvim <Formula
     bin.install "src/MacVim/mvim"
 
     # Create MacVim vimdiff, view, ex equivalents
-    %w[mvimdiff mview mvimex].each {|f| ln_s bin+'mvim', bin+f}
+    executables = %w[mvimdiff mview mvimex]
+    executables << "vim" if ARGV.include? "--override-system-vim"
+    executables.each {|f| ln_s bin+'mvim', bin+f}
   end
 
   def caveats
