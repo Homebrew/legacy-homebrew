@@ -39,8 +39,8 @@ end
 
 class Imagemagick <Formula
   url 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
-        :using => UnsafeSvn, :revision => '2715'
-  version '6.6.4-5'
+        :using => UnsafeSvn, :revision => '3445'
+  version '6.6.7-1'
   homepage 'http://www.imagemagick.org'
 
   head 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
@@ -101,6 +101,9 @@ class Imagemagick <Formula
 
   def caveats
     s = <<-EOS.undent
+    If you get "repository moved" errors, try deleting the folder:
+      ~/Library/Caches/Homebrew/imagemagick--svn
+
     Because ImageMagick likes to remove tarballs, we're downloading their
     stable release from their SVN repo instead. But they only serve the
     repo over HTTPS, and have an untrusted certificate, so we auto-accept
