@@ -1,18 +1,17 @@
 require 'formula'
 
 class Mysql <Formula
-  homepage 'http://dev.mysql.com/doc/refman/5.1/en/'
-  url 'http://mysql.mirrors.pair.com/Downloads/MySQL-5.1/mysql-5.1.54.tar.gz'
-  md5 '2a0f45a2f8b5a043b95ce7575796a30b'
+  homepage 'http://dev.mysql.com/doc/refman/5.5/en/'
+  url 'http://mysql.mirrors.pair.com/Downloads/MySQL-5.5/mysql-5.5.8.tar.gz'
+  md5 '42e866302b61f5e213afd33e04677017'
 
   depends_on 'readline'
+  depends_on 'cmake' => :build
 
   def options
     [
       ['--with-tests', "Keep tests when installing."],
       ['--with-bench', "Keep benchmark app when installing."],
-      ['--with-embedded', "Build the embedded server."],
-      ['--client-only', "Only install client tools, not the server."],
       ['--universal', "Make mysql a universal binary"]
     ]
   end
@@ -24,42 +23,27 @@ class Mysql <Formula
   def install
     fails_with_llvm "https://github.com/mxcl/homebrew/issues/issue/144"
 
-    # See: http://dev.mysql.com/doc/refman/5.1/en/configure-options.html
-    # These flags may not apply to gcc 4+
-    ENV['CXXFLAGS'] = ENV['CXXFLAGS'].gsub "-fomit-frame-pointer", ""
-    ENV['CXXFLAGS'] += " -fno-omit-frame-pointer -felide-constructors"
+    args = [
+      ".",
+      "-DCMAKE_INSTALL_PREFIX='#{prefix}'",
+      "-DMYSQL_DATADIR='#{var}/mysql/data'",
+      "-DINSTALL_MANDIR='#{man}'",
+      "-DWITH_SSL=yes",
+      "-DDEFAULT_CHARSET='utf8'",
+      "-DDEFAULT_COLLATION='utf8_general_ci'",
+      "-DSYSCONFDIR='#{HOMEBREW_PREFIX}/etc'"]
 
+    args << "-DWITH_UNIT_TESTS=OFF" if not ARGV.include? '--with-tests'
+    args << "-DINSTALL_SQLBENCHDIR=" if not ARGV.include? '--with-bench'
+    
     # Make universal for bindings to universal applications
-    ENV.universal_binary if ARGV.include? '--universal'
+    args << "-DCMAKE_OSX_ARCHITECTURES='ppc;i386'" if ARGV.include? '--universal'
 
-    configure_args = [
-      "--without-docs",
-      "--without-debug",
-      "--disable-dependency-tracking",
-      "--prefix=#{prefix}",
-      "--localstatedir=#{var}/mysql",
-      "--sysconfdir=#{etc}",
-      "--with-plugins=innobase,myisam",
-      "--with-extra-charsets=complex",
-      "--with-ssl",
-      "--without-readline", # Confusingly, means "use detected readline instead of included readline"
-      "--enable-assembler",
-      "--enable-thread-safe-client",
-      "--enable-local-infile",
-      "--enable-shared",
-      "--with-partition"]
+    system "cmake", *args
 
-    configure_args << "--without-server" if ARGV.include? '--client-only'
-    configure_args << "--with-embedded-server" if ARGV.include? '--with-embedded'
+    system "make"
 
-    system "./configure", *configure_args
     system "make install"
-
-    ln_s "#{libexec}/mysqld", bin
-    ln_s "#{share}/mysql/mysql.server", bin
-
-    (prefix+'mysql-test').rmtree unless ARGV.include? '--with-tests' # save 66MB!
-    (prefix+'sql-bench').rmtree unless ARGV.include? '--with-bench'
 
     (prefix+'com.mysql.mysqld.plist').write startup_plist
   end
@@ -67,7 +51,8 @@ class Mysql <Formula
   def caveats; <<-EOS.undent
     Set up databases with:
         unset TMPDIR
-        mysql_install_db
+        cd #{prefix}
+        scripts/mysql_install_db --basedir=#{prefix}
 
     If this is your first install, automatically load on login with:
         cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents
@@ -84,7 +69,7 @@ class Mysql <Formula
         plist with a version specific program argument.
 
     Or start manually with:
-        mysql.server start
+        mysqld_safe &
     EOS
   end
 
@@ -113,9 +98,9 @@ end
 
 
 __END__
---- old/scripts/mysqld_safe.sh	2009-09-02 04:10:39.000000000 -0400
-+++ new/scripts/mysqld_safe.sh	2009-09-02 04:52:55.000000000 -0400
-@@ -383,7 +383,7 @@
+--- old/scripts/mysqld_safe.sh  2010-11-02 15:01:13.000000000 -0700
++++ new/scripts/mysqld_safe.sh  2010-12-14 12:34:31.000000000 -0800
+@@ -555,7 +555,7 @@ else
  fi
  
  USER_OPTION=""
@@ -124,11 +109,9 @@ __END__
  then
    if test "$user" != "root" -o $SET_USER = 1
    then
-diff --git a/scripts/mysql_config.sh b/scripts/mysql_config.sh
-index efc8254..8964b70 100644
---- a/scripts/mysql_config.sh
-+++ b/scripts/mysql_config.sh
-@@ -132,7 +132,8 @@ for remove in DDBUG_OFF DSAFEMALLOC USAFEMALLOC DSAFE_MUTEX \
+--- old/scripts/mysql_config.sh 2010-11-02 15:01:13.000000000 -0700
++++ new/scripts/mysql_config.sh 2010-12-14 12:34:31.000000000 -0800
+@@ -133,7 +133,8 @@ for remove in DDBUG_OFF DSAFE_MUTEX DUNI
                DEXTRA_DEBUG DHAVE_purify O 'O[0-9]' 'xO[0-9]' 'W[-A-Za-z]*' \
                'mtune=[-A-Za-z0-9]*' 'mcpu=[-A-Za-z0-9]*' 'march=[-A-Za-z0-9]*' \
                Xa xstrconst "xc99=none" AC99 \
