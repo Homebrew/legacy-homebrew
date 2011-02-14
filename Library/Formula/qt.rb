@@ -16,6 +16,8 @@ class Qt <Formula
       ['--with-qtdbus', "Enable QtDBus module."],
       ['--with-qt3support', "Enable deprecated Qt3Support module."],
       ['--with-demos-examples', "Enable Qt demos and examples."],
+      ['--with-debug-and-release', "Compile Qt in debug and release mode."],
+      ['--universal', "Build both x86_64 and x86 architectures."],
     ]
   end
 
@@ -28,11 +30,11 @@ class Qt <Formula
   depends_on 'sqlite' if MACOS_VERSION <= 10.5
 
   def install
+    ENV.append "CXXFLAGS", "-fvisibility=hidden"
     args = ["-prefix", prefix,
             "-system-libpng", "-system-zlib",
-            "-release", "-cocoa",
             "-confirm-license", "-opensource",
-            "-fast"]
+            "-cocoa", "-fast" ]
 
     # See: https://github.com/mxcl/homebrew/issues/issue/744
     args << "-system-sqlite" if MACOS_VERSION <= 10.5
@@ -52,6 +54,12 @@ class Qt <Formula
       args << "-no-qt3support"
     end
 
+    if ARGV.include? '--with-debug-and-release'
+      args << "-debug-and-release"
+    else
+      args << "-release"
+    end
+
     unless ARGV.include? '--with-demos-examples'
       args << "-nomake" << "demos" << "-nomake" << "examples"
     end
@@ -64,14 +72,17 @@ class Qt <Formula
       args << "-I#{Formula.factory('libpng').include}"
     end
 
-    if snow_leopard_64?
+    if snow_leopard_64? or ARGV.include? '--universal'
       args << '-arch' << 'x86_64'
-    else
+    end
+
+    if !snow_leopard_64? or ARGV.include? '--universal'
       args << '-arch' << 'x86'
     end
 
     system "./configure", *args
     system "make"
+    ENV.j1
     system "make install"
 
     # stop crazy disk usage
