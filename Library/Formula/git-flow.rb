@@ -18,7 +18,7 @@ class GitFlowCompletion <Formula
 end
 
 class GitFlow <Formula
-  url 'git://github.com/nvie/gitflow.git', :tag => '0.4'
+  url 'git://github.com/nvie/gitflow.git', :tag => '0.4.1'
   version '0.4'
   head 'git://github.com/nvie/gitflow.git', :branch => 'develop'
 
