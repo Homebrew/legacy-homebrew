@@ -14,6 +14,7 @@ class Gpac <Formula
   url 'http://downloads.sourceforge.net/gpac/gpac-0.4.5.tar.gz'
   homepage 'http://gpac.sourceforge.net/index.php'
   md5 '755e8c438a48ebdb13525dd491f5b0d1'
+  head 'https://gpac.svn.sourceforge.net/svnroot/gpac/trunk/gpac', :using => :svn
 
   depends_on 'sdl' => :optional
 
@@ -22,7 +23,9 @@ class Gpac <Formula
     system "chmod +x configure"
     system "./configure", "--disable-wx", "--use-ffmpeg=no",
                           "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+                          "--mandir=#{man}",
+                          # Force detection of X libs on 64-bit kernel
+                          "--extra-ldflags=-L/usr/X11/lib"
     system "make"
     system "make install"
   end

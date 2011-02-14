@@ -19,8 +19,16 @@ def use_wmf?
   ARGV.include? '--use-wmf'
 end
 
+def use_lqr?
+  ARGV.include? '--use-lqr'
+end
+
 def disable_openmp?
   ARGV.include? '--disable-openmp'
+end
+
+def magick_plus_plus?
+    ARGV.include? '--with-magick-plus-plus'
 end
 
 def x11?
@@ -31,8 +39,8 @@ end
 
 class Imagemagick <Formula
   url 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
-        :using => UnsafeSvn, :revision => '2715'
-  version '6.6.4-5'
+        :using => UnsafeSvn, :revision => '3445'
+  version '6.6.7-1'
   homepage 'http://www.imagemagick.org'
 
   head 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
@@ -48,6 +56,7 @@ class Imagemagick <Formula
   depends_on 'jasper' => :optional
 
   depends_on 'libwmf' if use_wmf?
+  depends_on 'liblqr' if use_lqr?
 
   def skip_clean? path
     path.extname == '.la'
@@ -57,7 +66,9 @@ class Imagemagick <Formula
     [
       ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
       ['--use-wmf', 'Compile with libwmf support.'],
-      ['--disable-openmp', 'Disable OpenMP.']
+      ['--use-lqr', 'Compile with liblqr support.'],
+      ['--disable-openmp', 'Disable OpenMP.'],
+      ['--with-magick-plus-plus', 'Compile with C++ interface.']
     ]
   end
 
@@ -71,13 +82,13 @@ class Imagemagick <Formula
              "--disable-dependency-tracking",
              "--enable-shared",
              "--disable-static",
-             "--with-modules",
-             "--without-magick-plus-plus" ]
+             "--with-modules"]
 
     args << "--disable-openmp" if MACOS_VERSION < 10.6 or disable_openmp?
     args << "--without-gslib" unless ghostscript_srsly?
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
                 unless ghostscript_srsly? or ghostscript_fonts?
+    args << "--without-magic-plus-plus" unless magick_plus_plus?
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
@@ -90,6 +101,9 @@ class Imagemagick <Formula
 
   def caveats
     s = <<-EOS.undent
+    If you get "repository moved" errors, try deleting the folder:
+      ~/Library/Caches/Homebrew/imagemagick--svn
+
     Because ImageMagick likes to remove tarballs, we're downloading their
     stable release from their SVN repo instead. But they only serve the
     repo over HTTPS, and have an untrusted certificate, so we auto-accept

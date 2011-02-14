@@ -1,8 +1,8 @@
 require 'formula'
 
 class Znc <Formula
-  url 'http://downloads.sourceforge.net/project/znc/znc/0.094/znc-0.094.tar.gz'
-  md5 'db101f7a7756285d824b59e3b33e3ad5'
+  url 'http://downloads.sourceforge.net/project/znc/znc/0.096/znc-0.096.tar.gz'
+  md5 '38eec4f1911a68b4d2fc704170e7cbf6'
   homepage 'http://en.znc.in/wiki/ZNC'
 
   depends_on 'pkg-config' => :build
@@ -13,9 +13,7 @@ class Znc <Formula
   skip_clean 'bin/znc-buildmod'
 
   def install
-    # Apparently Snow Leopard's libperl is at /System/Library/Perl/lib/5.10/libperl.dylib
-    # but I don't know how to tell znc that. Perl is only used for user plugins, anyway.
-    system "./configure", "--prefix=#{prefix}", "--enable-extra", "--disable-perl"
+    system "./configure", "--prefix=#{prefix}", "--enable-extra"
     system "make install"
   end
 end

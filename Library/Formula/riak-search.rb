@@ -1,10 +1,10 @@
 require 'formula'
 
 class RiakSearch <Formula
-  url 'http://downloads.basho.com/riak-search/riak-search-0.13/riak_search-0.13.0-osx-i386.tar.gz'
+  url 'http://downloads.basho.com/riak-search/riak-search-0.14/riak_search-0.14.0-osx-i386.tar.gz'
   homepage 'http://riak.basho.com'
-  md5 '5f6f95a8edf183dc3799b5139b29d7f8'
-  version '0.13.0'
+  md5 'afb34fdedd1899a972e47050888e18b9'
+  version '0.14.0'
 
   skip_clean 'libexec/log'
   skip_clean 'libexec/log/sasl'

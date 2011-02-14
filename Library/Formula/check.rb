@@ -6,7 +6,8 @@ class Check <Formula
   md5 '5d75e9a6027cde79d2c339ef261e7470'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end
