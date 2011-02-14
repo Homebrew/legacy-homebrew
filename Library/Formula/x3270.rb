@@ -8,10 +8,10 @@ class X3270 <Formula
 
   def options
     [
-      ["--with-c3270",   "Include c3270, which is a curses-based version of x3270"],
-      ["--with-s3270",   "Include s3270, which is a displayless version for writing screen-scraping scripts"],
-      ["--with-tcl3270", "Include tcl3270, which is similar to s3270, but integrated with Tcl"],
-      ["--with-pr3287",  "Include pr3287, which is for printer emulation"]
+      ["--with-c3270",   "Include c3270 (curses-based version)"],
+      ["--with-s3270",   "Include s3270 (displayless version)"],
+      ["--with-tcl3270", "Include tcl3270 (integrated with Tcl)"],
+      ["--with-pr3287",  "Include pr3287 (printer emulation)"]
     ]
   end
 
