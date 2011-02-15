@@ -23,24 +23,29 @@ end
 
 __END__
 diff --git a/Makefile b/Makefile
-index 13d4a76..2049049 100644
+index 13d4a76..73879b6 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -13,6 +13,7 @@ INCLUDES=	-I.
- SUBDIRS=	. bcftools misc
- LIBPATH=
- LIBCURSES=	-lcurses # -lXCurses
-+RANLIB=	ranlib
+@@ -37,7 +37,7 @@ all:$(PROG)
+ lib:libbam.a
  
- .SUFFIXES:.c .o
- 
-@@ -40,6 +41,8 @@ libbam.a:$(LOBJS)
- 		$(AR) -cru $@ $(LOBJS)
+ libbam.a:$(LOBJS)
+-		$(AR) -cru $@ $(LOBJS)
++		$(AR) -s -cru $@ $(LOBJS)
  
  samtools:lib-recur $(AOBJS)
-+		 $(RANLIB) libbam.a
-+		 $(RANLIB) bcftools/libbcf.a
  		$(CC) $(CFLAGS) -o $@ $(AOBJS) libbam.a -lm $(LIBPATH) $(LIBCURSES) -lz -Lbcftools -lbcf
+diff --git a/bcftools/Makefile b/bcftools/Makefile
+index 8b890ba..5751e74 100644
+--- a/bcftools/Makefile
++++ b/bcftools/Makefile
+@@ -28,7 +28,7 @@ all:$(PROG)
+ lib:libbcf.a
  
- razip:razip.o razf.o $(KNETFILE_O)
+ libbcf.a:$(LOBJS)
+-		$(AR) -cru $@ $(LOBJS)
++		$(AR) -s -cru $@ $(LOBJS)
+ 
+ bcftools:lib $(AOBJS)
+ 		$(CC) $(CFLAGS) -o $@ $(AOBJS) -lm $(LIBPATH) -lz -L. -lbcf
 
