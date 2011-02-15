@@ -11,7 +11,7 @@ class Tophat <Formula
 
     # It seems this project Makefile doesn't like -j4
     # Disable until consult with upstream
-    ENV['MAKEFLAGS'] = nil
+    ENV.deparallelize
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
