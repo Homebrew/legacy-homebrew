@@ -1,6 +1,10 @@
 #!/usr/bin/ruby
 require 'global'
 
+# If the text here is edited, make sure the content of the similar method
+# in the external command brew-allinfo.rb is kept consistent with it.
+# That method produces long string output, which should be wrapped with
+# wrap_text in utils.rb.
 def text_for_keg_only_formula f
   if f.keg_only? == :provided_by_osx
     rationale = "Mac OS X already provides this program and installing another version in\nparallel can cause all kinds of trouble."
