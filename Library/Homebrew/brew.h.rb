@@ -209,7 +209,8 @@ def info f
 
   if f.caveats
     puts
-    puts f.caveats
+    # Soft-wrap caveats text to terminal width.
+    puts wrap_text(f.caveats)
     puts
   end
 
