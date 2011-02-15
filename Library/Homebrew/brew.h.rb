@@ -19,6 +19,15 @@ def check_for_blacklisted_formula names
         brew install pip && pip install mercurial
     EOS
 
+    when 'npm' then abort <<-EOS.undent
+      npm can be installed thusly by following the instructions at
+        http://npmjs.org/
+
+      To do it in one line, use this command:
+        curl http://npmjs.org/install.sh | sudo sh
+    EOS
+
+
     when 'setuptools' then abort <<-EOS.undent
       When working with a Homebrew-built Python, distribute is preferred
       over setuptools, and can be used as the prerequisite for pip.
