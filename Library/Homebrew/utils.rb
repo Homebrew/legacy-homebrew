@@ -144,6 +144,44 @@ def puts_columns items, cols = 4
   end
 end
 
+# We include a global and methods to support terminal-width output,
+# including soft wrapping.  wrap_text makes it simpler to write info strings
+# in formulas; if they are rendered using wrap_text, they can be written as a
+# long string (e.g., with "\" breaking lines in a paragraph, or by "adding"
+# strings comprising the paragraph content) instead of hard-coding wraps for
+# a particular line length, which makes editing long strings and string
+# blocks awkward.
+#
+# Note that the wrap algorithm does not handle tabs intelligently;
+# this is not really possible since an author's tab spacing can't be
+# determined from the formula source.  Tabs should be avoided in text
+# intended for terminal output.
+#
+# For a use case see the brew-allinfo.rb external command; it includes some
+# long strings benefitting from wrapping, and uses wrapping to write various
+# formula properties to the terminal.
+
+# $term_width is needed as a default arg value, and is useful elsewhere;
+# see external command brew-allinfo.rb for an external use case.
+rows_cols = `stty size`.split.map { |x| x.to_i }
+$term_width = rows_cols[1]
+
+# Text wrapping, borrowed from a 2006 blog post by by Allan Odgaard; see
+# http://blog.macromates.com/2006/wrapping-text-with-regular-expressions/
+# *** Perhaps modify to not wrap lines beginning with whitespace, such as
+# lines displaying example commands to enter at a shell prompt.
+def wrap_text(txt, txt_cols = $term_width)
+  txt.gsub(/(.{1,#{txt_cols}})( +|$)\n?|(.{#{txt_cols}})/,
+    "\\1\\3\n")
+end
+
+# Similar wrap, with 4-sp indents, e.g., for indented text describing options.
+def wrap_text_in4(txt, txt_cols = $term_width)
+  txt_in = txt_cols - 4
+  txt.gsub(/(.{1,#{txt_in}})( +|$)\n?|(.{#{txt_in}})/,
+    "    \\1\\3\n")
+end
+
 def exec_editor *args
   editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
   if editor.nil?
