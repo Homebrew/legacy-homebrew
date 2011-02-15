@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mkvalidator <Formula
-  url 'http://downloads.sourceforge.net/project/matroska/mkvalidator/mkvalidator-0.3.1.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/matroska/mkvalidator/mkvalidator-0.3.2.tar.bz2'
   homepage 'http://www.matroska.org/downloads/mkvalidator.html'
-  md5 'd767ed6fbda281c07f27a190cad1a1c4'
+  md5 'f3895e19e2b1579750d3a205dc4eec73'
 
   def install
     system "./configure"
