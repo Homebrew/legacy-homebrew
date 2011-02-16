@@ -16,6 +16,7 @@ class Redland <Formula
                           "--disable-debug",
                           "--disable-dependency-tracking",
                           "--with-sqlite=yes",
+                          "--with-mysql=no",
                           "--with-bdb=#{HOMEBREW_PREFIX}"
     system "make install"
   end

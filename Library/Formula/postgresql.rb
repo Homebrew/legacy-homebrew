@@ -3,8 +3,8 @@ require 'hardware'
 
 class Postgresql <Formula
   homepage 'http://www.postgresql.org/'
-  url 'http://ftp9.us.postgresql.org/pub/mirrors/postgresql/source/v9.0.1/postgresql-9.0.1.tar.bz2'
-  md5 '57ba57e43cfe29e16dacbf5789be98d1'
+  url 'http://ftp9.us.postgresql.org/pub/mirrors/postgresql/source/v9.0.3/postgresql-9.0.3.tar.bz2'
+  md5 '928df8c40bb012ad10756e58b70516fb'
 
   depends_on 'readline'
   depends_on 'libxml2' if MACOS_VERSION < 10.6 # Leopard libxml is too old
@@ -50,9 +50,10 @@ class Postgresql <Formula
     system "./configure", *args
     system "make install"
 
-    %w[ adminpack dblink fuzzystrmatch lo uuid-ossp pg_buffercache pg_trgm
-        pgcrypto tsearch2 vacuumlo xml2 intarray pg_upgrade pg_upgrade_support hstore ].each do |a|
-      system "cd contrib/#{a}; make install"
+    contrib_directories = Dir.glob("contrib/*").select{ |path| File.directory?(path) } - ['contrib/start-scripts']
+
+    contrib_directories.each do |contrib_directory|
+      system "cd #{contrib_directory}; make install"
     end
 
     (prefix+'org.postgresql.postgres.plist').write startup_plist
@@ -85,7 +86,7 @@ class Postgresql <Formula
 
   def caveats
     s = <<-EOS
-If builds of Postgresl 9 are failing and you have version 8.x installed,
+If builds of PostgreSQL 9 are failing and you have version 8.x installed,
 you may need to remove the previous version first. See:
   https://github.com/mxcl/homebrew/issues/issue/2510
 

@@ -1,8 +1,8 @@
 require 'formula'
 
 class Groovy <Formula
-  url 'http://dist.groovy.codehaus.org/distributions/groovy-binary-1.7.5.zip'
-  md5 '77538791a644bb3129662dbf5db006a4'
+  url 'http://dist.groovy.codehaus.org/distributions/groovy-binary-1.7.7.zip'
+  md5 '70449313b20b0592f93f8379e22f9ff0'
   homepage 'http://groovy.codehaus.org/'
 
   def install
