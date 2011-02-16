@@ -1,13 +1,13 @@
 require 'formula'
 
 class Vimpager < Formula
-  url 'http://www.vim.org/scripts/download_script.php?src_id=13024'
-  version '1.3'
+  url 'http://www.vim.org/scripts/download_script.php?src_id=14694'
+  version '1.4'
   homepage 'http://www.vim.org/scripts/script.php?script_id=1723'
-  md5 '2ace56c96fb47cd6f34e47b2d6707729'
+  md5 'b2c4c978c826876e11bf5453eb19c2a7'
 
   def install
-    bin.install 'download_script.php?src_id=13024' => 'vimpager'
+    bin.install 'download_script.php?src_id=14694' => 'vimpager'
   end
 
   def caveats; <<-EOS.undent

@@ -1,14 +1,14 @@
 require 'formula'
 
 class PopplerData <Formula
-  url 'http://poppler.freedesktop.org/poppler-data-0.4.3.tar.gz'
-  md5 '2d648047e5d0b315df1571b460ee6a96'
+  url 'http://poppler.freedesktop.org/poppler-data-0.4.4.tar.gz'
+  md5 'f3a1afa9218386b50ffd262c00b35b31'
 end
 
 class Poppler <Formula
-  url 'http://poppler.freedesktop.org/poppler-0.14.1.tar.gz'
+  url 'http://poppler.freedesktop.org/poppler-0.16.2.tar.gz'
   homepage 'http://poppler.freedesktop.org/'
-  md5 '1d27cb8a09aaa373660fd608b258022a'
+  md5 '0e68e4a894a4234d5468560bcd79baa9'
 
   depends_on 'pkg-config' => :build
   depends_on "qt" if ARGV.include? "--with-qt4"
@@ -18,7 +18,10 @@ class Poppler <Formula
   end
 
   def options
-    [["--with-qt4", "Include Qt4 support (which compiles all of Qt4!)"]]
+    [
+      ["--with-qt4", "Include Qt4 support (which compiles all of Qt4!)"],
+      ["--enable-xpdf-headers", "Also install XPDF headers."]
+    ]
   end
 
   def install
@@ -30,6 +33,7 @@ class Poppler <Formula
 
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
     args << "--disable-poppler-qt4" unless ARGV.include? "--with-qt4"
+    args << "--enable-xpdf-headers" if ARGV.include? "--enable-xpdf-headers"
 
     system "./configure", *args
     system "make install"
