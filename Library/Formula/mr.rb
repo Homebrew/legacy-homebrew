@@ -1,8 +1,8 @@
 require 'formula'
 
 class Mr <Formula
-  version '0.50'
-  url 'git://git.kitenet.net/mr', :tag => '0.50'
+  version '1.02'
+  url 'git://git.kitenet.net/mr', :tag => '1.02'
   homepage 'http://kitenet.net/~joey/code/mr/'
 
   def install
