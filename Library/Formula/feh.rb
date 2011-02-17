@@ -8,8 +8,7 @@ class Feh <Formula
   depends_on 'giblib' => :build
 
   def install
-    ENV.append "LDFLAGS", "-L/usr/X11/lib"
-    ENV.append "CFLAGS", "-I/usr/X11/include"
+    ENV.x11
 
     system "make"
     system "make", "PREFIX=#{prefix}", "install"
