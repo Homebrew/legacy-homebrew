@@ -2,14 +2,22 @@ require 'formula'
 require 'hardware'
 
 class Qt <Formula
-  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.0.tar.gz'
-  md5 '3a2f25b9b115037277f4fb759194a7a5'
+  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.1.tar.gz'
+  md5 '6f88d96507c84e9fea5bf3a71ebeb6d7'
   homepage 'http://qt.nokia.com/'
+
+  def patches
+    # To fix http://bugreports.qt.nokia.com/browse/QTBUG-13623. Patch sent upstream.
+    "http://qt.gitorious.org/qt/qt/commit/9f18a1ad5ce32dd397642a4c03fa1fcb21fb9456.patch"
+  end
 
   def options
     [
       ['--with-qtdbus', "Enable QtDBus module."],
       ['--with-qt3support', "Enable deprecated Qt3Support module."],
+      ['--with-demos-examples', "Enable Qt demos and examples."],
+      ['--with-debug-and-release', "Compile Qt in debug and release mode."],
+      ['--universal', "Build both x86_64 and x86 architectures."],
     ]
   end
 
@@ -22,14 +30,13 @@ class Qt <Formula
   depends_on 'sqlite' if MACOS_VERSION <= 10.5
 
   def install
+    ENV.append "CXXFLAGS", "-fvisibility=hidden"
     args = ["-prefix", prefix,
             "-system-libpng", "-system-zlib",
-            "-nomake", "demos", "-nomake", "examples",
-            "-release", "-cocoa",
             "-confirm-license", "-opensource",
-            "-fast"]
+            "-cocoa", "-fast" ]
 
-    # See: http://github.com/mxcl/homebrew/issues/issue/744
+    # See: https://github.com/mxcl/homebrew/issues/issue/744
     args << "-system-sqlite" if MACOS_VERSION <= 10.5
     args << "-plugin-sql-mysql" if (HOMEBREW_CELLAR+"mysql").directory?
 
@@ -47,6 +54,16 @@ class Qt <Formula
       args << "-no-qt3support"
     end
 
+    if ARGV.include? '--with-debug-and-release'
+      args << "-debug-and-release"
+    else
+      args << "-release"
+    end
+
+    unless ARGV.include? '--with-demos-examples'
+      args << "-nomake" << "demos" << "-nomake" << "examples"
+    end
+
     if Qt.x11?
       args << "-L/usr/X11R6/lib"
       args << "-I/usr/X11R6/include"
@@ -55,14 +72,17 @@ class Qt <Formula
       args << "-I#{Formula.factory('libpng').include}"
     end
 
-    if snow_leopard_64?
+    if snow_leopard_64? or ARGV.include? '--universal'
       args << '-arch' << 'x86_64'
-    else
+    end
+
+    if !snow_leopard_64? or ARGV.include? '--universal'
       args << '-arch' << 'x86'
     end
 
     system "./configure", *args
     system "make"
+    ENV.j1
     system "make install"
 
     # stop crazy disk usage
@@ -76,7 +96,7 @@ class Qt <Formula
 
     # Some config scripts will only find Qt in a "Frameworks" folder
     # VirtualBox is an example of where this is needed
-    # See: http://github.com/mxcl/homebrew/issues/issue/745
+    # See: https://github.com/mxcl/homebrew/issues/issue/745
     cd prefix do
       ln_s lib, "Frameworks"
     end

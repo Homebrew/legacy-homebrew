@@ -1,9 +1,9 @@
 require 'formula'
 
 class Dash <Formula
-  url 'http://mirrors.kernel.org/debian/pool/main/d/dash/dash_0.5.5.1.orig.tar.gz'
-  homepage 'http://packages.debian.org/sid/dash'
-  md5 '7ac832b440b91f5a52cf8eb68e172616'
+  url 'http://gondor.apana.org.au/~herbert/dash/files/dash-0.5.6.1.tar.gz'
+  homepage 'http://gondor.apana.org.au/~herbert/dash/'
+  sha1 '06944456a1e3a2cbc325bffd0c898eff198b210a'
 
   def install
     system "./configure", "--disable-debug",

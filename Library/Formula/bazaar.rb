@@ -1,8 +1,8 @@
 require 'formula'
 
 class Bazaar <Formula
-  url 'http://launchpadlibrarian.net/41811693/bzr-2.1.1.tar.gz'
-  md5 'ab6b5e0cc449b27abac2b4d717afe09d'
+  url 'http://launchpadlibrarian.net/59616932/bzr-2.2.2.tar.gz'
+  md5 'd1bfa2fd1aad282c423c78d62ebacb21'
   homepage 'http://bazaar-vcs.org/'
 
   def options
@@ -10,6 +10,12 @@ class Bazaar <Formula
   end
 
   def install
+    ENV.j1 # Builds aren't parallel-safe
+
+    # Make and install man page first
+    system "make man1/bzr.1"
+    man1.install "man1/bzr.1"
+
     if ARGV.include? "--system"
       ENV.prepend "PATH", "/System/Library/Frameworks/Python.framework/Versions/Current/bin", ":"
     else
@@ -28,10 +34,6 @@ EOS
     # specific compiler flags
     archs = archs_for_command("python")
     ENV.minimal_optimization if archs.include? :ppc64 or archs.include? :ppc7400
-
-    # Make the manual before we install (mv) bzrlib
-    system "make man1/bzr.1"
-    man1.install gzip('man1/bzr.1')
 
     system "make"
     inreplace "bzr", "#! /usr/bin/env python", "#!/usr/bin/python" if ARGV.include? "--system"

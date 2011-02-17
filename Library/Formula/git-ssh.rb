@@ -1,9 +1,9 @@
 require 'formula'
 
 class GitSsh <Formula
-  url 'http://github.com/lemarsu/git-ssh/tarball/v0.2.0'
+  url 'https://github.com/lemarsu/git-ssh/tarball/v0.2.0'
   md5 '5d146666bce5df59aab648b6ee7370ad'
-  homepage 'http://github.com/lemarsu/git-ssh'
+  homepage 'https://github.com/lemarsu/git-ssh'
 
   def install
     # Change loading of required code from libexec location (Cellar only)

@@ -1,7 +1,7 @@
 require 'formula'
 
 class Flac2Mp3 <GithubGistFormula
-  url 'http://gist.github.com/raw/124242/79857936f1d72824be0fb5d2ac845c02322abea0/flac2mp3'
+  url 'https://gist.github.com/raw/124242/79857936f1d72824be0fb5d2ac845c02322abea0/flac2mp3'
   md5 '8351009b64afedfeb7a9e162ccd8d94c'
 end
 
@@ -14,6 +14,8 @@ class Flac <Formula
   depends_on 'libogg' => :optional
 
   def install
+    fails_with_llvm "Undefined symbols when linking", :build => 2326
+
     # sadly the asm optimisations won't compile since Leopard, and nobody
     # cares or knows how to fix it
     system "./configure", "--disable-debug",

@@ -5,8 +5,15 @@ class GnuSed <Formula
   homepage 'http://www.gnu.org/software/sed/'
   md5 '7d310fbd76e01a01115075c1fd3f455a'
 
+  def options
+    [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
+  end
+
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--program-prefix=g"
+    args = ["--prefix=#{prefix}", "--disable-dependency-tracking"]
+    args << "--program-prefix=g" unless ARGV.include? '--default-names'
+
+    system "./configure", *args
     system "make install"
   end
 end
