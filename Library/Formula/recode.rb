@@ -19,9 +19,6 @@ class Recode < Formula
       cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config.*"], "."
     end
 
-    cp "#{libtool_config}/config.guess", "."
-    cp "#{libtool_config}/config.sub", "."
-
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--without-included-gettext",
                           "--infodir=#{info}",
