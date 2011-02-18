@@ -20,12 +20,14 @@ class Bash <Formula
 
   def caveats
     puts <<-EOS
-==============================================================
 To use this bash as your standard shell:
 
     sudo sh -c 'echo `brew --prefix`/bin/bash >> /etc/shells'
     chsh -s "`brew --prefix`/bin/bash"
-==============================================================
+
+When uninstalling, please set your shell to the Mac default one:
+chsh -s "/bin/bash"
+    
     EOS
   end  
 end
