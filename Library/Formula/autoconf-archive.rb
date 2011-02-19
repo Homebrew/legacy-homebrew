@@ -1,9 +1,9 @@
 require 'formula'
 
-class AutoconfArchive < Formula
-  url 'http://download.savannah.nongnu.org/releases/autoconf-archive/autoconf-archive-2010.02.14.tar.bz2'
+class AutoconfArchive <Formula
+  url 'http://ftpmirror.gnu.org/autoconf-archive/autoconf-archive-2011.01.02.tar.bz2'
   homepage 'http://savannah.gnu.org/projects/autoconf-archive/'
-  md5 '8dbbc4b75b518ca6d16826be9515a1ac'
+  md5 '2c6875364757ac301d0e8429791f0c4c'
 
   def install
     system './configure', "--prefix=#{prefix}"
