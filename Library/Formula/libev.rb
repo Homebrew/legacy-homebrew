@@ -1,11 +1,12 @@
 require 'formula'
 
 class Libev <Formula
-  url 'http://dist.schmorp.de/libev/libev-4.01.tar.gz'
+  url 'http://dist.schmorp.de/libev/Attic/libev-4.01.tar.gz'
   homepage 'http://software.schmorp.de/pkg/libev.html'
   md5 '2a6e0d3d7eda7d54b39f3800b8279707'
 
   def install
+    ENV["CFLAGS"] = '-arch i386 -arch x86_64'
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
