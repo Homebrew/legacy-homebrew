@@ -18,6 +18,7 @@ class SaneBackends <Formula
                           "--enable-libusb",
                           "--disable-latex"
     system "make"
-    system "make install"
+    # fails if run in parallel with a ``mkdir`` error
+    system "make -j1 install"
   end
 end
