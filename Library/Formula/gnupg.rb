@@ -17,7 +17,10 @@ class Gnupg <Formula
   end
 
   def options
-    [["--idea", "Build with (patented) IDEA cipher"]]
+    [
+      ["--idea", "Build with (patented) IDEA cipher"],
+      ["--8192", "Build with support for private keys up to 8192 bits"],
+    ]
   end
 
   def install
@@ -27,6 +30,8 @@ class Gnupg <Formula
       GnupgIdea.new.brew { (d+'cipher').install Dir['*'] }
       system 'gunzip', 'cipher/idea.c.gz'
     end
+
+    inreplace 'g10/keygen.c', 'max=4096', 'max=8192' if ARGV.include? '--8192'
 
     system "/usr/bin/autoconf"
 
