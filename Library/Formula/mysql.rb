@@ -13,7 +13,8 @@ class Mysql <Formula
       ['--with-bench', "Keep benchmark app when installing."],
       ['--with-embedded', "Build the embedded server."],
       ['--client-only', "Only install client tools, not the server."],
-      ['--universal', "Make mysql a universal binary"]
+      ['--universal', "Make mysql a universal binary"],
+      ['--with-utf8-default', "Set the default character set to utf8"]
     ]
   end
 
@@ -51,6 +52,7 @@ class Mysql <Formula
 
     configure_args << "--without-server" if ARGV.include? '--client-only'
     configure_args << "--with-embedded-server" if ARGV.include? '--with-embedded'
+    configure_args << "--with-charset=utf8" if ARGV.include? '--with-utf8-default'
 
     system "./configure", *configure_args
     system "make install"

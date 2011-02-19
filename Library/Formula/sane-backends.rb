@@ -1,9 +1,9 @@
 require 'formula'
 
 class SaneBackends <Formula
-  url 'ftp://ftp.sane-project.org/pub/sane/sane-backends-1.0.21/sane-backends-1.0.21.tar.gz'
+  url 'ftp://ftp.sane-project.org/pub/sane/sane-backends-1.0.22/sane-backends-1.0.22.tar.gz'
   homepage 'http://www.sane-project.org/'
-  md5 'be586a23633949cf2ecf0c9c6d769130'
+  md5 'fadf56a60f4776bfb24491f66b617cf5'
 
   depends_on 'jpeg'
   depends_on 'libtiff'
