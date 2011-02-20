@@ -1,7 +1,8 @@
 require 'formula'
 
 class Libmpq <Formula
-  url 'https://libmpq.org/download/libmpq-0.4.2.tar.bz2'
+  url 'https://libmpq.org/download/libmpq-0.4.2.tar.bz2',
+      :using => CurlUnsafeDownloadStrategy
   homepage 'https://libmpq.org'
   md5 '54ec039b9654ba1662485e1bc9682850'
 
