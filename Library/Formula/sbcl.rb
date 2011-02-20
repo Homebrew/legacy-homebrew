@@ -13,7 +13,7 @@ class Sbcl <Formula
   head 'git://sbcl.boinkor.net/sbcl.git'
 
   url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.46/sbcl-1.0.46-source.tar.bz2'
-  #md5 'b80e491b8e9228bbfa4fe679fd608697'
+  md5 '2a3262a4c52d0f81a9bde520a6e35df5'
   version '1.0.46'
 
   skip_clean 'bin'
