@@ -19,7 +19,12 @@ class FormulaInstaller
       @f.recursive_deps.each do |dep|
         FormulaInstaller.install_formula dep unless dep.installed?
       end
-      FormulaInstaller.check_external_deps @f
+      begin
+        FormulaInstaller.check_external_deps @f
+      rescue UnsatisfiedExternalDependencyError => e
+        onoe e.message
+        exit! 1
+      end
     end
     FormulaInstaller.install_formula @f
   end
