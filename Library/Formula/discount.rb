@@ -7,7 +7,7 @@ class Discount <Formula
 
   def install
     system "./configure.sh", "--prefix=#{prefix}", "--mandir=#{man}",
-                             "--enable-dl-tag", "--enable-all-features"
+                             "--with-dl=Both", "--enable-all-features"
     bin.mkdir
     lib.mkdir
     include.mkdir
