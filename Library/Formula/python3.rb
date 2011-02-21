@@ -3,7 +3,7 @@ require 'formula'
 <<-COMMENTS
 Versions
 --------
-This formula is currently tracking version 3.1.x.
+This formula is currently tracking version 3.2.
 
 Python 2.x is available as a separate formula:
   brew install python
@@ -19,9 +19,9 @@ def as_framework?
 end
 
 class Python3 < Formula
-  url 'http://www.python.org/ftp/python/3.1.3/Python-3.1.3.tar.bz2'
+  url 'http://www.python.org/ftp/python/3.2/Python-3.2.tar.bz2'
   homepage 'http://www.python.org/'
-  md5 'ad5e5f1c07e829321e0a015f8cafe245'
+  md5 '92e94b5b6652b96349d6362b8337811d'
 
   depends_on 'readline' => :optional  # Prefer over OS X's libedit
   depends_on 'sqlite'   => :optional  # Prefer over OS X's older version
@@ -41,16 +41,16 @@ class Python3 < Formula
     # The Cellar location of site-packages
     if as_framework?
       # If we're installed or installing as a Framework, then use that location.
-      return prefix+"Frameworks/Python.framework/Versions/3.1/lib/python3.1/site-packages"
+      return prefix+"Frameworks/Python.framework/Versions/3.2/lib/python3.2/site-packages"
     else
       # Otherwise, use just the lib path.
-      return lib+"python3.1/site-packages"
+      return lib+"python3.2/site-packages"
     end
   end
 
   def prefix_site_packages
     # The HOMEBREW_PREFIX location of site-packages
-    HOMEBREW_PREFIX+"lib/python3.1/site-packages"
+    HOMEBREW_PREFIX+"lib/python3.2/site-packages"
   end
 
   def install
