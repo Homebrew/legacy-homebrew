@@ -28,6 +28,11 @@ class AbstractDownloadStrategy
   end
 end
 
+class NoopDownloadStrategy <AbstractDownloadStrategy
+  def fetch; end
+  def stage; end
+end
+
 class CurlDownloadStrategy <AbstractDownloadStrategy
   attr_reader :tarball_path
 
