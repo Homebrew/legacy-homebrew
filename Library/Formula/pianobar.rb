@@ -15,7 +15,9 @@ class Pianobar <Formula
   skip_clean :bin
 
   def install
-    ENV.delete "CFLAGS"
+    inreplace "Makefile" do |s|
+      s.gsub! "CFLAGS:=-std=c99 -O2 -DNDEBUG", "CFLAGS=-std=c99 #{ENV.cflags}"
+    end
     system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"
   end
