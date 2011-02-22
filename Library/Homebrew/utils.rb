@@ -155,7 +155,7 @@ def exec_editor *args
       editor='edit'
     else
       # Default to vim
-      editor='/usr/bin/vim'
+      editor='/usr/bin/env vim'
     end
   end
   # we split the editor because especially on mac "mate -w" is common
