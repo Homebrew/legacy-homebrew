@@ -2,11 +2,11 @@ require 'formula'
 
 class Nginx < Formula
   url 'http://nginx.org/download/nginx-0.8.54.tar.gz'
-  head 'http://nginx.org/download/nginx-0.9.4.tar.gz'
+  head 'http://nginx.org/download/nginx-0.9.5.tar.gz'
   homepage 'http://nginx.org/'
 
   if ARGV.build_head?
-    @md5='055eb48433ec5ab5f25c5d186144e461'
+    @md5='955960482bf55b537ad0db5cca8fd61a'
   else
     @md5='44df4eb6a22d725021288c570789046f'
   end
