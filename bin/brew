@@ -262,7 +262,6 @@ begin
         begin
           cleanup(rack.basename.to_s) if rack.directory?
         rescue FormulaUnavailableError => e
-          opoo "Formula not found for #{e.name}"
         end
       end
       prune # seems like a good time to do some additional cleanup
