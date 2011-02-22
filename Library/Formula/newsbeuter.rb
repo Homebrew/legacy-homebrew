@@ -12,6 +12,9 @@ class Newsbeuter <Formula
   depends_on 'gettext'
 
   def install
+    inreplace 'config.sh' do |s|
+      s.concat("\necho \"CXXFLAGS+=$CPPFLAGS\" >> config.mk\necho \"LDFLAGS+=$LDFLAGS\" >> config.mk\n")
+    end
     system "make"
     system "make install prefix=#{prefix}"
   end
