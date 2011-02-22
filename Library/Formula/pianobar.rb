@@ -15,19 +15,12 @@ class Pianobar <Formula
   skip_clean :bin
 
   def install
-    ENV.delete "CFLAGS"
-
-    # help pianobar find homebrew installed libraries when not in /usr/local
-    unless HOMEBREW_PREFIX.to_s == '/usr/local'
-      inreplace 'Makefile' do |s|
-        cf = s.get_make_var("CFLAGS")
-        cf += " -I#{HOMEBREW_PREFIX}/include -L#{HOMEBREW_PREFIX}/lib"
-        s.change_make_var! 'CFLAGS', cf
-      end
+    inreplace "Makefile" do |s|
+      s.gsub! "CFLAGS:=-std=c99 -O2 -DNDEBUG", "CFLAGS=-std=c99 #{ENV.cflags}"
     end
-
     system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"
+    # Install contrib folder too, why not.
     prefix.install Dir['contrib']
   end
 end
