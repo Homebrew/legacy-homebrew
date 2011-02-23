@@ -2,8 +2,8 @@ require 'formula'
 
 class Mysql <Formula
   homepage 'http://dev.mysql.com/doc/refman/5.1/en/'
-  url 'http://mysql.mirrors.pair.com/Downloads/MySQL-5.1/mysql-5.1.54.tar.gz'
-  md5 '2a0f45a2f8b5a043b95ce7575796a30b'
+  url 'http://mysql.mirrors.pair.com/Downloads/MySQL-5.1/mysql-5.1.55.tar.gz'
+  md5 'e07e79edad557874d0870c914c9c81e1'
 
   depends_on 'readline'
 
@@ -11,8 +11,10 @@ class Mysql <Formula
     [
       ['--with-tests', "Keep tests when installing."],
       ['--with-bench', "Keep benchmark app when installing."],
+      ['--with-embedded', "Build the embedded server."],
       ['--client-only', "Only install client tools, not the server."],
-      ['--universal', "Make mysql a universal binary"]
+      ['--universal', "Make mysql a universal binary"],
+      ['--with-utf8-default', "Set the default character set to utf8"]
     ]
   end
 
@@ -49,6 +51,8 @@ class Mysql <Formula
       "--with-partition"]
 
     configure_args << "--without-server" if ARGV.include? '--client-only'
+    configure_args << "--with-embedded-server" if ARGV.include? '--with-embedded'
+    configure_args << "--with-charset=utf8" if ARGV.include? '--with-utf8-default'
 
     system "./configure", *configure_args
     system "make install"

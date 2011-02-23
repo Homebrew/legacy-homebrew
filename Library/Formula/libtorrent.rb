@@ -9,7 +9,7 @@ class Libtorrent <Formula
   depends_on 'libsigc++'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--with-kqueue", "--enable-ipv6"
     system "make"
     system "make install"
   end
