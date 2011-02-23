@@ -9,6 +9,7 @@ class Scantailor <Formula
   depends_on 'qt'
   depends_on 'jpeg'
   depends_on 'boost'
+  depends_on 'libtiff'
 
   def install
     system "cmake . #{std_cmake_parameters}"
