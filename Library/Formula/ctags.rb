@@ -10,7 +10,7 @@ class Ctags <Formula
   end
 
   def install
-	system "wget http://cssed.sourceforge.net/ctags/css.c"
+	system "wget --no-check-certificate https://github.com/fishman/ctags/raw/deploy/css.c"
     system "./configure", "--prefix=#{prefix}",
                           "--enable-macro-patterns",
                           "--mandir=#{man}",
