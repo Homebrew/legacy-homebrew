@@ -9,6 +9,10 @@ class Fish <Formula
   skip_clean 'share/doc'
 
   def install
+    inreplace ["proc.c"] do |s|
+      s.gsub!("tv\.tv_sec=5","tv.tv_sec=0")
+      s.gsub!("tv\.tv_usec=0","tv.tv_usec=10000")
+    end
     system "./configure", "--prefix=#{prefix}", "--without-xsel"
     system "make install"
   end
