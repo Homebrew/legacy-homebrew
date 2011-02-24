@@ -2,6 +2,7 @@ require 'formula'
 
 class Php5Midgard2 <Formula
   url 'http://www.midgard-project.org/midcom-serveattachmentguid-307e30ac335f11e0bf6851688cf9977f977f/php5-midgard2-10.05.3.tar.gz'
+  head 'git://github.com/midgardproject/midgard-php5.git', :branch => 'ratatoskr'
   homepage 'http://www.midgard-project.org/'
   md5 '96035da694db8572542346e1af2f29f2'
 
