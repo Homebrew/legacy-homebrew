@@ -1,8 +1,8 @@
 require 'formula'
 
 class RubyEnterpriseEdition <Formula
-  url 'http://rubyenterpriseedition.googlecode.com/files/ruby-enterprise-1.8.7-2011.02.tar.gz'
-  md5 '8c5faa11c1ddaed3f44b7294711980cc'
+  url 'http://rubyenterpriseedition.googlecode.com/files/ruby-enterprise-1.8.7-2011.03.tar.gz'
+  md5 '038604ce25349e54363c5df9cd535ec8'
   homepage 'http://rubyenterpriseedition.com/'
 
   depends_on 'readline'
