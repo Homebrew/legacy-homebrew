@@ -17,7 +17,8 @@ class Binutils <Formula
             "--disable-dependency-tracking",
             "--infodir=#{info}",
             "--mandir=#{man}",
-            "--disable-werror" ]
+            "--disable-werror",
+            "--enable-targets=x86_64-elf" ]
     args << "--program-prefix=g" unless ARGV.include? '--default-names'
 
     system "./configure", *args
