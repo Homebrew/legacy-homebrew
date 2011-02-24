@@ -7,8 +7,8 @@ class Qt <Formula
   homepage 'http://qt.nokia.com/'
 
   def patches
-    # To fix http://bugreports.qt.nokia.com/browse/QTBUG-13623. Patch sent upstream.
-    "http://qt.gitorious.org/~mikemcquaid/qt/mikemcquaid-qt/commit/ca2e8b6dc176576f7217f4b7209994eddad1a358.patch"
+      # To fix http://bugreports.qt.nokia.com/browse/QTBUG-13623. Remove when 4.7.2 lands.
+    "http://qt.gitorious.org/qt/qt/commit/9f18a1ad5ce32dd397642a4c03fa1fcb21fb9456.patch"
   end
 
   def options
