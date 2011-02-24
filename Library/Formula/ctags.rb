@@ -12,7 +12,7 @@ class Ctags <Formula
   end
 
   def install
-	system "wget --no-check-certificate https://github.com/fishman/ctags/raw/deploy/css.c"
+	system "curl -O https://github.com/fishman/ctags/raw/deploy/css.c"
 
     system "autoheader" if ARGV.build_head?
     system "autoconf" if ARGV.build_head?
