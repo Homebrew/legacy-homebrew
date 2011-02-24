@@ -6,6 +6,7 @@ class Ejabberd <Formula
   md5 '2029ceca45584d704ca821a771d6d928'
 
   depends_on "erlang"
+  depends_on "openssl" if MACOS_VERSION < 10.6 
 
   def install
     ENV['TARGET_DIR'] = ENV['DESTDIR'] = "#{lib}/ejabberd/erlang/lib/ejabberd-#{version}"
@@ -13,9 +14,16 @@ class Ejabberd <Formula
     ENV['SBIN_DIR'] = sbin
 
     Dir.chdir "src" do
-      system "./configure", "--prefix=#{prefix}",
-                            "--sysconfdir=#{etc}",
-                            "--localstatedir=#{var}"
+      args = ["--prefix=#{prefix}",
+              "--sysconfdir=#{etc}",
+              "--localstatedir=#{var}"
+             ]
+      if MACOS_VERSION < 10.6
+        openssl = Formula.factory('openssl')
+        args << "--with-openssl=#{openssl.prefix}"
+      end
+
+      system "./configure", *args
       system "make"
       system "make install"
     end
