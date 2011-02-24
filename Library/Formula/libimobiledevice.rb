@@ -13,6 +13,7 @@ class Libimobiledevice <Formula
   depends_on 'glib'
 
   def install
+    ENV.prepend "CFLAGS", "-I#{HOMEBREW_PREFIX}/include"
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}", "--without-swig"
     system "make install"
   end
