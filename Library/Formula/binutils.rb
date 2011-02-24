@@ -12,12 +12,13 @@ class Binutils < Formula
   def install
     ENV.append 'CPPFLAGS', "-I#{include}"
 
-    args = ["--prefix=#{prefix}",
-            "--disable-debug",
-            "--disable-dependency-tracking",
+    args = ["--disable-debug", "--disable-dependency-tracking",
+            "--prefix=#{prefix}",
             "--infodir=#{info}",
             "--mandir=#{man}",
-            "--disable-werror" ]
+            "--disable-werror",
+            "--enable-targets=x86_64-elf"]
+
     args << "--program-prefix=g" unless ARGV.include? '--default-names'
 
     system "./configure", *args
