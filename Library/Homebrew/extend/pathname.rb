@@ -143,6 +143,10 @@ class Pathname
     /-((\d+\.)*\d+([abc]|rc|RC)\d*)$/.match stem
     return $1 if $1
 
+    # eg. foobar-4.5.1.GA (Maven-style ga, release candidates and releases)
+    /-((\d+\.)*\d+\.(ga|GA|rc|RC|release|RELEASE)\d*)$/.match stem
+    return $1 if $1
+
     # eg foobar-4.5.0-beta1, or foobar-4.50-beta
     /-((\d+\.)*\d+-beta(\d+)?)$/.match stem
     return $1 if $1

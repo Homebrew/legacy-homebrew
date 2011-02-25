@@ -154,4 +154,25 @@ class VersionTests < Test::Unit::TestCase
     check 'http://ftp.de.debian.org/debian/pool/main/m/mmv/mmv_1.01b.orig.tar.gz',
       '1.01b'
   end
+
+  def test_maven_style_rc
+    check 'http://simple-build-tool.googlecode.com/files/sbt-launch-0.7.5.RC0.jar',
+      '0.7.5.RC0'
+    check 'http://simple-build-tool.googlecode.com/files/sbt-launch-0.7.5.rc0.jar',
+      '0.7.5.rc0'
+  end
+
+  def test_maven_style_release
+    check 'http://repo2.maven.org/maven2/org/springframework/security/spring-security-core/3.0.5.RELEASE/spring-security-core-3.0.5.RELEASE.jar',
+      '3.0.5.RELEASE'
+    check 'http://repo2.maven.org/maven2/org/springframework/security/spring-security-core/3.0.5.RELEASE/spring-security-core-3.0.5.release.jar',
+        '3.0.5.release'
+  end
+
+  def test_maven_style_ga
+    check 'http://repo2.maven.org/maven2/org/hibernate/hibernate/3.2.7.ga/hibernate-3.2.7.GA.jar',
+      '3.2.7.GA'
+    check 'http://repo2.maven.org/maven2/org/hibernate/hibernate/3.2.7.ga/hibernate-3.2.7.ga.jar',
+      '3.2.7.ga'
+  end
 end
