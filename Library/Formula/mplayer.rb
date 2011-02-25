@@ -20,6 +20,9 @@ class Mplayer <Formula
     ENV['CFLAGS'] = ''
     ENV['CXXFLAGS'] = ''
 
+    # Avoid interactive prompt by explicit FFmpeg checkout
+    system "git clone --depth 1 git://git.videolan.org/ffmpeg.git ffmpeg"
+
     args = ["--prefix=#{prefix}", "--enable-largefiles", "--enable-apple-remote"]
     args << "--target=x86_64-Darwin" if snow_leopard_64?
 
