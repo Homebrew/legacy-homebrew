@@ -2,7 +2,7 @@ require 'formula'
 
 class GitSubtree <Formula
   homepage 'https://github.com/apenwarr/git-subtree'
-  url 'https://github.com/apenwarr/git-subtree/zipball/v0.3'
+  url 'https://github.com/apenwarr/git-subtree/zipball/v0.4'
   head 'git://github.com/apenwarr/git-subtree.git'
 
   def options
