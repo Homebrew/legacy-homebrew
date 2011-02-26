@@ -1,10 +1,9 @@
 require 'formula'
 
 class Proguard <Formula
-  url 'http://heanet.dl.sourceforge.net/project/proguard/proguard%20beta/4.6beta/proguard4.6beta3.tar.gz'
+  url 'http://heanet.dl.sourceforge.net/project/proguard/proguard/4.6/proguard4.6.tar.gz'
   homepage 'http://proguard.sourceforge.net/'
-  md5 'ec9fb40f560cc79dbe6768c2abdd681d'
-  version '4.6beta3'
+  md5 '4c2f225d996349e3cf705b4aa671a6cb'
 
   def install
     libexec.install ['lib/proguard.jar']
