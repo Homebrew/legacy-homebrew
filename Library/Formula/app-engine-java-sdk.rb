@@ -1,9 +1,9 @@
 require 'formula'
 
 class AppEngineJavaSdk <Formula
-  url 'http://googleappengine.googlecode.com/files/appengine-java-sdk-1.4.0.zip'
+  url 'http://googleappengine.googlecode.com/files/google_appengine_1.4.2.zip'
   homepage 'http://code.google.com/appengine/docs/java/overview.html'
-  sha1 '92c9af1a4df16a1de1f3606484b38a7d09060b4b'
+  sha1 '132d50710b1337169981cd78914d36df29aea722'
 
   def shim_script target
     <<-EOS.undent
