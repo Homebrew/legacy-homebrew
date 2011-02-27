@@ -4,20 +4,48 @@ require 'hardware'
 class Mongodb <Formula
   homepage 'http://www.mongodb.org/'
 
-  if Hardware.is_64_bit? and not ARGV.include? '--32bit'
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-1.6.5.tgz'
-    md5 'f3438db5a5bd3ac4571616f3d19caf00'
-    version '1.6.5-x86_64'
-  else
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-1.6.5.tgz'
-    md5 '064c9c68752968875e4ccaf8801ef031'
-    version '1.6.5-i386'
-  end
+  installations = {
+    :production => {
+      :x86_64 => {
+        :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-1.6.5.tgz',
+        :md5 => 'f3438db5a5bd3ac4571616f3d19caf00',
+        :version => '1.6.5-x86_64'
+      },
+      :i386 => {
+        :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-1.6.5.tgz',
+        :md5 => '064c9c68752968875e4ccaf8801ef031',
+        :version => '1.6.5-i386'
+      }
+    },
+
+    :development => {
+      :x86_64 => {
+        :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-1.8.0-rc0.tgz',
+        :md5 => 'a3b2121f419996ab05443512cd8bb8dd',
+        :version => '1.8.0-rc0-x86_64'
+      },
+      :i386 => {
+        :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-1.8.0-rc0.tgz',
+        :md5 => '5caf346641dcc084a173ea9d773574da',
+        :version => '1.8.0-rc0-i386'
+      }
+    }
+  }
+
+  installations = ARGV.include?('--development-version') ? installations[:development] : installations[:production]
+  installation_data = (Hardware.is_64_bit? and not ARGV.include? '--32bit') ? installations[:x86_64] : installations[:i386]
+
+  url     installation_data[:url]
+  md5     installation_data[:md5]
+  version installation_data[:version]
 
   skip_clean :all
 
   def options
-    [['--32bit', 'Install the 32-bit version.']]
+    [
+      ['--32bit', 'Install the 32-bit version.'],
+      ['--development-version', 'Install the development (unstable) version.']
+    ]
   end
 
   def install
