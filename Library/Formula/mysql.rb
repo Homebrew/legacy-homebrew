@@ -72,12 +72,13 @@ class Mysql <Formula
         mysql_install_db
 
     If this is your first install, automatically load on login with:
-        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents
+        mkdir -p ~/Library/LaunchAgents
+        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
 
     If this is an upgrade and you already have the com.mysql.mysqld.plist loaded:
         launchctl unload -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
-        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents
+        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
 
     Note on upgrading:
@@ -115,11 +116,11 @@ end
 
 
 __END__
---- old/scripts/mysqld_safe.sh	2009-09-02 04:10:39.000000000 -0400
-+++ new/scripts/mysqld_safe.sh	2009-09-02 04:52:55.000000000 -0400
+--- old/scripts/mysqld_safe.sh  2009-09-02 04:10:39.000000000 -0400
++++ new/scripts/mysqld_safe.sh  2009-09-02 04:52:55.000000000 -0400
 @@ -383,7 +383,7 @@
  fi
- 
+
  USER_OPTION=""
 -if test -w / -o "$USER" = "root"
 +if test -w /sbin -o "$USER" = "root"

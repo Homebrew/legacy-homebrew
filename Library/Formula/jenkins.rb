@@ -13,12 +13,13 @@ class Jenkins <Formula
 
   def caveats; <<-EOS
 If this is your first install, automatically load on login with:
-    cp #{prefix}/org.jenkins-ci.plist ~/Library/LaunchAgents
+    mkdir -p ~/Library/LaunchAgents
+    cp #{prefix}/org.jenkins-ci.plist ~/Library/LaunchAgents/
     launchctl load -w ~/Library/LaunchAgents/org.jenkins-ci.plist
 
 If this is an upgrade and you already have the org.jenkins-ci.plist loaded:
     launchctl unload -w ~/Library/LaunchAgents/org.jenkins-ci.plist
-    cp #{prefix}/org.jenkins-ci.plist ~/Library/LaunchAgents
+    cp #{prefix}/org.jenkins-ci.plist ~/Library/LaunchAgents/
     launchctl load -w ~/Library/LaunchAgents/org.jenkins-ci.plist
 
 Or start it manually:
