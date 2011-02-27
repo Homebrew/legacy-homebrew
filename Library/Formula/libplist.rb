@@ -13,7 +13,7 @@ class Libplist <Formula
     # Disable Python bindings.
     inreplace "CMakeLists.txt", 'OPTION(ENABLE_PYTHON "Enable Python bindings (needs Swig)" ON)',
                                 '# Disabled Python Bindings'
-    system "cmake . #{std_cmake_parameters}"
+    system "cmake . #{std_cmake_parameters} -DCMAKE_INSTALL_NAME_DIR=#{lib}"
     system "make install"
 
     # Remove 'plutil', which duplicates the system-provided one. Leave the versioned one, though.
