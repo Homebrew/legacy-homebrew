@@ -1,6 +1,7 @@
 require 'formula'
 
 class RubyEnterpriseEdition <Formula
+<<<<<<< HEAD
   url 'http://rubyenterpriseedition.googlecode.com/files/ruby-enterprise-1.8.7-2011.02.tar.gz'
   md5 '8c5faa11c1ddaed3f44b7294711980cc'
   homepage 'http://rubyenterpriseedition.com/'
