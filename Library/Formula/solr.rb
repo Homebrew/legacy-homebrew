@@ -1,7 +1,7 @@
 require 'formula'
 
 class Solr <Formula
-  url 'http://ftp.wayne.edu/apache/lucene/solr/1.4.1/apache-solr-1.4.1.tgz'
+  url 'ftp://ftp.fu-berlin.de/unix/www/apache/lucene/solr/1.4.1/apache-solr-1.4.1.tgz'
   homepage 'http://lucene.apache.org/solr/'
   md5 '258a020ed8c3f44e13b09e8ae46a1c84'
 
