@@ -2,13 +2,14 @@ require 'formula'
 
 class GitSubtree <Formula
   homepage 'https://github.com/apenwarr/git-subtree'
-  url 'https://github.com/apenwarr/git-subtree/zipball/v0.3'
+  url 'https://github.com/apenwarr/git-subtree/zipball/v0.4'
+  version '0.4'
+  md5 '904f325d2208ad5ca542e7bb56c50f9c'
+
   head 'git://github.com/apenwarr/git-subtree.git'
 
   def options
-    [
-      ['--build-docs', "Build man pages using asciidoc and xmlto"]
-    ]
+    [['--build-docs', "Build man pages using asciidoc and xmlto"]]
   end
 
   if ARGV.include? '--build-docs'
@@ -16,9 +17,6 @@ class GitSubtree <Formula
     depends_on 'asciidoc'
     depends_on 'xmlto'
   end
-
-  # Not depending on git because people might have it
-  # installed through another means
 
   def install
     if ARGV.include? '--build-docs'
