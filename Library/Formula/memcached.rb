@@ -25,13 +25,14 @@ class Memcached <Formula
 
   def caveats; <<-EOS.undent
     You can enable memcached to automatically load on login with:
+        mkdir -p ~/Library/LaunchAgents
         cp #{prefix}/com.danga.memcached.plist ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/com.danga.memcached.plist
 
-    Or start it manually:
-        #{HOMEBREW_PREFIX}/bin/memcached
+        Or start it manually:
+            #{HOMEBREW_PREFIX}/bin/memcached
 
-    Add "-d" to start it as a daemon.
+        Add "-d" to start it as a daemon.
     EOS
   end
 
