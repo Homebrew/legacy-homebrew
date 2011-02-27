@@ -1,7 +1,6 @@
 require 'formula'
 
 class HeadDownloadStrategy <GitDownloadStrategy
-
   def stage
     stagedir= Dir.getwd
     Dir.chdir cached_location
