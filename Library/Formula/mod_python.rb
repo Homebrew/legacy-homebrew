@@ -12,7 +12,7 @@ class ModPython <Formula
 
       NOTE: mod_python is deprecated. See:
         http://blog.dscpl.com.au/2010/05/modpython-project-soon-to-be-officially.html
-  
+
       mod_wsgi is the suggested replacement.
     EOS
   end
