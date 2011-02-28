@@ -1,16 +1,9 @@
 require 'formula'
 
 class Cmake <Formula
-  url 'http://www.cmake.org/files/v2.8/cmake-2.8.3.tar.gz'
-  md5 'a76a44b93acf5e3badda9de111385921'
+  url 'http://www.cmake.org/files/v2.8/cmake-2.8.4.tar.gz'
+  md5 '209b7d1d04b2e00986538d74ba764fcf'
   homepage 'http://www.cmake.org/'
-
-  def patches
-    # Adds support for enabling/disabling specific system libraries
-    # http://public.kitware.com/Bug/view.php?id=11431
-    # Shouldn't be needed in 2.8.4
-    "http://cmake.org/gitweb?p=cmake.git;a=patch;h=60d72b56"
-  end
 
   def install
     # A framework-installed expat will be detected and mess things up.
