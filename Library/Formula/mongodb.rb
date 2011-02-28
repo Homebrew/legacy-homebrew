@@ -32,7 +32,7 @@ class Mongodb <Formula
     }
   }
 
-  installations = ARGV.include?('--development-version') ? installations[:development] : installations[:production]
+  installations = ARGV.include?('--HEAD') ? installations[:development] : installations[:production]
   installation_data = (Hardware.is_64_bit? and not ARGV.include? '--32bit') ? installations[:x86_64] : installations[:i386]
 
   url     installation_data[:url]
@@ -44,7 +44,7 @@ class Mongodb <Formula
   def options
     [
       ['--32bit', 'Install the 32-bit version.'],
-      ['--development-version', 'Install the development (unstable) version.']
+      ['--HEAD', 'Install the development (unstable) version.']
     ]
   end
 
