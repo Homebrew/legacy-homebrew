@@ -11,7 +11,5 @@ class TProt <Formula
     bin.install 't-prot'
     man1.install 't-prot.1'
     (share + "doc/#{name}-#{version}").install Dir['*']
-#    (share + "doc/#{name}-#{version}/contrib").install Dir['contrib/*']
-#    (share + "doc/#{name}-#{version}").install ['ChangeLog', 'README', 'TODO']
   end
 end
