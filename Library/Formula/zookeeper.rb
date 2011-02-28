@@ -1,9 +1,10 @@
 require 'formula'
 
 class Zookeeper <Formula
-  url 'http://mirror.switch.ch/mirror/apache/dist/hadoop/zookeeper/zookeeper-3.3.1/zookeeper-3.3.1.tar.gz'
-  homepage 'http://hadoop.apache.org/zookeeper'
-  md5 'bdcd73634e3f6623a025854f853c3d0d'
+  url 'http://mirror.switch.ch/mirror/apache/dist/hadoop/zookeeper/zookeeper-3.3.2/zookeeper-3.3.2.tar.gz'
+  homepage 'http://hadoop.apache.org/zookeeper/'
+  md5 '346cdc18bf2bc1ce2549ae320ccf1f94'
+  version '3.3.2'
 
   def shim_script target
     <<-EOS.undent
