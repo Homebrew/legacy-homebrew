@@ -36,7 +36,7 @@ class Zookeeper <Formula
 
   def install
     # Prep work for svn compile.
-    if version == 'HEAD'
+    if ARGV.build_head?
       system "ant", "compile_jute"
 
       cd "src/c" do
@@ -66,7 +66,7 @@ class Zookeeper <Formula
     rm_f Dir["bin/*.cmd"]
 
     # Install Java stuff
-    if version == 'HEAD'
+    if ARGV.build_head?
       system "ant"
       libexec.install %w(bin src/contrib src/java/lib)
       libexec.install Dir['build/*.jar']
