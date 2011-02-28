@@ -38,7 +38,7 @@ class AndroidSdk <Formula
     (bin/:adb).write <<-EOS.undent
       #!/bin/sh
       ADB="#{prefix}/platform-tools/adb"
-      test -f "$ADB" && exec "$ADB" $@
+      test -f "$ADB" && exec "$ADB" "$@"
       echo Use the \\`android\\' tool to install adb.
       EOS
   end
