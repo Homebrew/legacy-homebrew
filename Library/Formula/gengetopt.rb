@@ -8,8 +8,8 @@ class Gengetopt <Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--mandir=#{man}"
-    system "chmod +x build-aux/*sh"
     system "make"
+    chmod_R 0755, 'build-aux/'
     system "make install"
   end
 end
