@@ -2,6 +2,7 @@ require 'formula'
 
 class Zookeeper <Formula
   url 'http://mirror.switch.ch/mirror/apache/dist/hadoop/zookeeper/zookeeper-3.3.2/zookeeper-3.3.2.tar.gz'
+  head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
   homepage 'http://hadoop.apache.org/zookeeper/'
   md5 '346cdc18bf2bc1ce2549ae320ccf1f94'
   version '3.3.2'
@@ -34,12 +35,45 @@ class Zookeeper <Formula
   end
 
   def install
+    # Prep work for svn compile.
+    if version == 'HEAD'
+      system "ant", "compile_jute"
+
+      cd "src/c" do
+        system "autoreconf", "-if"
+      end
+    end
+
+    # Build & install C libraries.
+    cd "src/c" do
+      system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--without-cppunit"
+      system "make install"
+    end
+
+    # Install Python bindings
+    cd "src/contrib/zkpython" do
+      system "python", "src/python/setup.py", "build"
+      system "python", "src/python/setup.py", "install", "--prefix=#{prefix}"
+    end
+
+    # Install Perl bindings
+    cd "src/contrib/zkperl" do
+      system "perl", "Makefile.PL", "PREFIX=#{prefix}", "--zookeeper-include=#{prefix}/include/c-client-src", "--zookeeper-lib=#{prefix}/lib"
+      system "make install"
+    end
+
     # Remove windows executables
     rm_f Dir["bin/*.cmd"]
 
     # Install Java stuff
-    libexec.install %w(bin contrib lib)
-    libexec.install Dir['*.jar']
+    if version == 'HEAD'
+      system "ant"
+      libexec.install %w(bin src/contrib src/java/lib)
+      libexec.install Dir['build/*.jar']
+    else
+      libexec.install %w(bin contrib lib)
+      libexec.install Dir['*.jar']
+    end
 
     # Create neccessary directories
     bin.mkpath
