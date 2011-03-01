@@ -5,13 +5,8 @@ class R <Formula
   homepage 'http://www.R-project.org/'
   md5 'bc70b51dddab8aa39066710624e55d5e'
 
+  depends_on 'gfortran'
   def install
-    unless `/usr/bin/which gfortran`.chomp.size > 0
-      opoo 'No gfortran found in path'
-      puts "You'll need to `brew install gfortran` or otherwise have a copy"
-      puts "of gfortran in your path for this brew to work."
-    end
-
     ENV["FCFLAGS"] = ENV["CFLAGS"]
     ENV["FFLAGS"]  = ENV["CFLAGS"]
 
