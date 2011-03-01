@@ -38,9 +38,6 @@ class Qt <Formula
     if ARGV.include? '--with-qtdbus'
       args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
       args << "-I#{Formula.factory('d-bus').include}/dbus-1.0"
-      args << "-L#{Formula.factory('d-bus').lib}"
-      args << "-ldbus-1"
-      args << "-dbus-linked"
     end
 
     if ARGV.include? '--with-qt3support'
