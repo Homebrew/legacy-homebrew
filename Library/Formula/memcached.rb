@@ -49,7 +49,7 @@ Add "-d" to start it as a daemon.
   <array>
     <string>#{HOMEBREW_PREFIX}/bin/memcached</string>
     <string>-l</string>
-    <string>127.0.0.1</string>
+    <string>localhost</string>
   </array>
   <key>RunAtLoad</key>
   <true/>
