@@ -24,6 +24,10 @@ class SshfsFuse <Formula
     <<-EOS.undent
     This depends on the MacFUSE installation from http://code.google.com/p/macfuse/
     MacFUSE must be installed prior to installing this formula.
+    
+    Snow Leopard users must patch their MacFUSE installation to account for a 64-bit
+    stat structure.  See https://gist.github.com/544112 for the config which must be
+    changed prior to installing this formula, and homebrew issue 3340 for details.
     EOS
   end
 end
