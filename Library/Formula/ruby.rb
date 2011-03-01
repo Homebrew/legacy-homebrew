@@ -1,10 +1,10 @@
 require 'formula'
 
 class Ruby <Formula
-  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p136.tar.bz2'
+  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p180.tar.bz2'
   homepage 'http://www.ruby-lang.org/en/'
   head 'http://svn.ruby-lang.org/repos/ruby/trunk/', :using => :svn
-  md5 '52958d35d1b437f5d9d225690de94c13'
+  md5 '68510eeb7511c403b91fe5476f250538'
 
   depends_on 'readline'
   depends_on 'libyaml'
@@ -13,6 +13,7 @@ class Ruby <Formula
     [
       ["--with-suffix", "Add a 19 suffix to commands"],
       ["--with-doc", "Install with the Ruby documentation"],
+      ["--universal", "Compile a universal binary (arch=x86_64,i386)"],
     ]
   end
 
@@ -48,6 +49,7 @@ class Ruby <Formula
             "--enable-shared"]
 
     args << "--program-suffix=19" if ARGV.include? "--with-suffix"
+    args << "--with-arch=x86_64,i386" if ARGV.include? "--universal"
 
     # Put gem, site and vendor folders in the HOMEBREW_PREFIX
 

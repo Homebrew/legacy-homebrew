@@ -2,9 +2,9 @@ require 'formula'
 
 class Dcmtk <Formula
   homepage 'http://dicom.offis.de/dcmtk.php.en'
-  url 'http://dicom.offis.de/download/dcmtk/snapshot/old/dcmtk-3.5.5_20100903.tar.gz'
-  md5 '15a8f05a8035bcf7d18ab475b95c9163'
-  version '3.5.5_20100903'
+  url 'ftp://dicom.offis.de/pub/dicom/offis/software/dcmtk/dcmtk360/dcmtk-3.6.0.tar.gz'
+  md5 '19409e039e29a330893caea98715390e'
+  version '3.6.0'
 
   depends_on 'libtiff'
 
