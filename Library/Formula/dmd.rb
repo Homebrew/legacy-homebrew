@@ -2,8 +2,8 @@ require 'formula'
 
 class Dmd <Formula
   homepage 'http://www.digitalmars.com/d/'
-  url 'http://ftp.digitalmars.com/dmd.2.051.zip'
-  md5 '7952059a67995e3e74f3c27aa3942d6c'
+  url 'http://ftp.digitalmars.com/dmd.2.052.zip'
+  md5 '133e80a929eaeddc9fe8964bbfa4cc4f'
 
   def doc
     #use d and not dmd, rationale: meh
@@ -19,7 +19,7 @@ class Dmd <Formula
     mv 'README.TXT', 'README'
     mv 'src/phobos/phoboslicense.txt', 'src/phobos/COPYING.phobos'
 
-    prefix.install 'osx/lib'
+    prefix.install 'osx/lib32'
     prefix.install 'osx/bin'
     prefix.install 'src'
     man.install 'man/man1'
