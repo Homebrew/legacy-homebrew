@@ -3,8 +3,8 @@ require 'formula'
 class Httrack <Formula
   url 'http://download.httrack.com/cserv.php3?File=httrack.tar.gz'
   homepage 'http://www.httrack.com/'
-  md5 '065d2d7d37e99ab788fe4968bc947ac8'
-  version '3.43-9D'
+  md5 '7aaf56913388adfdba506c346c2ca020'
+  version '3.44.1'
 
   def install
     ENV.deparallelize
