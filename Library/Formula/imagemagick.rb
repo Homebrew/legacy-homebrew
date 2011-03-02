@@ -38,8 +38,8 @@ class Imagemagick <Formula
   # Send update requests to https://github.com/adamv/ImageMagick
   # Be sure to include the ImageMagick SVN revision # for the new version.
   url 'git://github.com/adamv/ImageMagick.git',
-          :tag => '0a63ba150ca80ba5b65515cac6f99dbba2386936'
-  version '6.6.7-8'
+          :ref => 'fdb125591a17a4002798742014118d5cfee44394'
+  version '6.6.7-10'
   homepage 'http://www.imagemagick.org'
   head 'git://github.com/adamv/ImageMagick.git'
 
