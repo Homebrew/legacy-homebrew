@@ -63,7 +63,7 @@ end
 def ohai title, *sput
   title = title.to_s[0, `/usr/bin/tput cols`.strip.to_i-4] unless ARGV.verbose?
   puts "#{Tty.blue}==>#{Tty.white} #{title}#{Tty.reset}"
-  puts *sput unless sput.empty?
+  puts sput unless sput.empty?
 end
 
 def opoo warning
@@ -73,7 +73,7 @@ end
 def onoe error
   lines = error.to_s.split'\n'
   puts "#{Tty.red}Error#{Tty.reset}: #{lines.shift}"
-  puts *lines unless lines.empty?
+  puts lines unless lines.empty?
 end
 
 def pretty_duration s
@@ -82,7 +82,12 @@ def pretty_duration s
   return "%.1f minutes" % (s/60)
 end
 
-def interactive_shell
+def interactive_shell f=nil
+  unless f.nil?
+    ENV['HOMEBREW_DEBUG_PREFIX'] = f.prefix
+    ENV['HOMEBREW_DEBUG_INSTALL'] = f.name
+  end
+
   fork {exec ENV['SHELL'] }
   Process.wait
   unless $?.success?
@@ -119,7 +124,7 @@ def quiet_system cmd, *args
 end
 
 def curl *args
-  safe_system 'curl', '-f#LA', HOMEBREW_USER_AGENT, *args unless args.empty?
+  safe_system '/usr/bin/curl', '-f#LA', HOMEBREW_USER_AGENT, *args unless args.empty?
 end
 
 def puts_columns items, cols = 4
@@ -135,29 +140,36 @@ def puts_columns items, cols = 4
 
     IO.popen("/usr/bin/pr -#{cols} -t -w#{console_width}", "w"){|io| io.puts(items) }
   else
-    puts *items
+    puts items
   end
 end
 
 def exec_editor *args
-  editor=ENV['EDITOR']
+  editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
   if editor.nil?
     if system "/usr/bin/which -s mate"
+      # TextMate
       editor='mate'
+    elsif system "/usr/bin/which -s edit"
+      # BBEdit / TextWrangler
+      editor='edit'
     else
+      # Default to vim
       editor='/usr/bin/vim'
     end
   end
   # we split the editor because especially on mac "mate -w" is common
   # but we still want to use the comma-delimited version of exec because then
   # we don't have to escape args, and escaping 100% is tricky
-  exec *(editor.split+args)
+  exec(*(editor.split+args))
 end
 
 # GZips the given path, and returns the gzipped file
-def gzip path
-  system "/usr/bin/gzip", path
-  return Pathname.new(path+".gz")
+def gzip *paths
+  paths.collect do |path|
+    system "/usr/bin/gzip", path
+    Pathname.new(path+".gz")
+  end
 end
 
 module ArchitectureListExtension
@@ -172,7 +184,7 @@ def archs_for_command cmd
   cmd = `/usr/bin/which #{cmd}` unless Pathname.new(cmd).absolute?
   cmd.gsub! ' ', '\\ '  # Escape spaces in the filename.
 
-  archs = IO.popen("/usr/bin/file #{cmd}").readlines.inject([]) do |archs, line|
+  archs = IO.popen("/usr/bin/file -L #{cmd}").readlines.inject([]) do |archs, line|
     case line
     when /Mach-O (executable|dynamically linked shared library) ppc/
       archs << :ppc7400
@@ -254,9 +266,25 @@ end
 def dump_build_env env
   puts "\"--use-llvm\" was specified" if ARGV.include? '--use-llvm'
 
-  %w[ CC CXX LD CFLAGS CXXFLAGS CPPFLAGS LDFLAGS MACOSX_DEPLOYMENT_TARGET MAKEFLAGS PKG_CONFIG_PATH
+  %w[ CC CXX LD ].each do |k|
+    value = env[k]
+    if value
+      results = value
+      if File.exists? value and File.symlink? value
+        target = Pathname.new(value)
+        results += " => #{target.realpath}"
+      end
+      puts "#{k}: #{results}"
+    end
+  end
+
+  %w[ CFLAGS CXXFLAGS CPPFLAGS LDFLAGS MACOSX_DEPLOYMENT_TARGET MAKEFLAGS PKG_CONFIG_PATH
       HOMEBREW_DEBUG HOMEBREW_VERBOSE HOMEBREW_USE_LLVM HOMEBREW_SVN ].each do |k|
     value = env[k]
     puts "#{k}: #{value}" if value
   end
+end
+
+def x11_installed?
+  Pathname.new('/usr/X11/lib/libpng.dylib').exist?
 end

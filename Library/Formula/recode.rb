@@ -1,7 +1,7 @@
 require 'formula'
 
 class Recode <Formula
-  url 'http://ftp.gnu.org/pub/gnu/recode/recode-3.6.tar.gz'
+  url 'http://recode.progiciels-bpi.ca/archives/recode-3.6.tar.gz'
   homepage 'http://www.gnu.org/software/recode/'
   md5 'be3f40ad2e93dae5cd5f628264bf1877'
 
@@ -13,9 +13,20 @@ class Recode <Formula
   end
 
   def install
-    cp "/usr/share/libtool/config/config.guess", "."
-    cp "/usr/share/libtool/config/config.sub", "."
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--without-included-gettext"
+    if MACOS_VERSION >= 10.6
+      libtool_config = "/usr/share/libtool/config"
+    else
+      libtool_config = "/usr/share/libtool"
+    end
+
+    cp "#{libtool_config}/config.guess", "."
+    cp "#{libtool_config}/config.sub", "."
+
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--without-included-gettext",
+                          "--infodir=#{info}",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make install"
   end
 end

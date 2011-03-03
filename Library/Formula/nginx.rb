@@ -1,14 +1,14 @@
 require 'formula'
 
 class Nginx < Formula
-  url 'http://nginx.org/download/nginx-0.7.67.tar.gz'
-  head 'http://nginx.org/download/nginx-0.8.44.tar.gz'
+  url 'http://nginx.org/download/nginx-0.8.54.tar.gz'
+  head 'http://nginx.org/download/nginx-0.9.5.tar.gz'
   homepage 'http://nginx.org/'
 
-  unless (ARGV & ['--HEAD', '-H']).empty?
-    @md5='7158c67ba2697f7d469aa7b17bef202f'
+  if ARGV.build_head?
+    @md5='955960482bf55b537ad0db5cca8fd61a'
   else
-    @md5='b6e175f969d03a4d3c5643aaabc6a5ff'
+    @md5='44df4eb6a22d725021288c570789046f'
   end
 
   depends_on 'pcre'
@@ -23,7 +23,8 @@ class Nginx < Formula
 
   def options
     [
-      ['--with-passenger', "Compile with support for Phusion Passenger module"]
+      ['--with-passenger', "Compile with support for Phusion Passenger module"],
+      ['--with-webdav',    "Compile with support for WebDAV module"]
     ]
   end
 
@@ -41,11 +42,16 @@ class Nginx < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}", "--with-http_ssl_module", "--with-pcre"]
+    args = ["--prefix=#{prefix}", "--with-http_ssl_module", "--with-pcre",
+            "--conf-path=#{etc}/nginx/nginx.conf", "--pid-path=#{var}/run/nginx.pid",
+            "--lock-path=#{var}/nginx/nginx.lock"]
     args << passenger_config_args if ARGV.include? '--with-passenger'
+    args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
 
     system "./configure", *args
     system "make install"
+
+    (prefix+'org.nginx.plist').write startup_plist
   end
 
   def caveats
@@ -56,7 +62,39 @@ port is set to localhost:8080.
 If you want to host pages on your local machine to the public, you should
 change that to localhost:80, and run `sudo nginx`. You'll need to turn off
 any other web servers running port 80, of course.
+
+You can start nginx automatically on login with:
+    cp #{prefix}/org.nginx.plist ~/Library/LaunchAgents
+    launchctl load -w ~/Library/LaunchAgents/org.nginx.plist
+
     CAVEATS
+  end
+
+  def startup_plist
+    return <<-EOPLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>org.nginx</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>UserName</key>
+    <string>#{`whoami`.chomp}</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>#{sbin}/nginx</string>
+        <string>-g</string>
+        <string>daemon off;</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>#{HOMEBREW_PREFIX}</string>
+  </dict>
+</plist>
+    EOPLIST
   end
 end
 
@@ -66,7 +104,7 @@ __END__
 @@ -155,6 +155,22 @@ else
              . auto/feature
          fi
- 
+
 +        if [ $ngx_found = no ]; then
 +
 +            # Homebrew

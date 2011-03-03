@@ -19,7 +19,7 @@ class RubyOdbc < Formula
       s.change_make_var! "prefix", prefix
       s.change_make_var! "sitearchdir", lib
 
-      if Hardware.is_64_bit? and MACOS_VERSION >= 10.6
+      if snow_leopard_64?
         # ruby-odbc still chooses iODBC over unixODBC (even with --with-odbc-dir)
         # apparently because unixODBC is compiled for only x86_64 and ruby-odbc
         # and iODBC are both i386 and x86_64. The solution (which works for me on Snow Leopard)

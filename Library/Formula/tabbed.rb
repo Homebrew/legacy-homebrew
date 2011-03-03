@@ -1,9 +1,9 @@
 require 'formula'
 
 class Tabbed <Formula
-  url 'http://dl.suckless.org/tools/tabbed-0.2.tar.gz'
+  url 'http://dl.suckless.org/tools/tabbed-0.3.tar.gz'
   homepage 'http://tools.suckless.org/tabbed'
-  md5 'fc00ee1a9fd1478561b064cd6a53d494'
+  md5 '4a30458f9adc38db549f735b8fb6451b'
   head 'http://hg.suckless.org/tabbed'
 
   def install

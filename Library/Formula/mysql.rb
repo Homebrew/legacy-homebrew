@@ -2,8 +2,8 @@ require 'formula'
 
 class Mysql <Formula
   homepage 'http://dev.mysql.com/doc/refman/5.1/en/'
-  url 'http://mysql.llarian.net/Downloads/MySQL-5.1/mysql-5.1.48.tar.gz'
-  md5 'd04c54d1cfbd8c6c8650c8d078f885b2'
+  url 'http://mysql.mirrors.pair.com/Downloads/MySQL-5.1/mysql-5.1.55.tar.gz'
+  md5 'e07e79edad557874d0870c914c9c81e1'
 
   depends_on 'readline'
 
@@ -11,8 +11,10 @@ class Mysql <Formula
     [
       ['--with-tests', "Keep tests when installing."],
       ['--with-bench', "Keep benchmark app when installing."],
+      ['--with-embedded', "Build the embedded server."],
       ['--client-only', "Only install client tools, not the server."],
-      ['--universal', "Make mysql a universal binary"]
+      ['--universal', "Make mysql a universal binary"],
+      ['--with-utf8-default', "Set the default character set to utf8"]
     ]
   end
 
@@ -21,7 +23,7 @@ class Mysql <Formula
   end
 
   def install
-    fails_with_llvm "http://github.com/mxcl/homebrew/issues/issue/144"
+    fails_with_llvm "https://github.com/mxcl/homebrew/issues/issue/144"
 
     # See: http://dev.mysql.com/doc/refman/5.1/en/configure-options.html
     # These flags may not apply to gcc 4+
@@ -45,14 +47,18 @@ class Mysql <Formula
       "--enable-assembler",
       "--enable-thread-safe-client",
       "--enable-local-infile",
-      "--enable-shared"]
+      "--enable-shared",
+      "--with-partition"]
 
     configure_args << "--without-server" if ARGV.include? '--client-only'
+    configure_args << "--with-embedded-server" if ARGV.include? '--with-embedded'
+    configure_args << "--with-charset=utf8" if ARGV.include? '--with-utf8-default'
 
     system "./configure", *configure_args
     system "make install"
 
-    ln_s "#{libexec}/mysqld", "#{bin}/mysqld"
+    ln_s "#{libexec}/mysqld", bin
+    ln_s "#{share}/mysql/mysql.server", bin
 
     (prefix+'mysql-test').rmtree unless ARGV.include? '--with-tests' # save 66MB!
     (prefix+'sql-bench').rmtree unless ARGV.include? '--with-bench'
@@ -62,24 +68,25 @@ class Mysql <Formula
 
   def caveats; <<-EOS.undent
     Set up databases with:
+        unset TMPDIR
         mysql_install_db
 
     If this is your first install, automatically load on login with:
         cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents
         launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
 
-    If this is an upgrade and you already have the com.mysql.mysqld.plist loaded: 
+    If this is an upgrade and you already have the com.mysql.mysqld.plist loaded:
         launchctl unload -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
         cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents
         launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
 
-    Note on upgrading: 
-        We overwrite any existing com.mysql.mysqld.plist in ~/Library/LaunchAgents 
-        if we are upgrading because previous versions of this brew created the 
+    Note on upgrading:
+        We overwrite any existing com.mysql.mysqld.plist in ~/Library/LaunchAgents
+        if we are upgrading because previous versions of this brew created the
         plist with a version specific program argument.
-    
+
     Or start manually with:
-        #{prefix}/share/mysql/mysql.server start
+        mysql.server start
     EOS
   end
 

@@ -2,15 +2,14 @@ require 'formula'
 
 class Rabbitmq <Formula
   homepage 'http://rabbitmq.com'
-  url 'http://mirror.rabbitmq.com/releases/rabbitmq-server/v1.8.0/rabbitmq-server-1.8.0.tar.gz'
-  md5 'e00bea375e81d51600b5b14220c64d89'
+  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.3.1/rabbitmq-server-2.3.1.tar.gz'
+  md5 'ebd57fe2286a4e4e9ce0e3bf88134fe0'
 
   depends_on 'erlang'
   depends_on 'simplejson' => :python if MACOS_VERSION < 10.6
 
   def patches
-    # remove man pages pending necessary formulae to build them:
-    # xmlto, gnu-getopts, docbook-xml, docbook-xsl, docbook-4.5
+    # Can't build manpages without a lot of other junk, so disable
     DATA
   end
 
@@ -22,48 +21,35 @@ class Rabbitmq <Formula
     ENV['SBIN_DIR'] = sbin
     system "make install"
 
-    (etc + "rabbitmq").mkpath
-    (var + "lib/rabbitmq").mkpath
-    (var + "log/rabbitmq").mkpath
+    (etc+'rabbitmq').mkpath
+    (var+'lib/rabbitmq').mkpath
+    (var+'log/rabbitmq').mkpath
 
     %w{rabbitmq-server rabbitmq-multi rabbitmqctl rabbitmq-env}.each do |script|
-      inreplace sbin+script do |contents|
-        contents.gsub! '/etc/rabbitmq', "#{etc}/rabbitmq"
-        contents.gsub! '/var/lib/rabbitmq', "#{var}/lib/rabbitmq"
-        contents.gsub! '/var/log/rabbitmq', "#{var}/log/rabbitmq"
+      inreplace sbin+script do |s|
+        s.gsub! '/etc/rabbitmq', "#{etc}/rabbitmq"
+        s.gsub! '/var/lib/rabbitmq', "#{var}/lib/rabbitmq"
+        s.gsub! '/var/log/rabbitmq', "#{var}/log/rabbitmq"
       end
     end
 
     # RabbitMQ Erlang binaries are installed in lib/rabbitmq/erlang/lib/rabbitmq-x.y.z/ebin
     # therefore need to add this path for erl -pa
-    inreplace sbin+'rabbitmq-env', '${SCRIPT_DIR}/..', "#{target_dir}"
+    inreplace sbin+'rabbitmq-env', '${SCRIPT_DIR}/..', target_dir
   end
 end
 
 __END__
 diff --git a/Makefile b/Makefile
-index 725f20a..65c94a9 100644
+index d3f052f..98ce763 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -243,7 +243,7 @@ $(SOURCE_DIR)/%_usage.erl:
- 
+@@ -267,7 +267,7 @@ $(SOURCE_DIR)/%_usage.erl:
+
  docs_all: $(MANPAGES) $(WEB_MANPAGES)
- 
--install: all docs_all install_dirs
-+install: all install_dirs
- 	cp -r ebin include LICENSE LICENSE-MPL-RabbitMQ INSTALL $(TARGET_DIR)
- 
- 	chmod 0755 scripts/*
-@@ -251,12 +251,6 @@ install: all docs_all install_dirs
- 		cp scripts/$$script $(TARGET_DIR)/sbin; \
- 		[ -e $(SBIN_DIR)/$$script ] || ln -s $(SCRIPTS_REL_PATH)/$$script $(SBIN_DIR)/$$script; \
- 	done
--	for section in 1 5; do \
--		mkdir -p $(MAN_DIR)/man$$section; \
--		for manpage in $(DOCS_DIR)/*.$$section.gz; do \
--			cp $$manpage $(MAN_DIR)/man$$section; \
--		done; \
--	done
- 
- install_dirs:
- 	@ OK=true && \
+
+-install: install_bin install_docs
++install: install_bin
+
+ install_bin: all install_dirs
+	cp -r ebin include LICENSE LICENSE-MPL-RabbitMQ INSTALL $(TARGET_DIR)

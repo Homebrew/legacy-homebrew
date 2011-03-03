@@ -8,6 +8,6 @@ class Xdelta <Formula
 
   def install
     system "make"
-    bin.install("xdelta3")
+    bin.install "xdelta3"
   end
 end

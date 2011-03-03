@@ -1,9 +1,10 @@
 require 'formula'
 
 class Hdf5 <Formula
-  url 'http://www.hdfgroup.org/ftp/HDF5/current/src/hdf5-1.8.5.tar.bz2'
+  url 'http://www.hdfgroup.org/ftp/HDF5/current/src/hdf5-1.8.6.tar.bz2'
   homepage 'http://www.hdfgroup.org/HDF5/'
-  md5 'a400fe6c1c5964a7224dc684225d415c'
+  sha1 '348bd881c03a9568ac4ea9071833d6119c733757'
+  version '1.8.6'
 
   depends_on 'szip'
 

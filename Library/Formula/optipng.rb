@@ -1,9 +1,9 @@
 require 'formula'
 
 class Optipng <Formula
-  url 'http://downloads.sourceforge.net/optipng/optipng-0.6.3.tar.gz'
+  url 'http://downloads.sourceforge.net/project/optipng/OptiPNG/optipng-0.6.5/optipng-0.6.5.tar.gz'
   homepage 'http://optipng.sourceforge.net/'
-  md5 '6cef405197a878acff4c6216cf38e871'
+  md5 '9df5fa7bb45ae096ed6c6e0d8dc43dc7'
 
   def install
     inreplace 'src/scripts/gcc.mak.in' do |s|

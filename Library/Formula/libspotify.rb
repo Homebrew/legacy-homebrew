@@ -1,33 +1,25 @@
 require 'formula'
 
 class Libspotify <Formula
-  url 'http://developer.spotify.com/download/libspotify/libspotify-0.0.4-darwin.zip'
-  version '0.0.4'
+  url "http://developer.spotify.com/download/libspotify/libspotify-0.0.7-Darwin.zip"
+  version '0.0.7'
   homepage 'http://developer.spotify.com/en/libspotify/overview/'
-  md5 'a97552130df26b1aa2228adcf8d4210b'
-
-  def inc
-    include + 'libspotify'
-  end
-  def pc
-    lib+'pkgconfig/libspotify.pc'
-  end
+  md5 '47e4d355b59aadbd7fad564f5fc172bf'
 
   def install
     prefix.install 'share'
-    inc.install "libspotify.framework/Versions/#{version}/Headers/api.h"
-    lib.install "libspotify.framework/Versions/#{version}/libspotify" => 'libspotify.0.0.4.dylib'
+    (include+'libspotify').install "libspotify.framework/Versions/0.0.7/Headers/api.h"
+    lib.install "libspotify.framework/Versions/0.0.7/libspotify" => "libspotify.0.0.7.dylib"
     doc.install Dir['doc/*']
 
     cd lib
-    ln_s "libspotify.0.0.4.dylib", "libspotify.dylib"
+    ln_s "libspotify.0.0.7.dylib", "libspotify.dylib"
 
-    system "install_name_tool",
-           "-id",
-           "#{HOMEBREW_PREFIX}/lib/libspotify.#{version}.dylib",
+    system "install_name_tool", "-id",
+           "#{HOMEBREW_PREFIX}/lib/libspotify.0.0.7.dylib",
            "libspotify.dylib"
 
-    pc.write pc_content
+    (lib+'pkgconfig/libspotify.pc').write pc_content
   end
 
   def pc_content; <<-EOS.undent

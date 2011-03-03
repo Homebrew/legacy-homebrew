@@ -1,5 +1,5 @@
 FORMULA_META_FILES = %w[README README.md ChangeLog COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
-PLEASE_REPORT_BUG = "#{Tty.white}Please report this bug at #{Tty.em}http://github.com/mxcl/homebrew/issues#{Tty.reset}"
+PLEASE_REPORT_BUG = "#{Tty.white}Please follow the instructions to report this bug at: #{Tty.em}\nhttps://github.com/mxcl/homebrew/wiki/new-issue#{Tty.reset}"
 
 def check_for_blacklisted_formula names
   return if ARGV.force?
@@ -19,9 +19,18 @@ def check_for_blacklisted_formula names
         brew install pip && pip install mercurial
     EOS
 
+    when 'npm' then abort <<-EOS.undent
+      npm can be installed thusly by following the instructions at
+        http://npmjs.org/
+
+      To do it in one line, use this command:
+        curl http://npmjs.org/install.sh | sudo sh
+    EOS
+
+
     when 'setuptools' then abort <<-EOS.undent
       When working with a Homebrew-built Python, distribute is preferred
-      over setuptools, and can be used as the prequisite for pip.
+      over setuptools, and can be used as the prerequisite for pip.
 
       Install distribute using:
         brew install distribute
@@ -33,19 +42,30 @@ end
 def __make url, name
   require 'formula'
   require 'digest'
+  require 'erb'
 
-  path = Formula.path name
+  path = Formula.path(name)
   raise "#{path} already exists" if path.exist?
-  
-  # Check if a formula aliased to this name exists.
-  already_aka = Formulary.find_alias name
-  if already_aka != nil
-    opoo "Formula #{already_aka} is aliased to #{name}."
-    puts "Please check if you are creating a duplicate."
+
+  if Formula.aliases.include? name and not ARGV.force?
+    realname = Formula.resolve_alias(name)
+    raise <<-EOS.undent
+          "#{name}" is an alias for formula "#{realname}".
+          Please check that you are not creating a duplicate.
+          To force creation use --force.
+          EOS
+  end
+
+  if ARGV.include? '--cmake'
+    mode = :cmake
+  elsif ARGV.include? '--autotools'
+    mode = :autotools
+  else
+    mode = nil
   end
 
   version = Pathname.new(url).version
-  if version == nil
+  if version.nil?
     opoo "Version cannot be determined from URL."
     puts "You'll need to add an explicit 'version' to the formula."
   else
@@ -65,59 +85,37 @@ def __make url, name
     end
   end
 
-  template=<<-EOS
-            require 'formula'
+  formula_template = <<-EOS
+require 'formula'
 
-            class #{Formula.class_s name} <Formula
-              url '#{url}'
-              homepage ''
-              md5 '#{md5}'
+class #{Formula.class_s name} <Formula
+  url '#{url}'
+  homepage ''
+  md5 '#{md5}'
 
-  cmake       depends_on 'cmake'
+<% if mode == :cmake %>
+  depends_on 'cmake'
+<% elsif mode == nil %>
+  # depends_on 'cmake'
+<% end %>
 
-              def install
-  autotools     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=\#{prefix}"
-  cmake         system "cmake . \#{std_cmake_parameters}"
-                system "make install"
-              end
-            end
+  def install
+<% if mode == :cmake %>
+    system "cmake . \#{std_cmake_parameters}"
+<% elsif mode == :autotools %>
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=\#{prefix}"
+<% else %>
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=\#{prefix}"
+    # system "cmake . \#{std_cmake_parameters}"
+<% end %>
+    system "make install"
+  end
+end
   EOS
 
-  mode=nil
-  if ARGV.include? '--cmake'
-    mode= :cmake
-  elsif ARGV.include? '--autotools'
-    mode= :autotools
-  end
-
-  f=File.new path, 'w'
-  template.each_line do |s|
-    if s.strip.empty?
-      f.puts
-      next
-    end
-    cmd=s[0..11].strip
-    if cmd.empty?
-      cmd=nil
-    else
-      cmd=cmd.to_sym
-    end
-    out=s[12..-1] || ''
-
-    if mode.nil?
-      # we show both but comment out cmake as it is less common
-      # the implication being the pacakger should remove whichever is not needed
-      if cmd == :cmake and not out.empty?
-        f.print '#'
-        out = out[1..-1]
-      end
-    elsif cmd != mode and not cmd.nil?
-      next
-    end
-    f.puts out
-  end
-  f.close
-
+  path.write(ERB.new(formula_template, nil, '>').result(binding))
   return path
 end
 
@@ -141,7 +139,21 @@ def make url
   force_text = "If you really want to make this formula use --force."
 
   case name.downcase
-  when /libxml/, /libxlst/, /freetype/, /libpng/
+  when 'vim', 'screen'
+    raise <<-EOS
+#{name} is blacklisted for creation
+Apple distributes this program with OS X.
+
+#{force_text}
+    EOS
+  when 'libarchive', 'libpcap'
+    raise <<-EOS
+#{name} is blacklisted for creation
+Apple distributes this library with OS X, you can find it in /usr/lib.
+
+#{force_text}
+    EOS
+  when 'libxml', 'libxlst', 'freetype', 'libpng'
     raise <<-EOS
 #{name} is blacklisted for creation
 Apple distributes this library with OS X, you can find it in /usr/X11/lib.
@@ -150,9 +162,9 @@ ENV.libxml2 in your formula's install function.
 
 #{force_text}
     EOS
-  when /rubygem/
+  when 'rubygem'
     raise "Sorry RubyGems comes with OS X so we don't package it.\n\n#{force_text}"
-  when /wxwidgets/
+  when 'wxwidgets'
     raise <<-EOS
 #{name} is blacklisted for creation
 An older version of wxWidgets is provided by Apple with OS X, but
@@ -169,28 +181,24 @@ end
 
 def github_info name
   formula_name = Formula.path(name).basename
-  user = ''
-  branch = ''
+  user = 'mxcl'
+  branch = 'master'
 
   if system "/usr/bin/which -s git"
-    user=`git config --global github.user`.chomp
-    all_branches = `git branch 2>/dev/null`
-     /^\*\s*(.*)/.match all_branches
-    branch = ($1 || '').chomp
+    gh_user=`git config --global github.user 2>/dev/null`.chomp
+    /^\*\s*(.*)/.match(`git --work-tree=#{HOMEBREW_REPOSITORY} branch 2>/dev/null`)
+    unless $1.nil? || $1.empty? || gh_user.empty?
+      branch = $1.chomp
+      user = gh_user
+    end
   end
-  
-  user = 'mxcl' if user.empty?
-  branch = 'master' if branch.empty?
 
   return "http://github.com/#{user}/homebrew/commits/#{branch}/Library/Formula/#{formula_name}"
 end
 
-def info name
-  require 'formula'
+def info f
+  exec 'open', github_info(f.name) if ARGV.flag? '--github'
 
-  exec 'open', github_info(name) if ARGV.flag? '--github'
-
-  f=Formula.factory name
   puts "#{f.name} #{f.version}"
   puts f.homepage
 
@@ -199,8 +207,9 @@ def info name
   if f.prefix.parent.directory?
     kids=f.prefix.parent.children
     kids.each do |keg|
+      next if keg.basename.to_s == '.DS_Store'
       print "#{keg} (#{keg.abv})"
-      print " *" if f.prefix == keg and kids.length > 1
+      print " *" if f.installed_prefix == keg and kids.length > 1
       puts
     end
   else
@@ -213,7 +222,7 @@ def info name
     puts
   end
 
-  history = github_info(name)
+  history = github_info(f.name)
   puts history if history
 
 rescue FormulaUnavailableError
@@ -254,22 +263,27 @@ def cleanup name
   require 'formula'
 
   f = Formula.factory name
+  formula_cellar = f.prefix.parent
 
-  if f.installed? and f.prefix.parent.directory?
+  if f.installed? and formula_cellar.directory?
     kids = f.prefix.parent.children
     kids.each do |keg|
-      next if f.prefix == keg
+      next if f.installed_prefix == keg
       print "Uninstalling #{keg}..."
       FileUtils.rm_rf keg
       puts
     end
   else
-    # we can't tell which one to keep in this circumstance
-    opoo "Skipping #{name}: most recent version #{f.version} not installed"
+    # If the cellar only has one version installed, don't complain
+    # that we can't tell which one to keep.
+    if formula_cellar.children.length > 1
+      opoo "Skipping #{name}: most recent version #{f.version} not installed"
+    end
   end
 end
 
 def clean f
+  require 'cleaner'
   Cleaner.new f
  
   # Hunt for empty folders and nuke them unless they are
@@ -411,18 +425,23 @@ end
 
 def search_brews text
   require "formula"
-  formulae = Formulary.names with_aliases=true
-  if text =~ /^\/(.*)\/$/
-    results = formulae.grep(Regexp.new($1))
+
+  return Formula.names if text.to_s.empty?
+
+  rx = if text =~ %r{^/(.*)/$}
+    Regexp.new($1)
   else
-    search_term = Regexp.escape(text || "")
-    results = formulae.grep(/.*#{search_term}.*/)
+    /.*#{Regexp.escape text}.*/i
   end
 
+  aliases = Formula.aliases
+  results = (Formula.names+aliases).grep rx
+
   # Filter out aliases when the full name was also found
-  aliases = Formulary.get_aliases
-  return results.select do |r|
-    aliases[r] == nil or not (results.include? aliases[r])
+  results.reject do |alias_name|
+    if aliases.include? alias_name
+      results.include? Formula.resolve_alias(alias_name)
+    end
   end
 end
 
@@ -442,7 +461,7 @@ def brew_install
   ################################################################# warnings
   begin
     if MACOS_VERSION >= 10.6
-      opoo "You should upgrade to Xcode 3.2.1" if llvm_build < RECOMMENDED_LLVM
+      opoo "You should upgrade to Xcode 3.2.3" if llvm_build < RECOMMENDED_LLVM
     else
       opoo "You should upgrade to Xcode 3.1.4" if (gcc_40_build < RECOMMENDED_GCC_40) or (gcc_42_build < RECOMMENDED_GCC_42)
     end
@@ -453,9 +472,9 @@ def brew_install
   end
 
   if macports_or_fink_installed?
-    opoo "It appears you have Macports or Fink installed"
-    puts "Although, unlikely, this can break builds or cause obscure runtime issues."
-    puts "If you experience problems try uninstalling these tools."
+    opoo "It appears you have MacPorts or Fink installed."
+    puts "Software installed with MacPorts and Fink are known to cause problems."
+    puts "If you experience issues try uninstalling these tools."
   end
 
   ################################################################# install!
@@ -485,8 +504,12 @@ class PrettyListing
         end
       else
         if pn.directory?
-          print_dir pn
-        elsif not FORMULA_META_FILES.include? pn.basename.to_s
+          if pn.symlink?
+            puts "#{pn} -> #{pn.readlink}"
+          else
+            print_dir pn
+          end
+        elsif not (FORMULA_META_FILES.include? pn.basename.to_s or pn.basename.to_s == '.DS_Store')
           puts pn
         end
       end
@@ -506,7 +529,7 @@ private
         puts pn
         other = 'other '
       else
-        remaining_root_files << pn 
+        remaining_root_files << pn unless pn.basename.to_s == '.DS_Store'
       end
     end
 
@@ -524,78 +547,13 @@ private
     when 0
       # noop
     when 1
-      puts *files
+      puts files
     else
       puts "#{root}/ (#{files.length} #{other}files)"
     end
   end
 end
 
-
-################################################################ class Cleaner
-class Cleaner
-  def initialize f
-    @f=f
-    [f.bin, f.sbin, f.lib].select{|d|d.exist?}.each{|d|clean_dir d}
-    # info pages suck
-    info = f.share+'info'
-    info.rmtree if info.directory? and not f.skip_clean? info
-  end
-
-private
-  def strip path, args=''
-    return if @f.skip_clean? path
-    puts "strip #{path}" if ARGV.verbose?
-    path.chmod 0644 # so we can strip
-    unless path.stat.nlink > 1
-      system "strip", *(args+path)
-    else
-      path = path.to_s.gsub ' ', '\\ '
-
-      # strip unlinks the file and recreates it, thus breaking hard links!
-      # is this expected behaviour? patch does it too… still, this fixes it
-      tmp = `/usr/bin/mktemp -t homebrew_strip`.chomp
-      begin
-        `/usr/bin/strip #{args} -o #{tmp} #{path}`
-        `/bin/cat #{tmp} > #{path}`
-      ensure
-        FileUtils.rm tmp
-      end
-    end
-  end
-
-  def clean_file path
-    perms=0444
-    case `file -h '#{path}'`
-    when /Mach-O dynamically linked shared library/
-      # Stripping libraries is causing no end of trouble
-      # Lets just give up, and try to do it manually in instances where it
-      # makes sense
-      #strip path, '-SxX'
-    when /Mach-O [^ ]* ?executable/
-      strip path
-      perms=0555
-    when /script text executable/
-      perms=0555
-    end
-    path.chmod perms
-  end
-
-  def clean_dir d
-    d.find do |path|
-      if path.directory?
-        Find.prune if @f.skip_clean? path
-      elsif not path.file?
-        next
-      elsif path.extname == '.la' and not @f.skip_clean? path
-        # *.la files are stupid
-        path.unlink
-      elsif not path.symlink?
-        clean_file path
-      end
-    end
-  end
-end
 
 def gcc_42_build
   `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
@@ -631,6 +589,12 @@ def llvm_build
   end
 end
 
-def x11_installed?
-  Pathname.new('/usr/X11/lib/libpng.dylib').exist?
+def xcode_version
+  `xcodebuild -version 2>&1` =~ /Xcode (\d(\.\d)*)/
+  return $1 ? $1 : nil
+end
+
+def _compiler_recommendation build, recommended
+  message = (!build.nil? && build < recommended) ? "(#{recommended} or newer recommended)" : ""
+  return build, message
 end

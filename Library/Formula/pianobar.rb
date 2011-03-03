@@ -1,19 +1,26 @@
 require 'formula'
 
 class Pianobar <Formula
-  head 'git://github.com/PromyLOPh/pianobar.git'
-  url 'http://github.com/PromyLOPh/pianobar/tarball/master'
-  version '2a1e81927ef6fbf0d9c5'
-  homepage 'http://github.com/PromyLOPh/pianobar/'
-  md5 '889c659210f89b5467c655449f09100b'
+  url 'https://github.com/PromyLOPh/pianobar/tarball/2011.01.24'
+  version '2011.01.24'
+  homepage 'https://github.com/PromyLOPh/pianobar/'
+  md5 '97ee5b39e5e9006f6139db2787f346a0'
 
- depends_on 'cmake'
- depends_on 'libao'
- depends_on 'mad'
- depends_on 'faad2'
+  head 'git://github.com/PromyLOPh/pianobar.git'
+
+  depends_on 'libao'
+  depends_on 'mad'
+  depends_on 'faad2'
+
+  skip_clean :bin
 
   def install
-    system "cmake . #{std_cmake_parameters}"
-    system "make install"
+    inreplace "Makefile" do |s|
+      s.gsub! "CFLAGS:=-std=c99 -O2 -DNDEBUG", "CFLAGS=-std=c99 #{ENV.cflags} #{ENV['CPPFLAGS']} #{ENV['LDFLAGS']}"
+    end
+    system "make", "PREFIX=#{prefix}"
+    system "make", "install", "PREFIX=#{prefix}"
+    # Install contrib folder too, why not.
+    prefix.install Dir['contrib']
   end
 end

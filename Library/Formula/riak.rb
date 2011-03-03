@@ -1,23 +1,22 @@
 require 'formula'
 
 class Riak <Formula
-  depends_on 'erlang'
-  
-  url 'http://downloads.basho.com/riak/riak-0.11/riak-0.11.0.tar.gz'
+  url 'http://downloads.basho.com/riak/riak-0.14/riak-0.14.1.tar.gz'
   homepage 'http://riak.basho.com'
-  md5 '5792ac2b91ad71ccaee91d1ef9632348'
-  
+  md5 'f85721775ad1732f20de2c40e0e41d80'
+
   skip_clean 'libexec/log'
   skip_clean 'libexec/log/sasl'
   skip_clean 'libexec/data'
   skip_clean 'libexec/data/dets'
   skip_clean 'libexec/data/ring'
-  
+
+  depends_on 'erlang'
+
   def install
     ENV.deparallelize
     system "make all rel"
     %w(riak riak-admin).each do |file|
-      inreplace "rel/riak/bin/#{file}", /^RUNNER_SCRIPT_DIR.+$/, ""
       inreplace "rel/riak/bin/#{file}", /^RUNNER_BASE_DIR=.+$/, "RUNNER_BASE_DIR=#{libexec}"
     end
 
@@ -29,5 +28,8 @@ class Riak <Formula
 
     (prefix + 'data/ring').mkpath
     (prefix + 'data/dets').mkpath
+
+    # Install man pages
+    man1.install Dir["doc/man/man1/*"]
   end
 end

@@ -1,11 +1,13 @@
 require 'formula'
 
 class Zsh <Formula
-  @url='http://downloads.sourceforge.net/project/zsh/zsh-dev/4.3.10/zsh-4.3.10.tar.gz'
-  @homepage='http://www.zsh.org/'
-  @md5='031efc8c8efb9778ffa8afbcd75f0152'
+  url 'http://downloads.sourceforge.net/project/zsh/zsh-dev/4.3.11/zsh-4.3.11.tar.gz'
+  homepage 'http://www.zsh.org/'
+  md5 '127e2a3b9100d6f2fddb6a32cd4aca40'
 
   depends_on 'gdbm' => :optional
+
+  skip_clean :all
 
   def install
     system "./configure", "--disable-debug",
@@ -20,9 +22,5 @@ class Zsh <Formula
       "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
     system "make install"
-  end
-  
-  def skip_clean? path
-    true
   end
 end

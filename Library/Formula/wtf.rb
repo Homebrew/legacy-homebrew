@@ -8,7 +8,7 @@ class Wtf <Formula
   def install
     inreplace %w[wtf wtf.6], "/usr/share", share
     bin.install "wtf"
-    (man+"man6").install "wtf.6"
+    man6.install "wtf.6"
     (share+"misc").install %w[acronyms acronyms.comp]
   end
 end

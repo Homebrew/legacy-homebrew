@@ -5,8 +5,6 @@ class Mad <Formula
   url 'http://downloads.sourceforge.net/project/mad/libmad/0.15.1b/libmad-0.15.1b.tar.gz'
   md5 '1be543bc30c56fb6bea1d7bf6a64e66c'
 
-  aka 'libmad'
-
   def mad_pc
     return <<-EOS
 prefix=#{HOMEBREW_PREFIX}
@@ -25,20 +23,15 @@ Cflags: -I${includedir}
   end
 
   def install
-    if MACOS_VERSION >= 10.6 and Hardware.is_64_bit?
-      fpm = '64bit'
-    else
-      fpm = 'intel'
-    end
-
-    # See: http://github.com/mxcl/homebrew/issues/issue/1263
-    if Hardware.intel_family == 'arrandale'
-      inreplace "Makefile" do |s|
-        s.remove_make_var! %w{CFLAGS LDFLAGS}
-      end
-    end
-
+    fpm = snow_leopard_64? ? '64bit': 'intel'
     system "./configure", "--disable-debugging", "--enable-fpm=#{fpm}", "--prefix=#{prefix}"
+
+    # See: https://github.com/mxcl/homebrew/issues/issue/1263
+    inreplace "Makefile" do |s|
+      s.change_make_var! "CFLAGS", ENV.cflags
+      s.change_make_var! "LDFLAGS", ENV.ldflags
+    end
+
     system "make install"
 
     (lib+'pkgconfig/mad.pc').write mad_pc

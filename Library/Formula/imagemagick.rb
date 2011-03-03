@@ -1,4 +1,4 @@
-# some credit to http://github.com/maddox/magick-installer
+# some credit to https://github.com/maddox/magick-installer
 require 'formula'
 
 def ghostscript_srsly?
@@ -13,6 +13,18 @@ def use_wmf?
   ARGV.include? '--use-wmf'
 end
 
+def use_lqr?
+  ARGV.include? '--use-lqr'
+end
+
+def disable_openmp?
+  ARGV.include? '--disable-openmp'
+end
+
+def magick_plus_plus?
+    ARGV.include? '--with-magick-plus-plus'
+end
+
 def x11?
   # I used this file because old Xcode seems to lack it, and its that old
   # Xcode that loads of people seem to have installed still
@@ -20,9 +32,16 @@ def x11?
 end
 
 class Imagemagick <Formula
-  url 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.6.3-0.tar.bz2'
-  md5 '7f07e873873d3e9afb4126ce4594f556'
+  # Using an unofficial Git mirror to work around:
+  # * Stable tarballs disappearing
+  # * Bad https cert on official SVN repo
+  # Send update requests to https://github.com/adamv/ImageMagick
+  # Be sure to include the ImageMagick SVN revision # for the new version.
+  url 'git://github.com/adamv/ImageMagick.git',
+          :ref => 'fdb125591a17a4002798742014118d5cfee44394'
+  version '6.6.7-10'
   homepage 'http://www.imagemagick.org'
+  head 'git://github.com/adamv/ImageMagick.git'
 
   depends_on 'jpeg'
   depends_on 'libpng' unless x11?
@@ -34,16 +53,24 @@ class Imagemagick <Formula
   depends_on 'jasper' => :optional
 
   depends_on 'libwmf' if use_wmf?
+  depends_on 'liblqr' if use_lqr?
 
   def skip_clean? path
     path.extname == '.la'
   end
 
-  def install
-    # Add to PATH for freetype-config on Snow Leopard
-    ENV.append 'PATH', '/usr/x11/bin', ':'
+  def options
+    [
+      ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
+      ['--use-wmf', 'Compile with libwmf support.'],
+      ['--use-lqr', 'Compile with liblqr support.'],
+      ['--disable-openmp', 'Disable OpenMP.'],
+      ['--with-magick-plus-plus', 'Compile with C++ interface.']
+    ]
+  end
 
-    ENV.libpng
+  def install
+    ENV.x11 # Add to PATH for freetype-config on Snow Leopard
     ENV.O3 # takes forever otherwise
 
     args = [ "--disable-osx-universal-binary",
@@ -52,13 +79,13 @@ class Imagemagick <Formula
              "--disable-dependency-tracking",
              "--enable-shared",
              "--disable-static",
-             "--with-modules",
-             "--without-magick-plus-plus" ]
+             "--with-modules"]
 
-     args << "--disable-openmp" if MACOS_VERSION < 10.6 # libgomp unavailable
-     args << "--without-gslib" unless ghostscript_srsly?
-     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
+    args << "--disable-openmp" if MACOS_VERSION < 10.6 or disable_openmp?
+    args << "--without-gslib" unless ghostscript_srsly?
+    args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
                 unless ghostscript_srsly? or ghostscript_fonts?
+    args << "--without-magick-plus-plus" unless magick_plus_plus?
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
@@ -70,11 +97,24 @@ class Imagemagick <Formula
   end
 
   def caveats
-    s = ""
-    s += "You don't have X11 from the Xcode DMG installed. Consequently Imagemagick is less fully featured.\n" unless x11?
-    s += "Some tools will complain if the ghostscript fonts are not installed in:\n\t#{HOMEBREW_PREFIX}/share/ghostscript/fonts\n" \
-            unless ghostscript_fonts? or ghostscript_srsly?
-    return nil if s.empty?
+    s = <<-EOS.undent
+    We are downloading from an unofficial GitHub mirror because of:
+    * Stable tarballs disappearing
+    * Bad https cert on official SVN repo
+    EOS
+
+    unless x11?
+      s += <<-EOS.undent
+      You don't have X11 from the Xcode DMG installed. Consequently Imagemagick is less fully featured.
+
+      EOS
+    end
+    unless ghostscript_fonts? or ghostscript_srsly?
+      s += <<-EOS.undent
+      Some tools will complain if the ghostscript fonts are not installed in:
+        #{HOMEBREW_PREFIX}/share/ghostscript/fonts
+      EOS
+    end
     return s
   end
 

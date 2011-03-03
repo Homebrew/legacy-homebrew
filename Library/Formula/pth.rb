@@ -7,11 +7,10 @@ class Pth <Formula
 
   def install
     ENV.deparallelize
-    system "./configure",
-            "--prefix=#{prefix}",
-# Shared library will not be build with disable debug
-#           "--disable-debug",
-            "--disable-dependency-tracking"
+    # Note: shared library will not be build with --disable-debug, so don't add that flag
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make install"
   end
 end

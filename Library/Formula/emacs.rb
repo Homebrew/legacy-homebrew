@@ -3,18 +3,24 @@ require 'formula'
 class Emacs <Formula
   url 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.2.tar.bz2'
   md5 '057a0379f2f6b85fb114d8c723c79ce2'
+  homepage 'http://www.gnu.org/software/emacs/'
+
   if ARGV.include? "--use-git-head"
     head 'git://repo.or.cz/emacs.git'
   else
     head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
   end
-  homepage 'http://www.gnu.org/software/emacs/'
 
   def options
     [
       ["--cocoa", "Build a Cocoa version of emacs"],
+      ["--with-x", "Include X11 support"],
       ["--use-git-head", "Use repo.or.cz git mirror for HEAD builds"],
     ]
+  end
+
+  def patches
+    "https://github.com/downloads/typester/emacs/feature-fullscreen.patch" if ARGV.include? "--cocoa"
   end
 
   def caveats
@@ -33,15 +39,6 @@ class Emacs <Formula
     end
 
     s += <<-EOS.undent
-      To access texinfo documentation, set your INFOPATH to:
-        #{info}
-
-      The Emacs project now uses bazaar for source code versioning. If you
-      last built the Homebrew emacs formula from HEAD prior to their switch
-      from CVS to bazaar, you will have to remove Homebrew's cached download
-      before building from HEAD again:
-        #{HOMEBREW_CACHE}/emacs-HEAD
-
       The initial checkout of the bazaar Emacs repository might take a long
       time. You might find that using the repo.or.cz git mirror is faster,
       even after the initial checkout. To use the repo.or.cz git mirror for
@@ -52,30 +49,38 @@ class Emacs <Formula
       status. The Emacs devs do not provide support for the git mirror, and
       they might reject bug reports filed with git version information. Use
       it at your own risk.
-
-      If you switch between repositories, you'll have to remove the Homebrew
-      emacs cache directory (see above).
     EOS
 
     return s
   end
-  
+
   def install
-    configure_args = [
-      "--prefix=#{prefix}",
-      "--without-dbus",
-      "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
-    ]
+    fails_with_llvm "Duplicate symbol errors while linking."
+
+    args = ["--prefix=#{prefix}",
+            "--without-dbus",
+            "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
+            "--infodir=#{info}/emacs"]
 
     if ARGV.include? "--cocoa"
-      configure_args << "--with-ns" << "--disable-ns-self-contained"
-      system "./configure", *configure_args
+      args << "--with-ns" << "--disable-ns-self-contained"
+      system "./configure", *args
       system "make bootstrap"
       system "make install"
       prefix.install "nextstep/Emacs.app"
+
+      bin.mkpath
+      ln_s prefix+'Emacs.app/Contents/MacOS/Emacs', bin+'emacs'
+      ln_s prefix+'Emacs.app/Contents/MacOS/bin/emacsclient', bin
     else
-      configure_args << "--without-x"
-      system "./configure", *configure_args
+      if ARGV.include? "--with-x"
+        args << "--with-x"
+        args << "--with-gif=no" << "--with-tiff=no" << "--with-jpeg=no"
+      else
+        args << "--without-x"
+      end
+
+      system "./configure", *args
       system "make"
       system "make install"
     end

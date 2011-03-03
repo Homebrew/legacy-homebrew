@@ -1,20 +1,16 @@
 require 'formula'
 
 class Activemq <Formula
-  url 'http://www.gossipcheck.com/mirrors/apache/activemq/apache-activemq/5.3.2/apache-activemq-5.3.2-bin.tar.gz'
+  url 'http://www.reverse.net/pub/apache/activemq/apache-activemq/5.4.1/apache-activemq-5.4.1-bin.tar.gz'
   homepage 'http://activemq.apache.org/'
-  md5 '17574ad1ee6cc3727bf7447c2421097b'
+  md5 '9cac63ecfd93852cda8dec35e5feb56a'
 
-  aka 'apache-activemq'
+  skip_clean 'libexec/webapps/admin/WEB-INF/jsp'
 
-  def skip_clean? path
-    path == libexec + 'webapps/admin/WEB-INF/jsp'
-  end
-
-  def startup_script
+  def startup_script name
     <<-EOS.undent
-      #!/usr/bin/env bash
-      exec #{libexec}/bin/activemq
+      #!/bin/bash
+      exec #{libexec}/bin/#{name} $@
     EOS
   end
 
@@ -23,16 +19,7 @@ class Activemq <Formula
 
     prefix.install %w{ LICENSE NOTICE README.txt }
     libexec.install Dir['*']
-    (bin+'activemq').write startup_script
-  end
 
-  def caveats
-    <<-EOS.undent
-    ActiveMQ was installed to:
-      #{libexec}
-
-    `activemq` is a startup script that will run the server
-    from its installed location.
-    EOS
+    (bin+'activemq-admin').write startup_script('activemq-admin')
   end
 end

@@ -8,6 +8,13 @@ class Fish <Formula
   depends_on 'readline'
   skip_clean 'share/doc'
 
+  def patches
+    # Reduces the timeout in select_try() from 5s to 10ms.
+    # The old timeout would cause fish to frequently freeze for a 5
+    # second period.
+    "http://gitorious.org/fish-shell/fish-shell/commit/6b8e7b16f6d4e11e168e3ce2effe2d8f0a53b184.patch"
+  end
+
   def install
     system "./configure", "--prefix=#{prefix}", "--without-xsel"
     system "make install"

@@ -12,17 +12,16 @@ class FfmpegPhp <Formula
                           "--prefix=#{prefix}",
                           "--with-ffmpeg=#{HOMEBREW_PREFIX}"
     system "make"
-    prefix.install 'modules/ffmpeg.so'    
+    prefix.install 'modules/ffmpeg.so'
   end
 
-  def caveats
-   <<-END_CAVEATS
+  def caveats; <<-EOS
  * Add the following line to php.ini:
     extension="#{prefix}/ffmpeg.so"
  * Restart your webserver.
  * Write a PHP page that calls "phpinfo();"
  * Load it in a browser and look for the info on the ffmpeg module.
  * If you see it, you have been successful!
-    END_CAVEATS
+    EOS
   end
 end

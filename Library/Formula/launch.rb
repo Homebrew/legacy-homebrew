@@ -7,7 +7,7 @@ class Launch <Formula
 
   def install
     rm_rf "launch" # We'll build it ourself, thanks.
-    system "#{ENV.cc} -o launch -std=c99 #{ENV['CFLAGS']} main.c -framework ApplicationServices"
+    system "#{ENV.cc} -o launch -std=c99 #{ENV.cflags} main.c -framework ApplicationServices"
     man1.install gzip('launch.1')
     bin.install 'launch'
   end

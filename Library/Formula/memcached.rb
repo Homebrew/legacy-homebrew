@@ -7,8 +7,17 @@ class Memcached <Formula
 
   depends_on 'libevent'
 
+  def options
+    [
+      ["--enable-sasl", "Enable SASL support -- disables ASCII protocol!"],
+    ]
+  end
+
   def install
-    system "./configure", "--prefix=#{prefix}"
+    args = ["--prefix=#{prefix}"]
+    args << "--enable-sasl" if ARGV.include? "--enable-sasl"
+
+    system "./configure", *args
     system "make install"
 
     (prefix+'com.danga.memcached.plist').write startup_plist
@@ -17,7 +26,7 @@ class Memcached <Formula
   def caveats; <<-EOS
 You can enabled memcached to automatically load on login with:
     cp #{prefix}/com.danga.memcached.plist ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/com.danga.memcached.plist 
+    launchctl load -w ~/Library/LaunchAgents/com.danga.memcached.plist
 
 Or start it manually:
     #{HOMEBREW_PREFIX}/bin/memcached
@@ -40,7 +49,7 @@ Add "-d" to start it as a daemon.
   <array>
     <string>#{HOMEBREW_PREFIX}/bin/memcached</string>
     <string>-l</string>
-    <string>127.0.0.1</string>
+    <string>localhost</string>
   </array>
   <key>RunAtLoad</key>
   <true/>

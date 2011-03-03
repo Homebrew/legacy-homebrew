@@ -1,9 +1,9 @@
 require 'formula'
 
 class Clamav <Formula
-  url 'http://downloads.sourceforge.net/project/clamav/clamav/0.96/clamav-0.96.tar.gz'
+  url 'http://downloads.sourceforge.net/clamav/clamav-0.97.tar.gz'
   homepage 'http://www.clamav.net/'
-  md5 '28ac7bec4cc03627a8e2d6e8647ee661'
+  md5 '605ed132b2f8e89df11064adea2b183b'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"

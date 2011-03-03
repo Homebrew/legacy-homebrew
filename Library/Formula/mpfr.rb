@@ -1,14 +1,14 @@
 require 'formula'
 
 class Mpfr <Formula
-  url 'http://www.mpfr.org/mpfr-2.4.2/mpfr-2.4.2.tar.bz2'
+  url 'http://www.mpfr.org/mpfr-3.0.0/mpfr-3.0.0.tar.bz2'
   homepage 'http://www.mpfr.org/'
-  md5 '89e59fe665e2b3ad44a6789f40b059a0'
+  md5 'f45bac3584922c8004a10060ab1a8f9f'
 
   depends_on 'gmp'
 
   def patches
-    {:p1 => ['http://www.mpfr.org/mpfr-2.4.2/allpatches']}
+    {:p1 => ['http://www.mpfr.org/mpfr-3.0.0/allpatches']}
   end
 
   def install

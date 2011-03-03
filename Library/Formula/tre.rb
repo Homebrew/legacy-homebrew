@@ -6,10 +6,8 @@ class Tre <Formula
   md5 'b4d3232593dadf6746f4727bdda20b41'
 
   def install
-    system "./configure",
-      "--disable-debug",
-      "--disable-dependency-tracking",
-      "--prefix=#{prefix}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

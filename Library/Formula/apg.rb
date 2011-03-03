@@ -9,14 +9,11 @@ class Apg <Formula
     inreplace "Makefile" do |s|
       s.remove_make_var! ["CC", "FLAGS", "LIBS", "LIBM"]
     end
-    
+
     system "make standalone"
-    
+
     # Install manually
-    bin.install "apg"
-    man1.install "doc/man/apg.1"
-    
-    bin.install "apgbfm"
-    man1.install "doc/man/apgbfm.1"
+    bin.install ["apg", "apgbfm"]
+    man1.install ["doc/man/apg.1", "doc/man/apgbfm.1"]
   end
 end

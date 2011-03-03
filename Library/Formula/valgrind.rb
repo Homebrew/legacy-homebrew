@@ -1,20 +1,26 @@
 require 'formula'
 
 class Valgrind <Formula
-  url 'http://www.valgrind.org/downloads/valgrind-3.5.0.tar.bz2'
   homepage 'http://www.valgrind.org/'
-  md5 'f03522a4687cf76c676c9494fcc0a517'
+
+  url "http://valgrind.org/downloads/valgrind-3.6.0.tar.bz2"
+  md5 "b289c5f4ab8e39741602445f1dd09b34"
+
+  depends_on 'pkg-config' => :build
+
+  skip_clean 'lib'
 
   def install
-    opoo "Valgrind 3.5.0 doesn't support Snow Leopard; see caveats." if MACOS_VERSION > 10.5
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
-    system "make install"
-  end
+    fails_with_llvm "Undefined symbols when linking", :build => 2326
 
-  def caveats
-    if MACOS_VERSION > 10.5
-      "Valgrind does not work on Snow Leopard / 64-bit mode. See:\n"+
-      "    http://bugs.kde.org/show_bug.cgi?id=205241"
+    system "./autogen.sh" if File.exists? "autogen.sh"
+
+    args = ["--prefix=#{prefix}", "--mandir=#{man}"]
+    if snow_leopard_64?
+      args << "--enable-only64bit" << "--build=amd64-darwin"
     end
+
+    system "./configure", *args
+    system "make install"
   end
 end

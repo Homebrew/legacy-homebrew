@@ -1,11 +1,11 @@
 require 'formula'
 
 class Ejabberd <Formula
-  version "2.1.3"
-  url "http://www.process-one.net/downloads/ejabberd/#{version}/ejabberd-#{version}.tar.gz"
+  url "http://www.process-one.net/downloads/ejabberd/2.1.5/ejabberd-2.1.5.tar.gz"
   homepage 'http://www.ejabberd.im'
-  md5 'e5c87eda5312a6e8a53df0f9b4844b69'
+  md5 '2029ceca45584d704ca821a771d6d928'
 
+  depends_on "openssl" if MACOS_VERSION < 10.6
   depends_on "erlang"
 
   def install
@@ -14,9 +14,16 @@ class Ejabberd <Formula
     ENV['SBIN_DIR'] = sbin
 
     Dir.chdir "src" do
-      system "./configure", "--prefix=#{prefix}",
-                            "--sysconfdir=#{etc}",
-                            "--localstatedir=#{var}"
+      args = ["--prefix=#{prefix}",
+              "--sysconfdir=#{etc}",
+              "--localstatedir=#{var}"]
+
+      if MACOS_VERSION < 10.6
+        openssl = Formula.factory('openssl')
+        args << "--with-openssl=#{openssl.prefix}"
+      end
+
+      system "./configure", *args
       system "make"
       system "make install"
     end
@@ -26,10 +33,10 @@ class Ejabberd <Formula
     (var+"spool/ejabberd").mkpath
   end
 
-  def caveats; <<-EOS
-  If you face nodedown problems, concat your machine name to:
-    /private/etc/hosts
-  after 'localhost'.
+  def caveats; <<-EOS.undent
+    If you face nodedown problems, concat your machine name to:
+      /private/etc/hosts
+    after 'localhost'.
     EOS
   end
 end

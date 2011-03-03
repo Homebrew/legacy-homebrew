@@ -8,9 +8,11 @@ class Id3v2 <Formula
   depends_on 'id3lib'
 
   def install
-    inreplace 'Makefile', 'c++', ENV.cxx
-    inreplace 'Makefile', '/man/man1', '/share/man/man1'
-    
+    inreplace 'Makefile' do |s|
+      s.gsub! 'c++', ENV.cxx
+      s.gsub! '/man/man1', '/share/man/man1'
+    end
+
     bin.mkpath
     man1.mkpath
     system "make", "install", "PREFIX=#{prefix}"

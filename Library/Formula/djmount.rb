@@ -13,14 +13,14 @@ class Djmount <Formula
 
   def caveats
     <<-EOS.undent
-    This depends on the MacFUSE installation from http://code.google.com/p/macfuse/
-    MacFUSE must be installed prior to installing this formula.
+      This depends on the MacFUSE installation from http://code.google.com/p/macfuse/
+      MacFUSE must be installed prior to installing this formula.
     EOS
   end
 
   def install
     ENV.append "CFLAGS", "-D__FreeBSD__=10"
-    system "./configure", "--disable-debug", 
+    system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-fuse-prefix=/usr/local",

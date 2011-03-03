@@ -1,16 +1,18 @@
 require 'formula'
 
 class Collectd <Formula
-  url 'http://collectd.org/files/collectd-4.10.0.tar.bz2'
+  url 'http://collectd.org/files/collectd-4.10.1.tar.bz2'
   homepage 'http://collectd.org/'
-  md5 '2f671d267bf6cb1a9d385107ba7b734d'
+  md5 '8cd79b4ebdb9dbeb51ba52d3463a06ef'
 
-  def skip_clean? path
-    true
-  end
+  skip_clean :all
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    args = ["--disable-debug", "--disable-dependency-tracking",
+            "--prefix=#{prefix}", "--localstatedir=#{var}"]
+    args << "--disable-embedded-perl" if MACOS_VERSION < 10.6
+
+    system "./configure", *args
     system "make install"
   end
 end

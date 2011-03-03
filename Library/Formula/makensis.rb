@@ -10,10 +10,7 @@ class Makensis <Formula
   homepage 'http://nsis.sourceforge.net/'
   md5 '61c2e81739436b06d7cf7bcce1d533ac'
 
-  depends_on 'scons'
-
-  # Note, this is not a full nsis package, but allow it to be found this way.
-  aka 'nsis'
+  depends_on 'scons' => :build
 
   def install
     system "scons makensis"

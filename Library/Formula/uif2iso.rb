@@ -7,8 +7,8 @@ class Uif2iso <Formula
   version '0.1.7c'
 
   def install
-    inreplace 'src/Makefile' do |contents| 
-      contents.change_make_var! "prefix", "#{prefix}"
+    inreplace 'src/Makefile' do |s|
+      s.change_make_var! "prefix", prefix
     end
     system "make -C src"
     system "make -C src install"

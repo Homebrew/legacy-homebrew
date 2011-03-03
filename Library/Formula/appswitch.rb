@@ -6,7 +6,7 @@ class Appswitch <Formula
   md5 '07cf9884a07939da487898cddba0c296'
 
   def install
-    system "#{ENV.cc} -o appswitch #{ENV['CFLAGS']} main.c -framework ApplicationServices"
+    system "#{ENV.cc} -o appswitch #{ENV.cflags} main.c -framework ApplicationServices"
     man1.install gzip('appswitch.1')
     bin.install 'appswitch'
   end
