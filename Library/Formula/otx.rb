@@ -5,7 +5,7 @@ class Otx <Formula
   homepage 'http://otx.osxninja.com/'
 
   def install
-    system 'xcodebuild'
+    system 'xcodebuild SYMROOT=build'
     build = Pathname.getwd + 'build/Release'
     bin.install build+"otx"
     prefix.install build+"otx.app"
