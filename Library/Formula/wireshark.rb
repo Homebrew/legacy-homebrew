@@ -14,6 +14,14 @@ class Wireshark <Formula
     [["--with-x", "Include X11 support"]]
   end
 
+  def caveats
+    "If your list of available capture interfaces is empty (behavior on default OS X installation), try the following commands: 
+  wget https://bugs.wireshark.org/bugzilla/attachment.cgi?id=3373 -O ChmodBPF.tar.gz
+  tar zxvf ChmodBPF.tar.gz
+  open ChmodBPF/Install\\ ChmodBPF.app
+This adds a launch daemon that changes the permissions of your BPF devices so that all users in the 'admin' group - all users with 'Allow user to administer this computer' turned on - have both read and write access to those devices."
+  end
+
   def install
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
 
