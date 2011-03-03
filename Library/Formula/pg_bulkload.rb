@@ -9,6 +9,7 @@ class PgBulkload <Formula
 
   def install
     system "make USE_PGXS=1 install"
+    bin.install `pg_config --bindir`.rstrip + '/pg_bulkload'
   end
 
   def caveats
