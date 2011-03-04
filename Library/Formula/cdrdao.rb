@@ -18,6 +18,7 @@ class Cdrdao <Formula
   end
 
   def install
+    fails_with_llvm "Segfault while linking", :build => 2326
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--mandir=#{man}"
     system "make install"
