@@ -9,7 +9,8 @@ class SourceHighlight <Formula
 
   def install
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-boost=#{HOMEBREW_PREFIX}"
     system "make install"
   end
 end

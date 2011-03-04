@@ -1,10 +1,10 @@
 require 'formula'
 
 class Zeromq <Formula
-  url 'http://www.zeromq.org/local--files/area:download/zeromq-2.0.10.tar.gz'
+  url 'http://download.zeromq.org/zeromq-2.1.1.tar.gz'
   head 'git://github.com/zeromq/zeromq2.git'
   homepage 'http://www.zeromq.org/'
-  md5 'ab794a174210b9e8096a4efd1d1a4d42'
+  md5 '987079513e4816979e4e3bd52ac4b0a7'
 
   def options
     [['--universal', 'Build as a Universal Intel binary.']]
@@ -22,10 +22,10 @@ class Zeromq <Formula
     arch = "-arch x86_64"
     system "CFLAGS=\"$CFLAGS #{arch}\" CXXFLAGS=\"$CXXFLAGS #{arch}\" ./configure --disable-dependency-tracking --prefix=#{prefix}"
     system "make"
-    system "mv src/.libs/libzmq.0.dylib src/.libs/libzmq.64.dylib"
+    system "mv src/.libs/libzmq.1.dylib src/.libs/libzmq.64.dylib"
 
     # merge UB
-    system "lipo", "-create", "src/libs-32/libzmq.0.dylib", "src/.libs/libzmq.64.dylib", "-output", "src/.libs/libzmq.0.dylib"
+    system "lipo", "-create", "src/libs-32/libzmq.1.dylib", "src/.libs/libzmq.64.dylib", "-output", "src/.libs/libzmq.1.dylib"
   end
 
   def install

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Macvim <Formula
-  url 'https://github.com/b4winckler/macvim/tarball/v7.3-53'
-  version 'v7.3-53'
-  md5 '35fb942c45109a2cbdbe7c1a3e02d59d'
+  url 'https://github.com/b4winckler/macvim/tarball/snapshot-57'
+  version '7.3-57'
+  md5 '2bf4630be2d59f62b8b70870ba1fe0a1'
   head 'git://github.com/b4winckler/macvim.git', :branch => 'master'
   homepage 'http://code.google.com/p/macvim/'
 
@@ -11,7 +11,9 @@ class Macvim <Formula
   [
     # Building custom icons fails for many users, so off by default.
     ["--custom-icons", "Try to generate custom document icons."],
-    ["--with-cscope", "Build with Cscope support."]
+    ["--with-cscope", "Build with Cscope support."],
+    ["--with-envycoder", "Build with Envy Code R Bold font."],
+    ["--override-system-vim", "Override system vim"]
   ]
   end
 
@@ -48,6 +50,11 @@ class Macvim <Formula
       inreplace "src/MacVim/icons/make_icons.py", "dont_create = False", "dont_create = True"
     end
 
+    unless ARGV.include? "--with-envycoder"
+      inreplace "src/MacVim/icons/Makefile", '$(OUTDIR)/MacVim-generic.icns: make_icons.py vim-noshadow-512.png loadfont.so Envy\ Code\ R\ Bold.ttf',
+                                             "$(OUTDIR)/MacVim-generic.icns: make_icons.py vim-noshadow-512.png loadfont.so"
+    end
+
     system "make"
 
     prefix.install "src/MacVim/build/Release/MacVim.app"
@@ -56,7 +63,9 @@ class Macvim <Formula
     bin.install "src/MacVim/mvim"
 
     # Create MacVim vimdiff, view, ex equivalents
-    %w[mvimdiff mview mvimex].each {|f| ln_s bin+'mvim', bin+f}
+    executables = %w[mvimdiff mview mvimex]
+    executables << "vim" if ARGV.include? "--override-system-vim"
+    executables.each {|f| ln_s bin+'mvim', bin+f}
   end
 
   def caveats

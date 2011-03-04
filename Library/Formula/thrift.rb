@@ -18,11 +18,13 @@ class Thrift <Formula
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--libdir=#{lib}",
+                          "--without-haskell",
                           "--without-java",
                           "--without-python",
                           "--without-ruby",
                           "--without-perl",
                           "--without-php"
+    ENV.j1
     system "make"
     system "make install"
   end

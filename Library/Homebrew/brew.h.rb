@@ -1,5 +1,5 @@
 FORMULA_META_FILES = %w[README README.md ChangeLog COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
-PLEASE_REPORT_BUG = "#{Tty.white}Please report this bug at #{Tty.em}http://github.com/mxcl/homebrew/issues#{Tty.reset}"
+PLEASE_REPORT_BUG = "#{Tty.white}Please follow the instructions to report this bug at: #{Tty.em}\nhttps://github.com/mxcl/homebrew/wiki/new-issue#{Tty.reset}"
 
 def check_for_blacklisted_formula names
   return if ARGV.force?
@@ -18,6 +18,15 @@ def check_for_blacklisted_formula names
       Mercurial can be install thusly:
         brew install pip && pip install mercurial
     EOS
+
+    when 'npm' then abort <<-EOS.undent
+      npm can be installed thusly by following the instructions at
+        http://npmjs.org/
+
+      To do it in one line, use this command:
+        curl http://npmjs.org/install.sh | sudo sh
+    EOS
+
 
     when 'setuptools' then abort <<-EOS.undent
       When working with a Homebrew-built Python, distribute is preferred

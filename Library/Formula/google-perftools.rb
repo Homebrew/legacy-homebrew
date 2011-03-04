@@ -6,6 +6,8 @@ class GooglePerftools <Formula
   md5 '7acfee8d3e2ba968d20684e9f7033015'
 
   def install
+    fails_with_llvm "Segfault during linking", :build => 2326
+
     ENV.append_to_cflags '-D_XOPEN_SOURCE'
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
