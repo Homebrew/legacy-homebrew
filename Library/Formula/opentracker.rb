@@ -7,8 +7,7 @@ class Libowfat <Formula
 end
 
 class Opentracker <Formula
-  version 'HEAD'
-  url 'cvs://:pserver:anoncvs:@cvs.erdgeist.org:/home/cvsroot:opentracker'
+  head 'cvs://:pserver:anoncvs:@cvs.erdgeist.org:/home/cvsroot:opentracker'
   homepage 'http://erdgeist.org/arts/software/opentracker/'
 
   def install

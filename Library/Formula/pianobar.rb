@@ -1,18 +1,22 @@
 require 'formula'
 
 class Pianobar <Formula
-  url 'http://github.com/PromyLOPh/pianobar/tarball/d38167c27597a8a114fde0f1fef2a73b3277ba36'
-  version 'd38167c'
-  homepage 'http://github.com/PromyLOPh/pianobar/'
-  md5 'e0922b871404269b73fc295c5468727e'
+  url 'https://github.com/PromyLOPh/pianobar/tarball/2010.11.06'
+  version '2010.11.06'
+  homepage 'https://github.com/PromyLOPh/pianobar/'
+  md5 '7a43df6abed644a35a43274eb350eb33'
 
- depends_on 'cmake'
- depends_on 'libao'
- depends_on 'mad'
- depends_on 'faad2'
+  head 'git://github.com/PromyLOPh/pianobar.git'
+
+  depends_on 'libao'
+  depends_on 'mad'
+  depends_on 'faad2'
+
+  skip_clean :bin
 
   def install
-    system "cmake . #{std_cmake_parameters}"
-    system "make install"
+    ENV.delete "CFLAGS"
+    system "make", "PREFIX=#{prefix}"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 end

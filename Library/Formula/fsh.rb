@@ -8,13 +8,13 @@ class Fsh <Formula
   def install
     # FCNTL was deprecated and needs to be changed to fcntl
     system "find . -type f -exec sed -i \"\" 's/FCNTL/fcntl/g' {} \\;"
-    
+
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
-    
+
     cd bin do
       inreplace ["fsh", "fshd", "in.fshd"],
-        "#! /usr/local/bin/python", "#!/usr/bin/env python"
+          "#! /usr/local/bin/python", "#!/usr/bin/env python"
     end
   end
 end

@@ -15,7 +15,7 @@ class Icecast <Formula
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
 
-    (prefix + 'var' + 'log' + 'icecast').mkpath
-    touch prefix + 'var' + 'log' + 'icecast' + 'error.log'
+    (prefix+'var/log/icecast').mkpath
+    touch prefix+'var/log/icecast/error.log'
   end
 end

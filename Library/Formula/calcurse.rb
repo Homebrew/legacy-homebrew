@@ -12,7 +12,7 @@ class Calcurse <Formula
   end
 
   def install
-    ENV.append 'CFLAGS', "-I#{prefix}/include -fnested-functions"
+    ENV.append 'CFLAGS', "-I#{include} -fnested-functions"
     ENV.append 'LDFLAGS', "-lintl"
     ENV.O3
     system "./configure", "--disable-dependency-tracking",

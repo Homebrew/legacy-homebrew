@@ -1,34 +1,38 @@
 require 'formula'
 
 class Clojure <Formula
-  url 'http://clojure.googlecode.com/files/clojure-1.1.0.zip'
-  md5 '9c9e92f85351721b76f40578f5c1a94a'
-  head 'git://github.com/richhickey/clojure.git'
+  url 'https://github.com/downloads/clojure/clojure/clojure-1.2.0.zip'
+  md5 'da0cc71378f56491d6ee70dee356831f'
+  head 'git://github.com/clojure/clojure.git'
   homepage 'http://clojure.org/'
-  JAR = "clojure.jar"
+
+  def jar
+    'clojure.jar'
+  end
 
   def script
 <<-EOS
-#!/bin/bash
+#!/bin/sh
 # Runs clojure.
 # With no arguments, runs Clojure's REPL.
-# With one or more arguments, the first is treated as a script name, the rest
-# passed as command-line arguments.
 
 # resolve links - $0 may be a softlink
-CLOJURE=$CLASSPATH:$(brew --cellar)/#{name}/#{version}/#{JAR}
+CLOJURE=$CLASSPATH:$(brew --cellar)/#{name}/#{version}/#{jar}
 
-if [ -z "$1" ]; then
-  java -server -cp $CLOJURE clojure.main
-else
-  scriptname=$1
-  java -server -cp $CLOJURE clojure.main $scriptname $*
-fi
+java -cp $CLOJURE clojure.main "$@"
 EOS
   end
 
   def install
-    prefix.install JAR
+    system "ant" if ARGV.build_head?
+    prefix.install jar
     (bin+'clj').write script
+  end
+
+  def caveats; <<-EOS.undent
+    If you `brew install repl` then you may find this wrapper script from
+    MacPorts useful:
+      http://trac.macports.org/browser/trunk/dports/lang/clojure/files/clj-rlwrap.sh?format=txt
+    EOS
   end
 end

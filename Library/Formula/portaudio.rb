@@ -6,13 +6,15 @@ class Portaudio <Formula
   md5 'd2943e4469834b25afe62cc51adc025f'
 
   def install
-    ENV.gcc_4_2
+    fails_with_llvm
 
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
 
     # remove arch flags else we get errors like:
     #   lipo: can't figure out the architecture type
-    inreplace "Makefile", /-arch (i386|x86_64|ppc|ppc64)/, ""
+    ['-arch x86_64', '-arch ppc64', '-arch i386', '-arch ppc'].each do |arch|
+      inreplace "Makefile", arch, ""
+    end
 
     system "make install"
   end

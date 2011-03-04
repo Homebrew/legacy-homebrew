@@ -17,8 +17,7 @@ class CupsPdf <Formula
     (share+'cups/model').install "extra/CUPS-PDF.ppd"
   end
 
-  def caveats
-    <<EOF
+  def caveats; <<-EOF
     In order to use cups-pdf with the Mac OS X printing system change the file
     permissions, symlink the necessary files to their System location and
     have cupsd re-read its configuration using:

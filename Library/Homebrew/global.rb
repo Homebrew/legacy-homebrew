@@ -5,8 +5,8 @@ require 'utils'
 
 ARGV.extend(HomebrewArgvExtension)
 
-HOMEBREW_VERSION = 0.6
-HOMEBREW_WWW = 'http://bit.ly/Homebrew'
+HOMEBREW_VERSION = '0.7.1'
+HOMEBREW_WWW = 'http://mxcl.github.com/homebrew/'
 
 if Process.uid == 0
   # technically this is not the correct place, this cache is for *all users*
@@ -23,9 +23,8 @@ end
 HOMEBREW_PREFIX = Pathname.new(HOMEBREW_BREW_FILE).dirname.parent # Where we link under
 HOMEBREW_REPOSITORY = Pathname.new(HOMEBREW_BREW_FILE).realpath.dirname.parent # Where .git is found
 
-# Where should be build to? 
-# If /usr/local/Cellar exists, as a symlink or real folder, use that.
-# Otherwise, build into a Cellar in the Repo. folder.
+# Where we store built products; /usr/local/Cellar if it exists,
+# otherwise a Cellar relative to the Repository.
 if (HOMEBREW_PREFIX+'Cellar').exist?
   HOMEBREW_CELLAR = HOMEBREW_PREFIX+'Cellar'
 else
@@ -38,32 +37,6 @@ MACOS_VERSION = /(10\.\d+)(\.\d+)?/.match(MACOS_FULL_VERSION).captures.first.to_
 HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; Mac OS X #{MACOS_FULL_VERSION})"
 
 
-class ExecutionError <RuntimeError
-  attr :exit_status
-
-  def initialize cmd, args = [], es = nil
-    super "Failure while executing: #{cmd} #{pretty(args)*' '}"
-    @exit_status = es.exitstatus rescue 1
-  end
-
-  private
-
-  def pretty args
-    args.collect do |arg|
-      if arg.to_s.include? ' '
-        "'#{ arg.gsub "'", "\\'" }'"
-      else
-        arg
-      end
-    end
-  end
-end
-
-class BuildError <ExecutionError
-  attr :env
-
-  def initialize cmd, args = [], es = nil
-    super
-    @env = ENV.to_hash
-  end
-end
+RECOMMENDED_LLVM = 2326
+RECOMMENDED_GCC_40 = (MACOS_VERSION >= 10.6) ? 5494 : 5493
+RECOMMENDED_GCC_42 = (MACOS_VERSION >= 10.6) ? 5664 : 5577

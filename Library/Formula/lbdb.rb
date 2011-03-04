@@ -1,9 +1,9 @@
 require 'formula'
 
 class Lbdb <Formula
-  url 'http://www.spinnaker.de/debian/lbdb_0.36.tar.gz'
+  url 'http://www.spinnaker.de/debian/lbdb_0.37.tar.gz'
   homepage 'http://www.spinnaker.de/lbdb/'
-  md5 '12d9bf7ef3ef526f0d82604a8f9add9c'
+  md5 '877f19ed4f314f2db5d358341412f8d2'
 
   def patches
     DATA
@@ -493,7 +493,7 @@ index 0000000..635f5f8
 +				GCC_WARN_UNUSED_VARIABLE = YES;
 +				ONLY_ACTIVE_ARCH = YES;
 +				PREBINDING = NO;
-+				SDKROOT = macosx10.6;
++				SDKROOT = macosx10.5;
 +			};
 +			name = Debug;
 +		};
@@ -505,7 +505,7 @@ index 0000000..635f5f8
 +				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 +				GCC_WARN_UNUSED_VARIABLE = YES;
 +				PREBINDING = NO;
-+				SDKROOT = macosx10.6;
++				SDKROOT = macosx10.5;
 +			};
 +			name = Release;
 +		};

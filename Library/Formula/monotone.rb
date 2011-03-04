@@ -1,11 +1,11 @@
 require 'formula'
 
 class Monotone <Formula
-  url 'http://www.monotone.ca/downloads/0.46/monotone-0.46.tar.gz'
+  url 'http://www.monotone.ca/downloads/0.48.1/monotone-0.48.1.tar.gz'
   homepage 'http://www.monotone.ca/'
-  md5 '405286223efcf375cd022dabf2f1c845'
+  md5 'b5fa9e3b02ca3dcaf58fb7a2519ef956'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'botan'
   depends_on 'boost'
@@ -14,9 +14,7 @@ class Monotone <Formula
   depends_on 'pcre'
 
   def install
-    # linker fails
-    ENV.gcc_4_2
-
+    fails_with_llvm "linker fails"
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end

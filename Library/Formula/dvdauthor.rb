@@ -14,11 +14,9 @@ class Dvdauthor <Formula
   end
 
   def install
-    system "./configure",
-        "--prefix=#{prefix}",
-        "--mandir=#{man}",
-        "--disable-debug",
-        "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make"
 
     # regular install will error out due to attempts to create the same

@@ -1,15 +1,17 @@
 require 'formula'
 
 class Dcraw <Formula
-  head 'http://www.cybercom.net/~dcoffin/dcraw/dcraw.c'
   homepage 'http://www.cybercom.net/~dcoffin/dcraw/'
-  md5 'cd5cb6e56d5b925c59680abe24b9b03a'
+  url 'http://www.cybercom.net/~dcoffin/dcraw/archive/dcraw-9.05.tar.gz'
+  md5 'e531229e4e79bb67a7007eec7aa74116'
 
   depends_on 'jpeg'
-  depends_on 'liblcms'
+  depends_on 'little-cms'
 
   def install
-    system "#{ENV.cc} -o dcraw #{ENV['CFLAGS']} dcraw.c -lm -ljpeg -llcms"
+    ENV.append_to_cflags "-I#{HOMEBREW_PREFIX}/include -L#{HOMEBREW_PREFIX}/lib"
+    system "#{ENV.cc} -o dcraw #{ENV.cflags} dcraw.c -lm -ljpeg -llcms"
     bin.install 'dcraw'
+    man1.install 'dcraw.1'
   end
 end

@@ -1,13 +1,12 @@
 require 'formula'
 
 class TokyoCabinet <Formula
-  url 'http://1978th.net/tokyocabinet/tokyocabinet-1.4.42.tar.gz'
-  homepage 'http://1978th.net/tokyocabinet'
-  sha1 'e46da0ef614f821b57564639cf15388df1c39fb5'
+  url 'http://fallabs.com/tokyocabinet/tokyocabinet-1.4.46.tar.gz'
+  homepage 'http://fallabs.com/tokyocabinet/'
+  md5 '341dadd1f3d68760e350f7e731111786'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--enable-fastest",
-            "--libdir=#{lib}", "--includedir=#{include}"
+    system "./configure", "--prefix=#{prefix}", "--enable-fastest"
     system "make"
     system "make install"
   end

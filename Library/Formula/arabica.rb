@@ -2,7 +2,7 @@ require 'formula'
 
 class Arabica <Formula
   homepage 'http://www.jezuk.co.uk/cgi-bin/view/arabica'
-  url 'http://github.com/ashb/Arabica/tarball/20100203'
+  url 'https://github.com/ashb/Arabica/tarball/20100203'
   version '20100203'
   md5 '9318c4d498957cd356e533f2132d6956'
 

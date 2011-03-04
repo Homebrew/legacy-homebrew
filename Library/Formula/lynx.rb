@@ -3,13 +3,12 @@ require 'formula'
 class Lynx <Formula
   url 'http://lynx.isc.org/release/lynx2.8.7.tar.bz2'
   homepage 'http://lynx.isc.org/release/'
-  md5 '493af4c77ef6761e3f0157cd1be033a0'
+  md5 'cb936aef812e4e463ab86cbbe14d4db9'
 
   def install
-    system "./configure", "--prefix=#{prefix}", 
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--mandir=#{man}",
-                          "--disable-debug", 
-                          "--disable-dependency-tracking",
                           "--disable-echo",
                           "--with-zlib",
                           "--with-bzlib",

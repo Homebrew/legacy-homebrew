@@ -8,14 +8,10 @@ class Scsh <Formula
   def install
     # 4.2 segfaults in building phase
     ENV.gcc_4_0
-    configure_args = [
-      "--prefix=#{prefix}",
-      "--infodir=#{info}",
-      "--mandir=#{man}",
-      "--disable-debug",
-      "--disable-dependency-tracking"
-    ]
-    system "./configure", *configure_args
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--infodir=#{info}",
+                          "--mandir=#{man}"
     system "make install"
   end
 end

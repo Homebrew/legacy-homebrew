@@ -5,19 +5,14 @@ class Libgsf <Formula
   homepage 'http://directory.fsf.org/project/libgsf/'
   sha256 '10c6b69149e424ac5f325eb247fdf640ddd949952f21b99a890e73f9d4276876'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'intltool'
   depends_on 'glib'
 
   def install
-    configure_args = [
-      "--prefix=#{prefix}",
-      "--disable-debug",
-      "--disable-dependency-tracking",
-      ]
-
-    system "./configure", *configure_args
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

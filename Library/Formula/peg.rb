@@ -4,8 +4,6 @@ class Peg <Formula
   url 'http://piumarta.com/software/peg/peg-0.1.4.tar.gz'
   homepage 'ihttp://piumarta.com/software/peg/'
   md5 'feb52a19a749f08fa8602387f1acbd93'
-  
-  aka "leg"
 
   def install
     system "make all"
