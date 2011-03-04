@@ -24,7 +24,7 @@ class Memcached <Formula
   end
 
   def caveats; <<-EOS
-You can enabled memcached to automatically load on login with:
+You can enable memcached to automatically load on login with:
     cp #{prefix}/com.danga.memcached.plist ~/Library/LaunchAgents/
     launchctl load -w ~/Library/LaunchAgents/com.danga.memcached.plist
 
