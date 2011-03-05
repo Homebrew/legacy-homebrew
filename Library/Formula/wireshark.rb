@@ -19,7 +19,8 @@ class Wireshark <Formula
   wget https://bugs.wireshark.org/bugzilla/attachment.cgi?id=3373 -O ChmodBPF.tar.gz
   tar zxvf ChmodBPF.tar.gz
   open ChmodBPF/Install\\ ChmodBPF.app
-This adds a launch daemon that changes the permissions of your BPF devices so that all users in the 'admin' group - all users with 'Allow user to administer this computer' turned on - have both read and write access to those devices."
+This adds a launch daemon that changes the permissions of your BPF devices so that all users in the 'admin' group - all users with 'Allow user to administer this computer' turned on - have both read and write access to those devices. See bug report:
+https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=3760"
   end
 
   def install
