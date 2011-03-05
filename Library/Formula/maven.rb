@@ -1,9 +1,9 @@
 require 'formula'
 
 class Maven <Formula
-  url 'http://www.apache.org/dist/maven/binaries/apache-maven-3.0.2-bin.tar.gz'
+  url 'http://www.apache.org/dist/maven/binaries/apache-maven-3.0.3-bin.tar.gz'
   homepage 'http://maven.apache.org/'
-  md5 '01496e49c1fae860cdf573c6316f85c4'
+  md5 '507828d328eb3735103c0492443ef0f0'
 
   def install
     # Remove windows files
@@ -18,8 +18,8 @@ class Maven <Formula
 
     # Symlink binaries
     bin.mkpath
-    Dir["#{libexec}/bin/*"].each do |f|
-      ln_s f, bin+File.basename(f)
-    end
+    ln_s "#{libexec}/bin/mvn", bin+"mvn"
+    ln_s "#{libexec}/bin/mvnDebug", bin+"mvnDebug"
+    ln_s "#{libexec}/bin/mvnyjp", bin+"mvnyjp"
   end
 end
