@@ -20,7 +20,7 @@ class Emacs <Formula
   end
 
   def patches
-    "https://github.com/downloads/typester/emacs/feature-fullscreen.patch" if ARGV.include? "--cocoa"
+    "https://github.com/downloads/typester/emacs/feature-fullscreen.patch" if (ARGV.include? "--cocoa" and not ARGV.build_head?)
   end
 
   def caveats
