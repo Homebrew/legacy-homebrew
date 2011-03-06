@@ -13,6 +13,7 @@ class Cdparanoia <Formula
   end
 
   def install
+    fails_with_llvm "\"File too small\" error while linking", :build => 2326
     system "autoconf"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
            "--prefix=#{prefix}", "--mandir=#{man}"
