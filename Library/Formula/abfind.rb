@@ -6,7 +6,7 @@ class Abfind <Formula
   homepage 'http://iharder.sourceforge.net/current/macosx/abfind/'
 
   def install
-    system "xcodebuild"
+    system "xcodebuild SYMROOT=build"
     bin.install "build/Release/abfind"
   end
 end

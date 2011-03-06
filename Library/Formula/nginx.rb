@@ -64,7 +64,8 @@ change that to localhost:80, and run `sudo nginx`. You'll need to turn off
 any other web servers running port 80, of course.
 
 You can start nginx automatically on login with:
-    cp #{prefix}/org.nginx.plist ~/Library/LaunchAgents
+    mkdir -p ~/Library/LaunchAgents
+    cp #{prefix}/org.nginx.plist ~/Library/LaunchAgents/
     launchctl load -w ~/Library/LaunchAgents/org.nginx.plist
 
     CAVEATS
