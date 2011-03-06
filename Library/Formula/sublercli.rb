@@ -7,7 +7,7 @@ class Sublercli <Formula
   def install
     ENV.llvm
     cd "SublerCLI" do
-      system "xcodebuild -configuration Release ARCHS='-arch i386 -arch x86_64'"
+      system "xcodebuild -configuration Release ARCHS='-arch i386 -arch x86_64' SYMROOT=build"
       bin.install "build/Release/SublerCLI"
     end
   end

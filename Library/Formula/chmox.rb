@@ -5,7 +5,7 @@ class Chmox <Formula
   homepage 'http://chmox.sourceforge.net'
 
   def install
-    system "xcodebuild"
+    system "xcodebuild SYMROOT=build"
     prefix.install "build/Default/Chmox.app"
   end
 

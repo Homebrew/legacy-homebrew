@@ -12,7 +12,7 @@ class Sleepnow <Formula
       inreplace "SleepNow.xcodeproj/project.pbxproj", /SDKROOT.*$/, ''
 
       # Build binary
-      system "xcodebuild", "-target", "SleepNow", "-configuration", "Release", "ONLY_ACTIVE_ARCH=YES"
+      system "xcodebuild", "-target", "SleepNow", "-configuration", "Release", "ONLY_ACTIVE_ARCH=YES", "SYMROOT=build"
 
       # Install binary and rename to lowercase
       bin.install 'build/Release/SleepNow' => 'sleepnow'
