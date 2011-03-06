@@ -34,12 +34,13 @@ class Redis <Formula
   def caveats
     <<-EOS.undent
     If this is your first install, automatically load on login with:
-        cp #{prefix}/io.redis.redis-server.plist ~/Library/LaunchAgents
+        mkdir -p ~/Library/LaunchAgents
+        cp #{prefix}/io.redis.redis-server.plist ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/io.redis.redis-server.plist
 
     If this is an upgrade and you already have the io.redis.redis-server.plist loaded:
         launchctl unload -w ~/Library/LaunchAgents/io.redis.redis-server.plist
-        cp #{prefix}/io.redis.redis-server.plist ~/Library/LaunchAgents
+        cp #{prefix}/io.redis.redis-server.plist ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/io.redis.redis-server.plist
 
       To start redis manually:

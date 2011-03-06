@@ -13,10 +13,10 @@ class Platypus <Formula
     end
 
     # Build main command-line binary, we don't care about the App
-    system "xcodebuild", "-target", "platypus", "-configuration", "Deployment", "ONLY_ACTIVE_ARCH=YES", "SDKROOT=", "MACOSX_DEPLOYMENT_TARGET="
+    system "xcodebuild", "-target", "platypus", "-configuration", "Deployment", "ONLY_ACTIVE_ARCH=YES", "SYMROOT=build", "SDKROOT=", "MACOSX_DEPLOYMENT_TARGET="
 
     # Build application sub-binary needed by command-line utility
-    system "xcodebuild", "-target", "ScriptExec", "-configuration", "Deployment", "ONLY_ACTIVE_ARCH=YES", "SDKROOT=", "MACOSX_DEPLOYMENT_TARGET="
+    system "xcodebuild", "-target", "ScriptExec", "-configuration", "Deployment", "ONLY_ACTIVE_ARCH=YES", "SYMROOT=build", "SDKROOT=", "MACOSX_DEPLOYMENT_TARGET="
 
     # Install binary and man page
     bin.install "build/Deployment/platypus"
