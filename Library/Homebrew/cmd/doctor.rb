@@ -144,10 +144,10 @@ def check_cc_symlink
         This bypasses LLVM checks, and some formulae may mysteriously fail to work.
         You may want to change /usr/bin/cc to point back at gcc.
 
-        To force Homebrew to use LLVM, you can set the "HOMEBREW_LLVM" environmental
+        To force Homebrew to use LLVM, you can set the "HOMEBREW_USE_LLVM" environmental
         variable, or pass "--use-llvm" to "brew install".
 
-        To force Homebrew to use gcc, you can set the "HOMEBREW_GCC" environmental
+        To force Homebrew to use gcc, you can set the "HOMEBREW_USE_GCC" environmental
         variable, or pass "--use-gcc" to "brew install".
 
       EOS
