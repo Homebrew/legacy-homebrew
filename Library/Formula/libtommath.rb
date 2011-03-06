@@ -6,7 +6,15 @@ class Libtommath < Formula
   md5 '7380da904b020301be7045cb3a89039b'
 
   def install
-    system "make DESTDIR=#{prefix} LIBPATH=/lib INCPATH=/include"
-    system "make install DESTDIR=#{prefix} LIBPATH=/lib INCPATH=/include"
+    inreplace "Makefile" do |s|
+      s.change_make_var! "DESTDIR", prefix
+      s.change_make_var! "LIBPATH", "/lib"
+      s.change_make_var! "INCPATH", "/include"
+
+      s.gsub! "-g $(GROUP) -o $(USER)", ""
+    end
+
+    system "make"
+    system "make install"
   end
 end
