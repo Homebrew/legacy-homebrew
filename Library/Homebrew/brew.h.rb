@@ -25,6 +25,8 @@ def check_for_blacklisted_formula names
 
       To do it in one line, use this command:
         curl http://npmjs.org/install.sh | sudo sh
+        
+      the sudo is not needed if your user has a write permission on /usr/local (which is the brew default behaviour)
     EOS
 
 
