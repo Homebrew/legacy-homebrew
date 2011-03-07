@@ -8,6 +8,8 @@ class Cvsync <Formula
   def install
     ENV['PREFIX'] = prefix
     ENV['MANDIR'] = man
+    ENV['CVSYNC_DEFAULT_CONFIG'] = etc + 'cvsync.conf'
+    ENV['CVSYNCD_DEFAULT_CONFIG'] = etc + 'cvsyncd.conf'
     ENV['HASH_TYPE'] = 'openssl'
 
     # Makefile from 2005 assumes Darwin doesn't define `socklen_t' and defines
