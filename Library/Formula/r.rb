@@ -26,4 +26,14 @@ class R < Formula
     ln_s prefix+"R.framework/Resources/man1/R.1", man1
     ln_s prefix+"R.framework/Resources/man1/Rscript.1", man1
   end
+
+  def caveats; <<-EOS.undent
+    R.framework was installed to:
+      #{prefix}/R.framework
+
+    To use this Framework with IDEs such as RStudio, it must be linked
+    to the standard OS X location:
+      ln -s "#{prefix}/R.framework" /Library/Frameworks
+    EOS
+  end
 end
