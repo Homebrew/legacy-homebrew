@@ -1,14 +1,16 @@
 require 'formula'
 
 class Redis <Formula
-  url 'http://redis.googlecode.com/files/redis-2.2.1.tar.gz'
+  url 'http://redis.googlecode.com/files/redis-2.2.2.tar.gz'
   head 'git://github.com/antirez/redis.git'
   homepage 'http://redis.io/'
-  sha1 'a64c32f37e67bdeabbab74f8413a960a8d42e381'
-  version '2.2.1'
+  sha1 '75b953e4a3067570555c5f3f5e8f481c40489904'
 
   def install
-    fails_with_llvm "Breaks with LLVM"
+    fails_with_llvm "Fails with \"reference out of range from _linenoise\""
+
+    # Architecture isn't detected correctly on 32bit Snow Leopard without help
+    ENV["OBJARCH"] = snow_leopard_64? ? "-arch x86_64" : "-arch i386"
 
     # Head and stable have different code layouts
     src = File.exists?('src/Makefile') ? 'src' : '.'
