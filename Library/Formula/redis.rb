@@ -10,6 +10,8 @@ class Redis <Formula
   def install
     fails_with_llvm "Breaks with LLVM"
 
+    ENV["OBJARCH"] = snow_leopard_64? ? "-arch x86_64" : "-arch i386"
+
     # Head and stable have different code layouts
     src = File.exists?('src/Makefile') ? 'src' : '.'
     system "make -C #{src}"
