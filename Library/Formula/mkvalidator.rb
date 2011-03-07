@@ -1,11 +1,12 @@
 require 'formula'
 
 class Mkvalidator <Formula
-  url 'http://downloads.sourceforge.net/project/matroska/mkvalidator/mkvalidator-0.3.2.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/matroska/mkvalidator/mkvalidator-0.3.3.tar.bz2'
   homepage 'http://www.matroska.org/downloads/mkvalidator.html'
-  md5 'f3895e19e2b1579750d3a205dc4eec73'
+  md5 'f63cac5127e196e94ebdb0fe30ccf352'
 
   def install
+    ENV.j1 # Otherwise there are races
     system "./configure"
     system "make -C mkvalidator"
     bindir = `corec/tools/coremake/system_output.sh`.chomp
