@@ -9,6 +9,7 @@ class Hiredis <Formula
 
   def install
     fails_with_llvm "Can't figure out architecture type", :build => 2333
+    ENV["OBJARCH"] = snow_leopard_64? ? "-arch x86_64" : "-arch i386"
     system "make PREFIX=#{prefix}"
     system "make install PREFIX=#{prefix}"
   end
