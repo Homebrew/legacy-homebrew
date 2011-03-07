@@ -1,7 +1,7 @@
 require 'formula'
 
 class Whereami <Formula
-  url 'git@github.com:yikulju/whereami.git', :using => :git
+  url 'git://github.com/yikulju/whereami.git'
   homepage 'https://github.com/yikulju/whereami'
   md5 ''
   version '1.0'
