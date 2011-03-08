@@ -24,7 +24,7 @@ def check_for_blacklisted_formula names
         http://npmjs.org/
 
       To do it in one line, use this command:
-        curl http://npmjs.org/install.sh | sudo sh
+        curl http://npmjs.org/install.sh | sh
     EOS
 
 

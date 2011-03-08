@@ -6,7 +6,7 @@ class Libogg <Formula
   md5 '5a9fcabc9a1b7c6f1cd75ddc78f36c56'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
     ENV.deparallelize
