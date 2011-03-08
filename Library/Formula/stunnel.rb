@@ -5,9 +5,18 @@ class Stunnel <Formula
   homepage 'http://www.stunnel.org/'
   md5 '2c8e153caee9d954fb7d00980968b50d'
 
+  def options
+    [[ '--enable-x-forwarded-proto', 'Enables appending an X-Forwarded-Proto HTTP header to notify downstream servers the request is using ssl' ]]
+  end
+
   def patches
     # This patch installs a bogus .pem in lieu of interactive cert generation
-    DATA
+    patches = [ DATA ]
+
+    # This patch enables the X-FORWARDED-PROTO HTTP header
+    patches << 'https://github.com/outerim/stunnel/commit/645c53a1324caed7493629d2303ed0a115d80bb0.patch' if ARGV.include? '--enable-x-forwarded-proto'
+
+    patches
   end
 
   def install
@@ -46,4 +55,3 @@ index 274f9a0..d5d7cc0 100644
  
  [ req_dn ]
  countryName = Country Name (2 letter code)
-
