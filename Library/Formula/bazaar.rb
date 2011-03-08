@@ -1,8 +1,8 @@
 require 'formula'
 
 class Bazaar <Formula
-  url 'http://launchpadlibrarian.net/59616932/bzr-2.2.2.tar.gz'
-  md5 'd1bfa2fd1aad282c423c78d62ebacb21'
+  url 'http://launchpad.net/bzr/2.3/2.3.0/+download/bzr-2.3.0.tar.gz'
+  md5 '2d8bc55d43209189a209361178d9d372'
   homepage 'http://bazaar-vcs.org/'
 
   def options
@@ -18,15 +18,6 @@ class Bazaar <Formula
 
     if ARGV.include? "--system"
       ENV.prepend "PATH", "/System/Library/Frameworks/Python.framework/Versions/Current/bin", ":"
-    else
-      python_version = `python -c "import sys;print sys.version"`
-      if python_version[0,4] == "2.7."
-        opoo <<-EOS
-Bazaar might not yet work with Python 2.7.
-You can force an installation using the system Python by doing:
-  brew install bazaar --system
-EOS
-      end
     end
 
     # Find the archs of the Python we are building against.
