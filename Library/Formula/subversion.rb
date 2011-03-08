@@ -72,6 +72,10 @@ class Subversion <Formula
       opoo "A non-Universal Java build was requested."
       puts "To use Java bindings with various Java IDEs, you might need a universal build:"
       puts "  brew install --universal --java subversion"
+      java_home = ENV["JAVA_HOME"] or ""
+      if not java_home.empty?
+        opoo "JAVA_HOME is set. Try unsetting it if JNI headers cannot be found."
+      end
     end
 
     ENV.universal_binary if build_universal?
