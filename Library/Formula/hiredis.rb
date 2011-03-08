@@ -8,7 +8,9 @@ class Hiredis <Formula
   sha1 '2a258b2bc56958144307df13a5ecf6692c637ee3'
 
   def install
-    fails_with_llvm "Can't figure out architecture type", :build => 2333
+    # Architecture isn't detected correctly on 32bit Snow Leopard without help
+    ENV["OBJARCH"] = snow_leopard_64? ? "-arch x86_64" : "-arch i386"
+
     system "make PREFIX=#{prefix}"
     system "make install PREFIX=#{prefix}"
   end
