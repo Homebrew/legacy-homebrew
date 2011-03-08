@@ -21,13 +21,10 @@ class Mplayer <Formula
     # http://trac.macports.org/browser/trunk/dports/multimedia/mplayer-devel/Portfile
     # any kind of optimisation breaks the build
     ENV.gcc_4_2
-    ENV['CC'] = ''
-    ENV['LD'] = ''
     ENV['CFLAGS'] = ''
     ENV['CXXFLAGS'] = ''
 
-    args = ["--prefix=#{prefix}", "--enable-largefiles", "--enable-apple-remote"]
-    args << "--target=x86_64-Darwin" if snow_leopard_64?
+    args = "--prefix=#{prefix}"
 
     system './configure', *args
     system "make"
