@@ -11,7 +11,6 @@ class SaneBackends <Formula
 
   def install
     system "./configure", "--disable-dependency-tracking",
-                          "--disable-debug",
                           "--prefix=#{prefix}",
                           "--without-gphoto2",
                           "--enable-local-backends",
