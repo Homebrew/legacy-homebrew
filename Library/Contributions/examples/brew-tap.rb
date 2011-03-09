@@ -44,11 +44,24 @@ module Homebrew extend self
       raise "A repository name must be passed to brew-tap add!" if ARGV.empty?
       brewery_name = ARGV.shift
       taproom.remove brewery_name
+    else
+      # At this point, we expect cmd is a `brew` subcommand followed by one or
+      # more non-standard formulae. The task is to resolve these formulae to
+      # pathnames in the Taproom repositories and recall brew.
+      formulae = ARGV.named
+      options = ARGV.options_only
+
+      # Resolve formula names to paths in subdirectories of the TAPROOM.
+      formulae.map! {|f| taproom.get_formula f}
+
+      # Dispatch back to brew
+      system "brew", cmd, *formulae.concat(options)
     end
   end
 
   def tap_list taproom
     # Lists repositories available for tapping
+    # TODO: Print tapped and untapped repositories separately.
     menu = taproom.menu
     ohai "Available breweries:\n"
     menu[:breweries].each do |brewery|
@@ -163,6 +176,29 @@ class Taproom
     @founder = founder
   end
 
+  def formulae
+    # One of the nice things about only considering forks of homebrew-alt is
+    # that any Ruby file in any subdirectory can be considered a homebrew
+    # formula.
+    Dir["#{@path}/**/*.rb"]
+  end
+
+  def get_formula name
+    # Searches through the available formulae for a formula that matches the
+    # given name.
+    # TODO: Allow the search to be restricted to a given Brewery or Brewery
+    # subfolder.
+    matches = formulae.select {|f| f.end_with? "#{name}.rb"}
+
+    if matches.empty?
+      raise "No formula for #{name} available in the Taproom"
+    else
+      # TODO: Handle cases where multiple brewfiles are available for a given
+      # formula.
+      matches.first
+    end
+  end
+
   def menu
     @menu ||= get_menu
   end
@@ -195,7 +231,7 @@ class Taproom
 
   def on_tap? name
     # Has a given brewery been tapped?
-    # TODO: Use partial matching on names?
+    # TODO: Use partial matching on names to save people some typing?
     File.directory? @path + name
   end
 
@@ -206,6 +242,7 @@ class Taproom
   end
 
   def get_brewery name
+    # TODO: Partial matching?
     brewery = menu[:breweries].select {|b| b.id == name}
     if brewery.empty?
       raise "No repository named #{name} on the menu!"
