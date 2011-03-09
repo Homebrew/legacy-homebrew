@@ -49,6 +49,10 @@ module Homebrew
     def self.du_h_depth(depth=0)
       provider.du_h_depth
     end
+
+    def self.ruby
+      `#{SystemCommand.which_s} ruby`.chomp
+    end
   end
 
   class SystemCommandLinux

@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
 
 # Many Pathname operations use getwd when they shouldn't, and then throw 
@@ -48,7 +48,7 @@ def dump_config
   bits = Hardware.bits
   cores = Hardware.cores_as_words
   kernel_arch = `uname -m`.chomp
-  system_ruby = Pathname.new("/usr/bin/ruby")
+  system_ruby = Pathname.new(SystemCommand.ruby)
 
   llvm,   llvm_msg   = _compiler_recommendation llvm_build,   RECOMMENDED_LLVM
   gcc_42, gcc_42_msg = _compiler_recommendation gcc_42_build, RECOMMENDED_GCC_42
