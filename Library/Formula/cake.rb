@@ -5,7 +5,7 @@ class Cake <Formula
   head "git://github.com/ninjudd/cake.git", :using => :git
   homepage "http://github.com/ninjudd/cake"
   version "0.6.2"
-  
+
   def install
     bin.install "bin/cake"
   end
