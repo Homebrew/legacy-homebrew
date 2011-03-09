@@ -1,6 +1,7 @@
 /*
 !/.gitignore
 !/Library/
+/Library/Taproom/*
 !/README.md
 !/bin
 /bin/*

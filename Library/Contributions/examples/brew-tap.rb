@@ -4,7 +4,7 @@ require 'yaml'
 
 require 'rubygems'
 # HTTParty is used because it provides a nice abstraction for querying the
-# GitHub API and marshaling the JSON response into ruby objects. However, only
+# GitHub API and serializing the JSON responses to ruby objects. However, only
 # a couple of API calls are ever made---so HTTParty could probably be ditched
 # in favor of a system call to curl with no great loss in exchange for removing
 # the dependency.
@@ -15,8 +15,8 @@ begin
   require 'httparty'
 rescue LoadError
   onoe <<-EOS
-Some objects used by brew-tap need to communicate with the GitHub API. They do
-this using the HTTParty gem, but that gem could not be imported.
+Some objects used by brew-tap need to communicate with the GitHub API.  This is
+done using the HTTParty gem, but that gem could not be imported.
   EOS
   puts 'To install: gem install httparty'
   exit 1
@@ -30,12 +30,20 @@ FOUNDING_BREWERY = {:owner => 'adamv', :name => 'homebrew-alt'}
 module Homebrew extend self
   def tap_dispatch taproom
     # Main entry point. Responsible for dispatching calls to brew-tap
-    # subcommands. Modeled after the dispatch method of brew it's self.
+    # subcommands. Modeled after the dispatch method in the main brew script.
     cmd = ARGV.shift
     if cmd == 'list'
       Homebrew.tap_list taproom
     elsif cmd == 'update'
       Homebrew.tap_update taproom
+    elsif cmd == 'add'
+      raise "A repository name must be passed to brew-tap add!" if ARGV.empty?
+      brewery_name = ARGV.shift
+      taproom.tap brewery_name
+    elsif cmd == 'remove'
+      raise "A repository name must be passed to brew-tap add!" if ARGV.empty?
+      brewery_name = ARGV.shift
+      taproom.remove brewery_name
     end
   end
 
@@ -45,8 +53,7 @@ module Homebrew extend self
     ohai "Available breweries:\n"
     menu[:breweries].each do |brewery|
       puts <<-EOS.undent
-      #{brewery.brew_id}:
-        Name: #{brewery.name}
+      #{brewery.id}
         Brewmaster: #{brewery.owner}
 
       EOS
@@ -67,16 +74,20 @@ class Brewery
   base_uri 'github.com/api/v2/json/repos/show'
   format :json
 
-  attr_reader :owner, :name, :brew_id
+  attr_reader :owner, :name, :id, :url
 
   def initialize args
     @owner = args[:owner]
     @name = args[:name]
-    @brew_id = args[:brew_id] || [owner, name].join('-')
+    # id should be a unique identifier that could be to clone this repository,
+    # along with several others from the same network, and not worry about
+    # folders overwriting each other.
+    @id = args[:id] || [owner, name].join('-')
+    @url = args[:url] || "git://github.com/#{owner}/#{name}.git"
   end
 
   def to_hash
-    {:owner => @owner, :name => @name, :brew_id => @brew_id}
+    {:owner => @owner, :name => @name, :id => @id}
   end
 
   def to_s
@@ -84,7 +95,8 @@ class Brewery
   end
 
   def network
-    # Memoize so we don't slam the GitHub API with unnecessary requests.
+    # Memoize using '||=' so we don't slam the GitHub API with unnecessary
+    # requests.
     @network ||= get_network
   end
 
@@ -101,7 +113,7 @@ class Brewery
   # These methods all hit the GitHub API. Therefore, they should only be
   # invoked through the memoized accessors defined above.
   def get_network
-    ohai "Fetching #{@owner}'s #{@name} network"
+    ohai "Scanning #{@owner}'s #{@name} network"
     network = self.class.get("/#{@owner}/#{@name}/network").parsed_response['network']
     network.map do |repo|
       # We don't need all the information returned in the network array.
@@ -123,7 +135,7 @@ class Brewery
     # the lines of "Ooops, that was supposed to be in the last update". So
     # it will happen eventually. The workaround is to use git its self to find
     # the remote HEAD and compare its SHA against the branch list.
-    git_info = `git ls-remote https://github.com/#{@owner}/#{@name}`.to_a
+    git_info = `git ls-remote #{@url}`.to_a
     hub_head = Hash[git_info.map{|line| line.split.reverse}].fetch 'HEAD'
     branches.invert.fetch hub_head # Unfortunately, this fails if two branches
                                    # share the same SHA (i.e. a branch other
@@ -170,7 +182,62 @@ class Taproom
     menu = {:menu_updated => Time.now, :breweries => @founder.network.map {|b| b.to_hash}}
     File.open(@menu_path, 'w') {|file| file.write(menu.to_yaml)}
   end
+
+  def list_available
+    # Return list of all breweries, tapped or untapped.
+    menu[:breweries].map {|b| b.id}
+  end
+
+  def on_menu? name
+    # Does the menu contain a brewery?
+    list_available.include? name
+  end
+
+  def on_tap? name
+    # Has a given brewery been tapped?
+    # TODO: Use partial matching on names?
+    File.directory? @path + name
+  end
+
+  def list_tapped
+    # Return list of tapped breweries.
+    tapped = menu[:breweries].select {|b| on_tap? b.id}
+    tapped.map {|b| b.id}
+  end
+
+  def get_brewery name
+    brewery = menu[:breweries].select {|b| b.id == name}
+    if brewery.empty?
+      raise "No repository named #{name} on the menu!"
+    else
+      brewery[0] # Because id should be a unique identifier
+    end
+  end
+
+  def tap brewery_name
+    # This method will run a checkout on the specified brewery.
+    # TODO: Find a way of hooking into the RefreshBrew class used by
+    # `brew update`
+    if on_tap? brewery_name
+      ohai "#{brewery_name} is allready on tap. Brew away!"
+      return
+    end
+
+    brewery_path = @path + brewery_name
+    brewery = get_brewery brewery_name
+
+    if not File.directory? brewery_path
+      safe_system("git clone #{brewery.url} #{brewery_path}")
+    end
+  end
+
+  def remove brewery
+    # This method will remove the specified brewery from the list of breweries
+    # on tap.
+    raise 'Not implemented.'
+  end
 end
 
+# The actual code that gets run when `brew` loads this external command
 Homebrew.tap_dispatch Taproom.new(TAPROOM, Brewery.new(FOUNDING_BREWERY))
 
