@@ -16,16 +16,14 @@ class Transcode <Formula
   depends_on 'libquicktime'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--build=x86_64-apple-darwin10.0.0",
-                          "--enable-a52", "--enable-faac",
-                          "--enable-imagemagick", "--enable-libdv",
-                          "--enable-ogg", "--enable-libquicktime",
-                          "--enable-theora", "--enable-vorbis",
-                          "--enable-libxml2", "--enable-lzo",
-                          "--enable-x264", "--enable-xvid",
-                          "--enable-sdl", "--without-x"
-    # system "cmake . #{std_cmake_parameters}"
+    args = ["--disable-debug", "--disable-dependency-tracking",
+            "--prefix=#{prefix}", "--enable-a52", "--enable-faac",
+            "--enable-imagemagick", "--enable-libdv", "--enable-ogg",
+            "--enable-libquicktime", "--enable-theora", "--enable-vorbis",
+            "--enable-libxml2", "--enable-lzo", "--enable-x264",
+            "--enable-xvid", "--enable-sdl", "--without-x" ]
+    args << "--build=x86_64-apple-darwin10.0.0" if snow_leopard_64?
+    system './configure', *args
     system "make install"
   end
 end
