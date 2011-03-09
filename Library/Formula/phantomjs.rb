@@ -9,7 +9,7 @@ class Phantomjs <Formula
   depends_on 'qt'
 
   def install
-    system "qmake"
+    system "qmake -spec macx-g++"
     system "make"
     bin.install "bin/phantomjs.app/Contents/MacOS/phantomjs"
   end
