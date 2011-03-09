@@ -5,7 +5,7 @@ class Skim <Formula
   homepage 'http://skim-app.sourceforge.net/'
 
   def install
-    system "xcodebuild"
+    system "xcodebuild SYMROOT=build"
     prefix.install "build/Release/Skim.app"
   end
 

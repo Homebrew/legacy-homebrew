@@ -11,6 +11,7 @@ class Abcde <Formula
   depends_on 'cd-discid'
   depends_on 'id3v2'
   depends_on 'cdrtools'
+  depends_on 'mkcue'
 
   def install
     inreplace 'Makefile', '-o 0', ''

@@ -6,7 +6,7 @@ class Mailtomutt <Formula
   md5 'ce108e8574df129425d8156ff8b830bf'
 
   def install
-    system "xcodebuild"
+    system "xcodebuild SYMROOT=build"
     prefix.install "build/Default/MailtoMutt.app"
   end
 
