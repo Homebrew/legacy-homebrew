@@ -2,8 +2,8 @@ require 'formula'
 
 class Wine <Formula
   if ARGV.flag? '--devel'
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.13.tar.bz2'
-    sha1 'f7e7aa2dbefc0f3fd48703f8640d13bcdb7312e4'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.15.tar.bz2'
+    sha1 'c0b6137671fc2413ad72c3aa9eb3046a871f7889'
   else
     url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.2.tar.bz2'
     sha1 '8b37c8e0230dd6a665d310054f4e36dcbdab7330'
@@ -19,9 +19,11 @@ class Wine <Formula
 
   # Wine loads many libraries lazily using dlopen calls, so it needs these paths
   # to be searched by dyld.
+  # Including /usr/lib because wine, as of 1.3.15, tries to dlopen
+  # libncurses.5.4.dylib, and fails to find it without the fallback path.
   def wine_wrapper; <<-EOS
 #!/bin/sh
-DYLD_FALLBACK_LIBRARY_PATH="/usr/X11/lib:#{HOMEBREW_PREFIX}/lib" "#{bin}/wine.bin" "$@"
+DYLD_FALLBACK_LIBRARY_PATH="/usr/X11/lib:#{HOMEBREW_PREFIX}/lib:/usr/lib" "#{bin}/wine.bin" "$@"
 EOS
   end
 
