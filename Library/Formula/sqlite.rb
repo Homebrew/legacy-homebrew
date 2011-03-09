@@ -1,9 +1,9 @@
 require 'formula'
 
 class Sqlite <Formula
-  url 'http://sqlite.org/sqlite-autoconf-3070400.tar.gz'
-  md5 '8f0c690bfb33c3cbbc2471c3d9ba0158'
-  version '3.7.4'
+  url 'http://www.sqlite.org/sqlite-autoconf-3070500.tar.gz'
+  md5 'a9604a82613ade2e7f4c303f233e477f'
+  version '3.7.5'
   homepage 'http://www.sqlite.org/'
 
   def options

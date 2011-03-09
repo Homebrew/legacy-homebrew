@@ -14,6 +14,8 @@ class Flac <Formula
   depends_on 'libogg' => :optional
 
   def install
+    fails_with_llvm "Undefined symbols when linking", :build => 2326
+
     # sadly the asm optimisations won't compile since Leopard, and nobody
     # cares or knows how to fix it
     system "./configure", "--disable-debug",

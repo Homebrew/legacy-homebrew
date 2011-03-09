@@ -31,8 +31,8 @@ end
 #unaffected - getopt will still find the version supplied
 #by OSX in other shells, for example.
 __END__
---- a/src/lib.sh
-+++ b/src/lib.sh
+--- a/src/core.sh
++++ b/src/core.sh
 @@ -1,4 +1,8 @@
  #!/bin/bash
 +shopt -s expand_aliases

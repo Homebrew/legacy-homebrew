@@ -18,6 +18,7 @@ class Thrift <Formula
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--libdir=#{lib}",
+                          "--without-haskell",
                           "--without-java",
                           "--without-python",
                           "--without-ruby",

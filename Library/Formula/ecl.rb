@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ecl <Formula
-  url 'http://downloads.sourceforge.net/project/ecls/ecls/10.4/ecl-10.4.1.tar.gz'
+  url 'http://downloads.sourceforge.net/project/ecls/ecls/11.1/ecl-11.1.1.tar.gz'
   homepage 'http://ecls.sourceforge.net/'
-  md5 'be53f5e55a3f07c7cfb5fb5cd9a2a3f0'
+  md5 '6963cfa00e1c6d4a2123fd62100b02e6'
 
   # doesn't start otherwise
   skip_clean 'bin'

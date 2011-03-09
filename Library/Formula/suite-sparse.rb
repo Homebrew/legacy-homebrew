@@ -1,9 +1,9 @@
 require 'formula'
 
 class SuiteSparse <Formula
-  url 'http://www.cise.ufl.edu/research/sparse/SuiteSparse/SuiteSparse-3.5.0.tar.gz'
+  url 'http://www.cise.ufl.edu/research/sparse/SuiteSparse/SuiteSparse-3.6.0.tar.gz'
   homepage 'http://www.cise.ufl.edu/research/sparse/SuiteSparse/'
-  md5 'd2cd759dd04f2f4258081e80c2891366'
+  md5 '8ccb9e90b478b5d55b1d9a794e8ed676'
 
   depends_on "metis"
   depends_on "tbb"

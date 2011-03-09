@@ -7,6 +7,7 @@ class LibgpgError <Formula
 
   def install
     ENV.j1
+    ENV.universal_binary  # build fat so wine can use it
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

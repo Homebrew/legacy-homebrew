@@ -1,9 +1,9 @@
 require 'formula'
 
 class R <Formula
-  url 'http://cran.r-project.org/src/base/R-2/R-2.12.1.tar.gz'
+  url 'http://cran.r-project.org/src/base/R-2/R-2.12.2.tar.gz'
   homepage 'http://www.R-project.org/'
-  md5 '078e8d1179fc9a762e326e6da2725468'
+  md5 'bc70b51dddab8aa39066710624e55d5e'
 
   def install
     unless `/usr/bin/which gfortran`.chomp.size > 0

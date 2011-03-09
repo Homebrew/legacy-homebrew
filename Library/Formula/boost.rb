@@ -2,15 +2,14 @@ require 'formula'
 
 class Boost <Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.45.0/boost_1_45_0.tar.bz2'
-  md5 'd405c606354789d0426bc07bea617e58'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.46.0/boost_1_46_0.tar.bz2'
+  md5 '37b12f1702319b73876b0097982087e0'
 
   def options
-    [['--with-mpi', "Enables MPI support"]]
-  end
-
-  def options
-    [["--universal", "Build universal binaries."]]
+    [
+      ['--with-mpi', "Enables MPI support"],
+      ["--universal", "Build universal binaries."]
+    ]
   end
 
   def install

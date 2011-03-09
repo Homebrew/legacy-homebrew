@@ -8,6 +8,7 @@ end
 class OpenTyrian <Formula
   url 'http://opentyrian.googlecode.com/hg/', :revision =>  '9ddcd06e48'
   homepage 'http://code.google.com/p/opentyrian/'
+  version '20091122'
 
   depends_on 'sdl'
   depends_on 'sdl_net'

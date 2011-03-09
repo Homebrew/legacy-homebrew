@@ -3,8 +3,8 @@ require 'formula'
 class Dialog <Formula
   url 'ftp://invisible-island.net/dialog/dialog.tar.gz'
   homepage 'http://invisible-island.net/dialog/'
-  md5 '519c0a0cbac28ddb992111ec2c3f82aa'
-  version '1.1.20070704'
+  md5 '07d6ab77bd8c12c3def07ed72a706194'
+  version '1.1.20110118'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

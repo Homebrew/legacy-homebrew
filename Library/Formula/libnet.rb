@@ -10,9 +10,12 @@ class Libnet < Formula
     cd 'libnet'
     inreplace "autogen.sh", "libtoolize", "glibtoolize"
     system "./autogen.sh"
-    # These are being linked in here for us...?
-    # cp "/usr/share/libtool/config/config.guess", "."
-    # cp "/usr/share/libtool/config/config.sub", "."
+
+    if MACOS_VERSION >= 10.6
+      cp "/usr/share/libtool/config/config.guess", "."
+      cp "/usr/share/libtool/config/config.sub", "."
+    end
+
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     touch 'doc/man/man3/libnet.3'
     system "make install"

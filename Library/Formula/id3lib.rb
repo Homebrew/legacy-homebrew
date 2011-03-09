@@ -11,6 +11,7 @@ class Id3lib <Formula
   end unless ARGV.build_head?
 
   def install
+    fails_with_llvm "Segfault during linking", :build => 2326
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end

@@ -1,7 +1,7 @@
 require 'formula'
 
 class Znc <Formula
-  url 'http://downloads.sourceforge.net/project/znc/znc/0.096/znc-0.096.tar.gz'
+  url 'http://znc.in/releases/archive/znc-0.096.tar.gz'
   md5 '38eec4f1911a68b4d2fc704170e7cbf6'
   homepage 'http://en.znc.in/wiki/ZNC'
 

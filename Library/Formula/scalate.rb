@@ -1,10 +1,10 @@
 require 'formula'
 
 class Scalate <Formula
-  url 'http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.3.2/scalate-distro-1.3.2-unix-bin.tar.gz'
-  version '1.3.2'
+  url 'http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.4.1/scalate-distro-1.4.1-unix-bin.tar.gz'
+  version '1.4.1'
   homepage 'http://scalate.fusesource.org/'
-  md5 'e1bdef41fa3c5bcc8848937d5d66b812'
+  md5 'ed58ac43592bdbb15148a5453b254cee'
 
   def startup_script
     <<-EOS.undent

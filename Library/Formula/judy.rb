@@ -1,7 +1,7 @@
 require 'formula'
 
 class Judy <Formula
-  url 'http://downloads.sourceforge.net/project/judy/judy/judy-1.0.5/judy-1.0.5.tar.gz'
+  url 'http://downloads.sourceforge.net/project/judy/judy/Judy-1.0.5/Judy-1.0.5.tar.gz'
   homepage 'http://judy.sourceforge.net/'
   md5 '115a0d26302676e962ae2f70ec484a54'
 
