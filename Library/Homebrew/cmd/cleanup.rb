@@ -8,7 +8,6 @@ module Homebrew extend self
         begin
           cleanup_formula rack.basename.to_s if rack.directory?
         rescue FormulaUnavailableError => e
-          opoo "Formula not found for #{e.name}"
         end
       end
       # seems like a good time to do some additional cleanup
