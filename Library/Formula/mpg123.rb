@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mpg123 <Formula
+class Mpg123 < Formula
   url 'http://downloads.sourceforge.net/project/mpg123/mpg123/1.12.5/mpg123-1.12.5.tar.bz2'
   homepage 'http://www.mpg123.de/'
   md5 '01fa64533cade452c2b22a3ce14a2fcd'

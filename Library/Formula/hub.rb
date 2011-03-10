@@ -1,6 +1,6 @@
 require 'formula'
 
-class Hub <Formula
+class Hub < Formula
   url 'https://github.com/defunkt/hub/tarball/v1.5.0'
   homepage 'https://github.com/defunkt/hub'
   head 'git://github.com/defunkt/hub.git'

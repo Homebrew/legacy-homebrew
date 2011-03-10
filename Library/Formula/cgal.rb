@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cgal <Formula
+class Cgal < Formula
   url 'https://gforge.inria.fr/frs/download.php/27641/CGAL-3.7.tar.gz'
   md5 '0e4c17f436ec04848abc3273bb6ab3ee'
   homepage 'http://www.cgal.org/'

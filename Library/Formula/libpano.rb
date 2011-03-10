@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libpano <Formula
+class Libpano < Formula
   url 'http://downloads.sourceforge.net/project/panotools/libpano13/libpano13-2.9.17/libpano13-2.9.17.tar.gz'
   version '13-2.9.17'
   homepage 'http://panotools.sourceforge.net/'

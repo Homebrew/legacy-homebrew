@@ -1,6 +1,6 @@
 require 'formula'
 
-class Dvdauthor <Formula
+class Dvdauthor < Formula
   url 'http://downloads.sourceforge.net/project/dvdauthor/dvdauthor/0.6.14/dvdauthor-0.6.14.tar.gz'
   homepage 'http://dvdauthor.sourceforge.net/'
   md5 'bd646b47950c4091ffd781d43fd2c5e9'

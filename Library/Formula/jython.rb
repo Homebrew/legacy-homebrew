@@ -1,6 +1,6 @@
 require 'formula'
 
-class Jython <Formula
+class Jython < Formula
   url "http://downloads.sourceforge.net/project/jython/jython/2.5.2/jython_installer-2.5.2.jar",
     :using => :nounzip
   homepage 'http://www.jython.org'

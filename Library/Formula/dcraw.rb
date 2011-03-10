@@ -1,6 +1,6 @@
 require 'formula'
 
-class Dcraw <Formula
+class Dcraw < Formula
   homepage 'http://www.cybercom.net/~dcoffin/dcraw/'
   url 'http://www.cybercom.net/~dcoffin/dcraw/archive/dcraw-9.05.tar.gz'
   md5 'e531229e4e79bb67a7007eec7aa74116'

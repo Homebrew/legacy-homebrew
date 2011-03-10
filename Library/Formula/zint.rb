@@ -1,6 +1,6 @@
 require 'formula'
 
-class Zint <Formula
+class Zint < Formula
   url 'http://downloads.sourceforge.net/project/zint/zint/2.4.1/zint-2.4.1.tar.gz'
   homepage 'http://www.zint.org.uk'
   md5 '7ec4441907827fa613b11847a467c61d'

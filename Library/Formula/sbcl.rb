@@ -1,14 +1,14 @@
 require 'formula'
 require 'hardware'
 
-class SbclBootstrapBinaries <Formula
+class SbclBootstrapBinaries < Formula
   url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.30/sbcl-1.0.30-x86-darwin-binary.tar.bz2'
   md5 'c15bbff2e7a9083ecd50942edb74cc8c'
   version "1.0.30"
 end
 
 
-class Sbcl <Formula
+class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
   head 'git://sbcl.boinkor.net/sbcl.git'
 

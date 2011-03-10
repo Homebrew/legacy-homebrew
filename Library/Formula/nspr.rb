@@ -1,6 +1,6 @@
 require 'formula'
 
-class Nspr <Formula
+class Nspr < Formula
   url 'http://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.8.6/src/nspr-4.8.6.tar.gz'
   homepage 'http://www.mozilla.org/projects/nspr/'
   md5 '592c275728c29d193fdba8009165990b'

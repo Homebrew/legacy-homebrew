@@ -1,6 +1,6 @@
 require 'formula'
 
-class Memcached <Formula
+class Memcached < Formula
   url "http://memcached.googlecode.com/files/memcached-1.4.5.tar.gz"
   homepage 'http://www.danga.com/memcached/'
   sha1 'c7d6517764b82d23ae2de76b56c2494343c53f02'

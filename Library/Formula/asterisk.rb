@@ -1,6 +1,6 @@
 require 'formula'
 
-class Asterisk <Formula
+class Asterisk < Formula
   url 'http://downloads.asterisk.org/pub/telephony/asterisk/releases/asterisk-1.6.1.6.tar.gz'
   homepage 'http://www.asterisk.org/'
   md5 '63a928373e741524aac09d8c078df7d5'

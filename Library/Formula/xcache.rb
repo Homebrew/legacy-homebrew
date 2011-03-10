@@ -1,6 +1,6 @@
 require 'formula'
 
-class Xcache <Formula
+class Xcache < Formula
   url 'http://xcache.lighttpd.net/pub/Releases/1.3.0/xcache-1.3.0.tar.gz'
   homepage 'http://xcache.lighttpd.net/'
   md5 'aa78eec93ce9684dfd99010f62ad6720'

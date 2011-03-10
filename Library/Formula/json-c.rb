@@ -1,6 +1,6 @@
 require 'formula'
 
-class JsonC <Formula
+class JsonC < Formula
   url 'http://oss.metaparadigm.com/json-c/json-c-0.9.tar.gz'
   homepage 'http://oss.metaparadigm.com/json-c/'
   md5 '3a13d264528dcbaf3931b0cede24abae'

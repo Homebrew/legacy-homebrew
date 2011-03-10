@@ -1,6 +1,6 @@
 require 'formula'
 
-class Djmount <Formula
+class Djmount < Formula
   url 'http://downloads.sourceforge.net/project/djmount/djmount/0.71/djmount-0.71.tar.gz'
   homepage 'http://djmount.sourceforge.net/'
   md5 'c922753e706c194bf82a8b6ca77e6a9a'

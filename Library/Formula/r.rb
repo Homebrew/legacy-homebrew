@@ -1,6 +1,6 @@
 require 'formula'
 
-class R <Formula
+class R < Formula
   url 'http://cran.r-project.org/src/base/R-2/R-2.12.2.tar.gz'
   homepage 'http://www.R-project.org/'
   md5 'bc70b51dddab8aa39066710624e55d5e'

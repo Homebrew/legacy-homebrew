@@ -1,6 +1,6 @@
 require 'formula'
 
-class Icu4c <Formula
+class Icu4c < Formula
   url 'http://download.icu-project.org/files/icu4c/4.4.1/icu4c-4_4_1-src.tgz'
   homepage 'http://site.icu-project.org/'
   md5 'b6bc0a1153540b2088f8b03e0ba625d3'

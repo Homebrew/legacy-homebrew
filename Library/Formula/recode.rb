@@ -1,6 +1,6 @@
 require 'formula'
 
-class Recode <Formula
+class Recode < Formula
   url 'http://recode.progiciels-bpi.ca/archives/recode-3.6.tar.gz'
   homepage 'http://www.gnu.org/software/recode/'
   md5 'be3f40ad2e93dae5cd5f628264bf1877'

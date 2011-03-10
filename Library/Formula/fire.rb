@@ -1,6 +1,6 @@
 require 'formula'
 
-class Fire <Formula
+class Fire < Formula
   head 'git://github.com/AzizLight/fire.git'
   homepage 'https://github.com/AzizLight/fire'
 

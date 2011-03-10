@@ -1,6 +1,6 @@
 require 'formula'
 
-class Platypus <Formula
+class Platypus < Formula
   url 'http://www.sveinbjorn.org/files/software/platypus.src.zip'
   version '4.4'
   homepage 'http://www.sveinbjorn.org/platypus'

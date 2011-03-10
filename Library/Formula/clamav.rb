@@ -1,6 +1,6 @@
 require 'formula'
 
-class Clamav <Formula
+class Clamav < Formula
   url 'http://downloads.sourceforge.net/clamav/clamav-0.97.tar.gz'
   homepage 'http://www.clamav.net/'
   md5 '605ed132b2f8e89df11064adea2b183b'
