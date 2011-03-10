@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gwyddion <Formula
-  url 'http://downloads.sourceforge.net/project/gwyddion/gwyddion/2.21/gwyddion-2.21.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/gwyddion/gwyddion/2.23/gwyddion-2.23.tar.bz2'
   homepage 'http://gwyddion.net/'
-  md5 '7330a22460743c9da8dceec03f7924e9'
+  md5 '24913aa2e44ed0791287e2b09fbe354f'
 
   depends_on 'gtk+'
   depends_on 'libxml2'
