@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module HomebrewEnvExtension
   # -w: keep signal to noise high
   SAFE_CFLAGS_FLAGS = "-w -pipe"
@@ -18,14 +19,22 @@ module HomebrewEnvExtension
       self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
     end
 
-    if MACOS_VERSION >= 10.6 and (self['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
+    if self['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm'
+      # force LLVM
       xcode_path = `/usr/bin/xcode-select -print-path`.chomp
       xcode_path = "/Developer" if xcode_path.to_s.empty?
       self['CC'] = "#{xcode_path}/usr/bin/llvm-gcc"
       self['CXX'] = "#{xcode_path}/usr/bin/llvm-g++"
       cflags = ['-O4'] # link time optimisation baby!
+    elsif self['HOMEBREW_USE_GCC'] or ARGV.include? '--use-gcc'
+      # force GCC
+      xcode_path = `/usr/bin/xcode-select -print-path`.chomp
+      xcode_path = "/Developer" if xcode_path.to_s.empty?
+      self['CC'] = "#{xcode_path}/usr/bin/gcc"
+      self['CXX'] = "#{xcode_path}/usr/bin/g++"
+      cflags = ['-O3'] # link time optimisation baby!
     else
-      # If these aren't set, many formulae fail to build
+      # use system default CC (may be LLVM or GCC)
       self['CC'] = '/usr/bin/cc'
       self['CXX'] = '/usr/bin/c++'
       cflags = ['-O3']
