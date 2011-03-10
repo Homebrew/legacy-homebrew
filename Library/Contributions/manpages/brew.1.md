@@ -34,8 +34,17 @@ didn't include with OS X.
     If `--debug` is passed and brewing fails, open a shell inside the
     temporary folder used for compiling.
 
-    If `--use-llvm` is passed, attempt to compile using the LLVM front-end to GCC.
-    *NOTE*: Not all formulae will build with LLVM.
+    If  `--use-llvm`  is  passed,  attempt  to  compile using the LLVM
+    front-end to GCC.
+
+    If `--use-gcc` is passed, attempt to compile using the traditional
+    GNU Compiler Collection.
+
+    NOTE:  Not  all formulae will build with LLVM; GCC may work more
+    readily than llvm. With Xcode 4, llvm is the  default,  so  this
+    command  is sometimes needed for packages for which LLVM doesn't
+    work yet. Brew will do what it can to fix this for you, but will
+    use your environment as it's configured.
 
     If `--ignore-dependencies` is passed, skip installing any dependencies of
     any kind. If they are not already present, the formula will probably fail
