@@ -79,25 +79,15 @@ class Gfortran < Formula
 
   def caveats
     caveats = <<-EOS
-Fortran compiler support in brews is currently experimental.  One of the
-consequences of this is that Homebrew does not set environment flags to ensure
-that a particular Fortran compiler is used and that the resulting code is
-optimized properly.  Therefore, in addition to using:
+Brews that require a Fortran compiler should not use:
 
-    depends_on "gfortran"
+    depends_on 'gfortran'
 
-Fortran-based brews should also specify environment variables for the Fortran
-compiler in the install section:
+The preferred method of declaring Fortran support is to invoke:
 
-    # Select the Fortran compiler to be used:
-    ENV["FC"] = ENV["F77"] = "\#{HOMEBREW_PREFIX}/bin/gfortran"
+    ENV.fortran
 
-    # Set Fortran optimization flags:
-    ENV["FFLAGS"] = ENV["FCFLAGS"] = ENV["CFLAGS"]
-
-Following these guidelines will allow Fortran-based brews to be easily edited so
-that alternate Fortran compilers, such as ifort, can be used instead of the
-version of gfortran provided by Homebrew.
+In the `install` section of the formula.
     EOS
   end
 end
