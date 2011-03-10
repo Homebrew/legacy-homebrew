@@ -6,7 +6,7 @@ def ff
   return ARGV.formulae
 end
 
-def audit_formula_text text
+def audit_formula_text name, text
   problems = []
 
   # Commented-out cmake support from default template
@@ -97,6 +97,11 @@ def audit_formula_text text
 	    problems << " * Use spaces instead of tabs for indentation"
 	  end
 	end
+
+  # Formula depends_on gfortran
+  if text =~ /\s*depends_on\s*(\'|\")gfortran(\'|\")\s*$/
+    problems << " * Use ENV.fortran during install instead of depends_on 'gfortran'"
+  end unless name == "gfortran" # Gfortran itself has this text in the caveats
 
   return problems
 end
@@ -230,7 +235,7 @@ module Homebrew extend self
       # Don't try remaining audits on text in __END__
       text_without_patch = (text.split("__END__")[0]).strip()
 
-      problems += audit_formula_text(text_without_patch)
+      problems += audit_formula_text(f.name, text_without_patch)
       problems += audit_formula_options(f, text_without_patch)
 
       unless problems.empty?
