@@ -12,7 +12,7 @@ module Homebrew extend self
       search_results = search_brews query
       puts_columns search_results
 
-      if $stdout.tty? and msg = blacklisted?(query)
+      if not query.to_s.empty? and $stdout.tty? and msg = blacklisted?(query)
         unless search_results.empty?
           puts
           puts "If you meant `#{query}' precisely:"
