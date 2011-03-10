@@ -98,6 +98,11 @@ def audit_formula_text text
 	  end
 	end
 
+  # Formula depends_on gfortran
+  if text =~ /\s*depends_on\s*(\'|\")gfortran(\'|\")\s*$/
+    problems << " * Use ENV.fortran during install instead of depends_on 'gfortran'"
+  end
+
   return problems
 end
 
