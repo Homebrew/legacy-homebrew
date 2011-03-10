@@ -35,10 +35,7 @@ module Homebrew
   class InstallationError < RuntimeError
     attr :formula
 
-    def initialize formula
-      @formula = formula
-    end
-    def initialize formula, message
+    def initialize formula, message=""
       super message
       @formula = formula
     end
