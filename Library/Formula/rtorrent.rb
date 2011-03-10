@@ -1,6 +1,6 @@
 require 'formula'
 
-class Rtorrent <Formula
+class Rtorrent < Formula
   url 'http://libtorrent.rakshasa.no/downloads/rtorrent-0.8.6.tar.gz'
   homepage 'http://libtorrent.rakshasa.no/'
   md5 'b804c45c01c40312926bcea6b55bb084'

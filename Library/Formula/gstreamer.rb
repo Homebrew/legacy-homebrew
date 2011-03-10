@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gstreamer <Formula
+class Gstreamer < Formula
   homepage 'http://gstreamer.freedesktop.org/'
   url 'http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-0.10.32.tar.bz2'
   md5 '442bc3d37b8511a73379143e7531d726'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Vips <Formula
+class Vips < Formula
   url 'http://www.vips.ecs.soton.ac.uk/supported/7.20/vips-7.20.7.tar.gz'
   head 'http://www.vips.ecs.soton.ac.uk/supported/7.22/vips-7.22.2.tar.gz'
   homepage 'http://www.vips.ecs.soton.ac.uk/'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cdparanoia <Formula
+class Cdparanoia < Formula
   url 'http://downloads.xiph.org/releases/cdparanoia/cdparanoia-III-10.2.src.tgz'
   homepage 'http://www.xiph.org/paranoia/'
   md5 'b304bbe8ab63373924a744eac9ebc652'

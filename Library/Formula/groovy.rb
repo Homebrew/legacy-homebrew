@@ -1,6 +1,6 @@
 require 'formula'
 
-class Groovy <Formula
+class Groovy < Formula
   url 'http://dist.groovy.codehaus.org/distributions/groovy-binary-1.7.8.zip'
   md5 '9d0b3c21cb1f98a7bd3e779474650882'
   homepage 'http://groovy.codehaus.org/'

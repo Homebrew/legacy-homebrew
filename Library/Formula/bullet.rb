@@ -1,6 +1,6 @@
 require 'formula'
 
-class Bullet <Formula
+class Bullet < Formula
   url 'http://bullet.googlecode.com/files/bullet-2.77.tgz'
   homepage 'http://bulletphysics.org/wordpress/'
   md5 '2f5074a1a29b618c672f1da4748e374b'

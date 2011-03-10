@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gnutls <Formula
+class Gnutls < Formula
   url 'http://ftp.gnu.org/pub/gnu/gnutls/gnutls-2.10.4.tar.bz2'
   homepage 'http://www.gnu.org/software/gnutls/gnutls.html'
   sha1 'f0dcd7b68748b48d7b945c52b6a9e64d643e4b58'

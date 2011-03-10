@@ -31,7 +31,7 @@ def x11?
   File.file? '/usr/X11/include/ft2build.h'
 end
 
-class Imagemagick <Formula
+class Imagemagick < Formula
   # Using an unofficial Git mirror to work around:
   # * Stable tarballs disappearing
   # * Bad https cert on official SVN repo

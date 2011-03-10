@@ -1,6 +1,6 @@
 require 'formula'
 
-class Html2text <Formula
+class Html2text < Formula
   url 'http://www.mbayer.de/html2text/downloads/html2text-1.3.2a.tar.gz'
   homepage 'http://www.mbayer.de/html2text/'
   md5 '6097fe07b948e142315749e6620c9cfc'

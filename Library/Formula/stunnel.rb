@@ -1,6 +1,6 @@
 require 'formula'
 
-class Stunnel <Formula
+class Stunnel < Formula
   url 'ftp://ftp.stunnel.org/stunnel/stunnel-4.35.tar.gz'
   homepage 'http://www.stunnel.org/'
   md5 '2c8e153caee9d954fb7d00980968b50d'

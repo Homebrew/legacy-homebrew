@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gettext <Formula
+class Gettext < Formula
   url 'http://ftp.gnu.org/pub/gnu/gettext/gettext-0.17.tar.gz'
   md5 '58a2bc6d39c0ba57823034d55d65d606'
   homepage 'http://www.gnu.org/software/gettext/'

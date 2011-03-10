@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cscope <Formula
+class Cscope < Formula
   url 'http://downloads.sourceforge.net/sourceforge/cscope/cscope-15.7a.tar.bz2'
   homepage 'http://cscope.sourceforge.net/'
   md5 'da43987622ace8c36bbf14c15a350ec1'
