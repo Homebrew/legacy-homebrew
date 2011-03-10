@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ghc <Formula
+class Ghc < Formula
   homepage 'http://haskell.org/ghc/'
   url "http://darcs.haskell.org/download/dist/6.12.3/GHC-6.12.3-i386.pkg"
   version '6.12.3'

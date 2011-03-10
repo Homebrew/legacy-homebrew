@@ -1,6 +1,6 @@
 require 'formula'
 
-class Wine <Formula
+class Wine < Formula
   if ARGV.flag? '--devel'
     url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.15.tar.bz2'
     sha1 'c0b6137671fc2413ad72c3aa9eb3046a871f7889'

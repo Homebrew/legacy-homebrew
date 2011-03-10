@@ -1,6 +1,6 @@
 require 'formula'
 
-class Tophat <Formula
+class Tophat < Formula
   url 'http://tophat.cbcb.umd.edu/downloads/tophat-1.2.0.tar.gz'
   homepage 'http://tophat.cbcb.umd.edu/'
   md5 '7ada78bdb9a84e13392418aa6cc9142c'

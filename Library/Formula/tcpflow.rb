@@ -1,6 +1,6 @@
 require 'formula'
 
-class Tcpflow <Formula
+class Tcpflow < Formula
   url 'http://www.circlemud.org/pub/jelson/tcpflow/tcpflow-0.21.tar.gz'
   homepage 'http://www.circlemud.org/~jelson/software/tcpflow/'
   md5 '45a5aef6f043312315b7f342afc4a9c5'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Fox <Formula
+class Fox < Formula
   url 'http://www.fox-toolkit.org/ftp/fox-1.7.23.tar.gz'
   homepage 'http://www.fox-toolkit.org/'
   md5 'ee8430d6480d3289d54b847f47405670'

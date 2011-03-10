@@ -1,6 +1,6 @@
 require 'formula'
 
-class Vala <Formula
+class Vala < Formula
   head 'git://git.gnome.org/vala'
   url 'http://download.gnome.org/sources/vala/0.11/vala-0.11.5.tar.bz2'
   homepage 'http://live.gnome.org/Vala'

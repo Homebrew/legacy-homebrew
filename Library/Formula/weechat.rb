@@ -1,6 +1,6 @@
 require 'formula'
 
-class Weechat <Formula
+class Weechat < Formula
   head 'git://git.sv.gnu.org/weechat.git'
   url 'http://www.weechat.org/files/src/weechat-0.3.4.tar.bz2'
   homepage 'http://www.weechat.org'

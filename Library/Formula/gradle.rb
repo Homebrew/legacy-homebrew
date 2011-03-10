@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gradle <Formula
+class Gradle < Formula
   homepage 'http://www.gradle.org/'
   version '1.0-milestone-1'
   url 'http://gradle.artifactoryonline.com/gradle/distributions/gradle-1.0-milestone-1-all.zip'

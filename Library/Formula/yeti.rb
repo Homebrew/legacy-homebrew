@@ -1,6 +1,6 @@
 require 'formula'
 
-class Yeti <Formula
+class Yeti < Formula
   url 'http://linux.ee/~mzz/yeti/yeti.jar'
   homepage 'http://mth.github.com/yeti/'
   md5 '4b1ef8dfa760224c061c3b0b98b2ea8c'

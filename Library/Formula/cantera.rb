@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cantera <Formula
+class Cantera < Formula
   url 'http://cantera.googlecode.com/files/cantera-1.8.0-beta.tar.gz'
   homepage 'http://code.google.com/p/cantera/'
   md5 '53d923922535c64b7e6b9f07bbfcf866'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cvsync <Formula
+class Cvsync < Formula
   url 'ftp://ftp.cvsync.org/pub/cvsync/cvsync-0.24.19.tar.gz'
   homepage 'http://www.cvsync.org/'
   sha1 'a3c0673bf0f3b81b1eb45ac828a527d2a4e6d2f6'

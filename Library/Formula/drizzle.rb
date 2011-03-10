@@ -1,6 +1,6 @@
 require 'formula'
 
-class Drizzle <Formula
+class Drizzle < Formula
   url 'http://launchpad.net/drizzle/elliott/2011-01-17/+download/drizzle7-2011.01.08.tar.gz'
   homepage 'http://drizzle.org'
   md5 'e2b26ad273f5d8560b3423716f52931d'

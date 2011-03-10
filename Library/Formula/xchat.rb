@@ -1,6 +1,6 @@
 require 'formula'
 
-class Xchat <Formula
+class Xchat < Formula
   url 'http://xchat.org/files/source/2.8/xchat-2.8.8.tar.bz2'
   homepage 'http://xchat.org'
   md5 '6775c44f38e84d06c06c336b32c4a452'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Tcptrack <Formula
+class Tcptrack < Formula
   url 'http://www.rhythm.cx/~steve/devel/tcptrack/release/1.3.0/source/tcptrack-1.3.0.tar.gz'
   homepage 'http://www.rhythm.cx/~steve/devel/tcptrack/'
   md5 '227baeb2f96758f7614f6f788b6a4d93'

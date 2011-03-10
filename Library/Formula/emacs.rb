@@ -1,6 +1,6 @@
 require 'formula'
 
-class Emacs <Formula
+class Emacs < Formula
   url 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.2.tar.bz2'
   md5 '057a0379f2f6b85fb114d8c723c79ce2'
   homepage 'http://www.gnu.org/software/emacs/'

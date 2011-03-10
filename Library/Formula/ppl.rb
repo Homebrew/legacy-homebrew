@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ppl <Formula
+class Ppl < Formula
   url 'http://www.cs.unipr.it/ppl/Download/ftp/releases/0.10.2/ppl-0.10.2.tar.bz2'
   head 'http://www.cs.unipr.it/ppl/Download/ftp/snapshots/ppl-0.11pre24.tar.bz2'
   homepage 'http://www.cs.unipr.it/ppl/'

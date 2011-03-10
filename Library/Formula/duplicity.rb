@@ -1,6 +1,6 @@
 require 'formula'
 
-class Duplicity <Formula
+class Duplicity < Formula
   url 'http://code.launchpad.net/duplicity/0.6-series/0.6.11/+download/duplicity-0.6.11.tar.gz'
   homepage 'http://www.nongnu.org/duplicity/'
   md5 '1116be7aababa467336eac2092f66ab7'

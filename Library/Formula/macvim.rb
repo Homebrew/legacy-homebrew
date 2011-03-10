@@ -1,6 +1,6 @@
 require 'formula'
 
-class Macvim <Formula
+class Macvim < Formula
   url 'https://github.com/b4winckler/macvim/tarball/snapshot-57'
   version '7.3-57'
   md5 '2bf4630be2d59f62b8b70870ba1fe0a1'

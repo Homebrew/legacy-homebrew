@@ -1,7 +1,7 @@
 require 'formula'
 require 'hardware'
 
-class Mongodb <Formula
+class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
 
   if Hardware.is_64_bit? and not ARGV.include? '--32bit'
