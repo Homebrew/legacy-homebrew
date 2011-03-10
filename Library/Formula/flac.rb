@@ -5,7 +5,7 @@ class Flac2Mp3 <GithubGistFormula
   md5 '8351009b64afedfeb7a9e162ccd8d94c'
 end
 
-class Flac <Formula
+class Flac < Formula
   homepage 'http://flac.sourceforge.net'
   url 'http://downloads.sourceforge.net/sourceforge/flac/flac-1.2.1.tar.gz'
   md5 '153c8b15a54da428d1f0fadc756c22c7'

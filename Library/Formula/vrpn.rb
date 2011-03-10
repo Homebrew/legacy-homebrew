@@ -1,6 +1,6 @@
 require 'formula'
 
-class Vrpn <Formula
+class Vrpn < Formula
   url 'git://git.cs.unc.edu/vrpn.git', :tag => 'version_07.28'
   version '07.28'
   homepage 'http://vrpn.org'

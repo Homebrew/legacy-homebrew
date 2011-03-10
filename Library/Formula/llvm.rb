@@ -5,13 +5,13 @@ def build_universal?; ARGV.include? '--universal'; end
 def build_shared?; ARGV.include? '--shared'; end
 def build_rtti?; ARGV.include? '--rtti'; end
 
-class Clang <Formula
+class Clang < Formula
   url       'http://llvm.org/releases/2.8/clang-2.8.tgz'
   homepage  'http://llvm.org/'
   md5       '10e14c901fc3728eecbd5b829e011b59'
 end
 
-class Llvm <Formula
+class Llvm < Formula
   url       'http://llvm.org/releases/2.8/llvm-2.8.tgz'
   homepage  'http://llvm.org/'
   md5       '220d361b4d17051ff4bb21c64abe05ba'

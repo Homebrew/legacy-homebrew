@@ -96,7 +96,7 @@ class FormulaCreator
   def template; <<-EOS.undent
     require 'formula'
 
-    class #{Formula.class_s name} <Formula
+    class #{Formula.class_s name} < Formula
       url '#{url}'
       homepage ''
       md5 '#{md5}'

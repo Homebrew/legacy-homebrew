@@ -1,12 +1,12 @@
 require 'formula'
 
-class GhostscriptFonts <Formula
+class GhostscriptFonts < Formula
   url 'http://downloads.sourceforge.net/project/gs-fonts/gs-fonts/8.11%20%28base%2035%2C%20GPL%29/ghostscript-fonts-std-8.11.tar.gz'
   homepage 'http://sourceforge.net/projects/gs-fonts/'
   md5 '6865682b095f8c4500c54b285ff05ef6'
 end
 
-class Ghostscript <Formula
+class Ghostscript < Formula
   url 'http://ghostscript.com/releases/ghostscript-9.01.tar.bz2'
   homepage 'http://www.ghostscript.com/'
   md5 '9824d6a21ad8b4a831f67601959f1181'

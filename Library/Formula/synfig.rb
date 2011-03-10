@@ -1,6 +1,6 @@
 require 'formula'
 
-class Synfig <Formula
+class Synfig < Formula
   url 'https://downloads.sourceforge.net/project/synfig/synfig/0.62.02/synfig-0.62.02.tar.gz'
   homepage 'http://synfig.org'
   head 'git://synfig.git.sourceforge.net/gitroot/synfig/synfig', :using => :git

@@ -1,6 +1,6 @@
 require 'formula'
 
-class TodoTxt <Formula
+class TodoTxt < Formula
   url 'https://github.com/downloads/ginatrapani/todo.txt-cli/todo.txt_cli-2.7.tar.gz'
   homepage 'http://todotxt.com/'
   md5 'b4ef313bbb8f185fe4a21ce07ad6933d'

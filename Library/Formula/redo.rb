@@ -1,11 +1,11 @@
 require 'formula'
 
-class RedoDocs <Formula
+class RedoDocs < Formula
   head 'https://github.com/apenwarr/redo.git', {:using => :git, :branch => 'man' }
   version 'foo'
 end
 
-class Redo <Formula
+class Redo < Formula
   version '0.06'
   url "https://github.com/apenwarr/redo/zipball/redo-#{version}"
   homepage 'https://github.com/apenwarr/redo'

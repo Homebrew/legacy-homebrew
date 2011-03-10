@@ -9,7 +9,7 @@ class VmallocDownloadStrategy <CurlDownloadStrategy
   end
 end
 
-class Vmalloc <Formula
+class Vmalloc < Formula
   url 'http://www2.research.att.com/~gsf/download/tgz/vmalloc.2005-02-01.tgz',
       :using => VmallocDownloadStrategy
   homepage 'http://www2.research.att.com/sw/download/'

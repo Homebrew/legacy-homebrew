@@ -1,6 +1,6 @@
 require 'formula'
 
-class Nmap <Formula
+class Nmap < Formula
   url 'http://nmap.org/dist/nmap-5.51.tar.bz2'
   homepage 'http://nmap.org/5/'
   md5 '0b80d2cb92ace5ebba8095a4c2850275'

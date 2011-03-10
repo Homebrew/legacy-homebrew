@@ -1,6 +1,6 @@
 require 'formula'
 
-class SaneBackends <Formula
+class SaneBackends < Formula
   url 'ftp://ftp.sane-project.org/pub/sane/sane-backends-1.0.22/sane-backends-1.0.22.tar.gz'
   homepage 'http://www.sane-project.org/'
   md5 'fadf56a60f4776bfb24491f66b617cf5'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Sublercli <Formula
+class Sublercli < Formula
   head 'http://subler.googlecode.com/svn/trunk/'
   homepage 'http://code.google.com/p/subler/'
 

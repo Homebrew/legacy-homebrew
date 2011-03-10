@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libspotify <Formula
+class Libspotify < Formula
   url "http://developer.spotify.com/download/libspotify/libspotify-0.0.7-Darwin.zip"
   version '0.0.7'
   homepage 'http://developer.spotify.com/en/libspotify/overview/'

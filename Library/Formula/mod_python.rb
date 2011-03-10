@@ -1,6 +1,6 @@
 require 'formula'
 
-class ModPython <Formula
+class ModPython < Formula
   url 'http://archive.apache.org/dist/httpd/modpython/mod_python-3.3.1.tgz'
   homepage 'http://www.modpython.org/'
   md5 'a3b0150176b726bd2833dac3a7837dc5'
