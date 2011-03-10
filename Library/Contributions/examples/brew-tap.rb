@@ -22,6 +22,27 @@ done using the HTTParty gem, but that gem could not be imported.
   exit 1
 end
 
+# Status:
+#
+# Done:
+#
+#   - Repository listing
+#   - Repository cloning
+#   - Resolution of non-standard formulae names to brewfile paths inside
+#     alternative repos
+#
+# TODO:
+#
+#   - Repository removal
+#   - Repository update
+#   - Partial matching for repository/subfolder names
+#   - Option for restricting formulae resolution to a specific
+#     repository/subfolder
+#   - Deal with multiple copies of the same formula
+#   - Dependency resolution---this one will be tricky
+#   - Usage message
+#   - Better Exception handling
+
 
 TAPROOM = HOMEBREW_PREFIX + 'Library' + 'Taproom'
 FOUNDING_BREWERY = {:owner => 'adamv', :name => 'homebrew-alt'}
@@ -186,15 +207,11 @@ class Taproom
   def get_formula name
     # Searches through the available formulae for a formula that matches the
     # given name.
-    # TODO: Allow the search to be restricted to a given Brewery or Brewery
-    # subfolder.
     matches = formulae.select {|f| f.end_with? "#{name}.rb"}
 
     if matches.empty?
       raise "No formula for #{name} available in the Taproom"
     else
-      # TODO: Handle cases where multiple brewfiles are available for a given
-      # formula.
       matches.first
     end
   end
@@ -231,7 +248,6 @@ class Taproom
 
   def on_tap? name
     # Has a given brewery been tapped?
-    # TODO: Use partial matching on names to save people some typing?
     File.directory? @path + name
   end
 
@@ -242,7 +258,6 @@ class Taproom
   end
 
   def get_brewery name
-    # TODO: Partial matching?
     brewery = menu[:breweries].select {|b| b.id == name}
     if brewery.empty?
       raise "No repository named #{name} on the menu!"
@@ -253,8 +268,6 @@ class Taproom
 
   def tap brewery_name
     # This method will run a checkout on the specified brewery.
-    # TODO: Find a way of hooking into the RefreshBrew class used by
-    # `brew update`
     if on_tap? brewery_name
       ohai "#{brewery_name} is allready on tap. Brew away!"
       return
