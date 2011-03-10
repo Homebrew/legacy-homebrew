@@ -6,6 +6,14 @@ class Graphviz <Formula
   homepage 'http://graphviz.org/'
 
   depends_on 'pkg-config' => :build
+  depends_on 'pango' if ARGV.include? '--with-pdf'
+  depends_on 'cario' if ARGV.include? '--with-pdf'
+
+  def options
+    [
+      ["--with-pdf", "Build with Pango/Cairo to support native PDF output"],
+    ]
+  end
 
   def install
     ENV.x11
