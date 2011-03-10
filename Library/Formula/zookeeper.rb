@@ -64,7 +64,7 @@ class Zookeeper <Formula
 
     # Install Perl bindings
     cd "src/contrib/zkperl" do
-      system "perl", "Makefile.PL", "PREFIX=#{prefix}", "--zookeeper-include=#{prefix}/include/c-client-src", "--zookeeper-lib=#{prefix}/lib"
+      system "perl", "Makefile.PL", "PREFIX=#{prefix}", "--zookeeper-include=#{include}/c-client-src", "--zookeeper-lib=#{lib}"
       system "make install"
     end if ARGV.include? "--perl"
 

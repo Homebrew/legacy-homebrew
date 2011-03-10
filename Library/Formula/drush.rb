@@ -17,4 +17,10 @@ class Drush <Formula
     symlink prefix+'drush', bin+'drush'
     DrushMake.new.brew { (prefix+'commands/drush_make').install Dir['*'] }
   end
+
+  def patches
+    # explanation and source: http://drupal.org/node/1078318
+    # remove this for any version above 4.2
+    "http://drupal.org/files/issues/drush-1078318.patch"
+  end
 end

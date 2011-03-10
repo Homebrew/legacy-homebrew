@@ -1,13 +1,12 @@
 require 'formula'
 
 class CupsPdf <Formula
-  url 'http://www.cups-pdf.de/src/cups-pdf_2.5.0.tar.gz'
-  md5 '9194af099a8c0e9aa213505b29ec6818'
+  url 'http://www.cups-pdf.de/src/cups-pdf_2.5.1.tar.gz'
+  md5 '4b4cf1a249d02a38045db74b5f259aac'
   homepage 'http://www.cups-pdf.de/'
 
-  def patches
-    DATA
-  end
+  # Patch derived from MacPorts.
+  def patches; DATA; end
 
   def install
     system "gcc -O9 -o cups-pdf src/cups-pdf.c"
