@@ -1,10 +1,11 @@
 require 'formula'
 
 class X264 <Formula
-  url "http://download.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20100903-2245.tar.bz2"
+  url "http://download.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20110309-2245-stable.tar.bz2"
   homepage 'http://www.videolan.org/developers/x264.html'
-  md5 '79d13e0fd56a73c65f75940d70e9c450'
-  version 'r1713M-c276662'
+  md5 '55ac2fc833e7d14f9e8f239ddb615f75'
+  head 'git://git.videolan.org/x264.git'
+  version 'r1913M'
 
   head 'git://git.videolan.org/x264.git'
 
@@ -13,7 +14,8 @@ class X264 <Formula
   def install
     system "./version.sh"
     system "./configure", "--prefix=#{prefix}",
-                          "--enable-shared"
+                          "--enable-shared",
+                          "--disable-debug"
 
     inreplace 'config.mak' do |s|
       ldflags = s.get_make_var 'LDFLAGS'
