@@ -28,7 +28,7 @@ Prints extra, comand\-specific debugging information\. Note that \fBbrew \-v\fR 
 Print the version number of brew to standard error and exit\.
 .
 .TP
-\fBinstall [\-\-force] [\-\-debug] [\-\-use\-llvm] [\-\-ignore\-dependencies] [\-\-HEAD]\fR \fIformula\fR
+\fBinstall [\-\-force] [\-\-debug] [\-\-use\-llvm | \-\-use\-gcc] [\-\-ignore\-dependencies] [\-\-HEAD]\fR \fIformula\fR
 Install \fIformula\fR\.
 .
 .IP
@@ -41,7 +41,11 @@ If \fB\-\-force\fR is passed, will install \fIformula\fR even if it is already i
 If \fB\-\-debug\fR is passed and brewing fails, open a shell inside the temporary folder used for compiling\.
 .
 .IP
-If \fB\-\-use\-llvm\fR is passed, attempt to compile using the LLVM front\-end to GCC\. \fINOTE\fR: Not all formulae will build with LLVM\.
+If \fB\-\-use\-llvm\fR is passed, attempt to compile using the LLVM front\-end to GCC\.
+
+If \fB\-\-use\-gcc\fR is passed, attempt to compile using the traditional GNU Compiler Collection\.
+
+\fINOTE\fR: Not all formulae will build with LLVM; GCC may work more readily than llvm\. With Xcode 4, llvm is the default, so this command is sometimes needed for packages for which LLVM doesn't work yet\. Brew will do what it can to fix this for you, but will use your environment as it's configured.
 .
 .IP
 If \fB\-\-ignore\-dependencies\fR is passed, skip installing any dependencies of any kind\. If they are not already present, the formula will probably fail to install\.
@@ -307,6 +311,10 @@ If set, instructs Homebrew to use gcc, even if the system default is currently s
 .TP
 HOMEBREW_USE_LLVM
 If set, instructs Homebrew to use the LLVM front\-ends to the GCC compilers\.
+.
+.TP
+HOMEBREW_USE_GCC
+If set, instructs Homebrew to use the traditional GNU Compiler Collection\.
 .
 .IP
 \fINOTE\fR: Not all formulae build correctly with LLVM\.
