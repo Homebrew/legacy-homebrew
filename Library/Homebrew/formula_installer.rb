@@ -13,15 +13,15 @@ class FormulaInstaller
   def go
     if @f.installed? and not ARGV.force?
       raise FormulaAlreadyInstalledError, @f
-    else
-      unless ignore_deps
-        @f.recursive_deps.each do |dep|
-          FormulaInstaller.install_formula dep unless dep.installed?
-        end
-        FormulaInstaller.check_external_deps @f
-      end
-      FormulaInstaller.install_formula @f
     end
+
+    unless ignore_deps
+      @f.recursive_deps.each do |dep|
+        FormulaInstaller.install_formula dep unless dep.installed?
+      end
+      FormulaInstaller.check_external_deps @f
+    end
+    FormulaInstaller.install_formula @f
   end
 
   def self.check_external_deps f
