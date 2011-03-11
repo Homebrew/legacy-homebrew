@@ -6,17 +6,12 @@ class R < Formula
   md5 'bc70b51dddab8aa39066710624e55d5e'
 
   def install
-    unless `/usr/bin/which gfortran`.chomp.size > 0
-      opoo 'No gfortran found in path'
-      puts "You'll need to `brew install gfortran` or otherwise have a copy"
-      puts "of gfortran in your path for this brew to work."
-    end
+    ENV.fortran
 
-    ENV["FCFLAGS"] = ENV["CFLAGS"]
-    ENV["FFLAGS"]  = ENV["CFLAGS"]
-
-    system "./configure", "--prefix=#{prefix}", "--with-aqua", "--enable-R-framework",
-           "--with-lapack"
+    system "./configure", "--prefix=#{prefix}",
+                          "--with-aqua",
+                          "--enable-R-framework",
+                          "--with-lapack"
     system "make"
     ENV.j1 # Serialized installs, please
     system "make install"
