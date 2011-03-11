@@ -9,6 +9,8 @@ class SaneBackends <Formula
   depends_on 'libtiff'
   depends_on 'libusb-compat'
 
+  skip_clean "var/lock/sane"
+
   def install
     ENV.j1 # Makefile does not seem to be parallel-safe
     system "./configure", "--disable-dependency-tracking",
@@ -19,5 +21,8 @@ class SaneBackends <Formula
                           "--disable-latex"
     system "make"
     system "make install"
+
+    # Some drivers require a lockfile
+    (var+"lock/sane").mkpath
   end
 end
