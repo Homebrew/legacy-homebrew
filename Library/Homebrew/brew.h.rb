@@ -1,5 +1,5 @@
 FORMULA_META_FILES = %w[README README.md ChangeLog COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
-PLEASE_REPORT_BUG = "#{Tty.white}Please report this bug at #{Tty.em}http://github.com/mxcl/homebrew/issues#{Tty.reset}"
+PLEASE_REPORT_BUG = "#{Tty.white}Please report this bug at #{Tty.em}\n#{HOMEBREW_GIT_URL}/issues#{Tty.reset}"
 
 def check_for_blacklisted_formula names
   return if ARGV.force?
@@ -172,8 +172,8 @@ end
 
 def github_info name
   formula_name = Formula.path(name).basename
-  user = 'mxcl'
-  branch = 'master'
+  user = HOMEBREW_GIT_URL
+  branch = HOMEBREW_GIT_BRANCH
 
   if system "#{SystemCommand.which_s} git"
     gh_user=`git config --global github.user 2>/dev/null`.chomp
@@ -239,9 +239,9 @@ def issues_for_formula name
 
   issues = []
 
-  open("http://github.com/api/v2/yaml/issues/search/mxcl/homebrew/open/"+name) do |f|
+  open("http://github.com/api/v2/yaml/issues/search/#{HOMEBREW_GIT_USER}/homebrew/open/"+name) do |f|
     YAML::load(f.read)['issues'].each do |issue|
-      issues << 'http://github.com/mxcl/homebrew/issues/#issue/%s' % issue['number']
+      issues << "http://github.com/#{HOMEBREW_GIT_USER}/homebrew/issues/#issue/%s" % issue['number']
     end
   end
 
