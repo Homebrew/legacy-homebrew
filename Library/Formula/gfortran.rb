@@ -1,5 +1,4 @@
 require 'formula'
-require 'brew.h'
 
 class GfortranPkgDownloadStrategy <CurlDownloadStrategy
   def stage
