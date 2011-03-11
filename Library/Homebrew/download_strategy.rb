@@ -268,7 +268,7 @@ class GitDownloadStrategy <AbstractDownloadStrategy
     end
 
     unless @clone.exist?
-      safe_system 'git', 'clone', @url, @clone # indeed, leave it verbose
+      safe_system 'git', 'clone', '--depth', '1', @url, @clone # indeed, leave it verbose
     else
       puts "Updating #{@clone}"
       Dir.chdir(@clone) do
