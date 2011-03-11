@@ -21,7 +21,7 @@ module HomebrewEnvExtension
       self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
     end
 
-    if SystemCommand.platform == :linux
+    if SystemCommand.platform == :linux || SystemCommand.platform == :freebsd
       self['CC'] = '/usr/bin/cc'
       self['CXX'] = '/usr/bin/c++'
       cflags = ['-O3']

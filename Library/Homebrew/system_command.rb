@@ -6,6 +6,8 @@ module Homebrew
         :linux
       elsif RUBY_PLATFORM =~ /.*-darwin.*/
         :mac
+      elsif RUBY_PLATFORM =~ /.*-freebsd.*/
+        :freebsd
       else
         :dunno
       end
@@ -27,6 +29,8 @@ module Homebrew
         @@provider ||= SystemCommandLinux.new
       when 'Darwin'
         @@provider ||= SystemCommandMac.new
+      when 'FreeBSD'
+        @@provider ||= SystemCommandFreeBSD.new
       else
         raise Exception.new 'Unknown platform. Aborting.'
       end
@@ -79,4 +83,11 @@ module Homebrew
     end
 
   end
+
+   class SystemCommandFreeBSD < SystemCommandMac
+
+     def which_s
+       "/usr/bin/which"
+     end
+   end
 end

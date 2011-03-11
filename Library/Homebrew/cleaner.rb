@@ -41,6 +41,9 @@ private
     when /Mach-O [^ ]* ?executable/
       strip path
       perms=0555
+    when /ELF (.*) executable/
+      strip path
+      perms=0555
     when /script text executable/
       perms=0555
     end
