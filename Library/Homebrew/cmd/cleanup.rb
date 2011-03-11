@@ -8,6 +8,8 @@ module Homebrew extend self
         begin
           cleanup_formula rack.basename.to_s if rack.directory?
         rescue FormulaUnavailableError => e
+          # Don't complain about Cellar folders that are from DIY installs
+          # instead of core formulae.
         end
       end
       # seems like a good time to do some additional cleanup
@@ -34,7 +36,7 @@ module Homebrew extend self
     elsif rack.children.length > 1
       # If the cellar only has one version installed, don't complain
       # that we can't tell which one to keep.
-      opoo "Skipping #{name}: most recent version #{f.version} not installed"
+      opoo "Skipping #{f.name}: most recent version #{f.version} not installed"
     end
   end
 
