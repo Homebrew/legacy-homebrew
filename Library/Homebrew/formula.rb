@@ -285,7 +285,8 @@ class Formula
       begin
         yield Formula.factory(n)
       rescue
-        # Don't let one broken formula break commands.
+        # Don't let one broken formula break commands. But do complain.
+        onoe "Formula #{n} will not import."
       end
     end
   end
