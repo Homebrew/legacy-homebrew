@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mkvtoolnix <Formula
-  url 'http://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-4.5.0.tar.bz2'
+  url 'http://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-4.6.0.tar.bz2'
   homepage 'http://www.bunkus.org/videotools/mkvtoolnix/'
-  sha1 '7e9c14c29f5aaf7043ac2c2db56326970c63242d'
+  sha1 '1e46f94a0b50bf3e12c0feab710655e7cf2a9489'
 
   depends_on 'boost'
   depends_on 'libvorbis'
