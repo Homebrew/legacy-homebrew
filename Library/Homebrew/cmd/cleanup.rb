@@ -25,6 +25,14 @@ module Homebrew extend self
     f = Formula.factory f
     rack = f.prefix.parent
 
+    # Don't clean up keg-only brews for now.
+    # Formulae link directly to them, so cleaning up old
+    # ones will break already compiled software.
+    if f.keg_only?
+      opoo "Skipping keg-only #{f.name}" if rack.children.length > 1
+      return
+    end
+
     if f.installed? and rack.directory?
       rack.children.each do |keg|
         if f.installed_prefix != keg
