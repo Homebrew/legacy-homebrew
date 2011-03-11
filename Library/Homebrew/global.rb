@@ -26,6 +26,7 @@ if not defined? HOMEBREW_BREW_FILE
 end
 
 HOMEBREW_PREFIX = Pathname.new(HOMEBREW_BREW_FILE).dirname.parent # Where we link under
+FORMULA_REPOSITORY = ENV['BREW_FORMULA_REPOSITORY'] || "#{Pathname.new(HOMEBREW_BREW_FILE).dirname.parent}/Library/Formula/"
 HOMEBREW_REPOSITORY = Pathname.new(HOMEBREW_BREW_FILE).realpath.dirname.parent # Where .git is found
 
 # Where we store built products; /usr/local/Cellar if it exists,
