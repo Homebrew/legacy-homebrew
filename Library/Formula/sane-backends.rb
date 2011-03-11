@@ -10,6 +10,7 @@ class SaneBackends <Formula
   depends_on 'libusb-compat'
 
   def install
+    ENV.j1 # Makefile does not seem to be parallel-safe
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-gphoto2",
