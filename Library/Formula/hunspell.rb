@@ -5,8 +5,12 @@ class Hunspell <Formula
   homepage 'http://hunspell.sourceforge.net/'
   md5 'c2f289af57a677e6b258f2d18ecb178e'
 
+  depends_on 'readline'
+
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--with-ui", "--with-readline"
     system "make"
     ENV.deparallelize
     system "make install"

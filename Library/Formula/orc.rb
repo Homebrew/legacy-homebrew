@@ -2,8 +2,8 @@ require 'formula'
 
 class Orc <Formula
   homepage 'http://code.entropywave.com/projects/orc/'
-  url 'http://code.entropywave.com/download/orc/orc-0.4.5.tar.gz'
-  md5 'e26e59428b13ec251916f34bea96eee5'
+  url 'http://code.entropywave.com/download/orc/orc-0.4.11.tar.gz'
+  md5 'b8b0b148d319422c3ad250c29483b3c4'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

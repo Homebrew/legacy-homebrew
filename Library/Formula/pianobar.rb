@@ -16,7 +16,7 @@ class Pianobar <Formula
 
   def install
     inreplace "Makefile" do |s|
-      s.gsub! "CFLAGS:=-std=c99 -O2 -DNDEBUG", "CFLAGS=-std=c99 #{ENV.cflags}"
+      s.gsub! "CFLAGS:=-std=c99 -O2 -DNDEBUG", "CFLAGS=-std=c99 #{ENV.cflags} #{ENV['CPPFLAGS']} #{ENV['LDFLAGS']}"
     end
     system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"
