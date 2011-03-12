@@ -1,9 +1,17 @@
 require 'formula'
 
 class Zookeeper <Formula
-  url 'http://mirror.switch.ch/mirror/apache/dist/hadoop/zookeeper/zookeeper-3.3.1/zookeeper-3.3.1.tar.gz'
-  homepage 'http://hadoop.apache.org/zookeeper'
-  md5 'bdcd73634e3f6623a025854f853c3d0d'
+  url 'http://mirror.switch.ch/mirror/apache/dist/hadoop/zookeeper/zookeeper-3.3.2/zookeeper-3.3.2.tar.gz'
+  head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
+  homepage 'http://hadoop.apache.org/zookeeper/'
+  md5 '346cdc18bf2bc1ce2549ae320ccf1f94'
+
+  def options
+    [
+      ["--perl", "Build Perl bindings."],
+      ["--python", "Build Python bindings."],
+    ]
+  end
 
   def shim_script target
     <<-EOS.undent
@@ -33,12 +41,45 @@ class Zookeeper <Formula
   end
 
   def install
+    # Prep work for svn compile.
+    if ARGV.build_head?
+      system "ant", "compile_jute"
+
+      cd "src/c" do
+        system "autoreconf", "-if"
+      end
+    end
+
+    # Build & install C libraries.
+    cd "src/c" do
+      system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--without-cppunit"
+      system "make install"
+    end
+
+    # Install Python bindings
+    cd "src/contrib/zkpython" do
+      system "python", "src/python/setup.py", "build"
+      system "python", "src/python/setup.py", "install", "--prefix=#{prefix}"
+    end if ARGV.include? "--python"
+
+    # Install Perl bindings
+    cd "src/contrib/zkperl" do
+      system "perl", "Makefile.PL", "PREFIX=#{prefix}", "--zookeeper-include=#{include}/c-client-src", "--zookeeper-lib=#{lib}"
+      system "make install"
+    end if ARGV.include? "--perl"
+
     # Remove windows executables
     rm_f Dir["bin/*.cmd"]
 
     # Install Java stuff
-    libexec.install %w(bin contrib lib)
-    libexec.install Dir['*.jar']
+    if ARGV.build_head?
+      system "ant"
+      libexec.install %w(bin src/contrib src/java/lib)
+      libexec.install Dir['build/*.jar']
+    else
+      libexec.install %w(bin contrib lib)
+      libexec.install Dir['*.jar']
+    end
 
     # Create neccessary directories
     bin.mkpath

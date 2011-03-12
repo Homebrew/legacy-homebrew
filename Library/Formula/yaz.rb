@@ -4,12 +4,16 @@ require 'formula'
 # if this is a problem for you then please fix it! Thanks.
 
 class Yaz <Formula
-  url 'http://ftp.indexdata.dk/pub/yaz/yaz-4.1.3.tar.gz'
+  url 'http://ftp.indexdata.dk/pub/yaz/yaz-4.1.4.tar.gz'
   homepage 'http://www.indexdata.com/yaz'
-  md5 '3e41a35b392e494d0b6d78a243420a84'
+  md5 'f8068fc2c3d0f2c1d68ff197bd9f8795'
+
+  depends_on 'pkg-config' => :build
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-xml2"
     system "make install"
   end
 end

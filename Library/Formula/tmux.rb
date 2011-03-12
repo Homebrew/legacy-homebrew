@@ -12,8 +12,6 @@ class Tmux <Formula
     system "./configure"
 
     inreplace "GNUmakefile" do |s|
-      # Fix 'install' flags
-      s.gsub! " -g bin -o root", ""
       # Put docs in the right place
       s.gsub! "man/man1", "share/man/man1"
     end
