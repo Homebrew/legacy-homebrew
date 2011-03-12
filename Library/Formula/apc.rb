@@ -1,6 +1,6 @@
 require 'formula'
 
-class Apc <Formula
+class Apc < Formula
   url 'http://pecl.php.net/get/APC-3.1.6.tgz'
   homepage 'http://pecl.php.net/package/apc'
   md5 '624b8030254f897face30789d64e6b7e'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Distribute <Formula
+class Distribute < Formula
   url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.14.tar.gz'
   homepage 'http://pypi.python.org/pypi/distribute/0.6.14'
   md5 'ac607e05682116c06383b27a15e2db90'

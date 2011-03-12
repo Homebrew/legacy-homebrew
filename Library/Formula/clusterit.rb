@@ -1,6 +1,6 @@
 require 'formula'
 
-class Clusterit <Formula
+class Clusterit < Formula
   url 'http://downloads.sourceforge.net/project/clusterit/clusterit/clusterit-2.5/clusterit-2.5.tar.gz'
   homepage 'http://www.garbled.net/clusterit.html'
   md5 'f0e772e07122e388de629fb57f7237ab'

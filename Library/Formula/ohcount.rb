@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ohcount <Formula
+class Ohcount < Formula
   url 'http://downloads.sourceforge.net/project/ohcount/ohcount-3.0.0.tar.gz'
   homepage 'http://sourceforge.net/apps/trac/ohcount/'
   md5 '08f97d01adde8b45635abfe93f8a717a'

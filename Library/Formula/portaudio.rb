@@ -1,6 +1,6 @@
 require 'formula'
 
-class Portaudio <Formula
+class Portaudio < Formula
   url 'http://www.portaudio.com/archives/pa_stable_v19_20071207.tar.gz'
   homepage 'http://www.portaudio.com'
   md5 'd2943e4469834b25afe62cc51adc025f'

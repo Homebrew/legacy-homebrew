@@ -1,6 +1,6 @@
 require 'formula'
 
-class Yajl <Formula
+class Yajl < Formula
   homepage 'http://lloyd.github.com/yajl/'
   url 'http://github.com/lloyd/yajl/tarball/1.0.11'
   md5 '5b60f4d59b3b1fb42d7808d08460fb12'

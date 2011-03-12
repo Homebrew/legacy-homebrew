@@ -1,6 +1,6 @@
 require 'formula'
 
-class Chipmunk <Formula
+class Chipmunk < Formula
   head 'http://chipmunk-physics.googlecode.com/svn/trunk'
   homepage 'http://code.google.com/p/chipmunk-physics/'
 

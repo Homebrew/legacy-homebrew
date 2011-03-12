@@ -1,6 +1,6 @@
 require 'formula'
 
-class Monotone <Formula
+class Monotone < Formula
   url 'http://www.monotone.ca/downloads/0.99.1/monotone-0.99.1.tar.gz'
   homepage 'http://www.monotone.ca/'
   sha1 'e74ba571b358f6b76370f882d15ddbd1edd9f37e'

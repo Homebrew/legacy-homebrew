@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libopenspotify <Formula
+class Libopenspotify < Formula
   head 'git://github.com/noahwilliamsson/openspotify.git'
   homepage 'https://github.com/noahwilliamsson/openspotify'
 

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Sleepnow <Formula
+class Sleepnow < Formula
   url 'http://www.snoize.com/SleepNow/SleepNow.tar.gz'
   version '20070603' # Jun  3  2007 source
   homepage 'http://www.snoize.com/SleepNow/'
