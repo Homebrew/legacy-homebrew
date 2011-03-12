@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ginac <Formula
-  url 'http://www.ginac.de/ginac-1.5.7.tar.bz2'
+  url 'http://www.ginac.de/ginac-1.5.8.tar.bz2'
   homepage 'http://www.ginac.de/'
-  md5 '6714dc642dec79fed35b9ba7b7a83b0a'
+  md5 '8693b3c9c3467694032ce9c8b3063d4c'
 
   depends_on 'cln'
   depends_on 'readline'

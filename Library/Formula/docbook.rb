@@ -71,8 +71,8 @@ class Docbookxml50 <Docbookxml
   homepage 'http://www.docbook.org/'
 end
 class Docbookxsl <Formula
-  url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl/1.75.2/docbook-xsl-1.75.2.tar.bz2'
-  md5 '0c76a58a8e6cb5ab49f819e79917308f'
+  url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl/1.76.1/docbook-xsl-1.76.1.tar.bz2'
+  md5 'b5340507cb240cc7ce00632b9c40bff5'
   homepage 'http://docbook.sourceforge.net/'
   def install
     doc_files = %w[AUTHORS BUGS README RELEASE-NOTES.txt TODO VERSION NEWS COPYING]

@@ -9,10 +9,7 @@ class Libicns <Formula
 
   def install
     ENV.libpng
-
-    # build fat so wine can use it
-    ENV.append "CFLAGS", "-arch x86_64 -arch i386"
-    ENV.append "LDFLAGS", "-arch x86_64 -arch i386"
+    ENV.universal_binary	# build fat so wine can use it
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

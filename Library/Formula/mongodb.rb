@@ -35,12 +35,13 @@ class Mongodb <Formula
 
   def caveats; <<-EOS
 If this is your first install, automatically load on login with:
-    cp #{prefix}/org.mongodb.mongod.plist ~/Library/LaunchAgents
+    mkdir -p ~/Library/LaunchAgents
+    cp #{prefix}/org.mongodb.mongod.plist ~/Library/LaunchAgents/
     launchctl load -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
 
 If this is an upgrade and you already have the org.mongodb.mongod.plist loaded:
     launchctl unload -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
-    cp #{prefix}/org.mongodb.mongod.plist ~/Library/LaunchAgents
+    cp #{prefix}/org.mongodb.mongod.plist ~/Library/LaunchAgents/
     launchctl load -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
 
 Or start it manually:

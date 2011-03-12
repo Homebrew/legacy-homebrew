@@ -1,20 +1,19 @@
 require 'formula'
 
 class MidnightCommander <Formula
-  url 'http://www.midnight-commander.org/downloads/mc-4.7.4.tar.bz2'
+  url 'http://www.midnight-commander.org/downloads/mc-4.7.5.tar.bz2'
   homepage 'http://www.midnight-commander.org/'
-  sha256 '3c8fb2cf3361958552b7397e7aa9400f8b35338da2668b4ed7b4f0e4c5377e9a'
-  version '4.7.4'
+  sha256 '0d2b4e87b8a4158edf54380df9402b4a1a19f7494ef06dd0a0a3e3ff6a2b50f1'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
+  depends_on 's-lang'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-x",
-                          "--with-samba",
-                          "--with-screen=ncurses"
+                          "--with-screen=slang"
     system "make install"
   end
 end

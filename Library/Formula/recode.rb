@@ -24,6 +24,7 @@ class Recode <Formula
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--without-included-gettext",
+                          "--infodir=#{info}",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make install"

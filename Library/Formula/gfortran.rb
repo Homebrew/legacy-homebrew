@@ -90,7 +90,7 @@ Fortran-based brews should also specify environment variables for the Fortran
 compiler in the install section:
 
     # Select the Fortran compiler to be used:
-    ENV["FC"] = ENV["F77"] "\#{HOMEBREW_PREFIX}/bin/gfortran"
+    ENV["FC"] = ENV["F77"] = "\#{HOMEBREW_PREFIX}/bin/gfortran"
 
     # Set Fortran optimization flags:
     ENV["FFLAGS"] = ENV["FCFLAGS"] = ENV["CFLAGS"]

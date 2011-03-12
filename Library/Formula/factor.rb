@@ -8,19 +8,20 @@ class Factor <Formula
   homepage 'http://factorcode.org/'
 
   def install
-    # The build script assume it's in a Git repository.
+    # The build script assumes it is in a Git repository.
     ENV['GIT_DIR']="#{@downloader.cached_location}/.git"
     system "./build-support/factor.sh update"
 
-    libexec.install ["Factor.app", "factor.image", "factor"]
+    prefix.install ["Factor.app", "factor.image", "factor"]
     (bin/'factor').write <<-EOS.undent
     #!/bin/sh
-    exec #{libexec}/factor $@
+    exec #{prefix}/factor $@
     EOS
   end
 
-  def caveats
-    "Cocoa app installed to #{libexec}/Factor.app.\n\n"\
-    "Makes use of 'factor.image' in the same folder."
+  def caveats; <<-EOS.undent
+    Cocoa app installed to #{prefix}/Factor.app.
+    Makes use of 'factor.image' in the same folder.
+    EOS
   end
 end

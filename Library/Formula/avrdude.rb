@@ -5,9 +5,15 @@ class Avrdude <Formula
   homepage 'http://savannah.nongnu.org/projects/avrdude/'
   md5 '69b082683047e054348088fd63bad2ff'
 
+  depends_on 'libusb-compat' if ARGV.include? '--with-usb'
+
+  def options
+    [['--with-usb', 'Compile AVRDUDE with USB support.']]
+  end
+
   def install
-    ENV.j1
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "make"
     system "make install"
   end
 end

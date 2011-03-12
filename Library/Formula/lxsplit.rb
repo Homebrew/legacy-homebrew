@@ -6,8 +6,8 @@ class Lxsplit <Formula
   md5 'ed21a08c167c08d4d81c820782947cb1'
 
   def install
+    bin.mkpath
     inreplace 'Makefile', '/usr/local/bin', bin
-
     system "make"
     system "make install"
   end

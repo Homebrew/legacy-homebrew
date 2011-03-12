@@ -1,9 +1,9 @@
 require 'formula'
 
 class Languagetool <Formula
-  url 'http://www.languagetool.org/download/LanguageTool-1.1.oxt'
+  url 'http://www.languagetool.org/download/LanguageTool-1.2.oxt'
   homepage 'http://www.languagetool.org/'
-  md5 '80abc0901135afa25385e519d44f802e'
+  md5 'f13ea47708968b2eb484f84623dd74e4'
 
   def startup_script
     <<-EOS

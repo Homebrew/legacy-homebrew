@@ -5,7 +5,12 @@ class Libusb <Formula
   homepage 'http://www.libusb.org/'
   md5 '37d34e6eaa69a4b645a19ff4ca63ceef'
 
+  def options
+    [["--universal", "Build a universal binary."]]
+  end
+
   def install
+    ENV.universal_binary if ARGV.include? "--universal"
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end

@@ -14,6 +14,7 @@ class Gpac <Formula
   url 'http://downloads.sourceforge.net/gpac/gpac-0.4.5.tar.gz'
   homepage 'http://gpac.sourceforge.net/index.php'
   md5 '755e8c438a48ebdb13525dd491f5b0d1'
+  head 'https://gpac.svn.sourceforge.net/svnroot/gpac/trunk/gpac', :using => :svn
 
   depends_on 'sdl' => :optional
 

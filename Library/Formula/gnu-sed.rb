@@ -1,9 +1,5 @@
 require 'formula'
 
-def use_default_names?
-  ARGV.include? '--default-names'
-end
-
 class GnuSed <Formula
   url 'http://ftp.gnu.org/gnu/sed/sed-4.2.1.tar.bz2'
   homepage 'http://www.gnu.org/software/sed/'
@@ -15,7 +11,7 @@ class GnuSed <Formula
 
   def install
     args = ["--prefix=#{prefix}", "--disable-dependency-tracking"]
-    args << "--program-prefix=g" unless use_default_names?
+    args << "--program-prefix=g" unless ARGV.include? '--default-names'
 
     system "./configure", *args
     system "make install"

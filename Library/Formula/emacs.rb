@@ -1,8 +1,8 @@
 require 'formula'
 
 class Emacs <Formula
-  url 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.2.tar.bz2'
-  md5 '057a0379f2f6b85fb114d8c723c79ce2'
+  url 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.3.tar.bz2'
+  md5 'a673c163b4714362b94ff6096e4d784a'
   homepage 'http://www.gnu.org/software/emacs/'
 
   if ARGV.include? "--use-git-head"
@@ -20,7 +20,9 @@ class Emacs <Formula
   end
 
   def patches
-    "https://github.com/downloads/typester/emacs/feature-fullscreen.patch" if ARGV.include? "--cocoa"
+    if ARGV.include? "--cocoa" and not ARGV.build_head?
+      "https://github.com/downloads/typester/emacs/feature-fullscreen.patch"
+    end
   end
 
   def caveats

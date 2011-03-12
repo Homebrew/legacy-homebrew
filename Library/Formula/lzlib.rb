@@ -1,9 +1,9 @@
 require 'formula'
 
 class Lzlib <Formula
-  url 'http://download.savannah.gnu.org/releases/lzip/lzlib-1.0.tar.gz'
+  url 'http://download.savannah.gnu.org/releases/lzip/lzlib-1.1.tar.gz'
   homepage 'http://www.nongnu.org/lzip/lzlib.html'
-  md5 '39bfe00964a03be95d51ebbe9104b337'
+  md5 '3e57ebb510b6343e93f56724cfa16510'
 
 
   def install

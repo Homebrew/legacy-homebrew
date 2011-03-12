@@ -13,10 +13,9 @@ class InternationalFonts <Formula
 end
 
 class Figlet <Formula
-  url 'ftp://ftp.figlet.org:21//pub/figlet/program/unix/figlet222.tar.gz'
+  url 'ftp://ftp.figlet.org/pub/figlet/program/unix/figlet-2.2.3.tar.gz'
   homepage 'http://www.figlet.org'
-  md5 '5f84ad52d092d5db4ad5916df767646b'
-  version "2.2.2"
+  md5 'c9e49dc83efc59070a00313b936002bf'
 
   def fonts
     share + "figlet/fonts"

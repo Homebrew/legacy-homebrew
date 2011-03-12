@@ -224,6 +224,8 @@ def audit_some_formulae
       problems << " * 'DATA' was found, but no '__END__'"
     end
 
+    problems += [' * invalid or missing version'] if f.version.to_s.empty?
+
     # Don't try remaining audits on text in __END__
     text_without_patch = (text.split("__END__")[0]).strip()
 

@@ -2,8 +2,13 @@ require 'formula'
 
 class Yajl <Formula
   homepage 'http://lloyd.github.com/yajl/'
-  url 'http://cloud.github.com/downloads/lloyd/yajl/yajl-1.0.9.tar.gz'
-  md5 '8643ff2fef762029e51c86882a4d0fc6'
+  url 'http://github.com/lloyd/yajl/tarball/1.0.11'
+  md5 '5b60f4d59b3b1fb42d7808d08460fb12'
+
+  def patches
+    # All YAJL releases so far have an rpath bug, though its fixed in upstream git:
+    "https://github.com/lloyd/yajl/commit/a31c4d0f9ad90b4b58508702fd877bb35039067e.patch"
+  end
 
   # Configure uses cmake, even though it looks like we're
   # just using autotools below.

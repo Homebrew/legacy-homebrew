@@ -2,8 +2,8 @@ require 'formula'
 
 class Dmd <Formula
   homepage 'http://www.digitalmars.com/d/'
-  url 'http://ftp.digitalmars.com/dmd.1.065.zip'
-  md5 '10e39569dee0ea6c95806b370f837bc7'
+  url 'http://ftp.digitalmars.com/dmd.2.051.zip'
+  md5 '7952059a67995e3e74f3c27aa3942d6c'
 
   def doc
     #use d and not dmd, rationale: meh
@@ -30,7 +30,7 @@ class Dmd <Formula
 
     (bin+'dmd.conf').open('w') do |f|
       f.puts "[Environment]"
-      f.puts "DFLAGS=-I#{prefix}/src/phobos -L#{lib}"
+      f.puts "DFLAGS=-I#{prefix}/src/phobos -I#{prefix}/src/druntime/import"
     end
   end
 end

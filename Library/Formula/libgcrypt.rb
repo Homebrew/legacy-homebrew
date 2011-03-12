@@ -8,6 +8,8 @@ class Libgcrypt <Formula
   depends_on 'libgpg-error'
 
   def install
+    ENV.universal_binary	# build fat so wine can use it
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-asm",
