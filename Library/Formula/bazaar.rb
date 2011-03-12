@@ -19,15 +19,6 @@ class Bazaar <Formula
 
     if ARGV.include? "--system"
       ENV.prepend "PATH", "/System/Library/Frameworks/Python.framework/Versions/Current/bin", ":"
-    else
-      python_version = `python -c "import sys;print sys.version"`
-      if python_version[0,4] == "2.7."
-        opoo <<-EOS
-Bazaar might not yet work with Python 2.7.
-You can force an installation using the system Python by doing:
-  brew install bazaar --system
-EOS
-      end
     end
 
     # Find the archs of the Python we are building against.
