@@ -1,9 +1,9 @@
 require 'formula'
 
-class Atomicparsley <Formula
+class Atomicparsley < Formula
   url 'http://bitbucket.org/wez/atomicparsley/get/0.9.3.tar.bz2'
   homepage 'http://bitbucket.org/wez/atomicparsley/overview/'
-  md5 'c1a859f0cdcfb2b02d53a2784b6cc662'
+  md5 'af94c6e1d5d63978fbc94ee9f51a4715'
 
   def install
     system "./autogen.sh"

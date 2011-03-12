@@ -1,6 +1,6 @@
 require 'formula'
 
-class BashCompletion <Formula
+class BashCompletion < Formula
   url 'http://bash-completion.alioth.debian.org/files/bash-completion-1.3.tar.bz2'
   homepage 'http://bash-completion.alioth.debian.org/'
   md5 'a1262659b4bbf44dc9e59d034de505ec'

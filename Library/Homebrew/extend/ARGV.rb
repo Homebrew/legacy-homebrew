@@ -1,25 +1,3 @@
-class UsageError <RuntimeError; end
-class FormulaUnspecifiedError <UsageError; end
-class KegUnspecifiedError <UsageError; end
-
-class MultipleVersionsInstalledError <RuntimeError
-  attr :name
-
-  def initialize name
-    @name = name
-    super "#{name} has multiple installed versions"
-  end
-end
-
-class NoSuchKegError <RuntimeError
-  attr :name
-
-  def initialize name
-    @name = name
-    super "No such keg: #{HOMEBREW_CELLAR}/#{name}"
-  end
-end
-
 module HomebrewArgvExtension
   def named
     @named ||= reject{|arg| arg[0..0] == '-'}
@@ -31,7 +9,7 @@ module HomebrewArgvExtension
 
   def formulae
     require 'formula'
-    @formulae ||= downcased_unique_named.map{ |name| Formula.factory(Formula.resolve_alias(name)) }
+    @formulae ||= downcased_unique_named.map{ |name| Formula.factory name }
     raise FormulaUnspecifiedError if @formulae.empty?
     @formulae
   end
@@ -40,7 +18,7 @@ module HomebrewArgvExtension
     require 'keg'
     require 'formula'
     @kegs ||= downcased_unique_named.collect do |name|
-      d = HOMEBREW_CELLAR + Formula.resolve_alias(name)
+      d = HOMEBREW_CELLAR+Formula.caniconical_name(name)
       dirs = d.children.select{ |pn| pn.directory? } rescue []
       raise NoSuchKegError.new(name) if not d.directory? or dirs.length == 0
       raise MultipleVersionsInstalledError.new(name) if dirs.length > 1
@@ -75,6 +53,9 @@ module HomebrewArgvExtension
   end
   def build_head?
     flag? '--HEAD'
+  end
+  def one?
+    flag? "--1"
   end
 
   def flag? flag

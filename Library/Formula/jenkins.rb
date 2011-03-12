@@ -1,6 +1,6 @@
 require 'formula'
 
-class Jenkins <Formula
+class Jenkins < Formula
   url 'http://ftp.osuosl.org/pub/hudson/war/1.399/jenkins.war', :using => :nounzip
   version '1.399'
   md5 'a99ed0277a59d7058c0c13b68cbee783'

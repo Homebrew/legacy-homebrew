@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gmp <Formula
+class Gmp < Formula
   url 'ftp://ftp.gnu.org/gnu/gmp/gmp-5.0.1.tar.bz2'
   homepage 'http://gmplib.org/'
   sha1 '6340edc7ceb95f9015a758c7c0d196eb0f441d49'

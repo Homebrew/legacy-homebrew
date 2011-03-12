@@ -1,6 +1,6 @@
 require 'formula'
 
-class Valgrind <Formula
+class Valgrind < Formula
   homepage 'http://www.valgrind.org/'
 
   url "http://valgrind.org/downloads/valgrind-3.6.1.tar.bz2"

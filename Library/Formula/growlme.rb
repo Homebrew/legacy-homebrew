@@ -1,6 +1,6 @@
 require 'formula'
 
-class Growlme <Formula
+class Growlme < Formula
   head 'git://github.com/robey/growlme.git'
   homepage 'https://github.com/robey/growlme'
 

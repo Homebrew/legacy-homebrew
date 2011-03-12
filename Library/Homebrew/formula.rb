@@ -1,15 +1,6 @@
 require 'download_strategy'
 require 'fileutils'
 
-class FormulaUnavailableError <RuntimeError
-  def initialize name
-    @name = name
-    super "No available formula for #{name}"
-  end
-
-  attr_reader :name
-end
-
 
 class SoftwareSpecification
   attr_reader :url, :specs, :using
@@ -223,6 +214,22 @@ class Formula
     end
   end
 
+  def == b
+    name == b.name
+  end
+  def eql? b
+    self == b and self.class.equal? b.class
+  end
+  def hash
+    name.hash
+  end
+  def <=> b
+    name <=> b.name
+  end
+  def to_s
+    name
+  end
+
   # Standard parameters for CMake builds.
   # Using Build Type "None" tells cmake to use our CFLAGS,etc. settings.
   # Setting it to Release would ignore our flags.
@@ -266,28 +273,42 @@ class Formula
 
   # an array of all Formula, instantiated
   def self.all
-    all = []
+    map{ |f| f }
+  end
+  def self.map
+    rv = []
+    each{ |f| rv << yield(f) }
+    rv
+  end
+  def self.each
     names.each do |n|
       begin
-        all << Formula.factory(n)
+        yield Formula.factory(n)
       rescue
-        # Don't let one broken formula break commands.
+        # Don't let one broken formula break commands. But do complain.
+        onoe "Formula #{n} will not import."
       end
     end
-    return all
+  end
+
+  def inspect
+    name
   end
 
   def self.aliases
     Dir["#{HOMEBREW_REPOSITORY}/Library/Aliases/*"].map{ |f| File.basename f }.sort
   end
 
-  def self.resolve_alias name
-    # Don't resolve paths or URLs
-    return name if name.include?("/")
-
-    aka = HOMEBREW_REPOSITORY+"Library/Aliases/#{name}"
-    if aka.file?
-      aka.realpath.basename('.rb').to_s
+  def self.caniconical_name name
+    formula_with_that_name = HOMEBREW_REPOSITORY+"Library/Formula/#{name}.rb"
+    possible_alias = HOMEBREW_REPOSITORY+"Library/Aliases"+name
+    if name.include? "/"
+      # Don't resolve paths or URLs
+      name
+    elsif formula_with_that_name.file? and formula_with_that_name.readable?
+      name
+    elsif possible_alias.file?
+      possible_alias.realpath.basename('.rb').to_s
     else
       name
     end
@@ -320,8 +341,9 @@ class Formula
         install_type = :from_path
         target_file = path.to_s
       else
+        name = Formula.caniconical_name(name)
         # For names, map to the path and then require
-        require self.path(name)
+        require Formula.path(name)
         install_type = :from_name
       end
     end
@@ -352,7 +374,20 @@ class Formula
   end
 
   def external_deps
-    self.class.external_deps
+    self.class.external_deps or {}
+  end
+
+  # deps are in an installable order
+  # which means if a depends on b then b will be ordered before a in this list
+  def recursive_deps
+    Formula.expand_deps(self).flatten.uniq
+  end
+
+  def self.expand_deps f
+    f.deps.map do |dep|
+      dep = Formula.factory dep
+      expand_deps(dep) << dep
+    end
   end
 
 protected
@@ -381,11 +416,8 @@ protected
         raise
       end
     end
-  rescue SystemCallError
-    # usually because exec could not be find the command that was requested
-    raise
   rescue
-    raise BuildError.new(cmd, args, $?)
+    raise BuildError.new(self, cmd, args, $?)
   end
 
 private

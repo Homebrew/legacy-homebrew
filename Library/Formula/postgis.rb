@@ -8,7 +8,7 @@ def topology?
   ARGV.include? '--with-topology'
 end
 
-class Postgis <Formula
+class Postgis < Formula
   url 'http://postgis.refractions.net/download/postgis-1.5.2.tar.gz'
   homepage 'http://postgis.refractions.net/'
   md5 '772ec1d0f04d6800cd7e2420a97a7483'

@@ -6,7 +6,7 @@ def ff
   return ARGV.formulae
 end
 
-def audit_formula_text text
+def audit_formula_text name, text
   problems = []
 
   # Commented-out cmake support from default template
@@ -98,6 +98,11 @@ def audit_formula_text text
 	  end
 	end
 
+  # Formula depends_on gfortran
+  if text =~ /\s*depends_on\s*(\'|\")gfortran(\'|\")\s*$/
+    problems << " * Use ENV.fortran during install instead of depends_on 'gfortran'"
+  end unless name == "gfortran" # Gfortran itself has this text in the caveats
+
   return problems
 end
 
@@ -138,10 +143,6 @@ end
 
 def audit_formula_urls f
   problems = []
-
-  # To do:
-  # Grab URLs out of patches as well
-  # urls = ((f.patches rescue []) || [])
 
   urls = [(f.url rescue nil), (f.head rescue nil)].reject {|p| p.nil?}
 
@@ -209,35 +210,39 @@ def audit_formula_instance f
   return problems
 end
 
-def audit_some_formulae
-  ff.each do |f|
-    problems = []
+module Homebrew extend self
+  def audit
+    ff.each do |f|
+      problems = []
+      problems += audit_formula_instance f
+      problems += audit_formula_urls f
 
-    problems += audit_formula_instance f
-    problems += audit_formula_urls f
+      perms = File.stat(f.path).mode
+      if perms.to_s(8) != "100644"
+        problems << " * permissions wrong; chmod 644 #{f.path}"
+      end
 
-    text = ""
-    File.open(f.path, "r") { |afile| text = afile.read }
+      text = ""
+      File.open(f.path, "r") { |afile| text = afile.read }
 
-    # DATA with no __END__
-    if (text =~ /\bDATA\b/) and not (text =~ /^\s*__END__\s*$/)
-      problems << " * 'DATA' was found, but no '__END__'"
-    end
+      # DATA with no __END__
+      if (text =~ /\bDATA\b/) and not (text =~ /^\s*__END__\s*$/)
+        problems << " * 'DATA' was found, but no '__END__'"
+      end
 
-    problems += [' * invalid or missing version'] if f.version.to_s.empty?
+      problems += [' * invalid or missing version'] if f.version.to_s.empty?
 
-    # Don't try remaining audits on text in __END__
-    text_without_patch = (text.split("__END__")[0]).strip()
+      # Don't try remaining audits on text in __END__
+      text_without_patch = (text.split("__END__")[0]).strip()
 
-    problems += audit_formula_text(text_without_patch)
-    problems += audit_formula_options(f, text_without_patch)
+      problems += audit_formula_text(f.name, text_without_patch)
+      problems += audit_formula_options(f, text_without_patch)
 
-    unless problems.empty?
-      puts "#{f.name}:"
-      puts problems * "\n"
-      puts
+      unless problems.empty?
+        puts "#{f.name}:"
+        puts problems * "\n"
+        puts
+      end
     end
   end
 end
-
-audit_some_formulae

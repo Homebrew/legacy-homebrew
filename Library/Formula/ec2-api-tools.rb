@@ -3,7 +3,7 @@ require 'formula'
 # This formula serves as the base class for several very similar
 # formulae for Amazon Web Services related tools.
 
-class AmazonWebServicesFormula <Formula
+class AmazonWebServicesFormula < Formula
   # Use this method to peform a standard install for Java-based tools,
   # keeping the .jars out of HOMEBREW_PREFIX/lib
   def standard_install

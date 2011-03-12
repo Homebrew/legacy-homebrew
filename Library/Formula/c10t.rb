@@ -2,7 +2,7 @@ require 'formula'
 
 # Minecraft cartography tool
 
-class C10t <Formula
+class C10t < Formula
   url 'https://github.com/udoprog/c10t/tarball/1.4'
   homepage 'https://github.com/udoprog/c10t'
   md5 '27ff806400602726e45679d444c4489d'

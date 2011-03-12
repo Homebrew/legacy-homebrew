@@ -1,7 +1,7 @@
 require 'formula'
 require 'hardware'
 
-class Qt <Formula
+class Qt < Formula
   url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.2.tar.gz'
   md5 '66b992f5c21145df08c99d21847f4fdb'
   homepage 'http://qt.nokia.com/'

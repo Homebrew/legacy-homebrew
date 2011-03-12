@@ -1,6 +1,6 @@
 require 'formula'
 
-class TokyoTyrant <Formula
+class TokyoTyrant < Formula
   url 'http://fallabs.com/tokyotyrant/tokyotyrant-1.1.41.tar.gz'
   homepage 'http://fallabs.com/tokyotyrant/'
   md5 'a47e58897bd1cbbac173d5a66cc32ae3'
