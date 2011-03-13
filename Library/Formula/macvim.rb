@@ -27,9 +27,13 @@ class Macvim < Formula
     ENV['CXX'] = nil
     ENV['CXXFLAGS'] = nil
 
+    arch = Hardware.is_64_bit? ? 'x86_64' : 'i386'
+    ENV['ARCHFLAGS'] = "-arch #{arch}"
+
     args = ["--with-macsdk=#{MACOS_VERSION}",
            # Add some features
            "--with-features=huge",
+           "--with-macarchs=#{arch}",
            "--enable-perlinterp",
            "--enable-pythoninterp",
            "--enable-rubyinterp",
