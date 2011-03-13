@@ -85,7 +85,7 @@ class FormulaCreator
       puts "Version detected as #{version}."
     end
 
-    unless ARGV.include? "--no-md5" and version
+    unless ARGV.include? "--no-fetch" and version
       strategy = detect_download_strategy url
       @md5 = strategy.new(url, name, version, nil).fetch.md5 if strategy == CurlDownloadStrategy
     end
