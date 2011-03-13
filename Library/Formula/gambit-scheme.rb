@@ -1,6 +1,6 @@
 require 'formula'
 
-class GambitScheme <Formula
+class GambitScheme < Formula
   url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.6/source/gambc-v4_6_0.tgz'
   homepage 'http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page'
   md5 '4f0e8b3e90a96f2203cbaf1e1cc1388a'

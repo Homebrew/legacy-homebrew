@@ -1,6 +1,6 @@
 require 'formula'
 
-class Dmd <Formula
+class Dmd < Formula
   homepage 'http://www.digitalmars.com/d/'
   url 'http://ftp.digitalmars.com/dmd.2.051.zip'
   md5 '7952059a67995e3e74f3c27aa3942d6c'

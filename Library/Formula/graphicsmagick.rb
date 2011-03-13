@@ -10,19 +10,23 @@ def ghostscript_srsly?
   ARGV.include? '--with-ghostscript'
 end
 
+def use_wmf?
+  ARGV.include? '--use-wmf'
+end
+
 def x11?
   # I used this file because old Xcode seems to lack it, and its that old
   # Xcode that loads of people seem to have installed still
   File.file? '/usr/X11/include/ft2build.h'
 end
 
-class Graphicsmagick <Formula
+class Graphicsmagick < Formula
   url 'http://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.12/GraphicsMagick-1.3.12.tar.bz2'
   homepage 'http://www.graphicsmagick.org/'
   md5 '55182f371f82d5f9367bce04e59bbf25'
 
   depends_on 'jpeg'
-  depends_on 'libwmf' => :optional if x11?
+  depends_on 'libwmf' if use_wmf?
   depends_on 'libtiff' => :optional
   depends_on 'little-cms' => :optional
   depends_on 'jasper' => :optional
@@ -37,6 +41,7 @@ class Graphicsmagick <Formula
     [
       ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
       ['--with-magick-plus-plus', 'With C++ library.'],
+      ['--use-wmf', 'Compile with libwmf support.'],
     ]
   end
 

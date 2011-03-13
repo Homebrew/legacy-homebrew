@@ -1,6 +1,6 @@
 require 'formula'
 
-class Exodriver <Formula
+class Exodriver < Formula
   url 'https://github.com/labjack/exodriver/tarball/v2.0.4'
   homepage 'http://labjack.com/support/linux-and-mac-os-x-drivers'
   md5 '9208085ee8a9166898dc812b9d7e1905'

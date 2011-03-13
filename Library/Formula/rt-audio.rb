@@ -1,6 +1,6 @@
 require 'formula'
 
-class RtAudio <Formula
+class RtAudio < Formula
   url 'http://www.music.mcgill.ca/~gary/rtaudio/release/rtaudio-4.0.7.tar.gz'
   homepage 'http://www.music.mcgill.ca/~gary/rtaudio/'
   md5 '5d1292abccffa37505d9c4cc177b1e4f'

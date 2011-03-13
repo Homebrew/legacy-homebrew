@@ -1,6 +1,6 @@
 require 'formula'
 
-class Pstoedit <Formula
+class Pstoedit < Formula
   url 'http://downloads.sourceforge.net/project/pstoedit/pstoedit/3.50/pstoedit-3.50.tar.gz'
   homepage 'http://www.pstoedit.net'
   md5 '97d649305ad90fab7a569154f17e0916'

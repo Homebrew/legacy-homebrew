@@ -1,6 +1,6 @@
 require 'formula'
 
-class Pianobar <Formula
+class Pianobar < Formula
   url 'https://github.com/PromyLOPh/pianobar/tarball/2011.01.24'
   version '2011.01.24'
   homepage 'https://github.com/PromyLOPh/pianobar/'
@@ -15,8 +15,12 @@ class Pianobar <Formula
   skip_clean :bin
 
   def install
-    ENV.delete "CFLAGS"
+    inreplace "Makefile" do |s|
+      s.gsub! "CFLAGS:=-std=c99 -O2 -DNDEBUG", "CFLAGS=-std=c99 #{ENV.cflags} #{ENV['CPPFLAGS']} #{ENV['LDFLAGS']}"
+    end
     system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"
+    # Install contrib folder too, why not.
+    prefix.install Dir['contrib']
   end
 end

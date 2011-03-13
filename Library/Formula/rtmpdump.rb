@@ -1,6 +1,6 @@
 require 'formula'
 
-class Rtmpdump <Formula
+class Rtmpdump < Formula
   url 'http://rtmpdump.mplayerhq.hu/download/rtmpdump-2.3.tgz'
   homepage 'http://rtmpdump.mplayerhq.hu'
   md5 'eb961f31cd55f0acf5aad1a7b900ef59'

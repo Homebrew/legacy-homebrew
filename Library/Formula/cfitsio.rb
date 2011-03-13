@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cfitsio <Formula
+class Cfitsio < Formula
   url 'ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio3240.tar.gz'
   homepage 'http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html'
   md5 'ba34e71562ed381a238678daffb116fb'
