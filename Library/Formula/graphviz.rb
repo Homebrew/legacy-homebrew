@@ -15,6 +15,23 @@ class Graphviz <Formula
     ]
   end
 
+  def caveats
+    s = ""
+    if ARGV.include? "--with-pdf"
+      s += <<-EOS.undent
+        Installing with native pdf support through Pango/Cairo
+
+      EOS
+    else
+      s += <<-EOS.undent
+        Use --with-pdf to build with native pdf support through Pango/Cairo
+
+      EOS
+    end
+
+    return s
+  end
+
   def install
     ENV.x11
     # Various language bindings fail with 32/64 issues.
