@@ -1,42 +1,62 @@
 require 'formula'
+require 'hardware'
 
 class Ghc < Formula
+  def options
+    [
+      ['--i386', 'Install 32-bit version of GHC (default).'],
+      ['--x86_64', 'Install 64-bit version of GHC (not recommended).']
+    ]
+  end
+
   homepage 'http://haskell.org/ghc/'
-  url "http://darcs.haskell.org/download/dist/6.12.3/GHC-6.12.3-i386.pkg"
-  version '6.12.3'
-  md5 '58399e3af68f50a23a847bdfe3de5aca'
+  if ARGV.include? '--x86_64'
+    url "http://www.haskell.org/ghc/dist/7.0.2/ghc-7.0.2-x86_64-apple-darwin.tar.bz2"
+    version '7.0.2-x86_64'
+    md5 'c39e197a720d68952f4d424144bd9f6a'
+  else
+    url "http://www.haskell.org/ghc/dist/7.0.2/ghc-7.0.2-i386-apple-darwin.tar.bz2"
+    version '7.0.2-i386'
+    md5 '80f8a6a522efb417c3123159fc797b8e'
+  end
 
   # Avoid stripping the Haskell binaries & libraries.
   # See: http://hackage.haskell.org/trac/ghc/ticket/2458
   skip_clean ['bin', 'lib']
 
-  def replace_all foo, bar
-    # Find all text files containing foo and replace it with bar
-    files = `/usr/bin/grep -lsIR #{foo} .`.split
-    inreplace files, foo, bar
-  end
-
   def install
-    short_version = version.split('.').first(2).join('')
+    if ARGV.include? '--x86_64'
+      if !Hardware.is_64_bit?
+        onoe <<-EOS.undent
+          The x86_64 version is for 64-bit hardware, which this is not!
+        EOS
+        exit 1
+      end
 
-    # Extract files from .pax.gz
-    system '/bin/pax -f ghc.pkg/Payload -p p -rz'
-    cd "GHC.framework/Versions/#{short_version}/usr"
+      ENV.m64
+      opoo <<-EOS.undent
+        The x86_64 version of ghc is labelled experimental, as it's unstable.
+        See #{Tty.em}http://article.gmane.org/gmane.comp.lang.haskell.platform/1496#{Tty.reset}
+      EOS
+    else
+      if Hardware.is_64_bit?
+        ohai <<-EOS.undent
+          Installing the stable 32-bit version of ghc, override with --x86_64.
+        EOS
+      end
+    end
 
-    # Fix paths
-    replace_all "/Library/Frameworks/GHC.framework/Versions/#{short_version}/usr/lib/ghc-#{version}", "#{lib}/ghc"
-    replace_all "/Library/Frameworks/GHC.framework/Versions/#{short_version}/usr", prefix
+    # This is a precompiled bindist and ready to install.
+    # We just have to configure the final install location.
+    system "./configure --prefix=#{prefix}"
+    system "make install"
 
-    prefix.install ['bin', 'share']
+    puts <<-EOS.undent
+      The Haskell packaging system is cabal, which plays nicely with homebrew.
+      You can learn about it at http://www.haskell.org/haskellwiki/Cabal-Install
 
-    # Remove version from lib folder
-    lib.install "lib/ghc-#{version}" => 'ghc'
-
-    # Fix ghc-asm Perl reference
-    inreplace "#{lib}/ghc/ghc-asm", "#!/opt/local/bin/perl", "#!/usr/bin/env perl"
-
-    # Regenerate GHC package cache
-    rm "#{lib}/ghc/package.conf.d/package.cache"
-    system "#{bin}/ghc-pkg", 'recache', '--package-conf', "#{lib}/ghc/package.conf.d"
+      Download cabal-install from http://hackage.haskell.org/package/cabal-install
+      You need a version >= 0.10.2 of cabal-install for this version of GHC.
+    EOS
   end
 end
