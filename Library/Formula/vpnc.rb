@@ -1,6 +1,6 @@
 require 'formula'
 
-class Vpnc <Formula
+class Vpnc < Formula
   url 'http://www.unix-ag.uni-kl.de/~massar/vpnc/vpnc-0.5.3.tar.gz'
   homepage 'http://www.unix-ag.uni-kl.de/~massar/vpnc/'
   sha256 '46cea3bd02f207c62c7c6f2f22133382602baeda1dc320747809e94881414884'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Tivodecode <Formula
+class Tivodecode < Formula
   url 'http://downloads.sourceforge.net/projects/tivodecode/files/tivodecode/0.2pre4/tivodecode-0.2pre4.tar.gz'
   homepage 'http://tivodecode.sourceforge.net/'
   md5 'cf82385db3e0d708ebdbe5055b8ae7ee'

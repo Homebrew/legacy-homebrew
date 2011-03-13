@@ -1,9 +1,9 @@
 require 'formula'
 
 class Synergy < Formula
-  url 'http://synergy.googlecode.com/files/synergy-1.3.6p2-MacOSX-Universal.zip'
-  md5 'd7eba8d3ee9d50caa1d8c00d27702879'
-  version '1.3.6p2'
+  url 'http://synergy.googlecode.com/files/synergy-1.4.2-MacOSX106-Universal.zip'
+  md5 'e52ca334612c3d01920c3beb927d93de'
+  version '1.4.2'
   homepage 'http://synergy-foss.org'
 
   def install

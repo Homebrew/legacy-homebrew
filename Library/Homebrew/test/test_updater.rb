@@ -7,7 +7,7 @@ ARGV.extend(HomebrewArgvExtension)
 
 require 'formula'
 require 'utils'
-require 'update'
+require 'cmd/update'
 
 class RefreshBrewMock < RefreshBrew
   def in_prefix_expect(expect, returns = '')

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Dialog <Formula
+class Dialog < Formula
   url 'ftp://invisible-island.net/dialog/dialog.tar.gz'
   homepage 'http://invisible-island.net/dialog/'
   md5 '07d6ab77bd8c12c3def07ed72a706194'

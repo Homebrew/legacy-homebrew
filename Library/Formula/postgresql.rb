@@ -1,7 +1,7 @@
 require 'formula'
 require 'hardware'
 
-class Postgresql <Formula
+class Postgresql < Formula
   homepage 'http://www.postgresql.org/'
   url 'http://ftp9.us.postgresql.org/pub/mirrors/postgresql/source/v9.0.3/postgresql-9.0.3.tar.bz2'
   md5 '928df8c40bb012ad10756e58b70516fb'

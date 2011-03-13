@@ -1,6 +1,6 @@
 require 'formula'
 
-class Adamem <Formula
+class Adamem < Formula
   head 'git://github.com/adamv/adamem-osx.git', :branch => 'osx-brew'
   homepage 'http://www.komkon.org/~dekogel/adamem.html'
 

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Guile <Formula
+class Guile < Formula
   url 'ftp://ftp.gnu.org/gnu/guile/guile-1.8.7.tar.gz'
   head 'ftp://alpha.gnu.org/gnu/guile/guile-1.9.15.tar.gz'
   homepage 'http://www.gnu.org/software/guile/'

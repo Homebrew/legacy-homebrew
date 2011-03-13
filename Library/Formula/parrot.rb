@@ -1,6 +1,6 @@
 require 'formula'
 
-class Parrot <Formula
+class Parrot < Formula
   head 'git://github.com/parrot/parrot.git'
   url 'ftp://ftp.parrot.org/pub/parrot/releases/supported/3.0.0/parrot-3.0.0.tar.gz'
   md5 'fc1d88114636eff4fe7953de456cecfa'

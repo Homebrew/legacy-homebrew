@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libiconv <Formula
+class Libiconv < Formula
   url 'http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.13.1.tar.gz'
   md5 '7ab33ebd26687c744a37264a330bbe9a'
   homepage 'http://www.gnu.org/software/libiconv/'
@@ -8,7 +8,7 @@ end
 
 def build_tests?; ARGV.include? '--test'; end
 
-class Glib <Formula
+class Glib < Formula
   url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.24/glib-2.24.2.tar.bz2'
   sha256 '3aeb521abd3642dd1224379f0e54915957e5010f888a4ae74afa0ad54da0160c'
   homepage 'http://www.gtk.org'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Tintin <Formula
+class Tintin < Formula
   url 'http://downloads.sourceforge.net/project/tintin/TinTin%2B%2B%20Source%20Code/2.00.5/tintin-2.00.5.tar.gz'
   homepage 'http://tintin.sf.net'
   md5 'b57b824fc7bb9f25705816fb62027ec1'

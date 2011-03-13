@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gource <Formula
+class Gource < Formula
   homepage 'http://code.google.com/p/gource/'
   url 'git://github.com/acaudwell/Gource.git', :tag => "f07d59f582a29bca55da"
   version "0.32"

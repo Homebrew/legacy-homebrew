@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "January 2011" "Homebrew" "brew"
+.TH "BREW" "1" "February 2011" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -188,8 +188,11 @@ Check formulae for Homebrew coding style violations\. This should be run before 
 If \fB\-\-warn\fR is passed, perform additional stricter checks that may not need to be fixed before submitting\.
 .
 .TP
-\fBoptions\fR \fIformula\fR
+\fBoptions [\-\-compact]\fR \fIformula\fR
 Display install options specific to \fIformula\fR\.
+.
+.IP
+If \fB\-\-compact\fR is passed, show all options on a single line separated by spaces\.
 .
 .TP
 \fBmissing\fR
@@ -296,6 +299,10 @@ If set, instructs Homebrew to use \fBHOMEBREW_TEMP\fR as the temporary folder fo
 .
 .IP
 This issue typically occurs when using FileVault or custom SSD configurations\.
+.
+.TP
+HOMEBREW_USE_GCC
+If set, instructs Homebrew to use gcc, even if the system default is currently set to LLVM\.
 .
 .TP
 HOMEBREW_USE_LLVM

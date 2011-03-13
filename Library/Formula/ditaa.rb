@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ditaa <Formula
+class Ditaa < Formula
   url 'http://downloads.sourceforge.net/project/ditaa/ditaa/0.9/ditaa0_9.zip'
   homepage 'http://ditaa.sourceforge.net/'
   md5 '23f2e5ede60ef7763309c08addca071a'
