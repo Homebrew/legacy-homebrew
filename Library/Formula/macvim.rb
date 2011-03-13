@@ -1,11 +1,11 @@
 require 'formula'
 
 class Macvim < Formula
+  homepage 'http://code.google.com/p/macvim/'
   url 'https://github.com/b4winckler/macvim/tarball/snapshot-57'
   version '7.3-57'
   md5 '2bf4630be2d59f62b8b70870ba1fe0a1'
   head 'git://github.com/b4winckler/macvim.git', :branch => 'master'
-  homepage 'http://code.google.com/p/macvim/'
 
   def options
   [
@@ -20,8 +20,7 @@ class Macvim < Formula
   depends_on 'cscope' if ARGV.include? '--with-cscope'
 
   def install
-    # MacVim's Xcode project gets confused by $CC
-    # Disable it until someone figures out why it fails.
+    # MacVim's Xcode project gets confused by $CC, so remove it
     ENV['CC'] = nil
     ENV['CFLAGS'] = nil
     ENV['CXX'] = nil
@@ -31,7 +30,6 @@ class Macvim < Formula
     ENV['ARCHFLAGS'] = "-arch #{arch}"
 
     args = ["--with-macsdk=#{MACOS_VERSION}",
-           # Add some features
            "--with-features=huge",
            "--with-macarchs=#{arch}",
            "--enable-perlinterp",
@@ -39,9 +37,7 @@ class Macvim < Formula
            "--enable-rubyinterp",
            "--enable-tclinterp"]
 
-    if ARGV.include? "--with-cscope"
-      args << "--enable-cscope"
-    end
+    args << "--enable-cscope" if ARGV.include? "--with-cscope"
 
     system "./configure", *args
 
@@ -76,7 +72,14 @@ class Macvim < Formula
     executables.each {|f| ln_s bin+'mvim', bin+f}
   end
 
-  def caveats
-    "MacVim.app installed to:\n#{prefix}"
+  def caveats; <<-EOS.undent
+    MacVim.app installed to:
+      #{prefix}
+
+    To link the application to a normal Mac OS X location:
+      $ brew linkapps
+    or:
+      $ sudo ln -s #{prefix}/MacVim.app /Applications
+    EOS
   end
 end
