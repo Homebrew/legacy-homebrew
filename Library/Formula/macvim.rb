@@ -50,9 +50,17 @@ class Macvim < Formula
       inreplace "src/MacVim/icons/make_icons.py", "dont_create = False", "dont_create = True"
     end
 
-    unless ARGV.include? "--with-envycoder"
-      inreplace "src/MacVim/icons/Makefile", '$(OUTDIR)/MacVim-generic.icns: make_icons.py vim-noshadow-512.png loadfont.so Envy\ Code\ R\ Bold.ttf',
-                                             "$(OUTDIR)/MacVim-generic.icns: make_icons.py vim-noshadow-512.png loadfont.so"
+    if ARGV.include? "--with-envycoder"
+      # Font download location has changed.
+      # This is fixed in MacVim trunk, but not in the stable tarball.
+      inreplace "src/MacVim/icons/Makefile",
+        "http://download.damieng.com/latest/EnvyCodeR",
+        "http://download.damieng.com/fonts/original/EnvyCodeR-PR7.zip"
+    else
+      # Remove the font from the build dependencies
+      inreplace "src/MacVim/icons/Makefile",
+        '$(OUTDIR)/MacVim-generic.icns: make_icons.py vim-noshadow-512.png loadfont.so Envy\ Code\ R\ Bold.ttf',
+        "$(OUTDIR)/MacVim-generic.icns: make_icons.py vim-noshadow-512.png loadfont.so"
     end
 
     system "make"
