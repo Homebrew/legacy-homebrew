@@ -8,10 +8,10 @@ HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.dirname.parent.join("Lib
 $:.unshift(HOMEBREW_LIBRARY_PATH)
 require 'global'
 
-case ARGV.first
-when '-h', '--help', '--usage', '-?', 'help', nil
-  puts ARGV.usage
-  exit 0
+case ARGV.first when '-h', '--help', '--usage', '-?', 'help', nil
+  require 'cmd/help'
+  puts Homebrew.help_s
+  exit ARGV.first ? 0 : 1
 when '--version'
   puts HOMEBREW_VERSION
   exit 0
