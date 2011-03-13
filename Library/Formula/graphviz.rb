@@ -7,7 +7,7 @@ class Graphviz <Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'pango' if ARGV.include? '--with-pdf'
-  depends_on 'cario' if ARGV.include? '--with-pdf'
+  depends_on 'cairo' if ARGV.include? '--with-pdf'
 
   def options
     [
