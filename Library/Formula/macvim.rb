@@ -53,6 +53,9 @@ class Macvim < Formula
     unless ARGV.include? "--with-envycoder"
       inreplace "src/MacVim/icons/Makefile", '$(OUTDIR)/MacVim-generic.icns: make_icons.py vim-noshadow-512.png loadfont.so Envy\ Code\ R\ Bold.ttf',
                                              "$(OUTDIR)/MacVim-generic.icns: make_icons.py vim-noshadow-512.png loadfont.so"
+    else
+        # fix download url for Envy Code R font
+        inreplace "src/MacVim/icons/Makefile", "http://download.damieng.com/latest/EnvyCodeR", "http://download.damieng.com/fonts/original/EnvyCodeR-PR7.zip"
     end
 
     system "make"
