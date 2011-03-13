@@ -1,10 +1,6 @@
 #!/usr/bin/ruby
 # -*- coding: utf-8 -*-
 
-# Many Pathname operations use getwd when they shouldn't, and then throw 
-# odd exceptions. Reduce our support burden by showing a user-friendly error.
-Dir.getwd rescue abort "The current working directory doesn't exist, cannot proceed."
-
 HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] = File.expand_path(__FILE__)
 
 require 'pathname'
@@ -40,6 +36,11 @@ if MACOS_VERSION < 10.5
     http://github.com/sceaga/homebrew/tree/tiger
   EOABORT
 end
+
+# Many Pathname operations use getwd when they shouldn't, and then throw
+# odd exceptions. Reduce our support burden by showing a user-friendly error.
+Dir.getwd rescue abort "The current working directory doesn't exist, cannot proceed."
+
 
 def require? path
   require path.to_s.chomp
