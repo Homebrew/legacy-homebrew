@@ -1,6 +1,6 @@
 require 'formula'
 
-class Lzo <Formula
+class Lzo < Formula
   url 'http://www.oberhumer.com/opensource/lzo/download/lzo-2.04.tar.gz'
   homepage 'http://www.oberhumer.com/opensource/lzo/'
   md5 'a383c7055a310e2a71b9ecd19cfea238'

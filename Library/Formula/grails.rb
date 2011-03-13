@@ -1,6 +1,6 @@
 require 'formula'
 
-class Grails <Formula
+class Grails < Formula
   url 'http://dist.springframework.org.s3.amazonaws.com/release/GRAILS/grails-1.3.7.zip'
   homepage 'http://grails.org'
   md5 'ea7cbfecdcf30c861f8faa8552ce3b46'

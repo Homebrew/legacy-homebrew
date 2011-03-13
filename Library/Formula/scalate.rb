@@ -1,6 +1,6 @@
 require 'formula'
 
-class Scalate <Formula
+class Scalate < Formula
   url 'http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.4.1/scalate-distro-1.4.1-unix-bin.tar.gz'
   version '1.4.1'
   homepage 'http://scalate.fusesource.org/'

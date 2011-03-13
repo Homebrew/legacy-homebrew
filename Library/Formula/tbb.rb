@@ -1,6 +1,6 @@
 require 'formula'
 
-class Tbb <Formula
+class Tbb < Formula
   url 'http://threadingbuildingblocks.org/uploads/77/164/3.0%20Update%205/tbb30_20101215oss_src.tgz'
   version '30_131'
   homepage 'http://www.threadingbuildingblocks.org/'

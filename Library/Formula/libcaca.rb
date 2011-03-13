@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libcaca <Formula
+class Libcaca < Formula
   url 'http://caca.zoy.org/files/libcaca/libcaca-0.99.beta17.tar.gz'
   version '0.99b17'
   homepage 'http://caca.zoy.org/wiki/libcaca'

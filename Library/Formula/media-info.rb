@@ -1,6 +1,6 @@
 require 'formula'
 
-class MediaInfo <Formula
+class MediaInfo < Formula
   url 'http://downloads.sourceforge.net/sourceforge/mediainfo/MediaInfo_CLI_0.7.36_GNU_FromSource.tar.bz2'
   homepage 'http://mediainfo.sourceforge.net'
   version '0.7.36'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Thrulay <Formula
+class Thrulay < Formula
   url 'http://shlang.com/thrulay/thrulay-0.8.tar.gz'
   homepage 'http://shlang.com/thrulay/'
   md5 '725fb13344608a652e818bcd16fe9ef6'

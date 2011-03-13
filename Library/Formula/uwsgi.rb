@@ -1,6 +1,6 @@
 require 'formula'
 
-class Uwsgi <Formula
+class Uwsgi < Formula
   url 'http://projects.unbit.it/downloads/uwsgi-0.9.6.2.tar.gz'
   homepage 'http://projects.unbit.it/uwsgi/'
   md5 'eab88c552e4c7c4ecb5188cdefc43390'

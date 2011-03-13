@@ -1,6 +1,6 @@
 require 'formula'
 
-class Hbase <Formula
+class Hbase < Formula
   url 'http://apache.tradebit.com/pub/hbase/hbase-0.89.20100924/hbase-0.89.20100924-bin.tar.gz'
   homepage 'http://hbase.apache.org'
   md5 '6fdefc110c4d6414cc2b7e3697244e95'

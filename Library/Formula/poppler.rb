@@ -1,11 +1,11 @@
 require 'formula'
 
-class PopplerData <Formula
+class PopplerData < Formula
   url 'http://poppler.freedesktop.org/poppler-data-0.4.4.tar.gz'
   md5 'f3a1afa9218386b50ffd262c00b35b31'
 end
 
-class Poppler <Formula
+class Poppler < Formula
   url 'http://poppler.freedesktop.org/poppler-0.16.3.tar.gz'
   homepage 'http://poppler.freedesktop.org/'
   md5 '42227f1a1498089213a07533596b22f4'

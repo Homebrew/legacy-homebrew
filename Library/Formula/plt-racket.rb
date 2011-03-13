@@ -1,6 +1,6 @@
 require 'formula'
 
-class PltRacket <Formula
+class PltRacket < Formula
   # Use GitHub; tarball doesn't have everything needed for building on OS X
   url 'git://github.com/plt/racket.git', :tag => 'v5.1'
   homepage 'http://racket-lang.org/'

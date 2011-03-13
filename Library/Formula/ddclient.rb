@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ddclient <Formula
+class Ddclient < Formula
   url 'http://downloads.sourceforge.net/project/ddclient/ddclient/ddclient-3.8.0/ddclient-3.8.0.tar.bz2'
   homepage 'http://sourceforge.net/apps/trac/ddclient'
   md5 '6cac7a5eb1da781bfd4d98cef0b21f8e'

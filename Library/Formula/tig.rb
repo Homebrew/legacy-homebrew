@@ -1,6 +1,6 @@
 require 'formula'
 
-class Tig <Formula
+class Tig < Formula
   url 'http://jonas.nitro.dk/tig/releases/tig-0.17.tar.gz'
   homepage 'http://jonas.nitro.dk/tig/'
   md5 'f373343199422c59518776db448dec0e'

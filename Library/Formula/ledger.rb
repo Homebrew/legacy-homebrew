@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ledger <Formula
+class Ledger < Formula
   url 'ftp://ftp.newartisans.com/pub/ledger/ledger-2.6.2.tar.gz'
   md5 'b2e6fa98e7339d1e130b1ea9af211c0f'
   homepage 'http://www.newartisans.com/software/ledger.html'

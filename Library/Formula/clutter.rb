@@ -1,6 +1,6 @@
 require 'formula'
 
-class Clutter <Formula
+class Clutter < Formula
   url 'http://www.clutter-project.org/sources/clutter/1.0/clutter-1.0.8.tar.bz2'
   homepage 'http://www.clutter-project.org/'
   md5 '687f9699ea5590091282034a936c6dc7'

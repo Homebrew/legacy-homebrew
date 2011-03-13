@@ -1,6 +1,6 @@
 require 'formula'
 
-class Sqlite <Formula
+class Sqlite < Formula
   url 'http://www.sqlite.org/sqlite-autoconf-3070500.tar.gz'
   md5 'a9604a82613ade2e7f4c303f233e477f'
   version '3.7.5'
