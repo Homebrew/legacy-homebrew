@@ -61,7 +61,9 @@ begin
              'configure' => :diy,
              'abv' => :info,
              'dr' => :doctor,
-             '--repo' => '--repository'}
+             '--repo' => '--repository',
+             'environment' => '--env'  # same as gem
+             }
 
   cmd = ARGV.shift
   cmd = aliases[cmd] if aliases[cmd]
