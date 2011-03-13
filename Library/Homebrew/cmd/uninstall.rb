@@ -13,7 +13,7 @@ module Homebrew extend self
         rack = f.prefix.parent
         if rack.directory?
           puts "Uninstalling #{f}..."
-          rack.children do |keg|
+          rack.children.each do |keg|
             if keg.directory?
               keg = Keg.new(keg)
               keg.unlink
