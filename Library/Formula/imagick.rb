@@ -1,6 +1,6 @@
 require 'formula'
 
-class Imagick <Formula
+class Imagick < Formula
   url 'http://pecl.php.net/get/imagick-3.0.1.tgz'
   homepage 'http://pecl.php.net/package/imagick'
   md5 'e2167713316639705202cf9b6cb1fdb1'

@@ -1,7 +1,7 @@
 require 'formula'
 require 'hardware'
 
-class Pypy <Formula
+class Pypy < Formula
   if snow_leopard_64?
     url 'http://pypy.org/download/pypy-1.4.1-osx64.tar.bz2'
     md5 '769b3fb134944ee8c22ad0834970de3b'

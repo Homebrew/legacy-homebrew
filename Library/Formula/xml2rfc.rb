@@ -1,6 +1,6 @@
 require 'formula'
 
-class Xml2rfc <Formula
+class Xml2rfc < Formula
   url 'http://xml.resource.org/authoring/xml2rfc-1.35.tgz'
   homepage 'http://xml.resource.org/'
   md5 '7ffb973fee55318b1bd0fd77a903d2e6'

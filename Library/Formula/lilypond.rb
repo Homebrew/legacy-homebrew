@@ -1,6 +1,6 @@
 require 'formula'
 
-class Lilypond <Formula
+class Lilypond < Formula
   url 'http://download.linuxaudio.org/lilypond/sources/v2.13/lilypond-2.13.52.tar.gz'
   homepage 'http://lilypond.org/'
   md5 '662e18ca5a01d3357eda17efb4ae95ce'

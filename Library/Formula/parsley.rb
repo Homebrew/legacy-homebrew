@@ -1,6 +1,6 @@
 require 'formula'
 
-class Parsley <Formula
+class Parsley < Formula
   head 'git://github.com/fizx/parsley.git'
   homepage 'https://github.com/fizx/parsley'
 

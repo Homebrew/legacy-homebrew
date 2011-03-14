@@ -1,6 +1,6 @@
 require 'formula'
 
-class Spidermonkey <Formula
+class Spidermonkey < Formula
   # There are no proper releases of spidermonkey, so pick a version that's known
   # to work (especially with CouchDB), revision r35345.
   url 'http://hg.mozilla.org/tracemonkey/archive/57a6ad20eae9.tar.gz'
@@ -69,7 +69,7 @@ class Spidermonkey <Formula
 end
 
 
-class Autoconf213 <Formula
+class Autoconf213 < Formula
   url 'http://ftp.gnu.org/pub/gnu/autoconf/autoconf-2.13.tar.gz'
   md5 '9de56d4a161a723228220b0f425dc711'
   homepage 'http://www.gnu.org/software/autoconf/'

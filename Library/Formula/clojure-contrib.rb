@@ -1,6 +1,6 @@
 require 'formula'
 
-class ClojureContrib <Formula
+class ClojureContrib < Formula
   url 'https://github.com/downloads/clojure/clojure-contrib/clojure-contrib-1.2.0.zip'
   md5 '83cc86fd2929ca417a9ab9f2a0dedadb'
   head 'git://github.com/clojure/clojure-contrib.git'

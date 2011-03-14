@@ -1,6 +1,6 @@
 require 'formula'
 
-class Encfs <Formula
+class Encfs < Formula
   url 'http://encfs.googlecode.com/files/encfs-1.7.2.tgz'
   homepage 'http://www.arg0.net/encfs'
   md5 '3a3fef640c7c9f020104304392cd1836'

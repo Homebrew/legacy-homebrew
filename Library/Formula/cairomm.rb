@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cairomm <Formula
+class Cairomm < Formula
   url 'http://cairographics.org/releases/cairomm-1.8.4.tar.gz'
   homepage 'http://cairographics.org/cairomm/'
   md5 '559afbc47484ba3fad265e38a3dafe90'

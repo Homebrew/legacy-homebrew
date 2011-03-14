@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mpd <Formula
+class Mpd < Formula
   url 'http://downloads.sourceforge.net/project/musicpd/mpd/0.16.1/mpd-0.16.1.tar.bz2'
   homepage 'http://mpd.wikia.com'
   md5 '4d07459125ab0154c5b4fe364331498a'
