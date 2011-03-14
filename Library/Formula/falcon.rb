@@ -1,6 +1,6 @@
 require 'formula'
 
-class Falcon <Formula
+class Falcon < Formula
   url 'http://falconpl.org/project_dl/_official_rel/Falcon-0.9.6.8.tgz'
   homepage 'http://www.falconpl.org/'
   md5 '8435f6f2fe95097ac2fbe000da97c242'

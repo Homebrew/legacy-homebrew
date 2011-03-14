@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cdrdao <Formula
+class Cdrdao < Formula
   url 'http://downloads.sourceforge.net/project/cdrdao/cdrdao/1.2.3/cdrdao-1.2.3.tar.bz2'
   homepage 'http://cdrdao.sourceforge.net/'
   md5 '8d15ba6280bb7ba2f4d6be31d28b3c0c'

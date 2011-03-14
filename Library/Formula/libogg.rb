@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libogg <Formula
+class Libogg < Formula
   homepage 'http://www.xiph.org/ogg/'
   url 'http://downloads.xiph.org/releases/ogg/libogg-1.2.2.tar.gz'
   md5 '5a9fcabc9a1b7c6f1cd75ddc78f36c56'

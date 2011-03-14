@@ -1,6 +1,6 @@
 require 'formula'
 
-class Rebar <Formula
+class Rebar < Formula
   head 'http://hg.basho.com/rebar/get/tip.tar.gz'
   homepage 'http://hg.basho.com/rebar/'
 

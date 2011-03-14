@@ -1,6 +1,6 @@
 require 'formula'
 
-class Pcre <Formula
+class Pcre < Formula
   url 'ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.12.tar.bz2'
   homepage 'http://www.pcre.org/'
   md5 'f14a9fef3c92f3fc6c5ac92d7a2c7eb3'

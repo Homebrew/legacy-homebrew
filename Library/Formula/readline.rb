@@ -1,6 +1,6 @@
 require 'formula'
 
-class Readline <Formula
+class Readline < Formula
   url 'ftp://ftp.cwru.edu/pub/bash/readline-6.1.tar.gz'
   md5 'fc2f7e714fe792db1ce6ddc4c9fb4ef3'
   homepage 'http://tiswww.case.edu/php/chet/readline/rltop.html'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Rzip <Formula
+class Rzip < Formula
   url 'http://rzip.samba.org/ftp/rzip/rzip-2.1.tar.gz'
   homepage 'http://rzip.samba.org/'
   md5 '0a3ba55085661647c12f2b014c51c406'

@@ -8,7 +8,7 @@ def mysql?
     ARGV.include? "--with-mysql"
 end
 
-class Grass <Formula
+class Grass < Formula
   homepage 'http://grass.osgeo.org/'
   url 'http://grass.osgeo.org/grass64/source/grass-6.4.0.tar.gz'
   md5 'ac3233aa3351f8e060ea48246aa01c7f'

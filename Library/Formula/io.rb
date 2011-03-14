@@ -1,6 +1,6 @@
 require 'formula'
 
-class Io <Formula
+class Io < Formula
   head 'git://github.com/stevedekorte/io.git'
   homepage 'http://iolanguage.com/'
 

@@ -1,12 +1,12 @@
 require 'formula'
 
-class XapianBindings <Formula
+class XapianBindings < Formula
   url 'http://oligarchy.co.uk/xapian/1.2.4/xapian-bindings-1.2.4.tar.gz'
   homepage 'http://xapian.org'
   sha1 '13611f09cdbca8424c871c79d14c8e75b6547a9c'
 end
 
-class Xapian <Formula
+class Xapian < Formula
   url 'http://oligarchy.co.uk/xapian/1.2.4/xapian-core-1.2.4.tar.gz'
   homepage 'http://xapian.org'
   sha1 'c269e0f711ff4c9423d6301c3f7b949cc85a01b4'

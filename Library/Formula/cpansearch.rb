@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cpansearch <Formula
+class Cpansearch < Formula
   head 'https://github.com/c9s/cpansearch.git', :using => :git
   homepage 'https://github.com/c9s/cpansearch'
 

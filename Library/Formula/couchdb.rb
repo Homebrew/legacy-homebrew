@@ -1,6 +1,6 @@
 require 'formula'
 
-class Couchdb <Formula
+class Couchdb < Formula
   url 'https://github.com/apache/couchdb/tarball/1.0.2'
   homepage "http://couchdb.apache.org/"
   md5 'cc1cc891ac47dd795b0b9aa2c5375923'
