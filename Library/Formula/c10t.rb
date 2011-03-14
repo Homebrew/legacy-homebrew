@@ -8,7 +8,6 @@ class C10t < Formula
   md5 '27ff806400602726e45679d444c4489d'
 
   depends_on 'cmake' => :build
-  depends_on 'libpng'
   depends_on 'boost'
 
   def install
