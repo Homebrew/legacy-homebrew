@@ -197,8 +197,9 @@ Please take one of the following actions:
     self['CFLAGS'] = self['CXXFLAGS'] = SAFE_CFLAGS_FLAGS
   end
 
+  # Some configure scripts won't find libxml2 without help
   def libxml2
-    append_to_cflags ' -I/usr/include/libxml2'
+    append_to_cflags '-I/usr/include/libxml2'
   end
 
   def x11

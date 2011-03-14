@@ -63,6 +63,10 @@ class Gfortran < Formula
       ohai "Installing gfortran 4.2.4 for XCode 3.2.3 (build 5664)"
       safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
       safe_system "ln -sf #{man1}/gfortran-4.2.1 #{man1}/gfortran.1"
+    when 5666
+      ohai "Installing gfortran 4.2.4 for XCode 4.0 (build 5666)"
+      safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
+      safe_system "ln -sf #{man1}/gfortran-4.2.1 #{man1}/gfortran.1"
     else
       onoe <<-EOS.undent
         Currently the gfortran compiler provided by this brew is only supported

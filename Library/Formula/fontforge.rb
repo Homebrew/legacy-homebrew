@@ -11,8 +11,11 @@ class Fontforge < Formula
   depends_on 'potrace'
 
   def install
-    ENV.x11
     fails_with_llvm "Compiling cvexportdlg.c fails with error: initializer element is not constant"
+
+    ENV.x11
+    # Fix linker error; see: http://trac.macports.org/ticket/25012
+    ENV.append "LDFLAGS", "-lintl"
     system "./configure", "--prefix=#{prefix}",
                           "--enable-double",
                           "--without-freetype-bytecode",

@@ -12,14 +12,7 @@ module Homebrew extend self
         puts "#{HOMEBREW_CELLAR.children.length} kegs, #{HOMEBREW_CELLAR.abv}"
       end
     elsif valid_url ARGV[0]
-      path = Pathname.new(ARGV.shift)
-      /(.*?)[-_.]?#{path.version}/.match path.basename
-      unless $1.to_s.empty?
-        name = $1
-      else
-        name = path.stem
-      end
-      puts "#{name} #{path.version}"
+      info_formula Formula.factory(ARGV.shift)
     else
       ARGV.formulae.each{ |f| info_formula f }
     end
