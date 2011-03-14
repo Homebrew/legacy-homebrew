@@ -70,7 +70,7 @@ def check_for_x11
   unless x11_installed?
     opoo "X11 not installed."
     puts <<-EOS.undent
-      You don't have X11 installed as part of your Xcode installation.
+      You don't have X11 installed as part of your OS X installation.
       This isn't required for all formulae, but is expected by some.
 
     EOS
