@@ -1,6 +1,6 @@
 require 'formula'
 
-class Dcmtk <Formula
+class Dcmtk < Formula
   homepage 'http://dicom.offis.de/dcmtk.php.en'
   url 'ftp://dicom.offis.de/pub/dicom/offis/software/dcmtk/dcmtk360/dcmtk-3.6.0.tar.gz'
   md5 '19409e039e29a330893caea98715390e'

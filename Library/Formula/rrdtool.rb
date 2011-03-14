@@ -1,6 +1,6 @@
 require 'formula'
 
-class Rrdtool <Formula
+class Rrdtool < Formula
   url 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.4.4.tar.gz'
   homepage 'http://oss.oetiker.ch/rrdtool/index.en.html'
   md5 '93ad2fc2e9ddcd7d99c611fe30284a54'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class ModPython <Formula
+class ModPython < Formula
   url 'http://archive.apache.org/dist/httpd/modpython/mod_python-3.3.1.tgz'
   homepage 'http://www.modpython.org/'
   md5 'a3b0150176b726bd2833dac3a7837dc5'
@@ -12,7 +12,7 @@ class ModPython <Formula
 
       NOTE: mod_python is deprecated. See:
         http://blog.dscpl.com.au/2010/05/modpython-project-soon-to-be-officially.html
-  
+
       mod_wsgi is the suggested replacement.
     EOS
   end

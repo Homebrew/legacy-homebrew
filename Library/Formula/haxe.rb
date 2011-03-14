@@ -1,6 +1,6 @@
 require 'formula'
 
-class Haxe <Formula
+class Haxe < Formula
   url 'http://haxe.org/file/haxe-2.07-osx.tar.gz'
   version '2.07'
   homepage 'http://haxe.org/'

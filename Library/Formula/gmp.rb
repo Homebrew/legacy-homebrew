@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gmp <Formula
+class Gmp < Formula
   url 'ftp://ftp.gnu.org/gnu/gmp/gmp-5.0.1.tar.bz2'
   homepage 'http://gmplib.org/'
   sha1 '6340edc7ceb95f9015a758c7c0d196eb0f441d49'
@@ -15,7 +15,8 @@ class Gmp <Formula
   def install
     # Reports of problems using gcc 4.0 on Leopard
     # https://github.com/mxcl/homebrew/issues/issue/2302
-    ENV.gcc_4_2 if MACOS_VERSION < 10.6
+    # Also force use of 4.2 on 10.6 in case a user has changed the default
+    ENV.gcc_4_2
 
     fails_with_llvm "Tests fail to compile; missing references in 'llvm bitcode in libtests.a(misc.o)'."
 

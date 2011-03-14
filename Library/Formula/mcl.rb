@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mcl <Formula
+class Mcl < Formula
   version '10-201'
   url 'http://micans.org/mcl/src/mcl-10-201.tar.gz'
   homepage 'http://micans.org/mcl'

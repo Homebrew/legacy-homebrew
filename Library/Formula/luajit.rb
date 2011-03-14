@@ -1,6 +1,6 @@
 require 'formula'
 
-class Luajit <Formula
+class Luajit < Formula
   url 'http://luajit.org/download/LuaJIT-2.0.0-beta4.tar.gz'
   head 'http://luajit.org/git/luajit-2.0.git', :using => :git
   homepage 'http://luajit.org/luajit.html'

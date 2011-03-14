@@ -1,6 +1,6 @@
 require 'formula'
 
-class SpatialiteTools <Formula
+class SpatialiteTools < Formula
   url 'http://www.gaia-gis.it/spatialite-2.4.0-4/spatialite-tools-2.4.0.tar.gz'
   version '2.4.0-rc4'
   homepage 'http://www.gaia-gis.it/spatialite/'

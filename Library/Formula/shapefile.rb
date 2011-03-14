@@ -1,6 +1,6 @@
 require 'formula'
 
-class Shapefile <Formula
+class Shapefile < Formula
   url 'http://download.osgeo.org/shapelib/shapelib-1.2.10.tar.gz'
   homepage 'http://shapelib.maptools.org/'
   md5 '4d96bd926167193d27bf14d56e2d484e'

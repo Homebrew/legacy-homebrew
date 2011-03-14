@@ -1,6 +1,6 @@
 require 'formula'
 
-class Leiningen <Formula
+class Leiningen < Formula
   url 'http://github.com/technomancy/leiningen/tarball/1.4.2'
   head 'http://github.com/technomancy/leiningen.git', :using => :git
   homepage 'http://github.com/technomancy/leiningen'

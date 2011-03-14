@@ -1,6 +1,6 @@
 require 'formula'
 
-class BashCompletion <Formula
+class BashCompletion < Formula
   url 'http://bash-completion.alioth.debian.org/files/bash-completion-1.3.tar.bz2'
   homepage 'http://bash-completion.alioth.debian.org/'
   md5 'a1262659b4bbf44dc9e59d034de505ec'
@@ -15,15 +15,20 @@ class BashCompletion <Formula
     system "./configure", "--prefix=#{prefix}"
     system "make install"
 
-    ln_s "#{HOMEBREW_PREFIX}/Library/Contributions/brew_bash_completion.sh", "#{etc}/bash_completion.d" unless
-      File.exists? "#{etc}/bash_completion.d/brew_bash_completion.sh" or File.symlink? "#{etc}/bash_completion.d/brew_bash_completion.sh"
+    # Cause the build to fails if you haven't already installed git or something else that
+    # creates a bash_completion.d
+    # ln_s "#{HOMEBREW_PREFIX}/Library/Contributions/brew_bash_completion.sh", "#{etc}/bash_completion.d" unless
+    #   File.exists? "#{etc}/bash_completion.d/brew_bash_completion.sh" or File.symlink? "#{etc}/bash_completion.d/brew_bash_completion.sh"
   end
 
   def caveats; <<-EOS
 Add the following lines to your ~/.bash_profile file:
-if [ -f `brew --prefix`/etc/bash_completion ]; then
-  . `brew --prefix`/etc/bash_completion
-fi
+  if [ -f `brew --prefix`/etc/bash_completion ]; then
+    . `brew --prefix`/etc/bash_completion
+  fi
+
+To install Homebrew's own completion script:
+  ln "#{HOMEBREW_PREFIX}/Library/Contributions/brew_bash_completion.sh", "#{etc}/bash_completion.d"
     EOS
   end
 end

@@ -5,7 +5,7 @@ require 'formula'
 # This formula is based on Nethack formula.
 # The patches in DATA section are shamelessly stolen from MacPorts' jnethack portfile.
 
-class Jnethack <Formula
+class Jnethack < Formula
   url 'http://downloads.sourceforge.net/project/nethack/nethack/3.4.3/nethack-343-src.tgz'
   homepage 'http://jnethack.sourceforge.jp/'
   version '3.4.3-0.10'
