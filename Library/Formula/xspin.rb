@@ -1,6 +1,6 @@
 require 'formula'
 
-class Xspin <Formula
+class Xspin < Formula
   url 'http://spinroot.com/spin/Src/xspin525.tcl'
   homepage 'http://spinroot.com/spin/Src/index.html'
   md5 '4b41ff53c1834168aa183def9036bbb7'

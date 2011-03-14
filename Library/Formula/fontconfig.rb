@@ -1,6 +1,6 @@
 require 'formula'
 
-class Fontconfig <Formula
+class Fontconfig < Formula
   url 'http://fontconfig.org/release/fontconfig-2.8.0.tar.gz'
   homepage 'http://fontconfig.org/'
   md5 '77e15a92006ddc2adbb06f840d591c0e'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Node <Formula
+class Node < Formula
   url 'http://nodejs.org/dist/node-v0.4.2.tar.gz'
   head 'git://github.com/joyent/node.git'
   homepage 'http://nodejs.org/'

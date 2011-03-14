@@ -1,6 +1,6 @@
 require 'formula'
 
-class Dovecot <Formula
+class Dovecot < Formula
   url 'http://www.dovecot.org/releases/1.2/dovecot-1.2.16.tar.gz'
   homepage 'http://dovecot.org/'
   md5 '8bbdf4e96e2e0f5749432ca9cb209a38'

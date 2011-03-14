@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gnuplot <Formula
+class Gnuplot < Formula
   url 'http://downloads.sourceforge.net/project/gnuplot/gnuplot/4.4.2/gnuplot-4.4.2.tar.gz'
   homepage 'http://www.gnuplot.info'
   md5 'a4f0dd89f9b9334890464f687ddd9f50'

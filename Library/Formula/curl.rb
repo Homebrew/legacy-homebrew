@@ -1,6 +1,6 @@
 require 'formula'
 
-class Curl <Formula
+class Curl < Formula
   url 'http://curl.haxx.se/download/curl-7.21.2.tar.bz2'
   homepage 'http://curl.haxx.se/'
   md5 'ca96df88e044c7c25d19692ec8b250b2'

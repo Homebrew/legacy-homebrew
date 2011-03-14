@@ -1,6 +1,6 @@
 require 'formula'
 
-class Jack <Formula
+class Jack < Formula
   url 'http://www.grame.fr/~letz/jack-1.9.6.tar.bz2'
   homepage 'http://jackaudio.org'
   md5 'fcd4bdb44f51d71c9e19bc1d0e887902'

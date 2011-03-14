@@ -1,6 +1,6 @@
 require 'formula'
 
-class SwiProlog <Formula
+class SwiProlog < Formula
   url 'http://www.swi-prolog.org/download/stable/src/pl-5.10.2.tar.gz'
   head 'git://www.swi-prolog.org/home/pl/git/pl.git'
   homepage 'http://www.swi-prolog.org/'

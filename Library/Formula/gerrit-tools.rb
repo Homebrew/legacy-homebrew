@@ -1,6 +1,6 @@
 require 'formula'
 
-class GerritTools <Formula
+class GerritTools < Formula
   head 'git://github.com/indirect/gerrit-tools.git'
   homepage 'https://github.com/indirect/gerrit-tools'
 

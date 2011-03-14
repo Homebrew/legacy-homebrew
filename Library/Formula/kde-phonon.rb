@@ -1,6 +1,6 @@
 require 'formula'
 
-class KdePhonon <Formula
+class KdePhonon < Formula
   url 'ftp://ftp.kde.org/pub/kde/stable/phonon/4.4.4/src/phonon-4.4.4.tar.bz2'
   homepage 'http://phonon.kde.org/'
   md5 '1deb14ecb2185e1f2fe2741a0bd46852'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cflow <Formula
+class Cflow < Formula
   url 'http://ftp.gnu.org/gnu/cflow/cflow-1.3.tar.bz2'
   homepage 'http://www.gnu.org/software/cflow/'
   md5 'b3fe4bfba9d648447065b3c2d73ae66c'

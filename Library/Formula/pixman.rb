@@ -1,6 +1,6 @@
 require 'formula'
 
-class Pixman <Formula
+class Pixman < Formula
   url 'http://www.cairographics.org/releases/pixman-0.21.2.tar.gz'
   homepage 'http://www.cairographics.org/'
   md5 '9e09fd6e58cbf9717140891e0b7d4a7a'

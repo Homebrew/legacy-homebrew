@@ -1,6 +1,6 @@
 require 'formula'
 
-class Yaf <Formula
+class Yaf < Formula
   url 'http://tools.netsa.cert.org/releases/yaf-1.3.1.tar.gz'
   homepage 'http://tools.netsa.cert.org/yaf/'
   md5 'cf7602056d8eaa157f5a53f77d193761'

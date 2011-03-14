@@ -1,6 +1,6 @@
 require 'formula'
 
-class IcalBuddy <Formula
+class IcalBuddy < Formula
   homepage 'http://hasseg.org/icalBuddy/'
   head "http://hasseg.org/git-public/icalBuddy.git", :using => :git
 

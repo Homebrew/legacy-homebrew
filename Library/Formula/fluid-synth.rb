@@ -1,6 +1,6 @@
 require 'formula'
 
-class FluidSynth <Formula
+class FluidSynth < Formula
   url 'http://mirrors.zerg.biz/nongnu/fluid/fluidsynth-1.1.1.tar.gz'
   homepage 'http://fluidsynth.resonance.org/trac'
   md5 '0db3da78028d255026230809c6e21b44'
