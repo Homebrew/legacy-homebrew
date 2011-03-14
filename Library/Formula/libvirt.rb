@@ -5,12 +5,13 @@ require 'formula'
 # remotely, and (as this continues to be developed) manage virtualisation servers
 # running on the local host
 
-class Libvirt <Formula
+class Libvirt < Formula
   homepage 'http://www.libvirt.org'
-  url 'http://libvirt.org/sources/libvirt-0.8.6.tar.gz'
-  sha256 '99d5f6f6890eaa78887832e218c01c79c410b6e76d8d526980906808e2487220'
+  url 'http://libvirt.org/sources/libvirt-0.8.8.tar.gz'
+  sha256 '030aea3728917053555bec98d93d2855e8a603b758c0b2a5d57ac48b4f39e113'
 
   depends_on "gnutls"
+  depends_on "yajl"
 
   if MACOS_VERSION < 10.6
     # Definitely needed on Leopard, but definitely not Snow Leopard.
@@ -30,7 +31,15 @@ class Libvirt <Formula
     args = ["--prefix=#{prefix}",
             "--localstatedir=#{var}",
             "--mandir=#{man}",
-            "--sysconfdir=#{etc}"]
+            "--sysconfdir=#{etc}",
+            "--with-esx",
+            "--with-init-script=none",
+            "--with-openvz",
+            "--with-remote",
+            "--with-test",
+            "--with-vbox=check",
+            "--with-vmware",
+            "--with-yajl"]
 
     args << "--without-libvirtd" if ARGV.include? '--without-libvirtd'
 

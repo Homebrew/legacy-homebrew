@@ -1,22 +1,21 @@
 require 'formula'
 
-class ContribFonts <Formula
+class ContribFonts < Formula
   url 'ftp://ftp.figlet.org:21//pub/figlet/fonts/contributed.tar.gz'
   version "2.2.2"
   md5 '6e2dec4499f7a7fe178522e02e0b6cd1'
 end
 
-class InternationalFonts <Formula
+class InternationalFonts < Formula
   url 'ftp://ftp.figlet.org:21//pub/figlet/fonts/international.tar.gz'
   version "2.2.2"
   md5 'b2d53f7e251014adcdb4d407c47f90ef'
 end
 
-class Figlet <Formula
-  url 'ftp://ftp.figlet.org:21//pub/figlet/program/unix/figlet222.tar.gz'
+class Figlet < Formula
+  url 'ftp://ftp.figlet.org/pub/figlet/program/unix/figlet-2.2.3.tar.gz'
   homepage 'http://www.figlet.org'
-  md5 '5f84ad52d092d5db4ad5916df767646b'
-  version "2.2.2"
+  md5 'c9e49dc83efc59070a00313b936002bf'
 
   def fonts
     share + "figlet/fonts"

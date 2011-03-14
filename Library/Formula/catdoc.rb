@@ -1,6 +1,6 @@
 require 'formula'
 
-class Catdoc <Formula
+class Catdoc < Formula
   url 'http://ftp.wagner.pp.ru/pub/catdoc/catdoc-0.94.2.tar.gz'
   homepage 'http://wagner.pp.ru/~vitus/software/catdoc/'
   sha1 '50ce9d7cb24ad6b10a856c9c24183e2b0a11ca04'

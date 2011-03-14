@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ngircd <Formula
+class Ngircd < Formula
   url 'ftp://ngircd.barton.de/pub/ngircd/ngircd-16.tar.gz'
   md5 '8c9e0382cd982b0ca77c05528ebe28eb'
   homepage 'http://ngircd.barton.de'

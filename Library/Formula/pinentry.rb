@@ -1,6 +1,6 @@
 require 'formula'
 
-class Pinentry <Formula
+class Pinentry < Formula
   url 'ftp://ftp.gnupg.org/gcrypt/pinentry/pinentry-0.8.0.tar.gz'
   homepage 'http://www.gnupg.org/related_software/pinentry/index.en.html'
   sha1 '381f9ee47b9f198e1be5d3ec4e043067a7e97912'

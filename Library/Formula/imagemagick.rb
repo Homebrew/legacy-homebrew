@@ -1,12 +1,6 @@
 # some credit to https://github.com/maddox/magick-installer
 require 'formula'
 
-class UnsafeSvn <SubversionDownloadStrategy
-  def _fetch_command svncommand, url, target
-    [svn, '--non-interactive', '--trust-server-cert', svncommand, '--force', url, target]
-  end
-end
-
 def ghostscript_srsly?
   ARGV.include? '--with-ghostscript'
 end
@@ -17,6 +11,10 @@ end
 
 def use_wmf?
   ARGV.include? '--use-wmf'
+end
+
+def use_lqr?
+  ARGV.include? '--use-lqr'
 end
 
 def disable_openmp?
@@ -33,14 +31,17 @@ def x11?
   File.file? '/usr/X11/include/ft2build.h'
 end
 
-class Imagemagick <Formula
-  url 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
-        :using => UnsafeSvn, :revision => '2715'
-  version '6.6.4-5'
+class Imagemagick < Formula
+  # Using an unofficial Git mirror to work around:
+  # * Stable tarballs disappearing
+  # * Bad https cert on official SVN repo
+  # Send update requests to https://github.com/adamv/ImageMagick
+  # Be sure to include the ImageMagick SVN revision # for the new version.
+  url 'git://github.com/adamv/ImageMagick.git',
+          :ref => 'fdb125591a17a4002798742014118d5cfee44394'
+  version '6.6.7-10'
   homepage 'http://www.imagemagick.org'
-
-  head 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
-        :using => UnsafeSvn
+  head 'git://github.com/adamv/ImageMagick.git'
 
   depends_on 'jpeg'
   depends_on 'libpng' unless x11?
@@ -50,9 +51,9 @@ class Imagemagick <Formula
   depends_on 'libtiff' => :optional
   depends_on 'little-cms' => :optional
   depends_on 'jasper' => :optional
-  depends_on 'liblqr' => :optional
 
   depends_on 'libwmf' if use_wmf?
+  depends_on 'liblqr' if use_lqr?
 
   def skip_clean? path
     path.extname == '.la'
@@ -62,6 +63,7 @@ class Imagemagick <Formula
     [
       ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
       ['--use-wmf', 'Compile with libwmf support.'],
+      ['--use-lqr', 'Compile with liblqr support.'],
       ['--disable-openmp', 'Disable OpenMP.'],
       ['--with-magick-plus-plus', 'Compile with C++ interface.']
     ]
@@ -83,7 +85,7 @@ class Imagemagick <Formula
     args << "--without-gslib" unless ghostscript_srsly?
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
                 unless ghostscript_srsly? or ghostscript_fonts?
-    args << "--without-magic-plus-plus" unless magick_plus_plus?
+    args << "--without-magick-plus-plus" unless magick_plus_plus?
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
@@ -96,14 +98,11 @@ class Imagemagick <Formula
 
   def caveats
     s = <<-EOS.undent
-    Because ImageMagick likes to remove tarballs, we're downloading their
-    stable release from their SVN repo instead. But they only serve the
-    repo over HTTPS, and have an untrusted certificate, so we auto-accept
-    this certificate for you.
-
-    If this bothers you, open a ticket with ImageMagick to fix their cert.
-
+    We are downloading from an unofficial GitHub mirror because of:
+    * Stable tarballs disappearing
+    * Bad https cert on official SVN repo
     EOS
+
     unless x11?
       s += <<-EOS.undent
       You don't have X11 from the Xcode DMG installed. Consequently Imagemagick is less fully featured.

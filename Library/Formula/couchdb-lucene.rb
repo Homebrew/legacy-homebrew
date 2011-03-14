@@ -1,9 +1,9 @@
 require 'formula'
 
-class CouchdbLucene <Formula
-  url 'https://github.com/rnewson/couchdb-lucene/tarball/v0.5.3'
+class CouchdbLucene < Formula
+  url 'https://github.com/rnewson/couchdb-lucene/tarball/v0.6.0'
   homepage 'https://github.com/rnewson/couchdb-lucene'
-  md5 '1b9be17eb59b6b2839e50eb222bc7e7e'
+  md5 'b55610d4c054987a5c69183585a31d8b'
 
   depends_on 'couchdb'
   depends_on 'maven'
@@ -24,6 +24,7 @@ class CouchdbLucene <Formula
   def caveats; <<-EOS
 You can enable couchdb-lucene to automatically load on login with:
 
+  mkdir -p ~/Library/LaunchAgents
   cp "#{prefix}/couchdb-lucene.plist" ~/Library/LaunchAgents/
   launchctl load -w ~/Library/LaunchAgents/couchdb-lucene.plist
 

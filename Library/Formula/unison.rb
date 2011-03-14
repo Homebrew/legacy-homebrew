@@ -1,7 +1,7 @@
 require 'formula'
 
 class Unison < Formula
-  url 'http://www.seas.upenn.edu/~bcpierce/unison//download/releases/stable/unison-2.32.52.tar.gz'
+  url 'http://www.seas.upenn.edu/~bcpierce/unison//download/releases/unison-2.32.52/unison-2.32.52.tar.gz'
   homepage 'http://www.cis.upenn.edu/~bcpierce/unison/'
   md5 '0701f095c1721776a0454b94607eda48'
 

@@ -1,6 +1,6 @@
 require 'formula'
 
-class CenterIm <Formula
+class CenterIm < Formula
   url 'http://www.centerim.org/download/releases/centerim-4.22.9.tar.gz'
   homepage 'http://www.centerim.org/index.php/Main_Page'
   md5 'c43911508205e0277529230c8316a298'

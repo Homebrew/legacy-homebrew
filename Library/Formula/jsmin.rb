@@ -1,6 +1,6 @@
 require 'formula'
 
-class Jsmin <Formula
+class Jsmin < Formula
   url 'https://github.com/douglascrockford/JSMin/tarball/8f62fe05856935ddcd49e364502ed98c4cf555b8'
   homepage 'http://www.crockford.com/javascript/jsmin.html'
   md5 '24a2db9f6a5337eae18d46c22de57013'

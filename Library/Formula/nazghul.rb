@@ -1,6 +1,6 @@
 require 'formula'
 
-class Nazghul <Formula
+class Nazghul < Formula
   url 'http://downloads.sourceforge.net/project/nazghul/nazghul/nazghul-0.7.0/nazghul-0.7.0.tar.gz'
   homepage 'http://myweb.cableone.net/gmcnutt/nazghul.html'
   md5 '3a3b08ee180163030bc9934d6fb40de8'
