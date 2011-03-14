@@ -16,7 +16,6 @@ class Vips < Formula
   depends_on 'glib'
   depends_on 'jpeg' => :optional
   depends_on 'libtiff' => :optional
-  depends_on 'libpng' => :optional
   depends_on 'imagemagick' => :optional
   depends_on 'fftw' => :optional
   depends_on 'little-cms' => :optional
@@ -26,6 +25,7 @@ class Vips < Formula
   depends_on 'openexr' => :optional
 
   def install
+    ENV.x11 # for libpng
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end

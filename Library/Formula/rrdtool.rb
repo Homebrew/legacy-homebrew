@@ -8,24 +8,24 @@ class Rrdtool < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'glib'
-  depends_on 'libxml2'
+  depends_on 'intltool'
   depends_on 'expat'
   depends_on 'pango'
-  depends_on 'libpng'
-  depends_on 'intltool'
 
   # Can use lua if it is found, but don't force users to install
   depends_on 'lua' => :optional if ARGV.include? "--lua"
 
-  def patches
-    DATA # Ha-ha, but sleeping is annoying when running configure a lot
-  end
+  # Ha-ha, but sleeping is annoying when running configure a lot
+  def patches; DATA; end
 
   def options
     [["--lua", "Compile with lua support."]]
   end
 
   def install
+    ENV.libxml2
+    ENV.x11
+
     which_perl = `/usr/bin/which perl`.chomp
     which_ruby = `/usr/bin/which ruby`.chomp
 
