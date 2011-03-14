@@ -10,7 +10,6 @@ class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
   url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.46/sbcl-1.0.46-source.tar.bz2'
   md5 '83f094aa36edce2d69214330890f05e5'
-  version '1.0.46'
   head 'git://sbcl.boinkor.net/sbcl.git'
 
   skip_clean 'bin'
