@@ -333,10 +333,10 @@ class Formula
       install_type = :from_url
     else
       # Check if this is a name or pathname
-      path = Pathname.new(name)
-      if path.absolute?
-        # For absolute paths, just require the path
+      if name.include? "/"
+        # For paths, just require the path
         require name
+        path = Pathname.new(name)
         name = path.stem
         install_type = :from_path
         target_file = path.to_s
@@ -655,14 +655,14 @@ EOF
 end
 
 # see ack.rb for an example usage
-class ScriptFileFormula <Formula
+class ScriptFileFormula < Formula
   def install
     bin.install Dir['*']
   end
 end
 
 # see flac.rb for example usage
-class GithubGistFormula <ScriptFileFormula
+class GithubGistFormula < ScriptFileFormula
   def initialize name='__UNKNOWN__', path=nil
     super name
     @version=File.basename(File.dirname(url))[0,6]
