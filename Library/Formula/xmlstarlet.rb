@@ -1,6 +1,6 @@
 require 'formula'
 
-class Xmlstarlet <Formula
+class Xmlstarlet < Formula
   url 'http://downloads.sourceforge.net/project/xmlstar/xmlstarlet/1.0.5/xmlstarlet-1.0.5.tar.gz'
   md5 '2a7e5333051fb0b38647cd1e94e81050'
   homepage 'http://xmlstar.sourceforge.net/'

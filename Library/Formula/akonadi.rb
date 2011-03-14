@@ -1,6 +1,6 @@
 require 'formula'
 
-class Akonadi <Formula
+class Akonadi < Formula
   url 'http://download.akonadi-project.org/akonadi-1.5.0.tar.bz2'
   homepage 'http://pim.kde.org/akonadi/'
   md5 '8b0d43b0e947b876a461d90f4b877f54'

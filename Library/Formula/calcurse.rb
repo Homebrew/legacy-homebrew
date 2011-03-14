@@ -1,6 +1,6 @@
 require 'formula'
 
-class Calcurse <Formula
+class Calcurse < Formula
   url 'http://culot.org/cgi-bin/get.cgi?calcurse-2.7.tar.gz'
   homepage 'http://culot.org/calcurse/'
   md5 'eddfae36370fd89532149fe80c312e1e'

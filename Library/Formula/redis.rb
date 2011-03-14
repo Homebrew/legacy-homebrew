@@ -1,6 +1,6 @@
 require 'formula'
 
-class Redis <Formula
+class Redis < Formula
   url 'http://redis.googlecode.com/files/redis-2.2.2.tar.gz'
   head 'git://github.com/antirez/redis.git'
   homepage 'http://redis.io/'

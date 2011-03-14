@@ -1,6 +1,6 @@
 require 'formula'
 
-class GitSubtree <Formula
+class GitSubtree < Formula
   homepage 'https://github.com/apenwarr/git-subtree'
   url 'https://github.com/apenwarr/git-subtree/zipball/v0.4'
   version '0.4'

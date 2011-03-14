@@ -1,6 +1,6 @@
 require 'formula'
 
-class Arabica <Formula
+class Arabica < Formula
   homepage 'http://www.jezuk.co.uk/cgi-bin/view/arabica'
   url 'https://github.com/ashb/Arabica/tarball/20100203'
   version '20100203'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Noweb <Formula
+class Noweb < Formula
   url 'ftp://www.eecs.harvard.edu/pub/nr/noweb.tgz'
   version '2.11b'
   homepage 'http://www.cs.tufts.edu/~nr/noweb/'

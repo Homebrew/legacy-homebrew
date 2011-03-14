@@ -1,6 +1,6 @@
 require 'formula'
 
-class Sleuthkit <Formula
+class Sleuthkit < Formula
   head 'http://svn.sleuthkit.org/repos/sleuthkit/trunk', :using => :svn
   url 'http://downloads.sourceforge.net/project/sleuthkit/sleuthkit/3.2.0/sleuthkit-3.2.0.tar.gz'
   homepage 'http://www.sleuthkit.org/'

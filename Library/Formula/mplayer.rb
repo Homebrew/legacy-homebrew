@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mplayer <Formula
+class Mplayer < Formula
   homepage 'http://www.mplayerhq.hu/'
   # https://github.com/mxcl/homebrew/issues/issue/87
   head 'svn://svn.mplayerhq.hu/mplayer/trunk', :using => StrictSubversionDownloadStrategy

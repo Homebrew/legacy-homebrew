@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gwyddion <Formula
+class Gwyddion < Formula
   url 'http://downloads.sourceforge.net/project/gwyddion/gwyddion/2.23/gwyddion-2.23.tar.bz2'
   homepage 'http://gwyddion.net/'
   md5 '24913aa2e44ed0791287e2b09fbe354f'

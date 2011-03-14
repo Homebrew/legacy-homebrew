@@ -1,6 +1,6 @@
 require 'formula'
 
-class Openimageio <Formula
+class Openimageio < Formula
   url 'http://svn.openimageio.org/oiio/branches/RB-0.8/', :using => :svn
   version "0.8"
   homepage 'http://openimageio.org'
