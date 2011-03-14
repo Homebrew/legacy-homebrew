@@ -23,7 +23,14 @@ class Openimageio < Formula
   depends_on 'tbb' => :optional
 
   def install
-    system "cmake src/ #{std_cmake_parameters} -DUSE_QT:BOOL=OFF -DEMBEDPLUGINS:BOOL=ON"
+    # Allow compilation against boost 1.46.0
+    # See https://github.com/OpenImageIO/oiio/issues/37
+    inreplace "src/libOpenImageIO/imageioplugin.cpp",
+      "#include <boost/filesystem.hpp>",
+      "#define BOOST_FILESYSTEM_VERSION 2\n#include <boost/filesystem.hpp>"
+
+    # Add include path for libpng explicitly
+    system "cmake src/ #{std_cmake_parameters} -DUSE_QT:BOOL=OFF -DEMBEDPLUGINS:BOOL=ON -DCMAKE_CXX_FLAGS=-I/usr/X11R6/include"
     system "make install"
   end
 end
