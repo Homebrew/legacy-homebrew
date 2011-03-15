@@ -1,6 +1,6 @@
 require 'formula'
 
-class Protobuf <Formula
+class Protobuf < Formula
   url 'http://protobuf.googlecode.com/files/protobuf-2.3.0.tar.bz2'
   sha1 'db0fbdc58be22a676335a37787178a4dfddf93c6'
   homepage 'http://code.google.com/p/protobuf/'

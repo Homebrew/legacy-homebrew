@@ -1,6 +1,6 @@
 require 'formula'
 
-class Lua <Formula
+class Lua < Formula
   url 'http://www.lua.org/ftp/lua-5.1.4.tar.gz'
   homepage 'http://www.lua.org/'
   md5 'd0870f2de55d59c1c8419f36e8fac150'

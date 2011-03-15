@@ -1,6 +1,6 @@
 require 'formula'
 
-class Glog <Formula
+class Glog < Formula
   # Stable tarball doesn't build on OS X, but trunk does
   #url 'http://google-glog.googlecode.com/files/glog-0.3.0.tar.gz'
   head 'http://google-glog.googlecode.com/svn/trunk/'

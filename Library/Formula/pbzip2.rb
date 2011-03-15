@@ -1,6 +1,6 @@
 require 'formula'
 
-class Pbzip2 <Formula
+class Pbzip2 < Formula
   url 'http://compression.ca/pbzip2/pbzip2-1.1.1.tar.gz'
   homepage 'http://compression.ca/pbzip2/'
   md5 'b354422759da7113da366aad1876ed5d'

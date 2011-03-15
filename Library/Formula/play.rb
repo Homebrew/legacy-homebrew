@@ -1,6 +1,6 @@
 require 'formula'
 
-class Play <Formula
+class Play < Formula
   url 'http://download.playframework.org/releases/play-1.1.1.zip'
   homepage 'http://www.playframework.org/'
   md5 '3a2a49cfcc0ea679c75d3c1cb34ec080'

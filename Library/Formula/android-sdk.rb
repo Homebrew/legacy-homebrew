@@ -1,10 +1,10 @@
 require 'formula'
 
-class AndroidSdk <Formula
-  url 'http://dl.google.com/android/android-sdk_r08-mac_86.zip'
+class AndroidSdk < Formula
+  url 'http://dl.google.com/android/android-sdk_r10-mac_x86.zip'
   homepage 'http://developer.android.com/index.html'
-  md5 'd2e392c4e4680cbf2dfd6dbf82b662c7'
-  version 'r8'
+  md5 'e3aa5578a6553b69cc36659c9505be3f'
+  version 'r10'
 
   def self.var_dirs
     %w[platforms samples temp add-ons ]
@@ -38,7 +38,7 @@ class AndroidSdk <Formula
     (bin/:adb).write <<-EOS.undent
       #!/bin/sh
       ADB="#{prefix}/platform-tools/adb"
-      test -f "$ADB" && exec "$ADB" $@
+      test -f "$ADB" && exec "$ADB" "$@"
       echo Use the \\`android\\' tool to install adb.
       EOS
   end

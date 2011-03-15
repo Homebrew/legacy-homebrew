@@ -1,9 +1,9 @@
 require 'formula'
 
-class Wine <Formula
+class Wine < Formula
   if ARGV.flag? '--devel'
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.9.tar.bz2'
-    sha1 '68f2172b3cd7674e0f7bb746eae065a7b542db9f'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.15.tar.bz2'
+    sha1 'c0b6137671fc2413ad72c3aa9eb3046a871f7889'
   else
     url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.2.tar.bz2'
     sha1 '8b37c8e0230dd6a665d310054f4e36dcbdab7330'
@@ -13,13 +13,17 @@ class Wine <Formula
 
   depends_on 'jpeg'
   depends_on 'libicns'
+  depends_on 'gnutls'
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
-  # configure: libgnutls, libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
+  # configure: libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
 
-  # This is required for using 3D applications.
+  # Wine loads many libraries lazily using dlopen calls, so it needs these paths
+  # to be searched by dyld.
+  # Including /usr/lib because wine, as of 1.3.15, tries to dlopen
+  # libncurses.5.4.dylib, and fails to find it without the fallback path.
   def wine_wrapper; <<-EOS
 #!/bin/sh
-DYLD_FALLBACK_LIBRARY_PATH="/usr/X11/lib" "#{bin}/wine.bin" "$@"
+DYLD_FALLBACK_LIBRARY_PATH="/usr/X11/lib:#{HOMEBREW_PREFIX}/lib:/usr/lib" "#{bin}/wine.bin" "$@"
 EOS
   end
 
@@ -43,8 +47,8 @@ EOS
             "--with-opengl"]
     args << "--disable-win16" if MACOS_VERSION < 10.6
 
-    args << "--without-mpg123" if Hardware.is_64_bit?
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
+    args << "--without-mpg123" if Hardware.is_64_bit?
 
     system "./configure", *args
     system "make install"

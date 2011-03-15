@@ -1,12 +1,16 @@
 require 'formula'
 
-class Dcmtk <Formula
+class Dcmtk < Formula
   homepage 'http://dicom.offis.de/dcmtk.php.en'
-  url 'http://dicom.offis.de/download/dcmtk/snapshot/old/dcmtk-3.5.5_20101008.tar.gz'
-  md5 'd82e7c7910f96a0b27a1a215b752d37e'
-  version '3.5.5_20101008'
+  url 'ftp://dicom.offis.de/pub/dicom/offis/software/dcmtk/dcmtk360/dcmtk-3.6.0.tar.gz'
+  md5 '19409e039e29a330893caea98715390e'
 
   depends_on 'libtiff'
+  depends_on 'doxygen' if ARGV.include? '--install-all'
+
+  def options
+    [['--install-all', 'Install development libraries/headers and HTML docs']]
+  end
 
   def install
     ENV.deparallelize
@@ -16,6 +20,10 @@ class Dcmtk <Formula
                           "--prefix=#{prefix}",
                           "--disable-threads"
     system "make all"
-    system "make install"
+    if ARGV.include? '--install-all'
+      system "make install-all"
+    else
+      system "make install"
+    end
   end
 end

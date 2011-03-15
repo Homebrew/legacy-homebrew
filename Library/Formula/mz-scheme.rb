@@ -1,6 +1,6 @@
 require 'formula'
 
-class MzScheme <Formula
+class MzScheme < Formula
   url 'http://download.plt-scheme.org/bundles/4.2.5/mz/mz-4.2.5-src-unix.tgz'
   homepage 'http://plt-scheme.org/'
   md5 '5d320c94e168ab58237c0e710c6050d0'

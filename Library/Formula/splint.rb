@@ -1,6 +1,6 @@
 require 'formula'
 
-class Splint <Formula
+class Splint < Formula
   url 'http://www.splint.org/downloads/splint-3.1.2.src.tgz'
   homepage 'http://www.splint.org/'
   md5 '25f47d70bd9c8bdddf6b03de5949c4fd'
