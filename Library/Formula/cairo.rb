@@ -6,7 +6,6 @@ class Cairo < Formula
   md5 'b60a82f405f9400bbfdcf850b1728d25'
 
   depends_on 'pkg-config' => :build
-  depends_on 'libpng'
   depends_on 'pixman'
 
   # Comes with Snow Leopard, but not Leopard
