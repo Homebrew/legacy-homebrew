@@ -8,11 +8,12 @@ class Libpano < Formula
 
   depends_on 'jpeg'
   depends_on 'libtiff'
-  depends_on 'libpng'
 
   def install
+    ENV.x11 # for libpng
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--mandir=#{man}"
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make install"
   end
 end

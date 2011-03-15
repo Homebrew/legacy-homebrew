@@ -7,13 +7,14 @@ class Wv < Formula
 
   depends_on 'glib'
   depends_on 'libgsf'
-  depends_on 'libpng'
   depends_on 'libwmf'
-  depends_on 'libxml2'
 
   def install
+    ENV.libxml2
+    ENV.libpng
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--mandir=#{man}"
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make"
     ENV.deparallelize
     system "make install"
