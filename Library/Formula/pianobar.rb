@@ -1,6 +1,6 @@
 require 'formula'
 
-class Pianobar <Formula
+class Pianobar < Formula
   url 'https://github.com/PromyLOPh/pianobar/tarball/2011.01.24'
   version '2011.01.24'
   homepage 'https://github.com/PromyLOPh/pianobar/'

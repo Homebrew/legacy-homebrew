@@ -1,6 +1,6 @@
 require 'formula'
 
-class GstPluginsBad <Formula
+class GstPluginsBad < Formula
   homepage 'http://gstreamer.freedesktop.org/'
   url 'http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-0.10.21.tar.bz2'
   md5 'f501336ab1d18d2565f47c36ce653a82'

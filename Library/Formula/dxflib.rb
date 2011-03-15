@@ -1,6 +1,6 @@
 require 'formula'
 
-class Dxflib <Formula
+class Dxflib < Formula
   homepage 'http://www.ribbonsoft.com/dxflib.html'
   url 'ftp://anonymous:anonymous@ribbonsoft.com/archives/dxflib/dxflib-2.2.0.0-1.src.tar.gz'
   version '2.2.0.0-1'

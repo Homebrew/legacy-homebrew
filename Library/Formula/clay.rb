@@ -1,6 +1,6 @@
 require 'formula'
 
-class Clay <Formula
+class Clay < Formula
   url 'http://tachyon.in/clay/binaries/clay-macosx-2010.11.13.zip'
   homepage 'http://claylanguage.org'
   version '2010.11.13'

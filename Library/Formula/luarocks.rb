@@ -1,6 +1,6 @@
 require 'formula'
 
-class Luarocks <Formula
+class Luarocks < Formula
   url 'http://luarocks.org/releases/luarocks-2.0.2.tar.gz'
   homepage 'http://luarocks.org'
   md5 'f8b13b642f8bf16740cac009580cda48'

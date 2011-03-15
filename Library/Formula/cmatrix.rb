@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cmatrix <Formula
+class Cmatrix < Formula
   url 'http://www.asty.org/cmatrix/dist/cmatrix-1.2a.tar.gz'
   homepage 'http://www.asty.org/cmatrix/'
   md5 'ebfb5733104a258173a9ccf2669968a1'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Fiwalk <Formula
+class Fiwalk < Formula
   url 'http://afflib.org/downloads/fiwalk-0.6.5.tar.gz'
   homepage 'http://afflib.org/software/fiwalk'
   md5 'b5ca30765b25455006c82725b33af142'

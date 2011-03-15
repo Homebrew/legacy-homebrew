@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gmtl <Formula
+class Gmtl < Formula
   url 'http://downloads.sourceforge.net/project/ggt/Generic%20Math%20Template%20Library/0.6.1/gmtl-0.6.1.tar.gz'
   homepage 'http://ggt.sourceforge.net/'
   md5 '1391af2c5ea050dda7735855ea5bb4c1'

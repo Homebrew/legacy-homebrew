@@ -1,6 +1,6 @@
 require 'formula'
 
-class Zookeeper <Formula
+class Zookeeper < Formula
   url 'http://mirror.switch.ch/mirror/apache/dist/hadoop/zookeeper/zookeeper-3.3.2/zookeeper-3.3.2.tar.gz'
   head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
   homepage 'http://hadoop.apache.org/zookeeper/'

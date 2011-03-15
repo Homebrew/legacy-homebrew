@@ -1,6 +1,6 @@
 require 'formula'
 
-class SpringRoo <Formula
+class SpringRoo < Formula
   url 'http://s3.amazonaws.com/dist.springframework.org/release/ROO/spring-roo-1.1.2.RELEASE.zip'
   version '1.1.2'
   homepage 'http://www.springsource.org/roo'

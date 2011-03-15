@@ -1,6 +1,6 @@
 require 'formula'
 
-class Flusspferd <Formula
+class Flusspferd < Formula
   url 'http://flusspferd.org/downloads/flusspferd-0.9.tar.bz2'
   homepage 'http://flusspferd.org/'
   md5 '7688b2a939777b4b7be82898dea9b3d9'

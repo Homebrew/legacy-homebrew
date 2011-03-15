@@ -1,6 +1,6 @@
 require 'formula'
 
-class Zeromq <Formula
+class Zeromq < Formula
   url 'http://download.zeromq.org/zeromq-2.1.1.tar.gz'
   head 'git://github.com/zeromq/zeromq2.git'
   homepage 'http://www.zeromq.org/'

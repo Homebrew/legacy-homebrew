@@ -1,6 +1,6 @@
 require 'formula'
 
-class Rename <Formula
+class Rename < Formula
   url 'http://plasmasturm.org/code/rename/rename', :using => :nounzip
   version '0.1.3'
   homepage 'http://plasmasturm.org/code/rename'

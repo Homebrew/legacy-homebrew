@@ -1,6 +1,6 @@
 require 'formula'
 
-class Spim <Formula
+class Spim < Formula
   url 'http://www.cs.wisc.edu/~larus/SPIM/spim.tar.gz'
   homepage 'http://pages.cs.wisc.edu/~larus/spim.html'
   md5 '146558e8256f2b7577fb825fdc76a04f'

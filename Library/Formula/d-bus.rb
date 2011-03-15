@@ -1,6 +1,6 @@
 require 'formula'
 
-class DBus <Formula
+class DBus < Formula
   url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.4.1.tar.gz'
   homepage 'http://www.freedesktop.org/wiki/Software/dbus'
   md5 '99cb057700c0455fb68f8d57902f77ac'
