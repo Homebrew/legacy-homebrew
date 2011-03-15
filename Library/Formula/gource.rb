@@ -11,7 +11,6 @@ class Gource < Formula
   depends_on 'sdl_image'
   depends_on 'ftgl'
   depends_on 'jpeg'
-  depends_on 'libpng'
   depends_on 'pcre'
   depends_on 'glew'
 

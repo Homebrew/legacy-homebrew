@@ -7,11 +7,16 @@ class Zint < Formula
   head 'git://zint.git.sourceforge.net/gitroot/zint/zint'
 
   depends_on 'cmake'
-  depends_on 'libpng'
 
   def install
     cd('build')
-    system "cmake ..  #{std_cmake_parameters} -DCMAKE_PREFIX_PATH=#{prefix} -DCMAKE_C_FLAGS=-I#{Formula.factory('libpng').include}"
+    system "cmake ..  #{std_cmake_parameters} -DCMAKE_PREFIX_PATH=#{prefix} -DCMAKE_C_FLAGS=-I/usr/X11R6/include"
     system "make install"
+  end
+
+  def test
+    system "zint -o test-zing.png -d 'This Text'"
+    system "open test-zing.png"
+    puts "You may want to `rm test-zing.png`"
   end
 end

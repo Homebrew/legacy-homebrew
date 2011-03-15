@@ -5,7 +5,6 @@ class Openttd < Formula
   homepage 'http://www.openttd.org/'
   md5 'fc79f788e2be140948b972c32b0f1eec'
 
-  depends_on 'libpng'
   depends_on 'lzo'
 
   def install
