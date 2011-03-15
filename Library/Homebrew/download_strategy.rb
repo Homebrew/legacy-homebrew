@@ -164,6 +164,7 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
   end
 
   def fetch
+    @url.sub!(/^svn\+/, '') if @url =~ %r[^svn\+http://]
     ohai "Checking out #{@url}"
     if @spec == :revision
       fetch_repo @co, @url, @ref
