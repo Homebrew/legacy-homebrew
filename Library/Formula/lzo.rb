@@ -6,7 +6,7 @@ class Lzo < Formula
   md5 'a383c7055a310e2a71b9ecd19cfea238'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-asm",
                           "--enable-shared=yes"

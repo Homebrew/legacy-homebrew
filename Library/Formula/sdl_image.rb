@@ -6,7 +6,6 @@ class SdlImage < Formula
   homepage 'http://www.libsdl.org/projects/SDL_image'
   md5 '6c06584b31559e2b59f2b982d0d1f628'
 
-  depends_on 'libpng'
   depends_on 'sdl'
 
   def install

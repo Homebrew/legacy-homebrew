@@ -7,7 +7,6 @@ class LibsvgCairo < Formula
   version '0.1.6'
 
   depends_on 'pkg-config' => :build
-  depends_on 'libpng'
   depends_on 'libsvg'
   depends_on 'cairo' if MACOS_VERSION < 10.6
 
