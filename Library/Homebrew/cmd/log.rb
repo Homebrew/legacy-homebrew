@@ -4,7 +4,7 @@ module Homebrew extend self
     if ARGV.named.empty?
       exec "git", "log", *ARGV.options_only
     else
-      exec "git", "log", *ARGV.formulae.map(&:path) + ARGV.options_only
+      exec "git", "log", *ARGV.options_only + ARGV.formulae.map(&:path)
     end
   end
 end

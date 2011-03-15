@@ -11,6 +11,8 @@ class X264 < Formula
   depends_on 'yasm'
 
   def install
+    # Having this set can fail the endian test!
+    ENV['GREP_OPTIONS'] = ''
     system "./version.sh"
     system "./configure", "--prefix=#{prefix}",
                           "--enable-shared"

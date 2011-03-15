@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "February 2011" "Homebrew" "brew"
+.TH "BREW" "1" "March 2011" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -60,11 +60,11 @@ Download and patch \fIformula\fR, then open a shell\. This allows the user to ru
 If \fB\-\-git\fR is passed, Homebrew will create a Git repository, useful for creating patches to the software\.
 .
 .TP
-\fB\-S\fR, \fBsearch\fR \fItext\fR|/\fItext\fR/
+\fBsearch\fR, \fB\-S\fR \fItext\fR|/\fItext\fR/
 Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. If no search term is given, all available formula are displayed\.
 .
 .TP
-\fB\-S \-\-macports\fR|\fB\-\-fink\fR \fItext\fR
+\fBsearch \-\-macports\fR|\fB\-\-fink\fR \fItext\fR
 Search for \fItext\fR on the MacPorts or Fink package search page\.
 .
 .TP
@@ -110,11 +110,11 @@ Uninstall \fIformula\fR\.
 If \fB\-\-force\fR is passed, and there are multiple versions of \fIformula\fR installed, delete all installed versions\.
 .
 .TP
-\fBcreate [\-\-cache]\fR \fIURL\fR
+\fBcreate [\-\-no\-fetch]\fR \fIURL\fR
 Generate a formula for the downloadable file at \fIURL\fR and opens it in $EDITOR\. Homebrew will attempt to automatically derive the formula name and version, if it fails, you\'ll have to make your own template\. I suggest copying wget\'s\.
 .
 .IP
-If \fB\-\-cache\fR is passed, Homebrew will download the \fIURL\fR to the cache and add the MD5 to the formula for you\.
+If \fB\-\-no\-fetch\fR is passed, Homebrew will not download \fIURL\fR to the cache and will thus not add the MD5 to the formula for you\.
 .
 .TP
 \fBedit\fR \fIformula\fR

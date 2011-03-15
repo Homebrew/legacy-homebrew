@@ -1,8 +1,8 @@
-class UsageError <RuntimeError; end
-class FormulaUnspecifiedError <UsageError; end
-class KegUnspecifiedError <UsageError; end
+class UsageError < RuntimeError; end
+class FormulaUnspecifiedError < UsageError; end
+class KegUnspecifiedError < UsageError; end
 
-class MultipleVersionsInstalledError <RuntimeError
+class MultipleVersionsInstalledError < RuntimeError
   attr :name
 
   def initialize name
@@ -13,7 +13,7 @@ end
 
 class NotAKegError < RuntimeError; end
 
-class NoSuchKegError <RuntimeError
+class NoSuchKegError < RuntimeError
   attr :name
 
   def initialize name
@@ -108,7 +108,7 @@ class BuildError < Homebrew::InstallationError
     @command = cmd
     @env = ENV.to_hash
     @exit_status = es.exitstatus rescue 1
-    args = args.map{ |arg| arg.gsub " ", "\\ " }.join(" ")
+    args = args.map{ |arg| arg.to_s.gsub " ", "\\ " }.join(" ")
     super formula, "Failed executing: #{command} #{args}"
   end
 

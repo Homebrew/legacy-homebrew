@@ -7,6 +7,15 @@ class Graphviz < Formula
 
   depends_on 'pkg-config' => :build
 
+  if ARGV.include? '--with-pdf'
+    depends_on 'pango'
+    depends_on 'cairo' if MACOS_VERSION < 10.6
+  end
+
+  def options
+    [["--with-pdf", "Build with Pango/Cairo to support native PDF output"]]
+  end
+
   def install
     ENV.x11
     # Various language bindings fail with 32/64 issues.

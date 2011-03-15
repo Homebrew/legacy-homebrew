@@ -1,10 +1,6 @@
 #!/usr/bin/ruby
 # -*- coding: utf-8 -*-
 
-# Many Pathname operations use getwd when they shouldn't, and then throw 
-# odd exceptions. Reduce our support burden by showing a user-friendly error.
-Dir.getwd rescue abort "The current working directory doesn't exist, cannot proceed."
-
 HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] = File.expand_path(__FILE__)
 
 require 'pathname'
@@ -12,10 +8,10 @@ HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.dirname.parent.join("Lib
 $:.unshift(HOMEBREW_LIBRARY_PATH)
 require 'global'
 
-case ARGV.first
-when '-h', '--help', '--usage', '-?', 'help', nil
-  puts ARGV.usage
-  exit 0
+case ARGV.first when '-h', '--help', '--usage', '-?', 'help', nil
+  require 'cmd/help'
+  puts Homebrew.help_s
+  exit ARGV.first ? 0 : 1
 when '--version'
   puts HOMEBREW_VERSION
   exit 0
@@ -41,6 +37,11 @@ if MACOS_VERSION < 10.5
   EOABORT
 end
 
+# Many Pathname operations use getwd when they shouldn't, and then throw
+# odd exceptions. Reduce our support burden by showing a user-friendly error.
+Dir.getwd rescue abort "The current working directory doesn't exist, cannot proceed."
+
+
 def require? path
   require path.to_s.chomp
 rescue LoadError => e
@@ -61,7 +62,9 @@ begin
              'configure' => :diy,
              'abv' => :info,
              'dr' => :doctor,
-             '--repo' => '--repository'}
+             '--repo' => '--repository',
+             'environment' => '--env'  # same as gem
+             }
 
   cmd = ARGV.shift
   cmd = aliases[cmd] if aliases[cmd]
