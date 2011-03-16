@@ -476,7 +476,7 @@ def detect_download_strategy url
   when %r[^git://] then GitDownloadStrategy
   when %r[^hg://] then MercurialDownloadStrategy
   when %r[^svn://] then SubversionDownloadStrategy
-  when %r[^svn+http://] then SubversionDownloadStrategy
+  when %r[^svn\+http://] then SubversionDownloadStrategy
   when %r[^fossil://] then FossilDownloadStrategy
     # Some well-known source hosts
   when %r[^http://github\.com/.+\.git$] then GitDownloadStrategy
