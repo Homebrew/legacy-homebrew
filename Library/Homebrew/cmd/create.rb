@@ -73,7 +73,6 @@ class FormulaCreator
 
   def generate
     raise "#{path} already exists" if path.exist?
-    raise VersionUndetermined if version.nil?
 
     require 'digest'
     require 'erb'
