@@ -1,7 +1,7 @@
 require 'download_strategy'
 require 'fileutils'
 
-
+# Defines a URL and download method for a stable or HEAD build
 class SoftwareSpecification
   attr_reader :url, :specs, :using
 
@@ -42,6 +42,31 @@ class SoftwareSpecification
 
   def detect_version
     Pathname.new(@url).version
+  end
+end
+
+
+# Used to annotate formulae that duplicate OS X provided software
+# :provided_by_osx
+class KegOnlyReason
+  attr_reader :reason, :explanation
+
+  def initialize reason, explanation=nil
+    @reason = reason
+    @explanation = explanation
+  end
+
+  def to_s
+    if @reason == :provided_by_osx
+      <<-EOS.chomp
+Mac OS X already provides this program and installing another version in
+parallel can cause all kinds of trouble.
+
+#{@explanation}
+EOS
+    else
+      @reason
+    end
   end
 end
 
@@ -648,8 +673,8 @@ EOF
       puts "detected as an alias for the target formula."
     end
 
-    def keg_only reason
-      @keg_only_reason = reason
+    def keg_only reason, explanation=nil
+      @keg_only_reason = KegOnlyReason.new(reason, explanation.chomp)
     end
   end
 end
