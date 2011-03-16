@@ -5,7 +5,10 @@ class Libiconv < Formula
   homepage 'http://www.gnu.org/software/libiconv/'
   md5 '7ab33ebd26687c744a37264a330bbe9a'
 
-  keg_only :provided_by_osx
+  keg_only :provided_by_osx, <<-EOS.undent
+    A few software packages require this newer version of libiconv.
+    Please use this dependency very sparingly.
+  EOS
 
   def patches
     { :p1 => [

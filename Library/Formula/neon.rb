@@ -7,7 +7,8 @@ class Neon < Formula
 
   depends_on 'pkg-config' => :build
 
-  keg_only :provided_by_osx
+  keg_only :provided_by_osx,
+            "Compiling newer versions of Subversion on 10.6 require this newer neon."
 
   def options
     [['--universal', 'Builds a universal binary.']]
