@@ -1,6 +1,6 @@
 require 'formula'
 
-class NetSnmp <Formula
+class NetSnmp < Formula
   url 'http://downloads.sourceforge.net/project/net-snmp/net-snmp/5.6/net-snmp-5.6.tar.gz'
   homepage 'http://www.net-snmp.org/'
   md5 '89b3a7a77e68daef925abee43a3f7018'

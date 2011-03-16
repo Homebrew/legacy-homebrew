@@ -1,6 +1,6 @@
 require 'formula'
 
-class KyotoTycoon <Formula
+class KyotoTycoon < Formula
   url 'http://fallabs.com/kyototycoon/pkg/kyototycoon-0.9.23.tar.gz'
   homepage 'http://fallabs.com/kyototycoon/'
   md5 '115aae62590dd20ed54f6c346cb313cd'

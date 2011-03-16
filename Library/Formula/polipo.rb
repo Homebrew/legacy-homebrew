@@ -1,6 +1,6 @@
 require 'formula'
 
-class Polipo <Formula
+class Polipo < Formula
   url 'http://freehaven.net/~chrisd/polipo/polipo-1.0.4.tar.gz'
   homepage 'http://www.pps.jussieu.fr/~jch/software/polipo/'
   head 'git://git.torproject.org/git/polipo'

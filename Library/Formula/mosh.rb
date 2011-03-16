@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mosh <Formula
+class Mosh < Formula
   url 'http://mosh-scheme.googlecode.com/files/mosh-0.2.6p.tar.gz'
   homepage 'http://mosh.monaos.org'
   md5 'e41e38a4a09614392c6e2eb850143724'

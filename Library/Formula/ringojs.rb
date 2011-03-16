@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ringojs <Formula
+class Ringojs < Formula
   url 'https://github.com/downloads/ringo/ringojs/ringojs-0.6.tar.gz'
   homepage 'http://ringojs.org'
   md5 '9a18e2bc6624df43010c61d2ef0d65ee'

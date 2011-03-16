@@ -1,6 +1,6 @@
 require 'formula'
 
-class Titlecase <Formula
+class Titlecase < Formula
   head 'git://github.com/ap/titlecase.git'
   homepage 'http://plasmasturm.org/code/titlecase/'
 

@@ -1,6 +1,6 @@
 require 'formula'
 
-class GstPluginsUgly <Formula
+class GstPluginsUgly < Formula
   homepage 'http://gstreamer.freedesktop.org/'
   url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-0.10.17.tar.bz2'
   md5 '504ed6508c3a8f035a2002ed69d68506'
