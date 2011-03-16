@@ -11,7 +11,7 @@ class Scantailor < Formula
   depends_on 'boost'
 
   def install
-    system "cmake . #{std_cmake_parameters}"
+    system "cmake . #{std_cmake_parameters} -DPNG_INCLUDE_DIR=/usr/X11R6/include"
     system "make install"
   end
 end
