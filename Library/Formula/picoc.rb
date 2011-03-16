@@ -1,6 +1,6 @@
 require 'formula'
 
-class Picoc <Formula
+class Picoc < Formula
   url 'http://picoc.googlecode.com/files/picoc-1.0.tar.bz2'
   homepage 'http://code.google.com/p/picoc/'
   md5 '7af179f5f9351228df8a34ed7add436a'

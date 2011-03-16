@@ -1,6 +1,6 @@
 require 'formula'
 
-class Metapixel <Formula
+class Metapixel < Formula
   url 'http://www.complang.tuwien.ac.at/schani/metapixel/files/metapixel-1.0.2.tar.gz'
   homepage 'http://www.complang.tuwien.ac.at/schani/metapixel/'
   md5 'af5d77d38826756af213a08e3ada9941'

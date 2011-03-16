@@ -1,7 +1,7 @@
 require 'formula'
 
-class Newlisp <Formula
-  url 'http://www.newlisp.org/downloads/newlisp-10.2.8.tgz'
+class Newlisp < Formula
+  url 'http://www.newlisp.org/downloads/newlisp-10.3.0.tgz'
   homepage 'http://www.newlisp.org/'
   md5 '4b728ce4d25cc6cbb4f53f8c98a02733'
 

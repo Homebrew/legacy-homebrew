@@ -1,6 +1,6 @@
 require 'formula'
 
-class Pdf2svg <Formula
+class Pdf2svg < Formula
   url 'http://www.cityinthesky.co.uk/files/pdf2svg-0.2.1.tar.gz'
   homepage 'http://www.cityinthesky.co.uk/pdf2svg.html'
   md5 '59b3b9768166f73b77215e95d91f0a9d'

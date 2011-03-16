@@ -1,6 +1,6 @@
 require 'formula'
 
-class Putty <Formula
+class Putty < Formula
   url 'http://the.earth.li/~sgtatham/putty/latest/putty-0.60.tar.gz'
   homepage 'http://www.chiark.greenend.org.uk/~sgtatham/putty/'
   md5 '07e65fd98b16d115ae38a180bfb242e2'

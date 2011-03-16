@@ -1,6 +1,6 @@
 require 'formula'
 
-class Zebra <Formula
+class Zebra < Formula
   url 'http://ftp.indexdata.dk/pub/zebra/idzebra-2.0.45.tar.gz'
   homepage 'http://www.indexdata.com/zebra'
   md5 '50aa282d76b4fa86a02c28e6dad4e24b'

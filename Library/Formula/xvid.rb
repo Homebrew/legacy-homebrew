@@ -1,6 +1,6 @@
 require 'formula'
 
-class Xvid <Formula
+class Xvid < Formula
   url 'http://downloads.xvid.org/downloads/xvidcore-1.2.2.tar.gz'
   homepage 'http://www.xvid.org'
   md5 '2ce9b1d280d703b5bc8e702c79e660b5'

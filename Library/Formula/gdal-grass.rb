@@ -1,6 +1,6 @@
 require 'formula'
 
-class GdalGrass <Formula
+class GdalGrass < Formula
   homepage 'http://www.gdal.org'
   url 'http://download.osgeo.org/gdal/gdal-grass-1.4.3.tar.gz'
   md5 '2bfb7640e03b4d9d012f1a5d62c0351d'

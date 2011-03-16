@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gd <Formula
+class Gd < Formula
   url "http://www.libgd.org/releases/gd-2.0.36RC1.tar.gz"
   homepage "http://www.libgd.org"
   head "http://bitbucket.org/pierrejoye/gd-libgd", :using => :hg

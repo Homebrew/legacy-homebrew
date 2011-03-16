@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libspatialite <Formula
+class Libspatialite < Formula
   url 'http://www.gaia-gis.it/spatialite-2.4.0-4/libspatialite-amalgamation-2.4.0.tar.gz'
   version '2.4.0-rc4'
   homepage 'http://www.gaia-gis.it/spatialite/'

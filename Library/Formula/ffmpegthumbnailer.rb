@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ffmpegthumbnailer <Formula
+class Ffmpegthumbnailer < Formula
   url 'http://ffmpegthumbnailer.googlecode.com/files/ffmpegthumbnailer-2.0.6.tar.gz'
   homepage 'http://code.google.com/p/ffmpegthumbnailer/'
   sha1 'c565eb31910ea03801045e19230870c7e772b1a6'

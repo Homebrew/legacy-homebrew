@@ -1,6 +1,6 @@
 require 'formula'
 
-class Openssl <Formula
+class Openssl < Formula
   url 'http://www.openssl.org/source/openssl-0.9.8o.tar.gz'
   version '0.9.8o'
   homepage 'http://www.openssl.org'

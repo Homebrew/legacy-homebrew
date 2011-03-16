@@ -1,6 +1,6 @@
 require 'formula'
 
-class Hiredis <Formula
+class Hiredis < Formula
   url 'https://github.com/antirez/hiredis/tarball/v0.9.2'
   head 'git://github.com/antirez/hiredis.git'
   homepage 'https://github.com/antirez/hiredis'

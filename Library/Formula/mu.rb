@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mu <Formula
+class Mu < Formula
   url 'http://mu0.googlecode.com/files/mu-0.9.3.tar.gz'
   homepage 'http://www.djcbsoftware.nl/code/mu/'
   md5 '4f19e26c8621fcace290f78abecf2d36'

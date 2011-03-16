@@ -1,6 +1,6 @@
 require 'formula'
 
-class Languagetool <Formula
+class Languagetool < Formula
   url 'http://www.languagetool.org/download/LanguageTool-1.2.oxt'
   homepage 'http://www.languagetool.org/'
   md5 'f13ea47708968b2eb484f84623dd74e4'

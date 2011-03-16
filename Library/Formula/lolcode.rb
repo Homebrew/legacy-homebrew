@@ -1,6 +1,6 @@
 require 'formula'
 
-class Lolcode <Formula
+class Lolcode < Formula
   homepage 'http://www.icanhaslolcode.org/'
   url 'https://github.com/justinmeza/lci/tarball/v0.9.2'
   head 'git://github.com/justinmeza/lolcode.git'
