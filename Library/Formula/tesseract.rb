@@ -1,27 +1,34 @@
 require 'formula'
 
-class TesseractEnglishData < Formula
-  url 'http://tesseract-ocr.googlecode.com/files/tesseract-2.00.eng.tar.gz'
-  md5 'b8291d6b3a63ce7879d688e845e341a9'
-  version '2.00'
+class TesseractEnglishData <Formula
+  url 'http://tesseract-ocr.googlecode.com/files/eng.traineddata.gz'
+  md5 'd91041ad156cf2db36664e91ef799451'
+  version '3.00'
 end
 
-class Tesseract < Formula
-  url 'http://tesseract-ocr.googlecode.com/files/tesseract-2.04.tar.gz'
+class Tesseract <Formula
+  url 'http://tesseract-ocr.googlecode.com/files/tesseract-3.00.tar.gz'
   homepage 'http://code.google.com/p/tesseract-ocr/'
-  md5 'b44eba1a9f4892ac62e484c807fe0533'
+  md5 'cc812a261088ea0c3d2da735be35d09f'
 
   depends_on 'libtiff'
+
+  def patches
+    # add 16bpp support.
+    DATA
+  end
 
   def install
     fails_with_llvm "Executable 'tesseract' segfaults on 10.6 when compiled with llvm-gcc", :build => "2206"
 
-    # 'make install' expects the language data files in the build directory
-    d = Dir.getwd
-    TesseractEnglishData.new.brew { cp Dir["*"], "#{d}/tessdata/" }
-
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
+
+    # 'make install' expects the language data files in the build directory
+    tesseract_prefix = prefix
+    TesseractEnglishData.new.brew do
+      cp(Dir["*"], "#{tesseract_prefix}/share/tessdata/" )
+    end
   end
 
   def caveats; <<-EOF.undent
@@ -34,3 +41,19 @@ class Tesseract < Formula
     EOF
   end
 end
+
+__END__
+diff --git a/image/imgs.cpp b/image/imgs.cpp
+index 0b6732d..a669ad7 100644
+--- a/image/imgs.cpp
++++ b/image/imgs.cpp
+@@ -252,7 +252,8 @@ inT32 check_legal_image_size(                     //get rest
+   }
+   if (bits_per_pixel != 1 && bits_per_pixel != 2
+       && bits_per_pixel != 4 && bits_per_pixel != 5
+-      && bits_per_pixel != 6 && bits_per_pixel != 8 && bits_per_pixel != 24
++      && bits_per_pixel != 6 && bits_per_pixel != 8
++      && bits_per_pixel != 16 && bits_per_pixel != 24
+       && bits_per_pixel != 32) {
+     BADBPP.error ("check_legal_image_size", TESSLOG, "%d", bits_per_pixel);
+     return -1;
