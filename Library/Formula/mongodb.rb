@@ -63,7 +63,6 @@ class Mongodb < Formula
 
   def caveats
     s = ""
-    
     s += <<-EOS.undent
     If this is your first install, automatically load on login with:
         mkdir -p ~/Library/LaunchAgents
@@ -80,7 +79,7 @@ class Mongodb < Formula
     EOS
 
     if !ARGV.include? "--journal"
-        s += <<-EOS.undent 
+        s += <<-EOS.undent
 
         MongoDB 1.8+ includes a feature for Write Ahead Logging (Journaling), which is not enabled by default.
         To install MongoDB with Journaling enabled, use --journal_option
@@ -115,8 +114,8 @@ EOS
     <string>#{bin}/mongod</string>
     <string>run</string>
     <string>--config</string>
-    <string>#{prefix}/mongod.conf</string> 
-    #{journal_option} 
+    <string>#{prefix}/mongod.conf</string>
+    #{journal_option}
     #{rest_option}
   </array>
   <key>RunAtLoad</key>
