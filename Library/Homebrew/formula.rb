@@ -265,7 +265,10 @@ class Formula
   end
 
   def fails_with_llvm msg="", data=nil
-    return unless (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
+    unless (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
+      ENV.gcc_4_2 if default_cc =~ /llvm/
+      return
+    end
 
     build = data.delete :build rescue nil
     msg = "(No specific reason was given)" if msg.empty?
