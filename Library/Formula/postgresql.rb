@@ -8,36 +8,42 @@ class Postgresql < Formula
 
   depends_on 'readline'
   depends_on 'libxml2' if MACOS_VERSION < 10.6 # Leopard libxml is too old
-  depends_on 'ossp-uuid'
+  depends_on 'ossp-uuid' unless ARGV.include? '--no-ossp-uuid' or ARGV.include? '--no-contrib'
 
   def options
     [
       ['--no-python', 'Build without Python support.'],
-      ['--no-perl', 'Build without Perl support.']
+      ['--no-perl', 'Build without Perl support.'],
+      ['--no-ossp-uuid', 'Build without OSSP uuid support.'],
+      ['--no-bonjour', 'Build without Bonjour support.'],
+      ['--no-gssapi', 'Build without GSSAPI support.'],
+      ['--no-krb5', 'Build without Kerberos support.'],
+      ['--no-openssl', 'Build without OpenSSL support.'],
+      ['--no-xml', 'Build without libxml and libxslt support.'],
+      ['--no-contrib', 'Build without PostgreSQL contrib.']
     ]
   end
 
   skip_clean :all
 
   def install
-    ENV.libxml2 if MACOS_VERSION >= 10.6
+    ENV.libxml2 if MACOS_VERSION >= 10.6 and not ARGV.include? '--no-xml'
 
     args = ["--disable-debug",
             "--prefix=#{prefix}",
-            "--enable-thread-safety",
-            "--with-bonjour",
-            "--with-gssapi",
-            "--with-krb5",
-            "--with-openssl",
-            "--with-libxml", "--with-libxslt"]
+            "--enable-thread-safety"]
 
-    args << "--with-python" unless ARGV.include? '--no-python'
-    args << "--with-perl" unless ARGV.include? '--no-perl'
+    %w(python perl bonjour gssapi krb5 openssl libxml libxslt).each do |feature|
+      args << "--with-#{feature}" unless ARGV.include? "--no-#{feature}"
+    end
+    args << '--with-xslt' unless ARGV.include? '--no-xml'
 
-    args << "--with-ossp-uuid"
-    ENV.append 'CFLAGS', `uuid-config --cflags`.strip
-    ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
-    ENV.append 'LIBS', `uuid-config --libs`.strip
+    unless ARGV.include? '--no-ossp-uuid'
+      args << "--with-ossp-uuid"
+      ENV.append 'CFLAGS', `uuid-config --cflags`.strip
+      ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
+      ENV.append 'LIBS', `uuid-config --libs`.strip
+    end
 
     if snow_leopard_64? and not ARGV.include? '--no-python'
       args << "ARCHFLAGS='-arch x86_64'"
@@ -50,10 +56,13 @@ class Postgresql < Formula
     system "./configure", *args
     system "make install"
 
-    contrib_directories = Dir.glob("contrib/*").select{ |path| File.directory?(path) } - ['contrib/start-scripts']
-
-    contrib_directories.each do |contrib_directory|
-      system "cd #{contrib_directory}; make install"
+    unless ARGV.include? '--no-contrib'
+      Dir.glob("contrib/*").each do |dir|
+        next unless File.directory?(dir)
+        next if dir =~ /start-scripts/i
+        next if dir =~ /ssl/i and ARGV.include? '--no-openssl'
+        system "cd #{dir}; make install"
+      end
     end
 
     (prefix+'org.postgresql.postgres.plist').write startup_plist
