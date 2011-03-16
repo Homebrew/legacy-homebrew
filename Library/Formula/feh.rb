@@ -1,6 +1,6 @@
 require 'formula'
 
-class Feh <Formula
+class Feh < Formula
   url 'http://feh.finalrewind.org/feh-1.11.2.tar.bz2'
   homepage 'http://freshmeat.net/projects/feh'
   md5 '3b2354d78a882ce02b429bbe053467a2'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Wxmac <Formula
+class Wxmac < Formula
   url 'http://downloads.sourceforge.net/project/wxwindows/2.8.11/wxMac-2.8.11.tar.bz2'
   homepage 'http://www.wxwidgets.org'
   md5 '8d84bfdc43838e2d2f75031f62d1864f'

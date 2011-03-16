@@ -1,6 +1,6 @@
 require 'formula'
 
-class Netcdf <Formula
+class Netcdf < Formula
   url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.1.1.tar.gz'
   homepage 'http://www.unidata.ucar.edu/software/netcdf/'
   md5 '79c5ff14c80d5e18dd8f1fceeae1c8e1'

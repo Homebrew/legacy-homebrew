@@ -1,6 +1,6 @@
 require 'formula'
 
-class Tomcat <Formula
+class Tomcat < Formula
   url 'http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.6/bin/apache-tomcat-7.0.6.tar.gz'
   homepage 'http://tomcat.apache.org/'
   md5 '1c54578e2e695212ab3ed75170930df4'

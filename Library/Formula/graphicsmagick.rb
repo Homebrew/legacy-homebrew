@@ -20,7 +20,7 @@ def x11?
   File.file? '/usr/X11/include/ft2build.h'
 end
 
-class Graphicsmagick <Formula
+class Graphicsmagick < Formula
   url 'http://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.12/GraphicsMagick-1.3.12.tar.bz2'
   homepage 'http://www.graphicsmagick.org/'
   md5 '55182f371f82d5f9367bce04e59bbf25'

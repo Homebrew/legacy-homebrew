@@ -1,6 +1,6 @@
 require 'formula'
 
-class Rubber <Formula
+class Rubber < Formula
   url 'http://launchpad.net/rubber/trunk/1.1/+download/rubber-20100306.tar.gz'
   homepage 'https://launchpad.net/rubber/'
   md5 'f3e41773853db232630d4a71636b2ba4'

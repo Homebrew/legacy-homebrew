@@ -1,6 +1,6 @@
 require 'formula'
 
-class X264 <Formula
+class X264 < Formula
   url "http://download.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20100903-2245.tar.bz2"
   homepage 'http://www.videolan.org/developers/x264.html'
   md5 '79d13e0fd56a73c65f75940d70e9c450'
@@ -11,6 +11,8 @@ class X264 <Formula
   depends_on 'yasm'
 
   def install
+    # Having this set can fail the endian test!
+    ENV['GREP_OPTIONS'] = ''
     system "./version.sh"
     system "./configure", "--prefix=#{prefix}",
                           "--enable-shared"

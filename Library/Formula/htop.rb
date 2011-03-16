@@ -1,6 +1,6 @@
 require 'formula'
 
-class Htop <Formula
+class Htop < Formula
   head 'git://github.com/cynthia/htop-osx.git'
   homepage 'http://htop.sourceforge.net/'
 

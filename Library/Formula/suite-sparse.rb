@@ -1,6 +1,6 @@
 require 'formula'
 
-class SuiteSparse <Formula
+class SuiteSparse < Formula
   url 'http://www.cise.ufl.edu/research/sparse/SuiteSparse/SuiteSparse-3.6.0.tar.gz'
   homepage 'http://www.cise.ufl.edu/research/sparse/SuiteSparse/'
   md5 '8ccb9e90b478b5d55b1d9a794e8ed676'

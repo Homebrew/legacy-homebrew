@@ -1,6 +1,6 @@
 require 'formula'
 
-class Openvpn <Formula
+class Openvpn < Formula
   url 'http://swupdate.openvpn.net/community/releases/openvpn-2.1.4.tar.gz'
   homepage 'http://openvpn.net/'
   md5 '96a11868082685802489254f03ff3bde'

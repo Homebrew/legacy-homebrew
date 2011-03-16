@@ -1,6 +1,6 @@
 require 'formula'
 
-class GoAccess <Formula
+class GoAccess < Formula
   url 'http://sourceforge.net/projects/goaccess/files/0.4.1/goaccess-0.4.1.tar.gz'
   homepage 'http://goaccess.prosoftcorp.com/'
   sha1 'f68336fc49eb4907262f53956d4b88d5573a861e'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Valgrind <Formula
+class Valgrind < Formula
   homepage 'http://www.valgrind.org/'
 
   url "http://valgrind.org/downloads/valgrind-3.6.1.tar.bz2"
@@ -11,7 +11,7 @@ class Valgrind <Formula
   skip_clean 'lib'
 
   def install
-    fails_with_llvm "Undefined symbols when linking", :build => 2326
+    fails_with_llvm "Makes applications segfault on startup", :build => 2326
 
     system "./autogen.sh" if File.exists? "autogen.sh"
 

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libxml2 <Formula
+class Libxml2 < Formula
   url 'ftp://xmlsoft.org/libxml2/libxml2-2.7.7.tar.gz'
   homepage 'http://xmlsoft.org'
   md5 '9abc9959823ca9ff904f1fbcf21df066'

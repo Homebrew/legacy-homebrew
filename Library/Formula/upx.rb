@@ -1,6 +1,6 @@
 require 'formula'
 
-class Upx <Formula
+class Upx < Formula
   url 'http://upx.sourceforge.net/download/upx-3.05-src.tar.bz2'
   homepage 'http://upx.sourceforge.net'
   md5 '1f0ca94c8c26a816402274dd7e628334'
