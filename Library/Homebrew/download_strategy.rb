@@ -83,8 +83,13 @@ class CurlDownloadStrategy <AbstractDownloadStrategy
       chdir
     when /^\037\213/, /^BZh/, /^\037\235/  # gzip/bz2/compress compressed
       # TODO check if it's really a tar archive
-      safe_system '/usr/bin/tar', 'xf', @tarball_path
-      chdir
+      if @tarball_path.extname == '.gz'
+        safe_system 'cp', @tarball_path, "#{@tarball_path.basename}"
+        safe_system 'gunzip', @tarball_path.basename
+      else
+        safe_system '/usr/bin/tar', 'xf', @tarball_path
+        chdir
+      end
     when '____pkg'
       safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, File.basename(@url)
       chdir
