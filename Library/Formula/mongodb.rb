@@ -7,27 +7,27 @@ class Mongodb < Formula
   if ARGV.build_head?
     packages = {
       :x86_64 => {
-        :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-1.8.0-rc2.tgz',
-        :md5 => 'b89e065fbc52f76bfe85e2e7bcc59f15',
-        :version => '1.8.0-rc2-x86_64'
+        :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-1.8.0.tgz',
+        :md5 => 'bba118bd6ba6a0db83aa5b7cff2f21fb',
+        :version => '1.8.0-x86_64'
       },
       :i386 => {
-        :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-1.8.0-rc2.tgz',
-        :md5 => '0fa436dce2459c1d59beeb49c195d138',
-        :version => '1.8.0-rc2-i386'
+        :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-1.8.0.tgz',
+        :md5 => '286109a07e3fdb265d4602571e965ec3',
+        :version => '1.8.0-i386'
       }
     }
   else
     packages = {
       :x86_64 => {
-        :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-1.6.5.tgz',
-        :md5 => 'f3438db5a5bd3ac4571616f3d19caf00',
-        :version => '1.6.5-x86_64'
+        :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-1.8.0.tgz',
+        :md5 => 'bba118bd6ba6a0db83aa5b7cff2f21fb',
+        :version => '1.8.0-x86_64'
       },
       :i386 => {
-        :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-1.6.5.tgz',
-        :md5 => '064c9c68752968875e4ccaf8801ef031',
-        :version => '1.6.5-i386'
+        :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-1.8.0.tgz',
+        :md5 => '286109a07e3fdb265d4602571e965ec3',
+        :version => '1.8.0-i386'
       }
     }
   end
@@ -101,7 +101,7 @@ EOS
   <key>RunAtLoad</key>
   <true/>
   <key>KeepAlive</key>
-  <true/>
+  <false/>
   <key>UserName</key>
   <string>#{`whoami`.chomp}</string>
   <key>WorkingDirectory</key>
