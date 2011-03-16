@@ -41,7 +41,11 @@ class Mongodb < Formula
   skip_clean :all
 
   def options
-    [['--32bit', 'Override arch detection and install the 32-bit version.']]
+    [
+        ['--32bit', 'Override arch detection and install the 32-bit version.'],
+        ['--journal', 'Enable write-ahead logging (Journaling)'],
+        ['--rest', 'Enable the REST Interface on the HTTP Status Page'],
+    ]
   end
 
   def install
@@ -57,7 +61,10 @@ class Mongodb < Formula
     (prefix+'org.mongodb.mongod.plist').write startup_plist
   end
 
-  def caveats; <<-EOS.undent
+  def caveats
+    s = ""
+    
+    s += <<-EOS.undent
     If this is your first install, automatically load on login with:
         mkdir -p ~/Library/LaunchAgents
         cp #{prefix}/org.mongodb.mongod.plist ~/Library/LaunchAgents/
@@ -71,6 +78,16 @@ class Mongodb < Formula
     Or start it manually:
         mongod run --config #{prefix}/mongod.conf
     EOS
+
+    if !ARGV.include? "--journal"
+        s += <<-EOS.undent 
+
+        MongoDB 1.8+ includes a feature for Write Ahead Logging (Journaling), which is not enabled by default.
+        To install MongoDB with Journaling enabled, use --journal_option
+        EOS
+    end
+
+    return s
   end
 
   def mongodb_conf
@@ -84,6 +101,8 @@ EOS
   end
 
   def startup_plist
+    journal_option = (ARGV.include? '--journal') ? "<string>--journal</string>" : ""
+    rest_option = (ARGV.include? '--rest') ? "<string>--rest</string>" : ""
     return <<-EOS
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -96,7 +115,9 @@ EOS
     <string>#{bin}/mongod</string>
     <string>run</string>
     <string>--config</string>
-    <string>#{prefix}/mongod.conf</string>
+    <string>#{prefix}/mongod.conf</string> 
+    #{journal_option} 
+    #{rest_option}
   </array>
   <key>RunAtLoad</key>
   <true/>
