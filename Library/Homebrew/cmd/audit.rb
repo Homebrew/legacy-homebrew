@@ -144,6 +144,10 @@ end
 def audit_formula_urls f
   problems = []
 
+  unless f.homepage =~ %r[^https?://]
+    problems << " * The homepage should start with http or https."
+  end
+
   urls = [(f.url rescue nil), (f.head rescue nil)].reject {|p| p.nil?}
 
   # Check SourceForge urls
