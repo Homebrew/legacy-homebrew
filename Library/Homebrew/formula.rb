@@ -674,7 +674,7 @@ EOF
     end
 
     def keg_only reason, explanation=nil
-      @keg_only_reason = KegOnlyReason.new(reason, explanation.chomp)
+      @keg_only_reason = KegOnlyReason.new(reason, explanation.to_s.chomp)
     end
   end
 end
