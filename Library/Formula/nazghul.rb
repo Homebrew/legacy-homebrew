@@ -8,9 +8,9 @@ class Nazghul < Formula
   depends_on 'sdl'
   depends_on 'sdl_image'
   depends_on 'sdl_mixer'
-  depends_on 'libpng'
 
   def install
+    ENV.x11 # For libpng
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-sdltest"
@@ -20,9 +20,8 @@ class Nazghul < Formula
   end
 
   def caveats; <<-EOS.undent
-    The built-in game for this engine is called "Haxima".
-    To run:
-      haxima.sh"
+    The built-in game for this engine is called Haxima. To run:
+      $ haxima.sh
     EOS
   end
 end

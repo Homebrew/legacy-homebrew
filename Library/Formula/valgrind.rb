@@ -11,7 +11,7 @@ class Valgrind < Formula
   skip_clean 'lib'
 
   def install
-    fails_with_llvm "Undefined symbols when linking", :build => 2326
+    fails_with_llvm "Makes applications segfault on startup", :build => 2326
 
     system "./autogen.sh" if File.exists? "autogen.sh"
 
