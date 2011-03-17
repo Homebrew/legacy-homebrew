@@ -5,14 +5,13 @@ class Mpg321 < Formula
   homepage 'http://mpg321.sourceforge.net/'
   md5 'fa542f9c638d8319b13a0a1647722bc5'
 
-  depends_on 'libmad'
+  depends_on 'mad'
   depends_on 'libid3tag'
   depends_on 'libao'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    # system "cmake . #{std_cmake_parameters}"
     system "make install"
   end
 end
