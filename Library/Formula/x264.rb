@@ -30,7 +30,11 @@ class X264 <Formula
     end
 
     system "make install"
-    opoo 'It is recommended that your re-install ffmpeg after updating x264'
-    opoo 'A simple \'brew install ffmpeg\' will work. This is only necessary if ffmpeg was previously installed.'
+
+    if Formula.factory('ffmpeg').installed?
+      ohai 'It is recommended that your re-install ffmpeg after updating x264.'
+      ohai 'A simple \'brew install ffmpeg\' will work.'
+    end
+
   end
 end
