@@ -9,14 +9,14 @@ def with_unicode_path?; ARGV.include? '--unicode-path'; end
 
 # On 10.5 we need newer versions of apr, neon etc.
 # On 10.6 we only need a newer version of neon
-class SubversionDeps <Formula
-  url 'http://subversion.tigris.org/downloads/subversion-deps-1.6.13.tar.bz2'
-  md5 '2a7d662bac872c61a5e11c89263d7f07'
+class SubversionDeps < Formula
+  url 'http://subversion.tigris.org/downloads/subversion-deps-1.6.16.tar.bz2'
+  md5 '85255aee26e958fc988e6e56d6d1ac55'
 end
 
-class Subversion <Formula
-  url 'http://subversion.tigris.org/downloads/subversion-1.6.13.tar.bz2'
-  md5 '7ae1c827689f21cf975804005be30aeb'
+class Subversion < Formula
+  url 'http://subversion.tigris.org/downloads/subversion-1.6.16.tar.bz2'
+  md5 '32f25a6724559fe8691d1f57a63f636e'
   homepage 'http://subversion.apache.org/'
 
   depends_on 'pkg-config' => :build
@@ -43,7 +43,7 @@ class Subversion <Formula
 
     # Patch for subversion handling of OS X Unicode paths (see caveats)
     if with_unicode_path?
-      p[:p1] = "http://gist.github.com/raw/434424/subversion-unicode-path.patch"
+      p[:p1] = "https://gist.github.com/raw/434424/subversion-unicode-path.patch"
     end
 
     return p
@@ -68,10 +68,16 @@ class Subversion <Formula
   end
 
   def install
-    if build_java? and not build_universal?
-      opoo "A non-Universal Java build was requested."
-      puts "To use Java bindings with various Java IDEs, you might need a universal build:"
-      puts "  brew install --universal --java subversion"
+    if build_java?
+      unless build_universal?
+        opoo "A non-Universal Java build was requested."
+        puts "To use Java bindings with various Java IDEs, you might need a universal build:"
+        puts "  brew install subversion --universal --java"
+      end
+
+      unless (ENV["JAVA_HOME"] or "").empty?
+        opoo "JAVA_HOME is set. Try unsetting it if JNI headers cannot be found."
+      end
     end
 
     ENV.universal_binary if build_universal?

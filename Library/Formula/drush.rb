@@ -1,16 +1,15 @@
 require 'formula'
 
-class DrushMake <Formula
-  url 'http://ftp.drupal.org/files/projects/drush_make-6.x-2.0-beta9.tar.gz'
+class DrushMake < Formula
+  url 'http://ftp.drupal.org/files/projects/drush_make-6.x-2.2.tar.gz'
   homepage 'http://drupal.org/project/drush_make'
-  md5 '971cde5da1fcf8ae63e42c074cbb5476'
+  md5 '9dddd6567c4de66494bdadebfc3e2989'
 end
 
-class Drush <Formula
-  url 'http://ftp.drupal.org/files/projects/drush-6.x-3.3.tar.gz'
+class Drush < Formula
+  url 'http://ftp.drupal.org/files/projects/drush-7.x-4.4.tar.gz'
   homepage 'http://drupal.org/project/drush'
-  version '3.3' # 3.3 is detected, but lets be explicit here
-  md5 'ed7ee13415548c643358a8a870534a5e'
+  md5 'b8f89ee75a8d45a4765679524ebdf8b4'
 
   def install
     prefix.install Dir['*'] # No lib folder, so this is OK for now.

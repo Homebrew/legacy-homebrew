@@ -46,7 +46,7 @@ didn't include with OS X.
 
     To install a newer version of HEAD use
     `brew rm <foo> && brew install --HEAD <foo>`
-    or `brew --force --HEAD <foo>`.
+    or `brew install --force --HEAD <foo>`.
 
   * `install --interactive [--git]` <formula>:
     Download and patch <formula>, then open a shell. This allows the user to
@@ -56,12 +56,12 @@ didn't include with OS X.
     If `--git` is passed, Homebrew will create a Git repository, useful for
     creating patches to the software.
 
-  * `-S`, `search` <text>|/<text>/:
+  * `search`, `-S` <text>|/<text>/:
     Perform a substring search of formula names for <text>. If <text> is
     surrounded with slashes, then it is interpreted as a regular expression.
     If no search term is given, all available formula are displayed.
 
-  * `-S --macports`|`--fink` <text>:
+  * `search --macports`|`--fink` <text>:
     Search for <text> on the MacPorts or Fink package search page.
 
   * `update`:
@@ -96,14 +96,14 @@ didn't include with OS X.
     If `--force` is passed, and there are multiple versions of <formula>
     installed, delete all installed versions.
 
-  * `create [--cache]` <URL>:
+  * `create [--no-fetch]` <URL>:
     Generate a formula for the downloadable file at <URL> and opens it in
     $EDITOR. Homebrew will attempt to automatically derive the formula name
     and version, if it fails, you'll have to make your own template. I suggest
     copying wget's.
 
-    If `--cache` is passed, Homebrew will download the <URL> to the cache and
-    add the MD5 to the formula for you.
+    If `--no-fetch` is passed, Homebrew will not download <URL> to the cache and
+    will thus not add the MD5 to the formula for you.
 
   * `edit` <formula>:
     Open <formula> in $EDITOR.
@@ -171,8 +171,11 @@ didn't include with OS X.
     If `--warn` is passed, perform additional stricter checks that may not need
     to be fixed before submitting.
 
-  * `options` <formula>:
+  * `options [--compact]` <formula>:
     Display install options specific to <formula>.
+
+    If `--compact` is passed, show all options on a single line separated by
+    spaces.
 
   * `missing`:
     Check all installed formuale for missing dependencies.
@@ -206,7 +209,7 @@ didn't include with OS X.
   * `--cellar`:
     Display Homebrew's Cellar path. *Default:* `/usr/local/Cellar`
 
-  * `--cellar`:
+  * `--cellar` <formula>:
     Display the location in the cellar where <formula> would be installed,
     without any sort of versioned folder as the last path.
 
@@ -228,7 +231,7 @@ to recognize `brew cmdname`.
 
 Some sample commands ship with Homebrew and are enabled by default.
 
-    $ ls `brew --repository`/Lirary/Contributes/examples
+    $ ls `brew --repository`/Library/Contributions/examples
 
 
 
@@ -274,6 +277,10 @@ Some sample commands ship with Homebrew and are enabled by default.
 
     This issue typically occurs when using FileVault or custom SSD
     configurations.
+
+  * HOMEBREW\_USE\_GCC:
+    If set, instructs Homebrew to use gcc, even if the system default
+    is currently set to LLVM.
 
   * HOMEBREW\_USE\_LLVM:
     If set, instructs Homebrew to use the LLVM front-ends to the GCC

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Thrift <Formula
+class Thrift < Formula
   homepage 'http://incubator.apache.org/thrift/'
   head 'http://svn.apache.org/repos/asf/incubator/thrift/trunk'
   url 'http://www.apache.org/dist/incubator/thrift/0.5.0-incubating/thrift-0.5.0.tar.gz'
@@ -18,11 +18,13 @@ class Thrift <Formula
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--libdir=#{lib}",
+                          "--without-haskell",
                           "--without-java",
                           "--without-python",
                           "--without-ruby",
                           "--without-perl",
                           "--without-php"
+    ENV.j1
     system "make"
     system "make install"
   end

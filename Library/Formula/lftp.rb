@@ -1,9 +1,9 @@
 require 'formula'
 
-class Lftp <Formula
-  url 'http://ftp.yars.free.net/pub/source/lftp/lftp-4.0.10.tar.bz2'
+class Lftp < Formula
+  url 'http://ftp.yars.free.net/pub/source/lftp/lftp-4.2.0.tar.bz2'
   homepage 'http://lftp.yar.ru/'
-  md5 '028f14ef845403e6f76acb41f51e908c'
+  md5 'ce17c8b96a65975928a5c964a771d6f8'
 
   depends_on 'pkg-config' => :build
   depends_on 'readline'

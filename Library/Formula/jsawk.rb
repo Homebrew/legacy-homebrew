@@ -1,8 +1,8 @@
 require 'formula'
 
-class Jsawk <Formula
+class Jsawk < Formula
   head 'git://github.com/micha/jsawk.git'
-  homepage 'http://github.com/micha/jsawk'
+  homepage 'https://github.com/micha/jsawk'
 
   depends_on 'spidermonkey'
 

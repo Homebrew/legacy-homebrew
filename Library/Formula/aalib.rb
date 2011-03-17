@@ -1,6 +1,6 @@
 require 'formula'
 
-class Aalib <Formula
+class Aalib < Formula
   url 'http://downloads.sourceforge.net/aa-project/aalib-1.4rc4.tar.gz'
   homepage 'http://aa-project.sourceforge.net/aalib/'
   md5 'd5aa8e9eae07b7441298b5c30490f6a6'
@@ -12,7 +12,8 @@ class Aalib <Formula
   def install
     ENV.ncurses_define
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--mandir=#{man}", "--prefix=#{prefix}"
+                          "--mandir=#{man}", "--infodir=#{info}",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

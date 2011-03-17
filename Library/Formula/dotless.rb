@@ -7,7 +7,7 @@ class Dotless < Formula
   version "1.1.0.2-26"
 
   # Head version is in GitHub, but requires builds:
-  # http://github.com/dotless/dotless
+  # https://github.com/dotless/dotless
 
   def install
     mono_path = `/usr/bin/which mono`.strip

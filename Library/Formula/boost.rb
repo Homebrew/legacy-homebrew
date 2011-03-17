@@ -1,12 +1,15 @@
 require 'formula'
 
-class Boost <Formula
+class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.44.0/boost_1_44_0.tar.bz2'
-  md5 'f02578f5218f217a9f20e9c30e119c6a'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.46.1/boost_1_46_1.tar.bz2'
+  md5 '7375679575f4c8db605d426fc721d506'
 
   def options
-    [['--with-mpi', "Enables MPI support"]]
+    [
+      ['--with-mpi', "Enables MPI support"],
+      ["--universal", "Build universal binaries."]
+    ]
   end
 
   def install
@@ -37,6 +40,9 @@ class Boost <Formula
       file.write "using mpi ;\n" if ARGV.include? '--with-mpi'
     end
 
+    additional_jam_args = []
+    additional_jam_args << "address-model=32_64" << "pch=off" if ARGV.include? "--universal"
+
     # we specify libdir too because the script is apparently broken
     system "./bootstrap.sh", "--prefix=#{prefix}", "--libdir=#{lib}"
     system "./bjam", "--prefix=#{prefix}",
@@ -45,6 +51,7 @@ class Boost <Formula
                      "--layout=tagged",
                      "--user-config=user-config.jam",
                      "threading=multi",
-                     "install"
+                     "install",
+                     *additional_jam_args
   end
 end

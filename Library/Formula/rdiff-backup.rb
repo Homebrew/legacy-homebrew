@@ -1,6 +1,6 @@
 require 'formula'
 
-class RdiffBackup <Formula
+class RdiffBackup < Formula
   url 'http://savannah.nongnu.org/download/rdiff-backup/rdiff-backup-1.2.8.tar.gz'
   homepage 'http://rdiff-backup.nongnu.org/'
   md5 '1a94dc537fcf74d6a3a80bd27808e77b'

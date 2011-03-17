@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libksba <Formula
+class Libksba < Formula
   url 'ftp://ftp.gnupg.org/gcrypt/libksba/libksba-1.0.7.tar.bz2'
   homepage 'http://www.gnupg.org/related_software/libksba/index.en.html'
   md5 'eebce521a90600369c33c5fa6b9bbbd8'
