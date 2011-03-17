@@ -1,9 +1,9 @@
 require 'formula'
 
 class Elasticsearch < Formula
-  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.14.2.tar.gz'
+  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.15.2.tar.gz'
   homepage 'http://www.elasticsearch.com'
-  md5 'b43789473b130fdecdf228f4120604a7'
+  md5 '6e0e9ea3fcc0e95d2fe490445fb4aa1d'
 
   skip_clean 'libexec/data'
 

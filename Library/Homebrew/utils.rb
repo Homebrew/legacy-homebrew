@@ -1,3 +1,5 @@
+require 'pathname'
+
 class Tty
   class <<self
     def blue; bold 34; end
@@ -78,7 +80,7 @@ end
 # Kernel.system but with exceptions
 def safe_system cmd, *args
   unless Homebrew.system cmd, *args
-    args = args.map{ |arg| arg.gsub " ", "\\ " } * " "
+    args = args.map{ |arg| arg.to_s.gsub " ", "\\ " } * " "
     raise "Failure while executing: #{cmd} #{args}"
   end
 end
@@ -208,6 +210,11 @@ def nostdout
 end
 
 module MacOS extend self
+
+  def default_cc
+    Pathname.new("/usr/bin/cc").realpath.basename.to_s
+  end
+
   def gcc_42_build_version
     `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
     if $1

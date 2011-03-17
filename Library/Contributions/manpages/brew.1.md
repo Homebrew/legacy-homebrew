@@ -56,12 +56,12 @@ didn't include with OS X.
     If `--git` is passed, Homebrew will create a Git repository, useful for
     creating patches to the software.
 
-  * `-S`, `search` <text>|/<text>/:
+  * `search`, `-S` <text>|/<text>/:
     Perform a substring search of formula names for <text>. If <text> is
     surrounded with slashes, then it is interpreted as a regular expression.
     If no search term is given, all available formula are displayed.
 
-  * `-S --macports`|`--fink` <text>:
+  * `search --macports`|`--fink` <text>:
     Search for <text> on the MacPorts or Fink package search page.
 
   * `update`:
@@ -96,14 +96,14 @@ didn't include with OS X.
     If `--force` is passed, and there are multiple versions of <formula>
     installed, delete all installed versions.
 
-  * `create [--cache]` <URL>:
+  * `create [--no-fetch]` <URL>:
     Generate a formula for the downloadable file at <URL> and opens it in
     $EDITOR. Homebrew will attempt to automatically derive the formula name
     and version, if it fails, you'll have to make your own template. I suggest
     copying wget's.
 
-    If `--cache` is passed, Homebrew will download the <URL> to the cache and
-    add the MD5 to the formula for you.
+    If `--no-fetch` is passed, Homebrew will not download <URL> to the cache and
+    will thus not add the MD5 to the formula for you.
 
   * `edit` <formula>:
     Open <formula> in $EDITOR.

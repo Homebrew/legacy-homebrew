@@ -1,7 +1,7 @@
 require 'download_strategy'
 require 'fileutils'
 
-
+# Defines a URL and download method for a stable or HEAD build
 class SoftwareSpecification
   attr_reader :url, :specs, :using
 
@@ -42,6 +42,31 @@ class SoftwareSpecification
 
   def detect_version
     Pathname.new(@url).version
+  end
+end
+
+
+# Used to annotate formulae that duplicate OS X provided software
+# :provided_by_osx
+class KegOnlyReason
+  attr_reader :reason, :explanation
+
+  def initialize reason, explanation=nil
+    @reason = reason
+    @explanation = explanation
+  end
+
+  def to_s
+    if @reason == :provided_by_osx
+      <<-EOS.chomp
+Mac OS X already provides this program and installing another version in
+parallel can cause all kinds of trouble.
+
+#{@explanation}
+EOS
+    else
+      @reason
+    end
   end
 end
 
@@ -240,7 +265,10 @@ class Formula
   end
 
   def fails_with_llvm msg="", data=nil
-    return unless (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
+    unless (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
+      ENV.gcc_4_2 if default_cc =~ /llvm/
+      return
+    end
 
     build = data.delete :build rescue nil
     msg = "(No specific reason was given)" if msg.empty?
@@ -333,10 +361,10 @@ class Formula
       install_type = :from_url
     else
       # Check if this is a name or pathname
-      path = Pathname.new(name)
-      if path.absolute?
-        # For absolute paths, just require the path
+      if name.include? "/"
+        # For paths, just require the path
         require name
+        path = Pathname.new(name)
         name = path.stem
         install_type = :from_path
         target_file = path.to_s
@@ -648,21 +676,21 @@ EOF
       puts "detected as an alias for the target formula."
     end
 
-    def keg_only reason
-      @keg_only_reason = reason
+    def keg_only reason, explanation=nil
+      @keg_only_reason = KegOnlyReason.new(reason, explanation.to_s.chomp)
     end
   end
 end
 
 # see ack.rb for an example usage
-class ScriptFileFormula <Formula
+class ScriptFileFormula < Formula
   def install
     bin.install Dir['*']
   end
 end
 
 # see flac.rb for example usage
-class GithubGistFormula <ScriptFileFormula
+class GithubGistFormula < ScriptFileFormula
   def initialize name='__UNKNOWN__', path=nil
     super name
     @version=File.basename(File.dirname(url))[0,6]

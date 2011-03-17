@@ -14,6 +14,10 @@ def dump_build_env env
   Homebrew.dump_build_env env
 end
 
+def default_cc
+  MacOS.default_cc
+end
+
 def gcc_42_build
   MacOS.gcc_42_build_version
 end

@@ -4,7 +4,7 @@ class Bash < Formula
   url 'http://ftp.gnu.org/gnu/bash/bash-4.2.tar.gz'
   homepage 'http://www.gnu.org/software/bash/'
   sha1 '487840ab7134eb7901fbb2e49b0ee3d22de15cb8'
-  version '4.2.7'
+  version '4.2.8'
 
   depends_on 'readline'
 

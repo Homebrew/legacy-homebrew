@@ -11,15 +11,6 @@ class Rtorrent < Formula
   depends_on 'xmlrpc-c' => :optional
 
   def install
-    if Formula.factory('ncursesw').installed?
-      opoo "Compiling rtorrent with ncursesw installed can segfault at runtime"
-      puts "You may need to do:"
-      puts "  brew unlink ncursesw"
-      puts "  brew install rtorrent"
-      puts "  brew link ncursesw"
-      puts "for rtorrent to compile correctly."
-    end
-
     args = ["--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"]
     args << "--with-xmlrpc-c" if Formula.factory("xmlrpc-c").installed?
     if MACOS_VERSION == 10.5

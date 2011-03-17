@@ -4,6 +4,7 @@ class Smpeg < Formula
   head 'svn://svn.icculus.org/smpeg/trunk'
   homepage 'http://icculus.org/smpeg/'
 
+  depends_on 'pkg-config' => :build
   depends_on 'sdl'
 
   def install

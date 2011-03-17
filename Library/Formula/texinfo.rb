@@ -5,7 +5,10 @@ class Texinfo < Formula
   homepage 'http://www.gnu.org/software/texinfo/'
   md5 '71ba711519209b5fb583fed2b3d86fcb'
 
-  keg_only :provided_by_osx
+  keg_only :provided_by_osx, <<-EOS.undent
+    Software that uses TeX, such as lilypond and octave, require a newer version
+    of these files.
+  EOS
 
   def install
     system "./configure", "--disable-dependency-tracking",

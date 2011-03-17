@@ -144,6 +144,10 @@ end
 def audit_formula_urls f
   problems = []
 
+  unless f.homepage =~ %r[^https?://]
+    problems << " * The homepage should start with http or https."
+  end
+
   urls = [(f.url rescue nil), (f.head rescue nil)].reject {|p| p.nil?}
 
   # Check SourceForge urls
@@ -196,6 +200,12 @@ def audit_formula_instance f
   # Check for things we don't like to depend on.
   # We allow non-Homebrew installs whenenever possible.
   f.deps.each do |d|
+    begin
+      dep_f = Formula.factory d
+    rescue
+      problems << " * Can't find dependency \"#{d}\"."
+    end
+
     case d
     when "git"
       problems << " * Don't use Git as a dependency; we allow non-Homebrew git installs."
