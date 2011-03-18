@@ -8,12 +8,12 @@ class Gnuplot < Formula
   depends_on 'pkg-config' => :build
   depends_on 'readline'
   depends_on 'gd' unless ARGV.include? "--nogd"
-  depends_on 'pdflib-lite' unless ARGV.include? "--nopdf"
+  depends_on 'pdflib-lite' if ARGV.include? "--pdf"
   depends_on 'lua' unless ARGV.include? '--nolua'
 
   def options
     [
-      ["--nopdf", "Build without pdflib-lite support."],
+      ["--pdf", "Build with pdflib-lite support."],
       ["--nolua", "Build without lua support."],
       ["--nogd", "Build without gd support."]
     ]
@@ -35,10 +35,10 @@ class Gnuplot < Formula
     else
       args << "--with-gd=#{gddir.prefix}"
     end
-    if ARGV.include? '--nopdf'
-      args << '--without-pdf'
-    else
+    if ARGV.include? '--pdf'
       args << "--with-pdf=#{pldir.prefix}"
+    else
+      args << '--without-pdf'
     end
 
     system "./configure", *args
