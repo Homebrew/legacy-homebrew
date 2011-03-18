@@ -301,6 +301,10 @@ module MacOS extend self
 
     false
   end
+
+  def prefer_64_bit?
+    MACOS_VERSION >= 10.6 and Hardware.is_64_bit?
+  end
 end
 
 module GitHub extend self
