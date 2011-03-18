@@ -7,14 +7,12 @@ class Mongodb < Formula
   if ARGV.build_head?
     packages = {
       :x86_64 => {
-        :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-1.8.0.tgz',
-        :md5 => 'bba118bd6ba6a0db83aa5b7cff2f21fb',
-        :version => '1.8.0-x86_64'
+        :url => 'http://downloads.mongodb.org/osx/mongodb-osx-x86_64-v1.8-latest.tgz',
+        :version => '1.8-latest-x86_64'
       },
       :i386 => {
-        :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-1.8.0.tgz',
-        :md5 => '286109a07e3fdb265d4602571e965ec3',
-        :version => '1.8.0-i386'
+        :url => 'http://downloads.mongodb.org/osx/mongodb-osx-i386-v1.8-latest.tgz',
+        :version => '1.8-latest-i386'
       }
     }
   else
@@ -35,7 +33,7 @@ class Mongodb < Formula
   package = (Hardware.is_64_bit? and not ARGV.include? '--32bit') ? packages[:x86_64] : packages[:i386]
 
   url     package[:url]
-  md5     package[:md5]
+  md5     package[:md5] if package[:md5]
   version package[:version]
 
   skip_clean :all
