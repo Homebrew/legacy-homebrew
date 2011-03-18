@@ -1,6 +1,6 @@
 require 'formula'
 
-class Exult <Formula
+class Exult < Formula
   url 'http://exult.svn.sourceforge.net/svnroot/exult/exult/trunk', :revision => '6317'
   homepage 'http://exult.sourceforge.net/'
   version '1.4pre'

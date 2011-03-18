@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ejabberd <Formula
+class Ejabberd < Formula
   url "http://www.process-one.net/downloads/ejabberd/2.1.5/ejabberd-2.1.5.tar.gz"
   homepage 'http://www.ejabberd.im'
   md5 '2029ceca45584d704ca821a771d6d928'

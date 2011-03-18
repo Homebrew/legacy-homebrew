@@ -1,6 +1,6 @@
 require 'formula'
 
-class OpenSg <Formula
+class OpenSg < Formula
   head 'cvs://:pserver:anonymous@opensg.cvs.sourceforge.net:/cvsroot/opensg:OpenSG'
   homepage 'http://www.opensg.org/wiki'
 

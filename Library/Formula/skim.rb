@@ -1,6 +1,6 @@
 require 'formula'
 
-class Skim <Formula
+class Skim < Formula
   head 'http://skim-app.svn.sourceforge.net/svnroot/skim-app/trunk'
   homepage 'http://skim-app.sourceforge.net/'
 

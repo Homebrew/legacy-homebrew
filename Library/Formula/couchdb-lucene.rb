@@ -1,6 +1,6 @@
 require 'formula'
 
-class CouchdbLucene <Formula
+class CouchdbLucene < Formula
   url 'https://github.com/rnewson/couchdb-lucene/tarball/v0.6.0'
   homepage 'https://github.com/rnewson/couchdb-lucene'
   md5 'b55610d4c054987a5c69183585a31d8b'

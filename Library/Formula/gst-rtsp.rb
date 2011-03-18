@@ -1,6 +1,6 @@
 require 'formula'
 
-class GstRtsp <Formula
+class GstRtsp < Formula
   homepage 'http://gstreamer.freedesktop.org/'
   url 'http://gstreamer.freedesktop.org/src/gst-rtsp/gst-rtsp-0.10.6.tar.bz2'
   md5 '8762d013f93f6aed39894f7eaf7bce86'
