@@ -1,9 +1,9 @@
 require 'formula'
 
 class GnuProlog < Formula
-  url 'http://gprolog.univ-paris1.fr/unstable/gprolog-20100713.tgz'
+  url 'http://gprolog.univ-paris1.fr/unstable/gprolog-20110301.tgz'
   homepage 'http://www.gprolog.org/'
-  md5 '0f882e352b886a5ddb59bcab457fa78e'
+  md5 '53a9bfba78f21f8f45a16f049d5df88a'
 
   skip_clean :all
 
