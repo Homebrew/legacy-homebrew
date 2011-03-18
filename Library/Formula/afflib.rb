@@ -1,6 +1,6 @@
 require 'formula'
 
-class Afflib <Formula
+class Afflib < Formula
   url 'http://afflib.org/downloads/afflib-3.6.6.tar.gz'
   homepage 'http://afflib.org'
   md5 'b7ff4d2945882018eb1536cad182ad01'

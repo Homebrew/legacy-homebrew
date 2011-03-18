@@ -1,6 +1,6 @@
 require 'formula'
 
-class Imlib2 <Formula
+class Imlib2 < Formula
   url 'http://downloads.sourceforge.net/project/enlightenment/imlib2-src/1.4.4/imlib2-1.4.4.tar.bz2'
   homepage 'http://sourceforge.net/projects/enlightenment/files/'
   md5 'b6de51879502e857d5b1f7622267a030'

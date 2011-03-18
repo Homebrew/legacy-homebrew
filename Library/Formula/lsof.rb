@@ -1,6 +1,6 @@
 require 'formula'
 
-class Lsof <Formula
+class Lsof < Formula
   url 'ftp://sunsite.ualberta.ca/pub/Mirror/lsof/lsof_4.84.tar.bz2'
   version '4.84'
   md5 'a09326df500ef7e4550af546868338d6'

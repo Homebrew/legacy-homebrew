@@ -1,6 +1,6 @@
 require 'formula'
 
-class Fping <Formula
+class Fping < Formula
   url 'http://fping.sourceforge.net/download/fping.tar.gz'
   homepage 'http://fping.sourceforge.net/'
   md5 'd5e8be59e307cef76bc479e1684df705'

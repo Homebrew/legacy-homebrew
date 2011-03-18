@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mongrel2 <Formula
+class Mongrel2 < Formula
   url 'http://mongrel2.org/static/downloads/mongrel2-1.5.tar.bz2'
   head 'fossil://http://mongrel2.org:44445/'
   homepage 'http://mongrel2.org/'

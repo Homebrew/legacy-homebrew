@@ -1,6 +1,6 @@
 require 'formula'
 
-class CloudbeesSdk <Formula
+class CloudbeesSdk < Formula
   url 'http://cloudbees-downloads.s3.amazonaws.com/sdk/cloudbees-sdk-0.5.0-dist.zip'
   version '0.5.0'
   homepage 'https://cloudbees.zendesk.com/entries/414109-cloudbees-sdk'

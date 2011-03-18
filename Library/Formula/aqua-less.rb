@@ -1,6 +1,6 @@
 require 'formula'
 
-class AquaLess <Formula
+class AquaLess < Formula
   url 'http://downloads.sourceforge.net/project/aqualess/AquaLess/1.6/AquaLess-1.6-src.tar.gz'
   homepage 'http://aqualess.sourceforge.net/'
   md5 '0d20fbda422538480abd18f4b298b7e0'
@@ -12,7 +12,7 @@ class AquaLess <Formula
   end
 
   def install
-    system "xcodebuild", "-sdk", "macosx10.5"
+    system "xcodebuild", "-sdk", "macosx10.5", "SYMROOT=build"
 
     bin.install "build/Release/aless"
     prefix.install "build/Release/AquaLess.app"

@@ -1,9 +1,9 @@
 require 'formula'
 
-class Jenkins <Formula
-  url 'http://ftp.osuosl.org/pub/hudson/war/1.396/jenkins.war', :using => :nounzip
-  version '1.396'
-  md5 '57655337809c93e40fbad9d1535215ff'
+class Jenkins < Formula
+  url 'http://mirrors.jenkins-ci.org/war/1.401/jenkins.war', :using => :nounzip
+  version '1.401'
+  md5 '41b2eb60ddf231bb8b45ba52f1c0b10f'
   homepage 'http://jenkins-ci.org'
 
   def install
@@ -13,12 +13,13 @@ class Jenkins <Formula
 
   def caveats; <<-EOS
 If this is your first install, automatically load on login with:
-    cp #{prefix}/org.jenkins-ci.plist ~/Library/LaunchAgents
+    mkdir -p ~/Library/LaunchAgents
+    cp #{prefix}/org.jenkins-ci.plist ~/Library/LaunchAgents/
     launchctl load -w ~/Library/LaunchAgents/org.jenkins-ci.plist
 
 If this is an upgrade and you already have the org.jenkins-ci.plist loaded:
     launchctl unload -w ~/Library/LaunchAgents/org.jenkins-ci.plist
-    cp #{prefix}/org.jenkins-ci.plist ~/Library/LaunchAgents
+    cp #{prefix}/org.jenkins-ci.plist ~/Library/LaunchAgents/
     launchctl load -w ~/Library/LaunchAgents/org.jenkins-ci.plist
 
 Or start it manually:

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Redcar <Formula
+class Redcar < Formula
   head 'git://github.com/danlucraft/redcar.git'
   homepage 'https://github.com/danlucraft/redcar'
 

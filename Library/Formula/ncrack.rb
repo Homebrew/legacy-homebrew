@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ncrack <Formula
+class Ncrack < Formula
   url 'http://nmap.org/ncrack/dist/ncrack-0.2ALPHA.tar.gz'
   homepage 'http://nmap.org/ncrack/'
   md5 '611d643b76008d44ca3e9eafad11393e'

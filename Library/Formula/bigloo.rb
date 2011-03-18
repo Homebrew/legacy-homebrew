@@ -1,6 +1,6 @@
 require 'formula'
 
-class Bigloo <Formula
+class Bigloo < Formula
   url 'ftp://ftp-sop.inria.fr/indes/fp/Bigloo/bigloo3.4a-3.tar.gz'
   version '3.4a-3'
   homepage 'http://www-sop.inria.fr/indes/fp/Bigloo/'

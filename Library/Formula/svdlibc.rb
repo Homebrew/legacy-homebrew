@@ -1,6 +1,6 @@
 require 'formula'
 
-class Svdlibc <Formula
+class Svdlibc < Formula
   url 'http://tedlab.mit.edu/~dr/SVDLIBC/svdlibc.tgz'
   homepage 'http://tedlab.mit.edu/~dr/SVDLIBC/'
   md5 '0e1b3bc149f1da476fd81c58742b5ee9'
