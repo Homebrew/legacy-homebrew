@@ -21,11 +21,6 @@ class Gnuplot < Formula
   end
 
   def install
-    # Without this I got:
-    # ld: rel32 out of range in _fit_command from fit.o
-    # - adamv
-    ENV.j1
-
     # Help configure find libraries
     ENV.x11
     readline = Formula.factory 'readline'
