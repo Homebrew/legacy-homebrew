@@ -1,6 +1,16 @@
+require 'formula'
+
+def ff
+  if ARGV.include? "--all"
+    Formula.all
+  else
+    ARGV.formulae
+  end
+end
+
 module Homebrew extend self
   def options
-    ARGV.formulae.each do |f|
+    ff.each do |f|
       f.options rescue next
       if ARGV.include? '--compact'
         puts f.options.collect {|o| o[0]} * " "
