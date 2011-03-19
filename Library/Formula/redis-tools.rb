@@ -1,6 +1,6 @@
 require 'formula'
 
-class RedisTools <Formula
+class RedisTools < Formula
   head 'git://github.com/antirez/redis-tools.git'
   homepage 'https://github.com/antirez/redis-tools'
 

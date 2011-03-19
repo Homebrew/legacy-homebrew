@@ -1,6 +1,6 @@
 require 'formula'
 
-class Xsw <Formula
+class Xsw < Formula
   url 'http://xsw.googlecode.com/files/xsw-0.3.5.tar.gz'
   homepage 'http://code.google.com/p/xsw/'
   sha1 'fe4cffcc8bcd3149f4ecbf2011ad78a8ab7f1dd4'

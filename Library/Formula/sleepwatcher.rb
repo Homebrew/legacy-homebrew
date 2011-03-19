@@ -1,6 +1,6 @@
 require 'formula'
 
-class Sleepwatcher <Formula
+class Sleepwatcher < Formula
   url 'http://www.bernhard-baehr.de/sleepwatcher_2.1.tgz'
   homepage 'http://www.bernhard-baehr.de/'
   md5 'd4ace64e2e978f4f289ca4dddd21c6f2'

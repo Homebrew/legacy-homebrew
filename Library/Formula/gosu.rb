@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gosu <Formula
+class Gosu < Formula
   url 'http://gosu-lang.org/downloads/gosu-0.7.0.1-C.zip'
   version '0.7.0.1-C'
   homepage 'http://gosu-lang.org/'

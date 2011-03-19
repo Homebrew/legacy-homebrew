@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gwenhywfar <Formula
+class Gwenhywfar < Formula
   url 'http://www.aquamaniac.de/sites/download/download.php?package=01&release=58&file=01&dummy=gwenhywfar-4.0.5.tar.gz'
   homepage 'http://www.aqbanking.de/'
   md5 'e9f707a2a01ec1b4fc1576b1c2f5980b'

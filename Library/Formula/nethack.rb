@@ -10,7 +10,7 @@ require 'formula'
 # instructions from the Wiki, and whatever else needed to be
 # done.
 
-class Nethack <Formula
+class Nethack < Formula
   url 'http://downloads.sourceforge.net/project/nethack/nethack/3.4.3/nethack-343-src.tgz'
   homepage 'http://www.nethack.org/index.html'
   version '3.4.3'

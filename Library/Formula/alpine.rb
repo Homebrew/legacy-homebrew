@@ -1,6 +1,6 @@
 require 'formula'
 
-class Alpine <Formula
+class Alpine < Formula
   url 'ftp://ftp.cac.washington.edu/alpine/alpine-2.00.tar.gz'
   homepage 'http://www.washington.edu/alpine/'
   md5 '0f4757167baf5c73aa44f2ffa4860093'

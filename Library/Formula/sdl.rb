@@ -1,6 +1,6 @@
 require 'formula'
 
-class Sdl <Formula
+class Sdl < Formula
   url 'http://www.libsdl.org/release/SDL-1.2.14.tar.gz'
   head 'http://hg.libsdl.org/SDL', :using => :hg
   homepage 'http://www.libsdl.org/'
