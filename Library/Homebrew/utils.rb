@@ -153,7 +153,8 @@ def archs_for_command cmd
   cmd = `/usr/bin/which #{cmd}` unless Pathname.new(cmd).absolute?
   cmd.gsub! ' ', '\\ '  # Escape spaces in the filename.
 
-  archs = IO.popen("/usr/bin/file -L #{cmd}").readlines.inject([]) do |archs, line|
+  lines = `/usr/bin/file -L #{cmd}`
+  archs = lines.to_a.inject([]) do |archs, line|
     case line
     when /Mach-O (executable|dynamically linked shared library) ppc/
       archs << :ppc7400
