@@ -1,9 +1,9 @@
 require 'formula'
 
 class Allegro < Formula
-  url 'http://downloads.sourceforge.net/project/alleg/allegro/4.4.1.1/allegro-4.4.1.1.tar.gz'
+  url 'http://downloads.sourceforge.net/project/alleg/allegro/5.0.1/allegro-5.0.1.tar.gz'
   homepage 'http://www.allegro.cc'
-  md5 '0f1cfff8f2cf88e5c91a667d9fd386ec'
+  md5 '7a7dafa3362b97dd653f736e21f5ef21'
 
   depends_on 'cmake' => :build
   depends_on 'libvorbis' => :optional
