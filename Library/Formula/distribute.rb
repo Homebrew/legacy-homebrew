@@ -1,9 +1,9 @@
 require 'formula'
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.14.tar.gz'
   homepage 'http://pypi.python.org/pypi/distribute/0.6.14'
-  md5 'ac607e05682116c06383b27a15e2db90'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.15.tar.gz'
+  md5 'af088df456ea6b25c0e23647648fd317ed6e0d1b'
 
   def caveats
     <<-EOS.undent
