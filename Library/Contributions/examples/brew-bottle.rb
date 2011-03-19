@@ -1,5 +1,4 @@
 # Builds binary brew package
-brew_install
 
 destination = HOMEBREW_PREFIX + "Bottles"
 if not File.directory?(destination)
