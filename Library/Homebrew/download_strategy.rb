@@ -250,6 +250,10 @@ class GitDownloadStrategy <AbstractDownloadStrategy
     @clone
   end
 
+  def support_depth?
+    @url =~ %r(git://) or @url =~ %r(https://github.com/)
+  end
+
   def fetch
     raise "You must install Git:\n\n"+
           "  brew install git\n" \
@@ -268,7 +272,11 @@ class GitDownloadStrategy <AbstractDownloadStrategy
     end
 
     unless @clone.exist?
-      safe_system 'git', 'clone', '--depth', '1', @url, @clone # indeed, leave it verbose
+      # Note: first-time checkouts are always done verbosely
+      git_args = %w(git clone)
+      git_args << "--depth" << "1" if support_depth?
+      git_args << @url << @clone
+      safe_system *git_args
     else
       puts "Updating #{@clone}"
       Dir.chdir(@clone) do
