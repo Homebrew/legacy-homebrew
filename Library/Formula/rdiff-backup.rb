@@ -8,7 +8,13 @@ class RdiffBackup < Formula
   depends_on 'librsync'
 
   def install
-    ENV.no_optimization
+    # Find the arch for the Python we are building against.
+    # We remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
+    archs = archs_for_command("python")
+    archs.delete :ppc7400
+    archs.delete :ppc64
+    ENV['ARCHFLAGS'] = archs.collect{ |a| "-arch #{a}" }.join(' ')
+
     system "python", "setup.py", "--librsync-dir=#{prefix}", "build"
 
     libexec.install Dir['build/lib.macosx*/rdiff_backup']
@@ -17,7 +23,7 @@ class RdiffBackup < Formula
     bin.mkpath
     Dir.chdir libexec do
       Dir['rdiff-backup*'].each do |f|
-        ln_s((libexec+f), bin)
+        ln_s libexec+f, bin
       end
     end
 
