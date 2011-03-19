@@ -11,9 +11,8 @@ class RdiffBackup < Formula
     # Find the arch for the Python we are building against.
     # We remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
     archs = archs_for_command("python")
-    archs.delete :ppc7400
-    archs.delete :ppc64
-    ENV['ARCHFLAGS'] = archs.collect{ |a| "-arch #{a}" }.join(' ')
+    archs.remove_ppc!
+    ENV['ARCHFLAGS'] = archs.as_arch_flags
 
     system "python", "setup.py", "--librsync-dir=#{prefix}", "build"
 
