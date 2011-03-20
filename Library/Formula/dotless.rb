@@ -2,9 +2,9 @@ require 'formula'
 
 class Dotless < Formula
   homepage "http://www.dotlesscss.com/"
-  url "http://www.dotlesscss.com:8081/repository/download/bt3/.lastPinned/dotless-v1.1.0.2-26-gd3370bd.zip?guest=1"
-  md5 '7fd6e39e47aeaaae615d061bc472c32e'
-  version "1.1.0.2-26"
+  url "https://github.com/downloads/dotless/dotless/dotless-v1.1.0.7a.zip"
+  md5 "1dcca3961124619b01a2d590e7e08998"
+  version "1.1.0.7a"
 
   # Head version is in GitHub, but requires builds:
   # https://github.com/dotless/dotless
