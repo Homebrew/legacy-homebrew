@@ -1,3 +1,5 @@
+require 'pathname'
+
 class Tty
   class <<self
     def blue; bold 34; end
@@ -143,6 +145,15 @@ module ArchitectureListExtension
   def universal?
     self.include? :i386 and self.include? :x86_64
   end
+
+  def remove_ppc!
+    self.delete :ppc7400
+    self.delete :ppc64
+  end
+
+  def as_arch_flags
+    self.collect{ |a| "-arch #{a}" }.join(' ')
+  end
 end
 
 # Returns array of architectures that the given command or library is built for.
@@ -151,7 +162,8 @@ def archs_for_command cmd
   cmd = `/usr/bin/which #{cmd}` unless Pathname.new(cmd).absolute?
   cmd.gsub! ' ', '\\ '  # Escape spaces in the filename.
 
-  archs = IO.popen("/usr/bin/file -L #{cmd}").readlines.inject([]) do |archs, line|
+  lines = `/usr/bin/file -L #{cmd}`
+  archs = lines.to_a.inject([]) do |archs, line|
     case line
     when /Mach-O (executable|dynamically linked shared library) ppc/
       archs << :ppc7400
@@ -208,6 +220,11 @@ def nostdout
 end
 
 module MacOS extend self
+
+  def default_cc
+    Pathname.new("/usr/bin/cc").realpath.basename.to_s
+  end
+
   def gcc_42_build_version
     `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
     if $1
@@ -293,6 +310,10 @@ module MacOS extend self
     end
 
     false
+  end
+
+  def prefer_64_bit?
+    MACOS_VERSION >= 10.6 and Hardware.is_64_bit?
   end
 end
 

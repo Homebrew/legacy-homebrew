@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ffmpeg < Formula
-  url 'http://ffmpeg.org/releases/ffmpeg-0.6.1.tar.bz2'
-  homepage 'http://ffmpeg.org/'
-  sha1 '24ada1d35fc000980090e773101e101ca45f85e5'
+  url 'http://libav.org/releases/libav-0.6.2.tar.bz2'
+  homepage 'http://libav.org/'
+  sha1 'b79dc56a08f4ef07b41d1a78b2251f21fde8b81d'
 
   head 'git://git.libav.org/libav.git'
 
@@ -46,7 +46,7 @@ class Ffmpeg < Formula
 
     system "./configure", *args
 
-    if snow_leopard_64?
+    if MacOS.prefer_64_bit?
       inreplace 'config.mak' do |s|
         shflags = s.get_make_var 'SHFLAGS'
         s.change_make_var! 'SHFLAGS', shflags.gsub!(' -Wl,-read_only_relocs,suppress', '')

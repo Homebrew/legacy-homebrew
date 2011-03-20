@@ -265,7 +265,10 @@ class Formula
   end
 
   def fails_with_llvm msg="", data=nil
-    return unless (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
+    unless (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
+      ENV.gcc_4_2 if default_cc =~ /llvm/
+      return
+    end
 
     build = data.delete :build rescue nil
     msg = "(No specific reason was given)" if msg.empty?
@@ -689,7 +692,7 @@ end
 # see flac.rb for example usage
 class GithubGistFormula < ScriptFileFormula
   def initialize name='__UNKNOWN__', path=nil
-    super name
+    super name, path
     @version=File.basename(File.dirname(url))[0,6]
   end
 end

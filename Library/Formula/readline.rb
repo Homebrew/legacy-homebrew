@@ -6,9 +6,9 @@ class Readline < Formula
   homepage 'http://tiswww.case.edu/php/chet/readline/rltop.html'
 
   keg_only <<-EOS
-OS X provides the BSD Readline library. In order to prevent conflicts when
-programs look for libreadline we are defaulting this GNU Readline installation
-to keg-only.
+OS X provides the BSD libedit library, which shadows libreadline.
+In order to prevent conflicts when programs look for libreadline we are
+defaulting this GNU Readline installation to keg-only.
 EOS
 
   def patches
