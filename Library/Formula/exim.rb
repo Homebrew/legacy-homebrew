@@ -23,7 +23,7 @@ class Exim < Formula
    end
 
     inreplace 'OS/Makefile-Darwin' do |s|
-      s.remove_make_var! %w{CC CFLAGS}
+      s.remove_make_var! "CC", "CFLAGS"
     end
 
     # The compile script ignores CPPFLAGS

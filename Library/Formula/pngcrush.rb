@@ -8,7 +8,7 @@ class Pngcrush < Formula
   def install
     # use our CFLAGS, LDFLAGS, CC, and LD
     inreplace 'Makefile' do |s|
-      s.remove_make_var! %w[CFLAGS LDFLAGS CC LD]
+      s.remove_make_var! 'CFLAGS', 'LDFLAGS', 'CC', 'LD'
     end
 
     system "make"

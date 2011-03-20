@@ -10,7 +10,7 @@ class Haproxy < Formula
       s.change_make_var! 'PREFIX', prefix
       s.change_make_var! 'DOCDIR', doc
       # use our CC, CFLAGS and LDFLAGS
-      s.remove_make_var! %w[LDFLAGS CFLAGS CC]
+      s.remove_make_var! 'LDFLAGS', 'CFLAGS', 'CC'
     end
 
     # We build generic since the Makefile.osx doesn't appear to work

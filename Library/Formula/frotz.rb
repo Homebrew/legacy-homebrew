@@ -7,7 +7,7 @@ class Frotz < Formula
 
   def install
     inreplace "Makefile" do |s|
-      s.remove_make_var! %w[CC OPTS]
+      s.remove_make_var! "CC", "OPTS"
       s.change_make_var! "PREFIX", prefix
       s.change_make_var! "CONFIG_DIR", etc
       s.change_make_var! "MAN_PREFIX", share

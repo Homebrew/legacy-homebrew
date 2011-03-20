@@ -10,7 +10,7 @@ class Jam < Formula
     system "chmod a+w *"
 
     inreplace "Makefile" do |s|
-      s.remove_make_var! ['CC', 'CFLAGS']
+      s.remove_make_var! "CC", "CFLAGS"
     end
 
     system "make"

@@ -13,7 +13,7 @@ class Omega < Formula
     # Set the system type in CFLAGS, not in makefile
     # Remove an obsolete flag
     inreplace "Makefile" do |s|
-      s.remove_make_var! ['CC', 'CFLAGS', 'LDFLAGS']
+      s.remove_make_var! "CC", "CFLAGS", "LDFLAGS"
     end
 
     ENV.append_to_cflags "-DUNIX -DSYSV"

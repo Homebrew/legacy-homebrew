@@ -25,7 +25,7 @@ class Git < Formula
     ENV['V']='1'
 
     inreplace "Makefile" do |s|
-      s.remove_make_var! %w{CFLAGS LDFLAGS}
+      s.remove_make_var! "CFLAGS", "LDFLAGS"
     end
 
     system "make", "prefix=#{prefix}", "install"

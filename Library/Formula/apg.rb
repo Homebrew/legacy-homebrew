@@ -7,7 +7,7 @@ class Apg < Formula
 
   def install
     inreplace "Makefile" do |s|
-      s.remove_make_var! ["CC", "FLAGS", "LIBS", "LIBM"]
+      s.remove_make_var! "CC", "FLAGS", "LIBS", "LIBM"
     end
 
     system "make standalone"
