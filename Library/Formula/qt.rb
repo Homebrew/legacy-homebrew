@@ -64,11 +64,11 @@ class Qt < Formula
       args << "-I#{Formula.factory('libpng').include}"
     end
 
-    if snow_leopard_64? or ARGV.include? '--universal'
+    if MacOS.prefer_64_bit? or ARGV.include? '--universal'
       args << '-arch' << 'x86_64'
     end
 
-    if !snow_leopard_64? or ARGV.include? '--universal'
+    if !MacOS.prefer_64_bit? or ARGV.include? '--universal'
       args << '-arch' << 'x86'
     end
 

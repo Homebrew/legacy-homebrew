@@ -17,7 +17,7 @@ class Mpg123 < Formula
             "--with-audio=coreaudio",
             "--with-default-audio=coreaudio"]
 
-    if snow_leopard_64?
+    if MacOS.prefer_64_bit?
       args << "--with-cpu=x86-64"
     else
       args << "--with-cpu=sse_alone"
