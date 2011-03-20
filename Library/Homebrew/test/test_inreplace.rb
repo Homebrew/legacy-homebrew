@@ -57,5 +57,10 @@ class InreplaceTest < Test::Unit::TestCase
     s1.extend(StringInreplaceExtension)
     s1.remove_make_var! "FLAG", "FLAG2"
     assert_equal "OTHER=def\nOTHER2=def", s1
+    # for compatibility
+    s1="OTHER=def\nFLAG = abc\nFLAG2 = def\nOTHER2=def"
+    s1.extend(StringInreplaceExtension)
+    s1.remove_make_var! ["FLAG", "FLAG2"]
+    assert_equal "OTHER=def\nOTHER2=def", s1
   end
 end
