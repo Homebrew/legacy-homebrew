@@ -1,6 +1,6 @@
 require 'formula'
 
-class Lockrun <Formula
+class Lockrun < Formula
   url 'http://unixwiz.net/tools/lockrun.c'
   homepage 'http://unixwiz.net/tools/lockrun.html'
   md5 '40f1a02df4dd67c5e2d973b669acb45d'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ranger <Formula
+class Ranger < Formula
   url 'http://download.savannah.gnu.org/releases/ranger/releases/ranger-1.2.3.tar.gz'
   version '1.2.3'
   homepage 'http://ranger.nongnu.org/'

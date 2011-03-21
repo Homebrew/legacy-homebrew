@@ -1,6 +1,6 @@
 require 'formula'
 
-class Binutils <Formula
+class Binutils < Formula
   url 'http://ftp.gnu.org/gnu/binutils/binutils-2.20.tar.gz'
   homepage 'http://www.gnu.org/software/binutils/binutils.html'
   md5 'e99487e0c4343d6fa68b7c464ff4a962'

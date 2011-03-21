@@ -1,6 +1,6 @@
 require 'formula'
 
-class Pil <Formula
+class Pil < Formula
   url 'http://effbot.org/downloads/Imaging-1.1.7.tar.gz'
   homepage 'http://www.pythonware.com/products/pil/'
   md5 'fc14a54e1ce02a0225be8854bfba478e'

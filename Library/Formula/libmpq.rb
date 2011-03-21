@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libmpq <Formula
+class Libmpq < Formula
   # Website currently has a bad SSL cert
   url 'https://libmpq.org/download/libmpq-0.4.2.tar.bz2',
       :using => CurlUnsafeDownloadStrategy

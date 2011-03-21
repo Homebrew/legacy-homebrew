@@ -1,6 +1,6 @@
 require 'formula'
 
-class Runit <Formula
+class Runit < Formula
   url 'http://smarden.org/runit/runit-2.1.1.tar.gz'
   homepage 'http://smarden.org/runit'
   md5 '8fa53ea8f71d88da9503f62793336bc3'

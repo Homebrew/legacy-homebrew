@@ -1,7 +1,7 @@
 require 'formula'
 require 'hardware'
 
-class Go <Formula
+class Go < Formula
   if ARGV.include? "--use-git-head"
     head 'https://github.com/tav/go.git', :tag => 'release'
   else
