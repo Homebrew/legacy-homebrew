@@ -171,11 +171,13 @@ didn't include with OS X.
     If `--strict` is passed, perform additional stricter checks that may not need
     to be fixed before submitting.
 
-  * `options [--compact]` <formula>:
+  * `options [--compact] [--all]` <formula>:
     Display install options specific to <formula>.
 
     If `--compact` is passed, show all options on a single line separated by
     spaces.
+
+    If `--all` is passed, show options for all formulae.
 
   * `missing`:
     Check all installed formuale for missing dependencies.
