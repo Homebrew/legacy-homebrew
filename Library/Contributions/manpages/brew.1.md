@@ -164,11 +164,11 @@ didn't include with OS X.
 
     If `--force` is passed, remove a previously cached version and re-fetch.
 
-  * `audit [--warn]`:
+  * `audit [--strict]`:
     Check formulae for Homebrew coding style violations. This should be
     run before submitting a new formula for inclusion.
 
-    If `--warn` is passed, perform additional stricter checks that may not need
+    If `--strict` is passed, perform additional stricter checks that may not need
     to be fixed before submitting.
 
   * `options [--compact]` <formula>:
