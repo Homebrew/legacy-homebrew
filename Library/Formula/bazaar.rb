@@ -20,11 +20,17 @@ class Bazaar < Formula
       ENV.prepend "PATH", "/System/Library/Frameworks/Python.framework/Versions/Current/bin", ":"
     end
 
-    # Find the archs of the Python we are building against.
-    # If the python includes PPC support, then don't use Intel-
-    # specific compiler flags
-    archs = archs_for_command("python")
-    ENV.minimal_optimization if archs.include? :ppc64 or archs.include? :ppc7400
+    # Find the arch for the Python we are building against.
+    # We remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
+    if ARGV.include? "--system"
+      python_cmd = "/usr/bin/python"
+    else
+      python_cmd = "python"
+    end
+
+    archs = archs_for_command("python_cmd")
+    archs.remove_ppc!
+    ENV['ARCHFLAGS'] = archs.as_arch_flags
 
     system "make"
     inreplace "bzr", "#! /usr/bin/env python", "#!/usr/bin/python" if ARGV.include? "--system"

@@ -9,7 +9,7 @@ class Hiredis < Formula
 
   def install
     # Architecture isn't detected correctly on 32bit Snow Leopard without help
-    ENV["OBJARCH"] = snow_leopard_64? ? "-arch x86_64" : "-arch i386"
+    ENV["OBJARCH"] = MacOS.prefer_64_bit? ? "-arch x86_64" : "-arch i386"
 
     system "make PREFIX=#{prefix}"
     system "make install PREFIX=#{prefix}"

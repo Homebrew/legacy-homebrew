@@ -378,7 +378,7 @@ class Formula
 
     begin
       klass_name = self.class_s(name)
-      klass = eval(klass_name)
+      klass = Object.const_get klass_name
     rescue NameError
       # TODO really this text should be encoded into the exception
       # and only shown if the UI deems it correct to show it
@@ -692,7 +692,7 @@ end
 # see flac.rb for example usage
 class GithubGistFormula < ScriptFileFormula
   def initialize name='__UNKNOWN__', path=nil
-    super name
+    super name, path
     @version=File.basename(File.dirname(url))[0,6]
   end
 end
