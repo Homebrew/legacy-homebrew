@@ -1,6 +1,6 @@
 require 'formula'
 
-class Dotwrp <Formula
+class Dotwrp < Formula
   url 'https://github.com/tenomoto/dotwrp.git', :using => :git
   homepage 'https://github.com/tenomoto/dotwrp'
   version '1.0'
