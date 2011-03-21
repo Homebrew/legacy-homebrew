@@ -1,10 +1,10 @@
 require 'formula'
 
 class Groovyserv < Formula
-  url 'https://github.com/downloads/kobo/groovyserv/groovyserv-0.5-src.zip'
-  md5 'aecbf09143039305d4e8cc6a843800fb'
-  head 'http://github.com/kobo/groovyserv.git', :using => :git
   homepage 'http://kobo.github.com/groovyserv/'
+  url 'https://github.com/downloads/kobo/groovyserv/groovyserv-0.6-src.zip'
+  sha1 '5a812e9dfaa1aa0d6a769bd5c6ccbcefb970f135'
+  head 'http://github.com/kobo/groovyserv.git', :using => :git
 
   depends_on 'groovy'
 

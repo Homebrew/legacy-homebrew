@@ -1,6 +1,6 @@
 require 'extend/pathname'
 
-class Keg <Pathname
+class Keg < Pathname
   def initialize path
     super path
     raise "#{to_s} is not a valid keg" unless parent.parent.realpath == HOMEBREW_CELLAR.realpath
