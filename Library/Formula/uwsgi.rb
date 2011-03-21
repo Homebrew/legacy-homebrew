@@ -6,13 +6,11 @@ class Uwsgi < Formula
   md5 'eab88c552e4c7c4ecb5188cdefc43390'
 
   def install
-    # Find the archs of the Python we are building against.
+    # Find the arch for the Python we are building against.
     # We remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
     archs = archs_for_command("python")
-    archs.delete :ppc7400
-    archs.delete :ppc64
-
-    flags = archs.collect{ |a| "-arch #{a}" }.join(' ')
+    archs.remove_ppc!
+    flags = archs.as_arch_flags
 
     ENV.append 'CFLAGS', flags
     ENV.append 'LDFLAGS', flags

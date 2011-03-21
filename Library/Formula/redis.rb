@@ -10,7 +10,7 @@ class Redis < Formula
     fails_with_llvm "Fails with \"reference out of range from _linenoise\""
 
     # Architecture isn't detected correctly on 32bit Snow Leopard without help
-    ENV["OBJARCH"] = snow_leopard_64? ? "-arch x86_64" : "-arch i386"
+    ENV["OBJARCH"] = MacOS.prefer_64_bit? ? "-arch x86_64" : "-arch i386"
 
     # Head and stable have different code layouts
     src = File.exists?('src/Makefile') ? 'src' : '.'

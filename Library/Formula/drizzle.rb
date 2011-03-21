@@ -13,6 +13,8 @@ class Drizzle < Formula
   depends_on 'libgcrypt'
   depends_on 'readline'
 
+  skip_clean ['sbin', 'bin']
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

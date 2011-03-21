@@ -34,7 +34,12 @@ class Aspell < Formula
       end
     end
     languages.flatten.each do |lang|
-      formula = Object.const_get("Aspell_" + lang).new
+      begin
+        formula = Object.const_get("Aspell_" + lang).new
+      rescue
+        opoo "Unknown language: #{lang}"
+        next
+      end
       formula.brew { formula.install }
     end
   end
