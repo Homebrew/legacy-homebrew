@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cdargs <Formula
+class Cdargs < Formula
   url 'http://www.skamphausen.de/downloads/cdargs/cdargs-1.35.tar.gz'
   homepage 'http://www.skamphausen.de/cgi-bin/ska/CDargs'
   md5 '50be618d67f0b9f2439526193c69c567'

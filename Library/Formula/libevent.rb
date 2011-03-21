@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libevent <Formula
+class Libevent < Formula
   url "http://downloads.sourceforge.net/project/levent/libevent/libevent-2.0/libevent-2.0.10-stable.tar.gz"
   homepage 'http://www.monkey.org/~provos/libevent/'
   md5 'a37401d26cbbf28185211d582741a3d4'

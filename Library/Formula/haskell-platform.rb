@@ -1,6 +1,6 @@
 require 'formula'
 
-class HaskellPlatform <Formula
+class HaskellPlatform < Formula
   url 'http://hackage.haskell.org/platform/2010.2.0.0/haskell-platform-2010.2.0.0.tar.gz'
   homepage 'http://hackage.haskell.org/platform/'
   md5 '9d1dd22a86bf2505591e6375f7dbe18e'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class DBus <Formula
+class DBus < Formula
   url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.4.1.tar.gz'
   homepage 'http://www.freedesktop.org/wiki/Software/dbus'
   md5 '99cb057700c0455fb68f8d57902f77ac'
@@ -38,12 +38,13 @@ class DBus <Formula
 
   def caveats; <<-EOS.undent
     If this is your first install, automatically load on login with:
-        cp #{prefix}/org.freedesktop.dbus-session.plist ~/Library/LaunchAgents
+        mkdir -p ~/Library/LaunchAgents
+        cp #{prefix}/org.freedesktop.dbus-session.plist ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/org.freedesktop.dbus-session.plist
 
     If this is an upgrade and you already have the org.freedesktop.dbus-session.plist loaded:
         launchctl unload -w ~/Library/LaunchAgents/org.freedesktop.dbus-session.plist
-        cp #{prefix}/org.freedesktop.dbus-session.plist ~/Library/LaunchAgents
+        cp #{prefix}/org.freedesktop.dbus-session.plist ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/org.freedesktop.dbus-session.plist
     EOS
   end

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Psgrep <Formula
+class Psgrep < Formula
   url 'http://psgrep.googlecode.com/files/psgrep-1.0.5.tar.bz2'
   head 'http://psgrep.googlecode.com/svn/trunk/'
   homepage 'http://code.google.com/p/psgrep/'

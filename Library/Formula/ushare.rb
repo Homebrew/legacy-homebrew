@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ushare <Formula
+class Ushare < Formula
   url 'http://ushare.geexbox.org/releases/ushare-1.1a.tar.bz2'
   homepage 'http://ushare.geexbox.org/'
   md5 '5bbcdbf1ff85a9710fa3d4e82ccaa251'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class BibTool <Formula
+class BibTool < Formula
   url 'http://sarovar.org/frs/download.php/1298/BibTool-2.51.tar.gz'
   homepage 'http://www.gerd-neugebauer.de/software/TeX/BibTool/index.en.html'
   version '2.51'

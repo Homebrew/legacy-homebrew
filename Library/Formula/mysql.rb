@@ -55,12 +55,13 @@ class Mysql <Formula
         scripts/mysql_install_db --basedir=#{prefix}
 
     If this is your first install, automatically load on login with:
-        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents
+        mkdir -p ~/Library/LaunchAgents
+        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
 
     If this is an upgrade and you already have the com.mysql.mysqld.plist loaded:
         launchctl unload -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
-        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents
+        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
 
     Note on upgrading:
