@@ -2,21 +2,17 @@
 require 'global'
 
 def text_for_keg_only_formula f
-  if f.keg_only? == :provided_by_osx
-    rationale = "Mac OS X already provides this program and installing another version in\nparallel can cause all kinds of trouble."
-  elsif f.keg_only?.kind_of? String
-    rationale = "The formula provides the following rationale:\n\n#{f.keg_only?.chomp}"
-  else
-    rationale = "The formula didn't provide any rationale for this."
-  end
   <<-EOS
-This formula is keg-only. This means it is not symlinked into #{HOMEBREW_PREFIX}.
-#{rationale}
+This formula is keg-only, so it was not symlinked into #{HOMEBREW_PREFIX}.
 
-Generally there are no consequences of this for you, however if you build
-your own software and it requires this formula, you may want to run this
-command to link it into the Homebrew prefix:
-    $ brew link #{f.name}
+#{f.keg_only?}
+
+Generally there are no consequences of this for you.
+If you build your own software and it requires this formula, you'll need
+to add its lib & include paths to your build variables:
+
+  LDFLAGS="$LDFLAGS #{f.lib}"
+  CPPFLAGS="$CPPFLAGS #{f.include}"
   EOS
 end
 
@@ -67,11 +63,6 @@ def install f
       ENV.prepend 'PATH', "#{dep.bin}", ':'
       ENV.prepend 'PKG_CONFIG_PATH', dep.lib+'pkgconfig', ':'
     end
-  end
-
-  if ARGV.verbose?
-    ohai "Build Environment"
-    dump_build_env ENV
   end
 
   build_time = nil

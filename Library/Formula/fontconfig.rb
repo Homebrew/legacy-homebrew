@@ -5,10 +5,10 @@ class Fontconfig < Formula
   homepage 'http://fontconfig.org/'
   md5 '77e15a92006ddc2adbb06f840d591c0e'
 
-  # Leopard comes with 2.4.x, which is too old for many packages.
-  keg_only :provided_by_osx
+  keg_only :provided_by_osx,
+    "Leopard comes with version 2.4.x, which is too old for many packages."
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
 
   def install
     ENV.x11
