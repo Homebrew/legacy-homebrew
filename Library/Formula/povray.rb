@@ -8,9 +8,9 @@ class Povray < Formula
   depends_on 'libtiff' => :optional
   depends_on 'jpeg' => :optional
 
-  def install
-    fails_with_llvm "llvm-gcc: povray fails with 'terminate called after throwing an instance of int'"
+  fails_with_llvm "llvm-gcc: povray fails with 'terminate called after throwing an instance of int'"
 
+  def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "COMPILED_BY=homebrew",
                           "--prefix=#{prefix}",

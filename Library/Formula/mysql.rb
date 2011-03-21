@@ -8,6 +8,8 @@ class Mysql < Formula
   depends_on 'cmake' => :build
   depends_on 'readline'
 
+  fails_with_llvm "https://github.com/mxcl/homebrew/issues/issue/144"
+
   def options
     [
       ['--with-tests', "Keep tests when installing."],
@@ -21,8 +23,6 @@ class Mysql < Formula
   end
 
   def install
-    fails_with_llvm "https://github.com/mxcl/homebrew/issues/issue/144"
-
     args = [
       ".",
       "-DCMAKE_INSTALL_PREFIX='#{prefix}'",

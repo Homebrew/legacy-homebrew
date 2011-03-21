@@ -13,9 +13,9 @@ class Tesseract < Formula
 
   depends_on 'libtiff'
 
-  def install
-    fails_with_llvm "Executable 'tesseract' segfaults on 10.6 when compiled with llvm-gcc", :build => "2206"
+  fails_with_llvm "Executable 'tesseract' segfaults on 10.6 when compiled with llvm-gcc", :build => "2206"
 
+  def install
     # 'make install' expects the language data files in the build directory
     d = Dir.getwd
     TesseractEnglishData.new.brew { cp Dir["*"], "#{d}/tessdata/" }

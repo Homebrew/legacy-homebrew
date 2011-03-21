@@ -6,7 +6,7 @@ class SwiProlog < Formula
   homepage 'http://www.swi-prolog.org/'
   md5 '7973bcfd3854ae0cb647cc62f2faabcf'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'readline'
   depends_on 'gmp'
   depends_on 'jpeg'
@@ -17,14 +17,14 @@ class SwiProlog < Formula
   depends_on 'fontconfig' if MACOS_VERSION < 10.6
   depends_on 'expat' if MACOS_VERSION < 10.6
 
+  fails_with_llvm "Exported procedure chr_translate:chr_translate_line_info/3 is not defined"
+
   def options
     [['--lite', "Don't install any packages; overrides --with-jpl"],
      ['--without-jpl', "Include JPL, the Java-Prolog Bridge"]]
   end
 
   def install
-    fails_with_llvm "Exported procedure chr_translate:chr_translate_line_info/3 is not defined"
-
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
     ENV.append 'DISABLE_PKGS', "jpl" if ARGV.include? "--without-jpl"
 

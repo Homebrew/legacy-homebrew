@@ -17,6 +17,8 @@ class Wine < Formula
   depends_on 'libicns'
   depends_on 'gnutls'
 
+  fails_with_llvm
+
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
   # configure: libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
 
@@ -32,7 +34,6 @@ EOS
   end
 
   def install
-    fails_with_llvm
     ENV.x11
 
     # Build 32-bit; Wine doesn't support 64-bit host builds on OS X.

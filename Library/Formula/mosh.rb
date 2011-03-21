@@ -9,8 +9,9 @@ class Mosh < Formula
   depends_on 'gmp'
   depends_on 'oniguruma'
 
+  fails_with_llvm
+
   def install
-    fails_with_llvm
     ENV.gcc_4_2 # GCC > 4.0 required
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
