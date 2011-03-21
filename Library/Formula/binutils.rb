@@ -10,8 +10,6 @@ class Binutils < Formula
   end
 
   def install
-    ENV.append 'CPPFLAGS', "-I#{include}"
-
     args = ["--disable-debug", "--disable-dependency-tracking",
             "--prefix=#{prefix}",
             "--infodir=#{info}",
