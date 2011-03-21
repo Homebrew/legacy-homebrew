@@ -6,9 +6,9 @@ class Redis < Formula
   homepage 'http://redis.io/'
   sha1 '75b953e4a3067570555c5f3f5e8f481c40489904'
 
-  def install
-    fails_with_llvm "Fails with \"reference out of range from _linenoise\""
+  fails_with_llvm "Fails with \"reference out of range from _linenoise\""
 
+  def install
     # Architecture isn't detected correctly on 32bit Snow Leopard without help
     ENV["OBJARCH"] = MacOS.prefer_64_bit? ? "-arch x86_64" : "-arch i386"
 

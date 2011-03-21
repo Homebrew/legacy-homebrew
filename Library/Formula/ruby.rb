@@ -9,6 +9,11 @@ class Ruby < Formula
   depends_on 'readline'
   depends_on 'libyaml'
 
+  fails_with_llvm
+
+  # Stripping breaks dynamic linking
+  skip_clean :all
+
   def options
     [
       ["--with-suffix", "Add a 19 suffix to commands"],
@@ -17,12 +22,7 @@ class Ruby < Formula
     ]
   end
 
-  # Stripping breaks dynamic linking
-  skip_clean :all
-
   def install
-    fails_with_llvm
-
     ruby_lib = HOMEBREW_PREFIX+"lib/ruby"
 
     if File.exist? ruby_lib and File.symlink? ruby_lib
