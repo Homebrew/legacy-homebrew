@@ -15,6 +15,10 @@ end
 def audit_formula_text name, text
   problems = []
 
+  if text =~ /<Formula/
+    problems << " * We now space class inheritance: class Foo < Formula"
+  end if strict?
+
   # Commented-out cmake support from default template
   if (text =~ /# depends_on 'cmake'/) or (text =~ /# system "cmake/)
     problems << " * Commented cmake support found."
@@ -193,8 +197,8 @@ def audit_formula_urls f
 
     unless p =~ %r[^http://mirrors\.kernel\.org/debian/pool/]
       problems << " * \"mirrors.kernel.org\" is the preferred mirror for debian software."
-    end if strict?
-  end
+    end
+  end if strict?
 
   return problems
 end
