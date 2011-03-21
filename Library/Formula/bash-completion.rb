@@ -28,7 +28,7 @@ Add the following lines to your ~/.bash_profile file:
   fi
 
 To install Homebrew's own completion script:
-  ln "#{HOMEBREW_PREFIX}/Library/Contributions/brew_bash_completion.sh", "#{etc}/bash_completion.d"
+  ln "#{HOMEBREW_PREFIX}/Library/Contributions/brew_bash_completion.sh" "#{etc}/bash_completion.d"
     EOS
   end
 end
