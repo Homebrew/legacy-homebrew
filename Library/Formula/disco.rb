@@ -1,6 +1,6 @@
 require 'formula'
 
-class Disco <Formula
+class Disco < Formula
   homepage 'http://discoproject.com/'
   url 'git://github.com/tuulos/disco.git', :tag => '0.3.1'
   # Periods in the install path cause disco-worker to complain so change to underscores.

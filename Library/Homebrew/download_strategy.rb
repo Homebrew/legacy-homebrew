@@ -250,6 +250,10 @@ class GitDownloadStrategy <AbstractDownloadStrategy
     @clone
   end
 
+  def support_depth?
+    @url =~ %r(git://) or @url =~ %r(https://github.com/)
+  end
+
   def fetch
     raise "You must install Git:\n\n"+
           "  brew install git\n" \
@@ -268,7 +272,11 @@ class GitDownloadStrategy <AbstractDownloadStrategy
     end
 
     unless @clone.exist?
-      safe_system 'git', 'clone', @url, @clone # indeed, leave it verbose
+      # Note: first-time checkouts are always done verbosely
+      git_args = %w(git clone)
+      git_args << "--depth" << "1" if support_depth?
+      git_args << @url << @clone
+      safe_system *git_args
     else
       puts "Updating #{@clone}"
       Dir.chdir(@clone) do
@@ -364,11 +372,7 @@ class MercurialDownloadStrategy <AbstractDownloadStrategy
   def cached_location; @clone; end
 
   def fetch
-    raise "You must install mercurial, there are two options:\n\n"+
-          "    brew install pip && pip install mercurial\n"+
-          "    easy_install mercurial\n\n"+
-          "Homebrew recommends pip over the OS X provided easy_install." \
-          unless system "/usr/bin/which hg"
+    raise "You must `easy_install mercurial'" unless system "/usr/bin/which hg"
 
     ohai "Cloning #{@url}"
 
@@ -480,7 +484,7 @@ def detect_download_strategy url
   when %r[^git://] then GitDownloadStrategy
   when %r[^hg://] then MercurialDownloadStrategy
   when %r[^svn://] then SubversionDownloadStrategy
-  when %r[^svn+http://] then SubversionDownloadStrategy
+  when %r[^svn\+http://] then SubversionDownloadStrategy
   when %r[^fossil://] then FossilDownloadStrategy
     # Some well-known source hosts
   when %r[^http://github\.com/.+\.git$] then GitDownloadStrategy

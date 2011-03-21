@@ -1,6 +1,6 @@
 require 'formula'
 
-class PgpoolIi <Formula
+class PgpoolIi < Formula
   url 'http://pgfoundry.org/frs/download.php/2841/pgpool-II-3.0.1.tar.gz'
   homepage 'http://pgpool.projects.postgresql.org/'
   md5 '86d8beff0396d11b6753dd2be31bcad7'

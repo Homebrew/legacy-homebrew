@@ -1,7 +1,8 @@
 require 'formula'
 
-class Fontforge <Formula
+class Fontforge < Formula
   url 'http://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20110222.tar.bz2'
+  head 'git://fontforge.git.sourceforge.net/gitroot/fontforge/fontforge'
   homepage 'http://fontforge.sourceforge.net'
   md5 '5be4dda345b5d73a27cc399df96e463a'
 
@@ -11,8 +12,11 @@ class Fontforge <Formula
   depends_on 'potrace'
 
   def install
-    ENV.x11
     fails_with_llvm "Compiling cvexportdlg.c fails with error: initializer element is not constant"
+
+    ENV.x11
+    # Fix linker error; see: http://trac.macports.org/ticket/25012
+    ENV.append "LDFLAGS", "-lintl"
     system "./configure", "--prefix=#{prefix}",
                           "--enable-double",
                           "--without-freetype-bytecode",

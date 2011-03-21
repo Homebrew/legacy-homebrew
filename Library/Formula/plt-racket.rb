@@ -1,6 +1,6 @@
 require 'formula'
 
-class PltRacket <Formula
+class PltRacket < Formula
   # Use GitHub; tarball doesn't have everything needed for building on OS X
   url 'git://github.com/plt/racket.git', :tag => 'v5.1'
   homepage 'http://racket-lang.org/'
@@ -16,7 +16,7 @@ class PltRacket <Formula
               "--enable-shared",
               "--prefix=#{prefix}" ]
 
-      if snow_leopard_64?
+      if MacOS.prefer_64_bit?
         args += ["--enable-mac64", "--enable-sgc", "--disable-gracket"]
       end
 

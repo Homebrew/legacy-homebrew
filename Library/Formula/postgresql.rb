@@ -1,7 +1,7 @@
 require 'formula'
 require 'hardware'
 
-class Postgresql <Formula
+class Postgresql < Formula
   homepage 'http://www.postgresql.org/'
   url 'http://ftp9.us.postgresql.org/pub/mirrors/postgresql/source/v9.0.3/postgresql-9.0.3.tar.bz2'
   md5 '928df8c40bb012ad10756e58b70516fb'
@@ -39,7 +39,7 @@ class Postgresql <Formula
     ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
     ENV.append 'LIBS', `uuid-config --libs`.strip
 
-    if snow_leopard_64? and not ARGV.include? '--no-python'
+    if MacOS.prefer_64_bit? and not ARGV.include? '--no-python'
       args << "ARCHFLAGS='-arch x86_64'"
       check_python_arch
     end
@@ -116,7 +116,7 @@ And stop with:
     pg_ctl -D #{var}/postgres stop -s -m fast
 EOS
 
-    if snow_leopard_64? then
+    if MacOS.prefer_64_bit? then
       s << <<-EOS
 
 If you want to install the postgres gem, including ARCHFLAGS is recommended:

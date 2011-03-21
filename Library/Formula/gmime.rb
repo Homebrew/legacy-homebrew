@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gmime <Formula
+class Gmime < Formula
   url 'http://ftp.acc.umu.se/pub/GNOME/sources/gmime/2.4/gmime-2.4.20.tar.bz2'
   homepage 'http://spruce.sourceforge.net/gmime/'
   sha256 'e13ea84678d92fd08a44b06b589a25e07af093634d490caad123b2eead14b990'

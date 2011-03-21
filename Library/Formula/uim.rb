@@ -1,6 +1,6 @@
 require 'formula'
 
-class Uim <Formula
+class Uim < Formula
   url 'http://uim.googlecode.com/files/uim-1.6.0.tar.bz2'
   homepage 'http://code.google.com/p/uim/'
   md5 'cb3b9b2adaff3db9dec43658f30e9f89'

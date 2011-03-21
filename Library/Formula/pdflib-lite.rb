@@ -1,6 +1,6 @@
 require 'formula'
 
-class PdflibLite <Formula
+class PdflibLite < Formula
   url 'http://www.pdflib.com/binaries/PDFlib/704/PDFlib-Lite-7.0.4p4.tar.gz'
   homepage 'http://www.pdflib.com/download/free-software/pdflib-lite/'
   md5 '1765de9c5f2b6c5769a2160eaa911e9a'

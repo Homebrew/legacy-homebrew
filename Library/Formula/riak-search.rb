@@ -1,6 +1,6 @@
 require 'formula'
 
-class RiakSearch <Formula
+class RiakSearch < Formula
   url 'http://downloads.basho.com/riak-search/riak-search-0.14/riak_search-0.14.0-osx-i386.tar.gz'
   homepage 'http://riak.basho.com'
   md5 'afb34fdedd1899a972e47050888e18b9'

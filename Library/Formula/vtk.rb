@@ -1,6 +1,6 @@
 require 'formula'
 
-class Vtk <Formula
+class Vtk < Formula
   url 'http://www.vtk.org/files/release/5.6/vtk-5.6.1.tar.gz'
   homepage 'http://www.vtk.org'
   md5 'b80a76435207c5d0f74dfcab15b75181'

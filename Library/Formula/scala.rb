@@ -1,13 +1,13 @@
 require 'formula'
 
-class ScalaDocs <Formula
+class ScalaDocs < Formula
   homepage 'http://www.scala-lang.org/'
   url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.8.1.final-devel-docs.tgz'
   version '2.8.1'
   md5 'afd5c7d3073bd735a25cfc4ed61f3543'
 end
 
-class Scala <Formula
+class Scala < Formula
   homepage 'http://www.scala-lang.org/'
   url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.8.1.final.tgz'
   version '2.8.1'

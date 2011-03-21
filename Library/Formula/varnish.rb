@@ -1,6 +1,6 @@
 require 'formula'
 
-class Varnish <Formula
+class Varnish < Formula
   url 'http://www.varnish-software.com/sites/default/files/varnish-2.1.4.tar.gz'
   homepage 'http://www.varnish-cache.org/'
   md5 'e794a37b6fbb786a083c0946103ae103'

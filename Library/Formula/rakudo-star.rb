@@ -1,6 +1,6 @@
 require 'formula'
 
-class RakudoStar <Formula
+class RakudoStar < Formula
   url 'https://github.com/downloads/rakudo/star/rakudo-star-2011.01.tar.gz'
   md5 '3ba1e37842e17b8fb5e0b21f614a6286'
   homepage 'http://rakudo.org/'

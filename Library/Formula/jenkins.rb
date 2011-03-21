@@ -1,9 +1,9 @@
 require 'formula'
 
-class Jenkins <Formula
-  url 'http://ftp.osuosl.org/pub/hudson/war/1.399/jenkins.war', :using => :nounzip
-  version '1.399'
-  md5 'a99ed0277a59d7058c0c13b68cbee783'
+class Jenkins < Formula
+  url 'http://mirrors.jenkins-ci.org/war/1.401/jenkins.war', :using => :nounzip
+  version '1.401'
+  md5 '41b2eb60ddf231bb8b45ba52f1c0b10f'
   homepage 'http://jenkins-ci.org'
 
   def install

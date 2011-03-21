@@ -1,6 +1,6 @@
 require 'formula'
 
-class GstPluginsBase <Formula
+class GstPluginsBase < Formula
   homepage 'http://gstreamer.freedesktop.org/'
   url 'http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-0.10.32.tar.bz2'
   md5 '2920af2b3162f3d9fbaa7fabc8ed4d38'

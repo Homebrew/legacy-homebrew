@@ -1,6 +1,6 @@
 require 'formula'
 
-class Flare <Formula
+class Flare < Formula
   url 'http://labs.gree.jp/data/source/flare-1.0.11.tgz'
   head 'git://github.com/fujimoto/flare.git'
   homepage 'http://labs.gree.jp/Top/OpenSource/Flare-en.html'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Physfs <Formula
+class Physfs < Formula
   url 'http://icculus.org/physfs/downloads/physfs-2.0.1.tar.gz'
   homepage 'http://icculus.org/physfs/'
   md5 'df00465fcfa80e87f718961c6dd6b928'

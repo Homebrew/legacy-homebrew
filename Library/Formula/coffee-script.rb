@@ -1,6 +1,6 @@
 require 'formula'
 
-class CoffeeScript <Formula
+class CoffeeScript < Formula
   url 'https://github.com/jashkenas/coffee-script/tarball/1.0.0'
   head 'git://github.com/jashkenas/coffee-script.git'
   homepage 'http://jashkenas.github.com/coffee-script/'
