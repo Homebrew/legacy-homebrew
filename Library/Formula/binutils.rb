@@ -6,7 +6,8 @@ class Binutils < Formula
   md5 'e99487e0c4343d6fa68b7c464ff4a962'
 
   def options
-    [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
+    [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."],
+    ['--elf64', "Compile with x86_64-elf format support."]]
   end
 
   def install
@@ -17,10 +18,10 @@ class Binutils < Formula
             "--disable-dependency-tracking",
             "--infodir=#{info}",
             "--mandir=#{man}",
-            "--disable-werror",
-            "--enable-targets=x86_64-elf" ]
+            "--disable-werror" ]
     args << "--program-prefix=g" unless ARGV.include? '--default-names'
-
+    args << "--enable-targets=x86_64-elf" if ARGV.include? '--elf64'
+    
     system "./configure", *args
     system "make"
     system "make install"
