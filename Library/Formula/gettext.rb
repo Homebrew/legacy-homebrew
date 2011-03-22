@@ -21,8 +21,7 @@ class Gettext < Formula
                           "--without-included-glib",
                           "--without-included-libcroco",
                           "--without-included-libxml",
-                          "--without-emacs",
-                          "--without-git"
+                          "--without-emacs"
     system "make"
     ENV.deparallelize # install doesn't support multiple make jobs
     system "make install"
