@@ -48,7 +48,12 @@ class Keg < Pathname
     link_dir('bin') {:skip}
     link_dir('sbin') {:link}
     link_dir('include') {:link}
-    link_dir('share') {|path| :mkpath if share_mkpaths.include? path.to_s}
+	link_dir('share') do |path|
+		case path.to_s
+			when /([a-z]|[A-Z]){2,3}(_([a-z]|[A-Z]){2,3})?$/ then :mkpath if path.to_s.include? "locale";
+			else :mkpath if share_mkpaths.include? path.to_s;
+		end
+	end
 
     link_dir('lib') do |path|
       case path.to_s
@@ -67,6 +72,11 @@ class Keg < Pathname
       # Everything else is symlinked to the cellar
       else :link
       end
+    end
+    
+    link_dir('locale') do |path|
+      puts "\npath.to_s";
+      #case path.to_s
     end
 
     return $n+$d
