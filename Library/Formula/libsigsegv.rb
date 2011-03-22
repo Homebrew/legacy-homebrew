@@ -6,6 +6,8 @@ class Libsigsegv < Formula
   md5 'ebe554e26870d8bc200ef3e3539ffd7c'
 
   def install
+    fails_with_llvm "Fails during configure with LLVM GCC from XCode 4 on Snow Leopard"
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"

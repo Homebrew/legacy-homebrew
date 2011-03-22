@@ -25,7 +25,7 @@ class GnuSmalltalk < Formula
     # 64-bit version doesn't build, so force 32 bits.
     ENV.m32
 
-    if snow_leopard_64? and Formula.factory('gdbm').installed?
+    if MacOS.prefer_64_bit? and Formula.factory('gdbm').installed?
       onoe "A 64-bit gdbm will cause linker errors"
       puts <<-EOS.undent
         GNU Smalltak doesn't compile 64-bit clean on OS X, so having a

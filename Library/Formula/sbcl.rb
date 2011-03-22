@@ -39,6 +39,7 @@ class Sbcl < Formula
   end
 
   def install
+    fails_with_llvm "Compilation fails with LLVM."
     write_features
 
     build_directory = Dir.pwd
