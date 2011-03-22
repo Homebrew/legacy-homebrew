@@ -14,6 +14,6 @@ class Samtools < Formula
     lib.install 'libbam.a'
     (include+'bam').install Dir['*.h']
     man1.install 'samtools.1'
-    (share+'doc/samtools/').install %w{AUTHORS COPYING ChangeLog NEWS}
+    (share+'doc/samtools/').install 'NEWS'
   end
 end
