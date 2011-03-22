@@ -6,8 +6,8 @@ class Perl < Formula
   md5 '29975a69dce54e47fcd6331c085c6c99'
 
   def install
-    system "./configure", "-de",
-                          "-DEBUGGING=none",
+    system("rm -f config.sh Policy.sh");
+    system "sh","Configure", "-de",
                           "-Dprefix=#{prefix}",
                           "-Dusethreads"
 
