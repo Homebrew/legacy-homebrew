@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gauche <Formula
+class Gauche < Formula
   url 'http://downloads.sourceforge.net/gauche/Gauche/Gauche-0.9.1.tgz'
   homepage 'http://practical-scheme.net/gauche/'
   md5 '6134e9c16aef2bc9fd3fa7e8fbebdd10'
