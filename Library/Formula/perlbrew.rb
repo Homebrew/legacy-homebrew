@@ -7,7 +7,6 @@ class Perlbrew < Formula
   depends_on 'perl'
 
   def install
-      system("mkdir #{prefix}/bin")
-      system("install perlbrew #{prefix}/bin/perlbrew")
+      bin.install "perlbrew"
   end
 end
