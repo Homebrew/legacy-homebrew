@@ -1,6 +1,6 @@
 require 'formula'
 
-class Qrupdate <Formula
+class Qrupdate < Formula
   url 'http://downloads.sourceforge.net/qrupdate/qrupdate-1.1.1.tar.gz'
   homepage 'http://sourceforge.net/projects/qrupdate/'
   sha1 '8fbaba202b0d4bf80852b2dc6c8d1d4b90b816d4'

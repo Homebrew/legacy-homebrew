@@ -5,8 +5,8 @@ class LibdbusmenuQt < Formula
   homepage 'http://people.canonical.com/~agateau/dbusmenu/index.html'
   md5 '512dc3213afcf0c561ac28000e85a80d'
 
+  depends_on 'cmake' => :build
   depends_on 'qt'
-  depends_on 'cmake'
 
   def install
     system "cmake . #{std_cmake_parameters}"

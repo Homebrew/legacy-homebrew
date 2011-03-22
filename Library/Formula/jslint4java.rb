@@ -7,9 +7,9 @@ class Jslint4java < Formula
   version '1.4.6'
 
   def install
-  	prefix.install Dir['*']
-  	bin.mkpath
-	  (bin + 'jslint4java').write <<-EOF.undent
+    prefix.install Dir['*']
+    bin.mkpath
+    (bin + 'jslint4java').write <<-EOF.undent
       #!/bin/bash
       java -jar #{prefix}/jslint4java-1.4.6.jar "$@"
     EOF

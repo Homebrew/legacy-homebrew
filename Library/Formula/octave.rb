@@ -12,13 +12,15 @@ def run_tests?
   ARGV.include? '--test'
 end
 
-class Octave <Formula
+class Octave < Formula
   url 'ftp://ftp.gnu.org/gnu/octave/octave-3.4.0.tar.bz2'
   homepage 'http://www.gnu.org/software/octave/index.html'
   sha1 '936a8fc962abd96e7568fb5909ec2a4d7997a1a8'
 
   # critical dependencies
   depends_on 'gnu-sed' => :build
+  depends_on 'texinfo' => :build     # OS X's makeinfo won't work for this
+
   depends_on 'fftw'
   # there is an incompatibility between gfortran and Apple's BLAS as of 10.6.6:
   #   http://www.macresearch.org/lapackblas-fortran-106
@@ -26,7 +28,6 @@ class Octave <Formula
   depends_on 'dotwrp'
   # octave refuses to work with BSD readline, so it's either this or --disable-readline
   depends_on 'readline'
-  depends_on 'texinfo' => :build     # OS X's makeinfo won't work for this
 
   # additional features
   depends_on 'suite-sparse'
