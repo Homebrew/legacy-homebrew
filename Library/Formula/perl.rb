@@ -7,10 +7,7 @@ class Perl < Formula
 
   def install
     system("rm -f config.sh Policy.sh");
-    system "sh","Configure", "-de",
-                          "-Dprefix=#{prefix}",
-                          "-Dusethreads"
-
+    system "sh Configure -de -Dprefix=#{prefix} -Dusethreads -Duseshrplib -Duselargefiles"
     system "make install"
   end
 end
