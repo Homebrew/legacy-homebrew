@@ -1,9 +1,9 @@
 require 'formula'
 
 class AtlassianPluginSdk <Formula
-  url 'https://maven.atlassian.com/public/com/atlassian/amps/atlassian-plugin-sdk/3.2.4/atlassian-plugin-sdk-3.2.4.tar.gz'
+  url 'https://maven.atlassian.com/public/com/atlassian/amps/atlassian-plugin-sdk/3.3/atlassian-plugin-sdk-3.3.tar.gz'
   homepage 'http://confluence.atlassian.com/display/DEVNET/Setting+up+your+Plugin+Development+Environment'
-  md5 '67d98f8b490714adbaf30a59d348eb72'
+  md5 '70af380f3e05753cc95f31bbe13a145c'
 
 def install
     # Remove windows files
