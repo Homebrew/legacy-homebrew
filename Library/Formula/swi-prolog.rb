@@ -23,6 +23,8 @@ class SwiProlog < Formula
   end
 
   def install
+    fails_with_llvm "Exported procedure chr_translate:chr_translate_line_info/3 is not defined"
+
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
     ENV.append 'DISABLE_PKGS', "jpl" if ARGV.include? "--without-jpl"
 
