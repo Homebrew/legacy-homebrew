@@ -39,6 +39,8 @@ class Coreutils < Formula
     args << "--program-prefix=g" unless use_default_names?
 
     system "./configure", *args
+    system "make"
+    ENV.j1 # Install isn't parallel-safe
     system "make install"
 
     (prefix+'aliases').write(coreutils_aliases)
