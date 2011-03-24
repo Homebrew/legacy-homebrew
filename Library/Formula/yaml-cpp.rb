@@ -1,6 +1,6 @@
 require 'formula'
 
-class YamlCpp <Formula
+class YamlCpp < Formula
   url 'http://yaml-cpp.googlecode.com/files/yaml-cpp-0.2.5.tar.gz'
   homepage 'http://code.google.com/p/yaml-cpp/'
   md5 'b17dc36055cd2259c88b2602601415d9'

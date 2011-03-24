@@ -1,10 +1,10 @@
 require 'formula'
 
-class Node <Formula
-  url 'http://nodejs.org/dist/node-v0.2.6.tar.gz'
-  head 'git://github.com/ry/node.git'
+class Node < Formula
+  url 'http://nodejs.org/dist/node-v0.4.3.tar.gz'
+  head 'git://github.com/joyent/node.git'
   homepage 'http://nodejs.org/'
-  md5 'b1c50ceb43bee1b221be210b7bc7a216'
+  md5 'a2a6a6699e275a30f6047b1f33281a77'
 
   # Stripping breaks dynamic loading
   skip_clean :all

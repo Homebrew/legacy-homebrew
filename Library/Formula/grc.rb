@@ -1,6 +1,6 @@
 require 'formula'
 
-class Grc <Formula
+class Grc < Formula
   homepage 'http://korpus.juls.savba.sk/~garabik/software/grc.html'
   url 'http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.3.tar.gz'
   md5 'a4814dcee965c3ff67681f6b59e6378c'

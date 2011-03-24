@@ -1,9 +1,9 @@
 require 'formula'
 
-class Boost <Formula
+class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.45.0/boost_1_45_0.tar.bz2'
-  md5 'd405c606354789d0426bc07bea617e58'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.46.1/boost_1_46_1.tar.bz2'
+  md5 '7375679575f4c8db605d426fc721d506'
 
   def options
     [

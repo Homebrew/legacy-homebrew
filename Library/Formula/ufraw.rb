@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ufraw <Formula
+class Ufraw < Formula
   url 'http://downloads.sourceforge.net/project/ufraw/ufraw/ufraw-0.17/ufraw-0.17.tar.gz'
   homepage 'http://ufraw.sourceforge.net'
   md5 '5e2c2b4adaea1f6d03eac66e11747fc6'

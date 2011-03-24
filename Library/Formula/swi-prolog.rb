@@ -1,6 +1,6 @@
 require 'formula'
 
-class SwiProlog <Formula
+class SwiProlog < Formula
   url 'http://www.swi-prolog.org/download/stable/src/pl-5.10.2.tar.gz'
   head 'git://www.swi-prolog.org/home/pl/git/pl.git'
   homepage 'http://www.swi-prolog.org/'
@@ -23,6 +23,8 @@ class SwiProlog <Formula
   end
 
   def install
+    fails_with_llvm "Exported procedure chr_translate:chr_translate_line_info/3 is not defined"
+
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
     ENV.append 'DISABLE_PKGS', "jpl" if ARGV.include? "--without-jpl"
 
