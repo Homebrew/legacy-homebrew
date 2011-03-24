@@ -1,7 +1,7 @@
 require 'formula'
 
 class Dotless < Formula
-  homepage "http://www.dotlesscss.com/"
+  homepage "http://www.dotlesscss.org/"
   url "https://github.com/downloads/dotless/dotless/dotless-v1.1.0.7a.zip"
   md5 "1dcca3961124619b01a2d590e7e08998"
   version "1.1.0.7a"
