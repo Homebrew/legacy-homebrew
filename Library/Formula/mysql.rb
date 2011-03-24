@@ -1,20 +1,18 @@
 require 'formula'
 
 class Mysql < Formula
-  homepage 'http://dev.mysql.com/doc/refman/5.1/en/'
-  url 'http://mysql.mirrors.pair.com/Downloads/MySQL-5.1/mysql-5.1.56.tar.gz'
-  md5 '15161d67f4830aad3a8a89e083749d49'
+  homepage 'http://dev.mysql.com/doc/refman/5.5/en/'
+  url 'http://ftp.sunet.se/pub/unix/databases/relational/mysql/Downloads/MySQL-5.5/mysql-5.5.10.tar.gz'
+  md5 'ee604aff531ff85abeb10cf332c1355a'
 
+  depends_on 'cmake' => :build
   depends_on 'readline'
 
   def options
     [
       ['--with-tests', "Keep tests when installing."],
       ['--with-bench', "Keep benchmark app when installing."],
-      ['--with-embedded', "Build the embedded server."],
-      ['--client-only', "Only install client tools, not the server."],
-      ['--universal', "Make mysql a universal binary"],
-      ['--with-utf8-default', "Set the default character set to utf8"]
+      ['--universal', "Make mysql a universal binary"]
     ]
   end
 
@@ -25,43 +23,25 @@ class Mysql < Formula
   def install
     fails_with_llvm "https://github.com/mxcl/homebrew/issues/issue/144"
 
-    # See: http://dev.mysql.com/doc/refman/5.1/en/configure-options.html
-    # These flags may not apply to gcc 4+
-    ENV['CXXFLAGS'] = ENV['CXXFLAGS'].gsub "-fomit-frame-pointer", ""
-    ENV['CXXFLAGS'] += " -fno-omit-frame-pointer -felide-constructors"
+    args = [
+      ".",
+      "-DCMAKE_INSTALL_PREFIX='#{prefix}'",
+      "-DMYSQL_DATADIR='#{var}/mysql/data'",
+      "-DINSTALL_MANDIR='#{man}'",
+      "-DWITH_SSL=yes",
+      "-DDEFAULT_CHARSET='utf8'",
+      "-DDEFAULT_COLLATION='utf8_general_ci'",
+      "-DSYSCONFDIR='#{HOMEBREW_PREFIX}/etc'"]
+
+    args << "-DWITH_UNIT_TESTS=OFF" if not ARGV.include? '--with-tests'
+    args << "-DINSTALL_SQLBENCHDIR=" if not ARGV.include? '--with-bench'
 
     # Make universal for bindings to universal applications
-    ENV.universal_binary if ARGV.include? '--universal'
+    args << "-DCMAKE_OSX_ARCHITECTURES='ppc;i386'" if ARGV.include? '--universal'
 
-    configure_args = [
-      "--without-docs",
-      "--without-debug",
-      "--disable-dependency-tracking",
-      "--prefix=#{prefix}",
-      "--localstatedir=#{var}/mysql",
-      "--sysconfdir=#{etc}",
-      "--with-plugins=innobase,myisam",
-      "--with-extra-charsets=complex",
-      "--with-ssl",
-      "--without-readline", # Confusingly, means "use detected readline instead of included readline"
-      "--enable-assembler",
-      "--enable-thread-safe-client",
-      "--enable-local-infile",
-      "--enable-shared",
-      "--with-partition"]
-
-    configure_args << "--without-server" if ARGV.include? '--client-only'
-    configure_args << "--with-embedded-server" if ARGV.include? '--with-embedded'
-    configure_args << "--with-charset=utf8" if ARGV.include? '--with-utf8-default'
-
-    system "./configure", *configure_args
+    system "cmake", *args
+    system "make"
     system "make install"
-
-    ln_s "#{libexec}/mysqld", bin
-    ln_s "#{share}/mysql/mysql.server", bin
-
-    (prefix+'mysql-test').rmtree unless ARGV.include? '--with-tests' # save 66MB!
-    (prefix+'sql-bench').rmtree unless ARGV.include? '--with-bench'
 
     (prefix+'com.mysql.mysqld.plist').write startup_plist
   end
@@ -69,7 +49,11 @@ class Mysql < Formula
   def caveats; <<-EOS.undent
     Set up databases with:
         unset TMPDIR
-        mysql_install_db
+        cd #{prefix}
+        scripts/mysql_install_db --basedir=#{prefix} --user=mysql --tmpdir=/tmp
+
+    Running the mysql_install_db command with the user and tmpdir option will
+        ensure that there is no issue creating your system databases.
 
     If this is your first install, automatically load on login with:
         mkdir -p ~/Library/LaunchAgents
@@ -87,7 +71,7 @@ class Mysql < Formula
         plist with a version specific program argument.
 
     Or start manually with:
-        mysql.server start
+        mysqld_safe &
     EOS
   end
 
