@@ -17,11 +17,11 @@ class Gettext < Formula
 
     system "./configure", "--disable-dependency-tracking", "--disable-debug",
                           "--prefix=#{prefix}",
-                          "--without-emacs",
                           "--without-included-gettext",
                           "--without-included-glib",
                           "--without-included-libcroco",
-                          "--without-included-libxml"
+                          "--without-included-libxml",
+                          "--without-emacs"
     system "make"
     ENV.deparallelize # install doesn't support multiple make jobs
     system "make install"

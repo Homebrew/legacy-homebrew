@@ -1,3 +1,4 @@
+## Compatibility layer introduced in 0.8 (refactor)
 
 # maybe never used by anyone, but alas it must continue to exist
 def versions_of(keg_name)
@@ -12,6 +13,10 @@ end
 def dump_build_env env
   require 'cmd/--env'
   Homebrew.dump_build_env env
+end
+
+def default_cc
+  MacOS.default_cc
 end
 
 def gcc_42_build
@@ -44,6 +49,10 @@ end
 def search_brews text
   require 'cmd/search'
   Homebrew.search_brews text
+end
+
+def snow_leopard_64?
+  MacOS.prefer_64_bit?
 end
 
 class Formula

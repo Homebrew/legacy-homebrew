@@ -1,19 +1,19 @@
 require 'formula'
 
 class ErlangManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R14B01.tar.gz'
-  md5 '55376d3b1994d083cd21c9d849517c6c'
+  url 'http://erlang.org/download/otp_doc_man_R14B02.tar.gz'
+  md5 'fc1c925e1195b6f851b1984da9ca0f6f'
 end
 
 class ErlangHeadManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R14B01.tar.gz'
-  md5 '55376d3b1994d083cd21c9d849517c6c'
+  url 'http://erlang.org/download/otp_doc_man_R14B02.tar.gz'
+  md5 'fc1c925e1195b6f851b1984da9ca0f6f'
 end
 
 class Erlang < Formula
   # Download from GitHub. Much faster than official tarball.
-  url "git://github.com/erlang/otp.git", :tag => "OTP_R14B01"
-  version 'R14B01'
+  url "git://github.com/erlang/otp.git", :tag => "OTP_R14B02"
+  version 'R14B02'
   homepage 'http://www.erlang.org'
 
   head "git://github.com/erlang/otp.git", :branch => "dev"
@@ -53,7 +53,7 @@ class Erlang < Formula
       args << '--enable-hipe'
     end
 
-    args << "--enable-darwin-64bit" if snow_leopard_64?
+    args << "--enable-darwin-64bit" if MacOS.prefer_64_bit?
 
     system "./configure", *args
     system "touch lib/wx/SKIP" if MACOS_VERSION >= 10.6

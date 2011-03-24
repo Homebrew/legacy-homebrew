@@ -173,7 +173,7 @@ class Gdal < Formula
 
       # `python-config` may try to talk us into building bindings for more
       # architectures than we really should.
-      if snow_leopard_64?
+      if MacOS.prefer_64_bit?
         ENV.append_to_cflags '-arch x86_64'
       else
         ENV.append_to_cflags '-arch i386'

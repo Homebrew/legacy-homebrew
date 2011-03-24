@@ -12,7 +12,7 @@ class MzScheme < Formula
     args = ["--disable-debug", "--disable-dependency-tracking",
             "--disable-pthread", "--disable-mred", "--enable-xonx",
             "--prefix=#{prefix}"]
-    args << "--enable-mac64" if snow_leopard_64?
+    args << "--enable-mac64" if MacOS.prefer_64_bit?
 
     system "./configure", *args
     system "make"
