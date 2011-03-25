@@ -15,7 +15,7 @@ class SphinxPHP <Formula
   end
 
   def caveats; <<-EOS.undent
-    To finish installing memcache:
+    To finish installing sphinx extension:
       * Add the following line to php.ini:
         extension="#{prefix}/sphinx.so"
       * Restart your webserver

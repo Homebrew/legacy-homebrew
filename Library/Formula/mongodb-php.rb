@@ -13,7 +13,7 @@ class MongoPhp <Formula
   end
 
   def caveats; <<-EOS.undent
-    To finish installing memcache:
+    To finish installing mongodb extension:
       * Add the following line to php.ini:
         extension="#{prefix}/mongo.so"
       * Restart your webserver
