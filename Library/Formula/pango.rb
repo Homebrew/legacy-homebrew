@@ -7,6 +7,7 @@ class Pango < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
+  depends_on 'gettext'
 
   if MACOS_VERSION < 10.6
     depends_on 'fontconfig' # Leopard's fontconfig is too old.
