@@ -31,7 +31,8 @@ class Mysql < Formula
       "-DWITH_SSL=yes",
       "-DDEFAULT_CHARSET='utf8'",
       "-DDEFAULT_COLLATION='utf8_general_ci'",
-      "-DSYSCONFDIR='#{HOMEBREW_PREFIX}/etc'"]
+      "-DSYSCONFDIR='#{HOMEBREW_PREFIX}/etc'",
+      "-DWITH_READLINE=1"]
 
     args << "-DWITH_UNIT_TESTS=OFF" if not ARGV.include? '--with-tests'
     args << "-DINSTALL_SQLBENCHDIR=" if not ARGV.include? '--with-bench'
