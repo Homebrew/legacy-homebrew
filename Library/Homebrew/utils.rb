@@ -97,8 +97,12 @@ def curl *args
   safe_system '/usr/bin/curl', '-f#LA', HOMEBREW_USER_AGENT, *args unless args.empty?
 end
 
-def puts_columns items, cols = 4
+def puts_columns items, star_items=[]
   return if items.empty?
+
+  if star_items && star_items.any?
+    items = items.map{|item| star_items.include?(item) ? "#{item}*" : item}
+  end
 
   if $stdout.tty?
     # determine the best width to display for different console sizes

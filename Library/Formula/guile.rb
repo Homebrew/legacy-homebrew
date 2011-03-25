@@ -21,6 +21,8 @@ class Guile < Formula
   depends_on 'readline'
 
   def install
+    fails_with_llvm "Segfaults during compilation."
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-libreadline-prefix=#{Formula.factory('readline').prefix}"
