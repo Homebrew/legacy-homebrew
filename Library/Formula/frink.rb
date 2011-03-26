@@ -1,6 +1,6 @@
 require 'formula'
 
-class Frink <Formula
+class Frink < Formula
   head 'http://futureboy.us/frinkjar/frink.jar'
   homepage 'http://futureboy.us/frinkdocs/index.html'
   md5 'dd6b317544234beee0c0039480304759'

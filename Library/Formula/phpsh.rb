@@ -1,6 +1,6 @@
 require 'formula'
 
-class Phpsh <Formula
+class Phpsh < Formula
   head 'git://github.com/facebook/phpsh.git'
   homepage 'http://www.phpsh.org/'
 
