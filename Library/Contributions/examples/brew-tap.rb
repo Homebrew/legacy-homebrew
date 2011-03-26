@@ -31,10 +31,10 @@ end
 #   - Resolution of non-standard formulae names to brewfile paths inside
 #     alternative repos
 #   - Partial matching for repository names
+#   - Repository removal
 #
 # TODO:
 #
-#   - Repository removal
 #   - Repository update
 #   - Option for restricting formulae resolution to a specific
 #     repository/subfolder
@@ -289,10 +289,20 @@ class Taproom
     end
   end
 
-  def remove brewery
+  def remove name
     # This method will remove the specified brewery from the list of breweries
     # on tap.
-    raise 'Not implemented.'
+    brewery = get_brewery name
+
+    if not on_tap? brewery.id
+      onoe "#{brewery.id} has not been tapped. No need to remove it."
+      return
+    end
+
+    checkout_path = @path + brewery.id
+
+    ohai "Unlinking #{checkout_path}..."
+    FileUtils.rm_rf checkout_path
   end
 end
 
