@@ -6,6 +6,8 @@ class Zeromq < Formula
   homepage 'http://www.zeromq.org/'
   md5 'ae681af2df1b7191aeecfcb23bb73864'
 
+  fails_with_llvm "Compiling with LLVM gives a segfault while linking."
+
   def options
     [['--universal', 'Build as a Universal Intel binary.']]
   end
@@ -29,8 +31,6 @@ class Zeromq < Formula
   end
 
   def install
-    fails_with_llvm "Compiling with LLVM gives a segfault while linking."
-
     system "./autogen.sh" if ARGV.build_head?
 
     if ARGV.include? '--universal'

@@ -12,30 +12,23 @@ class Monotone < Formula
   depends_on 'lua'
   depends_on 'pcre'
 
+  fails_with_llvm "linker fails"
+
   def install
-    fails_with_llvm "linker fails"
-
-    def install_body
-      system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-      system "make install"
-    end
-
     # Monotone only needs headers from Boost (it's templates all the way down!), so let's avoid
     # building boost (which takes approximately forever) if it's not already installed. This is
     # suggested in the Monotone installation instructions.
 
     boost = Formula.factory('boost')
-    if boost.installed?
-      install_body
-    else
-      monotone_dir = Dir.pwd
+    unless boost.installed?
       # a formula's stage method is private, so we cannot call boost.stage
       boost.brew do
-        boost_dir = Dir.pwd
-        ENV.append "CXXFLAGS", "-I"+boost_dir
-        Dir.chdir monotone_dir
-        install_body
+        ENV.append "CXXFLAGS", "-I"+Dir.pwd
       end
     end
+
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
+    system "make install"
   end
 end
