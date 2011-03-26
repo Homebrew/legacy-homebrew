@@ -6,8 +6,6 @@ class ArgpStandalone < Formula
   md5 '720704bac078d067111b32444e24ba69'
 
   def install
-    fails_with_llvm
-
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make"
 
