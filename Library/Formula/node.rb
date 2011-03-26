@@ -6,6 +6,8 @@ class Node < Formula
   homepage 'http://nodejs.org/'
   md5 'a2a6a6699e275a30f6047b1f33281a77'
 
+  fails_with_llvm
+
   # Stripping breaks dynamic loading
   skip_clean :all
 
@@ -14,8 +16,6 @@ class Node < Formula
   end
 
   def install
-    fails_with_llvm
-
     inreplace 'wscript' do |s|
       s.gsub! '/usr/local', HOMEBREW_PREFIX
       s.gsub! '/opt/local/lib', '/usr/lib'

@@ -9,9 +9,10 @@ class John < Formula
     { :p0 => DATA }
   end
 
+  fails_with_llvm
+
   def install
     ENV.deparallelize
-    fails_with_llvm
     arch = Hardware.is_64_bit? ? '64' : 'sse2'
 
     Dir.chdir 'src' do
