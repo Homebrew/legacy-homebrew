@@ -30,12 +30,12 @@ end
 #   - Repository cloning
 #   - Resolution of non-standard formulae names to brewfile paths inside
 #     alternative repos
+#   - Partial matching for repository names
 #
 # TODO:
 #
 #   - Repository removal
 #   - Repository update
-#   - Partial matching for repository/subfolder names
 #   - Option for restricting formulae resolution to a specific
 #     repository/subfolder
 #   - Deal with multiple copies of the same formula
@@ -258,26 +258,34 @@ class Taproom
   end
 
   def get_brewery name
-    brewery = menu[:breweries].select {|b| b.id == name}
+    # Searches the Taproom menu for a brewery whose id matches `name`.  Partial
+    # matching is used, but since ids are unique we require that `name` be long
+    # enough to generate a single match.
+    brewery = menu[:breweries].select {|b| b.id =~ /^#{name}/i}
     if brewery.empty?
       raise "No repository named #{name} on the menu!"
+    elsif brewery.length > 1
+      onoe "More than one brewery starts with #{name}:"
+      puts_columns brewery
+      raise "Please specify enough of the brewery name for a unique match."
     else
-      brewery[0] # Because id should be a unique identifier
+      brewery[0]
     end
   end
 
-  def tap brewery_name
+  def tap name
     # This method will run a checkout on the specified brewery.
-    if on_tap? brewery_name
-      ohai "#{brewery_name} is allready on tap. Brew away!"
+    brewery = get_brewery name
+
+    if on_tap? brewery.id
+      ohai "#{brewery.id} is allready on tap. Brew away!"
       return
     end
 
-    brewery_path = @path + brewery_name
-    brewery = get_brewery brewery_name
+    checkout_path = @path + brewery.id
 
-    if not File.directory? brewery_path
-      safe_system("git clone #{brewery.url} #{brewery_path}")
+    if not File.directory? checkout_path
+      safe_system("git clone #{brewery.url} #{checkout_path}")
     end
   end
 
