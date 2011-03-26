@@ -8,7 +8,7 @@ class X264 < Formula
 
   head 'git://git.videolan.org/x264.git'
 
-  depends_on 'yasm'
+  depends_on 'yasm' => :build
 
   def install
     # Having this set can fail the endian test!
