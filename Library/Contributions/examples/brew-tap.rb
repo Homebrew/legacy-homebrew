@@ -32,13 +32,13 @@ end
 #     alternative repos
 #   - Partial matching for repository names
 #   - Repository removal
+#   - Option for restricting formulae resolution to a specific
+#     repository/subfolder
+#   - Deal with multiple copies of the same formula
 #
 # TODO:
 #
 #   - Repository update
-#   - Option for restricting formulae resolution to a specific
-#     repository/subfolder
-#   - Deal with multiple copies of the same formula
 #   - Dependency resolution---this one will be tricky
 #   - Usage message
 #   - Better Exception handling
@@ -197,20 +197,35 @@ class Taproom
     @founder = founder
   end
 
-  def formulae
-    # One of the nice things about only considering forks of homebrew-alt is
-    # that any Ruby file in any subdirectory can be considered a homebrew
-    # formula.
-    Dir["#{@path}/**/*.rb"]
-  end
-
   def get_formula name
     # Searches through the available formulae for a formula that matches the
     # given name.
-    matches = formulae.select {|f| f.end_with? "#{name}.rb"}
+    d_names, f_name = Pathname.new(name).split
+
+    search_dirs = []
+    d_names.each_filename do |fname|
+      unless fname == '.'
+        search_dirs << fname + '*'
+      end
+    end
+
+    matches = Dir[File.join(@path, search_dirs, '**', "#{f_name}.rb")]
 
     if matches.empty?
-      raise "No formula for #{name} available in the Taproom"
+      raise "No formula for #{f_name} available in the Taproom"
+    elsif matches.length > 1
+      onoe "Multiple matches found when searching for #{name}:"
+
+      # Clean up the paths so they look like potential arguments that could be
+      # used to ensure a unique match.
+      matches.map! do |p|
+        p.sub! /^#{@path}\//, ''
+        p.sub! /\.rb$/, ''
+      end
+
+      puts_columns matches
+
+      raise "Try using repo/[subdirectories]/formula to narrow the search range."
     else
       matches.first
     end
