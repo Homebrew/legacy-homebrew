@@ -276,7 +276,7 @@ class Taproom
     # Searches the Taproom menu for a brewery whose id matches `name`.  Partial
     # matching is used, but since ids are unique we require that `name` be long
     # enough to generate a single match.
-    brewery = menu[:breweries].select {|b| b.id =~ /^#{name}/i}
+    brewery = menu[:breweries].select {|b| b.id =~ /^#{name}/}
     if brewery.empty?
       raise "No repository named #{name} on the menu!"
     elsif brewery.length > 1
