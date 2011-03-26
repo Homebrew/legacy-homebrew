@@ -1,6 +1,6 @@
 require 'formula'
 
-class Kismet <Formula
+class Kismet < Formula
   url 'http://www.kismetwireless.net/code/kismet-2010-07-R1.tar.gz'
   version '2010-07-R1'
   homepage 'http://www.kismetwireless.net'

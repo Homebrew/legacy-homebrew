@@ -1,6 +1,6 @@
 require 'formula'
 
-class Playdar <Formula
+class Playdar < Formula
   homepage 'http://www.playdar.org'
   head 'git://github.com/RJ/playdar-core.git'
 

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ruby <Formula
+class Ruby < Formula
   url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p180.tar.bz2'
   homepage 'http://www.ruby-lang.org/en/'
   head 'http://svn.ruby-lang.org/repos/ruby/trunk/', :using => :svn
@@ -8,6 +8,11 @@ class Ruby <Formula
 
   depends_on 'readline'
   depends_on 'libyaml'
+
+  fails_with_llvm
+
+  # Stripping breaks dynamic linking
+  skip_clean :all
 
   def options
     [
@@ -17,12 +22,7 @@ class Ruby <Formula
     ]
   end
 
-  # Stripping breaks dynamic linking
-  skip_clean :all
-
   def install
-    fails_with_llvm
-
     ruby_lib = HOMEBREW_PREFIX+"lib/ruby"
 
     if File.exist? ruby_lib and File.symlink? ruby_lib

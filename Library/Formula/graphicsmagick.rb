@@ -20,7 +20,7 @@ def x11?
   File.file? '/usr/X11/include/ft2build.h'
 end
 
-class Graphicsmagick <Formula
+class Graphicsmagick < Formula
   url 'http://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.12/GraphicsMagick-1.3.12.tar.bz2'
   homepage 'http://www.graphicsmagick.org/'
   md5 '55182f371f82d5f9367bce04e59bbf25'
@@ -32,6 +32,8 @@ class Graphicsmagick <Formula
   depends_on 'jasper' => :optional
   depends_on 'ghostscript' => :recommended if ghostscript_srsly? and x11?
   depends_on 'libpng' unless x11?
+
+  fails_with_llvm
 
   def skip_clean? path
     path.extname == '.la'
@@ -46,7 +48,6 @@ class Graphicsmagick <Formula
   end
 
   def install
-    fails_with_llvm
     ENV.libpng
     ENV.O3
 

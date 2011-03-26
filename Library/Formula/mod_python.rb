@@ -1,6 +1,6 @@
 require 'formula'
 
-class ModPython <Formula
+class ModPython < Formula
   url 'http://archive.apache.org/dist/httpd/modpython/mod_python-3.3.1.tgz'
   homepage 'http://www.modpython.org/'
   md5 'a3b0150176b726bd2833dac3a7837dc5'
@@ -23,17 +23,17 @@ class ModPython <Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
 
     # Explicitly set the arch in CFLAGS so the PSPModule will build against system Python
     # We remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
     archs = archs_for_command("python")
-    archs.delete :ppc7400
-    archs.delete :ppc64
-    ENV.append_to_cflags archs.collect{ |a| "-arch #{a}" }.join(' ')
+    archs.remove_ppc!
+    ENV.append_to_cflags archs.as_arch_flags
 
+    # Don't install to the system Apache libexec folder
     inreplace 'Makefile' do |s|
-      # Don't install to the system Apache libexec folder
       s.change_make_var! "LIBEXECDIR", libexec
     end
 

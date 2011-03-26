@@ -1,6 +1,6 @@
 require 'formula'
 
-class Dwm <Formula
+class Dwm < Formula
   url 'http://dl.suckless.org/dwm/dwm-5.8.2.tar.gz'
   homepage 'http://dwm.suckless.org/'
   md5 'f0b422bfeaa812d66c6dd15c3cc92a6b'

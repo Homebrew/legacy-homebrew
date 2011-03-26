@@ -1,6 +1,6 @@
 require 'formula'
 
-class Aplus <Formula
+class Aplus < Formula
   url 'http://mirrors.kernel.org/debian/pool/main/a/aplus-fsf/aplus-fsf_4.22.1.orig.tar.gz'
   homepage 'http://www.aplusdev.org/'
   md5 'c45df4f3e816d7fe957deed9b81f66c3'

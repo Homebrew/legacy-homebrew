@@ -1,6 +1,6 @@
 require 'formula'
 
-class Glibmm <Formula
+class Glibmm < Formula
   url 'http://ftp.gnome.org/pub/GNOME/sources/glibmm/2.22/glibmm-2.22.2.tar.gz'
   homepage 'http://www.gtkmm.org/'
   md5 '90ff0a5bd5987431cf36f0aa0160a753'

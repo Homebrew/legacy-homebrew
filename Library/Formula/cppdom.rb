@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cppdom <Formula
+class Cppdom < Formula
   url 'http://downloads.sourceforge.net/project/xml-cppdom/CppDOM/1.0.1/cppdom-1.0.1.tar.gz'
   homepage 'http://sourceforge.net/projects/xml-cppdom/'
   md5 'ab30e45eb8129e14040020edc5b0b130'
@@ -15,7 +15,7 @@ class Cppdom <Formula
     args = ["prefix=#{prefix}", "build_test=no", "var_type=optimized",
       "BoostBaseDir=#{HOMEBREW_PREFIX}/"]
 
-    if snow_leopard_64?
+    if MacOS.prefer_64_bit?
       args << 'var_arch=x64'
     else
       args << 'var_arch=ia32'

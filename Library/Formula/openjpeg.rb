@@ -1,6 +1,6 @@
 require 'formula'
 
-class Openjpeg <Formula
+class Openjpeg < Formula
   head 'http://openjpeg.googlecode.com/svn/trunk/'
   homepage 'http://www.openjpeg.org/'
 

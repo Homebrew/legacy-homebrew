@@ -1,6 +1,6 @@
 require 'formula'
 
-class AndroidSdk <Formula
+class AndroidSdk < Formula
   url 'http://dl.google.com/android/android-sdk_r10-mac_x86.zip'
   homepage 'http://developer.android.com/index.html'
   md5 'e3aa5578a6553b69cc36659c9505be3f'

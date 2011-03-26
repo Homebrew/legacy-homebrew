@@ -1,13 +1,23 @@
 require 'formula'
 require 'utils'
 
+# Use "brew audit --strict" to enable even stricter checks.
+
+def strict?
+  ARGV.flag? "--strict"
+end
+
 def ff
   return Formula.all if ARGV.named.empty?
   return ARGV.formulae
 end
 
-def audit_formula_text text
+def audit_formula_text name, text
   problems = []
+
+  if text =~ /<Formula/
+    problems << " * We now space class inheritance: class Foo < Formula"
+  end if strict?
 
   # Commented-out cmake support from default template
   if (text =~ /# depends_on 'cmake'/) or (text =~ /# system "cmake/)
@@ -92,11 +102,19 @@ def audit_formula_text text
     problems << " * Use separate make calls."
   end
 
-	if ARGV.include? "--warn"
-	  if text =~ /^\t/
-	    problems << " * Use spaces instead of tabs for indentation"
-	  end
-	end
+  if text =~ /^\t/
+    problems << " * Use spaces instead of tabs for indentation"
+  end if strict?
+
+  # Formula depends_on gfortran
+  if text =~ /\s*depends_on\s*(\'|\")gfortran(\'|\")\s*$/
+    problems << " * Use ENV.fortran during install instead of depends_on 'gfortran'"
+  end unless name == "gfortran" # Gfortran itself has this text in the caveats
+
+  # xcodebuild should specify SYMROOT
+  if text =~ /xcodebuild/ and not text =~ /SYMROOT=/
+    problems << " * xcodebuild should be passed an explicit \"SYMROOT\""
+  end if strict?
 
   return problems
 end
@@ -139,9 +157,9 @@ end
 def audit_formula_urls f
   problems = []
 
-  # To do:
-  # Grab URLs out of patches as well
-  # urls = ((f.patches rescue []) || [])
+  unless f.homepage =~ %r[^https?://]
+    problems << " * The homepage should start with http or https."
+  end
 
   urls = [(f.url rescue nil), (f.head rescue nil)].reject {|p| p.nil?}
 
@@ -178,7 +196,7 @@ def audit_formula_urls f
     unless p =~ %r[^http://mirrors\.kernel\.org/debian/pool/]
       problems << " * \"mirrors.kernel.org\" is the preferred mirror for debian software."
     end
-  end
+  end if strict?
 
   return problems
 end
@@ -195,6 +213,12 @@ def audit_formula_instance f
   # Check for things we don't like to depend on.
   # We allow non-Homebrew installs whenenever possible.
   f.deps.each do |d|
+    begin
+      dep_f = Formula.factory d
+    rescue
+      problems << " * Can't find dependency \"#{d}\"."
+    end
+
     case d
     when "git"
       problems << " * Don't use Git as a dependency; we allow non-Homebrew git installs."
@@ -209,35 +233,39 @@ def audit_formula_instance f
   return problems
 end
 
-def audit_some_formulae
-  ff.each do |f|
-    problems = []
+module Homebrew extend self
+  def audit
+    ff.each do |f|
+      problems = []
+      problems += audit_formula_instance f
+      problems += audit_formula_urls f
 
-    problems += audit_formula_instance f
-    problems += audit_formula_urls f
+      perms = File.stat(f.path).mode
+      if perms.to_s(8) != "100644"
+        problems << " * permissions wrong; chmod 644 #{f.path}"
+      end
 
-    text = ""
-    File.open(f.path, "r") { |afile| text = afile.read }
+      text = ""
+      File.open(f.path, "r") { |afile| text = afile.read }
 
-    # DATA with no __END__
-    if (text =~ /\bDATA\b/) and not (text =~ /^\s*__END__\s*$/)
-      problems << " * 'DATA' was found, but no '__END__'"
-    end
+      # DATA with no __END__
+      if (text =~ /\bDATA\b/) and not (text =~ /^\s*__END__\s*$/)
+        problems << " * 'DATA' was found, but no '__END__'"
+      end
 
-    problems += [' * invalid or missing version'] if f.version.to_s.empty?
+      problems += [' * invalid or missing version'] if f.version.to_s.empty?
 
-    # Don't try remaining audits on text in __END__
-    text_without_patch = (text.split("__END__")[0]).strip()
+      # Don't try remaining audits on text in __END__
+      text_without_patch = (text.split("__END__")[0]).strip()
 
-    problems += audit_formula_text(text_without_patch)
-    problems += audit_formula_options(f, text_without_patch)
+      problems += audit_formula_text(f.name, text_without_patch)
+      problems += audit_formula_options(f, text_without_patch)
 
-    unless problems.empty?
-      puts "#{f.name}:"
-      puts problems * "\n"
-      puts
+      unless problems.empty?
+        puts "#{f.name}:"
+        puts problems * "\n"
+        puts
+      end
     end
   end
 end
-
-audit_some_formulae
