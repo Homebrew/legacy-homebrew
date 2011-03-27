@@ -22,7 +22,7 @@ done using the HTTParty gem, but that gem could not be imported.
   exit 1
 end
 
-# Link into the Homebrew updater
+# Load the official Homebrew updater
 require 'cmd/update'
 
 # Status:
@@ -47,14 +47,16 @@ require 'cmd/update'
 #   - Better Exception handling
 
 
-TAPROOM = HOMEBREW_PREFIX + 'Library' + 'Taproom'
-FOUNDING_BREWERY = {:owner => 'adamv', :name => 'homebrew-alt'}
-
-
 module Homebrew extend self
-  def tap_dispatch taproom
-    # Main entry point. Responsible for dispatching calls to brew-tap
-    # subcommands. Modeled after the dispatch method in the main brew script.
+  def tap
+    # Some hardcoded parameters---hopefully these can be generalized in the
+    # future.
+    taproom_path = HOMEBREW_PREFIX + 'Library' + 'Taproom'
+    founding_brewery = {:owner => 'adamv', :name => 'homebrew-alt'}
+    taproom = Taproom.new(taproom_path, Brewery.new(founding_brewery))
+
+    # Entry point for Homebrew. Responsible for parsing the command line and
+    # executing brew-tap subcommands.
     cmd = ARGV.shift
     if cmd == 'list'
       # Lists tapped repositories and available repositories
@@ -97,7 +99,7 @@ module Homebrew extend self
       formulae = ARGV.named
       options = ARGV.options_only
 
-      # Resolve formula names to paths in subdirectories of the TAPROOM.
+      # Resolve formula names to paths in subdirectories of the taproom_path.
       formulae.map! {|f| taproom.get_formula f}
 
       # Dispatch back to brew
@@ -152,7 +154,6 @@ class Brewery
   # These methods all hit the GitHub API. Therefore, they should only be
   # invoked through the memoized accessors defined above.
   def get_network
-    ohai "Scanning #{@owner}'s #{@name} network"
     network = self.class.get("/#{@owner}/#{@name}/network").parsed_response['network']
     network.map do |repo|
       # We don't need all the information returned in the network array.
@@ -162,7 +163,6 @@ class Brewery
   end
 
   def get_branches
-    ohai "Fetching #{@owner}'s #{@name} branch list."
     self.class.get("/#{@owner}/#{@name}/branches").parsed_response['branches']
   end
 
@@ -172,7 +172,6 @@ class Brewery
     # the lines of "Ooops, that was supposed to be in the last update". So
     # it will happen eventually. The workaround is to use git ls-remote to find
     # the remote HEAD and compare its SHA against the branch list.
-    ohai "Fetching #{@owner}'s #{@name}'s default branch."
     git_info = `git ls-remote #{@url}`.to_a
     hub_head = Hash[git_info.map{|line| line.split.reverse}].fetch 'HEAD'
     branches.invert.fetch hub_head # Unfortunately, this  can fail to specify a
@@ -262,40 +261,6 @@ class Taproom
     @founder = founder
   end
 
-  def get_formula name
-    # Searches through the available formulae for a formula that matches the
-    # given name.
-    d_names, f_name = Pathname.new(name).split
-
-    search_dirs = []
-    d_names.each_filename do |fname|
-      unless fname == '.'
-        search_dirs << fname + '*'
-      end
-    end
-
-    matches = Dir[File.join(@path, search_dirs, '**', "#{f_name}.rb")]
-
-    if matches.empty?
-      raise "No formula for #{f_name} available in the Taproom"
-    elsif matches.length > 1
-      onoe "Multiple matches found when searching for #{name}:"
-
-      # Clean up the paths so they look like potential arguments that could be
-      # used to ensure a unique match.
-      matches.map! do |p|
-        p.sub! /^#{@path}\//, ''
-        p.sub! /\.rb$/, ''
-      end
-
-      puts_columns matches
-
-      raise "Try using repo/[subdirectories]/formula to narrow the search range."
-    else
-      matches.first
-    end
-  end
-
   def menu
     @menu ||= get_menu
   end
@@ -333,18 +298,8 @@ class Taproom
     end
   end
 
-  def list_available
-    # Return list of all brewery names, tapped or untapped.
-    menu[:breweries].map {|b| b.id}
-  end
-
-  def on_menu? name
-    # Does the menu contain a brewery?
-    list_available.include? name
-  end
-
   def on_tap? name
-    # Has a given brewery been tapped?
+    # Has a given brewery been tapped (cloned)?
     File.directory? @path + name
   end
 
@@ -374,6 +329,49 @@ class Taproom
     end
   end
 
+  def get_formula name
+    # Searches through the available formulae for a formula that matches the
+    # given name. Formula names can be plain:
+    #
+    #     gcc
+    #
+    # Or a path-like object of the form repo/[optional subdirectories]/formula:
+    #
+    #     adamv/duplicates/gcc
+    #
+    # A file glob, '*' will be appended to the end of each path component
+    # (other than the formula) to allow for partial matching.
+    d_names, f_name = Pathname.new(name).split
+
+    search_dirs = []
+    d_names.each_filename do |fname|
+      unless fname == '.'
+        search_dirs << fname + '*'
+      end
+    end
+
+    matches = Dir[File.join(@path, search_dirs, '**', "#{f_name}.rb")]
+
+    if matches.empty?
+      raise "No formula for #{f_name} available in the Taproom."
+    elsif matches.length > 1
+      onoe "Multiple matches found when searching for #{name}:"
+
+      # Clean up the paths so they look like potential arguments that could be
+      # passed to ensure a unique match.
+      matches.map! do |p|
+        p.sub! /^#{@path}\//, ''
+        p.sub! /\.rb$/, ''
+      end
+
+      puts_columns matches
+
+      raise "Try using repo/[subdirectories]/formula to narrow the search range."
+    else
+      matches.first
+    end
+  end
+
   def tap name
     # This method will run a checkout on the specified brewery.
     brewery = get_brewery name
@@ -386,13 +384,12 @@ class Taproom
     checkout_path = @path + brewery.id
 
     if not File.directory? checkout_path
-      safe_system("git clone #{brewery.url} #{checkout_path}")
+      safe_system "git clone #{brewery.url} #{checkout_path}"
     end
   end
 
   def remove name
-    # This method will remove the specified brewery from the list of breweries
-    # on tap.
+    # This method will remove the specified brewery from the Taproom directory.
     brewery = get_brewery name
 
     if not on_tap? brewery.id
@@ -408,6 +405,7 @@ class Taproom
 end
 
 
-# The actual code that gets run when `brew` loads this external command
-Homebrew.tap_dispatch Taproom.new(TAPROOM, Brewery.new(FOUNDING_BREWERY))
+# Here is the actual code that gets run when `brew` loads this external
+# command.
+Homebrew.tap
 
