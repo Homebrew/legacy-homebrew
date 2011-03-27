@@ -14,20 +14,18 @@ class Libvirt < Formula
   depends_on "yajl"
 
   if MACOS_VERSION < 10.6
-    # Definitely needed on Leopard, but definitely not Snow Leopard.
-    # Likely also needed on earlier OSX releases, though that hasn't
-    # been tested yet.
+    # Definitely needed on Leopard, but not on Snow Leopard.
     depends_on "readline"
     depends_on "libxml2"
   end
+
+  fails_with_llvm "Undefined symbols when linking", :build => "2326"
 
   def options
     [['--without-libvirtd', 'Build only the virsh client and development libraries.']]
   end
 
   def install
-    fails_with_llvm "Undefined symbols when linking", :build => "2326"
-
     args = ["--prefix=#{prefix}",
             "--localstatedir=#{var}",
             "--mandir=#{man}",

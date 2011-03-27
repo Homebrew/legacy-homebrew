@@ -17,7 +17,7 @@ class Octave < Formula
   homepage 'http://www.gnu.org/software/octave/index.html'
   sha1 '936a8fc962abd96e7568fb5909ec2a4d7997a1a8'
 
-  # critical dependencies
+  depends_on 'pkg-config' => :build
   depends_on 'gnu-sed' => :build
   depends_on 'texinfo' => :build     # OS X's makeinfo won't work for this
 
@@ -32,6 +32,7 @@ class Octave < Formula
   # additional features
   depends_on 'suite-sparse'
   depends_on 'glpk'
+  # test for presence of GraphicsMagick++ relies on pkg-config
   depends_on 'graphicsmagick' unless no_magick?
   depends_on 'hdf5'
   depends_on 'pcre'
