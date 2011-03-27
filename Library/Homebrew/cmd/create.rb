@@ -24,6 +24,7 @@ module Homebrew extend self
           path = Pathname.new url
           print "Formula name [#{path.stem}]: "
           fc.name = __gets || path.stem
+          fc.path = Formula.path fc.name
         end
 
         unless ARGV.force?
@@ -58,7 +59,7 @@ class FormulaCreator
   attr :url
   attr :md5
   attr :name, true
-  attr :path
+  attr :path, true
   attr :mode, true
 
   def url= url
