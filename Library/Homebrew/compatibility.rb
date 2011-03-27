@@ -70,4 +70,11 @@ class Formula
       name
     end
   end
+
+  # This used to be called in "def install", but should now be used
+  # up in the DSL section.
+  def fails_with_llvm msg=nil, data=nil
+    handle_llvm_failure FailsWithLLVM.new(msg, data)
+  end
+
 end

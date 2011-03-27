@@ -1,10 +1,10 @@
 require 'formula'
 
 class Polipo < Formula
-  url 'http://freehaven.net/~chrisd/polipo/polipo-1.0.4.tar.gz'
+  url 'http://freehaven.net/~chrisd/polipo/polipo-1.0.4.1.tar.gz'
   homepage 'http://www.pps.jussieu.fr/~jch/software/polipo/'
   head 'git://git.wifi.pps.jussieu.fr/polipo'
-  md5 'defdce7f8002ca68705b6c2c36c4d096'
+  md5 'bfc5c85289519658280e093a270d6703'
 
   def install
     cache_root = (var + "cache/polipo").mkpath
