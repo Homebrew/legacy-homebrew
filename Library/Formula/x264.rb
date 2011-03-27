@@ -1,10 +1,10 @@
 require 'formula'
 
-class X264 <Formula
-  url "http://download.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20110309-2245-stable.tar.bz2"
+class X264 < Formula
+  url 'http://download.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20110326-2245-stable.tar.bz2'
   homepage 'http://www.videolan.org/developers/x264.html'
-  md5 '55ac2fc833e7d14f9e8f239ddb615f75'
-  version 'r1913M'
+  md5 '114327ff055670084bdf301a1a7da86a'
+  version 'r1924M'
 
   head 'git://git.videolan.org/x264.git'
 
