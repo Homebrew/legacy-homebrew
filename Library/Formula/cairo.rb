@@ -6,11 +6,10 @@ class Cairo < Formula
   md5 'b60a82f405f9400bbfdcf850b1728d25'
 
   depends_on 'pkg-config' => :build
-  depends_on 'libpng'
   depends_on 'pixman'
 
-  # Comes with Snow Leopard, but not Leopard
-  keg_only :provided_by_osx
+  keg_only :provided_by_osx,
+            "The Cairo provided by Leopard is too old for newer software to link against."
 
   def install
     system "./configure", "--disable-dependency-tracking",

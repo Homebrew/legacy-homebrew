@@ -1,7 +1,7 @@
 require 'download_strategy'
 require 'fileutils'
 
-
+# Defines a URL and download method for a stable or HEAD build
 class SoftwareSpecification
   attr_reader :url, :specs, :using
 
@@ -42,6 +42,50 @@ class SoftwareSpecification
 
   def detect_version
     Pathname.new(@url).version
+  end
+end
+
+
+# Used to annotate formulae that duplicate OS X provided software
+# or cause conflicts when linked in.
+class KegOnlyReason
+  attr_reader :reason, :explanation
+
+  def initialize reason, explanation=nil
+    @reason = reason
+    @explanation = explanation
+  end
+
+  def to_s
+    if @reason == :provided_by_osx
+      <<-EOS.chomp
+Mac OS X already provides this program and installing another version in
+parallel can cause all kinds of trouble.
+
+#{@explanation}
+EOS
+    else
+      @reason
+    end
+  end
+end
+
+
+# Used to annotate formulae that won't build correctly with LLVM.
+class FailsWithLLVM
+  attr_reader :msg, :data, :build
+
+  def initialize msg=nil, data=nil
+    @msg = msg || "(No specific reason was given)"
+    @data = data
+    @build = data.delete :build rescue nil
+  end
+
+  def reason
+    s = @msg
+    s += "Tested with LLVM build #{@build}" unless @build == nil
+    s += "\n"
+    return s
   end
 end
 
@@ -173,6 +217,10 @@ class Formula
     self.class.keg_only_reason || false
   end
 
+  def fails_with_llvm?
+    self.class.fails_with_llvm_reason || false
+  end
+
   # sometimes the clean process breaks things
   # skip cleaning paths in a formula with a class method like this:
   #   skip_clean [bin+"foo", lib+"bar"]
@@ -187,6 +235,8 @@ class Formula
   def brew
     validate_variable :name
     validate_variable :version
+
+    handle_llvm_failure(fails_with_llvm?) if fails_with_llvm?
 
     stage do
       begin
@@ -239,25 +289,24 @@ class Formula
     "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None -Wno-dev"
   end
 
-  def fails_with_llvm msg="", data=nil
-    return unless (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
-
-    build = data.delete :build rescue nil
-    msg = "(No specific reason was given)" if msg.empty?
+  def handle_llvm_failure llvm
+    unless (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
+      ENV.gcc_4_2 if default_cc =~ /llvm/
+      return
+    end
 
     opoo "LLVM was requested, but this formula is reported as not working with LLVM:"
-    puts msg
-    puts "Tested with LLVM build #{build}" unless build == nil
-    puts
+    puts llvm.reason
 
     if ARGV.force?
-      puts "Continuing anyway. If this works, let us know so we can update the\n"+
-           "formula to remove the warning."
+      puts "Continuing anyway.\n" +
+           "If this works, let us know so we can update the formula to remove the warning."
     else
       puts "Continuing with GCC 4.2 instead.\n"+
            "(Use `brew install --force #{name}` to force use of LLVM.)"
       ENV.gcc_4_2
     end
+    puts
   end
 
   def self.class_s name
@@ -350,7 +399,7 @@ class Formula
 
     begin
       klass_name = self.class_s(name)
-      klass = eval(klass_name)
+      klass = Object.const_get klass_name
     rescue NameError
       # TODO really this text should be encoded into the exception
       # and only shown if the UI deems it correct to show it
@@ -576,7 +625,7 @@ EOF
     end
 
     attr_rw :version, :homepage, :specs, :deps, :external_deps
-    attr_rw :keg_only_reason, :skip_clean_all
+    attr_rw :keg_only_reason, :fails_with_llvm_reason, :skip_clean_all
     attr_rw(*CHECKSUM_TYPES)
 
     def head val=nil, specs=nil
@@ -648,8 +697,12 @@ EOF
       puts "detected as an alias for the target formula."
     end
 
-    def keg_only reason
-      @keg_only_reason = reason
+    def keg_only reason, explanation=nil
+      @keg_only_reason = KegOnlyReason.new(reason, explanation.to_s.chomp)
+    end
+
+    def fails_with_llvm msg=nil, data=nil
+      @fails_with_llvm_reason = FailsWithLLVM.new(msg, data)
     end
   end
 end
@@ -664,7 +717,7 @@ end
 # see flac.rb for example usage
 class GithubGistFormula < ScriptFileFormula
   def initialize name='__UNKNOWN__', path=nil
-    super name
+    super name, path
     @version=File.basename(File.dirname(url))[0,6]
   end
 end

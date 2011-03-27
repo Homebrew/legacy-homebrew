@@ -1,6 +1,12 @@
 require 'formula'
 require 'utils'
 
+# Use "brew audit --strict" to enable even stricter checks.
+
+def strict?
+  ARGV.flag? "--strict"
+end
+
 def ff
   return Formula.all if ARGV.named.empty?
   return ARGV.formulae
@@ -8,6 +14,10 @@ end
 
 def audit_formula_text name, text
   problems = []
+
+  if text =~ /<Formula/
+    problems << " * We now space class inheritance: class Foo < Formula"
+  end if strict?
 
   # Commented-out cmake support from default template
   if (text =~ /# depends_on 'cmake'/) or (text =~ /# system "cmake/)
@@ -92,16 +102,19 @@ def audit_formula_text name, text
     problems << " * Use separate make calls."
   end
 
-	if ARGV.include? "--warn"
-	  if text =~ /^\t/
-	    problems << " * Use spaces instead of tabs for indentation"
-	  end
-	end
+  if text =~ /^\t/
+    problems << " * Use spaces instead of tabs for indentation"
+  end if strict?
 
   # Formula depends_on gfortran
   if text =~ /\s*depends_on\s*(\'|\")gfortran(\'|\")\s*$/
     problems << " * Use ENV.fortran during install instead of depends_on 'gfortran'"
   end unless name == "gfortran" # Gfortran itself has this text in the caveats
+
+  # xcodebuild should specify SYMROOT
+  if text =~ /xcodebuild/ and not text =~ /SYMROOT=/
+    problems << " * xcodebuild should be passed an explicit \"SYMROOT\""
+  end if strict?
 
   return problems
 end
@@ -144,6 +157,10 @@ end
 def audit_formula_urls f
   problems = []
 
+  unless f.homepage =~ %r[^https?://]
+    problems << " * The homepage should start with http or https."
+  end
+
   urls = [(f.url rescue nil), (f.head rescue nil)].reject {|p| p.nil?}
 
   # Check SourceForge urls
@@ -179,7 +196,7 @@ def audit_formula_urls f
     unless p =~ %r[^http://mirrors\.kernel\.org/debian/pool/]
       problems << " * \"mirrors.kernel.org\" is the preferred mirror for debian software."
     end
-  end
+  end if strict?
 
   return problems
 end

@@ -5,9 +5,9 @@ class Pbzip2 < Formula
   homepage 'http://compression.ca/pbzip2/'
   md5 'b354422759da7113da366aad1876ed5d'
 
-  def install
-    fails_with_llvm
+  fails_with_llvm
 
+  def install
     inreplace "Makefile" do |s|
       s.change_make_var! 'PREFIX', prefix
       s.gsub! "/man/", "/share/man/"

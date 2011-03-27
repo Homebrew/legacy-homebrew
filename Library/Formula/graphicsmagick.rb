@@ -33,6 +33,8 @@ class Graphicsmagick < Formula
   depends_on 'ghostscript' => :recommended if ghostscript_srsly? and x11?
   depends_on 'libpng' unless x11?
 
+  fails_with_llvm
+
   def skip_clean? path
     path.extname == '.la'
   end
@@ -46,7 +48,6 @@ class Graphicsmagick < Formula
   end
 
   def install
-    fails_with_llvm
     ENV.libpng
     ENV.O3
 

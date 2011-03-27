@@ -67,51 +67,9 @@ module HomebrewArgvExtension
     return false
   end
 
-  def usage; <<-EOS.undent
-    Usage: brew [-v|--version] [--prefix [formula]] [--cache [formula]]
-                [--cellar [formula]] [--config] [--env] [--repository]
-                [-h|--help] COMMAND [formula] ...
-
-    Principal Commands:
-      install formula ... [--ignore-dependencies] [--HEAD]
-      list [--unbrewed|--versions] [formula] ...
-      search [/regex/] [substring]
-      uninstall formula ...
-      update
-
-    Other Commands:
-      info formula [--github]
-      options formula
-      deps formula
-      uses formula [--installed]
-      home formula ...
-      cleanup [formula]
-      link formula ...
-      unlink formula ...
-      outdated
-      missing
-      prune
-      doctor
-
-    Informational:
-      --version
-      --config
-      --prefix [formula]
-      --cache [formula]
-
-    Commands useful when contributing:
-      create URL
-      edit [formula]
-      audit [formula]
-      log formula
-      install formula [-vd|-i]
-
-    For more information:
-      man brew
-
-    To visit the Homebrew homepage type:
-      brew home
-    EOS
+  def usage
+    require 'cmd/help'
+    Homebrew.help_s
   end
 
   private
