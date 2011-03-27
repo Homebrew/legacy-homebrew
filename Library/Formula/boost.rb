@@ -12,10 +12,9 @@ class Boost < Formula
     ]
   end
 
-  def install
-    fails_with_llvm "LLVM-GCC causes errors with dropped arguments to "+
-                    "functions when linking with boost"
+  fails_with_llvm "LLVM-GCC causes errors with dropped arguments to functions when linking with boost"
 
+  def install
     # Adjust the name the libs are installed under to include the path to the
     # Homebrew lib directory so executables will work when installed to a
     # non-/usr/local location.

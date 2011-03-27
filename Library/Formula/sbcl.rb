@@ -12,6 +12,8 @@ class Sbcl < Formula
   md5 '83f094aa36edce2d69214330890f05e5'
   head 'git://sbcl.boinkor.net/sbcl.git'
 
+  fails_with_llvm "Compilation fails with LLVM."
+
   skip_clean 'bin'
   skip_clean 'lib'
 
@@ -39,7 +41,6 @@ class Sbcl < Formula
   end
 
   def install
-    fails_with_llvm "Compilation fails with LLVM."
     write_features
 
     build_directory = Dir.pwd

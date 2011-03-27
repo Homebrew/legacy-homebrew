@@ -5,9 +5,19 @@ class ErlangManuals < Formula
   md5 'fc1c925e1195b6f851b1984da9ca0f6f'
 end
 
+class ErlangHtmls < Formula
+  url 'http://erlang.org/download/otp_doc_html_R14B02.tar.gz'
+  md5 'e1b609c699a2d8fdbbe242a2e3b7efcd'
+end
+
 class ErlangHeadManuals < Formula
   url 'http://erlang.org/download/otp_doc_man_R14B02.tar.gz'
   md5 'fc1c925e1195b6f851b1984da9ca0f6f'
+end
+
+class ErlangHeadHtmls < Formula
+  url 'http://erlang.org/download/otp_doc_html_R14B02.tar.gz'
+  md5 'e1b609c699a2d8fdbbe242a2e3b7efcd'
 end
 
 class Erlang < Formula
@@ -32,9 +42,10 @@ class Erlang < Formula
     ]
   end
 
+  fails_with_llvm "See https://github.com/mxcl/homebrew/issues/issue/120", :build => 2326
+
   def install
     ENV.deparallelize
-    fails_with_llvm "See https://github.com/mxcl/homebrew/issues/issue/120", :build => 2326
 
     # If building from GitHub, this step is required (but not for tarball downloads.)
     system "./otp_build autoconf" if File.exist? "otp_build"
@@ -62,6 +73,9 @@ class Erlang < Formula
 
     manuals = ARGV.build_head? ? ErlangHeadManuals : ErlangManuals
     manuals.new.brew { man.install Dir['man/*'] }
+
+    htmls = ARGV.build_head? ? ErlangHeadHtmls : ErlangHtmls
+    htmls.new.brew { doc.install Dir['*'] }
   end
 
   def test

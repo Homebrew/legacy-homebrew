@@ -5,12 +5,12 @@ class Lua < Formula
   homepage 'http://www.lua.org/'
   md5 'd0870f2de55d59c1c8419f36e8fac150'
 
+  fails_with_llvm "Lua itself compiles with llvm, but may fail when other software tries to link."
+
   # Skip cleaning both empty folders and bin/libs so external symbols still work.
   skip_clean :all
 
   def install
-    fails_with_llvm "Lua itself compiles with llvm, but may fail when other software trys to link."
-
     # Apply patch-level 2
     curl "http://www.lua.org/ftp/patch-lua-5.1.4-3", "-O"
     safe_system '/usr/bin/patch', '-d', 'src', '-i', '../patch-lua-5.1.4-3'

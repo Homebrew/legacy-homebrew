@@ -65,11 +65,6 @@ def install f
     end
   end
 
-  if ARGV.verbose?
-    ohai "Build Environment"
-    dump_build_env ENV
-  end
-
   build_time = nil
   begin
     f.brew do

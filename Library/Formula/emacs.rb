@@ -56,9 +56,9 @@ class Emacs < Formula
     return s
   end
 
-  def install
-    fails_with_llvm "Duplicate symbol errors while linking."
+  fails_with_llvm "Duplicate symbol errors while linking."
 
+  def install
     args = ["--prefix=#{prefix}",
             "--without-dbus",
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",

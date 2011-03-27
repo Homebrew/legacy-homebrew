@@ -8,9 +8,10 @@ class Gd < Formula
 
   depends_on 'jpeg' => :recommended
 
+  fails_with_llvm "Undefined symbols when linking", :build => "2326"
+
   def install
-    fails_with_llvm "Undefined symbols when linking", :build => "2326"
-    ENV.libpng
+    ENV.x11
     system "./configure", "--prefix=#{prefix}", "--with-freetype=/usr/X11"
     system "make install"
     (lib+'pkgconfig/gdlib.pc').write pkg_file
