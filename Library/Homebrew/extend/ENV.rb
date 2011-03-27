@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 module HomebrewEnvExtension
   # -w: keep signal to noise high
   SAFE_CFLAGS_FLAGS = "-w -pipe"
@@ -30,7 +29,7 @@ module HomebrewEnvExtension
       self['CXX'] = "#{xcode_path}/usr/bin/g++"
       cflags = ['-O3']
     else
-      # use system default CC (may be LLVM or GCC)
+      # If these aren't set, many formulae fail to build
       self['CC'] = '/usr/bin/cc'
       self['CXX'] = '/usr/bin/c++'
       cflags = ['-O3']
