@@ -13,14 +13,15 @@ class Emacs < Formula
 
   def options
     [
-      ["--cocoa", "Build a Cocoa version of emacs"],
-      ["--with-x", "Include X11 support"],
-      ["--head-emacs-23", "Use repo.or.cz git mirror for HEAD builds"],
+      ["--cocoa", "Build a Cocoa version of emacs [excludes --with-x]"],
+      ["--with-x", "Include X11 support [excludes --cocoa]"],
+      ["--head-emacs-23", "Use official git mirror's emacs-23 branch for HEAD builds"],
     ]
   end
 
   def patches
-    if ARGV.include? "--cocoa" and not (not ARGV.include? "--head-emacs-23" and ARGV.build_head?)
+    if ARGV.include? "--cocoa" and
+        not (ARGV.build_head? and not ARGV.include? "--head-emacs-23")
       "https://github.com/downloads/typester/emacs/feature-fullscreen.patch"
     end
   end
