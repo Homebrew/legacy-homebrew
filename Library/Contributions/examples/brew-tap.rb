@@ -57,7 +57,26 @@ module Homebrew extend self
     # subcommands. Modeled after the dispatch method in the main brew script.
     cmd = ARGV.shift
     if cmd == 'list'
-      Homebrew.tap_list taproom
+      # Lists tapped repositories and available repositories
+      ohai "Repositories on tap:\n"
+      taproom.tapped.each do |brewery|
+        puts <<-EOS.undent
+        #{brewery.id}
+          Brewmaster: #{brewery.owner}
+
+        EOS
+      end
+
+      ohai "Untapped repositories (clone with `brew tap add repo_name`):\n"
+      taproom.untapped.each do |brewery|
+        puts <<-EOS.undent
+        #{brewery.id}
+          Brewmaster: #{brewery.owner}
+
+        EOS
+      end
+
+      ohai "Menu last updated: #{taproom.menu[:menu_updated]}"
     elsif cmd == 'update'
       # Update list of available repositories and perform `brew update`-like
       # operations on them
@@ -84,21 +103,6 @@ module Homebrew extend self
       # Dispatch back to brew
       system "brew", cmd, *formulae.concat(options)
     end
-  end
-
-  def tap_list taproom
-    # Lists repositories available for tapping
-    # TODO: Print tapped and untapped repositories separately.
-    menu = taproom.menu
-    ohai "Available breweries:\n"
-    menu[:breweries].each do |brewery|
-      puts <<-EOS.undent
-      #{brewery.id}
-        Brewmaster: #{brewery.owner}
-
-      EOS
-    end
-    ohai "Menu last updated: #{menu[:menu_updated]}"
   end
 end
 
@@ -330,7 +334,7 @@ class Taproom
   end
 
   def list_available
-    # Return list of all breweries, tapped or untapped.
+    # Return list of all brewery names, tapped or untapped.
     menu[:breweries].map {|b| b.id}
   end
 
@@ -347,6 +351,11 @@ class Taproom
   def tapped
     # Return tapped breweries.
     menu[:breweries].select {|b| on_tap? b.id}
+  end
+
+  def untapped
+    # Return untapped breweries.
+    menu[:breweries].select {|b| not on_tap? b.id}
   end
 
   def get_brewery name
