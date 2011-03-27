@@ -39,12 +39,12 @@ require 'cmd/update'
 #     repository/subfolder
 #   - Deal with multiple copies of the same formula
 #   - Repository update
+#   - Usage message
 #
 # TODO:
 #
 #   - Dependency resolution---this one will be tricky
-#   - Usage message
-#   - Better Exception handling
+#   - Proper classes for exceptions.
 
 
 module Homebrew extend self
@@ -55,10 +55,63 @@ module Homebrew extend self
     founding_brewery = {:owner => 'adamv', :name => 'homebrew-alt'}
     taproom = Taproom.new(taproom_path, Brewery.new(founding_brewery))
 
+    tap_usage = <<-EOS
+brew-tap: Manage external repositories containing Homebrew formulae
+Usage: brew tap subcommand
+
+Where subcommand is one of the following:
+
+list
+  List repositories that are cloned and available for brewing along with all
+  additional repositories available in the homebrew-alt network.
+
+add name
+  Clone a repository so that the formula it contains are available for brewing.
+  `name` is a repository name as given by `brew tap list`. Case-sensitive
+  partial matching is available to save some typing.
+
+remove name
+  Remove a cloned repository.
+
+update
+  Update the contents of each cloned repository and rescan the homebrew-alt
+  network to update `brew tap list`.
+
+brew_command [options] formula_names
+  Resolve each formula_name to a path within a cloned repository and recall
+  the brew command with the resolved name:
+
+      brew brew_subcommand [options] resolved_formula_names
+
+  Options are passed through unchanged. Not all brew subcommands will work
+  correctly, some common ones that do work are install, options and info.
+
+  Formula names may be specified plain:
+
+      brew tap install gcc
+
+  Or, in the case of multiple repositories providing multiple copies of the
+  same formula, a path-like name may be used:
+
+      brew tap install adamv/dup/gcc
+
+  Case-sensitive partial matching will be used to transform this into:
+
+      adamv-homebrew-alt/duplicates/gcc
+    EOS
+
     # Entry point for Homebrew. Responsible for parsing the command line and
     # executing brew-tap subcommands.
+    if ARGV.empty?
+      puts tap_usage
+      exit 0
+    end
+
     cmd = ARGV.shift
-    if cmd == 'list'
+    if cmd == 'help'
+      puts tap_usage
+      exit 0
+    elsif cmd == 'list'
       # Lists tapped repositories and available repositories
       ohai "Repositories on tap:\n"
       taproom.tapped.each do |brewery|
