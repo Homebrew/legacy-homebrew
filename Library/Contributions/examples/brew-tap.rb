@@ -22,6 +22,9 @@ done using the HTTParty gem, but that gem could not be imported.
   exit 1
 end
 
+# Link into the Homebrew updater
+require 'cmd/update'
+
 # Status:
 #
 # Done:
@@ -35,10 +38,10 @@ end
 #   - Option for restricting formulae resolution to a specific
 #     repository/subfolder
 #   - Deal with multiple copies of the same formula
+#   - Repository update
 #
 # TODO:
 #
-#   - Repository update
 #   - Dependency resolution---this one will be tricky
 #   - Usage message
 #   - Better Exception handling
@@ -56,7 +59,10 @@ module Homebrew extend self
     if cmd == 'list'
       Homebrew.tap_list taproom
     elsif cmd == 'update'
-      Homebrew.tap_update taproom
+      # Update list of available repositories and perform `brew update`-like
+      # operations on them
+      taproom.restock
+      taproom.update_menu
     elsif cmd == 'add'
       raise "A repository name must be passed to brew-tap add!" if ARGV.empty?
       brewery_name = ARGV.shift
@@ -94,13 +100,8 @@ module Homebrew extend self
     end
     ohai "Menu last updated: #{menu[:menu_updated]}"
   end
-
-  def tap_update taproom
-    # Update list of available repositories and perform `brew update`-like
-    # operations on them
-    taproom.update_menu
-  end
 end
+
 
 class Brewery
   # A Brewery represents a GitHub repository containing Homebrew formulae.
@@ -162,19 +163,79 @@ class Brewery
   end
 
   def get_default_branch
-    # TODO: Decide if this method is necessary or not.
-    #
     # Unfortunately, GitHub has not implemented this natively in their API...
     # yet. They keep saying they will and the last response was something along
     # the lines of "Ooops, that was supposed to be in the last update". So
-    # it will happen eventually. The workaround is to use git its self to find
+    # it will happen eventually. The workaround is to use git ls-remote to find
     # the remote HEAD and compare its SHA against the branch list.
+    ohai "Fetching #{@owner}'s #{@name}'s default branch."
     git_info = `git ls-remote #{@url}`.to_a
     hub_head = Hash[git_info.map{|line| line.split.reverse}].fetch 'HEAD'
-    branches.invert.fetch hub_head # Unfortunately, this fails if two branches
+    branches.invert.fetch hub_head # Unfortunately, this  can fail to specify a
+                                   # unique branch name if two branches
                                    # share the same SHA (i.e. a branch other
                                    # than the default branch is in perfect sync
-                                   # with it.)
+                                   # with it.) This should not be important for
+                                   # pulling, but would be important if you
+                                   # absolutely needed the correct branch name
+                                   # for some reason.
+  end
+end
+
+
+# We add and modify some methods of the official Homebrew updater that allow it
+# to be used on breweries.
+class RefreshBrew
+  def update_from_brewery! taproom_path, brewery
+    output = ''
+    (taproom_path + brewery.id).cd do
+      # See caveat in Brewery class concerning default_branch. Under some
+      # unlikely circumstances, we may end up pulling from a branch that is
+      # not actually the master---but it should bring in the same content as
+      # the SHA will be the same. This caveat probably isn't important for a
+      # pull.
+      #
+      # Probably.
+      output = execute "git pull #{brewery.url} #{brewery.default_branch}"
+    end
+
+    output.split("\n").reverse.each do |line|
+      case line
+      when %r{^\s+create mode \d+ (.+?)\.rb}
+        @added_formulae << $1
+      when %r{^\s+delete mode \d+ (.+?)\.rb}
+        @deleted_formulae << $1
+      when %r{^\s+(.+?)\.rb\s}
+        @updated_formulae << $1 unless @added_formulae.include?($1) or @deleted_formulae.include?($1)
+      end
+    end
+
+    @added_formulae.sort!
+    @deleted_formulae.sort!
+    @updated_formulae.sort!
+
+    # Return true/false depending on if git actually pulled new changes
+    output.strip != GIT_UP_TO_DATE
+  end
+
+  def report
+    ## New Formulae
+    if pending_new_formulae?
+      ohai "The following formulae are new:"
+      puts_columns added_formulae
+    end
+    ## Deleted Formulae
+    if deleted_formulae?
+      ohai "The following formulae were removed:"
+      puts_columns deleted_formulae, installed_formulae
+    end
+    ## Updated Formulae
+    if pending_formulae_changes?
+      ohai "The following formulae were updated:"
+      puts_columns updated_formulae, installed_formulae
+    else
+      puts "No formulae were updated."
+    end
   end
 end
 
@@ -251,6 +312,23 @@ class Taproom
     File.open(@menu_path, 'w') {|file| file.write(menu.to_yaml)}
   end
 
+  def restock
+    abort "Please `brew install git' first." unless system "/usr/bin/which -s git"
+
+    # Iterate over each tapped brewery and run the equivalent of `brew update`
+    tapped.each do |brewery|
+      updater = RefreshBrew.new
+
+      if updater.update_from_brewery! @path, brewery
+        puts "Updated #{brewery.id}."
+        updater.report
+      else
+        puts "#{brewery.id} already up-to-date."
+      end
+      print "\n"
+    end
+  end
+
   def list_available
     # Return list of all breweries, tapped or untapped.
     menu[:breweries].map {|b| b.id}
@@ -266,10 +344,9 @@ class Taproom
     File.directory? @path + name
   end
 
-  def list_tapped
-    # Return list of tapped breweries.
-    tapped = menu[:breweries].select {|b| on_tap? b.id}
-    tapped.map {|b| b.id}
+  def tapped
+    # Return tapped breweries.
+    menu[:breweries].select {|b| on_tap? b.id}
   end
 
   def get_brewery name
@@ -320,6 +397,7 @@ class Taproom
     FileUtils.rm_rf checkout_path
   end
 end
+
 
 # The actual code that gets run when `brew` loads this external command
 Homebrew.tap_dispatch Taproom.new(TAPROOM, Brewery.new(FOUNDING_BREWERY))
