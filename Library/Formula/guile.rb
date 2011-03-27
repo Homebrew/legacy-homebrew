@@ -20,6 +20,8 @@ class Guile < Formula
   # GNU Readline is required; libedit won't work.
   depends_on 'readline'
 
+  fails_with_llvm "Segfaults during compilation."
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

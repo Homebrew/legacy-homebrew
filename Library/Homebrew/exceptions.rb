@@ -56,7 +56,7 @@ end
 
 class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
   attr :type
-  
+
   def initialize formula, type
     @type = type
     @formula = formula

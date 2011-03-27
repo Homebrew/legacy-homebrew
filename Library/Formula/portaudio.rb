@@ -5,16 +5,16 @@ class Portaudio < Formula
   homepage 'http://www.portaudio.com'
   md5 'd2943e4469834b25afe62cc51adc025f'
 
-  def install
-    fails_with_llvm
+  depends_on 'pkg-config' => :build
 
+  fails_with_llvm
+
+  def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
 
     # remove arch flags else we get errors like:
     #   lipo: can't figure out the architecture type
-    ['-arch x86_64', '-arch ppc64', '-arch i386', '-arch ppc'].each do |arch|
-      inreplace "Makefile", arch, ""
-    end
+    inreplace 'Makefile', /-arch (x64_64|ppc64|i386|ppc)/, ''
 
     system "make install"
 
