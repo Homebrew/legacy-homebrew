@@ -5,9 +5,11 @@ class Libao < Formula
   md5 '2b2508c29bc97e4dc218fa162cf883c8'
   homepage 'http://www.xiph.org/ao/'
 
+  depends_on 'pkg-config' => :build
+
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--disable-x"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end
