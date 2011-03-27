@@ -22,11 +22,13 @@ class Gmp < Formula
 
     args = ["--prefix=#{prefix}", "--infodir=#{info}", "--enable-cxx"]
 
-    if Hardware.is_32_bit? or ARGV.include? "--32-bit"
+    # Build 32-bit where appropriate, and help configure find 64-bit CPUs
+    if MacOS.prefer_64_bit? and not ARGV.include? "--32-bit"
+      ENV.m64
+      args << "--build=x86_64-apple-darwin"
+    else
       ENV.m32
       args << "--host=none-apple-darwin"
-    else
-      ENV.m64
     end
 
     system "./configure", *args

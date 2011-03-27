@@ -7,9 +7,14 @@ class Ctags < Formula
 
   head 'https://ctags.svn.sourceforge.net/svnroot/ctags/trunk'
 
+  # true for both 5.8 and head
+  fails_with_llvm "Resulting executable generates erroneous tag files", :build => 2335
+
   def install
-    system "autoheader" if ARGV.build_head?
-    system "autoconf" if ARGV.build_head?
+    if ARGV.build_head?
+      system "autoheader"
+      system "autoconf"
+    end
     system "./configure", "--prefix=#{prefix}",
                           "--enable-macro-patterns",
                           "--mandir=#{man}",

@@ -1,13 +1,12 @@
 require 'formula'
 
+# Don't upgrade until this issue is resolved:
+# https://github.com/dotless/dotless/issues/issue/22
 class Dotless < Formula
   homepage "http://www.dotlesscss.org/"
-  url "https://github.com/downloads/dotless/dotless/dotless-v1.1.0.7a.zip"
-  md5 "1dcca3961124619b01a2d590e7e08998"
-  version "1.1.0.7a"
-
-  # Head version is in GitHub, but requires builds:
-  # https://github.com/dotless/dotless
+  url "https://github.com/dotless/dotless/tarball/v1.1.0.3"
+  md5 "6ca4801461c31214d2775858bc9adb29"
+  version "1.1.0.3"
 
   def install
     mono_path = `/usr/bin/which mono`.strip
