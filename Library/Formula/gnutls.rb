@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gnutls < Formula
-  url 'http://ftp.gnu.org/pub/gnu/gnutls/gnutls-2.10.4.tar.bz2'
   homepage 'http://www.gnu.org/software/gnutls/gnutls.html'
-  sha1 'f0dcd7b68748b48d7b945c52b6a9e64d643e4b58'
+  url 'http://ftp.gnu.org/pub/gnu/gnutls/gnutls-2.10.5.tar.bz2'
+  sha1 '4530657082a0e754356de89a5529d1ad7a18e777'
 
   depends_on 'pkg-config' => :build
   depends_on 'libgcrypt'
@@ -13,9 +13,9 @@ class Gnutls < Formula
     DATA
   end
 
-  def install
-    fails_with_llvm "Undefined symbols when linking", :build => "2326"
+  fails_with_llvm "Undefined symbols when linking", :build => "2326"
 
+  def install
     ENV.universal_binary	# build fat so wine can use it
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

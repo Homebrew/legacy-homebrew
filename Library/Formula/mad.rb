@@ -23,7 +23,7 @@ Cflags: -I${includedir}
   end
 
   def install
-    fpm = snow_leopard_64? ? '64bit': 'intel'
+    fpm = MacOS.prefer_64_bit? ? '64bit': 'intel'
     system "./configure", "--disable-debugging", "--enable-fpm=#{fpm}", "--prefix=#{prefix}"
 
     # See: https://github.com/mxcl/homebrew/issues/issue/1263

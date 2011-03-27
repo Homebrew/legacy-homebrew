@@ -8,7 +8,7 @@ class X264 < Formula
 
   head 'git://git.videolan.org/x264.git'
 
-  depends_on 'yasm'
+  depends_on 'yasm' => :build
 
   def install
     # Having this set can fail the endian test!
@@ -21,7 +21,7 @@ class X264 < Formula
       ldflags = s.get_make_var 'LDFLAGS'
       s.change_make_var! 'LDFLAGS', ldflags.gsub!(' -s', '')
 
-      if snow_leopard_64?
+      if MacOS.prefer_64_bit?
         soflags = s.get_make_var 'SOFLAGS'
         s.change_make_var! 'SOFLAGS', soflags.gsub!(' -Wl,-read_only_relocs,suppress', '')
       end

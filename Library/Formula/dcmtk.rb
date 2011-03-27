@@ -14,7 +14,7 @@ class Dcmtk < Formula
 
   def install
     ENV.deparallelize
-    ENV.m64 if snow_leopard_64?
+    ENV.m64 if MacOS.prefer_64_bit?
     ENV.x11
     system "./configure", "--disable-dependency-tracking", "--disable-debug",
                           "--prefix=#{prefix}",

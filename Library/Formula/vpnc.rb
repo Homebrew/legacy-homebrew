@@ -8,6 +8,8 @@ class Vpnc < Formula
   depends_on 'libgcrypt'
   depends_on 'libgpg-error'
 
+  fails_with_llvm
+
   skip_clean 'etc'
   skip_clean 'var'
 
@@ -16,7 +18,6 @@ class Vpnc < Formula
   end
 
   def install
-    fails_with_llvm
     ENV.no_optimization
     ENV.deparallelize
 
