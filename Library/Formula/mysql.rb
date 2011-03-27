@@ -13,6 +13,7 @@ class Mysql < Formula
   def options
     [
       ['--with-tests', "Keep tests when installing."],
+      ['--with-embedded', "Build the embedded server."],
       ['--with-bench', "Keep benchmark app when installing."],
       ['--universal', "Make mysql a universal binary"]
     ]
@@ -35,6 +36,9 @@ class Mysql < Formula
 
     args << "-DWITH_UNIT_TESTS=OFF" if not ARGV.include? '--with-tests'
     args << "-DINSTALL_SQLBENCHDIR=" if not ARGV.include? '--with-bench'
+
+    # Build the embedded server
+    args << "-DWITH_EMBEDDED_SERVER=ON" if ARGV.include? '--with-embedded'
 
     # Make universal for bindings to universal applications
     args << "-DCMAKE_OSX_ARCHITECTURES='ppc;i386'" if ARGV.include? '--universal'
