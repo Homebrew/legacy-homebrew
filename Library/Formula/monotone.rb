@@ -1,9 +1,9 @@
 require 'formula'
 
 class Monotone < Formula
-  url 'http://www.monotone.ca/downloads/0.99.1/monotone-0.99.1.tar.gz'
-  homepage 'http://www.monotone.ca/'
-  sha1 'e74ba571b358f6b76370f882d15ddbd1edd9f37e'
+  homepage 'http://monotone.ca/'
+  url 'http://www.monotone.ca/downloads/1.0/monotone-1.0.tar.bz2'
+  sha1 '7f82e1c1e852005b7f7de93c8892e371869ea418'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
