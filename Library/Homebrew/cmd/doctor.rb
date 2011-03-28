@@ -543,9 +543,9 @@ def check_for_linked_kegonly_brews
   end
 end
 
-def check_for_other_vars
+def check_for_MACOSX_DEPLOYMENT_TARGET
   target_var = ENV['MACOSX_DEPLOYMENT_TARGET']
-  return if target_var.nil? or target_var.empty?
+  return if target_var.to_s.empty?
 
   unless target_var == MACOS_VERSION.to_s
     puts <<-EOS.undent
@@ -553,6 +553,19 @@ def check_for_other_vars
     This is used by Fink, but having it set to a value different from the
     current system version (#{MACOS_VERSION}) can cause problems, compiling
     Git for instance, and should probably be removed.
+
+    EOS
+  end
+end
+
+def check_for_CLICOLOR_FORCE
+  target_var = ENV['CLICOLOR_FORCE']
+  return if target_var.to_s.empty?
+
+  unless target_var == MACOS_VERSION.to_s
+    puts <<-EOS.undent
+    $CLICOLOR_FORCE was set to #{target_var}
+    Having $CLICOLOR_FORCE set can cause git installs to fail.
 
     EOS
   end
@@ -600,7 +613,8 @@ module Homebrew extend self
       check_for_gettext
       check_for_config_scripts
       check_for_dyld_vars
-      check_for_other_vars
+      check_for_MACOSX_DEPLOYMENT_TARGET
+      check_for_CLICOLOR_FORCE
       check_for_symlinked_cellar
       check_for_multiple_volumes
       check_for_git
