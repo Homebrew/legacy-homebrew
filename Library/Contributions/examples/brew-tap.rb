@@ -109,8 +109,7 @@ brew_command [options] formula_names
 
     cmd = ARGV.shift
     if cmd == 'help'
-      puts tap_usage
-      exit 0
+      exec "man #{HOMEBREW_PREFIX + 'share' + 'man' + 'man1' + 'brew-tap.1'}"
     elsif cmd == 'list'
       # Lists tapped repositories and available repositories
       ohai "Repositories on tap:\n"

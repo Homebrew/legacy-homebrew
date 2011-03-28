@@ -7,5 +7,6 @@
 /bin/*
 !/bin/brew
 !/share/man/man1/brew.1
+!/share/man/man1/brew-tap.1
 .DS_Store
 /Library/LinkedKegs
