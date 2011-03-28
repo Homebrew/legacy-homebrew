@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cairo < Formula
-  url 'http://cairographics.org/releases/cairo-1.8.10.tar.gz'
   homepage 'http://cairographics.org/'
-  md5 'b60a82f405f9400bbfdcf850b1728d25'
+  url 'http://www.cairographics.org/releases/cairo-1.10.2.tar.gz'
+  sha1 'a8e55adb052ff2f253e57c0947b85711a14c4bfd'
 
   depends_on 'pkg-config' => :build
   depends_on 'pixman'
