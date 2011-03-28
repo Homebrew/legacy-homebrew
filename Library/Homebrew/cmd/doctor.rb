@@ -170,58 +170,46 @@ def check_access_share_man
   __check_subdir_access 'share/man'
 end
 
-def check_access_pkgconfig
-  # If PREFIX/lib/pkgconfig already exists, "sudo make install" of
-  # non-brew installed software may cause installation failures.
-  pkgconfig = HOMEBREW_PREFIX+'lib/pkgconfig'
-  return unless pkgconfig.exist?
+def __check_folder_access base, msg
+  folder = HOMEBREW_PREFIX+base
+  return unless folder.exist?
 
-  unless pkgconfig.writable?
+  unless folder.writable?
     puts <<-EOS.undent
-      #{pkgconfig} isn't writable.
+      #{folder} isn't writable.
       This can happen if you "sudo make install" software that isn't managed
-      by Homebrew. If a brew tries to write a .pc file to this folder, the
-      install will fail during the link step.
+      by Homebrew.
 
-      You should probably `chown` #{pkgconfig}
+      #{msg}
+
+      You should probably `chown` #{folder}
 
     EOS
   end
+end
+
+def check_access_pkgconfig
+  __check_folder_access 'lib/pkgconfig',
+  'If a brew tries to write a .pc file to this folder, the install will\n'+
+  'fail during the link step.'
 end
 
 def check_access_include
-  # Installing MySQL manually (for instance) can chown include to root.
-  include_folder = HOMEBREW_PREFIX+'include'
-  return unless include_folder.exist?
-
-  unless include_folder.writable?
-    puts <<-EOS.undent
-      #{include_folder} isn't writable.
-      This can happen if you "sudo make install" software that isn't managed
-      by Homebrew. If a brew tries to write a header file to this folder, the
-      install will fail during the link step.
-
-      You should probably `chown` #{include_folder}
-
-    EOS
-  end
+  __check_folder_access 'include',
+  'If a brew tries to write a header file to this folder, the install will\n'+
+  'fail during the link step.'
 end
 
 def check_access_etc
-  etc_folder = HOMEBREW_PREFIX+'etc'
-  return unless etc_folder.exist?
+  __check_folder_access 'etc',
+  'If a brew tries to write a file to this folder, the install will\n'+
+  'fail during the link step.'
+end
 
-  unless etc_folder.writable?
-    puts <<-EOS.undent
-      #{etc_folder} isn't writable.
-      This can happen if you "sudo make install" software that isn't managed
-      by Homebrew. If a brew tries to write a file to this folder, the install
-      will fail during the link step.
-
-      You should probably `chown` #{etc_folder}
-
-    EOS
-  end
+def check_access_share
+  __check_folder_access 'share',
+  'If a brew tries to write a file to this folder, the install will\n'+
+  'fail during the link step.'
 end
 
 def check_usr_bin_ruby
@@ -598,10 +586,11 @@ module Homebrew extend self
       check_for_other_package_managers
       check_for_x11
       check_for_nonstandard_x11
-      check_access_share_locale
-      check_access_share_man
       check_access_include
       check_access_etc
+      check_access_share
+      check_access_share_locale
+      check_access_share_man
       check_user_path
       check_which_pkg_config
       check_pkg_config_paths
