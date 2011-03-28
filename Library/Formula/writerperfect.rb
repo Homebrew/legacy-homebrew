@@ -1,15 +1,16 @@
 require 'formula'
 
-class Libwpd < Formula
-  url 'http://downloads.sourceforge.net/libwpd/libwpd-0.9.0.tar.bz2'
-  md5 '86e390f015e505dd71a66f0123c62f09'
+class Writerperfect < Formula
+  url 'http://downloads.sourceforge.net/libwpd/writerperfect-0.8.0.tar.bz2'
+  md5 'cb55b682737ee99cff9c632f0b360372'
   homepage 'http://libwpd.sourceforge.net/'
 
-  depends_on "glib"
-  depends_on "libgsf"
+  depends_on "libwpg"
+  depends_on "libwpd"
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end
 end
+
