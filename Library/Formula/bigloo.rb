@@ -18,7 +18,7 @@ class Bigloo < Formula
              "--os-macosx" ]
 
     # SRFI 27 is 32-bit only
-    args << "--disable-srfi27" if snow_leopard_64?
+    args << "--disable-srfi27" if MacOS.prefer_64_bit?
 
     system "./configure", *args
     system "make"

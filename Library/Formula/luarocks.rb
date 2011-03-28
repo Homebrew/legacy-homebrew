@@ -8,6 +8,8 @@ class Luarocks < Formula
   depends_on 'lua'
 
   def install
+    fails_with_llvm "Lua itself compiles with llvm, but may fail when other software trys to link."
+
     # Install to the Cellar, but direct modules to HOMEBREW_PREFIX
     # Configure can detect 'wget' to use as a downloader, but we don't
     # require it since curl works too and comes with OS X.
