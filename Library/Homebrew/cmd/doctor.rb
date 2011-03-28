@@ -55,12 +55,13 @@ def check_for_stray_dylibs
   bad_dylibs = unbrewed_dylibs.reject {|d| white_list.key? File.basename(d) }
   return if bad_dylibs.empty?
 
-  opoo "Unbrewed dylibs were found in /usr/local/lib"
   puts <<-EOS.undent
-    You have unbrewed dylibs in /usr/local/lib. If you didn't put them there on purpose,
-    they could cause problems when building Homebrew formulae.
+    Unbrewed dylibs were found in /usr/local/lib.
 
-    Unexpected dylibs (delete if they are no longer needed):
+    If you didn't put them there on purpose they could cause problems when
+    building Homebrew formulae, and may need to be deleted.
+
+    Unexpected dylibs:
   EOS
   puts *bad_dylibs.collect { |f| "    #{f}" }
   puts
@@ -68,8 +69,9 @@ end
 
 def check_for_x11
   unless x11_installed?
-    opoo "X11 not installed."
     puts <<-EOS.undent
+      X11 not installed.
+
       You don't have X11 installed as part of your OS X installation.
       This isn't required for all formulae, but is expected by some.
 
