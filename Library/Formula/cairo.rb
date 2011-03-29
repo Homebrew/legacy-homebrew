@@ -3,7 +3,7 @@ require 'formula'
 class Cairo < Formula
   homepage 'http://cairographics.org/'
   url 'http://www.cairographics.org/releases/cairo-1.10.2.tar.gz'
-  sha1 'a8e55adb052ff2f253e57c0947b85711a14c4bfd'
+  sha1 'ccce5ae03f99c505db97c286a0c9a90a926d3c6e'
 
   depends_on 'pkg-config' => :build
   depends_on 'pixman'
