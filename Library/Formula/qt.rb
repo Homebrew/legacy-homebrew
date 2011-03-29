@@ -6,6 +6,10 @@ class Qt < Formula
   md5 '66b992f5c21145df08c99d21847f4fdb'
   homepage 'http://qt.nokia.com/'
 
+  def patches
+    "http://qt.nokia.com/files/qt-patches/blacklist-fraudulent-comodo-certificates-patch.diff"
+  end
+
   def options
     [
       ['--with-qtdbus', "Enable QtDBus module."],
