@@ -10,46 +10,34 @@ class Colordiff < Formula
   end
 
   def install
-    system "make DESTDIR=#{prefix} install"
+    bin.mkpath
+    bin.install "colordiff.pl" => "colordiff"
+    bin.install "cdiff.sh" => "cdiff"
+    etc.mkpath
+    etc.install "colordiffrc"
+    etc.install "colordiffrc-lightbg"
+    man1.mkpath
+    man1.install "colordiff.1"
+    man1.install "cdiff.1"
   end
 end
-
 __END__
---- a/Makefile	2009-04-21 11:55:47.000000000 -0700
-+++ b/Makefile	2009-10-02 10:09:44.000000000 -0700
-@@ -1,5 +1,5 @@
--INSTALL_DIR=/usr/local/bin
--MAN_DIR=/usr/local/man/man1
-+INSTALL_DIR=/bin
-+MAN_DIR=/share/man/man1
- ETC_DIR=/etc
- VERSION=1.0.9
- DIST_FILES=COPYING INSTALL Makefile README \
-@@ -8,6 +8,7 @@
- TMPDIR=colordiff-${VERSION}
- TARBALL=${TMPDIR}.tar.gz
+--- a/colordiff.pl	2009-01-28 15:12:10.000000000 -0500
++++ b/colordiff.pl	2011-09-17 13:15:46.000000000 -0400
+@@ -23,6 +23,7 @@
  
-+.PHONY: install
+ use strict;
+ use Getopt::Long qw(:config pass_through);
++use File::Basename;
+ use IPC::Open2;
  
- doc: colordiff.xml cdiff.xml
- 	xmlto -vv man colordiff.xml
-@@ -22,14 +23,16 @@
+ my $app_name     = 'colordiff';
+@@ -63,7 +64,7 @@
  
- install:
- 	install -d ${DESTDIR}${INSTALL_DIR}
-+	install -d ${DESTDIR}${MAN_DIR}
-+	install -d ${DESTDIR}${ETC_DIR}
--	sed -e "s%/etc%${ETC_DIR}%g" colordiff.pl > \
-+	sed -e "s%/etc%${DESTDIR}${ETC_DIR}%g" colordiff.pl > \
- 	  ${DESTDIR}${INSTALL_DIR}/colordiff
- 	chmod +x ${DESTDIR}${INSTALL_DIR}/colordiff
- 	if [ ! -f ${DESTDIR}${INSTALL_DIR}/cdiff ] ; then \
- 	  install cdiff.sh ${DESTDIR}${INSTALL_DIR}/cdiff; \
- 	fi
--	install -Dm 644 colordiff.1 ${DESTDIR}${MAN_DIR}/colordiff.1
--	install -Dm 644 cdiff.1 ${DESTDIR}${MAN_DIR}/cdiff.1
-+	install -m 644 colordiff.1 ${DESTDIR}${MAN_DIR}/colordiff.1
-+	install -m 644 cdiff.1 ${DESTDIR}${MAN_DIR}/cdiff.1
- 	if [ -f ${DESTDIR}${ETC_DIR}/colordiffrc ]; then \
- 	  mv -f ${DESTDIR}${ETC_DIR}/colordiffrc \
- 	    ${DESTDIR}${ETC_DIR}/colordiffrc.old; \
+ # Locations for personal and system-wide colour configurations
+ my $HOME   = $ENV{HOME};
+-my $etcdir = '/etc';
++my $etcdir = dirname(__FILE__) . "/../etc";
+ my ($setting, $value);
+ my @config_files = ("$etcdir/colordiffrc");
+ push (@config_files, "$ENV{HOME}/.colordiffrc") if (defined $ENV{HOME});
