@@ -1,10 +1,12 @@
 require 'formula'
 
 class Zeromq < Formula
-  url 'http://download.zeromq.org/zeromq-2.1.2.tar.gz'
+  url 'http://download.zeromq.org/zeromq-2.1.3.tar.gz'
   head 'git://github.com/zeromq/zeromq2.git'
   homepage 'http://www.zeromq.org/'
-  md5 'ee0ebe3b9dd6c80941656dd8c755764d'
+  md5 'ae681af2df1b7191aeecfcb23bb73864'
+
+  fails_with_llvm "Compiling with LLVM gives a segfault while linking."
 
   def options
     [['--universal', 'Build as a Universal Intel binary.']]
@@ -29,8 +31,6 @@ class Zeromq < Formula
   end
 
   def install
-    fails_with_llvm "Compiling with LLVM gives a segfault while linking."
-
     system "./autogen.sh" if ARGV.build_head?
 
     if ARGV.include? '--universal'

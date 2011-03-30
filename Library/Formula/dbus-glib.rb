@@ -1,14 +1,14 @@
 require 'formula'
 
-class DbusGlib <Formula
-  url 'http://dbus.freedesktop.org/releases/dbus-glib/dbus-glib-0.88.tar.gz'
+class DbusGlib < Formula
   homepage 'http://library.gnome.org/devel/dbus-glib/'
-  md5 '7c04ba01df6130c2c4e62f73bea0d0d5'
+  url 'http://dbus.freedesktop.org/releases/dbus-glib/dbus-glib-0.92.tar.gz'
+  sha1 '69aa860251a2c916907ac7b34d5a40196cf073ff'
 
-  depends_on 'd-bus'
-  depends_on 'glib'
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
+  depends_on 'glib'
+  depends_on 'd-bus'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

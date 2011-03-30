@@ -19,7 +19,9 @@ class Encfs < Formula
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-boost=#{HOMEBREW_PREFIX}"
     system "make"
     system "make install"
   end

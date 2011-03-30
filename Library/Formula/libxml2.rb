@@ -7,14 +7,14 @@ class Libxml2 < Formula
 
   keg_only :provided_by_osx
 
+  fails_with_llvm "Undefined symbols when linking", :build => "2326"
+
   def options
     # Works with the Python 2 formula
     [['--with-python', 'Compile the libxml2 Python 2.x modules']]
   end
 
   def install
-    fails_with_llvm "Undefined symbols when linking", :build => "2326"
-
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
 
     if ARGV.include? '--with-python'
