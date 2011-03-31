@@ -1,6 +1,6 @@
 require 'formula'
 
-class Icon <Formula
+class Icon < Formula
   url 'http://www.cs.arizona.edu/icon/ftp/packages/unix/icon-v950src.tgz'
   homepage 'http://www.cs.arizona.edu/icon/'
   md5 '3f9b89bb8f2c0fb3e9c75d1b52fb5690'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Madplay <Formula
+class Madplay < Formula
   url 'http://downloads.sourceforge.net/project/mad/madplay/0.15.2b/madplay-0.15.2b.tar.gz'
   md5 '6814b47ceaa99880c754c5195aa1aac1'
 

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Task <Formula
+class Task < Formula
   url 'http://www.taskwarrior.org/download/task-1.9.4.tar.gz'
   homepage 'http://www.taskwarrior.org/'
   md5 '0c5d9dedb1ead69590af895d16708070'

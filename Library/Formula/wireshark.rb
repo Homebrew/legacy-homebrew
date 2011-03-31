@@ -1,6 +1,6 @@
 require 'formula'
 
-class Wireshark <Formula
+class Wireshark < Formula
   url 'http://media-2.cacetech.com/wireshark/src/wireshark-1.4.4.tar.bz2'
   md5 '11ce019d85d9822597b163ce5b4da858'
   homepage 'http://www.wireshark.org'

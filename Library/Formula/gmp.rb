@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gmp <Formula
+class Gmp < Formula
   url 'ftp://ftp.gnu.org/gnu/gmp/gmp-5.0.1.tar.bz2'
   homepage 'http://gmplib.org/'
   sha1 '6340edc7ceb95f9015a758c7c0d196eb0f441d49'
@@ -12,21 +12,23 @@ class Gmp <Formula
     ]
   end
 
+  fails_with_llvm "Tests fail to compile; missing references in 'llvm bitcode in libtests.a(misc.o)'."
+
   def install
     # Reports of problems using gcc 4.0 on Leopard
     # https://github.com/mxcl/homebrew/issues/issue/2302
     # Also force use of 4.2 on 10.6 in case a user has changed the default
     ENV.gcc_4_2
 
-    fails_with_llvm "Tests fail to compile; missing references in 'llvm bitcode in libtests.a(misc.o)'."
-
     args = ["--prefix=#{prefix}", "--infodir=#{info}", "--enable-cxx"]
 
-    if Hardware.is_32_bit? or ARGV.include? "--32-bit"
+    # Build 32-bit where appropriate, and help configure find 64-bit CPUs
+    if MacOS.prefer_64_bit? and not ARGV.include? "--32-bit"
+      ENV.m64
+      args << "--build=x86_64-apple-darwin"
+    else
       ENV.m32
       args << "--host=none-apple-darwin"
-    else
-      ENV.m64
     end
 
     system "./configure", *args

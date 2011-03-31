@@ -1,10 +1,14 @@
 require 'formula'
 require 'hardware'
 
-class Qt <Formula
+class Qt < Formula
   url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.2.tar.gz'
   md5 '66b992f5c21145df08c99d21847f4fdb'
   homepage 'http://qt.nokia.com/'
+
+  def patches
+    "http://qt.nokia.com/files/qt-patches/blacklist-fraudulent-comodo-certificates-patch.diff"
+  end
 
   def options
     [
@@ -64,11 +68,11 @@ class Qt <Formula
       args << "-I#{Formula.factory('libpng').include}"
     end
 
-    if snow_leopard_64? or ARGV.include? '--universal'
+    if MacOS.prefer_64_bit? or ARGV.include? '--universal'
       args << '-arch' << 'x86_64'
     end
 
-    if !snow_leopard_64? or ARGV.include? '--universal'
+    if !MacOS.prefer_64_bit? or ARGV.include? '--universal'
       args << '-arch' << 'x86'
     end
 

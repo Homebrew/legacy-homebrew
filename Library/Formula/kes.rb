@@ -1,6 +1,6 @@
 require 'formula'
 
-class Kes <Formula
+class Kes < Formula
   head 'git://github.com/epilnivek/kes.git'
   homepage 'https://github.com/epilnivek/kes'
 

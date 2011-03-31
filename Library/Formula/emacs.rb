@@ -1,6 +1,6 @@
 require 'formula'
 
-class Emacs <Formula
+class Emacs < Formula
   url 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.3.tar.bz2'
   md5 'a673c163b4714362b94ff6096e4d784a'
   homepage 'http://www.gnu.org/software/emacs/'
@@ -56,9 +56,9 @@ class Emacs <Formula
     return s
   end
 
-  def install
-    fails_with_llvm "Duplicate symbol errors while linking."
+  fails_with_llvm "Duplicate symbol errors while linking."
 
+  def install
     args = ["--prefix=#{prefix}",
             "--without-dbus",
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",

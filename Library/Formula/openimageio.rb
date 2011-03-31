@@ -1,8 +1,9 @@
 require 'formula'
 
-class Openimageio <Formula
-  url 'http://svn.openimageio.org/oiio/branches/RB-0.8/', :using => :svn
-  version "0.8"
+class Openimageio < Formula
+  url 'https://github.com/OpenImageIO/oiio/tarball/Release-0.9.0'
+  md5 'b9dc646c57c2137d7a9fe8bbb91e0ae7'
+  version "0.9.0"
   homepage 'http://openimageio.org'
 
   depends_on 'cmake' => :build
@@ -12,7 +13,6 @@ class Openimageio <Formula
   depends_on 'boost'
 
   # build plugins
-  depends_on 'libpng'  => :optional
   depends_on 'libtiff' => :optional
   depends_on 'jpeg'    => :optional
   depends_on 'jasper'  => :optional
@@ -23,7 +23,14 @@ class Openimageio <Formula
   depends_on 'tbb' => :optional
 
   def install
-    system "cmake src/ #{std_cmake_parameters} -DUSE_QT:BOOL=OFF -DEMBEDPLUGINS:BOOL=ON -DUPDATE_TYPE:STRING=svn"
+    # Allow compilation against boost 1.46.0
+    # See https://github.com/OpenImageIO/oiio/issues/37
+    inreplace "src/libOpenImageIO/imageioplugin.cpp",
+      "#include <boost/filesystem.hpp>",
+      "#define BOOST_FILESYSTEM_VERSION 2\n#include <boost/filesystem.hpp>"
+
+    # Add include path for libpng explicitly
+    system "cmake src/ #{std_cmake_parameters} -DUSE_QT:BOOL=OFF -DEMBEDPLUGINS:BOOL=ON -DCMAKE_CXX_FLAGS=-I/usr/X11R6/include"
     system "make install"
   end
 end

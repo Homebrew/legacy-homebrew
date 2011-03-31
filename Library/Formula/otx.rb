@@ -1,6 +1,6 @@
 require 'formula'
 
-class Otx <Formula
+class Otx < Formula
   head 'http://otx.osxninja.com/builds/trunk/', :using => :svn
   homepage 'http://otx.osxninja.com/'
 

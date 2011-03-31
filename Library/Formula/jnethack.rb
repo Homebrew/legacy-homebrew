@@ -5,11 +5,13 @@ require 'formula'
 # This formula is based on Nethack formula.
 # The patches in DATA section are shamelessly stolen from MacPorts' jnethack portfile.
 
-class Jnethack <Formula
+class Jnethack < Formula
   url 'http://downloads.sourceforge.net/project/nethack/nethack/3.4.3/nethack-343-src.tgz'
   homepage 'http://jnethack.sourceforge.jp/'
   version '3.4.3-0.10'
   md5 '21479c95990eefe7650df582426457f9'
+
+  fails_with_llvm
 
   # Don't remove save folder
   skip_clean 'libexec/save'
@@ -22,7 +24,6 @@ class Jnethack <Formula
   end
 
   def install
-    fails_with_llvm
     # Build everything in-order; no multi builds.
     ENV.deparallelize
 

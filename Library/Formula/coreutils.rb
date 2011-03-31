@@ -25,9 +25,9 @@ def coreutils_aliases
   return s
 end
 
-class Coreutils <Formula
-  url "http://ftp.gnu.org/gnu/coreutils/coreutils-8.7.tar.gz"
-  md5 '3c1ae9531159447083ae8f25ae554b81'
+class Coreutils < Formula
+  url "http://ftp.gnu.org/gnu/coreutils/coreutils-8.10.tar.gz"
+  md5 '74d54d09fc5c1bd3337127f49c88b1c5'
   homepage 'http://www.gnu.org/software/coreutils'
 
   def options

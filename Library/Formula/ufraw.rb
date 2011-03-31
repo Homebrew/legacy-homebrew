@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ufraw <Formula
+class Ufraw < Formula
   url 'http://downloads.sourceforge.net/project/ufraw/ufraw/ufraw-0.17/ufraw-0.17.tar.gz'
   homepage 'http://ufraw.sourceforge.net'
   md5 '5e2c2b4adaea1f6d03eac66e11747fc6'
@@ -13,8 +13,9 @@ class Ufraw <Formula
   depends_on 'dcraw'
   depends_on 'exiv2' => :optional
 
+  fails_with_llvm "Compiling with LLVM gives a segfault while linking."
+
   def install
-    fails_with_llvm "Compiling with LLVM gives a segfault while linking."
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-gtk",
