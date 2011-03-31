@@ -56,48 +56,24 @@ module Homebrew extend self
     taproom = Taproom.new(taproom_path, Brewery.new(founding_brewery))
 
     tap_usage = <<-EOS
-brew-tap: Manage external repositories containing Homebrew formulae
-Usage: brew tap subcommand
+Usage: brew tap <command> [args]
 
-Where subcommand is one of the following:
+Commands:
 
 list
-  List repositories that are cloned and available for brewing along with all
-  additional repositories available in the homebrew-alt network.
-
-add name
-  Clone a repository so that the formula it contains are available for brewing.
-  `name` is a repository name as given by `brew tap list`. Case-sensitive
-  partial matching is available to save some typing.
-
-remove name
-  Remove a cloned repository.
+  List available alternate repositories.
 
 update
-  Update the contents of each cloned repository and rescan the homebrew-alt
-  network to update `brew tap list`.
+  Update cloned repositories.
 
-brew_command [options] formula_names
-  Resolve each formula_name to a path within a cloned repository and recall
-  the brew command with the resolved name:
+add <repository>
+remove <repository>
+  Manage cloned repositories.
 
-      brew brew_subcommand [options] resolved_formula_names
+brew_command [--options] [<formulae>...]
+  Run a brew command, such as install, using formulae in alternate repositories.
 
-  Options are passed through unchanged. Not all brew subcommands will work
-  correctly, some common ones that do work are install, options and info.
-
-  Formula names may be specified plain:
-
-      brew tap install gcc
-
-  Or, in the case of multiple repositories providing multiple copies of the
-  same formula, a path-like name may be used:
-
-      brew tap install adamv/dup/gcc
-
-  Case-sensitive partial matching will be used to transform this into:
-
-      adamv-homebrew-alt/duplicates/gcc
+See 'brew tap help' for more detailed information.
     EOS
 
     # Entry point for Homebrew. Responsible for parsing the command line and

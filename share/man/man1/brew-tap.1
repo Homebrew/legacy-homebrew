@@ -7,7 +7,19 @@
 \fBbrew\-tap\fR \- Multi\-Repository Support for Homebrew
 .
 .SH "SYNOPSIS"
-\fBbrew tap\fR \fIcommand\fR
+\fBbrew tap\fR list
+.
+.P
+\fBbrew tap\fR update
+.
+.P
+\fBbrew tap\fR add \fIrepository\fR
+.
+.P
+\fBbrew tap\fR remove \fIrepository\fR
+.
+.P
+\fBbrew tap\fR \fIbrew_command\fR [\-\-options] [\fIformulae\fR\.\.\.]
 .
 .SH "DESCRIPTION"
 A tool for managing repositories containing alternative Homebrew formulae and making those formulae available to standard \fBbrew\fR commands like \fBinstall\fR\.
@@ -22,25 +34,27 @@ Currently designed to work with the fork network of Adam Vandenberg\'s homebrew\
 .
 .TP
 \fBlist\fR
-List all repositories that have been locally cloned and whose formulae are available for brewing\. Also list all uncloned repositories that can be cloned using \fBbrew tap add\fR
-.
-.TP
-\fBadd\fR \fIrepository name\fR
-Clone a repository so that the formulae it contains will be accessable to \fBbrew tap\fR\. \fIrepository name\fR is the name given by \fBbrew tap list\fR but case\-sensitive partial matching is also used\. See examples section for details\.
-.
-.TP
-\fBremove\fR \fIrepository name\fR
-Remove a cloned repository from the system\. \fIrepository name\fR follows the same rules outlined above for \fBbrew tap add\fR
+List all repositories that have been locally cloned and whose formulae are available for brewing\. Also list all repositories in the homebrew\-alt that can be cloned using \fBbrew tap add\fR
 .
 .TP
 \fBupdate\fR
 Update all cloned repositories and rescan the homebrew\-alt network to update \fBbrew tap info\fR\.
 .
 .TP
-\fIbrew_command\fR [options] [formula1] [formula2] \.\.\.
-Where \fIbrew_command\fR is a \fBbrew\fR subcommand such as \fBinstall\fR\. Any subcommand can be specified, but some may not work\. Formula names will be resolved to paths within cloned repositories\. \fBbrew\fR is then called to invoke \fIbrew_command\fR with the resolved paths and the contents of [options]\.
+\fBadd\fR \fIrepository\fR
+Clone a repository so that the formulae it contains will be accessable to \fBbrew tap\fR\. \fIrepository\fR is the name given by \fBbrew tap list\fR but case\-sensitive partial matching is also used\. See examples section for details\.
+.
+.TP
+\fBremove\fR \fIrepository\fR
+Remove a cloned repository from the system\. \fIrepository\fR follows the same rules outlined above for \fBbrew tap add\fR
+.
+.TP
+\fIbrew_command\fR [\-\-options] [\fIformulae\fR\.\.\.]
+Where \fIbrew_command\fR is a \fBbrew\fR subcommand such as \fBinstall\fR\. Any subcommand can be specified, but some may not work\. Formula names will be resolved to paths within cloned repositories\. \fBbrew\fR is then called to invoke \fIbrew_command\fR with the resolved paths and the contents of [\-\-options]\. See examples section for details\.
 .
 .SH "EXAMPLES"
+.
+.SS "REPOSITORY NAMES"
 Case\-sensitive partial matching is used by \fBbrew tap add\fR and \fBbrew tap remove\fR so the following are equivalent:
 .
 .IP "" 4
@@ -67,8 +81,8 @@ brew tap add Adamv
 .
 .IP "" 0
 .
-.P
-For example:
+.SS "FORMULAE NAMES"
+When \fBbrew\-tap\fR recalls a \fBbrew\fR subcommand, a more complicated form of pattern matching and expansion is used to locate brewfiles\. For example, the simple call:
 .
 .IP "" 4
 .
@@ -110,7 +124,7 @@ brew tap install adamv/dup/vim
 .IP "" 0
 .
 .P
-Case\-sensitive partial matching is used, so the first call restricts searches for the vim formula to the adamv\-homebrew\-alt repository while the second call restricts the search even further to adamv\-homebrew\-alt/duplicates\.
+Case\-sensitive partial matching is used, so the first call restricts searches for the vim formula to the adamv\-homebrew\-alt repository while the second call restricts the search even further to the subdirectory adamv\-homebrew\-alt/duplicates\.
 .
 .SH "SEE ALSO"
 \fBbrew\fR(1)
