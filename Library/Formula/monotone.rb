@@ -1,9 +1,9 @@
 require 'formula'
 
 class Monotone < Formula
-  url 'http://www.monotone.ca/downloads/0.99.1/monotone-0.99.1.tar.gz'
-  homepage 'http://www.monotone.ca/'
-  sha1 'e74ba571b358f6b76370f882d15ddbd1edd9f37e'
+  homepage 'http://monotone.ca/'
+  url 'http://www.monotone.ca/downloads/1.0/monotone-1.0.tar.bz2'
+  sha1 'aac556bb26d92910b74b65450a0be6c5045e2052'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
@@ -16,18 +16,16 @@ class Monotone < Formula
 
   def install
     # Monotone only needs headers from Boost (it's templates all the way down!), so let's avoid
-    # building boost (which takes approximately forever) if it's not already installed. This is
-    # suggested in the Monotone installation instructions.
+    # building boost (which takes approximately forever) if it's not already installed.
+    # This is suggested in the Monotone installation instructions.
 
     boost = Formula.factory('boost')
     unless boost.installed?
-      # a formula's stage method is private, so we cannot call boost.stage
-      boost.brew do
-        ENV.append "CXXFLAGS", "-I"+Dir.pwd
-      end
+      # Add header location to CPPFLAGS
+      boost.brew { ENV.append "CXXFLAGS", "-I"+Dir.pwd }
     end
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end
