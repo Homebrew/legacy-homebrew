@@ -22,7 +22,7 @@ class Logstalgia < Formula
     # Handle building head.
     system "autoreconf -f -i" unless File.exist? "configure"
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
     system "make install"
