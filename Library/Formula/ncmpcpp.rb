@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ncmpcpp <Formula
+class Ncmpcpp < Formula
   url 'http://unkart.ovh.org/ncmpcpp/ncmpcpp-0.5.6.tar.bz2'
   homepage 'http://unkart.ovh.org/ncmpcpp/'
   md5 'cdaf82694c0a1f5e9de65bb0a191e403'

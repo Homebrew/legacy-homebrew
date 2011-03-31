@@ -1,6 +1,6 @@
 require 'formula'
 
-class Kumofs <Formula
+class Kumofs < Formula
   url 'https://github.com/downloads/etolabo/kumofs/kumofs-0.4.12.tar.gz'
   head 'git://github.com/etolabo/kumofs.git'
   homepage 'http://kumofs.sourceforge.net/'

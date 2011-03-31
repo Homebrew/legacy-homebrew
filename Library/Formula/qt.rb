@@ -1,14 +1,13 @@
 require 'formula'
 require 'hardware'
 
-class Qt <Formula
-  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.1.tar.gz'
-  md5 '6f88d96507c84e9fea5bf3a71ebeb6d7'
+class Qt < Formula
+  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.2.tar.gz'
+  md5 '66b992f5c21145df08c99d21847f4fdb'
   homepage 'http://qt.nokia.com/'
 
   def patches
-    # To fix http://bugreports.qt.nokia.com/browse/QTBUG-13623. Patch sent upstream.
-    "http://qt.gitorious.org/qt/qt/commit/9f18a1ad5ce32dd397642a4c03fa1fcb21fb9456.patch"
+    "http://qt.nokia.com/files/qt-patches/blacklist-fraudulent-comodo-certificates-patch.diff"
   end
 
   def options
@@ -43,9 +42,6 @@ class Qt <Formula
     if ARGV.include? '--with-qtdbus'
       args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
       args << "-I#{Formula.factory('d-bus').include}/dbus-1.0"
-      args << "-L#{Formula.factory('d-bus').lib}"
-      args << "-ldbus-1"
-      args << "-dbus-linked"
     end
 
     if ARGV.include? '--with-qt3support'
@@ -72,11 +68,11 @@ class Qt <Formula
       args << "-I#{Formula.factory('libpng').include}"
     end
 
-    if snow_leopard_64? or ARGV.include? '--universal'
+    if MacOS.prefer_64_bit? or ARGV.include? '--universal'
       args << '-arch' << 'x86_64'
     end
 
-    if !snow_leopard_64? or ARGV.include? '--universal'
+    if !MacOS.prefer_64_bit? or ARGV.include? '--universal'
       args << '-arch' << 'x86'
     end
 

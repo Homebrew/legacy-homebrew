@@ -1,6 +1,6 @@
 require 'formula'
 
-class Proctools <Formula
+class Proctools < Formula
   url 'http://downloads.sourceforge.net/project/proctools/proctools/0.4pre1/proctools-0.4pre1.tar.gz'
   homepage 'http://proctools.sourceforge.net/'
   version '0.4pre1'

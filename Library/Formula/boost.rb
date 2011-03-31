@@ -1,9 +1,9 @@
 require 'formula'
 
-class Boost <Formula
+class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.45.0/boost_1_45_0.tar.bz2'
-  md5 'd405c606354789d0426bc07bea617e58'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.46.1/boost_1_46_1.tar.bz2'
+  md5 '7375679575f4c8db605d426fc721d506'
 
   def options
     [
@@ -12,10 +12,9 @@ class Boost <Formula
     ]
   end
 
-  def install
-    fails_with_llvm "LLVM-GCC causes errors with dropped arguments to "+
-                    "functions when linking with boost"
+  fails_with_llvm "LLVM-GCC causes errors with dropped arguments to functions when linking with boost"
 
+  def install
     # Adjust the name the libs are installed under to include the path to the
     # Homebrew lib directory so executables will work when installed to a
     # non-/usr/local location.

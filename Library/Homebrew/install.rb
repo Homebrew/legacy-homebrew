@@ -2,21 +2,17 @@
 require 'global'
 
 def text_for_keg_only_formula f
-  if f.keg_only? == :provided_by_osx
-    rationale = "Mac OS X already provides this program and installing another version in\nparallel can cause all kinds of trouble."
-  elsif f.keg_only?.kind_of? String
-    rationale = "The formula provides the following rationale:\n\n#{f.keg_only?.chomp}"
-  else
-    rationale = "The formula didn't provide any rationale for this."
-  end
   <<-EOS
-This formula is keg-only, so it is not symlinked into Homebrew's prefix.
-#{rationale}
+This formula is keg-only, so it was not symlinked into #{HOMEBREW_PREFIX}.
 
-Generally there are no consequences of this for you, however if you build
-your own software and it requires this formula, you may want to run this
-command to link it into the Homebrew prefix:
-    $ brew link #{f.name}
+#{f.keg_only?}
+
+Generally there are no consequences of this for you.
+If you build your own software and it requires this formula, you'll need
+to add its lib & include paths to your build variables:
+
+  LDFLAGS="$LDFLAGS #{f.lib}"
+  CPPFLAGS="$CPPFLAGS #{f.include}"
   EOS
 end
 
@@ -30,7 +26,7 @@ at_exit do
     require 'fileutils'
     require 'hardware'
     require 'keg'
-    require 'brew.h.rb'
+    require 'compatibility'
 
     ENV.extend(HomebrewEnvExtension)
     ENV.setup_build_environment
@@ -50,8 +46,14 @@ at_exit do
   end
 end
 
+ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| File.expand_path p }
+HOMEBREW_BIN = (HOMEBREW_PREFIX+'bin').to_s
+
 def install f
   show_summary_heading = false
+
+  # we must do this or tools like pkg-config won't get found by configure scripts etc.
+  ENV.prepend 'PATH', HOMEBREW_BIN, ':' unless ORIGINAL_PATHS.include? HOMEBREW_BIN
 
   f.deps.uniq.each do |dep|
     dep = Formula.factory dep
@@ -61,11 +63,6 @@ def install f
       ENV.prepend 'PATH', "#{dep.bin}", ':'
       ENV.prepend 'PKG_CONFIG_PATH', dep.lib+'pkgconfig', ':'
     end
-  end
-
-  if ARGV.verbose?
-    ohai "Build Environment"
-    dump_build_env ENV
   end
 
   build_time = nil
@@ -120,8 +117,21 @@ def install f
 
   ohai 'Finishing up' if ARGV.verbose?
 
+  keg = Keg.new f.prefix
+
   begin
-    clean f
+    keg.fix_install_names
+  rescue Exception => e
+    onoe "Failed to fix install names"
+    puts "The formula built, but you may encounter issues using it or linking other"
+    puts "formula against it."
+    ohai e, e.backtrace if ARGV.debug?
+    show_summary_heading = true
+  end
+
+  begin
+    require 'cleaner'
+    Cleaner.new f
   rescue Exception => e
     opoo "The cleaning step did not complete successfully"
     puts "Still, the installation was successful, so we will link it into your prefix"
@@ -136,13 +146,11 @@ def install f
     show_summary_heading = true
   else
     # warn the user if stuff was installed outside of their PATH
-    paths = ENV['PATH'].split(':').collect{|p| File.expand_path p}
     [f.bin, f.sbin].each do |bin|
       if bin.directory?
-        rootbin = (HOMEBREW_PREFIX+bin.basename).to_s
         bin = File.expand_path bin
-        unless paths.include? rootbin
-          opoo "#{rootbin} is not in your PATH"
+        unless ORIGINAL_PATHS.include? HOMEBREW_BIN
+          opoo "#{HOMEBREW_BIN} is not in your PATH"
           puts "You can amend this by altering your ~/.bashrc file"
           show_summary_heading = true
         end
@@ -174,12 +182,20 @@ def install f
       end
     end
 
+    # Check for m4 files
+    if Dir[f.share+"aclocal/*.m4"].length > 0
+      opoo 'm4 macros were installed to "share/aclocal".'
+      puts "Homebrew does not append \"#{HOMEBREW_PREFIX}/share/aclocal\""
+      puts "to \"/usr/share/aclocal/dirlist\". If an autoconf script you use"
+      puts "requires these m4 macros, you'll need to add this path manually."
+    end
+
     # link from Cellar to Prefix
     begin
-      Keg.new(f.prefix).link
+      keg.link
     rescue Exception => e
       onoe "The linking step did not complete successfully"
-      puts "The package built, but is not symlinked into #{HOMEBREW_PREFIX}"
+      puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
       puts "You can try again using `brew link #{f.name}'"
       if ARGV.debug?
         ohai e, e.backtrace

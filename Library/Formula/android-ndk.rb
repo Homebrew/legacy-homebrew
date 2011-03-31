@@ -1,6 +1,6 @@
 require 'formula'
 
-class AndroidNdk <Formula
+class AndroidNdk < Formula
   url 'http://dl.google.com/android/ndk/android-ndk-r5b-darwin-x86.tar.bz2'
   homepage 'http://developer.android.com/sdk/ndk/index.html#overview'
   md5 '019a14622a377b3727ec789af6707037'

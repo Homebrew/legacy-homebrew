@@ -5,7 +5,7 @@ require 'formula'
 # build figures out the version number from the hg checkout.
 #
 
-class Sip <Formula
+class Sip < Formula
   url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.12.1.tar.gz'
   md5 '92b0bf4b2ec76da55ac45f27bd17fbe0'
   head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg

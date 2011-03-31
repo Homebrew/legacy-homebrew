@@ -1,6 +1,6 @@
 require 'formula'
 
-class Clojure <Formula
+class Clojure < Formula
   url 'https://github.com/downloads/clojure/clojure/clojure-1.2.0.zip'
   md5 'da0cc71378f56491d6ee70dee356831f'
   head 'git://github.com/clojure/clojure.git'

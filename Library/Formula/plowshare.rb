@@ -1,6 +1,6 @@
 require 'formula'
 
-class Plowshare <Formula
+class Plowshare < Formula
   head 'http://plowshare.googlecode.com/svn/trunk/'
   homepage 'http://code.google.com/p/plowshare/'
 

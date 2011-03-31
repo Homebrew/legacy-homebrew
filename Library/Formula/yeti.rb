@@ -1,10 +1,10 @@
 require 'formula'
 
-class Yeti <Formula
+class Yeti < Formula
   url 'http://linux.ee/~mzz/yeti/yeti.jar'
   homepage 'http://mth.github.com/yeti/'
-  md5 '9be281e8b6cfe3e96f9ea95155d1dc97'
-  version '2010.04' # Yeti doesn't do any versioning that I can see, so use date
+  md5 'bff76dd83376c8d5828c1e813c2d774a'
+  version '2011.03' # Yeti doesn't do any versioning that I can see, so use date
 
   head 'git://github.com/mth/yeti.git'
 

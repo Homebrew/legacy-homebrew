@@ -1,6 +1,6 @@
 require 'formula'
 
-class Kdelibs <Formula
+class Kdelibs < Formula
   url 'ftp://ftp.kde.org/pub/kde/stable/4.6.0/src/kdelibs-4.6.0.tar.bz2'
   homepage 'http://www.kde.org/'
   md5 '9ee32f375809a42a4a8d512bd06a612b'

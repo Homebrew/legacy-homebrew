@@ -1,25 +1,3 @@
-class UsageError <RuntimeError; end
-class FormulaUnspecifiedError <UsageError; end
-class KegUnspecifiedError <UsageError; end
-
-class MultipleVersionsInstalledError <RuntimeError
-  attr :name
-
-  def initialize name
-    @name = name
-    super "#{name} has multiple installed versions"
-  end
-end
-
-class NoSuchKegError <RuntimeError
-  attr :name
-
-  def initialize name
-    @name = name
-    super "No such keg: #{HOMEBREW_CELLAR}/#{name}"
-  end
-end
-
 module HomebrewArgvExtension
   def named
     @named ||= reject{|arg| arg[0..0] == '-'}
@@ -31,7 +9,7 @@ module HomebrewArgvExtension
 
   def formulae
     require 'formula'
-    @formulae ||= downcased_unique_named.map{ |name| Formula.factory(Formula.resolve_alias(name)) }
+    @formulae ||= downcased_unique_named.map{ |name| Formula.factory name }
     raise FormulaUnspecifiedError if @formulae.empty?
     @formulae
   end
@@ -40,7 +18,7 @@ module HomebrewArgvExtension
     require 'keg'
     require 'formula'
     @kegs ||= downcased_unique_named.collect do |name|
-      d = HOMEBREW_CELLAR + Formula.resolve_alias(name)
+      d = HOMEBREW_CELLAR+Formula.caniconical_name(name)
       dirs = d.children.select{ |pn| pn.directory? } rescue []
       raise NoSuchKegError.new(name) if not d.directory? or dirs.length == 0
       raise MultipleVersionsInstalledError.new(name) if dirs.length > 1
@@ -76,6 +54,9 @@ module HomebrewArgvExtension
   def build_head?
     flag? '--HEAD'
   end
+  def one?
+    flag? "--1"
+  end
 
   def flag? flag
     options_only.each do |arg|
@@ -86,51 +67,9 @@ module HomebrewArgvExtension
     return false
   end
 
-  def usage; <<-EOS.undent
-    Usage: brew [-v|--version] [--prefix [formula]] [--cache [formula]]
-                [--cellar [formula]] [--config] [--env] [--repository]
-                [-h|--help] COMMAND [formula] ...
-
-    Principal Commands:
-      install formula ... [--ignore-dependencies] [--HEAD]
-      list [--unbrewed|--versions] [formula] ...
-      search [/regex/] [substring]
-      uninstall formula ...
-      update
-
-    Other Commands:
-      info formula [--github]
-      options formula
-      deps formula
-      uses formula [--installed]
-      home formula ...
-      cleanup [formula]
-      link formula ...
-      unlink formula ...
-      outdated
-      missing
-      prune
-      doctor
-
-    Informational:
-      --version
-      --config
-      --prefix [formula]
-      --cache [formula]
-
-    Commands useful when contributing:
-      create URL
-      edit [formula]
-      audit [formula]
-      log formula
-      install formula [-vd|-i]
-
-    For more information:
-      man brew
-
-    To visit the Homebrew homepage type:
-      brew home
-    EOS
+  def usage
+    require 'cmd/help'
+    Homebrew.help_s
   end
 
   private

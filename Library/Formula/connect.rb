@@ -1,6 +1,6 @@
 require 'formula'
 
-class Connect <Formula
+class Connect < Formula
   url 'http://www.taiyo.co.jp/~gotoh/ssh/connect.c'
   version '1.100'
   homepage 'http://bent.latency.net/bent/git/goto-san-connect-1.85/src/connect.html'
