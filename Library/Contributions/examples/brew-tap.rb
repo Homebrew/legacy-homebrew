@@ -22,42 +22,30 @@ done using the HTTParty gem, but that gem could not be imported.
   exit 1
 end
 
-# Load the official Homebrew updater
+# `brew-tap update` makes use of the same class as `brew update`
 require 'cmd/update'
-
-# Status:
-#
-# Done:
-#
-#   - Repository listing
-#   - Repository cloning
-#   - Resolution of non-standard formulae names to brewfile paths inside
-#     alternative repos
-#   - Partial matching for repository names
-#   - Repository removal
-#   - Option for restricting formulae resolution to a specific
-#     repository/subfolder
-#   - Deal with multiple copies of the same formula
-#   - Repository update
-#   - Usage message
-#
-# TODO:
-#
-#   - Dependency resolution---this one will be tricky
-#   - Proper classes for exceptions.
 
 
 module Homebrew extend self
   def tap
-    # Some hardcoded parameters---hopefully these can be generalized in the
-    # future.
+    # Some hardcoded parameters---currently brew-tap is designed to work with
+    # repositories in the fork network of Adam's homebrew-alt. There are two
+    # reasons this was done:
+    #
+    #   * The fork network provides a convienient way to discover new
+    #     repositories.
+    #
+    #   * The repositories have a "known structure" in that every *.rb file
+    #     contained within is a homebrew formula.
+    #
+    # Hopefully, this infrastructure can be generalized to include any git
+    # repository that contains homebrew formulae.
     taproom_path = HOMEBREW_PREFIX + 'Library' + 'Taproom'
     founding_brewery = {:owner => 'adamv', :name => 'homebrew-alt'}
     taproom = Taproom.new(taproom_path, Brewery.new(founding_brewery))
 
     tap_usage = <<-EOS
 Usage: brew tap <command> [args]
-
 Commands:
 
 list
@@ -76,17 +64,16 @@ brew_command [--options] [<formulae>...]
 See 'brew tap help' for more detailed information.
     EOS
 
-    # Entry point for Homebrew. Responsible for parsing the command line and
-    # executing brew-tap subcommands.
     if ARGV.empty?
       puts tap_usage
       exit 0
     end
 
-    cmd = ARGV.shift
-    if cmd == 'help'
-      exec "man #{HOMEBREW_PREFIX + 'share' + 'man' + 'man1' + 'brew-tap.1'}"
-    elsif cmd == 'list'
+    case cmd = ARGV.shift
+    when 'help'
+      exec "man #{HOMEBREW_PREFIX}/share/man/man1/brew-tap.1"
+
+    when 'list'
       # Lists tapped repositories and available repositories
       ohai "Repositories on tap:\n"
       taproom.tapped.each do |brewery|
@@ -107,19 +94,23 @@ See 'brew tap help' for more detailed information.
       end
 
       ohai "Menu last updated: #{taproom.menu[:menu_updated]}"
-    elsif cmd == 'update'
+
+    when 'update'
       # Update list of available repositories and perform `brew update`-like
       # operations on them
-      taproom.restock
-      taproom.update_menu
-    elsif cmd == 'add'
+      taproom.restock!
+      taproom.update_menu!
+
+    when 'add'
       raise "A repository name must be passed to brew-tap add!" if ARGV.empty?
       brewery_name = ARGV.shift
-      taproom.tap brewery_name
-    elsif cmd == 'remove'
-      raise "A repository name must be passed to brew-tap add!" if ARGV.empty?
+      taproom.tap! brewery_name
+
+    when 'remove'
+      raise "A repository name must be passed to brew-tap remove!" if ARGV.empty?
       brewery_name = ARGV.shift
-      taproom.remove brewery_name
+      taproom.remove! brewery_name
+
     else
       # At this point, we expect cmd is a `brew` subcommand followed by one or
       # more non-standard formulae. The task is to resolve these formulae to
@@ -139,6 +130,8 @@ end
 
 class Brewery
   # A Brewery represents a GitHub repository containing Homebrew formulae.
+
+  # HTTParty configuration
   include HTTParty
   base_uri 'github.com/api/v2/json/repos/show'
   format :json
@@ -150,7 +143,7 @@ class Brewery
     @name = args[:name]
     # id should be a unique identifier that could be to clone this repository,
     # along with several others from the same network, and not worry about
-    # folders overwriting each other.
+    # folder names clashing with each other.
     @id = args[:id] || [owner, name].join('-')
     @url = args[:url] || "git://github.com/#{owner}/#{name}.git"
   end
@@ -272,12 +265,16 @@ end
 
 
 class Taproom
-  # The Taproom manages the offerings of several breweries.
+  # The Taproom manages a folder into which "breweries" (repositiories) are
+  # placed "on tap" (cloned). The Taproom class mantains a list of cloned
+  # repositories and available repositories called the "menu". It manages the
+  # cloning and removal of repositories and resolves formulae names to
+  # brewfiles within the cloned repositories.
   attr_reader :path, :menu_path, :founder
 
   def initialize path, founder
-    if not File.directory?(path)
-      Dir.mkdir path # Or die? Needz moar error checking!
+    if not File.directory? path
+      Dir.mkdir path rescue raise "Unable to create Taproom directory at #{path}!"
     end
 
     @path = path
@@ -295,7 +292,7 @@ class Taproom
 
   def get_menu
     if not File.exists? @menu_path
-      update_menu
+      update_menu!
     end
 
     menu = YAML.load_file @menu_path
@@ -304,12 +301,12 @@ class Taproom
     return menu
   end
 
-  def update_menu
+  def update_menu!
     menu = {:menu_updated => Time.now, :breweries => @founder.network.map {|b| b.to_hash}}
     File.open(@menu_path, 'w') {|file| file.write(menu.to_yaml)}
   end
 
-  def restock
+  def restock!
     abort "Please `brew install git' first." unless system "/usr/bin/which -s git"
 
     # Iterate over each tapped brewery and run the equivalent of `brew update`
@@ -350,7 +347,7 @@ class Taproom
       raise "No repository named #{name} on the menu!"
     elsif brewery.length > 1
       onoe "More than one brewery starts with #{name}:"
-      puts_columns brewery
+      puts_columns brewery.map {|b| b.id}
       raise "Please specify enough of the brewery name for a unique match."
     else
       brewery[0]
@@ -372,11 +369,7 @@ class Taproom
     d_names, f_name = Pathname.new(name).split
 
     search_dirs = []
-    d_names.each_filename do |fname|
-      unless fname == '.'
-        search_dirs << fname + '*'
-      end
-    end
+    d_names.each_filename {|d| search_dirs << d + '*' unless d == '.'}
 
     matches = Dir[File.join(@path, search_dirs, '**', "#{f_name}.rb")]
 
@@ -400,7 +393,7 @@ class Taproom
     end
   end
 
-  def tap name
+  def tap! name
     # This method will run a checkout on the specified brewery.
     brewery = get_brewery name
 
@@ -416,7 +409,7 @@ class Taproom
     end
   end
 
-  def remove name
+  def remove! name
     # This method will remove the specified brewery from the Taproom directory.
     brewery = get_brewery name
 
