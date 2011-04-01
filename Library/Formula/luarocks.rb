@@ -5,7 +5,12 @@ class Luarocks < Formula
   homepage 'http://luarocks.org'
   md5 'f8b13b642f8bf16740cac009580cda48'
 
-  depends_on 'lua'
+  depends_on 'lua' unless ARGV.include? '--with-luajit'
+  depends_on 'luajit' if ARGV.include? '--with-luajit'
+
+  def options
+    [['--with-luajit', 'Use LuaJIT instead of the stock Lua.']]
+  end
 
   def install
     fails_with_llvm "Lua itself compiles with llvm, but may fail when other software trys to link."
@@ -13,9 +18,17 @@ class Luarocks < Formula
     # Install to the Cellar, but direct modules to HOMEBREW_PREFIX
     # Configure can detect 'wget' to use as a downloader, but we don't
     # require it since curl works too and comes with OS X.
-    system "./configure", "--prefix=#{prefix}",
-                          "--rocks-tree=#{HOMEBREW_PREFIX}/lib/luarocks",
-                          "--sysconfdir=#{etc}/luarocks"
+    if ARGV.include? '--with-luajit'
+      system "./configure", "--prefix=#{prefix}",
+                            "--rocks-tree=#{HOMEBREW_PREFIX}/lib/luarocks",
+                            "--sysconfdir=#{etc}/luarocks",
+                            "--with-lua-include=#{HOMEBREW_PREFIX}/include/luajit-2.0",
+                            "--lua-suffix=jit"
+    else
+      system "./configure", "--prefix=#{prefix}",
+                            "--rocks-tree=#{HOMEBREW_PREFIX}/lib/luarocks",
+                            "--sysconfdir=#{etc}/luarocks"
+    end
     system "make"
     system "make install"
   end
