@@ -17,6 +17,7 @@ class Netcdf < Formula
 
   def install
     ENV.fortran if fortran?
+    ENV.append 'LDFLAGS', '-lsz' # So configure finds szip during HDF5 tests
 
     # HDF5 is required to create and access files in the version 4 format
     hdf5 = Formula.factory 'hdf5'
@@ -25,7 +26,8 @@ class Netcdf < Formula
             "--prefix=#{prefix}",
             "--with-hdf5=#{hdf5.prefix}",
             "--enable-netcdf4",
-            "--enable-shared"]
+            "--enable-shared",
+            "--with-szlib=#{HOMEBREW_PREFIX}"]
     args << "--disable-fortran" unless fortran?
 
     system "./configure", *args
