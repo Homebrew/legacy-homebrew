@@ -562,10 +562,8 @@ def check_for_MACOSX_DEPLOYMENT_TARGET
 end
 
 def check_for_CLICOLOR_FORCE
-  target_var = ENV['CLICOLOR_FORCE']
-  return if target_var.to_s.empty?
-
-  unless target_var == MACOS_VERSION.to_s
+  target_var = ENV['CLICOLOR_FORCE'].to_s
+  unless target_var.empty?
     puts <<-EOS.undent
     $CLICOLOR_FORCE was set to #{target_var}
     Having $CLICOLOR_FORCE set can cause git installs to fail.
