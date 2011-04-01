@@ -18,20 +18,17 @@ class Mysql < Formula
     ]
   end
 
-  def patches
-    DATA
-  end
+  def patches; DATA; end
 
   def install
-    args = [
-      ".",
-      "-DCMAKE_INSTALL_PREFIX='#{prefix}'",
-      "-DMYSQL_DATADIR='#{var}/mysql'",
-      "-DINSTALL_MANDIR='#{man}'",
-      "-DWITH_SSL=yes",
-      "-DDEFAULT_CHARSET='utf8'",
-      "-DDEFAULT_COLLATION='utf8_general_ci'",
-      "-DSYSCONFDIR='#{HOMEBREW_PREFIX}/etc'"]
+    args = [".",
+            "-DCMAKE_INSTALL_PREFIX=#{prefix}",
+            "-DMYSQL_DATADIR=#{var}/mysql",
+            "-DINSTALL_MANDIR=#{man}",
+            "-DWITH_SSL=yes",
+            "-DDEFAULT_CHARSET=utf8",
+            "-DDEFAULT_COLLATION=utf8_general_ci",
+            "-DSYSCONFDIR=#{etc}"]
 
     # To enable unit testing at build, we need to download the unit testing suite
     args << "-DWITH_UNIT_TESTS=OFF" if not ARGV.include? '--with-tests'
@@ -48,6 +45,10 @@ class Mysql < Formula
     system "make install"
 
     (prefix+'com.mysql.mysqld.plist').write startup_plist
+
+    # Don't create databases inside of the prefix!
+    # See: https://github.com/mxcl/homebrew/issues/4975
+    rm_rf prefix+'data'
   end
 
   def caveats; <<-EOS.undent
