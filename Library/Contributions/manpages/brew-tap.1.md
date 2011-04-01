@@ -11,6 +11,8 @@ brew-tap(1) -- Multi-Repository Support for Homebrew
 
 `brew tap` remove <repository>
 
+`brew tap` which <formulae>...
+
 `brew tap` <brew_command> [--options] [<formulae>...]
 
 ## DESCRIPTION
@@ -43,6 +45,10 @@ homebrew-alt network:
   * `remove` <repository>:
     Remove a cloned repository from the system. <repository> follows the
     same rules outlined above for `brew tap add`
+
+  * `which` <formulae>...:
+    Resolve one or more formula names to brewfiles within cloned repositories
+    and print the paths to the brewfiles.
 
   * <brew_command> [--options] [<formulae>...]:
     Where <brew_command> is a `brew` subcommand such as `install`.  Any

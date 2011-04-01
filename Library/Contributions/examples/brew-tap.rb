@@ -58,6 +58,9 @@ add <repository>
 remove <repository>
   Manage cloned repositories.
 
+which <formulae>...
+  Resolve formula names to brewfiles and then print the brewfile paths.
+
 brew_command [--options] [<formulae>...]
   Run a brew command, such as install, using formulae in alternate repositories.
 
@@ -110,6 +113,12 @@ See 'brew tap help' for more detailed information.
       raise "A repository name must be passed to brew-tap remove!" if ARGV.empty?
       brewery_name = ARGV.shift
       taproom.remove! brewery_name
+
+    when 'which'
+      formulae = ARGV.named
+      raise FormulaUnspecifiedError if formulae.empty?
+      formulae.map! {|f| taproom.get_formula f}
+      puts formulae
 
     else
       # At this point, we expect cmd is a `brew` subcommand followed by one or

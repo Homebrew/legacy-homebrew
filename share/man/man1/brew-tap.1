@@ -19,6 +19,9 @@
 \fBbrew tap\fR remove \fIrepository\fR
 .
 .P
+\fBbrew tap\fR which \fIformulae\fR\.\.\.
+.
+.P
 \fBbrew tap\fR \fIbrew_command\fR [\-\-options] [\fIformulae\fR\.\.\.]
 .
 .SH "DESCRIPTION"
@@ -47,6 +50,10 @@ Clone a repository so that the formulae it contains will be accessable to \fBbre
 .TP
 \fBremove\fR \fIrepository\fR
 Remove a cloned repository from the system\. \fIrepository\fR follows the same rules outlined above for \fBbrew tap add\fR
+.
+.TP
+\fBwhich\fR \fIformulae\fR\.\.\.
+Resolve one or more formula names to brewfiles within cloned repositories and print the paths to the brewfiles\.
 .
 .TP
 \fIbrew_command\fR [\-\-options] [\fIformulae\fR\.\.\.]
