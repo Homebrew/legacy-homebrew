@@ -7,8 +7,9 @@ class W3m < Formula
 
   depends_on 'bdw-gc'
 
+  fails_with_llvm
+
   def install
-    fails_with_llvm
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-image"
