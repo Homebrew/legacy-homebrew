@@ -166,8 +166,8 @@ class Brewery
     @branches ||= get_branches
   end
 
-  def default_branch
-    @default_branch ||= get_default_branch
+  def master
+    @master ||= get_master_branch
   end
 
 
@@ -187,22 +187,9 @@ class Brewery
     self.class.get("/#{@owner}/#{@name}/branches").parsed_response['branches']
   end
 
-  def get_default_branch
-    # Unfortunately, GitHub has not implemented this natively in their API...
-    # yet. They keep saying they will and the last response was something along
-    # the lines of "Ooops, that was supposed to be in the last update". So
-    # it will happen eventually. The workaround is to use git ls-remote to find
-    # the remote HEAD and compare its SHA against the branch list.
-    git_info = `git ls-remote #{@url}`.to_a
-    hub_head = Hash[git_info.map{|line| line.split.reverse}].fetch 'HEAD'
-    branches.invert.fetch hub_head # Unfortunately, this  can fail to specify a
-                                   # unique branch name if two branches
-                                   # share the same SHA (i.e. a branch other
-                                   # than the default branch is in perfect sync
-                                   # with it.) This should not be important for
-                                   # pulling, but would be important if you
-                                   # absolutely needed the correct branch name
-                                   # for some reason.
+  def get_master_branch
+    # When no value is returned by the API, the master branch is named master.
+    self.class.get("/#{@owner}/#{@name}").parsed_response['repository']['master_branch'] || 'master'
   end
 end
 
@@ -213,14 +200,8 @@ class RefreshBrew
   def update_from_brewery! taproom_path, brewery
     output = ''
     (taproom_path + brewery.id).cd do
-      # See caveat in Brewery class concerning default_branch. Under some
-      # unlikely circumstances, we may end up pulling from a branch that is
-      # not actually the master---but it should bring in the same content as
-      # the SHA will be the same. This caveat probably isn't important for a
-      # pull.
-      #
-      # Probably.
-      output = execute "git pull #{brewery.url} #{brewery.default_branch}"
+      safe_system "git checkout -q #{brewery.master}"
+      output = execute "git pull #{brewery.url} #{brewery.master}"
     end
 
     output.split("\n").reverse.each do |line|
