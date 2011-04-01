@@ -40,7 +40,7 @@ class Boost < Formula
     end
 
     additional_jam_args = []
-    additional_jam_args << "address-model=32_64" << "pch=off" if ARGV.include? "--universal"
+    additional_jam_args << "address-model=32_64" << "architecture=x86" << "pch=off" if ARGV.include? "--universal"
 
     # we specify libdir too because the script is apparently broken
     system "./bootstrap.sh", "--prefix=#{prefix}", "--libdir=#{lib}"
