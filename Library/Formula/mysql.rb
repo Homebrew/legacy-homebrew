@@ -26,7 +26,7 @@ class Mysql < Formula
     args = [
       ".",
       "-DCMAKE_INSTALL_PREFIX='#{prefix}'",
-      "-DMYSQL_DATADIR='#{var}/mysql/data'",
+      "-DMYSQL_DATADIR='#{var}/mysql'",
       "-DINSTALL_MANDIR='#{man}'",
       "-DWITH_SSL=yes",
       "-DDEFAULT_CHARSET='utf8'",
