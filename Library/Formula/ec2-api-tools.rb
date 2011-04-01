@@ -41,8 +41,8 @@ end
 
 class Ec2ApiTools <AmazonWebServicesFormula
   homepage 'http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351'
-  url 'http://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.3-62308.zip'
-  md5 'cd0de5244f01a3d402ec2461d05f06aa'
+  url 'http://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.4.2.2.zip'
+  md5 'cdba94d87579823b4d043f629be338f0'
 
   def install
     standard_install

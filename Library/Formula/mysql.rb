@@ -12,8 +12,8 @@ class Mysql < Formula
 
   def options
     [
-      ['--with-tests', "Keep tests when installing."],
-      ['--with-bench', "Keep benchmark app when installing."],
+      ['--with-tests', "Build with unit tests."],
+      ['--with-embedded', "Build the embedded server."],
       ['--universal', "Make mysql a universal binary"]
     ]
   end
@@ -33,8 +33,12 @@ class Mysql < Formula
       "-DDEFAULT_COLLATION='utf8_general_ci'",
       "-DSYSCONFDIR='#{HOMEBREW_PREFIX}/etc'"]
 
+    # To enable unit testing at build, we need to download the unit testing suite
     args << "-DWITH_UNIT_TESTS=OFF" if not ARGV.include? '--with-tests'
-    args << "-DINSTALL_SQLBENCHDIR=" if not ARGV.include? '--with-bench'
+    args << "-DENABLE_DOWNLOADS=ON" if ARGV.include? '--with-tests'
+
+    # Build the embedded server
+    args << "-DWITH_EMBEDDED_SERVER=ON" if ARGV.include? '--with-embedded'
 
     # Make universal for bindings to universal applications
     args << "-DCMAKE_OSX_ARCHITECTURES='ppc;i386'" if ARGV.include? '--universal'
