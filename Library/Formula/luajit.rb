@@ -6,6 +6,8 @@ class Luajit < Formula
   homepage 'http://luajit.org/luajit.html'
   md5 'bfcbe2a11162cfa84d5a1693b442c8bf'
 
+  # Skip cleaning both empty folders and bin/libs so external symbols still work.
+  skip_clean :all
 
   def install
     system "make", "PREFIX=#{prefix}", "install"

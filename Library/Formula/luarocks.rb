@@ -1,9 +1,9 @@
 require 'formula'
 
 class Luarocks < Formula
-  url 'http://luarocks.org/releases/luarocks-2.0.2.tar.gz'
+  url 'http://luarocks.org/releases/luarocks-2.0.4.1.tar.gz'
   homepage 'http://luarocks.org'
-  md5 'f8b13b642f8bf16740cac009580cda48'
+  md5 '2c7caccce3cdf236e6f9aca7bec9bdea'
 
   depends_on 'lua' unless ARGV.include? '--with-luajit'
   depends_on 'luajit' if ARGV.include? '--with-luajit'
