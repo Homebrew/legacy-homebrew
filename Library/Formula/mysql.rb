@@ -14,7 +14,8 @@ class Mysql < Formula
     [
       ['--with-tests', "Build with unit tests."],
       ['--with-embedded', "Build the embedded server."],
-      ['--universal', "Make mysql a universal binary"]
+      ['--universal', "Make mysql a universal binary"],
+      ['--enable-local-infile', "Build with local infile loading support"]
     ]
   end
 
@@ -39,6 +40,9 @@ class Mysql < Formula
 
     # Make universal for bindings to universal applications
     args << "-DCMAKE_OSX_ARCHITECTURES='ppc;i386'" if ARGV.include? '--universal'
+
+    # Build with local infile loading support
+    args << "-DENABLED_LOCAL_INFILE=1" if ARGV.include? '--enable-local-infile'
 
     system "cmake", *args
     system "make"
