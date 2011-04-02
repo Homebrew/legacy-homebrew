@@ -10,6 +10,8 @@ class Mysql < Formula
 
   fails_with_llvm "https://github.com/mxcl/homebrew/issues/issue/144"
 
+  skip_clean :all # So "INSTALL PLUGIN" can work.
+
   def options
     [
       ['--with-tests', "Build with unit tests."],
@@ -32,8 +34,11 @@ class Mysql < Formula
             "-DSYSCONFDIR=#{etc}"]
 
     # To enable unit testing at build, we need to download the unit testing suite
-    args << "-DWITH_UNIT_TESTS=OFF" if not ARGV.include? '--with-tests'
-    args << "-DENABLE_DOWNLOADS=ON" if ARGV.include? '--with-tests'
+    if ARGV.include? '--with-tests'
+      args << "-DENABLE_DOWNLOADS=ON"
+    else
+      args << "-DWITH_UNIT_TESTS=OFF"
+    end
 
     # Build the embedded server
     args << "-DWITH_EMBEDDED_SERVER=ON" if ARGV.include? '--with-embedded'
@@ -53,34 +58,45 @@ class Mysql < Formula
     # Don't create databases inside of the prefix!
     # See: https://github.com/mxcl/homebrew/issues/4975
     rm_rf prefix+'data'
+
+    # Link the setup script into bin
+    ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
   end
 
   def caveats; <<-EOS.undent
-    Set up databases with:
-        unset TMPDIR
-        cd #{prefix}
-        scripts/mysql_install_db --basedir=#{prefix} --user=mysql --tmpdir=/tmp
+    Set up databases to run AS YOUR USER ACCOUNT with:
+      $ unset TMPDIR
+      $ mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix mysql)" --datadir=/usr/local/var/mysql --tmpdir=/tmp
 
-    Running the mysql_install_db command with the user and tmpdir option will
-        ensure that there is no issue creating your system databases.
+    To set up base tables in another folder, or use a differnet user to run
+    mysqld, view the help for mysqld_install_db:
+      $ mysql_install_db --help
+    and view the MySQL documentation:
+      * http://dev.mysql.com/doc/refman/5.5/en/mysql-install-db.html
+      * http://dev.mysql.com/doc/refman/5.5/en/default-privileges.html
 
-    If this is your first install, automatically load on login with:
-        mkdir -p ~/Library/LaunchAgents
-        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+    To run as, for instance, user "mysql", you may need to `sudo`:
+      $ sudo mysql_install_db ...options...
 
-    If this is an upgrade and you already have the com.mysql.mysqld.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
-        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+    Start mysqld manually with:
+      $ mysqld_safe &
 
-    Note on upgrading:
-        We overwrite any existing com.mysql.mysqld.plist in ~/Library/LaunchAgents
-        if we are upgrading because previous versions of this brew created the
-        plist with a version specific program argument.
+    To connect:
+      $ mysql -uroot
 
-    Or start manually with:
-        mysqld_safe &
+    To launch on startup:
+    * if this is your first install:
+      $ mkdir -p ~/Library/LaunchAgents
+      $ cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents/
+      $ launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+
+    * if this is an upgrade and you already have the com.mysql.mysqld.plist loaded:
+      $ launchctl unload -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+      $ cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents/
+      $ launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+
+    You may need to edit the plist to use the correct "UserName".
+
     EOS
   end
 
