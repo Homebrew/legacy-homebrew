@@ -1,10 +1,10 @@
 require 'formula'
 
-class Sleuthkit <Formula
+class Sleuthkit < Formula
   head 'http://svn.sleuthkit.org/repos/sleuthkit/trunk', :using => :svn
-  url 'http://downloads.sourceforge.net/project/sleuthkit/sleuthkit/3.2.0/sleuthkit-3.2.0.tar.gz'
+  url 'http://downloads.sourceforge.net/project/sleuthkit/sleuthkit/3.2.1/sleuthkit-3.2.1.tar.gz'
   homepage 'http://www.sleuthkit.org/'
-  md5 '05517963942aa92be77c05ca1c47f0de'
+  md5 'd873361cb5ef29f02c7107f9aec39b4f'
 
   depends_on 'afflib' => :optional
   depends_on 'libewf' => :optional

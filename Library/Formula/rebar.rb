@@ -1,8 +1,8 @@
 require 'formula'
 
-class Rebar <Formula
-  head 'http://hg.basho.com/rebar/get/tip.tar.gz'
-  homepage 'http://hg.basho.com/rebar/'
+class Rebar < Formula
+  head "git://github.com/basho/rebar.git", :branch => "master"
+  homepage 'https://github.com/basho/rebar/wiki'
 
   depends_on 'erlang'
 

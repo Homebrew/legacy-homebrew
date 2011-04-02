@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gant <Formula
+class Gant < Formula
   url 'http://dist.codehaus.org/gant/distributions/gant-1.9.3-_groovy-1.7.3.tgz'
   version '1.9.3'
   homepage 'http://gant.codehaus.org/'

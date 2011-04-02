@@ -19,11 +19,13 @@ module HomebrewEnvExtension
     end
 
     if MACOS_VERSION >= 10.6 and (self['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
-      xcode_path = `/usr/bin/xcode-select -print-path`.chomp
-      xcode_path = "/Developer" if xcode_path.to_s.empty?
-      self['CC'] = "#{xcode_path}/usr/bin/llvm-gcc"
-      self['CXX'] = "#{xcode_path}/usr/bin/llvm-g++"
+      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
+      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
       cflags = ['-O4'] # link time optimisation baby!
+    elsif MACOS_VERSION >= 10.6 and (self['HOMEBREW_USE_GCC'] or ARGV.include? '--use-gcc')
+      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/gcc"
+      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/g++"
+      cflags = ['-O3']
     else
       # If these aren't set, many formulae fail to build
       self['CC'] = '/usr/bin/cc'
@@ -121,12 +123,58 @@ module HomebrewEnvExtension
   end
 
   def llvm
-    xcode_path = `/usr/bin/xcode-select -print-path`.chomp
-    xcode_path = "/Developer" if xcode_path.to_s.empty?
-    self['CC'] = "#{xcode_path}/usr/bin/llvm-gcc"
-    self['CXX'] = "#{xcode_path}/usr/bin/llvm-g++"
+    self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
+    self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
     self['LD'] = self['CC']
     self.O4
+  end
+
+  def fortran
+    if self['FC']
+      ohai "Building with an alternative Fortran compiler. This is unsupported."
+      self['F77'] = self['FC'] unless self['F77']
+
+      if ARGV.include? '--default-fortran-flags'
+        self['FCFLAGS'] = self['CFLAGS'] unless self['FCFLAGS']
+        self['FFFLAGS'] = self['CFLAGS'] unless self['FFFLAGS']
+      elsif not self['FCFLAGS'] or self['FFLAGS']
+        opoo <<-EOS
+No Fortran optimization information was provided.  You may want to consider
+setting FCFLAGS and FFLAGS or pass the `--default-fortran-flags` option to
+`brew install` if your compiler is compatible with GCC.
+
+If you like the default optimization level of your compiler, ignore this
+warning.
+        EOS
+      end
+
+    elsif `/usr/bin/which gfortran`.chomp.size > 0
+      ohai <<-EOS
+Using Homebrew-provided fortran compiler.
+    This may be changed by setting the FC environment variable.
+      EOS
+      self['FC'] = `/usr/bin/which gfortran`.chomp
+      self['F77'] = self['FC']
+
+      self['FCFLAGS'] = self['CFLAGS']
+      self['FFLAGS'] = self['CFLAGS']
+
+    else
+      onoe <<-EOS
+This formula requires a fortran compiler, but we could not find one by
+looking at the FC environment variable or searching your PATH for `gfortran`.
+Please take one of the following actions:
+
+  - Decide to use the build of gfortran 4.2.x provided by Homebrew using
+        `brew install gfortran`
+
+  - Choose another Fortran compiler by setting the FC environment variable:
+        export FC=/path/to/some/fortran/compiler
+    Using an alternative compiler may produce more efficient code, but we will
+    not be able to provide support for build errors.
+      EOS
+      exit 1
+    end
   end
 
   def osx_10_4
@@ -147,12 +195,13 @@ module HomebrewEnvExtension
     self['CFLAGS'] = self['CXXFLAGS'] = SAFE_CFLAGS_FLAGS
   end
 
+  # Some configure scripts won't find libxml2 without help
   def libxml2
-    append_to_cflags ' -I/usr/include/libxml2'
+    append_to_cflags '-I/usr/include/libxml2'
   end
 
   def x11
-    opoo "You do not have X11 installed, this formula may not build." if not x11_installed?
+    opoo "You do not have X11 installed, this formula may not build." if not MacOS.x11_installed?
 
     # There are some config scripts (e.g. freetype) here that should go in the path
     prepend 'PATH', '/usr/X11/bin', ':'

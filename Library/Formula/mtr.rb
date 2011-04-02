@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mtr <Formula
+class Mtr < Formula
   url 'ftp://ftp.bitwizard.nl/mtr/mtr-0.80.tar.gz'
   homepage 'http://www.bitwizard.nl/mtr/'
   md5 'fa68528eaec1757f52bacf9fea8c68a9'

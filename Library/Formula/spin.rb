@@ -1,17 +1,18 @@
 require 'formula'
 
-class Spin <Formula
+class Spin < Formula
   url 'http://spinroot.com/spin/Src/spin525.tar.gz'
   homepage 'http://spinroot.com/spin/whatispin.html'
   md5 '03345f9713e7b4f82d2d8ec319802b9c'
   version '5.2.5'
+
+  fails_with_llvm
 
   def patches
     DATA
   end
 
   def install
-    fails_with_llvm
     ENV.deparallelize
 
     # Compile and install the binary.

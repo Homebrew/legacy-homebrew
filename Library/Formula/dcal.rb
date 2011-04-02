@@ -1,6 +1,6 @@
 require 'formula'
 
-class Dcal <Formula
+class Dcal < Formula
   url 'http://alexeyt.freeshell.org/code/dcal.c'
   homepage 'http://alexeyt.freeshell.org/'
   md5 '66e6abfccf934cf1e7fb8e467cc8f005'

@@ -1,10 +1,10 @@
 require 'formula'
 
-class Logstalgia <Formula
-  url 'http://logstalgia.googlecode.com/files/logstalgia-1.0.2.tar.gz'
+class Logstalgia < Formula
+  url 'http://logstalgia.googlecode.com/files/logstalgia-1.0.3.tar.gz'
   head 'git://github.com/acaudwell/Logstalgia.git'
   homepage 'http://code.google.com/p/logstalgia/'
-  md5 'c72fcff8fd507bee6c1aebf80d24009c'
+  md5 '5160380adb1fb1ed9272cf57fbdf3341'
 
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
@@ -22,7 +22,7 @@ class Logstalgia <Formula
     # Handle building head.
     system "autoreconf -f -i" unless File.exist? "configure"
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
     system "make install"

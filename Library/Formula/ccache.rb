@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ccache <Formula
+class Ccache < Formula
   url 'http://samba.org/ftp/ccache/ccache-3.1.4.tar.bz2'
   homepage 'http://ccache.samba.org/'
   md5 '676fda8a9a5e02574435c32b22942abd'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libftdi <Formula
+class Libftdi < Formula
   url "http://www.intra2net.com/en/developer/libftdi/download/libftdi-0.17.tar.gz"
   homepage 'http://www.intra2net.com/en/developer/libftdi'
   md5 '810c69cfaa078b49795c224ef9b6b851'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Colloquypush <Formula
+class Colloquypush < Formula
   head 'git://github.com/wired/colloquypush.git'
   homepage 'https://github.com/wired/colloquypush'
 
