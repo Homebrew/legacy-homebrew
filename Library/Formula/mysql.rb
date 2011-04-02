@@ -14,24 +14,22 @@ class Mysql < Formula
     [
       ['--with-tests', "Build with unit tests."],
       ['--with-embedded', "Build the embedded server."],
-      ['--universal', "Make mysql a universal binary"]
+      ['--universal', "Make mysql a universal binary"],
+      ['--enable-local-infile', "Build with local infile loading support"]
     ]
   end
 
-  def patches
-    DATA
-  end
+  def patches; DATA; end
 
   def install
-    args = [
-      ".",
-      "-DCMAKE_INSTALL_PREFIX='#{prefix}'",
-      "-DMYSQL_DATADIR='#{var}/mysql/data'",
-      "-DINSTALL_MANDIR='#{man}'",
-      "-DWITH_SSL=yes",
-      "-DDEFAULT_CHARSET='utf8'",
-      "-DDEFAULT_COLLATION='utf8_general_ci'",
-      "-DSYSCONFDIR='#{HOMEBREW_PREFIX}/etc'"]
+    args = [".",
+            "-DCMAKE_INSTALL_PREFIX=#{prefix}",
+            "-DMYSQL_DATADIR=#{var}/mysql",
+            "-DINSTALL_MANDIR=#{man}",
+            "-DWITH_SSL=yes",
+            "-DDEFAULT_CHARSET=utf8",
+            "-DDEFAULT_COLLATION=utf8_general_ci",
+            "-DSYSCONFDIR=#{etc}"]
 
     # To enable unit testing at build, we need to download the unit testing suite
     args << "-DWITH_UNIT_TESTS=OFF" if not ARGV.include? '--with-tests'
@@ -43,11 +41,18 @@ class Mysql < Formula
     # Make universal for bindings to universal applications
     args << "-DCMAKE_OSX_ARCHITECTURES='ppc;i386'" if ARGV.include? '--universal'
 
+    # Build with local infile loading support
+    args << "-DENABLED_LOCAL_INFILE=1" if ARGV.include? '--enable-local-infile'
+
     system "cmake", *args
     system "make"
     system "make install"
 
     (prefix+'com.mysql.mysqld.plist').write startup_plist
+
+    # Don't create databases inside of the prefix!
+    # See: https://github.com/mxcl/homebrew/issues/4975
+    rm_rf prefix+'data'
   end
 
   def caveats; <<-EOS.undent
