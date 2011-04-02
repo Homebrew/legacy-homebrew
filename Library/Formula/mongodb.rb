@@ -7,13 +7,13 @@ class Mongodb < Formula
   if ARGV.build_head?
     packages = {
       :x86_64 => {
-        :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-1.8.0.tgz',
-        :md5 => 'bba118bd6ba6a0db83aa5b7cff2f21fb',
+        :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-1.8.1-rc1.tgz',
+        :md5 => '76597bddbc36b6f75d1f8c9af499f3ba',
         :version => '1.8.0-x86_64'
       },
       :i386 => {
-        :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-1.8.0.tgz',
-        :md5 => '286109a07e3fdb265d4602571e965ec3',
+        :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-1.8.1-rc1.tgz',
+        :md5 => '73c9514d7cbf4263f7ae3c6442f7ff90',
         :version => '1.8.0-i386'
       }
     }
