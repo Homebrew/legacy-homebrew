@@ -5,9 +5,10 @@ class Asterisk < Formula
   homepage 'http://www.asterisk.org/'
   md5 '63a928373e741524aac09d8c078df7d5'
 
-  def patches
-    DATA
-  end
+  skip_clean :all # Or modules won't load
+
+  # Use cURL instead of wget
+  def patches; DATA; end
 
   def install
     configure_flags = [ "--prefix=#{prefix}", "--localstatedir=#{var}", "--sysconfdir=#{etc}" ]
@@ -21,7 +22,6 @@ class Asterisk < Formula
 end
 
 
-# Use cURL instead of wget
 __END__
 --- a/sounds/Makefile	2009-10-13 02:12:08.000000000 +0300
 +++ b/sounds/Makefile	2009-10-13 02:15:11.000000000 +0300
