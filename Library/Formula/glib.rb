@@ -16,6 +16,8 @@ class Glib < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
 
+  fails_with_llvm "Undefined symbol errors while linking"
+
   def patches
     mp = "http://trac.macports.org/export/77283/trunk/dports/devel/glib2/files/"
     {
@@ -35,8 +37,6 @@ class Glib < Formula
   end
 
   def install
-    fails_with_llvm "Undefined symbol errors while linking"
-
     # Snow Leopard libiconv doesn't have a 64bit version of the libiconv_open
     # function, which breaks things for us, so we build our own
     # http://www.mail-archive.com/gtk-list@gnome.org/msg28747.html
