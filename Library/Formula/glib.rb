@@ -10,8 +10,8 @@ def build_tests?; ARGV.include? '--test'; end
 
 class Glib < Formula
   homepage 'http://www.gtk.org'
-  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.28/glib-2.28.4.tar.bz2'
-  sha256 'ae627cf35c6a2b4bb9b0ea624046de5fa4c40d81c29e75718bc6c2088b6bd7a1'
+  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.28/glib-2.28.5.tar.bz2'
+  sha256 '8eb4b56b228c6d0bf5021dd23db5b0084d80cc6d8d89d7863073c2da575ec22a'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
