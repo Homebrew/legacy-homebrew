@@ -19,8 +19,7 @@ class Fontforge < Formula
     ENV.append "LDFLAGS", "-lintl"
     system "./configure", "--prefix=#{prefix}",
                           "--enable-double",
-                          "--without-freetype-bytecode",
-                          "--without-python"
+                          "--without-freetype-bytecode"
 
     inreplace "Makefile" do |s|
       s.gsub! "/Applications", "$(prefix)"
