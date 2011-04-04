@@ -43,7 +43,7 @@ class Mysql < Formula
     # Build the embedded server
     args << "-DWITH_EMBEDDED_SERVER=ON" if ARGV.include? '--with-embedded'
 
-    # Make universal for bindings to universal applications
+    # Make universal for binding to universal applications
     args << "-DCMAKE_OSX_ARCHITECTURES='ppc;i386'" if ARGV.include? '--universal'
 
     # Build with local infile loading support
@@ -66,7 +66,7 @@ class Mysql < Formula
   def caveats; <<-EOS.undent
     Set up databases to run AS YOUR USER ACCOUNT with:
       $ unset TMPDIR
-      $ mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix mysql)" --datadir=/usr/local/var/mysql --tmpdir=/tmp
+      $ mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix mysql)" --datadir=#{var}/mysql --tmpdir=/tmp
 
     To set up base tables in another folder, or use a differnet user to run
     mysqld, view the help for mysqld_install_db:
