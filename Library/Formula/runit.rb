@@ -20,22 +20,23 @@ class Runit < Formula
     # names added to package/commands. Read the file for the commands and
     # install them in homebrew.
     rcmds = File.open("package/commands").read
+
     rcmds.each do |r|
       bin.install("command/#{r.chomp}")
       man8.install("man/#{r.chomp}.8")
     end
+
     (var + "service").mkpath
   end
 
-  def caveats
-    <<-END_CAVEATS
-This formula does not install runit as a replacement for init.
-The service directory is #{var}/service instead of /service.
-To have runit ready to run services, start runsvdir:
+  def caveats; <<-EOS.undent
+    This formula does not install runit as a replacement for init.
+    The service directory is #{var}/service instead of /service.
 
-    $ runsvdir -P #{var}
+    To have runit ready to run services, start runsvdir:
+         runsvdir -P #{var}
 
-Depending on the services managed by runit, this may need to start as root.
-    END_CAVEATS
+    Depending on the services managed by runit, this may need to start as root.
+    EOS
   end
 end
