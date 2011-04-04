@@ -34,9 +34,9 @@ class Fontforge < Formula
     fontforge is an X11 application.
 
     To install the Mac OS X wrapper application run:
-      $ brew linkapps
+        brew linkapps
     or:
-      $ sudo ln -s #{prefix}/FontForge.app /Applications
+        sudo ln -s #{prefix}/FontForge.app /Applications
     EOS
   end
 end

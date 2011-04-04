@@ -65,37 +65,38 @@ class Mysql < Formula
 
   def caveats; <<-EOS.undent
     Set up databases to run AS YOUR USER ACCOUNT with:
-      $ unset TMPDIR
-      $ mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix mysql)" --datadir=#{var}/mysql --tmpdir=/tmp
+        unset TMPDIR
+        mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix mysql)" --datadir=#{var}/mysql --tmpdir=/tmp
 
     To set up base tables in another folder, or use a differnet user to run
     mysqld, view the help for mysqld_install_db:
-      $ mysql_install_db --help
+        mysql_install_db --help
+
     and view the MySQL documentation:
       * http://dev.mysql.com/doc/refman/5.5/en/mysql-install-db.html
       * http://dev.mysql.com/doc/refman/5.5/en/default-privileges.html
 
     To run as, for instance, user "mysql", you may need to `sudo`:
-      $ sudo mysql_install_db ...options...
+        sudo mysql_install_db ...options...
 
     Start mysqld manually with:
-      $ mysqld_safe &
+        mysqld_safe &
 
     To connect:
-      $ mysql -uroot
+        mysql -uroot
 
     To launch on startup:
     * if this is your first install:
-      $ mkdir -p ~/Library/LaunchAgents
-      $ cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents/
-      $ launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+        mkdir -p ~/Library/LaunchAgents
+        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
 
     * if this is an upgrade and you already have the com.mysql.mysqld.plist loaded:
-      $ launchctl unload -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
-      $ cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents/
-      $ launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+        launchctl unload -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
 
-    You may need to edit the plist to use the correct "UserName".
+    You may also need to edit the plist to use the correct "UserName".
 
     EOS
   end
