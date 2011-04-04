@@ -35,11 +35,15 @@ class Postgresql < Formula
     args << "--with-perl" unless ARGV.include? '--no-perl'
 
     args << "--with-ossp-uuid"
+
+    args << "--datadir=#{share}/#{name}"
+    args << "--docdir=#{doc}"
+
     ENV.append 'CFLAGS', `uuid-config --cflags`.strip
     ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
     ENV.append 'LIBS', `uuid-config --libs`.strip
 
-    if snow_leopard_64? and not ARGV.include? '--no-python'
+    if MacOS.prefer_64_bit? and not ARGV.include? '--no-python'
       args << "ARCHFLAGS='-arch x86_64'"
       check_python_arch
     end
@@ -49,6 +53,7 @@ class Postgresql < Formula
 
     system "./configure", *args
     system "make install"
+    system "make install-docs"
 
     contrib_directories = Dir.glob("contrib/*").select{ |path| File.directory?(path) } - ['contrib/start-scripts']
 
@@ -116,7 +121,7 @@ And stop with:
     pg_ctl -D #{var}/postgres stop -s -m fast
 EOS
 
-    if snow_leopard_64? then
+    if MacOS.prefer_64_bit? then
       s << <<-EOS
 
 If you want to install the postgres gem, including ARCHFLAGS is recommended:

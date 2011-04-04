@@ -26,7 +26,10 @@ class Macvim < Formula
     ENV['CXX'] = nil
     ENV['CXXFLAGS'] = nil
 
-    arch = Hardware.is_64_bit? ? 'x86_64' : 'i386'
+    # Set ARCHFLAGS so the Python app (with C extension) that is
+    # used to create the custom icons will not try to compile in
+    # PPC support (which isn't needed in Homebrew-supported systems.)
+    arch = MacOS.prefer_64_bit? ? 'x86_64' : 'i386'
     ENV['ARCHFLAGS'] = "-arch #{arch}"
 
     args = ["--with-macsdk=#{MACOS_VERSION}",

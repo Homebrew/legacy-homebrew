@@ -12,7 +12,7 @@ class Fish < Formula
     # Reduces the timeout in select_try() from 5s to 10ms.
     # The old timeout would cause fish to frequently freeze for a 5
     # second period.
-    "http://gitorious.org/fish-shell/fish-shell/commit/6b8e7b16f6d4e11e168e3ce2effe2d8f0a53b184.patch"
+    "http://gitorious.org/fish-shell/fish-shell/commit/6b8e7b16f6d4e11e168e3ce2effe2d8f0a53b184.patch?format=diff"
   end
 
   def install

@@ -19,14 +19,12 @@ module HomebrewEnvExtension
     end
 
     if MACOS_VERSION >= 10.6 and (self['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
-      xcode_path = `/usr/bin/xcode-select -print-path`.chomp
-      xcode_path = "/Developer" if xcode_path.to_s.empty?
-      self['CC'] = "#{xcode_path}/usr/bin/llvm-gcc"
-      self['CXX'] = "#{xcode_path}/usr/bin/llvm-g++"
+      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
+      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
       cflags = ['-O4'] # link time optimisation baby!
     elsif MACOS_VERSION >= 10.6 and (self['HOMEBREW_USE_GCC'] or ARGV.include? '--use-gcc')
-      self['CC'] = '/usr/bin/gcc'
-      self['CXX'] = '/usr/bin/g++'
+      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/gcc"
+      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/g++"
       cflags = ['-O3']
     else
       # If these aren't set, many formulae fail to build

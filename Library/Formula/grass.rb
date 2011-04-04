@@ -13,13 +13,13 @@ class Grass < Formula
   url 'http://grass.osgeo.org/grass64/source/grass-6.4.0.tar.gz'
   md5 'ac3233aa3351f8e060ea48246aa01c7f'
 
+  depends_on "pkg-config" => :build
+  depends_on "gettext"
+  depends_on "readline"
   depends_on "gdal"
   depends_on "libtiff"
   depends_on "unixodbc"
   depends_on "fftw"
-  depends_on "readline" # uses GNU Readline
-  depends_on "gettext"  # and GNU gettext
-  depends_on "pkg-config" => :build  # So that GRASS can find Cairo
 
   depends_on "cairo" if MACOS_VERSION < 10.6
 
@@ -69,7 +69,7 @@ class Grass < Formula
       "--without-tcltk" # Disabled due to compatibility issues with OS X Tcl/Tk
     ]
 
-    if Hardware.is_64_bit? and MACOS_VERSION >= 10.6
+    if MacOS.prefer_64_bit?
       configure_args << "--enable-64bit"
       configure_args << "--with-macosx-archs=x86_64"
     else
@@ -80,7 +80,7 @@ class Grass < Formula
     if MACOS_VERSION >= 10.6
       configure_args << "--with-cairo-includes=/usr/X11/include /usr/X11/include/cairo"
     else
-      cairo = Formula.factory( 'cairo' )
+      cairo = Formula.factory('cairo')
       configure_args << "--with-cairo-includes=#{cairo.include + 'cairo'}"
       configure_args << "--with-cairo-libs=#{cairo.lib}"
     end

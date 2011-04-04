@@ -1,27 +1,31 @@
 require 'formula'
 
 class Libiconv < Formula
+  homepage 'http://www.gnu.org/software/libiconv/'
   url 'http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.13.1.tar.gz'
   md5 '7ab33ebd26687c744a37264a330bbe9a'
-  homepage 'http://www.gnu.org/software/libiconv/'
 end
 
 def build_tests?; ARGV.include? '--test'; end
 
 class Glib < Formula
-  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.24/glib-2.24.2.tar.bz2'
-  sha256 '3aeb521abd3642dd1224379f0e54915957e5010f888a4ae74afa0ad54da0160c'
   homepage 'http://www.gtk.org'
+  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.28/glib-2.28.5.tar.bz2'
+  sha256 '8eb4b56b228c6d0bf5021dd23db5b0084d80cc6d8d89d7863073c2da575ec22a'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
 
   def patches
-    mp = "http://trac.macports.org/export/69965/trunk/dports/devel/glib2/files/"
+    mp = "http://trac.macports.org/export/77283/trunk/dports/devel/glib2/files/"
     {
       :p0 => [
-        mp+"patch-configure.in.diff",
-        mp+"patch-child-test.c.diff"
+        mp+"patch-configure.ac.diff",
+        mp+"patch-glib-2.0.pc.in.diff",
+        mp+"patch-glib_gunicollate.c.diff",
+        mp+"patch-gi18n.h.diff",
+        mp+"patch-gio_xdgmime_xdgmime.c.diff",
+        mp+"patch-gio_gdbusprivate.c.diff"
       ]
     }
   end

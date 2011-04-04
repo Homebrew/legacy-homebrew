@@ -65,11 +65,6 @@ def install f
     end
   end
 
-  if ARGV.verbose?
-    ohai "Build Environment"
-    dump_build_env ENV
-  end
-
   build_time = nil
   begin
     f.brew do
@@ -185,6 +180,14 @@ def install f
         puts "install to \"libexec\" and then symlink or wrap binaries into \"bin\"."
         puts "See \"activemq\", \"jruby\", etc. for examples."
       end
+    end
+
+    # Check for m4 files
+    if Dir[f.share+"aclocal/*.m4"].length > 0
+      opoo 'm4 macros were installed to "share/aclocal".'
+      puts "Homebrew does not append \"#{HOMEBREW_PREFIX}/share/aclocal\""
+      puts "to \"/usr/share/aclocal/dirlist\". If an autoconf script you use"
+      puts "requires these m4 macros, you'll need to add this path manually."
     end
 
     # link from Cellar to Prefix

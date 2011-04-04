@@ -1,93 +1,102 @@
 require 'formula'
 
 class Mysql < Formula
-  homepage 'http://dev.mysql.com/doc/refman/5.1/en/'
-  url 'http://mysql.mirrors.pair.com/Downloads/MySQL-5.1/mysql-5.1.56.tar.gz'
-  md5 '15161d67f4830aad3a8a89e083749d49'
+  homepage 'http://dev.mysql.com/doc/refman/5.5/en/'
+  url 'http://ftp.sunet.se/pub/unix/databases/relational/mysql/Downloads/MySQL-5.5/mysql-5.5.10.tar.gz'
+  md5 'ee604aff531ff85abeb10cf332c1355a'
 
+  depends_on 'cmake' => :build
   depends_on 'readline'
+
+  fails_with_llvm "https://github.com/mxcl/homebrew/issues/issue/144"
+
+  skip_clean :all # So "INSTALL PLUGIN" can work.
 
   def options
     [
-      ['--with-tests', "Keep tests when installing."],
-      ['--with-bench', "Keep benchmark app when installing."],
+      ['--with-tests', "Build with unit tests."],
       ['--with-embedded', "Build the embedded server."],
-      ['--client-only', "Only install client tools, not the server."],
       ['--universal', "Make mysql a universal binary"],
-      ['--with-utf8-default', "Set the default character set to utf8"]
+      ['--enable-local-infile', "Build with local infile loading support"]
     ]
   end
 
-  def patches
-    DATA
-  end
+  def patches; DATA; end
 
   def install
-    fails_with_llvm "https://github.com/mxcl/homebrew/issues/issue/144"
+    args = [".",
+            "-DCMAKE_INSTALL_PREFIX=#{prefix}",
+            "-DMYSQL_DATADIR=#{var}/mysql",
+            "-DINSTALL_MANDIR=#{man}",
+            "-DWITH_SSL=yes",
+            "-DDEFAULT_CHARSET=utf8",
+            "-DDEFAULT_COLLATION=utf8_general_ci",
+            "-DSYSCONFDIR=#{etc}"]
 
-    # See: http://dev.mysql.com/doc/refman/5.1/en/configure-options.html
-    # These flags may not apply to gcc 4+
-    ENV['CXXFLAGS'] = ENV['CXXFLAGS'].gsub "-fomit-frame-pointer", ""
-    ENV['CXXFLAGS'] += " -fno-omit-frame-pointer -felide-constructors"
+    # To enable unit testing at build, we need to download the unit testing suite
+    if ARGV.include? '--with-tests'
+      args << "-DENABLE_DOWNLOADS=ON"
+    else
+      args << "-DWITH_UNIT_TESTS=OFF"
+    end
+
+    # Build the embedded server
+    args << "-DWITH_EMBEDDED_SERVER=ON" if ARGV.include? '--with-embedded'
 
     # Make universal for bindings to universal applications
-    ENV.universal_binary if ARGV.include? '--universal'
+    args << "-DCMAKE_OSX_ARCHITECTURES='ppc;i386'" if ARGV.include? '--universal'
 
-    configure_args = [
-      "--without-docs",
-      "--without-debug",
-      "--disable-dependency-tracking",
-      "--prefix=#{prefix}",
-      "--localstatedir=#{var}/mysql",
-      "--sysconfdir=#{etc}",
-      "--with-plugins=innobase,myisam",
-      "--with-extra-charsets=complex",
-      "--with-ssl",
-      "--without-readline", # Confusingly, means "use detected readline instead of included readline"
-      "--enable-assembler",
-      "--enable-thread-safe-client",
-      "--enable-local-infile",
-      "--enable-shared",
-      "--with-partition"]
+    # Build with local infile loading support
+    args << "-DENABLED_LOCAL_INFILE=1" if ARGV.include? '--enable-local-infile'
 
-    configure_args << "--without-server" if ARGV.include? '--client-only'
-    configure_args << "--with-embedded-server" if ARGV.include? '--with-embedded'
-    configure_args << "--with-charset=utf8" if ARGV.include? '--with-utf8-default'
-
-    system "./configure", *configure_args
+    system "cmake", *args
+    system "make"
     system "make install"
 
-    ln_s "#{libexec}/mysqld", bin
-    ln_s "#{share}/mysql/mysql.server", bin
-
-    (prefix+'mysql-test').rmtree unless ARGV.include? '--with-tests' # save 66MB!
-    (prefix+'sql-bench').rmtree unless ARGV.include? '--with-bench'
-
     (prefix+'com.mysql.mysqld.plist').write startup_plist
+
+    # Don't create databases inside of the prefix!
+    # See: https://github.com/mxcl/homebrew/issues/4975
+    rm_rf prefix+'data'
+
+    # Link the setup script into bin
+    ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
   end
 
   def caveats; <<-EOS.undent
-    Set up databases with:
-        unset TMPDIR
-        mysql_install_db
+    Set up databases to run AS YOUR USER ACCOUNT with:
+      $ unset TMPDIR
+      $ mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix mysql)" --datadir=/usr/local/var/mysql --tmpdir=/tmp
 
-    If this is your first install, automatically load on login with:
-        mkdir -p ~/Library/LaunchAgents
-        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+    To set up base tables in another folder, or use a differnet user to run
+    mysqld, view the help for mysqld_install_db:
+      $ mysql_install_db --help
+    and view the MySQL documentation:
+      * http://dev.mysql.com/doc/refman/5.5/en/mysql-install-db.html
+      * http://dev.mysql.com/doc/refman/5.5/en/default-privileges.html
 
-    If this is an upgrade and you already have the com.mysql.mysqld.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
-        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+    To run as, for instance, user "mysql", you may need to `sudo`:
+      $ sudo mysql_install_db ...options...
 
-    Note on upgrading:
-        We overwrite any existing com.mysql.mysqld.plist in ~/Library/LaunchAgents
-        if we are upgrading because previous versions of this brew created the
-        plist with a version specific program argument.
+    Start mysqld manually with:
+      $ mysqld_safe &
 
-    Or start manually with:
-        mysql.server start
+    To connect:
+      $ mysql -uroot
+
+    To launch on startup:
+    * if this is your first install:
+      $ mkdir -p ~/Library/LaunchAgents
+      $ cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents/
+      $ launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+
+    * if this is an upgrade and you already have the com.mysql.mysqld.plist loaded:
+      $ launchctl unload -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+      $ cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents/
+      $ launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+
+    You may need to edit the plist to use the correct "UserName".
+
     EOS
   end
 
