@@ -565,8 +565,19 @@ def check_for_CLICOLOR_FORCE
   target_var = ENV['CLICOLOR_FORCE'].to_s
   unless target_var.empty?
     puts <<-EOS.undent
-    $CLICOLOR_FORCE was set to #{target_var}
-    Having $CLICOLOR_FORCE set can cause git installs to fail.
+    $CLICOLOR_FORCE was set to \"#{target_var}\".
+    Having $CLICOLOR_FORCE set can cause git builds to fail.
+
+    EOS
+  end
+end
+
+def check_for_GREP_OPTIONS
+  target_var = ENV['GREP_OPTIONS'].to_s
+  unless target_var.empty?
+    puts <<-EOS.undent
+    $GREP_OPTIONS was set to \"#{target_var}\".
+    Having $GREP_OPTIONS set can cause CMake builds to fail.
 
     EOS
   end
@@ -618,6 +629,7 @@ module Homebrew extend self
       check_for_dyld_vars
       check_for_MACOSX_DEPLOYMENT_TARGET
       check_for_CLICOLOR_FORCE
+      check_for_GREP_OPTIONS
       check_for_symlinked_cellar
       check_for_multiple_volumes
       check_for_git
