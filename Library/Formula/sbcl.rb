@@ -52,6 +52,12 @@ class Sbcl < Formula
   def install
     write_features
 
+    # Remove non-ASCIi values from environment as they cause build failure
+    # More information: http://bugs.gentoo.org/show_bug.cgi?id=174702
+    ENV.delete_if do |key, value|
+      !value.bytes.all? do |c| c <= 128 end
+    end
+
     build_directory = Dir.pwd
     SbclBootstrapBinaries.new.brew {
       # We only need the binaries for bootstrapping, so don't install anything:
