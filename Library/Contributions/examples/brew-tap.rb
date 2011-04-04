@@ -117,7 +117,7 @@ See 'brew tap help' for more detailed information.
     when 'which'
       formulae = ARGV.named
       raise FormulaUnspecifiedError if formulae.empty?
-      formulae.map! {|f| taproom.get_formula f}
+      formulae.map! {|f| taproom.get_brewfile f}
       puts formulae
 
     else
@@ -128,7 +128,7 @@ See 'brew tap help' for more detailed information.
       options = ARGV.options_only
 
       # Resolve formula names to paths in subdirectories of the taproom_path.
-      formulae.map! {|f| taproom.get_formula f}
+      formulae.map! {|f| taproom.get_brewfile f}
 
       # Dispatch back to brew
       system "brew", cmd, *formulae.concat(options)
@@ -263,11 +263,12 @@ class Taproom
   attr_reader :path, :menu_path, :founder
 
   def initialize path, founder
+    @path = Pathname.new path
+
     if not File.directory? path
       Dir.mkdir path rescue raise "Unable to create Taproom directory at #{path}!"
     end
 
-    @path = path
     @menu_path = path + 'menu.yml'
 
     # The fork network of the "founding brewery" is used to generate the menu
@@ -344,7 +345,7 @@ class Taproom
     end
   end
 
-  def get_formula name
+  def get_brewfile name
     # Searches through the available formulae for a formula that matches the
     # given name. Formula names can be plain:
     #
@@ -364,7 +365,7 @@ class Taproom
     matches = Dir[File.join(@path, search_dirs, '**', "#{f_name}.rb")]
 
     if matches.empty?
-      raise "No formula for #{f_name} available in the Taproom."
+      raise FormulaUnavailableError.new f_name
     elsif matches.length > 1
       onoe "Multiple matches found when searching for #{name}:"
 
