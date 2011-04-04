@@ -52,10 +52,10 @@ class Sbcl < Formula
   def install
     write_features
 
-    # Remove non-ASCIi values from environment as they cause build failure
+    # Remove non-ASCII values from environment as they cause build failures
     # More information: http://bugs.gentoo.org/show_bug.cgi?id=174702
     ENV.delete_if do |key, value|
-      !value.bytes.all? do |c| c <= 128 end
+      value.bytes.any? do |c| 128 <= c end
     end
 
     build_directory = Dir.pwd
