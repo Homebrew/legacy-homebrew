@@ -24,6 +24,7 @@ end
 
 # `brew-tap update` makes use of the same class as `brew update`
 require 'cmd/update'
+require 'formula'
 
 
 module Homebrew extend self
@@ -120,6 +121,26 @@ See 'brew tap help' for more detailed information.
       formulae.map! {|f| taproom.get_brewfile f}
       puts formulae
 
+    when 'install'
+      # We handle `brew install` separately from other brew commands in order
+      # to perform dependency resolution.
+      formulae = ARGV.named
+      options = ARGV.options_only
+
+      raise FormulaUnspecifiedError if formulae.empty?
+
+      if ARGV.include? '--ignore-dependencies'
+        formulae.map! {|f| taproom.get_brewfile f}
+      else
+        formulae.map! {|f| gather_dependencies f, taproom}
+        formulae.flatten!
+        formulae.compact!
+        formulae.uniq!
+      end
+
+      # Dispatch back to brew
+      system "brew", cmd, *formulae.concat(options)
+
     else
       # At this point, we expect cmd is a `brew` subcommand followed by one or
       # more non-standard formulae. The task is to resolve these formulae to
@@ -132,6 +153,49 @@ See 'brew tap help' for more detailed information.
 
       # Dispatch back to brew
       system "brew", cmd, *formulae.concat(options)
+    end
+  end
+
+  def gather_dependencies formula, taproom
+    # If the given formula has dependencies declared using the `:alt` keyword,
+    # attempt to discover them using the repositories contained in the given
+    # taproom. If any dependencies are not installed, add them to the list of
+    # formulae to install.
+    begin
+      formula = taproom.get_brewfile formula
+    rescue FormulaUnavailableError => e
+      begin
+        # A formula may not be available, because the repository it belongs to
+        # may not be checked out. Try tapping the repository and searching for
+        # the brewfile again.
+        brewery = (formula.split '/').first
+        ohai "Tapping #{brewery} to satisfy dependency #{formula}"
+        taproom.tap! brewery
+        formula = taproom.get_brewfile formula
+      rescue
+        # Our heroic efforts failed, time to give up and throw the original
+        # error.
+        raise e
+      end
+    end
+
+    # Check for dependencies
+    formula = Formula.factory formula
+    deps = formula.external_deps[:alt]
+
+    if formula.installed?
+      # Formula that are allready installed are assigned a path of nil so they
+      # may be eliminated by a later call to `compact`. This prevents brew from
+      # throwing "allready installed" errors when it is recalled.
+      formula_path = nil
+    else
+      formula_path = formula.path
+    end
+
+    if deps.empty?
+      return formula_path
+    else
+      return deps.map {|dep| gather_dependencies dep, taproom} << formula_path
     end
   end
 end
