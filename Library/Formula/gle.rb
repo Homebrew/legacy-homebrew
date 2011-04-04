@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gle <Formula
+class Gle < Formula
   url 'http://downloads.sourceforge.net/glx/gle-graphics-4.2.3bf-src.tar.gz'
   version '4.2.3b'
   homepage 'http://glx.sourceforge.net/'

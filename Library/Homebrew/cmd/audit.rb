@@ -107,7 +107,7 @@ def audit_formula_text name, text
   end if strict?
 
   # Formula depends_on gfortran
-  if text =~ /\s*depends_on\s*(\'|\")gfortran(\'|\")\s*$/
+  if text =~ /^\s*depends_on\s*(\'|\")gfortran(\'|\").*/
     problems << " * Use ENV.fortran during install instead of depends_on 'gfortran'"
   end unless name == "gfortran" # Gfortran itself has this text in the caveats
 

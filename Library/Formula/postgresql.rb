@@ -35,6 +35,10 @@ class Postgresql < Formula
     args << "--with-perl" unless ARGV.include? '--no-perl'
 
     args << "--with-ossp-uuid"
+
+    args << "--datadir=#{share}/#{name}"
+    args << "--docdir=#{doc}"
+
     ENV.append 'CFLAGS', `uuid-config --cflags`.strip
     ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
     ENV.append 'LIBS', `uuid-config --libs`.strip
@@ -49,6 +53,7 @@ class Postgresql < Formula
 
     system "./configure", *args
     system "make install"
+    system "make install-docs"
 
     contrib_directories = Dir.glob("contrib/*").select{ |path| File.directory?(path) } - ['contrib/start-scripts']
 
