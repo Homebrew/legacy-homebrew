@@ -10,6 +10,7 @@ module Homebrew extend self
     elsif ARGV.named.empty?
       raise UsageError
     else
+      HOMEBREW_CACHE.mkpath
       paths = ARGV.named.map do |url|
         fc = FormulaCreator.new
         fc.url = url
