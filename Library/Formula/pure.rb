@@ -15,5 +15,6 @@ class Pure < Formula
                           "--enable-release"
     system "make"
     system "make install"
+    system "make install-docs"
   end
 end
