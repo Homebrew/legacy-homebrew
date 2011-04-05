@@ -5,8 +5,6 @@ class Dpkg <Formula
   homepage 'http://en.wikipedia.org/wiki/Dpkg'
   md5 'bce745c7083ace01da1df6cdcad35f9a'
 
-  # depends_on 'cmake'
-
   def patches
 	#Fixes the PERL_LIBDIR
 	DATA
@@ -19,8 +17,7 @@ class Dpkg <Formula
 			  "--disable-compiler-optimisations",
 			  "--without-start-stop-daemon",
 			"PERL_LIBDIR=/Library/Perl/5.10.0/ "
-				
-    # system "cmake . #{std_cmake_parameters}"
+
     system "make install"
   end
 end
@@ -40,4 +37,3 @@ index a4e8516..de7f226 100755
  
  for ac_prog in pod2man
  do
-
