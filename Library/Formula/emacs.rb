@@ -64,6 +64,10 @@ class Emacs < Formula
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
             "--infodir=#{info}/emacs"]
 
+    if ARGV.build_head?
+      # system "./autogen.sh"
+      system "./autogen/copy_autogen"
+    end
     if ARGV.include? "--cocoa"
       args << "--with-ns" << "--disable-ns-self-contained"
       system "./configure", *args
