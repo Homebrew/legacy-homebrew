@@ -106,8 +106,8 @@ class Python < Formula
 
       You may want to symlink this Framework to a standard OS X location,
       such as:
-        mkdir ~/Frameworks
-        ln -s "#{prefix}/Frameworks/Python.framework" ~/Frameworks
+          mkdir ~/Frameworks
+          ln -s "#{prefix}/Frameworks/Python.framework" ~/Frameworks
     EOS
 
     general_caveats = <<-EOS.undent
@@ -120,8 +120,8 @@ class Python < Formula
 
       Distribute has been installed, so easy_install is available.
       To update distribute itself outside of Homebrew:
-      $ easy_install pip
-      $ pip install --upgrade distribute
+          #{scripts_folder}/easy_install pip
+          #{scripts_folder}/pip install --upgrade distribute
 
       See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
     EOS
@@ -144,7 +144,7 @@ private
 
   # The Cellar location of site-packages
   def site_packages
-    effective_lib + "python2.7/site-packages"
+    effective_lib+"python2.7/site-packages"
   end
 
   # The HOMEBREW_PREFIX location of site-packages
