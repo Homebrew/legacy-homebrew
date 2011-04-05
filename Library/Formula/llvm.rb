@@ -61,21 +61,19 @@ class Llvm < Formula
     system "make" # separate steps required, otherwise the build fails
     system "make install"
 
-    if build_clang?
-      Dir.chdir clang_dir do
-        system "make install"
-      end
-    end
+    Dir.chdir clang_dir do
+      system "make install"
+    end if build_clang?
   end
 
-  def caveats; <<-EOS
-    If you already have LLVM installed, then "brew upgrade llvm" might not
-    work. Instead, try:
-        $ brew rm llvm
-        $ brew install llvm
+  def caveats; <<-EOS.undent
+    If you already have LLVM installed, then "brew upgrade llvm" might not work.
+    Instead, try:
+        brew rm llvm & brew install llvm
     EOS
   end
 end
+
 
 __END__
 diff --git a/Makefile.rules b/Makefile.rules
