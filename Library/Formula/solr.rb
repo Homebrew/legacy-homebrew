@@ -22,10 +22,10 @@ class Solr < Formula
 
   def caveats; <<-EOS.undent
     To start solr:
-      $ solr path/to/solr/config/dir
+        solr path/to/solr/config/dir
 
     See the solr homepage for more setup information:
-      $ brew home solr
+        brew home solr
     EOS
   end
 end
