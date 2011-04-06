@@ -78,6 +78,10 @@ class Erlang < Formula
     htmls.new.brew { doc.install Dir['*'] }
   end
 
+  def patches
+    "https://gist.github.com/raw/904834/dd74249e2dddb0a7b73d26cc02be6c6b313db973/fix_ets_issue.patch"
+  end
+
   def test
     `erl -noshell -eval 'crypto:start().' -s init stop`
 
