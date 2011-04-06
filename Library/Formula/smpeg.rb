@@ -15,5 +15,6 @@ class Smpeg <Formula
     system "make"
     lib.install Dir[".libs/*.dylib"]
     bin.install ".libs/plaympeg"
+    include.install Dir["*.h"]
   end
 end
