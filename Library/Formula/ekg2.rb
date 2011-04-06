@@ -2,7 +2,7 @@ require 'formula'
 
 def use_libgadu?; ARGV.include? "--with-libgadu"; end
 
-class Ekg2 <Formula
+class Ekg2 < Formula
   url 'http://pl.ekg2.org/ekg2-0.3.1.tar.gz'
   homepage 'http://ekg2.org'
   md5 '68fc05b432c34622df6561eaabef5a40'
