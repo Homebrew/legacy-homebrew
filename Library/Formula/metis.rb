@@ -3,7 +3,7 @@ require 'formula'
 class Metis < Formula
   url 'http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/metis-4.0.3.tar.gz'
   homepage 'http://glaros.dtc.umn.edu/gkhome/views/metis'
-  md5 '69af672d61fc019474f29e71d7ecbaa4'
+  md5 'd3848b454532ef18dc83e4fb160d1e10'
 
   def install
     system "make"
