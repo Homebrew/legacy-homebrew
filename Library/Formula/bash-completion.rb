@@ -12,6 +12,12 @@ class BashCompletion < Formula
       s.gsub! 'readlink -f', "readlink"
     end
 
+    if ARGV.build_head?
+      system "aclocal"
+      system "autoconf"
+      system "automake --add-missing"
+    end
+
     system "./configure", "--prefix=#{prefix}"
     system "make install"
 

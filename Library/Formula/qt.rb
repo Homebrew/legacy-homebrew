@@ -20,18 +20,15 @@ class Qt < Formula
     ]
   end
 
-  def self.x11?
-    File.exist? "/usr/X11R6/lib"
-  end
-
   depends_on "d-bus" if ARGV.include? '--with-qtdbus'
-  depends_on 'libpng' unless x11?
   depends_on 'sqlite' if MACOS_VERSION <= 10.5
 
   def install
+    ENV.x11
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
     args = ["-prefix", prefix,
             "-system-libpng", "-system-zlib",
+            "-L/usr/X11R6/lib", "-I/usr/X11R6/include",
             "-confirm-license", "-opensource",
             "-cocoa", "-fast" ]
 
@@ -58,14 +55,6 @@ class Qt < Formula
 
     unless ARGV.include? '--with-demos-examples'
       args << "-nomake" << "demos" << "-nomake" << "examples"
-    end
-
-    if Qt.x11?
-      args << "-L/usr/X11R6/lib"
-      args << "-I/usr/X11R6/include"
-    else
-      args << "-L#{Formula.factory('libpng').lib}"
-      args << "-I#{Formula.factory('libpng').include}"
     end
 
     if MacOS.prefer_64_bit? or ARGV.include? '--universal'
