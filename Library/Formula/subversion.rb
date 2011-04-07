@@ -190,7 +190,8 @@ class Subversion < Formula
     if build_java?
       s += <<-EOS.undent
         You may need to link the Java bindings into the Java Extensions folder:
-          sudo ln -s #{HOMEBREW_PREFIX}/lib/libsvnjavahl-1.dylib /Library/Java/Extensions
+          sudo mkdir -p /Library/Java/Extensions
+          sudo ln -s #{HOMEBREW_PREFIX}/lib/libsvnjavahl-1.dylib /Library/Java/Extensions/libsvnjavahl-1.dylib
 
       EOS
     end

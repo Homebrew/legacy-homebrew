@@ -9,7 +9,7 @@ _brew_to_completion()
 
     # Subcommand list
     [[ ${COMP_CWORD} -eq 1 ]] && {
-        local actions="--cache --config --prefix cat cleanup configure create
+        local actions="--cache --config --prefix audit cat cleanup configure create
             deps doctor edit home info install link list log outdated prune
             remove search unlink update uses"
         local ext=$(\ls $(brew --repository)/Library/Contributions/examples |
