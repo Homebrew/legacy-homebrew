@@ -9,6 +9,17 @@ class Adium < Formula
     system "make clean adium"
 
     prefix.install Dir['build/Release-Debug/Adium.app']
-    ohai "Add Adium's link to your /Applications:\n sudo ln -sF #{prefix}/Adium.app /Applications/Adium.app"
+    ohai "Add Adium's link to your /Applications:\n sudo ln -s #{prefix}/Adium.app /Applications"
+  end
+
+  def caveats; <<-EOS.undent
+      Adium.app installed to:
+        #{prefix}
+
+      To link the application to a normal Mac OS X location:
+          brew linkapps
+      or:
+          sudo ln -s #{prefix}/Adium.app /Applications
+      EOS
   end
 end
