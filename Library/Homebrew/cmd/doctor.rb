@@ -565,8 +565,19 @@ def check_for_CLICOLOR_FORCE
   target_var = ENV['CLICOLOR_FORCE'].to_s
   unless target_var.empty?
     puts <<-EOS.undent
-    $CLICOLOR_FORCE was set to #{target_var}
-    Having $CLICOLOR_FORCE set can cause git installs to fail.
+    $CLICOLOR_FORCE was set to \"#{target_var}\".
+    Having $CLICOLOR_FORCE set can cause git builds to fail.
+
+    EOS
+  end
+end
+
+def check_for_GREP_OPTIONS
+  target_var = ENV['GREP_OPTIONS'].to_s
+  unless target_var.empty?
+    puts <<-EOS.undent
+    $GREP_OPTIONS was set to \"#{target_var}\".
+    Having $GREP_OPTIONS set can cause CMake builds to fail.
 
     EOS
   end
@@ -574,15 +585,17 @@ end
 
 def check_for_other_frameworks
   # Other frameworks that are known to cause problems when present
-  if File.exist? "/Library/Frameworks/expat.framework"
-    puts <<-EOS.undent
-      /Library/Frameworks/expat.framework detected
+  ["/Library/Frameworks/expat.framework", "/Library/Frameworks/libexpat.framework"].each do |f|
+    if File.exist? f
+      puts <<-EOS.undent
+        #{f} detected
 
-      This will be picked up by Cmake's build system and likey cause the
-      build to fail, trying to link to a 32-bit version of expat.
-      You may need to move this file out of the way to compile Cmake.
+        This will be picked up by Cmake's build system and likey cause the
+        build to fail, trying to link to a 32-bit version of expat.
+        You may need to move this file out of the way to compile Cmake.
 
-    EOS
+      EOS
+    end
   end
 end
 
@@ -616,6 +629,7 @@ module Homebrew extend self
       check_for_dyld_vars
       check_for_MACOSX_DEPLOYMENT_TARGET
       check_for_CLICOLOR_FORCE
+      check_for_GREP_OPTIONS
       check_for_symlinked_cellar
       check_for_multiple_volumes
       check_for_git
