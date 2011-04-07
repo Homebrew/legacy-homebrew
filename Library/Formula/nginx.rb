@@ -2,7 +2,7 @@ require 'formula'
 
 class Nginx < Formula
   url 'http://nginx.org/download/nginx-0.8.54.tar.gz'
-  head 'http://nginx.org/download/nginx-0.9.6.tar.gz'
+  head 'http://nginx.org/download/nginx-0.9.7.tar.gz'
   homepage 'http://nginx.org/'
 
   if ARGV.build_head?
