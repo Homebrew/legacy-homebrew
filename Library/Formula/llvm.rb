@@ -6,15 +6,15 @@ def build_shared?; ARGV.include? '--shared'; end
 def build_rtti?; ARGV.include? '--rtti'; end
 
 class Clang < Formula
-  url       'http://llvm.org/releases/2.8/clang-2.8.tgz'
+  url       'http://llvm.org/releases/2.9/clang-2.9.tgz'
   homepage  'http://llvm.org/'
-  md5       '10e14c901fc3728eecbd5b829e011b59'
+  md5       '634de18d04b7a4ded19ec4c17d23cfca'
 end
 
 class Llvm < Formula
-  url       'http://llvm.org/releases/2.8/llvm-2.8.tgz'
+  url       'http://llvm.org/releases/2.9/llvm-2.9.tgz'
   homepage  'http://llvm.org/'
-  md5       '220d361b4d17051ff4bb21c64abe05ba'
+  md5       '793138412d2af2c7c7f54615f8943771'
 
   def patches
     # changes the link options for the shared library build
@@ -61,21 +61,19 @@ class Llvm < Formula
     system "make" # separate steps required, otherwise the build fails
     system "make install"
 
-    if build_clang?
-      Dir.chdir clang_dir do
-        system "make install"
-      end
-    end
+    Dir.chdir clang_dir do
+      system "make install"
+    end if build_clang?
   end
 
-  def caveats; <<-EOS
-    If you already have LLVM installed, then "brew upgrade llvm" might not
-    work. Instead, try:
-        $ brew rm llvm
-        $ brew install llvm
+  def caveats; <<-EOS.undent
+    If you already have LLVM installed, then "brew upgrade llvm" might not work.
+    Instead, try:
+        brew rm llvm & brew install llvm
     EOS
   end
 end
+
 
 __END__
 diff --git a/Makefile.rules b/Makefile.rules
