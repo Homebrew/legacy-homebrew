@@ -16,6 +16,14 @@ class Cmake < Formula
       EOS
     end
 
+    if ENV['GREP_OPTIONS'] == "--color=always"
+      opoo "GREP_OPTIONS is set to '--color=always'"
+      puts <<-EOS.undent
+        Having `GREP_OPTIONS` set this way causes Cmake builds to fail.
+        You will need to `unset GREP_OPTIONS` before brewing.
+      EOS
+    end
+
     system "./bootstrap", "--prefix=#{prefix}",
                           "--system-libs",
                           "--no-system-libarchive",
