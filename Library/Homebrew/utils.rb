@@ -316,8 +316,16 @@ module MacOS extend self
     false
   end
 
+  def leopard?
+    10.5 == MACOS_VERSION
+  end
+
+  def snow_leopard?
+    10.6 <= MACOS_VERSION # Actually Snow Leopard or newer
+  end
+
   def prefer_64_bit?
-    MACOS_VERSION >= 10.6 and Hardware.is_64_bit?
+    Hardware.is_64_bit? and 10.6 <= MACOS_VERSION
   end
 end
 
