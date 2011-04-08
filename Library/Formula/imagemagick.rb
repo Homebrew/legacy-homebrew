@@ -74,7 +74,7 @@ class Imagemagick < Formula
              "--disable-static",
              "--with-modules"]
 
-    args << "--disable-openmp" if MACOS_VERSION < 10.6 or disable_openmp?
+    args << "--disable-openmp" if MacOS.leopard? or disable_openmp?
     args << "--without-gslib" unless ghostscript_srsly?
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
                 unless ghostscript_srsly? or ghostscript_fonts?
