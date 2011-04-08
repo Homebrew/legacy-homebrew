@@ -336,7 +336,7 @@ module GitHub extend self
 
     open "http://github.com/api/v2/yaml/issues/search/mxcl/homebrew/open/#{name}" do |f|
       YAML::load(f.read)['issues'].each do |issue|
-        issues << 'http://github.com/mxcl/homebrew/issues/#issue/%s' % issue['number']
+        issues << 'https://github.com/mxcl/homebrew/issues/#issue/%s' % issue['number']
       end
     end
 
