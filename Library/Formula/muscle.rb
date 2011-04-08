@@ -7,8 +7,8 @@ class Muscle < Formula
   version '3.8.31'
 
   def install
-    system "cd src/; make"
-    system "mkdir "+bin
-    system "cp src/muscle "+bin+"/"
+    Dir.chdir("src")
+    system "make"
+    bin.install "muscle"
   end
 end
