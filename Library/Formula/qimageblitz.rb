@@ -1,11 +1,11 @@
 require 'formula'
 
-class Qimageblitz <Formula
+class Qimageblitz < Formula
   url 'svn://anonsvn.kde.org/home/kde/tags/qimageblitz/0.0.6'
   version '0.0.6'
   homepage 'http://www.kde.org'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'qt'
 
   def install

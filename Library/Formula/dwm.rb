@@ -1,6 +1,6 @@
 require 'formula'
 
-class Dwm <Formula
+class Dwm < Formula
   url 'http://dl.suckless.org/dwm/dwm-5.8.2.tar.gz'
   homepage 'http://dwm.suckless.org/'
   md5 'f0b422bfeaa812d66c6dd15c3cc92a6b'
@@ -24,7 +24,7 @@ class Dwm <Formula
     e.g. by running the following command from $HOME/.xinitrc
     xmodmap -e 'remove Mod2 = Meta_L' -e 'add Mod1 = Meta_L'&
 
-    See also http://gist.github.com/311377 for a handful of tips and tricks
+    See also https://gist.github.com/311377 for a handful of tips and tricks
     for running dwm on Mac OS X.
     EOS
   end

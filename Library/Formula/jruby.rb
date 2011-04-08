@@ -1,9 +1,9 @@
 require 'formula'
 
 class Jruby < Formula
-  url 'http://jruby.org.s3.amazonaws.com/downloads/1.5.2/jruby-bin-1.5.2.tar.gz'
+  url 'http://jruby.org.s3.amazonaws.com/downloads/1.6.0/jruby-bin-1.6.0.tar.gz'
   homepage 'http://www.jruby.org'
-  md5 'd239deb9a108a6abbfbd6cb79cf8255b'
+  md5 'f4d7e339dfc0fbaef5b878d1c0a66fbe'
 
   def install
     # Remove Windows files
@@ -32,9 +32,8 @@ class Jruby < Formula
   end
 
   def caveats; <<-EOS.undent
-    Consider using RVM or Cider to manage Ruby environments:
+    Consider using RVM to manage Ruby environments:
       * RVM: http://rvm.beginrescueend.com/
-      * Cider: http://www.atmos.org/cider/intro.html
     EOS
   end
 

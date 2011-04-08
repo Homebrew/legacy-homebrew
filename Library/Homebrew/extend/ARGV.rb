@@ -1,7 +1,3 @@
-class UsageError <RuntimeError; end
-class FormulaUnspecifiedError <UsageError; end
-class KegUnspecifiedError <UsageError; end
-
 module HomebrewArgvExtension
   def named
     @named ||= reject{|arg| arg[0..0] == '-'}
@@ -13,18 +9,19 @@ module HomebrewArgvExtension
 
   def formulae
     require 'formula'
-    @formulae ||= downcased_unique_named.map{ |name| Formula.factory(resolve_alias(name)) }
+    @formulae ||= downcased_unique_named.map{ |name| Formula.factory name }
     raise FormulaUnspecifiedError if @formulae.empty?
     @formulae
   end
 
   def kegs
     require 'keg'
+    require 'formula'
     @kegs ||= downcased_unique_named.collect do |name|
-      d = HOMEBREW_CELLAR + resolve_alias(name)
+      d = HOMEBREW_CELLAR+Formula.caniconical_name(name)
       dirs = d.children.select{ |pn| pn.directory? } rescue []
-      raise "No such keg: #{HOMEBREW_CELLAR}/#{name}" if not d.directory? or dirs.length == 0
-      raise "#{name} has multiple installed versions" if dirs.length > 1
+      raise NoSuchKegError.new(name) if not d.directory? or dirs.length == 0
+      raise MultipleVersionsInstalledError.new(name) if dirs.length > 1
       Keg.new dirs.first
     end
     raise KegUnspecifiedError if @kegs.empty?
@@ -57,6 +54,9 @@ module HomebrewArgvExtension
   def build_head?
     flag? '--HEAD'
   end
+  def one?
+    flag? "--1"
+  end
 
   def flag? flag
     options_only.each do |arg|
@@ -67,65 +67,17 @@ module HomebrewArgvExtension
     return false
   end
 
-  def usage; <<-EOS.undent
-    Usage: brew [-v|--version] [--prefix [formula]] [--cache [formula]]
-                [--cellar [formula]] [--config] [--env] [--repository]
-                [-h|--help] COMMAND [formula] ...
-
-    Principle Commands:
-      install formula ... [--ignore-dependencies] [--HEAD]
-      list [--unbrewed|--versions] [formula] ...
-      search [/regex/] [substring]
-      uninstall formula ...
-      update
-
-    Other Commands:
-      info formula [--github]
-      options formula
-      deps formula
-      uses formula [--installed]
-      home formula ...
-      cleanup [formula]
-      link formula ...
-      unlink formula ...
-      outdated
-      missing
-      prune
-      doctor
-
-    Informational:
-      --version
-      --config
-      --prefix [formula]
-      --cache [formula]
-
-    Commands useful when contributing:
-      create URL
-      edit [formula]
-      audit [formula]
-      log formula
-      install formula [-vd|-i]
-
-    For more information:
-      man brew
-
-    To visit the Homebrew homepage type:
-      brew home
-    EOS
-  end
-
-  def resolve_alias name
-    aka = HOMEBREW_REPOSITORY+"Library/Aliases/#{name}"
-    if aka.file?
-      aka.realpath.basename('.rb').to_s
-    else
-      name
-    end
+  def usage
+    require 'cmd/help'
+    Homebrew.help_s
   end
 
   private
 
   def downcased_unique_named
-    @downcased_unique_named ||= named.map{|arg| arg.downcase}.uniq
+    # Only lowercase names, not paths or URLs
+    @downcased_unique_named ||= named.map do |arg|
+      arg.include?("/") ? arg : arg.downcase
+    end.uniq
   end
 end

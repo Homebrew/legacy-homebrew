@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cairomm <Formula
+class Cairomm < Formula
   url 'http://cairographics.org/releases/cairomm-1.8.4.tar.gz'
   homepage 'http://cairographics.org/cairomm/'
   md5 '559afbc47484ba3fad265e38a3dafe90'
@@ -9,7 +9,7 @@ class Cairomm <Formula
     { :p0 => DATA }
   end
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'libsigc++'
   # cairo is available on 10.6 via X11 but not on 10.5
   depends_on 'cairo' if MACOS_VERSION == 10.5
@@ -18,9 +18,9 @@ class Cairomm <Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-x",
-            						  "--without-xlib",
-            						  "--disable-quartz",
-            						  "--disable-quartz-font"
+                          "--without-xlib",
+                          "--disable-quartz",
+                          "--disable-quartz-font"
     system "make install"
   end
 end

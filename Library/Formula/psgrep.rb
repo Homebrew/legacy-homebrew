@@ -1,10 +1,10 @@
 require 'formula'
 
-class Psgrep <Formula
-  url 'http://psgrep.googlecode.com/files/psgrep-1.0.5.tar.bz2'
+class Psgrep < Formula
+  url 'http://psgrep.googlecode.com/files/psgrep-1.0.6.tar.bz2'
   head 'http://psgrep.googlecode.com/svn/trunk/'
   homepage 'http://code.google.com/p/psgrep/'
-  md5 'aa09cd7826220fd0ea4c81d74575d065'
+  sha1 'fe1102546971358a5eff2cff613d70ee63395444'
 
   def install
     bin.install "psgrep"

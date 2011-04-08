@@ -1,10 +1,11 @@
 #!/bin/bash
 
 set -e
+shopt -s nullglob
 
-man1_suffix="share/man/man1/brew.1"
-source_path="$HOMEBREW_REPOSITORY/Library/Contributions/manpages"
-target_file="$HOMEBREW_REPOSITORY/$man1_suffix"
+SOURCE_PATH="$HOMEBREW_REPOSITORY/Library/Contributions/manpages"
+TARGET_PATH="$HOMEBREW_REPOSITORY/share/man/man1"
+LINKED_PATH="$HOMEBREW_PREFIX/share/man/man1"
 
 
 die (){
@@ -14,7 +15,12 @@ die (){
 
 test "$1" = '--link' || \
 test "$1" = '-l' && {
-  ln -s "$target_file" "$HOMEBREW_PREFIX/$man1_suffix"
+  [[ $TARGET_PATH == $LINKED_PATH ]] && exit 0
+
+  for page in "$TARGET_PATH"/*.1
+  do
+    ln -s $page $LINKED_PATH
+  done
   exit 0
 }
 
@@ -22,14 +28,22 @@ test "$1" = '-l' && {
 
 test "$1" = '--server' || \
 test "$1" = '-s' && {
-  echo "Manpage test server: http://localhost:1207/"
+  echo "Man page test server: http://localhost:1207/"
   echo "Control-C to exit."
-  ronn --server $source_path/*
+  ronn --server $SOURCE_PATH/*
   exit 0
 }
 
-echo "Writing manpage to $target_file"
-ronn --roff --pipe --organization='Homebrew' --manual='brew' $source_path/brew.1.md > $target_file
+echo "Writing manpages to $TARGET_PATH"
+
+for i in "$SOURCE_PATH"/*.md
+do
+  # Get the filename only, without the .md extension
+  j=`basename $i`
+  target_file="$TARGET_PATH/${j%\.md}"
+
+  ronn --roff --pipe --organization='Homebrew' --manual='brew' $i > $target_file
+done
 
 test "$1" = '--verbose' || \
 test "$1" = '-v' && {

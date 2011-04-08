@@ -1,6 +1,6 @@
 require 'formula'
 
-class Rogue <Formula
+class Rogue < Formula
   url 'http://rogue.rogueforge.net/files/rogue5.4/rogue5.4.4-src.tar.gz'
   homepage 'http://rogue.rogueforge.net/'
   version '5.4.4'

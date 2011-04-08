@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ssss <Formula
+class Ssss < Formula
   url 'http://point-at-infinity.org/ssss/ssss-0.5.tar.gz'
   homepage 'http://point-at-infinity.org/ssss/'
   md5 '24227252aa195a146d09de1df10357a1'
@@ -11,7 +11,7 @@ class Ssss <Formula
   def install
     inreplace 'Makefile' do |s|
       # Compile with -DNOMLOCK to avoid warning on every run on OS X.
-      s.gsub! /\-W/, '-W -DNOMLOCK $(CFLAGS) $(LDFLAGS)'
+      s.gsub! /\-W /, '-W -DNOMLOCK $(CFLAGS) $(LDFLAGS)'
       s.change_make_var! "CC", ENV.cc
     end
 

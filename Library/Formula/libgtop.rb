@@ -1,11 +1,11 @@
 require 'formula'
 
-class Libgtop <Formula
+class Libgtop < Formula
   url 'ftp://ftp.gnome.org/pub/gnome/sources/libgtop/2.28/libgtop-2.28.1.tar.gz'
   homepage 'http://library.gnome.org/devel/libgtop/stable/'
   md5 'a035abf8cf7877a9950b6483aa7b96fd'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'intltool'

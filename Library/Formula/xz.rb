@@ -1,16 +1,13 @@
 require 'formula'
 
-class Xz <Formula
-  url 'http://tukaani.org/xz/xz-4.999.9beta.tar.bz2'
+class Xz < Formula
   homepage 'http://tukaani.org/xz/'
-  md5 'cc4044fcc073b8bcf3164d1d0df82161'
-  version '4.999.9beta' # *shrug*
+  url 'http://tukaani.org/xz/xz-5.0.2.tar.bz2'
+  sha1 'c244dfffef4196b997035d7389e957f56a3a87d1'
 
   def install
-    # Disable the assembly CRC checks they use x86 rather than x86-64 asm and fail to build for x86-64.
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-assembler"
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

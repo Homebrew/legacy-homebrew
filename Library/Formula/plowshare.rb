@@ -1,6 +1,6 @@
 require 'formula'
 
-class Plowshare <Formula
+class Plowshare < Formula
   head 'http://plowshare.googlecode.com/svn/trunk/'
   homepage 'http://code.google.com/p/plowshare/'
 
@@ -31,8 +31,8 @@ end
 #unaffected - getopt will still find the version supplied
 #by OSX in other shells, for example.
 __END__
---- a/src/lib.sh
-+++ b/src/lib.sh
+--- a/src/core.sh
++++ b/src/core.sh
 @@ -1,4 +1,8 @@
  #!/bin/bash
 +shopt -s expand_aliases
@@ -40,6 +40,6 @@ __END__
 +alias getopt='`brew --prefix gnu-getopt`/bin/getopt'
 +alias head='ghead'
  #
- # This file is part of Plowshare.
- #
+ # Common set of functions used by modules
+ # Copyright (c) 2010 - 2011 Plowshare team
 

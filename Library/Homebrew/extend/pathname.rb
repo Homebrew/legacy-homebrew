@@ -92,7 +92,7 @@ class Pathname
 
   def abv
     out=''
-    n=`find #{to_s} -type f | wc -l`.to_i
+    n=`find #{to_s} -type f ! -name .DS_Store | wc -l`.to_i
     out<<"#{n} files, " if n > 1
     out<<`/usr/bin/du -hd0 #{to_s} | cut -d"\t" -f1`.strip
   end
@@ -105,12 +105,26 @@ class Pathname
       # directories don't have extnames
       stem=basename.to_s
     else
-      stem=self.stem
+      # sourceforge /download
+      if %r[((?:sourceforge.net|sf.net)/.*)/download$].match to_s
+        stem=Pathname.new(dirname).stem
+      else
+        stem=self.stem
+      end
     end
 
-    # github tarballs are special
-    # we only support numbered tagged downloads
+    # github tarballs, like v1.2.3
     %r[github.com/.*/tarball/v?((\d\.)+\d+)$].match to_s
+    return $1 if $1
+
+    # dashed version
+    # eg. github.com/isaacs/npm/tarball/v0.2.5-1
+    %r[github.com/.*/tarball/v?((\d\.)+\d+-(\d+))$].match to_s
+    return $1 if $1
+
+    # underscore version
+    # eg. github.com/petdance/ack/tarball/1.93_02
+    %r[github.com/.*/tarball/v?((\d\.)+\d+_(\d+))$].match to_s
     return $1 if $1
 
     # eg. boost_1_39_0
@@ -152,7 +166,7 @@ class Pathname
 
     # eg. otp_src_R13B (this is erlang's style)
     # eg. astyle_1.23_macosx.tar.gz
-    stem.scan /_([^_]+)/ do |match|
+    stem.scan(/_([^_]+)/) do |match|
       return match.first if /\d/.match $1
     end
 
@@ -228,6 +242,16 @@ class Pathname
 
   def / that
     join that.to_s
+  end
+
+  def ensure_writable
+    saved_perms = unless writable?
+      chmod 0644
+      stat.mode
+    end
+    yield
+  ensure
+    chmod saved_perms if saved_perms
   end
 end
 

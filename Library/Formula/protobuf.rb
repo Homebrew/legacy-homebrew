@@ -1,12 +1,13 @@
 require 'formula'
 
-class Protobuf <Formula
-  url 'http://protobuf.googlecode.com/files/protobuf-2.3.0.tar.bz2'
-  sha1 'db0fbdc58be22a676335a37787178a4dfddf93c6'
+class Protobuf < Formula
+  url 'http://protobuf.googlecode.com/files/protobuf-2.4.0a.tar.bz2'
   homepage 'http://code.google.com/p/protobuf/'
+  sha1 '5816b0dd686115c3d90c3beccf17fd89432d3f07'
+
+  fails_with_llvm
 
   def install
-    fails_with_llvm
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-zlib"

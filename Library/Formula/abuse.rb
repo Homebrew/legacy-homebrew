@@ -1,16 +1,16 @@
 require 'formula'
 
-class AbuseGameData <Formula
+class AbuseGameData < Formula
   url 'http://abuse.zoy.org/raw-attachment/wiki/Downloads/abuse-data-2.00.tar.gz'
   md5 '2b857668849b2dc7cd29cdd84a33c19e'
 end
 
-class Abuse <Formula
+class Abuse < Formula
   url 'svn://svn.zoy.org/abuse/abuse/trunk'
   homepage 'http://abuse.zoy.org/'
   version 'trunk'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'sdl'
   depends_on 'libvorbis'
 

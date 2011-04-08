@@ -1,16 +1,16 @@
 require 'formula'
 
-class HaskellPlatform <Formula
-  url 'http://hackage.haskell.org/platform/2010.2.0.0/haskell-platform-2010.2.0.0.tar.gz'
+class HaskellPlatform < Formula
+  url 'http://lambda.galois.com/hp-tmp/2011.2.0.0/haskell-platform-2011.2.0.0.tar.gz'
   homepage 'http://hackage.haskell.org/platform/'
-  md5 '9d1dd22a86bf2505591e6375f7dbe18e'
-  version '2010.2.0.0'
+  md5 'b259698a93986b8679a0b0a415780e3a'
+  version '2011.2.0.0'
 
   depends_on 'ghc'
 
   def install
     # libdir doesn't work if passed to configure, needs to be passed to make install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--enable-unsupported-ghc-version"
     system %Q(EXTRA_CONFIGURE_OPTS="--libdir=#{lib}/ghc" make install)
   end
 

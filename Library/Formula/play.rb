@@ -1,11 +1,12 @@
 require 'formula'
 
-class Play <Formula
-  url 'http://download.playframework.org/releases/play-1.0.3.1.zip'
+class Play < Formula
+  url 'http://download.playframework.org/releases/play-1.1.1.zip'
   homepage 'http://www.playframework.org/'
-  md5 'b704cef8f2d8a68088ed0f80a4c4abe9'
+  md5 '3a2a49cfcc0ea679c75d3c1cb34ec080'
 
   def install
+    rm_rf 'python' # we don't need the bundled Python for windows
     rm Dir['*.bat']
     libexec.install Dir['*']
     bin.mkpath

@@ -1,10 +1,10 @@
 require 'formula'
 
-class Io <Formula
+class Io < Formula
   head 'git://github.com/stevedekorte/io.git'
   homepage 'http://iolanguage.com/'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'libsgml'
 
   def install

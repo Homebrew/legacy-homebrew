@@ -1,8 +1,8 @@
 require 'formula'
 
-class Growlme <Formula
+class Growlme < Formula
   head 'git://github.com/robey/growlme.git'
-  homepage 'http://github.com/robey/growlme'
+  homepage 'https://github.com/robey/growlme'
 
   def install
     bin.install "growlme"

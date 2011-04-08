@@ -1,12 +1,14 @@
 require 'formula'
 
-class Pango <Formula
-  url 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.28/pango-1.28.1.tar.bz2'
+class Pango < Formula
   homepage 'http://www.pango.org/'
-  sha256 '8f3eaab506f613dd25bb1fa65ea87a145d523d066d90c227bdb3016523451bc2'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.28/pango-1.28.4.tar.bz2'
+  sha256 '7eb035bcc10dd01569a214d5e2bc3437de95d9ac1cfa9f50035a687c45f05a9f'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
+
+  fails_with_llvm "Undefined symbols when linking", :build => "2326"
 
   if MACOS_VERSION < 10.6
     depends_on 'fontconfig' # Leopard's fontconfig is too old.

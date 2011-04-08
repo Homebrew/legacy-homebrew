@@ -1,13 +1,16 @@
 require 'formula'
 
-class Redis <Formula
-  url 'http://redis.googlecode.com/files/redis-2.0.1.tar.gz'
+class Redis < Formula
+  url 'http://redis.googlecode.com/files/redis-2.2.2.tar.gz'
   head 'git://github.com/antirez/redis.git'
-  homepage 'http://code.google.com/p/redis/'
-  sha1 '364665c966c90eb5ab7d16065734a2b713d4b8eb'
+  homepage 'http://redis.io/'
+  sha1 '75b953e4a3067570555c5f3f5e8f481c40489904'
+
+  fails_with_llvm "Fails with \"reference out of range from _linenoise\""
 
   def install
-    fails_with_llvm "Breaks with LLVM"
+    # Architecture isn't detected correctly on 32bit Snow Leopard without help
+    ENV["OBJARCH"] = MacOS.prefer_64_bit? ? "-arch x86_64" : "-arch i386"
 
     # Head and stable have different code layouts
     src = File.exists?('src/Makefile') ? 'src' : '.'
@@ -18,6 +21,9 @@ class Redis <Formula
     }
 
     %w( run db/redis log ).each { |p| (var+p).mkpath }
+
+    # Set correct directory permissions for database files
+    chmod 0755, "#{var}/db/redis"
 
     # Fix up default conf file to match our paths
     inreplace "redis.conf" do |s|
@@ -33,12 +39,13 @@ class Redis <Formula
   def caveats
     <<-EOS.undent
     If this is your first install, automatically load on login with:
-        cp #{prefix}/io.redis.redis-server.plist ~/Library/LaunchAgents
+        mkdir -p ~/Library/LaunchAgents
+        cp #{prefix}/io.redis.redis-server.plist ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/io.redis.redis-server.plist
 
     If this is an upgrade and you already have the io.redis.redis-server.plist loaded:
         launchctl unload -w ~/Library/LaunchAgents/io.redis.redis-server.plist
-        cp #{prefix}/io.redis.redis-server.plist ~/Library/LaunchAgents
+        cp #{prefix}/io.redis.redis-server.plist ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/io.redis.redis-server.plist
 
       To start redis manually:

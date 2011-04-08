@@ -1,9 +1,9 @@
 require 'formula'
 
-class Aqbanking <Formula
-  url 'http://www2.aquamaniac.de/sites/download/download.php?package=03&release=50&file=01&dummy=aqbanking-4.2.4.tar.gz'
+class Aqbanking < Formula
+  url 'http://www.aquamaniac.de/sites/download/download.php?package=03&release=76&file=01&dummy=aqbanking-5.0.3.tar.gz'
   homepage 'http://www.aqbanking.de/'
-  md5 '244f5c6e470b55452d9f2cb6c081c137'
+  md5 'a85e3e21a1cb04f0fe624299dc879d90'
 
   depends_on 'gettext'
   depends_on 'gmp'
@@ -11,12 +11,11 @@ class Aqbanking <Formula
   depends_on 'ktoblzcheck' => :optional
 
   def install
-    fails_with_llvm "llvm results in a sigsegfault during compile"
     ENV.j1
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-frontends=cli",
+                          "--enable-cli",
                           "--with-gwen-dir=#{HOMEBREW_PREFIX}"
     system "make install"
   end

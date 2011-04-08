@@ -5,7 +5,9 @@ class Cdrtools < Formula
   homepage 'http://cdrecord.berlios.de/private/cdrecord.html'
   md5 'bb21cefefcfbb76cf249120e8978ffdd'
 
+  depends_on 'smake' => :build
+
   def install
-    system "make", "GMAKE_NOWARN=true", "INS_BASE=#{prefix}", "INS_RBASE=#{prefix}", "install"
+    system "smake", "INS_BASE=#{prefix}", "INS_RBASE=#{prefix}", "install"
   end
 end

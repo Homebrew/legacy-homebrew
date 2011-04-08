@@ -1,8 +1,8 @@
 require 'formula'
 
-class RedisTools <Formula
+class RedisTools < Formula
   head 'git://github.com/antirez/redis-tools.git'
-  homepage 'http://code.google.com/p/redis/'
+  homepage 'https://github.com/antirez/redis-tools'
 
   def install
     system "make"

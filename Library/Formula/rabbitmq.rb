@@ -1,9 +1,9 @@
 require 'formula'
 
-class Rabbitmq <Formula
+class Rabbitmq < Formula
   homepage 'http://rabbitmq.com'
-  url 'http://mirror.rabbitmq.com/releases/rabbitmq-server/v2.0.0/rabbitmq-server-2.0.0.tar.gz'
-  md5 '04b99018085d4156b404d56377fc1c62'
+  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.4.0/rabbitmq-server-2.4.0.tar.gz'
+  md5 '5df5df63ec24249b7806e44b64059da5'
 
   depends_on 'erlang'
   depends_on 'simplejson' => :python if MACOS_VERSION < 10.6
@@ -25,7 +25,7 @@ class Rabbitmq <Formula
     (var+'lib/rabbitmq').mkpath
     (var+'log/rabbitmq').mkpath
 
-    %w{rabbitmq-server rabbitmq-multi rabbitmqctl rabbitmq-env}.each do |script|
+    %w{rabbitmq-server rabbitmqctl rabbitmq-env}.each do |script|
       inreplace sbin+script do |s|
         s.gsub! '/etc/rabbitmq', "#{etc}/rabbitmq"
         s.gsub! '/var/lib/rabbitmq', "#{var}/lib/rabbitmq"
@@ -41,28 +41,15 @@ end
 
 __END__
 diff --git a/Makefile b/Makefile
-index 46b1842..82d71a0 100644
+index d3f052f..98ce763 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -265,7 +265,7 @@ $(SOURCE_DIR)/%_usage.erl:
+@@ -267,7 +267,7 @@ $(SOURCE_DIR)/%_usage.erl:
 
  docs_all: $(MANPAGES) $(WEB_MANPAGES)
 
--install: all docs_all install_dirs
-+install: all install_dirs
- 	cp -r ebin include LICENSE LICENSE-MPL-RabbitMQ INSTALL $(TARGET_DIR)
+-install: install_bin install_docs
++install: install_bin
 
- 	chmod 0755 scripts/*
-@@ -273,12 +273,6 @@ install: all docs_all install_dirs
- 		cp scripts/$$script $(TARGET_DIR)/sbin; \
- 		[ -e $(SBIN_DIR)/$$script ] || ln -s $(SCRIPTS_REL_PATH)/$$script $(SBIN_DIR)/$$script; \
- 	done
--	for section in 1 5; do \
--		mkdir -p $(MAN_DIR)/man$$section; \
--		for manpage in $(DOCS_DIR)/*.$$section.gz; do \
--			cp $$manpage $(MAN_DIR)/man$$section; \
--		done; \
--	done
- 	mkdir -p $(TARGET_DIR)/plugins
- 	echo Put your .ez plugin files in this directory. > $(TARGET_DIR)/plugins/README
-
+ install_bin: all install_dirs
+	cp -r ebin include LICENSE LICENSE-MPL-RabbitMQ INSTALL $(TARGET_DIR)

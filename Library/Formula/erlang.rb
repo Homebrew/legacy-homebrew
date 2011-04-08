@@ -1,19 +1,29 @@
 require 'formula'
 
-class ErlangManuals <Formula
-  url 'http://erlang.org/download/otp_doc_man_R14B.tar.gz'
-  md5 '011530a24fbcc194be9bd01f779325a2'
+class ErlangManuals < Formula
+  url 'http://erlang.org/download/otp_doc_man_R14B02.tar.gz'
+  md5 'fc1c925e1195b6f851b1984da9ca0f6f'
 end
 
-class ErlangHeadManuals <Formula
-  url 'http://erlang.org/download/otp_doc_man_R14B.tar.gz'
-  md5 '011530a24fbcc194be9bd01f779325a2'
+class ErlangHtmls < Formula
+  url 'http://erlang.org/download/otp_doc_html_R14B02.tar.gz'
+  md5 'e1b609c699a2d8fdbbe242a2e3b7efcd'
 end
 
-class Erlang <Formula
+class ErlangHeadManuals < Formula
+  url 'http://erlang.org/download/otp_doc_man_R14B02.tar.gz'
+  md5 'fc1c925e1195b6f851b1984da9ca0f6f'
+end
+
+class ErlangHeadHtmls < Formula
+  url 'http://erlang.org/download/otp_doc_html_R14B02.tar.gz'
+  md5 'e1b609c699a2d8fdbbe242a2e3b7efcd'
+end
+
+class Erlang < Formula
   # Download from GitHub. Much faster than official tarball.
-  url "git://github.com/erlang/otp.git", :tag => "OTP_R14B"
-  version 'R14B'
+  url "git://github.com/erlang/otp.git", :tag => "OTP_R14B02"
+  version 'R14B02'
   homepage 'http://www.erlang.org'
 
   head "git://github.com/erlang/otp.git", :branch => "dev"
@@ -26,12 +36,16 @@ class Erlang <Formula
   skip_clean ['lib', 'bin']
 
   def options
-    [['--disable-hipe', "Disable building hipe; fails on various OS X systems."]]
+    [
+      ['--disable-hipe', "Disable building hipe; fails on various OS X systems."],
+      ['--time', '"brew test --time" to include a time-consuming test.']
+    ]
   end
+
+  fails_with_llvm "See https://github.com/mxcl/homebrew/issues/issue/120", :build => 2326
 
   def install
     ENV.deparallelize
-    fails_with_llvm "see http://github.com/mxcl/homebrew/issues/issue/120"
 
     # If building from GitHub, this step is required (but not for tarball downloads.)
     system "./otp_build autoconf" if File.exist? "otp_build"
@@ -50,7 +64,7 @@ class Erlang <Formula
       args << '--enable-hipe'
     end
 
-    args << "--enable-darwin-64bit" if snow_leopard_64?
+    args << "--enable-darwin-64bit" if MacOS.prefer_64_bit?
 
     system "./configure", *args
     system "touch lib/wx/SKIP" if MACOS_VERSION >= 10.6
@@ -60,11 +74,17 @@ class Erlang <Formula
     manuals = ARGV.build_head? ? ErlangHeadManuals : ErlangManuals
     manuals.new.brew { man.install Dir['man/*'] }
 
-    # See: http://github.com/mxcl/homebrew/issues/issue/1317
-    (lib+"erlang/lib/tools-2.6.5.1/emacs").install "lib/tools/emacs/erlang-skels.el"
+    htmls = ARGV.build_head? ? ErlangHeadHtmls : ErlangHtmls
+    htmls.new.brew { doc.install Dir['*'] }
   end
 
   def test
     `erl -noshell -eval 'crypto:start().' -s init stop`
+
+    # This test takes some time to run, but per bug #120 should finish in
+    # "less than 20 minutes". It takes a few minutes on a Mac Pro (2009).
+    if ARGV.include? "--time"
+      `dialyzer --build_plt -r #{lib}/erlang/lib/kernel-2.14.1/ebin/`
+    end
   end
 end
