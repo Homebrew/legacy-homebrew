@@ -11,7 +11,7 @@ class Libnet < Formula
     inreplace "autogen.sh", "libtoolize", "glibtoolize"
     system "./autogen.sh"
 
-    if MACOS_VERSION >= 10.6
+    unless MacOS.leopard?
       cp "/usr/share/libtool/config/config.guess", "."
       cp "/usr/share/libtool/config/config.sub", "."
     end

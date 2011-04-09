@@ -2,11 +2,11 @@ require 'formula'
 
 class Rabbitmq < Formula
   homepage 'http://rabbitmq.com'
-  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.4.0/rabbitmq-server-2.4.0.tar.gz'
-  md5 '5df5df63ec24249b7806e44b64059da5'
+  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.4.1/rabbitmq-server-2.4.1.tar.gz'
+  md5 '6db31b4353bd44f8ae9b6756b0a831e6'
 
   depends_on 'erlang'
-  depends_on 'simplejson' => :python if MACOS_VERSION < 10.6
+  depends_on 'simplejson' => :python if MacOS.leopard?
 
   def patches
     # Can't build manpages without a lot of other junk, so disable
