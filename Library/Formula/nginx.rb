@@ -6,7 +6,7 @@ class Nginx < Formula
   homepage 'http://nginx.org/'
 
   if ARGV.build_head?
-    md5 'bb2dbacd4e66c4c578e0ac44b2f006b5'
+    md5 'efd94b736155f2c0b5267f50f09e7f67'
   else
     md5 '44df4eb6a22d725021288c570789046f'
   end
