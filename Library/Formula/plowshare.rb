@@ -40,6 +40,6 @@ __END__
 +alias getopt='`brew --prefix gnu-getopt`/bin/getopt'
 +alias head='ghead'
  #
- # This file is part of Plowshare.
- #
+ # Common set of functions used by modules
+ # Copyright (c) 2010 - 2011 Plowshare team
 
