@@ -2,8 +2,8 @@ require 'formula'
 
 class Gource < Formula
   homepage 'http://code.google.com/p/gource/'
-  url 'git://github.com/acaudwell/Gource.git', :tag => "f07d59f582a29bca55da"
-  version "0.32"
+  url 'git://github.com/acaudwell/Gource.git', :tag => "ae14ffc6135b4cf0a89"
+  version "0.33"
   head 'git://github.com/acaudwell/Gource.git'
 
   depends_on 'pkg-config' => :build

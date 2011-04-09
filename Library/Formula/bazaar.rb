@@ -1,8 +1,8 @@
 require 'formula'
 
 class Bazaar < Formula
-  url 'http://launchpad.net/bzr/2.3/2.3.0/+download/bzr-2.3.0.tar.gz'
-  md5 '2d8bc55d43209189a209361178d9d372'
+  url 'http://launchpad.net/bzr/2.3/2.3.1/+download/bzr-2.3.1.tar.gz'
+  md5 '1a4367ce59a2880f321ecb882e195856'
   homepage 'http://bazaar-vcs.org/'
 
   def options
