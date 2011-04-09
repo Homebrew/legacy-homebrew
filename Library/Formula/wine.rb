@@ -50,7 +50,7 @@ EOS
             "--with-x",
             "--with-coreaudio",
             "--with-opengl"]
-    args << "--disable-win16" if MACOS_VERSION < 10.6
+    args << "--disable-win16" if MacOS.leopard?
 
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
     args << "--without-mpg123" if Hardware.is_64_bit?

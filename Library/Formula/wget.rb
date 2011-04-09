@@ -5,7 +5,7 @@ class Wget < Formula
   url 'http://ftp.gnu.org/gnu/wget/wget-1.12.tar.bz2'
   md5 '308a5476fc096a8a525d07279a6f6aa3'
 
-  depends_on "openssl" if MACOS_VERSION < 10.6
+  depends_on "openssl" if MacOS.leopard?
   depends_on "libidn" if ARGV.include? "--enable-iri"
 
   def options
