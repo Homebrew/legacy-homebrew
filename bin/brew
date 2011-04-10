@@ -84,6 +84,54 @@ begin
     # Check for git commands
     if %w[branch checkout pull push rebase reset].include? cmd
       onoe "Unknown command: #{cmd} (did you mean `git #{cmd}'?)"
+    # Autocorrect command if enabled
+    elsif ENV['HOMEBREW_AUTOCORRECT']
+      cmd_ary = cmd.split('')
+      ac_best_match = ""
+      ac_next_best_match = []
+      ac_best_diff = 2
+      ac_wait_time = ENV['HOMEBREW_AUTOCORRECT'].to_f/10.0
+
+      Dir.glob("#{HOMEBREW_REPOSITORY}/Library/Homebrew/cmd/*.rb").each do |c|
+        c =~ %r{cmd/(.+)\.rb}
+        ac_cmd = $1
+        ac_cmd_ary = ac_cmd.split('')
+        ac_cmd_diff = ((cmd_ary | ac_cmd_ary) - (cmd_ary & ac_cmd_ary)).length
+
+        if ac_cmd_diff < ac_best_diff
+          ac_best_diff = ac_cmd_diff
+          ac_best_match = ac_cmd
+        elsif ac_cmd_diff <= 2 && ac_cmd.length > 3
+          ac_next_best_match.push(ac_cmd)
+        end
+      end
+
+      if ac_best_diff <= 1 && ac_wait_time >= 0
+        opoo "Unknown command: #{cmd}"
+        puts "Assuming you meant '#{ac_best_match}' and continuing in #{ac_wait_time}s..."
+        puts
+        sleep(ac_wait_time)
+        require? HOMEBREW_REPOSITORY/"Library/Homebrew/cmd"/ac_best_match
+        Homebrew.send ac_best_match.to_s.gsub('-', '_')
+      elsif ac_best_diff <= 1 && ac_wait_time < 0
+        opoo "Unknown command: #{cmd}"
+        puts "Assuming you meant '#{ac_best_match}' and continuing..."
+        puts
+        require? HOMEBREW_REPOSITORY/"Library/Homebrew/cmd"/ac_best_match
+        Homebrew.send ac_best_match.to_s.gsub('-', '_')
+      elsif ac_best_diff <= 1
+        opoo "Unknown command: #{cmd}"
+        puts "Did you mean '#{ac_best_match}'?"
+      else
+        onoe "Unknown command: #{cmd}"
+        unless ac_next_best_match.empty?
+          puts
+          puts "Did you mean one of these?"
+          ac_next_best_match.each do |match|
+            puts "\t#{match}"
+          end
+        end
+      end
     else
       onoe "Unknown command: #{cmd}"
     end
