@@ -5,7 +5,7 @@ class Ejabberd < Formula
   homepage 'http://www.ejabberd.im'
   md5 '2029ceca45584d704ca821a771d6d928'
 
-  depends_on "openssl" if MACOS_VERSION < 10.6
+  depends_on "openssl" if MacOS.leopard?
   depends_on "erlang"
 
   def install
@@ -18,7 +18,7 @@ class Ejabberd < Formula
               "--sysconfdir=#{etc}",
               "--localstatedir=#{var}"]
 
-      if MACOS_VERSION < 10.6
+      if MacOS.leopard?
         openssl = Formula.factory('openssl')
         args << "--with-openssl=#{openssl.prefix}"
       end

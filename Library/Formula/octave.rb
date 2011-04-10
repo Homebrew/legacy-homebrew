@@ -97,7 +97,7 @@ class Octave < Formula
     brew_caveats = <<-EOS.undent
       To install, you will need custom installs of fltk and graphicsmagick:
           brew install --HEAD fltk
-          brew intalll graphicsmagick --with-magick-plus-plus
+          brew install graphicsmagick --with-magick-plus-plus
 
       To omit these features, see "brew options octave"
 

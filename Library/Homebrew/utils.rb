@@ -316,8 +316,16 @@ module MacOS extend self
     false
   end
 
+  def leopard?
+    10.5 == MACOS_VERSION
+  end
+
+  def snow_leopard?
+    10.6 <= MACOS_VERSION # Actually Snow Leopard or newer
+  end
+
   def prefer_64_bit?
-    MACOS_VERSION >= 10.6 and Hardware.is_64_bit?
+    Hardware.is_64_bit? and 10.6 <= MACOS_VERSION
   end
 end
 
@@ -336,7 +344,7 @@ module GitHub extend self
 
     open "http://github.com/api/v2/yaml/issues/search/mxcl/homebrew/open/#{name}" do |f|
       YAML::load(f.read)['issues'].each do |issue|
-        issues << 'http://github.com/mxcl/homebrew/issues/#issue/%s' % issue['number']
+        issues << 'https://github.com/mxcl/homebrew/issues/#issue/%s' % issue['number']
       end
     end
 

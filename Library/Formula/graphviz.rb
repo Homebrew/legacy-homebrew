@@ -9,7 +9,7 @@ class Graphviz < Formula
 
   if ARGV.include? '--with-pdf'
     depends_on 'pango'
-    depends_on 'cairo' if MACOS_VERSION < 10.6
+    depends_on 'cairo' if MacOS.leopard?
   end
 
   def options

@@ -6,6 +6,10 @@ class Qt < Formula
   md5 '66b992f5c21145df08c99d21847f4fdb'
   homepage 'http://qt.nokia.com/'
 
+  def patches
+    "http://qt.nokia.com/files/qt-patches/blacklist-fraudulent-comodo-certificates-patch.diff"
+  end
+
   def options
     [
       ['--with-qtdbus', "Enable QtDBus module."],
@@ -16,23 +20,20 @@ class Qt < Formula
     ]
   end
 
-  def self.x11?
-    File.exist? "/usr/X11R6/lib"
-  end
-
   depends_on "d-bus" if ARGV.include? '--with-qtdbus'
-  depends_on 'libpng' unless x11?
-  depends_on 'sqlite' if MACOS_VERSION <= 10.5
+  depends_on 'sqlite' if MacOS.leopard?
 
   def install
+    ENV.x11
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
     args = ["-prefix", prefix,
             "-system-libpng", "-system-zlib",
+            "-L/usr/X11R6/lib", "-I/usr/X11R6/include",
             "-confirm-license", "-opensource",
             "-cocoa", "-fast" ]
 
     # See: https://github.com/mxcl/homebrew/issues/issue/744
-    args << "-system-sqlite" if MACOS_VERSION <= 10.5
+    args << "-system-sqlite" if MacOS.leopard?
     args << "-plugin-sql-mysql" if (HOMEBREW_CELLAR+"mysql").directory?
 
     if ARGV.include? '--with-qtdbus'
@@ -54,14 +55,6 @@ class Qt < Formula
 
     unless ARGV.include? '--with-demos-examples'
       args << "-nomake" << "demos" << "-nomake" << "examples"
-    end
-
-    if Qt.x11?
-      args << "-L/usr/X11R6/lib"
-      args << "-I/usr/X11R6/include"
-    else
-      args << "-L#{Formula.factory('libpng').lib}"
-      args << "-I#{Formula.factory('libpng').include}"
     end
 
     if MacOS.prefer_64_bit? or ARGV.include? '--universal'
