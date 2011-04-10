@@ -1,9 +1,9 @@
 require 'formula'
 
 class BashCompletion < Formula
-  url 'http://bash-completion.alioth.debian.org/files/bash-completion-1.3.tar.bz2'
   homepage 'http://bash-completion.alioth.debian.org/'
-  md5 'a1262659b4bbf44dc9e59d034de505ec'
+  url 'http://bash-completion.alioth.debian.org/files/bash-completion-1.3.tar.bz2'
+  sha256 '8ebe30579f0f3e1a521013bcdd183193605dab353d7a244ff2582fb3a36f7bec'
   head 'git://git.debian.org/git/bash-completion/bash-completion.git'
 
   def install
@@ -14,8 +14,7 @@ class BashCompletion < Formula
 
     if ARGV.build_head?
       system "aclocal"
-      system "autoconf"
-      system "automake --add-missing"
+      system "autoreconf -f -i -Wall,no-obsolete"
     end
 
     system "./configure", "--prefix=#{prefix}"
