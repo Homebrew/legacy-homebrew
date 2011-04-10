@@ -67,7 +67,7 @@ class Erlang < Formula
     args << "--enable-darwin-64bit" if MacOS.prefer_64_bit?
 
     system "./configure", *args
-    system "touch lib/wx/SKIP" if MACOS_VERSION >= 10.6
+    system "touch lib/wx/SKIP" if MacOS.snow_leopard?
     system "make"
     system "make install"
 

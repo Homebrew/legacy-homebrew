@@ -2,7 +2,7 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.5/en/'
-  url 'http://ftp.sunet.se/pub/unix/databases/relational/mysql/Downloads/MySQL-5.5/mysql-5.5.10.tar.gz'
+  url 'http://downloads.mysql.com/archives/mysql-5.5/mysql-5.5.10.tar.gz'
   md5 'ee604aff531ff85abeb10cf332c1355a'
 
   depends_on 'cmake' => :build
