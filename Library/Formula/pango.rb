@@ -10,7 +10,7 @@ class Pango < Formula
 
   fails_with_llvm "Undefined symbols when linking", :build => "2326"
 
-  if MACOS_VERSION < 10.6
+  if MacOS.leopard?
     depends_on 'fontconfig' # Leopard's fontconfig is too old.
     depends_on 'cairo' # Leopard doesn't come with Cairo.
   end

@@ -6,10 +6,10 @@ class Gd < Formula
   # url "http://www.libgd.org/releases/gd-2.0.36RC1.tar.gz"
 
   homepage "http://bitbucket.org/pierrejoye/gd-libgd"
-  url "http://www.sfr-fresh.com/unix/www/gd-2.0.36RC1.tar.gz"
+  url "http://ring.riken.jp/archives/graphics/gd/gd-2.0.36RC1.tar.gz"
+  md5 "39ac48e6d5e0012a3bd2248a0102f209"
 
   head "http://bitbucket.org/pierrejoye/gd-libgd", :using => :hg
-  md5 "39ac48e6d5e0012a3bd2248a0102f209"
 
   depends_on 'jpeg' => :recommended
 

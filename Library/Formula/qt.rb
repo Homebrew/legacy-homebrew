@@ -21,7 +21,7 @@ class Qt < Formula
   end
 
   depends_on "d-bus" if ARGV.include? '--with-qtdbus'
-  depends_on 'sqlite' if MACOS_VERSION <= 10.5
+  depends_on 'sqlite' if MacOS.leopard?
 
   def install
     ENV.x11
@@ -33,7 +33,7 @@ class Qt < Formula
             "-cocoa", "-fast" ]
 
     # See: https://github.com/mxcl/homebrew/issues/issue/744
-    args << "-system-sqlite" if MACOS_VERSION <= 10.5
+    args << "-system-sqlite" if MacOS.leopard?
     args << "-plugin-sql-mysql" if (HOMEBREW_CELLAR+"mysql").directory?
 
     if ARGV.include? '--with-qtdbus'

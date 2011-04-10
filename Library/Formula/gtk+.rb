@@ -13,14 +13,15 @@ class Gtkx < Formula
 
   # Used by pango, but keg-only, so needs to be added to
   # the flags for gtk+ explicitly.
-  depends_on 'cairo' if MACOS_VERSION < 10.6
+  depends_on 'cairo' if MacOS.leopard?
 
   depends_on 'pango'
   depends_on 'jasper' => :optional
   depends_on 'atk' => :optional
 
+  fails_with_llvm "Undefined symbols when linking", :build => "2326"
+
   def install
-    fails_with_llvm "Undefined symbols when linking", :build => "2326"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-glibtest"
