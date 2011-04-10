@@ -1,6 +1,6 @@
 require 'formula'
 
-class JsCtags < Formula
+class DoctorJs < Formula
   head 'https://github.com/mozilla/doctorjs.git', :using => :git
   homepage 'https://github.com/mozilla/doctorjs'
 
