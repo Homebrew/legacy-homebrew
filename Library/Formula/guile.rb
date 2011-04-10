@@ -1,9 +1,15 @@
 require 'formula'
 
 class Guile < Formula
-  url 'ftp://ftp.gnu.org/pub/gnu/guile/guile-2.0.0.tar.gz'
+  url 'ftp://ftp.gnu.org/gnu/guile/guile-1.8.7.tar.gz'
+  head 'ftp://ftp.gnu.org/pub/gnu/guile/guile-2.0.0.tar.gz'
   homepage 'http://www.gnu.org/software/guile/'
-  sha1 'e266b79b17a04a98c438e9d5dabb5210fb368d77'
+
+  if ARGV.build_head?
+    sha1 'e266b79b17a04a98c438e9d5dabb5210fb368d77'
+  else
+    sha1 '24cd2f06439c76d41d982a7384fe8a0fe5313b54'
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'libffi'
