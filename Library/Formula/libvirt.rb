@@ -13,7 +13,7 @@ class Libvirt < Formula
   depends_on "gnutls"
   depends_on "yajl"
 
-  if MACOS_VERSION < 10.6
+  if MacOS.leopard?
     # Definitely needed on Leopard, but not on Snow Leopard.
     depends_on "readline"
     depends_on "libxml2"
