@@ -8,8 +8,7 @@ module Homebrew extend self
         puts "#{f.name}:#{f.deps*' '}"
       end
     else
-      func = if ARGV.one? then :deps else :recursive_deps end
-      puts ARGV.formulae.map(&func).intersection.sort
+      puts ARGV.formulae.map{ |f| ARGV.one? ? f.deps : f.recursive_deps }.intersection.sort
     end
   end
 end
