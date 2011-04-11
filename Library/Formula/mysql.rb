@@ -28,6 +28,10 @@ class Mysql < Formula
             "-DCMAKE_INSTALL_PREFIX=#{prefix}",
             "-DMYSQL_DATADIR=#{var}/mysql",
             "-DINSTALL_MANDIR=#{man}",
+            "-DINSTALL_DOCDIR=#{doc}",
+            "-DINSTALL_INFODIR=#{info}",
+            # CMake prepends prefix, so use share.basename
+            "-DINSTALL_MYSQLSHAREDIR=#{share.basename}/#{name}",
             "-DWITH_SSL=yes",
             "-DDEFAULT_CHARSET=utf8",
             "-DDEFAULT_COLLATION=utf8_general_ci",
@@ -61,6 +65,8 @@ class Mysql < Formula
 
     # Link the setup script into bin
     ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+    # Link the startup script into bin
+    ln_s "#{prefix}/support-files/mysql.server", bin
   end
 
   def caveats; <<-EOS.undent
@@ -80,7 +86,7 @@ class Mysql < Formula
         sudo mysql_install_db ...options...
 
     Start mysqld manually with:
-        mysqld_safe &
+        mysql.server start
 
     To connect:
         mysql -uroot
