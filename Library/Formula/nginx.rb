@@ -15,6 +15,11 @@ class Nginx < Formula
 
   skip_clean 'logs'
 
+  def options
+    [
+    ]
+  end
+
   def patches
     # Changes default port to 8080
     # Set configure to look in homebrew prefix for pcre
@@ -24,7 +29,8 @@ class Nginx < Formula
   def options
     [
       ['--with-passenger', "Compile with support for Phusion Passenger module"],
-      ['--with-webdav',    "Compile with support for WebDAV module"]
+      ['--with-webdav',    "Compile with support for WebDAV module"],
+      ['--with-status',    "Compile with support for HTTP status module"]
     ]
   end
 
@@ -51,6 +57,7 @@ class Nginx < Formula
 
     args << passenger_config_args if ARGV.include? '--with-passenger'
     args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
+    args << "--with-http_stub_status_module" if ARGV.include? '--with-status'
 
     system "./configure", *args
     system "make install"
