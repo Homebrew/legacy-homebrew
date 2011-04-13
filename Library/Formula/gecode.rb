@@ -1,11 +1,9 @@
 require 'formula'
 
-class Afflib < Formula
-  url 'http://afflib.org/downloads/afflib-3.6.9.tar.gz'
-  homepage 'http://afflib.org'
-  md5 'c946359e5f410a76bc4aa0ea2eabd5a1'
-
-  depends_on 'expat' => :optional
+class Gecode < Formula
+  url 'http://www.gecode.org/download/gecode-3.5.0.tar.gz'
+  homepage 'http://www.gecode.org/'
+  md5 'bb920bb708b6ef9c4e9f5fa47681a659'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
