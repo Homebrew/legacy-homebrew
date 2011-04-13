@@ -1,12 +1,15 @@
 require 'formula'
 
 class R < Formula
-  url 'http://cran.r-project.org/src/base/R-2/R-2.12.2.tar.gz'
+  url 'http://cran.r-project.org/src/base/R-2/R-2.13.0.tar.gz'
   homepage 'http://www.R-project.org/'
-  md5 'bc70b51dddab8aa39066710624e55d5e'
+  md5 'ecfb928067cfd932e75135f8b8bba3e7'
 
   def install
     ENV.fortran
+    ENV.x11 # So PNG gets added to the x11 and cairo plotting devices
+    ENV['OBJC'] = ENV['CC']
+    ENV['OBJCFLAGS'] = ENV['CFLAGS']
 
     system "./configure", "--prefix=#{prefix}",
                           "--with-aqua",
