@@ -92,6 +92,9 @@ class Mysql < Formula
     Start mysqld manually with:
         mysql.server start
 
+    A "/etc/my.cnf" from another install may interfere with a Homebrew-built
+    server starting up correctly.
+
     To connect:
         mysql -uroot
 
