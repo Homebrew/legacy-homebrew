@@ -131,10 +131,11 @@ def exec_editor *args
       '/usr/bin/vim' # Default to vim
     end
   end
-  # we split the editor because especially on mac "mate -w" is common
-  # but we still want to use the comma-delimited version of exec because then
-  # we don't have to escape args, and escaping 100% is tricky
-  exec *(editor.split + args) unless args.empty?
+
+  # Invoke bash to evaluate env vars in $EDITOR
+  # This also gets us proper argument quoting.
+  # See: https://github.com/mxcl/homebrew/issues/5123
+  system "bash", "-c", editor + ' "$@"', "--", *args
 end
 
 # GZips the given paths, and returns the gzipped paths
