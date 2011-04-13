@@ -8,7 +8,10 @@ class Protobuf < Formula
   fails_with_llvm
 
   def install
-    ENV['CFLAGS'] = '%s -arch i386 -arch x86_64' % ENV["CFLAGS"]
+    ENV['CFLAGS'] = '%s -arch i386' % ENV["CFLAGS"]
+    if Hardware.is_64_bit?
+      ENV['CFLAGS'] += ' -arch x86_64'
+    end
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-zlib"
