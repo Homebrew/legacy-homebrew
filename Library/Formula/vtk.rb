@@ -12,6 +12,7 @@ class Vtk < Formula
   [
     ['--python', "Enable python wrapping."],
     ['--qt', "Enable Qt extension."],
+    ['--qt-extern', "Enable Qt extension (via external Qt)"],
     ['--tcl', "Enable Tcl wrapping."],
   ]
   end
@@ -32,7 +33,7 @@ class Vtk < Formula
       args << "-DVTK_WRAP_PYTHON:BOOL=ON"
     end
 
-    if ARGV.include? '--qt'
+    if ARGV.include? '--qt' or ARGV.include? '--qt-extern'
       args << "-DVTK_USE_GUISUPPORT:BOOL=ON"
       args << "-DVTK_USE_QT:BOOL=ON"
       args << "-DVTK_USE_QVTK:BOOL=ON"
@@ -42,8 +43,8 @@ class Vtk < Formula
       args << "-DVTK_WRAP_TCL:BOOL=ON"
     end
 
-    args << "-DCMAKE_INSTALL_RPATH:STRING='${CMAKE_INSTALL_PREFIX}/lib/vtk-5.6'"
-    args << "-DCMAKE_INSTALL_NAME_DIR:STRING='${CMAKE_INSTALL_PREFIX}/lib/vtk-5.6'"
+    args << "-DCMAKE_INSTALL_RPATH:STRING='${prefix}/lib/vtk-5.6'"
+    args << "-DCMAKE_INSTALL_NAME_DIR:STRING='${prefix}/lib/vtk-5.6'"
 
     # Hack suggested at http://www.vtk.org/pipermail/vtk-developers/2006-February/003983.html
     # to get the right RPATH in the python libraries (the .so files in the vtk egg).
