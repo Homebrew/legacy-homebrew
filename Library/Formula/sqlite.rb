@@ -2,9 +2,9 @@ require 'formula'
 
 class Sqlite < Formula
   homepage 'http://sqlite.org/'
-  url 'http://sqlite.org/sqlite-autoconf-3070600.tar.gz'
-  sha256 'c56417140f32f495827c90565a25c1b1068d1117ae368ea6ab58c01875d78771'
-  version '3.7.6'
+  url 'http://www.sqlite.org/sqlite-autoconf-3070601.tar.gz'
+  sha256 '79b7de2483cbbfa79721c9414d4c7acda00ba98a8b1fe73460fe57c173651ad4'
+  version '3.7.6.1'
 
   def options
   [
