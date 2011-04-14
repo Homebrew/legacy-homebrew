@@ -63,6 +63,7 @@ class Llvm < Formula
 
     Dir.chdir clang_dir do
       system "make install"
+      bin.install 'tools/scan-build/set-xcode-analyzer'
     end if build_clang?
   end
 
