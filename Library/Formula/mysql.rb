@@ -7,6 +7,7 @@ class Mysql < Formula
 
   depends_on 'cmake' => :build
   depends_on 'readline'
+  depends_on 'pidof'
 
   fails_with_llvm "https://github.com/mxcl/homebrew/issues/issue/144"
 
@@ -65,7 +66,10 @@ class Mysql < Formula
 
     # Link the setup script into bin
     ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
-    # Link the startup script into bin
+    # Fix up the control script and link into bin
+    inreplace "#{prefix}/support-files/mysql.server" do |s|
+      s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
+    end
     ln_s "#{prefix}/support-files/mysql.server", bin
   end
 
@@ -87,6 +91,9 @@ class Mysql < Formula
 
     Start mysqld manually with:
         mysql.server start
+
+    A "/etc/my.cnf" from another install may interfere with a Homebrew-built
+    server starting up correctly.
 
     To connect:
         mysql -uroot
