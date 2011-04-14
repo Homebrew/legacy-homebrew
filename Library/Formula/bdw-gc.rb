@@ -8,13 +8,12 @@ class BdwGc < Formula
   fails_with_llvm "LLVM gives an unsupported inline asm error"
 
   def install
-    if 10.6 <= MACOS_VERSION
-      # ucontext has been deprecated in 10.6
-      # use this flag to force the header to compile
-      ENV.append 'CPPFLAGS', "-D_XOPEN_SOURCE"
-    end
+    # ucontext has been deprecated in 10.6
+    # use this flag to force the header to compile
+    ENV.append 'CPPFLAGS', "-D_XOPEN_SOURCE" if MacOS.snow_leopard?
 
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

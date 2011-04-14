@@ -1,10 +1,15 @@
 require 'formula'
 
 class Gd < Formula
-  url "http://www.libgd.org/releases/gd-2.0.36RC1.tar.gz"
-  homepage "http://www.libgd.org"
-  head "http://bitbucket.org/pierrejoye/gd-libgd", :using => :hg
+  # Official site has been down a lot, so use a mirror
+  # homepage "http://www.libgd.org"
+  # url "http://www.libgd.org/releases/gd-2.0.36RC1.tar.gz"
+
+  homepage "http://bitbucket.org/pierrejoye/gd-libgd"
+  url "http://ring.riken.jp/archives/graphics/gd/gd-2.0.36RC1.tar.gz"
   md5 "39ac48e6d5e0012a3bd2248a0102f209"
+
+  head "http://bitbucket.org/pierrejoye/gd-libgd", :using => :hg
 
   depends_on 'jpeg' => :recommended
 
