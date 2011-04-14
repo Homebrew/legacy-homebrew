@@ -28,7 +28,7 @@ _brew_to_completion()
 
     case "$prev" in
     # Commands that take a formula
-    cat|deps|edit|fetch|home|homepage|info|install|log|options|uses)
+    cat|deps|edit|fetch|home|homepage|info|install|log|missing|options|uses)
         # handle standard --options
         if [[ "$prev" == "install" && "$cur" == --* ]]; then
             local opts=$(
