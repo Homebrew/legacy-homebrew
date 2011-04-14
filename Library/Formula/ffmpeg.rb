@@ -1,11 +1,11 @@
 require 'formula'
 
 class Ffmpeg < Formula
-  url 'http://libav.org/releases/libav-0.6.2.tar.bz2'
-  homepage 'http://libav.org/'
-  sha1 'b79dc56a08f4ef07b41d1a78b2251f21fde8b81d'
+  url 'http://ffmpeg.org/releases/ffmpeg-0.6.2.tar.bz2'
+  homepage 'http://ffmpeg.org/'
+  sha1 'd4e464d4111971b9cef10be7a1efa3677a899338'
 
-  head 'git://git.libav.org/libav.git'
+  head 'git://git.videolan.org/ffmpeg.git'
 
   depends_on 'x264' => :optional
   depends_on 'faac' => :optional
@@ -49,7 +49,9 @@ class Ffmpeg < Formula
     if MacOS.prefer_64_bit?
       inreplace 'config.mak' do |s|
         shflags = s.get_make_var 'SHFLAGS'
-        s.change_make_var! 'SHFLAGS', shflags.gsub!(' -Wl,-read_only_relocs,suppress', '')
+        if shflags.gsub!(' -Wl,-read_only_relocs,suppress', '')
+          s.change_make_var! 'SHFLAGS', shflags
+        end
       end
     end
 
@@ -59,7 +61,7 @@ class Ffmpeg < Formula
   end
 
   # Makefile expects to run in git repo and generate a version number
-  # with 'git describe --always' (see version.sh) but Homebrew build
+  # with 'git describe' command (see version.sh) but Homebrew build
   # runs in temp copy created via git checkout-index, so 'git describe'
   # does not work. Work around by writing VERSION file in build directory
   # to be picked up by version.sh.  Note that VERSION file will already
@@ -68,14 +70,20 @@ class Ffmpeg < Formula
     return if File.exists?("VERSION")
     git_tag = "UNKNOWN"
     Dir.chdir(cached_download) do
-      ret = `git describe --always`
-      if not $?.success?
-        opoo "Could not determine build version from git repository - set to #{git_tag}"
+      ver = `./version.sh`.chomp
+      if not $?.success? or ver == "UNKNOWN"
+        # fall back to git
+        ver = `git describe --tags --match N --always`.chomp
+        if not $?.success?
+          opoo "Could not determine build version from git repository - set to #{git_tag}"
+        else
+          git_tag = "git-#{ver}"
+        end
       else
-        git_tag = ret
+        git_tag = ver
       end
     end
-    File.open("VERSION","w") {|f| f.puts "git-#{git_tag}"}
+    File.open("VERSION","w") {|f| f.puts git_tag}
   end
 
 end
