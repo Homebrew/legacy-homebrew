@@ -8,7 +8,7 @@ class Libvpx < Formula
   depends_on 'yasm' => :build
 
   def install
-    args = "--prefix=#{prefix}"
+    args = ["--prefix=#{prefix}"]
     # Configure detects 32-bit CPUs incorrectly.
     args << "--target=generic-gnu" unless MacOS.prefer_64_bit?
 
