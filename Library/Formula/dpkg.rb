@@ -33,7 +33,9 @@ index a4e8516..de7f226 100755
 -PERL_LIBDIR=$($PERL -MConfig -e 'my $r = $Config{vendorlibexp};
 -                                 $r =~ s/$Config{vendorprefixexp}/\$(prefix)/;
 -                                 print $r')
-+PERL_LIBDIR="/Library/perl/5.10.0"
++PERL_LIBDIR=$($PERL -MConfig -e 'my $r = $Config{sitelib}; 
++                                 $r =~ s/$Config{sitelib}/\$(prefix)/;
++                                 print $r')
  
  for ac_prog in pod2man
  do
