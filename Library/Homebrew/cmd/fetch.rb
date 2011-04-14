@@ -4,7 +4,21 @@ require 'formula'
 
 module Homebrew extend self
   def fetch
-    ARGV.formulae.each do |f|
+    if ARGV.include? '--deps'
+      bucket = []
+      ARGV.formulae.each do |f|
+        bucket << f
+        bucket << f.recursive_deps
+      end
+      
+      bucket = bucket.flatten.uniq
+    else
+      bucket = ARGV.formulae
+    end
+
+    puts "Fetching: #{bucket * ', '}" if bucket.size > 1
+
+    bucket.each do |f|
       if ARGV.include? "--force" or ARGV.include? "-f"
         where_to = `brew --cache #{f.name}`.strip
         FileUtils.rm_rf where_to unless where_to.empty?
