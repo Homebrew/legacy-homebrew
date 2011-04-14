@@ -6,6 +6,7 @@ class BulkExtractor < Formula
   md5 '680ee243ca04d23b1059e972c53d59ce'
 
   depends_on 'afflib' => :optional
+  depends_on 'exiv2' => :optional
   depends_on 'libewf' => :optional
 
   def install
