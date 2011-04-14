@@ -179,8 +179,10 @@ didn't include with OS X.
 
     If `--all` is passed, show options for all formulae.
 
-  * `missing`:
-    Check all installed formuale for missing dependencies.
+  * `missing` [<formulae>]:
+    Check the given <formulae> for missing dependencies.
+
+    If no <formulae> are given, check all installed brews.
 
   * `server`:
     Start a local web app that lets you browse available formulae, similar
