@@ -2,7 +2,7 @@ require 'formula'
 
 class Zeromq < Formula
   url 'http://download.zeromq.org/zeromq-2.1.4.tar.gz'
-  head 'git://github.com/zeromq/zeromq2.git'
+  head 'git://github.com/zeromq/libzmq.git'
   homepage 'http://www.zeromq.org/'
   md5 'b9a8043792be3bfbf791e77bf3f259e8'
 
