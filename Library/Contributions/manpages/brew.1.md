@@ -154,15 +154,17 @@ didn't include with OS X.
     Show the git log for the given formulae. Options that `git-log`(1)
     recognizes can be passed before the formula list.
 
-  * `fetch [--force] [-v] [--HEAD]` <formula>:
-    Download the source package for the given <formula>. For tarballs, also
-    prints MD5 and SHA1 checksums.
+  * `fetch [--force] [-v] [--HEAD] [--deps]` <formulae>:
+    Download the source packages for the given <formulae>.
+    For tarballs, also print MD5 and SHA1 checksums.
 
-    If `--HEAD` is passed, download the HEAD version of <formula> instead. `-v`
+    If `--HEAD` is passed, download the HEAD versions of <formulae> instead. `-v`
     may also be passed to make the VCS checkout verbose, useful for seeing if
     an existing HEAD cache has been updated.
 
     If `--force` is passed, remove a previously cached version and re-fetch.
+
+    If `--deps` is passed, also download dependencies for any listed <formulae>.
 
   * `audit [--strict]`:
     Check formulae for Homebrew coding style violations. This should be

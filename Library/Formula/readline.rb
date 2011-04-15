@@ -21,6 +21,8 @@ EOS
   def install
     # Always build universal, per https://github.com/mxcl/homebrew/issues/issue/899
     ENV.universal_binary
+    # Fix darwin detection for Lion, see https://github.com/mxcl/homebrew/issues/4782
+    inreplace 'support/shobj-conf', 'darwin[89]*|darwin10*)', 'darwin[89]*|darwin1[01]*)'
     system "./configure", "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--infodir=#{info}",
