@@ -26,9 +26,9 @@ def coreutils_aliases
 end
 
 class Coreutils < Formula
-  url "http://ftp.gnu.org/gnu/coreutils/coreutils-8.10.tar.gz"
-  md5 '74d54d09fc5c1bd3337127f49c88b1c5'
   homepage 'http://www.gnu.org/software/coreutils'
+  url 'ftp://ftp.gnu.org/gnu/coreutils/coreutils-8.11.tar.gz'
+  sha256 '39a126bdd54ba8af15a1fc4004a78fc7910c0650b435d903df7556b0028450b2'
 
   def options
     [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
