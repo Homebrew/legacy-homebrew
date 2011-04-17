@@ -6,6 +6,7 @@ class Plotutils < Formula
   md5 'c08a424bd2438c80a786a7f4b5bb6a40'
 
   def install
+    ENV.x11 # enable libpng support
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make"
     system "make install"
