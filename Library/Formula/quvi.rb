@@ -1,9 +1,9 @@
 require 'formula'
 
 class Quvi < Formula
-  url 'http://quvi.googlecode.com/files/quvi-0.2.2.tar.bz2'
-  sha1 'cfeacf4c0a9958ba42ecab65098d71ecdcdd02f4'
-  homepage 'http://code.google.com/p/quvi/'
+  url 'http://sourceforge.net/projects/quvi/files/0.2/quvi-0.2.14.tar.bz2'
+  sha1 '4d2a4e02db4bcb555ddb92de3a466ab608e971eb'
+  homepage 'http://quvi.sourceforge.net/'
 
   depends_on 'pkg-config' => :build
   depends_on 'pcre'

@@ -10,8 +10,7 @@ class Cimg < Formula
 
     doc.install %w(
       README.txt CHANGES.txt
-      Licence_CeCILL-C_V1-en.txt 
-      Licence_CeCILL_V2-en.txt 
+      Licence_CeCILL-C_V1-en.txt Licence_CeCILL_V2-en.txt
       html examples)
   end
 end
