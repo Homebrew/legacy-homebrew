@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ck < Formula
-  url 'http://concurrencykit.org/releases/ck-0.0.2.tar.gz'
+  url 'http://concurrencykit.org/releases/ck-0.0.3.tar.gz'
   homepage 'http://concurrencykit.org'
-  md5 'f799054b075f3a37970dbc8ffc3ffb38'
+  md5 '3363a91c5941b33628cc196d583bd740'
 
   def install
     system "./configure", "--prefix=#{prefix}"
