@@ -7,7 +7,7 @@ class Plotutils < Formula
 
   def install
     ENV.x11 # enable libpng support
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}", "--enable-libplotter"
     system "make"
     system "make install"
   end
