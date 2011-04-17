@@ -1,12 +1,12 @@
 require 'formula'
 
 class Guile < Formula
-  url 'ftp://ftp.gnu.org/gnu/guile/guile-1.8.7.tar.gz'
-  head 'ftp://alpha.gnu.org/gnu/guile/guile-1.9.15.tar.gz'
   homepage 'http://www.gnu.org/software/guile/'
+  url 'ftp://ftp.gnu.org/gnu/guile/guile-1.8.7.tar.gz'
+  head 'ftp://ftp.gnu.org/pub/gnu/guile/guile-2.0.0.tar.gz'
 
   if ARGV.build_head?
-    sha1 '0b1cdd5f0506dcda3ed85324b2a0ff510920ee76'
+    sha1 'e266b79b17a04a98c438e9d5dabb5210fb368d77'
   else
     sha1 '24cd2f06439c76d41d982a7384fe8a0fe5313b54'
   end
