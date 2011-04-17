@@ -1,10 +1,10 @@
 require 'formula'
 
 class Node < Formula
-  url 'http://nodejs.org/dist/node-v0.4.5.tar.gz'
+  url 'http://nodejs.org/dist/node-v0.4.6.tar.gz'
   head 'git://github.com/joyent/node.git'
   homepage 'http://nodejs.org/'
-  md5 '7d7536aab7c6320f160b42c18c48bb30'
+  md5 'adc911c886fbe0f283cf994403fd4e3c'
 
   fails_with_llvm
 

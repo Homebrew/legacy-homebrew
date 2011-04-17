@@ -7,6 +7,7 @@ class Mysql < Formula
 
   depends_on 'cmake' => :build
   depends_on 'readline'
+  depends_on 'pidof'
 
   fails_with_llvm "https://github.com/mxcl/homebrew/issues/issue/144"
 
@@ -28,6 +29,10 @@ class Mysql < Formula
             "-DCMAKE_INSTALL_PREFIX=#{prefix}",
             "-DMYSQL_DATADIR=#{var}/mysql",
             "-DINSTALL_MANDIR=#{man}",
+            "-DINSTALL_DOCDIR=#{doc}",
+            "-DINSTALL_INFODIR=#{info}",
+            # CMake prepends prefix, so use share.basename
+            "-DINSTALL_MYSQLSHAREDIR=#{share.basename}/#{name}",
             "-DWITH_SSL=yes",
             "-DDEFAULT_CHARSET=utf8",
             "-DDEFAULT_COLLATION=utf8_general_ci",
@@ -61,6 +66,11 @@ class Mysql < Formula
 
     # Link the setup script into bin
     ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+    # Fix up the control script and link into bin
+    inreplace "#{prefix}/support-files/mysql.server" do |s|
+      s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
+    end
+    ln_s "#{prefix}/support-files/mysql.server", bin
   end
 
   def caveats; <<-EOS.undent
@@ -80,7 +90,10 @@ class Mysql < Formula
         sudo mysql_install_db ...options...
 
     Start mysqld manually with:
-        mysqld_safe &
+        mysql.server start
+
+    A "/etc/my.cnf" from another install may interfere with a Homebrew-built
+    server starting up correctly.
 
     To connect:
         mysql -uroot

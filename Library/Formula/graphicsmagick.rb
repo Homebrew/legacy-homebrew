@@ -51,7 +51,7 @@ class Graphicsmagick < Formula
             "--prefix=#{prefix}",
             "--enable-shared", "--disable-static"]
     args << "--without-magick-plus-plus" unless ARGV.include? '--with-magick-plus-plus'
-    args << "--disable-openmp" if MACOS_VERSION < 10.6 # libgomp unavailable
+    args << "--disable-openmp" if MacOS.leopard? # libgomp unavailable
     args << "--with-gslib" if ghostscript_srsly?
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
               unless ghostscript_fonts?
