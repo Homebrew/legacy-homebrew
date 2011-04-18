@@ -171,14 +171,17 @@ For all installed or specific formulae, remove any older versions from the cella
 Show the git log for the given formulae\. Options that \fBgit\-log\fR(1) recognizes can be passed before the formula list\.
 .
 .TP
-\fBfetch [\-\-force] [\-v] [\-\-HEAD]\fR \fIformula\fR
-Download the source package for the given \fIformula\fR\. For tarballs, also prints MD5 and SHA1 checksums\.
+\fBfetch [\-\-force] [\-v] [\-\-HEAD] [\-\-deps]\fR \fIformulae\fR
+Download the source packages for the given \fIformulae\fR\. For tarballs, also print MD5 and SHA1 checksums\.
 .
 .IP
-If \fB\-\-HEAD\fR is passed, download the HEAD version of \fIformula\fR instead\. \fB\-v\fR may also be passed to make the VCS checkout verbose, useful for seeing if an existing HEAD cache has been updated\.
+If \fB\-\-HEAD\fR is passed, download the HEAD versions of \fIformulae\fR instead\. \fB\-v\fR may also be passed to make the VCS checkout verbose, useful for seeing if an existing HEAD cache has been updated\.
 .
 .IP
 If \fB\-\-force\fR is passed, remove a previously cached version and re\-fetch\.
+.
+.IP
+If \fB\-\-deps\fR is passed, also download dependencies for any listed \fIformulae\fR\.
 .
 .TP
 \fBaudit [\-\-strict]\fR

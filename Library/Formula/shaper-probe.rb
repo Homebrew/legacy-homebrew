@@ -1,6 +1,6 @@
 require 'formula'
 
-class ShaperProbe <Formula
+class ShaperProbe < Formula
   url 'http://www.cc.gatech.edu/~partha/diffprobe/shaperprobe.tgz'
   homepage 'http://www.cc.gatech.edu/~partha/diffprobe/shaperprobe.html'
   md5 'a15b31cce3ffe087c5242d1fc9006c13'
