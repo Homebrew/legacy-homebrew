@@ -10,7 +10,7 @@ class HaskellPlatform < Formula
 
   def install
     # libdir doesn't work if passed to configure, needs to be passed to make install
-    system "./configure", "--prefix=#{prefix}", "--enable-unsupported-ghc-version"
+    system "./configure", "--prefix=#{prefix}"
     system %Q(EXTRA_CONFIGURE_OPTS="--libdir=#{lib}/ghc" make install)
   end
 
