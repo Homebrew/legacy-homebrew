@@ -12,7 +12,7 @@ class Scantailor < Formula
   depends_on 'libtiff'
 
   def install
-    system "cmake . #{std_cmake_parameters} -DPNG_INCLUDE_DIR=/usr/X11R6/include"
+    system "cmake . #{std_cmake_parameters} -DPNG_INCLUDE_DIR=/usr/X11/include"
     system "make install"
   end
 end
