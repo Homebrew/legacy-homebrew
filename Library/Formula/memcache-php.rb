@@ -5,6 +5,9 @@ class MemcachePhp < Formula
   homepage 'http://pecl.php.net/package/memcache'
   md5 '9542f1886b72ffbcb039a5c21796fe8a'
 
+  depends_on 'php'
+  depends_on 'memcached'
+
   def install
     Dir.chdir "memcache-#{version}" do
       system "phpize"
