@@ -8,7 +8,9 @@ class Syck < Formula
   fails_with_llvm
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    ENV.deparallelize # Not parallel safe.
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end
