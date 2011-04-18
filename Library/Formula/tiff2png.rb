@@ -15,8 +15,8 @@ class Tiff2png < Formula
       s.change_make_var! 'LIBTIFF', HOMEBREW_PREFIX+"lib"
       s.change_make_var! 'TIFFINC', HOMEBREW_PREFIX+"include"
       s.change_make_var! 'LIBJPEG', HOMEBREW_PREFIX+"lib"
-      s.change_make_var! 'LIBPNG', '/usr/X11R6/lib'
-      s.change_make_var! 'PNGINC', '/usr/X11R6/include'
+      s.change_make_var! 'LIBPNG', '/usr/X11/lib'
+      s.change_make_var! 'PNGINC', '/usr/X11/include'
       s.change_make_var! 'ZLIB', '/usr/lib'
     end
 
