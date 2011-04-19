@@ -46,19 +46,29 @@ class Ddclient < Formula
   def caveats; <<-EOS
 For ddclient to work, you will need to do the following:
 
-1) Create configuration file in #{etc}/ddclient, sample
-   configuration can be found in #{share}/doc/ddclient
+1) Create configuration file in #{etc}/ddclient, a sample
+   configuration can be found in #{HOMEBREW_PREFIX}/share/doc/ddclient.
+
+   Note: don't enable daemon mode in the configuration file; see
+   additional information below.
 
 2) Install the launchd item in /Library/LaunchDaemons, like so:
 
-   sudo cp -vf #{prefix}/org.ddclient.plist /Library/LaunchDaemons/.
+   sudo cp -vf #{prefix}/org.ddclient.plist /Library/LaunchDaemons/
    sudo chown -v root:wheel /Library/LaunchDaemons/org.ddclient.plist
 
 3) Start the daemon using:
 
-   sudo launchctl load /Library/LaunchDaemons/org.ddclient.plist
+  sudo launchctl load /Library/LaunchDaemons/org.ddclient.plist
 
-Next boot of system will automatically start ddclient.
+The next reboot of the system will automatically start ddclient.
+
+You can adjust the execution interval by changing the value of
+StartInterval (in seconds) in /Library/LaunchDaemons/org.ddclient.plist,
+and then
+
+   sudo launchctl unload /Library/LaunchDaemons/org.ddclient.plist
+   sudo launchctl load /Library/LaunchDaemons/org.ddclient.plist
 EOS
   end
 
@@ -70,8 +80,6 @@ EOS
 <dict>
   <key>Label</key>
   <string>org.ddclient</string>
-  <key>OnDemand</key>
-  <true/>
   <key>ProgramArguments</key>
   <array>
     <string>#{sbin}/ddclient</string>
@@ -80,11 +88,8 @@ EOS
   </array>
   <key>RunAtLoad</key>
   <true/>
-  <key>StartCalendarInterval</key>
-  <dict>
-    <key>Minute</key>
-    <integer>0</integer>
-  </dict>
+  <key>StartInterval</key>
+  <integer>300</integer>
   <key>WatchPaths</key>
   <array>
     <string>#{etc}/ddclient</string>
