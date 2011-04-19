@@ -1,42 +1,13 @@
 require 'formula'
 
-<<-COMMENTS
-Versions
---------
-This formula is currently tracking version 2.7.x.
+# This formula for Python 2.7.1
+# Python 3.x is available as a separate formula:
+# $ brew install python3
 
-Python 3.x is available as a separate formula:
-  brew install python3
-
-Options
--------
-There are a few options for customzing the build.
-  --universal: Builds combined 32-/64-bit Intel binaries.
-  --framework: Builds a "Framework" version of Python.
-  --static:    Builds static instead of shared libraries.
-
-site-packages
--------------
-The "site-packages" folder lives in the Cellar, under the "lib" folder
-for normal builds, and under the "Frameworks" folder for Framework builds.
-
-A .pth file is added to the Cellar site-packages that adds the corresponding
-HOMEBREW_PREFIX folder (/usr/local/lib/python2.7/site-packages by default)
-to sys.path. Note that this alternate folder doesn't itself support .pth files.
-
-pip / distribute
-----------------
-The pip (and distribute) formulae in Homebrew are designed only to work
-against a Homebrew-installed Python, though they provide links for
-manually installing against a custom Python.
-
-pip and distribute are installed directly into the Cellar site-packages,
-since they need to install to a place that supports .pth files.
-
-The pip & distribute formuale use the "site_packages" method defined here
-to get the appropriate site-packages path.
-
-COMMENTS
+class Distribute < Formula
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.15.tar.gz'
+  md5 'ea52e1412e7ff560c290266ed400e216'
+end
 
 
 # Was a Framework build requested?
@@ -47,61 +18,32 @@ def as_framework?
   (self.installed? and File.exists? prefix+"Frameworks/Python.framework") or build_framework?
 end
 
-class Python <Formula
+class Python < Formula
   url 'http://www.python.org/ftp/python/2.7.1/Python-2.7.1.tar.bz2'
   homepage 'http://www.python.org/'
   md5 'aa27bc25725137ba155910bd8e5ddc4f'
 
-  depends_on 'readline' => :optional  # Prefer over OS X's libedit
-  depends_on 'sqlite'   => :optional  # Prefer over OS X's older version
+  depends_on 'readline' => :optional # Prefer over OS X's libedit
+  depends_on 'sqlite'   => :optional # Prefer over OS X's older version
   depends_on 'gdbm'     => :optional
 
   def options
     [
       ["--framework", "Do a 'Framework' build instead of a UNIX-style build."],
       ["--universal", "Build for both 32 & 64 bit Intel."],
-      ["--static", "Build static libraries."]
+      ["--static", "Build static libraries."],
+      ["--no-poll", "Remove HAVE_POLL.* options from build."]
     ]
   end
 
   # Skip binaries so modules will load; skip lib because it is mostly Python files
   skip_clean ['bin', 'lib']
 
-  def site_packages
-    # The Cellar location of site-packages
-    if as_framework?
-      # If we're installed or installing as a Framework, then use that location.
-      return prefix+"Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages"
-    else
-      # Otherwise use just 'lib'
-      return lib+"python2.7/site-packages"
-    end
-  end
-
-  def exec_prefix
-    if as_framework?
-      # If we're installed or installing as a Framework, then use that location.
-      return prefix+"Frameworks/Python.framework/Versions/2.7/bin"
-    else
-      # Otherwise just use 'bin'
-      return bin
-    end
-  end
-
-  def prefix_site_packages
-    # The HOMEBREW_PREFIX location of site-packages
-    HOMEBREW_PREFIX+"lib/python2.7/site-packages"
-  end
-
-  def validate_options
+  def install
     if build_framework? and ARGV.include? "--static"
       onoe "Cannot specify both framework and static."
       exit 99
     end
-  end
-
-  def install
-    validate_options
 
     args = ["--prefix=#{prefix}"]
 
@@ -117,53 +59,101 @@ class Python <Formula
 
     # allow sqlite3 module to load extensions
     inreplace "setup.py",
-      'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))',
-      '#sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))'
+      'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', ''
 
     system "./configure", *args
+
+    if ARGV.include? '--no-poll'
+      inreplace 'pyconfig.h', /.*?(HAVE_POLL[_A-Z]*).*/, '#undef \1'
+    end
+
     system "make"
     ENV.j1 # Installs must be serialized
     system "make install"
 
-    # Add the Homebrew prefix path to site-packages via a .pth
+    # Post-install, fix up the site-packages and install-scripts folders
+    # so that user-installed Python software survives minor updates, such
+    # as going from 2.7.0 to 2.7.1.
+
+    # Remove the site-packages that Python created in its Cellar.
+    site_packages.rmtree
+
+    # Create a site-packages in the prefix.
     prefix_site_packages.mkpath
-    (site_packages+"homebrew.pth").write prefix_site_packages
+
+    # Symlink the prefix site-packages into the cellar.
+    ln_s prefix_site_packages, site_packages
+
+    # Tell distutils-based installers where to put scripts
+    scripts_folder.mkpath
+    (effective_lib+"python2.7/distutils/distutils.cfg").write <<-EOF.undent
+      [install]
+      install-scripts=#{scripts_folder}
+    EOF
+
+    # Install distribute. The user can then do:
+    # $ easy_install pip
+    # $ pip install --upgrade distribute
+    # to get newer versions of distribute outside of Homebrew.
+    Distribute.new.brew { system "#{bin}/python", "setup.py", "install" }
   end
 
   def caveats
     framework_caveats = <<-EOS.undent
+
       Framework Python was installed to:
         #{prefix}/Frameworks/Python.framework
 
       You may want to symlink this Framework to a standard OS X location,
       such as:
-        mkdir ~/Frameworks
-        ln -s "#{prefix}/Frameworks/Python.framework" ~/Frameworks
-
-    EOS
-
-    site_caveats = <<-EOS.undent
-      The site-packages folder for this Python is:
-        #{site_packages}
-
-      We've added a "homebrew.pth" file to also include:
-        #{prefix_site_packages}
-
+          mkdir ~/Frameworks
+          ln -s "#{prefix}/Frameworks/Python.framework" ~/Frameworks
     EOS
 
     general_caveats = <<-EOS.undent
-      You may want to create a "virtual environment" using this Python as a base
-      so you can manage multiple independent site-packages. See:
-        http://pypi.python.org/pypi/virtualenv
+      A "distutils.cfg" has been written, specifing the install-scripts folder as:
+        #{scripts_folder}
 
-      If you install Python packages via pip, binaries will be installed under
-      Python's cellar but not automatically linked into the Homebrew prefix.
-      You may want to add Python's bin folder to your PATH as well:
-        #{exec_prefix}
+      If you install Python packages via "python setup.py install", easy_install, pip,
+      any provided scripts will go into the install-scripts folder above, so you may
+      want to add it to your PATH.
+
+      Distribute has been installed, so easy_install is available.
+      To update distribute itself outside of Homebrew:
+          #{scripts_folder}/easy_install pip
+          #{scripts_folder}/pip install --upgrade distribute
+
+      See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
     EOS
 
-    s = site_caveats+general_caveats
-    s = framework_caveats + s if as_framework?
+    s = general_caveats
+    s += framework_caveats if as_framework?
     return s
   end
+
+private
+
+  # Path helpers
+
+  def effective_lib
+    # If we're installed or installing as a Framework, then use that location.
+    return prefix+"Frameworks/Python.framework/Versions/2.7/lib" if as_framework?
+    # Otherwise use just 'lib'
+    return lib
+  end
+
+  # The Cellar location of site-packages
+  def site_packages
+    effective_lib+"python2.7/site-packages"
+  end
+
+  # The HOMEBREW_PREFIX location of site-packages
+  def prefix_site_packages
+    HOMEBREW_PREFIX+"lib/python2.7/site-packages"
+  end
+
+  def scripts_folder
+    HOMEBREW_PREFIX+"share/python"
+  end
+
 end

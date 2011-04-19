@@ -2,10 +2,10 @@ require 'formula'
 
 def build_32bit?; ARGV.include? '--32-bit' or Hardware.is_32_bit?; end
 
-class P7zip <Formula
-  url 'http://downloads.sourceforge.net/project/p7zip/p7zip/9.13/p7zip_9.13_src_all.tar.bz2'
+class P7zip < Formula
+  url 'http://downloads.sourceforge.net/project/p7zip/p7zip/9.20.1/p7zip_9.20.1_src_all.tar.bz2'
   homepage 'http://p7zip.sourceforge.net/'
-  md5 '8ddb5053db3b1f2696407d01be145779'
+  md5 'bd6caaea567dc0d995c990c5cc883c89'
 
   def options
     [["--32-bit", "Force 32-bit."]]

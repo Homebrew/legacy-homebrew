@@ -1,12 +1,12 @@
 require 'formula'
 
-class Rabbitmq <Formula
+class Rabbitmq < Formula
   homepage 'http://rabbitmq.com'
-  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.2.0/rabbitmq-server-2.2.0.tar.gz'
-  md5 '65d0644aa4bf24398d13553b6aa6465f'
+  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.4.1/rabbitmq-server-2.4.1.tar.gz'
+  md5 '6db31b4353bd44f8ae9b6756b0a831e6'
 
   depends_on 'erlang'
-  depends_on 'simplejson' => :python if MACOS_VERSION < 10.6
+  depends_on 'simplejson' => :python if MacOS.leopard?
 
   def patches
     # Can't build manpages without a lot of other junk, so disable
@@ -25,7 +25,7 @@ class Rabbitmq <Formula
     (var+'lib/rabbitmq').mkpath
     (var+'log/rabbitmq').mkpath
 
-    %w{rabbitmq-server rabbitmq-multi rabbitmqctl rabbitmq-env}.each do |script|
+    %w{rabbitmq-server rabbitmqctl rabbitmq-env}.each do |script|
       inreplace sbin+script do |s|
         s.gsub! '/etc/rabbitmq', "#{etc}/rabbitmq"
         s.gsub! '/var/lib/rabbitmq', "#{var}/lib/rabbitmq"

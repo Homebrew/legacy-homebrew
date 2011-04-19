@@ -1,6 +1,6 @@
 require 'formula'
 
-class OpenOcd <Formula
+class OpenOcd < Formula
   url 'http://download.berlios.de/openocd/openocd-0.4.0.tar.bz2'
   homepage 'http://openocd.berlios.de/web/'
   md5 '11a81b5f200fb0c318d9f49182bb71d7'

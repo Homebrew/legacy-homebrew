@@ -8,7 +8,7 @@ def topology?
   ARGV.include? '--with-topology'
 end
 
-class Postgis <Formula
+class Postgis < Formula
   url 'http://postgis.refractions.net/download/postgis-1.5.2.tar.gz'
   homepage 'http://postgis.refractions.net/'
   md5 '772ec1d0f04d6800cd7e2420a97a7483'
@@ -18,6 +18,7 @@ class Postgis <Formula
   depends_on 'postgresql'
   depends_on 'proj'
   depends_on 'geos'
+  depends_on 'gdal' if raster?
 
   # For libintl
   depends_on 'gettext' if ARGV.build_head?
@@ -56,6 +57,12 @@ class Postgis <Formula
       postgis/postgis_upgrade_14_to_15.sql
       postgis/postgis_upgrade_15_minor.sql postgis/uninstall_postgis.sql
     )
+
+    if ARGV.build_head?
+      (share+'postgis').install 'raster/rt_pg/rtpostgis.sql' if raster?
+      (share+'postgis').install 'topology/topology.sql' if topology?
+    end
+
     # Copy loader and utils binaries to bin folder
     bin.install %w(
       loader/pgsql2shp loader/shp2pgsql utils/create_undef.pl

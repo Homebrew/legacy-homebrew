@@ -1,6 +1,6 @@
 require 'formula'
 
-class Contacts <Formula
+class Contacts < Formula
   url 'http://www.gnufoo.org/contacts/contacts1.1.tgz'
   homepage 'http://www.gnufoo.org/contacts/contacts.html'
   md5 '37b6a6a0312dabc4ad2ddd8805f93e12'

@@ -1,20 +1,19 @@
 require 'formula'
 
-class Libxml2 <Formula
-  url 'ftp://xmlsoft.org/libxml2/libxml2-2.7.7.tar.gz'
+class Libxml2 < Formula
+  url 'ftp://xmlsoft.org/libxml2/libxml2-2.7.8.tar.gz'
   homepage 'http://xmlsoft.org'
-  md5 '9abc9959823ca9ff904f1fbcf21df066'
+  md5 '8127a65e8c3b08856093099b52599c86'
 
   keg_only :provided_by_osx
 
+  fails_with_llvm "Undefined symbols when linking", :build => "2326"
+
   def options
-    # Works with the Python 2 formula
     [['--with-python', 'Compile the libxml2 Python 2.x modules']]
   end
 
   def install
-    fails_with_llvm "Undefined symbols when linking", :build => "2326"
-
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
 
     if ARGV.include? '--with-python'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Pbrt <Formula
+class Pbrt < Formula
   head 'git://github.com/mmp/pbrt-v2.git'
   homepage 'http://www.pbrt.org/'
 
@@ -27,7 +27,7 @@ class Pbrt <Formula
       s.change_make_var! "EXR_LIBDIR", "-L#{openexr.lib} -L#{ilmbase.lib}"
 
       # Change settings if we are using a 32bit system
-      if MACOS_VERSION < 10.6 or Hardware.is_32_bit?
+      if MacOS.leopard? or Hardware.is_32_bit?
         s.change_make_var! "MARCH", "-m32 -msse2 -mfpmath=sse"
       end
     end

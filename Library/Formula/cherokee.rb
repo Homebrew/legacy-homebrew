@@ -1,9 +1,9 @@
 require 'formula'
 
-class Cherokee <Formula
-  url 'http://www.cherokee-project.com/download/1.0/1.0.8/cherokee-1.0.8.tar.gz'
+class Cherokee < Formula
+  url 'http://www.cherokee-project.com/download/1.2/1.2.1/cherokee-1.2.1.tar.gz'
   homepage 'http://www.cherokee-project.com/'
-  sha1 '28b2e2b192c713aa9c43737ae8376a55effa7336'
+  sha1 '982bc99e966218661abd562d604aea32923bfde9'
 
   depends_on 'gettext'
 

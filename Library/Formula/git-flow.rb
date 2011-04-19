@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 require 'formula'
 
-class GitFlowCompletion <Formula
-  url 'git://github.com/bobthecow/git-flow-completion.git', :tag => '0.4.0.1'
-  version '0.4.0.1'
+class GitFlowCompletion < Formula
+  url 'git://github.com/bobthecow/git-flow-completion.git', :tag => '0.4.0.2'
+  version '0.4.0.2'
   head 'git://github.com/bobthecow/git-flow-completion.git', :branch => 'develop'
 
   def initialize
@@ -17,9 +17,9 @@ class GitFlowCompletion <Formula
   homepage 'https://github.com/bobthecow/git-flow-completion'
 end
 
-class GitFlow <Formula
-  url 'git://github.com/nvie/gitflow.git', :tag => '0.4'
-  version '0.4'
+class GitFlow < Formula
+  url 'git://github.com/nvie/gitflow.git', :tag => '0.4.1'
+  version '0.4.1'
   head 'git://github.com/nvie/gitflow.git', :branch => 'develop'
 
   homepage 'https://github.com/nvie/gitflow'

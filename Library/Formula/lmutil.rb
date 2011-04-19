@@ -1,6 +1,6 @@
 require 'formula'
 
-class Lmutil <Formula
+class Lmutil < Formula
   url 'http://www.globes.com/products/utilities/v11.8/lmutil_universal_mac10.tar.gz'
   version '11.8'
   homepage 'http://www.globes.com/support/fnp_utilities_download.htm'

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pure < Formula
-  url 'http://pure-lang.googlecode.com/files/pure-0.44.tar.gz'
+  url 'http://pure-lang.googlecode.com/files/pure-0.47.tar.gz'
   homepage 'http://code.google.com/p/pure-lang/'
-  md5 '36578a3e4651c337fdff4a2fc0914e7b'
+  sha1 'f47915ffa9fd0c7dee40f364a5751bfd4f945bf1'
 
   depends_on 'llvm'
   depends_on 'gmp'
@@ -12,8 +12,10 @@ class Pure < Formula
   def install
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
-                          "--enable-release"
+                          "--enable-release",
+                          "--without-elisp"
     system "make"
     system "make install"
+    system "make install-docs"
   end
 end

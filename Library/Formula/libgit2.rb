@@ -1,11 +1,11 @@
 require 'formula'
 
-class Libgit2 <Formula
-  url 'https://github.com/libgit2/libgit2/tarball/v0.2.0'
-  md5 '753cbd61671663874d431b4292bcd4bb'
+class Libgit2 < Formula
+  url 'https://github.com/libgit2/libgit2/zipball/v0.11.0'
+  md5 '3205234f5a6526415edafaad373d897a'
   homepage 'http://libgit2.github.com/'
 
-  head 'https://github.com/libgit2/libgit2.git'
+  head 'git://github.com/libgit2/libgit2.git', :branch => 'master'
 
   def install
     system "./waf", "configure", "--prefix=#{prefix}"

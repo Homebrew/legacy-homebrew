@@ -1,6 +1,6 @@
 require 'formula'
 
-class SagaCpp <Formula
+class SagaCpp < Formula
   url 'http://static.saga.cct.lsu.edu/software/saga-core/saga-core-1.5.2.tgz'
   head 'https://svn.cct.lsu.edu/repos/saga/core/trunk/', :using => :svn
   homepage 'http://saga.cct.lsu.edu'
