@@ -9,6 +9,7 @@ class Xa < Formula
     inreplace 'Makefile' do |s|
       s.gsub! /\/usr\/local/, prefix
     end
+
     system "make"
     system "make install"
   end
