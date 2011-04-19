@@ -19,9 +19,9 @@ class GnuSmalltalk < Formula
 
   depends_on 'readline'
 
-  def install
-    fails_with_llvm "Codegen problems with LLVM"
+  fails_with_llvm "Codegen problems with LLVM"
 
+  def install
     # 64-bit version doesn't build, so force 32 bits.
     ENV.m32
 

@@ -21,7 +21,7 @@ class Grass < Formula
   depends_on "unixodbc"
   depends_on "fftw"
 
-  depends_on "cairo" if MACOS_VERSION < 10.6
+  depends_on "cairo" if MacOS.leopard?
 
   def patches
     DATA
@@ -38,9 +38,8 @@ class Grass < Formula
     readline = Formula.factory( 'readline' )
     gettext = Formula.factory( 'gettext' )
 
-    configure_args = [
-      "--disable-debug",
-      "--disable-dependency-tracking",
+    args = [
+      "--disable-debug", "--disable-dependency-tracking",
       "--with-libs=/usr/X11/lib #{HOMEBREW_PREFIX}/lib",
       "--with-includes=#{HOMEBREW_PREFIX}/include",
       "--enable-largefile",
@@ -70,32 +69,33 @@ class Grass < Formula
     ]
 
     if MacOS.prefer_64_bit?
-      configure_args << "--enable-64bit"
-      configure_args << "--with-macosx-archs=x86_64"
+      args << "--enable-64bit"
+      args << "--with-macosx-archs=x86_64"
     else
-      configure_args << "--with-macosx-archs=i386"
+      args << "--with-macosx-archs=i386"
     end
 
     # Deal with Cairo support
-    if MACOS_VERSION >= 10.6
-      configure_args << "--with-cairo-includes=/usr/X11/include /usr/X11/include/cairo"
-    else
+    if MacOS.leopard?
       cairo = Formula.factory('cairo')
-      configure_args << "--with-cairo-includes=#{cairo.include + 'cairo'}"
-      configure_args << "--with-cairo-libs=#{cairo.lib}"
+      args << "--with-cairo-includes=#{cairo.include}/cairo"
+      args << "--with-cairo-libs=#{cairo.lib}"
+    else
+      args << "--with-cairo-includes=/usr/X11/include /usr/X11/include/cairo"
     end
-    configure_args << "--with-cairo"
+
+    args << "--with-cairo"
 
     # Database support
-    configure_args << "--with-postgres" if postgres?
+    args << "--with-postgres" if postgres?
     if mysql?
       mysql = Formula.factory('mysql')
-      configure_args << "--with-mysql-includes=#{mysql.include + 'mysql'}"
-      configure_args << "--with-mysql-libs=#{mysql.lib + 'mysql'}"
-      configure_args << "--with-mysql"
+      args << "--with-mysql-includes=#{mysql.include + 'mysql'}"
+      args << "--with-mysql-libs=#{mysql.lib + 'mysql'}"
+      args << "--with-mysql"
     end
 
-    system "./configure", "--prefix=#{prefix}", *configure_args
+    system "./configure", "--prefix=#{prefix}", *args
     system "make" # make and make install must be seperate steps.
     system "make install"
   end

@@ -4,11 +4,11 @@ class Wine < Formula
   homepage 'http://www.winehq.org/'
 
   if ARGV.flag? '--devel'
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.16.tar.bz2'
-    sha1 '66c39e2a465a99cbe70fa7bfd5f370bcd9dc5f3c'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.18.tar.bz2'
+    sha256 '994064d326954e6df252002891bfcbb987a35aa573ab74be605224f66623a4ac'
   else
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.2.tar.bz2'
-    sha1 '8b37c8e0230dd6a665d310054f4e36dcbdab7330'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.3.tar.bz2'
+    sha256 '3fd8d3f2b466d07eb90b8198cdc9ec3005917a4533db7b8c6c69058a2e57c61f'
   end
 
   head 'git://source.winehq.org/git/wine.git'
@@ -16,6 +16,8 @@ class Wine < Formula
   depends_on 'jpeg'
   depends_on 'libicns'
   depends_on 'gnutls'
+
+  fails_with_llvm
 
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
   # configure: libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
@@ -32,7 +34,6 @@ EOS
   end
 
   def install
-    fails_with_llvm
     ENV.x11
 
     # Build 32-bit; Wine doesn't support 64-bit host builds on OS X.
@@ -49,7 +50,7 @@ EOS
             "--with-x",
             "--with-coreaudio",
             "--with-opengl"]
-    args << "--disable-win16" if MACOS_VERSION < 10.6
+    args << "--disable-win16" if MacOS.leopard?
 
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
     args << "--without-mpg123" if Hardware.is_64_bit?

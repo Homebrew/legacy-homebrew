@@ -11,11 +11,10 @@ class Clisp < Formula
 
   skip_clean :all # otherwise abort trap
 
-  def install
-    # This build isn't parallel safe.
-    ENV.j1
+  fails_with_llvm "Fails during configure with LLVM GCC from XCode 4 on Snow Leopard"
 
-    fails_with_llvm "Fails during configure with LLVM GCC from XCode 4 on Snow Leopard"
+  def install
+    ENV.j1 # This build isn't parallel safe.
 
     # Clisp requires to select word size explicitly this way,
     # set it in CFLAGS won't work.

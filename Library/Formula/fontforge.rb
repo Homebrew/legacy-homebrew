@@ -11,16 +11,15 @@ class Fontforge < Formula
   depends_on 'pango'
   depends_on 'potrace'
 
-  def install
-    fails_with_llvm "Compiling cvexportdlg.c fails with error: initializer element is not constant"
+  fails_with_llvm "Compiling cvexportdlg.c fails with error: initializer element is not constant"
 
+  def install
     ENV.x11
     # Fix linker error; see: http://trac.macports.org/ticket/25012
     ENV.append "LDFLAGS", "-lintl"
     system "./configure", "--prefix=#{prefix}",
                           "--enable-double",
-                          "--without-freetype-bytecode",
-                          "--without-python"
+                          "--without-freetype-bytecode"
 
     inreplace "Makefile" do |s|
       s.gsub! "/Applications", "$(prefix)"
@@ -35,9 +34,9 @@ class Fontforge < Formula
     fontforge is an X11 application.
 
     To install the Mac OS X wrapper application run:
-      $ brew linkapps
+        brew linkapps
     or:
-      $ sudo ln -s #{prefix}/FontForge.app /Applications
+        sudo ln -s #{prefix}/FontForge.app /Applications
     EOS
   end
 end

@@ -8,17 +8,15 @@ class Valgrind < Formula
 
   depends_on 'pkg-config' => :build
 
+  fails_with_llvm "Makes applications segfault on startup", :build => 2326
+
   skip_clean 'lib'
 
   def install
-    fails_with_llvm "Makes applications segfault on startup", :build => 2326
-
     system "./autogen.sh" if File.exists? "autogen.sh"
 
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
-    if MacOS.prefer_64_bit?
-      args << "--enable-only64bit" << "--build=amd64-darwin"
-    end
+    args << "--enable-only64bit" << "--build=amd64-darwin" if MacOS.prefer_64_bit?
 
     system "./configure", *args
     system "make install"

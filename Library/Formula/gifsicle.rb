@@ -6,7 +6,9 @@ class Gifsicle < Formula
   md5 '3d9e45873daaf960a35d1b89505f1101'
 
   def install
-    system "./configure", "--enable-all", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--enable-all"
     system "make install"
   end
 end
