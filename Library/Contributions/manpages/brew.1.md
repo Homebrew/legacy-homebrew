@@ -146,9 +146,12 @@ didn't include with OS X.
   * `cat` <formula>:
     Display the source to <formula>.
 
-  * `cleanup` [<formula>]:
+  * `cleanup [--force]` [<formula>]:
     For all installed or specific formulae, remove any older versions from the
-    cellar.
+    cellar. By default, does not remove out-of-date keg-only brews, as other
+    software may link directly to specific versions.
+
+    If `--force` is passed, remove out-of-date keg-only brews as well.
 
   * `log [git-log-options]` <formula> ...:
     Show the git log for the given formulae. Options that `git-log`(1)
