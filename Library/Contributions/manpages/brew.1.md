@@ -146,23 +146,28 @@ didn't include with OS X.
   * `cat` <formula>:
     Display the source to <formula>.
 
-  * `cleanup` [<formula>]:
+  * `cleanup [--force]` [<formula>]:
     For all installed or specific formulae, remove any older versions from the
-    cellar.
+    cellar. By default, does not remove out-of-date keg-only brews, as other
+    software may link directly to specific versions.
+
+    If `--force` is passed, remove out-of-date keg-only brews as well.
 
   * `log [git-log-options]` <formula> ...:
     Show the git log for the given formulae. Options that `git-log`(1)
     recognizes can be passed before the formula list.
 
-  * `fetch [--force] [-v] [--HEAD]` <formula>:
-    Download the source package for the given <formula>. For tarballs, also
-    prints MD5 and SHA1 checksums.
+  * `fetch [--force] [-v] [--HEAD] [--deps]` <formulae>:
+    Download the source packages for the given <formulae>.
+    For tarballs, also print MD5 and SHA1 checksums.
 
-    If `--HEAD` is passed, download the HEAD version of <formula> instead. `-v`
+    If `--HEAD` is passed, download the HEAD versions of <formulae> instead. `-v`
     may also be passed to make the VCS checkout verbose, useful for seeing if
     an existing HEAD cache has been updated.
 
     If `--force` is passed, remove a previously cached version and re-fetch.
+
+    If `--deps` is passed, also download dependencies for any listed <formulae>.
 
   * `audit [--strict]`:
     Check formulae for Homebrew coding style violations. This should be
@@ -179,8 +184,10 @@ didn't include with OS X.
 
     If `--all` is passed, show options for all formulae.
 
-  * `missing`:
-    Check all installed formuale for missing dependencies.
+  * `missing` [<formulae>]:
+    Check the given <formulae> for missing dependencies.
+
+    If no <formulae> are given, check all installed brews.
 
   * `server`:
     Start a local web app that lets you browse available formulae, similar

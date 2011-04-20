@@ -20,7 +20,7 @@ class Git < Formula
     ENV['NO_FINK']='1'
     ENV['NO_DARWIN_PORTS']='1'
     # If local::lib is used you get a 'Only one of PREFIX or INSTALL_BASE can be given' error
-    ENV['PERL_MM_OPT']='';
+    ENV['PERL_MM_OPT']=''
     # build verbosely so we can debug better
     ENV['V']='1'
 
@@ -37,7 +37,7 @@ class Git < Formula
     # Install emacs support.
     (share+'doc/git-core/contrib').install 'contrib/emacs'
 
-    # Install all other contrib files to share/contrib
+    # Install contrib files to share/contrib
     (share).install 'contrib'
 
     # these files are exact copies of the git binary, so like the contents
@@ -58,9 +58,13 @@ class Git < Formula
   end
 
   def caveats; <<-EOS.undent
-    Bash completion and emacs support have been installed.
+    Bash completion has been installed to:
+      #{prefix}/etc/bash_completion.d/
 
-    The rest of the "contrib" folder has been copied to:
+    Emacs support has been installed to:
+      #{share}/doc/git-core/contrib/emacs/
+
+    The rest of the "contrib" has been installed to:
       #{share}/contrib
     EOS
   end

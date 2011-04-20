@@ -7,9 +7,9 @@ class GhostscriptFonts < Formula
 end
 
 class Ghostscript < Formula
-  url 'http://ghostscript.com/releases/ghostscript-9.01.tar.bz2'
+  url 'http://downloads.ghostscript.com/public/ghostscript-9.02.tar.bz2'
   homepage 'http://www.ghostscript.com/'
-  md5 '9824d6a21ad8b4a831f67601959f1181'
+  md5 'f67151444bd56a7904579fc75a083dd6'
 
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
