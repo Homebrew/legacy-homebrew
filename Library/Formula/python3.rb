@@ -88,16 +88,40 @@ class Python3 < Formula
     ln_s "#{scripts_folder}/easy_install", "#{scripts_folder}/easy_install3"
   end
 
-  def caveats; <<-EOS.undent
-    Apple's Tcl/Tk is not recommended for use with 64-bit Python.
-    For more information see: http://www.python.org/download/mac/tcltk/
+  def caveats
+    framework_caveats = <<-EOS.undent
 
-    The site-packages folder for this Python is:
-      #{site_packages}
+      Framework Python was installed to:
+        #{prefix}/Frameworks/Python.framework
 
-    We've added a "homebrew.pth" file to also include:
-      #{prefix_site_packages}
+      You may want to symlink this Framework to a standard OS X location,
+      such as:
+          mkdir ~/Frameworks
+          ln -s "#{prefix}/Frameworks/Python.framework" ~/Frameworks
     EOS
+
+    general_caveats = <<-EOS.undent
+      A "distutils.cfg" has been written, specifing the install-scripts folder as:
+        #{scripts_folder}
+
+      If you install Python packages via "python3 setup.py install", easy_install, pip,
+      any provided scripts will go into the install-scripts folder above, so you may
+      want to add it to your PATH.
+
+      Distribute has been installed, so easy_install is available.
+      To update distribute itself outside of Homebrew:
+          #{scripts_folder}/easy_install pip
+          #{scripts_folder}/pip install --upgrade distribute
+
+      See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
+
+      Apple's Tcl/Tk is not recommended for use with 64-bit Python.
+      For more information see: http://www.python.org/download/mac/tcltk/
+    EOS
+
+    s = general_caveats
+    s += framework_caveats if as_framework?
+    return s
   end
 
 private
