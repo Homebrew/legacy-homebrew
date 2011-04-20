@@ -163,8 +163,11 @@ Check your system for potential problems\.
 Display the source to \fIformula\fR\.
 .
 .TP
-\fBcleanup\fR [\fIformula\fR]
-For all installed or specific formulae, remove any older versions from the cellar\.
+\fBcleanup [\-\-force]\fR [\fIformula\fR]
+For all installed or specific formulae, remove any older versions from the cellar\. By default, does not remove out\-of\-date keg\-only brews, as other software may link directly to specific versions\.
+.
+.IP
+If \fB\-\-force\fR is passed, remove out\-of\-date keg\-only brews as well\.
 .
 .TP
 \fBlog [git\-log\-options]\fR \fIformula\fR \.\.\.

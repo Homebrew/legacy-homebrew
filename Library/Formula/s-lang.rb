@@ -11,7 +11,7 @@ class SLang < Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-png=/usr/X11R6"
+                          "--with-png=/usr/X11"
     ENV.j1
     system "make"
     system "make install"

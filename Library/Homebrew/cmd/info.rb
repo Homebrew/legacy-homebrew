@@ -25,7 +25,7 @@ module Homebrew extend self
 
     if system "/usr/bin/which -s git"
       gh_user=`git config --global github.user 2>/dev/null`.chomp
-      /^\*\s*(.*)/.match(`git --work-tree=#{HOMEBREW_REPOSITORY} branch 2>/dev/null`)
+      /^\*\s*(.*)/.match(`git --git-dir=#{HOMEBREW_REPOSITORY}/.git branch 2>/dev/null`)
       unless $1.nil? || $1.empty? || gh_user.empty?
         branch = $1.chomp
         user = gh_user
