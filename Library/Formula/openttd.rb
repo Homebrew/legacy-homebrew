@@ -2,6 +2,7 @@ require 'formula'
 
 class Openttd < Formula
   url 'http://us.binaries.openttd.org/binaries/releases/1.1.0/openttd-1.1.0-source.tar.gz'
+  head 'git://git.openttd.org/openttd/trunk.git'
   homepage 'http://www.openttd.org/'
   md5 'd5ca3357e5c7f995aa43414ff4d93cfb'
 
