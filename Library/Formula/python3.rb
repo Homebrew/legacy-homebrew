@@ -4,6 +4,12 @@ require 'formula'
 # Python 2.7.1 is available as a separate formula:
 # $ brew install python
 
+class Distribute < Formula
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.15.tar.gz'
+  md5 'ea52e1412e7ff560c290266ed400e216'
+end
+
+
 # Was a Framework build requested?
 def build_framework?; ARGV.include? '--framework'; end
 
@@ -52,9 +58,31 @@ class Python3 < Formula
     ENV.j1 # Installs must be serialized
     system "make install"
 
-    # Add the Homebrew prefix path to site-packages via a .pth
+    # Post-install, fix up the site-packages and install-scripts folders
+    # so that user-installed Python software survives minor updates, such
+    # as going from 3.2.0 to 3.2.1.
+
+    # Remove the site-packages that Python created in its Cellar.
+    site_packages.rmtree
+
+    # Create a site-packages in the prefix.
     prefix_site_packages.mkpath
-    (site_packages+"homebrew.pth").write prefix_site_packages
+
+    # Symlink the prefix site-packages into the cellar.
+    ln_s prefix_site_packages, site_packages
+
+    # Tell distutils-based installers where to put scripts
+    scripts_folder.mkpath
+    (effective_lib+"python3.2/distutils/distutils.cfg").write <<-EOF.undent
+      [install]
+      install-scripts=#{scripts_folder}
+    EOF
+
+    # Install distribute. The user can then do:
+    # $ easy_install pip
+    # $ pip install --upgrade distribute
+    # to get newer versions of distribute outside of Homebrew.
+    Distribute.new.brew { system "#{bin}/python3", "setup.py", "install" }
   end
 
   def caveats; <<-EOS.undent
@@ -86,7 +114,6 @@ private
   end
 
   # The HOMEBREW_PREFIX location of site-packages
-  # We write a .pth file in the Cellar site-packages to here
   def prefix_site_packages
     HOMEBREW_PREFIX+"lib/python3.2/site-packages"
   end
