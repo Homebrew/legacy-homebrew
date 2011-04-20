@@ -17,8 +17,8 @@ class Python3 < Formula
   homepage 'http://www.python.org/'
   md5 '92e94b5b6652b96349d6362b8337811d'
 
-  depends_on 'readline' => :optional  # Prefer over OS X's libedit
-  depends_on 'sqlite'   => :optional  # Prefer over OS X's older version
+  depends_on 'readline' => :optional # Prefer over OS X's libedit
+  depends_on 'sqlite'   => :optional # Prefer over OS X's older version
   depends_on 'gdbm'     => :optional
 
   def options
@@ -29,25 +29,8 @@ class Python3 < Formula
     ]
   end
 
+  # Skip binaries so modules will load; skip lib because it is mostly Python files
   skip_clean ['bin', 'lib']
-
-  # The Cellar location of site-packages
-  # This location is different for Framework builds
-  def site_packages
-    if as_framework?
-      # If we're installed or installing as a Framework, then use that location.
-      return prefix+"Frameworks/Python.framework/Versions/3.2/lib/python3.2/site-packages"
-    else
-      # Otherwise, use just the lib path.
-      return lib+"python3.2/site-packages"
-    end
-  end
-
-  # The HOMEBREW_PREFIX location of site-packages
-  # We write a .pth file in the Cellar site-packages to here
-  def prefix_site_packages
-    HOMEBREW_PREFIX+"lib/python3.2/site-packages"
-  end
 
   def install
     # --with-computed-gotos requires addressable labels in C.
@@ -85,4 +68,31 @@ class Python3 < Formula
       #{prefix_site_packages}
     EOS
   end
+
+private
+
+  # Path helpers
+
+  def effective_lib
+    # If we're installed or installing as a Framework, then use that location.
+    return prefix+"Frameworks/Python.framework/Versions/3.2/lib" if as_framework?
+    # Otherwise use just 'lib'
+    return lib
+  end
+
+  # The Cellar location of site-packages
+  def site_packages
+    effective_lib+"python3.2/site-packages"
+  end
+
+  # The HOMEBREW_PREFIX location of site-packages
+  # We write a .pth file in the Cellar site-packages to here
+  def prefix_site_packages
+    HOMEBREW_PREFIX+"lib/python3.2/site-packages"
+  end
+
+  def scripts_folder
+    HOMEBREW_PREFIX+"share/python3.2"
+  end
+
 end
