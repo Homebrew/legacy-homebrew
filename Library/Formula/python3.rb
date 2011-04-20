@@ -83,6 +83,9 @@ class Python3 < Formula
     # $ pip install --upgrade distribute
     # to get newer versions of distribute outside of Homebrew.
     Distribute.new.brew { system "#{bin}/python3", "setup.py", "install" }
+
+    # Symlink to easy_install3 to match python3 command.
+    ln_s "#{scripts_folder}/easy_install", "#{scripts_folder}/easy_install3"
   end
 
   def caveats; <<-EOS.undent
