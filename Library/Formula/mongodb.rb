@@ -1,23 +1,36 @@
 require 'formula'
 require 'hardware'
 
-class Mongodb <Formula
+class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
 
-  if Hardware.is_64_bit? and not ARGV.include? '--32bit'
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-1.6.5.tgz'
-    md5 'f3438db5a5bd3ac4571616f3d19caf00'
-    version '1.6.5-x86_64'
-  else
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-1.6.5.tgz'
-    md5 '064c9c68752968875e4ccaf8801ef031'
-    version '1.6.5-i386'
-  end
+  packages = {
+    :x86_64 => {
+      :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-1.8.1.tgz',
+      :md5 => 'e446ba61cc8898fa2ffd5046953155ca',
+      :version => '1.8.1-x86_64'
+    },
+    :i386 => {
+      :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-1.8.1.tgz',
+      :md5 => 'db95a601072feb3031f628dd39ca2446',
+      :version => '1.8.1-i386'
+    }
+  }
+
+  package = (Hardware.is_64_bit? and not ARGV.include? '--32bit') ? packages[:x86_64] : packages[:i386]
+
+  url     package[:url]
+  md5     package[:md5]
+  version package[:version]
 
   skip_clean :all
 
   def options
-    [['--32bit', 'Install the 32-bit version.']]
+    [
+        ['--32bit', 'Override arch detection and install the 32-bit version.'],
+        ['--nojournal', 'Disable write-ahead logging (Journaling)'],
+        ['--rest', 'Enable the REST Interface on the HTTP Status Page'],
+    ]
   end
 
   def install
@@ -33,30 +46,64 @@ class Mongodb <Formula
     (prefix+'org.mongodb.mongod.plist').write startup_plist
   end
 
-  def caveats; <<-EOS
-If this is your first install, automatically load on login with:
-    mkdir -p ~/Library/LaunchAgents
-    cp #{prefix}/org.mongodb.mongod.plist ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
+  def caveats
+    s = ""
+    s += <<-EOS.undent
+    If this is your first install, automatically load on login with:
+        mkdir -p ~/Library/LaunchAgents
+        cp #{prefix}/org.mongodb.mongod.plist ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
 
-If this is an upgrade and you already have the org.mongodb.mongod.plist loaded:
-    launchctl unload -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
-    cp #{prefix}/org.mongodb.mongod.plist ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
+    If this is an upgrade and you already have the org.mongodb.mongod.plist loaded:
+        launchctl unload -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
+        cp #{prefix}/org.mongodb.mongod.plist ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
 
-Or start it manually:
-    mongod run --config #{prefix}/mongod.conf
-EOS
+    Or start it manually:
+        mongod run --config #{prefix}/mongod.conf
+    EOS
+
+    if ARGV.include? "--nojournal"
+        s += ""
+        s += <<-EOS.undent
+        Write Ahead logging (Journaling) has been disabled.
+        EOS
+    else
+        s += ""
+        s += <<-EOS.undent
+        MongoDB 1.8+ includes a feature for Write Ahead Logging (Journaling), which has been enabled by default.
+        This is not the default in production (Journaling is disabled); to disable journaling, use --nojournal.
+        EOS
+    end
+
+    return s
   end
 
   def mongodb_conf
-    return <<-EOS
-# Store data in #{var}/mongodb instead of the default /data/db
-dbpath = #{var}/mongodb
+    conf = ""
+    conf += <<-EOS.undent
+    # Store data in #{var}/mongodb instead of the default /data/db
+    dbpath = #{var}/mongodb
 
-# Only accept local connections
-bind_ip = 127.0.0.1
-EOS
+    # Only accept local connections
+    bind_ip = 127.0.0.1
+    EOS
+
+    if !ARGV.include? '--nojournal'
+        conf += <<-EOS.undent
+        # Enable Write Ahead Logging (not enabled by default in production deployments)
+        journal = true
+        EOS
+    end
+
+    if ARGV.include? '--rest'
+        conf += <<-EOS.undent
+        # Enable the REST interface on the HTTP Console (startup port + 1000)
+        rest = true
+        EOS
+    end
+
+    return conf
   end
 
   def startup_plist
@@ -77,7 +124,7 @@ EOS
   <key>RunAtLoad</key>
   <true/>
   <key>KeepAlive</key>
-  <true/>
+  <false/>
   <key>UserName</key>
   <string>#{`whoami`.chomp}</string>
   <key>WorkingDirectory</key>

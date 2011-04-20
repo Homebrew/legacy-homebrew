@@ -25,28 +25,21 @@ def magick_plus_plus?
     ARGV.include? '--with-magick-plus-plus'
 end
 
-def x11?
-  # I used this file because old Xcode seems to lack it, and its that old
-  # Xcode that loads of people seem to have installed still
-  File.file? '/usr/X11/include/ft2build.h'
-end
-
-class Imagemagick <Formula
+class Imagemagick < Formula
   # Using an unofficial Git mirror to work around:
   # * Stable tarballs disappearing
   # * Bad https cert on official SVN repo
   # Send update requests to https://github.com/adamv/ImageMagick
   # Be sure to include the ImageMagick SVN revision # for the new version.
   url 'git://github.com/adamv/ImageMagick.git',
-          :ref => 'fdb125591a17a4002798742014118d5cfee44394'
-  version '6.6.7-10'
+          :tag => '6.6.9-4'
+  version '6.6.9-4'
   homepage 'http://www.imagemagick.org'
   head 'git://github.com/adamv/ImageMagick.git'
 
   depends_on 'jpeg'
-  depends_on 'libpng' unless x11?
 
-  depends_on 'ghostscript' => :recommended if ghostscript_srsly? and x11?
+  depends_on 'ghostscript' => :recommended if ghostscript_srsly?
 
   depends_on 'libtiff' => :optional
   depends_on 'little-cms' => :optional
@@ -81,7 +74,7 @@ class Imagemagick <Formula
              "--disable-static",
              "--with-modules"]
 
-    args << "--disable-openmp" if MACOS_VERSION < 10.6 or disable_openmp?
+    args << "--disable-openmp" if MacOS.leopard? or disable_openmp?
     args << "--without-gslib" unless ghostscript_srsly?
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
                 unless ghostscript_srsly? or ghostscript_fonts?
@@ -91,9 +84,6 @@ class Imagemagick <Formula
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
     system "./configure", *args
     system "make install"
-
-    # We already copy these into the keg root
-    %w[NEWS.txt LICENSE ChangeLog].each {|f| (share+"ImageMagick/#{f}").unlink}
   end
 
   def caveats
@@ -103,12 +93,6 @@ class Imagemagick <Formula
     * Bad https cert on official SVN repo
     EOS
 
-    unless x11?
-      s += <<-EOS.undent
-      You don't have X11 from the Xcode DMG installed. Consequently Imagemagick is less fully featured.
-
-      EOS
-    end
     unless ghostscript_fonts? or ghostscript_srsly?
       s += <<-EOS.undent
       Some tools will complain if the ghostscript fonts are not installed in:

@@ -1,20 +1,14 @@
 require 'formula'
 
-class DBus <Formula
-  url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.4.1.tar.gz'
+class DBus < Formula
   homepage 'http://www.freedesktop.org/wiki/Software/dbus'
-  md5 '99cb057700c0455fb68f8d57902f77ac'
+  url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.4.8.tar.gz'
+  sha256 '48bf73a35be0f0e2d9a5071d8f2d9c7c40b4254d9b405dee57f0fb07c9c3cf58'
 
   # Don't clean the empty directories that D-Bus needs
   skip_clean "etc/dbus-1/session.d"
   skip_clean "etc/dbus-1/system.d"
   skip_clean "var/run/dbus"
-
-  def patches
-    # Last-minute build breakages for 1.4.1
-    [ 'http://cgit.freedesktop.org/dbus/dbus/patch/?id=88004d6b66f80d72e97e9b6b024842d692e5748a',
-      'http://cgit.freedesktop.org/dbus/dbus/patch/?id=56d8d4f58ee60cd4f860a99a2dd47b3f636321b8' ]
-  end
 
   def install
     # Fix the TMPDIR to one D-Bus doesn't reject due to odd symbols

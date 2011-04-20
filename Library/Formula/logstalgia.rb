@@ -1,6 +1,6 @@
 require 'formula'
 
-class Logstalgia <Formula
+class Logstalgia < Formula
   url 'http://logstalgia.googlecode.com/files/logstalgia-1.0.3.tar.gz'
   head 'git://github.com/acaudwell/Logstalgia.git'
   homepage 'http://code.google.com/p/logstalgia/'
@@ -22,7 +22,7 @@ class Logstalgia <Formula
     # Handle building head.
     system "autoreconf -f -i" unless File.exist? "configure"
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
     system "make install"

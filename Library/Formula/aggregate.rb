@@ -1,6 +1,6 @@
 require 'formula'
 
-class Aggregate <Formula
+class Aggregate < Formula
   url 'ftp://ftp.isc.org/isc/aggregate/aggregate-1.6.tar.gz'
   homepage 'http://freshmeat.net/projects/aggregate/'
   md5 '6fcc515388bf2c5b0c8f9f733bfee7e1'

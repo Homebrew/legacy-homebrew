@@ -1,8 +1,8 @@
 require 'formula'
 
-class Bazaar <Formula
-  url 'http://launchpad.net/bzr/2.3/2.3.0/+download/bzr-2.3.0.tar.gz'
-  md5 '2d8bc55d43209189a209361178d9d372'
+class Bazaar < Formula
+  url 'http://launchpad.net/bzr/2.3/2.3.1/+download/bzr-2.3.1.tar.gz'
+  md5 '1a4367ce59a2880f321ecb882e195856'
   homepage 'http://bazaar-vcs.org/'
 
   def options
@@ -20,11 +20,17 @@ class Bazaar <Formula
       ENV.prepend "PATH", "/System/Library/Frameworks/Python.framework/Versions/Current/bin", ":"
     end
 
-    # Find the archs of the Python we are building against.
-    # If the python includes PPC support, then don't use Intel-
-    # specific compiler flags
-    archs = archs_for_command("python")
-    ENV.minimal_optimization if archs.include? :ppc64 or archs.include? :ppc7400
+    # Find the arch for the Python we are building against.
+    # We remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
+    if ARGV.include? "--system"
+      python_cmd = "/usr/bin/python"
+    else
+      python_cmd = "python"
+    end
+
+    archs = archs_for_command("python_cmd")
+    archs.remove_ppc!
+    ENV['ARCHFLAGS'] = archs.as_arch_flags
 
     system "make"
     inreplace "bzr", "#! /usr/bin/env python", "#!/usr/bin/python" if ARGV.include? "--system"

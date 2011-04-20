@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ninja <Formula
+class Ninja < Formula
   head 'git://github.com/alexgartrell/ninja.git'
   homepage 'https://github.com/martine/ninja'
 

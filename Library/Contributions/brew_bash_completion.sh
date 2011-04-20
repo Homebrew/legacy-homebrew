@@ -9,7 +9,7 @@ _brew_to_completion()
 
     # Subcommand list
     [[ ${COMP_CWORD} -eq 1 ]] && {
-        local actions="--cache --config --prefix cat cleanup configure create
+        local actions="--cache --config --prefix audit cat cleanup configure create
             deps doctor edit home info install link list log outdated prune
             remove search unlink update uses"
         local ext=$(\ls $(brew --repository)/Library/Contributions/examples |
@@ -28,11 +28,11 @@ _brew_to_completion()
 
     case "$prev" in
     # Commands that take a formula
-    cat|deps|edit|fetch|home|homepage|info|install|log|options|uses)
+    cat|deps|edit|fetch|home|homepage|info|install|log|missing|options|uses)
         # handle standard --options
         if [[ "$prev" == "install" && "$cur" == --* ]]; then
             local opts=$(
-                local opts=( --force --debug --use-llvm --ignore-dependencies --HEAD )
+                local opts=( --force --verbose --debug --use-gcc --use-llvm --ignore-dependencies --HEAD )
                 for o in ${opts[*]}; do
                     [[ " ${COMP_WORDS[*]} " =~ " $o " ]] || echo "$o"
                 done

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Maven <Formula
+class Maven < Formula
   url 'http://www.apache.org/dist/maven/binaries/apache-maven-3.0.3-bin.tar.gz'
   homepage 'http://maven.apache.org/'
   md5 '507828d328eb3735103c0492443ef0f0'

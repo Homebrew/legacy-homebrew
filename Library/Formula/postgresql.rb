@@ -1,13 +1,13 @@
 require 'formula'
 require 'hardware'
 
-class Postgresql <Formula
+class Postgresql < Formula
   homepage 'http://www.postgresql.org/'
   url 'http://ftp9.us.postgresql.org/pub/mirrors/postgresql/source/v9.0.3/postgresql-9.0.3.tar.bz2'
   md5 '928df8c40bb012ad10756e58b70516fb'
 
   depends_on 'readline'
-  depends_on 'libxml2' if MACOS_VERSION < 10.6 # Leopard libxml is too old
+  depends_on 'libxml2' if MacOS.leopard? # Leopard libxml is too old
   depends_on 'ossp-uuid'
 
   def options
@@ -20,7 +20,7 @@ class Postgresql <Formula
   skip_clean :all
 
   def install
-    ENV.libxml2 if MACOS_VERSION >= 10.6
+    ENV.libxml2 if MacOS.snow_leopard?
 
     args = ["--disable-debug",
             "--prefix=#{prefix}",
@@ -35,11 +35,15 @@ class Postgresql <Formula
     args << "--with-perl" unless ARGV.include? '--no-perl'
 
     args << "--with-ossp-uuid"
+
+    args << "--datadir=#{share}/#{name}"
+    args << "--docdir=#{doc}"
+
     ENV.append 'CFLAGS', `uuid-config --cflags`.strip
     ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
     ENV.append 'LIBS', `uuid-config --libs`.strip
 
-    if snow_leopard_64? and not ARGV.include? '--no-python'
+    if MacOS.prefer_64_bit? and not ARGV.include? '--no-python'
       args << "ARCHFLAGS='-arch x86_64'"
       check_python_arch
     end
@@ -49,6 +53,7 @@ class Postgresql <Formula
 
     system "./configure", *args
     system "make install"
+    system "make install-docs"
 
     contrib_directories = Dir.glob("contrib/*").select{ |path| File.directory?(path) } - ['contrib/start-scripts']
 
@@ -116,7 +121,7 @@ And stop with:
     pg_ctl -D #{var}/postgres stop -s -m fast
 EOS
 
-    if snow_leopard_64? then
+    if MacOS.prefer_64_bit? then
       s << <<-EOS
 
 If you want to install the postgres gem, including ARCHFLAGS is recommended:

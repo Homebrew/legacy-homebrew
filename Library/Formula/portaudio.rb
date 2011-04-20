@@ -1,21 +1,25 @@
 require 'formula'
 
-class Portaudio <Formula
+class Portaudio < Formula
   url 'http://www.portaudio.com/archives/pa_stable_v19_20071207.tar.gz'
   homepage 'http://www.portaudio.com'
   md5 'd2943e4469834b25afe62cc51adc025f'
 
+  depends_on 'pkg-config' => :build
+
+  fails_with_llvm
+
+  # Use the MacPort patches that fix compiling against newer OS X SDKs
+  def patches
+    {:p0 => [
+      "https://trac.macports.org/export/77586/trunk/dports/audio/portaudio/files/patch-configure",
+      "https://trac.macports.org/export/77586/trunk/dports/audio/portaudio/files/patch-src__hostapi__coreaudio__pa_mac_core.c",
+      "https://trac.macports.org/export/77586/trunk/dports/audio/portaudio/files/patch-src__common__pa_types.h"
+    ]}
+  end
+
   def install
-    fails_with_llvm
-
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-
-    # remove arch flags else we get errors like:
-    #   lipo: can't figure out the architecture type
-    ['-arch x86_64', '-arch ppc64', '-arch i386', '-arch ppc'].each do |arch|
-      inreplace "Makefile", arch, ""
-    end
-
     system "make install"
 
     # Need 'pa_mac_core.h' to compile PyAudio

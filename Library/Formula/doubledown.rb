@@ -1,6 +1,6 @@
 require 'formula'
 
-class Doubledown <Formula
+class Doubledown < Formula
   url 'https://github.com/devstructure/doubledown/tarball/v0.0.2'
   homepage 'https://github.com/devstructure/doubledown'
   md5 '0f540c6da691769ca1efa305ad18acb6'

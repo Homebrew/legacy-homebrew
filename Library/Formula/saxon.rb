@@ -1,10 +1,10 @@
 require 'formula'
 
-class Saxon <Formula
+class Saxon < Formula
   homepage "http://saxon.sourceforge.net"
-  url "http://downloads.sourceforge.net/project/saxon/Saxon-HE/9.3/saxonhe9-3-0-1j.zip"
-  md5 "1783d5aff6ddae1b56f04a4005371ea6"
-  version "9.3.0.1"
+  url "http://downloads.sourceforge.net/project/saxon/Saxon-HE/9.3/saxonhe9-3-0-4j.zip"
+  md5 "9286c94c976109cbf23c226235a2e105"
+  version "9.3.0.4"
 
   def shim_script target
     <<-EOS.undent

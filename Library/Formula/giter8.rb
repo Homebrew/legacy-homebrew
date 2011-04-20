@@ -1,6 +1,6 @@
 require 'formula'
 
-class Giter8 <Formula
+class Giter8 < Formula
   url "http://simple-build-tool.googlecode.com/files/sbt-launch-0.7.4.jar"
   homepage 'http://github.com/n8han/giter8'
   md5 '8903fb141037056a497925f3efdb9edf'

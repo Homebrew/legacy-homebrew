@@ -2,7 +2,7 @@ require 'formula'
 
 # Official site is no longer responding; use
 # this GitHub mirror for now.
-class P0f <Formula
+class P0f < Formula
   url 'https://github.com/downloads/skord/p0f/p0f-2.0.8.tgz'
   homepage 'https://github.com/skord/p0f'
   md5 '1ccbcd8d4c95ef6dae841120d23c56a5'

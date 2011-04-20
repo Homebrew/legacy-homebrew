@@ -1,13 +1,13 @@
 require 'formula'
 
 class Vimpager < Formula
-  url 'http://www.vim.org/scripts/download_script.php?src_id=14694'
-  version '1.4'
-  homepage 'http://www.vim.org/scripts/script.php?script_id=1723'
-  md5 'b2c4c978c826876e11bf5453eb19c2a7'
+  homepage 'https://github.com/rkitover/vimpager'
+  url 'https://github.com/rkitover/vimpager/tarball/1.4.7'
+  sha256 '4bd8bb65ad4ad360264e89cf13dd798089e177716eea2db3a4dcdb558bbdd46c'
+  head 'git://github.com/rkitover/vimpager', :using => :git
 
   def install
-    bin.install 'download_script.php?src_id=14694' => 'vimpager'
+    bin.install 'vimpager'
   end
 
   def caveats; <<-EOS.undent

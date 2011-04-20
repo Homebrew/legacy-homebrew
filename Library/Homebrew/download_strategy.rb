@@ -28,7 +28,7 @@ class AbstractDownloadStrategy
   end
 end
 
-class CurlDownloadStrategy <AbstractDownloadStrategy
+class CurlDownloadStrategy < AbstractDownloadStrategy
   attr_reader :tarball_path
 
   def initialize url, name, version, specs
@@ -128,7 +128,7 @@ end
 
 # Download via an HTTP POST.
 # Query parameters on the URL are converted into POST parameters
-class CurlPostDownloadStrategy <CurlDownloadStrategy
+class CurlPostDownloadStrategy < CurlDownloadStrategy
   def _fetch
     base_url,data = @url.split('?')
     curl base_url, '-d', data, '-o', @tarball_path
@@ -137,7 +137,7 @@ end
 
 # Use this strategy to download but not unzip a file.
 # Useful for installing jars.
-class NoUnzipCurlDownloadStrategy <CurlDownloadStrategy
+class NoUnzipCurlDownloadStrategy < CurlDownloadStrategy
   def stage
     FileUtils.cp @tarball_path, File.basename(@url)
   end
@@ -146,7 +146,7 @@ end
 # This Download Strategy is provided for use with sites that
 # only provide HTTPS and also have a broken cert.
 # Try not to need this, as we probably won't accept the formula.
-class CurlUnsafeDownloadStrategy <CurlDownloadStrategy
+class CurlUnsafeDownloadStrategy < CurlDownloadStrategy
   def _fetch
     curl @url, '--insecure', '-o', @tarball_path
   end
@@ -164,6 +164,7 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
   end
 
   def fetch
+    @url.sub!(/^svn\+/, '') if @url =~ %r[^svn\+http://]
     ohai "Checking out #{@url}"
     if @spec == :revision
       fetch_repo @co, @url, @ref
@@ -222,7 +223,7 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
 end
 
 # Require a newer version of Subversion than 1.4.x (Leopard-provided version)
-class StrictSubversionDownloadStrategy <SubversionDownloadStrategy
+class StrictSubversionDownloadStrategy < SubversionDownloadStrategy
   def svn
     exe = super
     `#{exe} --version` =~ /version (\d+\.\d+(\.\d+)*)/
@@ -239,7 +240,7 @@ class StrictSubversionDownloadStrategy <SubversionDownloadStrategy
   end
 end
 
-class GitDownloadStrategy <AbstractDownloadStrategy
+class GitDownloadStrategy < AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
     @unique_token="#{name}--git" unless name.to_s.empty? or name == '__UNKNOWN__'
@@ -248,6 +249,10 @@ class GitDownloadStrategy <AbstractDownloadStrategy
 
   def cached_location
     @clone
+  end
+
+  def support_depth?
+    @url =~ %r(git://) or @url =~ %r(https://github.com/)
   end
 
   def fetch
@@ -268,7 +273,11 @@ class GitDownloadStrategy <AbstractDownloadStrategy
     end
 
     unless @clone.exist?
-      safe_system 'git', 'clone', @url, @clone # indeed, leave it verbose
+      # Note: first-time checkouts are always done verbosely
+      git_args = %w(git clone)
+      git_args << "--depth" << "1" if support_depth?
+      git_args << @url << @clone
+      safe_system *git_args
     else
       puts "Updating #{@clone}"
       Dir.chdir(@clone) do
@@ -304,7 +313,7 @@ class GitDownloadStrategy <AbstractDownloadStrategy
   end
 end
 
-class CVSDownloadStrategy <AbstractDownloadStrategy
+class CVSDownloadStrategy < AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
     @unique_token="#{name}--cvs" unless name.to_s.empty? or name == '__UNKNOWN__'
@@ -354,7 +363,7 @@ private
   end
 end
 
-class MercurialDownloadStrategy <AbstractDownloadStrategy
+class MercurialDownloadStrategy < AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
     @unique_token="#{name}--hg" unless name.to_s.empty? or name == '__UNKNOWN__'
@@ -364,11 +373,7 @@ class MercurialDownloadStrategy <AbstractDownloadStrategy
   def cached_location; @clone; end
 
   def fetch
-    raise "You must install mercurial, there are two options:\n\n"+
-          "    brew install pip && pip install mercurial\n"+
-          "    easy_install mercurial\n\n"+
-          "Homebrew recommends pip over the OS X provided easy_install." \
-          unless system "/usr/bin/which hg"
+    raise "You must `easy_install mercurial'" unless system "/usr/bin/which hg"
 
     ohai "Cloning #{@url}"
 
@@ -399,7 +404,7 @@ class MercurialDownloadStrategy <AbstractDownloadStrategy
   end
 end
 
-class BazaarDownloadStrategy <AbstractDownloadStrategy
+class BazaarDownloadStrategy < AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
     @unique_token="#{name}--bzr" unless name.to_s.empty? or name == '__UNKNOWN__'
@@ -480,10 +485,10 @@ def detect_download_strategy url
   when %r[^git://] then GitDownloadStrategy
   when %r[^hg://] then MercurialDownloadStrategy
   when %r[^svn://] then SubversionDownloadStrategy
-  when %r[^svn+http://] then SubversionDownloadStrategy
+  when %r[^svn\+http://] then SubversionDownloadStrategy
   when %r[^fossil://] then FossilDownloadStrategy
     # Some well-known source hosts
-  when %r[^http://github\.com/.+\.git$] then GitDownloadStrategy
+  when %r[^https?://github\.com/.+\.git$] then GitDownloadStrategy
   when %r[^https?://(.+?\.)?googlecode\.com/hg] then MercurialDownloadStrategy
   when %r[^https?://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
   when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy

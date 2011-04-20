@@ -1,6 +1,6 @@
 require 'formula'
 
-class Jsawk <Formula
+class Jsawk < Formula
   head 'git://github.com/micha/jsawk.git'
   homepage 'https://github.com/micha/jsawk'
 

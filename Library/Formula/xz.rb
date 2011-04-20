@@ -1,9 +1,9 @@
 require 'formula'
 
-class Xz <Formula
-  url 'http://tukaani.org/xz/xz-5.0.1.tar.bz2'
+class Xz < Formula
   homepage 'http://tukaani.org/xz/'
-  md5 'cb6c7a58cec4d663a395c54d186ca0c6'
+  url 'http://tukaani.org/xz/xz-5.0.2.tar.bz2'
+  sha1 'c244dfffef4196b997035d7389e957f56a3a87d1'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

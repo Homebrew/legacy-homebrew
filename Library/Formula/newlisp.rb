@@ -1,6 +1,6 @@
 require 'formula'
 
-class Newlisp <Formula
+class Newlisp < Formula
   url 'http://www.newlisp.org/downloads/newlisp-10.3.0.tgz'
   homepage 'http://www.newlisp.org/'
   md5 '149628df996a3154c7a286cbb05f65a8'

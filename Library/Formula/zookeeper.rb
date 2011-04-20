@@ -1,10 +1,10 @@
 require 'formula'
 
-class Zookeeper <Formula
-  url 'http://mirror.switch.ch/mirror/apache/dist/hadoop/zookeeper/zookeeper-3.3.2/zookeeper-3.3.2.tar.gz'
+class Zookeeper < Formula
+  url 'http://www.alliedquotes.com/mirrors/apache/zookeeper/zookeeper-3.3.3/zookeeper-3.3.3.tar.gz'
   head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
-  homepage 'http://hadoop.apache.org/zookeeper/'
-  md5 '346cdc18bf2bc1ce2549ae320ccf1f94'
+  homepage 'http://zookeeper.apache.org/'
+  md5 'aa4129c6eebb50dbd6b640c9c3aa21f0'
 
   def options
     [

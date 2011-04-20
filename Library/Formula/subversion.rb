@@ -9,12 +9,12 @@ def with_unicode_path?; ARGV.include? '--unicode-path'; end
 
 # On 10.5 we need newer versions of apr, neon etc.
 # On 10.6 we only need a newer version of neon
-class SubversionDeps <Formula
+class SubversionDeps < Formula
   url 'http://subversion.tigris.org/downloads/subversion-deps-1.6.16.tar.bz2'
   md5 '85255aee26e958fc988e6e56d6d1ac55'
 end
 
-class Subversion <Formula
+class Subversion < Formula
   url 'http://subversion.tigris.org/downloads/subversion-1.6.16.tar.bz2'
   md5 '32f25a6724559fe8691d1f57a63f636e'
   homepage 'http://subversion.apache.org/'
@@ -22,7 +22,7 @@ class Subversion <Formula
   depends_on 'pkg-config' => :build
 
   # On Snow Leopard, build a new neon. For Leopard, the deps above include this.
-  depends_on 'neon' if MACOS_VERSION >= 10.6
+  depends_on 'neon' if MacOS.snow_leopard?
 
   def options
     [
@@ -82,7 +82,7 @@ class Subversion <Formula
 
     ENV.universal_binary if build_universal?
 
-    if MACOS_VERSION < 10.6
+    if MacOS.leopard?
       setup_leopard
     else
       check_neon_arch if build_universal?
@@ -122,14 +122,14 @@ class Subversion <Formula
       # Remove hard-coded ppc target, add appropriate ones
       if build_universal?
         arches = "-arch x86_64 -arch i386"
-      elsif MACOS_VERSION < 10.6
+      elsif MacOS.leopard?
         arches = "-arch i386"
       else
         arches = "-arch x86_64"
       end
 
       # Use verison-appropriate system Perl
-      if MACOS_VERSION < 10.6
+     if MacOS.leopard?
         perl_version = "5.8.8"
       else
         perl_version = "5.10.0"
@@ -190,7 +190,8 @@ class Subversion <Formula
     if build_java?
       s += <<-EOS.undent
         You may need to link the Java bindings into the Java Extensions folder:
-          sudo ln -s #{HOMEBREW_PREFIX}/lib/libsvnjavahl-1.dylib /Library/Java/Extensions
+          sudo mkdir -p /Library/Java/Extensions
+          sudo ln -s #{HOMEBREW_PREFIX}/lib/libsvnjavahl-1.dylib /Library/Java/Extensions/libsvnjavahl-1.dylib
 
       EOS
     end

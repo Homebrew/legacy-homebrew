@@ -1,6 +1,6 @@
 require 'formula'
 
-class CupsPdf <Formula
+class CupsPdf < Formula
   url 'http://www.cups-pdf.de/src/cups-pdf_2.5.1.tar.gz'
   md5 '4b4cf1a249d02a38045db74b5f259aac'
   homepage 'http://www.cups-pdf.de/'

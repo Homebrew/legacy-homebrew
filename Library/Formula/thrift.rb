@@ -1,6 +1,6 @@
 require 'formula'
 
-class Thrift <Formula
+class Thrift < Formula
   homepage 'http://incubator.apache.org/thrift/'
   head 'http://svn.apache.org/repos/asf/incubator/thrift/trunk'
   url 'http://www.apache.org/dist/incubator/thrift/0.5.0-incubating/thrift-0.5.0.tar.gz'
