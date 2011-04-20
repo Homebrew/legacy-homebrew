@@ -7,8 +7,9 @@ class Xa < Formula
 
   def install
     inreplace 'Makefile' do |s|
-      s.gsub! /\/usr\/local/, prefix
+      s.change_make_var! 'DESTDIR', prefix
     end
+
     system "make"
     system "make install"
   end
