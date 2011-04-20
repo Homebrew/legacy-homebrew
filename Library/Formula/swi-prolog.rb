@@ -14,8 +14,10 @@ class SwiProlog < Formula
   depends_on 'gawk'
 
   # 10.5 versions of these are too old
-  depends_on 'fontconfig' if MACOS_VERSION < 10.6
-  depends_on 'expat' if MACOS_VERSION < 10.6
+  if MacOS.leopard?
+    depends_on 'fontconfig'
+    depends_on 'expat'
+  end
 
   fails_with_llvm "Exported procedure chr_translate:chr_translate_line_info/3 is not defined"
 

@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "March 2011" "Homebrew" "brew"
+.TH "BREW" "1" "April 2011" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -163,22 +163,28 @@ Check your system for potential problems\.
 Display the source to \fIformula\fR\.
 .
 .TP
-\fBcleanup\fR [\fIformula\fR]
-For all installed or specific formulae, remove any older versions from the cellar\.
+\fBcleanup [\-\-force]\fR [\fIformula\fR]
+For all installed or specific formulae, remove any older versions from the cellar\. By default, does not remove out\-of\-date keg\-only brews, as other software may link directly to specific versions\.
+.
+.IP
+If \fB\-\-force\fR is passed, remove out\-of\-date keg\-only brews as well\.
 .
 .TP
 \fBlog [git\-log\-options]\fR \fIformula\fR \.\.\.
 Show the git log for the given formulae\. Options that \fBgit\-log\fR(1) recognizes can be passed before the formula list\.
 .
 .TP
-\fBfetch [\-\-force] [\-v] [\-\-HEAD]\fR \fIformula\fR
-Download the source package for the given \fIformula\fR\. For tarballs, also prints MD5 and SHA1 checksums\.
+\fBfetch [\-\-force] [\-v] [\-\-HEAD] [\-\-deps]\fR \fIformulae\fR
+Download the source packages for the given \fIformulae\fR\. For tarballs, also print MD5 and SHA1 checksums\.
 .
 .IP
-If \fB\-\-HEAD\fR is passed, download the HEAD version of \fIformula\fR instead\. \fB\-v\fR may also be passed to make the VCS checkout verbose, useful for seeing if an existing HEAD cache has been updated\.
+If \fB\-\-HEAD\fR is passed, download the HEAD versions of \fIformulae\fR instead\. \fB\-v\fR may also be passed to make the VCS checkout verbose, useful for seeing if an existing HEAD cache has been updated\.
 .
 .IP
 If \fB\-\-force\fR is passed, remove a previously cached version and re\-fetch\.
+.
+.IP
+If \fB\-\-deps\fR is passed, also download dependencies for any listed \fIformulae\fR\.
 .
 .TP
 \fBaudit [\-\-strict]\fR
@@ -198,8 +204,11 @@ If \fB\-\-compact\fR is passed, show all options on a single line separated by s
 If \fB\-\-all\fR is passed, show options for all formulae\.
 .
 .TP
-\fBmissing\fR
-Check all installed formuale for missing dependencies\.
+\fBmissing\fR [\fIformulae\fR]
+Check the given \fIformulae\fR for missing dependencies\.
+.
+.IP
+If no \fIformulae\fR are given, check all installed brews\.
 .
 .TP
 \fBserver\fR

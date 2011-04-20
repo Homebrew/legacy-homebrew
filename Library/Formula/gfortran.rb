@@ -15,8 +15,7 @@ class GfortranPkgDownloadStrategy <CurlDownloadStrategy
 end
 
 class Gfortran < Formula
-  if MACOS_VERSION < 10.6
-    # Leopard
+  if MacOS.leopard?
     url 'http://r.research.att.com/gfortran-42-5577.pkg'
     md5 '30fb495c93cf514003cdfcb7846dc701'
     version "4.2.4-5577"
