@@ -33,7 +33,7 @@ class Zeromq < Formula
   def install
     system "./autogen.sh" if ARGV.build_head?
 
-    if ARGV.include? '--universal'
+    if ARGV.build_universal?
       build_fat
     else
       system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}", "--with-pgm"
