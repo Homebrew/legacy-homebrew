@@ -12,7 +12,7 @@ class Pcre < Formula
   end
 
   def install
-    ENV.universal_binary if ARGV.include? "--universal"
+    ENV.universal_binary if ARGV.build_universal?
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

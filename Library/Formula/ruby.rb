@@ -49,7 +49,7 @@ class Ruby < Formula
             "--enable-shared"]
 
     args << "--program-suffix=19" if ARGV.include? "--with-suffix"
-    args << "--with-arch=x86_64,i386" if ARGV.include? "--universal"
+    args << "--with-arch=x86_64,i386" if ARGV.build_universal?
 
     # Put gem, site and vendor folders in the HOMEBREW_PREFIX
 
