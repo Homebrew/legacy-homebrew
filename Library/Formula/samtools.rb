@@ -1,9 +1,9 @@
 require 'formula'
 
 class Samtools < Formula
-  url 'http://sourceforge.net/projects/samtools/files/samtools/0.1.14/samtools-0.1.14.tar.bz2'
+  url 'http://sourceforge.net/projects/samtools/files/samtools/0.1.15/samtools-0.1.15.tar.bz2'
   homepage 'http://samtools.sourceforge.net/'
-  md5 'aa2bed7b3d96e64cbeb3726f1fb6d880'
+  md5 'caf1cac191fdabd57a309e36f359c047'
 
   def install
     system "make"

@@ -1,5 +1,7 @@
 # Builds binary brew package
-brew_install
+require 'cmd/install'
+
+Homebrew.install_formulae ARGV.formulae
 
 destination = HOMEBREW_PREFIX + "Bottles"
 if not File.directory?(destination)

@@ -7,7 +7,7 @@ class Postgresql < Formula
   md5 '928df8c40bb012ad10756e58b70516fb'
 
   depends_on 'readline'
-  depends_on 'libxml2' if MACOS_VERSION < 10.6 # Leopard libxml is too old
+  depends_on 'libxml2' if MacOS.leopard? # Leopard libxml is too old
   depends_on 'ossp-uuid'
 
   def options
@@ -20,7 +20,7 @@ class Postgresql < Formula
   skip_clean :all
 
   def install
-    ENV.libxml2 if MACOS_VERSION >= 10.6
+    ENV.libxml2 if MacOS.snow_leopard?
 
     args = ["--disable-debug",
             "--prefix=#{prefix}",
@@ -35,6 +35,10 @@ class Postgresql < Formula
     args << "--with-perl" unless ARGV.include? '--no-perl'
 
     args << "--with-ossp-uuid"
+
+    args << "--datadir=#{share}/#{name}"
+    args << "--docdir=#{doc}"
+
     ENV.append 'CFLAGS', `uuid-config --cflags`.strip
     ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
     ENV.append 'LIBS', `uuid-config --libs`.strip
@@ -49,6 +53,7 @@ class Postgresql < Formula
 
     system "./configure", *args
     system "make install"
+    system "make install-docs"
 
     contrib_directories = Dir.glob("contrib/*").select{ |path| File.directory?(path) } - ['contrib/start-scripts']
 
