@@ -6,8 +6,6 @@ class Ice < Formula
   md5 '3aae42aa47dec74bb258c1a1b2847a1a'
 
   depends_on 'berkeley-db'
-  depends_on 'expat'
-  depends_on 'openssl'
   depends_on 'mcpp'
 
   def patches
@@ -28,7 +26,7 @@ class Ice < Formula
     end
 
     Dir.chdir "cpp" do
-      system "make -j4"
+      system "make"
       system "make install"
     end
 
