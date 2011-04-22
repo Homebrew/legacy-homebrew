@@ -13,12 +13,27 @@ class Ice < Formula
     "http://gist.github.com/raw/459204/44183ae997afb8ec19148fec498a11d67b5ae8bf/Ice-3.4.1-db5.patch"
   end
 
+  def options
+    [
+      ['--doc', 'Install Dokumentation'],
+      ['--demo', 'Build demos']
+    ]
+  end
+
   def install
     ENV.O2
     inreplace "cpp/config/Make.rules" do |s|
       s.gsub! "#OPTIMIZE", "OPTIMIZE"
       s.gsub! "/opt/Ice-$(VERSION)", "#{prefix}"
       s.gsub! "/opt/Ice-$(VERSION_MAJOR).$(VERSION_MINOR)", "#{prefix}"
+    end
+
+    # what want we build?
+    wb = 'config src include'
+    wb += ' doc' if ARGV.include? '--doc'
+    wb += ' demo' if ARGV.include? '--demo'
+    inreplace "cpp/Makefile" do |s|
+      s.change_make_var! "SUBDIRS", wb
     end
 
     inreplace "cpp/config/Make.rules.Darwin" do |s|
