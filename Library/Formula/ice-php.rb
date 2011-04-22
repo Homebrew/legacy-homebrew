@@ -47,6 +47,10 @@ class IcePhp < Formula
 
       ; load extension
       extension = IcePHP.so
+
+      ; allow to include Ice depends. Sample Ice.php
+      include_path = "#{prefix}/php"
+      
     EOS
   end
 
