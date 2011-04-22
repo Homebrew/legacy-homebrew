@@ -50,7 +50,10 @@ class IcePhp < Formula
 
       ; allow to include Ice depends. Sample Ice.php
       include_path = "#{prefix}/php"
+<<<<<<< HEAD
       
+=======
+>>>>>>> f653cb35288baa4be773d604971570a6bdc00e83
     EOS
   end
 
