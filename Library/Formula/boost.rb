@@ -15,7 +15,7 @@ class Boost < Formula
   fails_with_llvm "LLVM-GCC causes errors with dropped arguments to functions when linking with boost"
 
   def install
-    if ARGV.include? "--universal"
+    if ARGV.build_universal?
       archs = archs_for_command("python")
       unless archs.universal?
         opoo "A universal build was requested, but Python is not a universal build"

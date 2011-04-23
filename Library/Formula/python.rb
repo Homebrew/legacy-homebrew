@@ -47,7 +47,7 @@ class Python < Formula
 
     args = ["--prefix=#{prefix}"]
 
-    if ARGV.include? '--universal'
+    if ARGV.build_universal?
       args << "--enable-universalsdk=/" << "--with-universal-archs=intel"
     end
 
