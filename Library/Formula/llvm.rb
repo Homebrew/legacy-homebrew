@@ -1,7 +1,7 @@
 require 'formula'
 
 def build_clang?; ARGV.include? '--with-clang'; end
-def build_universal?; ARGV.include? '--universal'; end
+def build_universal?; ARGV.build_universal?; end
 def build_shared?; ARGV.include? '--shared'; end
 def build_rtti?; ARGV.include? '--rtti'; end
 
