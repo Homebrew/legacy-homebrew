@@ -49,7 +49,7 @@ class Mysql < Formula
     args << "-DWITH_EMBEDDED_SERVER=ON" if ARGV.include? '--with-embedded'
 
     # Make universal for binding to universal applications
-    args << "-DCMAKE_OSX_ARCHITECTURES='ppc;i386'" if ARGV.include? '--universal'
+    args << "-DCMAKE_OSX_ARCHITECTURES='ppc;i386'" if ARGV.build_universal?
 
     # Build with local infile loading support
     args << "-DENABLED_LOCAL_INFILE=1" if ARGV.include? '--enable-local-infile'
