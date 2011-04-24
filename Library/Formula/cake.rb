@@ -1,11 +1,11 @@
 require 'formula'
 
-$cake_version = "0.6.2"
+$cake_version = "0.6.3"
 
 # Downloads executable
 class CakeExecutable < Formula
   url     "http://releases.clojure-cake.org/cake"
-  md5     "d5533fc60a264d5db47f9801882a45c1"
+  md5     "543cad9af089f77a3cd9b0d58020e365"
   version $cake_version
 end
 
@@ -14,7 +14,7 @@ class Cake < Formula
   url       "http://releases.clojure-cake.org/jars/cake-#{$cake_version}.jar"
   head      "git://github.com/ninjudd/cake.git", :using => :git
   homepage  "http://github.com/ninjudd/cake"
-  md5       "2785a2614267e636b5ef889bda0a15e6"
+  md5       "cf570ef6301800515cf36301a322c383"
 
   def install
     if ARGV.build_head?
