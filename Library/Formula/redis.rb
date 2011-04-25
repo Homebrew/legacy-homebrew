@@ -22,9 +22,6 @@ class Redis < Formula
 
     %w( run db/redis log ).each { |p| (var+p).mkpath }
 
-    # Set correct directory permissions for database files
-    chmod 0755, "#{var}/db/redis"
-
     # Fix up default conf file to match our paths
     inreplace "redis.conf" do |s|
       s.gsub! "/var/run/redis.pid", "#{var}/run/redis.pid"
