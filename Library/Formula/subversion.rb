@@ -4,7 +4,7 @@ def build_java?; ARGV.include? "--java"; end
 def build_perl?; ARGV.include? "--perl"; end
 def build_python?; ARGV.include? "--python"; end
 def build_ruby?; ARGV.include? "--ruby"; end
-def build_universal?; ARGV.include? '--universal'; end
+def build_universal?; ARGV.build_universal?; end
 def with_unicode_path?; ARGV.include? '--unicode-path'; end
 
 # On 10.5 we need newer versions of apr, neon etc.

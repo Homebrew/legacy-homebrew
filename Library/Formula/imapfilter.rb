@@ -1,9 +1,9 @@
 require 'formula'
 
 class Imapfilter < Formula
-  url 'http://imapfilter.hellug.gr/source/imapfilter-2.2.2.tar.bz2'
-  homepage 'http://imapfilter.hellug.gr/'
-  md5 '09c6ffb085a5a244dc9f3e798259f341'
+  url 'http://github.com/downloads/lefcha/imapfilter/imapfilter-2.2.3.tar.gz'
+  homepage 'http://github.com/lefcha/imapfilter/'
+  md5 'f075ebe22deb50de99303b8282e5eebf'
 
   depends_on 'lua'
   depends_on 'pcre'
