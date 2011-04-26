@@ -13,7 +13,7 @@ class Doxygen < Formula
       s.change_make_var! 'MAN1DIR', 'share/man/man1'
     end
     # Lion compatibility
-    inreplace 'qtools/qglobal.h', 'MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_6', 'MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_7'
+    inreplace 'qtools/qglobal.h', '#  if (MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_6)', "#  if !defined(MAC_OS_X_VERSION_10_7)\n#       define MAC_OS_X_VERSION_10_7 MAC_OS_X_VERSION_10_6 + 1\n#  endif\n#  if (MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_7)"
     system "make"
     system "make install"
   end
