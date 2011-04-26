@@ -273,7 +273,7 @@ module MacOS extend self
 
   def llvm_build_version
     unless xcode_prefix.to_s.empty?
-      llvm_gcc_path = xcode_prefix/"usr/bin/llvm-gcc"
+      llvm_gcc_path = xcode_prefix.to_s + "usr/bin/llvm-gcc"
       # for Xcode 3 on OS X 10.5 this will not exist
       if llvm_gcc_path.file?
         `#{llvm_gcc_path} -v 2>&1` =~ /LLVM build (\d{4,})/
