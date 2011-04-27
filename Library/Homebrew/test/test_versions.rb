@@ -98,6 +98,11 @@ class VersionTests < Test::Unit::TestCase
     check "http://example.com/foo_bar-1.21.tar.gz", '1.21'
   end
 
+  def test_version_sourceforge_download
+    check "http://sourceforge.net/foo_bar-1.21.tar.gz/download", '1.21'
+    check "http://sf.net/foo_bar-1.21.tar.gz/download", '1.21'
+  end
+
   def test_version_github
     check "http://github.com/lloyd/yajl/tarball/1.0.5", '1.0.5'
   end

@@ -1,9 +1,9 @@
 require 'formula'
 
-class Groovy <Formula
-  url 'http://dist.groovy.codehaus.org/distributions/groovy-binary-1.7.8.zip'
-  md5 '9d0b3c21cb1f98a7bd3e779474650882'
+class Groovy < Formula
   homepage 'http://groovy.codehaus.org/'
+  url 'http://dist.groovy.codehaus.org/distributions/groovy-binary-1.8.0.zip'
+  sha1 'e343d18b6fe241f18533ee8b77945e7a380778bd'
 
   def install
     rm_f Dir["bin/*.bat"]

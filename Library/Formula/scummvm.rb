@@ -1,6 +1,6 @@
 require 'formula'
 
-class Scummvm <Formula
+class Scummvm < Formula
   url 'http://downloads.sourceforge.net/project/scummvm/scummvm/1.1.1/scummvm-1.1.1.tar.bz2'
   homepage 'http://www.scummvm.org/'
   md5 'ed9098a78022d07fa1482f14325e3ab8'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class John <Formula
+class John < Formula
   url 'http://www.openwall.com/john/g/john-1.7.3.4.tar.bz2'
   homepage 'http://www.openwall.com/john/'
   md5 '2f2310c49961c3edea6f92b8dcd45ff4'
@@ -9,9 +9,10 @@ class John <Formula
     { :p0 => DATA }
   end
 
+  fails_with_llvm
+
   def install
     ENV.deparallelize
-    fails_with_llvm
     arch = Hardware.is_64_bit? ? '64' : 'sse2'
 
     Dir.chdir 'src' do

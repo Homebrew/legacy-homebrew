@@ -1,10 +1,12 @@
 require 'formula'
 
-class Node <Formula
-  url 'http://nodejs.org/dist/node-v0.4.1.tar.gz'
-  head 'git://github.com/ry/node.git'
+class Node < Formula
+  url 'http://nodejs.org/dist/node-v0.4.7.tar.gz'
+  head 'git://github.com/joyent/node.git'
   homepage 'http://nodejs.org/'
-  md5 '9566bdbd05c18cc2bbe1fa0fba60dd0a'
+  md5 '7b955c8d5897ab3f3d5c21b7a04abdec'
+
+  fails_with_llvm
 
   # Stripping breaks dynamic loading
   skip_clean :all
@@ -14,8 +16,6 @@ class Node <Formula
   end
 
   def install
-    fails_with_llvm
-
     inreplace 'wscript' do |s|
       s.gsub! '/usr/local', HOMEBREW_PREFIX
       s.gsub! '/opt/local/lib', '/usr/lib'

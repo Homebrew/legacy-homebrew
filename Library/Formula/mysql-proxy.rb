@@ -1,6 +1,6 @@
 require 'formula'
 
-class MysqlProxy <Formula
+class MysqlProxy < Formula
   url 'http://launchpad.net/mysql-proxy/0.8/0.8.0/+download/mysql-proxy-0.8.0.tar.gz'
   homepage 'https://launchpad.net/mysql-proxy'
   md5 'b6a9748d72e8db7fe3789fbdd60ff451'

@@ -1,9 +1,9 @@
 require 'formula'
 
-class Xdebug <Formula
-  url 'http://xdebug.org/files/xdebug-2.1.0.tgz'
+class Xdebug < Formula
+  url 'http://xdebug.org/files/xdebug-2.1.1.tgz'
   homepage 'http://xdebug.org'
-  md5 '2abf000f8d94af469773b31772aa96ab'
+  md5 'fcdf078e715f44b77f13bac721ad63ce'
 
   def install
     Dir.chdir "xdebug-#{version}" do

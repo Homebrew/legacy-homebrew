@@ -1,15 +1,9 @@
 require 'formula'
 
 class Nginx < Formula
-  url 'http://nginx.org/download/nginx-0.8.54.tar.gz'
-  head 'http://nginx.org/download/nginx-0.9.5.tar.gz'
   homepage 'http://nginx.org/'
-
-  if ARGV.build_head?
-    @md5='955960482bf55b537ad0db5cca8fd61a'
-  else
-    @md5='44df4eb6a22d725021288c570789046f'
-  end
+  url 'http://nginx.org/download/nginx-1.0.0.tar.gz'
+  md5 '5751c920c266ea5bb5fc38af77e9c71c'
 
   depends_on 'pcre'
 
@@ -42,9 +36,13 @@ class Nginx < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}", "--with-http_ssl_module", "--with-pcre",
-            "--conf-path=#{etc}/nginx/nginx.conf", "--pid-path=#{var}/run/nginx.pid",
+    args = ["--prefix=#{prefix}",
+            "--with-http_ssl_module",
+            "--with-pcre",
+            "--conf-path=#{etc}/nginx/nginx.conf",
+            "--pid-path=#{var}/run/nginx.pid",
             "--lock-path=#{var}/nginx/nginx.lock"]
+
     args << passenger_config_args if ARGV.include? '--with-passenger'
     args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
 
@@ -64,7 +62,8 @@ change that to localhost:80, and run `sudo nginx`. You'll need to turn off
 any other web servers running port 80, of course.
 
 You can start nginx automatically on login with:
-    cp #{prefix}/org.nginx.plist ~/Library/LaunchAgents
+    mkdir -p ~/Library/LaunchAgents
+    cp #{prefix}/org.nginx.plist ~/Library/LaunchAgents/
     launchctl load -w ~/Library/LaunchAgents/org.nginx.plist
 
     CAVEATS
