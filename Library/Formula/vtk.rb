@@ -18,18 +18,22 @@ class Vtk < Formula
   end
 
   def install
-    args = std_cmake_parameters.split + [ 
+    args = std_cmake_parameters.split + [
              "-DVTK_REQUIRED_OBJCXX_FLAGS:STRING=''",
              "-DVTK_USE_CARBON:BOOL=OFF",
              "-DVTK_USE_COCOA:BOOL=ON",
              "-DBUILD_TESTING:BOOL=OFF",
              "-DBUILD_EXAMPLES:BOOL=OFF",
-             "-DBUILD_SHARED_LIBS:BOOL=ON" ]
+             "-DBUILD_SHARED_LIBS:BOOL=ON",
+             "-DCMAKE_INSTALL_RPATH:STRING='#{lib}/vtk-5.6'",
+             "-DCMAKE_INSTALL_NAME_DIR:STRING='#{lib}/vtk-5.6'"]
 
     if ARGV.include? '--python'
       python_prefix = `python-config --prefix`.strip
-      args << "-DVTK_PYTHON_SETUP_ARGS:STRING='--prefix=#{python_prefix}'" # Install to global python site-packages
-      args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'" # Python is actually a library. The libpythonX.Y.dylib points to this lib, too.
+      # Install to global python site-packages
+      args << "-DVTK_PYTHON_SETUP_ARGS:STRING='--prefix=#{python_prefix}'"
+      # Python is actually a library. The libpythonX.Y.dylib points to this lib, too.
+      args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
       args << "-DVTK_WRAP_PYTHON:BOOL=ON"
     end
 
@@ -42,9 +46,6 @@ class Vtk < Formula
     if ARGV.include? '--tcl'
       args << "-DVTK_WRAP_TCL:BOOL=ON"
     end
-
-    args << "-DCMAKE_INSTALL_RPATH:STRING='#{prefix}/lib/vtk-5.6'"
-    args << "-DCMAKE_INSTALL_NAME_DIR:STRING='#{prefix}/lib/vtk-5.6'"
 
     # Hack suggested at http://www.vtk.org/pipermail/vtk-developers/2006-February/003983.html
     # to get the right RPATH in the python libraries (the .so files in the vtk egg).
