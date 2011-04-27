@@ -7,13 +7,13 @@ class Rsyslog < Formula
 
   depends_on 'pkg-config' => :build
 
-  def build_fat
-    system './configure CC="gcc -arch i386 -arch x86_64" CXX="g++ -arch i386 -arch x86_64" CPP="gcc -E" CXXCPP="g++ -E"'
-  end
-
   def install
     if ARGV.build_universal?
-      build_fat
+      ENV['CC'] = "gcc -arch i386 -arch x86_64"
+      ENV['CXX'] = "g++ -arch i386 -arch x86_64"
+      ENV['CPP'] = "gcc -E"
+      ENV['CXXCPP'] = "g++ -E"      
+      system "./configure", "--prefix=#{prefix}"
     else
       system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     end
