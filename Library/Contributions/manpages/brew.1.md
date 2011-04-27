@@ -130,8 +130,8 @@ didn't include with OS X.
 
   * `upgrade`:
     Upgrade formula that have an updated version available. Equivalent 
-	to executing `brew install` on outdated formula, this does not 
-	preserve arguments initially used during `brew install`. 
+    to executing `brew install` on outdated formula, this does not 
+    preserve arguments initially used during `brew install`. 
 
   * `deps [--1]` <formula>:
     Show <formula>'s dependencies.
