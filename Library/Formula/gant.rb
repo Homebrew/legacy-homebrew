@@ -1,10 +1,10 @@
 require 'formula'
 
 class Gant < Formula
-  url 'http://dist.codehaus.org/gant/distributions/gant-1.9.3-_groovy-1.7.3.tgz'
-  version '1.9.3'
+  url 'http://dist.codehaus.org/gant/distributions/gant-1.9.4-_groovy-1.8.0.tgz'
+  version '1.9.4'
   homepage 'http://gant.codehaus.org/'
-  md5 '4a56ef11a7e7beaadbce59fe8510ef5b'
+  sha1 'cdefba538de14a89400f71fd3273ba4bf8b06641'
 
   depends_on 'groovy'
 
@@ -12,9 +12,10 @@ class Gant < Formula
     rm_f Dir["bin/*.bat"]
     # gant-starter.conf is found relative to bin
     libexec.install %w[bin lib conf]
-    (bin+'gant').write <<-EOS.undent
-      #!/bin/bash
-      exec #{libexec}/bin/gant
-    EOS
+    bin.mkpath
+    Dir["#{libexec}/bin/*"].each do |f|
+      next unless File.extname(f).empty?
+      ln_s f, bin+File.basename(f)
+    end
   end
 end
