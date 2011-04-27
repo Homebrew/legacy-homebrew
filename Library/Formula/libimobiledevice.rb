@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libimobiledevice < Formula
-  url 'http://www.libimobiledevice.org/downloads/libimobiledevice-1.0.3.tar.bz2'
+  url 'http://www.libimobiledevice.org/downloads/libimobiledevice-1.0.6.tar.bz2'
   homepage 'http://www.libimobiledevice.org/'
-  md5 '68e68b5c2bea3ad99917add839d32cb2'
+  md5 'bd5cdff5212060ee299481360f67fa24'
 
   depends_on 'pkg-config' => :build
   depends_on 'libtasn1'
