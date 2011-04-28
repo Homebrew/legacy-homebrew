@@ -45,6 +45,7 @@ class Nginx < Formula
 
     args << passenger_config_args if ARGV.include? '--with-passenger'
     args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
+    args << "--with-http_flv_module" if ARGV.include? '--with-flv'
 
     system "./configure", *args
     system "make install"
