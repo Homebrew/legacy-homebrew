@@ -10,7 +10,7 @@ def coreutils_aliases
   %w{
     base64 basename cat chcon chgrp chmod chown chroot cksum comm cp csplit
     cut date dd df dir dircolors dirname du echo env expand expr factor false
-    fmt fold gropus head hostid id install join kill link ln logname ls md5sum
+    fmt fold groups head hostid id install join kill link ln logname ls md5sum
     mkdir mkfifo mknod mktemp mv nice nl nohup od paste pathchk pinky pr
     printenv printf ptx pwd readlink rm rmdir runcon seq sha1sum sha225sum
     sha256sum sha384sum sha512sum shred shuf sleep sort split stat stty sum
