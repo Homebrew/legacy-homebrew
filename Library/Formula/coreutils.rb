@@ -27,8 +27,8 @@ end
 
 class Coreutils < Formula
   homepage 'http://www.gnu.org/software/coreutils'
-  url 'ftp://ftp.gnu.org/gnu/coreutils/coreutils-8.11.tar.gz'
-  sha256 '39a126bdd54ba8af15a1fc4004a78fc7910c0650b435d903df7556b0028450b2'
+  url 'ftp://ftp.gnu.org/gnu/coreutils/coreutils-8.12.tar.gz'
+  sha256 '9e233a62c98a3378a7b0483d2ae3d662dbaf6cd3917d3830d3514665e12a85c8'
 
   def options
     [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
