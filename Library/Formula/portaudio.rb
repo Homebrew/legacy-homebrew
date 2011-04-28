@@ -8,6 +8,10 @@ class Portaudio < Formula
   depends_on 'pkg-config' => :build
 
   fails_with_llvm
+  
+  def options
+    [["--universal", "Build a universal binary."]]
+  end
 
   # Use the MacPort patches that fix compiling against newer OS X SDKs
   def patches
@@ -19,6 +23,8 @@ class Portaudio < Formula
   end
 
   def install
+    ENV.universal_binary if ARGV.build_universal?
+
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
 
