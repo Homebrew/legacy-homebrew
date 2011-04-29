@@ -1,10 +1,10 @@
 require 'formula'
 
 class Pianobar < Formula
-  url 'https://github.com/PromyLOPh/pianobar/tarball/2011.04.10'
-  version '2011.04.10'
+  url 'https://github.com/PromyLOPh/pianobar/tarball/2011.04.27'
+  version '2011.04.27'
   homepage 'https://github.com/PromyLOPh/pianobar/'
-  md5 '813d3a9ee5dc23d6a68dd2a020096d06'
+  md5 '344d4c6957198357bf263629650f0597'
 
   head 'git://github.com/PromyLOPh/pianobar.git'
 
