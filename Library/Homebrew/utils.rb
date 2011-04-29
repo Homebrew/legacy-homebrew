@@ -264,7 +264,7 @@ module MacOS extend self
       elsif File.directory? '/Developer'
         # we do this to support cowboys who insist on installing
         # only a subset of Xcode
-        '/Developer'
+        Pathname.new '/Developer'
       else
         nil
       end
