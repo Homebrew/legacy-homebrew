@@ -6,6 +6,7 @@ Example usage:
   brew list [FORMULA...]
   brew update
   brew outdated
+  brew upgrade
   brew [info | home] [FORMULA...]
 
 Troubleshooting:
