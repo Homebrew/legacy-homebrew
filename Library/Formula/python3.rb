@@ -54,7 +54,7 @@ class Python3 < Formula
     # Both gcc and LLVM support this, so switch it on.
     args = ["--prefix=#{prefix}", "--with-computed-gotos"]
 
-    if ARGV.include? '--universal'
+    if ARGV.build_universal?
       args << "--enable-universalsdk=/" << "--with-universal-archs=intel"
     end
 

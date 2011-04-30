@@ -1,7 +1,7 @@
 require 'formula'
 
 class Tmux < Formula
-  url 'http://downloads.sourceforge.net/tmux/tmux-1.4.tar.gz'
+  url 'http://sourceforge.net/projects/tmux/files/tmux/tmux-1.4/tmux-1.4.tar.gz'
   md5 '0bfc7dd9a5bab192406167589c716a21'
   homepage 'http://tmux.sourceforge.net'
 
