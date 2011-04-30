@@ -241,10 +241,13 @@ class StrictSubversionDownloadStrategy < SubversionDownloadStrategy
 end
 
 class GitDownloadStrategy < AbstractDownloadStrategy
+  attr_accessor :retain_repo
+
   def initialize url, name, version, specs
     super
     @unique_token="#{name}--git" unless name.to_s.empty? or name == '__UNKNOWN__'
     @clone=HOMEBREW_CACHE+@unique_token
+    retain_repo = false
   end
 
   def cached_location
@@ -302,6 +305,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
       end
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
       safe_system 'git', 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
+      FileUtils.cp_r File.join(@clone, ".git"), dst if @retain_repo
       # check for submodules
       if File.exist?('.gitmodules')
         safe_system 'git', 'submodule', 'init'

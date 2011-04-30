@@ -21,4 +21,8 @@ class Io < Formula
 
     prefix.install 'license/bsd_license.txt' => 'LICENSE'
   end
+
+  def retain_repo?
+    true
+  end
 end
