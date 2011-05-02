@@ -21,10 +21,6 @@ class Figlet < Formula
     share + "figlet/fonts"
   end
 
-  def patches
-    DATA
-  end
-
   def install
     File.chmod 0666, 'Makefile'
     File.chmod 0666, 'showfigfonts'
@@ -43,32 +39,3 @@ class Figlet < Formula
     system "make install"
   end
 end
-
-__END__
-diff --git a/showfigfonts b/showfigfonts
-index 643c60b..543379c 100644
---- a/showfigfonts
-+++ b/showfigfonts
-@@ -14,6 +14,7 @@
- DIRSAVE=`pwd`
- cd `dirname "$0"`
- PATH="$PATH":`pwd`
-+FIGDIR=`pwd`
- cd "$DIRSAVE"
- 
- # Get figlet version
-@@ -42,12 +43,12 @@ else
-     FONTDIR="`figlet -F | sed -e '1d' -e '3,$d' -e 's/Font directory: //'`"
-   else
-     # figlet 2.1 or later
--    FONTDIR="`figlet -I2`"
-+    FONTDIR="`${FIGDIR}/figlet -I2`"
-   fi
- fi
- 
- cd "$FONTDIR"
--FONTLIST=`ls *.flf | sed s/\.flf$//`
-+FONTLIST=`ls *.fl* | sed s/\.fl.$//`
- cd $DIRSAVE
- for F in $FONTLIST ; do
-   echo "$F" :
