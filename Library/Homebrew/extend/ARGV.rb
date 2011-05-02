@@ -51,11 +51,15 @@ module HomebrewArgvExtension
   def interactive?
     flag? '--interactive'
   end
+  def one?
+    flag? '--1'
+  end
+
   def build_head?
     flag? '--HEAD'
   end
-  def one?
-    flag? "--1"
+  def build_universal?
+    include? '--universal'
   end
 
   def flag? flag
