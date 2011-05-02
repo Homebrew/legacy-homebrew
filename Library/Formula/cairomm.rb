@@ -17,6 +17,7 @@ class Cairomm < Formula
   depends_on 'cairo' if MacOS.leopard?
 
   def install
+    ENV.freetype2
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-x",

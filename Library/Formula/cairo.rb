@@ -12,6 +12,7 @@ class Cairo < Formula
             "The Cairo provided by Leopard is too old for newer software to link against."
 
   def install
+    ENV.x11
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-x"
