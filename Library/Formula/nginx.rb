@@ -13,7 +13,9 @@ class Nginx < Formula
   def patches
     # Changes default port to 8080
     # Set configure to look in homebrew prefix for pcre
-    `curl http://www.grid.net.ru/nginx/download/nginx_upload_module-#{UPLOAD_MODULE_VERSION}.tar.gz | tar -xzf -`
+    if ARGV.include?( '--with-upload-module' )
+      `curl http://www.grid.net.ru/nginx/download/nginx_upload_module-#{UPLOAD_MODULE_VERSION}.tar.gz | tar -xzf -`
+    end
     DATA
   end
 
