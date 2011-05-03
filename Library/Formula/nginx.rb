@@ -4,6 +4,7 @@ class Nginx < Formula
   homepage 'http://nginx.org/'
   url 'http://nginx.org/download/nginx-1.0.0.tar.gz'
   md5 '5751c920c266ea5bb5fc38af77e9c71c'
+  UPLOAD_MODULE_VERSION='2.2.0'
 
   depends_on 'pcre'
 
@@ -12,13 +13,15 @@ class Nginx < Formula
   def patches
     # Changes default port to 8080
     # Set configure to look in homebrew prefix for pcre
+    `curl http://www.grid.net.ru/nginx/download/nginx_upload_module-#{UPLOAD_MODULE_VERSION}.tar.gz | tar -xzf -`
     DATA
   end
 
   def options
     [
       ['--with-passenger', "Compile with support for Phusion Passenger module"],
-      ['--with-webdav',    "Compile with support for WebDAV module"]
+      ['--with-webdav',    "Compile with support for WebDAV module"],
+      ['--with-upload-module', 'Compile support for upload module (http://www.grid.net.ru/nginx/upload.en.html)']
     ]
   end
 
@@ -45,6 +48,7 @@ class Nginx < Formula
 
     args << passenger_config_args if ARGV.include? '--with-passenger'
     args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
+    args << "--add-module=nginx_upload_module-#{UPLOAD_MODULE_VERSION}" if ARGV.include?( '--with-upload-module' )
 
     system "./configure", *args
     system "make install"
