@@ -18,7 +18,11 @@ class Nginx < Formula
   def options
     [
       ['--with-passenger', "Compile with support for Phusion Passenger module"],
-      ['--with-webdav',    "Compile with support for WebDAV module"]
+      ['--with-webdav',    "Compile with support for WebDAV module"],
+      ['--with-gzip',      "Compile with support for Gzip static module"],
+      ['--with-realip',    "Compile with support for Realip module"],
+      ['--with-upload',    "Compile with support for Upload and Upload Progress module"],
+      ['--with-gru',       "Shortcut for --with-gzip, --with-realip, --with-upload"]
     ]
   end
 
@@ -35,17 +39,44 @@ class Nginx < Formula
       exit
   end
 
+  def upload_install_args
+    `mkdir /tmp/nginx_upload; mkdir /tmp/nginx_upload-progress`
+    `curl -o /tmp/nginx_upload.tar.gz http://www.grid.net.ru/nginx/download/nginx_upload_module-2.2.0.tar.gz`
+    `tar xzf /tmp/nginx_upload.tar.gz --directory /tmp/nginx_upload --strip 1`
+    `curl -o /tmp/nginx_upload-progress.tar.gz https://download.github.com/masterzen-nginx-upload-progress-module-v0.8.2-0-g8b55a34.tar.gz`
+    `tar xzf /tmp/nginx_upload-progress.tar.gz  --directory /tmp/nginx_upload-progress --strip 1`
+    
+    return ["--add-module=/tmp/nginx_upload" ""]
+  end
+
   def install
-    args = ["--prefix=#{prefix}",
+    args = ["--user=nobody",
+            "--group=nobody",
+            "--prefix=#{prefix}",
             "--with-http_ssl_module",
             "--with-pcre",
             "--conf-path=#{etc}/nginx/nginx.conf",
             "--pid-path=#{var}/run/nginx.pid",
-            "--lock-path=#{var}/nginx/nginx.lock"]
+            "--lock-path=#{var}/nginx/nginx.lock",
+            "--http-log-path=#{var}/nginx/log/default_access_log",
+            "--error-log-path=#{var}/nginx/log/default_error_log",
+            "--http-client-body-temp-path=#{var}/tmp/nginx/client",
+            "--http-proxy-temp-path=#{var}/tmp/nginx/proxy"]
 
     args << passenger_config_args if ARGV.include? '--with-passenger'
     args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
-
+    
+    if ARGV.include? '--with-gru'
+      args << "--with-http_gzip_static_module"
+      args << "--with-http_realip_module"
+      args << "--add-module=/tmp/nginx_upload"
+      args << "--add-module=/tmp/nginx_upload-progress"
+    else
+      args << "--with-http_gzip_static_module" if ARGV.include? '--with-gzip'
+      args << "--with-http_realip_module" if ARGV.include? '--with-realip'
+      args << upload_install_args if ARGV.include? '--with-upload'
+    end
+    
     system "./configure", *args
     system "make install"
 
