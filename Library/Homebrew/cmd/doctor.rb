@@ -1,7 +1,7 @@
 class Volumes
   def initialize
     @volumes = []
-    raw_mounts=`mount`
+    raw_mounts=`/sbin/mount`
     raw_mounts.split("\n").each do |line|
       case line
       when /^(.+) on (\S+) \(/
