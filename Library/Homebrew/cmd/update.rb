@@ -14,7 +14,7 @@ end
 class RefreshBrew
   REPOSITORY_URL   = "http://github.com/mxcl/homebrew.git"
   INIT_COMMAND     = "git init"
-  CHECKOUT_COMMAND = "git checkout -q master"
+  CHECKOUT_COMMAND = "git checkout -fq master"
   UPDATE_COMMAND   = "git pull #{REPOSITORY_URL} master"
   REVISION_COMMAND = "git log -l -1 --pretty=format:%H 2> /dev/null"
   GIT_UP_TO_DATE   = "Already up-to-date."
