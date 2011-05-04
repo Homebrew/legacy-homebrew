@@ -25,6 +25,9 @@ class Mysql < Formula
   def patches; DATA; end
 
   def install
+    # Make sure the var/msql directory exists
+    (var+"mysql").mkpath
+
     args = [".",
             "-DCMAKE_INSTALL_PREFIX=#{prefix}",
             "-DMYSQL_DATADIR=#{var}/mysql",
