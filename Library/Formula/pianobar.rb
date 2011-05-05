@@ -19,8 +19,9 @@ class Pianobar < Formula
 
     # Enable 64-bit builds if needed
     w_flag = MacOS.prefer_64_bit? ? "-W64" : ""
+    lib_path = HOMEBREW_PREFIX.to_s != "/usr/local" ? " -I#{HOMEBREW_PREFIX}/include -L#{HOMEBREW_PREFIX}/lib" : ""
     inreplace "Makefile" do |s|
-      s.gsub! "CFLAGS:=-O2 -DNDEBUG", "CFLAGS:=-O2 -DNDEBUG #{w_flag}"
+      s.gsub! "-O2 -DNDEBUG", "-O2 -DNDEBUG #{w_flag} #{lib_path}"
     end
     system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"
