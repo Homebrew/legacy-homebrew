@@ -13,14 +13,22 @@ class Sip < Formula
   head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
 
-  unless ARGV.include? '--HEAD'
-    def patches
-      DATA
-    end
+  def patches
+    DATA
   end
 
   def install
-    inreplace 'build.py', /@SIP_VERSION@/, (version.gsub '.', ',')
+    if ARGV.build_head?
+      # Set fallback version to the same value it would have without the patch
+      # and link the Mercurial repository into the download directory so
+      # buid.py can use it to figure out a version number.
+      sip_version = "0.1.0"
+      ln_s downloader.cached_location + '.hg', '.hg'
+    else
+      sip_version = version
+    end
+    inreplace 'build.py', /@SIP_VERSION@/, (sip_version.gsub '.', ',')
+
     system "python", "build.py", "prepare"
     system "python", "configure.py",
                               "--destdir=#{lib}/python",
