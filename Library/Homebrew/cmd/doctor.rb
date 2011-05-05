@@ -73,6 +73,22 @@ def check_for_stray_dylibs
   puts
 end
 
+def check_for_stray_static_libs
+  unbrewed_alibs = Dir['/usr/local/lib/*.a'].select { |f| File.file? f and not File.symlink? f }
+  return if unbrewed_alibs.empty?
+
+  puts <<-EOS.undent
+    Unbrewed static libraries were found in /usr/local/lib.
+
+    If you didn't put them there on purpose they could cause problems when
+    building Homebrew formulae, and may need to be deleted.
+
+    Unexpected static libraries:
+  EOS
+  puts *unbrewed_alibs.collect { |f| "    #{f}" }
+  puts
+end
+
 def check_for_x11
   unless x11_installed?
     puts <<-EOS.undent
@@ -611,6 +627,7 @@ module Homebrew extend self
       check_homebrew_prefix
       check_for_macgpg2
       check_for_stray_dylibs
+      check_for_stray_static_libs
       check_gcc_versions
       check_for_other_package_managers
       check_for_x11
