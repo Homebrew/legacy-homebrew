@@ -6,8 +6,6 @@ class MongoPhp < Formula
   md5 '22f1e25690589f6d80d5ed29e56644eb'  
   version '1.1.4'
 
-  depends_on 'mongo'
-
   def install
     Dir.chdir "mongo-#{version}" do
       system "phpize"
