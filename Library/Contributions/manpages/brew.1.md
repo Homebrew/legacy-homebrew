@@ -13,7 +13,7 @@ didn't include with OS X.
 
 ## OPTIONS
   * `-v`, `--verbose` command [options] [formula] ...:
-    Prints extra, comand-specific debugging information.
+    Prints extra, command-specific debugging information.
     Note that `brew -v` by itself is the same as `brew --version`.
 
 ## COMMANDS
