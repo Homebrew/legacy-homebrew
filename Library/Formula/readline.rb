@@ -3,7 +3,7 @@ require 'formula'
 class Readline < Formula
   homepage 'http://tiswww.case.edu/php/chet/readline/rltop.html'
   url 'http://ftp.gnu.org/gnu/readline/readline-6.2.tar.gz'
-  sha256 '67948acb2ca081f23359d0256e9a271c'
+  md5 '67948acb2ca081f23359d0256e9a271c'
   version '6.2.1'
 
   keg_only <<-EOS
