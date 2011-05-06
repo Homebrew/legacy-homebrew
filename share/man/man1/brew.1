@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "April 2011" "Homebrew" "brew"
+.TH "BREW" "1" "May 2011" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -19,7 +19,7 @@ Homebrew is the easiest and most flexible way to install the UNIX tools Apple di
 .
 .TP
 \fB\-v\fR, \fB\-\-verbose\fR command [options] [formula] \.\.\.
-Prints extra, comand\-specific debugging information\. Note that \fBbrew \-v\fR by itself is the same as \fBbrew \-\-version\fR\.
+Prints extra, command\-specific debugging information\. Note that \fBbrew \-v\fR by itself is the same as \fBbrew \-\-version\fR\.
 .
 .SH "COMMANDS"
 .
@@ -28,7 +28,7 @@ Prints extra, comand\-specific debugging information\. Note that \fBbrew \-v\fR 
 Print the version number of brew to standard error and exit\.
 .
 .TP
-\fBinstall [\-\-force] [\-\-debug] [\-\-use\-llvm] [\-\-ignore\-dependencies] [\-\-HEAD]\fR \fIformula\fR
+\fBinstall [\-\-force] [\-\-debug] [\-\-ignore\-dependencies] [\-\-use\-llvm] [\-\-use\-gcc] [\-\-HEAD]\fR \fIformula\fR
 Install \fIformula\fR\.
 .
 .IP
@@ -41,10 +41,13 @@ If \fB\-\-force\fR is passed, will install \fIformula\fR even if it is already i
 If \fB\-\-debug\fR is passed and brewing fails, open a shell inside the temporary folder used for compiling\.
 .
 .IP
+If \fB\-\-ignore\-dependencies\fR is passed, skip installing any dependencies of any kind\. If they are not already present, the formula will probably fail to install\.
+.
+.IP
 If \fB\-\-use\-llvm\fR is passed, attempt to compile using the LLVM front\-end to GCC\. \fINOTE\fR: Not all formulae will build with LLVM\.
 .
 .IP
-If \fB\-\-ignore\-dependencies\fR is passed, skip installing any dependencies of any kind\. If they are not already present, the formula will probably fail to install\.
+If \fB\-\-use\-gcc\fR is passed, attempt to compile using GCC\. This is useful for systems whose default compiler is LLVM\-GCC\.
 .
 .IP
 If \fB\-\-HEAD\fR is passed, and \fIformula\fR defines it, install the HEAD version, aka master, trunk, unstable, dev\.
