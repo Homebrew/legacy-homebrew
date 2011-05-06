@@ -5,6 +5,8 @@ class Couchdb < Formula
   homepage "http://couchdb.apache.org/"
   md5 'cc1cc891ac47dd795b0b9aa2c5375923'
 
+  head 'http://svn.apache.org/repos/asf/couchdb/trunk'
+
   depends_on 'spidermonkey'
   depends_on 'icu4c'
   depends_on 'erlang'
