@@ -12,7 +12,8 @@ class Bash < Formula
     patch_level = version.split('.').last.to_i
     {'p0' => (1..patch_level).map { |i| "http://ftp.gnu.org/gnu/bash/bash-4.2-patches/bash42-%03d" % i }}
   end
-
+  
+  def install 
     system "./configure", "--prefix=#{prefix}",
            "--with-installed-readline"
     system "make install"
