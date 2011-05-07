@@ -13,8 +13,8 @@ class Bash < Formula
     {'p0' => (1..patch_level).map { |i| "http://ftp.gnu.org/gnu/bash/bash-4.2-patches/bash42-%03d" % i }}
   end
 
-    system "./configure", "--prefix=#{prefix}",
-           "--with-installed-readline"
+  def install
+    system "./configure", "--prefix=#{prefix}", "--with-installed-readline"
     system "make install"
   end
 end
