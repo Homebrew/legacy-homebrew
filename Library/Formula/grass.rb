@@ -10,8 +10,8 @@ end
 
 class Grass < Formula
   homepage 'http://grass.osgeo.org/'
-  url 'http://grass.osgeo.org/grass64/source/grass-6.4.1.tar.gz'
-  md5 'd8ca83d416b5b0cf2aa9d36c81a77b23'
+  url 'http://grass.osgeo.org/grass64/source/grass-6.4.0.tar.gz'
+  md5 'ac3233aa3351f8e060ea48246aa01c7f'
 
   depends_on "pkg-config" => :build
   depends_on "gettext"
@@ -20,7 +20,6 @@ class Grass < Formula
   depends_on "libtiff"
   depends_on "unixodbc"
   depends_on "fftw"
-  depends_on "ffmpeg"
 
   depends_on "cairo" if MacOS.leopard?
 
@@ -36,12 +35,8 @@ class Grass < Formula
   end
 
   def install
-    readline = Formula.factory('readline')
-    gettext = Formula.factory('gettext')
-    ffmpeg = Formula.factory('ffmpeg')
-    ffmpeg_includes = ffmpeg.include.subdirs.map do |dir|
-      dir.to_s.gsub(ffmpeg.prefix, HOMEBREW_PREFIX) + " "
-    end
+    readline = Formula.factory( 'readline' )
+    gettext = Formula.factory( 'gettext' )
 
     args = [
       "--disable-debug", "--disable-dependency-tracking",
@@ -59,7 +54,6 @@ class Grass < Formula
       "--with-lapack",
       "--with-sqlite",
       "--with-odbc",
-      "--with-geos=#{HOMEBREW_PREFIX}/bin/geos-config",
       "--with-png-includes=/usr/X11/include",
       "--with-png",
       "--with-readline-includes=#{readline.include}",
@@ -70,8 +64,7 @@ class Grass < Formula
       "--with-nls",
       "--with-freetype-includes=/usr/X11/include /usr/X11/include/freetype2",
       "--with-freetype",
-      "--with-ffmpeg-includes=#{ffmpeg_includes}",
-      "--with-ffmpeg",
+      "--without-ffmpeg", # Disabled because NVIZ needs Tcl and wxNVIZ is not shipping yet.
       "--without-tcltk" # Disabled due to compatibility issues with OS X Tcl/Tk
     ]
 
