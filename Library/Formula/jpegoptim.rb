@@ -8,6 +8,7 @@ class Jpegoptim < Formula
   depends_on 'jpeg'
 
   def install
+    ENV.j1 # Install is not parallel-safe
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
