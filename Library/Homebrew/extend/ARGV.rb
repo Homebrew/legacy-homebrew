@@ -18,7 +18,7 @@ module HomebrewArgvExtension
     require 'keg'
     require 'formula'
     @kegs ||= downcased_unique_named.collect do |name|
-      d = HOMEBREW_CELLAR+Formula.caniconical_name(name)
+      d = HOMEBREW_CELLAR+Formula.canonical_name(name)
       dirs = d.children.select{ |pn| pn.directory? } rescue []
       raise NoSuchKegError.new(name) if not d.directory? or dirs.length == 0
       raise MultipleVersionsInstalledError.new(name) if dirs.length > 1
