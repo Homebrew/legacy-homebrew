@@ -17,7 +17,7 @@ class Go < Formula
 
   def install
     ENV.j1 # https://github.com/mxcl/homebrew/issues/#issue/237
-    prefix.install %w[src include test doc misc lib favicon.ico]
+    prefix.install %w[src include test doc misc lib favicon.ico AUTHORS]
     Dir.chdir prefix
     mkdir %w[pkg bin]
 
