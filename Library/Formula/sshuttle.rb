@@ -1,10 +1,10 @@
 require 'formula'
 
 class Sshuttle < Formula
-  url 'https://github.com/apenwarr/sshuttle/zipball/sshuttle-0.52'
+  url 'https://github.com/apenwarr/sshuttle/zipball/sshuttle-0.53'
   homepage 'https://github.com/apenwarr/sshuttle'
-  md5 '0f41d963be481d0d136d2b82180d6fcd'
-  version '0.52'
+  md5 '352181fa9ad9648d4e181d19a2458c69'
+  version '0.53'
 
   head 'git://github.com/apenwarr/sshuttle.git'
 
