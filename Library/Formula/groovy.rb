@@ -17,4 +17,11 @@ class Groovy < Formula
       ln_s f, bin+File.basename(f)
     end
   end
+
+  def caveats
+    <<-EOS.undent
+      You should set the environment variable GROOVY_HOME to
+        #{libexec}
+    EOS
+  end
 end
