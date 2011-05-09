@@ -8,7 +8,7 @@ class Tabix < Formula
 
   def install
     system "make"
-    bin.install %w{tabix}
+    bin.install %w{tabix bgzip}
     man1.install 'tabix.1'
   end
 end
