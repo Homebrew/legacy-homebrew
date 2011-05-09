@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libplist < Formula
-  url 'http://cloud.github.com/downloads/JonathanBeck/libplist/libplist-1.3.tar.bz2'
-  homepage 'https://github.com/JonathanBeck/libplist'
-  md5 '0f48f4da8ddba5d7e186307622bf2c62'
+  url 'http://www.libimobiledevice.org/downloads/libplist-1.4.tar.bz2'
+  homepage 'http://cgit.sukimashita.com/libplist.git/'
+  md5 '2ef8bf33d9aeb078c6d8b6ecafbc6396'
 
   depends_on 'cmake' => :build
   depends_on 'glib'
