@@ -1,10 +1,10 @@
 require 'formula'
 
 class Bash < Formula
-  url 'http://ftp.gnu.org/gnu/bash/bash-4.2.tar.gz'
   homepage 'http://www.gnu.org/software/bash/'
-  sha1 '487840ab7134eb7901fbb2e49b0ee3d22de15cb8'
-  version '4.2.8'
+  url 'ftp://ftp.gnu.org/gnu/bash/bash-4.2.tar.gz'
+  sha256 'a27a1179ec9c0830c65c6aa5d7dab60f7ce1a2a608618570f96bfa72e95ab3d8'
+  version '4.2.10'
 
   depends_on 'readline'
 
@@ -13,9 +13,8 @@ class Bash < Formula
     {'p0' => (1..patch_level).map { |i| "http://ftp.gnu.org/gnu/bash/bash-4.2-patches/bash42-%03d" % i }}
   end
 
-
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--with-installed-readline"
     system "make install"
   end
 end
