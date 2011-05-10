@@ -18,7 +18,7 @@ class Geoserver < Formula
       ['--with-geowebcache', "Install an additional Geo-Web-Cache (#{Geowebcache.homepage})"]
     ]
   end
-  
+
   def caveats
     s = "You can start/stop the geoserver via 'geoserver_startup.sh'/'geoserver_shutdown.sh'."
     s << "\nConsider using the '--with-geowebcache' parameter to install the optional cache." unless ARGV.include? '--with-geowebcache'
@@ -29,7 +29,7 @@ class Geoserver < Formula
     rm_f Dir['bin/*.bat']
     prefix.install Dir['*.txt']
     unless File.exists? var + name
-      (var + name).install Dir['data_dir'] 
+      (var + name).install Dir['data_dir']
     else
       ohai 'Existing data directory found!', "Directory #{var + name} already exists. Skipping install of data_dir."
       rm_rf Dir['data_dir']
