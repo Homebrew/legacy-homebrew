@@ -41,6 +41,11 @@ class Zookeeper < Formula
   end
 
   def install
+    # Fix ARCHFLAGS for 64bit
+    if MacOS.prefer_64_bit?
+      ENV['ARCHFLAGS'] = "-arch i386 -arch x86_64"
+    end
+
     # Prep work for svn compile.
     if ARGV.build_head?
       system "ant", "compile_jute"
