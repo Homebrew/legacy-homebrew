@@ -1,9 +1,9 @@
 require 'formula'
 
 class Play < Formula
-  url 'http://download.playframework.org/releases/play-1.2.zip'
+  url 'http://download.playframework.org/releases/play-1.2.1.zip'
   homepage 'http://www.playframework.org/'
-  md5 'dbe7321a7bef3a00b6ab67ededf865eb'
+  md5 '6974014f265b16e926e5dd5587573fea'
 
   def install
     rm_rf 'python' # we don't need the bundled Python for windows
