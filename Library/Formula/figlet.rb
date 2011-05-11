@@ -29,7 +29,7 @@ class Figlet < Formula
     InternationalFonts.new.brew { share_fonts.install Dir['*'] }
 
     inreplace "Makefile" do |s|
-      s.gsub! "/usr/local/", "#{prefix}/"
+      s.gsub! "/usr/local", prefix
       s.change_make_var! 'DEFAULTFONTDIR', share_fonts
       s.change_make_var! 'MANDIR', man6
     end
