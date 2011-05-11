@@ -1,10 +1,10 @@
 require 'formula'
 
 class Redis < Formula
-  url 'http://redis.googlecode.com/files/redis-2.2.2.tar.gz'
+  url 'http://redis.googlecode.com/files/redis-2.2.6.tar.gz'
   head 'git://github.com/antirez/redis.git'
   homepage 'http://redis.io/'
-  sha1 '75b953e4a3067570555c5f3f5e8f481c40489904'
+  sha1 'dd5a5a443327da09483701c48b7ea87e5d160c69'
 
   fails_with_llvm "Fails with \"reference out of range from _linenoise\""
 
@@ -21,9 +21,6 @@ class Redis < Formula
     }
 
     %w( run db/redis log ).each { |p| (var+p).mkpath }
-
-    # Set correct directory permissions for database files
-    chmod 0755, "#{var}/db/redis"
 
     # Fix up default conf file to match our paths
     inreplace "redis.conf" do |s|

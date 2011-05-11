@@ -4,7 +4,7 @@ def build_java?; ARGV.include? "--java"; end
 def build_perl?; ARGV.include? "--perl"; end
 def build_python?; ARGV.include? "--python"; end
 def build_ruby?; ARGV.include? "--ruby"; end
-def build_universal?; ARGV.include? '--universal'; end
+def build_universal?; ARGV.build_universal?; end
 def with_unicode_path?; ARGV.include? '--unicode-path'; end
 
 # On 10.5 we need newer versions of apr, neon etc.
@@ -22,7 +22,7 @@ class Subversion < Formula
   depends_on 'pkg-config' => :build
 
   # On Snow Leopard, build a new neon. For Leopard, the deps above include this.
-  depends_on 'neon' if MACOS_VERSION >= 10.6
+  depends_on 'neon' if MacOS.snow_leopard?
 
   def options
     [
@@ -82,7 +82,7 @@ class Subversion < Formula
 
     ENV.universal_binary if build_universal?
 
-    if MACOS_VERSION < 10.6
+    if MacOS.leopard?
       setup_leopard
     else
       check_neon_arch if build_universal?
@@ -122,14 +122,14 @@ class Subversion < Formula
       # Remove hard-coded ppc target, add appropriate ones
       if build_universal?
         arches = "-arch x86_64 -arch i386"
-      elsif MACOS_VERSION < 10.6
+      elsif MacOS.leopard?
         arches = "-arch i386"
       else
         arches = "-arch x86_64"
       end
 
       # Use verison-appropriate system Perl
-      if MACOS_VERSION < 10.6
+     if MacOS.leopard?
         perl_version = "5.8.8"
       else
         perl_version = "5.10.0"

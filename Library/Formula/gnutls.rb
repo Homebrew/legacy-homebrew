@@ -2,8 +2,8 @@ require 'formula'
 
 class Gnutls < Formula
   homepage 'http://www.gnu.org/software/gnutls/gnutls.html'
-  url 'http://ftp.gnu.org/pub/gnu/gnutls/gnutls-2.10.5.tar.bz2'
-  sha1 '4530657082a0e754356de89a5529d1ad7a18e777'
+  url 'ftp://ftp.gnu.org/gnu/gnutls/gnutls-2.12.3.tar.bz2'
+  sha256 '9fb3dba10d3fa6c2817cd47260b4c39026c69128fb39fc5026f179b3672539d3'
 
   depends_on 'pkg-config' => :build
   depends_on 'libgcrypt'
@@ -19,8 +19,10 @@ class Gnutls < Formula
     ENV.universal_binary	# build fat so wine can use it
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--disable-guile",
+                          "--disable-static",
                           "--prefix=#{prefix}",
-                          "--disable-guile"
+                          "--with-libgcrypt"
     system "make install"
   end
 end

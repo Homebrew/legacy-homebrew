@@ -1,7 +1,7 @@
 class Volumes
   def initialize
     @volumes = []
-    raw_mounts=`mount`
+    raw_mounts=`/sbin/mount`
     raw_mounts.split("\n").each do |line|
       case line
       when /^(.+) on (\S+) \(/
@@ -70,6 +70,46 @@ def check_for_stray_dylibs
     Unexpected dylibs:
   EOS
   puts *bad_dylibs.collect { |f| "    #{f}" }
+  puts
+end
+
+def check_for_stray_static_libs
+  unbrewed_alibs = Dir['/usr/local/lib/*.a'].select { |f| File.file? f and not File.symlink? f }
+  return if unbrewed_alibs.empty?
+
+  puts <<-EOS.undent
+    Unbrewed static libraries were found in /usr/local/lib.
+
+    If you didn't put them there on purpose they could cause problems when
+    building Homebrew formulae, and may need to be deleted.
+
+    Unexpected static libraries:
+  EOS
+  puts *unbrewed_alibs.collect { |f| "    #{f}" }
+  puts
+end
+
+def check_for_stray_pcs
+  unbrewed_pcs = Dir['/usr/local/lib/pkgconfig/*.pc'].select { |f| File.file? f and not File.symlink? f }
+
+  # Package-config files which are generally OK should be added to this list,
+  # with a short description of the software they come with.
+  white_list = {
+    "fuse.pc" => "MacFuse",
+  }
+
+  bad_pcs = unbrewed_pcs.reject {|d| white_list.key? File.basename(d) }
+  return if bad_pcs.empty?
+
+  puts <<-EOS.undent
+    Unbrewed .pc files were found in /usr/local/lib/pkgconfig.
+
+    If you didn't put them there on purpose they could cause problems when
+    building Homebrew formulae, and may need to be deleted.
+
+    Unexpected .pc files:
+  EOS
+  puts *bad_pcs.collect { |f| "    #{f}" }
   puts
 end
 
@@ -611,6 +651,8 @@ module Homebrew extend self
       check_homebrew_prefix
       check_for_macgpg2
       check_for_stray_dylibs
+      check_for_stray_static_libs
+      check_for_stray_pcs
       check_gcc_versions
       check_for_other_package_managers
       check_for_x11

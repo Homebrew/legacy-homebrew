@@ -26,24 +26,23 @@ def blacklisted? name
   when 'mercurial', 'hg' then <<-EOS.undent
     Install Mercurial with pip:
 
-        easy_install pip && pip install mercurial
+        easy_install pip && pip install Mercurial
 
     Or easy_install:
 
-        easy_install mercurial
+        easy_install Mercurial
     EOS
-  when 'setuptools' then <<-EOS.undent
-    When working with a Homebrew-built Python, distribute is preferred over
-    setuptools, and can be used as the prerequisite for pip:
+  when 'pip' then <<-EOS.undent
+    Install pip with easy_install:
 
-        brew install distribute
+        easy_install pip
     EOS
   when 'npm' then <<-EOS.undent
     npm can be installed thusly by following the instructions at
       http://npmjs.org/
 
     To do it in one line, use this command:
-      curl http://npmjs.org/install.sh | sudo sh
+      curl http://npmjs.org/install.sh | sh
     EOS
   end
 end

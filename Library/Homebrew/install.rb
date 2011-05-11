@@ -11,8 +11,8 @@ Generally there are no consequences of this for you.
 If you build your own software and it requires this formula, you'll need
 to add its lib & include paths to your build variables:
 
-  LDFLAGS="$LDFLAGS #{f.lib}"
-  CPPFLAGS="$CPPFLAGS #{f.include}"
+  LDFLAGS: -L#{f.lib}
+  CPPFLAGS: -I#{f.include}
   EOS
 end
 

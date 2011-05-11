@@ -1,19 +1,19 @@
 require 'formula'
 
 def build_clang?; ARGV.include? '--with-clang'; end
-def build_universal?; ARGV.include? '--universal'; end
+def build_universal?; ARGV.build_universal?; end
 def build_shared?; ARGV.include? '--shared'; end
 def build_rtti?; ARGV.include? '--rtti'; end
 
 class Clang < Formula
-  url       'http://llvm.org/releases/2.9/clang-2.9.tgz'
   homepage  'http://llvm.org/'
+  url       'http://llvm.org/releases/2.9/clang-2.9.tgz'
   md5       '634de18d04b7a4ded19ec4c17d23cfca'
 end
 
 class Llvm < Formula
-  url       'http://llvm.org/releases/2.9/llvm-2.9.tgz'
   homepage  'http://llvm.org/'
+  url       'http://llvm.org/releases/2.9/llvm-2.9.tgz'
   md5       '793138412d2af2c7c7f54615f8943771'
 
   def patches
@@ -63,6 +63,7 @@ class Llvm < Formula
 
     Dir.chdir clang_dir do
       system "make install"
+      bin.install 'tools/scan-build/set-xcode-analyzer'
     end if build_clang?
   end
 
@@ -76,16 +77,16 @@ end
 
 
 __END__
-diff --git a/Makefile.rules b/Makefile.rules
-index 9cff105..44d5b2d 100644
---- a/Makefile.rules
-+++ b/Makefile.rules
-@@ -497,7 +497,7 @@ ifeq ($(HOST_OS),Darwin)
+diff --git i/Makefile.rules w/Makefile.rules
+index 5fc77a5..a6baaf4 100644
+--- i/Makefile.rules
++++ w/Makefile.rules
+@@ -507,7 +507,7 @@ ifeq ($(HOST_OS),Darwin)
    # Get "4" out of 10.4 for later pieces in the makefile.
    DARWIN_MAJVERS := $(shell echo $(DARWIN_VERSION)| sed -E 's/10.([0-9]).*/\1/')
 
--  SharedLinkOptions=-Wl,-flat_namespace -Wl,-undefined,suppress \
-+  SharedLinkOptions=-Wl,-undefined,dynamic_lookup \
-                     -dynamiclib
+-  LoadableModuleOptions := -Wl,-flat_namespace -Wl,-undefined,suppress
++  LoadableModuleOptions := -Wl,-undefined,dynamic_lookup
+   SharedLinkOptions := -dynamiclib
    ifneq ($(ARCH),ARM)
      SharedLinkOptions += -mmacosx-version-min=$(DARWIN_VERSION)
