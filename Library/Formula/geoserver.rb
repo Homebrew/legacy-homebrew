@@ -2,16 +2,16 @@ require 'formula'
 
 class Geowebcache < Formula
   version '1.2.6'
-  url "http://sourceforge.net/projects/geowebcache/files/geowebcache/#{version}/geowebcache-#{version}-war.zip/download"
+  url "http://downloads.sourceforge.net/geowebcache/geowebcache-#{version}-war.zip"
   homepage 'http://geowebcache.org/'
   md5 '2ddf026b49aecb9eac1f9e67975ee6b4'
 end
 
 class Geoserver < Formula
-  version '2.1-RC5'
+  version '2.1.0'
   url "http://downloads.sourceforge.net/geoserver/geoserver-#{version}-bin.zip"
   homepage 'http://geoserver.org'
-  md5 '3ef93c9bf069e7de619be9bc2f412514'
+  md5 'edb3a39cd1565cfecab6c0d727de0cd1'
 
   def options
     [
@@ -43,6 +43,6 @@ class Geoserver < Formula
         . #{file}
       EOS
     end
-    Geowebcache.new.brew { (libexec + 'webapps/geowebcache').install Dir['*'] } if ARGV.include? '--with-geowebcache'
+    Geowebcache.new.brew { (libexec + 'webapps' + name).install Dir['*'] } if ARGV.include? '--with-geowebcache'
   end
 end
