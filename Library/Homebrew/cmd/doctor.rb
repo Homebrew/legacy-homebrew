@@ -113,6 +113,29 @@ def check_for_stray_pcs
   puts
 end
 
+def check_for_stray_las
+  unbrewed_las = Dir['/usr/local/lib/*.la'].select { |f| File.file? f and not File.symlink? f }
+
+  white_list = {
+    "libfuse.la" => "MacFuse",
+    "libfuse_ino64.la" => "MacFuse",
+  }
+
+  bad_las = unbrewed_las.reject {|d| white_list.key? File.basename(d) }
+  return if bad_las.empty?
+
+  puts <<-EOS.undent
+    Unbrewed .la files were found in /usr/local/lib.
+
+    If you didn't put them there on purpose they could cause problems when
+    building Homebrew formulae, and may need to be deleted.
+
+    Unexpected .la files:
+  EOS
+  puts *bad_las.collect { |f| "    #{f}" }
+  puts
+end
+
 def check_for_x11
   unless x11_installed?
     puts <<-EOS.undent
@@ -515,8 +538,30 @@ def check_for_git
       Homebrew uses Git for several internal functions, and some formulae
       use Git checkouts instead of stable tarballs.
 
-      You may want to do:
+      You may want to install git:
         brew install git
+
+    EOS
+  end
+end
+
+def check_git_newline_settings
+  git = `/usr/bin/which git`.chomp
+  return if git.empty?
+
+  autocrlf=`git config --get core.autocrlf`
+  safecrlf=`git config --get core.safecrlf`
+
+  if autocrlf=='input' and safecrlf=='true'
+    puts <<-EOS.undent
+    Suspicious Git newline settings found.
+
+    The detected Git newline settings can cause checkout problems:
+      core.autocrlf=#{autocrlf}
+      core.safecrlf=#{safecrlf}
+
+    If you are not routinely dealing with Windows-based projects,
+    consider removing these settings.
 
     EOS
   end
@@ -663,6 +708,7 @@ module Homebrew extend self
       check_for_stray_dylibs
       check_for_stray_static_libs
       check_for_stray_pcs
+      check_for_stray_las
       check_gcc_versions
       check_for_other_package_managers
       check_for_x11
@@ -685,6 +731,7 @@ module Homebrew extend self
       check_for_symlinked_cellar
       check_for_multiple_volumes
       check_for_git
+      check_git_newline_settings
       check_for_autoconf
       check_for_linked_kegonly_brews
       check_for_other_frameworks
