@@ -113,6 +113,29 @@ def check_for_stray_pcs
   puts
 end
 
+def check_for_stray_las
+  unbrewed_las = Dir['/usr/local/lib/*.la'].select { |f| File.file? f and not File.symlink? f }
+
+  white_list = {
+    "libfuse.la" => "MacFuse",
+    "libfuse_ino64.la" => "MacFuse",
+  }
+
+  bad_las = unbrewed_las.reject {|d| white_list.key? File.basename(d) }
+  return if bad_las.empty?
+
+  puts <<-EOS.undent
+    Unbrewed .la files were found in /usr/local/lib.
+
+    If you didn't put them there on purpose they could cause problems when
+    building Homebrew formulae, and may need to be deleted.
+
+    Unexpected .la files:
+  EOS
+  puts *bad_las.collect { |f| "    #{f}" }
+  puts
+end
+
 def check_for_x11
   unless x11_installed?
     puts <<-EOS.undent
@@ -663,6 +686,7 @@ module Homebrew extend self
       check_for_stray_dylibs
       check_for_stray_static_libs
       check_for_stray_pcs
+      check_for_stray_las
       check_gcc_versions
       check_for_other_package_managers
       check_for_x11
