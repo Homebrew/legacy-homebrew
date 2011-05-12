@@ -15,6 +15,13 @@ class Mlton < Formula
   skip_clean :all
 
   def install
+    unless HOMEBREW_PREFIX.to_s == "/usr/local"
+      opoo "mlton won't work outside of /usr/local."
+      puts "Because this uses pre-compiled binaries, it will not work if"
+      puts "Homebrew is installed somewhere other than /usr/local; mlton"
+      puts "will be unable to find GMP."
+    end
+
     Dir.chdir "local" do
       # Remove OS X droppings
       rm Dir["man/man1/._*"]
