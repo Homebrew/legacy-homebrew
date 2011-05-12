@@ -637,6 +637,16 @@ def check_for_other_frameworks
       EOS
     end
   end
+
+  if File.exist? "/Library/Frameworks/Mono.framework"
+    puts <<-EOS.undent
+      /Library/Frameworks/Mono.framework detected
+
+      This can be picked up by Cmake's build system and likey cause the
+      build to fail, finding improper header files for libpng for instance.
+
+    EOS
+  end
 end
 
 module Homebrew extend self
