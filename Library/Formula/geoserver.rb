@@ -11,7 +11,7 @@ class Geoserver < Formula
   version '2.1.0'
   url "http://downloads.sourceforge.net/geoserver/geoserver-#{version}-bin.zip"
   homepage 'http://geoserver.org'
-  md5 '3ef93c9bf069e7de619be9bc2f412514'
+  md5 'edb3a39cd1565cfecab6c0d727de0cd1'
 
   def options
     [
