@@ -1,34 +1,16 @@
 require 'formula'
 
 class Mutt < Formula
-  url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.20.tar.gz'
+  url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.21.tar.gz'
   homepage 'http://www.mutt.org/'
-  md5 '027cdd9959203de0c3c64149a7ee351c'
+  md5 'a29db8f1d51e2f10c070bf88e8a553fd'
 
   depends_on 'tokyo-cabinet'
 
   def options
     [
-      ['--sidebar-patch', "Apply sidebar (folder list) patch"],
-      ['--enable-debug', "Build with debug option enabled"],
-      ['--trash-patch', "Apply trash folder patch"]
+      ['--enable-debug', "Build with debug option enabled"]
     ]
-  end
-
-  def patches
-    # Fix unsubscribe malformed folder
-    # See: http://dev.mutt.org/trac/ticket/3389
-    p = [ 'http://dev.mutt.org/hg/mutt/raw-rev/25e46aad362b' ]
-
-    if ARGV.include? '--sidebar-patch'
-      p << 'http://lunar-linux.org/~tchan/mutt/patch-1.5.20.sidebar.20090619.txt'
-    end
-
-    if ARGV.include? '--trash-patch'
-      p <<  'http://trac.macports.org/export/69644/trunk/dports/mail/mutt-devel/files/patch-1.5.20.bk.trash_folder-purge_message.1'
-    end
-
-    return p
   end
 
   def install
