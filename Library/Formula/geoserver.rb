@@ -43,6 +43,6 @@ class Geoserver < Formula
         . #{file}
       EOS
     end
-    Geowebcache.new.brew { (libexec + 'webapps/geowebcache').install Dir['*'] } if ARGV.include? '--with-geowebcache'
+    Geowebcache.new.brew { (libexec + 'webapps' + name).install Dir['*'] } if ARGV.include? '--with-geowebcache'
   end
 end
