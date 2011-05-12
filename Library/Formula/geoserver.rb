@@ -2,7 +2,7 @@ require 'formula'
 
 class Geowebcache < Formula
   version '1.2.6'
-  url "http://sourceforge.net/projects/geowebcache/files/geowebcache/#{version}/geowebcache-#{version}-war.zip/download"
+  url "downloads.sourceforge.net/geowebcache/geowebcache-#{version}-war.zip"
   homepage 'http://geowebcache.org/'
   md5 '2ddf026b49aecb9eac1f9e67975ee6b4'
 end
