@@ -538,8 +538,30 @@ def check_for_git
       Homebrew uses Git for several internal functions, and some formulae
       use Git checkouts instead of stable tarballs.
 
-      You may want to do:
+      You may want to install git:
         brew install git
+
+    EOS
+  end
+end
+
+def check_git_newline_settings
+  git = `/usr/bin/which git`.chomp
+  return if git.empty?
+
+  autocrlf=`git config --get core.autocrlf`
+  safecrlf=`git config --get core.safecrlf`
+
+  if autocrlf=='input' and safecrlf=='true'
+    puts <<-EOS.undent
+    Suspicious Git newline settings found.
+
+    The detected Git newline settings can cause checkout problems:
+      core.autocrlf=#{autocrlf}
+      core.safecrlf=#{safecrlf}
+
+    If you are not routinely dealing with Windows-based projects,
+    consider removing these settings.
 
     EOS
   end
@@ -709,6 +731,7 @@ module Homebrew extend self
       check_for_symlinked_cellar
       check_for_multiple_volumes
       check_for_git
+      check_git_newline_settings
       check_for_autoconf
       check_for_linked_kegonly_brews
       check_for_other_frameworks
