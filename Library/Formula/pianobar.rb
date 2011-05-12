@@ -12,18 +12,23 @@ class Pianobar < Formula
   depends_on 'mad'
   depends_on 'faad2'
 
-  skip_clean :bin
+  skip_clean 'bin'
 
   def install
     ENV.delete 'CFLAGS' # Pianobar uses c99 instead of gcc; remove our gcc flags.
 
     # Enable 64-bit builds if needed
     w_flag = MacOS.prefer_64_bit? ? "-W64" : ""
+    # Help non-default install paths
+    lib_path = HOMEBREW_PREFIX.to_s == "/usr/local" ? "" : " -I#{HOMEBREW_PREFIX}/include -L#{HOMEBREW_PREFIX}/lib"
+
     inreplace "Makefile" do |s|
-      s.gsub! "CFLAGS:=-O2 -DNDEBUG", "CFLAGS:=-O2 -DNDEBUG #{w_flag}"
+      s.gsub! "-O2 -DNDEBUG", "-O2 -DNDEBUG #{w_flag} #{lib_path}"
     end
+
     system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"
+
     # Install contrib folder too, why not.
     prefix.install Dir['contrib']
   end
