@@ -11,6 +11,7 @@ class Mutt < Formula
     [
       ['--sidebar-patch', "Apply sidebar (folder list) patch"],
       ['--enable-debug', "Build with debug option enabled"],
+      ['--enable-verbose-mime', "Build with verbose mime option enabled"],
       ['--trash-patch', "Apply trash folder patch"]
     ]
   end
@@ -22,6 +23,10 @@ class Mutt < Formula
 
     if ARGV.include? '--sidebar-patch'
       p << 'http://lunar-linux.org/~tchan/mutt/patch-1.5.20.sidebar.20090619.txt'
+    end
+
+    if ARGV.include? '--enable-verbose-mime'
+      p <<  'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.20-9+squeeze1/features-old/patch-1.5.4.vk.pgp_verbose_mime'
     end
 
     if ARGV.include? '--trash-patch'
