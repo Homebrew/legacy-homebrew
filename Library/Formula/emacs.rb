@@ -21,7 +21,8 @@ class Emacs < Formula
 
   def patches
     if ARGV.include? "--cocoa" and not ARGV.build_head?
-      "https://github.com/downloads/typester/emacs/feature-fullscreen.patch"
+      ["https://github.com/downloads/typester/emacs/feature-fullscreen.patch",
+       "https://github.com/downloads/typester/emacs/fix-shiftmodifier-with-ime.patch"]
     end
   end
 
