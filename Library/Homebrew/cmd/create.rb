@@ -58,6 +58,7 @@ end
 class FormulaCreator
   attr :url
   attr :md5
+  attr :sha256
   attr :name, true
   attr :path, true
   attr :mode, true
@@ -89,7 +90,11 @@ class FormulaCreator
 
     unless ARGV.include? "--no-fetch" and version
       strategy = detect_download_strategy url
-      @md5 = strategy.new(url, name, version, nil).fetch.md5 if strategy == CurlDownloadStrategy
+      unless ARGV.include? "--sha256"
+        @md5 = strategy.new(url, name, version, nil).fetch.md5 if strategy == CurlDownloadStrategy
+      else
+        @sha256 = strategy.new(url, name, version, nil).fetch.sha2 if strategy == CurlDownloadStrategy
+      end
     end
 
     path.write ERB.new(template, nil, '>').result(binding)
@@ -99,9 +104,13 @@ class FormulaCreator
     require 'formula'
 
     class #{Formula.class_s name} < Formula
-      url '#{url}'
       homepage ''
+      url '#{url}'
+    <% unless sha256.nil? || sha256 == 0 %>
+      sha256 '#{sha256}'
+    <% else %>
       md5 '#{md5}'
+    <% end %>
 
     <% if mode == :cmake %>
       depends_on 'cmake'
