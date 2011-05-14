@@ -5,7 +5,6 @@ class Pgbouncer < Formula
   homepage 'http://wiki.postgresql.org/wiki/PgBouncer'
   md5 'e7956f599bc27077d95848b320a4310f'
 
-  depends_on 'postgresql'
   depends_on 'libevent'
 
   def install
