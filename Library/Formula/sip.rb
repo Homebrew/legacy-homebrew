@@ -89,3 +89,4 @@ index 57e8911..1af6152 100644
 +                # error("SIP requires Python to be built as a framework")
  
              self.LFLAGS.append("-undefined dynamic_lookup")
+ 

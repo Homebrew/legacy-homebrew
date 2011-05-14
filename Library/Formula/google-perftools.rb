@@ -1,9 +1,9 @@
 require 'formula'
 
 class GooglePerftools < Formula
-  url 'http://google-perftools.googlecode.com/files/google-perftools-1.7.tar.gz'
+  url 'http://google-perftools.googlecode.com/files/google-perftools-1.6.tar.gz'
   homepage 'http://code.google.com/p/google-perftools/'
-  md5 '5839cab3723e68a86ed327ebb54d54bc'
+  md5 '7acfee8d3e2ba968d20684e9f7033015'
 
   fails_with_llvm "Segfault during linking", :build => 2326
 
