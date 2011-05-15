@@ -24,7 +24,7 @@ class Cmus < Formula
   end
 
   def install
-    system "./configure", "prefix=#{prefix}", "mandir=#{man}"
+    system "./configure", "prefix=#{prefix}", "mandir=#{man}", "CONFIG_MODPLUG=n"
     system "make install"
   end
 end
