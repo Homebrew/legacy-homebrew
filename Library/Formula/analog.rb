@@ -8,7 +8,8 @@ class Analog < Formula
   def install
     system "make"
     bin.install "analog"
-    etc.install "analog.cfg"
+    bin.install "analog.cfg"
+    bin.install "lang"
     doc.install Dir["docs/*"]
     #not sure if this is the best way
     #to handle this man page
