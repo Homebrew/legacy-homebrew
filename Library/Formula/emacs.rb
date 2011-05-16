@@ -80,6 +80,7 @@ class Emacs < Formula
       bin.mkpath
       ln_s prefix+'Emacs.app/Contents/MacOS/Emacs', bin+'emacs'
       ln_s prefix+'Emacs.app/Contents/MacOS/bin/emacsclient', bin
+      ln_s prefix+'Emacs.app/Contents/MacOS/bin/etags', bin
     else
       if ARGV.include? "--with-x"
         args << "--with-x"

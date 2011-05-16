@@ -4,8 +4,8 @@ class Wine < Formula
   homepage 'http://www.winehq.org/'
 
   if ARGV.flag? '--devel'
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.19.tar.bz2'
-    sha256 '8686777c08d76be742f089a292cb5f7b339d7d4cc6ca8161c97d97dec9e4e78d'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.20.tar.bz2'
+    sha256 '39f55232973536158d4545c7f389648d64d34bc4be2b640086fdf3e6507db71e'
   else
     url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.3.tar.bz2'
     sha256 '3fd8d3f2b466d07eb90b8198cdc9ec3005917a4533db7b8c6c69058a2e57c61f'
