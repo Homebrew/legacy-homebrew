@@ -7,8 +7,8 @@ require 'formula'
 
 class Libvirt < Formula
   homepage 'http://www.libvirt.org'
-  url 'http://libvirt.org/sources/libvirt-0.8.8.tar.gz'
-  sha256 '030aea3728917053555bec98d93d2855e8a603b758c0b2a5d57ac48b4f39e113'
+  url 'http://libvirt.org/sources/libvirt-0.9.1.tar.gz'
+  md5 '4182dbe290cca4344a5387950dc06433'
 
   depends_on "gnutls"
   depends_on "yajl"
