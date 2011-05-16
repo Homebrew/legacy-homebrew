@@ -33,7 +33,13 @@ class Vtk < Formula
       # Install to global python site-packages
       args << "-DVTK_PYTHON_SETUP_ARGS:STRING='--prefix=#{python_prefix}'"
       # Python is actually a library. The libpythonX.Y.dylib points to this lib, too.
-      args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
+      if File.exist? '#{python_prefix}/Python'
+        # Python was compiled with --framework:
+        args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
+      else
+        python_version = `python-config --libs`.match('-lpython(\d+\.\d+)').captures.at(0)
+        args << "-DPYTHON_LIBRARY='#{python_prefix}/lib/libpython#{python_version}.dylib'"
+      end
       args << "-DVTK_WRAP_PYTHON:BOOL=ON"
     end
 
