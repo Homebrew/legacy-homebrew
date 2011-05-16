@@ -2,13 +2,9 @@ require 'formula'
 require 'hardware'
 
 class Qt < Formula
-  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.2.tar.gz'
-  md5 '66b992f5c21145df08c99d21847f4fdb'
+  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.3.tar.gz'
+  md5 '49b96eefb1224cc529af6fe5608654fe'
   homepage 'http://qt.nokia.com/'
-
-  def patches
-    "http://qt.nokia.com/files/qt-patches/blacklist-fraudulent-comodo-certificates-patch.diff"
-  end
 
   def options
     [
@@ -47,12 +43,6 @@ class Qt < Formula
       args << "-no-qt3support"
     end
 
-    if ARGV.include? '--with-debug-and-release'
-      args << "-debug-and-release"
-    else
-      args << "-release"
-    end
-
     unless ARGV.include? '--with-demos-examples'
       args << "-nomake" << "demos" << "-nomake" << "examples"
     end
@@ -63,6 +53,16 @@ class Qt < Formula
 
     if !MacOS.prefer_64_bit? or ARGV.build_universal?
       args << '-arch' << 'x86'
+    end
+
+    if ARGV.include? '--with-debug-and-release'
+      args << "-debug-and-release"
+      # Debug symbols need to find the source so build in the prefix
+      Dir.chdir '..'
+      mv "qt-everywhere-opensource-src-#{version}", "#{prefix}/src"
+      Dir.chdir "#{prefix}/src"
+    else
+      args << "-release"
     end
 
     system "./configure", *args
