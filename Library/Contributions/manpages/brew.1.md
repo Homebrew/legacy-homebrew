@@ -93,6 +93,9 @@ didn't include with OS X.
   * `home` <formula>:
     Open <formula>'s homepage in a browser.
 
+  * `changelog` <formula>:
+    Display <formula>'s changelog using `less`.
+
   * `rm`, `remove`, `uninstall [--force]` <formula>:
     Uninstall <formula>.
 
@@ -130,6 +133,16 @@ didn't include with OS X.
 
   * `outdated`:
     Show formula that have an updated version available.
+
+  * `diff`:
+    Show the relevant changelog entries for all outdated formula that describe
+    the difference between the currently installed version and the latest available
+    version.
+
+  * `diff` <formula>:
+    Show the relevant changelog entries for the specified <formula> that
+    describe the difference between the currently installed version and the
+    latest available version.
 
   * `deps [--1]` <formula>:
     Show <formula>'s dependencies.

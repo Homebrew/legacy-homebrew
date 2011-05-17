@@ -4,6 +4,8 @@ class Nginx < Formula
   homepage 'http://nginx.org/'
   url 'http://nginx.org/download/nginx-1.0.2.tar.gz'
   md5 '8a528ccaab3ddba84e72443fa40b19e7'
+  changelog 'http://nginx.org/en/CHANGES'
+  changelog_regex /^Changes with nginx ((\d*\.?)*)/
 
   depends_on 'pcre'
 
