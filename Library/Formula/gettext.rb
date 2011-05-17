@@ -19,8 +19,9 @@ class Gettext < Formula
     unless ARGV.include? '--with-examples'
       # Use a MacPorts patch to disable building examples at all
       # rather than build them and remove them afterwards.
-      {:p0 =>
-        "https://trac.macports.org/export/79183/trunk/dports/devel/gettext/files/patch-gettext-tools-Makefile.in"
+      {
+        :p0 => "https://trac.macports.org/export/79183/trunk/dports/devel/gettext/files/patch-gettext-tools-Makefile.in",
+        :p1 => DATA
       }
     end
   end
@@ -46,3 +47,15 @@ class Gettext < Formula
     system "make install"
   end
 end
+
+__END__
+--- gettext-tools/misc/convert-archive.in	2010-06-06 14:49:57.000000000 +0200
++++ gettext-tools/misc/convert-archive.in.new	2011-05-17 22:07:25.000000000 +0200
+@@ -305,6 +305,7 @@ case "$to" in
+     git_dir=`pwd`/tmpgit$$
+     mkdir "$git_dir" || func_fatal_error "mkdir failed"
+     unset GIT_CONFIG
++    unset HOME
+     (cd "$git_dir" && {
+       git init -q
+       git config user.name 'GNU Gettext Build'
