@@ -94,11 +94,13 @@ end
 class Formula
   include FileUtils
 
-  attr_reader :name, :path, :url, :version, :homepage, :specs, :downloader
+  attr_reader :name, :path, :url, :version, :homepage, :changelog, :changelog_regex, :specs, :downloader
 
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
     set_instance_variable 'homepage'
+    set_instance_variable 'changelog'
+    set_instance_variable 'changelog_regex'
     set_instance_variable 'url'
     set_instance_variable 'head'
     set_instance_variable 'specs'
@@ -624,7 +626,7 @@ EOF
       end
     end
 
-    attr_rw :version, :homepage, :specs, :deps, :external_deps
+    attr_rw :version, :homepage, :changelog, :changelog_regex, :specs, :deps, :external_deps
     attr_rw :keg_only_reason, :fails_with_llvm_reason, :skip_clean_all
     attr_rw(*CHECKSUM_TYPES)
 
