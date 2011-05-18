@@ -9,6 +9,8 @@ class GdkPixbuf < Formula
   depends_on 'jasper'
 
   def install
+    # added the missing path for PKGCONFIG to find glib-2.0.pc
+    system "export PKG_CONFIG_PATH=#{lib}/pkgconfig:$PKG_CONFIG_PATH"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-libjasper",
