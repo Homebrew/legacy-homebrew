@@ -2,7 +2,7 @@ require 'formula'
 
 class Thrift < Formula
   homepage 'http://incubator.apache.org/thrift/'
-  head 'http://svn.apache.org/repos/asf/incubator/thrift/trunk'
+  head 'http://svn.apache.org/repos/asf/thrift/trunk'
   url 'http://www.apache.org/dist/thrift/0.6.1/thrift-0.6.1.tar.gz'
   md5 'e1ec722d5f38077a23a32c4de4d4ce94'
 
