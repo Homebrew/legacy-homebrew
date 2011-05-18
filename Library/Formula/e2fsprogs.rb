@@ -5,11 +5,33 @@ class E2fsprogs < Formula
   homepage 'http://e2fsprogs.sourceforge.net/'
   md5 '1b24a21fc0c2381ef420961cbfec733f'
 
+  # Needed to make dylibs actually get installed to prefix. This has been
+  # submitted via email to the upstream author.
+  def patches
+    DATA
+  end
+
   keg_only "This brew installs several commands which override OS X-provided file system commands."
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--enable-bsd-shlibs"
     system "make"
+    lib.mkdir
     system "make install"
+    system "make install-libs"
   end
 end
+
+__END__
+diff -urN e2fsprogs-1.41.12.orig/lib/Makefile.darwin-lib e2fsprogs-1.41.12/lib/Makefile.darwin-lib
+--- e2fsprogs-1.41.12.orig/lib/Makefile.darwin-lib	2010-05-17 16:07:14.000000000 -0700
++++ e2fsprogs-1.41.12/lib/Makefile.darwin-lib	2011-05-03 16:17:44.000000000 -0700
+@@ -23,7 +23,7 @@
+ 
+ $(BSD_LIB): $(OBJS)
+ 	$(E) "	GEN_BSD_SOLIB $(BSD_LIB)"
+-	$(Q) (cd pic; $(CC) -dynamiclib -compatibility_version 1.0 -current_version $(BSDLIB_VERSION) \
++	$(Q) (cd pic; $(CC) -dynamiclib -install_name $(BSDLIB_INSTALL_DIR)/$(BSD_LIB) -compatibility_version 1.0 -current_version $(BSDLIB_VERSION) \
+ 		-flat_namespace -undefined warning -o $(BSD_LIB) $(OBJS))
+ 	$(Q) $(MV) pic/$(BSD_LIB) .
+ 	$(Q) $(RM) -f ../$(BSD_LIB)
