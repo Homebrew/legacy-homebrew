@@ -14,7 +14,7 @@ class Openssl < Formula
   end
 
   def install
-    ENV.universal_binary if ARGV.include? "--universal"
+    ENV.universal_binary if ARGV.build_universal?
     ENV.j1 # Breaks on Mac Pro
     system "./config", "--prefix=#{prefix}",
                        "--openssldir=#{etc}",

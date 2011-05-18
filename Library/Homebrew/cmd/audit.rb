@@ -147,6 +147,7 @@ def audit_formula_options f, text
 
   if documented_options.length > 0
     documented_options.each do |o|
+      next if o == '--universal'
       problems << " * Option #{o} is unused" unless options.include? o
     end
   end

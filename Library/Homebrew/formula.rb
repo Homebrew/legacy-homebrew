@@ -348,7 +348,7 @@ class Formula
     Dir["#{HOMEBREW_REPOSITORY}/Library/Aliases/*"].map{ |f| File.basename f }.sort
   end
 
-  def self.caniconical_name name
+  def self.canonical_name name
     formula_with_that_name = HOMEBREW_REPOSITORY+"Library/Formula/#{name}.rb"
     possible_alias = HOMEBREW_REPOSITORY+"Library/Aliases"+name
     if name.include? "/"
@@ -390,7 +390,7 @@ class Formula
         install_type = :from_path
         target_file = path.to_s
       else
-        name = Formula.caniconical_name(name)
+        name = Formula.canonical_name(name)
         # For names, map to the path and then require
         require Formula.path(name)
         install_type = :from_name

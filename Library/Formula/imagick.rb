@@ -8,12 +8,11 @@ class Imagick < Formula
   depends_on 'imagemagick'
 
   def install
-    extensions = lib+'php'+'extensions'
-    Dir.chdir "Imagick-#{version}" do
+    Dir.chdir "imagick-#{version}" do
       system "phpize"
       system "./configure", "--prefix=#{prefix}"
       system "make"
-      extensions.install 'modules/imagick.so'
+      (lib+'php/extensions').install 'modules/imagick.so'
     end
   end
 

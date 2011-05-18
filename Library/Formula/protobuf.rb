@@ -7,7 +7,12 @@ class Protobuf < Formula
 
   fails_with_llvm
 
+  def options
+    [['--universal', 'Do a universal build']]
+  end
+
   def install
+    ENV.universal_binary if ARGV.build_universal?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-zlib"
