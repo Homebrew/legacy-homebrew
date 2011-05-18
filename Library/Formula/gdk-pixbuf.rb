@@ -9,10 +9,8 @@ class GdkPixbuf < Formula
   depends_on 'jasper'
 
   def install
-    # added the missing path for PKGCONFIG to find glib-2.0.pc, unfortunately
-      # I don't know the way to specify the prefix path for another formula,
-      # this is a bit hack-ish way of fixing it.
-    ENV['PKG_CONFIG_PATH'] = "#{HOMEBREW_PREFIX}/Cellar/glib/2.28.6/lib/pkgconfig"
+    # added the missing path for PKGCONFIG to find glib-2.0.pc
+    system "export PKG_CONFIG_PATH=#{lib}/pkgconfig:$PKG_CONFIG_PATH"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-libjasper",
