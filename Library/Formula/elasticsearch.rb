@@ -13,21 +13,40 @@ class Elasticsearch < Formula
     prefix.install Dir['*']
 
     # Make sure we have support folders in /usr/var
-    %w( run data/elasticsearch log ).each { |path| (var+path).mkpath }
+    %w( run data log backup ).each { |path| (var+path).mkpath }
 
     # Put basic configuration into config file
-    inreplace "#{prefix}/config/elasticsearch.yml" do |s|
-      s << <<-EOS.undent
-        cluster:
-          name: elasticsearch
+    config = <<-CONFIG.undent
+    # Cluster settings
+    # ----------------
+    cluster:
+      name: elasticsearch
 
-        path:
-          logs: #{var}/log
-          data: #{var}/data
+    # Default index settings
+    # ----------------------
+    index:
+      number_of_shards: 1
+      number_of_replicas: 0
 
-        boostrap:
-          mlockall: true
-      EOS
+    # Path configurations
+    # -------------------
+    path:
+      logs: #{var}/log
+      data: #{var}/data
+
+    boostrap:
+      mlockall: true
+
+    # Backup strategy
+    # ---------------
+    # gateway:
+    #   type: fs
+    #   fs:
+    #     location: /usr/local/var/backup
+    CONFIG
+
+    File.open("#{prefix}/config/elasticsearch.yml", 'w') do |file|
+      file << config
     end
 
     # Write PLIST file for `launchd`
