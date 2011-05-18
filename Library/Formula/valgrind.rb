@@ -1,4 +1,5 @@
 require 'formula'
+require 'utils'
 
 class Valgrind < Formula
   homepage 'http://www.valgrind.org/'
@@ -15,7 +16,9 @@ class Valgrind < Formula
   def patches
     # Xcode 4 fix from upstream r11686
     # https://bugs.kde.org/show_bug.cgi?id=267997
-    { :p0 => DATA }
+    if MacOS.xcode_version >= "4.0.0"
+        { :p0 => DATA }
+    end
   end
 
   def install
