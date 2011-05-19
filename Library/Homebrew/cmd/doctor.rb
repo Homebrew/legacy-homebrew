@@ -572,7 +572,7 @@ def check_for_autoconf
   
   if which_autoconf.empty?
 puts <<-EOS.undent
-    "autconf" was not found in your path.
+    "autoconf" was not found in your path.
 
     Homebrew needs autoconf and this message needs more detail.
 
