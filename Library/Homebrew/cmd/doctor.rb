@@ -569,7 +569,15 @@ end
 
 def check_for_autoconf
   which_autoconf = `/usr/bin/which autoconf`.chomp
-  unless (which_autoconf == '/usr/bin/autoconf' or which_autoconf == '/Developer/usr/bin/autoconf')
+  
+  if which_autoconf.empty?
+puts <<-EOS.undent
+    "autconf" was not found in your path.
+
+    Homebrew needs autoconf and this message needs more detail.
+
+EOS
+  elsif !['/usr/bin/autoconf', '/Developer/usr/bin/autoconf'].include?(which_autoconf)
     puts <<-EOS.undent
       You have an "autoconf" in your path blocking the system version at:
         #{which_autoconf}
@@ -577,7 +585,7 @@ def check_for_autoconf
       Custom autoconf in general and autoconf 2.66 in particular has issues
       and will cause some Homebrew formulae to fail.
 
-    EOS
+EOS
   end
 end
 
