@@ -10,6 +10,7 @@ class Gnutls < Formula
   depends_on 'libtasn1' => :optional
 
   def patches
+    # Patched lib/configure.ac to remove dependency on zlib.pc
     DATA
   end
 
@@ -17,7 +18,7 @@ class Gnutls < Formula
 
   def install
     ENV.universal_binary	# build fat so wine can use it
-
+    system "autoreconf" # necessary for lib/configure.ac patch to work
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--disable-guile",
                           "--disable-static",
@@ -40,3 +41,21 @@ index 0307b05..ecd8725 100644
  peer_print_info (gnutls_session_t session, int *ret_length,
 		 const char *header)
  {
+diff --git a/lib/configure.ac b/lib/configure.ac
+index 84c31e9..8c41a36 100644
+--- a/lib/configure.ac
++++ b/lib/configure.ac
+@@ -80,13 +80,6 @@ else
+  AC_MSG_RESULT(no)
+ fi
+ 
+-if test x$ac_zlib != xno; then
+-  if test x$GNUTLS_REQUIRES_PRIVATE = x; then
+-    GNUTLS_REQUIRES_PRIVATE="Requires.private: zlib"
+-  else
+-    GNUTLS_REQUIRES_PRIVATE="$GNUTLS_REQUIRES_PRIVATE , zlib"
+-  fi
+-fi
+ AC_SUBST(GNUTLS_REQUIRES_PRIVATE)
+ 
+ lgl_INIT
