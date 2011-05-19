@@ -579,8 +579,10 @@ puts <<-EOS.undent
 EOS
   elsif !['/usr/bin/autoconf', '/Developer/usr/bin/autoconf'].include?(which_autoconf)
     puts <<-EOS.undent
-      You have an "autoconf" in your path blocking the system version at:
+      You have an "autoconf" in your path at:
         #{which_autoconf}
+
+      This blocks the system version of autoconf.
 
       Custom autoconf in general and autoconf 2.66 in particular has issues
       and will cause some Homebrew formulae to fail.
