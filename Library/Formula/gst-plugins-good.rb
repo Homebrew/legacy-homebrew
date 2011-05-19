@@ -24,7 +24,7 @@ class GstPluginsGood < Formula
   depends_on 'taglib' => :optional
 
   def install
-    system "./autogen.sh", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
                            "--prefix=#{prefix}",
                            "--disable-schemas-install",
                            "--disable-gtk-doc",
