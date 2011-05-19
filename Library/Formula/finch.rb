@@ -12,8 +12,6 @@ class Finch < Formula
   depends_on 'glib'
   depends_on 'intltool'
   depends_on 'gnutls'
-  # configure picked up this dep on my machine - adamv
-  # depends_on 'berkeley-db' => :optional
 
   def install
     # To get it to compile, had to configure without support for:
