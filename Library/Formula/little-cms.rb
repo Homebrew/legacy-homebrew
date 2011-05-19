@@ -1,9 +1,9 @@
 require 'formula'
 
 class LittleCms < Formula
-  url 'http://www.littlecms.com/1/lcms-1.19.tar.gz'
+  url 'http://downloads.sourceforge.net/project/lcms/lcms/2.1/lcms2-2.1.tar.gz'
   homepage 'http://www.littlecms.com/'
-  md5 '8af94611baf20d9646c7c2c285859818'
+  md5 '08036edb115ad74456dfa20b1998b5f4'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug"

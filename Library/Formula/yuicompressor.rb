@@ -1,7 +1,7 @@
 require 'formula'
 
 class Yuicompressor < Formula
-  url 'http://yuilibrary.com/downloads/yuicompressor/yuicompressor-2.4.6.zip'
+  url 'http://yui.zenfs.com/releases/yuicompressor/yuicompressor-2.4.6.zip'
   homepage 'http://yuilibrary.com/projects/yuicompressor'
   md5 '85670711b55124240a087e0b552304fa'
 
