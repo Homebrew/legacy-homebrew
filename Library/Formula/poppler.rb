@@ -26,9 +26,8 @@ class Poppler < Formula
 
   def install
     if ARGV.include? "--with-qt4"
-      qt4Flags = `pkg-config QtCore --libs` + `pkg-config QtGui --libs`
-      qt4Flags.gsub!("\n","")
-      ENV['POPPLER_QT4_CFLAGS'] = qt4Flags
+      ENV['POPPLER_QT4_CFLAGS'] = `pkg-config QtCore QtGui --libs`.chomp.strip
+      ENV.append 'LDFLAGS', "-Wl,-F#{HOMEBREW_PREFIX}/lib"
     end
 
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
@@ -45,8 +44,10 @@ class Poppler < Formula
   end
 end
 
-# fix location of fontconfig, http://www.mail-archive.com/poppler@lists.freedesktop.org/msg03837.html
 __END__
+fix location of fontconfig:
+  http://www.mail-archive.com/poppler@lists.freedesktop.org/msg03837.html
+
 --- a/cpp/Makefile.in	2010-07-08 20:57:56.000000000 +0200
 +++ b/cpp/Makefile.in	2010-08-06 11:11:27.000000000 +0200
 @@ -375,7 +375,8 @@
