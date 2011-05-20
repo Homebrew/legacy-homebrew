@@ -7,6 +7,7 @@ class GdkPixbuf < Formula
 
   depends_on 'glib'
   depends_on 'jasper'
+  depends_on 'libtiff'
 
   def install
     # added the missing path for PKGCONFIG to find glib-2.0.pc, unfortunately
