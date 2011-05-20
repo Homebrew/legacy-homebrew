@@ -2,8 +2,8 @@ require 'formula'
 
 class Gnutls < Formula
   homepage 'http://www.gnu.org/software/gnutls/gnutls.html'
-  url 'ftp://ftp.gnu.org/gnu/gnutls/gnutls-2.12.3.tar.bz2'
-  sha256 '9fb3dba10d3fa6c2817cd47260b4c39026c69128fb39fc5026f179b3672539d3'
+  url 'ftp://ftp.gnu.org/gnu/gnutls/gnutls-2.12.5.tar.bz2'
+  sha256 'bf263880f327ac34a561d8e66b5a729cbe33eea56728bfed3406ff2898448b60'
 
   depends_on 'pkg-config' => :build
   depends_on 'libgcrypt'

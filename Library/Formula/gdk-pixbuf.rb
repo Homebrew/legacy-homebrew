@@ -7,6 +7,7 @@ class GdkPixbuf < Formula
 
   depends_on 'glib'
   depends_on 'jasper'
+  depends_on 'libtiff'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
