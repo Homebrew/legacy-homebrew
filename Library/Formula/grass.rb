@@ -10,8 +10,8 @@ end
 
 class Grass < Formula
   homepage 'http://grass.osgeo.org/'
-  url 'http://grass.osgeo.org/grass64/source/grass-6.4.0.tar.gz'
-  md5 'ac3233aa3351f8e060ea48246aa01c7f'
+  url 'http://grass.osgeo.org/grass64/source/grass-6.4.1.tar.gz'
+  md5 'd8ca83d416b5b0cf2aa9d36c81a77b23'
 
   depends_on "pkg-config" => :build
   depends_on "gettext"
@@ -20,8 +20,9 @@ class Grass < Formula
   depends_on "libtiff"
   depends_on "unixodbc"
   depends_on "fftw"
+  depends_on "ffmpeg"
 
-  depends_on "cairo" if MACOS_VERSION < 10.6
+  depends_on "cairo" if MacOS.leopard?
 
   def patches
     DATA
@@ -35,12 +36,15 @@ class Grass < Formula
   end
 
   def install
-    readline = Formula.factory( 'readline' )
-    gettext = Formula.factory( 'gettext' )
+    readline = Formula.factory('readline')
+    gettext = Formula.factory('gettext')
+    ffmpeg = Formula.factory('ffmpeg')
+    ffmpeg_includes = ffmpeg.include.subdirs.map do |dir|
+      dir.to_s.gsub(ffmpeg.prefix, HOMEBREW_PREFIX) + " "
+    end
 
-    configure_args = [
-      "--disable-debug",
-      "--disable-dependency-tracking",
+    args = [
+      "--disable-debug", "--disable-dependency-tracking",
       "--with-libs=/usr/X11/lib #{HOMEBREW_PREFIX}/lib",
       "--with-includes=#{HOMEBREW_PREFIX}/include",
       "--enable-largefile",
@@ -55,6 +59,7 @@ class Grass < Formula
       "--with-lapack",
       "--with-sqlite",
       "--with-odbc",
+      "--with-geos=#{HOMEBREW_PREFIX}/bin/geos-config",
       "--with-png-includes=/usr/X11/include",
       "--with-png",
       "--with-readline-includes=#{readline.include}",
@@ -65,37 +70,39 @@ class Grass < Formula
       "--with-nls",
       "--with-freetype-includes=/usr/X11/include /usr/X11/include/freetype2",
       "--with-freetype",
-      "--without-ffmpeg", # Disabled because NVIZ needs Tcl and wxNVIZ is not shipping yet.
+      "--with-ffmpeg-includes=#{ffmpeg_includes}",
+      "--with-ffmpeg",
       "--without-tcltk" # Disabled due to compatibility issues with OS X Tcl/Tk
     ]
 
     if MacOS.prefer_64_bit?
-      configure_args << "--enable-64bit"
-      configure_args << "--with-macosx-archs=x86_64"
+      args << "--enable-64bit"
+      args << "--with-macosx-archs=x86_64"
     else
-      configure_args << "--with-macosx-archs=i386"
+      args << "--with-macosx-archs=i386"
     end
 
     # Deal with Cairo support
-    if MACOS_VERSION >= 10.6
-      configure_args << "--with-cairo-includes=/usr/X11/include /usr/X11/include/cairo"
-    else
+    if MacOS.leopard?
       cairo = Formula.factory('cairo')
-      configure_args << "--with-cairo-includes=#{cairo.include + 'cairo'}"
-      configure_args << "--with-cairo-libs=#{cairo.lib}"
+      args << "--with-cairo-includes=#{cairo.include}/cairo"
+      args << "--with-cairo-libs=#{cairo.lib}"
+    else
+      args << "--with-cairo-includes=/usr/X11/include /usr/X11/include/cairo"
     end
-    configure_args << "--with-cairo"
+
+    args << "--with-cairo"
 
     # Database support
-    configure_args << "--with-postgres" if postgres?
+    args << "--with-postgres" if postgres?
     if mysql?
       mysql = Formula.factory('mysql')
-      configure_args << "--with-mysql-includes=#{mysql.include + 'mysql'}"
-      configure_args << "--with-mysql-libs=#{mysql.lib + 'mysql'}"
-      configure_args << "--with-mysql"
+      args << "--with-mysql-includes=#{mysql.include + 'mysql'}"
+      args << "--with-mysql-libs=#{mysql.lib + 'mysql'}"
+      args << "--with-mysql"
     end
 
-    system "./configure", "--prefix=#{prefix}", *configure_args
+    system "./configure", "--prefix=#{prefix}", *args
     system "make" # make and make install must be seperate steps.
     system "make install"
   end

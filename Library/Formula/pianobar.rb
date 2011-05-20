@@ -1,10 +1,10 @@
 require 'formula'
 
 class Pianobar < Formula
-  url 'https://github.com/PromyLOPh/pianobar/tarball/2011.01.24'
-  version '2011.01.24'
+  url 'https://github.com/PromyLOPh/pianobar/zipball/2011.04.27'
+  version '2011.04.27'
   homepage 'https://github.com/PromyLOPh/pianobar/'
-  md5 '97ee5b39e5e9006f6139db2787f346a0'
+  md5 '1e83f851e92792bd6e59decc4a6b3662'
 
   head 'git://github.com/PromyLOPh/pianobar.git'
 
@@ -12,14 +12,23 @@ class Pianobar < Formula
   depends_on 'mad'
   depends_on 'faad2'
 
-  skip_clean :bin
+  skip_clean 'bin'
 
   def install
+    ENV.delete 'CFLAGS' # Pianobar uses c99 instead of gcc; remove our gcc flags.
+
+    # Enable 64-bit builds if needed
+    w_flag = MacOS.prefer_64_bit? ? "-W64" : ""
+    # Help non-default install paths
+    lib_path = HOMEBREW_PREFIX.to_s == "/usr/local" ? "" : " -I#{HOMEBREW_PREFIX}/include -L#{HOMEBREW_PREFIX}/lib"
+
     inreplace "Makefile" do |s|
-      s.gsub! "CFLAGS:=-std=c99 -O2 -DNDEBUG", "CFLAGS=-std=c99 #{ENV.cflags} #{ENV['CPPFLAGS']} #{ENV['LDFLAGS']}"
+      s.gsub! "-O2 -DNDEBUG", "-O2 -DNDEBUG #{w_flag} #{lib_path}"
     end
+
     system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"
+
     # Install contrib folder too, why not.
     prefix.install Dir['contrib']
   end

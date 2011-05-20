@@ -1,15 +1,9 @@
 require 'formula'
 
 class Nginx < Formula
-  url 'http://nginx.org/download/nginx-0.8.54.tar.gz'
-  head 'http://nginx.org/download/nginx-0.9.7.tar.gz'
   homepage 'http://nginx.org/'
-
-  if ARGV.build_head?
-    md5 'bb2dbacd4e66c4c578e0ac44b2f006b5'
-  else
-    md5 '44df4eb6a22d725021288c570789046f'
-  end
+  url 'http://nginx.org/download/nginx-1.0.2.tar.gz'
+  md5 '8a528ccaab3ddba84e72443fa40b19e7'
 
   depends_on 'pcre'
 

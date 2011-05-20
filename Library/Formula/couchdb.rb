@@ -5,10 +5,12 @@ class Couchdb < Formula
   homepage "http://couchdb.apache.org/"
   md5 'cc1cc891ac47dd795b0b9aa2c5375923'
 
+  head 'http://svn.apache.org/repos/asf/couchdb/trunk'
+
   depends_on 'spidermonkey'
   depends_on 'icu4c'
   depends_on 'erlang'
-  depends_on 'curl' if MACOS_VERSION < 10.6
+  depends_on 'curl' if MacOS.leopard?
 
   def install
     system "./bootstrap" if File.exists? "bootstrap"

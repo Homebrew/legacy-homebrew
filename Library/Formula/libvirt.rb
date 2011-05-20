@@ -7,13 +7,18 @@ require 'formula'
 
 class Libvirt < Formula
   homepage 'http://www.libvirt.org'
-  url 'http://libvirt.org/sources/libvirt-0.8.8.tar.gz'
-  sha256 '030aea3728917053555bec98d93d2855e8a603b758c0b2a5d57ac48b4f39e113'
+  if ARGV.build_head?
+    url 'http://libvirt.org/sources/libvirt-0.9.1.tar.gz'
+    md5 '4182dbe290cca4344a5387950dc06433'
+  else
+    url 'http://libvirt.org/sources/libvirt-0.8.8.tar.gz'
+    sha256 '030aea3728917053555bec98d93d2855e8a603b758c0b2a5d57ac48b4f39e113'
+  end
 
   depends_on "gnutls"
   depends_on "yajl"
 
-  if MACOS_VERSION < 10.6
+  if MacOS.leopard?
     # Definitely needed on Leopard, but not on Snow Leopard.
     depends_on "readline"
     depends_on "libxml2"
