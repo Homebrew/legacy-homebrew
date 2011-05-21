@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gmp < Formula
-  url 'ftp://ftp.gnu.org/gnu/gmp/gmp-5.0.1.tar.bz2'
+  url 'ftp://ftp.gnu.org/gnu/gmp/gmp-5.0.2.tar.bz2'
   homepage 'http://gmplib.org/'
-  sha1 '6340edc7ceb95f9015a758c7c0d196eb0f441d49'
+  sha1 '2968220e1988eabb61f921d11e5d2db5431e0a35'
 
   def options
     [
@@ -20,7 +20,7 @@ class Gmp < Formula
     # Also force use of 4.2 on 10.6 in case a user has changed the default
     ENV.gcc_4_2
 
-    args = ["--prefix=#{prefix}", "--infodir=#{info}", "--enable-cxx"]
+    args = ["--prefix=#{prefix}", "--enable-cxx"]
 
     # Build 32-bit where appropriate, and help configure find 64-bit CPUs
     if MacOS.prefer_64_bit? and not ARGV.include? "--32-bit"
