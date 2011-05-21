@@ -264,11 +264,16 @@ module MacOS extend self
       elsif File.directory? '/Developer'
         # we do this to support cowboys who insist on installing
         # only a subset of Xcode
-        '/Developer'
+        Pathname.new '/Developer'
       else
         nil
       end
     end
+  end
+
+  def xcode_version
+    `xcodebuild -version 2>&1` =~ /Xcode (\d(\.\d)*)/
+    $1
   end
 
   def llvm_build_version

@@ -2,16 +2,28 @@ require 'formula'
 
 class ScalaDocs < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.8.1.final-devel-docs.tgz'
-  version '2.8.1'
-  md5 'afd5c7d3073bd735a25cfc4ed61f3543'
+  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.0.final-devel-docs.tgz'
+  head 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.0.final-devel-docs.tgz'
+  version '2.9.0'
+
+  if ARGV.build_head?
+    md5 '9856168b833418f8c42ea7e800a3c659'
+  else
+    md5 '9856168b833418f8c42ea7e800a3c659'
+  end
 end
 
 class Scala < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.8.1.final.tgz'
-  version '2.8.1'
-  md5 '4fa66742341b5c9f6877ce64d409cb92'
+  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.0.final.tgz'
+  head 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.0.final.tgz'
+  version '2.9.0'
+
+  if ARGV.build_head?
+    md5 'e9a88a8961c4c1da84ba41d5495a6a43'
+  else
+    md5 'e9a88a8961c4c1da84ba41d5495a6a43'
+  end
 
   def options
     [['--with-docs', 'Also install library documentation']]

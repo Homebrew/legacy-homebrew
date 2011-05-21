@@ -2,14 +2,13 @@ require 'formula'
 
 class Gource < Formula
   homepage 'http://code.google.com/p/gource/'
-  url 'git://github.com/acaudwell/Gource.git', :tag => "ae14ffc6135b4cf0a89"
-  version "0.33"
+  url 'git://github.com/acaudwell/Gource.git', :tag => "gource-0.34"
+  version "0.34"
   head 'git://github.com/acaudwell/Gource.git'
 
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
   depends_on 'sdl_image'
-  depends_on 'ftgl'
   depends_on 'jpeg'
   depends_on 'pcre'
   depends_on 'glew'
