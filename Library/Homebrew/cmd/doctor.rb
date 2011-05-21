@@ -441,13 +441,13 @@ def check_for_iconv
 end
 
 def check_for_config_scripts
-  real_cellar = HOMEBREW_CELLAR.realpath
+  real_cellar = HOMEBREW_CELLAR.exist? && HOMEBREW_CELLAR.realpath
 
   config_scripts = []
 
   path_folders.each do |p|
     next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin"].include? p
-    next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})]
+    next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] if real_cellar
 
     configs = Dir["#{p}/*-config"]
     # puts "#{p}\n    #{configs * ' '}" unless configs.empty?
@@ -504,6 +504,7 @@ def check_for_symlinked_cellar
 end
 
 def check_for_multiple_volumes
+  return unless HOMEBREW_CELLAR.exist?
   volumes = Volumes.new
 
   # Find the volumes for the TMP folder & HOMEBREW_CELLAR
