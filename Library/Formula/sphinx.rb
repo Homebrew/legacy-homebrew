@@ -8,11 +8,23 @@ class Sphinx < Formula
 
   fails_with_llvm "fails with: ld: rel32 out of range in _GetPrivateProfileString from /usr/lib/libodbc.a(SQLGetPrivateProfileString.o)"
 
+  def options
+    [
+      ['--with-libstemmer', "Use libstemmer for additional stemmings"]
+    ]
+  end
+
   def install
     args = ["--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"]
     # configure script won't auto-select PostgreSQL
     args << "--with-pgsql" if `/usr/bin/which pg_config`.size > 0
     args << "--without-mysql" if `/usr/bin/which mysql`.size <= 0
+
+    if ARGV.include? '--with-libstemmer'
+      args << '--with-libstemmer'
+      curl 'http://snowball.tartarus.org/dist/libstemmer_c.tgz', '-O'
+      system 'tar', 'xvzf', 'libstemmer_c.tgz'
+    end
 
     system "./configure", *args
     system "make install"
