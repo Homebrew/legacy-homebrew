@@ -1,3 +1,5 @@
+require 'stringio'
+
 class Volumes
   def initialize
     @volumes = []
@@ -699,12 +701,10 @@ end
 
 module Homebrew extend self
   def doctor
-    read, write = IO.pipe
+    old_stdout = $stdout
+    $stdout = output = StringIO.new
 
-    if fork == nil
-      read.close
-      $stdout.reopen write
-
+    begin
       check_usr_bin_ruby
       check_homebrew_prefix
       check_for_macgpg2
@@ -738,17 +738,15 @@ module Homebrew extend self
       check_for_autoconf
       check_for_linked_kegonly_brews
       check_for_other_frameworks
+    ensure
+      $stdout = old_stdout
+    end
 
-      exit! 0
+    unless (warnings = output.string).chomp.empty?
+      puts warnings
     else
-      write.close
-
-      unless (out = read.read).chomp.empty?
-        puts out
-      else
-        puts "Your OS X is ripe for brewing."
-        puts "Any troubles you may be experiencing are likely purely psychosomatic."
-      end
+      puts "Your OS X is ripe for brewing."
+      puts "Any troubles you may be experiencing are likely purely psychosomatic."
     end
   end
 end
