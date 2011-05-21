@@ -744,6 +744,7 @@ module Homebrew extend self
 
     unless (warnings = output.string).chomp.empty?
       puts warnings
+      exit 1
     else
       puts "Your OS X is ripe for brewing."
       puts "Any troubles you may be experiencing are likely purely psychosomatic."
