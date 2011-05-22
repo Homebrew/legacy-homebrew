@@ -1,10 +1,10 @@
 require 'formula'
 
 class Luajit < Formula
-  url 'http://luajit.org/download/LuaJIT-2.0.0-beta6.tar.gz'
+  url 'http://luajit.org/download/LuaJIT-2.0.0-beta7.tar.gz'
   head 'http://luajit.org/git/luajit-2.0.git', :using => :git
   homepage 'http://luajit.org/luajit.html'
-  md5 'bfcbe2a11162cfa84d5a1693b442c8bf'
+  md5 'b845dec15dd9eba2fd17d865601a52e5'
 
   # Skip cleaning both empty folders and bin/libs so external symbols still work.
   skip_clean :all
