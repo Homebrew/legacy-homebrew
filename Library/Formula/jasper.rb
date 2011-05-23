@@ -7,6 +7,10 @@ class Jasper < Formula
 
   depends_on 'jpeg'
 
+  def options
+    [["--universal", "Build a universal binary."]]
+  end
+
   def patches
     DATA
   end
@@ -14,6 +18,7 @@ class Jasper < Formula
   fails_with_llvm "Undefined symbols when linking", :build => "2326"
 
   def install
+    ENV.universal_binary if ARGV.build_universal?
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--enable-shared",

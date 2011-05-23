@@ -1,8 +1,9 @@
 require 'formula'
+require 'utils'
 
 class Valgrind < Formula
   homepage 'http://www.valgrind.org/'
-
+  head 'svn://svn.valgrind.org/valgrind/trunk'
   url "http://valgrind.org/downloads/valgrind-3.6.1.tar.bz2"
   md5 "2c3aa122498baecc9d69194057ca88f5"
 
@@ -15,7 +16,9 @@ class Valgrind < Formula
   def patches
     # Xcode 4 fix from upstream r11686
     # https://bugs.kde.org/show_bug.cgi?id=267997
-    { :p0 => DATA }
+    if MacOS.xcode_version >= "4.0" and not ARGV.build_head?
+        { :p0 => DATA }
+    end
   end
 
   def install
