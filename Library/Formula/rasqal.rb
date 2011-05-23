@@ -5,7 +5,7 @@ class Rasqal < Formula
   homepage 'http://librdf.org/rasqal/'
   md5 'ee12d7ad59c581eb65db89c851672c0a'
 
-  depends_on 'raptor'
+  depends_on 'raptor2'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
