@@ -18,7 +18,7 @@ class Wxmac < Formula
       ENV.append compiler_flag, "-arch i386"
     end
 
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--enable-unicode"
     system "make install"
   end
 end
