@@ -19,14 +19,12 @@ module HomebrewEnvExtension
     end
 
     if MACOS_VERSION >= 10.6 and (self['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
-      xcode_path = `/usr/bin/xcode-select -print-path`.chomp
-      xcode_path = "/Developer" if xcode_path.to_s.empty?
-      self['CC'] = "#{xcode_path}/usr/bin/llvm-gcc"
-      self['CXX'] = "#{xcode_path}/usr/bin/llvm-g++"
+      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
+      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
       cflags = ['-O4'] # link time optimisation baby!
     elsif MACOS_VERSION >= 10.6 and (self['HOMEBREW_USE_GCC'] or ARGV.include? '--use-gcc')
-      self['CC'] = '/usr/bin/gcc'
-      self['CXX'] = '/usr/bin/g++'
+      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/gcc"
+      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/g++"
       cflags = ['-O3']
     else
       # If these aren't set, many formulae fail to build
@@ -41,12 +39,12 @@ module HomebrewEnvExtension
     # don't react properly to that.
     self['LD'] = self['CC']
 
-    # optimise all the way to eleven, references:
+    # Optimise all the way to eleven, references:
     # http://en.gentoo-wiki.com/wiki/Safe_Cflags/Intel
     # http://forums.mozillazine.org/viewtopic.php?f=12&t=577299
     # http://gcc.gnu.org/onlinedocs/gcc-4.2.1/gcc/i386-and-x86_002d64-Options.html
-    # we don't set, eg. -msse3 because the march flag does that for us
-    #   http://gcc.gnu.org/onlinedocs/gcc-4.3.3/gcc/i386-and-x86_002d64-Options.html
+    # We don't set, eg. -msse3 because the march flag does that for us:
+    # http://gcc.gnu.org/onlinedocs/gcc-4.3.3/gcc/i386-and-x86_002d64-Options.html
     if MACOS_VERSION >= 10.6
       case Hardware.intel_family
       when :nehalem, :penryn, :core2
@@ -208,10 +206,10 @@ Please take one of the following actions:
     # There are some config scripts (e.g. freetype) here that should go in the path
     prepend 'PATH', '/usr/X11/bin', ':'
     # CPPFLAGS are the C-PreProcessor flags, *not* C++!
-    append 'CPPFLAGS', '-I/usr/X11R6/include'
-    append 'LDFLAGS', '-L/usr/X11R6/lib'
+    append 'CPPFLAGS', '-I/usr/X11/include'
+    append 'LDFLAGS', '-L/usr/X11/lib'
     # CMake ignores the variables above
-    append 'CMAKE_PREFIX_PATH', '/usr/X11R6', ':'
+    append 'CMAKE_PREFIX_PATH', '/usr/X11', ':'
   end
   alias_method :libpng, :x11
 

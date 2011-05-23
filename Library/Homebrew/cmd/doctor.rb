@@ -1,7 +1,7 @@
 class Volumes
   def initialize
     @volumes = []
-    raw_mounts=`mount`
+    raw_mounts=`/sbin/mount`
     raw_mounts.split("\n").each do |line|
       case line
       when /^(.+) on (\S+) \(/
@@ -27,6 +27,12 @@ def is_prefix? prefix, longer_string
   p = prefix.to_s
   longer_string.to_s[0,p.length] == p
 end
+
+
+def path_folders
+  ENV['PATH'].split(':').collect{|p| File.expand_path p}.uniq
+end
+
 
 # Installing MacGPG2 interferes with Homebrew in a big way
 # http://sourceforge.net/projects/macgpg2/files/
@@ -55,21 +61,86 @@ def check_for_stray_dylibs
   bad_dylibs = unbrewed_dylibs.reject {|d| white_list.key? File.basename(d) }
   return if bad_dylibs.empty?
 
-  opoo "Unbrewed dylibs were found in /usr/local/lib"
   puts <<-EOS.undent
-    You have unbrewed dylibs in /usr/local/lib. If you didn't put them there on purpose,
-    they could cause problems when building Homebrew formulae.
+    Unbrewed dylibs were found in /usr/local/lib.
 
-    Unexpected dylibs (delete if they are no longer needed):
+    If you didn't put them there on purpose they could cause problems when
+    building Homebrew formulae, and may need to be deleted.
+
+    Unexpected dylibs:
   EOS
   puts *bad_dylibs.collect { |f| "    #{f}" }
   puts
 end
 
+def check_for_stray_static_libs
+  unbrewed_alibs = Dir['/usr/local/lib/*.a'].select { |f| File.file? f and not File.symlink? f }
+  return if unbrewed_alibs.empty?
+
+  puts <<-EOS.undent
+    Unbrewed static libraries were found in /usr/local/lib.
+
+    If you didn't put them there on purpose they could cause problems when
+    building Homebrew formulae, and may need to be deleted.
+
+    Unexpected static libraries:
+  EOS
+  puts *unbrewed_alibs.collect { |f| "    #{f}" }
+  puts
+end
+
+def check_for_stray_pcs
+  unbrewed_pcs = Dir['/usr/local/lib/pkgconfig/*.pc'].select { |f| File.file? f and not File.symlink? f }
+
+  # Package-config files which are generally OK should be added to this list,
+  # with a short description of the software they come with.
+  white_list = {
+    "fuse.pc" => "MacFuse",
+  }
+
+  bad_pcs = unbrewed_pcs.reject {|d| white_list.key? File.basename(d) }
+  return if bad_pcs.empty?
+
+  puts <<-EOS.undent
+    Unbrewed .pc files were found in /usr/local/lib/pkgconfig.
+
+    If you didn't put them there on purpose they could cause problems when
+    building Homebrew formulae, and may need to be deleted.
+
+    Unexpected .pc files:
+  EOS
+  puts *bad_pcs.collect { |f| "    #{f}" }
+  puts
+end
+
+def check_for_stray_las
+  unbrewed_las = Dir['/usr/local/lib/*.la'].select { |f| File.file? f and not File.symlink? f }
+
+  white_list = {
+    "libfuse.la" => "MacFuse",
+    "libfuse_ino64.la" => "MacFuse",
+  }
+
+  bad_las = unbrewed_las.reject {|d| white_list.key? File.basename(d) }
+  return if bad_las.empty?
+
+  puts <<-EOS.undent
+    Unbrewed .la files were found in /usr/local/lib.
+
+    If you didn't put them there on purpose they could cause problems when
+    building Homebrew formulae, and may need to be deleted.
+
+    Unexpected .la files:
+  EOS
+  puts *bad_las.collect { |f| "    #{f}" }
+  puts
+end
+
 def check_for_x11
   unless x11_installed?
-    opoo "X11 not installed."
     puts <<-EOS.undent
+      X11 not installed.
+
       You don't have X11 installed as part of your OS X installation.
       This isn't required for all formulae, but is expected by some.
 
@@ -170,58 +241,46 @@ def check_access_share_man
   __check_subdir_access 'share/man'
 end
 
-def check_access_pkgconfig
-  # If PREFIX/lib/pkgconfig already exists, "sudo make install" of
-  # non-brew installed software may cause installation failures.
-  pkgconfig = HOMEBREW_PREFIX+'lib/pkgconfig'
-  return unless pkgconfig.exist?
+def __check_folder_access base, msg
+  folder = HOMEBREW_PREFIX+base
+  return unless folder.exist?
 
-  unless pkgconfig.writable?
+  unless folder.writable?
     puts <<-EOS.undent
-      #{pkgconfig} isn't writable.
+      #{folder} isn't writable.
       This can happen if you "sudo make install" software that isn't managed
-      by Homebrew. If a brew tries to write a .pc file to this folder, the
-      install will fail during the link step.
+      by Homebrew.
 
-      You should probably `chown` #{pkgconfig}
+      #{msg}
+
+      You should probably `chown` #{folder}
 
     EOS
   end
+end
+
+def check_access_pkgconfig
+  __check_folder_access 'lib/pkgconfig',
+  'If a brew tries to write a .pc file to this folder, the install will\n'+
+  'fail during the link step.'
 end
 
 def check_access_include
-  # Installing MySQL manually (for instance) can chown include to root.
-  include_folder = HOMEBREW_PREFIX+'include'
-  return unless include_folder.exist?
-
-  unless include_folder.writable?
-    puts <<-EOS.undent
-      #{include_folder} isn't writable.
-      This can happen if you "sudo make install" software that isn't managed
-      by Homebrew. If a brew tries to write a header file to this folder, the
-      install will fail during the link step.
-
-      You should probably `chown` #{include_folder}
-
-    EOS
-  end
+  __check_folder_access 'include',
+  'If a brew tries to write a header file to this folder, the install will\n'+
+  'fail during the link step.'
 end
 
 def check_access_etc
-  etc_folder = HOMEBREW_PREFIX+'etc'
-  return unless etc_folder.exist?
+  __check_folder_access 'etc',
+  'If a brew tries to write a file to this folder, the install will\n'+
+  'fail during the link step.'
+end
 
-  unless etc_folder.writable?
-    puts <<-EOS.undent
-      #{etc_folder} isn't writable.
-      This can happen if you "sudo make install" software that isn't managed
-      by Homebrew. If a brew tries to write a file to this folder, the install
-      will fail during the link step.
-
-      You should probably `chown` #{etc_folder}
-
-    EOS
-  end
+def check_access_share
+  __check_folder_access 'share',
+  'If a brew tries to write a file to this folder, the install will\n'+
+  'fail during the link step.'
 end
 
 def check_usr_bin_ruby
@@ -250,9 +309,7 @@ def check_user_path
   seen_prefix_sbin = false
   seen_usr_bin = false
 
-  paths = ENV['PATH'].split(':').collect{|p| File.expand_path p}
-
-  paths.each do |p|
+  path_folders.each do |p|
     if p == '/usr/bin'
       seen_usr_bin = true
       unless seen_prefix_bin
@@ -385,8 +442,7 @@ def check_for_config_scripts
 
   config_scripts = []
 
-  paths = ENV['PATH'].split(':').collect{|p| File.expand_path p}
-  paths.each do |p|
+  path_folders.each do |p|
     next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin"].include? p
     next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})]
 
@@ -451,7 +507,7 @@ def check_for_multiple_volumes
   real_cellar = HOMEBREW_CELLAR.realpath
 
   tmp_prefix = ENV['HOMEBREW_TEMP'] || '/tmp'
-  tmp=Pathname.new `/usr/bin/mktemp -d #{tmp_prefix}/homebrew-brew-doctor-XXXX`.strip
+  tmp = Pathname.new `/usr/bin/mktemp -d #{tmp_prefix}/homebrew-brew-doctor-XXXX`.strip
   real_temp = tmp.realpath.parent
 
   where_cellar = volumes.which real_cellar
@@ -482,8 +538,30 @@ def check_for_git
       Homebrew uses Git for several internal functions, and some formulae
       use Git checkouts instead of stable tarballs.
 
-      You may want to do:
+      You may want to install git:
         brew install git
+
+    EOS
+  end
+end
+
+def check_git_newline_settings
+  git = `/usr/bin/which git`.chomp
+  return if git.empty?
+
+  autocrlf=`git config --get core.autocrlf`
+  safecrlf=`git config --get core.safecrlf`
+
+  if autocrlf=='input' and safecrlf=='true'
+    puts <<-EOS.undent
+    Suspicious Git newline settings found.
+
+    The detected Git newline settings can cause checkout problems:
+      core.autocrlf=#{autocrlf}
+      core.safecrlf=#{safecrlf}
+
+    If you are not routinely dealing with Windows-based projects,
+    consider removing these settings.
 
     EOS
   end
@@ -553,9 +631,9 @@ def check_for_linked_kegonly_brews
   end
 end
 
-def check_for_other_vars
+def check_for_MACOSX_DEPLOYMENT_TARGET
   target_var = ENV['MACOSX_DEPLOYMENT_TARGET']
-  return if target_var.nil? or target_var.empty?
+  return if target_var.to_s.empty?
 
   unless target_var == MACOS_VERSION.to_s
     puts <<-EOS.undent
@@ -568,15 +646,49 @@ def check_for_other_vars
   end
 end
 
+def check_for_CLICOLOR_FORCE
+  target_var = ENV['CLICOLOR_FORCE'].to_s
+  unless target_var.empty?
+    puts <<-EOS.undent
+    $CLICOLOR_FORCE was set to \"#{target_var}\".
+    Having $CLICOLOR_FORCE set can cause git builds to fail.
+
+    EOS
+  end
+end
+
+def check_for_GREP_OPTIONS
+  target_var = ENV['GREP_OPTIONS'].to_s
+  unless target_var.empty?
+    puts <<-EOS.undent
+    $GREP_OPTIONS was set to \"#{target_var}\".
+    Having $GREP_OPTIONS set can cause CMake builds to fail.
+
+    EOS
+  end
+end
+
 def check_for_other_frameworks
   # Other frameworks that are known to cause problems when present
-  if File.exist? "/Library/Frameworks/expat.framework"
-    puts <<-EOS.undent
-      /Library/Frameworks/expat.framework detected
+  ["/Library/Frameworks/expat.framework", "/Library/Frameworks/libexpat.framework"].each do |f|
+    if File.exist? f
+      puts <<-EOS.undent
+        #{f} detected
 
-      This will be picked up by Cmake's build system and likey cause the
-      build to fail, trying to link to a 32-bit version of expat.
-      You may need to move this file out of the way to compile Cmake.
+        This will be picked up by Cmake's build system and likey cause the
+        build to fail, trying to link to a 32-bit version of expat.
+        You may need to move this file out of the way to compile Cmake.
+
+      EOS
+    end
+  end
+
+  if File.exist? "/Library/Frameworks/Mono.framework"
+    puts <<-EOS.undent
+      /Library/Frameworks/Mono.framework detected
+
+      This can be picked up by Cmake's build system and likey cause the
+      build to fail, finding improper header files for libpng for instance.
 
     EOS
   end
@@ -594,14 +706,18 @@ module Homebrew extend self
       check_homebrew_prefix
       check_for_macgpg2
       check_for_stray_dylibs
+      check_for_stray_static_libs
+      check_for_stray_pcs
+      check_for_stray_las
       check_gcc_versions
       check_for_other_package_managers
       check_for_x11
       check_for_nonstandard_x11
-      check_access_share_locale
-      check_access_share_man
       check_access_include
       check_access_etc
+      check_access_share
+      check_access_share_locale
+      check_access_share_man
       check_user_path
       check_which_pkg_config
       check_pkg_config_paths
@@ -609,10 +725,13 @@ module Homebrew extend self
       check_for_gettext
       check_for_config_scripts
       check_for_dyld_vars
-      check_for_other_vars
+      check_for_MACOSX_DEPLOYMENT_TARGET
+      check_for_CLICOLOR_FORCE
+      check_for_GREP_OPTIONS
       check_for_symlinked_cellar
       check_for_multiple_volumes
       check_for_git
+      check_git_newline_settings
       check_for_autoconf
       check_for_linked_kegonly_brews
       check_for_other_frameworks

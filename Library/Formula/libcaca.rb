@@ -9,6 +9,8 @@ class Libcaca < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
 
+  fails_with_llvm "unsupported inline asm: input constraint with a matching output constraint of incompatible type!"
+
   def install
     # Some people can't compile when Java is enabled. See:
     # https://github.com/mxcl/homebrew/issues/issue/2049

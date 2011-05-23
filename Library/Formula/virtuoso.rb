@@ -11,7 +11,7 @@ class Virtuoso < Formula
   skip_clean :all
 
   def install
-    ENV.m64 if snow_leopard_64?
+    ENV.m64 if MacOS.prefer_64_bit?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end

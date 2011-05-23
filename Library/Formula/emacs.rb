@@ -56,13 +56,19 @@ class Emacs < Formula
     return s
   end
 
-  def install
-    fails_with_llvm "Duplicate symbol errors while linking."
+  fails_with_llvm "Duplicate symbol errors while linking."
 
+  def install
     args = ["--prefix=#{prefix}",
             "--without-dbus",
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
             "--infodir=#{info}/emacs"]
+
+    if ARGV.build_head? and File.exists? "./autogen/copy_autogen"
+      opoo "Using copy_autogen"
+      puts "See https://github.com/mxcl/homebrew/issues/4852"
+      system "autogen/copy_autogen"
+    end
 
     if ARGV.include? "--cocoa"
       args << "--with-ns" << "--disable-ns-self-contained"
@@ -74,6 +80,7 @@ class Emacs < Formula
       bin.mkpath
       ln_s prefix+'Emacs.app/Contents/MacOS/Emacs', bin+'emacs'
       ln_s prefix+'Emacs.app/Contents/MacOS/bin/emacsclient', bin
+      ln_s prefix+'Emacs.app/Contents/MacOS/bin/etags', bin
     else
       if ARGV.include? "--with-x"
         args << "--with-x"

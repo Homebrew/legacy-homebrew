@@ -1,27 +1,33 @@
 require 'formula'
 
 class Libiconv < Formula
+  homepage 'http://www.gnu.org/software/libiconv/'
   url 'http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.13.1.tar.gz'
   md5 '7ab33ebd26687c744a37264a330bbe9a'
-  homepage 'http://www.gnu.org/software/libiconv/'
 end
 
 def build_tests?; ARGV.include? '--test'; end
 
 class Glib < Formula
-  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.24/glib-2.24.2.tar.bz2'
-  sha256 '3aeb521abd3642dd1224379f0e54915957e5010f888a4ae74afa0ad54da0160c'
-  homepage 'http://www.gtk.org'
+  homepage 'http://developer.gnome.org/glib/2.28/'
+  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.28/glib-2.28.7.tar.bz2'
+  sha256 '0e1b3816a8934371d4ea2313dfbe25d10d16c950f8d02e0a7879ae10d91b1631'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
 
+  fails_with_llvm "Undefined symbol errors while linking"
+
   def patches
-    mp = "http://trac.macports.org/export/69965/trunk/dports/devel/glib2/files/"
+    mp = "http://trac.macports.org/export/78750/trunk/dports/devel/glib2/files/"
     {
       :p0 => [
-        mp+"patch-configure.in.diff",
-        mp+"patch-child-test.c.diff"
+        mp+"patch-configure.ac.diff",
+        mp+"patch-glib-2.0.pc.in.diff",
+        mp+"patch-glib_gunicollate.c.diff",
+        mp+"patch-gi18n.h.diff",
+        mp+"patch-gio_xdgmime_xdgmime.c.diff",
+        mp+"patch-gio_gdbusprivate.c.diff"
       ]
     }
   end
@@ -31,8 +37,6 @@ class Glib < Formula
   end
 
   def install
-    fails_with_llvm "Undefined symbol errors while linking"
-
     # Snow Leopard libiconv doesn't have a 64bit version of the libiconv_open
     # function, which breaks things for us, so we build our own
     # http://www.mail-archive.com/gtk-list@gnome.org/msg28747.html

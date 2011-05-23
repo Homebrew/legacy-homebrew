@@ -11,8 +11,8 @@ Generally there are no consequences of this for you.
 If you build your own software and it requires this formula, you'll need
 to add its lib & include paths to your build variables:
 
-  LDFLAGS="$LDFLAGS #{f.lib}"
-  CPPFLAGS="$CPPFLAGS #{f.include}"
+  LDFLAGS: -L#{f.lib}
+  CPPFLAGS: -I#{f.include}
   EOS
 end
 
@@ -63,11 +63,6 @@ def install f
       ENV.prepend 'PATH', "#{dep.bin}", ':'
       ENV.prepend 'PKG_CONFIG_PATH', dep.lib+'pkgconfig', ':'
     end
-  end
-
-  if ARGV.verbose?
-    ohai "Build Environment"
-    dump_build_env ENV
   end
 
   build_time = nil
@@ -185,6 +180,14 @@ def install f
         puts "install to \"libexec\" and then symlink or wrap binaries into \"bin\"."
         puts "See \"activemq\", \"jruby\", etc. for examples."
       end
+    end
+
+    # Check for m4 files
+    if Dir[f.share+"aclocal/*.m4"].length > 0
+      opoo 'm4 macros were installed to "share/aclocal".'
+      puts "Homebrew does not append \"#{HOMEBREW_PREFIX}/share/aclocal\""
+      puts "to \"/usr/share/aclocal/dirlist\". If an autoconf script you use"
+      puts "requires these m4 macros, you'll need to add this path manually."
     end
 
     # link from Cellar to Prefix

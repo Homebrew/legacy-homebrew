@@ -10,11 +10,11 @@ class Nspr < Formula
     Dir.chdir "mozilla/nsprpub" do
       # Fixes a bug with linking against CoreFoundation, needed to work with SpiderMonkey
       # See: http://openradar.appspot.com/7209349
-      target_frameworks = (Hardware.is_32_bit? or MACOS_VERSION == 10.5) ? "-framework Carbon" : ""
+      target_frameworks = (Hardware.is_32_bit? or MacOS.leopard?) ? "-framework Carbon" : ""
       inreplace "pr/src/Makefile.in", "-framework CoreServices -framework CoreFoundation", target_frameworks
 
       args = ["--prefix=#{prefix}", "--disable-debug", "--enable-strip", "--enable-optimize"]
-      args << "--enable-64bit" if snow_leopard_64?
+      args << "--enable-64bit" if MacOS.prefer_64_bit?
       system "./configure", *args
 
       # Remove the broken (for anyone but Firefox) install_name
