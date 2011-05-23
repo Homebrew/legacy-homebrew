@@ -1,6 +1,7 @@
 require 'formula'
 
 def build_clang?; ARGV.include? '--with-clang'; end
+def build_all_targets?; ARGV.include? '--all-targets'; end
 def build_universal?; ARGV.build_universal?; end
 def build_shared?; ARGV.include? '--shared'; end
 def build_rtti?; ARGV.include? '--rtti'; end
@@ -26,6 +27,7 @@ class Llvm < Formula
   def options
     [['--with-clang', 'Also build & install clang'],
      ['--shared', 'Build shared library'],
+     ['--all-targets', 'Build all target backends'],
      ['--rtti', 'Build with RTTI information'],
      ['--universal', 'Build both i386 and x86_64 architectures']]
   end
@@ -51,8 +53,13 @@ class Llvm < Formula
     ENV['REQUIRES_RTTI'] = '1' if build_rtti?
 
     configure_options = ["--prefix=#{prefix}",
-                         "--enable-targets=host-only",
                          "--enable-optimized"]
+
+    if build_all_targets?
+      configure_options << "--enable-targets=all"
+    else
+      configure_options << "--enable-targets=host-only"
+    end
 
     configure_options << "--enable-shared" if build_shared?
 

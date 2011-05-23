@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libmpd < Formula
-  url 'http://launchpad.net/gmpc/trunk/0.19.0/+download/libmpd-0.19.0.tar.gz'
-  homepage 'http://gmpc.wikia.com/wiki/Libmpd'
-  md5 'a994f5f25a22c778926a3684c3e3050d'
+  url 'http://downloads.sourceforge.net/project/musicpd/libmpd/0.20.0/libmpd-0.20.0.tar.gz'
+  homepage 'http://gmpc.wikia.com/wiki/Gnome_Music_Player_Client'
+  md5 '2f1c99e12c69f7d95cfd1e27368056ed'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'

@@ -1,13 +1,4 @@
 require 'formula'
-require 'download_strategy'
-
-# Normal strategy tries to untar as well
-class GzipOnlyDownloadStrategy < CurlDownloadStrategy
-  def stage
-    FileUtils.mv @tarball_path, File.basename(@url)
-    safe_system '/usr/bin/gunzip', '-f', File.basename(@url)
-  end
-end
 
 class TesseractEnglishData < Formula
   url 'http://tesseract-ocr.googlecode.com/files/eng.traineddata.gz',
