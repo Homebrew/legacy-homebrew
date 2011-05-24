@@ -5,6 +5,13 @@ class Cmake < Formula
   md5 '209b7d1d04b2e00986538d74ba764fcf'
   homepage 'http://www.cmake.org/'
 
+  def patches
+    # fixes CMake 2.8 to 2.8.4 not recognizing non-standard Developer tools issue
+    # fixed in CMake 2.8.5 (not yet released)
+    # upstream issue at http://public.kitware.com/Bug/view.php?id=10723
+    "http://cmake.org/gitweb?p=cmake.git;a=patch;h=d421a433a89064926ae6aad532850b8bed113562"
+  end
+
   def install
     # A framework-installed expat will be detected and mess things up.
     if File.exist? "/Library/Frameworks/expat.framework"
