@@ -12,6 +12,7 @@ class Doxygen < Formula
       # Path of man1 relative to already given prefix
       s.change_make_var! 'MAN1DIR', 'share/man/man1'
     end
+    inreplace "qtools/qglobal.h", "    error", "    warning"
     system "make"
     system "make install"
   end
