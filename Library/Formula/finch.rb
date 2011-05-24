@@ -2,9 +2,9 @@ require 'formula'
 
 # Finch is a command-line-only IM client from Pidgin
 class Finch < Formula
-  url 'http://sourceforge.net/projects/pidgin/files/Pidgin/2.7.10/pidgin-2.7.10.tar.bz2'
   homepage 'http://developer.pidgin.im/wiki/Using%20Finch'
-  md5 '7514a5e25cc0061e7e1b7a1928c99247'
+  url 'http://sourceforge.net/projects/pidgin/files/Pidgin/2.7.11/pidgin-2.7.11.tar.bz2'
+  sha256 'a24e2c3118bd47983955d398c9cf5543c12e95527cdf7de9d273a6e92f9d160b'
 
   depends_on 'pkg-config' => :build
   depends_on 'libidn'
@@ -12,8 +12,6 @@ class Finch < Formula
   depends_on 'glib'
   depends_on 'intltool'
   depends_on 'gnutls'
-  # configure picked up this dep on my machine - adamv
-  # depends_on 'berkeley-db' => :optional
 
   def install
     # To get it to compile, had to configure without support for:
