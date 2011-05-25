@@ -1,8 +1,8 @@
 require 'formula'
 
 class Mkvtoolnix < Formula
-  url 'http://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-4.7.0.tar.bz2'
-  sha1 'eaa688dde0e3218f2f1e7caf7d0d0f94181328c0'
+  url 'http://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-4.8.0.tar.bz2'
+  sha1 '2811dc27270fc97796dada529687b922b577349b'
   head 'git://github.com/mbunkus/mkvtoolnix.git'
   homepage 'http://www.bunkus.org/videotools/mkvtoolnix/'
 
