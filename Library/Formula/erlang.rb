@@ -1,29 +1,29 @@
 require 'formula'
 
 class ErlangManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R14B02.tar.gz'
-  md5 'fc1c925e1195b6f851b1984da9ca0f6f'
+  url 'http://erlang.org/download/otp_doc_man_R14B03.tar.gz'
+  md5 '357f54b174bb29d41fee97c063a47e8f'
 end
 
 class ErlangHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R14B02.tar.gz'
-  md5 'e1b609c699a2d8fdbbe242a2e3b7efcd'
+  url 'http://erlang.org/download/otp_doc_html_R14B03.tar.gz'
+  md5 'c9033bc35dbe4631dd2d14a6183b966a'
 end
 
 class ErlangHeadManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R14B02.tar.gz'
-  md5 'fc1c925e1195b6f851b1984da9ca0f6f'
+  url 'http://erlang.org/download/otp_doc_man_R14B03.tar.gz'
+  md5 '357f54b174bb29d41fee97c063a47e8f'
 end
 
 class ErlangHeadHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R14B02.tar.gz'
-  md5 'e1b609c699a2d8fdbbe242a2e3b7efcd'
+  url 'http://erlang.org/download/otp_doc_html_R14B03.tar.gz'
+  md5 'c9033bc35dbe4631dd2d14a6183b966a'
 end
 
 class Erlang < Formula
   # Download from GitHub. Much faster than official tarball.
-  url "git://github.com/erlang/otp.git", :tag => "OTP_R14B02"
-  version 'R14B02'
+  url "git://github.com/erlang/otp.git", :tag => "OTP_R14B03"
+  version 'R14B03'
   homepage 'http://www.erlang.org'
 
   head "git://github.com/erlang/otp.git", :branch => "dev"
