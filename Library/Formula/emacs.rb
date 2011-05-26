@@ -20,8 +20,12 @@ class Emacs < Formula
   end
 
   def patches
-    if ARGV.include? "--cocoa" and not ARGV.build_head?
-      "https://github.com/downloads/typester/emacs/feature-fullscreen.patch"
+    if ARGV.include? "--cocoa"
+      if ARGV.build_head?
+        "https://github.com/downloads/hh/emacs/feature-fullscreen.patch"
+      else
+        "https://github.com/downloads/typester/emacs/feature-fullscreen.patch"
+      end
     end
   end
 
