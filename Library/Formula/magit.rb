@@ -7,8 +7,6 @@ class Magit < Formula
   head 'git://github.com/magit/magit.git'
 
   def install
-    system "./autogen.sh" if File.exist? "autogen.sh"
-    system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make install DESTDIR=#{prefix} PREFIX="
   end
 end
