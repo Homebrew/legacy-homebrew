@@ -192,7 +192,7 @@ See 'brew tap help' for more detailed information.
       formula_path = formula.path
     end
 
-    if deps.empty?
+    if deps.nil? or deps.empty?
       return formula_path
     else
       return deps.map {|dep| gather_dependencies dep, taproom} << formula_path
