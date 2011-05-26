@@ -14,19 +14,25 @@ class Emacs < Formula
   def options
     [
       ["--cocoa", "Build a Cocoa version of emacs"],
+      ["--srgb", "Enable sRGB colors in the Cocoa version of emacs"],
       ["--with-x", "Include X11 support"],
       ["--use-git-head", "Use repo.or.cz git mirror for HEAD builds"],
     ]
   end
 
   def patches
+    p = []
     if ARGV.include? "--cocoa"
+      if ARGV.include? "--srgb"
+        p << DATA
+      end
       if ARGV.build_head?
-        "https://github.com/downloads/hh/emacs/feature-fullscreen.patch"
+        p << "https://github.com/downloads/hh/emacs/feature-fullscreen.patch"
       else
-        "https://github.com/downloads/typester/emacs/feature-fullscreen.patch"
+        p << "https://github.com/downloads/typester/emacs/feature-fullscreen.patch"
       end
     end
+    p
   end
 
   def caveats
@@ -35,7 +41,6 @@ class Emacs < Formula
       s += <<-EOS.undent
         Emacs.app was installed to:
           #{prefix}
-
       EOS
     else
       s += <<-EOS.undent
@@ -99,3 +104,21 @@ class Emacs < Formula
     end
   end
 end
+
+
+# patch for color issues described here:
+# http://debbugs.gnu.org/cgi/bugreport.cgi?bug=8402
+__END__
+diff --git a/src/nsterm.m b/src/nsterm.m
+index af1f21a..696dbdc 100644
+--- a/src/nsterm.m
++++ b/src/nsterm.m
+@@ -1389,7 +1389,7 @@ ns_get_color (const char *name, NSColor **col)
+
+   if (r >= 0.0)
+     {
+-      *col = [NSColor colorWithCalibratedRed: r green: g blue: b alpha: 1.0];
++      *col = [NSColor colorWithDeviceRed: r green: g blue: b alpha: 1.0];
+       UNBLOCK_INPUT;
+       return 0;
+     }
