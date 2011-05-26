@@ -1,9 +1,9 @@
 require 'formula'
 
 class Protobuf < Formula
-  url 'http://protobuf.googlecode.com/files/protobuf-2.4.0a.tar.bz2'
+  url 'http://protobuf.googlecode.com/files/protobuf-2.4.1.tar.bz2'
   homepage 'http://code.google.com/p/protobuf/'
-  sha1 '5816b0dd686115c3d90c3beccf17fd89432d3f07'
+  sha1 'df5867e37a4b51fb69f53a8baf5b994938691d6d'
 
   fails_with_llvm
 
