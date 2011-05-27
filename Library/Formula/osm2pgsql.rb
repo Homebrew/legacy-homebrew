@@ -9,5 +9,6 @@ class Osm2pgsql < Formula
     system "./configure"
     system "make"
     bin.install "osm2pgsql"
+    (share+'osm2pgsql').install 'default.style'
   end
 end
