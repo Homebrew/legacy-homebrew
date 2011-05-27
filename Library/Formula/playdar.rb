@@ -2,7 +2,7 @@ require 'formula'
 
 class Playdar < Formula
   homepage 'http://www.playdar.org'
-  head 'git://github.com/RJ/playdar-core.git'
+  head 'https://github.com/RJ/playdar-core.git'
 
   depends_on 'taglib'
   depends_on 'erlang'
