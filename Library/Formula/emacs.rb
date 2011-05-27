@@ -5,24 +5,27 @@ class Emacs < Formula
   md5 'a673c163b4714362b94ff6096e4d784a'
   homepage 'http://www.gnu.org/software/emacs/'
 
-  if ARGV.include? "--use-git-head"
-    head 'git://repo.or.cz/emacs.git'
+  if ARGV.include? "--head-emacs-23"
+    head "git://git.savannah.gnu.org/emacs.git", :branch => "emacs-23"
   else
-    head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
+    head "git://git.savannah.gnu.org/emacs.git", :branch => "master"
   end
 
   def options
     [
-      ["--cocoa", "Build a Cocoa version of emacs"],
-      ["--with-x", "Include X11 support"],
-      ["--use-git-head", "Use repo.or.cz git mirror for HEAD builds"],
+      ["--cocoa", "Build a Cocoa version of emacs [excludes --with-x]"],
+      ["--with-x", "Include X11 support [excludes --cocoa]"],
+      ["--head-emacs-23", "Use official git mirror's emacs-23 branch for HEAD builds"],
     ]
   end
 
   def patches
-    if ARGV.include? "--cocoa" and not ARGV.build_head?
+    p = [DATA]
+    if ARGV.include? "--cocoa" and
+        not (ARGV.build_head? and not ARGV.include? "--head-emacs-23")
       "https://github.com/downloads/typester/emacs/feature-fullscreen.patch"
     end
+    p
   end
 
   def caveats
@@ -39,19 +42,6 @@ class Emacs < Formula
 
       EOS
     end
-
-    s += <<-EOS.undent
-      The initial checkout of the bazaar Emacs repository might take a long
-      time. You might find that using the repo.or.cz git mirror is faster,
-      even after the initial checkout. To use the repo.or.cz git mirror for
-      HEAD builds, use the --use-git-head option in addition to --HEAD. Note
-      that there is inevitably some lag between checkins made to the
-      official Emacs bazaar repository and their appearance on the
-      repo.or.cz mirror. See http://repo.or.cz/w/emacs.git for the mirror's
-      status. The Emacs devs do not provide support for the git mirror, and
-      they might reject bug reports filed with git version information. Use
-      it at your own risk.
-    EOS
 
     return s
   end
@@ -95,3 +85,20 @@ class Emacs < Formula
     end
   end
 end
+
+# patch for color issues described here:
+# http://debbugs.gnu.org/cgi/bugreport.cgi?bug=8402
+__END__
+diff --git a/src/nsterm.m b/src/nsterm.m
+index af1f21a..696dbdc 100644
+--- a/src/nsterm.m
++++ b/src/nsterm.m
+@@ -1389,7 +1389,7 @@ ns_get_color (const char *name, NSColor **col)
+
+   if (r >= 0.0)
+     {
+-      *col = [NSColor colorWithCalibratedRed: r green: g blue: b alpha: 1.0];
++      *col = [NSColor colorWithDeviceRed: r green: g blue: b alpha: 1.0];
+       UNBLOCK_INPUT;
+       return 0;
+     }
