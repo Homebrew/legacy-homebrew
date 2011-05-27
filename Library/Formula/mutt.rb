@@ -6,12 +6,14 @@ class Mutt < Formula
   md5 'a29db8f1d51e2f10c070bf88e8a553fd'
 
   depends_on 'tokyo-cabinet'
+  depends_on 'slang' if ARGV.include? '--with-slang'
 
   def options
     [
       ['--enable-debug', "Build with debug option enabled"],
       ['--sidebar-patch', "Apply sidebar (folder list) patch"],
-      ['--trash-patch', "Apply trash folder patch"]
+      ['--trash-patch', "Apply trash folder patch"],
+      ['--with-slang', "Build against slang instead of ncurses"]
     ]
   end
 
@@ -53,6 +55,10 @@ class Mutt < Formula
       args << "--enable-debug"
     else
       args << "--disable-debug"
+    end
+
+    if ARGV.include? '--with-slang'
+      args << "--with-slang"
     end
 
     system "./configure", *args
