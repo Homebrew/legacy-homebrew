@@ -64,8 +64,6 @@ class Erlang < Formula
       args << '--enable-hipe'
     end
 
-    args << "--enable-darwin-64bit" if MacOS.prefer_64_bit?
-
     system "./configure", *args
     system "touch lib/wx/SKIP" if MacOS.snow_leopard?
     system "make"
