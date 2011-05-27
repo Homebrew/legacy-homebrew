@@ -5,7 +5,7 @@ class Resty < Formula
   homepage 'https://github.com/micha/resty'
   md5 'c99beeb500d616e6710beb05fad08285'
 
-  head 'git://github.com/micha/resty.git'
+  head 'https://github.com/micha/resty.git'
 
   # Don't take +x off these files
   skip_clean 'bin'
