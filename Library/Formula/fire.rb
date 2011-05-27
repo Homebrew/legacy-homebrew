@@ -1,7 +1,7 @@
 require 'formula'
 
 class Fire < Formula
-  head 'git://github.com/AzizLight/fire.git'
+  head 'https://github.com/AzizLight/fire.git'
   homepage 'https://github.com/AzizLight/fire'
 
   def install

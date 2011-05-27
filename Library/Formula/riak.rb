@@ -5,6 +5,8 @@ class Riak < Formula
   homepage 'http://riak.basho.com'
   md5 'f85721775ad1732f20de2c40e0e41d80'
 
+  head 'https://github.com/basho/riak.git'
+
   skip_clean 'libexec/log'
   skip_clean 'libexec/log/sasl'
   skip_clean 'libexec/data'
