@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mysql < Formula
+
   homepage 'http://dev.mysql.com/doc/refman/5.5/en/'
   url 'http://downloads.mysql.com/archives/mysql-5.5/mysql-5.5.10.tar.gz'
   md5 'ee604aff531ff85abeb10cf332c1355a'
@@ -94,6 +95,8 @@ class Mysql < Formula
 
     Start mysqld manually with:
         mysql.server start
+
+        Note: if this fails, you probably forgot to run the first two steps up above
 
     A "/etc/my.cnf" from another install may interfere with a Homebrew-built
     server starting up correctly.
