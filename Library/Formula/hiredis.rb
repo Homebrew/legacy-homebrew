@@ -2,7 +2,7 @@ require 'formula'
 
 class Hiredis < Formula
   url 'https://github.com/antirez/hiredis/tarball/v0.10.0'
-  head 'git://github.com/antirez/hiredis.git'
+  head 'https://github.com/antirez/hiredis.git'
   homepage 'https://github.com/antirez/hiredis'
   version '0.10.0'
   sha1 'a54dd2b31cb39bc05bf88538c688bf50f8c6c9c7'
