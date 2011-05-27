@@ -1,9 +1,12 @@
 require 'formula'
 
-class Uptimed <Formula
+class Uptimed < Formula
   url 'http://podgorny.cz/uptimed/releases/uptimed-0.3.12.tar.bz2'
   homepage 'http://podgorny.cz/moin/Uptimed'
   md5 'c523d6434b672107ea00559bb38eb050'
+
+  # Stripping symbols breaks uptimed
+  skip_clean :all
 
   def install
     system "./configure", "--disable-dependency-tracking",

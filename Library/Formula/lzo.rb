@@ -1,12 +1,12 @@
 require 'formula'
 
-class Lzo <Formula
-  url 'http://www.oberhumer.com/opensource/lzo/download/lzo-2.03.tar.gz'
+class Lzo < Formula
   homepage 'http://www.oberhumer.com/opensource/lzo/'
-  md5 '0c3d078c2e8ea5a88971089a2f02a726'
+  url 'http://www.oberhumer.com/opensource/lzo/download/lzo-2.05.tar.gz'
+  sha256 '449f98186d76ba252cd17ff1241ca2a96b7f62e0d3e4766f88730dab0ea5f333'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-asm",
                           "--enable-shared=yes"

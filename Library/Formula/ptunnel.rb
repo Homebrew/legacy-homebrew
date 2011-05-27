@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ptunnel <Formula
+class Ptunnel < Formula
   url 'http://www.cs.uit.no/~daniels/PingTunnel/PingTunnel-0.71.tar.gz'
   version '0.71'
   homepage 'http://www.cs.uit.no/~daniels/PingTunnel/'

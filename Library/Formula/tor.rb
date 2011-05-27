@@ -1,9 +1,9 @@
 require 'formula'
 
-class Tor <Formula
-  url 'https://www.torproject.org/dist/tor-0.2.1.27.tar.gz'
+class Tor < Formula
+  url 'https://www.torproject.org/dist/tor-0.2.1.30.tar.gz'
   homepage 'https://www.torproject.org/'
-  md5 '1719642b3f25a23c3b3843ee99be18fb'
+  md5 '6c6d61e053af5969a245d025c4cfce9d'
 
   depends_on 'libevent'
 

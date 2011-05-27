@@ -1,9 +1,9 @@
 require 'formula'
 
-class Tsung <Formula
-  url 'http://tsung.erlang-projects.org/dist/tsung-1.3.2.tar.gz'
+class Tsung < Formula
+  url 'http://tsung.erlang-projects.org/dist/tsung-1.3.3.tar.gz'
   homepage 'http://tsung.erlang-projects.org/'
-  md5 '6de503c41e608b25e4fe8fb058edc9cc'
+  md5 'c517187b44e22c5b3e169f4dff3164ca'
 
   depends_on 'erlang'
   depends_on 'gnuplot'

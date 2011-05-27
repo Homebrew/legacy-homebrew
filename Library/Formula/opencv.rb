@@ -3,7 +3,7 @@ require 'formula'
 class Opencv <Formula
   # use 2.2.1-pre since some critical bugs are fixed:
   # https://code.ros.org/trac/opencv/log/branches/2.2/opencv
-  url 'https://code.ros.org/svn/opencv/branches/2.2/opencv', :using => :svn, :revision => '4437'
+  url 'https://code.ros.org/svn/opencv/branches/2.2/opencv', :using => :svn, :revision => '5226'
   version "2.2.1-svn4437"
   homepage 'http://opencv.willowgarage.com/wiki/'
 

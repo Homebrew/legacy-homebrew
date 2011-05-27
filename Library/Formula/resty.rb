@@ -1,14 +1,17 @@
 require 'formula'
 
-class Resty <Formula
-  head 'git://github.com/micha/resty.git'
+class Resty < Formula
+  url 'https://github.com/micha/resty/tarball/1.8'
   homepage 'https://github.com/micha/resty'
+  md5 'c99beeb500d616e6710beb05fad08285'
+
+  head 'https://github.com/micha/resty.git'
 
   # Don't take +x off these files
   skip_clean 'bin'
 
   def install
-    system "mv README.markdown README"
+    system "mv README.md README"
     bin.install %w[pp resty pypp]
   end
 

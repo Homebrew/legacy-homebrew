@@ -1,9 +1,16 @@
 require 'formula'
 
-class Cmake <Formula
-  url 'http://www.cmake.org/files/v2.8/cmake-2.8.3.tar.gz'
-  md5 'a76a44b93acf5e3badda9de111385921'
+class Cmake < Formula
+  url 'http://www.cmake.org/files/v2.8/cmake-2.8.4.tar.gz'
+  md5 '209b7d1d04b2e00986538d74ba764fcf'
   homepage 'http://www.cmake.org/'
+
+  def patches
+    # fixes CMake 2.8 to 2.8.4 not recognizing non-standard Developer tools issue
+    # fixed in CMake 2.8.5 (not yet released)
+    # upstream issue at http://public.kitware.com/Bug/view.php?id=10723
+    "http://cmake.org/gitweb?p=cmake.git;a=patch;h=d421a433a89064926ae6aad532850b8bed113562"
+  end
 
   def install
     # A framework-installed expat will be detected and mess things up.
@@ -16,18 +23,17 @@ class Cmake <Formula
       EOS
     end
 
-    # If we specify to CMake to use the system libraries by passing
-    # --system-libs to bootstrap then it insists on finding them all
-    # or erroring out, as that's what other Linux/OSX distributions
-    # would want. I've requested that they either fix this or let us
-    # submit a patch to do so on their bug tracker:
-    # http://www.cmake.org/Bug/view.php?id=11431
-    inreplace 'CMakeLists.txt',
-              "# Mention to the user what system libraries are being used.",
-              "SET(CMAKE_USE_SYSTEM_LIBARCHIVE 0)"
+    if ENV['GREP_OPTIONS'] == "--color=always"
+      opoo "GREP_OPTIONS is set to '--color=always'"
+      puts <<-EOS.undent
+        Having `GREP_OPTIONS` set this way causes Cmake builds to fail.
+        You will need to `unset GREP_OPTIONS` before brewing.
+      EOS
+    end
 
     system "./bootstrap", "--prefix=#{prefix}",
                           "--system-libs",
+                          "--no-system-libarchive",
                           "--datadir=/share/cmake",
                           "--docdir=/share/doc/cmake",
                           "--mandir=/share/man"

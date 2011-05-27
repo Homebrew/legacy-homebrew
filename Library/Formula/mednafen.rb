@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mednafen <Formula
+class Mednafen < Formula
   homepage 'http://mednafen.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/mednafen/Mednafen/0.8.D.3/mednafen-0.8.D.3.tar.bz2'
   md5 '57d22805071becd81858b0c088a275e5'

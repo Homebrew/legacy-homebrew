@@ -1,9 +1,9 @@
 require 'formula'
 
-class Libplist <Formula
-  url 'http://cloud.github.com/downloads/JonathanBeck/libplist/libplist-1.3.tar.bz2'
-  homepage 'https://github.com/JonathanBeck/libplist'
-  md5 '0f48f4da8ddba5d7e186307622bf2c62'
+class Libplist < Formula
+  url 'http://cgit.sukimashita.com/libplist.git/snapshot/libplist-1.4.tar.bz2'
+  homepage 'http://cgit.sukimashita.com/libplist.git/'
+  md5 '53c278ea6aa0617f45fad263c688b2a4'
 
   depends_on 'cmake' => :build
   depends_on 'glib'
@@ -13,7 +13,7 @@ class Libplist <Formula
     # Disable Python bindings.
     inreplace "CMakeLists.txt", 'OPTION(ENABLE_PYTHON "Enable Python bindings (needs Swig)" ON)',
                                 '# Disabled Python Bindings'
-    system "cmake . #{std_cmake_parameters}"
+    system "cmake . #{std_cmake_parameters} -DCMAKE_INSTALL_NAME_DIR=#{lib}"
     system "make install"
 
     # Remove 'plutil', which duplicates the system-provided one. Leave the versioned one, though.

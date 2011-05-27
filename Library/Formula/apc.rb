@@ -1,6 +1,6 @@
 require 'formula'
 
-class Apc <Formula
+class Apc < Formula
   url 'http://pecl.php.net/get/APC-3.1.6.tgz'
   homepage 'http://pecl.php.net/package/apc'
   md5 '624b8030254f897face30789d64e6b7e'
@@ -24,7 +24,7 @@ class Apc <Formula
         extension="#{prefix}/apc.so"
         apc.enabled=1
         apc.shm_segments=1
-        apc.shm_size=64
+        apc.shm_size=64M
         apc.ttl=7200
         apc.user_ttl=7200
         apc.num_files_hint=1024

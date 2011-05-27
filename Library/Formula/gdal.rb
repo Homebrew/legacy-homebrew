@@ -16,11 +16,11 @@ def no_python?
   ARGV.include? "--without-python"
 end
 
-class Gdal <Formula
-  url 'http://download.osgeo.org/gdal/gdal-1.7.3.tar.gz'
+class Gdal < Formula
+  url 'http://download.osgeo.org/gdal/gdal-1.8.0.tar.gz'
   head 'https://svn.osgeo.org/gdal/trunk/gdal', :using => :svn
   homepage 'http://www.gdal.org/'
-  md5 'c4673970bd2285032de9ae9bbd82754a'
+  md5 'c762cdab0f7e51a677ba49278a8a263d'
 
   depends_on 'jpeg'
   depends_on 'giflib'
@@ -173,7 +173,7 @@ class Gdal <Formula
 
       # `python-config` may try to talk us into building bindings for more
       # architectures than we really should.
-      if snow_leopard_64?
+      if MacOS.prefer_64_bit?
         ENV.append_to_cflags '-arch x86_64'
       else
         ENV.append_to_cflags '-arch i386'

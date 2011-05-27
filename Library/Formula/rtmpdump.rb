@@ -1,21 +1,25 @@
 require 'formula'
 
-class Rtmpdump <Formula
+class Rtmpdump < Formula
   url 'http://rtmpdump.mplayerhq.hu/download/rtmpdump-2.3.tgz'
   homepage 'http://rtmpdump.mplayerhq.hu'
   md5 'eb961f31cd55f0acf5aad1a7b900ef59'
 
-  depends_on 'openssl' if MACOS_VERSION < 10.6
+  depends_on 'openssl' if MacOS.leopard?
 
-  def patches
-    DATA
-  end
+  # Use dylib instead of so
+  def patches; DATA; end
 
   def install
     ENV.j1
+    inreplace ["Makefile", "librtmp/Makefile"] do |s|
+      s.change_make_var! "CC", ENV['CC']
+      s.change_make_var! "LD", ENV['LD']
+    end
     system "make", "prefix=#{prefix}", "MANDIR=#{man}", "SYS=posix", "install"
   end
 end
+
 __END__
 --- rtmpdump-2.3/librtmp/Makefile.orig	2010-07-30 23:05:25.000000000 +0200
 +++ rtmpdump-2.3/librtmp/Makefile	2010-07-30 23:08:23.000000000 +0200

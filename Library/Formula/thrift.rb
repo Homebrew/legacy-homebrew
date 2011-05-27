@@ -1,10 +1,10 @@
 require 'formula'
 
-class Thrift <Formula
+class Thrift < Formula
   homepage 'http://incubator.apache.org/thrift/'
-  head 'http://svn.apache.org/repos/asf/incubator/thrift/trunk'
-  url 'http://www.apache.org/dist/incubator/thrift/0.5.0-incubating/thrift-0.5.0.tar.gz'
-  md5 '14c97adefb4efc209285f63b4c7f51f2'
+  head 'http://svn.apache.org/repos/asf/thrift/trunk'
+  url 'http://www.apache.org/dist/thrift/0.6.1/thrift-0.6.1.tar.gz'
+  md5 'e1ec722d5f38077a23a32c4de4d4ce94'
 
   depends_on 'boost'
 
@@ -18,11 +18,13 @@ class Thrift <Formula
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--libdir=#{lib}",
+                          "--without-haskell",
                           "--without-java",
                           "--without-python",
                           "--without-ruby",
                           "--without-perl",
                           "--without-php"
+    ENV.j1
     system "make"
     system "make install"
   end

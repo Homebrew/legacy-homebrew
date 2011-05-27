@@ -1,10 +1,10 @@
 require 'formula'
 
-class Dialog <Formula
+class Dialog < Formula
   url 'ftp://invisible-island.net/dialog/dialog.tar.gz'
   homepage 'http://invisible-island.net/dialog/'
-  md5 '519c0a0cbac28ddb992111ec2c3f82aa'
-  version '1.1.20070704'
+  md5 '2eaa82055b86006e205d2c3f74d9b800'
+  version '1.1.20110302'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

@@ -1,18 +1,18 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://kernel.org/pub/software/scm/git/git-manpages-1.7.3.4.tar.bz2'
-  md5 'ec0883134fa00628d9057d1551d9c739'
+  url 'http://kernel.org/pub/software/scm/git/git-manpages-1.7.5.3.tar.bz2'
+  md5 '6733ecbb5a46d9879463f963ae2a2dbb'
 end
 
 class GitHtmldocs < Formula
-  url 'http://kernel.org/pub/software/scm/git/git-htmldocs-1.7.3.4.tar.bz2'
-  md5 '2adbb534b28be52145ddd9bb5cca2f93'
+  url 'http://kernel.org/pub/software/scm/git/git-htmldocs-1.7.5.3.tar.bz2'
+  md5 '0b2f326216f4c43043c76dba0cf80803'
 end
 
 class Git < Formula
-  url 'http://kernel.org/pub/software/scm/git/git-1.7.3.4.tar.bz2'
-  md5 '3a2602016f98c529cda7b9fad1a6e216'
+  url 'http://kernel.org/pub/software/scm/git/git-1.7.5.3.tar.bz2'
+  md5 '5b5a5e6c1c5c05db6b8dd33e6f3acea4'
   homepage 'http://git-scm.com'
 
   def install
@@ -20,7 +20,7 @@ class Git < Formula
     ENV['NO_FINK']='1'
     ENV['NO_DARWIN_PORTS']='1'
     # If local::lib is used you get a 'Only one of PREFIX or INSTALL_BASE can be given' error
-    ENV['PERL_MM_OPT']='';
+    ENV['PERL_MM_OPT']=''
     # build verbosely so we can debug better
     ENV['V']='1'
 
@@ -30,16 +30,15 @@ class Git < Formula
 
     system "make", "prefix=#{prefix}", "install"
 
-    # Install the git bash completion file.  Put it into the Cellar so
-    # that it gets upgraded along with git upgrades.  (Normally, etc
-    # files go directly into HOMEBREW_PREFIX so that they don't get
-    # clobbered on upgrade.)
-
+    # Install the git bash completion file.
+    # Put it into the Cellar so that it gets upgraded along with git upgrades.
     (prefix+'etc/bash_completion.d').install 'contrib/completion/git-completion.bash'
+
+    # Install emacs support.
     (share+'doc/git-core/contrib').install 'contrib/emacs'
 
-    # Install git-p4
-    bin.install 'contrib/fast-import/git-p4'
+    # Install contrib files to share/contrib
+    (share).install 'contrib'
 
     # these files are exact copies of the git binary, so like the contents
     # of libexec/git-core lets hard link them
@@ -56,5 +55,17 @@ class Git < Formula
     # on many other packages, and is somewhat crazy, this way is easier
     GitManuals.new.brew { man.install Dir['*'] }
     GitHtmldocs.new.brew { (share+'doc/git-doc').install Dir['*'] }
+  end
+
+  def caveats; <<-EOS.undent
+    Bash completion has been installed to:
+      #{prefix}/etc/bash_completion.d/
+
+    Emacs support has been installed to:
+      #{share}/doc/git-core/contrib/emacs/
+
+    The rest of the "contrib" has been installed to:
+      #{share}/contrib
+    EOS
   end
 end

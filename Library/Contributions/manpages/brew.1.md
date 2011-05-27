@@ -13,7 +13,7 @@ didn't include with OS X.
 
 ## OPTIONS
   * `-v`, `--verbose` command [options] [formula] ...:
-    Prints extra, comand-specific debugging information.
+    Prints extra, command-specific debugging information.
     Note that `brew -v` by itself is the same as `brew --version`.
 
 ## COMMANDS
@@ -21,7 +21,7 @@ didn't include with OS X.
   * `-v`, `--version`:
     Print the version number of brew to standard error and exit.
 
-  * `install [--force] [--debug] [--use-llvm] [--ignore-dependencies] [--HEAD]` <formula>:
+  * `install [--force] [--debug] [--ignore-dependencies] [--use-llvm] [--use-gcc] [--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but may also be
@@ -34,12 +34,15 @@ didn't include with OS X.
     If `--debug` is passed and brewing fails, open a shell inside the
     temporary folder used for compiling.
 
-    If `--use-llvm` is passed, attempt to compile using the LLVM front-end to GCC.
-    *NOTE*: Not all formulae will build with LLVM.
-
     If `--ignore-dependencies` is passed, skip installing any dependencies of
     any kind. If they are not already present, the formula will probably fail
     to install.
+
+    If `--use-llvm` is passed, attempt to compile using the LLVM front-end to GCC.
+    *NOTE*: Not all formulae will build with LLVM.
+
+    If `--use-gcc` is passed, attempt to compile using GCC. This is useful for
+    systems whose default compiler is LLVM-GCC.
 
     If `--HEAD` is passed, and <formula> defines it, install the HEAD version,
     aka master, trunk, unstable, dev.
@@ -56,12 +59,12 @@ didn't include with OS X.
     If `--git` is passed, Homebrew will create a Git repository, useful for
     creating patches to the software.
 
-  * `-S`, `search` <text>|/<text>/:
+  * `search`, `-S` <text>|/<text>/:
     Perform a substring search of formula names for <text>. If <text> is
     surrounded with slashes, then it is interpreted as a regular expression.
     If no search term is given, all available formula are displayed.
 
-  * `-S --macports`|`--fink` <text>:
+  * `search --macports`|`--fink` <text>:
     Search for <text> on the MacPorts or Fink package search page.
 
   * `update`:
@@ -96,14 +99,14 @@ didn't include with OS X.
     If `--force` is passed, and there are multiple versions of <formula>
     installed, delete all installed versions.
 
-  * `create [--cache]` <URL>:
+  * `create [--no-fetch]` <URL>:
     Generate a formula for the downloadable file at <URL> and opens it in
     $EDITOR. Homebrew will attempt to automatically derive the formula name
     and version, if it fails, you'll have to make your own template. I suggest
     copying wget's.
 
-    If `--cache` is passed, Homebrew will download the <URL> to the cache and
-    add the MD5 to the formula for you.
+    If `--no-fetch` is passed, Homebrew will not download <URL> to the cache and
+    will thus not add the MD5 to the formula for you.
 
   * `edit` <formula>:
     Open <formula> in $EDITOR.
@@ -146,36 +149,48 @@ didn't include with OS X.
   * `cat` <formula>:
     Display the source to <formula>.
 
-  * `cleanup` [<formula>]:
+  * `cleanup [--force]` [<formula>]:
     For all installed or specific formulae, remove any older versions from the
-    cellar.
+    cellar. By default, does not remove out-of-date keg-only brews, as other
+    software may link directly to specific versions.
+
+    If `--force` is passed, remove out-of-date keg-only brews as well.
 
   * `log [git-log-options]` <formula> ...:
     Show the git log for the given formulae. Options that `git-log`(1)
     recognizes can be passed before the formula list.
 
-  * `fetch [--force] [-v] [--HEAD]` <formula>:
-    Download the source package for the given <formula>. For tarballs, also
-    prints MD5 and SHA1 checksums.
+  * `fetch [--force] [-v] [--HEAD] [--deps]` <formulae>:
+    Download the source packages for the given <formulae>.
+    For tarballs, also print MD5 and SHA1 checksums.
 
-    If `--HEAD` is passed, download the HEAD version of <formula> instead. `-v`
+    If `--HEAD` is passed, download the HEAD versions of <formulae> instead. `-v`
     may also be passed to make the VCS checkout verbose, useful for seeing if
     an existing HEAD cache has been updated.
 
     If `--force` is passed, remove a previously cached version and re-fetch.
 
-  * `audit [--warn]`:
+    If `--deps` is passed, also download dependencies for any listed <formulae>.
+
+  * `audit [--strict]`:
     Check formulae for Homebrew coding style violations. This should be
     run before submitting a new formula for inclusion.
 
-    If `--warn` is passed, perform additional stricter checks that may not need
+    If `--strict` is passed, perform additional stricter checks that may not need
     to be fixed before submitting.
 
-  * `options` <formula>:
+  * `options [--compact] [--all]` <formula>:
     Display install options specific to <formula>.
 
-  * `missing`:
-    Check all installed formuale for missing dependencies.
+    If `--compact` is passed, show all options on a single line separated by
+    spaces.
+
+    If `--all` is passed, show options for all formulae.
+
+  * `missing` [<formulae>]:
+    Check the given <formulae> for missing dependencies.
+
+    If no <formulae> are given, check all installed brews.
 
   * `server`:
     Start a local web app that lets you browse available formulae, similar
@@ -274,6 +289,10 @@ Some sample commands ship with Homebrew and are enabled by default.
 
     This issue typically occurs when using FileVault or custom SSD
     configurations.
+
+  * HOMEBREW\_USE\_GCC:
+    If set, instructs Homebrew to use gcc, even if the system default
+    is currently set to LLVM.
 
   * HOMEBREW\_USE\_LLVM:
     If set, instructs Homebrew to use the LLVM front-ends to the GCC

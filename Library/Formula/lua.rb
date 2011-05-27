@@ -1,17 +1,19 @@
 require 'formula'
 
-class Lua <Formula
+class Lua < Formula
   url 'http://www.lua.org/ftp/lua-5.1.4.tar.gz'
   homepage 'http://www.lua.org/'
   md5 'd0870f2de55d59c1c8419f36e8fac150'
+
+  fails_with_llvm "Lua itself compiles with llvm, but may fail when other software tries to link."
 
   # Skip cleaning both empty folders and bin/libs so external symbols still work.
   skip_clean :all
 
   def install
     # Apply patch-level 2
-    curl "http://www.lua.org/ftp/patch-lua-5.1.4-2", "-O"
-    safe_system '/usr/bin/patch', '-d', 'src', '-i', '../patch-lua-5.1.4-2'
+    curl "http://www.lua.org/ftp/patch-lua-5.1.4-3", "-O"
+    safe_system '/usr/bin/patch', '-d', 'src', '-i', '../patch-lua-5.1.4-3'
     # we could use the patches method if it supported additional arguments (-d in our case)
 
     # Use our CC/CFLAGS to compile.

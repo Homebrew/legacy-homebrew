@@ -1,6 +1,6 @@
 require 'formula'
 
-class Calc <Formula
+class Calc < Formula
   url 'http://www.isthe.com/chongo/src/calc/calc-2.12.4.0.tar.bz2'
   md5 '2ef56695837c6e501ca80b64e0be0db6'
   homepage 'http://www.isthe.com/chongo/tech/comp/calc/'

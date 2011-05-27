@@ -1,6 +1,6 @@
 require 'formula'
 
-class Attica <Formula
+class Attica < Formula
   url 'ftp://ftp.kde.org/pub/kde/stable/attica/attica-0.2.0.tar.bz2'
   homepage 'http://www.kde.org/'
   md5 'df3dcea0229cfa31539bdd427976e15b'
