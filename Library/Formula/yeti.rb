@@ -6,7 +6,7 @@ class Yeti < Formula
   md5 'bff76dd83376c8d5828c1e813c2d774a'
   version '2011.03' # Yeti doesn't do any versioning that I can see, so use date
 
-  head 'git://github.com/mth/yeti.git'
+  head 'https://github.com/mth/yeti.git'
 
   def install
     prefix.install "yeti.jar"

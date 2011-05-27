@@ -104,6 +104,11 @@ module HomebrewEnvExtension
     remove_from_cflags(/-O./)
     append_to_cflags '-Os'
   end
+  def Og
+    # Sometimes you want a debug build
+    remove_from_cflags(/-O./)
+    append_to_cflags '-g -O0'
+  end
 
   def gcc_4_0_1
     self['CC'] = self['LD'] = '/usr/bin/gcc-4.0'

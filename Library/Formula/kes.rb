@@ -1,7 +1,7 @@
 require 'formula'
 
 class Kes < Formula
-  head 'git://github.com/epilnivek/kes.git'
+  head 'https://github.com/epilnivek/kes.git'
   homepage 'https://github.com/epilnivek/kes'
 
   def install
