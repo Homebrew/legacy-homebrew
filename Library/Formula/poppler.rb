@@ -18,10 +18,6 @@ class Poppler < Formula
   depends_on "qt" if ARGV.include? "--with-qt4"
   depends_on 'cairo' if glib? # Needs a newer Cairo build than OS X 10.6.7 provides
 
-  def patches
-    DATA
-  end
-
   def options
     [
       ["--with-qt4", "Build Qt backend (which compiles all of Qt4!)"],
@@ -31,6 +27,8 @@ class Poppler < Formula
   end
 
   def install
+    ENV.x11 # For Fontconfig headers
+
     if ARGV.include? "--with-qt4"
       ENV['POPPLER_QT4_CFLAGS'] = `pkg-config QtCore QtGui --libs`.chomp.strip
       ENV.append 'LDFLAGS', "-Wl,-F#{HOMEBREW_PREFIX}/lib"
@@ -50,20 +48,3 @@ class Poppler < Formula
     end
   end
 end
-
-__END__
-fix location of fontconfig:
-  http://www.mail-archive.com/poppler@lists.freedesktop.org/msg03837.html
-
---- a/cpp/Makefile.in	2010-07-08 20:57:56.000000000 +0200
-+++ b/cpp/Makefile.in	2010-08-06 11:11:27.000000000 +0200
-@@ -375,7 +375,8 @@
- INCLUDES = \
- 	-I$(top_srcdir)				\
- 	-I$(top_srcdir)/goo			\
--	-I$(top_srcdir)/poppler
-+	-I$(top_srcdir)/poppler \
-+	$(FONTCONFIG_CFLAGS)
- 
- SUBDIRS = . tests
- poppler_includedir = $(includedir)/poppler/cpp
