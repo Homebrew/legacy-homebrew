@@ -13,7 +13,7 @@ didn't include with OS X.
 
 ## OPTIONS
   * `-v`, `--verbose` command [options] [formula] ...:
-    Prints extra, comand-specific debugging information.
+    Prints extra, command-specific debugging information.
     Note that `brew -v` by itself is the same as `brew --version`.
 
 ## COMMANDS
@@ -21,7 +21,7 @@ didn't include with OS X.
   * `-v`, `--version`:
     Print the version number of brew to standard error and exit.
 
-  * `install [--force] [--debug] [--use-llvm] [--ignore-dependencies] [--HEAD]` <formula>:
+  * `install [--force] [--debug] [--ignore-dependencies] [--use-llvm] [--use-gcc] [--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but may also be
@@ -34,12 +34,15 @@ didn't include with OS X.
     If `--debug` is passed and brewing fails, open a shell inside the
     temporary folder used for compiling.
 
-    If `--use-llvm` is passed, attempt to compile using the LLVM front-end to GCC.
-    *NOTE*: Not all formulae will build with LLVM.
-
     If `--ignore-dependencies` is passed, skip installing any dependencies of
     any kind. If they are not already present, the formula will probably fail
     to install.
+
+    If `--use-llvm` is passed, attempt to compile using the LLVM front-end to GCC.
+    *NOTE*: Not all formulae will build with LLVM.
+
+    If `--use-gcc` is passed, attempt to compile using GCC. This is useful for
+    systems whose default compiler is LLVM-GCC.
 
     If `--HEAD` is passed, and <formula> defines it, install the HEAD version,
     aka master, trunk, unstable, dev.
@@ -169,12 +172,17 @@ didn't include with OS X.
 
     If `--deps` is passed, also download dependencies for any listed <formulae>.
 
-  * `audit [--strict]`:
-    Check formulae for Homebrew coding style violations. This should be
-    run before submitting a new formula for inclusion.
+  * `audit [--strict]` [<formulae>]:
+    Check <formulae> for Homebrew coding style violations. This should be
+    run before submitting a new formula.
+
+    If no <formulae> are provided, all of them are checked.
 
     If `--strict` is passed, perform additional stricter checks that may not need
     to be fixed before submitting.
+
+    `audit` exits with a non-zero status if any errors are found. This is useful,
+    for instance, for implementing pre-commit hooks.
 
   * `options [--compact] [--all]` <formula>:
     Display install options specific to <formula>.

@@ -12,7 +12,7 @@ end
 # Cake jars, installs executable
 class Cake < Formula
   url       "http://releases.clojure-cake.org/jars/cake-#{$cake_version}.jar"
-  head      "git://github.com/ninjudd/cake.git", :using => :git
+  head      "https://github.com/ninjudd/cake.git", :using => :git
   homepage  "http://github.com/ninjudd/cake"
   md5       "cf570ef6301800515cf36301a322c383"
 
