@@ -38,7 +38,8 @@ class Erlang < Formula
   def options
     [
       ['--disable-hipe', "Disable building hipe; fails on various OS X systems."],
-      ['--time', '"brew test --time" to include a time-consuming test.']
+      ['--time', '"brew test --time" to include a time-consuming test.'],
+      ['--no-docs', 'Do not install documentation.']
     ]
   end
 
@@ -71,11 +72,13 @@ class Erlang < Formula
     system "make"
     system "make install"
 
-    manuals = ARGV.build_head? ? ErlangHeadManuals : ErlangManuals
-    manuals.new.brew { man.install Dir['man/*'] }
+    unless ARGV.include? '--no-docs'
+      manuals = ARGV.build_head? ? ErlangHeadManuals : ErlangManuals
+      manuals.new.brew { man.install Dir['man/*'] }
 
-    htmls = ARGV.build_head? ? ErlangHeadHtmls : ErlangHtmls
-    htmls.new.brew { doc.install Dir['*'] }
+      htmls = ARGV.build_head? ? ErlangHeadHtmls : ErlangHtmls
+      htmls.new.brew { doc.install Dir['*'] }
+    end
   end
 
   def test
