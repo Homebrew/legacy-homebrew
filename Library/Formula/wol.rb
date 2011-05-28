@@ -1,7 +1,7 @@
 require 'formula'
 
 class Wol < Formula
-  head 'git://github.com/kylef/wol.git'
+  head 'https://github.com/kylef/wol.git'
   homepage 'http://kylefuller.co.uk/'
 
   def install

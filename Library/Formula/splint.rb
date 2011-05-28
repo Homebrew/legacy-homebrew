@@ -11,11 +11,12 @@ class Splint < Formula
   end
 
   def install
+    ENV.j1 # build is not parallel-safe
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
-                          "--infodir=#{info}", "--mandir=#{man}"
+                          "--infodir=#{info}",
+                          "--mandir=#{man}"
     system "make"
-    ENV.j1 # Install fails on 8-core without this.
     system "make install"
   end
 end

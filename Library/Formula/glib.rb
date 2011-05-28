@@ -10,8 +10,8 @@ def build_tests?; ARGV.include? '--test'; end
 
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/2.28/'
-  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.28/glib-2.28.6.tar.bz2'
-  sha256 '557fb7c39d21b9359fbac51fd6b0b883bc97a2561c0166eef993a4078312f578'
+  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.28/glib-2.28.7.tar.bz2'
+  sha256 '0e1b3816a8934371d4ea2313dfbe25d10d16c950f8d02e0a7879ae10d91b1631'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
@@ -19,7 +19,7 @@ class Glib < Formula
   fails_with_llvm "Undefined symbol errors while linking"
 
   def patches
-    mp = "http://trac.macports.org/export/77283/trunk/dports/devel/glib2/files/"
+    mp = "http://trac.macports.org/export/78750/trunk/dports/devel/glib2/files/"
     {
       :p0 => [
         mp+"patch-configure.ac.diff",
