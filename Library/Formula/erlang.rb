@@ -22,11 +22,11 @@ end
 
 class Erlang < Formula
   # Download from GitHub. Much faster than official tarball.
-  url "git://github.com/erlang/otp.git", :tag => "OTP_R14B03"
+  url "https://github.com/erlang/otp.git", :tag => "OTP_R14B03"
   version 'R14B03'
   homepage 'http://www.erlang.org'
 
-  head "git://github.com/erlang/otp.git", :branch => "dev"
+  head "https://github.com/erlang/otp.git", :branch => "dev"
 
   # We can't strip the beam executables or any plugins, there isn't really
   # anything else worth stripping and it takes a really, long time to run
@@ -38,7 +38,8 @@ class Erlang < Formula
   def options
     [
       ['--disable-hipe', "Disable building hipe; fails on various OS X systems."],
-      ['--time', '"brew test --time" to include a time-consuming test.']
+      ['--time', '"brew test --time" to include a time-consuming test.'],
+      ['--no-docs', 'Do not install documentation.']
     ]
   end
 
@@ -71,11 +72,13 @@ class Erlang < Formula
     system "make"
     system "make install"
 
-    manuals = ARGV.build_head? ? ErlangHeadManuals : ErlangManuals
-    manuals.new.brew { man.install Dir['man/*'] }
+    unless ARGV.include? '--no-docs'
+      manuals = ARGV.build_head? ? ErlangHeadManuals : ErlangManuals
+      manuals.new.brew { man.install Dir['man/*'] }
 
-    htmls = ARGV.build_head? ? ErlangHeadHtmls : ErlangHtmls
-    htmls.new.brew { doc.install Dir['*'] }
+      htmls = ARGV.build_head? ? ErlangHeadHtmls : ErlangHtmls
+      htmls.new.brew { doc.install Dir['*'] }
+    end
   end
 
   def test

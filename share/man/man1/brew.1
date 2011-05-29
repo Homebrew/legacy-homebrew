@@ -190,11 +190,17 @@ If \fB\-\-force\fR is passed, remove a previously cached version and re\-fetch\.
 If \fB\-\-deps\fR is passed, also download dependencies for any listed \fIformulae\fR\.
 .
 .TP
-\fBaudit [\-\-strict]\fR
-Check formulae for Homebrew coding style violations\. This should be run before submitting a new formula for inclusion\.
+\fBaudit [\-\-strict]\fR [\fIformulae\fR]
+Check \fIformulae\fR for Homebrew coding style violations\. This should be run before submitting a new formula\.
+.
+.IP
+If no \fIformulae\fR are provided, all of them are checked\.
 .
 .IP
 If \fB\-\-strict\fR is passed, perform additional stricter checks that may not need to be fixed before submitting\.
+.
+.IP
+\fBaudit\fR exits with a non\-zero status if any errors are found\. This is useful, for instance, for implementing pre\-commit hooks\.
 .
 .TP
 \fBoptions [\-\-compact] [\-\-all]\fR \fIformula\fR

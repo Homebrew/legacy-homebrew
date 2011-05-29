@@ -3,7 +3,7 @@ require 'formula'
 class Lolcode < Formula
   homepage 'http://www.icanhaslolcode.org/'
   url 'https://github.com/justinmeza/lci/tarball/v0.9.2'
-  head 'git://github.com/justinmeza/lolcode.git'
+  head 'https://github.com/justinmeza/lolcode.git'
   md5 'bb757687aabea302351cbbce77e01c26'
 
   def install
