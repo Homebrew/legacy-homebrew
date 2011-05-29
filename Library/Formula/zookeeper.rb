@@ -41,6 +41,13 @@ class Zookeeper < Formula
   end
 
   def install
+    # Don't try to build extensions for PPC
+    if Hardware.is_32_bit?
+      ENV['ARCHFLAGS'] = "-arch i386"
+    else
+      ENV['ARCHFLAGS'] = "-arch i386 -arch x86_64"
+    end
+
     # Prep work for svn compile.
     if ARGV.build_head?
       system "ant", "compile_jute"
