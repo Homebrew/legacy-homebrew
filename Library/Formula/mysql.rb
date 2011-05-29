@@ -95,6 +95,8 @@ class Mysql < Formula
     Start mysqld manually with:
         mysql.server start
 
+        Note: if this fails, you probably forgot to run the first two steps up above
+
     A "/etc/my.cnf" from another install may interfere with a Homebrew-built
     server starting up correctly.
 
