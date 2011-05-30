@@ -9,8 +9,13 @@ class Rabbitmq < Formula
   depends_on 'simplejson' => :python if MacOS.leopard?
 
   def patches
-    # Can't build manpages without a lot of other junk, so disable
-    DATA
+    # (1) Can't build manpages without a lot of other junk, so disable
+    # (2) Patch to build against Erlang R14B03 - http://old.nabble.com/RabbitMQ-and-Erlang-R14B03-td31699881.html
+    #     Can be removed in next stable release.
+    [
+      DATA,
+      "https://github.com/rabbitmq/rabbitmq-server/commit/3ab92151948c0c546cbefe5902efbd92acd14280.patch"
+    ]
   end
 
   def install
