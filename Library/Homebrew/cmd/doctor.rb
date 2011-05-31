@@ -571,11 +571,10 @@ def check_for_autoconf
   which_autoconf = `/usr/bin/which autoconf`.chomp
   unless (which_autoconf == '/usr/bin/autoconf' or which_autoconf == '/Developer/usr/bin/autoconf')
     puts <<-EOS.undent
-      You have an "autoconf" in your path blocking the system version at:
+      An "autoconf" in your path blocking the Xcode-provided version at:
         #{which_autoconf}
 
-      Custom autoconf in general and autoconf 2.66 in particular has issues
-      and will cause some Homebrew formulae to fail.
+      This custom autoconf may cause some Homebrew formulae to fail to compile.
 
     EOS
   end
