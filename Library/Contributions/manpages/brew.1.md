@@ -16,6 +16,27 @@ didn't include with OS X.
     Prints extra, command-specific debugging information.
     Note that `brew -v` by itself is the same as `brew --version`.
 
+## ESSENTIAL COMMANDS
+
+For the full command list, see the COMMANDS section.
+
+  * `install` <formula>:
+    Install <formula>.
+
+  * `remove` <formula>:
+    Uninstall <formula>.
+
+  * `update`:
+    Fetch the newest version of Homebrew from GitHub using `git`(1).
+
+  * `list`:
+    List all installed formulae.
+
+  * `search`, `-S` <text>|/<text>/:
+    Perform a substring search of formula names for <text>. If <text> is
+    surrounded with slashes, then it is interpreted as a regular expression.
+    If no search term is given, all available formula are displayed.
+
 ## COMMANDS
 
   * `-v`, `--version`:
@@ -172,12 +193,17 @@ didn't include with OS X.
 
     If `--deps` is passed, also download dependencies for any listed <formulae>.
 
-  * `audit [--strict]`:
-    Check formulae for Homebrew coding style violations. This should be
-    run before submitting a new formula for inclusion.
+  * `audit [--strict]` [<formulae>]:
+    Check <formulae> for Homebrew coding style violations. This should be
+    run before submitting a new formula.
+
+    If no <formulae> are provided, all of them are checked.
 
     If `--strict` is passed, perform additional stricter checks that may not need
     to be fixed before submitting.
+
+    `audit` exits with a non-zero status if any errors are found. This is useful,
+    for instance, for implementing pre-commit hooks.
 
   * `options [--compact] [--all]` <formula>:
     Display install options specific to <formula>.
