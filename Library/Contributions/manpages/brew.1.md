@@ -16,6 +16,27 @@ didn't include with OS X.
     Prints extra, command-specific debugging information.
     Note that `brew -v` by itself is the same as `brew --version`.
 
+## ESSENTIAL COMMANDS
+
+For the full command list, see the COMMANDS section.
+
+  * `install` <formula>:
+    Install <formula>.
+
+  * `remove` <formula>:
+    Uninstall <formula>.
+
+  * `update`:
+    Fetch the newest version of Homebrew from GitHub using `git`(1).
+
+  * `list`:
+    List all installed formulae.
+
+  * `search`, `-S` <text>|/<text>/:
+    Perform a substring search of formula names for <text>. If <text> is
+    surrounded with slashes, then it is interpreted as a regular expression.
+    If no search term is given, all available formula are displayed.
+
 ## COMMANDS
 
   * `-v`, `--version`:
