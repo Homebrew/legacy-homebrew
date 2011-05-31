@@ -21,6 +21,29 @@ Homebrew is the easiest and most flexible way to install the UNIX tools Apple di
 \fB\-v\fR, \fB\-\-verbose\fR command [options] [formula] \.\.\.
 Prints extra, command\-specific debugging information\. Note that \fBbrew \-v\fR by itself is the same as \fBbrew \-\-version\fR\.
 .
+.SH "ESSENTIAL COMMANDS"
+For the full command list, see the COMMANDS section\.
+.
+.TP
+\fBinstall\fR \fIformula\fR
+Install \fIformula\fR\.
+.
+.TP
+\fBremove\fR \fIformula\fR
+Uninstall \fIformula\fR\.
+.
+.TP
+\fBupdate\fR
+Fetch the newest version of Homebrew from GitHub using \fBgit\fR(1)\.
+.
+.TP
+\fBlist\fR
+List all installed formulae\.
+.
+.TP
+\fBsearch\fR, \fB\-S\fR \fItext\fR|/\fItext\fR/
+Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. If no search term is given, all available formula are displayed\.
+.
 .SH "COMMANDS"
 .
 .TP
