@@ -6,9 +6,9 @@ class PopplerData < Formula
 end
 
 class Poppler < Formula
-  url 'http://poppler.freedesktop.org/poppler-0.16.5.tar.gz'
+  url 'http://poppler.freedesktop.org/poppler-0.16.6.tar.gz'
   homepage 'http://poppler.freedesktop.org/'
-  md5 '2b6e0c26b77a943df3b9bb02d67ca236'
+  md5 '592a564fb7075a845f75321ed6425424'
 
   depends_on 'pkg-config' => :build
   depends_on "qt" if ARGV.include? "--with-qt4"
