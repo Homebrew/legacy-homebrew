@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ufraw < Formula
-  url 'http://downloads.sourceforge.net/project/ufraw/ufraw/ufraw-0.17/ufraw-0.17.tar.gz'
+  url 'http://sourceforge.net/project/downloading.php?group_id=127649&filename=ufraw-0.18.tar.gz'
   homepage 'http://ufraw.sourceforge.net'
-  md5 '5e2c2b4adaea1f6d03eac66e11747fc6'
+  md5 '454f40a402928998a82e2645d9265d96'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'

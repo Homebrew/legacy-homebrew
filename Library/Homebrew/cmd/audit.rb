@@ -277,6 +277,7 @@ module Homebrew extend self
         puts "#{f.name}:"
         puts problems * "\n"
         puts
+        exit 1
       end
     end
   end

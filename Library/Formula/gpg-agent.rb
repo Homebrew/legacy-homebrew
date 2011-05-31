@@ -1,9 +1,9 @@
 require 'formula'
 
 class GpgAgent < Formula
-  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.15.tar.bz2'
+  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.17.tar.bz2'
   homepage 'http://www.gnupg.org/'
-  sha1 '3596668fb9cc8ec0714463a5009f990fc23434b0'
+  sha1 '41ef5460417ca0a1131fc730849fe3afd49ad2de'
 
   depends_on 'libgpg-error'
   depends_on 'libgcrypt'

@@ -271,6 +271,11 @@ module MacOS extend self
     end
   end
 
+  def xcode_version
+    `xcodebuild -version 2>&1` =~ /Xcode (\d(\.\d)*)/
+    $1
+  end
+
   def llvm_build_version
     unless xcode_prefix.to_s.empty?
       llvm_gcc_path = xcode_prefix/"usr/bin/llvm-gcc"
