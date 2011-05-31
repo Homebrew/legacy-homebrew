@@ -28,7 +28,7 @@ class Opencv <Formula
   def install
     makefiles = "cmake -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX:PATH=#{prefix} ."
     makefiles += " -DOPENCV_EXTRA_C_FLAGS='-arch i386 -m32'" if ARGV.include? '--build32'
-    makefiles += " -DWITH_FFPMEG='TRUE'" if ARGV.include? '--ffmpeg'
+    makefiles += " -DWITH_FFMPEG='TRUE'" if ARGV.include? '--ffmpeg'
     system makefiles
     system "make"
     system "make install"
