@@ -1,9 +1,9 @@
 require 'formula'
 
 class Geos < Formula
-  url 'http://download.osgeo.org/geos/geos-3.2.2.tar.bz2'
+  url 'http://download.osgeo.org/geos/geos-3.3.0.tar.bz2'
   homepage 'http://trac.osgeo.org/geos/'
-  md5 'c5d264acac22fe7720f85dadc1fc17c6'
+  md5 '3301f3d1d747b95749384b8a356b022a'
 
   def skip_clean? path
     path.extname == '.la'
