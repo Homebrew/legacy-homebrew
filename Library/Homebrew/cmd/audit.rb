@@ -246,6 +246,8 @@ end
 
 module Homebrew extend self
   def audit
+    errors = false
+
     ff.each do |f|
       problems = []
       problems += audit_formula_instance f
@@ -274,11 +276,13 @@ module Homebrew extend self
       problems += audit_formula_options(f, text_without_patch)
 
       unless problems.empty?
+        errors = true
         puts "#{f.name}:"
         puts problems * "\n"
         puts
-        exit 1
       end
     end
+
+    exit 1 if errors
   end
 end
