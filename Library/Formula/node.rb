@@ -6,6 +6,9 @@ class Node < Formula
   homepage 'http://nodejs.org/'
   md5 '22c9f69370069fe81678592cc8ae48f1'
 
+  # Leopard OpenSSL is not new enough, so use our keg-only one
+  depends_on 'openssl' if MacOS.leopard?
+
   fails_with_llvm
 
   # Stripping breaks dynamic loading
