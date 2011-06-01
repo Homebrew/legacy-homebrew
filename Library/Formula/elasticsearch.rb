@@ -1,9 +1,9 @@
 require 'formula'
 
 class Elasticsearch < Formula
-  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.16.1.tar.gz'
+  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.16.2.tar.gz'
   homepage 'http://www.elasticsearch.org'
-  md5 '8936d521951940dcd9650675b0e38636'
+  md5 '78402a00b959e63f8dc5456caaa9a5f1'
 
   def install
     # Remove Windows files
@@ -24,9 +24,6 @@ class Elasticsearch < Formula
         path:
           logs: #{var}/log
           data: #{var}/data
-
-        boostrap:
-          mlockall: true
       EOS
     end
 
