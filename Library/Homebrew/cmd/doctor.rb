@@ -342,16 +342,19 @@ def check_user_path
       EOS
   end
 
-  unless seen_prefix_sbin
-    puts <<-EOS.undent
-      Some brews install binaries to sbin instead of bin, but Homebrew's
-      sbin was not found in your path.
+  # Don't complain about sbin not being in the path if it doesn't exist
+  if (HOMEBREW_PREFIX+'sbin').exist?
+    unless seen_prefix_sbin
+      puts <<-EOS.undent
+        Some brews install binaries to sbin instead of bin, but Homebrew's
+        sbin was not found in your path.
 
-      Consider editing your .bashrc to add:
-        #{HOMEBREW_PREFIX}/sbin
-      to $PATH.
+        Consider editing your .bashrc to add:
+          #{HOMEBREW_PREFIX}/sbin
+        to $PATH.
 
-      EOS
+        EOS
+    end
   end
 end
 
