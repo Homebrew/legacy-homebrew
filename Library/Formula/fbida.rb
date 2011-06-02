@@ -1,9 +1,9 @@
 require 'formula'
 
 class Fbida < Formula
-  url 'http://dl.bytesex.org/releases/fbida/fbida-2.07.tar.gz'
+  url 'http://dl.bytesex.org/releases/fbida/fbida-2.08.tar.gz'
   homepage 'http://linux.bytesex.org/fbida/'
-  md5 '3e05910fb7c1d9b2bd3e272d96db069c'
+  md5 '9b3693ab26a58194e36b479bffb61ed0'
 
   depends_on 'libexif'
   depends_on 'jpeg'
