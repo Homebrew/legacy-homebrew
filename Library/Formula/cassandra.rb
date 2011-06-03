@@ -27,4 +27,11 @@ class Cassandra < Formula
     prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc}"]
     prefix.install Dir["lib/*.jar"]
   end
+
+  def caveats
+    <<-EOS.undent
+      To view a summary of the changes for this version of Cassandra, please see:
+      https://svn.apache.org/viewvc/cassandra/branches/cassandra-0.8.0/NEWS.txt?revision=1129278&view=co
+    EOS
+  end
 end
