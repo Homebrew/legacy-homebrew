@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cassandra < Formula
-  url 'http://www.mirrorservice.org/sites/ftp.apache.org//cassandra/0.7.5/apache-cassandra-0.7.5-bin.tar.gz'
+  url 'http://mirrors.ibiblio.org/apache//cassandra/0.8.0/apache-cassandra-0.8.0-bin.tar.gz'
   homepage 'http://cassandra.apache.org'
-  md5 '3a74739c1eb277c23b40302cc5a149bc'
+  md5 'ea97a815c3ee8c08ad408eb075f495cf'
 
   def install
     (var+"lib/cassandra").mkpath
@@ -26,5 +26,12 @@ class Cassandra < Formula
     (etc+"cassandra").install Dir["conf/*"]
     prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc}"]
     prefix.install Dir["lib/*.jar"]
+  end
+
+  def caveats
+    <<-EOS.undent
+      To view a summary of the changes for this version of Cassandra, please see:
+      https://svn.apache.org/viewvc/cassandra/branches/cassandra-0.8.0/NEWS.txt?revision=1129278&view=co
+    EOS
   end
 end
