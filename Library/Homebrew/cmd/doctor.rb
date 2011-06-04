@@ -1,3 +1,5 @@
+require 'stringio'
+
 class Volumes
   def initialize
     @volumes = []
@@ -441,13 +443,13 @@ def check_for_iconv
 end
 
 def check_for_config_scripts
-  real_cellar = HOMEBREW_CELLAR.realpath
+  real_cellar = HOMEBREW_CELLAR.exist? && HOMEBREW_CELLAR.realpath
 
   config_scripts = []
 
   path_folders.each do |p|
     next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin"].include? p
-    next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})]
+    next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] if real_cellar
 
     configs = Dir["#{p}/*-config"]
     # puts "#{p}\n    #{configs * ' '}" unless configs.empty?
@@ -504,6 +506,7 @@ def check_for_symlinked_cellar
 end
 
 def check_for_multiple_volumes
+  return unless HOMEBREW_CELLAR.exist?
   volumes = Volumes.new
 
   # Find the volumes for the TMP folder & HOMEBREW_CELLAR
@@ -698,12 +701,10 @@ end
 
 module Homebrew extend self
   def doctor
-    read, write = IO.pipe
+    old_stdout = $stdout
+    $stdout = output = StringIO.new
 
-    if fork == nil
-      read.close
-      $stdout.reopen write
-
+    begin
       check_usr_bin_ruby
       check_homebrew_prefix
       check_for_macgpg2
@@ -737,17 +738,16 @@ module Homebrew extend self
       check_for_autoconf
       check_for_linked_kegonly_brews
       check_for_other_frameworks
+    ensure
+      $stdout = old_stdout
+    end
 
-      exit! 0
+    unless (warnings = output.string).chomp.empty?
+      puts warnings
+      exit 1
     else
-      write.close
-
-      unless (out = read.read).chomp.empty?
-        puts out
-      else
-        puts "Your OS X is ripe for brewing."
-        puts "Any troubles you may be experiencing are likely purely psychosomatic."
-      end
+      puts "Your OS X is ripe for brewing."
+      puts "Any troubles you may be experiencing are likely purely psychosomatic."
     end
   end
 end
