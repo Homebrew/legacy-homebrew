@@ -2,7 +2,7 @@ require 'formula'
 
 class Gtkdatabox < Formula
   url 'http://netcologne.dl.sourceforge.net/project/gtkdatabox/gtkdatabox/0.9.1.1/gtkdatabox-0.9.1.1.tar.gz'
-  homepage ''
+  homepage 'http://sourceforge.net/projects/gtkdatabox/'
   md5 '910921da2198ebd02ea8a7eb622916ce'
 
   depends_on 'gtk+'
@@ -14,7 +14,6 @@ class Gtkdatabox < Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    # system "cmake . #{std_cmake_parameters}"
     system "make install"
   end
 end
