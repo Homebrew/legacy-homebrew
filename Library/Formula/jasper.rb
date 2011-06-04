@@ -1,11 +1,15 @@
 require 'formula'
 
 class Jasper < Formula
-  url 'http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-1.900.1.zip'
-  homepage 'http://www.ece.uvic.ca/~mdadams/jasper/'
+  url 'http://slackware.sukkology.net/packages/jasper/jasper-1.900.1.zip'
+  homepage 'http://slackware.sukkology.net/packages/jasper/'
   md5 'a342b2b4495b3e1394e161eb5d85d754'
 
   depends_on 'jpeg'
+
+  def options
+    [["--universal", "Build a universal binary."]]
+  end
 
   def patches
     DATA
@@ -14,6 +18,7 @@ class Jasper < Formula
   fails_with_llvm "Undefined symbols when linking", :build => "2326"
 
   def install
+    ENV.universal_binary if ARGV.build_universal?
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--enable-shared",

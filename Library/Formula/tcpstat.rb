@@ -1,7 +1,7 @@
 require 'formula'
 
 class Tcpstat < Formula
-  head 'git://github.com/jtt/tcpstat.git'
+  head 'https://github.com/jtt/tcpstat.git'
   homepage 'http://github.com/jtt/tcpstat'
 
   def install

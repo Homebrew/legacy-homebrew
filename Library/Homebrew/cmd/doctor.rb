@@ -342,16 +342,19 @@ def check_user_path
       EOS
   end
 
-  unless seen_prefix_sbin
-    puts <<-EOS.undent
-      Some brews install binaries to sbin instead of bin, but Homebrew's
-      sbin was not found in your path.
+  # Don't complain about sbin not being in the path if it doesn't exist
+  if (HOMEBREW_PREFIX+'sbin').exist?
+    unless seen_prefix_sbin
+      puts <<-EOS.undent
+        Some brews install binaries to sbin instead of bin, but Homebrew's
+        sbin was not found in your path.
 
-      Consider editing your .bashrc to add:
-        #{HOMEBREW_PREFIX}/sbin
-      to $PATH.
+        Consider editing your .bashrc to add:
+          #{HOMEBREW_PREFIX}/sbin
+        to $PATH.
 
-      EOS
+        EOS
+    end
   end
 end
 
@@ -571,11 +574,10 @@ def check_for_autoconf
   which_autoconf = `/usr/bin/which autoconf`.chomp
   unless (which_autoconf == '/usr/bin/autoconf' or which_autoconf == '/Developer/usr/bin/autoconf')
     puts <<-EOS.undent
-      You have an "autoconf" in your path blocking the system version at:
+      An "autoconf" in your path blocking the Xcode-provided version at:
         #{which_autoconf}
 
-      Custom autoconf in general and autoconf 2.66 in particular has issues
-      and will cause some Homebrew formulae to fail.
+      This custom autoconf may cause some Homebrew formulae to fail to compile.
 
     EOS
   end
