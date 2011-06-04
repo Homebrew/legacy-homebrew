@@ -1,8 +1,8 @@
 require 'formula'
 
 class Chicken < Formula
-  url 'http://code.call-cc.org/releases/4.6.0/chicken-4.6.0.tar.gz'
-  md5 '538a93e786e550ad848a040bcd902184'
+  url 'http://code.call-cc.org/releases/4.7.0/chicken-4.7.0.tar.gz'
+  md5 '9389388fdf04c3c64de29633aae12539'
   homepage 'http://www.call-cc.org/'
   head 'git://code.call-cc.org/chicken-core'
 

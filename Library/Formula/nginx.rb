@@ -49,7 +49,7 @@ class Nginx < Formula
     system "./configure", *args
     system "make install"
 
-    (prefix+'org.nginx.plist').write startup_plist
+    (prefix+'org.nginx.nginx.plist').write startup_plist
   end
 
   def caveats
@@ -63,8 +63,8 @@ any other web servers running port 80, of course.
 
 You can start nginx automatically on login with:
     mkdir -p ~/Library/LaunchAgents
-    cp #{prefix}/org.nginx.plist ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/org.nginx.plist
+    cp #{prefix}/org.nginx.nginx.plist ~/Library/LaunchAgents/
+    launchctl load -w ~/Library/LaunchAgents/org.nginx.nginx.plist
 
     CAVEATS
   end
@@ -76,7 +76,7 @@ You can start nginx automatically on login with:
 <plist version="1.0">
   <dict>
     <key>Label</key>
-    <string>org.nginx</string>
+    <string>org.nginx.nginx</string>
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
