@@ -10,7 +10,7 @@ ARGV.extend(HomebrewArgvExtension)
 HOMEBREW_VERSION = '0.8'
 HOMEBREW_WWW = 'http://mxcl.github.com/homebrew/'
 
-HOMEBREW_CACHE = if defined? ENV['HOMEBREW_CACHE']
+HOMEBREW_CACHE = if not defined? HOMEBREW_CACHE and ENV['HOMEBREW_CACHE']
   Pathname.new(ENV['HOMEBREW_CACHE'])
 elsif Process.uid == 0
   # technically this is not the correct place, this cache is for *all users*
