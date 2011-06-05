@@ -2,6 +2,7 @@ require 'formula'
 
 class Metasploit < Formula
   url "https://www.metasploit.com/svn/framework3/trunk/", :using => :svn, :revision => "9321"
+  head "https://www.metasploit.com/svn/framework3/trunk/", :using => :svn
   version "3.4.0"
   homepage 'http://www.metasploit.com/framework/'
 
