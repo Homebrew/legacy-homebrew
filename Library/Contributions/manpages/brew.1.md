@@ -224,6 +224,9 @@ For the full command list, see the COMMANDS section.
   * `update`:
     Fetch the newest version of Homebrew from GitHub using `git`(1).
 
+  * `upgrade`:
+    Updates all outdated packages.
+
   * `uses [--installed]` <formula>:
     Show the formulas that specify <formula> as a dependency. The list is
     not recursive; only one level of dependencies is resolved.
