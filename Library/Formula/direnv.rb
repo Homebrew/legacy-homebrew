@@ -5,7 +5,7 @@ class Direnv < Formula
   url 'https://github.com/zimbatm/direnv/tarball/v0.1.62'
   md5 '28eb1aa6b66f34c1a1990634bea02561'
 
-  head 'git://github.com/zimbatm/direnv.git'
+  head 'https://github.com/zimbatm/direnv.git'
 
   def install
     # App and support files live in libexec
