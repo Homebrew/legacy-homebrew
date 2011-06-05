@@ -5,7 +5,7 @@ class Macvim < Formula
   url 'https://github.com/b4winckler/macvim/tarball/snapshot-57'
   version '7.3-57'
   md5 '2bf4630be2d59f62b8b70870ba1fe0a1'
-  head 'git://github.com/b4winckler/macvim.git', :branch => 'master'
+  head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
   def options
   [

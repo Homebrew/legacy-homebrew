@@ -1,3 +1,5 @@
+require 'stringio'
+
 class Volumes
   def initialize
     @volumes = []
@@ -342,16 +344,19 @@ def check_user_path
       EOS
   end
 
-  unless seen_prefix_sbin
-    puts <<-EOS.undent
-      Some brews install binaries to sbin instead of bin, but Homebrew's
-      sbin was not found in your path.
+  # Don't complain about sbin not being in the path if it doesn't exist
+  if (HOMEBREW_PREFIX+'sbin').exist?
+    unless seen_prefix_sbin
+      puts <<-EOS.undent
+        Some brews install binaries to sbin instead of bin, but Homebrew's
+        sbin was not found in your path.
 
-      Consider editing your .bashrc to add:
-        #{HOMEBREW_PREFIX}/sbin
-      to $PATH.
+        Consider editing your .bashrc to add:
+          #{HOMEBREW_PREFIX}/sbin
+        to $PATH.
 
-      EOS
+        EOS
+    end
   end
 end
 
@@ -438,13 +443,13 @@ def check_for_iconv
 end
 
 def check_for_config_scripts
-  real_cellar = HOMEBREW_CELLAR.realpath
+  real_cellar = HOMEBREW_CELLAR.exist? && HOMEBREW_CELLAR.realpath
 
   config_scripts = []
 
   path_folders.each do |p|
     next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin"].include? p
-    next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})]
+    next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] if real_cellar
 
     configs = Dir["#{p}/*-config"]
     # puts "#{p}\n    #{configs * ' '}" unless configs.empty?
@@ -501,6 +506,7 @@ def check_for_symlinked_cellar
 end
 
 def check_for_multiple_volumes
+  return unless HOMEBREW_CELLAR.exist?
   volumes = Volumes.new
 
   # Find the volumes for the TMP folder & HOMEBREW_CELLAR
@@ -571,11 +577,10 @@ def check_for_autoconf
   which_autoconf = `/usr/bin/which autoconf`.chomp
   unless (which_autoconf == '/usr/bin/autoconf' or which_autoconf == '/Developer/usr/bin/autoconf')
     puts <<-EOS.undent
-      You have an "autoconf" in your path blocking the system version at:
+      An "autoconf" in your path blocking the Xcode-provided version at:
         #{which_autoconf}
 
-      Custom autoconf in general and autoconf 2.66 in particular has issues
-      and will cause some Homebrew formulae to fail.
+      This custom autoconf may cause some Homebrew formulae to fail to compile.
 
     EOS
   end
@@ -696,12 +701,10 @@ end
 
 module Homebrew extend self
   def doctor
-    read, write = IO.pipe
+    old_stdout = $stdout
+    $stdout = output = StringIO.new
 
-    if fork == nil
-      read.close
-      $stdout.reopen write
-
+    begin
       check_usr_bin_ruby
       check_homebrew_prefix
       check_for_macgpg2
@@ -735,17 +738,16 @@ module Homebrew extend self
       check_for_autoconf
       check_for_linked_kegonly_brews
       check_for_other_frameworks
+    ensure
+      $stdout = old_stdout
+    end
 
-      exit! 0
+    unless (warnings = output.string).chomp.empty?
+      puts warnings
+      exit 1
     else
-      write.close
-
-      unless (out = read.read).chomp.empty?
-        puts out
-      else
-        puts "Your OS X is ripe for brewing."
-        puts "Any troubles you may be experiencing are likely purely psychosomatic."
-      end
+      puts "Your OS X is ripe for brewing."
+      puts "Any troubles you may be experiencing are likely purely psychosomatic."
     end
   end
 end

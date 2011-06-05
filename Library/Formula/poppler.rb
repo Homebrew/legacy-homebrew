@@ -6,16 +6,12 @@ class PopplerData < Formula
 end
 
 class Poppler < Formula
-  url 'http://poppler.freedesktop.org/poppler-0.16.5.tar.gz'
+  url 'http://poppler.freedesktop.org/poppler-0.16.6.tar.gz'
   homepage 'http://poppler.freedesktop.org/'
-  md5 '2b6e0c26b77a943df3b9bb02d67ca236'
+  md5 '592a564fb7075a845f75321ed6425424'
 
   depends_on 'pkg-config' => :build
   depends_on "qt" if ARGV.include? "--with-qt4"
-
-  def patches
-    DATA
-  end
 
   def options
     [
@@ -25,6 +21,8 @@ class Poppler < Formula
   end
 
   def install
+    ENV.x11 # For Fontconfig headers
+
     if ARGV.include? "--with-qt4"
       ENV['POPPLER_QT4_CFLAGS'] = `pkg-config QtCore QtGui --libs`.chomp.strip
       ENV.append 'LDFLAGS', "-Wl,-F#{HOMEBREW_PREFIX}/lib"
@@ -43,20 +41,3 @@ class Poppler < Formula
     end
   end
 end
-
-__END__
-fix location of fontconfig:
-  http://www.mail-archive.com/poppler@lists.freedesktop.org/msg03837.html
-
---- a/cpp/Makefile.in	2010-07-08 20:57:56.000000000 +0200
-+++ b/cpp/Makefile.in	2010-08-06 11:11:27.000000000 +0200
-@@ -375,7 +375,8 @@
- INCLUDES = \
- 	-I$(top_srcdir)				\
- 	-I$(top_srcdir)/goo			\
--	-I$(top_srcdir)/poppler
-+	-I$(top_srcdir)/poppler \
-+	$(FONTCONFIG_CFLAGS)
- 
- SUBDIRS = . tests
- poppler_includedir = $(includedir)/poppler/cpp
