@@ -59,10 +59,10 @@ class Git < Formula
 
   def caveats; <<-EOS.undent
     Bash completion has been installed to:
-      #{prefix}/etc/bash_completion.d/
+      #{etc}/bash_completion.d
 
     Emacs support has been installed to:
-      #{share}/doc/git-core/contrib/emacs/
+      #{share}/doc/git-core/contrib/emacs
 
     The rest of the "contrib" has been installed to:
       #{share}/contrib
