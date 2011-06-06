@@ -1,7 +1,7 @@
 require 'formula'
 
 class Redcar < Formula
-  head 'git://github.com/danlucraft/redcar.git'
+  head 'https://github.com/danlucraft/redcar.git'
   homepage 'https://github.com/danlucraft/redcar'
 
   depends_on 'jruby'
