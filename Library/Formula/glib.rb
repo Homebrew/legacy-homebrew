@@ -19,7 +19,7 @@ class Glib < Formula
   fails_with_llvm "Undefined symbol errors while linking"
 
   def patches
-    mp = "http://trac.macports.org/export/78750/trunk/dports/devel/glib2/files/"
+    mp = "https://svn.macports.org/repository/macports/trunk/dports/devel/glib2/files/"
     {
       :p0 => [
         mp+"patch-configure.ac.diff",
@@ -33,10 +33,15 @@ class Glib < Formula
   end
 
   def options
-    [['--test', 'Build a debug build and run tests. NOTE: Tests may hang on "unix-streams".']]
+  [
+    ['--universal', 'Build universal binaries.'],
+    ['--test', 'Build a debug build and run tests. NOTE: Tests may hang on "unix-streams".']
+  ]
   end
 
   def install
+    ENV.universal_binary if ARGV.build_universal?
+
     # Snow Leopard libiconv doesn't have a 64bit version of the libiconv_open
     # function, which breaks things for us, so we build our own
     # http://www.mail-archive.com/gtk-list@gnome.org/msg28747.html
@@ -45,6 +50,11 @@ class Glib < Formula
     iconvd.mkpath
 
     Libiconv.new.brew do
+      # Help out universal builds
+      # TODO - do these lines need to be here?
+      # ENV["ac_cv_func_malloc_0_nonnull"]='yes'
+      # ENV["gl_cv_func_malloc_0_nonnull"]='1'
+
       system "./configure", "--disable-debug", "--disable-dependency-tracking",
                             "--prefix=#{iconvd}",
                             "--enable-static", "--disable-shared"
@@ -63,10 +73,20 @@ class Glib < Formula
 
     args << "--disable-debug" unless build_tests?
 
+    if ARGV.build_universal?
+      # autoconf 2.61 is fine don't worry about it
+      inreplace ["aclocal.m4", "configure.ac"] do |s|
+        s.gsub! "AC_PREREQ([2.62])", "AC_PREREQ([2.61])"
+      end
+
+      # Run autoconf so universal builds will work
+      system "autoconf"
+    end
+
     system "./configure", *args
 
     # Fix for 64-bit support, from MacPorts
-    curl "http://trac.macports.org/export/69965/trunk/dports/devel/glib2/files/config.h.ed", "-O"
+    curl "https://svn.macports.org/repository/macports/trunk/dports/devel/glib2/files/config.h.ed", "-O"
     system "ed - config.h < config.h.ed"
 
     system "make"
