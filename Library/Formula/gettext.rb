@@ -11,6 +11,16 @@ class Gettext < Formula
     [['--with-examples', 'Keep example files.']]
   end
 
+  def patches
+    unless ARGV.include? '--with-examples'
+      # Use a MacPorts patch to disable building examples at all
+      # rather than build them and remove them afterwards.
+      {:p0 =>
+        "https://trac.macports.org/export/79183/trunk/dports/devel/gettext/files/patch-gettext-tools-Makefile.in"
+      }
+    end
+  end
+
   def install
     ENV.libxml2
     ENV.O3 # Issues with LLVM & O4 on Mac Pro 10.6
@@ -21,11 +31,12 @@ class Gettext < Formula
                           "--without-included-glib",
                           "--without-included-libcroco",
                           "--without-included-libxml",
-                          "--without-emacs"
+                          "--without-emacs",
+                          # Don't use VCS systems to create these archives
+                          "--without-git",
+                          "--without-cvs"
     system "make"
     ENV.deparallelize # install doesn't support multiple make jobs
     system "make install"
-
-    (doc+'examples').rmtree unless ARGV.include? '--with-examples'
   end
 end
