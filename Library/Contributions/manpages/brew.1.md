@@ -154,9 +154,8 @@ For the full command list, see the COMMANDS section.
 
   * `ln`, `link` <formula>:
     Symlink all of <formula>'s installed files into the Homebrew prefix. This
-    is done automatically when you install formula. It is useful for DIY
-    installation, or in cases where you want to swap out different versions of
-    the same package that you have installed at the same time.
+    is done automatically when you install formula, but can be useful for DIY
+    installations.
 
   * `list`:
     List all installed formulae.
