@@ -1,16 +1,21 @@
 require 'formula'
 
-class Rabbitmq <Formula
+class Rabbitmq < Formula
   homepage 'http://rabbitmq.com'
-  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.3.1/rabbitmq-server-2.3.1.tar.gz'
-  md5 'ebd57fe2286a4e4e9ce0e3bf88134fe0'
+  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.4.1/rabbitmq-server-2.4.1.tar.gz'
+  md5 '6db31b4353bd44f8ae9b6756b0a831e6'
 
   depends_on 'erlang'
-  depends_on 'simplejson' => :python if MACOS_VERSION < 10.6
+  depends_on 'simplejson' => :python if MacOS.leopard?
 
   def patches
-    # Can't build manpages without a lot of other junk, so disable
-    DATA
+    # (1) Can't build manpages without a lot of other junk, so disable
+    # (2) Patch to build against Erlang R14B03 - http://old.nabble.com/RabbitMQ-and-Erlang-R14B03-td31699881.html
+    #     Can be removed in next stable release.
+    [
+      DATA,
+      "https://github.com/rabbitmq/rabbitmq-server/commit/3ab92151948c0c546cbefe5902efbd92acd14280.patch"
+    ]
   end
 
   def install
@@ -25,7 +30,7 @@ class Rabbitmq <Formula
     (var+'lib/rabbitmq').mkpath
     (var+'log/rabbitmq').mkpath
 
-    %w{rabbitmq-server rabbitmq-multi rabbitmqctl rabbitmq-env}.each do |script|
+    %w{rabbitmq-server rabbitmqctl rabbitmq-env}.each do |script|
       inreplace sbin+script do |s|
         s.gsub! '/etc/rabbitmq', "#{etc}/rabbitmq"
         s.gsub! '/var/lib/rabbitmq', "#{var}/lib/rabbitmq"
@@ -36,6 +41,51 @@ class Rabbitmq <Formula
     # RabbitMQ Erlang binaries are installed in lib/rabbitmq/erlang/lib/rabbitmq-x.y.z/ebin
     # therefore need to add this path for erl -pa
     inreplace sbin+'rabbitmq-env', '${SCRIPT_DIR}/..', target_dir
+
+    (prefix+'com.rabbitmq.rabbitmq-server.plist').write startup_plist
+  end
+
+  def caveats
+    <<-EOS.undent
+    If this is your first install, automatically load on login with:
+        mkdir -p ~/Library/LaunchAgents
+        cp #{prefix}/com.rabbitmq.rabbitmq-server.plist ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/com.rabbitmq.rabbitmq-server.plist
+
+    If this is an upgrade and you already have the com.rabbitmq.rabbitmq-server.plist loaded:
+        launchctl unload -w ~/Library/LaunchAgents/com.rabbitmq.rabbitmq-server.plist
+        cp #{prefix}/com.rabbitmq.rabbitmq-server.plist ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/com.rabbitmq.rabbitmq-server.plist
+
+      To start rabbitmq-server manually:
+        rabbitmq-server
+    EOS
+  end
+
+  def startup_plist
+    return <<-EOPLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
+"http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>com.rabbitmq.rabbitmq-server</string>
+    <key>Program</key>
+    <string>/usr/local/sbin/rabbitmq-server</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>UserName</key>
+    <string>#{`whoami`.chomp}</string>
+    <!-- need erl in the path -->
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>PATH</key>
+      <string>/usr/local/sbin:/usr/bin:/bin:/usr/local/bin</string>
+    </dict>
+  </dict>
+</plist>
+    EOPLIST
   end
 end
 

@@ -1,14 +1,18 @@
 require 'formula'
 
-class Eigen <Formula
-  url 'http://bitbucket.org/eigen/eigen/get/2.0.15.tar.bz2'
+class Eigen < Formula
+  url 'http://bitbucket.org/eigen/eigen/get/3.0.0.tar.bz2'
   homepage 'http://eigen.tuxfamily.org/'
-  md5 'a96fe69d652d7b3b1d990c99bbc518fb'
+  md5 '046baf7072f008653361f8321560a26f'
 
   depends_on 'cmake' => :build
 
   def install
-    system "cmake . #{std_cmake_parameters}"
-    system "make install"
+    mkdir 'eigen-build'
+    Dir.chdir 'eigen-build' do
+      system "cmake ..  #{std_cmake_parameters} -DCMAKE_BUILD_TYPE=Release"
+      system "make"
+      system "make install"
+    end
   end
 end

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Wxmac <Formula
+class Wxmac < Formula
   url 'http://downloads.sourceforge.net/project/wxwindows/2.8.11/wxMac-2.8.11.tar.bz2'
   homepage 'http://www.wxwidgets.org'
   md5 '8d84bfdc43838e2d2f75031f62d1864f'
@@ -18,7 +18,7 @@ class Wxmac <Formula
       ENV.append compiler_flag, "-arch i386"
     end
 
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--enable-unicode"
     system "make install"
   end
 end

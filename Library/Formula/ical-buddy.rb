@@ -1,11 +1,11 @@
 require 'formula'
 
-class IcalBuddy <Formula
+class IcalBuddy < Formula
   homepage 'http://hasseg.org/icalBuddy/'
   head "http://hasseg.org/git-public/icalBuddy.git", :using => :git
 
   def install
-    arch = snow_leopard_64? ? "x86_64" : "i386"
+    arch = MacOS.prefer_64_bit? ? "x86_64" : "i386"
 
     inreplace "Makefile", "-arch i386 -arch x86_64 -arch ppc", "-arch #{arch}"
     system "make icalBuddy icalBuddy.1 icalBuddyLocalization.1 icalBuddyConfig.1"

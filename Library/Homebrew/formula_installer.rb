@@ -1,100 +1,66 @@
+require 'exceptions'
 require 'formula'
 require 'set'
 
 class FormulaInstaller
-  @@attempted = Set.new
+  attr :ignore_deps, true
 
-  def initialize
-    @install_deps = true
+  def initialize f
+    @f = f
   end
 
-  attr_writer :install_deps
-
-  def self.expand_deps f
-    deps = []
-    f.deps.collect do |dep|
-      dep = Formula.factory dep
-      deps += expand_deps dep
-      deps << dep
+  # raises Homebrew::InstallationErrors in the event of install failures
+  def go
+    if @f.installed? and not ARGV.force?
+      raise FormulaAlreadyInstalledError, @f
     end
-    deps
-  end
 
-  def pyerr dep
-    brew_pip = ' brew install pip &&' unless Formula.factory('pip').installed?
-    <<-EOS.undent
-    Unsatisfied dependency, #{dep}
-    Homebrew does not provide Python dependencies, pip does:
-
-        #{brew_pip} pip install #{dep}
-    EOS
-  end
-  def plerr dep; <<-EOS.undent
-    Unsatisfied dependency, #{dep}
-    Homebrew does not provide Perl dependencies, cpan does:
-
-        cpan -i #{dep}
-    EOS
-  end
-  def rberr dep; <<-EOS.undent
-    Unsatisfied dependency "#{dep}"
-    Homebrew does not provide Ruby dependencies, rubygems does:
-
-        gem install #{dep}
-    EOS
-  end
-  def jrberr dep; <<-EOS.undent
-    Unsatisfied dependency "#{dep}"
-    Homebrew does not provide JRuby dependencies, rubygems does:
-
-        jruby -S gem install #{dep}
-    EOS
-  end
-
-  def check_external_deps f
-    return unless f.external_deps
-
-    f.external_deps[:python].each do |dep|
-      raise pyerr(dep) unless quiet_system "/usr/bin/env", "python", "-c", "import #{dep}"
-    end
-    f.external_deps[:perl].each do |dep|
-      raise plerr(dep) unless quiet_system "/usr/bin/env", "perl", "-e", "use #{dep}"
-    end
-    f.external_deps[:ruby].each do |dep|
-      raise rberr(dep) unless quiet_system "/usr/bin/env", "ruby", "-rubygems", "-e", "require '#{dep}'"
-    end
-    f.external_deps[:jruby].each do |dep|
-      raise jrberr(dep) unless quiet_system "/usr/bin/env", "jruby", "-rubygems", "-e", "require '#{dep}'"
-    end
-  end
-
-  def check_formula_deps f
-    FormulaInstaller.expand_deps(f).each do |dep|
+    unless ignore_deps
+      needed_deps = @f.recursive_deps.reject {|d| d.installed?}
+      unless needed_deps.empty?
+        puts "Also installing dependencies: "+needed_deps*", "
+        needed_deps.each do |dep|
+          FormulaInstaller.install_formula dep
+        end
+      end
       begin
-        install_private dep unless dep.installed?
-      rescue
-        #TODO continue if this is an optional dep
-        raise
+        FormulaInstaller.check_external_deps @f
+      rescue UnsatisfiedExternalDependencyError => e
+        onoe e.message
+        exit! 1
       end
     end
+    FormulaInstaller.install_formula @f
   end
 
-  def install f
-    if @install_deps
-      check_external_deps f
-      check_formula_deps f
+  def self.check_external_deps f
+    [:ruby, :python, :perl, :jruby].each do |type|
+      f.external_deps[type].each do |dep|
+        unless quiet_system(*external_dep_check(dep, type))
+          raise UnsatisfiedExternalDependencyError.new(dep, type)
+        end
+      end if f.external_deps[type]
     end
-    install_private f
+  end
+
+  def self.external_dep_check dep, type
+    case type
+      when :python then %W{/usr/bin/env python -c import\ #{dep}}
+      when :jruby then %W{/usr/bin/env jruby -rubygems -e require\ '#{dep}'}
+      when :ruby then %W{/usr/bin/env ruby -rubygems -e require\ '#{dep}'}
+      when :perl then %W{/usr/bin/env perl -e use\ #{dep}}
+    end
   end
 
   private
 
-  def install_private f
-    return if @@attempted.include? f.name
-    @@attempted << f.name
+  def self.install_formula f
+    @attempted ||= Set.new
+    raise FormulaInstallationAlreadyAttemptedError, f if @attempted.include? f
+    @attempted << f
 
     # 1. formulae can modify ENV, so we must ensure that each
-    #    installation has a pristine ENV when it starts, forking now is 
+    #    installation has a pristine ENV when it starts, forking now is
     #    the easiest way to do this
     # 2. formulae have access to __END__ the only way to allow this is
     #    to make the formula script the executed script
@@ -102,24 +68,29 @@ class FormulaInstaller
     # I'm guessing this is not a good way to do this, but I'm no UNIX guru
     ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
 
-     begin #watch_out_for_spill do #disabled temporarily, see Issue #124
-      fork do
-        begin
-          read.close
-          exec '/usr/bin/nice', '/usr/bin/ruby', '-I', File.dirname(__FILE__), '-rinstall', f.path, '--', *ARGV.options_only
-        rescue => e
-          Marshal.dump(e, write)
-          write.close
-          exit! 1
-        end
-      end
-      ignore_interrupts do # because child proc will get it and marshall it back
+    fork do
+      begin
+        read.close
+        exec '/usr/bin/nice',
+             '/usr/bin/ruby',
+             '-I', Pathname.new(__FILE__).dirname,
+             '-rinstall',
+             f.path,
+             '--',
+             *ARGV.options_only
+      rescue Exception => e
+        Marshal.dump(e, write)
         write.close
-        Process.wait
-        data = read.read
-        raise Marshal.load(data) unless data.nil? or data.empty?
-        raise "Suspicious installation failure" unless $?.success?
+        exit! 1
       end
+    end
+
+    ignore_interrupts do # the fork will receive the interrupt and marshall it back
+      write.close
+      Process.wait
+      data = read.read
+      raise Marshal.load(data) unless data.nil? or data.empty?
+      raise "Suspicious installation failure" unless $?.success?
     end
   end
 end

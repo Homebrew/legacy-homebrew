@@ -1,12 +1,12 @@
 require 'formula'
 
-class VipMan <Formula
+class VipMan < Formula
   url 'http://www.cs.duke.edu/~des/scripts/vip.man'
   md5 'e94b80d7e594c68e13813e371250e521'
   version '19970805'
 end
 
-class Vip <Formula
+class Vip < Formula
   url 'http://www.cs.duke.edu/~des/scripts/vip'
   version '19971113'
   homepage 'http://www.cs.duke.edu/~des/vip.html'

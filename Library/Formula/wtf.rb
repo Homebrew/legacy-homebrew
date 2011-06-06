@@ -1,6 +1,6 @@
 require 'formula'
 
-class Wtf <Formula
+class Wtf < Formula
   url 'http://mirror.aarnet.edu.au/pub/FreeBSD/ports/distfiles/wtf-20080926.tar.gz'
   homepage 'http://cvsweb.netbsd.org/bsdweb.cgi/src/games/wtf/'
   md5 '5f3ad46d90a71d30ecf281dbd58e9d20'

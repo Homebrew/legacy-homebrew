@@ -1,6 +1,6 @@
 require 'formula'
 
-class SshCopyId <Formula
+class SshCopyId < Formula
   url 'http://ftp.heanet.ie/pub/OpenBSD/OpenSSH/portable/openssh-5.5p1.tar.gz'
   version '5.5p1'
   homepage 'http://openssh.org/'
