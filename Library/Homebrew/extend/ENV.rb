@@ -245,7 +245,7 @@ Please take one of the following actions:
     append 'LDFLAGS', '-arch i386'
   end
 
-  # i386 and x86_64 only, no PPC
+  # i386 and x86_64 (no PPC)
   def universal_binary
     append_to_cflags '-arch i386 -arch x86_64'
     self.O3 if self['CFLAGS'].include? '-O4' # O4 seems to cause the build to fail
