@@ -5,6 +5,7 @@ class Jpeg < Formula
   version '8c'
   md5 'a2c10c04f396a9ce72894beb18b4e1f9'
   homepage 'http://www.ijg.org'
+  skip_clean [ 'lib' ]
 
   def install
     ENV.universal_binary
