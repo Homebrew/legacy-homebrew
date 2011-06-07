@@ -15,9 +15,9 @@ end
 def audit_formula_text name, text
   problems = []
 
-  if text =~ /<Formula/
-    problems << " * Use a space in class inheritance: class Foo < Formula"
-  end if strict?
+  if text =~ /<(Formula|AmazonWebServicesFormula)/
+    problems << " * Use a space in class inheritance: class Foo < #{$1}"
+  end
 
   # Commented-out cmake support from default template
   if (text =~ /# depends_on 'cmake'/) or (text =~ /# system "cmake/)
