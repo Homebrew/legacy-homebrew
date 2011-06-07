@@ -1,8 +1,8 @@
 require 'formula'
 
 class Vf < Formula
-  version "0.0.0-r61920"
-  url 'https://github.com/glejeune/vf/tarball/master'
+  version "0.0.1"
+  url 'https://github.com/glejeune/vf/tarball/0.0.1'
   homepage 'https://github.com/glejeune/vf'
   md5 'df8e9f57803467ffe9241701244c9cf5'
   head 'git://github.com/glejeune/vf.git'
