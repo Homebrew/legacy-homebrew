@@ -263,7 +263,20 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     @url =~ %r(git://) or @url =~ %r(https://github.com/)
   end
 
+  def use_http_fallback
+    if @url[0,3] == 'git'
+      puts "using http:// instead of git:// protocol"
+      if not ENV['HOMEBREW_GIT_VIA_HTTP']
+        puts "(force using http:// by setting the environment variable HOMEBREW_GIT_VIA_HTTP)"
+      end
+      @url[0,3] = 'http'
+    end
+  end
+
   def fetch
+    if ENV['HOMEBREW_GIT_VIA_HTTP']
+      use_http_fallback
+    end
     raise "You must install Git:\n\n"+
           "  brew install git\n" \
           unless system "/usr/bin/which git"
@@ -285,11 +298,28 @@ class GitDownloadStrategy < AbstractDownloadStrategy
       git_args = %w(git clone)
       git_args << "--depth" << "1" if support_depth?
       git_args << @url << @clone
-      safe_system *git_args
+      safe_system *git_args rescue begin
+        if @url[0,3] == 'git'
+          use_http_fallback
+          git_args = %w(git clone)
+          git_args << "--depth" << "1" if support_depth?
+          git_args << @url << @clone
+          safe_system *git_args
+        else
+          raise
+        end
+      end
     else
       puts "Updating #{@clone}"
-      Dir.chdir(@clone) do
-        quiet_safe_system 'git', 'fetch', @url
+      Dir.chdir @clone do
+        quiet_safe_system 'git', 'fetch', @url rescue begin
+          if @url[0,3] == 'git'
+           use_http_fallback
+           quiet_safe_system 'git', 'fetch', @url
+          else
+            raise
+          end
+        end
         # If we're going to checkout a tag, then we need to fetch new tags too.
         quiet_safe_system 'git', 'fetch', '--tags' if @spec == :tag
       end
