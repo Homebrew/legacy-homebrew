@@ -4,7 +4,7 @@ class Vf < Formula
   version "0.0.1"
   url 'https://github.com/glejeune/vf/tarball/0.0.1'
   homepage 'https://github.com/glejeune/vf'
-  md5 'df8e9f57803467ffe9241701244c9cf5'
+  md5 'c1d1c7dd52a960b01c5870165593dc35'
   head 'git://github.com/glejeune/vf.git'
 
   def install
