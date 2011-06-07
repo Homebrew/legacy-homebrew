@@ -8,6 +8,10 @@ class Libdvdread < Formula
 
   depends_on 'libdvdcss' => :optional
 
+  def patches
+    "http://dvdbackup.sourceforge.net/DVDFileStat.patch"
+  end
+
   def install
     system "./autogen.sh"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
