@@ -20,9 +20,12 @@ class Emacs < Formula
   end
 
   def patches
-    if ARGV.include? "--cocoa" and not ARGV.build_head?
-      "https://github.com/downloads/typester/emacs/feature-fullscreen.patch"
+    p = []
+    if not ARGV.build_head?
+      p << "https://gist.github.com/raw/1012602/a5153729e1bfc7fc06a7507f80fcaeb37e44e6f5/emacs23_3-xcode4.patch"
+      p << "https://github.com/downloads/typester/emacs/feature-fullscreen.patch" if ARGV.include? "--cocoa"
     end
+    p << "https://gist.github.com/raw/999057/9c6212c3970a113fd65f19e5e179fe7ea8c581c2/emacs-colors.patch" if ARGV.include? "--cocoa"
   end
 
   def caveats
