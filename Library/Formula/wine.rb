@@ -15,7 +15,6 @@ class Wine < Formula
 
   depends_on 'jpeg'
   depends_on 'libicns'
-  depends_on 'gnutls'
 
   fails_with_llvm
 
