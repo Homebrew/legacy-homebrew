@@ -20,9 +20,6 @@ class Mtr < Formula
     args << "--without-gtk" if ARGV.include? "--no-gtk"
     system "./configure", *args
     system "make install"
-  end
-
-  def caveats
-    "Run mtr sudo'd in order to avoid the error: `unable to get raw sockets'"
+    system "sudo chown root /usr/local/Cellar/mtr/0.80/sbin/mtr"
   end
 end
