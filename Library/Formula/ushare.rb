@@ -11,7 +11,10 @@ class Ushare < Formula
 
   def patches
     { :p0 =>
-      "http://svn.macports.org/repository/macports/trunk/dports/net/ushare/files/patch-configure.diff"
+      "http://svn.macports.org/repository/macports/trunk/dports/net/ushare/files/patch-configure.diff",
+      # applies some modifications to keep with up to date libupnp (should be upstream I guess)
+      :p1 =>
+      "http://dev.openwrt.org/browser/packages/multimedia/ushare/patches/200-compile-fixes.patch?format=txt"
     }
   end
 
