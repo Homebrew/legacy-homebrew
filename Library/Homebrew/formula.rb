@@ -350,7 +350,9 @@ class Formula
 
   def self.canonical_name name
     formula_with_that_name = HOMEBREW_REPOSITORY+"Library/Formula/#{name}.rb"
-    possible_alias = HOMEBREW_REPOSITORY+"Library/Aliases"+name
+    possible_alias = HOMEBREW_REPOSITORY+"Library/Aliases/#{name}"
+    possible_cached_formula = HOMEBREW_CACHE_FORMULA+"#{name}.rb"
+
     if name.include? "/"
       # Don't resolve paths or URLs
       name
@@ -358,6 +360,8 @@ class Formula
       name
     elsif possible_alias.file?
       possible_alias.realpath.basename('.rb').to_s
+    elsif possible_cached_formula.file?
+      possible_cached_formula.to_s
     else
       name
     end
@@ -371,26 +375,25 @@ class Formula
     if name =~ %r[(https?|ftp)://]
       url = name
       name = Pathname.new(name).basename
-      target_file = (HOMEBREW_CACHE+"Formula"+name)
+      target_file = HOMEBREW_CACHE_FORMULA+name
       name = name.basename(".rb").to_s
 
-      (HOMEBREW_CACHE+"Formula").mkpath
+      HOMEBREW_CACHE_FORMULA.mkpath
       FileUtils.rm target_file, :force => true
       curl url, '-o', target_file
 
       require target_file
       install_type = :from_url
     else
-      # Check if this is a name or pathname
+      name = Formula.canonical_name(name)
+      # If name was a path or mapped to a cached formula
       if name.include? "/"
-        # For paths, just require the path
         require name
         path = Pathname.new(name)
         name = path.stem
         install_type = :from_path
         target_file = path.to_s
       else
-        name = Formula.canonical_name(name)
         # For names, map to the path and then require
         require Formula.path(name)
         install_type = :from_name
@@ -400,7 +403,9 @@ class Formula
     begin
       klass_name = self.class_s(name)
       klass = Object.const_get klass_name
-    rescue NameError
+    rescue NameError => e
+      puts "NameError"
+      puts e
       # TODO really this text should be encoded into the exception
       # and only shown if the UI deems it correct to show it
       onoe "class \"#{klass_name}\" expected but not found in #{name}.rb"
@@ -410,7 +415,9 @@ class Formula
 
     return klass.new(name) if install_type == :from_name
     return klass.new(name, target_file)
-  rescue LoadError
+  rescue LoadError => e
+    puts "LoadError"
+    puts e
     raise FormulaUnavailableError.new(name)
   end
 
