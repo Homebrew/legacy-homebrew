@@ -7,8 +7,9 @@ class Xdebug < Formula
 
   def install
     Dir.chdir "xdebug-#{version}" do
-      # See https://github.com/mxcl/homebrew/issues/issue/69
-      ENV.universal_binary unless Hardware.is_64_bit?
+      # Always build a universal binary, in case the user has
+      # a 32-bit version of PHP.
+      ENV.universal_binary
 
       system "phpize"
       system "./configure", "--disable-debug", "--disable-dependency-tracking",
