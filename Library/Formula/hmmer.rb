@@ -7,7 +7,20 @@ class Hmmer < Formula
   version '3.0'
 
   def install
-    system "./configure","--prefix=#{prefix}" #,"--mandir=#{man}"
+    system "./configure","--prefix=#{prefix}"
     system "make install"
+
+    # Install man pages manually as long as automatic man page install
+    # is deactivated in the HMMER makefile.
+    # In case this changes in future versions of HMMER, those lines
+    # can be removed:
+
+    Dir.chdir "documentation/man"
+    # rename all *.man files to *.1 and install them into man1 section:
+    Dir.glob("*.man") do |file|
+           newname = file.sub(/.man/, ".1")
+           File.rename(file, newname)
+           man1.install newname
+    end
   end
 end
