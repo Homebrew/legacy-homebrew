@@ -17,10 +17,8 @@ class Hmmer < Formula
 
     Dir.chdir "documentation/man"
     # rename all *.man files to *.1 and install them into man1 section:
-    Dir.glob("*.man") do |file|
-           newname = file.sub(/.man/, ".1")
-           File.rename(file, newname)
-           man1.install newname
+    Dir.glob("*.man") do |filename|
+	   man1.install filename => filename.sub(/\.man/, ".1")
     end
   end
 end
