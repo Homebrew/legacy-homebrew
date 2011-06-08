@@ -403,9 +403,7 @@ class Formula
     begin
       klass_name = self.class_s(name)
       klass = Object.const_get klass_name
-    rescue NameError => e
-      puts "NameError"
-      puts e
+    rescue NameError
       # TODO really this text should be encoded into the exception
       # and only shown if the UI deems it correct to show it
       onoe "class \"#{klass_name}\" expected but not found in #{name}.rb"
@@ -415,9 +413,7 @@ class Formula
 
     return klass.new(name) if install_type == :from_name
     return klass.new(name, target_file)
-  rescue LoadError => e
-    puts "LoadError"
-    puts e
+  rescue LoadError
     raise FormulaUnavailableError.new(name)
   end
 
