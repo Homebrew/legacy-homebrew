@@ -274,6 +274,13 @@ Some sample commands ship with Homebrew and are enabled by default.
 
 ## ENVIRONMENT
 
+  * HOMEBREW\_CACHE:
+    If set, instructs Homebrew to use the give folder as the download cache.
+    Otherwise, `~/Library/Caches/Homebrew` is used.
+
+    This can be used to keep downloads out of your home folder, if you have
+    it mounted on an SSD for instance.
+
   * HOMEBREW\_DEBUG:
     If set, instructs Homebrew to always assume `--debug` when running
     commands.
