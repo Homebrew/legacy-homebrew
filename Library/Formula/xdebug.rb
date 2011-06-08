@@ -5,16 +5,11 @@ class Xdebug < Formula
   homepage 'http://xdebug.org'
   md5 'fcdf078e715f44b77f13bac721ad63ce'
 
-  def options
-    [
-      ['--universal', 'Make xdebug a universal binary']
-    ]
-  end
-
   def install
     Dir.chdir "xdebug-#{version}" do
-      # See https://github.com/mxcl/homebrew/issues/issue/69
-      ENV.universal_binary if ARGV.include?('--universal') or Hardware.is_32_bit?
+      # Always build a universal binary, in case the user has
+      # a 32-bit version of PHP.
+      ENV.universal_binary
 
       system "phpize"
       system "./configure", "--disable-debug", "--disable-dependency-tracking",
