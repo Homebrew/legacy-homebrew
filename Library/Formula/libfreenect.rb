@@ -7,7 +7,7 @@ class Libfreenect <Formula
   md5 ''
   
   depends_on 'libusb-freenect'
-  depends_on 'cmake'
+  #depends_on 'cmake'
 
   def install
     mkdir "build"
