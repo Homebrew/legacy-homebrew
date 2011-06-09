@@ -26,7 +26,7 @@ diff --git a/configure b/configure
 index a4e8516..de7f226 100755
 --- a/configure
 +++ b/configure
-@@ -8171,9 +8171,7 @@ else
+@@ -8171,9 +8171,9 @@ else
  $as_echo "no" >&6; }
  fi
  
