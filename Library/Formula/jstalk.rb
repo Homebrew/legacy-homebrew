@@ -1,12 +1,12 @@
 require 'formula'
 
 class Jstalk < Formula
-  url 'git://github.com/ccgus/jstalk.git', :tag => "v1.0.1"
+  url 'https://github.com/ccgus/jstalk.git', :tag => "v1.0.1"
   homepage 'http://jstalk.org/'
   version '1.0.1'
 
   def install
-    if MACOS_VERSION < 10.6
+    if MacOS.leopard?
       onoe "jstalk requires Mac OS X 10.6+"
       exit 1
     end

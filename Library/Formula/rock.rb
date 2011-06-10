@@ -4,7 +4,7 @@ class Rock < Formula
   url 'https://github.com/downloads/nddrylliog/rock/rock-0.9.1-source.tar.bz2'
   homepage 'http://ooc-lang.org'
   md5 '66c35a7d9271732790f08a4839cee287'
-  head 'git://github.com/nddrylliog/rock.git'
+  head 'https://github.com/nddrylliog/rock.git'
 
   def install
       # make rock using provided bootstrap

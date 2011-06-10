@@ -6,10 +6,10 @@ class Disco < Formula
   md5 '47a740b84ef61cea8ba3644610e25083'
   # Periods in the install path cause disco-worker to complain so change to underscores.
   version '0_3_2'
-  head 'git://github.com/tuulos/disco.git'
+  head 'https://github.com/tuulos/disco.git'
 
   depends_on 'erlang'
-  depends_on 'simplejson' => :python if MACOS_VERSION < 10.6
+  depends_on 'simplejson' => :python if MacOS.leopard?
   depends_on 'libcmph'
 
   def install

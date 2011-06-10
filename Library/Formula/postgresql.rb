@@ -3,11 +3,11 @@ require 'hardware'
 
 class Postgresql < Formula
   homepage 'http://www.postgresql.org/'
-  url 'http://ftp9.us.postgresql.org/pub/mirrors/postgresql/source/v9.0.3/postgresql-9.0.3.tar.bz2'
-  md5 '928df8c40bb012ad10756e58b70516fb'
+  url 'http://ftp9.us.postgresql.org/pub/mirrors/postgresql/source/v9.0.4/postgresql-9.0.4.tar.bz2'
+  md5 '80390514d568a7af5ab61db1cda27e29'
 
   depends_on 'readline'
-  depends_on 'libxml2' if MACOS_VERSION < 10.6 # Leopard libxml is too old
+  depends_on 'libxml2' if MacOS.leopard? # Leopard libxml is too old
   depends_on 'ossp-uuid'
 
   def options
@@ -20,7 +20,7 @@ class Postgresql < Formula
   skip_clean :all
 
   def install
-    ENV.libxml2 if MACOS_VERSION >= 10.6
+    ENV.libxml2 if MacOS.snow_leopard?
 
     args = ["--disable-debug",
             "--prefix=#{prefix}",
@@ -102,23 +102,27 @@ See:
 
 
 If this is your first install, create a database with:
-    initdb #{var}/postgres
+  initdb #{var}/postgres
 
 If this is your first install, automatically load on login with:
-    mkdir -p ~/Library/LaunchAgents
-    cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
+  mkdir -p ~/Library/LaunchAgents
+  cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
+  launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
 
 If this is an upgrade and you already have the org.postgresql.postgres.plist loaded:
-    launchctl unload -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
-    cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
+  launchctl unload -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
+  cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
+  launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
 
 Or start manually with:
-    pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start
+  pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start
 
 And stop with:
-    pg_ctl -D #{var}/postgres stop -s -m fast
+  pg_ctl -D #{var}/postgres stop -s -m fast
+
+
+Some machines may require provisioning of shared memory:
+  http://www.postgresql.org/docs/current/static/kernel-resources.html#SYSVIPC
 EOS
 
     if MacOS.prefer_64_bit? then

@@ -4,18 +4,20 @@ class Wine < Formula
   homepage 'http://www.winehq.org/'
 
   if ARGV.flag? '--devel'
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.17.tar.bz2'
-    sha1 'bdad018e266ed3ae8c17c186e435bb775edcc6bf'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.21.tar.bz2'
+    sha256 '6c089df0d164c442a5620f7b5eee48ab21fd746a75793731cc3a028b20df57a0'
   else
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.2.tar.bz2'
-    sha1 '8b37c8e0230dd6a665d310054f4e36dcbdab7330'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.3.tar.bz2'
+    sha256 '3fd8d3f2b466d07eb90b8198cdc9ec3005917a4533db7b8c6c69058a2e57c61f'
   end
 
   head 'git://source.winehq.org/git/wine.git'
 
   depends_on 'jpeg'
   depends_on 'libicns'
-  depends_on 'gnutls'
+
+  # gnutls not needed since 1.3.16
+  depends_on 'gnutls' unless ARGV.flag? '--devel' or ARGV.build_head?
 
   fails_with_llvm
 
@@ -50,7 +52,7 @@ EOS
             "--with-x",
             "--with-coreaudio",
             "--with-opengl"]
-    args << "--disable-win16" if MACOS_VERSION < 10.6
+    args << "--disable-win16" if MacOS.leopard?
 
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
     args << "--without-mpg123" if Hardware.is_64_bit?
