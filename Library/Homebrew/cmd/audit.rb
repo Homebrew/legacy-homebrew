@@ -15,9 +15,9 @@ end
 def audit_formula_text name, text
   problems = []
 
-  if text =~ /<Formula/
-    problems << " * Use a space in class inheritance: class Foo < Formula"
-  end if strict?
+  if text =~ /<(Formula|AmazonWebServicesFormula)/
+    problems << " * Use a space in class inheritance: class Foo < #{$1}"
+  end
 
   # Commented-out cmake support from default template
   if (text =~ /# depends_on 'cmake'/) or (text =~ /# system "cmake/)
@@ -246,6 +246,8 @@ end
 
 module Homebrew extend self
   def audit
+    errors = false
+
     ff.each do |f|
       problems = []
       problems += audit_formula_instance f
@@ -274,10 +276,13 @@ module Homebrew extend self
       problems += audit_formula_options(f, text_without_patch)
 
       unless problems.empty?
+        errors = true
         puts "#{f.name}:"
         puts problems * "\n"
         puts
       end
     end
+
+    exit 1 if errors
   end
 end

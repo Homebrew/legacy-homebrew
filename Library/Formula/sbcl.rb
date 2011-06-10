@@ -8,9 +8,9 @@ end
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.47/sbcl-1.0.47-source.tar.bz2'
-  md5 '2e90fca5ffec9ce19ed232b24f09cd0a'
-  head 'git://sbcl.boinkor.net/sbcl.git'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.49/sbcl-1.0.49-source.tar.bz2'
+  md5 '8d15c6af6388fcd9efbd13f301b7ba33'
+  head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
   fails_with_llvm "Compilation fails with LLVM."
 
