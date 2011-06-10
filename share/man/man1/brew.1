@@ -308,6 +308,13 @@ $ ls `brew \-\-repository`/Library/Contributions/examples
 .SH "ENVIRONMENT"
 .
 .TP
+HOMEBREW_CACHE
+If set, instructs Homebrew to use the give folder as the download cache\. Otherwise, \fB~/Library/Caches/Homebrew\fR is used\.
+.
+.IP
+This can be used to keep downloads out of your home folder, if you have it mounted on an SSD for instance\.
+.
+.TP
 HOMEBREW_DEBUG
 If set, instructs Homebrew to always assume \fB\-\-debug\fR when running commands\.
 .
