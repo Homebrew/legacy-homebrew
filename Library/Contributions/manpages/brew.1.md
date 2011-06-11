@@ -154,9 +154,8 @@ For the full command list, see the COMMANDS section.
 
   * `ln`, `link` <formula>:
     Symlink all of <formula>'s installed files into the Homebrew prefix. This
-    is done automatically when you install formula. It is useful for DIY
-    installation, or in cases where you want to swap out different versions of
-    the same package that you have installed at the same time.
+    is done automatically when you install formula, but can be useful for DIY
+    installations.
 
   * `list`:
     List all installed formulae.
@@ -274,6 +273,13 @@ Some sample commands ship with Homebrew and are enabled by default.
 
 
 ## ENVIRONMENT
+
+  * HOMEBREW\_CACHE:
+    If set, instructs Homebrew to use the give folder as the download cache.
+    Otherwise, `~/Library/Caches/Homebrew` is used.
+
+    This can be used to keep downloads out of your home folder, if you have
+    it mounted on an SSD for instance.
 
   * HOMEBREW\_DEBUG:
     If set, instructs Homebrew to always assume `--debug` when running

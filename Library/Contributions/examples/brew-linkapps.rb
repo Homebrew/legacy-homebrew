@@ -5,6 +5,7 @@ HOME_APPS = File.expand_path("~/Applications")
 
 unless File.exist? HOME_APPS
   opoo "#{HOME_APPS} does not exist, stopping."
+  puts "Run `mkdir ~/Applications` first."
   exit 1
 end
 
@@ -13,7 +14,7 @@ HOMEBREW_CELLAR.subdirs.each do |keg|
   name = keg.basename.to_s
 
   if ((f = Formula.factory(name)).installed? rescue false)
-    Dir["#{f.prefix}/*.app"].each do |p|
+    Dir["#{f.installed_prefix}/*.app", "#{f.installed_prefix}/libexec/*.app"].each do |p|
       puts "Linking #{p}"
       appname = File.basename(p)
       target = HOME_APPS+"/"+appname
