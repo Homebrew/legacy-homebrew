@@ -60,7 +60,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
         raise
       end
     else
-      puts "File already downloaded and cached to #{HOMEBREW_CACHE}"
+      puts "File already downloaded in #{File.dirname(@tarball_path)}"
     end
     return @tarball_path # thus performs checksum verification
   end
@@ -157,6 +157,18 @@ end
 class CurlUnsafeDownloadStrategy < CurlDownloadStrategy
   def _fetch
     curl @url, '--insecure', '-o', @tarball_path
+  end
+end
+
+# This strategy extracts our binary packages.
+class CurlBottleDownloadStrategy <CurlDownloadStrategy
+  def initialize url, name, version, specs
+    super
+    @tarball_path=HOMEBREW_CACHE+'Bottles'+("#{name}-#{version}"+ext)
+  end
+  def stage
+    ohai "Pouring #{File.basename(@tarball_path)}"
+    super
   end
 end
 
