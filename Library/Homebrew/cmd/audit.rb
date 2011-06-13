@@ -199,6 +199,13 @@ def audit_formula_urls f
     end
   end if strict?
 
+  # Check for git:// urls; https:// is preferred.
+  urls.each do |p|
+    if p =~ %r[^git://github\.com/]
+      problems << " * Use https:// URLs for accessing repositories on GitHub."
+    end
+  end
+
   return problems
 end
 
