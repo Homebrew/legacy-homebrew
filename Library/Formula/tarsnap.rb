@@ -8,9 +8,9 @@ class Tarsnap < Formula
   depends_on 'lzma' => :optional
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--enable-sse2"
+                          "--sysconfdir=#{etc}"
     system "make install"
   end
 end

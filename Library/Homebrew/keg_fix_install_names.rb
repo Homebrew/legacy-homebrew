@@ -28,7 +28,7 @@ class Keg
     id = install_names.shift
     install_names.compact!
     install_names.reject!{ |fn| fn =~ /^@(loader|executable)_path/ }
-    install_names.reject!{ |fn| fn.start_with? '/' }
+    install_names.reject!{ |fn| fn[0,1] == '/' }
 
     unless install_names.empty? and id == dylib # avoid the work if possible
       yield dylib, install_names

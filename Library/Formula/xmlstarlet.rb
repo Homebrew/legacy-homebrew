@@ -1,8 +1,8 @@
 require 'formula'
 
 class Xmlstarlet < Formula
-  url 'http://downloads.sourceforge.net/project/xmlstar/xmlstarlet/1.0.5/xmlstarlet-1.0.5.tar.gz'
-  md5 '2a7e5333051fb0b38647cd1e94e81050'
+  url 'http://downloads.sourceforge.net/project/xmlstar/xmlstarlet/1.1.0/xmlstarlet-1.1.0.tar.gz'
+  md5 '1b864b16c1dc78ce87ffc8528f021ab0'
   homepage 'http://xmlstar.sourceforge.net/'
 
   def install

@@ -131,10 +131,11 @@ def exec_editor *args
       '/usr/bin/vim' # Default to vim
     end
   end
-  # we split the editor because especially on mac "mate -w" is common
-  # but we still want to use the comma-delimited version of exec because then
-  # we don't have to escape args, and escaping 100% is tricky
-  exec *(editor.split + args) unless args.empty?
+
+  # Invoke bash to evaluate env vars in $EDITOR
+  # This also gets us proper argument quoting.
+  # See: https://github.com/mxcl/homebrew/issues/5123
+  system "bash", "-c", editor + ' "$@"', "--", *args
 end
 
 # GZips the given paths, and returns the gzipped paths
@@ -263,11 +264,16 @@ module MacOS extend self
       elsif File.directory? '/Developer'
         # we do this to support cowboys who insist on installing
         # only a subset of Xcode
-        '/Developer'
+        Pathname.new '/Developer'
       else
         nil
       end
     end
+  end
+
+  def xcode_version
+    `xcodebuild -version 2>&1` =~ /Xcode (\d(\.\d)*)/
+    $1
   end
 
   def llvm_build_version
@@ -316,8 +322,16 @@ module MacOS extend self
     false
   end
 
+  def leopard?
+    10.5 == MACOS_VERSION
+  end
+
+  def snow_leopard?
+    10.6 <= MACOS_VERSION # Actually Snow Leopard or newer
+  end
+
   def prefer_64_bit?
-    MACOS_VERSION >= 10.6 and Hardware.is_64_bit?
+    Hardware.is_64_bit? and 10.6 <= MACOS_VERSION
   end
 end
 
@@ -336,7 +350,7 @@ module GitHub extend self
 
     open "http://github.com/api/v2/yaml/issues/search/mxcl/homebrew/open/#{name}" do |f|
       YAML::load(f.read)['issues'].each do |issue|
-        issues << 'http://github.com/mxcl/homebrew/issues/#issue/%s' % issue['number']
+        issues << 'https://github.com/mxcl/homebrew/issues/#issue/%s' % issue['number']
       end
     end
 

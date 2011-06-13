@@ -60,7 +60,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
         raise
       end
     else
-      puts "File already downloaded and cached to #{HOMEBREW_CACHE}"
+      puts "File already downloaded in #{File.dirname(@tarball_path)}"
     end
     return @tarball_path # thus performs checksum verification
   end
@@ -143,12 +143,32 @@ class NoUnzipCurlDownloadStrategy < CurlDownloadStrategy
   end
 end
 
+# Normal strategy tries to untar as well
+class GzipOnlyDownloadStrategy < CurlDownloadStrategy
+  def stage
+    FileUtils.mv @tarball_path, File.basename(@url)
+    safe_system '/usr/bin/gunzip', '-f', File.basename(@url)
+  end
+end
+
 # This Download Strategy is provided for use with sites that
 # only provide HTTPS and also have a broken cert.
 # Try not to need this, as we probably won't accept the formula.
 class CurlUnsafeDownloadStrategy < CurlDownloadStrategy
   def _fetch
     curl @url, '--insecure', '-o', @tarball_path
+  end
+end
+
+# This strategy extracts our binary packages.
+class CurlBottleDownloadStrategy <CurlDownloadStrategy
+  def initialize url, name, version, specs
+    super
+    @tarball_path=HOMEBREW_CACHE+'Bottles'+("#{name}-#{version}"+ext)
+  end
+  def stage
+    ohai "Pouring #{File.basename(@tarball_path)}"
+    super
   end
 end
 
