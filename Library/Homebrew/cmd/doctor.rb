@@ -17,17 +17,11 @@ class Volumes
   def which path
     @volumes.each_index do |i|
       vol = @volumes[i]
-      return i if is_prefix?(vol[1], path)
+      return i if vol[1].start_with? path.to_s
     end
 
     return -1
   end
-end
-
-
-def is_prefix? prefix, longer_string
-  p = prefix.to_s
-  longer_string.to_s[0,p.length] == p
 end
 
 
