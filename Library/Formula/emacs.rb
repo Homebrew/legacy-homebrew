@@ -21,7 +21,12 @@ class Emacs < Formula
 
   def patches
     if ARGV.include? "--cocoa" and not ARGV.build_head?
-      "https://github.com/downloads/typester/emacs/feature-fullscreen.patch"
+      [
+        "https://github.com/downloads/typester/emacs/feature-fullscreen.patch",
+        DATA,
+      ]
+    else
+      DATA
     end
   end
 
@@ -95,3 +100,19 @@ class Emacs < Formula
     end
   end
 end
+
+# Include a backport of an emacs-23.4 change in the DATA section to enable
+# building using XCode 4.
+# Official diff:
+#   http://repo.or.cz/w/emacs.git/commitdiff/c8bba48c5889c4773c62a10f7c3d4383881f11c1
+__END__
+--- a/src/unexmacosx.c	2011-01-08 12:45:14.000000000 -0500
++++ b/src/unexmacosx.c	2011-03-21 04:44:57.000000000 -0400
+@@ -822,6 +822,7 @@
+ 	}
+       else if (strncmp (sectp->sectname, "__la_symbol_ptr", 16) == 0
+ 	       || strncmp (sectp->sectname, "__nl_symbol_ptr", 16) == 0
++	       || strncmp (sectp->sectname, "__got", 16) == 0
+ 	       || strncmp (sectp->sectname, "__la_sym_ptr2", 16) == 0
+ 	       || strncmp (sectp->sectname, "__dyld", 16) == 0
+ 	       || strncmp (sectp->sectname, "__const", 16) == 0
