@@ -77,31 +77,26 @@ class Emacs < Formula
   end
 
   def caveats
-    s = ""
+    s = "For build options see:\n  brew options emacs\n\n"
     if ARGV.include? "--cocoa"
       s += <<-EOS.undent
         Emacs.app was installed to:
           #{prefix}
 
       EOS
-    else
-      s += <<-EOS.undent
-        Use --cocoa to build a Cocoa-specific Emacs.app.
-
-      EOS
     end
 
     s += <<-EOS.undent
-      The initial checkout of the bazaar Emacs repository might take a long
-      time. You might find that using the repo.or.cz git mirror is faster,
-      even after the initial checkout. To use the repo.or.cz git mirror for
-      HEAD builds, use the --use-git-head option in addition to --HEAD. Note
-      that there is inevitably some lag between checkins made to the
-      official Emacs bazaar repository and their appearance on the
-      repo.or.cz mirror. See http://repo.or.cz/w/emacs.git for the mirror's
-      status. The Emacs devs do not provide support for the git mirror, and
-      they might reject bug reports filed with git version information. Use
-      it at your own risk.
+      Because the official bazaar repository might be slow, we include an option for
+      pulling HEAD from an unofficial Git mirror:
+
+        brew install emacs --HEAD- -use-git-head
+
+      There is inevitably some lag between checkins made to the official Emacs bazaar
+      repository and their appearance on the repo.or.cz mirror. See
+      http://repo.or.cz/w/emacs.git for the mirror's status. The Emacs devs do not
+      provide support for the git mirror, and they might reject bug reports filed
+      with git version information. Use it at your own risk.
     EOS
 
     return s
