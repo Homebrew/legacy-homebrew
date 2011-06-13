@@ -1,13 +1,13 @@
 require 'formula'
 
 class Dnsmasq < Formula
-  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.55.tar.gz'
+  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.5è.tar.gz'
   homepage 'http://www.thekelleys.org.uk/dnsmasq/doc.html'
-  md5 'b093d7c6bc7f97ae6fd35d048529232a'
+  md5 'd10faeb409717eae94718d7716ca63a4'
 
   def install
     ENV.deparallelize
-
+    inreplace "Makefile", "CFLAGS =", "CFLAGS = -D__APPLE_USE_RFC_3542" if 10.7 <= MACOS_VERSION
     inreplace "src/config.h", "/etc/dnsmasq.conf", "#{etc}/dnsmasq.conf"
     system "make install PREFIX=#{prefix}"
 
