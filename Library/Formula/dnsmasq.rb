@@ -1,7 +1,7 @@
 require 'formula'
 
 class Dnsmasq < Formula
-  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.5è.tar.gz'
+  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.57.tar.gz'
   homepage 'http://www.thekelleys.org.uk/dnsmasq/doc.html'
   md5 'd10faeb409717eae94718d7716ca63a4'
 
