@@ -20,9 +20,21 @@ class Emacs < Formula
   end
 
   def patches
-    if ARGV.include? "--cocoa" and not ARGV.build_head?
-      "https://github.com/downloads/typester/emacs/feature-fullscreen.patch"
+    p = []
+
+    # Fix for building with Xcode 4; harmless on Xcode 3.x.
+    unless ARGV.build_head?
+      p << "http://repo.or.cz/w/emacs.git/commitdiff_plain/c8bba48c5889c4773c62a10f7c3d4383881f11c1"
     end
+
+    if ARGV.include? "--cocoa"
+      # Existing fullscreen patch does not patch cleanly against head.
+      unless ARGV.build_head?
+        p << "https://github.com/downloads/typester/emacs/feature-fullscreen.patch"
+      end
+    end
+
+    return p
   end
 
   def caveats
