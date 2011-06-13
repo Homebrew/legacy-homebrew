@@ -104,6 +104,11 @@ module HomebrewEnvExtension
     remove_from_cflags(/-O./)
     append_to_cflags '-Os'
   end
+  def Og
+    # Sometimes you want a debug build
+    remove_from_cflags(/-O./)
+    append_to_cflags '-g -O0'
+  end
 
   def gcc_4_0_1
     self['CC'] = self['LD'] = '/usr/bin/gcc-4.0'
@@ -240,7 +245,7 @@ Please take one of the following actions:
     append 'LDFLAGS', '-arch i386'
   end
 
-  # i386 and x86_64 only, no PPC
+  # i386 and x86_64 (no PPC)
   def universal_binary
     append_to_cflags '-arch i386 -arch x86_64'
     self.O3 if self['CFLAGS'].include? '-O4' # O4 seems to cause the build to fail
