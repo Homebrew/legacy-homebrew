@@ -37,37 +37,6 @@ class Emacs < Formula
     return p
   end
 
-  def caveats
-    s = ""
-    if ARGV.include? "--cocoa"
-      s += <<-EOS.undent
-        Emacs.app was installed to:
-          #{prefix}
-
-      EOS
-    else
-      s += <<-EOS.undent
-        Use --cocoa to build a Cocoa-specific Emacs.app.
-
-      EOS
-    end
-
-    s += <<-EOS.undent
-      The initial checkout of the bazaar Emacs repository might take a long
-      time. You might find that using the repo.or.cz git mirror is faster,
-      even after the initial checkout. To use the repo.or.cz git mirror for
-      HEAD builds, use the --use-git-head option in addition to --HEAD. Note
-      that there is inevitably some lag between checkins made to the
-      official Emacs bazaar repository and their appearance on the
-      repo.or.cz mirror. See http://repo.or.cz/w/emacs.git for the mirror's
-      status. The Emacs devs do not provide support for the git mirror, and
-      they might reject bug reports filed with git version information. Use
-      it at your own risk.
-    EOS
-
-    return s
-  end
-
   fails_with_llvm "Duplicate symbol errors while linking."
 
   def install
@@ -105,5 +74,36 @@ class Emacs < Formula
       system "make"
       system "make install"
     end
+  end
+
+  def caveats
+    s = ""
+    if ARGV.include? "--cocoa"
+      s += <<-EOS.undent
+        Emacs.app was installed to:
+          #{prefix}
+
+      EOS
+    else
+      s += <<-EOS.undent
+        Use --cocoa to build a Cocoa-specific Emacs.app.
+
+      EOS
+    end
+
+    s += <<-EOS.undent
+      The initial checkout of the bazaar Emacs repository might take a long
+      time. You might find that using the repo.or.cz git mirror is faster,
+      even after the initial checkout. To use the repo.or.cz git mirror for
+      HEAD builds, use the --use-git-head option in addition to --HEAD. Note
+      that there is inevitably some lag between checkins made to the
+      official Emacs bazaar repository and their appearance on the
+      repo.or.cz mirror. See http://repo.or.cz/w/emacs.git for the mirror's
+      status. The Emacs devs do not provide support for the git mirror, and
+      they might reject bug reports filed with git version information. Use
+      it at your own risk.
+    EOS
+
+    return s
   end
 end
