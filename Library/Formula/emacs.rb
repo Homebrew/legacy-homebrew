@@ -14,6 +14,7 @@ class Emacs < Formula
   def options
     [
       ["--cocoa", "Build a Cocoa version of emacs"],
+      ["--srgb", "Enable sRGB colors in the Cocoa version of emacs"],
       ["--with-x", "Include X11 support"],
       ["--use-git-head", "Use repo.or.cz git mirror for HEAD builds"],
     ]
@@ -52,6 +53,14 @@ class Emacs < Formula
     end
 
     if ARGV.include? "--cocoa"
+      # Patch for color issues described here:
+      # http://debbugs.gnu.org/cgi/bugreport.cgi?bug=8402
+      if ARGV.include? "--srgb"
+        inreplace "src/nsterm.m",
+          "*col = [NSColor colorWithCalibratedRed: r green: g blue: b alpha: 1.0];",
+          "*col = [NSColor colorWithDeviceRed: r green: g blue: b alpha: 1.0];"
+      end
+
       args << "--with-ns" << "--disable-ns-self-contained"
       system "./configure", *args
       system "make bootstrap"
