@@ -29,10 +29,8 @@ class Emacs < Formula
     end
 
     if ARGV.include? "--cocoa"
-      # Existing fullscreen patch does not patch cleanly against head.
-      unless ARGV.build_head?
-        p << "https://github.com/downloads/typester/emacs/feature-fullscreen.patch"
-      end
+      # Fullscreen patch, works against 23.3 and HEAD.
+      p << "https://raw.github.com/gist/1012927"
     end
 
     return p
