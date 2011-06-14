@@ -15,9 +15,9 @@ end
 def audit_formula_text name, text
   problems = []
 
-  if text =~ /<Formula/
-    problems << " * Use a space in class inheritance: class Foo < Formula"
-  end if strict?
+  if text =~ /<(Formula|AmazonWebServicesFormula)/
+    problems << " * Use a space in class inheritance: class Foo < #{$1}"
+  end
 
   # Commented-out cmake support from default template
   if (text =~ /# depends_on 'cmake'/) or (text =~ /# system "cmake/)
@@ -198,6 +198,13 @@ def audit_formula_urls f
       problems << " * \"mirrors.kernel.org\" is the preferred mirror for debian software."
     end
   end if strict?
+
+  # Check for git:// urls; https:// is preferred.
+  urls.each do |p|
+    if p =~ %r[^git://github\.com/]
+      problems << " * Use https:// URLs for accessing repositories on GitHub."
+    end
+  end
 
   return problems
 end
