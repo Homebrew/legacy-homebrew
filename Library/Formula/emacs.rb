@@ -83,6 +83,9 @@ class Emacs < Formula
         Emacs.app was installed to:
           #{prefix}
 
+        Command-line emacs can be used by setting up an alias:
+          alias emacs=#{prefix}/Emacs.app/Contents/MacOS/Emacs -nw
+
       EOS
     end
 
