@@ -16,7 +16,8 @@ class Ejabberd < Formula
     Dir.chdir "src" do
       args = ["--prefix=#{prefix}",
               "--sysconfdir=#{etc}",
-              "--localstatedir=#{var}"]
+              "--localstatedir=#{var}",
+              "--enable-odbc"]
 
       if MacOS.leopard?
         openssl = Formula.factory('openssl')
