@@ -6,7 +6,6 @@ class Libav < Formula
   md5 '1cd2ba650c3ee16f603360d005a77ffa'
   head 'git://git.libav.org/libav.git', :using => :git
 
-  # depends_on 'cmake'
   depends_on 'yasm'
   depends_on 'dirac'
   depends_on 'faac'

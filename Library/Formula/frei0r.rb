@@ -5,14 +5,12 @@ class Frei0r < Formula
   homepage 'http://frei0r.dyne.org/'
   md5 'a2eb63feeeb0c5cf439ccca276cbf70c'
 
-  # depends_on 'cmake'
   depends_on 'opencv'
   depends_on 'gavl'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    # system "cmake . #{std_cmake_parameters}"
     system "make install"
   end
 end

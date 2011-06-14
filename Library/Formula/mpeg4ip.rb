@@ -11,7 +11,6 @@ class Mpeg4ip < Formula
   depends_on 'xvid'
   depends_on 'x264'
   depends_on 'ffmpeg'
-  # depends_on 'cmake'
 
   # gcc 4.2.0+ / Reference: http://bugs.gentoo.org/show_bug.cgi?id=186637
   # Direct Gentoo patch download: http://bugs.gentoo.org/attachment.cgi?id=127145&action=diff&context=patch&collapsed=&headers=1&format=raw
@@ -21,7 +20,6 @@ class Mpeg4ip < Formula
     system "./bootstrap"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--disable-player"
-    # system "cmake . #{std_cmake_parameters}"
     system "make install"
   end
 end
