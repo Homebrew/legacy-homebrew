@@ -1,22 +1,32 @@
 require 'formula'
 
-class ErlangManuals <Formula
-  url 'http://erlang.org/download/otp_doc_man_R14B01.tar.gz'
-  md5 '55376d3b1994d083cd21c9d849517c6c'
+class ErlangManuals < Formula
+  url 'http://erlang.org/download/otp_doc_man_R14B03.tar.gz'
+  md5 '357f54b174bb29d41fee97c063a47e8f'
 end
 
-class ErlangHeadManuals <Formula
-  url 'http://erlang.org/download/otp_doc_man_R14B01.tar.gz'
-  md5 '55376d3b1994d083cd21c9d849517c6c'
+class ErlangHtmls < Formula
+  url 'http://erlang.org/download/otp_doc_html_R14B03.tar.gz'
+  md5 'c9033bc35dbe4631dd2d14a6183b966a'
 end
 
-class Erlang <Formula
+class ErlangHeadManuals < Formula
+  url 'http://erlang.org/download/otp_doc_man_R14B03.tar.gz'
+  md5 '357f54b174bb29d41fee97c063a47e8f'
+end
+
+class ErlangHeadHtmls < Formula
+  url 'http://erlang.org/download/otp_doc_html_R14B03.tar.gz'
+  md5 'c9033bc35dbe4631dd2d14a6183b966a'
+end
+
+class Erlang < Formula
   # Download from GitHub. Much faster than official tarball.
-  url "git://github.com/erlang/otp.git", :tag => "OTP_R14B01"
-  version 'R14B01'
+  url "https://github.com/erlang/otp.git", :tag => "OTP_R14B03"
+  version 'R14B03'
   homepage 'http://www.erlang.org'
 
-  head "git://github.com/erlang/otp.git", :branch => "dev"
+  head "https://github.com/erlang/otp.git", :branch => "dev"
 
   # We can't strip the beam executables or any plugins, there isn't really
   # anything else worth stripping and it takes a really, long time to run
@@ -28,13 +38,15 @@ class Erlang <Formula
   def options
     [
       ['--disable-hipe', "Disable building hipe; fails on various OS X systems."],
-      ['--time', '"brew test --time" to include a time-consuming test.']
+      ['--time', '"brew test --time" to include a time-consuming test.'],
+      ['--no-docs', 'Do not install documentation.']
     ]
   end
 
+  fails_with_llvm "See https://github.com/mxcl/homebrew/issues/issue/120", :build => 2326
+
   def install
     ENV.deparallelize
-    fails_with_llvm "See https://github.com/mxcl/homebrew/issues/issue/120", :build => 2326
 
     # If building from GitHub, this step is required (but not for tarball downloads.)
     system "./otp_build autoconf" if File.exist? "otp_build"
@@ -53,15 +65,20 @@ class Erlang <Formula
       args << '--enable-hipe'
     end
 
-    args << "--enable-darwin-64bit" if snow_leopard_64?
+    args << "--enable-darwin-64bit" if MacOS.prefer_64_bit?
 
     system "./configure", *args
-    system "touch lib/wx/SKIP" if MACOS_VERSION >= 10.6
+    system "touch lib/wx/SKIP" if MacOS.snow_leopard?
     system "make"
     system "make install"
 
-    manuals = ARGV.build_head? ? ErlangHeadManuals : ErlangManuals
-    manuals.new.brew { man.install Dir['man/*'] }
+    unless ARGV.include? '--no-docs'
+      manuals = ARGV.build_head? ? ErlangHeadManuals : ErlangManuals
+      manuals.new.brew { man.install Dir['man/*'] }
+
+      htmls = ARGV.build_head? ? ErlangHeadHtmls : ErlangHtmls
+      htmls.new.brew { doc.install Dir['*'] }
+    end
   end
 
   def test

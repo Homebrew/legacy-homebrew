@@ -1,6 +1,6 @@
 require 'formula'
 
-class OpenMesh <Formula
+class OpenMesh < Formula
   url 'http://openmesh.org/fileadmin/openmesh-files/2.0RC5/OpenMesh-2.0-RC5.tar.gz'
   homepage 'http://www.openmesh.org'
   md5 '9b4f24a7b1a31cfd65aada58672a6c09'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Openexr <Formula
+class Openexr < Formula
   url 'http://download.savannah.gnu.org/releases/openexr/openexr-1.6.1.tar.gz'
   homepage 'http://www.openexr.com/'
   md5 '11951f164f9c872b183df75e66de145a'

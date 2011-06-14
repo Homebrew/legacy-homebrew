@@ -1,8 +1,8 @@
 require 'formula'
 
-class Emacs <Formula
-  url 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.2.tar.bz2'
-  md5 '057a0379f2f6b85fb114d8c723c79ce2'
+class Emacs < Formula
+  url 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.3.tar.bz2'
+  md5 'a673c163b4714362b94ff6096e4d784a'
   homepage 'http://www.gnu.org/software/emacs/'
 
   if ARGV.include? "--use-git-head"
@@ -20,47 +20,36 @@ class Emacs <Formula
   end
 
   def patches
-    "https://github.com/downloads/typester/emacs/feature-fullscreen.patch" if ARGV.include? "--cocoa"
-  end
+    p = []
 
-  def caveats
-    s = ""
-    if ARGV.include? "--cocoa"
-      s += <<-EOS.undent
-        Emacs.app was installed to:
-          #{prefix}
-
-      EOS
-    else
-      s += <<-EOS.undent
-        Use --cocoa to build a Cocoa-specific Emacs.app.
-
-      EOS
+    # Fix for building with Xcode 4; harmless on Xcode 3.x.
+    unless ARGV.build_head?
+      p << "http://repo.or.cz/w/emacs.git/commitdiff_plain/c8bba48c5889c4773c62a10f7c3d4383881f11c1"
     end
 
-    s += <<-EOS.undent
-      The initial checkout of the bazaar Emacs repository might take a long
-      time. You might find that using the repo.or.cz git mirror is faster,
-      even after the initial checkout. To use the repo.or.cz git mirror for
-      HEAD builds, use the --use-git-head option in addition to --HEAD. Note
-      that there is inevitably some lag between checkins made to the
-      official Emacs bazaar repository and their appearance on the
-      repo.or.cz mirror. See http://repo.or.cz/w/emacs.git for the mirror's
-      status. The Emacs devs do not provide support for the git mirror, and
-      they might reject bug reports filed with git version information. Use
-      it at your own risk.
-    EOS
+    if ARGV.include? "--cocoa"
+      # Existing fullscreen patch does not patch cleanly against head.
+      unless ARGV.build_head?
+        p << "https://github.com/downloads/typester/emacs/feature-fullscreen.patch"
+      end
+    end
 
-    return s
+    return p
   end
 
-  def install
-    fails_with_llvm "Duplicate symbol errors while linking."
+  fails_with_llvm "Duplicate symbol errors while linking."
 
+  def install
     args = ["--prefix=#{prefix}",
             "--without-dbus",
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
             "--infodir=#{info}/emacs"]
+
+    if ARGV.build_head? and File.exists? "./autogen/copy_autogen"
+      opoo "Using copy_autogen"
+      puts "See https://github.com/mxcl/homebrew/issues/4852"
+      system "autogen/copy_autogen"
+    end
 
     if ARGV.include? "--cocoa"
       args << "--with-ns" << "--disable-ns-self-contained"
@@ -72,6 +61,7 @@ class Emacs <Formula
       bin.mkpath
       ln_s prefix+'Emacs.app/Contents/MacOS/Emacs', bin+'emacs'
       ln_s prefix+'Emacs.app/Contents/MacOS/bin/emacsclient', bin
+      ln_s prefix+'Emacs.app/Contents/MacOS/bin/etags', bin
     else
       if ARGV.include? "--with-x"
         args << "--with-x"
@@ -84,5 +74,31 @@ class Emacs <Formula
       system "make"
       system "make install"
     end
+  end
+
+  def caveats
+    s = "For build options see:\n  brew options emacs\n\n"
+    if ARGV.include? "--cocoa"
+      s += <<-EOS.undent
+        Emacs.app was installed to:
+          #{prefix}
+
+      EOS
+    end
+
+    s += <<-EOS.undent
+      Because the official bazaar repository might be slow, we include an option for
+      pulling HEAD from an unofficial Git mirror:
+
+        brew install emacs --HEAD- -use-git-head
+
+      There is inevitably some lag between checkins made to the official Emacs bazaar
+      repository and their appearance on the repo.or.cz mirror. See
+      http://repo.or.cz/w/emacs.git for the mirror's status. The Emacs devs do not
+      provide support for the git mirror, and they might reject bug reports filed
+      with git version information. Use it at your own risk.
+    EOS
+
+    return s
   end
 end
