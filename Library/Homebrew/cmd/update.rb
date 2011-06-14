@@ -13,7 +13,7 @@ end
 
 class RefreshBrew
   REPOSITORY_URL   = "http://github.com/mxcl/homebrew.git"
-  INIT_COMMAND     = "git init"
+  INIT_COMMAND     = "git init && git fetch #{REPOSITORY_URL} && git reset --hard FETCH_HEAD"
   CHECKOUT_COMMAND = "git checkout -q master"
   UPDATE_COMMAND   = "git pull #{REPOSITORY_URL} master"
   REVISION_COMMAND = "git rev-parse HEAD"
