@@ -1,5 +1,9 @@
 require 'formula'
 
+def odbc?
+  ARGV.include? '--with-odbc'
+end
+
 class Ejabberd < Formula
   url "http://www.process-one.net/downloads/ejabberd/2.1.8/ejabberd-2.1.8.tar.gz"
   homepage 'http://www.ejabberd.im'
@@ -21,6 +25,10 @@ class Ejabberd < Formula
       if MacOS.leopard?
         openssl = Formula.factory('openssl')
         args << "--with-openssl=#{openssl.prefix}"
+      end
+
+      if odbc?
+        args << "--enable-odbc"
       end
 
       system "./configure", *args
