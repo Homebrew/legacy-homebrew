@@ -6,18 +6,19 @@ class Mutt < Formula
   md5 'a29db8f1d51e2f10c070bf88e8a553fd'
 
   depends_on 'tokyo-cabinet'
+  depends_on 'slang' if ARGV.include? '--with-slang'
 
   def options
     [
       ['--enable-debug', "Build with debug option enabled"],
       ['--sidebar-patch', "Apply sidebar (folder list) patch"],
-      ['--trash-patch', "Apply trash folder patch"]
+      ['--trash-patch', "Apply trash folder patch"],
+      ['--with-slang', "Build against slang instead of ncurses"]
     ]
   end
 
   def patches
-    # Fix unsubscribe malformed folder
-    p = Array.new
+    p = []
 
     if ARGV.include? '--sidebar-patch'
       p << 'https://raw.github.com/nedos/mutt-sidebar-patch/master/mutt-sidebar.patch'
@@ -46,8 +47,8 @@ class Mutt < Formula
             # This is just a trick to keep 'make install' from trying to chgrp
             # the mutt_dotlock file (which we can't do if we're running as an
             # unpriviledged user)
-            "--with-homespool=.mbox"
-      ]
+            "--with-homespool=.mbox"]
+    args << "--with-slang" if ARGV.include? '--with-slang'
 
     if ARGV.include? '--enable-debug'
       args << "--enable-debug"
