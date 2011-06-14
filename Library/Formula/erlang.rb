@@ -56,7 +56,8 @@ class Erlang < Formula
             "--enable-kernel-poll",
             "--enable-threads",
             "--enable-dynamic-ssl-lib",
-            "--enable-smp-support"]
+            "--enable-smp-support",
+            "--enable-odbc"]
 
     unless ARGV.include? '--disable-hipe'
       # HIPE doesn't strike me as that reliable on OS X
