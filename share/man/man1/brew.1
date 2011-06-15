@@ -78,11 +78,14 @@ Generate a formula for the downloadable file at \fIURL\fR and opens it in $EDITO
 If \fB\-\-no\-fetch\fR is passed, Homebrew will not download \fIURL\fR to the cache and will thus not add the MD5 to the formula for you\.
 .
 .TP
-\fBdeps [\-\-1]\fR \fIformula\fR
+\fBdeps [\-\-1] [\-n]\fR \fIformula\fR
 Show \fIformula\fR\'s dependencies\.
 .
 .IP
 If \fB\-\-1\fR is passed, only show dependencies one level down, instead of recursing\.
+.
+.IP
+If \fB\-n\fR is passed, shows dependencies in topological order\.
 .
 .TP
 \fBdoctor\fR
