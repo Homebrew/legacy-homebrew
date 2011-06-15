@@ -76,7 +76,7 @@ class RefreshBrew
 
         @installed_formulae = HOMEBREW_CELLAR.children.
           select{ |pn| pn.directory? }.
-          map{ |pn| pn.basename.to_s }.sort
+          map{ |pn| pn.basename.to_s }.sort if HOMEBREW_CELLAR.directory?
 
         return true
       end
