@@ -13,7 +13,8 @@ class Macvim < Formula
     ["--custom-icons", "Try to generate custom document icons."],
     ["--with-cscope", "Build with Cscope support."],
     ["--with-envycoder", "Build with Envy Code R Bold font."],
-    ["--override-system-vim", "Override system vim"]
+    ["--override-system-vim", "Override system vim."],
+    ["--enable-clipboard", "Enable System clipboard handling in the terminal."]
   ]
   end
 
@@ -41,6 +42,7 @@ class Macvim < Formula
            "--enable-tclinterp"]
 
     args << "--enable-cscope" if ARGV.include? "--with-cscope"
+    args << "--enable-clipboard" if ARGV.include? "--enable-clipboard"
 
     system "./configure", *args
 
