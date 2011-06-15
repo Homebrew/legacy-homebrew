@@ -7,6 +7,9 @@ class Libicns < Formula
 
   depends_on 'jasper'	# or openjpeg
 
+  # Fix for libpng 1.4+
+  inreplace 'icnsutils/png2icns.c', 'png_set_gray_1_2_4_to_8', 'png_set_expand_gray_1_2_4_to_8'
+
   def install
     ENV.libpng
     ENV.universal_binary	# build fat so wine can use it
