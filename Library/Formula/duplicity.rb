@@ -1,9 +1,9 @@
 require 'formula'
 
 class Duplicity < Formula
-  url 'http://code.launchpad.net/duplicity/0.6-series/0.6.12/+download/duplicity-0.6.12.tar.gz'
+  url 'http://code.launchpad.net/duplicity/0.6-series/0.6.13/+download/duplicity-0.6.13.tar.gz'
   homepage 'http://www.nongnu.org/duplicity/'
-  md5 '9b84c984054550bbb2ba29b553567b7b'
+  md5 'b3d627f35fc527b00121925840d5cca7'
 
   depends_on 'librsync'
   depends_on 'gnupg'
@@ -14,7 +14,8 @@ class Duplicity < Formula
     system "python", "setup.py", "install",
                      "--prefix=#{prefix}",
                      "--install-purelib=#{libexec}",
-                     "--install-platlib=#{libexec}"
+                     "--install-platlib=#{libexec}",
+                     "--install-scripts=#{bin}"
 
     # Shift files around to avoid needing a PYTHONPATH
     system "mv #{bin}/duplicity #{bin}/duplicity.py"

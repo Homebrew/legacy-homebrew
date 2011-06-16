@@ -9,7 +9,7 @@ class Pygments < Formula
 end
 
 class Shocco < Formula
-  head 'git://github.com/rtomayko/shocco.git',
+  head 'https://github.com/rtomayko/shocco.git',
           :commit => '06ab9ecebd713a1a6ae695b190a775ca6dfeb7b2'
   homepage 'http://rtomayko.github.com/shocco/'
 

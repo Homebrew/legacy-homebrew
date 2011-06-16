@@ -2,9 +2,9 @@ require 'formula'
 
 class Weechat < Formula
   head 'git://git.sv.gnu.org/weechat.git'
-  url 'http://www.weechat.org/files/src/weechat-0.3.4.tar.bz2'
+  url 'http://www.weechat.org/files/src/weechat-0.3.5.tar.bz2'
   homepage 'http://www.weechat.org'
-  md5 '79207fea567548462fe36397e633d287'
+  md5 '0d2a089bfbfa550e0c65618a171fb3c4'
 
   depends_on 'cmake' => :build
   depends_on 'gnutls'

@@ -1,10 +1,10 @@
 require 'formula'
 
 class HaskellPlatform < Formula
-  url 'http://hackage.haskell.org/platform/2010.2.0.0/haskell-platform-2010.2.0.0.tar.gz'
+  url 'http://lambda.galois.com/hp-tmp/2011.2.0.1/haskell-platform-2011.2.0.1.tar.gz'
   homepage 'http://hackage.haskell.org/platform/'
-  md5 '9d1dd22a86bf2505591e6375f7dbe18e'
-  version '2010.2.0.0'
+  md5 '97fd42f169a426d043368cec342745ef'
+  version '2011.2.0.1'
 
   depends_on 'ghc'
 

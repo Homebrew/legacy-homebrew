@@ -12,13 +12,15 @@ def run_tests?
   ARGV.include? '--test'
 end
 
-class Octave <Formula
+class Octave < Formula
   url 'ftp://ftp.gnu.org/gnu/octave/octave-3.4.0.tar.bz2'
   homepage 'http://www.gnu.org/software/octave/index.html'
   sha1 '936a8fc962abd96e7568fb5909ec2a4d7997a1a8'
 
-  # critical dependencies
+  depends_on 'pkg-config' => :build
   depends_on 'gnu-sed' => :build
+  depends_on 'texinfo' => :build     # OS X's makeinfo won't work for this
+
   depends_on 'fftw'
   # there is an incompatibility between gfortran and Apple's BLAS as of 10.6.6:
   #   http://www.macresearch.org/lapackblas-fortran-106
@@ -26,11 +28,11 @@ class Octave <Formula
   depends_on 'dotwrp'
   # octave refuses to work with BSD readline, so it's either this or --disable-readline
   depends_on 'readline'
-  depends_on 'texinfo' => :build     # OS X's makeinfo won't work for this
 
   # additional features
   depends_on 'suite-sparse'
   depends_on 'glpk'
+  # test for presence of GraphicsMagick++ relies on pkg-config
   depends_on 'graphicsmagick' unless no_magick?
   depends_on 'hdf5'
   depends_on 'pcre'
@@ -95,7 +97,7 @@ class Octave <Formula
     brew_caveats = <<-EOS.undent
       To install, you will need custom installs of fltk and graphicsmagick:
           brew install --HEAD fltk
-          brew intalll graphicsmagick --with-magick-plus-plus
+          brew install graphicsmagick --with-magick-plus-plus
 
       To omit these features, see "brew options octave"
 

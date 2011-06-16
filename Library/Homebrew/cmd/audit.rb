@@ -1,6 +1,12 @@
 require 'formula'
 require 'utils'
 
+# Use "brew audit --strict" to enable even stricter checks.
+
+def strict?
+  ARGV.flag? "--strict"
+end
+
 def ff
   return Formula.all if ARGV.named.empty?
   return ARGV.formulae
@@ -8,6 +14,10 @@ end
 
 def audit_formula_text name, text
   problems = []
+
+  if text =~ /<(Formula|AmazonWebServicesFormula)/
+    problems << " * Use a space in class inheritance: class Foo < #{$1}"
+  end
 
   # Commented-out cmake support from default template
   if (text =~ /# depends_on 'cmake'/) or (text =~ /# system "cmake/)
@@ -92,16 +102,19 @@ def audit_formula_text name, text
     problems << " * Use separate make calls."
   end
 
-	if ARGV.include? "--warn"
-	  if text =~ /^\t/
-	    problems << " * Use spaces instead of tabs for indentation"
-	  end
-	end
+  if text =~ /^\t/
+    problems << " * Use spaces instead of tabs for indentation"
+  end if strict?
 
   # Formula depends_on gfortran
-  if text =~ /\s*depends_on\s*(\'|\")gfortran(\'|\")\s*$/
+  if text =~ /^\s*depends_on\s*(\'|\")gfortran(\'|\").*/
     problems << " * Use ENV.fortran during install instead of depends_on 'gfortran'"
   end unless name == "gfortran" # Gfortran itself has this text in the caveats
+
+  # xcodebuild should specify SYMROOT
+  if text =~ /xcodebuild/ and not text =~ /SYMROOT=/
+    problems << " * xcodebuild should be passed an explicit \"SYMROOT\""
+  end if strict?
 
   return problems
 end
@@ -134,6 +147,7 @@ def audit_formula_options f, text
 
   if documented_options.length > 0
     documented_options.each do |o|
+      next if o == '--universal'
       problems << " * Option #{o} is unused" unless options.include? o
     end
   end
@@ -183,6 +197,13 @@ def audit_formula_urls f
     unless p =~ %r[^http://mirrors\.kernel\.org/debian/pool/]
       problems << " * \"mirrors.kernel.org\" is the preferred mirror for debian software."
     end
+  end if strict?
+
+  # Check for git:// urls; https:// is preferred.
+  urls.each do |p|
+    if p =~ %r[^git://github\.com/]
+      problems << " * Use https:// URLs for accessing repositories on GitHub."
+    end
   end
 
   return problems
@@ -220,12 +241,25 @@ def audit_formula_instance f
   return problems
 end
 
+def audit_formula_caveats f
+  problems = []
+
+  if f.caveats.to_s =~ /^\s*\$\s+/
+    problems << " * caveats should not use '$' prompts in multiline commands."
+  end if strict?
+
+  return problems
+end
+
 module Homebrew extend self
   def audit
+    errors = false
+
     ff.each do |f|
       problems = []
       problems += audit_formula_instance f
       problems += audit_formula_urls f
+      problems += audit_formula_caveats f
 
       perms = File.stat(f.path).mode
       if perms.to_s(8) != "100644"
@@ -249,10 +283,13 @@ module Homebrew extend self
       problems += audit_formula_options(f, text_without_patch)
 
       unless problems.empty?
+        errors = true
         puts "#{f.name}:"
         puts problems * "\n"
         puts
       end
     end
+
+    exit 1 if errors
   end
 end

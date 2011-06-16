@@ -97,8 +97,12 @@ def curl *args
   safe_system '/usr/bin/curl', '-f#LA', HOMEBREW_USER_AGENT, *args unless args.empty?
 end
 
-def puts_columns items, cols = 4
+def puts_columns items, star_items=[]
   return if items.empty?
+
+  if star_items && star_items.any?
+    items = items.map{|item| star_items.include?(item) ? "#{item}*" : item}
+  end
 
   if $stdout.tty?
     # determine the best width to display for different console sizes
@@ -127,10 +131,11 @@ def exec_editor *args
       '/usr/bin/vim' # Default to vim
     end
   end
-  # we split the editor because especially on mac "mate -w" is common
-  # but we still want to use the comma-delimited version of exec because then
-  # we don't have to escape args, and escaping 100% is tricky
-  exec *(editor.split + args) unless args.empty?
+
+  # Invoke bash to evaluate env vars in $EDITOR
+  # This also gets us proper argument quoting.
+  # See: https://github.com/mxcl/homebrew/issues/5123
+  system "bash", "-c", editor + ' "$@"', "--", *args
 end
 
 # GZips the given paths, and returns the gzipped paths
@@ -145,6 +150,15 @@ module ArchitectureListExtension
   def universal?
     self.include? :i386 and self.include? :x86_64
   end
+
+  def remove_ppc!
+    self.delete :ppc7400
+    self.delete :ppc64
+  end
+
+  def as_arch_flags
+    self.collect{ |a| "-arch #{a}" }.join(' ')
+  end
 end
 
 # Returns array of architectures that the given command or library is built for.
@@ -153,7 +167,8 @@ def archs_for_command cmd
   cmd = `/usr/bin/which #{cmd}` unless Pathname.new(cmd).absolute?
   cmd.gsub! ' ', '\\ '  # Escape spaces in the filename.
 
-  archs = IO.popen("/usr/bin/file -L #{cmd}").readlines.inject([]) do |archs, line|
+  lines = `/usr/bin/file -L #{cmd}`
+  archs = lines.to_a.inject([]) do |archs, line|
     case line
     when /Mach-O (executable|dynamically linked shared library) ppc/
       archs << :ppc7400
@@ -249,11 +264,16 @@ module MacOS extend self
       elsif File.directory? '/Developer'
         # we do this to support cowboys who insist on installing
         # only a subset of Xcode
-        '/Developer'
+        Pathname.new '/Developer'
       else
         nil
       end
     end
+  end
+
+  def xcode_version
+    `xcodebuild -version 2>&1` =~ /Xcode (\d(\.\d)*)/
+    $1
   end
 
   def llvm_build_version
@@ -301,6 +321,18 @@ module MacOS extend self
 
     false
   end
+
+  def leopard?
+    10.5 == MACOS_VERSION
+  end
+
+  def snow_leopard?
+    10.6 <= MACOS_VERSION # Actually Snow Leopard or newer
+  end
+
+  def prefer_64_bit?
+    Hardware.is_64_bit? and 10.6 <= MACOS_VERSION
+  end
 end
 
 module GitHub extend self
@@ -318,7 +350,7 @@ module GitHub extend self
 
     open "http://github.com/api/v2/yaml/issues/search/mxcl/homebrew/open/#{name}" do |f|
       YAML::load(f.read)['issues'].each do |issue|
-        issues << 'http://github.com/mxcl/homebrew/issues/#issue/%s' % issue['number']
+        issues << 'https://github.com/mxcl/homebrew/issues/#issue/%s' % issue['number']
       end
     end
 
