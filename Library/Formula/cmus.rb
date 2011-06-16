@@ -18,7 +18,7 @@ class Cmus < Formula
   skip_clean 'bin/cmus-remote'
 
   def install
-    system "./configure", "prefix=#{prefix}", "mandir=#{man}"
+    system "./configure", "prefix=#{prefix}", "mandir=#{man}", "CONFIG_MODPLUG=n"
     system "make install"
   end
 end
