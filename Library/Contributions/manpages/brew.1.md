@@ -70,11 +70,13 @@ For the full command list, see the COMMANDS section.
     If `--no-fetch` is passed, Homebrew will not download <URL> to the cache and
     will thus not add the MD5 to the formula for you.
 
-  * `deps [--1]` <formula>:
+  * `deps [--1] [-n]` <formula>:
     Show <formula>'s dependencies.
 
     If `--1` is passed, only show dependencies one level down, instead of
     recursing.
+
+    If `-n` is passed, shows dependencies in topological order.
 
   * `doctor`:
     Check your system for potential problems.
