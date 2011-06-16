@@ -129,8 +129,6 @@ class RefreshBrew
     if pending_formulae_changes?
       ohai "The following formulae were updated:"
       puts_columns updated_formulae, installed_formulae
-    else
-      puts "No formulae were updated."
     end
     ## New examples
     if pending_new_examples?
@@ -146,8 +144,6 @@ class RefreshBrew
     if pending_examples_changes?
       ohai "The following external commands were updated:"
       puts_columns updated_examples
-    else
-      puts "No external commands were updated."
     end
   end
 
