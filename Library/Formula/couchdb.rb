@@ -1,9 +1,9 @@
 require 'formula'
 
 class Couchdb < Formula
-  url 'https://github.com/apache/couchdb/tarball/1.0.2'
+  url 'https://github.com/apache/couchdb/tarball/1.1.0'
   homepage "http://couchdb.apache.org/"
-  md5 'cc1cc891ac47dd795b0b9aa2c5375923'
+  md5 '3c22f053071e29680b898b7148f05577'
 
   head 'http://svn.apache.org/repos/asf/couchdb/trunk'
 

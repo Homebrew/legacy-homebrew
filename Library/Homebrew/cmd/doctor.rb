@@ -31,8 +31,13 @@ def is_prefix? prefix, longer_string
 end
 
 
+def remove_trailing_slash s
+  (s[s.length-1] == '/') ? s[0,s.length-1] : s
+end
+
+
 def path_folders
-  ENV['PATH'].split(':').collect{|p| File.expand_path p}.uniq
+  ENV['PATH'].split(':').collect{|p| remove_trailing_slash(File.expand_path(p))}.uniq
 end
 
 

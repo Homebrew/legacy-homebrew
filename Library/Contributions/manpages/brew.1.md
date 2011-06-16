@@ -70,11 +70,13 @@ For the full command list, see the COMMANDS section.
     If `--no-fetch` is passed, Homebrew will not download <URL> to the cache and
     will thus not add the MD5 to the formula for you.
 
-  * `deps [--1]` <formula>:
+  * `deps [--1] [-n]` <formula>:
     Show <formula>'s dependencies.
 
     If `--1` is passed, only show dependencies one level down, instead of
     recursing.
+
+    If `-n` is passed, shows dependencies in topological order.
 
   * `doctor`:
     Check your system for potential problems.
@@ -154,9 +156,8 @@ For the full command list, see the COMMANDS section.
 
   * `ln`, `link` <formula>:
     Symlink all of <formula>'s installed files into the Homebrew prefix. This
-    is done automatically when you install formula. It is useful for DIY
-    installation, or in cases where you want to swap out different versions of
-    the same package that you have installed at the same time.
+    is done automatically when you install formula, but can be useful for DIY
+    installations.
 
   * `list`:
     List all installed formulae.
@@ -274,6 +275,13 @@ Some sample commands ship with Homebrew and are enabled by default.
 
 
 ## ENVIRONMENT
+
+  * HOMEBREW\_CACHE:
+    If set, instructs Homebrew to use the give folder as the download cache.
+    Otherwise, `~/Library/Caches/Homebrew` is used.
+
+    This can be used to keep downloads out of your home folder, if you have
+    it mounted on an SSD for instance.
 
   * HOMEBREW\_DEBUG:
     If set, instructs Homebrew to always assume `--debug` when running
