@@ -21,11 +21,12 @@ class ErlangHeadHtmls < Formula
 end
 
 class Erlang < Formula
-  # Download from GitHub. Much faster than official tarball.
+  homepage 'http://www.erlang.org'
+  # Download tarball from GitHub; it is served faster than the official tarball.
   url 'https://github.com/erlang/otp/tarball/OTP_R14B03'
   md5 '047f246c4ecb5fadaffb7e049795d80e'
   version 'R14B03'
-  homepage 'http://www.erlang.org'
+
   head 'https://github.com/erlang/otp.git', :branch => 'dev'
 
   # We can't strip the beam executables or any plugins, there isn't really
@@ -48,7 +49,7 @@ class Erlang < Formula
   def install
     ENV.deparallelize
 
-    # If building from GitHub, this step is required (but not for tarball downloads.)
+    # Do this if building from a checkout to generate configure
     system "./otp_build autoconf" if File.exist? "otp_build"
 
     args = ["--disable-debug",
