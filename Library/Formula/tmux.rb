@@ -17,5 +17,10 @@ class Tmux < Formula
     end
 
     system "make install"
+
+    ohai "Installing bash completion for tmux"
+    cellar_etc = prefix + 'etc'
+    bash_completion_d = cellar_etc + "bash_completion.d"
+    bash_completion_d.install "examples/bash_completion_tmux.sh" => 'tmux'
   end
 end
