@@ -245,9 +245,10 @@ class Pathname
   end
 
   def ensure_writable
-    saved_perms = unless writable?
+    saved_perms = nil
+    unless writable?
+      saved_perms = stat.mode
       chmod 0644
-      stat.mode
     end
     yield
   ensure
