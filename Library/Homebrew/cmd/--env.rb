@@ -9,8 +9,9 @@ module Homebrew extend self
   end
 
   def dump_build_env env
+    puts %["--use-clang" was specified] if ARGV.include? '--use-clang'
     puts %["--use-llvm" was specified] if ARGV.include? '--use-llvm'
-    puts "\"--use-gcc\" was specified" if ARGV.include? '--use-gcc'
+    puts %["--use-gcc" was specified] if ARGV.include? '--use-gcc'
 
     %w[ CC CXX LD ].each do |k|
       value = env[k]
