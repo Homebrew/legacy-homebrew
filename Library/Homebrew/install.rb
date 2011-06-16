@@ -120,16 +120,6 @@ def install f
   keg = Keg.new f.prefix
 
   begin
-    keg.fix_install_names
-  rescue Exception => e
-    onoe "Failed to fix install names"
-    puts "The formula built, but you may encounter issues using it or linking other"
-    puts "formula against it."
-    ohai e, e.backtrace if ARGV.debug?
-    show_summary_heading = true
-  end
-
-  begin
     require 'cleaner'
     Cleaner.new f if not f.pouring
   rescue Exception => e
@@ -202,6 +192,16 @@ def install f
       else
         onoe e
       end
+      show_summary_heading = true
+    end
+
+    begin
+      keg.fix_install_names
+    rescue Exception => e
+      onoe "Failed to fix install names"
+      puts "The formula built, but you may encounter issues using it or linking other"
+      puts "formula against it."
+      ohai e, e.backtrace if ARGV.debug?
       show_summary_heading = true
     end
   end
