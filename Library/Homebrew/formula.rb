@@ -301,7 +301,7 @@ class Formula
   end
 
   def handle_llvm_failure llvm
-    unless (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
+    unless (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm' or ARGV.include? '--use-clang')
       ENV.gcc_4_2 if default_cc =~ /llvm/
       return
     end
