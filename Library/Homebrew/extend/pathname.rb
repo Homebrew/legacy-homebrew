@@ -230,7 +230,7 @@ class Pathname
     Dir.chdir self.dirname do
       # TODO use Ruby function so we get exceptions
       # NOTE Ruby functions may work, but I had a lot of problems
-      rv = system 'ln', '-sf', src.relative_path_from(self.dirname)
+      rv = system 'ln', '-sf', src.relative_path_from(self.dirname), self.basename
       unless rv and $? == 0
         raise <<-EOS.undent
           Could not create symlink #{to_s}.
