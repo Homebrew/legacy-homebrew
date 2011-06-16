@@ -105,22 +105,27 @@ class Pathname
       # directories don't have extnames
       stem=basename.to_s
     else
-      stem=self.stem
+      # sourceforge /download
+      if %r[((?:sourceforge.net|sf.net)/.*)/download$].match to_s
+        stem=Pathname.new(dirname).stem
+      else
+        stem=self.stem
+      end
     end
 
     # github tarballs, like v1.2.3
-    %r[github.com/.*/tarball/v?((\d\.)+\d+)$].match to_s
-    return $1 if $1
+    %r[github.com/.*/(zip|tar)ball/v?((\d\.)+\d+)$].match to_s
+    return $2 if $2
 
     # dashed version
     # eg. github.com/isaacs/npm/tarball/v0.2.5-1
-    %r[github.com/.*/tarball/v?((\d\.)+\d+-(\d+))$].match to_s
-    return $1 if $1
+    %r[github.com/.*/(zip|tar)ball/v?((\d\.)+\d+-(\d+))$].match to_s
+    return $2 if $2
 
     # underscore version
     # eg. github.com/petdance/ack/tarball/1.93_02
-    %r[github.com/.*/tarball/v?((\d\.)+\d+_(\d+))$].match to_s
-    return $1 if $1
+    %r[github.com/.*/(zip|tar)ball/v?((\d\.)+\d+_(\d+))$].match to_s
+    return $2 if $2
 
     # eg. boost_1_39_0
     /((\d+_)+\d+)$/.match stem

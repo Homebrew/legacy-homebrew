@@ -18,12 +18,9 @@ class Spidermonkey < Formula
   end
 
   def install
-    if MACOS_VERSION == 10.5
-      # aparently this flag causes the build to fail for ivanvc on 10.5 with a
-      # penryn (core 2 duo) CPU. So lets be cautious here and remove it.
-      # It might not be need with newer spidermonkeys anymore tho.
-      ENV['CFLAGS'] = ENV['CFLAGS'].gsub(/-msse[^\s]+/, '')
-    end
+    # aparently this flag causes the build to fail for ivanvc on 10.5 with a
+    # penryn (core 2 duo) CPU. So lets be cautious here and remove it.
+    ENV['CFLAGS'] = ENV['CFLAGS'].gsub(/-msse[^\s]+/, '') if MacOS.leopard?
 
     # For some reason SpiderMonkey requires Autoconf-2.13
     ac213_prefix = Pathname.pwd.join('ac213')

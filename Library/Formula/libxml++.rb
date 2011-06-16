@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libxmlxx < Formula
-  url 'http://ftp.gnome.org/pub/GNOME/sources/libxml++/2.33/libxml++-2.33.2.tar.gz'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/libxml++/2.34/libxml++-2.34.1.tar.gz'
   homepage 'http://libxmlplusplus.sourceforge.net'
-  md5 '219f8c8e3bb3af9f9a012fffc82a642a'
+  md5 'c73e3916a1a0f4d01291c852e9af6241'
 
   depends_on 'glibmm'
 

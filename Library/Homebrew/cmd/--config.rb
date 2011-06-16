@@ -18,14 +18,13 @@ module Homebrew extend self
   end
 
   def xcode_version
-    `xcodebuild -version 2>&1` =~ /Xcode (\d(\.\d)*)/
-    $1
+    @xcode_version || MacOS.xcode_version
   end
 
   def llvm_recommendation
     "(#{RECOMMENDED_LLVM} or newer recommended)" if llvm and llvm < RECOMMENDED_LLVM
   end
-  
+
   def gcc_42_recommendation
     "(#{RECOMMENDED_GCC_42} or newer recommended)" if gcc_42 and gcc_42 < RECOMMENDED_GCC_42
   end
