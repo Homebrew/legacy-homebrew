@@ -1,9 +1,9 @@
 require 'formula'
 
 class Zsh < Formula
-  url 'http://downloads.sourceforge.net/project/zsh/zsh-dev/4.3.11/zsh-4.3.11.tar.gz'
+  url 'http://downloads.sourceforge.net/project/zsh/zsh-dev/4.3.12/zsh-4.3.12.tar.gz'
   homepage 'http://www.zsh.org/'
-  md5 '127e2a3b9100d6f2fddb6a32cd4aca40'
+  md5 '46ae7be975779b9b0ea24e8b30479a8b'
 
   depends_on 'gdbm' => :optional
 

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Parrot < Formula
-  head 'git://github.com/parrot/parrot.git'
-  url 'ftp://ftp.parrot.org/pub/parrot/releases/supported/3.0.0/parrot-3.0.0.tar.gz'
-  md5 'fc1d88114636eff4fe7953de456cecfa'
+  head 'https://github.com/parrot/parrot.git'
+  url 'ftp://ftp.parrot.org/pub/parrot/releases/supported/3.3.0/parrot-3.3.0.tar.gz'
+  md5 '335d50fbef245bfe6d0bb277e224c728'
   homepage 'http://www.parrot.org/'
 
   depends_on 'gmp' => :optional

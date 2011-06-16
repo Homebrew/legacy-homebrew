@@ -2,27 +2,27 @@ require 'formula'
 
 class ScalaDocs < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.0.final-devel-docs.tgz'
-  head 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.0.final-devel-docs.tgz'
-  version '2.9.0'
+  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.0.1-devel-docs.tgz'
+  head 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.0.1-devel-docs.tgz'
+  version '2.9.0.1'
 
   if ARGV.build_head?
-    md5 '9856168b833418f8c42ea7e800a3c659'
+    md5 'acb16cbdf46f682806f60b052707b7b7'
   else
-    md5 '9856168b833418f8c42ea7e800a3c659'
+    md5 'acb16cbdf46f682806f60b052707b7b7'
   end
 end
 
 class Scala < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.0.final.tgz'
-  head 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.0.final.tgz'
-  version '2.9.0'
+  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.0.1.tgz'
+  head 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.0.1.tgz'
+  version '2.9.0.1'
 
   if ARGV.build_head?
-    md5 'e9a88a8961c4c1da84ba41d5495a6a43'
+    md5 '10d01410fd75019fa21a88964462a077'
   else
-    md5 'e9a88a8961c4c1da84ba41d5495a6a43'
+    md5 '10d01410fd75019fa21a88964462a077'
   end
 
   def options

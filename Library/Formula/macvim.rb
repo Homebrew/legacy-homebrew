@@ -5,7 +5,7 @@ class Macvim < Formula
   url 'https://github.com/b4winckler/macvim/tarball/snapshot-57'
   version '7.3-57'
   md5 '2bf4630be2d59f62b8b70870ba1fe0a1'
-  head 'git://github.com/b4winckler/macvim.git', :branch => 'master'
+  head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
   def options
   [
@@ -13,7 +13,8 @@ class Macvim < Formula
     ["--custom-icons", "Try to generate custom document icons."],
     ["--with-cscope", "Build with Cscope support."],
     ["--with-envycoder", "Build with Envy Code R Bold font."],
-    ["--override-system-vim", "Override system vim"]
+    ["--override-system-vim", "Override system vim."],
+    ["--enable-clipboard", "Enable System clipboard handling in the terminal."]
   ]
   end
 
@@ -41,6 +42,7 @@ class Macvim < Formula
            "--enable-tclinterp"]
 
     args << "--enable-cscope" if ARGV.include? "--with-cscope"
+    args << "--enable-clipboard" if ARGV.include? "--enable-clipboard"
 
     system "./configure", *args
 

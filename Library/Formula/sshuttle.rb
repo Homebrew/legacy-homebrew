@@ -6,7 +6,7 @@ class Sshuttle < Formula
   md5 '352181fa9ad9648d4e181d19a2458c69'
   version '0.53'
 
-  head 'git://github.com/apenwarr/sshuttle.git'
+  head 'https://github.com/apenwarr/sshuttle.git'
 
   def install
     libexec.install Dir['*']

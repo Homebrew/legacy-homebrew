@@ -12,6 +12,14 @@ class Doxygen < Formula
       # Path of man1 relative to already given prefix
       s.change_make_var! 'MAN1DIR', 'share/man/man1'
     end
+
+    # This allows compilation against 10.7 Lion, by changing a preprocessor
+    # OS version check error to a warning. A bug report has been filed
+    # upstream (https://bugzilla.gnome.org/show_bug.cgi?id=650463). This
+    # should be fixed in the next version of Doxygen, so the following line
+    # can and should be removed when it is released.
+    inreplace "qtools/qglobal.h", "    error", "    warning"
+
     system "make"
     system "make install"
   end

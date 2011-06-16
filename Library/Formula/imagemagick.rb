@@ -31,11 +31,11 @@ class Imagemagick < Formula
   # * Bad https cert on official SVN repo
   # Send update requests to https://github.com/adamv/ImageMagick
   # Be sure to include the ImageMagick SVN revision # for the new version.
-  url 'git://github.com/adamv/ImageMagick.git',
+  url 'https://github.com/adamv/ImageMagick.git',
           :tag => '6.6.9-4'
   version '6.6.9-4'
   homepage 'http://www.imagemagick.org'
-  head 'git://github.com/adamv/ImageMagick.git'
+  head 'https://github.com/adamv/ImageMagick.git'
 
   depends_on 'jpeg'
 

@@ -2,9 +2,12 @@ require 'formula'
 
 class Node < Formula
   url 'http://nodejs.org/dist/node-v0.4.8.tar.gz'
-  head 'git://github.com/joyent/node.git'
+  head 'https://github.com/joyent/node.git'
   homepage 'http://nodejs.org/'
   md5 '22c9f69370069fe81678592cc8ae48f1'
+
+  # Leopard OpenSSL is not new enough, so use our keg-only one
+  depends_on 'openssl' if MacOS.leopard?
 
   fails_with_llvm
 

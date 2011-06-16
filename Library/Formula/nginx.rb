@@ -2,16 +2,16 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.0.2.tar.gz'
-  md5 '8a528ccaab3ddba84e72443fa40b19e7'
+  url 'http://nginx.org/download/nginx-1.0.4.tar.gz'
+  md5 'd23f6e6b07b57ac061e790b1ed64bb98'
 
   depends_on 'pcre'
 
   skip_clean 'logs'
 
+  # Changes default port to 8080
+  # Tell configure to look for pcre in HOMEBREW_PREFIX
   def patches
-    # Changes default port to 8080
-    # Set configure to look in homebrew prefix for pcre
     DATA
   end
 
@@ -49,24 +49,25 @@ class Nginx < Formula
     system "./configure", *args
     system "make install"
 
-    (prefix+'org.nginx.plist').write startup_plist
+    (prefix+'org.nginx.nginx.plist').write startup_plist
   end
 
-  def caveats
-    <<-CAVEATS
-In the interest of allowing you to run `nginx` without `sudo`, the default
-port is set to localhost:8080.
+  def caveats; <<-EOS.undent
+    In the interest of allowing you to run `nginx` without `sudo`, the default
+    port is set to localhost:8080.
 
-If you want to host pages on your local machine to the public, you should
-change that to localhost:80, and run `sudo nginx`. You'll need to turn off
-any other web servers running port 80, of course.
+    If you want to host pages on your local machine to the public, you should
+    change that to localhost:80, and run `sudo nginx`. You'll need to turn off
+    any other web servers running port 80, of course.
 
-You can start nginx automatically on login with:
-    mkdir -p ~/Library/LaunchAgents
-    cp #{prefix}/org.nginx.plist ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/org.nginx.plist
+    You can start nginx automatically on login running as your user with:
+      mkdir -p ~/Library/LaunchAgents
+      cp #{prefix}/org.nginx.nginx.plist ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/org.nginx.nginx.plist
 
-    CAVEATS
+    Though note that if running as your user, the launch agent will fail if you
+    try to use a port below 1024 (such as http's default of 80.)
+    EOS
   end
 
   def startup_plist
@@ -76,7 +77,7 @@ You can start nginx automatically on login with:
 <plist version="1.0">
   <dict>
     <key>Label</key>
-    <string>org.nginx</string>
+    <string>org.nginx.nginx</string>
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>

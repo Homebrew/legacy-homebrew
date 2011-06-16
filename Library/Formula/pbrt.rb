@@ -1,7 +1,7 @@
 require 'formula'
 
 class Pbrt < Formula
-  head 'git://github.com/mmp/pbrt-v2.git'
+  head 'https://github.com/mmp/pbrt-v2.git'
   homepage 'http://www.pbrt.org/'
 
   depends_on 'openexr'

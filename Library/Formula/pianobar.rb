@@ -6,13 +6,15 @@ class Pianobar < Formula
   homepage 'https://github.com/PromyLOPh/pianobar/'
   md5 '1e83f851e92792bd6e59decc4a6b3662'
 
-  head 'git://github.com/PromyLOPh/pianobar.git'
+  head 'https://github.com/PromyLOPh/pianobar.git'
 
   depends_on 'libao'
   depends_on 'mad'
   depends_on 'faad2'
 
   skip_clean 'bin'
+
+  fails_with_llvm "Reports of this not compiling on Xcode 4"
 
   def install
     ENV.delete 'CFLAGS' # Pianobar uses c99 instead of gcc; remove our gcc flags.
