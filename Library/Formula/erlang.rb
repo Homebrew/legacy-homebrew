@@ -26,6 +26,7 @@ class Erlang < Formula
   md5 '047f246c4ecb5fadaffb7e049795d80e'
   version 'R14B03'
   homepage 'http://www.erlang.org'
+  head 'https://github.com/erlang/otp.git', :branch => 'dev'
 
   # We can't strip the beam executables or any plugins, there isn't really
   # anything else worth stripping and it takes a really, long time to run
