@@ -4,7 +4,6 @@ class HaskellPlatform < Formula
   url 'http://lambda.galois.com/hp-tmp/2011.2.0.1/haskell-platform-2011.2.0.1.tar.gz'
   homepage 'http://hackage.haskell.org/platform/'
   md5 '97fd42f169a426d043368cec342745ef'
-  version '2011.2.0.1'
 
   depends_on 'ghc'
 
