@@ -155,6 +155,19 @@ def audit_formula_options f, text
   return problems
 end
 
+def audit_formula_version f, text
+  # Version as defined in the DSL (or nil)
+  version_text = f.class.send('version').to_s
+  # Version as determined from the URL
+  version_url = Pathname.new(f.url).version
+
+  if version_url == version_text
+    return [" * version "+version_text+" is redundant with version scanned from url"]
+  end
+
+  return []
+end
+
 def audit_formula_urls f
   problems = []
 
@@ -281,6 +294,7 @@ module Homebrew extend self
 
       problems += audit_formula_text(f.name, text_without_patch)
       problems += audit_formula_options(f, text_without_patch)
+      problems += audit_formula_version(f, text_without_patch)
 
       unless problems.empty?
         errors = true
