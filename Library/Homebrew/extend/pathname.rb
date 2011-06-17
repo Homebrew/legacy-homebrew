@@ -230,7 +230,7 @@ class Pathname
     Dir.chdir self.dirname do
       # TODO use Ruby function so we get exceptions
       # NOTE Ruby functions may work, but I had a lot of problems
-      rv = system 'ln', '-sf', src.relative_path_from(self.dirname)
+      rv = system 'ln', '-sf', src.relative_path_from(self.dirname), self.basename
       unless rv and $? == 0
         raise <<-EOS.undent
           Could not create symlink #{to_s}.
@@ -245,9 +245,10 @@ class Pathname
   end
 
   def ensure_writable
-    saved_perms = unless writable?
+    saved_perms = nil
+    unless writable?
+      saved_perms = stat.mode
       chmod 0644
-      stat.mode
     end
     yield
   ensure
