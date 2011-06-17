@@ -6,7 +6,6 @@ class Dotless < Formula
   homepage "http://www.dotlesscss.org/"
   url "https://github.com/dotless/dotless/tarball/v1.1.0.3"
   md5 "6ca4801461c31214d2775858bc9adb29"
-  version "1.1.0.3"
 
   def install
     mono_path = `/usr/bin/which mono`.strip

@@ -7,7 +7,6 @@ class RdsCommandLineTools < AmazonWebServicesFormula
   homepage 'http://developer.amazonwebservices.com/connect/entry.jspa?externalID=2928'
   url      'http://s3.amazonaws.com/rds-downloads/RDSCli-1.3.003.zip'
   md5      '01a0751b5e0b7a8a6c0097a579739394'
-  version  '1.3.003'
 
   def install
     standard_install
