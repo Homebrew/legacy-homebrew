@@ -32,7 +32,7 @@ _brew_to_completion()
         # handle standard --options
         if [[ "$prev" == "install" && "$cur" == --* ]]; then
             local opts=$(
-                local opts=( --force --verbose --debug --use-gcc --use-llvm --ignore-dependencies --HEAD )
+                local opts=( --force --verbose --debug --use-clang --use-gcc --use-llvm --ignore-dependencies --HEAD )
                 for o in ${opts[*]}; do
                     [[ " ${COMP_WORDS[*]} " =~ " $o " ]] || echo "$o"
                 done

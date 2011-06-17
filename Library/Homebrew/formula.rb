@@ -45,7 +45,7 @@ class SoftwareSpecification
   end
 end
 
-class BottleSoftwareSpecification <SoftwareSpecification
+class BottleSoftwareSpecification < SoftwareSpecification
   def download_strategy
     return CurlBottleDownloadStrategy if @using.nil?
     raise "Strategies cannot be used with bottles."
@@ -301,7 +301,7 @@ class Formula
   end
 
   def handle_llvm_failure llvm
-    unless (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
+    unless (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm' or ARGV.include? '--use-clang')
       ENV.gcc_4_2 if default_cc =~ /llvm/
       return
     end
@@ -454,7 +454,7 @@ class Formula
   end
 
   def pouring
-    return (@bottle or ARGV.build_from_source?)
+    @bottle or ARGV.build_from_source?
   end
 
 protected
