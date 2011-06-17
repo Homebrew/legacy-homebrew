@@ -18,7 +18,7 @@ module HomebrewEnvExtension
       self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
     end
 
-    if MACOS_VERSION >= 10.6 and ARGV.include? '--use-clang'
+    if MACOS_VERSION >= 10.6 and (self['HOMEBREW_USE_CLANG'] or ARGV.include? '--use-clang')
       self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/clang"
       self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/clang++"
       cflags = ['-O3'] # -O4 makes the linker fail on some formulae
