@@ -1,15 +1,10 @@
 require 'formula'
 
 class Varnish < Formula
-  url 'http://repo.varnish-cache.org/source/varnish-2.1.5.tar.gz'
-  head 'http://repo.varnish-cache.org/source/varnish-3.0.0-beta1.tar.gz'
+  url 'http://repo.varnish-cache.org/source/varnish-3.0.0.tar.gz'
   homepage 'http://www.varnish-cache.org/'
 
-  if ARGV.build_head?
-    md5 'c4dbd66ac6795c6c9d1c143ef2a47d38'
-  else
-    md5 '2d2f227da36a2a240c475304c717b8e3'
-  end
+  md5 '38387bf31a1574f5cd8dec4f0b7caf20'
 
   depends_on 'pkg-config' => :build
   depends_on 'pcre'
