@@ -1,9 +1,9 @@
 require 'formula'
 
 class Hbase < Formula
-  url 'http://www.takeyellow.com/apachemirror//hbase/hbase-0.90.2/hbase-0.90.2.tar.gz'
+  url 'http://www.takeyellow.com/apachemirror//hbase/hbase-0.90.3/hbase-0.90.3.tar.gz'
   homepage 'http://hbase.apache.org'
-  md5 '83f12e3a1d32375d1e2caa6245cda3d8'
+  md5 '834aa50df08886515939ad6af0a55885'
 
   depends_on 'hadoop'
 

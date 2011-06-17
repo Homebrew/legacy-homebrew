@@ -114,18 +114,18 @@ class Pathname
     end
 
     # github tarballs, like v1.2.3
-    %r[github.com/.*/tarball/v?((\d\.)+\d+)$].match to_s
-    return $1 if $1
+    %r[github.com/.*/(zip|tar)ball/v?((\d\.)+\d+)$].match to_s
+    return $2 if $2
 
     # dashed version
     # eg. github.com/isaacs/npm/tarball/v0.2.5-1
-    %r[github.com/.*/tarball/v?((\d\.)+\d+-(\d+))$].match to_s
-    return $1 if $1
+    %r[github.com/.*/(zip|tar)ball/v?((\d\.)+\d+-(\d+))$].match to_s
+    return $2 if $2
 
     # underscore version
     # eg. github.com/petdance/ack/tarball/1.93_02
-    %r[github.com/.*/tarball/v?((\d\.)+\d+_(\d+))$].match to_s
-    return $1 if $1
+    %r[github.com/.*/(zip|tar)ball/v?((\d\.)+\d+_(\d+))$].match to_s
+    return $2 if $2
 
     # eg. boost_1_39_0
     /((\d+_)+\d+)$/.match stem
@@ -157,7 +157,7 @@ class Pathname
     return $1 if $1
 
     # eg foobar-4.5.0-bin
-    /-((\d+\.)+\d+[abc]?)[-.](bin|stable|src|sources?)$/.match stem
+    /-((\d+\.)+\d+[abc]?)[-._](bin|stable|src|sources?)$/.match stem
     return $1 if $1
 
     # Debian style eg dash_0.5.5.1.orig.tar.gz
@@ -230,7 +230,7 @@ class Pathname
     Dir.chdir self.dirname do
       # TODO use Ruby function so we get exceptions
       # NOTE Ruby functions may work, but I had a lot of problems
-      rv = system 'ln', '-sf', src.relative_path_from(self.dirname)
+      rv = system 'ln', '-sf', src.relative_path_from(self.dirname), self.basename
       unless rv and $? == 0
         raise <<-EOS.undent
           Could not create symlink #{to_s}.
@@ -245,9 +245,10 @@ class Pathname
   end
 
   def ensure_writable
-    saved_perms = unless writable?
+    saved_perms = nil
+    unless writable?
+      saved_perms = stat.mode
       chmod 0644
-      stat.mode
     end
     yield
   ensure

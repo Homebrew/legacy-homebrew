@@ -45,6 +45,13 @@ class SoftwareSpecification
   end
 end
 
+class BottleSoftwareSpecification < SoftwareSpecification
+  def download_strategy
+    return CurlBottleDownloadStrategy if @using.nil?
+    raise "Strategies cannot be used with bottles."
+  end
+end
+
 
 # Used to annotate formulae that duplicate OS X provided software
 # or cause conflicts when linked in.
@@ -94,12 +101,14 @@ end
 class Formula
   include FileUtils
 
-  attr_reader :name, :path, :url, :version, :homepage, :specs, :downloader
+  attr_reader :name, :path, :url, :bottle, :bottle_sha1, :version, :homepage, :specs, :downloader
 
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
     set_instance_variable 'homepage'
     set_instance_variable 'url'
+    set_instance_variable 'bottle'
+    set_instance_variable 'bottle_sha1'
     set_instance_variable 'head'
     set_instance_variable 'specs'
 
@@ -110,6 +119,8 @@ class Formula
       @url = @head
       @version = 'HEAD'
       @spec_to_use = @unstable
+    elsif pouring
+      @spec_to_use = BottleSoftwareSpecification.new(@bottle, @specs)
     else
       if @stable.nil?
         @spec_to_use = SoftwareSpecification.new(@url, @specs)
@@ -290,7 +301,7 @@ class Formula
   end
 
   def handle_llvm_failure llvm
-    unless (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
+    unless (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm' or ARGV.include? '--use-clang')
       ENV.gcc_4_2 if default_cc =~ /llvm/
       return
     end
@@ -350,7 +361,9 @@ class Formula
 
   def self.canonical_name name
     formula_with_that_name = HOMEBREW_REPOSITORY+"Library/Formula/#{name}.rb"
-    possible_alias = HOMEBREW_REPOSITORY+"Library/Aliases"+name
+    possible_alias = HOMEBREW_REPOSITORY+"Library/Aliases/#{name}"
+    possible_cached_formula = HOMEBREW_CACHE_FORMULA+"#{name}.rb"
+
     if name.include? "/"
       # Don't resolve paths or URLs
       name
@@ -358,6 +371,8 @@ class Formula
       name
     elsif possible_alias.file?
       possible_alias.realpath.basename('.rb').to_s
+    elsif possible_cached_formula.file?
+      possible_cached_formula.to_s
     else
       name
     end
@@ -371,26 +386,25 @@ class Formula
     if name =~ %r[(https?|ftp)://]
       url = name
       name = Pathname.new(name).basename
-      target_file = (HOMEBREW_CACHE+"Formula"+name)
+      target_file = HOMEBREW_CACHE_FORMULA+name
       name = name.basename(".rb").to_s
 
-      (HOMEBREW_CACHE+"Formula").mkpath
+      HOMEBREW_CACHE_FORMULA.mkpath
       FileUtils.rm target_file, :force => true
       curl url, '-o', target_file
 
       require target_file
       install_type = :from_url
     else
-      # Check if this is a name or pathname
+      name = Formula.canonical_name(name)
+      # If name was a path or mapped to a cached formula
       if name.include? "/"
-        # For paths, just require the path
         require name
         path = Pathname.new(name)
         name = path.stem
         install_type = :from_path
         target_file = path.to_s
       else
-        name = Formula.canonical_name(name)
         # For names, map to the path and then require
         require Formula.path(name)
         install_type = :from_name
@@ -437,6 +451,10 @@ class Formula
       dep = Formula.factory dep
       expand_deps(dep) << dep
     end
+  end
+
+  def pouring
+    @bottle or ARGV.build_from_source?
   end
 
 protected
@@ -497,10 +515,16 @@ private
 
   def verify_download_integrity fn
     require 'digest'
-    type=CHECKSUM_TYPES.detect { |type| instance_variable_defined?("@#{type}") }
-    type ||= :md5
-    supplied=instance_variable_get("@#{type}")
-    type=type.to_s.upcase
+    if not pouring
+      type=CHECKSUM_TYPES.detect { |type| instance_variable_defined?("@#{type}") }
+      type ||= :md5
+      supplied=instance_variable_get("@#{type}")
+      type=type.to_s.upcase
+    else
+      supplied=instance_variable_get("@bottle_sha1")
+      type="SHA1"
+    end
+
     hasher = Digest.const_get(type)
     hash = fn.incremental_hash(hasher)
 
@@ -525,14 +549,21 @@ EOF
     fetched = @downloader.fetch
     verify_download_integrity fetched if fetched.kind_of? Pathname
 
-    mktemp do
-      @downloader.stage
-      yield
+    if not pouring
+      mktemp do
+        @downloader.stage
+        yield
+      end
+    else
+      HOMEBREW_CELLAR.cd do
+        @downloader.stage
+        yield
+      end
     end
   end
 
   def patch
-    return if patches.nil?
+    return if patches.nil? or pouring
 
     if not patches.kind_of? Hash
       # We assume -p1
@@ -626,6 +657,7 @@ EOF
 
     attr_rw :version, :homepage, :specs, :deps, :external_deps
     attr_rw :keg_only_reason, :fails_with_llvm_reason, :skip_clean_all
+    attr_rw :bottle, :bottle_sha1
     attr_rw(*CHECKSUM_TYPES)
 
     def head val=nil, specs=nil

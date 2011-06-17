@@ -1,8 +1,8 @@
 require 'formula'
 
 class Premake < Formula
-  url 'http://downloads.sourceforge.net/project/premake/Premake/4.1.2/premake-4.1.2-src.zip'
-  md5 'de11ee2ba611ffe6e00ba190e35d2c41'
+  url 'http://downloads.sourceforge.net/project/premake/Premake/4.3/premake-4.3-src.zip'
+  md5 '8cfafee76f9665c93b2e9ad15b015eb7'
   homepage 'http://industriousone.com/premake'
 
   def install

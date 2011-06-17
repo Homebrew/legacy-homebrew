@@ -6,6 +6,8 @@ class Qt < Formula
   md5 '49b96eefb1224cc529af6fe5608654fe'
   homepage 'http://qt.nokia.com/'
 
+  head 'git://gitorious.org/qt/qt.git', :branch => 'master'
+
   def options
     [
       ['--with-qtdbus', "Enable QtDBus module."],
