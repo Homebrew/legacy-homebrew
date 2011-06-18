@@ -6,14 +6,14 @@ class Mongodb < Formula
 
   packages = {
     :x86_64 => {
-      :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-1.8.1.tgz',
-      :md5 => 'e446ba61cc8898fa2ffd5046953155ca',
-      :version => '1.8.1-x86_64'
+      :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-1.8.2.tgz',
+      :md5 => '71acdb8fdd24cb8179b5436169e80912',
+      :version => '1.8.2-x86_64'
     },
     :i386 => {
-      :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-1.8.1.tgz',
-      :md5 => 'db95a601072feb3031f628dd39ca2446',
-      :version => '1.8.1-i386'
+      :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-1.8.2.tgz',
+      :md5 => '3cbe62979413058d5dac0ef20afbb70d',
+      :version => '1.8.2-i386'
     }
   }
 
