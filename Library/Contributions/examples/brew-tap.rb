@@ -206,7 +206,7 @@ class Brewery
 
   # HTTParty configuration
   include HTTParty
-  base_uri 'github.com/api/v2/json/repos/show'
+  base_uri 'https://api.github.com/repos'
   format :json
 
   attr_reader :owner, :name, :id, :url
@@ -248,21 +248,28 @@ class Brewery
   # These methods all hit the GitHub API. Therefore, they should only be
   # invoked through the memoized accessors defined above.
   def get_network
-    network = self.class.get("/#{@owner}/#{@name}/network").parsed_response['network']
-    network.map do |repo|
+    network = self.class.get("/#{@owner}/#{@name}/forks").parsed_response
+
+    # Convert the JSON results to Brewery objects
+    network.map! do |repo|
       # We don't need all the information returned in the network array.
       # Abstract the important bits into new Brewery objects.
-      brewery = Brewery.new :owner => repo['owner'], :name => repo['name']
+      brewery = Brewery.new :owner => repo['owner']['login'], :name => repo['name']
     end
+
+    # Version 3 of the GitHub api only offers a "fork network" which doesn't
+    # include the original repository. So we push a copy of this repo onto the
+    # list of results.
+    network.push self
   end
 
   def get_branches
-    self.class.get("/#{@owner}/#{@name}/branches").parsed_response['branches']
+    self.class.get("/#{@owner}/#{@name}/branches").parsed_response
   end
 
   def get_master_branch
     # When no value is returned by the API, the master branch is named master.
-    self.class.get("/#{@owner}/#{@name}").parsed_response['repository']['master_branch'] || 'master'
+    self.class.get("/#{@owner}/#{@name}").parsed_response['master_branch'] || 'master'
   end
 end
 
