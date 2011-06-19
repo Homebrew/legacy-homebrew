@@ -2,7 +2,7 @@ require 'formula'
 
 class Sigar < Formula
   # HEAD has up to date bindings that are actually useful.
-  head 'git://github.com/hyperic/sigar.git'
+  head 'https://github.com/hyperic/sigar.git'
   homepage 'http://sigar.hyperic.com/'
 
   def options
