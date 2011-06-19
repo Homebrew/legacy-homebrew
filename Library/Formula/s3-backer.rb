@@ -9,6 +9,7 @@ class S3Backer < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}"
+    system "perl -p -i -e 's/-lfuse/-lfuse_ino64/g' Makefile"
     system "make install"
   end
 
