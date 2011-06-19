@@ -70,11 +70,13 @@ For the full command list, see the COMMANDS section.
     If `--no-fetch` is passed, Homebrew will not download <URL> to the cache and
     will thus not add the MD5 to the formula for you.
 
-  * `deps [--1]` <formula>:
+  * `deps [--1] [-n]` <formula>:
     Show <formula>'s dependencies.
 
     If `--1` is passed, only show dependencies one level down, instead of
     recursing.
+
+    If `-n` is passed, shows dependencies in topological order.
 
   * `doctor`:
     Check your system for potential problems.
@@ -114,7 +116,7 @@ For the full command list, see the COMMANDS section.
   * `info` <URL>:
     Print the name and version that will be detected for <URL>.
 
-  * `install [--force] [--debug] [--ignore-dependencies] [--use-llvm] [--use-gcc] [--HEAD]` <formula>:
+  * `install [--force] [--debug] [--ignore-dependencies] [--use-clang] [--use-gcc] [--use-llvm] [--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but may also be
@@ -131,11 +133,13 @@ For the full command list, see the COMMANDS section.
     any kind. If they are not already present, the formula will probably fail
     to install.
 
-    If `--use-llvm` is passed, attempt to compile using the LLVM front-end to GCC.
-    *NOTE*: Not all formulae will build with LLVM.
+    If `--use-clang` is passed, attempt to compile using clang.
 
     If `--use-gcc` is passed, attempt to compile using GCC. This is useful for
     systems whose default compiler is LLVM-GCC.
+
+    If `--use-llvm` is passed, attempt to compile using the LLVM front-end to GCC.
+    *NOTE*: Not all formulae will build with LLVM.
 
     If `--HEAD` is passed, and <formula> defines it, install the HEAD version,
     aka master, trunk, unstable, dev.
@@ -322,13 +326,14 @@ Some sample commands ship with Homebrew and are enabled by default.
     This issue typically occurs when using FileVault or custom SSD
     configurations.
 
+  * HOMEBREW\_USE\_CLANG:
+    If set, instructs Homebrew to compile using clang.
+
   * HOMEBREW\_USE\_GCC:
-    If set, instructs Homebrew to use gcc, even if the system default
-    is currently set to LLVM.
+    If set, instructs Homebrew to compile using gcc.
 
   * HOMEBREW\_USE\_LLVM:
-    If set, instructs Homebrew to use the LLVM front-ends to the GCC
-    compilers.
+    If set, instructs Homebrew to compile using LLVM.
 
     *NOTE*: Not all formulae build correctly with LLVM.
 

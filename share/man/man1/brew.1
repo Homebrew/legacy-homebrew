@@ -78,11 +78,14 @@ Generate a formula for the downloadable file at \fIURL\fR and opens it in $EDITO
 If \fB\-\-no\-fetch\fR is passed, Homebrew will not download \fIURL\fR to the cache and will thus not add the MD5 to the formula for you\.
 .
 .TP
-\fBdeps [\-\-1]\fR \fIformula\fR
+\fBdeps [\-\-1] [\-n]\fR \fIformula\fR
 Show \fIformula\fR\'s dependencies\.
 .
 .IP
 If \fB\-\-1\fR is passed, only show dependencies one level down, instead of recursing\.
+.
+.IP
+If \fB\-n\fR is passed, shows dependencies in topological order\.
 .
 .TP
 \fBdoctor\fR
@@ -133,7 +136,7 @@ To view formula history locally: \fBbrew log \-p <formula>\fR\.
 Print the name and version that will be detected for \fIURL\fR\.
 .
 .TP
-\fBinstall [\-\-force] [\-\-debug] [\-\-ignore\-dependencies] [\-\-use\-llvm] [\-\-use\-gcc] [\-\-HEAD]\fR \fIformula\fR
+\fBinstall [\-\-force] [\-\-debug] [\-\-ignore\-dependencies] [\-\-use\-clang] [\-\-use\-gcc] [\-\-use\-llvm] [\-\-HEAD]\fR \fIformula\fR
 Install \fIformula\fR\.
 .
 .IP
@@ -149,10 +152,13 @@ If \fB\-\-debug\fR is passed and brewing fails, open a shell inside the temporar
 If \fB\-\-ignore\-dependencies\fR is passed, skip installing any dependencies of any kind\. If they are not already present, the formula will probably fail to install\.
 .
 .IP
-If \fB\-\-use\-llvm\fR is passed, attempt to compile using the LLVM front\-end to GCC\. \fINOTE\fR: Not all formulae will build with LLVM\.
+If \fB\-\-use\-clang\fR is passed, attempt to compile using clang\.
 .
 .IP
 If \fB\-\-use\-gcc\fR is passed, attempt to compile using GCC\. This is useful for systems whose default compiler is LLVM\-GCC\.
+.
+.IP
+If \fB\-\-use\-llvm\fR is passed, attempt to compile using the LLVM front\-end to GCC\. \fINOTE\fR: Not all formulae will build with LLVM\.
 .
 .IP
 If \fB\-\-HEAD\fR is passed, and \fIformula\fR defines it, install the HEAD version, aka master, trunk, unstable, dev\.
@@ -352,12 +358,16 @@ If set, instructs Homebrew to use \fBHOMEBREW_TEMP\fR as the temporary folder fo
 This issue typically occurs when using FileVault or custom SSD configurations\.
 .
 .TP
+HOMEBREW_USE_CLANG
+If set, instructs Homebrew to compile using clang\.
+.
+.TP
 HOMEBREW_USE_GCC
-If set, instructs Homebrew to use gcc, even if the system default is currently set to LLVM\.
+If set, instructs Homebrew to compile using gcc\.
 .
 .TP
 HOMEBREW_USE_LLVM
-If set, instructs Homebrew to use the LLVM front\-ends to the GCC compilers\.
+If set, instructs Homebrew to compile using LLVM\.
 .
 .IP
 \fINOTE\fR: Not all formulae build correctly with LLVM\.
