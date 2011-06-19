@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 require 'time'
+# Results from the GitHub API are serialized to disk using YAML to keep API
+# traffic low.
 require 'yaml'
 
 require 'rubygems'
-# HTTParty is used because it provides a nice abstraction for querying the
-# GitHub API and serializing the JSON responses to ruby objects. However, only
-# a couple of API calls are ever made---so HTTParty could probably be ditched
-# in favor of a system call to curl with no great loss in exchange for removing
-# the dependency.
+# HTTParty is used for querying the GitHub API and de-serializing the JSON
+# responses to ruby objects. However, only a couple of API calls are ever
+# made---so HTTParty could probably be ditched in favor of a system call to
+# curl with no great loss in exchange for removing the dependency.
 #
-# On the other hand, a JSON deserializer would still be required as GitHub is
+# On the other hand, a JSON de-serializer would still be required as GitHub is
 # depreciating the XML and YAML (bummer!) options.
 begin
   require 'httparty'
@@ -22,7 +23,7 @@ done using the HTTParty gem, but that gem could not be imported.
   exit 1
 end
 
-# `brew-tap update` makes use of the same class as `brew update`
+# `brew-tap update` recycles some of the machinery from `brew update`
 require 'cmd/update'
 require 'formula'
 
@@ -33,14 +34,14 @@ module Homebrew extend self
     # repositories in the fork network of Adam's homebrew-alt. There are two
     # reasons this was done:
     #
-    #   * The fork network provides a convienient way to discover new
+    #   * The fork network provides a convenient way to discover new
     #     repositories.
     #
     #   * The repositories have a "known structure" in that every *.rb file
     #     contained within is a homebrew formula.
     #
     # Hopefully, this infrastructure can be generalized to include any git
-    # repository that contains homebrew formulae.
+    # repository that contains Homebrew formulae.
     taproom_path = HOMEBREW_PREFIX + 'Library' + 'Taproom'
     founding_brewery = {:owner => 'adamv', :name => 'homebrew-alt'}
     taproom = Taproom.new(taproom_path, Brewery.new(founding_brewery))
@@ -53,17 +54,20 @@ list
   List available alternate repositories.
 
 update
-  Update cloned repositories.
+  Pull updates into cloned repositories. Also refreshes the list of available
+  alternate repositories.
 
 add <repository>
 remove <repository>
-  Manage cloned repositories.
+  Clone alternate repositories with add. Delete them with remove.
 
 which <formulae>...
-  Resolve formula names to brewfiles and then print the brewfile paths.
+  Resolve formula names to alternate brewfiles and then print paths to those
+  brewfiles.
 
-brew_command [--options] [<formulae>...]
-  Run a brew command, such as install, using formulae in alternate repositories.
+<brew command> [--options] [<formulae>...]
+  Run a brew command, such as install, using formulae in cloned alternate
+  repositories.
 
 See 'brew tap help' for more detailed information.
     EOS
@@ -78,7 +82,10 @@ See 'brew tap help' for more detailed information.
       exec "man #{HOMEBREW_PREFIX}/share/man/man1/brew-tap.1"
 
     when 'list'
-      # Lists tapped repositories and available repositories
+      # Lists tapped repositories and available repositories separately. The
+      # list of available repositories is generated from the fork network of
+      # the "founding brewery" using the GitHub API. This list is only updated
+      # when `brew tap update` is called.
       ohai "Repositories on tap:\n"
       taproom.tapped.each do |brewery|
         puts <<-EOS.undent
@@ -184,14 +191,16 @@ See 'brew tap help' for more detailed information.
     deps = formula.external_deps[:alt]
 
     if formula.installed?
-      # Formula that are allready installed are assigned a path of nil so they
+      # Formula that are already installed are assigned a path of nil so they
       # may be eliminated by a later call to `compact`. This prevents brew from
-      # throwing "allready installed" errors when it is recalled.
+      # throwing "already installed" errors when it is recalled.
       formula_path = nil
     else
       formula_path = formula.path
     end
 
+    # If the formula doesn't have any alternate dependencies, we just return
+    # it.
     if deps.nil? or deps.empty?
       return formula_path
     else
