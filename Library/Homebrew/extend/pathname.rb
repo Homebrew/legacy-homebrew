@@ -218,11 +218,6 @@ class Pathname
     (dirname+readlink).exist?
   end
 
-  def starts_with? prefix
-    prefix = prefix.to_s
-    self.to_s[0, prefix.length] == prefix
-  end
-
   # perhaps confusingly, this Pathname object becomes the symlink pointing to
   # the src paramter.
   def make_relative_symlink src
