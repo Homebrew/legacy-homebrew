@@ -13,7 +13,8 @@ class Poppler < Formula
   md5 '592a564fb7075a845f75321ed6425424'
 
   depends_on 'pkg-config' => :build
-  depends_on "qt" if ARGV.include? "--with-qt4"
+  depends_on 'qt' if ARGV.include? "--with-qt4"
+  depends_on 'glib' if glib?
   depends_on 'cairo' if glib? # Needs a newer Cairo build than OS X 10.6.7 provides
 
   def options
@@ -33,8 +34,8 @@ class Poppler < Formula
     end
 
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-    args << "--disable-poppler-qt4" unless ARGV.include? "--with-qt4"
-    args << "--disable-poppler-glib" unless glib?
+    args << "--enable-poppler-qt4" if ARGV.include? "--with-qt4"
+    args << "--enable-poppler-glib" if glib?
     args << "--enable-xpdf-headers" if ARGV.include? "--enable-xpdf-headers"
 
     system "./configure", *args
