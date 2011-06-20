@@ -8,8 +8,7 @@ module Homebrew extend self
 
     real_cellar = HOMEBREW_CELLAR.realpath
 
-    # paths=%w[bin sbin etc lib include share].collect {|d| HOMEBREW_PREFIX+d}
-    paths=%w[bin].collect {|d| HOMEBREW_PREFIX+d}
+    paths=%w[bin sbin lib].collect {|d| HOMEBREW_PREFIX+d}
 
     paths.each do |path|
       path.find do |path|
