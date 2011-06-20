@@ -233,6 +233,11 @@ For the full command list, see the COMMANDS section.
 
     If `--installed` is passed, only lists installed formulae.
 
+  * `which` [<formulae>]:
+    List versions of installed brews.
+
+    If <formulae> are given, only list versions for the specified brews.
+
   * `--cache`:
     Display Homebrew's download cache. *Default:* `~/Library/Cache/Homebrew`
 
