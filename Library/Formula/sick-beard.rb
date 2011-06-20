@@ -94,7 +94,7 @@ class SickBeard < Formula
 
         mkdir -p ~/Library/LaunchAgents
         (launchctl unload -w ~/Library/LaunchAgents/#{startup_plist_name} 2>/dev/null || true)
-        ln -s #{prefix}/#{startup_plist_name} ~/Library/LaunchAgents/#{startup_plist_name}
+        ln -sf #{prefix}/#{startup_plist_name} ~/Library/LaunchAgents/#{startup_plist_name}
         launchctl load -w ~/Library/LaunchAgents/#{startup_plist_name}
 
     You may want to edit #{prefix}/#{startup_plist_name} to change
