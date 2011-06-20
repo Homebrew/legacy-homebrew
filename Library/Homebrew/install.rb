@@ -120,16 +120,6 @@ def install f
   keg = Keg.new f.prefix
 
   begin
-    keg.fix_install_names
-  rescue Exception => e
-    onoe "Failed to fix install names"
-    puts "The formula built, but you may encounter issues using it or linking other"
-    puts "formula against it."
-    ohai e, e.backtrace if ARGV.debug?
-    show_summary_heading = true
-  end
-
-  begin
     require 'cleaner'
     Cleaner.new f if not f.pouring
   rescue Exception => e
@@ -162,6 +152,7 @@ def install f
       opoo 'A top-level "man" folder was found.'
       puts "Homebrew requires that man pages live under share."
       puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
+      show_summary_heading = true
     end
 
     # Check for info pages that aren't in share/info
@@ -169,6 +160,7 @@ def install f
       opoo 'A top-level "info" folder was found.'
       puts "Homebrew suggests that info pages live under share."
       puts 'This can often be fixed by passing "--infodir=#{info}" to configure.'
+      show_summary_heading = true
     end
 
     # Check for Jars in lib
@@ -179,6 +171,7 @@ def install f
         puts "For Java software, it is typically better for the formula to"
         puts "install to \"libexec\" and then symlink or wrap binaries into \"bin\"."
         puts "See \"activemq\", \"jruby\", etc. for examples."
+        show_summary_heading = true
       end
     end
 
@@ -188,6 +181,7 @@ def install f
       puts "Homebrew does not append \"#{HOMEBREW_PREFIX}/share/aclocal\""
       puts "to \"/usr/share/aclocal/dirlist\". If an autoconf script you use"
       puts "requires these m4 macros, you'll need to add this path manually."
+      show_summary_heading = true
     end
 
     # link from Cellar to Prefix
@@ -197,11 +191,17 @@ def install f
       onoe "The linking step did not complete successfully"
       puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
       puts "You can try again using `brew link #{f.name}'"
-      if ARGV.debug?
-        ohai e, e.backtrace
-      else
-        onoe e
-      end
+      ohai e, e.backtrace if ARGV.debug?
+      show_summary_heading = true
+    end
+
+    begin
+      keg.fix_install_names
+    rescue Exception => e
+      onoe "Failed to fix install names"
+      puts "The formula built, but you may encounter issues using it or linking other"
+      puts "formula against it."
+      ohai e, e.backtrace if ARGV.debug?
       show_summary_heading = true
     end
   end

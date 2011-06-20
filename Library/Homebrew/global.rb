@@ -54,4 +54,4 @@ module Homebrew extend self
 end
 
 FORMULA_META_FILES = %w[README README.md ChangeLog COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
-PLEASE_REPORT_BUG = "#{Tty.white}Please report this bug: #{Tty.em}https://github.com/mxcl/homebrew/wiki/new-issue#{Tty.reset}"
+PLEASE_REPORT_BUG = "#{Tty.white}Please report this bug: #{Tty.em}https://github.com/mxcl/homebrew/wiki/Checklist-before-filing-a-new-issue#{Tty.reset}"

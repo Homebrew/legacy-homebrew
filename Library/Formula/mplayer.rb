@@ -2,31 +2,30 @@ require 'formula'
 
 class Mplayer < Formula
   homepage 'http://www.mplayerhq.hu/'
-  # https://github.com/mxcl/homebrew/issues/issue/87
+  url 'ftp://ftp.mplayerhq.hu/MPlayer/releases/MPlayer-1.0rc4.tar.bz2'
+  md5 '1699c94de39da9c4c5d34e8f58e418f0'
+
   head 'svn://svn.mplayerhq.hu/mplayer/trunk', :using => StrictSubversionDownloadStrategy
 
   depends_on 'pkg-config' => :build
   depends_on 'yasm' => :build
 
   def patches
-    # configure prompts the user to pull ffmpeg from git.
-    # Don't do that.
-    DATA
+    # When building from SVN HEAD, configure prompts the user to pull FFmpeg
+    # from git.  Don't do that.
+    DATA if ARGV.build_head?
   end
 
   def install
-    # Do not use pipes, per bug report
-    # https://github.com/mxcl/homebrew/issues#issue/622
-    # and MacPorts
-    # http://trac.macports.org/browser/trunk/dports/multimedia/mplayer-devel/Portfile
-    # any kind of optimisation breaks the build
+    # (A) Do not use pipes, per bug report and MacPorts
+    # * https://github.com/mxcl/homebrew/issues/622
+    # * http://trac.macports.org/browser/trunk/dports/multimedia/mplayer-devel/Portfile
+    # (B) Any kind of optimisation breaks the build
     ENV.gcc_4_2
     ENV['CFLAGS'] = ''
     ENV['CXXFLAGS'] = ''
 
-    args = "--prefix=#{prefix}"
-
-    system './configure', *args
+    system './configure', "--prefix=#{prefix}"
     system "make"
     system "make install"
   end
