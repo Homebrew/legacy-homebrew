@@ -47,6 +47,7 @@ class Erlang < Formula
   fails_with_llvm "See https://github.com/mxcl/homebrew/issues/issue/120", :build => 2326
 
   def install
+    ohai "Compilation may take a very long time; use `brew install -v erlang` to see progress"
     ENV.deparallelize
 
     # Do this if building from a checkout to generate configure
