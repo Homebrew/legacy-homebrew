@@ -13,72 +13,80 @@ end
 
 class RefreshBrew
   REPOSITORY_URL   = "http://github.com/mxcl/homebrew.git"
-  INIT_COMMAND     = "git init"
   CHECKOUT_COMMAND = "git checkout -q master"
   UPDATE_COMMAND   = "git pull #{REPOSITORY_URL} master"
-  REVISION_COMMAND = "git log -l -1 --pretty=format:%H 2> /dev/null"
-  GIT_UP_TO_DATE   = "Already up-to-date."
+  REVISION_COMMAND = "git rev-parse HEAD"
+  DIFF_COMMAND     = "git diff-tree -r --name-status -z %s %s"
 
-  formula_regexp   = 'Library/Formula/(.+?)\.rb'
-  ADDED_FORMULA    = %r{^\s+create mode \d+ #{formula_regexp}$}
-  UPDATED_FORMULA  = %r{^\s+#{formula_regexp}\s}
-  DELETED_FORMULA  = %r{^\s+delete mode \d+ #{formula_regexp}$}
-
-  example_regexp   = 'Library/Contributions/examples/([^.\s]+).*'
-  ADDED_EXAMPLE    = %r{^\s+create mode \d+ #{example_regexp}$}
-  UPDATED_EXAMPLE  = %r{^\s+#{example_regexp}}
-  DELETED_EXAMPLE  = %r{^\s+delete mode \d+ #{example_regexp}$}
+  FORMULA_DIR = 'Library/Formula/'
+  EXAMPLE_DIR = 'Library/Contributions/examples/'
 
   attr_reader :added_formulae, :updated_formulae, :deleted_formulae, :installed_formulae
   attr_reader :added_examples, :updated_examples, :deleted_examples
-  attr_reader :initial_revision
+  attr_reader :initial_revision, :current_revision
 
   def initialize
     @added_formulae, @updated_formulae, @deleted_formulae, @installed_formulae = [], [], [], []
     @added_examples, @updated_examples, @deleted_examples = [], [], []
-    @initial_revision = self.current_revision
+    @initial_revision, @current_revision = nil
   end
 
   # Performs an update of the homebrew source. Returns +true+ if a newer
   # version was available, +false+ if already up-to-date.
   def update_from_masterbrew!
-    output = ''
     HOMEBREW_REPOSITORY.cd do
-      if File.directory? '.git'
+      if git_repo?
         safe_system CHECKOUT_COMMAND
+        @initial_revision = read_revision
       else
-        safe_system INIT_COMMAND
+        begin
+          safe_system "git init"
+          safe_system "git fetch #{REPOSITORY_URL}"
+          safe_system "git reset FETCH_HEAD"
+        rescue Exception
+          safe_system "rm -rf .git"
+          raise
+        end
       end
-      output = execute(UPDATE_COMMAND)
+      execute(UPDATE_COMMAND)
+      @current_revision = read_revision
     end
 
-    output.split("\n").reverse.each do |line|
-      case line
-      when ADDED_FORMULA
-        @added_formulae << $1
-      when DELETED_FORMULA
-        @deleted_formulae << $1
-      when UPDATED_FORMULA
-        @updated_formulae << $1 unless @added_formulae.include?($1) or @deleted_formulae.include?($1)
-      when ADDED_EXAMPLE
-        @added_examples << $1
-      when DELETED_EXAMPLE
-        @deleted_examples << $1
-      when UPDATED_EXAMPLE
-        @updated_examples << $1 unless @added_examples.include?($1) or @deleted_examples.include?($1)
+    if initial_revision && initial_revision != current_revision
+      # hash with status characters for keys:
+      # Added (A), Copied (C), Deleted (D), Modified (M), Renamed (R)
+      @changes_map = Hash.new {|h,k| h[k] = [] }
+
+      changes = HOMEBREW_REPOSITORY.cd do
+        execute(DIFF_COMMAND % [initial_revision, current_revision]).split("\0")
+      end
+
+      while status = changes.shift
+        file = changes.shift
+        @changes_map[status] << file
+      end
+
+      if @changes_map.any?
+        @added_formulae   = changed_items('A', FORMULA_DIR)
+        @deleted_formulae = changed_items('D', FORMULA_DIR)
+        @updated_formulae = changed_items('M', FORMULA_DIR)
+        @added_examples   = changed_items('A', EXAMPLE_DIR)
+        @deleted_examples = changed_items('D', EXAMPLE_DIR)
+        @updated_examples = changed_items('M', EXAMPLE_DIR)
+
+        @installed_formulae = HOMEBREW_CELLAR.children.
+          select{ |pn| pn.directory? }.
+          map{ |pn| pn.basename.to_s }.sort if HOMEBREW_CELLAR.directory?
+
+        return true
       end
     end
-    @added_formulae.sort!
-    @updated_formulae.sort!
-    @deleted_formulae.sort!
-    @added_examples.sort!
-    @updated_examples.sort!
-    @deleted_examples.sort!
-    @installed_formulae = HOMEBREW_CELLAR.children.
-      select{ |pn| pn.directory? }.
-      map{ |pn| pn.basename.to_s }.sort
+    # assume nothing was updated
+    return false
+  end
 
-    output.strip != GIT_UP_TO_DATE
+  def git_repo?
+    File.directory? '.git'
   end
 
   def pending_formulae_changes?
@@ -105,12 +113,6 @@ class RefreshBrew
     !@deleted_examples.empty?
   end
 
-  def current_revision
-    HOMEBREW_REPOSITORY.cd { execute(REVISION_COMMAND).strip }
-  rescue
-    'TAIL'
-  end
-
   def report
     puts "Updated Homebrew from #{initial_revision[0,8]} to #{current_revision[0,8]}."
     ## New Formulae
@@ -127,8 +129,6 @@ class RefreshBrew
     if pending_formulae_changes?
       ohai "The following formulae were updated:"
       puts_columns updated_formulae, installed_formulae
-    else
-      puts "No formulae were updated."
     end
     ## New examples
     if pending_new_examples?
@@ -144,17 +144,32 @@ class RefreshBrew
     if pending_examples_changes?
       ohai "The following external commands were updated:"
       puts_columns updated_examples
-    else
-      puts "No external commands were updated."
     end
   end
 
   private
 
+  def read_revision
+    execute(REVISION_COMMAND).chomp
+  end
+
+  def filter_by_directory(files, dir)
+    files.select { |f| f.index(dir) == 0 }
+  end
+
+  def basenames(files)
+    files.map { |f| File.basename(f, '.rb') }
+  end
+
+  # extracts items by status from @changes_map
+  def changed_items(status, dir)
+    basenames(filter_by_directory(@changes_map[status], dir)).sort
+  end
+
   def execute(cmd)
     out = `#{cmd}`
     if $? && !$?.success?
-      puts out
+      $stderr.puts out
       raise "Failed while executing #{cmd}"
     end
     ohai(cmd, out) if ARGV.verbose?
