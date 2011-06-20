@@ -1,11 +1,8 @@
 require 'formula'
 
 def build_clang?; ARGV.include? '--with-clang'; end
-<<<<<<< HEAD
 def build_all_targets?; ARGV.include? '--all-targets'; end
-=======
 def build_analyzer?; ARGV.include? '--analyzer'; end
->>>>>>> 4bd05f0... add --analyzer flag to install Clang Static Analyzer
 def build_universal?; ARGV.build_universal?; end
 def build_shared?; ARGV.include? '--shared'; end
 def build_rtti?; ARGV.include? '--rtti'; end
