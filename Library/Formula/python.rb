@@ -1,6 +1,6 @@
 require 'formula'
 
-# This formula for Python 2.7.1
+# This formula for Python 2.7.x
 # Python 3.x is available as a separate formula:
 # $ brew install python3
 
