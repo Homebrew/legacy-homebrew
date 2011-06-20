@@ -70,7 +70,13 @@ class Llvm < Formula
 
     Dir.chdir clang_dir do
       system "make install"
-      bin.install 'tools/scan-build/set-xcode-analyzer'
+      tools = lib/"clang/#{version}/tools"
+      mkdir tools
+      mv 'tools/scan-build', tools/'scan-build'
+      mv 'tools/scan-view', tools/'scan-view'
+      ln_s tools/'scan-build/set-xcode-analyzer', bin
+      ln_s tools/'scan-build/scan-build', bin
+      ln_s tools/'scan-view/scan-view', bin
     end if build_clang?
   end
 
