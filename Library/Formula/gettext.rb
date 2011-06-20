@@ -16,13 +16,13 @@ class Gettext < Formula
 
 
   def patches
-    unless ARGV.include? '--with-examples'
-      # Use a MacPorts patch to disable building examples at all
-      # rather than build them and remove them afterwards.
-      {:p0 =>
-        "https://trac.macports.org/export/79183/trunk/dports/devel/gettext/files/patch-gettext-tools-Makefile.in"
-      }
-    end
+    p = {:p0 => ['https://trac.macports.org/export/79617/trunk/dports/devel/gettext/files/stpncpy.patch']}
+    
+    # Use a MacPorts patch to disable building examples at all
+    # rather than build them and remove them afterwards.
+    p[:p0] << 'https://trac.macports.org/export/79183/trunk/dports/devel/gettext/files/patch-gettext-tools-Makefile.in' unless ARGV.include? '--with-examples'
+    
+    return p
   end
 
   def install
