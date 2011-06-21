@@ -1,10 +1,10 @@
 require 'formula'
 
 class Bitcoind < Formula
-  head 'git://github.com/bitcoin/bitcoin.git', :tag => 'v0.3.23' 
+  url 'https://github.com/bitcoin/bitcoin/tarball/v0.3.23'
   version '0.3.23'
   homepage 'http://www.bitcoin.org/'
-  md5 'b4730ea3d61a0388456f28acbc2f8d38'
+  md5 '8a8edec8c2581ac6e263cc78d4ec0914'
 
   depends_on 'boost'
   depends_on 'berkeley-db'
