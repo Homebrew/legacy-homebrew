@@ -210,6 +210,9 @@ class Formula
   # tell the user about any caveats regarding this package, return a string
   def caveats; nil end
 
+  # any e.g. configure options for this package
+  def options; end
+
   # patches are automatically applied after extracting the tarball
   # return an array of strings, or if you need a patch level other than -p1
   # return a Hash eg.
