@@ -9,7 +9,6 @@ class NagiosPlugins < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
-    #ln_s libexec, HOMEBREW_PREFIX+"libexec/nagios-plugins"
   end
   
   def caveats
