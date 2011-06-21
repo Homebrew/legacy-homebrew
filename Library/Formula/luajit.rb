@@ -9,8 +9,16 @@ class Luajit < Formula
   # Skip cleaning both empty folders and bin/libs so external symbols still work.
   skip_clean :all
 
+  def options
+    [["--debug", "Build with debugging symbols."]]
+  end
+
   def install
-    system "make", "PREFIX=#{prefix}", "install"
+    if ARGV.include? '--debug'
+      system "make", "CCDEBUG=-g", "PREFIX=#{prefix}", "install"
+    else
+      system "make", "PREFIX=#{prefix}", "install"
+    end
     # Non-versioned symlink
     ln_s bin+"luajit-#{version}", bin+"luajit"
   end

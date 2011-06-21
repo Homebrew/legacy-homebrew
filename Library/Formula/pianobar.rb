@@ -14,6 +14,8 @@ class Pianobar < Formula
 
   skip_clean 'bin'
 
+  fails_with_llvm "Reports of this not compiling on Xcode 4"
+
   def install
     ENV.delete 'CFLAGS' # Pianobar uses c99 instead of gcc; remove our gcc flags.
 
