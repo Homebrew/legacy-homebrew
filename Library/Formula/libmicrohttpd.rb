@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libmicrohttpd < Formula
-  url 'ftp://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-0.4.4.tar.gz'
+  url 'ftp://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-0.9.10.tar.gz'
   homepage 'http://www.gnu.org/software/libmicrohttpd/'
-  md5 'bcd61ebb10286379f55c7db9c79e0465'
+  md5 '7cc44373fe1b03348510755839091578'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
