@@ -9,6 +9,15 @@ class NagiosPlugins < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
-    ln_s libexec, HOMEBREW_PREFIX+"libexec/nagios-plugins"
+    #ln_s libexec, HOMEBREW_PREFIX+"libexec/nagios-plugins"
+  end
+  
+  def caveats
+    <<-EOS.undent
+    All plugins reside below #{libexec}.
+    You might wanna symlink to /usr/local/libexec or share for convenience:
+    
+      ln -s #{libexec} #{HOMEBREW_PREFIX+"libexec/nagios-plugins"}
+    EOS
   end
 end
