@@ -1,7 +1,7 @@
 require 'formula'
 
 class Jenkins < Formula
-  url 'http://mirrors.jenkins-ci.org/war/1.415/jenkins.war', :using => :nounzip
+  url 'http://mirrors.jenkins-ci.org/war/1.417/jenkins.war', :using => :nounzip
   version '1.417'
   md5 '2ebda22f810cd14f069e8c5807bc70f9'
   homepage 'http://jenkins-ci.org'
