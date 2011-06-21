@@ -9,6 +9,12 @@ class Bitcoind < Formula
   depends_on 'boost'
   depends_on 'berkeley-db'
   
+  def options
+     [
+       ["--no-keg-only", "Builds Bitcoin without `keg_only` mode, linking it to /usr/local"],
+     ]
+  end
+  
   if !ARGV.include?('--no-keg-only')
     keg_only "bitcoind requires version db-4.8 of Berkely-DB. See https://github.com/bitcoin/bitcoin/blob/master/doc/build-osx.txt"
   end
