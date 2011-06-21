@@ -454,7 +454,7 @@ class Formula
   end
 
   def pouring
-    @bottle or ARGV.build_from_source?
+    @bottle and not ARGV.build_from_source?
   end
 
 protected
