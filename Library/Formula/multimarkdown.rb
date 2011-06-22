@@ -14,5 +14,6 @@ class Multimarkdown < Formula
     system "make"
     bin.install 'multimarkdown'
     bin.install Dir['Support/bin/*']
+    bin.install Dir['scripts/*']
   end
 end
