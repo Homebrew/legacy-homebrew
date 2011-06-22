@@ -1,9 +1,9 @@
 require 'formula'
 
 class KyotoTycoon < Formula
-  url 'http://fallabs.com/kyototycoon/pkg/kyototycoon-0.9.42.tar.gz'
+  url 'http://fallabs.com/kyototycoon/pkg/kyototycoon-0.9.45.tar.gz'
   homepage 'http://fallabs.com/kyototycoon/'
-  sha1 'c51ac6bff82bdda6f04e2951fbeb93331f575281'
+  sha1 '6135bae26cbbb51ed6bc3c14192c7f8f8c466219'
 
   depends_on 'lua' unless ARGV.include? "--no-lua"
   depends_on 'kyoto-cabinet'
