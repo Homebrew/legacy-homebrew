@@ -6,7 +6,9 @@ class Lzo < Formula
   sha256 '449f98186d76ba252cd17ff1241ca2a96b7f62e0d3e4766f88730dab0ea5f333'
 
   def install
-    system "./configure", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",                          
+                          "--with-lzo-headers",
+                          "--with-lzo-lib",
                           "--prefix=#{prefix}",
                           "--disable-asm",
                           "--enable-shared=yes"
