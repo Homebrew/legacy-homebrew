@@ -1,10 +1,9 @@
 require 'formula'
 
 class MediaInfo < Formula
-  url 'http://downloads.sourceforge.net/sourceforge/mediainfo/MediaInfo_CLI_0.7.44_GNU_FromSource.tar.bz2'
+  url 'http://downloads.sourceforge.net/sourceforge/mediainfo/MediaInfo_CLI_0.7.45_GNU_FromSource.tar.bz2'
   homepage 'http://mediainfo.sourceforge.net'
-  version '0.7.44'
-  md5 'cde6700a396514b9954ec0185812dfdc'
+  md5 '68c78682b58fe1a3081b0eef9220afbf'
 
   depends_on 'pkg-config' => :build
 

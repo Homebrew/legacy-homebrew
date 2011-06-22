@@ -58,8 +58,13 @@ module HomebrewArgvExtension
   def build_head?
     flag? '--HEAD'
   end
+
   def build_universal?
     include? '--universal'
+  end
+
+  def build_from_source?
+    flag? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE']
   end
 
   def flag? flag

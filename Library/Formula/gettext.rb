@@ -8,22 +8,30 @@ class Gettext < Formula
   keg_only "OS X provides the BSD gettext library and some software gets confused if both are in the library path."
 
   def options
-    [['--with-examples', 'Keep example files.']]
+  [
+    ['--with-examples', 'Keep example files.'],
+    ['--universal', 'Build universal binaries.']
+  ]
   end
 
   def patches
+    # Patch to allow building with Xcode 4; safe for any compiler.
+    p = {:p0 => ['https://trac.macports.org/export/79617/trunk/dports/devel/gettext/files/stpncpy.patch']}
+
     unless ARGV.include? '--with-examples'
-      # Use a MacPorts patch to disable building examples at all
+      # Use a MacPorts patch to disable building examples at all,
       # rather than build them and remove them afterwards.
-      {:p0 =>
-        "https://trac.macports.org/export/79183/trunk/dports/devel/gettext/files/patch-gettext-tools-Makefile.in"
-      }
+      p[:p0] << 'https://trac.macports.org/export/79183/trunk/dports/devel/gettext/files/patch-gettext-tools-Makefile.in'
     end
+
+    return p
   end
 
   def install
     ENV.libxml2
     ENV.O3 # Issues with LLVM & O4 on Mac Pro 10.6
+
+    ENV.universal_binary if ARGV.build_universal?
 
     system "./configure", "--disable-dependency-tracking", "--disable-debug",
                           "--prefix=#{prefix}",

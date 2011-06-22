@@ -17,7 +17,7 @@ class Volumes
   def which path
     @volumes.each_index do |i|
       vol = @volumes[i]
-      return i if is_prefix?(vol[1], path)
+      return i if vol[1].start_with? path.to_s
     end
 
     return -1
@@ -25,14 +25,13 @@ class Volumes
 end
 
 
-def is_prefix? prefix, longer_string
-  p = prefix.to_s
-  longer_string.to_s[0,p.length] == p
+def remove_trailing_slash s
+  (s[s.length-1] == '/') ? s[0,s.length-1] : s
 end
 
 
 def path_folders
-  ENV['PATH'].split(':').collect{|p| File.expand_path p}.uniq
+  ENV['PATH'].split(':').collect{|p| remove_trailing_slash(File.expand_path(p))}.uniq
 end
 
 
@@ -232,6 +231,24 @@ def __check_subdir_access base
     EOS
     puts *cant_read.collect { |f| "    #{f}" }
     puts
+  end
+end
+
+def check_access_usr_local
+  return unless HOMEBREW_PREFIX.to_s == '/usr/local'
+
+  unless Pathname('/usr/local').writable?
+    puts <<-EOS.undent
+    The /usr/local directory is not writable.
+
+    Even if this folder was writable when you installed Homebrew, other
+    software may change permissions on this folder. Some versions of the
+    "InstantOn" component of Airfoil are known to do this.
+
+    You should probably change the ownership and permissions of /usr/local
+    back to your user account.
+
+    EOS
   end
 end
 
@@ -716,6 +733,7 @@ module Homebrew extend self
       check_for_other_package_managers
       check_for_x11
       check_for_nonstandard_x11
+      check_access_usr_local
       check_access_include
       check_access_etc
       check_access_share
