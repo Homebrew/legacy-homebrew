@@ -211,7 +211,7 @@ class Formula
   def caveats; nil end
 
   # any e.g. configure options for this package
-  def options; end
+  def options; [] end
 
   # patches are automatically applied after extracting the tarball
   # return an array of strings, or if you need a patch level other than -p1
