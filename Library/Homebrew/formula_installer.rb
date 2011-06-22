@@ -75,8 +75,8 @@ class FormulaInstaller
              '/usr/bin/ruby',
              '-I', Pathname.new(__FILE__).dirname,
              '-rinstall',
-             f.path,
              '--',
+             f.path,
              *ARGV.options_only
       rescue Exception => e
         Marshal.dump(e, write)
