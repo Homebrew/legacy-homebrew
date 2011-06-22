@@ -119,7 +119,7 @@ class Formula
       @url = @head
       @version = 'HEAD'
       @spec_to_use = @unstable
-    elsif pouring
+    elsif pourable?
       @spec_to_use = BottleSoftwareSpecification.new(@bottle, @specs)
     else
       if @stable.nil?
@@ -456,7 +456,7 @@ class Formula
     end
   end
 
-  def pouring
+  def pourable?
     @bottle and not ARGV.build_from_source?
   end
 
@@ -518,7 +518,7 @@ private
 
   def verify_download_integrity fn
     require 'digest'
-    if not pouring
+    if not pourable?
       type=CHECKSUM_TYPES.detect { |type| instance_variable_defined?("@#{type}") }
       type ||= :md5
       supplied=instance_variable_get("@#{type}")
@@ -552,7 +552,7 @@ EOF
     fetched = @downloader.fetch
     verify_download_integrity fetched if fetched.kind_of? Pathname
 
-    if not pouring
+    if not pourable?
       mktemp do
         @downloader.stage
         yield
@@ -566,7 +566,7 @@ EOF
   end
 
   def patch
-    return if patches.nil? or pouring
+    return if patches.nil? or pourable?
 
     if not patches.kind_of? Hash
       # We assume -p1
