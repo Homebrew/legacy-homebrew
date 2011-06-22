@@ -67,10 +67,6 @@ module HomebrewArgvExtension
     flag? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE']
   end
 
-  def one?
-    flag? "--1"
-  end
-
   def flag? flag
     options_only.each do |arg|
       return true if arg == flag
