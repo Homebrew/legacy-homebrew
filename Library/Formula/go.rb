@@ -39,6 +39,19 @@ class Go < Formula
     Dir['src/*'].each{|f| rm_rf f unless f.match(/^src\/(pkg|Make)/) }
     rm_rf %w[include test]
   end
+  
+  def caveats
+    arch = Hardware.is_64_bit? ? 'amd64' : '386'
+    <<-EOS.undent
+    To export needed variables, add them to your dotfiles.
+     * On Bash, add them to `~/.bash_profile`.
+     * On Zsh, add them to `~/.zprofile` instead.
+    
+    export GOOS="darwin"
+    export GOARCH="#{arch}"
+    export GOROOT="#{prefix}"
+    EOS
+  end
 end
 
 __END__
