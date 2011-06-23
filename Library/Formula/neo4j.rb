@@ -1,8 +1,9 @@
 require 'formula'
 
 class Neo4j < Formula
-  url 'http://builder.neo4j.org/guestAuth/repository/download/bt65/.lastSuccessful/standalone/neo4j-community-1.4-SNAPSHOT-unix.tar.gz'
-  version '1.4-SNAPSHOT'
+  head 'http://builder.neo4j.org/guestAuth/repository/download/bt65/.lastSuccessful/standalone/neo4j-community-1.4-SNAPSHOT-unix.tar.gz'
+  url 'http://dist.neo4j.org/neo4j-community-1.4.M04-unix.tar.gz'
+  version '1.4-M04'
   homepage 'http://neo4j.org'
 
 
