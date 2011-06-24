@@ -23,4 +23,8 @@ class Zsh < Formula
 
     system "make install"
   end
+  
+  def caveats
+    "Please make sure your shell is listed in /etc/shells"
+  end
 end
