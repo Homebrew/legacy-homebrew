@@ -45,3 +45,17 @@ index a65693d..2166f1b 100644
  
  	# Generate the IoImageInit.c file.
  	# Argument SHOULD ALWAYS be the exact name of the addon, case is
+--- a/addons/CMakeLists.txt
++++ b/addons/CMakeLists.txt
+@@ -102,9 +102,9 @@ add_subdirectory(SQLite3)
+ #add_subdirectory(SampleRateConverter)
+ add_subdirectory(SecureSocket)
+ #add_subdirectory(SkipDB) # XXX: Disabled...why?
+-if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD") # This should not be disabled for any platform. Upgrade Socket to support libevent2
++if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD" AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin") # This should not be disabled for any platform. Upgrade Socket to support libevent2
+   add_subdirectory(Socket)
+-endif(NOT ${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD")
++endif(NOT ${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD" AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+ #add_subdirectory(SoundTouch) # XXX: I can't meet dependencies
+ add_subdirectory(SqlDatabase)
+ add_subdirectory(Syslog)
