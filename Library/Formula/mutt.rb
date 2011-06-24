@@ -13,12 +13,18 @@ class Mutt < Formula
       ['--enable-debug', "Build with debug option enabled"],
       ['--sidebar-patch', "Apply sidebar (folder list) patch"],
       ['--trash-patch', "Apply trash folder patch"],
+      ['--empty-subject-patch', "Apply empty subject patch"],
       ['--with-slang', "Build against slang instead of ncurses"]
     ]
   end
 
   def patches
-    p = []
+    # Fix unsubscribe malformed folder
+    p = Array.new
+
+    if ARGV.include? '--empty-subject-patch'
+      p << 'https://raw.github.com/mikewilliams/mutt-empty-subject-patch/master/mutt-empty-subject.patch'
+    end
 
     if ARGV.include? '--sidebar-patch'
       p << 'https://raw.github.com/nedos/mutt-sidebar-patch/master/mutt-sidebar.patch'
