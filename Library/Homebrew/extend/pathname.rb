@@ -164,6 +164,10 @@ class Pathname
     /_((\d+\.)+\d+[abc]?)[.]orig$/.match stem
     return $1 if $1
 
+    # brew bottle style e.g. qt-4.7.3-bottle.tar.gz
+    /-((\d+\.)*\d+)-bottle$/.match stem
+    return $1 if $1
+
     # eg. otp_src_R13B (this is erlang's style)
     # eg. astyle_1.23_macosx.tar.gz
     stem.scan(/_([^_]+)/) do |match|
