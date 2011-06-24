@@ -1,6 +1,7 @@
 abort if ARGV.include? "--skip-update"
 
 require 'testing_env'
+HOMEBREW_CELLAR.mkpath
 
 require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
 ARGV.extend(HomebrewArgvExtension)
@@ -10,15 +11,23 @@ require 'utils'
 require 'cmd/update'
 
 class RefreshBrewMock < RefreshBrew
-  def in_prefix_expect(expect, returns = '')
-    @expect ||= {}
-    @expect[expect] = returns
+  def git_repo?
+    @git_repo
+  end
+  attr_writer :git_repo
+
+  def in_prefix_expect(cmd, output = '')
+    @outputs  ||= Hash.new { |h,k| h[k] = [] }
+    @expected ||= []
+    @expected << cmd
+    @outputs[cmd] << output
   end
   
   def `(cmd)
-    if Dir.pwd == HOMEBREW_PREFIX.to_s and @expect.has_key?(cmd)
-      (@called ||= []) << cmd
-      @expect[cmd]
+    if Dir.pwd == HOMEBREW_PREFIX.to_s and @expected.include?(cmd) and !@outputs[cmd].empty?
+      @called ||= []
+      @called << cmd
+      @outputs[cmd].shift
     else
       raise "#{inspect} Unexpectedly called backticks in pwd `#{HOMEBREW_PREFIX}' and command `#{cmd}'"
     end
@@ -27,7 +36,7 @@ class RefreshBrewMock < RefreshBrew
   alias safe_system `
   
   def expectations_met?
-    @expect.keys.sort == @called.sort
+    @expected == @called
   end
   
   def inspect
@@ -53,11 +62,30 @@ class UpdaterTests < Test::Unit::TestCase
     @fixture_data
   end
 
+  def test_init_homebrew
+    outside_prefix do
+      updater = RefreshBrewMock.new
+      updater.git_repo = false
+      updater.in_prefix_expect("git init")
+      updater.in_prefix_expect("git pull #{RefreshBrewMock::REPOSITORY_URL} master")
+      updater.in_prefix_expect("git rev-parse HEAD", "1234abcd")
+      
+      assert_equal false, updater.update_from_masterbrew!
+      assert updater.expectations_met?
+      assert updater.updated_formulae.empty?
+      assert updater.added_formulae.empty?
+    end
+  end
+
   def test_update_homebrew_without_any_changes
     outside_prefix do
       updater = RefreshBrewMock.new
-      updater.in_prefix_expect(RefreshBrew::INIT_COMMAND)
-      updater.in_prefix_expect(RefreshBrew::UPDATE_COMMAND, "Already up-to-date.\n")
+      updater.git_repo = true
+      updater.in_prefix_expect("git checkout -q master")
+      updater.in_prefix_expect("git rev-parse HEAD", "1234abcd")
+      updater.in_prefix_expect("git pull #{RefreshBrewMock::REPOSITORY_URL} master")
+      updater.in_prefix_expect("git rev-parse HEAD", "3456cdef")
+      updater.in_prefix_expect("git diff-tree -r --name-status -z 1234abcd 3456cdef", "")
       
       assert_equal false, updater.update_from_masterbrew!
       assert updater.expectations_met?
@@ -69,9 +97,14 @@ class UpdaterTests < Test::Unit::TestCase
   def test_update_homebrew_without_formulae_changes
     outside_prefix do
       updater = RefreshBrewMock.new
-      updater.in_prefix_expect(RefreshBrew::INIT_COMMAND)
-      output = fixture('update_git_pull_output_without_formulae_changes')
-      updater.in_prefix_expect(RefreshBrew::UPDATE_COMMAND, output)
+      updater.git_repo = true
+      diff_output = fixture('update_git_diff_output_without_formulae_changes')
+
+      updater.in_prefix_expect("git checkout -q master")
+      updater.in_prefix_expect("git rev-parse HEAD", "1234abcd")
+      updater.in_prefix_expect("git pull #{RefreshBrewMock::REPOSITORY_URL} master")
+      updater.in_prefix_expect("git rev-parse HEAD", "3456cdef")
+      updater.in_prefix_expect("git diff-tree -r --name-status -z 1234abcd 3456cdef", diff_output.gsub(/\s+/, "\0"))
       
       assert_equal true, updater.update_from_masterbrew!
       assert !updater.pending_formulae_changes?
@@ -83,22 +116,19 @@ class UpdaterTests < Test::Unit::TestCase
   def test_update_homebrew_with_formulae_changes
     outside_prefix do
       updater = RefreshBrewMock.new
-      updater.in_prefix_expect(RefreshBrew::INIT_COMMAND)
-      output = fixture('update_git_pull_output_with_formulae_changes')
-      updater.in_prefix_expect(RefreshBrew::UPDATE_COMMAND, output)
+      updater.git_repo = true
+      diff_output = fixture('update_git_diff_output_with_formulae_changes')
+
+      updater.in_prefix_expect("git checkout -q master")
+      updater.in_prefix_expect("git rev-parse HEAD", "1234abcd")
+      updater.in_prefix_expect("git pull #{RefreshBrewMock::REPOSITORY_URL} master")
+      updater.in_prefix_expect("git rev-parse HEAD", "3456cdef")
+      updater.in_prefix_expect("git diff-tree -r --name-status -z 1234abcd 3456cdef", diff_output.gsub(/\s+/, "\0"))
       
       assert_equal true, updater.update_from_masterbrew!
       assert updater.pending_formulae_changes?
       assert_equal %w{ xar yajl }, updater.updated_formulae
       assert_equal %w{ antiword bash-completion ddrescue dict lua }, updater.added_formulae
-    end
-  end
-  
-  def test_updater_returns_current_revision
-    outside_prefix do
-      updater = RefreshBrewMock.new
-      updater.in_prefix_expect(RefreshBrew::REVISION_COMMAND, 'the-revision-hash')
-      assert_equal 'the-revision-hash', updater.current_revision
     end
   end
 end
