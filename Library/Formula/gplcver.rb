@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gplcver <Formula
+class Gplcver < Formula
   url 'http://sourceforge.net/projects/gplcver/files/gplcver/2.12a/gplcver-2.12a.src.tar.bz2'
   homepage 'http://gplcver.sourceforge.net/'
   md5 '857a15a9ebc8ef63ece01502509cbeb7'

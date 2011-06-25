@@ -273,7 +273,9 @@ class Graph(NodeContainer, EdgeContainer, ClusterContainer):
 
 
 def main():
-    code, output = run(["brew", "deps", "--all"])
+    cmd = ["brew", "deps"]
+    cmd.extend(sys.argv[1:] or ["--all"])
+    code, output = run(cmd)
     output = output.strip()
     depgraph = list()
 

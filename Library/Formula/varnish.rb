@@ -1,11 +1,12 @@
 require 'formula'
 
-class Varnish <Formula
-  url 'http://downloads.sourceforge.net/project/varnish/varnish/2.1.3/varnish-2.1.3.tar.gz'
-  homepage 'http://varnish.projects.linpro.no/'
-  md5 '357d99a760de173d841ac37bf2052be8'
+class Varnish < Formula
+  url 'http://repo.varnish-cache.org/source/varnish-3.0.0.tar.gz'
+  homepage 'http://www.varnish-cache.org/'
 
-  depends_on 'pkg-config'
+  md5 '38387bf31a1574f5cd8dec4f0b7caf20'
+
+  depends_on 'pkg-config' => :build
   depends_on 'pcre'
 
   # Do not strip varnish binaries: Otherwise, the magic string end pointer isn't found.

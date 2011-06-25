@@ -1,11 +1,11 @@
 require 'formula'
 
-class KdebaseRuntime <Formula
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.4.2/src/kdebase-runtime-4.4.2.tar.bz2'
-  homepage ''
-  md5 'd46fca58103624c28fcdf3fbd63262eb'
+class KdebaseRuntime < Formula
+  url 'ftp://ftp.kde.org/pub/kde/stable/4.6.0/src/kdebase-runtime-4.6.0.tar.bz2'
+  homepage 'http://www.kde.org/'
+  md5 '1f9d6bc64d7b84a74dd3ab06615c71ce'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'kde-phonon'
   depends_on 'oxygen-icons'
 

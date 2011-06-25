@@ -1,6 +1,6 @@
 require 'formula'
 
-class Lbdb <Formula
+class Lbdb < Formula
   url 'http://www.spinnaker.de/debian/lbdb_0.37.tar.gz'
   homepage 'http://www.spinnaker.de/lbdb/'
   md5 '877f19ed4f314f2db5d358341412f8d2'

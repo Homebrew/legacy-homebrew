@@ -1,16 +1,19 @@
 require 'formula'
 
-class Mutt <Formula
-  url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.20.tar.gz'
+class Mutt < Formula
+  url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.21.tar.gz'
   homepage 'http://www.mutt.org/'
-  md5 '027cdd9959203de0c3c64149a7ee351c'
+  md5 'a29db8f1d51e2f10c070bf88e8a553fd'
 
   depends_on 'tokyo-cabinet'
+  depends_on 'slang' if ARGV.include? '--with-slang'
 
   def options
     [
+      ['--enable-debug', "Build with debug option enabled"],
       ['--sidebar-patch', "Apply sidebar (folder list) patch"],
-      ['--trash-patch', "Apply trash folder patch"]
+      ['--trash-patch', "Apply trash folder patch"],
+      ['--with-slang', "Build against slang instead of ncurses"]
     ]
   end
 
@@ -18,33 +21,42 @@ class Mutt <Formula
     p = []
 
     if ARGV.include? '--sidebar-patch'
-      p << 'http://lunar-linux.org/~tchan/mutt/patch-1.5.20.sidebar.20090619.txt'
+      p << 'https://raw.github.com/nedos/mutt-sidebar-patch/master/mutt-sidebar.patch'
     end
 
     if ARGV.include? '--trash-patch'
-      p <<  'http://trac.macports.org/export/69644/trunk/dports/mail/mutt-devel/files/patch-1.5.20.bk.trash_folder-purge_message.1'
+      p << 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-5/features/trash-folder'
     end
 
     return p
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--disable-warnings",
-                          "--prefix=#{prefix}",
-                          "--with-ssl",
-                          "--with-sasl",
-                          "--with-gnutls",
-                          "--with-gss",
-                          "--enable-imap",
-                          "--enable-smtp",
-                          "--enable-pop",
-                          "--enable-hcache",
-                          "--with-tokyocabinet",
-                          # This is just a trick to keep 'make install' from trying to chgrp
-                          # the mutt_dotlock file (which we can't do if we're running as an
-                          # unpriviledged user)
-                          "--with-homespool=.mbox"
+    args = ["--disable-dependency-tracking",
+            "--disable-warnings",
+            "--prefix=#{prefix}",
+            "--with-ssl",
+            "--with-sasl",
+            "--with-gnutls",
+            "--with-gss",
+            "--enable-imap",
+            "--enable-smtp",
+            "--enable-pop",
+            "--enable-hcache",
+            "--with-tokyocabinet",
+            # This is just a trick to keep 'make install' from trying to chgrp
+            # the mutt_dotlock file (which we can't do if we're running as an
+            # unpriviledged user)
+            "--with-homespool=.mbox"]
+    args << "--with-slang" if ARGV.include? '--with-slang'
+
+    if ARGV.include? '--enable-debug'
+      args << "--enable-debug"
+    else
+      args << "--disable-debug"
+    end
+
+    system "./configure", *args
     system "make install"
   end
 end

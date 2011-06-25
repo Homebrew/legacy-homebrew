@@ -1,27 +1,28 @@
 require 'formula'
 
-class Ruby <Formula
-  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p0.tar.bz2'
+class Ruby < Formula
+  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p180.tar.bz2'
   homepage 'http://www.ruby-lang.org/en/'
   head 'http://svn.ruby-lang.org/repos/ruby/trunk/', :using => :svn
-  md5 'd8a02cadf57d2571cd4250e248ea7e4b'
+  md5 '68510eeb7511c403b91fe5476f250538'
 
   depends_on 'readline'
   depends_on 'libyaml'
+
+  fails_with_llvm
+
+  # Stripping breaks dynamic linking
+  skip_clean :all
 
   def options
     [
       ["--with-suffix", "Add a 19 suffix to commands"],
       ["--with-doc", "Install with the Ruby documentation"],
+      ["--universal", "Compile a universal binary (arch=x86_64,i386)"],
     ]
   end
 
-  # Stripping breaks dynamic linking
-  skip_clean :all
-
   def install
-    fails_with_llvm
-
     ruby_lib = HOMEBREW_PREFIX+"lib/ruby"
 
     if File.exist? ruby_lib and File.symlink? ruby_lib
@@ -48,6 +49,7 @@ class Ruby <Formula
             "--enable-shared"]
 
     args << "--program-suffix=19" if ARGV.include? "--with-suffix"
+    args << "--with-arch=x86_64,i386" if ARGV.build_universal?
 
     # Put gem, site and vendor folders in the HOMEBREW_PREFIX
 
@@ -68,9 +70,9 @@ class Ruby <Formula
   end
 
   def caveats; <<-EOS.undent
-    Consider using RVM or Cider to manage Ruby environments:
-      * RVM:   http://rvm.beginrescueend.com/
-      * Cider: http://www.atmos.org/cider/intro.html
+    Consider using RVM or Cinderella to manage Ruby environments:
+      * RVM: http://rvm.beginrescueend.com/
+      * Cinderella: http://www.atmos.org/cinderella/
 
     NOTE: By default, gem installed binaries will be placed into:
       #{bin}

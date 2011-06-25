@@ -1,22 +1,41 @@
 require 'formula'
 
-class Wine <Formula
-  url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.tar.bz2'
-  sha1 'dc37a32edb274167990ca7820f92c2d85962e37d'
+class Wine < Formula
   homepage 'http://www.winehq.org/'
+
+  if ARGV.flag? '--devel'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.21.tar.bz2'
+    sha256 '6c089df0d164c442a5620f7b5eee48ab21fd746a75793731cc3a028b20df57a0'
+  else
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.3.tar.bz2'
+    sha256 '3fd8d3f2b466d07eb90b8198cdc9ec3005917a4533db7b8c6c69058a2e57c61f'
+  end
+
   head 'git://source.winehq.org/git/wine.git'
 
   depends_on 'jpeg'
+  depends_on 'libicns'
 
-  # This is required for using 3D applications.
+  # gnutls not needed since 1.3.16
+  depends_on 'gnutls' unless ARGV.flag? '--devel' or ARGV.build_head?
+
+  fails_with_llvm
+
+  # the following libraries are currently not specified as dependencies, or not built as 32-bit:
+  # configure: libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
+
+  # Wine loads many libraries lazily using dlopen calls, so it needs these paths
+  # to be searched by dyld.
+  # Including /usr/lib because wine, as of 1.3.15, tries to dlopen
+  # libncurses.5.4.dylib, and fails to find it without the fallback path.
+
   def wine_wrapper; <<-EOS
 #!/bin/sh
-DYLD_FALLBACK_LIBRARY_PATH="/usr/X11/lib" "#{bin}/wine.bin" "$@"
+DYLD_FALLBACK_LIBRARY_PATH="/usr/X11/lib:#{HOMEBREW_PREFIX}/lib:/usr/lib" "#{bin}/wine.bin" "$@"
 EOS
   end
 
   def install
-    fails_with_llvm
     ENV.x11
 
     # Build 32-bit; Wine doesn't support 64-bit host builds on OS X.
@@ -27,18 +46,16 @@ EOS
     ENV.append "CXXFLAGS", "-D_DARWIN_NO_64_BIT_INODE"
     ENV.append "LDFLAGS", "#{build32} -framework CoreServices -lz -lGL -lGLU"
 
-    args = ["--prefix=#{prefix}", "--x-include=/usr/X11/include/", "--x-lib=/usr/X11/lib/"]
-    args << "--without-freetype" if snow_leopard_64?
-    args << "--disable-win16" if MACOS_VERSION < 10.6
+    args = ["--prefix=#{prefix}",
+            "--x-include=/usr/X11/include/",
+            "--x-lib=/usr/X11/lib/",
+            "--with-x",
+            "--with-coreaudio",
+            "--with-opengl"]
+    args << "--disable-win16" if MacOS.leopard?
 
-    if Hardware.is_64_bit? and Formula.factory('mpg123').installed?
-      opoo "A 64-bit mpg123 causes this formula to fail"
-      puts <<-EOS.undent
-        Because Wine builds 32-bit, a 64-bit mpg123 will cause this formula to fail.
-        You can get around this by doing `brew unlink mpg123` before installing Wine
-        and then `brew link mpg123` afterwards.
-      EOS
-    end
+    # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
+    args << "--without-mpg123" if Hardware.is_64_bit?
 
     system "./configure", *args
     system "make install"
@@ -59,8 +76,8 @@ EOS
     You may also want to get winetricks:
       brew install winetricks
 
-    If you plan to use 3D applications, like games, you will need
-    to check "Emulate a virtual desktop" in winecfg's "Graphics" tab.
+    To use 3D applications, like games, check "Emulate a virtual desktop" in
+    winecfg's "Graphics" tab.
     EOS
   end
 end

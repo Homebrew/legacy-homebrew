@@ -1,8 +1,8 @@
 require 'formula'
 
-class Parsley <Formula
-  head 'git://github.com/fizx/parsley.git'
-  homepage 'http://github.com/fizx/parsley'
+class Parsley < Formula
+  head 'https://github.com/fizx/parsley.git'
+  homepage 'https://github.com/fizx/parsley'
 
   depends_on 'json-c'
   depends_on 'pcre'
@@ -12,8 +12,11 @@ class Parsley <Formula
     argp = Formula.factory("argp-standalone").prefix
 
     # remove the refs to /opt/local and use this opportunity to link to argp
-    inreplace 'configure', '-L/opt/local/lib', "-L#{argp}"
-    inreplace 'configure', '-I/opt/local/include', "-I#{argp}"
+    inrepace "configure" do |s|
+      s.gsub! '-L/opt/local/lib', "-L#{argp}"
+      s.gsub! '-I/opt/local/include', "-I#{argp}"
+    end
+
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end

@@ -1,11 +1,11 @@
 require 'formula'
 
-class Libfishsound <Formula
+class Libfishsound < Formula
   url 'http://downloads.xiph.org/releases/libfishsound/libfishsound-1.0.0.tar.gz'
   homepage 'http://xiph.org/fishsound/'
   md5 '02c5c7b361a35c9da3cf311d68800dab'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'libvorbis'
   depends_on 'speex' => :optional
   depends_on 'flac' => :optional

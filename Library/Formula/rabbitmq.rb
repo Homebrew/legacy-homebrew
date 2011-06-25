@@ -1,19 +1,18 @@
 require 'formula'
 
-class Rabbitmq <Formula
+class Rabbitmq < Formula
   homepage 'http://rabbitmq.com'
-  url 'http://mirror.rabbitmq.com/releases/rabbitmq-server/v2.1.0/rabbitmq-server-2.1.0.tar.gz'
-  md5 '53e205032b63d0f70c33e1eb1e26d803'
+
+  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.5.0/rabbitmq-server-2.5.0.tar.gz'
+  md5 'b665ba003ab3f811b3053082fd006fa8'
 
   depends_on 'erlang'
-  depends_on 'simplejson' => :python if MACOS_VERSION < 10.6
-
-  def patches
-    # Can't build manpages without a lot of other junk, so disable
-    DATA
-  end
+  depends_on 'simplejson' => :python if MacOS.leopard?
 
   def install
+    # Building the manual requires additional software, so skip it.
+    inreplace "Makefile", "install: install_bin install_docs", "install: install_bin"
+
     target_dir = "#{lib}/rabbitmq/erlang/lib/rabbitmq-#{version}"
     system "make"
     ENV['TARGET_DIR'] = target_dir
@@ -25,7 +24,7 @@ class Rabbitmq <Formula
     (var+'lib/rabbitmq').mkpath
     (var+'log/rabbitmq').mkpath
 
-    %w{rabbitmq-server rabbitmq-multi rabbitmqctl rabbitmq-env}.each do |script|
+    %w{rabbitmq-server rabbitmqctl rabbitmq-env}.each do |script|
       inreplace sbin+script do |s|
         s.gsub! '/etc/rabbitmq', "#{etc}/rabbitmq"
         s.gsub! '/var/lib/rabbitmq', "#{var}/lib/rabbitmq"
@@ -36,33 +35,50 @@ class Rabbitmq <Formula
     # RabbitMQ Erlang binaries are installed in lib/rabbitmq/erlang/lib/rabbitmq-x.y.z/ebin
     # therefore need to add this path for erl -pa
     inreplace sbin+'rabbitmq-env', '${SCRIPT_DIR}/..', target_dir
+
+    (prefix+'com.rabbitmq.rabbitmq-server.plist').write startup_plist
+  end
+
+  def caveats
+    <<-EOS.undent
+    If this is your first install, automatically load on login with:
+        mkdir -p ~/Library/LaunchAgents
+        cp #{prefix}/com.rabbitmq.rabbitmq-server.plist ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/com.rabbitmq.rabbitmq-server.plist
+
+    If this is an upgrade and you already have the com.rabbitmq.rabbitmq-server.plist loaded:
+        launchctl unload -w ~/Library/LaunchAgents/com.rabbitmq.rabbitmq-server.plist
+        cp #{prefix}/com.rabbitmq.rabbitmq-server.plist ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/com.rabbitmq.rabbitmq-server.plist
+
+      To start rabbitmq-server manually:
+        rabbitmq-server
+    EOS
+  end
+
+  def startup_plist
+    return <<-EOPLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
+"http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>com.rabbitmq.rabbitmq-server</string>
+    <key>Program</key>
+    <string>/usr/local/sbin/rabbitmq-server</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>UserName</key>
+    <string>#{`whoami`.chomp}</string>
+    <!-- need erl in the path -->
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>PATH</key>
+      <string>/usr/local/sbin:/usr/bin:/bin:/usr/local/bin</string>
+    </dict>
+  </dict>
+</plist>
+    EOPLIST
   end
 end
-
-__END__
-diff --git a/Makefile b/Makefile
-index 46b1842..82d71a0 100644
---- a/Makefile
-+++ b/Makefile
-@@ -265,7 +265,7 @@ $(SOURCE_DIR)/%_usage.erl:
-
- docs_all: $(MANPAGES) $(WEB_MANPAGES)
-
--install: all docs_all install_dirs
-+install: all install_dirs
- 	cp -r ebin include LICENSE LICENSE-MPL-RabbitMQ INSTALL $(TARGET_DIR)
-
- 	chmod 0755 scripts/*
-@@ -273,12 +273,6 @@ install: all docs_all install_dirs
- 		cp scripts/$$script $(TARGET_DIR)/sbin; \
- 		[ -e $(SBIN_DIR)/$$script ] || ln -s $(SCRIPTS_REL_PATH)/$$script $(SBIN_DIR)/$$script; \
- 	done
--	for section in 1 5; do \
--		mkdir -p $(MAN_DIR)/man$$section; \
--		for manpage in $(DOCS_DIR)/*.$$section.gz; do \
--			cp $$manpage $(MAN_DIR)/man$$section; \
--		done; \
--	done
- 	mkdir -p $(TARGET_DIR)/plugins
- 	echo Put your .ez plugin files in this directory. > $(TARGET_DIR)/plugins/README
-

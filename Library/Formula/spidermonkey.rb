@@ -1,6 +1,6 @@
 require 'formula'
 
-class Spidermonkey <Formula
+class Spidermonkey < Formula
   # There are no proper releases of spidermonkey, so pick a version that's known
   # to work (especially with CouchDB), revision r35345.
   url 'http://hg.mozilla.org/tracemonkey/archive/57a6ad20eae9.tar.gz'
@@ -14,16 +14,13 @@ class Spidermonkey <Formula
   def patches
     # Export date functions needed by manually-compiled MongoDB.
     # Is it just me or is the version-to-version stable API of SpiderMonkey kind of a mess?
-    "http://gist.github.com/raw/426476/a98a15a94ca4efd3aeafb3b5cd943491b53cbf81/001-Properly-export-js_DateClass-and-js_RegExpClass.patch"
+    "https://gist.github.com/raw/426476/a98a15a94ca4efd3aeafb3b5cd943491b53cbf81/001-Properly-export-js_DateClass-and-js_RegExpClass.patch"
   end
 
   def install
-    if MACOS_VERSION == 10.5
-      # aparently this flag causes the build to fail for ivanvc on 10.5 with a
-      # penryn (core 2 duo) CPU. So lets be cautious here and remove it.
-      # It might not be need with newer spidermonkeys anymore tho.
-      ENV['CFLAGS'] = ENV['CFLAGS'].gsub(/-msse[^\s]+/, '')
-    end
+    # aparently this flag causes the build to fail for ivanvc on 10.5 with a
+    # penryn (core 2 duo) CPU. So lets be cautious here and remove it.
+    ENV['CFLAGS'] = ENV['CFLAGS'].gsub(/-msse[^\s]+/, '') if MacOS.leopard?
 
     # For some reason SpiderMonkey requires Autoconf-2.13
     ac213_prefix = Pathname.pwd.join('ac213')
@@ -42,8 +39,11 @@ class Spidermonkey <Formula
       # building like this. See: http://openradar.appspot.com/7209349
       inreplace "configure.in", "LDFLAGS=\"$LDFLAGS -framework Cocoa\"", ""
       system "#{ac213_prefix}/bin/autoconf213"
+
       # Remove the broken *(for anyone but FF) install_name
-      inreplace "config/rules.mk", "-install_name @executable_path/$(SHARED_LIBRARY) ", ""
+      inreplace "config/rules.mk",
+        "-install_name @executable_path/$(SHARED_LIBRARY) ",
+        "-install_name #{lib}/$(SHARED_LIBRARY) "
     end
 
     mkdir "brew-build"
@@ -66,7 +66,7 @@ class Spidermonkey <Formula
 end
 
 
-class Autoconf213 <Formula
+class Autoconf213 < Formula
   url 'http://ftp.gnu.org/pub/gnu/autoconf/autoconf-2.13.tar.gz'
   md5 '9de56d4a161a723228220b0f425dc711'
   homepage 'http://www.gnu.org/software/autoconf/'

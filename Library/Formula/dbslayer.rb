@@ -1,6 +1,6 @@
 require 'formula'
 
-class Dbslayer <Formula
+class Dbslayer < Formula
   url 'http://code.nytimes.com/downloads/dbslayer-beta-12.tgz'
   homepage 'http://code.nytimes.com/projects/dbslayer/wiki'
   md5 'a529ea503c244d723166f78c75df3bb3'

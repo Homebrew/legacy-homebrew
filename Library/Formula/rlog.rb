@@ -1,6 +1,6 @@
 require 'formula'
 
-class Rlog <Formula
+class Rlog < Formula
   url 'http://rlog.googlecode.com/files/rlog-1.4.tar.gz'
   homepage 'http://www.arg0.net/rlog'
   md5 'c29f74e0f50d66b20312d049b683ff82'

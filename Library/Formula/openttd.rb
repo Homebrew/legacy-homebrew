@@ -1,12 +1,12 @@
 require 'formula'
 
-class Openttd <Formula
-  url 'http://binaries.openttd.org/releases/1.0.3/openttd-1.0.3-source.tar.bz2'
+class Openttd < Formula
+  url 'http://us.binaries.openttd.org/binaries/releases/1.1.0/openttd-1.1.0-source.tar.gz'
   homepage 'http://www.openttd.org/'
-  md5 'cff60c624913a491ed3c91474e845722'
+  md5 'd5ca3357e5c7f995aa43414ff4d93cfb'
 
-  depends_on 'libpng'
   depends_on 'lzo'
+  depends_on 'xz'
 
   def install
     system "./configure", "--without-application-bundle", "--prefix-dir=#{prefix}"

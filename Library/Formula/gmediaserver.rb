@@ -5,7 +5,7 @@ class Gmediaserver < Formula
   homepage 'http://www.gnu.org/software/gmediaserver/'
   md5 'c422de386331e2a1a859d45f6fa270a3'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'libupnp'
   depends_on 'libmagic'
   depends_on 'id3lib' => :optional

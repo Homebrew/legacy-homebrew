@@ -1,6 +1,6 @@
 require 'formula'
 
-class Colormake <Formula
+class Colormake < Formula
   url 'http://bre.klaki.net/programs/colormake/colormake-0.2.tar.gz'
   homepage 'http://bre.klaki.net/programs/colormake/'
   md5 '1029dae70e7a23cff0f6a11f3ceffbe1'

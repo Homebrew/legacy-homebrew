@@ -1,6 +1,6 @@
 require 'formula'
 
-class Vnstat <Formula
+class Vnstat < Formula
   url 'http://humdi.net/vnstat/vnstat-1.10.tar.gz'
   homepage 'http://humdi.net/vnstat/'
   md5 '95421d968689130590348ceb80ff74a8'

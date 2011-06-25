@@ -1,53 +1,72 @@
 require 'formula'
 require 'hardware'
 
-class Go <Formula
-  head 'http://go.googlecode.com/hg/', :revision => 'release'
+class Go < Formula
+  if ARGV.include? "--use-git"
+    url 'https://github.com/tav/go.git', :tag => 'release.r57.2'
+    head 'https://github.com/tav/go.git'
+  else
+    url 'http://go.googlecode.com/hg/', :revision => 'release.r57.2'
+    head 'http://go.googlecode.com/hg/'
+  end
+  version 'r57.2'
   homepage 'http://golang.org'
 
   skip_clean 'bin'
 
-  def cruft
-    %w[src include test doc]
+  def options
+    [["--use-git", "Use git mirror instead of official hg repository"]]
   end
 
-  def which_arch
-    Hardware.is_64_bit? ? 'amd64' : '386'
+  def patches
+    # Fix an egrep error; already present upstream.
+    # Remove when r58 is tagged.
+    DATA unless ARGV.build_head?
   end
 
   def install
-    ENV.j1 # http://github.com/mxcl/homebrew/issues/#issue/237
-    prefix.install %w[src include test doc misc]
+    ENV.j1 # Building in parallel fails
+    prefix.install %w[src include test doc misc lib favicon.ico AUTHORS]
     Dir.chdir prefix
-    mkdir %w[pkg bin lib]
-
-    ENV['GOROOT'] = Dir.getwd
-    ENV['GOBIN'] = bin
-    ENV['GOARCH'] = which_arch
-    ENV['GOOS'] = 'darwin'
-
-    ENV.prepend 'PATH', ENV['GOBIN'], ':'
+    mkdir %w[pkg bin]
 
     Dir.chdir 'src' do
-      system "./all.bash"
-      # Keep the makefiles - http://github.com/mxcl/homebrew/issues/issue/1404
+      # Some tests fail on Lion, so do this instead of "./all.bash"
+      system "./make.bash"
     end
 
-    Dir['src/*'].each{|f| rm_rf f unless f.match(/^src\/Make/) }
-    rm_rf %w[include test doc]
-  end
-
-  def caveats
-    <<-EOS.undent
-      In order to use Go, set the following in your ~/.profile:
-
-        export GOROOT=`brew --cellar`/go/#{version}
-        export GOBIN=#{HOMEBREW_PREFIX}/bin
-        export GOARCH=#{which_arch}
-        export GOOS=darwin
-
-      Presumably at some point the Go developers won't require us to
-      mutilate our shell environments in order to compile Go code...
-    EOS
+    # Don't need the src folder, but do keep the Makefiles as Go projects use these
+    Dir['src/*'].each{|f| rm_rf f unless f.match(/^src\/(pkg|Make)/) }
+    rm_rf %w[include test]
   end
 end
+
+__END__
+diff --git a/src/pkg/deps.bash b/src/pkg/deps.bash
+index a8e3dfc..2095ec1 100755
+--- a/src/pkg/deps.bash
++++ b/src/pkg/deps.bash
+@@ -15,7 +15,13 @@ fi
+ 
+ # Get list of directories from Makefile
+ dirs=$(gomake --no-print-directory echo-dirs)
+-dirpat=$(echo $dirs C | sed 's/ /|/g; s/.*/^(&)$/')
++dirpat=$(echo $dirs C | awk '{
++	for(i=1;i<=NF;i++){ 
++		x=$i
++		gsub("/", "\\/", x)
++		printf("/^(%s)$/\n", x)
++	}
++}')
+ 
+ for dir in $dirs; do (
+ 	cd $dir || exit 1
+@@ -30,7 +36,7 @@ for dir in $dirs; do (
+ 	deps=$(
+ 		sed -n '/^import.*"/p; /^import[ \t]*(/,/^)/p' $sources /dev/null |
+ 		cut -d '"' -f2 |
+-		egrep "$dirpat" |
++		awk "$dirpat" |
+ 		grep -v "^$dir\$" |
+ 		sed 's/$/.install/' |
+ 		sed 's;^C\.install;runtime/cgo.install;' |

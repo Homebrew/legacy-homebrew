@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pig < Formula
-  url 'http://apache.dataphone.se/hadoop/pig/pig-0.5.0/pig-0.5.0.tar.gz'
+  url 'ftp://apache.mirrors.pair.com//pig/pig-0.8.1/pig-0.8.1.tar.gz'
   homepage 'http://hadoop.apache.org/pig/'
-  md5 '9687f3a8c6042938bf8b1b225e6d4b40'
+  md5 'd3325f5816b68fb3c1d405095fcf5c7a'
 
   def patches
     DATA
@@ -11,7 +11,7 @@ class Pig < Formula
 
   def install
     rm_f Dir["bin/*.bat"]
-    prefix.install ['bin', 'lib/hadoop20.jar', "pig-#{version}-core.jar"]
+    prefix.install ['bin', "pig-#{version}-core.jar"]
   end
 end
 
@@ -33,5 +33,5 @@ index 97fc649..79056cf 100644
 -    fi
 +    this=`dirname "$this"`/"$link"
  done
- 
+
  # convert relative path to absolute path

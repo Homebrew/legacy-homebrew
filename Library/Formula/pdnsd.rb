@@ -1,6 +1,6 @@
 require 'formula'
 
-class Pdnsd <Formula
+class Pdnsd < Formula
   url 'http://www.phys.uu.nl/~rombouts/pdnsd/releases/pdnsd-1.2.8-par.tar.gz'
   version '1.2.8-par'
   homepage 'http://www.phys.uu.nl/~rombouts/pdnsd.html'

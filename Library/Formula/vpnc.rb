@@ -1,12 +1,14 @@
 require 'formula'
 
-class Vpnc <Formula
+class Vpnc < Formula
   url 'http://www.unix-ag.uni-kl.de/~massar/vpnc/vpnc-0.5.3.tar.gz'
   homepage 'http://www.unix-ag.uni-kl.de/~massar/vpnc/'
   sha256 '46cea3bd02f207c62c7c6f2f22133382602baeda1dc320747809e94881414884'
 
   depends_on 'libgcrypt'
   depends_on 'libgpg-error'
+
+  fails_with_llvm
 
   skip_clean 'etc'
   skip_clean 'var'
@@ -16,7 +18,6 @@ class Vpnc <Formula
   end
 
   def install
-    fails_with_llvm
     ENV.no_optimization
     ENV.deparallelize
 

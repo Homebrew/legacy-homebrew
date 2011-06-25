@@ -1,6 +1,6 @@
 require 'formula'
 
-class Bsdiff <Formula
+class Bsdiff < Formula
   url 'http://www.daemonology.net/bsdiff/bsdiff-4.3.tar.gz'
   homepage 'http://www.daemonology.net/bsdiff'
   md5 'e6d812394f0e0ecc8d5df255aa1db22a'
@@ -10,9 +10,9 @@ class Bsdiff <Formula
   end
 
   def install
-  	system "/usr/bin/bsdmake"
-  	bin.install "bsdiff"
-  	man1.install "bsdiff.1"
+    system "/usr/bin/bsdmake"
+    bin.install "bsdiff"
+    man1.install "bsdiff.1"
   end
 end
 

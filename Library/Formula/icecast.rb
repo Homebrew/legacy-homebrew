@@ -1,6 +1,6 @@
 require 'formula'
 
-class Icecast <Formula
+class Icecast < Formula
   url 'http://downloads.xiph.org/releases/icecast/icecast-2.3.2.tar.gz'
   homepage 'http://www.icecast.org/'
   md5 'ff516b3ccd2bcc31e68f460cd316093f'

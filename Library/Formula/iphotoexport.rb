@@ -1,6 +1,6 @@
 require 'formula'
 
-class Iphotoexport <Formula
+class Iphotoexport < Formula
   url 'http://iphotoexport.googlecode.com/files/iphotoexport-1.6.4.zip'
   homepage 'http://code.google.com/p/iphotoexport/'
   sha1 '50fa0916cf9689efdfd33cd4680424234b4e9023'

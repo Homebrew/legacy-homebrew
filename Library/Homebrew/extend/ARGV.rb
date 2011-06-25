@@ -1,7 +1,3 @@
-class UsageError <RuntimeError; end
-class FormulaUnspecifiedError <UsageError; end
-class KegUnspecifiedError <UsageError; end
-
 module HomebrewArgvExtension
   def named
     @named ||= reject{|arg| arg[0..0] == '-'}
@@ -13,7 +9,7 @@ module HomebrewArgvExtension
 
   def formulae
     require 'formula'
-    @formulae ||= downcased_unique_named.map{ |name| Formula.factory(Formula.resolve_alias(name)) }
+    @formulae ||= downcased_unique_named.map{ |name| Formula.factory name }
     raise FormulaUnspecifiedError if @formulae.empty?
     @formulae
   end
@@ -22,10 +18,10 @@ module HomebrewArgvExtension
     require 'keg'
     require 'formula'
     @kegs ||= downcased_unique_named.collect do |name|
-      d = HOMEBREW_CELLAR + Formula.resolve_alias(name)
+      d = HOMEBREW_CELLAR+Formula.canonical_name(name)
       dirs = d.children.select{ |pn| pn.directory? } rescue []
-      raise "No such keg: #{HOMEBREW_CELLAR}/#{name}" if not d.directory? or dirs.length == 0
-      raise "#{name} has multiple installed versions" if dirs.length > 1
+      raise NoSuchKegError.new(name) if not d.directory? or dirs.length == 0
+      raise MultipleVersionsInstalledError.new(name) if dirs.length > 1
       Keg.new dirs.first
     end
     raise KegUnspecifiedError if @kegs.empty?
@@ -55,11 +51,26 @@ module HomebrewArgvExtension
   def interactive?
     flag? '--interactive'
   end
-   def build_head?
+  def one?
+    flag? '--1'
+  end
+
+  def build_head?
     flag? '--HEAD'
   end
   def universal?
     flag? '--universal'
+  end
+
+  def build_universal?
+    include? '--universal'
+  end
+
+  def build_from_source?
+    return true if flag? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE'] or MacOS.leopard?
+    options = options_only
+    options.delete '--universal'
+    not options.empty?
   end
 
   def flag? flag
@@ -71,57 +82,17 @@ module HomebrewArgvExtension
     return false
   end
 
-  def usage; <<-EOS.undent
-    Usage: brew [-v|--version] [--prefix [formula]] [--cache [formula]]
-                [--cellar [formula]] [--config] [--env] [--repository]
-                [-h|--help] COMMAND [formula] ...
-
-    Principle Commands:
-      install formula ... [--ignore-dependencies] [--HEAD] [-universal]
-      list [--unbrewed|--versions] [formula] ...
-      search [/regex/] [substring]
-      uninstall formula ...
-      update
-
-    Other Commands:
-      info formula [--github]
-      options formula
-      deps formula
-      uses formula [--installed]
-      home formula ...
-      cleanup [formula]
-      link formula ...
-      unlink formula ...
-      options formula
-      outdated
-      missing
-      prune
-      doctor
-
-    Informational:
-      --version
-      --config
-      --prefix [formula]
-      --cache [formula]
-
-    Commands useful when contributing:
-      create URL
-      edit [formula]
-      audit [formula]
-      log formula
-      install formula [-vd|-i]
-
-    For more information:
-      man brew
-
-    To visit the Homebrew homepage type:
-      brew home
-    EOS
+  def usage
+    require 'cmd/help'
+    Homebrew.help_s
   end
 
   private
 
   def downcased_unique_named
-    @downcased_unique_named ||= named.map{|arg| arg.downcase}.uniq
+    # Only lowercase names, not paths or URLs
+    @downcased_unique_named ||= named.map do |arg|
+      arg.include?("/") ? arg : arg.downcase
+    end.uniq
   end
 end

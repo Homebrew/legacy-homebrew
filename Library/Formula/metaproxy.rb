@@ -1,6 +1,6 @@
 require 'formula'
 
-class Metaproxy <Formula
+class Metaproxy < Formula
   url 'http://ftp.indexdata.dk/pub/metaproxy/metaproxy-1.2.1.tar.gz'
   homepage 'http://www.indexdata.com/metaproxy'
   md5 '201af5bc981de16d16d27e0287c6a495'

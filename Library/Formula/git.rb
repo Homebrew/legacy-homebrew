@@ -1,27 +1,27 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://kernel.org/pub/software/scm/git/git-manpages-1.7.3.1.tar.bz2'
-  md5 '41a164c1ad025e0970b2365e27209a11'
+  url 'http://kernel.org/pub/software/scm/git/git-manpages-1.7.5.4.tar.bz2'
+  md5 '7a74ef1c64395a07301359a8707c828a'
 end
 
 class GitHtmldocs < Formula
-  url 'http://kernel.org/pub/software/scm/git/git-htmldocs-1.7.3.1.tar.bz2'
-  md5 'f9c9669fb00df38f1486763ace135666'
+  url 'http://kernel.org/pub/software/scm/git/git-htmldocs-1.7.5.4.tar.bz2'
+  md5 '88226c08c208101db61e345a3598c4af'
 end
 
 class Git < Formula
-  url 'http://kernel.org/pub/software/scm/git/git-1.7.3.1.tar.bz2'
-  md5 '77e1611498919965fb65fd1f229ee155'
+  url 'http://kernel.org/pub/software/scm/git/git-1.7.5.4.tar.bz2'
+  md5 '4985b774db84d3bbcc2b8d90952552a3'
   homepage 'http://git-scm.com'
 
   def install
-    # if these things are installed, tell git build system to not use them
+    # If these things are installed, tell Git build system to not use them
     ENV['NO_FINK']='1'
     ENV['NO_DARWIN_PORTS']='1'
     # If local::lib is used you get a 'Only one of PREFIX or INSTALL_BASE can be given' error
-    ENV['PERL_MM_OPT']='';
-    # build verbosely so we can debug better
+    ENV['PERL_MM_OPT']=''
+    # Build verbosely.
     ENV['V']='1'
 
     inreplace "Makefile" do |s|
@@ -30,19 +30,19 @@ class Git < Formula
 
     system "make", "prefix=#{prefix}", "install"
 
-    # Install the git bash completion file.  Put it into the Cellar so
-    # that it gets upgraded along with git upgrades.  (Normally, etc
-    # files go directly into HOMEBREW_PREFIX so that they don't get
-    # clobbered on upgrade.)
-
+    # Install the Git bash completion file.
+    # Put it into the Cellar so that it gets upgraded along with git upgrades.
     (prefix+'etc/bash_completion.d').install 'contrib/completion/git-completion.bash'
 
-    # Install git-p4
-    bin.install 'contrib/fast-import/git-p4'
+    # Install emacs support.
+    (share+'doc/git-core/contrib').install 'contrib/emacs'
 
-    # these files are exact copies of the git binary, so like the contents
-    # of libexec/git-core lets hard link them
-    # I am assuming this is an overisght by the git devs
+    # Install contrib files to share/contrib
+    (share).install 'contrib'
+
+    # These files are exact copies of the git binary, so like the contents
+    # of libexec/git-core lets hard link them.
+    # I am assuming this is an overisght by the git devs.
     git_md5 = (bin+'git').md5
     %w[git-receive-pack git-upload-archive].each do |fn|
       fn = bin + fn
@@ -51,9 +51,21 @@ class Git < Formula
       fn.make_link bin+'git'
     end
 
-    # we could build the manpages ourselves, but the build process depends
-    # on many other packages, and is somewhat crazy, this way is easier
+    # We could build the manpages ourselves, but the build process depends
+    # on many other packages, and is somewhat crazy, this way is easier.
     GitManuals.new.brew { man.install Dir['*'] }
     GitHtmldocs.new.brew { (share+'doc/git-doc').install Dir['*'] }
+  end
+
+  def caveats; <<-EOS.undent
+    Bash completion has been installed to:
+      #{etc}/bash_completion.d
+
+    Emacs support has been installed to:
+      #{share}/doc/git-core/contrib/emacs
+
+    The rest of the "contrib" has been installed to:
+      #{share}/contrib
+    EOS
   end
 end

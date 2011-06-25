@@ -1,9 +1,9 @@
 require 'formula'
 
-class Activemq <Formula
-  url 'http://www.gossipcheck.com/mirrors/apache/activemq/apache-activemq/5.4.0/apache-activemq-5.4.0-bin.tar.gz'
+class Activemq < Formula
+  url 'http://www.reverse.net/pub/apache/activemq/apache-activemq/5.4.2/apache-activemq-5.4.2-bin.tar.gz'
   homepage 'http://activemq.apache.org/'
-  md5 'ac68cb3fee593b6e0267679c6f8e1eff'
+  md5 '804c1a4c01b80321a743648add1fdd06'
 
   skip_clean 'libexec/webapps/admin/WEB-INF/jsp'
 
