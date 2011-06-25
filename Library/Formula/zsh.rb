@@ -23,4 +23,8 @@ class Zsh < Formula
 
     system "make install"
   end
+
+  def caveats
+    "In order to use this build of zsh as your login shell, it must be added to /etc/shells."
+  end
 end
