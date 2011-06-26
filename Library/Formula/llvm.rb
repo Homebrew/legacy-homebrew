@@ -26,7 +26,8 @@ class Llvm < Formula
   end
 
   def options
-    [['--with-clang', 'Also build & install clang'],
+    [['--with-clang', 'Build clang'],
+     ['--analyzer', 'Build clang analyzer'],
      ['--shared', 'Build shared library'],
      ['--all-targets', 'Build all target backends'],
      ['--rtti', 'Build with RTTI information'],
