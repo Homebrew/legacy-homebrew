@@ -1,9 +1,7 @@
 require 'formula'
 
 class Lynx < Formula
-  # Official site is down
-  # url 'http://lynx.isc.org/release/lynx2.8.7.tar.bz2'
-  url 'http://lynxmirror.3gforphones.com/lynx2.8.7/lynx2.8.7.tar.bz2'
+  url 'http://lynx.isc.org/release/lynx2.8.7.tar.bz2'
   homepage 'http://lynx.isc.org/release/'
   md5 'cb936aef812e4e463ab86cbbe14d4db9'
 
