@@ -10,13 +10,18 @@ class Luajit < Formula
   skip_clean :all
 
   def options
-    [["--debug", "Build with debugging symbols."]]
+    [
+      ["--debug", "Build with debugging symbols."],
+      ["--amalg", "Build the amalgation (faster & smaller, but needs more memory to compile)"]
+    ]
   end
 
   def install
     if ARGV.include? '--debug'
+      system "make", "CCDEBUG=-g", "PREFIX=#{prefix}", "amalg" if ARGV.include? '--amalg'
       system "make", "CCDEBUG=-g", "PREFIX=#{prefix}", "install"
     else
+      system "make", "PREFIX=#{prefix}", "amalg" if ARGV.include? '--amalg'
       system "make", "PREFIX=#{prefix}", "install"
     end
     # Non-versioned symlink
