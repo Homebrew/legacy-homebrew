@@ -1,9 +1,9 @@
 require 'formula'
 
 class Sox < Formula
-  url 'http://downloads.sourceforge.net/project/sox/sox/14.3.1/sox-14.3.1.tar.gz'
+  url 'http://downloads.sourceforge.net/project/sox/sox/14.3.2/sox-14.3.2.tar.gz'
   homepage 'http://sox.sourceforge.net/'
-  md5 'b99871c7bbae84feac9d0d1f010331ba'
+  md5 'e9d35cf3b0f8878596e0b7c49f9e8302'
 
   depends_on 'pkg-config' => :build
   depends_on 'libvorbis' => :optional
