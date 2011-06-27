@@ -25,10 +25,11 @@ class Opencv <Formula
   depends_on "ffmpeg" if ARGV.include? '--ffmpeg'
   depends_on "python" if ARGV.include? '--python'
 
+
   def install
     makefiles = "cmake -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX:PATH=#{prefix} ."
     makefiles += " -DOPENCV_EXTRA_C_FLAGS='-arch i386 -m32'" if ARGV.include? '--build32'
-    makefiles += " -DWITH_FFMPEG='TRUE'" if ARGV.include? '--ffmpeg'
+    makefiles += " -DWITH_FFMPEG='ON'" if ARGV.include? '--ffmpeg'
     system makefiles
     system "make"
     system "make install"
