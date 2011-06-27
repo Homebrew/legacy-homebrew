@@ -9,9 +9,9 @@ def topology?
 end
 
 class Postgis < Formula
-  url 'http://postgis.refractions.net/download/postgis-1.5.2.tar.gz'
+  url 'http://postgis.refractions.net/download/postgis-1.5.3.tar.gz'
   homepage 'http://postgis.refractions.net/'
-  md5 '772ec1d0f04d6800cd7e2420a97a7483'
+  md5 '05a61df5e1b78bf51c9ce98bea5526fc'
 
   head 'http://svn.osgeo.org/postgis/trunk/', :using => :svn
 
@@ -73,7 +73,9 @@ class Postgis < Formula
 
   def caveats; <<-EOS.undent
     To create a spatially-enabled database, see the documentation:
-      http://postgis.refractions.net/documentation/manual-1.5.2/ch02.html#id2786223
+      http://postgis.refractions.net/documentation/manual-1.5/ch02.html#id2630392
+    and to upgrade your existing spatial databases, see here:
+      http://postgis.refractions.net/documentation/manual-1.5/ch02.html#upgrading
     EOS
   end
 end
