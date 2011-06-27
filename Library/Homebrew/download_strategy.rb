@@ -47,22 +47,17 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
 
   # Private method, can be overridden if needed.
   def _fetch
-    curl @url, '-o', @tarball_path
+    if @tarball_path.exist? and ARGV.include? "--continue"
+      curl @url, "-C #{@tarball_path.size}", '-o', @tarball_path
+    else 
+      curl @url, '-o', @tarball_path
+    end
   end
 
   def fetch
     ohai "Downloading #{@url}"
-    unless @tarball_path.exist?
-      begin
-        _fetch
-      rescue Exception
-        ignore_interrupts { @tarball_path.unlink if @tarball_path.exist? }
-        raise
-      end
-    else
-      puts "File already downloaded in #{File.dirname(@tarball_path)}"
-    end
-    return @tarball_path # thus performs checksum verification
+    _fetch
+    @tarball_path # thus performs checksum verification
   end
 
   def stage
