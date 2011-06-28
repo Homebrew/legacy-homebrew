@@ -2,8 +2,8 @@ require 'formula'
 
 class GitExtras < Formula
   homepage 'https://github.com/visionmedia/git-extras'
-  url 'https://github.com/visionmedia/git-extras/tarball/0.5.1'
-  sha1 'faaeb466154cff9021d19aa4cb4f080ac9ee6d9f'
+  url 'https://github.com/visionmedia/git-extras/tarball/0.6.0'
+  sha1 '7e96df0793c0d1370bf2b0fb809c91317f92240b'
   head 'https://github.com/visionmedia/git-extras.git', :branch => 'master'
 
   def install
