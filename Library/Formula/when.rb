@@ -8,6 +8,6 @@ class When < Formula
 
   def install
     bin.install 'when'
-    (man + 'man1').install 'when.1'
+    man1.install 'when.1'
   end
 end
