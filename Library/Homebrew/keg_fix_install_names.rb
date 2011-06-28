@@ -2,9 +2,6 @@ class Keg
   def fix_install_names
     dylibs.each do |dylib|
       bad_install_names_for dylib do |id, bad_names|
-        # avoid the chmod change if unecessary—I'm not convinced it reverses right
-        next if bad_names.empty? and id.to_s == dylib.to_s
-
         dylib.ensure_writable do
           system "install_name_tool", "-id", id, dylib
           bad_names.each do |bad_name|
