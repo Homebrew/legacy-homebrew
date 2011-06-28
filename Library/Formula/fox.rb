@@ -1,9 +1,9 @@
 require 'formula'
 
 class Fox < Formula
-  url 'http://www.fox-toolkit.org/ftp/fox-1.7.23.tar.gz'
+  url 'http://ftp.fox-toolkit.org/pub/fox-1.7.26.tar.gz'
   homepage 'http://www.fox-toolkit.org/'
-  md5 'ee8430d6480d3289d54b847f47405670'
+  md5 'acaf8a1f33d02265b26a2b0c3fd06625'
 
   def install
     ENV.x11
