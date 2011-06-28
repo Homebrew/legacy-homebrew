@@ -8,17 +8,7 @@ class GradsSupplementary < Formula
 
   def install
     mkdir 'grads'
-    mv 'tables', 'grads/'
-    mv 'font0.dat', 'grads/'
-    mv 'font1.dat', 'grads/'
-    mv 'font2.dat', 'grads/'
-    mv 'font3.dat', 'grads/'
-    mv 'font4.dat', 'grads/'
-    mv 'font5.dat', 'grads/'
-    mv 'hires', 'grads/'
-    mv 'lowres', 'grads/'
-    mv 'mres', 'grads/'
-    mv 'udunits.dat', 'grads/'
+    mv ['tables', 'font0.dat', 'font1.dat', 'font2.dat', 'font3.dat', 'font4.dat', 'font5.dat', 'hires', 'lowres', 'mres', 'udunits.dat'], 'grads/'
     lib.install Dir['grads']
   end
 end
