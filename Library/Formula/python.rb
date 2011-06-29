@@ -84,6 +84,13 @@ class Python < Formula
     # Symlink the prefix site-packages into the cellar.
     ln_s prefix_site_packages, site_packages
 
+    # This is a fix for better interoperability with pyqt.
+    # See Issue #6176.
+    if not as_framework?
+      (bin+"pythonw").make_link bin+"python"
+      (bin+"pythonw2.7").make_link bin+"python2.7"
+    end
+
     # Tell distutils-based installers where to put scripts
     scripts_folder.mkpath
     (effective_lib+"python2.7/distutils/distutils.cfg").write <<-EOF.undent
