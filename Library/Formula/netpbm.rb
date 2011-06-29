@@ -2,8 +2,8 @@ require 'formula'
 
 class Netpbm < Formula
   homepage 'http://netpbm.sourceforge.net'
-  url 'http://sourceforge.net/projects/netpbm/files/super_stable/10.35.77/netpbm-10.35.77.tgz'
-  md5 '65d1b81d72341530f65d66dcd95786ad'
+  url 'http://sourceforge.net/projects/netpbm/files/super_stable/10.35.80/netpbm-10.35.80.tgz'
+  md5 '2edf98b802a82e5367fc52382e9ac144'
 
   depends_on "libtiff"
   depends_on "jasper"
