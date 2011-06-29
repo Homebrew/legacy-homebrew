@@ -13,6 +13,11 @@ class Luajit < Formula
     [["--debug", "Build with debugging symbols."]]
   end
 
+  # Apply beta8 hotfix #1
+  def patches
+    { :p1 => "http://luajit.org/download/beta8_hotfix1.patch" }
+  end
+
   def install
     if ARGV.include? '--debug'
       system "make", "CCDEBUG=-g", "PREFIX=#{prefix}", "install"
