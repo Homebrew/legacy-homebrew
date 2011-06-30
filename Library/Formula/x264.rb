@@ -15,7 +15,9 @@ class X264 < Formula
     ENV['GREP_OPTIONS'] = ''
     system "./version.sh"
     system "./configure", "--prefix=#{prefix}",
-                          "--enable-shared"
+                          "--enable-shared",
+			  "--enable-lavf",
+			  "--enable-gpac"
 
     inreplace 'config.mak' do |s|
       ldflags = s.get_make_var 'LDFLAGS'

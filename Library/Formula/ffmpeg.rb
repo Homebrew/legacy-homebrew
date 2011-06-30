@@ -33,6 +33,10 @@ class Ffmpeg < Formula
     args << "--enable-libvpx" if Formula.factory('libvpx').installed?
     args << "--enable-libxvid" if Formula.factory('xvid').installed?
 
+    args << "--cc=clang" if ARGV.include? '--use-clang'
+    args << "--cc=llvm-gcc" if ARGV.include? '--use-llvm'
+    args << "--cc=gcc" if ARGV.include? '--use-gcc'
+
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
     if MacOS.snow_leopard? and Hardware.is_32_bit?
