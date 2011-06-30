@@ -8,6 +8,7 @@ class Xvid < Formula
   def install
     cd 'build/generic' do
       system "./configure", "--disable-assembly", "--prefix=#{prefix}"
+      #system "./configure", "--prefix=#{prefix}"
       ENV.j1 # Doesn't compile on parallel build
       system "make"
       system "make install" # Need to call these separately
