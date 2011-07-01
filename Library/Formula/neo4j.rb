@@ -1,9 +1,10 @@
 require 'formula'
 
 class Neo4j < Formula
-  head 'http://builder.neo4j.org/guestAuth/repository/download/bt65/.lastSuccessful/standalone/neo4j-community-1.4-SNAPSHOT-unix.tar.gz'
-  url 'http://dist.neo4j.org/neo4j-community-1.4.M04-unix.tar.gz'
-  version 'community-1.4-M05'
+  head 'http://dist.neo4j.org/neo4j-community-1.4-SNAPSHOT-unix.tar.gz'
+  url 'http://dist.neo4j.org/neo4j-community-1.4-SNAPSHOT-unix.tar.gz'
+  #url 'http://dist.neo4j.org/neo4j-community-1.4.M05-unix.tar.gz'
+  version 'community-1.4-SNPASHOT'
   homepage 'http://neo4j.org'
 
 
@@ -15,7 +16,6 @@ class Neo4j < Formula
     chmod 0644, Dir["config"]
 
     # Install jars in libexec to avoid conflicts
-    #prefix.install %w{ NOTICE.txt LICENSE.txt README.txt }
     libexec.install Dir['*']
 
     # Symlink binaries
