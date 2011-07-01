@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gtkmm <Formula
+class Gtkmm < Formula
   url 'http://ftp.gnome.org/pub/GNOME/sources/gtkmm/2.18/gtkmm-2.18.2.tar.gz'
   homepage 'http://www.gtkmm.org/'
   md5 '746a901f5b15605c51d8a396415c8504'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Unp <Formula
+class Unp < Formula
   url 'http://mirrors.kernel.org/debian/pool/main/u/unp/unp_1.0.15.tar.gz'
   homepage 'http://packages.debian.org/source/stable/unp'
   md5 'bcf45819ac76093bba7b4a3f5b3a4bff'

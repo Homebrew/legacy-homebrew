@@ -1,6 +1,6 @@
 require 'formula'
 
-class Lemon <Formula
+class Lemon < Formula
   url 'http://tx97.net/pub/distfiles/lemon-1.69.tar.bz2'
   homepage 'http://www.hwaci.com/sw/lemon/'
   md5 '35aebc84c4f0e186aba1303bbef11a37'

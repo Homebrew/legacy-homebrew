@@ -1,6 +1,6 @@
 require 'formula'
 
-class ChocolateDoom <Formula
+class ChocolateDoom < Formula
   url 'http://downloads.sourceforge.net/project/chocolate-doom/chocolate-doom/1.3.0/chocolate-doom-1.3.0.tar.gz'
   homepage 'http://www.chocolate-doom.org/'
   md5 'c1b680b88e524b861d4e3fbc769c2e10'

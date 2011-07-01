@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ldapvi <Formula
+class Ldapvi < Formula
   url 'http://www.lichteblau.com/download/ldapvi-1.7.tar.gz'
   homepage 'http://www.lichteblau.com/ldapvi/'
   md5 '6dc2f5441ac5f1e2b5b036e3521012cc'

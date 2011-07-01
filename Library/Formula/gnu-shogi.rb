@@ -1,6 +1,6 @@
 require 'formula'
 
-class GnuShogi <Formula
+class GnuShogi < Formula
   url 'http://www.cs.caltech.edu/~mvanier/hacking/gnushogi/gnushogi-1.3.2.tar.gz'
   homepage 'http://www.cs.caltech.edu/~mvanier/hacking/gnushogi/gnushogi.html'
   md5 'a18eae93afc89bfd368ed5f6768be791'

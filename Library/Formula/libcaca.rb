@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libcaca <Formula
+class Libcaca < Formula
   url 'http://caca.zoy.org/files/libcaca/libcaca-0.99.beta17.tar.gz'
   version '0.99b17'
   homepage 'http://caca.zoy.org/wiki/libcaca'
@@ -8,6 +8,8 @@ class Libcaca <Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
+
+  fails_with_llvm "unsupported inline asm: input constraint with a matching output constraint of incompatible type!"
 
   def install
     # Some people can't compile when Java is enabled. See:

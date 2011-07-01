@@ -1,6 +1,6 @@
 require 'formula'
 
-class Hugs98 <Formula
+class Hugs98 < Formula
   url 'http://cvs.haskell.org/Hugs/downloads/2006-09/hugs98-plus-Sep2006.tar.gz'
   version 'plus-Sep2006'
   homepage 'http://www.haskell.org/hugs/'

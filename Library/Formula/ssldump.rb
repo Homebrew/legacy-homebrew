@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ssldump <Formula
+class Ssldump < Formula
   url 'http://www.rtfm.com/ssldump/ssldump-0.9b3.tar.gz'
   homepage 'http://www.rtfm.com/ssldump/'
   md5 'ac8c28fe87508d6bfb06344ec496b1dd'

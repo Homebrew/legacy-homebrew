@@ -1,6 +1,6 @@
 require 'formula'
 
-class Minbif <Formula
+class Minbif < Formula
   url 'http://minbif.im/attachments/download/50/minbif-1.0.3.tar.gz'
   homepage 'http://minbif.im/'
   md5 'c08add6234a6dd4a45b46b590fa63268'

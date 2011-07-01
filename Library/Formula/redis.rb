@@ -1,14 +1,16 @@
 require 'formula'
 
-class Redis <Formula
-  url 'https://github.com/antirez/redis/tarball/v2.0.4-stable'
-  head 'git://github.com/antirez/redis.git'
-  homepage 'http://code.google.com/p/redis/'
-  sha1 '48300996d3d34cccf076330859f37248fa5f6c1b'
-  version '2.0.4'
+class Redis < Formula
+  url 'http://redis.googlecode.com/files/redis-2.2.11.tar.gz'
+  head 'https://github.com/antirez/redis.git'
+  homepage 'http://redis.io/'
+  md5 '5501c90ca02ae7ea93c34f067b3e0619'
+
+  fails_with_llvm "Fails with \"reference out of range from _linenoise\""
 
   def install
-    fails_with_llvm "Breaks with LLVM"
+    # Architecture isn't detected correctly on 32bit Snow Leopard without help
+    ENV["OBJARCH"] = MacOS.prefer_64_bit? ? "-arch x86_64" : "-arch i386"
 
     # Head and stable have different code layouts
     src = File.exists?('src/Makefile') ? 'src' : '.'
@@ -34,12 +36,13 @@ class Redis <Formula
   def caveats
     <<-EOS.undent
     If this is your first install, automatically load on login with:
-        cp #{prefix}/io.redis.redis-server.plist ~/Library/LaunchAgents
+        mkdir -p ~/Library/LaunchAgents
+        cp #{prefix}/io.redis.redis-server.plist ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/io.redis.redis-server.plist
 
     If this is an upgrade and you already have the io.redis.redis-server.plist loaded:
         launchctl unload -w ~/Library/LaunchAgents/io.redis.redis-server.plist
-        cp #{prefix}/io.redis.redis-server.plist ~/Library/LaunchAgents
+        cp #{prefix}/io.redis.redis-server.plist ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/io.redis.redis-server.plist
 
       To start redis manually:

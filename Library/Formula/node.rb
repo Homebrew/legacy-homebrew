@@ -1,10 +1,15 @@
 require 'formula'
 
-class Node <Formula
-  url 'http://nodejs.org/dist/node-v0.2.6.tar.gz'
-  head 'git://github.com/ry/node.git'
+class Node < Formula
+  url 'http://nodejs.org/dist/node-v0.4.9.tar.gz'
+  head 'https://github.com/joyent/node.git'
   homepage 'http://nodejs.org/'
-  md5 'b1c50ceb43bee1b221be210b7bc7a216'
+  md5 'e525b8b99d949bf2f031bc262c138e96'
+
+  # Leopard OpenSSL is not new enough, so use our keg-only one
+  depends_on 'openssl' if MacOS.leopard?
+
+  fails_with_llvm
 
   # Stripping breaks dynamic loading
   skip_clean :all
@@ -14,8 +19,6 @@ class Node <Formula
   end
 
   def install
-    fails_with_llvm
-
     inreplace 'wscript' do |s|
       s.gsub! '/usr/local', HOMEBREW_PREFIX
       s.gsub! '/opt/local/lib', '/usr/lib'

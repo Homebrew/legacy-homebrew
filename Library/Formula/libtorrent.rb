@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libtorrent <Formula
+class Libtorrent < Formula
   url 'http://libtorrent.rakshasa.no/downloads/libtorrent-0.12.6.tar.gz'
   homepage 'http://libtorrent.rakshasa.no/'
   md5 '037499ed708aaf72988cee60e5a8d96b'
@@ -9,7 +9,7 @@ class Libtorrent <Formula
   depends_on 'libsigc++'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--with-kqueue", "--enable-ipv6"
     system "make"
     system "make install"
   end

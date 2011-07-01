@@ -1,6 +1,6 @@
 require 'formula'
 
-class Greg <Formula
+class Greg < Formula
   head 'https://github.com/nddrylliog/greg.git'
   homepage 'https://github.com/nddrylliog/greg'
 

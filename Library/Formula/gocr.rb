@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gocr <Formula
+class Gocr < Formula
   url 'http://www-e.uni-magdeburg.de/jschulen/ocr/gocr-0.49.tar.gz'
   homepage 'http://jocr.sourceforge.net/'
   md5 '4e527bc4bdd97c2be15fdd818857507f'

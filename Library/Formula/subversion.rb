@@ -4,25 +4,25 @@ def build_java?; ARGV.include? "--java"; end
 def build_perl?; ARGV.include? "--perl"; end
 def build_python?; ARGV.include? "--python"; end
 def build_ruby?; ARGV.include? "--ruby"; end
-def build_universal?; ARGV.include? '--universal'; end
+def build_universal?; ARGV.build_universal?; end
 def with_unicode_path?; ARGV.include? '--unicode-path'; end
 
 # On 10.5 we need newer versions of apr, neon etc.
 # On 10.6 we only need a newer version of neon
-class SubversionDeps <Formula
-  url 'http://subversion.tigris.org/downloads/subversion-deps-1.6.15.tar.bz2'
-  md5 '4aeb48233e62cf4afe9f5700ebed9150'
+class SubversionDeps < Formula
+  url 'http://subversion.tigris.org/downloads/subversion-deps-1.6.17.tar.bz2'
+  sha1 'ebfda3416c09a91dbcf744a22ea83ed827ad3495'
 end
 
-class Subversion <Formula
-  url 'http://subversion.tigris.org/downloads/subversion-1.6.15.tar.bz2'
-  md5 '113fca1d9e4aa389d7dc2b210010fa69'
+class Subversion < Formula
   homepage 'http://subversion.apache.org/'
+  url 'http://subversion.tigris.org/downloads/subversion-1.6.17.tar.bz2'
+  sha1 '6e3ed7c87d98fdf5f0a999050ab601dcec6155a1'
 
   depends_on 'pkg-config' => :build
 
   # On Snow Leopard, build a new neon. For Leopard, the deps above include this.
-  depends_on 'neon' if MACOS_VERSION >= 10.6
+  depends_on 'neon' if MacOS.snow_leopard?
 
   def options
     [
@@ -68,15 +68,21 @@ class Subversion <Formula
   end
 
   def install
-    if build_java? and not build_universal?
-      opoo "A non-Universal Java build was requested."
-      puts "To use Java bindings with various Java IDEs, you might need a universal build:"
-      puts "  brew install --universal --java subversion"
+    if build_java?
+      unless build_universal?
+        opoo "A non-Universal Java build was requested."
+        puts "To use Java bindings with various Java IDEs, you might need a universal build:"
+        puts "  brew install subversion --universal --java"
+      end
+
+      unless (ENV["JAVA_HOME"] or "").empty?
+        opoo "JAVA_HOME is set. Try unsetting it if JNI headers cannot be found."
+      end
     end
 
     ENV.universal_binary if build_universal?
 
-    if MACOS_VERSION < 10.6
+    if MacOS.leopard?
       setup_leopard
     else
       check_neon_arch if build_universal?
@@ -89,6 +95,7 @@ class Subversion <Formula
             "--prefix=#{prefix}",
             "--with-ssl",
             "--with-zlib=/usr",
+            "--with-sqlite=/usr",
             # use our neon, not OS X's
             "--disable-neon-version-check",
             "--disable-mod-activation",
@@ -116,14 +123,14 @@ class Subversion <Formula
       # Remove hard-coded ppc target, add appropriate ones
       if build_universal?
         arches = "-arch x86_64 -arch i386"
-      elsif MACOS_VERSION < 10.6
+      elsif MacOS.leopard?
         arches = "-arch i386"
       else
         arches = "-arch x86_64"
       end
 
       # Use verison-appropriate system Perl
-      if MACOS_VERSION < 10.6
+     if MacOS.leopard?
         perl_version = "5.8.8"
       else
         perl_version = "5.10.0"
@@ -184,7 +191,8 @@ class Subversion <Formula
     if build_java?
       s += <<-EOS.undent
         You may need to link the Java bindings into the Java Extensions folder:
-          sudo ln -s #{HOMEBREW_PREFIX}/lib/libsvnjavahl-1.dylib /Library/Java/Extensions
+          sudo mkdir -p /Library/Java/Extensions
+          sudo ln -s #{HOMEBREW_PREFIX}/lib/libsvnjavahl-1.dylib /Library/Java/Extensions/libsvnjavahl-1.dylib
 
       EOS
     end

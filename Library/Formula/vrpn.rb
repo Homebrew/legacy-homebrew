@@ -1,6 +1,6 @@
 require 'formula'
 
-class Vrpn <Formula
+class Vrpn < Formula
   url 'git://git.cs.unc.edu/vrpn.git', :tag => 'version_07.28'
   version '07.28'
   homepage 'http://vrpn.org'
@@ -12,7 +12,7 @@ class Vrpn <Formula
   end
 
   def install
-    args = [ "#{std_cmake_parameters}" ]
+    args = std_cmake_parameters.split
 
     if ARGV.include? '--clients'
       args << "-DVRPN_BUILD_CLIENTS:BOOL=ON"

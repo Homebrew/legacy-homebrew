@@ -1,6 +1,6 @@
 require 'formula'
 
-class AspellLang <Formula
+class AspellLang < Formula
   def install
     aspell = Formula.factory 'aspell'
     system "./configure --vars ASPELL=#{aspell.prefix}/bin/aspell PREZIP=#{aspell.prefix}/bin/prezip"
@@ -8,10 +8,12 @@ class AspellLang <Formula
   end
 end
 
-class Aspell <Formula
+class Aspell < Formula
   url 'ftp://ftp.gnu.org/gnu/aspell/aspell-0.60.6.tar.gz'
   homepage 'http://aspell.net/'
   md5 'bc80f0198773d5c05086522be67334eb'
+
+  fails_with_llvm "Segmentation fault during linking."
 
   def options
     [
@@ -21,7 +23,6 @@ class Aspell <Formula
   end
 
   def install
-    fails_with_llvm
     system "./configure", "--prefix=#{prefix}"
     system "make install"
 
@@ -34,7 +35,12 @@ class Aspell <Formula
       end
     end
     languages.flatten.each do |lang|
-      formula = Object.const_get("Aspell_" + lang).new
+      begin
+        formula = Object.const_get("Aspell_" + lang).new
+      rescue
+        opoo "Unknown language: #{lang}"
+        next
+      end
       formula.brew { formula.install }
     end
   end

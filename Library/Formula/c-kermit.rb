@@ -1,6 +1,6 @@
 require 'formula'
 
-class CKermit <Formula
+class CKermit < Formula
   url 'ftp://kermit.columbia.edu/kermit/archives/cku211.tar.gz'
   homepage 'http://www.columbia.edu/kermit/'
   md5 '5767ec5e6ff0857cbfe2d3ec1ee0e2bc'

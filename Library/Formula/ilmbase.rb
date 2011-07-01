@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ilmbase <Formula
+class Ilmbase < Formula
   url 'http://download.savannah.gnu.org/releases/openexr/ilmbase-1.0.1.tar.gz'
   homepage 'http://www.openexr.com/'
   md5 'f76f094e69a6079b0beb93d97e2a217e'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class TinyFugue <Formula
+class TinyFugue < Formula
   url 'http://downloads.sourceforge.net/project/tinyfugue/tinyfugue/5.0%20beta%208/tf-50b8.tar.gz'
   homepage 'http://tinyfugue.sourceforge.net/'
   md5 '3e994e791966d274f63b0e61abf2ef59'

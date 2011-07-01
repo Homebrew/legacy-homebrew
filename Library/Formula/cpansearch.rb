@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cpansearch <Formula
+class Cpansearch < Formula
   head 'https://github.com/c9s/cpansearch.git', :using => :git
   homepage 'https://github.com/c9s/cpansearch'
 
@@ -13,7 +13,7 @@ class Cpansearch <Formula
 
   def caveats; <<-EOS.undent
     For usage instructions:
-      $ more #{prefix}/README.md
+        more #{prefix}/README.md
     EOS
   end
 end

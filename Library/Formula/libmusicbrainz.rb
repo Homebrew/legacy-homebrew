@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libmusicbrainz <Formula
+class Libmusicbrainz < Formula
   url 'http://ftp.musicbrainz.org/pub/musicbrainz/libmusicbrainz-3.0.3.tar.gz'
   homepage 'http://musicbrainz.org'
   md5 'f4824d0a75bdeeef1e45cc88de7bb58a'

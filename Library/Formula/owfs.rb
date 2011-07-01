@@ -1,6 +1,6 @@
 require 'formula'
 
-class Owfs <Formula
+class Owfs < Formula
   url 'http://downloads.sourceforge.net/project/owfs/owfs/2.8p4/owfs-2.8p4.tar.gz'
   version '2.8p4'
   homepage 'http://owfs.org/'

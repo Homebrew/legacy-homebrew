@@ -1,6 +1,6 @@
 require 'formula'
 
-class Surfraw <Formula
+class Surfraw < Formula
   url 'http://surfraw.alioth.debian.org/dist/surfraw-2.2.7.tar.gz'
   head 'git://git.debian.org/surfraw/surfraw.git'
   homepage 'http://surfraw.alioth.debian.org/'

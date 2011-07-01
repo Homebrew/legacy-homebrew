@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cdecl <Formula
+class Cdecl < Formula
   url 'http://cdecl.org/files/cdecl-blocks-2.5.tar.gz'
   homepage 'http://cdecl.org/'
   md5 'c1927e146975b1c7524cbaf07a7c10f8'

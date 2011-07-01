@@ -1,9 +1,9 @@
 require 'formula'
 
-class RakudoStar <Formula
-  url 'https://github.com/downloads/rakudo/star/rakudo-star-2010.10.tar.gz'
+class RakudoStar < Formula
+  url 'https://github.com/downloads/rakudo/star/rakudo-star-2011.04.tar.gz'
+  md5 '1c01a95e6fa459f8b3481da15a79b71b'
   homepage 'http://rakudo.org/'
-  md5 '02b426572fe2f42514940f485bcf1d91'
 
   depends_on 'parrot'
 

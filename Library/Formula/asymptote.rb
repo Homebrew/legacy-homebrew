@@ -2,7 +2,7 @@ require 'formula'
 
 def TeX_installed?; return `which latex` != ''; end
 
-class Asymptote <Formula
+class Asymptote < Formula
   url 'http://downloads.sourceforge.net/asymptote/asymptote-2.08.src.tgz'
   homepage 'http://asymptote.sourceforge.net/'
   md5 'ab7bc11c8110b6eb459285b9c206cfe6'

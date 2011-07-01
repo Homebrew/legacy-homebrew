@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mcabber <Formula
+class Mcabber < Formula
   url 'http://mcabber.com/files/mcabber-0.10.1.tar.bz2'
   homepage 'http://mcabber.com/'
   md5 'fe96beab30f535d5d6270fd1719659b4'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Logrotate <Formula
+class Logrotate < Formula
   url 'https://fedorahosted.org/releases/l/o/logrotate/logrotate-3.7.8.tar.gz'
   homepage 'http://packages.debian.org/testing/admin/logrotate'
   md5 'b3589bea6d8d5afc8a84134fddaae973'
@@ -26,7 +26,7 @@ class Logrotate <Formula
 
     [
       DATA,
-      "http://www.securehost.com/mirror/debian/pool/main/l/logrotate/logrotate_3.7.8-4.diff.gz",
+      "https://launchpad.net/debian/sid/+source/logrotate/3.7.8-4/+files/logrotate_3.7.8-4.diff.gz",
       *debian_patches
     ]
   end

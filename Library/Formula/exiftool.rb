@@ -1,6 +1,6 @@
 require 'formula'
 
-class Exiftool <Formula
+class Exiftool < Formula
   url 'http://www.sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-8.32.tar.gz'
   homepage 'http://www.sno.phy.queensu.ca/~phil/exiftool/index.html'
   md5 '385862eca467a56c6e32b1d949f1d661'

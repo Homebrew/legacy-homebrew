@@ -1,6 +1,6 @@
 require 'formula'
 
-class Djview4 <Formula
+class Djview4 < Formula
   url 'http://sourceforge.net/projects/djvu/files/DjView/4.6/djview4-4.6.tar.gz'
   homepage 'http://djvu.sourceforge.net/djview4.html'
   md5 '642105970467cf0864c0073140d1fa11'

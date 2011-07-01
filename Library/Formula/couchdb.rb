@@ -1,14 +1,16 @@
 require 'formula'
 
-class Couchdb <Formula
-  url 'https://github.com/apache/couchdb/tarball/1.0.1'
+class Couchdb < Formula
+  url 'https://github.com/apache/couchdb/tarball/1.1.0'
   homepage "http://couchdb.apache.org/"
-  md5 'f2ea23caacff482afe44e29a3f8b7685'
+  md5 '3c22f053071e29680b898b7148f05577'
+
+  head 'http://svn.apache.org/repos/asf/couchdb/trunk'
 
   depends_on 'spidermonkey'
   depends_on 'icu4c'
   depends_on 'erlang'
-  depends_on 'curl' if MACOS_VERSION < 10.6
+  depends_on 'curl' if MacOS.leopard?
 
   def install
     system "./bootstrap" if File.exists? "bootstrap"
@@ -28,12 +30,13 @@ class Couchdb <Formula
 
   def caveats; <<-EOS.undent
     If this is your first install, automatically load on login with:
-        cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist ~/Library/LaunchAgents
+        mkdir -p ~/Library/LaunchAgents
+        cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/org.apache.couchdb.plist
 
     If this is an upgrade and you already have the org.apache.couchdb.plist loaded:
         launchctl unload -w ~/Library/LaunchAgents/org.apache.couchdb.plist
-        cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist ~/Library/LaunchAgents
+        cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/org.apache.couchdb.plist
 
     Or start manually with:

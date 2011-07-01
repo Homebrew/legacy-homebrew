@@ -1,6 +1,6 @@
 require 'formula'
 
-class Hive <Formula
+class Hive < Formula
   url 'http://www.bizdirusa.com/mirrors/apache/hadoop/hive/hive-0.5.0/hive-0.5.0-bin.tar.gz'
   homepage 'http://hive.apache.org'
   md5 '2d3b47ceaea6d5cdeaabc544aa9c2c28'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Sproxy <Formula
+class Sproxy < Formula
   url 'ftp://sid.joedog.org/pub/sproxy/sproxy-1.01.tar.gz'
   homepage 'http://www.joedog.org/index/sproxy-home'
   md5 'a8c3fa4c67b3e842fe5ee2ade69a3653'

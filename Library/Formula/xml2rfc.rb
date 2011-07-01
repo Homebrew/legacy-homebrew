@@ -1,9 +1,9 @@
 require 'formula'
 
-class Xml2rfc <Formula
-  url 'http://xml.resource.org/authoring/xml2rfc-1.35.tgz'
+class Xml2rfc < Formula
+  url 'http://xml.resource.org/authoring/xml2rfc-1.36.tgz'
   homepage 'http://xml.resource.org/'
-  md5 '7ffb973fee55318b1bd0fd77a903d2e6'
+  md5 'f96aa187e2ef86affe2843b556556b60'
 
   head 'http://svn.tools.ietf.org/svn/tools/xml2rfc/trunk',
     :using => StrictSubversionDownloadStrategy

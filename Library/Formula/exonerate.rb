@@ -1,6 +1,6 @@
 require 'formula'
 
-class Exonerate <Formula
+class Exonerate < Formula
   url 'http://www.ebi.ac.uk/~guy/exonerate/exonerate-2.2.0.tar.gz'
   homepage 'http://www.ebi.ac.uk/~guy/exonerate/'
   md5 'ad3f7fc413376201c4631687b2e0ae89'

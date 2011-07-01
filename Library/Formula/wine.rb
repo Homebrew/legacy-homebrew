@@ -1,30 +1,41 @@
 require 'formula'
 
-class Wine <Formula
-  if ARGV.flag? '--devel'
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.9.tar.bz2'
-    sha1 '68f2172b3cd7674e0f7bb746eae065a7b542db9f'
-  else
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.2.tar.bz2'
-    sha1 '8b37c8e0230dd6a665d310054f4e36dcbdab7330'
-  end
+class Wine < Formula
   homepage 'http://www.winehq.org/'
+
+  if ARGV.flag? '--devel'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.21.tar.bz2'
+    sha256 '6c089df0d164c442a5620f7b5eee48ab21fd746a75793731cc3a028b20df57a0'
+  else
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.3.tar.bz2'
+    sha256 '3fd8d3f2b466d07eb90b8198cdc9ec3005917a4533db7b8c6c69058a2e57c61f'
+  end
+
   head 'git://source.winehq.org/git/wine.git'
 
   depends_on 'jpeg'
   depends_on 'libicns'
-  # the following libraries are currently not specified as dependencies, or not built as 32-bit:
-  # configure: libgnutls, libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
 
-  # This is required for using 3D applications.
+  # gnutls not needed since 1.3.16
+  depends_on 'gnutls' unless ARGV.flag? '--devel' or ARGV.build_head?
+
+  fails_with_llvm
+
+  # the following libraries are currently not specified as dependencies, or not built as 32-bit:
+  # configure: libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
+
+  # Wine loads many libraries lazily using dlopen calls, so it needs these paths
+  # to be searched by dyld.
+  # Including /usr/lib because wine, as of 1.3.15, tries to dlopen
+  # libncurses.5.4.dylib, and fails to find it without the fallback path.
+
   def wine_wrapper; <<-EOS
 #!/bin/sh
-DYLD_FALLBACK_LIBRARY_PATH="/usr/X11/lib" "#{bin}/wine.bin" "$@"
+DYLD_FALLBACK_LIBRARY_PATH="/usr/X11/lib:#{HOMEBREW_PREFIX}/lib:/usr/lib" "#{bin}/wine.bin" "$@"
 EOS
   end
 
   def install
-    fails_with_llvm
     ENV.x11
 
     # Build 32-bit; Wine doesn't support 64-bit host builds on OS X.
@@ -41,10 +52,10 @@ EOS
             "--with-x",
             "--with-coreaudio",
             "--with-opengl"]
-    args << "--disable-win16" if MACOS_VERSION < 10.6
+    args << "--disable-win16" if MacOS.leopard?
 
-    args << "--without-mpg123" if Hardware.is_64_bit?
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
+    args << "--without-mpg123" if Hardware.is_64_bit?
 
     system "./configure", *args
     system "make install"

@@ -1,6 +1,6 @@
 require 'formula'
 
-class SyslogNg <Formula
+class SyslogNg < Formula
   url 'http://www.balabit.com/downloads/files?path=/syslog-ng/sources/3.2.1/source/syslog-ng_3.2.1.tar.gz'
   homepage 'http://www.balabit.com/network-security/syslog-ng/'
   md5 'c0160053e24a0408d08bbfd454b110df'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libquicktime <Formula
+class Libquicktime < Formula
   url 'http://downloads.sourceforge.net/project/libquicktime/libquicktime/1.1.5/libquicktime-1.1.5.tar.gz'
   homepage 'http://libquicktime.sourceforge.net/'
   md5 '0fd45b3deff0317c2f85a34b1b106acf'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mmv <Formula
+class Mmv < Formula
   url "http://mirrors.kernel.org/debian/pool/main/m/mmv/mmv_1.01b.orig.tar.gz"
   md5 '1b2135ab2f17bdfa9e08debbb3c46ad8'
   homepage 'http://packages.debian.org/unstable/utils/mmv'

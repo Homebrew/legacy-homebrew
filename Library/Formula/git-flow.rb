@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 require 'formula'
 
-class GitFlowCompletion <Formula
-  url 'git://github.com/bobthecow/git-flow-completion.git', :tag => '0.4.0.2'
-  version '0.4.0.2'
-  head 'git://github.com/bobthecow/git-flow-completion.git', :branch => 'develop'
+class GitFlowCompletion < Formula
+  url 'https://github.com/bobthecow/git-flow-completion.git', :tag => '0.4.1.0'
+  version '0.4.1.0'
+  head 'https://github.com/bobthecow/git-flow-completion.git', :branch => 'develop'
 
   def initialize
     # We need to hard-code the formula name since Homebrew can't
@@ -17,10 +17,10 @@ class GitFlowCompletion <Formula
   homepage 'https://github.com/bobthecow/git-flow-completion'
 end
 
-class GitFlow <Formula
-  url 'git://github.com/nvie/gitflow.git', :tag => '0.4'
-  version '0.4'
-  head 'git://github.com/nvie/gitflow.git', :branch => 'develop'
+class GitFlow < Formula
+  url 'https://github.com/nvie/gitflow.git', :tag => '0.4.1'
+  version '0.4.1'
+  head 'https://github.com/nvie/gitflow.git', :branch => 'develop'
 
   homepage 'https://github.com/nvie/gitflow'
 

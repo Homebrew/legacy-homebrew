@@ -1,6 +1,6 @@
 require 'formula'
 
-class Osmosis <Formula
+class Osmosis < Formula
   url 'http://bretth.dev.openstreetmap.org/osmosis-build/osmosis-0.38.zip'
   homepage 'http://wiki.openstreetmap.org/wiki/Osmosis'
   md5 'e0d48f644485578625482f5e660b2358'

@@ -1,22 +1,16 @@
 require 'formula'
 
-class Dos2unix <Formula
-  url 'http://www.sfr-fresh.com/linux/misc/old/dos2unix-3.1.tar.gz'
-  md5 '25ff56bab202de63ea6f6c211c416e96'
-  homepage 'http://www.sfr-fresh.com/linux/misc/'
+class Dos2unix < Formula
+  url 'http://sourceforge.net/projects/dos2unix/files/dos2unix/3.2/dos2unix-3.2.tar.gz'
+  md5 'db3902feba8a4bae26e9a1bd27c7ce53'
+  homepage 'http://dos2unix.sourceforge.net/'
 
   def install
-    File.unlink 'dos2unix'
-
     # we don't use the Makefile as it doesn't optimize
     system "#{ENV.cc} #{ENV.cflags} dos2unix.c -o dos2unix"
 
-    # make install is broken due to INSTALL file, but also it sucks so we'll do it
-    # also Ruby 1.8 is broken, it won't allow you to move a symlink that's
-    # target is invalid. FFS very dissapointed with dependability of
-    # fundamental Ruby functions. Maybe we shouldn't use them?
-    # Anyway, that is why the symlink is installed first.
-    bin.install %w[mac2unix dos2unix]
+    bin.install %w[dos2unix]
+    ln_sf bin+'dos2unix', bin+'mac2unix'
     man1.install %w[mac2unix.1 dos2unix.1]
   end
 end

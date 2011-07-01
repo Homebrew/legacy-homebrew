@@ -1,6 +1,6 @@
 require 'formula'
 
-class CsvFix <Formula
+class CsvFix < Formula
   url 'http://csvfix.googlecode.com/files/csvfix_src_097a.zip'
   homepage 'http://code.google.com/p/csvfix/'
   version '0.97a'

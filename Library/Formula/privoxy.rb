@@ -1,6 +1,6 @@
 require 'formula'
 
-class Privoxy <Formula
+class Privoxy < Formula
   url 'http://downloads.sourceforge.net/project/ijbswa/Sources/3.0.17%20%28stable%29/privoxy-3.0.17-stable-src.tar.gz'
   homepage 'http://www.privoxy.org'
   version '3.0.17'

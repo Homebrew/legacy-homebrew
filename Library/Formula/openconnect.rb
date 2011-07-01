@@ -1,6 +1,6 @@
 require 'formula'
 
-class Openconnect <Formula
+class Openconnect < Formula
   url 'ftp://ftp.infradead.org/pub/openconnect/openconnect-2.26.tar.gz'
   homepage 'http://www.infradead.org/openconnect.html'
   md5 'e3c7605fed128efe39c2eb9400af6765'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Fits <Formula
+class Fits < Formula
   url 'http://fits.googlecode.com/files/fits-0.4.3.zip'
   homepage 'http://code.google.com/p/fits/'
   md5 '24d1c71def27500b2edf68b1a40f6f84'

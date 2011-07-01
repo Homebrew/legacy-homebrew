@@ -1,6 +1,6 @@
 require 'formula'
 
-class GnuChess <Formula
+class GnuChess < Formula
   url 'http://ftp.gnu.org/pub/gnu/chess/gnuchess-5.07.tar.gz'
   homepage 'http://www.gnu.org/software/chess/'
   md5 '259da00aa559e5624c65279484fccaf7'

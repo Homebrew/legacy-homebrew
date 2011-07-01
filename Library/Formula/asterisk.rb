@@ -1,40 +1,20 @@
 require 'formula'
 
-class Asterisk <Formula
-  url 'http://downloads.asterisk.org/pub/telephony/asterisk/releases/asterisk-1.6.1.6.tar.gz'
+class Asterisk < Formula
+  url 'http://downloads.asterisk.org/pub/telephony/asterisk/releases/asterisk-1.8.3.2.tar.gz'
   homepage 'http://www.asterisk.org/'
-  md5 '63a928373e741524aac09d8c078df7d5'
+  md5 '0bee03f4498a6081146a579b51130633'
 
-  def patches
-    DATA
+  skip_clean :all # Or modules won't load
+
+  def options
+    [['--with-sample-config', "Install the sample config files.  NOTE. Without this, you won't have any config file."]]
   end
 
   def install
-    configure_flags = [ "--prefix=#{prefix}", "--localstatedir=#{var}", "--sysconfdir=#{etc}" ]
-    # Avoid "src/add.c:1: error: CPU you selected does not support x86-64 instruction set"
-    configure_flags << "--host=x86_64-darwin" if snow_leopard_64?
-    system "./configure", *configure_flags
+    system "./configure", "--prefix=#{prefix}", "--localstatedir=#{var}", "--sysconfdir=#{etc}"
     system "make"
     system "make install"
-    (etc+"asterisk").mkpath
+    system "make samples" if ARGV.include? '--with-sample-config'
   end
 end
-
-
-# Use cURL instead of wget
-__END__
---- a/sounds/Makefile	2009-10-13 02:12:08.000000000 +0300
-+++ b/sounds/Makefile	2009-10-13 02:15:11.000000000 +0300
-@@ -53,10 +53,8 @@
- MM:=$(subst -SLN16,-sln16,$(MM))
- MOH:=$(MM:MOH-%=asterisk-moh-%.tar.gz)
- MOH_TAGS:=$(MM:MOH-%=$(MOH_DIR)/.asterisk-moh-%)
--# If "fetch" is used, --continue is not a valid option.
--ifeq ($(WGET),wget)
--WGET_ARGS:=--continue
--endif
-+DOWNLOAD:=curl
-+WGET_ARGS:=-O
- 
- all: $(CORE_SOUNDS) $(EXTRA_SOUNDS) $(MOH)
- 

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Opencv <Formula
+class Opencv < Formula
   url 'http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/2.2/OpenCV-2.2.0.tar.bz2'
   version "2.2"
   homepage 'http://opencv.willowgarage.com/wiki/'

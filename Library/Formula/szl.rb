@@ -1,6 +1,6 @@
 require 'formula'
 
-class Szl <Formula
+class Szl < Formula
   url 'http://szl.googlecode.com/files/szl-1.0.tar.gz'
   homepage 'http://code.google.com/p/szl/'
   md5 'd25f73b2adf4b92229d8b451685506d1'

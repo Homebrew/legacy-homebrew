@@ -1,6 +1,6 @@
 require 'formula'
 
-class Agrep <Formula
+class Agrep < Formula
   url 'ftp://ftp.cs.arizona.edu/agrep/agrep-2.04.tar.Z'
   version '2.04'
   homepage 'http://en.wikipedia.org/wiki/Agrep'

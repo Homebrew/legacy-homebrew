@@ -1,6 +1,6 @@
 require 'formula'
 
-class Lastfmfpclient <Formula
+class Lastfmfpclient < Formula
   url 'https://github.com/lastfm/Fingerprinter/tarball/9ee83a51ac9058ff53c9'
   version '1.6'
   homepage 'https://github.com/lastfm/Fingerprinter'

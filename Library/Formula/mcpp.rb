@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mcpp <Formula
+class Mcpp < Formula
   url 'http://downloads.sourceforge.net/project/mcpp/mcpp/V.2.7.2/mcpp-2.7.2.tar.gz'
   homepage 'http://mcpp.sourceforge.net/'
   md5 '512de48c87ab023a69250edc7a0c7b05'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libdrizzle <Formula
+class Libdrizzle < Formula
   head 'bzr://https://launchpad.net/libdrizzle/trunk'
   url 'http://launchpad.net/libdrizzle/trunk/0.7/+download/libdrizzle-0.7.tar.gz'
   homepage 'https://launchpad.net/libdrizzle'

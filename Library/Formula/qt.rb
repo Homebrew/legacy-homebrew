@@ -1,49 +1,44 @@
 require 'formula'
 require 'hardware'
 
-class Qt <Formula
-  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.1.tar.gz'
-  md5 '6f88d96507c84e9fea5bf3a71ebeb6d7'
+class Qt < Formula
+  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.3.tar.gz'
+  md5 '49b96eefb1224cc529af6fe5608654fe'
   homepage 'http://qt.nokia.com/'
+  bottle 'https://downloads.sourceforge.net/project/machomebrew/Bottles/qt-4.7.3-bottle.tar.gz'
+  bottle_sha1 '6ab865b92db92cf2c49a332010f99566178d25cf'
 
-  def patches
-    # To fix http://bugreports.qt.nokia.com/browse/QTBUG-13623. Patch sent upstream.
-    "http://qt.gitorious.org/qt/qt/commit/9f18a1ad5ce32dd397642a4c03fa1fcb21fb9456.patch"
-  end
+  head 'git://gitorious.org/qt/qt.git', :branch => 'master'
 
   def options
     [
       ['--with-qtdbus', "Enable QtDBus module."],
       ['--with-qt3support', "Enable deprecated Qt3Support module."],
       ['--with-demos-examples', "Enable Qt demos and examples."],
+      ['--with-debug-and-release', "Compile Qt in debug and release mode."],
+      ['--universal', "Build both x86_64 and x86 architectures."],
     ]
   end
 
-  def self.x11?
-    File.exist? "/usr/X11R6/lib"
-  end
-
   depends_on "d-bus" if ARGV.include? '--with-qtdbus'
-  depends_on 'libpng' unless x11?
-  depends_on 'sqlite' if MACOS_VERSION <= 10.5
+  depends_on 'sqlite' if MacOS.leopard?
 
   def install
+    ENV.x11
+    ENV.append "CXXFLAGS", "-fvisibility=hidden"
     args = ["-prefix", prefix,
             "-system-libpng", "-system-zlib",
-            "-release", "-cocoa",
+            "-L/usr/X11/lib", "-I/usr/X11/include",
             "-confirm-license", "-opensource",
-            "-fast"]
+            "-cocoa", "-fast" ]
 
     # See: https://github.com/mxcl/homebrew/issues/issue/744
-    args << "-system-sqlite" if MACOS_VERSION <= 10.5
+    args << "-system-sqlite" if MacOS.leopard?
     args << "-plugin-sql-mysql" if (HOMEBREW_CELLAR+"mysql").directory?
 
     if ARGV.include? '--with-qtdbus'
       args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
       args << "-I#{Formula.factory('d-bus').include}/dbus-1.0"
-      args << "-L#{Formula.factory('d-bus').lib}"
-      args << "-ldbus-1"
-      args << "-dbus-linked"
     end
 
     if ARGV.include? '--with-qt3support'
@@ -56,22 +51,27 @@ class Qt <Formula
       args << "-nomake" << "demos" << "-nomake" << "examples"
     end
 
-    if Qt.x11?
-      args << "-L/usr/X11R6/lib"
-      args << "-I/usr/X11R6/include"
-    else
-      args << "-L#{Formula.factory('libpng').lib}"
-      args << "-I#{Formula.factory('libpng').include}"
+    if MacOS.prefer_64_bit? or ARGV.build_universal?
+      args << '-arch' << 'x86_64'
     end
 
-    if snow_leopard_64?
-      args << '-arch' << 'x86_64'
-    else
+    if !MacOS.prefer_64_bit? or ARGV.build_universal?
       args << '-arch' << 'x86'
+    end
+
+    if ARGV.include? '--with-debug-and-release'
+      args << "-debug-and-release"
+      # Debug symbols need to find the source so build in the prefix
+      Dir.chdir '..'
+      mv "qt-everywhere-opensource-src-#{version}", "#{prefix}/src"
+      Dir.chdir "#{prefix}/src"
+    else
+      args << "-release"
     end
 
     system "./configure", *args
     system "make"
+    ENV.j1
     system "make install"
 
     # stop crazy disk usage
