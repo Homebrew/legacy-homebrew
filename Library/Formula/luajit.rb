@@ -22,8 +22,10 @@ class Luajit < Formula
 
   def install
     if ARGV.include? '--debug'
+      system "make", "CCDEBUG=-g", "PREFIX=#{prefix}", "amalg"
       system "make", "CCDEBUG=-g", "PREFIX=#{prefix}", "install"
     else
+      system "make", "PREFIX=#{prefix}", "amalg"
       system "make", "PREFIX=#{prefix}", "install"
     end
 
