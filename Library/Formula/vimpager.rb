@@ -7,7 +7,10 @@ class Vimpager < Formula
   head 'https://github.com/rkitover/vimpager', :using => :git
 
   def install
+    inreplace "vimpager.1", "~/bin/", ""
+
     bin.install 'vimpager'
+    man1.install 'vimpager.1'
   end
 
   def caveats; <<-EOS.undent
