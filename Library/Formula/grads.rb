@@ -10,10 +10,10 @@ class Grads < Formula
   homepage 'http://www.iges.org/grads/grads.html'
   md5 '9c9f054aa2f96562fc49771f6364aeab'
   version '2.0a9'
-  
+
   def install
     bin.install ['bin/bufrscan', 'bin/grads', 'bin/grib2scan', 'bin/gribmap', 'bin/gribscan', 'bin/gxeps', 'bin/gxps', 'bin/gxtran', 'bin/stnmap', 'bin/wgrib']
-    
+
     # Install the required supplementary files
     GradsSupplementary.new.brew{ (lib+'grads').install Dir['*'] }
   end
