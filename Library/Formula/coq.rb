@@ -26,8 +26,8 @@ class Coq < Formula
                           "-coqide", "none",
                           "-with-doc", "no",
                           "-arch", arch
-    system "make world"
     ENV.j1 # Otherwise "mkdir bin" can be attempted by more than one job
+    system "make world"
     system "make install"
   end
 
