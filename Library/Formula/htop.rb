@@ -8,7 +8,7 @@ class Htop < Formula
     system "./autogen.sh"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make", "install", "DEFAULT_INCLUDES='-iquote .'"
+    system "make", "install", "DEFAULT_INCLUDES='-iquote .'", "CFLAGS=-m32"
     rm_rf "#{share}/applications" # Don't need Gnome support on OS X
     rm_rf "#{share}/pixmaps"
   end
