@@ -1,9 +1,9 @@
 require 'formula'
 
 class ClosureCompiler < Formula
-  url 'http://closure-compiler.googlecode.com/files/compiler-20110119.tar.gz'
+  url 'http://closure-compiler.googlecode.com/files/compiler-20110615.tar.gz'
   homepage 'http://code.google.com/p/closure-compiler/'
-  md5 '1e88d14026e63051df2aa3a89c9efcf3'
+  md5 '7ba597fa67b187df23413eb0ca50f4cb'
 
   def install
     libexec.install "compiler.jar"
