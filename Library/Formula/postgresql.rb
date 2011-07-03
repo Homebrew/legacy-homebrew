@@ -102,23 +102,27 @@ See:
 
 
 If this is your first install, create a database with:
-    initdb #{var}/postgres
+  initdb #{var}/postgres
 
 If this is your first install, automatically load on login with:
-    mkdir -p ~/Library/LaunchAgents
-    cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
+  mkdir -p ~/Library/LaunchAgents
+  cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
+  launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
 
 If this is an upgrade and you already have the org.postgresql.postgres.plist loaded:
-    launchctl unload -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
-    cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
+  launchctl unload -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
+  cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
+  launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
 
 Or start manually with:
-    pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start
+  pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start
 
 And stop with:
-    pg_ctl -D #{var}/postgres stop -s -m fast
+  pg_ctl -D #{var}/postgres stop -s -m fast
+
+
+Some machines may require provisioning of shared memory:
+  http://www.postgresql.org/docs/current/static/kernel-resources.html#SYSVIPC
 EOS
 
     if MacOS.prefer_64_bit? then

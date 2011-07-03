@@ -15,7 +15,9 @@ class Wine < Formula
 
   depends_on 'jpeg'
   depends_on 'libicns'
-  depends_on 'gnutls'
+
+  # gnutls not needed since 1.3.16
+  depends_on 'gnutls' unless ARGV.flag? '--devel' or ARGV.build_head?
 
   fails_with_llvm
 

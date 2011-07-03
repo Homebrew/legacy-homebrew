@@ -16,16 +16,19 @@ class Mpfr < Formula
   end
 
   def install
-    args = []
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
 
-    if Hardware.is_32_bit? or ARGV.include? "--32-bit"
+    # Build 32-bit where appropriate, and help configure find 64-bit CPUs
+    # Note: This logic should match what the GMP formula does.
+    if MacOS.prefer_64_bit? and not ARGV.include? "--32-bit"
+      ENV.m64
+      args << "--build=x86_64-apple-darwin"
+    else
       ENV.m32
       args << "--host=none-apple-darwin"
-    else
-      ENV.m64
     end
 
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}", *args
+    system "./configure", *args
     system "make install"
   end
 end
