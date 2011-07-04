@@ -194,16 +194,16 @@ def install f
       ohai e, e.backtrace if ARGV.debug?
       show_summary_heading = true
     end
+  end
 
-    begin
-      keg.fix_install_names
-    rescue Exception => e
-      onoe "Failed to fix install names"
-      puts "The formula built, but you may encounter issues using it or linking other"
-      puts "formula against it."
-      ohai e, e.backtrace if ARGV.debug?
-      show_summary_heading = true
-    end
+  begin
+    keg.fix_install_names
+  rescue Exception => e
+    onoe "Failed to fix install names"
+    puts "The formula built, but you may encounter issues using it or linking other"
+    puts "formula against it."
+    ohai e, e.backtrace if ARGV.debug?
+    show_summary_heading = true
   end
 
   ohai "Summary" if ARGV.verbose? or show_summary_heading
