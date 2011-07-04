@@ -29,6 +29,8 @@ class Hardware
       :nehalem
     when 0x573B5EEC # Arrandale
       :arrandale
+    when 0x5490B78C
+      :sandybridge # Sandy bridge
     else
       :dunno
     end
