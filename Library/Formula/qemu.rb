@@ -8,6 +8,8 @@ class Qemu < Formula
   depends_on 'jpeg'
   depends_on 'gnutls'
 
+  fails_with_llvm "Segmentation faults occur at run-time with LLVM"
+
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--disable-darwin-user",
