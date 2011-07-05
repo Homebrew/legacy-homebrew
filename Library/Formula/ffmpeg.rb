@@ -10,7 +10,6 @@ class Ffmpeg < Formula
   depends_on 'yasm' => :build
   depends_on 'x264' => :optional
   depends_on 'faac' => :optional
-  depends_on 'faad2' => :optional
   depends_on 'lame' => :optional
   depends_on 'theora' => :optional
   depends_on 'libvorbis' => :optional
