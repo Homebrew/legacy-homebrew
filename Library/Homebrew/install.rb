@@ -89,7 +89,7 @@ def install f
       else
         f.prefix.mkpath
         beginning=Time.now
-        f.install if not f.pouring
+        f.install if not f.pourable?
         FORMULA_META_FILES.each do |filename|
           next if File.directory? filename
           target_file = filename
@@ -99,7 +99,7 @@ def install f
           f.prefix.install target_file => filename rescue nil
           (f.prefix+file).chmod 0644 rescue nil
         end
-        build_time = Time.now-beginning if not f.pouring
+        build_time = Time.now-beginning if not f.pourable?
       end
     end
   rescue Exception
@@ -121,7 +121,7 @@ def install f
 
   begin
     require 'cleaner'
-    Cleaner.new f if not f.pouring
+    Cleaner.new f if not f.pourable?
   rescue Exception => e
     opoo "The cleaning step did not complete successfully"
     puts "Still, the installation was successful, so we will link it into your prefix"
@@ -194,16 +194,16 @@ def install f
       ohai e, e.backtrace if ARGV.debug?
       show_summary_heading = true
     end
+  end
 
-    begin
-      keg.fix_install_names
-    rescue Exception => e
-      onoe "Failed to fix install names"
-      puts "The formula built, but you may encounter issues using it or linking other"
-      puts "formula against it."
-      ohai e, e.backtrace if ARGV.debug?
-      show_summary_heading = true
-    end
+  begin
+    keg.fix_install_names
+  rescue Exception => e
+    onoe "Failed to fix install names"
+    puts "The formula built, but you may encounter issues using it or linking other"
+    puts "formula against it."
+    ohai e, e.backtrace if ARGV.debug?
+    show_summary_heading = true
   end
 
   ohai "Summary" if ARGV.verbose? or show_summary_heading
