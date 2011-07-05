@@ -1,9 +1,9 @@
 require 'formula'
 
 class BulkExtractor < Formula
-  url 'http://afflib.org/downloads/bulk_extractor-0.7.24.tar.gz'
+  url 'http://afflib.org/downloads/bulk_extractor-1.0.0.tar.gz'
   homepage 'http://afflib.org/software/bulk_extractor'
-  md5 '86c2681b0c938ba9eb0a630f0f66db1e'
+  md5 '79a9c2c160d29195a14e5647b2fc5eb2'
 
   depends_on 'afflib' => :optional
   depends_on 'exiv2' => :optional
@@ -13,6 +13,9 @@ class BulkExtractor < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
+
+    # Install documentation
+    (share+name+'doc').install Dir['doc/*.{html,txt,pdf}']
 
     # Install Python utilities
     (share+name+'python').install Dir['python/*.py']
