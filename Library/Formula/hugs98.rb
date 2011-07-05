@@ -10,7 +10,7 @@ class Hugs98 < Formula
 
   def patches
     { :p0 => [
-      "http://trac.macports.org/export/72943/trunk/dports/lang/hugs98/files/patch-packages-base-include-HsBase.h.diff",
+      "https://trac.macports.org/export/72943/trunk/dports/lang/hugs98/files/patch-packages-base-include-HsBase.h.diff",
       "https://trac.macports.org/raw-attachment/ticket/20950/patch-libraries-tools-make-bootlib.diff"
     ] }
   end
