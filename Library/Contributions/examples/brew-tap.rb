@@ -284,32 +284,49 @@ end
 
 
 # We add and modify some methods of the official Homebrew updater that allow it
-# to be used on breweries.
+# to be used on breweries. Basically, we change the target of the git commands
+# and reduce the reporting to formula files only.
 class RefreshBrew
   def update_from_brewery! taproom_path, brewery
-    output = ''
-    (taproom_path + brewery.id).cd do
+    brewery_path = taproom_path + brewery.id
+
+    brewery_path.cd do
       safe_system "git checkout -q #{brewery.master}"
-      output = execute "git pull #{brewery.url} #{brewery.master}"
+      @initial_revision = read_revision
+      execute "git pull #{brewery.url} #{brewery.master}"
+      @current_revision = read_revision
     end
 
-    output.split("\n").reverse.each do |line|
-      case line
-      when %r{^\s+create mode \d+ (.+?)\.rb}
-        @added_formulae << $1
-      when %r{^\s+delete mode \d+ (.+?)\.rb}
-        @deleted_formulae << $1
-      when %r{^\s+(.+?)\.rb\s}
-        @updated_formulae << $1 unless @added_formulae.include?($1) or @deleted_formulae.include?($1)
+    if initial_revision && initial_revision != current_revision
+      # hash with status characters for keys:
+      # Added (A), Copied (C), Deleted (D), Modified (M), Renamed (R)
+      @changes_map = Hash.new {|h,k| h[k] = [] }
+
+      changes = brewery_path.cd do
+        execute(DIFF_COMMAND % [initial_revision, current_revision]).split("\0")
+      end
+
+      while status = changes.shift
+        file = changes.shift
+        @changes_map[status] << file
+      end
+
+      if @changes_map.any?
+        # We assume all paths inside a brewery that end in .rb are formula
+        # files
+        @added_formulae   = changed_items('A', '')
+        @deleted_formulae = changed_items('D', '')
+        @updated_formulae = changed_items('M', '')
+
+        @installed_formulae = HOMEBREW_CELLAR.children.
+          select{ |pn| pn.directory? }.
+          map{ |pn| pn.basename.to_s }.sort if HOMEBREW_CELLAR.directory?
+
+        return true
       end
     end
-
-    @added_formulae.sort!
-    @deleted_formulae.sort!
-    @updated_formulae.sort!
-
-    # Return true/false depending on if git actually pulled new changes
-    output.strip != GIT_UP_TO_DATE
+    # assume nothing was updated
+    return false
   end
 
   def report
