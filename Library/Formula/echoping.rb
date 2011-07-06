@@ -11,6 +11,8 @@ class Echoping < Formula
   
   def patches
       # Fixes a DNS issue with header files
+      # This patch is taken from Macports
+      # https://trac.macports.org/browser/trunk/dports/net/echoping/files/patch-plugins-dns-dns.c.diff
       DATA
   end
     
