@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mogenerator < Formula
-  url 'https://github.com/rentzsch/mogenerator/tarball/1.21'
+  url 'https://github.com/rentzsch/mogenerator/tarball/1.22'
   homepage 'http://rentzsch.github.com/mogenerator/'
-  md5 'bea004068e891e9ec96325c31cb182bf'
+  md5 '72084ea17995f3ef9faa1ce9379a5ca3'
   head "https://github.com/rentzsch/mogenerator.git"
 
   def install

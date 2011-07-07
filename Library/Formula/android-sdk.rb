@@ -7,7 +7,7 @@ class AndroidSdk < Formula
   version 'r11'
 
   def self.var_dirs
-    %w[platforms samples temp add-ons ]
+    %w[platforms samples temp add-ons bin]
     # TODO docs, google-market_licensing and platform-tools
     # See the long comment below for the associated problems
   end
