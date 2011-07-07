@@ -44,7 +44,7 @@ class MongodbDev < Formula
         system "make -f Makefile.ref"
         system "make -f Makefile.ref export"
       end
-      FileUtils.rm(File.join(File.join(js_dir, 'lib'), 'libjs.dylib'))
+      FileUtils.rm("#{js_dir}/lib/libjs.dylib")
     end
 
     # The build and install must be separate commands.
