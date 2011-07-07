@@ -2,8 +2,8 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.5/en/'
-  url 'http://downloads.mysql.com/archives/mysql-5.5/mysql-5.5.12.tar.gz'
-  md5 '53d31a0b24f3eb3176185090eff129b9'
+  url 'http://downloads.mysql.com/archives/mysql-5.5/mysql-5.5.14.tar.gz'
+  md5 '19f43bb9c72b1b5f7ff86a7f921c9244'
 
   depends_on 'cmake' => :build
   depends_on 'readline'
