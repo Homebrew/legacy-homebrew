@@ -93,7 +93,7 @@ class Llvm < Formula
   def caveats; <<-EOS.undent
     If you already have LLVM installed, then "brew upgrade llvm" might not work.
     Instead, try:
-        brew rm llvm & brew install llvm
+        brew rm llvm && brew install llvm
     EOS
   end
 end
