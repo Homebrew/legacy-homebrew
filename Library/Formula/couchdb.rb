@@ -28,6 +28,16 @@ class Couchdb < Formula
     (var+'log/couchdb').mkpath
   end
 
+  def test
+    puts <<-EOS.undent
+      To test CouchDB, start `couchdb` in a terminal and then:
+        curl http://127.0.0.1:5984/
+
+      The reply should look like:
+        {"couchdb":"Welcome","version":"1.1.0"}
+    EOS
+  end
+
   def caveats; <<-EOS.undent
     If this is your first install, automatically load on login with:
         mkdir -p ~/Library/LaunchAgents
