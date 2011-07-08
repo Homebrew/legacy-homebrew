@@ -1,9 +1,9 @@
 require 'formula'
 
 class Jruby < Formula
-  url 'http://jruby.org.s3.amazonaws.com/downloads/1.6.2/jruby-bin-1.6.2.tar.gz'
+  url 'http://jruby.org.s3.amazonaws.com/downloads/1.6.3/jruby-bin-1.6.3.tar.gz'
   homepage 'http://www.jruby.org'
-  md5 'a46f978c24a208717023bb4b8995c678'
+  md5 '694b80e4eea784cdc1eb39fb1e3132c9'
 
   def install
     # Remove Windows files
