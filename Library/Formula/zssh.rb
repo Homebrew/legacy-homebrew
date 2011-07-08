@@ -7,6 +7,12 @@ class Zssh < Formula
 
   depends_on 'lrzsz'
 
+  def options
+    [
+      ['--no-telnet', 'Do not install the ztelnet binary.']
+    ]
+  end
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
