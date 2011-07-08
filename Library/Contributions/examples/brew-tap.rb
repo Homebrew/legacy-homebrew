@@ -148,6 +148,13 @@ See 'brew tap help' for more detailed information.
       # Dispatch back to brew
       system "brew", cmd, *formulae.concat(options)
 
+    when 'uninstall'
+      # We also handle uninstall seperately as it wants a formula name and not
+      # a path to a formula file.
+
+      # We just pass all arguments back to brew
+      system "brew", cmd, *ARGV
+
     else
       # At this point, we expect cmd is a `brew` subcommand followed by one or
       # more non-standard formulae. The task is to resolve these formulae to
