@@ -9,12 +9,13 @@ end
 def build_tests?; ARGV.include? '--test'; end
 
 class Glib < Formula
-  homepage 'http://developer.gnome.org/glib/2.28/'
-  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.28/glib-2.28.7.tar.bz2'
-  sha256 '0e1b3816a8934371d4ea2313dfbe25d10d16c950f8d02e0a7879ae10d91b1631'
+  homepage 'http://developer.gnome.org/glib/2.29/'
+  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.29/glib-2.29.8.tar.bz2'
+  sha256 '19087decb4f158c5222e5cb692e86495bd8446707a739b34cb83dcb1b3750cca'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
+  depends_on 'libffi'
 
   fails_with_llvm "Undefined symbol errors while linking"
 
@@ -22,7 +23,6 @@ class Glib < Formula
     mp = "https://svn.macports.org/repository/macports/trunk/dports/devel/glib2/files/"
     {
       :p0 => [
-        mp+"patch-configure.ac.diff",
         mp+"patch-glib-2.0.pc.in.diff",
         mp+"patch-glib_gunicollate.c.diff",
         mp+"patch-gi18n.h.diff",
@@ -70,8 +70,6 @@ class Glib < Formula
     args = ["--disable-dependency-tracking", "--disable-rebuilds",
             "--prefix=#{prefix}",
             "--with-libiconv=gnu"]
-
-    args << "--disable-debug" unless build_tests?
 
     if ARGV.build_universal?
       # autoconf 2.61 is fine don't worry about it
