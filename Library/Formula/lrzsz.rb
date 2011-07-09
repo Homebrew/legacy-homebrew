@@ -15,8 +15,5 @@ class Lrzsz < Formula
     bin.install "src/lsz"
 
     system "make install"
-
-    ln_s bin + "lrz", bin + "rz"
-    ln_s bin + "lsz", bin + "sz"
   end
 end
