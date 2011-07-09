@@ -1,21 +1,27 @@
 require 'formula'
 
 class CouchdbLucene < Formula
-  url 'https://github.com/rnewson/couchdb-lucene/tarball/v0.6.0'
+  version  '0.6.0'
+  url      'https://github.com/downloads/rnewson/couchdb-lucene/couchdb-lucene-0.6.0-dist.tar.gz'
+  md5      '1a4adcc7a791cd9a5384553759c38ec6'
+
+  head     'git://github.com/rnewson/couchdb-lucene.git'
+
   homepage 'https://github.com/rnewson/couchdb-lucene'
-  md5 'b55610d4c054987a5c69183585a31d8b'
 
   depends_on 'couchdb'
   depends_on 'maven'
 
   def install
-    # Skipping tests because the integration test assumes that couchdb-lucene
-    # has been integrated with a local couchdb instance. Not sure if there's a
-    # way to only disable the integration test.
-    system "mvn", "-DskipTests=true"
-
-    system "tar -xzf target/couchdb-lucene-#{version}-dist.tar.gz"
-    system "mv couchdb-lucene-#{version}/* #{prefix}"
+    if ARGV.build_head?
+      system "mvn", "-DskipTests=true"
+      system "pwd"
+      system "tar", "-xzf #{Dir.pwd}/target/couchdb-lucene-0.7-SNAPSHOT-dist.tar.gz"
+      prefix.install Dir["couchdb-lucene-0.7-SNAPSHOT/*"]
+    else
+      system "pwd"
+      prefix.install Dir["couchdb-lucene-#{version}/*"]
+    end
 
     (etc + "couchdb/local.d/couchdb-lucene.ini").write ini_file
     (prefix + "couchdb-lucene.plist").write plist_file
