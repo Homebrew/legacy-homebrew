@@ -68,12 +68,12 @@ class Mysql < Formula
     rm_rf prefix+'data'
 
     # Link the setup script into bin
-    ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+    ln_sf prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
     # Fix up the control script and link into bin
     inreplace "#{prefix}/support-files/mysql.server" do |s|
       s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
     end
-    ln_s "#{prefix}/support-files/mysql.server", bin
+    ln_sf "#{prefix}/support-files/mysql.server", bin
   end
 
   def caveats; <<-EOS.undent
