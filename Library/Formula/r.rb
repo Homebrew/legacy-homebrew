@@ -12,9 +12,9 @@ class RBashCompletion < Formula
 end
 
 class R < Formula
-  url 'http://cran.r-project.org/src/base/R-2/R-2.13.0.tar.gz'
-  homepage 'http://www.R-project.org/'
-  md5 'ecfb928067cfd932e75135f8b8bba3e7'
+  url 'http://cran.r-project.org/src/base/R-2/R-2.13.1.tar.gz'
+  homepage 'http://www.r-project.org/'
+  md5 '28dd0d68ac3a0eab93fe7035565a1c30'
 
   depends_on 'valgrind' if valgrind?
 
