@@ -3,8 +3,8 @@ require 'formula'
 class Rabbitmq < Formula
   homepage 'http://rabbitmq.com'
 
-  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.5.0/rabbitmq-server-2.5.0.tar.gz'
-  md5 'b665ba003ab3f811b3053082fd006fa8'
+  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.5.1/rabbitmq-server-2.5.1.tar.gz'
+  md5 '51295dfd10661ea0db99d9a22ae4445d'
 
   depends_on 'erlang'
   depends_on 'simplejson' => :python if MacOS.leopard?
