@@ -17,6 +17,7 @@ class Mysql < Formula
     [
       ['--with-tests', "Build with unit tests."],
       ['--with-embedded', "Build the embedded server."],
+      ['--with-libedit', "Compile with EditLine wrapper instead of readline"],
       ['--universal', "Make mysql a universal binary"],
       ['--enable-local-infile', "Build with local infile loading support"]
     ]
@@ -50,6 +51,9 @@ class Mysql < Formula
 
     # Build the embedded server
     args << "-DWITH_EMBEDDED_SERVER=ON" if ARGV.include? '--with-embedded'
+
+    # Compile with readline unless libedit is explicitly chosen
+    args << "-DWITH_READLINE=yes" unless ARGV.include? '--with-libedit'
 
     # Make universal for binding to universal applications
     args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if ARGV.build_universal?
