@@ -7,6 +7,6 @@ class Lltag < Formula
 
   def install
     system "make"
-    system "make install"
+    system "make install PREFIX=#{prefix}"
   end
 end
