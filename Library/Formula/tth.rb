@@ -8,7 +8,6 @@ class Tth < Formula
 
   def install
     system 'gcc -Os -o tth tth.c'
-    bin.install %w(tth latex2gif ps2gif ps2png)
-    man1.install 'tth.1'
+    bin.install 'tth'
   end
 end
