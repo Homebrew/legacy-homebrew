@@ -17,17 +17,9 @@ class Pianobar < Formula
   fails_with_llvm "Reports of this not compiling on Xcode 4"
 
   def install
-    ENV.delete 'CFLAGS' # Pianobar uses c99 instead of gcc; remove our gcc flags.
-    ENV['CC'] = 'c99'
-
-    # Enable 64-bit builds if needed
-    w_flag = MacOS.prefer_64_bit? ? "-W64" : ""
     # Help non-default install paths
     lib_path = HOMEBREW_PREFIX.to_s == "/usr/local" ? "" : " -I#{HOMEBREW_PREFIX}/include -L#{HOMEBREW_PREFIX}/lib"
-
-    inreplace "Makefile" do |s|
-      s.gsub! "-O2 -DNDEBUG", "-O2 -DNDEBUG #{w_flag} #{lib_path}"
-    end
+    ENV.append 'CFLAGS', "-std=c99 #{lib_path}"
 
     system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"
