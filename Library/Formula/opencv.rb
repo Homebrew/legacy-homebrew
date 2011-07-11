@@ -1,7 +1,7 @@
 require 'formula'
 
 class Opencv < Formula
-  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-win/2.3/OpenCV-2.3.0-win-src.zip'
+  url 'http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/2.3/OpenCV-2.3.0.tar.bz2'
   version "2.3"
   homepage 'http://opencv.willowgarage.com/wiki/'
   md5 '122c9ac793a46854ef2819fedbbd6b1b'
