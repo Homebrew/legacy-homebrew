@@ -13,9 +13,9 @@ def as_framework?
 end
 
 class Python3 < Formula
-  url 'http://www.python.org/ftp/python/3.2/Python-3.2.tar.bz2'
+  url 'http://python.org/ftp/python/3.2.1/Python-3.2.1.tar.bz2'
   homepage 'http://www.python.org/'
-  md5 '92e94b5b6652b96349d6362b8337811d'
+  md5 'f0869ba3f3797aacb1f954ef24c256f3'
 
   depends_on 'readline' => :optional  # Prefer over OS X's libedit
   depends_on 'sqlite'   => :optional  # Prefer over OS X's older version
