@@ -591,11 +591,12 @@ def check_git_newline_settings
 end
 
 def check_for_autoconf
-  which_autoconf = `/usr/bin/which autoconf`.chomp
-  unless (which_autoconf == '/usr/bin/autoconf' or which_autoconf == '/Developer/usr/bin/autoconf')
+  autoconf = `/usr/bin/which autoconf`.chomp
+  safe_autoconfs = %w[/usr/bin/autoconf /Developer/usr/bin/autoconf]
+  unless autoconf.empty? or safe_autoconfs.include? autoconf
     puts <<-EOS.undent
       An "autoconf" in your path blocking the Xcode-provided version at:
-        #{which_autoconf}
+        #{autoconf}
 
       This custom autoconf may cause some Homebrew formulae to fail to compile.
 
