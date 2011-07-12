@@ -2,9 +2,9 @@ require 'formula'
 
 class Macvim < Formula
   homepage 'http://code.google.com/p/macvim/'
-  url 'https://github.com/b4winckler/macvim/tarball/snapshot-57'
-  version '7.3-57'
-  md5 '2bf4630be2d59f62b8b70870ba1fe0a1'
+  url 'https://github.com/b4winckler/macvim/tarball/snapshot-59'
+  version '7.3-59'
+  md5 'cdf4db93ac249c653f3d0a2920ba8d08'
   head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
   def options
