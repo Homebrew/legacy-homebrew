@@ -1,9 +1,9 @@
 require 'formula'
 
 class Couchdb < Formula
-  url 'https://github.com/apache/couchdb/tarball/1.0.2'
+  url 'https://github.com/apache/couchdb/tarball/1.1.0'
   homepage "http://couchdb.apache.org/"
-  md5 'cc1cc891ac47dd795b0b9aa2c5375923'
+  md5 '3c22f053071e29680b898b7148f05577'
 
   head 'http://svn.apache.org/repos/asf/couchdb/trunk'
 
@@ -26,6 +26,16 @@ class Couchdb < Formula
     (lib+'couchdb/bin/couchjs').chmod 0755
     (var+'lib/couchdb').mkpath
     (var+'log/couchdb').mkpath
+  end
+
+  def test
+    puts <<-EOS.undent
+      To test CouchDB, start `couchdb` in a terminal and then:
+        curl http://127.0.0.1:5984/
+
+      The reply should look like:
+        {"couchdb":"Welcome","version":"1.1.0"}
+    EOS
   end
 
   def caveats; <<-EOS.undent

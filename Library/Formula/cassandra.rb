@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cassandra < Formula
-  url 'http://www.mirrorservice.org/sites/ftp.apache.org//cassandra/0.7.5/apache-cassandra-0.7.5-bin.tar.gz'
+  url 'http://www.mirrorservice.org/sites/ftp.apache.org/cassandra/0.8.1/apache-cassandra-0.8.1-bin.tar.gz'
   homepage 'http://cassandra.apache.org'
-  md5 '3a74739c1eb277c23b40302cc5a149bc'
+  md5 'b6c8a1e7281761e62230ea76daa3d841'
 
   def install
     (var+"lib/cassandra").mkpath
@@ -12,6 +12,10 @@ class Cassandra < Formula
 
     inreplace "conf/cassandra.yaml", "/var/lib/cassandra", "#{var}/lib/cassandra"
     inreplace "conf/log4j-server.properties", "/var/log/cassandra", "#{var}/log/cassandra"
+
+    inreplace "conf/cassandra-env.sh" do |s|
+      s.gsub! "/lib/", "/"
+    end
 
     inreplace "bin/cassandra.in.sh" do |s|
       s.gsub! "CASSANDRA_HOME=`dirname $0`/..", "CASSANDRA_HOME=#{prefix}"
@@ -24,7 +28,7 @@ class Cassandra < Formula
     rm Dir["bin/*.bat"]
 
     (etc+"cassandra").install Dir["conf/*"]
-    prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc}"]
+    prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc,lib/licenses}"]
     prefix.install Dir["lib/*.jar"]
   end
 end

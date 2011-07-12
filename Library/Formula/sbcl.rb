@@ -8,9 +8,9 @@ end
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.48/sbcl-1.0.48-source.tar.bz2'
-  md5 'f60f27bcc04d1c9241562aafe4ee5d4a'
-  head 'git://sbcl.boinkor.net/sbcl.git'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.49/sbcl-1.0.49-source.tar.bz2'
+  md5 '8d15c6af6388fcd9efbd13f301b7ba33'
+  head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
   fails_with_llvm "Compilation fails with LLVM."
 
@@ -55,7 +55,7 @@ class Sbcl < Formula
     # Remove non-ASCII values from environment as they cause build failures
     # More information: http://bugs.gentoo.org/show_bug.cgi?id=174702
     ENV.delete_if do |key, value|
-      value.bytes.any? do |c| 128 <= c end
+      value =~ /[\x80-\xff]/
     end
 
     build_directory = Dir.pwd
