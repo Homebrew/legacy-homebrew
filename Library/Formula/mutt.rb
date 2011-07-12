@@ -13,7 +13,8 @@ class Mutt < Formula
       ['--enable-debug', "Build with debug option enabled"],
       ['--sidebar-patch', "Apply sidebar (folder list) patch"],
       ['--trash-patch', "Apply trash folder patch"],
-      ['--with-slang', "Build against slang instead of ncurses"]
+      ['--with-slang', "Build against slang instead of ncurses"],
+      ['--pgp-verbose-mime-patch', "Apply PGP verbose mime patch"]
     ]
   end
 
@@ -26,6 +27,10 @@ class Mutt < Formula
 
     if ARGV.include? '--trash-patch'
       p << 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-5/features/trash-folder'
+    end
+
+    if ARGV.include? '--pgp-verbose-mime-patch'
+      p << 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-5/features-old/patch-1.5.4.vk.pgp_verbose_mime'
     end
 
     return p
