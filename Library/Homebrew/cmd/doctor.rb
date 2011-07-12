@@ -17,17 +17,11 @@ class Volumes
   def which path
     @volumes.each_index do |i|
       vol = @volumes[i]
-      return i if is_prefix?(vol[1], path)
+      return i if vol[1].start_with? path.to_s
     end
 
     return -1
   end
-end
-
-
-def is_prefix? prefix, longer_string
-  p = prefix.to_s
-  longer_string.to_s[0,p.length] == p
 end
 
 
@@ -237,6 +231,24 @@ def __check_subdir_access base
     EOS
     puts *cant_read.collect { |f| "    #{f}" }
     puts
+  end
+end
+
+def check_access_usr_local
+  return unless HOMEBREW_PREFIX.to_s == '/usr/local'
+
+  unless Pathname('/usr/local').writable?
+    puts <<-EOS.undent
+    The /usr/local directory is not writable.
+
+    Even if this folder was writable when you installed Homebrew, other
+    software may change permissions on this folder. Some versions of the
+    "InstantOn" component of Airfoil are known to do this.
+
+    You should probably change the ownership and permissions of /usr/local
+    back to your user account.
+
+    EOS
   end
 end
 
@@ -579,11 +591,12 @@ def check_git_newline_settings
 end
 
 def check_for_autoconf
-  which_autoconf = `/usr/bin/which autoconf`.chomp
-  unless (which_autoconf == '/usr/bin/autoconf' or which_autoconf == '/Developer/usr/bin/autoconf')
+  autoconf = `/usr/bin/which autoconf`.chomp
+  safe_autoconfs = %w[/usr/bin/autoconf /Developer/usr/bin/autoconf]
+  unless autoconf.empty? or safe_autoconfs.include? autoconf
     puts <<-EOS.undent
       An "autoconf" in your path blocking the Xcode-provided version at:
-        #{which_autoconf}
+        #{autoconf}
 
       This custom autoconf may cause some Homebrew formulae to fail to compile.
 
@@ -721,6 +734,7 @@ module Homebrew extend self
       check_for_other_package_managers
       check_for_x11
       check_for_nonstandard_x11
+      check_access_usr_local
       check_access_include
       check_access_etc
       check_access_share
