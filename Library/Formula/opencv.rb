@@ -22,7 +22,12 @@ class Opencv < Formula
   end
 
   def install
-    makefiles = "cmake -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX:PATH=#{prefix} ."
+    makefiles = "cmake -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX:PATH=#{prefix}"
+
+    # Use system PNG
+    makefiles += " -DPNG_FOUND:BOOL=ON -DPNG_INCLUDE_DIR:PATH=/usr/X11/include -DHAVE_PNG_H:INTERNAL=1 -DPNG_LIBRARIES:STRING='-L/usr/X11/lib -lpng'"
+
+    makefiles += " ."
     makefiles += " -DOPENCV_EXTRA_C_FLAGS='-arch i386 -m32'" if ARGV.include? '--build32'
     system makefiles
     system "make"
