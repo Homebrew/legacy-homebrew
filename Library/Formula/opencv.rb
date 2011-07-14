@@ -25,6 +25,7 @@ class Opencv < Formula
     makefiles = "cmake -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX:PATH=#{prefix}"
 
     # Use system PNG
+    [ "3rdparty/include/png.h", "3rdparty/include/pngconf.h" ].each{|f| File.unlink(f)}
     makefiles += " -DPNG_FOUND:BOOL=ON -DPNG_INCLUDE_DIR:PATH=/usr/X11/include -DHAVE_PNG_H:INTERNAL=1 -DPNG_LIBRARIES:STRING='-L/usr/X11/lib -lpng'"
 
     makefiles += " ."
