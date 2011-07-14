@@ -6,17 +6,23 @@ class NagiosPlugins < Formula
   md5 '56abd6ade8aa860b38c4ca4a6ac5ab0d'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--libexecdir=#{sbin+'nagios-plugins'}"
     system "make install"
   end
   
   def caveats
     <<-EOS.undent
-    All plugins reside below #{libexec}.
-    You might wanna symlink to /usr/local/libexec or share for convenience:
+    All plugins are accessible under
     
-      ln -s #{libexec} #{HOMEBREW_PREFIX+"libexec/nagios-plugins"}
+      /usr/local/sbin/nagios-plugins
+    
+    so that they don't appear in your search path but still can be found by
+    nagios across version updates.
+    
+    Please feel free to update your PATH if you want to use them standalone!
     EOS
   end
 end
