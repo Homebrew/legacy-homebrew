@@ -5,6 +5,8 @@ class Qt < Formula
   url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.3.tar.gz'
   md5 '49b96eefb1224cc529af6fe5608654fe'
   homepage 'http://qt.nokia.com/'
+  bottle 'https://downloads.sourceforge.net/project/machomebrew/Bottles/qt-4.7.3-bottle.tar.gz'
+  bottle_sha1 '6ab865b92db92cf2c49a332010f99566178d25cf'
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
 
