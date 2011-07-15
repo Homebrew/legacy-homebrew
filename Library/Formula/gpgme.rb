@@ -15,6 +15,8 @@ class Gpgme < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-asm"
+    system "make"
+    system "make check"
     system "make install"
   end
 end
