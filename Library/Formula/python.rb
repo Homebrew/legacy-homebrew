@@ -5,8 +5,8 @@ require 'formula'
 # $ brew install python3
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.15.tar.gz'
-  md5 'ea52e1412e7ff560c290266ed400e216'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.19.tar.gz'
+  md5 '45a17940eefee849d4cb8cc06d28d96f'
 end
 
 
