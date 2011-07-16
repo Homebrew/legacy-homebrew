@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libyaml < Formula
-  url 'http://pyyaml.org/download/libyaml/yaml-0.1.3.tar.gz'
+  url 'http://pyyaml.org/download/libyaml/yaml-0.1.4.tar.gz'
   homepage 'http://pyyaml.org/wiki/LibYAML'
-  md5 'b8ab9064e8e0330423fe640de76608cd'
+  md5 '36c852831d02cf90508c29852361d01b'
 
   def install
     system "./configure", "--prefix=#{prefix}"
