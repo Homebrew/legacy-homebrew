@@ -1,15 +1,15 @@
 require 'formula'
 
 class SbclBootstrapBinaries < Formula
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.30/sbcl-1.0.30-x86-darwin-binary.tar.bz2'
-  md5 'c15bbff2e7a9083ecd50942edb74cc8c'
-  version "1.0.30"
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.49/sbcl-1.0.49-x86-darwin-binary.tar.bz2'
+  md5 '6ffae170cfa0f1858efb37aa7544aba6'
+  version "1.0.49"
 end
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.49/sbcl-1.0.49-source.tar.bz2'
-  md5 '8d15c6af6388fcd9efbd13f301b7ba33'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.50/sbcl-1.0.50-source.tar.bz2'
+  md5 '74ce9b24516885d066ec4287cde52e8c'
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
   fails_with_llvm "Compilation fails with LLVM."
