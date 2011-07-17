@@ -1,7 +1,7 @@
 require 'formula'
 
 class RxvtUnicode < Formula
-  url 'http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-9.11.tar.bz2'
+  url 'http://dist.schmorp.de/rxvt-unicode/Attic/rxvt-unicode-9.11.tar.bz2'
   homepage 'http://software.schmorp.de/pkg/rxvt-unicode.html'
   md5 '1bed5bfeed026e0bfafa0e9e4f62aa37'
 
