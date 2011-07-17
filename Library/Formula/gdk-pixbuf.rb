@@ -2,8 +2,8 @@ require 'formula'
 
 class GdkPixbuf < Formula
   homepage 'http://gtk.org'
-  url 'http://ftp.gnome.org/pub/gnome/sources/gdk-pixbuf/2.22/gdk-pixbuf-2.22.1.tar.bz2'
-  md5 '716c4593ead3f9c8cca63b8b1907a561'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.23/gdk-pixbuf-2.23.5.tar.bz2'
+  md5 '025c38de1a599b0ded6c92d34924dd85'
 
   depends_on 'glib'
   depends_on 'jasper'
