@@ -4,6 +4,7 @@ class RxvtUnicode < Formula
   url 'http://dist.schmorp.de/rxvt-unicode/Attic/rxvt-unicode-9.12.tar.bz2'
   homepage 'http://software.schmorp.de/pkg/rxvt-unicode.html'
   md5 '945af37d661c8c45a7cac292160e7c70'
+  depends_on 'pkg-config' => :optional
 
   def patches
     # Patch hunks 1 and 2 allow perl support to compile on Intel.
