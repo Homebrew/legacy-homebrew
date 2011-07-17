@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mkclean < Formula
-  url 'http://downloads.sourceforge.net/project/matroska/mkclean/mkclean-0.8.2.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/matroska/mkclean/mkclean-0.8.4.tar.bz2'
   homepage 'http://www.matroska.org/downloads/mkclean.html'
-  md5 '3d2976101ed8fa7cacc2986bfbf20ce5'
+  md5 '3f261d853c4d4f612da04d69cb4d136a'
 
   def install
     ENV.j1 # Otherwise there are races
