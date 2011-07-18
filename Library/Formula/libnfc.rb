@@ -20,7 +20,8 @@ class Libnfc < Formula
       "--disable-dependency-tracking" ]
 
     if ARGV.include? '--with-pn532_uart'
-      args << "--with-drivers=pn532_uart --enable-serial-autoprobe" 
+      args << "--enable-serial-autoprobe"
+      args << "--with-drivers=pn532_uart" 
     end
 
     system "./configure", *args
