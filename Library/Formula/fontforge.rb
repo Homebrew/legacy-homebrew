@@ -28,7 +28,7 @@ class Fontforge < Formula
 
     inreplace "Makefile" do |s|
       s.gsub! "/Applications", "$(prefix)"
-      s.gsub! "/usr/local/bin", "$(bindir)"
+      s.gsub! "/usr/local/bin", "$(bindir)" unless s =~ /^INSTALL[ \t]*=/
     end
 
     system "make"
