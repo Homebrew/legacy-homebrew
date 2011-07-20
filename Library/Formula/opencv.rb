@@ -1,35 +1,36 @@
 require 'formula'
 
-class Opencv <Formula
-  # use 2.2.1-pre since some critical bugs are fixed:
-  # https://code.ros.org/trac/opencv/log/branches/2.2/opencv
-  url 'https://code.ros.org/svn/opencv/branches/2.2/opencv', :using => :svn, :revision => '5264'
-  version "2.2.1-svn5264"
+class Opencv < Formula
+  url 'http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/2.3/OpenCV-2.3.0.tar.bz2'
+  version "2.3"
   homepage 'http://opencv.willowgarage.com/wiki/'
+  md5 'dea5e9df241ac37f4439da16559e420d'
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
 
   depends_on 'libtiff' => :optional
   depends_on 'jasper'  => :optional
-  depends_on 'tbb'     => :optional
+  depends_on 'jpeg'  => :optional
+  depends_on 'qt'  => :optional
 
   def options
     [
         ['--build32','Force a 32-bit build.'],
+        ['--tbb','Enable Threaded Building Blocks'],
         ['--ffmpeg','Enable FFMPEG'],
-        ['--python','Use Homebrew Python']
     ]
   end
 
   depends_on "ffmpeg" if ARGV.include? '--ffmpeg'
   depends_on "python" if ARGV.include? '--python'
-
+  depends_on "tbb" if ARGV.include? '--tbb'
 
   def install
-    makefiles = "cmake -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX:PATH=#{prefix} ."
+    makefiles = "cmake -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX:PATH=#{prefix} -DENABLE_SSE3=ON ."
     makefiles += " -DOPENCV_EXTRA_C_FLAGS='-arch i386 -m32'" if ARGV.include? '--build32'
-    makefiles += " -DWITH_FFMPEG='ON'" if ARGV.include? '--ffmpeg'
+    makefiles += " -DWITH_TBB=ON" if ARGV.include? '--tbb'
+    makefiles += " -DWITH_FFMPEG=ON" if ARGV.include? '--ffmpeg'
     system makefiles
     system "make"
     system "make install"
