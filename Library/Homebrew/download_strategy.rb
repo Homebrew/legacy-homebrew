@@ -126,6 +126,23 @@ private
   end
 end
 
+# Detect and download from Apache Mirror
+class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
+  def _fetch
+    # Fetch mirror list site
+    require 'open-uri'
+    mirror_list = open(@url).read()
+
+    # Parse out suggested mirror
+    #   Yep, this is ghetto, grep the first <strong></strong> element content
+    mirror_url = mirror_list[/<strong>([^<]+)/, 1]
+
+    ohai "Actually downloading from mirror: #{mirror_url}"
+    # Start download from that mirror
+    curl mirror_url, '-o', @tarball_path
+  end
+end
+
 # Download via an HTTP POST.
 # Query parameters on the URL are converted into POST parameters
 class CurlPostDownloadStrategy < CurlDownloadStrategy
@@ -514,6 +531,7 @@ def detect_download_strategy url
   when %r[^https?://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
   when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
   when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
+  when %r[^http://www.apache.org/dyn/closer.cgi] then CurlApacheMirrorDownloadStrategy
     # Otherwise just try to download
   else CurlDownloadStrategy
   end
