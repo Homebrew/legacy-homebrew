@@ -23,6 +23,12 @@ class Qt < Formula
   depends_on "d-bus" if ARGV.include? '--with-qtdbus'
   depends_on 'sqlite' if MacOS.leopard?
 
+  def patches
+    # Replaces calls to super in error condition with proper error values.
+    # super does not implement those methods (derp)
+    DATA
+  end
+
   def install
     ENV.x11
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
@@ -95,3 +101,45 @@ class Qt < Formula
     "We agreed to the Qt opensource license for you.\nIf this is unacceptable you should uninstall."
   end
 end
+
+__END__
+diff --git a/src/gui/kernel/qcocoasharedwindowmethods_mac_p.h b/src/gui/kernel/qcocoasharedwindowmethods_mac_p.h
+index 8ef5f98..bd8691e 100644
+--- a/src/gui/kernel/qcocoasharedwindowmethods_mac_p.h
++++ b/src/gui/kernel/qcocoasharedwindowmethods_mac_p.h
+@@ -309,7 +309,7 @@ QT_END_NAMESPACE
+ 
+     QWidget *target = [self dragTargetHitTest:sender];
+     if (!target)
+-        return [super draggingEntered:sender];
++        return NSDragOperationNone;
+     if (target->testAttribute(Qt::WA_DropSiteRegistered) == false)
+         return NSDragOperationNone;
+ 
+@@ -321,7 +321,7 @@ QT_END_NAMESPACE
+ {
+     QWidget *target = [self dragTargetHitTest:sender];
+     if (!target)
+-        return [super draggingUpdated:sender];
++        return NSDragOperationNone;
+ 
+     if (target == *currentDragTarget()) {
+         // The drag continues to move over the widget that we have sendt
+@@ -345,7 +345,7 @@ QT_END_NAMESPACE
+ {
+     QWidget *target = [self dragTargetHitTest:sender];
+     if (!target)
+-        return [super draggingExited:sender];
++        return;
+ 
+     if (*currentDragTarget()) {
+         [reinterpret_cast<NSView *>((*currentDragTarget())->winId()) draggingExited:sender];
+@@ -357,7 +357,7 @@ QT_END_NAMESPACE
+ {
+     QWidget *target = [self dragTargetHitTest:sender];
+     if (!target)
+-        return [super performDragOperation:sender];
++        return NO;
+ 
+     BOOL dropResult = NO;
+     if (*currentDragTarget()) {
