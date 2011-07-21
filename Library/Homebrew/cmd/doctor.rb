@@ -194,17 +194,19 @@ def check_gcc_versions
     EOS
   end
 
-  if gcc_40 == nil
-    puts <<-EOS.undent
-      We couldn't detect gcc 4.0.x. Some formulae require this compiler.
+  if MacOS.xcode_version < "4.0"
+    if gcc_40 == nil
+      puts <<-EOS.undent
+        We couldn't detect gcc 4.0.x. Some formulae require this compiler.
 
-    EOS
-  elsif gcc_40 < RECOMMENDED_GCC_40
-    puts <<-EOS.undent
-      Your gcc 4.0.x version is older than the recommended version. It may be advisable
-      to upgrade to the latest release of Xcode.
+      EOS
+    elsif gcc_40 < RECOMMENDED_GCC_40
+      puts <<-EOS.undent
+        Your gcc 4.0.x version is older than the recommended version. It may be advisable
+        to upgrade to the latest release of Xcode.
 
-    EOS
+      EOS
+    end
   end
 end
 
