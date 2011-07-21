@@ -27,8 +27,10 @@ module HomebrewEnvExtension
       self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
       cflags = ['-O4'] # link time optimisation baby!
     elsif MACOS_VERSION >= 10.6 and self.use_gcc?
-      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/gcc"
-      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/g++"
+      # Xcode 4 makes gcc and g++ #{MacOS.xcode_prefix}/usr/bin/ links to llvm versions
+      # so we need to use gcc-4.2 and g++-4.2 for real non-llvm compilers
+      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/gcc-4.2"
+      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/g++-4.2"
       cflags = ['-O3']
     else
       # If these aren't set, many formulae fail to build
