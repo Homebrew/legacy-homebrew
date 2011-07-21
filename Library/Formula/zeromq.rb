@@ -9,7 +9,10 @@ class Zeromq < Formula
   fails_with_llvm "Compiling with LLVM gives a segfault while linking."
 
   def options
-    [['--universal', 'Build as a Universal Intel binary.']]
+    [
+      ['--universal', 'Build as a Universal Intel binary.'],
+      ['--with-pgm', 'Builds ZeroMq with PGM (Breaks Mongrel2 build)']
+    ]
   end
 
   def build_fat
@@ -31,12 +34,17 @@ class Zeromq < Formula
   end
 
   def install
+    args = ["--disable-dependency-tracking",
+                "--prefix=#{prefix}"]
     system "./autogen.sh" if ARGV.build_head?
 
     if ARGV.build_universal?
       build_fat
     else
-      system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}", "--with-pgm"
+      if ARGV.include? "--with-pgm"
+        args << "--with-pgm"
+      end
+      system "./configure", *args
     end
 
     system "make"
@@ -51,6 +59,9 @@ class Zeromq < Formula
     If you want to later build the Java bindings from https://github.com/zeromq/jzmq,
     you will need to obtain the Java Developer Package from Apple ADC
     at http://connect.apple.com/.
+    
+    If you wish to install ZeroMQ with PGM, reinstall with the --with-pgm flag. This
+    will however break Mongrel2 building.
     EOS
   end
 end
