@@ -1,13 +1,14 @@
 require 'formula'
 
 class Ruby < Formula
-  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p180.tar.bz2'
+  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p290.tar.bz2'
   homepage 'http://www.ruby-lang.org/en/'
   head 'http://svn.ruby-lang.org/repos/ruby/trunk/', :using => :svn
-  md5 '68510eeb7511c403b91fe5476f250538'
+  md5 '096758c3e853b839dc980b183227b182'
 
   depends_on 'readline'
   depends_on 'libyaml'
+  depends_on 'valgrind' if ARGV.include? "--with-valgrind"
 
   fails_with_llvm
 
@@ -19,6 +20,7 @@ class Ruby < Formula
       ["--with-suffix", "Add a 19 suffix to commands"],
       ["--with-doc", "Install with the Ruby documentation"],
       ["--universal", "Compile a universal binary (arch=x86_64,i386)"],
+      ["--with-valgrind", "Enable valgrind memcheck support"]
     ]
   end
 
@@ -48,6 +50,8 @@ class Ruby < Formula
             "--disable-dependency-tracking",
             "--enable-shared"]
 
+    args << "--disable-doc" unless ARGV.include? "--with-doc"
+    args << "--with-valgrind" if ARGV.include? "--with-valgrind"
     args << "--program-suffix=19" if ARGV.include? "--with-suffix"
     args << "--with-arch=x86_64,i386" if ARGV.build_universal?
 
