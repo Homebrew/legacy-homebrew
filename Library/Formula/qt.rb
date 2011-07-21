@@ -10,6 +10,13 @@ class Qt < Formula
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
 
+  def patches
+    # Fixes compilation on 10.7 or with llvm-gcc
+    # Bug report: https://bugreports.qt.nokia.com/browse/QTBUG-20496
+    # Merge request: https://qt.gitorious.org/qt/qt/merge_requests/1304
+    "https://qt.gitorious.org/+kdab-developers/qt/kdab-for-upstream/commit/1537d131e59e4fb43001299cfbd747c521fa1888?format=patch"
+  end
+
   def options
     [
       ['--with-qtdbus', "Enable QtDBus module."],
