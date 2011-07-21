@@ -1,9 +1,9 @@
 require 'formula'
 
 class Botan < Formula
-  url 'http://botan.randombit.net/files/Botan-1.8.11.tgz'
+  url 'http://files.randombit.net/botan/v1.10/Botan-1.10.1.tbz'
   homepage 'http://botan.randombit.net/'
-  md5 'ccb2c3cb8a324214a89b45a03422870b'
+  md5 '7ae93e205491a8e75115bfca983ff7f9'
 
   def install
     system "./configure.py", "--prefix=#{prefix}"
