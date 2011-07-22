@@ -1,10 +1,9 @@
 require 'formula'
 
 class Neo4j < Formula
-  head 'http://dist.neo4j.org/neo4j-community-1.4-SNAPSHOT-unix.tar.gz'
-  url 'http://dist.neo4j.org/neo4j-community-1.4-SNAPSHOT-unix.tar.gz'
-  #url 'http://dist.neo4j.org/neo4j-community-1.4.M05-unix.tar.gz'
-  version 'community-1.4-SNPASHOT'
+  head 'http://dist.neo4j.org/neo4j-community-1.5-SNAPSHOT-unix.tar.gz'
+  url 'http://dist.neo4j.org/neo4j-community-1.4-unix.tar.gz'
+  version 'community-1.4-SNAPSHOT'
   homepage 'http://neo4j.org'
 
 
