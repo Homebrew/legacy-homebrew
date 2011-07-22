@@ -32,8 +32,8 @@ class Imagemagick < Formula
   # Send update requests to https://github.com/trevor/ImageMagick
   # Be sure to include the ImageMagick SVN revision # for the new version.
   url 'https://github.com/trevor/ImageMagick.git',
-          :tag => '6.6.9-4'
-  version '6.6.9-4'
+          :tag => '6.7.1-1'
+  version '6.7.1-1'
   homepage 'http://www.imagemagick.org'
   head 'https://github.com/trevor/ImageMagick.git'
 
