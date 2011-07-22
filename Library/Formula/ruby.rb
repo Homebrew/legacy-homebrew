@@ -50,7 +50,7 @@ class Ruby < Formula
             "--disable-dependency-tracking",
             "--enable-shared"]
 
-    args << "--disable-doc" unless ARGV.include? "--with-doc"
+    args << "--disable-install-doc" unless ARGV.include? "--with-doc"
     args << "--with-valgrind" if ARGV.include? "--with-valgrind"
     args << "--program-suffix=19" if ARGV.include? "--with-suffix"
     args << "--with-arch=x86_64,i386" if ARGV.build_universal?
