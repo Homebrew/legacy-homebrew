@@ -10,6 +10,13 @@ class Openvpn < Formula
   skip_clean 'etc'
   skip_clean 'var'
 
+  # This patch fixes compilation on Lion
+  # There is a long history of confusion between these two consts:
+  # http://www.google.com/search?q=SOL_IP+IPPROTO_IP
+  def patches
+    DATA
+  end
+
   def install
     # Build and install binary
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
@@ -94,3 +101,20 @@ EOS
 EOS
   end
 end
+
+__END__
+diff --git a/socket.c b/socket.c
+index 4720398..faa1782 100644
+--- a/socket.c
++++ b/socket.c
+@@ -35,6 +35,10 @@
+
+ #include "memdbg.h"
+
++#ifndef SOL_IP
++#define SOL_IP IPPROTO_IP
++#endif
++
+ const int proto_overhead[] = { /* indexed by PROTO_x */
+   IPv4_UDP_HEADER_SIZE,
+   IPv4_TCP_HEADER_SIZE,
