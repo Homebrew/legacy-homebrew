@@ -13,6 +13,11 @@ class Openssl < Formula
     system "./config", "--prefix=#{prefix}",
                        "--openssldir=#{etc}",
                        "zlib-dynamic", "shared"
+
+    inreplace 'Makefile' do |s|
+      s.change_make_var! 'MANDIR', man
+    end
+
     ENV.j1 # Parallel compilation fails
     system "make"
     system "make test"
