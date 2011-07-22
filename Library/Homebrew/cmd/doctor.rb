@@ -700,7 +700,7 @@ def check_for_other_frameworks
       puts <<-EOS.undent
         #{f} detected
 
-        This will be picked up by Cmake's build system and likey cause the
+        This will be picked up by Cmake's build system and likely cause the
         build to fail, trying to link to a 32-bit version of expat.
         You may need to move this file out of the way to compile Cmake.
 
@@ -712,7 +712,7 @@ def check_for_other_frameworks
     puts <<-EOS.undent
       /Library/Frameworks/Mono.framework detected
 
-      This can be picked up by Cmake's build system and likey cause the
+      This can be picked up by Cmake's build system and likely cause the
       build to fail, finding improper header files for libpng for instance.
 
     EOS
