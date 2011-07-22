@@ -4,6 +4,8 @@ class Boost < Formula
   homepage 'http://www.boost.org'
   url 'http://downloads.sourceforge.net/project/boost/boost/1.46.1/boost_1_46_1.tar.bz2'
   md5 '7375679575f4c8db605d426fc721d506'
+  bottle 'https://downloads.sourceforge.net/project/machomebrew/Bottles/boost-1.46.1-bottle.tar.gz'
+  bottle_sha1 '15382f3aed119d207f0cdab7f089d284af1b3bbf'
 
   def options
     [
