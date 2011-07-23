@@ -10,6 +10,8 @@ class GribApi < Formula
   def install
     ENV.deparallelize
     ENV.no_optimization
+    ENV.fortran
+    
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
