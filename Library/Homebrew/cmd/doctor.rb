@@ -194,17 +194,19 @@ def check_gcc_versions
     EOS
   end
 
-  if gcc_40 == nil
-    puts <<-EOS.undent
-      We couldn't detect gcc 4.0.x. Some formulae require this compiler.
+  if MacOS.xcode_version < "4.0"
+    if gcc_40 == nil
+      puts <<-EOS.undent
+        We couldn't detect gcc 4.0.x. Some formulae require this compiler.
 
-    EOS
-  elsif gcc_40 < RECOMMENDED_GCC_40
-    puts <<-EOS.undent
-      Your gcc 4.0.x version is older than the recommended version. It may be advisable
-      to upgrade to the latest release of Xcode.
+      EOS
+    elsif gcc_40 < RECOMMENDED_GCC_40
+      puts <<-EOS.undent
+        Your gcc 4.0.x version is older than the recommended version. It may be advisable
+        to upgrade to the latest release of Xcode.
 
-    EOS
+      EOS
+    end
   end
 end
 
@@ -698,7 +700,7 @@ def check_for_other_frameworks
       puts <<-EOS.undent
         #{f} detected
 
-        This will be picked up by Cmake's build system and likey cause the
+        This will be picked up by Cmake's build system and likely cause the
         build to fail, trying to link to a 32-bit version of expat.
         You may need to move this file out of the way to compile Cmake.
 
@@ -710,7 +712,7 @@ def check_for_other_frameworks
     puts <<-EOS.undent
       /Library/Frameworks/Mono.framework detected
 
-      This can be picked up by Cmake's build system and likey cause the
+      This can be picked up by Cmake's build system and likely cause the
       build to fail, finding improper header files for libpng for instance.
 
     EOS
