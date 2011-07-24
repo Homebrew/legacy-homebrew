@@ -26,7 +26,8 @@ class Llvm < Formula
   end
 
   def options
-    [['--with-clang', 'Also build & install clang'],
+    [['--with-clang', 'Build clang'],
+     ['--analyzer', 'Build clang analyzer'],
      ['--shared', 'Build shared library'],
      ['--all-targets', 'Build all target backends'],
      ['--rtti', 'Build with RTTI information'],
@@ -92,7 +93,7 @@ class Llvm < Formula
   def caveats; <<-EOS.undent
     If you already have LLVM installed, then "brew upgrade llvm" might not work.
     Instead, try:
-        brew rm llvm & brew install llvm
+        brew rm llvm && brew install llvm
     EOS
   end
 end
