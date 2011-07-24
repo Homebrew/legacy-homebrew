@@ -6,10 +6,12 @@ class Thrift < Formula
   url 'http://www.apache.org/dist/thrift/0.6.1/thrift-0.6.1.tar.gz'
   md5 'e1ec722d5f38077a23a32c4de4d4ce94'
 
+  depends_on 'pkg-config' => :build
   depends_on 'boost'
 
   def install
-    cp "/usr/X11/share/aclocal/pkg.m4", "aclocal"
+    pkg_config_path = Formula.factory("pkg-config").installed_prefix
+    cp "#{pkg_config_path}/share/aclocal/pkg.m4", "aclocal"
     system "./bootstrap.sh" if version == 'HEAD'
 
     # Language bindings try to install outside of Homebrew's prefix, so
