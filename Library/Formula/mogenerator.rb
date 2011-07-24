@@ -7,6 +7,8 @@ class Mogenerator < Formula
   head "https://github.com/rentzsch/mogenerator.git"
 
   def install
+    ENV['CC'] = "#{MacOS.xcode_prefix}/usr/bin/clang"
+
     system "xcodebuild -target mogenerator -configuration Release SYMROOT=symroot OBJROOT=objroot"
     bin.install "symroot/Release/mogenerator"
   end
