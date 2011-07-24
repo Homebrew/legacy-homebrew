@@ -29,7 +29,10 @@ class Emacs < Formula
     # Fix for building with Xcode 4; harmless on Xcode 3.x.
     unless ARGV.build_head?
       p << "http://repo.or.cz/w/emacs.git/commitdiff_plain/c8bba48c5889c4773c62a10f7c3d4383881f11c1"
+      # Fix for address randomization on Darwin
       p << "https://raw.github.com/gist/1098107"
+      # Fix for the titlebar issue on Mac OS X 10.7
+      p << "https://raw.github.com/gist/1102744"
     end
 
     if ARGV.include? "--cocoa"
