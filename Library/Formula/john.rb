@@ -1,9 +1,9 @@
 require 'formula'
 
 class John < Formula
-  url 'http://www.openwall.com/john/g/john-1.7.8-jumbo-2.tar.bz2'
+  url 'http://www.openwall.com/john/g/john-1.7.8-jumbo-4.tar.bz2'
   homepage 'http://www.openwall.com/john/'
-  md5 'e1f382181249163a3e0468014e7c779e'
+  md5 '7b50641248e9570341d5474b7c83f087'
 
   fails_with_llvm
 
