@@ -11,5 +11,21 @@ class Mogenerator < Formula
 
     system "xcodebuild -target mogenerator -configuration Release SYMROOT=symroot OBJROOT=objroot"
     bin.install "symroot/Release/mogenerator"
+
+    (prefix + 'templates').install Dir['templates/*.motemplate']
+  end
+
+  def caveats; <<-EOS.undent
+     A default set of Mogenerator templates have been installed to:
+     
+       #{prefix}/templates
+     
+     If you haven't written your own templates, you may wish to copy these for
+     your own use:
+     
+       mkdir -p "#{ENV['HOME']}/Library/Application Support/mogenerator"
+       cp #{prefix}/templates/*.motemplate "#{ENV['HOME']}/Library/Application Support/mogenerator/"
+     
+    EOS
   end
 end
