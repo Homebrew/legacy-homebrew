@@ -16,6 +16,7 @@ end
 
 class Graphicsmagick < Formula
   url 'http://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.12/GraphicsMagick-1.3.12.tar.bz2'
+  head 'hg://http://graphicsmagick.hg.sourceforge.net:8000/hgroot/graphicsmagick/graphicsmagick'
   homepage 'http://www.graphicsmagick.org/'
   md5 '55182f371f82d5f9367bce04e59bbf25'
 
