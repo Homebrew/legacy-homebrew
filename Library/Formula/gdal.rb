@@ -22,14 +22,18 @@ end
 
 class Gdal < Formula
   url 'http://download.osgeo.org/gdal/gdal-1.8.1.tar.gz'
-  head 'https://svn.osgeo.org/gdal/trunk/gdal', :using => :svn
   homepage 'http://www.gdal.org/'
   md5 'b32269893afc9dc9eced45e74e4c6bb4'
+
+  head 'https://svn.osgeo.org/gdal/trunk/gdal', :using => :svn
 
   depends_on 'jpeg'
   depends_on 'giflib'
   depends_on 'proj'
   depends_on 'geos'
+
+  depends_on "postgresql" if postgres?
+  depends_on "mysql" if mysql?
 
   if complete?
     # Raster libraries
@@ -37,15 +41,7 @@ class Gdal < Formula
     depends_on "jasper" # May need a keg-only GeoJasPer library as this one is
                         # not geo-spatially enabled.
     depends_on "cfitsio"
-
     depends_on "epsilon"
-    def patches
-      # EPSILON v0.9.x slightly modified the naming of some struct members. A
-      # fix is in the GDAL trunk but was kept out of 1.8.1 due to concern for
-      # users of EPSILON v0.8.x. Homebrew installs 0.9.2+ so this concern is a
-      # moot point.
-      {:p1 => DATA}
-    end
 
     # Vector libraries
     depends_on "unixodbc" # OS X version is not complete enough
@@ -57,8 +53,15 @@ class Gdal < Formula
     depends_on "lzma"    # Compression algorithmn library
   end
 
-  depends_on "postgresql" if postgres?
-  depends_on "mysql" if mysql?
+  def patches
+    if complete?
+      # EPSILON v0.9.x slightly modified the naming of some struct members. A
+      # fix is in the GDAL trunk but was kept out of 1.8.1 due to concern for
+      # users of EPSILON v0.8.x. Homebrew installs 0.9.2+ so this concern is a
+      # moot point.
+      {:p1 => DATA}
+    end
+  end
 
   def options
     [
@@ -233,6 +236,7 @@ directory is added to the PYTHONPATH:
     end
   end
 end
+
 
 __END__
 
