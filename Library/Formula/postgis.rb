@@ -39,6 +39,12 @@ class Postgis < Formula
       "--with-projdir=#{HOMEBREW_PREFIX}"
     ]
 
+    # Apple ship a postgres client in Lion, conflicts with installed PostgreSQL server.
+    if MacOS.lion?
+      postgresql = Formula.factory('postgresql')
+      args << "--with-pgconfig=#{postgresql.bin}/pg_config"
+    end
+
     if ARGV.build_head?
       system "./autogen.sh"
       gettext = Formula.factory('gettext')
