@@ -7,9 +7,11 @@ class Libsvm < Formula
   version '3.1'
 
   def install
+    # Install core binaries.
     system "make"
     bin.install('svm-scale')
     bin.install('svm-train')
     bin.install('svm-predict')
+
   end
 end
