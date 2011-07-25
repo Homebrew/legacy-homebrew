@@ -2,8 +2,8 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.0.4.tar.gz'
-  md5 'd23f6e6b07b57ac061e790b1ed64bb98'
+  url 'http://nginx.org/download/nginx-1.0.5.tar.gz'
+  md5 '373c7761a7c682b92b164c8ee3d6d243'
 
   depends_on 'pcre'
 
