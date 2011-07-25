@@ -1,8 +1,8 @@
 require 'formula'
 
 class Yarp < Formula
-  url 'http://downloads.sourceforge.net/yarp0/yarp-2.3.4.tar.gz'
-  md5 '00a2b21ab6e6469bfc99fedf00a74c0f'
+  url 'http://downloads.sourceforge.net/yarp0/yarp-2.3.8.tar.gz'
+  md5 '5a932488be65aa4318f5c7f4aaf9ff50'
   homepage 'http://yarp.it'
   head 'https://yarp0.svn.sourceforge.net/svnroot/yarp0/trunk/yarp2'
 
