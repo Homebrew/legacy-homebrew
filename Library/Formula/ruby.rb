@@ -1,10 +1,10 @@
 require 'formula'
 
 class Ruby < Formula
-  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p180.tar.bz2'
+  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p290.tar.bz2'
   homepage 'http://www.ruby-lang.org/en/'
   head 'http://svn.ruby-lang.org/repos/ruby/trunk/', :using => :svn
-  md5 '68510eeb7511c403b91fe5476f250538'
+  md5 '096758c3e853b839dc980b183227b182'
 
   depends_on 'readline'
   depends_on 'libyaml'
