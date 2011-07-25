@@ -6,9 +6,7 @@ class NCurses < Formula
   homepage 'http://www.gnu.org/s/ncurses/'
 
   def install
-    system './configure', '--without-cxx', '--without-cxx-binding', \
-                          '--without-ada', '--without-progs', \
-                          '--without-curses-h', '--with-shared', \
+    system './configure', '--with-shared', \
                           '--without-debug', '--enable-widec', \
                           '--enable-const', '--enable-ext-colors', \
                           '--enable-sigwinch', '--enable-wgetch-events', \
