@@ -1,8 +1,8 @@
 require 'formula'
 
 class Graphviz < Formula
-  url 'http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.26.3.tar.gz'
-  md5 '6f45946fa622770c45609778c0a982ee'
+  url 'http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.28.0.tar.gz'
+  md5 '8d26c1171f30ca3b1dc1b429f7937e58'
   homepage 'http://graphviz.org/'
 
   depends_on 'pkg-config' => :build
@@ -21,6 +21,7 @@ class Graphviz < Formula
     # Various language bindings fail with 32/64 issues.
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--with-qt=no",
                           "--disable-quartz",
                           "--disable-java",
                           "--disable-ocaml",
