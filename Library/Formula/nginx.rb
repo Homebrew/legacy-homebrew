@@ -19,7 +19,8 @@ class Nginx < Formula
     [
       ['--with-passenger', "Compile with support for Phusion Passenger module"],
       ['--with-webdav',    "Compile with support for WebDAV module"],
-      ['--with-module',    "Compile with external 3rd party module"]
+      ['--with-module',    "Compile with external 3rd party module"],
+      ['--with-ld-opt',    "Compile with additional linker options"]
     ]
   end
 
@@ -41,17 +42,22 @@ class Nginx < Formula
     if parts.length != 2 then
       puts "Unable to parse option #{mod_arg}"
       exit
-    else
-      return acc << "-add-module=#{part[1]}" if File.directory?(part[1])
-      puts "Unable to locoate module in directory #{part[1]}"
-      exit
     end
+    return acc << "--add-module=#{parts[1]}" if File.directory?(parts[1])
+    puts "Unable to locate nginx module in directory #{parts[1]}"
+    exit
   end
 
-  def external_module_args(args)
+  def linker_args
+    ARGV.select {|a| a.start_with?('--with-ld-opt=')}
+  end
+
+  def external_module_args
     mod_args = ARGV.select {|a| a.start_with?('--with-module=')}
-    args unless mod_args.length > 0
-    mod_args.inject(args) {|acc, arg| add_module(arg, acc)}
+    if mod_args.length == 0 then
+    else
+      (mod_args.inject([]) {|acc, arg| add_module(arg, acc)}) | linker_args
+    end
   end
 
   def install
@@ -60,12 +66,9 @@ class Nginx < Formula
             "--with-pcre",
             "--conf-path=#{etc}/nginx/nginx.conf",
             "--pid-path=#{var}/run/nginx.pid",
-            "--lock-path=#{var}/nginx/nginx.lock"]
-
+            "--lock-path=#{var}/nginx/nginx.lock"] | external_module_args
     args << passenger_config_args if ARGV.include? '--with-passenger'
     args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
-    args << external_module_args(args) if ARGV.include? '--with-module'
-
     system "./configure", *args
     system "make install"
 
