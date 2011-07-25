@@ -38,13 +38,14 @@ class Nginx < Formula
   end
 
   def add_module(mod_arg, acc)
-    parts = mod_arg.split("=")
+    parts = mod_arg.split('=')
     if parts.length != 2 then
       puts "Unable to parse option #{mod_arg}"
       exit
     end
-    return acc << "--add-module=#{parts[1]}" if File.directory?(parts[1])
-    puts "Unable to locate nginx module in directory #{parts[1]}"
+    mod_dir = File.expand_path(parts[1])
+    return acc << "--add-module=#{mod_dir}" if File.directory?(mod_dir)
+    puts "Unable to locate nginx module in directory #{mod_dir}"
     exit
   end
 
