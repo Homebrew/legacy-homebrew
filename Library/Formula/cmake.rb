@@ -5,6 +5,17 @@ class Cmake < Formula
   md5 '3c5d32cec0f4c2dc45f4c2e84f4a20c5'
   homepage 'http://www.cmake.org/'
 
+  def patches
+    # CMake 2.8.5 fails to find some Qt libraries that CMake 2.8.4 could find.
+    # The following patch corrects this behavior. See discussion on the CMake
+    # mailing list:
+    #
+    #   http://cmake.3232098.n2.nabble.com/FindQt4-errors-out-when-locating-QtUITools-under-CMake-2-8-5-td6619091.html
+    #
+    # Patch can be removed after next CMake release.
+    {:p1 => "http://cmake.org/gitweb?p=cmake.git;a=patch;h=702538eaa3315f3fcad9f1daea01e6a83928967b"}
+  end
+
   def install
     # A framework-installed expat will be detected and mess things up.
     if File.exist? "/Library/Frameworks/expat.framework"
