@@ -96,9 +96,19 @@ class Qt < Formula
     cd prefix do
       ln_s lib, "Frameworks"
     end
+
+    # The pkg-config files installed suggest that geaders can be found in the
+    # `include` directory. Make this so by creating symlinks from `include` to
+    # the Frameworks' Headers folders.
+    Pathname.glob(lib + '*.framework/Headers').each do |path|
+      framework_name = File.basename(File.dirname(path), '.framework')
+      ln_s path.realpath, include+framework_name
+    end
   end
 
-  def caveats
-    "We agreed to the Qt opensource license for you.\nIf this is unacceptable you should uninstall."
+  def caveats; <<-EOS.undent
+    We agreed to the Qt opensource license for you.
+    If this is unacceptable you should uninstall.
+    EOS
   end
 end
