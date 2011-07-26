@@ -8,7 +8,7 @@ module HomebrewEnvExtension
     delete('CPPFLAGS')
     delete('LDFLAGS')
 
-    self['MAKEFLAGS'] = "-j#{Hardware.processor_count}"
+    self['MAKEFLAGS'] = "-j#{self.make_jobs}"
 
     unless HOMEBREW_PREFIX.to_s == '/usr/local'
       # /usr/local is already an -isystem and -L directory so we skip it
@@ -308,5 +308,14 @@ Please take one of the following actions:
   end
   def use_llvm?
     self['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm'
+  end
+
+  def make_jobs
+    # '-j' requires a positive integral argument
+    if self['HOMEBREW_MAKE_JOBS'].to_i > 0
+      self['HOMEBREW_MAKE_JOBS']
+    else
+      Hardware.processor_count
+    end
   end
 end
