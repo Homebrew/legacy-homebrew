@@ -684,10 +684,10 @@ end
 
 def check_for_GREP_OPTIONS
   target_var = ENV['GREP_OPTIONS'].to_s
-  unless target_var.empty?
+  unless target_var.empty? or target_var == '--color=auto'
     puts <<-EOS.undent
     $GREP_OPTIONS was set to \"#{target_var}\".
-    Having $GREP_OPTIONS set can cause CMake builds to fail.
+    Having $GREP_OPTIONS set this way can cause CMake builds to fail.
 
     EOS
   end
@@ -700,7 +700,7 @@ def check_for_other_frameworks
       puts <<-EOS.undent
         #{f} detected
 
-        This will be picked up by Cmake's build system and likey cause the
+        This will be picked up by Cmake's build system and likely cause the
         build to fail, trying to link to a 32-bit version of expat.
         You may need to move this file out of the way to compile Cmake.
 
@@ -712,7 +712,7 @@ def check_for_other_frameworks
     puts <<-EOS.undent
       /Library/Frameworks/Mono.framework detected
 
-      This can be picked up by Cmake's build system and likey cause the
+      This can be picked up by Cmake's build system and likely cause the
       build to fail, finding improper header files for libpng for instance.
 
     EOS
