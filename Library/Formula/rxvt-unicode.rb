@@ -1,9 +1,11 @@
 require 'formula'
 
 class RxvtUnicode < Formula
-  url 'http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-9.11.tar.bz2'
+  url 'http://dist.schmorp.de/rxvt-unicode/Attic/rxvt-unicode-9.12.tar.bz2'
   homepage 'http://software.schmorp.de/pkg/rxvt-unicode.html'
-  md5 '1bed5bfeed026e0bfafa0e9e4f62aa37'
+  md5 '945af37d661c8c45a7cac292160e7c70'
+
+  depends_on 'pkg-config' => :build
 
   def patches
     # Patch hunks 1 and 2 allow perl support to compile on Intel.

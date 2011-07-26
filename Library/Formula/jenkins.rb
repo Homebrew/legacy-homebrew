@@ -1,9 +1,9 @@
 require 'formula'
 
 class Jenkins < Formula
-  url 'http://mirrors.jenkins-ci.org/war/1.415/jenkins.war', :using => :nounzip
-  version '1.415'
-  md5 '7ec694c05967f4b0e72b27d12c6a38e4'
+  url 'http://mirrors.jenkins-ci.org/war/1.420/jenkins.war', :using => :nounzip
+  version '1.420'
+  md5 '098a8a3697001f8133666c4688ac7205'
   homepage 'http://jenkins-ci.org'
 
   def install
