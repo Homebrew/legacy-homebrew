@@ -96,6 +96,16 @@ class Qt < Formula
     cd prefix do
       ln_s lib, "Frameworks"
     end
+
+    # The Pkg-Config files installed suggest that Headers can be found in the
+    # `include` directory. Make this so by creating symlinks to Framework
+    # Header folders.
+    Pathname.glob(lib + '*.framework/Headers').each do |path|
+      framework_name = File.basename(File.dirname(path), '.framework')
+      include_dir = include + framework_name
+
+      ln_s path.realpath(), include_dir
+    end
   end
 
   def caveats
