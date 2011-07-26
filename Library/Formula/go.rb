@@ -3,25 +3,19 @@ require 'hardware'
 
 class Go < Formula
   if ARGV.include? "--use-git"
-    url 'https://github.com/tav/go.git', :tag => 'release.r57.2'
+    url 'https://github.com/tav/go.git', :tag => 'release.r58.1'
     head 'https://github.com/tav/go.git'
   else
-    url 'http://go.googlecode.com/hg/', :revision => 'release.r57.2'
+    url 'http://go.googlecode.com/hg/', :revision => 'release.r58.1'
     head 'http://go.googlecode.com/hg/'
   end
-  version 'r57.2'
+  version 'r58.1'
   homepage 'http://golang.org'
 
   skip_clean 'bin'
 
   def options
     [["--use-git", "Use git mirror instead of official hg repository"]]
-  end
-
-  def patches
-    # Fix an egrep error; already present upstream.
-    # Remove when r58 is tagged.
-    DATA unless ARGV.build_head?
   end
 
   def install
