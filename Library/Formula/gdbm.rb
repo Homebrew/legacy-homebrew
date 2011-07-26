@@ -6,6 +6,7 @@ class Gdbm < Formula
   md5 '1d1b1d5c0245b1c00aff92da751e9aa1'
 
   def install
+    inreplace "configure", "-flat_namespace -undefined suppress", "-undefined dynamic_lookup"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}", "--infodir=#{info}"
