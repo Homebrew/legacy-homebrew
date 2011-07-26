@@ -41,6 +41,7 @@ class AndroidSdk < Formula
       test -f "$ADB" && exec "$ADB" "$@"
       echo Use the \\`android\\' tool to install adb.
       EOS
+    (bin/:adb).chmod 0755
   end
 
   def caveats; <<-EOS.undent
