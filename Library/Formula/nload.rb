@@ -5,6 +5,8 @@ class Nload < Formula
   homepage 'http://www.roland-riegel.de/nload/'
   md5 '9b97c37fe1474f1da42f265fead24081'
 
+  fails_with_llvm
+
   def patches
     # Patching configure.in file to make configure compile on Mac OS.
     DATA
