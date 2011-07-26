@@ -316,6 +316,12 @@ Some sample commands ship with Homebrew and are enabled by default.
     If set, Homebrew will not remove files from `share/info`, allowing them
     to be linked from the Cellar.
 
+  * HOMEBREW\_MAKE\_JOBS:
+    If set, instructs Homebrew to use the value of `HOMEBREW_MAKE_JOBS` as
+    the number of parallel jobs to run when building with `make`(1).
+
+    *Default:* the number of available CPU cores.
+
   * HOMEBREW\_SVN:
     When exporting from Subversion, Homebrew will use `HOMEBREW_SVN` if set,
     a Homebrew-built Subversion if installed, or the system-provided binary.
