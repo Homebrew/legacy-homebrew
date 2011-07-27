@@ -296,9 +296,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 
   def fetch
-    raise "You must install Git:\n\n"+
-          "  brew install git\n" \
-          unless system "/usr/bin/which git"
+    raise "You must install Git: brew install git" unless system "/usr/bin/which -s git"
 
     ohai "Cloning #{@url}"
 
@@ -321,7 +319,8 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     else
       puts "Updating #{@clone}"
       Dir.chdir(@clone) do
-        quiet_safe_system 'git', 'fetch', @url
+        safe_system 'git', 'remote', 'set-url', 'origin', @url
+        quiet_safe_system 'git', 'fetch', 'origin'
         # If we're going to checkout a tag, then we need to fetch new tags too.
         quiet_safe_system 'git', 'fetch', '--tags' if @spec == :tag
       end
