@@ -3,7 +3,7 @@ require 'formula'
 class AspellLang < Formula
   def install
     aspell = Formula.factory 'aspell'
-    system "./configure --vars ASPELL=#{aspell.prefix}/bin/aspell PREZIP=#{aspell.prefix}/bin/prezip"
+    system "PATH=$PATH:#{aspell.prefix}/bin; ./configure --vars ASPELL=#{aspell.prefix}/bin/aspell PREZIP=#{aspell.prefix}/bin/prezip"
     system "PATH=$PATH:#{aspell.prefix}/bin; make install"
   end
 end
@@ -28,7 +28,7 @@ class Aspell < Formula
 
     languages = []
     if ARGV.include?('--all')
-      languages << available_languages.to_a - broken_dictionaries.to_a
+      languages << available_languages.to_a
     else
       ARGV.options_only.select { |v| v =~ /--lang=/ }.uniq.each do |opt|
         languages << opt.split('=')[1].split(',')
@@ -53,15 +53,8 @@ class Aspell < Formula
 
     For the following languages aspell dictionaries are available:
     #{available_languages.join(', ')}
-
-    The dictionaries for the following languages seem to be broken:
-    #{broken_dictionaries.join(', ')}
     EOS
   end
-end
-
-def broken_dictionaries
-  %w( br cy el fr gv nl tr wa)
 end
 
 # BEGIN generated with brew-aspell-dictionaries
