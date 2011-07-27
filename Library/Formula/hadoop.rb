@@ -1,7 +1,7 @@
 require 'formula'
 
 class Hadoop < Formula
-  url 'http://www.gtlib.gatech.edu/pub/apache/hadoop/core/hadoop-0.21.0/hadoop-0.21.0.tar.gz'
+  url 'http://www.apache.org/dyn/closer.cgi?path=hadoop/core/hadoop-0.21.0/hadoop-0.21.0.tar.gz'
   homepage 'http://hadoop.apache.org/common/'
   md5 'ec0f791f866f82a7f2c1319a54f4db97'
 
