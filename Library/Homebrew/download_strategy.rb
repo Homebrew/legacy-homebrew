@@ -137,7 +137,9 @@ class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
     #   Yep, this is ghetto, grep the first <strong></strong> element content
     mirror_url = mirror_list[/<strong>([^<]+)/, 1]
 
-    ohai "Actually downloading from mirror: #{mirror_url}"
+    raise "Couldn't determine mirror. Try again later." if mirror_url.nil?
+
+    ohai "Best Mirror #{mirror_url}"
     # Start download from that mirror
     curl mirror_url, '-o', @tarball_path
   end
