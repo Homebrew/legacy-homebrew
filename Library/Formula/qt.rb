@@ -10,6 +10,13 @@ class Qt < Formula
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
 
+  def patches
+    # Fixes compilation on 10.7 or with llvm-gcc
+    # Bug report: https://bugreports.qt.nokia.com/browse/QTBUG-20496
+    # Merge request: https://qt.gitorious.org/qt/qt/merge_requests/1304
+    "https://qt.gitorious.org/+kdab-developers/qt/kdab-for-upstream/commit/1537d131e59e4fb43001299cfbd747c521fa1888?format=patch"
+  end
+
   def options
     [
       ['--with-qtdbus', "Enable QtDBus module."],
@@ -89,9 +96,19 @@ class Qt < Formula
     cd prefix do
       ln_s lib, "Frameworks"
     end
+
+    # The pkg-config files installed suggest that geaders can be found in the
+    # `include` directory. Make this so by creating symlinks from `include` to
+    # the Frameworks' Headers folders.
+    Pathname.glob(lib + '*.framework/Headers').each do |path|
+      framework_name = File.basename(File.dirname(path), '.framework')
+      ln_s path.realpath, include+framework_name
+    end
   end
 
-  def caveats
-    "We agreed to the Qt opensource license for you.\nIf this is unacceptable you should uninstall."
+  def caveats; <<-EOS.undent
+    We agreed to the Qt opensource license for you.
+    If this is unacceptable you should uninstall.
+    EOS
   end
 end
