@@ -29,13 +29,10 @@ class Imagemagick < Formula
   # Using an unofficial Git mirror to work around:
   # * Stable tarballs disappearing
   # * Bad https cert on official SVN repo
-  # Send update requests to https://github.com/adamv/ImageMagick
-  # Be sure to include the ImageMagick SVN revision # for the new version.
-  url 'https://github.com/adamv/ImageMagick.git',
-          :tag => '6.6.9-4'
-  version '6.6.9-4'
+  url 'https://github.com/trevor/ImageMagick/tarball/6.7.1-1'
+  md5 '9c71dfbddc42b78a0d8db8acdb534d37'
   homepage 'http://www.imagemagick.org'
-  head 'https://github.com/adamv/ImageMagick.git'
+  head 'https://github.com/trevor/ImageMagick.git'
 
   depends_on 'jpeg'
 
