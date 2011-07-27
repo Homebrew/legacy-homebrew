@@ -1,7 +1,7 @@
 require 'formula'
 
 class Zookeeper < Formula
-  url 'http://www.alliedquotes.com/mirrors/apache/zookeeper/zookeeper-3.3.3/zookeeper-3.3.3.tar.gz'
+  url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.3.3/zookeeper-3.3.3.tar.gz'
   head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
   homepage 'http://zookeeper.apache.org/'
   md5 'aa4129c6eebb50dbd6b640c9c3aa21f0'

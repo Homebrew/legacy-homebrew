@@ -1,7 +1,7 @@
 require 'formula'
 
 class Cassandra < Formula
-  url 'http://www.mirrorservice.org/sites/ftp.apache.org/cassandra/0.8.1/apache-cassandra-0.8.1-bin.tar.gz'
+  url 'http://www.apache.org/dyn/closer.cgi?path=cassandra/0.8.1/apache-cassandra-0.8.1-bin.tar.gz'
   homepage 'http://cassandra.apache.org'
   md5 'b6c8a1e7281761e62230ea76daa3d841'
 

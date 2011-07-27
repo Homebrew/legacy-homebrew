@@ -1,7 +1,7 @@
 require 'formula'
 
 class Log4cxx < Formula
-  url 'http://apache.abdaal.com/logging/log4cxx/0.10.0/apache-log4cxx-0.10.0.tar.gz'
+  url 'http://www.apache.org/dyn/closer.cgi?path=logging/log4cxx/0.10.0/apache-log4cxx-0.10.0.tar.gz'
   homepage 'http://logging.apache.org/log4cxx/index.html'
   md5 'b30ffb8da3665178e68940ff7a61084c'
 

@@ -1,7 +1,7 @@
 require 'formula'
 
 class Solr < Formula
-  url 'http://mirrors.axint.net/apache/lucene/solr/3.3.0/apache-solr-3.3.0.tgz'
+  url 'http://www.apache.org/dyn/closer.cgi?path=lucene/solr/3.3.0/apache-solr-3.3.0.tgz'
   homepage 'http://lucene.apache.org/solr/'
   md5 '048e2aa7e16358600fa5fe3570b90018'
 

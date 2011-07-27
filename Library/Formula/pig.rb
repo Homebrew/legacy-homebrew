@@ -1,7 +1,7 @@
 require 'formula'
 
 class Pig < Formula
-  url 'ftp://apache.mirrors.pair.com//pig/pig-0.8.1/pig-0.8.1.tar.gz'
+  url 'http://www.apache.org/dyn/closer.cgi?path=pig/pig-0.8.1/pig-0.8.1.tar.gz'
   homepage 'http://hadoop.apache.org/pig/'
   md5 'd3325f5816b68fb3c1d405095fcf5c7a'
 
