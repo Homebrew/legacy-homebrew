@@ -36,7 +36,7 @@ class Zeromq < Formula
     if ARGV.build_universal?
       build_fat
     else
-      system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}", "--with-pgm"
+      system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"#, "--with-pgm"
     end
 
     system "make"
