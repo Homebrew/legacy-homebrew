@@ -1,7 +1,7 @@
 require 'formula'
 
 class Stunnel < Formula
-  url 'ftp://ftp.stunnel.org/stunnel/stunnel-4.37.tar.gz'
+  url 'ftp://ftp.stunnel.org/stunnel/obsolete/4.x/stunnel-4.37.tar.gz'
   homepage 'http://www.stunnel.org/'
   md5 '8d4e2cefbef6638da95986a3d44c1b4a'
 
@@ -46,3 +46,4 @@ index 274f9a0..d5d7cc0 100644
  
  [ req_dn ]
  countryName = Country Name (2 letter code)
+
