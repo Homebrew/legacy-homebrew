@@ -7,7 +7,7 @@ require 'formula'
 class Mlton < Formula
   # the dynamic macports version works fine with Homebrew's gmp
   url 'http://mlton.org/pages/Download/attachments/mlton-20100608-1.amd64-darwin.gmp-macports.tgz'
-  homepage 'http://mxcl.github.com/homebrew/'
+  homepage 'http://mlton.org'
   md5 'e9007318bb77c246258a53690b1d3449'
 
   depends_on 'gmp'

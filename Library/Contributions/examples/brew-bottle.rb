@@ -18,6 +18,8 @@ ARGV.each do|formula|
     # Use gzip, faster to compress than bzip2, faster to uncompress than bzip2
     # or an uncompressed tarball (and more bandwidth friendly).
     safe_system 'tar', 'czf', "#{destination}/#{filename}", "#{formula}/#{version}"
+    sha1 = Pathname.new("#{destination}/#{filename}").sha1
+    ohai "Bottled #{filename}"
+    ohai "SHA1 #{sha1}"
   end
-  ohai "Bottled #{filename}"
 end

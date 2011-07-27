@@ -1,19 +1,9 @@
 require 'formula'
 
-# This formula provides the libvirt daemon (libvirtd), development libraries, and the
-# virsh command line tool.  This allows people to manage their virtualisation servers
-# remotely, and (as this continues to be developed) manage virtualisation servers
-# running on the local host
-
 class Libvirt < Formula
   homepage 'http://www.libvirt.org'
-  if ARGV.build_head?
-    url 'http://libvirt.org/sources/libvirt-0.9.1.tar.gz'
-    md5 '4182dbe290cca4344a5387950dc06433'
-  else
-    url 'http://libvirt.org/sources/libvirt-0.8.8.tar.gz'
-    sha256 '030aea3728917053555bec98d93d2855e8a603b758c0b2a5d57ac48b4f39e113'
-  end
+  url 'ftp://libvirt.org/libvirt/libvirt-0.9.3.tar.gz'
+  sha256 '4d673be9aa7b5618c0fef3cfdbbbeff02df1c83e26680fe40defad2b32a56ae3'
 
   depends_on "gnutls"
   depends_on "yajl"
@@ -22,6 +12,11 @@ class Libvirt < Formula
     # Definitely needed on Leopard, but not on Snow Leopard.
     depends_on "readline"
     depends_on "libxml2"
+  end
+
+  def patches
+    # Patch to work around a compilation bug; fixed in libvirt 0.9.4
+    DATA
   end
 
   fails_with_llvm "Undefined symbols when linking", :build => "2326"
@@ -37,7 +32,6 @@ class Libvirt < Formula
             "--sysconfdir=#{etc}",
             "--with-esx",
             "--with-init-script=none",
-            "--with-openvz",
             "--with-remote",
             "--with-test",
             "--with-vbox=check",
@@ -68,3 +62,41 @@ class Libvirt < Formula
     end
   end
 end
+
+__END__
+diff --git a/src/conf/network_conf.h b/src/conf/network_conf.h
+index d7d2951..5edcf27 100644
+--- a/src/conf/network_conf.h
++++ b/src/conf/network_conf.h
+@@ -64,22 +64,22 @@ struct _virNetworkDNSTxtRecordsDef {
+     char *value;
+ };
+
+-struct virNetworkDNSHostsDef {
++struct _virNetworkDNSHostsDef {
+     virSocketAddr ip;
+     int nnames;
+     char **names;
+-} virNetworkDNSHostsDef;
++};
+
+-typedef struct virNetworkDNSHostsDef *virNetworkDNSHostsDefPtr;
++typedef struct _virNetworkDNSHostsDef *virNetworkDNSHostsDefPtr;
+
+-struct virNetworkDNSDef {
++struct _virNetworkDNSDef {
+     unsigned int ntxtrecords;
+     virNetworkDNSTxtRecordsDefPtr txtrecords;
+     unsigned int nhosts;
+     virNetworkDNSHostsDefPtr hosts;
+-} virNetworkDNSDef;
++};
+
+-typedef struct virNetworkDNSDef *virNetworkDNSDefPtr;
++typedef struct _virNetworkDNSDef *virNetworkDNSDefPtr;
+
+ typedef struct _virNetworkIpDef virNetworkIpDef;
+ typedef virNetworkIpDef *virNetworkIpDefPtr;
+--
+1.7.4.1
+

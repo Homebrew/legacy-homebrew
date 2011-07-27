@@ -1,7 +1,7 @@
 require 'formula'
 
 class Cocot < Formula
-  head 'git://github.com/vmi/cocot.git', :branch => 'master'
+  head 'https://github.com/vmi/cocot.git', :branch => 'master'
   homepage 'http://vmi.jp/software/cygwin/cocot.html'
 
   def install

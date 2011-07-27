@@ -5,7 +5,7 @@ class Z < Formula
   url 'https://github.com/rupa/z/tarball/v1.0'
   sha1 '788823562d7f03542685c1d839a9c74165cdb0dc'
 
-  head 'git://github.com/rupa/z.git'
+  head 'https://github.com/rupa/z.git'
 
   def install
     (prefix+'etc/profile.d').install 'z.sh'
