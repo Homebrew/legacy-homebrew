@@ -6,7 +6,7 @@ class Emacs < Formula
   homepage 'http://www.gnu.org/software/emacs/'
 
   # Stripping on Xcode 4 causes malformed object errors
-  skip_clean :all
+  skip_clean ["bin/emacs", "bin/emacs-23.3", "bin/emacs-24.0.50"]
 
   if ARGV.include? "--use-git-head"
     head 'git://repo.or.cz/emacs.git'
