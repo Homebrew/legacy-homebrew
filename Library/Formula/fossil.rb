@@ -1,9 +1,9 @@
 require 'formula'
 
 class Fossil < Formula
-  version '047e06193b'
-  url 'http://www.fossil-scm.org/download/fossil-src-20110413120518.tar.gz'
-  md5 'a044c50bf9f097db6630a409fc2f90bd'
+  version '1.18'
+  url 'http://www.fossil-scm.org/download/fossil-src-20110713230341.tar.gz'
+  md5 'ed916bc0db85f30eadd0de45f6bc95ad'
   homepage 'http://www.fossil-scm.org/'
   head 'fossil://http://www.fossil-scm.org/'
 
