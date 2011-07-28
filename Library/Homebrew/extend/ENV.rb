@@ -18,11 +18,15 @@ module HomebrewEnvExtension
       self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
     end
 
-    if MACOS_VERSION >= 10.6 and (self['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
+    if MACOS_VERSION >= 10.6 and self.use_clang?
+      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/clang"
+      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/clang++"
+      cflags = ['-O3'] # -O4 makes the linker fail on some formulae
+    elsif MACOS_VERSION >= 10.6 and self.use_llvm?
       self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
       self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
       cflags = ['-O4'] # link time optimisation baby!
-    elsif MACOS_VERSION >= 10.6 and (self['HOMEBREW_USE_GCC'] or ARGV.include? '--use-gcc')
+    elsif MACOS_VERSION >= 10.6 and self.use_gcc?
       self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/gcc"
       self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/g++"
       cflags = ['-O3']
@@ -103,6 +107,11 @@ module HomebrewEnvExtension
     # Sometimes you just want a small one
     remove_from_cflags(/-O./)
     append_to_cflags '-Os'
+  end
+  def Og
+    # Sometimes you want a debug build
+    remove_from_cflags(/-O./)
+    append_to_cflags '-g -O0'
   end
 
   def gcc_4_0_1
@@ -240,7 +249,7 @@ Please take one of the following actions:
     append 'LDFLAGS', '-arch i386'
   end
 
-  # i386 and x86_64 only, no PPC
+  # i386 and x86_64 (no PPC)
   def universal_binary
     append_to_cflags '-arch i386 -arch x86_64'
     self.O3 if self['CFLAGS'].include? '-O4' # O4 seems to cause the build to fail
@@ -282,5 +291,15 @@ Please take one of the following actions:
   def remove_from_cflags f
     remove 'CFLAGS', f
     remove 'CXXFLAGS', f
+  end
+
+  def use_clang?
+    self['HOMEBREW_USE_CLANG'] or ARGV.include? '--use-clang'
+  end
+  def use_gcc?
+    self['HOMEBREW_USE_GCC'] or ARGV.include? '--use-gcc'
+  end
+  def use_llvm?
+    self['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm'
   end
 end

@@ -4,7 +4,7 @@ class Znc < Formula
   url 'http://znc.in/releases/archive/znc-0.098.tar.gz'
   md5 '5667b4acb1f01309d6eded77abac700c'
   homepage 'http://en.znc.in/wiki/ZNC'
-  head 'git://github.com/znc/znc.git'
+  head 'https://github.com/znc/znc.git'
 
   depends_on 'pkg-config' => :build
   depends_on 'c-ares' => :optional
