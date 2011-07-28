@@ -1,10 +1,18 @@
 require 'formula'
 
 class Opencv < Formula
-  url 'http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/2.2/OpenCV-2.2.0.tar.bz2'
-  version "2.2"
+  if MacOS.lion?
+    # OpenCV 2.3 is incompatiable with libpng 1.5.1 shipped with Lion, use HEAD instead for the latest. 
+    url 'http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/2.2/OpenCV-2.2.0.tar.bz2'
+    version "2.2"
+    md5 '122c9ac793a46854ef2819fedbbd6b1b'
+  else 
+    url 'http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/2.3/OpenCV-2.3.0.tar.bz2'
+    version "2.3"
+    md5 'dea5e9df241ac37f4439da16559e420d'
+  end
+  head 'https://code.ros.org/svn/opencv/trunk/opencv', :using => :svn
   homepage 'http://opencv.willowgarage.com/wiki/'
-  md5 '122c9ac793a46854ef2819fedbbd6b1b'
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
@@ -34,6 +42,10 @@ class Opencv < Formula
       export PYTHONPATH="#{HOMEBREW_PREFIX}/lib/python2.6/site-packages/:$PYTHONPATH"
 
     To make this permanent, put it in your shell's profile (e.g. ~/.profile).
+    
+    For Lion users this will install OpenCV 2.2, as stable release of 2.3 will fail.
+    See https://github.com/mxcl/homebrew/pull/6558 for more details.
+    If you want the latest, use HEAD option to install from the dev stream.
     EOS
   end
 end
