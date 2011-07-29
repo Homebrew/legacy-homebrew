@@ -97,6 +97,6 @@ class Imagemagick < Formula
   end
 
   def test
-    system "identify", "/Library/Application Support/Apple/iChat Icons/Flags/Argentina.gif"
+    system "#{prefix}/bin/identify", "/Library/Application Support/Apple/iChat Icons/Flags/Argentina.gif"
   end
 end
