@@ -1,24 +1,6 @@
 #!/usr/bin/ruby
-#
 # This script installs to /usr/local only. To install elsewhere you can just
 # untar https://github.com/mxcl/homebrew/tarball/master anywhere you like.
-#
-#
-# 30th March 2010:
-#   Added a check to make sure user is in the staff group. This was a problem
-#   for me, and I think it was due to me migrating my account over several
-#   versions of OS X. I cannot verify that for sure, and it was tested on
-#   10.6.2 using the Directory Service command line utility and my laptop.
-#
-#   My assumptions are:
-#     - you are running OS X 10.6.x
-#     - your machine is not managed as part of a group using networked
-#       Directory Services
-#     - you have not recently killed any baby seals or kittens
-#
-# 14th March 2010:
-#   Adapted CodeButler's fork: http://gist.github.com/331512
-#
 
 module Tty extend self
   def blue; bold 34; end
