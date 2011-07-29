@@ -53,6 +53,15 @@ ensure
   system "/bin/stty -raw echo"
 end
 
+def badlibs
+  @badlibs ||= begin
+    Dir['/usr/local/lib/*.dylib'].select do |dylib|
+      ENV['dylib'] = dylib
+      File.file? dylib and not File.symlink? dylib and `/usr/bin/file "$dylib"` =~ /shared library/
+    end
+  end
+end
+
 ####################################################################### script
 abort "/usr/local/.git already exists!" unless Dir["/usr/local/.git/*"].empty?
 abort "Don't run this as root!" if Process.uid == 0
@@ -119,3 +128,12 @@ sudo "/bin/chmod o-w /usr/local"
 
 warn "/usr/local/bin is not in your PATH." unless ENV['PATH'].split(':').include? '/usr/local/bin'
 warn "Now install Xcode: http://developer.apple.com/technologies/xcode.html" unless Kernel.system "/usr/bin/which -s gcc"
+
+unless badlibs.empty?
+  warn "The following *evil* dylibs exist in /usr/local/lib"
+  puts "They may break builds or worse. You should consider deleting them:"
+  puts *badlibs
+end
+
+ohai "Installation successful!"
+puts "Now type: brew help"
