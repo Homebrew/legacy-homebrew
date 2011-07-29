@@ -17,8 +17,19 @@ class Pianobar < Formula
   fails_with_llvm "Reports of this not compiling on Xcode 4"
 
   def install
-    # Force GCC into c99 mode
-    ENV.append 'CFLAGS', "-std=c99"
+    # If you're going to update this formula, please consider not messing with
+    # the CFLAGS/Makefile stuff (from here until right before the make step)
+    # unless you know exactly what you're doing.
+
+    # Pianobar is a bit touchy, so let's use their Makefile defaults
+    ENV.delete 'CFLAGS'
+
+    # Help non-default install paths
+    lib_path = HOMEBREW_PREFIX.to_s == "/usr/local" ? "" : "-I#{HOMEBREW_PREFIX}/include -L#{HOMEBREW_PREFIX}/lib"
+
+    inreplace "Makefile" do |s|
+      s.gsub! "-O2 -DNDEBUG", "-O2 -DNDEBUG -std=c99 #{lib_path}"
+    end
 
     system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"
