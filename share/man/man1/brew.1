@@ -136,7 +136,7 @@ To view formula history locally: \fBbrew log \-p <formula>\fR\.
 Print the name and version that will be detected for \fIURL\fR\.
 .
 .TP
-\fBinstall [\-\-force] [\-\-debug] [\-\-ignore\-dependencies] [\-\-use\-clang] [\-\-use\-gcc] [\-\-use\-llvm] [\-\-HEAD]\fR \fIformula\fR
+\fBinstall [\-\-force] [\-\-debug] [\-\-ignore\-dependencies] [\-\-use\-clang] [\-\-use\-gcc] [\-\-use\-llvm] [\-\-build\-from\-source] [\-\-HEAD]\fR \fIformula\fR
 Install \fIformula\fR\.
 .
 .IP
@@ -159,6 +159,9 @@ If \fB\-\-use\-gcc\fR is passed, attempt to compile using GCC\. This is useful f
 .
 .IP
 If \fB\-\-use\-llvm\fR is passed, attempt to compile using the LLVM front\-end to GCC\. \fINOTE\fR: Not all formulae will build with LLVM\.
+.
+.IP
+If \fB\-\-build\-from\-source\fR is passed, and \fIformula\fR defines it, install by building the source code instead of pouring a (binary) bottle, if one exists\.
 .
 .IP
 If \fB\-\-HEAD\fR is passed, and \fIformula\fR defines it, install the HEAD version, aka master, trunk, unstable, dev\.
