@@ -101,6 +101,10 @@ class Emacs < Formula
         Command-line emacs can be used by setting up an alias:
           alias emacs="#{prefix}/Emacs.app/Contents/MacOS/Emacs -nw"
 
+         To link the application to a normal Mac OS X location:
+           brew linkapps
+         or:
+           ln -s #{prefix}/Emacs.app /Applications
       EOS
     end
 
