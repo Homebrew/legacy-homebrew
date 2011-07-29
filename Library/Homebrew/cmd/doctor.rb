@@ -725,6 +725,14 @@ def check_for_other_frameworks
   end
 end
 
+def check_tmpdir
+  tmpdir = ENV['TMPDIR']
+  if !File.directory?(tmpdir)
+    puts "$TMPDIR #{tmpdir.inspect} doesn't exist."
+    puts
+  end
+end
+
 module Homebrew extend self
   def doctor
     old_stdout = $stdout
@@ -765,6 +773,7 @@ module Homebrew extend self
       check_for_autoconf
       check_for_linked_kegonly_brews
       check_for_other_frameworks
+      check_tmpdir
     ensure
       $stdout = old_stdout
     end
