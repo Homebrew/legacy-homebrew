@@ -54,7 +54,7 @@ ensure
 end
 
 ####################################################################### script
-abort "/usr/local/.git already exists!" if File.directory? "/usr/local/.git"
+abort "/usr/local/.git already exists!" unless Dir["/usr/local/.git/*"].empty?
 abort "Don't run this as root!" if Process.uid == 0
 abort <<-EOABORT unless `groups`.split.include? "staff"
 This script requires the user #{ENV['USER']} to be in the staff group. If this
