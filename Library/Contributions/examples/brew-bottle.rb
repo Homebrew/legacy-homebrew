@@ -1,18 +1,20 @@
 # Builds binary brew package
 require 'cmd/install'
 
-Homebrew.install_formulae ARGV.formulae
-
 destination = HOMEBREW_PREFIX + "Bottles"
-if not File.directory?(destination)
-  Dir.mkdir destination
-end
+Dir.mkdir destination unless File.directory? destination
 
 ARGV.each do|formula|
   # Get the latest version
   version = `brew list --versions #{formula}`.split.last
+
+  if version.nil?
+    onoe "Formula not installed: #{formula}"
+    next
+  end
+
   source = HOMEBREW_CELLAR + formula + version
-  filename = formula + '-' + version + '-bottle.tar.gz'
+  filename = "#{formula}-#{version}-bottle.tar.gz"
   ohai "Bottling #{formula} #{version}..."
   HOMEBREW_CELLAR.cd do
     # Use gzip, faster to compress than bzip2, faster to uncompress than bzip2
