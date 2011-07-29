@@ -113,7 +113,7 @@ private
 
   def ext
     # GitHub uses odd URLs for zip files, so check for those
-    rx=%r[http://(www\.)?github\.com/.*/(zip|tar)ball/]
+    rx=%r[https?://(www\.)?github\.com/.*/(zip|tar)ball/]
     if rx.match @url
       if $2 == 'zip'
         '.zip'
