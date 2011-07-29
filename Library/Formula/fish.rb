@@ -2,7 +2,7 @@ require 'formula'
 
 class Fish < Formula
   url 'http://downloads.sourceforge.net/project/fish/fish/1.23.1/fish-1.23.1.tar.bz2'
-  homepage 'http://fishshell.org/'
+  homepage 'http://fishshell.com'
   md5 'ead6b7c6cdb21f35a3d4aa1d5fa596f1'
 
   head 'git://gitorious.org/fish-shell/fish-shell.git'
