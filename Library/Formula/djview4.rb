@@ -5,6 +5,7 @@ class Djview4 < Formula
   homepage 'http://djvu.sourceforge.net/djview4.html'
   md5 '642105970467cf0864c0073140d1fa11'
 
+  depends_on 'pkg-config' => :build
   depends_on 'djvulibre'
   depends_on 'qt'
 
