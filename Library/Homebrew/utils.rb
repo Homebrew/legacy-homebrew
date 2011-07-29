@@ -327,7 +327,11 @@ module MacOS extend self
   end
 
   def snow_leopard?
-    10.6 <= MACOS_VERSION # Actually Snow Leopard or newer
+    10.6 == MACOS_VERSION
+  end
+  
+  def lion?
+    10.7 <= MACOS_VERSION # Actually Lion or newer
   end
 
   def lion?
