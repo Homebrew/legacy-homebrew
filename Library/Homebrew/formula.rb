@@ -232,6 +232,13 @@ class Formula
     self.class.keg_only_reason || false
   end
 
+  # Occasionally, a formula's build script will require that the full 
+  # repository exists in the build directory.  Return true here in that
+  # case.
+  def retain_repo?
+    false
+  end
+
   def fails_with_llvm?
     self.class.fails_with_llvm_reason || false
   end
@@ -252,6 +259,8 @@ class Formula
     validate_variable :version
 
     handle_llvm_failure(fails_with_llvm?) if fails_with_llvm?
+
+    @downloader.retain_repo = retain_repo? if @downloader.respond_to? :retain_repo
 
     stage do
       begin
