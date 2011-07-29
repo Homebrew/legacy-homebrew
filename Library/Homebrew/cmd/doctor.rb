@@ -194,7 +194,13 @@ def check_gcc_versions
     EOS
   end
 
-  if MacOS.xcode_version < "4.0"
+  if MacOS.xcode_version == nil
+      puts <<-EOS.undent
+        We couldn't detect any version of Xcode.
+        If you downloaded Xcode 4.1 from the App Store, you may need to run the installer.
+
+      EOS
+  elsif MacOS.xcode_version < "4.0"
     if gcc_40 == nil
       puts <<-EOS.undent
         We couldn't detect gcc 4.0.x. Some formulae require this compiler.
@@ -684,10 +690,10 @@ end
 
 def check_for_GREP_OPTIONS
   target_var = ENV['GREP_OPTIONS'].to_s
-  unless target_var.empty?
+  unless target_var.empty? or target_var == '--color=auto'
     puts <<-EOS.undent
     $GREP_OPTIONS was set to \"#{target_var}\".
-    Having $GREP_OPTIONS set can cause CMake builds to fail.
+    Having $GREP_OPTIONS set this way can cause CMake builds to fail.
 
     EOS
   end
