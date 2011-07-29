@@ -465,8 +465,8 @@ protected
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
-    pretty_args = args
-    args.delete "--disable-dependency-tracking" if cmd == "./configure"
+    pretty_args = args.dup
+    pretty_args.delete "--disable-dependency-tracking" if cmd == "./configure"
     ohai "#{cmd} #{pretty_args*' '}".strip
 
     if ARGV.verbose?
