@@ -64,7 +64,7 @@ module HomebrewArgvExtension
   end
 
   def build_from_source?
-    return true if flag? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE'] or MacOS.leopard?
+    return true if flag? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE'] or not MacOS.lion?
     options = options_only
     options.delete '--universal'
     not options.empty?
