@@ -9,9 +9,9 @@ class AspellLang < Formula
 end
 
 class Aspell < Formula
-  url 'ftp://ftp.gnu.org/gnu/aspell/aspell-0.60.6.tar.gz'
+  url 'ftp://ftp.gnu.org/gnu/aspell/aspell-0.60.6.1.tar.gz'
   homepage 'http://aspell.net/'
-  md5 'bc80f0198773d5c05086522be67334eb'
+  md5 'e66a9c9af6a60dc46134fdacf6ce97d7'
 
   fails_with_llvm "Segmentation fault during linking."
 
