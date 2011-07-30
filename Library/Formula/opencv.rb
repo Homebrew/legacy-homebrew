@@ -1,29 +1,36 @@
 require 'formula'
 
 class Opencv < Formula
-  url 'http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/2.2/OpenCV-2.2.0.tar.bz2'
-  version "2.2"
+  url 'http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/2.3/OpenCV-2.3.0.tar.bz2'
+  version "2.3"
   homepage 'http://opencv.willowgarage.com/wiki/'
-  md5 '122c9ac793a46854ef2819fedbbd6b1b'
+  md5 'dea5e9df241ac37f4439da16559e420d'
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
 
   depends_on 'libtiff' => :optional
   depends_on 'jasper'  => :optional
-  depends_on 'tbb'     => :optional
-
-  # Can also depend on ffmpeg, but this pulls in a lot of extra stuff that
-  # you don't need unless you're doing video analysis, and some of it isn't
-  # in Homebrew anyway.
+  depends_on 'jpeg'  => :optional
+  depends_on 'qt'  => :optional
 
   def options
-    [['--build32', 'Force a 32-bit build.']]
+    [
+        ['--build32','Force a 32-bit build.'],
+        ['--tbb','Enable Threaded Building Blocks'],
+        ['--ffmpeg','Enable FFMPEG'],
+    ]
   end
 
+  depends_on "ffmpeg" if ARGV.include? '--ffmpeg'
+  depends_on "python" if ARGV.include? '--python'
+  depends_on "tbb" if ARGV.include? '--tbb'
+
   def install
-    makefiles = "cmake -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX:PATH=#{prefix} ."
+    makefiles = "cmake -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX:PATH=#{prefix} -DENABLE_SSE3=ON ."
     makefiles += " -DOPENCV_EXTRA_C_FLAGS='-arch i386 -m32'" if ARGV.include? '--build32'
+    makefiles += " -DWITH_TBB=ON" if ARGV.include? '--tbb'
+    makefiles += " -DWITH_FFMPEG=ON" if ARGV.include? '--ffmpeg'
     system makefiles
     system "make"
     system "make install"
