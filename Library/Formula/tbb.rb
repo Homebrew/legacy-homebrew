@@ -1,10 +1,10 @@
 require 'formula'
 
 class Tbb < Formula
-  url 'http://threadingbuildingblocks.org/uploads/78/166/3.0%20update%206/tbb30_174oss_src.tgz'
-  version '30_174'
+  url 'http://threadingbuildingblocks.org/uploads/78/170/3.0%20update%207/tbb30_196oss_src.tgz'
+  version '30_196'
   homepage 'http://www.threadingbuildingblocks.org/'
-  sha1 'b68764d0d9d2517c60fd88c71a3554d194733b03'
+  sha1 'eb77db011bc595d77a69de4fb78004b370cabd2f'
 
   def install
     # Override build prefix so we can copy the dylibs out of the same place
