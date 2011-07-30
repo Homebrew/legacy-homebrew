@@ -6,6 +6,7 @@ class Djview4 < Formula
   md5 '642105970467cf0864c0073140d1fa11'
 
   depends_on 'djvulibre'
+  depends_on 'pkg-config'
   depends_on 'qt'
 
   def install
