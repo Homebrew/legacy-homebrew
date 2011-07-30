@@ -6,12 +6,12 @@ def versions_of(keg_name)
 end
 
 def dump_config
-  require 'cmd/--config'
+  require 'cmd/__config'
   Homebrew.__config
 end
 
 def dump_build_env env
-  require 'cmd/--env'
+  require 'cmd/__env'
   Homebrew.dump_build_env env
 end
 
