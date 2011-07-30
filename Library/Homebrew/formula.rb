@@ -465,7 +465,11 @@ protected
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
-    ohai "#{cmd} #{args*' '}".strip
+    # remove "boring" arguments so that the important ones are more likely to
+    # be shown considering that we trim long ohai lines to the terminal width
+    pretty_args = args.dup
+    pretty_args.delete "--disable-dependency-tracking" if cmd == "./configure" and not ARGV.verbose?
+    ohai "#{cmd} #{pretty_args*' '}".strip
 
     if ARGV.verbose?
       safe_system cmd, *args
