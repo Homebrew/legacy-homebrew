@@ -26,6 +26,11 @@ when '-v'
   end
 end
 
+if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
+  # note we only abort if Homebrew is *not* uninstalled sudo and the user
+  # calls brew as root. The fix is to chown brew to root.
+  abort "Cowardly refusing to `sudo brew'"
+end
 case HOMEBREW_PREFIX.to_s when '/', '/usr'
   # it may work, but I only see pain this route and don't want to support it
   abort "Cowardly refusing to continue at this prefix: #{HOMEBREW_PREFIX}"
