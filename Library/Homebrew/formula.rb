@@ -65,14 +65,14 @@ class KegOnlyReason
 
   def to_s
     if @reason == :provided_by_osx
-      <<-EOS.chomp
+      <<-EOS.strip
 Mac OS X already provides this program and installing another version in
 parallel can cause all kinds of trouble.
 
 #{@explanation}
 EOS
     else
-      @reason
+      @reason.strip
     end
   end
 end
