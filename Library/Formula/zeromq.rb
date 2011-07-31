@@ -5,7 +5,8 @@ def pgm_flags
 end
 
 class Zeromq < Formula
-  url 'http://download.zeromq.org/zeromq-2.1.8.tar.gz'
+  url 'http://download.zeromq.org/zeromq-2.1.8-rc.tar.gz'
+  version '2.1.8-rc'
   head 'https://github.com/zeromq/libzmq.git'
   homepage 'http://www.zeromq.org/'
   md5 '2d234b1bc32a9e2c905b58f505d23ffa'
