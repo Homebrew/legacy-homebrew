@@ -1,9 +1,9 @@
 require 'formula'
 
 class John < Formula
-  url 'http://www.openwall.com/john/g/john-1.7.3.4.tar.bz2'
+  url 'http://www.openwall.com/john/g/john-1.7.8.tar.bz2'
   homepage 'http://www.openwall.com/john/'
-  md5 '2f2310c49961c3edea6f92b8dcd45ff4'
+  md5 'e6d7f261829610d6949c706ebac0517c'
 
   def patches
     { :p0 => DATA }
