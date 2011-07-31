@@ -8,7 +8,9 @@ class Since < Formula
   def patches; DATA; end
 
   def install
-    system "make install"
+    bin.mkpath
+    man1.mkpath
+    system "make prefix=#{prefix} install"
   end
 end
 
