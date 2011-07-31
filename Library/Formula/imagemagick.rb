@@ -29,13 +29,14 @@ class Imagemagick < Formula
   # Using an unofficial Git mirror to work around:
   # * Stable tarballs disappearing
   # * Bad https cert on official SVN repo
-  # Send update requests to https://github.com/adamv/ImageMagick
-  # Be sure to include the ImageMagick SVN revision # for the new version.
-  url 'https://github.com/adamv/ImageMagick.git',
-          :tag => '6.6.9-4'
-  version '6.6.9-4'
+  version '6.7.1-1'
+  url "https://github.com/trevor/ImageMagick/tarball/#{version}"
+  md5 '9c71dfbddc42b78a0d8db8acdb534d37'
   homepage 'http://www.imagemagick.org'
-  head 'https://github.com/adamv/ImageMagick.git'
+  head 'https://github.com/trevor/ImageMagick.git'
+
+  bottle "https://downloads.sf.net/project/machomebrew/Bottles/imagemagick-#{version}-bottle.tar.gz"
+  bottle_sha1 'bff8db4da4bd255b01b483e0629e093ee76a9eb9'
 
   depends_on 'jpeg'
 
@@ -87,22 +88,15 @@ class Imagemagick < Formula
   end
 
   def caveats
-    s = <<-EOS.undent
-    We are downloading from an unofficial GitHub mirror because of:
-    * Stable tarballs disappearing
-    * Bad https cert on official SVN repo
-    EOS
-
     unless ghostscript_fonts? or ghostscript_srsly?
-      s += <<-EOS.undent
-      Some tools will complain if the ghostscript fonts are not installed in:
+      <<-EOS.undent
+      Some tools will complain unless the ghostscript fonts are installed to:
         #{HOMEBREW_PREFIX}/share/ghostscript/fonts
       EOS
     end
-    return s
   end
 
   def test
-    system "identify", "/Library/Application Support/Apple/iChat Icons/Flags/Argentina.gif"
+    system "#{bin}/identify", "/Library/Application Support/Apple/iChat Icons/Flags/Argentina.gif"
   end
 end
