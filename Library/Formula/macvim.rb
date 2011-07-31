@@ -84,7 +84,7 @@ class Macvim < Formula
     To link the application to a normal Mac OS X location:
         brew linkapps
     or:
-        sudo ln -s #{prefix}/MacVim.app /Applications
+        ln -s #{prefix}/MacVim.app /Applications
     EOS
   end
 end
