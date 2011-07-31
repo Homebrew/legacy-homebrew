@@ -5,8 +5,6 @@ class Euca2ools < Formula
   homepage 'http://open.eucalyptus.com/downloads'
   md5 'a835e8fabd5875a5c8dbcba1bf89d402'
 
-  # depends_on 'cmake'
-  # python-dev, swig, help2man, and libssl-dev
   depends_on 'help2man'
   depends_on 'euca2ools-deps'
 

@@ -5,8 +5,6 @@ class Euca2oolsDeps < Formula
   homepage 'http://open.eucalyptus.com/downloads'
   version '1.3.1'
   md5 'a33ee3a129fa9135d9896cc9fc5a621a'
-  
-  depends_on 'python'
 
   def install
     install_boto
@@ -18,7 +16,7 @@ class Euca2oolsDeps < Formula
     system <<-EOS
       tar zxvf boto-1.9b.tar.gz
       cd boto-1.9b
-      python setup.py install
+      python setup.py -q install
     EOS
   end
   
@@ -26,7 +24,7 @@ class Euca2oolsDeps < Formula
     system <<-EOS
       tar zxf M2Crypto-0.20.2.tar.gz
       cd M2Crypto-0.20.2
-      python setup.py install
+      python setup.py  -q install
     EOS
   end
 end
