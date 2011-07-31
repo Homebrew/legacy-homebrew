@@ -1,15 +1,19 @@
 require 'formula'
 
 class Cmake < Formula
-  url 'http://www.cmake.org/files/v2.8/cmake-2.8.4.tar.gz'
-  md5 '209b7d1d04b2e00986538d74ba764fcf'
+  url 'http://www.cmake.org/files/v2.8/cmake-2.8.5.tar.gz'
+  md5 '3c5d32cec0f4c2dc45f4c2e84f4a20c5'
   homepage 'http://www.cmake.org/'
 
   def patches
-    # fixes CMake 2.8 to 2.8.4 not recognizing non-standard Developer tools issue
-    # fixed in CMake 2.8.5 (not yet released)
-    # upstream issue at http://public.kitware.com/Bug/view.php?id=10723
-    "http://cmake.org/gitweb?p=cmake.git;a=patch;h=d421a433a89064926ae6aad532850b8bed113562"
+    # CMake 2.8.5 fails to find some Qt libraries that CMake 2.8.4 could find.
+    # The following patch corrects this behavior. See discussion on the CMake
+    # mailing list:
+    #
+    #   http://cmake.3232098.n2.nabble.com/FindQt4-errors-out-when-locating-QtUITools-under-CMake-2-8-5-td6619091.html
+    #
+    # Patch can be removed after next CMake release.
+    {:p1 => "http://cmake.org/gitweb?p=cmake.git;a=patch;h=702538eaa3315f3fcad9f1daea01e6a83928967b"}
   end
 
   def install

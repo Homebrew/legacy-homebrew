@@ -8,7 +8,7 @@ class Tty
     def yellow; underline 33 ; end
     def reset; escape 0; end
     def em; underline 39; end
-    
+
   private
     def color n
       escape "0;#{n}"
@@ -332,6 +332,10 @@ module MacOS extend self
   
   def lion?
     10.7 <= MACOS_VERSION # Actually Lion or newer
+  end
+
+  def lion?
+    10.7 == MACOS_VERSION
   end
 
   def prefer_64_bit?

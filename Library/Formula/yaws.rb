@@ -2,8 +2,8 @@ require 'formula'
 
 class Yaws < Formula
   homepage 'http://yaws.hyber.org'
-  url 'http://yaws.hyber.org/download/yaws-1.88.tar.gz'
-  md5 '950f8199592c6490556632e20e59a353'
+  url 'http://yaws.hyber.org/download/yaws-1.90.tar.gz'
+  md5 'c2aae5a4e01ad47d44955551c9a67333'
 
   depends_on 'erlang'
 
