@@ -8,18 +8,27 @@ class Sphinx < Formula
 
   fails_with_llvm "fails with: ld: rel32 out of range in _GetPrivateProfileString from /usr/lib/libodbc.a(SQLGetPrivateProfileString.o)"
 
+  if ARGV.include? '--with-libstemmer'
+    depends_on "libstemmer" => :build
+  end
+
   def install
     args = ["--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"]
     # configure script won't auto-select PostgreSQL
     args << "--with-pgsql" if `/usr/bin/which pg_config`.size > 0
     args << "--without-mysql" if `/usr/bin/which mysql`.size <= 0
 
+    system "./configure", *args
+
     if ARGV.include? '--with-libstemmer'
-      args << "--with-libstemmer"
-      system("curl http://snowball.tartarus.org/dist/libstemmer_c.tgz | tar xzf -")
+      inreplace "config/config.h", /^#define USE_LIBSTEMMER 0$/, "#define USE_LIBSTEMMER 1"
+      inreplace "src/Makefile" do |s|
+        libs = s.get_make_var("LIBS")
+        libs << " " + HOMEBREW_PREFIX + "/lib/libstemmer.o"
+        s.change_make_var! "LIBS", libs
+      end
     end
 
-    system "./configure", *args
     system "make install"
   end
 
