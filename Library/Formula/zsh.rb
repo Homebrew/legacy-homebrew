@@ -11,6 +11,7 @@ class Zsh < Formula
 
   def install
     system "./configure", "--disable-debug",
+						  "--enable-cflags=-O3",
                           "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
                           # don't version stuff in Homebrew, we already do that!
