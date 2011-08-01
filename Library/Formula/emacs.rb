@@ -5,6 +5,10 @@ class Emacs < Formula
   md5 'a673c163b4714362b94ff6096e4d784a'
   homepage 'http://www.gnu.org/software/emacs/'
 
+  # Stripping on Xcode 4 causes malformed object errors
+  skip_clean "bin/emacs"
+  skip_clean "bin/emacs-23.3"
+
   if ARGV.include? "--use-git-head"
     head 'git://repo.or.cz/emacs.git'
   else

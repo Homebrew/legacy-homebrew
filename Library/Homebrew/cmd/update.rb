@@ -86,7 +86,7 @@ class RefreshBrew
   end
 
   def git_repo?
-    File.directory? '.git'
+    Dir['.git/*'].length > 0
   end
 
   def pending_formulae_changes?

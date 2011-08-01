@@ -1,10 +1,11 @@
 require 'formula'
 
 class Coq < Formula
-  url 'http://coq.inria.fr/distrib/V8.3/files/coq-8.3.tar.gz'
+  url 'http://coq.inria.fr/distrib/V8.3pl2/files/coq-8.3pl2.tar.gz'
+  version '8.3pl2'
   head 'svn://scm.gforge.inria.fr/svn/coq/trunk'
   homepage 'http://coq.inria.fr/'
-  md5 '14b80e6b7075adf1516ab931202be8df'
+  md5 'db415f6c5372f5a443699c62f5affcb4'
 
   skip_clean :all
 
