@@ -69,6 +69,15 @@ EOS
     (bin+'wine').write(wine_wrapper)
   end
 
+  # There is a bug in the Lion version of ld that prevents Wine from building
+  # correctly; see <http://bugs.winehq.org/show_bug.cgi?id=27929>
+  # We have backported Camillo Lugaresi's patch from upstream. The patch can
+  # be removed from this formula once it lands in both the devel and stable
+  # branches of Wine.
+  if MacOS.lion?
+    def patches; DATA; end
+  end
+
   def caveats; <<-EOS.undent
     For a more full-featured install, try:
       http://code.google.com/p/osxwinebuilder/
@@ -81,3 +90,19 @@ EOS
     EOS
   end
 end
+
+
+__END__
+diff --git a/configure b/configure
+index e8bc505..4b9a6d4 100755
+--- a/configure
++++ b/configure
+@@ -6417,7 +6417,7 @@ fi
+ 
+     APPLICATIONSERVICESLIB="-framework ApplicationServices"
+ 
+-    LDEXECFLAGS="-image_base 0x7bf00000 -Wl,-segaddr,WINE_DOS,0x00000000,-segaddr,WINE_SHAREDHEAP,0x7f000000"
++    LDEXECFLAGS="-image_base 0x7bf00000 -Wl,-macosx_version_min,10.6,-segaddr,WINE_DOS,0x00000000,-segaddr,WINE_SHAREDHEAP,0x7f000000"
+ 
+     if test "$ac_cv_header_DiskArbitration_DiskArbitration_h" = "yes"
+     then
