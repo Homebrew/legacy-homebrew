@@ -1,5 +1,15 @@
 require 'formula'
 
+class WineGecko < Formula
+  url 'http://downloads.sourceforge.net/wine/wine_gecko-1.2.0-x86.msi', :using => :nounzip
+  sha1 '6964d1877668ab7da07a60f6dcf23fb0e261a808'
+end
+
+class WineGeckoOld < Formula
+  url 'http://downloads.sourceforge.net/wine/wine_gecko-1.0.0-x86.cab', :using => :nounzip
+  sha1 'afa22c52bca4ca77dcb9edb3c9936eb23793de01'
+end
+
 class Wine < Formula
   homepage 'http://www.winehq.org/'
 
@@ -62,6 +72,10 @@ EOS
 
     # Don't need Gnome desktop support
     rm_rf share+'applications'
+
+    # Download Gecko once so we don't need to redownload for each prefix
+    gecko = (ARGV.flag? '--devel') ? WineGecko.new : WineGeckoOld.new
+    gecko.brew { (share+'wine/gecko').install Dir["*"] }
 
     # Use a wrapper script, so rename wine to wine.bin
     # and name our startup script wine
