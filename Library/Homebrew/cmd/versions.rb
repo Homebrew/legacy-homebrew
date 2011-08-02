@@ -24,7 +24,7 @@ module Homebrew extend self
         print Tty.white
         print "#{version.ljust(8)} "
         print Tty.reset
-        puts "git checkout #{sha} #{HOMEBREW_REPOSITORY}/Library/Formula/#{name}.rb"
+        puts "git checkout #{sha} #{HOMEBREW_REPOSITORY}/Library/Formula/#{f.name}.rb"
       end
     end
   end
