@@ -1,6 +1,6 @@
 require 'formula'
 
-class MemcachedPhp <Formula
+class MemcachedPhp < Formula
   url 'http://pecl.php.net/get/memcached-1.0.2.tgz'
   homepage 'http://pecl.php.net/package/memcached'
   md5 'b91f815ad59086d0c3564cce022b5c4f'

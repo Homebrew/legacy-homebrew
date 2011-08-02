@@ -42,7 +42,7 @@ class RefreshBrew
         begin
           safe_system "git init"
           safe_system "git fetch #{REPOSITORY_URL}"
-          safe_system "git reset FETCH_HEAD"
+          safe_system "git reset --soft FETCH_HEAD"
         rescue Exception
           safe_system "rm -rf .git"
           raise
@@ -86,7 +86,7 @@ class RefreshBrew
   end
 
   def git_repo?
-    File.directory? '.git'
+    Dir['.git/*'].length > 0
   end
 
   def pending_formulae_changes?
@@ -129,8 +129,6 @@ class RefreshBrew
     if pending_formulae_changes?
       ohai "The following formulae were updated:"
       puts_columns updated_formulae, installed_formulae
-    else
-      puts "No formulae were updated."
     end
     ## New examples
     if pending_new_examples?
@@ -146,8 +144,6 @@ class RefreshBrew
     if pending_examples_changes?
       ohai "The following external commands were updated:"
       puts_columns updated_examples
-    else
-      puts "No external commands were updated."
     end
   end
 

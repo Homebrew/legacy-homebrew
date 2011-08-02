@@ -64,11 +64,11 @@ module HomebrewArgvExtension
   end
 
   def build_from_source?
-    flag? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE']
-  end
-
-  def one?
-    flag? "--1"
+    return true if flag? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE'] \
+      or not MacOS.lion? or HOMEBREW_PREFIX.to_s != '/usr/local'
+    options = options_only
+    options.delete '--universal'
+    not options.empty?
   end
 
   def flag? flag
