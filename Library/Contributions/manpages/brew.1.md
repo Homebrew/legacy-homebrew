@@ -29,6 +29,9 @@ For the full command list, see the COMMANDS section.
   * `update`:
     Fetch the newest version of Homebrew from GitHub using `git`(1).
 
+  * `upgrade`:
+    Install newer versions of outdated packages.
+
   * `list`:
     List all installed formulae.
 
@@ -223,6 +226,9 @@ For the full command list, see the COMMANDS section.
   * `unlink` <formula>:
     Unsymlink <formula> from the Homebrew prefix. This can be useful for
     temporarily disabling a formula: `brew unlink foo && commands && brew link foo`.
+
+  * `upgrade`:
+    Install newer versions of outdated packages.    
 
   * `update`:
     Fetch the newest version of Homebrew from GitHub using `git`(1).
