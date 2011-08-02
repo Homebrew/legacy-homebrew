@@ -24,7 +24,7 @@ module Homebrew extend self
         print Tty.white
         print "#{version.ljust(8)} "
         print Tty.reset
-        puts "git checkout #{sha} #{HOMEBREW_REPOSITORY}/Library/Formula/#{f.name}.rb"
+        puts "git checkout #{sha} #{f.pretty_relative_path}"
       end
     end
   end
@@ -63,4 +63,11 @@ class Formula
     opoo "Version of #{name} could not be determined for #{sha}."
   end
 
+  def pretty_relative_path
+    if Pathname.pwd == HOMEBREW_REPOSITORY
+      "Library/Formula/#{name}.rb"
+    else
+      "#{HOMEBREW_REPOSITORY}/Library/Formula/#{name}.rb"
+    end
+  end
 end
