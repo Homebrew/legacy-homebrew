@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mdbtools <Formula
+class Mdbtools < Formula
   homepage 'http://sourceforge.net/projects/mdbtools/'
   # Last stable release won't build on OS X, but HEAD from CVS does.
   head "cvs://:pserver:anonymous@mdbtools.cvs.sourceforge.net:/cvsroot/mdbtools:mdbtools"

@@ -1,6 +1,6 @@
 require 'formula'
 
-class TalkFilters <Formula
+class TalkFilters < Formula
   url 'http://www.hyperrealm.com/talkfilters/talkfilters-2.3.8.tar.gz'
   homepage 'http://www.hyperrealm.com/main.php?s=talkfilters'
   md5 'c11c6863a1c246a8d49a80a1168b54c8'

@@ -1,9 +1,9 @@
 require 'formula'
 
-class GnuProlog <Formula
-  url 'http://gprolog.univ-paris1.fr/unstable/gprolog-20100713.tgz'
+class GnuProlog < Formula
+  url 'http://gprolog.univ-paris1.fr/gprolog-1.4.0.tar.gz'
   homepage 'http://www.gprolog.org/'
-  md5 '0f882e352b886a5ddb59bcab457fa78e'
+  md5 'cc944e5637a04a9184c8aa46c947fd16'
 
   skip_clean :all
 
@@ -11,7 +11,7 @@ class GnuProlog <Formula
     ENV.j1 # make won't run in parallel
 
     Dir.chdir 'src' do
-      system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+      system "./configure", "--prefix=#{prefix}"
       system "make"
       system "make install-strip"
     end

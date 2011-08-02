@@ -1,6 +1,6 @@
 require 'formula'
 
-class Orpie <Formula
+class Orpie < Formula
   url 'http://pessimization.com/software/orpie/orpie-1.5.1.tar.gz'
   homepage 'http://pessimization.com/software/orpie/'
   md5 '4511626ed853354af1b4b5dbbf143a1f'

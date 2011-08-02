@@ -1,10 +1,18 @@
 require 'formula'
 
-class Synergy <Formula
-  url 'http://downloads.sourceforge.net/project/synergy2/Binaries/1.3.1/synergy-1.3.1-1.OSX.tar.gz'
-  homepage 'http://sourceforge.net/projects/synergy2/'
-  md5 '19f8b396161a5bad982e6b7a06459a37'
-  version '1.3.1'
+class Synergy < Formula
+
+  if ARGV.build_head?
+    url 'http://synergy.googlecode.com/files/synergy-1.4.2-MacOSX106-Universal.zip'
+    md5 'e52ca334612c3d01920c3beb927d93de'
+    version '1.4.2'
+  else
+    url 'http://synergy.googlecode.com/files/synergy-1.3.6p2-MacOSX-Universal.zip'
+    md5 'd7eba8d3ee9d50caa1d8c00d27702879'
+    version '1.3.6'
+  end
+
+  homepage 'http://synergy-foss.org'
 
   def install
     bin.install 'synergyc'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class FfmpegPhp <Formula
+class FfmpegPhp < Formula
   homepage 'http://ffmpeg-php.sourceforge.net'
   head 'http://ffmpeg-php.svn.sourceforge.net/svnroot/ffmpeg-php/trunk/ffmpeg-php'
 

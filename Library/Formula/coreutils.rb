@@ -10,7 +10,7 @@ def coreutils_aliases
   %w{
     base64 basename cat chcon chgrp chmod chown chroot cksum comm cp csplit
     cut date dd df dir dircolors dirname du echo env expand expr factor false
-    fmt fold gropus head hostid id install join kill link ln logname ls md5sum
+    fmt fold groups head hostid id install join kill link ln logname ls md5sum
     mkdir mkfifo mknod mktemp mv nice nl nohup od paste pathchk pinky pr
     printenv printf ptx pwd readlink rm rmdir runcon seq sha1sum sha225sum
     sha256sum sha384sum sha512sum shred shuf sleep sort split stat stty sum
@@ -20,15 +20,15 @@ def coreutils_aliases
     s += "alias #{g}=\"$brew_prefix/bin/g#{g}\"\n"
   end
 
-  s += "alias '['=\"$brew_prefix/bin/g[\"\n"
+  s += "alias '['=\"$brew_prefix/bin/g\\[\"\n"
 
   return s
 end
 
-class Coreutils <Formula
-  url "http://ftp.gnu.org/gnu/coreutils/coreutils-8.7.tar.gz"
-  md5 '3c1ae9531159447083ae8f25ae554b81'
+class Coreutils < Formula
   homepage 'http://www.gnu.org/software/coreutils'
+  url 'ftp://ftp.gnu.org/gnu/coreutils/coreutils-8.12.tar.gz'
+  sha256 '9e233a62c98a3378a7b0483d2ae3d662dbaf6cd3917d3830d3514665e12a85c8'
 
   def options
     [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]

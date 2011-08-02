@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mytop <Formula
+class Mytop < Formula
   url 'http://jeremy.zawodny.com/mysql/mytop/mytop-1.6.tar.gz'
   homepage 'http://jeremy.zawodny.com/mysql/mytop/'
   md5 '4127c3e486eb664fed60f40849372a9f'

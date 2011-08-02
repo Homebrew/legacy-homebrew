@@ -1,9 +1,10 @@
 require 'formula'
 
-class Smpeg <Formula
+class Smpeg < Formula
   head 'svn://svn.icculus.org/smpeg/trunk'
   homepage 'http://icculus.org/smpeg/'
 
+  depends_on 'pkg-config' => :build
   depends_on 'sdl'
 
   def install
@@ -15,5 +16,6 @@ class Smpeg <Formula
     system "make"
     lib.install Dir[".libs/*.dylib"]
     bin.install ".libs/plaympeg"
+    include.install Dir["*.h"]
   end
 end

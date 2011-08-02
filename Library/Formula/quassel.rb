@@ -1,6 +1,6 @@
 require 'formula'
 
-class Quassel <Formula
+class Quassel < Formula
   head 'git://git.quassel-irc.org/quassel.git'
   homepage 'http://www.quassel-irc.org/'
 

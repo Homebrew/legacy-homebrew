@@ -8,7 +8,7 @@ class FreeimageHttpDownloadStrategy <CurlDownloadStrategy
   end
 end
 
-class Freeimage <Formula
+class Freeimage < Formula
   url 'http://downloads.sourceforge.net/project/freeimage/Source%20Distribution/3.13.1/FreeImage3131.zip',
         :using => FreeimageHttpDownloadStrategy
   version '3.13.1'

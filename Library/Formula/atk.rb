@@ -1,9 +1,9 @@
 require 'formula'
 
-class Atk <Formula
-  url 'ftp://ftp.gnome.org/pub/gnome/sources/atk/1.30/atk-1.30.0.tar.bz2'
+class Atk < Formula
   homepage 'http://library.gnome.org/devel/atk/'
-  sha256 '92b9b1213cafc68fe9c3806273b968c26423237d7b1f631dd83dc5270b8c268c'
+  url 'http://ftp.gnome.org/pub/gnome/sources/atk/2.0/atk-2.0.0.tar.bz2'
+  sha256 '5dbdc35f7f5b3f0748039bb3faa7cd5e45ec3d337a539772bc73acd0dfb55afd'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'

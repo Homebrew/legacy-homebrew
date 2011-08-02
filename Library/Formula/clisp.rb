@@ -1,6 +1,6 @@
 require 'formula'
 
-class Clisp <Formula
+class Clisp < Formula
   url 'http://ftp.gnu.org/pub/gnu/clisp/release/2.49/clisp-2.49.tar.bz2'
   homepage 'http://clisp.cons.org/'
   md5 '1962b99d5e530390ec3829236d168649'
@@ -11,13 +11,14 @@ class Clisp <Formula
 
   skip_clean :all # otherwise abort trap
 
+  fails_with_llvm "Fails during configure with LLVM GCC from XCode 4 on Snow Leopard"
+
   def install
-    # This build isn't parallel safe.
-    ENV.j1
+    ENV.j1 # This build isn't parallel safe.
 
     # Clisp requires to select word size explicitly this way,
     # set it in CFLAGS won't work.
-    ENV['CC'] = "#{ENV.cc} -m#{snow_leopard_64? ? 64 : 32}"
+    ENV['CC'] = "#{ENV.cc} -m#{MacOS.prefer_64_bit? ? 64 : 32}"
 
     system "./configure", "--prefix=#{prefix}",
                           "--with-readline=yes"

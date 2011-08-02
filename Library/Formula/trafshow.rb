@@ -1,6 +1,6 @@
 require 'formula'
 
-class Trafshow <Formula
+class Trafshow < Formula
   url 'ftp://ftp.FreeBSD.org/pub/FreeBSD/ports/distfiles/trafshow-5.2.3.tgz'
   homepage 'http://soft.risp.ru/trafshow/index_en.shtml'
   md5 '0b2f0bb23b7832138b7d841437b9e182'

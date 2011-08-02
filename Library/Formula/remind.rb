@@ -1,7 +1,7 @@
 require 'formula'
 
 
-class Remind <Formula
+class Remind < Formula
   url 'http://www.roaringpenguin.com/files/download/remind-03.01.10.tar.gz'
   homepage 'http://www.roaringpenguin.com/products/remind'
   md5 'f6f7829d3ac92e0d6d463c59b5e6ce3f'

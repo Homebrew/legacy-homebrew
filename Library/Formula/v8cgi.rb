@@ -1,6 +1,6 @@
 require 'formula'
 
-class V8cgi <Formula
+class V8cgi < Formula
   head 'http://v8cgi.googlecode.com/svn/trunk/'
   homepage 'http://code.google.com/p/v8cgi/'
 
@@ -29,7 +29,7 @@ class V8cgi <Formula
 
     args = ["config_file=#{conf}", "v8_path=#{v8_prefix}"]
     args << (ARGV.include? '--with-dom') ? 'dom=1' : 'dom=0'
-    args << (ARGV.include? '--with-gd') ? 'gd=1' :'gd=0'
+    args << (ARGV.include? '--with-gd') ? 'gd=1' : 'gd=0'
     args << (ARGV.include? '--with-sqlite') ? 'sqlite=1' : 'sqlite=0'
 
     system "scons",

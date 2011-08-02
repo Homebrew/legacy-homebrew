@@ -1,6 +1,6 @@
 require 'formula'
 
-class Smlnj <Formula
+class Smlnj < Formula
   url 'http://smlnj.cs.uchicago.edu/dist/working/110.72/config.tgz'
   homepage 'http://www.smlnj.org/'
   md5 '97503a4e749a5e72ff975f3883688105'

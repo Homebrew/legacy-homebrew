@@ -1,10 +1,10 @@
 require 'formula'
 
-class SpatialiteTools <Formula
-  url 'http://www.gaia-gis.it/spatialite-2.4.0-4/spatialite-tools-2.4.0.tar.gz'
-  version '2.4.0-rc4'
+class SpatialiteTools < Formula
+  url 'http://www.gaia-gis.it/spatialite-2.4.0-5/spatialite-tools-2.4.0.tar.gz'
+  version '2.4.0-rc5'
   homepage 'http://www.gaia-gis.it/spatialite/'
-  md5 'e161e774a26e874d7d92d428ae2ad685'
+  md5 '7a6b175661b27a5cb9da95209ed53f56'
 
   depends_on 'pkg-config' => :build
   depends_on 'libspatialite'

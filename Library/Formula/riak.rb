@@ -1,9 +1,11 @@
 require 'formula'
 
-class Riak <Formula
-  url 'http://downloads.basho.com/riak/riak-0.13/riak-0.13.0.tar.gz'
+class Riak < Formula
+  url 'http://downloads.basho.com/riak/riak-0.14/riak-0.14.2.tar.gz'
   homepage 'http://riak.basho.com'
-  md5 'fc559921c4d32526bfc0e9129eb17daf'
+  md5 '09b956315e0e2fe5b7d914138959da9d'
+
+  head 'https://github.com/basho/riak.git'
 
   skip_clean 'libexec/log'
   skip_clean 'libexec/log/sasl'
@@ -28,5 +30,8 @@ class Riak <Formula
 
     (prefix + 'data/ring').mkpath
     (prefix + 'data/dets').mkpath
+
+    # Install man pages
+    man1.install Dir["doc/man/man1/*"]
   end
 end

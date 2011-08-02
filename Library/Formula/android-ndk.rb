@@ -1,10 +1,10 @@
 require 'formula'
 
-class AndroidNdk <Formula
-  url 'http://dl.google.com/android/ndk/android-ndk-r4-darwin-x86.zip'
+class AndroidNdk < Formula
+  url 'http://dl.google.com/android/ndk/android-ndk-r6-darwin-x86.tar.bz2'
   homepage 'http://developer.android.com/sdk/ndk/index.html#overview'
-  md5 'b7d5f149fecf951c05a79b045f00419f'
-  version 'r4'
+  md5 'a154905e49a6246abd823b75b6eda738'
+  version 'r6'
 
   depends_on 'android-sdk'
 

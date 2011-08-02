@@ -1,6 +1,6 @@
 require 'formula'
 
-class Yconalyzer <Formula
+class Yconalyzer < Formula
   url 'http://downloads.sourceforge.net/project/yconalyzer/yconalyzer-1.0.4.tar.bz2'
   homepage 'http://sourceforge.net/projects/yconalyzer/'
   md5 '9b65a86d9c6aaf7717b9e2c7c1c4891e'

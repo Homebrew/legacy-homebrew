@@ -1,6 +1,6 @@
 require 'formula'
 
-class Qjson <Formula
+class Qjson < Formula
   url 'http://downloads.sourceforge.net/project/qjson/qjson/0.7.1/qjson-0.7.1.tar.bz2'
   homepage 'http://qjson.sourceforge.net'
   md5 '5a833ad606c164ed8aa69f0873366ace'

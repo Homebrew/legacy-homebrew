@@ -1,6 +1,6 @@
 require 'formula'
 
-class BerkeleyDb <Formula
+class BerkeleyDb < Formula
   url 'http://download.oracle.com/berkeley-db/db-5.1.19.tar.gz'
   homepage 'http://www.oracle.com/technology/products/berkeley-db/index.html'
   md5 '76fcbfeebfcd09ba0b4d96bfdf8d884d'

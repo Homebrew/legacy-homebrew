@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ushare <Formula
+class Ushare < Formula
   url 'http://ushare.geexbox.org/releases/ushare-1.1a.tar.bz2'
   homepage 'http://ushare.geexbox.org/'
   md5 '5bbcdbf1ff85a9710fa3d4e82ccaa251'
@@ -17,7 +17,9 @@ class Ushare <Formula
 
   def install
     # Need to explicitly add gettext here.
+    gettext = Formula.factory("gettext")
     ENV.append 'LDFLAGS', "-lintl"
+    ENV.append 'CFLAGS', "-I#{gettext.include}"
 
     inreplace 'configure', /config.h/, 'src/config.h'
     system "./configure", "--disable-debug",

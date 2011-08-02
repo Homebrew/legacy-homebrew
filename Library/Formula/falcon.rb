@@ -1,9 +1,9 @@
 require 'formula'
 
-class Falcon <Formula
-  url 'http://falconpl.org/project_dl/_official_rel/Falcon-0.9.6.6.tgz'
+class Falcon < Formula
+  url 'http://falconpl.org/project_dl/_official_rel/Falcon-0.9.6.8.tgz'
   homepage 'http://www.falconpl.org/'
-  md5 '50ea7d97ec7599d6e75a6b8b5b8c685a'
+  md5 '8435f6f2fe95097ac2fbe000da97c242'
 
   head 'http://git.falconpl.org/falcon.git', :branch => 'master', :using => :git
 
@@ -30,9 +30,9 @@ class Falcon <Formula
 
     if ARGV.include? '--manpages'
       args << "-DFALCON_WITH_MANPAGES=ON"
+      args << "-DFALCON_MAN_DIR=#{man1}"
     else
       args << "-DFALCON_WITH_MANPAGES=OFF"
-      args << "-DFALCON_MAN_DIR=#{man1}"
     end
 
     if ARGV.include? '--editline'

@@ -5,7 +5,6 @@ ARGV.extend(HomebrewArgvExtension)
 
 require 'test/testball'
 require 'utils'
-require 'brew.h'
 
 
 class MostlyAbstractFormula <Formula

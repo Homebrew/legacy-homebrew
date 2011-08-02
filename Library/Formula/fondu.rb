@@ -1,6 +1,6 @@
 require 'formula'
 
-class Fondu <Formula
+class Fondu < Formula
   url 'http://fondu.sourceforge.net/fondu_src-060102.tgz'
   md5 'e20861beacddc1ab392bef7813641bf8'
   homepage 'http://fondu.sourceforge.net/'

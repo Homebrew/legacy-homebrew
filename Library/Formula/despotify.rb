@@ -1,6 +1,6 @@
 require 'formula'
 
-class Despotify <Formula
+class Despotify < Formula
   head 'https://despotify.svn.sourceforge.net/svnroot/despotify/src'
   homepage 'http://despotify.se/'
 

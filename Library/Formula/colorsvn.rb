@@ -1,6 +1,6 @@
 require 'formula'
 
-class Colorsvn <Formula
+class Colorsvn < Formula
   url 'http://www.console-colors.de/downloads/colorsvn/colorsvn-0.3.2.tar.gz'
   homepage 'http://colorsvn.tigris.org/'
   md5 'f6f59439f56c0ce664a0a832052cdc06'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Id3lib <Formula
+class Id3lib < Formula
   url 'http://downloads.sourceforge.net/project/id3lib/id3lib/3.8.3/id3lib-3.8.3.tar.gz'
   head "cvs://:pserver:anonymous@id3lib.cvs.sourceforge.net:/cvsroot/id3lib:id3lib-devel"
   homepage 'http://id3lib.sourceforge.net/'
@@ -9,6 +9,8 @@ class Id3lib <Formula
   def patches
     {:p1 => DATA }
   end unless ARGV.build_head?
+
+  fails_with_llvm "Segfault during linking", :build => 2326
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"

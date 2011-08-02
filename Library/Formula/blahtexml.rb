@@ -1,6 +1,6 @@
 require 'formula'
 
-class Blahtexml <Formula
+class Blahtexml < Formula
   url 'http://gva.noekeon.org/blahtexml/blahtexml-0.8-src.tar.gz'
   homepage 'http://gva.noekeon.org/blahtexml/'
   md5 '2858418d85ca2afdf46ce67eb4d50de8'

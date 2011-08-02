@@ -1,6 +1,6 @@
 require 'formula'
 
-class Vsftpd <Formula
+class Vsftpd < Formula
   url 'ftp://vsftpd.beasts.org/users/cevans/vsftpd-2.3.2.tar.gz'
   md5 'bad7b117d737a738738836041edc00db'
   homepage 'http://vsftpd.beasts.org/'

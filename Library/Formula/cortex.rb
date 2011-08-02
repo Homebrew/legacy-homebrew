@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cortex <Formula
+class Cortex < Formula
   head 'git://glacicle.org/projects/cortex.git'
   homepage 'http://cortex.glacicle.org'
 

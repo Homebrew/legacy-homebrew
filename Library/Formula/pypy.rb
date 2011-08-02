@@ -1,18 +1,19 @@
 require 'formula'
 require 'hardware'
 
-class Pypy <Formula
-  if snow_leopard_64?
-    url 'http://pypy.org/download/pypy-1.4-osx64.tar.bz2'
-    md5 '23ed155d7a8a214c61efc9000d559383'
+class Pypy < Formula
+  if MacOS.prefer_64_bit?
+    url 'http://pypy.org/download/pypy-1.5-osx64.tar.bz2'
+    md5 'b1417916bc01ebb9f95c666f5e397fb5'
+    version '1.5.0'
   else
-    url 'http://pypy.org/download/pypy-1.4-osx.tar.bz2'
-    md5 'b715229d2a2b4c7129f7867fd84e7caf'
+    url 'http://pypy.org/download/pypy-1.4.1-osx.tar.bz2'
+    md5 '8584c4e8c042f5b661fcfffa0d9b8a25'
+    version '1.4.1'
   end
   homepage 'http://pypy.org/'
-  version '1.4'
 
   def install
-    prefix.install ["bin", "lib-python", "lib_pypy"]
+    prefix.install Dir['*']
   end
 end

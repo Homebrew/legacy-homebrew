@@ -1,6 +1,6 @@
 require 'formula'
 
-class Fsh <Formula
+class Fsh < Formula
   url 'http://www.lysator.liu.se/fsh/fsh-1.2.tar.gz'
   homepage 'http://www.lysator.liu.se/fsh/'
   md5 '74d7fc65044d1c9c27c6e9edbbde9c68'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Colordiff <Formula
+class Colordiff < Formula
   url 'http://colordiff.sourceforge.net/colordiff-1.0.9.tar.gz'
   homepage 'http://colordiff.sourceforge.net/'
   md5 '31864847eaa4e900f72bbb6bbc64f1ec'

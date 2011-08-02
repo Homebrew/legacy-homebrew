@@ -1,6 +1,6 @@
 require 'formula'
 
-class Hllib <Formula
+class Hllib < Formula
   homepage 'http://nemesis.thewavelength.net/index.php?p=35'
   url 'http://nemesis.thewavelength.net/files/files/hllib230.zip'
   md5 '1fc568dc8ea2e293511b921628b5c26d'
