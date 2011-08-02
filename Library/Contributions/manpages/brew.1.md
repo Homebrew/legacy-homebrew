@@ -227,11 +227,11 @@ For the full command list, see the COMMANDS section.
     Unsymlink <formula> from the Homebrew prefix. This can be useful for
     temporarily disabling a formula: `brew unlink foo && commands && brew link foo`.
 
-  * `upgrade`:
-    Install newer versions of outdated packages.    
-
   * `update`:
     Fetch the newest version of Homebrew from GitHub using `git`(1).
+
+  * `upgrade`:
+    Install newer versions of outdated packages.    
 
   * `uses [--installed]` <formula>:
     Show the formulas that specify <formula> as a dependency. The list is
