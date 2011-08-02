@@ -353,7 +353,8 @@ def check_user_path
   end
 
   # Don't complain about sbin not being in the path if it doesn't exist
-  if (HOMEBREW_PREFIX+'sbin').children.length > 0
+  sbin = (HOMEBREW_PREFIX+'sbin')
+  if sbin.directory? and sbin.children.length > 0
     unless seen_prefix_sbin
       puts <<-EOS.undent
         Some brews install binaries to sbin instead of bin, but Homebrew's
