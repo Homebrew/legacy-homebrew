@@ -709,3 +709,34 @@ Index: coregrind/Makefile.am
 +endif
 +
 +EXTRA_DIST += fixup_macho_loadcmds.c
+diff --git a/configure.in b/configure.in
+index 3878619..ed28cfd 100644
+--- configure.in
++++ configure.in
+@@ -282,6 +282,12 @@ case "${host_os}" in
+		  DEFAULT_SUPP="darwin10.supp ${DEFAULT_SUPP}"
+		  DEFAULT_SUPP="darwin10-drd.supp ${DEFAULT_SUPP}"
+		  ;;
++	    11.*)
++		  AC_MSG_RESULT([Darwin 11.x (${kernel}) / Mac OS X 10.7 Lion])
++		  AC_DEFINE([DARWIN_VERS], DARWIN_10_7, [Darwin / Mac OS X version])
++		  DEFAULT_SUPP="darwin11.supp ${DEFAULT_SUPP}"
++		  DEFAULT_SUPP="darwin11-drd.supp ${DEFAULT_SUPP}"
++		  ;;
+      *)
+		  AC_MSG_RESULT([unsupported (${kernel})])
+		  AC_MSG_ERROR([Valgrind works on Darwin 9.x and 10.x (Mac OS X 10.5 and 10.6)])
+diff --git a/darwin11-drd.supp b/darwin11-drd.supp
+index e69de29..31a56f7 100644
+--- darwin11-drd.supp
++++ darwin11-drd.supp
+@@ -0,0 +1,2 @@
++
++# DRD suppressions for Darwin 11.x / Mac OS X 10.7 Lion
+diff --git a/darwin11.supp b/darwin11.supp
+index e69de29..fecd6b8 100644
+--- darwin11.supp
++++ darwin11.supp
+@@ -0,0 +1,2 @@
++
++# Suppressions for Darwin 11.x / Mac OS X 10.7 Lion
