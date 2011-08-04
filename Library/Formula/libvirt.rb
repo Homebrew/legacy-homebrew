@@ -2,8 +2,8 @@ require 'formula'
 
 class Libvirt < Formula
   homepage 'http://www.libvirt.org'
-  url 'ftp://libvirt.org/libvirt/libvirt-0.9.3.tar.gz'
-  sha256 '4d673be9aa7b5618c0fef3cfdbbbeff02df1c83e26680fe40defad2b32a56ae3'
+  url 'ftp://libvirt.org/libvirt/libvirt-0.9.4.tar.gz'
+  sha256 'e76c026646ae4885b162bf711b854f36195f93538d6fcbee48479c2354a342af'
 
   depends_on "gnutls"
   depends_on "yajl"
@@ -12,11 +12,6 @@ class Libvirt < Formula
     # Definitely needed on Leopard, but not on Snow Leopard.
     depends_on "readline"
     depends_on "libxml2"
-  end
-
-  def patches
-    # Patch to work around a compilation bug; fixed in libvirt 0.9.4
-    DATA
   end
 
   fails_with_llvm "Undefined symbols when linking", :build => "2326"
@@ -62,41 +57,4 @@ class Libvirt < Formula
     end
   end
 end
-
-__END__
-diff --git a/src/conf/network_conf.h b/src/conf/network_conf.h
-index d7d2951..5edcf27 100644
---- a/src/conf/network_conf.h
-+++ b/src/conf/network_conf.h
-@@ -64,22 +64,22 @@ struct _virNetworkDNSTxtRecordsDef {
-     char *value;
- };
-
--struct virNetworkDNSHostsDef {
-+struct _virNetworkDNSHostsDef {
-     virSocketAddr ip;
-     int nnames;
-     char **names;
--} virNetworkDNSHostsDef;
-+};
-
--typedef struct virNetworkDNSHostsDef *virNetworkDNSHostsDefPtr;
-+typedef struct _virNetworkDNSHostsDef *virNetworkDNSHostsDefPtr;
-
--struct virNetworkDNSDef {
-+struct _virNetworkDNSDef {
-     unsigned int ntxtrecords;
-     virNetworkDNSTxtRecordsDefPtr txtrecords;
-     unsigned int nhosts;
-     virNetworkDNSHostsDefPtr hosts;
--} virNetworkDNSDef;
-+};
-
--typedef struct virNetworkDNSDef *virNetworkDNSDefPtr;
-+typedef struct _virNetworkDNSDef *virNetworkDNSDefPtr;
-
- typedef struct _virNetworkIpDef virNetworkIpDef;
- typedef virNetworkIpDef *virNetworkIpDefPtr;
---
-1.7.4.1
 
