@@ -82,7 +82,7 @@ index f58c4eb..3477fe3 100644
 +    info_ptr->color_type = (color);
 +#define COLOR_TYPE info_ptr->color_type
 +#define PALETTE info_ptr->palette
-+#define PNG_JMPBUF info_ptr->jmpbuf
++#define PNG_JMPBUF png_ptr->jmpbuf
 +#endif
  
      if (row == 0 || png_ptr == 0 || info_ptr == 0) {
