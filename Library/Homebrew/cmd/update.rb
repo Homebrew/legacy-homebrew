@@ -12,12 +12,7 @@ module Homebrew extend self
 end
 
 class RefreshBrew
-  REPOSITORY_URL   = "http://github.com/mxcl/homebrew.git"
-  CHECKOUT_COMMAND = "git checkout -q master"
-  UPDATE_COMMAND   = "git pull #{REPOSITORY_URL} master"
-  REVISION_COMMAND = "git rev-parse HEAD"
-  DIFF_COMMAND     = "git diff-tree -r --name-status -z %s %s"
-
+  REPOSITORY_URL = "http://github.com/mxcl/homebrew.git"
   FORMULA_DIR = 'Library/Formula/'
   EXAMPLE_DIR = 'Library/Contributions/examples/'
 
@@ -36,7 +31,7 @@ class RefreshBrew
   def update_from_masterbrew!
     HOMEBREW_REPOSITORY.cd do
       if git_repo?
-        safe_system CHECKOUT_COMMAND
+        safe_system "git checkout -q master"
         @initial_revision = read_revision
       else
         begin
@@ -44,11 +39,11 @@ class RefreshBrew
           safe_system "git fetch #{REPOSITORY_URL}"
           safe_system "git reset --hard FETCH_HEAD"
         rescue Exception
-          safe_system "rm -rf .git"
+          safe_system "/bin/rm -rf .git"
           raise
         end
       end
-      execute(UPDATE_COMMAND)
+      execute "git pull #{REPOSITORY_URL} master"
       @current_revision = read_revision
     end
 
@@ -58,7 +53,7 @@ class RefreshBrew
       @changes_map = Hash.new {|h,k| h[k] = [] }
 
       changes = HOMEBREW_REPOSITORY.cd do
-        execute(DIFF_COMMAND % [initial_revision, current_revision]).split("\0")
+        execute("git diff-tree -r --name-status -z #{initial_revision} #{current_revision}").split("\0")
       end
 
       while status = changes.shift
@@ -150,7 +145,7 @@ class RefreshBrew
   private
 
   def read_revision
-    execute(REVISION_COMMAND).chomp
+    execute("git rev-parse HEAD").chomp
   end
 
   def filter_by_directory(files, dir)
