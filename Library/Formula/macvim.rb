@@ -35,6 +35,8 @@ class Macvim < Formula
 
     args = ["--with-macsdk=#{MACOS_VERSION}",
            "--with-features=huge",
+           "--with-tlib=ncurses",
+           "--enable-multibyte",
            "--with-macarchs=#{arch}",
            "--enable-perlinterp",
            "--enable-pythoninterp",
