@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mu < Formula
-  url 'http://mu0.googlecode.com/files/mu-0.9.3.tar.gz'
+  url 'http://mu0.googlecode.com/files/mu-0.9.6.tar.gz'
   homepage 'http://www.djcbsoftware.nl/code/mu/'
-  md5 '4f19e26c8621fcace290f78abecf2d36'
+  md5 '72fdf907f2b7922a54c8d14bc4b06ccf'
 
   depends_on 'gettext'
   depends_on 'glib'
