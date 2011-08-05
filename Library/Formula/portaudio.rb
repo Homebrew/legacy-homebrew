@@ -13,12 +13,15 @@ class Portaudio < Formula
     [["--universal", "Build a universal binary."]]
   end
 
-  # Use the MacPort patches that fix compiling against newer OS X SDKs
   def patches
     {:p0 => [
+      # Use the MacPort patches that fix compiling against newer OS X SDKs
       "https://trac.macports.org/export/77586/trunk/dports/audio/portaudio/files/patch-configure",
       "https://trac.macports.org/export/77586/trunk/dports/audio/portaudio/files/patch-src__hostapi__coreaudio__pa_mac_core.c",
-      "https://trac.macports.org/export/77586/trunk/dports/audio/portaudio/files/patch-src__common__pa_types.h"
+      "https://trac.macports.org/export/77586/trunk/dports/audio/portaudio/files/patch-src__common__pa_types.h",
+
+      # allow PyAudio to build on 10.7
+      DATA
     ]}
   end
 
@@ -32,3 +35,18 @@ class Portaudio < Formula
     include.install "include/pa_mac_core.h"
   end
 end
+
+__END__
+diff --git include/pa_mac_core.h include/pa_mac_core.h
+index 783e3bc..d7ff4a2 100644
+--- include/pa_mac_core.h
++++ include/pa_mac_core.h
+@@ -39,7 +39,7 @@
+  */
+ 
+ #include <AudioUnit/AudioUnit.h>
+-//#include <AudioToolbox/AudioToolbox.h>
++#include <AudioToolbox/AudioToolbox.h>
+ 
+ #ifdef __cplusplus
+ extern "C" {
