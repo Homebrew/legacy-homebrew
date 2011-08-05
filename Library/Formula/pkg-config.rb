@@ -2,8 +2,8 @@ require 'formula'
 
 class PkgConfig < Formula
   homepage 'http://pkg-config.freedesktop.org'
-  url 'http://pkg-config.freedesktop.org/releases/pkg-config-0.25.tar.gz'
-  md5 'a3270bab3f4b69b7dc6dbdacbcae9745'
+  url 'http://pkg-config.freedesktop.org/releases/pkg-config-0.26.tar.gz'
+  md5 '47525c26a9ba7ba14bf85e01509a7234'
 
   def install
     paths = %W[
