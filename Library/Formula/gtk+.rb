@@ -10,11 +10,6 @@ class Gtkx < Formula
   depends_on 'jpeg'
   depends_on 'libtiff'
   depends_on 'gdk-pixbuf'
-
-  # Used by pango, but keg-only, so needs to be added to
-  # the flags for gtk+ explicitly.
-  depends_on 'cairo' if MacOS.leopard?
-
   depends_on 'pango'
   depends_on 'jasper' => :optional
   depends_on 'atk' => :optional
