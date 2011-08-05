@@ -1,9 +1,9 @@
 require 'formula'
 
 class Lilypond < Formula
-  url 'http://download.linuxaudio.org/lilypond/sources/v2.13/lilypond-2.13.52.tar.gz'
+  url 'http://download.linuxaudio.org/lilypond/sources/v2.14/lilypond-2.14.0.tar.gz'
   homepage 'http://lilypond.org/'
-  md5 '662e18ca5a01d3357eda17efb4ae95ce'
+  md5 '6c08f7246ce79934ec8a41ae7bea05d9'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
