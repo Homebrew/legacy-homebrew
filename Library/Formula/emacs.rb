@@ -1,9 +1,12 @@
 require 'formula'
 
 class Emacs < Formula
-  url 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.3.tar.bz2'
-  md5 'a673c163b4714362b94ff6096e4d784a'
+  url 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.3a.tar.bz2'
+  md5 'f2cf8dc6f28f8ae59bc695b4ddda339c'
   homepage 'http://www.gnu.org/software/emacs/'
+
+  # Stripping on Xcode 4 causes malformed object errors
+  skip_clean :all
 
   if ARGV.include? "--use-git-head"
     head 'git://repo.or.cz/emacs.git'

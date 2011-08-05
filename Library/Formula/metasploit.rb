@@ -1,9 +1,9 @@
 require 'formula'
 
 class Metasploit < Formula
-  url "http://updates.metasploit.com/data/releases/framework-3.7.1.tar.bz2"
+  url "http://updates.metasploit.com/data/releases/framework-3.7.2.tar.bz2"
   homepage 'http://www.metasploit.com/framework/'
-  sha1 '9a104bcacc8ecf683f5df16613da19076c81413c'
+  sha1 'b12991d879d7eb664ffd8f72e4fa11611f10a07d'
 
   head "https://www.metasploit.com/svn/framework3/trunk/", :using => :svn
 

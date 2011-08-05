@@ -42,7 +42,7 @@ class RefreshBrew
         begin
           safe_system "git init"
           safe_system "git fetch #{REPOSITORY_URL}"
-          safe_system "git reset FETCH_HEAD"
+          safe_system "git reset --soft FETCH_HEAD"
         rescue Exception
           safe_system "rm -rf .git"
           raise
@@ -86,7 +86,7 @@ class RefreshBrew
   end
 
   def git_repo?
-    File.directory? '.git'
+    Dir['.git/*'].length > 0
   end
 
   def pending_formulae_changes?
