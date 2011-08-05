@@ -4,6 +4,7 @@ class Mu < Formula
   url 'http://mu0.googlecode.com/files/mu-0.9.6.tar.gz'
   homepage 'http://www.djcbsoftware.nl/code/mu/'
   md5 '72fdf907f2b7922a54c8d14bc4b06ccf'
+  head 'http://mu0.googlecode.com/files/mu-0.9.7-pre.tar.gz'
 
   depends_on 'gettext'
   depends_on 'glib'
