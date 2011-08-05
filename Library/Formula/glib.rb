@@ -10,7 +10,8 @@ class Glib < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
 
-  fails_with_llvm "Undefined symbol errors while linking"
+  fails_with_llvm "Undefined symbol errors while linking" unless MacOS.lion?
+
   # Lion and Snow Leopard don't have a 64 bit version of the iconv_open
   # function. The fact that Lion still doesn't is ridiculous. But we're as
   # much to blame. Nobody reported the bug FFS. And I'm still not going to
