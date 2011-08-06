@@ -14,16 +14,21 @@ class Portaudio < Formula
   end
 
   def patches
-    {:p0 => [
+    p = {:p0 => [
       # Use the MacPort patches that fix compiling against newer OS X SDKs
       "https://trac.macports.org/export/77586/trunk/dports/audio/portaudio/files/patch-configure",
       "https://trac.macports.org/export/77586/trunk/dports/audio/portaudio/files/patch-src__hostapi__coreaudio__pa_mac_core.c",
-      "https://trac.macports.org/export/77586/trunk/dports/audio/portaudio/files/patch-src__common__pa_types.h",
-
-      # allow PyAudio to build on 10.7
-      DATA
-    ]}
+      "https://trac.macports.org/export/77586/trunk/dports/audio/portaudio/files/patch-src__common__pa_types.h"]}
+    
+    # allow PyAudio to build on 10.7
+    if 10.7 <= MACOS_VERSION
+      p[:p1] = DATA
+    end
+    
+    return p
   end
+  
+  #ENV.append_to_cflags "-D__APPLE_USE_RFC_3542" if 10.7 <= MACOS_VERSION
 
   def install
     ENV.universal_binary if ARGV.build_universal?
@@ -37,10 +42,10 @@ class Portaudio < Formula
 end
 
 __END__
-diff --git include/pa_mac_core.h include/pa_mac_core.h
+diff --git a/include/pa_mac_core.h b/include/pa_mac_core.h
 index 783e3bc..d7ff4a2 100644
---- include/pa_mac_core.h
-+++ include/pa_mac_core.h
+--- a/include/pa_mac_core.h
++++ b/include/pa_mac_core.h
 @@ -39,7 +39,7 @@
   */
  
