@@ -109,22 +109,23 @@ end
 
 sudo "/bin/mkdir /usr/local" unless File.directory? "/usr/local"
 sudo "/bin/chmod o+w /usr/local"
-sudo "/bin/chmod", "g+w", *chmods unless chmods.empty?
-sudo "/usr/bin/chgrp", "staff", *chgrps unless chgrps.empty?
-system "/bin/mkdir", *root_dirs unless root_dirs.empty?
+begin
+  sudo "/bin/chmod", "g+w", *chmods unless chmods.empty?
+  sudo "/usr/bin/chgrp", "staff", *chgrps unless chgrps.empty?
+  system "/bin/mkdir", *root_dirs unless root_dirs.empty?
 
-
-Dir.chdir "/usr/local" do
-  ohai "Downloading and Installing Homebrew..."
-  # -m to stop tar erroring out if it can't modify the mtime for root owned directories
-  # pipefail to cause the exit status from curl to propogate if it fails
-  system "/bin/bash -o pipefail -c '/usr/bin/curl -sSfL https://github.com/mxcl/homebrew/tarball/master | /usr/bin/tar xz -m --strip 1'"
+  Dir.chdir "/usr/local" do
+    ohai "Downloading and Installing Homebrew..."
+    # -m to stop tar erroring out if it can't modify the mtime for root owned directories
+    # pipefail to cause the exit status from curl to propogate if it fails
+    system "/bin/bash -o pipefail -c '/usr/bin/curl -sSfL https://github.com/mxcl/homebrew/tarball/master | /usr/bin/tar xz -m --strip 1'"
+  end
+ensure
+  # we reset the permissions of /usr/local because we want to minimise the
+  # amount of fiddling we do to the system. Some tools require /usr/local to
+  # be by non-writable for non-root users.
+  sudo "/bin/chmod o-w /usr/local"
 end
-
-# we reset the permissions of /usr/local because we want to minimise the
-# amount of fiddling we do to the system. Some tools require /usr/local to be
-# by non-writable for non-root users.
-sudo "/bin/chmod o-w /usr/local"
 
 warn "/usr/local/bin is not in your PATH." unless ENV['PATH'].split(':').include? '/usr/local/bin'
 warn "Now install Xcode: http://developer.apple.com/technologies/xcode.html" unless Kernel.system "/usr/bin/which -s gcc"
