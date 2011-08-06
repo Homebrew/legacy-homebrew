@@ -36,7 +36,7 @@ def sudo *args
   args = if args.length > 1
     args.unshift "/usr/bin/sudo"
   else
-    "/usr/bin/sudo #{args}"
+    "/usr/bin/sudo #{args.first}"
   end
   ohai *args
   system *args
