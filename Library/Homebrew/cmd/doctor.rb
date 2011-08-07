@@ -242,24 +242,6 @@ def __check_subdir_access base
   end
 end
 
-def check_access_usr_local
-  return unless HOMEBREW_PREFIX.to_s == '/usr/local'
-
-  unless Pathname('/usr/local').writable?
-    puts <<-EOS.undent
-    The /usr/local directory is not writable.
-
-    Even if this folder was writable when you installed Homebrew, other
-    software may change permissions on this folder. Some versions of the
-    "InstantOn" component of Airfoil are known to do this.
-
-    You should probably change the ownership and permissions of /usr/local
-    back to your user account.
-
-    EOS
-  end
-end
-
 def check_access_share_locale
   __check_subdir_access 'share/locale'
 end
@@ -325,6 +307,7 @@ def check_homebrew_prefix
   unless HOMEBREW_PREFIX.to_s == '/usr/local'
     puts <<-EOS.undent
       You can install Homebrew anywhere you want, but some brews may only work
+      You can install Homebrew anywhere you want, but some brews may only build
       correctly if you install to /usr/local.
 
     EOS
@@ -370,7 +353,8 @@ def check_user_path
   end
 
   # Don't complain about sbin not being in the path if it doesn't exist
-  if (HOMEBREW_PREFIX+'sbin').exist?
+  sbin = (HOMEBREW_PREFIX+'sbin')
+  if sbin.directory? and sbin.children.length > 0
     unless seen_prefix_sbin
       puts <<-EOS.undent
         Some brews install binaries to sbin instead of bin, but Homebrew's
@@ -725,6 +709,14 @@ def check_for_other_frameworks
   end
 end
 
+def check_tmpdir
+  tmpdir = ENV['TMPDIR']
+  if !File.directory?(tmpdir)
+    puts "$TMPDIR #{tmpdir.inspect} doesn't exist."
+    puts
+  end
+end
+
 module Homebrew extend self
   def doctor
     old_stdout = $stdout
@@ -742,7 +734,6 @@ module Homebrew extend self
       check_for_other_package_managers
       check_for_x11
       check_for_nonstandard_x11
-      check_access_usr_local
       check_access_include
       check_access_etc
       check_access_share
@@ -765,6 +756,7 @@ module Homebrew extend self
       check_for_autoconf
       check_for_linked_kegonly_brews
       check_for_other_frameworks
+      check_tmpdir
     ensure
       $stdout = old_stdout
     end
