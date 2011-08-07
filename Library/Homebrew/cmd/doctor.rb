@@ -711,6 +711,7 @@ end
 
 def check_tmpdir
   tmpdir = ENV['TMPDIR']
+  return if tmpdir.nil?
   if !File.directory?(tmpdir)
     puts "$TMPDIR #{tmpdir.inspect} doesn't exist."
     puts
