@@ -6,15 +6,18 @@ class Qt < Formula
   md5 '49b96eefb1224cc529af6fe5608654fe'
   homepage 'http://qt.nokia.com/'
   bottle 'https://downloads.sourceforge.net/project/machomebrew/Bottles/qt-4.7.3-bottle.tar.gz'
-  bottle_sha1 '6ab865b92db92cf2c49a332010f99566178d25cf'
+  bottle_sha1 'a50123be33c96cba97d4bcee61f3859c7d52000e'
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
 
   def patches
-    # Fixes compilation on 10.7 or with llvm-gcc
-    # Bug report: https://bugreports.qt.nokia.com/browse/QTBUG-20496
-    # Merge request: https://qt.gitorious.org/qt/qt/merge_requests/1304
-    "https://qt.gitorious.org/+kdab-developers/qt/kdab-for-upstream/commit/1537d131e59e4fb43001299cfbd747c521fa1888?format=patch"
+    [
+      # Fixes compilation on Lion or with llvm-gcc
+      # Should be unneeded in Qt 4.7.4.
+      "https://qt.gitorious.org/qt/qt/commit/91be1263b42a0a91daf3f905661e356e31482fd3?format=patch",
+      # Stop complaining about using Lion
+      "https://qt.gitorious.org/qt/qt/commit/1766bbdb53e1e20a1bbfb523bbbbe38ea7ab7b3d?format=patch"
+    ]
   end
 
   def options
@@ -96,9 +99,19 @@ class Qt < Formula
     cd prefix do
       ln_s lib, "Frameworks"
     end
+
+    # The pkg-config files installed suggest that geaders can be found in the
+    # `include` directory. Make this so by creating symlinks from `include` to
+    # the Frameworks' Headers folders.
+    Pathname.glob(lib + '*.framework/Headers').each do |path|
+      framework_name = File.basename(File.dirname(path), '.framework')
+      ln_s path.realpath, include+framework_name
+    end
   end
 
-  def caveats
-    "We agreed to the Qt opensource license for you.\nIf this is unacceptable you should uninstall."
+  def caveats; <<-EOS.undent
+    We agreed to the Qt opensource license for you.
+    If this is unacceptable you should uninstall.
+    EOS
   end
 end

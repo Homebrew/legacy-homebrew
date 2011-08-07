@@ -194,7 +194,13 @@ def check_gcc_versions
     EOS
   end
 
-  if MacOS.xcode_version < "4.0"
+  if MacOS.xcode_version == nil
+      puts <<-EOS.undent
+        We couldn't detect any version of Xcode.
+        If you downloaded Xcode 4.1 from the App Store, you may need to run the installer.
+
+      EOS
+  elsif MacOS.xcode_version < "4.0"
     if gcc_40 == nil
       puts <<-EOS.undent
         We couldn't detect gcc 4.0.x. Some formulae require this compiler.
@@ -233,24 +239,6 @@ def __check_subdir_access base
     EOS
     puts *cant_read.collect { |f| "    #{f}" }
     puts
-  end
-end
-
-def check_access_usr_local
-  return unless HOMEBREW_PREFIX.to_s == '/usr/local'
-
-  unless Pathname('/usr/local').writable?
-    puts <<-EOS.undent
-    The /usr/local directory is not writable.
-
-    Even if this folder was writable when you installed Homebrew, other
-    software may change permissions on this folder. Some versions of the
-    "InstantOn" component of Airfoil are known to do this.
-
-    You should probably change the ownership and permissions of /usr/local
-    back to your user account.
-
-    EOS
   end
 end
 
@@ -319,6 +307,7 @@ def check_homebrew_prefix
   unless HOMEBREW_PREFIX.to_s == '/usr/local'
     puts <<-EOS.undent
       You can install Homebrew anywhere you want, but some brews may only work
+      You can install Homebrew anywhere you want, but some brews may only build
       correctly if you install to /usr/local.
 
     EOS
@@ -364,7 +353,8 @@ def check_user_path
   end
 
   # Don't complain about sbin not being in the path if it doesn't exist
-  if (HOMEBREW_PREFIX+'sbin').exist?
+  sbin = (HOMEBREW_PREFIX+'sbin')
+  if sbin.directory? and sbin.children.length > 0
     unless seen_prefix_sbin
       puts <<-EOS.undent
         Some brews install binaries to sbin instead of bin, but Homebrew's
@@ -684,10 +674,10 @@ end
 
 def check_for_GREP_OPTIONS
   target_var = ENV['GREP_OPTIONS'].to_s
-  unless target_var.empty?
+  unless target_var.empty? or target_var == '--color=auto'
     puts <<-EOS.undent
     $GREP_OPTIONS was set to \"#{target_var}\".
-    Having $GREP_OPTIONS set can cause CMake builds to fail.
+    Having $GREP_OPTIONS set this way can cause CMake builds to fail.
 
     EOS
   end
@@ -719,6 +709,15 @@ def check_for_other_frameworks
   end
 end
 
+def check_tmpdir
+  tmpdir = ENV['TMPDIR']
+  return if tmpdir.nil?
+  if !File.directory?(tmpdir)
+    puts "$TMPDIR #{tmpdir.inspect} doesn't exist."
+    puts
+  end
+end
+
 module Homebrew extend self
   def doctor
     old_stdout = $stdout
@@ -736,7 +735,6 @@ module Homebrew extend self
       check_for_other_package_managers
       check_for_x11
       check_for_nonstandard_x11
-      check_access_usr_local
       check_access_include
       check_access_etc
       check_access_share
@@ -759,6 +757,7 @@ module Homebrew extend self
       check_for_autoconf
       check_for_linked_kegonly_brews
       check_for_other_frameworks
+      check_tmpdir
     ensure
       $stdout = old_stdout
     end
