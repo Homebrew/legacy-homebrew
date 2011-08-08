@@ -6,7 +6,9 @@ class Libyaml < Formula
   md5 '36c852831d02cf90508c29852361d01b'
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    ENV['CFLAGS'] = "-arch i386 -arch x86_64"
+    ENV['LDFLAGS'] = "-arch i386 -arch x86_64"
+    system './configure', "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end
