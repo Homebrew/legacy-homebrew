@@ -18,10 +18,19 @@ class Ruby < Formula
   def options
     [
       ["--with-suffix", "Add a 19 suffix to commands"],
-      ["--with-doc", "Install with the Ruby documentation"],
+      ["--without-doc", "Install with the Ruby documentation"],
       ["--universal", "Compile a universal binary (arch=x86_64,i386)"],
       ["--with-valgrind", "Enable valgrind memcheck support"]
     ]
+  end
+
+  def patches
+    # This patch speeds up 'require' for largeish applications
+    #=> http://www.betaful.com/2011/06/patching-ruby-1-9-2-for-faster-rails-load-times/
+    "https://raw.github.com/gist/999435/fc2718ac3f488ab2341b65dc2ae5c123f8859bff/fast-require-ruby-19.2-p180"
+    # This patch enables tunable garbage collection parameters
+    #=> http://www.engineyard.com/blog/2011/tuning-the-garbage-collector-with-ruby-1-9-2/
+    "https://raw.github.com/gist/856296/a19ac26fe7412ef398bd9f57e61f06fef1f186fe/patch-1.9.2-gc.patch"
   end
 
   def install
@@ -47,10 +56,9 @@ class Ruby < Formula
     args = ["--prefix=#{prefix}",
             "--with-readline-dir=#{Formula.factory('readline').prefix}",
             "--disable-debug",
-            "--disable-dependency-tracking",
             "--enable-shared"]
 
-    args << "--disable-install-doc" unless ARGV.include? "--with-doc"
+    args << "--disable-install-doc" unless ARGV.include? "--without-doc"
     args << "--with-valgrind" if ARGV.include? "--with-valgrind"
     args << "--program-suffix=19" if ARGV.include? "--with-suffix"
     args << "--with-arch=x86_64,i386" if ARGV.build_universal?
