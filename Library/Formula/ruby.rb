@@ -18,7 +18,7 @@ class Ruby < Formula
   def options
     [
       ["--with-suffix", "Add a 19 suffix to commands"],
-      ["--without-doc", "Install with the Ruby documentation"],
+      ["--no-docs", "Install with the Ruby documentation"],
       ["--universal", "Compile a universal binary (arch=x86_64,i386)"],
       ["--with-valgrind", "Enable valgrind memcheck support"]
     ]
@@ -58,7 +58,7 @@ class Ruby < Formula
             "--disable-debug",
             "--enable-shared"]
 
-    args << "--disable-install-doc" if ARGV.include? "--without-doc"
+    args << "--disable-install-doc" if ARGV.include? "--no-docs"
     args << "--with-valgrind" if ARGV.include? "--with-valgrind"
     args << "--program-suffix=19" if ARGV.include? "--with-suffix"
     args << "--with-arch=x86_64,i386" if ARGV.build_universal?
