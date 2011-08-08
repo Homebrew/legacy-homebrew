@@ -14,6 +14,6 @@ class Pypy < Formula
   homepage 'http://pypy.org/'
 
   def install
-    prefix.install ["bin", "lib-python", "lib_pypy"]
+    prefix.install Dir['*']
   end
 end

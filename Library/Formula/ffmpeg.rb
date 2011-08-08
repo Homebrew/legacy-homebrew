@@ -1,15 +1,15 @@
 require 'formula'
 
 class Ffmpeg < Formula
-  url 'http://ffmpeg.org/releases/ffmpeg-0.6.2.tar.bz2'
+  url 'http://ffmpeg.org/releases/ffmpeg-0.8.tar.bz2'
   homepage 'http://ffmpeg.org/'
-  sha1 'd4e464d4111971b9cef10be7a1efa3677a899338'
+  sha1 '461f87c4fc080e10ac0acc48287aaa706021bbc4'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
+  depends_on 'yasm' => :build
   depends_on 'x264' => :optional
   depends_on 'faac' => :optional
-  depends_on 'faad2' => :optional
   depends_on 'lame' => :optional
   depends_on 'theora' => :optional
   depends_on 'libvorbis' => :optional
@@ -18,13 +18,11 @@ class Ffmpeg < Formula
   depends_on 'xvid' => :optional
 
   def install
-    args = ["--disable-debug",
-            "--prefix=#{prefix}",
-            "--enable-shared",
-            "--enable-pthreads",
-            "--enable-nonfree",
+    args = ["--prefix=#{prefix}",
             "--enable-gpl",
-            "--disable-indev=jack"]
+            "--enable-version3",
+            "--enable-nonfree",
+            "--enable-hardcoded-tables"]
 
     args << "--enable-libx264" if Formula.factory('x264').installed?
     args << "--enable-libfaac" if Formula.factory('faac').installed?
@@ -34,9 +32,10 @@ class Ffmpeg < Formula
     args << "--enable-libvpx" if Formula.factory('libvpx').installed?
     args << "--enable-libxvid" if Formula.factory('xvid').installed?
 
-    unless ARGV.build_head?
-      args << "--enable-libfaad" if Formula.factory('faad2').installed?
-    end
+    # Enable alternate compilers
+    args << "--cc=clang" if ENV.use_clang?
+    args << "--cc=llvm-gcc" if ENV.use_llvm?
+    args << "--cc=gcc" if ENV.use_gcc?
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22

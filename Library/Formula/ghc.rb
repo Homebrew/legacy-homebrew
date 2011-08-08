@@ -1,15 +1,14 @@
 require 'formula'
-# require 'hardware'
 
 class Ghc < Formula
   homepage 'http://haskell.org/ghc/'
-  version '7.0.3'
+  version '7.0.4'
   if ARGV.include? '--64bit'
-    url "http://www.haskell.org/ghc/dist/7.0.3/ghc-7.0.3-x86_64-apple-darwin.tar.bz2"
-    md5 '8a514a022ce21b8672f00054244faf26'
+    url "http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-x86_64-apple-darwin.tar.bz2"
+    md5 'af89d3d2ca6e9b23384baacb7d8161dd'
   else
-    url "http://www.haskell.org/ghc/dist/7.0.3/ghc-7.0.3-i386-apple-darwin.tar.bz2"
-    md5 '649912037de756cf4570f84e5d53cf9c'
+    url "http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2"
+    md5 'ce297e783d113cf1547386703d1b1061'
   end
 
   # Avoid stripping the Haskell binaries & libraries.

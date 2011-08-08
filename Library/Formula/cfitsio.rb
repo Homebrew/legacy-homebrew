@@ -1,10 +1,10 @@
 require 'formula'
 
 class Cfitsio < Formula
-  url 'ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio3270.tar.gz'
+  url 'ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio3280.tar.gz'
   homepage 'http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html'
-  md5 '2a72b323de3f40ad1a671f2167500336'
-  version '3.27'
+  md5 'fdb9c0f51678b47e78592c70fb5dc793'
+  version '3.28'
 
   def install
     # --disable-debug and --disable-dependency-tracking are not recognized by configure

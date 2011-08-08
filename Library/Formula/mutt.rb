@@ -1,33 +1,37 @@
 require 'formula'
 
 class Mutt < Formula
-  url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.20.tar.gz'
+  url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.21.tar.gz'
   homepage 'http://www.mutt.org/'
-  md5 '027cdd9959203de0c3c64149a7ee351c'
+  md5 'a29db8f1d51e2f10c070bf88e8a553fd'
 
   depends_on 'tokyo-cabinet'
+  depends_on 'slang' if ARGV.include? '--with-slang'
 
   def options
     [
-      ['--sidebar-patch', "Apply sidebar (folder list) patch"],
       ['--enable-debug', "Build with debug option enabled"],
-      ['--trash-patch', "Apply trash folder patch"]
+      ['--sidebar-patch', "Apply sidebar (folder list) patch"],
+      ['--trash-patch', "Apply trash folder patch"],
+      ['--with-slang', "Build against slang instead of ncurses"],
+      ['--ignore-thread-patch', "Apply ignore-thread patch"],
+      ['--pgp-verbose-mime-patch', "Apply PGP verbose mime patch"]
     ]
   end
 
   def patches
-    # Fix unsubscribe malformed folder
-    # See: http://dev.mutt.org/trac/ticket/3389
-    p = [ 'http://dev.mutt.org/hg/mutt/raw-rev/25e46aad362b' ]
+    urls = [
+      ['--sidebar-patch', 'https://raw.github.com/nedos/mutt-sidebar-patch/master/mutt-sidebar.patch'],
+      ['--trash-patch', 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-5/features/trash-folder'],
+      ['--ignore-thread-patch', 'http://ben.at.tanjero.com/patches/ignore-thread-1.5.21.patch'],
+      ['--pgp-verbose-mime-patch',
+          'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-5/features-old/patch-1.5.4.vk.pgp_verbose_mime'],
+    ]
 
-    if ARGV.include? '--sidebar-patch'
-      p << 'http://lunar-linux.org/~tchan/mutt/patch-1.5.20.sidebar.20090619.txt'
+    p = []
+    urls.each do |u|
+      p << u[1] if ARGV.include? u[0]
     end
-
-    if ARGV.include? '--trash-patch'
-      p <<  'http://trac.macports.org/export/69644/trunk/dports/mail/mutt-devel/files/patch-1.5.20.bk.trash_folder-purge_message.1'
-    end
-
     return p
   end
 
@@ -47,8 +51,8 @@ class Mutt < Formula
             # This is just a trick to keep 'make install' from trying to chgrp
             # the mutt_dotlock file (which we can't do if we're running as an
             # unpriviledged user)
-            "--with-homespool=.mbox"
-      ]
+            "--with-homespool=.mbox"]
+    args << "--with-slang" if ARGV.include? '--with-slang'
 
     if ARGV.include? '--enable-debug'
       args << "--enable-debug"

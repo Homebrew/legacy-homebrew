@@ -1,9 +1,9 @@
 require 'formula'
 
 class NetSnmp < Formula
-  url 'http://downloads.sourceforge.net/project/net-snmp/net-snmp/5.6/net-snmp-5.6.tar.gz'
+  url 'http://downloads.sourceforge.net/project/net-snmp/net-snmp/5.6.1.1/net-snmp-5.6.1.1.tar.gz'
   homepage 'http://www.net-snmp.org/'
-  md5 '89b3a7a77e68daef925abee43a3f7018'
+  md5 '79e2b9cac947567a01ae2cc67ad8fe53'
 
   def install
     system "./configure", "--prefix=#{prefix}",
