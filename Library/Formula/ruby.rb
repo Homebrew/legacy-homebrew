@@ -18,7 +18,7 @@ class Ruby < Formula
   def options
     [
       ["--with-suffix", "Add a 19 suffix to commands"],
-      ["--no-docs", "Install with the Ruby documentation"],
+      ["--no-docs", "Don't install the Ruby documentation"],
       ["--universal", "Compile a universal binary (arch=x86_64,i386)"],
       ["--with-valgrind", "Enable valgrind memcheck support"]
     ]
