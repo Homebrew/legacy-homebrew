@@ -1,9 +1,9 @@
 require 'formula'
 
 class StoneSoup < Formula
-  url 'http://sourceforge.net/projects/crawl-ref/files/Stone%20Soup/0.7.2/stone_soup-0.7.2.tar.bz2'
+  url 'http://sourceforge.net/projects/crawl-ref/files/Stone%20Soup/0.8.1/stone_soup-0.8.1.tar.bz2'
   homepage 'http://crawl.develz.org/wordpress/'
-  md5 'ffb54c88d280f036a3819cba23bc4489'
+  md5 '771cf341cb330b0dd3e2dceca22ba6ea'
 
   # Keep empty folders for save games and such
   skip_clean :all
