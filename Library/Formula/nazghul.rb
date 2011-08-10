@@ -21,7 +21,7 @@ class Nazghul < Formula
 
   def caveats; <<-EOS.undent
     The built-in game for this engine is called Haxima. To run:
-      $ haxima.sh
+        haxima.sh
     EOS
   end
 end

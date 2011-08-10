@@ -24,7 +24,7 @@ class Apc < Formula
         extension="#{prefix}/apc.so"
         apc.enabled=1
         apc.shm_segments=1
-        apc.shm_size=64
+        apc.shm_size=64M
         apc.ttl=7200
         apc.user_ttl=7200
         apc.num_files_hint=1024

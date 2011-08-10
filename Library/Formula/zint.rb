@@ -10,7 +10,7 @@ class Zint < Formula
 
   def install
     cd('build')
-    system "cmake ..  #{std_cmake_parameters} -DCMAKE_PREFIX_PATH=#{prefix} -DCMAKE_C_FLAGS=-I/usr/X11R6/include"
+    system "cmake ..  #{std_cmake_parameters} -DCMAKE_PREFIX_PATH=#{prefix} -DCMAKE_C_FLAGS=-I/usr/X11/include"
     system "make install"
   end
 

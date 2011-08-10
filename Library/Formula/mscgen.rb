@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mscgen < Formula
-  url 'http://www.mcternan.me.uk/mscgen/software/mscgen-src-0.19.tar.gz'
+  url 'http://www.mcternan.me.uk/mscgen/software/mscgen-src-0.20.tar.gz'
   homepage 'http://www.mcternan.me.uk/mscgen/'
-  md5 '9ee92974529cbba5a058325b6607c263'
+  md5 '65c90fb5150d7176b65b793f0faa7377'
 
   depends_on 'pkg-config' => :build
   depends_on 'gd' => :recommended

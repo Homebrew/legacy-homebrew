@@ -7,8 +7,9 @@ class Streamripper < Formula
 
   depends_on 'glib'
 
+  fails_with_llvm "strange runtime errors with llvm"
+
   def install
-    fails_with_llvm "strange runtime errors with llvm"
     File.chmod 0755, "./install-sh" # without this 'make install' doesn't seem to work (permission denied)
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"

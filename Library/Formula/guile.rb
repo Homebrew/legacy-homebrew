@@ -1,12 +1,12 @@
 require 'formula'
 
 class Guile < Formula
-  url 'ftp://ftp.gnu.org/gnu/guile/guile-1.8.7.tar.gz'
-  head 'ftp://alpha.gnu.org/gnu/guile/guile-1.9.15.tar.gz'
   homepage 'http://www.gnu.org/software/guile/'
+  url 'ftp://ftp.gnu.org/gnu/guile/guile-1.8.7.tar.gz'
+  head 'ftp://ftp.gnu.org/pub/gnu/guile/guile-2.0.2.tar.gz'
 
   if ARGV.build_head?
-    sha1 '0b1cdd5f0506dcda3ed85324b2a0ff510920ee76'
+    sha1 '1943fd22417ce1e51babbdcd7681e66a794a8da3'
   else
     sha1 '24cd2f06439c76d41d982a7384fe8a0fe5313b54'
   end
@@ -20,9 +20,9 @@ class Guile < Formula
   # GNU Readline is required; libedit won't work.
   depends_on 'readline'
 
-  def install
-    fails_with_llvm "Segfaults during compilation."
+  fails_with_llvm "Segfaults during compilation."
 
+  def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-libreadline-prefix=#{Formula.factory('readline').prefix}"

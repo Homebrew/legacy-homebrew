@@ -10,13 +10,13 @@ class Proj < Formula
   homepage 'http://trac.osgeo.org/proj/'
   md5 '927d34623b52e0209ba2bfcca18fe8cd'
 
+  fails_with_llvm
+
   def skip_clean? path
     path.extname == '.la'
   end
 
   def install
-    fails_with_llvm
-
     # The datum grid files are required to support datum shifting
     d = Dir.getwd
     ProjDatumgrid.new.brew { cp Dir["*"], "#{d}/nad/" }
@@ -25,4 +25,3 @@ class Proj < Formula
     system "make install"
   end
 end
-

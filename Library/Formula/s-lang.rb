@@ -1,9 +1,9 @@
 require 'formula'
 
 class SLang < Formula
-  url 'ftp://space.mit.edu/pub/davis/slang/v2.2/slang-2.2.3.tar.bz2'
+  url 'ftp://space.mit.edu/pub/davis/slang/v2.2/slang-2.2.4.tar.bz2'
   homepage 'http://www.jedsoft.org/slang/'
-  md5 '17e1864de999ae9535a9f7350a010427'
+  md5 '7fcfd447e378f07dd0c0bae671fe6487'
 
   depends_on 'pcre' => :optional
   depends_on 'oniguruma' => :optional
@@ -11,7 +11,7 @@ class SLang < Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-png=/usr/X11R6"
+                          "--with-png=/usr/X11"
     ENV.j1
     system "make"
     system "make install"

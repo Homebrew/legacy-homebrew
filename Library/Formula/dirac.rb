@@ -5,8 +5,9 @@ class Dirac < Formula
   md5 'a57c2c5e58062d437d9ab13dffb28f0f'
   homepage 'http://diracvideo.org/'
 
+  fails_with_llvm
+
   def install
-    fails_with_llvm
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end

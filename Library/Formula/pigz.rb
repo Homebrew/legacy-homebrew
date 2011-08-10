@@ -8,5 +8,7 @@ class Pigz < Formula
   def install
     system "make"
     bin.install ["pigz", "unpigz"]
+    man1.install ["pigz.1"]
+    ln_s 'pigz.1', man1+'unpigz.1'
   end
 end

@@ -8,7 +8,8 @@ class GnuTime < Formula
   def install
     system "./configure", "--program-prefix=g",
                           "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+                          "--mandir=#{man}",
+                          "--info=#{info}"
     system "make install"
   end
 end

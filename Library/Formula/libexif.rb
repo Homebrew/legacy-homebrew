@@ -5,8 +5,9 @@ class Libexif < Formula
   homepage 'http://libexif.sourceforge.net/'
   md5 '56144a030a4c875c600b1ccf713f69f7'
 
+  fails_with_llvm "segfault with llvm"
+
   def install
-    fails_with_llvm "segfault with llvm"
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mpd <Formula
+class Mpd < Formula
   url 'http://downloads.sourceforge.net/project/musicpd/mpd/0.16.2/mpd-0.16.2.tar.bz2'
   homepage 'http://mpd.wikia.com'
   md5 'dedb75cef8e489f3de5231031876fb77'
@@ -34,7 +34,7 @@ class Mpd <Formula
             "--enable-fluidsynth",
             "--enable-zip",
             "--enable-lame-encoder"]
-    args << "--disable-curl" if MACOS_VERSION <= 10.5
+    args << "--disable-curl" if MacOS.leopard?
     args << "--enable-lastfm" if ARGV.include?("--lastfm")
 
     system "./configure", *args

@@ -8,9 +8,9 @@ class Igraph < Formula
   depends_on 'glpk'
   depends_on 'gmp'
 
-  def install
-    fails_with_llvm "Segfault while compiling."
+  fails_with_llvm "Segfault while compiling."
 
+  def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end

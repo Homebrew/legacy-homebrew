@@ -15,9 +15,9 @@ end
 def audit_formula_text name, text
   problems = []
 
-  if text =~ /<Formula/
-    problems << " * We now space class inheritance: class Foo < Formula"
-  end if strict?
+  if text =~ /<(Formula|AmazonWebServicesFormula)/
+    problems << " * Use a space in class inheritance: class Foo < #{$1}"
+  end
 
   # Commented-out cmake support from default template
   if (text =~ /# depends_on 'cmake'/) or (text =~ /# system "cmake/)
@@ -107,7 +107,7 @@ def audit_formula_text name, text
   end if strict?
 
   # Formula depends_on gfortran
-  if text =~ /\s*depends_on\s*(\'|\")gfortran(\'|\")\s*$/
+  if text =~ /^\s*depends_on\s*(\'|\")gfortran(\'|\").*/
     problems << " * Use ENV.fortran during install instead of depends_on 'gfortran'"
   end unless name == "gfortran" # Gfortran itself has this text in the caveats
 
@@ -147,11 +147,26 @@ def audit_formula_options f, text
 
   if documented_options.length > 0
     documented_options.each do |o|
+      next if o == '--universal'
       problems << " * Option #{o} is unused" unless options.include? o
     end
   end
 
   return problems
+end
+
+def audit_formula_version f, text
+  # Version as defined in the DSL (or nil)
+  version_text = f.class.send('version').to_s
+
+  # Version as determined from the URL
+  version_url = Pathname.new(f.url).version
+
+  if version_url == version_text
+    return [" * version #{version_text} is redundant with version scanned from url"]
+  end
+
+  return []
 end
 
 def audit_formula_urls f
@@ -198,6 +213,13 @@ def audit_formula_urls f
     end
   end if strict?
 
+  # Check for git:// urls; https:// is preferred.
+  urls.each do |p|
+    if p =~ %r[^git://github\.com/]
+      problems << " * Use https:// URLs for accessing repositories on GitHub."
+    end
+  end
+
   return problems
 end
 
@@ -233,12 +255,25 @@ def audit_formula_instance f
   return problems
 end
 
+def audit_formula_caveats f
+  problems = []
+
+  if f.caveats.to_s =~ /^\s*\$\s+/
+    problems << " * caveats should not use '$' prompts in multiline commands."
+  end if strict?
+
+  return problems
+end
+
 module Homebrew extend self
   def audit
+    errors = false
+
     ff.each do |f|
       problems = []
       problems += audit_formula_instance f
       problems += audit_formula_urls f
+      problems += audit_formula_caveats f
 
       perms = File.stat(f.path).mode
       if perms.to_s(8) != "100644"
@@ -260,12 +295,16 @@ module Homebrew extend self
 
       problems += audit_formula_text(f.name, text_without_patch)
       problems += audit_formula_options(f, text_without_patch)
+      problems += audit_formula_version(f, text_without_patch) if strict?
 
       unless problems.empty?
+        errors = true
         puts "#{f.name}:"
         puts problems * "\n"
         puts
       end
     end
+
+    exit 1 if errors
   end
 end

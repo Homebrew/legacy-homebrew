@@ -30,7 +30,7 @@ class Openimageio < Formula
       "#define BOOST_FILESYSTEM_VERSION 2\n#include <boost/filesystem.hpp>"
 
     # Add include path for libpng explicitly
-    system "cmake src/ #{std_cmake_parameters} -DUSE_QT:BOOL=OFF -DEMBEDPLUGINS:BOOL=ON -DCMAKE_CXX_FLAGS=-I/usr/X11R6/include"
+    system "cmake src/ #{std_cmake_parameters} -DUSE_QT:BOOL=OFF -DEMBEDPLUGINS:BOOL=ON -DCMAKE_CXX_FLAGS=-I/usr/X11/include"
     system "make install"
   end
 end

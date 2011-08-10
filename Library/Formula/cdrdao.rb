@@ -17,8 +17,9 @@ class Cdrdao < Formula
     "http://sourceforge.net/tracker/download.php?group_id=2171&atid=302171&file_id=369387&aid=2981804"
   end
 
+  fails_with_llvm "Segfault while linking", :build => 2326
+
   def install
-    fails_with_llvm "Segfault while linking", :build => 2326
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--mandir=#{man}"
     system "make install"

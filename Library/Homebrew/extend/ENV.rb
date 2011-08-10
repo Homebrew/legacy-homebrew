@@ -18,15 +18,19 @@ module HomebrewEnvExtension
       self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
     end
 
-    xcode_path = `/usr/bin/xcode-select -print-path`.chomp
-    xcode_path = "/Developer" if xcode_path.to_s.empty?
-    if MACOS_VERSION >= 10.6 and (self['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm')
-      self['CC'] = "#{xcode_path}/usr/bin/llvm-gcc"
-      self['CXX'] = "#{xcode_path}/usr/bin/llvm-g++"
+    if MACOS_VERSION >= 10.6 and self.use_clang?
+      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/clang"
+      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/clang++"
+      cflags = ['-O3'] # -O4 makes the linker fail on some formulae
+    elsif MACOS_VERSION >= 10.6 and self.use_llvm?
+      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
+      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
       cflags = ['-O4'] # link time optimisation baby!
-    elsif MACOS_VERSION >= 10.6 and (self['HOMEBREW_USE_GCC'] or ARGV.include? '--use-gcc')
-      self['CC'] = "#{xcode_path}/usr/bin/gcc"
-      self['CXX'] = "#{xcode_path}/usr/bin/g++"
+    elsif MACOS_VERSION >= 10.6 and self.use_gcc?
+      # Xcode 4 makes gcc and g++ #{MacOS.xcode_prefix}/usr/bin/ links to llvm versions
+      # so we need to use gcc-4.2 and g++-4.2 for real non-llvm compilers
+      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/gcc-4.2"
+      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/g++-4.2"
       cflags = ['-O3']
     else
       # If these aren't set, many formulae fail to build
@@ -41,12 +45,12 @@ module HomebrewEnvExtension
     # don't react properly to that.
     self['LD'] = self['CC']
 
-    # optimise all the way to eleven, references:
+    # Optimise all the way to eleven, references:
     # http://en.gentoo-wiki.com/wiki/Safe_Cflags/Intel
     # http://forums.mozillazine.org/viewtopic.php?f=12&t=577299
     # http://gcc.gnu.org/onlinedocs/gcc-4.2.1/gcc/i386-and-x86_002d64-Options.html
-    # we don't set, eg. -msse3 because the march flag does that for us
-    #   http://gcc.gnu.org/onlinedocs/gcc-4.3.3/gcc/i386-and-x86_002d64-Options.html
+    # We don't set, eg. -msse3 because the march flag does that for us:
+    # http://gcc.gnu.org/onlinedocs/gcc-4.3.3/gcc/i386-and-x86_002d64-Options.html
     if MACOS_VERSION >= 10.6
       case Hardware.intel_family
       when :nehalem, :penryn, :core2
@@ -105,6 +109,11 @@ module HomebrewEnvExtension
     # Sometimes you just want a small one
     remove_from_cflags(/-O./)
     append_to_cflags '-Os'
+  end
+  def Og
+    # Sometimes you want a debug build
+    remove_from_cflags(/-O./)
+    append_to_cflags '-g -O0'
   end
 
   def gcc_4_0_1
@@ -208,10 +217,10 @@ Please take one of the following actions:
     # There are some config scripts (e.g. freetype) here that should go in the path
     prepend 'PATH', '/usr/X11/bin', ':'
     # CPPFLAGS are the C-PreProcessor flags, *not* C++!
-    append 'CPPFLAGS', '-I/usr/X11R6/include'
-    append 'LDFLAGS', '-L/usr/X11R6/lib'
+    append 'CPPFLAGS', '-I/usr/X11/include'
+    append 'LDFLAGS', '-L/usr/X11/lib'
     # CMake ignores the variables above
-    append 'CMAKE_PREFIX_PATH', '/usr/X11R6', ':'
+    append 'CMAKE_PREFIX_PATH', '/usr/X11', ':'
   end
   alias_method :libpng, :x11
 
@@ -242,7 +251,7 @@ Please take one of the following actions:
     append 'LDFLAGS', '-arch i386'
   end
 
-  # i386 and x86_64 only, no PPC
+  # i386 and x86_64 (no PPC)
   def universal_binary
     append_to_cflags '-arch i386 -arch x86_64'
     self.O3 if self['CFLAGS'].include? '-O4' # O4 seems to cause the build to fail
@@ -284,5 +293,15 @@ Please take one of the following actions:
   def remove_from_cflags f
     remove 'CFLAGS', f
     remove 'CXXFLAGS', f
+  end
+
+  def use_clang?
+    self['HOMEBREW_USE_CLANG'] or ARGV.include? '--use-clang'
+  end
+  def use_gcc?
+    self['HOMEBREW_USE_GCC'] or ARGV.include? '--use-gcc'
+  end
+  def use_llvm?
+    self['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm'
   end
 end

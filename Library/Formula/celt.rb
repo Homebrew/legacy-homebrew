@@ -7,8 +7,9 @@ class Celt < Formula
 
   depends_on 'libogg' => :optional
 
+  fails_with_llvm "1 test failed with llvm-gcc"
+
   def install
-    fails_with_llvm "1 test failed with llvm-gcc"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-new-plc"

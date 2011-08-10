@@ -1,9 +1,9 @@
 require 'formula'
 
 class Tintin < Formula
-  url 'http://downloads.sourceforge.net/project/tintin/TinTin%2B%2B%20Source%20Code/2.00.5/tintin-2.00.5.tar.gz'
+  url 'http://downloads.sourceforge.net/project/tintin/TinTin%2B%2B%20Source%20Code/2.00.6/tintin-2.00.6.tar.gz'
   homepage 'http://tintin.sf.net'
-  md5 'b57b824fc7bb9f25705816fb62027ec1'
+  md5 '96c8505ad2b28ff9189eff02de89de25'
 
   # From version 1.91.1, pcre is required to compile TinTin++
   #   http://tintin.sourceforge.net/board/viewtopic.php?t=786

@@ -17,8 +17,7 @@ class Dcmtk < Formula
     ENV.m64 if MacOS.prefer_64_bit?
     ENV.x11
     system "./configure", "--disable-dependency-tracking", "--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--disable-threads"
+                          "--prefix=#{prefix}"
     system "make all"
     if ARGV.include? '--install-all'
       system "make install-all"

@@ -1,12 +1,16 @@
 require 'formula'
 
 class Ejabberd < Formula
-  url "http://www.process-one.net/downloads/ejabberd/2.1.5/ejabberd-2.1.5.tar.gz"
+  url "http://www.process-one.net/downloads/ejabberd/2.1.8/ejabberd-2.1.8.tar.gz"
   homepage 'http://www.ejabberd.im'
-  md5 '2029ceca45584d704ca821a771d6d928'
+  md5 'd7dae7e5a7986c5ad71beac2798cc406'
 
-  depends_on "openssl" if MACOS_VERSION < 10.6
+  depends_on "openssl" if MacOS.leopard?
   depends_on "erlang"
+
+  def options
+    [['--odbc', "Build with ODBC support."]]
+  end
 
   def install
     ENV['TARGET_DIR'] = ENV['DESTDIR'] = "#{lib}/ejabberd/erlang/lib/ejabberd-#{version}"
@@ -18,10 +22,12 @@ class Ejabberd < Formula
               "--sysconfdir=#{etc}",
               "--localstatedir=#{var}"]
 
-      if MACOS_VERSION < 10.6
+      if MacOS.leopard?
         openssl = Formula.factory('openssl')
         args << "--with-openssl=#{openssl.prefix}"
       end
+
+      args << "--enable-odbc" if ARGV.include? '--odbc'
 
       system "./configure", *args
       system "make"

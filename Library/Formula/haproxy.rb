@@ -1,8 +1,8 @@
 require 'formula'
 
 class Haproxy < Formula
-  url 'http://haproxy.1wt.eu/download/1.4/src/haproxy-1.4.8.tar.gz'
-  md5 '104f4985b37bd9bac7a33e20fb6aaadf'
+  url 'http://haproxy.1wt.eu/download/1.4/src/haproxy-1.4.15.tar.gz'
+  md5 'c1b4fc6028c6d8e23dde8c91ff47eabe'
   homepage 'http://haproxy.1wt.eu'
 
   def install

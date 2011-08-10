@@ -12,6 +12,12 @@ class BashCompletion < Formula
       s.gsub! 'readlink -f', "readlink"
     end
 
+    if ARGV.build_head?
+      system "aclocal"
+      system "autoconf"
+      system "automake --add-missing"
+    end
+
     system "./configure", "--prefix=#{prefix}"
     system "make install"
 
@@ -21,14 +27,14 @@ class BashCompletion < Formula
     #   File.exists? "#{etc}/bash_completion.d/brew_bash_completion.sh" or File.symlink? "#{etc}/bash_completion.d/brew_bash_completion.sh"
   end
 
-  def caveats; <<-EOS
-Add the following lines to your ~/.bash_profile file:
-  if [ -f `brew --prefix`/etc/bash_completion ]; then
-    . `brew --prefix`/etc/bash_completion
-  fi
+  def caveats; <<-EOS.undent
+    Add the following lines to your ~/.bash_profile file:
+      if [ -f `brew --prefix`/etc/bash_completion ]; then
+        . `brew --prefix`/etc/bash_completion
+      fi
 
-To install Homebrew's own completion script:
-  ln "#{HOMEBREW_PREFIX}/Library/Contributions/brew_bash_completion.sh" "#{etc}/bash_completion.d"
+    To install Homebrew's own completion script:
+      ln -s "#{HOMEBREW_PREFIX}/Library/Contributions/brew_bash_completion.sh" "#{etc}/bash_completion.d"
     EOS
   end
 end

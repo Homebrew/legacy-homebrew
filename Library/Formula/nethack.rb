@@ -16,6 +16,8 @@ class Nethack < Formula
   version '3.4.3'
   md5 '21479c95990eefe7650df582426457f9'
 
+  fails_with_llvm
+
   # Don't remove save folder
   skip_clean 'libexec/save'
 
@@ -24,7 +26,6 @@ class Nethack < Formula
   end
 
   def install
-    fails_with_llvm
     # Build everything in-order; no multi builds.
     ENV.deparallelize
 

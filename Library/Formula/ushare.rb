@@ -17,7 +17,9 @@ class Ushare < Formula
 
   def install
     # Need to explicitly add gettext here.
+    gettext = Formula.factory("gettext")
     ENV.append 'LDFLAGS', "-lintl"
+    ENV.append 'CFLAGS', "-I#{gettext.include}"
 
     inreplace 'configure', /config.h/, 'src/config.h'
     system "./configure", "--disable-debug",

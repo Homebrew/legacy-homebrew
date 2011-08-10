@@ -23,14 +23,18 @@ module Homebrew extend self
 
   def check_writable_install_location
     raise "Cannot write to #{HOMEBREW_CELLAR}" if HOMEBREW_CELLAR.exist? and not HOMEBREW_CELLAR.writable?
-    raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable?
+    raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable? or HOMEBREW_PREFIX.to_s == '/usr/local'
   end
 
   def check_cc
-    if MACOS_VERSION >= 10.6
-      opoo "You should upgrade to Xcode 3.2.3" if MacOS.llvm_build_version < RECOMMENDED_LLVM
+    if MacOS.snow_leopard?
+      if MacOS.llvm_build_version < RECOMMENDED_LLVM
+        opoo "You should upgrade to Xcode 3.2.6"
+      end
     else
-      opoo "You should upgrade to Xcode 3.1.4" if (MacOS.gcc_40_build_version < RECOMMENDED_GCC_40) or (MacOS.gcc_42_build_version < RECOMMENDED_GCC_42)
+      if (MacOS.gcc_40_build_version < RECOMMENDED_GCC_40) or (MacOS.gcc_42_build_version < RECOMMENDED_GCC_42)
+        opoo "You should upgrade to Xcode 3.1.4"
+      end
     end
   rescue
     # the reason we don't abort is some formula don't require Xcode

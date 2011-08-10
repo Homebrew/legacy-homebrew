@@ -1,15 +1,15 @@
 require 'formula'
 
 class Htmlcompressor < Formula
-  url 'http://htmlcompressor.googlecode.com/files/htmlcompressor-0.9.9.jar'
+  url 'http://htmlcompressor.googlecode.com/files/htmlcompressor-1.4.2.jar'
   homepage 'http://code.google.com/p/htmlcompressor/'
-  md5 'cbfb5ec29d6f2c50b7aea28de8bc1227'
+  md5 '2afe7aba064c619a761541ab466cca28'
 
   def install
-    libexec.install "htmlcompressor-0.9.9.jar"
+    libexec.install "htmlcompressor-1.4.2.jar"
     (bin+'htmlcompressor').write <<-EOS.undent
       #!/bin/sh
-      java -jar "#{libexec}/htmlcompressor-0.9.9.jar" $@
+      java -jar "#{libexec}/htmlcompressor-1.4.2.jar" $@
     EOS
   end
 end

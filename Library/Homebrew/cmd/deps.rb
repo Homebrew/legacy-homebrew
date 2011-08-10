@@ -4,12 +4,12 @@ module Homebrew extend self
   def deps
     if ARGV.include? '--all'
       Formula.each do |f|
-        # TODO add a space after the colon??
-        puts "#{f.name}:#{f.deps*' '}"
+        puts "#{f.name}: #{f.deps*' '}"
       end
     else
-      func = if ARGV.one? then :deps else :recursive_deps end
-      puts ARGV.formulae.map(&func).intersection.sort
+      all_deps = ARGV.formulae.map{ |f| ARGV.one? ? f.deps : f.recursive_deps }.intersection
+      all_deps.sort! unless ARGV.include? "-n"
+      puts all_deps
     end
   end
 end

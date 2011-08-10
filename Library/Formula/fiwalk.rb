@@ -1,9 +1,9 @@
 require 'formula'
 
 class Fiwalk < Formula
-  url 'http://afflib.org/downloads/fiwalk-0.6.5.tar.gz'
+  url 'http://afflib.org/downloads/fiwalk-0.6.15.tar.gz'
   homepage 'http://afflib.org/software/fiwalk'
-  md5 'b5ca30765b25455006c82725b33af142'
+  md5 '8e280df8e8d18b22154b6b37ab751b2b'
 
   depends_on 'sleuthkit'
   depends_on 'afflib'

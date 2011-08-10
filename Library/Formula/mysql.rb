@@ -2,76 +2,128 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.5/en/'
-  url 'http://ftp.sunet.se/pub/unix/databases/relational/mysql/Downloads/MySQL-5.5/mysql-5.5.10.tar.gz'
-  md5 'ee604aff531ff85abeb10cf332c1355a'
+  url 'http://downloads.mysql.com/archives/mysql-5.5/mysql-5.5.14.tar.gz'
+  md5 '19f43bb9c72b1b5f7ff86a7f921c9244'
 
   depends_on 'cmake' => :build
   depends_on 'readline'
+  depends_on 'pidof'
+
+  fails_with_llvm "https://github.com/mxcl/homebrew/issues/issue/144"
+
+  skip_clean :all # So "INSTALL PLUGIN" can work.
 
   def options
     [
-      ['--with-tests', "Keep tests when installing."],
-      ['--with-bench', "Keep benchmark app when installing."],
-      ['--universal', "Make mysql a universal binary"]
+      ['--with-tests', "Build with unit tests."],
+      ['--with-embedded', "Build the embedded server."],
+      ['--with-libedit', "Compile with EditLine wrapper instead of readline"],
+      ['--universal', "Make mysql a universal binary"],
+      ['--enable-local-infile', "Build with local infile loading support"]
     ]
   end
 
+  # The CMAKE patches are so that on Lion we do not detect a private
+  # pthread_init function as linkable.
   def patches
     DATA
   end
 
   def install
-    fails_with_llvm "https://github.com/mxcl/homebrew/issues/issue/144"
+    # Make sure the var/msql directory exists
+    (var+"mysql").mkpath
 
-    args = [
-      ".",
-      "-DCMAKE_INSTALL_PREFIX='#{prefix}'",
-      "-DMYSQL_DATADIR='#{var}/mysql/data'",
-      "-DINSTALL_MANDIR='#{man}'",
-      "-DWITH_SSL=yes",
-      "-DDEFAULT_CHARSET='utf8'",
-      "-DDEFAULT_COLLATION='utf8_general_ci'",
-      "-DSYSCONFDIR='#{HOMEBREW_PREFIX}/etc'"]
+    args = [".",
+            "-DCMAKE_INSTALL_PREFIX=#{prefix}",
+            "-DMYSQL_DATADIR=#{var}/mysql",
+            "-DINSTALL_MANDIR=#{man}",
+            "-DINSTALL_DOCDIR=#{doc}",
+            "-DINSTALL_INFODIR=#{info}",
+            # CMake prepends prefix, so use share.basename
+            "-DINSTALL_MYSQLSHAREDIR=#{share.basename}/#{name}",
+            "-DWITH_SSL=yes",
+            "-DDEFAULT_CHARSET=utf8",
+            "-DDEFAULT_COLLATION=utf8_general_ci",
+            "-DSYSCONFDIR=#{etc}"]
 
-    args << "-DWITH_UNIT_TESTS=OFF" if not ARGV.include? '--with-tests'
-    args << "-DINSTALL_SQLBENCHDIR=" if not ARGV.include? '--with-bench'
+    # To enable unit testing at build, we need to download the unit testing suite
+    if ARGV.include? '--with-tests'
+      args << "-DENABLE_DOWNLOADS=ON"
+    else
+      args << "-DWITH_UNIT_TESTS=OFF"
+    end
 
-    # Make universal for bindings to universal applications
-    args << "-DCMAKE_OSX_ARCHITECTURES='ppc;i386'" if ARGV.include? '--universal'
+    # Build the embedded server
+    args << "-DWITH_EMBEDDED_SERVER=ON" if ARGV.include? '--with-embedded'
+
+    # Compile with readline unless libedit is explicitly chosen
+    args << "-DWITH_READLINE=yes" unless ARGV.include? '--with-libedit'
+
+    # Make universal for binding to universal applications
+    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if ARGV.build_universal?
+
+    # Build with local infile loading support
+    args << "-DENABLED_LOCAL_INFILE=1" if ARGV.include? '--enable-local-infile'
 
     system "cmake", *args
     system "make"
     system "make install"
 
     (prefix+'com.mysql.mysqld.plist').write startup_plist
+
+    # Don't create databases inside of the prefix!
+    # See: https://github.com/mxcl/homebrew/issues/4975
+    rm_rf prefix+'data'
+
+    # Link the setup script into bin
+    ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+    # Fix up the control script and link into bin
+    inreplace "#{prefix}/support-files/mysql.server" do |s|
+      s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
+    end
+    ln_s "#{prefix}/support-files/mysql.server", bin
   end
 
   def caveats; <<-EOS.undent
-    Set up databases with:
+    Set up databases to run AS YOUR USER ACCOUNT with:
         unset TMPDIR
-        cd #{prefix}
-        scripts/mysql_install_db --basedir=#{prefix} --user=mysql --tmpdir=/tmp
+        mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix mysql)" --datadir=#{var}/mysql --tmpdir=/tmp
 
-    Running the mysql_install_db command with the user and tmpdir option will
-        ensure that there is no issue creating your system databases.
+    To set up base tables in another folder, or use a different user to run
+    mysqld, view the help for mysqld_install_db:
+        mysql_install_db --help
 
-    If this is your first install, automatically load on login with:
+    and view the MySQL documentation:
+      * http://dev.mysql.com/doc/refman/5.5/en/mysql-install-db.html
+      * http://dev.mysql.com/doc/refman/5.5/en/default-privileges.html
+
+    To run as, for instance, user "mysql", you may need to `sudo`:
+        sudo mysql_install_db ...options...
+
+    Start mysqld manually with:
+        mysql.server start
+
+        Note: if this fails, you probably forgot to run the first two steps up above
+
+    A "/etc/my.cnf" from another install may interfere with a Homebrew-built
+    server starting up correctly.
+
+    To connect:
+        mysql -uroot
+
+    To launch on startup:
+    * if this is your first install:
         mkdir -p ~/Library/LaunchAgents
         cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
 
-    If this is an upgrade and you already have the com.mysql.mysqld.plist loaded:
+    * if this is an upgrade and you already have the com.mysql.mysqld.plist loaded:
         launchctl unload -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
         cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
 
-    Note on upgrading:
-        We overwrite any existing com.mysql.mysqld.plist in ~/Library/LaunchAgents
-        if we are upgrading because previous versions of this brew created the
-        plist with a version specific program argument.
+    You may also need to edit the plist to use the correct "UserName".
 
-    Or start manually with:
-        mysqld_safe &
     EOS
   end
 
@@ -125,3 +177,21 @@ index efc8254..8964b70 100644
  do
    # The first option we might strip will always have a space before it because
    # we set -I$pkgincludedir as the first option
+diff --git a/configure.cmake b/configure.cmake
+index 0014c1d..21fe471 100644
+--- a/configure.cmake
++++ b/configure.cmake
+@@ -391,7 +391,11 @@ CHECK_FUNCTION_EXISTS (pthread_attr_setscope HAVE_PTHREAD_ATTR_SETSCOPE)
+ CHECK_FUNCTION_EXISTS (pthread_attr_setstacksize HAVE_PTHREAD_ATTR_SETSTACKSIZE)
+ CHECK_FUNCTION_EXISTS (pthread_condattr_create HAVE_PTHREAD_CONDATTR_CREATE)
+ CHECK_FUNCTION_EXISTS (pthread_condattr_setclock HAVE_PTHREAD_CONDATTR_SETCLOCK)
+-CHECK_FUNCTION_EXISTS (pthread_init HAVE_PTHREAD_INIT)
++
++IF (NOT CMAKE_OSX_SYSROOT)
++    CHECK_FUNCTION_EXISTS (pthread_init HAVE_PTHREAD_INIT)
++ENDIF (NOT CMAKE_OSX_SYSROOT)
++
+ CHECK_FUNCTION_EXISTS (pthread_key_delete HAVE_PTHREAD_KEY_DELETE)
+ CHECK_FUNCTION_EXISTS (pthread_rwlock_rdlock HAVE_PTHREAD_RWLOCK_RDLOCK)
+ CHECK_FUNCTION_EXISTS (pthread_sigmask HAVE_PTHREAD_SIGMASK)
+

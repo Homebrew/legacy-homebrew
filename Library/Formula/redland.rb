@@ -10,11 +10,11 @@ class Redland < Formula
   depends_on 'rasqal'
   depends_on 'berkeley-db' => :optional
 
+  fails_with_llvm
+
   def install
-    fails_with_llvm
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--with-sqlite=yes",
                           "--with-mysql=no",
                           "--with-bdb=#{HOMEBREW_PREFIX}"

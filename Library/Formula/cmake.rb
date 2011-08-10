@@ -1,9 +1,20 @@
 require 'formula'
 
 class Cmake < Formula
-  url 'http://www.cmake.org/files/v2.8/cmake-2.8.4.tar.gz'
-  md5 '209b7d1d04b2e00986538d74ba764fcf'
+  url 'http://www.cmake.org/files/v2.8/cmake-2.8.5.tar.gz'
+  md5 '3c5d32cec0f4c2dc45f4c2e84f4a20c5'
   homepage 'http://www.cmake.org/'
+
+  def patches
+    # CMake 2.8.5 fails to find some Qt libraries that CMake 2.8.4 could find.
+    # The following patch corrects this behavior. See discussion on the CMake
+    # mailing list:
+    #
+    #   http://cmake.3232098.n2.nabble.com/FindQt4-errors-out-when-locating-QtUITools-under-CMake-2-8-5-td6619091.html
+    #
+    # Patch can be removed after next CMake release.
+    {:p1 => "http://cmake.org/gitweb?p=cmake.git;a=patch;h=702538eaa3315f3fcad9f1daea01e6a83928967b"}
+  end
 
   def install
     # A framework-installed expat will be detected and mess things up.
@@ -13,6 +24,14 @@ class Cmake < Formula
         This will be picked up by Cmake's build system and likey cause the
         build to fail, trying to link to a 32-bit version of expat.
         You may need to move this file out of the way for this brew to work.
+      EOS
+    end
+
+    if ENV['GREP_OPTIONS'] == "--color=always"
+      opoo "GREP_OPTIONS is set to '--color=always'"
+      puts <<-EOS.undent
+        Having `GREP_OPTIONS` set this way causes Cmake builds to fail.
+        You will need to `unset GREP_OPTIONS` before brewing.
       EOS
     end
 

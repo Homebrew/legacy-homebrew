@@ -25,28 +25,22 @@ def magick_plus_plus?
     ARGV.include? '--with-magick-plus-plus'
 end
 
-def x11?
-  # I used this file because old Xcode seems to lack it, and its that old
-  # Xcode that loads of people seem to have installed still
-  File.file? '/usr/X11/include/ft2build.h'
-end
-
 class Imagemagick < Formula
   # Using an unofficial Git mirror to work around:
   # * Stable tarballs disappearing
   # * Bad https cert on official SVN repo
-  # Send update requests to https://github.com/adamv/ImageMagick
-  # Be sure to include the ImageMagick SVN revision # for the new version.
-  url 'git://github.com/adamv/ImageMagick.git',
-          :ref => 'fdb125591a17a4002798742014118d5cfee44394'
-  version '6.6.7-10'
+  version '6.7.1-1'
+  url "https://github.com/trevor/ImageMagick/tarball/#{version}"
+  md5 '9c71dfbddc42b78a0d8db8acdb534d37'
   homepage 'http://www.imagemagick.org'
-  head 'git://github.com/adamv/ImageMagick.git'
+  head 'https://github.com/trevor/ImageMagick.git'
+
+  bottle "https://downloads.sf.net/project/machomebrew/Bottles/imagemagick-#{version}-bottle.tar.gz"
+  bottle_sha1 'bff8db4da4bd255b01b483e0629e093ee76a9eb9'
 
   depends_on 'jpeg'
-  depends_on 'libpng' unless x11?
 
-  depends_on 'ghostscript' => :recommended if ghostscript_srsly? and x11?
+  depends_on 'ghostscript' => :recommended if ghostscript_srsly?
 
   depends_on 'libtiff' => :optional
   depends_on 'little-cms' => :optional
@@ -81,7 +75,7 @@ class Imagemagick < Formula
              "--disable-static",
              "--with-modules"]
 
-    args << "--disable-openmp" if MACOS_VERSION < 10.6 or disable_openmp?
+    args << "--disable-openmp" if MacOS.leopard? or disable_openmp?
     args << "--without-gslib" unless ghostscript_srsly?
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
                 unless ghostscript_srsly? or ghostscript_fonts?
@@ -91,34 +85,18 @@ class Imagemagick < Formula
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
     system "./configure", *args
     system "make install"
-
-    # We already copy these into the keg root
-    %w[NEWS.txt LICENSE ChangeLog].each {|f| (share+"ImageMagick/#{f}").unlink}
   end
 
   def caveats
-    s = <<-EOS.undent
-    We are downloading from an unofficial GitHub mirror because of:
-    * Stable tarballs disappearing
-    * Bad https cert on official SVN repo
-    EOS
-
-    unless x11?
-      s += <<-EOS.undent
-      You don't have X11 from the Xcode DMG installed. Consequently Imagemagick is less fully featured.
-
-      EOS
-    end
     unless ghostscript_fonts? or ghostscript_srsly?
-      s += <<-EOS.undent
-      Some tools will complain if the ghostscript fonts are not installed in:
+      <<-EOS.undent
+      Some tools will complain unless the ghostscript fonts are installed to:
         #{HOMEBREW_PREFIX}/share/ghostscript/fonts
       EOS
     end
-    return s
   end
 
   def test
-    system "identify", "/Library/Application Support/Apple/iChat Icons/Flags/Argentina.gif"
+    system "#{bin}/identify", "/Library/Application Support/Apple/iChat Icons/Flags/Argentina.gif"
   end
 end

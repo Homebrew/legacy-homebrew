@@ -1,9 +1,9 @@
 require 'formula'
 
 class Snappy < Formula
-  url 'http://snappy.googlecode.com/files/snappy-1.0.0.tar.gz'
+  url 'http://snappy.googlecode.com/files/snappy-1.0.3.tar.gz'
   homepage 'http://snappy.googlecode.com'
-  md5 '9d83bdcf0c79a8de608fa969c2909204'
+  md5 '9d328e39edbf01c0906c6293234a7637'
 
   depends_on 'pkg-config' => :build
 

@@ -16,8 +16,12 @@ class FormulaInstaller
     end
 
     unless ignore_deps
-      @f.recursive_deps.each do |dep|
-        FormulaInstaller.install_formula dep unless dep.installed?
+      needed_deps = @f.recursive_deps.reject {|d| d.installed?}
+      unless needed_deps.empty?
+        puts "Also installing dependencies: "+needed_deps*", "
+        needed_deps.each do |dep|
+          FormulaInstaller.install_formula dep
+        end
       end
       begin
         FormulaInstaller.check_external_deps @f
@@ -71,8 +75,8 @@ class FormulaInstaller
              '/usr/bin/ruby',
              '-I', Pathname.new(__FILE__).dirname,
              '-rinstall',
-             f.path,
              '--',
+             f.path,
              *ARGV.options_only
       rescue Exception => e
         Marshal.dump(e, write)

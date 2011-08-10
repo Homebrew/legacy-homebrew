@@ -28,7 +28,7 @@ module Homebrew extend self
     # Don't clean up keg-only brews for now.
     # Formulae link directly to them, so cleaning up old
     # ones will break already compiled software.
-    if f.keg_only?
+    if f.keg_only? and not ARGV.force?
       opoo "Skipping keg-only #{f.name}" if rack.children.length > 1
       return
     end

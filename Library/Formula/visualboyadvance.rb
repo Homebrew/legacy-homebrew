@@ -8,10 +8,11 @@ class Visualboyadvance < Formula
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
 
+  fails_with_llvm "Video scalers don't link with LLVM."
+
   def patches; DATA; end
 
   def install
-    fails_with_llvm "Video scalers don't link with LLVM."
     ENV.x11 # for libpng
 
     system "./configure", "--disable-dependency-tracking", "--disable-debug",
