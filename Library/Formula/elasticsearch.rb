@@ -51,8 +51,8 @@ class Elasticsearch < Formula
 
     See the #{prefix}/config/elasticsearch.yml file for configuration.
 
-    You'll find the ElasticSearch log here:
-        #{var}/log/elasticsearch.log
+    You'll find the ElasticSearch log files here:
+        #{var}/log/elasticsearch
 
     The folder with all the data is here:
         #{var}/data/elasticsearch
@@ -78,6 +78,8 @@ class Elasticsearch < Formula
             <string>#{bin}/elasticsearch</string>
             <string>-f</string>
             <string>-D es.config=#{prefix}/config/elasticsearch.yml</string>
+            <string>-D es.path.data=#{var}/data/elasticsearch</string>
+            <string>-D es.path.logs=#{var}/log/elasticsearch</string>
             <string>-p #{var}/run/elasticsearch.pid</string>
           </array>
           <key>RunAtLoad</key>
@@ -86,10 +88,6 @@ class Elasticsearch < Formula
           <string>#{`whoami`.chomp}</string>
           <key>WorkingDirectory</key>
           <string>#{var}</string>
-          <key>StandardErrorPath</key>
-          <string>#{var}/log/elasticsearch.log</string>
-          <key>StandardOutPath</key>
-          <string>#{var}/log/elasticsearch.log</string>
         </dict>
       </plist>
     PLIST
