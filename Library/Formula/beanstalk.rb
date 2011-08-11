@@ -7,6 +7,10 @@ class Beanstalk < Formula
 
   depends_on 'libevent'
 
+  def patches
+    "https://github.com/kr/beanstalkd/commit/976ec8ba8e70e3b5027f441de529f479c11c8507.patch"
+  end
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--with-event=#{HOMEBREW_PREFIX}"
