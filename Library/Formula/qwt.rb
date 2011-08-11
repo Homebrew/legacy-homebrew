@@ -1,9 +1,9 @@
 require 'formula'
 
 class Qwt < Formula
-  url 'http://sourceforge.net/projects/qwt/files/qwt/6.0.0/qwt-6.0.0.tar.bz2'
+  url 'http://sourceforge.net/projects/qwt/files/qwt/6.0.1/qwt-6.0.1.tar.bz2'
   homepage 'http://qwt.sourceforge.net/'
-  md5 '1795cf075ebce3ae048255d2060cbac0'
+  md5 'ace68558eab873e2da7e641179c4ef0c'
 
   depends_on 'qt'
 
