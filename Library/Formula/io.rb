@@ -32,8 +32,21 @@ class Io < Formula
 end
 
 __END__
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index a4cd440..e2d05eb 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -140,7 +140,7 @@ IF(WIN32 AND NOT CYGWIN)
+ ELSE(WIN32 AND NOT CYGWIN)
+ 	execute_process(COMMAND git rev-parse --short HEAD OUTPUT_VARIABLE IO_GIT_REV)
+ ENDIF(WIN32 AND NOT CYGWIN)
+-string(REGEX REPLACE "(.......)." "\\1" IO_GIT_REV ${IO_GIT_REV})
++string(REGEX REPLACE "(.......)." "\\1" IO_GIT_REV ${IO_GIT_REV} "" "")
+ 
+ SET(CPACK_PACKAGE_NAME ${PROJECT_NAME})
+ SET(CPACK_PACKAGE_VENDOR "iolanguage.com")
 diff --git a/addons/Image/CMakeLists.txt b/addons/Image/CMakeLists.txt
-index a65693d..2166f1b 100644
+index 295045f..9b038eb 100644
 --- a/addons/Image/CMakeLists.txt
 +++ b/addons/Image/CMakeLists.txt
 @@ -22,7 +22,7 @@ if(PNG_FOUND AND TIFF_FOUND AND JPEG_FOUND)
@@ -41,7 +54,7 @@ index a65693d..2166f1b 100644
  
  	# Additional include directories
 -	include_directories(${PNG_INCLUDE_DIR} ${TIFF_INCLUDE_DIR} ${JPEG_INCLUDE_DIR})
-+	include_directories("/usr/X11/include" ${PNG_INCLUDE_DIR} ${TIFF_INCLUDE_DIR} ${JPEG_INCLUDE_DIR})
++  include_directories("/usr/X11/include" ${PNG_INCLUDE_DIR} ${TIFF_INCLUDE_DIR} ${JPEG_INCLUDE_DIR})
  
  	# Generate the IoImageInit.c file.
  	# Argument SHOULD ALWAYS be the exact name of the addon, case is
