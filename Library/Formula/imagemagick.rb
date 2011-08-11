@@ -35,7 +35,7 @@ class Imagemagick < Formula
   homepage 'http://www.imagemagick.org'
   head 'https://github.com/trevor/ImageMagick.git'
 
-  bottle "https://downloads.sf.net/project/machomebrew/Bottles/imagemagick-#{version}-bottle.tar.gz"
+  bottle "http://downloads.sf.net/project/machomebrew/Bottles/imagemagick-#{version}-bottle.tar.gz"
   bottle_sha1 'bff8db4da4bd255b01b483e0629e093ee76a9eb9'
 
   depends_on 'jpeg'
