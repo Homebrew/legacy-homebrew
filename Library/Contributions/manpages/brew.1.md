@@ -29,6 +29,9 @@ For the full command list, see the COMMANDS section.
   * `update`:
     Fetch the newest version of Homebrew from GitHub using `git`(1).
 
+  * `upgrade`:
+    Install newer versions of outdated packages.
+
   * `list`:
     List all installed formulae.
 
@@ -226,6 +229,9 @@ For the full command list, see the COMMANDS section.
 
   * `update`:
     Fetch the newest version of Homebrew from GitHub using `git`(1).
+
+  * `upgrade`:
+    Install newer versions of outdated packages.    
 
   * `uses [--installed]` <formula>:
     Show the formulas that specify <formula> as a dependency. The list is
