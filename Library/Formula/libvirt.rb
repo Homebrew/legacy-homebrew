@@ -29,9 +29,10 @@ class Libvirt < Formula
             "--with-init-script=none",
             "--with-remote",
             "--with-test",
-            "--with-vbox=check",
+            "--with-vbox",
             "--with-vmware",
-            "--with-yajl"]
+            "--with-yajl",
+            "--without-qemu"]
 
     args << "--without-libvirtd" if ARGV.include? '--without-libvirtd'
 
