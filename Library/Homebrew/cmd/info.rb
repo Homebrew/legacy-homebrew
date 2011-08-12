@@ -41,6 +41,13 @@ module Homebrew extend self
     puts "#{f.name} #{f.version}"
     puts f.homepage
 
+    if f.keg_only?
+      puts
+      puts "This formula is keg-only."
+      puts f.keg_only?
+      puts
+    end
+
     puts "Depends on: #{f.deps*', '}" unless f.deps.empty?
 
     rack = f.prefix.parent
