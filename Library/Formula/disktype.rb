@@ -4,7 +4,7 @@ class Disktype < Formula
   head 'cvs://:pserver:anonymous@disktype.cvs.sourceforge.net:/cvsroot/disktype:disktype'
   homepage 'http://disktype.sourceforge.net/'
   md5 '25a673f162b9c01cd565109202559489'
-  
+
   # Fixes faulty Mac OS version checking
   def patches
     DATA if ARGV.build_head?
