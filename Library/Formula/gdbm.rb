@@ -1,12 +1,12 @@
 require 'formula'
 
 class Gdbm < Formula
-  url 'ftp://ftp.gnu.org/gnu/gdbm/gdbm-1.8.3.tar.gz'
+  url 'ftp://ftp.gnu.org/gnu/gdbm/gdbm-1.9.1.tar.gz'
   homepage 'http://www.gnu.org/software/gdbm/'
-  md5 '1d1b1d5c0245b1c00aff92da751e9aa1'
+  md5 '59f6e4c4193cb875964ffbe8aa384b58'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}", "--infodir=#{info}"
     inreplace "Makefile", "-o $(BINOWN) -g $(BINGRP)", ""
