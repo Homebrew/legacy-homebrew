@@ -8,7 +8,8 @@ class Tinc < Formula
   depends_on 'lzo'
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--sysconfdir=#{etc}"
+    system "make"
     system "make install"
   end
 end
