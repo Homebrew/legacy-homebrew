@@ -7,9 +7,9 @@ class DrushMake < Formula
 end
 
 class Drush < Formula
-  url 'http://ftp.drupal.org/files/projects/drush-7.x-4.4.tar.gz'
+  url 'http://ftp.drupal.org/files/projects/drush-7.x-4.5.tar.gz'
   homepage 'http://drupal.org/project/drush'
-  md5 'b8f89ee75a8d45a4765679524ebdf8b4'
+  md5 'f6df0593c3d3c9a5a2d0bb382bf629ba'
 
   def install
     prefix.install Dir['*'] # No lib folder, so this is OK for now.
