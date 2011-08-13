@@ -1,5 +1,6 @@
 require 'download_strategy'
 require 'fileutils'
+require 'hardware'
 
 # Defines a URL and download method for a stable or HEAD build
 class SoftwareSpecification
