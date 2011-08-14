@@ -1,9 +1,9 @@
 require 'formula'
 
 class Perl < Formula
-  url 'http://www.cpan.org/src/5.0/perl-5.14.1.tar.gz'
+  url 'http://www.cpan.org/src/5.0/perl-5.12.4.tar.gz'
   homepage 'http://www.perl.org/'
-  md5 '0b74cffa3a10aee08442f950aecbaeec'
+  md5 'fd22aba88e4e27ab879f142eec6452a0'
 
   def patches
       # Fix compilation on Lion per http://perl5.git.perl.org/perl.git/commit/60a655a1ee05c577268377c1135ffabc34dbff43
