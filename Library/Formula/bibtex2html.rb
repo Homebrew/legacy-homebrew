@@ -8,6 +8,11 @@ class Bibtex2html < Formula
   depends_on 'objective-caml'
 
   def install
+    # See: https://trac.macports.org/ticket/26724
+    inreplace 'Makefile.in' do |s|
+      s.remove_make_var! 'STRLIB'
+    end
+
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make"
     system "make install"
