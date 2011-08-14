@@ -6,7 +6,7 @@ class Rbenv < Formula
   head 'https://github.com/sstephenson/rbenv.git', :using => :git
 
   def install
-    # Noop
+    prefix.install Dir['*']
   end
 
   def caveats
@@ -19,10 +19,10 @@ class Rbenv < Formula
         exec
 
       Then install some rubies to:
-        #{prefix}/versions
+        ~/.rbenv/versions
 
       You might like to use ruby-build (available in homebrew):
-        ruby-build 1.9.2-p290 #{prefix}/versions/1.9.2-p290
+        ruby-build 1.9.2-p290 ~/.rbenv/versions/1.9.2-p290
 
       Finally, rebuild the shim binaries when you install a new ruby or a gem providing a binary:
         rbenv rehash
