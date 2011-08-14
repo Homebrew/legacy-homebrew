@@ -12,6 +12,11 @@ class Autojump < Formula
     man1.install "autojump.1"
 
     inreplace "autojump.sh", '/etc/profile.d/', (prefix+'etc/')
+    os_x_ver = `/usr/bin/sw_vers -productVersion`
+    if os_x_ver.include? '.7'
+      # fix PROMPT_COMMAND for lion compatibility until upstream fix
+      inreplace "autojump.bash", '; $AUTOJUMP', '$AUTOJUMP'
+    end
     (prefix+'etc').install "autojump.sh" => "autojump"
     (prefix+'etc').install ["autojump.bash", "autojump.zsh"]
   end
