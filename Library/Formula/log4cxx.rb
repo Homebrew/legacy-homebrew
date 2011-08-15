@@ -7,11 +7,24 @@ class Log4cxx < Formula
 
   fails_with_llvm "Fails with \"collect2: ld terminated with signal 11 [Segmentation fault]\"."
 
+  def options
+    [
+      ["--universal", "Build for both 32 & 64 bit Intel."],
+    ]
+  end
+
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          # Docs won't install on OS X
-                          "--disable-doxygen"
+    
+    args = ["--prefix=#{prefix}", "--disable-debug", "--disable-doxygen", "--disable-dependency-tracking"] # Docs won't install on OS X
+    
+    if ARGV.build_universal?
+      ENV['CFLAGS'] = "-arch i386 -arch x86_64"
+      ENV['CXXFLAGS'] = "-arch i386 -arch x86_64"
+      ENV['LDFLAGS'] = "-arch i386 -arch x86_64"
+      args << "--disable-dependency-tracking"
+    end
+    
+    system "./configure", *args
     system "make install"
   end
 end
