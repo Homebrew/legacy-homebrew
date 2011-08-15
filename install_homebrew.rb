@@ -62,7 +62,12 @@ def badlibs
   end
 end
 
+def macos_version
+  @macos_version ||= /(10\.\d+)(\.\d+)?/.match(`/usr/bin/sw_vers -productVersion`).captures.first.to_f
+end
+
 ####################################################################### script
+abort "MacOS too old, see: https://gist.github.com/1144389" if macos_version < 10.5
 abort "/usr/local/.git already exists!" unless Dir["/usr/local/.git/*"].empty?
 abort "Don't run this as root!" if Process.uid == 0
 abort <<-EOABORT unless `groups`.split.include? "staff"
