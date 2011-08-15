@@ -1,9 +1,9 @@
 require 'formula'
 
 class DrushMake < Formula
-  url 'http://ftp.drupal.org/files/projects/drush_make-6.x-2.2.tar.gz'
+  url 'http://ftp.drupal.org/files/projects/drush_make-6.x-2.3.tar.gz'
   homepage 'http://drupal.org/project/drush_make'
-  md5 '9dddd6567c4de66494bdadebfc3e2989'
+  md5 'd6636db943d4f996474b09245060263c'
 end
 
 class Drush < Formula
