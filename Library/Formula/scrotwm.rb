@@ -24,13 +24,13 @@ end
 
 __END__
 # osx.h is missing a macro for TAIL_END (which is defined for Linux)
---- a/osx/osx.h
-+++ b/osx/osx.h
-@@ -1,3 +1,8 @@
+--- a/osx/osx.h	2011-06-14 10:51:33.000000000 -0500
++++ b/osx/osx.h	2011-08-14 14:05:58.000000000 -0500
+@@ -1,3 +1,7 @@
  /* $scrotwm: osx.h,v 1.1 2009/11/25 16:12:13 marco Exp $ */
-
+ 
  long long strtonum(const char *, long long, long long, const char **);
 +
 +#ifndef TAILQ_END
-+#define	TAILQ_END(head)			NULL
++#define TAILQ_END(head)		NULL
 +#endif
