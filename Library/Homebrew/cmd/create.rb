@@ -33,7 +33,7 @@ module Homebrew extend self
           end
 
           if Formula.aliases.include? fc.name
-            realname = Formula.caniconical_name fc.name
+            realname = Formula.canonical_name fc.name
             raise <<-EOS.undent
               The formula #{realname} is already aliased to #{fc.name}
               Please check that you are not creating a duplicate.

@@ -7,6 +7,10 @@ class Plotutils < Formula
 
   def install
     ENV.x11 # enable libpng support
+
+    # Fix usage of libpng to be 1.5 compatible
+    inreplace 'libplot/z_write.c', 'png_ptr->jmpbuf', 'png_jmpbuf (png_ptr)'
+
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-libplotter"

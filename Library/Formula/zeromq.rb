@@ -1,28 +1,33 @@
 require 'formula'
 
+def pgm_flags
+  return ARGV.include?('--with-pgm') ? "--with-pgm" : ""
+end
+
 class Zeromq < Formula
-  url 'http://download.zeromq.org/zeromq-2.1.6.tar.gz'
-  head 'git://github.com/zeromq/libzmq.git'
+  url 'http://download.zeromq.org/zeromq-2.1.7.tar.gz'
+  head 'https://github.com/zeromq/libzmq.git'
   homepage 'http://www.zeromq.org/'
-  md5 '77b9ca20e8f2426874022080f41d7b0b'
+  md5 '7d3120f8a8fb913a7e55c57c6eb024f3'
 
   fails_with_llvm "Compiling with LLVM gives a segfault while linking."
 
   def options
-    [['--universal', 'Build as a Universal Intel binary.']]
+    [
+      ['--with-pgm', 'Build with PGM extension'],
+      ['--universal', 'Build as a Universal Intel binary.']
+    ]
   end
 
   def build_fat
     # make 32-bit
-    arch = "-arch i386"
-    system "CFLAGS=\"$CFLAGS #{arch}\" CXXFLAGS=\"$CXXFLAGS #{arch}\" ./configure --disable-dependency-tracking --prefix=#{prefix} --with-pgm"
+    system "CFLAGS=\"$CFLAGS -arch i386\" CXXFLAGS=\"$CXXFLAGS -arch i386\" ./configure --disable-dependency-tracking --prefix=#{prefix} #{pgm_flags}"
     system "make"
     system "mv src/.libs src/libs-32"
     system "make clean"
 
     # make 64-bit
-    arch = "-arch x86_64"
-    system "CFLAGS=\"$CFLAGS #{arch}\" CXXFLAGS=\"$CXXFLAGS #{arch}\" ./configure --disable-dependency-tracking --prefix=#{prefix} --with-pgm"
+    system "CFLAGS=\"$CFLAGS -arch x86_64\" CXXFLAGS=\"$CXXFLAGS -arch x86_64\" ./configure --disable-dependency-tracking --prefix=#{prefix} #{pgm_flags}"
     system "make"
     system "mv src/.libs/libzmq.1.dylib src/.libs/libzmq.64.dylib"
 
@@ -36,7 +41,9 @@ class Zeromq < Formula
     if ARGV.build_universal?
       build_fat
     else
-      system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}", "--with-pgm"
+      args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+      args << "--with-pgm" if ARGV.include? '--with-pgm'
+      system "./configure", *args
     end
 
     system "make"

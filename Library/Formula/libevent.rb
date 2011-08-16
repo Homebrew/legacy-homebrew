@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libevent < Formula
-  url "http://downloads.sourceforge.net/project/levent/libevent/libevent-2.0/libevent-2.0.10-stable.tar.gz"
+  url "http://monkey.org/~provos/libevent-2.0.12-stable.tar.gz"
   homepage 'http://www.monkey.org/~provos/libevent/'
-  md5 'a37401d26cbbf28185211d582741a3d4'
+  md5 '42986228baf95e325778ed328a93e070'
   head 'git://levent.git.sourceforge.net/gitroot/levent/levent'
 
   fails_with_llvm "Undefined symbol '_current_base' reported during linking.", :build => 2326

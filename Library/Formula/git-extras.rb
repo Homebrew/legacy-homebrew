@@ -2,9 +2,9 @@ require 'formula'
 
 class GitExtras < Formula
   homepage 'https://github.com/visionmedia/git-extras'
-  url 'https://github.com/visionmedia/git-extras/tarball/0.4.1'
-  sha1 'fdc105a9437296d207eb981ff23440ce8f115034'
-  head 'git://github.com/visionmedia/git-extras.git', :branch => 'master'
+  url 'https://github.com/visionmedia/git-extras/tarball/0.6.0'
+  sha1 '7e96df0793c0d1370bf2b0fb809c91317f92240b'
+  head 'https://github.com/visionmedia/git-extras.git', :branch => 'master'
 
   def install
     inreplace 'Makefile', '/usr/local', prefix

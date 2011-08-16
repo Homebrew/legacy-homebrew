@@ -1,9 +1,17 @@
 require 'formula'
 
 class Synergy < Formula
-  url 'http://synergy.googlecode.com/files/synergy-1.4.2-MacOSX106-Universal.zip'
-  md5 'e52ca334612c3d01920c3beb927d93de'
-  version '1.4.2'
+
+  if ARGV.build_head?
+    url 'http://synergy.googlecode.com/files/synergy-1.4.3-MacOSX106-Universal.zip'
+    sha1 'aa60fa6ac975dd22dc095d6cd9f3dc755b91bb64'
+    version '1.4.3'
+  else
+    url 'http://synergy.googlecode.com/files/synergy-1.3.7-MacOSX106-Universal.zip'
+    sha1 'f0380e9b810752045f76340767ab0e7a5dcde698'
+    version '1.3.7'
+  end
+
   homepage 'http://synergy-foss.org'
 
   def install

@@ -4,10 +4,17 @@ def valgrind?
   ARGV.include? '--with-valgrind'
 end
 
+class RBashCompletion < Formula
+  # This is the same script that Debian packages use.
+  url 'http://rcompletion.googlecode.com/svn-history/r12/trunk/bash_completion/R', :using => :curl
+  version 'r12'
+  md5 '3c8f6cf1c07e052074ee843be00fa5d6'
+end
+
 class R < Formula
-  url 'http://cran.r-project.org/src/base/R-2/R-2.13.0.tar.gz'
-  homepage 'http://www.R-project.org/'
-  md5 'ecfb928067cfd932e75135f8b8bba3e7'
+  url 'http://cran.r-project.org/src/base/R-2/R-2.13.1.tar.gz'
+  homepage 'http://www.r-project.org/'
+  md5 '28dd0d68ac3a0eab93fe7035565a1c30'
 
   depends_on 'valgrind' if valgrind?
 
@@ -50,6 +57,10 @@ class R < Formula
     ln_s prefix+"R.framework/Resources/bin/Rscript", bin
     ln_s prefix+"R.framework/Resources/man1/R.1", man1
     ln_s prefix+"R.framework/Resources/man1/Rscript.1", man1
+
+    bash_dir = prefix + 'etc/bash_completion.d'
+    bash_dir.mkpath
+    RBashCompletion.new.brew { bash_dir.install 'R' }
   end
 
   def caveats; <<-EOS.undent

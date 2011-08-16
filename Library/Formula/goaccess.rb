@@ -1,9 +1,10 @@
 require 'formula'
 
-class GoAccess < Formula
-  url 'http://sourceforge.net/projects/goaccess/files/0.4.1/goaccess-0.4.1.tar.gz'
+class Goaccess < Formula
+  url 'http://downloads.sourceforge.net/project/goaccess/0.4.2/goaccess-0.4.2.tar.gz'
   homepage 'http://goaccess.prosoftcorp.com/'
-  sha1 'f68336fc49eb4907262f53956d4b88d5573a861e'
+  md5 '7d7707c294c949d612e451da2f003c37'
+  head 'git://goaccess.git.sourceforge.net/gitroot/goaccess/goaccess'
 
   depends_on 'glib'
   depends_on 'geoip' if ARGV.include? "--enable-geoip"
@@ -13,9 +14,6 @@ class GoAccess < Formula
   end
 
   def install
-    # Don't attempt to link to librt since it doesn't exist on OSX.
-    inreplace "Makefile.in", "LIBS = @GLIB2_LIBS@ -lrt", "LIBS = @GLIB2_LIBS@"
-
     args = ["--prefix=#{prefix}",
             "--disable-debug",
             "--disable-dependency-tracking"]

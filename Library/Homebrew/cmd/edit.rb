@@ -13,7 +13,7 @@ module Homebrew extend self
     else
       # Don't use ARGV.formulae as that will throw if the file doesn't parse
       paths = ARGV.named.map do |name|
-        HOMEBREW_REPOSITORY+"Library/Formula/#{Formula.caniconical_name name}.rb"
+        HOMEBREW_REPOSITORY+"Library/Formula/#{Formula.canonical_name name}.rb"
       end
       unless ARGV.force?
         paths.each do |path|

@@ -1,11 +1,21 @@
 require 'formula'
 
+class WineGecko < Formula
+  url 'http://downloads.sourceforge.net/wine/wine_gecko-1.2.0-x86.msi', :using => :nounzip
+  sha1 '6964d1877668ab7da07a60f6dcf23fb0e261a808'
+end
+
+class WineGeckoOld < Formula
+  url 'http://downloads.sourceforge.net/wine/wine_gecko-1.0.0-x86.cab', :using => :nounzip
+  sha1 'afa22c52bca4ca77dcb9edb3c9936eb23793de01'
+end
+
 class Wine < Formula
   homepage 'http://www.winehq.org/'
 
   if ARGV.flag? '--devel'
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.18.tar.bz2'
-    sha256 '994064d326954e6df252002891bfcbb987a35aa573ab74be605224f66623a4ac'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.25.tar.bz2'
+    sha256 'f5525a966efd2f973c9a0fd6391d0d3e5817432e59598fe47c494b240d7e1caa'
   else
     url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.3.tar.bz2'
     sha256 '3fd8d3f2b466d07eb90b8198cdc9ec3005917a4533db7b8c6c69058a2e57c61f'
@@ -15,7 +25,9 @@ class Wine < Formula
 
   depends_on 'jpeg'
   depends_on 'libicns'
-  depends_on 'gnutls'
+
+  # gnutls not needed since 1.3.16
+  depends_on 'gnutls' unless ARGV.flag? '--devel' or ARGV.build_head?
 
   fails_with_llvm
 
@@ -61,10 +73,23 @@ EOS
     # Don't need Gnome desktop support
     rm_rf share+'applications'
 
+    # Download Gecko once so we don't need to redownload for each prefix
+    gecko = (ARGV.flag? '--devel') ? WineGecko.new : WineGeckoOld.new
+    gecko.brew { (share+'wine/gecko').install Dir["*"] }
+
     # Use a wrapper script, so rename wine to wine.bin
     # and name our startup script wine
     mv (bin+'wine'), (bin+'wine.bin')
     (bin+'wine').write(wine_wrapper)
+  end
+
+  # There is a bug in the Lion version of ld that prevents Wine from building
+  # correctly; see <http://bugs.winehq.org/show_bug.cgi?id=27929>
+  # We have backported Camillo Lugaresi's patch from upstream. The patch can
+  # be removed from this formula once it lands in both the devel and stable
+  # branches of Wine.
+  if MacOS.lion?
+    def patches; DATA; end
   end
 
   def caveats; <<-EOS.undent
@@ -79,3 +104,19 @@ EOS
     EOS
   end
 end
+
+
+__END__
+diff --git a/configure b/configure
+index e8bc505..4b9a6d4 100755
+--- a/configure
++++ b/configure
+@@ -6417,7 +6417,7 @@ fi
+ 
+     APPLICATIONSERVICESLIB="-framework ApplicationServices"
+ 
+-    LDEXECFLAGS="-image_base 0x7bf00000 -Wl,-segaddr,WINE_DOS,0x00000000,-segaddr,WINE_SHAREDHEAP,0x7f000000"
++    LDEXECFLAGS="-image_base 0x7bf00000 -Wl,-macosx_version_min,10.6,-segaddr,WINE_DOS,0x00000000,-segaddr,WINE_SHAREDHEAP,0x7f000000"
+ 
+     if test "$ac_cv_header_DiskArbitration_DiskArbitration_h" = "yes"
+     then

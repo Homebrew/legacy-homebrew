@@ -32,6 +32,7 @@ class ModWsgi < Formula
       cflags = s.get_make_var("CFLAGS")
       cflags.gsub! "-Wc,'-arch ppc7400'", ""
       cflags.gsub! "-Wc,'-arch ppc64'", ""
+      cflags.gsub! "-Wc,'-arch x86_64'", "" if Hardware.is_32_bit?
       s.change_make_var! "CFLAGS", cflags
 
       # --libexecdir parameter to ./configure isn't changing this, so cram it in

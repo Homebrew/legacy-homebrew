@@ -1,9 +1,9 @@
 require 'formula'
 
 class Rasqal < Formula
-  url 'http://download.librdf.org/source/rasqal-0.9.21.tar.gz'
+  url 'http://download.librdf.org/source/rasqal-0.9.25.tar.gz'
   homepage 'http://librdf.org/rasqal/'
-  md5 '55b67ec92a059ef8979d46486b00a032'
+  md5 'ee12d7ad59c581eb65db89c851672c0a'
 
   depends_on 'raptor'
 

@@ -1,7 +1,7 @@
 require 'formula'
 
 class Jstalk < Formula
-  url 'git://github.com/ccgus/jstalk.git', :tag => "v1.0.1"
+  url 'https://github.com/ccgus/jstalk.git', :tag => "v1.0.1"
   homepage 'http://jstalk.org/'
   version '1.0.1'
 

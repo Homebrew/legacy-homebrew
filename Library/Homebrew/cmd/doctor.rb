@@ -1,3 +1,5 @@
+require 'stringio'
+
 class Volumes
   def initialize
     @volumes = []
@@ -15,7 +17,7 @@ class Volumes
   def which path
     @volumes.each_index do |i|
       vol = @volumes[i]
-      return i if is_prefix?(vol[1], path)
+      return i if vol[1].start_with? path.to_s
     end
 
     return -1
@@ -23,14 +25,13 @@ class Volumes
 end
 
 
-def is_prefix? prefix, longer_string
-  p = prefix.to_s
-  longer_string.to_s[0,p.length] == p
+def remove_trailing_slash s
+  (s[s.length-1] == '/') ? s[0,s.length-1] : s
 end
 
 
 def path_folders
-  ENV['PATH'].split(':').collect{|p| File.expand_path p}.uniq
+  ENV['PATH'].split(':').collect{|p| remove_trailing_slash(File.expand_path(p))}.uniq
 end
 
 
@@ -70,6 +71,69 @@ def check_for_stray_dylibs
     Unexpected dylibs:
   EOS
   puts *bad_dylibs.collect { |f| "    #{f}" }
+  puts
+end
+
+def check_for_stray_static_libs
+  unbrewed_alibs = Dir['/usr/local/lib/*.a'].select { |f| File.file? f and not File.symlink? f }
+  return if unbrewed_alibs.empty?
+
+  puts <<-EOS.undent
+    Unbrewed static libraries were found in /usr/local/lib.
+
+    If you didn't put them there on purpose they could cause problems when
+    building Homebrew formulae, and may need to be deleted.
+
+    Unexpected static libraries:
+  EOS
+  puts *unbrewed_alibs.collect { |f| "    #{f}" }
+  puts
+end
+
+def check_for_stray_pcs
+  unbrewed_pcs = Dir['/usr/local/lib/pkgconfig/*.pc'].select { |f| File.file? f and not File.symlink? f }
+
+  # Package-config files which are generally OK should be added to this list,
+  # with a short description of the software they come with.
+  white_list = {
+    "fuse.pc" => "MacFuse",
+  }
+
+  bad_pcs = unbrewed_pcs.reject {|d| white_list.key? File.basename(d) }
+  return if bad_pcs.empty?
+
+  puts <<-EOS.undent
+    Unbrewed .pc files were found in /usr/local/lib/pkgconfig.
+
+    If you didn't put them there on purpose they could cause problems when
+    building Homebrew formulae, and may need to be deleted.
+
+    Unexpected .pc files:
+  EOS
+  puts *bad_pcs.collect { |f| "    #{f}" }
+  puts
+end
+
+def check_for_stray_las
+  unbrewed_las = Dir['/usr/local/lib/*.la'].select { |f| File.file? f and not File.symlink? f }
+
+  white_list = {
+    "libfuse.la" => "MacFuse",
+    "libfuse_ino64.la" => "MacFuse",
+  }
+
+  bad_las = unbrewed_las.reject {|d| white_list.key? File.basename(d) }
+  return if bad_las.empty?
+
+  puts <<-EOS.undent
+    Unbrewed .la files were found in /usr/local/lib.
+
+    If you didn't put them there on purpose they could cause problems when
+    building Homebrew formulae, and may need to be deleted.
+
+    Unexpected .la files:
+  EOS
+  puts *bad_las.collect { |f| "    #{f}" }
   puts
 end
 
@@ -130,17 +194,25 @@ def check_gcc_versions
     EOS
   end
 
-  if gcc_40 == nil
-    puts <<-EOS.undent
-      We couldn't detect gcc 4.0.x. Some formulae require this compiler.
+  if MacOS.xcode_version == nil
+      puts <<-EOS.undent
+        We couldn't detect any version of Xcode.
+        If you downloaded Xcode 4.1 from the App Store, you may need to run the installer.
 
-    EOS
-  elsif gcc_40 < RECOMMENDED_GCC_40
-    puts <<-EOS.undent
-      Your gcc 4.0.x version is older than the recommended version. It may be advisable
-      to upgrade to the latest release of Xcode.
+      EOS
+  elsif MacOS.xcode_version < "4.0"
+    if gcc_40 == nil
+      puts <<-EOS.undent
+        We couldn't detect gcc 4.0.x. Some formulae require this compiler.
 
-    EOS
+      EOS
+    elsif gcc_40 < RECOMMENDED_GCC_40
+      puts <<-EOS.undent
+        Your gcc 4.0.x version is older than the recommended version. It may be advisable
+        to upgrade to the latest release of Xcode.
+
+      EOS
+    end
   end
 end
 
@@ -235,6 +307,7 @@ def check_homebrew_prefix
   unless HOMEBREW_PREFIX.to_s == '/usr/local'
     puts <<-EOS.undent
       You can install Homebrew anywhere you want, but some brews may only work
+      You can install Homebrew anywhere you want, but some brews may only build
       correctly if you install to /usr/local.
 
     EOS
@@ -279,16 +352,20 @@ def check_user_path
       EOS
   end
 
-  unless seen_prefix_sbin
-    puts <<-EOS.undent
-      Some brews install binaries to sbin instead of bin, but Homebrew's
-      sbin was not found in your path.
+  # Don't complain about sbin not being in the path if it doesn't exist
+  sbin = (HOMEBREW_PREFIX+'sbin')
+  if sbin.directory? and sbin.children.length > 0
+    unless seen_prefix_sbin
+      puts <<-EOS.undent
+        Some brews install binaries to sbin instead of bin, but Homebrew's
+        sbin was not found in your path.
 
-      Consider editing your .bashrc to add:
-        #{HOMEBREW_PREFIX}/sbin
-      to $PATH.
+        Consider editing your .bashrc to add:
+          #{HOMEBREW_PREFIX}/sbin
+        to $PATH.
 
-      EOS
+        EOS
+    end
   end
 end
 
@@ -375,13 +452,13 @@ def check_for_iconv
 end
 
 def check_for_config_scripts
-  real_cellar = HOMEBREW_CELLAR.realpath
+  real_cellar = HOMEBREW_CELLAR.exist? && HOMEBREW_CELLAR.realpath
 
   config_scripts = []
 
   path_folders.each do |p|
     next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin"].include? p
-    next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})]
+    next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] if real_cellar
 
     configs = Dir["#{p}/*-config"]
     # puts "#{p}\n    #{configs * ' '}" unless configs.empty?
@@ -438,6 +515,7 @@ def check_for_symlinked_cellar
 end
 
 def check_for_multiple_volumes
+  return unless HOMEBREW_CELLAR.exist?
   volumes = Volumes.new
 
   # Find the volumes for the TMP folder & HOMEBREW_CELLAR
@@ -475,22 +553,44 @@ def check_for_git
       Homebrew uses Git for several internal functions, and some formulae
       use Git checkouts instead of stable tarballs.
 
-      You may want to do:
+      You may want to install git:
         brew install git
 
     EOS
   end
 end
 
-def check_for_autoconf
-  which_autoconf = `/usr/bin/which autoconf`.chomp
-  unless (which_autoconf == '/usr/bin/autoconf' or which_autoconf == '/Developer/usr/bin/autoconf')
-    puts <<-EOS.undent
-      You have an "autoconf" in your path blocking the system version at:
-        #{which_autoconf}
+def check_git_newline_settings
+  git = `/usr/bin/which git`.chomp
+  return if git.empty?
 
-      Custom autoconf in general and autoconf 2.66 in particular has issues
-      and will cause some Homebrew formulae to fail.
+  autocrlf=`git config --get core.autocrlf`
+  safecrlf=`git config --get core.safecrlf`
+
+  if autocrlf=='input' and safecrlf=='true'
+    puts <<-EOS.undent
+    Suspicious Git newline settings found.
+
+    The detected Git newline settings can cause checkout problems:
+      core.autocrlf=#{autocrlf}
+      core.safecrlf=#{safecrlf}
+
+    If you are not routinely dealing with Windows-based projects,
+    consider removing these settings.
+
+    EOS
+  end
+end
+
+def check_for_autoconf
+  autoconf = `/usr/bin/which autoconf`.chomp
+  safe_autoconfs = %w[/usr/bin/autoconf /Developer/usr/bin/autoconf]
+  unless autoconf.empty? or safe_autoconfs.include? autoconf
+    puts <<-EOS.undent
+      An "autoconf" in your path blocking the Xcode-provided version at:
+        #{autoconf}
+
+      This custom autoconf may cause some Homebrew formulae to fail to compile.
 
     EOS
   end
@@ -574,10 +674,10 @@ end
 
 def check_for_GREP_OPTIONS
   target_var = ENV['GREP_OPTIONS'].to_s
-  unless target_var.empty?
+  unless target_var.empty? or target_var == '--color=auto'
     puts <<-EOS.undent
     $GREP_OPTIONS was set to \"#{target_var}\".
-    Having $GREP_OPTIONS set can cause CMake builds to fail.
+    Having $GREP_OPTIONS set this way can cause CMake builds to fail.
 
     EOS
   end
@@ -590,27 +690,47 @@ def check_for_other_frameworks
       puts <<-EOS.undent
         #{f} detected
 
-        This will be picked up by Cmake's build system and likey cause the
+        This will be picked up by Cmake's build system and likely cause the
         build to fail, trying to link to a 32-bit version of expat.
         You may need to move this file out of the way to compile Cmake.
 
       EOS
     end
   end
+
+  if File.exist? "/Library/Frameworks/Mono.framework"
+    puts <<-EOS.undent
+      /Library/Frameworks/Mono.framework detected
+
+      This can be picked up by Cmake's build system and likely cause the
+      build to fail, finding improper header files for libpng for instance.
+
+    EOS
+  end
+end
+
+def check_tmpdir
+  tmpdir = ENV['TMPDIR']
+  return if tmpdir.nil?
+  if !File.directory?(tmpdir)
+    puts "$TMPDIR #{tmpdir.inspect} doesn't exist."
+    puts
+  end
 end
 
 module Homebrew extend self
   def doctor
-    read, write = IO.pipe
+    old_stdout = $stdout
+    $stdout = output = StringIO.new
 
-    if fork == nil
-      read.close
-      $stdout.reopen write
-
+    begin
       check_usr_bin_ruby
       check_homebrew_prefix
       check_for_macgpg2
       check_for_stray_dylibs
+      check_for_stray_static_libs
+      check_for_stray_pcs
+      check_for_stray_las
       check_gcc_versions
       check_for_other_package_managers
       check_for_x11
@@ -633,20 +753,21 @@ module Homebrew extend self
       check_for_symlinked_cellar
       check_for_multiple_volumes
       check_for_git
+      check_git_newline_settings
       check_for_autoconf
       check_for_linked_kegonly_brews
       check_for_other_frameworks
+      check_tmpdir
+    ensure
+      $stdout = old_stdout
+    end
 
-      exit! 0
+    unless (warnings = output.string).chomp.empty?
+      puts warnings
+      exit 1
     else
-      write.close
-
-      unless (out = read.read).chomp.empty?
-        puts out
-      else
-        puts "Your OS X is ripe for brewing."
-        puts "Any troubles you may be experiencing are likely purely psychosomatic."
-      end
+      puts "Your OS X is ripe for brewing."
+      puts "Any troubles you may be experiencing are likely purely psychosomatic."
     end
   end
 end
