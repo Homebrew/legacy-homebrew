@@ -6,10 +6,6 @@ class Pinentry < Formula
   sha1 '84a6940175b552a8562b4014f4661dec3ff10165'
 
   depends_on 'pkg-config' => :build
-  depends_on 'libgpg-error'
-  depends_on 'libgcrypt'
-  depends_on 'libksba'
-  depends_on 'libassuan'
 
   def install
     system "./configure", "--disable-dependency-tracking",
