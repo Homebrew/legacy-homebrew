@@ -10,6 +10,12 @@ class Libgcrypt < Formula
   def install
     ENV.universal_binary	# build fat so wine can use it
 
+    if Hardware.is_32_bit?
+      %w{ CFLAGS CXXFLAGS LDFLAGS OBJCFLAGS OBJCXXFLAGS }.each do |compiler_flag|
+        ENV.remove compiler_flag, "-arch x86_64"
+      end
+    end
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-asm",
