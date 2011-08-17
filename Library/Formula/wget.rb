@@ -1,9 +1,9 @@
 require 'formula'
 
 class Wget < Formula
-  homepage 'http://www.gnu.org/software/wget/'
-  url 'http://ftp.gnu.org/gnu/wget/wget-1.13.tar.gz'
-  md5 'd3698837e6a9567ca9be10f115989940'
+  homepage 'http://gnu.org/software/wget/'
+  url 'http://ftp.gnu.org/gnu/wget/wget-1.13.1.tar.gz'
+  sha256 '4bc25b2405a44cb1095ca326b4403f7ab5be45b6b72c317fe7e3a20d8b100e60'
 
   depends_on "openssl" if MacOS.leopard?
   depends_on "libidn" if ARGV.include? "--enable-iri"
