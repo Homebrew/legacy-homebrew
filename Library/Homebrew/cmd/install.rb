@@ -9,6 +9,12 @@ module Homebrew extend self
       raise "No available formula for #{name}\n#{msg}" if msg
     end unless ARGV.force?
 
+    if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
+      # note we only abort if Homebrew is *not* installed as sudo and the user
+      # calls brew as root. The fix is to chown brew to root.
+      abort "Cowardly refusing to `sudo brew install'"
+    end
+
     install_formulae ARGV.formulae
   end
 
