@@ -3,9 +3,9 @@ require 'formula'
 def TeX_installed?; return `which latex` != ''; end
 
 class Asymptote < Formula
-  url 'http://downloads.sourceforge.net/asymptote/asymptote-2.08.src.tgz'
+  url 'http://downloads.sourceforge.net/asymptote/asymptote-2.13.src.tgz'
   homepage 'http://asymptote.sourceforge.net/'
-  md5 'ab7bc11c8110b6eb459285b9c206cfe6'
+  md5 '7ef34150583d6fd617eae23803a3ead3'
 
   depends_on 'readline'
   depends_on 'bdw-gc'
