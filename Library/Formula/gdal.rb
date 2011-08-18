@@ -4,6 +4,10 @@ def complete?
   ARGV.include? "--complete"
 end
 
+def external_tiff?
+  ARGV.include? "--with-external-tiff"
+end
+
 def postgres?
   ARGV.include? "--with-postgres"
 end
@@ -34,6 +38,11 @@ class Gdal < Formula
 
   depends_on "postgresql" if postgres?
   depends_on "mysql" if mysql?
+
+  if external_tiff?
+    depends_on "libtiff"
+    depends_on "libgeotiff"
+  end
 
   if complete?
     # Raster libraries
@@ -69,7 +78,8 @@ class Gdal < Formula
       ['--with-postgres', 'Specify PostgreSQL as a dependency.'],
       ['--with-mysql', 'Specify MySQL as a dependency.'],
       ['--without-python', 'Build without Python support (disables a lot of tools).'],
-      ['--enable-opencl', 'Build with support for OpenCL.']
+      ['--enable-opencl', 'Build with support for OpenCL.'],
+      ['--with-external-tiff', 'Build with Homebrew libtiff instead of internal version.'],
     ]
   end
 
@@ -82,8 +92,6 @@ class Gdal < Formula
       "--with-libtool",
 
       # GDAL native backends.
-      "--with-libtiff=internal", # For bigTIFF support
-      "--with-geotiff=internal",
       "--with-pcraster=internal",
       "--with-pcidsk=internal",
       "--with-bsb",
@@ -98,7 +106,6 @@ class Gdal < Formula
 
       # Default Homebrew backends.
       "--with-jpeg=#{HOMEBREW_PREFIX}",
-      "--with-jpeg12",
       "--with-gif=#{HOMEBREW_PREFIX}",
       "--with-curl=/usr/bin/curl-config",
 
@@ -114,6 +121,20 @@ class Gdal < Formula
       "--with-dods-root=no"
 
     ]
+
+    if external_tiff?
+      args.concat [
+        "--with-libtiff=#{HOMEBREW_PREFIX}",
+        "--with-geotiff=#{HOMEBREW_PREFIX}",
+        "--without-jpeg12",
+      ]
+    else
+      args.concat [
+        "--with-libtiff=internal", # For bigTIFF support
+        "--with-geotiff=internal",
+        "--with-jpeg12",
+      ]
+    end
 
     # Optional library support for additional formats.
     if complete?
