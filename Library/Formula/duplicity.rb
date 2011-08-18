@@ -24,4 +24,26 @@ class Duplicity < Formula
     ln_s "#{libexec}/duplicity.py", "#{bin}/duplicity"
     ln_s "#{libexec}/rdiffdir", "#{bin}/rdiffdir"
   end
+
+  def patches
+    # back-ported fix to ssh-backend. fixed in upstream for 0.6.15.
+    # for issue-details see https://bugs.launchpad.net/duplicity/+bug/823556
+    DATA
+  end
 end
+
+
+__END__
+--- 0.6.14/src/backends/sshbackend.py	2011-06-13 14:24:27 +0000
++++ 0.6.15-pre/src/backends/sshbackend.py	2011-08-17 14:21:15 +0000
+@@ -278,6 +278,10 @@
+         be distinguished from the file boundaries.
+         """
+         dirs = self.remote_dir.split(os.sep)
++        if len(dirs) > 0:
++            if not dirs[0] :
++                dirs = dirs[1:]
++                dirs[0]= '/' + dirs[0]
+         mkdir_commands = [];
+         for d in dirs:
+             mkdir_commands += ["mkdir \"%s\"" % (d)] + ["cd \"%s\"" % (d)]
