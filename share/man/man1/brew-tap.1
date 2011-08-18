@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW\-TAP" "1" "March 2011" "Homebrew" "brew"
+.TH "BREW\-TAP" "1" "August 2011" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\-tap\fR \- Multi\-Repository Support for Homebrew
@@ -28,7 +28,7 @@
 A tool for managing repositories containing alternative Homebrew formulae and making those formulae available to standard \fBbrew\fR commands like \fBinstall\fR\.
 .
 .P
-Currently designed to work with the fork network of Adam Vandenberg\'s homebrew\-alt network:
+\fBbrew\-tap\fR is currently designed to access the fork network of Adam Vandenberg\'s Homebrew\-Alt network:
 .
 .P
 \fIhttps://github\.com/adamv/homebrew\-alt/network\fR
@@ -37,15 +37,15 @@ Currently designed to work with the fork network of Adam Vandenberg\'s homebrew\
 .
 .TP
 \fBlist\fR
-List all repositories that have been locally cloned and whose formulae are available for brewing\. Also list all repositories in the homebrew\-alt that can be cloned using \fBbrew tap add\fR
+List all repositories that have been locally cloned and whose formulae are available for brewing\. Also list all repositories in the Homebrew\-Alt network that can be cloned using \fBbrew tap add\fR\.
 .
 .TP
 \fBupdate\fR
-Update all cloned repositories and rescan the homebrew\-alt network to update \fBbrew tap info\fR\.
+Update all cloned repositories and rescan the Homebrew\-Alt network to refresh the information provided by \fBbrew tap list\fR\.
 .
 .TP
 \fBadd\fR \fIrepository\fR
-Clone a repository so that the formulae it contains will be accessable to \fBbrew tap\fR\. \fIrepository\fR is the name given by \fBbrew tap list\fR but case\-sensitive partial matching is also used\. See examples section for details\.
+Clone a repository so that the formulae it contains will be accessable to other \fBbrew tap\fR subcommands\. \fIrepository\fR is the name given by \fBbrew tap list\fR but case\-sensitive partial matching is also used\. See examples section for details on partial matching\.
 .
 .TP
 \fBremove\fR \fIrepository\fR
@@ -140,4 +140,4 @@ Case\-sensitive partial matching is used, so the first call restricts searches f
 Charlie Sharpsteen
 .
 .SH "BUGS"
-See Issues on GitHub: \fIhttp://github\.com/Sharpie/homebrew/issues\fR
+Bugs in \fBbrew\-tap\fR may be reported using the GitHub issue tracker: \fIhttp://github\.com/Sharpie/homebrew/issues\fR

@@ -20,8 +20,8 @@ brew-tap(1) -- Multi-Repository Support for Homebrew
 A tool for managing repositories containing alternative Homebrew formulae and
 making those formulae available to standard `brew` commands like `install`.
 
-Currently designed to work with the fork network of Adam Vandenberg's
-homebrew-alt network:
+`brew-tap` is currently designed to access the fork network of Adam
+Vandenberg's Homebrew-Alt network:
 
 <https://github.com/adamv/homebrew-alt/network>
 
@@ -29,18 +29,18 @@ homebrew-alt network:
 
   * `list`:
     List all repositories that have been locally cloned and whose formulae are
-    available for brewing.  Also list all repositories in the homebrew-alt that
-    can be cloned using `brew tap add`
+    available for brewing.  Also list all repositories in the Homebrew-Alt
+    network that can be cloned using `brew tap add`.
 
   * `update`:
-    Update all cloned repositories and rescan the homebrew-alt network to
-    update `brew tap info`.
+    Update all cloned repositories and rescan the Homebrew-Alt network to
+    refresh the information provided by `brew tap list`.
 
   * `add` <repository>:
     Clone a repository so that the formulae it contains will be accessable to
-    `brew tap`. <repository> is the name given by `brew tap list` but
-    case-sensitive partial matching is also used. See examples section for
-    details.
+    other `brew tap` subcommands. <repository> is the name given by `brew tap
+    list` but case-sensitive partial matching is also used. See examples
+    section for details on partial matching.
 
   * `remove` <repository>:
     Remove a cloned repository from the system. <repository> follows the
@@ -104,5 +104,6 @@ Charlie Sharpsteen
 
 ## BUGS
 
-See Issues on GitHub: <http://github.com/Sharpie/homebrew/issues>
+Bugs in `brew-tap` may be reported using the GitHub issue tracker:
+<http://github.com/Sharpie/homebrew/issues>
 
