@@ -291,6 +291,14 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 
   def support_depth?
+    !commit_history_required? and depth_supported_host?
+  end
+
+  def commit_history_required?
+    @spec == :sha
+  end
+
+  def depth_supported_host?
     @url =~ %r(git://) or @url =~ %r(https://github.com/)
   end
 
