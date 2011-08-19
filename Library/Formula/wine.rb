@@ -88,7 +88,7 @@ EOS
   # We have backported Camillo Lugaresi's patch from upstream. The patch can
   # be removed from this formula once it lands in both the devel and stable
   # branches of Wine.
-  if MacOS.lion?
+  if MacOS.lion? and not (ARGV.flag? '--devel' or ARGV.build_head?)
     def patches; DATA; end
   end
 
