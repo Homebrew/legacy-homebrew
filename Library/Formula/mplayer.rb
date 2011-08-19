@@ -30,7 +30,9 @@ class Mplayer < Formula
     ENV['CFLAGS'] = ''
     ENV['CXXFLAGS'] = ''
 
-    system './configure', "--prefix=#{prefix}"
+    # we disable cdparanoia because homebrew's version is hacked to work on OS X
+    # and mplayer doesn't expect the hacks we apply. So it chokes.
+    system './configure', "--prefix=#{prefix}", "--disable-cdparanoia"
     system "make"
     system "make install"
   end

@@ -19,6 +19,7 @@ class Ffmpeg < Formula
 
   def install
     args = ["--prefix=#{prefix}",
+            "--enable-shared",
             "--enable-gpl",
             "--enable-version3",
             "--enable-nonfree",
