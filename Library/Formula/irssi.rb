@@ -1,3 +1,4 @@
+
 require 'formula'
 
 class Irssi < Formula
@@ -21,7 +22,7 @@ class Irssi < Formula
 
     system "./configure", "--prefix=#{prefix}",
                           "--with-perl=yes",
-                          "--with-perl-lib=site",
+                          "--with-perl-lib=#{HOMEBREW_PREFIX}/lib/perl5/site_perl",
                           "--with-bot",
                           "--with-proxy",
                           "--enable-ssl",
