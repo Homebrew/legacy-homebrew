@@ -30,7 +30,7 @@ class Mplayer < Formula
     ENV['CFLAGS'] = ''
     ENV['CXXFLAGS'] = ''
 
-    system './configure', "--prefix=#{prefix}"
+    system './configure', "--prefix=#{prefix}", "--disable-cdparanoia"
     system "make"
     system "make install"
   end
