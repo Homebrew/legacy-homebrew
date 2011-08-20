@@ -1,9 +1,11 @@
 require 'formula'
 
 class Byobu < Formula
-  url 'http://launchpad.net/byobu/trunk/4.17/+download/byobu_4.17.orig.tar.gz'
+  url 'http://launchpad.net/byobu/trunk/4.29/+download/byobu_4.29.orig.tar.gz'
   homepage 'http://launchpad.net/byobu'
-  md5 '9f6921e870706df00c95df0c891925b9'
+  md5 'f144b2202eebbb19b1fbecde652d77c6'
+
+  depends_on 'newt'
 
   def install
     system "./configure", "--prefix=#{prefix}"
