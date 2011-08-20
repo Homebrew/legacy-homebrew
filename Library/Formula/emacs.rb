@@ -103,7 +103,7 @@ class Emacs < Formula
       Because the official bazaar repository might be slow, we include an option for
       pulling HEAD from an unofficial Git mirror:
 
-        brew install emacs --HEAD- -use-git-head
+        brew install emacs --HEAD --use-git-head
 
       There is inevitably some lag between checkins made to the official Emacs bazaar
       repository and their appearance on the repo.or.cz mirror. See
