@@ -55,5 +55,12 @@ def blacklisted? name
     To do it in one line, use this command:
       curl http://npmjs.org/install.sh | sh
     EOS
+  when 'bsnes' then <<-EOS.undent
+    BSNES requires a compiler that can utilize both C++0x and Cocoa, but
+    Apple's developer tools do not support this.
+
+    You can find a pre-compiled version of BSNES at:
+      http://www.bannister.org/software/bsnes.htm
+    EOS
   end
 end
