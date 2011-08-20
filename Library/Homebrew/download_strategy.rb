@@ -195,6 +195,7 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
     @unique_token="#{name}--svn" unless name.to_s.empty? or name == '__UNKNOWN__'
+    @unique_token += "--HEAD" if ARGV.include? '--HEAD'
     @co=HOMEBREW_CACHE+@unique_token
   end
 
