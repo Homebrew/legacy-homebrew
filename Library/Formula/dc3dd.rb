@@ -2,7 +2,7 @@ require 'formula'
 
 class Dc3dd < Formula
   url 'http://downloads.sourceforge.net/project/dc3dd/dc3dd/7.1.0/dc3dd-7.1.614.tar.gz'
-  homepage 'http://dc3dd.sourceforge.net/'
+  homepage 'http://sourceforge.net/projects/dc3dd/'
   md5 'b6c4ec16e7f539b17224d7f334f8396e'
 
   def patches
