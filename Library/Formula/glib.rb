@@ -7,7 +7,6 @@ class Glib < Formula
   url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.28/glib-2.28.8.tar.bz2'
   sha256 '222f3055d6c413417b50901008c654865e5a311c73f0ae918b0a9978d1f9466f'
 
-  depends_on 'pkg-config' => :build
   depends_on 'gettext'
 
   fails_with_llvm "Undefined symbol errors while linking" unless MacOS.lion?
@@ -60,6 +59,11 @@ class Glib < Formula
       # Run autoconf so universal builds will work
       system "autoconf"
     end
+
+    # hack so that we don't have to depend on pkg-config
+    # http://permalink.gmane.org/gmane.comp.package-management.pkg-config/627
+    ENV['ZLIB_CFLAGS'] = ''
+    ENV['ZLIB_LIBZ'] = '-l'
 
     system "./configure", *args
 
