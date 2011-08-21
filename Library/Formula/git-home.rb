@@ -1,9 +1,9 @@
 require 'formula'
 
 class GitHome < Formula
-  url 'https://github.com/juanpabloaj/git-home/tarball/v0.1'
+  url 'https://github.com/juanpabloaj/git-home/tarball/v0.1.1'
   homepage 'https://github.com/juanpabloaj/git-home'
-  md5 '3e5ab7b6516e33660c404e75a9d81d82'
+  md5 'f9701cc0e0d75c908d6bbc18bbab9ade'
   def install
 	  bin.install "git-home"
   end
