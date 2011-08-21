@@ -1,13 +1,11 @@
 require 'formula'
 
-require 'formula'
-
 class Libiconv < Formula
   url 'http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.14.tar.gz'
   homepage 'http://www.gnu.org/software/libiconv/'
   md5 'e34509b1623cec449dfeb73d7ce9c6c6'
 
-keg_only :provided_by_osx, <<-EOS.undent
+  keg_only :provided_by_osx, <<-EOS.undent
     A few software packages require this newer version of libiconv.
     Please use this dependency very sparingly.
   EOS
@@ -28,7 +26,6 @@ keg_only :provided_by_osx, <<-EOS.undent
     system "make -f Makefile.devel"
     system "make install"
   end
-
 
 end
 __END__
