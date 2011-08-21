@@ -195,7 +195,7 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
     @unique_token="#{name}--svn" unless name.to_s.empty? or name == '__UNKNOWN__'
-    @unique_token += "--HEAD" if ARGV.include? '--HEAD'
+    @unique_token += "-HEAD" if ARGV.include? '--HEAD'
     @co=HOMEBREW_CACHE+@unique_token
   end
 
@@ -238,16 +238,14 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
     end
   end
 
-  def _fetch_command svncommand, url, target
-    [svn, svncommand, '--force', url, target]
-  end
-
   def fetch_repo target, url, revision=nil, ignore_externals=false
     # Use "svn up" when the repository already exists locally.
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
     svncommand = target.exist? ? 'up' : 'checkout'
-    args = _fetch_command svncommand, url, target
+    args = [svn, svncommand, '--force']
+    args << url if !target.exist?
+    args << target
     args << '-r' << revision if revision
     args << '--ignore-externals' if ignore_externals
     quiet_safe_system(*args)
