@@ -14,7 +14,6 @@ class Jsvc < Formula
 
     cd('unix')
     system './configure'
-    system 'make clean'
     system 'make'
     bin.install 'jsvc'
   end
