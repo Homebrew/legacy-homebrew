@@ -7,8 +7,8 @@ class Jsvc < Formula
   md5 '044e996449b6b59a8cd5da87575a0007'
 
   def install
-    ENV.append "CFLAGS", "-m64"
-    ENV.append "LDFLAGS", "-m64"
+    ENV.append "CFLAGS", "-arch i386"
+    ENV.append "LDFLAGS", "-arch i386"
 
     prefix.install %w{ NOTICE.txt LICENSE.txt RELEASE-NOTES.txt }
 
