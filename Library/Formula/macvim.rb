@@ -2,9 +2,9 @@ require 'formula'
 
 class Macvim < Formula
   homepage 'http://code.google.com/p/macvim/'
-  url 'https://github.com/b4winckler/macvim/tarball/snapshot-60'
-  version '7.3-60'
-  md5 '637f731eb11fb49134e8244df3e33f56'
+  url 'https://github.com/b4winckler/macvim/tarball/snapshot-61'
+  version '7.3-61'
+  md5 '18218561913ae5d5ad68c1b6a6df5a1f'
   head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
   def options
@@ -35,6 +35,8 @@ class Macvim < Formula
 
     args = ["--with-macsdk=#{MACOS_VERSION}",
            "--with-features=huge",
+           "--with-tlib=ncurses",
+           "--enable-multibyte",
            "--with-macarchs=#{arch}",
            "--enable-perlinterp",
            "--enable-pythoninterp",
@@ -84,7 +86,7 @@ class Macvim < Formula
     To link the application to a normal Mac OS X location:
         brew linkapps
     or:
-        sudo ln -s #{prefix}/MacVim.app /Applications
+        ln -s #{prefix}/MacVim.app /Applications
     EOS
   end
 end
