@@ -1,12 +1,20 @@
 require 'formula'
 
 class Jsvc < Formula
-  version '1.0.5'
+  version '1.0.7'
   homepage 'http://commons.apache.org/daemon/jsvc.html'
-  url "http://archive.apache.org/dist/commons/daemon/binaries/#{version}/darwin/commons-daemon-#{version}-bin-darwin-universal.tar.gz"
-  md5 '1d5f4b81e5ac18da0d58af421bc3c139'
+  url 'http://apache.oss.eznetsols.org//commons/daemon/source/commons-daemon-1.0.7-native-src.tar.gz'
+  md5 '044e996449b6b59a8cd5da87575a0007'
 
   def install
+    ENV.append "CFLAGS", "-m64"
+    ENV.append "LDFLAGS", "-m64"
+
+    prefix.install %w{ NOTICE.txt LICENSE.txt RELEASE-NOTES.txt }
+
+    cd('unix')
+    system './configure'
+    system 'make'
     bin.install 'jsvc'
   end
 end
