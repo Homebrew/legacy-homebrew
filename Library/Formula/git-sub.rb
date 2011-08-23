@@ -1,7 +1,6 @@
 require 'formula'
 
 class GitSub < Formula
-
   homepage  'https://github.com/gosuri/git-sub'
   head      'git://github.com/gosuri/git-sub.git'
   url       'https://github.com/gosuri/git-sub/tarball/0.0.4'
