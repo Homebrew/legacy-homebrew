@@ -125,8 +125,6 @@ Dir.chdir "/usr/local" do
   system "/bin/bash -o pipefail -c '/usr/bin/curl -sSfL https://github.com/mxcl/homebrew/tarball/master | /usr/bin/tar xz -m --strip 1'"
 end
 
-ohai "Installation successful!"
-
 warn "/usr/local/bin is not in your PATH." unless ENV['PATH'].split(':').include? '/usr/local/bin'
 warn "Now install Xcode: http://developer.apple.com/technologies/xcode.html" unless Kernel.system "/usr/bin/which -s gcc"
 
