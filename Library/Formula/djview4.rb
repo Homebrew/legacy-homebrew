@@ -1,9 +1,9 @@
 require 'formula'
 
 class Djview4 < Formula
-  url 'http://sourceforge.net/projects/djvu/files/DjView/4.6/djview4-4.6.tar.gz'
+  url 'http://sourceforge.net/projects/djvu/files/DjView/4.8/djview-4.8.tar.gz'
   homepage 'http://djvu.sourceforge.net/djview4.html'
-  md5 '642105970467cf0864c0073140d1fa11'
+  md5 '70ef8f416c7d6892cc0cf012bfd0ae07'
 
   depends_on 'pkg-config' => :build
   depends_on 'djvulibre'
@@ -21,9 +21,17 @@ class Djview4 < Formula
                           "--with-x=no",
                           "--disable-desktopfiles"
     system "make"
-    system "make install"
+
+    # From the djview4.8 README:
+    #     Note3: Do not use command "make install".
+    #     Simply copy the application bundle where you want it.
+    bin.install 'src/djview.app'
+
+    # Part of the previous formula (left here for reference) <--
+    # system "make install"
     # Remove bad symlink created by make install
-    bin.rmtree
+    # bin.rmtree
+    # -->
   end
 
   def caveats; <<-EOS
