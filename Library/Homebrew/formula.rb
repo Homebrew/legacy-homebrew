@@ -65,14 +65,14 @@ class KegOnlyReason
 
   def to_s
     if @reason == :provided_by_osx
-      <<-EOS.chomp
+      <<-EOS.strip
 Mac OS X already provides this program and installing another version in
 parallel can cause all kinds of trouble.
 
 #{@explanation}
 EOS
     else
-      @reason
+      @reason.strip
     end
   end
 end
@@ -101,7 +101,8 @@ end
 class Formula
   include FileUtils
 
-  attr_reader :name, :path, :url, :bottle, :bottle_sha1, :version, :homepage, :specs, :downloader
+  attr_reader :name, :path, :url, :version, :homepage, :specs, :downloader
+  attr_reader :bottle, :bottle_sha1
 
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
@@ -119,7 +120,7 @@ class Formula
       @url = @head
       @version = 'HEAD'
       @spec_to_use = @unstable
-    elsif pouring
+    elsif pourable?
       @spec_to_use = BottleSoftwareSpecification.new(@bottle, @specs)
     else
       if @stable.nil?
@@ -211,7 +212,7 @@ class Formula
   def caveats; nil end
 
   # any e.g. configure options for this package
-  def options; end
+  def options; [] end
 
   # patches are automatically applied after extracting the tarball
   # return an array of strings, or if you need a patch level other than -p1
@@ -456,7 +457,7 @@ class Formula
     end
   end
 
-  def pouring
+  def pourable?
     @bottle and not ARGV.build_from_source?
   end
 
@@ -464,7 +465,11 @@ protected
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
-    ohai "#{cmd} #{args*' '}".strip
+    # remove "boring" arguments so that the important ones are more likely to
+    # be shown considering that we trim long ohai lines to the terminal width
+    pretty_args = args.dup
+    pretty_args.delete "--disable-dependency-tracking" if cmd == "./configure" and not ARGV.verbose?
+    ohai "#{cmd} #{pretty_args*' '}".strip
 
     if ARGV.verbose?
       safe_system cmd, *args
@@ -518,7 +523,7 @@ private
 
   def verify_download_integrity fn
     require 'digest'
-    if not pouring
+    if not pourable?
       type=CHECKSUM_TYPES.detect { |type| instance_variable_defined?("@#{type}") }
       type ||= :md5
       supplied=instance_variable_get("@#{type}")
@@ -552,7 +557,7 @@ EOF
     fetched = @downloader.fetch
     verify_download_integrity fetched if fetched.kind_of? Pathname
 
-    if not pouring
+    if not pourable?
       mktemp do
         @downloader.stage
         yield
@@ -566,7 +571,7 @@ EOF
   end
 
   def patch
-    return if patches.nil? or pouring
+    return if patches.nil? or pourable?
 
     if not patches.kind_of? Hash
       # We assume -p1

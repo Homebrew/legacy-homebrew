@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gpgme < Formula
-  url 'ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-1.3.0.tar.bz2'
+  url 'ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-1.3.1.tar.bz2'
   homepage 'http://www.gnupg.org/gpgme.html'
-  sha1 '0db69082abfbbbaf86c3ab0906f5137de900da73'
+  sha1 '7d19a95a2239da13764dad7f97541be884ec5a37'
 
   depends_on 'gnupg'
   depends_on 'libgpg-error'
@@ -15,6 +15,8 @@ class Gpgme < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-asm"
+    system "make"
+    system "make check"
     system "make install"
   end
 end

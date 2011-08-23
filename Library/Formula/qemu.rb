@@ -1,18 +1,21 @@
 require 'formula'
 
 class Qemu < Formula
-  url 'http://download.savannah.gnu.org/releases/qemu/qemu-0.14.0.tar.gz'
+  url 'http://wiki.qemu.org/download/qemu-0.15.0.tar.gz'
   homepage 'http://www.qemu.org/'
-  md5 'f9d145d5c09de9f0984ffe9bd1229970'
+  md5 'dbc55b014bcd21b98e347f6a90f7fb6d'
 
   depends_on 'jpeg'
   depends_on 'gnutls'
+
+  fails_with_llvm "Segmentation faults occur at run-time with LLVM"
 
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--disable-darwin-user",
                           "--enable-cocoa",
-                          "--disable-bsd-user"
+                          "--disable-bsd-user",
+                          "--disable-guest-agent"
     system "make install"
   end
 end

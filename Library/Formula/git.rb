@@ -1,19 +1,23 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://kernel.org/pub/software/scm/git/git-manpages-1.7.5.4.tar.bz2'
-  md5 '7a74ef1c64395a07301359a8707c828a'
+  url 'http://kernel.org/pub/software/scm/git/git-manpages-1.7.6.tar.bz2'
+  md5 'a017935cf9e90d9f056b6547c318fd15'
 end
 
 class GitHtmldocs < Formula
-  url 'http://kernel.org/pub/software/scm/git/git-htmldocs-1.7.5.4.tar.bz2'
-  md5 '88226c08c208101db61e345a3598c4af'
+  url 'http://kernel.org/pub/software/scm/git/git-htmldocs-1.7.6.tar.bz2'
+  md5 '8ab9c524844ad54edcb5c40d1c886ded'
 end
 
 class Git < Formula
-  url 'http://kernel.org/pub/software/scm/git/git-1.7.5.4.tar.bz2'
-  md5 '4985b774db84d3bbcc2b8d90952552a3'
+  url 'http://kernel.org/pub/software/scm/git/git-1.7.6.tar.bz2'
+  md5 '9e0a438eb71e89eedb61f89470ed32a0'
   homepage 'http://git-scm.com'
+
+  def options
+    [['--with-blk-sha1', 'compile with the optimized SHA1 implementation']]
+  end
 
   def install
     # If these things are installed, tell Git build system to not use them
@@ -23,6 +27,8 @@ class Git < Formula
     ENV['PERL_MM_OPT']=''
     # Build verbosely.
     ENV['V']='1'
+
+    ENV['BLK_SHA1']='YesPlease' if ARGV.include? '--with-blk-sha1'
 
     inreplace "Makefile" do |s|
       s.remove_make_var! %w{CFLAGS LDFLAGS}
