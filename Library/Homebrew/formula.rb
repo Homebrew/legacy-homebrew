@@ -590,8 +590,8 @@ EOF
         p = {:filename => '%03d-homebrew.diff' % n+=1, :compression => false}
 
         if defined? DATA and url == DATA
-          pn=Pathname.new p[:filename]
-          pn.write DATA.read
+          pn = Pathname.new p[:filename]
+          pn.write(DATA.read.to_s.gsub("HOMEBREW_PREFIX", HOMEBREW_PREFIX))
         elsif url =~ %r[^\w+\://]
           out_fn = p[:filename]
           case url
