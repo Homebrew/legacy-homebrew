@@ -5,11 +5,11 @@ class Flann < Formula
   homepage 'http://www.cs.ubc.ca/~mariusm/index.php/FLANN/FLANN'
   md5 '5fd889b9f3777aa6e0d05b2546d25eb5'
 
-  depends_on 'cmake'
+  depends_on 'cmake'=> :build
   depends_on 'HDF5'
   depends_on 'GTest'
+
   def install
-    # system "./configure", "--disable-debug", "--disable-dependency-tracking","--prefix=#{prefix}"
     system "cmake . #{std_cmake_parameters} -DBUILD_MATLAB_BINDINGS=OFF"
     system "make install"
   end
