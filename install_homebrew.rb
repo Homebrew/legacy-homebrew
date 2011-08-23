@@ -122,7 +122,9 @@ Dir.chdir "/usr/local" do
   ohai "Downloading and Installing Homebrew..."
   # -m to stop tar erroring out if it can't modify the mtime for root owned directories
   # pipefail to cause the exit status from curl to propogate if it fails
-  system "/bin/bash -o pipefail -c '/usr/bin/curl -sSfL https://github.com/mxcl/homebrew/tarball/master | /usr/bin/tar xz -m --strip 1'"
+  # we use -k because OS X curl has a bunch of bad SSL certificates
+  # you may want to remove the -k flag from your fork!
+  system "/bin/bash -o pipefail -c '/usr/bin/curl -skSfL https://github.com/mxcl/homebrew/tarball/master | /usr/bin/tar xz -m --strip 1'"
 end
 
 warn "/usr/local/bin is not in your PATH." unless ENV['PATH'].split(':').include? '/usr/local/bin'
