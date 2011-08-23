@@ -8,7 +8,7 @@ module HomebrewEnvExtension
     delete('CPPFLAGS')
     delete('LDFLAGS')
 
-    self['MAKEFLAGS']="-j#{Hardware.processor_count}"
+    self['MAKEFLAGS'] = "-j#{Hardware.processor_count}"
 
     unless HOMEBREW_PREFIX.to_s == '/usr/local'
       # /usr/local is already an -isystem and -L directory so we skip it
@@ -18,25 +18,26 @@ module HomebrewEnvExtension
       self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
     end
 
-    if MACOS_VERSION >= 10.6 and self.use_clang?
-      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/clang"
-      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/clang++"
-      cflags = ['-O3'] # -O4 makes the linker fail on some formulae
-    elsif MACOS_VERSION >= 10.6 and self.use_llvm?
-      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
-      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
-      cflags = ['-O4'] # link time optimisation baby!
-    elsif MACOS_VERSION >= 10.6 and self.use_gcc?
-      # Xcode 4 makes gcc and g++ #{MacOS.xcode_prefix}/usr/bin/ links to llvm versions
-      # so we need to use gcc-4.2 and g++-4.2 for real non-llvm compilers
-      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/gcc-4.2"
-      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/g++-4.2"
-      cflags = ['-O3']
-    else
-      # If these aren't set, many formulae fail to build
-      self['CC'] = '/usr/bin/cc'
-      self['CXX'] = '/usr/bin/c++'
-      cflags = ['-O3']
+    # llvm allows -O4 however it often fails to link and is very slow
+    cflags = ['-O3']
+
+    # If these aren't set, many formulae fail to build
+    self['CC'] = '/usr/bin/cc'
+    self['CXX'] = '/usr/bin/c++'
+
+    if MACOS_VERSION >= 10.6
+      if self.use_clang?
+        self['CC']  = "#{MacOS.xcode_prefix}/usr/bin/clang"
+        self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/clang++"
+      elsif self.use_llvm? and MacOS.xcode_version < '4.1'
+        # With Xcode 4 cc is llvm
+        self['CC']  = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
+        self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
+      elsif self.use_gcc? and MacOS.xcode_version < '4'
+        # With Xcode4 cc, c++, gcc and g++ are actually symlinks to llvm-gcc
+        self['CC']  = "#{MacOS.xcode_prefix}/usr/bin/gcc-4.2"
+        self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/g++-4.2"
+      end
     end
 
     # In rare cases this may break your builds, as the tool for some reason wants
