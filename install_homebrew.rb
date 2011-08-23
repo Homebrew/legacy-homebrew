@@ -84,16 +84,12 @@ puts "/usr/local/bin/brew"
 puts "/usr/local/Library/Formula/..."
 puts "/usr/local/Library/Homebrew/..."
 
-chmods = %w( share/man lib/pkgconfig var/log share/locale
+chmods = %w( . bin etc include lib lib/pkgconfig Library sbin share var var/log share/locale share/man
              share/man/man1 share/man/man2 share/man/man3 share/man/man4
              share/man/man5 share/man/man6 share/man/man7 share/man/man8
-             share/info share/doc share/aclocal ).map{ |d| "/usr/local/#{d}" }
-root_dirs = []
-%w(bin Cellar etc include lib Library sbin share var .git).each do |d|
-  d = "/usr/local/#{d}"
-  if File.directory? d then chmods else root_dirs end << d
-end
-chmods = chmods.select{ |d| File.directory? d and not File.writable? d }
+             share/info share/doc share/aclocal ).
+            map{ |d| "/usr/local/#{d}" }.
+            select{ |d| File.directory? d and not File.writable? d }
 chgrps = chmods.reject{ |d| File.stat(d).grpowned? }
 
 unless chmods.empty?
@@ -105,19 +101,22 @@ unless chgrps.empty?
   puts *chgrps
 end
 
-
 if STDIN.tty?
   puts
   puts "Press enter to continue"
   abort unless getc == 13
 end
 
-sudo "/bin/mkdir /usr/local" unless File.directory? "/usr/local"
-sudo "/bin/chmod o+w /usr/local"
-sudo "/bin/chmod", "g+w", *chmods unless chmods.empty?
-sudo "/usr/bin/chgrp", "staff", *chgrps unless chgrps.empty?
-system "/bin/mkdir", *root_dirs unless root_dirs.empty?
-
+if File.directory? "/usr/local"
+  sudo "/bin/chmod", "g+w", *chmods unless chmods.empty?
+  # all admin users are in staff
+  sudo "/usr/bin/chgrp", "staff", *chgrps unless chgrps.empty?
+else
+  sudo "/bin/mkdir /usr/local"
+  sudo "/bin/chmod g+w /usr/local"
+  # the group is set to wheel by default for some reason
+  sudo "/usr/bin/chgrp staff /usr/local"
+end
 
 Dir.chdir "/usr/local" do
   ohai "Downloading and Installing Homebrew..."
@@ -126,10 +125,7 @@ Dir.chdir "/usr/local" do
   system "/bin/bash -o pipefail -c '/usr/bin/curl -sSfL https://github.com/mxcl/homebrew/tarball/master | /usr/bin/tar xz -m --strip 1'"
 end
 
-# we reset the permissions of /usr/local because we want to minimise the
-# amount of fiddling we do to the system. Some tools require /usr/local to be
-# by non-writable for non-root users.
-sudo "/bin/chmod o-w /usr/local"
+ohai "Installation successful!"
 
 warn "/usr/local/bin is not in your PATH." unless ENV['PATH'].split(':').include? '/usr/local/bin'
 warn "Now install Xcode: http://developer.apple.com/technologies/xcode.html" unless Kernel.system "/usr/bin/which -s gcc"
