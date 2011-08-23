@@ -6,6 +6,6 @@ class Jsonpp < Formula
   md5 '2cd5faf6f11466b587a4ab744de13a16'
 
   def install
-    system "cp jsonpp #{bin}"
+    bin.install "jsonpp"
   end
 end
