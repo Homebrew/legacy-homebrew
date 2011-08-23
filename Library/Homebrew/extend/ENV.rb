@@ -18,25 +18,16 @@ module HomebrewEnvExtension
       self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
     end
 
-    if MACOS_VERSION >= 10.6 and self.use_clang?
-      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/clang"
-      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/clang++"
-      cflags = ['-O3'] # -O4 makes the linker fail on some formulae
-    elsif MACOS_VERSION >= 10.6 and self.use_llvm?
-      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
-      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
-      cflags = ['-O4'] # link time optimisation baby!
-    elsif MACOS_VERSION >= 10.6 and self.use_gcc?
-      # Xcode 4 makes gcc and g++ #{MacOS.xcode_prefix}/usr/bin/ links to llvm versions
-      # so we need to use gcc-4.2 and g++-4.2 for real non-llvm compilers
-      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/gcc-4.2"
-      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/g++-4.2"
-      cflags = ['-O3']
+    if MACOS_VERSION >= 10.6
+      self.clang if self.use_clang?
+      self.llvm if self.use_llvm?
+      self.gcc if self.use_gcc?
+
     else
       # If these aren't set, many formulae fail to build
       self['CC'] = '/usr/bin/cc'
       self['CXX'] = '/usr/bin/c++'
-      cflags = ['-O3']
+      self.O3
     end
 
     # In rare cases this may break your builds, as the tool for some reason wants
@@ -116,6 +107,14 @@ module HomebrewEnvExtension
     append_to_cflags '-g -O0'
   end
 
+  def gcc
+    # Xcode 4 makes gcc and g++ #{MacOS.xcode_prefix}/usr/bin/ links to llvm versions
+    # so we need to use gcc-4.2 and g++-4.2 for real non-llvm compilers
+    self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/gcc-4.2"
+    self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/g++-4.2"
+    self.O3
+  end
+
   def gcc_4_0_1
     self['CC'] = self['LD'] = '/usr/bin/gcc-4.0'
     self['CXX'] = '/usr/bin/g++-4.0'
@@ -138,6 +137,13 @@ module HomebrewEnvExtension
     self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
     self['LD'] = self['CC']
     self.O4
+  end
+
+  def clang
+    self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/clang"
+    self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/clang++"
+    self['LD'] = self['CC']
+    self.O3 # -O4 makes the linker fail on some formulae
   end
 
   def fortran
