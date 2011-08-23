@@ -6,7 +6,7 @@ class Ncdu < Formula
   md5 '172047c29d232724cc62e773e82e592a'
 
   def install
-    system "./configure", "--prefix=#{prefix}" "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
 end
