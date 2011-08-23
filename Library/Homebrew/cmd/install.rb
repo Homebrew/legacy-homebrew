@@ -57,22 +57,26 @@ module Homebrew extend self
     end
   end
 
-  def install_formulae formulae
-    formulae = [formulae].flatten.compact
-    return if formulae.empty?
-
+  def perform_preinstall_checks
     check_ppc
     check_writable_install_location
     check_cc
     check_macports
+  end
 
-    formulae.each do |f|
-      begin
-        installer = FormulaInstaller.new f
-        installer.ignore_deps = ARGV.include? '--ignore-dependencies'
-        installer.go
-      rescue FormulaAlreadyInstalledError => e
-        opoo e.message
+  def install_formulae formulae
+    formulae = [formulae].flatten.compact
+    unless formulae.empty?
+      perform_preinstall_checks
+      formulae.each do |f|
+        begin
+          fi = FormulaInstaller.new(f)
+          fi.install
+          fi.caveats
+          fi.finish
+        rescue FormulaAlreadyInstalledError => e
+          opoo e.message
+        end
       end
     end
   end
