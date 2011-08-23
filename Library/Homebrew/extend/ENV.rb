@@ -59,6 +59,10 @@ module HomebrewEnvExtension
         cflags << "-march=core2"
       when :core
         cflags<<"-march=prescott"<<"-mfpmath=sse"
+      else
+        # note that this didn't work on older versions of Xcode's gcc
+        # and maybe still doesn't. But it's at least not worse than nothing.
+        cflags << "-march=native"
       end
       # gcc doesn't auto add msse4 or above (based on march flag) yet
       case Hardware.intel_family
