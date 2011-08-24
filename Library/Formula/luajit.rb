@@ -15,7 +15,9 @@ class Luajit < Formula
 
   # Apply beta8 hotfix #1
   def patches
-    { :p1 => "http://luajit.org/download/beta8_hotfix1.patch" }
+    if not ARGV.build_head?
+      { :p1 => "http://luajit.org/download/beta8_hotfix1.patch" }
+    end
   end
 
   def install
@@ -24,7 +26,13 @@ class Luajit < Formula
     else
       system "make", "PREFIX=#{prefix}", "install"
     end
+
     # Non-versioned symlink
+    if ARGV.build_head?
+      version = "2.0.0-beta8"
+    else
+      version = @version
+    end
     ln_s bin+"luajit-#{version}", bin+"luajit"
   end
 end
