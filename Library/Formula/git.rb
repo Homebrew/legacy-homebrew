@@ -47,7 +47,7 @@ class Git < Formula
     (share+'doc/git-core/contrib').install 'contrib/emacs'
 
     # Install contrib files to share/contrib
-    (share).install 'contrib'
+    (share/:git).install 'contrib'
 
     # These files are exact copies of the git binary, so like the contents
     # of libexec/git-core lets hard link them.
@@ -71,10 +71,10 @@ class Git < Formula
       #{etc}/bash_completion.d
 
     Emacs support has been installed to:
-      #{share}/doc/git-core/contrib/emacs
+      #{HOMEBREW_PREFIX}/share/doc/git-core/contrib/emacs
 
-    The rest of the "contrib" has been installed to:
-      #{share}/contrib
+    The rest of the "contrib" is installed to:
+      #{HOMEBREW_PREFIX}/share/git/contrib
     EOS
   end
 end
