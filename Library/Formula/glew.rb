@@ -1,9 +1,9 @@
 require 'formula'
 
 class Glew < Formula
-  url 'http://downloads.sourceforge.net/project/glew/glew/1.5.8/glew-1.5.8.tgz'
+  url 'http://downloads.sourceforge.net/project/glew/glew/1.6.0/glew-1.6.0.tgz'
   homepage 'http://glew.sourceforge.net/'
-  md5 '342c8dc64fb9daa6af245b132e086bdd'
+  md5 '7dfbb444b5a4e125bc5dba0aef403082'
 
   def install
     (lib+'pkgconfig').mkpath

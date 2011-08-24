@@ -19,6 +19,7 @@ class Ffmpeg < Formula
 
   def install
     args = ["--prefix=#{prefix}",
+            "--enable-shared",
             "--enable-gpl",
             "--enable-version3",
             "--enable-nonfree",
@@ -32,10 +33,15 @@ class Ffmpeg < Formula
     args << "--enable-libvpx" if Formula.factory('libvpx').installed?
     args << "--enable-libxvid" if Formula.factory('xvid').installed?
 
-    # Enable alternate compilers
-    args << "--cc=clang" if ENV.use_clang?
-    args << "--cc=llvm-gcc" if ENV.use_llvm?
-    args << "--cc=gcc" if ENV.use_gcc?
+    # Force use of clang on Lion
+    # See: https://avcodec.org/trac/ffmpeg/ticket/353
+    if MacOS.lion?
+      args << "--cc=clang"
+    else
+      args << "--cc=clang" if ENV.use_clang?
+      args << "--cc=llvm-gcc" if ENV.use_llvm?
+      args << "--cc=gcc" if ENV.use_gcc?
+    end
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
