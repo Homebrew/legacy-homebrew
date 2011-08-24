@@ -54,7 +54,7 @@ module HomebrewEnvExtension
     # http://gcc.gnu.org/onlinedocs/gcc-4.3.3/gcc/i386-and-x86_002d64-Options.html
     if MACOS_VERSION >= 10.6
       case Hardware.intel_family
-      when :nehalem, :penryn, :core2
+      when :nehalem, :penryn, :core2, :arrandale
         # the 64 bit compiler adds -mfpmath=sse for us
         cflags << "-march=core2"
       when :core
