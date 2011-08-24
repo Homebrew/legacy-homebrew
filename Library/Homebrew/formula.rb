@@ -45,13 +45,6 @@ class SoftwareSpecification
   end
 end
 
-class BottleSoftwareSpecification < SoftwareSpecification
-  def download_strategy
-    return CurlBottleDownloadStrategy if @using.nil?
-    raise "Strategies cannot be used with bottles."
-  end
-end
-
 
 # Used to annotate formulae that duplicate OS X provided software
 # or cause conflicts when linked in.
@@ -120,8 +113,6 @@ class Formula
       @url = @head
       @version = 'HEAD'
       @spec_to_use = @unstable
-    elsif pourable?
-      @spec_to_use = BottleSoftwareSpecification.new(@bottle, @specs)
     else
       if @stable.nil?
         @spec_to_use = SoftwareSpecification.new(@url, @specs)
@@ -457,10 +448,6 @@ class Formula
     end
   end
 
-  def pourable?
-    @bottle and not ARGV.build_from_source?
-  end
-
 protected
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
@@ -521,16 +508,17 @@ private
 
   CHECKSUM_TYPES=[:md5, :sha1, :sha256].freeze
 
-  def verify_download_integrity fn
+  public # for FormulaInstaller
+
+  def verify_download_integrity fn, *args
     require 'digest'
-    if not pourable?
+    if args.count != 2
       type=CHECKSUM_TYPES.detect { |type| instance_variable_defined?("@#{type}") }
       type ||= :md5
       supplied=instance_variable_get("@#{type}")
       type=type.to_s.upcase
     else
-      supplied=instance_variable_get("@bottle_sha1")
-      type="SHA1"
+      supplied, type = args
     end
 
     hasher = Digest.const_get(type)
@@ -552,26 +540,20 @@ EOF
     end
   end
 
+  private
+
   def stage
     HOMEBREW_CACHE.mkpath
     fetched = @downloader.fetch
     verify_download_integrity fetched if fetched.kind_of? Pathname
-
-    if not pourable?
-      mktemp do
-        @downloader.stage
-        yield
-      end
-    else
-      HOMEBREW_CELLAR.cd do
-        @downloader.stage
-        yield
-      end
+    mktemp do
+      @downloader.stage
+      yield
     end
   end
 
   def patch
-    return if patches.nil? or pourable?
+    return if patches.nil?
 
     if not patches.kind_of? Hash
       # We assume -p1
