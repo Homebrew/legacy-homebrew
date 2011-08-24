@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cmigemo <Formula
+class Cmigemo < Formula
   url 'http://cmigemo.googlecode.com/files/cmigemo-default-src-20110227.zip'
   md5 '6e9b6f6ec96d4eb8bdd18e52b91e1b85'
   homepage 'http://www.kaoriya.net/software/cmigemo'
