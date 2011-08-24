@@ -1,10 +1,9 @@
 require 'formula'
 
 class Contacts < Formula
-  url 'https://github.com/dhess/contacts/tarball/v1.1a'
-  version '1.1a'
+  url 'http://www.gnufoo.org/contacts/contacts1.1.tgz'
   homepage 'http://www.gnufoo.org/contacts/contacts.html'
-  sha1 '2e5c8b4d9302aa6d3652a559155a95d74b6ffb6c'
+  md5 '37b6a6a0312dabc4ad2ddd8805f93e12'
 
   def install
     system "make"

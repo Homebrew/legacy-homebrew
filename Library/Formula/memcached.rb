@@ -1,9 +1,9 @@
 require 'formula'
 
 class Memcached < Formula
-  url "http://memcached.googlecode.com/files/memcached-1.4.6.tar.gz"
+  url "http://memcached.googlecode.com/files/memcached-1.4.5.tar.gz"
   homepage 'http://www.danga.com/memcached/'
-  sha1 '56c9cc0f7d234e90bb7b6459e0eda864b05021a7'
+  sha1 'c7d6517764b82d23ae2de76b56c2494343c53f02'
 
   depends_on 'libevent'
 

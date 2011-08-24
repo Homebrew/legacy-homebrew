@@ -15,10 +15,6 @@ class Git < Formula
   md5 '9e0a438eb71e89eedb61f89470ed32a0'
   homepage 'http://git-scm.com'
 
-  def options
-    [['--with-blk-sha1', 'compile with the optimized SHA1 implementation']]
-  end
-
   def install
     # If these things are installed, tell Git build system to not use them
     ENV['NO_FINK']='1'
