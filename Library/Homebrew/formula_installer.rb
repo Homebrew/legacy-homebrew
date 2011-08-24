@@ -14,7 +14,7 @@ class FormulaInstaller
     @f = ff
     @show_header = true
     @ignore_deps = ARGV.include? '--ignore-dependencies' || ARGV.interactive?
-    @install_bottle = ff.pourable? #TODO better
+    @install_bottle = !ff.bottle.nil? && !ARGV.build_from_source?
   end
 
   def install
@@ -149,13 +149,25 @@ class FormulaInstaller
 
   def clean
     require 'cleaner'
-    Cleaner.new f if not f.pourable?
+    Cleaner.new f
   rescue Exception => e
     opoo "The cleaning step did not complete successfully"
     puts "Still, the installation was successful, so we will link it into your prefix"
     ohai e, e.backtrace if ARGV.debug?
     @show_summary_heading = true
   end
+
+  def pour
+    HOMEBREW_CACHE.mkpath
+    downloader = CurlBottleDownloadStrategy.new f.bottle, f.name, f.version, nil
+    downloader.fetch
+    f.verify_download_integrity downloader.tarball_path, f.bottle_sha1, "SHA1"
+    HOMEBREW_CELLAR.cd do
+      downloader.stage
+    end
+  end
+
+  ## checks
 
   def paths
     @paths ||= ENV['PATH'].split(':').map{ |p| File.expand_path p }
