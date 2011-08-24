@@ -24,6 +24,11 @@ class Git < Formula
     # Build verbosely.
     ENV['V']='1'
 
+    # Clean XCode 4.x installs don't include Perl MakeMaker
+    ENV['NO_PERL_MAKEMAKER']='1' if MacOS.lion?
+
+    ENV['BLK_SHA1']='YesPlease' if ARGV.include? '--with-blk-sha1'
+
     inreplace "Makefile" do |s|
       s.remove_make_var! %w{CFLAGS LDFLAGS}
     end
