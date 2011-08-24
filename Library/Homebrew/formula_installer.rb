@@ -107,7 +107,7 @@ class FormulaInstaller
         exec '/usr/bin/nice',
              '/usr/bin/ruby',
              '-I', Pathname.new(__FILE__).dirname,
-             '-rinstall',
+             '-rbuild',
              '--',
              f.path,
              *ARGV.options_only
