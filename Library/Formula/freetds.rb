@@ -8,6 +8,7 @@ class Freetds < Formula
   def install
     system "./configure", "--prefix=#{prefix}", "--with-tdsver=7.1", "--mandir=#{man}"
     system 'make'
+    ENV.j1 # Or fails to install on multi-core machines
     system 'make install'
   end
 end
