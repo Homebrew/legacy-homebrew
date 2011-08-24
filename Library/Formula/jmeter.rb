@@ -1,7 +1,7 @@
 require 'formula'
 
 class Jmeter < Formula
-  url 'http://apache.mirror.rbftpnetworks.com//jakarta/jmeter/binaries/jakarta-jmeter-2.5.tgz'
+  url 'http://apache.osuosl.org/jakarta/jmeter/binaries/jakarta-jmeter-2.5.tgz'
   homepage 'http://jakarta.apache.org/jmeter/'
   md5 '18035ee0c8bf64792b2710d9ae48b2ac'
 
