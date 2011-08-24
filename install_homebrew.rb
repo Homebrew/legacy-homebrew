@@ -108,12 +108,12 @@ if STDIN.tty?
 end
 
 if File.directory? "/usr/local"
-  sudo "/bin/chmod", "g+w", *chmods unless chmods.empty?
+  sudo "/bin/chmod", "g+rwx", *chmods unless chmods.empty?
   # all admin users are in staff
   sudo "/usr/bin/chgrp", "staff", *chgrps unless chgrps.empty?
 else
   sudo "/bin/mkdir /usr/local"
-  sudo "/bin/chmod g+w /usr/local"
+  sudo "/bin/chmod g+rwx /usr/local"
   # the group is set to wheel by default for some reason
   sudo "/usr/bin/chgrp staff /usr/local"
 end
