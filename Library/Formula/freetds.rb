@@ -6,6 +6,8 @@ class Freetds < Formula
   md5 'b14db5823980a32f0643d1a84d3ec3ad'
 
   def install
+    ENV.deparallelize
+    ENV.no_optimization
     system "./configure", "--prefix=#{prefix}", "--with-tdsver=8.0", "--enable-msdblib", "--mandir=#{man}"
     system 'make'
     system 'make install'
