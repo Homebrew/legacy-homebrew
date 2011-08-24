@@ -12,7 +12,6 @@ class Avrdude < Formula
   end
 
   def install
-    ENV.j1 # See http://github.com/mxcl/homebrew/issues/6915
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make"
     system "make install"

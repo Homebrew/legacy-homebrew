@@ -17,14 +17,8 @@ class Pianobar < Formula
   fails_with_llvm "Reports of this not compiling on Xcode 4"
 
   def install
-    # we discard Homebrew's CFLAGS as Pianobar reportdely doesn't like them
-    ENV['CFLAGS'] = "-O2 -DNDEBUG " +
-              # fixes a segfault: https://github.com/PromyLOPh/pianobar/issues/138
-              "-D_DARWIN_C_SOURCE " +
-              # Or it doesn't build at all
-              "-std=c99 " +
-              # build if we aren't /usr/local'
-              "#{ENV["CPPFLAGS"]} #{ENV["LDFLAGS"]}"
+    # Force GCC into c99 mode
+    ENV.append 'CFLAGS', "-std=c99"
 
     system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"

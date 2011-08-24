@@ -7,8 +7,6 @@ class Rtmpdump < Formula
 
   depends_on 'openssl' if MacOS.leopard?
 
-  fails_with_llvm if MacOS.lion?
-
   # Use dylib instead of so
   def patches; DATA; end
 

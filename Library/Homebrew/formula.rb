@@ -65,14 +65,14 @@ class KegOnlyReason
 
   def to_s
     if @reason == :provided_by_osx
-      <<-EOS.strip
+      <<-EOS.chomp
 Mac OS X already provides this program and installing another version in
 parallel can cause all kinds of trouble.
 
 #{@explanation}
 EOS
     else
-      @reason.strip
+      @reason
     end
   end
 end
@@ -465,11 +465,7 @@ protected
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
-    # remove "boring" arguments so that the important ones are more likely to
-    # be shown considering that we trim long ohai lines to the terminal width
-    pretty_args = args.dup
-    pretty_args.delete "--disable-dependency-tracking" if cmd == "./configure" and not ARGV.verbose?
-    ohai "#{cmd} #{pretty_args*' '}".strip
+    ohai "#{cmd} #{args*' '}".strip
 
     if ARGV.verbose?
       safe_system cmd, *args

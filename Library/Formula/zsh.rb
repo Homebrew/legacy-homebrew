@@ -10,7 +10,9 @@ class Zsh < Formula
   skip_clean :all
 
   def install
-    system "./configure", "--prefix=#{prefix}",
+    system "./configure", "--disable-debug",
+                          "--prefix=#{prefix}",
+                          "--disable-dependency-tracking",
                           # don't version stuff in Homebrew, we already do that!
                           "--enable-fndir=#{share}/zsh/functions",
                           "--enable-scriptdir=#{share}/zsh/scripts"
