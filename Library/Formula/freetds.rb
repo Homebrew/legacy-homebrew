@@ -6,7 +6,7 @@ class Freetds < Formula
   md5 'b14db5823980a32f0643d1a84d3ec3ad'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--with-tdsver=8.0", "--enable-msdblib", "--mandir=#{man}"
+    system "./configure", "--prefix=#{prefix}", "--with-tdsver=7.1", "--mandir=#{man}"
     system 'make'
     system 'make install'
   end
