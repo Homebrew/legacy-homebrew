@@ -62,7 +62,9 @@ module HomebrewEnvExtension
       else
         # note that this didn't work on older versions of Xcode's gcc
         # and maybe still doesn't. But it's at least not worse than nothing.
-        cflags << "-march=native"
+        # UPDATE with Xcode 4.1 doesn't work at all.
+        # TODO there must be something useful!?
+        #cflags << "-march=native"
       end
       # gcc doesn't auto add msse4 or above (based on march flag) yet
       case Hardware.intel_family
