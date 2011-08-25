@@ -512,7 +512,7 @@ private
 
   def verify_download_integrity fn, *args
     require 'digest'
-    if args.count != 2
+    if args.length != 2
       type=CHECKSUM_TYPES.detect { |type| instance_variable_defined?("@#{type}") }
       type ||= :md5
       supplied=instance_variable_get("@#{type}")

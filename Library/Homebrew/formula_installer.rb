@@ -176,7 +176,7 @@ class FormulaInstaller
   def check_PATH
     # warn the user if stuff was installed outside of their PATH
     [f.bin, f.sbin].each do |bin|
-      if bin.directory? and bin.children.count > 0
+      if bin.directory? and bin.children.length > 0
         bin = (HOMEBREW_PREFIX/bin.basename).realpath.to_s
         unless paths.include? bin
           opoo "#{bin} is not in your PATH"

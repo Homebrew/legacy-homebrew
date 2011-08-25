@@ -17,7 +17,7 @@ module Homebrew extend self
       ARGV.formulae.map{ |f| [f.prefix.parent, f.name, f.version] }
     end
 
-    if outdated.count > 1
+    if outdated.length > 1
       oh1 "Upgrading #{outdated.count} outdated package#{outdated.count.plural_s}, with result:"
       puts outdated.map{ |_, name, version| "#{name} #{version}" } * ", "
     end
