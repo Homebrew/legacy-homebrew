@@ -33,17 +33,23 @@ class RefreshBrew
       if git_repo?
         safe_system "git checkout -q master"
         @initial_revision = read_revision
+        # originally we fetched by URL but then we decided that we should
+        # use origin so that it's easier for forks to operate seamlessly
+        unless `git remote`.split.include? 'origin'
+          safe_system "git remote add origin #{REPOSITORY_URL}"
+        end
       else
         begin
           safe_system "git init"
-          safe_system "git fetch #{REPOSITORY_URL}"
+          safe_system "git remote add origin #{REPOSITORY_URL}"
+          safe_system "git fetch origin"
           safe_system "git reset --hard FETCH_HEAD"
         rescue Exception
           safe_system "/bin/rm -rf .git"
           raise
         end
       end
-      execute "git pull #{REPOSITORY_URL} master"
+      execute "git pull origin master"
       @current_revision = read_revision
     end
 
