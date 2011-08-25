@@ -1,9 +1,9 @@
 require 'formula'
 
 class Generatorrunner <Formula
-  url 'http://www.pyside.org/files/generatorrunner-0.6.7.tar.bz2'
+  url 'http://www.pyside.org/files/generatorrunner-0.6.12.tar.bz2'
   homepage 'http://www.pyside.org'
-  md5 '4aa42befab58eac50b8b9403b8fe54cc'
+  md5 '39bf1f2e93fdec434d268cc6fb9d9ebf'
 
   depends_on 'cmake'
 
