@@ -1,9 +1,9 @@
 require 'formula'
 
 class Apiextractor <Formula
-  url 'http://www.pyside.org/files/apiextractor-0.10.0.tar.bz2'
+  url 'http://www.pyside.org/files/apiextractor-0.10.6.tar.bz2'
   homepage 'http://www.pyside.org'
-  md5 '1e6825f71be0c912395ec7b5636cd613'
+  md5 '85c3b00d04ad6f5f885caa002b2ae772'
 
   depends_on 'cmake'
 
