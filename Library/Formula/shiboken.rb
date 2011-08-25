@@ -1,9 +1,9 @@
 require 'formula'
 
 class Shiboken <Formula
-  url 'http://www.pyside.org/files/shiboken-1.0.0.tar.bz2'
+  url 'http://www.pyside.org/files/shiboken-1.0.6.tar.bz2'
   homepage 'http://www.pyside.org'
-  md5 'f732efeef712bc93b34a1fae2305d5ac'
+  md5 'd52f0dfdc1a63534085547946e4b5fff'
 
   depends_on 'cmake'
 
