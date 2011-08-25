@@ -30,7 +30,7 @@ _brew_to_completion()
     if [[ ${COMP_WORDS[1]} == "install" && "$cur" == --* ]]; then
         local opts=$(
             local opts=(
-              --force --verbose --debug --use-clang --use-gcc --use-llvm --ignore-dependencies --HEAD
+              --force --verbose --debug --use-clang --use-gcc --use-llvm --ignore-dependencies --build-from-source --HEAD
               $(brew options --compact "$prev")
             )
             for o in ${opts[*]}; do

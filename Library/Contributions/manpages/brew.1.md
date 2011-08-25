@@ -290,6 +290,10 @@ Some sample commands ship with Homebrew and are enabled by default.
 
 ## ENVIRONMENT
 
+  * HOMEBREW\_BUILD\_FROM\_SOURCE:
+    If set, instructs Homebrew to compile from source even when a formula
+    provides a bottle.
+
   * HOMEBREW\_CACHE:
     If set, instructs Homebrew to use the give folder as the download cache.
     Otherwise, `~/Library/Caches/Homebrew` is used.
