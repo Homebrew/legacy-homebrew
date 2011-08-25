@@ -11,7 +11,7 @@ class PysideQt47x <Formula
   depends_on 'shiboken'
 
   def install
-    system "cmake . #{std_cmake_parameters} -DALTERNATIVE_QT_INCLUDE_DIR='/Library/Frameworks'"
+    system "cmake . #{std_cmake_parameters} -DALTERNATIVE_QT_INCLUDE_DIR='/Library/Frameworks' -DSITE_PACKAGE='/Library/Python/2.7/site-packages'"
     system "make install"
   end
 end
