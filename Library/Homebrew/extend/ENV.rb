@@ -8,7 +8,7 @@ module HomebrewEnvExtension
     delete('CPPFLAGS')
     delete('LDFLAGS')
 
-    self['MAKEFLAGS']="-j#{Hardware.processor_count}"
+    self['MAKEFLAGS'] = "-j#{self.make_jobs}"
 
     unless HOMEBREW_PREFIX.to_s == '/usr/local'
       # /usr/local is already an -isystem and -L directory so we skip it
@@ -18,25 +18,26 @@ module HomebrewEnvExtension
       self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
     end
 
-    if MACOS_VERSION >= 10.6 and self.use_clang?
-      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/clang"
-      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/clang++"
-      cflags = ['-O3'] # -O4 makes the linker fail on some formulae
-    elsif MACOS_VERSION >= 10.6 and self.use_llvm?
-      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
-      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
-      cflags = ['-O4'] # link time optimisation baby!
-    elsif MACOS_VERSION >= 10.6 and self.use_gcc?
-      # Xcode 4 makes gcc and g++ #{MacOS.xcode_prefix}/usr/bin/ links to llvm versions
-      # so we need to use gcc-4.2 and g++-4.2 for real non-llvm compilers
-      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/gcc-4.2"
-      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/g++-4.2"
-      cflags = ['-O3']
-    else
-      # If these aren't set, many formulae fail to build
-      self['CC'] = '/usr/bin/cc'
-      self['CXX'] = '/usr/bin/c++'
-      cflags = ['-O3']
+    # llvm allows -O4 however it often fails to link and is very slow
+    cflags = ['-O3']
+
+    # If these aren't set, many formulae fail to build
+    self['CC'] = '/usr/bin/cc'
+    self['CXX'] = '/usr/bin/c++'
+
+    if MACOS_VERSION >= 10.6
+      if self.use_clang?
+        self['CC']  = "#{MacOS.xcode_prefix}/usr/bin/clang"
+        self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/clang++"
+      elsif self.use_llvm? and MacOS.xcode_version < '4.1'
+        # With Xcode 4 cc is llvm
+        self['CC']  = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
+        self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
+      elsif self.use_gcc? and MacOS.xcode_version < '4'
+        # With Xcode4 cc, c++, gcc and g++ are actually symlinks to llvm-gcc
+        self['CC']  = "#{MacOS.xcode_prefix}/usr/bin/gcc-4.2"
+        self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/g++-4.2"
+      end
     end
 
     # In rare cases this may break your builds, as the tool for some reason wants
@@ -53,11 +54,17 @@ module HomebrewEnvExtension
     # http://gcc.gnu.org/onlinedocs/gcc-4.3.3/gcc/i386-and-x86_002d64-Options.html
     if MACOS_VERSION >= 10.6
       case Hardware.intel_family
-      when :nehalem, :penryn, :core2
+      when :nehalem, :penryn, :core2, :arrandale
         # the 64 bit compiler adds -mfpmath=sse for us
         cflags << "-march=core2"
       when :core
         cflags<<"-march=prescott"<<"-mfpmath=sse"
+      else
+        # note that this didn't work on older versions of Xcode's gcc
+        # and maybe still doesn't. But it's at least not worse than nothing.
+        # UPDATE with Xcode 4.1 doesn't work at all.
+        # TODO there must be something useful!?
+        #cflags << "-march=native"
       end
       # gcc doesn't auto add msse4 or above (based on march flag) yet
       case Hardware.intel_family
@@ -303,5 +310,14 @@ Please take one of the following actions:
   end
   def use_llvm?
     self['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm'
+  end
+
+  def make_jobs
+    # '-j' requires a positive integral argument
+    if self['HOMEBREW_MAKE_JOBS'].to_i > 0
+      self['HOMEBREW_MAKE_JOBS']
+    else
+      Hardware.processor_count
+    end
   end
 end
