@@ -45,8 +45,7 @@ class Git < Formula
 
     # Install emacs support.
     (share+'doc/git-core/contrib').install 'contrib/emacs'
-
-    # Install contrib files to share/contrib
+    # Some people like the stuff in the contrib folder
     (share/:git).install 'contrib'
 
     # These files are exact copies of the git binary, so like the contents
