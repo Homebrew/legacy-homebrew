@@ -20,7 +20,7 @@ module Homebrew extend self
               keg.rmtree
             end
           end
-          rack.rmdir
+          rack.rmtree
         end
       end
     end

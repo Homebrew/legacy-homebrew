@@ -1,18 +1,18 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://kernel.org/pub/software/scm/git/git-manpages-1.7.6.tar.bz2'
-  md5 'a017935cf9e90d9f056b6547c318fd15'
+  url 'http://kernel.org/pub/software/scm/git/git-manpages-1.7.6.1.tar.bz2'
+  md5 'cae559424a62507cb2c15252d85a158e'
 end
 
 class GitHtmldocs < Formula
-  url 'http://kernel.org/pub/software/scm/git/git-htmldocs-1.7.6.tar.bz2'
-  md5 '8ab9c524844ad54edcb5c40d1c886ded'
+  url 'http://kernel.org/pub/software/scm/git/git-htmldocs-1.7.6.1.tar.bz2'
+  md5 'f698e0abbf1555582e30320930391c59'
 end
 
 class Git < Formula
-  url 'http://kernel.org/pub/software/scm/git/git-1.7.6.tar.bz2'
-  md5 '9e0a438eb71e89eedb61f89470ed32a0'
+  url 'http://kernel.org/pub/software/scm/git/git-1.7.6.1.tar.bz2'
+  md5 'd1e00772cc9dc6c571999feb9e8771ab'
   homepage 'http://git-scm.com'
 
   def options
@@ -28,6 +28,9 @@ class Git < Formula
     # Build verbosely.
     ENV['V']='1'
 
+    # Clean XCode 4.x installs don't include Perl MakeMaker
+    ENV['NO_PERL_MAKEMAKER']='1' if MacOS.lion?
+
     ENV['BLK_SHA1']='YesPlease' if ARGV.include? '--with-blk-sha1'
 
     inreplace "Makefile" do |s|
@@ -42,9 +45,8 @@ class Git < Formula
 
     # Install emacs support.
     (share+'doc/git-core/contrib').install 'contrib/emacs'
-
-    # Install contrib files to share/contrib
-    (share).install 'contrib'
+    # Some people like the stuff in the contrib folder
+    (share/:git).install 'contrib'
 
     # These files are exact copies of the git binary, so like the contents
     # of libexec/git-core lets hard link them.
@@ -68,10 +70,10 @@ class Git < Formula
       #{etc}/bash_completion.d
 
     Emacs support has been installed to:
-      #{share}/doc/git-core/contrib/emacs
+      #{HOMEBREW_PREFIX}/share/doc/git-core/contrib/emacs
 
-    The rest of the "contrib" has been installed to:
-      #{share}/contrib
+    The rest of the "contrib" is installed to:
+      #{HOMEBREW_PREFIX}/share/git/contrib
     EOS
   end
 end

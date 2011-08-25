@@ -183,8 +183,7 @@ end
 class CurlBottleDownloadStrategy <CurlDownloadStrategy
   def initialize url, name, version, specs
     super
-    HOMEBREW_CACHE_BOTTLES.mkpath
-    @tarball_path=HOMEBREW_CACHE_BOTTLES+("#{name}-#{version}"+ext)
+    @tarball_path = HOMEBREW_CACHE/"#{name}-#{version}.bottle#{ext}"
   end
   def stage
     ohai "Pouring #{File.basename(@tarball_path)}"
