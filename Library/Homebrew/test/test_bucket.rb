@@ -32,8 +32,10 @@ class BeerTasting < Test::Unit::TestCase
     assert_nothing_raised do
       MockFormula.new 'test-0.1.tar.gz'
       MockFormula.new 'test-0.1.tar.bz2'
+      MockFormula.new 'test-0.1.tar.xz'
       MockFormula.new 'test-0.1.tgz'
       MockFormula.new 'test-0.1.bgz'
+      MockFormula.new 'test-0.1.txz'
       MockFormula.new 'test-0.1.zip'
     end
   end

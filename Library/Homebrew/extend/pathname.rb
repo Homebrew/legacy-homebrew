@@ -62,9 +62,9 @@ class Pathname
     return dst
   end
 
-  # extended to support the double extensions .tar.gz and .tar.bz2
+  # extended to support the double extensions .tar.gz, .tar.bz2, and .tar.xz
   def extname
-    /(\.tar\.(gz|bz2))$/.match to_s
+    /(\.tar\.(gz|bz2|xz))$/.match to_s
     return $1 if $1
     return File.extname(to_s)
   end
