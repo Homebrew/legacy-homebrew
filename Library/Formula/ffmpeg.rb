@@ -38,9 +38,11 @@ class Ffmpeg < Formula
     if MacOS.lion?
       args << "--cc=clang"
     else
-      args << "--cc=clang" if ENV.use_clang?
-      args << "--cc=llvm-gcc" if ENV.use_llvm?
-      args << "--cc=gcc" if ENV.use_gcc?
+      args << case ENV.compiler
+        when :clang then "--cc=clang"
+        when :llvm then "--cc=llvm-gcc"
+        when :gcc then "--cc=gcc"
+      end
     end
 
     # For 32-bit compilation under gcc 4.2, see:
