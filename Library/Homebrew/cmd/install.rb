@@ -9,6 +9,18 @@ module Homebrew extend self
       raise "No available formula for #{name}\n#{msg}" if msg
     end unless ARGV.force?
 
+    ARGV.formulae.each do |f|
+      if File.directory? HOMEBREW_REPOSITORY/"Library/LinkedKegs/#{f.name}"
+        raise "#{f} already installed\nTry: brew upgrade #{f}"
+      end
+    end
+
+    if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
+      # note we only abort if Homebrew is *not* installed as sudo and the user
+      # calls brew as root. The fix is to chown brew to root.
+      abort "Cowardly refusing to `sudo brew install'"
+    end
+
     install_formulae ARGV.formulae
   end
 
@@ -51,22 +63,26 @@ module Homebrew extend self
     end
   end
 
-  def install_formulae formulae
-    formulae = [formulae].flatten.compact
-    return if formulae.empty?
-
+  def perform_preinstall_checks
     check_ppc
     check_writable_install_location
     check_cc
     check_macports
+  end
 
-    formulae.each do |f|
-      begin
-        installer = FormulaInstaller.new f
-        installer.ignore_deps = ARGV.include? '--ignore-dependencies'
-        installer.go
-      rescue FormulaAlreadyInstalledError => e
-        opoo e.message
+  def install_formulae formulae
+    formulae = [formulae].flatten.compact
+    unless formulae.empty?
+      perform_preinstall_checks
+      formulae.each do |f|
+        begin
+          fi = FormulaInstaller.new(f)
+          fi.install
+          fi.caveats
+          fi.finish
+        rescue FormulaAlreadyInstalledError => e
+          opoo e.message
+        end
       end
     end
   end

@@ -8,6 +8,11 @@ class Tty
     def yellow; underline 33 ; end
     def reset; escape 0; end
     def em; underline 39; end
+    def green; color 92 end
+
+    def width
+      `/usr/bin/tput cols`.strip.to_i
+    end
 
   private
     def color n
@@ -27,9 +32,14 @@ end
 
 # args are additional inputs to puts until a nil arg is encountered
 def ohai title, *sput
-  title = title.to_s[0, `/usr/bin/tput cols`.strip.to_i-4] unless ARGV.verbose?
+  title = title.to_s[0, Tty.width - 4] unless ARGV.verbose?
   puts "#{Tty.blue}==>#{Tty.white} #{title}#{Tty.reset}"
   puts sput unless sput.empty?
+end
+
+def oh1 title
+  title = title.to_s[0, Tty.width - 4] unless ARGV.verbose?
+  puts "#{Tty.green}==> #{Tty.reset}#{title}"
 end
 
 def opoo warning
@@ -94,7 +104,10 @@ def quiet_system cmd, *args
 end
 
 def curl *args
-  safe_system '/usr/bin/curl', '-f#LA', HOMEBREW_USER_AGENT, *args unless args.empty?
+  # See https://github.com/mxcl/homebrew/issues/6103
+  args << "--insecure" if MacOS.version < 10.6
+
+  safe_system '/usr/bin/curl', HOMEBREW_CURL_ARGS, HOMEBREW_USER_AGENT, *args unless args.empty?
 end
 
 def puts_columns items, star_items=[]
@@ -225,6 +238,9 @@ def nostdout
 end
 
 module MacOS extend self
+  def version
+    MACOS_VERSION
+  end
 
   def default_cc
     Pathname.new("/usr/bin/cc").realpath.basename.to_s
@@ -272,8 +288,10 @@ module MacOS extend self
   end
 
   def xcode_version
-    `xcodebuild -version 2>&1` =~ /Xcode (\d(\.\d)*)/
-    $1
+    @xcode_version ||= begin
+      `xcodebuild -version 2>&1` =~ /Xcode (\d(\.\d)*)/
+      $1
+    end
   end
 
   def llvm_build_version
@@ -331,7 +349,7 @@ module MacOS extend self
   end
 
   def lion?
-    10.7 == MACOS_VERSION
+    10.7 <= MACOS_VERSION #Actually Lion or newer
   end
 
   def prefer_64_bit?
