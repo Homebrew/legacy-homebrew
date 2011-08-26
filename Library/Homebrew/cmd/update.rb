@@ -43,7 +43,7 @@ class RefreshBrew
           safe_system "git init"
           safe_system "git remote add origin #{REPOSITORY_URL}"
           safe_system "git fetch origin"
-          safe_system "git reset --hard FETCH_HEAD"
+          safe_system "git reset --hard origin/master"
         rescue Exception
           safe_system "/bin/rm -rf .git"
           raise
