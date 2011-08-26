@@ -1,13 +1,17 @@
 require 'formula'
 
-def python_vers
-  "python" + `python -c 'import sys;print(sys.version[:3])'`.chomp.strip
+def which_python
+  "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+end
+
+def site_package_dir
+  "lib/#{which_python}/site_packages"
 end
 
 class Pyside < Formula
   homepage 'http://www.pyside.org'
-  url 'http://www.pyside.org/files/pyside-qt4.7+1.0.5.tar.bz2'
-  md5 'b24a9dc2e111718043eecf614375f2a5'
+  url 'http://www.pyside.org/files/pyside-qt4.7+1.0.6.tar.bz2'
+  md5 '6773cdd7c594f5bc314541d8cfb70256'
 
   depends_on 'cmake' => :build
 
@@ -24,14 +28,14 @@ class Pyside < Formula
     ENV.append_to_cflags "-F#{qt.prefix}/Frameworks"
 
     # Also need `ALTERNATIVE_QT_INCLUDE_DIR` to prevent "missing file" errors.
-    system "cmake . #{std_cmake_parameters} -DBUILD_TESTS=NO -DALTERNATIVE_QT_INCLUDE_DIR=#{qt.prefix}/Frameworks"
+    system "cmake . #{std_cmake_parameters} -DALTERNATIVE_QT_INCLUDE_DIR=#{qt.prefix}/Frameworks -DSITE_PACKAGE=#{site_package_dir} -DBUILD_TESTS=NO"
     system 'make install'
   end
 
   def caveats
     <<-EOS
 PySide Python modules have been linked to:
-    #{HOMEBREW_PREFIX}/lib/#{python_vers}/site-packages
+    #{HOMEBREW_PREFIX}/#{site_package_dir}
 
 Make sure this folder is on your PYTHONPATH. For PySide development tools,
 install the `pyside-tools` formula.

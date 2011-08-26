@@ -18,7 +18,7 @@ module Homebrew extend self
     end
 
     if outdated.length > 1
-      oh1 "Upgrading #{outdated.count} outdated package#{outdated.count.plural_s}, with result:"
+      oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
       puts outdated.map{ |_, name, version| "#{name} #{version}" } * ", "
     end
 

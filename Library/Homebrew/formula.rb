@@ -296,23 +296,19 @@ class Formula
   end
 
   def handle_llvm_failure llvm
-    unless ENV.use_llvm? or ENV.use_clang?
-      ENV.gcc_4_2 if MacOS.default_cc =~ /llvm/
+    case ENV.compiler
+    when :llvm, :clang
+      opoo "LLVM was requested, but this formula is reported to not work with LLVM:"
+      puts
+      puts llvm.reason
+      puts
+      puts "We are continuing anyway so if the build succeeds, please let us know so we"
+      puts "can update the formula. If it doesn't work you can: brew install --use-gcc"
+      puts
+    else
+      ENV.gcc if MacOS.default_cc =~ /llvm/
       return
     end
-
-    opoo "LLVM was requested, but this formula is reported as not working with LLVM:"
-    puts llvm.reason
-
-    if ARGV.force?
-      puts "Continuing anyway.\n" +
-           "If this works, let us know so we can update the formula to remove the warning."
-    else
-      puts "Continuing with GCC 4.2 instead.\n"+
-           "(Use `brew install --force #{name}` to force use of LLVM.)"
-      ENV.gcc_4_2
-    end
-    puts
   end
 
   def self.class_s name
