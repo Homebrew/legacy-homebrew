@@ -299,10 +299,11 @@ class Formula
     case ENV.compiler
     when :llvm, :clang
       opoo "LLVM was requested, but this formula is reported to not work with LLVM:"
+      puts
       puts llvm.reason
       puts
-      puts "We are continuing anyway so the build succeeds, please let us know so we can"
-      puts "update the formula. If it doesn't work you can: brew install --use-gcc"
+      puts "We are continuing anyway so if the build succeeds, please let us know so we"
+      puts "can update the formula. If it doesn't work you can: brew install --use-gcc"
       puts
     else
       ENV.gcc if MacOS.default_cc =~ /llvm/
