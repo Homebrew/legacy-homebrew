@@ -297,7 +297,7 @@ class Formula
 
   def handle_llvm_failure llvm
     case ENV.compiler
-    case :llvm, :clang
+    when :llvm, :clang
       opoo "LLVM was requested, but this formula is reported to not work with LLVM:"
       puts llvm.reason
       puts
