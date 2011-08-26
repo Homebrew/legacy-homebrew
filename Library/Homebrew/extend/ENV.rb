@@ -27,16 +27,11 @@ module HomebrewEnvExtension
 
     if MACOS_VERSION >= 10.6
       if self.use_clang?
-        self['CC']  = "#{MacOS.xcode_prefix}/usr/bin/clang"
-        self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/clang++"
-      elsif self.use_llvm? and MacOS.xcode_version < '4.1'
-        # With Xcode 4 cc is llvm
-        self['CC']  = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
-        self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
-      elsif self.use_gcc? and MacOS.xcode_version < '4'
-        # With Xcode4 cc, c++, gcc and g++ are actually symlinks to llvm-gcc
-        self['CC']  = "#{MacOS.xcode_prefix}/usr/bin/gcc-4.2"
-        self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/g++-4.2"
+        self.clang
+      elsif self.use_llvm?
+        self.llvm
+      elsif self.use_gcc?
+        self.gcc
       end
     end
 
@@ -132,19 +127,32 @@ module HomebrewEnvExtension
   end
   alias_method :gcc_4_0, :gcc_4_0_1
 
-  def gcc_4_2
-    # Sometimes you want to downgrade from LLVM to GCC 4.2
-    self['CC']="/usr/bin/gcc-4.2"
-    self['CXX']="/usr/bin/g++-4.2"
-    self['LD']=self['CC']
-    self.O3
+  def gcc
+    if MacOS.xcode_version < '4'
+      self['CC'] = '/usr/bin/cc'
+      self['CXX'] = '/usr/bin/c++'
+    else
+      # With Xcode4 cc, c++, gcc and g++ are actually symlinks to llvm-gcc
+      self['CC']  = "#{MacOS.xcode_prefix}/usr/bin/gcc-4.2"
+      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/g++-4.2"
+    end
+    remove_from_cflags '-O4'
   end
+  alias_method :gcc_4_2, :gcc
 
   def llvm
-    self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
-    self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
-    self['LD'] = self['CC']
-    self.O4
+    if MacOS.xcode_version < '4.1'
+      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
+      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
+    else
+      self['CC'] = '/usr/bin/cc'
+      self['CXX'] = '/usr/bin/c++'
+    end
+  end
+
+  def clang
+    self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/clang"
+    self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/clang++"
   end
 
   def fortran
