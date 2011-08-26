@@ -25,14 +25,10 @@ module HomebrewEnvExtension
     self['CC'] = '/usr/bin/cc'
     self['CXX'] = '/usr/bin/c++'
 
-    if MACOS_VERSION >= 10.6
-      if self.use_clang?
-        self.clang
-      elsif self.use_llvm?
-        self.llvm
-      elsif self.use_gcc?
-        self.gcc
-      end
+    case self.compiler
+      when :clang then self.clang
+      when :llvm then self.llvm
+      when :gcc then self.gcc
     end
 
     # In rare cases this may break your builds, as the tool for some reason wants
@@ -141,7 +137,9 @@ module HomebrewEnvExtension
   alias_method :gcc_4_2, :gcc
 
   def llvm
-    if MacOS.xcode_version < '4.1'
+    if MacOS.xcode_version < '4'
+      self.gcc
+    elsif MacOS.xcode_version < '4.1'
       self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
       self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
     else
@@ -151,8 +149,12 @@ module HomebrewEnvExtension
   end
 
   def clang
-    self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/clang"
-    self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/clang++"
+    if MacOS.xcode_version > '4'
+      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/clang"
+      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/clang++"
+    else
+      self.gcc
+    end
   end
 
   def fortran
@@ -310,14 +312,42 @@ Please take one of the following actions:
     remove 'CXXFLAGS', f
   end
 
+  def compiler
+    # TODO seems that ENV.clang in a Formula.install should warn when called
+    # if the user has set something that is tested here
+
+    # test for --flags first so that installs can be overridden on a per
+    # install basis
+    if ARGV.include? '--use-gcc'
+      :gcc
+    elsif ARGV.include? '--use-llvm'
+      :llvm
+    elsif ARGV.include? '--use-clang'
+      :clang
+    end
+
+    # test for ENVs in inverse order to flags, this is sensible, trust me
+    if self['HOMEBREW_USE_CLANG']
+      :clang
+    elsif self['HOMEBREW_USE_LLVM']
+      :llvm
+    elsif self['HOMEBREW_USE_GCC']
+      :gcc
+    else
+      :gcc
+    end
+  end
+
+  # don't use in new code
+  # don't remove though, but do add to compatibility.rb
   def use_clang?
-    self['HOMEBREW_USE_CLANG'] or ARGV.include? '--use-clang'
+    compiler == :clang
   end
   def use_gcc?
-    self['HOMEBREW_USE_GCC'] or ARGV.include? '--use-gcc'
+    compiler == :gcc
   end
   def use_llvm?
-    self['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm'
+    compiler == :llvm
   end
 
   def make_jobs
