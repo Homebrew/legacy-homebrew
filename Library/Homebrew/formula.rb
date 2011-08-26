@@ -224,7 +224,14 @@ class Formula
   end
 
   def fails_with_llvm?
-    self.class.fails_with_llvm_reason || false
+    llvm = self.class.fails_with_llvm_reason
+    if llvm
+      if llvm.build
+        MacOS.llvm_build_version <= llvm.build
+      else
+        true
+      end
+    end
   end
 
   # sometimes the clean process breaks things
