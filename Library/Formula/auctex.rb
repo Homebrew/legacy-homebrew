@@ -12,7 +12,7 @@ class Auctex < Formula
   end
 
   def which_emacs
-    emacs = `which emacs`.chop
+    emacs = `which emacs`.chomp
     # check arguments for a different emacs
     ARGV.each do |a|
       if a.index('--with-emacs')
@@ -33,29 +33,14 @@ class Auctex < Formula
       Process.exit
     end
 
-    # create brew dirs for
-    # - texmf components
-    # - emacs site-lisp
-    brew_texmf = File.join HOMEBREW_PREFIX, 'share', 'texmf'
-    brew_lispdir = File.join HOMEBREW_PREFIX, 'share', 'emacs', 'site-lisp'
-    [brew_texmf+'/tex/latex', brew_texmf+'/doc/latex/styles', brew_lispdir].each do |d|
-      if !File.directory? d
-        mkdir_p d
-      end
-    end
-
-    # local tmp dir for texmf and site-lisp
-    texmf = File.join Dir.pwd, 'texmf'
-    lispdir = File.join Dir.pwd, 'site-lisp'
-    mkdir_p texmf
-    mkdir_p lispdir
-
-    system "./configure", "--prefix=#{prefix}", "--with-texmf-dir=#{texmf}",
-                          "--with-emacs=#{which_emacs}", "--with-lispdir=#{lispdir}"
+    brew_texmf = share + 'texmf'
+    # configure fails if the texmf dir is not there yet
+    mkdir_p brew_texmf
+    brew_lispdir = share + 'emacs/site-lisp'
+    system "./configure", "--prefix=#{prefix}", "--with-texmf-dir=#{brew_texmf}",
+                          "--with-emacs=#{which_emacs}", "--with-lispdir=#{brew_lispdir}"
     system "make"
     system "make install"
-    (share+'texmf').install Dir[texmf+'/*']
-    (share+'emacs/site-lisp').install Dir[lispdir+'/*']
   end
 
   def caveats
