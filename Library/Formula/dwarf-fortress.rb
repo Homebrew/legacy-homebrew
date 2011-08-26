@@ -1,6 +1,6 @@
 require 'formula'
 
-class Dwarffortress < Formula
+class DwarfFortress < Formula
   url 'http://www.bay12games.com/dwarves/df_31_25_osx.tar.bz2'
   homepage 'http://www.bay12games.com/dwarves/'
   md5 '673b098b8b9c07b4c6be507dba8c7657'
