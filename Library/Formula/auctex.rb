@@ -42,6 +42,7 @@ class Auctex < Formula
                           "--with-emacs=#{which_emacs}", "--with-lispdir=#{brew_lispdir}"
 
     system "make"
+    ENV.deparallelize # Needs a serialized install
     system "make install"
   end
 
