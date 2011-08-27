@@ -13,7 +13,7 @@ class Qwt < Formula
       s.gsub! /^\s*QWT_INSTALL_PREFIX\s*=(.*)$/, "QWT_INSTALL_PREFIX=#{prefix}"
     end
 
-    system "qmake -config release"
-    system "make install"
+    system "qmake -spec macx-g++ -config release"
+    system "make && make install"
   end
 end
