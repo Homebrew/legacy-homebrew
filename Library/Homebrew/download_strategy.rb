@@ -291,6 +291,14 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 
   def support_depth?
+    !commit_history_required? and depth_supported_host?
+  end
+
+  def commit_history_required?
+    @spec == :sha
+  end
+
+  def depth_supported_host?
     @url =~ %r(git://) or @url =~ %r(https://github.com/)
   end
 
@@ -303,7 +311,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
       Dir.chdir(@clone) do
         # Check for interupted clone from a previous install
         unless system 'git', 'status', '-s'
-          ohai "Removing invalid .git repo from cache"
+          puts "Removing invalid .git repo from cache"
           FileUtils.rm_rf @clone
         end
       end
@@ -320,7 +328,6 @@ class GitDownloadStrategy < AbstractDownloadStrategy
       Dir.chdir(@clone) do
         safe_system 'git', 'remote', 'set-url', 'origin', @url
         quiet_safe_system 'git', 'fetch', 'origin'
-        # If we're going to checkout a tag, then we need to fetch new tags too.
         quiet_safe_system 'git', 'fetch', '--tags' if @spec == :tag
       end
     end
@@ -337,6 +344,10 @@ class GitDownloadStrategy < AbstractDownloadStrategy
         when :tag
           nostdout { quiet_safe_system 'git', 'checkout', @ref }
         end
+      else
+        # otherwise the checkout-index won't checkout HEAD
+        # https://github.com/mxcl/homebrew/issues/7124
+        quiet_safe_system "git", "reset", "--hard"
       end
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
       safe_system 'git', 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
