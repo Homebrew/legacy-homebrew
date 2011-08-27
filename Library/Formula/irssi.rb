@@ -21,7 +21,7 @@ class Irssi < Formula
 
     system "./configure", "--prefix=#{prefix}",
                           "--with-perl=yes",
-                          "--with-perl-lib=site",
+                          "--with-perl-lib=#{prefix}/lib/perl5/site_perl",
                           "--with-bot",
                           "--with-proxy",
                           "--enable-ssl",

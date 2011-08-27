@@ -8,7 +8,7 @@ module HomebrewEnvExtension
     delete('CPPFLAGS')
     delete('LDFLAGS')
 
-    self['MAKEFLAGS']="-j#{Hardware.processor_count}"
+    self['MAKEFLAGS'] = "-j#{self.make_jobs}"
 
     unless HOMEBREW_PREFIX.to_s == '/usr/local'
       # /usr/local is already an -isystem and -L directory so we skip it
@@ -18,25 +18,17 @@ module HomebrewEnvExtension
       self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
     end
 
-    if MACOS_VERSION >= 10.6 and self.use_clang?
-      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/clang"
-      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/clang++"
-      cflags = ['-O3'] # -O4 makes the linker fail on some formulae
-    elsif MACOS_VERSION >= 10.6 and self.use_llvm?
-      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
-      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
-      cflags = ['-O4'] # link time optimisation baby!
-    elsif MACOS_VERSION >= 10.6 and self.use_gcc?
-      # Xcode 4 makes gcc and g++ #{MacOS.xcode_prefix}/usr/bin/ links to llvm versions
-      # so we need to use gcc-4.2 and g++-4.2 for real non-llvm compilers
-      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/gcc-4.2"
-      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/g++-4.2"
-      cflags = ['-O3']
-    else
-      # If these aren't set, many formulae fail to build
-      self['CC'] = '/usr/bin/cc'
-      self['CXX'] = '/usr/bin/c++'
-      cflags = ['-O3']
+    # llvm allows -O4 however it often fails to link and is very slow
+    cflags = ['-O3']
+
+    # If these aren't set, many formulae fail to build
+    self['CC'] = '/usr/bin/cc'
+    self['CXX'] = '/usr/bin/c++'
+
+    case self.compiler
+      when :clang then self.clang
+      when :llvm then self.llvm
+      when :gcc then self.gcc
     end
 
     # In rare cases this may break your builds, as the tool for some reason wants
@@ -53,11 +45,17 @@ module HomebrewEnvExtension
     # http://gcc.gnu.org/onlinedocs/gcc-4.3.3/gcc/i386-and-x86_002d64-Options.html
     if MACOS_VERSION >= 10.6
       case Hardware.intel_family
-      when :nehalem, :penryn, :core2
+      when :nehalem, :penryn, :core2, :arrandale
         # the 64 bit compiler adds -mfpmath=sse for us
         cflags << "-march=core2"
       when :core
         cflags<<"-march=prescott"<<"-mfpmath=sse"
+      else
+        # note that this didn't work on older versions of Xcode's gcc
+        # and maybe still doesn't. But it's at least not worse than nothing.
+        # UPDATE with Xcode 4.1 doesn't work at all.
+        # TODO there must be something useful!?
+        #cflags << "-march=native"
       end
       # gcc doesn't auto add msse4 or above (based on march flag) yet
       case Hardware.intel_family
@@ -125,19 +123,38 @@ module HomebrewEnvExtension
   end
   alias_method :gcc_4_0, :gcc_4_0_1
 
-  def gcc_4_2
-    # Sometimes you want to downgrade from LLVM to GCC 4.2
-    self['CC']="/usr/bin/gcc-4.2"
-    self['CXX']="/usr/bin/g++-4.2"
-    self['LD']=self['CC']
-    self.O3
+  def gcc
+    if MacOS.xcode_version < '4'
+      self['CC'] = '/usr/bin/cc'
+      self['CXX'] = '/usr/bin/c++'
+    else
+      # With Xcode4 cc, c++, gcc and g++ are actually symlinks to llvm-gcc
+      self['CC']  = "#{MacOS.xcode_prefix}/usr/bin/gcc-4.2"
+      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/g++-4.2"
+    end
+    remove_from_cflags '-O4'
   end
+  alias_method :gcc_4_2, :gcc
 
   def llvm
-    self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
-    self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
-    self['LD'] = self['CC']
-    self.O4
+    if MacOS.xcode_version < '4'
+      self.gcc
+    elsif MacOS.xcode_version < '4.1'
+      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
+      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
+    else
+      self['CC'] = '/usr/bin/cc'
+      self['CXX'] = '/usr/bin/c++'
+    end
+  end
+
+  def clang
+    if MacOS.xcode_version > '4'
+      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/clang"
+      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/clang++"
+    else
+      self.gcc
+    end
   end
 
   def fortran
@@ -295,13 +312,50 @@ Please take one of the following actions:
     remove 'CXXFLAGS', f
   end
 
+  def compiler
+    # TODO seems that ENV.clang in a Formula.install should warn when called
+    # if the user has set something that is tested here
+
+    # test for --flags first so that installs can be overridden on a per
+    # install basis
+    if ARGV.include? '--use-gcc'
+      :gcc
+    elsif ARGV.include? '--use-llvm'
+      :llvm
+    elsif ARGV.include? '--use-clang'
+      :clang
+    end
+
+    # test for ENVs in inverse order to flags, this is sensible, trust me
+    if self['HOMEBREW_USE_CLANG']
+      :clang
+    elsif self['HOMEBREW_USE_LLVM']
+      :llvm
+    elsif self['HOMEBREW_USE_GCC']
+      :gcc
+    else
+      :gcc
+    end
+  end
+
+  # don't use in new code
+  # don't remove though, but do add to compatibility.rb
   def use_clang?
-    self['HOMEBREW_USE_CLANG'] or ARGV.include? '--use-clang'
+    compiler == :clang
   end
   def use_gcc?
-    self['HOMEBREW_USE_GCC'] or ARGV.include? '--use-gcc'
+    compiler == :gcc
   end
   def use_llvm?
-    self['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm'
+    compiler == :llvm
+  end
+
+  def make_jobs
+    # '-j' requires a positive integral argument
+    if self['HOMEBREW_MAKE_JOBS'].to_i > 0
+      self['HOMEBREW_MAKE_JOBS']
+    else
+      Hardware.processor_count
+    end
   end
 end

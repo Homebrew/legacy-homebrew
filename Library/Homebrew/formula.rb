@@ -45,13 +45,6 @@ class SoftwareSpecification
   end
 end
 
-class BottleSoftwareSpecification < SoftwareSpecification
-  def download_strategy
-    return CurlBottleDownloadStrategy if @using.nil?
-    raise "Strategies cannot be used with bottles."
-  end
-end
-
 
 # Used to annotate formulae that duplicate OS X provided software
 # or cause conflicts when linked in.
@@ -120,8 +113,6 @@ class Formula
       @url = @head
       @version = 'HEAD'
       @spec_to_use = @unstable
-    elsif pourable?
-      @spec_to_use = BottleSoftwareSpecification.new(@bottle, @specs)
     else
       if @stable.nil?
         @spec_to_use = SoftwareSpecification.new(@url, @specs)
@@ -305,23 +296,19 @@ class Formula
   end
 
   def handle_llvm_failure llvm
-    unless (ENV['HOMEBREW_USE_LLVM'] or ARGV.include? '--use-llvm' or ARGV.include? '--use-clang')
-      ENV.gcc_4_2 if default_cc =~ /llvm/
+    case ENV.compiler
+    when :llvm, :clang
+      opoo "LLVM was requested, but this formula is reported to not work with LLVM:"
+      puts
+      puts llvm.reason
+      puts
+      puts "We are continuing anyway so if the build succeeds, please let us know so we"
+      puts "can update the formula. If it doesn't work you can: brew install --use-gcc"
+      puts
+    else
+      ENV.gcc if MacOS.default_cc =~ /llvm/
       return
     end
-
-    opoo "LLVM was requested, but this formula is reported as not working with LLVM:"
-    puts llvm.reason
-
-    if ARGV.force?
-      puts "Continuing anyway.\n" +
-           "If this works, let us know so we can update the formula to remove the warning."
-    else
-      puts "Continuing with GCC 4.2 instead.\n"+
-           "(Use `brew install --force #{name}` to force use of LLVM.)"
-      ENV.gcc_4_2
-    end
-    puts
   end
 
   def self.class_s name
@@ -457,10 +444,6 @@ class Formula
     end
   end
 
-  def pourable?
-    @bottle and not ARGV.build_from_source?
-  end
-
 protected
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
@@ -521,16 +504,17 @@ private
 
   CHECKSUM_TYPES=[:md5, :sha1, :sha256].freeze
 
-  def verify_download_integrity fn
+  public # for FormulaInstaller
+
+  def verify_download_integrity fn, *args
     require 'digest'
-    if not pourable?
+    if args.length != 2
       type=CHECKSUM_TYPES.detect { |type| instance_variable_defined?("@#{type}") }
       type ||= :md5
       supplied=instance_variable_get("@#{type}")
       type=type.to_s.upcase
     else
-      supplied=instance_variable_get("@bottle_sha1")
-      type="SHA1"
+      supplied, type = args
     end
 
     hasher = Digest.const_get(type)
@@ -552,26 +536,20 @@ EOF
     end
   end
 
+  private
+
   def stage
     HOMEBREW_CACHE.mkpath
     fetched = @downloader.fetch
     verify_download_integrity fetched if fetched.kind_of? Pathname
-
-    if not pourable?
-      mktemp do
-        @downloader.stage
-        yield
-      end
-    else
-      HOMEBREW_CELLAR.cd do
-        @downloader.stage
-        yield
-      end
+    mktemp do
+      @downloader.stage
+      yield
     end
   end
 
   def patch
-    return if patches.nil? or pourable?
+    return if patches.nil?
 
     if not patches.kind_of? Hash
       # We assume -p1
@@ -590,8 +568,8 @@ EOF
         p = {:filename => '%03d-homebrew.diff' % n+=1, :compression => false}
 
         if defined? DATA and url == DATA
-          pn=Pathname.new p[:filename]
-          pn.write DATA.read
+          pn = Pathname.new p[:filename]
+          pn.write(DATA.read.to_s.gsub("HOMEBREW_PREFIX", HOMEBREW_PREFIX))
         elsif url =~ %r[^\w+\://]
           out_fn = p[:filename]
           case url
