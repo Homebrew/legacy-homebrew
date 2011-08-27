@@ -1,11 +1,9 @@
 require 'formula'
 
-# Don't upgrade until this issue is resolved:
-# https://github.com/dotless/dotless/issues/issue/22
 class Dotless < Formula
   homepage "http://www.dotlesscss.org/"
-  url "https://github.com/dotless/dotless/tarball/v1.1.0.3"
-  md5 "6ca4801461c31214d2775858bc9adb29"
+  url "https://github.com/downloads/dotless/dotless/dotless-v1.2.1.0.zip"
+  md5 "dd06170b2e6a8f943f715977cfcd254d"
 
   def install
     mono_path = `/usr/bin/which mono`.strip
