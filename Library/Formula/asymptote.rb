@@ -33,6 +33,34 @@ class Asymptote < Formula
     system "make install"
   end
 
+  def test
+    ENV['TEXMFHOME'] = "#{HOMEBREW_PREFIX}/share/texmf"
+    mktemp do
+      (Pathname.new(Dir.getwd) + 'asy_test.tex').write <<-EOS.undent
+        \\nonstopmode
+
+        \\documentclass{minimal}
+        \\usepackage{asymptote}
+
+        \\begin{document}
+        Hello, Asymptote!
+
+        \\begin{asy}
+          size(3cm);
+          draw((0,0)--(1,0)--(1,1)--(0,1)--cycle);
+        \\end{asy}
+
+        \\end{document}
+      EOS
+
+      system "pdflatex asy_test"
+      system "asy asy_test-1.asy"
+      system "pdflatex asy_test"
+    end
+
+    return (not $? == 0)
+  end
+
   def caveats
     caveats = <<-EOS
 1) This formula links the latest version of the Asymptote LaTeX and ConTeXt
