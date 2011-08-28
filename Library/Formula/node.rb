@@ -1,10 +1,10 @@
 require 'formula'
 
 class Node < Formula
-  url 'http://nodejs.org/dist/node-v0.4.9.tar.gz'
+  url 'http://nodejs.org/dist/node-v0.4.11.tar.gz'
   head 'https://github.com/joyent/node.git'
   homepage 'http://nodejs.org/'
-  md5 'e525b8b99d949bf2f031bc262c138e96'
+  md5 'ac4c3eaa0667d5e3eacf56fd26a4eadc'
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.leopard?
@@ -32,6 +32,6 @@ class Node < Formula
   end
 
   def caveats
-    "Please add #{HOMEBREW_PREFIX}/lib/node to your NODE_PATH environment variable to have node libraries picked up."
+    "Please add #{HOMEBREW_PREFIX}/lib/node_modules to your NODE_PATH environment variable to have node libraries picked up."
   end
 end

@@ -116,7 +116,7 @@ For the full command list, see the COMMANDS section.
   * `info` <URL>:
     Print the name and version that will be detected for <URL>.
 
-  * `install [--force] [--debug] [--ignore-dependencies] [--use-clang] [--use-gcc] [--use-llvm] [--HEAD]` <formula>:
+  * `install [--force] [--debug] [--ignore-dependencies] [--use-clang] [--use-gcc] [--use-llvm] [--build-from-source] [--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but may also be
@@ -140,6 +140,9 @@ For the full command list, see the COMMANDS section.
 
     If `--use-llvm` is passed, attempt to compile using the LLVM front-end to GCC.
     *NOTE*: Not all formulae will build with LLVM.
+
+    If `--build-from-source` is passed, compile from source even if a bottle
+    is provided for <formula>.
 
     If `--HEAD` is passed, and <formula> defines it, install the HEAD version,
     aka master, trunk, unstable, dev.
@@ -233,6 +236,10 @@ For the full command list, see the COMMANDS section.
 
     If `--installed` is passed, only lists installed formulae.
 
+  * `versions` <formulae>:
+    List previous versions of <formulae>, along with a command to checkout
+    each version.
+
   * `which` [<formulae>]:
     List versions of installed brews.
 
@@ -283,6 +290,10 @@ Some sample commands ship with Homebrew and are enabled by default.
 
 ## ENVIRONMENT
 
+  * HOMEBREW\_BUILD\_FROM\_SOURCE:
+    If set, instructs Homebrew to compile from source even when a formula
+    provides a bottle.
+
   * HOMEBREW\_CACHE:
     If set, instructs Homebrew to use the give folder as the download cache.
     Otherwise, `~/Library/Caches/Homebrew` is used.
@@ -315,6 +326,12 @@ Some sample commands ship with Homebrew and are enabled by default.
   * HOMEBREW\_KEEP\_INFO:
     If set, Homebrew will not remove files from `share/info`, allowing them
     to be linked from the Cellar.
+
+  * HOMEBREW\_MAKE\_JOBS:
+    If set, instructs Homebrew to use the value of `HOMEBREW_MAKE_JOBS` as
+    the number of parallel jobs to run when building with `make`(1).
+
+    *Default:* the number of available CPU cores.
 
   * HOMEBREW\_SVN:
     When exporting from Subversion, Homebrew will use `HOMEBREW_SVN` if set,

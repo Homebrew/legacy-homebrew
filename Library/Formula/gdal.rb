@@ -16,38 +16,60 @@ def no_python?
   ARGV.include? "--without-python"
 end
 
+def opencl?
+  ARGV.include? "--enable-opencl"
+end
+
 class Gdal < Formula
-  url 'http://download.osgeo.org/gdal/gdal-1.8.0.tar.gz'
-  head 'https://svn.osgeo.org/gdal/trunk/gdal', :using => :svn
+  url 'http://download.osgeo.org/gdal/gdal-1.8.1.tar.gz'
   homepage 'http://www.gdal.org/'
-  md5 'c762cdab0f7e51a677ba49278a8a263d'
+  md5 'b32269893afc9dc9eced45e74e4c6bb4'
+
+  head 'https://svn.osgeo.org/gdal/trunk/gdal', :using => :svn
 
   depends_on 'jpeg'
   depends_on 'giflib'
   depends_on 'proj'
   depends_on 'geos'
 
+  depends_on "postgresql" if postgres?
+  depends_on "mysql" if mysql?
+
   if complete?
     # Raster libraries
     depends_on "netcdf" # Also brings in HDF5
     depends_on "jasper" # May need a keg-only GeoJasPer library as this one is
                         # not geo-spatially enabled.
+    depends_on "cfitsio"
+    depends_on "epsilon"
 
     # Vector libraries
     depends_on "unixodbc" # OS X version is not complete enough
     depends_on "libspatialite"
     depends_on "xerces-c"
+    depends_on "poppler"
+
+    # Other libraries
+    depends_on "lzma"    # Compression algorithmn library
   end
 
-  depends_on "postgresql" if postgres?
-  depends_on "mysql" if mysql?
+  def patches
+    if complete?
+      # EPSILON v0.9.x slightly modified the naming of some struct members. A
+      # fix is in the GDAL trunk but was kept out of 1.8.1 due to concern for
+      # users of EPSILON v0.8.x. Homebrew installs 0.9.2+ so this concern is a
+      # moot point.
+      {:p1 => DATA}
+    end
+  end
 
   def options
     [
       ['--complete', 'Use additional Homebrew libraries to provide more drivers.'],
       ['--with-postgres', 'Specify PostgreSQL as a dependency.'],
       ['--with-mysql', 'Specify MySQL as a dependency.'],
-      ['--without-python', 'Build without Python support (disables a lot of tools).']
+      ['--without-python', 'Build without Python support (disables a lot of tools).'],
+      ['--enable-opencl', 'Build with support for OpenCL.']
     ]
   end
 
@@ -72,30 +94,40 @@ class Gdal < Formula
       "--with-libz=/usr",
       "--with-png=/usr/X11",
       "--with-expat=/usr",
-      "--with-curl=/usr/bin/curl-config",
       "--with-sqlite3=/usr",
 
       # Default Homebrew backends.
       "--with-jpeg=#{HOMEBREW_PREFIX}",
       "--with-jpeg12",
       "--with-gif=#{HOMEBREW_PREFIX}",
+      "--with-curl=/usr/bin/curl-config",
 
       # GRASS backend explicitly disabled.  Creates a chicken-and-egg problem.
       # Should be installed seperately after GRASS installation using the
       # official GDAL GRASS plugin.
       "--without-grass",
-      "--without-libgrass"
+      "--without-libgrass",
+
+      # OPeNDAP support also explicitly disabled for now---causes the
+      # configuration of other components such as Curl and Spatialite to fail
+      # for unknown reasons.
+      "--with-dods-root=no"
+
     ]
 
     # Optional library support for additional formats.
     if complete?
       args.concat [
+        "--with-liblzma=yes",
         "--with-netcdf=#{HOMEBREW_PREFIX}",
         "--with-hdf5=#{HOMEBREW_PREFIX}",
         "--with-jasper=#{HOMEBREW_PREFIX}",
+        "--with-cfitsio=#{HOMEBREW_PREFIX}",
+        "--with-epsilon=#{HOMEBREW_PREFIX}",
         "--with-odbc=#{HOMEBREW_PREFIX}",
         "--with-spatialite=#{HOMEBREW_PREFIX}",
-        "--with-xerces=#{HOMEBREW_PREFIX}"
+        "--with-xerces=#{HOMEBREW_PREFIX}",
+        "--with-poppler=#{HOMEBREW_PREFIX}"
       ]
     else
       args.concat [
@@ -104,11 +136,13 @@ class Gdal < Formula
         "--without-ogdi",
         "--without-hdf4",
         "--without-hdf5",
+        "--without-openjpeg",
         "--without-jasper",
         "--without-xerces",
         "--without-epsilon",
         "--without-spatialite",
-        "--with-dods-root=no",
+        "--without-libkml",
+        "--without-poppler",
 
         # The following libraries are either proprietary or available under
         # non-free licenses.  Interested users will have to install such
@@ -150,6 +184,9 @@ class Gdal < Formula
     args << "--without-perl"
     args << "--without-php"
     args << "--without-ruby"
+
+    # OpenCL support
+    args << "--with-opencl" if opencl?
 
     return args
   end
@@ -199,3 +236,61 @@ directory is added to the PYTHONPATH:
     end
   end
 end
+
+
+__END__
+
+This patch updates GDAL to be compatible with EPSILON 0.9.x. Changes sourced from the GDAL trunk:
+
+    http://trac.osgeo.org/gdal/changeset/22363
+
+Patch can be removed when GDAL hits 1.9.0.
+
+diff --git a/frmts/epsilon/epsilondataset.cpp b/frmts/epsilon/epsilondataset.cpp
+index b12928a..3f967cc 100644
+--- a/frmts/epsilon/epsilondataset.cpp
++++ b/frmts/epsilon/epsilondataset.cpp
+@@ -48,6 +48,13 @@ typedef struct
+     vsi_l_offset offset;
+ } BlockDesc;
+ 
++#ifdef I_WANT_COMPATIBILITY_WITH_EPSILON_0_8_1
++#define GET_FIELD(hdr, field) \
++    (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.field : hdr.tc.field
++#else
++#define GET_FIELD(hdr, field) \
++    (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.hdr_data.gs.field : hdr.hdr_data.tc.field
++#endif
+ 
+ /************************************************************************/
+ /* ==================================================================== */
+@@ -237,8 +244,8 @@ CPLErr EpsilonRasterBand::IReadBlock( int nBlockXOff,
+         return CE_Failure;
+     }
+     
+-    int w = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.w : hdr.tc.w;
+-    int h = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.h : hdr.tc.h;
++    int w = GET_FIELD(hdr, w);
++    int h = GET_FIELD(hdr, h);
+     int i;
+ 
+     if (poGDS->nBands == 1)
+@@ -505,12 +512,12 @@ int EpsilonDataset::ScanBlocks(int* pnBands)
+             continue;
+         }
+         
+-        int W = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.W : hdr.tc.W;
+-        int H = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.H : hdr.tc.H;
+-        int x = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.x : hdr.tc.x;
+-        int y = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.y : hdr.tc.y;
+-        int w = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.w : hdr.tc.w;
+-        int h = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.h : hdr.tc.h;
++        int W = GET_FIELD(hdr, W);
++        int H = GET_FIELD(hdr, H);
++        int x = GET_FIELD(hdr, x);
++        int y = GET_FIELD(hdr, y);
++        int w = GET_FIELD(hdr, w);
++        int h = GET_FIELD(hdr, h);
+ 
+         //CPLDebug("EPSILON", "W=%d,H=%d,x=%d,y=%d,w=%d,h=%d,offset=" CPL_FRMT_GUIB,
+         //                    W, H, x, y, w, h, nStartBlockFileOff);
