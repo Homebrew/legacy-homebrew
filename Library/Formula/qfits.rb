@@ -6,6 +6,7 @@ class Qfits < Formula
   md5 'f3920831eee308af04d75089291ce144'
 
   def install
+    # qfits does not support 64bit build
     build32 = "-arch i386 -m32"
     ENV.append "CFLAGS", build32
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
