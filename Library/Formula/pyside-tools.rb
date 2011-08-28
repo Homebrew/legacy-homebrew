@@ -5,7 +5,7 @@ def which_python
 end
 
 def site_package_dir
-  "lib/#{which_python}/site_packages"
+  "lib/#{which_python}/site-packages"
 end
 
 class PysideTools < Formula
