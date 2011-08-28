@@ -6,7 +6,7 @@ class Potrace < Formula
   md5 'ef973e7ec9c2e5b3e19e8dfeaa7524c3'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make install"

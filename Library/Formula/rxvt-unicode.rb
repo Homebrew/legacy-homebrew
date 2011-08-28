@@ -1,9 +1,11 @@
 require 'formula'
 
 class RxvtUnicode < Formula
-  url 'http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-9.11.tar.bz2'
+  url 'http://dist.schmorp.de/rxvt-unicode/Attic/rxvt-unicode-9.12.tar.bz2'
   homepage 'http://software.schmorp.de/pkg/rxvt-unicode.html'
-  md5 '1bed5bfeed026e0bfafa0e9e4f62aa37'
+  md5 '945af37d661c8c45a7cac292160e7c70'
+
+  depends_on 'pkg-config' => :build
 
   def patches
     # Patch hunks 1 and 2 allow perl support to compile on Intel.
@@ -12,16 +14,23 @@ class RxvtUnicode < Formula
     DATA
   end
 
-  def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--mandir=#{man}",
-                          "--disable-afterimage",
-                          "--enable-perl",
-                          "--enable-256-color",
-                          "--with-term=rxvt-unicode-256color",
-                          "--with-terminfo=/usr/share/terminfo",
-                          "--enable-smart-resize"
+  def options
+    [["--disable-iso14755", "Disable ISO 14775 Shift+Ctrl hotkey"]]
+  end
 
+  def install
+    args = ["--prefix=#{prefix}",
+            "--mandir=#{man}",
+            "--disable-afterimage",
+            "--enable-perl",
+            "--enable-256-color",
+            "--with-term=rxvt-unicode-256color",
+            "--with-terminfo=/usr/share/terminfo",
+            "--enable-smart-resize"]
+    
+    args << "--disable-iso14755" if ARGV.include? "--disable-iso14755"
+
+    system "./configure", *args
     system "make"
     # `make` won't work unless we rename this because of HFS's default case-insensitivity
     system "mv INSTALL README.install"

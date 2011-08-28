@@ -12,5 +12,6 @@ class Getmail < Formula
       libexec.install f
       ln_s libexec+f, bin
     end
+    man1.install Dir['docs/*.1']
   end
 end

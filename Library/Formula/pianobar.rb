@@ -1,10 +1,10 @@
 require 'formula'
 
 class Pianobar < Formula
-  url 'https://github.com/PromyLOPh/pianobar/zipball/2011.04.27'
-  version '2011.04.27'
+  url 'https://github.com/PromyLOPh/pianobar/zipball/2011.07.09'
+  version '2011.07.09'
   homepage 'https://github.com/PromyLOPh/pianobar/'
-  md5 '1e83f851e92792bd6e59decc4a6b3662'
+  md5 '5a19a10c83c1bf42ee4360e1a9773dfd'
 
   head 'https://github.com/PromyLOPh/pianobar.git'
 
@@ -17,16 +17,14 @@ class Pianobar < Formula
   fails_with_llvm "Reports of this not compiling on Xcode 4"
 
   def install
-    ENV.delete 'CFLAGS' # Pianobar uses c99 instead of gcc; remove our gcc flags.
-
-    # Enable 64-bit builds if needed
-    w_flag = MacOS.prefer_64_bit? ? "-W64" : ""
-    # Help non-default install paths
-    lib_path = HOMEBREW_PREFIX.to_s == "/usr/local" ? "" : " -I#{HOMEBREW_PREFIX}/include -L#{HOMEBREW_PREFIX}/lib"
-
-    inreplace "Makefile" do |s|
-      s.gsub! "-O2 -DNDEBUG", "-O2 -DNDEBUG #{w_flag} #{lib_path}"
-    end
+    # we discard Homebrew's CFLAGS as Pianobar reportdely doesn't like them
+    ENV['CFLAGS'] = "-O2 -DNDEBUG " +
+              # fixes a segfault: https://github.com/PromyLOPh/pianobar/issues/138
+              "-D_DARWIN_C_SOURCE " +
+              # Or it doesn't build at all
+              "-std=c99 " +
+              # build if we aren't /usr/local'
+              "#{ENV["CPPFLAGS"]} #{ENV["LDFLAGS"]}"
 
     system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"
