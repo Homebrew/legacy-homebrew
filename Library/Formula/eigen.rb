@@ -3,7 +3,7 @@ require 'formula'
 class Eigen < Formula
   url 'http://bitbucket.org/eigen/eigen/get/3.0.1.tar.bz2'
   homepage 'http://eigen.tuxfamily.org/'
-  md5 '542f0b304b42aade9b8bdd70e824328b'
+  md5 '69004f4d04fa6e49bf9fbeb957cfb97e'
 
   depends_on 'cmake' => :build
 
