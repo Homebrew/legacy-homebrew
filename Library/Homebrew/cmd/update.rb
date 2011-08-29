@@ -17,12 +17,12 @@ class RefreshBrew
   EXAMPLE_DIR = 'Library/Contributions/examples/'
 
   attr_reader :added_formulae, :updated_formulae, :deleted_formulae, :installed_formulae
-  attr_reader :added_examples, :updated_examples, :deleted_examples
+  attr_reader :added_examples, :deleted_examples
   attr_reader :initial_revision, :current_revision
 
   def initialize
     @added_formulae, @updated_formulae, @deleted_formulae, @installed_formulae = [], [], [], []
-    @added_examples, @updated_examples, @deleted_examples = [], [], []
+    @added_examples, @deleted_examples = [], [], []
     @initial_revision, @current_revision = nil
   end
 
@@ -43,7 +43,7 @@ class RefreshBrew
           safe_system "git init"
           safe_system "git remote add origin #{REPOSITORY_URL}"
           safe_system "git fetch origin"
-          safe_system "git reset --hard FETCH_HEAD"
+          safe_system "git reset --hard origin/master"
         rescue Exception
           safe_system "/bin/rm -rf .git"
           raise
@@ -73,7 +73,8 @@ class RefreshBrew
         @updated_formulae = changed_items('M', FORMULA_DIR)
         @added_examples   = changed_items('A', EXAMPLE_DIR)
         @deleted_examples = changed_items('D', EXAMPLE_DIR)
-        @updated_examples = changed_items('M', EXAMPLE_DIR)
+        @added_internal_commands = changed_items('A', "Library/Homebrew/cmd")
+        @deleted_internal_commands = changed_items('M', "Library/Homebrew/cmd")
 
         @installed_formulae = HOMEBREW_CELLAR.children.
           select{ |pn| pn.directory? }.
@@ -116,35 +117,37 @@ class RefreshBrew
 
   def report
     puts "Updated Homebrew from #{initial_revision[0,8]} to #{current_revision[0,8]}."
-    ## New Formulae
     if pending_new_formulae?
-      ohai "The following formulae are new:"
+      ohai "New formulae"
       puts_columns added_formulae
     end
-    ## Deleted Formulae
     if deleted_formulae?
-      ohai "The following formulae were removed:"
+      ohai "Removed formulae"
       puts_columns deleted_formulae, installed_formulae
     end
-    ## Updated Formulae
     if pending_formulae_changes?
-      ohai "The following formulae were updated:"
+      ohai "Updated formulae"
       puts_columns updated_formulae, installed_formulae
     end
-    ## New examples
+
+    unless @added_internal_commands.empty?
+      ohai "New commands"
+      puts_columns @added_internal_commands
+    end
+    unless @deleted_internal_commands.empty?
+      ohai "Removed commands"
+      puts_columns @deleted_internal_commands
+    end
+
+    # external commands aren't generally documented but the distinction
+    # is loose. They are less "supported" and more "playful".
     if pending_new_examples?
-      ohai "The following external commands are new:"
+      ohai "New external commands"
       puts_columns added_examples
     end
-    ## Deleted examples
     if deleted_examples?
-      ohai "The following external commands were removed:"
+      ohai "Removed external commands"
       puts_columns deleted_examples
-    end
-    ## Updated Formulae
-    if pending_examples_changes?
-      ohai "The following external commands were updated:"
-      puts_columns updated_examples
     end
   end
 

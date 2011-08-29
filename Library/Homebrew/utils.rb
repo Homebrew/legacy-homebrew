@@ -104,6 +104,9 @@ def quiet_system cmd, *args
 end
 
 def curl *args
+  # See https://github.com/mxcl/homebrew/issues/6103
+  args << "--insecure" if MacOS.version < 10.6
+
   safe_system '/usr/bin/curl', HOMEBREW_CURL_ARGS, HOMEBREW_USER_AGENT, *args unless args.empty?
 end
 
@@ -235,6 +238,9 @@ def nostdout
 end
 
 module MacOS extend self
+  def version
+    MACOS_VERSION
+  end
 
   def default_cc
     Pathname.new("/usr/bin/cc").realpath.basename.to_s
