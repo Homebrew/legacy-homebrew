@@ -594,10 +594,12 @@ EOF
 
     return if patch_list.empty?
 
-    ohai "Downloading patches"
-    # downloading all at once is much more efficient, especially for FTP
-    patches = patch_list.collect{|p| p[:curl_args]}.select{|p| p}.flatten
-    curl(*patches)
+    external_patches = patch_list.collect{|p| p[:curl_args]}.select{|p| p}.flatten
+    unless external_patches.empty?
+      ohai "Downloading patches"
+      # downloading all at once is much more efficient, especially for FTP
+      curl(*external_patches)
+    end
 
     ohai "Patching"
     patch_list.each do |p|
