@@ -50,7 +50,7 @@ _brew_to_completion()
         return
         ;;
     # Commands that take an existing brew
-    abv|cleanup|link|list|ln|ls|remove|rm|test|upgrade|uninstall|unlink)
+    abv|cleanup|link|list|ln|ls|remove|rm|test|uninstall|unlink|upgrade)
         COMPREPLY=( $(compgen -W "$(\ls $(brew --cellar))" -- ${cur}) )
         return
         ;;
