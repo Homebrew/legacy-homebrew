@@ -136,7 +136,7 @@ To view formula history locally: \fBbrew log \-p <formula>\fR\.
 Print the name and version that will be detected for \fIURL\fR\.
 .
 .TP
-\fBinstall [\-\-force] [\-\-debug] [\-\-ignore\-dependencies] [\-\-use\-clang] [\-\-use\-gcc] [\-\-use\-llvm] [\-\-build\-from\-source] [\-\-HEAD]\fR \fIformula\fR
+\fBinstall [\-\-force] [\-\-debug] [\-\-ignore\-dependencies] [\-\-use\-clang] [\-\-use\-gcc] [\-\-use\-llvm] [\-\-build\-from\-source] [\-\-assume\-xcode=version] [\-\-HEAD]\fR \fIformula\fR
 Install \fIformula\fR\.
 .
 .IP
@@ -162,6 +162,9 @@ If \fB\-\-use\-llvm\fR is passed, attempt to compile using the LLVM front\-end t
 .
 .IP
 If \fB\-\-build\-from\-source\fR is passed, compile from source even if a bottle is provided for \fIformula\fR\.
+.
+.IP
+If \fB\-\-assume\-xcode=version\fR is passed, instructs Homebrew to use the given Xcode version instead of detect it\. Please note that you need to replace \fBversion\fR with the version you want, e\.g: \fB\-\-assume\-xcode=4\.1\fR
 .
 .IP
 If \fB\-\-HEAD\fR is passed, and \fIformula\fR defines it, install the HEAD version, aka master, trunk, unstable, dev\.
@@ -326,6 +329,10 @@ $ ls `brew \-\-repository`/Library/Contributions/examples
 .IP "" 0
 .
 .SH "ENVIRONMENT"
+.
+.TP
+HOMEBREW_ASSUME_XCODE
+If set, instructs Homebrew to use the given Xcode version instead of detect it\.
 .
 .TP
 HOMEBREW_BUILD_FROM_SOURCE

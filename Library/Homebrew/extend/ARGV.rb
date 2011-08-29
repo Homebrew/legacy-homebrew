@@ -63,6 +63,20 @@ module HomebrewArgvExtension
     include? '--universal'
   end
 
+  def assume_xcode
+    # check if the env var is set, if not, check the command line arguments
+    if ENV['HOMEBREW_ASSUME_XCODE']
+      return ENV['HOMEBREW_ASSUME_XCODE']
+    else
+      options_only.each do |arg|
+        if arg.include?("--assume-xcode=")
+          return arg.split("=")[1]
+        end
+      end
+    end
+    return nil
+  end
+
   def build_from_source?
     return true if flag? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE'] \
       or not MacOS.lion? or HOMEBREW_PREFIX.to_s != '/usr/local'
