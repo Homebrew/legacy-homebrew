@@ -66,6 +66,10 @@ def macos_version
   @macos_version ||= /(10\.\d+)(\.\d+)?/.match(`/usr/bin/sw_vers -productVersion`).captures.first.to_f
 end
 
+# The block form of Dir.chdir fails later if Dir.CWD doesn't exist which I
+# guess is fair enough. Also sudo prints a warning message for no good reason
+Dir.chdir "/usr"
+
 ####################################################################### script
 abort "MacOS too old, see: https://gist.github.com/1144389" if macos_version < 10.5
 abort "/usr/local/.git already exists!" unless Dir["/usr/local/.git/*"].empty?
