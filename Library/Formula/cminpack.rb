@@ -11,4 +11,9 @@ class Cminpack < Formula
     system "cmake . #{std_cmake_parameters}"
     system "make install"
   end
+
+  def test
+    # this will fail we won't accept that, make it test the program works!
+    system "/usr/bin/false"
+  end
 end
