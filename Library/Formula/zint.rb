@@ -1,15 +1,16 @@
 require 'formula'
 
 class Zint < Formula
-  url 'http://downloads.sourceforge.net/project/zint/zint/2.4.1/zint-2.4.1.tar.gz'
+  url 'http://downloads.sourceforge.net/project/zint/zint/2.4.3/zint-2.4.3.tar.gz'
   homepage 'http://www.zint.org.uk'
-  md5 '7ec4441907827fa613b11847a467c61d'
+  md5 '2b47caff88cb746f212d6a0497185358'
   head 'git://zint.git.sourceforge.net/gitroot/zint/zint'
 
   depends_on 'cmake'
 
   def install
-    cd('build')
+    mkdir 'zint-build'
+    cd 'zint-build'
     system "cmake ..  #{std_cmake_parameters} -DCMAKE_PREFIX_PATH=#{prefix} -DCMAKE_C_FLAGS=-I/usr/X11/include"
     system "make install"
   end
