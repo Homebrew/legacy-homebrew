@@ -17,6 +17,12 @@ class Ffmpeg < Formula
   depends_on 'libvpx' => :optional
   depends_on 'xvid' => :optional
 
+  def options
+    [
+      ["--tools", "Install ffmpeg tools"]
+    ]
+  end
+
   def install
     args = ["--prefix=#{prefix}",
             "--enable-shared",
@@ -65,6 +71,12 @@ class Ffmpeg < Formula
     write_version_file if ARGV.build_head?
 
     system "make install"
+
+    if ARGV.include? "--tools"
+      system "make alltools"
+      tools = %w(cws2fws graph2dot lavfi-showfiltfmts pktdumper probetest qt-faststart trasher)
+      bin.install tools.map { |tool| 'tools/' + tool }
+    end
   end
 
   # Makefile expects to run in git repo and generate a version number
