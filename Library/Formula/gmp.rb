@@ -21,6 +21,7 @@ class Gmp < Formula
     args = ["--prefix=#{prefix}", "--enable-cxx"]
 
     # Build 32-bit where appropriate, and help configure find 64-bit CPUs
+    # see: http://gmplib.org/macos.html
     if MacOS.prefer_64_bit? and not ARGV.include? "--32-bit"
       ENV.m64
       args << "--build=x86_64-apple-darwin"
