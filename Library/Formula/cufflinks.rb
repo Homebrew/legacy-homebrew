@@ -3,7 +3,7 @@ require 'formula'
 class Cufflinks < Formula
   url 'http://cufflinks.cbcb.umd.edu/downloads/cufflinks-1.0.3.tar.gz'
   homepage 'http://cufflinks.cbcb.umd.edu/'
-  md5 '524f25fd96a49c09deda4b8525848ffe'
+  md5 '8642133b79df30087caed9069fa7dca0'
 
   depends_on 'boost'
   depends_on 'samtools'

@@ -1,22 +1,21 @@
 require 'formula'
 
-class Libiconv < Formula
-  homepage 'http://www.gnu.org/software/libiconv/'
-  url 'http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.13.1.tar.gz'
-  md5 '7ab33ebd26687c744a37264a330bbe9a'
-end
-
 def build_tests?; ARGV.include? '--test'; end
 
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/2.28/'
-  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.28/glib-2.28.7.tar.bz2'
-  sha256 '0e1b3816a8934371d4ea2313dfbe25d10d16c950f8d02e0a7879ae10d91b1631'
+  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.28/glib-2.28.8.tar.bz2'
+  sha256 '222f3055d6c413417b50901008c654865e5a311c73f0ae918b0a9978d1f9466f'
 
-  depends_on 'pkg-config' => :build
   depends_on 'gettext'
 
-  fails_with_llvm "Undefined symbol errors while linking"
+  fails_with_llvm "Undefined symbol errors while linking" unless MacOS.lion?
+
+  # Lion and Snow Leopard don't have a 64 bit version of the iconv_open
+  # function. The fact that Lion still doesn't is ridiculous. But we're as
+  # much to blame. Nobody reported the bug FFS. And I'm still not going to
+  # because I'm in a hurry here.
+  depends_on 'libiconv'
 
   def patches
     mp = "https://svn.macports.org/repository/macports/trunk/dports/devel/glib2/files/"
@@ -42,30 +41,8 @@ class Glib < Formula
   def install
     ENV.universal_binary if ARGV.build_universal?
 
-    # Snow Leopard libiconv doesn't have a 64bit version of the libiconv_open
-    # function, which breaks things for us, so we build our own
-    # http://www.mail-archive.com/gtk-list@gnome.org/msg28747.html
-
-    iconvd = Pathname.getwd+'iconv'
-    iconvd.mkpath
-
-    Libiconv.new.brew do
-      # Help out universal builds
-      # TODO - do these lines need to be here?
-      # ENV["ac_cv_func_malloc_0_nonnull"]='yes'
-      # ENV["gl_cv_func_malloc_0_nonnull"]='1'
-
-      system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                            "--prefix=#{iconvd}",
-                            "--enable-static", "--disable-shared"
-      system "make install"
-    end
-
     # indeed, amazingly, -w causes gcc to emit spurious errors for this package!
     ENV.enable_warnings
-
-    # Statically link to libiconv so glib doesn't use the bugged version in 10.6
-    ENV['LDFLAGS'] += " #{iconvd}/lib/libiconv.a"
 
     args = ["--disable-dependency-tracking", "--disable-rebuilds",
             "--prefix=#{prefix}",
@@ -82,6 +59,11 @@ class Glib < Formula
       # Run autoconf so universal builds will work
       system "autoconf"
     end
+
+    # hack so that we don't have to depend on pkg-config
+    # http://permalink.gmane.org/gmane.comp.package-management.pkg-config/627
+    ENV['ZLIB_CFLAGS'] = ''
+    ENV['ZLIB_LIBZ'] = '-l'
 
     system "./configure", *args
 
