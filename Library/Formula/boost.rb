@@ -2,10 +2,10 @@ require 'formula'
 
 class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.46.1/boost_1_46_1.tar.bz2'
-  md5 '7375679575f4c8db605d426fc721d506'
-  bottle 'https://downloads.sourceforge.net/project/machomebrew/Bottles/boost-1.46.1-bottle.tar.gz'
-  bottle_sha1 '15382f3aed119d207f0cdab7f089d284af1b3bbf'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.47.0/boost_1_47_0.tar.bz2'
+  md5 'a2dc343f7bc7f83f8941e47ed4a18200'
+  bottle 'https://downloads.sourceforge.net/project/machomebrew/Bottles/boost-1.47.0-bottle.tar.gz'
+  bottle_sha1 '4f3834fb471c3fac20c649bc4081ddde991e4b3b'
 
   def options
     [
@@ -14,7 +14,11 @@ class Boost < Formula
     ]
   end
 
-  fails_with_llvm "LLVM-GCC causes errors with dropped arguments to functions when linking with boost"
+  # Both clang and llvm-gcc provided by XCode 4.1 compile Boost 1.47.0 properly.
+  # Moreover, Apple LLVM compiler 2.1 is now among primary test compilers.
+  if MacOS.xcode_version < "4.1"
+    fails_with_llvm "LLVM-GCC causes errors with dropped arguments to functions when linking with boost"
+  end
 
   def install
     if ARGV.build_universal?

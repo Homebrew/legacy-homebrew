@@ -76,5 +76,7 @@ class Formula
   def fails_with_llvm msg=nil, data=nil
     handle_llvm_failure FailsWithLLVM.new(msg, data)
   end
+end
 
+class UnidentifiedFormula < Formula
 end
