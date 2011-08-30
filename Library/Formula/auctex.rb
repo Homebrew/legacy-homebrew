@@ -61,7 +61,7 @@ class Auctex < Formula
       EOS
     end
 
-    puts <<-EOS.undent
+    <<-EOS.undent
     * texmf files installed into
         #{HOMEBREW_PREFIX}/share/texmf/
       you can add it to your TEXMFHOME using:
