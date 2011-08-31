@@ -50,7 +50,7 @@ class Gdal < Formula
     depends_on "poppler"
 
     # Other libraries
-    depends_on "lzma"    # Compression algorithmn library
+    depends_on "xz" # get liblzma compression algorithm library from XZutils
   end
 
   def patches
