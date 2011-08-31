@@ -246,6 +246,14 @@ module MacOS extend self
     Pathname.new("/usr/bin/cc").realpath.basename.to_s
   end
 
+  def default_compiler
+    case default_cc
+      when /^gcc/ then :gcc
+      when /^llvm/ then :llvm
+      when "clang" then :clang
+    end
+  end
+
   def gcc_42_build_version
     `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
     if $1
