@@ -2,19 +2,18 @@ require 'formula'
 
 class Groovyserv < Formula
   homepage 'http://kobo.github.com/groovyserv/'
-  url 'https://github.com/downloads/kobo/groovyserv/groovyserv-0.6-src.zip'
-  sha1 '5a812e9dfaa1aa0d6a769bd5c6ccbcefb970f135'
+  url 'https://github.com/downloads/kobo/groovyserv/groovyserv-0.9-src.zip'
+  sha1 '54464608f90a381b44cf7959136e1b1f31a3919c'
   head 'http://github.com/kobo/groovyserv.git', :using => :git
 
+  depends_on 'gradle' => :build
   depends_on 'groovy'
-  depends_on 'maven'
 
   def install
-    # Build
-    system 'mvn package -Dmaven.test.skip=true'
+    system 'gradle clean executables'
 
     # Install executables in libexec to avoid conflicts
-    Dir::chdir Dir['target/groovyserv-*/groovyserv-*/'].first do
+    Dir::chdir Dir['build/executables/'].first do
       libexec.install %w{bin lib}
     end
     prefix.install %w{LICENSE.txt README.txt NOTICE.txt}

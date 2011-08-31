@@ -2,8 +2,8 @@ require 'formula'
 
 class Groovy < Formula
   homepage 'http://groovy.codehaus.org/'
-  url 'http://dist.groovy.codehaus.org/distributions/groovy-binary-1.7.10.zip'
-  sha1 '1d869e4ebb822ba5c74d7b06a5c61b94bfc1538b'
+  url 'http://dist.groovy.codehaus.org/distributions/groovy-binary-1.8.1.zip'
+  sha1 'd2293d9ae5a418550ab6d9f70934cce49970fd3c'
 
   def install
     rm_f Dir["bin/*.bat"]
@@ -16,5 +16,12 @@ class Groovy < Formula
       next unless File.extname(f).empty?
       ln_s f, bin+File.basename(f)
     end
+  end
+
+  def caveats
+    <<-EOS.undent
+      You should set the environment variable GROOVY_HOME to
+        #{libexec}
+    EOS
   end
 end

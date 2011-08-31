@@ -1,12 +1,12 @@
 require 'formula'
 
-# This formula for Python 2.7.1
+# This formula for Python 2.7.x
 # Python 3.x is available as a separate formula:
 # $ brew install python3
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.15.tar.gz'
-  md5 'ea52e1412e7ff560c290266ed400e216'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.19.tar.gz'
+  md5 '45a17940eefee849d4cb8cc06d28d96f'
 end
 
 
@@ -19,9 +19,9 @@ def as_framework?
 end
 
 class Python < Formula
-  url 'http://www.python.org/ftp/python/2.7.1/Python-2.7.1.tar.bz2'
+  url 'http://www.python.org/ftp/python/2.7.2/Python-2.7.2.tar.bz2'
   homepage 'http://www.python.org/'
-  md5 'aa27bc25725137ba155910bd8e5ddc4f'
+  md5 'ba7b2f11ffdbf195ee0d111b9455a5bd'
 
   depends_on 'readline' => :optional # Prefer over OS X's libedit
   depends_on 'sqlite'   => :optional # Prefer over OS X's older version
@@ -47,7 +47,7 @@ class Python < Formula
 
     args = ["--prefix=#{prefix}"]
 
-    if ARGV.include? '--universal'
+    if ARGV.build_universal?
       args << "--enable-universalsdk=/" << "--with-universal-archs=intel"
     end
 
@@ -83,6 +83,13 @@ class Python < Formula
 
     # Symlink the prefix site-packages into the cellar.
     ln_s prefix_site_packages, site_packages
+
+    # This is a fix for better interoperability with pyqt.
+    # See Issue #6176.
+    if not as_framework?
+      (bin+"pythonw").make_link bin+"python"
+      (bin+"pythonw2.7").make_link bin+"python2.7"
+    end
 
     # Tell distutils-based installers where to put scripts
     scripts_folder.mkpath

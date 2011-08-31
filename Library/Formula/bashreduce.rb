@@ -1,7 +1,7 @@
 require 'formula'
 
 class Bashreduce < Formula
-  head 'git://github.com/erikfrey/bashreduce.git'
+  head 'https://github.com/erikfrey/bashreduce.git'
   homepage 'https://github.com/erikfrey/bashreduce'
 
   def install

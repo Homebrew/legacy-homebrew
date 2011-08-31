@@ -10,8 +10,9 @@ end
 
 class Grass < Formula
   homepage 'http://grass.osgeo.org/'
-  url 'http://grass.osgeo.org/grass64/source/grass-6.4.0.tar.gz'
-  md5 'ac3233aa3351f8e060ea48246aa01c7f'
+  url 'http://grass.osgeo.org/grass64/source/grass-6.4.1.tar.gz'
+  md5 'd8ca83d416b5b0cf2aa9d36c81a77b23'
+  head 'https://svn.osgeo.org/grass/grass/trunk', :using => :svn
 
   depends_on "pkg-config" => :build
   depends_on "gettext"
@@ -35,8 +36,8 @@ class Grass < Formula
   end
 
   def install
-    readline = Formula.factory( 'readline' )
-    gettext = Formula.factory( 'gettext' )
+    readline = Formula.factory('readline')
+    gettext = Formula.factory('gettext')
 
     args = [
       "--disable-debug", "--disable-dependency-tracking",
@@ -54,6 +55,7 @@ class Grass < Formula
       "--with-lapack",
       "--with-sqlite",
       "--with-odbc",
+      "--with-geos=#{HOMEBREW_PREFIX}/bin/geos-config",
       "--with-png-includes=/usr/X11/include",
       "--with-png",
       "--with-readline-includes=#{readline.include}",
@@ -64,7 +66,6 @@ class Grass < Formula
       "--with-nls",
       "--with-freetype-includes=/usr/X11/include /usr/X11/include/freetype2",
       "--with-freetype",
-      "--without-ffmpeg", # Disabled because NVIZ needs Tcl and wxNVIZ is not shipping yet.
       "--without-tcltk" # Disabled due to compatibility issues with OS X Tcl/Tk
     ]
 

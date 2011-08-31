@@ -18,7 +18,7 @@ module HomebrewArgvExtension
     require 'keg'
     require 'formula'
     @kegs ||= downcased_unique_named.collect do |name|
-      d = HOMEBREW_CELLAR+Formula.caniconical_name(name)
+      d = HOMEBREW_CELLAR+Formula.canonical_name(name)
       dirs = d.children.select{ |pn| pn.directory? } rescue []
       raise NoSuchKegError.new(name) if not d.directory? or dirs.length == 0
       raise MultipleVersionsInstalledError.new(name) if dirs.length > 1
@@ -51,11 +51,24 @@ module HomebrewArgvExtension
   def interactive?
     flag? '--interactive'
   end
+  def one?
+    flag? '--1'
+  end
+
   def build_head?
     flag? '--HEAD'
   end
-  def one?
-    flag? "--1"
+
+  def build_universal?
+    include? '--universal'
+  end
+
+  def build_from_source?
+    return true if flag? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE'] \
+      or not MacOS.lion? or HOMEBREW_PREFIX.to_s != '/usr/local'
+    options = options_only
+    options.delete '--universal'
+    not options.empty?
   end
 
   def flag? flag

@@ -1,23 +1,34 @@
 require 'formula'
 
+# NOTE TO MAINTAINERS:
 #
-# NOTE: You must also change the version in the patch below, as the upstream
-# build figures out the version number from the hg checkout.
-#
+# Unless Riverbank policy changes in the future or the Mercurial archive
+# becomes unavailable, *do not use* the SIP download URL from the Riverbank
+# website. This URL will break as soon as a new version of SIP is released
+# which causes panic and terror to flood the Homebrew issue tracker.
 
 class Sip < Formula
-  url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.12.1.tar.gz'
-  md5 '92b0bf4b2ec76da55ac45f27bd17fbe0'
+  url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.12.4.tar.gz'
+  md5 '22bc7571fd06f26f0f3d7c27bd1c392a'
   head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
 
-  unless ARGV.include? '--HEAD'
-    def patches
-      DATA
-    end
+  def patches
+    DATA
   end
 
   def install
+    if ARGV.build_head?
+      # Set fallback version to the same value it would have without the patch
+      # and link the Mercurial repository into the download directory so
+      # buid.py can use it to figure out a version number.
+      sip_version = "0.1.0"
+      ln_s downloader.cached_location + '.hg', '.hg'
+    else
+      sip_version = version
+    end
+    inreplace 'build.py', /@SIP_VERSION@/, (sip_version.gsub '.', ',')
+
     system "python", "build.py", "prepare"
     system "python", "configure.py",
                               "--destdir=#{lib}/python",
@@ -36,7 +47,9 @@ end
 
 __END__
 Patch to allow the SIP build.py script to generate a reasonable version number
-without the .hg directory from the Mercurial repository.
+for installing from a Mercurial snapshot without the .hg directory from the
+Mercurial repository. The install code hooks on to the @SIP_VERSION@ tag and
+inserts a real version tuple
 
 diff --git a/build.py b/build.py
 index 927d7f1..fdf13a3 100755
@@ -56,17 +69,17 @@ index 927d7f1..fdf13a3 100755
      # Format the results.
      if version is None:
 -        version = (0, 1, 0)
-+        version = (4, 12, 1)
++        version = (@SIP_VERSION@)
  
      major, minor, micro = version
  
 
-Another patch to remove the seemingly unnecessary framework build requirement
+Patch to remove the seemingly unnecessary framework build requirement
 diff --git a/siputils.py b/siputils.py
 index 57e8911..1af6152 100644
 --- a/siputils.py
 +++ b/siputils.py
-@@ -1423,8 +1423,8 @@ class ModuleMakefile(Makefile):
+@@ -1434,8 +1434,8 @@ class ModuleMakefile(Makefile):
              # 'real_prefix' exists if virtualenv is being used.
              dl = getattr(sys, 'real_prefix', sys.exec_prefix).split(os.sep)
  

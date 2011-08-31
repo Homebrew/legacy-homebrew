@@ -2,8 +2,8 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.5/en/'
-  url 'http://downloads.mysql.com/archives/mysql-5.5/mysql-5.5.10.tar.gz'
-  md5 'ee604aff531ff85abeb10cf332c1355a'
+  url 'http://downloads.mysql.com/archives/mysql-5.5/mysql-5.5.14.tar.gz'
+  md5 '19f43bb9c72b1b5f7ff86a7f921c9244'
 
   depends_on 'cmake' => :build
   depends_on 'readline'
@@ -17,14 +17,22 @@ class Mysql < Formula
     [
       ['--with-tests', "Build with unit tests."],
       ['--with-embedded', "Build the embedded server."],
+      ['--with-libedit', "Compile with EditLine wrapper instead of readline"],
       ['--universal', "Make mysql a universal binary"],
       ['--enable-local-infile', "Build with local infile loading support"]
     ]
   end
 
-  def patches; DATA; end
+  # The CMAKE patches are so that on Lion we do not detect a private
+  # pthread_init function as linkable.
+  def patches
+    DATA
+  end
 
   def install
+    # Make sure the var/msql directory exists
+    (var+"mysql").mkpath
+
     args = [".",
             "-DCMAKE_INSTALL_PREFIX=#{prefix}",
             "-DMYSQL_DATADIR=#{var}/mysql",
@@ -48,8 +56,11 @@ class Mysql < Formula
     # Build the embedded server
     args << "-DWITH_EMBEDDED_SERVER=ON" if ARGV.include? '--with-embedded'
 
+    # Compile with readline unless libedit is explicitly chosen
+    args << "-DWITH_READLINE=yes" unless ARGV.include? '--with-libedit'
+
     # Make universal for binding to universal applications
-    args << "-DCMAKE_OSX_ARCHITECTURES='ppc;i386'" if ARGV.include? '--universal'
+    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if ARGV.build_universal?
 
     # Build with local infile loading support
     args << "-DENABLED_LOCAL_INFILE=1" if ARGV.include? '--enable-local-infile'
@@ -78,7 +89,7 @@ class Mysql < Formula
         unset TMPDIR
         mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix mysql)" --datadir=#{var}/mysql --tmpdir=/tmp
 
-    To set up base tables in another folder, or use a differnet user to run
+    To set up base tables in another folder, or use a different user to run
     mysqld, view the help for mysqld_install_db:
         mysql_install_db --help
 
@@ -91,6 +102,8 @@ class Mysql < Formula
 
     Start mysqld manually with:
         mysql.server start
+
+        Note: if this fails, you probably forgot to run the first two steps up above
 
     A "/etc/my.cnf" from another install may interfere with a Homebrew-built
     server starting up correctly.
@@ -164,3 +177,21 @@ index efc8254..8964b70 100644
  do
    # The first option we might strip will always have a space before it because
    # we set -I$pkgincludedir as the first option
+diff --git a/configure.cmake b/configure.cmake
+index 0014c1d..21fe471 100644
+--- a/configure.cmake
++++ b/configure.cmake
+@@ -391,7 +391,11 @@ CHECK_FUNCTION_EXISTS (pthread_attr_setscope HAVE_PTHREAD_ATTR_SETSCOPE)
+ CHECK_FUNCTION_EXISTS (pthread_attr_setstacksize HAVE_PTHREAD_ATTR_SETSTACKSIZE)
+ CHECK_FUNCTION_EXISTS (pthread_condattr_create HAVE_PTHREAD_CONDATTR_CREATE)
+ CHECK_FUNCTION_EXISTS (pthread_condattr_setclock HAVE_PTHREAD_CONDATTR_SETCLOCK)
+-CHECK_FUNCTION_EXISTS (pthread_init HAVE_PTHREAD_INIT)
++
++IF (NOT CMAKE_OSX_SYSROOT)
++    CHECK_FUNCTION_EXISTS (pthread_init HAVE_PTHREAD_INIT)
++ENDIF (NOT CMAKE_OSX_SYSROOT)
++
+ CHECK_FUNCTION_EXISTS (pthread_key_delete HAVE_PTHREAD_KEY_DELETE)
+ CHECK_FUNCTION_EXISTS (pthread_rwlock_rdlock HAVE_PTHREAD_RWLOCK_RDLOCK)
+ CHECK_FUNCTION_EXISTS (pthread_sigmask HAVE_PTHREAD_SIGMASK)
+

@@ -2,7 +2,7 @@ require 'formula'
 
 class Midgard2 < Formula
   url 'http://www.midgard-project.org/midcom-serveattachmentguid-b459b3e443f711e0a6353dc3bca0241a241a/midgard2-core-10.05.4.tar.gz'
-  head 'git://github.com/midgardproject/midgard-core.git', :branch => 'ratatoskr'
+  head 'https://github.com/midgardproject/midgard-core.git', :branch => 'ratatoskr'
   homepage 'http://www.midgard-project.org/'
   md5 '99dcf5d5e39901712a882598e3da17d2'
 

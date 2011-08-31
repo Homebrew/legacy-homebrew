@@ -1,16 +1,16 @@
 require 'formula'
 
 class SbclBootstrapBinaries < Formula
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.30/sbcl-1.0.30-x86-darwin-binary.tar.bz2'
-  md5 'c15bbff2e7a9083ecd50942edb74cc8c'
-  version "1.0.30"
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.49/sbcl-1.0.49-x86-darwin-binary.tar.bz2'
+  md5 '6ffae170cfa0f1858efb37aa7544aba6'
+  version "1.0.49"
 end
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.47/sbcl-1.0.47-source.tar.bz2'
-  md5 '2e90fca5ffec9ce19ed232b24f09cd0a'
-  head 'git://sbcl.boinkor.net/sbcl.git'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.50/sbcl-1.0.50-source.tar.bz2'
+  md5 '74ce9b24516885d066ec4287cde52e8c'
+  head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
   fails_with_llvm "Compilation fails with LLVM."
 
@@ -55,7 +55,7 @@ class Sbcl < Formula
     # Remove non-ASCII values from environment as they cause build failures
     # More information: http://bugs.gentoo.org/show_bug.cgi?id=174702
     ENV.delete_if do |key, value|
-      value.bytes.any? do |c| 128 <= c end
+      value =~ /[\x80-\xff]/
     end
 
     build_directory = Dir.pwd

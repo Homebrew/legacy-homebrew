@@ -75,7 +75,7 @@ class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
 
   def tool
     case type
-      when :python then 'pip'
+      when :python then 'easy_install'
       when :ruby, :jruby then 'rubygems'
       when :perl then 'cpan'
     end
@@ -84,7 +84,7 @@ class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
   def command_line
     case type
       when :python
-        "#{brew_pip}pip install"
+        "easy_install install"
       when :ruby
         "gem install"
       when :perl
@@ -92,10 +92,6 @@ class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
       when :jruby
         "jruby -S gem install"
     end
-  end
-
-  def brew_pip
-    'brew install pip && ' unless Formula.factory('pip').installed?
   end
 end
 

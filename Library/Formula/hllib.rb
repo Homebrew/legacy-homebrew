@@ -2,9 +2,9 @@ require 'formula'
 
 class Hllib < Formula
   homepage 'http://nemesis.thewavelength.net/index.php?p=35'
-  url 'http://nemesis.thewavelength.net/files/files/hllib230.zip'
-  md5 '1fc568dc8ea2e293511b921628b5c26d'
-  version '2.3.0'
+  url 'http://nemesis.thewavelength.net/files/files/hllib242.zip'
+  md5 'd89d53ff40a58062e13d5676fb871742'
+  version '2.4.2'
 
   def install
     # Library

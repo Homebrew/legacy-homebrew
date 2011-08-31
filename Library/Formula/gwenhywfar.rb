@@ -1,9 +1,10 @@
 require 'formula'
 
 class Gwenhywfar < Formula
-  url 'http://www.aquamaniac.de/sites/download/download.php?package=01&release=58&file=01&dummy=gwenhywfar-4.0.5.tar.gz'
+  url 'http://www.aquamaniac.de/sites/download/download.php?package=01&release=62&file=01&dummy=gwenhywfar-4.2.1.tar.gz'
   homepage 'http://www.aqbanking.de/'
-  md5 'e9f707a2a01ec1b4fc1576b1c2f5980b'
+  md5 '62d15e090a0c21bc9d22489ceaaadfde'
+  head 'http://devel.aqbanking.de/svn/gwenhywfar/trunk'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
