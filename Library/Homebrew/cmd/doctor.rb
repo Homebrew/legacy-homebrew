@@ -319,25 +319,29 @@ def check_user_path
   seen_prefix_sbin = false
   seen_usr_bin = false
 
-  path_folders.each do |p|
-    if p == '/usr/bin'
+  path_folders.each do |p| case p
+    when '/usr/bin'
       seen_usr_bin = true
       unless seen_prefix_bin
-        puts <<-EOS.undent
-          /usr/bin is in your PATH before Homebrew's bin. This means that system-
-          provided programs will be used before Homebrew-provided ones. This is an
-          issue if you install, for instance, Python.
+        # only show the doctor message if there are any conflicts
+        # rationale: a default install should not trigger any brew doctor messages
+        if Dir["#{HOMEBREW_PREFIX}/bin/*"].any? {|fn| File.exist? "/usr/bin/#{File.basename fn}"}
+          ohai "/usr/bin occurs before #{HOMEBREW_PREFIX}/bin"
+          puts <<-EOS.undent
+            This means that system-provided programs will be used instead of those
+            provided by Homebrew. This is an issue if you eg. brew installed Python.
 
-          Consider editing your .bashrc to put:
-            #{HOMEBREW_PREFIX}/bin
-          ahead of /usr/bin in your $PATH.
-
-        EOS
+            Consider editing your .bashrc to put:
+              #{HOMEBREW_PREFIX}/bin
+            ahead of /usr/bin in your $PATH.
+          EOS
+        end
       end
+    when "#{HOMEBREW_PREFIX}/bin"
+      seen_prefix_bin = true
+    when "#{HOMEBREW_PREFIX}/sbin"
+      seen_prefix_sbin = true
     end
-
-    seen_prefix_bin  = true if p == "#{HOMEBREW_PREFIX}/bin"
-    seen_prefix_sbin = true if p == "#{HOMEBREW_PREFIX}/sbin"
   end
 
   unless seen_prefix_bin
