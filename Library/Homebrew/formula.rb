@@ -267,6 +267,7 @@ class Formula
           if File.exist? 'CMakeLists.txt'
             mkdir_p logs
             mv 'CMakeLists.txt', logs
+          end
           raise
         end
         onoe e.inspect
