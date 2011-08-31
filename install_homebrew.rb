@@ -74,13 +74,11 @@ Dir.chdir "/usr"
 abort "MacOS too old, see: https://gist.github.com/1144389" if macos_version < 10.5
 abort "/usr/local/.git already exists!" unless Dir["/usr/local/.git/*"].empty?
 abort "Don't run this as root!" if Process.uid == 0
-abort <<-EOABORT unless `groups`.split.include? "staff"
-This script requires the user #{ENV['USER']} to be in the staff group. If this
+abort <<-EOABORT unless `groups`.split.include? "admin"
+This script requires the user #{ENV['USER']} to be an Administrator. If this
 sucks for you then you can install Homebrew in your home directory or however
 you please; please refer to the website. If you still want to use this script
-the following command should work:
-
-    dscl /Local/Default -append /Groups/staff GroupMembership $USER
+set your user to be an Administrator in System Preferences or `su'.
 EOABORT
 
 ohai "This script will install:"
@@ -101,7 +99,7 @@ unless chmods.empty?
   puts *chmods
 end
 unless chgrps.empty?
-  ohai "The following directories will have their group set to #{Tty.underline 39}staff#{Tty.reset}:"
+  ohai "The following directories will have their group set to #{Tty.underline 39}admin#{Tty.reset}:"
   puts *chgrps
 end
 
@@ -113,13 +111,12 @@ end
 
 if File.directory? "/usr/local"
   sudo "/bin/chmod", "g+rwx", *chmods unless chmods.empty?
-  # all admin users are in staff
-  sudo "/usr/bin/chgrp", "staff", *chgrps unless chgrps.empty?
+  sudo "/usr/bin/chgrp", "admin", *chgrps unless chgrps.empty?
 else
   sudo "/bin/mkdir /usr/local"
   sudo "/bin/chmod g+rwx /usr/local"
   # the group is set to wheel by default for some reason
-  sudo "/usr/bin/chgrp staff /usr/local"
+  sudo "/usr/bin/chgrp admin /usr/local"
 end
 
 Dir.chdir "/usr/local" do
