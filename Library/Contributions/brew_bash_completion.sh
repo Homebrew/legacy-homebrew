@@ -11,7 +11,7 @@ _brew_to_completion()
     [[ ${COMP_CWORD} -eq 1 ]] && {
         local actions="--cache --cellar --config --env --prefix --repository audit cat cleanup
             configure create deps doctor edit fetch help home info install link list log options
-            outdated prune remove search test uninstall unlink update uses versions"
+            outdated prune remove search test uninstall unlink update upgrade uses versions"
         local ext=$(\ls $(brew --repository)/Library/Contributions/examples |
                     sed -e "s/\.rb//g" -e "s/brew-//g")
         COMPREPLY=( $(compgen -W "${actions} ${ext}" -- ${cur}) )
@@ -30,7 +30,7 @@ _brew_to_completion()
     if [[ ${COMP_WORDS[1]} == "install" && "$cur" == --* ]]; then
         local opts=$(
             local opts=(
-              --force --verbose --debug --use-clang --use-gcc --use-llvm --ignore-dependencies --HEAD
+              --force --verbose --debug --use-clang --use-gcc --use-llvm --ignore-dependencies --build-from-source --HEAD
               $(brew options --compact "$prev")
             )
             for o in ${opts[*]}; do
@@ -50,7 +50,7 @@ _brew_to_completion()
         return
         ;;
     # Commands that take an existing brew
-    abv|cleanup|link|list|ln|ls|remove|rm|test|uninstall|unlink)
+    abv|cleanup|link|list|ln|ls|remove|rm|test|uninstall|unlink|upgrade)
         COMPREPLY=( $(compgen -W "$(\ls $(brew --cellar))" -- ${cur}) )
         return
         ;;

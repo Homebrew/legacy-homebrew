@@ -27,6 +27,9 @@ class Erlang < Formula
   md5 '047f246c4ecb5fadaffb7e049795d80e'
   version 'R14B03'
 
+  bottle 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R14B03-bottle.tar.gz'
+  bottle_sha1 '9b7605c7cf2a7dd0536723e487722e29bd2d2d9b'
+
   head 'https://github.com/erlang/otp.git', :branch => 'dev'
 
   # We can't strip the beam executables or any plugins, there isn't really
