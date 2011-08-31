@@ -319,25 +319,29 @@ def check_user_path
   seen_prefix_sbin = false
   seen_usr_bin = false
 
-  path_folders.each do |p|
-    if p == '/usr/bin'
+  path_folders.each do |p| case p
+    when '/usr/bin'
       seen_usr_bin = true
       unless seen_prefix_bin
-        puts <<-EOS.undent
-          /usr/bin is in your PATH before Homebrew's bin. This means that system-
-          provided programs will be used before Homebrew-provided ones. This is an
-          issue if you install, for instance, Python.
+        # only show the doctor message if there are any conflicts
+        # rationale: a default install should not trigger any brew doctor messages
+        if Dir["#{HOMEBREW_PREFIX}/bin/*"].any? {|fn| File.exist? "/usr/bin/#{File.basename fn}"}
+          ohai "/usr/bin occurs before #{HOMEBREW_PREFIX}/bin"
+          puts <<-EOS.undent
+            This means that system-provided programs will be used instead of those
+            provided by Homebrew. This is an issue if you eg. brew installed Python.
 
-          Consider editing your .bashrc to put:
-            #{HOMEBREW_PREFIX}/bin
-          ahead of /usr/bin in your $PATH.
-
-        EOS
+            Consider editing your .bashrc to put:
+              #{HOMEBREW_PREFIX}/bin
+            ahead of /usr/bin in your $PATH.
+          EOS
+        end
       end
+    when "#{HOMEBREW_PREFIX}/bin"
+      seen_prefix_bin = true
+    when "#{HOMEBREW_PREFIX}/sbin"
+      seen_prefix_sbin = true
     end
-
-    seen_prefix_bin  = true if p == "#{HOMEBREW_PREFIX}/bin"
-    seen_prefix_sbin = true if p == "#{HOMEBREW_PREFIX}/sbin"
   end
 
   unless seen_prefix_bin
@@ -718,6 +722,14 @@ def check_tmpdir
   end
 end
 
+def check_missing_deps
+  s = `brew missing`.strip
+  if s.length > 0
+    ohai "You should brew install these missing dependencies:"
+    puts s
+  end
+end
+
 module Homebrew extend self
   def doctor
     old_stdout = $stdout
@@ -758,6 +770,7 @@ module Homebrew extend self
       check_for_linked_kegonly_brews
       check_for_other_frameworks
       check_tmpdir
+      check_missing_deps
     ensure
       $stdout = old_stdout
     end
@@ -766,8 +779,7 @@ module Homebrew extend self
       puts warnings
       exit 1
     else
-      puts "Your OS X is ripe for brewing."
-      puts "Any troubles you may be experiencing are likely purely psychosomatic."
+      puts "Your system is raring to brew."
     end
   end
 end

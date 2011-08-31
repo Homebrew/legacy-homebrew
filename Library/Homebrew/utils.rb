@@ -246,6 +246,14 @@ module MacOS extend self
     Pathname.new("/usr/bin/cc").realpath.basename.to_s
   end
 
+  def default_compiler
+    case default_cc
+      when /^gcc/ then :gcc
+      when /^llvm/ then :llvm
+      when "clang" then :clang
+    end
+  end
+
   def gcc_42_build_version
     `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
     if $1
@@ -371,8 +379,12 @@ module GitHub extend self
     issues = []
 
     open "http://github.com/api/v2/yaml/issues/search/mxcl/homebrew/open/#{name}" do |f|
-      YAML::load(f.read)['issues'].each do |issue|
-        issues << 'https://github.com/mxcl/homebrew/issues/#issue/%s' % issue['number']
+      yaml = YAML::load(f.read);
+      yaml['issues'].each do |issue|
+        # don't include issues that just refer to the tool in their body
+        if issue['title'].include? name
+          issues << 'https://github.com/mxcl/homebrew/issues/#issue/%s' % issue['number']
+        end
       end
     end
 

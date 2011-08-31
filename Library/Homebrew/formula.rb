@@ -224,7 +224,14 @@ class Formula
   end
 
   def fails_with_llvm?
-    self.class.fails_with_llvm_reason || false
+    llvm = self.class.fails_with_llvm_reason
+    if llvm
+      if llvm.build
+        MacOS.llvm_build_version <= llvm.build
+      else
+        true
+      end
+    end
   end
 
   # sometimes the clean process breaks things
@@ -251,9 +258,21 @@ class Formula
         # so load any deps before this point! And exit asap afterwards
         yield self
       rescue Interrupt, RuntimeError, SystemCallError => e
-        raise unless ARGV.debug?
+        unless ARGV.debug?
+          logs = File.expand_path '~/Library/Logs/Homebrew/'
+          if File.exist? 'config.log'
+            mkdir_p logs
+            mv 'config.log', logs
+          end
+          if File.exist? 'CMakeLists.txt'
+            mkdir_p logs
+            mv 'CMakeLists.txt', logs
+          end
+          raise
+        end
         onoe e.inspect
         puts e.backtrace
+
         ohai "Rescuing build..."
         if (e.was_running_configure? rescue false) and File.exist? 'config.log'
           puts "It looks like an autotools configure failed."

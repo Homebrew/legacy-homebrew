@@ -21,10 +21,6 @@ module HomebrewEnvExtension
     # llvm allows -O4 however it often fails to link and is very slow
     cflags = ['-O3']
 
-    # If these aren't set, many formulae fail to build
-    self['CC'] = '/usr/bin/cc'
-    self['CXX'] = '/usr/bin/c++'
-
     case self.compiler
       when :clang then self.clang
       when :llvm then self.llvm
@@ -338,7 +334,7 @@ Please take one of the following actions:
     elsif self['HOMEBREW_USE_GCC']
       :gcc
     else
-      :gcc
+      MacOS.default_compiler
     end
   end
 
