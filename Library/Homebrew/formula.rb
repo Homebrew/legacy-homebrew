@@ -259,11 +259,14 @@ class Formula
         yield self
       rescue Interrupt, RuntimeError, SystemCallError => e
         unless ARGV.debug?
+          logs = File.expand_path '~/Library/Logs/Homebrew/'
           if File.exist? 'config.log'
-            logs = File.expand_path '~/Library/Logs/Homebrew/'
             mkdir_p logs
-            cp 'config.log', logs
+            mv 'config.log', logs
           end
+          if File.exist? 'CMakeLists.txt'
+            mkdir_p logs
+            mv 'CMakeLists.txt', logs
           raise
         end
         onoe e.inspect
