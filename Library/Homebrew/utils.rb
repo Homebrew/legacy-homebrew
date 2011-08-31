@@ -371,8 +371,12 @@ module GitHub extend self
     issues = []
 
     open "http://github.com/api/v2/yaml/issues/search/mxcl/homebrew/open/#{name}" do |f|
-      YAML::load(f.read)['issues'].each do |issue|
-        issues << 'https://github.com/mxcl/homebrew/issues/#issue/%s' % issue['number']
+      yaml = YAML::load(f.read);
+      yaml['issues'].each do |issue|
+        # don't include issues that just refer to the tool in their body
+        if issue['title'].include? name
+          issues << 'https://github.com/mxcl/homebrew/issues/#issue/%s' % issue['number']
+        end
       end
     end
 
