@@ -718,6 +718,14 @@ def check_tmpdir
   end
 end
 
+def check_missing_deps
+  s = `brew missing`.strip
+  if s.length > 0
+    ohai "You should brew install these missing dependencies:"
+    puts s
+  end
+end
+
 module Homebrew extend self
   def doctor
     old_stdout = $stdout
@@ -758,6 +766,7 @@ module Homebrew extend self
       check_for_linked_kegonly_brews
       check_for_other_frameworks
       check_tmpdir
+      check_missing_deps
     ensure
       $stdout = old_stdout
     end
