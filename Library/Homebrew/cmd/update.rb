@@ -49,7 +49,8 @@ class RefreshBrew
           raise
         end
       end
-      execute "git pull origin master"
+      # specify a refspec so that 'origin/master' gets updated
+      execute "git pull origin refs/heads/master:refs/remotes/origin/master"
       @current_revision = read_revision
     end
 
