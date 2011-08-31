@@ -75,7 +75,7 @@ class RefreshBrew
         @added_examples   = changed_items('A', EXAMPLE_DIR)
         @deleted_examples = changed_items('D', EXAMPLE_DIR)
         @added_internal_commands = changed_items('A', "Library/Homebrew/cmd")
-        @deleted_internal_commands = changed_items('M', "Library/Homebrew/cmd")
+        @deleted_internal_commands = changed_items('D', "Library/Homebrew/cmd")
 
         @installed_formulae = HOMEBREW_CELLAR.children.
           select{ |pn| pn.directory? }.
