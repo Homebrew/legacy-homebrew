@@ -251,9 +251,17 @@ class Formula
         # so load any deps before this point! And exit asap afterwards
         yield self
       rescue Interrupt, RuntimeError, SystemCallError => e
-        raise unless ARGV.debug?
+        unless ARGV.debug?
+          if File.exist? 'config.log'
+            logs = File.expand_path '~/Library/Logs/Homebrew/'
+            mkdir_p logs
+            cp 'config.log', logs
+          end
+          raise
+        end
         onoe e.inspect
         puts e.backtrace
+
         ohai "Rescuing build..."
         if (e.was_running_configure? rescue false) and File.exist? 'config.log'
           puts "It looks like an autotools configure failed."
