@@ -7,14 +7,14 @@ class Tinyproxy < Formula
 
   skip_clean 'var/run'
 
-  depends_on 'asciidoc'
+  depends_on 'asciidoc' => :build
 
+  # Fix linking error, via MacPorts
+  # See: https://trac.macports.org/ticket/27762
   def patches
-     # LDFLAG '-z' not recognized
-     # Tinyproxy switched to a2x and xmllint to build the man pages,
-     # and it fails on some systems. The patch just tells xmllint to
-     # ignore problems.
-     DATA
+    {:p0 => [
+      "https://trac.macports.org/export/83413/trunk/dports/net/tinyproxy/files/patch-configure.diff"
+    ]}
   end
 
   def install
@@ -22,47 +22,13 @@ class Tinyproxy < Formula
                           "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-regexcheck"
+
+    # Fix broken XML lint
+    # See: http://www.freebsd.org/cgi/query-pr.cgi?pr=154624
+    inreplace ["docs/man5/Makefile", "docs/man8/Makefile"] do |s|
+      s.gsub! "-f manpage", "-f manpage \\\n  -L"
+    end
+
     system "make install"
   end
 end
-
-__END__
-diff --git a/configure b/configure
-index 79e7938..2aa5347 100755
---- a/configure
-+++ b/configure
-@@ -6745,7 +6745,6 @@ if test x"$debug_enabled" != x"yes" ; then
-     CFLAGS="-DNDEBUG $CFLAGS"
- fi
- 
--LDFLAGS="-Wl,-z,defs"
- 
- 
- if test x"$ac_cv_func_regexec" != x"yes"; then
-
-diff --git a/docs/man5/Makefile.in b/docs/man5/Makefile.in
-index eac9e6f..eb2a887 100644
---- a/docs/man5/Makefile.in
-+++ b/docs/man5/Makefile.in
-@@ -194,7 +194,7 @@ MAN5_FILES = \
- 
- A2X_ARGS = \
- 	-d manpage \
--	-f manpage
-+	-f manpage -L
- 
- man_MANS = \
- 	$(MAN5_FILES:.txt=.5)
-diff --git a/docs/man8/Makefile.in b/docs/man8/Makefile.in
-index b51e93b..8957ccc 100644
---- a/docs/man8/Makefile.in
-+++ b/docs/man8/Makefile.in
-@@ -194,7 +194,7 @@ MAN8_FILES = \
- 
- A2X_ARGS = \
- 	-d manpage \
--	-f manpage
-+	-f manpage -L
- 
- man_MANS = \
- 	$(MAN8_FILES:.txt=.8)
