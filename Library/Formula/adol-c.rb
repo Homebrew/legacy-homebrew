@@ -7,7 +7,7 @@ class AdolC < Formula
   md5 '9bb10fa14459790f711fff827becd682'
 
   depends_on 'aardvark_shell_utils' => :build  # for realpath
-  depends_on 'colpack' => :build
+  depends_on 'colpack'
 
   def patches
       # fixes Makefile that doesn't propagate configure flags
