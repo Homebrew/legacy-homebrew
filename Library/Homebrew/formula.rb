@@ -227,7 +227,7 @@ class Formula
     llvm = self.class.fails_with_llvm_reason
     if llvm
       if llvm.build
-        MacOS.llvm_build_version <= llvm.build
+        MacOS.llvm_build_version <= llvm.build.to_i
       else
         true
       end
