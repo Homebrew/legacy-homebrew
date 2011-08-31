@@ -779,8 +779,7 @@ module Homebrew extend self
       puts warnings
       exit 1
     else
-      puts "Your OS X is ripe for brewing."
-      puts "Any troubles you may be experiencing are likely purely psychosomatic."
+      puts "Your system is raring to brew."
     end
   end
 end
