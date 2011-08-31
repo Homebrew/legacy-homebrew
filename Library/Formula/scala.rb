@@ -2,15 +2,16 @@ require 'formula'
 
 class ScalaDocs < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.0.1-devel-docs.tgz'
-  version '2.9.0.1'
-  md5 'acb16cbdf46f682806f60b052707b7b7'
+  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.1.final-devel-docs.tgz'
+  version '2.9.1'
+  md5 '88668b400ec61c8b043e288ddc62b8b8'
 end
 
 class Scala < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.0.1.tgz'
-  md5 '10d01410fd75019fa21a88964462a077'
+  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.1.final.tgz'
+  version '2.9.1'
+  md5 '1a06eacc7f59f279bf1700c98d5bf19d'
 
   def options
     [['--with-docs', 'Also install library documentation']]
