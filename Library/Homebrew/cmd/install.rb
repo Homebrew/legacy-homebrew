@@ -13,7 +13,7 @@ module Homebrew extend self
       if File.directory? HOMEBREW_REPOSITORY/"Library/LinkedKegs/#{f.name}"
         raise "#{f} already installed\nTry: brew upgrade #{f}"
       end
-    end
+    end unless ARGV.force?
 
     if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
       # note we only abort if Homebrew is *not* installed as sudo and the user

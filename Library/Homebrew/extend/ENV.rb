@@ -21,10 +21,6 @@ module HomebrewEnvExtension
     # llvm allows -O4 however it often fails to link and is very slow
     cflags = ['-O3']
 
-    # If these aren't set, many formulae fail to build
-    self['CC'] = '/usr/bin/cc'
-    self['CXX'] = '/usr/bin/c++'
-
     case self.compiler
       when :clang then self.clang
       when :llvm then self.llvm
@@ -127,6 +123,10 @@ module HomebrewEnvExtension
     if MacOS.xcode_version < '4'
       self['CC'] = '/usr/bin/cc'
       self['CXX'] = '/usr/bin/c++'
+    elsif MacOS.xcode_version >= '4.2'
+      # Apple stopped adding the -4.2 suffixes
+      self['CC']  = "#{MacOS.xcode_prefix}/usr/bin/gcc"
+      self['CXX']  = "#{MacOS.xcode_prefix}/usr/bin/g++"
     else
       # With Xcode4 cc, c++, gcc and g++ are actually symlinks to llvm-gcc
       self['CC']  = "#{MacOS.xcode_prefix}/usr/bin/gcc-4.2"
@@ -334,7 +334,7 @@ Please take one of the following actions:
     elsif self['HOMEBREW_USE_GCC']
       :gcc
     else
-      :gcc
+      MacOS.default_compiler
     end
   end
 
