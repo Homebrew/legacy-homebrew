@@ -317,17 +317,15 @@ Please take one of the following actions:
     # if the user has set something that is tested here
 
     # test for --flags first so that installs can be overridden on a per
-    # install basis
+    # install basis. Then test for ENVs in inverse order to flags, this is
+    # sensible, trust me
     if ARGV.include? '--use-gcc'
       :gcc
     elsif ARGV.include? '--use-llvm'
       :llvm
     elsif ARGV.include? '--use-clang'
       :clang
-    end
-
-    # test for ENVs in inverse order to flags, this is sensible, trust me
-    if self['HOMEBREW_USE_CLANG']
+    elsif self['HOMEBREW_USE_CLANG']
       :clang
     elsif self['HOMEBREW_USE_LLVM']
       :llvm
