@@ -4,6 +4,12 @@ require 'formula'
 # Python 2.7.1 is available as a separate formula:
 # $ brew install python
 
+class Distribute < Formula
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.15.tar.gz'
+  md5 'ea52e1412e7ff560c290266ed400e216'
+end
+
+
 # Was a Framework build requested?
 def build_framework?; ARGV.include? '--framework'; end
 
@@ -19,8 +25,8 @@ class Python3 < Formula
 
   depends_on 'pkg-config' => :build
 
-  depends_on 'readline' => :optional  # Prefer over OS X's libedit
-  depends_on 'sqlite'   => :optional  # Prefer over OS X's older version
+  depends_on 'readline' => :optional # Prefer over OS X's libedit
+  depends_on 'sqlite'   => :optional # Prefer over OS X's older version
   depends_on 'gdbm'     => :optional
 
   def options
@@ -31,25 +37,8 @@ class Python3 < Formula
     ]
   end
 
+  # Skip binaries so modules will load; skip lib because it is mostly Python files
   skip_clean ['bin', 'lib']
-
-  # The Cellar location of site-packages
-  # This location is different for Framework builds
-  def site_packages
-    if as_framework?
-      # If we're installed or installing as a Framework, then use that location.
-      return prefix+"Frameworks/Python.framework/Versions/3.2/lib/python3.2/site-packages"
-    else
-      # Otherwise, use just the lib path.
-      return lib+"python3.2/site-packages"
-    end
-  end
-
-  # The HOMEBREW_PREFIX location of site-packages
-  # We write a .pth file in the Cellar site-packages to here
-  def prefix_site_packages
-    HOMEBREW_PREFIX+"lib/python3.2/site-packages"
-  end
 
   def install
     args = ["--prefix=#{prefix}"]
@@ -69,20 +58,95 @@ class Python3 < Formula
     ENV.j1 # Installs must be serialized
     system "make install"
 
-    # Add the Homebrew prefix path to site-packages via a .pth
+    # Post-install, fix up the site-packages and install-scripts folders
+    # so that user-installed Python software survives minor updates, such
+    # as going from 3.2.0 to 3.2.1.
+
+    # Remove the site-packages that Python created in its Cellar.
+    site_packages.rmtree
+
+    # Create a site-packages in the prefix.
     prefix_site_packages.mkpath
-    (site_packages+"homebrew.pth").write prefix_site_packages
+
+    # Symlink the prefix site-packages into the cellar.
+    ln_s prefix_site_packages, site_packages
+
+    # Tell distutils-based installers where to put scripts
+    scripts_folder.mkpath
+    (effective_lib+"python3.2/distutils/distutils.cfg").write <<-EOF.undent
+      [install]
+      install-scripts=#{scripts_folder}
+    EOF
+
+    # Install distribute. The user can then do:
+    # $ easy_install pip
+    # $ pip install --upgrade distribute
+    # to get newer versions of distribute outside of Homebrew.
+    Distribute.new.brew { system "#{bin}/python3", "setup.py", "install" }
+
+    # Symlink to easy_install3 to match python3 command.
+    ln_s "#{scripts_folder}/easy_install", "#{scripts_folder}/easy_install3"
   end
 
-  def caveats; <<-EOS.undent
-    Apple's Tcl/Tk is not recommended for use with 64-bit Python.
-    For more information see: http://www.python.org/download/mac/tcltk/
+  def caveats
+    framework_caveats = <<-EOS.undent
 
-    The site-packages folder for this Python is:
-      #{site_packages}
+      Framework Python was installed to:
+        #{prefix}/Frameworks/Python.framework
 
-    We've added a "homebrew.pth" file to also include:
-      #{prefix_site_packages}
+      You may want to symlink this Framework to a standard OS X location,
+      such as:
+          mkdir ~/Frameworks
+          ln -s "#{prefix}/Frameworks/Python.framework" ~/Frameworks
     EOS
+
+    general_caveats = <<-EOS.undent
+      A "distutils.cfg" has been written, specifing the install-scripts folder as:
+        #{scripts_folder}
+
+      If you install Python packages via "python3 setup.py install", easy_install, pip,
+      any provided scripts will go into the install-scripts folder above, so you may
+      want to add it to your PATH.
+
+      Distribute has been installed, so easy_install is available.
+      To update distribute itself outside of Homebrew:
+          #{scripts_folder}/easy_install pip
+          #{scripts_folder}/pip install --upgrade distribute
+
+      See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
+
+      Apple's Tcl/Tk is not recommended for use with 64-bit Python.
+      For more information see: http://www.python.org/download/mac/tcltk/
+    EOS
+
+    s = general_caveats
+    s += framework_caveats if as_framework?
+    return s
   end
+
+private
+
+  # Path helpers
+
+  def effective_lib
+    # If we're installed or installing as a Framework, then use that location.
+    return prefix+"Frameworks/Python.framework/Versions/3.2/lib" if as_framework?
+    # Otherwise use just 'lib'
+    return lib
+  end
+
+  # The Cellar location of site-packages
+  def site_packages
+    effective_lib+"python3.2/site-packages"
+  end
+
+  # The HOMEBREW_PREFIX location of site-packages
+  def prefix_site_packages
+    HOMEBREW_PREFIX+"lib/python3.2/site-packages"
+  end
+
+  def scripts_folder
+    HOMEBREW_PREFIX+"share/python3.2"
+  end
+
 end
