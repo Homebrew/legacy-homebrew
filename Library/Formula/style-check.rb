@@ -1,9 +1,9 @@
 require 'formula'
 
 class StyleCheck < Formula
-  url 'http://www.cs.umd.edu/~nspring/software/style-check-0.13.tar.gz'
+  url 'http://www.cs.umd.edu/~nspring/software/style-check-0.14.tar.gz'
   homepage 'http://www.cs.umd.edu/~nspring/software/style-check-readme.html'
-  md5 '60eab1aa903217455dcd0f8997949c94'
+  md5 'b88b0632b80abf9c8aaa2c5f2c3e2934'
 
   def install
     inreplace "Makefile" do |s|

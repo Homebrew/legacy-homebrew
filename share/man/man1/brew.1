@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "June 2011" "Homebrew" "brew"
+.TH "BREW" "1" "August 2011" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -136,7 +136,7 @@ To view formula history locally: \fBbrew log \-p <formula>\fR\.
 Print the name and version that will be detected for \fIURL\fR\.
 .
 .TP
-\fBinstall [\-\-force] [\-\-debug] [\-\-ignore\-dependencies] [\-\-use\-clang] [\-\-use\-gcc] [\-\-use\-llvm] [\-\-HEAD]\fR \fIformula\fR
+\fBinstall [\-\-force] [\-\-debug] [\-\-ignore\-dependencies] [\-\-use\-clang] [\-\-use\-gcc] [\-\-use\-llvm] [\-\-build\-from\-source] [\-\-HEAD]\fR \fIformula\fR
 Install \fIformula\fR\.
 .
 .IP
@@ -159,6 +159,9 @@ If \fB\-\-use\-gcc\fR is passed, attempt to compile using GCC\. This is useful f
 .
 .IP
 If \fB\-\-use\-llvm\fR is passed, attempt to compile using the LLVM front\-end to GCC\. \fINOTE\fR: Not all formulae will build with LLVM\.
+.
+.IP
+If \fB\-\-build\-from\-source\fR is passed, compile from source even if a bottle is provided for \fIformula\fR\.
 .
 .IP
 If \fB\-\-HEAD\fR is passed, and \fIformula\fR defines it, install the HEAD version, aka master, trunk, unstable, dev\.
@@ -260,6 +263,10 @@ Show the formulas that specify \fIformula\fR as a dependency\. The list is not r
 If \fB\-\-installed\fR is passed, only lists installed formulae\.
 .
 .TP
+\fBversions\fR \fIformulae\fR
+List previous versions of \fIformulae\fR, along with a command to checkout each version\.
+.
+.TP
 \fBwhich\fR [\fIformulae\fR]
 List versions of installed brews\.
 .
@@ -321,6 +328,10 @@ $ ls `brew \-\-repository`/Library/Contributions/examples
 .SH "ENVIRONMENT"
 .
 .TP
+HOMEBREW_BUILD_FROM_SOURCE
+If set, instructs Homebrew to compile from source even when a formula provides a bottle\.
+.
+.TP
 HOMEBREW_CACHE
 If set, instructs Homebrew to use the give folder as the download cache\. Otherwise, \fB~/Library/Caches/Homebrew\fR is used\.
 .
@@ -349,6 +360,13 @@ If set, Homebrew will use this editor when editing a single formula, or several 
 .TP
 HOMEBREW_KEEP_INFO
 If set, Homebrew will not remove files from \fBshare/info\fR, allowing them to be linked from the Cellar\.
+.
+.TP
+HOMEBREW_MAKE_JOBS
+If set, instructs Homebrew to use the value of \fBHOMEBREW_MAKE_JOBS\fR as the number of parallel jobs to run when building with \fBmake\fR(1)\.
+.
+.IP
+\fIDefault:\fR the number of available CPU cores\.
 .
 .TP
 HOMEBREW_SVN

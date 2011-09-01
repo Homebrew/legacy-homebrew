@@ -1,32 +1,23 @@
 require 'formula'
 
 class Openexr < Formula
-  url 'http://download.savannah.gnu.org/releases/openexr/openexr-1.6.1.tar.gz'
+  url 'http://download.savannah.gnu.org/releases/openexr/openexr-1.7.0.tar.gz'
   homepage 'http://www.openexr.com/'
-  md5 '11951f164f9c872b183df75e66de145a'
+  md5 '27113284f7d26a58f853c346e0851d7a'
+
+  # included for reference only - repository doesn't have 'configure' script
+  # head 'cvs://:pserver:anonymous@cvs.sv.gnu.org:/sources/openexr:OpenEXR'
 
   depends_on 'pkg-config' => :build
   depends_on 'ilmbase'
 
-  def patches
-    DATA
-  end
-
   def install
+    # prevent 'cc1plus: error: unrecognized command line option "-Wno-long-double"'
+    inreplace 'configure', 'CXXFLAGS="$CXXFLAGS -Wno-long-double"', ''
+
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end
 end
 
-__END__
---- a/configure
-+++ b/configure
-@@ -21504,7 +21504,7 @@ Please re-run configure with these options:
-     CXXFLAGS="$CXXFLAGS -isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch ppc -arch i386"
-       fi
- 
--  CXXFLAGS="$CXXFLAGS -Wno-long-double"
-+  CXXFLAGS="$CXXFLAGS"
-   ;;
- esac
