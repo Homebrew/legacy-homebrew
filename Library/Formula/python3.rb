@@ -50,9 +50,7 @@ class Python3 < Formula
   end
 
   def install
-    # --with-computed-gotos requires addressable labels in C.
-    # Both gcc and LLVM support this, so switch it on.
-    args = ["--prefix=#{prefix}", "--with-computed-gotos"]
+    args = ["--prefix=#{prefix}"]
 
     if ARGV.build_universal?
       args << "--enable-universalsdk=/" << "--with-universal-archs=intel"
