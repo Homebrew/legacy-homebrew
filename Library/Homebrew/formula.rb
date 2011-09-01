@@ -229,7 +229,7 @@ class Formula
       if llvm.build
         MacOS.llvm_build_version <= llvm.build.to_i
       else
-        true
+        return llvm
       end
     end
   end
