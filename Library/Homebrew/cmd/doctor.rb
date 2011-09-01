@@ -314,6 +314,18 @@ def check_homebrew_prefix
   end
 end
 
+def check_xcode_prefix
+  prefix = MacOS.xcode_prefix
+  return if prefix.nil?
+  if prefix.to_s.match(' ')
+    puts <<-EOS.undent
+      Xcode is installed to a folder with a space in the name.
+      This may cause some formulae, such as libiconv, to fail to build.
+
+    EOS
+  end
+end
+
 def check_user_path
   seen_prefix_bin = false
   seen_prefix_sbin = false
@@ -738,6 +750,7 @@ module Homebrew extend self
     begin
       check_usr_bin_ruby
       check_homebrew_prefix
+      check_xcode_prefix
       check_for_macgpg2
       check_for_stray_dylibs
       check_for_stray_static_libs
