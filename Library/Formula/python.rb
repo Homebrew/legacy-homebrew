@@ -1,21 +1,16 @@
 require 'formula'
 
-# This formula for Python 2.7.x
-# Python 3.x is available as a separate formula:
-# $ brew install python3
-
-class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.19.tar.gz'
-  md5 '45a17940eefee849d4cb8cc06d28d96f'
-end
-
-
 # Was a Framework build requested?
 def build_framework?; ARGV.include? '--framework'; end
 
 # Are we installed or installing as a Framework?
 def as_framework?
   (self.installed? and File.exists? prefix+"Frameworks/Python.framework") or build_framework?
+end
+
+class Distribute < Formula
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.21.tar.gz'
+  md5 'c8cfcfd42ec9ab900fb3960a3308eef2'
 end
 
 class Python < Formula
