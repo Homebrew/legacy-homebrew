@@ -79,8 +79,8 @@ class Python < Formula
     # Symlink the prefix site-packages into the cellar.
     ln_s prefix_site_packages, site_packages
 
-    # This is a fix for better interoperability with pyqt.
-    # See Issue #6176.
+    # This is a fix for better interoperability with pyqt. See:
+    # https://github.com/mxcl/homebrew/issues/6176
     if not as_framework?
       (bin+"pythonw").make_link bin+"python"
       (bin+"pythonw2.7").make_link bin+"python2.7"
@@ -133,10 +133,7 @@ class Python < Formula
     return s
   end
 
-private
-
-  # Path helpers
-
+  # lib folder,taking into account whether we are a Framework build or not
   def effective_lib
     # If we're installed or installing as a Framework, then use that location.
     return prefix+"Frameworks/Python.framework/Versions/2.7/lib" if as_framework?
@@ -154,8 +151,8 @@ private
     HOMEBREW_PREFIX+"lib/python2.7/site-packages"
   end
 
+  # Where distribute will install executable scripts
   def scripts_folder
     HOMEBREW_PREFIX+"share/python"
   end
-
 end
