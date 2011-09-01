@@ -246,10 +246,13 @@ end
 
 
 class Formula
-  def keg_only_text; <<-EOS.undent
+  def keg_only_text
+    # Add indent into reason so undent won't truncate the beginnings of lines
+    reason = self.keg_only?.to_s.gsub(/[\n]/, "\n    ")
+    return <<-EOS.undent
     This formula is keg-only, so it was not symlinked into #{HOMEBREW_PREFIX}.
 
-    #{self.keg_only?}
+    #{reason}
 
     Generally there are no consequences of this for you.
     If you build your own software and it requires this formula, you'll need
