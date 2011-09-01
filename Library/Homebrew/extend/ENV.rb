@@ -120,7 +120,7 @@ module HomebrewEnvExtension
   alias_method :gcc_4_0, :gcc_4_0_1
 
   def gcc
-    if MacOS.xcode_version < '4'
+    if MacOS.xcode_version < '4' || MacOS.xcode_version == '4.2'
       self['CC'] = '/usr/bin/cc'
       self['CXX'] = '/usr/bin/c++'
     elsif MacOS.xcode_version >= '4.2'
