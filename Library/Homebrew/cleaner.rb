@@ -56,7 +56,7 @@ class Cleaner
     when /Mach-O [^ ]* ?executable/
       strip path
       perms = 0555
-    when /script text executable/
+    when /text executable/
       perms = 0555
     end
     path.chmod perms
