@@ -34,4 +34,17 @@ class Graphviz < Formula
                           "--disable-swig"
     system "make install"
   end
+
+  def test
+    mktemp do
+      p = Pathname.new Dir.pwd
+      (p+'sample.dot').write <<-EOS.undent
+      digraph G {
+        a -> b
+      }
+      EOS
+
+      system "#{bin}/dot -Tpdf -o sample.pdf sample.dot && /usr/bin/open ./sample.pdf && /bin/sleep 3"
+    end
+  end
 end
