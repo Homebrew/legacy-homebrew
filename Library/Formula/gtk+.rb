@@ -24,6 +24,6 @@ class Gtkx < Formula
   end
 
   def test
-    system "gtk-demo"
+    system "#{bin}/gtk-demo"
   end
 end

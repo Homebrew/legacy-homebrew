@@ -6,7 +6,7 @@ class Zint < Formula
   md5 '2b47caff88cb746f212d6a0497185358'
   head 'git://zint.git.sourceforge.net/gitroot/zint/zint'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
 
   def install
     mkdir 'zint-build'
@@ -16,8 +16,9 @@ class Zint < Formula
   end
 
   def test
-    system "zint -o test-zing.png -d 'This Text'"
-    system "open test-zing.png"
-    puts "You may want to `rm test-zing.png`"
+    mktemp do
+      system "#{bin}/zint -o test-zing.png -d 'This Text'"
+      system "/usr/bin/open test-zing.png && sleep 3"
+    end
   end
 end
