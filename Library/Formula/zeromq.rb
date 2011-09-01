@@ -10,7 +10,8 @@ class Zeromq < Formula
   homepage 'http://www.zeromq.org/'
   md5 '94c5e0262a79c5f82bc0b178c1f8a33d'
 
-  fails_with_llvm "Compiling with LLVM gives a segfault while linking."
+  fails_with_llvm "Compiling with LLVM gives a segfault while linking.",
+                  :build => 2326 if MacOS.snow_leopard?
 
   def options
     [
@@ -53,11 +54,11 @@ class Zeromq < Formula
   def caveats; <<-EOS.undent
     To install the zmq gem on 10.6 with the system Ruby on a 64-bit machine,
     you may need to do:
+
         ARCHFLAGS="-arch x86_64" gem install zmq -- --with-zmq-dir=#{HOMEBREW_PREFIX}
 
-    If you want to later build the Java bindings from https://github.com/zeromq/jzmq,
-    you will need to obtain the Java Developer Package from Apple ADC
-    at http://connect.apple.com/.
+    If you want to build the Java bindings from https://github.com/zeromq/jzmq
+    you will need the Java Developer Package from http://connect.apple.com/
     EOS
   end
 end
