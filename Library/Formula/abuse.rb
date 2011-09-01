@@ -1,39 +1,39 @@
 require 'formula'
 
-class AbuseGameData < Formula
-  url 'http://abuse.zoy.org/raw-attachment/wiki/Downloads/abuse-data-2.00.tar.gz'
-  md5 '2b857668849b2dc7cd29cdd84a33c19e'
-end
-
 class Abuse < Formula
-  url 'svn://svn.zoy.org/abuse/abuse/trunk'
+  url 'http://abuse.zoy.org/raw-attachment/wiki/download/abuse-0.8.tar.gz'
   homepage 'http://abuse.zoy.org/'
-  version 'trunk'
+  head 'svn://svn.zoy.org/abuse/abuse/trunk'
+  md5 'ec678b8dc8d00e0382d8c805c6438489'
 
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
   depends_on 'libvorbis'
 
-  def patches
-    # * Add SDL.m4 to aclocal includes
-    # * Re-enable OpenGL detection
-    # * Don't try to include malloc.h
-    DATA
-  end
+  def startup_script; <<-EOS.undent
+    #!/bin/sh
 
-  def startup_script
-      return <<-END
-#!/bin/bash
-#{libexec}/abuse -datadir #{libexec} $*
-END
+    #{libexec}/abuse-bin -datadir #{share}/abuse $*
+    EOS
   end
 
   def install
-    # Copy the data files
-    AbuseGameData.new.brew { libexec.install Dir["*"] }
+    # Add SDL.m4 to aclocal includes
+    inreplace 'bootstrap', 'aclocal${amvers} ${aclocalflags}',
+      'aclocal${amvers} ${aclocalflags} -I/usr/local/share/aclocal'
+
+    # undefined
+    inreplace 'src/net/fileman.cpp', 'ushort', 'unsigned short'
+    inreplace 'src/sdlport/setup.cpp', 'UInt8', 'uint8_t'
+
+    # Re-enable OpenGL detection
+    inreplace 'configure.ac',
+      "#error\t/* Error so the compile fails on OSX */",
+      '#include <OpenGL/gl.h>'
 
     system "./bootstrap"
     system "./configure", "--prefix=#{prefix}", "--disable-debug",
+                          "--with-assetdir=#{share}/abuse",
                           "--disable-dependency-tracking",
                           "--disable-sdltest",
                           "--with-sdl-prefix=#{HOMEBREW_PREFIX}"
@@ -44,74 +44,20 @@ END
     end
 
     system "make"
-    libexec.install "src/abuse"
+
+    bin.install 'src/abuse-tool'
+    libexec.install_p 'src/abuse', 'abuse-bin'
+    (share+'abuse').install Dir["data/*"] - %w(data/Makefile data/Makefile.am data/Makefile.in)
     # Use a startup script to find the game data
     (bin+'abuse').write startup_script
   end
 
-  def caveats
-    "Game settings and saves will be written to the ~/.abuse folder."
+  def caveats; <<-EOS.undent
+    Game settings and saves will be written to the ~/.abuse folder.
+    EOS
+  end
+
+  def test
+    system("#{libexec}/abuse-bin", '--help')
   end
 end
-
-
-__END__
-diff --git a/bootstrap b/bootstrap
-index b22c332..7c03039 100755
---- a/bootstrap
-+++ b/bootstrap
-@@ -116,7 +116,7 @@ if test "$libtool" = "yes"; then
-   fi
- fi
- 
--aclocal${amvers} ${aclocalflags}
-+aclocal${amvers} ${aclocalflags} -I /usr/local/share/aclocal
- autoconf${acvers}
- if test "$header" = "yes"; then
-   autoheader${acvers}
-diff --git a/configure.ac b/configure.ac
-index 52d55af..c466c4f 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -65,8 +65,7 @@ AC_TRY_COMPILE([
-     #ifdef WIN32
-     #include <windows.h>
-     #elif defined(__APPLE__) && defined(__MACH__)
--/*    #include <OpenGL/gl.h>*/
--    #error	/* Error so the compile fails on OSX */
-+    #include <OpenGL/gl.h>
-     #else
-     #include <GL/gl.h>
-     #endif
-diff --git a/src/compiled.cpp b/src/compiled.cpp
-index 3b8047c..f944788 100644
---- a/src/compiled.cpp
-+++ b/src/compiled.cpp
-@@ -10,7 +10,10 @@
- #include "config.h"
- 
- #include <string.h>
-+
-+#if !defined(__APPLE__)
- #include <malloc.h>
-+#endif
- 
- #include "lisp.hpp"
- #include "macs.hpp"
-diff --git a/src/sdlport/setup.cpp b/src/sdlport/setup.cpp
-index c3bd9d6..43db2a7 100644
---- a/src/sdlport/setup.cpp
-+++ b/src/sdlport/setup.cpp
-@@ -24,6 +24,12 @@
- #include <sys/stat.h>
- #include <signal.h>
- #include <SDL.h>
-+
-+#ifdef __APPLE__
-+/* This is needed if ! HAVE_OPENGL */
-+#include <CoreFoundation/CoreFoundation.h>
-+#endif
-+
- #ifdef HAVE_OPENGL
- #ifdef __APPLE__
- #include <Carbon/Carbon.h>
