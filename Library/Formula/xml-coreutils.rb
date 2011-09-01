@@ -5,7 +5,7 @@ class XmlCoreutils < Formula
   homepage 'http://www.lbreyer.com/xml-coreutils.html'
   md5 '2a5fa1f1feffad6be2f8af7661408268'
 
-  depends_on 'slang'
+  depends_on 's-lang'
 
   def install
     system "./configure", "--disable-dependency-tracking",
