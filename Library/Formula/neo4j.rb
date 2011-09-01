@@ -2,10 +2,10 @@ require 'formula'
 
 class Neo4j < Formula
   head 'http://dist.neo4j.org/neo4j-community-1.5-SNAPSHOT-unix.tar.gz'
-  url 'http://dist.neo4j.org/neo4j-community-1.4-unix.tar.gz'
-  version 'community-1.4'
+  url 'http://dist.neo4j.org/neo4j-community-1.4.1-unix.tar.gz'
+  version 'community-1.4.1'
   homepage 'http://neo4j.org'
-  md5 'a176c80283c3f4d3d71ee2f5c8bfa550'
+  md5 '3e26b39d498bd15853a299e10486eb90'
 
   def install
     # Remove windows files
