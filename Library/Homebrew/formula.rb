@@ -76,7 +76,12 @@ class FailsWithLLVM
   attr_reader :msg, :data, :build
 
   def initialize msg=nil, data=nil
-    @msg = msg || "(No specific reason was given)"
+    if msg.nil? or msg.kind_of? Hash
+      @msg = "(No specific reason was given)"
+      data = msg
+    else
+      @msg = msg
+    end
     @data = data
     @build = data.delete :build rescue nil
   end
@@ -226,10 +231,10 @@ class Formula
   def fails_with_llvm?
     llvm = self.class.fails_with_llvm_reason
     if llvm
-      if llvm.build
-        MacOS.llvm_build_version <= llvm.build.to_i
+      if llvm.build and MacOS.llvm_build_version > llvm.build.to_i
+        false
       else
-        true
+        llvm
       end
     end
   end
@@ -264,9 +269,9 @@ class Formula
             mkdir_p logs
             mv 'config.log', logs
           end
-          if File.exist? 'CMakeLists.txt'
+          if File.exist? 'CMakeCache.txt'
             mkdir_p logs
-            mv 'CMakeLists.txt', logs
+            mv 'CMakeCache.txt', logs
           end
           raise
         end
@@ -317,16 +322,26 @@ class Formula
   def handle_llvm_failure llvm
     case ENV.compiler
     when :llvm, :clang
-      opoo "LLVM was requested, but this formula is reported to not work with LLVM:"
+      # version 2335 is the latest version as of Xcode 4.1, so it is the
+      # latest version we have tested against so we will switch to GCC and
+      # bump this integer when Xcode 4.2 is released. TODO do that!
+      if llvm.build.to_i >= 2335
+        opoo "Formula will not build with LLVM, using GCC"
+        ENV.gcc
+        return
+      end
+      opoo "Building with LLVM, but this formula is reported to not work with LLVM:"
       puts
       puts llvm.reason
       puts
-      puts "We are continuing anyway so if the build succeeds, please let us know so we"
-      puts "can update the formula. If it doesn't work you can: brew install --use-gcc"
+      puts <<-EOS.undent
+        We are continuing anyway so if the build succeeds, please open a ticket with
+        the following information: #{MacOS.llvm_build_version}-#{MACOS_VERSION}. So
+        that we can update the formula accordingly. Thanks!
+        EOS
       puts
-    else
-      ENV.gcc if MacOS.default_cc =~ /llvm/
-      return
+      puts "If it doesn't work you can: brew install --use-gcc"
+      puts
     end
   end
 

@@ -7,7 +7,7 @@ class Elinks < Formula
 
   head 'http://elinks.cz/elinks.git', :using => :git
 
-  fails_with_llvm
+  fails_with_llvm :build => 2326 if MacOS.lion?
 
   def install
     ENV.deparallelize
