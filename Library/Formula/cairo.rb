@@ -14,6 +14,7 @@ class Cairo < Formula
   fails_with_llvm "Gives an LLVM ERROR with Xcode 4 on some CPUs"
 
   def install
+    ENV.x11
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-x"

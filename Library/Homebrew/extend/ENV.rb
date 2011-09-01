@@ -238,6 +238,11 @@ Please take one of the following actions:
     append 'LDFLAGS', '-L/usr/X11/lib'
     # CMake ignores the variables above
     append 'CMAKE_PREFIX_PATH', '/usr/X11', ':'
+    freetype2
+  end
+
+  def freetype2
+    append 'CPPFLAGS', '-I/usr/X11/include/freetype2'
   end
   alias_method :libpng, :x11
 
