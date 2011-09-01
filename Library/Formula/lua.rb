@@ -5,7 +5,8 @@ class Lua < Formula
   homepage 'http://www.lua.org/'
   md5 'd0870f2de55d59c1c8419f36e8fac150'
 
-  fails_with_llvm "Lua itself compiles with llvm, but may fail when other software tries to link."
+  fails_with_llvm "Lua itself compiles with LLVM, but may fail when other software tries to link.",
+                  :build => 2326 if MacOS.lion?
 
   # Skip cleaning both empty folders and bin/libs so external symbols still work.
   skip_clean :all
