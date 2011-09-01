@@ -76,7 +76,12 @@ class FailsWithLLVM
   attr_reader :msg, :data, :build
 
   def initialize msg=nil, data=nil
-    @msg = msg || "(No specific reason was given)"
+    if msg.nil? or msg.kind_of? Hash
+      @msg = "(No specific reason was given)"
+      data = msg
+    else
+      @msg = msg
+    end
     @data = data
     @build = data.delete :build rescue nil
   end
