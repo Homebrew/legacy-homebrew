@@ -17,6 +17,8 @@ class Python3 < Formula
   homepage 'http://www.python.org/'
   md5 'f0869ba3f3797aacb1f954ef24c256f3'
 
+  depends_on 'pkg-config' => :build
+
   depends_on 'readline' => :optional  # Prefer over OS X's libedit
   depends_on 'sqlite'   => :optional  # Prefer over OS X's older version
   depends_on 'gdbm'     => :optional
