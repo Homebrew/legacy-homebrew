@@ -264,9 +264,9 @@ class Formula
             mkdir_p logs
             mv 'config.log', logs
           end
-          if File.exist? 'CMakeLists.txt'
+          if File.exist? 'CMakeCache.txt'
             mkdir_p logs
-            mv 'CMakeLists.txt', logs
+            mv 'CMakeCache.txt', logs
           end
           raise
         end
