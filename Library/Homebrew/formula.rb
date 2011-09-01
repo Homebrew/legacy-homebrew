@@ -226,10 +226,10 @@ class Formula
   def fails_with_llvm?
     llvm = self.class.fails_with_llvm_reason
     if llvm
-      if llvm.build
-        MacOS.llvm_build_version <= llvm.build.to_i
+      if llvm.build and MacOS.llvm_build_version > llvm.build.to_i
+        false
       else
-        true
+        llvm
       end
     end
   end
@@ -317,12 +317,17 @@ class Formula
   def handle_llvm_failure llvm
     case ENV.compiler
     when :llvm, :clang
-      opoo "LLVM was requested, but this formula is reported to not work with LLVM:"
+      opoo "Building with LLVM, but this formula is reported to not work with LLVM:"
       puts
       puts llvm.reason
       puts
-      puts "We are continuing anyway so if the build succeeds, please let us know so we"
-      puts "can update the formula. If it doesn't work you can: brew install --use-gcc"
+      puts <<-EOS.undent
+        We are continuing anyway so if the build succeeds, please open a ticket with
+        the following information: #{MacOS.llvm_build_version}-#{MACOS_VERSION}. So
+        that we can update the formula accordingly. Thanks!
+        EOS
+      puts
+      puts "If it doesn't work you can: brew install --use-gcc"
       puts
     else
       ENV.gcc if MacOS.default_cc =~ /llvm/
