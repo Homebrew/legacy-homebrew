@@ -120,10 +120,10 @@ module HomebrewEnvExtension
   alias_method :gcc_4_0, :gcc_4_0_1
 
   def gcc
-    if MacOS.xcode_version < '4'
+    if MacOS.xcode_version.to_s < '4'
       self['CC'] = '/usr/bin/cc'
       self['CXX'] = '/usr/bin/c++'
-    elsif MacOS.xcode_version >= '4.2'
+    elsif MacOS.xcode_version.to_s >= '4.2'
       # Apple stopped adding the -4.2 suffixes
       self['CC']  = "#{MacOS.xcode_prefix}/usr/bin/gcc"
       self['CXX']  = "#{MacOS.xcode_prefix}/usr/bin/g++"
@@ -137,9 +137,9 @@ module HomebrewEnvExtension
   alias_method :gcc_4_2, :gcc
 
   def llvm
-    if MacOS.xcode_version < '4'
+    if MacOS.xcode_version.to_s < '4'
       self.gcc
-    elsif MacOS.xcode_version < '4.1'
+    elsif MacOS.xcode_version.to_s < '4.1'
       self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
       self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
     else
@@ -149,7 +149,7 @@ module HomebrewEnvExtension
   end
 
   def clang
-    if MacOS.xcode_version > '4'
+    if MacOS.xcode_version.to_s > '4'
       self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/clang"
       self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/clang++"
     else

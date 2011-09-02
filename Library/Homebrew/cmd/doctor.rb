@@ -195,6 +195,8 @@ def check_gcc_versions
   end
 
   if MacOS.xcode_version == nil
+      # TODO: Do better detection of gcc etc., or display proper instructions for
+      # installing eg. <https://github.com/kennethreitz/osx-gcc-installer>
       puts <<-EOS.undent
         We couldn't detect any version of Xcode.
         If you downloaded Xcode 4.1 from the App Store, you may need to run the installer.
