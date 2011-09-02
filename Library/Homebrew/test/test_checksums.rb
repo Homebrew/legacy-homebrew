@@ -20,7 +20,7 @@ class ChecksumTests < Test::Unit::TestCase
   
   def test_md5
     valid_md5 = Class.new(TestBall) do
-      @md5='a04e0a201dcf2e5758ad351f7eea3ddc'
+      @md5='060844753f2a3b36ecfc3192d307dab2'
     end
     
     good_checksum valid_md5
@@ -36,7 +36,7 @@ class ChecksumTests < Test::Unit::TestCase
 
   def test_sha1
     valid_sha1 = Class.new(TestBall) do
-      @sha1='027afeac65cfb27c15fc372122e6b2be2c14daba'
+      @sha1='482e737739d946b7c8cbaf127d9ee9c148b999f5'
     end
     
     good_checksum valid_sha1
@@ -52,7 +52,7 @@ class ChecksumTests < Test::Unit::TestCase
 
   def test_sha256
     valid_sha256 = Class.new(TestBall) do
-      @sha256='b537438cdd7519dc645d034d7e01f0bcdf908758901f26550e6bf65b496c4474'
+      @sha256='1dfb13ce0f6143fe675b525fc9e168adb2215c5d5965c9f57306bb993170914f'
     end
     
     good_checksum valid_sha256
