@@ -116,7 +116,7 @@ For the full command list, see the COMMANDS section.
   * `info` <URL>:
     Print the name and version that will be detected for <URL>.
 
-  * `install [--force] [--debug] [--ignore-dependencies] [--use-clang] [--use-gcc] [--use-llvm] [--build-from-source] [--HEAD]` <formula>:
+  * `install [--force] [--debug] [--ignore-dependencies] [--use-clang] [--use-gcc] [--use-llvm] [--build-from-source] [--assume-xcode=version] [--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but may also be
@@ -143,6 +143,10 @@ For the full command list, see the COMMANDS section.
 
     If `--build-from-source` is passed, compile from source even if a bottle
     is provided for <formula>.
+
+    If `--assume-xcode=version` is passed, instructs Homebrew to use the given
+    Xcode version instead of detect it. Please note that you need to replace
+    `version` with the version you want, e.g: `--assume-xcode=4.1`
 
     If `--HEAD` is passed, and <formula> defines it, install the HEAD version,
     aka master, trunk, unstable, dev.
@@ -297,6 +301,10 @@ Some sample commands ship with Homebrew and are enabled by default.
 
 
 ## ENVIRONMENT
+
+  * HOMEBREW\_ASSUME\_XCODE:
+    If set, instructs Homebrew to use the given Xcode version instead of detect
+    it.
 
   * HOMEBREW\_BUILD\_FROM\_SOURCE:
     If set, instructs Homebrew to compile from source even when a formula

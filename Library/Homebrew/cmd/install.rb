@@ -48,10 +48,14 @@ module Homebrew extend self
         opoo "You should upgrade to Xcode 3.1.4"
       end
     end
+    # the reason we don't abort is some formula don't require Xcode or when
+    # using something like osx-gcc-instaler.
+    if ARGV.assume_xcode
+      opoo "You changed the Xcode version to #{ARGV.assume_xcode}, you are on your own now."
+    end
   rescue
     # the reason we don't abort is some formula don't require Xcode
-    # TODO allow formula to declare themselves as "not needing Xcode"
-    opoo "Xcode is not installed! Builds may fail!"
+    opoo "Xcode is not installed! Builds may fail! Perhaps you want to use --assume-xcode, see the documentation."
   end
 
   def check_macports

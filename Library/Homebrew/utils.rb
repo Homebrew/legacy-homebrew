@@ -52,6 +52,12 @@ def onoe error
   puts lines unless lines.empty?
 end
 
+def version_assumed?
+  if ARGV.assume_xcode
+    msg =  "\n!!!! The user changed the Xcode version to: #{ARGV.assume_xcode} !!!!\n"
+    puts "#{Tty.red}#{msg}#{Tty.reset}"
+  end
+end
 
 def pretty_duration s
   return "2 seconds" if s < 3 # avoids the plural problem ;)
@@ -289,6 +295,10 @@ module MacOS extend self
         # we do this to support cowboys who insist on installing
         # only a subset of Xcode
         Pathname.new '/Developer'
+      elsif ARGV.assume_xcode
+        # Some tools like osx-gcc-installer install the tools in '/' instead of
+        # '/Developer' on osx, may apply to other plaforms too (if migrated).
+        Pathname.new '/'
       else
         nil
       end
@@ -297,8 +307,13 @@ module MacOS extend self
 
   def xcode_version
     @xcode_version ||= begin
-      `xcodebuild -version 2>&1` =~ /Xcode (\d(\.\d)*)/
-      $1
+      # Use the Xcode version informed by the user
+      if ARGV.assume_xcode
+        ARGV.assume_xcode
+      else
+        `xcodebuild -version 2>&1` =~ /Xcode (\d(\.\d)*)/
+        $1
+      end
     end
   end
 
