@@ -24,7 +24,7 @@ class Emacs < Formula
   end
 
   def patches
-    p = []
+    p = [DATA]
 
     # Fix for building with Xcode 4; harmless on Xcode 3.x.
     unless ARGV.build_head?
@@ -115,3 +115,20 @@ class Emacs < Formula
     return s
   end
 end
+
+# patch for color issues described here:
+# http://debbugs.gnu.org/cgi/bugreport.cgi?bug=8402
+__END__
+diff --git a/src/nsterm.m b/src/nsterm.m
+index af1f21a..696dbdc 100644
+--- a/src/nsterm.m
++++ b/src/nsterm.m
+@@ -1389,7 +1389,7 @@ ns_get_color (const char *name, NSColor **col)
+
+   if (r >= 0.0)
+     {
+-      *col = [NSColor colorWithCalibratedRed: r green: g blue: b alpha: 1.0];
++      *col = [NSColor colorWithDeviceRed: r green: g blue: b alpha: 1.0];
+       UNBLOCK_INPUT;
+       return 0;
+     }
