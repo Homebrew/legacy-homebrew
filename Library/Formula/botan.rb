@@ -6,7 +6,10 @@ class Botan < Formula
   md5 '7ae93e205491a8e75115bfca983ff7f9'
 
   def install
-    system "./configure.py", "--prefix=#{prefix}"
+    args = []
+    args << "--cpu=x86_64" if MacOS.prefer_64_bit?
+
+    system "./configure.py", "--prefix=#{prefix}", *args
     system "make install"
   end
 end
