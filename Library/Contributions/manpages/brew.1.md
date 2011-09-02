@@ -190,8 +190,11 @@ For the full command list, see the COMMANDS section.
 
     If `--all` is passed, show options for all formulae.
 
-  * `outdated`:
-    Show formula that have an updated version available.
+  * `outdated [--quiet]`:
+    Show formulae that have an updated version available.
+
+    If `--quiet` is passed, list only the names of outdated brews. Otherwise,
+    the versions are printed as well.
 
   * `prune`:
     Remove dead symlinks from the Homebrew prefix. This is generally not
