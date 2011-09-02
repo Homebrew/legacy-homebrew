@@ -9,7 +9,7 @@ class Ruby < Formula
   depends_on 'readline'
   depends_on 'libyaml'
 
-  fails_with_llvm
+  fails_with_llvm :build => 2326
 
   # Stripping breaks dynamic linking
   skip_clean :all

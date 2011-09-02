@@ -22,6 +22,6 @@ EOS
   end
 
   def test
-    system "lexparser.csh", "#{libexec}/testsent.txt"
+    system "#{bin}/lexparser.csh", "#{libexec}/testsent.txt"
   end
 end
