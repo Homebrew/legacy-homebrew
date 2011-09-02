@@ -21,6 +21,7 @@ class Memcached < Formula
     system "make install"
 
     (prefix+'com.danga.memcached.plist').write startup_plist
+    (prefix+'com.danga.memcached.plist').chmod 0644
   end
 
   def caveats; <<-EOS.undent

@@ -9,6 +9,7 @@ class Jenkins < Formula
   def install
     lib.install "jenkins.war"
     (prefix+'org.jenkins-ci.plist').write startup_plist
+    (prefix+'org.jenkins-ci.plist').chmod 0644
   end
 
   def caveats; <<-EOS
