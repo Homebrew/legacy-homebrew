@@ -67,7 +67,9 @@ class IscDhcp < Formula
 
     # sample launchd plists
     (prefix+'org.isc.dhcpd.plist').write dhcpd_plist
+    (prefix+'org.isc.dhcpd.plist').chmod 0644
     (prefix+'org.isc.dhcpd6.plist').write dhcpd6_plist
+    (prefix+'org.isc.dhcpd6.plist').chmod 0644
   end
 
   def caveats

@@ -70,6 +70,7 @@ class Mysql < Formula
     system "make install"
 
     (prefix+'com.mysql.mysqld.plist').write startup_plist
+    (prefix+'com.mysql.mysqld.plist').chmod 0644
 
     # Don't create databases inside of the prefix!
     # See: https://github.com/mxcl/homebrew/issues/4975
