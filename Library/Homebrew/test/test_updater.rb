@@ -67,7 +67,10 @@ class UpdaterTests < Test::Unit::TestCase
       updater = RefreshBrewMock.new
       updater.git_repo = false
       updater.in_prefix_expect("git init")
-      updater.in_prefix_expect("git pull #{RefreshBrewMock::REPOSITORY_URL} master")
+      updater.in_prefix_expect("git remote add origin #{RefreshBrewMock::REPOSITORY_URL}")
+      updater.in_prefix_expect("git fetch origin")
+      updater.in_prefix_expect("git reset --hard origin/master")
+      updater.in_prefix_expect("git pull origin refs/heads/master:refs/remotes/origin/master")
       updater.in_prefix_expect("git rev-parse HEAD", "1234abcd")
       
       assert_equal false, updater.update_from_masterbrew!
@@ -83,7 +86,8 @@ class UpdaterTests < Test::Unit::TestCase
       updater.git_repo = true
       updater.in_prefix_expect("git checkout -q master")
       updater.in_prefix_expect("git rev-parse HEAD", "1234abcd")
-      updater.in_prefix_expect("git pull #{RefreshBrewMock::REPOSITORY_URL} master")
+      updater.in_prefix_expect("git remote", "origin")
+      updater.in_prefix_expect("git pull origin refs/heads/master:refs/remotes/origin/master")
       updater.in_prefix_expect("git rev-parse HEAD", "3456cdef")
       updater.in_prefix_expect("git diff-tree -r --name-status -z 1234abcd 3456cdef", "")
       
@@ -102,11 +106,13 @@ class UpdaterTests < Test::Unit::TestCase
 
       updater.in_prefix_expect("git checkout -q master")
       updater.in_prefix_expect("git rev-parse HEAD", "1234abcd")
-      updater.in_prefix_expect("git pull #{RefreshBrewMock::REPOSITORY_URL} master")
+      updater.in_prefix_expect("git remote", "origin")
+      updater.in_prefix_expect("git pull origin refs/heads/master:refs/remotes/origin/master")
       updater.in_prefix_expect("git rev-parse HEAD", "3456cdef")
       updater.in_prefix_expect("git diff-tree -r --name-status -z 1234abcd 3456cdef", diff_output.gsub(/\s+/, "\0"))
       
       assert_equal true, updater.update_from_masterbrew!
+      assert updater.expectations_met?
       assert !updater.pending_formulae_changes?
       assert updater.updated_formulae.empty?
       assert updater.added_formulae.empty?
@@ -121,11 +127,13 @@ class UpdaterTests < Test::Unit::TestCase
 
       updater.in_prefix_expect("git checkout -q master")
       updater.in_prefix_expect("git rev-parse HEAD", "1234abcd")
-      updater.in_prefix_expect("git pull #{RefreshBrewMock::REPOSITORY_URL} master")
+      updater.in_prefix_expect("git remote", "origin")
+      updater.in_prefix_expect("git pull origin refs/heads/master:refs/remotes/origin/master")
       updater.in_prefix_expect("git rev-parse HEAD", "3456cdef")
       updater.in_prefix_expect("git diff-tree -r --name-status -z 1234abcd 3456cdef", diff_output.gsub(/\s+/, "\0"))
       
       assert_equal true, updater.update_from_masterbrew!
+      assert updater.expectations_met?
       assert updater.pending_formulae_changes?
       assert_equal %w{ xar yajl }, updater.updated_formulae
       assert_equal %w{ antiword bash-completion ddrescue dict lua }, updater.added_formulae
