@@ -16,9 +16,15 @@ class BashCompletion < Formula
       system "aclocal"
       system "autoconf"
       system "automake --add-missing"
+      system "./configure", "--prefix=#{prefix}"
+
+      inreplace 'Makefile' do |s|
+        s.change_make_var! "pkgconfigdir", "#{lib}/pkgconfig"
+      end
+    else
+      system "./configure", "--prefix=#{prefix}"
     end
 
-    system "./configure", "--prefix=#{prefix}"
     system "make install"
 
     # Cause the build to fails if you haven't already installed git or something else that
@@ -27,14 +33,32 @@ class BashCompletion < Formula
     #   File.exists? "#{etc}/bash_completion.d/brew_bash_completion.sh" or File.symlink? "#{etc}/bash_completion.d/brew_bash_completion.sh"
   end
 
-  def caveats; <<-EOS.undent
-    Add the following lines to your ~/.bash_profile file:
-      if [ -f `brew --prefix`/etc/bash_completion ]; then
-        . `brew --prefix`/etc/bash_completion
-      fi
+  def caveats
+    if ARGV.build_head?
+      <<-EOS.undent
+      Add the following lines to your ~/.bash_profile file:
+        if [ -f `brew --prefix`/share/bash-completion/bash_completion ]; then
+          . `brew --prefix`/share/bash-completion/bash_completion
+        fi
 
-    To install Homebrew's own completion script:
-      ln -s "#{HOMEBREW_PREFIX}/Library/Contributions/brew_bash_completion.sh" "#{etc}/bash_completion.d"
-    EOS
+      Some formula install their own completion scripts. To use them with the
+      HEAD version of bash-completion, link them into
+
+      #{HOMEBREW_PREFIX}/share/bash-completion/completions
+
+      To install Homebrew's own completion script:
+        ln -s "#{HOMEBREW_PREFIX}/Library/Contributions/brew_bash_completion.sh" "#{HOMEBREW_PREFIX}/share/bash-completion/completions"
+      EOS
+    else
+      <<-EOS.undent
+      Add the following lines to your ~/.bash_profile file:
+        if [ -f `brew --prefix`/etc/bash_completion ]; then
+          . `brew --prefix`/etc/bash_completion
+        fi
+
+      To install Homebrew's own completion script:
+        ln -s "#{HOMEBREW_PREFIX}/Library/Contributions/brew_bash_completion.sh" "#{etc}/bash_completion.d"
+      EOS
+    end
   end
 end
