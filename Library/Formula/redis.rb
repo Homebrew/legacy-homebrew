@@ -31,6 +31,7 @@ class Redis < Formula
     doc.install Dir["doc/*"]
     etc.install "redis.conf"
     (prefix+'io.redis.redis-server.plist').write startup_plist
+    (prefix+'io.redis.redis-server.plist').chmod 0644
   end
 
   def caveats

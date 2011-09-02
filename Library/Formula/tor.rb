@@ -17,6 +17,7 @@ class Tor < Formula
     system "make install"
 
     (prefix+'org.tor.plist').write startup_plist
+    (prefix+'org.tor.plist').chmod 0644
   end
 
   def startup_plist
