@@ -29,7 +29,7 @@ class Wine < Formula
   # gnutls not needed since 1.3.16
   depends_on 'gnutls' unless ARGV.flag? '--devel' or ARGV.build_head?
 
-  fails_with_llvm :build => 2336 if MacOS.lion?
+  fails_with_llvm :build => 2326
 
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
   # configure: libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
