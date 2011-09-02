@@ -10,6 +10,9 @@ class Lbdb < Formula
   end
 
   def install
+    inreplace "ABQuery/ABQuery.xcodeproj/project.pbxproj" do |s|
+      s.gsub! "SDKROOT = macosx10.5;", "SDKROOT = macosx#{MACOS_VERSION};"
+    end
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
