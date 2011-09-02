@@ -36,6 +36,7 @@ class Rabbitmq < Formula
     inreplace sbin+'rabbitmq-env', '${SCRIPT_DIR}/..', target_dir
 
     (prefix+'com.rabbitmq.rabbitmq-server.plist').write startup_plist
+    (prefix+'com.rabbitmq.rabbitmq-server.plist').chmod 0644
   end
 
   def caveats
