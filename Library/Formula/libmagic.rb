@@ -5,14 +5,14 @@ class Libmagic < Formula
   homepage 'http://www.darwinsys.com/file/'
   md5 'accade81ff1cc774904b47c72c8aeea0'
 
-  keg_only <<-KEG.undent
-    This brew provides 'libmagic', but also installs a 'file' command which shadows the OS X-provided one.
-  KEG
-
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make"
     ENV.j1 # Remove some warnings during install
     system "make install"
+
+    # don't dupe this system utility and this formula is called "libmagic" not "file"
+    rm bin/"file"
+    rm man1/"file.1"
   end
 end
