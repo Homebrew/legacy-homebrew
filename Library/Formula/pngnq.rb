@@ -13,4 +13,23 @@ class Pngnq < Formula
                           "--prefix=#{prefix}"
     system "make install"
   end
+
+  def patches
+    # Fixes compilation on OSX Lion
+    DATA
+  end
 end
+
+__END__
+diff --git a/src/rwpng.c b/src/rwpng.c
+index aaa21fc..5324afe 100644
+--- a/src/rwpng.c
++++ b/src/rwpng.c
+@@ -31,6 +31,7 @@
+
+ #include <stdio.h>
+ #include <stdlib.h>
++#include <zlib.h>
+
+ #include "png.h"        /* libpng header; includes zlib.h */
+ #include "rwpng.h"      /* typedefs, common macros, public prototypes */
