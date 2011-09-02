@@ -1,7 +1,7 @@
 require 'formula'
 
 class Authexec < Formula
-  head 'git://github.com/tcurdt/authexec.git'
+  head 'https://github.com/tcurdt/authexec.git'
   homepage 'https://github.com/tcurdt/authexec'
 
   def install
