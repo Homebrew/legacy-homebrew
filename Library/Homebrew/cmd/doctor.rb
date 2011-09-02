@@ -504,7 +504,7 @@ end
 def check_for_dyld_vars
   if ENV['DYLD_LIBRARY_PATH']
     puts <<-EOS.undent
-      Setting DYLD_LIBARY_PATH can break dynamic linking.
+      Setting DYLD_LIBRARY_PATH can break dynamic linking.
       You should probably unset it.
 
     EOS
