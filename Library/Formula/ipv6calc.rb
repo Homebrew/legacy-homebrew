@@ -6,10 +6,7 @@ class Ipv6calc < Formula
   md5 'c1a654214058fdac5f8c2ba6a196e2b8'
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make install"
   end
 end
