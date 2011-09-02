@@ -7,6 +7,12 @@ class Fixnum
   end
 end
 
+class Formula
+  def rack
+    HOMEBREW_CELLAR/name
+  end
+end
+
 module Homebrew extend self
   def upgrade
     Homebrew.perform_preinstall_checks
@@ -14,7 +20,11 @@ module Homebrew extend self
     outdated = if ARGV.named.empty?
       Homebrew.outdated_brews
     else
-      ARGV.formulae.map{ |f| [f.prefix.parent, f.name, f.version] }
+      ARGV.formulae.map do |f|
+        raise "#{f} already upgraded" if f.installed?
+        raise "#{f} not installed" unless f.rack.exist? and not f.rack.children.empty?
+        [f.prefix.parent, f.name, f.version]
+      end
     end
 
     if outdated.length > 1
