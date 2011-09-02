@@ -1,9 +1,9 @@
 require 'formula'
 
 class Lbdb < Formula
-  url 'http://www.spinnaker.de/debian/lbdb_0.37.tar.gz'
+  url 'http://www.spinnaker.de/debian/lbdb_0.38.tar.gz'
   homepage 'http://www.spinnaker.de/lbdb/'
-  md5 '877f19ed4f314f2db5d358341412f8d2'
+  md5 'a8e65f1400c90818ff324dc4fd67eba2'
 
   def patches
     DATA
