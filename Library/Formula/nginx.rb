@@ -56,6 +56,7 @@ class Nginx < Formula
     system "make install"
 
     (prefix+'org.nginx.nginx.plist').write startup_plist
+    (prefix+'org.nginx.nginx.plist').chmod 0644
   end
 
   def caveats; <<-EOS.undent

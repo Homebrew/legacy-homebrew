@@ -21,15 +21,15 @@ module HomebrewEnvExtension
     # llvm allows -O4 however it often fails to link and is very slow
     cflags = ['-O3']
 
-    # If these aren't set, many formulae fail to build
-    self['CC'] = '/usr/bin/cc'
-    self['CXX'] = '/usr/bin/c++'
-
     case self.compiler
       when :clang then self.clang
       when :llvm then self.llvm
       when :gcc then self.gcc
     end
+
+    # we must have a working compiler!
+    ENV['CC']  = '/usr/bin/cc'  unless File.exist? ENV['CC']
+    ENV['CXX'] = '/usr/bin/c++' unless File.exist? ENV['CXX']
 
     # In rare cases this may break your builds, as the tool for some reason wants
     # to use a specific linker. However doing this in general causes formula to
@@ -115,50 +115,29 @@ module HomebrewEnvExtension
   end
 
   def gcc_4_0_1
-    self['CC'] = self['LD'] = '/usr/bin/gcc-4.0'
+    self['CC'] = '/usr/bin/gcc-4.0'
     self['CXX'] = '/usr/bin/g++-4.0'
-    self.O3
+    remove_from_cflags '-O4'
     remove_from_cflags '-march=core2'
     remove_from_cflags %r{-msse4(\.\d)?}
   end
   alias_method :gcc_4_0, :gcc_4_0_1
 
   def gcc
-    if MacOS.xcode_version < '4'
-      self['CC'] = '/usr/bin/cc'
-      self['CXX'] = '/usr/bin/c++'
-    elsif MacOS.xcode_version >= '4.2'
-      # Apple stopped adding the -4.2 suffixes
-      self['CC']  = "#{MacOS.xcode_prefix}/usr/bin/gcc"
-      self['CXX']  = "#{MacOS.xcode_prefix}/usr/bin/g++"
-    else
-      # With Xcode4 cc, c++, gcc and g++ are actually symlinks to llvm-gcc
-      self['CC']  = "#{MacOS.xcode_prefix}/usr/bin/gcc-4.2"
-      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/g++-4.2"
-    end
+    self['CC']  = "/usr/bin/gcc-4.2"
+    self['CXX'] = "/usr/bin/g++-4.2"
     remove_from_cflags '-O4'
   end
   alias_method :gcc_4_2, :gcc
 
   def llvm
-    if MacOS.xcode_version < '4'
-      self.gcc
-    elsif MacOS.xcode_version < '4.1'
-      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
-      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
-    else
-      self['CC'] = '/usr/bin/cc'
-      self['CXX'] = '/usr/bin/c++'
-    end
+    self['CC']  = "/usr/bin/llvm-gcc"
+    self['CXX'] = "/usr/bin/llvm-g++"
   end
 
   def clang
-    if MacOS.xcode_version > '4'
-      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/clang"
-      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/clang++"
-    else
-      self.gcc
-    end
+    self['CC']  = "/usr/bin/clang"
+    self['CXX'] = "/usr/bin/clang++"
   end
 
   def fortran
@@ -321,24 +300,22 @@ Please take one of the following actions:
     # if the user has set something that is tested here
 
     # test for --flags first so that installs can be overridden on a per
-    # install basis
+    # install basis. Then test for ENVs in inverse order to flags, this is
+    # sensible, trust me
     if ARGV.include? '--use-gcc'
       :gcc
     elsif ARGV.include? '--use-llvm'
       :llvm
     elsif ARGV.include? '--use-clang'
       :clang
-    end
-
-    # test for ENVs in inverse order to flags, this is sensible, trust me
-    if self['HOMEBREW_USE_CLANG']
+    elsif self['HOMEBREW_USE_CLANG']
       :clang
     elsif self['HOMEBREW_USE_LLVM']
       :llvm
     elsif self['HOMEBREW_USE_GCC']
       :gcc
     else
-      :gcc
+      MacOS.default_compiler
     end
   end
 
