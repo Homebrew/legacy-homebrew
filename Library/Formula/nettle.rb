@@ -1,9 +1,9 @@
 require 'formula'
 
 class Nettle < Formula
-  url 'http://www.lysator.liu.se/~nisse/archive/nettle-2.3.tar.gz'
+  url 'http://www.lysator.liu.se/~nisse/archive/nettle-2.4.tar.gz'
   homepage 'http://www.lysator.liu.se/~nisse/nettle/'
-  md5 'ba66035af27731307229fd39efa51c0d'
+  md5 '450be8c4886d46c09f49f568ad6fa013'
 
   depends_on 'gmp'
 
