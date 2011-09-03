@@ -13,6 +13,9 @@ class Lbdb < Formula
     inreplace "ABQuery/ABQuery.xcodeproj/project.pbxproj" do |s|
       s.gsub! "SDKROOT = macosx10.5;", "SDKROOT = macosx#{MACOS_VERSION};"
     end
+    inreplace "Makefile.in" do |s|
+      s.gsub! "xcodebuild", "xcodebuild SYMROOT=build"
+    end
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
