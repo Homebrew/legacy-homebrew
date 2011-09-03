@@ -11,6 +11,7 @@ class Staticrouted < Formula
     sbin.install ["build/Release/staticroute", "build/Release/staticrouted"]
     man8.install ["staticroute.8", "staticrouted.8"]
     prefix.install "com.coriolis-systems.staticrouted.plist"
+    (prefix+"com.coriolis-systems.staticrouted.plist").chmod 0644
   end
 
   def caveats; <<-EOS.undent

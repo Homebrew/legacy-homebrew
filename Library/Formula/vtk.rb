@@ -17,6 +17,11 @@ class Vtk < Formula
   ]
   end
 
+  def patches
+    # fixes compilation issue on Mac OS X 10.7
+    "http://vtk.org/gitweb?p=VTK.git;a=patch;h=70db254a59c18a5e565c3232813dc821bb337563;hp=0c5990f503fe8f6e5f1a07b85b804dcc4262a6ed"
+  end
+
   def install
     args = std_cmake_parameters.split + [
              "-DVTK_REQUIRED_OBJCXX_FLAGS:STRING=''",

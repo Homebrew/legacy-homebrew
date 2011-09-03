@@ -9,6 +9,12 @@ module Homebrew extend self
       raise "No available formula for #{name}\n#{msg}" if msg
     end unless ARGV.force?
 
+    ARGV.formulae.each do |f|
+      if File.directory? HOMEBREW_REPOSITORY/"Library/LinkedKegs/#{f.name}"
+        raise "#{f} already installed\nTry: brew upgrade #{f}"
+      end
+    end unless ARGV.force?
+
     if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
       # note we only abort if Homebrew is *not* installed as sudo and the user
       # calls brew as root. The fix is to chown brew to root.
@@ -50,29 +56,32 @@ module Homebrew extend self
 
   def check_macports
     if MacOS.macports_or_fink_installed?
-      opoo "It appears you have Macports or Fink installed"
+      opoo "It appears you have MacPorts or Fink installed."
       puts "Software installed with other package managers causes known problems for"
-      puts "Homebrew. If formula fail to build uninstall Macports/Fink and reinstall any"
-      puts "affected formula."
+      puts "Homebrew. If a formula fails to build, uninstall MacPorts/Fink and try again."
     end
   end
 
-  def install_formulae formulae
-    formulae = [formulae].flatten.compact
-    return if formulae.empty?
-
+  def perform_preinstall_checks
     check_ppc
     check_writable_install_location
     check_cc
     check_macports
+  end
 
-    formulae.each do |f|
-      begin
-        installer = FormulaInstaller.new f
-        installer.ignore_deps = ARGV.include? '--ignore-dependencies'
-        installer.go
-      rescue FormulaAlreadyInstalledError => e
-        opoo e.message
+  def install_formulae formulae
+    formulae = [formulae].flatten.compact
+    unless formulae.empty?
+      perform_preinstall_checks
+      formulae.each do |f|
+        begin
+          fi = FormulaInstaller.new(f)
+          fi.install
+          fi.caveats
+          fi.finish
+        rescue FormulaAlreadyInstalledError => e
+          opoo e.message
+        end
       end
     end
   end
