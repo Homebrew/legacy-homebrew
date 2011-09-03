@@ -59,6 +59,7 @@ class Mariadb < Formula
     (prefix+'sql-bench').rmtree unless ARGV.include? '--with-bench'
 
     (prefix+'com.mysql.mysqld.plist').write startup_plist
+    (prefix+'com.mysql.mysqld.plist').chmod 0644
   end
 
   def caveats; <<-EOS.undent

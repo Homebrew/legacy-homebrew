@@ -14,7 +14,6 @@ class DBus < Formula
     # Fix the TMPDIR to one D-Bus doesn't reject due to odd symbols
     ENV["TMPDIR"] = "/tmp"
 
-
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-xml-docs",
@@ -25,6 +24,8 @@ class DBus < Formula
     system "make"
     ENV.deparallelize
     system "make install"
+
+    (prefix+'org.freedesktop.dbus-session.plist').chmod 0644
 
     # Generate D-Bus's UUID for this machine
     system "#{bin}/dbus-uuidgen", "--ensure=#{prefix}/var/lib/dbus/machine-id"
