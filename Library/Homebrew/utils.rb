@@ -325,13 +325,11 @@ module MacOS extend self
   end
 
   def llvm_build_version
-    unless xcode_prefix.to_s.empty?
-      llvm_gcc_path = xcode_prefix/"usr/bin/llvm-gcc"
-      # for Xcode 3 on OS X 10.5 this will not exist
-      if llvm_gcc_path.file?
-        `#{llvm_gcc_path} -v 2>&1` =~ /LLVM build (\d{4,})/
-        $1.to_i # if nil this raises and then you fix the regex
-      end
+    # for Xcode 3 on OS X 10.5 this will not exist
+    # NOTE may not be true anymore but we can't test
+    if File.exist? "/usr/bin/llvm-gcc"
+      `/usr/bin/llvm-gcc -v 2>&1` =~ /LLVM build (\d{4,})/
+      $1.to_i
     end
   end
 
