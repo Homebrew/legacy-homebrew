@@ -1,12 +1,12 @@
 require 'formula'
 
 class Ttytter < ScriptFileFormula
-  url 'http://www.floodgap.com/software/ttytter/dist1/1.2.00.txt'
-  homepage 'http://www.floodgap.com/software/ttytter/'
-  md5 '82841292bc27d9297e2a6d907be2cd83'
+  url 'http://cdkaiser.sdf.org/ttytter/dist1/1.2.01.txt'
+  homepage 'http://cdkaiser.sdf.org/ttytter/'
+  md5 'eb7060467236c8ed4e758a7a88832234'
 
   def install
-    bin.install '1.2.00.txt' => 'ttytter'
+    bin.install '1.2.01.txt' => 'ttytter'
   end
 
   def caveats; <<-EOS.undent

@@ -10,5 +10,10 @@ class Star < Formula
   def install
     system "smake", "GMAKE_NOWARN=true", "INS_BASE=#{prefix}", "MANDIR=share/man"
     system "smake", "GMAKE_NOWARN=true", "INS_BASE=#{prefix}", "MANDIR=share/man", "install"
+
+    # Remove symlinks that override built-in utilities
+    Dir.chdir bin do
+      Pathname.glob(%w[gnutar tar]) {|p| p.unlink}
+    end
   end
 end
