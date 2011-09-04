@@ -11,7 +11,7 @@ class Asciidoc < Formula
       ohai "Creating configure file"
       system "autoconf"
     end
-    system "./configure", "--disable-debug", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 end
