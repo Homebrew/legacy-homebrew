@@ -9,6 +9,9 @@ class Qrencode < Formula
 
   def install
     ENV.x11 # For libpng
+    inreplace 'configure' do |s|
+      s.gsub! "libpng12", "libpng"
+    end
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
