@@ -39,6 +39,7 @@ class Openvpn < Formula
 
     # Write the launchd script
     (prefix + 'org.openvpn.plist').write startup_plist
+    (prefix + 'org.openvpn.plist').chmod 0644
   end
 
   def caveats; <<-EOS
