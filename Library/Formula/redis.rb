@@ -6,7 +6,7 @@ class Redis < Formula
   homepage 'http://redis.io/'
   md5 '61b287860cab3e89c49390b8f5ffb697'
 
-  fails_with_llvm "Fails with \"reference out of range from _linenoise\""
+  fails_with_llvm 'Fails with "reference out of range from _linenoise"', :build => 2334
 
   def install
     # Architecture isn't detected correctly on 32bit Snow Leopard without help
