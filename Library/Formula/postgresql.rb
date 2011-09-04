@@ -165,6 +165,8 @@ To install gems without sudo, see the Homebrew wiki.
   <string>#{`whoami`.chomp}</string>
   <key>WorkingDirectory</key>
   <string>#{HOMEBREW_PREFIX}</string>
+  <key>StandardErrorPath</key>
+  <string>#{var}/postgres/server.log</string>
 </dict>
 </plist>
     EOPLIST

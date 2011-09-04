@@ -1,7 +1,5 @@
 require 'formula'
 
-# This formula used to derive from ImageMagick, but has diverged.
-
 def ghostscript_fonts?
   File.directory? "#{HOMEBREW_PREFIX}/share/ghostscript/fonts"
 end
