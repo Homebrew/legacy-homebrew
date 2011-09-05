@@ -7,6 +7,7 @@ class Stklos < Formula
 
   depends_on 'gmp'
   depends_on 'pcre'
+  depends_on 'bdw-gc'
 
   # it fails with LLVM while building its internal bdw-gc,
   # for the same reason as bdw-gc itself.
