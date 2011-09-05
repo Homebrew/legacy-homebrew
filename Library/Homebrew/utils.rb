@@ -403,7 +403,7 @@ module GitHub extend self
       yaml['issues'].each do |issue|
         # don't include issues that just refer to the tool in their body
         if issue['title'].include? name
-          issues << 'https://github.com/mxcl/homebrew/issues/#issue/%s' % issue['number']
+          issues << issue['html_url']
         end
       end
     end
