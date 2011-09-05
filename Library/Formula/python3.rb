@@ -17,9 +17,9 @@ class Distribute < Formula
 end
 
 class Python3 < Formula
-  url 'http://python.org/ftp/python/3.2.1/Python-3.2.1.tar.bz2'
+  url 'http://python.org/ftp/python/3.2.2/Python-3.2.2.tar.bz2'
   homepage 'http://www.python.org/'
-  md5 'f0869ba3f3797aacb1f954ef24c256f3'
+  md5 '9d763097a13a59ff53428c9e4d098a05'
 
   depends_on 'pkg-config' => :build
 
