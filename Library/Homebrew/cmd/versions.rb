@@ -8,7 +8,7 @@ module Homebrew extend self
       yielded = []
       f.rev_list.each do |sha|
         version = f.version_for_sha sha
-        unless yielded.include? version
+        unless yielded.include? version or version.nil?
           yield version, sha
           yielded << version
         end
@@ -55,7 +55,10 @@ class Formula
     return version[1] unless version.nil?
 
     url = code.match(/class #{Formula.class_s name} < ?Formula.*?(?:url\s|@url\s*=)\s*(?:'|")(.+?)(?:'|").*?end\s/m)
-    return Pathname.new(url[1]).version unless url.nil?
+    unless url.nil?
+      version = Pathname.new(url[1]).version
+      return version unless version.to_s.empty?
+    end
 
     head = code.match(/class #{Formula.class_s name} < ?Formula.*?head\s'(.*?)'.*?end\s\s/m)
     return 'HEAD' unless head.nil?
