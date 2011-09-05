@@ -15,6 +15,8 @@ class Ldapvi < Formula
     system "make install"
   end
 
+  #Backporting the fix from the devel version
+  #http://www.lichteblau.com/git/?p=ldapvi.git;a=commit;h=256ced029c235687bfafdffd07be7d47bf7af39b
   def patches
     DATA
   end
