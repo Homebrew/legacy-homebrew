@@ -64,6 +64,7 @@ class Postgresql < Formula
     end
 
     (prefix+'org.postgresql.postgres.plist').write startup_plist
+    (prefix+'org.postgresql.postgres.plist').chmod 0644
   end
 
   def check_python_arch
@@ -164,6 +165,8 @@ To install gems without sudo, see the Homebrew wiki.
   <string>#{`whoami`.chomp}</string>
   <key>WorkingDirectory</key>
   <string>#{HOMEBREW_PREFIX}</string>
+  <key>StandardErrorPath</key>
+  <string>#{var}/postgres/server.log</string>
 </dict>
 </plist>
     EOPLIST

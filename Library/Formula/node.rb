@@ -9,7 +9,7 @@ class Node < Formula
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.leopard?
 
-  fails_with_llvm
+  fails_with_llvm :build => 2326
 
   # Stripping breaks dynamic loading
   skip_clean :all

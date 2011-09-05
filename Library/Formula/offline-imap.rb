@@ -12,6 +12,7 @@ class OfflineImap < Formula
     bin.mkpath
     ln_s libexec+'offlineimap.py', bin+'offlineimap'
     (prefix+'org.offlineimap.plist').write startup_plist
+    (prefix+'org.offlineimap.plist').chmod 0644
   end
 
   def caveats; <<-EOS.undent

@@ -174,6 +174,11 @@ class Pathname
       return match.first if /\d/.match $1
     end
 
+    # erlang bottle style, booya
+    # e.g. erlang-R14B03-bottle.tar.gz
+    /-([^-]+)-bottle$/.match stem
+    return $1 if $1
+
     nil
   end
   
