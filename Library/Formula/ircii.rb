@@ -12,6 +12,8 @@ class Ircii < Formula
                           "--disable-dependency-tracking",
                           "--with-default-server=irc.freenode.net",
                           "--enable-ipv6"
+    system "make"
+    ENV.deparallelize
     system "make install"
   end
 end

@@ -12,22 +12,17 @@ module Homebrew extend self
 end
 
 class RefreshBrew
-  REPOSITORY_URL   = "http://github.com/mxcl/homebrew.git"
-  CHECKOUT_COMMAND = "git checkout -q master"
-  UPDATE_COMMAND   = "git pull #{REPOSITORY_URL} master"
-  REVISION_COMMAND = "git rev-parse HEAD"
-  DIFF_COMMAND     = "git diff-tree -r --name-status -z %s %s"
-
+  REPOSITORY_URL = "http://github.com/mxcl/homebrew.git"
   FORMULA_DIR = 'Library/Formula/'
   EXAMPLE_DIR = 'Library/Contributions/examples/'
 
   attr_reader :added_formulae, :updated_formulae, :deleted_formulae, :installed_formulae
-  attr_reader :added_examples, :updated_examples, :deleted_examples
+  attr_reader :added_examples, :deleted_examples
   attr_reader :initial_revision, :current_revision
 
   def initialize
     @added_formulae, @updated_formulae, @deleted_formulae, @installed_formulae = [], [], [], []
-    @added_examples, @updated_examples, @deleted_examples = [], [], []
+    @added_examples, @deleted_examples = [], [], []
     @initial_revision, @current_revision = nil
   end
 
@@ -36,19 +31,26 @@ class RefreshBrew
   def update_from_masterbrew!
     HOMEBREW_REPOSITORY.cd do
       if git_repo?
-        safe_system CHECKOUT_COMMAND
+        safe_system "git checkout -q master"
         @initial_revision = read_revision
+        # originally we fetched by URL but then we decided that we should
+        # use origin so that it's easier for forks to operate seamlessly
+        unless `git remote`.split.include? 'origin'
+          safe_system "git remote add origin #{REPOSITORY_URL}"
+        end
       else
         begin
           safe_system "git init"
-          safe_system "git fetch #{REPOSITORY_URL}"
-          safe_system "git reset --hard FETCH_HEAD"
+          safe_system "git remote add origin #{REPOSITORY_URL}"
+          safe_system "git fetch origin"
+          safe_system "git reset --hard origin/master"
         rescue Exception
-          safe_system "rm -rf .git"
+          safe_system "/bin/rm -rf .git"
           raise
         end
       end
-      execute(UPDATE_COMMAND)
+      # specify a refspec so that 'origin/master' gets updated
+      execute "git pull origin refs/heads/master:refs/remotes/origin/master"
       @current_revision = read_revision
     end
 
@@ -58,7 +60,7 @@ class RefreshBrew
       @changes_map = Hash.new {|h,k| h[k] = [] }
 
       changes = HOMEBREW_REPOSITORY.cd do
-        execute(DIFF_COMMAND % [initial_revision, current_revision]).split("\0")
+        execute("git diff-tree -r --name-status -z #{initial_revision} #{current_revision}").split("\0")
       end
 
       while status = changes.shift
@@ -72,7 +74,8 @@ class RefreshBrew
         @updated_formulae = changed_items('M', FORMULA_DIR)
         @added_examples   = changed_items('A', EXAMPLE_DIR)
         @deleted_examples = changed_items('D', EXAMPLE_DIR)
-        @updated_examples = changed_items('M', EXAMPLE_DIR)
+        @added_internal_commands = changed_items('A', "Library/Homebrew/cmd")
+        @deleted_internal_commands = changed_items('D', "Library/Homebrew/cmd")
 
         @installed_formulae = HOMEBREW_CELLAR.children.
           select{ |pn| pn.directory? }.
@@ -115,42 +118,44 @@ class RefreshBrew
 
   def report
     puts "Updated Homebrew from #{initial_revision[0,8]} to #{current_revision[0,8]}."
-    ## New Formulae
     if pending_new_formulae?
-      ohai "The following formulae are new:"
+      ohai "New formulae"
       puts_columns added_formulae
     end
-    ## Deleted Formulae
     if deleted_formulae?
-      ohai "The following formulae were removed:"
+      ohai "Removed formulae"
       puts_columns deleted_formulae, installed_formulae
     end
-    ## Updated Formulae
     if pending_formulae_changes?
-      ohai "The following formulae were updated:"
+      ohai "Updated formulae"
       puts_columns updated_formulae, installed_formulae
     end
-    ## New examples
+
+    unless @added_internal_commands.empty?
+      ohai "New commands"
+      puts_columns @added_internal_commands
+    end
+    unless @deleted_internal_commands.empty?
+      ohai "Removed commands"
+      puts_columns @deleted_internal_commands
+    end
+
+    # external commands aren't generally documented but the distinction
+    # is loose. They are less "supported" and more "playful".
     if pending_new_examples?
-      ohai "The following external commands are new:"
+      ohai "New external commands"
       puts_columns added_examples
     end
-    ## Deleted examples
     if deleted_examples?
-      ohai "The following external commands were removed:"
+      ohai "Removed external commands"
       puts_columns deleted_examples
-    end
-    ## Updated Formulae
-    if pending_examples_changes?
-      ohai "The following external commands were updated:"
-      puts_columns updated_examples
     end
   end
 
   private
 
   def read_revision
-    execute(REVISION_COMMAND).chomp
+    execute("git rev-parse HEAD").chomp
   end
 
   def filter_by_directory(files, dir)

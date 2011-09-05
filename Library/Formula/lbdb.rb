@@ -1,15 +1,21 @@
 require 'formula'
 
 class Lbdb < Formula
-  url 'http://www.spinnaker.de/debian/lbdb_0.37.tar.gz'
+  url 'http://www.spinnaker.de/debian/lbdb_0.38.tar.gz'
   homepage 'http://www.spinnaker.de/lbdb/'
-  md5 '877f19ed4f314f2db5d358341412f8d2'
+  md5 'a8e65f1400c90818ff324dc4fd67eba2'
 
   def patches
     DATA
   end
 
   def install
+    inreplace "ABQuery/ABQuery.xcodeproj/project.pbxproj" do |s|
+      s.gsub! "SDKROOT = macosx10.5;", "SDKROOT = macosx#{MACOS_VERSION};"
+    end
+    inreplace "Makefile.in" do |s|
+      s.gsub! "xcodebuild", "xcodebuild SYMROOT=build"
+    end
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end

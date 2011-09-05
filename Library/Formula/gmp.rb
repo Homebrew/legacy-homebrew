@@ -13,6 +13,7 @@ class Gmp < Formula
   end
 
   def install
+    ENV.universal_binary # build fat for nettle
     # Reports of problems using gcc 4.0 on Leopard
     # https://github.com/mxcl/homebrew/issues/issue/2302
     # Also force use of 4.2 on 10.6 in case a user has changed the default
@@ -21,6 +22,7 @@ class Gmp < Formula
     args = ["--prefix=#{prefix}", "--enable-cxx"]
 
     # Build 32-bit where appropriate, and help configure find 64-bit CPUs
+    # see: http://gmplib.org/macos.html
     if MacOS.prefer_64_bit? and not ARGV.include? "--32-bit"
       ENV.m64
       args << "--build=x86_64-apple-darwin"
