@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libmagic < Formula
-  url 'ftp://ftp.astron.com/pub/file/file-5.04.tar.gz'
+  url 'ftp://ftp.astron.com/pub/file/file-5.08.tar.gz'
   homepage 'http://www.darwinsys.com/file/'
-  md5 'accade81ff1cc774904b47c72c8aeea0'
+  md5 '6a2a263c20278f01fe3bb0f720b27d4e'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
