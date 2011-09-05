@@ -6,6 +6,7 @@ def build_analyzer?; ARGV.include? '--analyzer'; end
 def build_universal?; ARGV.build_universal?; end
 def build_shared?; ARGV.include? '--shared'; end
 def build_rtti?; ARGV.include? '--rtti'; end
+def build_jit?; ARGV.include? '--jit'; end
 
 class Clang < Formula
   homepage  'http://llvm.org/'
@@ -33,7 +34,8 @@ class Llvm < Formula
      ['--shared', 'Build shared library'],
      ['--all-targets', 'Build all target backends'],
      ['--rtti', 'Build with RTTI information'],
-     ['--universal', 'Build both i386 and x86_64 architectures']]
+     ['--universal', 'Build both i386 and x86_64 architectures'],
+     ['--jit', 'Build with Just In Time (JIT) compiler functionality']]
   end
 
   def install
@@ -64,6 +66,7 @@ class Llvm < Formula
     end
 
     configure_options << "--enable-shared" if build_shared?
+    configure_options << "--enable-jit" if build_jit?
 
     system "./configure", *configure_options
 
