@@ -30,19 +30,22 @@ class Thrift < Formula
                           "--without-python",
                           "--without-ruby",
                           "--without-perl",
-                          "--without-php"
+                          "--without-php",
+                          "--without-erlang"
     ENV.j1
     system "make"
     system "make install"
   end
 
   def caveats; <<-EOS.undent
-    Some bindings were not installed. You may like to do the following:
+    Most language bindings were not installed. You may like to do the
+    following:
 
         gem install thrift
         easy_install thrift
 
-    Perl and PHP bindings are a mystery someone should solve.
+    If anyone figures out the steps to reliably build a set of bindings, please
+    open a pull request.
     EOS
   end
 end
