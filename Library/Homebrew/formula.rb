@@ -327,7 +327,7 @@ class Formula
       # bump this integer when Xcode 4.2 is released. TODO do that!
       if llvm.build.to_i >= 2335
         opoo "Formula will not build with LLVM, using GCC"
-        ENV.gcc
+        ENV.gcc :force => true
         return
       end
       opoo "Building with LLVM, but this formula is reported to not work with LLVM:"
