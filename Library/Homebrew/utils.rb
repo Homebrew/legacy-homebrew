@@ -299,6 +299,7 @@ module MacOS extend self
     @xcode_version ||= begin
       raise unless system "/usr/bin/which -s xcodebuild"
       `xcodebuild -version 2>&1` =~ /Xcode (\d(\.\d)*)/
+      raise if $1.nil?
       $1
     rescue
       # for people who don't have xcodebuild installed due to using
@@ -403,7 +404,7 @@ module GitHub extend self
       yaml['issues'].each do |issue|
         # don't include issues that just refer to the tool in their body
         if issue['title'].include? name
-          issues << 'https://github.com/mxcl/homebrew/issues/#issue/%s' % issue['number']
+          issues << issue['html_url']
         end
       end
     end
