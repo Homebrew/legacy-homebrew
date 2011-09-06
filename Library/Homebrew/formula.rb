@@ -231,7 +231,7 @@ class Formula
   def fails_with_llvm?
     llvm = self.class.fails_with_llvm_reason
     if llvm
-      if llvm.build and MacOS.llvm_build_version > llvm.build.to_i
+      if llvm.build and MacOS.llvm_build_version.to_i > llvm.build.to_i
         false
       else
         llvm
@@ -327,7 +327,7 @@ class Formula
       # bump this integer when Xcode 4.2 is released. TODO do that!
       if llvm.build.to_i >= 2335
         opoo "Formula will not build with LLVM, using GCC"
-        ENV.gcc
+        ENV.gcc :force => true
         return
       end
       opoo "Building with LLVM, but this formula is reported to not work with LLVM:"
