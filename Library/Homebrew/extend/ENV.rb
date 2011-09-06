@@ -127,11 +127,15 @@ module HomebrewEnvExtension
   end
   alias_method :gcc_4_0, :gcc_4_0_1
 
-  def gcc
+  def gcc args = {}
     self['CC']  = "/usr/bin/gcc-4.2"
     self['CXX'] = "/usr/bin/g++-4.2"
     remove_from_cflags '-O4'
     @compiler = :gcc
+
+    raise "GCC could not be found" if args[:force] and not File.exist? ENV['CC'] \
+                                   or (File.symlink? ENV['CC'] \
+                                   and File.readlink(ENV['CC']) =~ 'llvm')
   end
   alias_method :gcc_4_2, :gcc
 
