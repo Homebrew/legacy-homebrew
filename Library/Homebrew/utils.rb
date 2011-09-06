@@ -299,6 +299,7 @@ module MacOS extend self
     @xcode_version ||= begin
       raise unless system "/usr/bin/which -s xcodebuild"
       `xcodebuild -version 2>&1` =~ /Xcode (\d(\.\d)*)/
+      raise if $1.nil?
       $1
     rescue
       # for people who don't have xcodebuild installed due to using
