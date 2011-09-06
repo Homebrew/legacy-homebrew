@@ -26,7 +26,8 @@ class Libcaca < Formula
                           "--disable-slang",
                           "--disable-java",
                           "--disable-csharp",
-                          "--disable-ruby"
+                          "--disable-ruby",
+                          "--disable-x11"
     ENV.j1 # Or install can fail making the same folder at the same time
     system "make install"
   end
