@@ -251,6 +251,7 @@ module MacOS extend self
       when /^gcc/ then :gcc
       when /^llvm/ then :llvm
       when "clang" then :clang
+      else :gcc # a hack, but a sensible one prolly
     end
   end
 
@@ -328,7 +329,7 @@ module MacOS extend self
   def llvm_build_version
     # for Xcode 3 on OS X 10.5 this will not exist
     # NOTE may not be true anymore but we can't test
-    if File.exist? "/usr/bin/llvm-gcc"
+    @llvm_build_version ||= if File.exist? "/usr/bin/llvm-gcc"
       `/usr/bin/llvm-gcc -v 2>&1` =~ /LLVM build (\d{4,})/
       $1.to_i
     end
