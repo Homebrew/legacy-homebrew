@@ -7,6 +7,9 @@ class Gtest < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    # gtest-config tries to be clever in locating libraries, but Homebrew's
+    # Cellar confuses it. This lets `gtest-config --libs` work correctly
+    inreplace 'scripts/gtest-config', '`dirname $0`', '$bindir'
     system "make install"
   end
 end

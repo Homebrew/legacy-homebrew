@@ -17,9 +17,9 @@ class Distribute < Formula
 end
 
 class Python3 < Formula
-  url 'http://python.org/ftp/python/3.2.1/Python-3.2.1.tar.bz2'
+  url 'http://python.org/ftp/python/3.2.2/Python-3.2.2.tar.bz2'
   homepage 'http://www.python.org/'
-  md5 'f0869ba3f3797aacb1f954ef24c256f3'
+  md5 '9d763097a13a59ff53428c9e4d098a05'
 
   depends_on 'pkg-config' => :build
 
@@ -70,7 +70,7 @@ class Python3 < Formula
 
     # Post-install, fix up the site-packages and install-scripts folders
     # so that user-installed Python software survives minor updates, such
-    # as going from 3.2.1 to 3.2.2.
+    # as going from 3.2.2 to 3.2.3.
 
     # Remove the site-packages that Python created in its Cellar.
     site_packages.rmtree
@@ -93,7 +93,7 @@ class Python3 < Formula
     # $ pip install --upgrade distribute
     # to get newer versions of distribute outside of Homebrew.
     Distribute.new.brew do
-      system "#{bin}/python3", "setup.py", "install"
+      system "#{bin}/python3.2", "setup.py", "install"
 
       # Symlink to easy_install3 to match python3 command.
       ln_s "#{scripts_folder}/easy_install", "#{scripts_folder}/easy_install3"

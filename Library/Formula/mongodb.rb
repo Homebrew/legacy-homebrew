@@ -59,6 +59,7 @@ class Mongodb < Formula
     # Write the configuration files and launchd script
     (prefix+'mongod.conf').write mongodb_conf
     (prefix+'org.mongodb.mongod.plist').write startup_plist
+    (prefix+'org.mongodb.mongod.plist').chmod 0644
   end
 
   def caveats
