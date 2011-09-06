@@ -17,7 +17,7 @@ class GearmanPhp < Formula
   end
 
   def caveats; <<-EOS.undent
-    To finish installing memcache:
+    To finish installing gearman:
       * Add the following line to php.ini:
         extension="#{prefix}/gearman.so"
       * Restart your webserver
