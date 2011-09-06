@@ -251,6 +251,7 @@ module MacOS extend self
       when /^gcc/ then :gcc
       when /^llvm/ then :llvm
       when "clang" then :clang
+      else :gcc # a hack, but a sensible one prolly
     end
   end
 
