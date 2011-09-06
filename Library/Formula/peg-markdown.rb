@@ -10,6 +10,6 @@ class PegMarkdown < Formula
 
   def install
     system 'make'
-    bin.install 'markdown'
+    bin.install 'markdown' => 'peg-markdown'
   end
 end
