@@ -28,8 +28,11 @@ module HomebrewEnvExtension
     end
 
     # we must have a working compiler!
-    ENV['CC']  = '/usr/bin/cc'  unless File.exist? ENV['CC']
-    ENV['CXX'] = '/usr/bin/c++' unless File.exist? ENV['CXX']
+    unless File.exist? ENV['CC'] and File.exist? ENV['CXX']
+      ENV['CC']  = '/usr/bin/cc'
+      ENV['CXX'] = '/usr/bin/c++'
+      @compiler = MacOS.default_compiler
+    end
 
     # In rare cases this may break your builds, as the tool for some reason wants
     # to use a specific linker. However doing this in general causes formula to
@@ -120,6 +123,7 @@ module HomebrewEnvExtension
     remove_from_cflags '-O4'
     remove_from_cflags '-march=core2'
     remove_from_cflags %r{-msse4(\.\d)?}
+    @compiler = :gcc
   end
   alias_method :gcc_4_0, :gcc_4_0_1
 
@@ -127,17 +131,20 @@ module HomebrewEnvExtension
     self['CC']  = "/usr/bin/gcc-4.2"
     self['CXX'] = "/usr/bin/g++-4.2"
     remove_from_cflags '-O4'
+    @compiler = :gcc
   end
   alias_method :gcc_4_2, :gcc
 
   def llvm
     self['CC']  = "/usr/bin/llvm-gcc"
     self['CXX'] = "/usr/bin/llvm-g++"
+    @compiler = :llvm
   end
 
   def clang
     self['CC']  = "/usr/bin/clang"
     self['CXX'] = "/usr/bin/clang++"
+    @compiler = :clang
   end
 
   def fortran
@@ -295,6 +302,7 @@ Please take one of the following actions:
     remove 'CXXFLAGS', f
   end
 
+  # actually c-compiler, so cc would be a better name
   def compiler
     # TODO seems that ENV.clang in a Formula.install should warn when called
     # if the user has set something that is tested here
@@ -302,7 +310,7 @@ Please take one of the following actions:
     # test for --flags first so that installs can be overridden on a per
     # install basis. Then test for ENVs in inverse order to flags, this is
     # sensible, trust me
-    if ARGV.include? '--use-gcc'
+    @compiler ||= if ARGV.include? '--use-gcc'
       :gcc
     elsif ARGV.include? '--use-llvm'
       :llvm
