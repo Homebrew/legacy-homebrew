@@ -7,17 +7,22 @@ class GnuProlog < Formula
 
   skip_clean :all
 
-  fails_with_llvm
+  def patches
+    # OSX x86-64
+    "https://gist.github.com/raw/1191268/35db85d5cfe5ecd5699286bdd945856ea9cee1a1/patch-x86_64-darwin.diff"
+  end
 
   def install
     ENV.j1 # make won't run in parallel
 
-    Dir.chdir 'src' do
-      # Applies fix as seen here:
-      # http://lists.gnu.org/archive/html/users-prolog/2011-07/msg00013.html
-      inreplace "configure", "darwin10", "darwin1"
+    args = ["--prefix=#{prefix}"]
 
-      system "./configure", "--prefix=#{prefix}"
+    if MacOS.prefer_64_bit?
+      args << "--build=x86_64-apple-darwin" << "--host=x86_64-apple-darwin"
+    end
+
+    Dir.chdir 'src' do
+      system "./configure", *args
       system "make"
       system "make install-strip"
     end
