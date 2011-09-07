@@ -37,7 +37,7 @@ class Scala < Formula
     libexec.install Dir['*']
     bin.mkpath
     Dir["#{libexec}/bin/*"].each { |f| ln_s f, bin }
-    ScalaCompletion.new.brew { (etc+'bash_completion.d').install 'scala' }
+    ScalaCompletion.new.brew { (prefix+'etc/bash_completion.d').install 'scala' }
 
     if ARGV.include? '--with-docs'
       ScalaDocs.new.brew { doc.install Dir['*'] }
