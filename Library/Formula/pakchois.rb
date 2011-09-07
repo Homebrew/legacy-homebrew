@@ -9,7 +9,7 @@ class Pakchois < Formula
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--enable-module-path=/usr/local/lib/pkcs11/"
+                          "--prefix=#{prefix}", "--enable-module-path=#{HOMEBREW_PREFIX}/lib/pkcs11/"
     system "make install"
   end
 end
