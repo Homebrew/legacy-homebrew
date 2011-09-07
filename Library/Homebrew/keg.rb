@@ -33,10 +33,21 @@ class Keg < Pathname
       n+=1
       Find.prune if src.directory?
     end
+    linked_keg_record.unlink if linked_keg_record.exist?
     n
   end
 
+  def fname
+    parent.basename.to_s
+  end
+
+  def linked_keg_record
+    @linked_keg_record ||= HOMEBREW_REPOSITORY/"Library/LinkedKegs"/fname
+  end
+
   def link
+    raise "Cannot link #{fname}\nAnother version is already linked: #{linked_keg_record.realpath}" if linked_keg_record.directory?
+
     $n=0
     $d=0
 
@@ -67,6 +78,8 @@ class Keg < Pathname
       else :link
       end
     end
+
+    (HOMEBREW_REPOSITORY/"Library/LinkedKegs"/fname).make_relative_symlink(self)
 
     return $n+$d
   end

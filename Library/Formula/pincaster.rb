@@ -17,6 +17,7 @@ class Pincaster < Formula
     etc.install "pincaster.conf"
     (var+"db/pincaster/").mkpath
     (prefix+'com.github.pincaster.plist').write startup_plist
+    (prefix+'com.github.pincaster.plist').chmod 0644
   end
 
   def caveats

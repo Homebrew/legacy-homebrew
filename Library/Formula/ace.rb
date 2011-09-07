@@ -1,16 +1,9 @@
 require 'formula'
 
 class Ace < Formula
-  url 'http://download.dre.vanderbilt.edu/previous_versions/ACE-6.0.2.tar.gz'
+  url 'http://download.dre.vanderbilt.edu/previous_versions/ACE-6.0.3.tar.bz2'
   homepage 'http://www.cse.wustl.edu/~schmidt/ACE.html'
-  md5 '2c0f2f3e8401e180007c48ab139df720'
-
-  # Default install target fails to pick up dylibs.
-  # Next upstream release will fix this.
-  # https://svn.dre.vanderbilt.edu/viewvc/MPC/trunk/prj_install.pl?r1=2012&r2=2011&pathrev=2012
-  def patches
-    { :p0 => DATA }
-  end
+  md5 'c38cff517ee80825a37f3b1e84f15229'
 
   def install
     # ACE has two methods of compilation, "traditional" and ./configure.
@@ -24,7 +17,8 @@ class Ace < Formula
     ver = ver.slice(0).to_i*100 + ver.slice(1).to_i
     name = { 1002 => 'macosx', 1003 => 'macosx_panther',
              1004 => 'macosx_tiger', 1005 => 'macosx_leopard',
-             1006 => 'macosx_snowleopard' }[ver]
+             1006 => 'macosx_snowleopard',
+             1007 => 'macosx_lion' }[ver]
     makefile = "platform_#{name}.GNU"
     header = "config-" + name.sub('_','-') + ".h"
 
@@ -44,17 +38,3 @@ class Ace < Formula
        "debug=0", "shared_libs=1", "static_libs=0", "install"
   end
 end
-
-
-__END__
---- MPC/prj_install-orig.pl     2011-04-05 17:54:16.000000000 -0400
-+++ MPC/prj_install.pl  2011-04-05 17:53:26.000000000 -0400
-@@ -186,7 +186,7 @@
-     my $fh   = new FileHandle();
-     if (opendir($fh, $odir)) {
-       foreach my $file (grep(!/^\.\.?$/, readdir($fh))) {
--        if ($file =~ /^lib$name\.(a|so|sl)/ ||
-+        if ($file =~ /^lib$name\.(a|so|sl|dylib)/ ||
-             $file =~ /^(lib)?$name.*\.(dll|lib)$/i) {
-           push(@libs, "$dir$insdir$binarydir$file");
-         }

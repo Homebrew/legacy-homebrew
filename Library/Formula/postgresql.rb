@@ -13,7 +13,8 @@ class Postgresql < Formula
   def options
     [
       ['--no-python', 'Build without Python support.'],
-      ['--no-perl', 'Build without Perl support.']
+      ['--no-perl', 'Build without Perl support.'],
+      ['--enable-dtrace', 'Build with DTrace support.']
     ]
   end
 
@@ -33,6 +34,7 @@ class Postgresql < Formula
 
     args << "--with-python" unless ARGV.include? '--no-python'
     args << "--with-perl" unless ARGV.include? '--no-perl'
+    args << "--enable-dtrace" if ARGV.include? '--enable-dtrace'
 
     args << "--with-ossp-uuid"
 
@@ -62,6 +64,7 @@ class Postgresql < Formula
     end
 
     (prefix+'org.postgresql.postgres.plist').write startup_plist
+    (prefix+'org.postgresql.postgres.plist').chmod 0644
   end
 
   def check_python_arch
@@ -102,23 +105,27 @@ See:
 
 
 If this is your first install, create a database with:
-    initdb #{var}/postgres
+  initdb #{var}/postgres
 
 If this is your first install, automatically load on login with:
-    mkdir -p ~/Library/LaunchAgents
-    cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
+  mkdir -p ~/Library/LaunchAgents
+  cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
+  launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
 
 If this is an upgrade and you already have the org.postgresql.postgres.plist loaded:
-    launchctl unload -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
-    cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
+  launchctl unload -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
+  cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
+  launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
 
 Or start manually with:
-    pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start
+  pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start
 
 And stop with:
-    pg_ctl -D #{var}/postgres stop -s -m fast
+  pg_ctl -D #{var}/postgres stop -s -m fast
+
+
+Some machines may require provisioning of shared memory:
+  http://www.postgresql.org/docs/current/static/kernel-resources.html#SYSVIPC
 EOS
 
     if MacOS.prefer_64_bit? then
@@ -158,6 +165,8 @@ To install gems without sudo, see the Homebrew wiki.
   <string>#{`whoami`.chomp}</string>
   <key>WorkingDirectory</key>
   <string>#{HOMEBREW_PREFIX}</string>
+  <key>StandardErrorPath</key>
+  <string>#{var}/postgres/server.log</string>
 </dict>
 </plist>
     EOPLIST

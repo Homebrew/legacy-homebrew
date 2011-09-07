@@ -3,15 +3,15 @@ require 'formula'
 class AspellLang < Formula
   def install
     aspell = Formula.factory 'aspell'
-    system "./configure --vars ASPELL=#{aspell.prefix}/bin/aspell PREZIP=#{aspell.prefix}/bin/prezip"
+    system "PATH=$PATH:#{aspell.prefix}/bin; ./configure --vars ASPELL=#{aspell.prefix}/bin/aspell PREZIP=#{aspell.prefix}/bin/prezip"
     system "PATH=$PATH:#{aspell.prefix}/bin; make install"
   end
 end
 
 class Aspell < Formula
-  url 'ftp://ftp.gnu.org/gnu/aspell/aspell-0.60.6.tar.gz'
+  url 'http://ftp.gnu.org/gnu/aspell/aspell-0.60.6.1.tar.gz'
   homepage 'http://aspell.net/'
-  md5 'bc80f0198773d5c05086522be67334eb'
+  md5 'e66a9c9af6a60dc46134fdacf6ce97d7'
 
   fails_with_llvm "Segmentation fault during linking."
 
@@ -28,7 +28,7 @@ class Aspell < Formula
 
     languages = []
     if ARGV.include?('--all')
-      languages << available_languages.to_a - broken_dictionaries.to_a
+      languages << available_languages.to_a
     else
       ARGV.options_only.select { |v| v =~ /--lang=/ }.uniq.each do |opt|
         languages << opt.split('=')[1].split(',')
@@ -53,15 +53,8 @@ class Aspell < Formula
 
     For the following languages aspell dictionaries are available:
     #{available_languages.join(', ')}
-
-    The dictionaries for the following languages seem to be broken:
-    #{broken_dictionaries.join(', ')}
     EOS
   end
-end
-
-def broken_dictionaries
-  %w( br cy el fr gv nl tr wa)
 end
 
 # BEGIN generated with brew-aspell-dictionaries
@@ -134,16 +127,16 @@ class Aspell_el <AspellLang
   md5 '0ea2c42ceb9b91f7f5de2c017234ad37'
 end
 class Aspell_en <AspellLang
-  url 'http://ftp.gnu.org/gnu/aspell/dict/en/aspell6-en-6.0-0.tar.bz2'
-  md5 '16449e0a266e1ecc526b2f3cd39d4bc2'
+  url 'http://ftp.gnu.org/gnu/aspell/dict/en/aspell6-en-7.1-0.tar.bz2'
+  md5 'beba5e8f3afd3ed1644653bb685b2dfb'
 end
 class Aspell_eo <AspellLang
   url 'http://ftp.gnu.org/gnu/aspell/dict/eo/aspell6-eo-2.1.20000225a-2.tar.bz2'
   md5 '455719c49ffeb51b204767de6e1d9ef6'
 end
 class Aspell_es <AspellLang
-  url 'http://ftp.gnu.org/gnu/aspell/dict/es/aspell6-es-1.9a-1.tar.bz2'
-  md5 '473c980181e1930d075c6111a7a68e49'
+  url 'http://ftp.gnu.org/gnu/aspell/dict/es/aspell6-es-1.11-2.tar.bz2'
+  md5 '8406336a89c64e47e96f4153d0af70c4'
 end
 class Aspell_et <AspellLang
   url 'http://ftp.gnu.org/gnu/aspell/dict/et/aspell6-et-0.1.21-1.tar.bz2'
@@ -236,6 +229,10 @@ end
 class Aspell_it <AspellLang
   url 'http://ftp.gnu.org/gnu/aspell/dict/it/aspell6-it-2.2_20050523-0.tar.bz2'
   md5 'b1217299a0b67d1e121494d7ec18a88d'
+end
+class Aspell_kn <AspellLang
+  url 'http://ftp.gnu.org/gnu/aspell/dict/kn/aspell6-kn-0.01-1.tar.bz2'
+  md5 '0359676017bf18a761b02346d3cc3253'
 end
 class Aspell_ku <AspellLang
   url 'http://ftp.gnu.org/gnu/aspell/dict/ku/aspell5-ku-0.20-1.tar.bz2'
@@ -423,6 +420,6 @@ class Aspell_zu <AspellLang
 end
 
 def available_languages
-  %w( af am ar ast az be bg bn br ca cs csb cy da de de_alt el en eo es et fa fi fo fr fy ga gd gl grc gu gv he hi hil hr hsb hu hy ia id is it ku ky la lt lv mg mi mk ml mn mr ms mt nb nds nl nn ny or pa pl pt_BR pt_PT qu ro ru rw sc sk sl sr sv sw ta te tet tk tl tn tr uk uz vi wa yi zu)
+  %w( af am ar ast az be bg bn br ca cs csb cy da de de_alt el en eo es et fa fi fo fr fy ga gd gl grc gu gv he hi hil hr hsb hu hy ia id is it kn ku ky la lt lv mg mi mk ml mn mr ms mt nb nds nl nn ny or pa pl pt_BR pt_PT qu ro ru rw sc sk sl sr sv sw ta te tet tk tl tn tr uk uz vi wa yi zu)
 end
 # END generated with brew-aspell-dictionaries

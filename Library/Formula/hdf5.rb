@@ -12,7 +12,6 @@ class Hdf5 < Formula
   url 'http://www.hdfgroup.org/ftp/HDF5/hdf5-1.8.7/src/hdf5-1.8.7.tar.bz2'
   homepage 'http://www.hdfgroup.org/HDF5/'
   sha1 'be1daff26f066aca0b5be52d86dada6757fc4b95'
-  version '1.8.7'
 
   depends_on 'szip'
 

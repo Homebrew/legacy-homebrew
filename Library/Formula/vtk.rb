@@ -17,6 +17,11 @@ class Vtk < Formula
   ]
   end
 
+  def patches
+    # fixes compilation issue on Mac OS X 10.7
+    "http://vtk.org/gitweb?p=VTK.git;a=patch;h=70db254a59c18a5e565c3232813dc821bb337563;hp=0c5990f503fe8f6e5f1a07b85b804dcc4262a6ed"
+  end
+
   def install
     args = std_cmake_parameters.split + [
              "-DVTK_REQUIRED_OBJCXX_FLAGS:STRING=''",
@@ -33,7 +38,18 @@ class Vtk < Formula
       # Install to global python site-packages
       args << "-DVTK_PYTHON_SETUP_ARGS:STRING='--prefix=#{python_prefix}'"
       # Python is actually a library. The libpythonX.Y.dylib points to this lib, too.
-      args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
+      if File.exist? "#{python_prefix}/Python"
+        # Python was compiled with --framework:
+        args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
+      else
+        python_version = `python-config --libs`.match('-lpython(\d+\.\d+)').captures.at(0)
+        python_lib = "#{python_prefix}/lib/libpython#{python_version}"
+        if File.exists? "#{python_lib}.a"
+          args << "-DPYTHON_LIBRARY='#{python_lib}.a'"
+        else
+          args << "-DPYTHON_LIBRARY='#{python_lib}.dylib'"
+        end
+      end
       args << "-DVTK_WRAP_PYTHON:BOOL=ON"
     end
 

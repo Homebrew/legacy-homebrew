@@ -26,7 +26,7 @@ module Homebrew extend self
     if system "/usr/bin/which -s git"
       gh_user=`git config --global github.user 2>/dev/null`.chomp
       /^\*\s*(.*)/.match(`git --git-dir=#{HOMEBREW_REPOSITORY}/.git branch 2>/dev/null`)
-      unless $1.nil? || $1.empty? || gh_user.empty?
+      unless $1.nil? || $1.empty? || $1.chomp == 'master' || gh_user.empty?
         branch = $1.chomp
         user = gh_user
       end
@@ -40,6 +40,13 @@ module Homebrew extend self
 
     puts "#{f.name} #{f.version}"
     puts f.homepage
+
+    if f.keg_only?
+      puts
+      puts "This formula is keg-only."
+      puts f.keg_only?
+      puts
+    end
 
     puts "Depends on: #{f.deps*', '}" unless f.deps.empty?
 

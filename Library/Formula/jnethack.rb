@@ -17,10 +17,10 @@ class Jnethack < Formula
   skip_clean 'libexec/save'
 
   def patches
-    {
-      :p0 => DATA,
-      :p1 => 'http://iij.dl.sourceforge.jp/jnethack/30862/jnethack-3.4.3-0.10.diff.gz'
-    }
+    [
+      'http://iij.dl.sourceforge.jp/jnethack/30862/jnethack-3.4.3-0.10.diff.gz',
+      DATA
+    ]
   end
 
   def install
@@ -71,8 +71,8 @@ class Jnethack < Formula
 end
 
 __END__
---- src/options.c.orig	2006-08-12 16:45:15.000000000 +0900
-+++ src/options.c	2006-08-12 16:45:43.000000000 +0900
+--- nethack/src/options.c.orig	2006-08-12 16:45:15.000000000 +0900
++++ nethack/src/options.c	2006-08-12 16:45:43.000000000 +0900
 @@ -137,7 +137,7 @@
  #else
  	{"news", (boolean *)0, FALSE, SET_IN_FILE},
@@ -82,8 +82,8 @@ __END__
  #ifdef MAC
  	{"page_wait", &flags.page_wait, TRUE, SET_IN_GAME},
  #else
---- sys/unix/Makefile.doc.orig	2006-07-29 05:14:04.000000000 +0900
-+++ sys/unix/Makefile.doc	2006-07-29 05:24:47.000000000 +0900
+--- nethack/sys/unix/Makefile.doc.orig	2006-07-29 05:14:04.000000000 +0900
++++ nethack/sys/unix/Makefile.doc	2006-07-29 05:24:47.000000000 +0900
 @@ -40,8 +40,8 @@
  	latex Guidebook.tex
  
@@ -95,8 +95,8 @@ __END__
  MANEXT	= 6
  
  # manual installation for most BSD-style systems
---- sys/unix/Makefile.src.orig	2008-05-12 09:35:18.000000000 +0900
-+++ sys/unix/Makefile.src	2008-05-12 09:36:38.000000000 +0900
+--- nethack/sys/unix/Makefile.src.orig	2008-05-12 09:35:18.000000000 +0900
++++ nethack/sys/unix/Makefile.src	2008-05-12 09:36:38.000000000 +0900
 @@ -36,7 +36,7 @@
  # SHELL=E:/GEMINI2/MUPFEL.TTP
  
@@ -126,8 +126,8 @@ __END__
  
  # The Qt and Be window systems are written in C++, while the rest of
  # NetHack is standard C.  If using Qt, uncomment the LINK line here to get
---- sys/unix/Makefile.top.orig	2006-08-11 13:30:01.000000000 +0900
-+++ sys/unix/Makefile.top	2006-08-11 13:35:41.000000000 +0900
+--- nethack/sys/unix/Makefile.top.orig	2006-08-11 13:30:01.000000000 +0900
++++ nethack/sys/unix/Makefile.top	2006-08-11 13:35:41.000000000 +0900
 @@ -14,18 +14,18 @@
  # MAKE = make
  
@@ -164,8 +164,8 @@ __END__
  
  # per discussion in Install.X11 and Install.Qt
  VARDATND = 
---- sys/unix/Makefile.utl.orig	2008-05-12 10:17:59.000000000 +0900
-+++ sys/unix/Makefile.utl	2008-05-12 10:19:33.000000000 +0900
+--- nethack/sys/unix/Makefile.utl.orig	2008-05-12 10:17:59.000000000 +0900
++++ nethack/sys/unix/Makefile.utl	2008-05-12 10:19:33.000000000 +0900
 @@ -15,7 +15,7 @@
  
  # if you are using gcc as your compiler,
@@ -195,8 +195,8 @@ __END__
  
  recover.o: recover.c $(CONFIG_H) ../include/date.h
  
---- sys/unix/nethack.sh.orig	2006-08-24 23:23:30.000000000 +0900
-+++ sys/unix/nethack.sh	2006-08-24 23:24:35.000000000 +0900
+--- nethack/sys/unix/nethack.sh.orig	2006-08-24 23:23:30.000000000 +0900
++++ nethack/sys/unix/nethack.sh	2006-08-24 23:24:35.000000000 +0900
 @@ -5,6 +5,7 @@
  export HACKDIR
  HACK=$HACKDIR/nethack
@@ -228,8 +228,8 @@ __END__
 +		exec $COCOT $HACK "$@" $MAXNROFPLAYERS
  		;;
  esac
---- win/tty/termcap.c.orig	2006-08-09 19:55:36.000000000 +0900
-+++ win/tty/termcap.c	2006-08-09 20:05:44.000000000 +0900
+--- nethack/win/tty/termcap.c.orig	2006-08-09 19:55:36.000000000 +0900
++++ nethack/win/tty/termcap.c	2006-08-09 20:05:44.000000000 +0900
 @@ -861,7 +861,7 @@
  
  #include <curses.h>

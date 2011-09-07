@@ -5,6 +5,7 @@ class Pure < Formula
   homepage 'http://code.google.com/p/pure-lang/'
   sha1 'f47915ffa9fd0c7dee40f364a5751bfd4f945bf1'
 
+  depends_on 'wget'
   depends_on 'llvm'
   depends_on 'gmp'
   depends_on 'readline'

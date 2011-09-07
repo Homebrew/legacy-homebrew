@@ -21,12 +21,16 @@ class ErlangHeadHtmls < Formula
 end
 
 class Erlang < Formula
-  # Download from GitHub. Much faster than official tarball.
-  url "https://github.com/erlang/otp.git", :tag => "OTP_R14B03"
-  version 'R14B03'
   homepage 'http://www.erlang.org'
+  # Download tarball from GitHub; it is served faster than the official tarball.
+  url 'https://github.com/erlang/otp/tarball/OTP_R14B03'
+  md5 '047f246c4ecb5fadaffb7e049795d80e'
+  version 'R14B03'
 
-  head "https://github.com/erlang/otp.git", :branch => "dev"
+  bottle 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R14B03-bottle.tar.gz'
+  bottle_sha1 '9b7605c7cf2a7dd0536723e487722e29bd2d2d9b'
+
+  head 'https://github.com/erlang/otp.git', :branch => 'dev'
 
   # We can't strip the beam executables or any plugins, there isn't really
   # anything else worth stripping and it takes a really, long time to run
@@ -46,9 +50,10 @@ class Erlang < Formula
   fails_with_llvm "See https://github.com/mxcl/homebrew/issues/issue/120", :build => 2326
 
   def install
+    ohai "Compilation may take a very long time; use `brew install -v erlang` to see progress"
     ENV.deparallelize
 
-    # If building from GitHub, this step is required (but not for tarball downloads.)
+    # Do this if building from a checkout to generate configure
     system "./otp_build autoconf" if File.exist? "otp_build"
 
     args = ["--disable-debug",
@@ -82,12 +87,12 @@ class Erlang < Formula
   end
 
   def test
-    `erl -noshell -eval 'crypto:start().' -s init stop`
+    `#{bin}/erl -noshell -eval 'crypto:start().' -s init stop`
 
     # This test takes some time to run, but per bug #120 should finish in
     # "less than 20 minutes". It takes a few minutes on a Mac Pro (2009).
     if ARGV.include? "--time"
-      `dialyzer --build_plt -r #{lib}/erlang/lib/kernel-2.14.1/ebin/`
+      `#{bin}/dialyzer --build_plt -r #{lib}/erlang/lib/kernel-2.14.1/ebin/`
     end
   end
 end
