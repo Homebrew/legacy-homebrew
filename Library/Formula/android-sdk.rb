@@ -21,7 +21,7 @@ class AndroidSdk < Formula
     mv 'tools', prefix
 
     %w[android apkbuilder ddms dmtracedump draw9patch emulator
-           hierarchyviewer hprof-conv layoutopt mksdcard traceview
+           hierarchyviewer hprof-conv layoutopt monkeyrunner mksdcard traceview
            zipalign].each do |tool|
       (bin/tool).make_link(prefix/'tools'/tool)
     end

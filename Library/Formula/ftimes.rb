@@ -8,29 +8,14 @@ class Ftimes < Formula
   depends_on 'pcre'
   depends_on 'openssl'
 
-  # puts man page under /[prefix]/share/man; --mandir flag does not work
-  def patches
-    DATA
-  end
-
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
+
+    inreplace 'doc/ftimes/Makefile' do |s|
+      s.change_make_var! 'INSTALL_PREFIX', man1
+    end
+
     system "make install"
   end
 end
-
-__END__
-diff --git a/configure b/configure
-index e05b3c2..589a824 100755
---- a/configure
-+++ b/configure
-@@ -349,7 +349,7 @@ libdir='${exec_prefix}/lib'
- includedir='${prefix}/include'
- oldincludedir='/usr/include'
- infodir='${prefix}/info'
--mandir='${prefix}/man'
-+mandir='${prefix}/share/man'
- 
- ac_prev=
- for ac_option

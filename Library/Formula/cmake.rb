@@ -4,6 +4,8 @@ class Cmake < Formula
   url 'http://www.cmake.org/files/v2.8/cmake-2.8.5.tar.gz'
   md5 '3c5d32cec0f4c2dc45f4c2e84f4a20c5'
   homepage 'http://www.cmake.org/'
+  bottle 'https://downloads.sf.net/project/machomebrew/Bottles/cmake-2.8.5-bottle.tar.gz'
+  bottle_sha1 'f7a4c459625eb9282fef9789cab2a702a2dff06a'
 
   def patches
     # CMake 2.8.5 fails to find some Qt libraries that CMake 2.8.4 could find.
@@ -21,7 +23,7 @@ class Cmake < Formula
     if File.exist? "/Library/Frameworks/expat.framework"
       opoo "/Library/Frameworks/expat.framework detected"
       puts <<-EOS.undent
-        This will be picked up by Cmake's build system and likey cause the
+        This will be picked up by CMake's build system and likey cause the
         build to fail, trying to link to a 32-bit version of expat.
         You may need to move this file out of the way for this brew to work.
       EOS
@@ -30,7 +32,7 @@ class Cmake < Formula
     if ENV['GREP_OPTIONS'] == "--color=always"
       opoo "GREP_OPTIONS is set to '--color=always'"
       puts <<-EOS.undent
-        Having `GREP_OPTIONS` set this way causes Cmake builds to fail.
+        Having `GREP_OPTIONS` set this way causes CMake builds to fail.
         You will need to `unset GREP_OPTIONS` before brewing.
       EOS
     end

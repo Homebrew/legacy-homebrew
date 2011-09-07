@@ -2,13 +2,13 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.0.5.tar.gz'
-  head 'http://nginx.org/download/nginx-1.1.0.tar.gz'
+  url 'http://nginx.org/download/nginx-1.0.6.tar.gz'
+  head 'http://nginx.org/download/nginx-1.1.1.tar.gz'
 
-  unless ARGV.build_head?
-    md5 '373c7761a7c682b92b164c8ee3d6d243'
+  if ARGV.build_head?
+    md5 '5afe88508dfca83db2cb991dceceb3a3'
   else
-    md5 '3381f34eafc755f935a2d94148500505'
+    md5 'bc98bac3f0b85da1045bc02e6d8fc80d'
   end
 
   depends_on 'pcre'
@@ -56,6 +56,7 @@ class Nginx < Formula
     system "make install"
 
     (prefix+'org.nginx.nginx.plist').write startup_plist
+    (prefix+'org.nginx.nginx.plist').chmod 0644
   end
 
   def caveats; <<-EOS.undent
