@@ -74,6 +74,10 @@ class Git < Formula
 
     The rest of the "contrib" is installed to:
       #{HOMEBREW_PREFIX}/share/git/contrib
+
+    If SVN has also been installed to #{HOMEBREW_PREFIX} and this is the
+    version that should work with git, then add the following to ~/.profile:
+      export GITPERLLIB=#{HOMEBREW_PREFIX}/lib/perl5/site_perl/
     EOS
   end
 end
