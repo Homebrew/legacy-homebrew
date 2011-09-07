@@ -11,7 +11,7 @@ _brew_to_completion()
     [[ ${COMP_CWORD} -eq 1 ]] && {
         local actions="--cache --cellar --config --env --prefix --repository audit cat cleanup
             configure create deps doctor edit fetch help home info install link list log options
-            outdated prune remove search test uninstall unlink update uses versions"
+            outdated prune remove search test uninstall unlink update upgrade uses versions"
         local ext=$(\ls $(brew --repository)/Library/Contributions/examples |
                     sed -e "s/\.rb//g" -e "s/brew-//g")
         COMPREPLY=( $(compgen -W "${actions} ${ext}" -- ${cur}) )
@@ -26,42 +26,33 @@ _brew_to_completion()
         prev="${COMP_WORDS[prev_index]}"
     done
 
+    # Handle installation --options
+    if [[ ${COMP_WORDS[1]} == "install" && "$cur" == --* ]]; then
+        local opts=$(
+            local opts=(
+              --force --verbose --debug --use-clang --use-gcc --use-llvm --ignore-dependencies --build-from-source --HEAD
+              $(brew options --compact "$prev")
+            )
+            for o in ${opts[*]}; do
+                [[ " ${COMP_WORDS[*]} " =~ " $o " ]] || echo "$o"
+            done
+        )
+        COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
+        return
+    fi
+
     case "$prev" in
     # Commands that take a formula
     cat|deps|edit|fetch|home|homepage|info|install|log|missing|options|uses|versions)
-        # handle standard --options
-        if [[ "$prev" == "install" && "$cur" == --* ]]; then
-            local opts=$(
-                local opts=( --force --verbose --debug --use-clang --use-gcc --use-llvm --ignore-dependencies --HEAD )
-                for o in ${opts[*]}; do
-                    [[ " ${COMP_WORDS[*]} " =~ " $o " ]] || echo "$o"
-                done
-            )
-            COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
-            return
-        fi
         local ff=$(\ls $(brew --repository)/Library/Formula | sed "s/\.rb//g")
         local af=$(\ls $(brew --repository)/Library/Aliases 2> /dev/null | sed "s/\.rb//g")
         COMPREPLY=( $(compgen -W "${ff} ${af}" -- ${cur}) )
         return
         ;;
     # Commands that take an existing brew
-    abv|cleanup|link|list|ln|ls|remove|rm|test|uninstall|unlink)
+    abv|cleanup|link|list|ln|ls|remove|rm|test|uninstall|unlink|upgrade)
         COMPREPLY=( $(compgen -W "$(\ls $(brew --cellar))" -- ${cur}) )
         return
-        ;;
-    # Complete --options for selected brew
-    *)
-        if [[ ${COMP_WORDS[1]} == "install" && "$cur" == --* ]]; then
-            local opts=$(
-                local opts=( $(brew options --compact "$prev") )
-                for o in ${opts[*]}; do
-                    [[ " ${COMP_WORDS[*]} " =~ " $o " ]] || echo "$o"
-                done
-            )
-            COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
-            return
-        fi
         ;;
     esac
 }

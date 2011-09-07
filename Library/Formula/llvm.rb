@@ -9,12 +9,14 @@ def build_rtti?; ARGV.include? '--rtti'; end
 
 class Clang < Formula
   homepage  'http://llvm.org/'
+  head      'http://llvm.org/git/clang.git', :using => :git
   url       'http://llvm.org/releases/2.9/clang-2.9.tgz'
   md5       '634de18d04b7a4ded19ec4c17d23cfca'
 end
 
 class Llvm < Formula
   homepage  'http://llvm.org/'
+  head      'http://llvm.org/git/llvm.git', :using => :git
   url       'http://llvm.org/releases/2.9/llvm-2.9.tgz'
   md5       '793138412d2af2c7c7f54615f8943771'
 
@@ -35,8 +37,6 @@ class Llvm < Formula
   end
 
   def install
-    ENV.gcc_4_2 # llvm can't compile itself
-
     if build_shared? && build_universal?
       onoe "Cannot specify both shared and universal (will not build)"
       exit 1
@@ -44,7 +44,7 @@ class Llvm < Formula
 
     if build_clang? or build_analyzer?
       clang_dir = Pathname.new(Dir.pwd)+'tools/clang'
-      Clang.new.brew { clang_dir.install Dir['*'] }
+      Clang.new("clang").brew { clang_dir.install Dir['*'] }
     end
 
     if build_universal?

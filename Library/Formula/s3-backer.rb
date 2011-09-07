@@ -1,9 +1,9 @@
 require 'formula'
 
 class S3Backer < Formula
-  url 'http://s3backer.googlecode.com/files/s3backer-1.3.1.tar.gz'
+  url 'http://s3backer.googlecode.com/files/s3backer-1.3.2.tar.gz'
   homepage 'http://code.google.com/p/s3backer/'
-  md5 '98907b98424c867a6e52ffdfbbdafce4'
+  sha1 'badc003ffb0830a3fa59c9f39f13ad94729cbcf1'
 
   depends_on 'pkg-config' => :build
 
