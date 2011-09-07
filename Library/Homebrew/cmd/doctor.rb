@@ -214,6 +214,13 @@ def check_gcc_versions
       EOS
     end
   end
+
+  unless File.exist? '/usr/bin/cc'
+    puts <<-EOS.undent
+      You have no /usr/bin/cc. This will cause numerous build issues. Please
+      reinstall Xcode.
+    EOS
+  end
 end
 
 def __check_subdir_access base
