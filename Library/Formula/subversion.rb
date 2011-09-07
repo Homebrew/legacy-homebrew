@@ -136,12 +136,13 @@ class Subversion < Formula
         perl_version = "5.10.0"
       end
 
-      ENV['DYLD_LIBRARY_PATH']="#{lib}"
-
       inreplace "Makefile" do |s|
         s.change_make_var! "SWIG_PL_INCLUDES",
           "$(SWIG_INCLUDES) #{arches} -g -pipe -fno-common -DPERL_DARWIN -fno-strict-aliasing -I/usr/local/include -I/System/Library/Perl/#{perl_version}/darwin-thread-multi-2level/CORE"
       end
+
+      system "make PREFIX=#{prefix} EXTRA_SWIG_LDFLAGS=-L#{lib} swig-pl"
+      system "make PREFIX=#{prefix} install-swig-pl"
 
       cd "subversion/bindings/swig/perl/native" do
         system "perl", "Makefile.PL", "PREFIX=#{prefix}"
