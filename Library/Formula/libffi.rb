@@ -1,7 +1,7 @@
 require 'formula'
 
 class Libffi < Formula
-  url 'http://mirrors.kernel.org/sources.redhat.com/libffi/libffi-3.0.9.tar.gz'
+  url 'http://ltsp.mirrors.tds.net/pub/sourceware.org/libffi/libffi-3.0.10.tar.gz'
   homepage 'http://sourceware.org/libffi/'
   sha1 '56e41f87780e09d06d279690e53d4ea2c371ea88'
 
