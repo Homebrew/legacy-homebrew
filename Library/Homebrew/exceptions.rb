@@ -84,7 +84,7 @@ class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
   def command_line
     case type
       when :python
-        "easy_install install"
+        "easy_install"
       when :ruby
         "gem install"
       when :perl
