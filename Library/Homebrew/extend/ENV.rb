@@ -26,9 +26,9 @@ module HomebrewEnvExtension
       when :llvm then self.llvm
       when :gcc then self.gcc
     end
-
+	
     # we must have a working compiler!
-    unless File.exist? ENV['CC'] and File.exist? ENV['CXX']
+    unless (!ENV['CC'].nil? and File.exist? ENV['CC']) and (!ENV['CXX'].nil? and File.exist? ENV['CXX'])
       ENV['CC']  = '/usr/bin/cc'
       ENV['CXX'] = '/usr/bin/c++'
       @compiler = MacOS.default_compiler
