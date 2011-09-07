@@ -6,6 +6,7 @@ class Neon < Formula
   homepage 'http://www.webdav.org/neon/'
 
   depends_on 'pkg-config' => :build
+  depends_on 'pakchois'
 
   keg_only :provided_by_osx,
             "Compiling newer versions of Subversion on 10.6 require this newer neon."
