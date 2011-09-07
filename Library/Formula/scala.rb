@@ -7,6 +7,13 @@ class ScalaDocs < Formula
   md5 '88668b400ec61c8b043e288ddc62b8b8'
 end
 
+class ScalaCompletion < Formula
+  homepage 'http://www.scala-lang.org/'
+  url 'https://raw.github.com/scala/scala-dist/27bc0c25145a8/completion.d/2.9.1/scala'
+  version '2.9.1'
+  md5 '40cb02604b718fd0977a12d932b9e693'
+end
+
 class Scala < Formula
   homepage 'http://www.scala-lang.org/'
   url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.1.final.tgz'
@@ -17,6 +24,12 @@ class Scala < Formula
     [['--with-docs', 'Also install library documentation']]
   end
 
+  def caveats; <<-EOS.undent
+    Bash completion has been installed to:
+      #{etc}/bash_completion.d
+    EOS
+  end
+
   def install
     rm_f Dir["bin/*.bat"]
     doc.install Dir['doc/*']
@@ -24,6 +37,7 @@ class Scala < Formula
     libexec.install Dir['*']
     bin.mkpath
     Dir["#{libexec}/bin/*"].each { |f| ln_s f, bin }
+    ScalaCompletion.new.brew { (prefix+'etc/bash_completion.d').install 'scala' }
 
     if ARGV.include? '--with-docs'
       ScalaDocs.new.brew { doc.install Dir['*'] }
