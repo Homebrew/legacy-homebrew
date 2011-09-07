@@ -1,9 +1,10 @@
 require 'formula'
 
-class Gpsbabel <Formula
-  url 'http://www.gpsbabel.org/plan9.php?dl=gpsbabel-1.3.6.tar.gz'
+class Gpsbabel < Formula
+  url 'http://www.mirrorservice.org/sites/www.ibiblio.org/gentoo/distfiles/gpsbabel-1.4.2.tar.gz'
   homepage 'http://www.gpsbabel.org'
-  md5 '1571b31f8f06f722995449dbff01ca49'
+  md5 '76ea9f7852be2e98aa18976c4697ca93'
+  head "cvs://:pserver:anonymous@gpsbabel.cvs.sourceforge.net:/cvsroot/gpsbabel:gpsbabel", :using => :cvs
 
   depends_on 'libusb'
   depends_on 'expat'

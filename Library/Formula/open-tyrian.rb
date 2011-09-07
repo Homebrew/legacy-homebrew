@@ -1,21 +1,20 @@
 require 'formula'
 
-class OpenTyrianData <Formula
+class OpenTyrianData < Formula
   url 'http://sites.google.com/a/camanis.net/opentyrian/tyrian/tyrian21.zip'
   md5 '2a3b206a6de25ed4b771af073f8ca904'
 end
 
-class OpenTyrian <Formula
-  head 'http://opentyrian.googlecode.com/hg/', :revision =>  '9ddcd06e48'
+class OpenTyrian < Formula
+  url 'http://opentyrian.googlecode.com/hg/', :revision =>  '9ddcd06e48'
   homepage 'http://code.google.com/p/opentyrian/'
-  version 'trunk'
-  
+  version '20091122'
+
   depends_on 'sdl'
   depends_on 'sdl_net'
 
   def install
-    d = libexec
-    OpenTyrianData.new.brew { d.install Dir['*'] }
+    OpenTyrianData.new.brew { libexec.install Dir['*'] }
 
     system "make release"
     libexec.install "opentyrian"
@@ -24,7 +23,7 @@ class OpenTyrian <Formula
   end
 
   def startup_script
-      return <<-END
+<<-END
 #!/bin/bash
 #{libexec}/opentyrian --data=#{libexec} $*
 END

@@ -1,38 +1,31 @@
 require 'formula'
 
-class Uwsgi <Formula
-  url 'http://projects.unbit.it/downloads/uwsgi-0.9.4.3.tar.gz'
+class Uwsgi < Formula
+  url 'http://projects.unbit.it/downloads/uwsgi-0.9.6.2.tar.gz'
   homepage 'http://projects.unbit.it/uwsgi/'
-  md5 '5f6a7385138deccfd5f8a80f2e0dea04'
-
-  def python_version
-    `python -c "import sys; print '%s.%s' % sys.version_info[:2]"`.chomp
-  end
+  md5 'eab88c552e4c7c4ecb5188cdefc43390'
 
   def install
-    case python_version
-    when '2.5'
-      makefile = "Makefile"
-      program = "uwsgi"
-    when '2.6'
-      makefile = "Makefile.Py26"
-      program = "uwsgi26"
-    end
-    
-    # Find the archs of the Python we are building against.
+    # Find the arch for the Python we are building against.
     # We remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
     archs = archs_for_command("python")
-    archs.delete :ppc7400
-    archs.delete :ppc64
+    archs.remove_ppc!
+    flags = archs.as_arch_flags
 
-    flags = archs.collect{ |a| "-arch #{a}" }.join(' ')
+    ENV.append 'CFLAGS', flags
+    ENV.append 'LDFLAGS', flags
 
-    inreplace makefile do |s|
-      s.change_make_var! "CFLAGS", "$(PYTHON_CFLAGS) $(XML_CFLAGS) #{flags}"
-      s.change_make_var! "LD_FLAGS", "$(PYTHON_LIBS) $(XML_LIBS) #{flags}"
-    end
+    inreplace 'uwsgiconfig.py', "PYLIB_PATH = ''", "PYLIB_PATH = '#{%x[python-config --ldflags].chomp[/-L(.*?) -l/, 1]}'"
 
-    system "make -f #{makefile}"
-    bin.install program
+    system "python uwsgiconfig.py --build"
+    bin.install "uwsgi"
+  end
+
+  def caveats
+    <<-EOS.undent
+      NOTE: "brew install -v uwsgi" will fail!
+      You must install in non-verbose mode for this to succeed.
+      Patches to fix this are welcome.
+    EOS
   end
 end

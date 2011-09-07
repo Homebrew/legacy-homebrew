@@ -1,45 +1,54 @@
-# This formula currently uses the bundled libedit since there are known
-# problems with readline.
-
 require 'formula'
 
-class FalconHtmldocs <Formula
-  url 'http://falconpl.org/project_dl/_official_rel/Falcon-docs-core.0.9.6.4.tar.gz'
-  md5 '94c5b17af5b9e06e4d97d497c292aad0'
-end
-
-class FalconFeathersHtmldocs <Formula
-  url 'http://falconpl.org/project_dl/_official_rel/Falcon-feathers-docs.0.9.6.4.tar.gz'
-  md5 '42ffa8650cf5a86e426837c38977ea5a'
-end
-
-class Falcon <Formula
-  url 'http://falconpl.org/project_dl/_official_rel/Falcon-0.9.6.4.tar.gz'
+class Falcon < Formula
+  url 'http://falconpl.org/project_dl/_official_rel/Falcon-0.9.6.8.tgz'
   homepage 'http://www.falconpl.org/'
-  md5 '35475a49f8dcc9ccf1c89f54de156951'
+  md5 '8435f6f2fe95097ac2fbe000da97c242'
 
-  depends_on 'cmake'
+  head 'http://git.falconpl.org/falcon.git', :branch => 'master', :using => :git
+
+  depends_on 'cmake' => :build
   depends_on 'pcre'
 
-  def install
-    cmake_opts = "-DCMAKE_INSTALL_NAME_DIR=#{prefix}/lib"
-    ENV.append "EXTRA_CMAKE", cmake_opts
-    system "./build.sh", "-p", "#{prefix}", "-int", "-el"
-    system "./build.sh", "-i"
-    # install the htmldocs for the core and standard modules (feathers)
-    FalconHtmldocs.new.brew {
-      (doc+'core-doc').install Dir['*']
-    }
-    FalconFeathersHtmldocs.new.brew {
-      (doc+'feathers-doc').install Dir['*']
-    }
+  def options
+    [
+      ['--manpages', "Install manpages"],
+      ['--editline', "Use editline instead of readline"],
+      ['--feathers', "Include feathers (extra libraries)"]
+    ]
   end
 
-  def caveats; <<-EOS.undent
-    HTML docs for the core and standard libraries (feathers) are 
-    installed in #{doc}/core-doc and 
-    #{doc}/feathers-doc respectively.
+  def install
+    args = ["-DCMAKE_BUILD_TYPE=Release",
+            "-DCMAKE_INSTALL_PREFIX=#{prefix}",
+            "-DFALCON_BIN_DIR=#{bin}",
+            "-DFALCON_LIB_DIR=#{lib}",
+            "-DFALCON_MAN_DIR=#{man1}",
+            "-DFALCON_WITH_INTERNAL_PCRE=ON",
+            "-DFALCON_WITH_INTERNAL_ZLIB=ON",
+            "-DFALCON_WITH_INTERNAL=ON" ]
 
-    EOS
+    if ARGV.include? '--manpages'
+      args << "-DFALCON_WITH_MANPAGES=ON"
+      args << "-DFALCON_MAN_DIR=#{man1}"
+    else
+      args << "-DFALCON_WITH_MANPAGES=OFF"
+    end
+
+    if ARGV.include? '--editline'
+      args << "-DFALCON_WITH_EDITLINE=ON"
+    else
+      args << "-DFALCON_WITH_EDITLINE=OFF"
+    end
+
+    if ARGV.include? '--feathers'
+      args << "-DFALCON_WITH_FEATHERS=feathers"
+    else
+      args << "-DFALCON_WITH_FEATHERS=NO"
+    end
+
+    system "cmake", *args
+    system "make"
+    system "make install"
   end
 end

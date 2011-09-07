@@ -1,8 +1,8 @@
 require 'formula'
 
-class Ngircd <Formula
-  url 'ftp://ngircd.barton.de/pub/ngircd/ngircd-15.tar.gz'
-  md5 'c183a85eba6fe51255983848f099c8ae'
+class Ngircd < Formula
+  url 'ftp://ftp.berlios.de/pub/ngircd/ngircd-17.1.tar.gz'
+  md5 'b4ad0b1f18875ff3f2e92f076e64496b'
   homepage 'http://ngircd.barton.de'
 
   depends_on 'libident'

@@ -1,14 +1,10 @@
 require 'formula'
 
-class InitSpatialite <Formula
-  url 'http://www.gaia-gis.it/spatialite-2.4.0/init_spatialite-2.4.sql.zip'
-  md5 '06c740cade77217844c99c25ecc2ac39'
-end
-
-class Libspatialite <Formula
-  url 'http://www.gaia-gis.it/spatialite-2.4.0/libspatialite-amalgamation-2.4.0.tar.gz'
+class Libspatialite < Formula
+  url 'http://www.gaia-gis.it/spatialite-2.4.0-5/libspatialite-amalgamation-2.4.0.tar.gz'
+  version '2.4.0-rc5'
   homepage 'http://www.gaia-gis.it/spatialite/'
-  md5 '9519c71b80037efccde02e046342f239'
+  md5 '33f8db72f4b6d863a2e0f4b2bed31a74'
 
   depends_on 'proj'
   depends_on 'geos'
@@ -19,9 +15,5 @@ class Libspatialite <Formula
                           "--prefix=#{prefix}",
                           "--target=macosx"
     system "make install"
-    
-    InitSpatialite.new.brew do
-      (share+'spatialite').install 'init_spatialite-2.4.sql'
-    end
   end
 end

@@ -1,10 +1,9 @@
 require 'formula'
 
-class Jsawk <Formula
-  head 'git://github.com/micha/jsawk.git'
-  homepage 'http://github.com/micha/jsawk'
-  
-  # Is there a built-in JavaScript interpreter on OS X 10.6 we can use instead?
+class Jsawk < Formula
+  head 'https://github.com/micha/jsawk.git'
+  homepage 'https://github.com/micha/jsawk'
+
   depends_on 'spidermonkey'
 
   def install

@@ -1,12 +1,16 @@
 require 'formula'
 
-class Ejabberd <Formula
-  version "2.1.2"
-  url "http://www.process-one.net/downloads/ejabberd/#{version}/ejabberd-#{version}.tar.gz"
+class Ejabberd < Formula
+  url "http://www.process-one.net/downloads/ejabberd/2.1.8/ejabberd-2.1.8.tar.gz"
   homepage 'http://www.ejabberd.im'
-  md5 '9102802ae19312c26f85ceb977b519aa'
+  md5 'd7dae7e5a7986c5ad71beac2798cc406'
 
+  depends_on "openssl" if MacOS.leopard?
   depends_on "erlang"
+
+  def options
+    [['--odbc', "Build with ODBC support."]]
+  end
 
   def install
     ENV['TARGET_DIR'] = ENV['DESTDIR'] = "#{lib}/ejabberd/erlang/lib/ejabberd-#{version}"
@@ -14,9 +18,18 @@ class Ejabberd <Formula
     ENV['SBIN_DIR'] = sbin
 
     Dir.chdir "src" do
-      system "./configure", "--prefix=#{prefix}",
-                            "--sysconfdir=#{etc}",
-                            "--localstatedir=#{var}"
+      args = ["--prefix=#{prefix}",
+              "--sysconfdir=#{etc}",
+              "--localstatedir=#{var}"]
+
+      if MacOS.leopard?
+        openssl = Formula.factory('openssl')
+        args << "--with-openssl=#{openssl.prefix}"
+      end
+
+      args << "--enable-odbc" if ARGV.include? '--odbc'
+
+      system "./configure", *args
       system "make"
       system "make install"
     end
@@ -24,14 +37,12 @@ class Ejabberd <Formula
     (etc+"ejabberd").mkpath
     (var+"lib/ejabberd").mkpath
     (var+"spool/ejabberd").mkpath
-
-    sbin.install 'tools/ejabberdctl'
   end
 
-  def caveats; <<-EOS
-  If you face nodedown problems, concat your machine name to:
-    /private/etc/hosts
-  after 'localhost'.
+  def caveats; <<-EOS.undent
+    If you face nodedown problems, concat your machine name to:
+      /private/etc/hosts
+    after 'localhost'.
     EOS
   end
 end

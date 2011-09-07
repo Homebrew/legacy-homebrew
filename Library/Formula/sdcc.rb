@@ -1,14 +1,17 @@
 require 'formula'
 
-class Sdcc <Formula
-  url 'http://downloads.sourceforge.net/project/sdcc/sdcc/2.8.0/sdcc-src-2.8.0.tar.bz2'
+class Sdcc < Formula
+  url 'http://downloads.sourceforge.net/project/sdcc/sdcc/3.0.0/sdcc-src-3.0.0.tar.bz2'
   homepage 'http://sdcc.sourceforge.net/'
-  md5 '1b9c2e581b92d5e3f13bca37c5784080'
+  md5 '20fbd49a3421e09fe65577c45524c89e'
+
+  depends_on 'gputils'
 
   def install
-    ENV.O3 # You don't want to see what happens with -O4.
-
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}",
+                          "--enable-avr-port",
+                          "--enable-xa51-port"
+    system "make all"
     system "make install"
   end
 end

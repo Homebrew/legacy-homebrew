@@ -1,29 +1,34 @@
 require 'formula'
 
-class Guile <Formula
-  @url='ftp://alpha.gnu.org/gnu/guile/guile-1.9.3.tar.gz'
-  @homepage='http://www.gnu.org/software/guile/'
-  @sha1='c8d1d25ed413b48493ec5b0cbf4de8593cab4a21'
+class Guile < Formula
+  homepage 'http://www.gnu.org/software/guile/'
+  url 'ftp://ftp.gnu.org/gnu/guile/guile-1.8.7.tar.gz'
+  head 'ftp://ftp.gnu.org/pub/gnu/guile/guile-2.0.2.tar.gz'
 
+  if ARGV.build_head?
+    sha1 '1943fd22417ce1e51babbdcd7681e66a794a8da3'
+  else
+    sha1 '24cd2f06439c76d41d982a7384fe8a0fe5313b54'
+  end
+
+  depends_on 'pkg-config' => :build
+  depends_on 'libffi'
   depends_on 'libunistring'
   depends_on 'bdw-gc'
   depends_on 'gmp'
-  
-  # GNU Readline is required
-  # libedit won't work.
+
+  # GNU Readline is required; libedit won't work.
   depends_on 'readline'
 
+  fails_with_llvm "Segfaults during compilation."
+
   def install
-    system "./configure",
-        "--prefix=#{prefix}", 
-        "--disable-debug", 
-        "--disable-dependency-tracking",
-        # Specifically look for readline here
-        # At least, we don't want the fake readline in
-        # /usr/lib to trump us, since it doesn't export
-        # all the same symbols
-        # --adamv
-        "--with-libreadline-prefix=#{Formula.factory('readline').prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-libreadline-prefix=#{Formula.factory('readline').prefix}"
     system "make install"
+
+    # A really messed up workaround required on OS X --mkhl
+    lib.cd { Dir["*.dylib"].each {|p| ln_sf p, File.basename(p, ".dylib")+".so" }}
   end
 end

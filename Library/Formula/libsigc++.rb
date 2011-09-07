@@ -1,12 +1,12 @@
 require 'formula'
 
-class Libsigcxx <Formula
-  url 'http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.2/libsigc++-2.2.4.2.tar.bz2'
+class Libsigcxx < Formula
   homepage 'http://libsigc.sourceforge.net'
-  md5 '545edbb7b54eec4f723323d3158c0e0c'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.2/libsigc++-2.2.9.tar.bz2'
+  sha256 '2f4c083e01d9be377669206bd97090d2e95bc05f2e8d95447c9f9ce92bdfbb63'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make"
     system "make install"
   end

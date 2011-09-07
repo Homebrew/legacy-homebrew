@@ -1,13 +1,13 @@
 require 'formula'
 
-class Dwm <Formula
-  url 'http://dl.suckless.org/dwm/dwm-5.7.2.tar.gz'
+class Dwm < Formula
+  url 'http://dl.suckless.org/dwm/dwm-5.9.tar.gz'
   homepage 'http://dwm.suckless.org/'
-  md5 'a0b8a799ddc5034dd8a818c9bd76f3a3'
+  md5 '2799f885c05817ca112d521bb247f797'
   head 'http://hg.suckless.org/dwm'
 
   def install
-    # The dwm default quit keybinding Mod1-Shift-q collides with 
+    # The dwm default quit keybinding Mod1-Shift-q collides with
     # the Mac OS X Log Out shortcut in the Apple menu.
     inreplace 'config.def.h',
     '{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },',
@@ -23,6 +23,9 @@ class Dwm <Formula
 
     e.g. by running the following command from $HOME/.xinitrc
     xmodmap -e 'remove Mod2 = Meta_L' -e 'add Mod1 = Meta_L'&
+
+    See also https://gist.github.com/311377 for a handful of tips and tricks
+    for running dwm on Mac OS X.
     EOS
   end
 end

@@ -1,22 +1,44 @@
+# -*- coding: utf-8 -*-
 require 'formula'
 
-class GitFlow <Formula
-  if ARGV.include? "--HEAD"
-    head 'git://github.com/nvie/gitflow.git', :branch => 'develop'
-  else
-    head 'git://github.com/nvie/gitflow.git', :tag => '0.2.1'
-    version '0.2.1'
+class GitFlowCompletion < Formula
+  url 'https://github.com/bobthecow/git-flow-completion.git', :tag => '0.4.1.0'
+  version '0.4.1.0'
+  head 'https://github.com/bobthecow/git-flow-completion.git', :branch => 'develop'
+
+  def initialize
+    # We need to hard-code the formula name since Homebrew can't
+    # deduce it from the formula's filename, and the git download
+    # strategy really needs a valid name.
+
+    super "git-flow-completion"
   end
 
-  homepage 'http://github.com/nvie/gitflow'
+  homepage 'https://github.com/bobthecow/git-flow-completion'
+end
 
-  # You need git to install, since we install from a git repo
-  # You also need git to run the scripts.
-  # But we're not going to mark it as a dependency just yet:
-  #   The user may have a non-brew git installed already.
-  # depends_on 'git'
+class GitFlow < Formula
+  url 'https://github.com/nvie/gitflow.git', :tag => '0.4.1'
+  version '0.4.1'
+  head 'https://github.com/nvie/gitflow.git', :branch => 'develop'
+
+  homepage 'https://github.com/nvie/gitflow'
 
   def install
-    system "make",  "prefix=#{prefix}", "install"
+    system "make", "prefix=#{prefix}", "install"
+
+    # Normally, etc files are installed directly into HOMEBREW_PREFIX,
+    # rather than being linked from the Cellar — this is so that
+    # configuration files don't get clobbered when you update.  The
+    # bash-completion file isn't really configuration, though; it
+    # should be updated when we upgrade the package.
+
+    cellar_etc = prefix + 'etc'
+    bash_completion_d = cellar_etc + "bash_completion.d"
+
+    completion = GitFlowCompletion.new
+    completion.brew do
+      bash_completion_d.install "git-flow-completion.bash"
+    end
   end
 end

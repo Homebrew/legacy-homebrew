@@ -1,6 +1,6 @@
 require 'formula'
 
-class NetNuclearSoundsAndGraphics <Formula
+class NetNuclearSoundsAndGraphics < Formula
   # Source tarball doesn't include sfx or gfx.
   # Get them from a v4 binary build.
   url 'http://studiostok.se/files/netnuclear4-linux.tar.gz'
@@ -9,7 +9,7 @@ class NetNuclearSoundsAndGraphics <Formula
 end
 
 
-class NetNuclear <Formula
+class NetNuclear < Formula
   url 'http://studiostok.se/files/netnuclear4-source.rar'
   version '4'
   homepage 'http://studiostok.se/?page=netnuclear'
@@ -29,7 +29,7 @@ END
   def install
     inreplace 'Makefile' do |s|
       s.remove_make_var! 'CC'
-      s.change_make_var! 'CFLAGS', "#{ENV['CFLAGS']} -I#{HOMEBREW_PREFIX}/include/SDL"
+      s.change_make_var! 'CFLAGS', "#{ENV.cflags} -I#{HOMEBREW_PREFIX}/include/SDL"
       s.change_make_var! 'LIBS', "-lSDLmain -lSDL -lSDL_mixer -lSDL_net -framework Cocoa"
     end
 

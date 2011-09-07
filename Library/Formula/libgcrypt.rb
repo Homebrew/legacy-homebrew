@@ -1,13 +1,15 @@
 require 'formula'
 
-class Libgcrypt <Formula
-  url 'ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.4.5.tar.bz2'
-  sha1 'ef7ecbd3a03a7978094366bcd1257b3654608d28'
-  homepage 'http://www.gnupg.org/'
+class Libgcrypt < Formula
+  url 'ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.5.0.tar.bz2'
+  sha1 '3e776d44375dc1a710560b98ae8437d5da6e32cf'
+  homepage 'http://directory.fsf.org/project/libgcrypt/'
 
   depends_on 'libgpg-error'
 
   def install
+    ENV.universal_binary	# build fat so wine can use it
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-asm",

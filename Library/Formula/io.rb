@@ -1,44 +1,51 @@
 require 'formula'
 
-class Io <Formula
-  head 'git://github.com/stevedekorte/io.git'
+class Io < Formula
+  head 'https://github.com/stevedekorte/io.git'
   homepage 'http://iolanguage.com/'
 
-  def hardcoded_prefixes; %w[
-    addons/Cairo/build.io
-    addons/Flux/io/Flux.io
-    addons/MySQL/build.io
-    addons/SGML/source/libsgml-1.1.4/acgeneral.m4
-    addons/SGML/source/libsgml-1.1.4/configure
-    addons/SGML/source/libsgml-1.1.4/libsgml.doxy
-    addons/SGML/source/libsgml-1.1.4/Makefile
-    addons/SGML/source/libsgml-1.1.4/Makefile.in
-    addons/SGML/source/libsgml-1.1.4_osx/acgeneral.m4
-    addons/SGML/source/libsgml-1.1.4_osx/config/configure
-    addons/SGML/source/libsgml-1.1.4_osx/libsgml.doxy
-    addons/SGML/source/libsgml-1.1.4_osx/Makefile
-    addons/SGML/source/libsgml-1.1.4_osx/Makefile.in
-    addons/TagDB/build.io
-    build/AddonBuilder.io
-    docs/IoGuide.html
-    extras/osx/osx.xcodeproj/project.pbxproj
-    extras/osxmain/osxmain.xcodeproj/project.pbxproj
-    libs/basekit/source/Hash_fnv.c
-    libs/basekit/source/Hash_fnv.h
-    libs/iovm/source/IoSystem.c
-    Makefile
-    tools/io/docs2html.io] << 
-    'extras/SyntaxHighlighters/Io.tmbundle/Commands/Run Io Program (ioServer).plist'
+  depends_on 'cmake' => :build
+  depends_on 'libsgml'
+  depends_on 'ossp-uuid'
+  depends_on 'libevent'
+
+  # Either CMake doesn't detect OS X's png include path correctly,
+  # or there's an issue with io's build system; force the path in
+  # so we can build.
+  def patches
+    DATA
   end
 
   def install
-    inreplace ['addons/SGML/build.io', 'addons/TagDB/build.io'],
-      'sudo ', ''
+    opoo "IO fails to build often!"
+    puts "There is no stable revision: https://github.com/mxcl/homebrew/issues/7399"
 
-    inreplace hardcoded_prefixes, '/usr/local', prefix
+    ENV.j1
+    mkdir 'io-build'
 
-    system "make vm"
-    system "make"
-    system "make install"
+    Dir.chdir 'io-build' do
+      system "cmake .. #{std_cmake_parameters}"
+      system "make install"
+    end
+
+    rm_f Dir['docs/*.pdf']
+    doc.install Dir['docs/*']
+
+    prefix.install 'license/bsd_license.txt' => 'LICENSE'
   end
 end
+
+__END__
+diff --git a/addons/Image/CMakeLists.txt b/addons/Image/CMakeLists.txt
+index a65693d..2166f1b 100644
+--- a/addons/Image/CMakeLists.txt
++++ b/addons/Image/CMakeLists.txt
+@@ -22,7 +22,7 @@ if(PNG_FOUND AND TIFF_FOUND AND JPEG_FOUND)
+ 	add_definitions(-DBUILDING_IMAGE_ADDON)
+ 
+ 	# Additional include directories
+-	include_directories(${PNG_INCLUDE_DIR} ${TIFF_INCLUDE_DIR} ${JPEG_INCLUDE_DIR})
++	include_directories("/usr/X11/include" ${PNG_INCLUDE_DIR} ${TIFF_INCLUDE_DIR} ${JPEG_INCLUDE_DIR})
+ 
+ 	# Generate the IoImageInit.c file.
+ 	# Argument SHOULD ALWAYS be the exact name of the addon, case is

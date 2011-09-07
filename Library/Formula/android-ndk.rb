@@ -1,16 +1,15 @@
 require 'formula'
 
-class AndroidNdk <Formula
-  url 'http://dl.google.com/android/ndk/android-ndk-r3-darwin-x86.zip'
-  homepage 'http://developer.android.com/index.html'
-  md5 'a083ccc36aa9a3a35404861e7d51d1ae'
-  version 'r3'
+class AndroidNdk < Formula
+  url 'http://dl.google.com/android/ndk/android-ndk-r6-darwin-x86.tar.bz2'
+  homepage 'http://developer.android.com/sdk/ndk/index.html#overview'
+  md5 'a154905e49a6246abd823b75b6eda738'
+  version 'r6'
 
   depends_on 'android-sdk'
 
   def install
     prefix.install Dir['*']
-    prefix.cd { system("./build/host-setup.sh") }
   end
 
   def caveats; <<-EOS
@@ -21,7 +20,7 @@ License information at:
 http://developer.android.com/sdk/terms.html
 
 Software and System requirements at:
-http://developer.android.com/sdk/ndk/1.6_r1/index.html#requirements
+http://developer.android.com/sdk/ndk/index.html#requirements
 
 For more documentation on Android NDK, please check:
   #{prefix}/docs

@@ -1,9 +1,9 @@
 require 'formula'
 
-class CAres <Formula
-  url 'http://c-ares.haxx.se/c-ares-1.6.0.tar.gz'
+class CAres < Formula
+  url 'http://c-ares.haxx.se/download/c-ares-1.7.5.tar.gz'
   homepage 'http://c-ares.haxx.se/'
-  md5 '4503b0db3dd79d3c1f58d87722dbab46'
+  md5 '800875fc23cd8e1924d8af9172ed33e7'
 
   def install
     system "./configure", "--prefix=#{prefix}"

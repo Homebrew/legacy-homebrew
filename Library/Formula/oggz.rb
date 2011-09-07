@@ -1,11 +1,11 @@
 require 'formula'
 
-class Oggz <Formula
+class Oggz < Formula
   url 'http://downloads.xiph.org/releases/liboggz/liboggz-1.0.0.tar.gz'
   md5 '57359f6f0824b3e9bad85b49a6418514'
   homepage 'http://www.xiph.org/oggz/'
 
-  aka 'liboggz'
+  depends_on 'pkg-config' => :build
   depends_on 'libogg'
 
   def install

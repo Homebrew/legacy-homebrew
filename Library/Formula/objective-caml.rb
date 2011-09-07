@@ -1,23 +1,23 @@
 require 'formula'
 
-class ObjectiveCaml <Formula
-  @url='http://caml.inria.fr/pub/distrib/ocaml-3.11/ocaml-3.11.1.tar.bz2'
-  @homepage='http://caml.inria.fr/ocaml/index.en.html'
-  @md5='fe011781f37f6b41fe08e0706969a89e'
-  
-  aka :ocaml, 'o-caml'
+class ObjectiveCaml < Formula
+  url 'http://caml.inria.fr/pub/distrib/ocaml-3.12/ocaml-3.12.1.tar.bz2'
+  homepage 'http://caml.inria.fr/ocaml/index.en.html'
+  md5 '227a3daaedb150bf5037a3db01f5bf42'
+
+  # Don't strip symbols, so dynamic linking doesn't break.
+  skip_clean :all
 
   def install
-    system "./configure --prefix #{prefix}"
+    system "./configure", "--prefix", HOMEBREW_PREFIX, "--mandir", man
+    ENV.deparallelize # Builds are not parallel-safe, esp. with many cores
     system "make world"
-    # 'world' can be built in parallel, but the other targets have problems
-    ENV.deparallelize
     system "make opt"
     system "make opt.opt"
-    system "make install"
-  end
+    system "make PREFIX=#{prefix} install"
 
-  # note it indeed seems necessary to clean everything
-  # see http://github.com/mxcl/homebrew/issues#issue/188
-  def skip_clean? path; true; end
+    # site-lib in the Cellar will be a symlink to the HOMEBREW_PREFIX location
+    (HOMEBREW_PREFIX+"lib/ocaml/site-lib").mkpath
+    ln_s HOMEBREW_PREFIX+"lib/ocaml/site-lib", lib+"ocaml/site-lib"
+  end
 end

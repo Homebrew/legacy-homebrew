@@ -1,23 +1,25 @@
 require 'formula'
 
-class Tmux <Formula
-  url 'http://downloads.sourceforge.net/tmux/tmux-1.2.tar.gz'
-  md5 '748fbe7bb5f86812e19bd6005ff21a5a'
+class Tmux < Formula
+  url 'http://sourceforge.net/projects/tmux/files/tmux/tmux-1.5/tmux-1.5.tar.gz'
+  md5 '3d4b683572af34e83bc8b183a8285263'
   homepage 'http://tmux.sourceforge.net'
 
   depends_on 'libevent'
 
   def install
-    ENV['PREFIX'] = prefix
-    system "./configure"
-
-    inreplace "GNUmakefile" do |f|
-      # Fix 'install' flags
-      f.gsub! " -g bin -o root", ""
-      # Put docs in the right place
-      f.gsub! "man/man1", "share/man/man1"
-    end
-
+    ENV.append "LDFLAGS", '-lresolv'
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}", "--sysconfdir=#{etc}"
     system "make install"
+
+    # Install bash completion scripts for use with bash-completion
+    (prefix+'etc/bash_completion.d').install "examples/bash_completion_tmux.sh" => 'tmux'
+  end
+
+  def caveats; <<-EOS.undent
+    Bash completion script was installed to:
+      #{etc}/bash_completion.d/tmux
+    EOS
   end
 end

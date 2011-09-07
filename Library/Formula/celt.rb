@@ -1,17 +1,18 @@
 require 'formula'
 
-class Celt <Formula
-  url 'http://downloads.xiph.org/releases/celt/celt-0.7.0.tar.gz'
+class Celt < Formula
+  url 'http://downloads.xiph.org/releases/celt/celt-0.8.1.tar.gz'
   homepage 'http://www.celt-codec.org/'
-  md5 '0bb72abec367f4ef12551f79dda11b23'
+  sha256 'cbaa8d2ba4d4807f29a5ed40b9f2be233f988c6e3ac8dd1737b6e2ac20174542'
 
-  depends_on 'libogg'
+  depends_on 'libogg' => :optional
+
+  fails_with_llvm "1 test failed with llvm-gcc"
 
   def install
-    # 1 Test failed with llvm-gcc
-    ENV.gcc_4_2
-
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--enable-new-plc"
     system "make check"
     system "make install"
   end

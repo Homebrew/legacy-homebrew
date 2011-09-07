@@ -1,35 +1,34 @@
 require 'formula'
 
-class Spidermonkey <Formula  
-  # There are no proper releases of spidermonkey. So pick a specific/constant
-  # revision:  r35345
-  url 'http://hg.mozilla.org/tracemonkey/archive/57a6ad20eae9.tar.gz'
-  md5 '4a143399f69d6509bd980073096af6d4'
+# Private older version of autoconf required to compile Spidermonkey
+class Autoconf213 < Formula
+  url 'http://ftp.gnu.org/pub/gnu/autoconf/autoconf-2.13.tar.gz'
+  md5 '9de56d4a161a723228220b0f425dc711'
+  homepage 'http://www.gnu.org/software/autoconf/'
+end
 
-  version '1.9.2'
-
+class Spidermonkey < Formula
   homepage 'https://developer.mozilla.org/en/SpiderMonkey'
-
-  head 'hg://http://hg.mozilla.org/tracemonkey'
+  # Pick a version that's known to work with CouchDB), revision r35345.
+  url 'http://hg.mozilla.org/tracemonkey/archive/57a6ad20eae9.tar.gz'
+  md5 '0f2490f78d880ec184d9233df97ab83d'
+  version '1.8.0'
 
   depends_on 'readline'
   depends_on 'nspr'
 
   def install
-    if MACOS_VERSION == 10.5
-      # aparently this flag causes the build to fail for ivanvc on 10.5 with a
-      # penryn (core 2 duo) CPU. So lets be cautious here and remove it.
-      # It might not be need with newer spidermonkeys anymore tho.
-      ENV['CFLAGS'] = ENV['CFLAGS'].gsub(/-msse[^\s]+/, '')
-    end
+    # aparently this flag causes the build to fail for ivanvc on 10.5 with a
+    # penryn (core 2 duo) CPU. So lets be cautious here and remove it.
+    ENV['CFLAGS'] = ENV['CFLAGS'].gsub(/-msse[^\s]+/, '') if MacOS.leopard?
 
     # For some reason SpiderMonkey requires Autoconf-2.13
-    ac213_prefix = Pathname.pwd.join('ac213').to_s
+    ac213_prefix = Pathname.pwd.join('ac213')
     Autoconf213.new.brew do |f|
-      # probably no longer required, see issue #751
+      # Force use of plain "awk"
       inreplace 'configure', 'for ac_prog in mawk gawk nawk awk', 'for ac_prog in awk'
 
-      system "./configure", "--disable-debug", 
+      system "./configure", "--disable-debug",
                             "--program-suffix=213",
                             "--prefix=#{ac213_prefix}"
       system "make install"
@@ -40,11 +39,14 @@ class Spidermonkey <Formula
       # building like this. See: http://openradar.appspot.com/7209349
       inreplace "configure.in", "LDFLAGS=\"$LDFLAGS -framework Cocoa\"", ""
       system "#{ac213_prefix}/bin/autoconf213"
+
       # Remove the broken *(for anyone but FF) install_name
-      inreplace "config/rules.mk", "-install_name @executable_path/$(SHARED_LIBRARY) ", ""
+      inreplace "config/rules.mk",
+        "-install_name @executable_path/$(SHARED_LIBRARY) ",
+        "-install_name #{lib}/$(SHARED_LIBRARY) "
     end
 
-    FileUtils.mkdir "brew-build";
+    mkdir "brew-build"
 
     Dir.chdir "brew-build" do
       system "../js/src/configure", "--prefix=#{prefix}",
@@ -53,21 +55,19 @@ class Spidermonkey <Formula
                                     "--with-system-nspr"
 
       inreplace "js-config", /JS_CONFIG_LIBS=.*?$/, "JS_CONFIG_LIBS=''"
-
-      # Can't do `make install` right off the bat sadly
+      # These need to be in separate steps.
       system "make"
       system "make install"
 
-      # The `js` binary ins't installed. Lets do that too, eh?
+      # Also install js REPL.
       bin.install "shell/js"
     end
-
   end
-end
 
+  def caveats; <<-EOS.undent
+    This formula installs Spidermonkey 1.8.x.
 
-class Autoconf213 <Formula
-  url 'http://ftp.gnu.org/pub/gnu/autoconf/autoconf-2.13.tar.gz'
-  md5 '9de56d4a161a723228220b0f425dc711'
-  homepage 'http://www.gnu.org/software/autoconf/'
+    If you are trying to compile MongoDB from scratch, you will need 1.7.x instead.
+    EOS
+  end
 end

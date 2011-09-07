@@ -1,15 +1,21 @@
 require 'formula'
 
-class Lbdb <Formula
-  url 'http://www.spinnaker.de/debian/lbdb_0.36.tar.gz'
+class Lbdb < Formula
+  url 'http://www.spinnaker.de/debian/lbdb_0.38.tar.gz'
   homepage 'http://www.spinnaker.de/lbdb/'
-  md5 '12d9bf7ef3ef526f0d82604a8f9add9c'
+  md5 'a8e65f1400c90818ff324dc4fd67eba2'
 
   def patches
     DATA
   end
 
   def install
+    inreplace "ABQuery/ABQuery.xcodeproj/project.pbxproj" do |s|
+      s.gsub! "SDKROOT = macosx10.5;", "SDKROOT = macosx#{MACOS_VERSION};"
+    end
+    inreplace "Makefile.in" do |s|
+      s.gsub! "xcodebuild", "xcodebuild SYMROOT=build"
+    end
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
@@ -493,7 +499,7 @@ index 0000000..635f5f8
 +				GCC_WARN_UNUSED_VARIABLE = YES;
 +				ONLY_ACTIVE_ARCH = YES;
 +				PREBINDING = NO;
-+				SDKROOT = macosx10.6;
++				SDKROOT = macosx10.5;
 +			};
 +			name = Debug;
 +		};
@@ -505,7 +511,7 @@ index 0000000..635f5f8
 +				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 +				GCC_WARN_UNUSED_VARIABLE = YES;
 +				PREBINDING = NO;
-+				SDKROOT = macosx10.6;
++				SDKROOT = macosx10.5;
 +			};
 +			name = Release;
 +		};

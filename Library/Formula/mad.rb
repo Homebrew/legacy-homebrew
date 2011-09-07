@@ -1,11 +1,9 @@
 require 'formula'
 
-class Mad <Formula
+class Mad < Formula
   homepage 'http://www.underbit.com/products/mad/'
   url 'http://downloads.sourceforge.net/project/mad/libmad/0.15.1b/libmad-0.15.1b.tar.gz'
   md5 '1be543bc30c56fb6bea1d7bf6a64e66c'
-
-  aka :libmad
 
   def mad_pc
     return <<-EOS
@@ -25,9 +23,17 @@ Cflags: -I${includedir}
   end
 
   def install
-    system "./configure --disable-debugging --enable-fpm=intel --prefix='#{prefix}'"
+    fpm = MacOS.prefer_64_bit? ? '64bit': 'intel'
+    system "./configure", "--disable-debugging", "--enable-fpm=#{fpm}", "--prefix=#{prefix}"
+
+    # See: https://github.com/mxcl/homebrew/issues/issue/1263
+    inreplace "Makefile" do |s|
+      s.change_make_var! "CFLAGS", ENV.cflags
+      s.change_make_var! "LDFLAGS", ENV.ldflags
+    end
+
     system "make install"
 
-    (lib+'pkgconfig'+'mad.pc').write mad_pc
+    (lib+'pkgconfig/mad.pc').write mad_pc
   end
 end

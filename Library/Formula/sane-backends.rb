@@ -1,17 +1,19 @@
 require 'formula'
 
-class SaneBackends <Formula
-  url 'ftp://ftp.sane-project.org/pub/sane/sane-backends-1.0.20/sane-backends-1.0.20.tar.gz'
+class SaneBackends < Formula
+  url 'ftp://ftp2.sane-project.org/pub/sane/sane-backends-1.0.22/sane-backends-1.0.22.tar.gz'
   homepage 'http://www.sane-project.org/'
-  md5 'a0cfdfdebca2feb4f2ba5d3418b15a42'
+  md5 'fadf56a60f4776bfb24491f66b617cf5'
 
   depends_on 'jpeg'
   depends_on 'libtiff'
   depends_on 'libusb-compat'
 
+  skip_clean "var/lock/sane"
+
   def install
+    ENV.j1 # Makefile does not seem to be parallel-safe
     system "./configure", "--disable-dependency-tracking",
-                          "--disable-debug",
                           "--prefix=#{prefix}",
                           "--without-gphoto2",
                           "--enable-local-backends",
@@ -19,5 +21,8 @@ class SaneBackends <Formula
                           "--disable-latex"
     system "make"
     system "make install"
+
+    # Some drivers require a lockfile
+    (var+"lock/sane").mkpath
   end
 end

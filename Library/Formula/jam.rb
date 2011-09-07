@@ -1,6 +1,6 @@
 require 'formula'
 
-class Jam <Formula
+class Jam < Formula
   url 'ftp://ftp.perforce.com/jam/jam-2.5.zip'
   homepage 'http://www.perforce.com/jam/jam.html'
   md5 'f92caadb62fe4cb0b152eff508c9d450'

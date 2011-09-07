@@ -1,6 +1,6 @@
 require 'formula'
 
-class Darwinbuild <Formula
+class Darwinbuild < Formula
   head 'http://svn.macosforge.org/repository/darwinbuild/trunk/', :using => :svn
   homepage 'http://darwinbuild.macosforge.org/'
 
@@ -9,8 +9,9 @@ class Darwinbuild <Formula
   end
 
   def install
-    ENV.no_optimization
-    system "make install PREFIX=#{prefix}"
+    ENV.delete('CC')
+    ENV.delete('LD')
+    system "xcodebuild -configuration Release install DSTROOT=/ PREFIX=#{prefix}"
   end
 end
 

@@ -1,46 +1,34 @@
 require 'formula'
 
-class Go <Formula
-  head 'https://go.googlecode.com/hg/', :revision => 'release'
+class Go < Formula
+  if ARGV.include? "--use-git"
+    url 'https://github.com/tav/go.git', :tag => 'release-branch.r59'
+    head 'https://github.com/tav/go.git'
+  else
+    url 'http://go.googlecode.com/hg/', :revision => 'release.r59'
+    head 'http://go.googlecode.com/hg/'
+  end
+  version 'r59'
   homepage 'http://golang.org'
-
-  aka 'google-go'
 
   skip_clean 'bin'
 
-  def cruft
-    %w[src include test doc]
+  def options
+    [["--use-git", "Use git mirror instead of official hg repository"]]
   end
 
   def install
-    ENV.j1 # http://github.com/mxcl/homebrew/issues/#issue/237
-    prefix.install cruft<<'misc'
+    prefix.install %w[src include test doc misc lib favicon.ico AUTHORS]
     Dir.chdir prefix
-    FileUtils.mkdir %w[pkg bin lib]
-
-    ENV['GOROOT'] = Dir.getwd
-    ENV['GOBIN'] = bin.to_s
-    ENV['GOARCH'] = Hardware.is_64_bit? ? 'amd64' : '386'
-    ENV['GOOS'] = 'darwin'
-
-    ENV.prepend 'PATH', ENV['GOBIN'], ':'
+    mkdir %w[pkg bin]
 
     Dir.chdir 'src' do
-      system "./all.bash"
+      # Tests take a very long time to run. Build only
+      system "./make.bash"
     end
 
-    FileUtils.rm_rf cruft
-  end
-
-  def caveats; <<-EOS
-In order to use Go you need to set the following in your ~/.profile:
-
-    export GOROOT=`brew --cellar`/go/#{version}
-    export GOARCH=#{ENV['GOARCH']}
-    export GOOS=#{ENV['GOOS']}
-
-Presumably at some point the Go developers won't require us to mutilate our
-shell environments in order to compile Go code...
-    EOS
+    # Don't need the src folder, but do keep the Makefiles as Go projects use these
+    Dir['src/*'].each{|f| rm_rf f unless f.match(/^src\/(pkg|Make)/) }
+    rm_rf %w[include test]
   end
 end

@@ -1,9 +1,10 @@
 require 'formula'
 
-class Gist <Formula
-  url 'http://github.com/defunkt/gist/tarball/v1.0.3'
-  homepage 'http://github.com/defunkt/gist'
-  md5 'e0b9eb913c46ad49e5d6072c420b2a17'
+class Gist < Formula
+  homepage 'https://github.com/defunkt/gist'
+  url 'https://github.com/defunkt/gist/tarball/v2.0.3'
+  md5 '0b99159635df2083651d2ff9db8abb25'
+  head 'https://github.com/defunkt/gist.git'
 
   def install
     system "rake", "install", "prefix=#{prefix}"

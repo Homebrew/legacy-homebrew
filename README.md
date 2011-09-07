@@ -1,38 +1,23 @@
 Homebrew
 ========
-Features and usage are [summarized on the homepage][homepage].
+Features, usage and installation instructions are [summarized on the homepage][home].
 
-
-Quick Install to /usr/local
----------------------------
-Run <http://gist.github.com/323731> and afterwards, [install Xcode][xcode].
-
-
-Umm… I thought I could install it anywhere?
--------------------------------------------
-Indeed, you can. Refer to our [complete installation instructions][install].
-
-
-Dude! Just give me a two-liner!
--------------------------------
-Alright then… as long as you know what you are doing:
-
-    sudo chown -R $USER /usr/local
-    curl -Lsf http://github.com/mxcl/homebrew/tarball/master | tar xvz -C/usr/local --strip 1
-
+What Packages Are Available?
+----------------------------
+1. You can [browse the Formula folder on GitHub][formula].
+2. Or type `brew search` for a list.
+3. Or run `brew server` to browse packages off of a local web server.
 
 More Documentation
-==================
-The [wiki][] is your friend.
-
+------------------
+`brew help` or `man brew` or check our [wiki][].
 
 Who Are You?
-============
+------------
 I'm [Max Howell][mxcl] and I'm a splendid chap.
 
 
+[home]:http://mxcl.github.com/homebrew
 [wiki]:http://wiki.github.com/mxcl/homebrew
-[install]:http://wiki.github.com/mxcl/homebrew/installation
-[xcode]:http://developer.apple.com/technology/xcode.html
 [mxcl]:http://twitter.com/mxcl
-[homepage]:http://mxcl.github.com/homebrew
+[formula]:http://github.com/mxcl/homebrew/tree/master/Library/Formula/

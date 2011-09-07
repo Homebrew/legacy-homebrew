@@ -1,23 +1,34 @@
 require 'formula'
 
-class Mpfr <Formula
-  url 'http://www.mpfr.org/mpfr-current/mpfr-2.4.2.tar.bz2'
+class Mpfr < Formula
+  url 'http://www.mpfr.org/mpfr-3.0.1/mpfr-3.0.1.tar.bz2'
   homepage 'http://www.mpfr.org/'
-  md5 '89e59fe665e2b3ad44a6789f40b059a0'
+  md5 'bfbecb2eacb6d48432ead5cfc3f7390a'
 
   depends_on 'gmp'
 
+  def options
+    [["--32-bit", "Force 32-bit."]]
+  end
+
   def patches
-    {:p1 => ['http://www.mpfr.org/mpfr-current/allpatches']}
+    {:p1 => ['http://www.mpfr.org/mpfr-3.0.1/allpatches']}
   end
 
   def install
-      configure_args = [
-          "--prefix=#{prefix}",
-          "--disable-debug",
-          "--disable-dependency-tracking",
-      ]
-    system "./configure", *configure_args
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+
+    # Build 32-bit where appropriate, and help configure find 64-bit CPUs
+    # Note: This logic should match what the GMP formula does.
+    if MacOS.prefer_64_bit? and not ARGV.include? "--32-bit"
+      ENV.m64
+      args << "--build=x86_64-apple-darwin"
+    else
+      ENV.m32
+      args << "--host=none-apple-darwin"
+    end
+
+    system "./configure", *args
     system "make install"
   end
 end

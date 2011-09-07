@@ -1,10 +1,10 @@
 require 'formula'
 
-class Languagetool <Formula
-  url 'http://www.languagetool.org/download/LanguageTool-1.0.0.oxt'
+class Languagetool < Formula
+  url 'http://www.languagetool.org/download/LanguageTool-1.3.1.oxt'
   homepage 'http://www.languagetool.org/'
-  md5 '979b1a1f2ce3a9100d7aa7b1ef245734'
-  
+  md5 '9bf13c617eba946fd6b44562cbc90d42'
+
   def startup_script
     <<-EOS
 #!/bin/bash
