@@ -254,7 +254,7 @@ For the full command list, see the COMMANDS section.
     If <formulae> are given, only list versions for the specified brews.
 
   * `--cache`:
-    Display Homebrew's download cache. *Default:* `~/Library/Cache/Homebrew`
+    Display Homebrew's download cache. *Default:* `~/Library/Caches/Homebrew`
 
   * `--cache` <formula>:
     Display the file or folder used to cache <formula>.
