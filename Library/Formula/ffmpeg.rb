@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ffmpeg < Formula
-  url 'http://ffmpeg.org/releases/ffmpeg-0.8.tar.bz2'
+  url 'http://ffmpeg.org/releases/ffmpeg-0.8.2.tar.bz2'
   homepage 'http://ffmpeg.org/'
-  sha1 '461f87c4fc080e10ac0acc48287aaa706021bbc4'
+  sha1 '984f731aced1380840cd8e3576e8db0c2fd5537f'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
@@ -16,6 +16,12 @@ class Ffmpeg < Formula
   depends_on 'libogg' => :optional
   depends_on 'libvpx' => :optional
   depends_on 'xvid' => :optional
+
+  def options
+    [
+      ["--with-tools", "Install additional FFmpeg tools."]
+    ]
+  end
 
   def install
     args = ["--prefix=#{prefix}",
@@ -38,9 +44,11 @@ class Ffmpeg < Formula
     if MacOS.lion?
       args << "--cc=clang"
     else
-      args << "--cc=clang" if ENV.use_clang?
-      args << "--cc=llvm-gcc" if ENV.use_llvm?
-      args << "--cc=gcc" if ENV.use_gcc?
+      args << case ENV.compiler
+        when :clang then "--cc=clang"
+        when :llvm then "--cc=llvm-gcc"
+        when :gcc then "--cc=gcc"
+      end
     end
 
     # For 32-bit compilation under gcc 4.2, see:
@@ -63,6 +71,11 @@ class Ffmpeg < Formula
     write_version_file if ARGV.build_head?
 
     system "make install"
+
+    if ARGV.include? "--with-tools"
+      system "make alltools"
+      bin.install Dir['tools/*'].select {|f| File.executable? f}
+    end
   end
 
   # Makefile expects to run in git repo and generate a version number

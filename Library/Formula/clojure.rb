@@ -37,6 +37,6 @@ class Clojure < Formula
   end
 
   def test
-    system "clj -e \"(println \\\"Hello World\\\")\""
+    system "#{bin}/clj -e \"(println \\\"Hello World\\\")\""
   end
 end

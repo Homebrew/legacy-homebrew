@@ -55,5 +55,7 @@ def blacklisted? name
     To do it in one line, use this command:
       curl http://npmjs.org/install.sh | sh
     EOS
+  when /(lib)?lzma/
+    "lzma is now part of the xz formula."
   end
 end

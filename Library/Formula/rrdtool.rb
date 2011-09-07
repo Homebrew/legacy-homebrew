@@ -32,7 +32,7 @@ class Rrdtool < Formula
     opoo "Using system Ruby. RRD module will be installed to /Library/Ruby/..." if which_ruby == "/usr/bin/ruby"
     opoo "Using system Perl. RRD module will be installed to /Library/Perl/..." if which_perl == "/usr/bin/perl"
 
-    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--mandir=#{man}"]
     args << "--enable-perl-site-install" if which_perl == "/usr/bin/perl"
     args << "--enable-ruby-site-install" if which_ruby == "/usr/bin/ruby"
 
