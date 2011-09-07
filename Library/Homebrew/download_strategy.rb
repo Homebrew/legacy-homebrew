@@ -282,6 +282,22 @@ class StrictSubversionDownloadStrategy < SubversionDownloadStrategy
   end
 end
 
+# Download from SVN servers with invalid or self-signed certs
+class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
+  def fetch_repo target, url, revision=nil, ignore_externals=false
+    # Use "svn up" when the repository already exists locally.
+    # This saves on bandwidth and will have a similar effect to verifying the
+    # cache as it will make any changes to get the right revision.
+    svncommand = target.exist? ? 'up' : 'checkout'
+    args = [svn, svncommand, '--non-interactive', '--trust-server-cert', '--force']
+    args << url if !target.exist?
+    args << target
+    args << '-r' << revision if revision
+    args << '--ignore-externals' if ignore_externals
+    quiet_safe_system(*args)
+  end
+end
+
 class GitDownloadStrategy < AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
