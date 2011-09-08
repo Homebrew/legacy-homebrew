@@ -2,10 +2,10 @@ require 'formula'
 
 class Go < Formula
   if ARGV.include? "--use-git"
-    url 'https://github.com/tav/go.git', :tag => 'release-branch.r59'
+    url 'https://github.com/tav/go.git', :tag => 'release-branch.r60'
     head 'https://github.com/tav/go.git'
   else
-    url 'http://go.googlecode.com/hg/', :revision => 'release.r59'
+    url 'http://go.googlecode.com/hg/', :revision => 'release.r60'
     head 'http://go.googlecode.com/hg/'
   end
   version 'r59'
