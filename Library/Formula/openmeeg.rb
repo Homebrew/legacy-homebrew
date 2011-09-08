@@ -1,7 +1,7 @@
 require 'formula'
 
 class Openmeeg < Formula
-  head 'svn://scm.gforge.inria.fr/svn/openmeeg/trunk', :using => :svn
+  head 'svn://scm.gforge.inria.fr/svn/openmeeg/branches/release-2.1', :using => :svn
   homepage 'http://openmeeg.gforge.inria.fr/'
 
   depends_on 'cmake' => :build
