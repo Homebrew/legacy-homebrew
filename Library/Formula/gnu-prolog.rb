@@ -7,7 +7,7 @@ class GnuProlog < Formula
 
   skip_clean :all
 
-  fails_with_llvm
+  fails_with_llvm :build => 2334
 
   def install
     ENV.j1 # make won't run in parallel
