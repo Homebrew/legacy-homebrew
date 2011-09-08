@@ -59,12 +59,12 @@ class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
 
   def initialize formula, type
     @type = type
-    @formula = formula
+    super formula, get_message(formula)
   end
 
-  def message
+  def get_message formula
     <<-EOS.undent
-      Unsatisfied dependency: #{formula}
+      Unsatisfied external dependency: #{formula}
       Homebrew does not provide #{type.to_s.capitalize} dependencies, #{tool} does:
 
           #{command_line} #{formula}
