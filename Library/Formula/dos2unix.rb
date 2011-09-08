@@ -16,11 +16,10 @@ class Dos2unix < Formula
 
     if ARGV.include? "--enable-nls"
       gettext = Formula.factory("gettext")
-      ENV.append 'CFLAGS', "-I#{gettext.include}"
-      ENV.append 'LDFLAGS', "-lintl "
-      args += ["CFLAGS=#{ENV['CFLAGS']}", "LDFLAGS=#{ENV['LDFLAGS']}"]
+      args << "CFLAGS_OS=-I#{gettext.include}"
+      args << "LDFLAGS_EXTRA=-L#{gettext.lib} -lintl"
     else
-      args += ["ENABLE_NLS="]
+      args << "ENABLE_NLS="
     end
 
     args << "install"
