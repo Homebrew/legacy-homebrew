@@ -8,7 +8,7 @@ class Go < Formula
     url 'http://go.googlecode.com/hg/', :revision => 'release.r60'
     head 'http://go.googlecode.com/hg/'
   end
-  version 'r59'
+  version 'r60'
   homepage 'http://golang.org'
 
   skip_clean 'bin'
