@@ -1,16 +1,29 @@
 require 'formula'
 
 class Dos2unix < Formula
-  url 'http://sourceforge.net/projects/dos2unix/files/dos2unix/3.2/dos2unix-3.2.tar.gz'
-  md5 'db3902feba8a4bae26e9a1bd27c7ce53'
+  url 'http://sourceforge.net/projects/dos2unix/files/dos2unix/5.3/dos2unix-5.3.tar.gz'
+  md5 '0db30704f5b68c5a0aeaff9b8d7012e8'
   homepage 'http://dos2unix.sourceforge.net/'
 
-  def install
-    # we don't use the Makefile as it doesn't optimize
-    system "#{ENV.cc} #{ENV.cflags} dos2unix.c -o dos2unix"
+  depends_on "gettext" if ARGV.include? "--enable-nls"
 
-    bin.install %w[dos2unix]
-    ln_sf bin+'dos2unix', bin+'mac2unix'
-    man1.install %w[mac2unix.1 dos2unix.1]
+  def options
+    [["--enable-nls", "Enable NLS support."]]
+  end
+
+  def install
+    args = ["prefix=#{prefix}"]
+
+    if ARGV.include? "--enable-nls"
+      gettext = Formula.factory("gettext")
+      args << "CFLAGS_OS=-I#{gettext.include}"
+      args << "LDFLAGS_EXTRA=-L#{gettext.lib} -lintl"
+    else
+      args << "ENABLE_NLS="
+    end
+
+    args << "install"
+
+    system "make", *args
   end
 end
