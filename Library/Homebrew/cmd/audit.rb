@@ -295,7 +295,7 @@ module Homebrew extend self
 
       problems += audit_formula_text(f.name, text_without_patch)
       problems += audit_formula_options(f, text_without_patch)
-      problems += audit_formula_version(f, text_without_patch)
+      problems += audit_formula_version(f, text_without_patch) if strict?
 
       unless problems.empty?
         errors = true

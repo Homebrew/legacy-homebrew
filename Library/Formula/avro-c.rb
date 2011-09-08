@@ -1,9 +1,9 @@
 require 'formula'
 
 class AvroC < Formula
-  url 'http://mirror.atlanticmetro.net/apache/avro/avro-1.4.0/c/avro-c-1.4.0.tar.gz'
+  url 'http://www.apache.org/dyn/closer.cgi?path=avro/avro-1.5.1/c/avro-c-1.5.1.tar.gz'
   homepage 'http://avro.apache.org/'
-  md5 'fdcd3916cbfc459a6938141028cf35e6'
+  md5 '80228a62dd58ec19eb8d436258b91952'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

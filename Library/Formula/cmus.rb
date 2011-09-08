@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cmus < Formula
-  url 'http://downloads.sourceforge.net/cmus/cmus-v2.4.1.tar.bz2'
+  url 'http://downloads.sourceforge.net/cmus/cmus-v2.4.2.tar.bz2'
   homepage 'http://cmus.sourceforge.net/'
-  md5 '7932bbada04bc9a273c332a323fc5704'
+  md5 'f3ed7f14db20344ad7386aef48b98a4c'
 
   depends_on 'pkg-config' => :build
   depends_on 'libao'

@@ -9,6 +9,8 @@ class Geos < Formula
     path.extname == '.la'
   end
 
+  fails_with_llvm "Some symbols are missing during link step."
+
   def install
     ENV.O3
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"

@@ -113,7 +113,7 @@ private
 
   def ext
     # GitHub uses odd URLs for zip files, so check for those
-    rx=%r[http://(www\.)?github\.com/.*/(zip|tar)ball/]
+    rx=%r[https?://(www\.)?github\.com/.*/(zip|tar)ball/]
     if rx.match @url
       if $2 == 'zip'
         '.zip'
@@ -123,6 +123,25 @@ private
     else
       Pathname.new(@url).extname
     end
+  end
+end
+
+# Detect and download from Apache Mirror
+class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
+  def _fetch
+    # Fetch mirror list site
+    require 'open-uri'
+    mirror_list = open(@url).read()
+
+    # Parse out suggested mirror
+    #   Yep, this is ghetto, grep the first <strong></strong> element content
+    mirror_url = mirror_list[/<strong>([^<]+)/, 1]
+
+    raise "Couldn't determine mirror. Try again later." if mirror_url.nil?
+
+    ohai "Best Mirror #{mirror_url}"
+    # Start download from that mirror
+    curl mirror_url, '-o', @tarball_path
   end
 end
 
@@ -164,8 +183,7 @@ end
 class CurlBottleDownloadStrategy <CurlDownloadStrategy
   def initialize url, name, version, specs
     super
-    HOMEBREW_CACHE_BOTTLES.mkpath
-    @tarball_path=HOMEBREW_CACHE_BOTTLES+("#{name}-#{version}"+ext)
+    @tarball_path = HOMEBREW_CACHE/"#{name}-#{version}.bottle#{ext}"
   end
   def stage
     ohai "Pouring #{File.basename(@tarball_path)}"
@@ -177,6 +195,7 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
     @unique_token="#{name}--svn" unless name.to_s.empty? or name == '__UNKNOWN__'
+    @unique_token += "-HEAD" if ARGV.include? '--HEAD'
     @co=HOMEBREW_CACHE+@unique_token
   end
 
@@ -219,16 +238,14 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
     end
   end
 
-  def _fetch_command svncommand, url, target
-    [svn, svncommand, '--force', url, target]
-  end
-
   def fetch_repo target, url, revision=nil, ignore_externals=false
     # Use "svn up" when the repository already exists locally.
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
     svncommand = target.exist? ? 'up' : 'checkout'
-    args = _fetch_command svncommand, url, target
+    args = [svn, svncommand, '--force']
+    args << url if !target.exist?
+    args << target
     args << '-r' << revision if revision
     args << '--ignore-externals' if ignore_externals
     quiet_safe_system(*args)
@@ -273,13 +290,19 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 
   def support_depth?
+    !commit_history_required? and depth_supported_host?
+  end
+
+  def commit_history_required?
+    @spec == :sha
+  end
+
+  def depth_supported_host?
     @url =~ %r(git://) or @url =~ %r(https://github.com/)
   end
 
   def fetch
-    raise "You must install Git:\n\n"+
-          "  brew install git\n" \
-          unless system "/usr/bin/which git"
+    raise "You must install Git: brew install git" unless system "/usr/bin/which -s git"
 
     ohai "Cloning #{@url}"
 
@@ -287,7 +310,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
       Dir.chdir(@clone) do
         # Check for interupted clone from a previous install
         unless system 'git', 'status', '-s'
-          ohai "Removing invalid .git repo from cache"
+          puts "Removing invalid .git repo from cache"
           FileUtils.rm_rf @clone
         end
       end
@@ -302,8 +325,8 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     else
       puts "Updating #{@clone}"
       Dir.chdir(@clone) do
-        quiet_safe_system 'git', 'fetch', @url
-        # If we're going to checkout a tag, then we need to fetch new tags too.
+        safe_system 'git', 'remote', 'set-url', 'origin', @url
+        quiet_safe_system 'git', 'fetch', 'origin'
         quiet_safe_system 'git', 'fetch', '--tags' if @spec == :tag
       end
     end
@@ -320,6 +343,10 @@ class GitDownloadStrategy < AbstractDownloadStrategy
         when :tag
           nostdout { quiet_safe_system 'git', 'checkout', @ref }
         end
+      else
+        # otherwise the checkout-index won't checkout HEAD
+        # https://github.com/mxcl/homebrew/issues/7124
+        quiet_safe_system "git", "reset", "--hard"
       end
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
       safe_system 'git', 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
@@ -514,6 +541,7 @@ def detect_download_strategy url
   when %r[^https?://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
   when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
   when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
+  when %r[^http://www.apache.org/dyn/closer.cgi] then CurlApacheMirrorDownloadStrategy
     # Otherwise just try to download
   else CurlDownloadStrategy
   end

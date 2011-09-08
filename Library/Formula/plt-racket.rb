@@ -2,9 +2,9 @@ require 'formula'
 
 class PltRacket < Formula
   # Use GitHub; tarball doesn't have everything needed for building on OS X
-  url 'https://github.com/plt/racket.git', :tag => 'v5.1.1'
+  url 'https://github.com/plt/racket.git', :tag => 'v5.1.3'
   homepage 'http://racket-lang.org/'
-  version '5.1.1'
+  version '5.1.3'
 
   # Don't strip symbols; need them for dynamic linking.
   skip_clean 'bin'

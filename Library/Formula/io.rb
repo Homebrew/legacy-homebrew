@@ -7,6 +7,7 @@ class Io < Formula
   depends_on 'cmake' => :build
   depends_on 'libsgml'
   depends_on 'ossp-uuid'
+  depends_on 'libevent'
 
   # Either CMake doesn't detect OS X's png include path correctly,
   # or there's an issue with io's build system; force the path in
@@ -16,6 +17,9 @@ class Io < Formula
   end
 
   def install
+    opoo "IO fails to build often!"
+    puts "There is no stable revision: https://github.com/mxcl/homebrew/issues/7399"
+
     ENV.j1
     mkdir 'io-build'
 

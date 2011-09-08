@@ -1,9 +1,9 @@
 require 'formula'
 
 class FluidSynth < Formula
-  url 'http://mirrors.zerg.biz/nongnu/fluid/fluidsynth-1.1.1.tar.gz'
-  homepage 'http://fluidsynth.resonance.org/trac'
-  md5 '0db3da78028d255026230809c6e21b44'
+  url 'http://sourceforge.net/projects/fluidsynth/files/fluidsynth-1.1.3/fluidsynth-1.1.3.tar.gz'
+  homepage 'http://www.fluidsynth.org/'
+  md5 '0d3e3cc770b4da413010dfb7dfdce9c8'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'

@@ -194,16 +194,31 @@ def check_gcc_versions
     EOS
   end
 
-  if gcc_40 == nil
-    puts <<-EOS.undent
-      We couldn't detect gcc 4.0.x. Some formulae require this compiler.
+  if MacOS.xcode_version == nil
+      puts <<-EOS.undent
+        We couldn't detect any version of Xcode.
+        If you downloaded Xcode 4.1 from the App Store, you may need to run the installer.
 
-    EOS
-  elsif gcc_40 < RECOMMENDED_GCC_40
-    puts <<-EOS.undent
-      Your gcc 4.0.x version is older than the recommended version. It may be advisable
-      to upgrade to the latest release of Xcode.
+      EOS
+  elsif MacOS.xcode_version < "4.0"
+    if gcc_40 == nil
+      puts <<-EOS.undent
+        We couldn't detect gcc 4.0.x. Some formulae require this compiler.
 
+      EOS
+    elsif gcc_40 < RECOMMENDED_GCC_40
+      puts <<-EOS.undent
+        Your gcc 4.0.x version is older than the recommended version. It may be advisable
+        to upgrade to the latest release of Xcode.
+
+      EOS
+    end
+  end
+
+  unless File.exist? '/usr/bin/cc'
+    puts <<-EOS.undent
+      You have no /usr/bin/cc. This will cause numerous build issues. Please
+      reinstall Xcode.
     EOS
   end
 end
@@ -231,24 +246,6 @@ def __check_subdir_access base
     EOS
     puts *cant_read.collect { |f| "    #{f}" }
     puts
-  end
-end
-
-def check_access_usr_local
-  return unless HOMEBREW_PREFIX.to_s == '/usr/local'
-
-  unless Pathname('/usr/local').writable?
-    puts <<-EOS.undent
-    The /usr/local directory is not writable.
-
-    Even if this folder was writable when you installed Homebrew, other
-    software may change permissions on this folder. Some versions of the
-    "InstantOn" component of Airfoil are known to do this.
-
-    You should probably change the ownership and permissions of /usr/local
-    back to your user account.
-
-    EOS
   end
 end
 
@@ -317,7 +314,20 @@ def check_homebrew_prefix
   unless HOMEBREW_PREFIX.to_s == '/usr/local'
     puts <<-EOS.undent
       You can install Homebrew anywhere you want, but some brews may only work
+      You can install Homebrew anywhere you want, but some brews may only build
       correctly if you install to /usr/local.
+
+    EOS
+  end
+end
+
+def check_xcode_prefix
+  prefix = MacOS.xcode_prefix
+  return if prefix.nil?
+  if prefix.to_s.match(' ')
+    puts <<-EOS.undent
+      Xcode is installed to a folder with a space in the name.
+      This may cause some formulae, such as libiconv, to fail to build.
 
     EOS
   end
@@ -328,25 +338,29 @@ def check_user_path
   seen_prefix_sbin = false
   seen_usr_bin = false
 
-  path_folders.each do |p|
-    if p == '/usr/bin'
+  path_folders.each do |p| case p
+    when '/usr/bin'
       seen_usr_bin = true
       unless seen_prefix_bin
-        puts <<-EOS.undent
-          /usr/bin is in your PATH before Homebrew's bin. This means that system-
-          provided programs will be used before Homebrew-provided ones. This is an
-          issue if you install, for instance, Python.
+        # only show the doctor message if there are any conflicts
+        # rationale: a default install should not trigger any brew doctor messages
+        if Dir["#{HOMEBREW_PREFIX}/bin/*"].any? {|fn| File.exist? "/usr/bin/#{File.basename fn}"}
+          ohai "/usr/bin occurs before #{HOMEBREW_PREFIX}/bin"
+          puts <<-EOS.undent
+            This means that system-provided programs will be used instead of those
+            provided by Homebrew. This is an issue if you eg. brew installed Python.
 
-          Consider editing your .bashrc to put:
-            #{HOMEBREW_PREFIX}/bin
-          ahead of /usr/bin in your $PATH.
-
-        EOS
+            Consider editing your .bashrc to put:
+              #{HOMEBREW_PREFIX}/bin
+            ahead of /usr/bin in your $PATH.
+          EOS
+        end
       end
+    when "#{HOMEBREW_PREFIX}/bin"
+      seen_prefix_bin = true
+    when "#{HOMEBREW_PREFIX}/sbin"
+      seen_prefix_sbin = true
     end
-
-    seen_prefix_bin  = true if p == "#{HOMEBREW_PREFIX}/bin"
-    seen_prefix_sbin = true if p == "#{HOMEBREW_PREFIX}/sbin"
   end
 
   unless seen_prefix_bin
@@ -362,7 +376,8 @@ def check_user_path
   end
 
   # Don't complain about sbin not being in the path if it doesn't exist
-  if (HOMEBREW_PREFIX+'sbin').exist?
+  sbin = (HOMEBREW_PREFIX+'sbin')
+  if sbin.directory? and sbin.children.length > 0
     unless seen_prefix_sbin
       puts <<-EOS.undent
         Some brews install binaries to sbin instead of bin, but Homebrew's
@@ -496,7 +511,7 @@ end
 def check_for_dyld_vars
   if ENV['DYLD_LIBRARY_PATH']
     puts <<-EOS.undent
-      Setting DYLD_LIBARY_PATH can break dynamic linking.
+      Setting DYLD_LIBRARY_PATH can break dynamic linking.
       You should probably unset it.
 
     EOS
@@ -591,11 +606,12 @@ def check_git_newline_settings
 end
 
 def check_for_autoconf
-  which_autoconf = `/usr/bin/which autoconf`.chomp
-  unless (which_autoconf == '/usr/bin/autoconf' or which_autoconf == '/Developer/usr/bin/autoconf')
+  autoconf = `/usr/bin/which autoconf`.chomp
+  safe_autoconfs = %w[/usr/bin/autoconf /Developer/usr/bin/autoconf]
+  unless autoconf.empty? or safe_autoconfs.include? autoconf
     puts <<-EOS.undent
       An "autoconf" in your path blocking the Xcode-provided version at:
-        #{which_autoconf}
+        #{autoconf}
 
       This custom autoconf may cause some Homebrew formulae to fail to compile.
 
@@ -681,10 +697,10 @@ end
 
 def check_for_GREP_OPTIONS
   target_var = ENV['GREP_OPTIONS'].to_s
-  unless target_var.empty?
+  unless target_var.empty? or target_var == '--color=auto'
     puts <<-EOS.undent
     $GREP_OPTIONS was set to \"#{target_var}\".
-    Having $GREP_OPTIONS set can cause CMake builds to fail.
+    Having $GREP_OPTIONS set this way can cause CMake builds to fail.
 
     EOS
   end
@@ -697,7 +713,7 @@ def check_for_other_frameworks
       puts <<-EOS.undent
         #{f} detected
 
-        This will be picked up by Cmake's build system and likey cause the
+        This will be picked up by Cmake's build system and likely cause the
         build to fail, trying to link to a 32-bit version of expat.
         You may need to move this file out of the way to compile Cmake.
 
@@ -709,10 +725,27 @@ def check_for_other_frameworks
     puts <<-EOS.undent
       /Library/Frameworks/Mono.framework detected
 
-      This can be picked up by Cmake's build system and likey cause the
+      This can be picked up by Cmake's build system and likely cause the
       build to fail, finding improper header files for libpng for instance.
 
     EOS
+  end
+end
+
+def check_tmpdir
+  tmpdir = ENV['TMPDIR']
+  return if tmpdir.nil?
+  if !File.directory?(tmpdir)
+    puts "$TMPDIR #{tmpdir.inspect} doesn't exist."
+    puts
+  end
+end
+
+def check_missing_deps
+  s = `brew missing`.strip
+  if s.length > 0
+    ohai "You should brew install these missing dependencies:"
+    puts s
   end
 end
 
@@ -724,6 +757,7 @@ module Homebrew extend self
     begin
       check_usr_bin_ruby
       check_homebrew_prefix
+      check_xcode_prefix
       check_for_macgpg2
       check_for_stray_dylibs
       check_for_stray_static_libs
@@ -733,7 +767,6 @@ module Homebrew extend self
       check_for_other_package_managers
       check_for_x11
       check_for_nonstandard_x11
-      check_access_usr_local
       check_access_include
       check_access_etc
       check_access_share
@@ -756,6 +789,8 @@ module Homebrew extend self
       check_for_autoconf
       check_for_linked_kegonly_brews
       check_for_other_frameworks
+      check_tmpdir
+      check_missing_deps
     ensure
       $stdout = old_stdout
     end
@@ -764,8 +799,7 @@ module Homebrew extend self
       puts warnings
       exit 1
     else
-      puts "Your OS X is ripe for brewing."
-      puts "Any troubles you may be experiencing are likely purely psychosomatic."
+      puts "Your system is raring to brew."
     end
   end
 end

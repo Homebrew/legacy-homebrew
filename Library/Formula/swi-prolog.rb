@@ -1,10 +1,10 @@
 require 'formula'
 
 class SwiProlog < Formula
-  url 'http://www.swi-prolog.org/download/stable/src/pl-5.10.2.tar.gz'
-  head 'git://www.swi-prolog.org/home/pl/git/pl.git'
   homepage 'http://www.swi-prolog.org/'
-  md5 '7973bcfd3854ae0cb647cc62f2faabcf'
+  url 'http://www.swi-prolog.org/download/stable/src/pl-5.10.4.tar.gz'
+  sha256 'e65275402e6d1aaaa07fa3dbb56f2f08cb688366d292324cc18b17bf0500bfb3'
+  head 'git://www.swi-prolog.org/home/pl/git/pl.git'
 
   depends_on 'pkg-config' => :build
   depends_on 'readline'

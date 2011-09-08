@@ -26,9 +26,10 @@ class Fontforge < Formula
     ENV.append "LDFLAGS", "-lintl"
     system "./configure", *args
 
+    # Fix hard-coded install locations that don't respect the target bindir
     inreplace "Makefile" do |s|
       s.gsub! "/Applications", "$(prefix)"
-      s.gsub! "/usr/local/bin", "$(bindir)"
+      s.gsub! "ln -s /usr/local/bin/fontforge", "ln -s $(bindir)/fontforge"
     end
 
     system "make"
@@ -41,7 +42,7 @@ class Fontforge < Formula
     To install the Mac OS X wrapper application run:
         brew linkapps
     or:
-        sudo ln -s #{prefix}/FontForge.app /Applications
+        ln -s #{prefix}/FontForge.app /Applications
     EOS
   end
 end
