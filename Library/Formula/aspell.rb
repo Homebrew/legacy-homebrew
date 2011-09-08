@@ -13,7 +13,7 @@ class Aspell < Formula
   homepage 'http://aspell.net/'
   md5 'e66a9c9af6a60dc46134fdacf6ce97d7'
 
-  fails_with_llvm "Segmentation fault during linking."
+  fails_with_llvm "Segmentation fault during linking.", :build => 2334
 
   def options
     [
