@@ -6,8 +6,7 @@ class SeleniumServerStandalone < Formula
   md5 'df59aecfcff3979f26ecf93f0a63837b'
 
   def install
-    system "mkdir -p /usr/local/Cellar/selenium-server-standalone/2.2.0"
-    system "cp selenium-server-standalone-2.2.0.jar /usr/local/Cellar/selenium-server-standalone/2.2.0"
+    prefix.install "selenium-server-standalone-2.2.0.jar"
     (prefix + "selenium-server-standalone.plist").write plist_file
   end
 
