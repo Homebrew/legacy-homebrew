@@ -181,12 +181,14 @@ If \fB\-\-git\fR is passed, Homebrew will create a Git repository, useful for cr
 Symlink all of \fIformula\fR\'s installed files into the Homebrew prefix\. This is done automatically when you install formula, but can be useful for DIY installations\.
 .
 .TP
-\fBlist\fR
-List all installed formulae\.
+\fBlist [\-\-versions]\fR [\fIformulae\fR]
+Without any arguments, list all installed formulae\.
 .
-.TP
-\fBlist\fR \fIformula\fR
-List the installed files for \fIformula\fR\.
+.IP
+If \fIformulae\fR are given, list the installed files for \fIformulae\fR\.
+.
+.IP
+If \fB\-\-versions\fR is passed, show the version number for installed formulae, or only the specified formulae if \fIformulae\fR are given\.
 .
 .TP
 \fBlog [git\-log\-options]\fR \fIformula\fR \.\.\.
