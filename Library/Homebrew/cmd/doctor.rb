@@ -749,6 +749,13 @@ def check_missing_deps
   end
 end
 
+def check_git_status
+  if system "/usr/bin/which -s git" and not `git status -s #{HOMEBREW_PREFIX}/Library/Homebrew`.empty?
+    ohai "You have uncommitted modifications to Homebrew core"
+    puts "Unless you know what you are doing, you should: git reset --hard"
+  end
+end
+
 module Homebrew extend self
   def doctor
     old_stdout = $stdout
@@ -791,6 +798,7 @@ module Homebrew extend self
       check_for_other_frameworks
       check_tmpdir
       check_missing_deps
+      check_git_status
     ensure
       $stdout = old_stdout
     end
