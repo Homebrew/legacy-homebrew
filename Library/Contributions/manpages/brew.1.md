@@ -290,11 +290,9 @@ Homebrew allows external commands to be defined by putting a +x file named
 `brew-<cmdname>` or `brew-<cmdname>.rb` on the PATH. This will cause Homebrew
 to recognize `brew cmdname`.
 
-Some sample commands ship with Homebrew and are enabled by default.
+Some example commands ship with Homebrew and are enabled by default.
 
     $ ls `brew --repository`/Library/Contributions/examples
-
-
 
 ## ENVIRONMENT
 
