@@ -1,10 +1,10 @@
 require 'formula'
 
 class Opencv < Formula
-  url 'http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/2.2/OpenCV-2.2.0.tar.bz2'
-  version "2.2"
+  url 'http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/2.3.1/OpenCV-2.3.1.tar.bz2'
+  version "2.3.1"
   homepage 'http://opencv.willowgarage.com/wiki/'
-  md5 '122c9ac793a46854ef2819fedbbd6b1b'
+  sha1 '65ec38aaad6e98f19d3dc2d4f017ce1ef8cbcb1b'
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
@@ -27,6 +27,7 @@ class Opencv < Formula
     system makefiles
     system "make"
     system "make install"
+    system "ln -s #{prefix}/lib/libopencv_legacy.dylib  #{prefix}/lib/libcv.dylib"
   end
 
   def caveats; <<-EOS.undent
