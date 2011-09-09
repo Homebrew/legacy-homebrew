@@ -164,11 +164,13 @@ For the full command list, see the COMMANDS section.
     is done automatically when you install formula, but can be useful for DIY
     installations.
 
-  * `list`:
-    List all installed formulae.
+  * `list [--versions]` [<formulae>]:
+    Without any arguments, list all installed formulae.
 
-  * `list` <formula>:
-    List the installed files for <formula>.
+    If <formulae> are given, list the installed files for <formulae>.
+
+    If `--versions` is passed, show the version number for installed formulae,
+    or only the specified formulae if <formulae> are given.
 
   * `log [git-log-options]` <formula> ...:
     Show the git log for the given formulae. Options that `git-log`(1)
