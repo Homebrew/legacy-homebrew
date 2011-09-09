@@ -9,7 +9,7 @@ class Nmap < Formula
   # Leopard's version of OpenSSL isn't new enough
   depends_on "openssl" if MacOS.leopard?
 
-  fails_with_llvm
+  fails_with_llvm :build => 2334
 
   def install
     ENV.deparallelize
