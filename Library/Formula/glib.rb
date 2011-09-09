@@ -44,7 +44,7 @@ class Glib < Formula
     # indeed, amazingly, -w causes gcc to emit spurious errors for this package!
     ENV.enable_warnings
 
-    args = ["--disable-dependency-tracking", "--disable-rebuilds",
+    args = ["--disable-dependency-tracking", "--disable-rebuilds", "--disable-glib",
             "--prefix=#{prefix}",
             "--with-libiconv=gnu"]
 
