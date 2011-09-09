@@ -1,9 +1,9 @@
 require 'formula'
 
 class Dwm < Formula
-  url 'http://dl.suckless.org/dwm/dwm-5.8.2.tar.gz'
+  url 'http://dl.suckless.org/dwm/dwm-5.9.tar.gz'
   homepage 'http://dwm.suckless.org/'
-  md5 'f0b422bfeaa812d66c6dd15c3cc92a6b'
+  md5 '2799f885c05817ca112d521bb247f797'
   head 'http://hg.suckless.org/dwm'
 
   def install

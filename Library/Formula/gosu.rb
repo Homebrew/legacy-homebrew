@@ -1,10 +1,10 @@
 require 'formula'
 
 class Gosu < Formula
-  url 'http://gosu-lang.org/downloads/gosu-0.7.0.1-C.zip'
-  version '0.7.0.1-C'
+  url 'http://gosu-lang.org/downloads/gosu-0.8.6.1-C/gosu-0.8.6.1-C.tgz'
+  version '0.8.6.1-C'
   homepage 'http://gosu-lang.org/'
-  md5 '3ea42cdc403ee57397a9559f6a95be67'
+  md5 '0689133a2d0d90368ed4fe1d2f3ef0f0'
 
   def install
     mv "bin/gosu.sh", "bin/gosu"

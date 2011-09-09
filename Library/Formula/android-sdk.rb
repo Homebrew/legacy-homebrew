@@ -21,7 +21,7 @@ class AndroidSdk < Formula
     mv 'tools', prefix
 
     %w[android apkbuilder ddms dmtracedump draw9patch emulator
-           hierarchyviewer hprof-conv layoutopt mksdcard traceview
+           hierarchyviewer hprof-conv layoutopt monkeyrunner mksdcard traceview
            zipalign].each do |tool|
       (bin/tool).make_link(prefix/'tools'/tool)
     end
@@ -35,12 +35,13 @@ class AndroidSdk < Formula
       dst.make_relative_symlink src
     end
 
-    (bin/:adb).write <<-EOS.undent
+    (bin+'adb').write <<-EOS.undent
       #!/bin/sh
       ADB="#{prefix}/platform-tools/adb"
       test -f "$ADB" && exec "$ADB" "$@"
       echo Use the \\`android\\' tool to install adb.
       EOS
+    (bin+'adb').chmod 0755
   end
 
   def caveats; <<-EOS.undent

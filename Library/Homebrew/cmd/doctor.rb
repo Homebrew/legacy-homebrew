@@ -214,6 +214,13 @@ def check_gcc_versions
       EOS
     end
   end
+
+  unless File.exist? '/usr/bin/cc'
+    puts <<-EOS.undent
+      You have no /usr/bin/cc. This will cause numerous build issues. Please
+      reinstall Xcode.
+    EOS
+  end
 end
 
 def __check_subdir_access base
@@ -239,24 +246,6 @@ def __check_subdir_access base
     EOS
     puts *cant_read.collect { |f| "    #{f}" }
     puts
-  end
-end
-
-def check_access_usr_local
-  return unless HOMEBREW_PREFIX.to_s == '/usr/local'
-
-  unless Pathname('/usr/local').writable?
-    puts <<-EOS.undent
-    The /usr/local directory is not writable.
-
-    Even if this folder was writable when you installed Homebrew, other
-    software may change permissions on this folder. Some versions of the
-    "InstantOn" component of Airfoil are known to do this.
-
-    You should probably change the ownership and permissions of /usr/local
-    back to your user account.
-
-    EOS
   end
 end
 
@@ -325,7 +314,20 @@ def check_homebrew_prefix
   unless HOMEBREW_PREFIX.to_s == '/usr/local'
     puts <<-EOS.undent
       You can install Homebrew anywhere you want, but some brews may only work
+      You can install Homebrew anywhere you want, but some brews may only build
       correctly if you install to /usr/local.
+
+    EOS
+  end
+end
+
+def check_xcode_prefix
+  prefix = MacOS.xcode_prefix
+  return if prefix.nil?
+  if prefix.to_s.match(' ')
+    puts <<-EOS.undent
+      Xcode is installed to a folder with a space in the name.
+      This may cause some formulae, such as libiconv, to fail to build.
 
     EOS
   end
@@ -336,25 +338,29 @@ def check_user_path
   seen_prefix_sbin = false
   seen_usr_bin = false
 
-  path_folders.each do |p|
-    if p == '/usr/bin'
+  path_folders.each do |p| case p
+    when '/usr/bin'
       seen_usr_bin = true
       unless seen_prefix_bin
-        puts <<-EOS.undent
-          /usr/bin is in your PATH before Homebrew's bin. This means that system-
-          provided programs will be used before Homebrew-provided ones. This is an
-          issue if you install, for instance, Python.
+        # only show the doctor message if there are any conflicts
+        # rationale: a default install should not trigger any brew doctor messages
+        if Dir["#{HOMEBREW_PREFIX}/bin/*"].any? {|fn| File.exist? "/usr/bin/#{File.basename fn}"}
+          ohai "/usr/bin occurs before #{HOMEBREW_PREFIX}/bin"
+          puts <<-EOS.undent
+            This means that system-provided programs will be used instead of those
+            provided by Homebrew. This is an issue if you eg. brew installed Python.
 
-          Consider editing your .bashrc to put:
-            #{HOMEBREW_PREFIX}/bin
-          ahead of /usr/bin in your $PATH.
-
-        EOS
+            Consider editing your .bashrc to put:
+              #{HOMEBREW_PREFIX}/bin
+            ahead of /usr/bin in your $PATH.
+          EOS
+        end
       end
+    when "#{HOMEBREW_PREFIX}/bin"
+      seen_prefix_bin = true
+    when "#{HOMEBREW_PREFIX}/sbin"
+      seen_prefix_sbin = true
     end
-
-    seen_prefix_bin  = true if p == "#{HOMEBREW_PREFIX}/bin"
-    seen_prefix_sbin = true if p == "#{HOMEBREW_PREFIX}/sbin"
   end
 
   unless seen_prefix_bin
@@ -370,7 +376,8 @@ def check_user_path
   end
 
   # Don't complain about sbin not being in the path if it doesn't exist
-  if (HOMEBREW_PREFIX+'sbin').exist?
+  sbin = (HOMEBREW_PREFIX+'sbin')
+  if sbin.directory? and sbin.children.length > 0
     unless seen_prefix_sbin
       puts <<-EOS.undent
         Some brews install binaries to sbin instead of bin, but Homebrew's
@@ -504,7 +511,7 @@ end
 def check_for_dyld_vars
   if ENV['DYLD_LIBRARY_PATH']
     puts <<-EOS.undent
-      Setting DYLD_LIBARY_PATH can break dynamic linking.
+      Setting DYLD_LIBRARY_PATH can break dynamic linking.
       You should probably unset it.
 
     EOS
@@ -725,6 +732,23 @@ def check_for_other_frameworks
   end
 end
 
+def check_tmpdir
+  tmpdir = ENV['TMPDIR']
+  return if tmpdir.nil?
+  if !File.directory?(tmpdir)
+    puts "$TMPDIR #{tmpdir.inspect} doesn't exist."
+    puts
+  end
+end
+
+def check_missing_deps
+  s = `brew missing`.strip
+  if s.length > 0
+    ohai "You should brew install these missing dependencies:"
+    puts s
+  end
+end
+
 module Homebrew extend self
   def doctor
     old_stdout = $stdout
@@ -733,6 +757,7 @@ module Homebrew extend self
     begin
       check_usr_bin_ruby
       check_homebrew_prefix
+      check_xcode_prefix
       check_for_macgpg2
       check_for_stray_dylibs
       check_for_stray_static_libs
@@ -742,7 +767,6 @@ module Homebrew extend self
       check_for_other_package_managers
       check_for_x11
       check_for_nonstandard_x11
-      check_access_usr_local
       check_access_include
       check_access_etc
       check_access_share
@@ -765,6 +789,8 @@ module Homebrew extend self
       check_for_autoconf
       check_for_linked_kegonly_brews
       check_for_other_frameworks
+      check_tmpdir
+      check_missing_deps
     ensure
       $stdout = old_stdout
     end
@@ -773,8 +799,7 @@ module Homebrew extend self
       puts warnings
       exit 1
     else
-      puts "Your OS X is ripe for brewing."
-      puts "Any troubles you may be experiencing are likely purely psychosomatic."
+      puts "Your system is raring to brew."
     end
   end
 end

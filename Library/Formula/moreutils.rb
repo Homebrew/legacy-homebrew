@@ -2,8 +2,8 @@ require 'formula'
 
 class Moreutils < Formula
   homepage 'http://packages.debian.org/unstable/utils/moreutils'
-  url 'http://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.41.tar.gz'
-  md5 '598c412bbc452b436becce8bd28df377'
+  url 'http://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.45.tar.gz'
+  md5 'b30306cd7312219551b890fbcbf984c4'
 
   def install
     # Building the man pages requires DocBook, so we skip them.

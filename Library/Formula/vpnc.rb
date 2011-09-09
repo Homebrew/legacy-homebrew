@@ -17,6 +17,11 @@ class Vpnc < Formula
     [["--hybrid", "Use vpnc hybrid authentication."]]
   end
 
+  # Patch from user @Imagesafari to enable compilation on Lion
+  def patches
+    DATA if MacOS.lion?
+  end
+
   def install
     ENV.no_optimization
     ENV.deparallelize
@@ -52,3 +57,15 @@ class Vpnc < Formula
     EOS
   end
 end
+
+__END__
+--- vpnc-0.5.3/sysdep.h	2008-11-19 15:36:12.000000000 -0500
++++ vpnc-0.5.3.patched/sysdep.h	2011-07-14 12:49:18.000000000 -0400
+@@ -109,6 +109,7 @@
+ #define HAVE_FGETLN    1
+ #define HAVE_UNSETENV  1
+ #define HAVE_SETENV    1
++#define HAVE_GETLINE   1
+ #endif
+ 
+ /***************************************************************************/
