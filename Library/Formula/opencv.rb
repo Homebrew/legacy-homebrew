@@ -27,6 +27,7 @@ class Opencv < Formula
     system makefiles
     system "make"
     system "make install"
+    system "ln -s #{prefix}/lib/libopencv_legacy.dylib  #{prefix}/lib/libcv.dylib"
   end
 
   def caveats; <<-EOS.undent
