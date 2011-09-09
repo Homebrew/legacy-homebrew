@@ -138,7 +138,7 @@ class PerconaServer < Formula
       <key>KeepAlive</key>
       <true/>
       <key>Label</key>
-      <string>com.mysql.mysqld</string>
+      <string>com.percona.mysqld</string>
       <key>Program</key>
       <string>#{bin}/mysqld_safe</string>
       <key>RunAtLoad</key>
