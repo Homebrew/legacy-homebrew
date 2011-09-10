@@ -12,7 +12,7 @@ module Homebrew extend self
 end
 
 class RefreshBrew
-  REPOSITORY_URL = "http://github.com/mxcl/homebrew.git"
+  REPOSITORY_URL = "https://github.com/mxcl/homebrew.git"
   FORMULA_DIR = 'Library/Formula/'
   EXAMPLE_DIR = 'Library/Contributions/examples/'
 
