@@ -488,6 +488,11 @@ protected
     pretty_args.delete "--disable-dependency-tracking" if cmd == "./configure" and not ARGV.verbose?
     ohai "#{cmd} #{pretty_args*' '}".strip
 
+    removed_ENV_variables = case if args.empty? then cmd.split(' ').first else cmd end
+    when "xcodebuild"
+      ENV.remove_cc_etc
+    end
+
     if ARGV.verbose?
       safe_system cmd, *args
     else
@@ -508,6 +513,11 @@ protected
         raise
       end
     end
+
+    removed_ENV_variables.each do |key, value|
+      ENV[key] = value # ENV.kind_of? Hash  # => false
+    end if removed_ENV_variables
+
   rescue
     raise BuildError.new(self, cmd, args, $?)
   end

@@ -351,4 +351,13 @@ Please take one of the following actions:
       Hardware.processor_count
     end
   end
+
+  def remove_cc_etc
+    keys = %w{CC CXX LD CPP LDFLAGS CFLAGS CPPFLAGS}
+    removed = Hash[*keys.map{ |key| [key, ENV[key]] }.flatten]
+    keys.each do |key|
+      ENV[key] = nil
+    end
+    removed
+  end
 end
