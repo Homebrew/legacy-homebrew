@@ -17,6 +17,9 @@ class Io < Formula
   end
 
   def install
+    opoo "IO fails to build often!"
+    puts "There is no stable revision: https://github.com/mxcl/homebrew/issues/7399"
+
     ENV.j1
     mkdir 'io-build'
 
