@@ -3,6 +3,8 @@ require 'formula'
 def ff
   if ARGV.include? "--all"
     Formula.all
+  elsif ARGV.include? "--installed"
+    Formula.all.reject{ |f| not f.installed? }
   else
     ARGV.formulae
   end
