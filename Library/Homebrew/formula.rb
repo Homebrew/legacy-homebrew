@@ -458,6 +458,10 @@ class Formula
     HOMEBREW_REPOSITORY+"Library/Formula/#{name.downcase}.rb"
   end
 
+  def mirrors
+    self.class.mirrors or []
+  end
+
   def deps
     self.class.deps or []
   end
@@ -549,8 +553,26 @@ private
 
   CHECKSUM_TYPES=[:md5, :sha1, :sha256].freeze
 
-  public # for FormulaInstaller
+  public
+  # For brew-fetch and others.
+  def fetch
+    downloader = @downloader
+    mirror_list = mirrors
 
+    begin
+      fetched = downloader.fetch
+    rescue DownloadError => e
+      raise e if mirror_list.empty?
+      opoo "#{e.message}\nTrying a mirror."
+      url, specs = mirror_list.shift.values_at :url, :specs
+      downloader = download_strategy.new url, name, version, specs
+      retry
+    end
+
+    return fetched, downloader
+  end
+
+  # For FormulaInstaller.
   def verify_download_integrity fn, *args
     require 'digest'
     if args.length != 2
@@ -585,10 +607,10 @@ EOF
 
   def stage
     HOMEBREW_CACHE.mkpath
-    fetched = @downloader.fetch
+    fetched, downloader = fetch
     verify_download_integrity fetched if fetched.kind_of? Pathname
     mktemp do
-      @downloader.stage
+      downloader.stage
       yield
     end
   end
@@ -688,7 +710,7 @@ EOF
       end
     end
 
-    attr_rw :version, :homepage, :specs, :deps, :external_deps
+    attr_rw :version, :homepage, :mirrors, :specs, :deps, :external_deps
     attr_rw :keg_only_reason, :fails_with_llvm_reason, :skip_clean_all
     attr_rw :bottle, :bottle_sha1
     attr_rw(*CHECKSUM_TYPES)
@@ -705,6 +727,16 @@ EOF
       @stable = SoftwareSpecification.new(val, specs)
       @url = val
       @specs = specs
+    end
+
+    def mirror val, specs=nil
+      @mirrors ||= []
+      @mirrors << {:url => val, :specs => specs}
+      # Added the uniq after some inspection with Pry---seems `mirror` gets
+      # called three times. The first two times only one copy of the input is
+      # left in `@mirrors`. On the final call, two copies are present. This
+      # happens with `@deps` as well. Odd.
+      @mirrors.uniq!
     end
 
     def depends_on name
