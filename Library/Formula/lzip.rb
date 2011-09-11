@@ -1,9 +1,9 @@
 require 'formula'
 
 class Lzip < Formula
-  url 'http://download.savannah.gnu.org/releases/lzip/lzip-1.11.tar.gz'
+  url 'http://download.savannah.gnu.org/releases/lzip/lzip-1.12.tar.gz'
+  md5 '69a40172db5ce896b58d862c50fcd517'
   homepage 'http://www.nongnu.org/lzip/lzip.html'
-  md5 'ba9d0a705e47bcd2b73145d238aa7b58'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}",
