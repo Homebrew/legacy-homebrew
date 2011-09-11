@@ -228,7 +228,7 @@ begin
       elsif ARGV.named.empty?
         raise UsageError
       else
-        exec_editor(*ARGV.named.collect {|name| make name})
+        exec_editor(*ARGV.named.collect {|name| editmake name})
       end
 
     when 'diy', 'configure'

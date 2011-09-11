@@ -30,6 +30,27 @@ def check_for_blacklisted_formula names
   end
 end
 
+
+def editmake url
+  path = Pathname.new url
+
+  /(.*?)[-_.]?#{path.version}/.match path.basename
+
+  unless $1.to_s.empty?
+    name = $1
+  else
+    print "Formula name [#{path.stem}]: "
+    gots = $stdin.gets.chomp
+    if gots.empty?
+      name = path.stem
+    else
+      name = gots
+    end
+  end
+
+  "#{FORMULA_REPOSITORY}#{name.downcase}.rb"
+end
+
 def __make url, name
   require 'formula'
   require 'digest'

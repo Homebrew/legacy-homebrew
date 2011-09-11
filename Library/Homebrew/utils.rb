@@ -150,6 +150,9 @@ def exec_editor *args
     if system "#{SystemCommand.which_s} mate"
       # TextMate
       editor='mate'
+    elsif system "#{SystemCommand.which_s} gedit"
+      # gedit
+      editor='gedit'
     elsif system "#{SystemCommand.which_s} edit"
       # BBEdit / TextWrangler
       editor='edit'
