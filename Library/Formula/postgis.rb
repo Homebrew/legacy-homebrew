@@ -57,16 +57,22 @@ class Postgis < Formula
     system "make install"
 
     # Copy some of the generated files to the share folder
-    (share+'postgis').install %w(
-      spatial_ref_sys.sql postgis/postgis.sql
-      postgis/postgis_upgrade_13_to_15.sql
-      postgis/postgis_upgrade_14_to_15.sql
-      postgis/postgis_upgrade_15_minor.sql postgis/uninstall_postgis.sql
-    )
-
     if ARGV.build_head?
+      (share+'postgis').install %w(
+        spatial_ref_sys.sql postgis/postgis.sql
+        postgis/legacy.sql postgis/legacy_compatibility_layer.sql
+        postgis/postgis_upgrade_20_minor.sql
+        postgis/uninstall_legacy.sql postgis/uninstall_postgis.sql
+      )
       (share+'postgis').install 'raster/rt_pg/rtpostgis.sql' if raster?
       (share+'postgis').install 'topology/topology.sql' if topology?
+    else
+      (share+'postgis').install %w(
+        spatial_ref_sys.sql postgis/postgis.sql
+        postgis/postgis_upgrade_13_to_15.sql
+        postgis/postgis_upgrade_14_to_15.sql
+        postgis/postgis_upgrade_15_minor.sql postgis/uninstall_postgis.sql
+      )
     end
 
     # Copy loader and utils binaries to bin folder
@@ -74,6 +80,7 @@ class Postgis < Formula
       loader/pgsql2shp loader/shp2pgsql utils/create_undef.pl
       utils/new_postgis_restore.pl utils/postgis_proc_upgrade.pl
       utils/postgis_restore.pl utils/profile_intersects.pl
+      utils/test_estimation.pl utils/test_joinestimation.pl
     )
   end
 
