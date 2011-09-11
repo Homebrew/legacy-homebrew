@@ -15,6 +15,8 @@ class Cppunit < Formula
     ENV.universal_binary if ARGV.build_universal?
 
     system "./configure", *args
+    system "make"
+    system "make check"
     system "make install"
   end
 end
