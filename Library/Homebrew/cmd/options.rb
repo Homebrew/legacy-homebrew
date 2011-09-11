@@ -11,7 +11,7 @@ end
 module Homebrew extend self
   def options
     ff.each do |f|
-      f.options rescue next
+      next if f.options.empty?
       if ARGV.include? '--compact'
         puts f.options.collect {|o| o[0]} * " "
       else
