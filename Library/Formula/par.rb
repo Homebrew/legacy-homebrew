@@ -5,6 +5,10 @@ class Par < Formula
   homepage 'http://www.nicemice.net/par/'
   md5 '4ccacd824171ba2c2f14fb8aba78b9bf'
 
+  def patches
+    "http://www.nicemice.net/par/par_1.52-i18n.3.diff.gz"
+  end
+  
   def install
     system "make -f protoMakefile"
     bin.install "par"
