@@ -1,7 +1,7 @@
 require 'formula'
 
 class Ninja < Formula
-  head 'https://github.com/alexgartrell/ninja.git'
+  head 'https://github.com/martine/ninja.git'
   homepage 'https://github.com/martine/ninja'
 
   def install
