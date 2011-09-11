@@ -6,6 +6,8 @@ class Rock < Formula
   md5 '8e3afbd3e31b977930692ee781e84529'
   head 'https://github.com/nddrylliog/rock.git'
 
+  fails_with_llvm "Fails in function 'AO_test_and_set_full' with an 'unsupported inline asm' error"
+
   def install
       # make rock using provided bootstrap
       system "make"
