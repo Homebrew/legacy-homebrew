@@ -15,6 +15,6 @@ class Aamath < Formula
   end
 
   def test
-    system "cat #{prefix}/testcases | aamath"
+    system "cat #{prefix}/testcases | #{bin}/aamath"
   end
 end

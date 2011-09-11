@@ -76,7 +76,12 @@ class FailsWithLLVM
   attr_reader :msg, :data, :build
 
   def initialize msg=nil, data=nil
-    @msg = msg || "(No specific reason was given)"
+    if msg.nil? or msg.kind_of? Hash
+      @msg = "(No specific reason was given)"
+      data = msg
+    else
+      @msg = msg
+    end
     @data = data
     @build = data.delete :build rescue nil
   end
@@ -224,7 +229,14 @@ class Formula
   end
 
   def fails_with_llvm?
-    self.class.fails_with_llvm_reason || false
+    llvm = self.class.fails_with_llvm_reason
+    if llvm
+      if llvm.build and MacOS.llvm_build_version.to_i > llvm.build.to_i
+        false
+      else
+        llvm
+      end
+    end
   end
 
   # sometimes the clean process breaks things
@@ -251,9 +263,21 @@ class Formula
         # so load any deps before this point! And exit asap afterwards
         yield self
       rescue Interrupt, RuntimeError, SystemCallError => e
-        raise unless ARGV.debug?
+        unless ARGV.debug?
+          logs = File.expand_path '~/Library/Logs/Homebrew/'
+          if File.exist? 'config.log'
+            mkdir_p logs
+            mv 'config.log', logs
+          end
+          if File.exist? 'CMakeCache.txt'
+            mkdir_p logs
+            mv 'CMakeCache.txt', logs
+          end
+          raise
+        end
         onoe e.inspect
         puts e.backtrace
+
         ohai "Rescuing build..."
         if (e.was_running_configure? rescue false) and File.exist? 'config.log'
           puts "It looks like an autotools configure failed."
@@ -298,16 +322,26 @@ class Formula
   def handle_llvm_failure llvm
     case ENV.compiler
     when :llvm, :clang
-      opoo "LLVM was requested, but this formula is reported to not work with LLVM:"
+      # version 2335 is the latest version as of Xcode 4.1, so it is the
+      # latest version we have tested against so we will switch to GCC and
+      # bump this integer when Xcode 4.2 is released. TODO do that!
+      if llvm.build.to_i >= 2335
+        opoo "Formula will not build with LLVM, using GCC"
+        ENV.gcc :force => true
+        return
+      end
+      opoo "Building with LLVM, but this formula is reported to not work with LLVM:"
       puts
       puts llvm.reason
       puts
-      puts "We are continuing anyway so if the build succeeds, please let us know so we"
-      puts "can update the formula. If it doesn't work you can: brew install --use-gcc"
+      puts <<-EOS.undent
+        We are continuing anyway so if the build succeeds, please open a ticket with
+        the following information: #{MacOS.llvm_build_version}-#{MACOS_VERSION}. So
+        that we can update the formula accordingly. Thanks!
+        EOS
       puts
-    else
-      ENV.gcc if MacOS.default_cc =~ /llvm/
-      return
+      puts "If it doesn't work you can: brew install --use-gcc"
+      puts
     end
   end
 
@@ -454,6 +488,11 @@ protected
     pretty_args.delete "--disable-dependency-tracking" if cmd == "./configure" and not ARGV.verbose?
     ohai "#{cmd} #{pretty_args*' '}".strip
 
+    removed_ENV_variables = case if args.empty? then cmd.split(' ').first else cmd end
+    when "xcodebuild"
+      ENV.remove_cc_etc
+    end
+
     if ARGV.verbose?
       safe_system cmd, *args
     else
@@ -474,6 +513,11 @@ protected
         raise
       end
     end
+
+    removed_ENV_variables.each do |key, value|
+      ENV[key] = value # ENV.kind_of? Hash  # => false
+    end if removed_ENV_variables
+
   rescue
     raise BuildError.new(self, cmd, args, $?)
   end
@@ -594,10 +638,12 @@ EOF
 
     return if patch_list.empty?
 
-    ohai "Downloading patches"
-    # downloading all at once is much more efficient, especially for FTP
-    patches = patch_list.collect{|p| p[:curl_args]}.select{|p| p}.flatten
-    curl(*patches)
+    external_patches = patch_list.collect{|p| p[:curl_args]}.select{|p| p}.flatten
+    unless external_patches.empty?
+      ohai "Downloading patches"
+      # downloading all at once is much more efficient, especially for FTP
+      curl(*external_patches)
+    end
 
     ohai "Patching"
     patch_list.each do |p|

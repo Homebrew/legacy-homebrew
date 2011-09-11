@@ -94,7 +94,7 @@ class Emacs < Formula
           #{prefix}
 
         Command-line emacs can be used by setting up an alias:
-          alias emacs=#{prefix}/Emacs.app/Contents/MacOS/Emacs -nw
+          alias emacs="#{prefix}/Emacs.app/Contents/MacOS/Emacs -nw"
 
       EOS
     end
