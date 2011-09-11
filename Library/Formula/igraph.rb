@@ -10,7 +10,13 @@ class Igraph < Formula
 
   fails_with_llvm "Segfault while compiling."
 
+  def options
+    [["--universal", "Build a universal binary."]]
+  end
+
   def install
+    ENV.universal_binary if ARGV.build_universal?
+
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
