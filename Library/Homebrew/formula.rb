@@ -344,7 +344,7 @@ class Formula
   end
 
   def self.path name
-    "#{FORMULA_REPOSITORY}/#{name.downcase}.rb"
+    "#{FORMULA_REPOSITORY}#{name.downcase}.rb"
   end
 
   def deps
