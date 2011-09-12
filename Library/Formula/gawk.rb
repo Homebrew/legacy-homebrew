@@ -1,7 +1,7 @@
 require 'formula'
 
 class Gawk < Formula
-  url 'http://ftp.gnu.org/gnu/gawk/gawk-4.0.0.tar.bz2'
+  url 'http://ftpmirror.gnu.org/gawk/gawk-4.0.0.tar.bz2'
   homepage 'http://www.gnu.org/software/gawk/'
   md5 '7cdc48e99b885a4bbe0e98dcf1706b22'
 
