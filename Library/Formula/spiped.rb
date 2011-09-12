@@ -1,9 +1,9 @@
 require 'formula'
 
 class Spiped < Formula
-  url 'http://www.tarsnap.com/spiped/spiped-1.0.0.tgz'
+  url 'http://www.tarsnap.com/spiped/spiped-1.1.0.tgz'
   homepage 'http://www.tarsnap.com/spiped.html'
-  sha256 '82df05533bf8d8580f57e6dbec7d7e2966eabd3ea7a0a0bb06f87000947969a3'
+  sha256 'b727b902310d217d56c07d503c4175c65387ff07c9cd50a24584903faf9f3dc3'
 
   def install
     inreplace 'Makefile' do |s|
