@@ -164,11 +164,13 @@ For the full command list, see the COMMANDS section.
     is done automatically when you install formula, but can be useful for DIY
     installations.
 
-  * `list`:
-    List all installed formulae.
+  * `list [--versions]` [<formulae>]:
+    Without any arguments, list all installed formulae.
 
-  * `list` <formula>:
-    List the installed files for <formula>.
+    If <formulae> are given, list the installed files for <formulae>.
+
+    If `--versions` is passed, show the version number for installed formulae,
+    or only the specified formulae if <formulae> are given.
 
   * `log [git-log-options]` <formula> ...:
     Show the git log for the given formulae. Options that `git-log`(1)
@@ -254,7 +256,7 @@ For the full command list, see the COMMANDS section.
     If <formulae> are given, only list versions for the specified brews.
 
   * `--cache`:
-    Display Homebrew's download cache. *Default:* `~/Library/Cache/Homebrew`
+    Display Homebrew's download cache. *Default:* `~/Library/Caches/Homebrew`
 
   * `--cache` <formula>:
     Display the file or folder used to cache <formula>.
@@ -290,11 +292,9 @@ Homebrew allows external commands to be defined by putting a +x file named
 `brew-<cmdname>` or `brew-<cmdname>.rb` on the PATH. This will cause Homebrew
 to recognize `brew cmdname`.
 
-Some sample commands ship with Homebrew and are enabled by default.
+Some example commands ship with Homebrew and are enabled by default.
 
     $ ls `brew --repository`/Library/Contributions/examples
-
-
 
 ## ENVIRONMENT
 
