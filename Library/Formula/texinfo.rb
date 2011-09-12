@@ -1,7 +1,7 @@
 require 'formula'
 
 class Texinfo < Formula
-  url 'http://ftp.gnu.org/gnu/texinfo/texinfo-4.13a.tar.gz'
+  url 'http://ftpmirror.gnu.org/texinfo/texinfo-4.13a.tar.gz'
   homepage 'http://www.gnu.org/software/texinfo/'
   md5 '71ba711519209b5fb583fed2b3d86fcb'
 
