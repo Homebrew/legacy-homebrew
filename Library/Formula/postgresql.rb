@@ -3,8 +3,8 @@ require 'hardware'
 
 class Postgresql < Formula
   homepage 'http://www.postgresql.org/'
-  url 'http://ftp9.us.postgresql.org/pub/mirrors/postgresql/source/v9.0.4/postgresql-9.0.4.tar.bz2'
-  md5 '80390514d568a7af5ab61db1cda27e29'
+  url 'http://ftp9.us.postgresql.org/pub/mirrors/postgresql/source/v9.1.0/postgresql-9.1.0.tar.bz2'
+  md5 '0497b9da1d7c380c340a9a87ba5500fe'
 
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.leopard? # Leopard libxml is too old
@@ -57,7 +57,7 @@ class Postgresql < Formula
     system "make install"
     system "make install-docs"
 
-    contrib_directories = Dir.glob("contrib/*").select{ |path| File.directory?(path) } - ['contrib/start-scripts']
+    contrib_directories = Dir.glob("contrib/*").select{ |path| File.directory?(path) } - ['contrib/start-scripts', 'contrib/sepgsql']
 
     contrib_directories.each do |contrib_directory|
       system "cd #{contrib_directory}; make install"
