@@ -79,6 +79,7 @@ class Emacs < Formula
       ln_s prefix+'Emacs.app/Contents/MacOS/bin/etags', bin
     else
       if ARGV.include? "--with-x"
+        ENV.x11
         args << "--with-x"
         args << "--with-gif=no" << "--with-tiff=no" << "--with-jpeg=no"
       else
