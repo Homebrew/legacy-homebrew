@@ -2,9 +2,8 @@ require 'formula'
 
 class Zoltan < Formula
   url 'http://trilinos.sandia.gov/download/files/trilinos-10.6.4-Source.tar.gz'
-  homepage ''
+  homepage 'http://www.cs.sandia.gov/Zoltan'
   md5 '75b393e633bde4d9565df304f84b52e4'
-
   version '3.3'
 
   def options
