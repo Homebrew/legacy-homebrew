@@ -5,6 +5,8 @@ class Emacs < Formula
   md5 'f2cf8dc6f28f8ae59bc695b4ddda339c'
   homepage 'http://www.gnu.org/software/emacs/'
 
+  fails_with_llvm "Duplicate symbol errors while linking.", :build => 2334
+
   # Stripping on Xcode 4 causes malformed object errors
   skip_clean ["bin/emacs", "bin/emacs-23.3", "bin/emacs-24.0.50"]
 
@@ -43,8 +45,6 @@ class Emacs < Formula
 
     return p
   end
-
-  fails_with_llvm "Duplicate symbol errors while linking."
 
   def install
     args = ["--prefix=#{prefix}",
