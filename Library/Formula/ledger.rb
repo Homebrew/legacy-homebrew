@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ledger < Formula
-  url 'ftp://ftp.newartisans.com/pub/ledger/ledger-2.6.2.tar.gz'
-  md5 'b2e6fa98e7339d1e130b1ea9af211c0f'
-  homepage 'http://www.newartisans.com/software/ledger.html'
+  url 'ftp://ftp.newartisans.com/pub/ledger/ledger-2.6.3.tar.gz'
+  md5 '6d5d8396b1cdde5f605854c7d21d1460'
+  homepage 'http://ledger-cli.org'
   head 'https://github.com/jwiegley/ledger.git', :branch => 'next'
 
   depends_on 'gettext'
