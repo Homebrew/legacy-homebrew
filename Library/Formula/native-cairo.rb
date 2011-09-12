@@ -20,10 +20,15 @@ class NativeCairo < Formula
     # https://trac.macports.org/ticket/30370
     # https://trac.macports.org/browser/trunk/dports/graphics/cairo/Portfile
     ENV.gcc_4_2
+    ENV.append 'CFLAGS', '-g3 -O0'
+    ENV.append 'CXXFLAGS', '-g3 -O0'
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-quartz", "--enable-quartz-font", "--enable-quartz-image",
-                          "--enable-gl", "--enable-glx"
+                          "--disable-xlib", "--disable-xcb", "--without-x",
+                          # enable useful features
+                          "--enable-ft", "--enable-pdf", "--enable-png", "--enable-ps", 
+                          "--enable-script", "--enable-svg", "--enable-tee", "--enable-xml"
     system "make install"
   end
 end
