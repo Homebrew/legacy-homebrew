@@ -11,7 +11,7 @@ class Djvu2pdf < Formula
   def install
     system "chmod +x djvu2pdf"
     bin.install 'djvu2pdf'
-    man1.install 'djvu2pdf.1.gz'
+    man1.install 'djvu2pdf.2.gz'
   end
 
   def test
