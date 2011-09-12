@@ -36,6 +36,8 @@ class Emacs < Formula
       p << "https://raw.github.com/gist/1098107"
       # Fix for the titlebar issue on Mac OS X 10.7
       p << "https://raw.github.com/gist/1102744"
+      # Fix for Shift key for IME users
+      p << "https://raw.github.com/gist/1212776"
     end
 
     if ARGV.include? "--cocoa"
