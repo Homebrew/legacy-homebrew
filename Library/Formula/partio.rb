@@ -4,7 +4,6 @@ class Partio < Formula
   head 'https://github.com/wdas/partio.git'
   homepage 'https://github.com/wdas/partio'
 
-  # depends_on 'cmake'
   depends_on 'scons' => :build
   depends_on 'doxygen' => :build
 
