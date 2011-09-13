@@ -5,10 +5,16 @@ class NativeLibglade < Formula
   homepage 'http://glade.gnome.org'
   sha256 'c41d189b68457976069073e48d6c14c183075d8b1d8077cb6dfb8b7c5097add3'
 
-  depends_on 'libxml2'
   depends_on 'native-gtk+'
 
+  def options
+    [
+      ["--universal", "Builds a universal binary"]
+    ]
+  end
+
   def install
+    ENV.universal_binary if ARGV.build_universal?
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end

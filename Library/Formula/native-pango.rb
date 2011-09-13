@@ -11,8 +11,17 @@ class NativePango < Formula
 
   fails_with_llvm "Undefined symbols when linking", :build => "2326"
 
+  def options
+    [
+      ["--universal", "Builds a universal binary"]
+    ]
+  end
+
   def install
-    system "./configure", "--prefix=#{prefix}", "--without-x"
+    ENV.universal_binary if ARGV.build_universal?
+    ENV.append 'LDFLAGS', '-no-undefined -bind_at_load' if ARGV.build_universal?
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
+                "--without-x", "--enable-static", "--disable-introspection"
     system "make install"
   end
 end

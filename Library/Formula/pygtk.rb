@@ -10,8 +10,15 @@ class Pygtk < Formula
   depends_on 'pygobject'
   depends_on 'py2cairo'
 
+  def options
+    [
+      ["--universal", "Builds a universal binary"]
+    ]
+  end
+
   def install
     ENV.append 'CFLAGS', '-ObjC'
+    ENV.universal_binary if ARGV.build_universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

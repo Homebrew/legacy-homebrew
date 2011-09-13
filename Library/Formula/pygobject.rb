@@ -8,7 +8,14 @@ class Pygobject < Formula
   depends_on 'gobject-introspection'
   depends_on 'native-gtk+'
 
+  def options
+    [
+      ["--universal", "Builds a universal binary"]
+    ]
+  end
+
   def install
+    ENV.universal_binary if ARGV.build_universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-introspection"

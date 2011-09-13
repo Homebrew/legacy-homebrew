@@ -7,6 +7,12 @@ class Py2cairo < Formula
 
   depends_on 'native-cairo'
 
+  def options
+    [
+      ["--universal", "Builds a universal binary"]
+    ]
+  end
+
   def install
     # Python extensions default to universal but cairo may not be universal
     ENV['ARCHFLAGS'] = "-arch x86_64" unless ARGV.build_universal?

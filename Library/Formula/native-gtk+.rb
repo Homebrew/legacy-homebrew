@@ -16,7 +16,14 @@ class NativeGtkx < Formula
 
   fails_with_llvm "Undefined symbols when linking", :build => "2326" unless MacOS.lion?
 
+  def options
+    [
+      ["--universal", "Builds a universal binary"]
+    ]
+  end
+
   def install
+    ENV.universal_binary if ARGV.build_universal?
     ENV.append 'LDFLAGS', "-framework Carbon -framework Cocoa"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
