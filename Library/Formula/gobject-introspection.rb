@@ -8,7 +8,14 @@ class GobjectIntrospection < Formula
   depends_on 'glib'
   depends_on 'libffi'
 
+  def options
+    [
+      ["--universal", "Builds a universal binary"]
+    ]
+  end
+
   def install
+    ENV.universal_binary if ARGV.build_universal?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
