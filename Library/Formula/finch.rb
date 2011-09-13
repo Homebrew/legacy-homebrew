@@ -26,8 +26,7 @@ class Finch < Formula
                           "--disable-vv",
                           "--disable-meanwhile",
                           "--disable-avahi",
-                          "--disable-dbus",
-                          "--disable-perl"
+                          "--disable-dbus"
     system "make install"
   end
 end
