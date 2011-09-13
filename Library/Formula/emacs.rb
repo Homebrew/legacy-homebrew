@@ -32,6 +32,8 @@ class Emacs < Formula
       # Fix for address randomization on Darwin. Based on:
       #   http://repo.or.cz/w/emacs.git/patch/f2cea124dffac9ca4b8ce1dbb9b746f8e81109a3
       p << "https://raw.github.com/gist/1098107"
+      # Fix for the titlebar issue on Mac OS X 10.7
+      p << "https://raw.github.com/gist/1102744"
     end
 
     if ARGV.include? "--cocoa"
