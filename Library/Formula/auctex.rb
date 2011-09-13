@@ -1,7 +1,7 @@
 require 'formula'
 
 class Auctex < Formula
-  url 'http://ftp.gnu.org/pub/gnu/auctex/auctex-11.86.tar.gz'
+  url 'http://ftpmirror.gnu.org/auctex/auctex-11.86.tar.gz'
   homepage 'http://ftp.gnu.org/pub/gnu/auctex'
   md5 '6bc33a67b6ac59db1aa238f3693b36d2'
 
