@@ -220,6 +220,13 @@ def audit_formula_urls f
     end
   end
 
+  # Check GNU urls
+  urls.each do |p|
+    if p =~ %r[ftp\.gnu\.org]
+      problems << " * ftpmirror.gnu.org is preferred for GNU software."
+    end
+  end
+
   return problems
 end
 
@@ -295,7 +302,7 @@ module Homebrew extend self
 
       problems += audit_formula_text(f.name, text_without_patch)
       problems += audit_formula_options(f, text_without_patch)
-      problems += audit_formula_version(f, text_without_patch)
+      problems += audit_formula_version(f, text_without_patch) if strict?
 
       unless problems.empty?
         errors = true

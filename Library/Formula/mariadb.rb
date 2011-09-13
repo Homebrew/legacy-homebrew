@@ -3,9 +3,9 @@ require 'formula'
 class Mariadb < Formula
   # You probably don't want to have this and MySQL's formula linked at the same time
   # Just saying.
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.2.7/kvm-tarbake-jaunty-x86/mariadb-5.2.7.tar.gz'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.2.8/kvm-tarbake-jaunty-x86/mariadb-5.2.8.tar.gz'
   homepage 'http://mariadb.org/'
-  md5 '06b9b102946a3606b38348c0ebf18367'
+  md5 '7b78be87df6a59ecd7a8c06a7e72eb83'
 
   depends_on 'readline'
 
@@ -59,6 +59,7 @@ class Mariadb < Formula
     (prefix+'sql-bench').rmtree unless ARGV.include? '--with-bench'
 
     (prefix+'com.mysql.mysqld.plist').write startup_plist
+    (prefix+'com.mysql.mysqld.plist').chmod 0644
   end
 
   def caveats; <<-EOS.undent

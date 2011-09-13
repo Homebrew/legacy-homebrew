@@ -36,7 +36,7 @@ module Homebrew extend self
     if f.installed? and rack.directory?
       rack.children.each do |keg|
         if f.installed_prefix != keg
-          print "Uninstalling #{keg}..."
+          print "Removing #{keg}..."
           rm_rf keg
           puts
         end

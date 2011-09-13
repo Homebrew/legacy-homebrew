@@ -1,10 +1,10 @@
 require 'formula'
 
 class Phantomjs < Formula
-  url "http://phantomjs.googlecode.com/files/phantomjs-1.1.0-source.zip"
+  url "http://phantomjs.googlecode.com/files/phantomjs-1.2.0-source.zip"
   head "https://github.com/ariya/phantomjs.git"
   homepage 'http://www.phantomjs.org/'
-  sha1 "11b6023c9b2bd3e5f7dc7e3d4e4ce24588a3d396"
+  sha1 "0b8b20fbc45013ecf61dd988390dd979a894dec1"
 
   depends_on 'qt'
 

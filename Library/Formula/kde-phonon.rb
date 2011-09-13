@@ -13,6 +13,8 @@ class KdePhonon < Formula
   keg_only "This package is already supplied by Qt and is only needed by KDE packages."
 
   def install
+    inreplace 'cmake/FindPhononInternal.cmake',
+        'BAD_ALLOCATOR AND NOT WIN32', 'BAD_ALLOCATOR AND NOT APPLE'
     system "cmake . #{std_cmake_parameters}"
     system "make install"
   end

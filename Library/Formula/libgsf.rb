@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libgsf < Formula
-  url 'http://ftp.acc.umu.se/pub/GNOME/sources/libgsf/1.14/libgsf-1.14.17.tar.bz2'
-  homepage 'http://directory.fsf.org/project/libgsf/'
-  sha256 '10c6b69149e424ac5f325eb247fdf640ddd949952f21b99a890e73f9d4276876'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/libgsf/1.14/libgsf-1.14.21.tar.bz2'
+  homepage 'http://projects.gnome.org/gnumeric/'
+  sha256 'eef0a9d6eca4e6af6c16b208947e3c958c428b94d22792bdd0b80c08a4b301db'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'

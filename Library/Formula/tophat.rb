@@ -1,9 +1,9 @@
 require 'formula'
 
 class Tophat < Formula
-  url 'http://tophat.cbcb.umd.edu/downloads/tophat-1.3.0.tar.gz'
+  url 'http://tophat.cbcb.umd.edu/downloads/tophat-1.3.2.tar.gz'
   homepage 'http://tophat.cbcb.umd.edu/'
-  md5 'e56f3ff42d1bb8a60489044da7b5421f'
+  md5 'b214c54928805eb1095828b1c7c1bbab'
 
   depends_on 'samtools'
 

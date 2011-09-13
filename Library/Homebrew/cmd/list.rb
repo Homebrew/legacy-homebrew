@@ -4,7 +4,7 @@ module Homebrew extend self
       dirs = HOMEBREW_PREFIX.children.select{ |pn| pn.directory? }.map{ |pn| pn.basename.to_s }
       dirs -= %w[Library Cellar .git]
       cd HOMEBREW_PREFIX
-      exec 'find', *dirs + %w[-type f ( ! -iname .ds_store ! -iname brew )]
+      exec 'find', *dirs + %w[-type f ( ! -iname .ds_store ! -iname brew ! -iname brew-man.1 ! -iname brew.1 )]
     elsif ARGV.flag? '--versions'
       if ARGV.named.empty?
         HOMEBREW_CELLAR.children.select{ |pn| pn.directory? }
