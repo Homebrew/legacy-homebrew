@@ -8,7 +8,14 @@ class Atk < Formula
   depends_on 'pkg-config' => :build
   depends_on 'glib'
 
+  def options
+    [
+      ["--universal", "Builds a universal binary"]
+    ]
+  end
+
   def install
+    ENV.universal_binary if ARGV.build_universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-glibtest"
