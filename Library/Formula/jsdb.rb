@@ -5,8 +5,6 @@ class Jsdb < Formula
   homepage 'http://jsdb.org'
   md5 'c98d07ecd08d0a5684e734eecfda97d5'
 
-  # depends_on 'cmake'
-
   def install
     system "chmod +x ./jsdb"
     bin.install ['jsdb']
