@@ -2,6 +2,7 @@ require 'download_strategy'
 require 'fileutils'
 require 'formula_support'
 require 'hardware'
+require 'taproom'
 
 
 # Derive and define at least @url, see Library/Formula for examples
@@ -344,7 +345,11 @@ class Formula
     possible_alias = HOMEBREW_REPOSITORY+"Library/Aliases/#{name}"
     possible_cached_formula = HOMEBREW_CACHE_FORMULA+"#{name}.rb"
 
-    if name.include? "/"
+    if HOMEBREW_TAPROOM.has_brewfile? name
+      # Check external repositories first because they use '/' in a special
+      # context.
+      HOMEBREW_TAPROOM.get_brewfile name
+    elsif name.include? "/"
       # Don't resolve paths or URLs
       name
     elsif formula_with_that_name.file? and formula_with_that_name.readable?
@@ -745,7 +750,7 @@ EOF
 
     def depends_on name
       @deps ||= []
-      @external_deps ||= {:python => [], :perl => [], :ruby => [], :jruby => [], :chicken => [], :rbx => [], :node => []}
+      @external_deps ||= {:python => [], :perl => [], :ruby => [], :jruby => [], :chicken => [], :rbx => [], :node => [], :alt => []}
 
       case name
       when String, Formula
@@ -753,7 +758,7 @@ EOF
       when Hash
         key, value = name.shift
         case value
-        when :python, :perl, :ruby, :jruby, :chicken, :rbx, :node
+        when :python, :perl, :ruby, :jruby, :chicken, :rbx, :node, :alt
           @external_deps[value] << key
         when :optional, :recommended, :build
           @deps << key

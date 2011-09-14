@@ -231,6 +231,18 @@ class Taproom
     end
   end
 
+  def has_brewfile? name
+    # This is a shim used to slot Taproom searching into
+    # `Formula.canonical_name`---a bit hacky, but it works.
+    begin
+      get_brewfile name
+    rescue FormulaUnavailableError
+      return false
+    end
+
+    return true
+  end
+
   def tap! name
     # This method will run a checkout on the specified brewery.
     brewery = get_brewery name
