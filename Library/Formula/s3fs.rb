@@ -1,7 +1,7 @@
 require 'formula'
 
 class S3fs < Formula
-  homepage 'http://code.google.com/p/s3fs'
+  homepage 'http://code.google.com/p/s3fs/'
   url 'http://s3fs.googlecode.com/files/s3fs-1.61.tar.gz'
   md5 '0dd7b7e9b1c58312cde19894488c5072'
 
