@@ -1,7 +1,7 @@
 require 'formula'
 
 class Gmp < Formula
-  url 'ftp://ftp.gnu.org/gnu/gmp/gmp-5.0.2.tar.bz2'
+  url 'http://ftpmirror.gnu.org/gmp/gmp-5.0.2.tar.bz2'
   homepage 'http://gmplib.org/'
   sha1 '2968220e1988eabb61f921d11e5d2db5431e0a35'
 
@@ -13,7 +13,6 @@ class Gmp < Formula
   end
 
   def install
-    ENV.universal_binary # build fat for nettle
     # Reports of problems using gcc 4.0 on Leopard
     # https://github.com/mxcl/homebrew/issues/issue/2302
     # Also force use of 4.2 on 10.6 in case a user has changed the default
