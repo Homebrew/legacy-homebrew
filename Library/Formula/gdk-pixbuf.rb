@@ -9,7 +9,14 @@ class GdkPixbuf < Formula
   depends_on 'jasper'
   depends_on 'libtiff'
 
+  def options
+    [
+      ["--universal", "Builds a universal binary"]
+    ]
+  end
+
   def install
+    ENV.universal_binary if ARGV.build_universal?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-libjasper",
