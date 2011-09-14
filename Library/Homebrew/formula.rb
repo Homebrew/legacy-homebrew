@@ -1,5 +1,6 @@
 require 'download_strategy'
 require 'fileutils'
+require 'taproom'
 
 # Defines a URL and download method for a stable or HEAD build
 class SoftwareSpecification
@@ -390,7 +391,11 @@ class Formula
     possible_alias = HOMEBREW_REPOSITORY+"Library/Aliases/#{name}"
     possible_cached_formula = HOMEBREW_CACHE_FORMULA+"#{name}.rb"
 
-    if name.include? "/"
+    if HOMEBREW_TAPROOM.has_brewfile? name
+      # Check external repositories first because they use '/' in a special
+      # context.
+      HOMEBREW_TAPROOM.get_brewfile name
+    elsif name.include? "/"
       # Don't resolve paths or URLs
       name
     elsif formula_with_that_name.file? and formula_with_that_name.readable?
