@@ -185,7 +185,7 @@ def audit_formula_urls f
     next if p =~ %r[svn\.sourceforge]
 
     # Is it a sourceforge http(s) URL?
-    next unless p =~ %r[^http?://.*\bsourceforge\.]
+    next unless p =~ %r[^https?://.*\bsourceforge\.]
 
     if p =~ /\?use_mirror=/
       problems << " * Update this url (don't use ?use_mirror)."
