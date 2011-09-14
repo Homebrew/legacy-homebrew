@@ -222,8 +222,8 @@ def audit_formula_urls f
 
   # Check GNU urls
   urls.each do |p|
-    if p =~ %r[ftp\.gnu\.org]
-      problems << " * ftpmirror.gnu.org is preferred for GNU software."
+    if p =~ %r[^(https?|ftp)://(.+)/gnu/]
+      problems << " * \"ftpmirror.gnu.org\" is preferred for GNU software."
     end
   end
 
