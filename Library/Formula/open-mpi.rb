@@ -11,5 +11,9 @@ class OpenMpi < Formula
     ENV.delete('CXXFLAGS')
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
+
+    # If Fortran bindings were built, there will be a stra `.mod` file (Fortran
+    # header) in `lib` that needs to be moved to `include`.
+    mv lib + 'mpi.mod', include if (lib + 'mpi.mod').exist?
   end
 end

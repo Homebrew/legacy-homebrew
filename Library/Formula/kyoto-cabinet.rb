@@ -1,9 +1,9 @@
 require 'formula'
 
 class KyotoCabinet < Formula
-  url 'http://fallabs.com/kyotocabinet/pkg/kyotocabinet-1.2.69.tar.gz'
+  url 'http://fallabs.com/kyotocabinet/pkg/kyotocabinet-1.2.70.tar.gz'
   homepage 'http://fallabs.com/kyotocabinet/'
-  sha1 '93ae2c560f72221cef51d0cb8780eb9e90e9d621'
+  sha1 '58dee8ff10dbff4d9508fdcfa8d5699ef1035f74'
 
   def install
     system "./configure", "--disable-debug", "--prefix=#{prefix}"

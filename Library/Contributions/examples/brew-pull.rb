@@ -9,20 +9,24 @@ if ARGV.include? '--install'
 end
 
 if ARGV.empty?
-  onoe 'This command requires at least one URL argument'
+  onoe 'This command requires at least one argument containing a URL or pull request number'
 end
 
 HOMEBREW_REPOSITORY.cd do
   ARGV.each do|arg|
-    # This regex should work, if it's too precise, feel free to fix it.
-    urlmatch = arg.match 'https:\/\/github.com\/\w+\/homebrew\/(pull\/(\d+)|commit\/\w{4,40})'
-    if !urlmatch
-      ohai 'Ignoring URL:', "Not a GitHub pull request or commit: #{arg}"
-      next
-    end
+    if arg.to_i > 0
+      url = 'https://github.com/mxcl/homebrew/pull/' + arg + '.patch'
+    else
+      # This regex should work, if it's too precise, feel free to fix it.
+      urlmatch = arg.match 'https:\/\/github.com\/\w+\/homebrew\/(pull\/(\d+)|commit\/\w{4,40})'
+      if !urlmatch
+        ohai 'Ignoring URL:', "Not a GitHub pull request or commit: #{arg}"
+        next
+      end
 
-    # GitHub provides commits'/pull-requests' raw patches using this URL.
-    url = urlmatch[0] + '.patch'
+      # GitHub provides commits'/pull-requests' raw patches using this URL.
+      url = urlmatch[0] + '.patch'
+    end
 
     # The cache directory seems like a good place to put patches.
     patchpath = (HOMEBREW_CACHE+File.basename(url))
@@ -35,7 +39,7 @@ HOMEBREW_REPOSITORY.cd do
     ohai 'Applying patch'
     safe_system 'git', 'am', '--signoff', '--whitespace=fix', patchpath
 
-    issue = urlmatch[2]
+    issue = arg.to_i > 0 ? arg.to_i : urlmatch[2]
     if issue
       ohai "Patch closes issue ##{issue}"
       message = `git log HEAD^.. --format=%B`

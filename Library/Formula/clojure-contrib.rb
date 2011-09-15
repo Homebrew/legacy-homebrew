@@ -4,7 +4,7 @@ class ClojureContrib < Formula
   url 'https://github.com/downloads/clojure/clojure-contrib/clojure-contrib-1.2.0.zip'
   md5 '83cc86fd2929ca417a9ab9f2a0dedadb'
   head 'https://github.com/clojure/clojure-contrib.git'
-  homepage 'http://richhickey.github.com/clojure-contrib/branch-1.1.x/index.html'
+  homepage 'http://clojure.github.com/clojure-contrib/'
 
   depends_on 'clojure'
   depends_on 'maven' if ARGV.build_head?

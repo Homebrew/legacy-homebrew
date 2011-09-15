@@ -8,6 +8,11 @@ class Tty
     def yellow; underline 33 ; end
     def reset; escape 0; end
     def em; underline 39; end
+    def green; color 92 end
+
+    def width
+      `/usr/bin/tput cols`.strip.to_i
+    end
 
   private
     def color n
@@ -27,9 +32,14 @@ end
 
 # args are additional inputs to puts until a nil arg is encountered
 def ohai title, *sput
-  title = title.to_s[0, `/usr/bin/tput cols`.strip.to_i-4] unless ARGV.verbose?
+  title = title.to_s[0, Tty.width - 4] unless ARGV.verbose?
   puts "#{Tty.blue}==>#{Tty.white} #{title}#{Tty.reset}"
   puts sput unless sput.empty?
+end
+
+def oh1 title
+  title = title.to_s[0, Tty.width - 4] unless ARGV.verbose?
+  puts "#{Tty.green}==> #{Tty.reset}#{title}"
 end
 
 def opoo warning
@@ -94,7 +104,10 @@ def quiet_system cmd, *args
 end
 
 def curl *args
-  safe_system '/usr/bin/curl', '-f#LA', HOMEBREW_USER_AGENT, *args unless args.empty?
+  # See https://github.com/mxcl/homebrew/issues/6103
+  args << "--insecure" if MacOS.version < 10.6
+
+  safe_system '/usr/bin/curl', HOMEBREW_CURL_ARGS, HOMEBREW_USER_AGENT, *args unless args.empty?
 end
 
 def puts_columns items, star_items=[]
@@ -225,9 +238,21 @@ def nostdout
 end
 
 module MacOS extend self
+  def version
+    MACOS_VERSION
+  end
 
   def default_cc
     Pathname.new("/usr/bin/cc").realpath.basename.to_s
+  end
+
+  def default_compiler
+    case default_cc
+      when /^gcc/ then :gcc
+      when /^llvm/ then :llvm
+      when "clang" then :clang
+      else :gcc # a hack, but a sensible one prolly
+    end
   end
 
   def gcc_42_build_version
@@ -272,18 +297,41 @@ module MacOS extend self
   end
 
   def xcode_version
-    `xcodebuild -version 2>&1` =~ /Xcode (\d(\.\d)*)/
-    $1
+    @xcode_version ||= begin
+      raise unless system "/usr/bin/which -s xcodebuild"
+      `xcodebuild -version 2>&1` =~ /Xcode (\d(\.\d)*)/
+      raise if $1.nil?
+      $1
+    rescue
+      # for people who don't have xcodebuild installed due to using
+      # some variety of minimal installer, let's try and guess their
+      # Xcode version
+      case llvm_build_version.to_i
+      when 0..2063 then "3.1.0"
+      when 2064..2065 then "3.1.4"
+      when 2366..2325
+        # we have no data for this range so we are guessing
+        "3.2.0"
+      when 2326
+        # also applies to "3.2.3"
+        "3.2.4"
+      when 2327..2333 then "3.2.5"
+      when 2335
+        # this build number applies to 3.2.6, 4.0 and 4.1
+        # https://github.com/mxcl/homebrew/wiki/Xcode
+        "4.0"
+      else
+        "4.2"
+      end
+    end
   end
 
   def llvm_build_version
-    unless xcode_prefix.to_s.empty?
-      llvm_gcc_path = xcode_prefix/"usr/bin/llvm-gcc"
-      # for Xcode 3 on OS X 10.5 this will not exist
-      if llvm_gcc_path.file?
-        `#{llvm_gcc_path} -v 2>&1` =~ /LLVM build (\d{4,})/
-        $1.to_i # if nil this raises and then you fix the regex
-      end
+    # for Xcode 3 on OS X 10.5 this will not exist
+    # NOTE may not be true anymore but we can't test
+    @llvm_build_version ||= if File.exist? "/usr/bin/llvm-gcc"
+      `/usr/bin/llvm-gcc -v 2>&1` =~ /LLVM build (\d{4,})/
+      $1.to_i
     end
   end
 
@@ -331,7 +379,7 @@ module MacOS extend self
   end
 
   def lion?
-    10.7 == MACOS_VERSION
+    10.7 <= MACOS_VERSION #Actually Lion or newer
   end
 
   def prefer_64_bit?
@@ -353,8 +401,12 @@ module GitHub extend self
     issues = []
 
     open "http://github.com/api/v2/yaml/issues/search/mxcl/homebrew/open/#{name}" do |f|
-      YAML::load(f.read)['issues'].each do |issue|
-        issues << 'https://github.com/mxcl/homebrew/issues/#issue/%s' % issue['number']
+      yaml = YAML::load(f.read);
+      yaml['issues'].each do |issue|
+        # don't include issues that just refer to the tool in their body
+        if issue['title'].include? name
+          issues << issue['html_url']
+        end
       end
     end
 
