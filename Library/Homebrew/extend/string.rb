@@ -17,7 +17,10 @@ module StringInreplaceExtension
   # value with "new_value", or removes the definition entirely.
   def change_make_var! flag, new_value
     new_value = "#{flag}=#{new_value}"
-    gsub! Regexp.new("^#{flag}[ \\t]*=[ \\t]*(.*)$"), new_value
+    # Prepend whitespace so that Makefile rules are not invalidated.
+    ws = match /^([ \t]*)#{flag}[ \t]*=.*$/
+    new_value = ws[1] + new_value if ws
+    gsub! /^[ \t]*#{flag}[ \t]*=[ \t]*(.*)$/, new_value
   end
 
   # Removes variable assignments completely.
@@ -26,13 +29,13 @@ module StringInreplaceExtension
     flags = [flags] unless flags.kind_of? Array
     flags.each do |flag|
       # Also remove trailing \n, if present.
-      gsub! Regexp.new("^#{flag}[ \\t]*=(.*)$\n?"), ""
+      gsub! /^[ \t]*#{flag}[ \t]*=(.*)$\n?/, ''
     end
   end
 
   # Finds the specified variable
   def get_make_var flag
-    m = match Regexp.new("^#{flag}[ \\t]*=[ \\t]*(.*)$")
+    m = match /^[ \t]*#{flag}[ \t]*=[ \t]*(.*)$/
     return m[1] if m
     return nil
   end
