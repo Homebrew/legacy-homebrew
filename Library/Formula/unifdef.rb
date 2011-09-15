@@ -13,6 +13,6 @@ class Unifdef < Formula
   end
 
   def test
-    system "echo '' | unifdef"
+    system "echo '' | #{bin}/unifdef"
   end
 end

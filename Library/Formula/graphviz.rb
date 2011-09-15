@@ -9,7 +9,8 @@ class Graphviz < Formula
 
   if ARGV.include? '--with-pdf'
     depends_on 'pango'
-    depends_on 'cairo' if MacOS.leopard?
+    depends_on 'cairo' if MacOS.leopard? or MacOS.lion?
+    depends_on 'gd' if MacOS.lion?
   end
 
   def options
@@ -33,5 +34,18 @@ class Graphviz < Formula
                           "--disable-sharp",
                           "--disable-swig"
     system "make install"
+  end
+
+  def test
+    mktemp do
+      p = Pathname.new Dir.pwd
+      (p+'sample.dot').write <<-EOS.undent
+      digraph G {
+        a -> b
+      }
+      EOS
+
+      system "#{bin}/dot -Tpdf -o sample.pdf sample.dot && /usr/bin/open ./sample.pdf && /bin/sleep 3"
+    end
   end
 end

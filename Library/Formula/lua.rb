@@ -5,10 +5,18 @@ class Lua < Formula
   homepage 'http://www.lua.org/'
   md5 'd0870f2de55d59c1c8419f36e8fac150'
 
-  fails_with_llvm "Lua itself compiles with llvm, but may fail when other software tries to link."
+  fails_with_llvm "Lua itself compiles with LLVM, but may fail when other software tries to link.",
+                  :build => 2326
 
   # Skip cleaning both empty folders and bin/libs so external symbols still work.
   skip_clean :all
+
+  # Be sure to build a dylib, or else runtime modules will pull in another static copy of liblua = crashy
+  # See: https://github.com/mxcl/homebrew/pull/5043
+  def patches
+    DATA
+  end
+
 
   def install
     # Apply patch-level 2
@@ -41,3 +49,65 @@ class Lua < Formula
     (lib+"pkgconfig").install 'etc/lua.pc'
   end
 end
+
+__END__
+diff --git a/Makefile b/Makefile
+index 6e78f66..6b48d2b 100644
+--- a/Makefile
++++ b/Makefile
+@@ -43,7 +43,7 @@ PLATS= aix ansi bsd freebsd generic linux macosx mingw posix solaris
+ # What to install.
+ TO_BIN= lua luac
+ TO_INC= lua.h luaconf.h lualib.h lauxlib.h ../etc/lua.hpp
+-TO_LIB= liblua.a
++TO_LIB= liblua.5.1.4.dylib
+ TO_MAN= lua.1 luac.1
+ 
+ # Lua version and release.
+@@ -64,6 +64,7 @@ install: dummy
+ 	cd src && $(INSTALL_DATA) $(TO_INC) $(INSTALL_INC)
+ 	cd src && $(INSTALL_DATA) $(TO_LIB) $(INSTALL_LIB)
+ 	cd doc && $(INSTALL_DATA) $(TO_MAN) $(INSTALL_MAN)
++	ln -s -f liblua.5.1.4.dylib $(INSTALL_LIB)/liblua.5.1.dylib
+ 
+ ranlib:
+ 	cd src && cd $(INSTALL_LIB) && $(RANLIB) $(TO_LIB)
+diff --git a/src/Makefile b/src/Makefile
+index e4a3cd6..e35a1b5 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -22,7 +22,7 @@ MYLIBS=
+ 
+ PLATS= aix ansi bsd freebsd generic linux macosx mingw posix solaris
+ 
+-LUA_A=	liblua.a
++LUA_A=	liblua.5.1.4.dylib
+ CORE_O=	lapi.o lcode.o ldebug.o ldo.o ldump.o lfunc.o lgc.o llex.o lmem.o \
+ 	lobject.o lopcodes.o lparser.o lstate.o lstring.o ltable.o ltm.o  \
+ 	lundump.o lvm.o lzio.o
+@@ -48,11 +48,13 @@ o:	$(ALL_O)
+ a:	$(ALL_A)
+ 
+ $(LUA_A): $(CORE_O) $(LIB_O)
+-	$(AR) $@ $?
+-	$(RANLIB) $@
++	$(CC) -dynamiclib -install_name /usr/local/lib/liblua.5.1.dylib \
++		-compatibility_version 5.1 -current_version 5.1.4 \
++		-o liblua.5.1.4.dylib $^
+ 
+ $(LUA_T): $(LUA_O) $(LUA_A)
+-	$(CC) -o $@ $(MYLDFLAGS) $(LUA_O) $(LUA_A) $(LIBS)
++	$(CC) -fno-common $(MYLDFLAGS) \
++		-o $@ $(LUA_O) $(LUA_A) -L. -llua.5.1.4 $(LIBS)
+ 
+ $(LUAC_T): $(LUAC_O) $(LUA_A)
+ 	$(CC) -o $@ $(MYLDFLAGS) $(LUAC_O) $(LUA_A) $(LIBS)
+@@ -99,7 +101,7 @@ linux:
+ 	$(MAKE) all MYCFLAGS=-DLUA_USE_LINUX MYLIBS="-Wl,-E -ldl -lreadline -lhistory -lncurses"
+ 
+ macosx:
+-	$(MAKE) all MYCFLAGS=-DLUA_USE_LINUX MYLIBS="-lreadline"
++	$(MAKE) all MYCFLAGS="-DLUA_USE_LINUX -fno-common" MYLIBS="-lreadline"
+ # use this on Mac OS X 10.3-
+ #	$(MAKE) all MYCFLAGS=-DLUA_USE_MACOSX
+ 
