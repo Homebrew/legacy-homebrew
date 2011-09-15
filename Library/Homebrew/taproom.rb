@@ -144,23 +144,6 @@ class Taproom
     File.open(@menu_path, 'w') {|file| file.write(menu.to_yaml)}
   end
 
-  def restock!
-    abort "Please `brew install git' first." unless system "/usr/bin/which -s git"
-
-    # Iterate over each tapped brewery and run the equivalent of `brew update`
-    tapped.each do |brewery|
-      updater = RefreshBrew.new
-
-      if updater.update_from_brewery! @path, brewery
-        puts "Updated #{brewery.id}."
-        updater.report
-      else
-        puts "#{brewery.id} already up-to-date."
-      end
-      print "\n"
-    end
-  end
-
   def on_tap? name
     # Has a given brewery been tapped (cloned)?
     File.directory? @path + name
