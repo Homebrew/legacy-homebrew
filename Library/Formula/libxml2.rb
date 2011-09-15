@@ -16,6 +16,8 @@ class Libxml2 < Formula
   def install
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
 
+    ENV.universal_binary if ARGV.build_universal?
+
     if ARGV.include? '--with-python'
       python_prefix=`python-config --prefix`
       ohai "Installing Python module to #{python_prefix}"
