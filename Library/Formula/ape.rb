@@ -7,7 +7,7 @@ class Ape < Formula
 
   def install
     inreplace 'Makefile' do |m|
-        m.change_make_var! 'prefix', prefix
+      m.change_make_var! 'prefix', prefix
     end
     system "./build.sh"
     system "make install"
