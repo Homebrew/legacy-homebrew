@@ -439,10 +439,37 @@ class Formula
   end
 
   def self.expand_deps f
-    f.deps.map do |dep|
+    expanded_deps = f.deps.map do |dep|
       dep = Formula.factory dep
       expand_deps(dep) << dep
     end
+
+    unless f.external_deps[:alt].nil? or f.external_deps[:alt].empty?
+      expanded_deps += f.external_deps[:alt].map do |dep|
+        begin
+          dep = HOMEBREW_TAPROOM.get_brewfile dep
+        rescue FormulaUnavailableError => e
+          begin
+            # A formula may not be available, because the repository it belongs to
+            # may not be checked out. Try tapping the repository and searching for
+            # the brewfile again.
+            brewery = (dep.split '/').first
+            ohai "Tapping #{brewery} to satisfy dependency #{dep}"
+            HOMEBREW_TAPROOM.tap! brewery
+            dep = HOMEBREW_TAPROOM.get_brewfile dep
+          rescue
+            # Our heroic efforts failed, time to give up and throw the original
+            # error.
+            raise e
+          end
+        end
+
+        dep = Formula.factory dep
+        expand_deps(dep) << dep
+      end
+    end
+
+    return expanded_deps
   end
 
 protected
