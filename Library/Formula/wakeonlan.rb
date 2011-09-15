@@ -8,6 +8,7 @@ class Wakeonlan < Formula
   def install
     system "perl", "Makefile.PL"
     system "make"
+    # 'make install' tries to put stuff in /Library/Perl
     bin.install 'blib/script/wakeonlan'
     man1.install 'blib/man1/wakeonlan.1'
   end
