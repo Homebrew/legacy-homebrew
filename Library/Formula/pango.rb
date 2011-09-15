@@ -17,8 +17,31 @@ class Pango < Formula
     depends_on 'cairo' # links against system Cairo without this
   end
 
+  def options
+    [
+      ["--universal", "Builds a universal binary"],
+      ["--quartz", "Builds with Quartz instead of X."]
+    ]
+  end
+
   def install
-    system "./configure", "--prefix=#{prefix}", "--with-x"
+    if ARGV.build_universal?
+      ENV.universal_binary
+      ENV.append 'LDFLAGS', '-no-undefined -bind_at_load'
+    end
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+    
+    if ARGV.include? '--quartz'
+      args << "--without-x" << "--enable-static" << "--disable-introspection"
+    else
+      args << "--with-x"
+    end
+    
+    system "./configure", *args
     system "make install"
+  end
+  
+  def caveats
+    "Pango may need to be intalled with --quartz if you want any of its dependencies to have quartz."
   end
 end
