@@ -22,10 +22,12 @@ class Xaw3d < Formula
     # force usage of /usr/X11/lib when linking, and install into the Cellar
     # apparently s.change_make_var! silently fails when Makefile variables
     # are preceded by whitespace, so do it manually
-    inreplace 'Makefile', 'LDPRELIB = -L$(USRLIBDIR)', 'LDPRELIB = -L$(USRLIBDIR) $(LDFLAGS)'
-    inreplace 'Makefile', 'USRLIBDIR = /usr/local/lib', "USRLIBDIR = #{lib}"
-    inreplace 'Makefile', 'SHLIBDIR = /usr/local/lib', "SHLIBDIR = #{lib}"
-    inreplace 'Makefile', 'INCROOT = /usr/local/include', "INCROOT = #{include}"
+    inreplace 'Makefile' do |s|
+      s.gsub! 'LDPRELIB = -L$(USRLIBDIR)', 'LDPRELIB = -L$(USRLIBDIR) $(LDFLAGS)'
+      s.gsub! 'USRLIBDIR = /usr/local/lib', "USRLIBDIR = #{lib}"
+      s.gsub! 'SHLIBDIR = /usr/local/lib', "SHLIBDIR = #{lib}"
+      s.gsub! 'INCROOT = /usr/local/include', "INCROOT = #{include}"
+    end
 
     system 'make'
     system 'make install'
