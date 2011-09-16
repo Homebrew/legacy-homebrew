@@ -2,13 +2,13 @@ require 'formula'
 
 class Guile < Formula
   homepage 'http://www.gnu.org/software/guile/'
-  url 'http://ftpmirror.gnu.org/guile/guile-1.8.7.tar.gz'
-  head 'http://ftpmirror.gnu.org/guile/guile-2.0.2.tar.gz'
 
-  if ARGV.build_head?
-    sha1 '1943fd22417ce1e51babbdcd7681e66a794a8da3'
-  else
+  unless ARGV.flag? '--devel'
+    url 'http://ftpmirror.gnu.org/guile/guile-1.8.7.tar.gz'
     sha1 '24cd2f06439c76d41d982a7384fe8a0fe5313b54'
+  else
+    url 'http://ftpmirror.gnu.org/guile/guile-2.0.2.tar.gz'
+    sha1 '1943fd22417ce1e51babbdcd7681e66a794a8da3'
   end
 
   depends_on 'pkg-config' => :build
