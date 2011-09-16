@@ -60,7 +60,7 @@ If this is your first install, automatically load on login with:
 
     <key>ProgramArguments</key>
     <array>
-        <string>/usr/local/bin/cassandra</string>
+        <string>#{bin}/cassandra</string>
         <string>-f</string>
     </array>
 
@@ -68,7 +68,7 @@ If this is your first install, automatically load on login with:
     <true/>
 
     <key>WorkingDirectory</key>
-    <string>/usr/local</string>
+    <string>#{var}/lib/cassandra</string>
   </dict>
 </plist>
     EOPLIST
