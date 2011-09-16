@@ -1,7 +1,7 @@
 require 'formula'
 
 class Jwhois < Formula
-  url 'http://ftp.gnu.org/pub/gnu/jwhois/jwhois-4.0.tar.gz'
+  url 'http://ftpmirror.gnu.org/jwhois/jwhois-4.0.tar.gz'
   homepage 'http://directory.fsf.org/project/jwhois/'
   md5 '977d0ba90ee058a7998c94d933fc9546'
 
