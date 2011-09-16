@@ -8,11 +8,10 @@ class Mapserver < Formula
   depends_on 'gd'
   depends_on 'proj'
   depends_on 'gdal'
-  depends_on 'libagg'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--with-png=/usr/X11",
-           "--with-proj", "--with-gdal", "--with-agg"
+           "--with-proj", "--with-gdal"
     system "make"
     bin.install "mapserv"
   end
