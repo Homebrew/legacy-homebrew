@@ -9,10 +9,68 @@ class Mapserver < Formula
   depends_on 'proj'
   depends_on 'gdal'
 
+  if ARGV.include? '--with-geos'
+    depends_on 'geos'
+  end
+
+  if ARGV.include? '--with-postgresql'
+    depends_on 'postgresql' unless MacOS.lion?
+  end
+
+  def options
+    [
+      ["--with-geos", "Build support for GEOS spatial operations"],
+      ["--with-php", "Build PHP MapScript module"],
+      ["--with-postgresql", "Build support for PostgreSQL as a data source"]
+    ]
+  end
+
+  def configure_args
+    args = [
+      "--prefix=#{prefix}",
+      "--with-proj",
+      "--with-gdal",
+      "--with-ogr",
+      "--with-png=/usr/X11"
+    ]
+
+    if ARGV.include? '--with-geos'
+      args.push "--with-geos"
+    end
+
+    if ARGV.include? '--with-php'
+      args.push "--with-php=/usr/include/php"
+    end
+
+    if ARGV.include? '--with-postgresql'
+      if MacOS.lion? # Lion ships with PostgreSQL libs
+        args.push "--with-postgis"
+      else
+        args.push "--with-postgis=#{Formula.factory('postgresql').prefix}/bin/pg_config"
+      end
+    end
+
+    args
+  end
+
   def install
-    system "./configure", "--prefix=#{prefix}", "--with-png=/usr/X11",
-           "--with-proj", "--with-gdal"
+    system "./configure", *configure_args
     system "make"
-    bin.install "mapserv"
+    bin.install %w(mapserv)
+
+    if ARGV.include? '--with-php'
+      prefix.install %w(mapscript/php/php_mapscript.so)
+    end
+  end
+
+  def caveats; <<-EOS.undent
+    The Mapserver CGI executable is #{prefix}/mapserv
+
+    If you built the PHP option:
+      * Add the following line to php.ini:
+        extension="#{prefix}/php_mapscript.so"
+      * Execute "php -m"
+      * You should see MapScript in the module list
+    EOS
   end
 end
