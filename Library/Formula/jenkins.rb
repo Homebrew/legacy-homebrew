@@ -1,14 +1,17 @@
 require 'formula'
 
 class Jenkins < Formula
-  url 'http://mirrors.jenkins-ci.org/war/1.427/jenkins.war', :using => :nounzip
-  version '1.427'
-  md5 '1d898294dc5f72b2b9c81ca423606f99'
+  url 'http://mirrors.jenkins-ci.org/war/1.428/jenkins.war', :using => :nounzip
+  head 'git://github.com/jenkinsci/jenkins.git'
+  version '1.428'
+  md5 '5817e09ccc3a2996addeb8f1bc1cb6c8'
   homepage 'http://jenkins-ci.org'
 
   def install
+    system "mvn clean install -pl war -am -DskipTests && mv war/target/jenkins.war ." if ARGV.build_head?
     lib.install "jenkins.war"
     (prefix+'org.jenkins-ci.plist').write startup_plist
+    (prefix+'org.jenkins-ci.plist').chmod 0644
   end
 
   def caveats; <<-EOS
@@ -27,6 +30,11 @@ Or start it manually:
 EOS
   end
 
+  # There is a startup plist, as well as a runner, here and here:
+  #  https://raw.github.com/jenkinsci/jenkins/master/osx/org.jenkins-ci.plist
+  #  https://raw.github.com/jenkinsci/jenkins/master/osx/Library/Application%20Support/Jenkins/jenkins-runner.sh
+  #
+  # Perhaps they could be integrated.
   def startup_plist
     return <<-EOS
 <?xml version="1.0" encoding="UTF-8"?>
@@ -47,5 +55,4 @@ EOS
 </plist>
 EOS
   end
-
 end

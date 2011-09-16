@@ -1,7 +1,7 @@
 require 'formula'
 
 class Ddd < Formula
-  url 'http://ftp.gnu.org/gnu/ddd/ddd-3.3.12.tar.gz'
+  url 'http://ftpmirror.gnu.org/ddd/ddd-3.3.12.tar.gz'
   homepage 'http://www.gnu.org/s/ddd/'
   md5 'c50396db7bac3862a6d2555b3b22c34e'
 

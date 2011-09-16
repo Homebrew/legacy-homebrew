@@ -7,7 +7,7 @@ class BdwGc < Formula
   head 'cvs://:pserver:anonymous@bdwgc.cvs.sourceforge.net:/cvsroot/bdwgc:bdwgc', :using => :cvs
   md5 '319d0b18cc4eb735c8038ece9df055e4'
 
-  fails_with_llvm "LLVM gives an unsupported inline asm error" unless ARGV.build_head?
+  fails_with_llvm "LLVM gives an unsupported inline asm error", :build => 2335
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

@@ -66,7 +66,6 @@ class FormulaInstaller
       ohai 'Caveats', f.keg_only_text
       @show_summary_heading = true
     else
-      check_PATH
       check_manpages
       check_infopages
       check_jars
@@ -77,7 +76,10 @@ class FormulaInstaller
   def finish
     ohai 'Finishing up' if ARGV.verbose?
 
-    link unless f.keg_only?
+    unless f.keg_only?
+      link
+      check_PATH
+    end
     fix_install_names
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading
@@ -246,10 +248,13 @@ end
 
 
 class Formula
-  def keg_only_text; <<-EOS.undent
+  def keg_only_text
+    # Add indent into reason so undent won't truncate the beginnings of lines
+    reason = self.keg_only?.to_s.gsub(/[\n]/, "\n    ")
+    return <<-EOS.undent
     This formula is keg-only, so it was not symlinked into #{HOMEBREW_PREFIX}.
 
-    #{self.keg_only?}
+    #{reason}
 
     Generally there are no consequences of this for you.
     If you build your own software and it requires this formula, you'll need

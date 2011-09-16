@@ -21,6 +21,7 @@ class Dnsmasq < Formula
 
     prefix.install "dnsmasq.conf.example"
     (prefix + "uk.org.thekelleys.dnsmasq.plist").write startup_plist
+    (prefix + "uk.org.thekelleys.dnsmasq.plist").chmod 0644
   end
 
   def caveats; <<-EOS.undent

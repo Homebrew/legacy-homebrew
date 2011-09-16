@@ -164,11 +164,13 @@ For the full command list, see the COMMANDS section.
     is done automatically when you install formula, but can be useful for DIY
     installations.
 
-  * `list`:
-    List all installed formulae.
+  * `list [--versions]` [<formulae>]:
+    Without any arguments, list all installed formulae.
 
-  * `list` <formula>:
-    List the installed files for <formula>.
+    If <formulae> are given, list the installed files for <formulae>.
+
+    If `--versions` is passed, show the version number for installed formulae,
+    or only the specified formulae if <formulae> are given.
 
   * `log [git-log-options]` <formula> ...:
     Show the git log for the given formulae. Options that `git-log`(1)
@@ -182,7 +184,7 @@ For the full command list, see the COMMANDS section.
 
     If no <formulae> are given, check all installed brews.
 
-  * `options [--compact] [--all]` <formula>:
+  * `options [--compact] [--all] [--installed]` <formula>:
     Display install options specific to <formula>.
 
     If `--compact` is passed, show all options on a single line separated by
@@ -190,8 +192,13 @@ For the full command list, see the COMMANDS section.
 
     If `--all` is passed, show options for all formulae.
 
-  * `outdated`:
-    Show formula that have an updated version available.
+    If `--installed` is passed, show options for all installed formulae.
+
+  * `outdated [--quiet]`:
+    Show formulae that have an updated version available.
+
+    If `--quiet` is passed, list only the names of outdated brews. Otherwise,
+    the versions are printed as well.
 
   * `prune`:
     Remove dead symlinks from the Homebrew prefix. This is generally not
@@ -230,6 +237,11 @@ For the full command list, see the COMMANDS section.
   * `update`:
     Fetch the newest version of Homebrew from GitHub using `git`(1).
 
+  * `upgrade` [<formulae>]:
+    Upgrade outdated brews.
+
+    If <formulae> are given, upgrade only the specified brews.
+
   * `uses [--installed]` <formula>:
     Show the formulas that specify <formula> as a dependency. The list is
     not recursive; only one level of dependencies is resolved.
@@ -246,7 +258,7 @@ For the full command list, see the COMMANDS section.
     If <formulae> are given, only list versions for the specified brews.
 
   * `--cache`:
-    Display Homebrew's download cache. *Default:* `~/Library/Cache/Homebrew`
+    Display Homebrew's download cache. *Default:* `~/Library/Caches/Homebrew`
 
   * `--cache` <formula>:
     Display the file or folder used to cache <formula>.
@@ -282,11 +294,9 @@ Homebrew allows external commands to be defined by putting a +x file named
 `brew-<cmdname>` or `brew-<cmdname>.rb` on the PATH. This will cause Homebrew
 to recognize `brew cmdname`.
 
-Some sample commands ship with Homebrew and are enabled by default.
+Some example commands ship with Homebrew and are enabled by default.
 
     $ ls `brew --repository`/Library/Contributions/examples
-
-
 
 ## ENVIRONMENT
 

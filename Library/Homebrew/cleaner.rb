@@ -30,7 +30,7 @@ class Cleaner
     puts "strip #{path}" if ARGV.verbose?
     path.chmod 0644 # so we can strip
     unless path.stat.nlink > 1
-      system "strip", *(args+path)
+      system "/usr/bin/strip", *(args+path)
     else
       path = path.to_s.gsub ' ', '\\ '
 
@@ -48,7 +48,7 @@ class Cleaner
 
   def clean_file path
     perms = 0444
-    case `file -h '#{path}'`
+    case `/usr/bin/file -h '#{path}'`
     when /Mach-O dynamically linked shared library/
       # Stripping libraries is causing no end of trouble. Lets just give up,
       # and try to do it manually in instances where it makes sense.
@@ -56,7 +56,7 @@ class Cleaner
     when /Mach-O [^ ]* ?executable/
       strip path
       perms = 0555
-    when /script text executable/
+    when /text executable/
       perms = 0555
     end
     path.chmod perms
