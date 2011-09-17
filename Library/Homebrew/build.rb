@@ -86,7 +86,7 @@ def install f
 rescue Exception
   if f.prefix.directory?
     f.prefix.rmtree
-    f.prefix.parent.rmdir_if_possible
+    f.rack.rmdir_if_possible
   end
   raise
 end
