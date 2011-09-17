@@ -7,7 +7,7 @@ class SdlRtf < Formula
   md5 'fe36733167b5c89f128414f32612121a'
 
   depends_on 'sdl'
-  depemds_on 'sdl_ttf'
+  depends_on 'sdl_ttf'
 
   def install
     # Sdl assumes X11 is present on UNIX
