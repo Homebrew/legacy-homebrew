@@ -1,11 +1,9 @@
 require 'formula'
 
 class Nu < Formula
-  url 'http://programming.nu/releases/Nu-0.4.0.tgz'
+  url 'http://programming.nu/releases/Nu-2.0.1.tgz'
   homepage 'http://programming.nu'
   md5 '94d181e94cd661569103290183e89477'
-
-  depends_on 'pcre'
 
   def install
     ENV['PREFIX'] = prefix
