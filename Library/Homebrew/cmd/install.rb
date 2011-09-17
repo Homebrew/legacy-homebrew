@@ -62,11 +62,21 @@ module Homebrew extend self
     end
   end
 
+  def check_cellar
+    FileUtils.mkdir_p HOMEBREW_CELLAR if not File.exist? HOMEBREW_CELLAR
+  rescue
+    raise <<-EOS.undent
+      Could not create #{HOMEBREW_CELLAR}
+      Check you have permission to write to #{HOMEBREW_CELLAR.parent}
+    EOS
+  end
+
   def perform_preinstall_checks
     check_ppc
     check_writable_install_location
     check_cc
     check_macports
+    check_cellar
   end
 
   def install_formulae formulae

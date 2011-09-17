@@ -3,6 +3,8 @@ require 'formula'
 def ff
   if ARGV.include? "--all"
     Formula.all
+  elsif ARGV.include? "--installed"
+    Formula.all.reject{ |f| not f.installed? }
   else
     ARGV.formulae
   end
@@ -11,7 +13,7 @@ end
 module Homebrew extend self
   def options
     ff.each do |f|
-      f.options rescue next
+      next if f.options.empty?
       if ARGV.include? '--compact'
         puts f.options.collect {|o| o[0]} * " "
       else
