@@ -6,7 +6,7 @@ class Global < Formula
   md5 '5a6439f1fee02d8df3b1ed83049c294e'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
 
     # we copy these in already
