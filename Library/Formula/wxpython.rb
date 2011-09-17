@@ -62,7 +62,7 @@ class Wxpython < Formula
                           "--with-libjpeg",
 	                      "--with-libtiff",
 	                      "--with-libpng",
-	                      "--with-zlib"
+	                      "--with-zlib",
 	                      "--enable-dnd",
 	                      "--enable-clipboard",
 	                      "--enable-webkit",
