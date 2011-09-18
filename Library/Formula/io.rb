@@ -1,8 +1,10 @@
 require 'formula'
 
 class Io < Formula
-  head 'https://github.com/stevedekorte/io.git', :tag => '2010.06.06'
+  url 'https://github.com/stevedekorte/io/tarball/2010.06.06'
   homepage 'http://iolanguage.com/'
+  md5 '7968fbe5367aad7a630fc7094be1775b'
+  head 'https://github.com/stevedekorte/io.git'
 
   depends_on 'libsgml'
   depends_on 'ossp-uuid'
