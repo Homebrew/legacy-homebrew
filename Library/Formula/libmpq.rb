@@ -1,17 +1,35 @@
 require 'formula'
 
 class Libmpq < Formula
-  # Website currently has a bad SSL cert
-  url 'https://libmpq.org/download/libmpq-0.4.2.tar.bz2',
-      :using => CurlUnsafeDownloadStrategy
+  head 'https://github.com/ge0rg/libmpq.git',
+    :tag => '464a407524646f3a7607d8c3cf5c11be2323970f'
 
-  md5 '54ec039b9654ba1662485e1bc9682850'
-  homepage 'https://libmpq.org'
+  homepage 'https://github.com/ge0rg/libmpq'
+
+  def patches
+    # fixes autogen.sh (glibtoolize instead of libtoolize)
+    DATA
+  end
 
   def install
+    system "sh ./autogen.sh"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make install"
   end
 end
+
+__END__
+--- a/autogen.sh
++++ b/autogen.sh
+@@ -8,7 +8,7 @@ directory=`dirname $0`
+ touch $directory/configure.ac
+ 
+ # Regenerate configuration files
+-libtoolize --copy
++glibtoolize --copy
+ aclocal
+ autoheader
+ automake --foreign --add-missing --copy
+-- 
