@@ -5,6 +5,13 @@ class Sshguard < Formula
   homepage 'http://www.sshguard.net/'
   md5 '11b9f47f9051e25bdfe84a365c961ec1'
 
+  def patches
+    # Fix blacklist flag (-b) so that it doesn't abort on first usage.
+    # Upstream bug report:
+    # http://sourceforge.net/tracker/?func=detail&aid=3252151&group_id=188282&atid=924685
+    "https://sourceforge.net/tracker/download.php?group_id=188282&atid=924685&file_id=405677&aid=3252151"
+  end
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
