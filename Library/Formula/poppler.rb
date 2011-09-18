@@ -1,6 +1,7 @@
 require 'formula'
 
-def glib?; ARGV.include? "--with-glib"; end
+def glib?; ARGV.include? '--with-glib'; end
+def qt?; ARGV.include? '--with-qt4'; end
 
 class PopplerData < Formula
   url 'http://poppler.freedesktop.org/poppler-data-0.4.4.tar.gz'
@@ -13,7 +14,7 @@ class Poppler < Formula
   md5 '3afa28e3c8c4f06b0fbca3c91e06394e'
 
   depends_on 'pkg-config' => :build
-  depends_on 'qt' if ARGV.include? "--with-qt4"
+  depends_on 'qt' if qt?
   depends_on 'glib' if glib?
   depends_on 'cairo' if glib? # Needs a newer Cairo build than OS X 10.6.7 provides
 
@@ -28,14 +29,16 @@ class Poppler < Formula
   def install
     ENV.x11 # For Fontconfig headers
 
-    if ARGV.include? "--with-qt4"
-      ENV['POPPLER_QT4_CFLAGS'] = `#{HOMEBREW_PREFIX}/bin/pkg-config QtCore QtGui --libs`.chomp.strip
+    if qt?
+      ENV['POPPLER_QT4_CFLAGS'] = `#{HOMEBREW_PREFIX}/bin/pkg-config QtCore QtGui --libs`.chomp
       ENV.append 'LDFLAGS', "-Wl,-F#{HOMEBREW_PREFIX}/lib"
     end
 
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-    args << "--enable-poppler-qt4" if ARGV.include? "--with-qt4"
-    args << "--enable-poppler-glib" if glib?
+    # Explicitly disable Qt if not requested because `POPPLER_QT4_CFLAGS` won't
+    # be set and the build will fail.
+    args << ( qt? ? '--enable-poppler-qt4' : '--disable-poppler-qt4' )
+    args << '--enable-poppler-glib' if glib?
     args << "--enable-xpdf-headers" if ARGV.include? "--enable-xpdf-headers"
 
     system "./configure", *args
