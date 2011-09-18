@@ -5,30 +5,13 @@ class Libmpq < Formula
   head 'https://github.com/ge0rg/libmpq.git'
   homepage 'https://github.com/ge0rg/libmpq'
 
-  def patches
-    # fixes autogen.sh (glibtoolize instead of libtoolize)
-    DATA
-  end
-
   def install
-    system "sh ./autogen.sh"
+    # on OS X, it's 'glibtoolize'
+    inreplace 'autogen.sh', 'libtoolize', 'glibtoolize'
+    system "./autogen.sh"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make install"
   end
 end
-
-__END__
---- a/autogen.sh
-+++ b/autogen.sh
-@@ -8,7 +8,7 @@ directory=`dirname $0`
- touch $directory/configure.ac
- 
- # Regenerate configuration files
--libtoolize --copy
-+glibtoolize --copy
- aclocal
- autoheader
- automake --foreign --add-missing --copy
--- 
