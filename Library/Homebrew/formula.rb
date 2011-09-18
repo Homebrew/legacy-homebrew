@@ -170,6 +170,7 @@ class Formula
     validate_variable :version
     HOMEBREW_CELLAR+@name+@version
   end
+  def rack; prefix.parent end
 
   def bin;     prefix+'bin'            end
   def doc;     prefix+'share/doc'+name end
