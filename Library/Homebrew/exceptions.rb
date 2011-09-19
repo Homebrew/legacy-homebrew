@@ -113,16 +113,10 @@ class BuildError < Homebrew::InstallationError
   end
 end
 
-class DownloadError < RuntimeError
-  attr :command
-  attr :args
-  attr :exit_status
+# raised in CurlDownloadStrategy.fetch
+class CurlDownloadStrategyError < RuntimeError
+end
 
-  def initialize cmd, args, status
-    @command = cmd
-    @args = args
-    args.map!{ |arg| arg.to_s.gsub " ", "\\ " }
-    super "#{cmd} #{args.join ' '}\nDownloader failed with exit status #{status}"
-    @exit_status = status
-  end
+# raised by safe_system in utils.rb
+class ErrorDuringExecution < RuntimeError
 end
