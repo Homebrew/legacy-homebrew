@@ -64,11 +64,12 @@ index 6e78f66..6b48d2b 100644
  TO_MAN= lua.1 luac.1
  
  # Lua version and release.
-@@ -64,6 +64,7 @@ install: dummy
+@@ -64,6 +64,8 @@ install: dummy
  	cd src && $(INSTALL_DATA) $(TO_INC) $(INSTALL_INC)
  	cd src && $(INSTALL_DATA) $(TO_LIB) $(INSTALL_LIB)
  	cd doc && $(INSTALL_DATA) $(TO_MAN) $(INSTALL_MAN)
 +	ln -s -f liblua.5.1.4.dylib $(INSTALL_LIB)/liblua.5.1.dylib
++	ln -s -f liblua.5.1.dylib $(INSTALL_LIB)/liblua.dylib
  
  ranlib:
  	cd src && cd $(INSTALL_LIB) && $(RANLIB) $(TO_LIB)
