@@ -48,7 +48,7 @@ module HomebrewEnvExtension
     # http://gcc.gnu.org/onlinedocs/gcc-4.3.3/gcc/i386-and-x86_002d64-Options.html
     if MACOS_VERSION >= 10.6
       case Hardware.intel_family
-      when :nehalem, :penryn, :core2, :arrandale
+      when :nehalem, :penryn, :core2, :arrandale, :sandybridge
         # the 64 bit compiler adds -mfpmath=sse for us
         cflags << "-march=core2"
       when :core
@@ -350,5 +350,14 @@ Please take one of the following actions:
     else
       Hardware.processor_count
     end
+  end
+
+  def remove_cc_etc
+    keys = %w{CC CXX LD CPP LDFLAGS CFLAGS CPPFLAGS}
+    removed = Hash[*keys.map{ |key| [key, ENV[key]] }.flatten]
+    keys.each do |key|
+      ENV[key] = nil
+    end
+    removed
   end
 end
