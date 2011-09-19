@@ -563,7 +563,8 @@ private
       fetched = downloader.fetch
     rescue DownloadError => e
       raise e if mirror_list.empty?
-      opoo "#{e.message}\nTrying a mirror."
+      opoo e.message
+      oh1 "Trying a mirror"
       url, specs = mirror_list.shift.values_at :url, :specs
       downloader = download_strategy.new url, name, version, specs
       retry
