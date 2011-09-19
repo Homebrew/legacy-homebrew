@@ -7,10 +7,7 @@ class Stklos < Formula
 
   depends_on 'gmp'
   depends_on 'pcre'
-
-  # it fails with LLVM while building its internal bdw-gc,
-  # for the same reason as bdw-gc itself.
-  fails_with_llvm "LLVM gives an unsupported inline asm error."
+  depends_on 'bdw-gc'
 
   def install
     system "./configure", "--disable-dependency-tracking",
