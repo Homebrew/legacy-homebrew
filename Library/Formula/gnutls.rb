@@ -22,7 +22,8 @@ class Gnutls < Formula
                           "--disable-guile",
                           "--disable-static",
                           "--prefix=#{prefix}",
-                          "--with-libgcrypt"
+                          "--with-libgcrypt",
+                          "--without-p11-kit"
     system "make install"
   end
 end
