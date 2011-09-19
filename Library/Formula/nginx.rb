@@ -115,14 +115,14 @@ __END__
 +        if [ $ngx_found = no ]; then
 +
 +            # Homebrew
-+            HOMEBREW_PREFIX=${NGX_PREFIX%Cellar*}
-+            ngx_feature="PCRE library in ${HOMEBREW_PREFIX}"
-+            ngx_feature_path="${HOMEBREW_PREFIX}/include"
++            HOMEBREW_NGINX_PREFIX=${NGX_PREFIX%Cellar*}
++            ngx_feature="PCRE library in ${HOMEBREW_NGINX_PREFIX}"
++            ngx_feature_path="${HOMEBREW_NGINX_PREFIX}/include"
 +
 +            if [ $NGX_RPATH = YES ]; then
-+                ngx_feature_libs="-R${HOMEBREW_PREFIX}/lib -L${HOMEBREW_PREFIX}/lib -lpcre"
++                ngx_feature_libs="-R${HOMEBREW_NGINX_PREFIX}/lib -L${HOMEBREW_NGINX_PREFIX}/lib -lpcre"
 +            else
-+                ngx_feature_libs="-L${HOMEBREW_PREFIX}/lib -lpcre"
++                ngx_feature_libs="-L${HOMEBREW_NGINX_PREFIX}/lib -lpcre"
 +            fi
 +
 +            . auto/feature
