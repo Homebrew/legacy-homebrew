@@ -14,13 +14,13 @@ class Nss < Formula
       'BUILD_OPT=1',
       'NSS_ENABLE_ECC=1',
       'NS_USE_GCC=1',
-      "USE_64=#{MacOS.prefer_64_bit? ? 1 : 0}",
       'NO_MDUPDATE=1',
       'NSS_USE_SYSTEM_SQLITE=1',
       "NSPR_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/nspr"
-    ].join(' ')
+    ]
+    args << 'USE_64=1' if MacOS.prefer_64_bit?
 
-    system "make build_coreconf build_dbm all -C mozilla/security/nss #{args}"
+    system "make build_coreconf build_dbm all -C mozilla/security/nss #{args.join ' '}"
 
     # We need to use cp here because all files get cross-linked into the dist
     # hierarchy, and Homebrew's Pathname.install moves the symlink into the keg
@@ -49,14 +49,12 @@ class Nss < Formula
 
   def test
     # http://www.mozilla.org/projects/security/pki/nss/tools/certutil.html
-    certdir  = '/tmp/nss-test'
-    pwfile   = "#{certdir}/passwd"
     password = "It's a secret to everyone."
 
-    Dir.mkdir(certdir) unless File.directory?(certdir)
-    File.open(pwfile, 'w') {|f| f.write(password) }
-    system "nss-certutil -N -d #{certdir} -f #{pwfile}"
-    system "nss-certutil -L -d #{certdir}"
-    system "rm #{certdir}/*"
+    mktemp do
+      File.open('passwd', 'w') {|f| f.write(password) }
+      system "nss-certutil -N -d #{Dir.getwd} -f passwd"
+      system "nss-certutil -L -d #{Dir.getwd}"
+    end
   end
 end
