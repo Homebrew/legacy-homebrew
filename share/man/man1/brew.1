@@ -325,10 +325,10 @@ Display where Homebrew\'s \fB\.git\fR folder is located\. For standard installs,
 Print the version number of brew to standard error and exit\.
 .
 .SH "EXTERNAL COMMANDS"
-Homebrew allows external commands to be defined by putting a +x file named \fBbrew\-<cmdname>\fR or \fBbrew\-<cmdname>\.rb\fR on the PATH\. This will cause Homebrew to recognize \fBbrew cmdname\fR\.
+Homebrew, like \fBgit\fR(1), supports external commands\. These are executable scripts that reside somewhere in the PATH, named \fBbrew\-<cmdname>\fR or \fBbrew\-<cmdname>\.rb\fR, which can be invoked like \fBbrew cmdname\fR\. This allows you to create your own commands without modifying Homebrew\'s internals\.
 .
 .P
-Some example commands ship with Homebrew and are enabled by default\.
+A number of (useful, but unsupported) example commands are included and enabled by default:
 .
 .IP "" 4
 .
@@ -339,6 +339,9 @@ $ ls `brew \-\-repository`/Library/Contributions/examples
 .fi
 .
 .IP "" 0
+.
+.P
+Documentation for the included external commands as well as instructions for creating your own can be found on the wiki: \fIhttp://wiki\.github\.com/mxcl/homebrew/External\-Commands\fR
 .
 .SH "ENVIRONMENT"
 .
