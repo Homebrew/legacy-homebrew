@@ -12,7 +12,7 @@ end
 
 def main
   # Names of outdated brews; they count as installed.
-  outdated = Homebrew.outdated_brews.collect{ |b| b[1] }
+  outdated = Homebrew.outdated_brews.collect{ |b| b.name }
 
   formuale_to_check = ARGV.formulae rescue installed_brews
 
