@@ -176,9 +176,6 @@ For the full command list, see the COMMANDS section.
     Show the git log for the given formulae. Options that `git-log`(1)
     recognizes can be passed before the formula list.
 
-  * `man`:
-    Regenerate this man page using [`ronn`][ronn]. See `man brew-man` for details.
-
   * `missing` [<formulae>]:
     Check the given <formulae> for missing dependencies.
 
@@ -408,9 +405,6 @@ Max Howell, a splendid chap.
 
 See Issues on GitHub: <http://github.com/mxcl/homebrew/issues>
 
-
-[ronn]: http://rtomayko.github.com/ronn/
-        "Ronn"
 
 [sinatra]: http://www.sinatrarb.com/
            "Sinatra"
