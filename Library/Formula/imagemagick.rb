@@ -69,7 +69,7 @@ class Imagemagick < Formula
 
     args = [ "--disable-osx-universal-binary",
              "--without-perl", # I couldn't make this compile
-             "--prefix=#{prefix}",
+             "--prefix=#{HOMEBREW_PREFIX}",
              "--disable-dependency-tracking",
              "--enable-shared",
              "--disable-static",
