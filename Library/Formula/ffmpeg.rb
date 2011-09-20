@@ -19,7 +19,8 @@ class Ffmpeg < Formula
 
   def options
     [
-      ["--with-tools", "Install additional FFmpeg tools."]
+      ["--with-tools", "Install additional FFmpeg tools."],
+      ["--with-prores", "Enable the Apple ProRes decoder"]
     ]
   end
 
@@ -27,7 +28,6 @@ class Ffmpeg < Formula
     args = ["--prefix=#{prefix}",
             "--enable-shared",
             "--enable-gpl",
-            "--enable-version3",
             "--enable-nonfree",
             "--enable-hardcoded-tables"]
 
@@ -38,6 +38,13 @@ class Ffmpeg < Formula
     args << "--enable-libvorbis" if Formula.factory('libvorbis').installed?
     args << "--enable-libvpx" if Formula.factory('libvpx').installed?
     args << "--enable-libxvid" if Formula.factory('xvid').installed?
+
+    if ARGV.include? "--with-prores" and Formula.factory('x264').installed?
+      args << "--enable-version2"
+      args << "--enable-decoder=prores"
+    else  
+      args << "--enable-version3"
+    end
 
     # Force use of clang on Lion
     # See: https://avcodec.org/trac/ffmpeg/ticket/353
