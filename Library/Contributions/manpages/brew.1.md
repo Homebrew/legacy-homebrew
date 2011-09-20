@@ -176,9 +176,6 @@ For the full command list, see the COMMANDS section.
     Show the git log for the given formulae. Options that `git-log`(1)
     recognizes can be passed before the formula list.
 
-  * `man`:
-    Regenerate this man page using [`ronn`][ronn]. See `man brew-man` for details.
-
   * `missing` [<formulae>]:
     Check the given <formulae> for missing dependencies.
 
@@ -234,8 +231,11 @@ For the full command list, see the COMMANDS section.
     Unsymlink <formula> from the Homebrew prefix. This can be useful for
     temporarily disabling a formula: `brew unlink foo && commands && brew link foo`.
 
-  * `update`:
-    Fetch the newest version of Homebrew from GitHub using `git`(1).
+  * `update [--rebase]`:
+    Fetch the newest version of Homebrew and all formulae from GitHub using
+     `git`(1).
+
+    If `--rebase` is specified then `git pull --rebase` is used.
 
   * `upgrade` [<formulae>]:
     Upgrade outdated brews.
@@ -290,13 +290,19 @@ For the full command list, see the COMMANDS section.
 
 ## EXTERNAL COMMANDS
 
-Homebrew allows external commands to be defined by putting a +x file named
-`brew-<cmdname>` or `brew-<cmdname>.rb` on the PATH. This will cause Homebrew
-to recognize `brew cmdname`.
+Homebrew, like `git`(1), supports external commands. These are executable
+scripts that reside somewhere in the PATH, named `brew-<cmdname>` or
+`brew-<cmdname>.rb`, which can be invoked like `brew cmdname`. This allows you
+to create your own commands without modifying Homebrew's internals.
 
-Some example commands ship with Homebrew and are enabled by default.
+A number of (useful, but unsupported) example commands are included and enabled
+by default:
 
     $ ls `brew --repository`/Library/Contributions/examples
+
+Documentation for the included external commands as well as instructions for
+creating your own can be found on the wiki:
+<http://wiki.github.com/mxcl/homebrew/External-Commands>
 
 ## ENVIRONMENT
 
@@ -402,9 +408,6 @@ Max Howell, a splendid chap.
 
 See Issues on GitHub: <http://github.com/mxcl/homebrew/issues>
 
-
-[ronn]: http://rtomayko.github.com/ronn/
-        "Ronn"
 
 [sinatra]: http://www.sinatrarb.com/
            "Sinatra"
