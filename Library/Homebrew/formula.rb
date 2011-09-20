@@ -559,6 +559,9 @@ private
     downloader = @downloader
     mirror_list = mirrors
 
+    # Ensure the cache exists
+    HOMEBREW_CACHE.mkpath
+
     begin
       fetched = downloader.fetch
     rescue CurlDownloadStrategyError => e
@@ -606,7 +609,6 @@ EOF
   private
 
   def stage
-    HOMEBREW_CACHE.mkpath
     fetched, downloader = fetch
     verify_download_integrity fetched if fetched.kind_of? Pathname
     mktemp do
