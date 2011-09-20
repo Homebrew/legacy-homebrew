@@ -108,21 +108,20 @@ end
 __END__
 --- a/auto/lib/pcre/conf
 +++ b/auto/lib/pcre/conf
-@@ -155,6 +155,22 @@ else
+@@ -155,6 +155,21 @@ else
              . auto/feature
          fi
 
 +        if [ $ngx_found = no ]; then
 +
 +            # Homebrew
-+            HOMEBREW_PREFIX=${NGX_PREFIX%Cellar*}
-+            ngx_feature="PCRE library in ${HOMEBREW_PREFIX}"
-+            ngx_feature_path="${HOMEBREW_PREFIX}/include"
++            ngx_feature="PCRE library in HOMEBREW_PREFIX"
++            ngx_feature_path="HOMEBREW_PREFIX/include"
 +
 +            if [ $NGX_RPATH = YES ]; then
-+                ngx_feature_libs="-R${HOMEBREW_PREFIX}/lib -L${HOMEBREW_PREFIX}/lib -lpcre"
++                ngx_feature_libs="-RHOMEBREW_PREFIX/lib -LHOMEBREW_PREFIX/lib -lpcre"
 +            else
-+                ngx_feature_libs="-L${HOMEBREW_PREFIX}/lib -lpcre"
++                ngx_feature_libs="-LHOMEBREW_PREFIX/lib -lpcre"
 +            fi
 +
 +            . auto/feature
