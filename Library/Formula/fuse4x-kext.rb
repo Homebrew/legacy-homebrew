@@ -22,7 +22,7 @@ class Fuse4xKext < Formula
       "SYMROOT=build",
       # Build a 32-bit kernel extension on Leopard and a fat binary for Snow
       # Leopard/Lion.
-      "ARCHS=i386 #{'x86_64' unless MacOS.leopard?}", 'ONLY_ACTIVE_ARCH=NO'
+      "ARCHS=i386 #{'x86_64' if MacOS.prefer_64_bit?}", 'ONLY_ACTIVE_ARCH=NO'
     ]
 
     system "/usr/bin/xcodebuild", *args
