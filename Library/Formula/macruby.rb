@@ -1,9 +1,9 @@
 require 'formula'
 
 class Macruby < Formula
-  version '0.10'
+  version '0.11'
   head 'git://github.com/MacRuby/MacRuby.git'
-  url 'https://nodeload.github.com/MacRuby/MacRuby/tarball/0.10'
+  url 'https://nodeload.github.com/MacRuby/MacRuby/tarball/0.11'
   md5 '3716da78ec7ff4345bfd1bdaffae5b11'
   homepage 'http://www.macruby.org'
 
