@@ -235,7 +235,7 @@ For the full command list, see the COMMANDS section.
     Fetch the newest version of Homebrew and all formulae from GitHub using
      `git`(1).
 
-    If --rebase is specified then `git pull --rebase` is used.
+    If `--rebase` is specified then `git pull --rebase` is used.
 
   * `upgrade` [<formulae>]:
     Upgrade outdated brews.
