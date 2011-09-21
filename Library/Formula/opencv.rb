@@ -1,10 +1,10 @@
 require 'formula'
 
 class Opencv < Formula
-  url 'http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/2.2/OpenCV-2.2.0.tar.bz2'
-  version "2.2"
+  url 'http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/2.3.1/OpenCV-2.3.1.tar.bz2'
+  version "2.3.1"
   homepage 'http://opencv.willowgarage.com/wiki/'
-  md5 '122c9ac793a46854ef2819fedbbd6b1b'
+  md5 '827c9f8aa14384c531c73aa165f9b777'
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
@@ -31,7 +31,7 @@ class Opencv < Formula
 
   def caveats; <<-EOS.undent
     The OpenCV Python module will not work until you edit your PYTHONPATH like so:
-      export PYTHONPATH="#{HOMEBREW_PREFIX}/lib/python2.6/site-packages/:$PYTHONPATH"
+      export PYTHONPATH="#{HOMEBREW_PREFIX}/lib/python2.7/site-packages/:$PYTHONPATH"
 
     To make this permanent, put it in your shell's profile (e.g. ~/.profile).
     EOS
