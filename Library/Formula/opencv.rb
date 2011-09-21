@@ -29,6 +29,14 @@ class Opencv < Formula
     system "make install"
   end
 
+  def patches
+    # fixes for newer ffmpeg builds; cf https://code.ros.org/trac/opencv/ticket/1020
+    # "/modules/highgui/src/cap_ffmpeg.cpp:469: error: ‘CODEC_TYPE_VIDEO’ was not declared in this scope" etc
+    # and
+    # "/modules/highgui/src/cap_ffmpeg.cpp:821: error: 'AVERROR_NUMEXPECTED' was not declared in this scope" etc
+    { :p4 => ["https://code.ros.org/trac/opencv/raw-attachment/ticket/1020/ffmpeg_build.patch", "https://code.ros.org/trac/opencv/raw-attachment/ticket/1020/ffmpeg_build_2.patch" ] }
+  end
+  
   def caveats; <<-EOS.undent
     The OpenCV Python module will not work until you edit your PYTHONPATH like so:
       export PYTHONPATH="#{HOMEBREW_PREFIX}/lib/python2.6/site-packages/:$PYTHONPATH"
