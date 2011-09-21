@@ -64,9 +64,9 @@ class Opencv < Formula
       end
       args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/include/#{which_python}'"
     end
+    args << "-DPYTHON_PACKAGES_PATH='#{lib}/#{which_python}/site-packages'"
 
     system 'cmake', '.', *args
-    interactive_shell
     system "make"
     system "make install"
   end
