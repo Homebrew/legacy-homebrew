@@ -21,6 +21,8 @@ class Opencv < Formula
   depends_on 'jasper'  => :optional
   depends_on 'tbb'     => :optional
 
+  depends_on 'numpy' => :python
+
   # Can also depend on ffmpeg, but this pulls in a lot of extra stuff that
   # you don't need unless you're doing video analysis, and some of it isn't
   # in Homebrew anyway.
@@ -36,9 +38,35 @@ class Opencv < Formula
   end
 
   def install
-    makefiles = "cmake -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX:PATH=#{prefix} ."
-    makefiles += " -DOPENCV_EXTRA_C_FLAGS='-arch i386 -m32'" if ARGV.include? '--build32'
-    system makefiles
+    args = std_cmake_parameters.split
+    args << " -DOPENCV_EXTRA_C_FLAGS='-arch i386 -m32'" if ARGV.include? '--build32'
+
+    # The CMake `FindPythonLibs` Module is dumber than a bag of hammers when
+    # more than one python installation is available---for example, it clings
+    # to the Header folder of the system Python Framework like a drowning
+    # sailor.
+    #
+    # This code was cribbed from the VTK formula and uses the output to
+    # `python-config` to do the job FindPythonLibs should be doing in the first
+    # place.
+    python_prefix = `python-config --prefix`.strip
+    # Python is actually a library. The libpythonX.Y.dylib points to this lib, too.
+    if File.exist? "#{python_prefix}/Python"
+      # Python was compiled with --framework:
+      args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
+      args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/Headers'"
+    else
+      python_lib = "#{python_prefix}/lib/lib#{which_python}"
+      if File.exists? "#{python_lib}.a"
+        args << "-DPYTHON_LIBRARY='#{python_lib}.a'"
+      else
+        args << "-DPYTHON_LIBRARY='#{python_lib}.dylib'"
+      end
+      args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/include/#{which_python}'"
+    end
+    args << "-DPYTHON_PACKAGES_PATH='#{lib}/#{which_python}/site-packages'"
+
+    system 'cmake', '.', *args
     system "make"
     system "make install"
   end
