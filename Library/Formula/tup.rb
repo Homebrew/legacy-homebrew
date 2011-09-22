@@ -13,7 +13,7 @@ class Tup < Formula
     if `kextfind -b org.fuse4x.kext.fuse4x`.chomp.empty?
       onoe <<-EOS.undent
         Tup requires the fuse4x kernel extension to be loadable in order to
-        build. Pleas follow the directions givein by `brew info fuse4x-kext`
+        build. Please follow the directions givein by `brew info fuse4x-kext`
         and try again!
       EOS
       exit 1
