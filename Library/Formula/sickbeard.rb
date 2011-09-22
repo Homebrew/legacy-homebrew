@@ -14,6 +14,7 @@ class Sickbeard < Formula
     bin.mkpath
     (bin+"sickbeard").write(startup_script)
     (prefix+"com.sickbeard.sickbeard.plist").write(startup_plist)
+    (prefix+"com.sickbeard.sickbeard.plist").chmod 0644
   end
 
   def startup_plist; <<-EOS.undent
@@ -25,7 +26,7 @@ class Sickbeard < Formula
       <string>com.sickbeard.sickbeard</string>
       <key>ProgramArguments</key>
       <array>
-           <string>#{bin}/sick-beard</string>
+           <string>#{bin}/sickbeard</string>
            <string>-q</string>
            <string>--nolaunch</string>
            <string>-p</string>

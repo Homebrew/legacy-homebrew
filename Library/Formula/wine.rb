@@ -11,11 +11,11 @@ class WineGeckoOld < Formula
 end
 
 class Wine < Formula
-  homepage 'http://www.winehq.org/'
+  homepage 'http://winehq.org/'
 
   if ARGV.flag? '--devel'
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.25.tar.bz2'
-    sha256 'f5525a966efd2f973c9a0fd6391d0d3e5817432e59598fe47c494b240d7e1caa'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.28.tar.bz2'
+    sha256 '9a311124a1a911066ab9d3a742dda888487ee516a18eda946be105a1d1135a38'
   else
     url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.3.tar.bz2'
     sha256 '3fd8d3f2b466d07eb90b8198cdc9ec3005917a4533db7b8c6c69058a2e57c61f'
@@ -29,7 +29,7 @@ class Wine < Formula
   # gnutls not needed since 1.3.16
   depends_on 'gnutls' unless ARGV.flag? '--devel' or ARGV.build_head?
 
-  fails_with_llvm
+  fails_with_llvm :build => 2326
 
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
   # configure: libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
@@ -88,7 +88,7 @@ EOS
   # We have backported Camillo Lugaresi's patch from upstream. The patch can
   # be removed from this formula once it lands in both the devel and stable
   # branches of Wine.
-  if MacOS.lion?
+  if MacOS.lion? and not (ARGV.flag? '--devel' or ARGV.build_head?)
     def patches; DATA; end
   end
 

@@ -2,19 +2,16 @@ require 'formula'
 require 'hardware'
 
 class Qt < Formula
-  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.3.tar.gz'
-  md5 '49b96eefb1224cc529af6fe5608654fe'
+  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.4.tar.gz'
+  md5 '9831cf1dfa8d0689a06c2c54c5c65aaf'
   homepage 'http://qt.nokia.com/'
-  bottle 'https://downloads.sourceforge.net/project/machomebrew/Bottles/qt-4.7.3-bottle.tar.gz'
-  bottle_sha1 'a50123be33c96cba97d4bcee61f3859c7d52000e'
+  bottle 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.7.4-bottle.tar.gz'
+  bottle_sha1 '3195cddb76c0d13b4500dc75cc55f20f00c10ef1'
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
 
   def patches
     [
-      # Fixes compilation on Lion or with llvm-gcc
-      # Should be unneeded in Qt 4.7.4.
-      "https://qt.gitorious.org/qt/qt/commit/91be1263b42a0a91daf3f905661e356e31482fd3?format=patch",
       # Stop complaining about using Lion
       "https://qt.gitorious.org/qt/qt/commit/1766bbdb53e1e20a1bbfb523bbbbe38ea7ab7b3d?format=patch"
     ]

@@ -116,7 +116,7 @@ For the full command list, see the COMMANDS section.
   * `info` <URL>:
     Print the name and version that will be detected for <URL>.
 
-  * `install [--force] [--debug] [--ignore-dependencies] [--use-clang] [--use-gcc] [--use-llvm] [--HEAD]` <formula>:
+  * `install [--force] [--debug] [--ignore-dependencies] [--use-clang] [--use-gcc] [--use-llvm] [--build-from-source] [--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but may also be
@@ -141,6 +141,9 @@ For the full command list, see the COMMANDS section.
     If `--use-llvm` is passed, attempt to compile using the LLVM front-end to GCC.
     *NOTE*: Not all formulae will build with LLVM.
 
+    If `--build-from-source` is passed, compile from source even if a bottle
+    is provided for <formula>.
+
     If `--HEAD` is passed, and <formula> defines it, install the HEAD version,
     aka master, trunk, unstable, dev.
 
@@ -161,25 +164,24 @@ For the full command list, see the COMMANDS section.
     is done automatically when you install formula, but can be useful for DIY
     installations.
 
-  * `list`:
-    List all installed formulae.
+  * `list [--versions]` [<formulae>]:
+    Without any arguments, list all installed formulae.
 
-  * `list` <formula>:
-    List the installed files for <formula>.
+    If <formulae> are given, list the installed files for <formulae>.
+
+    If `--versions` is passed, show the version number for installed formulae,
+    or only the specified formulae if <formulae> are given.
 
   * `log [git-log-options]` <formula> ...:
     Show the git log for the given formulae. Options that `git-log`(1)
     recognizes can be passed before the formula list.
-
-  * `man`:
-    Regenerate this man page using [`ronn`][ronn]. See `man brew-man` for details.
 
   * `missing` [<formulae>]:
     Check the given <formulae> for missing dependencies.
 
     If no <formulae> are given, check all installed brews.
 
-  * `options [--compact] [--all]` <formula>:
+  * `options [--compact] [--all] [--installed]` <formula>:
     Display install options specific to <formula>.
 
     If `--compact` is passed, show all options on a single line separated by
@@ -187,8 +189,13 @@ For the full command list, see the COMMANDS section.
 
     If `--all` is passed, show options for all formulae.
 
-  * `outdated`:
-    Show formula that have an updated version available.
+    If `--installed` is passed, show options for all installed formulae.
+
+  * `outdated [--quiet]`:
+    Show formulae that have an updated version available.
+
+    If `--quiet` is passed, list only the names of outdated brews. Otherwise,
+    the versions are printed as well.
 
   * `prune`:
     Remove dead symlinks from the Homebrew prefix. This is generally not
@@ -224,8 +231,16 @@ For the full command list, see the COMMANDS section.
     Unsymlink <formula> from the Homebrew prefix. This can be useful for
     temporarily disabling a formula: `brew unlink foo && commands && brew link foo`.
 
-  * `update`:
-    Fetch the newest version of Homebrew from GitHub using `git`(1).
+  * `update [--rebase]`:
+    Fetch the newest version of Homebrew and all formulae from GitHub using
+     `git`(1).
+
+    If `--rebase` is specified then `git pull --rebase` is used.
+
+  * `upgrade` [<formulae>]:
+    Upgrade outdated brews.
+
+    If <formulae> are given, upgrade only the specified brews.
 
   * `uses [--installed]` <formula>:
     Show the formulas that specify <formula> as a dependency. The list is
@@ -233,13 +248,17 @@ For the full command list, see the COMMANDS section.
 
     If `--installed` is passed, only lists installed formulae.
 
+  * `versions` <formulae>:
+    List previous versions of <formulae>, along with a command to checkout
+    each version.
+
   * `which` [<formulae>]:
     List versions of installed brews.
 
     If <formulae> are given, only list versions for the specified brews.
 
   * `--cache`:
-    Display Homebrew's download cache. *Default:* `~/Library/Cache/Homebrew`
+    Display Homebrew's download cache. *Default:* `~/Library/Caches/Homebrew`
 
   * `--cache` <formula>:
     Display the file or folder used to cache <formula>.
@@ -271,17 +290,25 @@ For the full command list, see the COMMANDS section.
 
 ## EXTERNAL COMMANDS
 
-Homebrew allows external commands to be defined by putting a +x file named
-`brew-<cmdname>` or `brew-<cmdname>.rb` on the PATH. This will cause Homebrew
-to recognize `brew cmdname`.
+Homebrew, like `git`(1), supports external commands. These are executable
+scripts that reside somewhere in the PATH, named `brew-<cmdname>` or
+`brew-<cmdname>.rb`, which can be invoked like `brew cmdname`. This allows you
+to create your own commands without modifying Homebrew's internals.
 
-Some sample commands ship with Homebrew and are enabled by default.
+A number of (useful, but unsupported) example commands are included and enabled
+by default:
 
     $ ls `brew --repository`/Library/Contributions/examples
 
-
+Documentation for the included external commands as well as instructions for
+creating your own can be found on the wiki:
+<http://wiki.github.com/mxcl/homebrew/External-Commands>
 
 ## ENVIRONMENT
+
+  * HOMEBREW\_BUILD\_FROM\_SOURCE:
+    If set, instructs Homebrew to compile from source even when a formula
+    provides a bottle.
 
   * HOMEBREW\_CACHE:
     If set, instructs Homebrew to use the give folder as the download cache.
@@ -315,6 +342,12 @@ Some sample commands ship with Homebrew and are enabled by default.
   * HOMEBREW\_KEEP\_INFO:
     If set, Homebrew will not remove files from `share/info`, allowing them
     to be linked from the Cellar.
+
+  * HOMEBREW\_MAKE\_JOBS:
+    If set, instructs Homebrew to use the value of `HOMEBREW_MAKE_JOBS` as
+    the number of parallel jobs to run when building with `make`(1).
+
+    *Default:* the number of available CPU cores.
 
   * HOMEBREW\_SVN:
     When exporting from Subversion, Homebrew will use `HOMEBREW_SVN` if set,
@@ -375,9 +408,6 @@ Max Howell, a splendid chap.
 
 See Issues on GitHub: <http://github.com/mxcl/homebrew/issues>
 
-
-[ronn]: http://rtomayko.github.com/ronn/
-        "Ronn"
 
 [sinatra]: http://www.sinatrarb.com/
            "Sinatra"
