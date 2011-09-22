@@ -2,9 +2,7 @@ require 'formula'
 
 class Ipe < Formula
   url 'http://sourceforge.net/projects/ipe7/files/ipe/7.1.0/ipe-7.1.1-src.tar.gz'
-  #url 'http://sourceforge.net/projects/ipe7/files/ipe/ipe-7.0.14-src.tar.gz'
   homepage 'http://ipe7.sourceforge.net'
-  #md5 '13b1790813304ac888402d9c6c40a6ec'
   md5 '0b15be5a0c12274c36e2805c0da94e27'
 
   depends_on 'qt'
