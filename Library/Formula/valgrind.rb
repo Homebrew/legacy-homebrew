@@ -14,16 +14,33 @@ class Valgrind < Formula
   skip_clean 'lib'
 
   def patches
+    patch_hash = {}
     # Xcode 4 fix from upstream r11686
     # https://bugs.kde.org/show_bug.cgi?id=267997
-    if MacOS.xcode_version >= "4.0" and not ARGV.build_head?
-        { :p0 => DATA }
-    end
+    patch_hash[:po] = DATA if MacOS.xcode_version >= "4.0" and not ARGV.build_head?
+
+    # Enable compilation to occur on Lion---Valgrind may be unstable. Upstream
+    # issue tracking official suport:
+    #   https://bugs.kde.org/show_bug.cgi?id=275168
+    patch_hash[:p1] = 'https://raw.github.com/gist/1234173' if MacOS.lion? and ARGV.force?
   end
 
   def install
+    if MacOS.lion? and not ARGV.force?
+      onoe <<-EOS.undent
+        Valgrind is currently unsupported on Lion. Using `brew install --force valgrind`
+        will patch the configure script such that a compilation will be attempted. The
+        results may be unstable and we take no responsibility for them.
+
+        For now, all issues concerning Lion support should be forwarded to the Valgrind
+        bugtracker:
+          https://bugs.kde.org/show_bug.cgi?id=275168
+      EOS
+      exit 1
+    end
+
     # Remove when Xcode 4 fix is removed
-    system "autoreconf -ivf"
+    system "autoreconf -ivf" if MacOS.xcode_version >= "4.0" and not ARGV.build_head?
 
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
     args << "--enable-only64bit" << "--build=amd64-darwin" if MacOS.prefer_64_bit?
@@ -709,34 +726,3 @@ Index: coregrind/Makefile.am
 +endif
 +
 +EXTRA_DIST += fixup_macho_loadcmds.c
-diff --git a/configure.in b/configure.in
-index 3878619..ed28cfd 100644
---- configure.in
-+++ configure.in
-@@ -282,6 +282,12 @@ case "${host_os}" in
-		  DEFAULT_SUPP="darwin10.supp ${DEFAULT_SUPP}"
-		  DEFAULT_SUPP="darwin10-drd.supp ${DEFAULT_SUPP}"
-		  ;;
-+	    11.*)
-+		  AC_MSG_RESULT([Darwin 11.x (${kernel}) / Mac OS X 10.7 Lion])
-+		  AC_DEFINE([DARWIN_VERS], DARWIN_10_7, [Darwin / Mac OS X version])
-+		  DEFAULT_SUPP="darwin11.supp ${DEFAULT_SUPP}"
-+		  DEFAULT_SUPP="darwin11-drd.supp ${DEFAULT_SUPP}"
-+		  ;;
-      *)
-		  AC_MSG_RESULT([unsupported (${kernel})])
-		  AC_MSG_ERROR([Valgrind works on Darwin 9.x and 10.x (Mac OS X 10.5 and 10.6)])
-diff --git a/darwin11-drd.supp b/darwin11-drd.supp
-index e69de29..31a56f7 100644
---- darwin11-drd.supp
-+++ darwin11-drd.supp
-@@ -0,0 +1,2 @@
-+
-+# DRD suppressions for Darwin 11.x / Mac OS X 10.7 Lion
-diff --git a/darwin11.supp b/darwin11.supp
-index e69de29..fecd6b8 100644
---- darwin11.supp
-+++ darwin11.supp
-@@ -0,0 +1,2 @@
-+
-+# Suppressions for Darwin 11.x / Mac OS X 10.7 Lion
