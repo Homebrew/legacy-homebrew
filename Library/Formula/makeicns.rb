@@ -6,8 +6,7 @@ class Makeicns < Formula
   homepage 'http://bitbucket.org/mkae/makeicns'
 
   def install
-    #system "./configure", "--prefix=#{prefix}"
     system "make"
-    system "cp makeicns /usr/local/bin/"
+    bin.install "makeicns"
   end
 end
