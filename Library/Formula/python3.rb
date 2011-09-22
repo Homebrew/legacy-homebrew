@@ -13,7 +13,7 @@ end
 
 class Distribute < Formula
   url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.21.tar.gz'
-  md5 'c8cfcfd42ec9ab900fb3960a3308eef2'
+  md5 'f783444754861f9b33e9f4083bd97b60'
 end
 
 class Python3 < Formula
