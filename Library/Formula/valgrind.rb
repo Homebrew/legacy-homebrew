@@ -22,6 +22,8 @@ class Valgrind < Formula
   end
 
   def install
+    opoo "Valgrind 3.6.1 doesn't support Lion; see caveats." if MACOS_VERSION > 10.6
+
     # Remove when Xcode 4 fix is removed
     system "autoreconf -ivf"
 
@@ -31,6 +33,14 @@ class Valgrind < Formula
     system "./configure", *args
     system "make install"
   end
+
+  def caveats
+    if MACOS_VERSION > 10.6
+      "Valgrind does not work on Lion. See:\n"+
+      "    https://bugs.kde.org/show_bug.cgi?id=275168"
+    end
+  end
+
 end
 
 __END__
