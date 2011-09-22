@@ -13,7 +13,6 @@ class Djmount < Formula
   end
 
   def install
-    ENV.append "CFLAGS", "-D__FreeBSD__=10"
     ENV['FUSE_CFLAGS'] = `pkg-config fuse --cflags`.chomp
     ENV['FUSE_LIBS'] = `pkg-config fuse --libs`.chomp
 
