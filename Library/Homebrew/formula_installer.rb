@@ -104,6 +104,7 @@ class FormulaInstaller
     # I'm guessing this is not a good way to do this, but I'm no UNIX guru
     ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
 
+    args = filtered_args
     fork do
       begin
         read.close
@@ -113,7 +114,7 @@ class FormulaInstaller
              '-rbuild',
              '--',
              f.path,
-             *ARGV.options_only
+             *args.options_only
       rescue Exception => e
         Marshal.dump(e, write)
         write.close
@@ -233,6 +234,23 @@ class FormulaInstaller
       puts "requires these m4 macros, you'll need to add this path manually."
       @show_summary_heading = true
     end
+  end
+
+  private
+
+  # This method gives us a chance to pre-process command line arguments before the
+  # installer forks and `Formula.install` kicks in.
+  def filtered_args
+    # Did the user actually pass the formula this installer is considering on
+    # the command line?
+    def explicitly_requested?; ARGV.formulae.include? f end
+
+    args = ARGV.clone
+    args.uniq! # Just in case someone was playing around...
+
+    %w[--HEAD --verbose -v --debug -d --interactive -i].each {|f| args.delete f} unless explicitly_requested?
+
+    return args
   end
 end
 
