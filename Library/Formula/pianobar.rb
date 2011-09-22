@@ -14,7 +14,7 @@ class Pianobar < Formula
 
   skip_clean 'bin'
 
-  fails_with_llvm "Reports of this not compiling on Xcode 4"
+  fails_with_llvm "Reports of this not compiling on Xcode 4", :build => 2334
 
   def install
     # we discard Homebrew's CFLAGS as Pianobar reportdely doesn't like them
