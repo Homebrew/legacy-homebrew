@@ -18,8 +18,15 @@ class Libiconv < Formula
     ]}
   end
 
+  def options
+    [
+      ['--universal', "Builds a universal binary."]
+    ]
+  end
+
   def install
     ENV.j1
+    ENV.universal_binary if ARGV.build_universal?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-extra-encodings"
