@@ -248,9 +248,11 @@ class FormulaInstaller
     # Did the user actually pass the formula this installer is considering on
     # the command line?
     def explicitly_requested?; ARGV.formulae.include? f end
+    previous_install = Tab.for_formula f
 
     args = ARGV.clone
-    args.uniq! # Just in case someone was playing around...
+    args.concat previous_install.used_options
+    args.uniq! # Just in case some dupes were added
 
     %w[--HEAD --verbose -v --debug -d --interactive -i].each {|f| args.delete f} unless explicitly_requested?
 
