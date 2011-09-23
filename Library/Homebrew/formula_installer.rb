@@ -2,6 +2,7 @@ require 'exceptions'
 require 'formula'
 require 'keg'
 require 'set'
+require 'tab'
 
 class FormulaInstaller
   attr :f
@@ -128,6 +129,9 @@ class FormulaInstaller
       data = read.read
       raise Marshal.load(data) unless data.nil? or data.empty?
       raise "Suspicious installation failure" unless $?.success?
+
+      # Write an installation recipt (a Tab) to the prefix
+      Tab.for_install(f, args).write
     end
   end
 
