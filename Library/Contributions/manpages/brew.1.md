@@ -176,11 +176,6 @@ For the full command list, see the COMMANDS section.
     Show the git log for the given formulae. Options that `git-log`(1)
     recognizes can be passed before the formula list.
 
-  * `missing` [<formulae>]:
-    Check the given <formulae> for missing dependencies.
-
-    If no <formulae> are given, check all installed brews.
-
   * `options [--compact] [--all] [--installed]` <formula>:
     Display install options specific to <formula>.
 
@@ -215,10 +210,6 @@ For the full command list, see the COMMANDS section.
   * `search --macports`|`--fink` <text>:
     Search for <text> on the MacPorts or Fink package search page.
 
-  * `server`:
-    Start a local web app that lets you browse available formulae, similar
-    to `gem server`. Requires [`sinatra`][sinatra].
-
   * `test` <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
     test method. There is no standard output or return code, but it should
@@ -251,11 +242,6 @@ For the full command list, see the COMMANDS section.
   * `versions` <formulae>:
     List previous versions of <formulae>, along with a command to checkout
     each version.
-
-  * `which` [<formulae>]:
-    List versions of installed brews.
-
-    If <formulae> are given, only list versions for the specified brews.
 
   * `--cache`:
     Display Homebrew's download cache. *Default:* `~/Library/Caches/Homebrew`
@@ -408,6 +394,3 @@ Max Howell, a splendid chap.
 
 See Issues on GitHub: <http://github.com/mxcl/homebrew/issues>
 
-
-[sinatra]: http://www.sinatrarb.com/
-           "Sinatra"
