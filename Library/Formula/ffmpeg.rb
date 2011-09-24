@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ffmpeg < Formula
-  url 'http://ffmpeg.org/releases/ffmpeg-0.8.2.tar.bz2'
+  url 'http://ffmpeg.org/releases/ffmpeg-0.8.3.tar.bz2'
   homepage 'http://ffmpeg.org/'
-  sha1 '984f731aced1380840cd8e3576e8db0c2fd5537f'
+  sha1 'cea7bd5eb1c12fa5559610f9237aa8253b06f455'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
@@ -39,17 +39,9 @@ class Ffmpeg < Formula
     args << "--enable-libvpx" if Formula.factory('libvpx').installed?
     args << "--enable-libxvid" if Formula.factory('xvid').installed?
 
-    # Force use of clang on Lion
+    # Force use of clang on SL and Lion.
     # See: https://avcodec.org/trac/ffmpeg/ticket/353
-    if MacOS.lion?
-      args << "--cc=clang"
-    else
-      args << case ENV.compiler
-        when :clang then "--cc=clang"
-        when :llvm then "--cc=llvm-gcc"
-        when :gcc then "--cc=gcc"
-      end
-    end
+    args << "--cc=clang"
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
