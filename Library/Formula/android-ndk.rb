@@ -9,7 +9,9 @@ class AndroidNdk < Formula
   depends_on 'android-sdk'
 
   def install
+    bin.mkpath
     prefix.install Dir['*']
+    %w[ ndk-build ndk-gdb ndk-stack ].each { |app| ln_s prefix+app, bin+app }
   end
 
   def caveats; <<-EOS
