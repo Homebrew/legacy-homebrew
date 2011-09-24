@@ -21,7 +21,7 @@ class Sdl < Formula
     # Sdl assumes X11 is present on UNIX
     ENV.x11
     system "./autogen.sh" if ARGV.build_head?
-    system "./configure", "--prefix=#{prefix}", "--disable-nasm"
+    system "./configure", "--prefix=#{prefix}", "--disable-nasm", "--disable-assembly"
     system "make install"
 
     # Copy source files needed for Ojective-C support.
