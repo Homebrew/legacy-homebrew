@@ -1,11 +1,13 @@
 require 'formula'
 
 class Ffmpeg < Formula
-  url 'http://ffmpeg.org/releases/ffmpeg-0.8.2.tar.bz2'
+  url 'http://ffmpeg.org/releases/ffmpeg-0.8.4.tar.bz2'
   homepage 'http://ffmpeg.org/'
-  sha1 '984f731aced1380840cd8e3576e8db0c2fd5537f'
+  sha1 '70fc95f2711defe4953862bd42a5a228cee803b8'
 
   head 'git://git.videolan.org/ffmpeg.git'
+
+  fails_with_llvm 'Dies during compilation of motionpixels_tablegen'
 
   depends_on 'yasm' => :build
   depends_on 'x264' => :optional
@@ -29,7 +31,8 @@ class Ffmpeg < Formula
             "--enable-gpl",
             "--enable-version3",
             "--enable-nonfree",
-            "--enable-hardcoded-tables"]
+            "--enable-hardcoded-tables",
+            "--cc=#{ENV.cc}"]
 
     args << "--enable-libx264" if Formula.factory('x264').installed?
     args << "--enable-libfaac" if Formula.factory('faac').installed?
@@ -38,18 +41,6 @@ class Ffmpeg < Formula
     args << "--enable-libvorbis" if Formula.factory('libvorbis').installed?
     args << "--enable-libvpx" if Formula.factory('libvpx').installed?
     args << "--enable-libxvid" if Formula.factory('xvid').installed?
-
-    # Force use of clang on Lion
-    # See: https://avcodec.org/trac/ffmpeg/ticket/353
-    if MacOS.lion?
-      args << "--cc=clang"
-    else
-      args << case ENV.compiler
-        when :clang then "--cc=clang"
-        when :llvm then "--cc=llvm-gcc"
-        when :gcc then "--cc=gcc"
-      end
-    end
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
