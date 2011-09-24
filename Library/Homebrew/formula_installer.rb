@@ -66,7 +66,6 @@ class FormulaInstaller
       ohai 'Caveats', f.keg_only_text
       @show_summary_heading = true
     else
-      check_PATH
       check_manpages
       check_infopages
       check_jars
@@ -77,7 +76,10 @@ class FormulaInstaller
   def finish
     ohai 'Finishing up' if ARGV.verbose?
 
-    link unless f.keg_only?
+    unless f.keg_only?
+      link
+      check_PATH
+    end
     fix_install_names
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading

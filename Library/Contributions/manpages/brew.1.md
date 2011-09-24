@@ -164,31 +164,27 @@ For the full command list, see the COMMANDS section.
     is done automatically when you install formula, but can be useful for DIY
     installations.
 
-  * `list`:
-    List all installed formulae.
+  * `list [--versions]` [<formulae>]:
+    Without any arguments, list all installed formulae.
 
-  * `list` <formula>:
-    List the installed files for <formula>.
+    If <formulae> are given, list the installed files for <formulae>.
+
+    If `--versions` is passed, show the version number for installed formulae,
+    or only the specified formulae if <formulae> are given.
 
   * `log [git-log-options]` <formula> ...:
     Show the git log for the given formulae. Options that `git-log`(1)
     recognizes can be passed before the formula list.
 
-  * `man`:
-    Regenerate this man page using [`ronn`][ronn]. See `man brew-man` for details.
-
-  * `missing` [<formulae>]:
-    Check the given <formulae> for missing dependencies.
-
-    If no <formulae> are given, check all installed brews.
-
-  * `options [--compact] [--all]` <formula>:
+  * `options [--compact] [--all] [--installed]` <formula>:
     Display install options specific to <formula>.
 
     If `--compact` is passed, show all options on a single line separated by
     spaces.
 
     If `--all` is passed, show options for all formulae.
+
+    If `--installed` is passed, show options for all installed formulae.
 
   * `outdated [--quiet]`:
     Show formulae that have an updated version available.
@@ -214,10 +210,6 @@ For the full command list, see the COMMANDS section.
   * `search --macports`|`--fink` <text>:
     Search for <text> on the MacPorts or Fink package search page.
 
-  * `server`:
-    Start a local web app that lets you browse available formulae, similar
-    to `gem server`. Requires [`sinatra`][sinatra].
-
   * `test` <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
     test method. There is no standard output or return code, but it should
@@ -230,8 +222,11 @@ For the full command list, see the COMMANDS section.
     Unsymlink <formula> from the Homebrew prefix. This can be useful for
     temporarily disabling a formula: `brew unlink foo && commands && brew link foo`.
 
-  * `update`:
-    Fetch the newest version of Homebrew from GitHub using `git`(1).
+  * `update [--rebase]`:
+    Fetch the newest version of Homebrew and all formulae from GitHub using
+     `git`(1).
+
+    If `--rebase` is specified then `git pull --rebase` is used.
 
   * `upgrade` [<formulae>]:
     Upgrade outdated brews.
@@ -248,13 +243,8 @@ For the full command list, see the COMMANDS section.
     List previous versions of <formulae>, along with a command to checkout
     each version.
 
-  * `which` [<formulae>]:
-    List versions of installed brews.
-
-    If <formulae> are given, only list versions for the specified brews.
-
   * `--cache`:
-    Display Homebrew's download cache. *Default:* `~/Library/Cache/Homebrew`
+    Display Homebrew's download cache. *Default:* `~/Library/Caches/Homebrew`
 
   * `--cache` <formula>:
     Display the file or folder used to cache <formula>.
@@ -286,15 +276,19 @@ For the full command list, see the COMMANDS section.
 
 ## EXTERNAL COMMANDS
 
-Homebrew allows external commands to be defined by putting a +x file named
-`brew-<cmdname>` or `brew-<cmdname>.rb` on the PATH. This will cause Homebrew
-to recognize `brew cmdname`.
+Homebrew, like `git`(1), supports external commands. These are executable
+scripts that reside somewhere in the PATH, named `brew-<cmdname>` or
+`brew-<cmdname>.rb`, which can be invoked like `brew cmdname`. This allows you
+to create your own commands without modifying Homebrew's internals.
 
-Some sample commands ship with Homebrew and are enabled by default.
+A number of (useful, but unsupported) example commands are included and enabled
+by default:
 
     $ ls `brew --repository`/Library/Contributions/examples
 
-
+Documentation for the included external commands as well as instructions for
+creating your own can be found on the wiki:
+<http://wiki.github.com/mxcl/homebrew/External-Commands>
 
 ## ENVIRONMENT
 
@@ -400,9 +394,3 @@ Max Howell, a splendid chap.
 
 See Issues on GitHub: <http://github.com/mxcl/homebrew/issues>
 
-
-[ronn]: http://rtomayko.github.com/ronn/
-        "Ronn"
-
-[sinatra]: http://www.sinatrarb.com/
-           "Sinatra"
