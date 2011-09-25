@@ -6,10 +6,9 @@ class Gremlin < Formula
   md5 'c524ee20e119c3b6059cfd0b7873d94c'
 
   def install
-    inreplace "gremlin.sh", '`dirname $0`', prefix
-    system "mv gremlin.sh gremlin"
-    system "rm gremlin.bat"
-    bin.install "gremlin"
-    prefix.install Dir['*']
+    target = Pathname.new("target/gremlin-#{@version}-standalone")
+    libexec.install Dir[target+'lib'+'*.jar']
+    inreplace target+'bin'+'gremlin.sh', '`dirname $0`/../lib', libexec
+    bin.install target+'bin'+'gremlin.sh' => 'gremlin'
   end
 end
