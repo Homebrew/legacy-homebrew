@@ -4,7 +4,7 @@ class Giter8 < Formula
   url "http://simple-build-tool.googlecode.com/files/sbt-launch-0.7.4.jar"
   homepage 'http://github.com/n8han/giter8'
   md5 '8903fb141037056a497925f3efdb9edf'
-  version '0.2.0'
+  version '0.2.2'
 
   def exec_script
      <<-EOS
@@ -16,7 +16,7 @@ exec java -Xmx512M -jar #{prefix}/sbt-launch-0.7.4.jar @giter8.launchconfig "$@"
   def config_script
     <<-EOS
 [app]
-  version: 0.2.0
+  version: 0.2.2
   org: net.databinder
   name: giter8
   class: giter8.Giter8
