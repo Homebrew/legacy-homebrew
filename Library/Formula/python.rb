@@ -10,7 +10,7 @@ end
 
 class Distribute < Formula
   url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.21.tar.gz'
-  md5 'c8cfcfd42ec9ab900fb3960a3308eef2'
+  md5 'f783444754861f9b33e9f4083bd97b60'
 end
 
 class Python < Formula
@@ -29,6 +29,12 @@ class Python < Formula
       ["--static", "Build static libraries."],
       ["--no-poll", "Remove HAVE_POLL.* options from build."]
     ]
+  end
+
+  def patches
+    # fix for recognizing gdbm 1.9.x databases
+    # patch is already upstream: http://hg.python.org/cpython/rev/14cafb8d1480
+    DATA
   end
 
   # Skip binaries so modules will load; skip lib because it is mostly Python files
@@ -156,3 +162,15 @@ class Python < Formula
     HOMEBREW_PREFIX+"share/python"
   end
 end
+
+__END__
+diff --git a/Lib/whichdb.py b/Lib/whichdb.py
+--- a/Lib/whichdb.py
++++ b/Lib/whichdb.py
+@@ -91,7 +91,7 @@ def whichdb(filename):
+         return ""
+ 
+     # Check for GNU dbm
+-    if magic == 0x13579ace:
++    if magic in (0x13579ace, 0x13579acd, 0x13579acf):
+         return "gdbm"

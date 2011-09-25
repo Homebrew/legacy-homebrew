@@ -124,7 +124,7 @@ def audit_formula_options f, text
 
   # Find possible options
   options = []
-  text.scan(/ARGV\.include\?[ ]*\(?(['"])(.+?)\1/) { |m| options << m[1] }
+  text.scan(/ARGV\.(include|flag)\?[ ]*\(?(['"])(.+?)\2/) { |m| options << m[2] }
   options.reject! {|o| o.include? "#"}
   options.uniq!
 
@@ -140,7 +140,7 @@ def audit_formula_options f, text
 
   if options.length > 0
     options.each do |o|
-      next if o == '--HEAD'
+      next if o == '--HEAD' || o == '--devel'
       problems << " * Option #{o} is not documented" unless documented_options.include? o
     end
   end
