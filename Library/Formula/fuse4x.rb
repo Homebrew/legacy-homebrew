@@ -22,12 +22,4 @@ class Fuse4x < Formula
     system "./configure", "--disable-dependency-tracking", "--disable-debug", "--disable-static", "--prefix=#{prefix}"
     system "make install"
   end
-
-  def caveats
-    <<-EOS.undent
-      In order to use the allow_other mount option, you must set the fuse4x admin group.
-      To set it to the default (admin group):
-        sudo sysctl -w vfs.generic.fuse4x.tunables.admin_group=80
-    EOS
-  end
 end
