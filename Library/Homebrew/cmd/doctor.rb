@@ -666,6 +666,7 @@ def check_for_linked_kegonly_brews
     EOS
 
     puts *warnings.keys.collect { |f| "    #{f}" }
+    puts
   end
 end
 
@@ -746,13 +747,16 @@ def check_missing_deps
   if s.length > 0
     ohai "You should brew install these missing dependencies:"
     puts s
+    puts
   end
 end
 
 def check_git_status
-  if system "/usr/bin/which -s git" and not `git status -s #{HOMEBREW_PREFIX}/Library/Homebrew`.empty?
+  status_cmd = "git --git-dir=#{HOMEBREW_REPOSITORY}/.git --work-tree=#{HOMEBREW_PREFIX} status -s #{HOMEBREW_PREFIX}/Library/Homebrew"
+  if system "/usr/bin/which -s git" and File.directory? HOMEBREW_REPOSITORY+'.git' and not `#{status_cmd}`.empty?
     ohai "You have uncommitted modifications to Homebrew core"
     puts "Unless you know what you are doing, you should: git reset --hard"
+    puts
   end
 end
 

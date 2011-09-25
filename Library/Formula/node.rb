@@ -1,10 +1,10 @@
 require 'formula'
 
 class Node < Formula
-  url 'http://nodejs.org/dist/node-v0.4.11.tar.gz'
+  url 'http://nodejs.org/dist/node-v0.4.12.tar.gz'
   head 'https://github.com/joyent/node.git'
   homepage 'http://nodejs.org/'
-  md5 'ac4c3eaa0667d5e3eacf56fd26a4eadc'
+  md5 'a6375eaa43db5356bf443e25b828ae16'
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.leopard?
