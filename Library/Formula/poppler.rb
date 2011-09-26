@@ -4,8 +4,8 @@ def glib?; ARGV.include? '--with-glib'; end
 def qt?; ARGV.include? '--with-qt4'; end
 
 class PopplerData < Formula
-  url 'http://poppler.freedesktop.org/poppler-data-0.4.4.tar.gz'
-  md5 'f3a1afa9218386b50ffd262c00b35b31'
+  url 'http://poppler.freedesktop.org/poppler-data-0.4.5.tar.gz'
+  md5 '448dd7c5077570e340340706cef931aa'
 end
 
 class Poppler < Formula
