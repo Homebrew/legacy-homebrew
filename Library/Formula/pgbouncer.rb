@@ -16,6 +16,7 @@ class Pgbouncer < Formula
     etc.install %w(etc/pgbouncer.ini etc/userlist.txt)
 
     (prefix+'org.postgresql.pgbouncer.plist').write startup_plist
+    (prefix+'org.postgresql.pgbouncer.plist').chmod 0644
   end
 
   def caveats

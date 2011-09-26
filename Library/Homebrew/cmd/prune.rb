@@ -7,7 +7,7 @@ module Homebrew extend self
     $d = 0
     dirs = []
 
-    %w[bin sbin etc lib include share].map{ |d| HOMEBREW_PREFIX+d }.each do |path|
+    %w[bin sbin etc lib include share Library/LinkedKegs].map{ |d| HOMEBREW_PREFIX+d }.each do |path|
       path.find do |path|
         path.extend ObserverPathnameExtension
         if path.symlink?

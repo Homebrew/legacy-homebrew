@@ -59,12 +59,12 @@ class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
 
   def initialize formula, type
     @type = type
-    @formula = formula
+    super formula, get_message(formula)
   end
 
-  def message
+  def get_message formula
     <<-EOS.undent
-      Unsatisfied dependency: #{formula}
+      Unsatisfied external dependency: #{formula}
       Homebrew does not provide #{type.to_s.capitalize} dependencies, #{tool} does:
 
           #{command_line} #{formula}
@@ -84,7 +84,7 @@ class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
   def command_line
     case type
       when :python
-        "easy_install install"
+        "easy_install"
       when :ruby
         "gem install"
       when :perl
@@ -111,4 +111,12 @@ class BuildError < Homebrew::InstallationError
   def was_running_configure?
     @command == './configure'
   end
+end
+
+# raised in CurlDownloadStrategy.fetch
+class CurlDownloadStrategyError < RuntimeError
+end
+
+# raised by safe_system in utils.rb
+class ErrorDuringExecution < RuntimeError
 end

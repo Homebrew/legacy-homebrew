@@ -13,7 +13,12 @@ class Mplayer < Formula
   def patches
     # When building from SVN HEAD, configure prompts the user to pull FFmpeg
     # from git.  Don't do that.
-    DATA if ARGV.build_head?
+    if ARGV.build_head?
+      DATA
+    elsif `uname -r` =~ /^11\./
+      # Lion requires the following diff (which is already fixed in svn trunk)
+      "https://raw.github.com/gist/1105164/704c64c97ab7ffcc3e5f69b1c5d4fb0850f572c1/vd_mpng.c.diff"
+    end
   end
 
   def install
@@ -25,7 +30,9 @@ class Mplayer < Formula
     ENV['CFLAGS'] = ''
     ENV['CXXFLAGS'] = ''
 
-    system './configure', "--prefix=#{prefix}"
+    # we disable cdparanoia because homebrew's version is hacked to work on OS X
+    # and mplayer doesn't expect the hacks we apply. So it chokes.
+    system './configure', "--prefix=#{prefix}", "--disable-cdparanoia"
     system "make"
     system "make install"
   end

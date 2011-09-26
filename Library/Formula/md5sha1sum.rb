@@ -6,7 +6,7 @@ class Md5sha1sum < Formula
   md5 'a75c5e21071ffa66fad1001de040517a'
 
   def install
-    system "./configure"
+    system "./configure --prefix=#{prefix}"
     system "make"
     bin.install "md5sum"
     ['sha1sum', 'ripemd160sum'].each { |s| ln_s bin+'md5sum', bin+s }

@@ -2,8 +2,14 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.0.4.tar.gz'
-  md5 'd23f6e6b07b57ac061e790b1ed64bb98'
+  url 'http://nginx.org/download/nginx-1.0.6.tar.gz'
+  head 'http://nginx.org/download/nginx-1.1.4.tar.gz'
+
+  if ARGV.build_head?
+    md5 'ae0b6d4c229817c247331750c7613d8b'
+  else
+    md5 'bc98bac3f0b85da1045bc02e6d8fc80d'
+  end
 
   depends_on 'pcre'
 
@@ -50,6 +56,7 @@ class Nginx < Formula
     system "make install"
 
     (prefix+'org.nginx.nginx.plist').write startup_plist
+    (prefix+'org.nginx.nginx.plist').chmod 0644
   end
 
   def caveats; <<-EOS.undent
@@ -101,21 +108,20 @@ end
 __END__
 --- a/auto/lib/pcre/conf
 +++ b/auto/lib/pcre/conf
-@@ -155,6 +155,22 @@ else
+@@ -155,6 +155,21 @@ else
              . auto/feature
          fi
 
 +        if [ $ngx_found = no ]; then
 +
 +            # Homebrew
-+            HOMEBREW_PREFIX=${NGX_PREFIX%Cellar*}
-+            ngx_feature="PCRE library in ${HOMEBREW_PREFIX}"
-+            ngx_feature_path="${HOMEBREW_PREFIX}/include"
++            ngx_feature="PCRE library in HOMEBREW_PREFIX"
++            ngx_feature_path="HOMEBREW_PREFIX/include"
 +
 +            if [ $NGX_RPATH = YES ]; then
-+                ngx_feature_libs="-R${HOMEBREW_PREFIX}/lib -L${HOMEBREW_PREFIX}/lib -lpcre"
++                ngx_feature_libs="-RHOMEBREW_PREFIX/lib -LHOMEBREW_PREFIX/lib -lpcre"
 +            else
-+                ngx_feature_libs="-L${HOMEBREW_PREFIX}/lib -lpcre"
++                ngx_feature_libs="-LHOMEBREW_PREFIX/lib -lpcre"
 +            fi
 +
 +            . auto/feature

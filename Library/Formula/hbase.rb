@@ -1,7 +1,7 @@
 require 'formula'
 
 class Hbase < Formula
-  url 'http://www.takeyellow.com/apachemirror//hbase/hbase-0.90.3/hbase-0.90.3.tar.gz'
+  url 'http://www.apache.org/dyn/closer.cgi?path=hbase/hbase-0.90.3/hbase-0.90.3.tar.gz'
   homepage 'http://hbase.apache.org'
   md5 '834aa50df08886515939ad6af0a55885'
 

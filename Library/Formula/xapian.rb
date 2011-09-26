@@ -1,15 +1,15 @@
 require 'formula'
 
 class XapianBindings < Formula
-  url 'http://oligarchy.co.uk/xapian/1.2.4/xapian-bindings-1.2.4.tar.gz'
+  url 'http://oligarchy.co.uk/xapian/1.2.6/xapian-bindings-1.2.6.tar.gz'
   homepage 'http://xapian.org'
-  sha1 '13611f09cdbca8424c871c79d14c8e75b6547a9c'
+  sha1 'd42d418c1873c607427c7cfb293477aa35428e4c'
 end
 
 class Xapian < Formula
-  url 'http://oligarchy.co.uk/xapian/1.2.4/xapian-core-1.2.4.tar.gz'
+  url 'http://oligarchy.co.uk/xapian/1.2.6/xapian-core-1.2.6.tar.gz'
   homepage 'http://xapian.org'
-  sha1 'c269e0f711ff4c9423d6301c3f7b949cc85a01b4'
+  sha1 '342c140af6c4cc18f1922f79e3f2fb855127e9ff'
 
   def options
     [
@@ -51,9 +51,18 @@ class Xapian < Formula
         ]
 
         args << arg_for_lang('ruby')
-        args << arg_for_lang('python')
         args << arg_for_lang('java')
-        args << "MACOX_DEPLOYMENT_TARGET=10.4" if ARGV.include? '--python'
+
+        if ARGV.include? '--python'
+          python_lib = lib + "python"
+          ENV.append 'PYTHONPATH', python_lib
+          python_lib.mkpath
+          ENV['OVERRIDE_MACOSX_DEPLOYMENT_TARGET'] = '10.4'
+          ENV['PYTHON_LIB'] = "#{python_lib}"
+          args << "--with-python"
+        else
+          args << "--without-python"
+        end
 
         if ARGV.include? '--php'
           extension_dir = lib+'php/extensions'
@@ -66,6 +75,16 @@ class Xapian < Formula
         system "./configure", *args
         system "make install"
       end
+    end
+  end
+
+  def caveats
+    s = ""
+    if ARGV.include? "--python"
+      s += <<-EOS.undent
+        The Python bindings won't function until you amend your PYTHONPATH like so:
+          export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/python:$PYTHONPATH
+      EOS
     end
   end
 end

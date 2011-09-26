@@ -14,7 +14,7 @@ HOMEBREW_CELLAR.subdirs.each do |keg|
   name = keg.basename.to_s
 
   if ((f = Formula.factory(name)).installed? rescue false)
-    Dir["#{f.installed_prefix}/*.app", "#{f.installed_prefix}/libexec/*.app"].each do |p|
+    Dir["#{f.installed_prefix}/*.app", "#{f.installed_prefix}/bin/*.app", "#{f.installed_prefix}/libexec/*.app"].each do |p|
       puts "Linking #{p}"
       appname = File.basename(p)
       target = HOME_APPS+"/"+appname
