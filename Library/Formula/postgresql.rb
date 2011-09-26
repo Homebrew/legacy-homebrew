@@ -3,8 +3,8 @@ require 'hardware'
 
 class Postgresql < Formula
   homepage 'http://www.postgresql.org/'
-  url 'http://ftp9.us.postgresql.org/pub/mirrors/postgresql/source/v9.0.4/postgresql-9.0.4.tar.bz2'
-  md5 '80390514d568a7af5ab61db1cda27e29'
+  url 'http://ftp9.us.postgresql.org/pub/mirrors/postgresql/source/v9.1.1/postgresql-9.1.1.tar.bz2'
+  md5 '061a9f17323117c9358ed60f33ecff78'
 
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.leopard? # Leopard libxml is too old
@@ -54,14 +54,7 @@ class Postgresql < Formula
     ENV.O2 if Hardware.intel_family == :core
 
     system "./configure", *args
-    system "make install"
-    system "make install-docs"
-
-    contrib_directories = Dir.glob("contrib/*").select{ |path| File.directory?(path) } - ['contrib/start-scripts']
-
-    contrib_directories.each do |contrib_directory|
-      system "cd #{contrib_directory}; make install"
-    end
+    system "make install-world"
 
     (prefix+'org.postgresql.postgres.plist').write startup_plist
     (prefix+'org.postgresql.postgres.plist').chmod 0644
@@ -94,6 +87,8 @@ class Postgresql < Formula
 
   def caveats
     s = <<-EOS
+# Build Notes
+
 If builds of PostgreSQL 9 are failing and you have version 8.x installed,
 you may need to remove the previous version first. See:
   https://github.com/mxcl/homebrew/issues/issue/2510
@@ -101,11 +96,17 @@ you may need to remove the previous version first. See:
 To build plpython against a specific Python, set PYTHON prior to brewing:
   PYTHON=/usr/local/bin/python  brew install postgresql
 See:
-  http://www.postgresql.org/docs/9.0/static/install-procedure.html
+  http://www.postgresql.org/docs/9.1/static/install-procedure.html
 
+# Create/Upgrade a Database
 
 If this is your first install, create a database with:
   initdb #{var}/postgres
+
+To migrate existing data from a previous major version (pre-9.1) of PostgreSQL, see:
+  http://www.postgresql.org/docs/9.1/static/upgrading.html
+
+# Start/Stop PostgreSQL
 
 If this is your first install, automatically load on login with:
   mkdir -p ~/Library/LaunchAgents
@@ -123,6 +124,7 @@ Or start manually with:
 And stop with:
   pg_ctl -D #{var}/postgres stop -s -m fast
 
+# Other
 
 Some machines may require provisioning of shared memory:
   http://www.postgresql.org/docs/current/static/kernel-resources.html#SYSVIPC
