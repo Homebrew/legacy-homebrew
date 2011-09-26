@@ -20,7 +20,8 @@ class BaculaFd < Formula
     system "make install"
 
 	# Ensure var/run exists:
-	system "mkdir -p #{HOMEBREW_PREFIX}/var/run"
+	(var + 'run').mkpath
+
   end
 
 end
