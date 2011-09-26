@@ -11,13 +11,16 @@ class BaculaFd < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--sbindir=#{prefix}/bin",
-                          "--with-working-dir=#{prefix}/var/bacula/working",
-                          "--with-pid-dir=#{prefix}/var/bacula/working",
+    system "./configure", "--prefix=#{prefix}", "--sbindir=#{bin}",
+                          "--with-working-dir=#{prefix}/working",
+                          "--with-pid-dir=#{HOMEBREW_PREFIX}/var/run",
                           "--enable-client-only",
                           "--disable-conio", "--disable-readline"
     system "make"
     system "make install"
+
+	# Ensure var/run exists:
+	system "mkdir -p #{HOMEBREW_PREFIX}/var/run"
   end
 
 end
