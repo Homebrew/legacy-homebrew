@@ -195,13 +195,6 @@ If \fB\-\-versions\fR is passed, show the version number for installed formulae,
 Show the git log for the given formulae\. Options that \fBgit\-log\fR(1) recognizes can be passed before the formula list\.
 .
 .TP
-\fBmissing\fR [\fIformulae\fR]
-Check the given \fIformulae\fR for missing dependencies\.
-.
-.IP
-If no \fIformulae\fR are given, check all installed brews\.
-.
-.TP
 \fBoptions [\-\-compact] [\-\-all] [\-\-installed]\fR \fIformula\fR
 Display install options specific to \fIformula\fR\.
 .
@@ -241,10 +234,6 @@ Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is su
 Search for \fItext\fR on the MacPorts or Fink package search page\.
 .
 .TP
-\fBserver\fR
-Start a local web app that lets you browse available formulae, similar to \fBgem server\fR\. Requires \fBsinatra\fR \fIhttp://www\.sinatrarb\.com/\fR\.
-.
-.TP
 \fBtest\fR \fIformula\fR
 A few formulae provide a test method\. \fBbrew test <formula>\fR runs this test method\. There is no standard output or return code, but it should generally indicate to the user if something is wrong with the installed formula\.
 .
@@ -279,13 +268,6 @@ If \fB\-\-installed\fR is passed, only lists installed formulae\.
 .TP
 \fBversions\fR \fIformulae\fR
 List previous versions of \fIformulae\fR, along with a command to checkout each version\.
-.
-.TP
-\fBwhich\fR [\fIformulae\fR]
-List versions of installed brews\.
-.
-.IP
-If \fIformulae\fR are given, only list versions for the specified brews\.
 .
 .TP
 \fB\-\-cache\fR
