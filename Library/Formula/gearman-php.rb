@@ -5,7 +5,7 @@ class GearmanPhp < Formula
   homepage 'http://pecl.php.net/package/gearman'
   md5 '43fd69b1710ddb17af59c91ddeb32cb1'
 
-  depends_on 'gearmand'
+  depends_on 'gearman'
 
   def install
     Dir.chdir "gearman-#{version}" do

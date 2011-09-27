@@ -23,7 +23,7 @@ class Denyhosts < Formula
     # Make it so that all DenyHosts tools have a default path that points at
     # our config file.
     inreplace 'DenyHosts/constants.py' do |s|
-      s.change_make_var! 'CONFIG_FILE', etc + 'denyhosts.cfg'
+      s.change_make_var! 'CONFIG_FILE', "'#{etc}/denyhosts.cfg'"
     end
     # Install mostly into libexec (a la Duplicity)
     system "python", "setup.py", "install",
