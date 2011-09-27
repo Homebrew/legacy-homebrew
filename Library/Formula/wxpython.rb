@@ -19,7 +19,6 @@ class Wxpython < Formula
   def options
     [
       ['--system-python', 'Build against the OS X Python instead of whatever is in the path.'],
-      ['--unicode', 'Builds with unicode-support.'],
       ['--universal', 'Universal i386 and x86_64'],
     ]
   end
@@ -28,9 +27,6 @@ class Wxpython < Formula
     opts = [
       # Reference our wx-config
       "WX_CONFIG=#{bin}/wx-config",
-      # Unicode depends on --unicode arg given or not
-      (ARGV.include? "--unicode") ? "UNICODE=1" : "UNICODE=0",
-
       # Enable OpenGl, if pyopengl is installed.
       "BUILD_GLCANVAS=1",
       "WXPORT=osx_cocoa"
@@ -60,14 +56,14 @@ class Wxpython < Formula
                           "--with-macosx-version-min=10.6", # also needed to fix "utils_osx.cpp:72: error: ‘CGDisplayBitsPerPixel’ was not declared in this scope"
                           "--with-opengl",
                           "--with-libjpeg",
-	                      "--with-libtiff",
-	                      "--with-libpng",
-	                      "--with-zlib",
-	                      "--enable-dnd",
-	                      "--enable-clipboard",
-	                      "--enable-webkit",
-	                      "--enable-svg",
-	                      "--with-expat"
+	                        "--with-libtiff",
+	                        "--with-libpng",
+	                        "--with-zlib",
+	                        "--enable-dnd",
+	                        "--enable-clipboard",
+	                        "--enable-webkit",
+	                        "--enable-svg",
+	                        "--with-expat"
     system "make install"
 
     ENV['WXWIN'] = Dir.getwd
