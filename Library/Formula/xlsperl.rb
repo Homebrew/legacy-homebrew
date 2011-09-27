@@ -13,9 +13,7 @@ class Xlsperl < Formula
     system "perl Makefile.PL"
     system "make"
     bin.install ['blib/script/XLSperl']
-    man.install Dir['blib/man1']
-    man.install Dir['blib/man3']
+    man1.install 'blib/man1/XLSperl.1'
+    man3.install 'blib/man3/App::XLSperl.3pm'
   end
 end
-
-
