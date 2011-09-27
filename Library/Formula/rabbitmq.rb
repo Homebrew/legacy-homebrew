@@ -2,8 +2,8 @@ require 'formula'
 
 class Rabbitmq < Formula
   homepage 'http://www.rabbitmq.com'
-  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.6.0/rabbitmq-server-2.6.0.tar.gz'
-  md5 'e4d9b6792b556f0c145cf02f1430f0b3'
+  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.6.1/rabbitmq-server-2.6.1.tar.gz'
+  md5 'c8b86f2e2a86502932b54e9ced2eb63c'
 
   depends_on 'erlang'
   depends_on 'simplejson' => :python if MacOS.leopard?
@@ -36,6 +36,7 @@ class Rabbitmq < Formula
     inreplace sbin+'rabbitmq-env', '${SCRIPT_DIR}/..', target_dir
 
     (prefix+'com.rabbitmq.rabbitmq-server.plist').write startup_plist
+    (prefix+'com.rabbitmq.rabbitmq-server.plist').chmod 0644
   end
 
   def caveats

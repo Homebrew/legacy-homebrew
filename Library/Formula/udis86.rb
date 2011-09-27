@@ -6,7 +6,7 @@ class Udis86 < Formula
   homepage 'http://udis86.sourceforge.net'
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--enable-shared", "--prefix=#{prefix}"
     system "make"
     system "make install"
   end

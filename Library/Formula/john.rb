@@ -9,7 +9,7 @@ class John < Formula
     { :p0 => DATA }
   end
 
-  fails_with_llvm
+  fails_with_llvm :build => 2334
 
   def install
     ENV.deparallelize

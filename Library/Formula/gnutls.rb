@@ -2,8 +2,8 @@ require 'formula'
 
 class Gnutls < Formula
   homepage 'http://www.gnu.org/software/gnutls/gnutls.html'
-  url 'ftp://ftp.gnu.org/gnu/gnutls/gnutls-2.12.5.tar.bz2'
-  sha256 'bf263880f327ac34a561d8e66b5a729cbe33eea56728bfed3406ff2898448b60'
+  url 'http://ftpmirror.gnu.org/gnutls/gnutls-2.12.11.tar.bz2'
+  md5 'f08234b64a8025d6d5aa1307868b02ed'
 
   depends_on 'pkg-config' => :build
   depends_on 'libgcrypt'
@@ -22,7 +22,8 @@ class Gnutls < Formula
                           "--disable-guile",
                           "--disable-static",
                           "--prefix=#{prefix}",
-                          "--with-libgcrypt"
+                          "--with-libgcrypt",
+                          "--without-p11-kit"
     system "make install"
   end
 end

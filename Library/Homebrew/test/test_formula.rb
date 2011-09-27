@@ -6,6 +6,9 @@ ARGV.extend(HomebrewArgvExtension)
 require 'test/testball'
 require 'utils'
 
+class AbstractDownloadStrategy
+  attr_reader :url
+end
 
 class MostlyAbstractFormula <Formula
   @url=''
@@ -50,5 +53,13 @@ class FormulaTests < Test::Unit::TestCase
     assert_raises(RuntimeError) { f.prefix }
     nostdout { assert_raises(RuntimeError) { f.brew } }
   end
-      
+
+  def test_mirror_support
+    HOMEBREW_CACHE.mkpath unless HOMEBREW_CACHE.exist?
+    f = TestBallWithMirror.new
+    tarball, downloader = f.fetch
+
+    assert_equal f.url, "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
+    assert_equal downloader.url, "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+  end
 end
