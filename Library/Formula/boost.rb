@@ -64,7 +64,7 @@ class Boost < Formula
             "install"]
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if ARGV.include? "--universal"
-    args << "--without-libraries=python" if ARGV.include? "--without-python"
+    args << "--without-python" if ARGV.include? "--without-python"
 
     # we specify libdir too because the script is apparently broken
     system "./bootstrap.sh", "--prefix=#{prefix}", "--libdir=#{lib}"
