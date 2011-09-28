@@ -759,6 +759,22 @@ def check_git_status
   end
 end
 
+def check_for_dyndns
+  if HOMEBREW_PREFIX.to_s == '/usr/local' and File.directory? '/usr/local/dyndns'
+    puts <<-EOS.undent
+      /usr/local/dyndns was detected.
+
+      This is created by the DynDNS Updater app. The app is sensitive to
+      permission and ownership changes on this directory, so you should
+      be careful when taking ownership of /usr/local.
+
+      Homebrew provides a ddclient formula:
+        brew info ddclient
+
+    EOS
+  end
+end
+
 module Homebrew extend self
   def doctor
     old_stdout = $stdout
@@ -802,6 +818,7 @@ module Homebrew extend self
       check_tmpdir
       check_missing_deps
       check_git_status
+      check_for_dyndns
     ensure
       $stdout = old_stdout
     end
