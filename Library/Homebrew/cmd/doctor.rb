@@ -313,7 +313,6 @@ end
 def check_homebrew_prefix
   unless HOMEBREW_PREFIX.to_s == '/usr/local'
     puts <<-EOS.undent
-      You can install Homebrew anywhere you want, but some brews may only work
       You can install Homebrew anywhere you want, but some brews may only build
       correctly if you install to /usr/local.
 
