@@ -112,10 +112,19 @@ If this is your first install, automatically load on login with:
   cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
   launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
 
+If this is an major, eg. 9.0 to 9.2 upgrade and you already have a database:
+  launchctl stop org.postgresql.postgres
+  mv #{var}/postgres #{var}/postgres_old
+  initdb #{var}/postgres
+  pg_upgrade -b your_old_postgres_bin_dir -B #{bin} -d #{var}/postgres_old -D #{var}/postgres
+
+where your_old_postgres_bin_dir is something like /usr/local/Cellar/postgresql/9.0.4/bin/
+
 If this is an upgrade and you already have the org.postgresql.postgres.plist loaded:
   launchctl unload -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
   cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
   launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
+  launchctl start org.postgresql.postgres
 
 Or start manually with:
   pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start
@@ -123,6 +132,7 @@ Or start manually with:
 And stop with:
   pg_ctl -D #{var}/postgres stop -s -m fast
 
+If you're having problems, take a look at #{var}/postgres/server.log
 
 Some machines may require provisioning of shared memory:
   http://www.postgresql.org/docs/current/static/kernel-resources.html#SYSVIPC
