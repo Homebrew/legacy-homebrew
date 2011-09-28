@@ -57,7 +57,7 @@ class Postgresql < Formula
     system "make install"
     system "make install-docs"
 
-    contrib_directories = Dir.glob("contrib/*").select{ |path| File.directory?(path) } - ['contrib/start-scripts']
+    contrib_directories = Dir.glob("contrib/*").select{ |path| File.directory?(path) } - ['contrib/start-scripts', 'contrib/sepgsql']
 
     contrib_directories.each do |contrib_directory|
       system "cd #{contrib_directory}; make install"
