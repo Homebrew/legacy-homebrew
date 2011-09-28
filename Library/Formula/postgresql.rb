@@ -112,7 +112,7 @@ If this is your first install, automatically load on login with:
   cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
   launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
 
-If this is an major, eg. 9.0 to 9.2 upgrade and you already have a database:
+If this is an major upgrade (eg. 9.0 to 9.1) and you already have a database:
   launchctl stop org.postgresql.postgres
   mv #{var}/postgres #{var}/postgres_old
   initdb #{var}/postgres
