@@ -55,9 +55,13 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     unless @tarball_path.exist?
       begin
         _fetch
-      rescue Exception
+      rescue Exception => e
         ignore_interrupts { @tarball_path.unlink if @tarball_path.exist? }
-        raise
+        if e.kind_of? ErrorDuringExecution
+          raise CurlDownloadStrategyError, "Download failed: #{@url}"
+        else
+          raise
+        end
       end
     else
       puts "File already downloaded in #{File.dirname(@tarball_path)}"

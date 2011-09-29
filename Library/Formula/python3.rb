@@ -13,7 +13,7 @@ end
 
 class Distribute < Formula
   url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.21.tar.gz'
-  md5 'c8cfcfd42ec9ab900fb3960a3308eef2'
+  md5 'f783444754861f9b33e9f4083bd97b60'
 end
 
 class Python3 < Formula
@@ -37,6 +37,12 @@ class Python3 < Formula
 
   # Skip binaries so modules will load; skip lib because it is mostly Python files
   skip_clean ['bin', 'lib']
+
+  def patches
+    # fix for recognizing gdbm 1.9.x databases
+    # patch is already upstream: http://hg.python.org/cpython/rev/7a41855b6196
+    DATA
+  end
 
   # The Cellar location of site-packages
   # This location is different for Framework builds
@@ -159,3 +165,15 @@ class Python3 < Formula
     HOMEBREW_PREFIX+"share/python3"
   end
 end
+
+__END__
+diff --git a/Lib/dbm/__init__.py b/Lib/dbm/__init__.py
+--- a/Lib/dbm/__init__.py
++++ b/Lib/dbm/__init__.py
+@@ -166,7 +166,7 @@ def whichdb(filename):
+         return ""
+ 
+     # Check for GNU dbm
+-    if magic == 0x13579ace:
++    if magic in (0x13579ace, 0x13579acd, 0x13579acf):
+         return "dbm.gnu"

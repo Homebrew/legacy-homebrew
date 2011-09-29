@@ -47,7 +47,7 @@ class Erlang < Formula
     ]
   end
 
-  fails_with_llvm "See https://github.com/mxcl/homebrew/issues/issue/120", :build => 2326
+  fails_with_llvm "Hangs while compiling HIPE with LLVM 2335. See issue #7691"
 
   def install
     ohai "Compilation may take a very long time; use `brew install -v erlang` to see progress"

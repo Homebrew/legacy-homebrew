@@ -19,10 +19,11 @@ class Fuse4xKext < Formula
       "-configuration", "Release",
       "-alltargets",
       "MACOSX_DEPLOYMENT_TARGET=#{MACOS_VERSION}",
-      "SYMROOT=build"
+      "SYMROOT=build",
+      # Build a 32-bit kernel extension on Leopard and a fat binary for Snow
+      # Leopard/Lion.
+      "ARCHS=i386 #{'x86_64' if MacOS.prefer_64_bit?}", 'ONLY_ACTIVE_ARCH=NO'
     ]
-    # Don't build a multi-arch kext for Leopard---it will fail.
-    args.concat %w[ARCHS=i386 ONLY_ACTIVE_ARCH=NO] if MacOS.leopard?
 
     system "/usr/bin/xcodebuild", *args
     system "/bin/mkdir -p build/Release/fuse4x.kext/Support"
@@ -36,6 +37,7 @@ class Fuse4xKext < Formula
       In order for FUSE-based filesystems to work, the fuse4x kernel extension
       must be installed by the root user:
         sudo cp -rfX #{kext_prefix}/fuse4x.kext /System/Library/Extensions
+        sudo chmod +s /System/Library/Extensions/fuse4x.kext/Support/load_fuse4x
     EOS
   end
 end
