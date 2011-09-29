@@ -1,21 +1,18 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://kernel.org/pub/software/scm/git/git-manpages-1.7.6.1.tar.bz2'
-  mirror 'http://www.mirrorservice.org/sites/ftp.kernel.org/pub/software/scm/git/git-manpages-1.7.6.1.tar.bz2'
-  md5 'cae559424a62507cb2c15252d85a158e'
+  url 'http://git-core.googlecode.com/files/git-manpages-1.7.6.4.tar.gz'
+  sha1 'c6f6d92f4005a7eccaf89e851c45768c18f7e65a'
 end
 
 class GitHtmldocs < Formula
-  url 'http://kernel.org/pub/software/scm/git/git-htmldocs-1.7.6.1.tar.bz2'
-  mirror 'http://www.mirrorservice.org/sites/ftp.kernel.org/pub/software/scm/git/git-htmldocs-1.7.6.1.tar.bz2'
-  md5 'f698e0abbf1555582e30320930391c59'
+  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.6.4.tar.gz'
+  sha1 '6abd985e24b6585284cef7fae2e3046ba9201356'
 end
 
 class Git < Formula
-  url 'http://kernel.org/pub/software/scm/git/git-1.7.6.1.tar.bz2'
-  mirror 'http://www.mirrorservice.org/sites/ftp.kernel.org/pub/software/scm/git/git-1.7.6.1.tar.bz2'
-  md5 'd1e00772cc9dc6c571999feb9e8771ab'
+  url 'http://git-core.googlecode.com/files/git-1.7.6.4.tar.gz'
+  sha1 'df91e2c32d6097ab1c9d0edc56dd8cecb4e9b686'
   homepage 'http://git-scm.com'
 
   def options
