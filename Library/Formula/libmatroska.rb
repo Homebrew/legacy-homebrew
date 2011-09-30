@@ -9,7 +9,8 @@ class Libmatroska < Formula
   depends_on 'libebml'
 
   def install
-    system 'cp -r make/linux make/darwin'
-    system "cd make/darwin && make install prefix=#{prefix}"
+    chdir 'make/linux' do
+      system "make install prefix=#{prefix} CXX=#{ENV.cxx}"
+    end
   end
 end
