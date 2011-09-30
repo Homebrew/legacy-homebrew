@@ -7,7 +7,8 @@ class Libebml < Formula
   md5 '726cc2bd1a525929ff35ff9854c0ebab'
 
   def install
-    system 'cp -r make/linux make/darwin'
-    system "cd make/darwin && make install prefix=#{prefix}"
+    chdir 'make/linux' do
+      system "make install prefix=#{prefix} CXX=#{ENV.cxx}"
+    end
   end
 end
