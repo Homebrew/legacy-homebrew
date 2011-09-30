@@ -15,7 +15,7 @@ begin
   require 'sinatra'
 rescue LoadError
   onoe 'Sinatra required but not found'
-  puts 'To install: gem install sinatra'
+  puts 'To install: /usr/bin/gem install sinatra'
   exit 1
 end
 
