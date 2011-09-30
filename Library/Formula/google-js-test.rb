@@ -1,9 +1,9 @@
 require 'formula'
 
 class GoogleJsTest < Formula
-  url 'http://google-js-test.googlecode.com/files/gjstest-1.0.2.tar.bz2'
+  url 'http://google-js-test.googlecode.com/files/gjstest-1.0.4.tar.bz2'
   homepage 'http://code.google.com/p/google-js-test/'
-  sha1 'a78b478912d1f1f28f900bbab4e44a4d1a9fbcde'
+  sha1 '7ec7c557d6f9aac96910509c8bdb917ebd7383ad'
 
   depends_on 'gflags'
   depends_on 'glog'
