@@ -170,6 +170,7 @@ class Formula
     validate_variable :version
     HOMEBREW_CELLAR+@name+@version
   end
+  def rack; prefix.parent end
 
   def bin;     prefix+'bin'            end
   def doc;     prefix+'share/doc'+name end
@@ -457,6 +458,10 @@ class Formula
     HOMEBREW_REPOSITORY+"Library/Formula/#{name.downcase}.rb"
   end
 
+  def mirrors
+    self.class.mirrors or []
+  end
+
   def deps
     self.class.deps or []
   end
@@ -488,6 +493,11 @@ protected
     pretty_args.delete "--disable-dependency-tracking" if cmd == "./configure" and not ARGV.verbose?
     ohai "#{cmd} #{pretty_args*' '}".strip
 
+    removed_ENV_variables = case if args.empty? then cmd.split(' ').first else cmd end
+    when "xcodebuild"
+      ENV.remove_cc_etc
+    end
+
     if ARGV.verbose?
       safe_system cmd, *args
     else
@@ -508,6 +518,11 @@ protected
         raise
       end
     end
+
+    removed_ENV_variables.each do |key, value|
+      ENV[key] = value # ENV.kind_of? Hash  # => false
+    end if removed_ENV_variables
+
   rescue
     raise BuildError.new(self, cmd, args, $?)
   end
@@ -538,8 +553,29 @@ private
 
   CHECKSUM_TYPES=[:md5, :sha1, :sha256].freeze
 
-  public # for FormulaInstaller
+  public
+  # For brew-fetch and others.
+  def fetch
+    downloader = @downloader
+    mirror_list = mirrors
 
+    # Ensure the cache exists
+    HOMEBREW_CACHE.mkpath
+
+    begin
+      fetched = downloader.fetch
+    rescue CurlDownloadStrategyError => e
+      raise e if mirror_list.empty?
+      puts "Trying a mirror..."
+      url, specs = mirror_list.shift.values_at :url, :specs
+      downloader = download_strategy.new url, name, version, specs
+      retry
+    end
+
+    return fetched, downloader
+  end
+
+  # For FormulaInstaller.
   def verify_download_integrity fn, *args
     require 'digest'
     if args.length != 2
@@ -573,11 +609,10 @@ EOF
   private
 
   def stage
-    HOMEBREW_CACHE.mkpath
-    fetched = @downloader.fetch
+    fetched, downloader = fetch
     verify_download_integrity fetched if fetched.kind_of? Pathname
     mktemp do
-      @downloader.stage
+      downloader.stage
       yield
     end
   end
@@ -677,7 +712,7 @@ EOF
       end
     end
 
-    attr_rw :version, :homepage, :specs, :deps, :external_deps
+    attr_rw :version, :homepage, :mirrors, :specs, :deps, :external_deps
     attr_rw :keg_only_reason, :fails_with_llvm_reason, :skip_clean_all
     attr_rw :bottle, :bottle_sha1
     attr_rw(*CHECKSUM_TYPES)
@@ -694,6 +729,16 @@ EOF
       @stable = SoftwareSpecification.new(val, specs)
       @url = val
       @specs = specs
+    end
+
+    def mirror val, specs=nil
+      @mirrors ||= []
+      @mirrors << {:url => val, :specs => specs}
+      # Added the uniq after some inspection with Pry---seems `mirror` gets
+      # called three times. The first two times only one copy of the input is
+      # left in `@mirrors`. On the final call, two copies are present. This
+      # happens with `@deps` as well. Odd.
+      @mirrors.uniq!
     end
 
     def depends_on name

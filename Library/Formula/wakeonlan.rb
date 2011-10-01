@@ -7,12 +7,9 @@ class Wakeonlan < Formula
 
   def install
     system "perl", "Makefile.PL"
-    # Make sure script and manual get installed in Cellar properly
-    inreplace "Makefile" do |s|
-      s.change_make_var! "INSTALLSITESCRIPT", bin
-      s.change_make_var! "INSTALLSITEMAN1DIR", man1
-    end
     system "make"
-    system "make install"
+    # 'make install' tries to put stuff in /Library/Perl
+    bin.install 'blib/script/wakeonlan'
+    man1.install 'blib/man1/wakeonlan.1'
   end
 end

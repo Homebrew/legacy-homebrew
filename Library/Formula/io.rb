@@ -1,10 +1,12 @@
 require 'formula'
 
 class Io < Formula
+  url 'https://github.com/stevedekorte/io/tarball/2010.06.06'
+  md5 '7968fbe5367aad7a630fc7094be1775b'
   head 'https://github.com/stevedekorte/io.git'
   homepage 'http://iolanguage.com/'
 
-  depends_on 'cmake' => :build
+  depends_on 'cmake' => :build if ARGV.build_head?
   depends_on 'libsgml'
   depends_on 'ossp-uuid'
   depends_on 'libevent'
@@ -13,19 +15,25 @@ class Io < Formula
   # or there's an issue with io's build system; force the path in
   # so we can build.
   def patches
-    DATA
+    DATA if ARGV.build_head?
   end
 
   def install
-    opoo "IO fails to build often!"
-    puts "There is no stable revision: https://github.com/mxcl/homebrew/issues/7399"
-
     ENV.j1
-    mkdir 'io-build'
 
-    Dir.chdir 'io-build' do
-      system "cmake .. #{std_cmake_parameters}"
+    if not ARGV.build_head?
+      system "make vm"
       system "make install"
+      system "make port"
+      system "make install"
+    else
+      opoo "IO --HEAD usually doesn't build!"
+
+      mkdir 'io-build'
+      Dir.chdir 'io-build' do
+        system "cmake .. #{std_cmake_parameters}"
+        system "make install"
+      end
     end
 
     rm_f Dir['docs/*.pdf']

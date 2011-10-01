@@ -12,7 +12,7 @@ module Homebrew extend self
 end
 
 class RefreshBrew
-  REPOSITORY_URL = "http://github.com/mxcl/homebrew.git"
+  REPOSITORY_URL = "https://github.com/mxcl/homebrew.git"
   FORMULA_DIR = 'Library/Formula/'
   EXAMPLE_DIR = 'Library/Contributions/examples/'
 
@@ -49,8 +49,11 @@ class RefreshBrew
           raise
         end
       end
+
       # specify a refspec so that 'origin/master' gets updated
-      execute "git pull origin refs/heads/master:refs/remotes/origin/master"
+      refspec = "refs/heads/master:refs/remotes/origin/master"
+      rebase = "--rebase" if ARGV.include? "--rebase"
+      execute "git pull #{rebase} origin #{refspec}"
       @current_revision = read_revision
     end
 

@@ -3,7 +3,7 @@ require 'hardware'
 
 class Qt < Formula
   url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.4.tar.gz'
-  md5 'ddf7d83f912cf1283aa066368464fa22'
+  md5 '9831cf1dfa8d0689a06c2c54c5c65aaf'
   homepage 'http://qt.nokia.com/'
   bottle 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.7.4-bottle.tar.gz'
   bottle_sha1 '3195cddb76c0d13b4500dc75cc55f20f00c10ef1'
