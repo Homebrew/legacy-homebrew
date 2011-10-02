@@ -187,8 +187,8 @@ def audit_formula_urls f
     # Is it a sourceforge http(s) URL?
     next unless p =~ %r[^https?://.*\bsourceforge\.]
 
-    if p =~ /\?use_mirror=/
-      problems << " * Update this url (don't use ?use_mirror)."
+    if p =~ /(\?|&)use_mirror=/
+      problems << " * Update this url (don't use #{$1}use_mirror)."
     end
 
     if p =~ /\/download$/
