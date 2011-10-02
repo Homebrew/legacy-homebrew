@@ -1,7 +1,7 @@
 require 'formula'
 
 class Exult < Formula
-  url 'http://prdownloads.sourceforge.net/exult/exult-1.4.9rc1.tar.gz'
+  url 'https://downloads.sourceforge.net/project/exult/exult-all-versions/1.4.9rc1/exult-1.4.9rc1.tar.gz'
   md5 'c17a48cc0377aa67264aaaf441cb1bb2'
   homepage 'http://exult.sourceforge.net/'
 
