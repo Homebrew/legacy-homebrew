@@ -9,7 +9,7 @@ class Gpgme < Formula
   depends_on 'libgpg-error'
   depends_on 'libassuan'
 
-  fails_with_llvm
+  fails_with_llvm :build => 2334
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
