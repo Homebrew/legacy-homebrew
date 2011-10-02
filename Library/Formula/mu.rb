@@ -1,7 +1,8 @@
 require 'formula'
 
 class Mu < Formula
-  url 'http://mu0.googlecode.com/files/mu-0.9.6.tar.gz'
+  url 'http://mu0.googlecode.com/files/mu-0.9.7.tar.gz'
+  sha1 '8641d579a770d59124b72433712841736d326ca6'
   homepage 'http://www.djcbsoftware.nl/code/mu/'
   head 'http://mu0.googlecode.com/files/mu-0.9.7-pre.tar.gz'
 
