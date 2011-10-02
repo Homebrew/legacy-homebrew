@@ -12,9 +12,8 @@ class Gpgme < Formula
   fails_with_llvm :build => 2334
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-asm"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make"
     system "make check"
     system "make install"
