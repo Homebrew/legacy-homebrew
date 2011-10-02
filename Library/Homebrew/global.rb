@@ -3,7 +3,6 @@ require 'extend/ARGV'
 require 'extend/string'
 require 'utils'
 require 'exceptions'
-require 'compatibility'
 
 ARGV.extend(HomebrewArgvExtension)
 
@@ -22,6 +21,9 @@ end
 
 # Where brews installed via URL are cached
 HOMEBREW_CACHE_FORMULA = HOMEBREW_CACHE+"Formula"
+
+# Where bottles are cached
+HOMEBREW_CACHE_BOTTLES = HOMEBREW_CACHE+"Bottles"
 
 if not defined? HOMEBREW_BREW_FILE
   HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] || `which brew`.chomp
@@ -43,6 +45,7 @@ MACOS_VERSION = /(10\.\d+)(\.\d+)?/.match(MACOS_FULL_VERSION).captures.first.to_
 
 HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; Mac OS X #{MACOS_FULL_VERSION})"
 
+HOMEBREW_CURL_ARGS = '-f#LA'
 
 RECOMMENDED_LLVM = 2326
 RECOMMENDED_GCC_40 = (MACOS_VERSION >= 10.6) ? 5494 : 5493
@@ -54,4 +57,9 @@ module Homebrew extend self
 end
 
 FORMULA_META_FILES = %w[README README.md ChangeLog COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
-PLEASE_REPORT_BUG = "#{Tty.white}Please report this bug: #{Tty.em}https://github.com/mxcl/homebrew/wiki/Checklist-before-filing-a-new-issue#{Tty.reset}"
+ISSUES_URL = "https://github.com/mxcl/homebrew/wiki/checklist-before-filing-a-new-issue"
+
+unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
+  $:.unshift(File.expand_path("#{__FILE__}/../compat"))
+  require 'compatibility'
+end

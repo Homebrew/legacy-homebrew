@@ -10,9 +10,7 @@ class Zsh < Formula
   skip_clean :all
 
   def install
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--disable-dependency-tracking",
+    system "./configure", "--prefix=#{prefix}",
                           # don't version stuff in Homebrew, we already do that!
                           "--enable-fndir=#{share}/zsh/functions",
                           "--enable-scriptdir=#{share}/zsh/scripts"
@@ -22,5 +20,11 @@ class Zsh < Formula
       "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
     system "make install"
+  end
+
+  def caveats; <<-EOS.undent
+    In order to use this build of zsh as your login shell,
+    it must be added to /etc/shells.
+    EOS
   end
 end

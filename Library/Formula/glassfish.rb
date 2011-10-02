@@ -1,9 +1,9 @@
 require 'formula'
 
 class Glassfish < Formula
-  url 'http://download.java.net/glassfish/3.1/release/glassfish-3.1.zip'
+  url 'http://download.java.net/glassfish/3.1.1/release/glassfish-3.1.1.zip'
   homepage 'http://glassfish.org/'
-  md5 'a4951c1a7268f92fd0bd6fada89f29d6'
+  md5 'bf92c2c99b3d53b83bbc8c7e2124a897'
 
   skip_clean :all
 

@@ -159,4 +159,14 @@ class VersionTests < Test::Unit::TestCase
     check 'http://ftp.de.debian.org/debian/pool/main/m/mmv/mmv_1.01b.orig.tar.gz',
       '1.01b'
   end
+
+  def test_bottle_style
+    check 'https://downloads.sourceforge.net/project/machomebrew/Bottles/qt-4.7.3-bottle.tar.gz',
+      '4.7.3'
+  end
+
+  def test_imagemagick_bottle_style
+    check 'http://downloads.sf.net/project/machomebrew/Bottles/imagemagick-6.7.1-1-bottle.tar.gz',
+      '6.7.1-1'
+  end
 end

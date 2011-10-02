@@ -1,36 +1,43 @@
 require 'formula'
 
+def glib?; ARGV.include? '--with-glib'; end
+def qt?; ARGV.include? '--with-qt4'; end
+
 class PopplerData < Formula
-  url 'http://poppler.freedesktop.org/poppler-data-0.4.4.tar.gz'
-  md5 'f3a1afa9218386b50ffd262c00b35b31'
+  url 'http://poppler.freedesktop.org/poppler-data-0.4.5.tar.gz'
+  md5 '448dd7c5077570e340340706cef931aa'
 end
 
 class Poppler < Formula
-  url 'http://poppler.freedesktop.org/poppler-0.16.6.tar.gz'
-  homepage 'http://poppler.freedesktop.org/'
-  md5 '592a564fb7075a845f75321ed6425424'
+  url 'http://poppler.freedesktop.org/poppler-0.18.0.tar.gz'
+  homepage 'http://poppler.freedesktop.org'
+  md5 '4cd3bf2a0a13fa8eaf00d31368915f77'
 
   depends_on 'pkg-config' => :build
-  depends_on "qt" if ARGV.include? "--with-qt4"
+  depends_on 'qt' if qt?
+  depends_on 'glib' if glib?
+  depends_on 'cairo' if glib? # Needs a newer Cairo build than OS X 10.6.7 provides
 
   def options
     [
-      ["--with-qt4", "Include Qt4 support (which compiles all of Qt4!)"],
-      ["--enable-xpdf-headers", "Also install XPDF headers."]
+      ["--with-qt4", "Build Qt backend"],
+      ["--with-glib", "Build Glib backend"]
     ]
   end
 
   def install
     ENV.x11 # For Fontconfig headers
 
-    if ARGV.include? "--with-qt4"
-      ENV['POPPLER_QT4_CFLAGS'] = `pkg-config QtCore QtGui --libs`.chomp.strip
+    if qt?
+      ENV['POPPLER_QT4_CFLAGS'] = `#{HOMEBREW_PREFIX}/bin/pkg-config QtCore QtGui --libs`.chomp
       ENV.append 'LDFLAGS', "-Wl,-F#{HOMEBREW_PREFIX}/lib"
     end
 
-    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-    args << "--disable-poppler-qt4" unless ARGV.include? "--with-qt4"
-    args << "--enable-xpdf-headers" if ARGV.include? "--enable-xpdf-headers"
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--enable-xpdf-headers"]
+    # Explicitly disable Qt if not requested because `POPPLER_QT4_CFLAGS` won't
+    # be set and the build will fail.
+    args << ( qt? ? '--enable-poppler-qt4' : '--disable-poppler-qt4' )
+    args << '--enable-poppler-glib' if glib?
 
     system "./configure", *args
     system "make install"

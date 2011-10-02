@@ -6,6 +6,9 @@ class Icu4c < Formula
   md5 'b6bc0a1153540b2088f8b03e0ba625d3'
   version "4.4.1"
 
+  bottle 'https://downloads.sf.net/project/machomebrew/Bottles/icu4c-4.4.1-bottle.tar.gz'
+  bottle_sha1 '8bf3607c7db6ff11d23a0cfc848dc6b33c16fc27'
+
   def patches
     DATA
   end

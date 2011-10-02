@@ -1,9 +1,9 @@
 require 'formula'
 
 class Tor < Formula
-  url 'https://www.torproject.org/dist/tor-0.2.1.30.tar.gz'
+  url 'https://www.torproject.org/dist/tor-0.2.2.33.tar.gz'
   homepage 'https://www.torproject.org/'
-  md5 '6c6d61e053af5969a245d025c4cfce9d'
+  md5 'ea99aba49694bb982d2fccc57a70d58e'
 
   depends_on 'libevent'
 
@@ -17,6 +17,7 @@ class Tor < Formula
     system "make install"
 
     (prefix+'org.tor.plist').write startup_plist
+    (prefix+'org.tor.plist').chmod 0644
   end
 
   def startup_plist

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Vnstat < Formula
-  url 'http://humdi.net/vnstat/vnstat-1.10.tar.gz'
+  url 'http://humdi.net/vnstat/vnstat-1.11.tar.gz'
   homepage 'http://humdi.net/vnstat/'
-  md5 '95421d968689130590348ceb80ff74a8'
+  md5 'a5a113f9176cd61fb954f2ba297f5fdb'
 
   def install
     inreplace ["src/cfg.c", "man/vnstat.1", "man/vnstatd.1", "man/vnstat.conf.5"] do |s|

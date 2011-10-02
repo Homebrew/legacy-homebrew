@@ -1,9 +1,9 @@
 require 'formula'
 
 class Elasticsearch < Formula
-  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.16.2.tar.gz'
+  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.17.7.tar.gz'
   homepage 'http://www.elasticsearch.org'
-  md5 '78402a00b959e63f8dc5456caaa9a5f1'
+  md5 '8502edd8a9b7eb43a895eddeaa299850'
 
   def install
     # Remove Windows files
@@ -29,6 +29,7 @@ class Elasticsearch < Formula
 
     # Write PLIST file for `launchd`
     (prefix+'org.elasticsearch.plist').write startup_plist
+    (prefix+'org.elasticsearch.plist').chmod 0644
   end
 
   def caveats

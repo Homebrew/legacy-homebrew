@@ -9,8 +9,13 @@ class Geos < Formula
     path.extname == '.la'
   end
 
+  fails_with_llvm "Some symbols are missing during link step."
+
   def install
     ENV.O3
+    # Force GCC 4.2 instead of LLVM-GCC on Lion, per MacPorts:
+    # https://trac.macports.org/ticket/30309
+    ENV.gcc_4_2 if MacOS.lion?
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end

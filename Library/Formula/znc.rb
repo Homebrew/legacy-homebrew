@@ -1,8 +1,8 @@
 require 'formula'
 
 class Znc < Formula
-  url 'http://znc.in/releases/archive/znc-0.098.tar.gz'
-  md5 '5667b4acb1f01309d6eded77abac700c'
+  url 'http://znc.in/releases/archive/znc-0.202.tar.gz'
+  md5 '3c6ff4620e139e3d9745cd53111bab20'
   homepage 'http://en.znc.in/wiki/ZNC'
   head 'https://github.com/znc/znc.git'
 

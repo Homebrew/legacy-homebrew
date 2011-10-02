@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libechonest < Formula
-  url 'http://pwsp.cleinias.com/libechonest-1.1.5.tar.bz2'
+  url 'http://pwsp.cleinias.com/libechonest-1.1.8.tar.bz2'
   homepage 'https://projects.kde.org/projects/playground/libs/libechonest'
-  md5 'dfee05ea5dd58b320fce015bf5cb32e5'
+  sha1 'ce79da389979e7deca2858b1d677312f027b6264'
 
   depends_on 'cmake'
   depends_on 'qt'

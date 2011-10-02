@@ -1,14 +1,9 @@
 require 'formula'
 
-# This formula provides the libvirt daemon (libvirtd), development libraries, and the
-# virsh command line tool.  This allows people to manage their virtualisation servers
-# remotely, and (as this continues to be developed) manage virtualisation servers
-# running on the local host
-
 class Libvirt < Formula
   homepage 'http://www.libvirt.org'
-  url 'ftp://libvirt.org/libvirt/libvirt-0.9.2.tar.gz'
-  sha256 '9a851fba532bafb604de92819752815a9015f529f6d69c9a93d2c90c79419f38'
+  url 'ftp://libvirt.org/libvirt/libvirt-0.9.6.tar.gz'
+  sha256 'ce29b1cd3067b224aa834fec2a93d7613c0e72bc035760ad536a2142430bc02b'
 
   depends_on "gnutls"
   depends_on "yajl"
@@ -34,9 +29,10 @@ class Libvirt < Formula
             "--with-init-script=none",
             "--with-remote",
             "--with-test",
-            "--with-vbox=check",
+            "--with-vbox",
             "--with-vmware",
-            "--with-yajl"]
+            "--with-yajl",
+            "--without-qemu"]
 
     args << "--without-libvirtd" if ARGV.include? '--without-libvirtd'
 
@@ -62,3 +58,4 @@ class Libvirt < Formula
     end
   end
 end
+
