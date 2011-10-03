@@ -9,7 +9,7 @@ class Storm < Formula
     prefix.install Dir["{bin,lib,log4j,logs,public}"]
     prefix.install Dir["*.jar"]
     mkdir_p File.expand_path("~/.storm")
-    cp_r Dir["conf/*"], File.expand_path("~/.storm")
+    cp_r Dir["conf/*"], File.expand_path("~/.storm") unless File.exist?(File.expand_path("~/.storm/storm.yaml"))
     
     inreplace "#{prefix}/bin/storm", 'STORM_DIR = "/".join(os.path.abspath( __file__ ).split("/")[:-2])', "STORM_DIR = \"#{prefix}\""
   end
