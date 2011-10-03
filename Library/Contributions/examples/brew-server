@@ -15,7 +15,7 @@ begin
   require 'sinatra'
 rescue LoadError
   onoe 'Sinatra required but not found'
-  puts 'To install: gem install sinatra'
+  puts 'To install: /usr/bin/gem install sinatra'
   exit 1
 end
 
@@ -50,6 +50,7 @@ def html_page
   			<div id="header">
   				<h1><a href="./">Homebrew</a></h1>
   				<p id="subtitle"><strong>The missing package manager for OS X</strong></p>
+                                <p id="installed"><a href="/installed">Show installed packages</a></p>
   			</div>
 
   			<div id="informations">
@@ -170,5 +171,38 @@ get '/formula/:name' do
 
   return s
 end
+
+
+def installed_formulas
+  Formula.all.select{|formula| formula.installed?}
+end
+
+get '/installed' do
+
+  s = <<-HTML
+    <html>
+    <head>
+      <title>Installed Formulas</title>
+      #{css_style}
+    </head>
+    <body>
+     <h1>Installed Fomulas</h1>
+    <ul>
+  HTML
+
+  installed_formulas.each do |formula|
+    s << "<li>#{link_to_formula(formula.name)}</li>"
+  end
+
+  s += <<-HTML
+    </ul>
+    <div>&larr; <a href="/">Back to menu</a></div>
+    </body>
+  </html>
+  HTML
+
+  return s
+end
+
 
 puts "View our tasting menu at http://localhost:4567/\nUse \"Control-C\" to exit.\n\n"

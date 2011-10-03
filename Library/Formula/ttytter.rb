@@ -1,8 +1,8 @@
 require 'formula'
 
 class Ttytter < ScriptFileFormula
-  url 'http://cdkaiser.sdf.org/ttytter/dist1/1.2.01.txt'
-  homepage 'http://cdkaiser.sdf.org/ttytter/'
+  url 'http://www.floodgap.com/software/ttytter/dist1/1.2.01.txt'
+  homepage 'http://www.floodgap.com/software/ttytter/'
   md5 'eb7060467236c8ed4e758a7a88832234'
 
   def install

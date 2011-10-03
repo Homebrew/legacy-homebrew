@@ -9,9 +9,9 @@ class PopplerData < Formula
 end
 
 class Poppler < Formula
-  url 'http://poppler.freedesktop.org/poppler-0.16.7.tar.gz'
-  homepage 'http://poppler.freedesktop.org/'
-  md5 '3afa28e3c8c4f06b0fbca3c91e06394e'
+  url 'http://poppler.freedesktop.org/poppler-0.18.0.tar.gz'
+  homepage 'http://poppler.freedesktop.org'
+  md5 '4cd3bf2a0a13fa8eaf00d31368915f77'
 
   depends_on 'pkg-config' => :build
   depends_on 'qt' if qt?
@@ -21,8 +21,7 @@ class Poppler < Formula
   def options
     [
       ["--with-qt4", "Build Qt backend"],
-      ["--with-glib", "Build Glib backend"],
-      ["--enable-xpdf-headers", "Also install XPDF headers"]
+      ["--with-glib", "Build Glib backend"]
     ]
   end
 
@@ -34,12 +33,11 @@ class Poppler < Formula
       ENV.append 'LDFLAGS', "-Wl,-F#{HOMEBREW_PREFIX}/lib"
     end
 
-    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--enable-xpdf-headers"]
     # Explicitly disable Qt if not requested because `POPPLER_QT4_CFLAGS` won't
     # be set and the build will fail.
     args << ( qt? ? '--enable-poppler-qt4' : '--disable-poppler-qt4' )
     args << '--enable-poppler-glib' if glib?
-    args << "--enable-xpdf-headers" if ARGV.include? "--enable-xpdf-headers"
 
     system "./configure", *args
     system "make install"
