@@ -25,7 +25,7 @@ class Mpfr < Formula
       args << "--build=x86_64-apple-darwin"
     else
       ENV.m32
-      args << "--host=none-apple-darwin"
+      args << "--build=none-apple-darwin"
     end
 
     system "./configure", *args
