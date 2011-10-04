@@ -6,6 +6,8 @@ class RubyBuild < Formula
   md5 '2f3cd506d0bb7a7e2cb6bbb36c81fdca'
   version 'v20110928'
 
+  head 'https://github.com/sstephenson/ruby-build.git'
+
   def install
     system "PREFIX=\"#{prefix}\" ./install.sh"
   end
