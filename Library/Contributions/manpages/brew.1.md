@@ -301,7 +301,7 @@ creating your own can be found on the wiki:
     Otherwise, `~/Library/Caches/Homebrew` is used.
 
     This can be used to keep downloads out of your home folder, if you have
-    it mounted on an SSD for instance.
+    it mounted on an SSD or are using FileVault for instance.
 
   * HOMEBREW\_DEBUG:
     If set, instructs Homebrew to always assume `--debug` when running
