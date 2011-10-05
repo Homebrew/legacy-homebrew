@@ -238,7 +238,7 @@ class Pathname
       unless rv and $? == 0
         raise <<-EOS.undent
           Could not create symlink #{to_s}.
-          Check that you have permssions on #{self.dirname}
+          Check that you have permissions on #{self.dirname}
           EOS
       end
     end
