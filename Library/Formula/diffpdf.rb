@@ -14,7 +14,7 @@ class Diffpdf < Formula
   depends_on 'poppler'
 
   def patches
-    # Fix header include path.
+    # Fix library and header search paths.
     DATA
   end
 
@@ -40,17 +40,18 @@ end
 
 __END__
 
-The location of Poppler includes is hardcoded in the project file which causes
-builds to fail if Homebrew is not installed to /usr/local.
+The location of Poppler library/include paths is hardcoded in the project file
+which causes builds to fail if Homebrew is not installed to /usr/local.
 
 diff --git a/diffpdf.pro b/diffpdf.pro
-index d561963..530d3d5 100644
+index d561963..0f9618f 100644
 --- a/diffpdf.pro
 +++ b/diffpdf.pro
-@@ -9,14 +9,4 @@ SOURCES     += sequence_matcher.cpp
+@@ -8,15 +8,5 @@ HEADERS	    += sequence_matcher.hpp
+ SOURCES     += sequence_matcher.cpp
  SOURCES     += main.cpp
  RESOURCES   += resources.qrc
- LIBS	    += -lpoppler-qt4
+-LIBS	    += -lpoppler-qt4
 -exists($(HOME)/opt/poppler016/) {
 -    message(Using locally built Poppler library)
 -    INCLUDEPATH += $(HOME)/opt/poppler016/include/poppler/qt4
@@ -62,4 +63,5 @@ index d561963..530d3d5 100644
 -	INCLUDEPATH += /usr/local/include/poppler/qt4
 -    }
 -}
-+INCLUDEPATH += HOMEBREW_PREFIX/include/poppler/qt4
++LIBS	      += -L$$quote(HOMEBREW_PREFIX/lib) -lpoppler-qt4
++INCLUDEPATH += $$quote(HOMEBREW_PREFIX/include/poppler/qt4)
