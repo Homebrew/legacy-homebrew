@@ -17,7 +17,7 @@ module Homebrew extend self
       if ARGV.include? '--compact'
         puts f.options.collect {|o| o[0]} * " "
       else
-        puts #{Tty.white}#{f.name}#{Tty.reset}
+        puts "#{Tty.white}#{f.name}#{Tty.reset}"
         f.options.each do |k,v|
           puts k
           puts "\t"+v
