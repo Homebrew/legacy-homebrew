@@ -9,7 +9,7 @@ class Boost < Formula
 
   def options
     [
-      ["--with-mpi", "Enable MPI support"],
+      ["--with-mpi", "Enable support for MPI (Message Passing Interface)"],
       ["--universal", "Build universal binaries"],
       ["--without-python", "Build without Python"]
     ]
