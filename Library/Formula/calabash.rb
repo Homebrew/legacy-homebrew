@@ -4,7 +4,7 @@ class Calabash < Formula
   homepage 'http://xmlcalabash.com'
   url 'http://xmlcalabash.com/download/calabash-0.9.36.zip'
   md5 '82afd255063b3f9f2aec363fc89c011d'
-  head 'git://github.com/ndw/xmlcalabash1.git'
+  head 'https://github.com/ndw/xmlcalabash1.git'
 
 
   def install
