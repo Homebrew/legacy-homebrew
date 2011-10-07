@@ -1,9 +1,9 @@
 require 'formula'
 
 class Rbenv < Formula
-  url 'https://github.com/sstephenson/rbenv/tarball/v0.2.0'
+  url 'https://github.com/sstephenson/rbenv/tarball/v0.2.1'
   homepage 'https://github.com/sstephenson/rbenv'
-  md5 'c26a72aa07ecf6cf51f1517f2c70a9dd'
+  md5 '4b2ca757c7dcc6384a49d8947b97c4ed'
 
   head 'https://github.com/sstephenson/rbenv.git'
 
