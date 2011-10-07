@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libpurple <Formula
+class Libpurple < Formula
   url 'http://downloads.sourceforge.net/project/pidgin/Pidgin/2.7.3/pidgin-2.7.3.tar.bz2'
   homepage 'http://pidgin.im/'
   md5 'e4bbadadae85e5e008690b52dd51f102'

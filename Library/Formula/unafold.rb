@@ -1,6 +1,6 @@
 require 'formula'
 
-class Unafold <Formula
+class Unafold < Formula
   url 'http://dinamelt.bioinfo.rpi.edu/download/unafold-3.8.tar.gz'
   homepage 'http://dinamelt.bioinfo.rpi.edu/unafold/'
   md5 'c1d473c1c4685b7ded51979d8fe4ce0b'

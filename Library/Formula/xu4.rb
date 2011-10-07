@@ -1,6 +1,6 @@
 require 'formula'
 
-class Xu4 <Formula
+class Xu4 < Formula
   url 'http://xu4.svn.sourceforge.net/svnroot/xu4/trunk/u4',
           :revision => '2725'
   homepage 'http://xu4.sourceforge.net/'

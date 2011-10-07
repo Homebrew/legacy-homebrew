@@ -1,6 +1,6 @@
 require 'formula'
 
-class Nu <Formula
+class Nu < Formula
   url 'http://programming.nu/releases/Nu-0.4.0.tgz'
   homepage 'http://programming.nu'
   md5 '94d181e94cd661569103290183e89477'

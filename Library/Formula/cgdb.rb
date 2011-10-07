@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cgdb <Formula
+class Cgdb < Formula
   url 'http://downloads.sourceforge.net/project/cgdb/cgdb/cgdb-0.6.5/cgdb-0.6.5.tar.gz'
   homepage 'http://cgdb.sourceforge.net/'
   md5 'f7d054ec74b1431f3f8304195ddd21b4'

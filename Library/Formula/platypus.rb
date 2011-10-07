@@ -1,6 +1,6 @@
 require 'formula'
 
-class Platypus <Formula
+class Platypus < Formula
   url 'http://www.sveinbjorn.org/files/software/platypus.src.zip'
   version '4.4'
   homepage 'http://www.sveinbjorn.org/platypus'
@@ -13,10 +13,10 @@ class Platypus <Formula
     end
 
     # Build main command-line binary, we don't care about the App
-    system "xcodebuild", "-target", "platypus", "-configuration", "Deployment", "ONLY_ACTIVE_ARCH=YES", "SDKROOT=", "MACOSX_DEPLOYMENT_TARGET="
+    system "xcodebuild", "-target", "platypus", "-configuration", "Deployment", "ONLY_ACTIVE_ARCH=YES", "SYMROOT=build", "SDKROOT=", "MACOSX_DEPLOYMENT_TARGET="
 
     # Build application sub-binary needed by command-line utility
-    system "xcodebuild", "-target", "ScriptExec", "-configuration", "Deployment", "ONLY_ACTIVE_ARCH=YES", "SDKROOT=", "MACOSX_DEPLOYMENT_TARGET="
+    system "xcodebuild", "-target", "ScriptExec", "-configuration", "Deployment", "ONLY_ACTIVE_ARCH=YES", "SYMROOT=build", "SDKROOT=", "MACOSX_DEPLOYMENT_TARGET="
 
     # Install binary and man page
     bin.install "build/Deployment/platypus"

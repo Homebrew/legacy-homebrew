@@ -26,7 +26,7 @@ class ConfigureTests < Test::Unit::TestCase
     f=ConfigureFails.new
     begin
       f.brew { f.install }
-    rescue ExecutionError => e
+    rescue BuildError => e
       assert e.was_running_configure?
     end
   end

@@ -1,9 +1,9 @@
 require 'formula'
 
-class GambitScheme <Formula
-  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.6/source/gambc-v4_6_0.tgz'
+class GambitScheme < Formula
+  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.6/source/gambc-v4_6_1.tgz'
   homepage 'http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page'
-  md5 '4f0e8b3e90a96f2203cbaf1e1cc1388a'
+  md5 'fb716406266746ad25ff57b651caf3c8'
 
   def options
     [
@@ -12,10 +12,12 @@ class GambitScheme <Formula
     ]
   end
 
+  skip_clean :all
+
+  fails_with_llvm "ld crashes during the build process or segfault at runtime"
+
   def install
-    fails_with_llvm "ld crashes during the build process"
-    # Gambit Scheme doesn't like full optimizations
-    ENV.O2
+    ENV.O2 # Gambit Scheme doesn't like full optimizations
 
     configure_args = [
       "--prefix=#{prefix}",

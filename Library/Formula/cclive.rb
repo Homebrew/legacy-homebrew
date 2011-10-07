@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cclive <Formula
+class Cclive < Formula
   url 'http://cclive.googlecode.com/files/cclive-0.6.5.tar.bz2'
   homepage 'http://code.google.com/p/cclive/'
   md5 'c3d50c05ca332b01286f9f3b6dd21841'

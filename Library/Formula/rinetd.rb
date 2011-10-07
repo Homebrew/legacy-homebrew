@@ -1,6 +1,6 @@
 require 'formula'
 
-class Rinetd <Formula
+class Rinetd < Formula
   url 'http://www.boutell.com/rinetd/http/rinetd.tar.gz'
   homepage 'http://www.boutell.com/rinetd/'
   md5 '28c78bac648971724c46f1a921154c4f'

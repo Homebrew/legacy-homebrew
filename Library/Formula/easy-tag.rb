@@ -1,6 +1,6 @@
 require 'formula'
 
-class EasyTag <Formula
+class EasyTag < Formula
   url 'http://archive.ubuntu.com/ubuntu/pool/universe/e/easytag/easytag_2.1.6.orig.tar.gz'
   homepage 'http://easytag.sf.net'
   md5 '91b57699ac30c1764af33cc389a64c71'

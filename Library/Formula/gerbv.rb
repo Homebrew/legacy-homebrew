@@ -1,13 +1,13 @@
 require 'formula'
 
-class Gerbv <Formula
+class Gerbv < Formula
   url 'http://downloads.sourceforge.net/project/gerbv/gerbv/gerbv-2.5.0/gerbv-2.5.0.tar.gz'
   homepage 'http://gerbv.gpleda.org/'
   md5 '633a55473f62b96fff302ed1ed52c88e'
 
   depends_on 'pkg-config' => :build
   depends_on 'gtk+'
-  depends_on 'cairo' if MACOS_VERSION < 10.6
+  depends_on 'cairo' if MacOS.leopard?
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

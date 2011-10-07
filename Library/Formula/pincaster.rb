@@ -1,6 +1,6 @@
 require 'formula'
 
-class Pincaster <Formula
+class Pincaster < Formula
   url 'http://download.pureftpd.org/pincaster/releases/pincaster-0.5.tar.gz'
   homepage 'https://github.com/jedisct1/Pincaster'
   md5 'd2cba33470c1d23d381a2003b3986efe'
@@ -17,6 +17,7 @@ class Pincaster <Formula
     etc.install "pincaster.conf"
     (var+"db/pincaster/").mkpath
     (prefix+'com.github.pincaster.plist').write startup_plist
+    (prefix+'com.github.pincaster.plist').chmod 0644
   end
 
   def caveats

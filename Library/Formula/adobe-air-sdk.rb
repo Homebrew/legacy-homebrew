@@ -1,10 +1,10 @@
 require 'formula'
 
-class AdobeAirSdk <Formula
-  url 'http://airdownload.adobe.com/air/mac/download/latest/AdobeAIRSDK.tbz2'
+class AdobeAirSdk < Formula
+  url 'http://airdownload.adobe.com/air/mac/download/2.7/AdobeAIRSDK.tbz2'
   homepage 'http://www.adobe.com/products/air/sdk/'
-  md5 'e46e1da07f01611d905b6ec89b8b1331'
-  version '2.5'
+  md5 'f93c8a540a6db24509b4fbaddf2f1770'
+  version '2.7'
 
   def startup_script name
     <<-EOS.undent

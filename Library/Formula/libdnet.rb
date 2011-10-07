@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libdnet <Formula
+class Libdnet < Formula
   url 'http://libdnet.googlecode.com/files/libdnet-1.12.tgz'
   homepage 'http://code.google.com/p/libdnet/'
   md5 '9253ef6de1b5e28e9c9a62b882e44cc9'

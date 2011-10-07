@@ -1,6 +1,6 @@
 require 'formula'
 
-class Exim <Formula
+class Exim < Formula
   url 'http://ftp.exim.org/pub/exim/exim4/exim-4.72.tar.gz'
   homepage 'http://exim.org'
   sha1 '261c02c95b4d3aada73840b01f836e6874841c44'

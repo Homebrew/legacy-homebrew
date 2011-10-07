@@ -1,13 +1,20 @@
 require 'formula'
 
-class Hydra <Formula
-  url 'http://freeworld.thc.org/releases/hydra-5.7-src.tar.gz'
-  homepage 'http://freeworld.thc.org/thc-hydra/'
-  md5 'a8ad06ed726208800ca9a3c09aaf9cf7'
+class Hydra < Formula
+  url 'http://www.thc.org/releases/hydra-6.5-src.tar.gz'
+  homepage 'http://www.thc.org/thc-hydra/'
+  md5 '69a5afbbcbe3b1fdd31f9bf616480336'
+  version "6.5+diff1"
+
+  # This patch is provided by the original authors of this software
+  def patches
+    { :p0 => "http://www.thc.org/thc-hydra/hydra-6.5-fix.diff" }
+  end
 
   def install
-    system "./configure", "--disable-xhydra", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     bin.mkpath
-    system "make install"
+    system "make all install"
+    share.install prefix+"man" # Put man pages in correct place
   end
 end

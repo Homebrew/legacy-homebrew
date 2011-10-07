@@ -1,6 +1,6 @@
 require 'formula'
 
-class Bcwipe <Formula
+class Bcwipe < Formula
   url 'http://www.jetico.com/linux/BCWipe-1.9-6.tar.gz'
   homepage 'http://www.jetico.com/linux/bcwipe-help/wu_intro.htm'
   md5 'abe1ddf92284d585acf43d7e2d8b1593'

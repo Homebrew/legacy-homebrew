@@ -1,6 +1,6 @@
 require 'formula'
 
-class Szl <Formula
+class Szl < Formula
   url 'http://szl.googlecode.com/files/szl-1.0.tar.gz'
   homepage 'http://code.google.com/p/szl/'
   md5 'd25f73b2adf4b92229d8b451685506d1'
@@ -8,6 +8,7 @@ class Szl <Formula
   depends_on 'binutils' # For objdump
   depends_on 'icu4c'
   depends_on 'protobuf' # for protoc
+  depends_on 'pcre'
 
   def install
     ENV['OBJDUMP'] = "#{HOMEBREW_PREFIX}/bin/gobjdump"

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Frotz <Formula
+class Frotz < Formula
   url 'http://downloads.sourceforge.net/project/frotz/frotz/2.43/frotz-2.43.tar.gz'
   homepage 'http://frotz.sourceforge.net/'
   md5 'efe51879e012b92bb8d5f4a82e982677'

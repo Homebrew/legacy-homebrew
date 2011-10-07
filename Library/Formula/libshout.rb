@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libshout <Formula
+class Libshout < Formula
   url 'http://downloads.us.xiph.org/releases/libshout/libshout-2.2.2.tar.gz'
   homepage 'http://www.icecast.org/'
   md5 '4f75fc9901c724b712c371c9a1e782d3'

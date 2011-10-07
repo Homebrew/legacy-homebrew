@@ -1,6 +1,6 @@
 require 'formula'
 
-class Kdelibs <Formula
+class Kdelibs < Formula
   url 'ftp://ftp.kde.org/pub/kde/stable/4.6.0/src/kdelibs-4.6.0.tar.bz2'
   homepage 'http://www.kde.org/'
   md5 '9ee32f375809a42a4a8d512bd06a612b'
@@ -11,7 +11,6 @@ class Kdelibs <Formula
   depends_on 'pcre'
   depends_on 'jpeg'
   depends_on 'giflib'
-  depends_on 'libpng' unless File.exist? "/usr/X11R6/lib"
   depends_on 'strigi'
   depends_on 'soprano'
   depends_on 'shared-desktop-ontologies'
@@ -29,6 +28,7 @@ class Kdelibs <Formula
   end
 
   def install
+    ENV.x11
     gettext_prefix = Formula.factory('gettext').prefix
     docbook_prefix = Formula.factory('docbook').prefix
     docbook_dtd = "#{docbook_prefix}/docbook/xml/4.5"

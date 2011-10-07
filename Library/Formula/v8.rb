@@ -1,6 +1,6 @@
 require 'formula'
 
-class V8 <Formula
+class V8 < Formula
   head 'http://v8.googlecode.com/svn/trunk/'
   homepage 'http://code.google.com/p/v8/'
 

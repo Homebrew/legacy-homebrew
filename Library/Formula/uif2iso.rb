@@ -1,6 +1,6 @@
 require 'formula'
 
-class Uif2iso <Formula
+class Uif2iso < Formula
   url 'http://aluigi.org/mytoolz/uif2iso.zip'
   homepage 'http://aluigi.org/mytoolz.htm#uif2iso'
   md5 '2eb9797ec463c38253014d45591a7043'

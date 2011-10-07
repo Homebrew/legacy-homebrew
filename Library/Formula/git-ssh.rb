@@ -1,6 +1,6 @@
 require 'formula'
 
-class GitSsh <Formula
+class GitSsh < Formula
   url 'https://github.com/lemarsu/git-ssh/tarball/v0.2.0'
   md5 '5d146666bce5df59aab648b6ee7370ad'
   homepage 'https://github.com/lemarsu/git-ssh'

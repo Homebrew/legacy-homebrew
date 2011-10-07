@@ -1,6 +1,6 @@
 require 'formula'
 
-class Flasm <Formula
+class Flasm < Formula
   url 'http://www.nowrap.de/download/flasm16src.zip'
   version '1.62'
   homepage 'http://www.nowrap.de/flasm.html'

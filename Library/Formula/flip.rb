@@ -1,6 +1,6 @@
 require 'formula'
 
-class Flip <Formula
+class Flip < Formula
   url 'https://ccrma.stanford.edu/~craig/utility/flip/flip.cpp'
   homepage 'https://ccrma.stanford.edu/~craig/utility/flip/'
   md5 '21dc9256584eceffcfc27e137b3f8bc5'

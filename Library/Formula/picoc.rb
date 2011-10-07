@@ -1,9 +1,9 @@
 require 'formula'
 
-class Picoc <Formula
-  url 'http://picoc.googlecode.com/files/picoc-1.0.tar.bz2'
+class Picoc < Formula
+  url 'http://picoc.googlecode.com/files/picoc-2.1.tar.bz2'
   homepage 'http://code.google.com/p/picoc/'
-  md5 '7af179f5f9351228df8a34ed7add436a'
+  md5 '6505fb108d195bad0854c7024993cc24'
 
   def install
     inreplace 'Makefile' do |s|

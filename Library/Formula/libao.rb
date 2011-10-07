@@ -1,18 +1,15 @@
 require 'formula'
 
-class Libao <Formula
-  url 'http://downloads.xiph.org/releases/ao/libao-1.0.0.tar.gz'
-  md5 '08283fbe1f587619053a156254afecec'
+class Libao < Formula
+  url 'http://downloads.xiph.org/releases/ao/libao-1.1.0.tar.gz'
+  md5 '2b2508c29bc97e4dc218fa162cf883c8'
   homepage 'http://www.xiph.org/ao/'
 
-  # Fix build on OS X 10.4 and 10.5 (included in upcoming 1.0.1)
-  def patches
-    "https://trac.xiph.org/raw-attachment/ticket/1667/libao.patch"
-  end
+  depends_on 'pkg-config' => :build
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--disable-x"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

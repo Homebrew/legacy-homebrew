@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gtksourceview <Formula
+class Gtksourceview < Formula
   url 'http://ftp.gnome.org/pub/GNOME/sources/gtksourceview/2.11/gtksourceview-2.11.2.tar.gz'
   homepage 'http://projects.gnome.org/gtksourceview/'
   md5 '7c4bbdc1d1628932362b4f222e80afd4'

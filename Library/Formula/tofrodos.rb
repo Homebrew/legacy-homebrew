@@ -1,6 +1,6 @@
 require 'formula'
 
-class Tofrodos <Formula
+class Tofrodos < Formula
   url 'http://tofrodos.sourceforge.net/download/tofrodos-1.7.8.tar.gz'
   homepage 'http://www.thefreecountry.com/tofrodos/index.shtml'
   md5 'aaa044f9817a048e126d9eb7a7535e96'

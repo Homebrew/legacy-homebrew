@@ -1,6 +1,6 @@
 require 'formula'
 
-class Box2d <Formula
+class Box2d < Formula
   url 'http://box2d.googlecode.com/files/Box2D_v2.1.2.zip'
   homepage 'http://www.box2d.org/'
   md5 '59d142cd8d4d73e8832c7b67591f590c'

@@ -11,13 +11,7 @@ class N2n < Formula
   end
 
   def caveats; <<-EOF.undent
-    To link correctly you need to have access to the /usr/local/sbin
-    and link n2n
-
-    $ chown `whoami`:staff /usr/local/sbin
-    $ brew link n2n
-
-    n2n also requires the tun/tap devices. To get these on OS X:
+    n2n requires the tun/tap devices. To get these on OS X:
       http://tuntaposx.sourceforge.net/download.xhtml
     EOF
   end

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Xspringies <Formula
+class Xspringies < Formula
   url 'http://www.cs.rutgers.edu/~decarlo/software/xspringies-1.12.tar.Z'
   homepage 'http://www.cs.rutgers.edu/~decarlo/software.html'
   md5 '14b14916471874e9d0569ab5f4e8d492'

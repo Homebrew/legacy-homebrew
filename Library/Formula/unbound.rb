@@ -1,6 +1,6 @@
 require 'formula'
 
-class Unbound <Formula
+class Unbound < Formula
   url 'http://www.unbound.net/downloads/unbound-1.4.7.tar.gz'
   homepage 'http://www.unbound.net'
   md5 '97ee3c4a9877ff725fad23e31ecadfe0'

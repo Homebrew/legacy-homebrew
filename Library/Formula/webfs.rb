@@ -1,6 +1,6 @@
 require 'formula'
 
-class Webfs <Formula
+class Webfs < Formula
   url 'http://dl.bytesex.org/releases/webfs/webfs-1.21.tar.gz'
   homepage 'http://linux.bytesex.org/misc/webfs.html'
   md5 '6dc125fe160479404147e7bbfc781dbc'

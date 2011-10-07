@@ -1,6 +1,6 @@
 require 'formula'
 
-class Nzbget <Formula
+class Nzbget < Formula
   url 'http://downloads.sourceforge.net/project/nzbget/nzbget-stable/0.7.0/nzbget-0.7.0.tar.gz'
   homepage 'http://sourceforge.net/projects/nzbget/'
   md5 '27971846aba75f5e312d80dce7edbc5d'

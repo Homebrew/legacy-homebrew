@@ -1,6 +1,6 @@
 require 'formula'
 
-class Fluxus <Formula
+class Fluxus < Formula
   head 'git://git.savannah.nongnu.org/fluxus.git'
   homepage 'http://www.pawfal.org/fluxus/'
 

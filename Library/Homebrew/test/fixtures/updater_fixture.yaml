@@ -1,53 +1,26 @@
-update_git_pull_output_without_formulae_changes: |
-  remote: counting objects: 58, done.
-  remote: Compressing objects: 100% (35/35), done.
-  remote: Total 39 (delta 20), reused 0 (delta 0)
-  Unpacking objects: 100% (39/39), done.
-  From git://github.com/mxcl/homebrew
-   * branch            master -> FETCH_HEAD
-  Updating 14ef7f9..f414bc8
-  Fast forward
-   Library/Homebrew/ARGV+yeast.rb                |   35 ++--
-   Library/Homebrew/beer_events.rb               |  181 +++++++++++++
-   Library/Homebrew/hardware.rb                  |   71 ++++++
-   Library/Homebrew/hw.model.c                   |   17 --
-   README                                        |  337 +++++++++++++------------
-   bin/brew                                      |  137 ++++++++---
-   40 files changed, 1107 insertions(+), 426 deletions(-)
-   create mode 100644 Library/Homebrew/beer_events.rb
-   create mode 100644 Library/Homebrew/hardware.rb
-   delete mode 100644 Library/Homebrew/hw.model.c
-   delete mode 100644 Library/Homebrew/hw.model.rb
-update_git_pull_output_with_formulae_changes: |
-  remote: counting objects: 58, done.
-  remote: Compressing objects: 100% (35/35), done.
-  remote: Total 39 (delta 20), reused 0 (delta 0)
-  Unpacking objects: 100% (39/39), done.
-  From git://github.com/mxcl/homebrew
-   * branch            master -> FETCH_HEAD
-  Updating 14ef7f9..f414bc8
-  Fast forward
-   Library/Contributions/brew_bash_completion.sh |    6 +-
-   Library/Formula/antiword.rb                   |   13 +
-   Library/Formula/bash-completion.rb            |   25 ++
-   Library/Formula/xar.rb                        |   19 ++
-   Library/Formula/yajl.rb                       |    2 +-
-   Library/Homebrew/ARGV+yeast.rb                |   35 ++--
-   Library/Homebrew/beer_events.rb               |  181 +++++++++++++
-   Library/Homebrew/hardware.rb                  |   71 ++++++
-   Library/Homebrew/hw.model.c                   |   17 --
-   Library/Homebrew/pathname+yeast.rb            |   28 ++-
-   Library/Homebrew/unittest.rb                  |  106 ++++++++-
-   Library/Homebrew/utils.rb                     |   36 ++-
-   README                                        |  337 +++++++++++++------------
-   bin/brew                                      |  137 ++++++++---
-   40 files changed, 1107 insertions(+), 426 deletions(-)
-   create mode 100644 Library/Formula/antiword.rb
-   create mode 100644 Library/Formula/bash-completion.rb
-   create mode 100644 Library/Formula/ddrescue.rb
-   create mode 100644 Library/Formula/dict.rb
-   create mode 100644 Library/Formula/lua.rb
-   create mode 100644 Library/Homebrew/beer_events.rb
-   create mode 100644 Library/Homebrew/hardware.rb
-   delete mode 100644 Library/Homebrew/hw.model.c
-   delete mode 100644 Library/Homebrew/hw.model.rb
+update_git_diff_output_without_formulae_changes: |
+  M       Library/Homebrew/ARGV+yeast.rb
+  A       Library/Homebrew/beer_events.rb
+  A       Library/Homebrew/hardware.rb
+  D       Library/Homebrew/hw.model.c
+  M       README
+  M       bin/brew
+update_git_diff_output_with_formulae_changes: |
+  M       Library/Contributions/brew_bash_completion.sh
+  A       Library/Formula/antiword.rb
+  A       Library/Formula/bash-completion.rb
+  M       Library/Formula/xar.rb
+  M       Library/Formula/yajl.rb
+  M       Library/Homebrew/ARGV+yeast.rb
+  M       Library/Homebrew/pathname+yeast.rb
+  M       Library/Homebrew/unittest.rb
+  M       Library/Homebrew/utils.rb
+  M       README
+  M       bin/brew
+  A       Library/Formula/ddrescue.rb
+  A       Library/Formula/dict.rb
+  A       Library/Formula/lua.rb
+  A       Library/Homebrew/beer_events.rb
+  A       Library/Homebrew/hardware.rb
+  D       Library/Homebrew/hw.model.c
+  D       Library/Homebrew/hw.model.rb

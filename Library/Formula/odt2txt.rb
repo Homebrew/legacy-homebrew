@@ -1,6 +1,6 @@
 require 'formula'
 
-class Odt2txt <Formula
+class Odt2txt < Formula
   # Retrieve the HEAD because no releases have been made since the commit that
   # includes Makefile rules for Mac OS X.
   head 'git://repo.or.cz/odt2txt.git'

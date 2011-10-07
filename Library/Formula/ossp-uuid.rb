@@ -1,6 +1,6 @@
 require 'formula'
 
-class OsspUuid <Formula
+class OsspUuid < Formula
   # url 'ftp://ftp.ossp.org/pkg/lib/uuid/uuid-1.6.2.tar.gz'
   # Official site is down, use a mirror
   url 'http://www.mirrorservice.org/sites/ftp.ossp.org/pkg/lib/uuid/uuid-1.6.2.tar.gz'

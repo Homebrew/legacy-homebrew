@@ -1,6 +1,6 @@
 require 'formula'
 
-class Bibutils <Formula
+class Bibutils < Formula
   url 'http://www.scripps.edu/~cdputnam/software/bibutils/bibutils_4.12_src.tgz'
   homepage 'http://www.scripps.edu/~cdputnam/software/bibutils/'
   md5 '395f46393eca8e184652c5e8e1ae83b6'

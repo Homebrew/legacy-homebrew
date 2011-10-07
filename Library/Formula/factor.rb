@@ -3,8 +3,8 @@ require 'formula'
 # This formula installs Factor TRUNK.
 # One can install the latest stable release using the official DMG.
 
-class Factor <Formula
-  head 'git://github.com/slavapestov/factor.git'
+class Factor < Formula
+  head 'https://github.com/slavapestov/factor.git'
   homepage 'http://factorcode.org/'
 
   def install

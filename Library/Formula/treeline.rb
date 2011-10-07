@@ -1,6 +1,6 @@
 require 'formula'
 
-class Treeline <Formula
+class Treeline < Formula
   url 'http://download.berlios.de/treeline/treeline-1.2.4.tar.gz'
   homepage 'http://treeline.bellz.org/'
   md5 'af51957700b68c4af36dc0b5cf0fee92'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class OMake <Formula
+class OMake < Formula
   url 'http://omake.metaprl.org/downloads/omake-0.9.8.5-3.tar.gz'
   homepage 'http://omake.metaprl.org/'
   md5 'd114b3c4201808aacd73ec1a98965c47'

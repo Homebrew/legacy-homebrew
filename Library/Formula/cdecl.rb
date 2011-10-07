@@ -1,11 +1,14 @@
 require 'formula'
 
-class Cdecl <Formula
+class Cdecl < Formula
   url 'http://cdecl.org/files/cdecl-blocks-2.5.tar.gz'
   homepage 'http://cdecl.org/'
   md5 'c1927e146975b1c7524cbaf07a7c10f8'
 
   def install
+    # Fix namespace clash with Lion's getline
+    inreplace "cdecl.c", "getline", "cdecl_getline"
+
     inreplace "Makefile" do |s|
       s.change_make_var! "CC", ENV.cc
       s.change_make_var! "CFLAGS", "#{ENV.cflags} -DBSD -DUSE_READLINE"
@@ -13,6 +16,7 @@ class Cdecl <Formula
       s.change_make_var! "BINDIR", bin
       s.change_make_var! "MANDIR", man1
     end
+
     system "make"
     bin.mkdir
     man1.mkpath

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Kdepimlibs <Formula
+class Kdepimlibs < Formula
   url 'ftp://ftp.kde.org/pub/kde/stable/4.6.0/src/kdepimlibs-4.6.0.tar.bz2'
   homepage 'http://www.kde.org/'
   md5 'bfcc74fff5c6d0803d43cf13033660ab'

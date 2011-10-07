@@ -1,45 +1,38 @@
 require 'formula'
 
-# This formula provides the libvirt daemon (libvirtd), development libraries, and the
-# virsh command line tool.  This allows people to manage their virtualisation servers
-# remotely, and (as this continues to be developed) manage virtualisation servers
-# running on the local host
-
-class Libvirt <Formula
+class Libvirt < Formula
   homepage 'http://www.libvirt.org'
-  url 'http://libvirt.org/sources/libvirt-0.8.8.tar.gz'
-  sha256 '030aea3728917053555bec98d93d2855e8a603b758c0b2a5d57ac48b4f39e113'
+  url 'ftp://libvirt.org/libvirt/libvirt-0.9.6.tar.gz'
+  sha256 'ce29b1cd3067b224aa834fec2a93d7613c0e72bc035760ad536a2142430bc02b'
 
   depends_on "gnutls"
   depends_on "yajl"
 
-  if MACOS_VERSION < 10.6
-    # Definitely needed on Leopard, but definitely not Snow Leopard.
-    # Likely also needed on earlier OSX releases, though that hasn't
-    # been tested yet.
+  if MacOS.leopard?
+    # Definitely needed on Leopard, but not on Snow Leopard.
     depends_on "readline"
     depends_on "libxml2"
   end
+
+  fails_with_llvm "Undefined symbols when linking", :build => "2326"
 
   def options
     [['--without-libvirtd', 'Build only the virsh client and development libraries.']]
   end
 
   def install
-    fails_with_llvm "Undefined symbols when linking", :build => "2326"
-
     args = ["--prefix=#{prefix}",
             "--localstatedir=#{var}",
             "--mandir=#{man}",
             "--sysconfdir=#{etc}",
             "--with-esx",
             "--with-init-script=none",
-            "--with-openvz",
             "--with-remote",
             "--with-test",
-            "--with-vbox=check",
+            "--with-vbox",
             "--with-vmware",
-            "--with-yajl"]
+            "--with-yajl",
+            "--without-qemu"]
 
     args << "--without-libvirtd" if ARGV.include? '--without-libvirtd'
 
@@ -65,3 +58,4 @@ class Libvirt <Formula
     end
   end
 end
+

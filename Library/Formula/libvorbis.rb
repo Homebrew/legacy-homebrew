@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libvorbis <Formula
+class Libvorbis < Formula
   url 'http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.2.tar.bz2'
   md5 '798a4211221073c1409f26eac4567e8b'
   homepage 'http://vorbis.com'

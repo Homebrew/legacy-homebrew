@@ -1,6 +1,6 @@
 require 'formula'
 
-class Primer3 <Formula
+class Primer3 < Formula
   url 'http://downloads.sourceforge.net/project/primer3/primer3/2.2.3/primer3-2.2.3.tar.gz'
   homepage 'http://primer3.sourceforge.net/'
   md5 'b9cdcff68637479c094844d652c03839'

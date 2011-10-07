@@ -1,6 +1,6 @@
 require 'formula'
 
-class Wyrd <Formula
+class Wyrd < Formula
   url 'http://pessimization.com/software/wyrd/wyrd-1.4.5.tar.gz'
   homepage 'http://pessimization.com/software/wyrd/'
   md5 '3f39fa83a54d2d890823094aba9ca3cc'

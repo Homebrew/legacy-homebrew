@@ -1,6 +1,6 @@
 require 'formula'
 
-class JsdocToolkit <Formula
+class JsdocToolkit < Formula
   url 'http://jsdoc-toolkit.googlecode.com/files/jsdoc_toolkit-2.3.2.zip'
   homepage 'http://code.google.com/p/jsdoc-toolkit/'
   sha1 'd8c3977cee202c06a9d6a85b2b9b068d21309fad'

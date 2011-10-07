@@ -1,6 +1,6 @@
 require 'formula'
 
-class Bwa <Formula
+class Bwa < Formula
   url 'http://downloads.sourceforge.net/project/bio-bwa/bwa-0.5.8a.tar.bz2'
   homepage 'http://bio-bwa.sourceforge.net/'
   md5 '4f34d6d1156f7259eb5a3c946f7f59db'

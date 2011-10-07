@@ -1,6 +1,6 @@
 require 'formula'
 
-class Litmus <Formula
+class Litmus < Formula
   url 'http://www.webdav.org/neon/litmus/litmus-0.12.1.tar.gz'
   homepage 'http://www.webdav.org/neon/litmus/'
   md5 'd0bbb717196e835a5759f67f097321fb'

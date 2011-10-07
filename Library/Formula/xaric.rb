@@ -1,6 +1,6 @@
 require 'formula'
 
-class Xaric <Formula
+class Xaric < Formula
   url 'http://xaric.org/software/xaric/releases/xaric-0.13.6.tar.gz'
   homepage 'http://xaric.org/'
   md5 '3523edcd8c8d5234b87c56c86c2dfdfc'

@@ -1,11 +1,11 @@
 require 'formula'
 
-class Chmox <Formula
+class Chmox < Formula
   head 'cvs://:pserver:anonymous@chmox.cvs.sourceforge.net:/cvsroot/chmox:Sources'
   homepage 'http://chmox.sourceforge.net'
 
   def install
-    system "xcodebuild"
+    system "xcodebuild SYMROOT=build"
     prefix.install "build/Default/Chmox.app"
   end
 

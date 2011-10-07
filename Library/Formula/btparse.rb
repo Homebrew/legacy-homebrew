@@ -1,6 +1,6 @@
 require 'formula'
 
-class Btparse <Formula
+class Btparse < Formula
   url 'http://www.gerg.ca/software/btOOL/btparse-0.34.tar.gz'
   homepage 'http://www.gerg.ca/software/btOOL/'
   md5 '87d09ce6331c57cc2da30b5c83f545e0'

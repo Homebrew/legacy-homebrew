@@ -1,6 +1,6 @@
 require 'formula'
 
-class Qpdf <Formula
+class Qpdf < Formula
   url 'http://downloads.sourceforge.net/project/qpdf/qpdf/2.1.5/qpdf-2.1.5.tar.gz'
   homepage 'http://qpdf.sourceforge.net/'
   md5 '8c4eb57066761778a9e745bfa9a70f64'

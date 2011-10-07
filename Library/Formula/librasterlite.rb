@@ -1,6 +1,6 @@
 require 'formula'
 
-class Librasterlite <Formula
+class Librasterlite < Formula
   url 'http://www.gaia-gis.it/spatialite/librasterlite-1.0.tar.gz'
   homepage 'http://www.gaia-gis.it/spatialite/'
   md5 'c6f7864ac6101ff63f8aec4b02603b46'

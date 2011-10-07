@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gccxml <Formula
+class Gccxml < Formula
   url "cvs://:pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML:gccxml"
   version 'HEAD'
   homepage 'http://www.gccxml.org/HTML/Index.html'

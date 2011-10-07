@@ -1,7 +1,7 @@
 require 'formula'
 
-class Plowshare <Formula
-  head 'http://plowshare.googlecode.com/svn/trunk/'
+class Plowshare < Formula
+  head 'https://code.google.com/p/plowshare/', :using => :git
   homepage 'http://code.google.com/p/plowshare/'
 
   depends_on 'recode'
@@ -40,6 +40,6 @@ __END__
 +alias getopt='`brew --prefix gnu-getopt`/bin/getopt'
 +alias head='ghead'
  #
- # This file is part of Plowshare.
- #
+ # Common set of functions used by modules
+ # Copyright (c) 2010 - 2011 Plowshare team
 

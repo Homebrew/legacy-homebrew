@@ -1,9 +1,9 @@
 require 'formula'
 
-class Cherokee <Formula
-  url 'http://www.cherokee-project.com/download/1.0/1.0.20/cherokee-1.0.20.tar.gz'
+class Cherokee < Formula
   homepage 'http://www.cherokee-project.com/'
-  sha1 '8ff35e097ed7acf6cfea090501d05bbf0c4a799b'
+  url 'http://www.cherokee-project.com/download/1.2/1.2.99/cherokee-1.2.99.tar.gz'
+  md5 'c83115c3eebb29e6f2b4cc6fe699affe'
 
   depends_on 'gettext'
 
@@ -40,6 +40,7 @@ class Cherokee <Formula
     system "make install"
 
     prefix.install "org.cherokee.webserver.plist"
+    (prefix+'org.cherokee.webserver.plist').chmod 0644
     (share+'cherokee/admin/server.py').chmod 0755
   end
 end

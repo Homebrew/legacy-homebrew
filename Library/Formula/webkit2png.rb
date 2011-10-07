@@ -1,6 +1,6 @@
 require 'formula'
 
-class Webkit2png <Formula
+class Webkit2png < Formula
   url 'https://github.com/paulhammond/webkit2png/tarball/9c4265a82ebfcec200fca8de39fb970e5aae0a3d'
   version '0.5'
   homepage 'http://www.paulhammond.org/webkit2png/'

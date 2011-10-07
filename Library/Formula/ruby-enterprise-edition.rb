@@ -1,11 +1,13 @@
 require 'formula'
 
-class RubyEnterpriseEdition <Formula
+class RubyEnterpriseEdition < Formula
   url 'http://rubyenterpriseedition.googlecode.com/files/ruby-enterprise-1.8.7-2011.03.tar.gz'
   md5 '038604ce25349e54363c5df9cd535ec8'
   homepage 'http://rubyenterpriseedition.com/'
 
   depends_on 'readline'
+
+  fails_with_llvm "fails with LLVM"
 
   skip_clean 'bin/ruby'
 
@@ -16,7 +18,6 @@ class RubyEnterpriseEdition <Formula
   def install
     readline = Formula.factory('readline').prefix
 
-    fails_with_llvm "fails with LLVM"
     args = ['./installer', "--auto", prefix, '--no-tcmalloc']
     args << '-c' << '--enable-shared' if ARGV.include? '--enable-shared'
     # Configure will complain that this is an unknown option, but it is actually OK

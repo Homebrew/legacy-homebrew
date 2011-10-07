@@ -1,17 +1,18 @@
 require 'formula'
 
-class John <Formula
-  url 'http://www.openwall.com/john/g/john-1.7.3.4.tar.bz2'
+class John < Formula
+  url 'http://www.openwall.com/john/g/john-1.7.8.tar.bz2'
   homepage 'http://www.openwall.com/john/'
-  md5 '2f2310c49961c3edea6f92b8dcd45ff4'
+  md5 'e6d7f261829610d6949c706ebac0517c'
 
   def patches
     { :p0 => DATA }
   end
 
+  fails_with_llvm :build => 2334
+
   def install
     ENV.deparallelize
-    fails_with_llvm
     arch = Hardware.is_64_bit? ? '64' : 'sse2'
 
     Dir.chdir 'src' do

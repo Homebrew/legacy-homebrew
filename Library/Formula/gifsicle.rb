@@ -1,12 +1,14 @@
 require 'formula'
 
-class Gifsicle <Formula
-  url 'http://www.lcdf.org/gifsicle/gifsicle-1.60.tar.gz'
+class Gifsicle < Formula
+  url 'http://www.lcdf.org/gifsicle/gifsicle-1.61.tar.gz'
   homepage 'http://www.lcdf.org/gifsicle/'
-  md5 '2629d5894e189e251f148eec8e7805d6'
+  md5 '3d9e45873daaf960a35d1b89505f1101'
 
   def install
-    system "./configure", "--enable-all", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--enable-all"
     system "make install"
   end
 end

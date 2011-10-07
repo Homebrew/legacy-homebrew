@@ -1,6 +1,6 @@
 require 'formula'
 
-class Csstidy <Formula
+class Csstidy < Formula
   head 'http://csstidy.svn.sourceforge.net/svnroot/csstidy/trunk-cpp/'
   homepage 'http://csstidy.sourceforge.net/'
 

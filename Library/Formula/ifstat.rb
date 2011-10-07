@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ifstat <Formula
+class Ifstat < Formula
   url 'http://gael.roualland.free.fr/ifstat/ifstat-1.1.tar.gz'
   homepage 'http://gael.roualland.free.fr/ifstat/'
   md5 'b655642c33a626cfe976792fbcd9b6e1'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Most <Formula
+class Most < Formula
   url 'ftp://space.mit.edu/pub/davis/most/most-5.0.0a.tar.bz2'
   homepage 'http://www.jedsoft.org/most/'
   md5 '4c42abfc8d3ace1b0e0062ea021a5917'

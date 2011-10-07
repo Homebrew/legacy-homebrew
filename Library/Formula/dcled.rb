@@ -1,6 +1,6 @@
 require 'formula'
 
-class Dcled <Formula
+class Dcled < Formula
   url 'http://www.jeffrika.com/~malakai/dcled/dcled-1.9.tgz'
   homepage 'http://www.jeffrika.com/~malakai/dcled/index.html'
   md5 '7cffd6585a5d355626d60e2127599dd0'

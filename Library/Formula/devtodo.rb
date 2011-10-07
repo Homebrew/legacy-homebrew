@@ -1,6 +1,6 @@
 require 'formula'
 
-class Devtodo <Formula
+class Devtodo < Formula
   url 'http://swapoff.org/files/devtodo/devtodo-0.1.20.tar.gz'
   homepage 'http://swapoff.org/DevTodo'
   md5 '4a6241437cb56f237f850bcd2233c3c4'

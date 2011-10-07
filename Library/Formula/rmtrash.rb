@@ -1,6 +1,6 @@
 require 'formula'
 
-class Rmtrash <Formula
+class Rmtrash < Formula
   url 'http://www.nightproductions.net/downloads/rmtrash_source.tar.gz'
   homepage 'http://www.nightproductions.net/cli.htm'
   md5 'fecbb879766e23ec4c918b0e13bc7e43'
