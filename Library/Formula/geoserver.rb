@@ -8,10 +8,10 @@ class Geowebcache < Formula
 end
 
 class Geoserver < Formula
-  version '2.1.1'
+  version '2.1.2'
   url "http://downloads.sourceforge.net/geoserver/geoserver-#{version}-bin.zip"
   homepage 'http://geoserver.org'
-  md5 '06b9d29eab1d6faf61cb795fb12b19e2'
+  md5 '13499f8f6ea35b106adb845f7d87f6e4'
 
   def options
     [
