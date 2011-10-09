@@ -31,7 +31,7 @@ module Homebrew extend self
           target = Pathname.new(value)
           results = target.realpath
         end
-        puts "#{k}=#{results}"
+        puts "#{k}=\"#{results}\""
       end
     end
 
@@ -39,7 +39,7 @@ module Homebrew extend self
         HOMEBREW_DEBUG HOMEBREW_VERBOSE HOMEBREW_USE_CLANG HOMEBREW_USE_GCC HOMEBREW_USE_LLVM
         HOMEBREW_SVN ].each do |k|
       value = ENV[k]
-      puts "#{k}=#{value}" if value
+      puts "#{k}=\"#{value}\"" if value
     end
   end
 end
