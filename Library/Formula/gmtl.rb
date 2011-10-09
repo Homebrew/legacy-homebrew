@@ -10,8 +10,11 @@ class Gmtl < Formula
 
   # Build assumes that Python is a framework, which isn't always true. See:
   # https://sourceforge.net/tracker/?func=detail&aid=3172856&group_id=43735&atid=437247
-  def patches
-    "https://gist.github.com/raw/811405/fix-gmtl-build.diff"
+  # The SConstruct from gmtl's HEAD doesn't need to be patched
+  if !ARGV.build_head?
+    def patches
+      "https://gist.github.com/raw/811405/fix-gmtl-build.diff"
+    end
   end
 
   def install
