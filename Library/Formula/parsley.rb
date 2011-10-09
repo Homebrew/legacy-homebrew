@@ -1,7 +1,7 @@
 require 'formula'
 
 class Parsley < Formula
-  head 'git://github.com/fizx/parsley.git'
+  head 'https://github.com/fizx/parsley.git'
   homepage 'https://github.com/fizx/parsley'
 
   depends_on 'json-c'

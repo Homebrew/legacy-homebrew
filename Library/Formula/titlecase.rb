@@ -1,7 +1,7 @@
 require 'formula'
 
 class Titlecase < Formula
-  head 'git://github.com/ap/titlecase.git'
+  head 'https://github.com/ap/titlecase.git'
   homepage 'http://plasmasturm.org/code/titlecase/'
 
   def install

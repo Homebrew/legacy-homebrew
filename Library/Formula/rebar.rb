@@ -1,7 +1,7 @@
 require 'formula'
 
 class Rebar < Formula
-  head "git://github.com/basho/rebar.git", :branch => "master"
+  head "https://github.com/basho/rebar.git", :branch => "master"
   homepage 'https://github.com/basho/rebar/wiki'
 
   depends_on 'erlang'

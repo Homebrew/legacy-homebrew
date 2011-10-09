@@ -1,7 +1,7 @@
 require 'formula'
 
 class Siege < Formula
-  url "ftp://ftp.joedog.org/pub/siege/siege-2.70.tar.gz"
+  url "http://www.joedog.org/pub/siege/siege-2.70.tar.gz"
   homepage 'http://www.joedog.org/index/siege-home'
   sha1 'ee0a0c3a9e6559cf8cbaf717649f6684b0d9643a'
 

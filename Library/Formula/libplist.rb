@@ -1,15 +1,16 @@
 require 'formula'
 
 class Libplist < Formula
-  url 'http://cloud.github.com/downloads/JonathanBeck/libplist/libplist-1.3.tar.bz2'
-  homepage 'https://github.com/JonathanBeck/libplist'
-  md5 '0f48f4da8ddba5d7e186307622bf2c62'
+  url 'http://cgit.sukimashita.com/libplist.git/snapshot/libplist-1.6.tar.bz2'
+  homepage 'http://cgit.sukimashita.com/libplist.git/'
+  md5 '78fe4b8fb50e0bad267ffc6e77081cbe'
 
   depends_on 'cmake' => :build
-  depends_on 'glib'
   depends_on 'libxml2'
 
   def install
+    ENV.deparallelize # make fails on an 8-core Mac Pro
+
     # Disable Python bindings.
     inreplace "CMakeLists.txt", 'OPTION(ENABLE_PYTHON "Enable Python bindings (needs Swig)" ON)',
                                 '# Disabled Python Bindings'

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Lilypond < Formula
-  url 'http://download.linuxaudio.org/lilypond/sources/v2.13/lilypond-2.13.52.tar.gz'
+  url 'http://download.linuxaudio.org/lilypond/sources/v2.14/lilypond-2.14.2.tar.gz'
   homepage 'http://lilypond.org/'
-  md5 '662e18ca5a01d3357eda17efb4ae95ce'
+  md5 '4053a19e03181021893981280feb9aaa'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
@@ -17,6 +17,8 @@ class Lilypond < Formula
   skip_clean :all
 
   def install
+    abort caveats unless quiet_system "/usr/bin/which -s mpost"
+
     gs = Formula.factory('ghostscript')
     system "./configure", "--prefix=#{prefix}",
                           "--with-ncsb-dir=#{gs.share}/ghostscript/fonts/"

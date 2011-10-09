@@ -1,7 +1,7 @@
 require 'formula'
 
 class UtCache < Formula
-  head 'git://github.com/tanj/Unreal-Tournament-Cache.git'
+  head 'https://github.com/tanj/Unreal-Tournament-Cache.git'
   homepage 'https://github.com/tanj/Unreal-Tournament-Cache'
 
   def patches

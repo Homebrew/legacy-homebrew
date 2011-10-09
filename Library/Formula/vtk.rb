@@ -1,9 +1,9 @@
 require 'formula'
 
 class Vtk < Formula
-  url 'http://www.vtk.org/files/release/5.6/vtk-5.6.1.tar.gz'
+  url 'http://www.vtk.org/files/release/5.8/vtk-5.8.0.tar.gz'
   homepage 'http://www.vtk.org'
-  md5 'b80a76435207c5d0f74dfcab15b75181'
+  md5 '37b7297d02d647cc6ca95b38174cb41f'
 
   depends_on 'cmake' => :build
   depends_on 'qt' if ARGV.include? '--qt'
@@ -25,15 +25,26 @@ class Vtk < Formula
              "-DBUILD_TESTING:BOOL=OFF",
              "-DBUILD_EXAMPLES:BOOL=OFF",
              "-DBUILD_SHARED_LIBS:BOOL=ON",
-             "-DCMAKE_INSTALL_RPATH:STRING='#{lib}/vtk-5.6'",
-             "-DCMAKE_INSTALL_NAME_DIR:STRING='#{lib}/vtk-5.6'"]
+             "-DCMAKE_INSTALL_RPATH:STRING='#{lib}/vtk-5.8'",
+             "-DCMAKE_INSTALL_NAME_DIR:STRING='#{lib}/vtk-5.8'"]
 
     if ARGV.include? '--python'
       python_prefix = `python-config --prefix`.strip
       # Install to global python site-packages
       args << "-DVTK_PYTHON_SETUP_ARGS:STRING='--prefix=#{python_prefix}'"
       # Python is actually a library. The libpythonX.Y.dylib points to this lib, too.
-      args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
+      if File.exist? "#{python_prefix}/Python"
+        # Python was compiled with --framework:
+        args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
+      else
+        python_version = `python-config --libs`.match('-lpython(\d+\.\d+)').captures.at(0)
+        python_lib = "#{python_prefix}/lib/libpython#{python_version}"
+        if File.exists? "#{python_lib}.a"
+          args << "-DPYTHON_LIBRARY='#{python_lib}.a'"
+        else
+          args << "-DPYTHON_LIBRARY='#{python_lib}.dylib'"
+        end
+      end
       args << "-DVTK_WRAP_PYTHON:BOOL=ON"
     end
 

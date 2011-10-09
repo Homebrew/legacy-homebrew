@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libass < Formula
-  url 'http://libass.googlecode.com/files/libass-0.9.11.tar.bz2'
+  url 'http://libass.googlecode.com/files/libass-0.9.13.tar.gz'
   homepage 'http://code.google.com/p/libass/'
-  md5 'f9042884397002ba40aa89dc7d34f59f'
+  md5 '006f48a9831c00914f05f830592f532c'
 
   depends_on 'pkg-config' => :build
 

@@ -2,8 +2,8 @@ require 'formula'
 
 class GstRtsp < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-rtsp/gst-rtsp-0.10.6.tar.bz2'
-  md5 '8762d013f93f6aed39894f7eaf7bce86'
+  url 'http://gstreamer.freedesktop.org/src/gst-rtsp/gst-rtsp-0.10.8.tar.bz2'
+  sha256 '9915887cf8515bda87462c69738646afb715b597613edc7340477ccab63a6617'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'

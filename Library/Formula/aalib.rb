@@ -11,9 +11,10 @@ class Aalib < Formula
 
   def install
     ENV.ncurses_define
+    system 'autoreconf --force --install'
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--mandir=#{man}", "--infodir=#{info}",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}", "--enable-shared=yes", "--enable-static=yes"
     system "make install"
   end
 end

@@ -1,7 +1,7 @@
 require 'formula'
 
 class RedisTools < Formula
-  head 'git://github.com/antirez/redis-tools.git'
+  head 'https://github.com/antirez/redis-tools.git'
   homepage 'https://github.com/antirez/redis-tools'
 
   def install

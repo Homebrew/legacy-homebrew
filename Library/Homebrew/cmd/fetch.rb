@@ -10,7 +10,7 @@ module Homebrew extend self
         bucket << f
         bucket << f.recursive_deps
       end
-      
+
       bucket = bucket.flatten.uniq
     else
       bucket = ARGV.formulae
@@ -20,11 +20,11 @@ module Homebrew extend self
 
     bucket.each do |f|
       if ARGV.include? "--force" or ARGV.include? "-f"
-        where_to = `brew --cache #{f.name}`.strip
-        FileUtils.rm_rf where_to unless where_to.empty?
+        where_to = f.cached_download
+        FileUtils.rm_rf where_to if File.exist? where_to
       end
 
-      the_tarball = f.downloader.fetch
+      the_tarball, _ = f.fetch
       next unless the_tarball.kind_of? Pathname
 
       previous_md5 = f.instance_variable_get(:@md5)

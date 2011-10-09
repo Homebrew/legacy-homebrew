@@ -6,7 +6,7 @@ class Alpine < Formula
   md5 '0f4757167baf5c73aa44f2ffa4860093'
 
   def patches
-    DATA unless MacOS.snow_leopard?
+    DATA if MacOS.snow_leopard?
   end
 
   def install

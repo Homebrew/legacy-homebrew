@@ -2,9 +2,9 @@ require 'formula'
 
 class Saxon < Formula
   homepage "http://saxon.sourceforge.net"
-  url "http://downloads.sourceforge.net/project/saxon/Saxon-HE/9.3/saxonhe9-3-0-4j.zip"
-  md5 "9286c94c976109cbf23c226235a2e105"
-  version "9.3.0.4"
+  url "http://downloads.sourceforge.net/project/saxon/Saxon-HE/9.3/saxonhe9-3-0-5j.zip"
+  md5 "a940c252e1ae386a5f9949ace75e4ea6"
+  version "9.3.0.5"
 
   def shim_script target
     <<-EOS.undent

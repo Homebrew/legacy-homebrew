@@ -4,7 +4,7 @@ require 'formula'
 # One can install the latest stable release using the official DMG.
 
 class Factor < Formula
-  head 'git://github.com/slavapestov/factor.git'
+  head 'https://github.com/slavapestov/factor.git'
   homepage 'http://factorcode.org/'
 
   def install

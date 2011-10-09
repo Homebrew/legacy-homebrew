@@ -2,7 +2,6 @@ require 'formula'
 
 class FleetDb < Formula
   url 'http://fleetdb.s3.amazonaws.com/fleetdb-standalone-0.2.0.jar'
-  version '0.2.0'
   homepage 'http://fleetdb.org'
   md5 'e7c0b9dd61650300e82da46bab6ee560'
 

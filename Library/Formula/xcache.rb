@@ -1,9 +1,9 @@
 require 'formula'
 
 class Xcache < Formula
-  url 'http://xcache.lighttpd.net/pub/Releases/1.3.0/xcache-1.3.0.tar.gz'
+  url 'http://xcache.lighttpd.net/pub/Releases/1.3.1/xcache-1.3.1.tar.gz'
   homepage 'http://xcache.lighttpd.net/'
-  md5 'aa78eec93ce9684dfd99010f62ad6720'
+  md5 'aff79b19c7623ba923233ae193e9537a'
 
   def install
     # See https://github.com/mxcl/homebrew/issues/issue/69
@@ -19,7 +19,7 @@ class Xcache < Formula
   def caveats; <<-EOS.undent
     To use this software:
      * Add the following line to php.ini:
-        extension="#{prefix}/xcache.so"
+        zend_extension="#{prefix}/xcache.so"
      * Restart your webserver.
      * Write a PHP page that calls "phpinfo();"
      * Load it in a browser and look for the info on the xcache module.

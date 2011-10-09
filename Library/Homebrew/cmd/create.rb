@@ -33,7 +33,7 @@ module Homebrew extend self
           end
 
           if Formula.aliases.include? fc.name
-            realname = Formula.caniconical_name fc.name
+            realname = Formula.canonical_name fc.name
             raise <<-EOS.undent
               The formula #{realname} is already aliased to #{fc.name}
               Please check that you are not creating a duplicate.
@@ -121,6 +121,15 @@ class FormulaCreator
         # system "cmake . \#{std_cmake_parameters}"
     <% end %>
         system "make install"
+      end
+
+      def test
+        # This test will fail and we won't accept that! It's enough to just
+        # replace "false" with the main program this formula installs, but
+        # it'd be nice if you were more thorough. Test the test with
+        # `brew test #{name}`. Remove this comment before submitting
+        # your pull request!
+        system "false"
       end
     end
     EOS

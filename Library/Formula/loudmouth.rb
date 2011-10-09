@@ -6,7 +6,7 @@ class Loudmouth < Formula
   homepage 'http://www.loudmouth-project.org/'
   md5 'd9693855e1d8226144937decd25633d2'
 
-  head 'git://github.com/engineyard/loudmouth.git'
+  head 'https://github.com/engineyard/loudmouth.git'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'

@@ -2,12 +2,19 @@ require 'formula'
 require 'hardware'
 
 class Qt < Formula
-  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.2.tar.gz'
-  md5 '66b992f5c21145df08c99d21847f4fdb'
+  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.4.tar.gz'
+  md5 '9831cf1dfa8d0689a06c2c54c5c65aaf'
   homepage 'http://qt.nokia.com/'
+  bottle 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.7.4-bottle.tar.gz'
+  bottle_sha1 '3195cddb76c0d13b4500dc75cc55f20f00c10ef1'
+
+  head 'git://gitorious.org/qt/qt.git', :branch => 'master'
 
   def patches
-    "http://qt.nokia.com/files/qt-patches/blacklist-fraudulent-comodo-certificates-patch.diff"
+    [
+      # Stop complaining about using Lion
+      "https://qt.gitorious.org/qt/qt/commit/1766bbdb53e1e20a1bbfb523bbbbe38ea7ab7b3d?format=patch"
+    ]
   end
 
   def options
@@ -47,22 +54,26 @@ class Qt < Formula
       args << "-no-qt3support"
     end
 
-    if ARGV.include? '--with-debug-and-release'
-      args << "-debug-and-release"
-    else
-      args << "-release"
-    end
-
     unless ARGV.include? '--with-demos-examples'
       args << "-nomake" << "demos" << "-nomake" << "examples"
     end
 
-    if MacOS.prefer_64_bit? or ARGV.include? '--universal'
+    if MacOS.prefer_64_bit? or ARGV.build_universal?
       args << '-arch' << 'x86_64'
     end
 
-    if !MacOS.prefer_64_bit? or ARGV.include? '--universal'
+    if !MacOS.prefer_64_bit? or ARGV.build_universal?
       args << '-arch' << 'x86'
+    end
+
+    if ARGV.include? '--with-debug-and-release'
+      args << "-debug-and-release"
+      # Debug symbols need to find the source so build in the prefix
+      Dir.chdir '..'
+      mv "qt-everywhere-opensource-src-#{version}", "#{prefix}/src"
+      Dir.chdir "#{prefix}/src"
+    else
+      args << "-release"
     end
 
     system "./configure", *args
@@ -85,9 +96,19 @@ class Qt < Formula
     cd prefix do
       ln_s lib, "Frameworks"
     end
+
+    # The pkg-config files installed suggest that geaders can be found in the
+    # `include` directory. Make this so by creating symlinks from `include` to
+    # the Frameworks' Headers folders.
+    Pathname.glob(lib + '*.framework/Headers').each do |path|
+      framework_name = File.basename(File.dirname(path), '.framework')
+      ln_s path.realpath, include+framework_name
+    end
   end
 
-  def caveats
-    "We agreed to the Qt opensource license for you.\nIf this is unacceptable you should uninstall."
+  def caveats; <<-EOS.undent
+    We agreed to the Qt opensource license for you.
+    If this is unacceptable you should uninstall.
+    EOS
   end
 end

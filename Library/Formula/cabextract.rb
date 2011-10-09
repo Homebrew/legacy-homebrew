@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cabextract < Formula
-  url 'http://www.cabextract.org.uk/cabextract-1.3.tar.gz'
+  url 'http://www.cabextract.org.uk/cabextract-1.4.tar.gz'
   homepage 'http://www.cabextract.org.uk/'
-  md5 'cb9a4a38470d2a71a0275968e7eb64d3'
+  md5 '79f41f568cf1a3ac105e0687e8bfb7c0'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

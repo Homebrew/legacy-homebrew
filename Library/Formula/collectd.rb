@@ -1,9 +1,9 @@
 require 'formula'
 
 class Collectd < Formula
-  url 'http://collectd.org/files/collectd-4.10.2.tar.bz2'
+  url 'http://collectd.org/files/collectd-5.0.0.tar.bz2'
   homepage 'http://collectd.org/'
-  md5 '85d9d8d0a1327782661e3c89800aa70e'
+  md5 '7bfea6e82d35b36f16d1da2c71397213'
 
   depends_on 'pkg-config' => :build
 

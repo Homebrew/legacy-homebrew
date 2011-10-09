@@ -2,10 +2,10 @@ require 'formula'
 
 class Macvim < Formula
   homepage 'http://code.google.com/p/macvim/'
-  url 'https://github.com/b4winckler/macvim/tarball/snapshot-57'
-  version '7.3-57'
-  md5 '2bf4630be2d59f62b8b70870ba1fe0a1'
-  head 'git://github.com/b4winckler/macvim.git', :branch => 'master'
+  url 'https://github.com/b4winckler/macvim/tarball/snapshot-62'
+  version '7.3-62'
+  md5 '04d14c9ebe1b8fd0fe119d977e148c39'
+  head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
   def options
   [
@@ -13,7 +13,8 @@ class Macvim < Formula
     ["--custom-icons", "Try to generate custom document icons."],
     ["--with-cscope", "Build with Cscope support."],
     ["--with-envycoder", "Build with Envy Code R Bold font."],
-    ["--override-system-vim", "Override system vim"]
+    ["--override-system-vim", "Override system vim."],
+    ["--enable-clipboard", "Enable System clipboard handling in the terminal."]
   ]
   end
 
@@ -34,6 +35,8 @@ class Macvim < Formula
 
     args = ["--with-macsdk=#{MACOS_VERSION}",
            "--with-features=huge",
+           "--with-tlib=ncurses",
+           "--enable-multibyte",
            "--with-macarchs=#{arch}",
            "--enable-perlinterp",
            "--enable-pythoninterp",
@@ -41,6 +44,7 @@ class Macvim < Formula
            "--enable-tclinterp"]
 
     args << "--enable-cscope" if ARGV.include? "--with-cscope"
+    args << "--enable-clipboard" if ARGV.include? "--enable-clipboard"
 
     system "./configure", *args
 
@@ -49,13 +53,8 @@ class Macvim < Formula
       inreplace "src/MacVim/icons/make_icons.py", "dont_create = False", "dont_create = True"
     end
 
-    if ARGV.include? "--with-envycoder"
-      # Font download location has changed.
-      # This is fixed in MacVim trunk, but not in the stable tarball.
-      inreplace "src/MacVim/icons/Makefile",
-        "http://download.damieng.com/latest/EnvyCodeR",
-        "http://download.damieng.com/fonts/original/EnvyCodeR-PR7.zip"
-    else
+    # TODO: This seems to be different in snapshot-62
+    unless ARGV.include? "--with-envycoder"
       # Remove the font from the build dependencies
       inreplace "src/MacVim/icons/Makefile",
         '$(OUTDIR)/MacVim-generic.icns: make_icons.py vim-noshadow-512.png loadfont.so Envy\ Code\ R\ Bold.ttf',
@@ -71,7 +70,7 @@ class Macvim < Formula
 
     # Create MacVim vimdiff, view, ex equivalents
     executables = %w[mvimdiff mview mvimex]
-    executables << "vim" if ARGV.include? "--override-system-vim"
+    executables += %w[vi vim vimdiff view vimex] if ARGV.include? "--override-system-vim"
     executables.each {|f| ln_s bin+'mvim', bin+f}
   end
 
@@ -82,7 +81,7 @@ class Macvim < Formula
     To link the application to a normal Mac OS X location:
         brew linkapps
     or:
-        sudo ln -s #{prefix}/MacVim.app /Applications
+        ln -s #{prefix}/MacVim.app /Applications
     EOS
   end
 end
