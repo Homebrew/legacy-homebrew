@@ -22,6 +22,7 @@ class Emacs < Formula
       ["--srgb", "Enable sRGB colors in the Cocoa version of emacs"],
       ["--with-x", "Include X11 support"],
       ["--use-git-head", "Use repo.or.cz git mirror for HEAD builds"],
+      ["--ime", "Enable IME control with Emacs lisp"],
     ]
   end
 
@@ -37,12 +38,24 @@ class Emacs < Formula
       # Fix for the titlebar issue on Mac OS X 10.7
       p << "https://raw.github.com/gist/1102744"
       # Fix for Shift key for IME users
-      p << "https://raw.github.com/gist/1212776"
+      unless ARGV.include? "--ime"
+        # This patch is also included in IME patch, so avoid duplicate
+        # application.
+        p << "https://raw.github.com/gist/1212776"
+      end
     end
 
     if ARGV.include? "--cocoa"
       # Fullscreen patch, works against 23.3 and HEAD.
       p << "https://raw.github.com/gist/1012927"
+    end
+
+    if !ARGV.build_head? and ARGV.include? "--ime"
+      # Enable to control IME with Emacs lisp.  2nd patch is for selecting
+      # correct IME based on Language preferences.
+      p = { :p1 => p,
+            :p0 => ["http://sourceforge.jp/projects/macemacsjp/svn/view/inline_patch/trunk/emacs-inline.patch?revision=573&root=macemacsjp",
+                    "https://raw.github.com/gist/1273211/"] }
     end
 
     return p
