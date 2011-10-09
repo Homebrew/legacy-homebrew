@@ -57,6 +57,8 @@ _brew_to_completion()
     # Commands that take an outdated brew
     upgrade)
         COMPREPLY=( $(compgen -W "$(brew outdated --quiet)" -- ${cur}) )
+        return
+        ;;
     esac
 }
 
