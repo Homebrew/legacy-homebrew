@@ -7,7 +7,7 @@ class Bsdconv < Formula
   md5 '6b8ccb9ef8143f077882ebeb387e4e4a'
 
   def install
-    system "env PREFIX=#{prefix} make install"
+    system "make PREFIX=#{prefix} install"
   end
 
   def test
