@@ -22,7 +22,7 @@ class Valgrind < Formula
     # Enable compilation to occur on Lion---Valgrind may be unstable. Upstream
     # issue tracking official suport:
     #   https://bugs.kde.org/show_bug.cgi?id=275168
-    patch_hash[:p1] = 'https://raw.github.com/gist/1234173' if MacOS.lion? and ARGV.force?
+    patch_hash[:p1] = 'https://raw.github.com/gist/1234173' if MacOS.lion? and ARGV.force? and !ARGV.build_head?
   end
 
   def install
@@ -45,6 +45,7 @@ class Valgrind < Formula
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
     args << "--enable-only64bit" << "--build=amd64-darwin" if MacOS.prefer_64_bit?
 
+    system "./autogen.sh" if ARGV.build_head?
     system "./configure", *args
     system "make install"
   end
