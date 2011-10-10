@@ -4,7 +4,7 @@ class TodoTxt < Formula
   url 'https://github.com/downloads/ginatrapani/todo.txt-cli/todo.txt_cli-2.8.tar.gz'
   homepage 'http://todotxt.com/'
   md5 '065b848d0c300dd024a4ece86a68c0fa'
-  head 'git://github.com/ginatrapani/todo.txt-cli.git'
+  head 'https://github.com/ginatrapani/todo.txt-cli.git'
 
   def install
     bin.install 'todo.sh'
