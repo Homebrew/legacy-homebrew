@@ -1,7 +1,7 @@
 require 'formula'
 
 class Gdb < Formula
-  url 'http://ftp.gnu.org/gnu/gdb/gdb-7.3.1.tar.bz2'
+  url 'http://ftpmirror.gnu.org/gdb/gdb-7.3.1.tar.bz2'
   homepage 'http://www.gnu.org/software/gdb/'
   md5 'b89a5fac359c618dda97b88645ceab47'
 
