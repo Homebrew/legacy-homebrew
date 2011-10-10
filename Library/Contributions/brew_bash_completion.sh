@@ -50,8 +50,13 @@ _brew_to_completion()
         return
         ;;
     # Commands that take an existing brew
-    abv|cleanup|link|list|ln|ls|remove|rm|test|uninstall|unlink|upgrade)
+    abv|cleanup|link|list|ln|ls|remove|rm|test|uninstall|unlink)
         COMPREPLY=( $(compgen -W "$(\ls $(brew --cellar))" -- ${cur}) )
+        return
+        ;;
+    # Commands that take an outdated brew
+    upgrade)
+        COMPREPLY=( $(compgen -W "$(brew outdated --quiet)" -- ${cur}) )
         return
         ;;
     esac
