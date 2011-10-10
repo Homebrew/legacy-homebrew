@@ -1,10 +1,10 @@
 require 'formula'
 
 class SshAgentLocker < Formula
-  url 'https://github.com/gdcbyers/ssh-agent-locker/tarball/master'
+  url 'https://github.com/gdcbyers/ssh-agent-locker/tarball/v0.1.0'
   homepage 'https://github.com/gdcbyers/ssh-agent-locker'
-  md5 'e906b9a94f7a36611b11a7de4dbf91eb'
-  version '1.0'
+  md5 '37685d3a1e7b3ec29d0e9f0562367fe0'
+  version '0.1.0'
 
   def install
     system "xcodebuild SYMROOT=build"
