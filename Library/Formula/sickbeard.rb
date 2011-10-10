@@ -5,7 +5,7 @@ class Sickbeard < Formula
   homepage 'http://www.sickbeard.com/'
   md5 '3bdcabe963e2622513f3cca2757fa2f0'
 
-  head 'git://github.com/midgetspy/Sick-Beard.git'
+  head 'https://github.com/midgetspy/Sick-Beard.git'
 
   depends_on 'Cheetah' => :python
 
