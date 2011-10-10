@@ -113,7 +113,7 @@ class FormulaInstaller
              '-rbuild',
              '--',
              f.path,
-             *ARGV.options_only
+             *ARGV
       rescue Exception => e
         Marshal.dump(e, write)
         write.close
