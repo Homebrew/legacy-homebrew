@@ -310,7 +310,7 @@ class RefreshBrew
       @changes_map = Hash.new {|h,k| h[k] = [] }
 
       changes = brewery_path.cd do
-        execute(DIFF_COMMAND % [initial_revision, current_revision]).split("\0")
+        execute("git diff-tree -r --name-status -z #{initial_revision} #{current_revision}").split("\0")
       end
 
       while status = changes.shift
