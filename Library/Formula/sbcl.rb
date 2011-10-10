@@ -12,7 +12,7 @@ class Sbcl < Formula
   md5 '74ce9b24516885d066ec4287cde52e8c'
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
-  fails_with_llvm "Compilation fails with LLVM."
+  fails_with_llvm "Compilation fails with LLVM.", :build => 2334
 
   skip_clean 'bin'
   skip_clean 'lib'

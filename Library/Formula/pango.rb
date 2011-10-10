@@ -13,6 +13,8 @@ class Pango < Formula
   if MacOS.leopard?
     depends_on 'fontconfig' # Leopard's fontconfig is too old.
     depends_on 'cairo' # Leopard doesn't come with Cairo.
+  elsif MacOS.lion?
+    depends_on 'cairo' # links against system Cairo without this
   end
 
   def install
