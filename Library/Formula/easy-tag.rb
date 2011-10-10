@@ -19,6 +19,7 @@ class EasyTag < Formula
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make"
+    system "make -j1 install"
   end
 end
