@@ -344,7 +344,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
         case @spec
         when :branch
           nostdout { quiet_safe_system 'git', 'checkout', "origin/#{@ref}" }
-        when :tag
+        when :tag, :sha
           nostdout { quiet_safe_system 'git', 'checkout', @ref }
         end
       else
