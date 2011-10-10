@@ -264,7 +264,30 @@ class Brewery
   # These methods all hit the GitHub API. Therefore, they should only be
   # invoked through the memoized accessors defined above.
   def get_network
-    network = self.class.get("/#{@owner}/#{@name}/forks").parsed_response
+    # GitHub paginates API v3 responses---so we set the number returned to 100
+    # (the maximum)
+    hub_request = self.class.get("/#{@owner}/#{@name}/forks", :query => {:per_page => 100})
+    network = hub_request.parsed_response
+
+    # We may need to issue additional requests in order to get all the data. If
+    # there is more than one page available, the response will have a 'link'
+    # header.
+    unless hub_request.headers['link'].nil?
+      # Try to find the link flagged as `rel=last`---that will let us know how
+      # many pages we have. This part is a bit messy: a cleaner approach would
+      # be much appreciated.
+      links = hub_request.headers['link'].split ','
+      last_page = links.select {|s| s.split(';')[1].match /last/}[0]
+      last_page = last_page.match(/page=(\d+)/)[1] unless last_page.nil?
+
+      unless last_page.nil?
+        last_page = last_page.to_i
+        (2..last_page).each do |i|
+          hub_request = self.class.get("/#{@owner}/#{@name}/forks", :query => {:page => i, :per_page => 100})
+          network += hub_request.parsed_response
+        end
+      end
+    end
 
     # Convert the JSON results to Brewery objects
     network.map! do |repo|
