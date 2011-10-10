@@ -20,7 +20,7 @@ class EasyTag < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
-    ENV.j1 # make install fails in parallel
+    ENV.deparallelize # make install fails in parallel
     system "make install"
   end
 end
