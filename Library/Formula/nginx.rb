@@ -24,7 +24,7 @@ class Nginx < Formula
   def options
     [
       ['--with-passenger', "Compile with support for Phusion Passenger module (shortcut)"],
-      ['--help',  "displays list of available options"]
+      ['--help',  "displays list of available options for configuring nginx"]
     ]
   end
 
@@ -42,15 +42,10 @@ class Nginx < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}",
-            "--with-http_ssl_module",
-            "--with-pcre",
-            "--conf-path=#{etc}/nginx/nginx.conf",
-            "--pid-path=#{var}/run/nginx.pid",
-            "--lock-path=#{var}/nginx/nginx.lock"]
+    args = [].concat(default_options)
 
     args << passenger_config_args if ARGV.include? '--with-passenger'
-    system "./configure", *(args + (ARGV - %w(--force --with-passenger)))
+    system "./configure", *(args + ARGV.options(name))
     system "make install"
 
     (prefix+'org.nginx.nginx.plist').write startup_plist
@@ -72,6 +67,19 @@ class Nginx < Formula
 
     Though note that if running as your user, the launch agent will fail if you
     try to use a port below 1024 (such as http's default of 80.)
+
+    options
+    =======
+    brew takes care of path options and sensible defaults
+
+    options following `nginx` are passed to configure `nginx`
+
+    eg:
+      brew install --force nginx --with-http_gzip_static_module
+
+    will configure `nginx` with default options and --with-http_gzip_static_module (but not --force)
+
+    default options are #{default_options}
     EOS
   end
 
@@ -100,6 +108,17 @@ class Nginx < Formula
   </dict>
 </plist>
     EOPLIST
+  end
+  private
+  def default_options
+    [
+      "--prefix=#{prefix}",
+      "--conf-path=#{etc}/nginx/nginx.conf",
+      "--pid-path=#{var}/run/nginx.pid",
+      "--lock-path=#{var}/nginx/nginx.lock",
+      "--with-http_ssl_module",
+      "--with-pcre"
+    ]
   end
 end
 
