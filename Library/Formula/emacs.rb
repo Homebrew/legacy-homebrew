@@ -51,11 +51,15 @@ class Emacs < Formula
     end
 
     if !ARGV.build_head? and ARGV.include? "--ime"
-      # Enable to control IME with Emacs lisp.  2nd patch is for selecting
-      # correct IME based on Language preferences.
+      # 1st patch: Enable to control IME with Emacs lisp.
+      # 2nd patch: For selecting correct IME based on Language preferences.
+      # 3rd patch: Fix wrong emacs event handling.  This patch is from
+      #   https://gist.github.com/397610, but modifed for being enable
+      #   to apply with '-p0'
       p = { :p1 => p,
             :p0 => ["http://sourceforge.jp/projects/macemacsjp/svn/view/inline_patch/trunk/emacs-inline.patch?revision=573&root=macemacsjp",
-                    "https://raw.github.com/gist/1273211/"] }
+                    "https://raw.github.com/gist/1273211/",
+                    DATA] }
     end
 
     return p
@@ -141,3 +145,18 @@ class Emacs < Formula
     return s
   end
 end
+
+__END__
+diff --git a/src/nsterm.m b/src/nsterm.m
+index 635f737..4aade4a 100644
+--- src.orig/nsterm.m
++++ src/nsterm.m
+@@ -3945,6 +3945,8 @@ ns_term_shutdown (int sig)
+ 
+   if (mac_store_change_input_method_event())
+     {
++      if (!emacs_event)
++       return;
+       emacs_event->kind = NS_NONKEY_EVENT;
+       emacs_event->code = KEY_MAC_CHANGE_INPUT_METHOD;
+       EV_TRAILER ((id)nil);
