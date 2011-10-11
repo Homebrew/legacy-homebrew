@@ -20,6 +20,8 @@ class Keg < Pathname
   def uninstall
     chmod_R 0777 # ensure we have permission to delete
     rmtree
+    current_link = parent+".current"
+    current_link.unlink if FileTest.symlink? current_link
     parent.rmdir_if_possible
   end
 
