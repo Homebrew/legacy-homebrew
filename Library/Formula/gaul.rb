@@ -16,7 +16,7 @@ class Gaul < Formula
     system "make install"
   end
 
-  def patch
+  def patches
     # cf. http://www.pgrouting.org/docs/1.x/install_freebsd.html
     "https://gist.github.com/raw/1271339/d58fc59d16649170bb267c8d1607054c6b960f03/gaul-mac-os-x.patch"
   end
