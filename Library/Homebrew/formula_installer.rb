@@ -80,6 +80,7 @@ class FormulaInstaller
       link
       check_PATH
     end
+    create_link_to_current
     fix_install_names
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading
@@ -148,6 +149,12 @@ class FormulaInstaller
     puts "formula against it."
     ohai e, e.backtrace if ARGV.debug?
     @show_summary_heading = true
+  end
+
+  def create_link_to_current
+    current_link = HOMEBREW_CELLAR+f.name+".current"
+    File.unlink(current_link) if File.exist? current_link
+    File.symlink f.prefix, current_link
   end
 
   def clean

@@ -149,11 +149,19 @@ class Formula
   end
 
   def installed_prefix
-    head_prefix = HOMEBREW_CELLAR+@name+'HEAD'
-    if @version == 'HEAD' || head_prefix.directory?
-      head_prefix
+    # new prefix logic
+    current_link = HOMEBREW_CELLAR+@name+".current"
+    if File.exist? current_link
+      target = File.readlink current_link
+      HOMEBREW_CELLAR+@name+target
     else
-      prefix
+    # fallback to old prefix logic
+      head_prefix = HOMEBREW_CELLAR+@name+'HEAD'
+      if @version == 'HEAD' || head_prefix.directory?
+        head_prefix
+      else
+        prefix
+      end
     end
   end
 
