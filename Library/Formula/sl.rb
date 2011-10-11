@@ -7,6 +7,11 @@ class Sl < Formula
   md5 'd0d997b964bb3478f7f4968eee13c698'
 
   def install
+    inreplace 'Makefile' do |s|
+      s.change_make_var! 'CC', ENV.cc
+      s.change_make_var! 'CFLAGS', ENV.cflags
+    end
+
     system "make"
     bin.install "sl"
     man1.install "sl.1"
