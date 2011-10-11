@@ -6,7 +6,16 @@ class Smartmontools < Formula
   md5 '4577886bea79d4ff12bd9a7d323ce692'
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}", "--sysconfdir=#{etc}"
+    (var+'run').mkpath
+    (var+'lib/smartmontools').mkpath
+
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}",
+                          "--localstatedir=#{var}",
+                          "--enable-drivedb",
+                          "--enable-savestates",
+                          "--enable-attributelog"
     system "make install"
   end
 end
