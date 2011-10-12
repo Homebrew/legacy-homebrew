@@ -94,6 +94,16 @@ If \fB\-n\fR is passed, show dependencies in topological order\.
 If \fB\-\-all\fR is passed, show dependencies for all formulae\.
 .
 .TP
+\fBdiy [\-\-set\-name] [\-\-set\-version]\fR
+Automatically determine the installation prefix for non\-Homebrew software\.
+.
+.IP
+Using the output from this command, you can install your own software into the Cellar and then link it into Homebrew\'s prefix with \fBbrew link\fR\.
+.
+.IP
+The options \fB\-\-set\-name\fR and \fB\-\-set\-version\fR each take an argument and allow you to explicitly set the name and version of the package you are installing\.
+.
+.TP
 \fBdoctor\fR
 Check your system for potential problems\. Doctor exits with a non\-zero status if any problems are found\.
 .
