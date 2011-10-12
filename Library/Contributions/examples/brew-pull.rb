@@ -29,6 +29,7 @@ HOMEBREW_REPOSITORY.cd do
     end
 
     # The cache directory seems like a good place to put patches.
+    HOMEBREW_CACHE.mkpath
     patchpath = (HOMEBREW_CACHE+File.basename(url))
     curl url, '-o', patchpath
 
