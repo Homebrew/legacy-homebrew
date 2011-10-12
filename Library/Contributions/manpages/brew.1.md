@@ -198,6 +198,11 @@ For the full command list, see the COMMANDS section.
     Show the git log for the given formulae. Options that `git-log`(1)
     recognizes can be passed before the formula list.
 
+  * `missing [<formulae>]`:
+    Check the given <formulae> for missing dependencies.
+
+    If no <formulae> are given, check all installed brews.
+
   * `options [--compact] [--all] [--installed]` <formula>:
     Display install options specific to <formula>.
 
