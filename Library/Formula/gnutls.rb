@@ -21,5 +21,7 @@ class Gnutls < Formula
                           "--with-libgcrypt",
                           "--without-p11-kit"
     system "make install"
+
+    mv bin+'certtool', bin+'gnutls-certtool'
   end
 end
