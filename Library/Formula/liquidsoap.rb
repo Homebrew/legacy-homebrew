@@ -1,10 +1,10 @@
 require 'formula'
 
 class Liquidsoap < Formula
-  url 'http://sourceforge.net/projects/savonet/files/liquidsoap/1.0.0-beta3/liquidsoap-1.0.0-beta3-full.tar.bz2'
+  url 'http://sourceforge.net/projects/savonet/files/liquidsoap/1.0.0/liquidsoap-1.0.0-full.tar.bz2'
   homepage 'http://savonet.sf.net/'
-  md5 '7c361ebb60c03f0f797af638a0577a8b'
-  version '1.0.0~beta3'
+  md5 'e379caaf68b1141b0b34bdb3db14ab69'
+  version '1.0.0'
 
   depends_on 'objective-caml' => :build
   depends_on 'ocaml-findlib' => :build
@@ -23,7 +23,6 @@ class Liquidsoap < Formula
   depends_on 'schroedinger' => :optional
 
   def install
-    ENV.append 'LIBS', '-lstdc++'
     system 'cp PACKAGES.minimal PACKAGES'
     inreplace 'PACKAGES', 'ocaml-ao', '#ocaml-ao'  unless Formula.factory('libao').installed?
     inreplace 'PACKAGES', 'ocaml-ogg', '#ocaml-ogg'  unless Formula.factory('libogg').installed?
@@ -37,8 +36,7 @@ class Liquidsoap < Formula
     inreplace 'PACKAGES', '#ocaml-theora', 'ocaml-theora'  if Formula.factory('theora').installed?
     inreplace 'PACKAGES', '#ocaml-schroedinger', 'ocaml-schroedinger' if Formula.factory('schroedinger').installed?
     system './configure', "--prefix=#{prefix}"
-    ENV.delete 'LIBS'
-    system 'make -j 1'
+    system 'make -j 2'
     system 'make doc'
     system 'rm INSTALL'
     system 'make install'
