@@ -4,10 +4,9 @@ def build_tests?; ARGV.include? '--test'; end
 
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/2.28/'
-  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.28/glib-2.28.7.tar.bz2'
-  sha256 '0e1b3816a8934371d4ea2313dfbe25d10d16c950f8d02e0a7879ae10d91b1631'
+  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.28/glib-2.28.8.tar.bz2'
+  sha256 '222f3055d6c413417b50901008c654865e5a311c73f0ae918b0a9978d1f9466f'
 
-  depends_on 'pkg-config' => :build
   depends_on 'gettext'
 
   fails_with_llvm "Undefined symbol errors while linking" unless MacOS.lion?
@@ -47,7 +46,8 @@ class Glib < Formula
 
     args = ["--disable-dependency-tracking", "--disable-rebuilds",
             "--prefix=#{prefix}",
-            "--with-libiconv=gnu"]
+            "--with-libiconv=gnu",
+            "--disable-dtrace"]
 
     args << "--disable-debug" unless build_tests?
 
@@ -60,6 +60,11 @@ class Glib < Formula
       # Run autoconf so universal builds will work
       system "autoconf"
     end
+
+    # hack so that we don't have to depend on pkg-config
+    # http://permalink.gmane.org/gmane.comp.package-management.pkg-config/627
+    ENV['ZLIB_CFLAGS'] = ''
+    ENV['ZLIB_LIBZ'] = '-l'
 
     system "./configure", *args
 

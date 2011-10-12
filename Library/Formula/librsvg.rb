@@ -1,9 +1,9 @@
 require 'formula'
 
 class Librsvg < Formula
-  url 'http://ftp.gnome.org/pub/GNOME/sources/librsvg/2.34/librsvg-2.34.0.tar.gz'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/librsvg/2.34/librsvg-2.34.1.tar.bz2'
   homepage 'http://librsvg.sourceforge.net/'
-  md5 '3bf6472d65e15cd13230f886da88e913'
+  sha256 '9f98ab27c4ae04a7c3a37277aeb581feb8035a8b1e1937b06e27423a176a0a73'
 
   depends_on 'gtk+'
   depends_on 'libcroco'

@@ -5,7 +5,7 @@ class Sickbeard < Formula
   homepage 'http://www.sickbeard.com/'
   md5 '3bdcabe963e2622513f3cca2757fa2f0'
 
-  head 'git://github.com/midgetspy/Sick-Beard.git'
+  head 'https://github.com/midgetspy/Sick-Beard.git'
 
   depends_on 'Cheetah' => :python
 
@@ -14,6 +14,7 @@ class Sickbeard < Formula
     bin.mkpath
     (bin+"sickbeard").write(startup_script)
     (prefix+"com.sickbeard.sickbeard.plist").write(startup_plist)
+    (prefix+"com.sickbeard.sickbeard.plist").chmod 0644
   end
 
   def startup_plist; <<-EOS.undent
@@ -25,7 +26,7 @@ class Sickbeard < Formula
       <string>com.sickbeard.sickbeard</string>
       <key>ProgramArguments</key>
       <array>
-           <string>#{bin}/sick-beard</string>
+           <string>#{bin}/sickbeard</string>
            <string>-q</string>
            <string>--nolaunch</string>
            <string>-p</string>

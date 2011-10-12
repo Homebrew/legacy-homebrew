@@ -50,7 +50,7 @@ def audit_formula_text name, text
   end
 
   # Prefer formula path shortcuts in Pathname+
-  if text =~ %r{\(\s*(prefix\s*\+\s*(['"])(bin|include|lib|libexec|sbin|share))}
+  if text =~ %r{\(\s*(prefix\s*\+\s*(['"])(bin|include|libexec|lib|sbin|share))}
     problems << " * \"(#{$1}...#{$2})\" should be \"(#{$3}+...)\""
   end
 
@@ -59,7 +59,7 @@ def audit_formula_text name, text
   end
 
   # Prefer formula path shortcuts in strings
-  if text =~ %r[(\#\{prefix\}/(bin|include|lib|libexec|sbin|share))]
+  if text =~ %r[(\#\{prefix\}/(bin|include|libexec|lib|sbin|share))]
     problems << " * \"#{$1}\" should be \"\#{#{$2}}\""
   end
 
@@ -124,7 +124,7 @@ def audit_formula_options f, text
 
   # Find possible options
   options = []
-  text.scan(/ARGV\.include\?[ ]*\(?(['"])(.+?)\1/) { |m| options << m[1] }
+  text.scan(/ARGV\.(include|flag)\?[ ]*\(?(['"])(.+?)\2/) { |m| options << m[2] }
   options.reject! {|o| o.include? "#"}
   options.uniq!
 
@@ -140,7 +140,7 @@ def audit_formula_options f, text
 
   if options.length > 0
     options.each do |o|
-      next if o == '--HEAD'
+      next if o == '--HEAD' || o == '--devel'
       problems << " * Option #{o} is not documented" unless documented_options.include? o
     end
   end
@@ -185,10 +185,10 @@ def audit_formula_urls f
     next if p =~ %r[svn\.sourceforge]
 
     # Is it a sourceforge http(s) URL?
-    next unless p =~ %r[^http?://.*\bsourceforge\.]
+    next unless p =~ %r[^https?://.*\bsourceforge\.]
 
-    if p =~ /\?use_mirror=/
-      problems << " * Update this url (don't use ?use_mirror)."
+    if p =~ /(\?|&)use_mirror=/
+      problems << " * Update this url (don't use #{$1}use_mirror)."
     end
 
     if p =~ /\/download$/
@@ -217,6 +217,13 @@ def audit_formula_urls f
   urls.each do |p|
     if p =~ %r[^git://github\.com/]
       problems << " * Use https:// URLs for accessing repositories on GitHub."
+    end
+  end
+
+  # Check GNU urls
+  urls.each do |p|
+    if p =~ %r[^(https?|ftp)://(.+)/gnu/]
+      problems << " * \"ftpmirror.gnu.org\" is preferred for GNU software."
     end
   end
 

@@ -42,6 +42,12 @@ def blacklisted? name
 
         easy_install pip
     EOS
+  when 'macruby' then <<-EOS.undent
+    MacRuby works better when you install their package:
+      http://www.macruby.org/downloads.html
+
+    Although if you prefer, there is a formula in homebrew-alt.
+    EOS
   when 'npm' then <<-EOS.undent
     npm can be installed thusly by following the instructions at
       http://npmjs.org/
@@ -49,5 +55,7 @@ def blacklisted? name
     To do it in one line, use this command:
       curl http://npmjs.org/install.sh | sh
     EOS
+  when /(lib)?lzma/
+    "lzma is now part of the xz formula."
   end
 end

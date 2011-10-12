@@ -2,14 +2,14 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.5/en/'
-  url 'http://downloads.mysql.com/archives/mysql-5.5/mysql-5.5.14.tar.gz'
-  md5 '19f43bb9c72b1b5f7ff86a7f921c9244'
+  url 'http://downloads.mysql.com/archives/mysql-5.5/mysql-5.5.15.tar.gz'
+  md5 '306b5549c7bd72e8e705a890db0da82b'
 
   depends_on 'cmake' => :build
   depends_on 'readline'
   depends_on 'pidof'
 
-  fails_with_llvm "https://github.com/mxcl/homebrew/issues/issue/144"
+  fails_with_llvm "https://github.com/mxcl/homebrew/issues/issue/144", :build => 2326
 
   skip_clean :all # So "INSTALL PLUGIN" can work.
 
@@ -70,6 +70,7 @@ class Mysql < Formula
     system "make install"
 
     (prefix+'com.mysql.mysqld.plist').write startup_plist
+    (prefix+'com.mysql.mysqld.plist').chmod 0644
 
     # Don't create databases inside of the prefix!
     # See: https://github.com/mxcl/homebrew/issues/4975

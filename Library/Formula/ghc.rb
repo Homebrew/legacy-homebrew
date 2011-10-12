@@ -22,7 +22,7 @@ class Ghc < Formula
   def install
     if ARGV.include? '--64bit'
       if Hardware.is_64_bit?
-        onoe "The x86_64 version is experimental!"
+        opoo "The x86_64 version is experimental!"
       else
         onoe "The x86_64 version is only for 64-bit hardware."
         exit 1
