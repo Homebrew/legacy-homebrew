@@ -83,6 +83,15 @@ For the full command list, see the COMMANDS section.
 
     If `--all` is passed, show dependencies for all formulae.
 
+  * `diy [--set-name] [--set-version]`:
+    Automatically determine the installation prefix for non-Homebrew software.
+
+    Using the output from this command, you can install your own software into
+    the Cellar and then link it into Homebrew's prefix with `brew link`.
+
+    The options `--set-name` and `--set-version` each take an argument and allow
+    you to explicitly set the name and version of the package you are installing.
+
   * `doctor`:
     Check your system for potential problems. Doctor exits with a non-zero status
     if any problems are found.
