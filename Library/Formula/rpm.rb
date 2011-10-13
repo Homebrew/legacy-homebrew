@@ -9,6 +9,7 @@ class Rpm < Formula
   depends_on 'nspr'
   depends_on 'libmagic'
   depends_on 'popt'
+  depends_on 'lua'
 
   def patches
     DATA
