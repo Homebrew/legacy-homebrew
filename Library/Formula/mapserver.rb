@@ -1,24 +1,66 @@
 require 'formula'
 
 class Mapserver < Formula
-  url 'http://download.osgeo.org/mapserver/mapserver-6.0.0.tar.gz'
+  url 'http://download.osgeo.org/mapserver/mapserver-6.0.1.tar.gz'
   homepage 'http://mapserver.org/'
-  md5 '5bcb1a6fb4a743e9f069466fbdf4ab76'
+  md5 'b96287449dcbca9a2fcea3a64905915a'
 
   depends_on 'gd'
   depends_on 'proj'
   depends_on 'gdal'
-  depends_on 'libagg'
 
-  def patches
-    # http://trac.osgeo.org/mapserver/ticket/3877 (patch from the 6.0 release branch)
-    { :p4 => "http://trac.osgeo.org/mapserver/changeset/11714?format=diff&new=11714" }
+  depends_on 'geos' if ARGV.include? '--with-geos'
+  depends_on 'postgresql' if ARGV.include? '--with-postgresql' and not MacOS.lion?
+
+  def options
+    [
+      ["--with-geos", "Build support for GEOS spatial operations"],
+      ["--with-php", "Build PHP MapScript module"],
+      ["--with-postgresql", "Build support for PostgreSQL as a data source"]
+    ]
+  end
+
+  def configure_args
+    args = [
+      "--prefix=#{prefix}",
+      "--with-proj",
+      "--with-gdal",
+      "--with-ogr",
+      "--with-png=/usr/X11"
+    ]
+
+    args.push "--with-geos" if ARGV.include? '--with-geos'
+    args.push "--with-php=/usr/include/php" if ARGV.include? '--with-php'
+
+    if ARGV.include? '--with-postgresql'
+      if MacOS.lion? # Lion ships with PostgreSQL libs
+        args.push "--with-postgis"
+      else
+        args.push "--with-postgis=#{HOMEBREW_PREFIX}/bin/pg_config"
+      end
+    end
+
+    args
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--with-png=/usr/X11",
-           "--with-proj", "--with-gdal", "--with-agg"
+    system "./configure", *configure_args
     system "make"
-    bin.install "mapserv"
+    bin.install %w(mapserv)
+
+    if ARGV.include? '--with-php'
+      prefix.install %w(mapscript/php/php_mapscript.so)
+    end
+  end
+
+  def caveats; <<-EOS.undent
+    The Mapserver CGI executable is #{prefix}/mapserv
+
+    If you built the PHP option:
+      * Add the following line to php.ini:
+        extension="#{prefix}/php_mapscript.so"
+      * Execute "php -m"
+      * You should see MapScript in the module list
+    EOS
   end
 end

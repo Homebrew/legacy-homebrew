@@ -1,4 +1,5 @@
 require 'pathname'
+require 'exceptions'
 
 class Tty
   class <<self
@@ -91,7 +92,7 @@ end
 def safe_system cmd, *args
   unless Homebrew.system cmd, *args
     args = args.map{ |arg| arg.to_s.gsub " ", "\\ " } * " "
-    raise "Failure while executing: #{cmd} #{args}"
+    raise ErrorDuringExecution, "Failure while executing: #{cmd} #{args}"
   end
 end
 
@@ -104,10 +105,14 @@ def quiet_system cmd, *args
 end
 
 def curl *args
+  curl = Pathname.new '/usr/bin/curl'
+  raise "#{curl} is not executable" unless curl.exist? and curl.executable?
+
+  args = [HOMEBREW_CURL_ARGS, HOMEBREW_USER_AGENT, *args]
   # See https://github.com/mxcl/homebrew/issues/6103
   args << "--insecure" if MacOS.version < 10.6
 
-  safe_system '/usr/bin/curl', HOMEBREW_CURL_ARGS, HOMEBREW_USER_AGENT, *args unless args.empty?
+  safe_system curl, *args
 end
 
 def puts_columns items, star_items=[]
@@ -246,6 +251,15 @@ module MacOS extend self
     Pathname.new("/usr/bin/cc").realpath.basename.to_s
   end
 
+  def default_compiler
+    case default_cc
+      when /^gcc/ then :gcc
+      when /^llvm/ then :llvm
+      when "clang" then :clang
+      else :gcc # a hack, but a sensible one prolly
+    end
+  end
+
   def gcc_42_build_version
     `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
     if $1
@@ -289,19 +303,40 @@ module MacOS extend self
 
   def xcode_version
     @xcode_version ||= begin
+      raise unless system "/usr/bin/which -s xcodebuild"
       `xcodebuild -version 2>&1` =~ /Xcode (\d(\.\d)*)/
+      raise if $1.nil?
       $1
+    rescue
+      # for people who don't have xcodebuild installed due to using
+      # some variety of minimal installer, let's try and guess their
+      # Xcode version
+      case llvm_build_version.to_i
+      when 0..2063 then "3.1.0"
+      when 2064..2065 then "3.1.4"
+      when 2366..2325
+        # we have no data for this range so we are guessing
+        "3.2.0"
+      when 2326
+        # also applies to "3.2.3"
+        "3.2.4"
+      when 2327..2333 then "3.2.5"
+      when 2335
+        # this build number applies to 3.2.6, 4.0 and 4.1
+        # https://github.com/mxcl/homebrew/wiki/Xcode
+        "4.0"
+      else
+        "4.2"
+      end
     end
   end
 
   def llvm_build_version
-    unless xcode_prefix.to_s.empty?
-      llvm_gcc_path = xcode_prefix/"usr/bin/llvm-gcc"
-      # for Xcode 3 on OS X 10.5 this will not exist
-      if llvm_gcc_path.file?
-        `#{llvm_gcc_path} -v 2>&1` =~ /LLVM build (\d{4,})/
-        $1.to_i # if nil this raises and then you fix the regex
-      end
+    # for Xcode 3 on OS X 10.5 this will not exist
+    # NOTE may not be true anymore but we can't test
+    @llvm_build_version ||= if File.exist? "/usr/bin/llvm-gcc"
+      `/usr/bin/llvm-gcc -v 2>&1` =~ /LLVM build (\d{4,})/
+      $1.to_i
     end
   end
 
@@ -371,8 +406,12 @@ module GitHub extend self
     issues = []
 
     open "http://github.com/api/v2/yaml/issues/search/mxcl/homebrew/open/#{name}" do |f|
-      YAML::load(f.read)['issues'].each do |issue|
-        issues << 'https://github.com/mxcl/homebrew/issues/#issue/%s' % issue['number']
+      yaml = YAML::load(f.read);
+      yaml['issues'].each do |issue|
+        # don't include issues that just refer to the tool in their body
+        if issue['title'].include? name
+          issues << issue['html_url']
+        end
       end
     end
 

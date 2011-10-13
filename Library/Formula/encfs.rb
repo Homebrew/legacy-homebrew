@@ -9,17 +9,18 @@ class Encfs < Formula
   depends_on 'gettext'
   depends_on 'boost'
   depends_on 'rlog'
+  depends_on 'fuse4x'
 
   def caveats
     <<-EOS.undent
-      encfs requires MacFUSE 2.6 or later to be installed.
-      You can find MacFUSE at:
-        http://code.google.com/p/macfuse/
+      Make sure to follow the directions given by `brew info fuse4x-kext`
+      before trying to use a FUSE-based filesystem.
     EOS
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    inreplace "configure", "-lfuse", "-lfuse4x"
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-boost=#{HOMEBREW_PREFIX}"
     system "make"
