@@ -5,8 +5,6 @@ class Libstxxl < Formula
   homepage 'http://stxxl.sourceforge.net/'
   md5 '8d0e8544c4c830cf9ae81c39b092438c'
 
-  # depends_on 'cmake'
-
   def install
     system "make", "config_gnu"
     inreplace "Makefile" do |s|
