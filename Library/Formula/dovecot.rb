@@ -1,13 +1,16 @@
 require 'formula'
 
 class Dovecot < Formula
-  url 'http://www.dovecot.org/releases/1.2/dovecot-1.2.16.tar.gz'
+  url 'http://www.dovecot.org/releases/2.0/dovecot-2.0.15.tar.gz'
+  md5 '16a08dfd24422d482440a8b03d6f7f6c'
   homepage 'http://dovecot.org/'
-  md5 '8bbdf4e96e2e0f5749432ca9cb209a38'
+
+  def patches; DATA; end
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--libexecdir=#{libexec}",
                           "--sysconfdir=#{etc}",
                           "--localstatedir=#{var}",
                           "--with-ssl=openssl"
@@ -47,3 +50,38 @@ Source: http://wiki.dovecot.org/LaunchdInstall
     EOS
   end
 end
+
+__END__
+
+# This patch fixes a linking problem looking for _environ, call
+# _NSGetEnviron() instead (upstream does that at another location but
+# missesthis one).
+
+diff --git a/src/lib/env-util.c b/src/lib/env-util.c
+index 8111db7..c3520d0 100644
+--- a/src/lib/env-util.c
++++ b/src/lib/env-util.c
+@@ -7,6 +7,7 @@
+ #include <stdlib.h>
+ #ifdef __APPLE__
+ #  include <crt_externs.h>
++#  define environ (*_NSGetEnviron())
+ #endif
+
+ struct env_backup {
+@@ -36,7 +37,6 @@ void env_remove(const char *name)
+	unsetenv(name);
+ #endif
+ #else
+-	extern char **environ;
+	unsigned int len;
+	char **envp;
+
+@@ -109,7 +109,6 @@ void env_clean_except(const char *const preserve_envs[])
+
+ struct env_backup *env_backup_save(void)
+ {
+-	char **environ = *env_get_environ_p();
+	struct env_backup *env;
+	unsigned int i, count;
+	pool_t pool;
