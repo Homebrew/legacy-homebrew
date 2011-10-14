@@ -1,23 +1,15 @@
 require 'formula'
 
-class Py2cairo < Formula
-  url 'http://cairographics.org/releases/py2cairo-1.10.0.tar.bz2'
+class Pycairo < Formula
+  url 'http://cairographics.org/releases/py2cairo-1.8.10.tar.gz'
   homepage 'http://cairographics.org/pycairo/'
-  md5 '20337132c4ab06c1146ad384d55372c5'
+  md5 '87421a6a70304120555ba7ba238f3dc3'
 
+  depends_on 'pkg-config' => :build
   depends_on 'cairo'
 
-  def options
-    [
-      ["--universal", "Builds a universal binary"]
-    ]
-  end
-
   def install
-    # Python extensions default to universal but cairo may not be universal
-    ENV['ARCHFLAGS'] = "-arch x86_64" unless ARGV.build_universal?
-    system "./waf", "configure", "--prefix=#{prefix}", "--nopyc", "--nopyo"
-    system "./waf", "install"
+    system "./configure", "--prefix=#{prefix}"
+    system "make install"
   end
-
 end
