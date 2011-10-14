@@ -16,7 +16,7 @@ class Valgrind < Formula
   def patches
     # Xcode 4 fix from upstream r11686
     # https://bugs.kde.org/show_bug.cgi?id=267997
-    DATA
+    {:p0 => DATA}
   end if MacOS.xcode_version >= "4.0" and not ARGV.build_head?
 
   def install
@@ -32,8 +32,11 @@ class Valgrind < Formula
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
     args << "--enable-only64bit" << "--build=amd64-darwin" if MacOS.prefer_64_bit?
 
-    # Remove the `xcode_version` piece after the next update.
-    system "./autogen.sh" if MacOS.xcode_version >= "4.0" or ARGV.build_head?
+    # Remove when Xcode 4 fix is removed
+    system "autoreconf -ivf" if MacOS.xcode_version >= "4.0" and not ARGV.build_head?
+
+    system "./autogen.sh" if ARGV.build_head?
+
     system "./configure", *args
     system "make install"
   end
