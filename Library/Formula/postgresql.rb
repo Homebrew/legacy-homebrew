@@ -3,8 +3,8 @@ require 'hardware'
 
 class Postgresql < Formula
   homepage 'http://www.postgresql.org/'
-  url 'http://ftp9.us.postgresql.org/pub/mirrors/postgresql/source/v9.0.4/postgresql-9.0.4.tar.bz2'
-  md5 '80390514d568a7af5ab61db1cda27e29'
+  url 'http://ftp9.us.postgresql.org/pub/mirrors/postgresql/source/v9.1.1/postgresql-9.1.1.tar.bz2'
+  md5 '061a9f17323117c9358ed60f33ecff78'
 
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.leopard? # Leopard libxml is too old
@@ -57,7 +57,7 @@ class Postgresql < Formula
     system "make install"
     system "make install-docs"
 
-    contrib_directories = Dir.glob("contrib/*").select{ |path| File.directory?(path) } - ['contrib/start-scripts']
+    contrib_directories = Dir.glob("contrib/*").select{ |path| File.directory?(path) } - ['contrib/start-scripts', 'contrib/sepgsql']
 
     contrib_directories.each do |contrib_directory|
       system "cd #{contrib_directory}; make install"
@@ -112,10 +112,19 @@ If this is your first install, automatically load on login with:
   cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
   launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
 
+If this is an major upgrade (eg. 9.0 to 9.1) and you already have a database:
+  launchctl stop org.postgresql.postgres
+  mv #{var}/postgres #{var}/postgres_old
+  initdb #{var}/postgres
+  pg_upgrade -b your_old_postgres_bin_dir -B #{bin} -d #{var}/postgres_old -D #{var}/postgres
+
+where your_old_postgres_bin_dir is something like /usr/local/Cellar/postgresql/9.0.4/bin/
+
 If this is an upgrade and you already have the org.postgresql.postgres.plist loaded:
   launchctl unload -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
   cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
   launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
+  launchctl start org.postgresql.postgres
 
 Or start manually with:
   pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start
@@ -123,6 +132,7 @@ Or start manually with:
 And stop with:
   pg_ctl -D #{var}/postgres stop -s -m fast
 
+If you're having problems, take a look at #{var}/postgres/server.log
 
 Some machines may require provisioning of shared memory:
   http://www.postgresql.org/docs/current/static/kernel-resources.html#SYSVIPC
