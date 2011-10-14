@@ -4,7 +4,7 @@ class Redis < Formula
   url 'http://redis.googlecode.com/files/redis-2.4.0.tar.gz'
   head 'git://github.com/antirez/redis.git'
   homepage 'http://redis.io/'
-  sha1 '063e6e9f615ceda664d0691a6ea59befb22ebc40'
+  sha1 'efdfa0d40fc7676199005bd0178cf6a9'
 
   fails_with_llvm "Fails with \"reference out of range from _linenoise\""
 
