@@ -17,7 +17,7 @@ class Mkvtoolnix < Formula
                           "--prefix=#{prefix}",
                           "--with-boost-libdir=#{HOMEBREW_PREFIX}/lib", # For non-/usr/local prefix
                           "--with-boost-regex=boost_regex-mt" # via macports
-    system "./drake -j#{Hardware.processor_count}"
+    system "./drake -j#{ENV.make_jobs}"
     system "./drake install"
   end
 end
