@@ -178,6 +178,11 @@ def audit_formula_urls f
 
   urls = [(f.url rescue nil), (f.head rescue nil)].reject {|p| p.nil?}
 
+  f.mirrors.each do |m|
+    mirror = m.values_at :url
+    urls << (mirror.to_s rescue nil)
+  end
+
   # Check SourceForge urls
   urls.each do |p|
     # Is it a filedownload (instead of svnroot)
