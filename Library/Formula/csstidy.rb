@@ -8,7 +8,7 @@ class Csstidy < Formula
 
   def install
     arch = Hardware.is_64_bit? ? 'x64' : 'ia32'
-    system "scons", "-j #{Hardware.processor_count}",
+    system "scons", "-j #{ENV.make_jobs}",
                     "arch=#{arch}"
 
     bin.install "release/csstidy/csstidy"
