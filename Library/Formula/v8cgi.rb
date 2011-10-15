@@ -33,7 +33,7 @@ class V8cgi < Formula
     args << (ARGV.include? '--with-sqlite') ? 'sqlite=1' : 'sqlite=0'
 
     system "scons",
-            "-j #{Hardware.processor_count}",
+            "-j #{ENV.make_jobs}",
             "arch=#{arch}",
             "library=shared",
             "socket=1",
