@@ -1,6 +1,6 @@
 require 'formula'
 
-class Progressbar < Formula
+class PythonProgressbar < Formula
   url 'https://python-progressbar.googlecode.com/files/progressbar-2.3.tar.gz'
   homepage ''
   md5 '4f904e94b783b4c6e71aa74fd2432c59'
