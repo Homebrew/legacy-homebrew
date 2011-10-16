@@ -16,17 +16,26 @@ class Valgrind < Formula
   def patches
     # Xcode 4 fix from upstream r11686
     # https://bugs.kde.org/show_bug.cgi?id=267997
-    if MacOS.xcode_version >= "4.0" and not ARGV.build_head?
-        { :p0 => DATA }
-    end
-  end
+    {:p0 => DATA}
+  end if MacOS.xcode_version >= "4.0" and not ARGV.build_head?
 
   def install
-    # Remove when Xcode 4 fix is removed
-    system "autoreconf -ivf"
+    if MacOS.lion? and not ARGV.build_head?
+      onoe <<-EOS.undent
+        The current stable version of Valgrind (3.6.1) does not work on Lion.
+        You may try `brew install valgrind --HEAD` to install an unstable
+        version that has some Lion support.
+      EOS
+      exit 1
+    end
 
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
     args << "--enable-only64bit" << "--build=amd64-darwin" if MacOS.prefer_64_bit?
+
+    # Remove when Xcode 4 fix is removed
+    system "autoreconf -ivf" if MacOS.xcode_version >= "4.0" and not ARGV.build_head?
+
+    system "./autogen.sh" if ARGV.build_head?
 
     system "./configure", *args
     system "make install"

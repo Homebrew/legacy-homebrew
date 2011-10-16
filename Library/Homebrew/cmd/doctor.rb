@@ -313,7 +313,6 @@ end
 def check_homebrew_prefix
   unless HOMEBREW_PREFIX.to_s == '/usr/local'
     puts <<-EOS.undent
-      You can install Homebrew anywhere you want, but some brews may only work
       You can install Homebrew anywhere you want, but some brews may only build
       correctly if you install to /usr/local.
 
@@ -753,10 +752,49 @@ end
 
 def check_git_status
   status_cmd = "git --git-dir=#{HOMEBREW_REPOSITORY}/.git --work-tree=#{HOMEBREW_PREFIX} status -s #{HOMEBREW_PREFIX}/Library/Homebrew"
-  if system "/usr/bin/which -s git" and not `#{status_cmd}`.empty?
+  if system "/usr/bin/which -s git" and File.directory? HOMEBREW_REPOSITORY+'.git' and not `#{status_cmd}`.empty?
     ohai "You have uncommitted modifications to Homebrew core"
     puts "Unless you know what you are doing, you should: git reset --hard"
     puts
+  end
+end
+
+def check_for_leopard_ssl
+  if MacOS.leopard? and not ENV['GIT_SSL_NO_VERIFY']
+    puts <<-EOS.undent
+      The version of libcurl provided with Mac OS X Leopard has outdated
+      SSL certificates.
+
+      This can cause problems when running Homebrew commands that use Git to
+      fetch over HTTPS, e.g. `brew update` or installing formulae that perform
+      Git checkouts.
+
+      You can force Git to ignore these errors by setting $GIT_SSL_NO_VERIFY.
+        export GIT_SSL_NO_VERIFY=1
+
+    EOS
+  end
+end
+
+def check_git_version
+  # see https://github.com/blog/642-smart-http-support
+  return unless system "/usr/bin/which -s git"
+  `git --version`.chomp =~ /git version (\d)\.(\d)\.(\d)/
+
+  if $2.to_i > 6
+    return
+  elsif $2.to_i == 6 and $3.to_i == 6
+    return
+  else
+    puts <<-EOS.undent
+      An outdated version of Git was detected in your PATH.
+
+      Git 1.6.6 or newer is required to perform checkouts over HTTP from GitHub.
+
+      You may want to upgrade:
+        brew upgrade git
+
+    EOS
   end
 end
 
@@ -803,6 +841,8 @@ module Homebrew extend self
       check_tmpdir
       check_missing_deps
       check_git_status
+      check_for_leopard_ssl
+      check_git_version
     ensure
       $stdout = old_stdout
     end
