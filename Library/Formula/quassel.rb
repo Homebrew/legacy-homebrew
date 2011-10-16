@@ -1,6 +1,8 @@
 require 'formula'
 
 class Quassel < Formula
+  url 'http://www.quassel-irc.org/pub/quassel-0.7.3.tar.bz2'
+  md5 'f12b2b09d8ebe533781aa969597d671c'
   head 'git://git.quassel-irc.org/quassel.git'
   homepage 'http://www.quassel-irc.org/'
 
