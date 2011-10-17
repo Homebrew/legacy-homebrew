@@ -6,8 +6,8 @@ end
 
 class Fuse4xKext < Formula
   homepage 'http://fuse4x.org/'
-  url 'https://github.com/fuse4x/kext.git', :tag => "fuse4x_0_8_12"
-  version "0.8.12"
+  url 'https://github.com/fuse4x/kext.git', :tag => "fuse4x_0_8_13"
+  version "0.8.13"
 
   def install
     ENV.delete('CC')
