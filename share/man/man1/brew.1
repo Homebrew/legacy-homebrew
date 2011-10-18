@@ -71,25 +71,41 @@ For all installed or specific formulae, remove any older versions from the cella
 If \fB\-\-force\fR is passed, remove out\-of\-date keg\-only brews as well\.
 .
 .TP
-\fBcreate [\-\-no\-fetch]\fR \fIURL\fR
-Generate a formula for the downloadable file at \fIURL\fR and opens it in $EDITOR\. Homebrew will attempt to automatically derive the formula name and version, if it fails, you\'ll have to make your own template\. I suggest copying wget\'s\.
+\fBcreate [\-\-autotools|\-\-cmake] [\-\-no\-fetch]\fR \fIURL\fR
+Generate a formula for the downloadable file at \fIURL\fR and open it in $EDITOR\. Homebrew will attempt to automatically derive the formula name and version, but if it fails, you\'ll have to make your own template\. The wget formula serves as a simple example\.
+.
+.IP
+If \fB\-\-autotools\fR is passed, create a basic template for an Autotools\-style build\. If \fB\-\-cmake\fR is passed, create a basic template for a CMake\-style build\.
 .
 .IP
 If \fB\-\-no\-fetch\fR is passed, Homebrew will not download \fIURL\fR to the cache and will thus not add the MD5 to the formula for you\.
 .
 .TP
-\fBdeps [\-\-1] [\-n]\fR \fIformula\fR
+\fBdeps [\-\-1] [\-n] [\-\-all]\fR \fIformula\fR
 Show \fIformula\fR\'s dependencies\.
 .
 .IP
 If \fB\-\-1\fR is passed, only show dependencies one level down, instead of recursing\.
 .
 .IP
-If \fB\-n\fR is passed, shows dependencies in topological order\.
+If \fB\-n\fR is passed, show dependencies in topological order\.
+.
+.IP
+If \fB\-\-all\fR is passed, show dependencies for all formulae\.
+.
+.TP
+\fBdiy [\-\-set\-name] [\-\-set\-version]\fR
+Automatically determine the installation prefix for non\-Homebrew software\.
+.
+.IP
+Using the output from this command, you can install your own software into the Cellar and then link it into Homebrew\'s prefix with \fBbrew link\fR\.
+.
+.IP
+The options \fB\-\-set\-name\fR and \fB\-\-set\-version\fR each take an argument and allow you to explicitly set the name and version of the package you are installing\.
 .
 .TP
 \fBdoctor\fR
-Check your system for potential problems\.
+Check your system for potential problems\. Doctor exits with a non\-zero status if any problems are found\.
 .
 .TP
 \fBedit\fR
@@ -121,8 +137,11 @@ Open Homebrew\'s own homepage in a browser\.
 Open \fIformula\fR\'s homepage in a browser\.
 .
 .TP
-\fBinfo\fR \fIformula\fR
+\fBinfo [\-\-all]\fR \fIformula\fR
 Display information about \fIformula\fR\.
+.
+.IP
+If \fB\-\-all\fR is passed, show info for all formulae\.
 .
 .TP
 \fBinfo \-\-github\fR \fIformula\fR
@@ -181,11 +200,14 @@ If \fB\-\-git\fR is passed, Homebrew will create a Git repository, useful for cr
 Symlink all of \fIformula\fR\'s installed files into the Homebrew prefix\. This is done automatically when you install formula, but can be useful for DIY installations\.
 .
 .TP
-\fBlist [\-\-versions]\fR [\fIformulae\fR]
+\fBls, list [\-\-unbrewed] [\-\-versions]\fR [\fIformulae\fR]
 Without any arguments, list all installed formulae\.
 .
 .IP
-If \fIformulae\fR are given, list the installed files for \fIformulae\fR\.
+If \fIformulae\fR are given, list the installed files for \fIformulae\fR\. Combined with \fB\-\-verbose\fR, recursively list the contents of all subdirectories in each \fIformula\fR\'s keg\.
+.
+.IP
+If \fB\-\-unbrewed\fR is passed, list all files in the Homebrew prefix not installed by Homebrew\.
 .
 .IP
 If \fB\-\-versions\fR is passed, show the version number for installed formulae, or only the specified formulae if \fIformulae\fR are given\.
@@ -193,6 +215,13 @@ If \fB\-\-versions\fR is passed, show the version number for installed formulae,
 .TP
 \fBlog [git\-log\-options]\fR \fIformula\fR \.\.\.
 Show the git log for the given formulae\. Options that \fBgit\-log\fR(1) recognizes can be passed before the formula list\.
+.
+.TP
+\fBmissing [<formulae>]\fR
+Check the given \fIformulae\fR for missing dependencies\.
+.
+.IP
+If no \fIformulae\fR are given, check all installed brews\.
 .
 .TP
 \fBoptions [\-\-compact] [\-\-all] [\-\-installed]\fR \fIformula\fR
@@ -263,7 +292,7 @@ If \fIformulae\fR are given, upgrade only the specified brews\.
 Show the formulas that specify \fIformula\fR as a dependency\. The list is not recursive; only one level of dependencies is resolved\.
 .
 .IP
-If \fB\-\-installed\fR is passed, only lists installed formulae\.
+If \fB\-\-installed\fR is passed, only list installed formulae\.
 .
 .TP
 \fBversions\fR \fIformulae\fR
