@@ -7,6 +7,6 @@ class Fex < Formula
 
   def install
     ENV['PREFIX'] = prefix
-  	system "make install"
+    system "make install"
   end
 end
