@@ -26,7 +26,7 @@ module HomebrewArgvExtension
       else
         n
       end
-      dirs = rack.children.select{ |pn| pn.directory? } rescue []
+      dirs = rack.children.select{ |pn| pn.directory? and not "#{pn}" =~ /\/\.current$/ } rescue []
       raise NoSuchKegError.new(name) if not rack.directory? or dirs.length == 0
       raise MultipleVersionsInstalledError.new(name) if dirs.length > 1
       Keg.new dirs.first
