@@ -17,7 +17,7 @@ class Cairomm < Formula
   depends_on 'cairo' if MacOS.leopard?
 
   def install
-    ENV.append "PKG_CONFIG_PATH", "/usr/local/lib/pkgconfig"
+    ENV.append "PKG_CONFIG_PATH", "#{HOMEBREW_PREFIX}/pkgconfig"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
     system "make install"
