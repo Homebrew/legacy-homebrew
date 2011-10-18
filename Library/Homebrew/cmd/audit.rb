@@ -102,9 +102,9 @@ def audit_formula_text name, text
     problems << " * Use separate make calls."
   end
 
-  if text =~ /^\t/
+  if text =~ /^[ ]*\t/
     problems << " * Use spaces instead of tabs for indentation"
-  end if strict?
+  end
 
   # Formula depends_on gfortran
   if text =~ /^\s*depends_on\s*(\'|\")gfortran(\'|\").*/
