@@ -14,7 +14,7 @@ class Mapnik < Formula
   depends_on 'cairomm' => :optional
 
   def install
-    ENV.append "PKG_CONFIG_PATH", "/usr/local/lib/pkgconfig"
+    ENV.append "PKG_CONFIG_PATH", "#{HOMEBREW_PREFIX}/pkgconfig"
     ENV.x11 # for freetype-config
 
     icu = Formula.factory("icu4c")
