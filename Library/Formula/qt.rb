@@ -13,7 +13,10 @@ class Qt < Formula
   def patches
     [
       # Stop complaining about using Lion
-      "https://qt.gitorious.org/qt/qt/commit/1766bbdb53e1e20a1bbfb523bbbbe38ea7ab7b3d?format=patch"
+      "https://qt.gitorious.org/qt/qt/commit/1766bbdb53e1e20a1bbfb523bbbbe38ea7ab7b3d?format=patch",
+      # Fixes typo in WebKit, this can be removed when upgrading to Qt 4.8
+      # see https://bugs.webkit.org/show_bug.cgi?id=47284 for details
+      DATA
     ]
   end
 
@@ -112,3 +115,19 @@ class Qt < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/src/3rdparty/webkit/WebCore/platform/network/qt/SocketStreamHandlePrivate.h b/src/3rdparty/webkit/WebCore/platform/network/qt/SocketStreamHandlePrivate.h
+index 235f1b1..d074f42 100644
+--- a/src/3rdparty/webkit/WebCore/platform/network/qt/SocketStreamHandlePrivate.h
++++ b/src/3rdparty/webkit/WebCore/platform/network/qt/SocketStreamHandlePrivate.h
+@@ -57 +57 @@ public slots:
+-    void socketSentdata();
++    void socketSentData();
+diff --git a/src/3rdparty/webkit/WebCore/platform/network/qt/SocketStreamHandleQt.cpp b/src/3rdparty/webkit/WebCore/platform/network/qt/SocketStreamHandleQt.cpp
+index e666ff7..d7a7fcc 100644
+--- a/src/3rdparty/webkit/WebCore/platform/network/qt/SocketStreamHandleQt.cpp
++++ b/src/3rdparty/webkit/WebCore/platform/network/qt/SocketStreamHandleQt.cpp
+@@ -113 +113 @@ void SocketStreamHandlePrivate::close()
+-void SocketStreamHandlePrivate::socketSentdata()
++void SocketStreamHandlePrivate::socketSentData()
