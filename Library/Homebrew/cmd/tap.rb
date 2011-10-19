@@ -1,3 +1,5 @@
+require 'taproom'
+
 module Homebrew extend self
   def print_tap_usage
     puts <<-EOS
