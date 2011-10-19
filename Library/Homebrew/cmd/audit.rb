@@ -102,9 +102,9 @@ def audit_formula_text name, text
     problems << " * Use separate make calls."
   end
 
-  if text =~ /^\t/
+  if text =~ /^[ ]*\t/
     problems << " * Use spaces instead of tabs for indentation"
-  end if strict?
+  end
 
   # Formula depends_on gfortran
   if text =~ /^\s*depends_on\s*(\'|\")gfortran(\'|\").*/
@@ -177,6 +177,11 @@ def audit_formula_urls f
   end
 
   urls = [(f.url rescue nil), (f.head rescue nil)].reject {|p| p.nil?}
+
+  f.mirrors.each do |m|
+    mirror = m.values_at :url
+    urls << (mirror.to_s rescue nil)
+  end
 
   # Check SourceForge urls
   urls.each do |p|
