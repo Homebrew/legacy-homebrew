@@ -11,8 +11,6 @@ class XercesJ < Formula
   homepage 'http://xerces.apache.org/xerces2-j'
   md5 'd01fc11eacbe43b45681cb85ac112ebf'
 
-  def java; prefix+'share/java' end
-
   def install
     mkdir "tools"
     tools_dir = pwd + '/tools'
@@ -20,7 +18,7 @@ class XercesJ < Formula
     XercesJTools.new.brew { mv Dir.glob("*"), tools_dir }
     system "/usr/bin/ant jars docs javadocs"
 
-    java.install Dir['build/*.jar']
+    (share+'java').install Dir['build/*.jar']
     doc.install Dir['build/docs/*']
   end
 end
