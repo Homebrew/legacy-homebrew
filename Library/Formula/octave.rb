@@ -38,6 +38,7 @@ class Octave < Formula
   depends_on 'dotwrp' if snow_leopard_64?
   # octave refuses to work with BSD readline, so it's either this or --disable-readline
   depends_on 'readline'
+  depends_on 'curl' if MacOS.leopard? # Leopard's libcurl is too old
 
   # additional features
   depends_on 'suite-sparse'

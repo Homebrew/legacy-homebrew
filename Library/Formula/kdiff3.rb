@@ -8,7 +8,8 @@ class Kdiff3 < Formula
   depends_on 'qt'
 
   def install
-    system "./configure", "qt4" 
+    # configure builds the binary
+    system "./configure", "qt4"
     bin.install "src-QT4/kdiff3.app/Contents/MacOS/kdiff3"
   end
 end
