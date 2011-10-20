@@ -6,6 +6,7 @@ class Pgrouting < Formula
   md5 'bd7c106e3db3c38f7081f1ee9b0e12ae'
   version '1.05'
 
+  depends_on "cmake"
   depends_on "postgresql"
   depends_on "postgis"
   depends_on "boost"
