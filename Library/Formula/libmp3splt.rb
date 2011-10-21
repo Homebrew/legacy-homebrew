@@ -18,7 +18,7 @@ class Libmp3splt < Formula
   end
 
   def install
-    ENV.append 'ACLOCAL_FLAGS', '-I/usr/local/share/aclocal'
+    ENV.append 'ACLOCAL_FLAGS', "-I#{HOMEBREW_PREFIX}/share/aclocal"
     system "./autogen.sh"
     system "autoconf"
     system "automake"
