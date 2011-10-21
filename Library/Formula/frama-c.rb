@@ -14,6 +14,7 @@ class FramaC < Formula
   depends_on 'libgnomecanvas'
   depends_on 'gtksourceview'
   depends_on 'gdk-pixbuf'
+  depends_on 'lablgtk'
   depends_on 'graphviz'
 
   def install
