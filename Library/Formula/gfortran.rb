@@ -14,6 +14,15 @@ class GfortranPkgDownloadStrategy <CurlDownloadStrategy
   end
 end
 
+class GfortranDmgDownloadStrategy <CurlDownloadStrategy
+  def stage
+    # extract Archive.pax.gz from the PKG/DMG.
+    safe_system "hdiutil attach #{@tarball_path}"
+    safe_system "cp -pr /Volumes/gfortran*/gfortran.pkg/Contents/Archive.pax.gz ."
+    safe_system "hdiutil detach /Volumes/gfortran*"
+  end
+end
+
 class Gfortran < Formula
   if MacOS.leopard?
     url 'http://r.research.att.com/gfortran-42-5577.pkg'
@@ -33,18 +42,27 @@ class Gfortran < Formula
       version "4.2.4-5664"
     end
   else
-    # Lion
-
-    # Only version released so far is for XCode 4.1
-    url 'http://r.research.att.com/gfortran-lion-5666-3.pkg'
-    md5 '7eb140822c89bec17db5666859868b3b'
-    version "4.2.4-5666.3"
+    # Lion 64 Bit for now
+    url 'http://quatramaran.ens.fr/~coudert/gfortran/gfortran-4.6.2-x86_64-Lion.dmg'
+    md5 '60b59cf90d78eb601c4fd0bd1393e94d'
+    version "4.6.2"
   end
 
   homepage 'http://r.research.att.com/tools/'
 
   def download_strategy
-    GfortranPkgDownloadStrategy
+    # look at the machine environment & determine download strategy
+    # options are (GfortranDmgDownloadStrategy | GfortranPkgDownloadStrategy)
+
+    # used exception handling mechanism here, homebrew doesn't seem to allow
+    # simpler $?.exitstatus checks
+    begin
+        safe_system "which gcc-4.2"
+    rescue
+        GfortranDmgDownloadStrategy
+    else
+        GfortranPkgDownloadStrategy
+    end
   end
 
   # Shouldn't strip compiler binaries.
@@ -75,19 +93,15 @@ class Gfortran < Formula
       safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
       safe_system "ln -sf #{man1}/gfortran-4.2.1 #{man1}/gfortran.1"
     else
-      onoe <<-EOS.undent
-        Currently the gfortran compiler provided by this brew is only supported
-        for:
+      ohai "Installing gfortran 4.6.2 ..."
+      safe_system "pax --insecure -rz -f Archive.pax.gz -s ',.#{HOMEBREW_PREFIX}/gfortran,#{prefix},'"
 
-          - XCode 3.1.4 on OS X 10.5.x
-          - XCode 3.2.2/3.2.3 -- 4.0 on OS X 10.6.x
-          - XCode 4.1 on OS X 10.7.x
-
-        The AppStore and Software Update can help upgrade your copy of XCode.
-        The latest version of XCode is also available from:
-
-            http://developer.apple.com/technologies/xcode.html
-      EOS
+      # remove files from cellar that we don't want to symlink
+      # older libs to suppress link warnings (not needed under 10.7 anyway)
+      safe_system "rm #{prefix}/lib/libgcc_ext.10.4.dylib;rm #{prefix}/lib/libgcc_ext.10.5.dylib"
+      
+      # avoid anything outside of gfortran that could mess w/ other user needs
+      safe_system "rm #{prefix}/bin/cpp;rm #{prefix}/bin/g++;rm #{prefix}/bin/gcc;rm #{prefix}/bin/gcov"
     end
   end
 
