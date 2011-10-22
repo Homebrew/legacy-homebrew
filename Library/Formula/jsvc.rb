@@ -13,8 +13,9 @@ class Jsvc < Formula
   end
 
   def install
-    ENV.append "CFLAGS", "-m64"
-    ENV.append "LDFLAGS", "-m64"
+    arch = Hardware.is_64_bit? ? "-m64" : "-arch i386"
+    ENV.append "CFLAGS", arch
+    ENV.append "LDFLAGS", arch
 
     prefix.install %w{ NOTICE.txt LICENSE.txt RELEASE-NOTES.txt unix/samples }
 
