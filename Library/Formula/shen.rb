@@ -1,10 +1,10 @@
 require 'formula'
 
 class Shen < Formula
-  url 'http://www.lambdassociates.org/Download/Shen1.8sources.zip'
+  url 'http://www.shenlanguage.org/Download/Shen1.9sources.zip'
   homepage 'http://www.lambdassociates.org/'
-  md5 'bbd8d527683859f2bc3e6ee9bf439e50'
-  version '1.8'
+  md5 'bf161cf83dc1ae3fc23454ad6aff02f7'
+  version '1.9'
 
   depends_on 'clisp'
 
