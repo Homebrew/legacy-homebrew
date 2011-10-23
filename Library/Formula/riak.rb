@@ -10,7 +10,6 @@ class Riak < Formula
   skip_clean 'libexec/log'
   skip_clean 'libexec/log/sasl'
   skip_clean 'libexec/data'
-  skip_clean 'libexec/data/dets'
   skip_clean 'libexec/data/ring'
 
   depends_on 'erlang'
@@ -18,7 +17,7 @@ class Riak < Formula
   def install
     ENV.deparallelize
     system "make all rel"
-    %w(riak riak-admin).each do |file|
+    %w(riak riak-admin search-cmd).each do |file|
       inreplace "rel/riak/bin/#{file}", /^RUNNER_BASE_DIR=.+$/, "RUNNER_BASE_DIR=#{libexec}"
     end
 
@@ -27,9 +26,9 @@ class Riak < Formula
     bin.mkpath
     ln_s libexec+'bin/riak', bin
     ln_s libexec+'bin/riak-admin', bin
+    ln_s libexec+'bin/search-cmd', bin
 
     (prefix + 'data/ring').mkpath
-    (prefix + 'data/dets').mkpath
 
     # Install man pages
     man1.install Dir["doc/man/man1/*"]
