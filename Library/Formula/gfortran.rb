@@ -93,15 +93,8 @@ class Gfortran < Formula
       safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
       safe_system "ln -sf #{man1}/gfortran-4.2.1 #{man1}/gfortran.1"
     else
-      ohai "Installing gfortran 4.6.2 ..."
+      ohai "Installing gfortran 4.6.2 (x86_64) for Lion"
       safe_system "pax --insecure -rz -f Archive.pax.gz -s ',.#{HOMEBREW_PREFIX}/gfortran,#{prefix},'"
-
-      # remove files from cellar that we don't want to symlink
-      # older libs to suppress link warnings (not needed under 10.7 anyway)
-      safe_system "rm #{prefix}/lib/libgcc_ext.10.4.dylib;rm #{prefix}/lib/libgcc_ext.10.5.dylib"
-      
-      # avoid anything outside of gfortran that could mess w/ other user needs
-      safe_system "rm #{prefix}/bin/cpp;rm #{prefix}/bin/g++;rm #{prefix}/bin/gcc;rm #{prefix}/bin/gcov"
     end
   end
 
