@@ -1,4 +1,5 @@
 require 'pathname'
+require 'exceptions'
 
 class Tty
   class <<self
@@ -91,7 +92,7 @@ end
 def safe_system cmd, *args
   unless Homebrew.system cmd, *args
     args = args.map{ |arg| arg.to_s.gsub " ", "\\ " } * " "
-    raise "Failure while executing: #{cmd} #{args}"
+    raise ErrorDuringExecution, "Failure while executing: #{cmd} #{args}"
   end
 end
 
@@ -104,10 +105,14 @@ def quiet_system cmd, *args
 end
 
 def curl *args
+  curl = Pathname.new '/usr/bin/curl'
+  raise "#{curl} is not executable" unless curl.exist? and curl.executable?
+
+  args = [HOMEBREW_CURL_ARGS, HOMEBREW_USER_AGENT, *args]
   # See https://github.com/mxcl/homebrew/issues/6103
   args << "--insecure" if MacOS.version < 10.6
 
-  safe_system '/usr/bin/curl', HOMEBREW_CURL_ARGS, HOMEBREW_USER_AGENT, *args unless args.empty?
+  safe_system curl, *args
 end
 
 def puts_columns items, star_items=[]
