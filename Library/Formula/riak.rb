@@ -15,6 +15,11 @@ class Riak < Formula
 
   depends_on 'erlang'
 
+  # Enable use of Erlang R14B04
+  # This was fixed upstream, so when updating the version of Riak
+  # check if this fix is already in place.
+  def patches; DATA; end
+
   def install
     ENV.deparallelize
     system "make all rel"
@@ -35,3 +40,17 @@ class Riak < Formula
     man1.install Dir["doc/man/man1/*"]
   end
 end
+
+__END__
+diff --git a/rebar.config b/rebar.config
+index ee81bfc..31d2fae 100644
+--- a/rebar.config
++++ b/rebar.config
+@@ -1,6 +1,6 @@
+ {sub_dirs, ["rel"]}.
+ 
+-{require_otp_vsn, "R14B0[23]"}.
++{require_otp_vsn, "R14B0[234]"}.
+ 
+ {cover_enabled, true}.
+ 
