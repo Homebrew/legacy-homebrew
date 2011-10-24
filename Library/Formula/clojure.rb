@@ -25,6 +25,7 @@ class Clojure < Formula
   def install
     system "ant" if ARGV.build_head?
     prefix.install 'clojure-1.3.0.jar'
+    (prefix+'clojure-1.3.0.jar').chmod(0644) # otherwise it's 0600
     (prefix+'classes').mkpath
     (bin+'clj').write script
   end
