@@ -10,7 +10,11 @@ require 'formula'
 require 'utils'
 require 'cmd/update'
 
-class RefreshBrewMock < RefreshBrew
+class RefreshCoreMock < RefreshCore
+  def initialize
+    super HOMEBREW_REPOSITORY, 'https://github.com/mxcl/homebrew.git'
+  end
+
   def git_repo?
     @git_repo
   end
@@ -64,10 +68,10 @@ class UpdaterTests < Test::Unit::TestCase
 
   def test_init_homebrew
     outside_prefix do
-      updater = RefreshBrewMock.new
+      updater = RefreshCoreMock.new
       updater.git_repo = false
       updater.in_prefix_expect("git init")
-      updater.in_prefix_expect("git remote add origin #{RefreshBrewMock::REPOSITORY_URL}")
+      updater.in_prefix_expect("git remote add origin #{updater.repository_url}")
       updater.in_prefix_expect("git fetch origin")
       updater.in_prefix_expect("git reset --hard origin/master")
       updater.in_prefix_expect("git pull  origin refs/heads/master:refs/remotes/origin/master")
@@ -82,7 +86,7 @@ class UpdaterTests < Test::Unit::TestCase
 
   def test_update_homebrew_without_any_changes
     outside_prefix do
-      updater = RefreshBrewMock.new
+      updater = RefreshCoreMock.new
       updater.git_repo = true
       updater.in_prefix_expect("git checkout -q master")
       updater.in_prefix_expect("git rev-parse HEAD", "1234abcd")
@@ -100,7 +104,7 @@ class UpdaterTests < Test::Unit::TestCase
   
   def test_update_homebrew_without_formulae_changes
     outside_prefix do
-      updater = RefreshBrewMock.new
+      updater = RefreshCoreMock.new
       updater.git_repo = true
       diff_output = fixture('update_git_diff_output_without_formulae_changes')
 
@@ -121,7 +125,7 @@ class UpdaterTests < Test::Unit::TestCase
   
   def test_update_homebrew_with_formulae_changes
     outside_prefix do
-      updater = RefreshBrewMock.new
+      updater = RefreshCoreMock.new
       updater.git_repo = true
       diff_output = fixture('update_git_diff_output_with_formulae_changes')
 
