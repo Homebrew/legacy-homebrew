@@ -1,8 +1,8 @@
 require 'formula'
 
 class Growlnotify < Formula
-  url 'https://github.com/indirect/growlnotify/tarball/v1.2.2'
-  md5 'cfe9a988a0a64aba128baf363050b434'
+  url 'https://github.com/indirect/growlnotify/tarball/v1.3'
+  md5 '44f771b0bafd0fc077ecc546841d9831'
   homepage 'http://growl.info/extras.php#growlnotify'
 
   def install
