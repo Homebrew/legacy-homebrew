@@ -10,8 +10,8 @@ class Pulledpork < Formula
 
   def install
     bin.install 'pulledpork.pl'
-    doc = Pathname.new(File.join(share, 'doc', 'pulledpork'))
-    doc.mkpath
+    doc.install 'README'
+    doc.install 'LICENSE'
     doc.install Dir['doc/*']
     etc.install Dir['etc/*']
   end
