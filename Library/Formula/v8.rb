@@ -6,17 +6,53 @@ class V8 < Formula
 
   depends_on 'scons' => :build
 
+  def options
+    [
+     ['--debug',"For debugging the V8 JavaScript Engine.  Includes debugging information and assertions in the binary."],
+     ['--no-snapshots',"Disable 'snapshots' (saved program states) in V8."],
+     ['--shared-libraries',"Build shared rather than static libraries."],
+     ['--developer-shell',"Build the V8 developer shell."]
+    ]
+
   def install
-    arch = Hardware.is_64_bit? ? 'x64' : 'ia32'
+
+    if ARGV.include? '--debug'
+      mode = "mode=debug"
+    else
+      mode = "mode=release"      
+    end
+    
+    if ARGV.include? '--no-snapshots'
+      snapshot = "snapshot=off"
+    else
+      snapshot = "snapshot=on"      
+    end
+
+    if ARGV.include? '--shared-libraries'
+      library = "library=shared"
+    else
+      library = "library=static"      
+    end
+
+    if ARGV.include? '--d8'
+      shell = "d8"
+    else
+      shell = "sample=shell"      
+    end
+
+    
+
+arch = Hardware.is_64_bit? ? 'x64' : 'ia32'
 
     system "scons", "-j #{Hardware.processor_count}",
                     "arch=#{arch}",
-                    "mode=release",
-                    "snapshot=on",
-                    "library=shared",
+                    mode,
+                    snapshot,
+                    library,
+                    shell,
                     "visibility=default",
-                    "console=readline",
-                    "sample=shell"
+                    "console=readline"
+
 
     include.install Dir['include/*']
     lib.install Dir['libv8.*']
