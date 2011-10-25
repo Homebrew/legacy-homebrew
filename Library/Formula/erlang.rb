@@ -42,6 +42,7 @@ class Erlang < Formula
   def options
     [
       ['--disable-hipe', "Disable building hipe; fails on various OS X systems."],
+      ['--halfword', 'Enable halfword emulator (64-bit builds only)'],
       ['--time', '"brew test --time" to include a time-consuming test.'],
       ['--no-docs', 'Do not install documentation.']
     ]
@@ -52,6 +53,11 @@ class Erlang < Formula
   def install
     ohai "Compilation may take a very long time; use `brew install -v erlang` to see progress"
     ENV.deparallelize
+    if ENV.compiler == :llvm
+      # Don't use optimizations. Fixes build on Lion/Xcode 4.2
+      ENV.remove_from_cflags /-O./
+      ENV.append_to_cflags '-O0'
+    end
 
     # Do this if building from a checkout to generate configure
     system "./otp_build autoconf" if File.exist? "otp_build"
@@ -61,6 +67,7 @@ class Erlang < Formula
             "--enable-kernel-poll",
             "--enable-threads",
             "--enable-dynamic-ssl-lib",
+            "--enable-shared-zlib",
             "--enable-smp-support"]
 
     unless ARGV.include? '--disable-hipe'
@@ -70,7 +77,10 @@ class Erlang < Formula
       args << '--enable-hipe'
     end
 
-    args << "--enable-darwin-64bit" if MacOS.prefer_64_bit?
+    if MacOS.prefer_64_bit?
+      args << "--enable-darwin-64bit"
+      args << "--enable-halfword-emulator" if ARGV.include? '--halfword' # Does not work with HIPE yet. Added for testing only
+    end
 
     system "./configure", *args
     system "touch lib/wx/SKIP" if MacOS.snow_leopard?
