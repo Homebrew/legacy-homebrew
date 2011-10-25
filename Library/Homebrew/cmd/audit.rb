@@ -209,15 +209,6 @@ def audit_formula_urls f
     end
   end
 
-  # Check Debian urls
-  urls.each do |p|
-    next unless p =~ %r[/debian/pool/]
-
-    unless p =~ %r[^http://mirrors\.kernel\.org/debian/pool/]
-      problems << " * \"mirrors.kernel.org\" is the preferred mirror for debian software."
-    end
-  end if strict?
-
   # Check for git:// urls; https:// is preferred.
   urls.each do |p|
     if p =~ %r[^git://github\.com/]
