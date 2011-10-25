@@ -15,8 +15,9 @@ class Vice < Formula
     end
   end
 
+  fails_with_llvm "Cannot build with LLVM"
+
   def install
-    fails_with_llvm "Cannot build with LLVM"
     ENV.libpng
 
     # Disable the zlibtest, we know we have it.

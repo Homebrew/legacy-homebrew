@@ -76,7 +76,12 @@ class FailsWithLLVM
   attr_reader :msg, :data, :build
 
   def initialize msg=nil, data=nil
-    @msg = msg || "(No specific reason was given)"
+    if msg.nil? or msg.kind_of? Hash
+      @msg = "(No specific reason was given)"
+      data = msg
+    else
+      @msg = msg
+    end
     @data = data
     @build = data.delete :build rescue nil
   end
@@ -95,7 +100,7 @@ class Formula
   include FileUtils
 
   attr_reader :name, :path, :url, :version, :homepage, :specs, :downloader
-  attr_reader :bottle, :bottle_sha1
+  attr_reader :bottle, :bottle_sha1, :head
 
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
@@ -165,6 +170,7 @@ class Formula
     validate_variable :version
     HOMEBREW_CELLAR+@name+@version
   end
+  def rack; prefix.parent end
 
   def bin;     prefix+'bin'            end
   def doc;     prefix+'share/doc'+name end
@@ -224,7 +230,14 @@ class Formula
   end
 
   def fails_with_llvm?
-    self.class.fails_with_llvm_reason || false
+    llvm = self.class.fails_with_llvm_reason
+    if llvm
+      if llvm.build and MacOS.llvm_build_version.to_i > llvm.build.to_i
+        false
+      else
+        llvm
+      end
+    end
   end
 
   # sometimes the clean process breaks things
@@ -251,9 +264,21 @@ class Formula
         # so load any deps before this point! And exit asap afterwards
         yield self
       rescue Interrupt, RuntimeError, SystemCallError => e
-        raise unless ARGV.debug?
+        unless ARGV.debug?
+          logs = File.expand_path '~/Library/Logs/Homebrew/'
+          if File.exist? 'config.log'
+            mkdir_p logs
+            mv 'config.log', logs
+          end
+          if File.exist? 'CMakeCache.txt'
+            mkdir_p logs
+            mv 'CMakeCache.txt', logs
+          end
+          raise
+        end
         onoe e.inspect
         puts e.backtrace
+
         ohai "Rescuing build..."
         if (e.was_running_configure? rescue false) and File.exist? 'config.log'
           puts "It looks like an autotools configure failed."
@@ -298,16 +323,26 @@ class Formula
   def handle_llvm_failure llvm
     case ENV.compiler
     when :llvm, :clang
-      opoo "LLVM was requested, but this formula is reported to not work with LLVM:"
+      # version 2335 is the latest version as of Xcode 4.1, so it is the
+      # latest version we have tested against so we will switch to GCC and
+      # bump this integer when Xcode 4.2 is released. TODO do that!
+      if llvm.build.to_i >= 2335
+        opoo "Formula will not build with LLVM, using GCC"
+        ENV.gcc :force => true
+        return
+      end
+      opoo "Building with LLVM, but this formula is reported to not work with LLVM:"
       puts
       puts llvm.reason
       puts
-      puts "We are continuing anyway so if the build succeeds, please let us know so we"
-      puts "can update the formula. If it doesn't work you can: brew install --use-gcc"
+      puts <<-EOS.undent
+        We are continuing anyway so if the build succeeds, please open a ticket with
+        the following information: #{MacOS.llvm_build_version}-#{MACOS_VERSION}. So
+        that we can update the formula accordingly. Thanks!
+        EOS
       puts
-    else
-      ENV.gcc if MacOS.default_cc =~ /llvm/
-      return
+      puts "If it doesn't work you can: brew install --use-gcc"
+      puts
     end
   end
 
@@ -423,6 +458,10 @@ class Formula
     HOMEBREW_REPOSITORY+"Library/Formula/#{name.downcase}.rb"
   end
 
+  def mirrors
+    self.class.mirrors or []
+  end
+
   def deps
     self.class.deps or []
   end
@@ -454,6 +493,11 @@ protected
     pretty_args.delete "--disable-dependency-tracking" if cmd == "./configure" and not ARGV.verbose?
     ohai "#{cmd} #{pretty_args*' '}".strip
 
+    removed_ENV_variables = case if args.empty? then cmd.split(' ').first else cmd end
+    when "xcodebuild"
+      ENV.remove_cc_etc
+    end
+
     if ARGV.verbose?
       safe_system cmd, *args
     else
@@ -474,6 +518,11 @@ protected
         raise
       end
     end
+
+    removed_ENV_variables.each do |key, value|
+      ENV[key] = value # ENV.kind_of? Hash  # => false
+    end if removed_ENV_variables
+
   rescue
     raise BuildError.new(self, cmd, args, $?)
   end
@@ -504,8 +553,31 @@ private
 
   CHECKSUM_TYPES=[:md5, :sha1, :sha256].freeze
 
-  public # for FormulaInstaller
+  public
+  # For brew-fetch and others.
+  def fetch
+    downloader = @downloader
+    # Don't attempt mirrors if this install is not pointed at a "stable" URL.
+    # This can happen when options like `--HEAD` are invoked.
+    mirror_list =  @spec_to_use == @stable ? mirrors : []
 
+    # Ensure the cache exists
+    HOMEBREW_CACHE.mkpath
+
+    begin
+      fetched = downloader.fetch
+    rescue CurlDownloadStrategyError => e
+      raise e if mirror_list.empty?
+      puts "Trying a mirror..."
+      url, specs = mirror_list.shift.values_at :url, :specs
+      downloader = download_strategy.new url, name, version, specs
+      retry
+    end
+
+    return fetched, downloader
+  end
+
+  # For FormulaInstaller.
   def verify_download_integrity fn, *args
     require 'digest'
     if args.length != 2
@@ -539,11 +611,10 @@ EOF
   private
 
   def stage
-    HOMEBREW_CACHE.mkpath
-    fetched = @downloader.fetch
+    fetched, downloader = fetch
     verify_download_integrity fetched if fetched.kind_of? Pathname
     mktemp do
-      @downloader.stage
+      downloader.stage
       yield
     end
   end
@@ -594,10 +665,12 @@ EOF
 
     return if patch_list.empty?
 
-    ohai "Downloading patches"
-    # downloading all at once is much more efficient, especially for FTP
-    patches = patch_list.collect{|p| p[:curl_args]}.select{|p| p}.flatten
-    curl(*patches)
+    external_patches = patch_list.collect{|p| p[:curl_args]}.select{|p| p}.flatten
+    unless external_patches.empty?
+      ohai "Downloading patches"
+      # downloading all at once is much more efficient, especially for FTP
+      curl(*external_patches)
+    end
 
     ohai "Patching"
     patch_list.each do |p|
@@ -641,7 +714,7 @@ EOF
       end
     end
 
-    attr_rw :version, :homepage, :specs, :deps, :external_deps
+    attr_rw :version, :homepage, :mirrors, :specs, :deps, :external_deps
     attr_rw :keg_only_reason, :fails_with_llvm_reason, :skip_clean_all
     attr_rw :bottle, :bottle_sha1
     attr_rw(*CHECKSUM_TYPES)
@@ -658,6 +731,16 @@ EOF
       @stable = SoftwareSpecification.new(val, specs)
       @url = val
       @specs = specs
+    end
+
+    def mirror val, specs=nil
+      @mirrors ||= []
+      @mirrors << {:url => val, :specs => specs}
+      # Added the uniq after some inspection with Pry---seems `mirror` gets
+      # called three times. The first two times only one copy of the input is
+      # left in `@mirrors`. On the final call, two copies are present. This
+      # happens with `@deps` as well. Odd.
+      @mirrors.uniq!
     end
 
     def depends_on name

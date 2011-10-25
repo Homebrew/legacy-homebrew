@@ -1,7 +1,7 @@
 require 'formula'
 
 class MitScheme < Formula
-  url 'http://ftp.gnu.org/gnu/mit-scheme/stable.pkg/9.0.1/mit-scheme-c-9.0.1.tar.gz'
+  url 'http://ftpmirror.gnu.org/mit-scheme/stable.pkg/9.0.1/mit-scheme-c-9.0.1.tar.gz'
   homepage 'http://www.gnu.org/software/mit-scheme/'
   md5 '92884092806dd075f103cd1e9996413c'
 

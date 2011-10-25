@@ -9,6 +9,8 @@ class Libplist < Formula
   depends_on 'libxml2'
 
   def install
+    ENV.deparallelize # make fails on an 8-core Mac Pro
+
     # Disable Python bindings.
     inreplace "CMakeLists.txt", 'OPTION(ENABLE_PYTHON "Enable Python bindings (needs Swig)" ON)',
                                 '# Disabled Python Bindings'

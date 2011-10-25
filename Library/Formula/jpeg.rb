@@ -7,8 +7,8 @@ class Jpeg < Formula
   homepage 'http://www.ijg.org'
 
   def install
-    ENV.universal_binary
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--enable-shared", "--enable-static"
+    ENV.universal_binary   # Builds universal libs. Default is static & shared.
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
 end

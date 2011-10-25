@@ -214,6 +214,13 @@ def check_gcc_versions
       EOS
     end
   end
+
+  unless File.exist? '/usr/bin/cc'
+    puts <<-EOS.undent
+      You have no /usr/bin/cc. This will cause numerous build issues. Please
+      reinstall Xcode.
+    EOS
+  end
 end
 
 def __check_subdir_access base
@@ -306,9 +313,20 @@ end
 def check_homebrew_prefix
   unless HOMEBREW_PREFIX.to_s == '/usr/local'
     puts <<-EOS.undent
-      You can install Homebrew anywhere you want, but some brews may only work
       You can install Homebrew anywhere you want, but some brews may only build
       correctly if you install to /usr/local.
+
+    EOS
+  end
+end
+
+def check_xcode_prefix
+  prefix = MacOS.xcode_prefix
+  return if prefix.nil?
+  if prefix.to_s.match(' ')
+    puts <<-EOS.undent
+      Xcode is installed to a folder with a space in the name.
+      This may cause some formulae, such as libiconv, to fail to build.
 
     EOS
   end
@@ -319,25 +337,29 @@ def check_user_path
   seen_prefix_sbin = false
   seen_usr_bin = false
 
-  path_folders.each do |p|
-    if p == '/usr/bin'
+  path_folders.each do |p| case p
+    when '/usr/bin'
       seen_usr_bin = true
       unless seen_prefix_bin
-        puts <<-EOS.undent
-          /usr/bin is in your PATH before Homebrew's bin. This means that system-
-          provided programs will be used before Homebrew-provided ones. This is an
-          issue if you install, for instance, Python.
+        # only show the doctor message if there are any conflicts
+        # rationale: a default install should not trigger any brew doctor messages
+        if Dir["#{HOMEBREW_PREFIX}/bin/*"].any? {|fn| File.exist? "/usr/bin/#{File.basename fn}"}
+          ohai "/usr/bin occurs before #{HOMEBREW_PREFIX}/bin"
+          puts <<-EOS.undent
+            This means that system-provided programs will be used instead of those
+            provided by Homebrew. This is an issue if you eg. brew installed Python.
 
-          Consider editing your .bashrc to put:
-            #{HOMEBREW_PREFIX}/bin
-          ahead of /usr/bin in your $PATH.
-
-        EOS
+            Consider editing your .bashrc to put:
+              #{HOMEBREW_PREFIX}/bin
+            ahead of /usr/bin in your $PATH.
+          EOS
+        end
       end
+    when "#{HOMEBREW_PREFIX}/bin"
+      seen_prefix_bin = true
+    when "#{HOMEBREW_PREFIX}/sbin"
+      seen_prefix_sbin = true
     end
-
-    seen_prefix_bin  = true if p == "#{HOMEBREW_PREFIX}/bin"
-    seen_prefix_sbin = true if p == "#{HOMEBREW_PREFIX}/sbin"
   end
 
   unless seen_prefix_bin
@@ -488,7 +510,7 @@ end
 def check_for_dyld_vars
   if ENV['DYLD_LIBRARY_PATH']
     puts <<-EOS.undent
-      Setting DYLD_LIBARY_PATH can break dynamic linking.
+      Setting DYLD_LIBRARY_PATH can break dynamic linking.
       You should probably unset it.
 
     EOS
@@ -643,6 +665,7 @@ def check_for_linked_kegonly_brews
     EOS
 
     puts *warnings.keys.collect { |f| "    #{f}" }
+    puts
   end
 end
 
@@ -662,11 +685,10 @@ def check_for_MACOSX_DEPLOYMENT_TARGET
 end
 
 def check_for_CLICOLOR_FORCE
-  target_var = ENV['CLICOLOR_FORCE'].to_s
-  unless target_var.empty?
+  if ENV['CLICOLOR_FORCE']
     puts <<-EOS.undent
-    $CLICOLOR_FORCE was set to \"#{target_var}\".
-    Having $CLICOLOR_FORCE set can cause git builds to fail.
+    Having $CLICOLOR_FORCE set can cause some builds to fail.
+    You may want to unset it.
 
     EOS
   end
@@ -718,6 +740,63 @@ def check_tmpdir
   end
 end
 
+def check_missing_deps
+  s = `brew missing`.strip
+  if s.length > 0
+    ohai "You should brew install these missing dependencies:"
+    puts s
+    puts
+  end
+end
+
+def check_git_status
+  status_cmd = "git --git-dir=#{HOMEBREW_REPOSITORY}/.git --work-tree=#{HOMEBREW_PREFIX} status -s #{HOMEBREW_PREFIX}/Library/Homebrew"
+  if system "/usr/bin/which -s git" and File.directory? HOMEBREW_REPOSITORY+'.git' and not `#{status_cmd}`.empty?
+    ohai "You have uncommitted modifications to Homebrew core"
+    puts "Unless you know what you are doing, you should: git reset --hard"
+    puts
+  end
+end
+
+def check_for_leopard_ssl
+  if MacOS.leopard? and not ENV['GIT_SSL_NO_VERIFY']
+    puts <<-EOS.undent
+      The version of libcurl provided with Mac OS X Leopard has outdated
+      SSL certificates.
+
+      This can cause problems when running Homebrew commands that use Git to
+      fetch over HTTPS, e.g. `brew update` or installing formulae that perform
+      Git checkouts.
+
+      You can force Git to ignore these errors by setting $GIT_SSL_NO_VERIFY.
+        export GIT_SSL_NO_VERIFY=1
+
+    EOS
+  end
+end
+
+def check_git_version
+  # see https://github.com/blog/642-smart-http-support
+  return unless system "/usr/bin/which -s git"
+  `git --version`.chomp =~ /git version (\d)\.(\d)\.(\d)/
+
+  if $2.to_i > 6
+    return
+  elsif $2.to_i == 6 and $3.to_i == 6
+    return
+  else
+    puts <<-EOS.undent
+      An outdated version of Git was detected in your PATH.
+
+      Git 1.6.6 or newer is required to perform checkouts over HTTP from GitHub.
+
+      You may want to upgrade:
+        brew upgrade git
+
+    EOS
+  end
+end
+
 module Homebrew extend self
   def doctor
     old_stdout = $stdout
@@ -726,6 +805,7 @@ module Homebrew extend self
     begin
       check_usr_bin_ruby
       check_homebrew_prefix
+      check_xcode_prefix
       check_for_macgpg2
       check_for_stray_dylibs
       check_for_stray_static_libs
@@ -758,6 +838,10 @@ module Homebrew extend self
       check_for_linked_kegonly_brews
       check_for_other_frameworks
       check_tmpdir
+      check_missing_deps
+      check_git_status
+      check_for_leopard_ssl
+      check_git_version
     ensure
       $stdout = old_stdout
     end
@@ -766,8 +850,7 @@ module Homebrew extend self
       puts warnings
       exit 1
     else
-      puts "Your OS X is ripe for brewing."
-      puts "Any troubles you may be experiencing are likely purely psychosomatic."
+      puts "Your system is raring to brew."
     end
   end
 end

@@ -5,7 +5,7 @@ class Tarsnap < Formula
   homepage 'http://www.tarsnap.com/'
   sha256 'ad663922064a98bce9c085a53ecd83eb839457b49d7cd22cff7c069e9b7e522e'
 
-  depends_on 'lzma' => :optional
+  depends_on 'xz' => :optional
 
   fails_with_llvm "Compilation hangs."
 

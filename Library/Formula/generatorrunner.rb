@@ -2,8 +2,8 @@ require 'formula'
 
 class Generatorrunner < Formula
   homepage 'http://www.pyside.org/docs/generatorrunner'
-  url 'http://pyside.org/files/generatorrunner-0.6.12.tar.bz2'
-  md5 '39bf1f2e93fdec434d268cc6fb9d9ebf'
+  url 'http://pyside.org/files/generatorrunner-0.6.13.tar.bz2'
+  md5 'ca214a017404bb1f4775aebcb98e373e'
 
   depends_on 'cmake' => :build
 

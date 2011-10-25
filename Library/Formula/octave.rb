@@ -1,4 +1,5 @@
 require 'formula'
+require 'hardware'
 
 def no_magick?
   ARGV.include? '--without-graphicsmagick'
@@ -12,27 +13,36 @@ def run_tests?
   ARGV.include? '--test'
 end
 
+def snow_leopard_64?
+  # 64 bit builds on 10.6 require some special handling.
+  MACOS_VERSION == 10.6 and MacOS.prefer_64_bit?
+end
+
 class Octave < Formula
-  url 'ftp://ftp.gnu.org/gnu/octave/octave-3.4.0.tar.bz2'
+  url 'http://ftpmirror.gnu.org/octave/octave-3.4.2.tar.bz2'
   homepage 'http://www.gnu.org/software/octave/index.html'
-  sha1 '936a8fc962abd96e7568fb5909ec2a4d7997a1a8'
+  md5 '31c744ab4555a2bf04d5e644b93f9b51'
 
   depends_on 'pkg-config' => :build
   depends_on 'gnu-sed' => :build
   depends_on 'texinfo' => :build     # OS X's makeinfo won't work for this
 
   depends_on 'fftw'
-  # there is an incompatibility between gfortran and Apple's BLAS as of 10.6.6:
+  # When building 64-bit binaries on Snow Leopard, there are naming issues with
+  # the dot product functions in the BLAS library provided by Apple's
+  # Accelerate framework. See the following thread for the gory details:
+  #
   #   http://www.macresearch.org/lapackblas-fortran-106
-  # we can work around it using dotwrp
-  depends_on 'dotwrp'
+  #
+  # We can work around the issues using dotwrp.
+  depends_on 'dotwrp' if snow_leopard_64?
   # octave refuses to work with BSD readline, so it's either this or --disable-readline
   depends_on 'readline'
+  depends_on 'curl' if MacOS.leopard? # Leopard's libcurl is too old
 
   # additional features
   depends_on 'suite-sparse'
   depends_on 'glpk'
-  # test for presence of GraphicsMagick++ relies on pkg-config
   depends_on 'graphicsmagick' unless no_magick?
   depends_on 'hdf5'
   depends_on 'pcre'
@@ -54,55 +64,28 @@ class Octave < Formula
   def install
     ENV.fortran
 
-    unless no_magick? or quiet_system "#{HOMEBREW_PREFIX}/bin/pkg-config", "--exists", "GraphicsMagick++"
-      onoe <<-EOS.undent
-        GraphicsMagick was installed without its C++ libraries. Please reinstall
-        GraphicsMagick with the option "--with-magick-plus-plus"; otherwise, install
-        Octave with option "--without-graphicsmagick".
-      EOS
-      exit 1
-    end
-
-    fltk = Formula.factory('fltk')
-    unless no_native? or fltk.installed_prefix.to_s !~ /1.1.10$/
-      onoe <<-EOS.undent
-        fltk 1.1.10 is too old to be used with Octave. Please reinstall ftlk with
-        the option "--HEAD"; otherwise, install Octave with option "--without-fltk".
-      EOS
-      exit 1
-    end
-
     # yes, compiling octave takes a long time, but using -O2 gives negligible savings
     # build time with -O2: user 58m5.295s   sys 7m29.064s
     # build time with -O3: user 58m58.054s  sys 7m52.221s
-    ENV.m64 if Hardware.is_64_bit?
+    ENV.m64 if MacOS.prefer_64_bit?
     ENV.append_to_cflags "-D_REENTRANT"
     ENV.x11
 
-    # as per the caveats in the gfortran formula:
-    ENV["FC"] = ENV["F77"] = "#{HOMEBREW_PREFIX}/bin/gfortran"
-    ENV["FFLAGS"] = ENV["FCFLAGS"] = ENV["CFLAGS"]
+    args = [
+      "--disable-dependency-tracking",
+      "--prefix=#{prefix}",
+      "--with-blas=#{'-ldotwrp ' if snow_leopard_64?}-framework Accelerate"
+    ]
+    args << "--without-framework-carbon" if MacOS.lion?
 
-    # almost everything is autodetected, but dotwrp must be linked before Accelerate
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-blas=-ldotwrp -framework Accelerate"
+    system "./configure", *args
     system "make all"
-    system "make check" if run_tests?
+    system "make check 2>&1 | tee make-check.log" if run_tests?
     system "make install"
-    prefix.install "test/fntests.log" if run_tests?
+    prefix.install ["test/fntests.log", "make-check.log"] if run_tests?
   end
 
   def caveats
-    brew_caveats = <<-EOS.undent
-      To install, you will need custom installs of fltk and graphicsmagick:
-          brew install --HEAD fltk
-          brew install graphicsmagick --with-magick-plus-plus
-
-      To omit these features, see "brew options octave"
-
-    EOS
-
     native_caveats = <<-EOS.undent
       Octave 3.4.0 supports "native" plotting using OpenGL and FLTK. You can activate
       it for all future figures using the Octave command
@@ -123,7 +106,5 @@ class Octave < Formula
 
     s = gnuplot_caveats
     s = native_caveats + s unless no_native?
-    s = brew_caveats + s
   end
-
 end

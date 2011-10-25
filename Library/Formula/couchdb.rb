@@ -23,6 +23,7 @@ class Couchdb < Formula
     system "make"
     system "make install"
 
+    (prefix+"Library/LaunchDaemons/org.apache.couchdb.plist").chmod 0644
     (lib+'couchdb/bin/couchjs').chmod 0755
     (var+'lib/couchdb').mkpath
     (var+'log/couchdb').mkpath

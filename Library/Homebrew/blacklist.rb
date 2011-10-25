@@ -55,5 +55,14 @@ def blacklisted? name
     To do it in one line, use this command:
       curl http://npmjs.org/install.sh | sh
     EOS
+  when /(lib)?lzma/
+    "lzma is now part of the xz formula."
+  when 'xcode' then <<-EOS.undent
+    Xcode can be installed via the App Store (on Lion), or from:
+      http://connect.apple.com/
+
+    If you download from the App Store, make sure you run the installer
+    placed in /Applications after the download completes.
+    EOS
   end
 end

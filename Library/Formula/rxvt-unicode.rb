@@ -27,7 +27,7 @@ class RxvtUnicode < Formula
             "--with-term=rxvt-unicode-256color",
             "--with-terminfo=/usr/share/terminfo",
             "--enable-smart-resize"]
-    
+
     args << "--disable-iso14755" if ARGV.include? "--disable-iso14755"
 
     system "./configure", *args

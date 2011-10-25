@@ -2,6 +2,7 @@ require 'formula'
 
 class Urlview < Formula
   url 'http://mirrors.kernel.org/debian/pool/main/u/urlview/urlview_0.9.orig.tar.gz'
+  mirror 'http://ftp.us.debian.org/debian/pool/main/u/urlview/urlview_0.9.orig.tar.gz'
   homepage 'http://packages.debian.org/unstable/misc/urlview'
   md5 '4f253c82b59136181b1f0bf218ef059d'
 

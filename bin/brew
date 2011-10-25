@@ -118,23 +118,19 @@ rescue BuildError => e
   Homebrew.dump_build_env e.env
   puts
   onoe e
-  puts PLEASE_REPORT_BUG
-  # this feature can be slow (depends on network conditions and if github is up)
-  # so ideally we'd show feedback, eg. "checking for existing issues..." and
-  # then replace that string with the following when the github api returns
   issues = GitHub.issues_for_formula formula_name
-  puts "These existing issues may help you:", *issues unless issues.empty?
-  if e.was_running_configure?
-    puts "It looks like an autotools configure failed."
-    puts "Consider re-running the install with '-vd' to keep 'config.log' around:"
-    puts "    brew install -vd #{formula_name}"
-    puts "Gist 'config.log' and any error output when reporting an issue."
-    puts "Remember to include your config information: brew --config"
+  if issues.empty?
+    puts "If `brew doctor' does not help diagnose the issue, please report the bug:"
+    puts "    #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
+  else
+    puts "These existing issues may help you:", *issues.map{ |s| "    #{Tty.em}#{s}#{Tty.reset}" }
+    puts "Otherwise, please report the bug:"
+    puts "    #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
   end
-  puts
-  puts "Also try:"
-  puts "  `brew doctor` to check your setup for common problems."
-  puts "  `brew missing` to check installed packages for missing deps."
+  if e.was_running_configure?
+    puts "We saved the configure log, please gist it if you report the issue:"
+    puts "    ~/Library/Logs/Homebrew/config.log"
+  end
   exit 1
 rescue RuntimeError, SystemCallError => e
   onoe e
@@ -142,7 +138,8 @@ rescue RuntimeError, SystemCallError => e
   exit 1
 rescue Exception => e
   onoe e
-  puts PLEASE_REPORT_BUG
+  puts "#{Tty.white}Please report this bug:"
+  puts "    #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
   puts e.backtrace
   exit 1
 end

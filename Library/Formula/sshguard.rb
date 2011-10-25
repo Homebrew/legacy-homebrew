@@ -10,5 +10,45 @@ class Sshguard < Formula
                           "--prefix=#{prefix}",
                           "--with-firewall=ipfw"
     system "make install"
+
+    (prefix+'net.sshguard.plist').write startup_plist
+    (prefix+'net.sshguard.plist').chmod 0644
+  end
+
+  def caveats; <<-EOS
+1) Install the launchd item in /Library/LaunchDaemons, like so:
+
+   sudo cp -vf #{prefix}/net.sshguard.plist /Library/LaunchDaemons/
+   sudo chown -v root:wheel /Library/LaunchDaemons/net.sshguard.plist
+
+2) Start the daemon using:
+
+   sudo launchctl load /Library/LaunchDaemons/net.sshguard.plist
+
+   Next boot of system will automatically start sshguard.
+EOS
+  end
+
+  def startup_plist
+    return <<-EOPLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>net.sshguard</string>
+  <key>KeepAlive</key>
+  <true/>
+  <key>ProgramArguments</key>
+  <array>
+    <string>#{HOMEBREW_PREFIX}/sbin/sshguard</string>
+    <string>-l</string>
+    <string>/var/log/secure.log</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+</dict>
+</plist>
+EOPLIST
   end
 end

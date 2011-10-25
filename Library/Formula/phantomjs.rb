@@ -1,16 +1,16 @@
 require 'formula'
 
 class Phantomjs < Formula
-  url "http://phantomjs.googlecode.com/files/phantomjs-1.2.0-source.zip"
+  url "https://phantomjs.googlecode.com/files/phantomjs-1.3.0-source.tar.gz"
   head "https://github.com/ariya/phantomjs.git"
   homepage 'http://www.phantomjs.org/'
-  sha1 "0b8b20fbc45013ecf61dd988390dd979a894dec1"
+  sha1 "76902ad0956cf212cc9bb845f290690f53eca576"
 
   depends_on 'qt'
 
   def install
     system "qmake -spec macx-g++"
     system "make"
-    bin.install "bin/phantomjs.app/Contents/MacOS/phantomjs"
+    bin.install "bin/phantomjs"
   end
 end

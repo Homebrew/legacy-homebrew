@@ -10,17 +10,16 @@ module Homebrew extend self
       end
     else
       ARGV.formulae.each do |f|
-        rack = f.prefix.parent
-        if rack.directory?
+        if f.rack.directory?
           puts "Uninstalling #{f}..."
-          rack.children.each do |keg|
+          f.rack.children.each do |keg|
             if keg.directory?
               keg = Keg.new(keg)
               keg.unlink
               keg.rmtree
             end
           end
-          rack.rmtree
+          f.rack.rmtree
         end
       end
     end

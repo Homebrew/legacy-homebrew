@@ -14,8 +14,8 @@ class Wine < Formula
   homepage 'http://winehq.org/'
 
   if ARGV.flag? '--devel'
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.26.tar.bz2'
-    sha256 '6cadb2d80c0cd12c44fa26147041a32f61066dd39e748c83dad48af79ecd4e74'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.31.tar.bz2'
+    sha256 'c3827c192ebcc34fbfb7a6e4b6fcdef79ca5d42ad5b6ff8230e98ea238353f5e'
   else
     url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.3.tar.bz2'
     sha256 '3fd8d3f2b466d07eb90b8198cdc9ec3005917a4533db7b8c6c69058a2e57c61f'
@@ -29,7 +29,7 @@ class Wine < Formula
   # gnutls not needed since 1.3.16
   depends_on 'gnutls' unless ARGV.flag? '--devel' or ARGV.build_head?
 
-  fails_with_llvm
+  fails_with_llvm 'Wine dies with an "Unhandled exception code" when built with LLVM'
 
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
   # configure: libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
@@ -88,7 +88,7 @@ EOS
   # We have backported Camillo Lugaresi's patch from upstream. The patch can
   # be removed from this formula once it lands in both the devel and stable
   # branches of Wine.
-  if MacOS.lion?
+  if MacOS.lion? and not (ARGV.flag? '--devel' or ARGV.build_head?)
     def patches; DATA; end
   end
 

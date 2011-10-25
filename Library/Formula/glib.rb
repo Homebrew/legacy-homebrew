@@ -46,7 +46,8 @@ class Glib < Formula
 
     args = ["--disable-dependency-tracking", "--disable-rebuilds",
             "--prefix=#{prefix}",
-            "--with-libiconv=gnu"]
+            "--with-libiconv=gnu",
+            "--disable-dtrace"]
 
     args << "--disable-debug" unless build_tests?
 

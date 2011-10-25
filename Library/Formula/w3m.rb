@@ -7,7 +7,7 @@ class W3m < Formula
 
   depends_on 'bdw-gc'
 
-  fails_with_llvm
+  fails_with_llvm :build => 2334
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

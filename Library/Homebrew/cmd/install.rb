@@ -13,7 +13,7 @@ module Homebrew extend self
       if File.directory? HOMEBREW_REPOSITORY/"Library/LinkedKegs/#{f.name}"
         raise "#{f} already installed\nTry: brew upgrade #{f}"
       end
-    end
+    end unless ARGV.force?
 
     if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
       # note we only abort if Homebrew is *not* installed as sudo and the user
@@ -56,11 +56,19 @@ module Homebrew extend self
 
   def check_macports
     if MacOS.macports_or_fink_installed?
-      opoo "It appears you have Macports or Fink installed"
+      opoo "It appears you have MacPorts or Fink installed."
       puts "Software installed with other package managers causes known problems for"
-      puts "Homebrew. If formula fail to build uninstall Macports/Fink and reinstall any"
-      puts "affected formula."
+      puts "Homebrew. If a formula fails to build, uninstall MacPorts/Fink and try again."
     end
+  end
+
+  def check_cellar
+    FileUtils.mkdir_p HOMEBREW_CELLAR if not File.exist? HOMEBREW_CELLAR
+  rescue
+    raise <<-EOS.undent
+      Could not create #{HOMEBREW_CELLAR}
+      Check you have permission to write to #{HOMEBREW_CELLAR.parent}
+    EOS
   end
 
   def perform_preinstall_checks
@@ -68,6 +76,7 @@ module Homebrew extend self
     check_writable_install_location
     check_cc
     check_macports
+    check_cellar
   end
 
   def install_formulae formulae

@@ -21,14 +21,17 @@ module HomebrewEnvExtension
     # llvm allows -O4 however it often fails to link and is very slow
     cflags = ['-O3']
 
-    # If these aren't set, many formulae fail to build
-    self['CC'] = '/usr/bin/cc'
-    self['CXX'] = '/usr/bin/c++'
-
     case self.compiler
       when :clang then self.clang
       when :llvm then self.llvm
       when :gcc then self.gcc
+    end
+
+    # we must have a working compiler!
+    unless File.exist? ENV['CC'] and File.exist? ENV['CXX']
+      ENV['CC']  = '/usr/bin/cc'
+      ENV['CXX'] = '/usr/bin/c++'
+      @compiler = MacOS.default_compiler
     end
 
     # In rare cases this may break your builds, as the tool for some reason wants
@@ -45,7 +48,7 @@ module HomebrewEnvExtension
     # http://gcc.gnu.org/onlinedocs/gcc-4.3.3/gcc/i386-and-x86_002d64-Options.html
     if MACOS_VERSION >= 10.6
       case Hardware.intel_family
-      when :nehalem, :penryn, :core2, :arrandale
+      when :nehalem, :penryn, :core2, :arrandale, :sandybridge
         # the 64 bit compiler adds -mfpmath=sse for us
         cflags << "-march=core2"
       when :core
@@ -115,46 +118,37 @@ module HomebrewEnvExtension
   end
 
   def gcc_4_0_1
-    self['CC'] = self['LD'] = '/usr/bin/gcc-4.0'
+    self['CC'] = '/usr/bin/gcc-4.0'
     self['CXX'] = '/usr/bin/g++-4.0'
-    self.O3
+    remove_from_cflags '-O4'
     remove_from_cflags '-march=core2'
     remove_from_cflags %r{-msse4(\.\d)?}
+    @compiler = :gcc
   end
   alias_method :gcc_4_0, :gcc_4_0_1
 
-  def gcc
-    if MacOS.xcode_version < '4'
-      self['CC'] = '/usr/bin/cc'
-      self['CXX'] = '/usr/bin/c++'
-    else
-      # With Xcode4 cc, c++, gcc and g++ are actually symlinks to llvm-gcc
-      self['CC']  = "#{MacOS.xcode_prefix}/usr/bin/gcc-4.2"
-      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/g++-4.2"
-    end
+  def gcc args = {}
+    self['CC']  = "/usr/bin/gcc-4.2"
+    self['CXX'] = "/usr/bin/g++-4.2"
     remove_from_cflags '-O4'
+    @compiler = :gcc
+
+    raise "GCC could not be found" if args[:force] and not File.exist? ENV['CC'] \
+                                   or (File.symlink? ENV['CC'] \
+                                   and File.readlink(ENV['CC']) =~ 'llvm')
   end
   alias_method :gcc_4_2, :gcc
 
   def llvm
-    if MacOS.xcode_version < '4'
-      self.gcc
-    elsif MacOS.xcode_version < '4.1'
-      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-gcc"
-      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/llvm-g++"
-    else
-      self['CC'] = '/usr/bin/cc'
-      self['CXX'] = '/usr/bin/c++'
-    end
+    self['CC']  = "/usr/bin/llvm-gcc"
+    self['CXX'] = "/usr/bin/llvm-g++"
+    @compiler = :llvm
   end
 
   def clang
-    if MacOS.xcode_version > '4'
-      self['CC'] = "#{MacOS.xcode_prefix}/usr/bin/clang"
-      self['CXX'] = "#{MacOS.xcode_prefix}/usr/bin/clang++"
-    else
-      self.gcc
-    end
+    self['CC']  = "/usr/bin/clang"
+    self['CXX'] = "/usr/bin/clang++"
+    @compiler = :clang
   end
 
   def fortran
@@ -312,29 +306,28 @@ Please take one of the following actions:
     remove 'CXXFLAGS', f
   end
 
+  # actually c-compiler, so cc would be a better name
   def compiler
     # TODO seems that ENV.clang in a Formula.install should warn when called
     # if the user has set something that is tested here
 
     # test for --flags first so that installs can be overridden on a per
-    # install basis
-    if ARGV.include? '--use-gcc'
+    # install basis. Then test for ENVs in inverse order to flags, this is
+    # sensible, trust me
+    @compiler ||= if ARGV.include? '--use-gcc'
       :gcc
     elsif ARGV.include? '--use-llvm'
       :llvm
     elsif ARGV.include? '--use-clang'
       :clang
-    end
-
-    # test for ENVs in inverse order to flags, this is sensible, trust me
-    if self['HOMEBREW_USE_CLANG']
+    elsif self['HOMEBREW_USE_CLANG']
       :clang
     elsif self['HOMEBREW_USE_LLVM']
       :llvm
     elsif self['HOMEBREW_USE_GCC']
       :gcc
     else
-      :gcc
+      MacOS.default_compiler
     end
   end
 
@@ -357,5 +350,14 @@ Please take one of the following actions:
     else
       Hardware.processor_count
     end
+  end
+
+  def remove_cc_etc
+    keys = %w{CC CXX LD CPP LDFLAGS CFLAGS CPPFLAGS}
+    removed = Hash[*keys.map{ |key| [key, ENV[key]] }.flatten]
+    keys.each do |key|
+      ENV[key] = nil
+    end
+    removed
   end
 end

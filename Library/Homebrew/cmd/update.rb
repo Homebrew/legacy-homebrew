@@ -12,7 +12,7 @@ module Homebrew extend self
 end
 
 class RefreshBrew
-  REPOSITORY_URL = "http://github.com/mxcl/homebrew.git"
+  REPOSITORY_URL = "https://github.com/mxcl/homebrew.git"
   FORMULA_DIR = 'Library/Formula/'
   EXAMPLE_DIR = 'Library/Contributions/examples/'
 
@@ -49,7 +49,11 @@ class RefreshBrew
           raise
         end
       end
-      execute "git pull origin master"
+
+      # specify a refspec so that 'origin/master' gets updated
+      refspec = "refs/heads/master:refs/remotes/origin/master"
+      rebase = "--rebase" if ARGV.include? "--rebase"
+      execute "git pull #{rebase} origin #{refspec}"
       @current_revision = read_revision
     end
 
@@ -74,7 +78,7 @@ class RefreshBrew
         @added_examples   = changed_items('A', EXAMPLE_DIR)
         @deleted_examples = changed_items('D', EXAMPLE_DIR)
         @added_internal_commands = changed_items('A', "Library/Homebrew/cmd")
-        @deleted_internal_commands = changed_items('M', "Library/Homebrew/cmd")
+        @deleted_internal_commands = changed_items('D', "Library/Homebrew/cmd")
 
         @installed_formulae = HOMEBREW_CELLAR.children.
           select{ |pn| pn.directory? }.

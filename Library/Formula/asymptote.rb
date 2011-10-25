@@ -1,6 +1,6 @@
 require 'formula'
 
-def TeX_installed?; return `which latex` != ''; end
+def TeX_installed?; return `which latex`.chomp != ''; end
 
 class Asymptote < Formula
   url 'http://downloads.sourceforge.net/asymptote/asymptote-2.13.src.tgz'
@@ -9,19 +9,6 @@ class Asymptote < Formula
 
   depends_on 'readline'
   depends_on 'bdw-gc'
-
-  def link_asy_texmfhome
-    texmfhome = `kpsewhich -var-value=TEXMFHOME`.chop
-    texmflocl = `kpsewhich -var-value=TEXMFLOCAL`.chop
-
-    asyhome = "#{texmfhome}/tex/latex/asymptote-brew"
-    asylocl = "#{texmflocl}/tex/latex/asymptote"
-    system "mkdir -p #{asyhome}"
-
-    for asyfile in ['asycolors.sty','asymptote.sty','ocg.sty','latexmkrc']
-      system "ln -s -f #{asylocl}/#{asyfile} #{asyhome}/#{asyfile}"
-    end
-  end
 
   def install
     unless TeX_installed?
@@ -33,35 +20,58 @@ class Asymptote < Formula
       exit 1
     end
 
+    texmfhome = share + 'texmf'
+
     system "./configure", "--prefix=#{prefix}",
-                          "--enable-gc=#{HOMEBREW_PREFIX}"
+                          "--enable-gc=#{HOMEBREW_PREFIX}",
+                          "--with-latex=#{texmfhome}/tex/latex",
+                          "--with-context=#{texmfhome}/tex/context/third",
+                          # So that `texdoc` can find manuals
+                          "--with-docdir=#{texmfhome}/doc"
+    system "make"
+    ENV.deparallelize
     system "make install"
-    link_asy_texmfhome
+  end
+
+  def test
+    ENV['TEXMFHOME'] = "#{HOMEBREW_PREFIX}/share/texmf"
+    mktemp do
+      (Pathname.new(Dir.getwd) + 'asy_test.tex').write <<-EOS.undent
+        \\nonstopmode
+
+        \\documentclass{minimal}
+        \\usepackage{asymptote}
+
+        \\begin{document}
+        Hello, Asymptote!
+
+        \\begin{asy}
+          size(3cm);
+          draw((0,0)--(1,0)--(1,1)--(0,1)--cycle);
+        \\end{asy}
+
+        \\end{document}
+      EOS
+
+      system "pdflatex asy_test"
+      system "asy asy_test-1.asy"
+      system "pdflatex asy_test"
+    end
+
+    return (not $? == 0)
   end
 
   def caveats
     caveats = <<-EOS
-1) This formula links the latest version of asymptote.sty into your user
-   texmf directory:
+1) This formula links the latest version of the Asymptote LaTeX and ConTeXt
+   packages into:
 
-       ~/Library/texmf/tex/asymptote-brew/asymptote.sty
+       #{HOMEBREW_PREFIX}/share/texmf
 
-   This file links back to where the Asymptote source installer puts it:
+   In order for these packages to be visible to TeX compilers, the above
+   directory will need to be added to the TeX search path:
 
-       /usr/local/texlive/texmf-local/tex/latex/asymptote/asymptote.sty
-
-   Other users of your machine will not be able to use the source-installed
-   version of asymptote.sty unless they perform a similar linking operation;
-   e.g.,
-
-       mkdir -p ~/Library/texmf/tex/asymptote-brew/
-       ln -s /usr/local/texlive/texmf-local/tex/latex/asymptote/asymptote.sty  ~/Library/texmf/tex/asymptote-brew/asymptote.sty
-
-   and similarly for asycolors.sty, ocg.sty, and latexmkrc.
-
-   If you are not using MacTeX / TeX Live or you have customised your TeX
-   distribution, the paths shown above may not match your particular system,
-   but you get the idea.
+       sudo tlmgr conf texmf TEXMFHOME "~/Library/texmf:#{HOMEBREW_PREFIX}/share/texmf"
 
 
 2) If you want to have Asymptote compiled with support for fftw or gsl

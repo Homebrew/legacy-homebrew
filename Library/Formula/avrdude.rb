@@ -1,9 +1,9 @@
 require 'formula'
 
 class Avrdude < Formula
-  url 'http://mirror.lihnidos.org/GNU/savannah/avrdude/avrdude-5.10.tar.gz'
+  url 'http://download.savannah.gnu.org/releases/avrdude/avrdude-5.11.tar.gz'
   homepage 'http://savannah.nongnu.org/projects/avrdude/'
-  md5 '69b082683047e054348088fd63bad2ff'
+  md5 'ba62697270b1292146dc56d462f5da14'
 
   depends_on 'libusb-compat' if ARGV.include? '--with-usb'
 

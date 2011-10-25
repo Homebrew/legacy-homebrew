@@ -5,7 +5,7 @@ class BdwGc < Formula
   homepage 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/'
   md5 '2ff9924c7249ef7f736ecfe6f08f3f9b'
 
-  fails_with_llvm "LLVM gives an unsupported inline asm error"
+  fails_with_llvm "LLVM gives an unsupported inline asm error", :build => 2335
 
   def install
     # ucontext has been deprecated in 10.6

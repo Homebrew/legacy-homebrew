@@ -2,9 +2,9 @@ require 'formula'
 
 class Macvim < Formula
   homepage 'http://code.google.com/p/macvim/'
-  url 'https://github.com/b4winckler/macvim/tarball/snapshot-61'
-  version '7.3-61'
-  md5 '18218561913ae5d5ad68c1b6a6df5a1f'
+  url 'https://github.com/b4winckler/macvim/tarball/snapshot-62'
+  version '7.3-62'
+  md5 '04d14c9ebe1b8fd0fe119d977e148c39'
   head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
   def options
@@ -53,13 +53,8 @@ class Macvim < Formula
       inreplace "src/MacVim/icons/make_icons.py", "dont_create = False", "dont_create = True"
     end
 
-    if ARGV.include? "--with-envycoder"
-      # Font download location has changed.
-      # This is fixed in MacVim trunk, but not in the stable tarball.
-      inreplace "src/MacVim/icons/Makefile",
-        "http://download.damieng.com/latest/EnvyCodeR",
-        "http://download.damieng.com/fonts/original/EnvyCodeR-PR7.zip"
-    else
+    # TODO: This seems to be different in snapshot-62
+    unless ARGV.include? "--with-envycoder"
       # Remove the font from the build dependencies
       inreplace "src/MacVim/icons/Makefile",
         '$(OUTDIR)/MacVim-generic.icns: make_icons.py vim-noshadow-512.png loadfont.so Envy\ Code\ R\ Bold.ttf',
