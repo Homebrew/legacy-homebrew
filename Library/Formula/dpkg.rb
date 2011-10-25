@@ -5,21 +5,12 @@ class Dpkg < Formula
   homepage   'http://packages.debian.org/search?keywords=dpkg'
   md5        '4326172a959b5b6484b4bc126e9f628d'
 
-  depends_on 'libiconv'
-  depends_on 'libtool'
-  depends_on 'gettext'
-  depends_on 'gdbm'
-  depends_on 'gmp'
-  depends_on 'xz'
-
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-sgml-doc",
-                          "--with-libintl-prefix=#{prefix}",
-                          "--with-libiconv-prefix=#{prefix}",
-                          "--with-admindir=#{prefix}/var/db/dpkg",
+                          "--with-admindir=#{var}/db/dpkg",
                           "--mandir=#{man}",
                           "--with-zlib",
                           "--with-bz2",
