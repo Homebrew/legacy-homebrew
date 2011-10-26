@@ -6,57 +6,51 @@ class V8 < Formula
 
   depends_on 'scons' => :build
 
+  def caveats
+    s = "For build options see:\n  brew options v8"
+
+    return s
+  end
+
+
   def options
     [
-     ['--debug',"For debugging the V8 JavaScript Engine.  Includes debugging information and assertions in the binary."],
+     ['--debug',"Include debugging information and assertions in the V8 binary."],
      ['--no-snapshots',"Disable 'snapshots' (saved program states) in V8."],
      ['--shared-libraries',"Build shared rather than static libraries."],
-     ['--developer-shell',"Build the V8 developer shell."]
+     ['--developer-shell',"Build the V8 JavaScript development shell."]
     ]
-
+  end
+  
   def install
 
-    if ARGV.include? '--debug'
-      mode = "mode=debug"
-    else
-      mode = "mode=release"      
-    end
-    
-    if ARGV.include? '--no-snapshots'
-      snapshot = "snapshot=off"
-    else
-      snapshot = "snapshot=on"      
-    end
+    arch = Hardware.is_64_bit? ? 'x64' : 'ia32'
 
-    if ARGV.include? '--shared-libraries'
-      library = "library=shared"
-    else
-      library = "library=static"      
-    end
+    args = [
+            "-j #{Hardware.processor_count}",
+            "arch=#{arch}",
+            "visibility=default",
+            "console=readline",
+            (ARGV.include? '--debug')?'mode=debug':'mode=release',
+            (ARGV.include? '--no-snapshots')?'snapshot=off':'snapshot=on',
+            (ARGV.include? '--shared-libraries')?'library=shared':'library=static',
+            (ARGV.include? '--developer-shell')?'d8':'sample=shell'
+            ]
 
-    if ARGV.include? '--d8'
-      shell = "d8"
-    else
-      shell = "sample=shell"      
-    end
 
-    
 
-arch = Hardware.is_64_bit? ? 'x64' : 'ia32'
 
-    system "scons", "-j #{Hardware.processor_count}",
-                    "arch=#{arch}",
-                    mode,
-                    snapshot,
-                    library,
-                    shell,
-                    "visibility=default",
-                    "console=readline"
+    system "scons", *args
 
 
     include.install Dir['include/*']
     lib.install Dir['libv8.*']
-    bin.install 'shell' => 'v8'
+
+    if ARGV.include? '--developer-shell'
+      bin.install 'd8' => 'v8'
+    else
+      bin.install 'shell' => 'v8'
+    end
 
     system "install_name_tool -change libv8.dylib #{lib}/libv8.dylib #{bin}/v8"
   end
