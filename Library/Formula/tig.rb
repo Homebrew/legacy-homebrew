@@ -9,5 +9,9 @@ class Tig < Formula
     system "./configure", "--prefix=#{prefix}"
     system "make install"
     system "make install-doc-man"
+
+    cellar_etc = prefix + 'etc'
+    bash_completion_d = cellar_etc + 'bash_completion.d'
+    bash_completion_d.install 'contrib/tig-completion.bash'
   end
 end
