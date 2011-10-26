@@ -2,8 +2,8 @@ require 'formula'
 
 class Fuse4x < Formula
   homepage 'http://fuse4x.org/'
-  url 'https://github.com/fuse4x/fuse.git', :tag => "fuse4x_0_8_12"
-  version "0.8.12"
+  url 'https://github.com/fuse4x/fuse.git', :tag => "fuse4x_0_8_13"
+  version "0.8.13"
 
   depends_on 'gettext'
   depends_on 'fuse4x-kext'
@@ -11,11 +11,8 @@ class Fuse4x < Formula
   def install
     # Build universal if the hardware can handle it---otherwise 32 bit only
     MacOS.prefer_64_bit? ? ENV.universal_binary : ENV.m32
-    gettext = Formula.factory('gettext')
 
-    # Don't hardwire a universal binary build in the CFLAGS and LDFLAGS
-    # see issue #7713
-    inreplace 'configure.in', '-arch i386 -arch x86_64', ''
+    gettext = Formula.factory('gettext')
     ENV['ACLOCAL'] = "/usr/bin/aclocal -I#{gettext.share}/aclocal"
     system "autoreconf", "--force", "--install"
 

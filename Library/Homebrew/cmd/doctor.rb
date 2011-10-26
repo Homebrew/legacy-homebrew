@@ -685,11 +685,10 @@ def check_for_MACOSX_DEPLOYMENT_TARGET
 end
 
 def check_for_CLICOLOR_FORCE
-  target_var = ENV['CLICOLOR_FORCE'].to_s
-  unless target_var.empty?
+  if ENV['CLICOLOR_FORCE']
     puts <<-EOS.undent
-    $CLICOLOR_FORCE was set to \"#{target_var}\".
-    Having $CLICOLOR_FORCE set can cause git builds to fail.
+    Having $CLICOLOR_FORCE set can cause some builds to fail.
+    You may want to unset it.
 
     EOS
   end

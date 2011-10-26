@@ -1,31 +1,31 @@
 require 'formula'
 
 class ErlangManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R14B03.tar.gz'
-  md5 '357f54b174bb29d41fee97c063a47e8f'
+  url 'http://erlang.org/download/otp_doc_man_R14B04.tar.gz'
+  md5 'f31e72518daae4007f595c0b224dd59f'
 end
 
 class ErlangHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R14B03.tar.gz'
-  md5 'c9033bc35dbe4631dd2d14a6183b966a'
+  url 'http://erlang.org/download/otp_doc_html_R14B04.tar.gz'
+  md5 '2a440aa8c1242dd0c79785d69f0d97ca'
 end
 
 class ErlangHeadManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R14B03.tar.gz'
-  md5 '357f54b174bb29d41fee97c063a47e8f'
+  url 'http://erlang.org/download/otp_doc_man_R14B04.tar.gz'
+  md5 'f31e72518daae4007f595c0b224dd59f'
 end
 
 class ErlangHeadHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R14B03.tar.gz'
-  md5 'c9033bc35dbe4631dd2d14a6183b966a'
+  url 'http://erlang.org/download/otp_doc_html_R14B04.tar.gz'
+  md5 '2a440aa8c1242dd0c79785d69f0d97ca'
 end
 
 class Erlang < Formula
   homepage 'http://www.erlang.org'
   # Download tarball from GitHub; it is served faster than the official tarball.
-  url 'https://github.com/erlang/otp/tarball/OTP_R14B03'
-  md5 '047f246c4ecb5fadaffb7e049795d80e'
-  version 'R14B03'
+  url 'https://github.com/erlang/otp/tarball/OTP_R14B04'
+  md5 'f6cd1347dfb6436b99cc1313011a3d24'
+  version 'R14B04'
 
   bottle 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R14B03-bottle.tar.gz'
   bottle_sha1 '9b7605c7cf2a7dd0536723e487722e29bd2d2d9b'
@@ -47,7 +47,7 @@ class Erlang < Formula
     ]
   end
 
-  fails_with_llvm "Hangs while compiling HIPE with LLVM 2335. See issue #7691"
+  fails_with_llvm :build => 2334
 
   def install
     ohai "Compilation may take a very long time; use `brew install -v erlang` to see progress"
