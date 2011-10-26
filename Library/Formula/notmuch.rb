@@ -10,7 +10,7 @@ class Notmuch < Formula
   depends_on 'gmime'
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--without-emacs"
 
     # notmuch requires a newer emacs than macosx provides. So we either
     # disable the emacs bindings or make notmuch depend on the homebrew
@@ -18,7 +18,7 @@ class Notmuch < Formula
     # And there is a race condition in the makefile, so we have to either
     # deparallelize the process or run make and make install separately.
 
-    system "make HAVE_EMACS=0"
-    system "make install HAVE_EMACS=0"
+    system "make"
+    system "make install"
   end
 end
