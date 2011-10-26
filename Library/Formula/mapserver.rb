@@ -44,6 +44,7 @@ class Mapserver < Formula
   end
 
   def install
+    ENV.x11
     system "./configure", *configure_args
     system "make"
     bin.install %w(mapserv)
