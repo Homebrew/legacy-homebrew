@@ -16,12 +16,12 @@ class Gettext < Formula
 
   def patches
     # Patch to allow building with Xcode 4; safe for any compiler.
-    p = {:p0 => ['https://trac.macports.org/export/79617/trunk/dports/devel/gettext/files/stpncpy.patch']}
+    p = {:p0 => ['https://raw.github.com/gist/1318406/e18af95cee4511f7e1255dc789f2b1990b4a56ee/stpncpy.patch']}
 
     unless ARGV.include? '--with-examples'
       # Use a MacPorts patch to disable building examples at all,
       # rather than build them and remove them afterwards.
-      p[:p0] << 'https://trac.macports.org/export/79183/trunk/dports/devel/gettext/files/patch-gettext-tools-Makefile.in'
+      p[:p0] << 'https://raw.github.com/gist/1318408/1a474dda36d2cf1bca28a3e63077aa934c08df8c/patch-gettext-tools-Makefile.in'
     end
 
     return p
