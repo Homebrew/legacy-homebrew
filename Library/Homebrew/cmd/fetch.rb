@@ -29,7 +29,7 @@ module Homebrew extend self
 
       previous_md5 = f.instance_variable_get(:@md5)
       previous_sha1 = f.instance_variable_get(:@sha1)
-      previous_sha2 = f.instance_variable_get(:@sha2)
+      previous_sha2 = f.instance_variable_get(:@sha256)
 
       puts "MD5:  #{the_tarball.md5}"
       puts "SHA1: #{the_tarball.sha1}"

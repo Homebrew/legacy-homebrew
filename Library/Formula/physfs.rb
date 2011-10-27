@@ -8,7 +8,11 @@ class Physfs < Formula
   depends_on 'cmake' => :build
 
   def install
-    system "cmake . #{std_cmake_parameters} -DPHYSFS_BUILD_WX_TEST=FALSE"
-    system "make install"
+    mkdir 'macbuild'
+    Dir.chdir 'macbuild' do
+      system "cmake #{std_cmake_parameters} -DPHYSFS_BUILD_WX_TEST=FALSE -DPHYSFS_BUILD_TEST=TRUE .."
+      system "make"
+      system "make install"
+    end
   end
 end

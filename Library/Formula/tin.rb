@@ -7,9 +7,9 @@ class Libiconv < Formula
 end
 
 class Tin < Formula
-  url 'ftp://ftp.tin.org/pub/news/clients/tin/unstable/tin-1.9.5.tar.gz'
+  url 'ftp://ftp.tin.org/pub/news/clients/tin/stable/tin-2.0.0.tar.gz'
   homepage 'http://www.tin.org'
-  md5 '51661ec8ae10aa7ccf97cbf309cbbf11'
+  md5 'fae76336a6bfe82aaa9e99f2212a356c'
 
   def install
     iconvd = Pathname.getwd+'iconv'

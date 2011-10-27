@@ -14,8 +14,8 @@ class Wine < Formula
   homepage 'http://winehq.org/'
 
   if ARGV.flag? '--devel'
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.29.tar.bz2'
-    sha256 '41fa0f7a9d67de65bd5813405a49b3f6b91a1672cde85570b22a567cd7ef24d6'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.31.tar.bz2'
+    sha256 'c3827c192ebcc34fbfb7a6e4b6fcdef79ca5d42ad5b6ff8230e98ea238353f5e'
   else
     url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.3.tar.bz2'
     sha256 '3fd8d3f2b466d07eb90b8198cdc9ec3005917a4533db7b8c6c69058a2e57c61f'
@@ -29,7 +29,7 @@ class Wine < Formula
   # gnutls not needed since 1.3.16
   depends_on 'gnutls' unless ARGV.flag? '--devel' or ARGV.build_head?
 
-  fails_with_llvm :build => 2326
+  fails_with_llvm 'Wine dies with an "Unhandled exception code" when built with LLVM'
 
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
   # configure: libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
