@@ -4,7 +4,7 @@ class Mcabber < Formula
   url 'http://mcabber.com/files/mcabber-0.10.1.tar.bz2'
   homepage 'http://mcabber.com/'
   md5 'fe96beab30f535d5d6270fd1719659b4'
-  head 'http://mcabber.com/hg/'
+  head 'http://mcabber.com/hg/', :using => :hg
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
@@ -25,6 +25,7 @@ class Mcabber < Formula
   end
 
   def install
+    system "./autogen.sh" if ARGV.build_head?
     args = ["--disable-debug", "--disable-dependency-tracking",
             "--prefix=#{prefix}"]
 
