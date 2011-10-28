@@ -22,14 +22,28 @@ class ARGVTests < Test::Unit::TestCase
     assert_raises(FormulaUnspecifiedError) { ARGV.formulae }
     assert_raises(KegUnspecifiedError) { ARGV.kegs }
     assert ARGV.named.empty?
-    
+
     (HOMEBREW_CELLAR+'mxcl/10.0').mkpath
-    
+
     ARGV.reset
     ARGV.unshift 'mxcl'
     assert_equal 1, ARGV.named.length
     assert_equal 1, ARGV.kegs.length
     assert_raises(FormulaUnavailableError) { ARGV.formulae }
   end
-  
+
 end
+
+class ARGVOptions < Test::Unit::TestCase
+
+  def test_options_tells_options_that_immediately_follow_a_name
+    ARGV.concat %w(--git git --with-colors)
+    assert_equal(["--git"], ARGV.options)
+    assert_equal(["--with-colors"], ARGV.options("git"))
+  end
+
+  def teardown
+    ARGV.clear
+  end
+end
+

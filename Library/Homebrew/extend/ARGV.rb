@@ -1,10 +1,10 @@
 module HomebrewArgvExtension
   def named
-    @named ||= reject{|arg| arg[0..0] == '-'}
+    @named ||= reject{|arg| option?(arg)}
   end
 
   def options_only
-    select {|arg| arg[0..0] == '-'}
+    select {|arg| option?(arg)}
   end
 
   def formulae
@@ -92,7 +92,39 @@ module HomebrewArgvExtension
     Homebrew.help_s
   end
 
+  # return options following immediately a `name`
+  #
+  # eg :
+  #   ARGV = %w(--help git --verbose)
+  #   ARGV.options == ["--help"]
+  #   ARGV.options("git") == ["--verbose"]
+  #
+  def options(name = nil)
+    parse.reduce([]) { |acc, o| acc.concat(o.last) if o.first == name; acc }
+  end
+
   private
+  # move this to String ?
+  def option?(o)
+    o[0..0] == '-'
+  end
+
+  # reduce self as a list of tuple : [name, options]
+  # options are stacked until a new name happens
+  #
+  # nil is used as name value when head is not a name
+  # eg : %w(--help git --verbose) => [ [nil, ["--help"]], ["git", ["--verbose]] ]
+  #
+  def parse
+    @parsed ||= reduce([[nil, []]]) do |acc, o|
+      if option?(o)
+        acc.last.last << o
+      else
+        acc << [o, []]
+      end
+      acc
+    end
+  end
 
   def downcased_unique_named
     # Only lowercase names, not paths or URLs
