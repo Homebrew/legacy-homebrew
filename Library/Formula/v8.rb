@@ -27,7 +27,7 @@ class V8 < Formula
     arch = Hardware.is_64_bit? ? 'x64' : 'ia32'
 
     args = [
-            "-j #{Hardware.processor_count}",
+            "-j #{ENV.make_jobs}",
             "arch=#{arch}",
             "visibility=default",
             "console=readline",
