@@ -1,9 +1,19 @@
 require 'formula'
 
 class Ace < Formula
-  url 'http://download.dre.vanderbilt.edu/previous_versions/ACE-6.0.3.tar.bz2'
+  url 'http://download.dre.vanderbilt.edu/previous_versions/ACE-6.0.5.tar.bz2'
   homepage 'http://www.cse.wustl.edu/~schmidt/ACE.html'
-  md5 'c38cff517ee80825a37f3b1e84f15229'
+  md5 '6958df8e3a672a549e651ec2287a3313'
+
+  # XCode 4.1 an later have numeric typedefs that differ from ACE's,
+  # that's why a patch is required. Probably a proper way to fix it is
+  # using ./configure method of compilation, that detects such cases
+  # automatically.
+  if MacOS.xcode_version >= "4.1"
+    def patches
+      { :p0 => DATA }
+    end
+  end
 
   def install
     # ACE has two methods of compilation, "traditional" and ./configure.
@@ -38,3 +48,23 @@ class Ace < Formula
        "debug=0", "shared_libs=1", "static_libs=0", "install"
   end
 end
+
+
+__END__
+--- ace/config-macosx-leopard-orig.h
++++ ace/config-macosx-leopard.h
+@@ -226,4 +226,14 @@
+ #error "Compiler must be upgraded, see http://developer.apple.com"
+ #endif /* __APPLE_CC__ */
+ 
++// compiler supports numeric typedefs
++#define ACE_HAS_INT8_T
++#define ACE_HAS_UINT8_T
++#define ACE_HAS_INT16_T
++#define ACE_HAS_UINT16_T
++#define ACE_HAS_INT32_T
++#define ACE_HAS_UINT32_T
++#define ACE_HAS_INT64_T
++#define ACE_HAS_UINT64_T
++
+ #endif /* ACE_CONFIG_MACOSX_LEOPARD_H */
