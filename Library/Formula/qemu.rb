@@ -1,9 +1,9 @@
 require 'formula'
 
 class Qemu < Formula
-  url 'http://download.savannah.gnu.org/releases/qemu/qemu-0.14.1.tar.gz'
+  url 'http://wiki.qemu.org/download/qemu-0.15.0.tar.gz'
   homepage 'http://www.qemu.org/'
-  md5 'b6c713a8db638e173af53a62d5178640'
+  md5 'dbc55b014bcd21b98e347f6a90f7fb6d'
 
   depends_on 'jpeg'
   depends_on 'gnutls'
@@ -14,7 +14,8 @@ class Qemu < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--disable-darwin-user",
                           "--enable-cocoa",
-                          "--disable-bsd-user"
+                          "--disable-bsd-user",
+                          "--disable-guest-agent"
     system "make install"
   end
 end

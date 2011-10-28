@@ -1,10 +1,12 @@
 require 'formula'
 
 class Rock < Formula
-  url 'https://github.com/downloads/nddrylliog/rock/rock-0.9.1-source.tar.bz2'
+  url 'https://github.com/downloads/nddrylliog/rock/rock-0.9.2-source.tar.bz2'
   homepage 'http://ooc-lang.org'
-  md5 '66c35a7d9271732790f08a4839cee287'
+  md5 '8e3afbd3e31b977930692ee781e84529'
   head 'https://github.com/nddrylliog/rock.git'
+
+  fails_with_llvm "Fails in function 'AO_test_and_set_full' with an 'unsupported inline asm' error"
 
   def install
       # make rock using provided bootstrap
@@ -14,6 +16,6 @@ class Rock < Formula
 
       # install misc authorship files & rock binary in place
       # copy the sdk, libs and docs
-      prefix.install ['rock.use', 'README.rst', "sdk", "libs", "docs"]
+      prefix.install ['rock.use', 'README.md', "sdk", "libs", "docs"]
   end
 end

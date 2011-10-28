@@ -1,7 +1,7 @@
 require 'formula'
 
 class GnuChess < Formula
-  url 'http://ftp.gnu.org/pub/gnu/chess/gnuchess-5.07.tar.gz'
+  url 'http://ftpmirror.gnu.org/chess/gnuchess-5.07.tar.gz'
   homepage 'http://www.gnu.org/software/chess/'
   md5 '259da00aa559e5624c65279484fccaf7'
 
@@ -21,7 +21,7 @@ class GnuChess < Formula
     # Opening book for gnuchess.  This can be put in the doc directory and the
     # user can optionally add the opening book.  The README has details on
     # adding the opening book.
-    book_url = "http://ftp.gnu.org/pub/gnu/chess/book_1.01.pgn.gz"
+    book_url = "http://ftpmirror.gnu.org/chess/book_1.01.pgn.gz"
     ohai "Downloading #{book_url}"
     curl book_url, "-O"
 

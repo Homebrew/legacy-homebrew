@@ -8,7 +8,7 @@ class Vpnc < Formula
   depends_on 'libgcrypt'
   depends_on 'libgpg-error'
 
-  fails_with_llvm
+  fails_with_llvm :build => 2334
 
   skip_clean 'etc'
   skip_clean 'var'
@@ -17,6 +17,7 @@ class Vpnc < Formula
     [["--hybrid", "Use vpnc hybrid authentication."]]
   end
 
+  # Patch from user @Imagesafari to enable compilation on Lion
   def patches
     DATA if MacOS.lion?
   end

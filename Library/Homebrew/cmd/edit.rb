@@ -9,7 +9,7 @@ module Homebrew extend self
       exec 'mate', HOMEBREW_REPOSITORY+"bin/brew",
                    HOMEBREW_REPOSITORY+'README.md',
                    HOMEBREW_REPOSITORY+".gitignore",
-              *Dir[HOMEBREW_REPOSITORY+"Library/*"]
+                  *library_folders
     else
       # Don't use ARGV.formulae as that will throw if the file doesn't parse
       paths = ARGV.named.map do |name|
@@ -21,6 +21,12 @@ module Homebrew extend self
         end
       end
       exec_editor *paths
+    end
+  end
+
+  def library_folders
+    Dir["#{HOMEBREW_REPOSITORY}/Library/*"].reject do |d|
+      case File.basename(d) when 'LinkedKegs', 'Aliases' then true end
     end
   end
 end

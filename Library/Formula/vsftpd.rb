@@ -1,9 +1,9 @@
 require 'formula'
 
 class Vsftpd < Formula
-  url 'ftp://vsftpd.beasts.org/users/cevans/vsftpd-2.3.2.tar.gz'
-  md5 'bad7b117d737a738738836041edc00db'
-  homepage 'http://vsftpd.beasts.org/'
+  url 'https://security.appspot.com/downloads/vsftpd-2.3.4.tar.gz'
+  md5 '2ea5d19978710527bb7444d93b67767a'
+  homepage 'https://security.appspot.com/vsftpd.html'
 
   # Patch so vsftpd doesn't depend on UTMPX, and can't find OS X's PAM library.
   def patches; DATA; end

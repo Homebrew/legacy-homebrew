@@ -11,10 +11,6 @@ class Jstalk < Formula
       exit 1
     end
 
-    # JSTalk specifies its particular compiler needs in jstalk.xcodeproj
-    ENV.delete 'CC'
-    ENV.delete 'CXX'
-
     args = ["-configuration", "Release", "ONLY_ACTIVE_ARCH=YES"]
     targets = ["JSTalk Framework", "jstalk command line", "JSTalk Editor"]
 

@@ -1,30 +1,19 @@
 require 'formula'
 
 class Ilmbase < Formula
-  url 'http://download.savannah.gnu.org/releases/openexr/ilmbase-1.0.1.tar.gz'
+  url 'http://download.savannah.gnu.org/releases/openexr/ilmbase-1.0.2.tar.gz'
   homepage 'http://www.openexr.com/'
-  md5 'f76f094e69a6079b0beb93d97e2a217e'
+  md5 '26c133ee8ca48e1196fbfb3ffe292ab4'
 
-  def patches
-    DATA
-  end
+  # included for reference only - repository doesn't have 'configure' script
+  # head 'cvs://:pserver:anonymous@cvs.sv.gnu.org:/sources/openexr:IlmBase'
 
   def install
+    # prevent 'cc1plus: error: unrecognized command line option "-Wno-long-double"'
+    inreplace 'configure', 'CXXFLAGS="$CXXFLAGS -Wno-long-double"', ''
+
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end
 end
-
-__END__
---- a/configure
-+++ b/configure
-@@ -21049,7 +21049,7 @@ Please re-run configure with these options:
-     CXXFLAGS="$CXXFLAGS -isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch ppc -arch i386"
-       fi
- 
--  CXXFLAGS="$CXXFLAGS -Wno-long-double"
-+  CXXFLAGS="$CXXFLAGS"
-   ;;
- esac
- 
 

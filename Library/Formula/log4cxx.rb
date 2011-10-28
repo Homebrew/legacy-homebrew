@@ -7,7 +7,15 @@ class Log4cxx < Formula
 
   fails_with_llvm "Fails with \"collect2: ld terminated with signal 11 [Segmentation fault]\"."
 
+  def options
+    [
+      ["--universal", "Build for both 32 & 64 bit Intel."]
+    ]
+  end
+
   def install
+    ENV.universal_binary if ARGV.build_universal?
+
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           # Docs won't install on OS X

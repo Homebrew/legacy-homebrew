@@ -30,7 +30,7 @@ class Gource < Formula
 
   def test
     Dir.chdir HOMEBREW_REPOSITORY do
-      system "gource"
+      system "#{bin}/gource"
     end
   end
 end

@@ -14,25 +14,24 @@ class Mutt < Formula
       ['--sidebar-patch', "Apply sidebar (folder list) patch"],
       ['--trash-patch', "Apply trash folder patch"],
       ['--with-slang', "Build against slang instead of ncurses"],
-      ['--ignore-thread-patch', "Apply ignore-thread patch"]
+      ['--ignore-thread-patch', "Apply ignore-thread patch"],
+      ['--pgp-verbose-mime-patch', "Apply PGP verbose mime patch"]
     ]
   end
 
   def patches
+    urls = [
+      ['--sidebar-patch', 'https://raw.github.com/nedos/mutt-sidebar-patch/master/mutt-sidebar.patch'],
+      ['--trash-patch', 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-5/features/trash-folder'],
+      ['--ignore-thread-patch', 'http://ben.at.tanjero.com/patches/ignore-thread-1.5.21.patch'],
+      ['--pgp-verbose-mime-patch',
+          'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-5/features-old/patch-1.5.4.vk.pgp_verbose_mime'],
+    ]
+
     p = []
-
-    if ARGV.include? '--sidebar-patch'
-      p << 'https://raw.github.com/nedos/mutt-sidebar-patch/master/mutt-sidebar.patch'
+    urls.each do |u|
+      p << u[1] if ARGV.include? u[0]
     end
-
-    if ARGV.include? '--trash-patch'
-      p << 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-5/features/trash-folder'
-    end
-
-    if ARGV.include? '--ignore-thread-patch'
-      p << 'http://ben.at.tanjero.com/patches/ignore-thread-1.5.21.patch'
-    end
-
     return p
   end
 

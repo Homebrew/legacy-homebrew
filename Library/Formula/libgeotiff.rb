@@ -1,7 +1,7 @@
 require 'formula'
 
 class Libgeotiff < Formula
-  url 'ftp://ftp.remotesensing.org/pub/geotiff/libgeotiff/libgeotiff-1.2.5.tar.gz'
+  url 'http://download.osgeo.org/geotiff/libgeotiff/libgeotiff-1.2.5.tar.gz'
   homepage 'http://geotiff.osgeo.org/'
   md5 '000f247a88510f1b38d4b314d1e47048'
 

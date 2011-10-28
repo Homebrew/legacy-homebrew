@@ -41,11 +41,17 @@ module Homebrew extend self
     puts "#{f.name} #{f.version}"
     puts f.homepage
 
+    if f.keg_only?
+      puts
+      puts "This formula is keg-only."
+      puts f.keg_only?
+      puts
+    end
+
     puts "Depends on: #{f.deps*', '}" unless f.deps.empty?
 
-    rack = f.prefix.parent
-    if rack.directory?
-      kegs = rack.children
+    if f.rack.directory?
+      kegs = f.rack.children
       kegs.each do |keg|
         next if keg.basename.to_s == '.DS_Store'
         print "#{keg} (#{keg.abv})"

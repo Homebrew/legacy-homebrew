@@ -2,8 +2,8 @@ require 'formula'
 
 class Dmd < Formula
   homepage 'http://www.digitalmars.com/d/'
-  url 'http://ftp.digitalmars.com/dmd.2.054.zip'
-  md5 'caa653b1d92648e6103acfe5fb8e6732'
+  url 'http://ftp.digitalmars.com/dmd.2.055.zip'
+  md5 'b7faf4ef7513ede9aa266483968c2f43'
 
   def doc
     #use d and not dmd, rationale: meh

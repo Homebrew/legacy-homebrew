@@ -9,6 +9,13 @@ class Qrencode < Formula
 
   def install
     ENV.x11 # For libpng
+
+    # This may be removable in the next official release.
+    # See: https://github.com/fukuchi/libqrencode/issues/3
+    unless ARGV.build_head?
+      inreplace 'configure', "libpng12", "libpng"
+    end
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"

@@ -55,9 +55,13 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     unless @tarball_path.exist?
       begin
         _fetch
-      rescue Exception
+      rescue Exception => e
         ignore_interrupts { @tarball_path.unlink if @tarball_path.exist? }
-        raise
+        if e.kind_of? ErrorDuringExecution
+          raise CurlDownloadStrategyError, "Download failed: #{@url}"
+        else
+          raise
+        end
       end
     else
       puts "File already downloaded in #{File.dirname(@tarball_path)}"
@@ -183,8 +187,7 @@ end
 class CurlBottleDownloadStrategy <CurlDownloadStrategy
   def initialize url, name, version, specs
     super
-    HOMEBREW_CACHE_BOTTLES.mkpath
-    @tarball_path=HOMEBREW_CACHE_BOTTLES+("#{name}-#{version}"+ext)
+    @tarball_path = HOMEBREW_CACHE/"#{name}-#{version}.bottle#{ext}"
   end
   def stage
     ohai "Pouring #{File.basename(@tarball_path)}"
@@ -196,6 +199,7 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
     @unique_token="#{name}--svn" unless name.to_s.empty? or name == '__UNKNOWN__'
+    @unique_token += "-HEAD" if ARGV.include? '--HEAD'
     @co=HOMEBREW_CACHE+@unique_token
   end
 
@@ -238,16 +242,14 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
     end
   end
 
-  def _fetch_command svncommand, url, target
-    [svn, svncommand, '--force', url, target]
-  end
-
   def fetch_repo target, url, revision=nil, ignore_externals=false
     # Use "svn up" when the repository already exists locally.
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
     svncommand = target.exist? ? 'up' : 'checkout'
-    args = _fetch_command svncommand, url, target
+    args = [svn, svncommand, '--force']
+    args << url if !target.exist?
+    args << target
     args << '-r' << revision if revision
     args << '--ignore-externals' if ignore_externals
     quiet_safe_system(*args)
@@ -280,6 +282,22 @@ class StrictSubversionDownloadStrategy < SubversionDownloadStrategy
   end
 end
 
+# Download from SVN servers with invalid or self-signed certs
+class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
+  def fetch_repo target, url, revision=nil, ignore_externals=false
+    # Use "svn up" when the repository already exists locally.
+    # This saves on bandwidth and will have a similar effect to verifying the
+    # cache as it will make any changes to get the right revision.
+    svncommand = target.exist? ? 'up' : 'checkout'
+    args = [svn, svncommand, '--non-interactive', '--trust-server-cert', '--force']
+    args << url if !target.exist?
+    args << target
+    args << '-r' << revision if revision
+    args << '--ignore-externals' if ignore_externals
+    quiet_safe_system(*args)
+  end
+end
+
 class GitDownloadStrategy < AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
@@ -292,6 +310,14 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 
   def support_depth?
+    !commit_history_required? and depth_supported_host?
+  end
+
+  def commit_history_required?
+    @spec == :sha
+  end
+
+  def depth_supported_host?
     @url =~ %r(git://) or @url =~ %r(https://github.com/)
   end
 
@@ -304,7 +330,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
       Dir.chdir(@clone) do
         # Check for interupted clone from a previous install
         unless system 'git', 'status', '-s'
-          ohai "Removing invalid .git repo from cache"
+          puts "Removing invalid .git repo from cache"
           FileUtils.rm_rf @clone
         end
       end
@@ -321,7 +347,6 @@ class GitDownloadStrategy < AbstractDownloadStrategy
       Dir.chdir(@clone) do
         safe_system 'git', 'remote', 'set-url', 'origin', @url
         quiet_safe_system 'git', 'fetch', 'origin'
-        # If we're going to checkout a tag, then we need to fetch new tags too.
         quiet_safe_system 'git', 'fetch', '--tags' if @spec == :tag
       end
     end
@@ -335,9 +360,14 @@ class GitDownloadStrategy < AbstractDownloadStrategy
         case @spec
         when :branch
           nostdout { quiet_safe_system 'git', 'checkout', "origin/#{@ref}" }
-        when :tag
+        when :tag, :sha
           nostdout { quiet_safe_system 'git', 'checkout', @ref }
         end
+      else
+        # otherwise the checkout-index won't checkout HEAD
+        # https://github.com/mxcl/homebrew/issues/7124
+        # must specify origin/master, otherwise it resets to the current local HEAD
+        quiet_safe_system "git", "reset", "--hard", "origin/master"
       end
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
       safe_system 'git', 'checkout-index', '-a', '-f', "--prefix=#{dst}/"

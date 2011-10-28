@@ -1,16 +1,23 @@
 require 'formula'
 
 class Ldns < Formula
-  url 'http://nlnetlabs.nl/downloads/ldns/ldns-1.6.5.tar.gz'
+  url 'http://nlnetlabs.nl/downloads/ldns/ldns-1.6.10.tar.gz'
   homepage 'http://nlnetlabs.nl/projects/ldns/'
-  sha1 '267eea7a8a7af5a373aed6c26084ed9e43bddc4d'
+  sha1 '7798a32c6f50a4fb7d56ddf772163dc1cb79c1a4'
 
   def install
-      system "./configure", "--prefix=#{prefix}"
+      system "./configure", "--prefix=#{prefix}", "--disable-gost"
       system "make"
       system "make install"
+
       Dir.chdir('drill') do
         system "./configure", "--prefix=#{prefix}", "--with-ldns=#{prefix}"
+        system "make"
+        system "make install"
+      end
+
+      Dir.chdir('examples') do
+        system "./configure", "--prefix=#{prefix}", "--with-ldns=#{prefix}", "--disable-gost"
         system "make"
         system "make install"
       end

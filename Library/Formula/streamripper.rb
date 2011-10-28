@@ -7,7 +7,7 @@ class Streamripper < Formula
 
   depends_on 'glib'
 
-  fails_with_llvm "strange runtime errors with llvm"
+  fails_with_llvm "Strange runtime errors with LLVM.", :build => 2335
 
   def install
     File.chmod 0755, "./install-sh" # without this 'make install' doesn't seem to work (permission denied)

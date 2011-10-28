@@ -9,7 +9,8 @@ class Highlight < Formula
   depends_on 'lua'
 
   def install
-    system "make", "PREFIX=#{prefix}", "conf_dir=#{etc}/highlight"
-    system "make", "PREFIX=#{prefix}", "conf_dir=#{etc}/highlight", "install"
+    conf_dir = etc+'highlight/' # highlight needs a final / for conf_dir
+    system "make", "PREFIX=#{prefix}", "conf_dir=#{conf_dir}"
+    system "make", "PREFIX=#{prefix}", "conf_dir=#{conf_dir}", "install"
   end
 end

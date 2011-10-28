@@ -1,7 +1,7 @@
 require 'formula'
 
 class Plowshare < Formula
-  head 'http://plowshare.googlecode.com/svn/trunk/'
+  head 'https://code.google.com/p/plowshare/', :using => :git
   homepage 'http://code.google.com/p/plowshare/'
 
   depends_on 'recode'

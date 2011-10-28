@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mpfr < Formula
-  url 'http://www.mpfr.org/mpfr-3.0.1/mpfr-3.0.1.tar.bz2'
+  url 'http://www.mpfr.org/mpfr-3.1.0/mpfr-3.1.0.tar.bz2'
   homepage 'http://www.mpfr.org/'
-  md5 'bfbecb2eacb6d48432ead5cfc3f7390a'
+  md5 '238ae4a15cc3a5049b723daef5d17938'
 
   depends_on 'gmp'
 
@@ -12,7 +12,7 @@ class Mpfr < Formula
   end
 
   def patches
-    {:p1 => ['http://www.mpfr.org/mpfr-3.0.1/allpatches']}
+    { :p1 => "http://www.mpfr.org/mpfr-3.1.0/allpatches" }
   end
 
   def install
@@ -25,7 +25,7 @@ class Mpfr < Formula
       args << "--build=x86_64-apple-darwin"
     else
       ENV.m32
-      args << "--host=none-apple-darwin"
+      args << "--build=none-apple-darwin"
     end
 
     system "./configure", *args
