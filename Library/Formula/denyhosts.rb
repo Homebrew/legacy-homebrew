@@ -18,6 +18,8 @@ class Denyhosts < Formula
     # 'data path' via command line arguments to `setup.py`.
     inreplace 'setup.py' do |s|
       s.change_make_var! 'libpath', "''"
+      s.change_make_var! 'scriptspath', "''"
+      s.change_make_var! 'pluginspath', "''"
     end
 
     # Make it so that all DenyHosts tools have a default path that points at
