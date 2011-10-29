@@ -15,8 +15,4 @@ class Alac < Formula
     end
     (include+'alac').install Dir['codec/*.h']
   end
-
-  def test
-    system "test -e #{bin}/alacconvert"
-  end
 end
