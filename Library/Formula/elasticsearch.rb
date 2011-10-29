@@ -56,12 +56,19 @@ class Elasticsearch < Formula
     To start ElasticSearch manually:
         elasticsearch -f -D es.config=#{prefix}/config/elasticsearch.yml
 
-    See the 'elasticsearch.yml' file for configuration options.
+    See the 'elasticsearch.yml' file for overview of configuration options.
 
-    You'll find the ElasticSearch log here:
+    Note that for development purposes, it usually makes sense
+    to use small number of shards and no replicas.
+
+    You may want to put something like this in the configuration file:
+        index.number_of_shards: 1
+        index.number_of_replicas: 0
+
+    The ElasticSearch log is here:
         open #{var}/log/elasticsearch/#{cluster_name}.log
 
-    The folder with cluster data is here:
+    And the folder with cluster data is here:
         open #{var}/elasticsearch/#{cluster_name}/
 
     You should see ElasticSearch running:
