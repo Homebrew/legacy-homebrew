@@ -27,6 +27,12 @@ class Elasticsearch < Formula
       s.gsub! /#\s*path\.logs\: [^\n]+/, "path.logs: #{var}/log/elasticsearch/"
     end
 
+    # Install configuration files to 'etc' and symlink them from Cellar
+    (etc+'elasticsearch').install prefix+'config/elasticsearch.yml'
+    (etc+'elasticsearch').install prefix+'config/logging.yml'
+    ln_s (etc+'elasticsearch/elasticsearch.yml'), (prefix+'config/elasticsearch.yml')
+    ln_s (etc+'elasticsearch/logging.yml'),       (prefix+'config/logging.yml')
+
     # Write .plist file for `launchd`
     (prefix+'org.elasticsearch.plist').write startup_plist
     (prefix+'org.elasticsearch.plist').chmod 0644
