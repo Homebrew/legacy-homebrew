@@ -1,8 +1,8 @@
 /* ****************************************************
 
-	@file         screen.css
-	@description  Screen stylesheet
-	vim: set noet ts=4 fdm=marker fenc=utf-8:
+  @file         screen.css
+  @description  Screen stylesheet
+  vim: set noet ts=4 fdm=marker fenc=utf-8:
 
 ***************************************************** */
 
@@ -15,14 +15,14 @@ html { font-size: 62.5%; }
 html, body { height: 100%; }
 
 body {
-	font-family: Helvetica, Arial, sans-serif;
-	font-size: 150%;
-	line-height: 1.3;
-	color: #f6e6cc;
-	background: #27221a url("../img/bg-body.gif");
-	position: relative;
-	behavior: url("/js/ie6/csshover.htc");
-	padding: 0 30px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 150%;
+  line-height: 1.3;
+  color: #f6e6cc;
+  background: #27221a url("../img/bg-body.gif");
+  position: relative;
+  behavior: url("/js/ie6/csshover.htc");
+  padding: 0 30px;
 }
 
 p,ul,ol,dl,table,pre { margin-bottom: 1em; }
@@ -47,49 +47,49 @@ h1,h2,h3,h4,h5,h6 { line-height: 1.1; }
 ::-moz-selection { background: #745626; }
 
 h1 {
-	font-size: 420%;
-	margin: 0 0 0.1em;
-	font-family: 'ChunkFiveRegular', serif;
-	font-weight: normal;
-	text-shadow: 1px 1px 10px rgba(0,0,0,0.25);
+  font-size: 420%;
+  margin: 0 0 0.1em;
+  font-family: 'ChunkFiveRegular', serif;
+  font-weight: normal;
+  text-shadow: 1px 1px 10px rgba(0,0,0,0.25);
 }
 
 h1 a,
 h1 a:hover {
-	color: #d7af72;
-	font-weight: normal;
-	text-decoration: none;
+  color: #d7af72;
+  font-weight: normal;
+  text-decoration: none;
 }
 
 #subtitle {
-	color: #a1804c;
+  color: #a1804c;
 }
 
 #wrap {
-	width: 52em;
-	/*width: 760px;*/
-	max-width: 100%;
-	margin: 0 auto;
-	padding: 30px 0 0;
+  width: 52em;
+  /*width: 760px;*/
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 30px 0 0;
 }
 
 #header {
-	text-align: center;
-	padding: 1em 0 2em;
+  text-align: center;
+  padding: 1em 0 2em;
 }
 
 pre {
-	background: rgba(0,0,0,0.3);
-	color: #fff;
-	padding: 8px 10px;
-	border-radius: 0.4em;
-	-moz-border-radius: 0.4em;
-	-webkit-border-radius: 0.4em;
-	overflow-x: hidden;
+  background: rgba(0,0,0,0.3);
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 0.4em;
+  -moz-border-radius: 0.4em;
+  -webkit-border-radius: 0.4em;
+  overflow-x: auto;
 }
 
 pre code {
-	font-size: 10pt;
+  font-size: 10pt;
 }
 
 /*}}}*/
@@ -98,81 +98,81 @@ pre code {
 ******************************************************************************/
 
 #informations {
-	border-top: 1px solid rgba(0,0,0,0.5);
+  border-top: 1px solid rgba(0,0,0,0.5);
 }
 
 #informations ul {
-	margin: 0;
+  margin: 0;
 }
 
 #informations .row {
-	border-bottom: 1px solid rgba(0,0,0,0.5);
-	border-top: 1px solid rgba(255,255,255,0.08);
-	padding: 2em 20px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.5);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 2em 20px 0;
 }
  
 #informations .row .col-1 {
-	width: 49%;
-	float: left;
-	padding: 0 0 1em;
+  width: 49%;
+  float: left;
+  padding: 0 0 1em;
 }
 
 #informations .row .col-2 {
-	width: 49%;
-	float: right;
-	padding: 0 0 1em;
+  width: 49%;
+  float: right;
+  padding: 0 0 1em;
 }
 
 .button {
-	text-align: center;
+  text-align: center;
 }
 
 #informations .button a {
-	background: rgba(162,107,20,0.3);
-	padding: 8px 10px 6px;
-	border-radius: 0.4em;
-	-moz-border-radius: 0.4em;
-	-webkit-border-radius: 0.4em;
-	box-shadow: 0 0 5px rgba(0,0,0,0.4);
-	-moz-box-shadow: 0 0 5px rgba(0,0,0,0.4);
-	-webkit-box-shadow: 0 0 5px rgba(0,0,0,0.4);
-	text-decoration: none;
+  background: rgba(162,107,20,0.3);
+  padding: 8px 10px 6px;
+  border-radius: 0.4em;
+  -moz-border-radius: 0.4em;
+  -webkit-border-radius: 0.4em;
+  box-shadow: 0 0 5px rgba(0,0,0,0.4);
+  -moz-box-shadow: 0 0 5px rgba(0,0,0,0.4);
+  -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.4);
+  text-decoration: none;
 }
 
 #informations .button a:hover {
-	background: rgba(162,107,20,0.25);
+  background: rgba(162,107,20,0.25);
 }
 
 #informations .button-large {
-	padding: 2em 0 1em;
-	font-size: 120%;
+  padding: 2em 0 1em;
+  font-size: 120%;
 }
 
 #informations .quote {
-	text-align: center;
-	color: #816f51;
-	padding-bottom: 2em;
+  text-align: center;
+  color: #816f51;
+  padding-bottom: 2em;
 }
 
 #informations .quote blockquote {
-	/*font-family: Georgia, serif;*/
-	font-size: 140%;
-	padding: 0 15%;
+  /*font-family: Georgia, serif;*/
+  font-size: 140%;
+  padding: 0 15%;
 }
 
 #informations .quote blockquote span {
-	font-family: Georgia, serif;
-	font-size: 140%;
-	line-height: 0.5;
-	vertical-align: sub;
+  font-family: Georgia, serif;
+  font-size: 140%;
+  line-height: 0.5;
+  vertical-align: sub;
 }
 
 #informations .quote cite {
-	font-style: normal;
+  font-style: normal;
 }
 
 #informations .quote cite a {
-	font-weight: normal;
+  font-weight: normal;
 }
 
 /*}}}*/
