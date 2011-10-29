@@ -5,7 +5,7 @@ class Syck < Formula
   homepage 'https://wiki.github.com/indeyets/syck/'
   md5 '198f925b4ed7fe04a182c35014498634'
 
-  fails_with_llvm
+  fails_with_llvm :build => 2334
 
   def install
     ENV.deparallelize # Not parallel safe.
