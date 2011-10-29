@@ -1,42 +1,42 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
-	<head>
-		<title>Homebrew &mdash; MacPorts driving you to drink? Try Homebrew!</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<meta name="dc.creator" content="Rémi Prévost - http://remiprevost.com" />
+  <head>
+    <title>Homebrew &mdash; MacPorts driving you to drink? Try Homebrew!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="dc.creator" content="Rémi Prévost - http://remiprevost.com" />
 
-		<link rel="stylesheet" href="./css/screen.css" type="text/css" media="screen" />
-		<link rel="stylesheet" href="./css/fonts/chunkfive/chunkfive.css" type="text/css" media="screen" />
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-		<script type="text/javascript" src="./js/global.js"></script>
+    <link rel="stylesheet" href="./css/screen.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="./css/fonts/chunkfive/chunkfive.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script type="text/javascript" src="./js/global.js"></script>
 
-	</head>
-	<body>
-		<div id="wrap">
-			<div id="header">
-				<h1><a href="./">Homebrew</a></h1>
-				<p id="subtitle"><strong>The missing package manager for OS X</strong></p>
-			</div>
+  </head>
+  <body>
+    <div id="wrap">
+      <div id="header">
+        <h1><a href="./">Homebrew</a></h1>
+        <p id="subtitle"><strong>The missing package manager for OS X</strong></p>
+      </div>
 
-			<div id="informations">
-				<ul>
-					<li>
-						<div class="group row">
-							<div class="col-1">
-								<p>Homebrew is the easiest and most flexible way to install the UNIX tools Apple didn't include with OS X.</p>
-							</div>
-							<div class="col-2">
-								<pre><code><span style="color: #e3d796;">$</span> brew install wget</code></pre>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="group row">
-							<div class="col-1">
-								<p>Packages are installed into their own isolated prefixes and then symlinked into <code>/usr/local</code>.</p>
-							</div>
-							<div class="col-2">
-								<pre><code><span style="color: #e3d796;">$</span> cd /usr/local
+      <div id="informations">
+        <ul>
+          <li>
+            <div class="group row">
+              <div class="col-1">
+                <p>Homebrew is the easiest and most flexible way to install the UNIX tools Apple didn't include with OS X.</p>
+              </div>
+              <div class="col-2">
+                <pre><code><span style="color: #e3d796;">$</span> brew install wget</code></pre>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="group row">
+              <div class="col-1">
+                <p>Homebrew installs packages into their own isolated prefix and then symlinks everything into <code>/usr/local</code>.</p>
+              </div>
+              <div class="col-2">
+                <pre><code><span style="color: #e3d796;">$</span> cd /usr/local
 <span style="color: #e3d796;">$</span> find Cellar
 Cellar/wget/1.12
 Cellar/wget/1.12/bin/wget
@@ -45,47 +45,47 @@ Cellar/wget/1.12/share/man/man1/wget.1
 <span style="color: #e3d796;">$</span> ls -l bin
 bin/wget -&gt; ../Cellar/wget/1.12/bin/wget</code></pre>
 
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="group row">
-							<div class="col-1">
-								<p>Just extract the tarball and straight away you have a working Homebrew installation. </p>
-							</div>
-							<div class="col-2">
-								<p class="button"><a href="http://wiki.github.com/mxcl/homebrew/installation">Install Homebrew Today!</a></p>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="group row">
-							<div class="col-1">
-								<p>Create new Homebrew packages in seconds.</p>
-							</div>
-							<div class="col-2">
-								<pre><code><span style="color: #e3d796;">$</span> brew create http://foo.com/bar-1.0.tgz
-Created /usr/local/Library/Formula/bar.rb</code></pre>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="group row">
-							<div class="col-1">
-								<p>Easily adapt Homebrew formula to your needs. And since it's all Git underneath your changes are merged automatically with upstream updates.</p>
-							</div>
-							<div class="col-2">
-								<pre><code><span style="color: #e3d796;">$</span> brew edit wget <span style="color: #666;"># opens in TextMate!</span></code></pre>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="group row">
-							<div class="col-1">
-								<p>Homebrew formula are simple Ruby scripts:</p>
-							</div>
-							<div class="col-2">
-								<pre class="overflow"><code><span style="color: #8a9597;">require</span> <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">formula</span><span style="color: #c2c98f;">'</span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="group row">
+              <div class="col-1">
+                <p>Homebrew is self-contained and unintrusive. </p>
+              </div>
+              <div class="col-2">
+                <p class="button"><a href="http://wiki.github.com/mxcl/homebrew/installation">Install Homebrew Today!</a></p>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="group row">
+              <div class="col-1">
+                <p>Create your own Homebrew packages in seconds.</p>
+              </div>
+              <div class="col-2">
+                <pre><code><span style="color: #e3d796;">$</span> brew create http://foo.com/bar-1.0.tgz
+Created /usr/local/Library/Formula/foo.rb</code></pre>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="group row">
+              <div class="col-1">
+                <p>Homebrew has a Git foundation, so enjoy version control on your brewing customizations and easily merge upstream updates. </p>
+              </div>
+              <div class="col-2">
+                <pre><code><span style="color: #e3d796;">$</span> brew edit wget <span style="color: #666;"># opens in TextMate!</span></code></pre>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="group row">
+              <div class="col-1">
+                <p>Homebrew formula are simple Ruby scripts:</p>
+              </div>
+              <div class="col-2">
+                <pre class="overflow"><code><span style="color: #8a9597;">require</span> <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">formula</span><span style="color: #c2c98f;">'</span>
 
 <span style="color: #8a9597;">class</span> <span style="color: #e3d796;"><em>Wget</em></span> &lt; Formula
   homepage <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">http://www.gnu.org/wget/</span><span style="color: #c2c98f;">'</span>
@@ -97,34 +97,34 @@ Created /usr/local/Library/Formula/bar.rb</code></pre>
     system <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">make install</span><span style="color: #c2c98f;">'</span>
   <span style="color: #8a9597;">end</span>
 <span style="color: #8a9597;">end</span></code></pre>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="group row">
-							<div class="col-1">
-								<p>Homebrew complements OS X. Install your gems with gem, and their dependencies with brew.</p>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="row group button button-large">
-							<p><a href="http://wiki.github.com/mxcl/homebrew">Please oh please tell me more!</a></p>
-						</div>
-					</li>
-					<li>
-						<div class="group row quote">
-							<blockquote>
-								<span>“</span>
-								Homebrew is the bee’s knees, friends. So far it’s a perfect replacement for MacPorts.
-								<span>”</span>
-							</blockquote>
-							<cite>— <a href="http://twitter.com/thillerson/status/6688848379">@thillerson</a></cite>
-						</div>
-					</li>
-				</ul>
-			</div>
-		</div>
-		<a href="http://github.com/mxcl/homebrew"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub" /></a>
-	</body>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="group row">
+              <div class="col-1">
+                <p>Homebrew compliments OS X. Install your gems with gem, and their dependencies with brew.</p>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="row group button button-large">
+              <p><a href="http://wiki.github.com/mxcl/homebrew">Please! Oh please teach me more!</a></p>
+            </div>
+          </li>
+          <li>
+            <div class="group row quote">
+              <blockquote>
+                <span>“</span>
+                Homebrew is the bee’s knees, friends. So far it’s a perfect replacement for MacPorts.
+                <span>”</span>
+              </blockquote>
+              <cite>— <a href="http://twitter.com/thillerson/status/6688848379">@thillerson</a></cite>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <a href="http://github.com/mxcl/homebrew"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub" /></a>
+  </body>
 </html>
