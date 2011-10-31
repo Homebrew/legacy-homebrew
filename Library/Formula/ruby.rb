@@ -1,10 +1,10 @@
 require 'formula'
 
 class Ruby < Formula
-  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p290.tar.bz2'
+  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p0.tar.bz2'
   homepage 'http://www.ruby-lang.org/en/'
   head 'http://svn.ruby-lang.org/repos/ruby/trunk/', :using => :svn
-  sha256 '403b3093fbe8a08dc69c269753b8c6e7bd8f87fb79a7dd7d676913efe7642487'
+  sha256 'ca8ba4e564fc5f98b210a5784e43dfffef9471222849e46f8e848b37e9f38acf'
 
   depends_on 'readline'
   depends_on 'libyaml'
@@ -50,6 +50,9 @@ class Ruby < Formula
 
     args << "--program-suffix=19" if ARGV.include? "--with-suffix"
     args << "--with-arch=x86_64,i386" if ARGV.build_universal?
+    # based on http://svn.ruby-lang.org/repos/ruby/tags/v1_9_3_0/NEWS for OSX Lion:
+    args << "--with-gcc=gcc-4.2" if `clang --version`.include? "Apple clang version 2.1"
+    args << "--with-gcc=clang" if `clang --version`.include? "Apple clang version 3.0"
 
     # Put gem, site and vendor folders in the HOMEBREW_PREFIX
 
