@@ -21,5 +21,6 @@ class Activemq < Formula
     libexec.install Dir['*']
 
     (bin+'activemq-admin').write startup_script('activemq-admin')
+    (bin+'activemq').write startup_script('activemq')
   end
 end
