@@ -10,6 +10,7 @@ class Couchdb < Formula
   depends_on 'spidermonkey'
   depends_on 'icu4c'
   depends_on 'erlang'
+  depends_on 'help2man'
   depends_on 'curl' if MacOS.leopard?
 
   def install
