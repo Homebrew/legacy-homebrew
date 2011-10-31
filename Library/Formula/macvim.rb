@@ -33,6 +33,25 @@ class Macvim < Formula
     arch = MacOS.prefer_64_bit? ? 'x86_64' : 'i386'
     ENV['ARCHFLAGS'] = "-arch #{arch}"
 
+    if !ARGV.include? '--HEAD' and MacOS.xcode_version == '4.2'
+      if !ARGV.include? '--dragons'
+        puts ""
+        onoe <<-EOS
+The current snapshot version of MacVim does not compile properly
+with Xcode 4.2 - see https://github.com/mxcl/homebrew/issues/7763
+for more information.  
+
+Pass `--dragons` if you want to try compiling anyway.
+
+As a workaround, you can install the development version for the 
+moment:
+      `brew install macvim --HEAD #{ARGV.join(" ")}`
+
+        EOS
+        exit 1
+      end
+    end
+
     args = ["--with-features=huge",
             "--with-tlib=ncurses",
             "--enable-multibyte",
