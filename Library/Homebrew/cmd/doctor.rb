@@ -618,6 +618,21 @@ def check_for_autoconf
   end
 end
 
+def check_for_coreutils
+  binary = `/usr/bin/which ls`.chomp
+  unless binary == '/bin/ls'
+    puts <<-EOS.undent
+      An "ls" was found blocking the OS X-provided version at:
+        #{binary}
+      This may occur from installing coreutils with --default-names
+
+      This can cause many problems in bash scripts and may cause some Homebrew
+      formulae to fail to compile.
+
+    EOS
+  end
+end
+
 def __check_linked_brew f
   links_found = []
 
@@ -835,6 +850,7 @@ module Homebrew extend self
       check_for_git
       check_git_newline_settings
       check_for_autoconf
+      check_for_coreutils
       check_for_linked_kegonly_brews
       check_for_other_frameworks
       check_tmpdir
