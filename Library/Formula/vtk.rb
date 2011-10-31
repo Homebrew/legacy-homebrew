@@ -14,6 +14,7 @@ class Vtk < Formula
     ['--qt', "Enable Qt extension."],
     ['--qt-extern', "Enable Qt extension (via external Qt)"],
     ['--tcl', "Enable Tcl wrapping."],
+    ['--x11', "Use the X11 backend."],
   ]
   end
 
@@ -21,12 +22,18 @@ class Vtk < Formula
     args = std_cmake_parameters.split + [
              "-DVTK_REQUIRED_OBJCXX_FLAGS:STRING=''",
              "-DVTK_USE_CARBON:BOOL=OFF",
-             "-DVTK_USE_COCOA:BOOL=ON",
              "-DBUILD_TESTING:BOOL=OFF",
              "-DBUILD_EXAMPLES:BOOL=OFF",
              "-DBUILD_SHARED_LIBS:BOOL=ON",
              "-DCMAKE_INSTALL_RPATH:STRING='#{lib}/vtk-5.8'",
              "-DCMAKE_INSTALL_NAME_DIR:STRING='#{lib}/vtk-5.8'"]
+
+    if ARGV.include? '--x11'
+      args << "-DVTK_USE_COCOA:BOOL=OFF"
+      args << "-DVTK_USE_X:BOOL=ON"
+    else
+      args << "-DVTK_USE_COCOA:BOOL=ON"
+    end
 
     if ARGV.include? '--python'
       python_prefix = `python-config --prefix`.strip
