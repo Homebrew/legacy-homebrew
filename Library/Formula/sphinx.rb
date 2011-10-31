@@ -2,7 +2,7 @@ require 'formula'
 
 class Libstemmer < Formula
   # upstream is constantly changing the tarball,
-  # so doing checksumv verification here would require
+  # so doing checksum verification here would require
   # constant, rapid updates to this formula.
   head 'http://snowball.tartarus.org/dist/libstemmer_c.tgz'
   homepage 'http://snowball.tartarus.org/'
@@ -14,7 +14,8 @@ class Sphinx < Formula
   md5 '7b9b618cb9b378f949bb1b91ddcc4f54'
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
-  fails_with_llvm "fails with: ld: rel32 out of range in _GetPrivateProfileString from /usr/lib/libodbc.a(SQLGetPrivateProfileString.o)"
+  fails_with_llvm "ld: rel32 out of range in _GetPrivateProfileString from /usr/lib/libodbc.a(SQLGetPrivateProfileString.o)",
+    :build => 2334
 
   def install
     lstem = Pathname.pwd+'libstemmer_c'

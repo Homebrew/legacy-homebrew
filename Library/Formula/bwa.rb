@@ -1,9 +1,10 @@
 require 'formula'
 
 class Bwa < Formula
-  url 'http://downloads.sourceforge.net/project/bio-bwa/bwa-0.5.8a.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/bio-bwa/bwa-0.5.9.tar.bz2'
   homepage 'http://bio-bwa.sourceforge.net/'
-  md5 '4f34d6d1156f7259eb5a3c946f7f59db'
+  md5 '27facf40c92e9af40def844b245ed7db'
+  head 'https://github.com/lh3/bwa.git'
 
   def install
     inreplace "Makefile" do |s|

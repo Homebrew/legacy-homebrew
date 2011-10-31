@@ -1,9 +1,9 @@
 require 'formula'
 
 class Transmission < Formula
-  url 'http://download.transmissionbt.com/files/transmission-2.33.tar.bz2'
+  url 'http://download.transmissionbt.com/files/transmission-2.41.tar.bz2'
   homepage 'http://www.transmissionbt.com/'
-  md5 '082217a65713ac879410c622cbe6eb26'
+  md5 '799b7bb24e236dbbdc86275f89ea9e67'
 
   # Actually depends on libcurl but doesn't find it without pkg-config
   depends_on 'pkg-config' => :build
