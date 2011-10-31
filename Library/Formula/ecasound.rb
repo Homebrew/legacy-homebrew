@@ -6,7 +6,7 @@ class Ecasound < Formula
   md5 'd9ded0074a8eeb59dd507c248220d010'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--enable-rubyecasound=no",
                           "--prefix=#{prefix}"
     system "make install"
   end
