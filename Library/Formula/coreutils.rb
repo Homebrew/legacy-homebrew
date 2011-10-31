@@ -60,6 +60,12 @@ which is known to cause problems with "bash-completion".
 
 The man pages are still referenced with the g-prefix.
     EOS
+    else
+      <<-EOS
+Installing coreutils using the default names will cause the utilities to
+shadow system-provided BSD tools if /usr/local/bin is ahead of /usr/bin in
+the path. This may cause problems in shell scripts.
+      EOS
     end
   end
 end
