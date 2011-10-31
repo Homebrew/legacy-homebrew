@@ -11,6 +11,10 @@ class Mpfr < Formula
     [["--32-bit", "Force 32-bit."]]
   end
 
+  def patches
+    { :p1 => "http://www.mpfr.org/mpfr-3.1.0/allpatches" }
+  end
+
   def install
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
 

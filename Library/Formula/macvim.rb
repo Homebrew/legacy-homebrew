@@ -33,15 +33,14 @@ class Macvim < Formula
     arch = MacOS.prefer_64_bit? ? 'x86_64' : 'i386'
     ENV['ARCHFLAGS'] = "-arch #{arch}"
 
-    args = ["--with-macsdk=#{MACOS_VERSION}",
-           "--with-features=huge",
-           "--with-tlib=ncurses",
-           "--enable-multibyte",
-           "--with-macarchs=#{arch}",
-           "--enable-perlinterp",
-           "--enable-pythoninterp",
-           "--enable-rubyinterp",
-           "--enable-tclinterp"]
+    args = ["--with-features=huge",
+            "--with-tlib=ncurses",
+            "--enable-multibyte",
+            "--with-macarchs=#{arch}",
+            "--enable-perlinterp",
+            "--enable-pythoninterp",
+            "--enable-rubyinterp",
+            "--enable-tclinterp"]
 
     args << "--enable-cscope" if ARGV.include? "--with-cscope"
     args << "--enable-clipboard" if ARGV.include? "--enable-clipboard"

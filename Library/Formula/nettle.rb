@@ -7,12 +7,13 @@ class Nettle < Formula
 
   depends_on 'gmp'
 
-  # Fix undefined symbols when linking
-  def patches; DATA; end
+  def patches
+    # patch from MacPorts to sort out really ugly dylib mess
+    { :p0 => "https://trac.macports.org/export/85828/trunk/dports/devel/nettle/files/patch-configure.diff" }
+  end
 
   def install
     ENV.universal_binary
-    ENV.append 'LDFLAGS', '-lgmp' # Fix undefined symbols when linking
     ENV['DYLD_LIBRARY_PATH'] = lib # otherwise 'make check' fails
 
     system "./configure", "--disable-dependency-tracking",
@@ -24,18 +25,3 @@ class Nettle < Formula
     system "make check"
   end
 end
-
-__END__
-diff --git a/Makefile.in b/Makefile.in
-index fd486f5..227ccd9 100644
---- a/Makefile.in
-+++ b/Makefile.in
-@@ -163,7 +163,7 @@ $(LIBNETTLE_FORLINK): $(nettle_PURE_OBJS)
-           && ln -sf ../$(LIBNETTLE_FORLINK) $(LIBNETTLE_SONAME))
- 
- $(LIBHOGWEED_FORLINK): $(hogweed_PURE_OBJS) $(LIBNETTLE_FORLINK)
--	$(LIBHOGWEED_LINK) $(hogweed_PURE_OBJS) -o $@ $(LIBHOGWEED_LIBS)
-+	$(LIBHOGWEED_LINK) $(hogweed_PURE_OBJS) $(nettle_PURE_OBJS) -o $@ $(LIBHOGWEED_LIBS)
- 	-mkdir .lib 2>/dev/null
- 	[ -z "$(LIBHOGWEED_SONAME)" ] || (cd .lib \
-           && ln -sf ../$(LIBHOGWEED_FORLINK) $(LIBHOGWEED_SONAME))

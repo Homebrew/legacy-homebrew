@@ -9,7 +9,7 @@ class Pixman < Formula
 
   def install
     if ENV.compiler == :llvm
-        if MacOS.xcode_version == "4.1"
+        if MacOS.xcode_version >= "4.1"
             ENV.clang
         else
             ENV.gcc_4_2

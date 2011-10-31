@@ -61,25 +61,40 @@ For the full command list, see the COMMANDS section.
 
     If `--force` is passed, remove out-of-date keg-only brews as well.
 
-  * `create [--no-fetch]` <URL>:
-    Generate a formula for the downloadable file at <URL> and opens it in
+  * `create [--autotools|--cmake] [--no-fetch]` <URL>:
+    Generate a formula for the downloadable file at <URL> and open it in
     $EDITOR. Homebrew will attempt to automatically derive the formula name
-    and version, if it fails, you'll have to make your own template. I suggest
-    copying wget's.
+    and version, but if it fails, you'll have to make your own template. The wget
+    formula serves as a simple example.
+
+    If `--autotools` is passed, create a basic template for an Autotools-style build.
+    If `--cmake` is passed, create a basic template for a CMake-style build.
 
     If `--no-fetch` is passed, Homebrew will not download <URL> to the cache and
     will thus not add the MD5 to the formula for you.
 
-  * `deps [--1] [-n]` <formula>:
+  * `deps [--1] [-n] [--all]` <formula>:
     Show <formula>'s dependencies.
 
     If `--1` is passed, only show dependencies one level down, instead of
     recursing.
 
-    If `-n` is passed, shows dependencies in topological order.
+    If `-n` is passed, show dependencies in topological order.
+
+    If `--all` is passed, show dependencies for all formulae.
+
+  * `diy [--set-name] [--set-version]`:
+    Automatically determine the installation prefix for non-Homebrew software.
+
+    Using the output from this command, you can install your own software into
+    the Cellar and then link it into Homebrew's prefix with `brew link`.
+
+    The options `--set-name` and `--set-version` each take an argument and allow
+    you to explicitly set the name and version of the package you are installing.
 
   * `doctor`:
-    Check your system for potential problems.
+    Check your system for potential problems. Doctor exits with a non-zero status
+    if any problems are found.
 
   * `edit`:
     Open all of Homebrew for editing in TextMate.
@@ -105,8 +120,10 @@ For the full command list, see the COMMANDS section.
   * `home` <formula>:
     Open <formula>'s homepage in a browser.
 
-  * `info` <formula>:
+  * `info [--all]` <formula>:
     Display information about <formula>.
+
+    If `--all` is passed, show info for all formulae.
 
   * `info --github` <formula>:
     Open a browser to the GitHub History page for formula <formula>.
@@ -164,10 +181,15 @@ For the full command list, see the COMMANDS section.
     is done automatically when you install formula, but can be useful for DIY
     installations.
 
-  * `list [--versions]` [<formulae>]:
+  * `ls, list [--unbrewed] [--versions]` [<formulae>]:
     Without any arguments, list all installed formulae.
 
     If <formulae> are given, list the installed files for <formulae>.
+    Combined with `--verbose`, recursively list the contents of all subdirectories
+    in each <formula>'s keg.
+
+    If `--unbrewed` is passed, list all files in the Homebrew prefix not installed
+    by Homebrew.
 
     If `--versions` is passed, show the version number for installed formulae,
     or only the specified formulae if <formulae> are given.
@@ -175,6 +197,11 @@ For the full command list, see the COMMANDS section.
   * `log [git-log-options]` <formula> ...:
     Show the git log for the given formulae. Options that `git-log`(1)
     recognizes can be passed before the formula list.
+
+  * `missing [<formulae>]`:
+    Check the given <formulae> for missing dependencies.
+
+    If no <formulae> are given, check all installed brews.
 
   * `options [--compact] [--all] [--installed]` <formula>:
     Display install options specific to <formula>.
@@ -237,7 +264,7 @@ For the full command list, see the COMMANDS section.
     Show the formulas that specify <formula> as a dependency. The list is
     not recursive; only one level of dependencies is resolved.
 
-    If `--installed` is passed, only lists installed formulae.
+    If `--installed` is passed, only list installed formulae.
 
   * `versions` <formulae>:
     List previous versions of <formulae>, along with a command to checkout
