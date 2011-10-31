@@ -1,9 +1,9 @@
 require 'formula'
 
 class Kdelibs < Formula
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.6.0/src/kdelibs-4.6.0.tar.bz2'
+  url 'ftp://ftp.kde.org/pub/kde/stable/4.7.1/src/kdelibs-4.7.1.tar.bz2'
   homepage 'http://www.kde.org/'
-  md5 '9ee32f375809a42a4a8d512bd06a612b'
+  md5 'eaeacc3c94501f343eb7c4ef74c7475b'
 
   depends_on 'cmake' => :build
   depends_on 'automoc4' => :build
@@ -20,12 +20,6 @@ class Kdelibs < Formula
   depends_on 'd-bus'
   depends_on 'qt'
   depends_on 'libdbusmenu-qt'
-
-  def patches
-    # To fix https://bugs.kde.org/show_bug.cgi?id=209903. Committed upstream.
-    "https://projects.kde.org/projects/kde/kdelibs/repository/revisions/f04c3a64885c652ab3dfb6f5dd2106409b027360/diff.diff"
-    "https://projects.kde.org/projects/kde/kdelibs/repository/revisions/19f4bf0c212a28e79ef9b8d0cb35068951e58a85/diff.diff"
-  end
 
   def install
     ENV.x11
