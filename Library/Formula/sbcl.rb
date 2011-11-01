@@ -8,8 +8,8 @@ end
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.50/sbcl-1.0.50-source.tar.bz2'
-  md5 '74ce9b24516885d066ec4287cde52e8c'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.52/sbcl-1.0.52-source.tar.bz2'
+  md5 'e9e186637155184ec662b5a37634b457'
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
   fails_with_llvm "Compilation fails with LLVM.", :build => 2334

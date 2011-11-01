@@ -7,7 +7,7 @@ class Multimarkdown < Formula
   head 'https://github.com/fletcher/peg-multimarkdown.git', :branch => 'development'
 
   def install
-    ENV.append 'CFLAGS', '-include GlibFacade.h'
+    ENV.append 'CFLAGS', '-include GLibFacade.h'
     system "make"
     bin.install 'multimarkdown'
     bin.install Dir['Support/bin/*']
