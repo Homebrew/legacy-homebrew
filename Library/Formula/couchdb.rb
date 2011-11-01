@@ -7,6 +7,7 @@ class Couchdb < Formula
 
   head 'http://svn.apache.org/repos/asf/couchdb/trunk'
 
+  depends_on 'help2man' => :build
   depends_on 'spidermonkey'
   depends_on 'icu4c'
   depends_on 'erlang'
