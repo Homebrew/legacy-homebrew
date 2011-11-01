@@ -13,7 +13,9 @@ class Antiword < Formula
       s.change_make_var! "GLOBAL_RESOURCES_DIR", share+'antiword'
     end
 
-    system 'make'
+    inreplace 'antiword.h', '/usr/share/antiword', share+'antiword'
+
+    system "make CC=#{ENV.cc} LD=#{ENV.cc}"
     bin.install 'antiword'
     man1.install 'Docs/antiword.1'
     (share+'antiword').mkpath
