@@ -7,14 +7,13 @@ class Odt2txt < Formula
   homepage 'http://stosberg.net/odt2txt/'
 
   def install
-    inreplace "Makefile" do |s|
-      # Don't add /opt on OS X
-      s.gsub! "CFLAGS += -I/opt/local/include", ""
-      s.gsub! "LDFLAGS += -L/opt/local/lib", ""
-    end
+    # the build flags in the Makefile contain "/opt" paths
+    args = ["CC=#{ENV.cc}",
+            "CFLAGS=#{ENV.cflags}",
+            "LDFLAGS=#{ENV.cppflags}",
+            "DESTDIR=#{prefix}"]
 
-    # Uses a custom makefile instead of autoconf; we set DESTDIR to the prefix value
     # Use the -B flag to force make the install target to circumvent bugs in the Makefile
-    system "make", "-B", "DESTDIR=#{prefix}", "install"
+    system "make", "-B", "install", *args
   end
 end
