@@ -14,7 +14,6 @@ class Finch < Formula
   depends_on 'glib'
   depends_on 'dbus'
   depends_on 'dbus-glib'
-  depends_on 'intltool'
   depends_on 'gnutls'
   depends_on 'nss' # Extra for some SSL stuff, probably unrequired
 
