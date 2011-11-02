@@ -84,6 +84,10 @@ def audit_formula_text name, text
     problems << " * sha1 is empty"
   end
 
+  if text =~ /sha256\s+(\'\'|\"\")/
+    problems << " * sha256 is empty"
+  end
+
   # Commented-out depends_on
   if text =~ /#\s*depends_on\s+(.+)\s*$/
     problems << " * Commented-out dep #{$1}."
