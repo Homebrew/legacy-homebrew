@@ -1,9 +1,9 @@
 require 'formula'
 
 class Couchdb < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=couchdb/1.1.0/apache-couchdb-1.1.0.tar.gz'
+  url 'http://www.apache.org/dyn/closer.cgi?path=couchdb/1.1.1/apache-couchdb-1.1.1.tar.gz'
   homepage "http://couchdb.apache.org/"
-  md5 '907b763d3a14b6649bf0371ffa75a36b'
+  sha1 'c901676663279338095642462bafa2d0667df98b'
 
   head 'http://svn.apache.org/repos/asf/couchdb/trunk'
 
