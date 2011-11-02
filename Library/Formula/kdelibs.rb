@@ -1,9 +1,9 @@
 require 'formula'
 
 class Kdelibs < Formula
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.7.1/src/kdelibs-4.7.1.tar.bz2'
+  url 'ftp://ftp.kde.org/pub/kde/stable/4.7.3/src/kdelibs-4.7.3.tar.bz2'
   homepage 'http://www.kde.org/'
-  md5 'eaeacc3c94501f343eb7c4ef74c7475b'
+  md5 '57fdc211995a6846b15dfdbf40a3e2e3'
 
   depends_on 'cmake' => :build
   depends_on 'automoc4' => :build
