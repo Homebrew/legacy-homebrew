@@ -6,7 +6,8 @@ class Ipmitool < Formula
   md5 '1d0da20add7388d64c549f95538b6858'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}",
+                          "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end
 end
