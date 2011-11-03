@@ -147,6 +147,7 @@ class Emacs < Formula
 end
 
 __END__
+# For avoiding SIGSEGV when IME patch is enabled.
 diff --git a/src/nsterm.m b/src/nsterm.m
 index 635f737..4aade4a 100644
 --- src.orig/nsterm.m
@@ -160,3 +161,22 @@ index 635f737..4aade4a 100644
        emacs_event->kind = NS_NONKEY_EVENT;
        emacs_event->code = KEY_MAC_CHANGE_INPUT_METHOD;
        EV_TRAILER ((id)nil);
+--- src.orig/nsterm.m
++++ src/nsterm.m
+@@ -45,6 +45,7 @@
+ #include "fontset.h"
+ #include "composite.h"
+ #include "ccl.h"
++#include "commands.h"
+ 
+ #include "termhooks.h"
+ #include "termopts.h"
+@@ -4723,7 +4724,7 @@
+   if (NS_KEYLOG)
+     NSLog (@"firstRectForCharRange request");
+     
+-  if (NILP (Feval (Fcons (intern ("ns-in-echo-area"), Qnil))))
++  if (!cursor_in_echo_area)
+     win = XWINDOW (FRAME_SELECTED_WINDOW (emacsframe));
+   else if (WINDOWP (echo_area_window))
+     win = XWINDOW (echo_area_window);
