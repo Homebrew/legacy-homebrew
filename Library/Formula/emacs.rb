@@ -22,6 +22,7 @@ class Emacs < Formula
       ["--srgb", "Enable sRGB colors in the Cocoa version of emacs"],
       ["--with-x", "Include X11 support"],
       ["--use-git-head", "Use repo.or.cz git mirror for HEAD builds"],
+      ["--use-copy_autogen", "Use './autogen/copy_autogen' insted of 'autogen.sh'"],
     ]
   end
 
@@ -54,10 +55,13 @@ class Emacs < Formula
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
             "--infodir=#{info}/emacs"]
 
-    if ARGV.build_head? and File.exists? "./autogen/copy_autogen"
+    if ARGV.include? "--use-copy_autogen" and File.exists? "./autogen/copy_autogen"
       opoo "Using copy_autogen"
       puts "See https://github.com/mxcl/homebrew/issues/4852"
       system "autogen/copy_autogen"
+    else
+      opoo "Using ./autogen.sh"
+      system "./autogen.sh"
     end
 
     if ARGV.include? "--cocoa"
