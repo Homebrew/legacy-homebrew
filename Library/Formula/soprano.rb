@@ -14,7 +14,7 @@ class Soprano < Formula
   def install
     ENV['CLUCENE_HOME'] = HOMEBREW_PREFIX
 
-    system "cmake . #{std_cmake_parameters}"
+    system "cmake . #{std_cmake_parameters} -DSOPRANO_DISABLE_RAPTOR_PARSER=ON -DSOPRANO_DISABLE_RAPTOR_SERIALIZER=ON -DSOPRANO_DISABLE_REDLAND_BACKEND=ON"
     system "make install"
   end
 end
