@@ -1,9 +1,9 @@
 require 'formula'
 
 class Emboss < Formula
-  url 'ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.3.1.tar.gz'
+  url 'ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.4.0.tar.gz'
   homepage 'http://emboss.sourceforge.net/'
-  md5 '04d1179b6261103a77e396d54f8ac38e'
+  md5 '54993a22064222b01bd4fc8086f7684d'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"

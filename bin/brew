@@ -84,8 +84,10 @@ begin
     # Check for git commands
     if %w[branch checkout pull push rebase reset].include? cmd
       onoe "Unknown command: #{cmd} (did you mean `git #{cmd}'?)"
+      exit 1
     else
       onoe "Unknown command: #{cmd}"
+      exit 1
     end
   end
 

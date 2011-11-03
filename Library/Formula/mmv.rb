@@ -7,7 +7,7 @@ class Mmv < Formula
   homepage 'http://packages.debian.org/unstable/utils/mmv'
 
   def patches
-    "http://mirrors.kernel.org/debian/pool/main/m/mmv/mmv_1.01b-15.diff.gz"
+    "http://ftp.us.debian.org/debian/pool/main/m/mmv/mmv_1.01b-15.diff.gz"
   end
 
   def install

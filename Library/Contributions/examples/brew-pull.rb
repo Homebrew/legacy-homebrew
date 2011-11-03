@@ -13,7 +13,7 @@ if ARGV.empty?
 end
 
 HOMEBREW_REPOSITORY.cd do
-  ARGV.each do|arg|
+  ARGV.named.each do|arg|
     if arg.to_i > 0
       url = 'https://github.com/mxcl/homebrew/pull/' + arg + '.patch'
     else
@@ -36,15 +36,20 @@ HOMEBREW_REPOSITORY.cd do
     # Store current revision
     revision = `git log -n1 --format=%H`.strip()
 
-    # Makes sense to squash whitespace errors, we don't want them.
     ohai 'Applying patch'
-    safe_system 'git', 'am', '--signoff', '--whitespace=fix', patchpath
+    patch_args = %w[am --signoff]
+    # Normally we don't want whitespace errors, but squashing them can break
+    # patches so an option is provided to skip this step.
+    patch_args << '--whitespace=fix' unless ARGV.include? '--ignore-whitespace'
+    patch_args << patchpath
+
+    safe_system 'git', *patch_args
 
     issue = arg.to_i > 0 ? arg.to_i : urlmatch[2]
     if issue
       ohai "Patch closes issue ##{issue}"
       message = `git log HEAD^.. --format=%B`
-      
+
       # If this is a pull request, append a close message.
       if !message.include? 'Closes #'
         issueline = "Closes ##{issue}."
