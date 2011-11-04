@@ -1,5 +1,4 @@
 require 'formula'
-require 'fileutils'
 
 class Akka < Formula
   url 'http://akka.io/downloads/akka-microkernel-1.2.zip'
@@ -11,21 +10,19 @@ class Akka < Formula
 
   def install
     # Translate akka script
-    script = ::File.read(File.join("bin", "akka"))
-    ohai("Reading script as: #{script}")
+    script = ::File.read("bin/akka")
     script.gsub!(/^AKKA_HOME=.*$/, "AKKA_HOME=#{prefix}")
     script.gsub!(/\$AKKA_HOME\/lib\//, "$AKKA_HOME/libexec/")
-    ohai("Modified script to: #{script}")
 
-    ::FileUtils.rm "bin/akka"
-    ::FileUtils.rm "bin/akka.bat"
+    rm "bin/akka"
+    rm "bin/akka.bat"
     ohai("Deleted bin/akka and bin/akka.bat")
 
     ::File.open('bin/akka', 'w') do |f|
       f.puts script
     end
 
-    ::FileUtils.mv "lib", "libexec"
-    ::FileUtils.cp_r ".", prefix
+    mv "lib", "libexec"
+    prefix.install Dir["*"]
   end
 end
