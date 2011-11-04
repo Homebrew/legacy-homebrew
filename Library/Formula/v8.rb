@@ -6,12 +6,6 @@ class V8 < Formula
 
   depends_on 'scons' => :build
 
-  def caveats
-    s = "For build options see:\n  brew options v8"
-
-    return s
-  end
-
 
   def options
     [
