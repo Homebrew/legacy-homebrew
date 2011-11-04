@@ -64,7 +64,12 @@ The man pages are still referenced with the g-prefix.
       <<-EOS
 Installing coreutils using the default names will cause the utilities to
 shadow system-provided BSD tools if /usr/local/bin is ahead of /usr/bin in
-the path. This may cause problems in shell scripts.
+the path.
+
+This can cause problems in shell scripts.
+
+Some software in Homebrew expects the system-provided tools to be first in
+the path, and builds may fail if the coreutils verions are used instead.
       EOS
     end
   end
