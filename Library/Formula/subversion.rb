@@ -5,19 +5,11 @@ def build_perl?; ARGV.include? "--perl"; end
 def build_python?; ARGV.include? "--python"; end
 def build_ruby?; ARGV.include? "--ruby"; end
 def build_universal?; ARGV.build_universal?; end
-def with_unicode_path?; ARGV.include? '--unicode-path'; end
-
-# On 10.5 we need newer versions of apr, neon etc.
-# On 10.6 we only need a newer version of neon
-class SubversionDeps < Formula
-  url 'http://subversion.tigris.org/downloads/subversion-deps-1.6.17.tar.bz2'
-  sha1 'ebfda3416c09a91dbcf744a22ea83ed827ad3495'
-end
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
-  url 'http://subversion.tigris.org/downloads/subversion-1.6.17.tar.bz2'
-  sha1 '6e3ed7c87d98fdf5f0a999050ab601dcec6155a1'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.7.1.tar.bz2'
+  sha1 '4bfaa8e33e9eaf26a504117cd91b23805518071a'
 
   depends_on 'pkg-config' => :build
 
@@ -31,28 +23,7 @@ class Subversion < Formula
       ['--python', 'Build Python bindings.'],
       ['--ruby', 'Build Ruby bindings.'],
       ['--universal', 'Build as a Universal Intel binary.'],
-      ['--unicode-path', 'Include support for OS X unicode (but see caveats!)']
     ]
-  end
-
-  def patches
-    # Patch to find Java headers
-    p = { :p0 =>
-      "http://trac.macports.org/export/73004/trunk/dports/devel/subversion-javahlbindings/files/patch-configure.diff"
-    }
-
-    # Patch for subversion handling of OS X Unicode paths (see caveats)
-    if with_unicode_path?
-      p[:p1] = "https://gist.github.com/raw/434424/subversion-unicode-path.patch"
-    end
-
-    return p
-  end
-
-  def setup_leopard
-    # Slot dependencies into place
-    d=Pathname.getwd
-    SubversionDeps.new.brew { d.install Dir['*'] }
   end
 
   def check_neon_arch
@@ -82,11 +53,7 @@ class Subversion < Formula
 
     ENV.universal_binary if build_universal?
 
-    if MacOS.leopard?
-      setup_leopard
-    else
-      check_neon_arch if build_universal?
-    end
+    check_neon_arch if build_universal?
 
     # Use existing system zlib
     # Use dep-provided other libraries
@@ -104,7 +71,6 @@ class Subversion < Formula
 
     args << "--enable-javahl" << "--without-jikes" if build_java?
     args << "--with-ruby-sitedir=#{lib}/ruby" if build_ruby?
-    args << "--with-unicode-path" if with_unicode_path?
 
     # Undo a bit of the MacPorts patch
     inreplace "configure", "@@DESTROOT@@/", ""
@@ -159,18 +125,6 @@ class Subversion < Formula
 
   def caveats
     s = ""
-
-    if with_unicode_path?
-      s += <<-EOS.undent
-        This unicode-path version implements a hack to deal with composed/decomposed
-        unicode handling on Mac OS X which is different from linux and windows.
-        It is an implementation of solution 1 from
-        http://svn.collab.net/repos/svn/trunk/notes/unicode-composition-for-filenames
-        which _WILL_ break some setups. Please be sure you understand what you
-        are asking for when you install this version.
-
-      EOS
-    end
 
     if build_python?
       s += <<-EOS.undent
