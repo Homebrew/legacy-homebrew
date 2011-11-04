@@ -16,7 +16,6 @@ class Akka < Formula
 
     rm "bin/akka"
     rm "bin/akka.bat"
-    ohai("Deleted bin/akka and bin/akka.bat")
 
     ::File.open('bin/akka', 'w') do |f|
       f.puts script
