@@ -4,7 +4,6 @@ class Ocp < Formula
   head "git://git.code.sf.net/p/opencubicplayer/code", :using => :git
   homepage "http://sourceforge.net/p/opencubicplayer/home/"
 
-  #depends_on "binutils" => :build
   depends_on "mad" unless ARGV.include? "--without-mad"
   depends_on "flac" unless ARGV.include? "--without-flac"
   depends_on "adplug" if ARGV.include? "--with-adplug"
@@ -34,10 +33,6 @@ class Ocp < Formula
     system "./configure", *args
     system "make"
     system "make install"
-  end
-
-  def caveats
-    "For build options see:\n  brew options ocp\n\n"
   end
 
 end
