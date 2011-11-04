@@ -340,6 +340,20 @@ module MacOS extend self
     end
   end
 
+  def clang_version
+    @clang_version ||= if File.exist? "/usr/bin/clang"
+      `/usr/bin/clang --version` =~ /clang version (\d\.\d)/
+      $1
+    end
+  end
+
+  def clang_build_version
+    @clang_build_version ||= if File.exist? "/usr/bin/clang"
+      `/usr/bin/clang --version` =~ %r[tags/Apple/clang-(\d{3}(\.\d)*)]
+      $1
+    end
+  end
+
   def x11_installed?
     Pathname.new('/usr/X11/lib/libpng.dylib').exist?
   end
