@@ -10,18 +10,16 @@ class Akka < Formula
 
   def install
     # Translate akka script
-    script = ::File.read("bin/akka")
-    script.gsub!(/^AKKA_HOME=.*$/, "AKKA_HOME=#{prefix}")
-    script.gsub!(/\$AKKA_HOME\/lib\//, "$AKKA_HOME/libexec/")
+    inreplace "bin/akka", /^AKKA_HOME=.*$/, "AKKA_HOME=#{prefix}"
+    inreplace "bin/akka", /\$AKKA_HOME\/lib\//, "$AKKA_HOME/libexec/"
 
-    rm "bin/akka"
+    # Remove Windows bat file - unnecessary
     rm "bin/akka.bat"
 
-    ::File.open('bin/akka', 'w') do |f|
-      f.puts script
-    end
-
+    # Move JAR files to libexec
     mv "lib", "libexec"
+
+    # install into prefix directory
     prefix.install Dir["*"]
   end
 end
