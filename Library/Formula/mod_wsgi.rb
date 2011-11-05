@@ -1,6 +1,6 @@
 require 'formula'
 
-class ModWsgi <Formula
+class ModWsgi < Formula
   url 'http://modwsgi.googlecode.com/files/mod_wsgi-3.3.tar.gz'
   sha1 'f32d38e5d3ed5de1efd5abefb52678f833dc9166'
   homepage 'http://code.google.com/p/modwsgi/'
@@ -32,6 +32,7 @@ class ModWsgi <Formula
       cflags = s.get_make_var("CFLAGS")
       cflags.gsub! "-Wc,'-arch ppc7400'", ""
       cflags.gsub! "-Wc,'-arch ppc64'", ""
+      cflags.gsub! "-Wc,'-arch x86_64'", "" if Hardware.is_32_bit?
       s.change_make_var! "CFLAGS", cflags
 
       # --libexecdir parameter to ./configure isn't changing this, so cram it in

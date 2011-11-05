@@ -1,6 +1,6 @@
 require 'formula'
 
-class Atool <Formula
+class Atool < Formula
   url 'http://savannah.nongnu.org/download/atool/atool-0.37.0.tar.gz'
   homepage 'http://www.nongnu.org/atool/'
   md5 '2607e9b19518af4145be8a6bed454477'

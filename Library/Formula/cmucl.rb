@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cmucl <Formula
+class Cmucl < Formula
   url 'http://common-lisp.net/project/cmucl/downloads/release/20b/cmucl-20b-x86-darwin.tar.bz2'
   version '20b'
   homepage 'http://www.cons.org/cmucl'

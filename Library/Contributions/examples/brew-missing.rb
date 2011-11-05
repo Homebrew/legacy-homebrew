@@ -1,21 +1,31 @@
 require "formula"
-require 'formula_installer'
+require "cmd/outdated"
+
+def installed_brews
+  formulae = []
+  HOMEBREW_CELLAR.subdirs.each do |rack|
+    f = Formula.factory rack.basename.to_s rescue nil
+    formulae << f if f and f.installed?
+  end
+  formulae
+end
 
 def main
+  return unless HOMEBREW_CELLAR.exist?
+
   # Names of outdated brews; they count as installed.
-  outdated = outdated_brews.collect {|b| b[1]}
+  outdated = Homebrew.outdated_brews.collect{ |b| b.name }
 
-  HOMEBREW_CELLAR.subdirs.each do |keg|
-    next unless keg.subdirs
-    if ((f = Formula.factory(keg.basename.to_s)).installed? rescue false)
-      f_deps = FormulaInstaller.expand_deps(f).collect{|g| g.name}.uniq
-      next if f_deps.empty?
+  formuale_to_check = ARGV.formulae rescue installed_brews
 
-      missing_deps = f_deps.reject do |dep_name|
-        Formula.factory(dep_name).installed? or outdated.include?(dep_name)
-      end
+  formuale_to_check.each do |f|
+    missing_deps = f.recursive_deps.map{ |g| g.name }.uniq.reject do |dep_name|
+      Formula.factory(dep_name).installed? or outdated.include?(dep_name)
+    end
 
-      puts "#{f.name}: #{missing_deps.join(', ')}" unless missing_deps.empty?
+    unless missing_deps.empty?
+      print "#{f.name}: " if formuale_to_check.size > 1
+      puts "#{missing_deps * ', '}"
     end
   end
 end

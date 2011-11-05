@@ -1,6 +1,6 @@
 require 'formula'
 
-class KdebaseRuntime <Formula
+class KdebaseRuntime < Formula
   url 'ftp://ftp.kde.org/pub/kde/stable/4.6.0/src/kdebase-runtime-4.6.0.tar.bz2'
   homepage 'http://www.kde.org/'
   md5 '1f9d6bc64d7b84a74dd3ab06615c71ce'

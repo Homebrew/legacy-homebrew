@@ -1,6 +1,6 @@
 require 'formula'
 
-class CouchdbLucene <Formula
+class CouchdbLucene < Formula
   url 'https://github.com/rnewson/couchdb-lucene/tarball/v0.6.0'
   homepage 'https://github.com/rnewson/couchdb-lucene'
   md5 'b55610d4c054987a5c69183585a31d8b'
@@ -18,18 +18,20 @@ class CouchdbLucene <Formula
     system "mv couchdb-lucene-#{version}/* #{prefix}"
 
     (etc + "couchdb/local.d/couchdb-lucene.ini").write ini_file
-    (prefix + "couchdb-lucene.plist").write plist_file
+    (prefix+"couchdb-lucene.plist").write plist_file
+    (prefix+"couchdb-lucene.plist").chmod 0644
   end
 
-  def caveats; <<-EOS
-You can enable couchdb-lucene to automatically load on login with:
+  def caveats; <<-EOS.undent
+    You can enable couchdb-lucene to automatically load on login with:
 
-  cp "#{prefix}/couchdb-lucene.plist" ~/Library/LaunchAgents/
-  launchctl load -w ~/Library/LaunchAgents/couchdb-lucene.plist
+      mkdir -p ~/Library/LaunchAgents
+      cp "#{prefix}/couchdb-lucene.plist" ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/couchdb-lucene.plist
 
-Or start it manually with:
-  #{bin}/run
-EOS
+    Or start it manually with:
+      #{bin}/run
+    EOS
   end
 
   def ini_file

@@ -3,7 +3,7 @@ require 'formula'
 class Libnet < Formula
   url "https://github.com/sam-github/libnet/tarball/libnet-1.1.4"
   md5 "0cb6c04063c1db37c91af08c76d25134"
-  head 'git://github.com/sam-github/libnet.git'
+  head 'https://github.com/sam-github/libnet.git'
   homepage 'https://github.com/sam-github/libnet'
 
   def install
@@ -11,7 +11,7 @@ class Libnet < Formula
     inreplace "autogen.sh", "libtoolize", "glibtoolize"
     system "./autogen.sh"
 
-    if MACOS_VERSION >= 10.6
+    unless MacOS.leopard?
       cp "/usr/share/libtool/config/config.guess", "."
       cp "/usr/share/libtool/config/config.sub", "."
     end

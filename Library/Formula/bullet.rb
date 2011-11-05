@@ -1,9 +1,10 @@
 require 'formula'
 
-class Bullet <Formula
-  url 'http://bullet.googlecode.com/files/bullet-2.77.tgz'
+class Bullet < Formula
+  url 'http://bullet.googlecode.com/files/bullet-2.79-rev2440.tgz'
   homepage 'http://bulletphysics.org/wordpress/'
-  md5 '2f5074a1a29b618c672f1da4748e374b'
+  sha1 '49b4b362a0c8d279e32b946ef9578b1dd8c5987c'
+  version '2.79'
 
   depends_on 'cmake' => :build
 
@@ -12,7 +13,7 @@ class Bullet <Formula
       ['--framework'  , "Build Frameworks"],
       ['--universal'  , "Build in universal mode"],
       ['--shared'     , "Build shared libraries"],
-      ['--build-demo' , "Build demo application"],
+      ['--build-demo' , "Build demo applications"],
       ['--build-extra', "Build extra library"]
     ]
   end
@@ -29,7 +30,7 @@ class Bullet <Formula
       args << "-DCMAKE_INSTALL_PREFIX=#{prefix}"
     end
 
-    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if ARGV.include? "--universal"
+    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if ARGV.build_universal?
     args << "-DBUILD_DEMOS=OFF" if not ARGV.include? "--build-demo"
     args << "-DBUILD_EXTRAS=OFF" if not ARGV.include? "--build-extra"
 

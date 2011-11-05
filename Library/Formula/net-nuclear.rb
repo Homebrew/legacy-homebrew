@@ -1,6 +1,6 @@
 require 'formula'
 
-class NetNuclearSoundsAndGraphics <Formula
+class NetNuclearSoundsAndGraphics < Formula
   # Source tarball doesn't include sfx or gfx.
   # Get them from a v4 binary build.
   url 'http://studiostok.se/files/netnuclear4-linux.tar.gz'
@@ -9,7 +9,7 @@ class NetNuclearSoundsAndGraphics <Formula
 end
 
 
-class NetNuclear <Formula
+class NetNuclear < Formula
   url 'http://studiostok.se/files/netnuclear4-source.rar'
   version '4'
   homepage 'http://studiostok.se/?page=netnuclear'

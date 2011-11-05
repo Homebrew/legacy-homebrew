@@ -1,11 +1,11 @@
-class Keg <Pathname
+require 'extend/pathname'
+
+class Keg < Pathname
   def initialize path
     super path
     raise "#{to_s} is not a valid keg" unless parent.parent.realpath == HOMEBREW_CELLAR.realpath
     raise "#{to_s} is not a directory" unless directory?
   end
-
-  class NotAKegError <RuntimeError; end
 
   # if path is a file in a keg then this will return the containing Keg object
   def self.for path
@@ -33,10 +33,21 @@ class Keg <Pathname
       n+=1
       Find.prune if src.directory?
     end
+    linked_keg_record.unlink if linked_keg_record.exist?
     n
   end
 
+  def fname
+    parent.basename.to_s
+  end
+
+  def linked_keg_record
+    @linked_keg_record ||= HOMEBREW_REPOSITORY/"Library/LinkedKegs"/fname
+  end
+
   def link
+    raise "Cannot link #{fname}\nAnother version is already linked: #{linked_keg_record.realpath}" if linked_keg_record.directory?
+
     $n=0
     $d=0
 
@@ -62,10 +73,13 @@ class Keg <Pathname
       when /^perl5/ then :mkpath
       when 'php' then :mkpath
       when /^python[23]\.\d$/ then :mkpath
+      when 'ruby' then :mkpath
       # Everything else is symlinked to the cellar
       else :link
       end
     end
+
+    (HOMEBREW_REPOSITORY/"Library/LinkedKegs"/fname).make_relative_symlink(self)
 
     return $n+$d
   end
@@ -122,3 +136,5 @@ protected
     end
   end
 end
+
+require 'keg_fix_install_names'

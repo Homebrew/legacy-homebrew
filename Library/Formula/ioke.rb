@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ioke <Formula
+class Ioke < Formula
   url 'http://ioke.org/dist/ioke-P-ikj-0.4.0.tar.gz'
   homepage 'http://ioke.org/'
   md5 '936fac215d14809ff5f4bd1fd8262ce0'

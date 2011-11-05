@@ -1,6 +1,6 @@
 require 'formula'
 
-class Tcpflow <Formula
+class Tcpflow < Formula
   url 'http://www.circlemud.org/pub/jelson/tcpflow/tcpflow-0.21.tar.gz'
   homepage 'http://www.circlemud.org/~jelson/software/tcpflow/'
   md5 '45a5aef6f043312315b7f342afc4a9c5'
@@ -11,8 +11,11 @@ class Tcpflow <Formula
   end
 
   def install
-    where = `xcode-select --print-path`.chomp
-    cp Dir["#{where}/usr/share/libtool/config/config.*"], "."
+    if MacOS.leopard?
+      cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config.*"], "."
+    else
+      cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config/config.*"], "."
+    end
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--mandir=#{man}"

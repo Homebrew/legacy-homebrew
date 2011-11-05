@@ -1,6 +1,6 @@
 require 'formula'
 
-class V8 <Formula
+class V8 < Formula
   head 'http://v8.googlecode.com/svn/trunk/'
   homepage 'http://code.google.com/p/v8/'
 
@@ -9,7 +9,7 @@ class V8 <Formula
   def install
     arch = Hardware.is_64_bit? ? 'x64' : 'ia32'
 
-    system "scons", "-j #{Hardware.processor_count}",
+    system "scons", "-j #{ENV.make_jobs}",
                     "arch=#{arch}",
                     "mode=release",
                     "snapshot=on",

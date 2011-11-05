@@ -1,6 +1,6 @@
 require 'formula'
 
-class PhoronixTestSuite <Formula
+class PhoronixTestSuite < Formula
   homepage 'http://www.phoronix-test-suite.com/'
   url "http://www.phoronix-test-suite.com/download.php?file=phoronix-test-suite-2.8.1"
   md5 "623d0ea01963df438f738ec50e90afc6"

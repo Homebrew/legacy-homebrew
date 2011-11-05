@@ -1,6 +1,6 @@
 require 'formula'
 
-class Autossh <Formula
+class Autossh < Formula
   url 'http://www.harding.motd.ca/autossh/autossh-1.4b.tgz'
   homepage 'http://www.harding.motd.ca/autossh/'
   md5 '8f9aa006f6f69e912d3c2f504622d6f7'

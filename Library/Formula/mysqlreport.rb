@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mysqlreport <ScriptFileFormula
+class Mysqlreport < ScriptFileFormula
   url 'http://hackmysql.com/scripts/mysqlreport'
   version '3.5'
   homepage 'http://hackmysql.com/mysqlreport'

@@ -1,9 +1,10 @@
 require 'formula'
 
-class Mkvtoolnix <Formula
-  url 'http://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-4.5.0.tar.bz2'
+class Mkvtoolnix < Formula
+  url 'http://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-5.0.1.tar.bz2'
+  sha1 '900211d47ba6cbeb4188bb45a492a2b9edf08ed2'
+  head 'https://github.com/mbunkus/mkvtoolnix.git'
   homepage 'http://www.bunkus.org/videotools/mkvtoolnix/'
-  sha1 '7e9c14c29f5aaf7043ac2c2db56326970c63242d'
 
   depends_on 'boost'
   depends_on 'libvorbis'
@@ -16,7 +17,7 @@ class Mkvtoolnix <Formula
                           "--prefix=#{prefix}",
                           "--with-boost-libdir=#{HOMEBREW_PREFIX}/lib", # For non-/usr/local prefix
                           "--with-boost-regex=boost_regex-mt" # via macports
-    system "./drake -j#{Hardware.processor_count}"
+    system "./drake -j#{ENV.make_jobs}"
     system "./drake install"
   end
 end

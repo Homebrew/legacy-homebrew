@@ -1,6 +1,6 @@
 require 'formula'
 
-class Lha <Formula
+class Lha < Formula
   url 'http://dl.sourceforge.jp/lha/22231/lha-1.14i-ac20050924p1.tar.gz'
   homepage 'http://lha.sourceforge.jp/'
   md5 '9f52430410928ba4390a73a41a36d56f'

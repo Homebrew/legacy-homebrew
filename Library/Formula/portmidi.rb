@@ -1,6 +1,6 @@
 require 'formula'
 
-class Portmidi <Formula
+class Portmidi < Formula
   url 'http://downloads.sourceforge.net/project/portmedia/portmidi/200/portmidi-src-200.zip'
   homepage 'http://sourceforge.net/apps/trac/portmedia/wiki/portmidi'
   md5 '26053a105d938395227bb6ae1d78643b'

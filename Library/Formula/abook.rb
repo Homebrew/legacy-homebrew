@@ -1,6 +1,6 @@
 require 'formula'
 
-class Abook <Formula
+class Abook < Formula
   url 'http://downloads.sourceforge.net/abook/abook-0.5.6.tar.gz'
   homepage 'http://abook.sourceforge.net/'
   md5 '87d25df96864a7c507a4965e6d1da49d'

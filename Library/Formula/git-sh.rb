@@ -5,7 +5,7 @@ class GitSh < Formula
   homepage 'https://github.com/rtomayko/git-sh'
   md5 '061c56717564651dd99f5cd14b2b1569'
   version '20100401'
-  head 'git://github.com/rtomayko/git-sh.git'
+  head 'https://github.com/rtomayko/git-sh.git'
 
   # Not depending on git because people might have it
   # installed through another means

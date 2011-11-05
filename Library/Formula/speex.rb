@@ -1,6 +1,6 @@
 require 'formula'
 
-class Speex <Formula
+class Speex < Formula
   url 'http://downloads.us.xiph.org/releases/speex/speex-1.2rc1.tar.gz'
   homepage 'http://speex.org'
   md5 'c4438b22c08e5811ff10e2b06ee9b9ae'

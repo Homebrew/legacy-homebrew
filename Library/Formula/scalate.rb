@@ -1,10 +1,11 @@
 require 'formula'
+require 'find'
 
-class Scalate <Formula
-  url 'http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.4.0/scalate-distro-1.4.0-unix-bin.tar.gz'
-  version '1.4.0'
+class Scalate < Formula
+  url 'http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.5.0/scalate-distro-1.5.0-unix-bin.tar.gz'
+  version '1.5.0'
   homepage 'http://scalate.fusesource.org/'
-  md5 'e2c7f309a2774a13262102ce70f78a21'
+  md5 '7574d29b29c05c086f1fa977f23ed4a5'
 
   def startup_script
     <<-EOS.undent
@@ -17,9 +18,17 @@ class Scalate <Formula
   end
 
   def install
-    rm_f Dir["bin/*.bat"]
 
-    prefix.install %w{ LICENSE.txt ReadMe.html }
+    # Recursively fix the permissions of extracted regular files excluding the bin directory contents.
+    %w{ archetypes docs lib samples license.txt readme.html }.each do |name|
+      Find.find(name) do |path|
+        if File.file?(path)
+          File.chmod(0644, path)
+        end
+      end
+    end
+
+    prefix.install %w{ license.txt readme.html }
     libexec.install Dir['*']
 
     (bin+'scalate').write startup_script

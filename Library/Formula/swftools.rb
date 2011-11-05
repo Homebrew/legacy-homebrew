@@ -1,6 +1,6 @@
 require 'formula'
 
-class Swftools <Formula
+class Swftools < Formula
   url 'http://www.swftools.org/swftools-0.9.1.tar.gz'
   homepage 'http://www.swftools.org'
   md5 '72dc4a7bf5cdf98c28f9cf9b1d8f5d7a'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Bigloo <Formula
+class Bigloo < Formula
   url 'ftp://ftp-sop.inria.fr/indes/fp/Bigloo/bigloo3.4a-3.tar.gz'
   version '3.4a-3'
   homepage 'http://www-sop.inria.fr/indes/fp/Bigloo/'
@@ -18,7 +18,7 @@ class Bigloo <Formula
              "--os-macosx" ]
 
     # SRFI 27 is 32-bit only
-    args << "--disable-srfi27" if snow_leopard_64?
+    args << "--disable-srfi27" if MacOS.prefer_64_bit?
 
     system "./configure", *args
     system "make"

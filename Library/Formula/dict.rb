@@ -19,7 +19,7 @@ server localhost
 server dict.org
 EOS
 
-class Dict <Formula
+class Dict < Formula
   url 'ftp://ftp.dict.org/dict/dictd-1.9.15.tar.gz'
   homepage 'http://www.dict.org/'
   md5 '68c1cffa952012ba85a7271311de55e9'

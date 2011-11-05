@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libdv <Formula
+class Libdv < Formula
   url 'http://downloads.sourceforge.net/libdv/libdv-1.0.0.tar.gz'
   homepage 'http://libdv.sourceforge.net'
   md5 'f895162161cfa4bb4a94c070a7caa6c7'

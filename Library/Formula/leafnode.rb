@@ -1,6 +1,6 @@
 require 'formula'
 
-class Leafnode <Formula
+class Leafnode < Formula
   url 'http://downloads.sourceforge.net/project/leafnode/leafnode/1.11.8/leafnode-1.11.8.tar.bz2'
   homepage 'http://sourceforge.net/projects/leafnode/'
   md5 'a3edafeb854efaa3fbb0f7951d02160f'

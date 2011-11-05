@@ -1,6 +1,6 @@
 require 'formula'
 
-class StanfordParser <Formula
+class StanfordParser < Formula
   url 'http://nlp.stanford.edu/software/stanford-parser-2010-02-26.tgz'
   homepage 'http://nlp.stanford.edu/software/lex-parser.shtml'
   md5 '25e26c79d221685956d2442592321027'
@@ -22,6 +22,6 @@ EOS
   end
 
   def test
-    system "lexparser.csh", "#{libexec}/testsent.txt"
+    system "#{bin}/lexparser.csh", "#{libexec}/testsent.txt"
   end
 end

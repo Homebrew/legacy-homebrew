@@ -1,6 +1,6 @@
 require 'formula'
 
-class Polyml <Formula
+class Polyml < Formula
   url 'http://downloads.sourceforge.net/project/polyml/polyml/5.3/polyml.5.3.tar.gz'
   homepage 'http://www.polyml.org'
   md5 'c4e3a33307c4465c4f068ae4fa225ced'

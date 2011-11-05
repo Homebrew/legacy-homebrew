@@ -1,7 +1,7 @@
 require 'formula'
 
 # Phylogenetic Analysis by Maximum Likelihood
-class Paml <Formula
+class Paml < Formula
   url 'http://abacus.gene.ucl.ac.uk/software/paml4.4c.tar.gz'
   homepage 'http://abacus.gene.ucl.ac.uk/software/paml.html'
   md5 '0ab0b722bc28c15b22554ec68576b09f'

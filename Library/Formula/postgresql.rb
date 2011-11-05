@@ -1,26 +1,27 @@
 require 'formula'
 require 'hardware'
 
-class Postgresql <Formula
+class Postgresql < Formula
   homepage 'http://www.postgresql.org/'
-  url 'http://ftp9.us.postgresql.org/pub/mirrors/postgresql/source/v9.0.3/postgresql-9.0.3.tar.bz2'
-  md5 '928df8c40bb012ad10756e58b70516fb'
+  url 'http://ftp9.us.postgresql.org/pub/mirrors/postgresql/source/v9.0.4/postgresql-9.0.4.tar.bz2'
+  md5 '80390514d568a7af5ab61db1cda27e29'
 
   depends_on 'readline'
-  depends_on 'libxml2' if MACOS_VERSION < 10.6 # Leopard libxml is too old
+  depends_on 'libxml2' if MacOS.leopard? # Leopard libxml is too old
   depends_on 'ossp-uuid'
 
   def options
     [
       ['--no-python', 'Build without Python support.'],
-      ['--no-perl', 'Build without Perl support.']
+      ['--no-perl', 'Build without Perl support.'],
+      ['--enable-dtrace', 'Build with DTrace support.']
     ]
   end
 
   skip_clean :all
 
   def install
-    ENV.libxml2 if MACOS_VERSION >= 10.6
+    ENV.libxml2 if MacOS.snow_leopard?
 
     args = ["--disable-debug",
             "--prefix=#{prefix}",
@@ -33,13 +34,18 @@ class Postgresql <Formula
 
     args << "--with-python" unless ARGV.include? '--no-python'
     args << "--with-perl" unless ARGV.include? '--no-perl'
+    args << "--enable-dtrace" if ARGV.include? '--enable-dtrace'
 
     args << "--with-ossp-uuid"
+
+    args << "--datadir=#{share}/#{name}"
+    args << "--docdir=#{doc}"
+
     ENV.append 'CFLAGS', `uuid-config --cflags`.strip
     ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
     ENV.append 'LIBS', `uuid-config --libs`.strip
 
-    if snow_leopard_64? and not ARGV.include? '--no-python'
+    if MacOS.prefer_64_bit? and not ARGV.include? '--no-python'
       args << "ARCHFLAGS='-arch x86_64'"
       check_python_arch
     end
@@ -49,6 +55,7 @@ class Postgresql <Formula
 
     system "./configure", *args
     system "make install"
+    system "make install-docs"
 
     contrib_directories = Dir.glob("contrib/*").select{ |path| File.directory?(path) } - ['contrib/start-scripts']
 
@@ -57,6 +64,7 @@ class Postgresql <Formula
     end
 
     (prefix+'org.postgresql.postgres.plist').write startup_plist
+    (prefix+'org.postgresql.postgres.plist').chmod 0644
   end
 
   def check_python_arch
@@ -97,25 +105,30 @@ See:
 
 
 If this is your first install, create a database with:
-    initdb #{var}/postgres
+  initdb #{var}/postgres
 
 If this is your first install, automatically load on login with:
-    cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents
-    launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
+  mkdir -p ~/Library/LaunchAgents
+  cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
+  launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
 
 If this is an upgrade and you already have the org.postgresql.postgres.plist loaded:
-    launchctl unload -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
-    cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents
-    launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
+  launchctl unload -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
+  cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
+  launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
 
 Or start manually with:
-    pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start
+  pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start
 
 And stop with:
-    pg_ctl -D #{var}/postgres stop -s -m fast
+  pg_ctl -D #{var}/postgres stop -s -m fast
+
+
+Some machines may require provisioning of shared memory:
+  http://www.postgresql.org/docs/current/static/kernel-resources.html#SYSVIPC
 EOS
 
-    if snow_leopard_64? then
+    if MacOS.prefer_64_bit? then
       s << <<-EOS
 
 If you want to install the postgres gem, including ARCHFLAGS is recommended:
@@ -152,6 +165,8 @@ To install gems without sudo, see the Homebrew wiki.
   <string>#{`whoami`.chomp}</string>
   <key>WorkingDirectory</key>
   <string>#{HOMEBREW_PREFIX}</string>
+  <key>StandardErrorPath</key>
+  <string>#{var}/postgres/server.log</string>
 </dict>
 </plist>
     EOPLIST

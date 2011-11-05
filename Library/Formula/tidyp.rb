@@ -1,6 +1,6 @@
 require 'formula'
 
-class Tidyp <Formula
+class Tidyp < Formula
   url 'http://github.com/downloads/petdance/tidyp/tidyp-1.04.tar.gz'
   homepage 'http://tidyp.com/'
   md5 '00a6b804f6625221391d010ca37178e1'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gtkglext <Formula
+class Gtkglext < Formula
   url 'http://downloads.sourceforge.net/gtkglext/gtkglext-1.2.0.tar.gz'
   homepage 'http://projects.gnome.org/gtkglext/'
   md5 '5c3240bfc1b21becd33ce35c5abe6f8d'

@@ -105,22 +105,27 @@ class Pathname
       # directories don't have extnames
       stem=basename.to_s
     else
-      stem=self.stem
+      # sourceforge /download
+      if %r[((?:sourceforge.net|sf.net)/.*)/download$].match to_s
+        stem=Pathname.new(dirname).stem
+      else
+        stem=self.stem
+      end
     end
 
     # github tarballs, like v1.2.3
-    %r[github.com/.*/tarball/v?((\d\.)+\d+)$].match to_s
-    return $1 if $1
+    %r[github.com/.*/(zip|tar)ball/v?((\d\.)+\d+)$].match to_s
+    return $2 if $2
 
     # dashed version
     # eg. github.com/isaacs/npm/tarball/v0.2.5-1
-    %r[github.com/.*/tarball/v?((\d\.)+\d+-(\d+))$].match to_s
-    return $1 if $1
+    %r[github.com/.*/(zip|tar)ball/v?((\d\.)+\d+-(\d+))$].match to_s
+    return $2 if $2
 
     # underscore version
     # eg. github.com/petdance/ack/tarball/1.93_02
-    %r[github.com/.*/tarball/v?((\d\.)+\d+_(\d+))$].match to_s
-    return $1 if $1
+    %r[github.com/.*/(zip|tar)ball/v?((\d\.)+\d+_(\d+))$].match to_s
+    return $2 if $2
 
     # eg. boost_1_39_0
     /((\d+_)+\d+)$/.match stem
@@ -152,11 +157,15 @@ class Pathname
     return $1 if $1
 
     # eg foobar-4.5.0-bin
-    /-((\d+\.)+\d+[abc]?)[-.](bin|stable|src|sources?)$/.match stem
+    /-((\d+\.)+\d+[abc]?)[-._](bin|stable|src|sources?)$/.match stem
     return $1 if $1
 
     # Debian style eg dash_0.5.5.1.orig.tar.gz
     /_((\d+\.)+\d+[abc]?)[.]orig$/.match stem
+    return $1 if $1
+
+    # brew bottle style e.g. qt-4.7.3-bottle.tar.gz
+    /-((\d+\.)*\d+(-\d)*)-bottle$/.match stem
     return $1 if $1
 
     # eg. otp_src_R13B (this is erlang's style)
@@ -164,6 +173,11 @@ class Pathname
     stem.scan(/_([^_]+)/) do |match|
       return match.first if /\d/.match $1
     end
+
+    # erlang bottle style, booya
+    # e.g. erlang-R14B03-bottle.tar.gz
+    /-([^-]+)-bottle$/.match stem
+    return $1 if $1
 
     nil
   end
@@ -213,11 +227,6 @@ class Pathname
     (dirname+readlink).exist?
   end
 
-  def starts_with? prefix
-    prefix = prefix.to_s
-    self.to_s[0, prefix.length] == prefix
-  end
-
   # perhaps confusingly, this Pathname object becomes the symlink pointing to
   # the src paramter.
   def make_relative_symlink src
@@ -225,11 +234,11 @@ class Pathname
     Dir.chdir self.dirname do
       # TODO use Ruby function so we get exceptions
       # NOTE Ruby functions may work, but I had a lot of problems
-      rv = system 'ln', '-sf', src.relative_path_from(self.dirname)
+      rv = system 'ln', '-sf', src.relative_path_from(self.dirname), self.basename
       unless rv and $? == 0
         raise <<-EOS.undent
           Could not create symlink #{to_s}.
-          Check that you have permssions on #{self.dirname}
+          Check that you have permissions on #{self.dirname}
           EOS
       end
     end
@@ -237,6 +246,17 @@ class Pathname
 
   def / that
     join that.to_s
+  end
+
+  def ensure_writable
+    saved_perms = nil
+    unless writable?
+      saved_perms = stat.mode
+      chmod 0644
+    end
+    yield
+  ensure
+    chmod saved_perms if saved_perms
   end
 end
 

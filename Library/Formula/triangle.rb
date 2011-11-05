@@ -1,6 +1,6 @@
 require 'formula'
 
-class Triangle <Formula
+class Triangle < Formula
   homepage 'http://www.cs.cmu.edu/~quake/triangle.html'
   url 'http://www.netlib.org/voronoi/triangle.zip'
   md5 '10aff8d7950f5e0e2fb6dd2e340be2c9'

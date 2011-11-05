@@ -1,6 +1,6 @@
 require 'formula'
 
-class Willgit <Formula
+class Willgit < Formula
   head 'git://gitorious.org/willgit/mainline.git'
   homepage 'http://git-wt-commit.rubyforge.org/'
 

@@ -1,11 +1,10 @@
 require 'formula'
 
-class GitExtras <Formula
-  url 'git://github.com/visionmedia/git-extras.git', :tag => '0.1.0'
-  version '0.1.0'
-  head 'git://github.com/visionmedia/git-extras.git', :branch => 'master'
-
+class GitExtras < Formula
   homepage 'https://github.com/visionmedia/git-extras'
+  url 'https://github.com/visionmedia/git-extras/tarball/0.7.0'
+  sha1 '03fd10ad4b1b3786912a77bdb32c30973507dc6a'
+  head 'https://github.com/visionmedia/git-extras.git', :branch => 'master'
 
   def install
     inreplace 'Makefile', '/usr/local', prefix

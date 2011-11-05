@@ -1,6 +1,6 @@
 require 'formula'
 
-class Scsh <Formula
+class Scsh < Formula
   url 'http://ftp.scsh.net/pub/scsh/0.6/scsh-0.6.7.tar.gz'
   homepage 'http://www.scsh.net/'
   md5 '69c88ca86a8aaaf0f87d253b99d339b5'

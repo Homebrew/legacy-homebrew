@@ -1,7 +1,7 @@
 require 'formula'
 require 'hardware'
 
-class Dosbox <Formula
+class Dosbox < Formula
   url 'http://downloads.sourceforge.net/project/dosbox/dosbox/0.74/dosbox-0.74.tar.gz'
   homepage 'http://www.dosbox.com/'
   md5 'b9b240fa87104421962d14eee71351e8'

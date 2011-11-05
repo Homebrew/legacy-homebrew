@@ -1,6 +1,6 @@
 require 'formula'
 
-class Whohas <Formula
+class Whohas < Formula
   url 'http://www.philippwesche.org/200811/whohas/whohas-0.23.tar.gz'
   homepage 'http://www.philippwesche.org/200811/whohas/intro.html'
   md5 '0895fb6353950fe2e686fa867aaf0416'

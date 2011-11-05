@@ -1,9 +1,9 @@
 require 'formula'
 
-class Lftp <Formula
-  url 'http://ftp.yars.free.net/pub/source/lftp/lftp-4.1.1.tar.bz2'
+class Lftp < Formula
+  url 'http://ftp.yars.free.net/pub/source/lftp/lftp-4.3.3.tar.bz2'
   homepage 'http://lftp.yar.ru/'
-  md5 '87717c30869a626cc53817c1c0a585ef'
+  md5 '91757a201c1030714ac1996f27437cc7'
 
   depends_on 'pkg-config' => :build
   depends_on 'readline'
@@ -11,9 +11,9 @@ class Lftp <Formula
 
   def install
     # Bus error
-    ENV.no_optimization if MACOS_VERSION == 10.5
+    ENV.no_optimization if MacOS.leopard?
 
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end

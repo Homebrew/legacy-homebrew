@@ -1,6 +1,6 @@
 require 'formula'
 
-class Dar <Formula
+class Dar < Formula
   url 'http://downloads.sourceforge.net/project/dar/dar/2.3.10/dar-2.3.10.tar.gz'
   homepage 'http://dar.linux.free.fr/doc/index.html'
   md5 'f134276bb9dc761dbb318c5511e65833'

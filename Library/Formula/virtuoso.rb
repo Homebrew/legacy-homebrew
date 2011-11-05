@@ -1,6 +1,6 @@
 require 'formula'
 
-class Virtuoso <Formula
+class Virtuoso < Formula
   url 'http://downloads.sourceforge.net/project/virtuoso/virtuoso/6.1.2/virtuoso-opensource-6.1.2.tar.gz'
   homepage 'http://virtuoso.openlinksw.com/wiki/main/'
   md5 '0519e1f104428e0c8b25fad89e3c57ef'
@@ -11,7 +11,7 @@ class Virtuoso <Formula
   skip_clean :all
 
   def install
-    ENV.m64 if snow_leopard_64?
+    ENV.m64 if MacOS.prefer_64_bit?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end

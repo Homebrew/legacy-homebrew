@@ -1,6 +1,6 @@
 require 'formula'
 
-class Liblas <Formula
+class Liblas < Formula
   url 'http://trac.liblas.org/raw-attachment/wiki/1.6.0b1/libLAS-1.6.0b1.tar.gz'
   homepage 'http://liblas.org'
   md5 '4a08325b7daf4006e3762804d722b770'

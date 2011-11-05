@@ -3,10 +3,10 @@ require 'formula'
 # Note: this project doesn't save old releases, so it breaks often as
 # downloads disappear.
 
-class Pyqt <Formula
-  url 'http://www.riverbankcomputing.co.uk/static/Downloads/PyQt4/PyQt-mac-gpl-4.8.3.tar.gz'
+class Pyqt < Formula
+  url 'http://www.riverbankcomputing.co.uk/static/Downloads/PyQt4/PyQt-mac-gpl-4.8.6.tar.gz'
   homepage 'http://www.riverbankcomputing.co.uk/software/pyqt'
-  md5 '14bade8b251660177ccc1a0cbbe33aba'
+  md5 '67878ee2a3207f38f7b2be5d15b066da'
 
   depends_on 'sip'
   depends_on 'qt'
@@ -63,7 +63,7 @@ sys.exit(0)
       file.write test_program
     end
 
-    ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/python", ':'
+    ENV['PYTHONPATH'] = "#{HOMEBREW_PREFIX}/lib/python"
     system "python test_pyqt.py"
 
     ohai "Removing test script 'test_pyqt.py'."

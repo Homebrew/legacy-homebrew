@@ -4,7 +4,7 @@ def use_python?
   ARGV.include? '--enable-python-bindings'
 end
 
-class Libemu <Formula
+class Libemu < Formula
   head 'http://git.carnivore.it/libemu.git', :using => :git
   homepage 'http://libemu.carnivore.it/'
 

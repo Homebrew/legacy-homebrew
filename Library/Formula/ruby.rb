@@ -1,13 +1,18 @@
 require 'formula'
 
-class Ruby <Formula
-  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p136.tar.bz2'
+class Ruby < Formula
+  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p290.tar.bz2'
   homepage 'http://www.ruby-lang.org/en/'
   head 'http://svn.ruby-lang.org/repos/ruby/trunk/', :using => :svn
-  md5 '52958d35d1b437f5d9d225690de94c13'
+  sha256 '403b3093fbe8a08dc69c269753b8c6e7bd8f87fb79a7dd7d676913efe7642487'
 
   depends_on 'readline'
   depends_on 'libyaml'
+
+  fails_with_llvm :build => 2326
+
+  # Stripping breaks dynamic linking
+  skip_clean :all
 
   def options
     [
@@ -17,12 +22,7 @@ class Ruby <Formula
     ]
   end
 
-  # Stripping breaks dynamic linking
-  skip_clean :all
-
   def install
-    fails_with_llvm
-
     ruby_lib = HOMEBREW_PREFIX+"lib/ruby"
 
     if File.exist? ruby_lib and File.symlink? ruby_lib
@@ -49,7 +49,7 @@ class Ruby <Formula
             "--enable-shared"]
 
     args << "--program-suffix=19" if ARGV.include? "--with-suffix"
-    args << "--with-arch=x86_64,i386" if ARGV.include? "--universal"
+    args << "--with-arch=x86_64,i386" if ARGV.build_universal?
 
     # Put gem, site and vendor folders in the HOMEBREW_PREFIX
 

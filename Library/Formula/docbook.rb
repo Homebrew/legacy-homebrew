@@ -1,6 +1,6 @@
 require 'formula'
 
-class Docbook <Formula
+class Docbook < Formula
   url 'https://gist.github.com/raw/462528/098ccc609b039cf5b6d11fcd9c8ef333c3861b65/docbook-register'
   md5 '0fbc35a136190050de3598354655fd82'
   version '5.0'
@@ -32,7 +32,7 @@ class Docbook <Formula
   end
 end
 
-class Docbookxml <Formula
+class Docbookxml < Formula
   def install
     rm_rf 'docs'
     docbook = Formula.factory 'docbook'
@@ -70,7 +70,7 @@ class Docbookxml50 <Docbookxml
   md5 '2411c19ed4fb141f3fa3d389fae40736'
   homepage 'http://www.docbook.org/'
 end
-class Docbookxsl <Formula
+class Docbookxsl < Formula
   url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl/1.76.1/docbook-xsl-1.76.1.tar.bz2'
   md5 'b5340507cb240cc7ce00632b9c40bff5'
   homepage 'http://docbook.sourceforge.net/'

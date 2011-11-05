@@ -1,9 +1,9 @@
 require 'formula'
 
-class Dmd <Formula
+class Dmd < Formula
   homepage 'http://www.digitalmars.com/d/'
-  url 'http://ftp.digitalmars.com/dmd.2.051.zip'
-  md5 '7952059a67995e3e74f3c27aa3942d6c'
+  url 'http://ftp.digitalmars.com/dmd.2.056.zip'
+  md5 '90cdeb8d4839ed1871fae37aeac0a5c8'
 
   def doc
     #use d and not dmd, rationale: meh
