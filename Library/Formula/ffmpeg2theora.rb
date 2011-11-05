@@ -8,11 +8,14 @@ class Ffmpeg2theora < Formula
   depends_on 'pkg-config' => :build
   depends_on 'scons' => :build
   depends_on 'ffmpeg'
+  depends_on 'libkate' => :optional
   depends_on 'libogg'
   depends_on 'libvorbis'
   depends_on 'theora'
 
   def install
-    system "scons", "install", "prefix=#{prefix}", "mandir=PREFIX/share/man"
+    args = ["prefix=#{prefix}", "mandir=PREFIX/share/man"]
+    args << "libkate=1" if Formula.factory('libkate').installed?
+    system "scons", "install", *args
   end
 end
