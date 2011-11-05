@@ -242,7 +242,10 @@ def external_dep_check dep, type
     when :python then %W{/usr/bin/env python -c import\ #{dep}}
     when :jruby then %W{/usr/bin/env jruby -rubygems -e require\ '#{dep}'}
     when :ruby then %W{/usr/bin/env ruby -rubygems -e require\ '#{dep}'}
+    when :rbx then %W{/usr/bin/env rbx -rubygems -e require\ '#{dep}'}
     when :perl then %W{/usr/bin/env perl -e use\ #{dep}}
+    when :chicken then %W{/usr/bin/env csi -e (use #{dep})}
+    when :node then %W{/usr/bin/env node -e require('#{dep}');}
   end
 end
 
@@ -266,7 +269,7 @@ class Formula
   end
 
   def check_external_deps
-    [:ruby, :python, :perl, :jruby].each do |type|
+    [:ruby, :python, :perl, :jruby, :rbx, :chicken, :node].each do |type|
       self.external_deps[type].each do |dep|
         unless quiet_system(*external_dep_check(dep, type))
           raise UnsatisfiedExternalDependencyError.new(dep, type)
