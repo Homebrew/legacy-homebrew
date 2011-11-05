@@ -8,6 +8,7 @@ class Paperkey < Formula
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make"
+    system "make check"
     system "make install"
   end
 end
