@@ -7,7 +7,9 @@ class Crfxx < Formula
   md5 'a3c12c99b25e06d18147d50f0f92e8d3'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    arg = ["--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"]
+
+    system "./configure", *arg
     system "make"
     system "make install"
   end

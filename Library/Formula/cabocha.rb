@@ -11,9 +11,10 @@ class Cabocha < Formula
   depends_on 'crf++'
 
   def install
+    args = ["--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}", "--with-charset=utf8"]
+
     system "/bin/sh -c LIBS=-liconv"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-          "--prefix=#{prefix}", "--with-charset=utf8"
+    system "./configure", *args
     system "make"
     system "make install"
   end
