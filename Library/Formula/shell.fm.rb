@@ -1,15 +1,14 @@
 require 'formula'
 
-class ShellFm <Formula
-  url 'http://github.com/jkramer/shell-fm/tarball/v0.7'
+class ShellFm < Formula
+  url 'https://github.com/jkramer/shell-fm/tarball/v0.8'
   homepage 'http://nex.scrapping.cc/shell-fm/'
-  md5 '3f83866622a892ee89685f1ed079eefd'
-
-  aka 'shell-fm'
+  md5 'ce5c45ead71a299edbff280d4007ad99'
+  head 'https://github.com/jkramer/shell-fm.git'
 
   # homepage says that libao is optional, but it doesn't seem
-  # to build without it…
-  depends_on 'pkg-config'
+  # to build without it
+  depends_on 'pkg-config' => :build
   depends_on 'libao'
   depends_on 'mad'
 

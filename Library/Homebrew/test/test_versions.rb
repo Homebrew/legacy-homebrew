@@ -65,6 +65,10 @@ class VersionTests < Test::Unit::TestCase
     check "http://camaya.net/download/gloox-1.0-beta7.tar.bz2", '1.0-beta7'
   end
 
+  def test_sphinx_beta_style
+    check 'http://sphinxsearch.com/downloads/sphinx-1.10-beta.tar.gz', '1.10-beta'
+  end
+
   def test_astyle_verson_style
     check "http://kent.dl.sourceforge.net/sourceforge/astyle/astyle_1.23_macosx.tar.gz",
       '1.23'
@@ -92,6 +96,11 @@ class VersionTests < Test::Unit::TestCase
 
   def test_version_regular
     check "http://example.com/foo_bar-1.21.tar.gz", '1.21'
+  end
+
+  def test_version_sourceforge_download
+    check "http://sourceforge.net/foo_bar-1.21.tar.gz/download", '1.21'
+    check "http://sf.net/foo_bar-1.21.tar.gz/download", '1.21'
   end
 
   def test_version_github
@@ -149,5 +158,15 @@ class VersionTests < Test::Unit::TestCase
   def test_debian_style_2
     check 'http://ftp.de.debian.org/debian/pool/main/m/mmv/mmv_1.01b.orig.tar.gz',
       '1.01b'
+  end
+
+  def test_bottle_style
+    check 'https://downloads.sourceforge.net/project/machomebrew/Bottles/qt-4.7.3-bottle.tar.gz',
+      '4.7.3'
+  end
+
+  def test_imagemagick_bottle_style
+    check 'http://downloads.sf.net/project/machomebrew/Bottles/imagemagick-6.7.1-1-bottle.tar.gz',
+      '6.7.1-1'
   end
 end

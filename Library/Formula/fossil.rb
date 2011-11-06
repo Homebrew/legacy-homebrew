@@ -1,11 +1,14 @@
 require 'formula'
 
-class Fossil <Formula
-  url 'http://www.fossil-scm.org/download/fossil-src-20100703153359.tar.gz'
+class Fossil < Formula
+  version '1.20'
+  url 'http://www.fossil-scm.org/download/fossil-src-20111021125253.tar.gz'
+  md5 'd3bd7d3bf60b523578f37315cd8a8f12'
   homepage 'http://www.fossil-scm.org/'
-  md5 '2f9d5d3587a902896b31a6bd1855f386'
+  head 'fossil://http://www.fossil-scm.org/'
 
   def install
+    system "./configure"
     system "make"
     bin.install 'fossil'
   end

@@ -1,22 +1,28 @@
 require 'formula'
 
-class Nmap <Formula
-  url 'http://nmap.org/dist/nmap-5.21.tar.bz2'
+class Nmap < Formula
+  url 'http://nmap.org/dist/nmap-5.51.tar.bz2'
   homepage 'http://nmap.org/5/'
-  md5 'f77fa51d89ab27d35e5cd87bb086b858'
+  md5 '0b80d2cb92ace5ebba8095a4c2850275'
+  head 'svn://guest:@svn.insecure.org/nmap/', :using => :svn
+
+  # Leopard's version of OpenSSL isn't new enough
+  depends_on "openssl" if MacOS.leopard?
+
+  fails_with_llvm :build => 2334
 
   def install
-    fails_with_llvm
     ENV.deparallelize
 
-    # There are reports that this is needed for sudo. See:
-    # http://github.com/mxcl/homebrew/issues/issue/1270
-    ENV['CFLAGS']   = "-m32 -O2"
-    ENV['LDFLAGS']  = "-m32 -O2"
-    ENV['CXXFLAGS'] = "-m32 -O2"
+    args = ["--prefix=#{prefix}", "--without-zenmap"]
 
-    system "./configure", "--prefix=#{prefix}", "--without-zenmap"
-    system "make"                      
-    system "make install" # seperate steps required otherwise the build fails
+    if MacOS.leopard?
+      openssl = Formula.factory('openssl')
+      args << "--with-openssl=#{openssl.prefix}"
+    end
+
+    system "./configure", *args
+    system "make" # seperate steps required otherwise the build fails
+    system "make install"
   end
 end

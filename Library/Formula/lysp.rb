@@ -1,6 +1,6 @@
 require 'formula'
 
-class Lysp <Formula
+class Lysp < Formula
   url 'http://www.piumarta.com/software/lysp/lysp-1.0.tar.gz'
   homepage 'http://www.piumarta.com/software/lysp/'
   md5 '1cd5df2f83956c5ce58a7394b9d8b92e'
@@ -13,9 +13,7 @@ class Lysp <Formula
 
   def install
     system "make"
-
-    bin.install "lysp"
-    bin.install "gclysp"
+    bin.install ["lysp", "gclysp"]
   end
 end
 

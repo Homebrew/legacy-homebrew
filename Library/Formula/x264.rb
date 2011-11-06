@@ -1,25 +1,25 @@
 require 'formula'
 
-class X264 <Formula
+class X264 < Formula
+  url 'http://download.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20110912-2245-stable.tar.bz2'
   homepage 'http://www.videolan.org/developers/x264.html'
-  head 'git://git.videolan.org/x264.git',
-        :tag => '20fa784d2d9e0d5e524d4e3834699e9ff9b57511'
+  md5 '08b1658cf9964b73a53f445e4d21e161'
+  version 'r2066'
 
-  depends_on 'yasm'
+  head 'git://git.videolan.org/x264.git'
 
+  depends_on 'yasm' => :build
 
   def install
-    system "./version.sh"
+    # Having this set can fail the endian test!
+    ENV['GREP_OPTIONS'] = ''
     system "./configure", "--prefix=#{prefix}",
                           "--enable-shared"
 
-    inreplace 'config.mak' do |s|
-      ldflags = s.get_make_var 'LDFLAGS'
-      s.change_make_var! 'LDFLAGS', ldflags.gsub!(' -s', '')
-
-      if MACOS_VERSION >= 10.6 and Hardware.is_64_bit?
+    if MacOS.prefer_64_bit?
+      inreplace 'config.mak' do |s|
         soflags = s.get_make_var 'SOFLAGS'
-        s.change_make_var! 'SOFLAGS', soflags.gsub!(' -Wl,-read_only_relocs,suppress', '')
+        s.change_make_var! 'SOFLAGS', soflags.gsub(' -Wl,-read_only_relocs,suppress', '')
       end
     end
 

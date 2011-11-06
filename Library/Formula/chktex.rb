@@ -1,6 +1,6 @@
 require 'formula'
 
-class Chktex <Formula
+class Chktex < Formula
   url 'http://baruch.ev-en.org/proj/chktex/chktex-1.6.4.tar.gz'
   homepage 'http://baruch.ev-en.org/proj/chktex/'
   md5 'e1d1f70d37e97734a69c94682a2038a0'

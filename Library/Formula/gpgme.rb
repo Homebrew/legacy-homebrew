@@ -1,18 +1,21 @@
 require 'formula'
 
 class Gpgme < Formula
-  url 'ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-1.1.8.tar.bz2'
-  homepage 'http://www.gnupg.org'
-  sha1 'e56da614f3e6acc1cb51af767c77f4a95b05b1e8'
+  url 'ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-1.3.1.tar.bz2'
+  homepage 'http://www.gnupg.org/gpgme.html'
+  sha1 '7d19a95a2239da13764dad7f97541be884ec5a37'
 
   depends_on 'gnupg'
   depends_on 'libgpg-error'
+  depends_on 'libassuan'
+
+  fails_with_llvm :build => 2334
 
   def install
-    fails_with_llvm
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-asm"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
+    system "make"
+    system "make check"
     system "make install"
   end
 end

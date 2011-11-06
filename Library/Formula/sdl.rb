@@ -1,7 +1,8 @@
 require 'formula'
 
-class Sdl <Formula
+class Sdl < Formula
   url 'http://www.libsdl.org/release/SDL-1.2.14.tar.gz'
+  head 'http://hg.libsdl.org/SDL', :using => :hg
   homepage 'http://www.libsdl.org/'
   md5 'e52086d1b508fa0b76c52ee30b55bec4'
 
@@ -12,13 +13,15 @@ class Sdl <Formula
     inreplace files, '@prefix@', HOMEBREW_PREFIX
   end
 
+  fails_with_llvm :build => 2335 # 2335.15.0 to be exact
+
   def install
-    fails_with_llvm
     Sdl.use_homebrew_prefix %w[sdl.pc.in sdl-config.in]
 
-    system "./configure", "--prefix=#{prefix}", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-nasm"
+    # Sdl assumes X11 is present on UNIX
+    ENV.x11
+    system "./autogen.sh" if ARGV.build_head?
+    system "./configure", "--prefix=#{prefix}", "--disable-nasm"
     system "make install"
 
     # Copy source files needed for Ojective-C support.

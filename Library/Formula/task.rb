@@ -1,17 +1,14 @@
 require 'formula'
 
-class Task <Formula
-  url 'http://www.taskwarrior.org/download/task-1.9.2.tar.gz'
+class Task < Formula
+  url 'http://www.taskwarrior.org/download/task-1.9.4.tar.gz'
   homepage 'http://www.taskwarrior.org/'
-  md5 'be98cc74fe03b8336250e0b7ed3cd8c7'
+  md5 '0c5d9dedb1ead69590af895d16708070'
 
-  def skip_clean? path
-    true
-  end
+  skip_clean :all
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
 

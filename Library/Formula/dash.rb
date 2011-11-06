@@ -1,15 +1,28 @@
 require 'formula'
 
-class Dash <Formula
-  url 'http://ftp.debian.org/debian/pool/main/d/dash/dash_0.5.5.1.orig.tar.gz'
-  homepage 'http://packages.debian.org/sid/dash'
-  md5 '7ac832b440b91f5a52cf8eb68e172616'
+class Dash < Formula
+  url 'http://gondor.apana.org.au/~herbert/dash/files/dash-0.5.7.tar.gz'
+  homepage 'http://gondor.apana.org.au/~herbert/dash/'
+  sha1 'a3ebc16f2e2c7ae8adf64e5e62ae3dcb631717c6'
+  head 'https://git.kernel.org/pub/scm/utils/dash/dash.git', :using => :git
 
   def install
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--with-libedit"
+    if ARGV.build_head?
+      system "aclocal"
+      system "autoreconf -f -i -Wall,no-obsolete"
+    end
+
+    system "./configure", "--prefix=#{prefix}",
+                          "--with-libedit",
+                          "--disable-dependency-tracking",
+                          "--enable-fnmatch",
+                          "--enable-glob"
     system "make"
     system "make install"
+  end
+
+  def test
+    system "#{HOMEBREW_PREFIX}/bin/dash -c \"echo Hello!\""
+    puts "  ^--- That works."
   end
 end

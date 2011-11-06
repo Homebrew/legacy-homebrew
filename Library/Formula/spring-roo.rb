@@ -1,16 +1,13 @@
 require 'formula'
 
-class SpringRoo <Formula
-  url 'http://s3.amazonaws.com/dist.springframework.org/release/ROO/spring-roo-1.0.2.RELEASE.zip'
-  version '1.0.2'
+class SpringRoo < Formula
+  url 'http://s3.amazonaws.com/dist.springframework.org/release/ROO/spring-roo-1.1.4.RELEASE.zip'
+  version '1.1.4'
   homepage 'http://www.springsource.org/roo'
-  md5 '31d4444700311b14388a29139f4ea9bc'
+  md5 'c4f572fa6ab2c1162b4761054df9f67a'
 
   def install
-    inreplace 'bin/roo.sh', '$ROO_HOME/lib', '$ROO_HOME/java/lib'
-
-    FileUtils.rm_f Dir["bin/*.bat"]
-    prefix.install %w[bin dist docs legal]
-    (prefix+'java').install 'lib'
+    rm_f Dir["bin/*.bat"]
+    prefix.install %w[annotations bin bundle conf docs legal samples]
   end
 end

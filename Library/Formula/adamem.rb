@@ -1,7 +1,7 @@
 require 'formula'
 
-class Adamem <Formula
-  head 'git://github.com/adamv/adamem-osx.git', :branch => 'osx-brew'
+class Adamem < Formula
+  head 'https://github.com/adamv/adamem-osx.git', :branch => 'osx-brew'
   homepage 'http://www.komkon.org/~dekogel/adamem.html'
 
   def startup_script app
@@ -13,18 +13,18 @@ class Adamem <Formula
 #{libexec}/#{app} -os7 "#{libexec}/OS7.rom" -eos "#{libexec}/EOS.rom" -wp "#{libexec}/WP.rom" $*
 END
   end
-  
+
   def install
     Dir.chdir 'src' do
       system "make -f Makefile.osx dist"
     end
-    
+
     libexec.install Dir["dist/*"]
-  
+
     (bin+'adamem').write startup_script('adamem')
     (bin+'cvem').write startup_script('cvem')
   end
-  
+
   def caveats
     "Note that AdamEm is an X11 app, and does not support sound."
   end

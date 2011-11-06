@@ -1,17 +1,20 @@
 require 'formula'
 
-class Qwt <Formula
-  url 'http://downloads.sourceforge.net/project/qwt/qwt/5.1.2/qwt-5.1.2.tar.bz2'
+class Qwt < Formula
+  url 'http://sourceforge.net/projects/qwt/files/qwt/6.0.1/qwt-6.0.1.tar.bz2'
   homepage 'http://qwt.sourceforge.net/'
-  md5 'cb26a36f020d7c038e207b03b7d79bc5'
+  md5 'ace68558eab873e2da7e641179c4ef0c'
 
   depends_on 'qt'
 
   def install
-    ENV.j1
-    inreplace 'qwtconfig.pri', '    INSTALLBASE    = /usr/local/qwt-5.1.2',
-                               "    INSTALLBASE    = #{prefix}"
-    system "qmake -config release"
+    inreplace 'qwtconfig.pri' do |s|
+      # change_make_var won't work because there are leading spaces
+      s.gsub! /^\s*QWT_INSTALL_PREFIX\s*=(.*)$/, "QWT_INSTALL_PREFIX=#{prefix}"
+    end
+
+    system "qmake -spec macx-g++ -config release"
+    system "make"
     system "make install"
   end
 end

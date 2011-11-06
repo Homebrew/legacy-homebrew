@@ -1,9 +1,9 @@
 require 'formula'
 
-class Fftw <Formula
+class Fftw < Formula
   homepage 'http://www.fftw.org'
-  url 'http://www.fftw.org/fftw-3.2.2.tar.gz'
-  md5 'b616e5c91218cc778b5aa735fefb61ae'
+  url 'http://www.fftw.org/fftw-3.3.tar.gz'
+  md5 '0728ab3ec0ebb06631ab3b80a5c3d130'
 
   def install
     args = ["--enable-shared",
@@ -27,9 +27,7 @@ class Fftw <Formula
 
     # double precision
     # enable-sse2 only works with double precision (default)
-    system "./configure", "--enable-sse2",
-                          *args
-
+    system "./configure", "--enable-sse2", *args
     system "make install"
 
     # clean up so we can compile the long-double precision variant
@@ -37,12 +35,10 @@ class Fftw <Formula
 
     # long-double precision
     # no SIMD optimization available
-    system "./configure", "--enable-long-double",
-                          *args
-
+    system "./configure", "--enable-long-double", *args
     system "make install"
 
     #wtf file?
-    (prefix+'share/info/dir').unlink
+    (info+'dir').unlink
   end
 end

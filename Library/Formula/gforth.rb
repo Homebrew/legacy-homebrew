@@ -1,6 +1,6 @@
 require 'formula'
 
-class Gforth <Formula
+class Gforth < Formula
   url 'http://www.complang.tuwien.ac.at/forth/gforth/gforth-0.7.0.tar.gz'
   homepage 'http://www.jwdt.com/~paysan/gforth.html'
   md5 '2979ae86ede73ce2b3576dae957f4098'

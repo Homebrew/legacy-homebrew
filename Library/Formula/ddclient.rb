@@ -1,13 +1,12 @@
 require 'formula'
 
-class Ddclient <Formula
+class Ddclient < Formula
   url 'http://downloads.sourceforge.net/project/ddclient/ddclient/ddclient-3.8.0/ddclient-3.8.0.tar.bz2'
   homepage 'http://sourceforge.net/apps/trac/ddclient'
   md5 '6cac7a5eb1da781bfd4d98cef0b21f8e'
 
-  def skip_clean? path
-    path == etc or path == var
-  end
+  skip_clean 'etc'
+  skip_clean 'var'
 
   def install
     # Adjust default paths in script
@@ -20,18 +19,20 @@ class Ddclient <Formula
     sbin.install "ddclient"
 
     # Install sample files
-    inreplace 'sample-ddclient-wrapper.sh' do |s|
-      s.gsub! "/etc/ddclient", (etc + 'ddclient')
-    end
-    inreplace 'sample-etc_cron.d_ddclient' do |s|
-      s.gsub! "/usr/sbin/ddclient", (sbin + 'ddclient')
-    end
-    inreplace 'sample-etc_ddclient.conf' do |s|
-      s.gsub! "/var/run/ddclient.pid", (var + 'run/ddclient/pid')
-    end
-    (share + 'doc/ddclient').install ['sample-ddclient-wrapper.sh',\
-                                          'sample-etc_cron.d_ddclient',\
-                                          'sample-etc_ddclient.conf']
+    inreplace 'sample-ddclient-wrapper.sh',
+      "/etc/ddclient", (etc + 'ddclient')
+
+    inreplace 'sample-etc_cron.d_ddclient',
+      "/usr/sbin/ddclient", (sbin + 'ddclient')
+
+    inreplace 'sample-etc_ddclient.conf',
+      "/var/run/ddclient.pid", (var + 'run/ddclient/pid')
+
+    (share + 'doc/ddclient').install %w(
+      sample-ddclient-wrapper.sh
+      sample-etc_cron.d_ddclient
+      sample-etc_ddclient.conf
+    )
 
     # Create etc & var paths
     (etc + 'ddclient').mkpath
@@ -39,6 +40,7 @@ class Ddclient <Formula
 
     # Write the launchd script
     (prefix + 'org.ddclient.plist').write startup_plist
+    (prefix + 'org.ddclient.plist').chmod 0644
   end
 
   def caveats; <<-EOS
@@ -66,29 +68,29 @@ EOS
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Label</key>
-	<string>org.ddclient</string>
-	<key>OnDemand</key>
-	<true/>
-	<key>ProgramArguments</key>
-	<array>
-		<string>#{sbin}/ddclient</string>
-		<string>-file</string>
-		<string>#{etc}/ddclient/ddclient.conf</string>
-	</array>
-	<key>RunAtLoad</key>
-	<true/>
-	<key>StartCalendarInterval</key>
-	<dict>
-		<key>Minute</key>
-		<integer>0</integer>
-	</dict>
-	<key>WatchPaths</key>
-	<array>
-		<string>#{etc}/ddclient</string>
-	</array>
-	<key>WorkingDirectory</key>
-	<string>#{etc}/ddclient</string>
+  <key>Label</key>
+  <string>org.ddclient</string>
+  <key>OnDemand</key>
+  <true/>
+  <key>ProgramArguments</key>
+  <array>
+    <string>#{sbin}/ddclient</string>
+    <string>-file</string>
+    <string>#{etc}/ddclient/ddclient.conf</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Minute</key>
+    <integer>0</integer>
+  </dict>
+  <key>WatchPaths</key>
+  <array>
+    <string>#{etc}/ddclient</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>#{etc}/ddclient</string>
 </dict>
 </plist>
 EOS

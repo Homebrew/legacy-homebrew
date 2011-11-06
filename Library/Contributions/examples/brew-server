@@ -4,16 +4,23 @@
 # Note: this external command is ruby, but set up as a shell script, so that it gets exec'd.
 # This is required for sinatra's run-loop to take over.
 
-puts "View our tasting menu at http://localhost:4567/\nUse \"Control-C\" to exit.\n\n"
 $:.unshift(ENV['HOMEBREW_LIBRARY_PATH'])
-
-require 'rubygems'
-require 'sinatra'
-
-require 'cgi'
 
 require 'global'
 require 'formula'
+
+require 'rubygems'
+
+begin
+  require 'sinatra'
+rescue LoadError
+  onoe 'Sinatra required but not found'
+  puts 'To install: /usr/bin/gem install sinatra'
+  exit 1
+end
+
+require 'cgi'
+
 
 def link_to_formula name
   "<a href=\"/formula/#{CGI.escape(name)}\">#{name}</a>"
@@ -43,6 +50,7 @@ def html_page
   			<div id="header">
   				<h1><a href="./">Homebrew</a></h1>
   				<p id="subtitle"><strong>The missing package manager for OS X</strong></p>
+                                <p id="installed"><a href="/installed">Show installed packages</a></p>
   			</div>
 
   			<div id="informations">
@@ -64,7 +72,7 @@ get '/' do
     <div class="row">
       <ul>
     HTML
-    Formulary.read_all do |name, klass|
+    Formula.names do |name|
       s << "<li>#{link_to_formula(name)}</li>"
     end
     s << <<-HTML
@@ -75,7 +83,6 @@ get '/' do
 end
 
 get '/search' do
-  require 'brew.h'
   q = params['q']
   results = search_brews(q)
 
@@ -106,7 +113,6 @@ get '/search' do
 end
 
 get '/formula/:name' do
-  # klass = Formulary.read params[:name]
   klass = Formula.factory(params[:name])
 
   installed = klass.installed? ? "Installed at" : "Not installed."
@@ -145,8 +151,8 @@ get '/formula/:name' do
     end
   end
 
-  used_by = Formula.get_used_by()[klass.name]
-  unless used_by == nil
+  used_by = Formula.all.select{|ff| ff.deps.include?(klass.name)}.map{|f| f.name}.flatten.uniq.sort
+  unless used_by.empty?
     s << <<-HTML
             <dt>Used by</td>
     HTML
@@ -165,3 +171,38 @@ get '/formula/:name' do
 
   return s
 end
+
+
+def installed_formulas
+  Formula.all.select{|formula| formula.installed?}
+end
+
+get '/installed' do
+
+  s = <<-HTML
+    <html>
+    <head>
+      <title>Installed Formulas</title>
+      #{css_style}
+    </head>
+    <body>
+     <h1>Installed Fomulas</h1>
+    <ul>
+  HTML
+
+  installed_formulas.each do |formula|
+    s << "<li>#{link_to_formula(formula.name)}</li>"
+  end
+
+  s += <<-HTML
+    </ul>
+    <div>&larr; <a href="/">Back to menu</a></div>
+    </body>
+  </html>
+  HTML
+
+  return s
+end
+
+
+puts "View our tasting menu at http://localhost:4567/\nUse \"Control-C\" to exit.\n\n"

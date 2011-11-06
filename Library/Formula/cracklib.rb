@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cracklib <Formula
+class Cracklib < Formula
   url 'http://downloads.sourceforge.net/project/cracklib/cracklib/2.8.16/cracklib-2.8.16.tar.gz'
   homepage 'http://cracklib.sourceforge.net/'
   md5 '3bfb22db8fcffd019463ee415a1b25b7'

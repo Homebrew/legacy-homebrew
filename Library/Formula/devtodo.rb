@@ -1,6 +1,6 @@
 require 'formula'
 
-class Devtodo <Formula
+class Devtodo < Formula
   url 'http://swapoff.org/files/devtodo/devtodo-0.1.20.tar.gz'
   homepage 'http://swapoff.org/DevTodo'
   md5 '4a6241437cb56f237f850bcd2233c3c4'
@@ -13,7 +13,7 @@ class Devtodo <Formula
 
   def install
     # Rename Regex.h to Regex.hh to avoid case-sensitivity confusion with regex.h
-    FileUtils.mv "util/Regex.h", "util/Regex.hh"
+    mv "util/Regex.h", "util/Regex.hh"
     inreplace ["util/Lexer.h", "util/Makefile.in", "util/Regex.cc"],
       "Regex.h", "Regex.hh"
 

@@ -1,11 +1,11 @@
-class Keg <Pathname
+require 'extend/pathname'
+
+class Keg < Pathname
   def initialize path
     super path
     raise "#{to_s} is not a valid keg" unless parent.parent.realpath == HOMEBREW_CELLAR.realpath
     raise "#{to_s} is not a directory" unless directory?
   end
-
-  class NotAKegError <RuntimeError; end
 
   # if path is a file in a keg then this will return the containing Keg object
   def self.for path
@@ -33,14 +33,25 @@ class Keg <Pathname
       n+=1
       Find.prune if src.directory?
     end
+    linked_keg_record.unlink if linked_keg_record.exist?
     n
   end
 
+  def fname
+    parent.basename.to_s
+  end
+
+  def linked_keg_record
+    @linked_keg_record ||= HOMEBREW_REPOSITORY/"Library/LinkedKegs"/fname
+  end
+
   def link
+    raise "Cannot link #{fname}\nAnother version is already linked: #{linked_keg_record.realpath}" if linked_keg_record.directory?
+
     $n=0
     $d=0
 
-    share_mkpaths=%w[aclocal doc info locale man]+(1..9).collect{|x|"man/man#{x}"}
+    share_mkpaths=%w[aclocal doc info locale man]+(1..8).collect{|x|"man/man#{x}"}
 
     # yeah indeed, you have to force anything you need in the main tree into
     # these dirs REMEMBER that *NOT* everything needs to be in the main tree
@@ -57,13 +68,18 @@ class Keg <Pathname
       # lib/language folders also get explicitly created
       when 'ghc' then :mkpath
       when 'lua' then :mkpath
+      when 'node' then :mkpath
       when 'ocaml' then :mkpath
       when /^perl5/ then :mkpath
       when 'php' then :mkpath
       when /^python[23]\.\d$/ then :mkpath
+      when 'ruby' then :mkpath
+      # Everything else is symlinked to the cellar
       else :link
       end
     end
+
+    (HOMEBREW_REPOSITORY/"Library/LinkedKegs"/fname).make_relative_symlink(self)
 
     return $n+$d
   end
@@ -96,7 +112,7 @@ protected
       dst.extend ObserverPathnameExtension
 
       if src.file?
-        dst.make_relative_symlink src
+        dst.make_relative_symlink src unless File.basename(src) == '.DS_Store'
       elsif src.directory?
         # if the dst dir already exists, then great! walk the rest of the tree tho
         next if dst.directory? and not dst.symlink?
@@ -120,3 +136,5 @@ protected
     end
   end
 end
+
+require 'keg_fix_install_names'

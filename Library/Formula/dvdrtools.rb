@@ -16,16 +16,11 @@ class Dvdrtools < Formula
   def install
     ENV['LIBS'] = '-lIOKit -framework CoreFoundation'
 
-    system "./configure",
-      "--prefix=#{prefix}",
-      "--mandir=#{man}",
-      '--disable-debug',
-      '--disable-dependency-tracking'
-
+    system "./configure", '--disable-debug', '--disable-dependency-tracking',
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system 'make install'
   end
-
-  private
 
   # while homebrew assumes p1, macports patches at p0
   def macports_patches(files)

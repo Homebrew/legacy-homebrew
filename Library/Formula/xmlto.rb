@@ -1,6 +1,6 @@
 require 'formula'
 
-class Xmlto <Formula
+class Xmlto < Formula
   url 'http://fedorahosted.org/releases/x/m/xmlto/xmlto-0.0.23.tar.bz2'
   md5 '3001d6bb2bbc2c8f6c2301f05120f074'
   homepage 'http://cyberelk.net/tim/software/xmlto/'

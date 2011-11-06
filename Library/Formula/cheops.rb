@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cheops <Formula
+class Cheops < Formula
   url 'http://files.nothingisreal.com/software/cheops/cheops-1.1.tar.bz2'
   homepage 'http://en.nothingisreal.com/wiki/CHEOPS'
   md5 'ced2dba9d0d6de77d538e04ff2909969'

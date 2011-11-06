@@ -1,12 +1,18 @@
 require 'formula'
 
-class Hunspell <Formula
-  url 'http://downloads.sourceforge.net/hunspell/hunspell-1.2.8.tar.gz'
+class Hunspell < Formula
+  url 'http://downloads.sourceforge.net/hunspell/hunspell-1.3.2.tar.gz'
   homepage 'http://hunspell.sourceforge.net/'
-  md5 '1177af54a09e320d2c24015f29c3a93e'
+  md5 '3121aaf3e13e5d88dfff13fb4a5f1ab8'
+
+  depends_on 'readline'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-ui", "--with-readline"
+    system "make"
+    ENV.deparallelize
     system "make install"
   end
 end

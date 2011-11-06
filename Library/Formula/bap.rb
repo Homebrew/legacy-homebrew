@@ -1,6 +1,6 @@
 require 'formula'
 
-class Bap <Formula
+class Bap < Formula
   head 'http://bap.googlecode.com/svn/trunk/'
   homepage 'http://code.google.com/p/bap/'
 

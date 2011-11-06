@@ -1,13 +1,13 @@
 require 'formula'
 
-class Mpd <Formula
-  url 'http://downloads.sourceforge.net/project/musicpd/mpd/0.15.12/mpd-0.15.12.tar.bz2'
+class Mpd < Formula
+  url 'http://downloads.sourceforge.net/project/musicpd/mpd/0.16.3/mpd-0.16.3.tar.bz2'
   homepage 'http://mpd.wikia.com'
-  md5 'b00b289a20ecd9accfd4972d6395135c'
+  md5 '6e708c02b0e8c288aec855eecf441a5a'
 
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'libid3tag'
-  depends_on 'pkg-config'
   depends_on 'flac'
   depends_on 'libshout'
   depends_on 'mad'
@@ -26,21 +26,18 @@ class Mpd <Formula
     # make faad.h findable (when brew is used elsewhere than /usr/local/)
     ENV.append 'CFLAGS', "-I#{HOMEBREW_PREFIX}/include"
 
-    configure_args = [
-      "--prefix=#{prefix}",
-      "--disable-debug",
-      "--disable-dependency-tracking",
-      "--enable-bzip2",
-      "--enable-flac",
-      "--enable-shout",
-      "--enable-fluidsynth",
-      "--enable-zip",
-      "--enable-lame-encoder",
-    ]
-    configure_args << "--disable-curl" if MACOS_VERSION <= 10.5
-    configure_args << "--enable-lastfm" if ARGV.include?("--lastfm")
+    args = ["--disable-debug", "--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--enable-bzip2",
+            "--enable-flac",
+            "--enable-shout",
+            "--enable-fluidsynth",
+            "--enable-zip",
+            "--enable-lame-encoder"]
+    args << "--disable-curl" if MacOS.leopard?
+    args << "--enable-lastfm" if ARGV.include?("--lastfm")
 
-    system "./configure", *configure_args
+    system "./configure", *args
     system "make install"
   end
 end

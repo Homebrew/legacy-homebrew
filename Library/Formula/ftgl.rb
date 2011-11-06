@@ -1,22 +1,18 @@
 require 'formula'
 
-class Ftgl <Formula
+class Ftgl < Formula
   url 'http://downloads.sourceforge.net/project/ftgl/FTGL%20Source/2.1.3~rc5/ftgl-2.1.3-rc5.tar.gz'
   homepage 'http://sourceforge.net/projects/ftgl/'
   md5 'fcf4d0567b7de9875d4e99a9f7423633'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
 
   def install
-    if Formula.factory("doxygen").installed?
-      puts "If doxygen is installed, the docs may still fail to build."
-      puts "Try \"brew unlink doxygen\" before installing ftgl, and then"
-      puts "use \"brew link doxygen\" afterwards to reactivate it."
-    end
+    ENV.x11 # Put freetype-config in path
 
-    # Put freetype-config in path
-    ENV.x11
-    ENV.prepend 'PATH', "/usr/X11/bin", ":"
+    # If doxygen is installed, the docs may still fail to build.
+    # So we disable building docs.
+    inreplace "configure", "set dummy doxygen;", "set dummy no_doxygen;"
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

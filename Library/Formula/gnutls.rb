@@ -1,16 +1,29 @@
 require 'formula'
 
-class Gnutls <Formula
-  @url='http://ftp.gnu.org/pub/gnu/gnutls/gnutls-2.8.5.tar.bz2'
-  @homepage='http://www.gnu.org/software/gnutls/gnutls.html'
-  @sha1='5121c52efd4718ad3d8b641d28343b0c6abaa571'
+class Gnutls < Formula
+  homepage 'http://www.gnu.org/software/gnutls/gnutls.html'
+  url 'http://ftpmirror.gnu.org/gnutls/gnutls-2.12.12.tar.bz2'
+  md5 '29ec03027f0e551301da781f02953160'
 
+  depends_on 'pkg-config' => :build
   depends_on 'libgcrypt'
+  depends_on 'libtasn1' => :optional
+
+  fails_with_llvm "Undefined symbols when linking", :build => "2326"
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-guile"
+    ENV.universal_binary	# build fat so wine can use it
+
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--disable-guile",
+                          "--disable-static",
+                          "--prefix=#{prefix}",
+                          "--with-libgcrypt",
+                          "--without-p11-kit"
     system "make install"
+
+    # certtool shadows the OS X certtool utility
+    mv bin+'certtool', bin+'gnutls-certtool'
+    mv man1+'certtool.1', man1+'gnutls-certtool.1'
   end
 end

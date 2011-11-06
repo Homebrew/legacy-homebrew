@@ -1,12 +1,11 @@
 require 'formula'
 
-class MediaInfo <Formula
-  url 'http://ovh.dl.sourceforge.net/sourceforge/mediainfo/MediaInfo_CLI_0.7.8_GNU_FromSource.tar.bz2'
+class MediaInfo < Formula
+  url 'http://downloads.sourceforge.net/sourceforge/mediainfo/MediaInfo_CLI_0.7.50_GNU_FromSource.tar.bz2'
   homepage 'http://mediainfo.sourceforge.net'
-  version '0.7.8'
-  md5 '9df4cf265802bae929450954f15a46d1'
+  md5 '1af1ce104975680bda00e2fe8d80d49c'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
 
   def install
     root_dir = Dir.pwd

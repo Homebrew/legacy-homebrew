@@ -1,15 +1,13 @@
 require 'formula'
 
-class GnuGetopt <Formula
+class GnuGetopt < Formula
   url 'http://software.frodo.looijaard.name/getopt/files/getopt-1.1.4.tar.gz'
   md5 '02188ca68da27c4175d6e9f3da732101'
   homepage 'http://software.frodo.looijaard.name/getopt/'
 
   depends_on 'gettext'
 
-  def keg_only?
-    :provided_by_osx
-  end
+  keg_only :provided_by_osx
 
   def install
     inreplace 'Makefile' do |s|

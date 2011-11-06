@@ -1,25 +1,23 @@
 require 'formula'
 
-class Gource <Formula
+class Gource < Formula
   homepage 'http://code.google.com/p/gource/'
-  # Stable version doesn't work on 10.6.3
-  # url 'http://gource.googlecode.com/files/gource-0.26.tar.gz'
-  # sha1 'f2e92a5f806264790f61a988d58dd488d1dc169a'
-  head 'git://github.com/acaudwell/Gource.git'
+  url 'https://github.com/acaudwell/Gource.git', :tag => "gource-0.35"
+  version "0.35"
+  head 'https://github.com/acaudwell/Gource.git'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'sdl'
   depends_on 'sdl_image'
-  depends_on 'ftgl'
   depends_on 'jpeg'
-  depends_on 'libpng'
   depends_on 'pcre'
   depends_on 'glew'
 
   def install
-    # Put freetype-config in path
-    ENV.x11
-    ENV.prepend 'PATH', "/usr/X11/bin", ":"
+    ENV.x11 # Put freetype-config in path
+
+    # For non-/usr/local installs
+    ENV.append "CXXFLAGS", "-I#{HOMEBREW_PREFIX}/include"
 
     system "autoreconf -f -i" unless File.exist? "configure"
 
@@ -28,5 +26,11 @@ class Gource <Formula
                           "--disable-sdltest",
                           "--disable-freetypetest"
     system "make install"
+  end
+
+  def test
+    Dir.chdir HOMEBREW_REPOSITORY do
+      system "#{bin}/gource"
+    end
   end
 end

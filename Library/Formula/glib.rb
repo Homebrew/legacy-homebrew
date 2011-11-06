@@ -1,47 +1,82 @@
 require 'formula'
 
-class Libiconv <Formula
-  url 'http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.13.1.tar.gz'
-  md5 '7ab33ebd26687c744a37264a330bbe9a'
-  homepage 'http://www.gnu.org/software/libiconv/'
-end
+def build_tests?; ARGV.include? '--test'; end
 
+class Glib < Formula
+  homepage 'http://developer.gnome.org/glib/2.28/'
+  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.28/glib-2.28.8.tar.bz2'
+  sha256 '222f3055d6c413417b50901008c654865e5a311c73f0ae918b0a9978d1f9466f'
 
-class Glib <Formula
-  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.24/glib-2.24.1.tar.bz2'
-  sha256 '014c3da960bf17117371075c16495f05f36501db990851ceea658f15d2ea6d04'
-  homepage 'http://www.gtk.org'
-
-  depends_on 'pkg-config'
   depends_on 'gettext'
 
-  def install
-    # Snow Leopard libiconv doesn't have a 64bit version of the libiconv_open
-    # function, which breaks things for us, so we build our own
-    # http://www.mail-archive.com/gtk-list@gnome.org/msg28747.html
-    
-    iconvd = Pathname.getwd+'iconv'
-    iconvd.mkpath
+  fails_with_llvm "Undefined symbol errors while linking" unless MacOS.lion?
 
-    Libiconv.new.brew do
-      system "./configure", "--prefix=#{iconvd}", "--disable-debug", "--disable-dependency-tracking",
-                            "--enable-static", "--disable-shared"
-      system "make install"
-    end
+  # Lion and Snow Leopard don't have a 64 bit version of the iconv_open
+  # function. The fact that Lion still doesn't is ridiculous. But we're as
+  # much to blame. Nobody reported the bug FFS. And I'm still not going to
+  # because I'm in a hurry here.
+  depends_on 'libiconv'
+
+  def patches
+    mp = "https://svn.macports.org/repository/macports/trunk/dports/devel/glib2/files/"
+    {
+      :p0 => [
+        mp+"patch-configure.ac.diff",
+        mp+"patch-glib-2.0.pc.in.diff",
+        mp+"patch-glib_gunicollate.c.diff",
+        mp+"patch-gi18n.h.diff",
+        mp+"patch-gio_xdgmime_xdgmime.c.diff",
+        mp+"patch-gio_gdbusprivate.c.diff"
+      ]
+    }
+  end
+
+  def options
+  [
+    ['--universal', 'Build universal binaries.'],
+    ['--test', 'Build a debug build and run tests. NOTE: Tests may hang on "unix-streams".']
+  ]
+  end
+
+  def install
+    ENV.universal_binary if ARGV.build_universal?
 
     # indeed, amazingly, -w causes gcc to emit spurious errors for this package!
     ENV.enable_warnings
 
-    # basically we are going to statically link to the symbols that glib doesn't
-    # find in the bugged GNU libiconv that ships with 10.6
-    ENV['LDFLAGS'] += " #{iconvd}/lib/libiconv.a"
+    args = ["--disable-dependency-tracking", "--disable-rebuilds",
+            "--prefix=#{prefix}",
+            "--with-libiconv=gnu",
+            "--disable-dtrace"]
 
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--disable-dependency-tracking",
-                          "--disable-rebuilds",
-                          "--with-libiconv=gnu"
+    args << "--disable-debug" unless build_tests?
+
+    if ARGV.build_universal?
+      # autoconf 2.61 is fine don't worry about it
+      inreplace ["aclocal.m4", "configure.ac"] do |s|
+        s.gsub! "AC_PREREQ([2.62])", "AC_PREREQ([2.61])"
+      end
+
+      # Run autoconf so universal builds will work
+      system "autoconf"
+    end
+
+    # hack so that we don't have to depend on pkg-config
+    # http://permalink.gmane.org/gmane.comp.package-management.pkg-config/627
+    ENV['ZLIB_CFLAGS'] = ''
+    ENV['ZLIB_LIBZ'] = '-l'
+
+    system "./configure", *args
+
+    # Fix for 64-bit support, from MacPorts
+    curl "https://svn.macports.org/repository/macports/trunk/dports/devel/glib2/files/config.h.ed", "-O"
+    system "ed - config.h < config.h.ed"
+
     system "make"
+    # Supress a folder already exists warning during install
+    # Also needed for running tests
+    ENV.j1
+    system "make test" if build_tests?
     system "make install"
 
     # This sucks; gettext is Keg only to prevent conflicts with the wider
@@ -52,11 +87,11 @@ class Glib <Formula
     inreplace lib+'pkgconfig/glib-2.0.pc' do |s|
       s.gsub! 'Libs: -L${libdir} -lglib-2.0 -lintl',
               "Libs: -L${libdir} -lglib-2.0 -L#{gettext.lib} -lintl"
-      
+
       s.gsub! 'Cflags: -I${includedir}/glib-2.0 -I${libdir}/glib-2.0/include',
               "Cflags: -I${includedir}/glib-2.0 -I${libdir}/glib-2.0/include -I#{gettext.include}"
     end
 
-    (prefix+'share/gtk-doc').rmtree
+    (share+'gtk-doc').rmtree
   end
 end

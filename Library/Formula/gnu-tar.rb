@@ -1,9 +1,9 @@
 require 'formula'
 
 class GnuTar < Formula
-  url 'ftp://ftp.gnu.org/gnu/tar/tar-1.22.tar.gz'
+  url 'http://ftpmirror.gnu.org/tar/tar-1.26.tar.gz'
   homepage 'http://www.gnu.org/software/tar/'
-  md5 'efafad1b256e3de410f4fce5335d9c9d'
+  md5 '00d1e769c6af702c542cca54b728920d'
 
   def options
     [['--default-names', "Do NOT prepend 'g' to the binary; will override system tar."]]
@@ -13,7 +13,7 @@ class GnuTar < Formula
     args = [ "--prefix=#{prefix}" , "--mandir=#{man}" ]
     args << "--program-prefix=g" unless ARGV.include? '--default-names'
 
-    system "./configure", *args                      
+    system "./configure", *args
     system "make install"
   end
 end

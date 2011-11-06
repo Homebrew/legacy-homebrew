@@ -1,31 +1,72 @@
 require 'formula'
 
-class Cassandra <Formula
-  url 'http://apache.mirroring.de/cassandra/0.6.3/apache-cassandra-0.6.3-bin.tar.gz'
+class Cassandra < Formula
+  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.0.1/apache-cassandra-1.0.1-bin.tar.gz'
   homepage 'http://cassandra.apache.org'
-  md5 '5a6965a0450a5836d3f4e4456d870154'
-  version '0.6.3'
+  md5 '5d921110df26a6fc0f7582e52a3c053e'
 
   def install
     (var+"lib/cassandra").mkpath
     (var+"log/cassandra").mkpath
     (etc+"cassandra").mkpath
 
-    inreplace "conf/storage-conf.xml", "/var/lib/cassandra", "#{var}/lib/cassandra"
-    inreplace "conf/log4j.properties", "/var/log/cassandra", "#{var}/log/cassandra"
+    inreplace "conf/cassandra.yaml", "/var/lib/cassandra", "#{var}/lib/cassandra"
+    inreplace "conf/log4j-server.properties", "/var/log/cassandra", "#{var}/log/cassandra"
+
+    inreplace "conf/cassandra-env.sh" do |s|
+      s.gsub! "/lib/", "/"
+    end
 
     inreplace "bin/cassandra.in.sh" do |s|
-      s.gsub! "cassandra_home=`dirname $0`/..", "cassandra_home=#{prefix}"
+      s.gsub! "CASSANDRA_HOME=`dirname $0`/..", "CASSANDRA_HOME=#{prefix}"
       # Store configs in etc, outside of keg
-      s.gsub! "CASSANDRA_CONF=$cassandra_home/conf", "CASSANDRA_CONF=#{etc}/cassandra"
+      s.gsub! "CASSANDRA_CONF=$CASSANDRA_HOME/conf", "CASSANDRA_CONF=#{etc}/cassandra"
       # Jars installed to prefix, no longer in a lib folder
-      s.gsub! "$cassandra_home/lib/*.jar", "$cassandra_home/*.jar"
+      s.gsub! "$CASSANDRA_HOME/lib/*.jar", "$CASSANDRA_HOME/*.jar"
     end
 
     rm Dir["bin/*.bat"]
 
     (etc+"cassandra").install Dir["conf/*"]
-    prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc}"]
+    prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc,lib/licenses}"]
     prefix.install Dir["lib/*.jar"]
+
+    (prefix+'org.apache.cassandra.plist').write startup_plist
+    (prefix+'org.apache.cassandra.plist').chmod 0644
+  end
+
+  def caveats; <<-EOS.undent
+    If this is your first install, automatically load on login with:
+      mkdir -p ~/Library/LaunchAgents
+      cp #{prefix}/org.apache.cassandra.plist ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/org.apache.cassandra.plist
+    EOS
+  end
+
+  def startup_plist; <<-EOPLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>Label</key>
+    <string>org.apache.cassandra</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>#{bin}/cassandra</string>
+        <string>-f</string>
+    </array>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>WorkingDirectory</key>
+    <string>#{var}/lib/cassandra</string>
+  </dict>
+</plist>
+    EOPLIST
   end
 end

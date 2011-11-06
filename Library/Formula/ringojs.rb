@@ -1,9 +1,9 @@
 require 'formula'
 
-class Ringojs <Formula
-  url 'http://github.com/downloads/ringo/ringojs/ringojs-0.5.tar.gz'
+class Ringojs < Formula
+  url 'https://github.com/downloads/ringo/ringojs/ringojs-0.8.tar.gz'
   homepage 'http://ringojs.org'
-  md5 'ef79b9f6840d68842f4fbc1f466807f5'
+  md5 '405455f7ab1bc7e230ff2ef50ced01c4'
 
   def shim_script target
     <<-EOS.undent

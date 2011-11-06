@@ -1,12 +1,17 @@
 require 'formula'
 
-class Arping <Formula
-  url 'http://github.com/ThomasHabets/arping/tarball/arping-2.09'
+class Arping < Formula
+  url 'https://github.com/ThomasHabets/arping/tarball/arping-2.09'
   version '2.09'
-  homepage 'http://github.com/ThomasHabets/arping'
+  homepage 'https://github.com/ThomasHabets/arping'
   md5 '8a10b23655ffbe93667691fb881afbf4'
 
   depends_on 'libnet'
+
+  def patches
+    # Patch removes header conflict with libpcap; arping 2.x uses libnet
+    DATA
+  end
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
@@ -15,15 +20,9 @@ class Arping <Formula
     inreplace 'Makefile' do |s|
       s.change_make_var! "LIBS", " -lnet"
     end
-  
+
     system "make"
     system "make install"
-  end
-
-  def patches
-    # Patch removes header conflict with libpcap
-    # arping 2.x uses libnet
-    DATA
   end
 end
 

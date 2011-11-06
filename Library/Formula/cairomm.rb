@@ -1,32 +1,33 @@
 require 'formula'
 
-class Cairomm <Formula
+class Cairomm < Formula
   url 'http://cairographics.org/releases/cairomm-1.8.4.tar.gz'
   homepage 'http://cairographics.org/cairomm/'
   md5 '559afbc47484ba3fad265e38a3dafe90'
 
+  # patch for universal compilation from:
+  # http://trac.macports.org/browser/trunk/dports/graphics/cairomm/files/patch-quartz-lp64.diff
   def patches
     { :p0 => DATA }
   end
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'libsigc++'
   # cairo is available on 10.6 via X11 but not on 10.5
-  depends_on 'cairo' if MACOS_VERSION == 10.5
+  depends_on 'cairo' if MacOS.leopard?
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-x",
-            						  "--without-xlib",
-            						  "--disable-quartz",
-            						  "--disable-quartz-font"
+                          "--without-xlib",
+                          "--disable-quartz",
+                          "--disable-quartz-font"
     system "make install"
   end
 end
 
-# patch for universal compilation from:
-# http://trac.macports.org/browser/trunk/dports/graphics/cairomm/files/patch-quartz-lp64.diff
+
 __END__
 diff -urN cairomm/quartz_font.cc cairomm-1.8.2/cairomm/quartz_font.cc
 --- cairomm/quartz_font.cc	2008-12-20 18:37:46.000000000 +0100

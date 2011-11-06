@@ -1,10 +1,10 @@
 require 'formula'
 
-class Kumofs <Formula
-  url 'http://github.com/downloads/etolabo/kumofs/kumofs-0.4.8.tar.gz'
-  head 'git://github.com/etolabo/kumofs.git'
+class Kumofs < Formula
+  url 'https://github.com/downloads/etolabo/kumofs/kumofs-0.4.12.tar.gz'
+  head 'https://github.com/etolabo/kumofs.git'
   homepage 'http://kumofs.sourceforge.net/'
-  md5 '8ce7bc91f86bb7e43b66cbf11af37a99'
+  md5 '70fc53a332fb2b76ae6a3aad7aa59aad'
 
   depends_on 'tokyo-cabinet'
   # msgpack rubygem and the C++ lib are needed
@@ -12,8 +12,10 @@ class Kumofs <Formula
   depends_on 'msgpack' => :ruby
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}",
-                          "--with-msgpack=#{prefix}", "--with-tokyocabinet=#{prefix}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-msgpack=#{prefix}",
+                          "--with-tokyocabinet=#{prefix}"
     system "make install"
   end
 end

@@ -1,23 +1,27 @@
 require 'formula'
 
-# This formula installs Factor TRUNK, as there is no
-# good stable release. It also takes up to and including
-# "a very long time" to bootstrap the image.
+# This formula installs Factor TRUNK.
+# One can install the latest stable release using the official DMG.
 
-class Factor <Formula
-  head 'git://github.com/slavapestov/factor.git'
+class Factor < Formula
+  head 'https://github.com/slavapestov/factor.git'
   homepage 'http://factorcode.org/'
 
   def install
-    system "make"
-    curl "http://factorcode.org/images/latest/boot.unix-x86.64.image", "-O"
-    system "./factor -i=boot.unix-x86.64.image"
-    libexec.install "Factor.app"
-    libexec.install "factor.image"
+    # The build script assumes it is in a Git repository.
+    ENV['GIT_DIR']="#{@downloader.cached_location}/.git"
+    system "./build-support/factor.sh update"
+
+    prefix.install ["Factor.app", "factor.image", "factor"]
+    (bin/'factor').write <<-EOS.undent
+    #!/bin/sh
+    exec #{prefix}/factor $@
+    EOS
   end
 
-  def caveats
-    "Cocoa app installed to #{libexec}.\n\n"\
-    "Makes use of 'factor.image' in the same folder."
+  def caveats; <<-EOS.undent
+    Cocoa app installed to #{prefix}/Factor.app.
+    Makes use of 'factor.image' in the same folder.
+    EOS
   end
 end

@@ -1,17 +1,15 @@
 require 'formula'
 
-class Libffi <Formula
-  @url='ftp://sourceware.org/pub/libffi/libffi-3.0.8.tar.gz'
-  @homepage='http://sourceware.org/libffi/'
-  @sha1='ce44d10c39d9a37479c8777e206cac0f36c48712'
+class Libffi < Formula
+  url 'http://mirrors.kernel.org/sources.redhat.com/libffi/libffi-3.0.9.tar.gz'
+  mirror 'ftp://sourceware.org/pub/libffi/libffi-3.0.9.tar.gz'
+  homepage 'http://sourceware.org/libffi/'
+  sha1 '56e41f87780e09d06d279690e53d4ea2c371ea88'
 
-  def patches
-    host = "http://trac.macports.org"
-    base = "export/57218/trunk/dports/devel/libffi/files"
-    { :p0 => "#{host}/#{base}/patch-includedir.diff" }
-  end
+  keg_only :provided_by_osx, "Guile uses this version of libffi."
 
   def install
+    ENV.universal_binary
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end
