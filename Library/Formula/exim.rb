@@ -7,6 +7,10 @@ class Exim < Formula
 
   depends_on 'pcre'
 
+  def options
+    [['--support-maildir', 'Support delivery in Maildir format']]
+  end
+
   def install
     cp 'src/EDITME', 'Local/Makefile'
     inreplace 'Local/Makefile' do |s|
@@ -16,6 +20,7 @@ class Exim < Formula
       s.gsub! '/usr/exim/configure', etc+'exim.conf'
       s.gsub! '/usr/exim', prefix
       s.gsub! '/var/spool/exim', var+'spool/exim'
+      s << "SUPPORT_MAILDIR=yes\n" if ARGV.include? '--support-maildir'
 
       # For non-/usr/local HOMEBREW_PREFIX
       s << "LOOKUP_INCLUDE=-I#{HOMEBREW_PREFIX}/include\n"
