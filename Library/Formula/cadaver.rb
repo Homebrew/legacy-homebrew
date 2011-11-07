@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cadaver < Formula
-  url 'http://www.webdav.org/cadaver/cadaver-0.23.2.tar.gz'
+  url 'http://www.webdav.org/cadaver/cadaver-0.23.3.tar.gz'
   homepage 'http://www.webdav.org/cadaver/'
-  md5 '5ac79e41f3b7b4f68bf4003beed5dc26'
+  sha1 '4ad8ea2341b77e7dee26b46e4a8a496f1a2962cd'
 
   depends_on 'gettext'
 
