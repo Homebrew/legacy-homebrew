@@ -11,8 +11,14 @@ end
 class Spidermonkey < Formula
   homepage 'https://developer.mozilla.org/en/SpiderMonkey'
   url 'http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz'
-  md5 'a4574365938222adca0a6bd33329cb32'
+  # Don't provide an md5 for the HEAD build
+  unless ARGV.build_head?
+    md5 'a4574365938222adca0a6bd33329cb32'
+  end
   version '1.8.5'
+  # This is terribly, terribly slow the first time.
+  # head 'https://hg.mozilla.org/tracemonkey', :using => :hg
+  head 'https://hg.mozilla.org/tracemonkey/archive/tip.tar.gz', :using => :curl
 
   depends_on 'readline'
   depends_on 'nspr'
