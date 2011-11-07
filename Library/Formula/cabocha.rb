@@ -13,13 +13,9 @@ class Cabocha < Formula
   def install
     args = ["--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}", "--with-charset=utf8"]
 
-    system "/bin/sh -c LIBS=-liconv"
+    ENV["LIBS"] = "-liconv"
     system "./configure", *args
     system "make"
     system "make install"
-  end
-
-  def test
-    system "false"
   end
 end
