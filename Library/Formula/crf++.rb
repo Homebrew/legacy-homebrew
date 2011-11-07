@@ -13,8 +13,4 @@ class Crfxx < Formula
     system "make"
     system "make install"
   end
-
-  def test
-    system "false"
-  end
 end
