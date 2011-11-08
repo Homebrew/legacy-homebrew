@@ -20,16 +20,60 @@ class Kdelibs < Formula
   depends_on 'd-bus'
   depends_on 'qt'
   depends_on 'libdbusmenu-qt'
+  depends_on 'aspell' => :optional
+  depends_on 'enchant' => :optional
+
+  def patches
+    # macports patches.
+    {:p1 => [
+      "http://svn.macports.org/repository/macports/trunk/dports/kde/kdelibs4/files/add-bundles-to-path.patch",
+      "http://svn.macports.org/repository/macports/trunk/dports/kde/kdelibs4/files/default-kde4-xdg-menu-prefix.patch",
+      "http://svn.macports.org/repository/macports/trunk/dports/kde/kdelibs4/files/workaround-kdeinit4-crash.patch",
+      "http://svn.macports.org/repository/macports/trunk/dports/kde/kdelibs4/files/patch-cmake-modules-FindKDE4-Internal.cmake.diff",
+      "http://svn.macports.org/repository/macports/trunk/dports/kde/kdelibs4/files/patch-cmake-modules-FindPhonon.cmake.diff",
+      "http://svn.macports.org/repository/macports/trunk/dports/kde/kdelibs4/files/patch-cmake-modules-FindQt4.cmake.diff"
+    ]}
+  end
 
   def install
+    opoo "Compile qt formula first with: --with-qtdbus and --with-qt3support flags."
+    puts <<-EOS.undent
+      Enable QtDBus module (--with-qtdbus) and Qt3Support module (--with-qt3support)
+      in qt formula first to avoid errors in kdevplatform and kdevelop formulas.
+    EOS
+
     ENV.x11
     gettext_prefix = Formula.factory('gettext').prefix
     docbook_prefix = Formula.factory('docbook').prefix
     docbook_dtd = "#{docbook_prefix}/docbook/xml/4.5"
     docbook_xsl = Dir.glob("#{docbook_prefix}/docbook/xsl/*").first
-    mkdir 'build'
-    cd 'build'
-    system "cmake .. #{std_cmake_parameters} -DCMAKE_PREFIX_PATH=#{gettext_prefix} -DDOCBOOKXML_CURRENTDTD_DIR=#{docbook_dtd} -DDOCBOOKXSL_DIR=#{docbook_xsl} -DBUILD_doc=FALSE -DBUNDLE_INSTALL_DIR=#{bin}"
+    args = std_cmake_parameters.split + [
+      "-DCMAKE_PREFIX_PATH=#{gettext_prefix}",
+      "-DDOCBOOKXML_CURRENTDTD_DIR=#{docbook_dtd}",
+      "-DDOCBOOKXSL_DIR=#{docbook_xsl}",
+      "-DBUILD_doc=FALSE",
+      "-DBUNDLE_INSTALL_DIR=#{bin}",
+      "-DWITH_ENCHANT=ON",
+      "-DWITH_Soprano=ON",
+      "-DKDE_DEFAULT_HOME=Library/Preferences/KDE",
+      "-DWITH_Avahi=OFF",
+      "-DWITH_HSPELL=OFF",
+      "-DWITH_FAM=OFF"]
+    mkdir "build"
+    cd "build"
+    args << ".."
+    system "cmake", *args
     system "make install"
+  end
+
+  def caveats; <<-EOS.undent
+      First add /usr/local path to your $KDEDIRS in your ~/.bash_profile file.
+        export KDEDIRS="$KDEDIRS:$HOME/Library/Preferences/KDE:/usr/local"
+
+      Now remember to run kbuildsycoca4 command, if you have some issues with kdevelop
+      formula or kate formula about mime types, try to update mime types:
+        $ update-mime-database /usr/local/share/mime
+        $ kbuildsycoca4 --noincremental
+    EOS
   end
 end
