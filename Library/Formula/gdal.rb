@@ -20,6 +20,10 @@ def opencl?
   ARGV.include? "--enable-opencl"
 end
 
+def netcdf?
+  ARGV.include? "--with-netcdf"
+end
+
 class Gdal < Formula
   url 'http://download.osgeo.org/gdal/gdal-1.8.1.tar.gz'
   homepage 'http://www.gdal.org/'
@@ -34,6 +38,7 @@ class Gdal < Formula
 
   depends_on "postgresql" if postgres?
   depends_on "mysql" if mysql?
+  depends_on "netcdf" if netcdf?
 
   # Without Numpy, the Python bindings can't deal with raster data.
   depends_on 'numpy' => :python unless no_python?
@@ -71,6 +76,7 @@ class Gdal < Formula
       ['--complete', 'Use additional Homebrew libraries to provide more drivers.'],
       ['--with-postgres', 'Specify PostgreSQL as a dependency.'],
       ['--with-mysql', 'Specify MySQL as a dependency.'],
+      ['--with-netcdf', 'Specify NetCDF as a dependency.'],
       ['--without-python', 'Build without Python support (disables a lot of tools).'],
       ['--enable-opencl', 'Build with support for OpenCL.']
     ]
@@ -122,7 +128,6 @@ class Gdal < Formula
     if complete?
       args.concat [
         "--with-liblzma=yes",
-        "--with-netcdf=#{HOMEBREW_PREFIX}",
         "--with-hdf5=#{HOMEBREW_PREFIX}",
         "--with-jasper=#{HOMEBREW_PREFIX}",
         "--with-cfitsio=#{HOMEBREW_PREFIX}",
@@ -135,7 +140,6 @@ class Gdal < Formula
     else
       args.concat [
         "--without-cfitsio",
-        "--without-netcdf",
         "--without-ogdi",
         "--without-hdf4",
         "--without-hdf5",
@@ -167,6 +171,12 @@ class Gdal < Formula
     args << "--without-ingres" # Ingres databases
     args << "--without-oci"    # Oracle databases
     args << "--without-idb"    # IBM Informix DataBlades
+
+    if netcdf?
+      args << "--with-netcdf=#{HOMEBREW_PREFIX}"
+    else
+      args << "--without-netcdf"
+    end
 
     # Hombrew-provided databases.
     args << "--with-pg=#{HOMEBREW_PREFIX}/bin/pg_config" if postgres?
