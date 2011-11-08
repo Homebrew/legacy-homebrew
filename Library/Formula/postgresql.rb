@@ -5,6 +5,7 @@ class Postgresql < Formula
   homepage 'http://www.postgresql.org/'
   url 'http://ftp9.us.postgresql.org/pub/mirrors/postgresql/source/v9.0.4/postgresql-9.0.4.tar.bz2'
   md5 '80390514d568a7af5ab61db1cda27e29'
+  head 'https://github.com/postgres/postgres.git', :tag => 'REL9_0_STABLE'
 
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.leopard? # Leopard libxml is too old
@@ -14,7 +15,8 @@ class Postgresql < Formula
     [
       ['--no-python', 'Build without Python support.'],
       ['--no-perl', 'Build without Perl support.'],
-      ['--enable-dtrace', 'Build with DTrace support.']
+      ['--enable-dtrace', 'Build with DTrace support.'],
+      ['--no-docs', 'Don''t even try to build docs.']
     ]
   end
 
@@ -55,7 +57,7 @@ class Postgresql < Formula
 
     system "./configure", *args
     system "make install"
-    system "make install-docs"
+    system "make install-docs" unless ARGV.include? '--no-docs'
 
     contrib_directories = Dir.glob("contrib/*").select{ |path| File.directory?(path) } - ['contrib/start-scripts']
 
