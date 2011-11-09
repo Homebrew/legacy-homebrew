@@ -172,7 +172,7 @@ class Gdal < Formula
     args << "--without-oci"    # Oracle databases
     args << "--without-idb"    # IBM Informix DataBlades
 
-    if netcdf?
+    if netcdf? || complete?
       args << "--with-netcdf=#{HOMEBREW_PREFIX}"
     else
       args << "--without-netcdf"
