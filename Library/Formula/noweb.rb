@@ -10,13 +10,15 @@ class Noweb < Formula
 
   def install
     Dir.chdir "src" do
-      system "make LIBSRC=icon ICONC=icont"
+      system "bash", "awkname", "awk"
+      system "make LIBSRC=icon ICONC=icont CFLAGS='-U_POSIX_C_SOURCE -D_POSIX_C_SOURCE=1'"
 
       kpse = `which kpsewhich`
       if kpse == ''
         ohai 'No TeX installation found. Installing TeX support files in the noweb Cellar.'
         texmf = "#{prefix}"
       else
+        ohai 'TeX installation found. Installing TeX support files there might fail if your user does not have permission'
         texmf = "`kpsewhich -var-value=TEXMFLOCAL`"
       end
 

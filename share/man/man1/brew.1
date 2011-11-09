@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "October 2011" "Homebrew" "brew"
+.TH "BREW" "1" "November 2011" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -64,11 +64,14 @@ If \fB\-\-strict\fR is passed, perform additional stricter checks that may not n
 Display the source to \fIformula\fR\.
 .
 .TP
-\fBcleanup [\-\-force]\fR [\fIformula\fR]
+\fBcleanup [\-\-force] [\-n]\fR [\fIformula\fR]
 For all installed or specific formulae, remove any older versions from the cellar\. By default, does not remove out\-of\-date keg\-only brews, as other software may link directly to specific versions\.
 .
 .IP
 If \fB\-\-force\fR is passed, remove out\-of\-date keg\-only brews as well\.
+.
+.IP
+If \fB\-n\fR is passed, show what would be removed, but do not actually remove anything\.
 .
 .TP
 \fBcreate [\-\-autotools|\-\-cmake] [\-\-no\-fetch]\fR \fIURL\fR
