@@ -16,7 +16,11 @@ class Valgrind < Formula
 
   def install
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
-    args << "--enable-only64bit" << "--build=amd64-darwin" if MacOS.prefer_64_bit?
+    if MacOS.prefer_64_bit?
+      args << "--enable-only64bit" << "--build=amd64-darwin"
+    else
+      args << "--enable-only32bit"
+    end
 
     system "./configure", *args
     system "make"
