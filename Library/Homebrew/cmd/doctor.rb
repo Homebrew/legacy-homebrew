@@ -797,6 +797,20 @@ def check_git_version
   end
 end
 
+def check_terminal_width
+  if `tput cols`.chomp.to_i > 262
+    puts <<-EOS.undent
+      Your terminal width is greater than 262 columns.
+
+      This can trigger a segfault in some versions of curl, which may cause
+      downloads to appear to fail.
+
+      You may want to adjust your terminal size.
+
+    EOS
+  end
+end
+
 module Homebrew extend self
   def doctor
     old_stdout = $stdout
@@ -842,6 +856,7 @@ module Homebrew extend self
       check_git_status
       check_for_leopard_ssl
       check_git_version
+      check_terminal_width
     ensure
       $stdout = old_stdout
     end
