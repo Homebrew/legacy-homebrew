@@ -2,9 +2,11 @@ require 'formula'
 
 class Calabash < Formula
   homepage 'http://xmlcalabash.com'
-  url 'http://xmlcalabash.com/download/calabash-0.9.36.zip'
-  md5 '82afd255063b3f9f2aec363fc89c011d'
+  url 'http://xmlcalabash.com/download/calabash-0.9.44.94.zip'
+  md5 'dedce74a5bc355c547a2aa2800d6ba40'
   head 'https://github.com/ndw/xmlcalabash1.git'
+  
+  depends_on 'saxon'
 
 
   def install
@@ -14,11 +16,11 @@ class Calabash < Formula
 
 
   #
-  # Copied & modified from `brew cat saxon`
+  # Modified from saxon's formula
   #
   def shim_script target
     <<-EOS.undent
-      #!/bin/bash
+      #!/usr/bin/env bash
       java -Xmx1024m -jar #{libexec}/calabash.jar "$@"
     EOS
 
@@ -37,6 +39,6 @@ class Calabash < Formula
   def test
     # This small XML pipeline (*.xpl) that comes with Calabash
     # is basically its equivalent "Hello World" program.
-    system "calabash #{self.prefix}/xpl/pipe.xpl"
+    system "calabash #{self.prefix}/libexec/xpl/pipe.xpl"
   end
-end
+end 
