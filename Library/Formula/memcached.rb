@@ -30,10 +30,15 @@ class Memcached < Formula
         cp #{prefix}/com.danga.memcached.plist ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/com.danga.memcached.plist
 
-        Or start it manually:
-            #{HOMEBREW_PREFIX}/bin/memcached
+    If this is an upgrade and you already have the com.danga.memcached.plist loaded:
+        launchctl unload -w ~/Library/LaunchAgents/com.danga.memcached.plist
+        cp #{prefix}/com.danga.memcached.plist ~/Library/LaunchAgents/com.danga.memcached.plist
+        launchctl load -w ~/Library/LaunchAgents/com.danga.memcached.plist
 
-        Add "-d" to start it as a daemon.
+    Or start it manually:
+        #{HOMEBREW_PREFIX}/bin/memcached
+
+    Add "-d" to start it as a daemon.
     EOS
   end
 
