@@ -750,9 +750,10 @@ def check_missing_deps
 end
 
 def check_git_status
-  status_cmd = "git --git-dir=#{HOMEBREW_REPOSITORY}/.git --work-tree=#{HOMEBREW_PREFIX} status -s #{HOMEBREW_PREFIX}/Library/Homebrew"
-  if system "/usr/bin/which -s git" and File.directory? HOMEBREW_REPOSITORY+'.git' and not `#{status_cmd}`.empty?
-    ohai "You have uncommitted modifications to Homebrew core"
+  repo = HOMEBREW_REPOSITORY
+  status_cmd = "git --git-dir=#{repo}/.git --work-tree=#{repo} status -s #{repo}/Library/Homebrew"
+  if system "/usr/bin/which -s git" and File.directory? repo+'.git' and not `#{status_cmd}`.empty?
+    ohai "You have uncommitted modifications to Homebrew's core."
     puts "Unless you know what you are doing, you should: git reset --hard"
     puts
   end
@@ -792,6 +793,21 @@ def check_git_version
 
       You may want to upgrade:
         brew upgrade git
+
+    EOS
+  end
+end
+
+def check_terminal_width
+  # http://sourceforge.net/tracker/?func=detail&atid=100976&aid=3435710&group_id=976
+  if `tput cols`.chomp.to_i > 262
+    puts <<-EOS.undent
+      Your terminal width is greater than 262 columns.
+
+      This can trigger a segfault in some versions of curl, which may cause
+      downloads to appear to fail.
+
+      You may want to adjust your terminal size.
 
     EOS
   end
@@ -842,6 +858,7 @@ module Homebrew extend self
       check_git_status
       check_for_leopard_ssl
       check_git_version
+      check_terminal_width
     ensure
       $stdout = old_stdout
     end
