@@ -1,8 +1,8 @@
 require 'formula'
 
 class Wireshark < Formula
-  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.6.2.tar.bz2'
-  md5 '301677b5f8150265315632fb6247e06e'
+  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.7.0.tar.bz2'
+  md5 'c9f646a15fed6e31c4aa88322b8cce2a'
   homepage 'http://www.wireshark.org'
 
   depends_on 'gnutls' => :optional

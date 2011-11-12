@@ -8,6 +8,7 @@ end
 
 class Drush < Formula
   url 'http://ftp.drupal.org/files/projects/drush-7.x-4.5.tar.gz'
+  head 'git://git.drupal.org/project/drush.git'
   homepage 'http://drupal.org/project/drush'
   md5 'f6df0593c3d3c9a5a2d0bb382bf629ba'
 

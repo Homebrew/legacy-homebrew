@@ -2,6 +2,26 @@
 #
 # To use, edit your .bashrc and add:
 #   source `brew --prefix`/Library/Contributions/brew_bash_completion.sh
+#
+# The __brew_ps1() function can be used to annotate your PS1 with
+# Homebrew debugging information; it behaves similarly to the __git_ps1()
+# function provided by the git's bash completion script.
+#
+# For example, the prompt string
+#     PS1='\u@\h \W $(__brew_ps1 "(%s)") $'
+#
+# would result in a prompt like
+#    user@hostname cwd $
+#
+# but if you are currently engaged in an interactive or debug install,
+# (i.e., you invoked `brew install` with either '-i' or '-d'), then the
+# prompt would look like
+#     user@hostname cwd (formula_name|DEBUG) $
+#
+# You can customize the output string, e.g. $(__brew_ps1 "[%s]") would
+# output "[formula_name|DEBUG]". The default (if you do not provide a
+# format argument) is to print "(formula_name|DEBUG)" prefixed with a
+# single space.
 
 _brew_to_completion()
 {
@@ -204,6 +224,12 @@ _brew_to_completion()
         return
         ;;
     esac
+}
+
+__brew_ps1 ()
+{
+    [[ -n $HOMEBREW_DEBUG_INSTALL ]] &&
+    printf "${1:- (%s)}" "$HOMEBREW_DEBUG_INSTALL|DEBUG"
 }
 
 complete -o bashdefault -o default -F _brew_to_completion brew
