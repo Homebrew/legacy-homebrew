@@ -197,7 +197,7 @@ def check_gcc_versions
   if MacOS.xcode_version == nil
       puts <<-EOS.undent
         We couldn't detect any version of Xcode.
-        If you downloaded Xcode 4.1 from the App Store, you may need to run the installer.
+        If you downloaded Xcode from the App Store, you may need to run the installer.
 
       EOS
   elsif MacOS.xcode_version < "4.0"
