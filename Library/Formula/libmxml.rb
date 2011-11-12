@@ -1,17 +1,16 @@
 require 'formula'
 
-class P11Kit < Formula
-  url 'http://p11-glue.freedesktop.org/releases/p11-kit-0.8.tar.gz'
-  homepage 'http://p11-glue.freedesktop.org'
-  md5 '0928ab06acbdeda48645df4791f4d28d'
+class Libmxml < Formula
+  url 'http://ftp.easysw.com/pub/mxml/2.6/mxml-2.6.tar.gz'
+  homepage 'http://www.minixml.org/'
+  md5 '68977789ae64985dddbd1a1a1652642e'
 
   def install
-    ENV.universal_binary
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
+                          "--enable-shared",
                           "--prefix=#{prefix}"
     system "make"
-    system "make check"
     system "make install"
   end
 end
