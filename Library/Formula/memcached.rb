@@ -1,9 +1,9 @@
 require 'formula'
 
 class Memcached < Formula
-  url "http://memcached.googlecode.com/files/memcached-1.4.9.tar.gz"
+  url "http://memcached.googlecode.com/files/memcached-1.4.10.tar.gz"
   homepage 'http://memcached.org/'
-  sha1 'd3c745d7c63e2d4a88394210404f5100031301d5'
+  sha1 '0ae300f858b767abf812009d53ed58647ceb498a'
 
   depends_on 'libevent'
 
@@ -30,10 +30,15 @@ class Memcached < Formula
         cp #{prefix}/com.danga.memcached.plist ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/com.danga.memcached.plist
 
-        Or start it manually:
-            #{HOMEBREW_PREFIX}/bin/memcached
+    If this is an upgrade and you already have the com.danga.memcached.plist loaded:
+        launchctl unload -w ~/Library/LaunchAgents/com.danga.memcached.plist
+        cp #{prefix}/com.danga.memcached.plist ~/Library/LaunchAgents/com.danga.memcached.plist
+        launchctl load -w ~/Library/LaunchAgents/com.danga.memcached.plist
 
-        Add "-d" to start it as a daemon.
+    Or start it manually:
+        #{HOMEBREW_PREFIX}/bin/memcached
+
+    Add "-d" to start it as a daemon.
     EOS
   end
 

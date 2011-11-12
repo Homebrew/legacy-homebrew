@@ -54,12 +54,14 @@ For the full command list, see the COMMANDS section.
   * `cat` <formula>:
     Display the source to <formula>.
 
-  * `cleanup [--force]` [<formula>]:
+  * `cleanup [--force] [-n]` [<formula>]:
     For all installed or specific formulae, remove any older versions from the
     cellar. By default, does not remove out-of-date keg-only brews, as other
     software may link directly to specific versions.
 
     If `--force` is passed, remove out-of-date keg-only brews as well.
+
+    If `-n` is passed, show what would be removed, but do not actually remove anything.
 
   * `create [--autotools|--cmake] [--no-fetch]` <URL>:
     Generate a formula for the downloadable file at <URL> and open it in
