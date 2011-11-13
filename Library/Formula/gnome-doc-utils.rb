@@ -10,6 +10,7 @@ class GnomeDocUtils < Formula
   #
   # $ brew install libxml2 --with-python
 
+  depends_on 'docbook'
   depends_on 'pkg-config'
   depends_on 'intltool'
   depends_on 'libxml2' # --with-python
