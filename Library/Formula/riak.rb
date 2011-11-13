@@ -10,7 +10,6 @@ class Riak < Formula
   skip_clean 'libexec/log'
   skip_clean 'libexec/log/sasl'
   skip_clean 'libexec/data'
-  skip_clean 'libexec/data/dets'
   skip_clean 'libexec/data/ring'
 
   depends_on 'erlang'
@@ -35,7 +34,6 @@ class Riak < Formula
     ln_s libexec+'bin/search-cmd', bin
 
     (prefix + 'data/ring').mkpath
-    (prefix + 'data/dets').mkpath
 
     # Install man pages
     man1.install Dir["doc/man/man1/*"]
