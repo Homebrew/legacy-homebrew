@@ -3,7 +3,12 @@ require 'net/http'
 require 'net/https'
 require 'uri'
 require 'zlib'
-require 'vendor/multi_xml'
+# XML backend explicity disabled. Homebrew does not use it so there is no
+# reason to vendor the multi_xml gem. However, this may have unintended
+# consequences.
+#
+# FIXME: Check with the HTTParty project to see if commeting this out is safe.
+#require 'vendor/multi_xml'
 require 'vendor/multi_json'
 
 require 'vendor/httparty/module_inheritable_attributes'
