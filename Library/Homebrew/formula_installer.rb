@@ -247,7 +247,16 @@ class FormulaInstaller
   def filtered_args
     # Did the user actually pass the formula this installer is considering on
     # the command line?
-    def explicitly_requested?; ARGV.formulae.include? f end
+    def explicitly_requested?
+      # `ARGV.formulae` will throw an exception if it comes up with an empty
+      # list.
+      #
+      # FIXME:
+      # `ARGV.formulae` probably should be throwing exceptions, it should be
+      # the caller's responsibility to check `ARGV.formulae.empty?`.
+      return false if ARGV.named.empty?
+      ARGV.formulae.include? f
+    end
     previous_install = Tab.for_formula f
 
     args = ARGV.clone
