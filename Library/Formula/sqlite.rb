@@ -22,7 +22,9 @@ class Sqlite < Formula
   end
 
   def install
-    ENV.Os # O2 and O3 leads to corrupt/invalid rtree indexes
+    # O2 and O3 leads to corrupt/invalid rtree indexes
+    # http://groups.google.com/group/spatialite-users/browse_thread/thread/8e1cfa79f2d02a00#
+    ENV.Os
     ENV.append "CFLAGS", "-DSQLITE_ENABLE_RTREE=1" if ARGV.include? "--with-rtree"
     ENV.append "CPPFLAGS","-DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS" if ARGV.include? "--with-fts"
     ENV.universal_binary if ARGV.build_universal?
