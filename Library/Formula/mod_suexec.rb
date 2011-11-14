@@ -7,8 +7,8 @@ class ModSuexec < Formula
   md5 '4504934464c5ee51018dbafa6d99810d'
 
   def install
-    docroot   = '/Library/WebServer/Documents'
-    logfile   = '/private/var/log/apache2/suexec_log'
+    suexec_docroot   = '/Library/WebServer'
+    logfile          = '/private/var/log/apache2/suexec_log'
     begin
       suexecbin = `/usr/sbin/apachectl -V`.match(/SUEXEC_BIN="(.+)"/)[1]
     rescue # This should never happen, unless Apple drops support for suexec in the future...
@@ -19,7 +19,7 @@ class ModSuexec < Formula
       "--with-suexec-bin=#{suexecbin}",
       "--with-suexec-caller=_www",
       "--with-suexec-userdir=Sites",
-      "--with-suexec-docroot=#{docroot}",
+      "--with-suexec-docroot=#{suexec_docroot}",
       "--with-suexec-uidmin=500",
       "--with-suexec-gidmin=20",
       "--with-suexec-logfile=#{logfile}",
