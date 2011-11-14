@@ -5,9 +5,7 @@ class Ispell < Formula
   homepage 'http://lasr.cs.ucla.edu/geoff/ispell.html'
   md5 '12087d7555fc2b746425cd167af480fe'
 
-  def skip_clean? path
-    true
-  end
+  skip_clean :all
 
   # a little tricky since it doesn't use a configure script
   def install
@@ -16,7 +14,7 @@ class Ispell < Formula
     cp "local.h.macos", "local.h"
     chmod 0644, "local.h"
     inreplace "local.h" do |s|
-      s.gsub! '/usr/local', "#{prefix}"
+      s.gsub! '/usr/local', prefix
       s.gsub! '/man/man', '/share/man/man'
     end
     chmod 0644, "correct.c"
