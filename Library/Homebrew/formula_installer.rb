@@ -245,8 +245,9 @@ class FormulaInstaller
   # This method gives us a chance to pre-process command line arguments before the
   # installer forks and `Formula.install` kicks in.
   def filtered_args
-    # Did the user actually pass the formula this installer is considering on
-    # the command line?
+    # Returns true if the formula attached to this installer was explicitly
+    # passed on the command line by the user as opposed to being automatically
+    # added to satisfy a dependency.
     def explicitly_requested?
       # `ARGV.formulae` will throw an exception if it comes up with an empty
       # list.
@@ -257,13 +258,23 @@ class FormulaInstaller
       return false if ARGV.named.empty?
       ARGV.formulae.include? f
     end
-    previous_install = Tab.for_formula f
 
     args = ARGV.clone
-    args.concat previous_install.used_options
-    args.uniq! # Just in case some dupes were added
 
-    %w[--HEAD --verbose -v --debug -d --interactive -i].each {|f| args.delete f} unless explicitly_requested?
+    %w[
+      --debug -d
+      --fresh
+      --HEAD
+      --interactive -i
+      --verbose -v
+    ].each {|flag| args.delete flag} unless explicitly_requested?
+
+    unless args.include? '--fresh'
+      previous_install = Tab.for_formula f
+      args.concat previous_install.used_options
+    end
+
+    args.uniq! # Just in case some dupes slipped by
 
     return args
   end
