@@ -12,7 +12,7 @@ class ModSuexec < Formula
     begin
       suexecbin = `/usr/sbin/apachectl -V`.match(/SUEXEC_BIN="(.+)"/)[1]
     rescue # This should never happen, unless Apple drops support for suexec in the future...
-      abort "Could not determine suexec path. Are you sure that Apache has been compiled with suexec support?" unless suexecbin
+      abort "Could not determine suexec path. Are you sure that Apache has been compiled with suexec support?"
     end
     system "./configure",
       "--enable-suexec=shared",
