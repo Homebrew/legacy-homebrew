@@ -1,4 +1,4 @@
-require "multi_json/vendor/ok_json" unless defined?(::OkJson)
+require "vendor/multi_json/vendor/ok_json" unless defined?(::OkJson)
 
 module MultiJson
   module Engines
