@@ -1,19 +1,19 @@
 require 'formula'
 
 class LibrawDemosaicGPL2 < Formula
-  url 'http://www.libraw.org/data/LibRaw-demosaic-pack-GPL2-0.13.8.tar.gz'
-  sha1 '0a5113d255c292d81ea38f583172ed550518a410'
+  url 'http://www.libraw.org/data/LibRaw-demosaic-pack-GPL2-0.14.0.tar.gz'
+  sha1 '7bd82e7aa531fa2ae53864b5d4613e4000645b14'
 end
 
 class LibrawDemosaicGPL3 < Formula
-  url 'http://www.libraw.org/data/LibRaw-demosaic-pack-GPL3-0.13.8.tar.gz'
-  sha1 'df7bf32567461408c5da74491482a0b700225da4'
+  url 'http://www.libraw.org/data/LibRaw-demosaic-pack-GPL3-0.14.0.tar.gz'
+  sha1 'a51410732f8c8485b250b5de742b77dc2616a743'
 end
 
 class Libraw < Formula
-  url 'http://www.libraw.org/data/LibRaw-0.13.8.tar.gz'
+  url 'http://www.libraw.org/data/LibRaw-0.14.0.tar.gz'
   homepage 'http://www.libraw.org/'
-  sha1 '7b1bc092dc442fd20773c1155e1f3022b379b55a'
+  sha1 '8656af58fa2df52a671ab9864a6c1f862f2948d5'
 
   depends_on 'little-cms'
 

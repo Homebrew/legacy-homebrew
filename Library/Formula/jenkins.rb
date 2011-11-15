@@ -2,7 +2,7 @@ require 'formula'
 
 class Jenkins < Formula
   url 'http://mirrors.jenkins-ci.org/war/1.428/jenkins.war', :using => :nounzip
-  head 'git://github.com/jenkinsci/jenkins.git'
+  head 'https://github.com/jenkinsci/jenkins.git'
   version '1.428'
   md5 '5817e09ccc3a2996addeb8f1bc1cb6c8'
   homepage 'http://jenkins-ci.org'

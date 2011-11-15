@@ -50,7 +50,7 @@ def audit_formula_text name, text
   end
 
   # Prefer formula path shortcuts in Pathname+
-  if text =~ %r{\(\s*(prefix\s*\+\s*(['"])(bin|include|lib|libexec|sbin|share))}
+  if text =~ %r{\(\s*(prefix\s*\+\s*(['"])(bin|include|libexec|lib|sbin|share))}
     problems << " * \"(#{$1}...#{$2})\" should be \"(#{$3}+...)\""
   end
 
@@ -59,7 +59,7 @@ def audit_formula_text name, text
   end
 
   # Prefer formula path shortcuts in strings
-  if text =~ %r[(\#\{prefix\}/(bin|include|lib|libexec|sbin|share))]
+  if text =~ %r[(\#\{prefix\}/(bin|include|libexec|lib|sbin|share))]
     problems << " * \"#{$1}\" should be \"\#{#{$2}}\""
   end
 
@@ -84,6 +84,10 @@ def audit_formula_text name, text
     problems << " * sha1 is empty"
   end
 
+  if text =~ /sha256\s+(\'\'|\"\")/
+    problems << " * sha256 is empty"
+  end
+
   # Commented-out depends_on
   if text =~ /#\s*depends_on\s+(.+)\s*$/
     problems << " * Commented-out dep #{$1}."
@@ -102,9 +106,9 @@ def audit_formula_text name, text
     problems << " * Use separate make calls."
   end
 
-  if text =~ /^\t/
+  if text =~ /^[ ]*\t/
     problems << " * Use spaces instead of tabs for indentation"
-  end if strict?
+  end
 
   # Formula depends_on gfortran
   if text =~ /^\s*depends_on\s*(\'|\")gfortran(\'|\").*/
@@ -147,7 +151,7 @@ def audit_formula_options f, text
 
   if documented_options.length > 0
     documented_options.each do |o|
-      next if o == '--universal'
+      next if o == '--universal' and text =~ /ARGV\.build_universal\?/
       problems << " * Option #{o} is unused" unless options.include? o
     end
   end
@@ -178,6 +182,11 @@ def audit_formula_urls f
 
   urls = [(f.url rescue nil), (f.head rescue nil)].reject {|p| p.nil?}
 
+  f.mirrors.each do |m|
+    mirror = m.values_at :url
+    urls << (mirror.to_s rescue nil)
+  end
+
   # Check SourceForge urls
   urls.each do |p|
     # Is it a filedownload (instead of svnroot)
@@ -187,8 +196,8 @@ def audit_formula_urls f
     # Is it a sourceforge http(s) URL?
     next unless p =~ %r[^https?://.*\bsourceforge\.]
 
-    if p =~ /\?use_mirror=/
-      problems << " * Update this url (don't use ?use_mirror)."
+    if p =~ /(\?|&)use_mirror=/
+      problems << " * Update this url (don't use #{$1}use_mirror)."
     end
 
     if p =~ /\/download$/
@@ -203,15 +212,6 @@ def audit_formula_urls f
       problems << " * Update this url (don't use specific dl mirrors)."
     end
   end
-
-  # Check Debian urls
-  urls.each do |p|
-    next unless p =~ %r[/debian/pool/]
-
-    unless p =~ %r[^http://mirrors\.kernel\.org/debian/pool/]
-      problems << " * \"mirrors.kernel.org\" is the preferred mirror for debian software."
-    end
-  end if strict?
 
   # Check for git:// urls; https:// is preferred.
   urls.each do |p|

@@ -11,6 +11,8 @@ def installed_brews
 end
 
 def main
+  return unless HOMEBREW_CELLAR.exist?
+
   # Names of outdated brews; they count as installed.
   outdated = Homebrew.outdated_brews.collect{ |b| b.name }
 

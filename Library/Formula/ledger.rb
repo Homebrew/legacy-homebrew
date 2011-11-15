@@ -19,7 +19,7 @@ class Ledger < Formula
     else
       # gmp installs x86_64 only
       inreplace 'acprep', "'-arch', 'i386', ", "" if Hardware.is_64_bit?
-      system "./acprep -j#{Hardware.processor_count} opt make -- --prefix=#{prefix}"
+      system "./acprep -j#{ENV.make_jobs} opt make -- --prefix=#{prefix}"
     end
     system 'make'
     ENV.deparallelize

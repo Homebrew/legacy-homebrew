@@ -100,7 +100,7 @@ class Formula
   include FileUtils
 
   attr_reader :name, :path, :url, :version, :homepage, :specs, :downloader
-  attr_reader :bottle, :bottle_sha1
+  attr_reader :bottle, :bottle_sha1, :head
 
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
@@ -557,7 +557,9 @@ private
   # For brew-fetch and others.
   def fetch
     downloader = @downloader
-    mirror_list = mirrors
+    # Don't attempt mirrors if this install is not pointed at a "stable" URL.
+    # This can happen when options like `--HEAD` are invoked.
+    mirror_list =  @spec_to_use == @stable ? mirrors : []
 
     # Ensure the cache exists
     HOMEBREW_CACHE.mkpath

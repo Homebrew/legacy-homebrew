@@ -108,6 +108,7 @@ class Emacs < Formula
            brew linkapps
          or:
            ln -s #{prefix}/Emacs.app /Applications
+
       EOS
     end
 

@@ -6,6 +6,9 @@ class Ack < Formula
   homepage 'http://betterthangrep.com/'
 
   def install
+    system "pod2man ack ack.1"
+    inreplace 'ack.1', '\*(d\-', '\*(d-' # remove a pod2man formatting error
+    man1.install 'ack.1'
     bin.install 'ack'
     (prefix+'etc/bash_completion.d').install 'etc/ack.bash_completion.sh'
   end

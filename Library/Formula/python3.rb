@@ -12,8 +12,8 @@ def as_framework?
 end
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.21.tar.gz'
-  md5 'c8cfcfd42ec9ab900fb3960a3308eef2'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.24.tar.gz'
+  md5 '17722b22141aba8235787f79800cc452'
 end
 
 class Python3 < Formula
