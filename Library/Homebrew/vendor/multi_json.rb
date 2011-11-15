@@ -22,18 +22,6 @@ module MultiJson
   # if any engines are already loaded, then checks
   # to see which are installed if none are loaded.
   def default_engine
-    return :yajl if defined?(::Yajl)
-    return :json_gem if defined?(::JSON)
-
-    REQUIREMENT_MAP.each do |(library, engine)|
-      begin
-        require library
-        return engine
-      rescue LoadError
-        next
-      end
-    end
-
     :ok_json
   end
 
@@ -47,7 +35,7 @@ module MultiJson
   def engine=(new_engine)
     case new_engine
     when String, Symbol
-      require "multi_json/engines/#{new_engine}"
+      require "vendor/multi_json/engines/#{new_engine}"
       @engine = MultiJson::Engines.const_get("#{new_engine.to_s.split('_').map{|s| s.capitalize}.join('')}")
     when Class
       @engine = new_engine
