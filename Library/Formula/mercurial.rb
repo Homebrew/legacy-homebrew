@@ -19,6 +19,7 @@ class Mercurial < Formula
     # Skip making the docs; depends on 'docutils' module.
     system "make", "PREFIX=#{prefix}", "build"
     system "make", "PREFIX=#{prefix}", "install-bin"
+
     # Now we have lib/python2.x/site-packages/ with Mercurial
     # libs in them. We want to move these out of site-packages into
     # a self-contained folder. Let's choose libexec.
@@ -27,19 +28,11 @@ class Mercurial < Formula
 
     libexec.install Dir["#{lib}/python*/site-packages/*"]
 
-    # Move "hg" executable to libexec and symlink back to bin
-    # libexec.install bin+'hg'
+    # Symlink the hg binary into bin
     ln_s libexec+'hg', bin+'hg'
-
-    # Move the hg startup script into libexec too, and link it from bin
-    # bin.mkpath
-    # libexec.install HOMEBREW_PREFIX+'share/python/hg'
-    # ln_s libexec+'hg', bin+'hg'
 
     # Remove the hard-coded python invocation from hg
     inreplace bin+'hg', %r[#!/.*/python], '#!/usr/bin/env python'
-
-    # We now have a self-contained Mercurial install.
 
     # Install some contribs
     bin.install 'contrib/hgk'
