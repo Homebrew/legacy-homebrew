@@ -2,6 +2,7 @@ require 'formula'
 
 class GnuChess < Formula
   url 'http://ftpmirror.gnu.org/chess/gnuchess-5.07.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/chess/gnuchess-5.07.tar.gz'
   homepage 'http://www.gnu.org/software/chess/'
   md5 '259da00aa559e5624c65279484fccaf7'
 

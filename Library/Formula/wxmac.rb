@@ -82,9 +82,20 @@ class Wxmac < Formula
       ENV.append compiler_flag, "-arch i386"
     end
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--enable-unicode"
+    args = [
+      "--disable-debug",
+      "--disable-dependency-tracking",
+      "--prefix=#{prefix}",
+      "--enable-unicode"
+    ]
+
+    # build will fail on Lion unless we use the 10.6 sdk
+    if MacOS.lion?
+      args << "--with-macosx-sdk=/Developer/SDKs/MacOSX10.6.sdk"
+      args << "--with-macosx-version-min=10.6"
+    end
+
+    system "./configure", *args
     system "make install"
 
     if build_python?

@@ -5,13 +5,13 @@ def ffplay?
 end
 
 class Ffmpeg < Formula
-  url 'http://ffmpeg.org/releases/ffmpeg-0.8.6.tar.bz2'
+  url 'http://ffmpeg.org/releases/ffmpeg-0.9.tar.bz2'
   homepage 'http://ffmpeg.org/'
-  sha1 'ad7eaefa5072ca3c11778f9186fab35558a04478'
+  sha1 '5f4118496ebe8fc37e8f11cf0303f6f7c85756f9'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
-  fails_with_llvm 'Dies during compilation of motionpixels_tablegen'
+  fails_with_llvm 'Undefined symbols when linking libavfilter'
 
   def options
     [
@@ -33,12 +33,14 @@ class Ffmpeg < Formula
   depends_on 'sdl' if ffplay?
 
   def install
+    ENV.x11
     args = ["--prefix=#{prefix}",
             "--enable-shared",
             "--enable-gpl",
             "--enable-version3",
             "--enable-nonfree",
             "--enable-hardcoded-tables",
+            "--enable-libfreetype",
             "--cc=#{ENV.cc}"]
 
     args << "--enable-libx264" if Formula.factory('x264').installed?
@@ -52,7 +54,7 @@ class Ffmpeg < Formula
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
-    if MacOS.snow_leopard? and Hardware.is_32_bit?
+    if MacOS.leopard? or Hardware.is_32_bit?
       ENV.append_to_cflags "-mdynamic-no-pic"
     end
 

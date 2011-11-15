@@ -119,7 +119,9 @@ class Python < Formula
     EOS
 
     general_caveats = <<-EOS.undent
-      A "distutils.cfg" has been written, specifing the install-scripts folder as:
+      A "distutils.cfg" has been written to:
+        #{effective_lib}/python2.7/distutils
+      specifing the install-scripts folder as:
         #{scripts_folder}
 
       If you install Python packages via "python setup.py install", easy_install, pip,

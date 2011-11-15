@@ -5,9 +5,9 @@ def fortran?
 end
 
 class Netcdf < Formula
-  url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.1.2.tar.gz'
+  url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.1.3.tar.gz'
   homepage 'http://www.unidata.ucar.edu/software/netcdf/'
-  md5 '4a94ebe2d998d649159aa5665c83fb1a'
+  md5 'ead16cb3b671f767396387dcb3c1a814'
 
   depends_on 'hdf5'
 

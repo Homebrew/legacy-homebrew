@@ -13,15 +13,18 @@ class Sdl < Formula
     inreplace files, '@prefix@', HOMEBREW_PREFIX
   end
 
-  fails_with_llvm :build => 2335 # 2335.15.0 to be exact
-
   def install
     Sdl.use_homebrew_prefix %w[sdl.pc.in sdl-config.in]
 
     # Sdl assumes X11 is present on UNIX
     ENV.x11
     system "./autogen.sh" if ARGV.build_head?
-    system "./configure", "--prefix=#{prefix}", "--disable-nasm"
+
+    args = %W[--prefix=#{prefix} --disable-nasm]
+    # LLVM-based compilers choke on the assembly code packaged with SDL.
+    args << '--disable-assembly' if ENV.compiler == :llvm or ENV.compiler == :clang
+
+    system './configure', *args
     system "make install"
 
     # Copy source files needed for Ojective-C support.
