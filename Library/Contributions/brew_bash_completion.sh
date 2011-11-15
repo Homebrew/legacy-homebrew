@@ -127,7 +127,7 @@ _brew_to_completion()
             local opts=$(
                 local opts=(--force --verbose --debug --use-clang --use-gcc
                     --use-llvm --ignore-dependencies --build-from-source --HEAD
-                    --interactive $(brew options --compact "$prev"))
+                    --interactive --fresh $(brew options --compact "$prev"))
 
                 # options that make sense with '--interactive'
                 if [[ "${COMP_WORDS[*]}" =~ "--interactive" ]]; then
