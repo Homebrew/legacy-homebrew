@@ -1,19 +1,24 @@
 require 'formula'
 
 class X264 < Formula
-  url 'http://download.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20110912-2245-stable.tar.bz2'
+  url 'http://download.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20111115-2245-stable.tar.bz2'
   homepage 'http://www.videolan.org/developers/x264.html'
-  md5 '08b1658cf9964b73a53f445e4d21e161'
-  version 'r2066'
+  md5 '062491c2dce5349c3c32b82103428033'
+  version 'r2092'
 
   head 'git://git.videolan.org/x264.git'
 
   depends_on 'yasm' => :build
 
+  def options
+    [["--10-bit", "Make a 10-bit x264. (default: 8-bit)"]]
+  end
+
   def install
     # Having this set can fail the endian test!
     ENV['GREP_OPTIONS'] = ''
     system "./configure", "--prefix=#{prefix}",
+                          "--bit-depth=#{ARGV.include?('--10-bit') ? 10 : 8}",
                           "--enable-shared"
 
     if MacOS.prefer_64_bit?
