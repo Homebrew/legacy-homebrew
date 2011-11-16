@@ -131,7 +131,7 @@ class FormulaInstaller
       raise "Suspicious installation failure" unless $?.success?
 
       # Write an installation receipt (a Tab) to the prefix
-      Tab.for_install(f, args).write
+      Tab.for_install(f, args).write if f.prefix.exist?
     end
   end
 
