@@ -13,7 +13,8 @@ class Snort < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--enable-ipv6", "--enable-zlib",
                           "--enable-mpls", "--enable-targetbased", "--enable-ppm",
-                          "--enable-perfprofiling"
+                          "--enable-perfprofiling", "--enable-active-response",
+                          "--enable-normalizer"
     system "make install"
   end
 
