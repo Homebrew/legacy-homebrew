@@ -158,7 +158,7 @@ To view formula history locally: \fBbrew log \-p <formula>\fR\.
 Print the name and version that will be detected for \fIURL\fR\.
 .
 .TP
-\fBinstall [\-\-force] [\-\-debug] [\-\-ignore\-dependencies] [\-\-use\-clang] [\-\-use\-gcc] [\-\-use\-llvm] [\-\-build\-from\-source] [\-\-HEAD]\fR \fIformula\fR
+\fBinstall [\-\-force] [\-\-debug] [\-\-ignore\-dependencies] [\-\-fresh] [\-\-use\-clang] [\-\-use\-gcc] [\-\-use\-llvm] [\-\-build\-from\-source] [\-\-HEAD]\fR \fIformula\fR
 Install \fIformula\fR\.
 .
 .IP
@@ -172,6 +172,9 @@ If \fB\-\-debug\fR is passed and brewing fails, open a shell inside the temporar
 .
 .IP
 If \fB\-\-ignore\-dependencies\fR is passed, skip installing any dependencies of any kind\. If they are not already present, the formula will probably fail to install\.
+.
+.IP
+If \fB\-\-fresh\fR is passed, the installation process will not re\-use any options from previous installs\.
 .
 .IP
 If \fB\-\-use\-clang\fR is passed, attempt to compile using clang\.
