@@ -231,7 +231,7 @@ class FormulaInstaller
 
   def check_m4
     # Check for m4 files
-    if Dir[f.share+"aclocal/*.m4"].length > 0 && (File.open("/usr/share/aclocal/dirlist") {|f| f.grep(%r{^/usr/local/share/aclocal$}).length} rescue 0) < 1
+    if Dir[f.share+"aclocal/*.m4"].length > 0 && (File.open("/usr/share/aclocal/dirlist") {|f| f.grep(%r{^#{HOMEBREW_PREFIX}/share/aclocal$}).length} rescue 0) < 1
       opoo 'm4 macros were installed to "share/aclocal".'
       puts "Homebrew does not append \"#{HOMEBREW_PREFIX}/share/aclocal\""
       puts "to \"/usr/share/aclocal/dirlist\". If an autoconf script you use"
