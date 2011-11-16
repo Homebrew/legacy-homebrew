@@ -41,11 +41,25 @@ class Gfortran < Formula
       md5 'eb64ba9f8507da22e582814a69fbb7ca'
       version "4.2.4-5664"
     end
-  else
-    # Lion 64 Bit for now
+  elsif MacOS.lion?
+    # Lion 64 Bit
     url 'http://quatramaran.ens.fr/~coudert/gfortran/gfortran-4.6.2-x86_64-Lion.dmg'
     md5 '60b59cf90d78eb601c4fd0bd1393e94d'
     version "4.6.2"
+  else
+    onoe <<-EOS.undent
+        Currently the gfortran compiler provided by this brew is only supported
+        for:
+
+          - XCode 3.1.4 on OS X 10.5.x
+          - XCode 3.2.2/3.2.3 -- 4.0 on OS X 10.6.x
+          - XCode 4.1/4.2 on OS X 10.7.x
+
+        The AppStore and Software Update can help upgrade your copy of XCode.
+        The latest version of XCode is also available from:
+
+            http://developer.apple.com/technologies/xcode.html
+    EOS
   end
 
   homepage 'http://r.research.att.com/tools/'
@@ -56,9 +70,7 @@ class Gfortran < Formula
 
     # used exception handling mechanism here, homebrew doesn't seem to allow
     # simpler $?.exitstatus checks
-    begin
-        safe_system "which gcc-4.2"
-    rescue
+    if MacOS.lion?
         GfortranDmgDownloadStrategy
     else
         GfortranPkgDownloadStrategy
