@@ -202,6 +202,12 @@ class FormulaInstaller
     @paths ||= ENV['PATH'].split(':').map{ |p| File.expand_path p }
   end
 
+  def in_aclocal_dirlist?
+    File.open("/usr/share/aclocal/dirlist") do |dirlist|
+      dirlist.grep(%r{^#{HOMEBREW_PREFIX}/share/aclocal$}).length > 0
+    end rescue false
+  end
+
   def check_PATH
     # warn the user if stuff was installed outside of their PATH
     [f.bin, f.sbin].each do |bin|
@@ -252,7 +258,7 @@ class FormulaInstaller
 
   def check_m4
     # Check for m4 files
-    if Dir[f.share+"aclocal/*.m4"].length > 0
+    if Dir[f.share+"aclocal/*.m4"].length > 0 and not in_aclocal_dirlist?
       opoo 'm4 macros were installed to "share/aclocal".'
       puts "Homebrew does not append \"#{HOMEBREW_PREFIX}/share/aclocal\""
       puts "to \"/usr/share/aclocal/dirlist\". If an autoconf script you use"
