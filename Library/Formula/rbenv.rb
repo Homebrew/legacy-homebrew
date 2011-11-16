@@ -10,10 +10,10 @@ class Rbenv < Formula
   def install
     prefix.install Dir['*']
   end
-  
+
   def caveats; <<-EOS.undent
     Add rbenv init to your shell to enable shims and autocompletion:
-    
+
         echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
     EOS
   end
