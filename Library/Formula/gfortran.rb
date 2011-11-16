@@ -60,6 +60,7 @@ class Gfortran < Formula
 
             http://developer.apple.com/technologies/xcode.html
     EOS
+    exit
   end
 
   homepage 'http://r.research.att.com/tools/'
@@ -68,8 +69,6 @@ class Gfortran < Formula
     # look at the machine environment & determine download strategy
     # options are (GfortranDmgDownloadStrategy | GfortranPkgDownloadStrategy)
 
-    # used exception handling mechanism here, homebrew doesn't seem to allow
-    # simpler $?.exitstatus checks
     if MacOS.lion?
         GfortranDmgDownloadStrategy
     else
