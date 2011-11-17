@@ -23,15 +23,12 @@ class Git < Formula
     # If these things are installed, tell Git build system to not use them
     ENV['NO_FINK']='1'
     ENV['NO_DARWIN_PORTS']='1'
-    # If local::lib is used you get a 'Only one of PREFIX or INSTALL_BASE can be given' error
-    ENV['PERL_MM_OPT']=''
-    # Build verbosely.
-    ENV['V']='1'
+    ENV['V']='1' # build verbosely
 
     # Clean XCode 4.x installs don't include Perl MakeMaker
     ENV['NO_PERL_MAKEMAKER']='1' if MacOS.lion?
 
-    ENV['BLK_SHA1']='YesPlease' if ARGV.include? '--with-blk-sha1'
+    ENV['BLK_SHA1']='1' if ARGV.include? '--with-blk-sha1'
 
     inreplace "Makefile" do |s|
       s.remove_make_var! %w{CFLAGS LDFLAGS}
@@ -43,10 +40,17 @@ class Git < Formula
     # Put it into the Cellar so that it gets upgraded along with git upgrades.
     (prefix+'etc/bash_completion.d').install 'contrib/completion/git-completion.bash'
 
+    # Install Git.pm in the correct location for Lion
+    # https://github.com/mxcl/homebrew/issues/8620
+    if MacOS.lion?
+      (lib+'perl5/site_perl').install 'perl/blib/lib/Git.pm'
+      (lib+'Git.pm').unlink
+    end
+
     # Install emacs support.
     (share+'doc/git-core/contrib').install 'contrib/emacs'
     # Some people like the stuff in the contrib folder
-    (share/:git).install 'contrib'
+    (share+'git').install 'contrib'
 
     # These files are exact copies of the git binary, so like the contents
     # of libexec/git-core lets hard link them.
