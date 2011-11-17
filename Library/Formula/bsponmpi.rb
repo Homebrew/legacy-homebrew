@@ -5,12 +5,12 @@ class Bsponmpi < Formula
   homepage 'http://sourceforge.net/projects/bsponmpi'
   md5 '75db882a340ef5e97d8398db3e1611d0'
 
-  depends_on 'scons'
+  depends_on 'scons' => :build
   depends_on 'open-mpi'
 
   def install
     system "scons"
-    system "cp lib/* #{HOMEBREW_PREFIX}/lib"
-    system "cp -R include/* #{HOMEBREW_PREFIX}/include"
+    lib.install Dir['lib/*']
+    include.install Dir['include/*']
   end
 end
