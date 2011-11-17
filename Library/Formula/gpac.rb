@@ -24,9 +24,13 @@ class Gpac < Formula
   depends_on 'mad' => :optional
   depends_on 'sdl' => :optional
   depends_on 'theora' => :optional
-  
+
   depends_on 'ffmpeg' => :optional if ARGV.build_head?
   depends_on 'openjpeg' => :optional if ARGV.build_head?
+
+  def options
+    [['--with-lowercase', 'Install binaries with lowercase names']]
+  end
 
   def install
     ENV.deparallelize
@@ -40,13 +44,16 @@ class Gpac < Formula
 
     system "chmod +x configure"
     system "./configure", *args
-                          
+
     system "chmod", "+rw", "Makefile"
     ["MP4Box","MP4Client"].each do |name|
       filename = "applications/#{name}/Makefile"
       system "chmod", "+rw", filename
-      inreplace filename, name, name.downcase
-      inreplace "Makefile", name, name.downcase
+
+      if ARGV.include? '--with-lowercase'
+        inreplace filename, name, name.downcase
+        inreplace "Makefile", name, name.downcase
+      end
     end
 
     system "make"
