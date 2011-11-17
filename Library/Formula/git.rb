@@ -19,6 +19,8 @@ class Git < Formula
     [['--with-blk-sha1', 'compile with the optimized SHA1 implementation']]
   end
 
+  def patches; DATA; end
+
   def install
     # If these things are installed, tell Git build system to not use them
     ENV['NO_FINK']='1'
@@ -74,3 +76,16 @@ class Git < Formula
     EOS
   end
 end
+__END__
+diff -urN git-1.7.7.3.orig/perl/Makefile git-1.7.7.3/perl/Makefile
+--- git-1.7.7.3.orig/perl/Makefile	2011-11-08 20:05:09.000000000 -0500
++++ git-1.7.7.3/perl/Makefile	2011-11-16 23:41:27.000000000 -0500
+@@ -20,7 +20,7 @@
+ 	$(RM) $(makfile).old
+ 
+ ifdef NO_PERL_MAKEMAKER
+-instdir_SQ = $(subst ','\'',$(prefix)/lib)
++instdir_SQ = $(subst installsitelib=,'',$(shell $(PERL_PATH_SQ) -V:installsitelib))
+ $(makfile): ../GIT-CFLAGS Makefile
+ 	echo all: private-Error.pm Git.pm > $@
+ 	echo '	mkdir -p blib/lib' >> $@
