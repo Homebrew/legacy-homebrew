@@ -40,13 +40,6 @@ class Git < Formula
     # Put it into the Cellar so that it gets upgraded along with git upgrades.
     (prefix+'etc/bash_completion.d').install 'contrib/completion/git-completion.bash'
 
-    # Install Git.pm in the correct location for Lion
-    # https://github.com/mxcl/homebrew/issues/8620
-    if MacOS.lion?
-      (lib+'perl5/site_perl').install 'perl/blib/lib/Git.pm'
-      (lib+'Git.pm').unlink
-    end
-
     # Install emacs support.
     (share+'doc/git-core/contrib').install 'contrib/emacs'
     # Some people like the stuff in the contrib folder
