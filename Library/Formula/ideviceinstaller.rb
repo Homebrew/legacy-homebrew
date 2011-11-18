@@ -4,7 +4,6 @@ class Ideviceinstaller < Formula
   url 'http://cgit.sukimashita.com/ideviceinstaller.git', :using => :git, :tag => '1.0.0'
   head 'http://cgit.sukimashita.com/ideviceinstaller.git', :using => :git
   homepage 'http://www.sukimashita.com/'
-  version '1.0.0'
 
   depends_on 'pkg-config' => :build
   depends_on 'libimobiledevice'
