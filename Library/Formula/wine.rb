@@ -13,7 +13,7 @@ end
 class Wine < Formula
   homepage 'http://winehq.org/'
 
-  if ARGV.flag? '--devel'
+  if ARGV.include? '--devel'
     url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.32.tar.bz2'
     sha256 'fe1691ef8e9c5c4afeb345ad0f0b364d055cfe67a7e64b0a4a44da4d85cfa8b6'
   else
@@ -27,7 +27,7 @@ class Wine < Formula
   depends_on 'libicns'
 
   # gnutls not needed since 1.3.16
-  depends_on 'gnutls' unless ARGV.flag? '--devel' or ARGV.build_head?
+  depends_on 'gnutls' unless ARGV.include? '--devel' or ARGV.build_head?
 
   fails_with_llvm 'Wine dies with an "Unhandled exception code" when built with LLVM'
 
@@ -74,7 +74,7 @@ EOS
     rm_rf share+'applications'
 
     # Download Gecko once so we don't need to redownload for each prefix
-    gecko = (ARGV.flag? '--devel') ? WineGecko.new : WineGeckoOld.new
+    gecko = (ARGV.include? '--devel') ? WineGecko.new : WineGeckoOld.new
     gecko.brew { (share+'wine/gecko').install Dir["*"] }
 
     # Use a wrapper script, so rename wine to wine.bin
@@ -88,7 +88,7 @@ EOS
   # We have backported Camillo Lugaresi's patch from upstream. The patch can
   # be removed from this formula once it lands in both the devel and stable
   # branches of Wine.
-  if MacOS.lion? and not (ARGV.flag? '--devel' or ARGV.build_head?)
+  if MacOS.lion? and not (ARGV.include? '--devel' or ARGV.build_head?)
     def patches; DATA; end
   end
 
