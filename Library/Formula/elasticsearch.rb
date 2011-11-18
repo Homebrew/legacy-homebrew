@@ -27,6 +27,12 @@ class Elasticsearch < Formula
       s.gsub! /#\s*path\.logs\: [^\n]+/, "path.logs: #{var}/log/elasticsearch/"
     end
 
+    # Install configuration files to 'etc' and symlink them from Cellar
+    (etc+'elasticsearch').install prefix+'config/elasticsearch.yml'
+    (etc+'elasticsearch').install prefix+'config/logging.yml'
+    ln_s (etc+'elasticsearch/elasticsearch.yml'), (prefix+'config/elasticsearch.yml')
+    ln_s (etc+'elasticsearch/logging.yml'),       (prefix+'config/logging.yml')
+
     # Write .plist file for `launchd`
     (prefix+'org.elasticsearch.plist').write startup_plist
     (prefix+'org.elasticsearch.plist').chmod 0644
@@ -50,12 +56,19 @@ class Elasticsearch < Formula
     To start ElasticSearch manually:
         elasticsearch -f -D es.config=#{prefix}/config/elasticsearch.yml
 
-    See the 'elasticsearch.yml' file for configuration options.
+    See the 'elasticsearch.yml' file for overview of configuration options.
 
-    You'll find the ElasticSearch log here:
+    Note that for development purposes, it usually makes sense
+    to use small number of shards and no replicas.
+
+    You may want to put something like this in the configuration file:
+        index.number_of_shards: 1
+        index.number_of_replicas: 0
+
+    The ElasticSearch log is here:
         open #{var}/log/elasticsearch/#{cluster_name}.log
 
-    The folder with cluster data is here:
+    And the folder with cluster data is here:
         open #{var}/elasticsearch/#{cluster_name}/
 
     You should see ElasticSearch running:
