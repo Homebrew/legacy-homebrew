@@ -95,7 +95,7 @@ class Emacs < Formula
   end
 
   def caveats
-    s = "For build options see:\n  brew options emacs\n\n"
+    s = ""
     if ARGV.include? "--cocoa"
       s += <<-EOS.undent
         Emacs.app was installed to:
