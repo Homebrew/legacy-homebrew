@@ -1,8 +1,8 @@
 require 'formula'
 
 class WineGecko < Formula
-  url 'http://downloads.sourceforge.net/wine/wine_gecko-1.2.0-x86.msi', :using => :nounzip
-  sha1 '6964d1877668ab7da07a60f6dcf23fb0e261a808'
+  url 'http://downloads.sourceforge.net/wine/wine_gecko-1.3-x86.msi', :using => :nounzip
+  sha1 'acc6a5bc15ebb3574e00f8ef4f23912239658b41'
 end
 
 class WineGeckoOld < Formula
@@ -29,7 +29,7 @@ class Wine < Formula
   # gnutls not needed since 1.3.16
   depends_on 'gnutls' unless ARGV.flag? '--devel' or ARGV.build_head?
 
-  fails_with_llvm 'Wine dies with an "Unhandled exception code" when built with LLVM'
+  fails_with_llvm 'llvm-gcc does not respect force_align_arg_pointer'
 
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
   # configure: libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
@@ -74,7 +74,7 @@ EOS
     rm_rf share+'applications'
 
     # Download Gecko once so we don't need to redownload for each prefix
-    gecko = (ARGV.flag? '--devel') ? WineGecko.new : WineGeckoOld.new
+    gecko = (ARGV.flag? '--devel' or ARGV.build_head?) ? WineGecko.new : WineGeckoOld.new
     gecko.brew { (share+'wine/gecko').install Dir["*"] }
 
     # Use a wrapper script, so rename wine to wine.bin
