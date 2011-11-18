@@ -10,6 +10,9 @@ class PkgConfig < Formula
   md5 'a3270bab3f4b69b7dc6dbdacbcae9745'
 
   def install
+    # fixes compile error on Lion with Clang duplicate symbols in libglib
+    ENV.append_to_cflags '-std=gnu89' if MacOS.lion? and ENV.compiler == :clang
+
     paths = %W[
         #{HOMEBREW_PREFIX}/lib/pkgconfig
         /usr/local/lib/pkgconfig
@@ -19,6 +22,8 @@ class PkgConfig < Formula
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--with-pc-path=#{paths*':'}"
+    system "make"
+    system "make check"
     system "make install"
   end
 end

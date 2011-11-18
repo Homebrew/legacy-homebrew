@@ -54,12 +54,14 @@ For the full command list, see the COMMANDS section.
   * `cat` <formula>:
     Display the source to <formula>.
 
-  * `cleanup [--force]` [<formula>]:
+  * `cleanup [--force] [-n]` [<formula>]:
     For all installed or specific formulae, remove any older versions from the
     cellar. By default, does not remove out-of-date keg-only brews, as other
     software may link directly to specific versions.
 
     If `--force` is passed, remove out-of-date keg-only brews as well.
+
+    If `-n` is passed, show what would be removed, but do not actually remove anything.
 
   * `create [--autotools|--cmake] [--no-fetch]` <URL>:
     Generate a formula for the downloadable file at <URL> and open it in
@@ -133,7 +135,7 @@ For the full command list, see the COMMANDS section.
   * `info` <URL>:
     Print the name and version that will be detected for <URL>.
 
-  * `install [--force] [--debug] [--ignore-dependencies] [--use-clang] [--use-gcc] [--use-llvm] [--build-from-source] [--HEAD]` <formula>:
+  * `install [--force] [--debug] [--ignore-dependencies] [--fresh] [--use-clang] [--use-gcc] [--use-llvm] [--build-from-source] [--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but may also be
@@ -149,6 +151,9 @@ For the full command list, see the COMMANDS section.
     If `--ignore-dependencies` is passed, skip installing any dependencies of
     any kind. If they are not already present, the formula will probably fail
     to install.
+
+    If `--fresh` is passed, the installation process will not re-use any
+    options from previous installs.
 
     If `--use-clang` is passed, attempt to compile using clang.
 

@@ -84,6 +84,10 @@ def audit_formula_text name, text
     problems << " * sha1 is empty"
   end
 
+  if text =~ /sha256\s+(\'\'|\"\")/
+    problems << " * sha256 is empty"
+  end
+
   # Commented-out depends_on
   if text =~ /#\s*depends_on\s+(.+)\s*$/
     problems << " * Commented-out dep #{$1}."
@@ -147,7 +151,7 @@ def audit_formula_options f, text
 
   if documented_options.length > 0
     documented_options.each do |o|
-      next if o == '--universal'
+      next if o == '--universal' and text =~ /ARGV\.build_universal\?/
       problems << " * Option #{o} is unused" unless options.include? o
     end
   end
@@ -177,6 +181,7 @@ def audit_formula_urls f
   end
 
   urls = [(f.url rescue nil), (f.head rescue nil)].reject {|p| p.nil?}
+  urls.uniq! # head-only formulae result in duplicate entries
 
   f.mirrors.each do |m|
     mirror = m.values_at :url
