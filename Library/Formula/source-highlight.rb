@@ -12,5 +12,8 @@ class SourceHighlight < Formula
                           "--prefix=#{prefix}",
                           "--with-boost=#{HOMEBREW_PREFIX}"
     system "make install"
+
+    bash_completion_d = prefix + 'etc/bash_completion.d'
+    bash_completion_d.install 'source-highlight-bash-completion'
   end
 end
