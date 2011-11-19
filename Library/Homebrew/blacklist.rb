@@ -28,15 +28,6 @@ def blacklisted? name
 
     We recommend using a MacTeX distribution: http://www.tug.org/mactex/
     EOS
-  when 'mercurial', 'hg' then <<-EOS.undent
-    Install Mercurial with pip:
-
-        easy_install pip && pip install Mercurial
-
-    Or easy_install:
-
-        easy_install Mercurial
-    EOS
   when 'pip' then <<-EOS.undent
     Install pip with easy_install:
 
