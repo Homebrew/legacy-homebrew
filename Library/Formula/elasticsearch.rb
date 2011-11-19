@@ -30,12 +30,12 @@ class Elasticsearch < Formula
       s.gsub! /#\s*path\.logs\: [^\n]+/, "path.logs: #{var}/log/elasticsearch/"
     end
 
-    inreplace "#{prefix}/bin/elasticsearch.in.sh" do |s|
+    inreplace "#{bin}/elasticsearch.in.sh" do |s|
       # Replace CLASSPATH paths to use libexec instead of lib
       s.gsub! /ES_HOME\/lib\//, "ES_HOME/libexec/"
     end
 
-    inreplace "#{prefix}/bin/elasticsearch" do |s|
+    inreplace "#{bin}/elasticsearch" do |s|
       # Set ES_HOME to prefix value
       s.gsub! /^ES_HOME=.*$/, "ES_HOME=#{prefix}"
     end
