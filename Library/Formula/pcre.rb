@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pcre < Formula
-  url 'ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.13.tar.bz2'
+  url 'ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.20.tar.bz2'
   homepage 'http://www.pcre.org/'
-  md5 '5e595edbcded141813fa1a10dbce05cb'
+  md5 'a1931c70e1273e3450d5036fe273d25c'
 
   fails_with_llvm "Bus error in ld on SL 10.6.4", :build => 2326
 
