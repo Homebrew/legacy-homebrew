@@ -6,6 +6,8 @@ class Webp < Formula
   md5 '254d4670e14e9ed881f0536b006ab336'
 
   def install
+    ENV.x11
+
     system "./autogen.sh"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
