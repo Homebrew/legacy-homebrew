@@ -13,6 +13,9 @@ class Fox < Formula
 
   fails_with_llvm "Inline asm errors during build" if ARGV.include? '--devel'
 
+  depends_on 'libtiff'
+  depends_on 'jpeg'
+
   def install
     ENV.x11
 
