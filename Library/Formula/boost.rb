@@ -2,8 +2,8 @@ require 'formula'
 
 class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.47.0/boost_1_47_0.tar.bz2'
-  md5 'a2dc343f7bc7f83f8941e47ed4a18200'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.48.0/boost_1_48_0.tar.bz2'
+  md5 'd1e9a7a7f532bb031a3c175d86688d95'
   bottle 'https://downloads.sourceforge.net/project/machomebrew/Bottles/boost-1.47.0-bottle.tar.gz'
   bottle_sha1 '4f3834fb471c3fac20c649bc4081ddde991e4b3b'
 
