@@ -5,12 +5,12 @@ class Webp < Formula
   homepage 'http://code.google.com/speed/webp/'
   md5 '254d4670e14e9ed881f0536b006ab336'
 
+  depends_on 'jpeg'
+
   def install
     ENV.x11
 
-    system "./autogen.sh"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
 end
