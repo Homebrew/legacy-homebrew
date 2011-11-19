@@ -1,18 +1,18 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.7.7.1.tar.gz'
-  sha1 '419c750617ae0c952e2e43f0357c16de6ebc0a44'
+  url 'http://git-core.googlecode.com/files/git-manpages-1.7.7.4.tar.gz'
+  sha1 'cb21e55ae793865453c165a0e666348f2db8c740'
 end
 
 class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.7.1.tar.gz'
-  sha1 'b25dacb07ebbfc37e7a90c3d47f76b4c0f0487d9'
+  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.7.4.tar.gz'
+  sha1 '6012cb017a04ded85c48ca5510f741e98c02f671'
 end
 
 class Git < Formula
-  url 'http://git-core.googlecode.com/files/git-1.7.7.1.tar.gz'
-  sha1 '9200e0b8ee543d297952b78aac8f61f8b3693f8e'
+  url 'http://git-core.googlecode.com/files/git-1.7.7.4.tar.gz'
+  sha1 '5b6920989480a37ec65977e756b24961578795dd'
   homepage 'http://git-scm.com'
 
   def options
@@ -23,15 +23,12 @@ class Git < Formula
     # If these things are installed, tell Git build system to not use them
     ENV['NO_FINK']='1'
     ENV['NO_DARWIN_PORTS']='1'
-    # If local::lib is used you get a 'Only one of PREFIX or INSTALL_BASE can be given' error
-    ENV['PERL_MM_OPT']=''
-    # Build verbosely.
-    ENV['V']='1'
+    ENV['V']='1' # build verbosely
 
     # Clean XCode 4.x installs don't include Perl MakeMaker
     ENV['NO_PERL_MAKEMAKER']='1' if MacOS.lion?
 
-    ENV['BLK_SHA1']='YesPlease' if ARGV.include? '--with-blk-sha1'
+    ENV['BLK_SHA1']='1' if ARGV.include? '--with-blk-sha1'
 
     inreplace "Makefile" do |s|
       s.remove_make_var! %w{CFLAGS LDFLAGS}
@@ -46,7 +43,7 @@ class Git < Formula
     # Install emacs support.
     (share+'doc/git-core/contrib').install 'contrib/emacs'
     # Some people like the stuff in the contrib folder
-    (share/:git).install 'contrib'
+    (share+'git').install 'contrib'
 
     # These files are exact copies of the git binary, so like the contents
     # of libexec/git-core lets hard link them.
