@@ -1,10 +1,10 @@
 require 'formula'
 
 class CoffeeScript < Formula
-  url 'https://github.com/jashkenas/coffee-script/tarball/1.1.0'
+  url 'https://github.com/jashkenas/coffee-script/tarball/1.1.3'
   head 'https://github.com/jashkenas/coffee-script.git'
   homepage 'http://jashkenas.github.com/coffee-script/'
-  md5 'b5949db25b62eed9d8ba4f60a78619d4'
+  md5 '0919b917f0c1bda3bbac218b2a9baf48'
 
   # head coffee-script usually depends on head node and
   # since there isn't a way to specify that just remove
@@ -21,8 +21,7 @@ class CoffeeScript < Formula
     This has the advantage of supporting multiple versions (of any Node libs)
     at the same time.
 
-    Since coffee-script syntax changed pretty drastically between 0.7.2 and
-    0.9.x, you may want to install it via npm instead.
+    You may want to install coffee-script via npm.
 
     This formula may be retired from a future version of Homebrew.
     EOS

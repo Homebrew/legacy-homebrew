@@ -1,8 +1,8 @@
 require 'formula'
 
 class Libgphoto2 < Formula
-  url 'http://downloads.sourceforge.net/project/gphoto/libgphoto/2.4.10.1/libgphoto2-2.4.10.1.tar.bz2'
-  md5 '362cd914c64b2363f4d0bd5ad07c7209'
+  url 'http://downloads.sourceforge.net/project/gphoto/libgphoto/2.4.11/libgphoto2-2.4.11.tar.bz2'
+  md5 '16a22b9739e45a95980ed62705fe7333'
   homepage 'http://www.gphoto.org/proj/libgphoto2/'
 
   depends_on 'pkg-config' => :build

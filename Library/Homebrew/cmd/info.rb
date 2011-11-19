@@ -1,4 +1,5 @@
 require 'formula'
+require 'tab'
 
 module Homebrew extend self
   def info
@@ -26,7 +27,7 @@ module Homebrew extend self
     if system "/usr/bin/which -s git"
       gh_user=`git config --global github.user 2>/dev/null`.chomp
       /^\*\s*(.*)/.match(`git --git-dir=#{HOMEBREW_REPOSITORY}/.git branch 2>/dev/null`)
-      unless $1.nil? || $1.empty? || gh_user.empty?
+      unless $1.nil? || $1.empty? || $1.chomp == 'master' || gh_user.empty?
         branch = $1.chomp
         user = gh_user
       end
@@ -41,11 +42,17 @@ module Homebrew extend self
     puts "#{f.name} #{f.version}"
     puts f.homepage
 
+    if f.keg_only?
+      puts
+      puts "This formula is keg-only."
+      puts f.keg_only?
+      puts
+    end
+
     puts "Depends on: #{f.deps*', '}" unless f.deps.empty?
 
-    rack = f.prefix.parent
-    if rack.directory?
-      kegs = rack.children
+    if f.rack.directory?
+      kegs = f.rack.children
       kegs.each do |keg|
         next if keg.basename.to_s == '.DS_Store'
         print "#{keg} (#{keg.abv})"
@@ -54,6 +61,13 @@ module Homebrew extend self
       end
     else
       puts "Not installed"
+    end
+
+    if f.installed?
+      tab = Tab.for_formula f
+      unless tab.used_options.empty?
+        puts "Installed with: #{tab.used_options*', '}"
+      end
     end
 
     if f.caveats

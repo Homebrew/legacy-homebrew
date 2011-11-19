@@ -8,8 +8,8 @@ class Hunspell < Formula
   depends_on 'readline'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--with-ui", "--with-readline"
     system "make"
     ENV.deparallelize

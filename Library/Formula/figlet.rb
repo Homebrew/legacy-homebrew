@@ -31,13 +31,13 @@ class Figlet < Formula
     inreplace "Makefile" do |s|
       s.gsub! "/usr/local", prefix
       s.change_make_var! 'DEFAULTFONTDIR', share_fonts
-      s.change_make_var! 'MANDIR', man6
+      s.change_make_var! 'MANDIR', man
     end
 
     system "make install"
   end
 
   def test
-    system "figlet -f larry3d hello, figlet"
+    system "#{bin}/figlet -f larry3d hello, figlet"
   end
 end

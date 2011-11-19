@@ -2,20 +2,27 @@ require 'formula'
 
 class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.46.1/boost_1_46_1.tar.bz2'
-  md5 '7375679575f4c8db605d426fc721d506'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.47.0/boost_1_47_0.tar.bz2'
+  md5 'a2dc343f7bc7f83f8941e47ed4a18200'
+  bottle 'https://downloads.sourceforge.net/project/machomebrew/Bottles/boost-1.47.0-bottle.tar.gz'
+  bottle_sha1 '4f3834fb471c3fac20c649bc4081ddde991e4b3b'
 
   def options
     [
-      ['--with-mpi', "Enables MPI support"],
-      ["--universal", "Build universal binaries."]
+      ["--with-mpi", "Enable MPI support"],
+      ["--universal", "Build universal binaries"],
+      ["--without-python", "Build without Python"]
     ]
   end
 
-  fails_with_llvm "LLVM-GCC causes errors with dropped arguments to functions when linking with boost"
+  # Both clang and llvm-gcc provided by XCode 4.1 compile Boost 1.47.0 properly.
+  # Moreover, Apple LLVM compiler 2.1 is now among primary test compilers.
+  if MacOS.xcode_version < "4.1"
+    fails_with_llvm "LLVM-GCC causes errors with dropped arguments to functions when linking with boost"
+  end
 
   def install
-    if ARGV.build_universal?
+    if ARGV.build_universal? and not ARGV.include? "--without-python"
       archs = archs_for_command("python")
       unless archs.universal?
         opoo "A universal build was requested, but Python is not a universal build"
@@ -50,13 +57,14 @@ class Boost < Formula
 
     args = ["--prefix=#{prefix}",
             "--libdir=#{lib}",
-            "-j#{Hardware.processor_count}",
+            "-j#{ENV.make_jobs}",
             "--layout=tagged",
             "--user-config=user-config.jam",
             "threading=multi",
             "install"]
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if ARGV.include? "--universal"
+    args << "--without-python" if ARGV.include? "--without-python"
 
     # we specify libdir too because the script is apparently broken
     system "./bootstrap.sh", "--prefix=#{prefix}", "--libdir=#{lib}"

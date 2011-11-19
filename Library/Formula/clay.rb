@@ -3,7 +3,6 @@ require 'formula'
 class Clay < Formula
   url 'http://tachyon.in/clay/binaries/clay-macosx-2011.04.18.zip'
   homepage 'http://claylanguage.org'
-  version '2011.04.18'
   md5 '9f43d8147f95ce0d7c3cd12e368406a4'
 
   def install

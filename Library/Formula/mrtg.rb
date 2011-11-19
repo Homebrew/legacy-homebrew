@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mrtg < Formula
-  url 'http://oss.oetiker.ch/mrtg/pub/mrtg-2.16.2.zip'
+  url 'http://oss.oetiker.ch/mrtg/pub/mrtg-2.17.2.tar.gz'
   homepage 'http://oss.oetiker.ch/mrtg/'
-  md5 'c085b85d1f93f459cef9e889bf654fd5'
+  md5 'f4c251ef883da2509188711eff4577ad'
 
   depends_on 'gd'
 

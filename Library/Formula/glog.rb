@@ -1,11 +1,9 @@
 require 'formula'
 
 class Glog < Formula
-  # Stable tarball doesn't build on OS X, but trunk does
-  #url 'http://google-glog.googlecode.com/files/glog-0.3.0.tar.gz'
-  head 'http://google-glog.googlecode.com/svn/trunk/'
+  url 'http://google-glog.googlecode.com/files/glog-0.3.1-1.tar.gz'
   homepage 'http://code.google.com/p/google-glog/'
-  md5 '968fe4bfbaddba315bf52de310dcadc5'
+  md5 '06f525c117fc37b19d12a527c65eab1d'
 
   depends_on 'gflags'
 

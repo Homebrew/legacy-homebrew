@@ -1,12 +1,15 @@
 require 'formula'
 
 class Node < Formula
-  url 'http://nodejs.org/dist/node-v0.4.8.tar.gz'
+  url 'http://nodejs.org/dist/v0.6.1/node-v0.6.1.tar.gz'
   head 'https://github.com/joyent/node.git'
   homepage 'http://nodejs.org/'
-  md5 '22c9f69370069fe81678592cc8ae48f1'
+  md5 '92b8085967110b0125c192634f127a2b'
 
-  fails_with_llvm
+  # Leopard OpenSSL is not new enough, so use our keg-only one
+  depends_on 'openssl' if MacOS.leopard?
+
+  fails_with_llvm :build => 2326
 
   # Stripping breaks dynamic loading
   skip_clean :all
@@ -24,11 +27,15 @@ class Node < Formula
     args = ["--prefix=#{prefix}"]
     args << "--debug" if ARGV.include? '--debug'
 
+    # v0.6 appears to have a bug in parallel building
+    # so we'll -j1 it for now
+    ENV.deparallelize
+
     system "./configure", *args
     system "make install"
   end
 
   def caveats
-    "Please add #{HOMEBREW_PREFIX}/lib/node to your NODE_PATH environment variable to have node libraries picked up."
+    "Please add #{HOMEBREW_PREFIX}/lib/node_modules to your NODE_PATH environment variable to have node libraries picked up."
   end
 end

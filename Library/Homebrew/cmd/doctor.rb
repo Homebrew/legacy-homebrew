@@ -1,3 +1,5 @@
+require 'stringio'
+
 class Volumes
   def initialize
     @volumes = []
@@ -15,7 +17,7 @@ class Volumes
   def which path
     @volumes.each_index do |i|
       vol = @volumes[i]
-      return i if is_prefix?(vol[1], path)
+      return i if vol[1].start_with? path.to_s
     end
 
     return -1
@@ -23,14 +25,13 @@ class Volumes
 end
 
 
-def is_prefix? prefix, longer_string
-  p = prefix.to_s
-  longer_string.to_s[0,p.length] == p
+def remove_trailing_slash s
+  (s[s.length-1] == '/') ? s[0,s.length-1] : s
 end
 
 
 def path_folders
-  ENV['PATH'].split(':').collect{|p| File.expand_path p}.uniq
+  ENV['PATH'].split(':').collect{|p| remove_trailing_slash(File.expand_path(p))}.uniq
 end
 
 
@@ -193,16 +194,31 @@ def check_gcc_versions
     EOS
   end
 
-  if gcc_40 == nil
-    puts <<-EOS.undent
-      We couldn't detect gcc 4.0.x. Some formulae require this compiler.
+  if MacOS.xcode_version == nil
+      puts <<-EOS.undent
+        We couldn't detect any version of Xcode.
+        If you downloaded Xcode 4.1 from the App Store, you may need to run the installer.
 
-    EOS
-  elsif gcc_40 < RECOMMENDED_GCC_40
-    puts <<-EOS.undent
-      Your gcc 4.0.x version is older than the recommended version. It may be advisable
-      to upgrade to the latest release of Xcode.
+      EOS
+  elsif MacOS.xcode_version < "4.0"
+    if gcc_40 == nil
+      puts <<-EOS.undent
+        We couldn't detect gcc 4.0.x. Some formulae require this compiler.
 
+      EOS
+    elsif gcc_40 < RECOMMENDED_GCC_40
+      puts <<-EOS.undent
+        Your gcc 4.0.x version is older than the recommended version. It may be advisable
+        to upgrade to the latest release of Xcode.
+
+      EOS
+    end
+  end
+
+  unless File.exist? '/usr/bin/cc'
+    puts <<-EOS.undent
+      You have no /usr/bin/cc. This will cause numerous build issues. Please
+      reinstall Xcode.
     EOS
   end
 end
@@ -297,8 +313,20 @@ end
 def check_homebrew_prefix
   unless HOMEBREW_PREFIX.to_s == '/usr/local'
     puts <<-EOS.undent
-      You can install Homebrew anywhere you want, but some brews may only work
+      You can install Homebrew anywhere you want, but some brews may only build
       correctly if you install to /usr/local.
+
+    EOS
+  end
+end
+
+def check_xcode_prefix
+  prefix = MacOS.xcode_prefix
+  return if prefix.nil?
+  if prefix.to_s.match(' ')
+    puts <<-EOS.undent
+      Xcode is installed to a folder with a space in the name.
+      This may cause some formulae, such as libiconv, to fail to build.
 
     EOS
   end
@@ -309,25 +337,29 @@ def check_user_path
   seen_prefix_sbin = false
   seen_usr_bin = false
 
-  path_folders.each do |p|
-    if p == '/usr/bin'
+  path_folders.each do |p| case p
+    when '/usr/bin'
       seen_usr_bin = true
       unless seen_prefix_bin
-        puts <<-EOS.undent
-          /usr/bin is in your PATH before Homebrew's bin. This means that system-
-          provided programs will be used before Homebrew-provided ones. This is an
-          issue if you install, for instance, Python.
+        # only show the doctor message if there are any conflicts
+        # rationale: a default install should not trigger any brew doctor messages
+        if Dir["#{HOMEBREW_PREFIX}/bin/*"].any? {|fn| File.exist? "/usr/bin/#{File.basename fn}"}
+          ohai "/usr/bin occurs before #{HOMEBREW_PREFIX}/bin"
+          puts <<-EOS.undent
+            This means that system-provided programs will be used instead of those
+            provided by Homebrew. This is an issue if you eg. brew installed Python.
 
-          Consider editing your .bashrc to put:
-            #{HOMEBREW_PREFIX}/bin
-          ahead of /usr/bin in your $PATH.
-
-        EOS
+            Consider editing your .bashrc to put:
+              #{HOMEBREW_PREFIX}/bin
+            ahead of /usr/bin in your $PATH.
+          EOS
+        end
       end
+    when "#{HOMEBREW_PREFIX}/bin"
+      seen_prefix_bin = true
+    when "#{HOMEBREW_PREFIX}/sbin"
+      seen_prefix_sbin = true
     end
-
-    seen_prefix_bin  = true if p == "#{HOMEBREW_PREFIX}/bin"
-    seen_prefix_sbin = true if p == "#{HOMEBREW_PREFIX}/sbin"
   end
 
   unless seen_prefix_bin
@@ -342,16 +374,20 @@ def check_user_path
       EOS
   end
 
-  unless seen_prefix_sbin
-    puts <<-EOS.undent
-      Some brews install binaries to sbin instead of bin, but Homebrew's
-      sbin was not found in your path.
+  # Don't complain about sbin not being in the path if it doesn't exist
+  sbin = (HOMEBREW_PREFIX+'sbin')
+  if sbin.directory? and sbin.children.length > 0
+    unless seen_prefix_sbin
+      puts <<-EOS.undent
+        Some brews install binaries to sbin instead of bin, but Homebrew's
+        sbin was not found in your path.
 
-      Consider editing your .bashrc to add:
-        #{HOMEBREW_PREFIX}/sbin
-      to $PATH.
+        Consider editing your .bashrc to add:
+          #{HOMEBREW_PREFIX}/sbin
+        to $PATH.
 
-      EOS
+        EOS
+    end
   end
 end
 
@@ -438,13 +474,13 @@ def check_for_iconv
 end
 
 def check_for_config_scripts
-  real_cellar = HOMEBREW_CELLAR.realpath
+  real_cellar = HOMEBREW_CELLAR.exist? && HOMEBREW_CELLAR.realpath
 
   config_scripts = []
 
   path_folders.each do |p|
     next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin"].include? p
-    next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})]
+    next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] if real_cellar
 
     configs = Dir["#{p}/*-config"]
     # puts "#{p}\n    #{configs * ' '}" unless configs.empty?
@@ -474,7 +510,7 @@ end
 def check_for_dyld_vars
   if ENV['DYLD_LIBRARY_PATH']
     puts <<-EOS.undent
-      Setting DYLD_LIBARY_PATH can break dynamic linking.
+      Setting DYLD_LIBRARY_PATH can break dynamic linking.
       You should probably unset it.
 
     EOS
@@ -501,6 +537,7 @@ def check_for_symlinked_cellar
 end
 
 def check_for_multiple_volumes
+  return unless HOMEBREW_CELLAR.exist?
   volumes = Volumes.new
 
   # Find the volumes for the TMP folder & HOMEBREW_CELLAR
@@ -568,11 +605,12 @@ def check_git_newline_settings
 end
 
 def check_for_autoconf
-  which_autoconf = `/usr/bin/which autoconf`.chomp
-  unless (which_autoconf == '/usr/bin/autoconf' or which_autoconf == '/Developer/usr/bin/autoconf')
+  autoconf = `/usr/bin/which autoconf`.chomp
+  safe_autoconfs = %w[/usr/bin/autoconf /Developer/usr/bin/autoconf]
+  unless autoconf.empty? or safe_autoconfs.include? autoconf
     puts <<-EOS.undent
       An "autoconf" in your path blocking the Xcode-provided version at:
-        #{which_autoconf}
+        #{autoconf}
 
       This custom autoconf may cause some Homebrew formulae to fail to compile.
 
@@ -627,6 +665,7 @@ def check_for_linked_kegonly_brews
     EOS
 
     puts *warnings.keys.collect { |f| "    #{f}" }
+    puts
   end
 end
 
@@ -646,11 +685,10 @@ def check_for_MACOSX_DEPLOYMENT_TARGET
 end
 
 def check_for_CLICOLOR_FORCE
-  target_var = ENV['CLICOLOR_FORCE'].to_s
-  unless target_var.empty?
+  if ENV['CLICOLOR_FORCE']
     puts <<-EOS.undent
-    $CLICOLOR_FORCE was set to \"#{target_var}\".
-    Having $CLICOLOR_FORCE set can cause git builds to fail.
+    Having $CLICOLOR_FORCE set can cause some builds to fail.
+    You may want to unset it.
 
     EOS
   end
@@ -658,10 +696,10 @@ end
 
 def check_for_GREP_OPTIONS
   target_var = ENV['GREP_OPTIONS'].to_s
-  unless target_var.empty?
+  unless target_var.empty? or target_var == '--color=auto'
     puts <<-EOS.undent
     $GREP_OPTIONS was set to \"#{target_var}\".
-    Having $GREP_OPTIONS set can cause CMake builds to fail.
+    Having $GREP_OPTIONS set this way can cause CMake builds to fail.
 
     EOS
   end
@@ -674,7 +712,7 @@ def check_for_other_frameworks
       puts <<-EOS.undent
         #{f} detected
 
-        This will be picked up by Cmake's build system and likey cause the
+        This will be picked up by Cmake's build system and likely cause the
         build to fail, trying to link to a 32-bit version of expat.
         You may need to move this file out of the way to compile Cmake.
 
@@ -686,8 +724,90 @@ def check_for_other_frameworks
     puts <<-EOS.undent
       /Library/Frameworks/Mono.framework detected
 
-      This can be picked up by Cmake's build system and likey cause the
+      This can be picked up by Cmake's build system and likely cause the
       build to fail, finding improper header files for libpng for instance.
+
+    EOS
+  end
+end
+
+def check_tmpdir
+  tmpdir = ENV['TMPDIR']
+  return if tmpdir.nil?
+  if !File.directory?(tmpdir)
+    puts "$TMPDIR #{tmpdir.inspect} doesn't exist."
+    puts
+  end
+end
+
+def check_missing_deps
+  s = `brew missing`.strip
+  if s.length > 0
+    ohai "You should brew install these missing dependencies:"
+    puts s
+    puts
+  end
+end
+
+def check_git_status
+  repo = HOMEBREW_REPOSITORY
+  status_cmd = "git --git-dir=#{repo}/.git --work-tree=#{repo} status -s #{repo}/Library/Homebrew"
+  if system "/usr/bin/which -s git" and File.directory? repo+'.git' and not `#{status_cmd}`.empty?
+    ohai "You have uncommitted modifications to Homebrew's core."
+    puts "Unless you know what you are doing, you should: git reset --hard"
+    puts
+  end
+end
+
+def check_for_leopard_ssl
+  if MacOS.leopard? and not ENV['GIT_SSL_NO_VERIFY']
+    puts <<-EOS.undent
+      The version of libcurl provided with Mac OS X Leopard has outdated
+      SSL certificates.
+
+      This can cause problems when running Homebrew commands that use Git to
+      fetch over HTTPS, e.g. `brew update` or installing formulae that perform
+      Git checkouts.
+
+      You can force Git to ignore these errors by setting $GIT_SSL_NO_VERIFY.
+        export GIT_SSL_NO_VERIFY=1
+
+    EOS
+  end
+end
+
+def check_git_version
+  # see https://github.com/blog/642-smart-http-support
+  return unless system "/usr/bin/which -s git"
+  `git --version`.chomp =~ /git version (\d)\.(\d)\.(\d)/
+
+  if $2.to_i > 6
+    return
+  elsif $2.to_i == 6 and $3.to_i == 6
+    return
+  else
+    puts <<-EOS.undent
+      An outdated version of Git was detected in your PATH.
+
+      Git 1.6.6 or newer is required to perform checkouts over HTTP from GitHub.
+
+      You may want to upgrade:
+        brew upgrade git
+
+    EOS
+  end
+end
+
+def check_terminal_width
+  # http://sourceforge.net/tracker/?func=detail&atid=100976&aid=3435710&group_id=976
+  if `tput cols`.chomp.to_i > 262
+    puts <<-EOS.undent
+      Your terminal width is greater than 262 columns.
+
+      This can trigger a segfault in some versions of curl, which may cause
+      downloads to appear to fail.
+
+      You may want to adjust your terminal size.
 
     EOS
   end
@@ -695,14 +815,13 @@ end
 
 module Homebrew extend self
   def doctor
-    read, write = IO.pipe
+    old_stdout = $stdout
+    $stdout = output = StringIO.new
 
-    if fork == nil
-      read.close
-      $stdout.reopen write
-
+    begin
       check_usr_bin_ruby
       check_homebrew_prefix
+      check_xcode_prefix
       check_for_macgpg2
       check_for_stray_dylibs
       check_for_stray_static_libs
@@ -734,17 +853,21 @@ module Homebrew extend self
       check_for_autoconf
       check_for_linked_kegonly_brews
       check_for_other_frameworks
+      check_tmpdir
+      check_missing_deps
+      check_git_status
+      check_for_leopard_ssl
+      check_git_version
+      check_terminal_width
+    ensure
+      $stdout = old_stdout
+    end
 
-      exit! 0
+    unless (warnings = output.string).chomp.empty?
+      puts warnings
+      exit 1
     else
-      write.close
-
-      unless (out = read.read).chomp.empty?
-        puts out
-      else
-        puts "Your OS X is ripe for brewing."
-        puts "Any troubles you may be experiencing are likely purely psychosomatic."
-      end
+      puts "Your system is raring to brew."
     end
   end
 end

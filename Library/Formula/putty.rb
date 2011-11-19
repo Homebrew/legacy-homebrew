@@ -1,9 +1,9 @@
 require 'formula'
 
 class Putty < Formula
-  url 'http://the.earth.li/~sgtatham/putty/latest/putty-0.60.tar.gz'
+  url 'http://the.earth.li/~sgtatham/putty/0.61/putty-0.61.tar.gz'
   homepage 'http://www.chiark.greenend.org.uk/~sgtatham/putty/'
-  md5 '07e65fd98b16d115ae38a180bfb242e2'
+  md5 'db0e37f6b82ea62f0ace87927d29b2a4'
 
   def install
     # use the unix build to make all PuTTY command line tools

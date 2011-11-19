@@ -2,12 +2,15 @@ require 'formula'
 
 class Vimpager < Formula
   homepage 'https://github.com/rkitover/vimpager'
-  url 'https://github.com/rkitover/vimpager/tarball/1.4.7'
-  sha256 '4bd8bb65ad4ad360264e89cf13dd798089e177716eea2db3a4dcdb558bbdd46c'
-  head 'https://github.com/rkitover/vimpager', :using => :git
+  url 'https://github.com/rkitover/vimpager/tarball/1.5.7'
+  md5 'c266ec2fe974c5431de8ce16c4ab97f6'
+  head 'https://github.com/rkitover/vimpager.git'
 
   def install
+    inreplace 'vimpager.1', '~/bin/', ''
+
     bin.install 'vimpager'
+    man1.install gzip('vimpager.1')
   end
 
   def caveats; <<-EOS.undent

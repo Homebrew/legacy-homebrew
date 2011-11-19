@@ -9,6 +9,9 @@ class Libwpg < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    # Separate steps or install can fail due to folders not existing
+    system "make"
+    ENV.j1
     system "make install"
   end
 end

@@ -40,6 +40,7 @@ class Ddclient < Formula
 
     # Write the launchd script
     (prefix + 'org.ddclient.plist').write startup_plist
+    (prefix + 'org.ddclient.plist').chmod 0644
   end
 
   def caveats; <<-EOS

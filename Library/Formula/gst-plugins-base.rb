@@ -2,8 +2,8 @@ require 'formula'
 
 class GstPluginsBase < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-0.10.32.tar.bz2'
-  md5 '2920af2b3162f3d9fbaa7fabc8ed4d38'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-0.10.34.tar.bz2'
+  sha256 '7f347a60cd4317c7ea44c23e52d6e6233d2fa278b3fe3df7cbefe2bc2e253989'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'

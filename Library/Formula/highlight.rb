@@ -1,13 +1,16 @@
 require 'formula'
 
 class Highlight < Formula
-  url 'http://www.andre-simon.de/zip/highlight-2.16.tar.bz2'
+  url 'http://www.andre-simon.de/zip/highlight-3.6.tar.bz2'
   homepage 'http://www.andre-simon.de/doku/highlight/en/highlight.html'
-  sha1 'b5fed14bb1a973fe134dd2133766bb86fdc7494e'
+  sha1 'ff3d5f5d17edfed4881d34ef847e63bf800a33e2'
+
+  depends_on 'boost'
+  depends_on 'lua'
 
   def install
-    conf = etc+'highlight/'
-    system "make", "PREFIX=#{prefix}", "conf_dir=#{conf}"
-    system "make", "PREFIX=#{prefix}", "conf_dir=#{conf}", "install"
+    conf_dir = etc+'highlight/' # highlight needs a final / for conf_dir
+    system "make", "PREFIX=#{prefix}", "conf_dir=#{conf_dir}"
+    system "make", "PREFIX=#{prefix}", "conf_dir=#{conf_dir}", "install"
   end
 end

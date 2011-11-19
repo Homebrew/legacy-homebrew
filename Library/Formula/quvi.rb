@@ -1,8 +1,8 @@
 require 'formula'
 
 class Quvi < Formula
-  url 'http://sourceforge.net/projects/quvi/files/0.2/quvi-0.2.14.tar.bz2'
-  sha1 '4d2a4e02db4bcb555ddb92de3a466ab608e971eb'
+  url 'http://sourceforge.net/projects/quvi/files/0.2/quvi-0.2.18.tar.bz2'
+  sha1 '42a1a0a949ddb5d3eaec91cddd21ed34a5b1e259'
   homepage 'http://quvi.sourceforge.net/'
 
   depends_on 'pkg-config' => :build

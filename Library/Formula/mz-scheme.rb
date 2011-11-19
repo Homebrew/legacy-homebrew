@@ -6,6 +6,8 @@ class MzScheme < Formula
   md5 '5d320c94e168ab58237c0e710c6050d0'
   version '4.2.5'
 
+  fails_with_llvm "Unsupported inline asm", :build => 2335
+
   def install
     cd "src"
 
