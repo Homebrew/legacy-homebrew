@@ -3,9 +3,8 @@ require 'formula'
 class Postgresql < Formula
   homepage 'http://www.postgresql.org/'
   url 'http://ftp.postgresql.org/pub/source/v9.1.3/postgresql-9.1.3.tar.bz2'
-  md5 '641e1915f7ebfdc9f138e4c55b6aec0e'
+  sha256 '7a79800a624031c1d9bc9cdce73cb40050100ac50a82050cbf7bbbd16ac4d5d5'
 
-  depends_on 'readline'
   depends_on 'libxml2' if MacOS.leopard? # Leopard libxml is too old
   depends_on 'ossp-uuid'
 
@@ -14,7 +13,8 @@ class Postgresql < Formula
       ['--32-bit', 'Build 32-bit only.'],
       ['--no-python', 'Build without Python support.'],
       ['--no-perl', 'Build without Perl support.'],
-      ['--enable-dtrace', 'Build with DTrace support.']
+      ['--enable-dtrace', 'Build with DTrace support.'],
+      ['--postgres-user', 'Run as user _postgres.'],
     ]
   end
 
@@ -31,6 +31,8 @@ class Postgresql < Formula
             "--with-bonjour",
             "--with-gssapi",
             "--with-krb5",
+            "--with-pam",
+            "--with-ldap",
             "--with-openssl",
             "--with-libxml",
             "--with-libxslt",
@@ -62,6 +64,26 @@ class Postgresql < Formula
 
     plist_path.write startup_plist
     plist_path.chmod 0644
+  end
+
+  # The postgres project has an actual domain, so let's use it for the bundle id as per
+  # Apple's recommendations.
+  def plist_name; 'org.postgresql.postgres'; end
+
+  # default location for the database cluster
+  def datadir; var+'postgres'; end
+
+  def current_user
+    @current_user ||= `whoami`.chomp
+  end
+
+  def use_postgres_user?
+    ARGV.include? '--postgres-user' or (current_user == "root" and MacOS.lion?)
+    # never install as root when the system provides a specific user
+  end
+
+  def db_user
+    use_postgres_user? ? '_postgres' : current_user
   end
 
   def check_python_arch
@@ -105,8 +127,20 @@ See:
 # Create/Upgrade a Database
 
 If this is your first install, create a database with:
-  initdb #{var}/postgres
+EOS
+    if use_postgres_user?
+      s << <<-EOS
+  mkdir -p #{datadir}
+  sudo chown -R #{db_user}:#{db_user} #{datadir}
+  sudo -u #{db_user} initdb #{datadir}
+EOS
+    else
+      s << <<-EOS
+  initdb #{datadir}
+EOS
+    end
 
+    s << <<-EOS
 To migrate existing data from a previous major version (pre-9.1) of PostgreSQL, see:
   http://www.postgresql.org/docs/9.1/static/upgrading.html
 
@@ -123,10 +157,10 @@ If this is an upgrade and you already have the #{plist_path.basename} loaded:
   launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
 Or start manually with:
-  pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start
+  pg_ctl -D #{datadir} -l #{datadir}/server.log start
 
 And stop with:
-  pg_ctl -D #{var}/postgres stop -s -m fast
+  pg_ctl -D #{datadir} stop -s -m fast
 
 # Loading Extensions
 
@@ -181,14 +215,14 @@ To install gems without sudo, see the Homebrew wiki.
   <array>
     <string>#{HOMEBREW_PREFIX}/bin/postgres</string>
     <string>-D</string>
-    <string>#{var}/postgres</string>
+    <string>#{datadir}</string>
     <string>-r</string>
-    <string>#{var}/postgres/server.log</string>
+    <string>#{datadir}/server.log</string>
   </array>
   <key>RunAtLoad</key>
   <true/>
   <key>UserName</key>
-  <string>#{`whoami`.chomp}</string>
+  <string>#{db_user}</string>
   <key>WorkingDirectory</key>
   <string>#{HOMEBREW_PREFIX}</string>
   <key>StandardErrorPath</key>
