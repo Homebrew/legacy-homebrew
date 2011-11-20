@@ -17,6 +17,13 @@ class Znc < Formula
     [['--enable-debug', "Compile ZNC with --enable-debug"]]
   end
 
+  def patches
+    # Pass AF_UNSPEC to ares when the socket address says so. Ares only attempts
+    # a A lookup after a failed AAAA lookup if AF_UNSPEC was specified in the
+    # original request.
+    "https://raw.github.com/gist/1380715/6af4fe00a2c34f733443e44768869278a2223294/znc-0.202-ipv6-fix"
+  end
+
   def install
     if ARGV.build_head?
       ENV['ACLOCAL_FLAGS'] = "--acdir=#{HOMEBREW_PREFIX}/share/aclocal"
