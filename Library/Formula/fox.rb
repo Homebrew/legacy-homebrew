@@ -2,7 +2,7 @@ require 'formula'
 
 class Fox < Formula
   # Development and stable branches are incompatible
-  if ARGV.include? '--devel'
+  if ARGV.build_devel?
     url 'http://ftp.fox-toolkit.org/pub/fox-1.7.30.tar.gz'
     md5 '345df53f1e652bc99d1348444b4e3016'
   else
@@ -11,7 +11,7 @@ class Fox < Formula
   end
   homepage 'http://www.fox-toolkit.org/'
 
-  fails_with_llvm "Inline asm errors during build" if ARGV.include? '--devel'
+  fails_with_llvm "Inline asm errors during build" if ARGV.build_devel?
 
   def install
     ENV.x11
