@@ -4,7 +4,6 @@ class V8 < Formula
   head 'https://github.com/v8/v8.git', :using => :git
   url 'https://github.com/v8/v8/tarball/3.7.0'
   homepage 'http://code.google.com/p/v8/'
-  version "3.7.0"
   sha1 "8b22460558b39d0016cf372b08112f3636a08f25"
 
   depends_on 'scons' => :build
