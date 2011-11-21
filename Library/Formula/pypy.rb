@@ -2,15 +2,15 @@ require 'formula'
 require 'hardware'
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.21.tar.gz'
-  md5 'c8cfcfd42ec9ab900fb3960a3308eef2'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.24.tar.gz'
+  md5 '17722b22141aba8235787f79800cc452'
 end
 
 class Pypy < Formula
   if MacOS.prefer_64_bit?
-    url 'http://bitbucket.org/pypy/pypy/downloads/pypy-1.6-osx64.tar.bz2'
-    md5 '78bbf70f55e9fec20d7ac22531a997fc'
-    version '1.6.0'
+    url 'https://bitbucket.org/pypy/pypy/downloads/pypy-1.7-osx64.tar.bz2'
+    md5 'ff979054fc8e17b4973ffebb9844b159'
+    version '1.7.0'
   else
     url 'http://pypy.org/download/pypy-1.4.1-osx.tar.bz2'
     md5 '8584c4e8c042f5b661fcfffa0d9b8a25'
