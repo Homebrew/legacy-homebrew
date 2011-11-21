@@ -15,9 +15,13 @@ class Growl < Formula
   sha1 'b556dc4c5541be79edc9ed8acfadbddd84538c36'
   version '1.3.1'
   
+  depends_on 'osx/plist' => :ruby unless ARGV.include? "--disable-hardware"
+
   def options
     [
-      ["--no-sign", "Disable code signature and avoid the need for a certificate"]
+      ["--enable-codesign", "Enable code signature"],
+      ["--disable-notify", "Don't include the growlnotify application"],
+      ["--disable-hardware", "Don't include the HardwareGrowler application"],
     ]
   end
 
@@ -27,36 +31,63 @@ class Growl < Formula
     p << "https://raw.github.com/gist/1373382/"
     p << "https://raw.github.com/gist/1374166/"
 
-    if ARGV.include? "--no-sign"
-      # Disable code sign
+    unless ARGV.include? "--disable-hardware"
+      # Fix case sensitivity in HardwareGrowler.app
+      p << "https://raw.github.com/gist/1380233/"
+    end
+
+    unless ARGV.include? "--enable-codesign"
+      # Disable code sign in Growl.app
       p << "https://raw.github.com/gist/1374159/"
+
+      unless ARGV.include? "--disable-hardware"
+        # Disable code sign in HardwareGrowler.app
+        p << "https://raw.github.com/gist/1379714/"
+      end
     end
 
     return p
   end
 
   def install
+    # Include dependencies not provided by the tarball.
     unless ARGV.build_head?
       p = (Pathname.getwd+'external_dependencies'+'iso8601parser')
       p.mkpath
       ISO8601ParserUnparser.new.brew{p.install Dir['*']}
     end
     
-    opoo "You need to have the developer certificate already present in Keychain or to use the '--no-sign' option"
+    ohai "You need to have the developer certificate already present in Keychain" if ARGV.include? "--enable-codesign"
 
-    system "xcodebuild", "-configuration", "Release"
+    buildPath = Pathname.getwd+"build"
+
+    system "xcodebuild -configuration Release SYMROOT=#{buildPath}"
     prefix.install "build/Release/Growl.app"
+
+    unless ARGV.include? "--disable-notify"
+      system "xcodebuild -project Extras/growlnotify/growlnotify.xcodeproj -configuration Release SYMROOT=#{buildPath}"
+      bin.install "build/Release/growlnotify"
+      man.install "Extras/growlnotify/growlnotify.1"
+    end
+
+    unless ARGV.include? "--disable-hardware"
+      # Build using the previously compiled Growl.framework
+      system "xcodebuild -project Extras/HardwareGrowler/HardwareGrowler.xcodeproj -configuration Release SYMROOT=#{buildPath}"
+      prefix.install "build/Release/HardwareGrowler.app"
+    end
   end
 
   def caveats
+    # Infos on code signing
     s = <<-EOS.undent
-          The code needs to be signed to compile.
-          The easiest way to get rid of this problem is to use the "--no-sign" option which removes code signature.
-          A recommanded alternative would be to generate a self signed certificate:
+          The code needs to be signed to compile, by default the signature is disable with patches.
+          It may be useful to re-enable the code sign, which can be done with "--enable-codesign".
+
+          The easiest way to enable code signature is to add manually a self-signed certificate:
 
           To do so, open "Keychain Access.app";
             "Keychain Access" Menu > "Certificate Assistant" > "Create a Certificate..."
-          
+
           The certificate name must be :
             3rd Party Mac Developer Application: The Growl Project, LLC
           Choose "Code Signing" as Certificate Type.
@@ -64,14 +95,16 @@ class Growl < Formula
 
     EOS
 
+    # Info on .app
     s += <<-EOS.undent
-          Growl.app is installed in:
+          Growl.app and HardwareGrowler.app are installed in:
             #{prefix}
 
-           To link the application to a normal Mac OS X location:
+           To link the applications to a normal Mac OS X location:
              brew linkapps
            or:
              ln -s #{prefix}/Growl.app /Applications
+             ln -s #{prefix}/HardwareGrowler.app /Applications
         EOS
 
     return s
