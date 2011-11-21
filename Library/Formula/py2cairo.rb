@@ -13,8 +13,8 @@ class Py2cairo < Formula
     py_prefix = `brew --prefix python`.chomp
     cairo_prefix = `brew --prefix cairo`.chomp
 
-    ENV.prepend 'PKG_CONFIG_PATH', cairo_prefix
-    ENV['ARCHFLAGS'] = archs_for_command("#{py_prefix}/bin/python").as_arch_flags
+    ENV['PKG_CONFIG_PATH'] = "#{cairo_prefix}/lib/pkgconfig:#{ENV['PKG_CONFIG']}"
+    ENV['ARCHFLAGS'] = "-arch #{Hardware.is_64_bit? ? 'x86_64' : 'i386'}"
     system "./waf configure --prefix=#{prefix}"
     system "./waf build"
 
