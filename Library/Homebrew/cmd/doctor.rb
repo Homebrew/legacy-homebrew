@@ -550,6 +550,8 @@ def check_for_multiple_volumes
   where_cellar = volumes.which real_cellar
   where_temp = volumes.which real_temp
 
+  Dir.delete tmp
+
   unless where_cellar == where_temp
     puts <<-EOS.undent
       Your Cellar & TEMP folders are on different volumes.
