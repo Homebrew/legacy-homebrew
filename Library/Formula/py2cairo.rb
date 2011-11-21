@@ -13,8 +13,6 @@ class Py2cairo < Formula
     py_prefix = `brew --prefix python`.chomp
     cairo_prefix = `brew --prefix cairo`.chomp
 
-    ohai "#{py_prefix}/bin/python"
-
     ENV.prepend 'PKG_CONFIG_PATH', cairo_prefix
     ENV['ARCHFLAGS'] = archs_for_command("#{py_prefix}/bin/python").as_arch_flags
     system "./waf configure --prefix=#{prefix}"
