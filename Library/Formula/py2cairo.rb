@@ -26,4 +26,8 @@ class Py2cairo < Formula
 
     system "./waf install"
   end
+
+  def test
+    system "python -c'import cairo; cairo.Context(cairo.ImageSurface(cairo.FORMAT_ARGB32, 10, 10))'"
+  end
 end
