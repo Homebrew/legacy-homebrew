@@ -5,7 +5,6 @@ class Mercurial < Formula
   homepage 'http://mercurial.selenic.com/'
   head 'http://selenic.com/repo/hg', :using => :hg
   sha1 '5ede1b3f54d3be2af0657901e7013dde7c19b7c5'
-  version '2.0'
 
   depends_on 'docutils' => :python if ARGV.build_head? or ARGV.include? "--doc"
 
