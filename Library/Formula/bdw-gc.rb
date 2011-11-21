@@ -3,7 +3,7 @@ require 'formula'
 class BdwGc < Formula
   homepage 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/'
 
-  if ARGV.include? '--devel'
+  if ARGV.build_devel?
     url 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.2alpha6.tar.gz'
     md5 '319d0b18cc4eb735c8038ece9df055e4'
     version '7.2alpha6'
@@ -16,7 +16,7 @@ class BdwGc < Formula
   # some directory restructuring between 7.1 and 7.2a6 force us to have two
   # versions of the same patch
   def patches
-    if ARGV.include? '--devel'
+    if ARGV.build_devel?
       DATA
     else
       { :p0 => "https://trac.macports.org/export/86621/trunk/dports/devel/boehmgc/files/asm.patch" }
