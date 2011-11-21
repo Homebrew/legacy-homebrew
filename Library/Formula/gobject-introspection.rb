@@ -8,12 +8,12 @@ class GobjectIntrospection < Formula
   depends_on 'glib'
   depends_on 'libffi'
 
-  def installg
+  def install
     ffi_prefix = `brew --prefix libffi`.chomp
 
     ENV['PKG_CONFIG_PATH'] = "#{ffi_prefix}/lib/pkgconfig:#{ENV['PKG_CONFIG_PATH']}"
 
-    system "./configure --prefix=#{prefix}"
+    system "./configure --prefix=#{prefix} --disable-dependency-tracking"
     system "make install"
   end
 end
