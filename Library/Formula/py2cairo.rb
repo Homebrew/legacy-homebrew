@@ -22,7 +22,7 @@ class Py2cairo < Formula
 
     # Grrr. Despite all efforts, this still links against system Python.
     # Fix it with brute force and ignorance:
-    system "install_name_tool -change /System/Library/Frameworks/Python.framework/Versions/2.7/Python #{py_prefix   }/lib/libpython2.7.dylib ./build_directory/src/_cairo.so"
+    system "install_name_tool -change /System/Library/Frameworks/Python.framework/Versions/2.7/Python #{py_prefix}/lib/libpython2.7.dylib ./build_directory/src/_cairo.so"
 
     system "./waf install"
   end
