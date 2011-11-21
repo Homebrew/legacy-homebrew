@@ -12,4 +12,8 @@ class Imapfilter < Formula
     system "make all"
     system "make PREFIX=#{prefix} MANDIR=#{man} install"
   end
+
+  def test
+    system "imapfilter -V"
+  end
 end
