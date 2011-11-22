@@ -41,8 +41,13 @@ class Emacs < Formula
     end
 
     if ARGV.include? "--cocoa"
-      # Fullscreen patch, works against 23.3 and HEAD.
-      p << "https://raw.github.com/gist/1012927"
+      if ARGV.include? "--use-git-head"
+        # Fullscreen patch, works against HEAD.
+        p << "https://raw.github.com/gist/1355895"
+      else
+        # Fullscreen patch, works against 23.3 and HEAD.
+        p << "https://raw.github.com/gist/1012927"
+      end
     end
 
     return p
