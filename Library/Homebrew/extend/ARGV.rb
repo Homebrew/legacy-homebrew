@@ -66,6 +66,10 @@ module HomebrewArgvExtension
     flag? '--HEAD'
   end
 
+  def build_devel?
+    include? '--devel'
+  end
+
   def build_universal?
     include? '--universal'
   end
