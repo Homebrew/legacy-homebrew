@@ -1,13 +1,24 @@
 require 'formula'
 
+def ffplay?
+  ARGV.include? '--with-ffplay'
+end
+
 class Ffmpeg < Formula
-  url 'http://ffmpeg.org/releases/ffmpeg-0.8.5.tar.bz2'
+  url 'http://ffmpeg.org/releases/ffmpeg-0.8.6.tar.bz2'
   homepage 'http://ffmpeg.org/'
-  sha1 'a69d909958b23f8b2509ddda6cdeba2601edf5ff'
+  sha1 'ad7eaefa5072ca3c11778f9186fab35558a04478'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
   fails_with_llvm 'Dies during compilation of motionpixels_tablegen'
+
+  def options
+    [
+      ["--with-tools", "Install additional FFmpeg tools."],
+      ["--with-ffplay", "Build ffplay."]
+    ]
+  end
 
   depends_on 'yasm' => :build
   depends_on 'x264' => :optional
@@ -19,11 +30,7 @@ class Ffmpeg < Formula
   depends_on 'libvpx' => :optional
   depends_on 'xvid' => :optional
 
-  def options
-    [
-      ["--with-tools", "Install additional FFmpeg tools."]
-    ]
-  end
+  depends_on 'sdl' if ffplay?
 
   def install
     args = ["--prefix=#{prefix}",
@@ -41,6 +48,7 @@ class Ffmpeg < Formula
     args << "--enable-libvorbis" if Formula.factory('libvorbis').installed?
     args << "--enable-libvpx" if Formula.factory('libvpx').installed?
     args << "--enable-libxvid" if Formula.factory('xvid').installed?
+    args << "--disable-ffplay" unless ffplay?
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
