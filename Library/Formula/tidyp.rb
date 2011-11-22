@@ -15,10 +15,10 @@ class Tidyp < Formula
     system "make install"
 
     TidypManual.new.brew {
-        system "#{prefix}/bin/tidyp -xml-help > tidyp1.xml"
-        system "#{prefix}/bin/tidyp -xml-config > tidyp-config.xml"
+        system "#{bin}/tidyp -xml-help > tidyp1.xml"
+        system "#{bin}/tidyp -xml-config > tidyp-config.xml"
         system "/usr/bin/xsltproc tidyp1.xsl tidyp1.xml |/usr/bin/gzip >tidyp.1.gz"
-        man1.install ['tidyp.1.gz']
+        man1.install 'tidyp.1.gz'
     }
 
   end
