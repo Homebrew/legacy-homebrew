@@ -13,7 +13,7 @@ class Whatmask < Formula
   end
 
   def test
-    %x[ whatmask \/24 ].eql?("\n---------------------------------------------\n       TCP/IP SUBNET MASK EQUIVALENTS\n---------------------------------------------\nCIDR = .....................: /24\nNetmask = ..................: 255.255.255.0\nNetmask (hex) = ............: 0xffffff00\nWildcard Bits = ............: 0.0.0.255\nUsable IP Addresses = ......: 254\n\n")
+    %x[ #{bin}/whatmask \/24 ].eql?("\n---------------------------------------------\n       TCP/IP SUBNET MASK EQUIVALENTS\n---------------------------------------------\nCIDR = .....................: /24\nNetmask = ..................: 255.255.255.0\nNetmask (hex) = ............: 0xffffff00\nWildcard Bits = ............: 0.0.0.255\nUsable IP Addresses = ......: 254\n\n")
   end
 
 end
