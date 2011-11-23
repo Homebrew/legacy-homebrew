@@ -21,7 +21,12 @@ class Sdl < Formula
     # Sdl assumes X11 is present on UNIX
     ENV.x11
     system "./autogen.sh" if ARGV.build_head?
-    system "./configure", "--prefix=#{prefix}", "--disable-nasm"
+
+    args = %W[--prefix=#{prefix} --disable-nasm]
+    # On Lion, LLVM-GCC chokes on the assembly code packaged with SDL.
+    args << '--disable-assembly' if ENV.compiler == :llvm and MacOS.lion?
+
+    system './configure', *args
     system "make install"
 
     # Copy source files needed for Ojective-C support.
