@@ -1,9 +1,18 @@
 require 'formula'
 
 class Mercurial < Formula
-  url 'http://mercurial.selenic.com/release/mercurial-1.9.3.tar.gz'
+  url 'http://mercurial.selenic.com/release/mercurial-2.0.tar.gz'
   homepage 'http://mercurial.selenic.com/'
-  md5 'f309b084aaf58773e9f4f4d66c49622a'
+  head 'http://selenic.com/repo/hg', :using => :hg
+  sha1 '5ede1b3f54d3be2af0657901e7013dde7c19b7c5'
+
+  depends_on 'docutils' => :python if ARGV.build_head? or ARGV.include? "--doc"
+
+  def options
+    [
+      ["--doc", "build the documentation. Depends on 'docutils' module."],
+    ]
+  end
 
   def install
     # Don't add compiler specific flags so we can build against
@@ -16,7 +25,10 @@ class Mercurial < Formula
       "setup.py $(PURE) install --install-scripts=\"#{libexec}\""
 
     # Make Mercurial into the Cellar.
-    # Skip making the docs; depends on 'docutils' module.
+    # The documentation must be built when using HEAD
+    if ARGV.build_head? or ARGV.include? "--doc"
+      system "make", "doc"
+    end
     system "make", "PREFIX=#{prefix}", "build"
     system "make", "PREFIX=#{prefix}", "install-bin"
 
@@ -40,5 +52,21 @@ class Mercurial < Formula
     # Install man pages
     man1.install 'doc/hg.1'
     man5.install ['doc/hgignore.5', 'doc/hgrc.5']
+  end
+
+  def caveats
+    s = ""
+    if ARGV.build_head?
+      s += <<-EOS.undent
+        As mercurial is required to get its own repository, there is now two
+        installations of mercurial on this machine.
+        If the previous installation has been done through Homebrew, the old version
+        needs to be removed and the new one needs to be linked :
+
+          brew cleanup mercurial && brew link mercurial
+
+      EOS
+    end
+    return s
   end
 end
