@@ -120,6 +120,16 @@ def audit_formula_text name, text
     problems << " * xcodebuild should be passed an explicit \"SYMROOT\""
   end if strict?
 
+  # using ARGV.flag? for formula options is generally a bad thing
+  if text =~ /ARGV\.flag\?/
+    problems << " * Use 'ARGV.include?' instead of 'ARGV.flag?'"
+  end
+
+  # MacPorts patches should specify a revision, not trunk
+  if text =~ %r[macports/trunk]
+    problems << " * MacPorts patches should specify a revision instead of trunk"
+  end
+
   return problems
 end
 
@@ -128,7 +138,7 @@ def audit_formula_options f, text
 
   # Find possible options
   options = []
-  text.scan(/ARGV\.(include|flag)\?[ ]*\(?(['"])(.+?)\2/) { |m| options << m[2] }
+  text.scan(/ARGV\.include\?[ ]*\(?(['"])(.+?)\1/) { |m| options << m[1] }
   options.reject! {|o| o.include? "#"}
   options.uniq!
 
@@ -303,7 +313,7 @@ module Homebrew extend self
 
       problems += audit_formula_text(f.name, text_without_patch)
       problems += audit_formula_options(f, text_without_patch)
-      problems += audit_formula_version(f, text_without_patch) if strict?
+      problems += audit_formula_version(f, text_without_patch)
 
       unless problems.empty?
         errors = true
