@@ -50,6 +50,9 @@ class Ruby < Formula
 
     args << "--program-suffix=19" if ARGV.include? "--with-suffix"
     args << "--with-arch=x86_64,i386" if ARGV.build_universal?
+    # based on http://svn.ruby-lang.org/repos/ruby/tags/v1_9_3_0/NEWS for OSX Lion:
+    args << "--with-gcc=gcc-4.2" if `clang --version`.include? "Apple clang version 2.1"
+    args << "--with-gcc=clang" if `clang --version`.include? "Apple clang version 3.0"
 
     # Put gem, site and vendor folders in the HOMEBREW_PREFIX
 
