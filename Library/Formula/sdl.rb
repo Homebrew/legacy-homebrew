@@ -13,8 +13,6 @@ class Sdl < Formula
     inreplace files, '@prefix@', HOMEBREW_PREFIX
   end
 
-  fails_with_llvm :build => 2335 # 2335.15.0 to be exact
-
   def install
     Sdl.use_homebrew_prefix %w[sdl.pc.in sdl-config.in]
 
@@ -23,8 +21,8 @@ class Sdl < Formula
     system "./autogen.sh" if ARGV.build_head?
 
     args = %W[--prefix=#{prefix} --disable-nasm]
-    # On Lion, LLVM-GCC chokes on the assembly code packaged with SDL.
-    args << '--disable-assembly' if ENV.compiler == :llvm and MacOS.lion?
+    # LLVM-based compilers choke on the assembly code packaged with SDL.
+    args << '--disable-assembly' if ENV.compiler == :llvm or ENV.compiler == :clang
 
     system './configure', *args
     system "make install"
