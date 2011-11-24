@@ -125,6 +125,11 @@ def audit_formula_text name, text
     problems << " * Use 'ARGV.include?' instead of 'ARGV.flag?'"
   end
 
+  # MacPorts patches should specify a revision, not trunk
+  if text =~ %r[macports/trunk]
+    problems << " * MacPorts patches should specify a revision instead of trunk"
+  end
+
   return problems
 end
 
