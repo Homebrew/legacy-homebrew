@@ -28,8 +28,8 @@ class Emacs < Formula
   def patches
     p = []
 
-    # Fix for building with Xcode 4; harmless on Xcode 3.x.
     unless ARGV.build_head?
+      # Fix for building with Xcode 4; harmless on Xcode 3.x.
       p << "http://repo.or.cz/w/emacs.git/commitdiff_plain/c8bba48c5889c4773c62a10f7c3d4383881f11c1"
       # Fix for address randomization on Darwin. Based on:
       #   http://repo.or.cz/w/emacs.git/patch/f2cea124dffac9ca4b8ce1dbb9b746f8e81109a3
@@ -43,16 +43,36 @@ class Emacs < Formula
     if ARGV.include? "--cocoa"
       # Fullscreen patch, works against 23.3 and HEAD.
       p << "https://raw.github.com/gist/1012927"
+
     end
 
     return p
   end
 
+  def configure_arguments
+    args = ["--prefix=#{prefix}", "--without-dbus",
+            "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp", "--infodir=#{info}/emacs"]
+
+    if ARGV.include? "--cocoa"
+      args << "--with-ns" << "--disable-ns-self-contained"
+    elsif ARGV.include? "--with-x"
+      ENV.x11
+      args << "--with-x" << "--with-gif=no" << "--with-tiff=no" << "--with-jpeg=no"
+    else
+      args << "--without-x"
+    end
+    
+    return args
+  end
+
   def install
-    args = ["--prefix=#{prefix}",
-            "--without-dbus",
-            "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
-            "--infodir=#{info}/emacs"]
+    # Patch for color issues described here:
+    # http://debbugs.gnu.org/cgi/bugreport.cgi?bug=8402
+    if ARGV.include? "--srgb"
+      inreplace "src/nsterm.m",
+        "*col = [NSColor colorWithCalibratedRed: r green: g blue: b alpha: 1.0];",
+        "*col = [NSColor colorWithDeviceRed: r green: g blue: b alpha: 1.0];"
+    end
 
     if ARGV.build_head? and File.exists? "./autogen/copy_autogen"
       opoo "Using copy_autogen"
@@ -60,19 +80,12 @@ class Emacs < Formula
       system "autogen/copy_autogen"
     end
 
-    if ARGV.include? "--cocoa"
-      # Patch for color issues described here:
-      # http://debbugs.gnu.org/cgi/bugreport.cgi?bug=8402
-      if ARGV.include? "--srgb"
-        inreplace "src/nsterm.m",
-          "*col = [NSColor colorWithCalibratedRed: r green: g blue: b alpha: 1.0];",
-          "*col = [NSColor colorWithDeviceRed: r green: g blue: b alpha: 1.0];"
-      end
+    system "./configure", configure_arguments
+    system "make bootstrap"
+    system "make"
+    system "make install"
 
-      args << "--with-ns" << "--disable-ns-self-contained"
-      system "./configure", *args
-      system "make bootstrap"
-      system "make install"
+    if ARGV.include? "--cocoa"
       prefix.install "nextstep/Emacs.app"
 
       unless ARGV.build_head?
@@ -81,18 +94,6 @@ class Emacs < Formula
         ln_s prefix+'Emacs.app/Contents/MacOS/bin/emacsclient', bin
         ln_s prefix+'Emacs.app/Contents/MacOS/bin/etags', bin
       end
-    else
-      if ARGV.include? "--with-x"
-        ENV.x11
-        args << "--with-x"
-        args << "--with-gif=no" << "--with-tiff=no" << "--with-jpeg=no"
-      else
-        args << "--without-x"
-      end
-
-      system "./configure", *args
-      system "make"
-      system "make install"
     end
   end
 
