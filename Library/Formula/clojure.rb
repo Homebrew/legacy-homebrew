@@ -1,8 +1,8 @@
 require 'formula'
 
 class Clojure < Formula
-  url 'https://github.com/downloads/clojure/clojure/clojure-1.2.1.zip'
-  md5 'c5724c624fd6ce6a1d00252c27d53ebe'
+  url 'http://repo1.maven.org/maven2/org/clojure/clojure/1.3.0/clojure-1.3.0.zip'
+  md5 'de91ee9914017a38c7cc391ab8fcbc1a'
   head 'https://github.com/clojure/clojure.git'
   homepage 'http://clojure.org/'
 
@@ -12,7 +12,7 @@ class Clojure < Formula
     # With no arguments runs Clojure's REPL.
 
     # Put the Clojure jar from the cellar and the current folder in the classpath.
-    CLOJURE=$CLASSPATH:#{prefix}/clojure.jar:${PWD}
+    CLOJURE=$CLASSPATH:#{prefix}/clojure-1.3.0.jar:${PWD}
 
     if [ "$#" -eq 0 ]; then
         java -cp $CLOJURE clojure.main --repl
@@ -24,7 +24,8 @@ class Clojure < Formula
 
   def install
     system "ant" if ARGV.build_head?
-    prefix.install 'clojure.jar'
+    prefix.install 'clojure-1.3.0.jar'
+    (prefix+'clojure-1.3.0.jar').chmod(0644) # otherwise it's 0600
     (prefix+'classes').mkpath
     (bin+'clj').write script
   end
@@ -37,6 +38,6 @@ class Clojure < Formula
   end
 
   def test
-    system "clj -e \"(println \\\"Hello World\\\")\""
+    system "#{bin}/clj -e \"(println \\\"Hello World\\\")\""
   end
 end

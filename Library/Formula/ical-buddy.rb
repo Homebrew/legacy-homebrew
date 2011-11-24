@@ -1,17 +1,20 @@
 require 'formula'
 
+# NOTE: Using git-repo instead of zip package as the latter does not
+#       include source files.
+
 class IcalBuddy < Formula
-  url "http://hasseg.org/git-public/icalBuddy.git",
-    :tag => '36058c4f05bebbc377f5dfa68b9be476f3d0a361',
+  url 'http://hasseg.org/git-public/icalBuddy.git', :tag => 'v1.7.19',
     :using => :git
   homepage 'http://hasseg.org/icalBuddy/'
-  version '1.7.18'
+  version '1.7.19'
+  md5 '719089991317e01479d666b003b925fc'
 
-  head "http://hasseg.org/git-public/icalBuddy.git", :using => :git
+  head 'http://hasseg.org/git-public/icalBuddy.git', :using => :git
 
   def install
     arch = MacOS.prefer_64_bit? ? "x86_64" : "i386"
-    sdk = MacOS.leopard? ? "10.5" : "10.6"
+    sdk = MACOS_VERSION
 
     inreplace "Makefile" do |s|
       s.gsub! "-arch i386 -arch ppc $(ARCH_64BIT)", "-arch #{arch}"

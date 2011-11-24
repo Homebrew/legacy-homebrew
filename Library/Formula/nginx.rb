@@ -2,8 +2,14 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.0.5.tar.gz'
-  md5 '373c7761a7c682b92b164c8ee3d6d243'
+  url 'http://nginx.org/download/nginx-1.0.9.tar.gz'
+  head 'http://nginx.org/download/nginx-1.1.7.tar.gz'
+
+  if ARGV.build_head?
+    md5 '2d6b93a50b60a98608a7ab710d437378'
+  else
+    md5 'bd2bfba1c5bf751bc3361de5e3ac7c4a'
+  end
 
   depends_on 'pcre'
 
@@ -47,9 +53,12 @@ class Nginx < Formula
     args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
 
     system "./configure", *args
+    system "make"
     system "make install"
+    man8.install "objs/nginx.8"
 
     (prefix+'org.nginx.nginx.plist').write startup_plist
+    (prefix+'org.nginx.nginx.plist').chmod 0644
   end
 
   def caveats; <<-EOS.undent
@@ -101,21 +110,20 @@ end
 __END__
 --- a/auto/lib/pcre/conf
 +++ b/auto/lib/pcre/conf
-@@ -155,6 +155,22 @@ else
+@@ -155,6 +155,21 @@ else
              . auto/feature
          fi
 
 +        if [ $ngx_found = no ]; then
 +
 +            # Homebrew
-+            HOMEBREW_PREFIX=${NGX_PREFIX%Cellar*}
-+            ngx_feature="PCRE library in ${HOMEBREW_PREFIX}"
-+            ngx_feature_path="${HOMEBREW_PREFIX}/include"
++            ngx_feature="PCRE library in HOMEBREW_PREFIX"
++            ngx_feature_path="HOMEBREW_PREFIX/include"
 +
 +            if [ $NGX_RPATH = YES ]; then
-+                ngx_feature_libs="-R${HOMEBREW_PREFIX}/lib -L${HOMEBREW_PREFIX}/lib -lpcre"
++                ngx_feature_libs="-RHOMEBREW_PREFIX/lib -LHOMEBREW_PREFIX/lib -lpcre"
 +            else
-+                ngx_feature_libs="-L${HOMEBREW_PREFIX}/lib -lpcre"
++                ngx_feature_libs="-LHOMEBREW_PREFIX/lib -lpcre"
 +            fi
 +
 +            . auto/feature

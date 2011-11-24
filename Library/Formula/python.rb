@@ -1,21 +1,16 @@
 require 'formula'
 
-# This formula for Python 2.7.x
-# Python 3.x is available as a separate formula:
-# $ brew install python3
-
-class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.19.tar.gz'
-  md5 '45a17940eefee849d4cb8cc06d28d96f'
-end
-
-
 # Was a Framework build requested?
 def build_framework?; ARGV.include? '--framework'; end
 
 # Are we installed or installing as a Framework?
 def as_framework?
   (self.installed? and File.exists? prefix+"Frameworks/Python.framework") or build_framework?
+end
+
+class Distribute < Formula
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.24.tar.gz'
+  md5 '17722b22141aba8235787f79800cc452'
 end
 
 class Python < Formula
@@ -34,6 +29,12 @@ class Python < Formula
       ["--static", "Build static libraries."],
       ["--no-poll", "Remove HAVE_POLL.* options from build."]
     ]
+  end
+
+  def patches
+    # fix for recognizing gdbm 1.9.x databases
+    # patch is already upstream: http://hg.python.org/cpython/rev/14cafb8d1480
+    DATA
   end
 
   # Skip binaries so modules will load; skip lib because it is mostly Python files
@@ -84,6 +85,13 @@ class Python < Formula
     # Symlink the prefix site-packages into the cellar.
     ln_s prefix_site_packages, site_packages
 
+    # This is a fix for better interoperability with pyqt. See:
+    # https://github.com/mxcl/homebrew/issues/6176
+    if not as_framework?
+      (bin+"pythonw").make_link bin+"python"
+      (bin+"pythonw2.7").make_link bin+"python2.7"
+    end
+
     # Tell distutils-based installers where to put scripts
     scripts_folder.mkpath
     (effective_lib+"python2.7/distutils/distutils.cfg").write <<-EOF.undent
@@ -131,10 +139,7 @@ class Python < Formula
     return s
   end
 
-private
-
-  # Path helpers
-
+  # lib folder,taking into account whether we are a Framework build or not
   def effective_lib
     # If we're installed or installing as a Framework, then use that location.
     return prefix+"Frameworks/Python.framework/Versions/2.7/lib" if as_framework?
@@ -152,8 +157,20 @@ private
     HOMEBREW_PREFIX+"lib/python2.7/site-packages"
   end
 
+  # Where distribute will install executable scripts
   def scripts_folder
     HOMEBREW_PREFIX+"share/python"
   end
-
 end
+
+__END__
+diff --git a/Lib/whichdb.py b/Lib/whichdb.py
+--- a/Lib/whichdb.py
++++ b/Lib/whichdb.py
+@@ -91,7 +91,7 @@ def whichdb(filename):
+         return ""
+ 
+     # Check for GNU dbm
+-    if magic == 0x13579ace:
++    if magic in (0x13579ace, 0x13579acd, 0x13579acf):
+         return "gdbm"

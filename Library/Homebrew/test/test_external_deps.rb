@@ -77,13 +77,13 @@ end
 class ExternalDepsTests < Test::Unit::TestCase
   def check_deps_fail f
     assert_raises(UnsatisfiedExternalDependencyError) do
-      FormulaInstaller.check_external_deps f.new
+      f.new.check_external_deps
     end
   end
 
   def check_deps_pass f
     assert_nothing_raised do
-      FormulaInstaller.check_external_deps f.new
+      f.new.check_external_deps
     end
   end
 

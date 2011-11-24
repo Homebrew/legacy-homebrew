@@ -1,10 +1,10 @@
 require 'formula'
 
 class Smlnj < Formula
-  url 'http://smlnj.cs.uchicago.edu/dist/working/110.72/config.tgz'
+  url 'http://smlnj.cs.uchicago.edu/dist/working/110.73/config.tgz'
   homepage 'http://www.smlnj.org/'
-  md5 '97503a4e749a5e72ff975f3883688105'
-  version '110.72'
+  md5 '19dc682fa29441b0980b50b9842861bb'
+  version '110.73'
 
   def targets
 <<-EOS

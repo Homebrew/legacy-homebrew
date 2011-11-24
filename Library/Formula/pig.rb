@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pig < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=pig/pig-0.8.1/pig-0.8.1.tar.gz'
-  homepage 'http://hadoop.apache.org/pig/'
-  md5 'd3325f5816b68fb3c1d405095fcf5c7a'
+  url 'http://www.apache.org/dyn/closer.cgi?path=pig/pig-0.9.0/pig-0.9.0.tar.gz'
+  homepage 'http://pig.apache.org/'
+  md5 '89e3bd3dbe3a9739ce54472421db6484'
 
   def patches
     DATA

@@ -1,8 +1,8 @@
 require 'formula'
 
 class Libgit2 < Formula
-  url 'https://github.com/libgit2/libgit2/zipball/v0.14.0'
-  md5 '1f43e7895d2950eb9c19b716c0694f93'
+  url 'https://github.com/libgit2/libgit2/zipball/v0.15.0'
+  md5 'b215209d19db5bd6d3510d3d203b7fd4'
   homepage 'http://libgit2.github.com/'
 
   head 'https://github.com/libgit2/libgit2.git', :branch => 'master'

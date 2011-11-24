@@ -1,8 +1,8 @@
 require 'formula'
 
 class XmlrpcC < Formula
-  url 'http://downloads.sourceforge.net/sourceforge/xmlrpc-c/xmlrpc-c-1.06.39.tgz'
-  md5 'ec62fb15cca83ffeaf6a8d53b5ec8614'
+  url 'http://downloads.sourceforge.net/sourceforge/xmlrpc-c/xmlrpc-c-1.16.38.tgz'
+  md5 'fabb49e5f1efeffa1bedd15a9131699a'
   homepage 'http://xmlrpc-c.sourceforge.net/'
 
   def install

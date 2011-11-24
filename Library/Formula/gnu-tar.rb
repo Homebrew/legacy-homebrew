@@ -1,7 +1,7 @@
 require 'formula'
 
 class GnuTar < Formula
-  url 'ftp://ftp.gnu.org/gnu/tar/tar-1.26.tar.gz'
+  url 'http://ftpmirror.gnu.org/tar/tar-1.26.tar.gz'
   homepage 'http://www.gnu.org/software/tar/'
   md5 '00d1e769c6af702c542cca54b728920d'
 

@@ -1,12 +1,12 @@
 require 'formula'
 
 class Global < Formula
-  url 'http://tamacom.com/global/global-5.8.1.tar.gz'
+  url 'http://ftpmirror.gnu.org/global/global-6.0.tar.gz'
   homepage 'http://www.gnu.org/software/global/'
-  md5 '9c357098e42c9ba32776ccd6b549d85d'
+  md5 '5a6439f1fee02d8df3b1ed83049c294e'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
 
     # we copy these in already

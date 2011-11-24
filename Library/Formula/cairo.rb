@@ -11,7 +11,7 @@ class Cairo < Formula
   keg_only :provided_by_osx,
             "The Cairo provided by Leopard is too old for newer software to link against."
 
-  fails_with_llvm "Gives an LLVM ERROR with Xcode 4 on some CPUs"
+  fails_with_llvm "Gives an LLVM ERROR with Xcode 4 on some CPUs", :build => 2334
 
   def install
     system "./configure", "--disable-dependency-tracking",

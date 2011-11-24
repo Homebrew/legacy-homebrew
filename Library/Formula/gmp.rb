@@ -1,7 +1,7 @@
 require 'formula'
 
 class Gmp < Formula
-  url 'ftp://ftp.gnu.org/gnu/gmp/gmp-5.0.2.tar.bz2'
+  url 'http://ftpmirror.gnu.org/gmp/gmp-5.0.2.tar.bz2'
   homepage 'http://gmplib.org/'
   sha1 '2968220e1988eabb61f921d11e5d2db5431e0a35'
 
@@ -21,12 +21,13 @@ class Gmp < Formula
     args = ["--prefix=#{prefix}", "--enable-cxx"]
 
     # Build 32-bit where appropriate, and help configure find 64-bit CPUs
+    # see: http://gmplib.org/macos.html
     if MacOS.prefer_64_bit? and not ARGV.include? "--32-bit"
       ENV.m64
       args << "--build=x86_64-apple-darwin"
     else
       ENV.m32
-      args << "--host=none-apple-darwin"
+      args << "--build=none-apple-darwin"
     end
 
     system "./configure", *args

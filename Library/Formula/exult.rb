@@ -1,9 +1,10 @@
 require 'formula'
 
 class Exult < Formula
-  url 'http://exult.svn.sourceforge.net/svnroot/exult/exult/trunk', :revision => '6317'
+  url 'https://downloads.sourceforge.net/project/exult/exult-all-versions/1.4.9rc1/exult-1.4.9rc1.tar.gz'
+  md5 'c17a48cc0377aa67264aaaf441cb1bb2'
   homepage 'http://exult.sourceforge.net/'
-  version '1.4pre'
+
   head 'http://exult.svn.sourceforge.net/svnroot/exult/exult/trunk'
 
   depends_on 'sdl'
@@ -11,7 +12,6 @@ class Exult < Formula
   depends_on 'libvorbis'
 
   def install
-    # Yes, really. Goddamnit.
     inreplace "autogen.sh", "libtoolize", "glibtoolize"
 
     system "./autogen.sh"
@@ -24,14 +24,13 @@ class Exult < Formula
     prefix.install "Exult.app"
   end
 
-  def caveats
-    <<-EOS.undent
-      Cocoa app installed to:
-        #{prefix}
+  def caveats; <<-EOS.undent
+    Cocoa app installed to:
+      #{prefix}
 
-      Note that this includes only the game engine; you will need to supply your own
-      own legal copy of the Ultima 7 game files. Try here (Amazon.com):
-        http://bit.ly/8JzovU
+    Note that this includes only the game engine; you will need to supply your own
+    own legal copy of the Ultima 7 game files. Try here (Amazon.com):
+      http://bit.ly/8JzovU
     EOS
   end
 end

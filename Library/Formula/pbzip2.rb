@@ -5,7 +5,7 @@ class Pbzip2 < Formula
   homepage 'http://compression.ca/pbzip2/'
   md5 '797e3ae5c6293a55e3e97fefb11cf494'
 
-  fails_with_llvm
+  fails_with_llvm :build => 2334
 
   def install
     inreplace "Makefile" do |s|

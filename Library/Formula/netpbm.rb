@@ -2,8 +2,9 @@ require 'formula'
 
 class Netpbm < Formula
   homepage 'http://netpbm.sourceforge.net'
-  url 'http://sourceforge.net/projects/netpbm/files/super_stable/10.35.80/netpbm-10.35.80.tgz'
-  md5 '2edf98b802a82e5367fc52382e9ac144'
+  url 'http://sourceforge.net/projects/netpbm/files/super_stable/10.35.82/netpbm-10.35.82.tgz'
+  md5 'fcae2fc7928ad7d31b0540ec0c3e710b'
+  head 'http://netpbm.svn.sourceforge.net/svnroot/netpbm/trunk'
 
   depends_on "libtiff"
   depends_on "jasper"
@@ -11,9 +12,15 @@ class Netpbm < Formula
   def install
     ENV.x11 # For PNG
 
-    system "cp", "Makefile.config.in", "Makefile.config"
+    if ARGV.build_head?
+      system "cp", "config.mk.in", "config.mk"
+      config = "config.mk"
+    else
+      system "cp", "Makefile.config.in", "Makefile.config"
+      config = "Makefile.config"
+    end
 
-    inreplace "Makefile.config" do |s|
+    inreplace config do |s|
       s.remove_make_var! "CC"
       s.change_make_var! "CFLAGS_SHLIB", "-fno-common"
       s.change_make_var! "NETPBMLIBTYPE", "dylib"

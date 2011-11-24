@@ -2,8 +2,8 @@ require 'formula'
 
 class Autogen < Formula
   homepage 'http://autogen.sourceforge.net'
-  url 'http://sourceforge.net/projects/autogen/files/AutoGen/AutoGen-5.11.5/autogen-5.11.5.tar.bz2'
-  md5 '51c841eab6114de22b55f77a1c4f85b8'
+  url 'http://ftpmirror.gnu.org/autogen/rel5.12/autogen-5.12.tar.bz2'
+  md5 '126e56be629cda747390e8ba9be71e4b'
 
   depends_on 'guile'
 

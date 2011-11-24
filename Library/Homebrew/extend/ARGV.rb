@@ -18,9 +18,16 @@ module HomebrewArgvExtension
     require 'keg'
     require 'formula'
     @kegs ||= downcased_unique_named.collect do |name|
-      d = HOMEBREW_CELLAR+Formula.canonical_name(name)
-      dirs = d.children.select{ |pn| pn.directory? } rescue []
-      raise NoSuchKegError.new(name) if not d.directory? or dirs.length == 0
+      n = Formula.canonical_name(name)
+      rack = HOMEBREW_CELLAR + if n.include? "/"
+        # canonical_name returns a path if it was a formula installed via a
+        # URL. And we only want the name. FIXME that function is insane.
+        Pathname.new(n).stem
+      else
+        n
+      end
+      dirs = rack.children.select{ |pn| pn.directory? } rescue []
+      raise NoSuchKegError.new(name) if not rack.directory? or dirs.length == 0
       raise MultipleVersionsInstalledError.new(name) if dirs.length > 1
       Keg.new dirs.first
     end
