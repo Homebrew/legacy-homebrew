@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ldns < Formula
-  url 'http://nlnetlabs.nl/downloads/ldns/ldns-1.6.10.tar.gz'
+  url 'http://nlnetlabs.nl/downloads/ldns/ldns-1.6.11.tar.gz'
   homepage 'http://nlnetlabs.nl/projects/ldns/'
-  sha1 '7798a32c6f50a4fb7d56ddf772163dc1cb79c1a4'
+  sha1 '2c4537eee39a1af63e8dde4f35498ce78c968c1f'
 
   def install
       system "./configure", "--prefix=#{prefix}", "--disable-gost"
