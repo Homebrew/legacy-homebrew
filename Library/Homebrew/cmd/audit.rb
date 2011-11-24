@@ -125,6 +125,11 @@ def audit_formula_text name, text
     problems << " * Use 'ARGV.include?' instead of 'ARGV.flag?'"
   end
 
+  # MacPorts patches should specify a revision, not trunk
+  if text =~ %r[macports/trunk]
+    problems << " * MacPorts patches should specify a revision instead of trunk"
+  end
+
   return problems
 end
 
@@ -308,7 +313,7 @@ module Homebrew extend self
 
       problems += audit_formula_text(f.name, text_without_patch)
       problems += audit_formula_options(f, text_without_patch)
-      problems += audit_formula_version(f, text_without_patch) if strict?
+      problems += audit_formula_version(f, text_without_patch)
 
       unless problems.empty?
         errors = true

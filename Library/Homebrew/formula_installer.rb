@@ -131,7 +131,7 @@ class FormulaInstaller
       raise "Suspicious installation failure" unless $?.success?
 
       # Write an installation receipt (a Tab) to the prefix
-      Tab.for_install(f, args).write if f.prefix.exist?
+      Tab.for_install(f, args).write if f.installed?
     end
   end
 
@@ -253,7 +253,7 @@ class FormulaInstaller
       # list.
       #
       # FIXME:
-      # `ARGV.formulae` probably should be throwing exceptions, it should be
+      # `ARGV.formulae` probably shouldn't be throwing exceptions, it should be
       # the caller's responsibility to check `ARGV.formulae.empty?`.
       return false if ARGV.named.empty?
       ARGV.formulae.include? f
@@ -261,10 +261,14 @@ class FormulaInstaller
 
     args = ARGV.clone
 
+    # FIXME: Also need to remove `--HEAD`, however there is a problem in that
+    # the properties of formula objects, such as `prefix`, are influenced by
+    # `--HEAD` and get set when the object is created.
+    #
+    # See issue #8668
     %w[
       --debug -d
       --fresh
-      --HEAD
       --interactive -i
       --verbose -v
     ].each {|flag| args.delete flag} unless explicitly_requested?
