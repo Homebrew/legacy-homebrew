@@ -9,7 +9,7 @@ class Luajit < Formula
   # Skip cleaning both empty folders and bin/libs so external symbols still work.
   skip_clean :all
 
-  fails_with_llvm "_Unwind_Exception_Class undeclared", :build => 2335
+  fails_with_llvm "_Unwind_Exception_Class undeclared", :build => 2336
 
   def options
     [["--debug", "Build with debugging symbols."]]
