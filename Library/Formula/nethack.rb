@@ -56,6 +56,9 @@ class Nethack < Formula
 
     bin.install 'src/nethack'
     (libexec+'save').mkpath
+
+    system "chmod g+w \"#{libexec}\""
+    system "chmod g+w \"#{libexec + 'save'}\""
   end
 end
 
