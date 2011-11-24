@@ -57,6 +57,10 @@ class Nethack < Formula
 
     bin.install 'src/nethack'
     (libexec+'save').mkpath
+
+    # These need to be group-writable in multi-user situations
+    system "chmod", "g+w", libexec
+    system "chmod", "g+w", libexec+'save'
   end
 end
 
