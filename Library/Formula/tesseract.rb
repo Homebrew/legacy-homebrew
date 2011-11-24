@@ -1,18 +1,18 @@
 require 'formula'
 
 class TesseractEnglishData < Formula
-  url 'http://tesseract-ocr.googlecode.com/files/eng.traineddata.gz',
-      :using => GzipOnlyDownloadStrategy
-  md5 'd91041ad156cf2db36664e91ef799451'
-  version '3.00'
+  url 'http://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.01.eng.tar.gz'
+  version '3.01'
+  md5 '89c139a73e0e7b1225809fc7b226b6c9'
 end
 
 class Tesseract < Formula
-  url 'http://tesseract-ocr.googlecode.com/files/tesseract-3.00.tar.gz'
+  url 'http://tesseract-ocr.googlecode.com/files/tesseract-3.01.tar.gz'
   homepage 'http://code.google.com/p/tesseract-ocr/'
-  md5 'cc812a261088ea0c3d2da735be35d09f'
+	md5 '1ba496e51a42358fb9d3ffe781b2d20a'
 
   depends_on 'libtiff'
+  depends_on 'leptonica'
 
   fails_with_llvm "Executable 'tesseract' segfaults on 10.6 when compiled with llvm-gcc", :build => "2206"
 
@@ -20,9 +20,10 @@ class Tesseract < Formula
   skip_clean 'bin'
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "/bin/sh autogen.sh"
+		system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
-    TesseractEnglishData.new.brew { mv "eng.traineddata", "#{share}/tessdata/" }
+    TesseractEnglishData.new.brew { mv Dir['tessdata/*'], "#{share}/tessdata/" }
   end
 
   def caveats; <<-EOF.undent
