@@ -261,7 +261,7 @@ module MacOS extend self
   end
 
   def gcc_42_build_version
-    `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
+    `/usr/bin/gcc-4.2 --version` =~ /build (\d{4,})/
     if $1
       $1.to_i
     elsif system "/usr/bin/which gcc"
@@ -276,7 +276,7 @@ module MacOS extend self
   end
 
   def gcc_40_build_version
-    `/usr/bin/gcc-4.0 -v 2>&1` =~ /build (\d{4,})/
+    `/usr/bin/gcc-4.0 --version` =~ /build (\d{4,})/
     if $1
       $1.to_i
     else
@@ -335,8 +335,22 @@ module MacOS extend self
     # for Xcode 3 on OS X 10.5 this will not exist
     # NOTE may not be true anymore but we can't test
     @llvm_build_version ||= if File.exist? "/usr/bin/llvm-gcc"
-      `/usr/bin/llvm-gcc -v 2>&1` =~ /LLVM build (\d{4,})/
+      `/usr/bin/llvm-gcc --version` =~ /LLVM build (\d{4,})/
       $1.to_i
+    end
+  end
+
+  def clang_version
+    @clang_version ||= if File.exist? "/usr/bin/clang"
+      `/usr/bin/clang --version` =~ /clang version (\d\.\d)/
+      $1
+    end
+  end
+
+  def clang_build_version
+    @clang_build_version ||= if File.exist? "/usr/bin/clang"
+      `/usr/bin/clang --version` =~ %r[tags/Apple/clang-(\d{2,3}(\.\d)*)]
+      $1
     end
   end
 

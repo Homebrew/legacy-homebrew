@@ -17,6 +17,14 @@ module Homebrew extend self
     @gcc_40 ||= MacOS.gcc_40_build_version
   end
 
+  def clang
+    @clang ||= MacOS.clang_version
+  end
+
+  def clang_build
+    @clang_build ||= MacOS.clang_build_version
+  end
+
   def xcode_version
     @xcode_version || MacOS.xcode_version
   end
@@ -58,6 +66,7 @@ module Homebrew extend self
     GCC-4.0: #{gcc_40 ? "build #{gcc_40}" : "N/A"} #{gcc_40_recommendation}
     GCC-4.2: #{gcc_42 ? "build #{gcc_42}" : "N/A"} #{gcc_42_recommendation}
     LLVM: #{llvm ? "build #{llvm}" : "N/A" } #{llvm_recommendation}
+    Clang: #{clang ? "#{clang}-#{clang_build}" : "N/A"}
     MacPorts or Fink? #{macports_or_fink_installed?}
     X11 installed? #{x11_installed?}
     EOS
