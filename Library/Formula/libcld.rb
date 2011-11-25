@@ -7,6 +7,7 @@ class Libcld < Formula
   md5 'd8913e2acf594ea98d8988d1718cb732'
   version '0.1.1'
 
+  depends_on 'pkg-config' => :build
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
