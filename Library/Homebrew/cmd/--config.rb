@@ -29,18 +29,6 @@ module Homebrew extend self
     @xcode_version || MacOS.xcode_version
   end
 
-  def llvm_recommendation
-    "(#{RECOMMENDED_LLVM} or newer recommended)" if llvm and llvm < RECOMMENDED_LLVM
-  end
-
-  def gcc_42_recommendation
-    "(#{RECOMMENDED_GCC_42} or newer recommended)" if gcc_42 and gcc_42 < RECOMMENDED_GCC_42
-  end
-
-  def gcc_40_recommendation
-    "(#{RECOMMENDED_GCC_40} or newer recommended)" if gcc_40 and gcc_40 < RECOMMENDED_GCC_40
-  end
-
   def sha
     sha = `cd #{HOMEBREW_REPOSITORY} && git rev-parse --verify HEAD 2> /dev/null`.chomp
     if sha.empty? then "(none)" else sha end
@@ -63,9 +51,9 @@ module Homebrew extend self
     Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
     /usr/bin/ruby => #{system_ruby}
     Xcode: #{xcode_version}
-    GCC-4.0: #{gcc_40 ? "build #{gcc_40}" : "N/A"} #{gcc_40_recommendation}
-    GCC-4.2: #{gcc_42 ? "build #{gcc_42}" : "N/A"} #{gcc_42_recommendation}
-    LLVM: #{llvm ? "build #{llvm}" : "N/A" } #{llvm_recommendation}
+    GCC-4.0: #{gcc_40 ? "build #{gcc_40}" : "N/A"}
+    GCC-4.2: #{gcc_42 ? "build #{gcc_42}" : "N/A"}
+    LLVM: #{llvm ? "build #{llvm}" : "N/A"}
     Clang: #{clang ? "#{clang}-#{clang_build}" : "N/A"}
     MacPorts or Fink? #{macports_or_fink_installed?}
     X11 installed? #{x11_installed?}
