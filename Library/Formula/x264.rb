@@ -10,10 +10,15 @@ class X264 < Formula
 
   depends_on 'yasm' => :build
 
+  def options
+    [["--10-bit", "Make a 10-bit x264. (default: 8-bit)"]]
+  end
+
   def install
     # Having this set can fail the endian test!
     ENV['GREP_OPTIONS'] = ''
     system "./configure", "--prefix=#{prefix}",
+                          "--bit-depth=#{ARGV.include?('--10-bit') ? 10 : 8}",
                           "--enable-shared"
 
     if MacOS.prefer_64_bit?
