@@ -14,8 +14,8 @@ class Wine < Formula
   homepage 'http://winehq.org/'
 
   if ARGV.build_devel?
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.32.tar.bz2'
-    sha256 'fe1691ef8e9c5c4afeb345ad0f0b364d055cfe67a7e64b0a4a44da4d85cfa8b6'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.33.tar.bz2'
+    sha256 'd49b96e3f999a7380898c3c09cf3d920c369756cb735d9c05295b5bb73c19f8c'
   else
     url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.3.tar.bz2'
     sha256 '3fd8d3f2b466d07eb90b8198cdc9ec3005917a4533db7b8c6c69058a2e57c61f'
