@@ -1,16 +1,19 @@
 require 'formula'
 
 class Imapfilter < Formula
-  url 'http://github.com/downloads/lefcha/imapfilter/imapfilter-2.2.3.tar.gz'
+  url 'https://github.com/downloads/lefcha/imapfilter/imapfilter-2.3.tar.gz'
   homepage 'http://github.com/lefcha/imapfilter/'
-  md5 'f075ebe22deb50de99303b8282e5eebf'
+  md5 '912bb395d6c377018eaf7d74d2db6636'
 
   depends_on 'lua'
   depends_on 'pcre'
 
   def install
-    system "./configure", "-p", prefix, "-m", man
-    system "make"
-    system "make install"
+    system "make all"
+    system "make PREFIX=#{prefix} MANDIR=#{man} install"
+  end
+
+  def test
+    system "imapfilter -V"
   end
 end
