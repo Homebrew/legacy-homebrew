@@ -1,10 +1,10 @@
 require 'formula'
 
 class Redis < Formula
-  url 'http://redis.googlecode.com/files/redis-2.4.2.tar.gz'
+  url 'http://redis.googlecode.com/files/redis-2.4.3.tar.gz'
   head 'https://github.com/antirez/redis.git'
   homepage 'http://redis.io/'
-  md5 'c4b0b5e4953a11a503cb54cf6b09670e'
+  md5 '2511481019d1ba5ae18dea30ea77abb8'
 
   fails_with_llvm 'Fails with "reference out of range from _linenoise"', :build => 2334
 
