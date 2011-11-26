@@ -261,26 +261,16 @@ module MacOS extend self
   end
 
   def gcc_42_build_version
-    `/usr/bin/gcc-4.2 --version` =~ /build (\d{4,})/
-    if $1
+    @gcc_42_build_version ||= if File.exist? "/usr/bin/gcc-4.2"
+      `/usr/bin/gcc-4.2 --version` =~ /build (\d{4,})/
       $1.to_i
-    elsif system "/usr/bin/which gcc"
-      # Xcode 3.0 didn't come with gcc-4.2
-      # We can't change the above regex to use gcc because the version numbers
-      # are different and thus, not useful.
-      # FIXME I bet you 20 quid this causes a side effect — magic values tend to
-      401
-    else
-      nil
     end
   end
 
   def gcc_40_build_version
-    `/usr/bin/gcc-4.0 --version` =~ /build (\d{4,})/
-    if $1
+    @gcc_40_build_version ||= if File.exist? "/usr/bin/gcc-4.0"
+      `/usr/bin/gcc-4.0 --version` =~ /build (\d{4,})/
       $1.to_i
-    else
-      nil
     end
   end
 
