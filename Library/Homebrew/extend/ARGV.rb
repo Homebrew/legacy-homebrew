@@ -101,14 +101,15 @@ module HomebrewArgvExtension
     # restores to original state.
     old_args = clone
 
-    %w[
+    flags_to_clear = %w[
       --debug -d
       --devel
       --fresh
       --interactive -i
-      --verbose -v
       --HEAD
-    ].each {|flag| delete flag}
+    ]
+    flags_to_clear << %[--verbose -v] if quieter?
+    flags_to_clear.each {|flag| delete flag}
 
     yield
 
