@@ -3,16 +3,16 @@ require 'formula'
 class FreeimageHttpDownloadStrategy <CurlDownloadStrategy
   def stage
     # need to convert newlines or patch chokes
-    safe_system '/usr/bin/unzip', '-aqq', @tarball_path
+    safe_system '/usr/bin/unzip', '-aaq', @tarball_path
     chdir
   end
 end
 
 class Freeimage < Formula
-  url 'http://downloads.sourceforge.net/project/freeimage/Source%20Distribution/3.13.1/FreeImage3131.zip',
+  url 'http://downloads.sourceforge.net/project/freeimage/Source%20Distribution/3.15.1/FreeImage3151.zip',
         :using => FreeimageHttpDownloadStrategy
-  version '3.13.1'
-  md5 'a2e20b223a2cf6a5791cc47686364e99'
+  version '3.15.1'
+  md5 '450d2ff278690b0d1d7d7d58fad083cc'
   homepage 'http://sf.net/projects/freeimage'
 
   def patches
@@ -26,9 +26,9 @@ class Freeimage < Formula
 end
 
 __END__
---- old/Makefile.gnu	2009-07-27 20:35:26.000000000 -0400
-+++ new/Makefile.gnu	2009-11-16 10:53:33.000000000 -0300
-@@ -5,8 +5,9 @@
+--- old/Makefile.gnu
++++ new/Makefile.gnu
+@@ -5,8 +5,9 @@ include Makefile.srcs
  
  # General configuration variables:
  DESTDIR ?= /
@@ -40,7 +40,7 @@ __END__
  
  # Converts cr/lf to just lf
  DOS2UNIX = dos2unix
-@@ -27,11 +28,10 @@
+@@ -27,11 +28,11 @@ endif
  
  TARGET  = freeimage
  STATICLIB = lib$(TARGET).a
@@ -48,14 +48,14 @@ __END__
 -LIBNAME	= lib$(TARGET).so
 -VERLIBNAME = $(LIBNAME).$(VER_MAJOR)
 +SHAREDLIB = lib$(TARGET).$(VER_MAJOR).$(VER_MINOR).dylib
-+LIBNAME	= lib$(TARGET).dylib
++LIBNAME = lib$(TARGET).dylib
  HEADER = Source/FreeImage.h
--
+ 
 +LIBTOOL ?= libtool
  
  
  default: all
-@@ -40,7 +40,7 @@
+@@ -40,7 +41,7 @@ all: dist
  
  dist: FreeImage
  	cp *.a Dist
@@ -64,7 +64,7 @@ __END__
  	cp Source/FreeImage.h Dist
  
  dos2unix:
-@@ -55,16 +55,17 @@
+@@ -55,19 +56,17 @@ FreeImage: $(STATICLIB) $(SHAREDLIB)
  	$(CXX) $(CXXFLAGS) -c $< -o $@
  
  $(STATICLIB): $(MODULES)
@@ -72,7 +72,7 @@ __END__
 +	$(LIBTOOL) -static -o $@ $(MODULES)
  
  $(SHAREDLIB): $(MODULES)
--	$(CC) -shared -Wl,-soname,$(VERLIBNAME) $(LDFLAGS) -o $@ $(MODULES) $(LIBRARIES)
+-	$(CC) -s -shared -Wl,-soname,$(VERLIBNAME) $(LDFLAGS) -o $@ $(MODULES) $(LIBRARIES)
 +	$(CXX) -dynamiclib -install_name $(LIBNAME) -current_version $(VER_MAJOR).$(VER_MINOR) -compatibility_version $(VER_MAJOR) -o $@ $(MODULES)
  
  install:
@@ -80,10 +80,13 @@ __END__
 -	install -m 644 -o root -g root $(HEADER) $(INCDIR)
 -	install -m 644 -o root -g root $(STATICLIB) $(INSTALLDIR)
 -	install -m 755 -o root -g root $(SHAREDLIB) $(INSTALLDIR)
+-	ln -sf $(SHAREDLIB) $(INSTALLDIR)/$(VERLIBNAME)
+-	ln -sf $(VERLIBNAME) $(INSTALLDIR)/$(LIBNAME)	
+-	ldconfig
 +	install -m 644 $(HEADER) $(INCDIR)
 +	install -m 644 $(STATICLIB) $(INSTALLDIR)
 +	install -m 755 $(SHAREDLIB) $(INSTALLDIR)
-+	ln -s $(SHAREDLIB) $(INSTALLDIR)/$(LIBNAME)
++	ln -sf $(SHAREDLIB) $(INSTALLDIR)/$(LIBNAME)
  
  clean:
  	rm -f core Dist/*.* u2dtmp* $(MODULES) $(STATICLIB) $(SHAREDLIB) $(LIBNAME)
