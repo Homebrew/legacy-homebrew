@@ -148,6 +148,16 @@ class Formula
     return false
   end
 
+  def explicitly_requested?
+
+    # `ARGV.formulae` will throw an exception if it comes up with an empty
+    # list.
+    #
+    # FIXME: `ARGV.formulae` shouldn't be throwing exceptions, see issue #8823
+   return false if ARGV.named.empty?
+   ARGV.formulae.include? self
+  end
+
   def installed_prefix
     head_prefix = HOMEBREW_CELLAR+@name+'HEAD'
     if @version == 'HEAD' || head_prefix.directory?

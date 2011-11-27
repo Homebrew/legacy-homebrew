@@ -96,6 +96,24 @@ module HomebrewArgvExtension
     Homebrew.help_s
   end
 
+  def filter_for_dependencies
+    # Clears some flags that affect installation, yields to a block, then
+    # restores to original state.
+    old_args = clone
+
+    %w[
+      --debug -d
+      --fresh
+      --interactive -i
+      --verbose -v
+      --HEAD
+    ].each {|flag| delete flag}
+
+    yield
+
+    replace old_args
+  end
+
   private
 
   def downcased_unique_named
