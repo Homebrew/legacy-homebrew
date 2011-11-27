@@ -40,6 +40,13 @@ class Elasticsearch < Formula
       s.gsub! /^ES_HOME=.*$/, "ES_HOME=#{prefix}"
     end
 
+    inreplace "#{bin}/plugin" do |s|
+      # Set ES_HOME to prefix value
+      s.gsub! /^ES_HOME=.*$/, "ES_HOME=#{prefix}"
+      # Replace CLASSPATH paths to use libexec instead of lib
+      s.gsub! /-cp \".*\"/, '-cp "$ES_HOME/libexec/*"'
+    end
+
     # Write .plist file for `launchd`
     (prefix+'org.elasticsearch.plist').write startup_plist
     (prefix+'org.elasticsearch.plist').chmod 0644
