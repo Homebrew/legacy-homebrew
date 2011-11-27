@@ -27,12 +27,12 @@ class Sbcl < Formula
   end
 
   def patches
-    base = "http://svn.macports.org/repository/macports/trunk/dports/lang/sbcl/files"
-    { :p0 => ["patch-base-target-features.diff",
-              "patch-make-doc.diff",
-              "patch-posix-tests.diff",
-              "patch-use-mach-exception-handler.diff"].map { |file_name| "#{base}/#{file_name}" }
-    }
+    { :p0 => [
+        "https://trac.macports.org/export/87593/trunk/dports/lang/sbcl/files/patch-base-target-features.diff",
+        "https://trac.macports.org/export/87593/trunk/dports/lang/sbcl/files/patch-make-doc.diff",
+        "https://trac.macports.org/export/87593/trunk/dports/lang/sbcl/files/patch-posix-tests.diff",
+        "https://trac.macports.org/export/87593/trunk/dports/lang/sbcl/files/patch-use-mach-exception-handler.diff"
+    ]}
   end
 
   def write_features
@@ -60,6 +60,7 @@ class Sbcl < Formula
     end
 
     build_directory = Dir.pwd
+
     SbclBootstrapBinaries.new.brew {
       # We only need the binaries for bootstrapping, so don't install anything:
       command = Dir.pwd + "/src/runtime/sbcl"
