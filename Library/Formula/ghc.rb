@@ -2,13 +2,13 @@ require 'formula'
 
 class Ghc < Formula
   homepage 'http://haskell.org/ghc/'
-  version '7.0.4'
+  version '7.2.1'
   if ARGV.include? '--64bit'
-    url "http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-x86_64-apple-darwin.tar.bz2"
-    md5 'af89d3d2ca6e9b23384baacb7d8161dd'
+    url "http://www.haskell.org/ghc/dist/7.2.1/ghc-7.2.1-x86_64-apple-darwin.tar.bz2"
+    md5 '314a9ad7fbc4fcafd612e12ab6b45140'
   else
-    url "http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2"
-    md5 'ce297e783d113cf1547386703d1b1061'
+    url "http://haskell.org/ghc/dist/7.2.1/ghc-7.2.1-i386-apple-darwin.tar.bz2"
+    md5 'f17c16770969e3c1a516ad0a3cee40a6'
   end
 
   # Avoid stripping the Haskell binaries & libraries.
