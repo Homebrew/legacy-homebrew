@@ -31,12 +31,6 @@ class Jruby < Formula
     end
   end
 
-  def caveats; <<-EOS.undent
-    Consider using RVM to manage Ruby environments:
-      * RVM: http://rvm.beginrescueend.com/
-    EOS
-  end
-
   def test
     system "#{bin}/jruby -e 'puts \"hello\"'"
   end
