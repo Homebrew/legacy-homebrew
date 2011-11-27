@@ -108,7 +108,7 @@ module HomebrewArgvExtension
       --interactive -i
       --HEAD
     ]
-    flags_to_clear << %[--verbose -v] if quieter?
+    flags_to_clear.concat %w[--verbose -v] if quieter?
     flags_to_clear.each {|flag| delete flag}
 
     yield
