@@ -1,9 +1,9 @@
 require 'formula'
 
 class Potrace < Formula
-  url 'http://potrace.sourceforge.net/download/potrace-1.9.tar.gz'
+  url 'http://potrace.sourceforge.net/download/potrace-1.10.tar.gz'
   homepage 'http://potrace.sourceforge.net'
-  md5 'ef973e7ec9c2e5b3e19e8dfeaa7524c3'
+  md5 'c6a7227ed0a6291a95f38c7d4352ba53'
 
   def install
     system "./configure", "--disable-dependency-tracking",
