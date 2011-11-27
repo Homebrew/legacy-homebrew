@@ -21,7 +21,8 @@ class Sbcl < Formula
     [
       ["--without-threads",  "Build SBCL without support for native threads"],
       ["--with-ldb",  "Include low-level debugger in the build"],
-      ["--with-internal-xref",  "Include XREF information for SBCL internals (increases core size by 5-6MB)"]
+      ["--with-internal-xref",  "Include XREF information for SBCL internals (increases core size by 5-6MB)"],
+      ["--32bit", "Override arch detection and compile for 32-bits."]
     ]
   end
 
@@ -64,9 +65,10 @@ class Sbcl < Formula
       command = Dir.pwd + "/src/runtime/sbcl"
       core = Dir.pwd + "/output/sbcl.core"
       xc_cmdline = "#{command} --core #{core} --disable-debugger --no-userinit --no-sysinit"
+      sbcl_arch = "SBCL_ARCH=x86" if ARGV.include? "--32bit"
 
       Dir.chdir(build_directory)
-      system "./make.sh --prefix='#{prefix}' --xc-host='#{xc_cmdline}'"
+      system "#{sbcl_arch} ./make.sh --prefix='#{prefix}' --xc-host='#{xc_cmdline}'"
     }
 
     ENV['INSTALL_ROOT'] = prefix
