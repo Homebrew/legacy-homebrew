@@ -75,10 +75,12 @@ class Emacs < Formula
       system "make install"
       prefix.install "nextstep/Emacs.app"
 
-      bin.mkpath
-      ln_s prefix+'Emacs.app/Contents/MacOS/Emacs', bin+'emacs'
-      ln_s prefix+'Emacs.app/Contents/MacOS/bin/emacsclient', bin
-      ln_s prefix+'Emacs.app/Contents/MacOS/bin/etags', bin
+      unless ARGV.build_head?
+        bin.mkpath
+        ln_s prefix+'Emacs.app/Contents/MacOS/Emacs', bin+'emacs'
+        ln_s prefix+'Emacs.app/Contents/MacOS/bin/emacsclient', bin
+        ln_s prefix+'Emacs.app/Contents/MacOS/bin/etags', bin
+      end
     else
       if ARGV.include? "--with-x"
         ENV.x11
