@@ -70,10 +70,6 @@ class Ruby < Formula
   end
 
   def caveats; <<-EOS.undent
-    Consider using RVM or Cinderella to manage Ruby environments:
-      * RVM: http://rvm.beginrescueend.com/
-      * Cinderella: http://www.atmos.org/cinderella/
-
     NOTE: By default, gem installed binaries will be placed into:
       #{bin}
 
