@@ -1,14 +1,16 @@
 require 'formula'
 
 class Webp < Formula
-  url 'http://webp.googlecode.com/files/libwebp-0.1.2.tar.gz'
+  url 'http://webp.googlecode.com/files/libwebp-0.1.3.tar.gz'
   homepage 'http://code.google.com/speed/webp/'
-  md5 '5534f6e3c8b9f5851a9a5b56bf78f2b0'
+  md5 '254d4670e14e9ed881f0536b006ab336'
+
+  depends_on 'jpeg'
 
   def install
-    system "./autogen.sh"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    ENV.x11
+
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
 end

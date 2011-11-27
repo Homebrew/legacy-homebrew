@@ -118,7 +118,17 @@ def audit_formula_text name, text
   # xcodebuild should specify SYMROOT
   if text =~ /xcodebuild/ and not text =~ /SYMROOT=/
     problems << " * xcodebuild should be passed an explicit \"SYMROOT\""
-  end if strict?
+  end
+
+  # using ARGV.flag? for formula options is generally a bad thing
+  if text =~ /ARGV\.flag\?/
+    problems << " * Use 'ARGV.include?' instead of 'ARGV.flag?'"
+  end
+
+  # MacPorts patches should specify a revision, not trunk
+  if text =~ %r[macports/trunk]
+    problems << " * MacPorts patches should specify a revision instead of trunk"
+  end
 
   return problems
 end
@@ -128,7 +138,7 @@ def audit_formula_options f, text
 
   # Find possible options
   options = []
-  text.scan(/ARGV\.(include|flag)\?[ ]*\(?(['"])(.+?)\2/) { |m| options << m[2] }
+  text.scan(/ARGV\.include\?[ ]*\(?(['"])(.+?)\1/) { |m| options << m[1] }
   options.reject! {|o| o.include? "#"}
   options.uniq!
 
@@ -181,6 +191,7 @@ def audit_formula_urls f
   end
 
   urls = [(f.url rescue nil), (f.head rescue nil)].reject {|p| p.nil?}
+  urls.uniq! # head-only formulae result in duplicate entries
 
   f.mirrors.each do |m|
     mirror = m.values_at :url
@@ -262,16 +273,6 @@ def audit_formula_instance f
   return problems
 end
 
-def audit_formula_caveats f
-  problems = []
-
-  if f.caveats.to_s =~ /^\s*\$\s+/
-    problems << " * caveats should not use '$' prompts in multiline commands."
-  end if strict?
-
-  return problems
-end
-
 module Homebrew extend self
   def audit
     errors = false
@@ -280,7 +281,6 @@ module Homebrew extend self
       problems = []
       problems += audit_formula_instance f
       problems += audit_formula_urls f
-      problems += audit_formula_caveats f
 
       perms = File.stat(f.path).mode
       if perms.to_s(8) != "100644"
@@ -302,7 +302,7 @@ module Homebrew extend self
 
       problems += audit_formula_text(f.name, text_without_patch)
       problems += audit_formula_options(f, text_without_patch)
-      problems += audit_formula_version(f, text_without_patch) if strict?
+      problems += audit_formula_version(f, text_without_patch)
 
       unless problems.empty?
         errors = true
