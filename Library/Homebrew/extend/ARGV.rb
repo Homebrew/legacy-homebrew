@@ -103,6 +103,7 @@ module HomebrewArgvExtension
 
     %w[
       --debug -d
+      --devel
       --fresh
       --interactive -i
       --verbose -v
