@@ -2,13 +2,24 @@ require 'formula'
 
 class Ghc < Formula
   homepage 'http://haskell.org/ghc/'
-  version '7.0.4'
-  if ARGV.include? '--64bit'
-    url "http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-x86_64-apple-darwin.tar.bz2"
-    md5 'af89d3d2ca6e9b23384baacb7d8161dd'
+  if not ARGV.build_devel?
+    version '7.0.4'
+    if ARGV.include? '--64bit'
+      url "http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-x86_64-apple-darwin.tar.bz2"
+      md5 'af89d3d2ca6e9b23384baacb7d8161dd'
+    else
+      url "http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2"
+      md5 'ce297e783d113cf1547386703d1b1061'
+    end
   else
-    url "http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2"
-    md5 'ce297e783d113cf1547386703d1b1061'
+    version '7.2.2'
+    if ARGV.include? '--64bit'
+      url "http://www.haskell.org/ghc/dist/7.2.2/ghc-7.2.2-x86_64-apple-darwin.tar.bz2"
+      md5 '97c9dc221fcf9eb8635f05ba08eca0c9'
+    else
+      url "http://www.haskell.org/ghc/dist/7.2.2/ghc-7.2.2-i386-apple-darwin.tar.bz2"
+      md5 '1084f44b0d9e5ea5d3bf9b699b6e3e35'
+    end
   end
 
   # Avoid stripping the Haskell binaries & libraries.
@@ -20,6 +31,9 @@ class Ghc < Formula
   end
 
   def install
+    if ARGV.build_devel?
+      opoo "The current version of haskell-platform will NOT work with this version of GHC!"
+    end
     if ARGV.include? '--64bit'
       if Hardware.is_64_bit?
         opoo "The x86_64 version is experimental!"

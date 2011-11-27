@@ -2,7 +2,7 @@ require 'formula'
 
 class Squashfs < Formula
   homepage 'http://squashfs.sourceforge.net/'
-  url 'http://sourceforge.net/projects/squashfs/files/squashfs/squashfs4.0/squashfs4.0.tar.gz/download'
+  url 'http://sourceforge.net/projects/squashfs/files/squashfs/squashfs4.0/squashfs4.0.tar.gz'
   md5 'a3c23391da4ebab0ac4a75021ddabf96'
 
    def patches
