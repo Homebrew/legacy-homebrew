@@ -47,14 +47,11 @@ Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is su
 .SH "COMMANDS"
 .
 .TP
-\fBaudit [\-\-strict]\fR [\fIformulae\fR]
+\fBaudit\fR [\fIformulae\fR]
 Check \fIformulae\fR for Homebrew coding style violations\. This should be run before submitting a new formula\.
 .
 .IP
 If no \fIformulae\fR are provided, all of them are checked\.
-.
-.IP
-If \fB\-\-strict\fR is passed, perform additional stricter checks that may not need to be fixed before submitting\.
 .
 .IP
 \fBaudit\fR exits with a non\-zero status if any errors are found\. This is useful, for instance, for implementing pre\-commit hooks\.
