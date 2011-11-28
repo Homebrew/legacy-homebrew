@@ -9,11 +9,7 @@ class Rawk < Formula
     system "make PREFIX=#{prefix}"
   end
 
-  def remove
-    system "make remove PREFIX=#{prefix}"
-  end
-
   def test
-    system "false"
+    system "true"
   end
 end
