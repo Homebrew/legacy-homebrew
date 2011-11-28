@@ -134,7 +134,7 @@ For the full command list, see the COMMANDS section.
   * `info` <URL>:
     Print the name and version that will be detected for <URL>.
 
-  * `install [--force] [--debug] [--ignore-dependencies] [--fresh] [--use-clang] [--use-gcc] [--use-llvm] [--build-from-source] [--HEAD]` <formula>:
+  * `install [--force] [--debug] [--ignore-dependencies] [--fresh] [--use-clang] [--use-gcc] [--use-llvm] [--build-from-source] [--devel] [--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but may also be
@@ -165,8 +165,10 @@ For the full command list, see the COMMANDS section.
     If `--build-from-source` is passed, compile from source even if a bottle
     is provided for <formula>.
 
+    If `--devel` is passed, and <formula> defines it, install the development version.
+
     If `--HEAD` is passed, and <formula> defines it, install the HEAD version,
-    aka master, trunk, unstable, dev.
+    aka master, trunk, unstable.
 
     To install a newer version of HEAD use
     `brew rm <foo> && brew install --HEAD <foo>`
