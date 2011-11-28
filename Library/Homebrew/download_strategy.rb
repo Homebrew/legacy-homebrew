@@ -366,8 +366,8 @@ class GitDownloadStrategy < AbstractDownloadStrategy
       else
         # otherwise the checkout-index won't checkout HEAD
         # https://github.com/mxcl/homebrew/issues/7124
-        # must specify origin/master, otherwise it resets to the current local HEAD
-        quiet_safe_system "git", "reset", "--hard", "origin/master"
+        # must specify origin/HEAD, otherwise it resets to the current local HEAD
+        quiet_safe_system "git", "reset", "--hard", "origin/HEAD"
       end
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
       safe_system 'git', 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
@@ -442,7 +442,7 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
   def cached_location; @clone; end
 
   def fetch
-    raise "You must `easy_install mercurial'" unless system "/usr/bin/which hg"
+    raise "You must install Mercurial: brew install mercurial" unless system "/usr/bin/which hg"
 
     ohai "Cloning #{@url}"
 

@@ -1,10 +1,10 @@
 require 'formula'
 
 class Node < Formula
-  url 'http://nodejs.org/dist/v0.6.0/node-v0.6.0.tar.gz'
+  url 'http://nodejs.org/dist/v0.6.2/node-v0.6.2.tar.gz'
   head 'https://github.com/joyent/node.git'
   homepage 'http://nodejs.org/'
-  md5 'c05f2dadd4d82c0d72dbc116e82cfc0e'
+  md5 '875431b2c2e3d0ebf5a676b3d96bf766'
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.leopard?
@@ -27,7 +27,7 @@ class Node < Formula
     args = ["--prefix=#{prefix}"]
     args << "--debug" if ARGV.include? '--debug'
 
-    # v0.6.0 appears to have a bug in parallel building
+    # v0.6 appears to have a bug in parallel building
     # so we'll -j1 it for now
     ENV.deparallelize
 

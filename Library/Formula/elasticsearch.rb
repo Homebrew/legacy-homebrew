@@ -1,9 +1,9 @@
 require 'formula'
 
 class Elasticsearch < Formula
-  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.18.1.tar.gz'
+  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.18.4.tar.gz'
   homepage 'http://www.elasticsearch.org'
-  md5 '490c7959e02b885535e08e3cca2ffda8'
+  md5 '4a641cfbaf4ec79b802171dc9f35b21e'
 
   def cluster_name
     "elasticsearch_#{ENV['USER']}"
@@ -12,6 +12,9 @@ class Elasticsearch < Formula
   def install
     # Remove Windows files
     rm_f Dir["bin/*.bat"]
+    # Move JARs from lib to libexec according to homebrew conventions
+    libexec.install Dir['lib/*.jar']
+    (libexec+'sigar').install Dir['lib/sigar/*.jar']
 
     # Install everything directly into folder
     prefix.install Dir['*']
@@ -25,6 +28,23 @@ class Elasticsearch < Formula
       # 2. Configure paths
       s.gsub! /#\s*path\.data\: [^\n]+/, "path.data: #{var}/elasticsearch/"
       s.gsub! /#\s*path\.logs\: [^\n]+/, "path.logs: #{var}/log/elasticsearch/"
+    end
+
+    inreplace "#{bin}/elasticsearch.in.sh" do |s|
+      # Replace CLASSPATH paths to use libexec instead of lib
+      s.gsub! /ES_HOME\/lib\//, "ES_HOME/libexec/"
+    end
+
+    inreplace "#{bin}/elasticsearch" do |s|
+      # Set ES_HOME to prefix value
+      s.gsub! /^ES_HOME=.*$/, "ES_HOME=#{prefix}"
+    end
+
+    inreplace "#{bin}/plugin" do |s|
+      # Set ES_HOME to prefix value
+      s.gsub! /^ES_HOME=.*$/, "ES_HOME=#{prefix}"
+      # Replace CLASSPATH paths to use libexec instead of lib
+      s.gsub! /-cp \".*\"/, '-cp "$ES_HOME/libexec/*"'
     end
 
     # Write .plist file for `launchd`

@@ -178,8 +178,8 @@ def check_for_other_package_managers
 end
 
 def check_gcc_versions
-  gcc_42 = gcc_42_build
-  gcc_40 = gcc_40_build
+  gcc_42 = MacOS.gcc_42_build_version
+  gcc_40 = MacOS.gcc_40_build_version
 
   if gcc_42 == nil
     puts <<-EOS.undent
@@ -197,7 +197,7 @@ def check_gcc_versions
   if MacOS.xcode_version == nil
       puts <<-EOS.undent
         We couldn't detect any version of Xcode.
-        If you downloaded Xcode 4.1 from the App Store, you may need to run the installer.
+        If you downloaded Xcode from the App Store, you may need to run the installer.
 
       EOS
   elsif MacOS.xcode_version < "4.0"
@@ -550,6 +550,8 @@ def check_for_multiple_volumes
   where_cellar = volumes.which real_cellar
   where_temp = volumes.which real_temp
 
+  Dir.delete tmp
+
   unless where_cellar == where_temp
     puts <<-EOS.undent
       Your Cellar & TEMP folders are on different volumes.
@@ -750,9 +752,10 @@ def check_missing_deps
 end
 
 def check_git_status
-  status_cmd = "git --git-dir=#{HOMEBREW_REPOSITORY}/.git --work-tree=#{HOMEBREW_PREFIX} status -s #{HOMEBREW_PREFIX}/Library/Homebrew"
-  if system "/usr/bin/which -s git" and File.directory? HOMEBREW_REPOSITORY+'.git' and not `#{status_cmd}`.empty?
-    ohai "You have uncommitted modifications to Homebrew core"
+  repo = HOMEBREW_REPOSITORY
+  status_cmd = "git --git-dir=#{repo}/.git --work-tree=#{repo} status -s #{repo}/Library/Homebrew"
+  if system "/usr/bin/which -s git" and File.directory? repo+'.git' and not `#{status_cmd}`.empty?
+    ohai "You have uncommitted modifications to Homebrew's core."
     puts "Unless you know what you are doing, you should: git reset --hard"
     puts
   end
