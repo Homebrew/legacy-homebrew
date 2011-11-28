@@ -20,6 +20,14 @@ class Emacs < Formula
   end
 
   def patches
+<<<<<<< HEAD
+    ps = []
+    if ARGV.include? "--cocoa" and not ARGV.build_head?
+      ps << "https://github.com/downloads/typester/emacs/feature-fullscreen.patch"
+    end
+    ps << "https://gist.github.com/raw/959440/127e44bfca90a64396031952c167e039f252f288/gistfile1.diff"
+  end
+=======
     p = []
 
     # Fix for building with Xcode 4; harmless on Xcode 3.x.
@@ -33,6 +41,7 @@ class Emacs < Formula
       # Fix for Shift key for IME users
       p << "https://raw.github.com/gist/1212776"
     end
+>>>>>>> b9741b42a35b676b507cdd2d54b55e374704652e
 
     if ARGV.include? "--cocoa"
       # Fullscreen patch, works against 23.3 and HEAD.
