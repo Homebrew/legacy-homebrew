@@ -10,12 +10,8 @@ class Blazeblogger < Formula
   end
 
   def test
-    # test blazeblogger is hard, we'd have to test creating a repo
+    # testing blazeblogger is hard, we'd have to test creating a repo
     system "true"
-  end
-
-  def remove
-    system "make prefix=#{prefix} compdir=#{prefix} uninstall"
   end
 
 end
