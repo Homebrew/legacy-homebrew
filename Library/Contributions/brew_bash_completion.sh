@@ -85,7 +85,7 @@ _brew_to_completion()
             ;;
         deps)
             local opts=$(
-                local opts=(--1 --all)
+                local opts=(--1 --all --tree)
                 for o in ${opts[*]}; do
                     [[ "${COMP_WORDS[*]}" =~ "$o" ]] || echo "$o"
                 done
