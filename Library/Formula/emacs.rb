@@ -1,8 +1,8 @@
 require 'formula'
 
 class Emacs < Formula
-  url 'http://ftpmirror.gnu.org/emacs/emacs-23.3a.tar.bz2'
-  md5 'f2cf8dc6f28f8ae59bc695b4ddda339c'
+  url 'http://ftpmirror.gnu.org/emacs/emacs-23.3b.tar.bz2'
+  md5 '917ce0054ef63773078a6e99b55df1ee'
   homepage 'http://www.gnu.org/software/emacs/'
   head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
 
