@@ -130,7 +130,7 @@ class Formula
     @name=name
     validate_variable :name
 
-    @path=path
+    @path = path.nil? ? nil : Pathname.new(path)
 
     set_instance_variable 'version'
     @version ||= @spec_to_use.detect_version
