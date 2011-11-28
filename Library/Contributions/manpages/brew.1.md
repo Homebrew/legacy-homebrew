@@ -39,14 +39,11 @@ For the full command list, see the COMMANDS section.
 
 ## COMMANDS
 
-  * `audit [--strict]` [<formulae>]:
+  * `audit` [<formulae>]:
     Check <formulae> for Homebrew coding style violations. This should be
     run before submitting a new formula.
 
     If no <formulae> are provided, all of them are checked.
-
-    If `--strict` is passed, perform additional stricter checks that may not need
-    to be fixed before submitting.
 
     `audit` exits with a non-zero status if any errors are found. This is useful,
     for instance, for implementing pre-commit hooks.
@@ -75,13 +72,15 @@ For the full command list, see the COMMANDS section.
     If `--no-fetch` is passed, Homebrew will not download <URL> to the cache and
     will thus not add the MD5 to the formula for you.
 
-  * `deps [--1] [-n] [--all]` <formula>:
+  * `deps [--1] [-n] [--tree] [--all]` <formula>:
     Show <formula>'s dependencies.
 
     If `--1` is passed, only show dependencies one level down, instead of
     recursing.
 
     If `-n` is passed, show dependencies in topological order.
+
+    If `--tree` is passed, show dependencies as a tree.
 
     If `--all` is passed, show dependencies for all formulae.
 
