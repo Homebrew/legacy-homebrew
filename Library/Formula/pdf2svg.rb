@@ -3,7 +3,7 @@ require 'formula'
 def have_poppler_glib?
   # Not using Homebrew's system wrapper because we actually want to see the
   # exit code of the command.
-  return Kernel.system "#{HOMEBREW_PREFIX}/bin/pkg-config", "poppler-glib", "--exists"
+  Kernel.system "#{HOMEBREW_PREFIX}/bin/pkg-config", "poppler-glib", "--exists"
 end
 
 class Pdf2svg < Formula
