@@ -1,10 +1,10 @@
 require 'formula'
 
 class CloudbeesSdk < Formula
-  url 'http://cloudbees-downloads.s3.amazonaws.com/sdk/cloudbees-sdk-0.6.0-dist.zip'
-  version '0.6.0'
+  url 'http://cloudbees-downloads.s3.amazonaws.com/sdk/cloudbees-sdk-0.7.3-dist.zip'
+  version '0.7.3'
   homepage 'https://cloudbees.zendesk.com/entries/414109-cloudbees-sdk'
-  md5 '2e109218d5a4537548e41a0a0e7ed5c7'
+  md5 '97354d0bec3d99aa3833b7a320d5f256'
 
   def shim_script target
     <<-EOS.undent
