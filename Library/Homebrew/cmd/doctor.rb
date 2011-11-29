@@ -184,6 +184,7 @@ def check_gcc_versions
   if gcc_42 == nil
     puts <<-EOS.undent
       We couldn't detect gcc 4.2.x. Some formulae require this compiler.
+      NOTE: Versions of XCode newer than 4.2 don't include gcc 4.2.x.
 
     EOS
   elsif gcc_42 < RECOMMENDED_GCC_42
