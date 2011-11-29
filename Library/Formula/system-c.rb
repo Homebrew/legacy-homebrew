@@ -5,12 +5,18 @@ class SystemC < Formula
   homepage 'http://www.systemc.org'
   md5 'ccd0a9b8987b2902de647cfd0794e668'
 
+  def options
+    [
+      ['--32bit', 'install the 32-bit version.']
+    ]
+  end
+
   def install
+    arch_string = (Hardware.is_64_bit? and not ARGV.include? '--32bit') ? "x86_64-apple-macosx" : "i386-apple-macosx"
     system "aclocal"
     system "autoconf"
     system "automake"
-    system "./configure", "--prefix=#{prefix}", "--build=x86_64-apple-macosx",
-                          "--host=x86_64-apple-macosx"
+    system "./configure", "--prefix=#{prefix}", "--build=#{arch_string}", "--host=#{arch_string}"
     system "make"
     ENV.j1
     system "make install"
@@ -28,6 +34,67 @@ class SystemC < Formula
 end
 
 __END__
+diff --git a/src/sysc/utils/Makefile.am b/src/sysc/utils/Makefile.am
+index d6539d4..27d3cd1 100644
+--- a/src/sysc/utils/Makefile.am
++++ b/src/sysc/utils/Makefile.am
+@@ -70,7 +70,7 @@ libutils_a_SOURCES = $(H_FILES) $(CXX_FILES)
+ 
+ INCLUDE_DIR = $(prefix)/include/sysc/utils
+ 
+-CXXCOMPILE_DEBUG = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(EXTRA_CXXFLAGS) $(DEBUG_CXXFLAGS)
++CXXCOMPILE_DEBUG = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(AM_CXXFLAGS) $(EXTRA_CXXFLAGS) $(DEBUG_CXXFLAGS)
+ 
+ sc_stop_here.o: sc_stop_here.cpp
+        $(CXXCOMPILE_DEBUG) -c $<
+diff --git a/configure.in b/configure.in
+index 7231a7a..3616660 100644
+--- a/configure.in
++++ b/configure.in
+@@ -128,6 +128,43 @@ echo "$as_me: error: \"sorry...compiler not supported\"" >&2;}
+ 	AS=as
+         QT_ARCH="x86_64"
+         ;;
++    x86_64*macosx*)
++        case "$CXX_COMP" in
++            c++ | g++* | gcc-* | llvm*)
++                EXTRA_CXXFLAGS="-Wall"
++                DEBUG_CXXFLAGS="-g"
++                OPT_CXXFLAGS="-O3"
++                TARGET_ARCH="macosx"
++                CC="$CXX"
++                CFLAGS="$EXTRA_CXXFLAGS $OPT_CXXFLAGS"
++                CXXFLAGS="$EXTRA_CXXFLAGS $OPT_CXXFLAGS"
++                ;;
++            *)
++                AC_MSG_ERROR("sorry...compiler not supported")
++               ;;
++        esac
++        AS=as
++        QT_ARCH="x86_64"
++        ;;
++    i386*macosx*)
++        case "$CXX_COMP" in
++            c++ | g++* | gcc-* | llvm*)
++                EXTRA_CXXFLAGS="-Wall"
++                DEBUG_CXXFLAGS="-g"
++                OPT_CXXFLAGS="-O3 -m32 -arch i386"
++                TARGET_ARCH="macosx"
++                CC="$CXX"
++                CFLAGS="$EXTRA_CXXFLAGS $OPT_CXXFLAGS"
++                CXXFLAGS="$EXTRA_CXXFLAGS $OPT_CXXFLAGS"
++                LDFLAGS="-m32 -arch i386"
++                ;;
++            *)
++                AC_MSG_ERROR("sorry...compiler not supported")
++               ;;
++        esac
++        AS="as -arch i386"
++        QT_ARCH="iX86-ss"
++        ;;
+     *linux*)
+         case "$CXX_COMP" in
+             c++ | g++)
 diff --git a/Makefile.am b/Makefile.am
 index 1e99a7c..f9aa934 100644
 --- a/Makefile.am
@@ -40,35 +107,6 @@ index 1e99a7c..f9aa934 100644
 -	examples \
  	.
  
-diff --git a/configure.in b/configure.in
-index 7231a7a..943a03d 100644
---- a/configure.in
-+++ b/configure.in
-@@ -128,6 +128,24 @@ echo "$as_me: error: \"sorry...compiler not supported\"" >&2;}
-        AS=as
-         QT_ARCH="x86_64"
-         ;;
-+    x86_64*macosx*)
-+        case "$CXX_COMP" in
-+            c++ | g++* | gcc-* | llvm*)
-+                EXTRA_CXXFLAGS="-Wall"
-+                DEBUG_CXXFLAGS="-g"
-+                OPT_CXXFLAGS="-O3"
-+                TARGET_ARCH="macosx"
-+                CC="$CXX"
-+                CFLAGS="$EXTRA_CXXFLAGS $OPT_CXXFLAGS -fPIC -shared"
-+                CXXFLAGS="$EXTRA_CXXFLAGS $OPT_CXXFLAGS -fPIC -shared"
-+                ;;
-+            *)
-+                AC_MSG_ERROR("sorry...compiler not supported")
-+               ;;
-+        esac
-+        AS=as
-+        QT_ARCH="x86_64"
-+        ;;
-     *linux*)
-         case "$CXX_COMP" in
-             c++ | g++)
 diff --git a/src/sysc/kernel/sc_cor.h b/src/sysc/kernel/sc_cor.h
 index 75434f7..e76b4fa 100644
 --- a/src/sysc/kernel/sc_cor.h
