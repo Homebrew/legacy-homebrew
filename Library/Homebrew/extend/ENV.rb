@@ -158,7 +158,7 @@ module HomebrewEnvExtension
 
       if ARGV.include? '--default-fortran-flags'
         self['FCFLAGS'] = self['CFLAGS'] unless self['FCFLAGS']
-        self['FFFLAGS'] = self['CFLAGS'] unless self['FFFLAGS']
+        self['FFLAGS'] = self['CFLAGS'] unless self['FFLAGS']
       elsif not self['FCFLAGS'] or self['FFLAGS']
         opoo <<-EOS
 No Fortran optimization information was provided.  You may want to consider
