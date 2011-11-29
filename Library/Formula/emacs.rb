@@ -8,7 +8,7 @@ class Emacs < Formula
   fails_with_llvm "Duplicate symbol errors while linking.", :build => 2334
 
   # Stripping on Xcode 4 causes malformed object errors
-  skip_clean ["bin/emacs", "bin/emacs-23.3", "bin/emacs-24.0.50"]
+  skip_clean ["bin/emacs*"]
 
   if ARGV.include? "--use-git-head"
     head 'git://repo.or.cz/emacs.git'
@@ -43,7 +43,14 @@ class Emacs < Formula
     if ARGV.include? "--cocoa"
       # Fullscreen patch, works against 23.3 and HEAD.
       p << "https://raw.github.com/gist/1012927"
+    end
 
+    if ARGV.include? "--srgb"
+      # Patch for color issues described here:
+      # http://debbugs.gnu.org/cgi/bugreport.cgi?bug=8402
+      inreplace "src/nsterm.m",
+        "*col = [NSColor colorWithCalibratedRed: r green: g blue: b alpha: 1.0];",
+        "*col = [NSColor colorWithDeviceRed: r green: g blue: b alpha: 1.0];"
     end
 
     return p
@@ -66,14 +73,6 @@ class Emacs < Formula
   end
 
   def install
-    # Patch for color issues described here:
-    # http://debbugs.gnu.org/cgi/bugreport.cgi?bug=8402
-    if ARGV.include? "--srgb"
-      inreplace "src/nsterm.m",
-        "*col = [NSColor colorWithCalibratedRed: r green: g blue: b alpha: 1.0];",
-        "*col = [NSColor colorWithDeviceRed: r green: g blue: b alpha: 1.0];"
-    end
-
     if ARGV.build_head? and File.exists? "./autogen/copy_autogen"
       opoo "Using copy_autogen"
       puts "See https://github.com/mxcl/homebrew/issues/4852"
