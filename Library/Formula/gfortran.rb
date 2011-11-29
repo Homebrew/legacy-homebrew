@@ -5,7 +5,7 @@ class GfortranPkgDownloadStrategy <CurlDownloadStrategy
     # The 4.2.4 compiler is distributed as a OS X 10.5
     # package- a single flat xar archive instead of a
     # bundle.
-    safe_system "/usr/bin/xar -xf #{@tarball_path}"
+    safe_system '/usr/bin/xar', '-xf', @tarball_path
     chdir
 
     # Clean up.
