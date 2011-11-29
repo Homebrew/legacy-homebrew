@@ -19,7 +19,7 @@ class Emacs < Formula
   def options
     [
       ["--cocoa", "Build a Cocoa version of emacs"],
-      ["--srgb", "Enable sRGB colors in the Cocoa version of emacs"],
+      ["--srgb", "Enable sRGB colors in the Cocoa version of emacs (enables --cocoa)"],
       ["--with-x", "Include X11 support"],
       ["--use-git-head", "Use repo.or.cz git mirror for HEAD builds"],
     ]
@@ -40,7 +40,7 @@ class Emacs < Formula
       p << "https://raw.github.com/gist/1212776"
     end
 
-    if ARGV.include? "--cocoa"
+    if ARGV.include? "--cocoa" or ARGV.include? "--srgb"
       # Fullscreen patch, works against 23.3 and HEAD.
       p << "https://raw.github.com/gist/1012927"
     end
@@ -60,7 +60,7 @@ class Emacs < Formula
     args = ["--prefix=#{prefix}", "--without-dbus",
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp", "--infodir=#{info}/emacs"]
 
-    if ARGV.include? "--cocoa"
+    if ARGV.include? "--cocoa"or ARGV.include? "--srgb"
       args << "--with-ns" << "--disable-ns-self-contained"
     elsif ARGV.include? "--with-x"
       ENV.x11
@@ -84,7 +84,7 @@ class Emacs < Formula
     system "make"
     system "make install"
 
-    if ARGV.include? "--cocoa"
+    if ARGV.include? "--cocoa"  or ARGV.include? "--srgb"
       prefix.install "nextstep/Emacs.app"
 
       unless ARGV.build_head?
@@ -98,7 +98,7 @@ class Emacs < Formula
 
   def caveats
     s = ""
-    if ARGV.include? "--cocoa"
+    if ARGV.include? "--cocoa" or ARGV.include? "--srgb"
       s += <<-EOS.undent
         Emacs.app was installed to:
           #{prefix}
