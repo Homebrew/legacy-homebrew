@@ -127,11 +127,11 @@ _brew_to_completion()
             local opts=$(
                 local opts=(--force --verbose --debug --use-clang --use-gcc
                     --use-llvm --ignore-dependencies --build-from-source --HEAD
-                    --interactive --fresh $(brew options --compact "$prev"))
+                    --interactive --fresh --devel $(brew options --compact "$prev"))
 
                 # options that make sense with '--interactive'
                 if [[ "${COMP_WORDS[*]}" =~ "--interactive" ]]; then
-                    opts=(--force --git --use-clang --use-gcc --use-llvm --HEAD)
+                    opts=(--force --git --use-clang --use-gcc --use-llvm --HEAD --devel)
                 fi
 
                 for o in ${opts[*]}; do
