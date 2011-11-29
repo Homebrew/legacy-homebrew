@@ -9,6 +9,10 @@ class Macvim < Formula
   md5 '6bed74d5a9317855a4cd35f1647a9c0f'
 #  head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
   head 'https://github.com/ivanoats/macvim.git', :branch => 'master'
+  # url 'https://github.com/b4winckler/macvim/tarball/snapshot-63'
+  # version '7.3-63'
+  # md5 '6abd828216e4ee37d78538cf6f4a7af0'
+  # head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
   def options
   [

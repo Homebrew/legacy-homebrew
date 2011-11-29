@@ -1,8 +1,8 @@
 require 'formula'
 
 class Emacs < Formula
-  url 'http://ftpmirror.gnu.org/emacs/emacs-23.3a.tar.bz2'
-  md5 'f2cf8dc6f28f8ae59bc695b4ddda339c'
+  url 'http://ftpmirror.gnu.org/emacs/emacs-23.3b.tar.bz2'
+  md5 '917ce0054ef63773078a6e99b55df1ee'
   homepage 'http://www.gnu.org/software/emacs/'
 
   fails_with_llvm "Duplicate symbol errors while linking.", :build => 2334
@@ -75,10 +75,12 @@ class Emacs < Formula
       system "make install"
       prefix.install "nextstep/Emacs.app"
 
-      bin.mkpath
-      ln_s prefix+'Emacs.app/Contents/MacOS/Emacs', bin+'emacs'
-      ln_s prefix+'Emacs.app/Contents/MacOS/bin/emacsclient', bin
-      ln_s prefix+'Emacs.app/Contents/MacOS/bin/etags', bin
+      unless ARGV.build_head?
+        bin.mkpath
+        ln_s prefix+'Emacs.app/Contents/MacOS/Emacs', bin+'emacs'
+        ln_s prefix+'Emacs.app/Contents/MacOS/bin/emacsclient', bin
+        ln_s prefix+'Emacs.app/Contents/MacOS/bin/etags', bin
+      end
     else
       if ARGV.include? "--with-x"
         ENV.x11
@@ -95,7 +97,7 @@ class Emacs < Formula
   end
 
   def caveats
-    s = "For build options see:\n  brew options emacs\n\n"
+    s = ""
     if ARGV.include? "--cocoa"
       s += <<-EOS.undent
         Emacs.app was installed to:
