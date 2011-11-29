@@ -118,7 +118,7 @@ def audit_formula_text name, text
   # xcodebuild should specify SYMROOT
   if text =~ /xcodebuild/ and not text =~ /SYMROOT=/
     problems << " * xcodebuild should be passed an explicit \"SYMROOT\""
-  end if strict?
+  end
 
   # using ARGV.flag? for formula options is generally a bad thing
   if text =~ /ARGV\.flag\?/
@@ -273,16 +273,6 @@ def audit_formula_instance f
   return problems
 end
 
-def audit_formula_caveats f
-  problems = []
-
-  if f.caveats.to_s =~ /^\s*\$\s+/
-    problems << " * caveats should not use '$' prompts in multiline commands."
-  end if strict?
-
-  return problems
-end
-
 module Homebrew extend self
   def audit
     errors = false
@@ -291,7 +281,6 @@ module Homebrew extend self
       problems = []
       problems += audit_formula_instance f
       problems += audit_formula_urls f
-      problems += audit_formula_caveats f
 
       perms = File.stat(f.path).mode
       if perms.to_s(8) != "100644"

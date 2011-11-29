@@ -178,8 +178,8 @@ def check_for_other_package_managers
 end
 
 def check_gcc_versions
-  gcc_42 = gcc_42_build
-  gcc_40 = gcc_40_build
+  gcc_42 = MacOS.gcc_42_build_version
+  gcc_40 = MacOS.gcc_40_build_version
 
   if gcc_42 == nil
     puts <<-EOS.undent
@@ -197,7 +197,7 @@ def check_gcc_versions
   if MacOS.xcode_version == nil
       puts <<-EOS.undent
         We couldn't detect any version of Xcode.
-        If you downloaded Xcode 4.1 from the App Store, you may need to run the installer.
+        If you downloaded Xcode from the App Store, you may need to run the installer.
 
       EOS
   elsif MacOS.xcode_version < "4.0"
@@ -800,21 +800,6 @@ def check_git_version
   end
 end
 
-def check_terminal_width
-  # http://sourceforge.net/tracker/?func=detail&atid=100976&aid=3435710&group_id=976
-  if `tput cols`.chomp.to_i > 262
-    puts <<-EOS.undent
-      Your terminal width is greater than 262 columns.
-
-      This can trigger a segfault in some versions of curl, which may cause
-      downloads to appear to fail.
-
-      You may want to adjust your terminal size.
-
-    EOS
-  end
-end
-
 module Homebrew extend self
   def doctor
     old_stdout = $stdout
@@ -860,7 +845,6 @@ module Homebrew extend self
       check_git_status
       check_for_leopard_ssl
       check_git_version
-      check_terminal_width
     ensure
       $stdout = old_stdout
     end
