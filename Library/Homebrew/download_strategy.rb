@@ -412,7 +412,7 @@ class CVSDownloadStrategy < AbstractDownloadStrategy
   end
 
   def stage
-    FileUtils.cp_r Dir[@co+"*"], Dir.pwd
+    FileUtils.cp_r Dir[@co+"{.}"], Dir.pwd
 
     require 'find'
     Find.find(Dir.pwd) do |path|
