@@ -16,11 +16,12 @@ class Libimobiledevice < Formula
   def install
     if ARGV.build_head?
       # fix the m4 problem with the missing pkg.m4
-      aclocalDefault = `/usr/bin/aclocal --print-ac-dir`
-      inreplace "autogen.sh", "aclocal -I m4", "aclocal -I m4 -I#{aclocalDefault.strip} -I #{HOMEBREW_PREFIX}/share/aclocal"
 
+      ENV['LIBTOOLIZE'] = "/usr/bin/glibtoolize"
+      ENV['ACLOCAL'] = "/usr/bin/aclocal -I m4 -I #{HOMEBREW_PREFIX}/share/aclocal"
       ENV.prepend "CFLAGS", "-I#{HOMEBREW_PREFIX}/include"
-      system "./autogen.sh"
+
+      system "autoreconf -ivf"
     end
 
     system "./configure", "--disable-dependency-tracking",
