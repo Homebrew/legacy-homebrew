@@ -2,10 +2,10 @@ require 'formula'
 require 'find'
 
 class Scalate < Formula
-  url 'http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.5.0/scalate-distro-1.5.0-unix-bin.tar.gz'
-  version '1.5.0'
+  url 'http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.5.3/scalate-distro-1.5.3-unix-bin.tar.gz'
+  version '1.5.3'
   homepage 'http://scalate.fusesource.org/'
-  md5 '7574d29b29c05c086f1fa977f23ed4a5'
+  md5 '5114f611836957f479c1f2060b20beb3'
 
   def startup_script
     <<-EOS.undent
