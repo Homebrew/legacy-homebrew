@@ -33,9 +33,10 @@ class FormulaInstaller
           else
             ARGV.filter_for_dependencies do
               # Re-create the formula object so that args like `--HEAD` won't
-              # affect properties like the installation prefix.
+              # affect properties like the installation prefix. Also need to
+              # re-check installed status as the Formula may have changed.
               dep = Formula.factory dep.name
-              install_dependency dep
+              install_dependency dep unless dep.installed?
             end
           end
         end
