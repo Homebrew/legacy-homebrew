@@ -6,7 +6,6 @@ class Libstemmer < Formula
   # constant, rapid updates to this formula.
   head 'http://snowball.tartarus.org/dist/libstemmer_c.tgz'
   homepage 'http://snowball.tartarus.org/'
-  md5 'facd65506711b8908648160014bcc309'
 end
 
 class Sphinx < Formula
