@@ -5,7 +5,7 @@ class Liblas < Formula
   homepage 'http://liblas.org'
   sha1 '0eada80c6de49e9e866f746645cb227034c3af4a'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'libgeotiff'
   depends_on 'gdal'
   depends_on 'boost'
