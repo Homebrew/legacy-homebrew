@@ -2,6 +2,7 @@ require 'formula'
 
 class Emacs < Formula
   url 'http://ftpmirror.gnu.org/emacs/emacs-23.3b.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/emacs/emacs-23.3b.tar.bz2'
   md5 '917ce0054ef63773078a6e99b55df1ee'
   homepage 'http://www.gnu.org/software/emacs/'
 

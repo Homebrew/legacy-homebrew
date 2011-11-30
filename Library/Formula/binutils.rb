@@ -2,6 +2,7 @@ require 'formula'
 
 class Binutils < Formula
   url 'http://ftpmirror.gnu.org/binutils/binutils-2.21.1a.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/binutils/binutils-2.21.1a.tar.bz2'
   homepage 'http://www.gnu.org/software/binutils/binutils.html'
   md5 'bde820eac53fa3a8d8696667418557ad'
 
