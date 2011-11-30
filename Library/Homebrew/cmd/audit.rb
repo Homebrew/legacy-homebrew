@@ -198,6 +198,14 @@ def audit_formula_urls f
   urls = [(f.url rescue nil), (f.head rescue nil)].reject {|p| p.nil?}
   urls.uniq! # head-only formulae result in duplicate entries
 
+  # Check GNU urls; doesn't apply to mirrors
+  urls.each do |p|
+    if p =~ %r[^(https?|ftp)://(.+)/gnu/]
+      problems << " * \"ftpmirror.gnu.org\" is preferred for GNU software."
+    end
+  end
+
+  # the rest of the checks apply to mirrors as well
   f.mirrors.each do |m|
     mirror = m.values_at :url
     urls << (mirror.to_s rescue nil)
@@ -235,14 +243,6 @@ def audit_formula_urls f
       problems << " * Use https:// URLs for accessing repositories on GitHub."
     end
   end
-
-  # Check GNU urls
-  # FIXME only check primary URLs, not mirrors
-  # urls.each do |p|
-  #   if p =~ %r[^(https?|ftp)://(.+)/gnu/]
-  #     problems << " * \"ftpmirror.gnu.org\" is preferred for GNU software."
-  #   end
-  # end
 
   return problems
 end
