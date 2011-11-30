@@ -5,7 +5,7 @@ class Opencc < Formula
   homepage 'http://code.google.com/p/opencc/'
   md5 'fc5915f43f7bd30f0f30ccdc4ad3a7f1'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
 
   def install
     args = std_cmake_parameters.split
