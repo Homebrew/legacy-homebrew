@@ -30,7 +30,7 @@ def audit_formula_text name, text
   end
 
   # cmake, pkg-config, and scons are build-time deps
-  if text =~ /depends_on ['"](cmake|pkg-config|scons)['"]$/
+  if text =~ /depends_on ['"](cmake|pkg-config|scons|smake)['"]$/
     problems << " * #{$1} dependency should be \"depends_on '#{$1}' => :build\""
   end
 
