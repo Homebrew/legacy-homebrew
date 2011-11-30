@@ -2,6 +2,7 @@ require 'formula'
 
 class GnuBarcode < Formula
   url 'http://ftpmirror.gnu.org/barcode/barcode-0.98.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/barcode/barcode-0.98.tar.gz'
   homepage 'http://www.gnu.org/software/barcode/'
   md5 '7f10c3307b84a19a4ab2fa4b3f2974da'
 

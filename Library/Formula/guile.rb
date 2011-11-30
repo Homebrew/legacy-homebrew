@@ -3,6 +3,7 @@ require 'formula'
 class Guile < Formula
   homepage 'http://www.gnu.org/software/guile/'
   url 'http://ftpmirror.gnu.org/guile/guile-1.8.7.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/guile/guile-1.8.7.tar.gz'
   head 'http://ftpmirror.gnu.org/guile/guile-2.0.2.tar.gz'
 
   if ARGV.build_head?

@@ -3,6 +3,7 @@ require 'formula'
 # Private older version of autoconf required to compile Spidermonkey
 class Autoconf213 < Formula
   url 'http://ftpmirror.gnu.org/autoconf/autoconf-2.13.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/autoconf/autoconf-2.13.tar.gz'
   md5 '9de56d4a161a723228220b0f425dc711'
   homepage 'http://www.gnu.org/software/autoconf/'
 end

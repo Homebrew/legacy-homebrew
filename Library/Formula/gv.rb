@@ -2,6 +2,7 @@ require 'formula'
 
 class Gv < Formula
   url 'http://ftpmirror.gnu.org/gv/gv-3.7.2.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/gv/gv-3.7.2.tar.gz'
   homepage 'http://www.gnu.org/s/gv/'
   md5 'eb47d465755b7291870af66431c6f2e1'
 

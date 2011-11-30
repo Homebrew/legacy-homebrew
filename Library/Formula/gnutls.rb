@@ -3,6 +3,7 @@ require 'formula'
 class Gnutls < Formula
   homepage 'http://www.gnu.org/software/gnutls/gnutls.html'
   url 'http://ftpmirror.gnu.org/gnutls/gnutls-2.12.14.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/gnutls/gnutls-2.12.14.tar.bz2'
   md5 '555687a7ffefba0bd9de1e71cb61402c'
 
   depends_on 'pkg-config' => :build
