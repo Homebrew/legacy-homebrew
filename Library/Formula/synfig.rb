@@ -7,6 +7,11 @@ class Synfig < Formula
 
   head 'git://synfig.git.sourceforge.net/gitroot/synfig/synfig', :using => :git
 
+  def patches
+    # this patches synfig to work with libpng 1.5 per http://sourceforge.net/tracker/?func=detail&aid=3427945&group_id=144022&atid=757416
+    { :p2 => "http://sourceforge.net/tracker/download.php?group_id=144022&atid=757416&file_id=426842&aid=3427945" }
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'etl'
