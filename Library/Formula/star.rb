@@ -5,7 +5,7 @@ class Star < Formula
   homepage 'http://cdrecord.berlios.de/old/private/star.html'
   md5 'f9a28f83702624c4c08ef1a343014c7a'
 
-  depends_on "smake"
+  depends_on "smake" => :build
 
   def install
     system "smake", "GMAKE_NOWARN=true", "INS_BASE=#{prefix}", "MANDIR=share/man"
