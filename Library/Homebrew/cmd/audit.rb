@@ -29,6 +29,11 @@ def audit_formula_text name, text
     problems << " * Check indentation of 'depends_on'."
   end
 
+  # cmake, pkg-config, and scons are build-time deps
+  if text =~ /depends_on ['"](cmake|pkg-config|scons)['"]$/
+    problems << " * #{$1} dependency should be \"depends_on '#{$1}' => :build\""
+  end
+
   # FileUtils is included in Formula
   if text =~ /FileUtils\.(\w+)/
     problems << " * Don't need 'FileUtils.' before #{$1}."
