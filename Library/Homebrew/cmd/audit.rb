@@ -256,7 +256,7 @@ def audit_formula_instance f
   end
 
   # Check for things we don't like to depend on.
-  # We allow non-Homebrew installs whenenever possible.
+  # We allow non-Homebrew installs whenever possible.
   f.deps.each do |d|
     begin
       dep_f = Formula.factory d
@@ -265,8 +265,8 @@ def audit_formula_instance f
     end
 
     case d
-    when "git"
-      problems << " * Don't use Git as a dependency; we allow non-Homebrew git installs."
+    when "git", "python", "ruby", "emacs"
+      problems << " * Don't use #{d} as a dependency; we allow non-Homebrew #{d} installs."
     end
   end
 
