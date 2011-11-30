@@ -6,7 +6,7 @@ class Freetds < Formula
   md5 'b14db5823980a32f0643d1a84d3ec3ad'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--with-tdsver=7.1", "--mandir=#{man}"
+    system "./configure", "--prefix=#{prefix}", "--with-tdsver=7.1", "--mandir=#{man}", "--with-openssl"
     system 'make'
     ENV.j1 # Or fails to install on multi-core machines
     system 'make install'
