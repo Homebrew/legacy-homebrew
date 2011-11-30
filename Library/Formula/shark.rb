@@ -5,7 +5,7 @@ class Shark < Formula
   homepage 'http://shark-project.sourceforge.net/'
   md5 '12d87a519c27b33800df11b7c78972ed'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
 
   def install
     system "cmake . #{std_cmake_parameters}"
