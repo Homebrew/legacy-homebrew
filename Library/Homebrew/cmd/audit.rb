@@ -237,11 +237,12 @@ def audit_formula_urls f
   end
 
   # Check GNU urls
-  urls.each do |p|
-    if p =~ %r[^(https?|ftp)://(.+)/gnu/]
-      problems << " * \"ftpmirror.gnu.org\" is preferred for GNU software."
-    end
-  end
+  # FIXME only check primary URLs, not mirrors
+  # urls.each do |p|
+  #   if p =~ %r[^(https?|ftp)://(.+)/gnu/]
+  #     problems << " * \"ftpmirror.gnu.org\" is preferred for GNU software."
+  #   end
+  # end
 
   return problems
 end
