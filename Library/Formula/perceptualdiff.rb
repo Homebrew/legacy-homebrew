@@ -5,7 +5,7 @@ class Perceptualdiff < Formula
   md5 '8fbd197a4be33fc116e26478c1ff8ce7'
   homepage 'http://pdiff.sourceforge.net/'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'freeimage'
 
   def install

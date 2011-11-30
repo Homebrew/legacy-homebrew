@@ -29,6 +29,11 @@ def audit_formula_text name, text
     problems << " * Check indentation of 'depends_on'."
   end
 
+  # cmake, pkg-config, and scons are build-time deps
+  if text =~ /depends_on ['"](cmake|pkg-config|scons|smake)['"]$/
+    problems << " * #{$1} dependency should be \"depends_on '#{$1}' => :build\""
+  end
+
   # FileUtils is included in Formula
   if text =~ /FileUtils\.(\w+)/
     problems << " * Don't need 'FileUtils.' before #{$1}."
@@ -251,7 +256,7 @@ def audit_formula_instance f
   end
 
   # Check for things we don't like to depend on.
-  # We allow non-Homebrew installs whenenever possible.
+  # We allow non-Homebrew installs whenever possible.
   f.deps.each do |d|
     begin
       dep_f = Formula.factory d
@@ -260,8 +265,8 @@ def audit_formula_instance f
     end
 
     case d
-    when "git"
-      problems << " * Don't use Git as a dependency; we allow non-Homebrew git installs."
+    when "git", "python", "ruby", "emacs", "mysql", "postgresql"
+      problems << " * Don't use #{d} as a dependency; we allow non-Homebrew #{d} installs."
     end
   end
 
