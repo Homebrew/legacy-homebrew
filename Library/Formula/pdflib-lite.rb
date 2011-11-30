@@ -1,12 +1,9 @@
 require 'formula'
 
 class PdflibLite < Formula
-  url 'http://www.pdflib.com/binaries/PDFlib/704/PDFlib-Lite-7.0.4p4.tar.gz'
+  url 'http://www.pdflib.com/binaries/PDFlib/705/PDFlib-Lite-7.0.5.tar.gz'
   homepage 'http://www.pdflib.com/download/free-software/pdflib-lite/'
-  md5 '1765de9c5f2b6c5769a2160eaa911e9a'
-  version "7.0.4p4"
-
-  fails_with_llvm "SL 10.6.1 LLVM crashes with an internal compiler error on this version."
+  md5 '34a1cc89e2cfdc1e43ba57019e442a90'
 
   def install
     # Without the following substituion, pdflib-lite runs into weird
