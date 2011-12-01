@@ -18,4 +18,3 @@ class Haxe < Formula
     EOS
   end
 end
-
