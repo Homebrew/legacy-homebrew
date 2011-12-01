@@ -2,6 +2,7 @@ require 'formula'
 
 class Plotutils < Formula
   url 'http://ftpmirror.gnu.org/plotutils/plotutils-2.6.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/plotutils/plotutils-2.6.tar.gz'
   homepage 'http://www.gnu.org/software/plotutils/'
   md5 'c08a424bd2438c80a786a7f4b5bb6a40'
 
