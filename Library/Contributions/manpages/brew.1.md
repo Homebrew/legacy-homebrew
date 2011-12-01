@@ -72,13 +72,15 @@ For the full command list, see the COMMANDS section.
     If `--no-fetch` is passed, Homebrew will not download <URL> to the cache and
     will thus not add the MD5 to the formula for you.
 
-  * `deps [--1] [-n] [--all]` <formula>:
+  * `deps [--1] [-n] [--tree] [--all]` <formula>:
     Show <formula>'s dependencies.
 
     If `--1` is passed, only show dependencies one level down, instead of
     recursing.
 
     If `-n` is passed, show dependencies in topological order.
+
+    If `--tree` is passed, show dependencies as a tree.
 
     If `--all` is passed, show dependencies for all formulae.
 
@@ -132,7 +134,7 @@ For the full command list, see the COMMANDS section.
   * `info` <URL>:
     Print the name and version that will be detected for <URL>.
 
-  * `install [--force] [--debug] [--ignore-dependencies] [--fresh] [--use-clang] [--use-gcc] [--use-llvm] [--build-from-source] [--HEAD]` <formula>:
+  * `install [--force] [--debug] [--ignore-dependencies] [--fresh] [--use-clang] [--use-gcc] [--use-llvm] [--build-from-source] [--devel] [--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but may also be
@@ -163,8 +165,10 @@ For the full command list, see the COMMANDS section.
     If `--build-from-source` is passed, compile from source even if a bottle
     is provided for <formula>.
 
+    If `--devel` is passed, and <formula> defines it, install the development version.
+
     If `--HEAD` is passed, and <formula> defines it, install the HEAD version,
-    aka master, trunk, unstable, dev.
+    aka master, trunk, unstable.
 
     To install a newer version of HEAD use
     `brew rm <foo> && brew install --HEAD <foo>`
