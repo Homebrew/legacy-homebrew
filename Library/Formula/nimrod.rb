@@ -1,10 +1,10 @@
 require 'formula'
 
 class Nimrod < Formula
-  url 'http://force7.de/nimrod/download/nimrod_0.8.10.zip'
+  url 'http://force7.de/nimrod/download/nimrod_0.8.12.zip'
   head 'https://github.com/Araq/Nimrod.git'
   homepage 'http://force7.de/nimrod/'
-  md5 'b32d08ff40d2e17eda39a3c1f1bc39f9'
+  md5 '2101fdff83339b4480ffe8fd12b934da'
 
   def install
     system "/bin/sh", "./build.sh"
