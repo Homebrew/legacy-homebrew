@@ -79,7 +79,7 @@ __END__
 -	install -m 644 -o root -g root $(STATICLIB) $(INSTALLDIR)
 -	install -m 755 -o root -g root $(SHAREDLIB) $(INSTALLDIR)
 -	ln -sf $(SHAREDLIB) $(INSTALLDIR)/$(VERLIBNAME)
--	ln -sf $(VERLIBNAME) $(INSTALLDIR)/$(LIBNAME)
+-	ln -sf $(VERLIBNAME) $(INSTALLDIR)/$(LIBNAME)	
 -	ldconfig
 +	install -m 644 $(HEADER) $(INCDIR)
 +	install -m 644 $(STATICLIB) $(INSTALLDIR)
