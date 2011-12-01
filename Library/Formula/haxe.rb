@@ -1,10 +1,10 @@
 require 'formula'
 
 class Haxe < Formula
-  url 'http://haxe.org/file/haxe-2.07-osx.tar.gz'
-  version '2.07'
+  url 'http://haxe.org/file/haxe-2.08-osx.tar.gz'
+  version '2.08'
   homepage 'http://haxe.org/'
-  sha1 '0958a13077aedef1b304d4b43b6eb5d6041bdf88'
+  sha1 'e8758ea9155bf27606348d02240c2af1fecee67b'
 
   def install
     bin.install %w(haxe haxedoc haxelib)
@@ -18,3 +18,4 @@ class Haxe < Formula
     EOS
   end
 end
+
