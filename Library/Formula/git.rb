@@ -31,7 +31,7 @@ class Git < Formula
     ENV['BLK_SHA1']='1' if ARGV.include? '--with-blk-sha1'
 
     inreplace "Makefile" do |s|
-      s.remove_make_var! %w{CFLAGS LDFLAGS}
+      s.remove_make_var! %w{CFLAGS LDFLAGS CC}
     end
 
     system "make", "prefix=#{prefix}", "install"
