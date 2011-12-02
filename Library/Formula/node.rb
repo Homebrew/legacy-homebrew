@@ -1,10 +1,10 @@
 require 'formula'
 
 class Node < Formula
-  url 'http://nodejs.org/dist/v0.6.2/node-v0.6.2.tar.gz'
+  url 'http://nodejs.org/dist/v0.6.4/node-v0.6.4.tar.gz'
   head 'https://github.com/joyent/node.git'
   homepage 'http://nodejs.org/'
-  md5 '875431b2c2e3d0ebf5a676b3d96bf766'
+  md5 'a170bef450de365720223c3af3747bf7'
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.leopard?
@@ -24,7 +24,7 @@ class Node < Formula
       s.gsub! '/opt/local/lib', '/usr/lib'
     end
 
-    args = ["--prefix=#{prefix}"]
+    args = ["--prefix=#{prefix}", "--without-npm"]
     args << "--debug" if ARGV.include? '--debug'
 
     # v0.6 appears to have a bug in parallel building
@@ -36,6 +36,9 @@ class Node < Formula
   end
 
   def caveats
-    "Please add #{HOMEBREW_PREFIX}/lib/node_modules to your NODE_PATH environment variable to have node libraries picked up."
+    <<-EOS.undent
+        Homebrew has NOT installed npm.  Please use 'curl http://npmjs.org/install.sh | sh' to install.
+        Please add #{HOMEBREW_PREFIX}/lib/node_modules to your NODE_PATH environment variable to have node libraries picked up.
+    EOS
   end
 end
