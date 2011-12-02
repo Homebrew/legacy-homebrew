@@ -10,8 +10,8 @@ end
 
 class Pyside < Formula
   homepage 'http://www.pyside.org'
-  url 'http://www.pyside.org/files/pyside-qt4.7+1.0.8.tar.bz2'
-  md5 '131cc4d5c56b3b20bc99362f68f3f29d'
+  url 'http://www.pyside.org/files/pyside-qt4.7+1.0.9.tar.bz2'
+  md5 '63d1104cf245d9eea307434c94e15443'
 
   depends_on 'cmake' => :build
 
@@ -19,12 +19,6 @@ class Pyside < Formula
   depends_on 'generatorrunner'
   depends_on 'apiextractor'
   depends_on 'qt'
-
-  def patches
-    # Fix an infinite loop that was added to the CMake config file in
-    # PySide 1.0.8
-    DATA
-  end
 
   def install
     # The build will be unable to find Qt headers buried inside frameworks
@@ -48,25 +42,3 @@ install the `pyside-tools` formula.
     EOS
   end
 end
-
-__END__
-Ensure PySideConfig.cmake gets generated with a default value for
-SHIBOKEN_PYTHON_SUFFIX, otherwise an infinite loop will occur.
-
-Submitted upstream:
-
-  http://bugs.pyside.org/show_bug.cgi?id=1052
-
-diff --git a/libpyside/PySideConfig.cmake.in b/libpyside/PySideConfig.cmake.in
-index b83c48b..ab7b389 100644
---- a/libpyside/PySideConfig.cmake.in
-+++ b/libpyside/PySideConfig.cmake.in
-@@ -1,5 +1,5 @@
--if (NOT PYTHON_BASENAME)
--    message(STATUS "Using default python: @PYTHON_BASENAME@")
--    SET(PYTHON_BASENAME @PYTHON_BASENAME@)
-+if (NOT SHIBOKEN_PYTHON_SUFFIX)
-+  message(STATUS "Using default python: @SHIBOKEN_PYTHON_SUFFIX@")
-+  SET(SHIBOKEN_PYTHON_SUFFIX @SHIBOKEN_PYTHON_SUFFIX@)
- endif()
- include(@LIB_INSTALL_DIR@/cmake/PySide-@BINDING_API_VERSION@/PySideConfig${SHIBOKEN_PYTHON_SUFFIX}.cmake)

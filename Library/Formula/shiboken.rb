@@ -2,8 +2,8 @@ require 'formula'
 
 class Shiboken < Formula
   homepage 'http://www.pyside.org/docs/shiboken'
-  url 'http://pyside.org/files/shiboken-1.0.9.tar.bz2'
-  md5 'c33a25a64a06320e495e8b8775b8918c'
+  url 'http://pyside.org/files/shiboken-1.0.10.tar.bz2'
+  md5 'b98e7c35edef95a77594a6d1801c5875'
 
   depends_on 'cmake' => :build
 
