@@ -133,7 +133,7 @@ class Subversion < Formula
      if MacOS.leopard?
         perl_version = "5.8.8"
       else
-        perl_version = "5.10.0"
+        perl_version = "5.12"
       end
 
       inreplace "Makefile" do |s|
