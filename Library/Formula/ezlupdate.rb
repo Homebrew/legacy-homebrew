@@ -13,7 +13,7 @@ class Ezlupdate < Formula
     Dir.chdir "support/ezlupdate-qt4.5/ezlupdate"
     # Use the qmake installation done with brew
     # because others installations can make a mess
-    system "/usr/local/bin/qmake ezlupdate.pro"
+    system "#{HOMEBREW_PREFIX}/bin/qmake ezlupdate.pro"
     system "make"
     Dir.chdir "../../.."
     bin.install ['bin/macosx/ezlupdate']
