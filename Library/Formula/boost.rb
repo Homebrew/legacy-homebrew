@@ -26,7 +26,8 @@ class Boost < Formula
     [
       ["--with-mpi", "Enable MPI support"],
       ["--universal", "Build universal binaries"],
-      ["--without-python", "Build without Python"]
+      ["--without-python", "Build without Python"],
+      ["--with-thread-unsafe", "Build thread-unsafe binaries in addition to thread-safe"]
     ]
   end
 
@@ -75,11 +76,16 @@ class Boost < Formula
             "-j#{ENV.make_jobs}",
             "--layout=tagged",
             "--user-config=user-config.jam",
-            "threading=multi",
             "install"]
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if ARGV.include? "--universal"
     args << "--without-python" if ARGV.include? "--without-python"
+
+    if (ARGV.include? "--with-thread-unsafe") then
+        args << "threading=multi,single/link=static"
+    else
+        args << "threading=multi"
+    end
 
     # we specify libdir too because the script is apparently broken
     system "./bootstrap.sh", "--prefix=#{prefix}", "--libdir=#{lib}"
