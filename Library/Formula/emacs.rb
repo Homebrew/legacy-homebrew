@@ -2,6 +2,7 @@ require 'formula'
 
 class Emacs < Formula
   url 'http://ftpmirror.gnu.org/emacs/emacs-23.3b.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/emacs/emacs-23.3b.tar.bz2'
   md5 '917ce0054ef63773078a6e99b55df1ee'
   homepage 'http://www.gnu.org/software/emacs/'
 
@@ -11,7 +12,7 @@ class Emacs < Formula
   skip_clean ["bin/emacs", "bin/emacs-23.3", "bin/emacs-24.0.50"]
 
   if ARGV.include? "--use-git-head"
-    head 'git://repo.or.cz/emacs.git'
+    head 'git://git.sv.gnu.org/emacs.git'
   else
     head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
   end

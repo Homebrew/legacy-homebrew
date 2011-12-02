@@ -6,7 +6,6 @@ class Libstemmer < Formula
   # constant, rapid updates to this formula.
   head 'http://snowball.tartarus.org/dist/libstemmer_c.tgz'
   homepage 'http://snowball.tartarus.org/'
-  md5 'facd65506711b8908648160014bcc309'
 end
 
 class Sphinx < Formula
@@ -33,7 +32,7 @@ class Sphinx < Formula
 
     # configure script won't auto-select PostgreSQL
     args << "--with-pgsql" if `/usr/bin/which pg_config`.size > 0
-    args << "--with-mysql" if `/usr/bin/which mysql`.size > 0
+    args << "--without-mysql" unless `/usr/bin/which mysql`.size > 0
 
     system "./configure", *args
     system "make install"
