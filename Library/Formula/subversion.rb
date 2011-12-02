@@ -133,15 +133,21 @@ class Subversion < Formula
      if MacOS.leopard?
         perl_version = "5.8.8"
       else
-        perl_version = "5.10.0"
+        perl_version = "5.12"
       end
 
       inreplace "Makefile" do |s|
         s.change_make_var! "SWIG_PL_INCLUDES",
           "$(SWIG_INCLUDES) #{arches} -g -pipe -fno-common -DPERL_DARWIN -fno-strict-aliasing -I/usr/local/include -I/System/Library/Perl/#{perl_version}/darwin-thread-multi-2level/CORE"
       end
-      system "make swig-pl"
-      system "make install-swig-pl"
+
+      system "make PREFIX=#{prefix} EXTRA_SWIG_LDFLAGS=-L#{lib} swig-pl"
+      system "make PREFIX=#{prefix} install-swig-pl"
+
+      cd "subversion/bindings/swig/perl/native" do
+        system "perl", "Makefile.PL", "PREFIX=#{prefix}"
+        system "make OTHERLDFLAGS=-L#{lib} install"
+      end
     end
 
     if build_java?
