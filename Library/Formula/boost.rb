@@ -81,7 +81,7 @@ class Boost < Formula
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if ARGV.include? "--universal"
     args << "--without-python" if ARGV.include? "--without-python"
 
-    if (ARGV.include? "--with-thread-unsafe") then
+    if ARGV.include? "--with-thread-unsafe"
         args << "threading=multi,single/link=static"
     else
         args << "threading=multi"
