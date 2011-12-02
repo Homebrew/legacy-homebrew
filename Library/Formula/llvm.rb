@@ -11,15 +11,15 @@ def build_jit?; ARGV.include? '--jit'; end
 class Clang < Formula
   homepage  'http://llvm.org/'
   head      'http://llvm.org/git/clang.git', :using => :git
-  url       'http://llvm.org/releases/2.9/clang-2.9.tgz'
-  md5       '634de18d04b7a4ded19ec4c17d23cfca'
+  url       'http://llvm.org/releases/3.0/clang-3.0.tar.gz'
+  md5       '43350706ae6cf05d0068885792ea0591'
 end
 
 class Llvm < Formula
   homepage  'http://llvm.org/'
   head      'http://llvm.org/git/llvm.git', :using => :git
-  url       'http://llvm.org/releases/2.9/llvm-2.9.tgz'
-  md5       '793138412d2af2c7c7f54615f8943771'
+  url       'http://llvm.org/releases/3.0/llvm-3.0.tar.gz'
+  md5       'a8e5f5f1c1adebae7b4a654c376a6005'
 
   def patches
     # changes the link options for the shared library build
