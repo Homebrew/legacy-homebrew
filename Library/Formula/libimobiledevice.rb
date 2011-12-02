@@ -24,6 +24,8 @@ class Libimobiledevice < Formula
       system "autoreconf -ivf"
     end
 
+    ENV.append_to_cflags "-std=gnu89" if ENV.compiler == :clang
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-swig"
