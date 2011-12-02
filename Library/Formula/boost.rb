@@ -8,7 +8,7 @@ class Boost < Formula
 
   # Bottle built on 10.7.2 using XCode 4.2
   bottle 'https://downloads.sourceforge.net/project/machomebrew/Bottles/boost-1.48.0-bottle.tar.gz'
-  bottle_sha1 'd5edc2714c4182081d0399f0a0278672e1c85410'
+  bottle_sha1 'acabb0317509faf6868d7dc392656513b859d7c7'
 
   def patches
     # https://svn.boost.org/trac/boost/ticket/6131
