@@ -131,3 +131,30 @@ index e666ff7..d7a7fcc 100644
 @@ -113 +113 @@ void SocketStreamHandlePrivate::close()
 -void SocketStreamHandlePrivate::socketSentdata()
 +void SocketStreamHandlePrivate::socketSentData()
+diff --git a/src/gui/util/qsystemtrayicon_mac.mm b/src/gui/util/qsystemtrayicon_mac.mm
+--- a/src/gui/util/qsystemtrayicon_mac.mm   2011-10-05 12:07:57.000000000 +0200
++++ b/src/gui/util/qsystemtrayicon_mac.mm   2011-10-05 12:09:36.000000000 +0200
+@@ -247,6 +247,15 @@
+         if (CFStringCompare(CFBundleGetIdentifier(bundle), CFSTR("com.Growl.GrowlHelperApp"),
+                     kCFCompareCaseInsensitive |  kCFCompareBackwards) != kCFCompareEqualTo)
+             return;
++
++        // since Growl 1.3, GrowlHelperApp was renamed to Growl
++        QString targetApp = QLatin1String("Growl");
++        UInt32 bundleVersion = CFBundleGetVersionNumber(bundle);
++        if ((bundleVersion >> 24 & 0xff) == 1 &&
++                (bundleVersion >> 20 & 0xf) < 3) {
++            targetApp = QLatin1String("GrowlHelperApp");
++        }
++
+         QPixmap notificationIconPixmap;
+         if(icon == QSystemTrayIcon::Information)
+             notificationIconPixmap = QApplication::style()->standardPixmap(QStyle::SP_MessageBoxInformation);
+@@ -264,7 +273,7 @@
+                 notificationIcon = QLatin1String("image from location \"file://") + notificationIconFile.fileName() + QLatin1String("\"");
+         }
+         const QString script(QLatin1String(
+-            "tell application \"GrowlHelperApp\"\n"
++            "tell application \"") + targetApp + QLatin1String("\"\n"
+             "-- Make a list of all the notification types (all)\n"
+             "set the allNotificationsList to {\"") + notificationType + QLatin1String("\"}\n"
