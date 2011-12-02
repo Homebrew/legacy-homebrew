@@ -135,7 +135,7 @@ module HomebrewEnvExtension
 
     raise "GCC could not be found" if args[:force] and not File.exist? ENV['CC'] \
                                    or (File.symlink? ENV['CC'] \
-                                   and File.readlink(ENV['CC']) =~ 'llvm')
+                                   and File.readlink(ENV['CC']) =~ /llvm/)
   end
   alias_method :gcc_4_2, :gcc
 
