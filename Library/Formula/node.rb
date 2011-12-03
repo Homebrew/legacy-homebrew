@@ -27,10 +27,6 @@ class Node < Formula
     args = ["--prefix=#{prefix}", "--without-npm"]
     args << "--debug" if ARGV.include? '--debug'
 
-    # v0.6 appears to have a bug in parallel building
-    # so we'll -j1 it for now
-    ENV.deparallelize
-
     system "./configure", *args
     system "make install"
   end
