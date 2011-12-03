@@ -2,20 +2,27 @@ require 'formula'
 
 class Emacs < Formula
   url 'http://ftpmirror.gnu.org/emacs/emacs-23.3b.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/emacs/emacs-23.3b.tar.bz2'
   md5 '917ce0054ef63773078a6e99b55df1ee'
   homepage 'http://www.gnu.org/software/emacs/'
-  head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
 
   fails_with_llvm "Duplicate symbol errors while linking.", :build => 2334
 
   # Stripping on Xcode 4 causes malformed object errors
   skip_clean ["bin/emacs", "bin/emacs-23.3", "bin/emacs-24.0.50"]
 
+  if ARGV.include? "--use-git-head"
+    head 'git://git.sv.gnu.org/emacs.git'
+  else
+    head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
+  end
+
   def options
     [
       ["--cocoa", "Build a Cocoa version of emacs"],
       ["--srgb", "Enable sRGB colors in the Cocoa version of emacs"],
       ["--with-x", "Include X11 support"],
+      ["--use-git-head", "Use repo.or.cz git mirror for HEAD builds"],
     ]
   end
 
@@ -107,6 +114,20 @@ class Emacs < Formula
 
       EOS
     end
+
+    s += <<-EOS.undent
+      Because the official bazaar repository might be slow, we include an option for
+      pulling HEAD from an unofficial Git mirror:
+
+        brew install emacs --HEAD --use-git-head
+
+      There is inevitably some lag between checkins made to the official Emacs bazaar
+      repository and their appearance on the repo.or.cz mirror. See
+      http://repo.or.cz/w/emacs.git for the mirror's status. The Emacs devs do not
+      provide support for the git mirror, and they might reject bug reports filed
+      with git version information. Use it at your own risk.
+    EOS
+
     return s
   end
 end
