@@ -56,8 +56,15 @@ class Llvm < Formula
 
     ENV['REQUIRES_RTTI'] = '1' if build_rtti?
 
-    configure_options = ["--prefix=#{prefix}",
-                         "--enable-optimized"]
+    configure_options = [
+      "--prefix=#{prefix}",
+      "--enable-optimized",
+      # As of LLVM 3.0, the only bindings offered are for OCaml and attempting
+      # to build these when Homebrew's OCaml is installed results in errors.
+      #
+      # See issue #8947 for details.
+      "--enable-bindings=none"
+    ]
 
     if build_all_targets?
       configure_options << "--enable-targets=all"
