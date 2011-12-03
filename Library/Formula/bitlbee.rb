@@ -7,6 +7,7 @@ class Bitlbee < Formula
 
   depends_on 'glib'
   depends_on 'gnutls'
+  depends_on 'libotr'
 
   def install
     # By default Homebrew will set ENV['LD'] to the same as ENV['CC'] which
@@ -21,6 +22,7 @@ class Bitlbee < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--debug=0", "--strip=0",
                           "--ssl=gnutls",
+			  "--otr=1",
                           "--pidfile=#{var}/bitlbee/run/bitlbee.pid",
                           "--config=#{var}/bitlbee/lib/",
                           "--ipsocket=#{var}/bitlbee/run/bitlbee.sock"
