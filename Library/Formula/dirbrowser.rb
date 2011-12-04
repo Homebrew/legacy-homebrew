@@ -1,9 +1,9 @@
 require 'formula'
 
 class Dirbrowser < Formula
-  url 'https://github.com/bend/Dir_browser/tarball/v0.2'
+  url 'https://github.com/bend/Dir_browser/tarball/v0.4'
   homepage 'http://bend.github.com/Dir_browser/'
-  md5 '3f657350ae6b5cea1dfc8d6166dde6ca'
+  md5 '38e9b47ab91999eba41e6910c32560a4'
 
   depends_on 'cmake' => :build
 
