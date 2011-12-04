@@ -9,9 +9,9 @@ module Homebrew extend self
         puts f.versions * " "
       else
         f.versions do |version, sha|
-          print Tty.white
+          print Tty.white.to_s
           print "#{version.ljust(8)} "
-          print Tty.reset
+          print Tty.reset.to_s
           puts "git checkout #{sha} #{f.pretty_relative_path}"
         end
       end
