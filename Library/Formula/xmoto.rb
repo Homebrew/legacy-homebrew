@@ -24,10 +24,14 @@ class Xmoto < Formula
   def install
     # The ENV.x11 picks up libpng and sets CFLAGS and LDFLAGS
     ENV.x11
-    system "./configure", "--prefix=#{prefix}", "--with-internal-xdg=1", "--with-apple-opengl-framework"
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-sdltest",
+                          "--with-internal-xdg=1",
+                          "--with-apple-opengl-framework"
     system "make install"
   end
 end
+
 
 __END__
 diff --git a/src/image/tim_png.cpp b/src/image/tim_png.cpp
