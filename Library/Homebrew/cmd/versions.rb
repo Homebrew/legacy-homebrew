@@ -21,9 +21,9 @@ module Homebrew extend self
 
     ARGV.formulae.all? do |f|
       old_versions = Versions.old_versions f do |version, sha|
-        print Tty.white
+        print Tty.white.to_s
         print "#{version.ljust(8)} "
-        print Tty.reset
+        print Tty.reset.to_s
         puts "git checkout #{sha} #{f.pretty_relative_path}"
       end
     end
