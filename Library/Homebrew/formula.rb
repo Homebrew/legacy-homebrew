@@ -351,7 +351,7 @@ class Formula
         that we can update the formula accordingly. Thanks!
         EOS
       puts
-      if xcode_version < "4.2"
+      if MacOS.xcode_version < "4.2"
         puts "If it doesn't work you can: brew install --use-gcc"
       else
         puts "If it doesn't work you can try: brew install --use-clang"
