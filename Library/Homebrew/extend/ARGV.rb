@@ -35,6 +35,19 @@ module HomebrewArgvExtension
     @kegs
   end
 
+  def linked_kegs
+    require 'keg'
+    require 'formula'
+    @kegs ||= downcased_unique_named.collect do |name|
+      name = Formula.canonical_name(name)
+      linked_keg = HOMEBREW_REPOSITORY/"Library/LinkedKegs"/name
+      raise NoSuchKegError.new(name) unless linked_keg.symlink? && linked_keg.directory?
+      Keg.new(linked_keg.dirname + linked_keg.readlink)
+    end
+    raise KegUnspecifiedError if @kegs.empty?
+    @kegs
+  end
+
   # self documenting perhaps?
   def include? arg
     @n=index arg
