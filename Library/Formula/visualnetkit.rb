@@ -107,3 +107,16 @@ diff --git a/bin/visualnetkit.sh b/bin/visualnetkit.sh
  
 -$APP_PATH/VisualNetkit
 +open $APP_PATH/VisualNetkit.app
+diff --git a/src/gui/MainWindow.cpp b/src/gui/MainWindow.cpp
+--- a/src/gui/MainWindow.cpp
++++ b/src/gui/MainWindow.cpp
+@@ -50,7 +50,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
+ 	dockLog->setVisible(false);
+ 	
+ 	/* init the file dialog (save mode) */
+-	saveFileDialog = new QFileDialog(this, tr("Save laboratory as..."), QDir::homePath(), "");
++	saveFileDialog = new QFileDialog(this, Qt::Sheet);
++	saveFileDialog->setDirectory(QDir::home());
+ 	saveFileDialog->setFileMode(QFileDialog::AnyFile);
+ 	saveFileDialog->setAcceptMode(QFileDialog::AcceptSave);
+ 	saveFileDialog->setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
