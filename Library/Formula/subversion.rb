@@ -63,7 +63,6 @@ class Subversion < Formula
             "--prefix=#{prefix}",
             "--with-ssl",
             "--with-zlib=/usr",
-            "--with-sqlite=/usr/local",
             # use our neon, not OS X's
             "--disable-neon-version-check",
             "--disable-mod-activation",
@@ -72,6 +71,8 @@ class Subversion < Formula
 
     args << "--enable-javahl" << "--without-jikes" if build_java?
     args << "--with-ruby-sitedir=#{lib}/ruby" if build_ruby?
+    args << "--with-sqlite=/usr/local" if MacOS.snow_leopard?
+    args << "--with-sqlite=/usr" unless MacOS.snow_leopard?
 
     # Undo a bit of the MacPorts patch
     inreplace "configure", "@@DESTROOT@@/", ""
