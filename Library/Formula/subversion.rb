@@ -8,13 +8,14 @@ def build_universal?; ARGV.build_universal?; end
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.7.1.tar.bz2'
-  sha1 '4bfaa8e33e9eaf26a504117cd91b23805518071a'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.7.2.tar.bz2'
+  sha1 '8c0824aeb7f42da1ff4f7cd296877af7f59812bb'
 
   depends_on 'pkg-config' => :build
 
   # On Snow Leopard, build a new neon. For Leopard, the deps above include this.
   depends_on 'neon' if MacOS.snow_leopard?
+  depends_on 'sqlite' if MacOS.snow_leopard?
 
   def options
     [
@@ -62,7 +63,7 @@ class Subversion < Formula
             "--prefix=#{prefix}",
             "--with-ssl",
             "--with-zlib=/usr",
-            "--with-sqlite=/usr",
+            "--with-sqlite=/usr/local",
             # use our neon, not OS X's
             "--disable-neon-version-check",
             "--disable-mod-activation",
@@ -74,7 +75,6 @@ class Subversion < Formula
 
     # Undo a bit of the MacPorts patch
     inreplace "configure", "@@DESTROOT@@/", ""
-
     system "./configure", *args
     system "make"
     system "make install"
