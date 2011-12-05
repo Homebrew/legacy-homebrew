@@ -8,16 +8,16 @@ class Visualnetkit < Formula
 
   depends_on 'qt'
 
+  def patches
+    DATA
+  end
+
   def install
     system "/bin/sh", "./build.sh", "-r"
     prefix.install 'bin/VisualNetkit.app'
   end
 
   def test
-  end
-
-  def patches
-    DATA
   end
 end
 
