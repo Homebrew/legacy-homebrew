@@ -14,7 +14,6 @@ class Visualnetkit < Formula
   end
 
   def test
-    system "false"
   end
 
   def patches
