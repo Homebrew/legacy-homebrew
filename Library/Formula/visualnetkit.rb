@@ -14,7 +14,10 @@ class Visualnetkit < Formula
 
   def install
     system "/bin/sh", "./build.sh", "-r"
-    prefix.install 'bin/VisualNetkit.app'
+    inreplace 'bin/visualnetkit.sh', /^APP=.*$/, "APP=#{bin}"
+    bin.install 'bin/VisualNetkit.app'
+    bin.install 'bin/visualnetkit.sh' => 'visualnetkit'
+    prefix.install 'bin/plugins'
   end
 
   def test
@@ -94,3 +97,13 @@ diff --git a/src/plugin_dev/test/test.pro b/src/plugin_dev/test/test.pro
  
  DEPENDPATH += .
  DESTDIR = ../../../bin/plugins
+diff --git a/bin/visualnetkit.sh b/bin/visualnetkit.sh
+--- a/bin/visualnetkit.sh
++++ b/bin/visualnetkit.sh
+@@ -6,4 +6,4 @@ APP_PATH=${APP/\/visualnetkit.sh/}
+ 
+-export VISUAL_NETKIT_PLUGINS="$APP_PATH/plugins:$HOME/.visualnetkit/plugins"
++export VISUAL_NETKIT_PLUGINS="$APP_PATH/../plugins:$HOME/.visualnetkit/plugins"
+ 
+-$APP_PATH/VisualNetkit
++open $APP_PATH/VisualNetkit.app
