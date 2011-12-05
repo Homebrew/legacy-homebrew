@@ -1,0 +1,97 @@
+require 'formula'
+
+class Visualnetkit < Formula
+  url 'http://visual-netkit.googlecode.com/files/visualnetkit-1.4.tar.bz'
+  homepage 'http://code.google.com/p/visual-netkit/'
+  sha1 '17dbc3a6b7e62b1b2183f2a4426b9021781e4ec4'
+  version '1.4'
+
+  depends_on 'qt'
+
+  def install
+    system "/bin/sh", "./build.sh", "-r"
+    prefix.install 'bin/VisualNetkit.app'
+  end
+
+  def test
+    system "false"
+  end
+
+  def patches
+    DATA
+  end
+end
+
+__END__
+diff --git a/src/plugin_dev/ipv4/ipv4.pro b/src/plugin_dev/ipv4/ipv4.pro
+--- a/src/plugin_dev/ipv4/ipv4.pro
++++ b/src/plugin_dev/ipv4/ipv4.pro
+@@ -5,7 +5,7 @@ TEMPLATE = lib
+ TARGET = ipv4
+ 
+ #prevent linking error on some system (like ubuntu)
+-QMAKE_LFLAGS = -Wl,-rpath,$$[QT_INSTALL_LIBS] $$[QMAKE_LFLAGS_SHLIB]
++QMAKE_LFLAGS = -Wl,-rpath,$$[QT_INSTALL_LIBS] -undefined dynamic_lookup $$[QMAKE_LFLAGS_SHLIB]
+ 
+ DEPENDPATH += .
+ DESTDIR = ../../../bin/plugins
+diff --git a/src/plugin_dev/mac/mac.pro b/src/plugin_dev/mac/mac.pro
+--- a/src/plugin_dev/mac/mac.pro
++++ b/src/plugin_dev/mac/mac.pro
+@@ -5,7 +5,7 @@ TEMPLATE = lib
+ TARGET = mac
+ 
+ #prevent linking error on some system (like ubuntu)
+-QMAKE_LFLAGS = -Wl,-rpath,$$[QT_INSTALL_LIBS] $$[QMAKE_LFLAGS_SHLIB]
++QMAKE_LFLAGS = -Wl,-rpath,$$[QT_INSTALL_LIBS] -undefined dynamic_lookup $$[QMAKE_LFLAGS_SHLIB]
+ 
+ DEPENDPATH += .
+ DESTDIR = ../../../bin/plugins
+diff --git a/src/plugin_dev/quagga/bgp/quagga-bgp.pro b/src/plugin_dev/quagga/bgp/quagga-bgp.pro
+--- a/src/plugin_dev/quagga/bgp/quagga-bgp.pro
++++ b/src/plugin_dev/quagga/bgp/quagga-bgp.pro
+@@ -2,7 +2,7 @@ TEMPLATE = lib
+ TARGET = quagga-bgp
+ 
+ # prevent linking error on some system (like ubuntu)
+-QMAKE_LFLAGS = -Wl,-rpath,$$[QT_INSTALL_LIBS] \
++QMAKE_LFLAGS = -Wl,-rpath,$$[QT_INSTALL_LIBS] -undefined dynamic_lookup \
+     $$[QMAKE_LFLAGS_SHLIB]
+ DEPENDPATH += .
+ DESTDIR = ../../../../bin/plugins
+diff --git a/src/plugin_dev/quagga/core/quagga-core.pro b/src/plugin_dev/quagga/core/quagga-core.pro
+--- a/src/plugin_dev/quagga/core/quagga-core.pro
++++ b/src/plugin_dev/quagga/core/quagga-core.pro
+@@ -2,7 +2,7 @@ TEMPLATE = lib
+ TARGET = quagga-core
+ 
+ #prevent linking error on some system (like ubuntu)
+-QMAKE_LFLAGS = -Wl,-rpath,$$[QT_INSTALL_LIBS] $$[QMAKE_LFLAGS_SHLIB]
++QMAKE_LFLAGS = -Wl,-rpath,$$[QT_INSTALL_LIBS] -undefined dynamic_lookup $$[QMAKE_LFLAGS_SHLIB]
+
+ DEPENDPATH += .
+ DESTDIR = ../../../../bin/plugins
+diff --git a/src/plugin_dev/quagga/rip/quagga-rip.pro b/src/plugin_dev/quagga/rip/quagga-rip.pro
+--- a/src/plugin_dev/quagga/rip/quagga-rip.pro
++++ b/src/plugin_dev/quagga/rip/quagga-rip.pro
+@@ -2,7 +2,7 @@ TEMPLATE = lib
+ TARGET = quagga-rip
+ 
+ # prevent linking error on some system (like ubuntu)
+-QMAKE_LFLAGS = -Wl,-rpath,$$[QT_INSTALL_LIBS] \
++QMAKE_LFLAGS = -Wl,-rpath,$$[QT_INSTALL_LIBS] -undefined dynamic_lookup \
+     $$[QMAKE_LFLAGS_SHLIB]
+ DEPENDPATH += .
+ DESTDIR = ../../../../bin/plugins
+diff --git a/src/plugin_dev/test/test.pro b/src/plugin_dev/test/test.pro
+--- a/src/plugin_dev/test/test.pro
++++ b/src/plugin_dev/test/test.pro
+@@ -5,7 +5,7 @@ TEMPLATE = lib
+ TARGET = test
+ 
+ #prevent linking error on some system (like ubuntu)
+-QMAKE_LFLAGS = -Wl,-rpath,$$[QT_INSTALL_LIBS] $$[QMAKE_LFLAGS_SHLIB]
++QMAKE_LFLAGS = -Wl,-rpath,$$[QT_INSTALL_LIBS] -undefined dynamic_lookup $$[QMAKE_LFLAGS_SHLIB]
+ 
+ DEPENDPATH += .
+ DESTDIR = ../../../bin/plugins
