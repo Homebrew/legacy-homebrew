@@ -5,7 +5,7 @@ class Leiningen < Formula
   homepage 'http://github.com/technomancy/leiningen'
   md5 '27b8a48619be7b1e080a1a2ad3777024'
 
-  head 'https://github.com/technomancy/leiningen.git', :using => :git
+  head 'https://github.com/technomancy/leiningen.git', :using => :git, :tag=>"1.6.2"
 
   def install
     bin.install "bin/lein"
