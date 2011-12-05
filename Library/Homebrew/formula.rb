@@ -130,7 +130,7 @@ class Formula
     @name=name
     validate_variable :name
 
-    @path=path
+    @path = path.nil? ? nil : Pathname.new(path)
 
     set_instance_variable 'version'
     @version ||= @spec_to_use.detect_version
@@ -146,6 +146,16 @@ class Formula
     return installed_prefix.children.length > 0
   rescue
     return false
+  end
+
+  def explicitly_requested?
+
+    # `ARGV.formulae` will throw an exception if it comes up with an empty
+    # list.
+    #
+    # FIXME: `ARGV.formulae` shouldn't be throwing exceptions, see issue #8823
+   return false if ARGV.named.empty?
+   ARGV.formulae.include? self
   end
 
   def installed_prefix
@@ -341,7 +351,11 @@ class Formula
         that we can update the formula accordingly. Thanks!
         EOS
       puts
-      puts "If it doesn't work you can: brew install --use-gcc"
+      if MacOS.xcode_version < "4.2"
+        puts "If it doesn't work you can: brew install --use-gcc"
+      else
+        puts "If it doesn't work you can try: brew install --use-clang"
+      end
       puts
     end
   end
