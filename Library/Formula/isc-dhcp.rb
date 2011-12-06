@@ -31,6 +31,10 @@ class IscDhcp < Formula
       ENV.append 'CFLAGS', "-D#{symbol}='\"#{path}\"'"
     end
 
+    if 10.7 <= MACOS_VERSION
+      ENV.append 'CFLAGS', "-D__APPLE_USE_RFC_3542"
+    end
+
     system './configure', "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--localstatedir=#{dhcpd_dir}"
