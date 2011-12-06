@@ -24,6 +24,7 @@ class Node < Formula
       s.gsub! '/opt/local/lib', '/usr/lib'
     end
 
+    # Why skip npm install? Read https://github.com/mxcl/homebrew/pull/8784.
     args = ["--prefix=#{prefix}", "--without-npm"]
     args << "--debug" if ARGV.include? '--debug'
 
