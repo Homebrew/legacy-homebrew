@@ -21,4 +21,31 @@ class Neo4j < Formula
     ln_s "#{libexec}/bin/neo4j", bin+"neo4j"
     ln_s "#{libexec}/bin/neo4j-shell", bin+"neo4j-shell"
   end
+
+  def caveats; <<-EOS.undent
+    Quick-start guide:
+
+        1. Start the server manually:
+            neo4j start
+
+        2. Open webadmin:
+            open http://localhost:7474/webadmin/
+
+        3. Start exploring the REST API:
+            curl -v http://localhost:7474/db/data/
+
+        4. Stop:
+            neo4j stop
+
+    To launch on startup, install launchd-agent to ~/Library/LaunchAgents/ with:
+        neo4j install
+
+    If this is an upgrade, see:
+        #{libexec}/UPGRADE.txt
+
+    The manual can be found in:
+        #{libexec}/doc/
+
+    EOS
+  end
 end
