@@ -18,5 +18,14 @@ class Protobuf < Formula
                           "--with-zlib"
     system "make"
     system "make install"
+
+    # Install editor support and documentation
+    (share+'doc/protobuf').install %w( editors examples )
+  end
+
+  def caveats; <<-EOS.undent
+      Editor support and examples have been installed to:
+        #{HOMEBREW_PREFIX}/share/doc/protobuf
+    EOS
   end
 end
