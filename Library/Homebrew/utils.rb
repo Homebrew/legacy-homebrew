@@ -31,6 +31,10 @@ class Tty
   end
 end
 
+def in_path? prog
+  system "/usr/bin/which -s #{prog}"
+end
+
 # args are additional inputs to puts until a nil arg is encountered
 def ohai title, *sput
   title = title.to_s[0, Tty.width - 4] unless ARGV.verbose?
@@ -141,9 +145,9 @@ def exec_editor *args
 
   editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
   if editor.nil?
-    editor = if system "/usr/bin/which -s mate"
+    editor = if in_path? "mate"
       'mate'
-    elsif system "/usr/bin/which -s edit"
+    elsif in_path? "edit"
       'edit' # BBEdit / TextWrangler
     else
       '/usr/bin/vim' # Default to vim
@@ -293,7 +297,7 @@ module MacOS extend self
 
   def xcode_version
     @xcode_version ||= begin
-      raise unless system "/usr/bin/which -s xcodebuild"
+      raise unless in_path? "xcodebuild"
       `xcodebuild -version 2>&1` =~ /Xcode (\d(\.\d)*)/
       raise if $1.nil?
       $1
@@ -355,8 +359,7 @@ module MacOS extend self
     # http://github.com/mxcl/homebrew/issues/#issue/48
 
     %w[port fink].each do |ponk|
-      path = `/usr/bin/which -s #{ponk}`
-      return ponk unless path.empty?
+      return ponk unless in_path? ponk
     end
 
     # we do the above check because macports can be relocated and fink may be
