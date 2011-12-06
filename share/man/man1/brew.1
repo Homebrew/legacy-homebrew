@@ -47,14 +47,11 @@ Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is su
 .SH "COMMANDS"
 .
 .TP
-\fBaudit [\-\-strict]\fR [\fIformulae\fR]
+\fBaudit\fR [\fIformulae\fR]
 Check \fIformulae\fR for Homebrew coding style violations\. This should be run before submitting a new formula\.
 .
 .IP
 If no \fIformulae\fR are provided, all of them are checked\.
-.
-.IP
-If \fB\-\-strict\fR is passed, perform additional stricter checks that may not need to be fixed before submitting\.
 .
 .IP
 \fBaudit\fR exits with a non\-zero status if any errors are found\. This is useful, for instance, for implementing pre\-commit hooks\.
@@ -84,7 +81,7 @@ If \fB\-\-autotools\fR is passed, create a basic template for an Autotools\-styl
 If \fB\-\-no\-fetch\fR is passed, Homebrew will not download \fIURL\fR to the cache and will thus not add the MD5 to the formula for you\.
 .
 .TP
-\fBdeps [\-\-1] [\-n] [\-\-all]\fR \fIformula\fR
+\fBdeps [\-\-1] [\-n] [\-\-tree] [\-\-all]\fR \fIformula\fR
 Show \fIformula\fR\'s dependencies\.
 .
 .IP
@@ -92,6 +89,9 @@ If \fB\-\-1\fR is passed, only show dependencies one level down, instead of recu
 .
 .IP
 If \fB\-n\fR is passed, show dependencies in topological order\.
+.
+.IP
+If \fB\-\-tree\fR is passed, show dependencies as a tree\.
 .
 .IP
 If \fB\-\-all\fR is passed, show dependencies for all formulae\.
@@ -158,7 +158,7 @@ To view formula history locally: \fBbrew log \-p <formula>\fR\.
 Print the name and version that will be detected for \fIURL\fR\.
 .
 .TP
-\fBinstall [\-\-force] [\-\-debug] [\-\-ignore\-dependencies] [\-\-use\-clang] [\-\-use\-gcc] [\-\-use\-llvm] [\-\-build\-from\-source] [\-\-HEAD]\fR \fIformula\fR
+\fBinstall [\-\-force] [\-\-debug] [\-\-ignore\-dependencies] [\-\-fresh] [\-\-use\-clang] [\-\-use\-gcc] [\-\-use\-llvm] [\-\-build\-from\-source] [\-\-devel] [\-\-HEAD]\fR \fIformula\fR
 Install \fIformula\fR\.
 .
 .IP
@@ -174,6 +174,9 @@ If \fB\-\-debug\fR is passed and brewing fails, open a shell inside the temporar
 If \fB\-\-ignore\-dependencies\fR is passed, skip installing any dependencies of any kind\. If they are not already present, the formula will probably fail to install\.
 .
 .IP
+If \fB\-\-fresh\fR is passed, the installation process will not re\-use any options from previous installs\.
+.
+.IP
 If \fB\-\-use\-clang\fR is passed, attempt to compile using clang\.
 .
 .IP
@@ -186,7 +189,10 @@ If \fB\-\-use\-llvm\fR is passed, attempt to compile using the LLVM front\-end t
 If \fB\-\-build\-from\-source\fR is passed, compile from source even if a bottle is provided for \fIformula\fR\.
 .
 .IP
-If \fB\-\-HEAD\fR is passed, and \fIformula\fR defines it, install the HEAD version, aka master, trunk, unstable, dev\.
+If \fB\-\-devel\fR is passed, and \fIformula\fR defines it, install the development version\.
+.
+.IP
+If \fB\-\-HEAD\fR is passed, and \fIformula\fR defines it, install the HEAD version, aka master, trunk, unstable\.
 .
 .IP
 To install a newer version of HEAD use \fBbrew rm <foo> && brew install \-\-HEAD <foo>\fR or \fBbrew install \-\-force \-\-HEAD <foo>\fR\.

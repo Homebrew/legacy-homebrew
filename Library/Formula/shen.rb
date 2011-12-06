@@ -2,7 +2,6 @@ require 'formula'
 class Shen < Formula
   url 'http://www.shenlanguage.org/download/Shen2.0.zip'
   homepage 'http://www.lambdassociates.org/'
-  version '2.0'
   md5 '70770fe417e9d1a104f952a6acafb9ee'
 
   case

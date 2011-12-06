@@ -1,9 +1,9 @@
 require 'formula'
 
 class Riak < Formula
-  url 'http://downloads.basho.com/riak/CURRENT/riak-1.0.1.tar.gz'
+  url 'http://downloads.basho.com/riak/CURRENT/riak-1.0.2.tar.gz'
   homepage 'http://wiki.basho.com/Riak.html'
-  md5 '7334e56ba6449f3c72d90f9acab0493c'
+  md5 '322a1c66374f83a50519401e0386b15b'
 
   head 'https://github.com/basho/riak.git'
 
@@ -23,7 +23,7 @@ class Riak < Formula
   def install
     ENV.deparallelize
     system "make all rel"
-    %w(riak riak-admin).each do |file|
+    %w(riak riak-admin search-cmd).each do |file|
       inreplace "rel/riak/bin/#{file}", /^RUNNER_BASE_DIR=.+$/, "RUNNER_BASE_DIR=#{libexec}"
     end
 
@@ -32,6 +32,7 @@ class Riak < Formula
     bin.mkpath
     ln_s libexec+'bin/riak', bin
     ln_s libexec+'bin/riak-admin', bin
+    ln_s libexec+'bin/search-cmd', bin
 
     (prefix + 'data/ring').mkpath
     (prefix + 'data/dets').mkpath

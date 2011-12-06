@@ -3,11 +3,12 @@ require 'formula'
 def build_tests?; ARGV.include? '--test'; end
 
 class Glib < Formula
-  homepage 'http://developer.gnome.org/glib/2.28/'
-  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.28/glib-2.28.8.tar.bz2'
-  sha256 '222f3055d6c413417b50901008c654865e5a311c73f0ae918b0a9978d1f9466f'
+  homepage 'http://developer.gnome.org/glib/'
+  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.30/glib-2.30.2.tar.bz2'
+  sha256 '94b1f1a1456c67060ca868d299bef3f7268a2c1c5c360aabb7149d4d9b2fdcd3'
 
   depends_on 'gettext'
+  depends_on 'libffi'
 
   fails_with_llvm "Undefined symbol errors while linking" unless MacOS.lion?
 
@@ -18,10 +19,10 @@ class Glib < Formula
   depends_on 'libiconv'
 
   def patches
-    mp = "https://svn.macports.org/repository/macports/trunk/dports/devel/glib2/files/"
+    mp = "https://svn.macports.org/repository/macports/!svn/bc/87537/trunk/dports/devel/glib2/files/"
     {
       :p0 => [
-        mp+"patch-configure.ac.diff",
+        mp+"patch-configure.diff",
         mp+"patch-glib-2.0.pc.in.diff",
         mp+"patch-glib_gunicollate.c.diff",
         mp+"patch-gi18n.h.diff",
@@ -69,7 +70,7 @@ class Glib < Formula
     system "./configure", *args
 
     # Fix for 64-bit support, from MacPorts
-    curl "https://svn.macports.org/repository/macports/trunk/dports/devel/glib2/files/config.h.ed", "-O"
+    curl "https://svn.macports.org/repository/macports/!svn/bc/87537/trunk/dports/devel/glib2/files/config.h.ed", "-O"
     system "ed - config.h < config.h.ed"
 
     system "make"

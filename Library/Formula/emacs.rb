@@ -1,8 +1,9 @@
 require 'formula'
 
 class Emacs < Formula
-  url 'http://ftpmirror.gnu.org/emacs/emacs-23.3a.tar.bz2'
-  md5 'f2cf8dc6f28f8ae59bc695b4ddda339c'
+  url 'http://ftpmirror.gnu.org/emacs/emacs-23.3b.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/emacs/emacs-23.3b.tar.bz2'
+  md5 '917ce0054ef63773078a6e99b55df1ee'
   homepage 'http://www.gnu.org/software/emacs/'
 
   fails_with_llvm "Duplicate symbol errors while linking.", :build => 2334
@@ -11,7 +12,7 @@ class Emacs < Formula
   skip_clean ["bin/emacs", "bin/emacs-23.3", "bin/emacs-24.0.50"]
 
   if ARGV.include? "--use-git-head"
-    head 'git://repo.or.cz/emacs.git'
+    head 'git://git.sv.gnu.org/emacs.git'
   else
     head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
   end
@@ -75,10 +76,12 @@ class Emacs < Formula
       system "make install"
       prefix.install "nextstep/Emacs.app"
 
-      bin.mkpath
-      ln_s prefix+'Emacs.app/Contents/MacOS/Emacs', bin+'emacs'
-      ln_s prefix+'Emacs.app/Contents/MacOS/bin/emacsclient', bin
-      ln_s prefix+'Emacs.app/Contents/MacOS/bin/etags', bin
+      unless ARGV.build_head?
+        bin.mkpath
+        ln_s prefix+'Emacs.app/Contents/MacOS/Emacs', bin+'emacs'
+        ln_s prefix+'Emacs.app/Contents/MacOS/bin/emacsclient', bin
+        ln_s prefix+'Emacs.app/Contents/MacOS/bin/etags', bin
+      end
     else
       if ARGV.include? "--with-x"
         ENV.x11
@@ -95,7 +98,7 @@ class Emacs < Formula
   end
 
   def caveats
-    s = "For build options see:\n  brew options emacs\n\n"
+    s = ""
     if ARGV.include? "--cocoa"
       s += <<-EOS.undent
         Emacs.app was installed to:

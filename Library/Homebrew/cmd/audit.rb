@@ -29,6 +29,11 @@ def audit_formula_text name, text
     problems << " * Check indentation of 'depends_on'."
   end
 
+  # cmake, pkg-config, and scons are build-time deps
+  if text =~ /depends_on ['"](cmake|pkg-config|scons|smake)['"]$/
+    problems << " * #{$1} dependency should be \"depends_on '#{$1}' => :build\""
+  end
+
   # FileUtils is included in Formula
   if text =~ /FileUtils\.(\w+)/
     problems << " * Don't need 'FileUtils.' before #{$1}."
@@ -118,7 +123,17 @@ def audit_formula_text name, text
   # xcodebuild should specify SYMROOT
   if text =~ /xcodebuild/ and not text =~ /SYMROOT=/
     problems << " * xcodebuild should be passed an explicit \"SYMROOT\""
-  end if strict?
+  end
+
+  # using ARGV.flag? for formula options is generally a bad thing
+  if text =~ /ARGV\.flag\?/
+    problems << " * Use 'ARGV.include?' instead of 'ARGV.flag?'"
+  end
+
+  # MacPorts patches should specify a revision, not trunk
+  if text =~ %r[macports/trunk]
+    problems << " * MacPorts patches should specify a revision instead of trunk"
+  end
 
   return problems
 end
@@ -128,7 +143,7 @@ def audit_formula_options f, text
 
   # Find possible options
   options = []
-  text.scan(/ARGV\.(include|flag)\?[ ]*\(?(['"])(.+?)\2/) { |m| options << m[2] }
+  text.scan(/ARGV\.include\?[ ]*\(?(['"])(.+?)\1/) { |m| options << m[1] }
   options.reject! {|o| o.include? "#"}
   options.uniq!
 
@@ -181,7 +196,16 @@ def audit_formula_urls f
   end
 
   urls = [(f.url rescue nil), (f.head rescue nil)].reject {|p| p.nil?}
+  urls.uniq! # head-only formulae result in duplicate entries
 
+  # Check GNU urls; doesn't apply to mirrors
+  urls.each do |p|
+    if p =~ %r[^(https?|ftp)://(.+)/gnu/]
+      problems << " * \"ftpmirror.gnu.org\" is preferred for GNU software."
+    end
+  end
+
+  # the rest of the checks apply to mirrors as well
   f.mirrors.each do |m|
     mirror = m.values_at :url
     urls << (mirror.to_s rescue nil)
@@ -220,13 +244,6 @@ def audit_formula_urls f
     end
   end
 
-  # Check GNU urls
-  urls.each do |p|
-    if p =~ %r[^(https?|ftp)://(.+)/gnu/]
-      problems << " * \"ftpmirror.gnu.org\" is preferred for GNU software."
-    end
-  end
-
   return problems
 end
 
@@ -240,7 +257,7 @@ def audit_formula_instance f
   end
 
   # Check for things we don't like to depend on.
-  # We allow non-Homebrew installs whenenever possible.
+  # We allow non-Homebrew installs whenever possible.
   f.deps.each do |d|
     begin
       dep_f = Formula.factory d
@@ -249,8 +266,8 @@ def audit_formula_instance f
     end
 
     case d
-    when "git"
-      problems << " * Don't use Git as a dependency; we allow non-Homebrew git installs."
+    when "git", "python", "ruby", "emacs", "mysql", "postgresql"
+      problems << " * Don't use #{d} as a dependency; we allow non-Homebrew #{d} installs."
     end
   end
 
@@ -258,16 +275,6 @@ def audit_formula_instance f
   if f.homepage =~ %r[^https?://code\.google\.com/p/[^/]+[^/]$]
     problems << " * Google Code homepage should end with a slash."
   end
-
-  return problems
-end
-
-def audit_formula_caveats f
-  problems = []
-
-  if f.caveats.to_s =~ /^\s*\$\s+/
-    problems << " * caveats should not use '$' prompts in multiline commands."
-  end if strict?
 
   return problems
 end
@@ -280,7 +287,6 @@ module Homebrew extend self
       problems = []
       problems += audit_formula_instance f
       problems += audit_formula_urls f
-      problems += audit_formula_caveats f
 
       perms = File.stat(f.path).mode
       if perms.to_s(8) != "100644"
@@ -302,7 +308,7 @@ module Homebrew extend self
 
       problems += audit_formula_text(f.name, text_without_patch)
       problems += audit_formula_options(f, text_without_patch)
-      problems += audit_formula_version(f, text_without_patch) if strict?
+      problems += audit_formula_version(f, text_without_patch)
 
       unless problems.empty?
         errors = true
