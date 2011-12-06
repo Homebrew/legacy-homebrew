@@ -1,7 +1,7 @@
 require 'formula'
 
 class Stunnel < Formula
-  url 'ftp://ftp.stunnel.org/stunnel/stunnel-4.49.tar.gz'
+  url 'ftp://ftp.stunnel.org/stunnel/archive/4.x/stunnel-4.49.tar.gz'
   homepage 'http://www.stunnel.org/'
   sha256 'dcb0e1f21e9fcf56f4d67bc7a5a4ef8720845b61063a749953417db2616cb20d'
 
