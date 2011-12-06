@@ -8,6 +8,12 @@ class Libnfc < Formula
   depends_on 'libusb-compat'
 
   def install
+    if ARGV.build_head?
+      ENV['ACLOCAL'] = "/usr/bin/aclocal -I m4 -I #{HOMEBREW_PREFIX}/share/aclocal"
+
+      system "autoreconf -vis"
+    end
+
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
