@@ -6,6 +6,6 @@ class Xf < Formula
   md5 'cff2d95591e721526068b53e5f8ce2d7'
 
   def install
-      bin.install 'xf'
+    bin.install 'xf'
   end
 end
