@@ -13,14 +13,14 @@ class Vmtouch < Formula
   md5 '575d072ee193784b3e453f90e44cb070'
 
   def install
-    system "/usr/bin/gcc -Wall -O3 -o vmtouch vmtouch.c"
+    system "#{ENV.cc} #{ENV.cflags} -o vmtouch vmtouch.c"
     bin.install 'vmtouch'
-    
+
     # Technique for installing manpages copied from the git.rb formula
     VmtouchManual.new.brew { man8.install Dir['*'] }
   end
 
   def test
-    system vmtouch
+    system "#{bin}/vmtouch #{bin}/vmtouch"
   end
 end
