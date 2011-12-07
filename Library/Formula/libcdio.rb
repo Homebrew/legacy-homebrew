@@ -2,6 +2,7 @@ require 'formula'
 
 class Libcdio < Formula
   url 'http://ftpmirror.gnu.org/libcdio/libcdio-0.82.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/libcdio/libcdio-0.82.tar.gz'
   md5 '1c29b18e01ab2b966162bc727bf3c360'
   homepage 'http://www.gnu.org/software/libcdio/'
 

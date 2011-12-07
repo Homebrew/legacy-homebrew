@@ -2,6 +2,7 @@ require 'formula'
 
 class Emacs < Formula
   url 'http://ftpmirror.gnu.org/emacs/emacs-23.3b.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/emacs/emacs-23.3b.tar.bz2'
   md5 '917ce0054ef63773078a6e99b55df1ee'
   homepage 'http://www.gnu.org/software/emacs/'
 
@@ -21,7 +22,7 @@ class Emacs < Formula
       ["--cocoa", "Build a Cocoa version of emacs"],
       ["--srgb", "Enable sRGB colors in the Cocoa version of emacs"],
       ["--with-x", "Include X11 support"],
-      ["--use-git-head", "Use repo.or.cz git mirror for HEAD builds"],
+      ["--use-git-head", "Use Savannah git mirror for HEAD builds"],
     ]
   end
 
@@ -121,10 +122,10 @@ class Emacs < Formula
         brew install emacs --HEAD --use-git-head
 
       There is inevitably some lag between checkins made to the official Emacs bazaar
-      repository and their appearance on the repo.or.cz mirror. See
-      http://repo.or.cz/w/emacs.git for the mirror's status. The Emacs devs do not
-      provide support for the git mirror, and they might reject bug reports filed
-      with git version information. Use it at your own risk.
+      repository and their appearance on the Savannah mirror. See
+      http://git.savannah.gnu.org/cgit/emacs.git for the mirror's status. The Emacs
+      devs do not provide support for the git mirror, and they might reject bug
+      reports filed with git version information. Use it at your own risk.
     EOS
 
     return s
