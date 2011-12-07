@@ -6,34 +6,35 @@ class Colordiff < Formula
   md5 '31864847eaa4e900f72bbb6bbc64f1ec'
 
   def patches
-    DATA
-  end
+    # Fixes the path to colordiffrc.
+    # Uses git-diff colors due to Git popularity.
+    # Improves wdiff support through better regular expressions.
+    DATA end
 
   def install
-    bin.mkpath
     bin.install "colordiff.pl" => "colordiff"
     bin.install "cdiff.sh" => "cdiff"
-    etc.mkpath
     etc.install "colordiffrc"
     etc.install "colordiffrc-lightbg"
-    man1.mkpath
     man1.install "colordiff.1"
     man1.install "cdiff.1"
   end
 end
 __END__
---- a/colordiff.pl	2009-01-28 15:12:10.000000000 -0500
-+++ b/colordiff.pl	2011-09-17 13:15:46.000000000 -0400
+diff --git 1/a/colordiff.pl 2/b/colordiff.pl
+index 9e74e5c..c0649aa 100755
+--- a/colordiff.pl
++++ b/colordiff.pl
 @@ -23,6 +23,7 @@
- 
+
  use strict;
  use Getopt::Long qw(:config pass_through);
 +use File::Basename;
  use IPC::Open2;
- 
+
  my $app_name     = 'colordiff';
-@@ -63,7 +64,7 @@
- 
+@@ -63,7 +64,7 @@ my $cvs_stuff  = $colour{green};
+
  # Locations for personal and system-wide colour configurations
  my $HOME   = $ENV{HOME};
 -my $etcdir = '/etc';
@@ -41,3 +42,29 @@ __END__
  my ($setting, $value);
  my @config_files = ("$etcdir/colordiffrc");
  push (@config_files, "$ENV{HOME}/.colordiffrc") if (defined $ENV{HOME});
+@@ -418,8 +419,8 @@ foreach (@inputstream) {
+         }
+     }
+     elsif ($diff_type eq 'wdiff') {
+-        $_ =~ s/(\[-[^]]*?-\])/$file_old$1$colour{off}/g;
+-        $_ =~ s/(\{\+[^]]*?\+\})/$file_new$1$colour{off}/g;
++        $_ =~ s/(\[-([^-]*(-[^]])?)*-\])/$file_old$1$colour{off}/g;
++        $_ =~ s/(\{\+([^+]*(\+[^}])?)*\+\})/$file_new$1$colour{off}/g;
+     }
+     elsif ($diff_type eq 'debdiff') {
+         $_ =~ s/(\[-[^]]*?-\])/$file_old$1$colour{off}/g;
+diff --git 1/a/colordiffrc 2/b/colordiffrc
+index 6e75b2b..7712014 100644
+--- a/colordiffrc
++++ b/colordiffrc
+@@ -20,7 +20,7 @@ color_patches=no
+ # this, use the default output colour"
+ #
+ plain=off
+-newtext=blue
++newtext=green
+ oldtext=red
+-diffstuff=magenta
+-cvsstuff=green
++diffstuff=cyan
++cvsstuff=magenta
