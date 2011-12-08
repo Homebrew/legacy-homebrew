@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "November 2011" "Homebrew" "brew"
+.TH "BREW" "1" "December 2011" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -374,6 +374,10 @@ If set, instructs Homebrew to use the give folder as the download cache\. Otherw
 .
 .IP
 This can be used to keep downloads out of your home folder, if you have it mounted on an SSD or are using FileVault for instance\.
+.
+.TP
+HOMEBREW_CURL_VERBOSE
+If set, Homebrew will pass \fB\-\-verbose\fR when invoking \fBcurl\fR(1)\.
 .
 .TP
 HOMEBREW_DEBUG
