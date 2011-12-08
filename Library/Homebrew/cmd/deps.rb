@@ -2,8 +2,9 @@ require 'formula'
 
 def recursive_deps_tree f, level
   f.deps.each do |dep|
-    puts "> "*level+dep
-    recursive_deps_tree(Formula.factory(dep), level+1)
+    dep = Formula.factory(dep)
+    puts "> "*level+"#{dep}#{'*' if dep.installed?}"
+    recursive_deps_tree(dep, level+1)
   end
 end
 
@@ -22,7 +23,9 @@ module Homebrew extend self
     else
       all_deps = ARGV.formulae.map{ |f| ARGV.one? ? f.deps : f.recursive_deps }.intersection
       all_deps.sort! unless ARGV.include? "-n"
-      puts all_deps
+      all_deps.each do |dep|
+        puts "#{dep}#{'*' if Formula.factory(dep).installed?}"
+      end
     end
   end
 end
