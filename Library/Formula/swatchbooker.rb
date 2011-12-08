@@ -5,21 +5,13 @@ class Swatchbooker < Formula
   homepage 'http://www.selapa.net/swatchbooker/'
   md5 'd5c2d6d58679b233e2c298381b164acd'
 
-  depends_on 'lcms'
+  depends_on 'little-cms'
   depends_on 'pil'
   depends_on 'pyqt'
 
   def install
     # Tell launching shell scipts where the python code actually is
-    inreplace "data/swatchbooker" do |s|
-      s.gsub! "/usr/lib",
-              "#{HOMEBREW_PREFIX}/lib"
-    end
-    inreplace "data/sbconvert" do |s|
-      s.gsub! "/usr/lib",
-              "#{HOMEBREW_PREFIX}/lib"
-    end
-    inreplace "data/sbconvertor" do |s|
+    inreplace ["data/swatchbooker","data/sbconvert","data/sbconvertor"] do |s|
       s.gsub! "/usr/lib",
               "#{HOMEBREW_PREFIX}/lib"
     end
