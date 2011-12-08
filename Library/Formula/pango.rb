@@ -18,6 +18,7 @@ class Pango < Formula
   end
 
   def install
+    ENV.x11
     system "./configure", "--disable-dependency-tracking", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--enable-man",

@@ -1,8 +1,8 @@
 require 'formula'
 
 class Libsgml < Formula
-  url 'http://www.hick.org/code/skape/libsgml/libsgml-1.1.4.tar.gz'
-  homepage 'http://www.hick.org'
+  url 'http://hick.org/code/skape/libsgml/libsgml-1.1.4.tar.gz'
+  homepage 'http://hick.org'
   md5 'a3ba2f8c19faf1a53182d9c6fab22e58'
 
   def patches
