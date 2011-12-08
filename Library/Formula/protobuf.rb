@@ -19,8 +19,8 @@ class Protobuf < Formula
     system "make"
     system "make install"
 
-    # Install editor support and documentation
-    (share+'doc/protobuf').install %w( editors examples )
+    # Install editor support and examples
+    doc.install %w( editors examples )
 
     # Install manpage protoc.1 from Debian package
     #  protobuf-compiler_2.4.1-1
