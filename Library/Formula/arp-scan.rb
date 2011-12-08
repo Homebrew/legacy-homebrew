@@ -6,12 +6,12 @@ class ArpScan < Formula
   md5 'be8826574ec566217eb7ca040fe472f9'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end
 
   def test
-    system "arp-scan -V"
+    system "#{bin}/arp-scan -V"
   end
 end
