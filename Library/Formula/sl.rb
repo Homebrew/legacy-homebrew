@@ -6,6 +6,11 @@ class Sl < Formula
   homepage 'http://packages.debian.org/source/stable/sl'
   md5 'd0d997b964bb3478f7f4968eee13c698'
 
+  def patches
+    # just improve its functionality.
+    'http://www.izumix.org.uk/sl/sl5-1.patch'
+  end
+
   def install
     inreplace 'Makefile' do |s|
       s.change_make_var! 'CC', ENV.cc
