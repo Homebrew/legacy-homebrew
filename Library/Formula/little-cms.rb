@@ -7,7 +7,7 @@ class LittleCms < Formula
   md5 '8af94611baf20d9646c7c2c285859818'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug"
+    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--with-python"
     system "make install"
   end
 end
