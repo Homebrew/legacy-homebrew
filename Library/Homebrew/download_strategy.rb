@@ -77,7 +77,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       magic_bytes = "____pkg"
     else
       # get the first four bytes
-      File.open(@tarball_path) { |f| magic_bytes = f.read(4) }
+      File.open(@tarball_path) { |f| magic_bytes = f.read(300) }
     end
 
     # magic numbers stolen from /usr/share/file/magic/
@@ -85,7 +85,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     when /^PK\003\004/ # .zip archive
       quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @tarball_path
       chdir
-    when /^\037\213/, /^BZh/, /^\037\235/  # gzip/bz2/compress compressed
+    when /^\037\213/, /^BZh/, /^\037\235/, /.{256}ustar(\0|\040\040\0)/  # gzip/bz2/compress/tar compressed
       # TODO check if it's really a tar archive
       safe_system '/usr/bin/tar', 'xf', @tarball_path
       chdir
