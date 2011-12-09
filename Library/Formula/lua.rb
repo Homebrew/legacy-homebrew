@@ -28,6 +28,7 @@ class Lua < Formula
     inreplace 'src/Makefile' do |s|
       s.remove_make_var! 'CC'
       s.change_make_var! 'CFLAGS', "#{ENV.cflags} $(MYCFLAGS)"
+      s.gsub! '/usr/local', HOMEBREW_PREFIX
     end
 
     # Fix path in the config header
