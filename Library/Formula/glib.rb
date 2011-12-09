@@ -10,13 +10,7 @@ class Glib < Formula
   depends_on 'gettext'
   depends_on 'libffi'
 
-  fails_with_llvm "Undefined symbol errors while linking" unless MacOS.lion?
-
-  # Lion and Snow Leopard don't have a 64 bit version of the iconv_open
-  # function. The fact that Lion still doesn't is ridiculous. But we're as
-  # much to blame. Nobody reported the bug FFS. And I'm still not going to
-  # because I'm in a hurry here.
-  depends_on 'libiconv'
+  fails_with_llvm "Undefined symbol errors while linking", :build => 2334
 
   def patches
     mp = "https://svn.macports.org/repository/macports/!svn/bc/87537/trunk/dports/devel/glib2/files/"
@@ -28,7 +22,8 @@ class Glib < Formula
         mp+"patch-gi18n.h.diff",
         mp+"patch-gio_xdgmime_xdgmime.c.diff",
         mp+"patch-gio_gdbusprivate.c.diff"
-      ]
+      ],
+      :p1 => [ DATA ]
     }
   end
 
@@ -47,7 +42,6 @@ class Glib < Formula
 
     args = ["--disable-dependency-tracking", "--disable-rebuilds",
             "--prefix=#{prefix}",
-            "--with-libiconv=gnu",
             "--disable-dtrace"]
 
     args << "--disable-debug" unless build_tests?
@@ -96,3 +90,20 @@ class Glib < Formula
     (share+'gtk-doc').rmtree
   end
 end
+
+# glib is being overzealous about trying to detect situations where you use headers from one version
+# of iconv with libraries from another. The libiconv that comes with OS X is actually GNU libiconv,
+# but symbols have standard name like iconv_open instead of libiconv_open, and glib gets a bit
+# confused. This patch solves the problem by disabling glib's faulty check.
+# Bug filed with upstream at https://bugzilla.gnome.org/show_bug.cgi?id=665705
+__END__
+diff --git a/glib/gconvert.c b/glib/gconvert.c
+index b363bca..9924c6c 100644
+--- a/glib/gconvert.c
++++ b/glib/gconvert.c
+@@ -62,7 +62,6 @@
+ #error GNU libiconv in use but included iconv.h not from libiconv
+ #endif
+ #if !defined(USE_LIBICONV_GNU) && defined (_LIBICONV_H)
+-#error GNU libiconv not in use but included iconv.h is from libiconv
+ #endif
