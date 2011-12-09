@@ -18,6 +18,7 @@ class Fceux < Formula
   
   def patches
     # fixes compilation errors on osx -- patch data at tail
+	# patch merged upstream in 2.1.6
     DATA
   end
 
