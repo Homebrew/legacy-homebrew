@@ -1,10 +1,9 @@
 require 'formula'
 
 class BulkExtractor < Formula
-  url 'http://afflib.org/downloads/bulk_extractor-1.1.0_beta8.tar.gz'
-  version '1.1.0-beta8'
+  url 'http://afflib.org/downloads/bulk_extractor-1.1.1.tar.gz'
   homepage 'http://afflib.org/software/bulk_extractor'
-  md5 '372d9e6642e68b28fceeac92cd7c33b4'
+  md5 'ce95df931f63dedd6d0e5bd1a57288a7'
 
   depends_on 'afflib' => :optional
   depends_on 'exiv2' => :optional
