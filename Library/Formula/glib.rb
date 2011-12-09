@@ -56,10 +56,16 @@ class Glib < Formula
       system "autoconf"
     end
 
-    # hack so that we don't have to depend on pkg-config
-    # http://permalink.gmane.org/gmane.comp.package-management.pkg-config/627
+    # glib and pkg-config <= 0.26 have circular dependencies, so we should build glib without pkg-config
+    # The pkg-config dependency can be eliminated if certain env variables are set
+    # Note that this *may* need to be updated if any new dependencies are added in the future
+    # See http://permalink.gmane.org/gmane.comp.package-management.pkg-config/627
     ENV['ZLIB_CFLAGS'] = ''
     ENV['ZLIB_LIBZ'] = '-l'
+    # libffi include paths are dramatically ugly
+    libffi = Formula.factory('libffi')
+    ENV['LIBFFI_CFLAGS'] = "-I #{libffi.lib}/libffi-#{libffi.version}/include"
+    ENV['LIBFFI_LIBS'] = '-lffi'
 
     system "./configure", *args
 
