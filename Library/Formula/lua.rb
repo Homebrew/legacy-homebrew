@@ -92,7 +92,7 @@ index e4a3cd6..e35a1b5 100644
  $(LUA_A): $(CORE_O) $(LIB_O)
 -	$(AR) $@ $?
 -	$(RANLIB) $@
-+	$(CC) -dynamiclib -install_name /usr/local/lib/liblua.5.1.dylib \
++	$(CC) -dynamiclib -install_name HOMEBREW_PREFIX/lib/liblua.5.1.dylib \
 +		-compatibility_version 5.1 -current_version 5.1.4 \
 +		-o liblua.5.1.4.dylib $^
  
