@@ -135,6 +135,15 @@ def audit_formula_text name, text
     problems << " * MacPorts patches should specify a revision instead of trunk"
   end
 
+  # Avoid hard-coding compilers
+  if text =~ %r[(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]]
+    problems << " * Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
+  end
+
+  if text =~ %r[(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?((g|llvm-g|clang)\+\+)['" ]]
+    problems << " * Use \"\#{ENV.cxx}\" instead of hard-coding \"#{$3}\""
+  end
+
   return problems
 end
 
