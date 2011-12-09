@@ -7,7 +7,7 @@ class Tth < Formula
   version '4.00'
 
   def install
-    system 'gcc -Os -o tth tth.c'
+    system "#{ENV.cc} -o tth tth.c"
     bin.install %w(tth latex2gif ps2gif ps2png)
     man1.install 'tth.1'
   end

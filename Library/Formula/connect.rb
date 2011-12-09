@@ -7,7 +7,7 @@ class Connect < Formula
   md5 '5165e2fcd2cf58899f34878fe6b447c6'
 
   def install
-    system "gcc", "connect.c", "-o", "connect", "-lresolv"
+    system "#{ENV.cc}", "connect.c", "-o", "connect", "-lresolv"
     bin.install "connect"
   end
 end
