@@ -10,7 +10,6 @@ class Fceux < Formula
   depends_on 'libzip'
   depends_on 'gtk+' unless ARGV.include? "--no-gtk"
 
-  # broken right now
   def options
     [
       ['--no-gtk', "Don't build with Gtk+ support"]
@@ -26,10 +25,9 @@ class Fceux < Formula
     if ARGV.include? "--no-gtk"
       system "sed \"s/\\(GTK.\\+ \\)1/\\10/g\" SConstruct > SConstruct"
     end
-    system "cat SConstruct"
     system "scons"
-    system "mkdir -p #{prefix}/bin"
-    system "install -m755 ./src/fceux #{prefix}/bin/"
+	bin.install '/src/fceux'
+	chmod 0755, bin+'fceux'
   end
 end
 
