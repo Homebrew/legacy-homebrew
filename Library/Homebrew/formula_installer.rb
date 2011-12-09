@@ -2,6 +2,7 @@ require 'exceptions'
 require 'formula'
 require 'keg'
 require 'set'
+require 'tab'
 
 class FormulaInstaller
   attr :f
@@ -27,15 +28,18 @@ class FormulaInstaller
       needed_deps = f.recursive_deps.reject{ |d| d.installed? }
       unless needed_deps.empty?
         needed_deps.each do |dep|
-          fi = FormulaInstaller.new(dep)
-          fi.ignore_deps = true
-          fi.show_header = false
-          oh1 "Installing #{f} dependency: #{dep}"
-          fi.install
-          fi.caveats
-          fi.finish
+          if dep.explicitly_requested?
+            install_dependency dep
+          else
+            ARGV.filter_for_dependencies do
+              # Re-create the formula object so that args like `--HEAD` won't
+              # affect properties like the installation prefix. Also need to
+              # re-check installed status as the Formula may have changed.
+              dep = Formula.factory dep.name
+              install_dependency dep unless dep.installed?
+            end
+          end
         end
-
         # now show header as all the deps stuff has clouded the original issue
         show_header = true
       end
@@ -55,6 +59,16 @@ class FormulaInstaller
     end
 
     raise "Nothing was installed to #{f.prefix}" unless f.installed?
+  end
+
+  def install_dependency dep
+    fi = FormulaInstaller.new dep
+    fi.ignore_deps = true
+    fi.show_header = false
+    oh1 "Installing #{f} dependency: #{dep}"
+    fi.install
+    fi.caveats
+    fi.finish
   end
 
   def caveats
@@ -104,6 +118,13 @@ class FormulaInstaller
     # I'm guessing this is not a good way to do this, but I'm no UNIX guru
     ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
 
+    args = ARGV.clone
+    unless args.include? '--fresh'
+      previous_install = Tab.for_formula f
+      args.concat previous_install.used_options
+      args.uniq! # Just in case some dupes were added
+    end
+
     fork do
       begin
         read.close
@@ -113,7 +134,7 @@ class FormulaInstaller
              '-rbuild',
              '--',
              f.path,
-             *ARGV.options_only
+             *args.options_only
       rescue Exception => e
         Marshal.dump(e, write)
         write.close
@@ -127,6 +148,9 @@ class FormulaInstaller
       data = read.read
       raise Marshal.load(data) unless data.nil? or data.empty?
       raise "Suspicious installation failure" unless $?.success?
+
+      # Write an installation receipt (a Tab) to the prefix
+      Tab.for_install(f, args).write if f.installed?
     end
   end
 

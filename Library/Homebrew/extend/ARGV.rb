@@ -66,6 +66,10 @@ module HomebrewArgvExtension
     flag? '--HEAD'
   end
 
+  def build_devel?
+    include? '--devel'
+  end
+
   def build_universal?
     include? '--universal'
   end
@@ -90,6 +94,26 @@ module HomebrewArgvExtension
   def usage
     require 'cmd/help'
     Homebrew.help_s
+  end
+
+  def filter_for_dependencies
+    # Clears some flags that affect installation, yields to a block, then
+    # restores to original state.
+    old_args = clone
+
+    flags_to_clear = %w[
+      --debug -d
+      --devel
+      --fresh
+      --interactive -i
+      --HEAD
+    ]
+    flags_to_clear.concat %w[--verbose -v] if quieter?
+    flags_to_clear.each {|flag| delete flag}
+
+    yield
+
+    replace old_args
   end
 
   private
