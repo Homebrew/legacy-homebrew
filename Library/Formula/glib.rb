@@ -10,7 +10,7 @@ class Glib < Formula
   depends_on 'gettext'
   depends_on 'libffi'
 
-  fails_with_llvm "Undefined symbol errors while linking" unless MacOS.lion?
+  fails_with_llvm "Undefined symbol errors while linking", :build => 2334
 
   def patches
     mp = "https://svn.macports.org/repository/macports/!svn/bc/87537/trunk/dports/devel/glib2/files/"
