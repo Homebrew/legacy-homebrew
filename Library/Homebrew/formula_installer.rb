@@ -232,7 +232,7 @@ class FormulaInstaller
   def check_manpages
     # Check for man pages that aren't in share/man
     if (f.prefix+'man').exist?
-      opoo 'A top-level "man" folder was found.'
+      opoo 'A top-level "man" directory was found.'
       puts "Homebrew requires that man pages live under share."
       puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
       @show_summary_heading = true
@@ -242,7 +242,7 @@ class FormulaInstaller
   def check_infopages
     # Check for info pages that aren't in share/info
     if (f.prefix+'info').exist?
-      opoo 'A top-level "info" folder was found.'
+      opoo 'A top-level "info" directory was found.'
       puts "Homebrew suggests that info pages live under share."
       puts 'This can often be fixed by passing "--infodir=#{info}" to configure.'
       @show_summary_heading = true
