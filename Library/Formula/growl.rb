@@ -9,11 +9,11 @@ class ISO8601ParserUnparser < Formula
 end
 
 class Growl < Formula
-  url 'http://growl.info/hg/growl/archive/59aef435cefb.tar.bz2'
+  url 'http://growl.info/hg/growl/archive/4d49890e785a.tar.bz2'
   head 'https://code.google.com/p/growl/', :using => :hg
   homepage 'http://www.growl.info/'
-  sha1 'b556dc4c5541be79edc9ed8acfadbddd84538c36'
-  version '1.3.1'
+  sha1 'ae9fcf34a7f666bcc608285f8ee6fe4955474060'
+  version '1.3.2'
   
   depends_on 'osx/plist' => :ruby unless ARGV.include? "--disable-hardware"
 
