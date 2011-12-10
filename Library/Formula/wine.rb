@@ -1,8 +1,8 @@
 require 'formula'
 
 class WineGecko < Formula
-  url 'http://downloads.sourceforge.net/wine/wine_gecko-1.2.0-x86.msi', :using => :nounzip
-  sha1 '6964d1877668ab7da07a60f6dcf23fb0e261a808'
+  url 'http://downloads.sourceforge.net/wine/wine_gecko-1.4-x86.msi', :using => :nounzip
+  sha1 'c30aa99621e98336eb4b7e2074118b8af8ea2ad5'
 end
 
 class WineGeckoOld < Formula
@@ -14,8 +14,8 @@ class Wine < Formula
   homepage 'http://winehq.org/'
 
   if ARGV.build_devel?
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.33.tar.bz2'
-    sha256 'd49b96e3f999a7380898c3c09cf3d920c369756cb735d9c05295b5bb73c19f8c'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.34.tar.bz2'
+    sha256 'ac597a63c289bfedd75dcdc1cfaf342ad816669167868ad97490d0c08b7f1c52'
   else
     url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.3.tar.bz2'
     sha256 '3fd8d3f2b466d07eb90b8198cdc9ec3005917a4533db7b8c6c69058a2e57c61f'
@@ -29,7 +29,7 @@ class Wine < Formula
   # gnutls not needed since 1.3.16
   depends_on 'gnutls' unless ARGV.build_devel? or ARGV.build_head?
 
-  fails_with_llvm 'Wine dies with an "Unhandled exception code" when built with LLVM'
+  fails_with_llvm 'Wine dies with an "Unhandled exception code" when built with LLVM', :build => 2336
 
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
   # configure: libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
