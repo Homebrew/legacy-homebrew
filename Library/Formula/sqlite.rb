@@ -8,9 +8,9 @@ end
 
 class Sqlite < Formula
   homepage 'http://sqlite.org/'
-  url 'http://www.sqlite.org/sqlite-autoconf-3070701.tar.gz'
-  md5 '554026fe7fac47b1cf61c18d5fe43419'
-  version '3.7.7.1'
+  url 'http://www.sqlite.org/sqlite-autoconf-3070900.tar.gz'
+  sha1 'a9da98a4bde4d9dae5c29a969455d11a03600e11'
+  version '3.7.9'
 
   def options
   [
