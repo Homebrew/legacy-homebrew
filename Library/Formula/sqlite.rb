@@ -14,10 +14,10 @@ class Sqlite < Formula
 
   def options
   [
-    ["--with-rtree", "Enables the R*Tree index module"],
-    ["--with-fts", "Enables the FTS Module"],
-    ["--universal", "Build a universal binary."],
-    ["--with-functions", "Enables more math and string functions for SQL queries."]
+    ["--with-rtree", "Enable the R*Tree index module"],
+    ["--with-fts", "Enable the FTS Module"],
+    ["--universal", "Build a universal binary"],
+    ["--with-functions", "Enable more math and string functions for SQL queries"]
   ]
   end
 
@@ -25,8 +25,14 @@ class Sqlite < Formula
     # O2 and O3 leads to corrupt/invalid rtree indexes
     # http://groups.google.com/group/spatialite-users/browse_thread/thread/8e1cfa79f2d02a00#
     ENV.Os
-    ENV.append "CFLAGS", "-DSQLITE_ENABLE_RTREE=1" if ARGV.include? "--with-rtree"
-    ENV.append "CPPFLAGS","-DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS" if ARGV.include? "--with-fts"
+
+    ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_RTREE" if ARGV.include? "--with-rtree"
+    ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS" if ARGV.include? "--with-fts"
+
+    # enable these options by default
+    ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_COLUMN_METADATA"
+    ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_STAT3"
+
     ENV.universal_binary if ARGV.build_universal?
 
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking",
