@@ -41,9 +41,7 @@ class Ruby < Formula
 
     system "autoconf" unless File.exists? 'configure'
 
-    # Configure claims that "--with-readline-dir" is unused, but it works.
     args = ["--prefix=#{prefix}",
-            "--with-readline-dir=#{Formula.factory('readline').prefix}",
             "--disable-debug",
             "--disable-dependency-tracking",
             "--enable-shared"]
