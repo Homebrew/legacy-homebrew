@@ -1,10 +1,10 @@
 require 'formula'
 
 class Node < Formula
-  url 'http://nodejs.org/dist/v0.6.4/node-v0.6.4.tar.gz'
+  url 'http://nodejs.org/dist/v0.6.5/node-v0.6.5.tar.gz'
   head 'https://github.com/joyent/node.git'
   homepage 'http://nodejs.org/'
-  md5 'a170bef450de365720223c3af3747bf7'
+  md5 '0aaae7ebf357b4a67dcf1916dfc250fa'
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.leopard?
@@ -24,12 +24,9 @@ class Node < Formula
       s.gsub! '/opt/local/lib', '/usr/lib'
     end
 
+    # Why skip npm install? Read https://github.com/mxcl/homebrew/pull/8784.
     args = ["--prefix=#{prefix}", "--without-npm"]
     args << "--debug" if ARGV.include? '--debug'
-
-    # v0.6 appears to have a bug in parallel building
-    # so we'll -j1 it for now
-    ENV.deparallelize
 
     system "./configure", *args
     system "make install"
