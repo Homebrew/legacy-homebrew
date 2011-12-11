@@ -63,11 +63,6 @@ _brew_to_completion()
     # handle subcommand options
     if [[  "$cur" == --* ]]; then
         case "${COMP_WORDS[1]}" in
-        audit)
-            local opts=$([[ "${COMP_WORDS[*]}" =~ "--strict" ]] || echo "--strict")
-            COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
-            return
-            ;;
         cleanup)
             local opts=$([[ "${COMP_WORDS[*]}" =~ "--force" ]] || echo "--force")
             COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
@@ -214,7 +209,7 @@ _brew_to_completion()
 
     case "${COMP_WORDS[cmd_index]}" in
     # Commands that take a formula
-    cat|deps|edit|fetch|home|homepage|info|install|log|missing|options|uses|versions)
+    audit|cat|deps|edit|fetch|home|homepage|info|install|log|missing|options|uses|versions)
         local ff=$(\ls $(brew --repository)/Library/Formula 2> /dev/null | sed "s/\.rb//g")
         local af=$(\ls $(brew --repository)/Library/Aliases 2> /dev/null | sed "s/\.rb//g")
         COMPREPLY=( $(compgen -W "${ff} ${af}" -- ${cur}) )
