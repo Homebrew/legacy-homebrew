@@ -12,6 +12,8 @@ class Sqlite < Formula
   sha1 'a9da98a4bde4d9dae5c29a969455d11a03600e11'
   version '3.7.9'
 
+  depends_on 'readline' => :optional
+
   def options
   [
     ["--with-rtree", "Enable the R*Tree index module"],
