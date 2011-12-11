@@ -1,8 +1,7 @@
 require 'formula'
 
-# TODO: test whether this note is still true for 4.2.22 and Lion!
-# NOTE this formula conflicts with icu4c on Snow Leopard at the moment
-# if this is a problem for you then please fix it! Thanks.
+# currently the dependency on brew's version of libxml2 is necessary
+# to avoid this: https://gist.github.com/1458566
 
 class Yaz < Formula
   url 'http://ftp.indexdata.dk/pub/yaz/yaz-4.2.22.tar.gz'
