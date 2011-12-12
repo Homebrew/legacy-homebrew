@@ -51,7 +51,6 @@ class Field3d < Formula
 
     lib.install Dir[b+'lib/*']
     include.install Dir[b+'include/*']
-    prefix.install 'CHANGES'
     doc.install Dir['docs/html/*']
   end
 end
