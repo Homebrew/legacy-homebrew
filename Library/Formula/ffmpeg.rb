@@ -5,13 +5,13 @@ def ffplay?
 end
 
 class Ffmpeg < Formula
-  url 'http://ffmpeg.org/releases/ffmpeg-0.8.7.tar.bz2'
+  url 'http://ffmpeg.org/releases/ffmpeg-0.9.tar.bz2'
   homepage 'http://ffmpeg.org/'
-  sha1 'e6c391769b1e45afd8e3f41b734c17ba1437f4a9'
+  sha1 '5f4118496ebe8fc37e8f11cf0303f6f7c85756f9'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
-  fails_with_llvm 'Dies during compilation of motionpixels_tablegen'
+  fails_with_llvm 'Undefined symbols when linking libavfilter'
 
   def options
     [
