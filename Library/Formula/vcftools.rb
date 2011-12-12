@@ -5,6 +5,12 @@ class Vcftools < Formula
   homepage 'http://vcftools.sourceforge.net/index.html'
   md5 'd3e68027a7fe40d3f8cb28c3006c7248'
 
+  def patches
+    # Install Perl modules to /lib/perl5/site_perl and ensure VcfStats.pm is installed
+    # This is fixed in vcf source tree, will not be needed after version 0.1.7
+    DATA
+  end
+
   def install
     system "make install PREFIX=#{prefix} CPP=#{ENV.cxx}"
   end
@@ -18,12 +24,6 @@ class Vcftools < Formula
     are included in your PERL5LIB environment variable:
       export PERL5LIB=#{HOMEBREW_PREFIX}/lib/perl5/site_perl:${PERL5LIB}
     EOS
-  end
-
-  def patches
-    # Install Perl modules to /lib/perl5/site_perl and ensure VcfStats.pm is installed
-    # This is fixed in vcf source tree, will not be needed after version 0.1.7
-    DATA
   end
 end
 
