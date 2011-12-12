@@ -135,7 +135,7 @@ module HomebrewEnvExtension
 
     raise "GCC could not be found" if args[:force] and not File.exist? ENV['CC'] \
                                    or (File.symlink? ENV['CC'] \
-                                   and File.readlink(ENV['CC']) =~ 'llvm')
+                                   and File.readlink(ENV['CC']) =~ /llvm/)
   end
   alias_method :gcc_4_2, :gcc
 
@@ -158,7 +158,7 @@ module HomebrewEnvExtension
 
       if ARGV.include? '--default-fortran-flags'
         self['FCFLAGS'] = self['CFLAGS'] unless self['FCFLAGS']
-        self['FFFLAGS'] = self['CFLAGS'] unless self['FFFLAGS']
+        self['FFLAGS'] = self['CFLAGS'] unless self['FFLAGS']
       elsif not self['FCFLAGS'] or self['FFLAGS']
         opoo <<-EOS
 No Fortran optimization information was provided.  You may want to consider

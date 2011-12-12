@@ -9,8 +9,8 @@ def as_framework?
 end
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.21.tar.gz'
-  md5 'f783444754861f9b33e9f4083bd97b60'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.24.tar.gz'
+  md5 '17722b22141aba8235787f79800cc452'
 end
 
 class Python < Formula
@@ -119,7 +119,9 @@ class Python < Formula
     EOS
 
     general_caveats = <<-EOS.undent
-      A "distutils.cfg" has been written, specifing the install-scripts folder as:
+      A "distutils.cfg" has been written to:
+        #{effective_lib}/python2.7/distutils
+      specifing the install-scripts folder as:
         #{scripts_folder}
 
       If you install Python packages via "python setup.py install", easy_install, pip,

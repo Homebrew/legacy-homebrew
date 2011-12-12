@@ -7,6 +7,11 @@ class Bitlbee < Formula
 
   depends_on 'glib'
   depends_on 'gnutls'
+  depends_on 'libpurple' if ARGV.include? '--purple'
+
+  def options
+    [['--purple', "Use libpurple for all communication with instant messaging networks"]]
+  end
 
   def install
     # By default Homebrew will set ENV['LD'] to the same as ENV['CC'] which
@@ -16,21 +21,24 @@ class Bitlbee < Formula
     # magician will know).
     ENV['LD'] = '/usr/bin/ld'
 
-    # Homebrew should handle the stripping.
-    # Should we use --config=/usr/local/var/lib/bitlbee/ ?
-    system "./configure", "--prefix=#{prefix}",
-                          "--debug=0", "--strip=0",
-                          "--ssl=gnutls",
-                          "--pidfile=#{var}/bitlbee/run/bitlbee.pid",
-                          "--config=#{var}/bitlbee/lib/",
-                          "--ipsocket=#{var}/bitlbee/run/bitlbee.sock"
+    args = ["--prefix=#{prefix}",
+            "--debug=0",
+            "--strip=0", # Let Homebrew handle the stripping
+            "--ssl=gnutls",
+            "--pidfile=#{var}/bitlbee/run/bitlbee.pid",
+            "--config=#{var}/bitlbee/lib/",
+            "--ipsocket=#{var}/bitlbee/run/bitlbee.sock"]
+
+    args << "--purple=1" if ARGV.include? "--purple"
+
+    system "./configure", *args
+
     # This build depends on make running first.
     system "make"
     system "make install"
     # This build has an extra step.
     system "make install-etc"
 
-    (var+"bitlbee").mkpath
     (var+"bitlbee/run").mkpath
     (var+"bitlbee/lib").mkpath
   end

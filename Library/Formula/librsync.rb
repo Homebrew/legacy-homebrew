@@ -9,7 +9,14 @@ class Librsync < Formula
     ENV.universal_binary
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+                          "--mandir=#{man}",
+                          "--enable-shared"
+
+    inreplace 'libtool' do |s|
+      s.gsub! /compiler_flags=$/, "compiler_flags=' #{ENV.cflags}'"
+      s.gsub! /linker_flags=$/, "linker_flags=' #{ENV.ldflags}'"
+    end
+
     system "make install"
   end
 end
