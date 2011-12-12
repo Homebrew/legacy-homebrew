@@ -10,10 +10,13 @@ end
 
 class Spidermonkey < Formula
   homepage 'https://developer.mozilla.org/en/SpiderMonkey'
-  # Pick a version that's known to work with CouchDB), revision r35345.
-  url 'http://hg.mozilla.org/tracemonkey/archive/57a6ad20eae9.tar.gz'
-  md5 '0f2490f78d880ec184d9233df97ab83d'
-  version '1.8.0'
+  # Pick a version that's known to work with CouchDB
+  # Using 1.8.5 to address CouchDB issue 893
+  #  https://issues.apache.org/jira/browse/COUCHDB-893
+  url 'http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz'
+  md5 'a4574365938222adca0a6bd33329cb32'
+  version '1.8.5'
+
 
   depends_on 'readline'
   depends_on 'nspr'
