@@ -3,7 +3,10 @@ require 'formula'
 class AdolC < Formula
   url 'http://www.coin-or.org/download/source/ADOL-C/ADOL-C-2.2.1.tgz'
   homepage 'https://projects.coin-or.org/ADOL-C'
+  head 'https://projects.coin-or.org/svn/ADOL-C/trunk/', :using => :svn
   md5 '5fe149865b47f77344ff910702da8b99'
+  # HEAD contains bugfix causing NaN to appear in 2.2.1
+  # http://answerpot.com/showthread.php?2997935-sparse_jac+return+unreasonable+NaN's
 
   depends_on 'aardvark_shell_utils' => :build  # for realpath
   depends_on 'colpack'
