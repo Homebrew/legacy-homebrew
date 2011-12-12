@@ -8,6 +8,7 @@ class Gpgme < Formula
   depends_on 'gnupg'
   depends_on 'libgpg-error'
   depends_on 'libassuan'
+  depends_on 'pth'
 
   fails_with_llvm :build => 2334
 
