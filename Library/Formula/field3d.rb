@@ -20,31 +20,37 @@ class Field3d < Formula
                   env.Replace(CC = "#{ENV.cc}")
                   env.Replace(CXX = "#{ENV.cxx}")
                 EOS
-    # Set the systemIncludePaths and systemLibPaths that get searched.
-    inreplace 'BuildSupport.py', '/opt/local/include', "#{HOMEBREW_PREFIX}/include"
-    inreplace 'BuildSupport.py', '/opt/local/lib', "#{HOMEBREW_PREFIX}/lib"
-    # Merge Homebrew's CFLAGS into the build's CCFLAGS passed to CC and CXX.
-    inreplace 'BuildSupport.py',
-                'env.Append(CCFLAGS = ["-Wall"])',
-                "env.MergeFlags(['#{ENV.cflags}'])"
+
+    inreplace 'BuildSupport.py' do |s|
+      s.gsub! '/opt/local/include', "#{HOMEBREW_PREFIX}/include"
+      s.gsub! '/opt/local/lib', "#{HOMEBREW_PREFIX}/lib"
+      # Merge Homebrew's CFLAGS into the build's CCFLAGS passed to CC and CXX
+      s.gsub! 'env.Append(CCFLAGS = ["-Wall"])', "env.MergeFlags(['#{ENV.cflags}'])"
+    end
 
     # Build the software with scons.
-    system "scons" unless MacOS.prefer_64_bit?
-    system "scons do64=1" if MacOS.prefer_64_bit?
+    if MacOS.prefer_64_bit?
+      system "scons do64=1"
+    else
+      system "scons"
+    end
+
     # Build the docs with cmake
     mkdir 'macbuild'
     Dir.chdir 'macbuild' do
       system "cmake .."
       system "make doc"
     end
+
     # Install the libraries and docs.
-    b = 'install/darwin/m64/release/' if MacOS.prefer_64_bit?
-    b = 'install/darwin/m32/release/' unless MacOS.prefer_64_bit?
-    l = b+'lib/*'
-    i = b+'include/*'
-    lib.install Dir[l]
-    include.install Dir[i]
-    prefix.install %w{ README CHANGES COPYING }
+    b = if MacOS.prefer_64_bit?
+      'install/darwin/m64/release/'
+    else
+      'install/darwin/m32/release/'
+    end
+
+    lib.install Dir[b+'lib/*']
+    include.install Dir[b+'include/*']
     doc.install Dir['docs/html/*']
   end
 end
