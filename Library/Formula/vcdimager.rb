@@ -2,6 +2,7 @@ require 'formula'
 
 class Vcdimager < Formula
   url 'http://ftpmirror.gnu.org/vcdimager/vcdimager-0.7.23.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/vcdimager/vcdimager-0.7.23.tar.gz'
   homepage 'http://www.gnu.org/software/vcdimager/'
   md5 '5e7d80fdbf0037ad20e438f2a9573253'
 
