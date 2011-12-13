@@ -2,6 +2,7 @@ require 'formula'
 
 class Gengetopt < Formula
   url 'http://ftpmirror.gnu.org/gengetopt/gengetopt-2.22.5.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/gengetopt/gengetopt-2.22.5.tar.gz'
   homepage 'http://www.gnu.org/software/gengetopt/'
   md5 'a2168a480e49456451af83aa4618a529'
 

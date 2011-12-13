@@ -22,7 +22,8 @@ class Camlp5 < Formula
 
     system "./configure -prefix #{prefix} -mandir #{man} #{strictness}"
     # this build fails if jobs are parallelized
-    system "make -j 1 world.opt"
+    ENV.deparallelize
+    system "make world.opt"
     system "make install"
   end
 end
