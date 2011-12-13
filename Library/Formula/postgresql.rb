@@ -124,6 +124,23 @@ Or start manually with:
 And stop with:
   pg_ctl -D #{var}/postgres stop -s -m fast
 
+# Loading Extensions
+
+By default, Homebrew builds all available Contrib extensions.  To see a list of all
+available extensions, from the psql command line, run:
+  SELECT * FROM pg_available_extensions;
+
+To load any of the extension names, navigate to the desired database and run:
+  CREATE EXTENSION [extension name];
+
+For instance, to load the tablefunc extension in the current database, run:
+  CREATE EXTENSION tablefunc;
+
+For more information on the CREATE EXTENSION command, see:
+  http://www.postgresql.org/docs/9.1/static/sql-createextension.html
+For more information on extensions, see:
+  http://www.postgresql.org/docs/9.1/static/contrib.html
+
 # Other
 
 Some machines may require provisioning of shared memory:
