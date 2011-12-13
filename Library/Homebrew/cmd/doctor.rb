@@ -184,6 +184,7 @@ def check_gcc_versions
   if gcc_42 == nil
     puts <<-EOS.undent
       We couldn't detect gcc 4.2.x. Some formulae require this compiler.
+      NOTE: Versions of XCode newer than 4.2 don't include gcc 4.2.x.
 
     EOS
   elsif gcc_42 < RECOMMENDED_GCC_42
@@ -479,7 +480,7 @@ def check_for_config_scripts
   config_scripts = []
 
   path_folders.each do |p|
-    next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin"].include? p
+    next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', '/usr/X11R6/bin', "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin"].include? p
     next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] if real_cellar
 
     configs = Dir["#{p}/*-config"]

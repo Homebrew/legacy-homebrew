@@ -86,7 +86,7 @@ module Homebrew extend self
       formulae.each do |f|
         # Check formula status and skip if necessary---a formula passed on the
         # command line may have been installed to satisfy a dependency.
-        next if f.installed?
+        next if f.installed? unless ARGV.force?
 
         begin
           fi = FormulaInstaller.new(f)
