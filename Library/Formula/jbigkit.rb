@@ -19,7 +19,8 @@ class Jbigkit < Formula
     system "make"
 
     # It needs j1 to make the tests happen in sequence.
-    system "make -j1 test" if ARGV.include? '--with-check'
+    ENV.deparallelize
+    system "make test" if ARGV.include? '--with-check'
 
     # Install the files using three common styles of syntax:
     prefix.install %w[contrib examples]
