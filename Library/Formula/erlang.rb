@@ -1,34 +1,34 @@
 require 'formula'
 
 class ErlangManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R14B04.tar.gz'
-  md5 'f31e72518daae4007f595c0b224dd59f'
+  url 'http://erlang.org/download/otp_doc_man_R15B.tar.gz'
+  md5 '9738da523737712a9db87db0dee05338'
 end
 
 class ErlangHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R14B04.tar.gz'
-  md5 '2a440aa8c1242dd0c79785d69f0d97ca'
+  url 'http://erlang.org/download/otp_doc_html_R15B.tar.gz'
+  md5 '80553f4730b04aad4c9994590bad3fe6'
 end
 
 class ErlangHeadManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R14B04.tar.gz'
-  md5 'f31e72518daae4007f595c0b224dd59f'
+  url 'http://erlang.org/download/otp_doc_man_R15B.tar.gz'
+  md5 '9738da523737712a9db87db0dee05338'
 end
 
 class ErlangHeadHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R14B04.tar.gz'
-  md5 '2a440aa8c1242dd0c79785d69f0d97ca'
+  url 'http://erlang.org/download/otp_doc_html_R15B.tar.gz'
+  md5 '80553f4730b04aad4c9994590bad3fe6'
 end
 
 class Erlang < Formula
   homepage 'http://www.erlang.org'
   # Download tarball from GitHub; it is served faster than the official tarball.
-  url 'https://github.com/erlang/otp/tarball/OTP_R14B04'
-  md5 'f6cd1347dfb6436b99cc1313011a3d24'
-  version 'R14B04'
+  url 'https://github.com/erlang/otp/tarball/OTP_R15B'
+  md5 '91c939a56e7f3c492b4ce99c8babe3b2'
+  version 'R15B'
 
-  bottle 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R14B04-bottle.tar.gz'
-  bottle_sha1 'ad262d3d9600e76b816b74fac32b339c4a25c58f'
+  bottle 'https://github.com/downloads/wfarr/homebrew/erlang-R15-bottle.tar.gz'
+  bottle_sha1 '99b4f654b339130c6fd89d82893a2522'
 
   head 'https://github.com/erlang/otp.git', :branch => 'dev'
 
