@@ -7,7 +7,7 @@ class Funcoeszz < Formula
   version '10.12'
 
   def install
-    system "cp funcoeszz-#{@version}.sh #{prefix}"
+    prefix.install "funcoeszz-#{@version}.sh"
   end
 
   def caveats
