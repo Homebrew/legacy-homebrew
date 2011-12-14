@@ -178,12 +178,13 @@ def check_for_other_package_managers
 end
 
 def check_gcc_versions
-  gcc_42 = gcc_42_build
-  gcc_40 = gcc_40_build
+  gcc_42 = MacOS.gcc_42_build_version
+  gcc_40 = MacOS.gcc_40_build_version
 
   if gcc_42 == nil
     puts <<-EOS.undent
       We couldn't detect gcc 4.2.x. Some formulae require this compiler.
+      NOTE: Versions of XCode newer than 4.2 don't include gcc 4.2.x.
 
     EOS
   elsif gcc_42 < RECOMMENDED_GCC_42
@@ -197,7 +198,7 @@ def check_gcc_versions
   if MacOS.xcode_version == nil
       puts <<-EOS.undent
         We couldn't detect any version of Xcode.
-        If you downloaded Xcode 4.1 from the App Store, you may need to run the installer.
+        If you downloaded Xcode from the App Store, you may need to run the installer.
 
       EOS
   elsif MacOS.xcode_version < "4.0"
@@ -479,7 +480,7 @@ def check_for_config_scripts
   config_scripts = []
 
   path_folders.each do |p|
-    next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin"].include? p
+    next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', '/usr/X11R6/bin', "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin"].include? p
     next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] if real_cellar
 
     configs = Dir["#{p}/*-config"]
@@ -549,6 +550,8 @@ def check_for_multiple_volumes
 
   where_cellar = volumes.which real_cellar
   where_temp = volumes.which real_temp
+
+  Dir.delete tmp
 
   unless where_cellar == where_temp
     puts <<-EOS.undent
@@ -798,21 +801,6 @@ def check_git_version
   end
 end
 
-def check_terminal_width
-  # http://sourceforge.net/tracker/?func=detail&atid=100976&aid=3435710&group_id=976
-  if `tput cols`.chomp.to_i > 262
-    puts <<-EOS.undent
-      Your terminal width is greater than 262 columns.
-
-      This can trigger a segfault in some versions of curl, which may cause
-      downloads to appear to fail.
-
-      You may want to adjust your terminal size.
-
-    EOS
-  end
-end
-
 module Homebrew extend self
   def doctor
     old_stdout = $stdout
@@ -858,7 +846,6 @@ module Homebrew extend self
       check_git_status
       check_for_leopard_ssl
       check_git_version
-      check_terminal_width
     ensure
       $stdout = old_stdout
     end

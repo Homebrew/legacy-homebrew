@@ -1,9 +1,9 @@
 require 'formula'
 
 class Elasticsearch < Formula
-  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.18.3.tar.gz'
+  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.18.5.tar.gz'
   homepage 'http://www.elasticsearch.org'
-  md5 '56a56fe47402de2c8e19d14d5f53efa4'
+  md5 'f9201f3893e546d0f6cbe1b748ea6d36'
 
   def cluster_name
     "elasticsearch_#{ENV['USER']}"
@@ -30,14 +30,21 @@ class Elasticsearch < Formula
       s.gsub! /#\s*path\.logs\: [^\n]+/, "path.logs: #{var}/log/elasticsearch/"
     end
 
-    inreplace "#{prefix}/bin/elasticsearch.in.sh" do |s|
+    inreplace "#{bin}/elasticsearch.in.sh" do |s|
       # Replace CLASSPATH paths to use libexec instead of lib
       s.gsub! /ES_HOME\/lib\//, "ES_HOME/libexec/"
     end
 
-    inreplace "#{prefix}/bin/elasticsearch" do |s|
+    inreplace "#{bin}/elasticsearch" do |s|
       # Set ES_HOME to prefix value
       s.gsub! /^ES_HOME=.*$/, "ES_HOME=#{prefix}"
+    end
+
+    inreplace "#{bin}/plugin" do |s|
+      # Set ES_HOME to prefix value
+      s.gsub! /^ES_HOME=.*$/, "ES_HOME=#{prefix}"
+      # Replace CLASSPATH paths to use libexec instead of lib
+      s.gsub! /-cp \".*\"/, '-cp "$ES_HOME/libexec/*"'
     end
 
     # Write .plist file for `launchd`

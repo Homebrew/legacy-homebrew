@@ -1,22 +1,27 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.7.7.3.tar.gz'
-  sha1 'cf1b0d35e2d242bc4cffce3b2bf5b3e32857b395'
+  url 'http://git-core.googlecode.com/files/git-manpages-1.7.8.tar.gz'
+  sha1 '93315f7f51d7f27d3e421c9b0d64afa27f3d16df'
 end
 
 class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.7.3.tar.gz'
-  sha1 'bc0f89cb04e562e4a6d3b936382dbc8f593d861f'
+  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.8.tar.gz'
+  sha1 '2734079e22a0a6e3e78779582be9138ffc7de6f7'
 end
 
 class Git < Formula
-  url 'http://git-core.googlecode.com/files/git-1.7.7.3.tar.gz'
-  sha1 '382ee40da74a1b4a1875820c0f0a35c9ccd750f8'
+  url 'http://git-core.googlecode.com/files/git-1.7.8.tar.gz'
+  sha1 '7453e737e008f7319a5eca24a9ef3c5fb1f13398'
   homepage 'http://git-scm.com'
 
+  depends_on 'pcre' if ARGV.include? '--with-pcre'
+
   def options
-    [['--with-blk-sha1', 'compile with the optimized SHA1 implementation']]
+    [
+      ['--with-blk-sha1', 'compile with the optimized SHA1 implementation'],
+      ['--with-pcre', 'compile with the PCRE library'],
+    ]
   end
 
   def install
@@ -30,8 +35,13 @@ class Git < Formula
 
     ENV['BLK_SHA1']='1' if ARGV.include? '--with-blk-sha1'
 
+    if ARGV.include? '--with-pcre'
+      ENV['USE_LIBPCRE']='1'
+      ENV['LIBPCREDIR'] = HOMEBREW_PREFIX
+    end
+
     inreplace "Makefile" do |s|
-      s.remove_make_var! %w{CFLAGS LDFLAGS}
+      s.remove_make_var! %w{CC CFLAGS LDFLAGS}
     end
 
     system "make", "prefix=#{prefix}", "install"
