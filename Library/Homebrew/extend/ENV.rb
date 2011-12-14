@@ -280,6 +280,7 @@ Please take one of the following actions:
     cflags =~ %r{(-Xarch_i386 )-march=}
     xarch = $1.to_s
     remove_from_cflags %r{(-Xarch_i386 )?-march=\S*}
+    remove_from_cflags %r{( -Xclang \S+)+}
     remove_from_cflags %r{-mssse3}
     remove_from_cflags %r{-msse4(\.\d)?}
     # Don't set -msse3 and older flags because -march does that for us
