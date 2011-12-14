@@ -1,5 +1,6 @@
 require 'formula'
 
+def devel?; ARGV.flag? '--devel'; end
 def build_python?; ARGV.include? "--python"; end
 
 def which_python
@@ -11,17 +12,30 @@ def which_python
 end
 
 class Wxpython < Formula
-  url 'http://downloads.sourceforge.net/wxpython/wxPython-src-2.8.11.0.tar.bz2'
-  md5 '63f73aae49e530852db56a31b57529fa'
+  if devel?
+    url 'http://downloads.sourceforge.net/project/wxpython/wxPython/2.9.2.4/wxPython-src-2.9.2.4.tar.bz2'
+    md5 '8dae829b3bb3ccfe279d5d3948562c5f'
+  else
+    url 'http://downloads.sourceforge.net/wxpython/wxPython-src-2.8.11.0.tar.bz2'
+    md5 '63f73aae49e530852db56a31b57529fa'
+  end
 end
 
 class Wxmac < Formula
-  url 'http://downloads.sourceforge.net/project/wxwindows/2.8.11/wxMac-2.8.11.tar.bz2'
+  
+  if devel?
+    url 'http://downloads.sourceforge.net/project/wxwindows/2.9.2/wxWidgets-2.9.2.tar.bz2'
+    md5 'd6cec5bd331ba90b74c1e2fcb0563620'
+  else    
+    url 'http://downloads.sourceforge.net/project/wxwindows/2.8.11/wxMac-2.8.11.tar.bz2'
+    md5 '8d84bfdc43838e2d2f75031f62d1864f'
+  end
+  
   homepage 'http://www.wxwidgets.org'
-  md5 '8d84bfdc43838e2d2f75031f62d1864f'
 
   def options
     [
+      ['--devel',  'Use 2.9.x branch'],
       ['--python', 'Build Python bindings'],
       ['--system-python', 'Build against the OS X Python instead of whatever is in the path.']
     ]
@@ -76,15 +90,28 @@ class Wxmac < Formula
   def install
     test_python_arch if build_python?
 
-    # Force i386
-    %w{ CFLAGS CXXFLAGS LDFLAGS OBJCFLAGS OBJCXXFLAGS }.each do |compiler_flag|
-      ENV.remove compiler_flag, "-arch x86_64"
-      ENV.append compiler_flag, "-arch i386"
+    unless devel?
+      # Force i386
+      %w{ CFLAGS CXXFLAGS LDFLAGS OBJCFLAGS OBJCXXFLAGS }.each do |compiler_flag|
+        ENV.remove compiler_flag, "-arch x86_64"
+        ENV.append compiler_flag, "-arch i386"
+      end
     end
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--enable-unicode"
+    if devel?
+      system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                            "--prefix=#{prefix}",
+                            "--with-osx-cocoa",
+                            "--enable-unicode",
+                            "--with-macosx-sdk=/Developer/SDKs/MacOSX10.6.sdk"
+    else 
+      system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                            "--prefix=#{prefix}",
+                            "--enable-unicode",
+                            "--with-macosx-sdk=/Developer/SDKs/MacOSX10.6.sdk",
+                            "--with-macosx-version-min=10.6"
+    end  
+    
     system "make install"
 
     if build_python?
