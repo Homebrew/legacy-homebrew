@@ -45,7 +45,7 @@ MACOS_VERSION = /(10\.\d+)(\.\d+)?/.match(MACOS_FULL_VERSION).captures.first.to_
 
 HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; Mac OS X #{MACOS_FULL_VERSION})"
 
-HOMEBREW_CURL_ARGS = '-f#LA'
+HOMEBREW_CURL_ARGS = '-qf#LA'
 
 RECOMMENDED_LLVM = 2326
 RECOMMENDED_GCC_40 = (MACOS_VERSION >= 10.6) ? 5494 : 5493
@@ -56,7 +56,7 @@ module Homebrew extend self
   include FileUtils
 end
 
-FORMULA_META_FILES = %w[README README.md ChangeLog COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
+FORMULA_META_FILES = %w[README README.md ChangeLog CHANGES COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
 ISSUES_URL = "https://github.com/mxcl/homebrew/wiki/checklist-before-filing-a-new-issue"
 
 unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
