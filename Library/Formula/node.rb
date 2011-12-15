@@ -38,7 +38,7 @@ class Node < Formula
       installation:
         curl http://npmjs.org/install.sh | sh
 
-      After installing, add the following path to your NODE_PATH enviornment
+      After installing, add the following path to your NODE_PATH environment
       variable to have npm libraries picked up:
         #{HOMEBREW_PREFIX}/lib/node_modules
     EOS
