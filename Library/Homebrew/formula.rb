@@ -303,6 +303,14 @@ class Formula
     end
   end
 
+  def hold_path
+    HOMEBREW_REPOSITORY+'Library/Hold'+name
+  end
+
+  def held?
+    File.exists? hold_path
+  end
+
   def == b
     name == b.name
   end

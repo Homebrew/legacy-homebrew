@@ -22,7 +22,7 @@ module Homebrew extend self
 
       name = rack.basename.to_s
       f = Formula.factory name rescue nil
-      f if f and not f.installed?
+      f if f and not f.installed? and not f.held?
     end.compact
   end
 end
