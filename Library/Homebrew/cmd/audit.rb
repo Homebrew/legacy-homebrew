@@ -276,7 +276,7 @@ def audit_formula_instance f
 
     case d
     when "git", "python", "ruby", "emacs", "mysql", "postgresql"
-      problems << " * Don't use #{d} as a dependency; we allow non-Homebrew #{d} installs."
+      problems << " * Don't use #{d} as a dependency; we allow non-Homebrew\n   #{d} installs."
     end
   end
 
