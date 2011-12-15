@@ -7,8 +7,6 @@ class Shairport < Formula
   depends_on 'libao'
 
   def install
-    #system "./configure", "--disable-debug", "--disable-dependency-tracking",
-    #                      "--prefix=#{prefix}"
     system "mkdir #{bin}"
     inreplace 'Makefile' do |s|
       s.change_make_var! 'prefix', prefix
