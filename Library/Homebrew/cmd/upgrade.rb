@@ -15,6 +15,7 @@ module Homebrew extend self
       Homebrew.outdated_brews
     else
       ARGV.formulae.each do |f|
+        next if f.held?
         raise "#{f} already upgraded" if f.installed?
         raise "#{f} not installed" unless f.rack.exist? and not f.rack.children.empty?
       end
