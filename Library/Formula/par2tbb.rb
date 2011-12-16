@@ -18,20 +18,21 @@ class Par2tbb < Formula
     # doesn't respect --disable-maintainer-mode
 
     # it ships with broken permissions too
-    FileUtils.chmod 0755, 'install-sh'
+    chmod 0755, 'install-sh'
 
     # par2tbb expects to link against 10.4 / 10.5 SDKs,
     # but only 10.6+ are available on Xcode4
-    # sed is done against the .am file since .in will be regenerated anyway
-    system "/usr/bin/sed -i '' /-mmacosx-version/d Makefile.am"
+    inreplace 'Makefile.am', /^.*-mmacosx-version.*$/, ''
 
     # NOTE: fails build with clang; doesn't recognize a x87 instruction
     #       works with llvm-g++ though.
+    ENV.llvm if ENV.compiler == :clang
+
+    host_triplet = MacOS.prefer_64_bit? ? "x86_64-apple-darwin11" : "i686-apple-darwin11"
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "CC=llvm-gcc", "CXX=llvm-g++",
-                          "--host=x86_64-apple-darwin11"
+                          "--prefix=#{prefix}", "--build=#{host_triplet}",
+                          "--host=#{host_triplet}"
     system "make install"
   end
 
