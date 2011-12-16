@@ -11,6 +11,12 @@ class BaculaFd < Formula
   end
 
   def install
+
+	%w{ CFLAGS CXXFLAGS LDFLAGS OBJCFLAGS OBJCXXFLAGS }.each do |compiler_flag|
+		ENV.remove compiler_flag, "-arch x86_64"
+	    ENV.append compiler_flag, "-arch i386"
+	end
+
     system "./configure", "--prefix=#{prefix}", "--sbindir=#{bin}",
                           "--with-working-dir=#{prefix}/working",
                           "--with-pid-dir=#{HOMEBREW_PREFIX}/var/run",
