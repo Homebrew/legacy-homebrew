@@ -19,7 +19,9 @@ class Mysql < Formula
       ['--with-embedded', "Build the embedded server."],
       ['--with-libedit', "Compile with EditLine wrapper instead of readline"],
       ['--universal', "Make mysql a universal binary"],
-      ['--enable-local-infile', "Build with local infile loading support"]
+      ['--enable-local-infile', "Build with local infile loading support"],
+      ['--charset=utf8', 'Default character set for the database (defaults to utf8)'],
+      ['--collation=utf8_general_ci', 'Default collation for the database (defaults to utf8_general_ci)']
     ]
   end
 
@@ -42,9 +44,23 @@ class Mysql < Formula
             # CMake prepends prefix, so use share.basename
             "-DINSTALL_MYSQLSHAREDIR=#{share.basename}/#{name}",
             "-DWITH_SSL=yes",
-            "-DDEFAULT_CHARSET=utf8",
-            "-DDEFAULT_COLLATION=utf8_general_ci",
             "-DSYSCONFDIR=#{etc}"]
+
+    # set the default database charset
+    charset = if opt = ARGV.detect {|v| v =~ /--charset=/ }
+      opt.gsub('--charset=', '')
+    else
+      'utf8'
+    end
+    args << "-DDEFAULT_CHARSET=#{charset}"
+
+    # set the default database collation
+    collation = if opt = ARGV.detect {|v| v =~ /--collation=/ }
+      opt.gsub('--collation=', '')
+    else
+      'utf8_general_ci'
+    end
+    args << "-DDEFAULT_COLLATION=#{collation}"
 
     # To enable unit testing at build, we need to download the unit testing suite
     if ARGV.include? '--with-tests'
