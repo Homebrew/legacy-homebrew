@@ -98,7 +98,7 @@ For the full command list, see the COMMANDS section.
     if any problems are found.
 
   * `edit`:
-    Open all of Homebrew for editing in TextMate.
+    Open all of Homebrew for editing.
 
   * `edit` <formula>:
     Open <formula> in $EDITOR.
