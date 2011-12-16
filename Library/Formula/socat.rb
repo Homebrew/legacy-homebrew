@@ -5,6 +5,8 @@ class Socat < Formula
   homepage 'http://www.dest-unreach.org/socat/'
   md5 '2081987fb0cb0290b8105574058cb329'
 
+  depends_on 'readline'
+
   def install
     # Lion requires this flag in some cases
     ENV.append "CFLAGS", "-D__APPLE_USE_RFC_3542" if 10.7 <= MACOS_VERSION

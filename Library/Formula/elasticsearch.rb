@@ -1,33 +1,53 @@
 require 'formula'
 
 class Elasticsearch < Formula
-  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.17.7.tar.gz'
+  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.18.5.tar.gz'
   homepage 'http://www.elasticsearch.org'
-  md5 '8502edd8a9b7eb43a895eddeaa299850'
+  md5 'f9201f3893e546d0f6cbe1b748ea6d36'
+
+  def cluster_name
+    "elasticsearch_#{ENV['USER']}"
+  end
 
   def install
     # Remove Windows files
     rm_f Dir["bin/*.bat"]
+    # Move JARs from lib to libexec according to homebrew conventions
+    libexec.install Dir['lib/*.jar']
+    (libexec+'sigar').install Dir['lib/sigar/*.jar']
 
     # Install everything directly into folder
     prefix.install Dir['*']
 
-    # Make sure we have support folders in /usr/var
-    %w( run data/elasticsearch log ).each { |path| (var+path).mkpath }
-
-    # Put basic configuration into config file
+    # Set up ElasticSearch for local development:
     inreplace "#{prefix}/config/elasticsearch.yml" do |s|
-      s << <<-EOS.undent
-        cluster:
-          name: elasticsearch
 
-        path:
-          logs: #{var}/log
-          data: #{var}/data
-      EOS
+      # 1. Give the cluster a unique name
+      s.gsub! /#\s*cluster\.name\: elasticsearch/, "cluster.name: #{cluster_name}"
+
+      # 2. Configure paths
+      s.gsub! /#\s*path\.data\: [^\n]+/, "path.data: #{var}/elasticsearch/"
+      s.gsub! /#\s*path\.logs\: [^\n]+/, "path.logs: #{var}/log/elasticsearch/"
     end
 
-    # Write PLIST file for `launchd`
+    inreplace "#{bin}/elasticsearch.in.sh" do |s|
+      # Replace CLASSPATH paths to use libexec instead of lib
+      s.gsub! /ES_HOME\/lib\//, "ES_HOME/libexec/"
+    end
+
+    inreplace "#{bin}/elasticsearch" do |s|
+      # Set ES_HOME to prefix value
+      s.gsub! /^ES_HOME=.*$/, "ES_HOME=#{prefix}"
+    end
+
+    inreplace "#{bin}/plugin" do |s|
+      # Set ES_HOME to prefix value
+      s.gsub! /^ES_HOME=.*$/, "ES_HOME=#{prefix}"
+      # Replace CLASSPATH paths to use libexec instead of lib
+      s.gsub! /-cp \".*\"/, '-cp "$ES_HOME/libexec/*"'
+    end
+
+    # Write .plist file for `launchd`
     (prefix+'org.elasticsearch.plist').write startup_plist
     (prefix+'org.elasticsearch.plist').chmod 0644
   end
@@ -50,13 +70,13 @@ class Elasticsearch < Formula
     To start ElasticSearch manually:
         elasticsearch -f -D es.config=#{prefix}/config/elasticsearch.yml
 
-    See the #{prefix}/config/elasticsearch.yml file for configuration.
+    See the 'elasticsearch.yml' file for configuration options.
 
     You'll find the ElasticSearch log here:
-        #{var}/log/elasticsearch.log
+        open #{var}/log/elasticsearch/#{cluster_name}.log
 
-    The folder with all the data is here:
-        #{var}/data/elasticsearch
+    The folder with cluster data is here:
+        open #{var}/elasticsearch/#{cluster_name}/
 
     You should see ElasticSearch running:
         open http://localhost:9200/
@@ -79,18 +99,17 @@ class Elasticsearch < Formula
             <string>#{bin}/elasticsearch</string>
             <string>-f</string>
             <string>-D es.config=#{prefix}/config/elasticsearch.yml</string>
-            <string>-p #{var}/run/elasticsearch.pid</string>
           </array>
           <key>RunAtLoad</key>
           <true/>
           <key>UserName</key>
-          <string>#{`whoami`.chomp}</string>
+          <string>#{ENV['USER']}</string>
           <key>WorkingDirectory</key>
           <string>#{var}</string>
           <key>StandardErrorPath</key>
-          <string>#{var}/log/elasticsearch.log</string>
+          <string>/dev/null</string>
           <key>StandardOutPath</key>
-          <string>#{var}/log/elasticsearch.log</string>
+          <string>/dev/null</string>
         </dict>
       </plist>
     PLIST

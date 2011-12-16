@@ -2,8 +2,8 @@ require 'formula'
 
 class Direnv < Formula
   homepage 'https://github.com/zimbatm/direnv'
-  url 'https://github.com/zimbatm/direnv/tarball/v0.1.72'
-  md5 '34fecdff4bc6a5cbe4890ad14e5f3438'
+  url 'https://github.com/zimbatm/direnv/tarball/v0.1.81'
+  md5 '9429548fbf48ec56ff1d11bf601ed649'
 
   head 'https://github.com/zimbatm/direnv.git'
 
