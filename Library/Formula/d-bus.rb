@@ -13,6 +13,7 @@ class DBus < Formula
   # man2html needs to be piped the input instead of given a filename. See:
   # http://forums.freebsd.org/archive/index.php/t-20529.html
   # https://github.com/mxcl/homebrew/issues/8978
+  # https://bugs.freedesktop.org/show_bug.cgi?id=43875
   # Otherwise, if man2html is installed the build will hang.
   def patches
     DATA
