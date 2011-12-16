@@ -1,8 +1,8 @@
 require 'formula'
 class Shen < Formula
-  url 'http://www.shenlanguage.org/download/Shen2.0.zip'
+  url 'http://www.shenlanguage.org/download/Shen3.0.zip'
   homepage 'http://www.lambdassociates.org/'
-  md5 '70770fe417e9d1a104f952a6acafb9ee'
+  md5 'ea14b335772ede6a50c5e03d86dbd9c6'
 
   case
     when ARGV.include?("--sbcl") then
