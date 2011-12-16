@@ -10,6 +10,15 @@ class DBus < Formula
   skip_clean "etc/dbus-1/system.d"
   skip_clean "var/run/dbus"
 
+  # man2html needs to be piped the input instead of given a filename. See:
+  # http://forums.freebsd.org/archive/index.php/t-20529.html
+  # https://github.com/mxcl/homebrew/issues/8978
+  # https://bugs.freedesktop.org/show_bug.cgi?id=43875
+  # Otherwise, if man2html is installed the build will hang.
+  def patches
+    DATA
+  end
+
   def install
     # Fix the TMPDIR to one D-Bus doesn't reject due to odd symbols
     ENV["TMPDIR"] = "/tmp"
@@ -44,3 +53,18 @@ class DBus < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/doc/Makefile.in b/doc/Makefile.in
+index 45e1062..d79c018 100644
+--- a/doc/Makefile.in
++++ b/doc/Makefile.in
+@@ -728,7 +728,7 @@ uninstall-man: uninstall-man1
+ @DBUS_DOXYGEN_DOCS_ENABLED_TRUE@		rmdir $(DESTDIR)$(apidir)
+ 
+ @DBUS_HAVE_MAN2HTML_TRUE@%.1.html: %.1
+-@DBUS_HAVE_MAN2HTML_TRUE@	$(AM_V_GEN)( $(MAN2HTML) $< > $@.tmp && mv $@.tmp $@ )
++@DBUS_HAVE_MAN2HTML_TRUE@	$(AM_V_GEN)( $(MAN2HTML) < $< > $@.tmp && mv $@.tmp $@ )
+ 
+ @DBUS_CAN_UPLOAD_DOCS_TRUE@dbus-docs: $(STATIC_DOCS) $(dist_doc_DATA) $(dist_html_DATA) $(MAN_HTML_FILES) $(BONUS_FILES) doxygen.stamp
+ @DBUS_CAN_UPLOAD_DOCS_TRUE@	$(AM_V_at)rm -rf $@ $@.tmp
