@@ -10,13 +10,8 @@ class Par2tbb < Formula
   depends_on 'tbb'
 
   def install
-    # tbb is only built on x86_64 mode on Lion;
-    # therefore par2tbb needs to be 64bit too
-    # CC/CXX are llvm-gcc/++ because tbb also is built with them
-
     # par2tbb ships with bad timestamps and
     # doesn't respect --disable-maintainer-mode
-
     # it ships with broken permissions too
     chmod 0755, 'install-sh'
 
