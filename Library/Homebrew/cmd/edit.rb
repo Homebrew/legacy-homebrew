@@ -2,14 +2,18 @@ require 'formula'
 
 module Homebrew extend self
   def edit
+    # If no brews are listed, open the project root in an editor.
     if ARGV.named.empty?
-      # EDITOR isn't a good fit here, we need a GUI client that actually has
-      # a UI for projects, so apologies if this wasn't what you expected,
-      # please improve it! :)
-      exec 'mate', HOMEBREW_REPOSITORY+"bin/brew",
-                   HOMEBREW_REPOSITORY+'README.md',
-                   HOMEBREW_REPOSITORY+".gitignore",
-                  *library_folders
+      editor = which_editor
+      if editor == "mate"
+        # If the user is using TextMate, give a nice project view instead.
+        exec 'mate', HOMEBREW_REPOSITORY+"bin/brew",
+                     HOMEBREW_REPOSITORY+'README.md',
+                     HOMEBREW_REPOSITORY+".gitignore",
+                    *library_folders
+      else
+        exec_editor HOMEBREW_REPOSITORY
+      end
     else
       # Don't use ARGV.formulae as that will throw if the file doesn't parse
       paths = ARGV.named.map do |name|
