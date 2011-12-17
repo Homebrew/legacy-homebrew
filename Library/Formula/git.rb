@@ -30,6 +30,9 @@ class Git < Formula
     ENV['NO_DARWIN_PORTS']='1'
     ENV['V']='1' # build verbosely
 
+    # workaround for users of perlbrew
+    ENV['PERL_PATH'] = `/usr/bin/which perl`.chomp
+
     # Clean XCode 4.x installs don't include Perl MakeMaker
     ENV['NO_PERL_MAKEMAKER']='1' if MacOS.lion?
 
