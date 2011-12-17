@@ -9,6 +9,12 @@ class Par2tbb < Formula
 
   depends_on 'tbb'
 
+  def caveats
+    <<-EOS.undent
+    par2tbb is a modified fork of par2 and conflicts with it.
+    EOS
+  end
+
   def install
     # par2tbb ships with bad timestamps and
     # doesn't respect --disable-maintainer-mode
