@@ -1,7 +1,5 @@
 require 'formula'
 
-# Conflicts with the par2 formula, but there's no way to signal that
-
 class Par2tbb < Formula
   url 'http://chuchusoft.com/par2_tbb/par2cmdline-0.4-tbb-20100203.tar.gz'
   homepage 'http://chuchusoft.com/par2_tbb/'
@@ -11,7 +9,7 @@ class Par2tbb < Formula
 
   def caveats
     <<-EOS.undent
-    par2tbb is a modified fork of par2 and conflicts with it.
+    par2tbb is a modified fork of par2 and conflicts with its binaries.
     EOS
   end
 
