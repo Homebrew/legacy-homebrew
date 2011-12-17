@@ -17,6 +17,7 @@ class R < Formula
   md5 '98cf8fe74e512e1061caf1ee0c2043a8'
 
   depends_on 'valgrind' if valgrind?
+  depends_on 'readline'
 
   def options
     [
@@ -34,6 +35,10 @@ class R < Formula
     ENV.x11 # So PNG gets added to the x11 and cairo plotting devices
     ENV['OBJC'] = ENV['CC']
     ENV['OBJCFLAGS'] = ENV['CFLAGS']
+    ENV["FCFLAGS"] = ENV["CFLAGS"]
+    ENV["FFLAGS"]  = ENV["CFLAGS"]
+    ENV["CPPFLAGS"] = "-I#{Formula.factory('readline').include}"
+    ENV["LDFLAGS"] = "-L#{Formula.factory('readline').lib}"
 
     args = [
       "--prefix=#{prefix}",
