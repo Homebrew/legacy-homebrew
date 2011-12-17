@@ -40,6 +40,8 @@ class Git < Formula
       ENV['LIBPCREDIR'] = HOMEBREW_PREFIX
     end
 
+    ENV['PERL_PATH'] = `which perl`.chomp
+
     inreplace "Makefile" do |s|
       s.remove_make_var! %w{CC CFLAGS LDFLAGS}
     end
