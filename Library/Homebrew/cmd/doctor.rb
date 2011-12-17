@@ -570,8 +570,7 @@ def check_for_multiple_volumes
 end
 
 def check_for_git
-  git = `/usr/bin/which git`.chomp
-  if git.empty?
+  unless system "/usr/bin/which -s git"
     puts <<-EOS.undent
       "Git" was not found in your path.
 
@@ -586,19 +585,18 @@ def check_for_git
 end
 
 def check_git_newline_settings
-  git = `/usr/bin/which git`.chomp
-  return if git.empty?
+  return unless system "/usr/bin/which -s git"
 
-  autocrlf=`git config --get core.autocrlf`
-  safecrlf=`git config --get core.safecrlf`
+  autocrlf = `git config --get core.autocrlf`.chomp
+  safecrlf = `git config --get core.safecrlf`.chomp
 
-  if autocrlf=='input' and safecrlf=='true'
+  if autocrlf == 'input' and safecrlf == 'true'
     puts <<-EOS.undent
     Suspicious Git newline settings found.
 
     The detected Git newline settings can cause checkout problems:
-      core.autocrlf=#{autocrlf}
-      core.safecrlf=#{safecrlf}
+      core.autocrlf = #{autocrlf}
+      core.safecrlf = #{safecrlf}
 
     If you are not routinely dealing with Windows-based projects,
     consider removing these settings.
