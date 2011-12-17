@@ -5,6 +5,7 @@ class Ocp < Formula
   md5 '558a6eacfadfd9c60c97a6e9c7f83f47'
   homepage "http://sourceforge.net/p/opencubicplayer/home/"
 
+  depends_on "libvorbis"
   depends_on "mad" unless ARGV.include? "--without-mad"
   depends_on "flac" unless ARGV.include? "--without-flac"
   depends_on "adplug" if ARGV.include? "--with-adplug"
@@ -25,13 +26,9 @@ class Ocp < Formula
             "--without-sdl",
             "--without-desktop_file_install"]
 
-    if ARGV.include? "--without-mad"
-      args << "--without-mad"
-    elsif ARGV.include? "--without-flac"
-      args << "--without-flac"
-    elsif ARGV.include? "--with-adplug"
-      args << "--with-adplug"
-    end
+    args << "--without-mad"  if ARGV.include? "--without-mad"
+    args << "--without-flac" if ARGV.include? "--without-flac"
+    args << "--with-adplug"  if ARGV.include? "--with-adplug"
 
     system "./configure", *args
     system "make"
