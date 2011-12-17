@@ -352,7 +352,7 @@ def check_user_path
 
             Consider editing your .bashrc to put:
               #{HOMEBREW_PREFIX}/bin
-            ahead of /usr/bin in your $PATH.
+            ahead of /usr/bin in your PATH.
           EOS
         end
       end
@@ -370,7 +370,7 @@ def check_user_path
 
       You should edit your .bashrc to add:
         #{HOMEBREW_PREFIX}/bin
-      to $PATH.
+      to the PATH variable.
 
       EOS
   end
@@ -385,7 +385,7 @@ def check_user_path
 
         Consider editing your .bashrc to add:
           #{HOMEBREW_PREFIX}/sbin
-        to $PATH.
+        to the PATH variable.
 
         EOS
     end
@@ -676,7 +676,7 @@ def check_for_MACOSX_DEPLOYMENT_TARGET
 
   unless target_var == MACOS_VERSION.to_s
     puts <<-EOS.undent
-    $MACOSX_DEPLOYMENT_TARGET was set to #{target_var}
+    MACOSX_DEPLOYMENT_TARGET was set to #{target_var}
     This is used by Fink, but having it set to a value different from the
     current system version (#{MACOS_VERSION}) can cause problems, compiling
     Git for instance, and should probably be removed.
@@ -688,7 +688,7 @@ end
 def check_for_CLICOLOR_FORCE
   if ENV['CLICOLOR_FORCE']
     puts <<-EOS.undent
-    Having $CLICOLOR_FORCE set can cause some builds to fail.
+    Having CLICOLOR_FORCE set can cause some builds to fail.
     You may want to unset it.
 
     EOS
@@ -699,8 +699,8 @@ def check_for_GREP_OPTIONS
   target_var = ENV['GREP_OPTIONS'].to_s
   unless target_var.empty? or target_var == '--color=auto'
     puts <<-EOS.undent
-    $GREP_OPTIONS was set to \"#{target_var}\".
-    Having $GREP_OPTIONS set this way can cause CMake builds to fail.
+    GREP_OPTIONS was set to \"#{target_var}\".
+    Having GREP_OPTIONS set this way can cause CMake builds to fail.
 
     EOS
   end
@@ -736,7 +736,7 @@ def check_tmpdir
   tmpdir = ENV['TMPDIR']
   return if tmpdir.nil?
   if !File.directory?(tmpdir)
-    puts "$TMPDIR #{tmpdir.inspect} doesn't exist."
+    puts "TMPDIR #{tmpdir.inspect} doesn't exist."
     puts
   end
 end
@@ -770,7 +770,7 @@ def check_for_leopard_ssl
       fetch over HTTPS, e.g. `brew update` or installing formulae that perform
       Git checkouts.
 
-      You can force Git to ignore these errors by setting $GIT_SSL_NO_VERIFY.
+      You can force Git to ignore these errors by setting GIT_SSL_NO_VERIFY.
         export GIT_SSL_NO_VERIFY=1
 
     EOS
