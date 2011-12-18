@@ -294,6 +294,11 @@ module Homebrew extend self
 
     ff.each do |f|
       problems = []
+
+      if f.unstable and f.stable.nil?
+        problems += [' * head-only formula']
+      end
+
       problems += audit_formula_instance f
       problems += audit_formula_urls f
 
