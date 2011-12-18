@@ -16,9 +16,6 @@ class Gnupg2 < Formula
   depends_on 'libusb-compat' => :optional
 
   def patches
-    # fix runtime data location
-    # change package name to 'gnupg2' to avoid conflicts
-    # fix tests for external gpg-agent
     DATA
   end
 
@@ -43,6 +40,24 @@ class Gnupg2 < Formula
 end
 
 __END__
+# fix configure's failure to detect libcurl
+# http://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=commit;h=57ef0d6
+diff --git a/configure b/configure
+index 3df3900..35c474f 100755
+--- a/configure
++++ b/configure
+@@ -9384,7 +9384,7 @@ else
+ 
+            cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+-include <curl/curl.h>
++#include <curl/curl.h>
+ int
+ main ()
+ {
+
+# fix runtime data location
+# http://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=commitdiff;h=c3f08dc
 diff --git a/common/homedir.c b/common/homedir.c
 index 5f2e31e..d797b68 100644
 --- a/common/homedir.c
@@ -57,6 +72,7 @@ index 5f2e31e..d797b68 100644
  }
  
 
+# rename package to avoid conflicts with our gnupg 1.x formula
 diff --git a/configure b/configure
 index 3df3900..b102aec 100755
 --- a/configure
@@ -73,6 +89,7 @@ index 3df3900..b102aec 100755
  PACKAGE_STRING='gnupg 2.0.18'
  PACKAGE_BUGREPORT='http://bugs.gnupg.org'
 
+# fix tests to work with our "gpg-agent is a separate package" scheme
 diff --git a/tests/openpgp/Makefile.in b/tests/openpgp/Makefile.in
 index ab2f10f..1d3cace 100644
 --- a/tests/openpgp/Makefile.in
