@@ -6,16 +6,13 @@ class BaculaFd < Formula
   md5 '9de254ae39cab0587fdb2f5d8d90b03b'
 
   # Cleaning seems to break things:
-  def skip_clean? path
-	  true
-  end
+  skip_clean: all
 
   def install
 
-	%w{ CFLAGS CXXFLAGS LDFLAGS OBJCFLAGS OBJCXXFLAGS }.each do |compiler_flag|
-		ENV.remove compiler_flag, "-arch x86_64"
-	    ENV.append compiler_flag, "-arch i386"
-	end
+    # Force 32 bit build. Formula builds 64 bit binary without error
+    # on Snow Leopard and Lion, but binary is non-funcitonal.
+    ENV.m32
 
     system "./configure", "--prefix=#{prefix}", "--sbindir=#{bin}",
                           "--with-working-dir=#{prefix}/working",
@@ -25,8 +22,8 @@ class BaculaFd < Formula
     system "make"
     system "make install"
 
-	# Ensure var/run exists:
-	(var + 'run').mkpath
+    # Ensure var/run exists:
+    (var + 'run').mkpath
 
   end
 
