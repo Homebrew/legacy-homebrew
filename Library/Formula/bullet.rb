@@ -8,6 +8,10 @@ class Bullet < Formula
 
   depends_on 'cmake' => :build
 
+  def patches
+    DATA
+  end
+
   def options
     [
       ['--framework'  , "Build Frameworks"],
@@ -42,3 +46,16 @@ class Bullet < Formula
     prefix.install 'Extras' if ARGV.include? "--build-extra"
   end
 end
+__END__
+diff --git a/src/BulletMultiThreaded/GpuSoftBodySolvers/OpenCL/CMakeLists.txt src/BulletMultiThreaded/GpuSoftBodySolvers/OpenCL/CMakeLists.txt
+index 7ad8005..844836e 100644
+--- a/src/BulletMultiThreaded/GpuSoftBodySolvers/OpenCL/CMakeLists.txt
++++ b/src/BulletMultiThreaded/GpuSoftBodySolvers/OpenCL/CMakeLists.txt
+@@ -11,6 +11,6 @@
+ 	SUBDIRS(NVidia)
+ ENDIF()
+ 
+-IF(APPLE)
++IF(APPLE AND OPENCL_LIBRARY)
+ 	SUBDIRS(Apple)
+ ENDIF()
