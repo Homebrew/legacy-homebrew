@@ -7,12 +7,6 @@ class Par2tbb < Formula
 
   depends_on 'tbb'
 
-  def caveats
-    <<-EOS.undent
-    par2tbb is a modified fork of par2 and conflicts with its binaries.
-    EOS
-  end
-
   def install
     # par2tbb ships with bad timestamps and
     # doesn't respect --disable-maintainer-mode
@@ -33,6 +27,12 @@ class Par2tbb < Formula
                           "--prefix=#{prefix}", "--build=#{host_triplet}",
                           "--host=#{host_triplet}"
     system "make install"
+  end
+
+  def caveats
+    <<-EOS.undent
+    par2tbb is a modified fork of par2 and conflicts with its binaries.
+    EOS
   end
 
   def test
