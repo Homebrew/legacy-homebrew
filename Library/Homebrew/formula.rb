@@ -588,14 +588,19 @@ private
     return fetched, downloader
   end
 
+  # Detect which type of checksum is being used, or nil if none
+  def checksum_type
+    CHECKSUM_TYPES.detect { |type| instance_variable_defined?("@#{type}") }
+  end
+
   # For FormulaInstaller.
   def verify_download_integrity fn, *args
     require 'digest'
     if args.length != 2
-      type=CHECKSUM_TYPES.detect { |type| instance_variable_defined?("@#{type}") }
-      type ||= :md5
-      supplied=instance_variable_get("@#{type}")
-      type=type.to_s.upcase
+      type = checksum_type || :md5
+      supplied = instance_variable_get("@#{type}")
+      # Convert symbol to readable string
+      type = type.to_s.upcase
     else
       supplied, type = args
     end
