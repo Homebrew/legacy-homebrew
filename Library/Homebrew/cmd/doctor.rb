@@ -799,6 +799,18 @@ def check_git_version
   end
 end
 
+def check_for_enthought_python
+  return unless system "/usr/bin/which -s enpkg"
+  puts <<-EOS.undent
+    Enthought Python was found in your PATH.
+
+    This can cause build problems, as this software installs its own
+    copies of iconv and libxml2 into folders that are picked up by
+    other build systems.
+
+  EOS
+end
+
 module Homebrew extend self
   def doctor
     old_stdout = $stdout
@@ -844,6 +856,7 @@ module Homebrew extend self
       check_git_status
       check_for_leopard_ssl
       check_git_version
+      check_for_enthought_python
     ensure
       $stdout = old_stdout
     end
