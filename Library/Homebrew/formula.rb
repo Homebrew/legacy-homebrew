@@ -100,6 +100,7 @@ class Formula
   include FileUtils
 
   attr_reader :name, :path, :url, :version, :homepage, :specs, :downloader
+  attr_reader :stable, :unstable
   attr_reader :bottle, :bottle_sha1, :head
 
   # Homebrew determines the name
