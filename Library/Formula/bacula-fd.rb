@@ -6,12 +6,12 @@ class BaculaFd < Formula
   md5 '9de254ae39cab0587fdb2f5d8d90b03b'
 
   # Cleaning seems to break things:
-  skip_clean: all
+  skip_clean :all
 
   def install
 
     # Force 32 bit build. Formula builds 64 bit binary without error
-    # on Snow Leopard and Lion, but binary is non-funcitonal.
+    # on Snow Leopard and Lion, but binary is non-functional.
     ENV.m32
 
     system "./configure", "--prefix=#{prefix}", "--sbindir=#{bin}",
