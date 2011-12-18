@@ -149,10 +149,7 @@ class Formula
   end
 
   def explicitly_requested?
-
-    # `ARGV.formulae` will throw an exception if it comes up with an empty
-    # list.
-    #
+    # `ARGV.formulae` will throw an exception if it comes up with an empty list.
     # FIXME: `ARGV.formulae` shouldn't be throwing exceptions, see issue #8823
    return false if ARGV.named.empty?
    ARGV.formulae.include? self
@@ -253,7 +250,7 @@ class Formula
   # sometimes the clean process breaks things
   # skip cleaning paths in a formula with a class method like this:
   #   skip_clean [bin+"foo", lib+"bar"]
-  # redefining skip_clean? in formulas is now deprecated
+  # redefining skip_clean? now deprecated
   def skip_clean? path
     return true if self.class.skip_clean_all?
     to_check = path.relative_path_from(prefix).to_s
