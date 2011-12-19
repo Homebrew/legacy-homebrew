@@ -9,10 +9,25 @@ class Xplanet < Formula
   depends_on 'giflib'
   depends_on 'libtiff'
 
+  def options
+    [
+      ["--with-x", "Build for X11 instead of Aqua."],
+    ]
+  end
+
   def install
     ENV.x11 # So we can see the system libpng
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    args = ["--disable-debug",
+            "--disable-dependency-tracking",
+            "--prefix=#{prefix}"]
+
+    if ARGV.include? "--with-x"
+        args << "--with-x"
+    else
+        args << "--with-aqua" << "--without-x"
+    end
+
+    system "./configure", *args
     system "make install"
   end
 end
