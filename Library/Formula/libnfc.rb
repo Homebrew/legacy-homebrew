@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libnfc < Formula
-  url 'http://libnfc.googlecode.com/files/libnfc-1.5.0.tar.gz'
+  url 'http://libnfc.googlecode.com/files/libnfc-1.5.1.tar.gz'
   homepage 'http://www.libnfc.org/'
-  md5 '569d85c36cd68f6e6560c9d78b46788f'
+  md5 '81e3e59496060dc495c95844654a8038'
 
   depends_on 'libusb-compat'
 
