@@ -17,13 +17,11 @@ class CoffeeScript < Formula
   end
 
   def caveats; <<-EOS.undent
-    coffee-script can also be installed via `npm install coffee-script`.
-    This has the advantage of supporting multiple versions (of any Node libs)
+    coffee-script can also be installed via npm with:
+      npm install coffee-script
+
+    This has the advantage of supporting multiple versions of Node libs
     at the same time.
-
-    You may want to install coffee-script via npm.
-
-    This formula may be retired from a future version of Homebrew.
     EOS
   end
 end
