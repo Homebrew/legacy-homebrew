@@ -72,10 +72,12 @@ class FormulaInstaller
   end
 
   def caveats
-    if f.caveats
+    the_caveats = (f.caveats || "").strip
+    unless the_caveats.empty?
       ohai "Caveats", f.caveats
       @show_summary_heading = true
     end
+
     if f.keg_only?
       ohai 'Caveats', f.keg_only_text
       @show_summary_heading = true
