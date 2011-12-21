@@ -45,10 +45,13 @@ class Postgresql < Formula
     ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
     ENV.append 'LIBS', `uuid-config --libs`.strip
 
-    if MacOS.prefer_64_bit? and not ARGV.include? '--no-python'
+    if not ARGV.include? '--build32' and MacOS.prefer_64_bit? and not ARGV.include? '--no-python'
       args << "ARCHFLAGS='-arch x86_64'"
       check_python_arch
     end
+
+    ENV.append 'CFLAGS', '-arch i386' if ARGV.include? '--build32'
+    ENV.append 'LDFLAGS', '-arch i386' if ARGV.include? '--build32'
 
     # Fails on Core Duo with O4 and O3
     ENV.O2 if Hardware.intel_family == :core
@@ -132,6 +135,8 @@ EOS
 
     if MacOS.prefer_64_bit? then
       s << <<-EOS
+
+To install postgresql ( and ossp-uuid ) in 32 bits mode; you may use the --build32 flag
 
 If you want to install the postgres gem, including ARCHFLAGS is recommended:
     env ARCHFLAGS="-arch x86_64" gem install pg
