@@ -1,12 +1,6 @@
 require 'formula'
 require 'utils'
 
-# Use "brew audit --strict" to enable even stricter checks.
-
-def strict?
-  ARGV.flag? "--strict"
-end
-
 def ff
   return Formula.all if ARGV.named.empty?
   return ARGV.formulae
