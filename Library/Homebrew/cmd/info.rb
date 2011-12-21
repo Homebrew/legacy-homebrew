@@ -70,7 +70,8 @@ module Homebrew extend self
       end
     end
 
-    if f.caveats
+    the_caveats = (f.caveats || "").strip
+    unless the_caveats.empty?
       puts
       puts f.caveats
       puts
