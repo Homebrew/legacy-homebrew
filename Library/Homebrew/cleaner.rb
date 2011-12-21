@@ -3,7 +3,7 @@ class Cleaner
     @f = Formula.factory f
     [f.bin, f.sbin, f.lib].select{ |d| d.exist? }.each{ |d| clean_dir d }
 
-    unless ENV['HOMEBREW_KEEP_INFO'].nil?
+    unless ENV['HOMEBREW_KEEP_INFO']
       f.info.rmtree if f.info.directory? and not f.skip_clean? f.info
     end
 

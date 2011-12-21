@@ -1,9 +1,9 @@
 require 'formula'
 
 class GoogleAppEngine < Formula
-  url 'http://googleappengine.googlecode.com/files/google_appengine_1.5.4.zip'
+  url 'http://googleappengine.googlecode.com/files/google_appengine_1.6.1.zip'
   homepage 'http://code.google.com/appengine/'
-  sha1 '0c580fa233527dd701d9363eebc8ee0a7fe8dd95'
+  sha1 'e9882abe0381111cc52a210f5c59e3d24202b5d2'
 
   def install
     cd '..'

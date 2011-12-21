@@ -1,16 +1,13 @@
 require 'formula'
 
 class MediaInfo < Formula
-  url 'http://downloads.sourceforge.net/sourceforge/mediainfo/MediaInfo_CLI_0.7.48_GNU_FromSource.tar.bz2'
+  url 'http://downloads.sourceforge.net/sourceforge/mediainfo/MediaInfo_CLI_0.7.51_GNU_FromSource.tar.bz2'
   homepage 'http://mediainfo.sourceforge.net'
-  md5 '47017511e067ca992d7fe41f9018e579'
+  md5 'b474a089ad26e9db4358ee335498ae43'
 
   depends_on 'pkg-config' => :build
 
   def install
-    # Build fails when parallelized
-    ENV.deparallelize
-
     root_dir = Dir.pwd
 
     Dir.chdir root_dir + '/ZenLib/Project/GNU/Library'

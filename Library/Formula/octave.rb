@@ -19,9 +19,10 @@ def snow_leopard_64?
 end
 
 class Octave < Formula
-  url 'http://ftpmirror.gnu.org/octave/octave-3.4.2.tar.bz2'
+  url 'http://ftpmirror.gnu.org/octave/octave-3.4.3.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/octave/octave-3.4.3.tar.bz2'
   homepage 'http://www.gnu.org/software/octave/index.html'
-  md5 '31c744ab4555a2bf04d5e644b93f9b51'
+  md5 '185b08f4e4a7b646d76e4d33b77fa87e'
 
   depends_on 'pkg-config' => :build
   depends_on 'gnu-sed' => :build
@@ -38,6 +39,7 @@ class Octave < Formula
   depends_on 'dotwrp' if snow_leopard_64?
   # octave refuses to work with BSD readline, so it's either this or --disable-readline
   depends_on 'readline'
+  depends_on 'curl' if MacOS.leopard? # Leopard's libcurl is too old
 
   # additional features
   depends_on 'suite-sparse'

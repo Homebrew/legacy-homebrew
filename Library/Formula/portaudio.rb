@@ -7,7 +7,7 @@ class Portaudio < Formula
 
   depends_on 'pkg-config' => :build
 
-  fails_with_llvm
+  fails_with_llvm :build => 2334
 
   def options
     [["--universal", "Build a universal binary."]]
@@ -20,7 +20,7 @@ class Portaudio < Formula
       "https://trac.macports.org/export/77586/trunk/dports/audio/portaudio/files/patch-src__hostapi__coreaudio__pa_mac_core.c",
       "https://trac.macports.org/export/77586/trunk/dports/audio/portaudio/files/patch-src__common__pa_types.h"
     ]}
-  end
+  end unless MacOS.leopard?
 
   def install
     ENV.universal_binary if ARGV.build_universal?

@@ -5,7 +5,7 @@ class YamlCpp < Formula
   homepage 'http://code.google.com/p/yaml-cpp/'
   md5 'b17dc36055cd2259c88b2602601415d9'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
   depends_on 'libyaml'
 
   def install

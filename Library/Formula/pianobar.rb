@@ -1,16 +1,17 @@
 require 'formula'
 
 class Pianobar < Formula
-  url 'https://github.com/PromyLOPh/pianobar/zipball/2011.09.22'
-  version '2011.09.22'
+  url 'https://github.com/PromyLOPh/pianobar/tarball/2011.12.11'
+  version '2011.12.11'
   homepage 'https://github.com/PromyLOPh/pianobar/'
-  md5 '61f84526b42381204678165825f0d4a5'
+  md5 'c8573c133851ff54649d1ab45c7b855c'
 
   head 'https://github.com/PromyLOPh/pianobar.git'
 
   depends_on 'libao'
   depends_on 'mad'
   depends_on 'faad2'
+  depends_on 'gnutls'
 
   skip_clean 'bin'
 

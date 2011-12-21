@@ -111,6 +111,7 @@ def curl *args
   args = [HOMEBREW_CURL_ARGS, HOMEBREW_USER_AGENT, *args]
   # See https://github.com/mxcl/homebrew/issues/6103
   args << "--insecure" if MacOS.version < 10.6
+  args << "--verbose" if ENV['HOMEBREW_CURL_VERBOSE']
 
   safe_system curl, *args
 end
@@ -136,24 +137,26 @@ def puts_columns items, star_items=[]
   end
 end
 
+def which_editor
+  editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
+  # If an editor wasn't set, try to pick a sane default
+  return editor unless editor.nil?
+
+  # Find Textmate
+  return 'mate' if system "/usr/bin/which -s mate"
+  # Find # BBEdit / TextWrangler
+  return 'edit' if system "/usr/bin/which -s edit"
+  # Default to vim
+  return '/usr/bin/vim'
+end
+
 def exec_editor *args
   return if args.to_s.empty?
-
-  editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
-  if editor.nil?
-    editor = if system "/usr/bin/which -s mate"
-      'mate'
-    elsif system "/usr/bin/which -s edit"
-      'edit' # BBEdit / TextWrangler
-    else
-      '/usr/bin/vim' # Default to vim
-    end
-  end
 
   # Invoke bash to evaluate env vars in $EDITOR
   # This also gets us proper argument quoting.
   # See: https://github.com/mxcl/homebrew/issues/5123
-  system "bash", "-c", editor + ' "$@"', "--", *args
+  system "bash", "-c", which_editor + ' "$@"', "--", *args
 end
 
 # GZips the given paths, and returns the gzipped paths
@@ -261,26 +264,16 @@ module MacOS extend self
   end
 
   def gcc_42_build_version
-    `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
-    if $1
+    @gcc_42_build_version ||= if File.exist? "/usr/bin/gcc-4.2"
+      `/usr/bin/gcc-4.2 --version` =~ /build (\d{4,})/
       $1.to_i
-    elsif system "/usr/bin/which gcc"
-      # Xcode 3.0 didn't come with gcc-4.2
-      # We can't change the above regex to use gcc because the version numbers
-      # are different and thus, not useful.
-      # FIXME I bet you 20 quid this causes a side effect — magic values tend to
-      401
-    else
-      nil
     end
   end
 
   def gcc_40_build_version
-    `/usr/bin/gcc-4.0 -v 2>&1` =~ /build (\d{4,})/
-    if $1
+    @gcc_40_build_version ||= if File.exist? "/usr/bin/gcc-4.0"
+      `/usr/bin/gcc-4.0 --version` =~ /build (\d{4,})/
       $1.to_i
-    else
-      nil
     end
   end
 
@@ -335,8 +328,22 @@ module MacOS extend self
     # for Xcode 3 on OS X 10.5 this will not exist
     # NOTE may not be true anymore but we can't test
     @llvm_build_version ||= if File.exist? "/usr/bin/llvm-gcc"
-      `/usr/bin/llvm-gcc -v 2>&1` =~ /LLVM build (\d{4,})/
+      `/usr/bin/llvm-gcc --version` =~ /LLVM build (\d{4,})/
       $1.to_i
+    end
+  end
+
+  def clang_version
+    @clang_version ||= if File.exist? "/usr/bin/clang"
+      `/usr/bin/clang --version` =~ /clang version (\d\.\d)/
+      $1
+    end
+  end
+
+  def clang_build_version
+    @clang_build_version ||= if File.exist? "/usr/bin/clang"
+      `/usr/bin/clang --version` =~ %r[tags/Apple/clang-(\d+(\.\d+)*)]
+      $1
     end
   end
 

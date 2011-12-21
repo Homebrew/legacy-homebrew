@@ -2,19 +2,20 @@ require 'formula'
 
 class Libstemmer < Formula
   # upstream is constantly changing the tarball,
-  # so doing checksumv verification here would require
+  # so doing checksum verification here would require
   # constant, rapid updates to this formula.
   head 'http://snowball.tartarus.org/dist/libstemmer_c.tgz'
   homepage 'http://snowball.tartarus.org/'
 end
 
 class Sphinx < Formula
-  url 'http://sphinxsearch.com/downloads/sphinx-0.9.9.tar.gz'
+  url 'http://sphinxsearch.com/files/sphinx-2.0.2-beta.tar.gz'
   homepage 'http://www.sphinxsearch.com'
-  md5 '7b9b618cb9b378f949bb1b91ddcc4f54'
+  md5 'fafe0f1a71d0ded32404c067eba7d0b3'
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
-  fails_with_llvm "fails with: ld: rel32 out of range in _GetPrivateProfileString from /usr/lib/libodbc.a(SQLGetPrivateProfileString.o)"
+  fails_with_llvm "ld: rel32 out of range in _GetPrivateProfileString from /usr/lib/libodbc.a(SQLGetPrivateProfileString.o)",
+    :build => 2334
 
   def install
     lstem = Pathname.pwd+'libstemmer_c'
@@ -31,7 +32,7 @@ class Sphinx < Formula
 
     # configure script won't auto-select PostgreSQL
     args << "--with-pgsql" if `/usr/bin/which pg_config`.size > 0
-    args << "--without-mysql" if `/usr/bin/which mysql`.size <= 0
+    args << "--without-mysql" unless `/usr/bin/which mysql`.size > 0
 
     system "./configure", *args
     system "make install"
