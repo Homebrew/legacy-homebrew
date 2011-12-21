@@ -1,14 +1,15 @@
 require 'formula'
 
 class KdePhonon < Formula
-  url 'ftp://ftp.kde.org/pub/kde/stable/phonon/4.5.0/src/phonon-4.5.0.tar.bz2'
+  url 'ftp://ftp.kde.org/pub/kde/stable/phonon/4.6.0/src/phonon-4.6.0.tar.xz'
   homepage 'http://phonon.kde.org/'
-  md5 '32f8d388c18fde2e23dea7bb103f9713'
+  md5 'bbe0c1c62ed14c31479c4c1a6cf1e173'
 
   depends_on 'cmake' => :build
   depends_on 'automoc4' => :build
   depends_on 'qt'
   depends_on 'glib' => :build
+  depends_on 'xz'
 
   keg_only "This package is already supplied by Qt and is only needed by KDE packages."
 

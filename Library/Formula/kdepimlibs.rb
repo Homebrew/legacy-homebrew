@@ -1,9 +1,9 @@
 require 'formula'
 
 class Kdepimlibs < Formula
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.6.0/src/kdepimlibs-4.6.0.tar.bz2'
+  url 'http://ftp.kde.org/stable/4.7.4/src/kdepimlibs-4.7.4.tar.bz2'
   homepage 'http://www.kde.org/'
-  md5 'bfcc74fff5c6d0803d43cf13033660ab'
+  md5 'ccc9d9ec4173e5627623d93207fdf318'
 
   depends_on 'cmake' => :build
   depends_on 'gpgme'
