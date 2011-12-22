@@ -1,18 +1,18 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://kernel.org/pub/software/scm/git/git-manpages-1.7.6.1.tar.bz2'
-  md5 'cae559424a62507cb2c15252d85a158e'
+  url 'http://git-core.googlecode.com/files/git-manpages-1.7.8.1.tar.gz'
+  md5 'b29f719b318b4170f5cb6278f17648f2'
 end
 
 class GitHtmldocs < Formula
-  url 'http://kernel.org/pub/software/scm/git/git-htmldocs-1.7.6.1.tar.bz2'
-  md5 'f698e0abbf1555582e30320930391c59'
+  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.8.1.tar.gz'
+  md5 'e841ab285b8a03d3620c9db042bab976'
 end
 
 class Git < Formula
-  url 'http://kernel.org/pub/software/scm/git/git-1.7.6.1.tar.bz2'
-  md5 'd1e00772cc9dc6c571999feb9e8771ab'
+  url 'http://git-core.googlecode.com/files/git-1.7.8.1.tar.gz'
+  md5 '617fe0301390e98cfc5d665b2702254a'
   homepage 'http://git-scm.com'
 
   def options
