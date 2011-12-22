@@ -1,9 +1,9 @@
 require 'formula'
 
 class HaskellPlatform < Formula
-  url 'http://lambda.galois.com/hp-tmp/2011.2.0.1/haskell-platform-2011.2.0.1.tar.gz'
+  url 'http://lambda.haskell.org/platform/download/2011.4.0.0/haskell-platform-2011.4.0.0.tar.gz'
   homepage 'http://hackage.haskell.org/platform/'
-  md5 '97fd42f169a426d043368cec342745ef'
+  sha256 'aae19e73d6de2a37508aae652ef92fa21c4cf5b678d40ded5c0a8e1e3492e804'
 
   depends_on 'ghc'
 
