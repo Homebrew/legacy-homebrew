@@ -1,9 +1,9 @@
 require 'formula'
 
 class IscDhcp < Formula
-  url 'ftp://ftp.isc.org/isc/dhcp/dhcp-4.2.3/dhcp-4.2.3.tar.gz'
+  url 'ftp://ftp.isc.org/isc/dhcp/4.2.3-P1/dhcp-4.2.3-P1.tar.gz'
   homepage 'http://www.isc.org/software/dhcp'
-  md5 'a06649ec5336d284fc86a0232c0edd63'
+  sha256 '505c5754526ba92669bfd64daa8b529c6694c4528b45c3f35743c6fd4bd72897'
 
   def install
     # use one dir under var for all runtime state.
@@ -29,6 +29,11 @@ class IscDhcp < Formula
 
     path_opts.each do |symbol,path|
       ENV.append 'CFLAGS', "-D#{symbol}='\"#{path}\"'"
+    end
+
+    # See discussion at: https://gist.github.com/1157223
+    if 10.7 <= MACOS_VERSION
+      ENV.append 'CFLAGS', "-D__APPLE_USE_RFC_3542"
     end
 
     system './configure', "--disable-dependency-tracking",
