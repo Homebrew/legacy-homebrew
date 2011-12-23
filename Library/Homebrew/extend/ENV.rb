@@ -19,19 +19,15 @@ module HomebrewEnvExtension
     end
 
     # llvm allows -O4 however it often fails to link and is very slow
-    cflags = ['-O3']
+    self['CFLAGS'] = self['CXXFLAGS'] = "-O3 #{SAFE_CFLAGS_FLAGS}"
 
-    case self.compiler
-      when :clang then self.clang
-      when :llvm then self.llvm
-      when :gcc then self.gcc
-    end
-
+    self.send self.compiler
     # we must have a working compiler!
     unless File.exist? ENV['CC'] and File.exist? ENV['CXX']
+      @compiler = MacOS.default_compiler
+      self.send @compiler
       ENV['CC']  = '/usr/bin/cc'
       ENV['CXX'] = '/usr/bin/c++'
-      @compiler = MacOS.default_compiler
     end
 
     # In rare cases this may break your builds, as the tool for some reason wants
@@ -39,46 +35,6 @@ module HomebrewEnvExtension
     # build more successfully because we are changing CC and many build systems
     # don't react properly to that.
     self['LD'] = self['CC']
-
-    # Optimise all the way to eleven, references:
-    # http://en.gentoo-wiki.com/wiki/Safe_Cflags/Intel
-    # http://forums.mozillazine.org/viewtopic.php?f=12&t=577299
-    # http://gcc.gnu.org/onlinedocs/gcc-4.2.1/gcc/i386-and-x86_002d64-Options.html
-    # We don't set, eg. -msse3 because the march flag does that for us:
-    # http://gcc.gnu.org/onlinedocs/gcc-4.3.3/gcc/i386-and-x86_002d64-Options.html
-    if MACOS_VERSION >= 10.6
-      case Hardware.intel_family
-      when :nehalem, :penryn, :core2, :arrandale, :sandybridge
-        # the 64 bit compiler adds -mfpmath=sse for us
-        cflags << "-march=core2"
-      when :core
-        cflags<<"-march=prescott"<<"-mfpmath=sse"
-      else
-        # note that this didn't work on older versions of Xcode's gcc
-        # and maybe still doesn't. But it's at least not worse than nothing.
-        # UPDATE with Xcode 4.1 doesn't work at all.
-        # TODO there must be something useful!?
-        #cflags << "-march=native"
-      end
-      # gcc doesn't auto add msse4 or above (based on march flag) yet
-      case Hardware.intel_family
-      when :nehalem
-        cflags << "-msse4" # means msse4.2 and msse4.1
-      when :penryn
-        cflags << "-msse4.1"
-      end
-    else
-      # gcc 4.0 didn't support msse4
-      case Hardware.intel_family
-      when :nehalem, :penryn, :core2
-        cflags<<"-march=nocona"
-      when :core
-        cflags<<"-march=prescott"
-      end
-      cflags<<"-mfpmath=sse"
-    end
-
-    self['CFLAGS'] = self['CXXFLAGS'] = "#{cflags*' '} #{SAFE_CFLAGS_FLAGS}"
   end
 
   def deparallelize
@@ -120,9 +76,8 @@ module HomebrewEnvExtension
   def gcc_4_0_1
     self['CC'] = '/usr/bin/gcc-4.0'
     self['CXX'] = '/usr/bin/g++-4.0'
-    remove_from_cflags '-O4'
-    remove_from_cflags '-march=core2'
-    remove_from_cflags %r{-msse4(\.\d)?}
+    replace_in_cflags '-O4', '-O3'
+    set_cpu_cflags 'nocona -mssse3', :core => 'prescott'
     @compiler = :gcc
   end
   alias_method :gcc_4_0, :gcc_4_0_1
@@ -130,7 +85,8 @@ module HomebrewEnvExtension
   def gcc args = {}
     self['CC']  = "/usr/bin/gcc-4.2"
     self['CXX'] = "/usr/bin/g++-4.2"
-    remove_from_cflags '-O4'
+    replace_in_cflags '-O4', '-O3'
+    set_cpu_cflags 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott'
     @compiler = :gcc
 
     raise "GCC could not be found" if args[:force] and not File.exist? ENV['CC'] \
@@ -142,12 +98,16 @@ module HomebrewEnvExtension
   def llvm
     self['CC']  = "/usr/bin/llvm-gcc"
     self['CXX'] = "/usr/bin/llvm-g++"
+    set_cpu_cflags 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott'
     @compiler = :llvm
   end
 
   def clang
     self['CC']  = "/usr/bin/clang"
     self['CXX'] = "/usr/bin/clang++"
+    replace_in_cflags(/-Xarch_i386 (-march=\S*)/, '\1')
+    # Clang mistakenly enables AES-NI on plain Nehalem
+    set_cpu_cflags 'native', :nehalem => 'native -Xclang -target-feature -Xclang -aes'
     @compiler = :clang
   end
 
@@ -219,7 +179,7 @@ Please take one of the following actions:
 
   # Some configure scripts won't find libxml2 without help
   def libxml2
-    append_to_cflags '-I/usr/include/libxml2'
+    append 'CPPFLAGS', '-I/usr/include/libxml2'
   end
 
   def x11
@@ -265,11 +225,13 @@ Please take one of the following actions:
   # i386 and x86_64 (no PPC)
   def universal_binary
     append_to_cflags '-arch i386 -arch x86_64'
-    self.O3 if self['CFLAGS'].include? '-O4' # O4 seems to cause the build to fail
+    replace_in_cflags '-O4', '-O3' # O4 seems to cause the build to fail
     append 'LDFLAGS', '-arch i386 -arch x86_64'
 
-    # Can't mix "-march" for a 32-bit CPU  with "-arch x86_64"
-    remove_from_cflags(/-march=\S*/) if Hardware.is_32_bit?
+    unless compiler == :clang
+      # Can't mix "-march" for a 32-bit CPU  with "-arch x86_64"
+      replace_in_cflags(/-march=\S*/, '-Xarch_i386 \0') if Hardware.is_32_bit?
+    end
   end
 
   def prepend key, value, separator = ' '
@@ -296,14 +258,33 @@ Please take one of the following actions:
     append 'CFLAGS', f
     append 'CXXFLAGS', f
   end
+
   def remove key, value
     return if self[key].nil?
     self[key] = self[key].sub value, '' # can't use sub! on ENV
     self[key] = nil if self[key].empty? # keep things clean
   end
+
   def remove_from_cflags f
     remove 'CFLAGS', f
     remove 'CXXFLAGS', f
+  end
+
+  def replace_in_cflags before, after
+    %w{CFLAGS CXXFLAGS}.each do |key|
+      self[key] = self[key].sub before, after if self[key]
+    end
+  end
+
+  def set_cpu_cflags default, map = {}
+    cflags =~ %r{(-Xarch_i386 )-march=}
+    xarch = $1.to_s
+    remove_from_cflags %r{(-Xarch_i386 )?-march=\S*}
+    remove_from_cflags %r{( -Xclang \S+)+}
+    remove_from_cflags %r{-mssse3}
+    remove_from_cflags %r{-msse4(\.\d)?}
+    # Don't set -msse3 and older flags because -march does that for us
+    append_to_cflags xarch + '-march=' + map.fetch(Hardware.intel_family, default)
   end
 
   # actually c-compiler, so cc would be a better name
@@ -353,7 +334,7 @@ Please take one of the following actions:
   end
 
   def remove_cc_etc
-    keys = %w{CC CXX LD CPP LDFLAGS CFLAGS CPPFLAGS}
+    keys = %w{CC CXX LD CPP CFLAGS CXXFLAGS LDFLAGS CPPFLAGS}
     removed = Hash[*keys.map{ |key| [key, ENV[key]] }.flatten]
     keys.each do |key|
       ENV[key] = nil

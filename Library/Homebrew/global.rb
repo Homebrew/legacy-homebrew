@@ -6,7 +6,7 @@ require 'exceptions'
 
 ARGV.extend(HomebrewArgvExtension)
 
-HOMEBREW_VERSION = '0.8'
+HOMEBREW_VERSION = '0.8.1'
 HOMEBREW_WWW = 'http://mxcl.github.com/homebrew/'
 
 HOMEBREW_CACHE = if ENV['HOMEBREW_CACHE']
@@ -56,7 +56,7 @@ module Homebrew extend self
   include FileUtils
 end
 
-FORMULA_META_FILES = %w[README README.md ChangeLog COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
+FORMULA_META_FILES = %w[README README.md ChangeLog CHANGES COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
 ISSUES_URL = "https://github.com/mxcl/homebrew/wiki/checklist-before-filing-a-new-issue"
 
 unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']

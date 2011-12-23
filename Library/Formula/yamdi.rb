@@ -6,7 +6,7 @@ class Yamdi < Formula
   md5 '3f8395373e941f235015a92d4da047c8'
 
   def install
-    system "gcc yamdi.c -o yamdi -O2 -Wall"
+    system "#{ENV.cc} #{ENV.cflags} yamdi.c -o yamdi"
     bin.install "yamdi"
     man1.install "man1/yamdi.1"
   end
