@@ -52,7 +52,7 @@ All commands have been installed with the prefix 'g'.
 A file that aliases these commands to their normal names is available
 and may be used in your bashrc like:
 
-    source #{prefix}/aliases
+    source #{HOMEBREW_PREFIX}/Library/LinkedKegs/coreutils/aliases
 
 But note that sourcing these aliases will cause them to be used instead
 of Bash built-in commands, which may cause problems in shell scripts.
