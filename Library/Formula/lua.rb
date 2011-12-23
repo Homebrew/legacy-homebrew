@@ -15,8 +15,14 @@ class Lua < Formula
   # See: https://github.com/mxcl/homebrew/pull/5043
   def patches
     DATA
+    if ARGV.include? '--completion'
+      'http://luajit.org/patches/lua-5.1.4-advanced_readline.patch'
+    end
   end
 
+  def options
+    [['--completion', 'Enables advanced readline support']]
+  end
 
   def install
     # Apply patch-level 2
