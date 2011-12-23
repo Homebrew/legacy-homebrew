@@ -5,11 +5,12 @@ class Dpkg < Formula
   homepage 'http://en.wikipedia.org/wiki/Dpkg'
   md5 '58a1a3ab86ab3220e469cb75f6fb6d7c'
 
-  depends_on 'pkg-config' => :build
+  depends_on 'gnu-tar'
 
-  #Fixes the PERL_LIBDIR
-  def patches; DATA; end
-
+  def patches
+    #Fixes the PERL_LIBDIR
+    DATA
+  end
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -40,3 +41,16 @@ index a4e8516..de7f226 100755
  
  for ac_prog in pod2man
  do
+diff --git a/lib/dpkg/dpkg.h b/lib/dpkg/dpkg.h
+index ba6066c..89a66ba 100644
+--- a/lib/dpkg/dpkg.h
++++ b/lib/dpkg/dpkg.h
+@@ -97,7 +97,7 @@
+ #define DPKG  	"dpkg"
+ #define DEBSIGVERIFY	"/usr/bin/debsig-verify"
+ 
+-#define TAR		"tar"
++#define TAR		"gnutar"
+ #define RM		"rm"
+ #define FIND		"find"
+ #define DIFF		"diff"
