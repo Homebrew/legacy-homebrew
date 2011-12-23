@@ -90,16 +90,26 @@ EOS
     def patches; DATA; end
   end
 
-  def caveats; <<-EOS.undent
-    For a more full-featured install, try:
-      http://code.google.com/p/osxwinebuilder/
-
-    You may also want to get winetricks:
-      brew install winetricks
-
-    To use 3D applications, like games, check "Emulate a virtual desktop" in
-    winecfg's "Graphics" tab.
+  def caveats
+    s = <<-EOS.undent
+      For best results, you will want to install the latest version of XQuartz:
+        http://xquartz.macosforge.org/
+      
+      You may also want to get winetricks:
+        brew install winetricks
+      
+      Or check out:
+        http://code.google.com/p/osxwinebuilder/
     EOS
+    if not (ARGV.build_devel? or ARGV.build_head?)
+      s += <<-EOS.undent
+        
+        The stable version of Wine is very old. You will get better results with
+        the development version. Use:
+          brew install wine --devel
+      EOS
+    end
+    return s
   end
 end
 
