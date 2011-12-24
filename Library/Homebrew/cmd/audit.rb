@@ -1,12 +1,6 @@
 require 'formula'
 require 'utils'
 
-# Use "brew audit --strict" to enable even stricter checks.
-
-def strict?
-  ARGV.flag? "--strict"
-end
-
 def ff
   return Formula.all if ARGV.named.empty?
   return ARGV.formulae
@@ -276,7 +270,7 @@ def audit_formula_instance f
 
     case d
     when "git", "python", "ruby", "emacs", "mysql", "postgresql"
-      problems << " * Don't use #{d} as a dependency; we allow non-Homebrew #{d} installs."
+      problems << " * Don't use #{d} as a dependency; we allow non-Homebrew\n   #{d} installs."
     end
   end
 
@@ -294,6 +288,11 @@ module Homebrew extend self
 
     ff.each do |f|
       problems = []
+
+      if f.unstable and f.stable.nil?
+        problems += [' * head-only formula']
+      end
+
       problems += audit_formula_instance f
       problems += audit_formula_urls f
 

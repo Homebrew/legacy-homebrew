@@ -13,7 +13,10 @@ class Gpgme < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--enable-static",
+                          "--without-gpgsm",
+                          "--without-gpgconf"
     system "make"
     system "make check"
     system "make install"
