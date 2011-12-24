@@ -62,6 +62,14 @@ class Octave < Formula
     ]
   end
 
+  def patches
+    # Upstream patch that fixes a bug that causes the build to fail when BSD
+    # sed is used instead of GNU sed. See changeset 13791:4cf7356a99d0. See
+    # http://hg.savannah.gnu.org/hgweb/octave/rev/4cf7356a99d0 for more
+    # information.
+    DATA
+  end
+
   def install
     ENV.fortran
 
@@ -109,3 +117,15 @@ class Octave < Formula
     s = native_caveats + s unless no_native?
   end
 end
+
+__END__
+--- a/src/find-defun-files.sh	Wed Nov 02 09:24:48 2011 -0700
++++ b/src/find-defun-files.sh	Wed Nov 02 12:40:29 2011 -0400
+@@ -21,6 +21,6 @@
+     file="$srcdir/$arg"
+   fi
+   if [ "`$EGREP -l "$DEFUN_PATTERN" $file`" ]; then
+-    echo "$file" | $SED 's,.*/,,; s/\.\(cc\|yy\|ll\)$/.df/';
++    echo "$file" | $SED 's,.*/,,; s/\.cc$/.df/; s/\.ll$/.df/; s/\.yy$/.df/';
+   fi
+ done
