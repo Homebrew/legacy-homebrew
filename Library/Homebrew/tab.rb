@@ -1,7 +1,7 @@
 require 'ostruct'
 
 require 'formula'
-require 'vendor/multi_json'
+require 'vendor/ok_json'
 
 # Inherit from OpenStruct to gain a generic initialization method that takes a
 # hash and creates an attribute for each key and value. `Tab.new` probably
@@ -21,7 +21,7 @@ class Tab < OpenStruct
   end
 
   def self.from_file path
-    tab = Tab.new MultiJson.decode(open(path).read)
+    tab = Tab.new OkJson.decode(open(path).read)
     tab.tabfile = path
 
     return tab
@@ -74,7 +74,7 @@ class Tab < OpenStruct
   end
 
   def to_json
-    MultiJson.encode({
+    OkJson.encode({
       :used_options => used_options,
       :unused_options => unused_options
     })

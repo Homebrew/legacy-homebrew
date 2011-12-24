@@ -165,7 +165,7 @@ module OkJson
   end
 
 
-  # Sans s and returns a list of json tokens,
+  # Scans s and returns a list of json tokens,
   # excluding white space (as defined in RFC 4627).
   def lex(s)
     ts = []
@@ -185,7 +185,7 @@ module OkJson
 
   # Scans the first token in s and
   # returns a 3-element list, or nil
-  # if no such token exists.
+  # if s does not begin with a valid token.
   #
   # The first list element is one of
   # '{', '}', ':', ',', '[', ']',
@@ -488,9 +488,9 @@ module OkJson
 
 
   def numenc(x)
-    if x.nan? || x.infinite?
-      return 'null'
-    end rescue nil
+    if ((x.nan? || x.infinite?) rescue false)
+      raise Error, "Numeric cannot be represented: #{x}"
+    end
     "#{x}"
   end
 
