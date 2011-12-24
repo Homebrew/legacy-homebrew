@@ -329,8 +329,7 @@ class Formula
   end
 
   def handle_llvm_failure llvm
-    case ENV.compiler
-    when :llvm, :clang
+    if ENV.compiler == :llvm
       # version 2335 is the latest version as of Xcode 4.1, so it is the
       # latest version we have tested against so we will switch to GCC and
       # bump this integer when Xcode 4.2 is released. TODO do that!
