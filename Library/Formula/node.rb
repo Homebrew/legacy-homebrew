@@ -28,6 +28,9 @@ class Node < Formula
     args = ["--prefix=#{prefix}", "--without-npm"]
     args << "--debug" if ARGV.include? '--debug'
 
+    # Add python tools to PYTHONPATH so the imports will always work
+    ENV['PYTHONPATH'] = "tools/"
+
     system "./configure", *args
     system "make install"
   end
