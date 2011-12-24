@@ -430,7 +430,7 @@ module OkJson
 
   def keyenc(k)
     case k
-    when String then strenc(k)
+    when String, Symbol then strenc(k.to_s)
     else
       raise Error, "Hash key is not a string: #{k.inspect}"
     end
