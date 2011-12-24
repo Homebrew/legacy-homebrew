@@ -64,7 +64,9 @@ class Octave < Formula
 
   def patches
     # Upstream patch that fixes a bug that causes the build to fail when BSD
-    # sed is used instead of GNU sed. See changeset 13791:4cf7356a99d0.
+    # sed is used instead of GNU sed. See changeset 13791:4cf7356a99d0. See
+    # http://hg.savannah.gnu.org/hgweb/octave/rev/4cf7356a99d0 for more
+    # information.
     DATA
   end
 
