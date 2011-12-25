@@ -11,11 +11,7 @@ class Graphviz < Formula
 
   depends_on 'pkg-config' => :build
 
-  if ARGV.include? '--with-pangocairo'
-    depends_on 'pango'
-    depends_on 'cairo' if MacOS.leopard?
-  end
-
+  depends_on 'pango' if ARGV.include? '--with-pangocairo'
   depends_on 'swig' if build_bindings?
 
   def options
