@@ -9,6 +9,7 @@ class Pcb < Formula
   depends_on 'gd'
   depends_on 'gettext'
   depends_on 'd-bus'
+  depends_on 'intltool'
 
   def install
     # Help configure find libraries
