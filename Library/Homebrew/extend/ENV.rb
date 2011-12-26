@@ -89,9 +89,16 @@ module HomebrewEnvExtension
     set_cpu_cflags 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott'
     @compiler = :gcc
 
+    # Check the symlink path... There's no File.realpath on Ruby 1.8.7.
+    was_link = File.symlink? self['CC']
+
+    # Loop until it's no longer a symlink.
+    while (File.symlink? self['CC']) do
+        self['CC'] = File.readlink(self['CC'])
+    end
+
     raise "GCC could not be found" if args[:force] and not File.exist? ENV['CC'] \
-                                   or (File.symlink? ENV['CC'] \
-                                   and File.readlink(ENV['CC']) =~ /llvm/)
+                                   or (was_link and ENV['CC'] =~ /llvm/)
   end
   alias_method :gcc_4_2, :gcc
 
