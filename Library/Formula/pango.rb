@@ -19,6 +19,12 @@ class Pango < Formula
     #
     #   https://trac.macports.org/ticket/30370
     depends_on 'cairo'
+    
+    def patches
+      # Fixes font size rendering in lion. See the following for details
+      # http://web.me.com/aschweiz/Website/Blog/Entries/2011/10/6_CoreText_vs._FontConfig.html
+      "http://web.me.com/aschweiz/Website/Blog/Entries/2011/10/6_CoreText_vs._FontConfig_files/pango-1.29.3-coretext.patch"
+    end
   end
 
   def install
