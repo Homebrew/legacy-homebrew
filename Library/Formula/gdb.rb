@@ -6,7 +6,7 @@ class Gdb < Formula
   md5 'b89a5fac359c618dda97b88645ceab47'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--enable-64-bit-bfd"
+    system "./configure", "--prefix=#{prefix}", "--with-python"
     system "make"
     system "make install"
   end
@@ -26,7 +26,7 @@ You need to codesign your gdb or run as root:
 
 5) Back in the terminal:
 
-   codesign -s gdb-code #{prefix}/bin/gdb
+   codesign -s gdb-cert #{prefix}/bin/gdb
 EOS
   end
 end
