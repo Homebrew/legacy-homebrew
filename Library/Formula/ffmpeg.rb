@@ -52,7 +52,7 @@ class Ffmpeg < Formula
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
-    if MacOS.snow_leopard? and Hardware.is_32_bit?
+    if Hardware.is_32_bit?
       ENV.append_to_cflags "-mdynamic-no-pic"
     end
 
