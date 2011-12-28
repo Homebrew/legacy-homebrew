@@ -29,6 +29,7 @@ class Git < Formula
     ENV['NO_FINK']='1'
     ENV['NO_DARWIN_PORTS']='1'
     ENV['V']='1' # build verbosely
+    ENV['NO_R_TO_GCC_LINKER']='1' # pass arguments to LD correctly
 
     # workaround for users of perlbrew
     ENV['PERL_PATH'] = `/usr/bin/which perl`.chomp
