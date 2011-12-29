@@ -6,7 +6,7 @@ require 'exceptions'
 
 ARGV.extend(HomebrewArgvExtension)
 
-HOMEBREW_VERSION = '0.8'
+HOMEBREW_VERSION = '0.8.1'
 HOMEBREW_WWW = 'http://mxcl.github.com/homebrew/'
 
 HOMEBREW_CACHE = if ENV['HOMEBREW_CACHE']

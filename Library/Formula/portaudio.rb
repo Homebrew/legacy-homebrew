@@ -1,9 +1,9 @@
 require 'formula'
 
 class Portaudio < Formula
-  url 'http://www.portaudio.com/archives/pa_stable_v19_20071207.tar.gz'
+  url 'http://www.portaudio.com/archives/pa_stable_v19_20111121.tgz'
   homepage 'http://www.portaudio.com'
-  md5 'd2943e4469834b25afe62cc51adc025f'
+  md5 '25c85c1cc5e9e657486cbc299c6c035a'
 
   depends_on 'pkg-config' => :build
 
@@ -13,19 +13,16 @@ class Portaudio < Formula
     [["--universal", "Build a universal binary."]]
   end
 
-  # Use the MacPort patches that fix compiling against newer OS X SDKs
-  def patches
-    {:p0 => [
-      "https://trac.macports.org/export/77586/trunk/dports/audio/portaudio/files/patch-configure",
-      "https://trac.macports.org/export/77586/trunk/dports/audio/portaudio/files/patch-src__hostapi__coreaudio__pa_mac_core.c",
-      "https://trac.macports.org/export/77586/trunk/dports/audio/portaudio/files/patch-src__common__pa_types.h"
-    ]}
-  end unless MacOS.leopard?
-
   def install
     ENV.universal_binary if ARGV.build_universal?
 
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    args = [ "--prefix=#{prefix}",
+             "--disable-debug",
+             "--disable-dependency-tracking",
+             # portaudio builds universal unless told not to
+             "--enable-mac-universal=#{ARGV.build_universal? ? 'yes' : 'no'}" ]
+
+    system "./configure", *args
     system "make install"
 
     # Need 'pa_mac_core.h' to compile PyAudio

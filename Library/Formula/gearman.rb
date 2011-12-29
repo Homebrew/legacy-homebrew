@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gearman < Formula
-  url 'http://launchpad.net/gearmand/trunk/0.24/+download/gearmand-0.24.tar.gz'
+  url 'http://launchpad.net/gearmand/trunk/0.26/+download/gearmand-0.26.tar.gz'
   homepage 'http://gearman.org/'
-  md5 '7cd3bfedd37fd8f2d2c9a59333e08c8c'
+  md5 '52a8cc98f649980331cc8011d47af09f'
 
   depends_on 'libevent'
   depends_on 'boost'
