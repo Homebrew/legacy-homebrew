@@ -59,7 +59,7 @@ class Gfortran < Formula
 
   def install
     # The version of pax jumped 16 years in development between OS X 10.5
-    # and OS X 10.6. In that time it became security concious. Additionally,
+    # and OS X 10.6. In that time it became security conscious. Additionally,
     # there are some slight variations in the packaging- because of this
     # installation is broken down by GCC version.
     case gcc_42_build
