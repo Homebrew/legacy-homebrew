@@ -40,7 +40,7 @@ exec java -Xmx512M -jar #{prefix}/sbt-launch.jar @giter8.launchconfig "$@"
     prefix.install 'sbt-launch.jar'
   end
 
-  def caveats; <<-EOS
+  def caveats; <<-EOS.undent
     Giter8 will download the Scala runtime from scala-tools.org
     and the rest of the giter8 binaries the first time you run it.
     You can do that now running "g8".
