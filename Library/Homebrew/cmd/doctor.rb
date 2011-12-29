@@ -751,12 +751,13 @@ def check_missing_deps
 end
 
 def check_git_status
-  repo = HOMEBREW_REPOSITORY
-  status_cmd = "git --git-dir=#{repo}/.git --work-tree=#{repo} status -s #{repo}/Library/Homebrew"
-  if system "/usr/bin/which -s git" and File.directory? repo+'.git' and not `#{status_cmd}`.empty?
-    ohai "You have uncommitted modifications to Homebrew's core."
-    puts "Unless you know what you are doing, you should: git reset --hard"
-    puts
+  HOMEBREW_REPOSITORY.cd do
+    cmd = `git status -s Library/Homebrew/`.chomp
+    if system "/usr/bin/which -s git" and File.directory? '.git' and not cmd.empty?
+      ohai "You have uncommitted modifications to Homebrew's core."
+      puts "Unless you know what you are doing, you should: git reset --hard"
+      puts
+    end
   end
 end
 
