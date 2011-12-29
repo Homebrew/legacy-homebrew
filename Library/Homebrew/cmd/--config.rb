@@ -30,7 +30,9 @@ module Homebrew extend self
   end
 
   def sha
-    sha = `cd #{HOMEBREW_REPOSITORY} && git rev-parse --verify HEAD 2> /dev/null`.chomp
+    sha = HOMEBREW_REPOSITORY.cd do
+      `git rev-parse --verify -q HEAD 2>/dev/null`.chomp
+    end
     if sha.empty? then "(none)" else sha end
   end
 
