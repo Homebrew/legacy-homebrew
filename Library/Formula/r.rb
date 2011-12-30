@@ -39,6 +39,7 @@ class R < Formula
       "--prefix=#{prefix}",
       "--with-aqua",
       "--enable-R-framework",
+      "--with-blas='-framework vecLib'"
       "--with-lapack"
     ]
     args << '--with-valgrind-instrumentation=2' if valgrind?
