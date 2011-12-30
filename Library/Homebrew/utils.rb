@@ -111,6 +111,7 @@ def curl *args
   args = [HOMEBREW_CURL_ARGS, HOMEBREW_USER_AGENT, *args]
   # See https://github.com/mxcl/homebrew/issues/6103
   args << "--insecure" if MacOS.version < 10.6
+  args << "--verbose" if ENV['HOMEBREW_CURL_VERBOSE']
 
   safe_system curl, *args
 end
@@ -136,24 +137,26 @@ def puts_columns items, star_items=[]
   end
 end
 
+def which_editor
+  editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
+  # If an editor wasn't set, try to pick a sane default
+  return editor unless editor.nil?
+
+  # Find Textmate
+  return 'mate' if system "/usr/bin/which -s mate"
+  # Find # BBEdit / TextWrangler
+  return 'edit' if system "/usr/bin/which -s edit"
+  # Default to vim
+  return '/usr/bin/vim'
+end
+
 def exec_editor *args
   return if args.to_s.empty?
-
-  editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
-  if editor.nil?
-    editor = if system "/usr/bin/which -s mate"
-      'mate'
-    elsif system "/usr/bin/which -s edit"
-      'edit' # BBEdit / TextWrangler
-    else
-      '/usr/bin/vim' # Default to vim
-    end
-  end
 
   # Invoke bash to evaluate env vars in $EDITOR
   # This also gets us proper argument quoting.
   # See: https://github.com/mxcl/homebrew/issues/5123
-  system "bash", "-c", editor + ' "$@"', "--", *args
+  system "bash", "-c", which_editor + ' "$@"', "--", *args
 end
 
 # GZips the given paths, and returns the gzipped paths
@@ -339,7 +342,7 @@ module MacOS extend self
 
   def clang_build_version
     @clang_build_version ||= if File.exist? "/usr/bin/clang"
-      `/usr/bin/clang --version` =~ %r[tags/Apple/clang-(\d{2,3}(\.\d)*)]
+      `/usr/bin/clang --version` =~ %r[tags/Apple/clang-(\d+(\.\d+)*)]
       $1
     end
   end
