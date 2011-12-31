@@ -208,6 +208,10 @@ class Formula
   # generally we don't want var stuff inside the keg
   def var; HOMEBREW_PREFIX+'var' end
 
+  # plist name, i.e. the name of the launchd service
+  def plist_name; 'homebrew.mxcl.'+name end
+  def plist_path; prefix+(plist_name+'.plist') end
+
   # Use the @spec_to_use to detect the download strategy.
   # Can be overriden to force a custom download strategy
   def download_strategy

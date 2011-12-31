@@ -43,9 +43,8 @@ class Denyhosts < Formula
     ln_s libexec + 'denyhosts.py', sbin + 'denyhosts'
     ln_s libexec + 'daemon-control', sbin + 'daemon-control'
 
-    plist = prefix + 'org.denyhosts.cron.plist'
-    plist.write cron_plist
-    plist.chmod 0644
+    plist_path.write cron_plist
+    plist_path.chmod 0644
   end
 
   def cron_plist
@@ -55,7 +54,7 @@ class Denyhosts < Formula
       <plist version="1.0">
       <dict>
         <key>Label</key>
-        <string>org.denyhosts.cron</string>
+        <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
           <string>#{HOMEBREW_PREFIX}/sbin/denyhosts</string>
@@ -83,7 +82,7 @@ class Denyhosts < Formula
       /etc/hosts.deny every 10 minutes. It will need to be run by the user that
       owns /etc/hosts.deny, usually root, and can be set to load at startup
       via:
-        sudo cp #{prefix}/org.denyhosts.cron.plist /Library/LaunchDaemons/
+        sudo cp #{plist_path} /Library/LaunchDaemons/
 
     EOS
   end
