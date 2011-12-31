@@ -26,7 +26,7 @@ class Sickbeard < Formula
       <string>com.sickbeard.sickbeard</string>
       <key>ProgramArguments</key>
       <array>
-           <string>#{bin}/sickbeard</string>
+           <string>#{HOMEBREW_PREFIX}/bin/sickbeard</string>
            <string>-q</string>
            <string>--nolaunch</string>
            <string>-p</string>
