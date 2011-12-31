@@ -1,18 +1,14 @@
 require 'formula'
 
 class Direnv < Formula
-  homepage 'https://github.com/zimbatm/direnv'
-  url 'https://github.com/zimbatm/direnv/tarball/v0.1.81'
-  md5 '9429548fbf48ec56ff1d11bf601ed649'
+  homepage 'http://www.direnv.net'
+  url 'https://github.com/zimbatm/direnv/tarball/v0.1.108'
+  md5 'de4f7eb31cebba4c220c200df1c99e5c'
 
   head 'https://github.com/zimbatm/direnv.git'
 
   def install
-    # App and support files live in libexec
-    libexec.install Dir['libexec/*']
-    # Symlink into bin
-    bin.mkpath
-    ln_s libexec+'direnv', bin+'direnv'
+    system("make install DESTDIR=#{prefix}")
   end
 
   def caveats
