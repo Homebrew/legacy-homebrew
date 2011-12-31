@@ -62,7 +62,7 @@ For the full command list, see the COMMANDS section.
 
   * `create [--autotools|--cmake] [--no-fetch]` <URL>:
     Generate a formula for the downloadable file at <URL> and open it in
-    $EDITOR. Homebrew will attempt to automatically derive the formula name
+    `EDITOR`. Homebrew will attempt to automatically derive the formula name
     and version, but if it fails, you'll have to make your own template. The wget
     formula serves as a simple example.
 
@@ -98,10 +98,10 @@ For the full command list, see the COMMANDS section.
     if any problems are found.
 
   * `edit`:
-    Open all of Homebrew for editing in TextMate.
+    Open all of Homebrew for editing.
 
   * `edit` <formula>:
-    Open <formula> in $EDITOR.
+    Open <formula> in `EDITOR`.
 
   * `fetch [--force] [-v] [--HEAD] [--deps]` <formulae>:
     Download the source packages for the given <formulae>.
@@ -335,6 +335,9 @@ creating your own can be found on the wiki:
 
     This can be used to keep downloads out of your home folder, if you have
     it mounted on an SSD or are using FileVault for instance.
+
+  * HOMEBREW\_CURL\_VERBOSE:
+    If set, Homebrew will pass `--verbose` when invoking `curl`(1).
 
   * HOMEBREW\_DEBUG:
     If set, instructs Homebrew to always assume `--debug` when running
