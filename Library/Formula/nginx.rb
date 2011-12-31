@@ -94,7 +94,7 @@ class Nginx < Formula
     <string>#{`whoami`.chomp}</string>
     <key>ProgramArguments</key>
     <array>
-        <string>#{sbin}/nginx</string>
+        <string>#{HOMEBREW_PREFIX}/sbin/nginx</string>
         <string>-g</string>
         <string>daemon off;</string>
     </array>

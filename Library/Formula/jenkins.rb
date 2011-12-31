@@ -47,7 +47,7 @@ EOS
     <array>
     <string>/usr/bin/java</string>
     <string>-jar</string>
-    <string>#{lib}/jenkins.war</string>
+    <string>#{HOMEBREW_PREFIX}/lib/jenkins.war</string>
     </array>
     <key>RunAtLoad</key>
     <true/>

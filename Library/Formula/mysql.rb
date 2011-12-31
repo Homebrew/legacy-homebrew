@@ -144,7 +144,7 @@ class Mysql < Formula
       <key>Label</key>
       <string>com.mysql.mysqld</string>
       <key>Program</key>
-      <string>#{bin}/mysqld_safe</string>
+      <string>#{HOMEBREW_PREFIX}/bin/mysqld_safe</string>
       <key>RunAtLoad</key>
       <true/>
       <key>UserName</key>

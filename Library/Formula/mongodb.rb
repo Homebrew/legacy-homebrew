@@ -121,7 +121,7 @@ class Mongodb < Formula
   <string>org.mongodb.mongod</string>
   <key>ProgramArguments</key>
   <array>
-    <string>#{bin}/mongod</string>
+    <string>#{HOMEBREW_PREFIX}/bin/mongod</string>
     <string>run</string>
     <string>--config</string>
     <string>#{etc}/mongod.conf</string>
