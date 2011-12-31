@@ -309,6 +309,8 @@ module Homebrew extend self
         problems << " * 'DATA' was found, but no '__END__'"
       end
 
+      problems << " * File should end with a newline" if text =~ /.+\z/
+
       problems += [' * invalid or missing version'] if f.version.to_s.empty?
 
       # Don't try remaining audits on text in __END__
