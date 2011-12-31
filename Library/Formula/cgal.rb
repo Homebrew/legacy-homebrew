@@ -17,7 +17,10 @@ class Cgal < Formula
   end
 
   def install
-    args = ["-DCMAKE_INSTALL_PREFIX=#{prefix}", "-DCMAKE_BUILD_TYPE=Release"]
+    args = ["-DCMAKE_INSTALL_PREFIX=#{prefix}",
+            "-DCMAKE_BUILD_TYPE=Release",
+            "-DCMAKE_BUILD_WITH_INSTALL_RPATH=ON",
+            "-DCMAKE_INSTALL_NAME_DIR=#{HOMEBREW_PREFIX}/lib"]
     unless ARGV.include? '--imaging'
       args << "-DWITH_CGAL_Qt3=OFF" << "-DWITH_CGAL_Qt4=OFF" << "-DWITH_CGAL_ImageIO=OFF"
     end
