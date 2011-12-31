@@ -37,11 +37,11 @@ class Graphviz < Formula
     system "./configure", *args
     system "make install"
 
-    # build GraphViz.app
+    # build Graphviz.app
     Dir.chdir "macosx" do
       system "xcodebuild", "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"
     end
-    prefix.install "macosx/build/Release/GraphViz.app"
+    prefix.install "macosx/build/Release/Graphviz.app"
   end
 
   def test
@@ -58,7 +58,7 @@ class Graphviz < Formula
   end
 
   def caveats; <<-EOS
-    GraphViz.app was installed in:
+    Graphviz.app was installed in:
       #{prefix}
 
     To symlink into ~/Applications, you can do:
