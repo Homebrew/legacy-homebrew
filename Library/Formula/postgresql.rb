@@ -56,8 +56,8 @@ class Postgresql < Formula
     system "./configure", *args
     system "make install-world"
 
-    (prefix+'org.postgresql.postgres.plist').write startup_plist
-    (prefix+'org.postgresql.postgres.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def check_python_arch
@@ -110,13 +110,13 @@ To migrate existing data from a previous major version (pre-9.1) of PostgreSQL, 
 
 If this is your first install, automatically load on login with:
   mkdir -p ~/Library/LaunchAgents
-  cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
-  launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
+  cp #{plist_path} ~/Library/LaunchAgents/
+  launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-If this is an upgrade and you already have the org.postgresql.postgres.plist loaded:
-  launchctl unload -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
-  cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
-  launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
+If this is an upgrade and you already have the #{plist_path} loaded:
+  launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+  cp #{plist_path} ~/Library/LaunchAgents/
+  launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
 Or start manually with:
   pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start
@@ -152,7 +152,7 @@ To install gems without sudo, see the Homebrew wiki.
   <key>KeepAlive</key>
   <true/>
   <key>Label</key>
-  <string>org.postgresql.postgres</string>
+  <string>#{plist_name}</string>
   <key>ProgramArguments</key>
   <array>
     <string>#{HOMEBREW_PREFIX}/bin/postgres</string>
