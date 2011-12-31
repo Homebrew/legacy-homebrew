@@ -155,7 +155,7 @@ To install gems without sudo, see the Homebrew wiki.
   <string>org.postgresql.postgres</string>
   <key>ProgramArguments</key>
   <array>
-    <string>#{bin}/postgres</string>
+    <string>#{HOMEBREW_PREFIX}/bin/postgres</string>
     <string>-D</string>
     <string>#{var}/postgres</string>
     <string>-r</string>

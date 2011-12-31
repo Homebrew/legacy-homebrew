@@ -62,7 +62,7 @@ EOS
     </dict>
     <key>ProgramArguments</key>
     <array>
-      <string>#{bin}/run</string>
+      <string>#{HOMEBREW_PREFIX}/bin/run</string>
     </array>
     <key>UserName</key>
     <string>#{`whoami`.chomp}</string>

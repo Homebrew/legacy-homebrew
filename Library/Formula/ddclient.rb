@@ -79,7 +79,7 @@ EOS
   <string>org.ddclient</string>
   <key>ProgramArguments</key>
   <array>
-    <string>#{sbin}/ddclient</string>
+    <string>#{HOMEBREW_PREFIX}/sbin/ddclient</string>
     <string>-file</string>
     <string>#{etc}/ddclient/ddclient.conf</string>
   </array>

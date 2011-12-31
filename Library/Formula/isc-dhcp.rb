@@ -98,8 +98,8 @@ class IscDhcp < Formula
 
     Note that you must create the appropriate config files before starting
     the services or dhcpd will refuse to run.
-      DHCPv4: /usr/local/etc/dhcpd.conf
-      DHCPv6: /usr/local/etc/dhcpd6.conf
+      DHCPv4: #{etc}/dhcpd.conf
+      DHCPv6: #{etc}/dhcpd6.conf
 
     Sample config files may be found in #{etc}.
     If you change the config, restart dhcpd with one or both of
@@ -118,7 +118,7 @@ class IscDhcp < Formula
     <key>Label</key><string>org.isc.dhcpd</string>
     <key>ProgramArguments</key>
       <array>
-        <string>/usr/local/sbin/dhcpd</string>
+        <string>#{HOMEBREW_PREFIX}/sbin/dhcpd</string>
         <string>-f</string>
       </array>
     <key>Disabled</key><false/>
@@ -140,11 +140,11 @@ class IscDhcp < Formula
     <key>Label</key><string>org.isc.dhcpd</string>
     <key>ProgramArguments</key>
       <array>
-        <string>/usr/local/sbin/dhcpd</string>
+        <string>#{HOMEBREW_PREFIX}/sbin/dhcpd</string>
         <string>-f</string>
         <string>-6</string>
         <string>-cf</string>
-        <string>/usr/local/etc/dhcpd6.conf</string>
+        <string>#{etc}/dhcpd6.conf</string>
       </array>
     <key>Disabled</key><false/>
     <key>KeepAlive</key><true/>

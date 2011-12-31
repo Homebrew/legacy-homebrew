@@ -42,7 +42,7 @@ class Pincaster < Formula
     <string>com.github.pincaster</string>
     <key>ProgramArguments</key>
     <array>
-      <string>#{bin}/pincaster</string>
+      <string>#{HOMEBREW_PREFIX}/bin/pincaster</string>
       <string>#{etc}/pincaster.conf</string>
     </array>
     <key>RunAtLoad</key>

@@ -66,7 +66,7 @@ class Redis < Formula
     <string>io.redis.redis-server</string>
     <key>ProgramArguments</key>
     <array>
-      <string>#{bin}/redis-server</string>
+      <string>#{HOMEBREW_PREFIX}/bin/redis-server</string>
       <string>#{etc}/redis.conf</string>
     </array>
     <key>RunAtLoad</key>

@@ -60,7 +60,7 @@ class PureFtpd < Formula
     <string>org.pureftpd.pure-ftpd</string>
     <key>ProgramArguments</key>
     <array>
-      <string>#{sbin}/pure-ftpd</string>
+      <string>#{HOMEBREW_PREFIX}/sbin/pure-ftpd</string>
       <string>-A -j -z</string>
     </array>
     <key>RunAtLoad</key>

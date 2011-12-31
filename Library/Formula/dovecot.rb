@@ -35,7 +35,7 @@ For Dovecot to work, you will need to do the following:
         <false/>
         <key>ProgramArguments</key>
         <array>
-                <string>#{sbin}/dovecot</string>
+                <string>#{HOMEBREW_PREFIX}/sbin/dovecot</string>
                 <string>-F</string>
         </array>
         <key>RunAtLoad</key>

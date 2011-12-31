@@ -50,7 +50,7 @@ class OfflineImap < Formula
         <string>org.offlineimap</string>
         <key>ProgramArguments</key>
         <array>
-          <string>/usr/local/bin/offlineimap</string>
+          <string>#{HOMEBREW_PREFIX}/bin/offlineimap</string>
         </array>
         <key>StartInterval</key>
         <integer>300</integer>

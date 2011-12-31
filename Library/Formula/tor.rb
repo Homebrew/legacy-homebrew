@@ -32,7 +32,7 @@ class Tor < Formula
     <string>#{`whoami`.chomp}</string>
     <key>ProgramArguments</key>
     <array>
-        <string>#{bin}/tor</string>
+        <string>#{HOMEBREW_PREFIX}/bin/tor</string>
     </array>
     <key>WorkingDirectory</key>
     <string>#{HOMEBREW_PREFIX}</string>

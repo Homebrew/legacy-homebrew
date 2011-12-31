@@ -141,7 +141,7 @@ class PerconaServer < Formula
       <key>Label</key>
       <string>com.percona.mysqld</string>
       <key>Program</key>
-      <string>#{bin}/mysqld_safe</string>
+      <string>#{HOMEBREW_PREFIX}/bin/mysqld_safe</string>
       <key>RunAtLoad</key>
       <true/>
       <key>UserName</key>

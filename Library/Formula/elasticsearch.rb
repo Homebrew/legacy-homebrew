@@ -96,7 +96,7 @@ class Elasticsearch < Formula
           <string>org.elasticsearch</string>
           <key>ProgramArguments</key>
           <array>
-            <string>#{bin}/elasticsearch</string>
+            <string>#{HOMEBREW_PREFIX}/bin/elasticsearch</string>
             <string>-f</string>
             <string>-D es.config=#{prefix}/config/elasticsearch.yml</string>
           </array>

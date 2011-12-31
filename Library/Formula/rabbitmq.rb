@@ -66,7 +66,7 @@ class Rabbitmq < Formula
     <key>Label</key>
     <string>com.rabbitmq.rabbitmq-server</string>
     <key>Program</key>
-    <string>/usr/local/sbin/rabbitmq-server</string>
+    <string>#{HOMEBREW_PREFIX}/sbin/rabbitmq-server</string>
     <key>RunAtLoad</key>
     <true/>
     <key>UserName</key>

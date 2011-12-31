@@ -57,7 +57,7 @@ Or start manually with:
   <string>org.postgresql.pgbouncer</string>
   <key>ProgramArguments</key>
   <array>
-    <string>#{bin}/pgbouncer</string>
+    <string>#{HOMEBREW_PREFIX}/bin/pgbouncer</string>
     <string>-d</string>
     <string>-q</string>
     <string>#{etc}/pgbouncer.ini</string>

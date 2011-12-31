@@ -79,7 +79,7 @@ EOS
   <string>org.openvpn</string>
   <key>ProgramArguments</key>
   <array>
-    <string>#{sbin}/openvpn</string>
+    <string>#{HOMEBREW_PREFIX}/sbin/openvpn</string>
     <string>--config</string>
     <string>#{etc}/openvpn/openvpn.conf</string>
   </array>
