@@ -264,7 +264,8 @@ module MacOS extend self
   end
 
   def gcc_42_build_version
-    @gcc_42_build_version ||= if File.exist? "/usr/bin/gcc-4.2"
+    @gcc_42_build_version ||= if File.exist? "/usr/bin/gcc-4.2" \
+      and not Pathname.new("/usr/bin/gcc-4.2").realpath.basename.to_s =~ /^llvm/
       `/usr/bin/gcc-4.2 --version` =~ /build (\d{4,})/
       $1.to_i
     end
