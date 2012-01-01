@@ -11,14 +11,14 @@ def which_python
 end
 
 class Wxpython < Formula
-  url 'http://downloads.sourceforge.net/wxpython/wxPython-src-2.8.11.0.tar.bz2'
-  md5 '63f73aae49e530852db56a31b57529fa'
+  url 'http://downloads.sourceforge.net/wxpython/wxPython-src-2.8.12.1.tar.bz2'
+  md5 '8c06c5941477beee213b4f2fa78be620'
 end
 
 class Wxmac < Formula
-  url 'http://downloads.sourceforge.net/project/wxwindows/2.8.11/wxMac-2.8.11.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/wxwindows/2.8.12/wxMac-2.8.12.tar.bz2'
   homepage 'http://www.wxwidgets.org'
-  md5 '8d84bfdc43838e2d2f75031f62d1864f'
+  md5 '876000a9a9742c3c75a2597afbcb8856'
 
   def options
     [
@@ -46,16 +46,16 @@ class Wxmac < Formula
     opts = [
       # Reference our wx-config
       "WX_CONFIG=#{bin}/wx-config",
-      # At this time Wxmac is installed ANSI only
-      "UNICODE=0",
+      # At this time Wxmac is installed Unicode only
+      "UNICODE=1",
       # And thus we have no need for multiversion support
       "INSTALL_MULTIVERSION=0",
       # TODO: see if --with-opengl can work on the wxmac build
-      "BUILD_GLCANVAS=0",
+      "BUILD_GLCANVAS=1",
       # Contribs that I'm not sure anyone cares about, but
       # wxPython tries to build them by default
-      "BUILD_STC=0",
-      "BUILD_GIZMOS=0"
+      "BUILD_STC=1",
+      "BUILD_GIZMOS=1"
     ]
     Dir.chdir "wxPython" do
       system "arch", "-i386",
@@ -84,9 +84,10 @@ class Wxmac < Formula
 
     args = [
       "--disable-debug",
-      "--disable-dependency-tracking",
       "--prefix=#{prefix}",
-      "--enable-unicode"
+      "--enable-unicode",
+      "--enable-display",
+      "--with-opengl"
     ]
 
     # build will fail on Lion unless we use the 10.6 sdk
@@ -98,6 +99,11 @@ class Wxmac < Formula
     system "./configure", *args
     system "make install"
 
+    # erlang needs contrib/stc during configure phase.
+    %w{ gizmos stc ogl }.each do |c|
+      system "make -C contrib/src/$c install"
+    end
+
     if build_python?
       ENV['WXWIN'] = Dir.getwd
       Wxpython.new.brew { install_wx_python }
@@ -106,8 +112,8 @@ class Wxmac < Formula
 
   def caveats
     s = <<-EOS.undent
-      wxWidgets 2.8.x builds 32-bit only, so you probably won''t be able to use it
-      for other Homebrew-installed softare on Snow Leopard (like Erlang).
+      wxWidgets 2.8.x builds 32-bit only, so you probably won't be able to use it
+      for other Homebrew-installed softare on Snow Leopard.
 
     EOS
 
@@ -124,7 +130,6 @@ class Wxmac < Formula
 
         Homebrew Python does not support this by default (compile using the
         --universal option)
-
       EOS
     end
 
