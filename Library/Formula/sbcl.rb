@@ -22,7 +22,7 @@ class Sbcl < Formula
       ["--without-threads",  "Build SBCL without support for native threads"],
       ["--with-ldb",  "Include low-level debugger in the build"],
       ["--with-internal-xref",  "Include XREF information for SBCL internals (increases core size by 5-6MB)"],
-      ["--32bit", "Override arch detection and compile for 32-bits."]
+      ["--32-bit", "Build 32-bit only."]
     ]
   end
 
@@ -69,7 +69,7 @@ class Sbcl < Formula
 
       Dir.chdir(build_directory)
 
-      if ARGV.include? "--32bit"
+      if ARGV.build_32_bit?
         system "SBCL_ARCH=x86 ./make.sh --prefix='#{prefix}' --xc-host='#{xc_cmdline}'"
       else
         system "./make.sh --prefix='#{prefix}' --xc-host='#{xc_cmdline}'"
