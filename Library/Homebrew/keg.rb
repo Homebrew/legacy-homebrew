@@ -45,6 +45,10 @@ class Keg < Pathname
     @linked_keg_record ||= HOMEBREW_REPOSITORY/"Library/LinkedKegs"/fname
   end
 
+  def linked?
+    linked_keg_record.directory? and self == linked_keg_record.realpath
+  end
+
   def link
     raise "Cannot link #{fname}\nAnother version is already linked: #{linked_keg_record.realpath}" if linked_keg_record.directory?
 
