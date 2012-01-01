@@ -27,6 +27,16 @@ class Tab < OpenStruct
     return tab
   end
 
+  def self.for_keg keg
+    path = keg+'INSTALL_RECEIPT.json'
+
+    if path.exist?
+      self.from_file path
+    else
+      self.dummy_tab Formula.factory(keg.parent.basename)
+    end
+  end
+
   def self.for_formula f
     f = Formula.factory f unless f.kind_of? Formula
     path = HOMEBREW_REPOSITORY + 'Library' + 'LinkedKegs' + f.name + 'INSTALL_RECEIPT.json'
@@ -42,9 +52,13 @@ class Tab < OpenStruct
       # TODO:
       # This isn't the best behavior---perhaps a future version of Homebrew can
       # treat missing Tabs as errors.
-      Tab.new :used_options => [],
-              :unused_options => f.options.map { |o, _| o}
+      self.dummy_tab f
     end
+  end
+
+  def self.dummy_tab f
+    Tab.new :used_options => [],
+            :unused_options => f.options.map { |o, _| o}
   end
 
   def installed_with? opt
