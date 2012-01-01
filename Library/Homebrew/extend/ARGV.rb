@@ -74,6 +74,13 @@ module HomebrewArgvExtension
     include? '--universal'
   end
 
+  # Request a 32-bit only build.
+  # This is needed for some use-cases though we prefer to build Universal
+  # when a 32-bit version is needed.
+  def build_32_bit?
+    include? '--32-bit'
+  end
+
   def build_from_source?
     return true if flag? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE'] \
       or not MacOS.lion? or HOMEBREW_PREFIX.to_s != '/usr/local'
