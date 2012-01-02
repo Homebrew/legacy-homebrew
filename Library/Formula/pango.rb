@@ -14,10 +14,15 @@ class Pango < Formula
     depends_on 'fontconfig' # Leopard's fontconfig is too old.
     depends_on 'cairo' # Leopard doesn't come with Cairo.
   elsif MacOS.lion?
-    depends_on 'cairo' # links against system Cairo without this
+    # The Cairo library shipped with Lion contains a flaw that causes Graphviz
+    # to segfault. See the following ticket for information:
+    #
+    #   https://trac.macports.org/ticket/30370
+    depends_on 'cairo'
   end
 
   def install
+    ENV.x11
     system "./configure", "--disable-dependency-tracking", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--enable-man",

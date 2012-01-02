@@ -14,7 +14,7 @@ class Haxe < Formula
   def caveats; <<-EOS.undent
     HaXe needs to know how to find its standard library so add this to your
     shell profile:
-      export HAXE_LIBRARY_PATH="`brew --prefix`/share/haxe/std"'
+      export HAXE_LIBRARY_PATH="$(brew --prefix)/share/haxe/std"
     EOS
   end
 end

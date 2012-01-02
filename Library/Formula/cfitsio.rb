@@ -7,10 +7,10 @@ class CfitsioExamples < Formula
 end
 
 class Cfitsio < Formula
-  url 'ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio3280.tar.gz'
+  url 'ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio3290.tar.gz'
   homepage 'http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html'
-  md5 'fdb9c0f51678b47e78592c70fb5dc793'
-  version '3.28'
+  md5 'd0d460c5e314a15fa6905b2096159827'
+  version '3.29'
 
   def options
     [
@@ -34,7 +34,7 @@ class Cfitsio < Formula
         Dir.glob('*.c').each do |f|
           # compressed_fits.c does not work (obsolete function call)
           if f != 'compress_fits.c'
-            system "#{ENV.compiler} #{f} -I#{include} -L#{lib} -lcfitsio -lm -o bin/#{f.sub('.c','')}"
+            system "#{ENV.cc} #{f} -I#{include} -L#{lib} -lcfitsio -lm -o bin/#{f.sub('.c','')}"
           end
         end
         bin.install Dir['bin/*']
