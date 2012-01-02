@@ -9,13 +9,11 @@ end
 class Cfitsio < Formula
   url 'ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio3290.tar.gz'
   homepage 'http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html'
-  md5 'd0d460c5e314a15fa6905b2096159827'
+  md5 'bba93808486cf5edac236a941283b3c3'
   version '3.29'
 
   def options
-    [
-     ['--with-examples', "Compile and install example programs from http://heasarc.gsfc.nasa.gov/docs/software/fitsio/cexamples.html as well as fpack and funpack"]
-    ]
+    [['--with-examples', "Compile and install example programs."]]
   end
 
   def install
@@ -33,9 +31,8 @@ class Cfitsio < Formula
         mkdir 'bin'
         Dir.glob('*.c').each do |f|
           # compressed_fits.c does not work (obsolete function call)
-          if f != 'compress_fits.c'
-            system "#{ENV.cc} #{f} -I#{include} -L#{lib} -lcfitsio -lm -o bin/#{f.sub('.c','')}"
-          end
+          next if f == 'compress_fits.c'
+          system "#{ENV.cc} #{f} -I#{include} -L#{lib} -lcfitsio -lm -o bin/#{f.sub('.c','')}"
         end
         bin.install Dir['bin/*']
       end

@@ -30,7 +30,9 @@ module Homebrew extend self
   end
 
   def sha
-    sha = `cd #{HOMEBREW_REPOSITORY} && git rev-parse --verify HEAD 2> /dev/null`.chomp
+    sha = HOMEBREW_REPOSITORY.cd do
+      `git rev-parse --verify -q HEAD 2>/dev/null`.chomp
+    end
     if sha.empty? then "(none)" else sha end
   end
 
@@ -43,8 +45,6 @@ module Homebrew extend self
     HEAD: #{sha}
     HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}
     HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}
-    HOMEBREW_REPOSITORY: #{HOMEBREW_REPOSITORY}
-    HOMEBREW_LIBRARY_PATH: #{HOMEBREW_LIBRARY_PATH}
     Hardware: #{Hardware.cores_as_words}-core #{Hardware.bits}-bit #{Hardware.intel_family}
     OS X: #{MACOS_FULL_VERSION}
     Kernel Architecture: #{`uname -m`.chomp}
