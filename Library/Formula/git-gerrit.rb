@@ -7,12 +7,10 @@ class GitGerrit < Formula
 
   def install
     # install scripts in bin.
-    prefix.install 'bin'
+    bin.install Dir['bin/*']
 
     # install bash completions.
-    cellar_etc = prefix + 'etc'
-    bash_completion_d = cellar_etc + "bash_completion.d"
-    bash_completion_d.install "completion/git-gerrit-completion.bash"
+    (prefix + 'etc/bash_completion.d').install 'completion/git-gerrit-completion.bash'
 
   end
 
