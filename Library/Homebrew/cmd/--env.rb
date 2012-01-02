@@ -5,6 +5,7 @@ module Homebrew extend self
   def __env
     ENV.extend(HomebrewEnvExtension)
     ENV.setup_build_environment
+    ENV.universal_binary if ARGV.build_universal?
     dump_build_env ENV
   end
 
@@ -26,8 +27,8 @@ module Homebrew extend self
     end
 
     %w[ CFLAGS CXXFLAGS CPPFLAGS LDFLAGS MACOSX_DEPLOYMENT_TARGET MAKEFLAGS PKG_CONFIG_PATH
-        HOMEBREW_DEBUG HOMEBREW_VERBOSE HOMEBREW_USE_CLANG HOMEBREW_USE_GCC HOMEBREW_USE_LLVM
-        HOMEBREW_SVN ].each do |k|
+        HOMEBREW_BUILD_FROM_SOURCE HOMEBREW_DEBUG HOMEBREW_MAKE_JOBS HOMEBREW_VERBOSE
+        HOMEBREW_USE_CLANG HOMEBREW_USE_GCC HOMEBREW_USE_LLVM HOMEBREW_SVN ].each do |k|
       value = env[k]
       puts "#{k}: #{value}" if value
     end
