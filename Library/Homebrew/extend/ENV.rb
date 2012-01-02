@@ -83,13 +83,15 @@ module HomebrewEnvExtension
   alias_method :gcc_4_0, :gcc_4_0_1
 
   def gcc args = {}
-    self['CC']  = "/usr/bin/gcc-4.2"
-    self['CXX'] = "/usr/bin/g++-4.2"
+    gcc_path = Pathname.new "/usr/bin/gcc-4.2"
+    gxx_path = Pathname.new "/usr/bin/g++-4.2"
+    self['CC']  = gcc_path.exist? ? gcc_path : HOMEBREW_PREFIX+'bin/gcc-4.2'
+    self['CXX'] = gxx_path.exist? ? gxx_path : HOMEBREW_PREFIX+'bin/g++-4.2'
     replace_in_cflags '-O4', '-O3'
     set_cpu_cflags 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott'
     @compiler = :gcc
 
-    raise "GCC could not be found" if args[:force] and not File.exist? ENV['CC'] \
+    raise "GCC could not be found" if not File.exist? ENV['CC'] \
                                    or (Pathname.new(ENV['CC']).realpath.to_s =~ /llvm/)
   end
   alias_method :gcc_4_2, :gcc
