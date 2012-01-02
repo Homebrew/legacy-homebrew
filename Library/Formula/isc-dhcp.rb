@@ -4,7 +4,7 @@ class IscDhcp < Formula
   url 'ftp://ftp.isc.org/isc/dhcp/4.2.3-P1/dhcp-4.2.3-P1.tar.gz'
   homepage 'http://www.isc.org/software/dhcp'
   version '4.2.3-P1'
-  sha256 '505c5754526ba92669bfd64daa8b529c6694c4528b45c3f35743c6fd4bd72897'
+  sha256 '4860625e07c290768d513b9a2260e655ae4bad4cc5c4c8f5eaaeb4f9cbfa96af'
 
   def install
     # use one dir under var for all runtime state.
