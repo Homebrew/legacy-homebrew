@@ -29,7 +29,7 @@ __END__
 @@ -181,6 +181,12 @@ int get_max_fds(void)
        exit(1);
      }
- 
+
 +#if defined(__APPLE__)
 +	if (limit.rlim_max > OPEN_MAX) {
 +		limit.rlim_max = OPEN_MAX;
@@ -42,16 +42,40 @@ __END__
 
 --- a/src/datalink.c	2002-03-29 18:19:03.000000000 -0500
 +++ b/src/datalink.c	2010-08-06 17:40:55.000000000 -0400
+@@ -42,6 +42,13 @@
+
+ #include "tcpflow.h"
+
++/*
++ * Byte-swap a 32-bit number.
++ * ("htonl()" or "ntohl()" won't work - we want to byte-swap even on
++ * big-endian platforms.)
++ */
++#define SWAPLONG(y) \
++((((y)&0xff)<<24) | (((y)&0xff00)<<8) | (((y)&0xff0000)>>8) | (((y)>>24)&0xff))
+
+
+ /* The DLT_NULL packet header is 4 bytes long. It contains a network
 @@ -49,6 +49,9 @@
   * DLT_NULL is used by the localhost interface. */
  #define	NULL_HDRLEN 4
- 
+
 +/* loopback family */
 +#define AF_LOOPBACK 0x2000000
 +
  void dl_null(u_char *user, const struct pcap_pkthdr *h, const u_char *p)
  {
    u_int caplen = h->caplen;
+@@ -71,7 +78,8 @@
+ #ifndef DLT_NULL_BROKEN
+   /* make sure this is AF_INET */
+   memcpy((char *)&family, (char *)p, sizeof(family));
+-  family = ntohl(family);
++  // family = ntohl(family);
++  if ((family & 0xFFFF0000) != 0) family = SWAPLONG(family);
+   if (family != AF_INET) {
+     DEBUG(6) ("warning: received non-AF_INET null frame (type %d)", family);
+     return;
 @@ -72,7 +75,7 @@
    /* make sure this is AF_INET */
    memcpy((char *)&family, (char *)p, sizeof(family));
