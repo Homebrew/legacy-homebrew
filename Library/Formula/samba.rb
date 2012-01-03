@@ -1,9 +1,9 @@
 require 'formula'
 
 class Samba < Formula
-  url 'http://samba.org/samba/ftp/stable/samba-3.6.0.tar.gz'
+  url 'http://samba.org/samba/ftp/stable/samba-3.6.1.tar.gz'
   homepage 'http://samba.org/'
-  md5 'e297e0ea7923c7de8d7c1d8fd0ec0a05'
+  md5 '5291717be0734e07dc07b6110e162e87'
 
   # depends_on 'cmake'
 
