@@ -21,8 +21,8 @@ class Qemu < Formula
                           "--enable-cocoa",
                           "--disable-darwin-user",
                           "--enable-cocoa",
-                     "--disable-bsd-user",
- 	                  "--disable-guest-agent"
+                          "--disable-bsd-user",
+ 	                        "--disable-guest-agent"
     system "make install"
   end
 end
