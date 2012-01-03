@@ -329,8 +329,7 @@ class Formula
   end
 
   def handle_llvm_failure llvm
-    case ENV.compiler
-    when :llvm, :clang
+    if ENV.compiler == :llvm
       # version 2335 is the latest version as of Xcode 4.1, so it is the
       # latest version we have tested against so we will switch to GCC and
       # bump this integer when Xcode 4.2 is released. TODO do that!
@@ -398,6 +397,9 @@ class Formula
   end
 
   def self.canonical_name name
+    # Cast pathnames to strings.
+    name = name.to_s if name.kind_of? Pathname
+
     formula_with_that_name = HOMEBREW_REPOSITORY+"Library/Formula/#{name}.rb"
     possible_alias = HOMEBREW_REPOSITORY+"Library/Aliases/#{name}"
     possible_cached_formula = HOMEBREW_CACHE_FORMULA+"#{name}.rb"
