@@ -8,16 +8,12 @@ class Libnfc < Formula
   depends_on 'libusb-compat'
 
   def options
-    [
-      ['--with-pn532_uart', 'Enable PN532 UART support'],
-    ]
+    [['--with-pn532_uart', 'Enable PN532 UART support']]
   end
 
   def install
-    args = [
-      "--prefix=#{prefix}",
-      "--disable-debug",
-      "--disable-dependency-tracking" ]
+    args = ["--disable-debug", "--disable-dependency-tracking",
+            "--prefix=#{prefix}"]
 
     if ARGV.include? '--with-pn532_uart'
       args << "--enable-serial-autoprobe"
@@ -25,7 +21,6 @@ class Libnfc < Formula
     end
 
     system "./configure", *args
-
     system "make install"
   end
 end
