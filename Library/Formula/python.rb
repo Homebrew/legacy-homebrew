@@ -1,7 +1,15 @@
 require 'formula'
 
 # Was a Framework build requested?
-def build_framework?; ARGV.include? '--framework'; end
+# (framework by default to make it easier to work right with OSX, see:
+# https://github.com/mxcl/homebrew/issues/9370
+def build_framework?; 
+    if ARGV.include? '--framework' and ARGV.include? '--unix'
+      onoe "Cannot specify both --framework and --unix."
+      exit 99;
+    end
+    not ARGV.include? '--unix';
+end
 
 # Are we installed or installing as a Framework?
 def as_framework?
@@ -24,7 +32,8 @@ class Python < Formula
 
   def options
     [
-      ["--framework", "Do a 'Framework' build instead of a UNIX-style build."],
+      ["--unix", "Do a UNIX-style build."],
+      ["--framework", "Do a 'Framework' build instead of a UNIX-style build. [default]"],
       ["--universal", "Build for both 32 & 64 bit Intel."],
       ["--static", "Build static libraries."],
       ["--no-poll", "Remove HAVE_POLL.* options from build."]
