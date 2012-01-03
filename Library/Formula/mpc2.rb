@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mpc < Formula
+class Mpc2 < Formula
   url 'ftp://gcc.gnu.org/pub/gcc/infrastructure/mpc-0.8.1.tar.gz'
   md5 '5b34aa804d514cc295414a963aedb6bf'
 
