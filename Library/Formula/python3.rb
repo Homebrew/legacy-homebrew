@@ -4,7 +4,15 @@ require 'formula'
 # $ brew install python
 
 # Was a Framework build requested?
-def build_framework?; ARGV.include? '--framework'; end
+# (framework by default to make it easier to work right with OSX, see:
+# https://github.com/mxcl/homebrew/issues/9370
+def build_framework?; 
+    if ARGV.include? '--framework' and ARGV.include? '--unix'
+      onoe "Cannot specify both --framework and --unix."
+      exit 99;
+    end
+    not ARGV.include? '--unix';
+end
 
 # Are we installed or installing as a Framework?
 def as_framework?
@@ -29,8 +37,8 @@ class Python3 < Formula
 
   def options
     [
-      ["--framework", "Do a 'Framework' build instead of a UNIX-style build."],
-      ["--universal", "Build for both 32 & 64 bit Intel."],
+      ["--unix", "Do a UNIX-style build."],
+      ["--framework", "Do a 'Framework' build instead of a UNIX-style build. [default]"], ["--universal", "Build for both 32 & 64 bit Intel."],
       ["--static", "Build static libraries."]
     ]
   end
@@ -172,7 +180,7 @@ diff --git a/Lib/dbm/__init__.py b/Lib/dbm/__init__.py
 +++ b/Lib/dbm/__init__.py
 @@ -166,7 +166,7 @@ def whichdb(filename):
          return ""
- 
+
      # Check for GNU dbm
 -    if magic == 0x13579ace:
 +    if magic in (0x13579ace, 0x13579acd, 0x13579acf):
