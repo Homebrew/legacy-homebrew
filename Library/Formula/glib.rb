@@ -74,7 +74,7 @@ class Glib < Formula
     system "ed - config.h < config.h.ed"
 
     system "make"
-    # Supress a folder already exists warning during install
+    # Suppress a folder already exists warning during install
     # Also needed for running tests
     ENV.j1
     system "make test" if build_tests?
