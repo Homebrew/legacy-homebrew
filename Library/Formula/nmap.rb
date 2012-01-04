@@ -22,7 +22,7 @@ class Nmap < Formula
     end
 
     system "./configure", *args
-    system "make" # seperate steps required otherwise the build fails
+    system "make" # separate steps required otherwise the build fails
     system "make install"
   end
 end
