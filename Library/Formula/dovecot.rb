@@ -55,7 +55,7 @@ __END__
 
 # This patch fixes a linking problem looking for _environ, call
 # _NSGetEnviron() instead (upstream does that at another location but
-# missesthis one).
+# misses this one).
 
 diff --git a/src/lib/env-util.c b/src/lib/env-util.c
 index 8111db7..c3520d0 100644
