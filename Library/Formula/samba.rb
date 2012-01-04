@@ -7,6 +7,11 @@ class Samba < Formula
 
   # depends_on 'cmake'
 
+  def patches
+    # Fixes the Grouplimit of 16 users os OS X
+    "https://raw.github.com/gist/1559603/6718bc55cdd43e7293b96a3ddbaa48cd0e52073d/samba.3.6.1.osx-getgrouplist.patch"
+  end
+
   def install
     Dir.chdir('source3') do
       system "./autogen.sh"
