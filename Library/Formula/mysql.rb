@@ -18,6 +18,8 @@ class Mysql < Formula
       ['--with-tests', "Build with unit tests."],
       ['--with-embedded', "Build the embedded server."],
       ['--with-libedit', "Compile with EditLine wrapper instead of readline"],
+      ['--with-archive-storage-engine', "Compile with the ARCHIVE storage engine enabled"],
+      ['--with-blackhole-storage-engine', "Compile with the BLACKHOLE storage engine enabled"],
       ['--universal', "Make mysql a universal binary"],
       ['--enable-local-infile', "Build with local infile loading support"]
     ]
@@ -56,6 +58,12 @@ class Mysql < Formula
 
     # Compile with readline unless libedit is explicitly chosen
     args << "-DWITH_READLINE=yes" unless ARGV.include? '--with-libedit'
+
+    # Compile with ARCHIVE engine enabled if chosen
+    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if ARGV.include? '--with-archive-storage-engine'
+
+    # Compile with BLACKHOLE engine enabled if chosen
+    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if ARGV.include? '--with-blackhole-storage-engine'
 
     # Make universal for binding to universal applications
     args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if ARGV.build_universal?
