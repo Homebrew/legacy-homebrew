@@ -1,9 +1,9 @@
 require 'formula'
 
 class GitGerrit < Formula
-  url 'https://github.com/fbzhong/git-gerrit/tarball/v0.1.0'
+  url 'https://github.com/fbzhong/git-gerrit/tarball/v0.2.0'
   homepage 'https://github.com/fbzhong/git-gerrit'
-  md5 '9c3bfc1fd59e789f0720e6abd3cf884c'
+  md5 '943163c38db55173bc9be981d03fbd8e'
 
   def install
     # install scripts in bin.
