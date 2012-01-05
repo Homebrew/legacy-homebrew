@@ -20,8 +20,8 @@ class Qt < Formula
     ]
   end
 
-  depends_on "d-bus" if ARGV.include? '--with-qtdbus'
-  depends_on 'sqlite' if MacOS.leopard?
+  depends_on "d-bus" # forced if ARGV.include? '--with-qtdbus'
+  depends_on 'sqlite' # forced if MacOS.leopard?
 
   def install
     # Needed for Qt 4.8.0 due to attempting to link moc with gcc.
@@ -40,31 +40,31 @@ class Qt < Formula
             "-cocoa", "-fast" ]
 
     # See: https://github.com/mxcl/homebrew/issues/issue/744
-    args << "-system-sqlite" if MacOS.leopard?
-    args << "-plugin-sql-mysql" if (HOMEBREW_CELLAR+"mysql").directory?
+    args << "-system-sqlite" # forced if MacOS.leopard?
+    args << "-plugin-sql-mysql" # forced if (HOMEBREW_CELLAR+"mysql").directory?
 
-    if ARGV.include? '--with-qtdbus'
+    # forced if ARGV.include? '--with-qtdbus'
       args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
       args << "-I#{Formula.factory('d-bus').include}/dbus-1.0"
-    end
+    # forced end
 
-    if ARGV.include? '--with-qt3support'
+    # forced if ARGV.include? '--with-qt3support'
       args << "-qt3support"
-    else
-      args << "-no-qt3support"
-    end
+    # forced else
+    # forced   args << "-no-qt3support"
+    # forced end
 
     unless ARGV.include? '--with-demos-examples'
       args << "-nomake" << "demos" << "-nomake" << "examples"
     end
 
-    if MacOS.prefer_64_bit? or ARGV.build_universal?
+    # forced if MacOS.prefer_64_bit? or ARGV.build_universal?
       args << '-arch' << 'x86_64'
-    end
+    # forced end
 
-    if !MacOS.prefer_64_bit? or ARGV.build_universal?
+    # forced if !MacOS.prefer_64_bit? or ARGV.build_universal?
       args << '-arch' << 'x86'
-    end
+    # forced end
 
     if ARGV.include? '--with-debug-and-release'
       args << "-debug-and-release"

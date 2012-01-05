@@ -1,20 +1,17 @@
 require 'formula'
 
-class Kdepimlibs < Formula
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.7.4/src/kdepimlibs-4.7.4.tar.bz2'
-  homepage 'http://www.kde.org/'
-  md5 'ccc9d9ec4173e5627623d93207fdf318'
+class Kstars < Formula
+  url 'ftp://ftp.kde.org/pub/kde/stable/4.7.4/src/kstars-4.7.4.tar.bz2'
+  homepage 'http://edu.kde.org/kstars/'
+  md5 'd1b753e798202d2bf9cac76b552608ac'
 
   depends_on 'cmake' => :build
   depends_on 'automoc4' => :build
-  depends_on 'gpgme'
-  depends_on 'akonadi'
-  depends_on 'libical'
   depends_on 'kdelibs'
-  depends_on 'nepomuk' # part of kdelibs ?
+  depends_on 'kde-runtime'
+  depends_on 'eigen'
 
   def install
-    ENV.x11
     mkdir 'build'
     cd 'build'
     kdelibs = Formula.factory 'kdelibs'
@@ -26,4 +23,5 @@ class Kdepimlibs < Formula
     Remember to run brew linkapps.
     EOS
   end
+
 end

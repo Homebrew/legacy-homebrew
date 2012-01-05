@@ -1,20 +1,16 @@
 require 'formula'
 
-class Kdepimlibs < Formula
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.7.4/src/kdepimlibs-4.7.4.tar.bz2'
-  homepage 'http://www.kde.org/'
-  md5 'ccc9d9ec4173e5627623d93207fdf318'
+class Kate < Formula
+  url 'ftp://ftp.kde.org/pub/kde/stable/4.7.4/src/kate-4.7.4.tar.bz2'
+  homepage 'http://kate-editor.org'
+  md5 '565ebff0d1e2316097897149eeb4d255'
 
   depends_on 'cmake' => :build
   depends_on 'automoc4' => :build
-  depends_on 'gpgme'
-  depends_on 'akonadi'
-  depends_on 'libical'
   depends_on 'kdelibs'
-  depends_on 'nepomuk' # part of kdelibs ?
+  depends_on 'kde-runtime'
 
   def install
-    ENV.x11
     mkdir 'build'
     cd 'build'
     kdelibs = Formula.factory 'kdelibs'
