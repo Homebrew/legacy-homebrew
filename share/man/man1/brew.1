@@ -158,7 +158,7 @@ To view formula history locally: \fBbrew log \-p <formula>\fR\.
 Print the name and version that will be detected for \fIURL\fR\.
 .
 .TP
-\fBinstall [\-\-force] [\-\-debug] [\-\-ignore\-dependencies] [\-\-fresh] [\-\-use\-clang] [\-\-use\-gcc] [\-\-use\-llvm] [\-\-build\-from\-source] [\-\-devel] [\-\-HEAD]\fR \fIformula\fR
+\fBinstall [\-\-force] [\-\-debug] [\-\-ignore\-dependencies] [\-\-fresh] [\-\-use\-clang] [\-\-use\-gcc] [\-\-use\-llvm] [\-\-build\-from\-source] [\-\-devel\fR|\fB\-\-HEAD\fR|\fB\-\-version\fR \fIversion\fR\fB]\fR \fIformula\fR
 Install \fIformula\fR\.
 .
 .IP
@@ -193,6 +193,9 @@ If \fB\-\-devel\fR is passed, and \fIformula\fR defines it, install the developm
 .
 .IP
 If \fB\-\-HEAD\fR is passed, and \fIformula\fR defines it, install the HEAD version, aka master, trunk, unstable\.
+.
+.IP
+If \fB\-\-versions\fR is passed, install version \fIversion\fR of \fIformula\fR\. See \fBversions\fR\.
 .
 .IP
 To install a newer version of HEAD use \fBbrew rm <foo> && brew install \-\-HEAD <foo>\fR or \fBbrew install \-\-force \-\-HEAD <foo>\fR\.
@@ -305,7 +308,7 @@ If \fB\-\-installed\fR is passed, only list installed formulae\.
 .
 .TP
 \fBversions [\-\-compact]\fR \fIformulae\fR
-List previous versions of \fIformulae\fR, along with a command to checkout each version\.
+List previous versions of \fIformulae\fR, along with a command to install each version\.
 .
 .IP
 If \fB\-\-compact\fR is passed, show all options on a single line separated by spaces\.

@@ -122,7 +122,7 @@ _brew_to_completion()
             local opts=$(
                 local opts=(--force --verbose --debug --use-clang --use-gcc
                     --use-llvm --ignore-dependencies --build-from-source --HEAD
-                    --interactive --fresh --devel $(brew options --compact "$prev"))
+                    --interactive --fresh --devel --version $(brew options --compact "$prev"))
 
                 # options that make sense with '--interactive'
                 if [[ "${COMP_WORDS[*]}" =~ "--interactive" ]]; then
@@ -214,7 +214,7 @@ _brew_to_completion()
 
     case "${COMP_WORDS[cmd_index]}" in
     # Commands that take a formula
-    audit|cat|deps|edit|fetch|home|homepage|info|install|log|missing|options|uses|versions)
+    audit|cat|deps|edit|fetch|home|homepage|info|log|missing|options|uses|versions)
         local ff=$(\ls $(brew --repository)/Library/Formula 2> /dev/null | sed "s/\.rb//g")
         local af=$(\ls $(brew --repository)/Library/Aliases 2> /dev/null | sed "s/\.rb//g")
         COMPREPLY=( $(compgen -W "${ff} ${af}" -- ${cur}) )
@@ -223,6 +223,17 @@ _brew_to_completion()
     # Commands that take an existing brew
     abv|cleanup|link|list|ln|ls|remove|rm|test|uninstall|unlink)
         COMPREPLY=( $(compgen -W "$(\ls $(brew --cellar))" -- ${cur}) )
+        return
+        ;;
+    install)
+        if [[ "${COMP_WORDS[*]}" =~ "--version" ]]; then
+            local versions=$(brew versions --compact "${prev}" 2> /dev/null)
+            COMPREPLY=( $(compgen -W "${versions}" -- ${cur}) )
+        else
+            local ff=$(\ls $(brew --repository)/Library/Formula 2> /dev/null | sed "s/\.rb//g")
+            local af=$(\ls $(brew --repository)/Library/Aliases 2> /dev/null | sed "s/\.rb//g")
+            COMPREPLY=( $(compgen -W "${ff} ${af}" -- ${cur}) )
+        fi
         return
         ;;
     # Commands that take an outdated brew
