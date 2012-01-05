@@ -7,7 +7,9 @@ class Amarok < Formula
 
   # Required
   depends_on 'cmake' => :build
+  depends_on 'automoc4' => :build
   depends_on 'kdelibs'
+  depends_on 'kde-runtime'
   #depends_on 'zlib'
   depends_on 'curl'
   depends_on 'libxml2'
@@ -34,8 +36,15 @@ class Amarok < Formula
   #depends_on 'qtscriptgenerator'
     
   def install
-    system "cmake . -DCMAKE_PREFIX_PATH=/usr/local/Cellar/gettext/0.18.1.1/ #{std_cmake_parameters}"
+    mkdir 'build'
+    cd 'build'
+    gettext = Formula.factory 'gettext'
+    system "cmake .. -DCMAKE_PREFIX_PATH=#{gettext.prefix} #{std_cmake_parameters} -DBUILD_doc=FALSE -DBUNDLE_INSTALL_DIR=#{bin}"
     system "make install"
   end
 
+  def caveats; <<-EOS.undent
+    Remember to run brew linkapps.
+    EOS
+  end
 end
