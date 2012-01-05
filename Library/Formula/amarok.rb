@@ -39,7 +39,9 @@ class Amarok < Formula
     mkdir 'build'
     cd 'build'
     gettext = Formula.factory 'gettext'
-    system "cmake .. -DCMAKE_PREFIX_PATH=#{gettext.prefix} #{std_cmake_parameters} -DBUILD_doc=FALSE -DBUNDLE_INSTALL_DIR=#{bin}"
+    kdelibs = Formula.factory 'kdelibs'
+    # this has to be installed along with this kdelibs. // kde4-config --prefix
+    system "cmake .. -DCMAKE_INSTALL_PREFIX=#{kdelibs.prefix} -DBUILD_doc=FALSE -DBUNDLE_INSTALL_DIR=#{bin} -DCMAKE_PREFIX_PATH=#{gettext.prefix} "
     system "make install"
   end
 
