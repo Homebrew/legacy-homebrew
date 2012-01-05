@@ -33,7 +33,11 @@ class Tab < OpenStruct
     if path.exist?
       self.from_file path
     else
-      self.dummy_tab Formula.factory(keg.parent.basename)
+      begin
+        self.dummy_tab Formula.factory(keg.parent.basename)
+      rescue FormulaUnavailableError
+        Tab.new :used_options => [], :unused_options => []
+      end
     end
   end
 
