@@ -36,12 +36,13 @@ class Amarok < Formula
   #depends_on 'qtscriptgenerator'
     
   def install
+    ENV.x11
     mkdir 'build'
     cd 'build'
-    gettext = Formula.factory 'gettext'
-    kdelibs = Formula.factory 'kdelibs'
+    gettext_prefix = Formula.factory('gettext').prefix
+    kdelibs_prefix = Formula.factory('kdelibs').prefix
     # this has to be installed along with this kdelibs. // kde4-config --prefix
-    system "cmake .. -DCMAKE_INSTALL_PREFIX=#{kdelibs.prefix} -DBUILD_doc=FALSE -DBUNDLE_INSTALL_DIR=#{bin} -DCMAKE_PREFIX_PATH=#{gettext.prefix} "
+    system "cmake .. -DCMAKE_INSTALL_PREFIX=#{kdelibs_prefix} -DBUILD_doc=FALSE -DBUNDLE_INSTALL_DIR=#{bin} -DCMAKE_PREFIX_PATH=#{gettext_prefix} "
     system "make install"
   end
 
