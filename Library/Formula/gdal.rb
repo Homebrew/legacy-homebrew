@@ -106,7 +106,7 @@ class Gdal < Formula
       "--with-curl=/usr/bin/curl-config",
 
       # GRASS backend explicitly disabled.  Creates a chicken-and-egg problem.
-      # Should be installed seperately after GRASS installation using the
+      # Should be installed separately after GRASS installation using the
       # official GDAL GRASS plugin.
       "--without-grass",
       "--without-libgrass",
