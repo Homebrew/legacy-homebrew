@@ -32,13 +32,8 @@ class Amarok < Formula
 
   #depends_on 'qtscript-qt'
   #depends_on 'qtscriptgenerator'
-  
-  #ENV['GETTEXT_LIBRARIES']="/usr/local/Cellar/gettext/0.18.1.1/lib"
-  #ENV['GETTEXT_INCLUDE_DIR']="/usr/local/Cellar/gettext/0.18.1.1/include"
-  # -L/usr/local/Cellar/gettext/0.18.1.1/lib -I/usr/local/Cellar/gettext/0.18.1.1/include
-  
+    
   def install
-    # get_text_prefix="GETTEXT_LIBRARIES=/usr/local/Cellar/gettext/0.18.1.1/lib GETTEXT_INCLUDE_DIR=/usr/local/Cellar/gettext/0.18.1.1/include "
     system "cmake . -DCMAKE_PREFIX_PATH=/usr/local/Cellar/gettext/0.18.1.1/ #{std_cmake_parameters}"
     system "make install"
   end
