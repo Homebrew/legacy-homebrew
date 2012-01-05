@@ -6,13 +6,12 @@ class Gtkpod < Formula
   version '2.1.0'
   md5 '8e01f7cf2db1a421140eab561aee26d7'
 
-  # depends_on 'cmake' => :build
   depends_on 'libgpod'
+  depends_on 'gtk+' # 3.0
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    # system "cmake . #{std_cmake_parameters}"
     system "make install"
   end
 
