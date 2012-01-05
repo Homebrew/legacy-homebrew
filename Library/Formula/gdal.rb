@@ -168,7 +168,7 @@ class Gdal < Formula
     args << "--without-oci"    # Oracle databases
     args << "--without-idb"    # IBM Informix DataBlades
 
-    # Hombrew-provided databases.
+    # Homebrew-provided databases.
     args << "--with-pg=#{HOMEBREW_PREFIX}/bin/pg_config" if postgres?
     args << "--with-mysql=#{HOMEBREW_PREFIX}/bin/mysql_config" if mysql?
 
@@ -179,7 +179,7 @@ class Gdal < Formula
     # Scripting APIs that have not been re-worked to respect Homebrew prefixes.
     #
     # Currently disabled as they install willy-nilly into locations outside of
-    # the Hombrew prefix.  Enable if you feel like it, but uninstallation may be
+    # the Homebrew prefix.  Enable if you feel like it, but uninstallation may be
     # a manual affair.
     #
     # TODO: Fix installation of script bindings so they install into the
