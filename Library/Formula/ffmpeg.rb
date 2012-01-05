@@ -11,7 +11,7 @@ class Ffmpeg < Formula
 
   head 'git://git.videolan.org/ffmpeg.git'
 
-  fails_with_llvm 'Undefined symbols when linking libavfilter'
+  fails_with_llvm 'Undefined symbols when linking `libavfilter`'
 
   def options
     [
@@ -39,7 +39,7 @@ class Ffmpeg < Formula
             "--enable-version3",
             "--enable-nonfree",
             "--enable-hardcoded-tables",
-            "--cc=#{ENV.cc}"]
+            "--cc=clang"]
 
     args << "--enable-libx264" if Formula.factory('x264').installed?
     args << "--enable-libfaac" if Formula.factory('faac').installed?
