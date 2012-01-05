@@ -1,10 +1,10 @@
 require 'formula'
 
 class Help2man < Formula
-  url 'http://ftpmirror.gnu.org/help2man/help2man-1.40.4.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/help2man/help2man-1.40.4.tar.gz'
+  url 'http://ftpmirror.gnu.org/help2man/help2man-1.40.5.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/help2man/help2man-1.40.5.tar.gz'
   homepage 'http://www.gnu.org/software/help2man/'
-  md5 '4d79dc7cb7c20019c2a3650d35259c45'
+  md5 '75a7d2f93765cd367aab98986a75f88c'
 
   def install
     system "./configure", "--prefix=#{prefix}"
