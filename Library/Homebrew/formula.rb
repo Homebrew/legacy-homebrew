@@ -94,6 +94,14 @@ class FailsWithLLVM
   end
 end
 
+# Used to annotate formulae that won't build correctly on Leopard.
+class FailsOnLeopard
+  attr_reader :reason
+
+  def initialize reason=nil
+    @reason = reason.strip unless reason == nil
+  end
+end
 
 # Derive and define at least @url, see Library/Formula for examples
 class Formula
@@ -248,6 +256,10 @@ class Formula
     end
   end
 
+  def fails_on_leopard?
+    self.class.fails_on_leopard_reason || false
+  end
+
   # sometimes the clean process breaks things
   # skip cleaning paths in a formula with a class method like this:
   #   skip_clean [bin+"foo", lib+"bar"]
@@ -262,6 +274,8 @@ class Formula
   def brew
     validate_variable :name
     validate_variable :version
+
+    handle_leopard_failure(fails_on_leopard?) if fails_on_leopard? and not ARGV.force?
 
     handle_llvm_failure(fails_with_llvm?) if fails_with_llvm?
 
@@ -355,6 +369,16 @@ class Formula
       end
       puts
     end
+  end
+
+  def handle_leopard_failure r
+    return unless MacOS.leopard?
+    onoe "This formula fails to build on Mac OS X Leopard."
+    puts "\n#{r.reason}" unless r.reason == nil
+    puts
+    puts "To proceed with the build anyway, use brew install --force"
+    puts
+    exit 1
   end
 
   def self.class_s name
@@ -735,6 +759,7 @@ EOF
 
     attr_rw :version, :homepage, :mirrors, :specs, :deps, :external_deps
     attr_rw :keg_only_reason, :fails_with_llvm_reason, :skip_clean_all
+    attr_rw :fails_on_leopard_reason
     attr_rw :bottle, :bottle_sha1
     attr_rw(*CHECKSUM_TYPES)
 
@@ -823,6 +848,10 @@ EOF
 
     def fails_with_llvm msg=nil, data=nil
       @fails_with_llvm_reason = FailsWithLLVM.new(msg, data)
+    end
+
+    def fails_on_leopard reason=nil
+      @fails_on_leopard_reason = FailsOnLeopard.new(reason)
     end
   end
 end
