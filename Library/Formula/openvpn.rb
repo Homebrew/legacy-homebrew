@@ -8,9 +8,6 @@ class Openvpn < Formula
 
   depends_on 'lzo' => :recommended
 
-  skip_clean 'etc'
-  skip_clean 'var'
-
   # This patch fixes compilation on Lion
   # There is a long history of confusion between these two consts:
   # http://www.google.com/search?q=SOL_IP+IPPROTO_IP
