@@ -79,7 +79,7 @@ class Postgresql < Formula
         shown above, or move it out of the way before brewing PostgreSQL.
 
         Note that a framework Python in /Library/Frameworks/Python.framework is
-        the "MacPython" verison, and not the system-provided version which is in:
+        the "MacPython" version, and not the system-provided version which is in:
           /System/Library/Frameworks/Python.framework
       EOS
     end

@@ -1,9 +1,9 @@
 require 'formula'
 
 class SuiteSparse < Formula
-  url 'http://www.cise.ufl.edu/research/sparse/SuiteSparse/SuiteSparse-3.6.1.tar.gz'
-  homepage 'http://www.cise.ufl.edu/research/sparse/SuiteSparse/'
-  md5 '88a44890e8f61cdbb844a76b7259d876'
+  homepage 'http://www.cise.ufl.edu/research/sparse/SuiteSparse'
+  url 'http://www.cise.ufl.edu/research/sparse/SuiteSparse/SuiteSparse-3.7.0.tar.gz'
+  md5 'e7579ba6ab4265b751753649cb63664d'
 
   depends_on "metis"
   depends_on "tbb"
@@ -14,7 +14,7 @@ class SuiteSparse < Formula
 
     # So, SuiteSparse was written by a scientific researcher.  This
     # tends to result in makefile-based build systems that are completely
-    # ignorant of the existance of things such as CPPFLAGS and LDFLAGS.
+    # ignorant of the existence of things such as CPPFLAGS and LDFLAGS.
     # SuiteSparse Does The Right Thing™ when homebrew is in /usr/local
     # but if it is not, we have to piggyback some stuff in on CFLAGS.
     unless HOMEBREW_PREFIX.to_s == '/usr/local'
