@@ -24,4 +24,8 @@ dirname_unlinked_exiftool=$(dirname $dirname_exiftool/$readlink_exiftool)
 $dirname_unlinked_exiftool/../libexec/exiftool "$@"
 EOBIN
   end
+
+  def test
+    system "#{libexec}/exiftool"
+  end
 end
