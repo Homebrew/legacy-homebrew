@@ -33,12 +33,14 @@ class Ffmpeg < Formula
   depends_on 'sdl' if ffplay?
 
   def install
+    ENV.x11
     args = ["--prefix=#{prefix}",
             "--enable-shared",
             "--enable-gpl",
             "--enable-version3",
             "--enable-nonfree",
             "--enable-hardcoded-tables",
+            "--enable-libfreetype",
             "--cc=#{ENV.cc}"]
 
     args << "--enable-libx264" if Formula.factory('x264').installed?
