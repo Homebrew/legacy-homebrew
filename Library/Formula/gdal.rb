@@ -172,7 +172,7 @@ class Gdal < Formula
     args << "--with-pg=#{HOMEBREW_PREFIX}/bin/pg_config" if postgres?
     args << "--with-mysql=#{HOMEBREW_PREFIX}/bin/mysql_config" if mysql?
 
-    args << "--without-python" # Installed using a seperate set of
+    args << "--without-python" # Installed using a separate set of
                                          # steps so that everything winds up
                                          # in the prefix.
 
