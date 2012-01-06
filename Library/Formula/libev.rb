@@ -6,6 +6,7 @@ class Libev < Formula
   sha1 '7768c2bcce30dbf76672e51642a655479dd45772'
 
   def install
+    ENV["CFLAGS"] = '-arch i386 -arch x86_64'
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
