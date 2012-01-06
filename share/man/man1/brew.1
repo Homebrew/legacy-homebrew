@@ -275,6 +275,10 @@ Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is su
 Search for \fItext\fR on the MacPorts or Fink package search page\.
 .
 .TP
+\fBswitch\fR \fIformula\fR \fIversion\fR
+Unlink all installed versions of \fIformula\fR, then link \fIversion\fR\.
+.
+.TP
 \fBtest\fR \fIformula\fR
 A few formulae provide a test method\. \fBbrew test <formula>\fR runs this test method\. There is no standard output or return code, but it should generally indicate to the user if something is wrong with the installed formula\.
 .

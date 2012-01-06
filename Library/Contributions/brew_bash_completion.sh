@@ -31,7 +31,7 @@ _brew_to_completion()
     [[ ${COMP_CWORD} -eq 1 ]] && {
         local actions="--cache --cellar --config --env --prefix --repository audit cat cleanup
             configure create deps diy doctor edit fetch help home info install link list log options
-            outdated prune remove search test uninstall unlink update upgrade uses versions"
+            outdated prune remove search switch test uninstall unlink update upgrade uses versions"
         local ext=$(\ls $(brew --repository)/Library/Contributions/examples 2> /dev/null |
                     sed -e "s/\.rb//g" -e "s/brew-//g")
         COMPREPLY=( $(compgen -W "${actions} ${ext}" -- ${cur}) )
@@ -233,6 +233,15 @@ _brew_to_completion()
             local ff=$(\ls $(brew --repository)/Library/Formula 2> /dev/null | sed "s/\.rb//g")
             local af=$(\ls $(brew --repository)/Library/Aliases 2> /dev/null | sed "s/\.rb//g")
             COMPREPLY=( $(compgen -W "${ff} ${af}" -- ${cur}) )
+        fi
+        return
+        ;;
+    switch)
+        if [[ "${prev}" != "${COMP_WORDS[cmd_index]}" ]]; then
+            local kegs=$(\ls $(brew --cellar "${prev}") 2> /dev/null)
+            COMPREPLY=( $(compgen -W "${kegs}" -- ${cur}) )
+        else
+            COMPREPLY=( $(compgen -W "$(\ls $(brew --cellar))" -- ${cur}) )
         fi
         return
         ;;

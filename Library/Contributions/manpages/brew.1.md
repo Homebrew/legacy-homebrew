@@ -246,6 +246,9 @@ For the full command list, see the COMMANDS section.
   * `search --macports`|`--fink` <text>:
     Search for <text> on the MacPorts or Fink package search page.
 
+  * `switch` <formula> <version>:
+    Unlink all installed versions of <formula>, then link <version>.
+
   * `test` <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
     test method. There is no standard output or return code, but it should
