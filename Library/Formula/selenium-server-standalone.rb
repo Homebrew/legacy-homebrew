@@ -1,12 +1,12 @@
 require 'formula'
 
 class SeleniumServerStandalone < Formula
-  url 'http://selenium.googlecode.com/files/selenium-server-standalone-2.11.0.jar'
+  url 'http://selenium.googlecode.com/files/selenium-server-standalone-2.16.1.jar'
   homepage 'http://seleniumhq.org/'
-  md5 '9a7ce9ce3e160e7a4cbe4ae13d72711c'
+  md5 'ce6e50d8c9114ffea5f712b93e088e5f'
 
   def install
-    prefix.install "selenium-server-standalone-2.11.0.jar"
+    prefix.install "selenium-server-standalone-2.16.1.jar"
     (prefix + "selenium-server-standalone.plist").write plist_file
   end
 
@@ -24,7 +24,7 @@ If this is an upgrade and you already have the selenium-server-standalone.plist 
   launchctl load -w ~/Library/LaunchAgents/selenium-server-standalone.plist
 
 Or start it manually with:
-  java -jar #{prefix}/selenium-server-standalone-2.11.0.jar -p 4444
+  java -jar #{prefix}/selenium-server-standalone-2.16.1.jar -p 4444
 EOS
   end
 
@@ -44,7 +44,7 @@ EOS
         <array>
                 <string>/usr/bin/java</string>
                 <string>-jar</string>
-                <string>#{prefix}/selenium-server-standalone-2.11.0.jar</string>
+                <string>#{prefix}/selenium-server-standalone-2.16.1.jar</string>
                 <string>-port</string>
                 <string>4444</string>
         </array>
