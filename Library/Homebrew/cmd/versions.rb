@@ -5,11 +5,15 @@ module Homebrew extend self
     raise "Please `brew install git` first" unless system "/usr/bin/which -s git"
 
     ARGV.formulae.all? do |f|
-      f.versions do |version, sha|
-        print Tty.white
-        print "#{version.ljust(8)} "
-        print Tty.reset
-        puts "git checkout #{sha} #{f.pretty_relative_path}"
+      if ARGV.include? '--compact'
+        puts f.versions * " "
+      else
+        f.versions do |version, sha|
+          print Tty.white
+          print "#{version.ljust(8)} "
+          print Tty.reset
+          puts "git checkout #{sha} #{f.pretty_relative_path}"
+        end
       end
     end
   end
@@ -55,14 +59,10 @@ class Formula
     end
 
     def version_for_sha sha
-      begin
-        version = mktemp do
-          path = Pathname.new(Pathname.pwd+"#{name}.rb")
-          path.write text_from_sha(sha)
-          Formula.factory(path).version
-        end
-      rescue
-        opoo "Version of #{name} could not be determined for #{sha}."
-      end
+      mktemp do
+        path = Pathname.new(Pathname.pwd+"#{name}.rb")
+        path.write text_from_sha(sha)
+        Formula.factory(path).version
+      end rescue nil
     end
 end

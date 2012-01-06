@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "December 2011" "Homebrew" "brew"
+.TH "BREW" "1" "January 2012" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -304,8 +304,11 @@ Show the formulas that specify \fIformula\fR as a dependency\. The list is not r
 If \fB\-\-installed\fR is passed, only list installed formulae\.
 .
 .TP
-\fBversions\fR \fIformulae\fR
+\fBversions [\-\-compact]\fR \fIformulae\fR
 List previous versions of \fIformulae\fR, along with a command to checkout each version\.
+.
+.IP
+If \fB\-\-compact\fR is passed, show all options on a single line separated by spaces\.
 .
 .TP
 \fB\-\-cache\fR
