@@ -197,6 +197,11 @@ _brew_to_completion()
             COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
             return
             ;;
+        versions)
+            local opts=$([[ "${COMP_WORDS[*]}" =~ "--compact" ]] || echo "--compact")
+            COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
+            return
+            ;;
         esac
     fi
 
