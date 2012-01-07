@@ -7,10 +7,6 @@ class Cherokee < Formula
 
   depends_on 'gettext'
 
-  skip_clean "var/run"
-  skip_clean "var/log"
-  skip_clean "var/lib/cherokee/graphs/images"
-
   def caveats
     <<-EOS.undent
       Cherokee is setup to run with your user permissions as part of the
