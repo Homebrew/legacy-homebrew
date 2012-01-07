@@ -17,7 +17,7 @@ class Mongodb < Formula
     }
   }
 
-  package = (Hardware.is_64_bit? and not ARGV.include? '--32bit') ? packages[:x86_64] : packages[:i386]
+  package = (Hardware.is_64_bit? and not ARGV.build_32_bit?) ? packages[:x86_64] : packages[:i386]
 
   url     package[:url]
   md5     package[:md5]
@@ -27,7 +27,7 @@ class Mongodb < Formula
 
   def options
     [
-        ['--32bit', 'Override arch detection and install the 32-bit version.'],
+        ['--32-bit', 'Build 32-bit only.'],
         ['--nojournal', 'Disable write-ahead logging (Journaling)'],
         ['--rest', 'Enable the REST Interface on the HTTP Status Page'],
     ]
