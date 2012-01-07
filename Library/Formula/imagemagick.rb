@@ -39,7 +39,7 @@ class Imagemagick < Formula
   bottle_sha1 'bff8db4da4bd255b01b483e0629e093ee76a9eb9'
 
   depends_on 'jpeg'
-
+  depends_on 'librsvg'
   depends_on 'ghostscript' => :recommended if ghostscript_srsly?
 
   depends_on 'libtiff' => :optional
