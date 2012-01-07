@@ -62,6 +62,8 @@ class Formula
       mktemp do
         path = Pathname.new(Pathname.pwd+"#{name}.rb")
         path.write text_from_sha(sha)
+        # FIXME: shouldn't have to do this?
+        Object.send(:remove_const, "#{name.capitalize}")
         Formula.factory(path).version
       end rescue nil
     end
