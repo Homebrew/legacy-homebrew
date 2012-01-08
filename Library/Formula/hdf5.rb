@@ -9,9 +9,9 @@ def threadsafe?
 end
 
 class Hdf5 < Formula
-  url 'http://www.hdfgroup.org/ftp/HDF5/hdf5-1.8.7/src/hdf5-1.8.7.tar.bz2'
-  homepage 'http://www.hdfgroup.org/HDF5/'
-  sha1 'be1daff26f066aca0b5be52d86dada6757fc4b95'
+  url 'http://www.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8.8/src/hdf5-1.8.8.tar.bz2'
+  homepage 'http://www.hdfgroup.org/HDF5'
+  sha1 '1bc16883ecd631840b70857bea637a06eb0155da'
 
   depends_on 'szip'
 

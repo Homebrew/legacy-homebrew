@@ -28,15 +28,18 @@ class FormulaInstaller
       needed_deps = f.recursive_deps.reject{ |d| d.installed? }
       unless needed_deps.empty?
         needed_deps.each do |dep|
-          fi = FormulaInstaller.new(dep)
-          fi.ignore_deps = true
-          fi.show_header = false
-          oh1 "Installing #{f} dependency: #{dep}"
-          fi.install
-          fi.caveats
-          fi.finish
+          if dep.explicitly_requested?
+            install_dependency dep
+          else
+            ARGV.filter_for_dependencies do
+              # Re-create the formula object so that args like `--HEAD` won't
+              # affect properties like the installation prefix. Also need to
+              # re-check installed status as the Formula may have changed.
+              dep = Formula.factory dep.path
+              install_dependency dep unless dep.installed?
+            end
+          end
         end
-
         # now show header as all the deps stuff has clouded the original issue
         show_header = true
       end
@@ -58,11 +61,23 @@ class FormulaInstaller
     raise "Nothing was installed to #{f.prefix}" unless f.installed?
   end
 
+  def install_dependency dep
+    fi = FormulaInstaller.new dep
+    fi.ignore_deps = true
+    fi.show_header = false
+    oh1 "Installing #{f} dependency: #{dep}"
+    fi.install
+    fi.caveats
+    fi.finish
+  end
+
   def caveats
-    if f.caveats
+    the_caveats = (f.caveats || "").strip
+    unless the_caveats.empty?
       ohai "Caveats", f.caveats
       @show_summary_heading = true
     end
+
     if f.keg_only?
       ohai 'Caveats', f.keg_only_text
       @show_summary_heading = true
@@ -105,7 +120,13 @@ class FormulaInstaller
     # I'm guessing this is not a good way to do this, but I'm no UNIX guru
     ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
 
-    args = filtered_args
+    args = ARGV.clone
+    unless args.include? '--fresh'
+      previous_install = Tab.for_formula f
+      args.concat previous_install.used_options
+      args.uniq! # Just in case some dupes were added
+    end
+
     fork do
       begin
         read.close
@@ -131,7 +152,7 @@ class FormulaInstaller
       raise "Suspicious installation failure" unless $?.success?
 
       # Write an installation receipt (a Tab) to the prefix
-      Tab.for_install(f, args).write
+      Tab.for_install(f, args).write if f.installed?
     end
   end
 
@@ -179,6 +200,12 @@ class FormulaInstaller
 
   def paths
     @paths ||= ENV['PATH'].split(':').map{ |p| File.expand_path p }
+  end
+
+  def in_aclocal_dirlist?
+    File.open("/usr/share/aclocal/dirlist") do |dirlist|
+      dirlist.grep(%r{^#{HOMEBREW_PREFIX}/share/aclocal$}).length > 0
+    end rescue false
   end
 
   def check_PATH
@@ -231,52 +258,13 @@ class FormulaInstaller
 
   def check_m4
     # Check for m4 files
-    if Dir[f.share+"aclocal/*.m4"].length > 0
+    if Dir[f.share+"aclocal/*.m4"].length > 0 and not in_aclocal_dirlist?
       opoo 'm4 macros were installed to "share/aclocal".'
       puts "Homebrew does not append \"#{HOMEBREW_PREFIX}/share/aclocal\""
       puts "to \"/usr/share/aclocal/dirlist\". If an autoconf script you use"
       puts "requires these m4 macros, you'll need to add this path manually."
       @show_summary_heading = true
     end
-  end
-
-  private
-
-  # This method gives us a chance to pre-process command line arguments before the
-  # installer forks and `Formula.install` kicks in.
-  def filtered_args
-    # Returns true if the formula attached to this installer was explicitly
-    # passed on the command line by the user as opposed to being automatically
-    # added to satisfy a dependency.
-    def explicitly_requested?
-      # `ARGV.formulae` will throw an exception if it comes up with an empty
-      # list.
-      #
-      # FIXME:
-      # `ARGV.formulae` probably should be throwing exceptions, it should be
-      # the caller's responsibility to check `ARGV.formulae.empty?`.
-      return false if ARGV.named.empty?
-      ARGV.formulae.include? f
-    end
-
-    args = ARGV.clone
-
-    %w[
-      --debug -d
-      --fresh
-      --HEAD
-      --interactive -i
-      --verbose -v
-    ].each {|flag| args.delete flag} unless explicitly_requested?
-
-    unless args.include? '--fresh'
-      previous_install = Tab.for_formula f
-      args.concat previous_install.used_options
-    end
-
-    args.uniq! # Just in case some dupes slipped by
-
-    return args
   end
 end
 
