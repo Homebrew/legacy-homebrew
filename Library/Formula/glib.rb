@@ -4,8 +4,8 @@ def build_tests?; ARGV.include? '--test'; end
 
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/'
-  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.30/glib-2.30.2.tar.bz2'
-  sha256 '94b1f1a1456c67060ca868d299bef3f7268a2c1c5c360aabb7149d4d9b2fdcd3'
+  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.30/glib-2.31.6.tar.xz'
+  sha256 '26f082d3dfa017c73049a7f09333dd2114abd32849fd601394e35f4f8b34e49a'
 
   depends_on 'gettext'
   depends_on 'libffi'
@@ -16,12 +16,12 @@ class Glib < Formula
     mp = "https://svn.macports.org/repository/macports/!svn/bc/87537/trunk/dports/devel/glib2/files/"
     {
       :p0 => [
-        mp+"patch-configure.diff",
+#        mp+"patch-configure.diff",
         mp+"patch-glib-2.0.pc.in.diff",
         mp+"patch-glib_gunicollate.c.diff",
         mp+"patch-gi18n.h.diff",
         mp+"patch-gio_xdgmime_xdgmime.c.diff",
-        mp+"patch-gio_gdbusprivate.c.diff"
+#        mp+"patch-gio_gdbusprivate.c.diff"
       ],
       :p1 => [ DATA ]
     }
@@ -70,8 +70,8 @@ class Glib < Formula
     system "./configure", *args
 
     # Fix for 64-bit support, from MacPorts
-    curl "https://svn.macports.org/repository/macports/!svn/bc/87537/trunk/dports/devel/glib2/files/config.h.ed", "-O"
-    system "ed - config.h < config.h.ed"
+#    curl "https://svn.macports.org/repository/macports/!svn/bc/87537/trunk/dports/devel/glib2/files/config.h.ed", "-O"
+#    system "ed - config.h < config.h.ed"
 
     system "make"
     # Suppress a folder already exists warning during install
