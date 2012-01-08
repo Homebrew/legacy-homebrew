@@ -9,14 +9,10 @@ class TaLib < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
+    bin.install ['src/tools/ta_regtest/.libs/ta_regtest']
   end
 
   def test
-    # This test will fail and we won't accept that! It's enough to just
-    # replace "false" with the main program this formula installs, but
-    # it'd be nice if you were more thorough. Test the test with
-    # `brew test ta-lib`. Remove this comment before submitting
-    # your pull request!
-    system "#{bin}/ta-lib"
+    system "#{bin}/ta_regtest"
   end
 end
