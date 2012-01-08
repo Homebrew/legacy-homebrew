@@ -167,7 +167,7 @@ _brew_to_completion()
             COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
             return
             ;;
-        search)
+        search|-S)
             local opts=$(
                 local opts=(--fink --macports)
                 for o in ${opts[*]}; do
