@@ -6,6 +6,7 @@ class Ack < Formula
   homepage 'http://betterthangrep.com/'
 
   def install
+    system "sudo chmod 755 /usr/bin/pod2man"
     system "pod2man ack ack.1"
     inreplace 'ack.1', '\*(d\-', '\*(d-' # remove a pod2man formatting error
     man1.install 'ack.1'
