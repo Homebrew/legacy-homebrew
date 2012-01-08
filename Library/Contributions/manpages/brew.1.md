@@ -204,7 +204,7 @@ For the full command list, see the COMMANDS section.
     Show the git log for the given formulae. Options that `git-log`(1)
     recognizes can be passed before the formula list.
 
-  * `missing [<formulae>]`:
+  * `missing` [<formulae>]:
     Check the given <formulae> for missing dependencies.
 
     If no <formulae> are given, check all installed brews.
@@ -272,9 +272,12 @@ For the full command list, see the COMMANDS section.
 
     If `--installed` is passed, only list installed formulae.
 
-  * `versions` <formulae>:
+  * `versions [--compact]` <formulae>:
     List previous versions of <formulae>, along with a command to checkout
     each version.
+
+    If `--compact` is passed, show all options on a single line separated by
+    spaces.
 
   * `--cache`:
     Display Homebrew's download cache. *Default:* `~/Library/Caches/Homebrew`
