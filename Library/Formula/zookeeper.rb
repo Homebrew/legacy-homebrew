@@ -88,7 +88,7 @@ class Zookeeper < Formula
       libexec.install Dir['*.jar']
     end
 
-    # Create neccessary directories
+    # Create necessary directories
     bin.mkpath
     (etc+'zookeeper').mkpath
     (var+'log/zookeeper').mkpath

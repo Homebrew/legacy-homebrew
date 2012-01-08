@@ -16,11 +16,13 @@ class Ffmbc < Formula
   depends_on 'xvid' => :optional
 
   def install
+    ENV.x11
     args = ["--prefix=#{prefix}",
             "--disable-debug",
             "--disable-shared",
             "--enable-gpl",
             "--enable-nonfree",
+            "--enable-libfreetype",
             "--cc=#{ENV.cc}"]
 
     args << "--enable-libx264" if Formula.factory('x264').installed?
