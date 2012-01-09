@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cppcheck < Formula
-  url 'http://downloads.sourceforge.net/project/cppcheck/cppcheck/1.51/cppcheck-1.51.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/cppcheck/cppcheck/1.52/cppcheck-1.52.tar.bz2'
   homepage 'http://sourceforge.net/apps/mediawiki/cppcheck/index.php?title=Main_Page'
-  md5 '8349ab90472801b9d377cfabf846ca28'
+  md5 'ebb9355890057a5145485dd42c18e05e'
   head 'https://github.com/danmar/cppcheck.git'
 
   depends_on 'pcre' unless ARGV.include? '--no-rules'
@@ -20,6 +20,8 @@ class Cppcheck < Formula
   skip_clean :all
 
   def install
+    # Man pages aren't installed as they require docbook schemas.
+
     # Pass to make variables.
     if ARGV.include? '--no-rules'
       system "make", "HAVE_RULES=no"
@@ -40,8 +42,8 @@ class Cppcheck < Formula
       system "make"
       bin.install "cppcheck-gui.app"
     end
-    # Man pages aren't installed, they require docbook schemas which I don't know how to install.
   end
+
   def caveats; <<-EOS.undent
     --with-gui installs cppcheck-gui.app in:
       #{bin}
@@ -52,5 +54,4 @@ class Cppcheck < Formula
         ln -s #{bin}/cppcheck-gui.app /Applications
     EOS
   end
-
 end
