@@ -170,6 +170,7 @@ def audit_formula_options f, text
   if documented_options.length > 0
     documented_options.each do |o|
       next if o == '--universal' and text =~ /ARGV\.build_universal\?/
+      next if o == '--32-bit' and text =~ /ARGV\.build_32_bit\?/
       problems << " * Option #{o} is unused" unless options.include? o
     end
   end
@@ -308,6 +309,8 @@ module Homebrew extend self
       if (text =~ /\bDATA\b/) and not (text =~ /^\s*__END__\s*$/)
         problems << " * 'DATA' was found, but no '__END__'"
       end
+
+      problems << " * File should end with a newline" if text =~ /.+\z/
 
       problems += [' * invalid or missing version'] if f.version.to_s.empty?
 

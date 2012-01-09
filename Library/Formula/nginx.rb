@@ -3,10 +3,10 @@ require 'formula'
 class Nginx < Formula
   homepage 'http://nginx.org/'
   url 'http://nginx.org/download/nginx-1.0.11.tar.gz'
-  head 'http://nginx.org/download/nginx-1.1.11.tar.gz'
+  head 'http://nginx.org/download/nginx-1.1.12.tar.gz'
 
   if ARGV.build_head?
-    md5 '1eeef6fbe8fb0ee6b2f15e145ffd9c7d'
+    md5 '2a98411773c87a98e92c5aa68f322338'
   else
     md5 'a41a01d7cd46e13ea926d7c9ca283a95'
   end
