@@ -8,7 +8,8 @@ class Taglib < Formula
   depends_on 'cmake' => :build
 
   def install
-    system "cmake", "-DWITH_MP4=ON", "-DWITH_ASF=ON", "-DCMAKE_INSTALL_PREFIX=#{prefix}"
+    ENV.append 'CXXFLAGS', "-DNDEBUG=1"
+    system "cmake #{std_cmake_parameters} -DWITH_MP4=ON -DWITH_ASF=ON"
     system "make"
     system "make install"
   end
