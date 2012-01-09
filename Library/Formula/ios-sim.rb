@@ -1,9 +1,10 @@
 require 'formula'
 
 class IosSim < Formula
-  url "https://github.com/Fingertips/ios-sim/tarball/1.1"
+  url "https://github.com/Fingertips/ios-sim/tarball/master"
+  version "1.3"
   homepage "https://github.com/Fingertips/ios-sim"
-  md5 "ea70e2889390844ce2a72f1345df0e69"
+  md5 "64b88ea87d5af6bc959366530a6d1a61"
 
   def install
     system "rake install prefix='#{prefix}'"
