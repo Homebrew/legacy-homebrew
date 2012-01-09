@@ -7,14 +7,9 @@ class Trafficserver < Formula
 
   depends_on 'pcre'
 
-  def patches
-      # configure script seems to erroneously detect ac_cv_gethostbyname_r_style=glibc2
-      DATA
-  end
-
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--with-user=#{ENV['USER']}", "--with-group=admin"
+    ENV.remove_from_cflags /-w/
+    system "./configure --prefix=#{prefix} --with-user=#{ENV['USER']} --with-group=admin"
     system "make install"
   end
 
@@ -22,16 +17,3 @@ class Trafficserver < Formula
     system "trafficserver status"
   end
 end
-
-__END__
---- a/configure.2012-01-05-162306	2011-12-04 13:57:42.000000000 -0800
-+++ b/configure	2012-01-05 16:24:04.000000000 -0800
-@@ -21533,7 +21533,7 @@
-      return 0; }
- _ACEOF
- if ac_fn_c_try_compile "$LINENO"; then :
--  ac_cv_gethostbyname_r_style=glibc2
-+  ac_cv_gethostbyname_r_style=none
- else
-   ac_cv_gethostbyname_r_style=none
- fi
