@@ -1,5 +1,3 @@
-# Includes postgis 2.0 support
-
 require 'formula'
 
 def raster?
@@ -72,7 +70,7 @@ class Postgis < Formula
       postgis/uninstall_postgis.sql
     ]
 
-    # Be explicit about requirements for 2.0 and 1.5.x series PostGIS, even if a little non-DRY.
+    # Be explicit about requirements for 2.0 and 1.5.x series PostGIS
     if ARGV.build_head?
       # Install PostGIS 2.0 SQL scripts
       postgis_sql.install %w[
@@ -82,14 +80,10 @@ class Postgis < Formula
         postgis/postgis_upgrade_20_minor.sql
       ]
       
-      # Copy utils scripts and SQL to PostGIS Cellar for convenience
+      # Copy utils scripts and SQL to PostGIS Cellar
       #
-      # SQL and scripts
-      # also in /usr/local/Cellar/postgresql/9.1.2/share/postgresql/contrib/postgis-2.0
-      #
-      # IMPORTANT: shp2pgsql, pgsql2shp and raster2pgsql
-      # Found in /usr/local/Cellar/postgresql/9.1.x/bin and need to be symlinked not moved  
-                
+      # shp2pgsql, pgsql2shp and raster2pgsql:
+      # Found in /usr/local/Cellar/postgresql/9.1.x/bin and need to be symlinked not moved                  
       bin.install %w[
         utils/create_undef.pl      
         utils/postgis_proc_upgrade.pl
@@ -147,7 +141,7 @@ class Postgis < Formula
     and to upgrade your existing spatial databases, see here:
       http://postgis.refractions.net/documentation/manual-1.5/ch02.html#upgrading
     IMPORTANT: If installing HEAD, shp2pgsql, pgsql2shp and raster2pgsql will be found in 
-      /usr/local/Cellar/postgresql/9.1.x/bin and need to be re-linked
+      /usr/local/Cellar/postgresql/9.1.x/bin and need to be linked
     EOS
   end
 end
