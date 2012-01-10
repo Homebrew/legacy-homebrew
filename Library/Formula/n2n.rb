@@ -4,6 +4,7 @@ class N2n < Formula
   url 'http://www.sideshowcoder.railsplayground.net/files/n2n-2.7.tar.gz'
   homepage 'http://www.ntop.org/n2n/'
   md5 '8e64e4fd0ebf05c76b942549dc8b6b76'
+  head 'https://svn.ntop.org/svn/ntop/trunk/n2n/n2n_v2/', :using => :svn
 
   def install
     system "make"
