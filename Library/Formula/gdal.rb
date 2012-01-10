@@ -21,9 +21,9 @@ def opencl?
 end
 
 class Gdal < Formula
-  url 'http://download.osgeo.org/gdal/gdal-1.8.1.tar.gz'
+  url 'http://download.osgeo.org/gdal/gdal-1.9.0.tar.gz'
   homepage 'http://www.gdal.org/'
-  md5 'b32269893afc9dc9eced45e74e4c6bb4'
+  md5 '1853f3d8eb5232ae030abe007840cade'
 
   head 'https://svn.osgeo.org/gdal/trunk/gdal', :using => :svn
 
@@ -106,7 +106,7 @@ class Gdal < Formula
       "--with-curl=/usr/bin/curl-config",
 
       # GRASS backend explicitly disabled.  Creates a chicken-and-egg problem.
-      # Should be installed seperately after GRASS installation using the
+      # Should be installed separately after GRASS installation using the
       # official GDAL GRASS plugin.
       "--without-grass",
       "--without-libgrass",
@@ -168,18 +168,18 @@ class Gdal < Formula
     args << "--without-oci"    # Oracle databases
     args << "--without-idb"    # IBM Informix DataBlades
 
-    # Hombrew-provided databases.
+    # Homebrew-provided databases.
     args << "--with-pg=#{HOMEBREW_PREFIX}/bin/pg_config" if postgres?
     args << "--with-mysql=#{HOMEBREW_PREFIX}/bin/mysql_config" if mysql?
 
-    args << "--without-python" # Installed using a seperate set of
+    args << "--without-python" # Installed using a separate set of
                                          # steps so that everything winds up
                                          # in the prefix.
 
     # Scripting APIs that have not been re-worked to respect Homebrew prefixes.
     #
     # Currently disabled as they install willy-nilly into locations outside of
-    # the Hombrew prefix.  Enable if you feel like it, but uninstallation may be
+    # the Homebrew prefix.  Enable if you feel like it, but uninstallation may be
     # a manual affair.
     #
     # TODO: Fix installation of script bindings so they install into the
