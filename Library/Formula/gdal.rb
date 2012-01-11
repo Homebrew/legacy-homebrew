@@ -21,9 +21,9 @@ def opencl?
 end
 
 class Gdal < Formula
-  url 'http://download.osgeo.org/gdal/gdal-1.8.1.tar.gz'
+  url 'http://download.osgeo.org/gdal/gdal-1.9.0.tar.gz'
   homepage 'http://www.gdal.org/'
-  md5 'b32269893afc9dc9eced45e74e4c6bb4'
+  md5 '1853f3d8eb5232ae030abe007840cade'
 
   head 'https://svn.osgeo.org/gdal/trunk/gdal', :using => :svn
 
