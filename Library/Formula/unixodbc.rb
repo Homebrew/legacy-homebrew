@@ -1,9 +1,9 @@
 require 'formula'
 
 class Unixodbc < Formula
-  url 'http://www.unixodbc.org/unixODBC-2.3.0.tar.gz'
+  url 'http://www.unixodbc.org/unixODBC-2.3.1.tar.gz'
   homepage 'http://www.unixodbc.org/'
-  md5 'f2ad22cbdffe836c58987ed2332c2e99'
+  md5 '86788d4006620fa1f171c13d07fdcaab'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

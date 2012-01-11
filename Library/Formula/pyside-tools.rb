@@ -15,7 +15,6 @@ class PysideTools < Formula
 
   depends_on 'cmake' => :build
 
-  depends_on 'qt'
   depends_on 'pyside'
 
   def install
