@@ -343,8 +343,8 @@ module MacOS extend self
 
   def clang_build_version
     @clang_build_version ||= if File.exist? "/usr/bin/clang"
-      `/usr/bin/clang --version` =~ %r[tags/Apple/clang-(\d+(\.\d+)*)]
-      $1
+      `/usr/bin/clang --version` =~ %r[tags/Apple/clang-(\d{2,})]
+      $1.to_i
     end
   end
 
