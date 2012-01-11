@@ -2,10 +2,10 @@ require 'formula'
 
 class Macvim < Formula
   homepage 'http://code.google.com/p/macvim/'
-  url 'https://github.com/ivanoats/macvim/tarball/master'
-  version '7.3-62'
-  md5 '6bed74d5a9317855a4cd35f1647a9c0f'
-  head 'https://github.com/ivanoats/macvim.git', :branch => 'master'
+  #url 'https://github.com/b4winckler/macvim/tarball/snapshot-63'
+  url 'https://github.com/alloy/macvim.git'
+  version '7.3-63'
+  head 'https://github.com/alloy/macvim.git', :branch => 'master'
 
   def options
   [
