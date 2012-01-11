@@ -27,7 +27,8 @@ class Python < Formula
       ["--framework", "Do a 'Framework' build instead of a UNIX-style build."],
       ["--universal", "Build for both 32 & 64 bit Intel."],
       ["--static", "Build static libraries."],
-      ["--no-poll", "Remove HAVE_POLL.* options from build."]
+      ["--no-poll", "Remove HAVE_POLL.* options from build."],
+      ["--wide", "Build python which support wide unicode char."]
     ]
   end
 
@@ -51,7 +52,10 @@ class Python < Formula
     if ARGV.build_universal?
       args << "--enable-universalsdk=/" << "--with-universal-archs=intel"
     end
-
+    if ARGV.include? "--wide"
+      args << "--enable-unicode=ucs4"
+    end
+    
     if build_framework?
       args << "--enable-framework=#{prefix}/Frameworks"
     else
