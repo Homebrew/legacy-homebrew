@@ -3,9 +3,10 @@ require 'formula'
 class Macvim < Formula
   homepage 'http://code.google.com/p/macvim/'
   url 'https://github.com/b4winckler/macvim/tarball/snapshot-63'
+  url 'https://github.com/alloy/macvim.git'
   version '7.3-63'
   md5 '6abd828216e4ee37d78538cf6f4a7af0'
-  head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
+  head 'https://github.com/alloy/macvim.git', :branch => 'master'
 
   def options
   [
