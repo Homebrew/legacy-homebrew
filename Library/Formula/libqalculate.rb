@@ -1,7 +1,7 @@
 require 'formula'
 
 class Libqalculate < Formula
-  url 'http://cdnetworks-us-2.dl.sourceforge.net/project/qalculate/libqalculate/libqalculate-0.9.7/libqalculate-0.9.7.tar.gz'
+  url 'http://sourceforge.net/projects/qalculate/files/libqalculate/libqalculate-0.9.7/libqalculate-0.9.7.tar.gz'
   homepage 'http://qalculate.sourceforge.net/'
   md5 'a1507ab862f4ad9852788619aada35cd'
 
@@ -13,7 +13,7 @@ class Libqalculate < Formula
   depends_on 'wget'
 
   def patches
-    # something about your mum being b0rked
+    # Patches against version 0.9.7, should not be needed in the future
     DATA
   end
 
@@ -24,7 +24,7 @@ class Libqalculate < Formula
   end
 
   def test
-    system "`brew --prefix`/bin/qalc '(2+2)/4 hours to minutes'"
+    system "#{prefix}/bin/qalc '(2+2)/4 hours to minutes'"
   end
 end
 
