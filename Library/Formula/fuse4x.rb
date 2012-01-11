@@ -2,8 +2,8 @@ require 'formula'
 
 class Fuse4x < Formula
   homepage 'http://fuse4x.org/'
-  url 'https://github.com/fuse4x/fuse.git', :tag => "fuse4x_0_8_13"
-  version "0.8.13"
+  url 'https://github.com/fuse4x/fuse.git', :tag => "fuse4x_0_8_14"
+  version "0.8.14"
 
   depends_on 'gettext'
   depends_on 'fuse4x-kext'

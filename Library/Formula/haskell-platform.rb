@@ -1,9 +1,9 @@
 require 'formula'
 
 class HaskellPlatform < Formula
-  url 'http://lambda.galois.com/hp-tmp/2011.2.0.1/haskell-platform-2011.2.0.1.tar.gz'
+  url 'http://lambda.haskell.org/platform/download/2011.4.0.0/haskell-platform-2011.4.0.0.tar.gz'
   homepage 'http://hackage.haskell.org/platform/'
-  md5 '97fd42f169a426d043368cec342745ef'
+  sha1 '0dc3abd2f046f4437b7ea0bf1588175f16cd439b'
 
   depends_on 'ghc'
 
@@ -16,10 +16,12 @@ class HaskellPlatform < Formula
   def caveats; <<-EOS.undent
     Run `cabal update` to initialize the package list.
 
-    If you are trying to upgrade from a previous version of haskell-platform,
-    you may need to delete .conf files from:
-      ~/.ghc/i386-darwin-6.12.3/package.conf.d
-    that reference the previous version of haskell-platform first!
+    If you are replacing a previous version of haskell-platform, you may want
+    to unregister packages belonging to the old version. You can find broken
+    packages using:
+      ghc-pkg check --simple-output
+    You can uninstall them using:
+      ghc-pkg check --simple-output | xargs -n 1 ghc-pkg unregister --force
     EOS
   end
 end

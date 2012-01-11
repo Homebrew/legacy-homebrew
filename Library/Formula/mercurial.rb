@@ -1,10 +1,10 @@
 require 'formula'
 
 class Mercurial < Formula
-  url 'http://mercurial.selenic.com/release/mercurial-2.0.tar.gz'
+  url 'http://mercurial.selenic.com/release/mercurial-2.0.2.tar.gz'
   homepage 'http://mercurial.selenic.com/'
+  sha1 'aedcb4e41c5b49188d9d34d12c343b2ec099c61b'
   head 'http://selenic.com/repo/hg', :using => :hg
-  sha1 '5ede1b3f54d3be2af0657901e7013dde7c19b7c5'
 
   depends_on 'docutils' => :python if ARGV.build_head? or ARGV.include? "--doc"
 
@@ -58,7 +58,7 @@ class Mercurial < Formula
     s = ""
     if ARGV.build_head?
       s += <<-EOS.undent
-        As mercurial is required to get its own repository, there is now two
+        As mercurial is required to get its own repository, there are now two
         installations of mercurial on this machine.
         If the previous installation has been done through Homebrew, the old version
         needs to be removed and the new one needs to be linked :

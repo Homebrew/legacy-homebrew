@@ -35,7 +35,7 @@ class FormulaInstaller
               # Re-create the formula object so that args like `--HEAD` won't
               # affect properties like the installation prefix. Also need to
               # re-check installed status as the Formula may have changed.
-              dep = Formula.factory dep.name
+              dep = Formula.factory dep.path
               install_dependency dep unless dep.installed?
             end
           end
@@ -72,10 +72,12 @@ class FormulaInstaller
   end
 
   def caveats
-    if f.caveats
+    the_caveats = (f.caveats || "").strip
+    unless the_caveats.empty?
       ohai "Caveats", f.caveats
       @show_summary_heading = true
     end
+
     if f.keg_only?
       ohai 'Caveats', f.keg_only_text
       @show_summary_heading = true
@@ -200,6 +202,12 @@ class FormulaInstaller
     @paths ||= ENV['PATH'].split(':').map{ |p| File.expand_path p }
   end
 
+  def in_aclocal_dirlist?
+    File.open("/usr/share/aclocal/dirlist") do |dirlist|
+      dirlist.grep(%r{^#{HOMEBREW_PREFIX}/share/aclocal$}).length > 0
+    end rescue false
+  end
+
   def check_PATH
     # warn the user if stuff was installed outside of their PATH
     [f.bin, f.sbin].each do |bin|
@@ -250,7 +258,7 @@ class FormulaInstaller
 
   def check_m4
     # Check for m4 files
-    if Dir[f.share+"aclocal/*.m4"].length > 0
+    if Dir[f.share+"aclocal/*.m4"].length > 0 and not in_aclocal_dirlist?
       opoo 'm4 macros were installed to "share/aclocal".'
       puts "Homebrew does not append \"#{HOMEBREW_PREFIX}/share/aclocal\""
       puts "to \"/usr/share/aclocal/dirlist\". If an autoconf script you use"
