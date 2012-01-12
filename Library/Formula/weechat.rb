@@ -20,11 +20,8 @@ class Weechat < Formula
       %Q{\n  STRING(REGEX REPLACE "#{archs.join '|'}" "" PERL_CFLAGS "${PERL_CFLAGS}")} +
       %Q{\n  STRING(REGEX REPLACE "#{archs.join '|'}" "" PERL_LFLAGS "${PERL_LFLAGS}")}
 
-    #FIXME: Compiling perl module doesn't work
     #NOTE: -DPREFIX has to be specified because weechat devs enjoy being non-standard
     system "cmake", "-DPREFIX=#{prefix}",
-                    "-DENABLE_RUBY=OFF",
-                    "-DENABLE_PERL=OFF",
                     std_cmake_parameters, "."
     system "make install"
   end
