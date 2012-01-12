@@ -6,8 +6,13 @@ class Nu < Formula
   md5 '8ceee36a3e89cab8d00f543fb61f7ffb'
 
   depends_on 'pcre'
+    
+  if MACOS_VERSION < 10.7
+    raise "This version of Nu is exclusively for systems running Mac OS 10.7 or iOS 4.3 and their successors. The older version is available on Homebrew-alt, see https://github.com/adamv/homebrew-alt for more information."
+  end
 
   def install
+
     ENV['PREFIX'] = prefix
 
     inreplace "Makefile" do |s|
