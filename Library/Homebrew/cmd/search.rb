@@ -27,7 +27,7 @@ module Homebrew extend self
         puts msg
       end
 
-      if search_results.empty? and not blacklisted? query
+      if ARGV.include? '--remote' and search_results.empty? and not blacklisted? query
         pulls = GitHub.find_pull_requests rx
         unless pulls.empty?
           puts "Open pull requests matching \"#{query}\":", *pulls.map { |p| "    #{p}" }
