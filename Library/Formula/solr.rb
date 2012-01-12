@@ -1,9 +1,9 @@
 require 'formula'
 
-class Solr <Formula
-  url 'http://ftp.wayne.edu/apache/lucene/solr/1.4.1/apache-solr-1.4.1.tgz'
+class Solr < Formula
+  url 'http://www.apache.org/dyn/closer.cgi?path=lucene/solr/3.4.0/apache-solr-3.4.0.tgz'
   homepage 'http://lucene.apache.org/solr/'
-  md5 '258a020ed8c3f44e13b09e8ae46a1c84'
+  md5 '949b145669a6c9517b2fef32b58f679e'
 
   def script; <<-EOS.undent
     #!/bin/sh
@@ -22,10 +22,10 @@ class Solr <Formula
 
   def caveats; <<-EOS.undent
     To start solr:
-      $ solr path/to/solr/config/dir
+        solr path/to/solr/config/dir
 
     See the solr homepage for more setup information:
-      $ brew home solr
+        brew home solr
     EOS
   end
 end

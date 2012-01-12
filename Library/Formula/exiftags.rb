@@ -1,6 +1,6 @@
 require 'formula'
 
-class Exiftags <Formula
+class Exiftags < Formula
   url 'http://johnst.org/sw/exiftags/exiftags-1.01.tar.gz'
   homepage 'http://johnst.org/sw/exiftags'
   md5 '9d5bce968fdde2dc24ba49c0024dc0cc'

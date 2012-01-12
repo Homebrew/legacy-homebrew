@@ -1,6 +1,6 @@
 require 'formula'
 
-class Wkhtmltopdf <Formula
+class Wkhtmltopdf < Formula
   url 'http://wkhtmltopdf.googlecode.com/files/wkhtmltopdf-0.9.9.tar.bz2'
   homepage 'http://code.google.com/p/wkhtmltopdf/'
   md5 'df2bb84b7d15140ca14732898155dd6a'
@@ -14,7 +14,7 @@ class Wkhtmltopdf <Formula
       s.gsub! 'include($$join(TEMP, "/"))', ''
     end
 
-    # Always creates a uselles .app doh,
+    # Always creates a useless .app doh,
     # AFAIK this is fixed in 0.10.0beta
     wkhtml_bin = 'wkhtmltopdf.app/Contents/MacOS/wkhtmltopdf'
     wkhtml_man = "#{name}.1"

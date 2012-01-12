@@ -1,13 +1,13 @@
 require 'formula'
 
-class AndroidSdk <Formula
-  url 'http://dl.google.com/android/android-sdk_r09-mac_x86.zip'
+class AndroidSdk < Formula
+  url 'http://dl.google.com/android/android-sdk_r16-macosx.zip'
   homepage 'http://developer.android.com/index.html'
-  md5 'ef3102fdbbbbd9bf4d9b572624aa9dc1'
-  version 'r9'
+  md5 'd1dc2b6f13eed5e3ce5cf26c4e4c47aa'
+  version 'r16'
 
   def self.var_dirs
-    %w[platforms samples temp add-ons ]
+    %w[platforms samples temp add-ons bin]
     # TODO docs, google-market_licensing and platform-tools
     # See the long comment below for the associated problems
   end
@@ -21,8 +21,9 @@ class AndroidSdk <Formula
     mv 'tools', prefix
 
     %w[android apkbuilder ddms dmtracedump draw9patch emulator
-           hierarchyviewer hprof-conv layoutopt mksdcard traceview
-           zipalign].each do |tool|
+       emulator-arm emulator-x86 hierarchyviewer hprof-conv
+       lint mksdcard monkeyrunner sqlite3 traceview
+       zipalign].each do |tool|
       (bin/tool).make_link(prefix/'tools'/tool)
     end
 
@@ -35,12 +36,13 @@ class AndroidSdk <Formula
       dst.make_relative_symlink src
     end
 
-    (bin/:adb).write <<-EOS.undent
+    (bin+'adb').write <<-EOS.undent
       #!/bin/sh
       ADB="#{prefix}/platform-tools/adb"
-      test -f "$ADB" && exec "$ADB" $@
+      test -f "$ADB" && exec "$ADB" "$@"
       echo Use the \\`android\\' tool to install adb.
       EOS
+    (bin+'adb').chmod 0755
   end
 
   def caveats; <<-EOS.undent

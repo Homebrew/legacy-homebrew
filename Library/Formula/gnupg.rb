@@ -1,11 +1,11 @@
 require 'formula'
 
-class GnupgIdea <Formula
+class GnupgIdea < Formula
   head 'http://www.gnupg.dk/contrib-dk/idea.c.gz', :using  => NoUnzipCurlDownloadStrategy
   md5 '9dc3bc086824a8c7a331f35e09a3e57f'
 end
 
-class Gnupg <Formula
+class Gnupg < Formula
   url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.11.tar.bz2'
   homepage 'http://www.gnupg.org/'
   sha1 '78e22f5cca88514ee71034aafff539c33f3c6676'
@@ -17,7 +17,10 @@ class Gnupg <Formula
   end
 
   def options
-    [["--idea", "Build with (patented) IDEA cipher"]]
+    [
+      ["--idea", "Build with (patented) IDEA cipher"],
+      ["--8192", "Build with support for private keys up to 8192 bits"],
+    ]
   end
 
   def install
@@ -27,6 +30,8 @@ class Gnupg <Formula
       GnupgIdea.new.brew { (d+'cipher').install Dir['*'] }
       system 'gunzip', 'cipher/idea.c.gz'
     end
+
+    inreplace 'g10/keygen.c', 'max=4096', 'max=8192' if ARGV.include? '--8192'
 
     system "/usr/bin/autoconf"
 

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Portmidi <Formula
+class Portmidi < Formula
   url 'http://downloads.sourceforge.net/project/portmedia/portmidi/200/portmidi-src-200.zip'
   homepage 'http://sourceforge.net/apps/trac/portmedia/wiki/portmidi'
   md5 '26053a105d938395227bb6ae1d78643b'
@@ -16,7 +16,7 @@ class Portmidi <Formula
 
   def install
     # PATCH for Snow Leopard, see https://github.com/halfbyte/portmidi
-    # hopefully not needed anymymore in the next version of portmidi
+    # hopefully not needed anymore in the next version of portmidi
     architectures = archs_for_command('/bin/sh').join(' ')
     inreplace 'CMakeLists.txt',
       'CMAKE_OSX_ARCHITECTURES i386 ppc CACHE STRING "do not build for 64-bit"',

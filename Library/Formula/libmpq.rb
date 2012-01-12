@@ -1,13 +1,17 @@
 require 'formula'
 
-class Libmpq <Formula
-  url 'https://libmpq.org/download/libmpq-0.4.2.tar.bz2'
-  homepage 'https://libmpq.org'
-  md5 '54ec039b9654ba1662485e1bc9682850'
+class Libmpq < Formula
+  # libmpq.org has seen prolonged downtime
+  head 'https://github.com/ge0rg/libmpq.git'
+  homepage 'https://github.com/ge0rg/libmpq'
 
   def install
+    # on OS X, it's 'glibtoolize'
+    inreplace 'autogen.sh', 'libtoolize', 'glibtoolize'
+    system "./autogen.sh"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--mandir=#{man}"
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make install"
   end
 end

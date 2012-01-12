@@ -1,16 +1,19 @@
 require 'formula'
 
-class Gd <Formula
+class Gd < Formula
   url "http://www.libgd.org/releases/gd-2.0.36RC1.tar.gz"
-  homepage "http://www.libgd.org"
-  head "http://bitbucket.org/pierrejoye/gd-libgd", :using => :hg
+  homepage "http://bitbucket.org/pierrejoye/gd-libgd"
+  mirror "http://download.osgeo.org/mapserver/libgd/gd-2.0.36RC1.tar.gz"
   md5 "39ac48e6d5e0012a3bd2248a0102f209"
+
+  head "http://bitbucket.org/pierrejoye/gd-libgd", :using => :hg
 
   depends_on 'jpeg' => :recommended
 
+  fails_with_llvm "Undefined symbols when linking", :build => "2326"
+
   def install
-    fails_with_llvm "Undefined symbols when linking", :build => "2326"
-    ENV.libpng
+    ENV.x11
     system "./configure", "--prefix=#{prefix}", "--with-freetype=/usr/X11"
     system "make install"
     (lib+'pkgconfig/gdlib.pc').write pkg_file

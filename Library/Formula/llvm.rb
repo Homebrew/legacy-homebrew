@@ -1,20 +1,25 @@
 require 'formula'
 
 def build_clang?; ARGV.include? '--with-clang'; end
-def build_universal?; ARGV.include? '--universal'; end
+def build_all_targets?; ARGV.include? '--all-targets'; end
+def build_analyzer?; ARGV.include? '--analyzer'; end
+def build_universal?; ARGV.build_universal?; end
 def build_shared?; ARGV.include? '--shared'; end
 def build_rtti?; ARGV.include? '--rtti'; end
+def build_jit?; ARGV.include? '--jit'; end
 
-class Clang <Formula
-  url       'http://llvm.org/releases/2.8/clang-2.8.tgz'
+class Clang < Formula
   homepage  'http://llvm.org/'
-  md5       '10e14c901fc3728eecbd5b829e011b59'
+  head      'http://llvm.org/git/clang.git', :using => :git
+  url       'http://llvm.org/releases/3.0/clang-3.0.tar.gz'
+  md5       '43350706ae6cf05d0068885792ea0591'
 end
 
-class Llvm <Formula
-  url       'http://llvm.org/releases/2.8/llvm-2.8.tgz'
+class Llvm < Formula
   homepage  'http://llvm.org/'
-  md5       '220d361b4d17051ff4bb21c64abe05ba'
+  head      'http://llvm.org/git/llvm.git', :using => :git
+  url       'http://llvm.org/releases/3.0/llvm-3.0.tar.gz'
+  md5       'a8e5f5f1c1adebae7b4a654c376a6005'
 
   def patches
     # changes the link options for the shared library build
@@ -24,23 +29,24 @@ class Llvm <Formula
   end
 
   def options
-    [['--with-clang', 'Also build & install clang'],
+    [['--with-clang', 'Build clang'],
+     ['--analyzer', 'Build clang analyzer'],
      ['--shared', 'Build shared library'],
+     ['--all-targets', 'Build all target backends'],
      ['--rtti', 'Build with RTTI information'],
-     ['--universal', 'Build both i386 and x86_64 architectures']]
+     ['--universal', 'Build both i386 and x86_64 architectures'],
+     ['--jit', 'Build with Just In Time (JIT) compiler functionality']]
   end
 
   def install
-    ENV.gcc_4_2 # llvm can't compile itself
-
     if build_shared? && build_universal?
       onoe "Cannot specify both shared and universal (will not build)"
       exit 1
     end
 
-    if build_clang?
+    if build_clang? or build_analyzer?
       clang_dir = Pathname.new(Dir.pwd)+'tools/clang'
-      Clang.new.brew { clang_dir.install Dir['*'] }
+      Clang.new("clang").brew { clang_dir.install Dir['*'] }
     end
 
     if build_universal?
@@ -50,44 +56,70 @@ class Llvm <Formula
 
     ENV['REQUIRES_RTTI'] = '1' if build_rtti?
 
-    configure_options = ["--prefix=#{prefix}",
-                         "--enable-targets=host-only",
-                         "--enable-optimized"]
+    configure_options = [
+      "--prefix=#{prefix}",
+      "--enable-optimized",
+      # As of LLVM 3.0, the only bindings offered are for OCaml and attempting
+      # to build these when Homebrew's OCaml is installed results in errors.
+      #
+      # See issue #8947 for details.
+      "--enable-bindings=none"
+    ]
+
+    if build_all_targets?
+      configure_options << "--enable-targets=all"
+    else
+      configure_options << "--enable-targets=host-only"
+    end
 
     configure_options << "--enable-shared" if build_shared?
+    configure_options << "--enable-jit" if build_jit?
 
     system "./configure", *configure_options
 
     system "make" # separate steps required, otherwise the build fails
     system "make install"
 
-    if build_clang?
-      Dir.chdir clang_dir do
-        system "make install"
-      end
-    end
+    Dir.chdir clang_dir do
+      system "make install"
+      bin.install 'tools/scan-build/set-xcode-analyzer'
+    end if build_clang? or build_analyzer?
+
+    Dir.chdir clang_dir do
+      bin.install 'tools/scan-build/scan-build'
+      bin.install 'tools/scan-build/ccc-analyzer'
+      bin.install 'tools/scan-build/c++-analyzer'
+      bin.install 'tools/scan-build/sorttable.js'
+      bin.install 'tools/scan-build/scanview.css'
+
+      bin.install 'tools/scan-view/scan-view'
+      bin.install 'tools/scan-view/ScanView.py'
+      bin.install 'tools/scan-view/Reporter.py'
+      bin.install 'tools/scan-view/startfile.py'
+      bin.install 'tools/scan-view/Resources'
+    end if build_analyzer?
   end
 
-  def caveats; <<-EOS
-    If you already have LLVM installed, then "brew upgrade llvm" might not
-    work. Instead, try:
-        $ brew rm llvm
-        $ brew install llvm
+  def caveats; <<-EOS.undent
+    If you already have LLVM installed, then "brew upgrade llvm" might not work.
+    Instead, try:
+        brew rm llvm && brew install llvm
     EOS
   end
 end
 
+
 __END__
-diff --git a/Makefile.rules b/Makefile.rules
-index 9cff105..44d5b2d 100644
---- a/Makefile.rules
-+++ b/Makefile.rules
-@@ -497,7 +497,7 @@ ifeq ($(HOST_OS),Darwin)
+diff --git i/Makefile.rules w/Makefile.rules
+index 5fc77a5..a6baaf4 100644
+--- i/Makefile.rules
++++ w/Makefile.rules
+@@ -507,7 +507,7 @@ ifeq ($(HOST_OS),Darwin)
    # Get "4" out of 10.4 for later pieces in the makefile.
    DARWIN_MAJVERS := $(shell echo $(DARWIN_VERSION)| sed -E 's/10.([0-9]).*/\1/')
 
--  SharedLinkOptions=-Wl,-flat_namespace -Wl,-undefined,suppress \
-+  SharedLinkOptions=-Wl,-undefined,dynamic_lookup \
-                     -dynamiclib
+-  LoadableModuleOptions := -Wl,-flat_namespace -Wl,-undefined,suppress
++  LoadableModuleOptions := -Wl,-undefined,dynamic_lookup
+   SharedLinkOptions := -dynamiclib
    ifneq ($(ARCH),ARM)
      SharedLinkOptions += -mmacosx-version-min=$(DARWIN_VERSION)

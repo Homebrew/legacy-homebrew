@@ -1,6 +1,6 @@
 require 'formula'
 
-class MecabIpadic <Formula
+class MecabIpadic < Formula
   url 'http://downloads.sourceforge.net/project/mecab/mecab-ipadic/2.7.0-20070801/mecab-ipadic-2.7.0-20070801.tar.gz'
   homepage 'http://mecab.sourceforge.net/'
   md5 'e09556657cc70e45564c6514a6b08495'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class S3sync <Formula
+class S3sync < Formula
   url 'http://s3sync-s3cmd.googlecode.com/svn/trunk/', :revision => '4'
   version '1.2.6'
   homepage 'http://s3sync.net'

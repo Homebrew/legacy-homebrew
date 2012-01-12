@@ -1,6 +1,6 @@
 require 'formula'
 
-class Strategoxt <Formula
+class Strategoxt < Formula
   url 'ftp://ftp.stratego-language.org/pub/stratego/StrategoXT/strategoxt-0.17/strategoxt-0.17.tar.gz'
   homepage 'http://strategoxt.org/Stratego/WebHome'
   md5 '6a1523ec105c5091a8174b276aceea1b'

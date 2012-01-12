@@ -1,13 +1,9 @@
 require 'formula'
 
 class Dotless < Formula
-  homepage "http://www.dotlesscss.com/"
-  url "http://www.dotlesscss.com:8081/repository/download/bt3/.lastPinned/dotless-v1.1.0.2-26-gd3370bd.zip?guest=1"
-  md5 '7fd6e39e47aeaaae615d061bc472c32e'
-  version "1.1.0.2-26"
-
-  # Head version is in GitHub, but requires builds:
-  # https://github.com/dotless/dotless
+  homepage "http://www.dotlesscss.org/"
+  url "https://github.com/downloads/dotless/dotless/dotless-v1.2.1.0.zip"
+  md5 "dd06170b2e6a8f943f715977cfcd254d"
 
   def install
     mono_path = `/usr/bin/which mono`.strip

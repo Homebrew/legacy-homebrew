@@ -1,14 +1,18 @@
 require 'formula'
 
-class Monit <Formula
-  url 'http://mmonit.com/monit/dist/monit-5.2.1.tar.gz'
+class Monit < Formula
+  url 'http://mmonit.com/monit/dist/monit-5.3.2.tar.gz'
   homepage 'http://mmonit.com/monit/'
-  sha256 '31b37dd4a6f6b48e6d6926d97bfe5ad998a2a0611af0586525a5dd1b5847e41e'
+  sha256 '406a06ac912525c8e76066d07235c848466b331532b2b3de931b61fe455ae915'
 
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--localstatedir=#{var}/monit",
                           "--sysconfdir=#{etc}/monit"
     system "make install"
+  end
+
+  def test
+    system "monit -h"
   end
 end

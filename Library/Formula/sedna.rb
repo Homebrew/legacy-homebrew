@@ -1,12 +1,12 @@
 require 'formula'
 
-class Sedna <Formula
+class Sedna < Formula
   url 'http://www.modis.ispras.ru/FTPContent/sedna/current/sedna-3.4.66-src-darwin.tar.gz'
   homepage 'http://modis.ispras.ru/sedna/index.html'
   md5 '8c0006dbfb0ab89a63b4ae93e35f2213'
   version '3.4.66'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
 
   def install
     path = pwd

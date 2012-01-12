@@ -14,6 +14,10 @@ _brew_installed_formulae() {
   installed_formulae=(`brew list`)
 }
 
+_brew_outdated_formulae() {
+  outdated_formulae=(`brew outdated`)
+}
+
 local -a _1st_arguments
 _1st_arguments=(
   'cat:display formula file for a formula'
@@ -36,14 +40,19 @@ _1st_arguments=(
   'server:start a local web app that lets you browse formulae (requires Sinatra)'
   'unlink:unlink a formula'
   'update:freshen up links'
+  'upgrade:upgrade outdated formulae'
   'uses:show formulas which depend on a formula'
 )
 
 local expl
-local -a formula installed_formulae
+local -a formulae installed_formulae outdated_formulae
 
 _arguments \
-  '(-v --verbose)'{-v,--verbose}'[verbose]' \
+  '(-v)-v[verbose]' \
+  '(--cellar)--cellar[brew cellar]' \
+  '(--config)--config[brew configuration]' \
+  '(--env)--env[brew environment]' \
+  '(--repository)--repository[brew repository]' \
   '(--version)--version[version information]' \
   '(--prefix)--prefix[where brew lives on this system]' \
   '(--cache)--cache[brew cache]' \
@@ -55,7 +64,11 @@ if (( CURRENT == 1 )); then
 fi
 
 case "$words[1]" in
-  list)
+  search|-S)
+    _arguments \
+      '(--macports)--macports[search the macports repository]' \
+      '(--fink)--fink[search the fink repository]' ;;
+  list|ls)
     _arguments \
       '(--unbrewed)--unbrewed[files in brew --prefix not controlled by brew]' \
       '(--versions)--versions[list all installed versions of a formula]' \
@@ -65,10 +78,13 @@ case "$words[1]" in
         _brew_installed_formulae
         _wanted installed_formulae expl 'installed formulae' compadd -a installed_formulae
       fi ;;
-  install|home|log|info|uses|cat|deps)
+  install|home|homepage|log|info|abv|uses|cat|deps|edit|options)
     _brew_all_formulae
     _wanted formulae expl 'all formulae' compadd -a formulae ;;
-  remove|edit|xo)
+  remove|rm|uninstall|unlink|cleanup|link|ln)
     _brew_installed_formulae
     _wanted installed_formulae expl 'installed formulae' compadd -a installed_formulae ;;
+  upgrade)
+    _brew_outdated_formulae
+    _wanted outdated_formulae expl 'outdated formulae' compadd -a outdated_formulae ;;
 esac

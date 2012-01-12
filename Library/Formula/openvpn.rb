@@ -1,14 +1,19 @@
 require 'formula'
 
-class Openvpn <Formula
-  url 'http://openvpn.net/release/openvpn-2.1.3.tar.gz'
+class Openvpn < Formula
   homepage 'http://openvpn.net/'
-  md5 '7486d3e270ba4b033e311d3e022a0ad7'
+  url 'http://build.openvpn.net/downloads/releases/openvpn-2.2.1.tar.gz'
+  mirror 'http://swupdate.openvpn.org/community/releases/openvpn-2.2.1.tar.gz'
+  sha256 'a860858cc92d4573399bb2ff17ac62d9b4b8939e6af0b8cc69150ba39d6e94e0'
 
   depends_on 'lzo' => :recommended
 
-  skip_clean 'etc'
-  skip_clean 'var'
+  # This patch fixes compilation on Lion
+  # There is a long history of confusion between these two consts:
+  # http://www.google.com/search?q=SOL_IP+IPPROTO_IP
+  def patches
+    DATA
+  end
 
   def install
     # Build and install binary
@@ -32,6 +37,7 @@ class Openvpn <Formula
 
     # Write the launchd script
     (prefix + 'org.openvpn.plist').write startup_plist
+    (prefix + 'org.openvpn.plist').chmod 0644
   end
 
   def caveats; <<-EOS
@@ -94,3 +100,20 @@ EOS
 EOS
   end
 end
+
+__END__
+diff --git a/socket.c b/socket.c
+index 4720398..faa1782 100644
+--- a/socket.c
++++ b/socket.c
+@@ -35,6 +35,10 @@
+
+ #include "memdbg.h"
+
++#ifndef SOL_IP
++#define SOL_IP IPPROTO_IP
++#endif
++
+ const int proto_overhead[] = { /* indexed by PROTO_x */
+   IPv4_UDP_HEADER_SIZE,
+   IPv4_TCP_HEADER_SIZE,

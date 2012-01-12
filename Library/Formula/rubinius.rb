@@ -1,11 +1,11 @@
 require 'formula'
 
 class Rubinius < Formula
-  url 'http://asset.rubini.us/rubinius-1.2.0-20101221.tar.gz'
-  version '1.2.0'
   homepage 'http://rubini.us/'
-  md5 '4284c2660f1f648942de35d4fc871f70'
-  head 'git://github.com/evanphx/rubinius.git'
+  url 'http://asset.rubini.us/rubinius-1.2.4-20110705.tar.gz'
+  version '1.2.4'
+  sha1 'c39c4fb1e62e0fb418453811636177e6ccf6a936'
+  head 'https://github.com/rubinius/rubinius.git'
 
   # Do not strip binaries, or else it fails to run.
   skip_clean :all
@@ -35,12 +35,5 @@ class Rubinius < Formula
 
     # Remove conflicting command aliases
     bin.children.select(&:symlink?).each(&:unlink)
-  end
-
-  def caveats; <<-EOS.undent
-    Consider using RVM or Cinderella to manage Ruby environments:
-      * RVM: http://rvm.beginrescueend.com/
-      * Cinderella: http://www.atmos.org/cinderella/
-    EOS
   end
 end

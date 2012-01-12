@@ -1,6 +1,6 @@
 require 'testing_env'
 require 'utils'
-require 'brew.h'
+require 'hardware'
 require 'extend/ENV'
 ENV.extend(HomebrewEnvExtension)
   

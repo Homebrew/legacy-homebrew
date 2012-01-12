@@ -1,6 +1,6 @@
 require 'formula'
 
-class CdDiscid <Formula
+class CdDiscid < Formula
   url 'http://linukz.org/download/cd-discid-1.1.tar.gz'
   homepage 'http://linukz.org/cd-discid.shtml'
   md5 '04cb368e3f1ce17e656ac6691ca0b687'

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Vice <Formula
+class Vice < Formula
   url "http://www.zimmers.net/anonftp/pub/cbm/crossplatform/emulators/VICE/vice-2.2.tar.gz"
   md5 "6737f540806205384e9129026898b0a1"
   homepage 'http://www.viceteam.org/'
@@ -15,8 +15,9 @@ class Vice <Formula
     end
   end
 
+  fails_with_llvm "Cannot build with LLVM"
+
   def install
-    fails_with_llvm "Cannot build with LLVM"
     ENV.libpng
 
     # Disable the zlibtest, we know we have it.

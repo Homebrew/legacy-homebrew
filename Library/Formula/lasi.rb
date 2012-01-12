@@ -1,6 +1,6 @@
 require 'formula'
 
-class Lasi <Formula
+class Lasi < Formula
   head 'https://lasi.svn.sourceforge.net/svnroot/lasi/trunk'
   homepage 'http://www.unifont.org/lasi/'
 

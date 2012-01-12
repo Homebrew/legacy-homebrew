@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cvs2svn <Formula
+class Cvs2svn < Formula
   url 'http://trac.macports.org/export/70472/distfiles/cvs2svn/cvs2svn-2.3.0.tar.gz'
   homepage 'http://cvs2svn.tigris.org/'
   md5 '6c412baec974f3ff64b9145944682a15'
@@ -17,7 +17,7 @@ class Cvs2svn <Formula
     system "python", "setup.py", "install", "--prefix=#{prefix}"
     system "make man"
     man1.install gzip('cvs2svn.1', 'cvs2git.1', 'cvs2bzr.1')
-    prefix.install %w[ BUGS CHANGES COMMITTERS HACKING
+    prefix.install %w[ BUGS COMMITTERS HACKING
       cvs2bzr-example.options cvs2git-example.options cvs2hg-example.options
       cvs2svn-example.options contrib ]
 

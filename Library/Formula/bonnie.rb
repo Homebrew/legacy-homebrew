@@ -1,11 +1,8 @@
 require 'formula'
 
-class Bonnie <Formula
-  url 'http://www.textuality.com/bonnie/bonnie.tar.gz'
-  homepage 'http://www.textuality.com/bonnie/'
-  md5 'f61cc061a418c3ae308ae362a1ae6490'
-  # no real version numbers
-  version '0.1.0'
+class Bonnie < Formula
+  homepage 'http://code.google.com/p/bonnie-64/'
+  head 'http://bonnie-64.googlecode.com/svn/trunk/'
 
   def install
     system "make"

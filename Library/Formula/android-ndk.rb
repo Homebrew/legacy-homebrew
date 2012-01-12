@@ -1,15 +1,27 @@
 require 'formula'
 
-class AndroidNdk <Formula
-  url 'http://dl.google.com/android/ndk/android-ndk-r5-darwin-x86.tar.bz2'
+class AndroidNdk < Formula
+  url 'http://dl.google.com/android/ndk/android-ndk-r7-darwin-x86.tar.bz2'
   homepage 'http://developer.android.com/sdk/ndk/index.html#overview'
-  md5 '9dee8e4cb529a5619e9b8d1707478c32'
-  version 'r5'
+  md5 '817ca5675a1dd44078098e43070f19b6'
+  version 'r7'
 
   depends_on 'android-sdk'
 
   def install
+    bin.mkpath
     prefix.install Dir['*']
+
+    # Create a dummy script to launch the ndk apps
+    ndk_exec = prefix+'ndk-exec.sh'
+    (ndk_exec).write <<-EOS.undent
+      #!/bin/sh
+      BASENAME=`basename $0`
+      EXEC="#{prefix}/$BASENAME"
+      test -f "$EXEC" && exec "$EXEC" "$@"
+      EOS
+    (ndk_exec).chmod 0755
+    %w[ ndk-build ndk-gdb ndk-stack ].each { |app| ln_s ndk_exec, bin+app }
   end
 
   def caveats; <<-EOS

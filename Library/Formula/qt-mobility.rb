@@ -1,9 +1,9 @@
 require 'formula'
 
-class QtMobility <Formula
-  url 'http://get.qt.nokia.com/qt/add-ons/qt-mobility-opensource-src-1.1.0.tar.gz'
+class QtMobility < Formula
+  url 'http://get.qt.nokia.com/qt/add-ons/qt-mobility-opensource-src-1.1.1.tar.gz'
   homepage 'http://qt.nokia.com/'
-  md5 '0bf8603493058735e16b35349da121df'
+  md5 'eb1e89b47b8ff2f831ba718938f7b959'
 
   depends_on 'qt'
 

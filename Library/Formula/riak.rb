@@ -1,10 +1,11 @@
 require 'formula'
 
-class Riak <Formula
-  url 'http://downloads.basho.com/riak/riak-0.14/riak-0.14.0-1.tar.gz'
-  homepage 'http://riak.basho.com'
-  md5 'a2049806b89d422c24f0c10720c6889d'
-  version '0.14.0'
+class Riak < Formula
+  url 'http://downloads.basho.com/riak/CURRENT/riak-1.0.2.tar.gz'
+  homepage 'http://wiki.basho.com/Riak.html'
+  md5 '322a1c66374f83a50519401e0386b15b'
+
+  head 'https://github.com/basho/riak.git'
 
   skip_clean 'libexec/log'
   skip_clean 'libexec/log/sasl'
@@ -14,10 +15,15 @@ class Riak <Formula
 
   depends_on 'erlang'
 
+  # Enable use of Erlang R14B04
+  # This was fixed upstream, so when updating the version of Riak
+  # check if this fix is already in place.
+  def patches; DATA; end
+
   def install
     ENV.deparallelize
     system "make all rel"
-    %w(riak riak-admin).each do |file|
+    %w(riak riak-admin search-cmd).each do |file|
       inreplace "rel/riak/bin/#{file}", /^RUNNER_BASE_DIR=.+$/, "RUNNER_BASE_DIR=#{libexec}"
     end
 
@@ -26,6 +32,7 @@ class Riak <Formula
     bin.mkpath
     ln_s libexec+'bin/riak', bin
     ln_s libexec+'bin/riak-admin', bin
+    ln_s libexec+'bin/search-cmd', bin
 
     (prefix + 'data/ring').mkpath
     (prefix + 'data/dets').mkpath
@@ -34,3 +41,17 @@ class Riak <Formula
     man1.install Dir["doc/man/man1/*"]
   end
 end
+
+__END__
+diff --git a/rebar.config b/rebar.config
+index ee81bfc..31d2fae 100644
+--- a/rebar.config
++++ b/rebar.config
+@@ -1,6 +1,6 @@
+ {sub_dirs, ["rel"]}.
+ 
+-{require_otp_vsn, "R14B0[23]"}.
++{require_otp_vsn, "R14B0[234]"}.
+ 
+ {cover_enabled, true}.
+ 

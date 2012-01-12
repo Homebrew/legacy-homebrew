@@ -1,15 +1,11 @@
 require 'formula'
 
-class Cherokee <Formula
-  url 'http://www.cherokee-project.com/download/1.0/1.0.8/cherokee-1.0.8.tar.gz'
+class Cherokee < Formula
   homepage 'http://www.cherokee-project.com/'
-  sha1 '28b2e2b192c713aa9c43737ae8376a55effa7336'
+  url 'http://www.cherokee-project.com/download/1.2/1.2.101/cherokee-1.2.101.tar.gz'
+  md5 'ef47003355a2e368e4d9596cd070ef23'
 
   depends_on 'gettext'
-
-  skip_clean "var/run"
-  skip_clean "var/log"
-  skip_clean "var/lib/cherokee/graphs/images"
 
   def caveats
     <<-EOS.undent
@@ -40,6 +36,7 @@ class Cherokee <Formula
     system "make install"
 
     prefix.install "org.cherokee.webserver.plist"
+    (prefix+'org.cherokee.webserver.plist').chmod 0644
     (share+'cherokee/admin/server.py').chmod 0755
   end
 end

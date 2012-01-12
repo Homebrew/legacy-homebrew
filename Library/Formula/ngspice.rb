@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ngspice <Formula
+class Ngspice < Formula
   url 'http://downloads.sourceforge.net/project/ngspice/ng-spice-rework/22/ngspice-22.tar.gz'
   homepage 'http://ngspice.sourceforge.net/'
   md5 'b55cdd80a56692fe6ce13f7a33c64d08'

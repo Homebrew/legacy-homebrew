@@ -1,24 +1,30 @@
 require 'formula'
 
 class Nginx < Formula
-  url 'http://nginx.org/download/nginx-0.8.54.tar.gz'
   homepage 'http://nginx.org/'
+  url 'http://nginx.org/download/nginx-1.0.11.tar.gz'
+  head 'http://nginx.org/download/nginx-1.1.12.tar.gz'
 
-  md5 '44df4eb6a22d725021288c570789046f'
+  if ARGV.build_head?
+    md5 '2a98411773c87a98e92c5aa68f322338'
+  else
+    md5 'a41a01d7cd46e13ea926d7c9ca283a95'
+  end
 
   depends_on 'pcre'
 
   skip_clean 'logs'
 
+  # Changes default port to 8080
+  # Tell configure to look for pcre in HOMEBREW_PREFIX
   def patches
-    # Changes default port to 8080
-    # Set configure to look in homebrew prefix for pcre
     DATA
   end
 
   def options
     [
-      ['--with-passenger', "Compile with support for Phusion Passenger module"]
+      ['--with-passenger', "Compile with support for Phusion Passenger module"],
+      ['--with-webdav',    "Compile with support for WebDAV module"]
     ]
   end
 
@@ -36,31 +42,41 @@ class Nginx < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}", "--with-http_ssl_module", "--with-pcre",
-            "--conf-path=#{etc}/nginx/nginx.conf", "--pid-path=#{var}/run/nginx.pid",
+    args = ["--prefix=#{prefix}",
+            "--with-http_ssl_module",
+            "--with-pcre",
+            "--conf-path=#{etc}/nginx/nginx.conf",
+            "--pid-path=#{var}/run/nginx.pid",
             "--lock-path=#{var}/nginx/nginx.lock"]
+
     args << passenger_config_args if ARGV.include? '--with-passenger'
+    args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
 
     system "./configure", *args
+    system "make"
     system "make install"
+    man8.install "objs/nginx.8"
 
-    (prefix+'org.nginx.plist').write startup_plist
+    (prefix+'org.nginx.nginx.plist').write startup_plist
+    (prefix+'org.nginx.nginx.plist').chmod 0644
   end
 
-  def caveats
-    <<-CAVEATS
-In the interest of allowing you to run `nginx` without `sudo`, the default
-port is set to localhost:8080.
+  def caveats; <<-EOS.undent
+    In the interest of allowing you to run `nginx` without `sudo`, the default
+    port is set to localhost:8080.
 
-If you want to host pages on your local machine to the public, you should
-change that to localhost:80, and run `sudo nginx`. You'll need to turn off
-any other web servers running port 80, of course.
+    If you want to host pages on your local machine to the public, you should
+    change that to localhost:80, and run `sudo nginx`. You'll need to turn off
+    any other web servers running port 80, of course.
 
-You can start nginx automatically on login with:
-    cp #{prefix}/org.nginx.plist ~/Library/LaunchAgents
-    launchctl load -w ~/Library/LaunchAgents/org.nginx.plist
+    You can start nginx automatically on login running as your user with:
+      mkdir -p ~/Library/LaunchAgents
+      cp #{prefix}/org.nginx.nginx.plist ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/org.nginx.nginx.plist
 
-    CAVEATS
+    Though note that if running as your user, the launch agent will fail if you
+    try to use a port below 1024 (such as http's default of 80.)
+    EOS
   end
 
   def startup_plist
@@ -70,7 +86,7 @@ You can start nginx automatically on login with:
 <plist version="1.0">
   <dict>
     <key>Label</key>
-    <string>org.nginx</string>
+    <string>org.nginx.nginx</string>
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
@@ -94,21 +110,20 @@ end
 __END__
 --- a/auto/lib/pcre/conf
 +++ b/auto/lib/pcre/conf
-@@ -155,6 +155,22 @@ else
+@@ -155,6 +155,21 @@ else
              . auto/feature
          fi
 
 +        if [ $ngx_found = no ]; then
 +
 +            # Homebrew
-+            HOMEBREW_PREFIX=${NGX_PREFIX%Cellar*}
-+            ngx_feature="PCRE library in ${HOMEBREW_PREFIX}"
-+            ngx_feature_path="${HOMEBREW_PREFIX}/include"
++            ngx_feature="PCRE library in HOMEBREW_PREFIX"
++            ngx_feature_path="HOMEBREW_PREFIX/include"
 +
 +            if [ $NGX_RPATH = YES ]; then
-+                ngx_feature_libs="-R${HOMEBREW_PREFIX}/lib -L${HOMEBREW_PREFIX}/lib -lpcre"
++                ngx_feature_libs="-RHOMEBREW_PREFIX/lib -LHOMEBREW_PREFIX/lib -lpcre"
 +            else
-+                ngx_feature_libs="-L${HOMEBREW_PREFIX}/lib -lpcre"
++                ngx_feature_libs="-LHOMEBREW_PREFIX/lib -lpcre"
 +            fi
 +
 +            . auto/feature

@@ -1,9 +1,10 @@
 require 'formula'
 
-class Netpbm <Formula
+class Netpbm < Formula
   homepage 'http://netpbm.sourceforge.net'
-  url 'http://sourceforge.net/projects/netpbm/files/super_stable/10.35.77/netpbm-10.35.77.tgz'
-  md5 '65d1b81d72341530f65d66dcd95786ad'
+  url 'http://sourceforge.net/projects/netpbm/files/super_stable/10.35.82/netpbm-10.35.82.tgz'
+  md5 'fcae2fc7928ad7d31b0540ec0c3e710b'
+  head 'http://netpbm.svn.sourceforge.net/svnroot/netpbm/trunk'
 
   depends_on "libtiff"
   depends_on "jasper"
@@ -11,9 +12,15 @@ class Netpbm <Formula
   def install
     ENV.x11 # For PNG
 
-    system "cp", "Makefile.config.in", "Makefile.config"
+    if ARGV.build_head?
+      system "cp", "config.mk.in", "config.mk"
+      config = "config.mk"
+    else
+      system "cp", "Makefile.config.in", "Makefile.config"
+      config = "Makefile.config"
+    end
 
-    inreplace "Makefile.config" do |s|
+    inreplace config do |s|
       s.remove_make_var! "CC"
       s.change_make_var! "CFLAGS_SHLIB", "-fno-common"
       s.change_make_var! "NETPBMLIBTYPE", "dylib"
@@ -35,7 +42,9 @@ class Netpbm <Formula
 
     Dir.chdir stage_dir do
       prefix.install %w{ bin include lib misc }
-      share.install Dir['man']
+      # do man pages explicitly; otherwise a junk file is installed in man/web
+      man1.install Dir['man/man1/*.1']
+      man5.install Dir['man/man5/*.5']
       lib.install Dir['link/*.a']
     end
   end

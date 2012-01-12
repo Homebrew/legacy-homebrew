@@ -1,6 +1,6 @@
 require 'formula'
 
-class Theora <Formula
+class Theora < Formula
   url 'http://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.bz2'
   homepage 'http://www.theora.org/'
   md5 '292ab65cedd5021d6b7ddd117e07cd8e'

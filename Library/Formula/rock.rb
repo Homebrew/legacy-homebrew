@@ -1,10 +1,10 @@
 require 'formula'
 
-class Rock <Formula
-  url 'https://github.com/downloads/nddrylliog/rock/rock-0.9.1-source.tar.bz2'
+class Rock < Formula
+  url 'https://github.com/downloads/nddrylliog/rock/rock-0.9.3-source.tar.bz2'
   homepage 'http://ooc-lang.org'
-  md5 '66c35a7d9271732790f08a4839cee287'
-  head 'git://github.com/nddrylliog/rock.git'
+  md5 'ce877bcc72b0a78ba088a1826d8c12b3'
+  head 'https://github.com/nddrylliog/rock.git'
 
   def install
       # make rock using provided bootstrap
@@ -14,6 +14,6 @@ class Rock <Formula
 
       # install misc authorship files & rock binary in place
       # copy the sdk, libs and docs
-      prefix.install ['rock.use', 'README.rst', "sdk", "libs", "docs"]
+      prefix.install ['rock.use', 'README.md', "sdk", "libs", "docs"]
   end
 end

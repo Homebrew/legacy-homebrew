@@ -1,6 +1,6 @@
 require 'formula'
 
-class Dtach <Formula
+class Dtach < Formula
   url 'http://downloads.sourceforge.net/project/dtach/dtach/0.8/dtach-0.8.tar.gz'
   md5 'ec5999f3b6bb67da19754fcb2e5221f3'
   homepage 'http://dtach.sourceforge.net/'

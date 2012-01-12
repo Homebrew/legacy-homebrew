@@ -1,14 +1,43 @@
 require 'formula'
 
-class Luajit <Formula
-  url 'http://luajit.org/download/LuaJIT-2.0.0-beta4.tar.gz'
+class Luajit < Formula
+  url 'http://luajit.org/download/LuaJIT-2.0.0-beta9.tar.gz'
   head 'http://luajit.org/git/luajit-2.0.git', :using => :git
   homepage 'http://luajit.org/luajit.html'
-  md5 '5c5a9305b3e06765e1dae138e1a95c3a'
+  md5 'e7e03e67e2550817358bc28b44270c6d'
 
-  depends_on 'lua'
+  # Skip cleaning both empty folders and bin/libs so external symbols still work.
+  skip_clean :all
+
+  fails_with_llvm "_Unwind_Exception_Class undeclared", :build => 2336
+
+  def options
+    [["--debug", "Build with debugging symbols."]]
+  end
 
   def install
-    system "make", "PREFIX=#{prefix}", "install"
+    if ARGV.include? '--debug'
+      system "make", "CCDEBUG=-g", "PREFIX=#{prefix}",
+             "TARGET_CC=#{ENV['CC']}",
+             "amalg"
+      system "make", "CCDEBUG=-g", "PREFIX=#{prefix}",
+             "TARGET_CC=#{ENV['CC']}",
+             "install"
+    else
+      system "make", "PREFIX=#{prefix}",
+             "TARGET_CC=#{ENV['CC']}",
+             "amalg"
+      system "make", "PREFIX=#{prefix}",
+             "TARGET_CC=#{ENV['CC']}",
+             "install"
+    end
+
+    # Non-versioned symlink
+    if ARGV.build_head?
+      version = "2.0.0-beta9"
+    else
+      version = @version
+    end
+    ln_s bin+"luajit-#{version}", bin+"luajit"
   end
 end

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Pngrewrite <Formula
+class Pngrewrite < Formula
   url 'http://entropymine.com/jason/pngrewrite/pngrewrite-1.3.0.zip'
   homepage 'http://entropymine.com/jason/pngrewrite/'
   md5 '37216932d12bf9b47dca1f45724080d6'

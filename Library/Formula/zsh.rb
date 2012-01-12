@@ -1,18 +1,16 @@
 require 'formula'
 
-class Zsh <Formula
-  url 'http://downloads.sourceforge.net/project/zsh/zsh-dev/4.3.11/zsh-4.3.11.tar.gz'
+class Zsh < Formula
+  url 'http://sourceforge.net/projects/zsh/files/zsh-dev/4.3.15/zsh-4.3.15.tar.gz'
   homepage 'http://www.zsh.org/'
-  md5 '127e2a3b9100d6f2fddb6a32cd4aca40'
+  md5 'b2e2d0a431935b408ed8ea48226f9962'
 
   depends_on 'gdbm' => :optional
 
   skip_clean :all
 
   def install
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--disable-dependency-tracking",
+    system "./configure", "--prefix=#{prefix}",
                           # don't version stuff in Homebrew, we already do that!
                           "--enable-fndir=#{share}/zsh/functions",
                           "--enable-scriptdir=#{share}/zsh/scripts"
@@ -22,5 +20,11 @@ class Zsh <Formula
       "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
     system "make install"
+  end
+
+  def caveats; <<-EOS.undent
+    In order to use this build of zsh as your login shell,
+    it must be added to /etc/shells.
+    EOS
   end
 end

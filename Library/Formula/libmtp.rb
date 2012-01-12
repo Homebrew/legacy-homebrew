@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libmtp <Formula
+class Libmtp < Formula
   url 'http://downloads.sourceforge.net/project/libmtp/libmtp/1.0.1/libmtp-1.0.1.tar.gz'
   homepage 'http://libmtp.sourceforge.net/'
   md5 'd540a0ef033483bd10b7f83f7a84e4a7'

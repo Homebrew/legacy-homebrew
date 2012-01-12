@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libfishsound <Formula
+class Libfishsound < Formula
   url 'http://downloads.xiph.org/releases/libfishsound/libfishsound-1.0.0.tar.gz'
   homepage 'http://xiph.org/fishsound/'
   md5 '02c5c7b361a35c9da3cf311d68800dab'

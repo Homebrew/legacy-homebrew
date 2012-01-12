@@ -1,15 +1,15 @@
 require 'formula'
 
-class Yuicompressor <Formula
-  url 'http://yuilibrary.com/downloads/yuicompressor/yuicompressor-2.4.2.zip'
+class Yuicompressor < Formula
+  url 'http://yui.zenfs.com/releases/yuicompressor/yuicompressor-2.4.7.zip'
   homepage 'http://yuilibrary.com/projects/yuicompressor'
-  md5 '2a526a9aedfe2affceed1e1c3f9c0579'
+  md5 '885657c68ed617737e730b4c2ce52dda'
 
   def install
-    libexec.install "build/yuicompressor-2.4.2.jar"
+    libexec.install "build/yuicompressor-2.4.7.jar"
     (bin+'yuicompressor').write <<-EOS.undent
       #!/bin/sh
-      java -jar "#{libexec}/yuicompressor-2.4.2.jar" $@
+      java -jar "#{libexec}/yuicompressor-2.4.7.jar" $@
     EOS
   end
 end

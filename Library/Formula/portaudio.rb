@@ -1,21 +1,28 @@
 require 'formula'
 
-class Portaudio <Formula
-  url 'http://www.portaudio.com/archives/pa_stable_v19_20071207.tar.gz'
+class Portaudio < Formula
+  url 'http://www.portaudio.com/archives/pa_stable_v19_20111121.tgz'
   homepage 'http://www.portaudio.com'
-  md5 'd2943e4469834b25afe62cc51adc025f'
+  md5 '25c85c1cc5e9e657486cbc299c6c035a'
+
+  depends_on 'pkg-config' => :build
+
+  fails_with_llvm :build => 2334
+
+  def options
+    [["--universal", "Build a universal binary."]]
+  end
 
   def install
-    fails_with_llvm
+    ENV.universal_binary if ARGV.build_universal?
 
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    args = [ "--prefix=#{prefix}",
+             "--disable-debug",
+             "--disable-dependency-tracking",
+             # portaudio builds universal unless told not to
+             "--enable-mac-universal=#{ARGV.build_universal? ? 'yes' : 'no'}" ]
 
-    # remove arch flags else we get errors like:
-    #   lipo: can't figure out the architecture type
-    ['-arch x86_64', '-arch ppc64', '-arch i386', '-arch ppc'].each do |arch|
-      inreplace "Makefile", arch, ""
-    end
-
+    system "./configure", *args
     system "make install"
 
     # Need 'pa_mac_core.h' to compile PyAudio

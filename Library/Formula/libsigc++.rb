@@ -1,13 +1,18 @@
 require 'formula'
 
-class Libsigcxx <Formula
-  url 'http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.2/libsigc++-2.2.8.tar.bz2'
+class Libsigcxx < Formula
   homepage 'http://libsigc.sourceforge.net'
-  md5 '1198425eab9fd605721a278c651b8dd8'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.2/libsigc++-2.2.10.tar.bz2'
+  sha256 'd3d810c2ad469edfb2d4db29643bef189b7613019eadbd4a72823af3c73c959c'
+
+  def options
+    [[ '--test', 'Verify the build during install with make check. (~3sec)' ]]
+  end
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make"
+    system "make check" if ARGV.include? '--test'
     system "make install"
   end
 end

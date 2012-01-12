@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libgarmin <Formula
+class Libgarmin < Formula
   head 'http://libgarmin.svn.sourceforge.net/svnroot/libgarmin/libgarmin/dev/'
   homepage 'http://libgarmin.sourceforge.net/'
 

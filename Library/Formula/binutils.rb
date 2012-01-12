@@ -1,23 +1,25 @@
 require 'formula'
 
-class Binutils <Formula
-  url 'http://ftp.gnu.org/gnu/binutils/binutils-2.20.tar.gz'
+class Binutils < Formula
+  url 'http://ftpmirror.gnu.org/binutils/binutils-2.21.1a.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/binutils/binutils-2.21.1a.tar.bz2'
   homepage 'http://www.gnu.org/software/binutils/binutils.html'
-  md5 'e99487e0c4343d6fa68b7c464ff4a962'
+  md5 'bde820eac53fa3a8d8696667418557ad'
 
   def options
     [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
   end
 
   def install
-    ENV.append 'CPPFLAGS', "-I#{include}"
-
-    args = ["--prefix=#{prefix}",
-            "--disable-debug",
-            "--disable-dependency-tracking",
+    args = ["--disable-debug", "--disable-dependency-tracking",
+            "--prefix=#{prefix}",
             "--infodir=#{info}",
             "--mandir=#{man}",
-            "--disable-werror" ]
+            "--disable-werror",
+            "--enable-interwork",
+            "--enable-multilib",
+            "--enable-targets=x86_64-elf",
+            "--enable-targets=arm-none-eabi"]
     args << "--program-prefix=g" unless ARGV.include? '--default-names'
 
     system "./configure", *args

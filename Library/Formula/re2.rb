@@ -1,6 +1,6 @@
 require 'formula'
 
-class Re2 <Formula
+class Re2 < Formula
   head 'https://re2.googlecode.com/hg'
   homepage 'http://code.google.com/p/re2/'
 

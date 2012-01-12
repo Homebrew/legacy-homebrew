@@ -1,6 +1,6 @@
 require 'formula'
 
-class Hping <Formula
+class Hping < Formula
   url 'http://www.hping.org/hping3-20051105.tar.gz'
   homepage 'http://www.hping.org/'
   md5 'ca4ea4e34bcc2162aedf25df8b2d1747'

@@ -1,10 +1,10 @@
 require 'formula'
 
-class Vala <Formula
+class Vala < Formula
   head 'git://git.gnome.org/vala'
-  url 'http://download.gnome.org/sources/vala/0.11/vala-0.11.2.tar.bz2'
+  url 'http://download.gnome.org/sources/vala/0.14/vala-0.14.1.tar.xz'
   homepage 'http://live.gnome.org/Vala'
-  md5 'ef0b6dc4a5fe4caa57e0d029bb9ea8dd'
+  sha256 'bef8c803e6e84d6dd2c6e771b72245ae268f49f554f3d00b2c4a0b7a28f4a439'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
@@ -17,6 +17,6 @@ class Vala <Formula
   end
 
   def test
-    system "valac --version"
+    system "#{bin}/valac --version"
   end
 end

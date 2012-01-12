@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ode <Formula
+class Ode < Formula
   # Build from svn to get Snow Leopard fixes.
   url 'http://opende.svn.sourceforge.net/svnroot/opende/trunk', :revision => 1760
   version 'r1760'

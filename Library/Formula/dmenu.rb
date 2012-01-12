@@ -1,9 +1,9 @@
 require 'formula'
 
-class Dmenu <Formula
-  url 'http://dl.suckless.org/tools/dmenu-4.2.1.tar.gz'
+class Dmenu < Formula
+  url 'http://dl.suckless.org/tools/dmenu-4.4.1.tar.gz'
   homepage 'http://tools.suckless.org/dmenu/'
-  md5 '5c95f974fa0c723f46838d0d5fbf5aca'
+  md5 'd18aaa9ac3265f92ec34a0df0cb6ebd4'
   head 'http://hg.suckless.org/dmenu/'
 
   def install

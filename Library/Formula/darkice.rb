@@ -1,6 +1,6 @@
 require 'formula'
 
-class Darkice <Formula
+class Darkice < Formula
   # coreaudio brach of darkice
   head 'http://darkice.googlecode.com/svn/darkice/branches/darkice-macosx'
   homepage 'http://darkice.org/'

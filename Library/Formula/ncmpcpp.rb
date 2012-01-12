@@ -1,9 +1,9 @@
 require 'formula'
 
-class Ncmpcpp <Formula
-  url 'http://unkart.ovh.org/ncmpcpp/ncmpcpp-0.5.6.tar.bz2'
+class Ncmpcpp < Formula
+  url 'http://unkart.ovh.org/ncmpcpp/ncmpcpp-0.5.8.tar.bz2'
   homepage 'http://unkart.ovh.org/ncmpcpp/'
-  md5 'cdaf82694c0a1f5e9de65bb0a191e403'
+  md5 '288952c6b4cf4fa3683f3f83a58da37c'
 
   depends_on 'taglib'
   depends_on 'libmpdclient'

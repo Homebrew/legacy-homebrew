@@ -1,11 +1,12 @@
 require 'formula'
 
-class Gearman <Formula
-  url 'http://launchpad.net/gearmand/trunk/0.12/+download/gearmand-0.12.tar.gz'
+class Gearman < Formula
+  url 'http://launchpad.net/gearmand/trunk/0.26/+download/gearmand-0.26.tar.gz'
   homepage 'http://gearman.org/'
-  md5 '6e88a6bfb26e50d5aed37d143184e7f2'
+  md5 '52a8cc98f649980331cc8011d47af09f'
 
   depends_on 'libevent'
+  depends_on 'boost'
 
   def install
     system "./configure", "--prefix=#{prefix}"

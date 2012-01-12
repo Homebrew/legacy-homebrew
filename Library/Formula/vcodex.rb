@@ -12,7 +12,7 @@ class VcodexDownloadStrategy <CurlDownloadStrategy
   end
 end
 
-class Vcodex <Formula
+class Vcodex < Formula
   url 'http://www2.research.att.com/~gsf/download/tgz.att-src/vcodex.2005-05-22.tgz',
       :using => VcodexDownloadStrategy
   homepage 'http://www2.research.att.com/~gsf/download/ref/vcodex/vcodex.html'

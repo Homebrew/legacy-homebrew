@@ -1,9 +1,9 @@
 require 'formula'
 
-class SyslogNg <Formula
-  url 'http://www.balabit.com/downloads/files?path=/syslog-ng/sources/3.2.1/source/syslog-ng_3.2.1.tar.gz'
+class SyslogNg < Formula
+  url 'http://www.balabit.com/downloads/files/syslog-ng/sources/3.2.5/source/syslog-ng_3.2.5.tar.gz'
   homepage 'http://www.balabit.com/network-security/syslog-ng/'
-  md5 'c0160053e24a0408d08bbfd454b110df'
+  sha1 '5541cd6711b7a9d983601d8047b9a27d98ecbe9b'
 
   depends_on 'pkg-config' => :build
   depends_on 'pcre'
@@ -11,9 +11,19 @@ class SyslogNg <Formula
   depends_on 'glib'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    ENV.append 'LDFLAGS', '-levtlog -lglib-2.0' # help the linker find symbols
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--enable-dynamic-linking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}",
+                          "--localstatedir=#{var}"
+
+    # the HAVE_ENVIRON check in configure fails
+    # discussion for a fix is ongoing on the Homebrew mailing list, but for
+    # now this is sufficient
+    inreplace 'config.h', '#define HAVE_ENVIRON 1', ''
+
     system "make install"
   end
 end

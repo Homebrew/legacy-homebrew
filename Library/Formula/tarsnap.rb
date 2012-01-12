@@ -1,16 +1,19 @@
 require 'formula'
 
-class Tarsnap <Formula
-  url 'https://www.tarsnap.com/download/tarsnap-autoconf-1.0.28.tgz'
+class Tarsnap < Formula
+  url 'https://www.tarsnap.com/download/tarsnap-autoconf-1.0.31.tgz'
   homepage 'http://www.tarsnap.com/'
-  sha256 '4e36b57496a0682ec896aac753e028d9d6a34efbb23fbe2032c0e04d1be51675'
+  sha256 '3b461e1e76b92c1538a6322d8dbaa8e5285dae2029b4470357cb57e321625d95'
 
-  depends_on 'lzma' => :optional
+  depends_on 'xz' => :optional
+
+  fails_with_llvm "Compilation hangs."
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
+                          "--enable-sse2",
                           "--prefix=#{prefix}",
-                          "--enable-sse2"
+                          "--sysconfdir=#{etc}"
     system "make install"
   end
 end

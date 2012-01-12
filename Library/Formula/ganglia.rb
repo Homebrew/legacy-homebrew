@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ganglia <Formula
+class Ganglia < Formula
   url 'http://downloads.sourceforge.net/project/ganglia/ganglia%20monitoring%20core/3.1.7/ganglia-3.1.7.tar.gz'
   homepage 'http://ganglia.sourceforge.net/'
   md5 '6aa5e2109c2cc8007a6def0799cf1b4c'
