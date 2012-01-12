@@ -33,12 +33,14 @@ class Ffmpeg < Formula
   depends_on 'sdl' if ffplay?
 
   def install
+    ENV.x11
     args = ["--prefix=#{prefix}",
             "--enable-shared",
             "--enable-gpl",
             "--enable-version3",
             "--enable-nonfree",
             "--enable-hardcoded-tables",
+            "--enable-libfreetype",
             "--cc=#{ENV.cc}"]
 
     args << "--enable-libx264" if Formula.factory('x264').installed?
@@ -52,7 +54,7 @@ class Ffmpeg < Formula
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
-    if Hardware.is_32_bit?
+    if MacOS.leopard? or Hardware.is_32_bit?
       ENV.append_to_cflags "-mdynamic-no-pic"
     end
 
