@@ -180,6 +180,11 @@ class BeerTasting < Test::Unit::TestCase
     assert_equal '.tar.gz', foo1.extname
     assert_equal 'foo-0.1', foo1.stem
     assert_equal '0.1', foo1.version
+
+    foo1 = HOMEBREW_CACHE/'foo-0.1.cpio.gz'
+    assert_equal '.cpio.gz', foo1.extname
+    assert_equal 'foo-0.1', foo1.stem
+    assert_equal '0.1', foo1.version
   end
 
   class MockMockFormula < Struct.new(:name); end
