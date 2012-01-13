@@ -9,7 +9,14 @@ module Homebrew extend self
       exec "open", "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
     else
       query = ARGV.first
-      search_results = search_brews query
+      rx = case query
+      when nil then ""
+      when %r{^/(.*)/$} then Regexp.new($1)
+      else
+        /.*#{Regexp.escape query}.*/i
+      end
+
+      search_results = search_brews rx
       puts_columns search_results
 
       if not query.to_s.empty? and $stdout.tty? and msg = blacklisted?(query)
@@ -20,19 +27,20 @@ module Homebrew extend self
         end
         puts msg
       end
+
+      if search_results.empty? and not blacklisted? query
+        pulls = GitHub.find_pull_requests rx
+        unless pulls.empty?
+          puts "Open pull requests matching \"#{query}\":", *pulls.map { |p| "    #{p}" }
+        end
+      end
     end
   end
 
-  def search_brews text
-    if text.to_s.empty?
+  def search_brews rx
+    if rx.to_s.empty?
       Formula.names
     else
-      rx = if text =~ %r{^/(.*)/$}
-        Regexp.new($1)
-      else
-        /.*#{Regexp.escape text}.*/i
-      end
-
       aliases = Formula.aliases
       results = (Formula.names+aliases).grep rx
 
@@ -45,5 +53,4 @@ module Homebrew extend self
       end
     end
   end
-
 end

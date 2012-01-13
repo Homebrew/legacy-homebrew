@@ -343,8 +343,8 @@ module MacOS extend self
 
   def clang_build_version
     @clang_build_version ||= if File.exist? "/usr/bin/clang"
-      `/usr/bin/clang --version` =~ %r[tags/Apple/clang-(\d+(\.\d+)*)]
-      $1
+      `/usr/bin/clang --version` =~ %r[tags/Apple/clang-(\d{2,})]
+      $1.to_i
     end
   end
 
@@ -424,6 +424,30 @@ module GitHub extend self
     end
 
     issues
+  rescue
+    []
+  end
+
+  def find_pull_requests rx
+    require 'open-uri'
+    require 'vendor/multi_json'
+
+    pulls = []
+    uri = URI.parse("https://api.github.com/repos/mxcl/homebrew/pulls")
+    uri.query = "per_page=100"
+
+    open uri do |f|
+      MultiJson.decode((f.read)).each do |pull|
+        pulls << pull['html_url'] if rx.match pull['title']
+      end
+
+      uri = if f.meta['link'] =~ /rel="next"/
+        f.meta['link'].slice(URI.regexp)
+      else
+        nil
+      end
+    end while uri
+    pulls
   rescue
     []
   end
