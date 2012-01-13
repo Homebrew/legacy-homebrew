@@ -427,4 +427,28 @@ module GitHub extend self
   rescue
     []
   end
+
+  def find_pull_requests rx
+    require 'open-uri'
+    require 'vendor/multi_json'
+
+    pulls = []
+    uri = URI.parse("https://api.github.com/repos/mxcl/homebrew/pulls")
+    uri.query = "per_page=100"
+
+    open uri do |f|
+      MultiJson.decode((f.read)).each do |pull|
+        pulls << pull['html_url'] if rx.match pull['title']
+      end
+
+      uri = if f.meta['link'] =~ /rel="next"/
+        f.meta['link'].slice(URI.regexp)
+      else
+        nil
+      end
+    end while uri
+    pulls
+  rescue
+    []
+  end
 end
