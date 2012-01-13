@@ -9,8 +9,9 @@ module Homebrew extend self
       exec "open", "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
     else
       query = ARGV.first
-      rx = if query =~ %r{^/(.*)/$}
-        Regexp.new($1)
+      rx = case query
+      when nil then ""
+      when %r{^/(.*)/$} then Regexp.new($1)
       else
         /.*#{Regexp.escape query}.*/i
       end
