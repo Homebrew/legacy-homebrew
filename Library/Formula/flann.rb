@@ -1,9 +1,9 @@
 require 'formula'
 
 class Flann < Formula
-  url 'http://people.cs.ubc.ca/~mariusm/uploads/FLANN/flann-1.6.11-src.zip'
+  url 'http://people.cs.ubc.ca/~mariusm/uploads/FLANN/flann-1.7.1-src.zip'
   homepage 'http://www.cs.ubc.ca/~mariusm/index.php/FLANN/FLANN'
-  md5 '5fd889b9f3777aa6e0d05b2546d25eb5'
+  md5 'd780795f523eabda7c7ea09c6f5cf235'
 
   def options
     [
