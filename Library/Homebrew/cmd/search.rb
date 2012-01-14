@@ -29,10 +29,8 @@ module Homebrew extend self
       end
 
       if search_results.empty? and not blacklisted? query
-        pulls = GitHub.find_pull_requests rx
-        unless pulls.empty?
-          puts "Open pull requests matching \"#{query}\":", *pulls.map { |p| "    #{p}" }
-        end
+        puts "No formula found for \"#{query}\". Searching open pull requests..."
+        GitHub.find_pull_requests(rx) { |pull| puts pull }
       end
     end
   end
