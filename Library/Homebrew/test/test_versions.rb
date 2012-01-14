@@ -61,6 +61,10 @@ class VersionTests < Test::Unit::TestCase
       '9.04'
   end
 
+  def test_new_github_style
+    check "https://github.com/sam-github/libnet/tarball/libnet-1.1.4", "1.1.4"
+  end
+
   def test_gloox_beta_style
     check "http://camaya.net/download/gloox-1.0-beta7.tar.bz2", '1.0-beta7'
   end
