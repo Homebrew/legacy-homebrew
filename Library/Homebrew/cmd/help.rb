@@ -2,7 +2,7 @@ HOMEBREW_HELP = <<-EOS
 Example usage:
   brew install FORMULA...
   brew uninstall FORMULA...
-  brew search [foo]
+  brew search [foo [--remote]]
   brew list [FORMULA...]
   brew update
   brew upgrade [FORMULA...]
