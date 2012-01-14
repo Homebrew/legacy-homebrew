@@ -9,8 +9,9 @@ module Homebrew extend self
       exec "open", "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
     else
       query = ARGV.first
-      rx = if query =~ %r{^/(.*)/$}
-        Regexp.new($1)
+      rx = case query
+      when nil then ""
+      when %r{^/(.*)/$} then Regexp.new($1)
       else
         /.*#{Regexp.escape query}.*/i
       end
@@ -28,10 +29,8 @@ module Homebrew extend self
       end
 
       if search_results.empty? and not blacklisted? query
-        pulls = GitHub.find_pull_requests rx
-        unless pulls.empty?
-          puts "Open pull requests matching \"#{query}\":", *pulls.map { |p| "    #{p}" }
-        end
+        puts "No formula found for \"#{query}\". Searching open pull requests..."
+        GitHub.find_pull_requests(rx) { |pull| puts pull }
       end
     end
   end
