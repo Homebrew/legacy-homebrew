@@ -17,7 +17,7 @@ class Cairo < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-x",
-			  "--enable-xcb"
+                          "--enable-xcb"
     system "make install"
   end
 end
