@@ -102,7 +102,9 @@ class Python3 < Formula
       system "#{bin}/python3.2", "setup.py", "install"
 
       # Symlink to easy_install3 to match python3 command.
-      ln_s "#{scripts_folder}/easy_install", "#{scripts_folder}/easy_install3"
+      if !(scripts_folder+'easy_install3').exist?
+        ln_s "#{scripts_folder}/easy_install", "#{scripts_folder}/easy_install3"
+      end
     end
   end
 
