@@ -9,6 +9,13 @@ class SaneBackends < Formula
   depends_on 'libtiff'
   depends_on 'libusb-compat'
 
+  skip_clean "var/lock/sane"
+
+  def patches
+    # Fixes u_long missing error
+    DATA
+  end
+
   def install
     ENV.j1 # Makefile does not seem to be parallel-safe
     system "./configure", "--disable-dependency-tracking",
@@ -25,3 +32,19 @@ class SaneBackends < Formula
     (var+"lock/sane").mkpath
   end
 end
+
+__END__
+diff --git a/include/sane/sane.h.orig b/include/sane/sane.h
+index 5320b4a..6cb7090 100644
+--- a/include/sane/sane.h.orig
++++ b/include/sane/sane.h
+@@ -20,6 +20,9 @@
+ extern "C" {
+ #endif
+ 
++// Fixes u_long missing error
++#include <sys/types.h>
++
+ /*
+  * SANE types and defines
+  */
