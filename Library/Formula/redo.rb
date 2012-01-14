@@ -6,8 +6,7 @@ class RedoDocs < Formula
 end
 
 class Redo < Formula
-  version '0.10'
-  url "https://github.com/apenwarr/redo/zipball/redo-#{version}"
+  url "https://github.com/apenwarr/redo/zipball/redo-0.10"
   homepage 'https://github.com/apenwarr/redo'
   md5 '69b31b105db347968ee9486342fb6c1d'
 
