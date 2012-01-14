@@ -117,6 +117,10 @@ class Pathname
     %r[github.com/.*/(zip|tar)ball/v?((\d\.)+\d+)$].match to_s
     return $2 if $2
 
+    # eg. https://github.com/sam-github/libnet/tarball/libnet-1.1.4
+    %r[github.com/.*/(zip|tar)ball/.*-((\d\.)+\d+)$].match to_s
+    return $2 if $2
+
     # dashed version
     # eg. github.com/isaacs/npm/tarball/v0.2.5-1
     %r[github.com/.*/(zip|tar)ball/v?((\d\.)+\d+-(\d+))$].match to_s

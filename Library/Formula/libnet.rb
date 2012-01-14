@@ -5,7 +5,6 @@ class Libnet < Formula
   md5 "0cb6c04063c1db37c91af08c76d25134"
   head 'https://github.com/sam-github/libnet.git'
   homepage 'https://github.com/sam-github/libnet'
-  version '1.1.4'
 
   def install
     cd 'libnet'
