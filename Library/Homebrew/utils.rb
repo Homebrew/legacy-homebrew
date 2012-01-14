@@ -436,7 +436,7 @@ module GitHub extend self
     require 'open-uri'
     require 'vendor/multi_json'
 
-    query = rx.source.delete '.*'
+    query = rx.source.delete('.*').gsub('\\', '')
     uri = URI.parse("http://github.com/api/v2/json/issues/search/mxcl/homebrew/open/#{query}")
 
     open uri do |f|
