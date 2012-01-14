@@ -20,6 +20,7 @@ class SaneBackends < Formula
     ENV.j1 # Makefile does not seem to be parallel-safe
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--localstatedir=#{var}",
                           "--without-gphoto2",
                           "--enable-local-backends",
                           "--enable-libusb",

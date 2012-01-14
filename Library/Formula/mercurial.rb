@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mercurial < Formula
-  url 'http://mercurial.selenic.com/release/mercurial-2.0.1.tar.gz'
+  url 'http://mercurial.selenic.com/release/mercurial-2.0.2.tar.gz'
   homepage 'http://mercurial.selenic.com/'
-  sha1 '7983f564c06aef598fcfd7f8c1c33f4669362760'
+  sha1 'aedcb4e41c5b49188d9d34d12c343b2ec099c61b'
   head 'http://selenic.com/repo/hg', :using => :hg
 
   depends_on 'docutils' => :python if ARGV.build_head? or ARGV.include? "--doc"
@@ -44,7 +44,7 @@ class Mercurial < Formula
     ln_s libexec+'hg', bin+'hg'
 
     # Remove the hard-coded python invocation from hg
-    inreplace bin+'hg', %r[#!/.*/python], '#!/usr/bin/env python'
+    inreplace bin+'hg', %r[#!/.*/python/.*], '#!/usr/bin/env python'
 
     # Install some contribs
     bin.install 'contrib/hgk'

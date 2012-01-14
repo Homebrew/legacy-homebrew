@@ -5,9 +5,6 @@ class Ddclient < Formula
   homepage 'http://sourceforge.net/apps/trac/ddclient'
   md5 '7fa417bc65f8f0e6ce78418a4f631988'
 
-  skip_clean 'etc'
-  skip_clean 'var'
-
   def install
     # Adjust default paths in script
     inreplace 'ddclient' do |s|

@@ -16,6 +16,7 @@ class Wget < Formula
   def install
     args = ["--disable-debug",
             "--prefix=#{prefix}",
+            "--sysconfdir=#{etc}",
             "--with-ssl=openssl"]
 
     args << "--disable-iri" unless ARGV.include? "--enable-iri"

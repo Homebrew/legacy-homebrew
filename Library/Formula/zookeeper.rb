@@ -1,10 +1,10 @@
 require 'formula'
 
 class Zookeeper < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.3.4/zookeeper-3.3.4.tar.gz'
+  url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.2/zookeeper-3.4.2.tar.gz'
   head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
   homepage 'http://zookeeper.apache.org/'
-  md5 '4f3ce9fc78ec3dea1ddca2bf6bab308d'
+  md5 '726d9301c03f84a126a1d559f03df4a4'
 
   def options
     [
@@ -88,7 +88,7 @@ class Zookeeper < Formula
       libexec.install Dir['*.jar']
     end
 
-    # Create neccessary directories
+    # Create necessary directories
     bin.mkpath
     (etc+'zookeeper').mkpath
     (var+'log/zookeeper').mkpath

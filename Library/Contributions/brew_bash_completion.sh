@@ -167,7 +167,7 @@ _brew_to_completion()
             COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
             return
             ;;
-        search)
+        search|-S)
             local opts=$(
                 local opts=(--fink --macports)
                 for o in ${opts[*]}; do
@@ -194,6 +194,11 @@ _brew_to_completion()
             ;;
         uses)
             local opts=$([[ "${COMP_WORDS[*]}" =~ "--installed" ]] || echo "--installed")
+            COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
+            return
+            ;;
+        versions)
+            local opts=$([[ "${COMP_WORDS[*]}" =~ "--compact" ]] || echo "--compact")
             COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
             return
             ;;
