@@ -16,7 +16,8 @@ class Cairo < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-x"
+                          "--with-x",
+                          "--enable-xcb"
     system "make install"
   end
 end
