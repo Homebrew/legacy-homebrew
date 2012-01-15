@@ -6,10 +6,9 @@ class RedoDocs < Formula
 end
 
 class Redo < Formula
-  version '0.06'
-  url "https://github.com/apenwarr/redo/zipball/redo-#{version}"
+  url "https://github.com/apenwarr/redo/zipball/redo-0.10"
   homepage 'https://github.com/apenwarr/redo'
-  md5 '28c32ca00bb4d884e0d87c89808771a6'
+  md5 '69b31b105db347968ee9486342fb6c1d'
 
   def install
     ENV['PREFIX'] = prefix
