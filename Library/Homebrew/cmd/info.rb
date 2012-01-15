@@ -66,6 +66,7 @@ module Homebrew extend self
       end
     else
       puts "Not installed"
+      puts "Options: #{f.options.map { |o| o[0] }*', '}" unless f.options.empty?
     end
 
     the_caveats = (f.caveats || "").strip
