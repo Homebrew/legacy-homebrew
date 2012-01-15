@@ -2,6 +2,7 @@ require 'exceptions'
 require 'formula'
 require 'keg'
 require 'set'
+require 'tab'
 
 class FormulaInstaller
   attr :f
@@ -27,15 +28,18 @@ class FormulaInstaller
       needed_deps = f.recursive_deps.reject{ |d| d.installed? }
       unless needed_deps.empty?
         needed_deps.each do |dep|
-          fi = FormulaInstaller.new(dep)
-          fi.ignore_deps = true
-          fi.show_header = false
-          oh1 "Installing #{f} dependency: #{dep}"
-          fi.install
-          fi.caveats
-          fi.finish
+          if dep.explicitly_requested?
+            install_dependency dep
+          else
+            ARGV.filter_for_dependencies do
+              # Re-create the formula object so that args like `--HEAD` won't
+              # affect properties like the installation prefix. Also need to
+              # re-check installed status as the Formula may have changed.
+              dep = Formula.factory dep.path
+              install_dependency dep unless dep.installed?
+            end
+          end
         end
-
         # now show header as all the deps stuff has clouded the original issue
         show_header = true
       end
@@ -57,11 +61,23 @@ class FormulaInstaller
     raise "Nothing was installed to #{f.prefix}" unless f.installed?
   end
 
+  def install_dependency dep
+    fi = FormulaInstaller.new dep
+    fi.ignore_deps = true
+    fi.show_header = false
+    oh1 "Installing #{f} dependency: #{dep}"
+    fi.install
+    fi.caveats
+    fi.finish
+  end
+
   def caveats
-    if f.caveats
+    the_caveats = (f.caveats || "").strip
+    unless the_caveats.empty?
       ohai "Caveats", f.caveats
       @show_summary_heading = true
     end
+
     if f.keg_only?
       ohai 'Caveats', f.keg_only_text
       @show_summary_heading = true
@@ -104,6 +120,13 @@ class FormulaInstaller
     # I'm guessing this is not a good way to do this, but I'm no UNIX guru
     ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
 
+    args = ARGV.clone
+    unless args.include? '--fresh'
+      previous_install = Tab.for_formula f
+      args.concat previous_install.used_options
+      args.uniq! # Just in case some dupes were added
+    end
+
     fork do
       begin
         read.close
@@ -113,7 +136,7 @@ class FormulaInstaller
              '-rbuild',
              '--',
              f.path,
-             *ARGV.options_only
+             *args.options_only
       rescue Exception => e
         Marshal.dump(e, write)
         write.close
@@ -127,6 +150,9 @@ class FormulaInstaller
       data = read.read
       raise Marshal.load(data) unless data.nil? or data.empty?
       raise "Suspicious installation failure" unless $?.success?
+
+      # Write an installation receipt (a Tab) to the prefix
+      Tab.for_install(f, args).write if f.installed?
     end
   end
 
@@ -174,6 +200,12 @@ class FormulaInstaller
 
   def paths
     @paths ||= ENV['PATH'].split(':').map{ |p| File.expand_path p }
+  end
+
+  def in_aclocal_dirlist?
+    File.open("/usr/share/aclocal/dirlist") do |dirlist|
+      dirlist.grep(%r{^#{HOMEBREW_PREFIX}/share/aclocal$}).length > 0
+    end rescue false
   end
 
   def check_PATH
@@ -226,7 +258,7 @@ class FormulaInstaller
 
   def check_m4
     # Check for m4 files
-    if Dir[f.share+"aclocal/*.m4"].length > 0
+    if Dir[f.share+"aclocal/*.m4"].length > 0 and not in_aclocal_dirlist?
       opoo 'm4 macros were installed to "share/aclocal".'
       puts "Homebrew does not append \"#{HOMEBREW_PREFIX}/share/aclocal\""
       puts "to \"/usr/share/aclocal/dirlist\". If an autoconf script you use"

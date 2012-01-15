@@ -2,6 +2,26 @@
 #
 # To use, edit your .bashrc and add:
 #   source `brew --prefix`/Library/Contributions/brew_bash_completion.sh
+#
+# The __brew_ps1() function can be used to annotate your PS1 with
+# Homebrew debugging information; it behaves similarly to the __git_ps1()
+# function provided by the git's bash completion script.
+#
+# For example, the prompt string
+#     PS1='\u@\h \W $(__brew_ps1 "(%s)") $'
+#
+# would result in a prompt like
+#    user@hostname cwd $
+#
+# but if you are currently engaged in an interactive or debug install,
+# (i.e., you invoked `brew install` with either '-i' or '-d'), then the
+# prompt would look like
+#     user@hostname cwd (formula_name|DEBUG) $
+#
+# You can customize the output string, e.g. $(__brew_ps1 "[%s]") would
+# output "[formula_name|DEBUG]". The default (if you do not provide a
+# format argument) is to print "(formula_name|DEBUG)" prefixed with a
+# single space.
 
 _brew_to_completion()
 {
@@ -43,11 +63,6 @@ _brew_to_completion()
     # handle subcommand options
     if [[  "$cur" == --* ]]; then
         case "${COMP_WORDS[1]}" in
-        audit)
-            local opts=$([[ "${COMP_WORDS[*]}" =~ "--strict" ]] || echo "--strict")
-            COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
-            return
-            ;;
         cleanup)
             local opts=$([[ "${COMP_WORDS[*]}" =~ "--force" ]] || echo "--force")
             COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
@@ -65,7 +80,7 @@ _brew_to_completion()
             ;;
         deps)
             local opts=$(
-                local opts=(--1 --all)
+                local opts=(--1 --all --tree)
                 for o in ${opts[*]}; do
                     [[ "${COMP_WORDS[*]}" =~ "$o" ]] || echo "$o"
                 done
@@ -107,11 +122,11 @@ _brew_to_completion()
             local opts=$(
                 local opts=(--force --verbose --debug --use-clang --use-gcc
                     --use-llvm --ignore-dependencies --build-from-source --HEAD
-                    --interactive $(brew options --compact "$prev"))
+                    --interactive --fresh --devel $(brew options --compact "$prev"))
 
                 # options that make sense with '--interactive'
                 if [[ "${COMP_WORDS[*]}" =~ "--interactive" ]]; then
-                    opts=(--force --git --use-clang --use-gcc --use-llvm --HEAD)
+                    opts=(--force --git --use-clang --use-gcc --use-llvm --HEAD --devel)
                 fi
 
                 for o in ${opts[*]}; do
@@ -152,7 +167,7 @@ _brew_to_completion()
             COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
             return
             ;;
-        search)
+        search|-S)
             local opts=$(
                 local opts=(--fink --macports)
                 for o in ${opts[*]}; do
@@ -182,12 +197,24 @@ _brew_to_completion()
             COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
             return
             ;;
+        versions)
+            local opts=$([[ "${COMP_WORDS[*]}" =~ "--compact" ]] || echo "--compact")
+            COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
+            return
+            ;;
         esac
     fi
 
-    case "$prev" in
+    # find the index of the *first* non-switch word
+    # we can use this to allow completion for multiple formula arguments
+    local cmd_index=1
+    while [[ ${COMP_WORDS[cmd_index]} == -* ]]; do
+        cmd_index=$((++cmd_index))
+    done
+
+    case "${COMP_WORDS[cmd_index]}" in
     # Commands that take a formula
-    cat|deps|edit|fetch|home|homepage|info|install|log|missing|options|uses|versions)
+    audit|cat|deps|edit|fetch|home|homepage|info|install|log|missing|options|uses|versions)
         local ff=$(\ls $(brew --repository)/Library/Formula 2> /dev/null | sed "s/\.rb//g")
         local af=$(\ls $(brew --repository)/Library/Aliases 2> /dev/null | sed "s/\.rb//g")
         COMPREPLY=( $(compgen -W "${ff} ${af}" -- ${cur}) )
@@ -204,6 +231,12 @@ _brew_to_completion()
         return
         ;;
     esac
+}
+
+__brew_ps1 ()
+{
+    [[ -n $HOMEBREW_DEBUG_INSTALL ]] &&
+    printf "${1:- (%s)}" "$HOMEBREW_DEBUG_INSTALL|DEBUG"
 }
 
 complete -o bashdefault -o default -F _brew_to_completion brew

@@ -62,9 +62,9 @@ class Pathname
     return dst
   end
 
-  # extended to support the double extensions .tar.gz and .tar.bz2
+  # extended to support common double extensions
   def extname
-    /(\.tar\.(gz|bz2))$/.match to_s
+    /(\.(tar|cpio)\.(gz|bz2|xz))$/.match to_s
     return $1 if $1
     return File.extname(to_s)
   end
@@ -115,6 +115,10 @@ class Pathname
 
     # github tarballs, like v1.2.3
     %r[github.com/.*/(zip|tar)ball/v?((\d\.)+\d+)$].match to_s
+    return $2 if $2
+
+    # eg. https://github.com/sam-github/libnet/tarball/libnet-1.1.4
+    %r[github.com/.*/(zip|tar)ball/.*-((\d\.)+\d+)$].match to_s
     return $2 if $2
 
     # dashed version

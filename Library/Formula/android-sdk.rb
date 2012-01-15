@@ -1,10 +1,10 @@
 require 'formula'
 
 class AndroidSdk < Formula
-  url 'http://dl.google.com/android/android-sdk_r14-macosx.zip'
+  url 'http://dl.google.com/android/android-sdk_r16-macosx.zip'
   homepage 'http://developer.android.com/index.html'
-  md5 '812887018435382de8486f3bb26a5db4'
-  version 'r14'
+  md5 'd1dc2b6f13eed5e3ce5cf26c4e4c47aa'
+  version 'r16'
 
   def self.var_dirs
     %w[platforms samples temp add-ons bin]
@@ -21,8 +21,9 @@ class AndroidSdk < Formula
     mv 'tools', prefix
 
     %w[android apkbuilder ddms dmtracedump draw9patch emulator
-           hierarchyviewer hprof-conv layoutopt monkeyrunner mksdcard traceview
-           zipalign].each do |tool|
+       emulator-arm emulator-x86 hierarchyviewer hprof-conv
+       lint mksdcard monkeyrunner sqlite3 traceview
+       zipalign].each do |tool|
       (bin/tool).make_link(prefix/'tools'/tool)
     end
 

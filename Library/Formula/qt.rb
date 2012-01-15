@@ -2,20 +2,13 @@ require 'formula'
 require 'hardware'
 
 class Qt < Formula
-  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.4.tar.gz'
-  md5 '9831cf1dfa8d0689a06c2c54c5c65aaf'
+  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.8.0.tar.gz'
+  md5 'e8a5fdbeba2927c948d9f477a6abe904'
   homepage 'http://qt.nokia.com/'
-  bottle 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.7.4-bottle.tar.gz'
-  bottle_sha1 '3195cddb76c0d13b4500dc75cc55f20f00c10ef1'
+  bottle 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.8.0-bottle.tar.gz'
+  bottle_sha1 'd03b56811d2cac933b6103bd4c8ac636dea3b877'
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
-
-  def patches
-    [
-      # Stop complaining about using Lion
-      "https://qt.gitorious.org/qt/qt/commit/1766bbdb53e1e20a1bbfb523bbbbe38ea7ab7b3d?format=patch"
-    ]
-  end
 
   def options
     [
@@ -31,6 +24,13 @@ class Qt < Formula
   depends_on 'sqlite' if MacOS.leopard?
 
   def install
+    # Needed for Qt 4.8.0 due to attempting to link moc with gcc.
+    ENV['LD'] = ENV['CXX']
+
+    inreplace "src/corelib/tools/qstring.cpp",
+      "# ifdef __SSE4_2__",
+      "# if defined(__SSE4_2__) && defined(_SIDD_UWORD_OPS)"
+
     ENV.x11
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
     args = ["-prefix", prefix,

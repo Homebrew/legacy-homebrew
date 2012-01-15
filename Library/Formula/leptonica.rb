@@ -12,7 +12,7 @@ class Leptonica < Formula
     # Leptonica is missing an #include for PNG support
     # Can be removed in 1.69
     # http://code.google.com/p/leptonica/issues/detail?id=56
-    "http://leptonica.googlecode.com/issues/attachment?aid=560001000&name=zlib-include.patch&token=c41d407131e91bb18eb4f3d2d569c778"
+    "https://raw.github.com/gist/1320510/b11d417326344202d8ff03ede8151c147ec2598d/zlib-include.patch"
   end
 
   def install

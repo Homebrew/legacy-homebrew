@@ -1,8 +1,8 @@
 require 'formula'
 
 class Wireshark < Formula
-  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.6.2.tar.bz2'
-  md5 '301677b5f8150265315632fb6247e06e'
+  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.7.0.tar.bz2'
+  md5 'c9f646a15fed6e31c4aa88322b8cce2a'
   homepage 'http://www.wireshark.org'
 
   depends_on 'gnutls' => :optional
@@ -16,6 +16,10 @@ class Wireshark < Formula
 
   def install
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+
+    # don't build python bindings, results in runtime errors
+    # e.g. "dlsym(0x8fe467fc, py_create_dissector_handle): symbol not found"
+    args << "--without-python"
 
     # actually just disables the GTK GUI
     args << "--disable-wireshark" if not ARGV.include? "--with-x"

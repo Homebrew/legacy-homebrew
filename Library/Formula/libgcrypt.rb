@@ -7,8 +7,16 @@ class Libgcrypt < Formula
 
   depends_on 'libgpg-error'
 
+  def patches
+    if ENV.compiler == :clang
+      { :p0 => "https://trac.macports.org/export/85232/trunk/dports/devel/libgcrypt/files/clang-asm.patch" }
+    end
+  end
+
   def install
     ENV.universal_binary	# build fat so wine can use it
+
+    ENV.append 'CFLAGS', "-fheinous-gnu-extensions -std=gnu89" if ENV.compiler == :clang
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

@@ -1,10 +1,10 @@
 require 'formula'
 
 class Node < Formula
-  url 'http://nodejs.org/dist/node-v0.4.12.tar.gz'
+  url 'http://nodejs.org/dist/v0.6.7/node-v0.6.7.tar.gz'
   head 'https://github.com/joyent/node.git'
   homepage 'http://nodejs.org/'
-  md5 'a6375eaa43db5356bf443e25b828ae16'
+  md5 'e7b238356ea7fb230b956010931ca468'
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.leopard?
@@ -24,7 +24,8 @@ class Node < Formula
       s.gsub! '/opt/local/lib', '/usr/lib'
     end
 
-    args = ["--prefix=#{prefix}"]
+    # Why skip npm install? Read https://github.com/mxcl/homebrew/pull/8784.
+    args = ["--prefix=#{prefix}", "--without-npm"]
     args << "--debug" if ARGV.include? '--debug'
 
     system "./configure", *args
@@ -32,6 +33,14 @@ class Node < Formula
   end
 
   def caveats
-    "Please add #{HOMEBREW_PREFIX}/lib/node_modules to your NODE_PATH environment variable to have node libraries picked up."
+    <<-EOS.undent
+      Homebrew has NOT installed npm. We recommend the following method of
+      installation:
+        curl http://npmjs.org/install.sh | sh
+
+      After installing, add the following path to your NODE_PATH environment
+      variable to have npm libraries picked up:
+        #{HOMEBREW_PREFIX}/lib/node_modules
+    EOS
   end
 end
