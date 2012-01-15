@@ -17,6 +17,7 @@ class R < Formula
   md5 'ba5b6fb15b660670ea29b885348f322a'
 
   depends_on 'valgrind' if valgrind?
+  depends_on 'readline'
 
   def options
     [
