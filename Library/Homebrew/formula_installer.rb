@@ -122,6 +122,7 @@ class FormulaInstaller
     oh1 "Installing #{f} dependency: #{dep}"
     outdated_keg.unlink if outdated_keg
     fi.install
+    dep.linked_keg.unlink if dep.linked_keg
     fi.caveats
     fi.finish
   ensure
