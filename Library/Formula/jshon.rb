@@ -10,8 +10,9 @@ class Jshon < Formula
 
   def install
     system "make"
-    system "mkdir -p #{bin}"
+    system "mkdir -p #{bin} #{prefix}/share/man/man1/"
     system "cp jshon #{bin}/"
+    system "cp jshon.1 #{prefix}/share/man/man1/"
   end
 
   def test
