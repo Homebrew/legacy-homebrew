@@ -103,7 +103,7 @@ module HomebrewEnvExtension
     @compiler = :llvm
   end
 
-  def clang
+  def clang args = {}
     self['CC']  = "/usr/bin/clang"
     self['CXX'] = "/usr/bin/clang++"
     replace_in_cflags(/-Xarch_i386 (-march=\S*)/, '\1')
