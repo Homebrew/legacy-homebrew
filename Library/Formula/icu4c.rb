@@ -7,7 +7,7 @@ class Icu4c < Formula
   version '4.8.1.1'
 
   bottle 'https://downloads.sf.net/project/machomebrew/Bottles/icu4c-4.8.1.1-bottle.tar.gz'
-  bottle_sha1 'a4a5eb012eab4adeb3ad87734628a3aa8ca7dcc2'
+  bottle_sha1 '51b6e6e735ea581a2736127414e600362846b7e1'
 
   keg_only "Conflicts; see: https://github.com/mxcl/homebrew/issues/issue/167"
 
