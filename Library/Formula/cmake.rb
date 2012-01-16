@@ -5,7 +5,7 @@ class Cmake < Formula
   md5 'e1b237aeaed880f65dec9c20602452f6'
   homepage 'http://www.cmake.org/'
   bottle 'https://downloads.sf.net/project/machomebrew/Bottles/cmake-2.8.7-bottle.tar.gz'
-  bottle_sha1 '8f4731fa17bf96afa2cdbfa48aaf6020a9836e3f'
+  bottle_sha1 'f218ed64ce6e7a5d3670acdd6a18e5ed95421d1f'
 
   def install
     # A framework-installed expat will be detected and mess things up.
