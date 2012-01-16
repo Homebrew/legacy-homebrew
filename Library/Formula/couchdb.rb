@@ -1,5 +1,11 @@
 require 'formula'
 
+class GeoCouch < Formula
+  url 'https://github.com/couchbase/geocouch/tarball/d9c32ae6a53ed5cc5f76792cc7bb0ab4800b8da4', :using => :curl
+  md5 'a9ae36150266b56916c737dd6f06e7fc'
+  version '2012-01-06'
+end
+
 class Couchdb < Formula
   url 'http://www.apache.org/dyn/closer.cgi?path=couchdb/1.1.1/apache-couchdb-1.1.1.tar.gz'
   homepage "http://couchdb.apache.org/"
@@ -12,6 +18,12 @@ class Couchdb < Formula
   depends_on 'icu4c'
   depends_on 'erlang'
   depends_on 'curl' if MacOS.leopard?
+
+  def options
+    [
+      [ '--with-geocouch', 'Include geocouch for spatial queries' ]
+    ]
+  end
 
   def install
     system "./bootstrap" if File.exists? "bootstrap"
@@ -28,6 +40,39 @@ class Couchdb < Formula
     (lib+'couchdb/bin/couchjs').chmod 0755
     (var+'lib/couchdb').mkpath
     (var+'log/couchdb').mkpath
+
+    if ARGV.include? '--with-geocouch'
+      couch_src = Dir.pwd
+      couch_share = share
+      GeoCouch.new.brew do
+        ENV['COUCH_SRC'] = couch_src + '/src/couchdb'
+        system "make"
+        tests = Dir['share/www/script/test/*.js']
+        (couch_share + 'couchdb/www/script/test/').install tests
+        (etc + 'couchdb/local.d').install Dir['etc/couchdb/local.d/geocouch.ini']
+        tests = tests.map { |a| a.gsub(/^.*\/(.*)$/, 'loadTest("\1");') }
+        inreplace (couch_share + 'couchdb/www/script/couch_tests.js'), /\Z/m, tests.join("\n")
+
+        (couch_share + 'couchdb/geocouch').mkpath
+        (couch_share + 'couchdb/geocouch').install Dir['build']
+
+        puts <<-EOS.undent
+          You choose to install geocouch with couchdb. To ensure couchdb still starts
+          please do one of the following actions:
+
+          1) For automatic load on login:
+             Add the following to ~/Library/LaunchAgents/org.apache.couchdb.plist in
+             the <dict> under EnvironmentVariables:
+             <key>ERL_FLAGS</key>
+             <string>-pa /usr/local/share/couchdb/geocouch/build</string>
+
+          2) For manual start:
+             Add the following line to your ~/.bashrc
+             export ERL_FLAGS="-pa /usr/local/share/couchdb/geocouch/build"
+
+        EOS
+      end
+    end
   end
 
   def test
