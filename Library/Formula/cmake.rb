@@ -24,4 +24,15 @@ class Cmake < Formula
     system "make"
     system "make install"
   end
+
+  def caveats
+    <<-EOS
+      The Qt-based GUI has not been built.  If you really want it, please
+      install it manually using the pre-built bundle available from:
+
+      http://cmake.org/cmake/resources/software.html
+
+    EOS
+  end
+
 end
