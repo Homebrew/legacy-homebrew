@@ -398,6 +398,10 @@ module MacOS extend self
   def prefer_64_bit?
     Hardware.is_64_bit? and 10.6 <= MACOS_VERSION
   end
+
+  def bottles_supported?
+    lion? and HOMEBREW_PREFIX.to_s == '/usr/local'
+  end
 end
 
 module GitHub extend self
@@ -426,5 +430,21 @@ module GitHub extend self
     issues
   rescue
     []
+  end
+
+  def find_pull_requests rx
+    require 'open-uri'
+    require 'vendor/multi_json'
+
+    query = rx.source.delete '.*'
+    uri = URI.parse("http://github.com/api/v2/json/issues/search/mxcl/homebrew/open/#{query}")
+
+    open uri do |f|
+      MultiJson.decode(f.read)["issues"].each do |pull|
+        yield pull['pull_request_url'] if rx.match pull['title'] and pull["pull_request_url"]
+      end
+    end
+  rescue
+    nil
   end
 end
