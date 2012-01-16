@@ -432,23 +432,15 @@ module GitHub extend self
     require 'open-uri'
     require 'vendor/multi_json'
 
-    pulls = []
-    uri = URI.parse("https://api.github.com/repos/mxcl/homebrew/pulls")
-    uri.query = "per_page=100"
+    query = rx.source.delete '.*'
+    uri = URI.parse("http://github.com/api/v2/json/issues/search/mxcl/homebrew/open/#{query}")
 
     open uri do |f|
-      MultiJson.decode((f.read)).each do |pull|
-        pulls << pull['html_url'] if rx.match pull['title']
+      MultiJson.decode(f.read)["issues"].each do |pull|
+        yield pull['pull_request_url'] if rx.match pull['title'] and pull["pull_request_url"]
       end
-
-      uri = if f.meta['link'] =~ /rel="next"/
-        f.meta['link'].slice(URI.regexp)
-      else
-        nil
-      end
-    end while uri
-    pulls
+    end
   rescue
-    []
+    nil
   end
 end

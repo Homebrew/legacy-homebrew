@@ -156,6 +156,11 @@ class Formula
    ARGV.formulae.include? self
   end
 
+  def linked_keg
+    keg = Pathname.new(HOMEBREW_REPOSITORY/"Library/LinkedKegs"/@name)
+    if keg.exist? then Keg.new(keg.realpath) else nil end
+  end
+
   def installed_prefix
     head_prefix = HOMEBREW_CELLAR+@name+'HEAD'
     if @version == 'HEAD' || head_prefix.directory?
