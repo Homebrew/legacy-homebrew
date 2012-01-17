@@ -7,11 +7,26 @@ class Ncmpcpp < Formula
 
   depends_on 'taglib'
   depends_on 'libmpdclient'
+  depends_on 'fftw' if ARGV.include? "--visualizer"
+
+  def options
+    [["--visualizer", "Build with visualizer support."]]
+  end
 
   def install
-    system "./configure", "--with-taglib", "--with-curl", "--enable-unicode",
-                          "--disable-debug", "--disable-dependency-tracking",
-                          "LDFLAGS=-liconv", "--prefix=#{prefix}"
+    args = ["--with-taglib",
+            "--with-curl",
+            "--enable-unicode",
+            "--disable-dependency-tracking",
+            "LDFLAGS=-liconv",
+            "--prefix=#{prefix}"]
+
+    if ARGV.include? "--visualizer"
+      args << "--with-fftw"
+      args << "--enable-visualizer"
+    end
+
+    system "./configure", *args
     system "make install"
   end
 end
