@@ -335,12 +335,17 @@ class Formula
 
   def handle_llvm_failure llvm
     if ENV.compiler == :llvm
-      # version 2335 is the latest version as of Xcode 4.1, so it is the
+      # version 2336 is the latest version as of Xcode 4.2, so it is the
       # latest version we have tested against so we will switch to GCC and
-      # bump this integer when Xcode 4.2 is released. TODO do that!
-      if llvm.build.to_i >= 2335
-        opoo "Formula will not build with LLVM, using GCC"
-        ENV.gcc :force => true
+      # bump this integer when Xcode 4.3 is released. TODO do that!
+      if llvm.build.to_i >= 2336
+        if MacOS.xcode_version < "4.2"
+          opoo "Formula will not build with LLVM, using GCC"
+          ENV.gcc :force => true
+        else
+          opoo "Formula will not build with LLVM, trying Clang"
+          ENV.clang :force => true
+        end
         return
       end
       opoo "Building with LLVM, but this formula is reported to not work with LLVM:"

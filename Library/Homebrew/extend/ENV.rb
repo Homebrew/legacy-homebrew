@@ -77,7 +77,7 @@ module HomebrewEnvExtension
     self['CC'] = '/usr/bin/gcc-4.0'
     self['CXX'] = '/usr/bin/g++-4.0'
     replace_in_cflags '-O4', '-O3'
-    set_cpu_cflags 'nocona -mssse3', :core => 'prescott'
+    set_cpu_cflags 'nocona -mssse3', :core => 'prescott', :bottle => 'generic'
     @compiler = :gcc
   end
   alias_method :gcc_4_0, :gcc_4_0_1
@@ -88,7 +88,7 @@ module HomebrewEnvExtension
     self['CC']  = gcc_path.exist? ? gcc_path : HOMEBREW_PREFIX+'bin/gcc-4.2'
     self['CXX'] = gxx_path.exist? ? gxx_path : HOMEBREW_PREFIX+'bin/g++-4.2'
     replace_in_cflags '-O4', '-O3'
-    set_cpu_cflags 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott'
+    set_cpu_cflags 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott', :bottle => 'generic'
     @compiler = :gcc
 
     raise "GCC could not be found" if not File.exist? ENV['CC'] \
@@ -103,7 +103,7 @@ module HomebrewEnvExtension
     @compiler = :llvm
   end
 
-  def clang
+  def clang args = {}
     self['CC']  = "/usr/bin/clang"
     self['CXX'] = "/usr/bin/clang++"
     replace_in_cflags(/-Xarch_i386 (-march=\S*)/, '\1')
@@ -284,8 +284,15 @@ Please take one of the following actions:
     remove_from_cflags %r{( -Xclang \S+)+}
     remove_from_cflags %r{-mssse3}
     remove_from_cflags %r{-msse4(\.\d)?}
+    append_to_cflags xarch
     # Don't set -msse3 and older flags because -march does that for us
-    append_to_cflags xarch + '-march=' + map.fetch(Hardware.intel_family, default)
+    if ARGV.build_bottle?
+      if map.has_key?(:bottle)
+        append_to_cflags '-mtune=' + map.fetch(:bottle)
+      end
+    else
+      append_to_cflags '-march=' + map.fetch(Hardware.intel_family, default)
+    end
   end
 
   # actually c-compiler, so cc would be a better name

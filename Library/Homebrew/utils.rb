@@ -398,6 +398,10 @@ module MacOS extend self
   def prefer_64_bit?
     Hardware.is_64_bit? and 10.6 <= MACOS_VERSION
   end
+
+  def bottles_supported?
+    lion? and HOMEBREW_PREFIX.to_s == '/usr/local'
+  end
 end
 
 module GitHub extend self
