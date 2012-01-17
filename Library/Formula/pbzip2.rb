@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pbzip2 < Formula
-  url 'http://compression.ca/pbzip2/pbzip2-1.1.4.tar.gz'
+  url 'http://compression.ca/pbzip2/pbzip2-1.1.6.tar.gz'
   homepage 'http://compression.ca/pbzip2/'
-  md5 '797e3ae5c6293a55e3e97fefb11cf494'
+  md5 '26cc5a0d882198f106e75101ff0544a3'
 
   fails_with_llvm :build => 2334
 
