@@ -9,13 +9,12 @@ class Jshon < Formula
   depends_on 'jansson'
 
   def install
-    system "make"
-    system "mkdir -p #{bin} #{prefix}/share/man/man1/"
-    system "cp jshon #{bin}/"
-    system "cp jshon.1 #{prefix}/share/man/man1/"
+    system 'make'
+    bin.install 'jshon'
+    man1.install 'jshon.1'
   end
 
   def test
-    system "jshon"
+    system 'jshon'
   end
 end
