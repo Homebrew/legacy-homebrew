@@ -2,9 +2,9 @@ require 'formula'
 
 class Weechat < Formula
   head 'git://git.sv.gnu.org/weechat.git'
-  url 'http://www.weechat.org/files/src/weechat-0.3.5.tar.bz2'
+  url 'http://www.weechat.org/files/src/weechat-0.3.6.tar.bz2'
   homepage 'http://www.weechat.org'
-  md5 '0d2a089bfbfa550e0c65618a171fb3c4'
+  md5 'db2392b8e31738f79f0898f77eda8daa'
 
   depends_on 'cmake' => :build
   depends_on 'gnutls'
@@ -20,11 +20,8 @@ class Weechat < Formula
       %Q{\n  STRING(REGEX REPLACE "#{archs.join '|'}" "" PERL_CFLAGS "${PERL_CFLAGS}")} +
       %Q{\n  STRING(REGEX REPLACE "#{archs.join '|'}" "" PERL_LFLAGS "${PERL_LFLAGS}")}
 
-    #FIXME: Compiling perl module doesn't work
     #NOTE: -DPREFIX has to be specified because weechat devs enjoy being non-standard
     system "cmake", "-DPREFIX=#{prefix}",
-                    "-DENABLE_RUBY=OFF",
-                    "-DENABLE_PERL=OFF",
                     std_cmake_parameters, "."
     system "make install"
   end
