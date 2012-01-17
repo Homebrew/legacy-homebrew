@@ -7,6 +7,10 @@ class Outguess < Formula
   md5 '321f23dc0badaba4350fa66b59829064'
 
   def install
+
+    opoo "Formula has problem with clang during runtime, using GCC"
+    ENV.gcc :force => true
+
     args = ["--disable-debug",
             "--disable-dependency-tracking",
             "--prefix=#{prefix}",
@@ -16,6 +20,7 @@ class Outguess < Formula
 
     system "./configure", *args
     system "make"
+
     bin.install "outguess"
     man1.install "outguess.1"
   end
