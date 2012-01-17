@@ -323,7 +323,7 @@ module Homebrew extend self
 
       unless problems.empty?
         errors = true
-        puts "#{f.name}:"
+        onoe "#{f.name}:"
         puts problems * "\n"
         puts
       end
