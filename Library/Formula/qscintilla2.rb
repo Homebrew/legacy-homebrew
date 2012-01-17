@@ -1,9 +1,9 @@
 require 'formula'
 
 class Qscintilla2 < Formula
-  url 'http://www.riverbankcomputing.co.uk/static/Downloads/QScintilla2/QScintilla-gpl-2.5.1.tar.gz'
+  url 'http://www.riverbankcomputing.co.uk/static/Downloads/QScintilla2/QScintilla-gpl-2.6.tar.gz'
   homepage 'http://www.riverbankcomputing.co.uk/software/qscintilla/intro'
-  md5 'dd7edef5ff674d307057a3c12dbd8fce'
+  md5 '0605a8006ea752ec2d1d7fc4791d1c75'
 
   depends_on 'pyqt'
   depends_on 'sip'
