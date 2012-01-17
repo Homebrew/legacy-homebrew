@@ -10,10 +10,9 @@ end
 
 class Spidermonkey < Formula
   homepage 'https://developer.mozilla.org/en/SpiderMonkey'
-  # Pick a version that's known to work with CouchDB), revision r35345.
-  url 'http://hg.mozilla.org/tracemonkey/archive/57a6ad20eae9.tar.gz'
-  md5 '0f2490f78d880ec184d9233df97ab83d'
-  version '1.8.0'
+  url 'http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz'
+  md5 'a4574365938222adca0a6bd33329cb32'
+  version '1.8.5'
 
   depends_on 'readline'
   depends_on 'nspr'
@@ -66,7 +65,7 @@ class Spidermonkey < Formula
   end
 
   def caveats; <<-EOS.undent
-    This formula installs Spidermonkey 1.8.x.
+    This formula installs Spidermonkey 1.8.5.
 
     If you are trying to compile MongoDB from scratch, you will need 1.7.x instead.
     EOS

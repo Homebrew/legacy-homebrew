@@ -1,9 +1,9 @@
 require 'formula'
 
 class Concurrencykit < Formula
-  url 'http://concurrencykit.org/releases/ck-0.1.0.tar.gz'
+  url 'http://concurrencykit.org/releases/ck-0.1.4.tar.gz'
   homepage 'http://concurrencykit.org'
-  md5 '1832e4d0b7fb31a159d50ab3e66b8979'
+  md5 '11f6f2145d12c48fd17845b39f492ceb'
   head 'git://git.concurrencykit.org/ck.git'
 
   def install
