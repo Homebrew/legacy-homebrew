@@ -2,8 +2,8 @@ require 'formula'
 
 class Calabash < Formula
   homepage 'http://xmlcalabash.com'
-  url 'http://xmlcalabash.com/download/calabash-0.9.44.94.zip'
-  md5 'dedce74a5bc355c547a2aa2800d6ba40'
+  url 'http://xmlcalabash.com/download/calabash-1.0.0-94.zip'
+  md5 '2adcfd89f8ed17a5be5b22002b35350a'
   head 'https://github.com/ndw/xmlcalabash1.git'
   
   depends_on 'saxon'
@@ -14,26 +14,11 @@ class Calabash < Formula
     (bin+'calabash').write shim_script('calabash')
   end
 
-
-  #
-  # Modified from saxon's formula
-  #
   def shim_script target
     <<-EOS.undent
       #!/usr/bin/env bash
       java -Xmx1024m -jar #{libexec}/calabash.jar "$@"
     EOS
-
-    # NOTE
-    #
-    #   The download comes a "bin" directory and an executable.
-    #   Unfortunately, I don't know how to tell Homebrew to use
-    #   it (or whether that's a good idea).
-    #
-    #   Please let me know how to do this (and whether it's a good
-    #   idea)!  Message me on GitHub (I'm "Zearin").
-    #
-    #   (In the meantime, the code above worked for me.)
   end
 
   def test
