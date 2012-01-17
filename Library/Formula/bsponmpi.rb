@@ -9,7 +9,7 @@ class Bsponmpi < Formula
   depends_on 'open-mpi'
 
   def install
-    system "scons"
+    system "scons -Q mode=release"
     lib.install Dir['lib/*']
     include.install Dir['include/*']
   end
