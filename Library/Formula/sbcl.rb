@@ -8,8 +8,8 @@ end
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.53/sbcl-1.0.53-source.tar.bz2'
-  md5 '28bdb8d65b240bcc45370f19b781f9b8'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.55/sbcl-1.0.55-source.tar.bz2'
+  md5 '128fb15c80e8e3f8d4024bd8e04635e0'
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
   fails_with_llvm "Compilation fails with LLVM.", :build => 2334
@@ -28,10 +28,10 @@ class Sbcl < Formula
 
   def patches
     { :p0 => [
-        "https://trac.macports.org/export/87593/trunk/dports/lang/sbcl/files/patch-base-target-features.diff",
-        "https://trac.macports.org/export/87593/trunk/dports/lang/sbcl/files/patch-make-doc.diff",
-        "https://trac.macports.org/export/87593/trunk/dports/lang/sbcl/files/patch-posix-tests.diff",
-        "https://trac.macports.org/export/87593/trunk/dports/lang/sbcl/files/patch-use-mach-exception-handler.diff"
+        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-base-target-features.diff",
+        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-make-doc.diff",
+        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-posix-tests.diff",
+        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-use-mach-exception-handler.diff"
     ]}
   end
 
