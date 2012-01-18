@@ -47,6 +47,9 @@ class AndroidSdk < Formula
 
   def caveats; <<-EOS.undent
     Now run the `android' tool to install the actual SDK stuff.
+
+    The SDK files will be installed to: #{var}/lib/android-sdk
+
     You will have to install the platform-tools EVERY time this formula updates.
     If you want to try and fix this then see the comment in this formula.
     EOS
