@@ -17,7 +17,7 @@ class HgFlow < Formula
     3. For more information go to http://bitbucket.org/yinwm/hgflow
 
     [extensions]
-    hgflow = #{HOMEBREW_PREFIX}/Cellar/#{name}/#{version}/src/hgflow/hgflow.py
+    hgflow = #{prefix}/src/hgflow/hgflow.py
     
     EOS
   end
