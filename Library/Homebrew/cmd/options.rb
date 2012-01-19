@@ -22,11 +22,13 @@ module Homebrew extend self
       if ARGV.include? '--compact'
         puts f.options.collect {|o| o[0]} * " "
       else
-        puts f.name
+        ohai "#{f.name}"
+        
         f.options.each do |o|
-          puts o[0]
-          puts "\t"+o[1]
+          puts "  "+o[0]
+          puts "        "+o[1]
         end
+        
         puts
       end
     end

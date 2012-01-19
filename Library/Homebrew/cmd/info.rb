@@ -40,24 +40,24 @@ module Homebrew extend self
   def info_formula f
     exec 'open', github_info(f.name) if ARGV.flag? '--github'
 
-    puts "#{f.name} #{f.version}"
-    puts f.homepage
+    ohai "#{f.name} #{f.version}"
+    puts "  #{f.homepage}"
 
     if f.keg_only?
       puts
-      puts "This formula is keg-only."
-      puts f.keg_only?
+      puts "  This formula is keg-only."
+      puts "  #{f.keg_only?}"
       puts
     end
 
-    puts "Depends on: #{f.deps*', '}" unless f.deps.empty?
+    puts "  Depends on: #{f.deps*', '}" unless f.deps.empty?
 
     if f.rack.directory?
       kegs = f.rack.children
       kegs.each do |keg|
         next if keg.basename.to_s == '.DS_Store'
-        print "#{keg} (#{keg.abv})"
-        print " *" if Keg.new(keg).linked? and kegs.length > 1
+        print "  #{keg} (#{keg.abv})"
+        print "   *" if Keg.new(keg).linked? and kegs.length > 1
         puts
         tab = Tab.for_keg keg
         unless tab.used_options.empty?
@@ -65,27 +65,31 @@ module Homebrew extend self
         end
       end
     else
-      puts "Not installed"
+      puts "  Not installed"
     end
 
     the_caveats = (f.caveats || "").strip
     unless the_caveats.empty?
       puts
-      puts f.caveats
+      puts "  #{f.caveats}"
       puts
     end
 
+    unless f.deps.empty?
+      puts "  Depends on: #{f.deps*', '}" 
+    end
+
     history = github_info f.name
-    puts history if history
+    puts "  #{history}" if history
 
   rescue FormulaUnavailableError
     # check for DIY installation
     d = HOMEBREW_PREFIX+name
     if d.directory?
-      ohai "DIY Installation"
-      d.children.each{ |keg| puts "#{keg} (#{keg.abv})" }
+      ohai "  DIY Installation"
+      d.children.each{ |keg| puts "  #{keg} (#{keg.abv})" }
     else
-      raise "No such formula or keg"
+      raise "  No such formula or keg"
     end
   end
 
