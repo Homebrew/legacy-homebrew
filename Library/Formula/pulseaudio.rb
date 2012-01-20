@@ -17,7 +17,7 @@ class Pulseaudio < Formula
             "--with-udev-rules-dir=#{prefix}/lib/udev/rules.d"]
     
     if !File.exists? "/Developer/SDKs/MacOSX10.5.sdk" then
-      # Does not seem to build correctly with 10.6 SDK
+      # Does not seem to build correctly with 10.6 SDK (hence the and false)
       if File.exists? "/Developer/SDKs/MacOSX10.6.sdk" and false then
         args << "--with-mac-sysroot=/Developer/SDKs/MacOSX10.6.sdk"
         args << "--with-mac-version-min=10.6"
@@ -33,9 +33,6 @@ class Pulseaudio < Formula
       system "./autogen.sh"
     end
     
-    gettext = Formula.factory 'gettext'
-    ENV.append 'PATH', ";" + gettext.prefix + "/bin"
-    ENV.append 'CFLAGS', " -I" + gettext.prefix + "/include"
     system "./configure", *args
     system "make install"
   end
@@ -44,3 +41,5 @@ class Pulseaudio < Formula
     system "pulseaudio"
   end
 end
+
+
