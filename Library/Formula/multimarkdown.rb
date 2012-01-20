@@ -2,8 +2,8 @@ require 'formula'
 
 class Multimarkdown < Formula
   homepage 'http://fletcherpenney.net/multimarkdown/'
-  url 'https://github.com/fletcher/peg-multimarkdown/tarball/3.2'
-  md5 '438a7c09af13adf91e318ba2f49681b6'
+  url 'https://github.com/fletcher/peg-multimarkdown/tarball/3.5'
+  md5 'fa4e93b38f2e1fec37d5a9441daa10a6'
   head 'https://github.com/fletcher/peg-multimarkdown.git', :branch => 'development'
 
   def install
