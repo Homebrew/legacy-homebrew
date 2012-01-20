@@ -7,7 +7,7 @@ class AwsIamTools < AmazonWebServicesFormula
   # No stable build yet
   head 'http://awsiammedia.s3.amazonaws.com/public/tools/cli/latest/IAMCli.zip'
   homepage 'http://developer.amazonwebservices.com/connect/entry.jspa?externalID=4143&categoryID=322'
-  md5 '24454ac0bc1db5196add524ac4cdcb3d'
+  md5 'b39871a93b5e9e3d9e9a072f84814a42'
 
   def install
     standard_install
