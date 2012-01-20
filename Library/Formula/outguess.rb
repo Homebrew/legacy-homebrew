@@ -8,7 +8,7 @@ class Outguess < Formula
 
   def install
 
-    opoo "Formula has problem with clang during runtime, using GCC"
+    opoo "Formula has problem with clang during runtime, using llvm-gcc"
     ENV.gcc :force => true
 
     args = ["--disable-debug",
