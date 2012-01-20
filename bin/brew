@@ -25,6 +25,10 @@ when '-v'
     puts HOMEBREW_VERSION
     exit 0
   end
+when 'beer'
+  require 'cmd/beer'
+  puts Homebrew.beer_recipe
+  exit 0
 end
 
 case HOMEBREW_PREFIX.to_s when '/', '/usr'
