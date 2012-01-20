@@ -29,6 +29,9 @@ class Keg < Pathname
       next if src == self
       dst=HOMEBREW_PREFIX+src.relative_path_from(self)
       next unless dst.symlink?
+      if ENV['HOMEBREW_KEEP_INFO']
+        dst.uninstall_info if dst.to_s =~ Pathname::INFOFILE_REGEXP
+      end
       dst.unlink
       n+=1
       Find.prune if src.directory?
@@ -127,7 +130,12 @@ protected
       dst.extend ObserverPathnameExtension
 
       if src.file?
+        # Do the symlink.
         dst.make_relative_symlink src unless File.basename(src) == '.DS_Store'
+        # Install the info files in the directory file.
+        if ENV['HOMEBREW_KEEP_INFO']
+          dst.install_info if dst.to_s =~ Pathname::INFOFILE_REGEXP
+        end
       elsif src.directory?
         # if the dst dir already exists, then great! walk the rest of the tree tho
         next if dst.directory? and not dst.symlink?

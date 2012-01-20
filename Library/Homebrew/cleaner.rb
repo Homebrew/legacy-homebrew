@@ -3,7 +3,14 @@ class Cleaner
     @f = Formula.factory f
     [f.bin, f.sbin, f.lib].select{ |d| d.exist? }.each{ |d| clean_dir d }
 
-    unless ENV['HOMEBREW_KEEP_INFO']
+    if ENV['HOMEBREW_KEEP_INFO']
+      # Get rid of the directory file, so it no longer bother us at link stage.
+      info_dir = f.info + 'dir'
+      if info_dir.file? and not f.skip_clean? info_dir
+        puts "rm #{info_dir}" if ARGV.verbose?
+        info_dir.unlink
+      end
+    else
       f.info.rmtree if f.info.directory? and not f.skip_clean? f.info
     end
 
