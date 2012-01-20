@@ -284,7 +284,7 @@ Please take one of the following actions:
     remove_from_cflags %r{( -Xclang \S+)+}
     remove_from_cflags %r{-mssse3}
     remove_from_cflags %r{-msse4(\.\d)?}
-    append_to_cflags xarch
+    append_to_cflags xarch unless xarch.empty?
     # Don't set -msse3 and older flags because -march does that for us
     if ARGV.build_bottle?
       if map.has_key?(:bottle)
