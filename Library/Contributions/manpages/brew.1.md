@@ -366,7 +366,10 @@ creating your own can be found on the wiki:
 
   * HOMEBREW\_KEEP\_INFO:
     If set, Homebrew will not remove files from `share/info`, allowing them
-    to be linked from the Cellar.
+    to be linked from the Cellar. To access these info files, prepend
+    `share/info` to your `INFOPATH` environment variable.
+
+    *Example:* `export INFOPATH='/usr/local/share/info:/usr/share/info'`
 
   * HOMEBREW\_MAKE\_JOBS:
     If set, instructs Homebrew to use the value of `HOMEBREW_MAKE_JOBS` as

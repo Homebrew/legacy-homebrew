@@ -262,6 +262,20 @@ class Pathname
   ensure
     chmod saved_perms if saved_perms
   end
+
+  def install_info
+    unless self.symlink?
+      raise "Cannot install info entry for unbrewed info file '#{self}'"
+    end
+    system '/usr/bin/install-info', self.to_s, (self.dirname+'dir').to_s
+  end
+
+  def uninstall_info
+    unless self.symlink?
+      raise "Cannot uninstall info entry for unbrewed info file '#{self}'"
+    end
+    system '/usr/bin/install-info', '--delete', '--quiet', self.to_s, (self.dirname+'dir').to_s
+  end
 end
 
 # sets $n and $d so you can observe creation of stuff
@@ -285,6 +299,14 @@ module ObserverPathnameExtension
     super
     puts "ln #{to_s}" if ARGV.verbose?
     $n+=1
+  end
+  def install_info
+    super
+    puts "info #{to_s}" if ARGV.verbose?
+  end
+  def uninstall_info
+    super
+    puts "uninfo #{to_s}" if ARGV.verbose?
   end
 end
 
