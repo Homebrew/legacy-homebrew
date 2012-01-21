@@ -9,15 +9,15 @@ def with_unicode_path?; ARGV.include? '--unicode-path'; end
 
 # On 10.5 we need newer versions of apr, neon etc.
 # On 10.6 we only need a newer version of neon
-class SubversionDeps < Formula
-  url 'http://subversion.tigris.org/downloads/subversion-deps-1.6.17.tar.bz2'
-  sha1 'ebfda3416c09a91dbcf744a22ea83ed827ad3495'
-end
+# class SubversionDeps < Formula
+#   url 'http://subversion.tigris.org/downloads/subversion-deps-1.6.17.tar.bz2'
+#   sha1 'ebfda3416c09a91dbcf744a22ea83ed827ad3495'
+# end
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
-  url 'http://subversion.tigris.org/downloads/subversion-1.6.17.tar.bz2'
-  sha1 '6e3ed7c87d98fdf5f0a999050ab601dcec6155a1'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.7.2.tar.bz2'
+  sha1 '8c0824aeb7f42da1ff4f7cd296877af7f59812bb'
 
   depends_on 'pkg-config' => :build
 
@@ -37,9 +37,9 @@ class Subversion < Formula
 
   def patches
     # Patch to find Java headers
-    p = { :p0 =>
-      "http://trac.macports.org/export/73004/trunk/dports/devel/subversion-javahlbindings/files/patch-configure.diff"
-    }
+    # p = { :p0 =>
+    #   "http://trac.macports.org/export/73004/trunk/dports/devel/subversion-javahlbindings/files/patch-configure.diff"
+    # }
 
     # Patch for subversion handling of OS X Unicode paths (see caveats)
     if with_unicode_path?
