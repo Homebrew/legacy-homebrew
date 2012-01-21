@@ -403,7 +403,10 @@ If set, Homebrew will use this editor when editing a single formula, or several 
 .
 .TP
 HOMEBREW_KEEP_INFO
-If set, Homebrew will not remove files from \fBshare/info\fR, allowing them to be linked from the Cellar\.
+If set, Homebrew will not remove files from \fBshare/info\fR, allowing them to be linked from the Cellar\. To access those info files prepend \fBshare/info\fR to your \fBINFOPATH\fR environment variable\.
+.
+.IP
+\fIExample:\fR \fBexport INFOPATH=\'/usr/local/share/info:/usr/share/info\'\fR
 .
 .TP
 HOMEBREW_MAKE_JOBS
