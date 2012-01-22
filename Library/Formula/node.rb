@@ -19,6 +19,7 @@ class Node < Formula
   end
 
   def install
+    ENV.append_to_cflags '-D__DARWIN_64_BIT_INO_T'
     inreplace 'wscript' do |s|
       s.gsub! '/usr/local', HOMEBREW_PREFIX
       s.gsub! '/opt/local/lib', '/usr/lib'
