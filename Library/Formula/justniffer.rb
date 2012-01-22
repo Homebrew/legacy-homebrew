@@ -1,5 +1,3 @@
-# vim:set sts=2 sw=2:
-
 require 'formula'
 
 class Justniffer < Formula
@@ -41,7 +39,7 @@ class Justniffer < Formula
   def caveats; <<-EOS.undent
     Sample invocation to get you started:
       justniffer -i en1 -p "port 80"
-      
+
     "en1" is my wireless inteface; "en0" is Ethernet; see output of ifconfig
     EOS
   end
