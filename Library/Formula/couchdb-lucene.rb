@@ -1,18 +1,15 @@
 require 'formula'
 
 class CouchdbLucene < Formula
-  url 'https://github.com/rnewson/couchdb-lucene/tarball/v0.6.0'
+  url 'https://github.com/rnewson/couchdb-lucene/tarball/v0.8.0'
   homepage 'https://github.com/rnewson/couchdb-lucene'
-  md5 'b55610d4c054987a5c69183585a31d8b'
+  md5 '3d4d321881188247b80847429f514639'
 
   depends_on 'couchdb'
   depends_on 'maven'
 
   def install
-    # Skipping tests because the integration test assumes that couchdb-lucene
-    # has been integrated with a local couchdb instance. Not sure if there's a
-    # way to only disable the integration test.
-    system "mvn", "-DskipTests=true"
+    system "mvn"
 
     system "tar -xzf target/couchdb-lucene-#{version}-dist.tar.gz"
     system "mv couchdb-lucene-#{version}/* #{prefix}"

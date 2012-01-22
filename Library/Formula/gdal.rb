@@ -21,9 +21,9 @@ def opencl?
 end
 
 class Gdal < Formula
-  url 'http://download.osgeo.org/gdal/gdal-1.8.1.tar.gz'
+  url 'http://download.osgeo.org/gdal/gdal-1.9.0.tar.gz'
   homepage 'http://www.gdal.org/'
-  md5 'b32269893afc9dc9eced45e74e4c6bb4'
+  md5 '1853f3d8eb5232ae030abe007840cade'
 
   head 'https://svn.osgeo.org/gdal/trunk/gdal', :using => :svn
 
@@ -54,16 +54,6 @@ class Gdal < Formula
 
     # Other libraries
     depends_on "xz" # get liblzma compression algorithm library from XZutils
-  end
-
-  def patches
-    if complete?
-      # EPSILON v0.9.x slightly modified the naming of some struct members. A
-      # fix is in the GDAL trunk but was kept out of 1.8.1 due to concern for
-      # users of EPSILON v0.8.x. Homebrew installs 0.9.2+ so this concern is a
-      # moot point.
-      {:p1 => DATA}
-    end
   end
 
   def options
@@ -106,7 +96,7 @@ class Gdal < Formula
       "--with-curl=/usr/bin/curl-config",
 
       # GRASS backend explicitly disabled.  Creates a chicken-and-egg problem.
-      # Should be installed seperately after GRASS installation using the
+      # Should be installed separately after GRASS installation using the
       # official GDAL GRASS plugin.
       "--without-grass",
       "--without-libgrass",
@@ -146,6 +136,7 @@ class Gdal < Formula
         "--without-spatialite",
         "--without-libkml",
         "--without-poppler",
+        "--without-podofo",
 
         # The following libraries are either proprietary or available under
         # non-free licenses.  Interested users will have to install such
@@ -168,18 +159,18 @@ class Gdal < Formula
     args << "--without-oci"    # Oracle databases
     args << "--without-idb"    # IBM Informix DataBlades
 
-    # Hombrew-provided databases.
+    # Homebrew-provided databases.
     args << "--with-pg=#{HOMEBREW_PREFIX}/bin/pg_config" if postgres?
     args << "--with-mysql=#{HOMEBREW_PREFIX}/bin/mysql_config" if mysql?
 
-    args << "--without-python" # Installed using a seperate set of
+    args << "--without-python" # Installed using a separate set of
                                          # steps so that everything winds up
                                          # in the prefix.
 
     # Scripting APIs that have not been re-worked to respect Homebrew prefixes.
     #
     # Currently disabled as they install willy-nilly into locations outside of
-    # the Hombrew prefix.  Enable if you feel like it, but uninstallation may be
+    # the Homebrew prefix.  Enable if you feel like it, but uninstallation may be
     # a manual affair.
     #
     # TODO: Fix installation of script bindings so they install into the
@@ -195,6 +186,13 @@ class Gdal < Formula
   end
 
   def install
+    # The 1.9.0 release appears to contain a regression where linking flags for
+    # Sqlite are not added at a critical moment when the GDAL library is being
+    # assembled. This causes the build to fail due to missing symbols.
+    #
+    # Fortunately, this can be remedied using LDFLAGS.
+    ENV.append 'LDFLAGS', '-lsqlite3'
+
     system "./configure", "--prefix=#{prefix}", *get_configure_args
     system "make"
     system "make install"
@@ -239,61 +237,3 @@ directory is added to the PYTHONPATH:
     end
   end
 end
-
-
-__END__
-
-This patch updates GDAL to be compatible with EPSILON 0.9.x. Changes sourced from the GDAL trunk:
-
-    http://trac.osgeo.org/gdal/changeset/22363
-
-Patch can be removed when GDAL hits 1.9.0.
-
-diff --git a/frmts/epsilon/epsilondataset.cpp b/frmts/epsilon/epsilondataset.cpp
-index b12928a..3f967cc 100644
---- a/frmts/epsilon/epsilondataset.cpp
-+++ b/frmts/epsilon/epsilondataset.cpp
-@@ -48,6 +48,13 @@ typedef struct
-     vsi_l_offset offset;
- } BlockDesc;
- 
-+#ifdef I_WANT_COMPATIBILITY_WITH_EPSILON_0_8_1
-+#define GET_FIELD(hdr, field) \
-+    (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.field : hdr.tc.field
-+#else
-+#define GET_FIELD(hdr, field) \
-+    (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.hdr_data.gs.field : hdr.hdr_data.tc.field
-+#endif
- 
- /************************************************************************/
- /* ==================================================================== */
-@@ -237,8 +244,8 @@ CPLErr EpsilonRasterBand::IReadBlock( int nBlockXOff,
-         return CE_Failure;
-     }
-     
--    int w = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.w : hdr.tc.w;
--    int h = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.h : hdr.tc.h;
-+    int w = GET_FIELD(hdr, w);
-+    int h = GET_FIELD(hdr, h);
-     int i;
- 
-     if (poGDS->nBands == 1)
-@@ -505,12 +512,12 @@ int EpsilonDataset::ScanBlocks(int* pnBands)
-             continue;
-         }
-         
--        int W = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.W : hdr.tc.W;
--        int H = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.H : hdr.tc.H;
--        int x = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.x : hdr.tc.x;
--        int y = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.y : hdr.tc.y;
--        int w = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.w : hdr.tc.w;
--        int h = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.h : hdr.tc.h;
-+        int W = GET_FIELD(hdr, W);
-+        int H = GET_FIELD(hdr, H);
-+        int x = GET_FIELD(hdr, x);
-+        int y = GET_FIELD(hdr, y);
-+        int w = GET_FIELD(hdr, w);
-+        int h = GET_FIELD(hdr, h);
- 
-         //CPLDebug("EPSILON", "W=%d,H=%d,x=%d,y=%d,w=%d,h=%d,offset=" CPL_FRMT_GUIB,
-         //                    W, H, x, y, w, h, nStartBlockFileOff);

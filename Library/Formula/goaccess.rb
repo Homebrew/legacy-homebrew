@@ -6,6 +6,7 @@ class Goaccess < Formula
   md5 '7d7707c294c949d612e451da2f003c37'
   head 'git://goaccess.git.sourceforge.net/gitroot/goaccess/goaccess'
 
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'geoip' if ARGV.include? "--enable-geoip"
 

@@ -12,8 +12,8 @@ def as_framework?
 end
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.21.tar.gz'
-  md5 'f783444754861f9b33e9f4083bd97b60'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.24.tar.gz'
+  md5 '17722b22141aba8235787f79800cc452'
 end
 
 class Python3 < Formula
@@ -102,7 +102,9 @@ class Python3 < Formula
       system "#{bin}/python3.2", "setup.py", "install"
 
       # Symlink to easy_install3 to match python3 command.
-      ln_s "#{scripts_folder}/easy_install", "#{scripts_folder}/easy_install3"
+      if !(scripts_folder+'easy_install3').exist?
+        ln_s "#{scripts_folder}/easy_install", "#{scripts_folder}/easy_install3"
+      end
     end
   end
 

@@ -11,7 +11,7 @@ class Jnethack < Formula
   version '3.4.3-0.10'
   md5 '21479c95990eefe7650df582426457f9'
 
-  fails_with_llvm
+  fails_with_llvm :build => 2334
 
   # Don't remove save folder
   skip_clean 'libexec/save'

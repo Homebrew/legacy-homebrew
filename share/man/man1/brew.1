@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "October 2011" "Homebrew" "brew"
+.TH "BREW" "1" "January 2012" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -47,14 +47,11 @@ Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is su
 .SH "COMMANDS"
 .
 .TP
-\fBaudit [\-\-strict]\fR [\fIformulae\fR]
+\fBaudit\fR [\fIformulae\fR]
 Check \fIformulae\fR for Homebrew coding style violations\. This should be run before submitting a new formula\.
 .
 .IP
 If no \fIformulae\fR are provided, all of them are checked\.
-.
-.IP
-If \fB\-\-strict\fR is passed, perform additional stricter checks that may not need to be fixed before submitting\.
 .
 .IP
 \fBaudit\fR exits with a non\-zero status if any errors are found\. This is useful, for instance, for implementing pre\-commit hooks\.
@@ -64,15 +61,18 @@ If \fB\-\-strict\fR is passed, perform additional stricter checks that may not n
 Display the source to \fIformula\fR\.
 .
 .TP
-\fBcleanup [\-\-force]\fR [\fIformula\fR]
+\fBcleanup [\-\-force] [\-n]\fR [\fIformula\fR]
 For all installed or specific formulae, remove any older versions from the cellar\. By default, does not remove out\-of\-date keg\-only brews, as other software may link directly to specific versions\.
 .
 .IP
 If \fB\-\-force\fR is passed, remove out\-of\-date keg\-only brews as well\.
 .
+.IP
+If \fB\-n\fR is passed, show what would be removed, but do not actually remove anything\.
+.
 .TP
 \fBcreate [\-\-autotools|\-\-cmake] [\-\-no\-fetch]\fR \fIURL\fR
-Generate a formula for the downloadable file at \fIURL\fR and open it in $EDITOR\. Homebrew will attempt to automatically derive the formula name and version, but if it fails, you\'ll have to make your own template\. The wget formula serves as a simple example\.
+Generate a formula for the downloadable file at \fIURL\fR and open it in \fBEDITOR\fR\. Homebrew will attempt to automatically derive the formula name and version, but if it fails, you\'ll have to make your own template\. The wget formula serves as a simple example\.
 .
 .IP
 If \fB\-\-autotools\fR is passed, create a basic template for an Autotools\-style build\. If \fB\-\-cmake\fR is passed, create a basic template for a CMake\-style build\.
@@ -81,7 +81,7 @@ If \fB\-\-autotools\fR is passed, create a basic template for an Autotools\-styl
 If \fB\-\-no\-fetch\fR is passed, Homebrew will not download \fIURL\fR to the cache and will thus not add the MD5 to the formula for you\.
 .
 .TP
-\fBdeps [\-\-1] [\-n] [\-\-all]\fR \fIformula\fR
+\fBdeps [\-\-1] [\-n] [\-\-tree] [\-\-all]\fR \fIformula\fR
 Show \fIformula\fR\'s dependencies\.
 .
 .IP
@@ -89,6 +89,9 @@ If \fB\-\-1\fR is passed, only show dependencies one level down, instead of recu
 .
 .IP
 If \fB\-n\fR is passed, show dependencies in topological order\.
+.
+.IP
+If \fB\-\-tree\fR is passed, show dependencies as a tree\.
 .
 .IP
 If \fB\-\-all\fR is passed, show dependencies for all formulae\.
@@ -109,11 +112,11 @@ Check your system for potential problems\. Doctor exits with a non\-zero status 
 .
 .TP
 \fBedit\fR
-Open all of Homebrew for editing in TextMate\.
+Open all of Homebrew for editing\.
 .
 .TP
 \fBedit\fR \fIformula\fR
-Open \fIformula\fR in $EDITOR\.
+Open \fIformula\fR in \fBEDITOR\fR\.
 .
 .TP
 \fBfetch [\-\-force] [\-v] [\-\-HEAD] [\-\-deps]\fR \fIformulae\fR
@@ -155,7 +158,7 @@ To view formula history locally: \fBbrew log \-p <formula>\fR\.
 Print the name and version that will be detected for \fIURL\fR\.
 .
 .TP
-\fBinstall [\-\-force] [\-\-debug] [\-\-ignore\-dependencies] [\-\-use\-clang] [\-\-use\-gcc] [\-\-use\-llvm] [\-\-build\-from\-source] [\-\-HEAD]\fR \fIformula\fR
+\fBinstall [\-\-force] [\-\-debug] [\-\-ignore\-dependencies] [\-\-fresh] [\-\-use\-clang] [\-\-use\-gcc] [\-\-use\-llvm] [\-\-build\-from\-source] [\-\-devel] [\-\-HEAD]\fR \fIformula\fR
 Install \fIformula\fR\.
 .
 .IP
@@ -171,6 +174,9 @@ If \fB\-\-debug\fR is passed and brewing fails, open a shell inside the temporar
 If \fB\-\-ignore\-dependencies\fR is passed, skip installing any dependencies of any kind\. If they are not already present, the formula will probably fail to install\.
 .
 .IP
+If \fB\-\-fresh\fR is passed, the installation process will not re\-use any options from previous installs\.
+.
+.IP
 If \fB\-\-use\-clang\fR is passed, attempt to compile using clang\.
 .
 .IP
@@ -183,7 +189,10 @@ If \fB\-\-use\-llvm\fR is passed, attempt to compile using the LLVM front\-end t
 If \fB\-\-build\-from\-source\fR is passed, compile from source even if a bottle is provided for \fIformula\fR\.
 .
 .IP
-If \fB\-\-HEAD\fR is passed, and \fIformula\fR defines it, install the HEAD version, aka master, trunk, unstable, dev\.
+If \fB\-\-devel\fR is passed, and \fIformula\fR defines it, install the development version\.
+.
+.IP
+If \fB\-\-HEAD\fR is passed, and \fIformula\fR defines it, install the HEAD version, aka master, trunk, unstable\.
 .
 .IP
 To install a newer version of HEAD use \fBbrew rm <foo> && brew install \-\-HEAD <foo>\fR or \fBbrew install \-\-force \-\-HEAD <foo>\fR\.
@@ -217,7 +226,7 @@ If \fB\-\-versions\fR is passed, show the version number for installed formulae,
 Show the git log for the given formulae\. Options that \fBgit\-log\fR(1) recognizes can be passed before the formula list\.
 .
 .TP
-\fBmissing [<formulae>]\fR
+\fBmissing\fR [\fIformulae\fR]
 Check the given \fIformulae\fR for missing dependencies\.
 .
 .IP
@@ -295,8 +304,11 @@ Show the formulas that specify \fIformula\fR as a dependency\. The list is not r
 If \fB\-\-installed\fR is passed, only list installed formulae\.
 .
 .TP
-\fBversions\fR \fIformulae\fR
+\fBversions [\-\-compact]\fR \fIformulae\fR
 List previous versions of \fIformulae\fR, along with a command to checkout each version\.
+.
+.IP
+If \fB\-\-compact\fR is passed, show all options on a single line separated by spaces\.
 .
 .TP
 \fB\-\-cache\fR
@@ -365,6 +377,10 @@ If set, instructs Homebrew to use the give folder as the download cache\. Otherw
 .
 .IP
 This can be used to keep downloads out of your home folder, if you have it mounted on an SSD or are using FileVault for instance\.
+.
+.TP
+HOMEBREW_CURL_VERBOSE
+If set, Homebrew will pass \fB\-\-verbose\fR when invoking \fBcurl\fR(1)\.
 .
 .TP
 HOMEBREW_DEBUG

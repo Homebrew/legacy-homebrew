@@ -1,10 +1,10 @@
 require 'formula'
 
 class X3270 < Formula
-  url 'http://sourceforge.net/projects/x3270/files/x3270/3.3.11ga6/suite3270-3.3.11ga6-src.tgz'
+  url 'http://sourceforge.net/projects/x3270/files/x3270/3.3.12ga7/suite3270-3.3.12ga7-src.tgz'
   homepage 'http://x3270.bgp.nu/'
-  md5 '01d6d3809a457e6f6bd3731642e0c02d'
-  version '3.3.11ga6'
+  md5 '5a501ed84d522c02d3c7ed3e36a00d0a'
+  version '3.3.12ga7'
 
   def options
     [

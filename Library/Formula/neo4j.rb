@@ -1,11 +1,10 @@
 require 'formula'
 
 class Neo4j < Formula
-  head 'http://dist.neo4j.org/neo4j-community-1.5-SNAPSHOT-unix.tar.gz'
-  url 'http://dist.neo4j.org/neo4j-community-1.4-unix.tar.gz'
-  version 'community-1.4'
+  url 'http://dist.neo4j.org/neo4j-community-1.5-unix.tar.gz'
+  version 'community-1.5'
   homepage 'http://neo4j.org'
-  md5 'a176c80283c3f4d3d71ee2f5c8bfa550'
+  md5 '7a48947c8bccef033098e5872510cb72'
 
   def install
     # Remove windows files
@@ -20,5 +19,6 @@ class Neo4j < Formula
     # Symlink binaries
     bin.mkpath
     ln_s "#{libexec}/bin/neo4j", bin+"neo4j"
+    ln_s "#{libexec}/bin/neo4j-shell", bin+"neo4j-shell"
   end
 end

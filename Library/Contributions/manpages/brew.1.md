@@ -39,14 +39,11 @@ For the full command list, see the COMMANDS section.
 
 ## COMMANDS
 
-  * `audit [--strict]` [<formulae>]:
+  * `audit` [<formulae>]:
     Check <formulae> for Homebrew coding style violations. This should be
     run before submitting a new formula.
 
     If no <formulae> are provided, all of them are checked.
-
-    If `--strict` is passed, perform additional stricter checks that may not need
-    to be fixed before submitting.
 
     `audit` exits with a non-zero status if any errors are found. This is useful,
     for instance, for implementing pre-commit hooks.
@@ -54,16 +51,18 @@ For the full command list, see the COMMANDS section.
   * `cat` <formula>:
     Display the source to <formula>.
 
-  * `cleanup [--force]` [<formula>]:
+  * `cleanup [--force] [-n]` [<formula>]:
     For all installed or specific formulae, remove any older versions from the
     cellar. By default, does not remove out-of-date keg-only brews, as other
     software may link directly to specific versions.
 
     If `--force` is passed, remove out-of-date keg-only brews as well.
 
+    If `-n` is passed, show what would be removed, but do not actually remove anything.
+
   * `create [--autotools|--cmake] [--no-fetch]` <URL>:
     Generate a formula for the downloadable file at <URL> and open it in
-    $EDITOR. Homebrew will attempt to automatically derive the formula name
+    `EDITOR`. Homebrew will attempt to automatically derive the formula name
     and version, but if it fails, you'll have to make your own template. The wget
     formula serves as a simple example.
 
@@ -73,13 +72,15 @@ For the full command list, see the COMMANDS section.
     If `--no-fetch` is passed, Homebrew will not download <URL> to the cache and
     will thus not add the MD5 to the formula for you.
 
-  * `deps [--1] [-n] [--all]` <formula>:
+  * `deps [--1] [-n] [--tree] [--all]` <formula>:
     Show <formula>'s dependencies.
 
     If `--1` is passed, only show dependencies one level down, instead of
     recursing.
 
     If `-n` is passed, show dependencies in topological order.
+
+    If `--tree` is passed, show dependencies as a tree.
 
     If `--all` is passed, show dependencies for all formulae.
 
@@ -97,10 +98,10 @@ For the full command list, see the COMMANDS section.
     if any problems are found.
 
   * `edit`:
-    Open all of Homebrew for editing in TextMate.
+    Open all of Homebrew for editing.
 
   * `edit` <formula>:
-    Open <formula> in $EDITOR.
+    Open <formula> in `EDITOR`.
 
   * `fetch [--force] [-v] [--HEAD] [--deps]` <formulae>:
     Download the source packages for the given <formulae>.
@@ -133,7 +134,7 @@ For the full command list, see the COMMANDS section.
   * `info` <URL>:
     Print the name and version that will be detected for <URL>.
 
-  * `install [--force] [--debug] [--ignore-dependencies] [--use-clang] [--use-gcc] [--use-llvm] [--build-from-source] [--HEAD]` <formula>:
+  * `install [--force] [--debug] [--ignore-dependencies] [--fresh] [--use-clang] [--use-gcc] [--use-llvm] [--build-from-source] [--devel] [--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but may also be
@@ -150,6 +151,9 @@ For the full command list, see the COMMANDS section.
     any kind. If they are not already present, the formula will probably fail
     to install.
 
+    If `--fresh` is passed, the installation process will not re-use any
+    options from previous installs.
+
     If `--use-clang` is passed, attempt to compile using clang.
 
     If `--use-gcc` is passed, attempt to compile using GCC. This is useful for
@@ -161,8 +165,10 @@ For the full command list, see the COMMANDS section.
     If `--build-from-source` is passed, compile from source even if a bottle
     is provided for <formula>.
 
+    If `--devel` is passed, and <formula> defines it, install the development version.
+
     If `--HEAD` is passed, and <formula> defines it, install the HEAD version,
-    aka master, trunk, unstable, dev.
+    aka master, trunk, unstable.
 
     To install a newer version of HEAD use
     `brew rm <foo> && brew install --HEAD <foo>`
@@ -198,7 +204,7 @@ For the full command list, see the COMMANDS section.
     Show the git log for the given formulae. Options that `git-log`(1)
     recognizes can be passed before the formula list.
 
-  * `missing [<formulae>]`:
+  * `missing` [<formulae>]:
     Check the given <formulae> for missing dependencies.
 
     If no <formulae> are given, check all installed brews.
@@ -266,9 +272,12 @@ For the full command list, see the COMMANDS section.
 
     If `--installed` is passed, only list installed formulae.
 
-  * `versions` <formulae>:
+  * `versions [--compact]` <formulae>:
     List previous versions of <formulae>, along with a command to checkout
     each version.
+
+    If `--compact` is passed, show all options on a single line separated by
+    spaces.
 
   * `--cache`:
     Display Homebrew's download cache. *Default:* `~/Library/Caches/Homebrew`
@@ -329,6 +338,9 @@ creating your own can be found on the wiki:
 
     This can be used to keep downloads out of your home folder, if you have
     it mounted on an SSD or are using FileVault for instance.
+
+  * HOMEBREW\_CURL\_VERBOSE:
+    If set, Homebrew will pass `--verbose` when invoking `curl`(1).
 
   * HOMEBREW\_DEBUG:
     If set, instructs Homebrew to always assume `--debug` when running

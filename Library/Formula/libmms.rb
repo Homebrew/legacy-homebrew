@@ -8,6 +8,13 @@ class Libmms < Formula
   depends_on 'pkg-config' => :build
   depends_on 'glib'
 
+  def patches
+    # see https://trac.macports.org/ticket/27988
+    if MacOS.leopard?
+      { :p0 => "https://svn.macports.org/repository/macports/!svn/bc/87883/trunk/dports/multimedia/libmms/files/src_mms-common.h.patch" }
+    end
+  end
+
   def install
     ENV.append 'LDFLAGS', '-liconv'
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"

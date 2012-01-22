@@ -1,10 +1,10 @@
 require 'formula'
 
 class Jenkins < Formula
-  url 'http://mirrors.jenkins-ci.org/war/1.428/jenkins.war', :using => :nounzip
+  url 'http://mirrors.jenkins-ci.org/war/1.447/jenkins.war', :using => :nounzip
   head 'https://github.com/jenkinsci/jenkins.git'
-  version '1.428'
-  md5 '5817e09ccc3a2996addeb8f1bc1cb6c8'
+  version '1.447'
+  md5 '1d7abb4fe6de96c48f0ef1a99edb5879'
   homepage 'http://jenkins-ci.org'
 
   def install

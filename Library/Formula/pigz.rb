@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pigz < Formula
-  url 'http://www.zlib.net/pigz/pigz-2.1.6.tar.gz'
+  url 'http://www.zlib.net/pigz/pigz-2.2.3.tar.gz'
   homepage 'http://www.zlib.net/pigz/'
-  md5 'cbe9030c4be3d0ef2438ee5f8b169ca4'
+  md5 '8330a6c6a3e5f1954687aaba4b973a6f'
 
   def install
     system "make"
