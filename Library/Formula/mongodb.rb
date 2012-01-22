@@ -62,15 +62,19 @@ class Mongodb < Formula
 
     Or start it manually:
         mongod run --config #{prefix}/mongod.conf
+
+    The launchctl plist above expects the config file to be at #{etc}/mongod.conf.
+    If this is a first install, you can copy one from #{prefix}/mongod.conf:
+        cp #{prefix}/mongod.conf #{etc}/mongod.conf
     EOS
 
     if ARGV.include? "--nojournal"
-        s += ""
+        s += "\n"
         s += <<-EOS.undent
         Write Ahead logging (Journaling) has been disabled.
         EOS
     else
-        s += ""
+        s += "\n"
         s += <<-EOS.undent
         MongoDB 1.8+ includes a feature for Write Ahead Logging (Journaling), which has been enabled by default.
         To disable journaling, use --nojournal.
@@ -120,7 +124,7 @@ class Mongodb < Formula
     <string>#{bin}/mongod</string>
     <string>run</string>
     <string>--config</string>
-    <string>#{prefix}/mongod.conf</string>
+    <string>#{etc}/mongod.conf</string>
   </array>
   <key>RunAtLoad</key>
   <true/>
