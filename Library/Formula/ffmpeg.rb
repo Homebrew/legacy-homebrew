@@ -29,6 +29,7 @@ class Ffmpeg < Formula
   depends_on 'libogg' => :optional
   depends_on 'libvpx' => :optional
   depends_on 'xvid' => :optional
+  depends_on 'libfrei0r' => :optional
 
   depends_on 'sdl' if ffplay?
 
@@ -50,6 +51,7 @@ class Ffmpeg < Formula
     args << "--enable-libvorbis" if Formula.factory('libvorbis').installed?
     args << "--enable-libvpx" if Formula.factory('libvpx').installed?
     args << "--enable-libxvid" if Formula.factory('xvid').installed?
+	args << "--enable-frei0r" if Formula.factory('libfrei0r').installed?
     args << "--disable-ffplay" unless ffplay?
 
     # For 32-bit compilation under gcc 4.2, see:
