@@ -22,6 +22,7 @@ class GstPluginsGood < Formula
   depends_on 'libshout' => :optional
   depends_on 'speex' => :optional
   depends_on 'taglib' => :optional
+  depends_on 'libsoup' => :optional
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
