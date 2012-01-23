@@ -8,7 +8,7 @@ class Appledoc < Formula
 
   def install
     ENV['CC'] = "#{MacOS.xcode_prefix}/usr/bin/clang"
-    system "/usr/bin/xcodebuild", "-project", "appledoc.xcodeproj", "-target", "appledoc", "-configuration", "Release", "SYMROOT=symroot", "OBJROOT=objroot"
+    system "xcodebuild", "-project", "appledoc.xcodeproj", "-target", "appledoc", "-configuration", "Release", "SYMROOT=symroot", "OBJROOT=objroot"
     bin.install "symroot/Release/appledoc"
 
     (prefix + 'Templates').install Dir['Templates/*']
