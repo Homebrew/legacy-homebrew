@@ -7,7 +7,7 @@ class Httping < Formula
 
   def patches
     # fixes conflicting definitions of strdup()
-    { :p0 => 'https://svn.macports.org/repository/macports/!svn/bc/88419/trunk/dports/net/httping/files/patch-strndup.diff' }
+    { :p0 => 'https://trac.macports.org/export/88419/trunk/dports/net/httping/files/patch-strndup.diff' }
   end
 
   def install
