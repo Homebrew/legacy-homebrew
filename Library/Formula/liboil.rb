@@ -8,18 +8,18 @@ class Liboil < Formula
   depends_on 'pkg-config' => :build
   depends_on 'glib'
 
+  def patches
+    { :p0 => [
+      "https://trac.macports.org/export/89276/trunk/dports/devel/liboil/files/patch-liboil_liboilcpu-x86.c.diff",
+      "https://trac.macports.org/export/89276/trunk/dports/devel/liboil/files/host_cpu.diff"
+    ]}
+  end
+
   def install
     arch = Hardware.is_64_bit? ? 'x64_64' : 'i386'
     inreplace "configure", "__HOST_CPU__", arch
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make"
     system "make install"
-  end
-
-  def patches
-    {:p0 => [
-      "http://svn.macports.org/repository/macports/trunk/dports/devel/liboil/files/patch-liboil_liboilcpu-x86.c.diff",
-      "http://svn.macports.org/repository/macports/trunk/dports/devel/liboil/files/host_cpu.diff"
-    ]}
   end
 end
