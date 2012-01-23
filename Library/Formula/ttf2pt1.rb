@@ -8,7 +8,7 @@ class Ttf2pt1 < Formula
   def patches
     # From MacPorts, needed to find free-type on OS X.
     { 'p0' =>
-      "http://trac.macports.org/export/75341/trunk/dports/print/ttf2pt1/files/patch-ft.c"
+      "https://trac.macports.org/export/75341/trunk/dports/print/ttf2pt1/files/patch-ft.c"
     }
   end
 
