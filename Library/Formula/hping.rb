@@ -9,11 +9,11 @@ class Hping < Formula
   def patches
     {:p0 => [
       # MacPorts patches: http://trac.macports.org/browser/trunk/dports/net/hping3
-      "http://trac.macports.org/export/70033/trunk/dports/net/hping3/files/patch-libpcap_stuff.c.diff",
-      "http://trac.macports.org/export/70033/trunk/dports/net/hping3/files/patch-ars.c.diff",
-      "http://trac.macports.org/export/70033/trunk/dports/net/hping3/files/patch-sendip.c.diff",
-      "http://trac.macports.org/export/70033/trunk/dports/net/hping3/files/patch-Makefile.in.diff",
-      "http://trac.macports.org/export/70033/trunk/dports/net/hping3/files/patch-bytesex.h.diff"
+      "https://trac.macports.org/export/70033/trunk/dports/net/hping3/files/patch-libpcap_stuff.c.diff",
+      "https://trac.macports.org/export/70033/trunk/dports/net/hping3/files/patch-ars.c.diff",
+      "https://trac.macports.org/export/70033/trunk/dports/net/hping3/files/patch-sendip.c.diff",
+      "https://trac.macports.org/export/70033/trunk/dports/net/hping3/files/patch-Makefile.in.diff",
+      "https://trac.macports.org/export/70033/trunk/dports/net/hping3/files/patch-bytesex.h.diff"
     ]}
   end
 
