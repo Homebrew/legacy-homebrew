@@ -10,8 +10,8 @@ class Libffi < Formula
 
   def patches
     # both of these are fixed upstream
-    { :p0 => ["https://svn.macports.org/repository/macports/!svn/bc/88691/trunk/dports/devel/libffi/files/patch-configure.diff",
-              "https://svn.macports.org/repository/macports/!svn/bc/88691/trunk/dports/devel/libffi/files/patch-configure-darwin11.diff"] }
+    { :p0 => ["https://trac.macports.org/export/88691/trunk/dports/devel/libffi/files/patch-configure.diff",
+              "https://trac.macports.org/export/88691/trunk/dports/devel/libffi/files/patch-configure-darwin11.diff"] }
   end
 
   def install
