@@ -13,7 +13,7 @@ class Glib < Formula
   fails_with_llvm "Undefined symbol errors while linking", :build => 2334
 
   def patches
-    mp = "https://svn.macports.org/repository/macports/!svn/bc/87537/trunk/dports/devel/glib2/files/"
+    mp = "https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/"
     {
       :p0 => [
         mp+"patch-configure.diff",
@@ -45,6 +45,12 @@ class Glib < Formula
             "--disable-dtrace"]
 
     args << "--disable-debug" unless build_tests?
+
+    # MacPorts puts "@@PREFIX@@" in patches and does inreplace on the files,
+    # so we must follow suit if we use their patches
+    inreplace ['gio/xdgmime/xdgmime.c', 'gio/gdbusprivate.c'] do |s|
+      s.gsub! '@@PREFIX@@', HOMEBREW_PREFIX
+    end
 
     if ARGV.build_universal?
       # autoconf 2.61 is fine don't worry about it

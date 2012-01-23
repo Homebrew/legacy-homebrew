@@ -5,11 +5,12 @@ require 'formula'
 # would require an existing ML compiler/interpreter for bootstrapping.
 
 class Mlton < Formula
-  # the dynamic macports version works fine with Homebrew's gmp
-  url 'http://mlton.org/pages/Download/attachments/mlton-20100608-1.amd64-darwin.gmp-macports.tgz'
+  url 'http://mlton.org/pages/Download/attachments/mlton-20100608-1.amd64-darwin.gmp-static.tgz'
   homepage 'http://mlton.org'
-  md5 'e9007318bb77c246258a53690b1d3449'
+  md5 'd32430f2b66f05ac0ef6ff087ea109ca'
 
+  # We download and install the version of MLton which is statically linked to libgmp, but all
+  # generated executables will require gmp anyway, hence the dependency
   depends_on 'gmp'
 
   skip_clean :all

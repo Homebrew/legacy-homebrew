@@ -44,7 +44,7 @@ class Mercurial < Formula
     ln_s libexec+'hg', bin+'hg'
 
     # Remove the hard-coded python invocation from hg
-    inreplace bin+'hg', %r[#!/.*/python], '#!/usr/bin/env python'
+    inreplace bin+'hg', %r[#!/.*/python/.*], '#!/usr/bin/env python'
 
     # Install some contribs
     bin.install 'contrib/hgk'
