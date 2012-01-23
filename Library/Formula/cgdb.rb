@@ -15,8 +15,8 @@ class Cgdb < Formula
   # patches from MacPorts, or segfaults when run
   def patches
     { :p0 => [
-      "http://trac.macports.org/export/73182/trunk/dports/devel/cgdb/files/patch-various-util-src-pseudo.c.diff",
-      "http://trac.macports.org/export/73182/trunk/dports/devel/cgdb/files/patch-implicit-declaration-of-cgdb_malloc.diff"
+      "https://trac.macports.org/export/73182/trunk/dports/devel/cgdb/files/patch-various-util-src-pseudo.c.diff",
+      "https://trac.macports.org/export/73182/trunk/dports/devel/cgdb/files/patch-implicit-declaration-of-cgdb_malloc.diff"
     ]}
   end
 
