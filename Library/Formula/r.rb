@@ -12,11 +12,12 @@ class RBashCompletion < Formula
 end
 
 class R < Formula
-  url 'http://cran.r-project.org/src/base/R-2/R-2.14.0.tar.gz'
-  homepage 'http://www.r-project.org/'
-  md5 '98cf8fe74e512e1061caf1ee0c2043a8'
+  homepage 'http://www.r-project.org'
+  url 'http://cran.r-project.org/src/base/R-2/R-2.14.1.tar.gz'
+  md5 'ba5b6fb15b660670ea29b885348f322a'
 
   depends_on 'valgrind' if valgrind?
+  depends_on 'readline'
 
   def options
     [

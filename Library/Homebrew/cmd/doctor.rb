@@ -184,6 +184,7 @@ def check_gcc_versions
   if gcc_42 == nil
     puts <<-EOS.undent
       We couldn't detect gcc 4.2.x. Some formulae require this compiler.
+      NOTE: Versions of XCode newer than 4.2 don't include gcc 4.2.x.
 
     EOS
   elsif gcc_42 < RECOMMENDED_GCC_42
@@ -351,7 +352,7 @@ def check_user_path
 
             Consider editing your .bashrc to put:
               #{HOMEBREW_PREFIX}/bin
-            ahead of /usr/bin in your $PATH.
+            ahead of /usr/bin in your PATH.
           EOS
         end
       end
@@ -369,7 +370,7 @@ def check_user_path
 
       You should edit your .bashrc to add:
         #{HOMEBREW_PREFIX}/bin
-      to $PATH.
+      to the PATH variable.
 
       EOS
   end
@@ -384,7 +385,7 @@ def check_user_path
 
         Consider editing your .bashrc to add:
           #{HOMEBREW_PREFIX}/sbin
-        to $PATH.
+        to the PATH variable.
 
         EOS
     end
@@ -479,7 +480,7 @@ def check_for_config_scripts
   config_scripts = []
 
   path_folders.each do |p|
-    next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin"].include? p
+    next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', '/usr/X11R6/bin', "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin"].include? p
     next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] if real_cellar
 
     configs = Dir["#{p}/*-config"]
@@ -569,8 +570,7 @@ def check_for_multiple_volumes
 end
 
 def check_for_git
-  git = `/usr/bin/which git`.chomp
-  if git.empty?
+  unless system "/usr/bin/which -s git"
     puts <<-EOS.undent
       "Git" was not found in your path.
 
@@ -585,19 +585,18 @@ def check_for_git
 end
 
 def check_git_newline_settings
-  git = `/usr/bin/which git`.chomp
-  return if git.empty?
+  return unless system "/usr/bin/which -s git"
 
-  autocrlf=`git config --get core.autocrlf`
-  safecrlf=`git config --get core.safecrlf`
+  autocrlf = `git config --get core.autocrlf`.chomp
+  safecrlf = `git config --get core.safecrlf`.chomp
 
-  if autocrlf=='input' and safecrlf=='true'
+  if autocrlf == 'input' and safecrlf == 'true'
     puts <<-EOS.undent
     Suspicious Git newline settings found.
 
     The detected Git newline settings can cause checkout problems:
-      core.autocrlf=#{autocrlf}
-      core.safecrlf=#{safecrlf}
+      core.autocrlf = #{autocrlf}
+      core.safecrlf = #{safecrlf}
 
     If you are not routinely dealing with Windows-based projects,
     consider removing these settings.
@@ -677,7 +676,7 @@ def check_for_MACOSX_DEPLOYMENT_TARGET
 
   unless target_var == MACOS_VERSION.to_s
     puts <<-EOS.undent
-    $MACOSX_DEPLOYMENT_TARGET was set to #{target_var}
+    MACOSX_DEPLOYMENT_TARGET was set to #{target_var}
     This is used by Fink, but having it set to a value different from the
     current system version (#{MACOS_VERSION}) can cause problems, compiling
     Git for instance, and should probably be removed.
@@ -689,7 +688,7 @@ end
 def check_for_CLICOLOR_FORCE
   if ENV['CLICOLOR_FORCE']
     puts <<-EOS.undent
-    Having $CLICOLOR_FORCE set can cause some builds to fail.
+    Having CLICOLOR_FORCE set can cause some builds to fail.
     You may want to unset it.
 
     EOS
@@ -700,8 +699,8 @@ def check_for_GREP_OPTIONS
   target_var = ENV['GREP_OPTIONS'].to_s
   unless target_var.empty? or target_var == '--color=auto'
     puts <<-EOS.undent
-    $GREP_OPTIONS was set to \"#{target_var}\".
-    Having $GREP_OPTIONS set this way can cause CMake builds to fail.
+    GREP_OPTIONS was set to \"#{target_var}\".
+    Having GREP_OPTIONS set this way can cause CMake builds to fail.
 
     EOS
   end
@@ -737,7 +736,7 @@ def check_tmpdir
   tmpdir = ENV['TMPDIR']
   return if tmpdir.nil?
   if !File.directory?(tmpdir)
-    puts "$TMPDIR #{tmpdir.inspect} doesn't exist."
+    puts "TMPDIR #{tmpdir.inspect} doesn't exist."
     puts
   end
 end
@@ -752,12 +751,13 @@ def check_missing_deps
 end
 
 def check_git_status
-  repo = HOMEBREW_REPOSITORY
-  status_cmd = "git --git-dir=#{repo}/.git --work-tree=#{repo} status -s #{repo}/Library/Homebrew"
-  if system "/usr/bin/which -s git" and File.directory? repo+'.git' and not `#{status_cmd}`.empty?
-    ohai "You have uncommitted modifications to Homebrew's core."
-    puts "Unless you know what you are doing, you should: git reset --hard"
-    puts
+  HOMEBREW_REPOSITORY.cd do
+    cmd = `git status -s Library/Homebrew/`.chomp
+    if system "/usr/bin/which -s git" and File.directory? '.git' and not cmd.empty?
+      ohai "You have uncommitted modifications to Homebrew's core."
+      puts "Unless you know what you are doing, you should: git reset --hard"
+      puts
+    end
   end
 end
 
@@ -771,7 +771,7 @@ def check_for_leopard_ssl
       fetch over HTTPS, e.g. `brew update` or installing formulae that perform
       Git checkouts.
 
-      You can force Git to ignore these errors by setting $GIT_SSL_NO_VERIFY.
+      You can force Git to ignore these errors by setting GIT_SSL_NO_VERIFY.
         export GIT_SSL_NO_VERIFY=1
 
     EOS
@@ -798,6 +798,18 @@ def check_git_version
 
     EOS
   end
+end
+
+def check_for_enthought_python
+  return unless system "/usr/bin/which -s enpkg"
+  puts <<-EOS.undent
+    Enthought Python was found in your PATH.
+
+    This can cause build problems, as this software installs its own
+    copies of iconv and libxml2 into folders that are picked up by
+    other build systems.
+
+  EOS
 end
 
 module Homebrew extend self
@@ -845,6 +857,7 @@ module Homebrew extend self
       check_git_status
       check_for_leopard_ssl
       check_git_version
+      check_for_enthought_python
     ensure
       $stdout = old_stdout
     end

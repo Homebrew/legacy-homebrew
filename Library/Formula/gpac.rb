@@ -47,7 +47,7 @@ class Gpac < Formula
 
     system "chmod", "+rw", "Makefile"
     ["MP4Box","MP4Client"].each do |name|
-      filename = "applications/#{name}/Makefile"
+      filename = "applications/#{name.downcase}/Makefile"
       system "chmod", "+rw", filename
 
       if ARGV.include? '--with-lowercase'

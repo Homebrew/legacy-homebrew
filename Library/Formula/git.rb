@@ -1,22 +1,27 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.7.7.4.tar.gz'
-  sha1 'cb21e55ae793865453c165a0e666348f2db8c740'
+  url 'http://git-core.googlecode.com/files/git-manpages-1.7.8.4.tar.gz'
+  sha1 '4372c423a0d2f7df33b5b39727a81f0a7b40669d'
 end
 
 class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.7.4.tar.gz'
-  sha1 '6012cb017a04ded85c48ca5510f741e98c02f671'
+  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.8.4.tar.gz'
+  sha1 'ac2b89d8d4418c7633ee2344e89eb7dfcb81522a'
 end
 
 class Git < Formula
-  url 'http://git-core.googlecode.com/files/git-1.7.7.4.tar.gz'
-  sha1 '5b6920989480a37ec65977e756b24961578795dd'
+  url 'http://git-core.googlecode.com/files/git-1.7.8.4.tar.gz'
+  sha1 'add7b05f26216181d1b148dde298432132552b0f'
   homepage 'http://git-scm.com'
 
+  depends_on 'pcre' if ARGV.include? '--with-pcre'
+
   def options
-    [['--with-blk-sha1', 'compile with the optimized SHA1 implementation']]
+    [
+      ['--with-blk-sha1', 'compile with the optimized SHA1 implementation'],
+      ['--with-pcre', 'compile with the PCRE library'],
+    ]
   end
 
   def install
@@ -24,14 +29,23 @@ class Git < Formula
     ENV['NO_FINK']='1'
     ENV['NO_DARWIN_PORTS']='1'
     ENV['V']='1' # build verbosely
+    ENV['NO_R_TO_GCC_LINKER']='1' # pass arguments to LD correctly
+
+    # workaround for users of perlbrew
+    ENV['PERL_PATH'] = `/usr/bin/which perl`.chomp
 
     # Clean XCode 4.x installs don't include Perl MakeMaker
     ENV['NO_PERL_MAKEMAKER']='1' if MacOS.lion?
 
     ENV['BLK_SHA1']='1' if ARGV.include? '--with-blk-sha1'
 
+    if ARGV.include? '--with-pcre'
+      ENV['USE_LIBPCRE']='1'
+      ENV['LIBPCREDIR'] = HOMEBREW_PREFIX
+    end
+
     inreplace "Makefile" do |s|
-      s.remove_make_var! %w{CFLAGS LDFLAGS}
+      s.remove_make_var! %w{CC CFLAGS LDFLAGS}
     end
 
     system "make", "prefix=#{prefix}", "install"
@@ -44,17 +58,6 @@ class Git < Formula
     (share+'doc/git-core/contrib').install 'contrib/emacs'
     # Some people like the stuff in the contrib folder
     (share+'git').install 'contrib'
-
-    # These files are exact copies of the git binary, so like the contents
-    # of libexec/git-core lets hard link them.
-    # I am assuming this is an overisght by the git devs.
-    git_md5 = (bin+'git').md5
-    %w[git-receive-pack git-upload-archive].each do |fn|
-      fn = bin + fn
-      next unless git_md5 == fn.md5
-      fn.unlink
-      fn.make_link bin+'git'
-    end
 
     # We could build the manpages ourselves, but the build process depends
     # on many other packages, and is somewhat crazy, this way is easier.

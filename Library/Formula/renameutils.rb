@@ -7,6 +7,8 @@ class Renameutils < Formula
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make -j1 install" # fails if run in parallel
+    system "make"
+    ENV.deparallelize # parallel install fails
+    system "make install"
   end
 end

@@ -3,6 +3,7 @@ require 'formula'
 class Guile < Formula
   homepage 'http://www.gnu.org/software/guile/'
   url 'http://ftpmirror.gnu.org/guile/guile-1.8.7.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/guile/guile-1.8.7.tar.gz'
   head 'http://ftpmirror.gnu.org/guile/guile-2.0.2.tar.gz'
 
   if ARGV.build_head?
@@ -20,7 +21,7 @@ class Guile < Formula
   # GNU Readline is required; libedit won't work.
   depends_on 'readline'
 
-  fails_with_llvm "Segfaults during compilation."
+  fails_with_llvm "Segfaults during compilation.", :build => 2336
 
   def install
     system "./configure", "--disable-dependency-tracking",

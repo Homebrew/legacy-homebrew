@@ -3,8 +3,8 @@ require 'hardware'
 
 class Postgresql < Formula
   homepage 'http://www.postgresql.org/'
-  url 'http://ftp9.us.postgresql.org/pub/mirrors/postgresql/source/v9.1.1/postgresql-9.1.1.tar.bz2'
-  md5 '061a9f17323117c9358ed60f33ecff78'
+  url 'http://ftp.postgresql.org/pub/source/v9.1.2/postgresql-9.1.2.tar.bz2'
+  md5 '7dbff52221954c46595313eb7f92c3e0'
 
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.leopard? # Leopard libxml is too old
@@ -79,7 +79,7 @@ class Postgresql < Formula
         shown above, or move it out of the way before brewing PostgreSQL.
 
         Note that a framework Python in /Library/Frameworks/Python.framework is
-        the "MacPython" verison, and not the system-provided version which is in:
+        the "MacPython" version, and not the system-provided version which is in:
           /System/Library/Frameworks/Python.framework
       EOS
     end

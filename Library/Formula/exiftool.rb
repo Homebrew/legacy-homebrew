@@ -1,9 +1,9 @@
 require 'formula'
 
 class Exiftool < Formula
-  url 'http://www.sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-8.71.tar.gz'
+  url 'http://www.sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-8.76.tar.gz'
   homepage 'http://www.sno.phy.queensu.ca/~phil/exiftool/index.html'
-  md5 '9bc316b3270d95f069188c93f79bcd58'
+  md5 'a176e674a08a92afa330901f29a7d68d'
 
   def install
     system "perl", "Makefile.PL"
@@ -23,5 +23,9 @@ readlink_exiftool=$(readlink $which_exiftool)
 dirname_unlinked_exiftool=$(dirname $dirname_exiftool/$readlink_exiftool)
 $dirname_unlinked_exiftool/../libexec/exiftool "$@"
 EOBIN
+  end
+
+  def test
+    system "#{libexec}/exiftool"
   end
 end
