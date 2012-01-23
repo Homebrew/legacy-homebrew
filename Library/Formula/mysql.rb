@@ -28,7 +28,7 @@ class Mysql < Formula
   end
 
   def install
-    # Make sure the var/msql directory exists
+    # Make sure the var/mysql directory exists
     (var+"mysql").mkpath
 
     args = [".",
