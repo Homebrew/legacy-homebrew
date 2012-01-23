@@ -6,7 +6,6 @@ require 'formula'
 
 class Mlton < Formula
   url 'http://mlton.org/pages/Download/attachments/mlton-20100608-1.amd64-darwin.gmp-static.tgz'
-  version '20100608-1'
   homepage 'http://mlton.org'
   md5 'd32430f2b66f05ac0ef6ff087ea109ca'
 
