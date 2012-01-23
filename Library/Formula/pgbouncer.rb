@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pgbouncer < Formula
-  url 'http://pgfoundry.org/frs/download.php/3085/pgbouncer-1.4.2.tgz'
+  url 'http://pgfoundry.org/frs/download.php/3197/pgbouncer-1.5.tgz'
   homepage 'http://wiki.postgresql.org/wiki/PgBouncer'
-  md5 '5083110b5b4f2127234bfc7b1f451f8d'
+  md5 '6179fdc7f7e3c702fe834d655676de4c'
 
   depends_on 'libevent'
 
@@ -11,6 +11,7 @@ class Pgbouncer < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--with-libevent=#{HOMEBREW_PREFIX}",
                           "--prefix=#{prefix}"
+    system "ln -s ../install-sh doc/install-sh"
     system "make install"
     bin.install "etc/mkauth.py"
     etc.install %w(etc/pgbouncer.ini etc/userlist.txt)
