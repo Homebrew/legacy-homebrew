@@ -4,9 +4,9 @@ require 'formula'
 require "#{File.dirname __FILE__}/ec2-api-tools.rb"
 
 class AwsIamTools < AmazonWebServicesFormula
-  # No stable build yet
-  head 'http://awsiammedia.s3.amazonaws.com/public/tools/cli/latest/IAMCli.zip'
+  url 'http://awsiammedia.s3.amazonaws.com/public/tools/cli/latest/IAMCli.zip'
   homepage 'http://developer.amazonwebservices.com/connect/entry.jspa?externalID=4143&categoryID=322'
+  version "1.3.0"
   md5 'b39871a93b5e9e3d9e9a072f84814a42'
 
   def install
