@@ -1,9 +1,9 @@
 require 'formula'
 
 class Multitail < Formula
-  url 'http://www.vanheusden.com/multitail/multitail-5.2.6.tgz'
+  url 'http://www.vanheusden.com/multitail/multitail-5.2.8.tgz'
   homepage 'http://www.vanheusden.com/multitail/download.html'
-  md5 '6496b3d78660ff8d11c743a0d03cca34'
+  md5 'aaa3691b0ea66ef02ffefd628c7dee8b'
 
   def install
     system "env", "DESTDIR=#{prefix}", "make", "-f", "makefile.macosx", "multitail"

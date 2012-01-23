@@ -18,7 +18,7 @@ class Glib < Formula
   depends_on 'libiconv'
 
   def patches
-    mp = "https://svn.macports.org/repository/macports/trunk/dports/devel/glib2/files/"
+    mp = "https://svn.macports.org/repository/macports/!svn/bc/79276/trunk/dports/devel/glib2/files/"
     {
       :p0 => [
         mp+"patch-configure.ac.diff",

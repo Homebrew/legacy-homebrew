@@ -1,9 +1,9 @@
 require 'formula'
 
 class Doxygen < Formula
-  url 'http://ftp.stack.nl/pub/users/dimitri/doxygen-1.7.5.src.tar.gz'
+  url 'http://ftp.stack.nl/pub/users/dimitri/doxygen-1.7.5.1.src.tar.gz'
   homepage 'http://www.doxygen.org/'
-  md5 '40912d0a4b8248d78df6f705837dcd80'
+  sha1 '15671defd1eefe255aa564b6f3097e30ab07ff55'
   head 'https://doxygen.svn.sourceforge.net/svnroot/doxygen/trunk'
 
   def install

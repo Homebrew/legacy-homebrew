@@ -49,8 +49,11 @@ class RefreshBrew
           raise
         end
       end
+
       # specify a refspec so that 'origin/master' gets updated
-      execute "git pull origin refs/heads/master:refs/remotes/origin/master"
+      refspec = "refs/heads/master:refs/remotes/origin/master"
+      rebase = "--rebase" if ARGV.include? "--rebase"
+      execute "git pull #{rebase} origin #{refspec}"
       @current_revision = read_revision
     end
 

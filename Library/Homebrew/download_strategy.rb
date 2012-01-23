@@ -55,9 +55,13 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     unless @tarball_path.exist?
       begin
         _fetch
-      rescue Exception
+      rescue Exception => e
         ignore_interrupts { @tarball_path.unlink if @tarball_path.exist? }
-        raise
+        if e.kind_of? ErrorDuringExecution
+          raise CurlDownloadStrategyError, "Download failed: #{@url}"
+        else
+          raise
+        end
       end
     else
       puts "File already downloaded in #{File.dirname(@tarball_path)}"
@@ -278,6 +282,22 @@ class StrictSubversionDownloadStrategy < SubversionDownloadStrategy
   end
 end
 
+# Download from SVN servers with invalid or self-signed certs
+class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
+  def fetch_repo target, url, revision=nil, ignore_externals=false
+    # Use "svn up" when the repository already exists locally.
+    # This saves on bandwidth and will have a similar effect to verifying the
+    # cache as it will make any changes to get the right revision.
+    svncommand = target.exist? ? 'up' : 'checkout'
+    args = [svn, svncommand, '--non-interactive', '--trust-server-cert', '--force']
+    args << url if !target.exist?
+    args << target
+    args << '-r' << revision if revision
+    args << '--ignore-externals' if ignore_externals
+    quiet_safe_system(*args)
+  end
+end
+
 class GitDownloadStrategy < AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
@@ -340,14 +360,14 @@ class GitDownloadStrategy < AbstractDownloadStrategy
         case @spec
         when :branch
           nostdout { quiet_safe_system 'git', 'checkout', "origin/#{@ref}" }
-        when :tag
+        when :tag, :sha
           nostdout { quiet_safe_system 'git', 'checkout', @ref }
         end
       else
         # otherwise the checkout-index won't checkout HEAD
         # https://github.com/mxcl/homebrew/issues/7124
-        # must specify origin/master, otherwise it resets to the current local HEAD
-        quiet_safe_system "git", "reset", "--hard", "origin/master"
+        # must specify origin/HEAD, otherwise it resets to the current local HEAD
+        quiet_safe_system "git", "reset", "--hard", "origin/HEAD"
       end
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
       safe_system 'git', 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
@@ -422,7 +442,7 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
   def cached_location; @clone; end
 
   def fetch
-    raise "You must `easy_install mercurial'" unless system "/usr/bin/which hg"
+    raise "You must install Mercurial: brew install mercurial" unless system "/usr/bin/which hg"
 
     ohai "Cloning #{@url}"
 

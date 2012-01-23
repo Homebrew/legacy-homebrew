@@ -10,6 +10,9 @@ class Libspatialite < Formula
   depends_on 'geos'
 
   def install
+    # O2 and O3 leads to corrupt/invalid rtree indexes
+    # http://groups.google.com/group/spatialite-users/browse_thread/thread/8e1cfa79f2d02a00#
+    ENV.Os
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

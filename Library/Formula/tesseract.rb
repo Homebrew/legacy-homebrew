@@ -16,6 +16,9 @@ class Tesseract < Formula
 
   fails_with_llvm "Executable 'tesseract' segfaults on 10.6 when compiled with llvm-gcc", :build => "2206"
 
+  # mftraining has a missing symbols error when cleaned
+  skip_clean 'bin'
+
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"

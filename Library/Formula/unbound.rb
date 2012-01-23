@@ -1,9 +1,9 @@
 require 'formula'
 
 class Unbound < Formula
-  url 'http://www.unbound.net/downloads/unbound-1.4.7.tar.gz'
+  url 'http://www.unbound.net/downloads/unbound-1.4.13.tar.gz'
   homepage 'http://www.unbound.net'
-  md5 '97ee3c4a9877ff725fad23e31ecadfe0'
+  md5 '7e3b27dee2b97640dd2e1783253317ab'
 
   depends_on 'ldns'
 

@@ -9,6 +9,8 @@ class Luajit < Formula
   # Skip cleaning both empty folders and bin/libs so external symbols still work.
   skip_clean :all
 
+  fails_with_llvm "_Unwind_Exception_Class undeclared", :build => 2336
+
   def options
     [["--debug", "Build with debugging symbols."]]
   end
@@ -22,11 +24,19 @@ class Luajit < Formula
 
   def install
     if ARGV.include? '--debug'
-      system "make", "CCDEBUG=-g", "PREFIX=#{prefix}", "amalg"
-      system "make", "CCDEBUG=-g", "PREFIX=#{prefix}", "install"
+      system "make", "CCDEBUG=-g", "PREFIX=#{prefix}",
+             "TARGET_CC=#{ENV['CC']}",
+             "amalg"
+      system "make", "CCDEBUG=-g", "PREFIX=#{prefix}",
+             "TARGET_CC=#{ENV['CC']}",
+             "install"
     else
-      system "make", "PREFIX=#{prefix}", "amalg"
-      system "make", "PREFIX=#{prefix}", "install"
+      system "make", "PREFIX=#{prefix}",
+             "TARGET_CC=#{ENV['CC']}",
+             "amalg"
+      system "make", "PREFIX=#{prefix}",
+             "TARGET_CC=#{ENV['CC']}",
+             "install"
     end
 
     # Non-versioned symlink

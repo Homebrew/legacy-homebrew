@@ -1,9 +1,9 @@
 require 'formula'
 
 class ColorCode < Formula
-  url 'http://test.laebisch.com/ColorCode-0.5.5.tar.gz'
+  url 'http://colorcode.laebisch.com/download/ColorCode-0.7.2.tar.gz'
   homepage 'http://colorcode.laebisch.com/'
-  md5 'f41657dccdb9305c3b5532f701067630'
+  sha1 'd9ecd49d04c41ac680ae4d2cb217215440c1a27d'
 
   depends_on 'qt'
 

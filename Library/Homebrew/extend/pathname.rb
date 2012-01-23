@@ -165,7 +165,7 @@ class Pathname
     return $1 if $1
 
     # brew bottle style e.g. qt-4.7.3-bottle.tar.gz
-    /-((\d+\.)*\d+)-bottle$/.match stem
+    /-((\d+\.)*\d+(-\d)*)-bottle$/.match stem
     return $1 if $1
 
     # eg. otp_src_R13B (this is erlang's style)
@@ -238,7 +238,7 @@ class Pathname
       unless rv and $? == 0
         raise <<-EOS.undent
           Could not create symlink #{to_s}.
-          Check that you have permssions on #{self.dirname}
+          Check that you have permissions on #{self.dirname}
           EOS
       end
     end

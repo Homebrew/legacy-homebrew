@@ -100,7 +100,7 @@ class Formula
   include FileUtils
 
   attr_reader :name, :path, :url, :version, :homepage, :specs, :downloader
-  attr_reader :bottle, :bottle_sha1
+  attr_reader :bottle, :bottle_sha1, :head
 
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
@@ -130,7 +130,7 @@ class Formula
     @name=name
     validate_variable :name
 
-    @path=path
+    @path = path.nil? ? nil : Pathname.new(path)
 
     set_instance_variable 'version'
     @version ||= @spec_to_use.detect_version
@@ -146,6 +146,16 @@ class Formula
     return installed_prefix.children.length > 0
   rescue
     return false
+  end
+
+  def explicitly_requested?
+
+    # `ARGV.formulae` will throw an exception if it comes up with an empty
+    # list.
+    #
+    # FIXME: `ARGV.formulae` shouldn't be throwing exceptions, see issue #8823
+   return false if ARGV.named.empty?
+   ARGV.formulae.include? self
   end
 
   def installed_prefix
@@ -458,6 +468,10 @@ class Formula
     HOMEBREW_REPOSITORY+"Library/Formula/#{name.downcase}.rb"
   end
 
+  def mirrors
+    self.class.mirrors or []
+  end
+
   def deps
     self.class.deps or []
   end
@@ -549,8 +563,31 @@ private
 
   CHECKSUM_TYPES=[:md5, :sha1, :sha256].freeze
 
-  public # for FormulaInstaller
+  public
+  # For brew-fetch and others.
+  def fetch
+    downloader = @downloader
+    # Don't attempt mirrors if this install is not pointed at a "stable" URL.
+    # This can happen when options like `--HEAD` are invoked.
+    mirror_list =  @spec_to_use == @stable ? mirrors : []
 
+    # Ensure the cache exists
+    HOMEBREW_CACHE.mkpath
+
+    begin
+      fetched = downloader.fetch
+    rescue CurlDownloadStrategyError => e
+      raise e if mirror_list.empty?
+      puts "Trying a mirror..."
+      url, specs = mirror_list.shift.values_at :url, :specs
+      downloader = download_strategy.new url, name, version, specs
+      retry
+    end
+
+    return fetched, downloader
+  end
+
+  # For FormulaInstaller.
   def verify_download_integrity fn, *args
     require 'digest'
     if args.length != 2
@@ -584,11 +621,10 @@ EOF
   private
 
   def stage
-    HOMEBREW_CACHE.mkpath
-    fetched = @downloader.fetch
+    fetched, downloader = fetch
     verify_download_integrity fetched if fetched.kind_of? Pathname
     mktemp do
-      @downloader.stage
+      downloader.stage
       yield
     end
   end
@@ -688,7 +724,7 @@ EOF
       end
     end
 
-    attr_rw :version, :homepage, :specs, :deps, :external_deps
+    attr_rw :version, :homepage, :mirrors, :specs, :deps, :external_deps
     attr_rw :keg_only_reason, :fails_with_llvm_reason, :skip_clean_all
     attr_rw :bottle, :bottle_sha1
     attr_rw(*CHECKSUM_TYPES)
@@ -705,6 +741,16 @@ EOF
       @stable = SoftwareSpecification.new(val, specs)
       @url = val
       @specs = specs
+    end
+
+    def mirror val, specs=nil
+      @mirrors ||= []
+      @mirrors << {:url => val, :specs => specs}
+      # Added the uniq after some inspection with Pry---seems `mirror` gets
+      # called three times. The first two times only one copy of the input is
+      # left in `@mirrors`. On the final call, two copies are present. This
+      # happens with `@deps` as well. Odd.
+      @mirrors.uniq!
     end
 
     def depends_on name

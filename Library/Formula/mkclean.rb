@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mkclean < Formula
-  url 'http://downloads.sourceforge.net/project/matroska/mkclean/mkclean-0.8.5.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/matroska/mkclean/mkclean-0.8.6.tar.bz2'
   homepage 'http://www.matroska.org/downloads/mkclean.html'
-  md5 'eb1bd84aba2b496efcd61e67cbf2502e'
+  sha1 'dd59c50178c5d1b11190e466c0562ac3cd64cd71'
 
   def install
     ENV.j1 # Otherwise there are races
@@ -16,6 +16,6 @@ class Mkclean < Formula
     system "./configure"
     system "make -C mkclean"
     bindir = `corec/tools/coremake/system_output.sh`.chomp
-    bin.install "release/#{bindir}/mkclean"
+    bin.install Dir["release/#{bindir}/mk*"]
   end
 end

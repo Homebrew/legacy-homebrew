@@ -39,6 +39,10 @@ class Formula
       do_patch
     end
   end
+
+  # handle_llvm_failure() requires extend/ENV, so let's never fail
+  # with llvm since we don't particularly care in this context.
+  def fails_with_llvm?; false; end
 end
 
 module Homebrew extend self

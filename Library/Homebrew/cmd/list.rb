@@ -43,7 +43,7 @@ class PrettyListing
           else
             print_dir pn
           end
-        elsif not (FORMULA_META_FILES + ['.DS_Store']).include? pn.basename.to_s
+        elsif not (FORMULA_META_FILES + %w[.DS_Store INSTALL_RECEIPT.json]).include? pn.basename.to_s
           puts pn
         end
       end

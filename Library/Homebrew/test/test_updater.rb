@@ -70,7 +70,7 @@ class UpdaterTests < Test::Unit::TestCase
       updater.in_prefix_expect("git remote add origin #{RefreshBrewMock::REPOSITORY_URL}")
       updater.in_prefix_expect("git fetch origin")
       updater.in_prefix_expect("git reset --hard origin/master")
-      updater.in_prefix_expect("git pull origin refs/heads/master:refs/remotes/origin/master")
+      updater.in_prefix_expect("git pull  origin refs/heads/master:refs/remotes/origin/master")
       updater.in_prefix_expect("git rev-parse HEAD", "1234abcd")
       
       assert_equal false, updater.update_from_masterbrew!
@@ -87,7 +87,7 @@ class UpdaterTests < Test::Unit::TestCase
       updater.in_prefix_expect("git checkout -q master")
       updater.in_prefix_expect("git rev-parse HEAD", "1234abcd")
       updater.in_prefix_expect("git remote", "origin")
-      updater.in_prefix_expect("git pull origin refs/heads/master:refs/remotes/origin/master")
+      updater.in_prefix_expect("git pull  origin refs/heads/master:refs/remotes/origin/master")
       updater.in_prefix_expect("git rev-parse HEAD", "3456cdef")
       updater.in_prefix_expect("git diff-tree -r --name-status -z 1234abcd 3456cdef", "")
       
@@ -107,7 +107,7 @@ class UpdaterTests < Test::Unit::TestCase
       updater.in_prefix_expect("git checkout -q master")
       updater.in_prefix_expect("git rev-parse HEAD", "1234abcd")
       updater.in_prefix_expect("git remote", "origin")
-      updater.in_prefix_expect("git pull origin refs/heads/master:refs/remotes/origin/master")
+      updater.in_prefix_expect("git pull  origin refs/heads/master:refs/remotes/origin/master")
       updater.in_prefix_expect("git rev-parse HEAD", "3456cdef")
       updater.in_prefix_expect("git diff-tree -r --name-status -z 1234abcd 3456cdef", diff_output.gsub(/\s+/, "\0"))
       
@@ -128,7 +128,7 @@ class UpdaterTests < Test::Unit::TestCase
       updater.in_prefix_expect("git checkout -q master")
       updater.in_prefix_expect("git rev-parse HEAD", "1234abcd")
       updater.in_prefix_expect("git remote", "origin")
-      updater.in_prefix_expect("git pull origin refs/heads/master:refs/remotes/origin/master")
+      updater.in_prefix_expect("git pull  origin refs/heads/master:refs/remotes/origin/master")
       updater.in_prefix_expect("git rev-parse HEAD", "3456cdef")
       updater.in_prefix_expect("git diff-tree -r --name-status -z 1234abcd 3456cdef", diff_output.gsub(/\s+/, "\0"))
       

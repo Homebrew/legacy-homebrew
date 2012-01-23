@@ -1,12 +1,13 @@
 require 'formula'
 
 class Couchdb < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=couchdb/1.1.0/apache-couchdb-1.1.0.tar.gz'
+  url 'http://www.apache.org/dyn/closer.cgi?path=couchdb/1.1.1/apache-couchdb-1.1.1.tar.gz'
   homepage "http://couchdb.apache.org/"
-  md5 '907b763d3a14b6649bf0371ffa75a36b'
+  md5 'cd126219b9cb69a4c521abd6960807a6'
 
   head 'http://svn.apache.org/repos/asf/couchdb/trunk'
 
+  depends_on 'help2man' => :build
   depends_on 'spidermonkey'
   depends_on 'icu4c'
   depends_on 'erlang'

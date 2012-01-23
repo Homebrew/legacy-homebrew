@@ -16,17 +16,17 @@ class Staticrouted < Formula
 
   def caveats; <<-EOS.undent
     If this is your first install, automatically load on login with:
-    	sudo mkdir -p /Library/LaunchDaemons
-    	sudo cp #{prefix}/com.coriolis-systems.staticrouted.plist /Library/LaunchDaemons/
-    	sudo launchctl load -w /Library/LaunchDaemons/com.coriolis-systems.staticrouted.plist
+      sudo mkdir -p /Library/LaunchDaemons
+      sudo cp #{prefix}/com.coriolis-systems.staticrouted.plist /Library/LaunchDaemons/
+      sudo launchctl load -w /Library/LaunchDaemons/com.coriolis-systems.staticrouted.plist
 
     If this is an upgrade and you already have the com.coriolis-systems.staticrouted.plist loaded:
-    	sudo launchctl unload -w /Library/LaunchDaemons/com.coriolis-systems.staticrouted.plist
-    	sudo cp #{prefix}/com.coriolis-systems.staticrouted.plist /Library/LaunchDaemons/
-    	sudo launchctl load -w /Library/LaunchDaemons/com.coriolis-systems.staticrouted.plist
+      sudo launchctl unload -w /Library/LaunchDaemons/com.coriolis-systems.staticrouted.plist
+      sudo cp #{prefix}/com.coriolis-systems.staticrouted.plist /Library/LaunchDaemons/
+      sudo launchctl load -w /Library/LaunchDaemons/com.coriolis-systems.staticrouted.plist
 
     Or start it manually:
-    	sudo staticrouted
+      sudo staticrouted
     EOS
   end
 end

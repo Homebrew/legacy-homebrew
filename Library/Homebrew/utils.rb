@@ -1,4 +1,5 @@
 require 'pathname'
+require 'exceptions'
 
 class Tty
   class <<self
@@ -91,7 +92,7 @@ end
 def safe_system cmd, *args
   unless Homebrew.system cmd, *args
     args = args.map{ |arg| arg.to_s.gsub " ", "\\ " } * " "
-    raise "Failure while executing: #{cmd} #{args}"
+    raise ErrorDuringExecution, "Failure while executing: #{cmd} #{args}"
   end
 end
 
@@ -104,10 +105,14 @@ def quiet_system cmd, *args
 end
 
 def curl *args
+  curl = Pathname.new '/usr/bin/curl'
+  raise "#{curl} is not executable" unless curl.exist? and curl.executable?
+
+  args = [HOMEBREW_CURL_ARGS, HOMEBREW_USER_AGENT, *args]
   # See https://github.com/mxcl/homebrew/issues/6103
   args << "--insecure" if MacOS.version < 10.6
 
-  safe_system '/usr/bin/curl', HOMEBREW_CURL_ARGS, HOMEBREW_USER_AGENT, *args unless args.empty?
+  safe_system curl, *args
 end
 
 def puts_columns items, star_items=[]
@@ -256,26 +261,16 @@ module MacOS extend self
   end
 
   def gcc_42_build_version
-    `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
-    if $1
+    @gcc_42_build_version ||= if File.exist? "/usr/bin/gcc-4.2"
+      `/usr/bin/gcc-4.2 --version` =~ /build (\d{4,})/
       $1.to_i
-    elsif system "/usr/bin/which gcc"
-      # Xcode 3.0 didn't come with gcc-4.2
-      # We can't change the above regex to use gcc because the version numbers
-      # are different and thus, not useful.
-      # FIXME I bet you 20 quid this causes a side effect — magic values tend to
-      401
-    else
-      nil
     end
   end
 
   def gcc_40_build_version
-    `/usr/bin/gcc-4.0 -v 2>&1` =~ /build (\d{4,})/
-    if $1
+    @gcc_40_build_version ||= if File.exist? "/usr/bin/gcc-4.0"
+      `/usr/bin/gcc-4.0 --version` =~ /build (\d{4,})/
       $1.to_i
-    else
-      nil
     end
   end
 
@@ -330,8 +325,22 @@ module MacOS extend self
     # for Xcode 3 on OS X 10.5 this will not exist
     # NOTE may not be true anymore but we can't test
     @llvm_build_version ||= if File.exist? "/usr/bin/llvm-gcc"
-      `/usr/bin/llvm-gcc -v 2>&1` =~ /LLVM build (\d{4,})/
+      `/usr/bin/llvm-gcc --version` =~ /LLVM build (\d{4,})/
       $1.to_i
+    end
+  end
+
+  def clang_version
+    @clang_version ||= if File.exist? "/usr/bin/clang"
+      `/usr/bin/clang --version` =~ /clang version (\d\.\d)/
+      $1
+    end
+  end
+
+  def clang_build_version
+    @clang_build_version ||= if File.exist? "/usr/bin/clang"
+      `/usr/bin/clang --version` =~ %r[tags/Apple/clang-(\d{2,3}(\.\d)*)]
+      $1
     end
   end
 

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Hive < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=hadoop/hive/hive-0.5.0/hive-0.5.0-bin.tar.gz'
+  url 'http://www.apache.org/dyn/closer.cgi?path=hive/hive-0.7.1/hive-0.7.1-bin.tar.gz'
   homepage 'http://hive.apache.org'
-  md5 '2d3b47ceaea6d5cdeaabc544aa9c2c28'
+  md5 '5fb37e7ea3526e50185c1d7edda0f789'
 
   depends_on 'hadoop'
 

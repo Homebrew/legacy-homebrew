@@ -7,11 +7,11 @@ class Avra < Formula
 
   def install
     # build fails if these don't exist
-  	system "touch NEWS ChangeLog"
+    system "touch NEWS ChangeLog"
     Dir.chdir "src" do
-    	system "./bootstrap"
-    	system "./configure --prefix=#{prefix}"
-    	system "make install"
-  	end
+      system "./bootstrap"
+      system "./configure --prefix=#{prefix}"
+      system "make install"
+    end
   end
 end

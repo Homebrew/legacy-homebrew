@@ -112,3 +112,11 @@ class BuildError < Homebrew::InstallationError
     @command == './configure'
   end
 end
+
+# raised in CurlDownloadStrategy.fetch
+class CurlDownloadStrategyError < RuntimeError
+end
+
+# raised by safe_system in utils.rb
+class ErrorDuringExecution < RuntimeError
+end

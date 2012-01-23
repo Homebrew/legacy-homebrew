@@ -5,6 +5,7 @@ HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] = File.expand_path(__FILE__)
 
 require 'pathname'
 HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.dirname.parent.join("Library/Homebrew").to_s
+$:.unshift(HOMEBREW_LIBRARY_PATH + '/vendor')
 $:.unshift(HOMEBREW_LIBRARY_PATH)
 require 'global'
 
@@ -84,8 +85,10 @@ begin
     # Check for git commands
     if %w[branch checkout pull push rebase reset].include? cmd
       onoe "Unknown command: #{cmd} (did you mean `git #{cmd}'?)"
+      exit 1
     else
       onoe "Unknown command: #{cmd}"
+      exit 1
     end
   end
 

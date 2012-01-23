@@ -1,22 +1,11 @@
 require 'formula'
 
 class Cmake < Formula
-  url 'http://www.cmake.org/files/v2.8/cmake-2.8.5.tar.gz'
-  md5 '3c5d32cec0f4c2dc45f4c2e84f4a20c5'
+  url 'http://www.cmake.org/files/v2.8/cmake-2.8.6.tar.gz'
+  md5 '2147da452fd9212bb9b4542a9eee9d5b'
   homepage 'http://www.cmake.org/'
-  bottle 'https://downloads.sf.net/project/machomebrew/Bottles/cmake-2.8.5-bottle.tar.gz'
-  bottle_sha1 'f7a4c459625eb9282fef9789cab2a702a2dff06a'
-
-  def patches
-    # CMake 2.8.5 fails to find some Qt libraries that CMake 2.8.4 could find.
-    # The following patch corrects this behavior. See discussion on the CMake
-    # mailing list:
-    #
-    #   http://cmake.3232098.n2.nabble.com/FindQt4-errors-out-when-locating-QtUITools-under-CMake-2-8-5-td6619091.html
-    #
-    # Patch can be removed after next CMake release.
-    {:p1 => "http://cmake.org/gitweb?p=cmake.git;a=patch;h=702538eaa3315f3fcad9f1daea01e6a83928967b"}
-  end
+  bottle 'https://downloads.sf.net/project/machomebrew/Bottles/cmake-2.8.6-bottle.tar.gz'
+  bottle_sha1 '3d8368605477bddc138872053f183ba52a6e4ec9'
 
   def install
     # A framework-installed expat will be detected and mess things up.

@@ -5,18 +5,35 @@ class Libxmlsec1 < Formula
   homepage 'http://www.aleksey.com/xmlsec/'
   md5 '8694b4609aab647186607f79e1da7f1a'
 
-  # use the keg-only libxml2 as Snow Leopard and Lion's versions are too old
-  depends_on 'libxml2'
-
-  # use gnutls as an additional crypto engine, alongside system openssl
+  depends_on 'pkg-config' => :build
+  depends_on 'libxml2' #version on 10.6/10.7 is too old
   depends_on 'gnutls' => :optional
+
+  def patches
+    DATA
+  end
 
   def install
     libxml2 = Formula.factory('libxml2')
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-libxml=#{libxml2.prefix}"
+                          "--with-libxml=#{libxml2.prefix}",
+                          "--disable-apps-crypto-dl"
     system "make install"
   end
 end
+
+__END__
+diff --git a/src/dl.c b/src/dl.c
+index 6e8a56a..0e7f06b 100644
+--- a/src/dl.c
++++ b/src/dl.c
+@@ -141,6 +141,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
+     }
+ 
+ #ifdef XMLSEC_DL_LIBLTDL
++    lt_dlsearchpath("HOMEBREW_PREFIX/lib");
+     lib->handle = lt_dlopenext((char*)lib->filename);
+     if(lib->handle == NULL) {
+         xmlSecError(XMLSEC_ERRORS_HERE,

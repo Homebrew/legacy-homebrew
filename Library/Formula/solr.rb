@@ -1,9 +1,9 @@
 require 'formula'
 
 class Solr < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=lucene/solr/3.3.0/apache-solr-3.3.0.tgz'
+  url 'http://www.apache.org/dyn/closer.cgi?path=lucene/solr/3.4.0/apache-solr-3.4.0.tgz'
   homepage 'http://lucene.apache.org/solr/'
-  md5 '048e2aa7e16358600fa5fe3570b90018'
+  md5 '949b145669a6c9517b2fef32b58f679e'
 
   def script; <<-EOS.undent
     #!/bin/sh

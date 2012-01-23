@@ -1,10 +1,9 @@
 require 'formula'
 
 class Ncview < Formula
-  url 'ftp://cirrus.ucsd.edu/pub/ncview/ncview-2.0beta4.tar.gz'
+  url 'ftp://cirrus.ucsd.edu/pub/ncview/ncview-2.1.1.tar.gz'
   homepage 'http://meteora.ucsd.edu/~pierce/ncview_home_page.html'
-  md5 '03968a8fdf13c71c7582c2352f771a85'
-  version '2.0beta4'
+  md5 '34e25f5949af342a1783542799f51bed'
 
   depends_on "netcdf"
 

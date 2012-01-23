@@ -28,8 +28,7 @@ class Nss < Formula
 
     bin.mkdir
     Dir['mozilla/dist/Darwin*/bin/*'].each do |file|
-      # Add 'nss-' prefix to prevent collisions with other binaries.
-      cp file, "#{bin}/nss-" + File.basename(file)
+      cp file, bin
     end
 
     include.mkdir
@@ -48,13 +47,11 @@ class Nss < Formula
   end
 
   def test
-    # http://www.mozilla.org/projects/security/pki/nss/tools/certutil.html
-    password = "It's a secret to everyone."
-
+    # See: http://www.mozilla.org/projects/security/pki/nss/tools/certutil.html
     mktemp do
-      File.open('passwd', 'w') {|f| f.write(password) }
-      system "nss-certutil -N -d #{Dir.getwd} -f passwd"
-      system "nss-certutil -L -d #{Dir.getwd}"
+      File.open('passwd', 'w') {|f| f.write("It's a secret to everyone.") }
+      system "certutil -N -d #{Dir.getwd} -f passwd"
+      system "certutil -L -d #{Dir.getwd}"
     end
   end
 end
