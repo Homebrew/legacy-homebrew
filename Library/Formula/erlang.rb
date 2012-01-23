@@ -27,8 +27,10 @@ class Erlang < Formula
   md5 'f6cd1347dfb6436b99cc1313011a3d24'
   version 'R14B04'
 
-  bottle 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R14B04-bottle.tar.gz'
-  bottle_sha1 '0cbd2ebd59491a473b38833970ba0cfb78549594'
+  bottle do
+    url 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R14B04-bottle.tar.gz'
+    sha1 '0cbd2ebd59491a473b38833970ba0cfb78549594'
+  end
 
   head 'https://github.com/erlang/otp.git', :branch => 'dev'
 

@@ -2,16 +2,16 @@ require 'formula'
 
 class Ghc < Formula
   homepage 'http://haskell.org/ghc/'
-  if not ARGV.build_devel?
-    version '7.0.4'
-    if ARGV.include? '--64bit'
-      url "http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-x86_64-apple-darwin.tar.bz2"
-      md5 'af89d3d2ca6e9b23384baacb7d8161dd'
-    else
-      url "http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2"
-      md5 'ce297e783d113cf1547386703d1b1061'
-    end
+  version '7.0.4'
+  if ARGV.include? '--64bit'
+    url "http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-x86_64-apple-darwin.tar.bz2"
+    md5 'af89d3d2ca6e9b23384baacb7d8161dd'
   else
+    url "http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2"
+    md5 'ce297e783d113cf1547386703d1b1061'
+  end
+
+  devel do
     version '7.2.2'
     if ARGV.include? '--64bit'
       url "http://www.haskell.org/ghc/dist/7.2.2/ghc-7.2.2-x86_64-apple-darwin.tar.bz2"

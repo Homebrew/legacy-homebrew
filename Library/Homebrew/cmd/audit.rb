@@ -290,7 +290,7 @@ module Homebrew extend self
     ff.each do |f|
       problems = []
 
-      if f.unstable and f.stable.nil?
+      if f.unstable and f.standard.nil?
         problems += [' * head-only formula']
       end
 
@@ -313,6 +313,12 @@ module Homebrew extend self
       problems << " * File should end with a newline" if text =~ /.+\z/
 
       problems += [' * invalid or missing version'] if f.version.to_s.empty?
+
+      problems << " * 'devel' block found before stable 'url'" if text =~ /devel.+(url '.+').+(url '.+')/m
+
+      problems << " * 'devel' block found before 'head'" if text =~ /devel.+(head '.+')/m
+
+      problems << " * Empty 'devel' block found" if text =~ /devel do\s+end/
 
       # Don't try remaining audits on text in __END__
       text_without_patch = (text.split("__END__")[0]).strip()
