@@ -19,7 +19,7 @@ class Boost < Formula
     # #define foreach BOOST_FOREACH causes compile error "'boost::BOOST_FOREACH'
     # has not been declared" on its line if it appears after #include
     # <boost/foreach.hpp> and before certain other boost headers.
-    DATA
+    DATA unless ARGV.build_head?
   end
 
   def options
