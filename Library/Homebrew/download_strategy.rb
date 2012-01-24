@@ -188,7 +188,7 @@ class CurlUnsafeDownloadStrategy < CurlDownloadStrategy
 end
 
 # This strategy extracts our binary packages.
-class CurlBottleDownloadStrategy <CurlDownloadStrategy
+class CurlBottleDownloadStrategy < CurlDownloadStrategy
   def initialize url, name, version, specs
     super
     @tarball_path = HOMEBREW_CACHE/"#{name}-#{version}.bottle#{ext}"
@@ -199,7 +199,7 @@ class CurlBottleDownloadStrategy <CurlDownloadStrategy
   end
 end
 
-class SubversionDownloadStrategy <AbstractDownloadStrategy
+class SubversionDownloadStrategy < AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
     @unique_token="#{name}--svn" unless name.to_s.empty? or name == '__UNKNOWN__'
