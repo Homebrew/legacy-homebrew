@@ -1,8 +1,8 @@
 require 'formula'
 
 class Tmux < Formula
-  url 'http://sourceforge.net/projects/tmux/files/tmux/tmux-1.5/tmux-1.5.tar.gz'
-  md5 '3d4b683572af34e83bc8b183a8285263'
+  url 'http://sourceforge.net/projects/tmux/files/tmux/tmux-1.6/tmux-1.6.tar.gz'
+  md5 '3e37db24aa596bf108a0442a81c845b3'
   homepage 'http://tmux.sourceforge.net'
 
   depends_on 'libevent'
