@@ -12,11 +12,4 @@ class RbenvGemset < Formula
   def install
     prefix.install Dir['*']
   end
-
-  def caveats; <<-EOS.undent
-    Run the following command to complete the installation of rbenv-gemset:
-
-        rbenv gemset install
-    EOS
-  end
 end

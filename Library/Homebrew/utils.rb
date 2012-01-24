@@ -264,7 +264,8 @@ module MacOS extend self
   end
 
   def gcc_42_build_version
-    @gcc_42_build_version ||= if File.exist? "/usr/bin/gcc-4.2"
+    @gcc_42_build_version ||= if File.exist? "/usr/bin/gcc-4.2" \
+      and not Pathname.new("/usr/bin/gcc-4.2").realpath.basename.to_s =~ /^llvm/
       `/usr/bin/gcc-4.2 --version` =~ /build (\d{4,})/
       $1.to_i
     end
@@ -342,8 +343,8 @@ module MacOS extend self
 
   def clang_build_version
     @clang_build_version ||= if File.exist? "/usr/bin/clang"
-      `/usr/bin/clang --version` =~ %r[tags/Apple/clang-(\d+(\.\d+)*)]
-      $1
+      `/usr/bin/clang --version` =~ %r[tags/Apple/clang-(\d{2,})]
+      $1.to_i
     end
   end
 
@@ -397,6 +398,10 @@ module MacOS extend self
   def prefer_64_bit?
     Hardware.is_64_bit? and 10.6 <= MACOS_VERSION
   end
+
+  def bottles_supported?
+    lion? and HOMEBREW_PREFIX.to_s == '/usr/local'
+  end
 end
 
 module GitHub extend self
@@ -425,5 +430,21 @@ module GitHub extend self
     issues
   rescue
     []
+  end
+
+  def find_pull_requests rx
+    require 'open-uri'
+    require 'vendor/multi_json'
+
+    query = rx.source.delete '.*'
+    uri = URI.parse("http://github.com/api/v2/json/issues/search/mxcl/homebrew/open/#{query}")
+
+    open uri do |f|
+      MultiJson.decode(f.read)["issues"].each do |pull|
+        yield pull['pull_request_url'] if rx.match pull['title'] and pull["pull_request_url"]
+      end
+    end
+  rescue
+    nil
   end
 end

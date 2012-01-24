@@ -8,7 +8,7 @@ class Mpfr < Formula
   depends_on 'gmp'
 
   def options
-    [["--32-bit", "Force 32-bit."]]
+    [["--32-bit", "Build 32-bit only."]]
   end
 
   def patches
@@ -20,7 +20,7 @@ class Mpfr < Formula
 
     # Build 32-bit where appropriate, and help configure find 64-bit CPUs
     # Note: This logic should match what the GMP formula does.
-    if MacOS.prefer_64_bit? and not ARGV.include? "--32-bit"
+    if MacOS.prefer_64_bit? and not ARGV.build_32_bit?
       ENV.m64
       args << "--build=x86_64-apple-darwin"
     else
