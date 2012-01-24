@@ -7,18 +7,17 @@ class Binutils < Formula
   md5 'bde820eac53fa3a8d8696667418557ad'
 
   def install
-    args = ["--disable-debug", "--disable-dependency-tracking",
-            "--prefix=#{prefix}",
-            "--infodir=#{info}",
-            "--mandir=#{man}",
-            "--disable-werror",
-            "--enable-interwork",
-            "--enable-multilib",
-            "--enable-targets=x86_64-elf",
-            "--enable-targets=arm-none-eabi"]
-    args << "--program-prefix=g" unless ARGV.include? '--default-names'
-
-    system "./configure", *args
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--program-prefix=g",
+                          "--prefix=#{prefix}",
+                          "--infodir=#{info}",
+                          "--mandir=#{man}",
+                          "--disable-werror",
+                          "--enable-interwork",
+                          "--enable-multilib",
+                          "--enable-targets=x86_64-elf",
+                          "--enable-targets=arm-none-eabi"
     system "make"
     system "make install"
   end
