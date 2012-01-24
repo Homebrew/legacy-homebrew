@@ -134,7 +134,7 @@ For the full command list, see the COMMANDS section.
   * `info` <URL>:
     Print the name and version that will be detected for <URL>.
 
-  * `install [--force] [--debug] [--ignore-dependencies] [--fresh] [--use-clang] [--use-gcc] [--use-llvm] [--build-from-source] [--devel] [--HEAD]` <formula>:
+  * `install [--force] [--debug] [--ignore-dependencies] [--fresh] [--use-clang] [--use-gcc] [--use-llvm] [--build-from-source] [--devel`|`--HEAD`|`--version` <version>`]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but may also be
@@ -169,6 +169,9 @@ For the full command list, see the COMMANDS section.
 
     If `--HEAD` is passed, and <formula> defines it, install the HEAD version,
     aka master, trunk, unstable.
+
+    If `--versions` is passed, install version <version> of <formula>. See
+    `versions`.
 
     To install a newer version of HEAD use
     `brew rm <foo> && brew install --HEAD <foo>`
@@ -243,6 +246,9 @@ For the full command list, see the COMMANDS section.
   * `search --macports`|`--fink` <text>:
     Search for <text> on the MacPorts or Fink package search page.
 
+  * `switch` <formula> <version>:
+    Unlink all installed versions of <formula>, then link <version>.
+
   * `test` <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
     test method. There is no standard output or return code, but it should
@@ -273,7 +279,7 @@ For the full command list, see the COMMANDS section.
     If `--installed` is passed, only list installed formulae.
 
   * `versions [--compact]` <formulae>:
-    List previous versions of <formulae>, along with a command to checkout
+    List previous versions of <formulae>, along with a command to install
     each version.
 
     If `--compact` is passed, show all options on a single line separated by

@@ -8,11 +8,11 @@ module Homebrew extend self
       if ARGV.include? '--compact'
         puts f.versions * " "
       else
-        f.versions do |version, sha|
+        f.versions do |version|
           print Tty.white
-          print "#{version.ljust(8)} "
+          print " #{version.ljust(12)} "
           print Tty.reset
-          puts "git checkout #{sha} #{f.pretty_relative_path}"
+          puts "brew install #{f.name} --version #{version}"
         end
       end
     end
@@ -26,18 +26,27 @@ class Formula
     rev_list.each do |sha|
       version = version_for_sha sha
       unless versions.include? version or version.nil?
-        yield version, sha if block_given?
+        yield version if block_given?
         versions << version
       end
     end
     return versions
   end
 
-  def pretty_relative_path
-    if Pathname.pwd == HOMEBREW_REPOSITORY
-      "Library/Formula/#{name}.rb"
-    else
-      "#{HOMEBREW_REPOSITORY}/Library/Formula/#{name}.rb"
+  def formula_for_version version
+    f = nil
+    mktemp do
+      begin
+        path = Pathname.new(Pathname.pwd+"#{name}.rb")
+        sha = sha_for_version(version)
+        raise if sha == nil
+        path.write text_from_sha(sha)
+        f = Formula.factory(path)
+      rescue
+        raise FormulaUnavailableError.new("#{name} #{version}")
+      end
+
+      yield f
     end
   end
 

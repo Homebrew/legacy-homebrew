@@ -31,7 +31,7 @@ _brew_to_completion()
     [[ ${COMP_CWORD} -eq 1 ]] && {
         local actions="--cache --cellar --config --env --prefix --repository audit cat cleanup
             configure create deps diy doctor edit fetch help home info install link list log options
-            outdated prune remove search test uninstall unlink update upgrade uses versions"
+            outdated prune remove search switch test uninstall unlink update upgrade uses versions"
         local ext=$(\ls $(brew --repository)/Library/Contributions/examples 2> /dev/null |
                     sed -e "s/\.rb//g" -e "s/brew-//g")
         COMPREPLY=( $(compgen -W "${actions} ${ext}" -- ${cur}) )
@@ -122,7 +122,7 @@ _brew_to_completion()
             local opts=$(
                 local opts=(--force --verbose --debug --use-clang --use-gcc
                     --use-llvm --ignore-dependencies --build-from-source --HEAD
-                    --interactive --fresh --devel $(brew options --compact "$prev"))
+                    --interactive --fresh --devel --version $(brew options --compact "$prev"))
 
                 # options that make sense with '--interactive'
                 if [[ "${COMP_WORDS[*]}" =~ "--interactive" ]]; then
@@ -214,7 +214,7 @@ _brew_to_completion()
 
     case "${COMP_WORDS[cmd_index]}" in
     # Commands that take a formula
-    audit|cat|deps|edit|fetch|home|homepage|info|install|log|missing|options|uses|versions)
+    audit|cat|deps|edit|fetch|home|homepage|info|log|missing|options|uses|versions)
         local ff=$(\ls $(brew --repository)/Library/Formula 2> /dev/null | sed "s/\.rb//g")
         local af=$(\ls $(brew --repository)/Library/Aliases 2> /dev/null | sed "s/\.rb//g")
         COMPREPLY=( $(compgen -W "${ff} ${af}" -- ${cur}) )
@@ -223,6 +223,26 @@ _brew_to_completion()
     # Commands that take an existing brew
     abv|cleanup|link|list|ln|ls|remove|rm|test|uninstall|unlink)
         COMPREPLY=( $(compgen -W "$(\ls $(brew --cellar))" -- ${cur}) )
+        return
+        ;;
+    install)
+        if [[ "${COMP_WORDS[*]}" =~ "--version" ]]; then
+            local versions=$(brew versions --compact "${prev}" 2> /dev/null)
+            COMPREPLY=( $(compgen -W "${versions}" -- ${cur}) )
+        else
+            local ff=$(\ls $(brew --repository)/Library/Formula 2> /dev/null | sed "s/\.rb//g")
+            local af=$(\ls $(brew --repository)/Library/Aliases 2> /dev/null | sed "s/\.rb//g")
+            COMPREPLY=( $(compgen -W "${ff} ${af}" -- ${cur}) )
+        fi
+        return
+        ;;
+    switch)
+        if [[ "${prev}" != "${COMP_WORDS[cmd_index]}" ]]; then
+            local kegs=$(\ls $(brew --cellar "${prev}") 2> /dev/null)
+            COMPREPLY=( $(compgen -W "${kegs}" -- ${cur}) )
+        else
+            COMPREPLY=( $(compgen -W "$(\ls $(brew --cellar))" -- ${cur}) )
+        fi
         return
         ;;
     # Commands that take an outdated brew

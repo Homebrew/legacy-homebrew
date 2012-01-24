@@ -1,6 +1,7 @@
 require 'formula_installer'
 require 'hardware'
 require 'blacklist'
+require 'cmd/versions'
 
 module Homebrew extend self
   def install
@@ -13,7 +14,7 @@ module Homebrew extend self
       if File.directory? HOMEBREW_REPOSITORY/"Library/LinkedKegs/#{f.name}"
         raise "#{f} already installed\nTry: brew upgrade #{f}"
       end
-    end unless ARGV.force?
+    end unless ARGV.force? or ARGV.include? '--version'
 
     if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
       # note we only abort if Homebrew is *not* installed as sudo and the user
@@ -21,7 +22,12 @@ module Homebrew extend self
       abort "Cowardly refusing to `sudo brew install'"
     end
 
-    install_formulae ARGV.formulae
+    if ARGV.include? '--version'
+      f, version = ARGV.named.first(2)
+      install_version f, version
+    else
+      install_formulae ARGV.formulae
+    end
   end
 
   def check_ppc
@@ -107,6 +113,26 @@ module Homebrew extend self
           opoo e.message
         end
       end
+    end
+  end
+
+  def install_version f, version
+    raise "This command requires a version argument" if version.nil?
+
+    Formula.factory(f).formula_for_version version do |ff|
+      if ff.rack.directory?
+        kegs = ff.rack.children
+        kegs.each do |keg|
+          if Keg.new(keg).linked?
+            ff.class.keg_only <<-EOS.undent
+            There is another version of #{ff.name} installed and linked. You can enable
+            this version using `brew switch #{ff.name} #{ff.version}`.
+            EOS
+            break
+          end
+        end
+      end
+      install_formulae ff
     end
   end
 end
