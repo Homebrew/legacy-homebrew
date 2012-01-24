@@ -6,10 +6,6 @@ class Binutils < Formula
   homepage 'http://www.gnu.org/software/binutils/binutils.html'
   md5 'bde820eac53fa3a8d8696667418557ad'
 
-  def options
-    [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
-  end
-
   def install
     args = ["--disable-debug", "--disable-dependency-tracking",
             "--prefix=#{prefix}",
