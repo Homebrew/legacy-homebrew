@@ -31,6 +31,8 @@ class Coreutils < Formula
   mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.14.tar.xz'
   sha256 '0d120817c19292edb19e92ae6b8eac9020e03d51e0af9cb116cf82b65d18b02d'
 
+  depends_on 'xz'
+
   def options
     [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
   end
