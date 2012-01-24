@@ -5,7 +5,7 @@ class Uchardet < Formula
   homepage 'http://code.google.com/p/uchardet/'
   md5 '9c17f0aca38c66c95d400691a9160b1b'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
 
   def install
     system "cmake . #{std_cmake_parameters}"
