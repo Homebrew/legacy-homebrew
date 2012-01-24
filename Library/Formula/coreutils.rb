@@ -50,6 +50,5 @@ which is known to cause problems with "bash-completion".
 
 The man pages are still referenced with the g-prefix.
     EOS
-    end
   end
 end
