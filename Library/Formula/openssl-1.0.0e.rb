@@ -1,6 +1,6 @@
 require 'formula'
 
-class Openssl < Formula
+class Openssl100e < Formula
   url 'http://www.openssl.org/source/openssl-1.0.0e.tar.gz'
   version '1.0.0e'
   homepage 'http://www.openssl.org'
@@ -8,17 +8,26 @@ class Openssl < Formula
 
   keg_only :provided_by_osx,
     "The OpenSSL provided by Leopard (0.9.7) is too old for some software."
+  
+  def options
+    [["--64bit", "If you wish to build the 64-bit library."]]
+  end
 
   def install
-    system "./config", "--prefix=#{prefix}",
-                       "--openssldir=#{etc}",
-                       "zlib-dynamic", "shared"
+    args = ["--prefix=#{prefix}",
+            "--openssldir=#{etc}",
+            "zlib-dynamic",
+            "shared"]
+    
+    args << "darwin64-x86_64-cc" if ARGV.include? "--64bit"
+
+    system "./Configure", *args
 
     inreplace 'Makefile' do |s|
       s.change_make_var! 'MANDIR', man
     end
 
-    ENV.j1 # Parallel compilation fails
+    #ENV.j1 # Parallel compilation fails
     system "make"
     system "make test"
     system "make install"
