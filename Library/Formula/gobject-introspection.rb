@@ -1,9 +1,10 @@
 require 'formula'
 
 class GobjectIntrospection < Formula
-  url 'http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/0.10/gobject-introspection-0.10.8.tar.bz2'
+  url 'http://ftp.gnome.org/pub/gnome/sources/gobject-introspection/1.31/gobject-introspection-1.31.10.tar.xz'
   homepage 'http://live.gnome.org/GObjectIntrospection'
-  md5 'b5da58a5327d13b4d1e08b8e42b2456d'
+  md5 'f71e80054048546d282af5f205a08a14'
+  version '1.31.10'
 
   depends_on 'glib'
   depends_on 'libffi'
