@@ -17,7 +17,7 @@ class Curlftpfs < Formula
     end
     ENV['ACLOCAL'] = "/usr/bin/aclocal -I/usr/share/aclocal -I#{HOMEBREW_PREFIX}/share/aclocal"
     system "autoreconf", "--force", "--install"
-    ENV['CFLAGS'] = "-D__off_t=off_t"
+    ENV.append 'CFLAGS', '-D__off_t=off_t'
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
