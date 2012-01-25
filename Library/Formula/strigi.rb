@@ -1,9 +1,9 @@
 require 'formula'
 
 class Strigi < Formula
-  url 'http://www.vandenoever.info/software/strigi/strigi-0.7.2.tar.bz2'
+  url 'http://www.vandenoever.info/software/strigi/strigi-0.7.5.tar.bz2'
   homepage 'http://strigi.sourceforge.net/'
-  md5 'ca09ba176cf3ffe9afce4d92f38f9a85'
+  md5 '0559e2ab65d187d30916e9ffe36e0fb6'
 
   depends_on 'cmake' => :build
   depends_on 'clucene'

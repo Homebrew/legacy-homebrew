@@ -1,9 +1,9 @@
 require 'formula'
 
 class Soprano < Formula
-  url 'http://downloads.sourceforge.net/project/soprano/Soprano/2.6.0/soprano-2.6.0.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/soprano/Soprano/2.7.4/soprano-2.7.4.tar.bz2'
   homepage 'http://soprano.sourceforge.net/'
-  md5 '03ae49e87c6ec99e57d0433c2650846f'
+  md5 '783fb07f9679f45e987aff7a17bef649'
 
   depends_on 'cmake' => :build
   depends_on 'qt'
@@ -13,8 +13,12 @@ class Soprano < Formula
 
   def install
     ENV['CLUCENE_HOME'] = HOMEBREW_PREFIX
+    extra_cmake_options = ""
+    if Formula.factory('raptor').installed?
+      extra_cmake_options += "-DCMAKE_PREFIX_PATH=" + Formula.factory('raptor').prefix
+    end
 
-    system "cmake . #{std_cmake_parameters}"
+    system "cmake . #{std_cmake_parameters} #{extra_cmake_options}"
     system "make install"
   end
 end
