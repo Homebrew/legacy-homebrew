@@ -35,7 +35,7 @@ class Mednafen < Formula
     if ARGV.include? "--with-psx" and not ARGV.build_devel?
       onoe "--with-psx is only supported with --devel" \
     end
-    args << "--enable-psx" if ARGV.flag? "--with-psx" and ARGV.build_devel?
+    args << "--enable-psx" if ARGV.include? "--with-psx" and ARGV.build_devel?
 
     # Platform detection is buggy; problem reported upstream:
     # http://forum.fobby.net/index.php?t=msg&&th=659&goto=2214#msg_2214
