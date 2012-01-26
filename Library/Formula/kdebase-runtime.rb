@@ -1,9 +1,9 @@
 require 'formula'
 
 class KdebaseRuntime < Formula
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.6.0/src/kdebase-runtime-4.6.0.tar.bz2'
+  url 'http://ftp.kde.org/stable/4.8.0/src/kde-runtime-4.8.0.tar.bz2'
   homepage 'http://www.kde.org/'
-  md5 '1f9d6bc64d7b84a74dd3ab06615c71ce'
+  md5 '571563f6ab330348d3f917abdf9c69e4'
 
   depends_on 'cmake' => :build
   depends_on 'kde-phonon'
