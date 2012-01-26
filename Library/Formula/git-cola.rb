@@ -5,7 +5,7 @@ class GitCola < Formula
   homepage 'http://git-cola.github.com/'
   md5 'd0f667c91e12a707df73060bf0822c27'
 
-  head 'git://github.com/git-cola/git-cola.git'
+  head 'https://github.com/git-cola/git-cola.git'
 
   depends_on 'pyqt'
 
