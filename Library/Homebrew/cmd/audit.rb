@@ -314,9 +314,9 @@ module Homebrew extend self
 
       problems += [' * invalid or missing version'] if f.version.to_s.empty?
 
-      problems << " * 'devel' block found before stable 'url'" if text =~ /devel.+(url '.+').+(url '.+')/m
+      problems << " * 'devel' block found before stable 'url'" if text =~ /devel .+(url '.+').+(url '.+')/m
 
-      problems << " * 'devel' block found before 'head'" if text =~ /devel.+(head '.+')/m
+      problems << " * 'devel' block found before 'head'" if text =~ /devel .+(head '.+')/m
 
       problems << " * Empty 'devel' block found" if text =~ /devel do\s+end/
 
