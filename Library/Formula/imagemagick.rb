@@ -29,14 +29,15 @@ class Imagemagick < Formula
   # Using an unofficial Git mirror to work around:
   # * Stable tarballs disappearing
   # * Bad https cert on official SVN repo
-  version '6.7.1-1'
-  url "https://github.com/trevor/ImageMagick/tarball/#{version}"
+  url 'https://github.com/trevor/ImageMagick/tarball/6.7.1-1'
   md5 '9c71dfbddc42b78a0d8db8acdb534d37'
   homepage 'http://www.imagemagick.org'
   head 'https://github.com/trevor/ImageMagick.git'
 
-  bottle "http://downloads.sf.net/project/machomebrew/Bottles/imagemagick-#{version}-bottle.tar.gz"
-  bottle_sha1 'd63cbdfb4e314f17ed1d553e5e1c7f3eebf1654b'
+  bottle do
+    url 'http://downloads.sf.net/project/machomebrew/Bottles/imagemagick-6.7.1-1-bottle.tar.gz'
+    sha1 'd63cbdfb4e314f17ed1d553e5e1c7f3eebf1654b'
+  end
 
   depends_on 'jpeg'
 
