@@ -1,5 +1,7 @@
 require 'formula'
 
+def with_gdal?; ARGV.include? '--with-gdal'; end
+
 class Gshhs < Formula
   url 'ftp://ftp.soest.hawaii.edu/gmt/gshhs-2.2.0.tar.bz2'
   homepage 'http://gmt.soest.hawaii.edu/'
@@ -12,16 +14,25 @@ class Gmt < Formula
   md5 'fc8a4a546ff8572c225aa7bdb56bbdf8'
 
   depends_on 'netcdf'
+  if with_gdal?
+    depends_on 'gdal'
+  end
 
   def install
-    # we need -j1 to prevent make dependency errors
-    ENV.j1
+    # we need to deparallelize to prevent make dependency errors
+    ENV.deparallelize
 
-    system "./configure", "--datadir=#{share}/#{name}",
-                          "--enable-netcdf=#{HOMEBREW_PREFIX}",
-                          "--enable-shared", "--enable-triangle",
-                          "--disable-xgrid", "--disable-mex",
-                          "--prefix=#{prefix}"
+    args = ["--prefix=#{prefix}",
+            "--datadir=#{share}/#{name}",
+            "--enable-netcdf=#{HOMEBREW_PREFIX}",
+            "--enable-shared", "--enable-triangle",
+            "--disable-xgrid", "--disable-mex"]
+
+    if with_gdal?
+        args << "--enable-gdal=#{HOMEBREW_PREFIX}"
+    end
+
+    system "./configure", *args
     system "make"
     system "make install-gmt"
     system "make install-data"
