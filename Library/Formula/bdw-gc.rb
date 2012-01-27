@@ -30,7 +30,7 @@ class BdwGc < Formula
 
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
                           "--enable-cplusplus"
     system "make"
     system "make check"
