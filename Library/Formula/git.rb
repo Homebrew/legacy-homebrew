@@ -1,18 +1,18 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.7.8.3.tar.gz'
-  sha1 'a6e2b7cff8181ee52a1cc00ebba7b349850d6680'
+  url 'http://git-core.googlecode.com/files/git-manpages-1.7.9.tar.gz'
+  sha1 '1ca1fc430b2814f9e9cf82ec3bf7f2eaf5209b7a'
 end
 
 class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.8.3.tar.gz'
-  sha1 '8a65d2425c1b6f646d130cf5846e92e9e0e93736'
+  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.9.tar.gz'
+  sha1 'c7b1fa20dc501beb2cb5091dd24dbfd2a0013a0c'
 end
 
 class Git < Formula
-  url 'http://git-core.googlecode.com/files/git-1.7.8.3.tar.gz'
-  sha1 'e5eb8c289b69d69fd08c81b587a06eb5dd2b5c1c'
+  url 'http://git-core.googlecode.com/files/git-1.7.9.tar.gz'
+  sha1 'ed51ef5ef250daaa6e98515cf2641820cd268d4c'
   homepage 'http://git-scm.com'
 
   depends_on 'pcre' if ARGV.include? '--with-pcre'
@@ -30,7 +30,7 @@ class Git < Formula
     ENV['NO_DARWIN_PORTS']='1'
     ENV['V']='1' # build verbosely
     ENV['NO_R_TO_GCC_LINKER']='1' # pass arguments to LD correctly
-
+    ENV['NO_GETTEXT']= '1'
     # workaround for users of perlbrew
     ENV['PERL_PATH'] = `/usr/bin/which perl`.chomp
 

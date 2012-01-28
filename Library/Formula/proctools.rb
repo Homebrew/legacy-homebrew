@@ -7,7 +7,7 @@ class Proctools < Formula
   md5 '714e4350749c680a7806635632d524b1'
 
   def patches
-    base = "http://svn.macports.org/repository/macports/trunk/dports/sysutils/proctools/files"
+    base = "https://trac.macports.org/export/89276/trunk/dports/sysutils/proctools/files"
     { :p0 => ["patch-pfind-Makefile.diff",
               "patch-pfind-pfind.c.diff",
               "patch-pgrep-Makefile.diff",

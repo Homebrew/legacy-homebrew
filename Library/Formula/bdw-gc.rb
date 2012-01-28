@@ -3,13 +3,13 @@ require 'formula'
 class BdwGc < Formula
   homepage 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/'
 
-  if ARGV.build_devel?
+  url 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.1.tar.gz'
+  md5 '2ff9924c7249ef7f736ecfe6f08f3f9b'
+
+  devel do
     url 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.2alpha6.tar.gz'
     md5 '319d0b18cc4eb735c8038ece9df055e4'
     version '7.2alpha6'
-  else
-    url 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.1.tar.gz'
-    md5 '2ff9924c7249ef7f736ecfe6f08f3f9b'
   end
 
   # patch to fix inline asm errors with LLVM, present in upstream SVN
@@ -30,7 +30,7 @@ class BdwGc < Formula
 
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
                           "--enable-cplusplus"
     system "make"
     system "make check"

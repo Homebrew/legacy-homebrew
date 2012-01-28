@@ -15,7 +15,7 @@ class Ggobi < Formula
 
   def install
     # Necessary for ggobi to build - based on patch from MacPorts
-    # See: http://svn.macports.org/repository/macports/trunk/dports/science/ggobi/files/patch-src-texture.diff
+    # See: https://trac.macports.org/export/64669/trunk/dports/science/ggobi/files/patch-src-texture.diff
     inreplace 'src/texture.c', 'psort', 'p_sort'
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--with-all-plugins", "--prefix=#{prefix}"
