@@ -4,6 +4,7 @@ class Yaafe < Formula
   url 'http://sourceforge.net/projects/yaafe/files/yaafe-v0.64.tgz'
   homepage 'http://yaafe.sourceforge.net/'
   md5 'f8c66623961840576c14468e249c8a0f'
+  version '0.64'
 
   depends_on 'cmake' => :build
   depends_on 'argtable'
