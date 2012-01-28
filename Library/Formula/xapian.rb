@@ -3,7 +3,7 @@ require 'formula'
 class XapianBindings < Formula
   url 'http://oligarchy.co.uk/xapian/1.2.7/xapian-bindings-1.2.7.tar.gz'
   homepage 'http://xapian.org'
-  sha1 'd42d418c1873c607427c7cfb293477aa35428e4c'
+  sha1 '79e9f0b01f1af3440d10d00469dbe248784ffa1c'
 end
 
 class Xapian < Formula

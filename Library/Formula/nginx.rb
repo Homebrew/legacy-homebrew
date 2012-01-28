@@ -2,13 +2,12 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.0.8.tar.gz'
-  head 'http://nginx.org/download/nginx-1.1.6.tar.gz'
+  url 'http://nginx.org/download/nginx-1.0.11.tar.gz'
+  md5 'a41a01d7cd46e13ea926d7c9ca283a95'
 
-  if ARGV.build_head?
-    md5 '976bd857e7d2327aa9977efaacea2c8f'
-  else
-    md5 '1049e5fc6e80339f6ba8668fadfb75f9'
+  devel do
+    url 'http://nginx.org/download/nginx-1.1.13.tar.gz'
+    md5 '3a457fc31da382ed0546bfb76fc70c13'
   end
 
   depends_on 'pcre'
@@ -53,7 +52,9 @@ class Nginx < Formula
     args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
 
     system "./configure", *args
+    system "make"
     system "make install"
+    man8.install "objs/nginx.8"
 
     (prefix+'org.nginx.nginx.plist').write startup_plist
     (prefix+'org.nginx.nginx.plist').chmod 0644

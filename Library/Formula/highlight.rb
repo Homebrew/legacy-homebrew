@@ -1,9 +1,9 @@
 require 'formula'
 
 class Highlight < Formula
-  url 'http://www.andre-simon.de/zip/highlight-3.5.tar.bz2'
+  url 'http://www.andre-simon.de/zip/highlight-3.6.tar.bz2'
   homepage 'http://www.andre-simon.de/doku/highlight/en/highlight.html'
-  sha1 '0e57b45103b6f471a96f987f98dc5e09fed138b5'
+  sha1 'ff3d5f5d17edfed4881d34ef847e63bf800a33e2'
 
   depends_on 'boost'
   depends_on 'lua'

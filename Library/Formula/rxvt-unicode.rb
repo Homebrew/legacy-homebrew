@@ -1,11 +1,13 @@
 require 'formula'
 
 class RxvtUnicode < Formula
-  url 'http://dist.schmorp.de/rxvt-unicode/Attic/rxvt-unicode-9.12.tar.bz2'
+  url 'http://dist.schmorp.de/rxvt-unicode/Attic/rxvt-unicode-9.14.tar.bz2'
   homepage 'http://software.schmorp.de/pkg/rxvt-unicode.html'
-  md5 '945af37d661c8c45a7cac292160e7c70'
+  md5 '022235a9a8b012c29e72c49177be6ce4'
 
   depends_on 'pkg-config' => :build
+
+  fails_with_llvm "memory fences not defined for your architecture", :build => 2336
 
   def patches
     # Patch hunks 1 and 2 allow perl support to compile on Intel.

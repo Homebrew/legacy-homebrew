@@ -2,14 +2,12 @@ require 'formula'
 
 class Shiboken < Formula
   homepage 'http://www.pyside.org/docs/shiboken'
-  url 'http://pyside.org/files/shiboken-1.0.7.tar.bz2'
-  md5 'b932c66a49145894c0af556030ac90ac'
+  url 'http://pyside.org/files/shiboken-1.1.0.tar.bz2'
+  md5 '9c9d696c8c426fb5abf28a6bd3759558'
 
   depends_on 'cmake' => :build
 
   depends_on 'generatorrunner'
-  depends_on 'apiextractor'
-  depends_on 'qt'
 
   def install
     # Building the tests also runs them. Not building and running tests cuts

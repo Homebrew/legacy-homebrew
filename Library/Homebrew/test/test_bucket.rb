@@ -32,8 +32,10 @@ class BeerTasting < Test::Unit::TestCase
     assert_nothing_raised do
       MockFormula.new 'test-0.1.tar.gz'
       MockFormula.new 'test-0.1.tar.bz2'
+      MockFormula.new 'test-0.1.tar.xz'
       MockFormula.new 'test-0.1.tgz'
       MockFormula.new 'test-0.1.bgz'
+      MockFormula.new 'test-0.1.txz'
       MockFormula.new 'test-0.1.zip'
     end
   end
@@ -176,6 +178,11 @@ class BeerTasting < Test::Unit::TestCase
     foo1 = HOMEBREW_CACHE/'foo-0.1.tar.gz'
     
     assert_equal '.tar.gz', foo1.extname
+    assert_equal 'foo-0.1', foo1.stem
+    assert_equal '0.1', foo1.version
+
+    foo1 = HOMEBREW_CACHE/'foo-0.1.cpio.gz'
+    assert_equal '.cpio.gz', foo1.extname
     assert_equal 'foo-0.1', foo1.stem
     assert_equal '0.1', foo1.version
   end

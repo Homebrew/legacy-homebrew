@@ -10,5 +10,6 @@ class Jscoverage < Formula
                           "--prefix=#{prefix}"
     system "make"
     bin.install('jscoverage');
+    bin.install('jscoverage-server');
   end
 end

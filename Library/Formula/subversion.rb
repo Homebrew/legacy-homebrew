@@ -129,7 +129,7 @@ class Subversion < Formula
         arches = "-arch x86_64"
       end
 
-      # Use verison-appropriate system Perl
+      # Use version-appropriate system Perl
      if MacOS.leopard?
         perl_version = "5.8.8"
       else

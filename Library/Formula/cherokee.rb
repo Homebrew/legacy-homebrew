@@ -7,10 +7,6 @@ class Cherokee < Formula
 
   depends_on 'gettext'
 
-  skip_clean "var/run"
-  skip_clean "var/log"
-  skip_clean "var/lib/cherokee/graphs/images"
-
   def caveats
     <<-EOS.undent
       Cherokee is setup to run with your user permissions as part of the
@@ -36,7 +32,8 @@ class Cherokee < Formula
                           "--sysconfdir=#{etc}",
                           "--localstatedir=#{var}/cherokee",
                           "--with-wwwuser=#{ENV['USER']}",
-                          "--with-wwwgroup=www"
+                          "--with-wwwgroup=www",
+                          "--enable-internal-pcre"
     system "make install"
 
     prefix.install "org.cherokee.webserver.plist"

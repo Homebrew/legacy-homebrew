@@ -44,9 +44,12 @@ class Mapserver < Formula
   end
 
   def install
+    ENV.x11
     system "./configure", *configure_args
     system "make"
-    bin.install %w(mapserv)
+    bin.install %w(mapserv shp2img legend shptree shptreevis
+        shptreetst scalebar sortshp mapscriptvars tile4ms
+        msencrypt mapserver-config)
 
     if ARGV.include? '--with-php'
       prefix.install %w(mapscript/php/php_mapscript.so)

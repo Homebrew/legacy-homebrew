@@ -2,9 +2,9 @@ require 'formula'
 
 class Vala < Formula
   head 'git://git.gnome.org/vala'
-  url 'http://download.gnome.org/sources/vala/0.11/vala-0.11.7.tar.bz2'
+  url 'http://download.gnome.org/sources/vala/0.15/vala-0.15.1.tar.xz'
   homepage 'http://live.gnome.org/Vala'
-  md5 '5515f32552ee45ed5c7541c119009caa'
+  md5 '639c8a85e184647a2c912a4f6ac28ed1'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'

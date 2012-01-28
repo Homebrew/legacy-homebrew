@@ -2,7 +2,7 @@ require 'formula'
 
 class SolrPhp < Formula
   url 'http://pecl.php.net/get/solr-1.0.1.tgz'
-  homepage 'http://pecl.php.net/package/mongo'
+  homepage 'http://pecl.php.net/package/solr'
   md5 '538adecfd52a79feae777870edcfd5d7'
 
   def install

@@ -6,6 +6,7 @@ class Herrie < Formula
   md5 '88832b10298ab89473730eb0c93b6ddf'
 
   depends_on 'gettext' => :build
+  depends_on 'glib'
   depends_on 'libvorbis'
   depends_on 'libid3tag'
   depends_on 'mad'
