@@ -11,6 +11,6 @@ class Uudeview < Formula
   end
 
   def test
-    system "uudeview -V"
+    system "#{bin}/uudeview -V"
   end
 end
