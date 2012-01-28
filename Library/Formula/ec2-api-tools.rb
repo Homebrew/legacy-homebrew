@@ -31,7 +31,7 @@ class AmazonWebServicesFormula < Formula
        * On Bash, add them to `~/.bash_profile`.
        * On Zsh, add them to `~/.zprofile` instead.
 
-      export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Home"
+      export JAVA_HOME="$(/usr/libexec/java_home)"
       export EC2_PRIVATE_KEY="$(/bin/ls $HOME/.ec2/pk-*.pem)"
       export EC2_CERT="$(/bin/ls $HOME/.ec2/cert-*.pem)"
       export #{var_name}="#{var_value}"
