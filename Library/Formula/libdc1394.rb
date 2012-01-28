@@ -5,7 +5,7 @@ class Libdc1394 < Formula
   homepage 'http://damien.douxchamps.net/ieee1394/libdc1394/'
   md5 'a9c5306dfc17917872513355f87e8412'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'libusb'
 
   def install
