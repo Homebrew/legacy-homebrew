@@ -13,6 +13,7 @@ class NagiosPlugins < Formula
                           "--prefix=#{prefix}",
                           "--libexecdir=#{nagios_sbin}"
     system "make install"
+    system "make install-root"
   end
 
   def caveats
