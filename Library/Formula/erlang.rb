@@ -45,6 +45,8 @@ class Erlang < Formula
 
   def options
     [
+      ['--wxmac', 'Enable wxmac and build 32-bit erlang.'],
+      ['--odbc', 'Enable odbc'],
       ['--disable-hipe', "Disable building hipe; fails on various OS X systems."],
       ['--halfword', 'Enable halfword emulator (64-bit builds only)'],
       ['--time', '"brew test --time" to include a time-consuming test.'],
@@ -87,13 +89,25 @@ class Erlang < Formula
       args << '--enable-hipe'
     end
 
-    if MacOS.prefer_64_bit?
+    if ARGV.include? '--odbc'
+      args << '--enable-odbc'
+    end
+
+    if ARGV.include? '--wxmac'
+      %w{ CFLAGS CXXFLAGS CPPFLAGS LDFLAGS OBJCFLAGS OBJCXXFLAGS }.each do |compiler_flag|
+        ENV.append compiler_flag, "-arch i386 -isysroot /Developer/SDKs/MacOSX10.6.sdk"
+      end
+      # if wxosx is installed, HOMEBREW_PREFIX/bin/wx-config may be overwritten.
+      args << "--with-wx-config=#{HOMEBREW_PREFIX}/lib/wx/config/mac-unicode-release-2.8"
+    elsif MacOS.prefer_64_bit?
       args << "--enable-darwin-64bit"
       args << "--enable-halfword-emulator" if ARGV.include? '--halfword' # Does not work with HIPE yet. Added for testing only
     end
 
     system "./configure", *args
-    system "touch lib/wx/SKIP" if MacOS.snow_leopard?
+    unless ARGV.include? '--wxmac'
+      system "touch lib/wx/SKIP"
+    end
     system "make"
     system "make install"
 
