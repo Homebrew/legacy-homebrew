@@ -25,7 +25,6 @@ class Erlang < Formula
   # Download tarball from GitHub; it is served faster than the official tarball.
   url 'https://github.com/erlang/otp/tarball/OTP_R15B'
   md5 '91c939a56e7f3c492b4ce99c8babe3b2'
-  version 'R15B'
 
   bottle do
     # Bottle built on OS X 10.7.2 using Xcode 4.1 using:
