@@ -28,8 +28,11 @@ class Erlang < Formula
   version 'R15B'
 
   bottle do
-    url 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R14B04-bottle.tar.gz'
-    sha1 '0cbd2ebd59491a473b38833970ba0cfb78549594'
+    # Bottle built on OS X 10.7.2 using Xcode 4.1 using:
+    #
+    #     brew install erlang --build-bottle --use-gcc
+    url 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15-bottle.tar.gz'
+    sha1 '4c81febc679dc9e9c27e66317fc317df9a5a40e7'
   end
 
   head 'https://github.com/erlang/otp.git', :branch => 'dev'
