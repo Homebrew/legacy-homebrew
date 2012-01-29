@@ -5,6 +5,11 @@ class ObjectiveCaml < Formula
   homepage 'http://caml.inria.fr/ocaml/index.en.html'
   md5 '227a3daaedb150bf5037a3db01f5bf42'
 
+  bottle do
+    url 'https://downloads.sf.net/project/machomebrew/Bottles/objective-caml-3.12.1-bottle.tar.gz'
+    sha1 '9bab332759a8262b07b2df46d09ab7c2026837cb'
+  end
+
   # Don't strip symbols, so dynamic linking doesn't break.
   skip_clean :all
 
