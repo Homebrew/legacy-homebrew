@@ -1,7 +1,8 @@
 require 'formula'
 
 class Kawa < Formula
-  url 'ftp://ftp.gnu.org/pub/gnu/kawa/kawa-1.11.jar'
+  url 'http://ftpmirror.gnu.org/kawa/kawa-1.11.jar'
+  mirror 'http://ftp.gnu.org/gnu/kawa/kawa-1.11.jar'
   homepage 'http://www.gnu.org/software/kawa/'
   md5 'eee96e13a329513a2f705ee03bacef63'
 
