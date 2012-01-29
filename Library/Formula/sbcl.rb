@@ -12,6 +12,11 @@ class Sbcl < Formula
   md5 '128fb15c80e8e3f8d4024bd8e04635e0'
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
+  bottle do
+    url 'https://downloads.sf.net/project/machomebrew/Bottles/sbcl-1.0.55-bottle.tar.gz'
+    sha1 '3c13225c8fe3eabf54e9d368e6b74318a5546430'
+  end
+
   fails_with_llvm "Compilation fails with LLVM.", :build => 2334
 
   skip_clean 'bin'
