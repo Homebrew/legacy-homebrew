@@ -104,8 +104,9 @@ module HomebrewEnvExtension
   end
 
   def clang args = {}
+    clang = File.exist? "/usr/bin/clang++" ? "/usr/bin/clang++" : "/usr/bin/clang"
     self['CC']  = "/usr/bin/clang"
-    self['CXX'] = "/usr/bin/clang++"
+    self['CXX'] = clang
     replace_in_cflags(/-Xarch_i386 (-march=\S*)/, '\1')
     # Clang mistakenly enables AES-NI on plain Nehalem
     set_cpu_cflags 'native', :nehalem => 'native -Xclang -target-feature -Xclang -aes'
