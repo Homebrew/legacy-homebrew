@@ -1,5 +1,10 @@
 require 'formula'
 
+# Python 3 is available as a separate formula:
+# $ brew install python3
+# PyPy is also available:
+# $ brew install pypy
+
 # Was a Framework build requested?
 def build_framework?; ARGV.include? '--framework'; end
 

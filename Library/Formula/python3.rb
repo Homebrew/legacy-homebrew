@@ -2,6 +2,8 @@ require 'formula'
 
 # Python 2.7.x is available as a separate formula:
 # $ brew install python
+# PyPy is also available:
+# $ brew install pypy
 
 # Was a Framework build requested?
 def build_framework?; ARGV.include? '--framework'; end
