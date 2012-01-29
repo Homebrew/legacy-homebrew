@@ -29,7 +29,7 @@ class Finch < Formula
                           "--disable-meanwhile",
                           "--disable-avahi",
                           "--disable-nm",
-                          "-with-dbus-services=/usr/local/share/dbus-1/"
+                          "-with-dbus-services=#{HOMEBREW_PREFIX}/share/dbus-1"
     system "make install"
   end
   
