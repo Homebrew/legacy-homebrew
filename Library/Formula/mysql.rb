@@ -2,8 +2,8 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.5/en/'
-  url 'http://downloads.mysql.com/archives/mysql-5.5/mysql-5.5.15.tar.gz'
-  md5 '306b5549c7bd72e8e705a890db0da82b'
+  url 'http://downloads.mysql.com/archives/mysql-5.5/mysql-5.5.19.tar.gz'
+  md5 'a78cf450974e9202bd43674860349b5a'
 
   depends_on 'cmake' => :build
   depends_on 'readline'
@@ -18,19 +18,19 @@ class Mysql < Formula
       ['--with-tests', "Build with unit tests."],
       ['--with-embedded', "Build the embedded server."],
       ['--with-libedit', "Compile with EditLine wrapper instead of readline"],
+      ['--with-archive-storage-engine', "Compile with the ARCHIVE storage engine enabled"],
+      ['--with-blackhole-storage-engine', "Compile with the BLACKHOLE storage engine enabled"],
       ['--universal', "Make mysql a universal binary"],
       ['--enable-local-infile', "Build with local infile loading support"]
     ]
   end
 
-  # The CMAKE patches are so that on Lion we do not detect a private
-  # pthread_init function as linkable.
   def patches
     DATA
   end
 
   def install
-    # Make sure the var/msql directory exists
+    # Make sure the var/mysql directory exists
     (var+"mysql").mkpath
 
     args = [".",
@@ -58,6 +58,12 @@ class Mysql < Formula
 
     # Compile with readline unless libedit is explicitly chosen
     args << "-DWITH_READLINE=yes" unless ARGV.include? '--with-libedit'
+
+    # Compile with ARCHIVE engine enabled if chosen
+    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if ARGV.include? '--with-archive-storage-engine'
+
+    # Compile with BLACKHOLE engine enabled if chosen
+    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if ARGV.include? '--with-blackhole-storage-engine'
 
     # Make universal for binding to universal applications
     args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if ARGV.build_universal?
@@ -153,11 +159,13 @@ end
 
 
 __END__
---- old/scripts/mysqld_safe.sh  2009-09-02 04:10:39.000000000 -0400
-+++ new/scripts/mysqld_safe.sh  2009-09-02 04:52:55.000000000 -0400
-@@ -383,7 +383,7 @@
+diff --git a/scripts/mysqld_safe.sh b/scripts/mysqld_safe.sh
+index 0d2045a..2fdd5ce 100644
+--- a/scripts/mysqld_safe.sh
++++ b/scripts/mysqld_safe.sh
+@@ -558,7 +558,7 @@ else
  fi
-
+ 
  USER_OPTION=""
 -if test -w / -o "$USER" = "root"
 +if test -w /sbin -o "$USER" = "root"
@@ -165,10 +173,10 @@ __END__
    if test "$user" != "root" -o $SET_USER = 1
    then
 diff --git a/scripts/mysql_config.sh b/scripts/mysql_config.sh
-index efc8254..8964b70 100644
+index 9296075..a600de2 100644
 --- a/scripts/mysql_config.sh
 +++ b/scripts/mysql_config.sh
-@@ -132,7 +132,8 @@ for remove in DDBUG_OFF DSAFEMALLOC USAFEMALLOC DSAFE_MUTEX \
+@@ -137,7 +137,8 @@ for remove in DDBUG_OFF DSAFE_MUTEX DUNIV_MUST_NOT_INLINE DFORCE_INIT_OF_VARS \
                DEXTRA_DEBUG DHAVE_purify O 'O[0-9]' 'xO[0-9]' 'W[-A-Za-z]*' \
                'mtune=[-A-Za-z0-9]*' 'mcpu=[-A-Za-z0-9]*' 'march=[-A-Za-z0-9]*' \
                Xa xstrconst "xc99=none" AC99 \
@@ -178,21 +186,3 @@ index efc8254..8964b70 100644
  do
    # The first option we might strip will always have a space before it because
    # we set -I$pkgincludedir as the first option
-diff --git a/configure.cmake b/configure.cmake
-index 0014c1d..21fe471 100644
---- a/configure.cmake
-+++ b/configure.cmake
-@@ -391,7 +391,11 @@ CHECK_FUNCTION_EXISTS (pthread_attr_setscope HAVE_PTHREAD_ATTR_SETSCOPE)
- CHECK_FUNCTION_EXISTS (pthread_attr_setstacksize HAVE_PTHREAD_ATTR_SETSTACKSIZE)
- CHECK_FUNCTION_EXISTS (pthread_condattr_create HAVE_PTHREAD_CONDATTR_CREATE)
- CHECK_FUNCTION_EXISTS (pthread_condattr_setclock HAVE_PTHREAD_CONDATTR_SETCLOCK)
--CHECK_FUNCTION_EXISTS (pthread_init HAVE_PTHREAD_INIT)
-+
-+IF (NOT CMAKE_OSX_SYSROOT)
-+    CHECK_FUNCTION_EXISTS (pthread_init HAVE_PTHREAD_INIT)
-+ENDIF (NOT CMAKE_OSX_SYSROOT)
-+
- CHECK_FUNCTION_EXISTS (pthread_key_delete HAVE_PTHREAD_KEY_DELETE)
- CHECK_FUNCTION_EXISTS (pthread_rwlock_rdlock HAVE_PTHREAD_RWLOCK_RDLOCK)
- CHECK_FUNCTION_EXISTS (pthread_sigmask HAVE_PTHREAD_SIGMASK)
-
