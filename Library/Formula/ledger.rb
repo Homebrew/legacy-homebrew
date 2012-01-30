@@ -12,6 +12,12 @@ class Ledger < Formula
   depends_on 'gmp'
   depends_on 'pcre'
   depends_on 'expat'
+  
+  def options
+    [
+      ['--no-python', 'Disable Python support']
+    ]
+  end
 
   def options
     [['--no-python', 'Disable Python support']]
