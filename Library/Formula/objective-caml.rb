@@ -15,7 +15,8 @@ class ObjectiveCaml < Formula
     system "make opt"
     system "make opt.opt"
     system "make PREFIX=#{prefix} install"
-
+    mkdir "#{lib}/ocaml/compiler-libs"
+    `cp -R typing parsing utils #{lib}/ocaml/compiler-libs`
     # site-lib in the Cellar will be a symlink to the HOMEBREW_PREFIX location
     (HOMEBREW_PREFIX+"lib/ocaml/site-lib").mkpath
     ln_s HOMEBREW_PREFIX+"lib/ocaml/site-lib", lib+"ocaml/site-lib"
