@@ -8,18 +8,19 @@ end
 
 class Ghostscript < Formula
   url 'http://downloads.ghostscript.com/public/ghostscript-9.02.tar.bz2'
+  head 'git://git.ghostscript.com/ghostpdl.git'
   homepage 'http://www.ghostscript.com/'
   md5 'f67151444bd56a7904579fc75a083dd6'
 
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
   depends_on 'libtiff'
-  depends_on 'jasper'
+  depends_on 'jasper' unless ARGV.build_head?
 
   # The patches fix compilation against libpng 1.5, provided by Lion.
   # Patch by @CharlieRoot
   def patches
-    DATA
+    DATA unless ARGV.build_head?
   end
 
   def move_included_source_copies
@@ -41,17 +42,22 @@ class Ghostscript < Formula
     # ghostscript configure ignores LDFLAGs apparently
     ENV['LIBS']="-L/usr/X11/lib"
 
-    move_included_source_copies
+    src_dir = ARGV.build_head? ? "gs" : "."
 
-    system "./configure", "--prefix=#{prefix}", "--disable-debug",
-                          # the cups component adamantly installs to /usr so fuck it
-                          "--disable-cups",
-                          "--disable-compile-inits",
-                          "--disable-gtk"
+    cd src_dir do
+      move_included_source_copies
 
-    # versioned stuff in main tree is pointless for us
-    inreplace 'Makefile', '/$(GS_DOT_VERSION)', ''
-    system "make install"
+      system "./autogen.sh" if ARGV.build_head?
+      system "./configure", "--prefix=#{prefix}", "--disable-debug",
+                            # the cups component adamantly installs to /usr so fuck it
+                            "--disable-cups",
+                            "--disable-compile-inits",
+                            "--disable-gtk"
+
+      # versioned stuff in main tree is pointless for us
+      inreplace 'Makefile', '/$(GS_DOT_VERSION)', ''
+      system "make install"
+    end
 
     GhostscriptFonts.new.brew do
       Dir.chdir '..'
