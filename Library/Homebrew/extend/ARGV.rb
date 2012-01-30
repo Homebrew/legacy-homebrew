@@ -10,8 +10,7 @@ module HomebrewArgvExtension
   def formulae
     require 'formula'
     @formulae ||= downcased_unique_named.map{ |name| Formula.factory name }
-    raise FormulaUnspecifiedError if @formulae.empty?
-    @formulae
+    return @formulae
   end
 
   def kegs
@@ -31,8 +30,7 @@ module HomebrewArgvExtension
       raise MultipleVersionsInstalledError.new(name) if dirs.length > 1
       Keg.new dirs.first
     end
-    raise KegUnspecifiedError if @kegs.empty?
-    @kegs
+    return @kegs
   end
 
   # self documenting perhaps?
