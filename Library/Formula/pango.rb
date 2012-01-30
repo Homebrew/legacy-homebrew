@@ -21,6 +21,11 @@ class Pango < Formula
     depends_on 'cairo'
   end
 
+  def patches
+    # https://bugzilla.gnome.org/show_bug.cgi?id=652202 Stop using G_CONST_RETURN in Pango
+    "http://git.gnome.org/browse/pango/patch/?id=4c7807daee7189f481d7c18b56b06d7b7dba7884"
+  end
+
   def install
     ENV.x11
     system "./configure", "--disable-dependency-tracking", "--disable-debug",

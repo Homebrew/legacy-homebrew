@@ -9,9 +9,6 @@ class Libglade < Formula
   depends_on 'gtk+'
 
   def install
-    # G_CONST_RETURN was deprecated in glib-2.30 (for const)
-    inreplace 'glade/Makefile.in', '-DG_DISABLE_DEPRECATED', ''
-
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
