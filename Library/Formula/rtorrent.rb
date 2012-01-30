@@ -4,6 +4,12 @@ class Rtorrent < Formula
   url 'http://libtorrent.rakshasa.no/downloads/rtorrent-0.8.9.tar.gz'
   homepage 'http://libtorrent.rakshasa.no/'
   md5 '629247636cb1210663b52dadbd040a6c'
+  def patches
+    # color support is not yet in the main version of rtorrent (0.8.9). But
+    # there exists this patch. Homepage of the patch:
+    # http://code.google.com/p/trerront/
+    'http://trerront.googlecode.com/files/rtorrent-0.8.9-canvas-fix.patch'
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'libsigc++'
