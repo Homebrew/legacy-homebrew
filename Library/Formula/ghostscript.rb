@@ -27,7 +27,7 @@ class Ghostscript < Formula
     # If the install version of any of these doesn't match
     # the version included in ghostscript, we get errors
     # Taken from the MacPorts portfile - http://bit.ly/ghostscript-portfile
-    renames = [ "jpeg", "libpng", "zlib", "jasper", "expat", "tiff" ]
+    renames = [ "jpeg", "libpng", "zlib", "jasper", "tiff" ]
     renames << "freetype" if 10.7 <= MACOS_VERSION
     renames.each do |lib|
       mv lib, "#{lib}_local"
