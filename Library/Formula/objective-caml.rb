@@ -16,8 +16,8 @@ class ObjectiveCaml < Formula
     system "make opt.opt"
     system "make PREFIX=#{prefix} install"
 
-    # site-lib in the Cellar will be a symlink to the HOMEBREW_PREFIX location
-    (HOMEBREW_PREFIX+"lib/ocaml/site-lib").mkpath
+    # site-lib in the Cellar will be a symlink to the HOMEBREW_PREFIX location,
+    # which is mkpath'd by Keg#link when something installs into it
     ln_s HOMEBREW_PREFIX+"lib/ocaml/site-lib", lib+"ocaml/site-lib"
   end
 end
