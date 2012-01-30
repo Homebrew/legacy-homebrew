@@ -8,7 +8,8 @@ class Cabocha < Formula
   depends_on 'crf++'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    ENV["LIBS"] = "-liconv"
+    system "./configure", "CXXFLAGS=#{ENV.cflags}",  "--with-charset=utf8", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end
