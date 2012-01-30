@@ -1,11 +1,14 @@
 require 'formula'
 
 class Cmake < Formula
-  url 'http://www.cmake.org/files/v2.8/cmake-2.8.6.tar.gz'
-  md5 '2147da452fd9212bb9b4542a9eee9d5b'
+  url 'http://www.cmake.org/files/v2.8/cmake-2.8.7.tar.gz'
+  md5 'e1b237aeaed880f65dec9c20602452f6'
   homepage 'http://www.cmake.org/'
-  bottle 'https://downloads.sf.net/project/machomebrew/Bottles/cmake-2.8.6-bottle.tar.gz'
-  bottle_sha1 '3d8368605477bddc138872053f183ba52a6e4ec9'
+
+  bottle do
+    url 'https://downloads.sf.net/project/machomebrew/Bottles/cmake-2.8.7-bottle.tar.gz'
+    sha1 'f218ed64ce6e7a5d3670acdd6a18e5ed95421d1f'
+  end
 
   def install
     # A framework-installed expat will be detected and mess things up.

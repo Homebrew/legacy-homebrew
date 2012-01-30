@@ -1,69 +1,36 @@
 require 'formula'
 
 module Homebrew extend self
-
-  module Versions
-    # yields version, sha for all versions in the git history
-    def self.old_versions f
-      yielded = []
-      f.rev_list.each do |sha|
-        version = f.version_for_sha sha
-        unless yielded.include? version or version.nil?
-          yield version, sha
-          yielded << version
-        end
-      end
-    end
-  end
-
   def versions
     raise "Please `brew install git` first" unless system "/usr/bin/which -s git"
 
     ARGV.formulae.all? do |f|
-      old_versions = Versions.old_versions f do |version, sha|
-        print Tty.white
-        print "#{version.ljust(8)} "
-        print Tty.reset
-        puts "git checkout #{sha} #{f.pretty_relative_path}"
+      if ARGV.include? '--compact'
+        puts f.versions * " "
+      else
+        f.versions do |version, sha|
+          print Tty.white.to_s
+          print "#{version.ljust(8)} "
+          print Tty.reset.to_s
+          puts "git checkout #{sha} #{f.pretty_relative_path}"
+        end
       end
     end
   end
-
 end
 
 
 class Formula
-  def rev_list
-    Dir.chdir HOMEBREW_REPOSITORY do
-      `git rev-list --abbrev-commit HEAD Library/Formula/#{name}.rb`.split
+  def versions
+    versions = []
+    rev_list.each do |sha|
+      version = version_for_sha sha
+      unless versions.include? version or version.nil?
+        yield version, sha if block_given?
+        versions << version
+      end
     end
-  end
-
-  def sha_for_version version
-    revlist.find{ |sha| version == version_for(sha) }
-  end
-
-  def version_for_sha sha
-    # TODO really we should open a new ruby instance and parse the formula
-    # class and then get the version but this would be too slow (?)
-
-    code = Dir.chdir(HOMEBREW_REPOSITORY) do
-      `git show #{sha}:Library/Formula/#{name}.rb`
-    end
-
-    version = code.match(/class #{Formula.class_s name} < ?Formula.*?(?:version\s|@version\s*=)\s*(?:'|")(.+?)(?:'|").*?end\s/m)
-    return version[1] unless version.nil?
-
-    url = code.match(/class #{Formula.class_s name} < ?Formula.*?(?:url\s|@url\s*=)\s*(?:'|")(.+?)(?:'|").*?end\s/m)
-    unless url.nil?
-      version = Pathname.new(url[1]).version
-      return version unless version.to_s.empty?
-    end
-
-    head = code.match(/class #{Formula.class_s name} < ?Formula.*?head\s'(.*?)'.*?end\s\s/m)
-    return 'HEAD' unless head.nil?
-
-    opoo "Version of #{name} could not be determined for #{sha}."
+    return versions
   end
 
   def pretty_relative_path
@@ -73,4 +40,40 @@ class Formula
       "#{HOMEBREW_REPOSITORY}/Library/Formula/#{name}.rb"
     end
   end
+
+  private
+    def rev_list
+      HOMEBREW_REPOSITORY.cd do
+        `git rev-list --abbrev-commit HEAD -- Library/Formula/#{name}.rb`.split
+      end
+    end
+
+    def text_from_sha sha
+      HOMEBREW_REPOSITORY.cd do
+        `git cat-file blob #{sha}:Library/Formula/#{name}.rb`
+      end
+    end
+
+    def sha_for_version version
+      rev_list.find{ |sha| version == version_for_sha(sha) }
+    end
+
+    def version_for_sha sha
+      mktemp do
+        path = Pathname.new(Pathname.pwd+"#{name}.rb")
+        path.write text_from_sha(sha)
+
+        # Unload the class so Formula#version returns the correct value
+        # FIXME shouldn't have to do this?
+        begin
+          version = nostdout { Formula.factory(path).version }
+          Object.send(:remove_const, Formula.class_s(name))
+          version
+        rescue SyntaxError, TypeError, NameError, ArgumentError
+          # We rescue these so that we can skip bad versions and
+          # continue walking the history
+          nil
+        end
+      end
+    end
 end

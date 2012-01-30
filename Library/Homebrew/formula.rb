@@ -100,18 +100,19 @@ class Formula
   include FileUtils
 
   attr_reader :name, :path, :url, :version, :homepage, :specs, :downloader
-  attr_reader :bottle, :bottle_sha1, :head
+  attr_reader :standard, :unstable
+  attr_reader :bottle_url, :bottle_sha1, :head
 
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
     set_instance_variable 'homepage'
     set_instance_variable 'url'
-    set_instance_variable 'bottle'
+    set_instance_variable 'bottle_url'
     set_instance_variable 'bottle_sha1'
     set_instance_variable 'head'
     set_instance_variable 'specs'
 
-    set_instance_variable 'stable'
+    set_instance_variable 'standard'
     set_instance_variable 'unstable'
 
     if @head and (not @url or ARGV.build_head?)
@@ -119,10 +120,10 @@ class Formula
       @version = 'HEAD'
       @spec_to_use = @unstable
     else
-      if @stable.nil?
+      if @standard.nil?
         @spec_to_use = SoftwareSpecification.new(@url, @specs)
       else
-        @spec_to_use = @stable
+        @spec_to_use = @standard
       end
     end
 
@@ -149,13 +150,15 @@ class Formula
   end
 
   def explicitly_requested?
-
-    # `ARGV.formulae` will throw an exception if it comes up with an empty
-    # list.
-    #
+    # `ARGV.formulae` will throw an exception if it comes up with an empty list.
     # FIXME: `ARGV.formulae` shouldn't be throwing exceptions, see issue #8823
    return false if ARGV.named.empty?
    ARGV.formulae.include? self
+  end
+
+  def linked_keg
+    keg = Pathname.new(HOMEBREW_REPOSITORY/"Library/LinkedKegs"/@name)
+    if keg.exist? then Keg.new(keg.realpath) else nil end
   end
 
   def installed_prefix
@@ -253,7 +256,7 @@ class Formula
   # sometimes the clean process breaks things
   # skip cleaning paths in a formula with a class method like this:
   #   skip_clean [bin+"foo", lib+"bar"]
-  # redefining skip_clean? in formulas is now deprecated
+  # redefining skip_clean? now deprecated
   def skip_clean? path
     return true if self.class.skip_clean_all?
     to_check = path.relative_path_from(prefix).to_s
@@ -331,14 +334,18 @@ class Formula
   end
 
   def handle_llvm_failure llvm
-    case ENV.compiler
-    when :llvm, :clang
-      # version 2335 is the latest version as of Xcode 4.1, so it is the
+    if ENV.compiler == :llvm
+      # version 2336 is the latest version as of Xcode 4.2, so it is the
       # latest version we have tested against so we will switch to GCC and
-      # bump this integer when Xcode 4.2 is released. TODO do that!
-      if llvm.build.to_i >= 2335
-        opoo "Formula will not build with LLVM, using GCC"
-        ENV.gcc :force => true
+      # bump this integer when Xcode 4.3 is released. TODO do that!
+      if llvm.build.to_i >= 2336
+        if MacOS.xcode_version < "4.2"
+          opoo "Formula will not build with LLVM, using GCC"
+          ENV.gcc :force => true
+        else
+          opoo "Formula will not build with LLVM, trying Clang"
+          ENV.clang :force => true
+        end
         return
       end
       opoo "Building with LLVM, but this formula is reported to not work with LLVM:"
@@ -400,6 +407,9 @@ class Formula
   end
 
   def self.canonical_name name
+    # Cast pathnames to strings.
+    name = name.to_s if name.kind_of? Pathname
+
     formula_with_that_name = HOMEBREW_REPOSITORY+"Library/Formula/#{name}.rb"
     possible_alias = HOMEBREW_REPOSITORY+"Library/Aliases/#{name}"
     possible_cached_formula = HOMEBREW_CACHE_FORMULA+"#{name}.rb"
@@ -573,7 +583,7 @@ private
     downloader = @downloader
     # Don't attempt mirrors if this install is not pointed at a "stable" URL.
     # This can happen when options like `--HEAD` are invoked.
-    mirror_list =  @spec_to_use == @stable ? mirrors : []
+    mirror_list =  @spec_to_use == @standard ? mirrors : []
 
     # Ensure the cache exists
     HOMEBREW_CACHE.mkpath
@@ -591,14 +601,19 @@ private
     return fetched, downloader
   end
 
+  # Detect which type of checksum is being used, or nil if none
+  def checksum_type
+    CHECKSUM_TYPES.detect { |type| instance_variable_defined?("@#{type}") }
+  end
+
   # For FormulaInstaller.
   def verify_download_integrity fn, *args
     require 'digest'
     if args.length != 2
-      type=CHECKSUM_TYPES.detect { |type| instance_variable_defined?("@#{type}") }
-      type ||= :md5
-      supplied=instance_variable_get("@#{type}")
-      type=type.to_s.upcase
+      type = checksum_type || :md5
+      supplied = instance_variable_get("@#{type}")
+      # Convert symbol to readable string
+      type = type.to_s.upcase
     else
       supplied, type = args
     end
@@ -716,7 +731,7 @@ EOF
 
   class << self
     # The methods below define the formula DSL.
-    attr_reader :stable, :unstable
+    attr_reader :standard, :unstable
 
     def self.attr_rw(*attrs)
       attrs.each do |attr|
@@ -730,7 +745,7 @@ EOF
 
     attr_rw :version, :homepage, :mirrors, :specs, :deps, :external_deps
     attr_rw :keg_only_reason, :fails_with_llvm_reason, :skip_clean_all
-    attr_rw :bottle, :bottle_sha1
+    attr_rw :bottle_url, :bottle_sha1
     attr_rw(*CHECKSUM_TYPES)
 
     def head val=nil, specs=nil
@@ -742,9 +757,33 @@ EOF
 
     def url val=nil, specs=nil
       return @url if val.nil?
-      @stable = SoftwareSpecification.new(val, specs)
+      @standard = SoftwareSpecification.new(val, specs)
       @url = val
       @specs = specs
+    end
+
+    def stable &block
+      raise "url and md5 must be specified in a block" unless block_given?
+      instance_eval &block unless ARGV.build_devel? or ARGV.build_head?
+    end
+
+    def devel &block
+      raise "url and md5 must be specified in a block" unless block_given?
+      instance_eval &block if ARGV.build_devel?
+    end
+
+    def bottle url=nil, &block
+      if block_given?
+        eval <<-EOCLASS
+        module BottleData
+          def self.url url; @url = url; end
+          def self.sha1 sha1; @sha1 = sha1; end
+          def self.return_data; [@url,@sha1]; end
+        end
+        EOCLASS
+        BottleData.instance_eval &block
+        @bottle_url, @bottle_sha1 = BottleData.return_data
+      end
     end
 
     def mirror val, specs=nil

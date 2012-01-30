@@ -137,24 +137,26 @@ def puts_columns items, star_items=[]
   end
 end
 
+def which_editor
+  editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
+  # If an editor wasn't set, try to pick a sane default
+  return editor unless editor.nil?
+
+  # Find Textmate
+  return 'mate' if system "/usr/bin/which -s mate"
+  # Find # BBEdit / TextWrangler
+  return 'edit' if system "/usr/bin/which -s edit"
+  # Default to vim
+  return '/usr/bin/vim'
+end
+
 def exec_editor *args
   return if args.to_s.empty?
-
-  editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
-  if editor.nil?
-    editor = if system "/usr/bin/which -s mate"
-      'mate'
-    elsif system "/usr/bin/which -s edit"
-      'edit' # BBEdit / TextWrangler
-    else
-      '/usr/bin/vim' # Default to vim
-    end
-  end
 
   # Invoke bash to evaluate env vars in $EDITOR
   # This also gets us proper argument quoting.
   # See: https://github.com/mxcl/homebrew/issues/5123
-  system "bash", "-c", editor + ' "$@"', "--", *args
+  system "bash", "-c", which_editor + ' "$@"', "--", *args
 end
 
 # GZips the given paths, and returns the gzipped paths
@@ -262,7 +264,8 @@ module MacOS extend self
   end
 
   def gcc_42_build_version
-    @gcc_42_build_version ||= if File.exist? "/usr/bin/gcc-4.2"
+    @gcc_42_build_version ||= if File.exist? "/usr/bin/gcc-4.2" \
+      and not Pathname.new("/usr/bin/gcc-4.2").realpath.basename.to_s =~ /^llvm/
       `/usr/bin/gcc-4.2 --version` =~ /build (\d{4,})/
       $1.to_i
     end
@@ -340,8 +343,8 @@ module MacOS extend self
 
   def clang_build_version
     @clang_build_version ||= if File.exist? "/usr/bin/clang"
-      `/usr/bin/clang --version` =~ %r[tags/Apple/clang-(\d{2,3}(\.\d)*)]
-      $1
+      `/usr/bin/clang --version` =~ %r[tags/Apple/clang-(\d{2,})]
+      $1.to_i
     end
   end
 
@@ -395,6 +398,10 @@ module MacOS extend self
   def prefer_64_bit?
     Hardware.is_64_bit? and 10.6 <= MACOS_VERSION
   end
+
+  def bottles_supported?
+    lion? and HOMEBREW_PREFIX.to_s == '/usr/local' and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar'
+  end
 end
 
 module GitHub extend self
@@ -423,5 +430,21 @@ module GitHub extend self
     issues
   rescue
     []
+  end
+
+  def find_pull_requests rx
+    require 'open-uri'
+    require 'vendor/multi_json'
+
+    query = rx.source.delete('.*').gsub('\\', '')
+    uri = URI.parse("http://github.com/api/v2/json/issues/search/mxcl/homebrew/open/#{query}")
+
+    open uri do |f|
+      MultiJson.decode(f.read)["issues"].each do |pull|
+        yield pull['pull_request_url'] if rx.match pull['title'] and pull["pull_request_url"]
+      end
+    end
+  rescue
+    nil
   end
 end

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ffmbc < Formula
-  url 'http://ffmbc.googlecode.com/files/FFmbc-0.7-rc4.tar.bz2'
+  url 'http://ffmbc.googlecode.com/files/FFmbc-0.7-rc5.tar.bz2'
   homepage 'http://code.google.com/p/ffmbc/'
-  md5 '45f68c3096c2ad0321fd4bacb7127be6'
+  md5 '42881eaf4f012c0d32f1bebde2bbb70d'
 
   depends_on 'yasm' => :build
   depends_on 'x264' => :optional
@@ -16,11 +16,13 @@ class Ffmbc < Formula
   depends_on 'xvid' => :optional
 
   def install
+    ENV.x11
     args = ["--prefix=#{prefix}",
             "--disable-debug",
             "--disable-shared",
             "--enable-gpl",
             "--enable-nonfree",
+            "--enable-libfreetype",
             "--cc=#{ENV.cc}"]
 
     args << "--enable-libx264" if Formula.factory('x264').installed?

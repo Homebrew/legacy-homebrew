@@ -9,9 +9,10 @@ class Libstemmer < Formula
 end
 
 class Sphinx < Formula
-  url 'http://sphinxsearch.com/files/sphinx-2.0.2-beta.tar.gz'
+  url 'http://sphinxsearch.com/files/sphinx-2.0.3-release.tar.gz'
+  version '2.0.3'
   homepage 'http://www.sphinxsearch.com'
-  md5 'fafe0f1a71d0ded32404c067eba7d0b3'
+  md5 'a1293aecd5034aa797811610beb7ba89'
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
   fails_with_llvm "ld: rel32 out of range in _GetPrivateProfileString from /usr/lib/libodbc.a(SQLGetPrivateProfileString.o)",

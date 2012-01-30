@@ -15,8 +15,8 @@ class FormulaInstaller
     @f = ff
     @show_header = true
     @ignore_deps = ARGV.include? '--ignore-dependencies' || ARGV.interactive?
-    @install_bottle = !ff.bottle.nil? && !ARGV.build_from_source? &&
-                      Pathname.new(ff.bottle).version == ff.version
+    @install_bottle = !ff.bottle_url.nil? && !ARGV.build_from_source? &&
+                      Pathname.new(ff.bottle_url).version == ff.version
   end
 
   def install
@@ -35,7 +35,7 @@ class FormulaInstaller
               # Re-create the formula object so that args like `--HEAD` won't
               # affect properties like the installation prefix. Also need to
               # re-check installed status as the Formula may have changed.
-              dep = Formula.factory dep.name
+              dep = Formula.factory dep.path
               install_dependency dep unless dep.installed?
             end
           end
@@ -67,15 +67,18 @@ class FormulaInstaller
     fi.show_header = false
     oh1 "Installing #{f} dependency: #{dep}"
     fi.install
+    dep.linked_keg.unlink if dep.linked_keg
     fi.caveats
     fi.finish
   end
 
   def caveats
-    if f.caveats
+    the_caveats = (f.caveats || "").strip
+    unless the_caveats.empty?
       ohai "Caveats", f.caveats
       @show_summary_heading = true
     end
+
     if f.keg_only?
       ohai 'Caveats', f.keg_only_text
       @show_summary_heading = true
@@ -186,7 +189,7 @@ class FormulaInstaller
 
   def pour
     HOMEBREW_CACHE.mkpath
-    downloader = CurlBottleDownloadStrategy.new f.bottle, f.name, f.version, nil
+    downloader = CurlBottleDownloadStrategy.new f.bottle_url, f.name, f.version, nil
     downloader.fetch
     f.verify_download_integrity downloader.tarball_path, f.bottle_sha1, "SHA1"
     HOMEBREW_CELLAR.cd do
@@ -198,6 +201,12 @@ class FormulaInstaller
 
   def paths
     @paths ||= ENV['PATH'].split(':').map{ |p| File.expand_path p }
+  end
+
+  def in_aclocal_dirlist?
+    File.open("/usr/share/aclocal/dirlist") do |dirlist|
+      dirlist.grep(%r{^#{HOMEBREW_PREFIX}/share/aclocal$}).length > 0
+    end rescue false
   end
 
   def check_PATH
@@ -250,7 +259,7 @@ class FormulaInstaller
 
   def check_m4
     # Check for m4 files
-    if Dir[f.share+"aclocal/*.m4"].length > 0
+    if Dir[f.share+"aclocal/*.m4"].length > 0 and not in_aclocal_dirlist?
       opoo 'm4 macros were installed to "share/aclocal".'
       puts "Homebrew does not append \"#{HOMEBREW_PREFIX}/share/aclocal\""
       puts "to \"/usr/share/aclocal/dirlist\". If an autoconf script you use"

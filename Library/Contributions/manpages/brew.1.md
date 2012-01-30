@@ -62,7 +62,7 @@ For the full command list, see the COMMANDS section.
 
   * `create [--autotools|--cmake] [--no-fetch]` <URL>:
     Generate a formula for the downloadable file at <URL> and open it in
-    $EDITOR. Homebrew will attempt to automatically derive the formula name
+    `EDITOR`. Homebrew will attempt to automatically derive the formula name
     and version, but if it fails, you'll have to make your own template. The wget
     formula serves as a simple example.
 
@@ -98,10 +98,10 @@ For the full command list, see the COMMANDS section.
     if any problems are found.
 
   * `edit`:
-    Open all of Homebrew for editing in TextMate.
+    Open all of Homebrew for editing.
 
   * `edit` <formula>:
-    Open <formula> in $EDITOR.
+    Open <formula> in `EDITOR`.
 
   * `fetch [--force] [-v] [--HEAD] [--deps]` <formulae>:
     Download the source packages for the given <formulae>.
@@ -204,7 +204,7 @@ For the full command list, see the COMMANDS section.
     Show the git log for the given formulae. Options that `git-log`(1)
     recognizes can be passed before the formula list.
 
-  * `missing [<formulae>]`:
+  * `missing` [<formulae>]:
     Check the given <formulae> for missing dependencies.
 
     If no <formulae> are given, check all installed brews.
@@ -272,9 +272,12 @@ For the full command list, see the COMMANDS section.
 
     If `--installed` is passed, only list installed formulae.
 
-  * `versions` <formulae>:
+  * `versions [--compact]` <formulae>:
     List previous versions of <formulae>, along with a command to checkout
     each version.
+
+    If `--compact` is passed, show all options on a single line separated by
+    spaces.
 
   * `--cache`:
     Display Homebrew's download cache. *Default:* `~/Library/Caches/Homebrew`

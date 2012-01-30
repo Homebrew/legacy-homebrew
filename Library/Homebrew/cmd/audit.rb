@@ -1,12 +1,6 @@
 require 'formula'
 require 'utils'
 
-# Use "brew audit --strict" to enable even stricter checks.
-
-def strict?
-  ARGV.flag? "--strict"
-end
-
 def ff
   return Formula.all if ARGV.named.empty?
   return ARGV.formulae
@@ -30,7 +24,7 @@ def audit_formula_text name, text
   end
 
   # cmake, pkg-config, and scons are build-time deps
-  if text =~ /depends_on ['"](cmake|pkg-config|scons|smake)['"]$/
+  if text =~ /depends_on ['"](boost-jam|cmake|pkg-config|scons|smake)['"]$/
     problems << " * #{$1} dependency should be \"depends_on '#{$1}' => :build\""
   end
 
@@ -176,6 +170,7 @@ def audit_formula_options f, text
   if documented_options.length > 0
     documented_options.each do |o|
       next if o == '--universal' and text =~ /ARGV\.build_universal\?/
+      next if o == '--32-bit' and text =~ /ARGV\.build_32_bit\?/
       problems << " * Option #{o} is unused" unless options.include? o
     end
   end
@@ -202,6 +197,11 @@ def audit_formula_urls f
 
   unless f.homepage =~ %r[^https?://]
     problems << " * The homepage should start with http or https."
+  end
+
+  # Google Code homepages should end in a slash
+  if f.homepage =~ %r[^https?://code\.google\.com/p/[^/]+[^/]$]
+    problems << " * Google Code homepage should end with a slash."
   end
 
   urls = [(f.url rescue nil), (f.head rescue nil)].reject {|p| p.nil?}
@@ -256,6 +256,24 @@ def audit_formula_urls f
   return problems
 end
 
+def audit_formula_specs text
+  problems = []
+
+  if text =~ /devel .+(url '.+').+(url '.+')/m
+    problems << " * 'devel' block found before stable 'url'"
+  end
+
+  if text =~ /devel .+(head '.+')/m
+    problems << " * 'devel' block found before 'head'"
+  end
+
+  if text =~ /devel do\s+end/
+    problems << " * Empty 'devel' block found"
+  end
+
+  return problems
+end
+
 def audit_formula_instance f
   problems = []
 
@@ -275,15 +293,12 @@ def audit_formula_instance f
     end
 
     case d
-    when "git", "python", "ruby", "emacs", "mysql", "postgresql"
+    when "git", "python", "ruby", "emacs", "mysql", "postgresql", "mercurial"
       problems << " * Don't use #{d} as a dependency; we allow non-Homebrew\n   #{d} installs."
     end
   end
 
-  # Google Code homepages should end in a slash
-  if f.homepage =~ %r[^https?://code\.google\.com/p/[^/]+[^/]$]
-    problems << " * Google Code homepage should end with a slash."
-  end
+  problems += [' * invalid or missing version'] if f.version.to_s.empty?
 
   return problems
 end
@@ -294,6 +309,11 @@ module Homebrew extend self
 
     ff.each do |f|
       problems = []
+
+      if f.unstable and f.standard.nil?
+        problems += [' * head-only formula']
+      end
+
       problems += audit_formula_instance f
       problems += audit_formula_urls f
 
@@ -310,7 +330,10 @@ module Homebrew extend self
         problems << " * 'DATA' was found, but no '__END__'"
       end
 
-      problems += [' * invalid or missing version'] if f.version.to_s.empty?
+      # files should end with a newline
+      if text =~ /.+\z/
+        problems << " * File should end with a newline"
+      end
 
       # Don't try remaining audits on text in __END__
       text_without_patch = (text.split("__END__")[0]).strip()
@@ -318,6 +341,7 @@ module Homebrew extend self
       problems += audit_formula_text(f.name, text_without_patch)
       problems += audit_formula_options(f, text_without_patch)
       problems += audit_formula_version(f, text_without_patch)
+      problems += audit_formula_specs(text_without_patch)
 
       unless problems.empty?
         errors = true

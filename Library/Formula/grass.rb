@@ -97,7 +97,7 @@ class Grass < Formula
     end
 
     system "./configure", "--prefix=#{prefix}", *args
-    system "make" # make and make install must be seperate steps.
+    system "make" # make and make install must be separate steps.
     system "make install"
   end
 

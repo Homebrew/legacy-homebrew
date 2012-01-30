@@ -58,59 +58,58 @@ class Gfortran < Formula
   skip_clean :all
 
   def install
-    # The version of pax jumped 16 years in development between OS X 10.5
-    # and OS X 10.6. In that time it became security concious. Additionally,
-    # there are some slight variations in the packaging- because of this
-    # installation is broken down by GCC version.
-    case gcc_42_build
-    when 5577
-      ohai "Installing gfortran 4.2.4 for XCode 3.1.4 (build 5577)"
-      safe_system "pax -rz -f Payload.gz -s ',./usr,#{prefix},'"
-      # The 5577 package does not contain the gfortran->gfortran-4.2 symlink
-      safe_system "ln -sf #{bin}/gfortran-4.2 #{bin}/gfortran"
-      safe_system "ln -sf #{man1}/gfortran-4.2.1 #{man1}/gfortran.1"
-    when 5659
-      ohai "Installing gfortran 4.2.4 for XCode 3.2.2 (build 5659)"
+    if MacOS.xcode_version >= '4.2' and MACOS_VERSION == 10.7
+      ohai "Installing gfortran 4.2.4 for XCode 4.2 (build 5666)"
       safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
-      safe_system "ln -sf #{man1}/gfortran-4.2.1 #{man1}/gfortran.1"
-    when 5664
-      ohai "Installing gfortran 4.2.4 for XCode 3.2.3 (build 5664)"
-      safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
-      safe_system "ln -sf #{man1}/gfortran-4.2.1 #{man1}/gfortran.1"
-    when 5666
-      ohai "Installing gfortran 4.2.4 for XCode 3.2.6--4.1 (build 5666)"
-      safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
-      safe_system "ln -sf #{man1}/gfortran-4.2.1 #{man1}/gfortran.1"
-    else
-      if MacOS.xcode_version >= '4.2'
-          ohai "Installing gfortran 4.2.4 for XCode 4.2 (build 5666)"
-          safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
 
-          safe_system "ln -sf #{man1}/gfortran-4.2.1 #{man1}/gfortran.1"
-          # This package installs a whole GCC suite. Remove non-fortran
-          # components.
-          bin.children.reject{|p| p.basename.to_s.match /gfortran/}.each{|p| rm p}
-          man1.children.reject{|p| p.basename.to_s.match /gfortran/}.each{|p| rm p}
-          (include + 'gcc').rmtree
-          # This package does not contain the gfortran->gfortran-4.2 symlink
-          safe_system "ln -sf #{bin}/gfortran-4.2 #{bin}/gfortran"
+      # This package installs a whole GCC suite. Remove non-fortran
+      # components.
+      bin.children.reject{|p| p.basename.to_s.match /gfortran/}.each{|p| rm p}
+      man1.children.reject{|p| p.basename.to_s.match /gfortran/}.each{|p| rm p}
+      (include + 'gcc').rmtree
+
+      # This package does not contain the gfortran->gfortran-4.2 symlink
+      safe_system "ln -sf #{bin}/gfortran-4.2 #{bin}/gfortran"
+    else
+      # Break installation down by GCC build as there are some slight
+      # variations in packaging.
+      case gcc_42_build
+      when 5577
+        ohai "Installing gfortran 4.2.4 for XCode 3.1.4 (build 5577)"
+        safe_system "pax -rz -f Payload.gz -s ',./usr,#{prefix},'"
+        # The 5577 package does not contain the gfortran->gfortran-4.2 symlink
+        safe_system "ln -sf #{bin}/gfortran-4.2 #{bin}/gfortran"
+      when 5659
+        ohai "Installing gfortran 4.2.4 for XCode 3.2.2 (build 5659)"
+        # The version of pax jumped 16 years in development between OS X 10.5
+        # and OS X 10.6. In that time it became security conscious.
+        safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
+      when 5664
+        ohai "Installing gfortran 4.2.4 for XCode 3.2.3 (build 5664)"
+        safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
+      when 5666
+        ohai "Installing gfortran 4.2.4 for XCode 3.2.6--4.1 (build 5666)"
+        safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
       else
         onoe <<-EOS.undent
-            Currently the gfortran compiler provided by this brew is only supported
-            for:
+          Currently the gfortran compiler provided by this brew is only supports
+          the following versions of XCode:
 
-              - XCode 3.1.4 on OS X 10.5.x
-              - XCode 3.2.2/3.2.3 -- 4.0 on OS X 10.6.x
-              - XCode 4.1/4.2 on OS X 10.7.x
+            - XCode 3.1.4 on OS X 10.5.x
+            - XCode 3.2.2/3.2.3 -- 4.0 on OS X 10.6.x
+            - XCode 4.1 or newer on OS X 10.7.x
 
-            The AppStore and Software Update can help upgrade your copy of XCode.
-            The latest version of XCode is also available from:
+          The AppStore and Software Update can help upgrade your copy of XCode.
+          The latest version of XCode is also available from:
 
-                http://developer.apple.com/technologies/xcode.html
+              http://developer.apple.com/technologies/xcode.html
         EOS
         exit
       end
     end
+
+    # Alias the manpage so it will be available via `man gfortran`
+    safe_system "ln -sf #{man1}/gfortran-4.2.1 #{man1}/gfortran.1"
   end
 
   def caveats; <<-EOS.undent

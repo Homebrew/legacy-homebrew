@@ -12,16 +12,14 @@ end
 
 class Wine < Formula
   homepage 'http://winehq.org/'
-
-  if ARGV.build_devel?
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.34.tar.bz2'
-    sha256 'ac597a63c289bfedd75dcdc1cfaf342ad816669167868ad97490d0c08b7f1c52'
-  else
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.3.tar.bz2'
-    sha256 '3fd8d3f2b466d07eb90b8198cdc9ec3005917a4533db7b8c6c69058a2e57c61f'
-  end
-
+  url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.3.tar.bz2'
+  sha256 '3fd8d3f2b466d07eb90b8198cdc9ec3005917a4533db7b8c6c69058a2e57c61f'
   head 'git://source.winehq.org/git/wine.git'
+
+  devel do
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.3.35.tar.bz2'
+    sha256 'e23e4da5efebc11206198e9cf2a2638851db4e00a1af0abccd8b6369e99c288b'
+  end
 
   depends_on 'jpeg'
   depends_on 'libicns'

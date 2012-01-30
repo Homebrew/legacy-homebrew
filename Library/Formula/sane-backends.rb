@@ -9,12 +9,11 @@ class SaneBackends < Formula
   depends_on 'libtiff'
   depends_on 'libusb-compat'
 
-  skip_clean "var/lock/sane"
-
   def install
     ENV.j1 # Makefile does not seem to be parallel-safe
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--localstatedir=#{var}",
                           "--without-gphoto2",
                           "--enable-local-backends",
                           "--enable-libusb",

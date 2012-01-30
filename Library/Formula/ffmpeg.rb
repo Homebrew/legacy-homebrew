@@ -5,9 +5,9 @@ def ffplay?
 end
 
 class Ffmpeg < Formula
-  url 'http://ffmpeg.org/releases/ffmpeg-0.9.tar.bz2'
+  url 'http://ffmpeg.org/releases/ffmpeg-0.9.1.tar.bz2'
   homepage 'http://ffmpeg.org/'
-  sha1 '5f4118496ebe8fc37e8f11cf0303f6f7c85756f9'
+  sha1 '89326f93902aee49dac659a63b39b0f69be0e7ee'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
@@ -24,35 +24,42 @@ class Ffmpeg < Formula
   depends_on 'x264' => :optional
   depends_on 'faac' => :optional
   depends_on 'lame' => :optional
+  depends_on 'rtmpdump' => :optional
   depends_on 'theora' => :optional
   depends_on 'libvorbis' => :optional
   depends_on 'libogg' => :optional
   depends_on 'libvpx' => :optional
   depends_on 'xvid' => :optional
+  depends_on 'opencore-amr' => :optional
 
   depends_on 'sdl' if ffplay?
 
   def install
+    ENV.x11
     args = ["--prefix=#{prefix}",
             "--enable-shared",
             "--enable-gpl",
             "--enable-version3",
             "--enable-nonfree",
             "--enable-hardcoded-tables",
+            "--enable-libfreetype",
             "--cc=#{ENV.cc}"]
 
     args << "--enable-libx264" if Formula.factory('x264').installed?
     args << "--enable-libfaac" if Formula.factory('faac').installed?
     args << "--enable-libmp3lame" if Formula.factory('lame').installed?
+    args << "--enable-librtmp" if Formula.factory('rtmpdump').installed?
     args << "--enable-libtheora" if Formula.factory('theora').installed?
     args << "--enable-libvorbis" if Formula.factory('libvorbis').installed?
     args << "--enable-libvpx" if Formula.factory('libvpx').installed?
     args << "--enable-libxvid" if Formula.factory('xvid').installed?
+    args << "--enable-libopencore-amrnb" if Formula.factory('opencore-amr').installed?
+    args << "--enable-libopencore-amrwb" if Formula.factory('opencore-amr').installed?
     args << "--disable-ffplay" unless ffplay?
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
-    if MacOS.snow_leopard? and Hardware.is_32_bit?
+    if MacOS.leopard? or Hardware.is_32_bit?
       ENV.append_to_cflags "-mdynamic-no-pic"
     end
 

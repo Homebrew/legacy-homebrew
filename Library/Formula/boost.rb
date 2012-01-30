@@ -7,8 +7,10 @@ class Boost < Formula
   head 'http://svn.boost.org/svn/boost/trunk', :using => :svn
 
   # Bottle built on 10.7.2 using XCode 4.2
-  bottle 'https://downloads.sourceforge.net/project/machomebrew/Bottles/boost-1.48.0-bottle.tar.gz'
-  bottle_sha1 'acabb0317509faf6868d7dc392656513b859d7c7'
+  bottle do
+    url 'https://downloads.sourceforge.net/project/machomebrew/Bottles/boost-1.48.0-bottle.tar.gz'
+    sha1 'c7871ddd020a24e3b0cfd3c9a352a1210b68b372'
+  end
 
   def patches
     # https://svn.boost.org/trac/boost/ticket/6131
@@ -19,7 +21,7 @@ class Boost < Formula
     # #define foreach BOOST_FOREACH causes compile error "'boost::BOOST_FOREACH'
     # has not been declared" on its line if it appears after #include
     # <boost/foreach.hpp> and before certain other boost headers.
-    DATA
+    DATA unless ARGV.build_head?
   end
 
   def options
