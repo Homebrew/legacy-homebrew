@@ -26,7 +26,9 @@ ARGV.each do|formula|
     # or an uncompressed tarball (and more bandwidth friendly).
     safe_system 'tar', 'czf', destination/filename, "#{formula}/#{version}"
     puts "./#{filename}"
-    puts "bottle 'https://downloads.sf.net/project/machomebrew/Bottles/#{filename}'"
-    puts "bottle_sha1 '#{(destination/filename).sha1}'"
+    puts "bottle do"
+    puts "  url 'https://downloads.sf.net/project/machomebrew/Bottles/#{filename}'"
+    puts "  sha1 '#{(destination/filename).sha1}'"
+    puts "end"
   end
 end
