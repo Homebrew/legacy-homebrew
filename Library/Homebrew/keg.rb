@@ -84,7 +84,7 @@ class Keg < Pathname
       when 'ghc' then :mkpath
       when 'lua' then :mkpath
       when 'node' then :mkpath
-      when 'ocaml' then :mkpath
+      when /^ocaml/ then :mkpath
       when /^perl5/ then :mkpath
       when 'php' then :mkpath
       when /^python[23]\.\d$/ then :mkpath
