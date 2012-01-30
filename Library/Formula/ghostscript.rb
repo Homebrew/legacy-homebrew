@@ -15,7 +15,6 @@ class Ghostscript < Formula
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
   depends_on 'libtiff'
-  depends_on 'jasper' unless ARGV.build_head?
 
   # The patches fix compilation against libpng 1.5, provided by Lion.
   # Patch by @CharlieRoot
@@ -27,7 +26,7 @@ class Ghostscript < Formula
     # If the install version of any of these doesn't match
     # the version included in ghostscript, we get errors
     # Taken from the MacPorts portfile - http://bit.ly/ghostscript-portfile
-    renames = [ "jpeg", "libpng", "zlib", "jasper", "tiff" ]
+    renames = [ "jpeg", "libpng", "zlib", "tiff" ]
     renames << "freetype" if 10.7 <= MACOS_VERSION
     renames.each do |lib|
       mv lib, "#{lib}_local"
