@@ -8,7 +8,6 @@ class GobjectIntrospection < Formula
   
   depends_on 'glib'
   depends_on 'libffi'
-  depends_on 'cairo'
   
   def install
     system "./configure", "--prefix=#{prefix}"
