@@ -1,9 +1,9 @@
 require 'formula'
 
 class Kytea < Formula
-  url 'http://www.phontron.com/kytea/download/kytea-0.3.2.tar.gz'
+  url 'http://www.phontron.com/kytea/download/kytea-0.4.0.tar.gz'
   homepage 'http://www.phontron.com/kytea/'
-  md5 '14fb920c60f7abd9ce4c08037cc1be13'
+  md5 'b95b82303257ab50bb1301ca0a314ece'
 
   def install
     system "./configure", "--disable-dependency-tracking",
