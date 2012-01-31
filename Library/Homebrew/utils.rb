@@ -400,7 +400,7 @@ module MacOS extend self
   end
 
   def bottles_supported?
-    lion? and HOMEBREW_PREFIX.to_s == '/usr/local'
+    lion? and HOMEBREW_PREFIX.to_s == '/usr/local' and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar'
   end
 end
 
@@ -436,7 +436,7 @@ module GitHub extend self
     require 'open-uri'
     require 'vendor/multi_json'
 
-    query = rx.source.delete '.*'
+    query = rx.source.delete('.*').gsub('\\', '')
     uri = URI.parse("http://github.com/api/v2/json/issues/search/mxcl/homebrew/open/#{query}")
 
     open uri do |f|
