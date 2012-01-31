@@ -6,13 +6,23 @@ class Radare2 < Formula
   homepage 'http://radare.org'
   md5 '751f0dc71f82b7689f10365ee3a5842f'
 
-  depends_on 'libewf'
+  depends_on 'libewf' unless ARGV.include? '--without-ewf'
+  depends_on 'gmp'    unless ARGV.include? '--without-gmp'
   depends_on 'libmagic'
-  depends_on 'gmp'
   depends_on 'lua'
 
+  def options
+    [
+      ['--without-ewf','Disable libewf dependency'],
+      ['--without-gmp','Disable libgmp dependency']
+    ]
+  end
+
   def install
-    system "./configure", "--prefix=#{prefix}"
+    args = ["--prefix=#{prefix}"]
+    args << '--without-ewf' if ARGV.include? '--without-ewf'
+    args << '--without-gmp' if ARGV.include? '--without-gmp'
+    system "./configure", *args
     system "make"
     system "make install"
   end
