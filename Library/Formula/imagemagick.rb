@@ -61,7 +61,7 @@ class Imagemagick < Formula
   end
 
   depends_on 'jpeg'
-
+  depends_on 'librsvg'
   depends_on 'ghostscript' => :recommended if ghostscript_srsly?
 
   depends_on 'libtiff' => :optional
