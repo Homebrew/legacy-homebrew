@@ -8,7 +8,7 @@ class Eigen < Formula
   depends_on 'cmake' => :build
 
   def install
-    ENV.gfortran
+    ENV.fortran
 
     mkdir 'eigen-build'
     Dir.chdir 'eigen-build' do
