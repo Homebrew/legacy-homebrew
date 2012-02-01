@@ -21,9 +21,30 @@ def disable_openmp?
   ARGV.include? '--disable-openmp'
 end
 
+def enable_hdri?
+    ARGV.include? '--enable-hdri'
+end
+
 def magick_plus_plus?
     ARGV.include? '--with-magick-plus-plus'
 end
+
+def use_exr?
+  ARGV.include? '--use-exr'
+end
+
+def quantum_depth_8?
+    ARGV.include? '--with-quantum-depth-8'
+end
+
+def quantum_depth_16?
+    ARGV.include? '--with-quantum-depth-16'
+end
+
+def quantum_depth_32?
+    ARGV.include? '--with-quantum-depth-32'
+end
+
 
 class Imagemagick < Formula
   # Using an unofficial Git mirror to work around:
@@ -49,6 +70,8 @@ class Imagemagick < Formula
 
   depends_on 'libwmf' if use_wmf?
   depends_on 'liblqr' if use_lqr?
+  depends_on 'openexr' if use_exr?
+
 
   def skip_clean? path
     path.extname == '.la'
@@ -59,8 +82,13 @@ class Imagemagick < Formula
       ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
       ['--use-wmf', 'Compile with libwmf support.'],
       ['--use-lqr', 'Compile with liblqr support.'],
+      ['--use-exr', 'Compile with openexr support.'],
       ['--disable-openmp', 'Disable OpenMP.'],
-      ['--with-magick-plus-plus', 'Compile with C++ interface.']
+      ['--enable-hdri', 'Compile with HDRI support enabled'],
+      ['--with-magick-plus-plus', 'Compile with C++ interface.'],
+      ['--with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'],
+      ['--with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'],
+      ['--with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'],
     ]
   end
 
@@ -81,6 +109,17 @@ class Imagemagick < Formula
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
                 unless ghostscript_srsly? or ghostscript_fonts?
     args << "--without-magick-plus-plus" unless magick_plus_plus?
+    args << "--enable-hdri=yes" if enable_hdri?
+
+    if quantum_depth_32?
+      quantum_depth = 32
+    elsif quantum_depth_16?
+      quantum_depth = 16
+    elsif quantum_depth_8?
+      quantum_depth = 8
+    end
+
+    args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
