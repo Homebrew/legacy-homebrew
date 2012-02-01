@@ -3,11 +3,19 @@ require 'formula'
 class Mariadb < Formula
   # You probably don't want to have this and MySQL's formula linked at the same time
   # Just saying.
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.2.8/kvm-tarbake-jaunty-x86/mariadb-5.2.8.tar.gz'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.2.10/kvm-tarbake-jaunty-x86/mariadb-5.2.10.tar.gz'
   homepage 'http://mariadb.org/'
-  md5 '7b78be87df6a59ecd7a8c06a7e72eb83'
+  md5 'c47fa6448476b06bb15788d3f23e2ae8'
 
   depends_on 'readline'
+
+  def patches
+    # upstream patches to fix compilation failures on OS X
+    # will be present in next release
+    { :p0 => ['http://bazaar.launchpad.net/~maria-captains/maria/5.2/diff/3085',
+              'http://bazaar.launchpad.net/~maria-captains/maria/5.2/diff/3075.1.1',
+              'http://bazaar.launchpad.net/~maria-captains/maria/5.2/diff/3094'] }
+  end
 
   def options
     [
@@ -19,8 +27,7 @@ class Mariadb < Formula
   end
 
   def install
-    ENV['CXXFLAGS'] = ENV['CXXFLAGS'].gsub "-fomit-frame-pointer", ""
-    ENV['CXXFLAGS'] += " -O3 -fno-omit-frame-pointer -felide-constructors"
+    ENV.append 'CXXFLAGS', '-fno-omit-frame-pointer -felide-constructors'
 
     # Make universal for bindings to universal applications
     ENV.universal_binary if ARGV.build_universal?

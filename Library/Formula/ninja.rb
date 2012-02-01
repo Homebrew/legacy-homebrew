@@ -5,7 +5,7 @@ class Ninja < Formula
   homepage 'https://github.com/martine/ninja'
 
   def install
-    system "./bootstrap.sh"
+    system "./bootstrap.py"
     bin.install "ninja"
   end
 end

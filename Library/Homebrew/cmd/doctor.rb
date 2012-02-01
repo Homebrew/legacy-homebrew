@@ -756,7 +756,7 @@ def check_git_status
     if system "/usr/bin/which -s git" and File.directory? '.git' and not cmd.empty?
       ohai "You have uncommitted modifications to Homebrew's core."
       puts "Unless you know what you are doing, you should run:"
-      puts "cd "+HOMEBREW_PREFIX+" && git reset --hard"
+      puts "cd "+HOMEBREW_REPOSITORY+" && git reset --hard"
       puts
     end
   end
