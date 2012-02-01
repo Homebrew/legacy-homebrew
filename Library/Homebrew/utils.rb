@@ -400,7 +400,7 @@ module MacOS extend self
   end
 
   def bottles_supported?
-    lion? and HOMEBREW_PREFIX.to_s == '/usr/local'
+    lion? and HOMEBREW_PREFIX.to_s == '/usr/local' and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar'
   end
 end
 
