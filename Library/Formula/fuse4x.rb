@@ -14,7 +14,9 @@ class Fuse4x < Formula
 
     gettext = Formula.factory('gettext')
     ENV['ACLOCAL'] = "/usr/bin/aclocal -I#{gettext.share}/aclocal"
-    system "autoreconf", "--force", "--install"
+    ENV['AUTOCONF'] = "/usr/bin/autoconf"
+    ENV['AUTOMAKE'] = "/usr/bin/automake"
+    system "/usr/bin/autoreconf", "--force", "--install"
 
     system "./configure", "--disable-dependency-tracking", "--disable-debug", "--disable-static", "--prefix=#{prefix}"
     system "make install"
