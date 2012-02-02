@@ -17,9 +17,16 @@ class Par2tbb < Formula
     # but only 10.6+ are available on Xcode4
     inreplace 'Makefile.am', /^.*-mmacosx-version.*$/, ''
 
-    # NOTE: fails build with clang; doesn't recognize a x87 instruction
-    #       works with llvm-g++ though.
-    ENV.llvm if ENV.compiler == :clang
+    # FIXME This should be replaced with fails_with_clang once available
+    if ENV.compiler == :clang
+      opoo "Formula will not build with Clang, using LLVM."
+      ENV.llvm
+    end
+
+    if Formula.factory('par2').installed?
+      opoo "par2tbb conflicts with par2. Your par2 binaries will be overwritten.
+         If this bothers you, you can restore par2 with `brew link par2`."
+    end
 
     host_triplet = MacOS.prefer_64_bit? ? "x86_64-apple-darwin11" : "i686-apple-darwin11"
 
