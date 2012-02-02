@@ -1,9 +1,9 @@
 require 'formula'
 
 class Redland < Formula
-  url 'http://download.librdf.org/source/redland-1.0.14.tar.gz'
+  url 'http://download.librdf.org/source/redland-1.0.15.tar.gz'
   homepage 'http://librdf.org/'
-  md5 '3400579d137da82c4175debf9f6d53ba'
+  md5 'b0deb87f3c7d3237a3d587c1e0f2f266'
 
   depends_on 'pkg-config' => :build
   depends_on 'raptor'
