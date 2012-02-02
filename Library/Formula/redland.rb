@@ -1,7 +1,7 @@
 require 'formula'
 
 class Redland < Formula
-  url 'http://download.librdf.org/source/redland-1.0.14.tar.gz'
+  url 'http://download.librdf.org/source/redland-1.0.15.tar.gz'
   homepage 'http://librdf.org/'
   md5 '3400579d137da82c4175debf9f6d53ba'
 
