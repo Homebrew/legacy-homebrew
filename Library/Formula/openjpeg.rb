@@ -15,7 +15,7 @@ class Openjpeg < Formula
   def patches
     # libpng 1.5 no longer #includes zlib.h, so add it to the relevant file
     # see http://code.google.com/p/openjpeg/issues/detail?id=83
-    DATA
+    DATA unless ARGV.build_head?
   end
 
   def install
