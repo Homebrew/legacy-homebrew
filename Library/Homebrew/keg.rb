@@ -69,7 +69,7 @@ class Keg < Pathname
     link_dir('share') do |path|
       # locale-specific directories have the form
       # language[_territory][.codeset][@modifier]
-      if path.to_s =~ /man\/([a-z]{2}|C|POSIX)(_[A-Z]{2})?(\.[a-zA-Z\-0-9]+(@.+)?)?/
+      if path.to_s =~ /(locale|man)\/([a-z]{2}|C|POSIX)(_[A-Z]{2})?(\.[a-zA-Z\-0-9]+(@.+)?)?/
         :mkpath
       elsif share_mkpaths.include? path.to_s
         :mkpath
