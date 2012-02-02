@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mercurial < Formula
-  url 'http://mercurial.selenic.com/release/mercurial-2.0.2.tar.gz'
+  url 'http://mercurial.selenic.com/release/mercurial-2.1.tar.gz'
   homepage 'http://mercurial.selenic.com/'
-  sha1 'aedcb4e41c5b49188d9d34d12c343b2ec099c61b'
+  sha1 'f649a0b33e0cafb3e5867a2e970f41eb887d3fab'
   head 'http://selenic.com/repo/hg', :using => :hg
 
   depends_on 'docutils' => :python if ARGV.build_head? or ARGV.include? "--doc"
