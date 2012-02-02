@@ -7,6 +7,8 @@ class Keg < Pathname
     raise "#{to_s} is not a directory" unless directory?
   end
 
+  # locale-specific directories have the form language[_territory][.codeset][@modifier]
+  LOCALEDIR_RX = /(locale|man)\/([a-z]{2}|C|POSIX)(_[A-Z]{2})?(\.[a-zA-Z\-0-9]+(@.+)?)?/
   INFOFILE_RX = %r[/share/info/[^.].*?\.info$]
 
   # if path is a file in a keg then this will return the containing Keg object
@@ -70,9 +72,7 @@ class Keg < Pathname
     link_dir('include') {:link}
 
     link_dir('share') do |path|
-      # locale-specific directories have the form
-      # language[_territory][.codeset][@modifier]
-      if path.to_s =~ /(locale|man)\/([a-z]{2}|C|POSIX)(_[A-Z]{2})?(\.[a-zA-Z\-0-9]+(@.+)?)?/
+      if path.to_s =~ LOCALEDIR_RX
         :mkpath
       elsif share_mkpaths.include? path.to_s
         :mkpath
