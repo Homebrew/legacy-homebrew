@@ -2,8 +2,8 @@ require 'formula'
 
 class Yajl < Formula
   homepage 'http://lloyd.github.com/yajl/'
-  url 'http://github.com/lloyd/yajl/tarball/2.0.2'
-  sha256 '4917049b7700e289d38e0ac82f63b7182a5dfc6cf21c5eb9a26d70b6d2e7b68b'
+  url 'http://github.com/lloyd/yajl/tarball/2.0.4'
+  sha256 'c19b9691cf15f22e74d903cd06ac9ba5e1e216e6a1b82bfe787c3b48a25bc118'
 
   # Configure uses cmake, even though it looks like we're
   # just using autotools below.
