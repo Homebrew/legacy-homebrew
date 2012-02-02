@@ -769,7 +769,13 @@ EOF
 
     def devel &block
       raise "url and md5 must be specified in a block" unless block_given?
-      instance_eval &block if ARGV.build_devel?
+
+      if ARGV.build_devel?
+        # clear out mirrors from the stable release
+        @mirrors = nil
+
+        instance_eval &block
+      end
     end
 
     def bottle url=nil, &block
