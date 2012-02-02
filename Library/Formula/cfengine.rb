@@ -1,7 +1,7 @@
 require 'formula'
 
 class Cfengine < Formula
-  url 'https://cfengine.com/source_code/download?file=cfengine-3.2.3.tar.gz'
+  url 'https://cfengine.com/source-code/download?file=cfengine-3.2.3.tar.gz'
   homepage 'http://cfengine.com/'
   md5 'be118dd95537221da38008845fc0d84a'
 
