@@ -1,3 +1,5 @@
+require 'keg'
+
 module Homebrew extend self
   # $n and $d are used by the ObserverPathnameExtension to keep track of
   # certain filesystem actions.
@@ -11,7 +13,12 @@ module Homebrew extend self
       path.find do |path|
         path.extend ObserverPathnameExtension
         if path.symlink?
-          path.unlink unless path.resolved_path_exists?
+          unless path.resolved_path_exists?
+            if ENV['HOMEBREW_KEEP_INFO'] and path.to_s =~ Keg::INFOFILE_RX
+              path.uninstall_info
+            end
+            path.unlink
+          end
         elsif path.directory?
           dirs << path
         end
