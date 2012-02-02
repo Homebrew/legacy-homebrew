@@ -7,6 +7,10 @@ class Keg < Pathname
     raise "#{to_s} is not a directory" unless directory?
   end
 
+  # locale-specific directories have the form language[_territory][.codeset][@modifier]
+  LOCALEDIR_RX = /(locale|man)\/([a-z]{2}|C|POSIX)(_[A-Z]{2})?(\.[a-zA-Z\-0-9]+(@.+)?)?/
+  INFOFILE_RX = %r[/share/info/[^.].*?\.info$]
+
   # if path is a file in a keg then this will return the containing Keg object
   def self.for path
     path = path.realpath
@@ -29,6 +33,7 @@ class Keg < Pathname
       next if src == self
       dst=HOMEBREW_PREFIX+src.relative_path_from(self)
       next unless dst.symlink?
+      dst.uninstall_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
       dst.unlink
       n+=1
       Find.prune if src.directory?
@@ -67,9 +72,7 @@ class Keg < Pathname
     link_dir('include') {:link}
 
     link_dir('share') do |path|
-      # locale-specific directories have the form
-      # language[_territory][.codeset][@modifier]
-      if path.to_s =~ /man\/([a-z]{2}|C|POSIX)(_[A-Z]{2})?(\.[a-zA-Z\-0-9]+(@.+)?)?/
+      if path.to_s =~ LOCALEDIR_RX
         :mkpath
       elsif share_mkpaths.include? path.to_s
         :mkpath
@@ -127,7 +130,10 @@ protected
       dst.extend ObserverPathnameExtension
 
       if src.file?
+        # Do the symlink.
         dst.make_relative_symlink src unless File.basename(src) == '.DS_Store'
+        # Install info file entries in the info directory file
+        dst.install_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
       elsif src.directory?
         # if the dst dir already exists, then great! walk the rest of the tree tho
         next if dst.directory? and not dst.symlink?
