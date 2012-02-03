@@ -1,9 +1,9 @@
 require 'formula'
 
-class GoogleAppEngine < Formula
-  url 'http://googleappengine.googlecode.com/files/google_appengine_1.6.2.zip'
-  homepage 'http://code.google.com/appengine/'
-  sha1 '7fd3ae37bc76b0ffcbb14a7b2e404559ec18b551'
+class GoAppEngine64 < Formula
+  url 'http://googleappengine.googlecode.com/files/go_appengine_sdk_darwin_386-1.6.2.zip'
+  homepage 'http://code.google.com/appengine/docs/go/overview.html'
+  sha1 '004aebd7e6252ce3e84b89096009dcd22dadf5fe'
 
   def install
     cd '..'
