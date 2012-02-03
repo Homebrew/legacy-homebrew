@@ -1,6 +1,6 @@
 require 'formula'
 
-class GoAppEngine64 < Formula
+class GoAppEngine32 < Formula
   url 'http://googleappengine.googlecode.com/files/go_appengine_sdk_darwin_386-1.6.2.zip'
   homepage 'http://code.google.com/appengine/docs/go/overview.html'
   sha1 '004aebd7e6252ce3e84b89096009dcd22dadf5fe'
