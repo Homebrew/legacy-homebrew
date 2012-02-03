@@ -320,18 +320,6 @@ Please take one of the following actions:
     end
   end
 
-  # don't use in new code
-  # don't remove though, but do add to compatibility.rb
-  def use_clang?
-    compiler == :clang
-  end
-  def use_gcc?
-    compiler == :gcc
-  end
-  def use_llvm?
-    compiler == :llvm
-  end
-
   def make_jobs
     # '-j' requires a positive integral argument
     if self['HOMEBREW_MAKE_JOBS'].to_i > 0
