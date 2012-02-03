@@ -10,7 +10,7 @@ class Aldo < Formula
   def patches
     # Fixes crash due to added field in libao-1.0.
     # See:
-    #   http://list-archive.xemacs.org/pipermail/novalug/2011-March/112453.html
+    #   http://calypso.tux.org/pipermail/novalug/2011-March/027843.html
     DATA
   end
 
