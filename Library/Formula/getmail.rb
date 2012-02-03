@@ -1,9 +1,9 @@
 require 'formula'
 
 class Getmail < Formula
-  url 'http://pyropus.ca/software/getmail/old-versions/getmail-4.24.0.tar.gz'
+  url 'http://pyropus.ca/software/getmail/old-versions/getmail-4.25.0.tar.gz'
   homepage 'http://pyropus.ca/software/getmail/'
-  md5 '85cf05f692f282c254b14fae9ec236bd'
+  md5 'ec0be67bc1e472c13201c1e3a0c35e66'
 
   def install
     libexec.install 'getmailcore'
