@@ -13,7 +13,7 @@ class Transmission < Formula
 
   def install
     args = ["--disable-dependency-tracking",
-            "--disable-gtk", "--disable-mac",
+            "--without-gtk", "--disable-mac",
             "--prefix=#{prefix}"]
 
     args << "--disable-nls" unless Formula.factory("intltool").installed? and
