@@ -8,6 +8,7 @@ class Libcaca < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
+  depends_on 'imlib2'
 
   fails_with_llvm "unsupported inline asm: input constraint with a matching output constraint of incompatible type!"
 
@@ -21,12 +22,12 @@ class Libcaca < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
-                          "--disable-imlib2",
                           "--disable-doc",
                           "--disable-slang",
                           "--disable-java",
                           "--disable-csharp",
-                          "--disable-ruby"
+                          "--disable-ruby",
+                          "--disable-x11"
     ENV.j1 # Or install can fail making the same folder at the same time
     system "make install"
   end
