@@ -7,7 +7,7 @@ require 'formula'
 
 module Homebrew extend self
   def uses
-    return if ARGV.formulae.empty?
+    raise FormulaUnspecifiedError if ARGV.named.empty?
 
     uses = Formula.all.select do |f|
       ARGV.formulae.all? do |ff|
