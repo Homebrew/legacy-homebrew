@@ -26,6 +26,7 @@ class Coq < Formula
                           "-coqdocdir", "#{share}/coq/latex",
                           "-coqide", "none",
                           "-with-doc", "no",
+                          "-natdynlink", "no",
                           "-arch", arch
     ENV.j1 # Otherwise "mkdir bin" can be attempted by more than one job
     system "make world"
