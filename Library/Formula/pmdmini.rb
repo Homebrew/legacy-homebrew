@@ -18,7 +18,7 @@ class Pmdmini < Formula
     Dir.chdir "jni/pmdmini"
     # Specify Homebrew's cc
     inreplace "mak/general.mak", "gcc", ENV.cc
-    if ARGV.flag? '--lib-only'
+    if ARGV.include? '--lib-only'
       system "make", "-f", "Makefile.lib"
     else
       system "make"
@@ -27,7 +27,7 @@ class Pmdmini < Formula
     # Makefile doesn't build a dylib
     system "#{ENV.cc} -dynamiclib -install_name #{lib}/libpmdmini.dylib -o libpmdmini.dylib -undefined dynamic_lookup obj/*.o"
 
-    bin.install "pmdplay" => "pmdmini" unless ARGV.flag? '--lib-only'
+    bin.install "pmdplay" unless ARGV.include? '--lib-only'
     lib.install "libpmdmini.a"
     lib.install "libpmdmini.dylib"
     (include+'libpmdmini').install Dir['src/*.h']
