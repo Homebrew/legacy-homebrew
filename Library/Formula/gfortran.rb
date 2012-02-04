@@ -48,7 +48,7 @@ class Gfortran < Formula
     end
   end
 
-  homepage 'http://r.research.att.com/tools/'
+  homepage 'http://gcc.gnu.org/wiki/GFortran'
 
   def download_strategy
     GfortranPkgDownloadStrategy
