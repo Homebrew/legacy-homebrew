@@ -28,6 +28,10 @@ class Gettext < Formula
     return p
   end
 
+  def patches
+    { :p0 => DATA }
+  end
+
   def install
     ENV.libxml2
     ENV.O3 # Issues with LLVM & O4 on Mac Pro 10.6
@@ -49,3 +53,15 @@ class Gettext < Formula
     system "make install"
   end
 end
+
+__END__
+--- gettext-tools/misc/convert-archive.in	2010-06-06 14:49:57.000000000 +0200
++++ gettext-tools/misc/convert-archive.in.new	2011-05-17 22:07:25.000000000 +0200
+@@ -305,6 +305,7 @@ case "$to" in
+     git_dir=`pwd`/tmpgit$$
+     mkdir "$git_dir" || func_fatal_error "mkdir failed"
+     unset GIT_CONFIG
++    unset HOME
+     (cd "$git_dir" && {
+       git init -q
+       git config user.name 'GNU Gettext Build'
