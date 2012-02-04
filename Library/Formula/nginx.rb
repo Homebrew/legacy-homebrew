@@ -50,6 +50,11 @@ class Nginx < Formula
 
     args << passenger_config_args if ARGV.include? '--with-passenger'
     args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
+    args << "--with-http_gzip_static_module" if ARGV.include? '--with-gzip-static'
+    args << "--with-http_realip_module" if ARGV.include? '--with-realip'
+    args << "--with-mail" if ARGV.include? '--with-mail'
+    args << "--with-mail_ssl_module" if ARGV.include? 'with-mail-ssl'
+    args << "--with-http_image_filter_module" if ARGV.include? 'with-image-filter'
 
     system "./configure", *args
     system "make"
@@ -142,3 +147,4 @@ __END__
          server_name  localhost;
 
          #charset koi8-r;
+
