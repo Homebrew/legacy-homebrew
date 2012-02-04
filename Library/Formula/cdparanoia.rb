@@ -15,6 +15,7 @@ class Cdparanoia < Formula
   fails_with_llvm '"File too small" error while linking', :build => 2326
 
   def install
+    fails_with_llvm "\"File too small\" error while linking", :build => 2326
     system "autoconf"
     # Libs are installed as keg-only because most software that searches for cdparanoia
     # will fail to link against it cleanly due to our patches
