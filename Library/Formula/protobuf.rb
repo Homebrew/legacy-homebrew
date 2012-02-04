@@ -11,6 +11,12 @@ class Protobuf < Formula
     [['--universal', 'Do a universal build']]
   end
 
+  def options
+      [
+        ["--install-python", "Install Python protobuf package (requires Homebrew-built Python)"],
+      ]
+  end
+
   def install
     # Don't build in debug mode. See:
     # https://github.com/mxcl/homebrew/issues/9279
@@ -22,5 +28,18 @@ class Protobuf < Formula
                           "--with-zlib"
     system "make"
     system "make install"
+
+    if ARGV.include? "--install-python"
+      python = Formula.factory("python")
+      unless python.installed?
+        onoe "The \"--install-python\" option requires a Homebrew-built Python."
+        exit 99
+      end
+
+      cd 'python' do
+        # Note: setup.py currently requires setuptools (or distribute)
+        system "#{python.bin}/python", "setup.py", "install"
+      end
+    end
   end
 end
