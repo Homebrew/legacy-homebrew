@@ -27,10 +27,6 @@ class Savana < Formula
     libexec.install %w[bin lib logging.properties]
     create_wrapper_script 'sav'
     
-    # Create a symbolic link to the sav script named savana since this is most likely what
-    # most people will expect after installing the package
-    ln_s (bin + 'sav'), (bin + 'savana')
-    
     # Install the Savana bash completion file, renaming it to be specific to savana.
     (prefix + 'etc/bash_completion.d').install('etc/bash_completion' => 'savana-completion.bash')
   end
