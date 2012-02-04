@@ -10,20 +10,20 @@ class Jenkins < Formula
   def install
     system "mvn clean install -pl war -am -DskipTests && mv war/target/jenkins.war ." if ARGV.build_head?
     lib.install "jenkins.war"
-    (prefix+'org.jenkins-ci.plist').write startup_plist
-    (prefix+'org.jenkins-ci.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS
 If this is your first install, automatically load on login with:
     mkdir -p ~/Library/LaunchAgents
-    cp #{prefix}/org.jenkins-ci.plist ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/org.jenkins-ci.plist
+    cp #{plist_path} ~/Library/LaunchAgents/
+    launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-If this is an upgrade and you already have the org.jenkins-ci.plist loaded:
-    launchctl unload -w ~/Library/LaunchAgents/org.jenkins-ci.plist
-    cp #{prefix}/org.jenkins-ci.plist ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/org.jenkins-ci.plist
+If this is an upgrade and you already have the #{plist_path.basename} loaded:
+    launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+    cp #{plist_path} ~/Library/LaunchAgents/
+    launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
 Or start it manually:
     java -jar #{lib}/jenkins.war
@@ -42,12 +42,12 @@ EOS
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>Jenkins</string>
+    <string>#{plist_name}</string>
     <key>ProgramArguments</key>
     <array>
     <string>/usr/bin/java</string>
     <string>-jar</string>
-    <string>#{lib}/jenkins.war</string>
+    <string>#{HOMEBREW_PREFIX}/lib/jenkins.war</string>
     </array>
     <key>RunAtLoad</key>
     <true/>

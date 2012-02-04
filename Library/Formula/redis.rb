@@ -30,21 +30,21 @@ class Redis < Formula
 
     doc.install Dir["doc/*"]
     etc.install "redis.conf"
-    (prefix+'io.redis.redis-server.plist').write startup_plist
-    (prefix+'io.redis.redis-server.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats
     <<-EOS.undent
     If this is your first install, automatically load on login with:
         mkdir -p ~/Library/LaunchAgents
-        cp #{prefix}/io.redis.redis-server.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/io.redis.redis-server.plist
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-    If this is an upgrade and you already have the io.redis.redis-server.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/io.redis.redis-server.plist
-        cp #{prefix}/io.redis.redis-server.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/io.redis.redis-server.plist
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
+        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
       To start redis manually:
         redis-server #{etc}/redis.conf
@@ -63,10 +63,10 @@ class Redis < Formula
     <key>KeepAlive</key>
     <true/>
     <key>Label</key>
-    <string>io.redis.redis-server</string>
+    <string>#{plist_name}</string>
     <key>ProgramArguments</key>
     <array>
-      <string>#{bin}/redis-server</string>
+      <string>#{HOMEBREW_PREFIX}/bin/redis-server</string>
       <string>#{etc}/redis.conf</string>
     </array>
     <key>RunAtLoad</key>
