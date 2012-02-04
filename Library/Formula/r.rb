@@ -76,4 +76,15 @@ class R < Formula
       R CMD javareconf JAVA_CPPFLAGS=-I/System/Library/Frameworks/JavaVM.framework/Headers
     EOS
   end
+
+  def caveats
+    return <<-EOS.undent
+      R.framework was installed to:
+        #{prefix}/R.framework
+
+      You may want to symlink this Framework, if you use an IDE such as
+      RStudio, to a standard OS X location, such as:
+        ln -s "#{prefix}/R.framework" /Library/Frameworks
+    EOS
+  end
 end
