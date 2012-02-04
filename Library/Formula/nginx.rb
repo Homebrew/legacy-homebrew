@@ -22,6 +22,7 @@ class Nginx < Formula
 
   def options
     [
+      ['--add-module',     "Compile with support for an external module"],
       ['--with-passenger', "Compile with support for Phusion Passenger module"],
       ['--with-webdav',    "Compile with support for WebDAV module"]
     ]
@@ -40,6 +41,10 @@ class Nginx < Formula
       exit
   end
 
+  def extra_modules
+      ARGV.options_only.select { |v| v =~ /--add-module=/ }.uniq
+  end
+
   def install
     args = ["--prefix=#{prefix}",
             "--with-http_ssl_module",
@@ -50,6 +55,7 @@ class Nginx < Formula
 
     args << passenger_config_args if ARGV.include? '--with-passenger'
     args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
+    args.concat extra_modules
 
     system "./configure", *args
     system "make"
