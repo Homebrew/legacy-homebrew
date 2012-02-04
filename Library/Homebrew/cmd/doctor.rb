@@ -252,6 +252,21 @@ def __check_subdir_access base
   end
 end
 
+def check_access_usr_local
+  usr_local = Pathname('/usr/local')
+  unless usr_local.writable?
+    puts <<-EOS.undent
+    The /usr/local directory is not writable.
+    This can happen if software that is not managed by Homebrew writes to
+    /usr/local, a normal practice for command-line apps. Some of these
+    apps are misbehaved in that they change the permissions on files and
+    directories that are not part of the app like /usr/local. You should
+    probably change the ownership and permissions of /usr/local back to
+    your user account.
+    EOS
+  end
+end
+
 def check_access_share_locale
   __check_subdir_access 'share/locale'
 end
@@ -833,6 +848,7 @@ module Homebrew extend self
       check_for_other_package_managers
       check_for_x11
       check_for_nonstandard_x11
+      check_access_usr_local
       check_access_include
       check_access_etc
       check_access_share
