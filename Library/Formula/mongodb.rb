@@ -118,7 +118,7 @@ class Mongodb < Formula
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>#{plist_path}</string>
+  <string>#{plist_name}</string>
   <key>ProgramArguments</key>
   <array>
     <string>#{HOMEBREW_PREFIX}/bin/mongod</string>
