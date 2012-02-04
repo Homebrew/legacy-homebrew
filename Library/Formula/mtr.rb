@@ -24,5 +24,6 @@ class Mtr < Formula
 
   def caveats
     "Run mtr sudo'd in order to avoid the error: `unable to get raw sockets'"
+    "Or you can setuid your mtr with this command : sudo chmod +s /usr/local/sbin/mtr"
   end
 end
