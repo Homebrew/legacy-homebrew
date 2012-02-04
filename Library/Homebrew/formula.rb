@@ -368,7 +368,13 @@ class Formula
 
   # an array of all Formula names
   def self.names
-    Dir["#{HOMEBREW_REPOSITORY}/Library/Formula/*.rb"].map{ |f| File.basename f, '.rb' }.sort
+    names = []
+    HOMEBREW_FORMULA_PATHS.each do |p|
+      p.children(false).each do |f| 
+        names << (File.basename f, '.rb')
+      end
+    end
+    names.sort
   end
 
   # an array of all Formula, instantiated
@@ -400,7 +406,7 @@ class Formula
   end
 
   def self.canonical_name name
-    formula_with_that_name = HOMEBREW_REPOSITORY+"Library/Formula/#{name}.rb"
+    formula_with_that_name = path_with_formula_or_default name 
     possible_alias = HOMEBREW_REPOSITORY+"Library/Aliases/#{name}"
     possible_cached_formula = HOMEBREW_CACHE_FORMULA+"#{name}.rb"
 
@@ -468,8 +474,16 @@ class Formula
     raise FormulaUnavailableError.new(name)
   end
 
+  def self.path_with_formula_or_default name
+    path = HOMEBREW_FORMULA_PATHS.find {|p|
+      p.join("#{name.downcase}.rb").exist?
+    }
+    path ||= HOMEBREW_DEFAULT_FORMULA_PATH
+    path.join("#{name.downcase}.rb")
+  end
+
   def self.path name
-    HOMEBREW_REPOSITORY+"Library/Formula/#{name.downcase}.rb"
+    path_with_formula_or_default name
   end
 
   def mirrors

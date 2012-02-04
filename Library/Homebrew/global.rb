@@ -32,6 +32,12 @@ end
 HOMEBREW_PREFIX = Pathname.new(HOMEBREW_BREW_FILE).dirname.parent # Where we link under
 HOMEBREW_REPOSITORY = Pathname.new(HOMEBREW_BREW_FILE).realpath.dirname.parent # Where .git is found
 
+HOMEBREW_DEFAULT_FORMULA_PATH = HOMEBREW_REPOSITORY.join("Library/Formula/")
+
+HOMEBREW_ALTERNATE_FORMULA_PATHS = ENV['HOMEBREW_ALT_FORMULA_PATHS'] ? ENV['HOMEBREW_ALT_FORMULA_PATHS'].split(/:/).map {|p| Pathname.new(p) } : []
+
+HOMEBREW_FORMULA_PATHS = [HOMEBREW_DEFAULT_FORMULA_PATH] + HOMEBREW_ALTERNATE_FORMULA_PATHS 
+
 # Where we store built products; /usr/local/Cellar if it exists,
 # otherwise a Cellar relative to the Repository.
 HOMEBREW_CELLAR = if (HOMEBREW_PREFIX+"Cellar").exist?
