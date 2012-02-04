@@ -4,6 +4,8 @@ require 'formula'
 
 module Homebrew extend self
   def fetch
+    raise FormulaUnspecifiedError if ARGV.named.empty?
+
     if ARGV.include? '--deps'
       bucket = []
       ARGV.formulae.each do |f|

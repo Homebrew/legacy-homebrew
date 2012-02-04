@@ -4,6 +4,8 @@ module Homebrew extend self
   def versions
     raise "Please `brew install git` first" unless system "/usr/bin/which -s git"
 
+    raise FormulaUnspecifiedError if ARGV.named.empty?
+
     ARGV.formulae.all? do |f|
       if ARGV.include? '--compact'
         puts f.versions * " "

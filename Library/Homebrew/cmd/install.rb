@@ -4,6 +4,8 @@ require 'blacklist'
 
 module Homebrew extend self
   def install
+    raise FormulaUnspecifiedError if ARGV.named.empty?
+
     ARGV.named.each do |name|
       msg = blacklisted? name
       raise "No available formula for #{name}\n#{msg}" if msg
