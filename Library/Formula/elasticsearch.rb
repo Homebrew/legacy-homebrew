@@ -59,7 +59,7 @@ class Elasticsearch < Formula
         ln -nfs #{plist_path} ~/Library/LaunchAgents/
         launchctl load -wF ~/Library/LaunchAgents/#{plist_path.basename}
 
-    If this is an upgrade and you already have the #{plist_path} loaded:
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
         launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
         ln -nfs #{plist_path} ~/Library/LaunchAgents/
         launchctl load -wF ~/Library/LaunchAgents/#{plist_path.basename}
