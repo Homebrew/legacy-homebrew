@@ -12,7 +12,8 @@ class McryptPhp < Formula
     Dir.chdir "ext/mcrypt"
     system "phpize"
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-mcrypt=#{Formula.factory('mcrypt').prefix}"
     system "make"
     prefix.install 'modules/mcrypt.so'
   end
