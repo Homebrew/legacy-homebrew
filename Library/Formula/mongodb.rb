@@ -55,7 +55,7 @@ class Mongodb < Formula
         cp #{plist_path} ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-    If this is an upgrade and you already have the #{plist_path} loaded:
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
         launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
         cp #{plist_path} ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
