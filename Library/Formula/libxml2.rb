@@ -1,7 +1,7 @@
 require 'formula'
 
 class Libxml2 < Formula
-  url 'ftp://xmlsoft.org/libxml2/libxml2-2.7.8.tar.gz'
+  url 'ftp://gd.tuwien.ac.at/pub/libxml/libxml2-2.7.8.tar.gz'
   homepage 'http://xmlsoft.org'
   md5 '8127a65e8c3b08856093099b52599c86'
 
