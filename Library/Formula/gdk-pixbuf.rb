@@ -9,6 +9,8 @@ class GdkPixbuf < Formula
   depends_on 'jasper'
   depends_on 'libtiff'
 
+  depends_on 'jasper'
+
   def install
     args = ["--prefix=#{prefix}",
             "--disable-dependency-tracking",
