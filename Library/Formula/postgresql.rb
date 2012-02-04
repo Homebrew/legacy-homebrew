@@ -26,6 +26,8 @@ class Postgresql < Formula
 
     args = ["--disable-debug",
             "--prefix=#{prefix}",
+            "--datadir=#{share}/#{name}",
+            "--docdir=#{share}/doc/#{name}",
             "--enable-thread-safety",
             "--with-bonjour",
             "--with-gssapi",
