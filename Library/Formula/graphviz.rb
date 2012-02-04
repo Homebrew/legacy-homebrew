@@ -10,6 +10,31 @@ class Graphviz < Formula
   homepage 'http://graphviz.org/'
 
   depends_on 'pkg-config' => :build
+  depends_on 'pango' if ARGV.include? '--with-pdf'
+  depends_on 'cairo' if ARGV.include? '--with-pdf'
+
+  def options
+    [
+      ["--with-pdf", "Build with Pango/Cairo to support native PDF output"],
+    ]
+  end
+
+  def caveats
+    s = ""
+    if ARGV.include? "--with-pdf"
+      s += <<-EOS.undent
+        Installing with native pdf support through Pango/Cairo
+
+      EOS
+    else
+      s += <<-EOS.undent
+        Use --with-pdf to build with native pdf support through Pango/Cairo
+
+      EOS
+    end
+
+    return s
+  end
 
   depends_on 'pango' if ARGV.include? '--with-pangocairo'
   depends_on 'swig' if build_bindings?
