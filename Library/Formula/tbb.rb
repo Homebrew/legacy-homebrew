@@ -17,6 +17,7 @@ class Tbb < Formula
     args << (MacOS.prefer_64_bit? ? "arch=intel64" : "arch=ia32")
     system "make", *args
     lib.install Dir['build/BUILDPREFIX_release/*.dylib']
+    lib.install Dir['build/BUILDPREFIX_debug/*.dylib']
     include.install 'include/tbb'
   end
 end
