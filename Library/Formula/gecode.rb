@@ -7,6 +7,7 @@ class Gecode < Formula
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
+            "--with-architectures=i386,x86_64", "--disable-qt",
                           "--prefix=#{prefix}"
     system "make install"
   end
