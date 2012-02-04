@@ -75,16 +75,16 @@ class Mariadb < Formula
         mysql_install_db
 
     If this is your first install, automatically load on login with:
-        cp #{plist_path} ~/Library/LaunchAgents
+        cp #{plist_path} ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-    If this is an upgrade and you already have the #{plist_path} loaded:
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
         launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-        cp #{plist_path} ~/Library/LaunchAgents
+        cp #{plist_path} ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     Note on upgrading:
-        We overwrite any existing #{plist_path} in ~/Library/LaunchAgents
+        We overwrite any existing #{plist_path.basename} in ~/Library/LaunchAgents
         if we are upgrading because previous versions of this brew created the
         plist with a version specific program argument.
 

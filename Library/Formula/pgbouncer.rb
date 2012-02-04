@@ -34,7 +34,7 @@ If this is your first install, automatically load on login with:
     cp #{plist_path} ~/Library/LaunchAgents/
     launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-If this is an upgrade and you already have the #{plist_path}
+If this is an upgrade and you already have the #{plist_path.basename}
 loaded:
     launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
     cp #{plist_path} ~/Library/LaunchAgents/
