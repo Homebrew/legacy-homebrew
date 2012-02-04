@@ -51,7 +51,7 @@ For the full command list, see the COMMANDS section.
   * `cat` <formula>:
     Display the source to <formula>.
 
-  * `cleanup [--force] [-n]` [<formula>]:
+  * `cleanup [--force] [-n]` [<formulae>]:
     For all installed or specific formulae, remove any older versions from the
     cellar. By default, does not remove out-of-date keg-only brews, as other
     software may link directly to specific versions.
