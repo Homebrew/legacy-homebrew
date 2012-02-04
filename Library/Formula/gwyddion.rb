@@ -11,6 +11,7 @@ class Gwyddion < Formula
   depends_on 'gtkglext'
 
   def install
+    inreplace 'modules/file/pixmap.c', 'Z_BEST_COMPRESSION', '9'
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--disable-desktop-file-update",
                           "--prefix=#{prefix}"
