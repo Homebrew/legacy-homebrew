@@ -208,6 +208,10 @@ class Formula
   # generally we don't want var stuff inside the keg
   def var; HOMEBREW_PREFIX+'var' end
 
+  # plist name, i.e. the name of the launchd service
+  def plist_name; 'homebrew.mxcl.'+name end
+  def plist_path; prefix+(plist_name+'.plist') end
+
   # Use the @spec_to_use to detect the download strategy.
   # Can be overriden to force a custom download strategy
   def download_strategy
@@ -844,17 +848,6 @@ EOF
 
     def skip_clean_paths
       @skip_clean_paths or []
-    end
-
-    # 'aka' is no longer used to define aliases, so have it print out
-    # a notice about the change. This will alert people with private
-    # formulae that they need to update.
-    # This notice will be removed in version 0.9
-    def aka args
-      onoe "#{name}: 'aka' is no longer used to define aliases"
-      puts "To define an alias, create a relative symlink from"
-      puts "Aliases to Formula. The name of the symlink will be"
-      puts "detected as an alias for the target formula."
     end
 
     def keg_only reason, explanation=nil

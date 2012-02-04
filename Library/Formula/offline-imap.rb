@@ -12,8 +12,8 @@ class OfflineImap < Formula
     prefix.install [ 'offlineimap.conf', 'offlineimap.conf.minimal' ]
     bin.mkpath
     ln_s libexec+'offlineimap.py', bin+'offlineimap'
-    (prefix+'org.offlineimap.plist').write startup_plist
-    (prefix+'org.offlineimap.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent
@@ -28,13 +28,13 @@ class OfflineImap < Formula
     To launch on startup and run every 5 minutes:
     * if this is your first install:
         mkdir -p ~/Library/LaunchAgents
-        cp #{prefix}/org.offlineimap.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/org.offlineimap.plist
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-    * if this is an upgrade and you already have the org.offlineimap.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/org.offlineimap.plist
-        cp #{prefix}/org.offlineimap.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/org.offlineimap.plist
+    * if this is an upgrade and you already have the #{plist_path.basename} loaded:
+        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     EOS
   end
@@ -47,10 +47,10 @@ class OfflineImap < Formula
         <key>KeepAlive</key>
         <false/>
         <key>Label</key>
-        <string>org.offlineimap</string>
+        <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>/usr/local/bin/offlineimap</string>
+          <string>#{HOMEBREW_PREFIX}/bin/offlineimap</string>
         </array>
         <key>StartInterval</key>
         <integer>300</integer>
