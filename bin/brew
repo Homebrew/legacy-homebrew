@@ -137,6 +137,7 @@ rescue BuildError => e
   exit 1
 rescue RuntimeError, SystemCallError => e
   onoe e
+  puts e.message if ARGV.verbose?
   puts e.backtrace if ARGV.debug?
   exit 1
 rescue Exception => e
