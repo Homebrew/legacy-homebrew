@@ -27,10 +27,7 @@ class Ghc < Formula
   skip_clean ['bin', 'lib']
 
   def options
-    [
-      ['--64bit', 'Install 64-bit version of GHC (experimental).'],
-      ['--devel', 'Install version 7.4.x']
-    ]
+    [['--64bit', 'Install 64-bit version of GHC (experimental).']]
   end
 
   def install
