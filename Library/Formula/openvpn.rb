@@ -99,6 +99,10 @@ EOS
 </plist>
 EOS
   end
+
+  def patches
+    DATA
+  end
 end
 
 __END__
