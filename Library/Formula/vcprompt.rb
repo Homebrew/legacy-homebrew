@@ -1,13 +1,13 @@
 require 'formula'
 
 class Vcprompt < Formula
-  head 'hg://http://vc.gerg.ca/hg/vcprompt/'
-  homepage 'http://vc.gerg.ca/hg/vcprompt/'
+  head 'git://github.com/xvzf/vcprompt.git'
+  homepage 'https://github.com/xvzf/vcprompt'
 
   def install
-    system "make"
+    system "python setup.py build"
     # Install manually; 'make install' doesn't work.
-    bin.install "vcprompt"
+    bin.install "bin/vcprompt"
   end
 end
 
