@@ -17,6 +17,8 @@ class GnuSmalltalk < Formula
 
   # 'gmp' is an optional dep, it is built 64-bit on Snow Leopard
   # (and this brew is forced to build in 32-bit mode.)
+  
+  depends_on 'readline'
 
   depends_on 'readline'
 
