@@ -35,8 +35,19 @@ class Sphinx < Formula
     args << "--with-pgsql" if `/usr/bin/which pg_config`.size > 0
     args << "--without-mysql" unless `/usr/bin/which mysql`.size > 0
 
+    if ARGV.include? '--with-libstemmer'
+      args << "--with-libstemmer"
+      system("curl http://snowball.tartarus.org/dist/libstemmer_c.tgz | tar xzf -")
+    end
+
     system "./configure", *args
     system "make install"
+  end
+
+  def options
+    [
+      ['--with-libstemmer', "Compile with libstemmer"]
+    ]
   end
 
   def caveats
