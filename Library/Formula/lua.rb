@@ -39,6 +39,20 @@ class Lua < Formula
       s.change_make_var! 'CFLAGS', "#{ENV.cflags} $(MYCFLAGS)"
     end
 
+    # add shared library build to src/Makefile
+    inreplace 'src/Makefile' do |s|
+        lua_a = "LUA_A=\tliblua.a"
+        s.gsub! lua_a,lua_a+"\nLUA_SO=\tliblua.so"
+        s.change_make_var! 'ALL_T','$(LUA_A) $(LUA_T) $(LUAC_T) $(LUA_SO)'
+        lua_a = "$(LUA_A): $(CORE_O) $(LIB_O)\n\t$(AR) $@ $?\n\t$(RANLIB) $@"
+        s.gsub! lua_a,lua_a+"\n\n$(LUA_SO): $(CORE_O) $(LIB_O)\n\t$(CC) -o $@ -shared $?"
+    end
+
+    # add shared library build to Makefile
+    inreplace 'Makefile' do |s|
+        s.change_make_var! 'TO_LIB','liblua.a liblua.so'
+    end
+
     # Fix path in the config header
     inreplace 'src/luaconf.h', '/usr/local', HOMEBREW_PREFIX
 
