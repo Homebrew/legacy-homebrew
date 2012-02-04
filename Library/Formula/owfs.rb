@@ -8,7 +8,7 @@ class Owfs < Formula
 
   depends_on 'libusb-compat'
 
-  def install
+def install
     system "autoreconf -ivf"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--disable-swig",
