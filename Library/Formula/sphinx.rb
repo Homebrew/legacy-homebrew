@@ -18,6 +18,10 @@ class Sphinx < Formula
   fails_with_llvm "ld: rel32 out of range in _GetPrivateProfileString from /usr/lib/libodbc.a(SQLGetPrivateProfileString.o)",
     :build => 2334
 
+  if ARGV.include? '--with-libstemmer'
+    depends_on "libstemmer" => :build
+  end
+
   def install
     lstem = Pathname.pwd+'libstemmer_c'
     lstem.mkpath
@@ -36,7 +40,23 @@ class Sphinx < Formula
     args << "--without-mysql" unless `/usr/bin/which mysql`.size > 0
 
     system "./configure", *args
+
+    if ARGV.include? '--with-libstemmer'
+      inreplace "config/config.h", /^#define USE_LIBSTEMMER 0$/, "#define USE_LIBSTEMMER 1"
+      inreplace "src/Makefile" do |s|
+        libs = s.get_make_var("LIBS")
+        libs << " " + HOMEBREW_PREFIX + "/lib/libstemmer.o"
+        s.change_make_var! "LIBS", libs
+      end
+    end
+
     system "make install"
+  end
+
+  def options
+    [
+      ['--with-libstemmer', "Compile with libstemmer"]
+    ]
   end
 
   def caveats
