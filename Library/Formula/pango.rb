@@ -18,6 +18,7 @@ class Pango < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
+  depends_on 'gettext'
 
   fails_with_llvm "Undefined symbols when linking", :build => "2326"
 
