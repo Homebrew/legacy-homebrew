@@ -12,8 +12,8 @@ class Tor < Formula
                           "--prefix=#{prefix}"
     system "make install"
 
-    (prefix+'org.tor.plist').write startup_plist
-    (prefix+'org.tor.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def startup_plist
@@ -23,7 +23,7 @@ class Tor < Formula
 <plist version="1.0">
   <dict>
     <key>Label</key>
-    <string>org.tor</string>
+    <string>#{plist_name}</string>
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
@@ -32,7 +32,7 @@ class Tor < Formula
     <string>#{`whoami`.chomp}</string>
     <key>ProgramArguments</key>
     <array>
-        <string>#{bin}/tor</string>
+        <string>#{HOMEBREW_PREFIX}/bin/tor</string>
     </array>
     <key>WorkingDirectory</key>
     <string>#{HOMEBREW_PREFIX}</string>
@@ -44,8 +44,8 @@ class Tor < Formula
   def caveats; <<-EOS.undent
     You can start tor automatically on login with:
       mkdir -p ~/Library/LaunchAgents
-      cp #{prefix}/org.tor.plist ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/org.tor.plist
+      cp #{plist_path} ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
     EOS
   end
 end

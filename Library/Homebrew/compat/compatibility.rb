@@ -80,3 +80,17 @@ end
 
 class UnidentifiedFormula < Formula
 end
+
+module HomebrewEnvExtension extend self
+  def use_clang?
+    compiler == :clang
+  end
+
+  def use_gcc?
+    compiler == :gcc
+  end
+
+  def use_llvm?
+    compiler == :llvm
+  end
+end
