@@ -44,6 +44,8 @@ class Octave < Formula
   # additional features
   depends_on 'suite-sparse'
   depends_on 'glpk'
+  # test for presence of GraphicsMagick++ relies on pkg-config
+  depends_on 'pkg-config'
   depends_on 'graphicsmagick' unless no_magick?
   depends_on 'hdf5'
   depends_on 'pcre'
