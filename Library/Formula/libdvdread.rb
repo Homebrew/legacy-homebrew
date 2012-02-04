@@ -8,6 +8,10 @@ class Libdvdread < Formula
 
   depends_on 'libdvdcss' => :optional
 
+  def patches
+    "http://dvdbackup.sourceforge.net/DVDFileStat.patch"
+  end
+
   def install
     if Formula.factory("libdvdcss").installed?
       ENV.append "CFLAGS", "-DHAVE_DVDCSS_DVDCSS_H"
