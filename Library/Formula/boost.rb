@@ -38,6 +38,10 @@ class Boost < Formula
     fails_with_llvm "LLVM-GCC causes errors with dropped arguments to functions when linking with boost"
   end
 
+  def options
+    [['--with-mpi', "Enables MPI support"]]
+  end
+
   def install
     if ARGV.build_universal? and not ARGV.include? "--without-python"
       archs = archs_for_command("python")
