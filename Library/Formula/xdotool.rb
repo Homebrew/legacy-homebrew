@@ -9,14 +9,20 @@ class Xdotool < Formula
 
   def install
     system "make", "PREFIX=#{prefix}", "INSTALLMAN=#{man}", "install"
-
-    ohai "You will probably want to enable XTEST in your X11 server now by running:\n"
-    ohai "defaults write org.x.X11 enable_test_extensions -boolean true\n"
-    ohai "(see http://stackoverflow.com/questions/1264210/does-mac-x11-have-the-xtest-extension"
-    ohai "for the source of this useful hint - thx to Nicholas Riley for providing that)"
   end
 
   def test
     system "xdotool version"
   end
+
+  def caveats; <<-EOS.undent
+    You will probably want to enable XTEST in your X11 server now by running:
+
+      defaults write org.x.X11 enable_test_extensions -boolean true
+
+    (see http://stackoverflow.com/questions/1264210/does-mac-x11-have-the-xtest-extension
+    for the source of this useful hint - thx to Nicholas Riley for providing that)
+    EOS
+  end
+
 end
