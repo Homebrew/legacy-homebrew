@@ -20,14 +20,16 @@ class ARGVTests < Test::Unit::TestCase
 
   def test_ARGV
     assert ARGV.named.empty?
-    
+
     (HOMEBREW_CELLAR+'mxcl/10.0').mkpath
-    
+
     ARGV.reset
     ARGV.unshift 'mxcl'
     assert_equal 1, ARGV.named.length
     assert_equal 1, ARGV.kegs.length
-    assert_raises(FormulaUnavailableError) { ARGV.formulae }
+    assert_equal [], ARGV.formulae
+    assert_raises(FormulaUnavailableError) { ARGV.formulae! }
+    assert_equal %w{mxcl}, ARGV.unknown
   end
-  
+
 end

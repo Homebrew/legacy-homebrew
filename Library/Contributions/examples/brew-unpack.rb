@@ -62,7 +62,7 @@ supplied, patches will also be downloaded and applied.
       exit 0
     end
 
-    formulae = ARGV.formulae
+    formulae = ARGV.formulae!
     raise FormulaUnspecifiedError if formulae.empty?
 
     unpack_dir = ARGV.options_only.select {|o| o.start_with? "--destdir="}

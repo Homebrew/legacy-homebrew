@@ -8,14 +8,14 @@ module Homebrew extend self
 
     if ARGV.include? '--deps'
       bucket = []
-      ARGV.formulae.each do |f|
+      ARGV.formulae!.each do |f|
         bucket << f
         bucket << f.recursive_deps
       end
 
       bucket = bucket.flatten.uniq
     else
-      bucket = ARGV.formulae
+      bucket = ARGV.formulae!
     end
 
     puts "Fetching: #{bucket * ', '}" if bucket.size > 1

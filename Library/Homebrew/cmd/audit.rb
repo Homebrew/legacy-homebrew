@@ -3,7 +3,7 @@ require 'utils'
 
 def ff
   return Formula.all if ARGV.named.empty?
-  return ARGV.formulae
+  return ARGV.formulae!
 end
 
 def audit_formula_text name, text
