@@ -11,6 +11,8 @@ class Bwa < Formula
       s.change_make_var! 'CFLAGS', ENV.cflags
     end
 
+    system "make -C bwt_gen"
+    system "ar -s bwt_gen/libbwtgen.a"
     system "make"
     bin.install "bwa"
     man1.install "bwa.1"
