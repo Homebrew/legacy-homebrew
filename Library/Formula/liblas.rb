@@ -11,7 +11,7 @@ class Liblas < Formula
   depends_on 'boost'
 
   def options
-    [[ '--with-test', 'Verify the build duing install with make test' ]]
+    [['--with-test', 'Verify during install with `make test`.']]
   end
 
   def install
