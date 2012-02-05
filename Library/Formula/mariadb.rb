@@ -65,8 +65,8 @@ class Mariadb < Formula
     (prefix+'mysql-test').rmtree unless ARGV.include? '--with-tests' # save 121MB!
     (prefix+'sql-bench').rmtree unless ARGV.include? '--with-bench'
 
-    (prefix+'com.mysql.mysqld.plist').write startup_plist
-    (prefix+'com.mysql.mysqld.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent
@@ -75,16 +75,16 @@ class Mariadb < Formula
         mysql_install_db
 
     If this is your first install, automatically load on login with:
-        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents
-        launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-    If this is an upgrade and you already have the com.mysql.mysqld.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
-        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents
-        launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
+        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     Note on upgrading:
-        We overwrite any existing com.mysql.mysqld.plist in ~/Library/LaunchAgents
+        We overwrite any existing #{plist_path.basename} in ~/Library/LaunchAgents
         if we are upgrading because previous versions of this brew created the
         plist with a version specific program argument.
 
@@ -101,9 +101,9 @@ class Mariadb < Formula
       <key>KeepAlive</key>
       <true/>
       <key>Label</key>
-      <string>com.mysql.mysqld</string>
+      <string>#{plist_name}</string>
       <key>Program</key>
-      <string>#{bin}/mysqld_safe</string>
+      <string>#{HOMEBREW_PREFIX}/bin/mysqld_safe</string>
       <key>RunAtLoad</key>
       <true/>
       <key>UserName</key>

@@ -10,7 +10,8 @@ class MemcachedPhp < Formula
   def install
     Dir.chdir "memcached-#{version}" do
       system "phpize"
-      system "./configure", "--prefix=#{prefix}"
+      system "./configure", "--prefix=#{prefix}",
+                            "--with-libmemcached-dir=#{Formula.factory('libmemcached').prefix}"
       system "make"
       prefix.install 'modules/memcached.so'
     end
