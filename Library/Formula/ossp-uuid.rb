@@ -6,7 +6,16 @@ class OsspUuid < Formula
   homepage 'http://www.ossp.org/pkg/lib/uuid/'
   md5 '5db0d43a9022a6ebbbc25337ae28942f'
 
+  def options
+    [["--32-bit", "Build 32-bit only."]]
+  end
+
   def install
+    if ARGV.include? '--32-bit'
+      ENV.append 'CFLAGS', '-arch i386'
+      ENV.append 'LDFLAGS', '-arch i386'
+    end
+
     system "./configure", "--disable-debug",
                           "--without-perl",
                           "--without-php",

@@ -27,21 +27,21 @@ class PureFtpd < Formula
 
     system "./configure", *args
     system "make install"
-    (prefix+'org.pureftpd.pure-ftpd.plist').write startup_plist
-    (prefix+'org.pureftpd.pure-ftpd.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats
     <<-EOS.undent
     If this is your first install, automatically load on login with:
         mkdir -p ~/Library/LaunchAgents
-        cp #{prefix}/org.pureftpd.pure-ftpd.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/org.pureftpd.pure-ftpd.plist
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-    If this is an upgrade and you already have the org.pureftpd.pure-ftpd.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/org.pureftpd.pure-ftpd.plist
-        cp #{prefix}/org.pureftpd.pure-ftpd.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/org.pureftpd.pure-ftpd.plist
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
+        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
       To start pure-ftpd manually:
         pure-ftpd <options>
@@ -57,10 +57,10 @@ class PureFtpd < Formula
     <key>KeepAlive</key>
     <true/>
     <key>Label</key>
-    <string>org.pureftpd.pure-ftpd</string>
+    <string>#{plist_name}</string>
     <key>ProgramArguments</key>
     <array>
-      <string>#{sbin}/pure-ftpd</string>
+      <string>#{HOMEBREW_PREFIX}/sbin/pure-ftpd</string>
       <string>-A -j -z</string>
     </array>
     <key>RunAtLoad</key>

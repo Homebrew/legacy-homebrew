@@ -43,8 +43,8 @@ class Mongodb < Formula
 
     # Write the configuration files and launchd script
     (prefix+'mongod.conf').write mongodb_conf
-    (prefix+'org.mongodb.mongod.plist').write startup_plist
-    (prefix+'org.mongodb.mongod.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats
@@ -52,13 +52,13 @@ class Mongodb < Formula
     s += <<-EOS.undent
     If this is your first install, automatically load on login with:
         mkdir -p ~/Library/LaunchAgents
-        cp #{prefix}/org.mongodb.mongod.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-    If this is an upgrade and you already have the org.mongodb.mongod.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
-        cp #{prefix}/org.mongodb.mongod.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
+        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     Or start it manually:
         mongod run --config #{prefix}/mongod.conf
@@ -118,10 +118,10 @@ class Mongodb < Formula
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>org.mongodb.mongod</string>
+  <string>#{plist_name}</string>
   <key>ProgramArguments</key>
   <array>
-    <string>#{bin}/mongod</string>
+    <string>#{HOMEBREW_PREFIX}/bin/mongod</string>
     <string>run</string>
     <string>--config</string>
     <string>#{etc}/mongod.conf</string>
