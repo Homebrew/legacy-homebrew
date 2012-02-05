@@ -9,9 +9,7 @@ class GitNow < Formula
   depends_on 'gnu-getopt'
 
   def options
-    [
-      ['--zsh-completion', "copy zsh completion function file to #{share}/zsh/functions"]
-    ]
+    [['--zsh-completion', "Install zsh completions."]]
   end
 
   def patches
@@ -24,6 +22,12 @@ class GitNow < Formula
       zsh_functions_d = share + 'zsh/functions'
       zsh_functions_d.install "etc/_git-now"
     end
+  end
+
+  def caveats; <<-EOS
+    If `--zsh-completion` is specified, zsh completions are installed to:
+      #{share}/zsh/functions
+    EOS
   end
 
 end
