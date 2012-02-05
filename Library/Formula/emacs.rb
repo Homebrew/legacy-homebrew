@@ -20,6 +20,7 @@ class Emacs < Formula
   def options
     [
       ["--cocoa", "Build a Cocoa version of emacs"],
+      ["--lion", "Build with Lion fullscreen support"],
       ["--srgb", "Enable sRGB colors in the Cocoa version of emacs"],
       ["--with-x", "Include X11 support"],
       ["--use-git-head", "Use Savannah git mirror for HEAD builds"],
@@ -42,8 +43,12 @@ class Emacs < Formula
     end
 
     if ARGV.include? "--cocoa"
-      # Fullscreen patch, works against 23.3 and HEAD.
-      p << "https://raw.github.com/gist/1012927"
+      if ARGV.include? "--lion"
+        p << "https://raw.github.com/gist/1747566/ns-toggle-fullscreen.diff"
+      else
+        # Old fullscreen patch, works against 23.3 and HEAD.
+        p << "https://raw.github.com/gist/1012927"
+      end
     end
 
     return p
