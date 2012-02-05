@@ -68,7 +68,17 @@ class Vtk < Formula
     args << ".."
     Dir.chdir 'build' do
       system "cmake", *args
-      system "make install"
+      # Work-a-round to avoid:
+      #   ld: file not found: /usr/local/Cellar/vtk/5.8.0/lib/vtk-5.8/libvtkDICOMParser.5.8.dylib for architecture x86_64"
+      #   collect2: ld returned 1 exit status
+      #   make[2]: *** [bin/vtkpython] Error 1
+      # We symlink such that the DCMAKE_INSTALL_NAME_DIR is available and points to the current build/bin
+      mkpath "#{lib}" # create empty directories, because we need it here
+      system "ln -s " + ENV['DYLD_LIBRARY_PATH'] + " '#{lib}/vtk-5.8'"
+      system "make"
+      system "rm '#{lib}/vtk-5.8'" # Remove our symlink, was only needed to make make succeed.
+      # end work-a-round
+      system "make install" # Finally move libs in their places.
     end
   end
 end
