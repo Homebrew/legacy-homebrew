@@ -20,12 +20,4 @@ class Uwsgi < Formula
     system "python uwsgiconfig.py --build"
     bin.install "uwsgi"
   end
-
-  def caveats
-    <<-EOS.undent
-      NOTE: "brew install -v uwsgi" will fail!
-      You must install in non-verbose mode for this to succeed.
-      Patches to fix this are welcome.
-    EOS
-  end
 end
