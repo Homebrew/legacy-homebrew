@@ -11,7 +11,7 @@ class GearmanPhp < Formula
     Dir.chdir "gearman-#{version}" do
       system "phpize"
       system "./configure", "--prefix=#{prefix}",
-                            "--with-gearman=#{Formula.factory('gearmand').prefix}"
+                            "--with-gearman=#{Formula.factory('gearman').prefix}"
       system "make"
       prefix.install 'modules/gearman.so'
     end
