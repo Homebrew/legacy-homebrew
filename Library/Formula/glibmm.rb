@@ -1,9 +1,9 @@
 require 'formula'
 
 class Glibmm < Formula
-  url 'http://ftp.gnome.org/pub/GNOME/sources/glibmm/2.22/glibmm-2.22.2.tar.gz'
   homepage 'http://www.gtkmm.org/'
-  md5 '90ff0a5bd5987431cf36f0aa0160a753'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/glibmm/2.28/glibmm-2.28.2.tar.bz2'
+  sha256 '7b67178363f8494c94f8b3dd704a4c8db7ad75a253fc84a4ad229e5e179ec192'
 
   depends_on 'pkg-config' => :build
   depends_on 'libsigc++'
