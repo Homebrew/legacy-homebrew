@@ -17,7 +17,9 @@ class SdlSound < Formula
 
   def install
     system "./bootstrap" if ARGV.build_head?
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-dependency-tracking",
+                          "--disable-sdltest"
     system "make"
     system "make check"
     system "make install"
