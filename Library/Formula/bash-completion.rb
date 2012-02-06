@@ -21,11 +21,14 @@ class BashCompletion < Formula
       inreplace 'Makefile' do |s|
         s.change_make_var! "pkgconfigdir", "#{lib}/pkgconfig"
       end
+
+      system "make"
+      ENV.deparallelize
+      system "make install"
     else
       system "./configure", "--prefix=#{prefix}"
+      system "make install"
     end
-
-    system "make install"
 
     # Cause the build to fails if you haven't already installed git or something else that
     # creates a bash_completion.d
