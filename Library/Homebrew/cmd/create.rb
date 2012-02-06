@@ -99,8 +99,8 @@ class FormulaCreator
     require 'formula'
 
     class #{Formula.class_s name} < Formula
-      url '#{url}'
       homepage ''
+      url '#{url}'
       md5 '#{md5}'
 
     <% if mode == :cmake %>
