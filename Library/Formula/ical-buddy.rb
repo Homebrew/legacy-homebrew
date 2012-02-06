@@ -8,8 +8,6 @@ class IcalBuddy < Formula
     :using => :git
   homepage 'http://hasseg.org/icalBuddy/'
   version '1.8.0'
-  # Don't think we need an md5 if checking out from git
-  # md5 '719089991317e01479d666b003b925fc'
 
   head 'http://hasseg.org/git-public/icalBuddy.git', :using => :git
 
