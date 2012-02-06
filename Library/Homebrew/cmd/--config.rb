@@ -51,8 +51,11 @@ module Homebrew extend self
 
     real_python = Pathname.new(python).realpath.to_s
 
-    return python if python == real_python
-    return "#{python} => #{real_python}"
+    site_packages = `python -c 'import distutils.sysconfig as c; print(c.get_python_lib())'`.chomp
+    site_packages = Pathname.new(site_packages).realpath.to_s
+
+    return python + "\n    Site-packages: " + site_packages if python == real_python
+    return "#{python} => #{real_python}" + "\n    Site-packages: " + site_packages
   end
 
   def describe_ruby
@@ -85,9 +88,9 @@ module Homebrew extend self
     X11 installed? #{x11_installed?}
     System Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
     /usr/bin/ruby => #{real_path("/usr/bin/ruby")}
-    Which Perl:   #{describe_perl}
-    Which Python: #{describe_python}
-    Which Ruby:   #{describe_ruby}
+    Which Perl:    #{describe_perl}
+    Which Python:  #{describe_python}
+    Which Ruby:    #{describe_ruby}
     EOS
   end
 end
