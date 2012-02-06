@@ -1,33 +1,17 @@
 require 'formula'
 
 class BdwGc < Formula
+  # upstream recommends using 7.2alpha6 over 7.1
   homepage 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/'
+  url 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.2alpha6.tar.gz'
+  md5 '319d0b18cc4eb735c8038ece9df055e4'
+  version '7.2alpha6'
 
-  url 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.1.tar.gz'
-  md5 '2ff9924c7249ef7f736ecfe6f08f3f9b'
-
-  devel do
-    url 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.2alpha6.tar.gz'
-    md5 '319d0b18cc4eb735c8038ece9df055e4'
-    version '7.2alpha6'
-  end
-
-  # patch to fix inline asm errors with LLVM, present in upstream SVN
-  # some directory restructuring between 7.1 and 7.2a6 force us to have two
-  # versions of the same patch
   def patches
-    if ARGV.build_devel?
-      DATA
-    else
-      { :p0 => "https://trac.macports.org/export/86621/trunk/dports/devel/boehmgc/files/asm.patch" }
-    end
+    DATA # fix inline asm errors with LLVM, present in upstream SVN
   end
 
   def install
-    # ucontext has been deprecated in 10.6
-    # use this flag to force the header to compile
-    ENV.append 'CPPFLAGS', "-D_XOPEN_SOURCE" if MacOS.snow_leopard?
-
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
