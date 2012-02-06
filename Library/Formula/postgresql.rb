@@ -12,6 +12,7 @@ class Postgresql < Formula
 
   def options
     [
+      ['--32-bit', 'Build 32-bit only.'],
       ['--no-python', 'Build without Python support.'],
       ['--no-perl', 'Build without Perl support.'],
       ['--enable-dtrace', 'Build with DTrace support.']
@@ -45,10 +46,13 @@ class Postgresql < Formula
     ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
     ENV.append 'LIBS', `uuid-config --libs`.strip
 
-    if MacOS.prefer_64_bit? and not ARGV.include? '--no-python'
+    if not ARGV.include? '--32-bit' and MacOS.prefer_64_bit? and not ARGV.include? '--no-python'
       args << "ARCHFLAGS='-arch x86_64'"
       check_python_arch
     end
+
+    ENV.append 'CFLAGS', '-arch i386' if ARGV.include? '--32-bit'
+    ENV.append 'LDFLAGS', '-arch i386' if ARGV.include? '--32-bit'
 
     # Fails on Core Duo with O4 and O3
     ENV.O2 if Hardware.intel_family == :core
@@ -56,8 +60,8 @@ class Postgresql < Formula
     system "./configure", *args
     system "make install-world"
 
-    (prefix+'org.postgresql.postgres.plist').write startup_plist
-    (prefix+'org.postgresql.postgres.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def check_python_arch
@@ -110,19 +114,36 @@ To migrate existing data from a previous major version (pre-9.1) of PostgreSQL, 
 
 If this is your first install, automatically load on login with:
   mkdir -p ~/Library/LaunchAgents
-  cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
-  launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
+  cp #{plist_path} ~/Library/LaunchAgents/
+  launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-If this is an upgrade and you already have the org.postgresql.postgres.plist loaded:
-  launchctl unload -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
-  cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents/
-  launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
+If this is an upgrade and you already have the #{plist_path.basename} loaded:
+  launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+  cp #{plist_path} ~/Library/LaunchAgents/
+  launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
 Or start manually with:
   pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start
 
 And stop with:
   pg_ctl -D #{var}/postgres stop -s -m fast
+
+# Loading Extensions
+
+By default, Homebrew builds all available Contrib extensions.  To see a list of all
+available extensions, from the psql command line, run:
+  SELECT * FROM pg_available_extensions;
+
+To load any of the extension names, navigate to the desired database and run:
+  CREATE EXTENSION [extension name];
+
+For instance, to load the tablefunc extension in the current database, run:
+  CREATE EXTENSION tablefunc;
+
+For more information on the CREATE EXTENSION command, see:
+  http://www.postgresql.org/docs/9.1/static/sql-createextension.html
+For more information on extensions, see:
+  http://www.postgresql.org/docs/9.1/static/contrib.html
 
 # Other
 
@@ -132,6 +153,9 @@ EOS
 
     if MacOS.prefer_64_bit? then
       s << <<-EOS
+
+To install postgresql ( and ossp-uuid ) in 32 bits mode; you may use --32-bit :
+   brew install postgresql --32-bit
 
 If you want to install the postgres gem, including ARCHFLAGS is recommended:
     env ARCHFLAGS="-arch x86_64" gem install pg
@@ -152,10 +176,10 @@ To install gems without sudo, see the Homebrew wiki.
   <key>KeepAlive</key>
   <true/>
   <key>Label</key>
-  <string>org.postgresql.postgres</string>
+  <string>#{plist_name}</string>
   <key>ProgramArguments</key>
   <array>
-    <string>#{bin}/postgres</string>
+    <string>#{HOMEBREW_PREFIX}/bin/postgres</string>
     <string>-D</string>
     <string>#{var}/postgres</string>
     <string>-r</string>
