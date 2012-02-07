@@ -135,8 +135,16 @@ class Python < Formula
       See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
     EOS
 
+    real_site_packages = Pathname.new(effective_site_packages()).realpath.to_s
+    site_packages_caveats = <<-EOS.undent
+
+      Site-packages (pip will install python modules there):
+        #{site_packages}#{" => "+real_site_packages if site_packages != real_site_packages}
+    EOS
+
     s = general_caveats
     s += framework_caveats if as_framework?
+    s += site_packages_caveats unless effective_site_packages.empty?
     return s
   end
 
@@ -156,6 +164,15 @@ class Python < Formula
   # The HOMEBREW_PREFIX location of site-packages
   def prefix_site_packages
     HOMEBREW_PREFIX+"lib/python2.7/site-packages"
+  end
+
+  # Ask python's distutils what is the effective path to the site-packages
+  def effective_site_packages
+    if `which python`.chomp.empty?
+      return ""
+    else
+      return `python -c 'import distutils.sysconfig as c; print(c.get_python_lib())'`.chomp
+    end
   end
 
   # Where distribute will install executable scripts
