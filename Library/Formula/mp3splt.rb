@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mp3splt < Formula
-  url 'http://downloads.sourceforge.net/project/mp3splt/mp3splt/2.3a/mp3splt-2.3a.tar.gz'
+  url 'http://downloads.sourceforge.net/project/mp3splt/mp3splt/mp3splt-2.4.1.tar.gz'
   homepage 'http://mp3splt.sourceforge.net'
-  md5 '1fe663f7de5a6949bbe5b6aa78fea79f'
+  md5 'aed4a94f996abcdb07679206a600fc5b'
 
   depends_on 'libmp3splt'
 
