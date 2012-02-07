@@ -75,6 +75,11 @@ module HomebrewEnvExtension
     remove_from_cflags(/-O./)
     append_to_cflags '-g -O0'
   end
+  def O1
+    # Sometimes even O2 doesn't work :(
+    remove_from_cflags(/-O./)
+    append_to_cflags '-O1'
+  end
 
   def gcc_4_0_1
     # we don't use xcrun because gcc 4.0 has not been provided since Xcode 4
