@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libmp3splt < Formula
-  url 'http://downloads.sourceforge.net/project/mp3splt/libmp3splt/0.6.1a/libmp3splt-0.6.1a.tar.gz'
+  url 'http://downloads.sourceforge.net/project/mp3splt/libmp3splt/0.7.1/libmp3splt-0.7.1.tar.gz'
   homepage 'http://mp3splt.sourceforge.net'
-  md5 'a6a00d83e49adf27abb7a0cb0ea384a4'
+  md5 '62025951f483334f14f1b9be58162094'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
@@ -12,16 +12,7 @@ class Libmp3splt < Formula
   depends_on 'mad'
   depends_on 'libvorbis'
 
-  def patches
-    # fixes unneeded dependency on autopoint and uses glibtoolize instead of libtoolize
-    "https://gist.github.com/raw/1034717/931c582cba12d5afcbaa3edd6032baa25bebf5d8/autogen.sh.patch"
-  end
-
   def install
-    ENV.append 'ACLOCAL_FLAGS', "-I#{HOMEBREW_PREFIX}/share/aclocal"
-    system "./autogen.sh"
-    system "autoconf"
-    system "automake"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
