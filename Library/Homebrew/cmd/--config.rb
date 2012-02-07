@@ -38,7 +38,7 @@ module Homebrew extend self
 
   def describe_perl
     perl = `which perl`.chomp
-    return "N/A" unless perl
+    return "N/A" if perl.empty?
 
     real_perl = Pathname.new(perl).realpath.to_s
     return perl if perl == real_perl
@@ -47,7 +47,7 @@ module Homebrew extend self
 
   def describe_python
     python = `which python`.chomp
-    return "N/A" unless python
+    return "N/A" if python.empty?
 
     real_python = Pathname.new(python).realpath.to_s
 
@@ -57,7 +57,7 @@ module Homebrew extend self
 
   def describe_ruby
     ruby = `which ruby`.chomp
-    return "N/A" unless ruby
+    return "N/A" if ruby.empty?
 
     real_ruby = Pathname.new(ruby).realpath.to_s
     return ruby if ruby == real_ruby
