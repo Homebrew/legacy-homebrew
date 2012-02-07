@@ -9,6 +9,7 @@ class GdkPixbuf < Formula
   depends_on 'glib'
   depends_on 'jasper'
   depends_on 'libtiff'
+  depends_on 'xz'
 
   def options
     [["--universal", "Build a universal binary."]]
