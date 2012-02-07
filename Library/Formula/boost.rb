@@ -12,6 +12,8 @@ class Boost < Formula
     sha1 'c7871ddd020a24e3b0cfd3c9a352a1210b68b372'
   end
 
+  depends_on "icu4c" if ARGV.include? "--with-icu"
+
   def patches
     # https://svn.boost.org/trac/boost/ticket/6131
     #
@@ -28,7 +30,8 @@ class Boost < Formula
     [
       ["--with-mpi", "Enable MPI support"],
       ["--universal", "Build universal binaries"],
-      ["--without-python", "Build without Python"]
+      ["--without-python", "Build without Python"],
+      ["--with-icu", "Build regexp engine with icu support"],
     ]
   end
 
@@ -72,6 +75,15 @@ class Boost < Formula
       file.write "using mpi ;\n" if ARGV.include? '--with-mpi'
     end
 
+    bargs = ["--prefix=#{prefix}",
+             "--libdir=#{lib}"]
+
+    if ARGV.include? "--with-icu"
+      icu4c_prefix = Formula.factory('icu4c').prefix
+      bargs << "--with-icu=#{icu4c_prefix}"
+    end
+
+
     args = ["--prefix=#{prefix}",
             "--libdir=#{lib}",
             "-j#{ENV.make_jobs}",
@@ -84,10 +96,11 @@ class Boost < Formula
     args << "--without-python" if ARGV.include? "--without-python"
 
     # we specify libdir too because the script is apparently broken
-    system "./bootstrap.sh", "--prefix=#{prefix}", "--libdir=#{lib}"
+    system "./bootstrap.sh", *bargs
     system "./bjam", *args
   end
 end
+
 __END__
 Index: /boost/foreach_fwd.hpp
 ===================================================================
