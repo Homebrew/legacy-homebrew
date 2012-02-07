@@ -1,12 +1,12 @@
 require 'formula'
 
 class Apollo < Formula
-  url 'http://www.apache.org/dist/activemq/activemq-apollo/1.0-beta3/apache-apollo-1.0-beta3-unix-distro.tar.gz'
+  version "1.0"
+  url "http://archive.apache.org/dist/activemq/activemq-apollo/#{version}/apache-apollo-#{version}-unix-distro.tar.gz"
   homepage 'http://activemq.apache.org/apollo'
-  md5 'c77b7c9a45862c49d436009dc9c8124c'
-  version "1.0-beta3"
+  md5 '7388ff240b48acabcd6ec6859dbbbff6'
   
-  depends_on 'berkeley-db-je' # => :optional
+  depends_on 'berkeley-db-je' => :optional
 
   def install
     prefix.install %w{ LICENSE NOTICE readme.html docs examples }
@@ -22,14 +22,8 @@ class Apollo < Formula
     (bin+'apollo').write bin_script('apollo')
     
     if ! File.exists?("#{var}/apollo")
-      ohai 'creating the broker instance...'
+      ohai "creating the broker instance '#{var}/apollo' ..."
       `sh #{bin}/apollo create #{var}/apollo`
-      
-      if have_je 
-        inreplace "#{var}/apollo/etc/apollo.xml" do |s|
-          s.gsub! "jdbm2_store", "bdb_store"
-        end        
-      end
     end
     
     (prefix+'org.apache.activemq.apollo.plist').write startup_plist
@@ -44,21 +38,22 @@ EOS
   end
   
   def caveats
-    <<-EOS
-
-If this is your first install, automatically load on startup with:
+    if File.exists?("#{var}/apollo/log/apollo.log")
+      """
+You have an existing broker instance located at: #{var}/apollo
+You may need to updated update the #{var}/apollo/bin/apollo-broker script to use the new broker version.
+"""
+    else
+      ""
+    end +"""
+To automatically load on startup, run:
     sudo cp #{prefix}/org.apache.activemq.apollo.plist /System/Library/LaunchDaemons/
     sudo launchctl load -w /System/Library/LaunchDaemons/org.apache.activemq.apollo.plist
 
-If this is an upgrade and you already have the org.apache.activemq.apollo.plist loaded:
-    sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.activemq.apollo.plist
-    sudo cp #{prefix}/org.apache.activemq.apollo.plist /System/Library/LaunchDaemons/
-    sudo launchctl load -w /System/Library/LaunchDaemons/org.apache.activemq.apollo.plist
-
-Or start manually with:
+Or to start the broker in the foreground run:
     sudo #{var}/apollo/bin/apollo-broker run
-
-EOS
+    
+"""
   end
 
   def startup_plist
