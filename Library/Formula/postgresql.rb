@@ -26,33 +26,34 @@ class Postgresql < Formula
 
     args = ["--disable-debug",
             "--prefix=#{prefix}",
+            "--datadir=#{share}/#{name}",
+            "--docdir=#{doc}",
             "--enable-thread-safety",
             "--with-bonjour",
             "--with-gssapi",
             "--with-krb5",
             "--with-openssl",
-            "--with-libxml", "--with-libxslt"]
+            "--with-libxml",
+            "--with-libxslt",
+            "--with-ossp-uuid"]
 
     args << "--with-python" unless ARGV.include? '--no-python'
     args << "--with-perl" unless ARGV.include? '--no-perl'
     args << "--enable-dtrace" if ARGV.include? '--enable-dtrace'
 
-    args << "--with-ossp-uuid"
-
-    args << "--datadir=#{share}/#{name}"
-    args << "--docdir=#{doc}"
-
     ENV.append 'CFLAGS', `uuid-config --cflags`.strip
     ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
     ENV.append 'LIBS', `uuid-config --libs`.strip
 
-    if not ARGV.include? '--32-bit' and MacOS.prefer_64_bit? and not ARGV.include? '--no-python'
+    if not ARGV.build_32_bit? and MacOS.prefer_64_bit? and not ARGV.include? '--no-python'
       args << "ARCHFLAGS='-arch x86_64'"
       check_python_arch
     end
 
-    ENV.append 'CFLAGS', '-arch i386' if ARGV.include? '--32-bit'
-    ENV.append 'LDFLAGS', '-arch i386' if ARGV.include? '--32-bit'
+    if ARGV.build_32_bit?
+      ENV.append 'CFLAGS', '-arch i386'
+      ENV.append 'LDFLAGS', '-arch i386'
+    end
 
     # Fails on Core Duo with O4 and O3
     ENV.O2 if Hardware.intel_family == :core
@@ -154,7 +155,7 @@ EOS
     if MacOS.prefer_64_bit? then
       s << <<-EOS
 
-To install postgresql ( and ossp-uuid ) in 32 bits mode; you may use --32-bit :
+To install postgresql (and ossp-uuid) in 32-bit mode:
    brew install postgresql --32-bit
 
 If you want to install the postgres gem, including ARCHFLAGS is recommended:
