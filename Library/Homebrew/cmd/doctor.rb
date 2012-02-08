@@ -815,6 +815,22 @@ def check_for_enthought_python
   EOS
 end
 
+def check_for_osx_gcc_installer
+  # Use the existence of Carbon headers to make a guess as to whether
+  # the osx-gcc-installer was used in lieu of Xcode.
+  unless File.exist? "/System/Library/Frameworks/Carbon.framework/Headers/Carbon.h"
+    puts <<-EOS.undent
+      It appears that you are using the osx-gcc-installer.
+
+      This is unsupported, and software that require headers and other
+      resources that are normally provided by Xcode will fail to compile.
+
+      We recommend that you install Xcode.
+
+    EOS
+  end
+end
+
 module Homebrew extend self
   def doctor
     old_stdout = $stdout
@@ -861,6 +877,7 @@ module Homebrew extend self
       check_for_leopard_ssl
       check_git_version
       check_for_enthought_python
+      check_for_osx_gcc_installer
     ensure
       $stdout = old_stdout
     end
