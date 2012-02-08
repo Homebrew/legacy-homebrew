@@ -1,4 +1,5 @@
 require 'formula'
+
 class Shen < Formula
   homepage 'http://www.shenlanguage.org/'
   url 'http://www.shenlanguage.org/download/Shen3.0.zip'
