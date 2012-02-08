@@ -5,6 +5,7 @@ class Mydumper < Formula
   homepage 'http://www.mydumper.org/'
   md5 'b4df42dfe23f308ab13eb6ecb73a0d21'
 
+  depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
   depends_on 'glib'
   depends_on 'pcre'
