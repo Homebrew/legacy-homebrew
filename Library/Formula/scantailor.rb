@@ -6,9 +6,9 @@ class Scantailor < Formula
   md5 '15984c8828ecb2de542ac94e3c41a810'
 
   devel do
-    url 'http://downloads.sourceforge.net/project/scantailor/scantailor-devel/enhanced/scantailor-enhanced-20110907.tar.gz'
-    md5 '8ba5c23c611e7bdd7cdb40f991f6fd35'
-    version 'enhanced-20110907'
+    url 'http://downloads.sourceforge.net/project/scantailor/scantailor-devel/enhanced/scantailor-enhanced-20111213.tar.gz'
+    md5 'bcba593dcba17880429884fe2bfb1d2a'
+    version 'enhanced-20111213'
   end
 
   depends_on 'cmake' => :build
