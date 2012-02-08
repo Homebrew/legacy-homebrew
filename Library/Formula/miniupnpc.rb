@@ -6,6 +6,7 @@ class Miniupnpc < Formula
   md5 '61f136f1302add9d89d329a6c1e338ca'
 
   def install
+    inreplace 'Makefile', "-Wl,-install_name,$(SONAME)", "-Wl,-install_name,$(INSTALLDIRLIB)/$(SONAME)"
     system "make INSTALLPREFIX=#{prefix} install"
   end
 end
