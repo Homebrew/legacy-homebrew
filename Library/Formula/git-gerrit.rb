@@ -11,4 +11,5 @@ class GitGerrit < Formula
     # install bash completions.
     (prefix + 'etc/bash_completion.d').install 'completion/git-gerrit-completion.bash'
   end
+
 end
