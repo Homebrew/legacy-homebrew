@@ -3,6 +3,7 @@ require 'formula'
 class Wget < Formula
   homepage 'http://www.gnu.org/software/wget/'
   url 'http://ftpmirror.gnu.org/wget/wget-1.13.4.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/wget/wget-1.13.4.tar.bz2'
   md5 '12115c3750a4d92f9c6ac62bac372e85'
 
   depends_on "openssl" if MacOS.leopard?
@@ -15,6 +16,7 @@ class Wget < Formula
   def install
     args = ["--disable-debug",
             "--prefix=#{prefix}",
+            "--sysconfdir=#{etc}",
             "--with-ssl=openssl"]
 
     args << "--disable-iri" unless ARGV.include? "--enable-iri"

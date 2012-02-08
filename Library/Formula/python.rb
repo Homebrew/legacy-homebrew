@@ -26,8 +26,7 @@ class Python < Formula
     [
       ["--framework", "Do a 'Framework' build instead of a UNIX-style build."],
       ["--universal", "Build for both 32 & 64 bit Intel."],
-      ["--static", "Build static libraries."],
-      ["--no-poll", "Remove HAVE_POLL.* options from build."]
+      ["--static", "Build static libraries."]
     ]
   end
 
@@ -64,9 +63,9 @@ class Python < Formula
 
     system "./configure", *args
 
-    if ARGV.include? '--no-poll'
-      inreplace 'pyconfig.h', /.*?(HAVE_POLL[_A-Z]*).*/, '#undef \1'
-    end
+    # HAVE_POLL is "broken" on OS X
+    # See: http://trac.macports.org/ticket/18376
+    inreplace 'pyconfig.h', /.*?(HAVE_POLL[_A-Z]*).*/, '#undef \1'
 
     system "make"
     ENV.j1 # Installs must be serialized
@@ -119,7 +118,9 @@ class Python < Formula
     EOS
 
     general_caveats = <<-EOS.undent
-      A "distutils.cfg" has been written, specifing the install-scripts folder as:
+      A "distutils.cfg" has been written to:
+        #{effective_lib}/python2.7/distutils
+      specifing the install-scripts folder as:
         #{scripts_folder}
 
       If you install Python packages via "python setup.py install", easy_install, pip,

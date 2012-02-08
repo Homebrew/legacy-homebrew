@@ -1,9 +1,9 @@
 require 'formula'
 
 class Jetty < Formula
-  url 'http://dist.codehaus.org/jetty/jetty-6.1.26/jetty-6.1.26.zip'
-  homepage 'http://jetty.codehaus.org/jetty/index.html'
-  md5 '0d9b2ae3feb2b207057358142658a11f'
+  url 'http://download.eclipse.org/jetty/8.0.4.v20111024/dist/jetty-distribution-8.0.4.v20111024.tar.gz'
+  homepage 'http://www.eclipse.org/jetty/'
+  md5 '8da01a64a0042ad43babbd92a1b8dcbf'
 
   skip_clean :all
 

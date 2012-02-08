@@ -9,7 +9,7 @@ class GooglePerftools < Formula
 
   def install
     ENV.append_to_cflags '-D_XOPEN_SOURCE'
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
     system "make install"

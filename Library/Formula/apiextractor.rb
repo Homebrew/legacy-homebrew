@@ -2,10 +2,11 @@ require 'formula'
 
 class Apiextractor < Formula
   homepage 'http://www.pyside.org/docs/apiextractor'
-  url 'http://pyside.org/files/apiextractor-0.10.7.tar.bz2'
-  md5 '539be815e7fb09064fefcdb21ad44965'
+  url 'http://www.pyside.org/files/apiextractor-0.10.10.tar.bz2'
+  md5 '7cdf6bdbf161e15b8bc5e98df86f95ee'
 
   depends_on 'cmake' => :build
+
   depends_on 'qt'
 
   def install

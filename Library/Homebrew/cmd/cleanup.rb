@@ -13,7 +13,7 @@ module Homebrew extend self
         end
       end
       # seems like a good time to do some additional cleanup
-      Homebrew.prune
+      Homebrew.prune unless ARGV.include? '-n'
     else
       ARGV.formulae.each do |f|
         cleanup_formula f
@@ -36,7 +36,7 @@ module Homebrew extend self
       f.rack.children.each do |keg|
         if f.installed_prefix != keg
           print "Removing #{keg}..."
-          rm_rf keg
+          rm_rf keg unless ARGV.include? '-n'
           puts
         end
       end

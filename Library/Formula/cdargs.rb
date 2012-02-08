@@ -5,7 +5,7 @@ class Cdargs < Formula
   homepage 'http://www.skamphausen.de/cgi-bin/ska/CDargs'
   md5 '50be618d67f0b9f2439526193c69c567'
 
-  fails_with_llvm "Bus error in ld on SL 10.6.4"
+  fails_with_llvm "Bus error in ld on SL 10.6.4", :build => 2334
 
   # fixes zsh usage using the patch provided at the cdargs homepage
   # (See http://www.skamphausen.de/cgi-bin/ska/CDargs)

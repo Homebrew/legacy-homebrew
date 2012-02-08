@@ -11,7 +11,7 @@ class Ushare < Formula
 
   def patches
     { :p0 =>
-      "http://svn.macports.org/repository/macports/trunk/dports/net/ushare/files/patch-configure.diff"
+      "https://trac.macports.org/export/89267/trunk/dports/net/ushare/files/patch-configure.diff"
     }
   end
 

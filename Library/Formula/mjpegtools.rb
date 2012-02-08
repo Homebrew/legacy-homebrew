@@ -27,7 +27,7 @@ class Mjpegtools < Formula
     args = ["--disable-dependency-tracking",
             "--enable-simd-accel",
             "--prefix=#{prefix}"]
-    args << "--without-x" if ARGV.flag? "--without-x"
+    args << "--without-x" if ARGV.include? "--without-x"
 
     system "./configure", *args
     system "make install"

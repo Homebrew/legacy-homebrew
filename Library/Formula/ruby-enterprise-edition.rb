@@ -26,10 +26,6 @@ class RubyEnterpriseEdition < Formula
   end
 
   def caveats; <<-EOS.undent
-    Consider using RVM or Cinderella to manage Ruby environments:
-      * RVM: http://rvm.beginrescueend.com/
-      * Cinderella: http://www.atmos.org/cinderella/
-
     By default we don't compile REE as a shared library. From their documentation:
         Please note that enabling --enable-shared will make the Ruby interpreter
         about 20% slower.

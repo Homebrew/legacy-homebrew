@@ -1,9 +1,9 @@
 require 'formula'
 
 class Feh < Formula
-  url 'http://feh.finalrewind.org/feh-1.16.tar.bz2'
-  homepage 'http://freshmeat.net/projects/feh'
-  md5 'd8583e8dde2f383dc9a8dfc28bf6b348'
+  url 'http://feh.finalrewind.org/feh-2.2.tar.bz2'
+  homepage 'http://feh.finalrewind.org/'
+  md5 '7dee285e8dd34f69058b0977283b3a8a'
 
   depends_on 'giblib' => :build
 

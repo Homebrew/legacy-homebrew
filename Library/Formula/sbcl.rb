@@ -1,16 +1,21 @@
 require 'formula'
 
 class SbclBootstrapBinaries < Formula
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.49/sbcl-1.0.49-x86-darwin-binary.tar.bz2'
-  md5 '6ffae170cfa0f1858efb37aa7544aba6'
-  version "1.0.49"
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.55/sbcl-1.0.55-x86-darwin-binary.tar.bz2'
+  md5 '941351112392a77dd62bdcb9fb62e4e4'
+  version "1.0.55"
 end
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.52/sbcl-1.0.52-source.tar.bz2'
-  md5 'e9e186637155184ec662b5a37634b457'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.55/sbcl-1.0.55-source.tar.bz2'
+  md5 '128fb15c80e8e3f8d4024bd8e04635e0'
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
+
+  bottle do
+    url 'https://downloads.sf.net/project/machomebrew/Bottles/sbcl-1.0.55-bottle.tar.gz'
+    sha1 '3c13225c8fe3eabf54e9d368e6b74318a5546430'
+  end
 
   fails_with_llvm "Compilation fails with LLVM.", :build => 2334
 
@@ -21,17 +26,18 @@ class Sbcl < Formula
     [
       ["--without-threads",  "Build SBCL without support for native threads"],
       ["--with-ldb",  "Include low-level debugger in the build"],
-      ["--with-internal-xref",  "Include XREF information for SBCL internals (increases core size by 5-6MB)"]
+      ["--with-internal-xref",  "Include XREF information for SBCL internals (increases core size by 5-6MB)"],
+      ["--32-bit", "Build 32-bit only."]
     ]
   end
 
   def patches
-    base = "http://svn.macports.org/repository/macports/trunk/dports/lang/sbcl/files"
-    { :p0 => ["patch-base-target-features.diff",
-              "patch-make-doc.diff",
-              "patch-posix-tests.diff",
-              "patch-use-mach-exception-handler.diff"].map { |file_name| "#{base}/#{file_name}" }
-    }
+    { :p0 => [
+        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-base-target-features.diff",
+        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-make-doc.diff",
+        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-posix-tests.diff",
+        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-use-mach-exception-handler.diff"
+    ]}
   end
 
   def write_features
@@ -59,6 +65,7 @@ class Sbcl < Formula
     end
 
     build_directory = Dir.pwd
+
     SbclBootstrapBinaries.new.brew {
       # We only need the binaries for bootstrapping, so don't install anything:
       command = Dir.pwd + "/src/runtime/sbcl"
@@ -66,7 +73,12 @@ class Sbcl < Formula
       xc_cmdline = "#{command} --core #{core} --disable-debugger --no-userinit --no-sysinit"
 
       Dir.chdir(build_directory)
-      system "./make.sh --prefix='#{prefix}' --xc-host='#{xc_cmdline}'"
+
+      if ARGV.build_32_bit?
+        system "SBCL_ARCH=x86 ./make.sh --prefix='#{prefix}' --xc-host='#{xc_cmdline}'"
+      else
+        system "./make.sh --prefix='#{prefix}' --xc-host='#{xc_cmdline}'"
+      end
     }
 
     ENV['INSTALL_ROOT'] = prefix

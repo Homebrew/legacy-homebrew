@@ -6,12 +6,14 @@ class Asciidoc < Formula
   head 'https://code.google.com/p/asciidoc/', :using => :hg
   homepage 'http://www.methods.co.nz/asciidoc'
 
+  depends_on 'docbook'
+
   def install
-    if ARGV.build_head? and not File.exists? "./configure"
-      ohai "Creating configure file"
-      system "autoconf"
-    end
+    system "autoconf" if ARGV.build_head? and not File.exists? "./configure"
     system "./configure", "--prefix=#{prefix}"
+
+    # otherwise OS X's xmllint bails out
+    inreplace 'Makefile', '-f manpage', '-f manpage -L'
     system "make install"
   end
 end

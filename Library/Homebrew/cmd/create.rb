@@ -20,7 +20,7 @@ module Homebrew extend self
           :autotools
         end
 
-        if fc.name.to_s.strip.empty?
+        if fc.name.nil? or fc.name.to_s.strip.empty?
           path = Pathname.new url
           print "Formula name [#{path.stem}]: "
           fc.name = __gets || path.stem
@@ -67,7 +67,7 @@ class FormulaCreator
     path = Pathname.new url
     /(.*?)[-_.]?#{path.version}/.match path.basename
     @name = $1
-    @path = Formula.path $1
+    @path = Formula.path $1 unless $1.nil?
   end
 
   def version
@@ -99,14 +99,14 @@ class FormulaCreator
     require 'formula'
 
     class #{Formula.class_s name} < Formula
-      url '#{url}'
       homepage ''
+      url '#{url}'
       md5 '#{md5}'
 
     <% if mode == :cmake %>
-      depends_on 'cmake'
+      depends_on 'cmake' => :build
     <% elsif mode == nil %>
-      # depends_on 'cmake'
+      # depends_on 'cmake' => :build
     <% end %>
 
       def install

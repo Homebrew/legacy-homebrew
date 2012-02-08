@@ -13,6 +13,8 @@ class Dia < Formula
   depends_on 'gtk+'
 
   def install
+    ENV.x11
+    inreplace 'objects/GRAFCET/boolequation.c', 'isspecial', 'char_isspecial'
     system "./configure", "--prefix=#{prefix}"
     system "make install"
     rm_rf share+"applications"

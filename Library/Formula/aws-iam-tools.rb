@@ -4,10 +4,10 @@ require 'formula'
 require "#{File.dirname __FILE__}/ec2-api-tools.rb"
 
 class AwsIamTools < AmazonWebServicesFormula
-  # No stable build yet
-  head 'http://awsiammedia.s3.amazonaws.com/public/tools/cli/latest/IAMCli.zip'
+  url 'http://awsiammedia.s3.amazonaws.com/public/tools/cli/latest/IAMCli.zip'
   homepage 'http://developer.amazonwebservices.com/connect/entry.jspa?externalID=4143&categoryID=322'
-  md5 '24454ac0bc1db5196add524ac4cdcb3d'
+  version "1.3.0"
+  md5 'b39871a93b5e9e3d9e9a072f84814a42'
 
   def install
     standard_install
@@ -36,7 +36,8 @@ class AwsIamTools < AmazonWebServicesFormula
       To export the needed variables, add them to your dotfiles.
         * On Bash, add them to `~/.bash_profile`.
         * On Zsh, add them to `~/.zprofile` instead.
-      export JAVA_HOME="/Library/Java/Home/"
+
+      export JAVA_HOME="$(/usr/libexec/java_home)"
       export AWS_IAM_HOME="#{prefix}/jars"
       export AWS_CREDENTIAL_FILE=$HOME/.aws-credentials-master
     EOS
