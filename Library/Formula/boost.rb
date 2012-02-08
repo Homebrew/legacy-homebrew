@@ -4,26 +4,21 @@ class Boost < Formula
   homepage 'http://www.boost.org'
   url 'http://downloads.sourceforge.net/project/boost/boost/1.48.0/boost_1_48_0.tar.bz2'
   md5 'd1e9a7a7f532bb031a3c175d86688d95'
+
   head 'http://svn.boost.org/svn/boost/trunk', :using => :svn
 
-  # Bottle built on 10.7.2 using XCode 4.2
   bottle do
+    # Bottle built on 10.7.2 using XCode 4.2
     url 'https://downloads.sourceforge.net/project/machomebrew/Bottles/boost-1.48.0-bottle.tar.gz'
     sha1 'c7871ddd020a24e3b0cfd3c9a352a1210b68b372'
   end
 
   depends_on "icu4c" if ARGV.include? "--with-icu"
 
-  def patches
-    # https://svn.boost.org/trac/boost/ticket/6131
-    #
-    # #define foreach BOOST_FOREACH causes weird compile error in certain
-    # circumstances with boost 1.48
-    #
-    # #define foreach BOOST_FOREACH causes compile error "'boost::BOOST_FOREACH'
-    # has not been declared" on its line if it appears after #include
-    # <boost/foreach.hpp> and before certain other boost headers.
-    DATA unless ARGV.build_head?
+  # Both clang and llvm-gcc provided by XCode 4.1 compile Boost 1.47.0 properly.
+  # Moreover, Apple LLVM compiler 2.1 is now among primary test compilers.
+  if MacOS.xcode_version < "4.1"
+    fails_with_llvm "LLVM-GCC causes errors with dropped arguments to functions when linking with boost"
   end
 
   def options
@@ -35,10 +30,16 @@ class Boost < Formula
     ]
   end
 
-  # Both clang and llvm-gcc provided by XCode 4.1 compile Boost 1.47.0 properly.
-  # Moreover, Apple LLVM compiler 2.1 is now among primary test compilers.
-  if MacOS.xcode_version < "4.1"
-    fails_with_llvm "LLVM-GCC causes errors with dropped arguments to functions when linking with boost"
+  def patches
+    # https://svn.boost.org/trac/boost/ticket/6131
+    #
+    # #define foreach BOOST_FOREACH causes weird compile error in certain
+    # circumstances with boost 1.48
+    #
+    # #define foreach BOOST_FOREACH causes compile error "'boost::BOOST_FOREACH'
+    # has not been declared" on its line if it appears after #include
+    # <boost/foreach.hpp> and before certain other boost headers.
+    DATA unless ARGV.build_head?
   end
 
   def install
