@@ -17,9 +17,11 @@ class Gtkx < Formula
   fails_with_llvm "Undefined symbols when linking", :build => "2326" unless MacOS.lion?
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--disable-glibtest"
+                          "--disable-glibtest",
+                          "--disable-introspection"
     system "make install"
   end
 
