@@ -17,7 +17,7 @@ class Pathname
     if new_basename
       new_basename = File.basename(new_basename) # rationale: see Pathname.+
       dst = self+new_basename
-      return_value =Pathname.new(dst)
+      return_value = Pathname.new(dst)
     else
       dst = self
       return_value = self+File.basename(src)
@@ -64,7 +64,7 @@ class Pathname
 
   # extended to support common double extensions
   def extname
-    /(\.(tar|cpio)\.(gz|bz2|xz))$/.match to_s
+    /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
     return $1 if $1
     return File.extname(to_s)
   end
