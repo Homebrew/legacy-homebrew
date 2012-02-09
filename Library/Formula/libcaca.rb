@@ -11,6 +11,11 @@ class Libcaca < Formula
 
   fails_with_llvm "unsupported inline asm: input constraint with a matching output constraint of incompatible type!"
 
+  def patches
+    # Make libcaca build with clang; see http://caca.zoy.org/ticket/90
+    { :p0 => DATA }
+  end
+
   def install
     # Some people can't compile when Java is enabled. See:
     # https://github.com/mxcl/homebrew/issues/issue/2049
@@ -31,3 +36,16 @@ class Libcaca < Formula
     system "make install"
   end
 end
+
+__END__
+--- caca/caca.h.orig    2011-07-05 00:09:51.000000000 -0700
++++ caca/caca.h 2011-07-05 00:10:10.000000000 -0700
+@@ -645,7 +645,7 @@ typedef struct cucul_buffer cucul_buffer
+ #       define CACA_DEPRECATED
+ #   endif
+ 
+-#   if defined __GNUC__ && __GNUC__ > 3
++#   if !defined __APPLE__ && defined __GNUC__ && __GNUC__ > 3
+ #       define CACA_ALIAS(x) __attribute__ ((weak, alias(#x)))
+ #   else
+ #       define CACA_ALIAS(x)
