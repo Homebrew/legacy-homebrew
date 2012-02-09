@@ -17,7 +17,7 @@ class Pathname
     if new_basename
       new_basename = File.basename(new_basename) # rationale: see Pathname.+
       dst = self+new_basename
-      return_value =Pathname.new(dst)
+      return_value = Pathname.new(dst)
     else
       dst = self
       return_value = self+File.basename(src)
