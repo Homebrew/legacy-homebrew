@@ -15,8 +15,7 @@ class FormulaInstaller
     @f = ff
     @show_header = true
     @ignore_deps = ARGV.include? '--ignore-dependencies' || ARGV.interactive?
-    @install_bottle = !ff.bottle_url.nil? && !ARGV.build_from_source? &&
-                      Pathname.new(ff.bottle_url).version == ff.version
+    @install_bottle = !ARGV.build_from_source? && ff.bottle_up_to_date?
   end
 
   def install

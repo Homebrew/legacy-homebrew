@@ -57,6 +57,10 @@ class Formula
     return false
   end
 
+  def bottle_up_to_date?
+    !bottle_url.nil? && Pathname.new(bottle_url).version == version
+  end
+
   def explicitly_requested?
     # `ARGV.formulae` will throw an exception if it comes up with an empty list.
     # FIXME: `ARGV.formulae` shouldn't be throwing exceptions, see issue #8823
