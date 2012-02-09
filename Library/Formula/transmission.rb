@@ -1,9 +1,9 @@
 require 'formula'
 
 class Transmission < Formula
-  url 'http://download.transmissionbt.com/files/transmission-2.41.tar.bz2'
+  url 'http://download.transmissionbt.com/files/transmission-2.42.tar.bz2'
   homepage 'http://www.transmissionbt.com/'
-  md5 '799b7bb24e236dbbdc86275f89ea9e67'
+  md5 '2ade0818d465779bd956b8b72ea56b02'
 
   # Actually depends on libcurl but doesn't find it without pkg-config
   depends_on 'pkg-config' => :build
@@ -13,7 +13,7 @@ class Transmission < Formula
 
   def install
     args = ["--disable-dependency-tracking",
-            "--disable-gtk", "--disable-mac",
+            "--without-gtk", "--disable-mac",
             "--prefix=#{prefix}"]
 
     args << "--disable-nls" unless Formula.factory("intltool").installed? and
