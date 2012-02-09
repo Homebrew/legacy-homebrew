@@ -6,7 +6,6 @@ class Arm < Formula
   sha256 'e543fcd75cdce8cf7bab3c50769d2a06d1ac8e8cc6927be7173a65a1e87abce0'
 
   def install
-    (share+"arm").mkpath
     (share+"arm").install Dir["*"]
 
     (bin+'arm').write <<-EOS
