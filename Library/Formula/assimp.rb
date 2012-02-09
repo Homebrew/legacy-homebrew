@@ -15,6 +15,6 @@ class Assimp < Formula
   end
 
   def test
-    system "assimp version"
+    system "#{bin}/assimp version"
   end
 end
