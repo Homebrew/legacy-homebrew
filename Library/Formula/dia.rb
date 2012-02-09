@@ -14,6 +14,8 @@ class Dia < Formula
 
   def install
     ENV.x11
+    # fix for Leopard, potentially others with isspecial defined elswhere
+    inreplace 'objects/GRAFCET/boolequation.c', 'isspecial', 'char_isspecial'
     system "./configure", "--enable-debug=no",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
