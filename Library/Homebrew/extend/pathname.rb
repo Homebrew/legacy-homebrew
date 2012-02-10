@@ -269,7 +269,7 @@ class Pathname
     unless self.symlink?
       raise "Cannot install info entry for unbrewed info file '#{self}'"
     end
-    system '/usr/bin/install-info', self.to_s, (self.dirname+'dir').to_s
+    system '/usr/bin/install-info', '--quiet', self.to_s, (self.dirname+'dir').to_s
   end
 
   def uninstall_info
