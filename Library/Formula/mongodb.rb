@@ -17,11 +17,7 @@ class Mongodb < Formula
   skip_clean :all
 
   def options
-    [
-      ['--32-bit', 'Build 32-bit only.'],
-      ['--nojournal', 'Disable write-ahead logging (Journaling)'],
-      ['--rest', 'Enable the REST Interface on the HTTP Status Page'],
-    ]
+    [['--32-bit', 'Build 32-bit only.']]
   end
 
   def install
@@ -38,9 +34,7 @@ class Mongodb < Formula
     plist_path.chmod 0644
   end
 
-  def caveats
-    s = ""
-    s += <<-EOS.undent
+  def caveats; <<-EOS.undent
     If this is your first install, automatically load on login with:
         mkdir -p ~/Library/LaunchAgents
         cp #{plist_path} ~/Library/LaunchAgents/
@@ -58,48 +52,15 @@ class Mongodb < Formula
     If this is a first install, you can copy one from #{prefix}/mongod.conf:
         cp #{prefix}/mongod.conf #{etc}/mongod.conf
     EOS
-
-    if ARGV.include? "--nojournal"
-        s += "\n"
-        s += <<-EOS.undent
-        Write Ahead logging (Journaling) has been disabled.
-        EOS
-    else
-        s += "\n"
-        s += <<-EOS.undent
-        MongoDB 1.8+ includes a feature for Write Ahead Logging (Journaling), which has been enabled by default.
-        To disable journaling, use --nojournal.
-        EOS
-    end
-
-    return s
   end
 
-  def mongodb_conf
-    conf = ""
-    conf += <<-EOS.undent
+  def mongodb_conf; <<-EOS.undent
     # Store data in #{var}/mongodb instead of the default /data/db
     dbpath = #{var}/mongodb
 
     # Only accept local connections
     bind_ip = 127.0.0.1
     EOS
-
-    if ARGV.include? '--nojournal'
-      conf += <<-EOS.undent
-      # Disable Write Ahead Logging
-      nojournal = true
-      EOS
-    end
-
-    if ARGV.include? '--rest'
-        conf += <<-EOS.undent
-        # Enable the REST interface on the HTTP Console (startup port + 1000)
-        rest = true
-        EOS
-    end
-
-    return conf
   end
 
   def startup_plist
