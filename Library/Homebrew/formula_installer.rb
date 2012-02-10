@@ -66,7 +66,7 @@ class FormulaInstaller
     fi.show_header = false
     oh1 "Installing #{f} dependency: #{dep}"
     fi.install
-    dep.linked_keg.unlink if dep.linked_keg
+    Keg.new(dep.linked_keg.realpath).unlink if dep.linked_keg.directory?
     fi.caveats
     fi.finish
   end
