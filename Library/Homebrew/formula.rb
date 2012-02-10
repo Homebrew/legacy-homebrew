@@ -69,8 +69,7 @@ class Formula
   end
 
   def linked_keg
-    keg = Pathname.new(HOMEBREW_REPOSITORY/"Library/LinkedKegs"/@name)
-    if keg.exist? then Keg.new(keg.realpath) else nil end
+    HOMEBREW_REPOSITORY/'Library/LinkedKegs'/@name
   end
 
   def installed_prefix
