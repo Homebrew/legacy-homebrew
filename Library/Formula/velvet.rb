@@ -13,6 +13,6 @@ class Velvet < Formula
       s.change_make_var! "CFLAGS", "-Wall -m64"
     end
     system "make velveth velvetg OPENMP=1 MAXKMERLENGTH=1 LONGSEQUENCES=1"
-    bin.install ['velveth', 'velvetg']
+    bin.install 'velveth', 'velvetg'
   end
 end
