@@ -1,9 +1,9 @@
 require 'formula'
 
 class Yaf < Formula
-  url 'http://tools.netsa.cert.org/releases/yaf-1.3.1.tar.gz'
   homepage 'http://tools.netsa.cert.org/yaf/'
-  md5 'cf7602056d8eaa157f5a53f77d193761'
+  url 'http://tools.netsa.cert.org/releases/yaf-2.1.2.tar.gz'
+  md5 '77ab8927db0cb28965d70dbceb65a1f4'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
