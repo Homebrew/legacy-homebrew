@@ -1,10 +1,10 @@
 require 'formula'
 
 class When < Formula
-  url 'http://www.lightandmatter.com/when/when.tar.gz'
   homepage 'http://www.lightandmatter.com/when/when.html'
-  md5 'f0abae65bbd53b07af7a29da8b817155'
-  version '1.1.28'
+  url 'http://www.lightandmatter.com/when/when.tar.gz'
+  md5 'e094bcff1e5a267094f14a50b673aab4'
+  version '1.1.29'
 
   def install
     bin.install 'when'
