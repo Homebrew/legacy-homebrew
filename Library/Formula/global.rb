@@ -1,10 +1,10 @@
 require 'formula'
 
 class Global < Formula
-  url 'http://ftpmirror.gnu.org/global/global-6.0.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/global/global-6.0.tar.gz'
   homepage 'http://www.gnu.org/software/global/'
-  md5 '5a6439f1fee02d8df3b1ed83049c294e'
+  url 'http://ftpmirror.gnu.org/global/global-6.2.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/global/global-6.2.tar.gz'
+  md5 '30f5c6c0f737a3475ec8786ae6e34648'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
