@@ -2,14 +2,16 @@ require 'pathname'
 
 # we enhance pathname to make our code more readable
 class Pathname
-  def install src
-    case src
-    when Array
-      src.collect {|src| install_p(src) }
-    when Hash
-      src.collect {|src, new_basename| install_p(src, new_basename) }
-    else
-      install_p(src)
+  def install *sources
+    sources.each do |src|
+      case src
+      when Array
+        src.collect {|src| install_p(src) }
+      when Hash
+        src.collect {|src, new_basename| install_p(src, new_basename) }
+      else
+        install_p(src)
+      end
     end
   end
 
@@ -17,7 +19,7 @@ class Pathname
     if new_basename
       new_basename = File.basename(new_basename) # rationale: see Pathname.+
       dst = self+new_basename
-      return_value =Pathname.new(dst)
+      return_value = Pathname.new(dst)
     else
       dst = self
       return_value = self+File.basename(src)
@@ -64,7 +66,7 @@ class Pathname
 
   # extended to support common double extensions
   def extname
-    /(\.(tar|cpio)\.(gz|bz2|xz))$/.match to_s
+    /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
     return $1 if $1
     return File.extname(to_s)
   end
