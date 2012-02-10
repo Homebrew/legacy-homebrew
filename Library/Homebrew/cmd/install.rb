@@ -103,10 +103,6 @@ module Homebrew extend self
         begin
           fi = FormulaInstaller.new(f)
           fi.install
-          # Due to the nature of Keg#unlink, this will remove symlinks from an
-          # older keg, which may still be present if an uninstallation was done
-          # via `rm -rf <keg>`; this is desired.
-          Keg.new("#{f.rack}/#{f.version}").unlink
           fi.caveats
           fi.finish
         rescue FormulaAlreadyInstalledError => e
