@@ -2,14 +2,16 @@ require 'pathname'
 
 # we enhance pathname to make our code more readable
 class Pathname
-  def install src
-    case src
-    when Array
-      src.collect {|src| install_p(src) }
-    when Hash
-      src.collect {|src, new_basename| install_p(src, new_basename) }
-    else
-      install_p(src)
+  def install *sources
+    sources.each do |src|
+      case src
+      when Array
+        src.collect {|src| install_p(src) }
+      when Hash
+        src.collect {|src, new_basename| install_p(src, new_basename) }
+      else
+        install_p(src)
+      end
     end
   end
 
