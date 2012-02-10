@@ -50,14 +50,9 @@ class Git < Formula
                    "LDFLAGS=#{ENV.ldflags}",
                    "install"
 
-    # Install the Git bash completion file.
-    # Put it into the Cellar so that it gets upgraded along with git upgrades.
+    # install the completion script first because it is inside 'contrib'
     (prefix+'etc/bash_completion.d').install 'contrib/completion/git-completion.bash'
-
-    # Install emacs support.
-    (share+'doc/git-core/contrib').install 'contrib/emacs'
-    # Some people like the stuff in the contrib folder
-    (share+'git').install 'contrib'
+    (share+'git-core').install 'contrib'
 
     # We could build the manpages ourselves, but the build process depends
     # on many other packages, and is somewhat crazy, this way is easier.
@@ -69,11 +64,8 @@ class Git < Formula
     Bash completion has been installed to:
       #{etc}/bash_completion.d
 
-    Emacs support has been installed to:
-      #{HOMEBREW_PREFIX}/share/doc/git-core/contrib/emacs
-
-    The rest of "contrib" is installed to:
-      #{HOMEBREW_PREFIX}/share/git/contrib
+    The 'contrib' directory has been installed to:
+      #{HOMEBREW_PREFIX}/share/git-core/contrib
     EOS
   end
 end
