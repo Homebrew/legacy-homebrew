@@ -6,10 +6,10 @@ class Proguard < Formula
   md5 '7c3e746308c0385f09783c3ee710fcc4'
 
   def install
-    libexec.install ['lib/proguard.jar']
-    (bin/:proguard).write <<-EOS.undent
+    libexec.install 'lib/proguard.jar'
+    (bin+"proguard").write <<-EOS.undent
       #!/bin/sh
-      java -jar #{libexec}/proguard.jar $*
+      java -jar "#{libexec}/proguard.jar" "$@"
     EOS
   end
 end
