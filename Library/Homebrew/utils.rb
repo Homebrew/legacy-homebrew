@@ -33,13 +33,13 @@ end
 
 # args are additional inputs to puts until a nil arg is encountered
 def ohai title, *sput
-  title = title.to_s[0, Tty.width - 4] unless ARGV.verbose?
+  title = title.to_s[0, Tty.width - 4] if $stdout.tty? unless ARGV.verbose?
   puts "#{Tty.blue}==>#{Tty.white} #{title}#{Tty.reset}"
   puts sput unless sput.empty?
 end
 
 def oh1 title
-  title = title.to_s[0, Tty.width - 4] unless ARGV.verbose?
+  title = title.to_s[0, Tty.width - 4] if $stdout.tty? unless ARGV.verbose?
   puts "#{Tty.green}==> #{Tty.reset}#{title}"
 end
 
@@ -112,6 +112,7 @@ def curl *args
   # See https://github.com/mxcl/homebrew/issues/6103
   args << "--insecure" if MacOS.version < 10.6
   args << "--verbose" if ENV['HOMEBREW_CURL_VERBOSE']
+  args << "--silent" unless $stdout.tty?
 
   safe_system curl, *args
 end
@@ -343,8 +344,8 @@ module MacOS extend self
 
   def clang_build_version
     @clang_build_version ||= if File.exist? "/usr/bin/clang"
-      `/usr/bin/clang --version` =~ %r[tags/Apple/clang-(\d+(\.\d+)*)]
-      $1
+      `/usr/bin/clang --version` =~ %r[tags/Apple/clang-(\d{2,})]
+      $1.to_i
     end
   end
 
@@ -398,6 +399,10 @@ module MacOS extend self
   def prefer_64_bit?
     Hardware.is_64_bit? and 10.6 <= MACOS_VERSION
   end
+
+  def bottles_supported?
+    lion? and HOMEBREW_PREFIX.to_s == '/usr/local' and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar'
+  end
 end
 
 module GitHub extend self
@@ -426,5 +431,21 @@ module GitHub extend self
     issues
   rescue
     []
+  end
+
+  def find_pull_requests rx
+    require 'open-uri'
+    require 'vendor/multi_json'
+
+    query = rx.source.delete('.*').gsub('\\', '')
+    uri = URI.parse("http://github.com/api/v2/json/issues/search/mxcl/homebrew/open/#{query}")
+
+    open uri do |f|
+      MultiJson.decode(f.read)["issues"].each do |pull|
+        yield pull['pull_request_url'] if rx.match pull['title'] and pull["pull_request_url"]
+      end
+    end
+  rescue
+    nil
   end
 end

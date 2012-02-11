@@ -5,8 +5,11 @@ class Qt < Formula
   url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.8.0.tar.gz'
   md5 'e8a5fdbeba2927c948d9f477a6abe904'
   homepage 'http://qt.nokia.com/'
-  bottle 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.8.0-bottle.tar.gz'
-  bottle_sha1 'd03b56811d2cac933b6103bd4c8ac636dea3b877'
+
+  bottle do
+    url 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.8.0-bottle.tar.gz'
+    sha1 '2bfe00c5112b0d2a680cd01144701f8937846096'
+  end
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
 
@@ -23,13 +26,16 @@ class Qt < Formula
   depends_on "d-bus" if ARGV.include? '--with-qtdbus'
   depends_on 'sqlite' if MacOS.leopard?
 
+  def patches
+    [
+      # Fix compilation with llvm-gcc. Remove for 4.8.1.
+      "https://qt.gitorious.org/qt/qt/commit/448ab7cd150ab7bb7d12bcac76bc2ce1c72298bd?format=patch"
+    ]
+  end
+
   def install
     # Needed for Qt 4.8.0 due to attempting to link moc with gcc.
     ENV['LD'] = ENV['CXX']
-
-    inreplace "src/corelib/tools/qstring.cpp",
-      "# ifdef __SSE4_2__",
-      "# if defined(__SSE4_2__) && defined(_SIDD_UWORD_OPS)"
 
     ENV.x11
     ENV.append "CXXFLAGS", "-fvisibility=hidden"

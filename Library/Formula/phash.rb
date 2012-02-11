@@ -25,7 +25,7 @@ class Phash < Formula
   # fix compilation on ffmpeg <= 0.7
   # source: https://launchpad.net/ubuntu/+source/libphash/0.9.4-1.2
   def patches
-    DATA
+    "https://launchpad.net/ubuntu/+archive/primary/+files/libphash_0.9.4-1.2.diff.gz"
   end
 
   def install
@@ -42,90 +42,3 @@ class Phash < Formula
     system "make install"
   end
 end
-
-__END__
---- a/src/cimgffmpeg.cpp
-+++ b/src/cimgffmpeg.cpp
-@@ -67,7 +67,7 @@
-	    // Find the video stream
-	    for(i=0; i<st_info->pFormatCtx->nb_streams; i++)
-	    {
--		if(st_info->pFormatCtx->streams[i]->codec->codec_type==CODEC_TYPE_VIDEO)
-+		if(st_info->pFormatCtx->streams[i]->codec->codec_type==AVMEDIA_TYPE_VIDEO)
-	        {
-		    st_info->videoStream=i;
-		    break;
-@@ -123,6 +123,10 @@
-	int size = 0;
-
-	AVPacket packet;
-+
-+	AVPacket avpacket;
-+	av_init_packet(&avpacket);
-+
-	int result = 1;
-	CImg<uint8_t> next_image;
-	SwsContext *c = sws_getContext(st_info->pCodecCtx->width, st_info->pCodecCtx->height, st_info->pCodecCtx->pix_fmt, st_info->width, st_info->height, ffmpeg_pixfmt , SWS_BICUBIC, NULL, NULL, NULL);
-@@ -131,7 +135,10 @@
-           if (result < 0)
-	      break;
-	  if(packet.stream_index==st_info->videoStream) {
--	      avcodec_decode_video(st_info->pCodecCtx, pFrame, &frameFinished,packet.data, packet.size);
-+	      avpacket.data = packet.data;
-+	      avpacket.size = packet.size;
-+	      avpacket.flags = AV_PKT_FLAG_KEY;
-+	      avcodec_decode_video2(st_info->pCodecCtx, pFrame, &frameFinished, &avpacket);
-	      if(frameFinished) {
-		  if (st_info->current_index == st_info->next_index){
-		      st_info->next_index += st_info->step;
-@@ -213,7 +220,7 @@
-		// Find the video stream
-		for(i=0; i< st_info->pFormatCtx->nb_streams; i++)
-		{
--			if(st_info->pFormatCtx->streams[i]->codec->codec_type==CODEC_TYPE_VIDEO)
-+			if(st_info->pFormatCtx->streams[i]->codec->codec_type==AVMEDIA_TYPE_VIDEO)
-			{
-				st_info->videoStream=i;
-				break;
-@@ -268,6 +275,10 @@
-	int frameFinished;
-	int size = 0;
-	AVPacket packet;
-+
-+	AVPacket avpacket;
-+	av_init_packet(&avpacket);
-+
-	int result = 1;
-	CImg<uint8_t> next_image;
-	SwsContext *c = sws_getContext(st_info->pCodecCtx->width, st_info->pCodecCtx->height, st_info->pCodecCtx->pix_fmt, st_info->width, st_info->height, ffmpeg_pixfmt , SWS_BICUBIC, NULL, NULL, NULL);
-@@ -279,8 +290,10 @@
-			break;
-		if(packet.stream_index == st_info->videoStream) {
-
--		    avcodec_decode_video(st_info->pCodecCtx, pFrame, &frameFinished,
--		                         packet.data,packet.size);
-+		    avpacket.data = packet.data;
-+		    avpacket.size = packet.size;
-+		    avpacket.flags = AV_PKT_FLAG_KEY;
-+		    avcodec_decode_video2(st_info->pCodecCtx, pFrame, &frameFinished, &avpacket);
-
-		    if(frameFinished) {
-			if (st_info->current_index == st_info->next_index)
-@@ -365,7 +378,7 @@
-	int videoStream=-1;
-	for(unsigned int i=0; i<pFormatCtx->nb_streams; i++)
-	{
--	     if(pFormatCtx->streams[i]->codec->codec_type==CODEC_TYPE_VIDEO)
-+	     if(pFormatCtx->streams[i]->codec->codec_type==AVMEDIA_TYPE_VIDEO)
-	     {
-		    videoStream=i;
-		    break;
-@@ -407,7 +420,7 @@
-	int videoStream=-1;
-	for(unsigned int i=0; i<pFormatCtx->nb_streams; i++)
-	{
--		     if(pFormatCtx->streams[i]->codec->codec_type==CODEC_TYPE_VIDEO)
-+		     if(pFormatCtx->streams[i]->codec->codec_type==AVMEDIA_TYPE_VIDEO)
-		     {
-			    videoStream=i;
-			    break;

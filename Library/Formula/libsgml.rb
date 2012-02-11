@@ -6,13 +6,13 @@ class Libsgml < Formula
   md5 'a3ba2f8c19faf1a53182d9c6fab22e58'
 
   def patches
-    macports_patches %w[
-      patch-examples_variant.c.diff
-      patch-src_Variant.c.diff
-      patch-Makefile.in.diff
-      patch-configure.in.diff
-      patch-src_Makefile.in.diff
-    ]
+    { :p0 => [
+      "https://trac.macports.org/export/89276/trunk/dports/textproc/libsgml/files/patch-examples_variant.c.diff",
+      "https://trac.macports.org/export/89276/trunk/dports/textproc/libsgml/files/patch-src_Variant.c.diff",
+      "https://trac.macports.org/export/89276/trunk/dports/textproc/libsgml/files/patch-Makefile.in.diff",
+      "https://trac.macports.org/export/89276/trunk/dports/textproc/libsgml/files/patch-configure.in.diff",
+      "https://trac.macports.org/export/89276/trunk/dports/textproc/libsgml/files/patch-src_Makefile.in.diff"
+      ] }
   end
 
   def install
@@ -21,14 +21,5 @@ class Libsgml < Formula
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make"
     system "make install"
-  end
-
-  def macports_patches(files)
-    { :p0 => files.collect { |file| macports_patch_url('textproc', file) } }
-  end
-
-  def macports_patch_url(group, file)
-    template = 'http://svn.macports.org/repository/macports/trunk/dports/%s/%s/files/%s'
-    template % [group, name, file]
   end
 end

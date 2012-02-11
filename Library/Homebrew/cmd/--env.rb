@@ -5,6 +5,7 @@ module Homebrew extend self
   def __env
     ENV.extend(HomebrewEnvExtension)
     ENV.setup_build_environment
+    ENV.universal_binary if ARGV.build_universal?
     dump_build_env ENV
   end
 

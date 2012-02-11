@@ -5,11 +5,6 @@ class DBus < Formula
   url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.4.16.tar.gz'
   sha256 '1d8ee6262f8cc2148f06578eee522c755ba0896206b3464ca9bdc84f411b29c6'
 
-  # Don't clean the empty directories that D-Bus needs
-  skip_clean "etc/dbus-1/session.d"
-  skip_clean "etc/dbus-1/system.d"
-  skip_clean "var/run/dbus"
-
   # man2html needs to be piped the input instead of given a filename. See:
   # http://forums.freebsd.org/archive/index.php/t-20529.html
   # https://github.com/mxcl/homebrew/issues/8978
@@ -25,6 +20,8 @@ class DBus < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--localstatedir=#{var}",
+                          "--sysconfdir=#{etc}",
                           "--disable-xml-docs",
                           "--disable-doxygen-docs",
                           "--enable-launchd",
@@ -37,7 +34,7 @@ class DBus < Formula
     (prefix+'org.freedesktop.dbus-session.plist').chmod 0644
 
     # Generate D-Bus's UUID for this machine
-    system "#{bin}/dbus-uuidgen", "--ensure=#{prefix}/var/lib/dbus/machine-id"
+    system "#{bin}/dbus-uuidgen", "--ensure=#{var}/lib/dbus/machine-id"
   end
 
   def caveats; <<-EOS.undent

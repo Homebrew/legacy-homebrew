@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pgbouncer < Formula
-  url 'http://pgfoundry.org/frs/download.php/3085/pgbouncer-1.4.2.tgz'
+  url 'http://pgfoundry.org/frs/download.php/3197/pgbouncer-1.5.tgz'
   homepage 'http://wiki.postgresql.org/wiki/PgBouncer'
-  md5 '5083110b5b4f2127234bfc7b1f451f8d'
+  md5 '6179fdc7f7e3c702fe834d655676de4c'
 
   depends_on 'libevent'
 
@@ -11,12 +11,13 @@ class Pgbouncer < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--with-libevent=#{HOMEBREW_PREFIX}",
                           "--prefix=#{prefix}"
+    system "ln -s ../install-sh doc/install-sh"
     system "make install"
     bin.install "etc/mkauth.py"
     etc.install %w(etc/pgbouncer.ini etc/userlist.txt)
 
-    (prefix+'org.postgresql.pgbouncer.plist').write startup_plist
-    (prefix+'org.postgresql.pgbouncer.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats
@@ -30,14 +31,14 @@ can be populated by the #{bin}/mkauth.py script.
 
 If this is your first install, automatically load on login with:
     mkdir -p ~/Library/LaunchAgents
-    cp #{prefix}/org.postgresql.pgbouncer.plist ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/org.postgresql.pgbouncer.plist
+    cp #{plist_path} ~/Library/LaunchAgents/
+    launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-If this is an upgrade and you already have the org.postgresql.pgbouncer.plist
+If this is an upgrade and you already have the #{plist_path.basename}
 loaded:
-    launchctl unload -w ~/Library/LaunchAgents/org.postgresql.pgbouncer.plist
-    cp #{prefix}/org.postgresql.pgbouncer.plist ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/org.postgresql.pgbouncer.plist
+    launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+    cp #{plist_path} ~/Library/LaunchAgents/
+    launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
 Or start manually with:
     pgbouncer -q #{etc}/pgbouncer.ini
@@ -53,10 +54,10 @@ Or start manually with:
   <key>KeepAlive</key>
   <true/>
   <key>Label</key>
-  <string>org.postgresql.pgbouncer</string>
+  <string>#{plist_name}</string>
   <key>ProgramArguments</key>
   <array>
-    <string>#{bin}/pgbouncer</string>
+    <string>#{HOMEBREW_PREFIX}/bin/pgbouncer</string>
     <string>-d</string>
     <string>-q</string>
     <string>#{etc}/pgbouncer.ini</string>

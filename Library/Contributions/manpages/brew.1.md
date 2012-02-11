@@ -51,7 +51,7 @@ For the full command list, see the COMMANDS section.
   * `cat` <formula>:
     Display the source to <formula>.
 
-  * `cleanup [--force] [-n]` [<formula>]:
+  * `cleanup [--force] [-n]` [<formulae>]:
     For all installed or specific formulae, remove any older versions from the
     cellar. By default, does not remove out-of-date keg-only brews, as other
     software may link directly to specific versions.
@@ -204,7 +204,7 @@ For the full command list, see the COMMANDS section.
     Show the git log for the given formulae. Options that `git-log`(1)
     recognizes can be passed before the formula list.
 
-  * `missing [<formulae>]`:
+  * `missing` [<formulae>]:
     Check the given <formulae> for missing dependencies.
 
     If no <formulae> are given, check all installed brews.
@@ -272,9 +272,12 @@ For the full command list, see the COMMANDS section.
 
     If `--installed` is passed, only list installed formulae.
 
-  * `versions` <formulae>:
+  * `versions [--compact]` <formulae>:
     List previous versions of <formulae>, along with a command to checkout
     each version.
+
+    If `--compact` is passed, show all options on a single line separated by
+    spaces.
 
   * `--cache`:
     Display Homebrew's download cache. *Default:* `~/Library/Caches/Homebrew`
@@ -363,7 +366,10 @@ creating your own can be found on the wiki:
 
   * HOMEBREW\_KEEP\_INFO:
     If set, Homebrew will not remove files from `share/info`, allowing them
-    to be linked from the Cellar.
+    to be linked from the Cellar. To access these info files, prepend
+    `share/info` to your `INFOPATH` environment variable.
+
+    *Example:* `export INFOPATH='/usr/local/share/info:/usr/share/info'`
 
   * HOMEBREW\_MAKE\_JOBS:
     If set, instructs Homebrew to use the value of `HOMEBREW_MAKE_JOBS` as

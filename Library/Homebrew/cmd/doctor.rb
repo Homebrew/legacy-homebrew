@@ -182,11 +182,13 @@ def check_gcc_versions
   gcc_40 = MacOS.gcc_40_build_version
 
   if gcc_42 == nil
-    puts <<-EOS.undent
-      We couldn't detect gcc 4.2.x. Some formulae require this compiler.
-      NOTE: Versions of XCode newer than 4.2 don't include gcc 4.2.x.
+    # Don't show this warning on Xcode 4.2+
+    if MacOS.xcode_version < "4.2"
+      puts <<-EOS.undent
+        We couldn't detect gcc 4.2.x. Some formulae require this compiler.
 
-    EOS
+      EOS
+    end
   elsif gcc_42 < RECOMMENDED_GCC_42
     puts <<-EOS.undent
       Your gcc 4.2.x version is older than the recommended version. It may be advisable
@@ -755,7 +757,8 @@ def check_git_status
     cmd = `git status -s Library/Homebrew/`.chomp
     if system "/usr/bin/which -s git" and File.directory? '.git' and not cmd.empty?
       ohai "You have uncommitted modifications to Homebrew's core."
-      puts "Unless you know what you are doing, you should: git reset --hard"
+      puts "Unless you know what you are doing, you should run:"
+      puts "cd "+HOMEBREW_REPOSITORY+" && git reset --hard"
       puts
     end
   end
@@ -812,6 +815,22 @@ def check_for_enthought_python
   EOS
 end
 
+def check_for_osx_gcc_installer
+  # Use the existence of Carbon headers to make a guess as to whether
+  # the osx-gcc-installer was used in lieu of Xcode.
+  unless File.exist? "/System/Library/Frameworks/Carbon.framework/Headers/Carbon.h"
+    puts <<-EOS.undent
+      It appears that you are using the osx-gcc-installer.
+
+      This is unsupported, and software that require headers and other
+      resources that are normally provided by Xcode will fail to compile.
+
+      We recommend that you install Xcode.
+
+    EOS
+  end
+end
+
 module Homebrew extend self
   def doctor
     old_stdout = $stdout
@@ -858,6 +877,7 @@ module Homebrew extend self
       check_for_leopard_ssl
       check_git_version
       check_for_enthought_python
+      check_for_osx_gcc_installer
     ensure
       $stdout = old_stdout
     end

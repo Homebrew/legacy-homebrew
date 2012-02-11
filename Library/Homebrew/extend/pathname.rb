@@ -2,14 +2,16 @@ require 'pathname'
 
 # we enhance pathname to make our code more readable
 class Pathname
-  def install src
-    case src
-    when Array
-      src.collect {|src| install_p(src) }
-    when Hash
-      src.collect {|src, new_basename| install_p(src, new_basename) }
-    else
-      install_p(src)
+  def install *sources
+    sources.each do |src|
+      case src
+      when Array
+        src.collect {|src| install_p(src) }
+      when Hash
+        src.collect {|src, new_basename| install_p(src, new_basename) }
+      else
+        install_p(src)
+      end
     end
   end
 
@@ -17,7 +19,7 @@ class Pathname
     if new_basename
       new_basename = File.basename(new_basename) # rationale: see Pathname.+
       dst = self+new_basename
-      return_value =Pathname.new(dst)
+      return_value = Pathname.new(dst)
     else
       dst = self
       return_value = self+File.basename(src)
@@ -62,9 +64,9 @@ class Pathname
     return dst
   end
 
-  # extended to support the double extensions .tar.gz, .tar.bz2, and .tar.xz
+  # extended to support common double extensions
   def extname
-    /(\.tar\.(gz|bz2|xz))$/.match to_s
+    /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
     return $1 if $1
     return File.extname(to_s)
   end
@@ -84,7 +86,7 @@ class Pathname
     raise unless e.errno == Errno::ENOTEMPTY::Errno or e.errno == Errno::EACCES::Errno
     false
   end
-  
+
   def chmod_R perms
     require 'fileutils'
     FileUtils.chmod_R perms, to_s
@@ -117,6 +119,10 @@ class Pathname
     %r[github.com/.*/(zip|tar)ball/v?((\d\.)+\d+)$].match to_s
     return $2 if $2
 
+    # eg. https://github.com/sam-github/libnet/tarball/libnet-1.1.4
+    %r[github.com/.*/(zip|tar)ball/.*-((\d\.)+\d+)$].match to_s
+    return $2 if $2
+
     # dashed version
     # eg. github.com/isaacs/npm/tarball/v0.2.5-1
     %r[github.com/.*/(zip|tar)ball/v?((\d\.)+\d+-(\d+))$].match to_s
@@ -135,7 +141,7 @@ class Pathname
     # eg. ruby-1.9.1-p243
     /-((\d+\.)*\d\.\d+-(p|rc|RC)?\d+)$/.match stem
     return $1 if $1
-    
+
     # eg. lame-398-1
     /-((\d)+-\d)/.match stem
     return $1 if $1
@@ -181,7 +187,7 @@ class Pathname
 
     nil
   end
-  
+
   def incremental_hash(hasher)
     incr_hash = hasher.new
     self.open('r') do |f|
@@ -196,12 +202,12 @@ class Pathname
     require 'digest/md5'
     incremental_hash(Digest::MD5)
   end
-  
+
   def sha1
     require 'digest/sha1'
     incremental_hash(Digest::SHA1)
   end
-  
+
   def sha2
     require 'digest/sha2'
     incremental_hash(Digest::SHA2)
@@ -258,6 +264,20 @@ class Pathname
   ensure
     chmod saved_perms if saved_perms
   end
+
+  def install_info
+    unless self.symlink?
+      raise "Cannot install info entry for unbrewed info file '#{self}'"
+    end
+    system '/usr/bin/install-info', '--quiet', self.to_s, (self.dirname+'dir').to_s
+  end
+
+  def uninstall_info
+    unless self.symlink?
+      raise "Cannot uninstall info entry for unbrewed info file '#{self}'"
+    end
+    system '/usr/bin/install-info', '--delete', '--quiet', self.to_s, (self.dirname+'dir').to_s
+  end
 end
 
 # sets $n and $d so you can observe creation of stuff
@@ -281,6 +301,14 @@ module ObserverPathnameExtension
     super
     puts "ln #{to_s}" if ARGV.verbose?
     $n+=1
+  end
+  def install_info
+    super
+    puts "info #{to_s}" if ARGV.verbose?
+  end
+  def uninstall_info
+    super
+    puts "uninfo #{to_s}" if ARGV.verbose?
   end
 end
 

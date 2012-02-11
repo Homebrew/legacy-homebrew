@@ -8,7 +8,7 @@ class Gmp < Formula
 
   def options
     [
-      ["--32-bit", "Force 32-bit."],
+      ["--32-bit", "Build 32-bit only."],
       ["--skip-check", "Do not run 'make check' to verify libraries."]
     ]
   end
@@ -32,7 +32,7 @@ class Gmp < Formula
 
     # Build 32-bit where appropriate, and help configure find 64-bit CPUs
     # see: http://gmplib.org/macos.html
-    if MacOS.prefer_64_bit? and not ARGV.include? "--32-bit"
+    if MacOS.prefer_64_bit? and not ARGV.build_32_bit?
       ENV.m64
       args << "--build=x86_64-apple-darwin"
     else
