@@ -6,10 +6,10 @@ class Csscrush < Formula
   md5 '10c03ffce864cd8cbf40256179a8592e'
 
   def install
-    include.install Dir['*']
+    libexec.install Dir['*']
     (bin+'csscrush').write <<-EOS.undent
       #!/bin/sh
-      php "#{include}/cli.php" $@
+      php "#{libexec}/cli.php" "$@"
     EOS
   end
 
