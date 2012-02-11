@@ -7,10 +7,9 @@ class Arm < Formula
 
   def install
     (share+"arm").install Dir["*"]
-
-    (bin+'arm').write <<-EOS
-#!/bin/sh
-cd #{share}/arm; arm $@
+    (bin+'arm').write <<-EOS.undent
+      #!/bin/sh
+      exec "#{share}/arm/arm" "$@"
     EOS
   end
 
