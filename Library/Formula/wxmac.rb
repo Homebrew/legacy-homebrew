@@ -99,6 +99,7 @@ def install_wx_python
       "--disable-debug",
       "--prefix=#{prefix}",
       "--enable-unicode",
+      "--enable-std_string",
       "--enable-display",
       "--with-opengl"
     ]
