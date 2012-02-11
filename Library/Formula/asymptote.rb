@@ -22,6 +22,9 @@ class Asymptote < Formula
 
     texmfhome = share + 'texmf'
 
+    # see: https://sourceforge.net/tracker/?func=detail&aid=3486838&group_id=120000&atid=685683
+    inreplace 'configure', '--no-var-tracking', '' if ENV.compiler == :clang
+
     system "./configure", "--prefix=#{prefix}",
                           "--enable-gc=#{HOMEBREW_PREFIX}",
                           "--with-latex=#{texmfhome}/tex/latex",
