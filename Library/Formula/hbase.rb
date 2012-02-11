@@ -10,7 +10,7 @@ class Hbase < Formula
   def shim_script target
     <<-EOS.undent
       #!/bin/bash
-      exec #{libexec}/bin/#{target} $@
+      exec "#{libexec}/bin/#{target}" "$@"
     EOS
   end
 
