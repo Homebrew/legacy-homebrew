@@ -163,7 +163,7 @@ class Pathname
     return $1 if $1
 
     # eg foobar-4.5.0-bin
-    /-((\d+\.)+\d+[abc]?)[-._](bin|stable|src|sources?)$/.match stem
+    /-((\d+\.)+\d+[abc]?)[-._](bin|dist|stable|src|sources?)$/.match stem
     return $1 if $1
 
     # Debian style eg dash_0.5.5.1.orig.tar.gz
