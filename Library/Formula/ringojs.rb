@@ -8,7 +8,7 @@ class Ringojs < Formula
   def shim_script target
     <<-EOS.undent
       #!/bin/bash
-      #{libexec}/bin/#{target} $*
+      "#{libexec}/bin/#{target}" "$@"
     EOS
   end
 
