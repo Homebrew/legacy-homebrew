@@ -86,6 +86,7 @@ class Wxmac < Formula
       "--disable-debug",
       "--prefix=#{prefix}",
       "--enable-unicode",
+      "--enable-std_string",
       "--enable-display",
       "--with-opengl"
     ]
