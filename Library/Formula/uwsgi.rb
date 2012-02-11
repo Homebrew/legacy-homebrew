@@ -1,9 +1,9 @@
 require 'formula'
 
 class Uwsgi < Formula
-  url 'http://projects.unbit.it/downloads/uwsgi-1.0.2.1.tar.gz'
+  url 'http://projects.unbit.it/downloads/uwsgi-1.0.3.tar.gz'
   homepage 'http://projects.unbit.it/uwsgi/'
-  md5 '41648cb886c0d1e31a672bad2b45f4c9'
+  md5 'dfbfd8776b9653f4e618aa64c6a7c740'
 
   def install
     # Find the arch for the Python we are building against.
