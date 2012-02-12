@@ -32,3 +32,4 @@ class Ncmpcpp < Formula
     system "make install"
   end
 end
+
