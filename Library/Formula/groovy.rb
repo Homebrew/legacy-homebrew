@@ -6,16 +6,14 @@ class Groovy < Formula
   md5 '0c8759563be35e26fcebff240de4ca21'
 
   def install
-    rm_f Dir["bin/*.bat"]
+    # Don't need Windows files.
+    # Why are icons in bin?
+    rm_f Dir["bin/*.bat","bin/groovy.{icns,ico}"]
 
     prefix.install %w{ LICENSE.txt NOTICE.txt }
     libexec.install %w[bin conf lib]
 
-    bin.mkpath
-    Dir["#{libexec}/bin/*"].each do |f|
-      next unless File.extname(f).empty?
-      ln_s f, bin+File.basename(f)
-    end
+    bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
   def caveats
