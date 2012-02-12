@@ -10,6 +10,7 @@ class Gtkmm < Formula
   depends_on 'gtk+'
   depends_on 'libsigc++'
   depends_on 'pangomm'
+  depends_on 'atkmm'
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
