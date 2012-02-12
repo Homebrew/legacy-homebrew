@@ -6,12 +6,9 @@ class Getmail < Formula
   md5 'ec0be67bc1e472c13201c1e3a0c35e66'
 
   def install
-    libexec.install 'getmailcore'
-    bin.mkpath
-    %w[ getmail getmail_fetch getmail_maildir getmail_mbox ].each do |f|
-      libexec.install f
-      ln_s libexec+f, bin
-    end
+    scripts = %w[ getmail getmail_fetch getmail_maildir getmail_mbox ]
+    libexec.install 'getmailcore', scripts
+    bin.install_symlink libexec.prefixing(scripts)
     man1.install Dir['docs/*.1']
   end
 end
