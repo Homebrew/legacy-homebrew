@@ -1,14 +1,14 @@
 require 'formula'
 
 class Jmeter < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=jmeter/binaries/jakarta-jmeter-2.5.1.tgz'
+  url 'http://www.apache.org/dyn/closer.cgi?path=jmeter/binaries/apache-jmeter-2.6.tgz'
   homepage 'http://jakarta.apache.org/jmeter/'
-  md5 'e72f17c352fa4d3469d042e6542dd36d'
+  md5 '87c13f4e1b32b5ec5f2a77426d624b4d'
 
   def startup_script name
     <<-EOS.undent
       #!/bin/bash
-      exec #{libexec}/bin/#{name} $@
+      exec "#{libexec}/bin/#{name}" "$@"
     EOS
   end
 
