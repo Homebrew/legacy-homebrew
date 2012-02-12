@@ -163,7 +163,7 @@ class Pathname
     return $1 if $1
 
     # eg foobar-4.5.0-bin
-    /-((\d+\.)+\d+[abc]?)[-._](bin|stable|src|sources?)$/.match stem
+    /-((\d+\.)+\d+[abc]?)[-._](bin|dist|stable|src|sources?)$/.match stem
     return $1 if $1
 
     # Debian style eg dash_0.5.5.1.orig.tar.gz
@@ -269,7 +269,7 @@ class Pathname
     unless self.symlink?
       raise "Cannot install info entry for unbrewed info file '#{self}'"
     end
-    system '/usr/bin/install-info', self.to_s, (self.dirname+'dir').to_s
+    system '/usr/bin/install-info', '--quiet', self.to_s, (self.dirname+'dir').to_s
   end
 
   def uninstall_info

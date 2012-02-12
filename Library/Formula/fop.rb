@@ -13,7 +13,7 @@ class Fop < Formula
   def shim_script target
     <<-EOS.undent
       #!/bin/bash
-      #{libexec}/#{target} $*
+      "#{libexec}/#{target}" "$@"
     EOS
   end
 
