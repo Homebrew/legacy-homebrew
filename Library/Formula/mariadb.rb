@@ -59,8 +59,8 @@ class Mariadb < Formula
     system "./configure", *configure_args
     system "make install"
 
-    ln_s "#{libexec}/mysqld", bin
-    ln_s "#{share}/mysql/mysql.server", bin
+    bin.install_symlink "#{libexec}/mysqld"
+    bin.install_symlink "#{share}/mysql/mysql.server"
 
     (prefix+'mysql-test').rmtree unless ARGV.include? '--with-tests' # save 121MB!
     (prefix+'sql-bench').rmtree unless ARGV.include? '--with-bench'
