@@ -1,10 +1,10 @@
 require 'formula'
 
 class Ceylon < Formula
-  url 'http://ceylon-lang.org/download/dist/1_0_Milestone1'
   homepage 'http://ceylon-lang.org/'
-  md5 '627ebfc52fc9ba93fc63df59f8309509'
+  url 'http://ceylon-lang.org/download/dist/1_0_Milestone1'
   version '1.0.M1'
+  md5 '627ebfc52fc9ba93fc63df59f8309509'
 
   def install
     rm_f Dir["bin/*.bat"]
@@ -12,7 +12,15 @@ class Ceylon < Formula
     doc.install Dir['doc/*']
     libexec.install Dir['*']
 
-    bin.mkpath
-    Dir["#{libexec}/bin/*"].each { |f| ln_s f, bin }
+    # Symlink shell scripts but not args.sh
+    bin.install_symlink Dir["#{libexec}/bin/ceylon*"]
+  end
+
+  def test
+    Dir.chdir "#{libexec}/samples/helloworld" do
+      system "#{bin}/ceylonc", "com.acme.helloworld"
+      system "#{bin}/ceylond", "-private", "com.acme.helloworld"
+      system "#{bin}/ceylon", "com.acme.helloworld/1.0.0", "John"
+    end
   end
 end
