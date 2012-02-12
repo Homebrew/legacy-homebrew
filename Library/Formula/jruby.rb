@@ -23,12 +23,8 @@ class Jruby < Formula
       end
     end
 
-    (prefix+'jruby').install Dir['*']
-
-    bin.mkpath
-    Dir["#{prefix}/jruby/bin/*"].each do |f|
-      ln_s f, bin+File.basename(f)
-    end
+    libexec.install Dir['*']
+    bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
   def test
