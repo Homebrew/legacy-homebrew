@@ -48,6 +48,36 @@ class Pathname
     return return_value
   end
 
+  # Creates symlinks to sources in this folder.
+  def install_symlink *sources
+    sources.each do |src|
+      case src
+      when Array
+        src.collect {|src| install_symlink_p(src) }
+      when Hash
+        src.collect {|src, new_basename| install_symlink_p(src, new_basename) }
+      else
+        install_symlink_p(src)
+      end
+    end
+  end
+
+  def install_symlink_p src, new_basename = nil
+    if new_basename.nil?
+      dst = self+File.basename(src)
+    else
+      dst = self+File.basename(new_basename)
+    end
+
+    src = src.to_s
+    dst = dst.to_s
+
+    mkpath
+    FileUtils.ln_s src, dst
+
+    return dst
+  end
+
   # we assume this pathname object is a file obviously
   def write content
     raise "Will not overwrite #{to_s}" if exist? and not ARGV.force?
