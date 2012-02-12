@@ -14,7 +14,8 @@ class Macvim < Formula
     ["--with-cscope", "Build with Cscope support."],
     ["--with-envycoder", "Build with Envy Code R Bold font."],
     ["--override-system-vim", "Override system vim."],
-    ["--enable-clipboard", "Enable System clipboard handling in the terminal."]
+    ["--enable-clipboard", "Enable System clipboard handling in the terminal."],
+    ["--with-system-ruby", "Build with system ruby"]
   ]
   end
 
@@ -44,6 +45,7 @@ class Macvim < Formula
 
     args << "--enable-cscope" if ARGV.include? "--with-cscope"
     args << "--enable-clipboard" if ARGV.include? "--enable-clipboard"
+    args << "--with-ruby-command=/usr/bin/ruby" if ARGV.include? "--with-system-ruby"
 
     system "./configure", *args
 
@@ -77,9 +79,9 @@ class Macvim < Formula
     MacVim.app installed to:
       #{prefix}
 
-    To link the application to a normal Mac OS X location:
+    To link the application to a local application directory (e.g. ~/Applications):
         brew linkapps
-    or:
+    or a global one:
         ln -s #{prefix}/MacVim.app /Applications
     EOS
   end
