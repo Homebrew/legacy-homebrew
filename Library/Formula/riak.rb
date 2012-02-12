@@ -1,8 +1,8 @@
 require 'formula'
 
 class Riak < Formula
-  url 'http://downloads.basho.com/riak/riak-1.0.3/riak-1.0.3.tar.gz'
   homepage 'http://wiki.basho.com/Riak.html'
+  url 'http://downloads.basho.com/riak/riak-1.0.3/riak-1.0.3.tar.gz'
   md5 '433d2cb0c6eba0b6d374d9d37f7f54fe'
 
   head 'https://github.com/basho/riak.git'
@@ -15,9 +15,7 @@ class Riak < Formula
 
   depends_on 'erlang'
 
-  # Enable use of Erlang R14B04
-  # This was fixed upstream, so when updating the version of Riak
-  # check if this fix is already in place.
+  # Enable use of Erlang R14B04; fixed in the upstream 1.1.0 pre-release.
   def patches; DATA; end
 
   def install
@@ -29,10 +27,9 @@ class Riak < Formula
 
     # Install most files to private libexec, and link in the binaries.
     libexec.install Dir["rel/riak/*"]
-    bin.mkpath
-    ln_s libexec+'bin/riak', bin
-    ln_s libexec+'bin/riak-admin', bin
-    ln_s libexec+'bin/search-cmd', bin
+    bin.install_symlink libexec+'bin/riak',
+                        libexec+'bin/riak-admin',
+                        libexec+'bin/search-cmd'
 
     (prefix + 'data/ring').mkpath
     (prefix + 'data/dets').mkpath
