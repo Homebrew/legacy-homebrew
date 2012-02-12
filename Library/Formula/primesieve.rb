@@ -7,6 +7,7 @@ class Primesieve < Formula
 
   def install
     system "make"
+    system "make lib SHARED=yes"
     system "make PREFIX=#{prefix} install"
   end
 
