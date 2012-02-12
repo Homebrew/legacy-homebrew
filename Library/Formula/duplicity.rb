@@ -1,8 +1,8 @@
 require 'formula'
 
 class Duplicity < Formula
-  url 'http://launchpad.net/duplicity/0.6-series/0.6.17/+download/duplicity-0.6.17.tar.gz'
   homepage 'http://www.nongnu.org/duplicity/'
+  url 'http://launchpad.net/duplicity/0.6-series/0.6.17/+download/duplicity-0.6.17.tar.gz'
   md5 '36423ab4e3b9aa90c5c44d9fa93fba0f'
 
   depends_on 'librsync'
@@ -18,10 +18,10 @@ class Duplicity < Formula
                      "--install-scripts=#{bin}"
 
     # Shift files around to avoid needing a PYTHONPATH
-    system "mv #{bin}/duplicity #{bin}/duplicity.py"
-    system "mv #{bin}/* #{libexec}"
-    # Symlink the executables
-    ln_s "#{libexec}/duplicity.py", "#{bin}/duplicity"
-    ln_s "#{libexec}/rdiffdir", "#{bin}/rdiffdir"
+    system "mv", "#{bin}/duplicity", "#{bin}/duplicity.py"
+    system "mv", "#{bin}/*", "#{libexec}"
+
+    bin.install_symlink "#{libexec}/duplicity.py" => "duplicity"
+    bin.install_symlink "#{libexec}/rdiffdir"
   end
 end
