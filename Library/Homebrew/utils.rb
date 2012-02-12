@@ -33,13 +33,13 @@ end
 
 # args are additional inputs to puts until a nil arg is encountered
 def ohai title, *sput
-  title = title.to_s[0, Tty.width - 4] unless ARGV.verbose?
+  title = title.to_s[0, Tty.width - 4] if $stdout.tty? unless ARGV.verbose?
   puts "#{Tty.blue}==>#{Tty.white} #{title}#{Tty.reset}"
   puts sput unless sput.empty?
 end
 
 def oh1 title
-  title = title.to_s[0, Tty.width - 4] unless ARGV.verbose?
+  title = title.to_s[0, Tty.width - 4] if $stdout.tty? unless ARGV.verbose?
   puts "#{Tty.green}==> #{Tty.reset}#{title}"
 end
 
@@ -112,6 +112,7 @@ def curl *args
   # See https://github.com/mxcl/homebrew/issues/6103
   args << "--insecure" if MacOS.version < 10.6
   args << "--verbose" if ENV['HOMEBREW_CURL_VERBOSE']
+  args << "--silent" unless $stdout.tty?
 
   safe_system curl, *args
 end
@@ -400,7 +401,7 @@ module MacOS extend self
   end
 
   def bottles_supported?
-    lion? and HOMEBREW_PREFIX.to_s == '/usr/local'
+    lion? and HOMEBREW_PREFIX.to_s == '/usr/local' and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar'
   end
 end
 
@@ -436,7 +437,7 @@ module GitHub extend self
     require 'open-uri'
     require 'vendor/multi_json'
 
-    query = rx.source.delete '.*'
+    query = rx.source.delete('.*').gsub('\\', '')
     uri = URI.parse("http://github.com/api/v2/json/issues/search/mxcl/homebrew/open/#{query}")
 
     open uri do |f|

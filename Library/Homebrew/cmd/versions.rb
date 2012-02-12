@@ -4,6 +4,8 @@ module Homebrew extend self
   def versions
     raise "Please `brew install git` first" unless system "/usr/bin/which -s git"
 
+    raise FormulaUnspecifiedError if ARGV.named.empty?
+
     ARGV.formulae.all? do |f|
       if ARGV.include? '--compact'
         puts f.versions * " "
@@ -63,15 +65,17 @@ class Formula
         path = Pathname.new(Pathname.pwd+"#{name}.rb")
         path.write text_from_sha(sha)
 
-        # Unload the class so Formula#version returns the correct value.
-        # Note that this means that the command will error out after it
-        # encounters a formula that won't import. This doesn't matter
-        # for most formulae, but e.g. Bash at revision aae084c9db has a
-        # syntax error and so `versions` isn't able to walk very far back
-        # through the history.
+        # Unload the class so Formula#version returns the correct value
         # FIXME shouldn't have to do this?
-        Object.send(:remove_const, "#{Formula.class_s(name)}")
-        Formula.factory(path).version
-      end rescue nil
+        begin
+          version = nostdout { Formula.factory(path).version }
+          Object.send(:remove_const, Formula.class_s(name))
+          version
+        rescue SyntaxError, TypeError, NameError, ArgumentError
+          # We rescue these so that we can skip bad versions and
+          # continue walking the history
+          nil
+        end
+      end
     end
 end
