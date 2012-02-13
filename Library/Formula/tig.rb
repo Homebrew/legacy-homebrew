@@ -1,8 +1,8 @@
 require 'formula'
 
 class Tig < Formula
-  url 'http://jonas.nitro.dk/tig/releases/tig-0.18.tar.gz'
   homepage 'http://jonas.nitro.dk/tig/'
+  url 'http://jonas.nitro.dk/tig/releases/tig-0.18.tar.gz'
   md5 '4fa9e33c5daa76b6fed11e068405356f'
 
   def install
@@ -10,7 +10,7 @@ class Tig < Formula
     system "make install"
     system "make install-doc-man"
 
-    bash_completion_d = prefix + 'etc' + 'bash_completion.d'
-    bash_completion_d.install 'contrib/tig-completion.bash'
+    doc.install Dir['*.html']
+    (prefix+'etc/bash_completion.d').install 'contrib/tig-completion.bash'
   end
 end

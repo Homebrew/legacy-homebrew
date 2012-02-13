@@ -211,7 +211,8 @@ Please take one of the following actions:
   def cc;      self['CC'] or "gcc";  end
   def cxx;     self['CXX'] or "g++"; end
   def cflags;  self['CFLAGS'];       end
-  def cppflags;self['CPPLAGS'];      end
+  def cxxflags;self['CXXFLAGS'];     end
+  def cppflags;self['CPPFLAGS'];      end
   def ldflags; self['LDFLAGS'];      end
 
   def m64
@@ -284,7 +285,7 @@ Please take one of the following actions:
     remove_from_cflags %r{( -Xclang \S+)+}
     remove_from_cflags %r{-mssse3}
     remove_from_cflags %r{-msse4(\.\d)?}
-    append_to_cflags xarch
+    append_to_cflags xarch unless xarch.empty?
     # Don't set -msse3 and older flags because -march does that for us
     if ARGV.build_bottle?
       if map.has_key?(:bottle)
@@ -318,18 +319,6 @@ Please take one of the following actions:
     else
       MacOS.default_compiler
     end
-  end
-
-  # don't use in new code
-  # don't remove though, but do add to compatibility.rb
-  def use_clang?
-    compiler == :clang
-  end
-  def use_gcc?
-    compiler == :gcc
-  end
-  def use_llvm?
-    compiler == :llvm
   end
 
   def make_jobs
