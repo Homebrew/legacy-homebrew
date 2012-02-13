@@ -7,8 +7,8 @@ def build_ruby?;      ARGV.include? "--ruby";   end
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.7.2.tar.bz2'
-  sha1 '8c0824aeb7f42da1ff4f7cd296877af7f59812bb'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.7.3.tar.bz2'
+  sha1 '624d4070361c0e8d7cf4f5c667629e72459b122d'
 
   depends_on 'pkg-config' => :build
 
