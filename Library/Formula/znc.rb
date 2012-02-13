@@ -1,9 +1,10 @@
 require 'formula'
 
 class Znc < Formula
-  url 'http://znc.in/releases/archive/znc-0.202.tar.gz'
-  md5 '3c6ff4620e139e3d9745cd53111bab20'
-  homepage 'http://en.znc.in/wiki/ZNC'
+  url 'http://znc.in/releases/archive/znc-0.204.tar.gz'
+  md5 '7c7247423fc08b0c5c62759a50a9bca3'
+  homepage 'http://wiki.znc.in/ZNC'
+
   head 'https://github.com/znc/znc.git'
 
   depends_on 'pkg-config' => :build
