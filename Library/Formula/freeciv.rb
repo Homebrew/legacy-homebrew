@@ -7,15 +7,11 @@ class Freeciv < Formula
   head 'svn://svn.gna.org/svn/freeciv/trunk', :using => :svn
 
   def options
-    [['--enable-xaw', 'Use Xaw client (instead of the nicer GTK+ client).'],
      ['--disable-nls', 'Disable NLS support.'],
-     ['--disable-sdl', 'Disable sound.'],
-    ]
   end
 
-  depends_on "gtk+" unless ARGV.include? "--enable-xaw"
+  depends_on "gtk+"
   depends_on "gettext" unless ARGV.include? "--disable-nls"
-  depends_on 'sdl_mixer' unless ARGV.include? '--disable-sdl'
 
   def install
     args = ["--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"]
