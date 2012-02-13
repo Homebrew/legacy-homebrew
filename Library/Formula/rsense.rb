@@ -16,7 +16,7 @@ class Rsense < Formula
     prefix.install ['README.txt']
     libexec.install Dir['*']
 
-    system "chmod +x '#{libexec}/bin/rsense'"
+    (libexec+'bin/rsense').chmod 0755
     (bin+'rsense').write startup_script('rsense')
   end
 
