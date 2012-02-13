@@ -57,7 +57,7 @@ __END__
  	rm -f *~ svm.o svm-train svm-predict svm-scale libsvm.so.$(SHVER)
 +
 +define _LIBSVM_SETUP_EGG
-+#!/usr/bin/python
++#!/usr/bin/env python
 +# coding=utf-8
 +
 +from setuptools import setup, find_packages
