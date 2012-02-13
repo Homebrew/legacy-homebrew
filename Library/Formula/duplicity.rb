@@ -19,7 +19,7 @@ class Duplicity < Formula
 
     # Shift files around to avoid needing a PYTHONPATH
     system "mv", "#{bin}/duplicity", "#{bin}/duplicity.py"
-    system "mv", "#{bin}/*", "#{libexec}"
+    system "mv", "#{bin}/*", libexec
 
     bin.install_symlink "#{libexec}/duplicity.py" => "duplicity"
     bin.install_symlink "#{libexec}/rdiffdir"
