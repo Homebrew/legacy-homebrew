@@ -9,12 +9,13 @@ class Plv8 < Formula
   depends_on 'v8' # and postgres
 
   def install
-    system 'pg_config' # ensure postgres installed
+    begin
+      system 'which -s pg_config'
+    rescue BuildError
+      onoe 'Unable to find Postgres. Building PLV8 will fail without Postgres.'
+      puts 'Please install Postgres and ensure `pg_config` works.'
+    end
     system "make"
     system "make install"
-  end
-
-  def test
-    system "make installcheck"
   end
 end
