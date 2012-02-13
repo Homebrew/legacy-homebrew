@@ -9,15 +9,11 @@ class Grails < Formula
     rm_f Dir["bin/*.bat", "bin/cygrails", "*.bat"]
     prefix.install %w[LICENSE README]
     libexec.install Dir['*']
-    bin.mkpath
-    Dir["#{libexec}/bin/*"].each do |f|
-      next unless File.extname(f).empty?
-      ln_s f, bin+File.basename(f)
-    end
+    bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
   def caveats; <<-EOS.undent
-    Important Note On Upgrading Grails From Versions < 1.3.7
+    Notes On Upgrading Grails From Versions < 1.3.7
 
     The directory layout has been changed slightly for versions >= 1.3.7
     in order to conform with Homebrew conventions for installation of Java
@@ -44,5 +40,4 @@ class Grails < Formula
     change its value accordingly.
     EOS
   end
-
 end
