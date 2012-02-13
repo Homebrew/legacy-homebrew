@@ -2,6 +2,7 @@ require 'formula'
 
 class Trafficserver < Formula
   url 'http://www.apache.org/dyn/closer.cgi/trafficserver/trafficserver-3.0.2.tar.bz2'
+  head 'http://svn.apache.org/repos/asf/trafficserver/traffic/trunk/'
   homepage 'http://trafficserver.apache.org/'
   md5 '0f8e5ce658d28511001c6585d1e1813a'
 
@@ -14,6 +15,10 @@ class Trafficserver < Formula
   depends_on 'pcre'
 
   def install
+    if ARGV.build_head?
+      system "autoreconf -i"
+    end
+
     # Needed for correct ./configure detections.
     ENV.enable_warnings
     # Needed for OpenSSL headers on Lion.
