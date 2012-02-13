@@ -12,7 +12,7 @@ module Homebrew extend self
     end unless ARGV.force?
 
     ARGV.formulae.each do |f|
-      if File.directory? HOMEBREW_REPOSITORY/"Library/LinkedKegs/#{f.name}"
+      if f.linked_keg.directory?
         raise "#{f} already installed\nTry: brew upgrade #{f}"
       end
     end unless ARGV.force?
@@ -103,11 +103,8 @@ module Homebrew extend self
         begin
           fi = FormulaInstaller.new(f)
           fi.install
-          # Due to the nature of Keg#unlink, this will remove symlinks from an
-          # older keg, which may still be present if an uninstallation was done
-          # via `rm -rf <keg>`; this is desired.
-          Keg.new("#{f.rack}/#{f.version}").unlink
           fi.caveats
+          f.linked_keg.unlink if f.linked_keg.directory? and f.linked_keg.realpath == f.prefix
           fi.finish
         rescue FormulaAlreadyInstalledError => e
           opoo e.message

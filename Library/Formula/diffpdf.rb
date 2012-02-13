@@ -13,35 +13,32 @@ class Diffpdf < Formula
   depends_on 'qt'
   depends_on 'poppler'
 
+  # The location of Poppler library/include paths is hardcoded in the project file
+  # which causes builds to fail if Homebrew is not installed to /usr/local.
   def patches
-    # Fix library and header search paths.
     DATA
   end
 
   def install
-    if poppler_has_qt4?
-      # Generate makefile and disable .app creation
-      system 'qmake -spec macx-g++ CONFIG-=app_bundle'
-      system 'make'
-
-      bin.install 'diffpdf'
-      man1.install 'diffpdf.1'
-    else
+    unless poppler_has_qt4?
       onoe <<-EOS.undent
         Could not locate header files for poppler-qt4. This probably means that Poppler
         was not installed with support for Qt. Try reinstalling Poppler using the
         `--with-qt4` option.
       EOS
-
       exit 1
     end
+
+    # Generate makefile and disable .app creation
+    system 'qmake -spec macx-g++ CONFIG-=app_bundle'
+    system 'make'
+
+    bin.install 'diffpdf'
+    man1.install 'diffpdf.1'
   end
 end
 
 __END__
-
-The location of Poppler library/include paths is hardcoded in the project file
-which causes builds to fail if Homebrew is not installed to /usr/local.
 
 diff --git a/diffpdf.pro b/diffpdf.pro
 index 1566ed7..7d37a3d 100644
