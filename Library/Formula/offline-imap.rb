@@ -8,11 +8,11 @@ class OfflineImap < Formula
   head 'https://github.com/spaetz/offlineimap.git'
 
   def install
+    prefix.install 'offlineimap.conf', 'offlineimap.conf.minimal'
     libexec.install 'bin/offlineimap' => 'offlineimap.py'
     libexec.install 'offlineimap'
-    prefix.install [ 'offlineimap.conf', 'offlineimap.conf.minimal' ]
-    bin.mkpath
-    ln_s libexec+'offlineimap.py', bin+'offlineimap'
+    bin.install_symlink libexec+'offlineimap.py' => 'offlineimap'
+
     plist_path.write startup_plist
     plist_path.chmod 0644
   end
