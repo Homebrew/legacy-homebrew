@@ -10,9 +10,7 @@ class Tkdiff < Formula
   end
 
   def test
-    # It's enough to just replace "false" with the main program this
-    # formula installs, but it'd be nice if you were more thorough.
-    # Test the test with `brew test tkdiff`.
-    system "tkdiff --help"
+    # Test that the executable runs
+    system "#{bin}/tkdiff --help"
   end
 end
