@@ -15,8 +15,7 @@ class FormulaInstaller
     @f = ff
     @show_header = true
     @ignore_deps = ARGV.include? '--ignore-dependencies' || ARGV.interactive?
-    @install_bottle = !ff.bottle_url.nil? && !ARGV.build_from_source? &&
-                      Pathname.new(ff.bottle_url).version == ff.version
+    @install_bottle = !ARGV.build_from_source? && ff.bottle_up_to_date?
   end
 
   def install
@@ -67,7 +66,7 @@ class FormulaInstaller
     fi.show_header = false
     oh1 "Installing #{f} dependency: #{dep}"
     fi.install
-    dep.linked_keg.unlink if dep.linked_keg
+    Keg.new(dep.linked_keg.realpath).unlink if dep.linked_keg.directory?
     fi.caveats
     fi.finish
   end

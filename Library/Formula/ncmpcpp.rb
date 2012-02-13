@@ -10,21 +10,23 @@ class Ncmpcpp < Formula
   depends_on 'fftw' if ARGV.include? "--visualizer"
 
   def options
-    [["--visualizer", "Build with visualizer support."]]
+    [
+      ["--outputs", "Compile with mpd outputs control"],
+      ["--visualizer", "Compile with built-in visualizer"],
+      ["--clock", "Compile with optional clock tab"]
+    ]
   end
 
   def install
-    args = ["--with-taglib",
+    ENV.append 'LDFLAGS', '-liconv'
+    args = ["--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--with-taglib",
             "--with-curl",
-            "--enable-unicode",
-            "--disable-dependency-tracking",
-            "LDFLAGS=-liconv",
-            "--prefix=#{prefix}"]
-
-    if ARGV.include? "--visualizer"
-      args << "--with-fftw"
-      args << "--enable-visualizer"
-    end
+            "--enable-unicode"]
+    args << '--enable-outputs'    if ARGV.include?('--outputs')
+    args << '--enable-visualizer' if ARGV.include?('--visualizer')
+    args << '--enable-clock'      if ARGV.include?('--clock')
 
     system "./configure", *args
     system "make install"

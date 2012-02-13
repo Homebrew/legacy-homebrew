@@ -3,9 +3,9 @@ require 'formula'
 def TeX_installed?; return `which latex`.chomp != ''; end
 
 class Asymptote < Formula
-  url 'http://downloads.sourceforge.net/asymptote/asymptote-2.13.src.tgz'
   homepage 'http://asymptote.sourceforge.net/'
-  md5 '7ef34150583d6fd617eae23803a3ead3'
+  url 'http://downloads.sourceforge.net/asymptote/asymptote-2.15.src.tgz'
+  md5 '1adb969a4d7b17a3ae98728d1956bd77'
 
   depends_on 'readline'
   depends_on 'bdw-gc'
@@ -21,6 +21,9 @@ class Asymptote < Formula
     end
 
     texmfhome = share + 'texmf'
+
+    # see: https://sourceforge.net/tracker/?func=detail&aid=3486838&group_id=120000&atid=685683
+    inreplace 'configure', '--no-var-tracking', '' if ENV.compiler == :clang
 
     system "./configure", "--prefix=#{prefix}",
                           "--enable-gc=#{HOMEBREW_PREFIX}",

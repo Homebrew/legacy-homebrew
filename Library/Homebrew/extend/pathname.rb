@@ -2,14 +2,16 @@ require 'pathname'
 
 # we enhance pathname to make our code more readable
 class Pathname
-  def install src
-    case src
-    when Array
-      src.collect {|src| install_p(src) }
-    when Hash
-      src.collect {|src, new_basename| install_p(src, new_basename) }
-    else
-      install_p(src)
+  def install *sources
+    sources.each do |src|
+      case src
+      when Array
+        src.collect {|src| install_p(src) }
+      when Hash
+        src.collect {|src, new_basename| install_p(src, new_basename) }
+      else
+        install_p(src)
+      end
     end
   end
 
@@ -17,7 +19,7 @@ class Pathname
     if new_basename
       new_basename = File.basename(new_basename) # rationale: see Pathname.+
       dst = self+new_basename
-      return_value =Pathname.new(dst)
+      return_value = Pathname.new(dst)
     else
       dst = self
       return_value = self+File.basename(src)
@@ -46,6 +48,36 @@ class Pathname
     return return_value
   end
 
+  # Creates symlinks to sources in this folder.
+  def install_symlink *sources
+    sources.each do |src|
+      case src
+      when Array
+        src.collect {|src| install_symlink_p(src) }
+      when Hash
+        src.collect {|src, new_basename| install_symlink_p(src, new_basename) }
+      else
+        install_symlink_p(src)
+      end
+    end
+  end
+
+  def install_symlink_p src, new_basename = nil
+    if new_basename.nil?
+      dst = self+File.basename(src)
+    else
+      dst = self+File.basename(new_basename)
+    end
+
+    src = src.to_s
+    dst = dst.to_s
+
+    mkpath
+    FileUtils.ln_s src, dst
+
+    return dst
+  end
+
   # we assume this pathname object is a file obviously
   def write content
     raise "Will not overwrite #{to_s}" if exist? and not ARGV.force?
@@ -64,7 +96,7 @@ class Pathname
 
   # extended to support common double extensions
   def extname
-    /(\.(tar|cpio)\.(gz|bz2|xz))$/.match to_s
+    /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
     return $1 if $1
     return File.extname(to_s)
   end
@@ -161,7 +193,7 @@ class Pathname
     return $1 if $1
 
     # eg foobar-4.5.0-bin
-    /-((\d+\.)+\d+[abc]?)[-._](bin|stable|src|sources?)$/.match stem
+    /-((\d+\.)+\d+[abc]?)[-._](bin|dist|stable|src|sources?)$/.match stem
     return $1 if $1
 
     # Debian style eg dash_0.5.5.1.orig.tar.gz
@@ -267,7 +299,7 @@ class Pathname
     unless self.symlink?
       raise "Cannot install info entry for unbrewed info file '#{self}'"
     end
-    system '/usr/bin/install-info', self.to_s, (self.dirname+'dir').to_s
+    system '/usr/bin/install-info', '--quiet', self.to_s, (self.dirname+'dir').to_s
   end
 
   def uninstall_info

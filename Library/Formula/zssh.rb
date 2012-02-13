@@ -12,9 +12,7 @@ class Zssh < Formula
                           "--prefix=#{prefix}"
     system "make"
 
-    bin.install "zssh"
-    bin.install "ztelnet"
-    man1.install "zssh.1"
-    man1.install "ztelnet.1"
+    bin.install "zssh", "ztelnet"
+    man1.install "zssh.1", "ztelnet.1"
   end
 end
