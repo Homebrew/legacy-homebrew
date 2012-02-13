@@ -1,9 +1,9 @@
 require 'formula'
 
 class Jruby < Formula
-  url 'http://jruby.org.s3.amazonaws.com/downloads/1.6.5.1/jruby-bin-1.6.5.1.tar.gz'
   homepage 'http://www.jruby.org'
-  md5 '246a7aa2b7d7e6e9e8a0c2e282cbcfd0'
+  url 'http://jruby.org.s3.amazonaws.com/downloads/1.6.6/jruby-bin-1.6.6.tar.gz'
+  sha1 '21de8186235aba98572073041b82f3e3cd7004e4'
 
   def install
     # Remove Windows files
@@ -12,7 +12,7 @@ class Jruby < Formula
     # Prefix a 'j' on some commands
     Dir.chdir 'bin' do
       Dir['*'].each do |file|
-        mv file, "j#{file}" unless file.match /^[j_]/
+        mv file, "j#{file}" unless file.match /^[j]/
       end
     end
 
@@ -23,12 +23,8 @@ class Jruby < Formula
       end
     end
 
-    (prefix+'jruby').install Dir['*']
-
-    bin.mkpath
-    Dir["#{prefix}/jruby/bin/*"].each do |f|
-      ln_s f, bin+File.basename(f)
-    end
+    libexec.install Dir['*']
+    bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
   def test
