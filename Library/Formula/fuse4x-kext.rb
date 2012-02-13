@@ -6,8 +6,8 @@ end
 
 class Fuse4xKext < Formula
   homepage 'http://fuse4x.org/'
-  url 'https://github.com/fuse4x/kext.git', :tag => "fuse4x_0_8_13"
-  version "0.8.13"
+  url 'https://github.com/fuse4x/kext.git', :tag => "fuse4x_0_8_14"
+  version "0.8.14"
 
   def install
     ENV.delete('CC')
@@ -36,8 +36,20 @@ class Fuse4xKext < Formula
     <<-EOS.undent
       In order for FUSE-based filesystems to work, the fuse4x kernel extension
       must be installed by the root user:
+
         sudo cp -rfX #{kext_prefix}/fuse4x.kext /System/Library/Extensions
         sudo chmod +s /System/Library/Extensions/fuse4x.kext/Support/load_fuse4x
+
+      If upgrading from a previous version of Fuse4x, the old kernel extension
+      will need to be unloaded before performing the steps listed above. First,
+      check that no FUSE-based filesystems are running:
+
+        mount | grep fuse4x
+
+      Unmount all FUSE filesystems and then unload the kernel extension:
+
+        sudo kextunload -b org.fuse4x.kext.fuse4x
+
     EOS
   end
 end

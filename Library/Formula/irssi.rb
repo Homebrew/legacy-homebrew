@@ -28,6 +28,8 @@ class Irssi < Formula
                           "--enable-ssl",
                           "--enable-ipv6",
                           "--with-socks"
+    # 'make' and 'make install' must be done separately on some systems
+    system "make"
     system "make install"
   end
 end

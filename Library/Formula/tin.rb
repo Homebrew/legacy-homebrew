@@ -2,6 +2,7 @@ require 'formula'
 
 class Libiconv < Formula
   url 'http://ftpmirror.gnu.org/libiconv/libiconv-1.13.1.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/libiconv/libiconv-1.13.1.tar.gz'
   md5 '7ab33ebd26687c744a37264a330bbe9a'
   homepage 'http://www.gnu.org/software/libiconv/'
 end

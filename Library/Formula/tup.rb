@@ -3,8 +3,8 @@ require 'formula'
 class Tup < Formula
   homepage 'http://gittup.org/tup/'
   head 'https://github.com/gittup/tup.git'
-  url 'https://github.com/gittup/tup.git', :tag => 'v0.4.1'
-  version '0.4.1'
+  url 'https://github.com/gittup/tup.git', :tag => 'v0.5'
+  version '0.5'
 
   depends_on 'pkg-config' => :build
   depends_on 'fuse4x'

@@ -24,6 +24,7 @@ class Graphicsmagick < Formula
   depends_on 'little-cms' => :optional
   depends_on 'jasper' => :optional
   depends_on 'ghostscript' => :recommended if ghostscript_srsly?
+  depends_on 'xz' => :optional
 
   fails_with_llvm
 

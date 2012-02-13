@@ -8,10 +8,8 @@ class GitEncrypt < Formula
 
   def install
     print "Symlink the file from #{prefix}"
-    prefix.install ['gitcrypt']
     bin.mkpath
-    symlink prefix+'gitcrypt', bin+'gitcrypt'
-    system "chmod +x #{bin}/gitcrypt"
+    bin.install ['gitcrypt']
   end
 
   def test

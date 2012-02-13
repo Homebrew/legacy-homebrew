@@ -8,7 +8,8 @@ class Neko < Formula
   depends_on 'bdw-gc'
 
   def install
-    system "yes s | /usr/bin/gnumake -j1 MACOSX=1 INSTALL_PREFIX=#{prefix}"
+    ENV.deparallelize # parallel build fails
+    system "yes s | make MACOSX=1 INSTALL_PREFIX=#{prefix}"
     prefix.install %w{bin libs src}
   end
 end

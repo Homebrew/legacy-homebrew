@@ -2,8 +2,8 @@ require 'formula'
 
 class Libvirt < Formula
   homepage 'http://www.libvirt.org'
-  url 'ftp://libvirt.org/libvirt/libvirt-0.9.7.tar.gz'
-  sha256 '29ff05bfe5177d6680c02c279ed2573dcfae993f2824bffa192a3a2cdd05af23'
+  url 'ftp://libvirt.org/libvirt/libvirt-0.9.9.tar.gz'
+  sha256 'f3253567dc0f22b1bd72121c4163b0caf17f5beb55adaa4104c7e4636e7edf94'
 
   depends_on "gnutls"
   depends_on "yajl"

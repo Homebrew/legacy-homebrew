@@ -3,7 +3,7 @@ require 'formula'
 class Scantailor < Formula
   homepage 'http://scantailor.sourceforge.net/'
 
-  unless ARGV.flag? '--enhanced'
+  unless ARGV.include? '--enhanced'
     url 'http://downloads.sourceforge.net/project/scantailor/scantailor/0.9.10/scantailor-0.9.10.tar.gz'
     md5 'f962c93a2d63b449fa3f6612ade3b028'
   else

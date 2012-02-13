@@ -2,6 +2,7 @@ require 'formula'
 
 class Clisp < Formula
   url 'http://ftpmirror.gnu.org/clisp/release/2.49/clisp-2.49.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/clisp/release/2.49/clisp-2.49.tar.bz2'
   homepage 'http://clisp.cons.org/'
   md5 '1962b99d5e530390ec3829236d168649'
 
@@ -11,7 +12,11 @@ class Clisp < Formula
 
   skip_clean :all # otherwise abort trap
 
-  fails_with_llvm "Fails during configure with LLVM GCC from XCode 4 on Snow Leopard"
+  fails_with_llvm "Configure fails on XCode 4/Snow Leopard.", :build => 2334
+
+  def patches
+    { :p0 => "https://svn.macports.org/repository/macports/!svn/bc/89054/trunk/dports/lang/clisp/files/patch-src_lispbibl_d.diff" }
+  end
 
   def install
     ENV.j1 # This build isn't parallel safe.

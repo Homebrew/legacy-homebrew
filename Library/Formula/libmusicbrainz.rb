@@ -2,7 +2,7 @@ require 'formula'
 
 class Libmusicbrainz < Formula
   homepage 'http://musicbrainz.org'
-  if ARGV.flag? '--devel'
+  if ARGV.build_devel?
     version '4.0.0beta1'
     url 'ftp://ftp.musicbrainz.org/pub/musicbrainz/libmusicbrainz-4.0.0beta1.tar.gz'
     md5 '7dffa8fa08e4c0bc8119b8f48a15da41'
