@@ -1,9 +1,9 @@
 require 'formula'
 
 class Field3d < Formula
-  url 'https://github.com/imageworks/Field3D/tarball/v1.2.0'
+  url 'https://github.com/imageworks/Field3D/tarball/v1.3.2'
   homepage 'https://sites.google.com/site/field3d/'
-  sha1 '1bbd1c7cadca96d5f0d58f3f2a27241d481e205f'
+  sha1 '6f4de442869587f7fa5ce6f5f8bd0630b6ae7192'
 
   depends_on 'cmake' => :build
   depends_on 'scons' => :build
@@ -13,6 +13,11 @@ class Field3d < Formula
   depends_on 'hdf5'
 
   def install
+    # When compiling with Clang, remove flags that SCons can't parse
+    if ENV.compiler == :clang then
+      ENV.remove_from_cflags '-Xclang -target-feature -Xclang -aes'
+    end
+
     # Set the compilers for Homebrew - was fixed to gcc & g++
     inreplace 'SConstruct', 'env = Environment()',
                 <<-EOS.undent
