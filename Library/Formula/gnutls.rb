@@ -13,7 +13,7 @@ class Gnutls < Formula
   fails_with_llvm "Undefined symbols when linking", :build => "2326"
 
   def install
-    ENV.universal_binary	# build fat so wine can use it
+    ENV.universal_binary # build fat so wine can use it
     ENV.append 'LDFLAGS', '-ltasn1' # find external libtasn1
 
     system "./configure", "--disable-debug",
