@@ -4,7 +4,7 @@ class Jenkins < Formula
   homepage 'http://jenkins-ci.org'
   url 'http://mirrors.jenkins-ci.org/war/1.451/jenkins.war', :using => :nounzip
   version '1.451'
-  md5 ''
+  md5 '3f3a60fa54fa85bd9a56cec0a768ef78'
   head 'https://github.com/jenkinsci/jenkins.git'
 
   def install
