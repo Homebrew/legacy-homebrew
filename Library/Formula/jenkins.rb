@@ -1,11 +1,11 @@
 require 'formula'
 
 class Jenkins < Formula
-  url 'http://mirrors.jenkins-ci.org/war/1.450/jenkins.war', :using => :nounzip
-  head 'https://github.com/jenkinsci/jenkins.git'
-  version '1.450'
-  md5 '45b5011c6624383dc8a40f3fa4d6191d'
   homepage 'http://jenkins-ci.org'
+  url 'http://mirrors.jenkins-ci.org/war/1.451/jenkins.war', :using => :nounzip
+  version '1.451'
+  md5 ''
+  head 'https://github.com/jenkinsci/jenkins.git'
 
   def install
     system "mvn clean install -pl war -am -DskipTests && mv war/target/jenkins.war ." if ARGV.build_head?
@@ -30,11 +30,6 @@ Or start it manually:
 EOS
   end
 
-  # There is a startup plist, as well as a runner, here and here:
-  #  https://raw.github.com/jenkinsci/jenkins/master/osx/org.jenkins-ci.plist
-  #  https://raw.github.com/jenkinsci/jenkins/master/osx/Library/Application%20Support/Jenkins/jenkins-runner.sh
-  #
-  # Perhaps they could be integrated.
   def startup_plist
     return <<-EOS
 <?xml version="1.0" encoding="UTF-8"?>
