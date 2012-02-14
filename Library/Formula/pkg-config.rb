@@ -11,7 +11,7 @@ class PkgConfig < Formula
 
   def install
     # fixes compile error on Lion with Clang duplicate symbols in libglib
-    ENV.append_to_cflags '-std=gnu89' if MacOS.lion? and ENV.compiler == :clang
+    ENV.append_to_cflags '-std=gnu89' if ENV.compiler == :clang
 
     paths = %W[
         #{HOMEBREW_PREFIX}/lib/pkgconfig
