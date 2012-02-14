@@ -3,7 +3,7 @@ require 'formula'
 class Gtkwave < Formula
   homepage 'http://gtkwave.sourceforge.net/'
   url 'http://gtkwave.sourceforge.net/gtkwave-3.3.31.tar.gz'
-  md5 'brary/Caches/Homebrew/gtkwave-3.'
+  #md5 'brary/Caches/Homebrew/gtkwave-3.'
 
   depends_on 'gtk+'
   depends_on 'xz'

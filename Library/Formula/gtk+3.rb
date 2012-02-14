@@ -1,12 +1,17 @@
 require 'formula'
 
-class Gtkx < Formula
+class Gtkx3 < Formula
   homepage 'http://gtk.org/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.10.tar.xz'
-  sha256 'ea56e31bb9d6e19ed2e8911f4c7ac493cb804431caa21cdcadae625d375a0e89'
+  #url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.10.tar.xz'
+  #sha256 'ea56e31bb9d6e19ed2e8911f4c7ac493cb804431caa21cdcadae625d375a0e89'
   
   #url 'http://ftp.gnome.org/pub/GNOME/sources/gtk+/2.91/gtk+-2.91.7.tar.bz2'
   #sha256 '24fbfd9d7f45a57df80cbc7ac8185672f0cdc9f259dc3680b0d35401fc906860'
+  
+  url 'http://ftp.gnome.org/pub/GNOME/sources/gtk+/3.3/gtk+-3.3.14.tar.xz'
+  sha256 '8f70ee47942ae11837c5fd5a0976d8ec551b5b66ce39dda5036dac62855c2541'
+  
+  keg_only "Will conflict with the gtk+ 2.x.y series."
   
   depends_on 'pkg-config' => :build
   depends_on 'glib'
