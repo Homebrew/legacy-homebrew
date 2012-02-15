@@ -17,7 +17,7 @@ class Monotone < Formula
   depends_on 'lua'
   depends_on 'pcre'
 
-  fails_with_llvm "linker fails"
+  fails_with_llvm "linker fails", :build => 2334
 
   def install
     botan18_prefix = libexec+'botan18'
