@@ -15,7 +15,8 @@ class GtkDoc < Formula
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--disable-scrollkeeper"
+                          "--disable-scrollkeeper",
+                          "--with-xml-catalog=#{etc}/xml/catalog"
     system "make"
     system "make install"
   end
