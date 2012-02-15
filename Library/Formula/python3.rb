@@ -127,13 +127,15 @@ class Python3 < Formula
           ln -s "#{prefix}/Frameworks/Python.framework/Versions/3.2" /Library/Frameworks/Python.framework/Versions/3.2
     EOS
 
-    general_caveats = <<-EOS.undent
-      Apple's Tcl/Tk is not recommended for use with 64-bit Python.
+    # Tk warning only for 10.6 (not for Lion)
+    tk_caveats = <<-EOS.undent
+      Apple's Tcl/Tk is not recommended for use with Python on Mac OS X 10.6.
       For more information see: http://www.python.org/download/mac/tcltk/
 
-      A "distutils.cfg" has been written to:
-        #{effective_lib}/python3.2/distutils
-      specifing the install-scripts folder as:
+    EOS
+
+    general_caveats = <<-EOS.undent
+      A "distutils.cfg" has been written, specifing the install-scripts folder as:
         #{scripts_folder}
 
       If you install Python packages via "python3 setup.py install", easy_install, pip,
@@ -149,6 +151,7 @@ class Python3 < Formula
     EOS
 
     s = general_caveats
+    s += tk_caveats if not MacOS.lion?
     s += framework_caveats if as_framework?
     return s
   end
