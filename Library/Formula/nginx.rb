@@ -2,8 +2,8 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.0.11.tar.gz'
-  md5 'a41a01d7cd46e13ea926d7c9ca283a95'
+  url 'http://nginx.org/download/nginx-1.0.12.tar.gz'
+  md5 'd0ceefeb2a68ecb19e78ee894a5b52a3'
 
   devel do
     url 'http://nginx.org/download/nginx-1.1.14.tar.gz'
@@ -56,8 +56,8 @@ class Nginx < Formula
     system "make install"
     man8.install "objs/nginx.8"
 
-    (prefix+'org.nginx.nginx.plist').write startup_plist
-    (prefix+'org.nginx.nginx.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent
@@ -70,8 +70,8 @@ class Nginx < Formula
 
     You can start nginx automatically on login running as your user with:
       mkdir -p ~/Library/LaunchAgents
-      cp #{prefix}/org.nginx.nginx.plist ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/org.nginx.nginx.plist
+      cp #{plist_path} ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     Though note that if running as your user, the launch agent will fail if you
     try to use a port below 1024 (such as http's default of 80.)
@@ -85,7 +85,7 @@ class Nginx < Formula
 <plist version="1.0">
   <dict>
     <key>Label</key>
-    <string>org.nginx.nginx</string>
+    <string>#{plist_name}</string>
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
@@ -94,7 +94,7 @@ class Nginx < Formula
     <string>#{`whoami`.chomp}</string>
     <key>ProgramArguments</key>
     <array>
-        <string>#{sbin}/nginx</string>
+        <string>#{HOMEBREW_PREFIX}/sbin/nginx</string>
         <string>-g</string>
         <string>daemon off;</string>
     </array>

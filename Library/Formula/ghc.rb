@@ -12,13 +12,13 @@ class Ghc < Formula
   end
 
   devel do
-    version '7.2.2'
+    version '7.4.1'
     if ARGV.include? '--64bit'
-      url "http://www.haskell.org/ghc/dist/7.2.2/ghc-7.2.2-x86_64-apple-darwin.tar.bz2"
-      md5 '97c9dc221fcf9eb8635f05ba08eca0c9'
+      url "http://www.haskell.org/ghc/dist/7.4.1/ghc-7.4.1-x86_64-apple-darwin.tar.bz2"
+      md5 '04a572f72c25e9d8fcbd7e9363d276bf'
     else
-      url "http://www.haskell.org/ghc/dist/7.2.2/ghc-7.2.2-i386-apple-darwin.tar.bz2"
-      md5 '1084f44b0d9e5ea5d3bf9b699b6e3e35'
+      url "http://www.haskell.org/ghc/dist/7.4.1/ghc-7.4.1-i386-apple-darwin.tar.bz2"
+      md5 '80243578b243224800f217e5e3060836'
     end
   end
 

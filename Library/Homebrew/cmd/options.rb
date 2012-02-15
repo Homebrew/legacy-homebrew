@@ -11,6 +11,7 @@ def ff
       f.installed? or outdated.include? f.name
     end
   else
+    raise FormulaUnspecifiedError if ARGV.named.empty?
     ARGV.formulae
   end
 end

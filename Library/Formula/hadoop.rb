@@ -1,14 +1,14 @@
 require 'formula'
 
 class Hadoop < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=hadoop/core/hadoop-0.21.0/hadoop-0.21.0.tar.gz'
   homepage 'http://hadoop.apache.org/common/'
+  url 'http://www.apache.org/dyn/closer.cgi?path=hadoop/core/hadoop-0.21.0/hadoop-0.21.0.tar.gz'
   md5 'ec0f791f866f82a7f2c1319a54f4db97'
 
   def shim_script target
     <<-EOS.undent
     #!/bin/bash
-    exec #{libexec}/bin/#{target} $@
+    exec "#{libexec}/bin/#{target}" "$@"
     EOS
   end
 
