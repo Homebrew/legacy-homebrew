@@ -63,6 +63,11 @@ class Python3 < Formula
       args << "--enable-shared" unless ARGV.include? '--static'
     end
 
+    if File.exist?( ENV['HOME']+'/.pydistutils.cfg' )
+      opoo 'Detected '+ENV['HOME']+'/.pydistutils.cfg which may cause trouble.
+         (See http://bugs.python.org/issue6138)'
+    end
+
     system "./configure", *args
     system "make"
     ENV.j1 # Installs must be serialized
