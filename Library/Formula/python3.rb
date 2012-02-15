@@ -103,6 +103,8 @@ class Python3 < Formula
   end
 
   def caveats
+    # Since right now, python 2.x is still the default (for homebrew), we
+    # suggest only a symlink to the framework Version 3.2 and not "Current".
     framework_caveats = <<-EOS.undent
 
       Framework Python was installed to:
@@ -110,8 +112,8 @@ class Python3 < Formula
 
       You may want to symlink this Framework to a standard OS X location,
       such as:
-          mkdir ~/Frameworks
-          ln -s "#{prefix}/Frameworks/Python.framework" ~/Frameworks
+          mkdir -p /Library/Frameworks/Python.framework/Versions
+          ln -s "#{prefix}/Frameworks/Python.framework/Versions/3.2" /Library/Frameworks/Python.framework/Versions/3.2
     EOS
 
     general_caveats = <<-EOS.undent
