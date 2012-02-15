@@ -8,7 +8,10 @@ class BdwGc < Formula
   version '7.2alpha6'
 
   def patches
-    DATA # fix inline asm errors with LLVM, present in upstream SVN
+    # fix inline ASM issues with LLVM
+    # fix Makefile double-install
+    # both fixes already upstream
+    DATA
   end
 
   def install
@@ -49,3 +52,25 @@ index 0f68c1e..b3b57f9 100644
    return (AO_TS_VAL_t)oldval;
  }
  #define AO_HAVE_test_and_set_full
+
+diff --git a/Makefile.in b/Makefile.in
+index 09dea13..1f4356e 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -108,7 +108,6 @@ check_PROGRAMS = gctest$(EXEEXT) leaktest$(EXEEXT) middletest$(EXEEXT) \
+ # C++ Interface
+ # -------------
+ @CPLUSPLUS_TRUE@am__append_5 = libgccpp.la
+-@CPLUSPLUS_TRUE@am__append_6 = include/gc_cpp.h include/gc_allocator.h
+ DIST_COMMON = $(am__configure_deps) $(am__pkginclude_HEADERS_DIST) \
+ 	$(dist_noinst_HEADERS) $(dist_noinst_SCRIPTS) \
+ 	$(dist_pkgdata_DATA) $(include_HEADERS) $(srcdir)/Makefile.am \
+@@ -579,7 +578,7 @@ include_HEADERS = include/extra/gc.h include/extra/gc_cpp.h
+ 
+ # installed headers
+ #
+-pkginclude_HEADERS = $(am__append_6) include/gc.h include/gc_typed.h \
++pkginclude_HEADERS = include/gc.h include/gc_typed.h \
+ 	include/gc_inline.h include/gc_mark.h include/gc_cpp.h \
+ 	include/weakpointer.h include/new_gc_alloc.h \
+ 	include/gc_allocator.h include/gc_backptr.h include/gc_gcj.h \
