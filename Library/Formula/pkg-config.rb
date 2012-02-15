@@ -15,6 +15,7 @@ class PkgConfig < Formula
 
     paths = %W[
         #{HOMEBREW_PREFIX}/lib/pkgconfig
+        #{HOMEBREW_PREFIX}/share/pkgconfig
         /usr/local/lib/pkgconfig
         /usr/lib/pkgconfig
         /usr/X11/lib/pkgconfig
