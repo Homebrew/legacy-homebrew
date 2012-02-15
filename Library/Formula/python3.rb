@@ -68,6 +68,12 @@ class Python3 < Formula
     ENV.j1 # Installs must be serialized
     system "make install"
 
+    # The "python3" executable is forgotten if the --framework option is used.
+    # Make sure homebrew symlinks it to `brew --prefix`/bin.
+    if ! (File.exist? "#{bin}/python3")
+      ln_s "#{bin}/python3.2", "#{bin}/python3"
+    end
+
     # Post-install, fix up the site-packages and install-scripts folders
     # so that user-installed Python software survives minor updates, such
     # as going from 3.2.2 to 3.2.3.
