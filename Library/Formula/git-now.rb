@@ -1,16 +1,13 @@
 require 'formula'
 
 class GitNow < Formula
+  homepage 'https://github.com/iwata/git-now'
   url 'https://github.com/iwata/git-now.git', :tag => 'v0.1.0.9'
   version '0.1.0.9'
+
   head 'https://github.com/iwata/git-now.git', :branch => 'develop'
-  homepage 'https://github.com/iwata/git-now'
 
   depends_on 'gnu-getopt'
-
-  def options
-    [['--zsh-completion', "Install zsh completions."]]
-  end
 
   def patches
     DATA
@@ -18,18 +15,14 @@ class GitNow < Formula
 
   def install
     system "make", "prefix=#{prefix}", "install"
-    if ARGV.include? '--zsh-completion'
-      zsh_functions_d = share + 'zsh/functions'
-      zsh_functions_d.install "etc/_git-now"
-    end
+    (share+'zsh/functions').install 'etc/_git-now'
   end
 
-  def caveats; <<-EOS
-    If `--zsh-completion` is specified, zsh completions are installed to:
+  def caveats; <<-EOS.undent
+   Zsh completion has been installed to:
       #{share}/zsh/functions
     EOS
   end
-
 end
 
 # This patch makes sure GNUtools are used on OSX.

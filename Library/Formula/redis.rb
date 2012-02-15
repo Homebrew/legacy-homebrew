@@ -1,10 +1,11 @@
 require 'formula'
 
 class Redis < Formula
-  url 'http://redis.googlecode.com/files/redis-2.4.6.tar.gz'
-  head 'https://github.com/antirez/redis.git', :branch => 'unstable'
   homepage 'http://redis.io/'
-  md5 '41d394074bcde762872ecb5506f35aee'
+  url 'http://redis.googlecode.com/files/redis-2.4.7.tar.gz'
+  md5 '6afffb6120724183e40f1cac324ac71c'
+
+  head 'https://github.com/antirez/redis.git', :branch => 'unstable'
 
   fails_with_llvm 'Fails with "reference out of range from _linenoise"', :build => 2334
 
