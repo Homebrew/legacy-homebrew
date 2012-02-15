@@ -12,8 +12,6 @@ class Monotone < Formula
   depends_on 'lua'
   depends_on 'pcre'
 
-  fails_with_llvm "linker fails"
-
   def install
     # Monotone only needs headers from Boost (it's templates all the way down!), so let's avoid
     # building boost (which takes approximately forever) if it's not already installed.
