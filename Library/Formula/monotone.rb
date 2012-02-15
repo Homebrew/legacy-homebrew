@@ -7,7 +7,7 @@ class Monotone < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
-  depends_on 'botan'
+  depends_on 'botan-1.8'
   depends_on 'libidn'
   depends_on 'lua'
   depends_on 'pcre'
@@ -25,6 +25,10 @@ class Monotone < Formula
       boost.brew { ENV.append "CXXFLAGS", "-I"+Dir.pwd }
     end
 
+    botan_flags = `pkg-config --cflags botan-1.8`
+    botan_libs = `pkg-config --libs botan-1.8`
+    ENV.append "botan_CFLAGS", botan_flags
+    ENV.append "botan_LIBS", botan_libs
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
