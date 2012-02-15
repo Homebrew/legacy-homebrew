@@ -18,8 +18,8 @@ class Duplicity < Formula
                      "--install-scripts=#{bin}"
 
     # Shift files around to avoid needing a PYTHONPATH
-    system "mv", "#{bin}/duplicity", "#{bin}/duplicity.py"
-    system "mv", "#{bin}/*", libexec
+    mv bin+'duplicity', bin+'duplicity.py'
+    mv Dir[bin+'*'], libexec
 
     bin.install_symlink "#{libexec}/duplicity.py" => "duplicity"
     bin.install_symlink "#{libexec}/rdiffdir"
