@@ -2,11 +2,12 @@ require 'formula'
 
 class Ice < Formula
   homepage 'http://www.zeroc.com'
-  url 'http://www.zeroc.com/download/Ice/3.4/Ice-3.4.1.tar.gz'
-  md5 '3aae42aa47dec74bb258c1a1b2847a1a'
+  url 'http://www.zeroc.com/download/Ice/3.4/Ice-3.4.2.tar.gz'
+  md5 'e97672eb4a63c6b8dd202d0773e19dc7'
 
   depends_on 'berkeley-db'
   depends_on 'mcpp'
+  # other dependencies listed for Ice are for additional utilities not compiled
 
   # * compile against Berkely DB 5.X
   # * use our selected compiler
@@ -17,10 +18,20 @@ class Ice < Formula
     ]
   end
 
+  def site_package_dir
+    "#{which_python}/site-packages"
+  end
+
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+  end
+
   def options
     [
       ['--doc', 'Install documentation'],
-      ['--demo', 'Build demos']
+      ['--demo', 'Build demos'],
+      ['--java', 'Build java library'],
+      ['--python', 'Build python library']
     ]
   end
 
@@ -40,7 +51,6 @@ class Ice < Formula
   def install
     ENV.O2
     inreplace "cpp/config/Make.rules" do |s|
-      s.gsub! "#OPTIMIZE", "OPTIMIZE"
       s.gsub! "/opt/Ice-$(VERSION)", prefix
       s.gsub! "/opt/Ice-$(VERSION_MAJOR).$(VERSION_MINOR)", prefix
     end
@@ -49,6 +59,7 @@ class Ice < Formula
     wb = 'config src include'
     wb += ' doc' if ARGV.include? '--doc'
     wb += ' demo' if ARGV.include? '--demo'
+
     inreplace "cpp/Makefile" do |s|
       s.change_make_var! "SUBDIRS", wb
     end
@@ -61,6 +72,34 @@ class Ice < Formula
       system "make"
       system "make install"
     end
+
+    if ARGV.include? '--java'
+      Dir.chdir "java" do
+        system "ant ice-jar"
+        Dir.chdir "lib" do
+          lib.install ['Ice.jar', 'ant-ice.jar']
+        end
+      end
+    end
+
+    if ARGV.include? '--python'
+
+      inreplace "py/config/Make.rules" do |s|
+        s.gsub! "/opt/Ice-$(VERSION)", prefix
+        s.gsub! "/opt/Ice-$(VERSION_MAJOR).$(VERSION_MINOR)", prefix
+      end
+
+      Dir.chdir "py" do
+        system "make"
+        system "make install"
+      end
+
+      # install python bits
+      Dir.chdir "#{prefix}/python" do
+        (lib + site_package_dir).install Dir['*']
+      end
+    end
+
   end
 end
 
