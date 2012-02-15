@@ -11,7 +11,7 @@ class Findlib < Formula
     man.mkpath
     lib.mkpath
     (prefix+'etc').mkpath
-    system "./configure -bindir #{bin} -mandir #{man} -sitelib #{lib} -config #{prefix}/etc -with-toolbox"
+    system "./configure -bindir #{bin} -mandir #{man} -sitelib #{lib} -with-toolbox"
     system "make all"
     system "make opt"
     system "make install"
