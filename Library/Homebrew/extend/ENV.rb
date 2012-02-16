@@ -19,8 +19,8 @@ module HomebrewEnvExtension
       self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
     end
 
-    # llvm allows -O4 however it often fails to link and is very slow
-    self['CFLAGS'] = self['CXXFLAGS'] = "-O3 #{SAFE_CFLAGS_FLAGS}"
+    # Os is the default Apple uses for all its stuff so let's trust them
+    self['CFLAGS'] = self['CXXFLAGS'] = "-Os #{SAFE_CFLAGS_FLAGS}"
 
     self.send self.compiler
     # we must have a working compiler!
