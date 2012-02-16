@@ -22,11 +22,14 @@ module HomebrewEnvExtension
     # Os is the default Apple uses for all its stuff so let's trust them
     self['CFLAGS'] = self['CXXFLAGS'] = "-Os #{SAFE_CFLAGS_FLAGS}"
 
+    # set us up for the user's compiler choice
     self.send self.compiler
+
     # we must have a working compiler!
     unless File.exist? ENV['CC'] and File.exist? ENV['CXX']
       @compiler = MacOS.default_compiler
       self.send @compiler
+
       ENV['CC']  = '/usr/bin/cc'
       ENV['CXX'] = '/usr/bin/c++'
     end
@@ -75,8 +78,8 @@ module HomebrewEnvExtension
   end
 
   def gcc_4_0_1
-    self['CC'] = '/usr/bin/gcc-4.0'
-    self['CXX'] = '/usr/bin/g++-4.0'
+    self['CC'] =  "#{MacOS.dev_tools_path}/gcc-4.0"
+    self['CXX'] = "#{MacOS.dev_tools_path}/g++-4.0"
     replace_in_cflags '-O4', '-O3'
     set_cpu_cflags 'nocona -mssse3', :core => 'prescott', :bottle => 'generic'
     @compiler = :gcc
@@ -84,8 +87,12 @@ module HomebrewEnvExtension
   alias_method :gcc_4_0, :gcc_4_0_1
 
   def gcc args = {}
-    gcc_path = Pathname.new "/usr/bin/gcc-4.2"
-    gxx_path = Pathname.new "/usr/bin/g++-4.2"
+    # Apple stopped shipping gcc-4.2 with Xcode 4.2
+    # However they still provide a gcc symlink to llvm
+    # But we don't want LLVM of course.
+
+    gcc_path = Pathname.new "#{MacOS.dev_tools_path}/gcc-4.2"
+    gxx_path = Pathname.new "#{MacOS.dev_tools_path}/g++-4.2"
     self['CC']  = gcc_path.exist? ? gcc_path : HOMEBREW_PREFIX+'bin/gcc-4.2'
     self['CXX'] = gxx_path.exist? ? gxx_path : HOMEBREW_PREFIX+'bin/g++-4.2'
     replace_in_cflags '-O4', '-O3'
@@ -98,15 +105,15 @@ module HomebrewEnvExtension
   alias_method :gcc_4_2, :gcc
 
   def llvm
-    self['CC']  = "/usr/bin/llvm-gcc"
-    self['CXX'] = "/usr/bin/llvm-g++"
+    self['CC']  = "#{MacOS.dev_tools_path}/llvm-gcc"
+    self['CXX'] = "#{MacOS.dev_tools_path}/llvm-g++"
     set_cpu_cflags 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott'
     @compiler = :llvm
   end
 
   def clang args = {}
-    self['CC']  = "/usr/bin/clang"
-    self['CXX'] = "/usr/bin/clang++"
+    self['CC']  = "#{MacOS.dev_tools_path}/clang"
+    self['CXX'] = "#{MacOS.dev_tools_path}/clang++"
     replace_in_cflags(/-Xarch_i386 (-march=\S*)/, '\1')
     # Clang mistakenly enables AES-NI on plain Nehalem
     set_cpu_cflags 'native', :nehalem => 'native -Xclang -target-feature -Xclang -aes'
