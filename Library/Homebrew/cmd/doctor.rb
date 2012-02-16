@@ -697,17 +697,6 @@ def check_for_CLICOLOR_FORCE
   end
 end
 
-def check_for_GREP_OPTIONS
-  target_var = ENV['GREP_OPTIONS'].to_s
-  unless target_var.empty? or target_var == '--color=auto'
-    puts <<-EOS.undent
-    GREP_OPTIONS was set to \"#{target_var}\".
-    Having GREP_OPTIONS set this way can cause CMake builds to fail.
-
-    EOS
-  end
-end
-
 def check_for_other_frameworks
   # Other frameworks that are known to cause problems when present
   ["/Library/Frameworks/expat.framework", "/Library/Frameworks/libexpat.framework"].each do |f|
@@ -863,7 +852,6 @@ module Homebrew extend self
       check_for_dyld_vars
       check_for_MACOSX_DEPLOYMENT_TARGET
       check_for_CLICOLOR_FORCE
-      check_for_GREP_OPTIONS
       check_for_symlinked_cellar
       check_for_multiple_volumes
       check_for_git
