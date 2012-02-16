@@ -19,7 +19,7 @@ class Abyss < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking",
-        "--prefix=#{prefix}"
+      "--prefix=#{prefix}"
     system "make install"
   end
 
