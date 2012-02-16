@@ -16,6 +16,11 @@ def no_python?
   ARGV.include? "--without-python"
 end
 
+def which_python
+  "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+end
+
+
 def opencl?
   ARGV.include? "--enable-opencl"
 end
@@ -202,7 +207,7 @@ class Gdal < Formula
       # install to anywhere that is not on the PYTHONPATH.
       #
       # Really setuptools, we're all consenting adults here...
-      python_lib = lib + "python"
+      python_lib = lib + which_python + 'site-packages'
       ENV.append 'PYTHONPATH', python_lib
 
       # setuptools is also apparently incapable of making the directory it's
@@ -229,10 +234,13 @@ class Gdal < Formula
       <<-EOS
 This version of GDAL was built with Python support.  In addition to providing
 modules that makes GDAL functions available to Python scripts, the Python
-binding provides ~18 additional command line tools.  However, both the Python
-bindings and the additional tools will be unusable unless the following
-directory is added to the PYTHONPATH:
-    #{HOMEBREW_PREFIX}/lib/python
+binding provides ~18 additional command line tools.
+
+Unless you are using Homebrew's Python, both the bindings and the
+additional tools will be unusable unless the following directory is added to
+the PYTHONPATH:
+
+    #{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages
       EOS
     end
   end
