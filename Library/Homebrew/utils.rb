@@ -290,6 +290,9 @@ module MacOS extend self
         # we do this to support cowboys who insist on installing
         # only a subset of Xcode
         Pathname.new '/Developer'
+      elsif File.directory? '/Applications/Xcode.app/Contents/Developer'
+        # fallback for broken Xcode 4.3 installs
+        Pathname.new '/Applications/Xcode.app/Contents/Developer'
       else
         nil
       end
