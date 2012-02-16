@@ -1,8 +1,8 @@
 require 'formula'
 
 class Denyhosts < Formula
-  url 'http://downloads.sourceforge.net/project/denyhosts/denyhosts/2.6/DenyHosts-2.6.tar.gz'
   homepage 'http://denyhosts.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/project/denyhosts/denyhosts/2.6/DenyHosts-2.6.tar.gz'
   md5 'fc2365305a9402886a2b0173d1beb7df'
 
   def patches
@@ -35,13 +35,11 @@ class Denyhosts < Formula
                      "--install-data=#{libexec}"
     libexec.install 'daemon-control'
 
-    # Don't overwrite the config file if it exists---the user may have tweaked
-    # it.
+    # Don't overwrite the config file; the user may have tweaked it.
     etc.install 'denyhosts.cfg' unless (etc + 'denyhosts.cfg').exist?
 
-    sbin.mkpath
-    ln_s libexec + 'denyhosts.py', sbin + 'denyhosts'
-    ln_s libexec + 'daemon-control', sbin + 'daemon-control'
+    sbin.install_symlink libexec+'daemon-control'
+    sbin.install_symlink libexec+'denyhosts.py' => 'denyhosts'
 
     plist_path.write cron_plist
     plist_path.chmod 0644
