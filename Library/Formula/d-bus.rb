@@ -2,8 +2,8 @@ require 'formula'
 
 class DBus < Formula
   homepage 'http://www.freedesktop.org/wiki/Software/dbus'
-  url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.4.16.tar.gz'
-  sha256 '1d8ee6262f8cc2148f06578eee522c755ba0896206b3464ca9bdc84f411b29c6'
+  url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.5.8.tar.gz'
+  sha256 '6e1cd5248562b5362e9a1ad8314459fe2f60ee3b9622ce0afd68cc9df8ae7c5e'
 
   # man2html needs to be piped the input instead of given a filename. See:
   # http://forums.freebsd.org/archive/index.php/t-20529.html
