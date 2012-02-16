@@ -12,6 +12,11 @@ class Abyss < Formula
   # strip breaks the ability to read compressed files.
   skip_clean 'bin'
 
+  def patches
+    # abyss-overlap does not build with LLVM-GCC
+    DATA
+  end
+
   def install
     system "./configure", "--disable-dependency-tracking",
         "--prefix=#{prefix}"
@@ -20,11 +25,6 @@ class Abyss < Formula
 
   def test
     system "#{bin}/ABYSS --version"
-  end
-
-  def patches
-    # abyss-overlap does not build with LLVM-GCC
-    DATA
   end
 end
 
