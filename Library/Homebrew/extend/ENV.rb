@@ -122,21 +122,21 @@ module HomebrewEnvExtension
         self['FCFLAGS'] = self['CFLAGS'] unless self['FCFLAGS']
         self['FFLAGS'] = self['CFLAGS'] unless self['FFLAGS']
       elsif not self['FCFLAGS'] or self['FFLAGS']
-        opoo <<-EOS
-No Fortran optimization information was provided.  You may want to consider
-setting FCFLAGS and FFLAGS or pass the `--default-fortran-flags` option to
-`brew install` if your compiler is compatible with GCC.
+        opoo <<-EOS.undent
+          No Fortran optimization information was provided.  You may want to consider
+          setting FCFLAGS and FFLAGS or pass the `--default-fortran-flags` option to
+          `brew install` if your compiler is compatible with GCC.
 
-If you like the default optimization level of your compiler, ignore this
-warning.
+          If you like the default optimization level of your compiler, ignore this
+          warning.
         EOS
       end
 
     elsif `/usr/bin/which gfortran`.chomp.size > 0
-      ohai <<-EOS
-Using Homebrew-provided fortran compiler.
-    This may be changed by setting the FC environment variable.
-      EOS
+      ohai <<-EOS.undent
+        Using Homebrew-provided fortran compiler.
+        This may be changed by setting the FC environment variable.
+        EOS
       self['FC'] = `/usr/bin/which gfortran`.chomp
       self['F77'] = self['FC']
 
@@ -213,7 +213,7 @@ Please take one of the following actions:
   def cxx;     self['CXX'] or "g++"; end
   def cflags;  self['CFLAGS'];       end
   def cxxflags;self['CXXFLAGS'];     end
-  def cppflags;self['CPPFLAGS'];      end
+  def cppflags;self['CPPFLAGS'];     end
   def ldflags; self['LDFLAGS'];      end
 
   def m64
