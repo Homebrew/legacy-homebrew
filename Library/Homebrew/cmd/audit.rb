@@ -76,7 +76,7 @@ def audit_formula_text name, text
 
   # Empty checksums
   if text =~ /(md5|sha1|sha256)\s+(''|"")/
-    problems << " * md5 is empty"
+    problems << " * #{$1} is empty"
   end
 
   # Checksum sanity check
