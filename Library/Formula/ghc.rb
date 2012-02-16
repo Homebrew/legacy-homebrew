@@ -44,6 +44,9 @@ class Ghc < Formula
     end
 
     system "./configure --prefix=#{prefix}"
+    system "make"
+    # Fix linker verbosity
+    #system "sed -i '$ { s/^exec  *[^ ][^ ]*  */& -optl\"-Wl,-read_only_relocs,suppress\" / ;}' something something ghc"
     system "make install"
   end
 
