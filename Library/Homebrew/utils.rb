@@ -33,13 +33,13 @@ end
 
 # args are additional inputs to puts until a nil arg is encountered
 def ohai title, *sput
-  title = title.to_s[0, Tty.width - 4] unless ARGV.verbose?
+  title = title.to_s[0, Tty.width - 4] if $stdout.tty? unless ARGV.verbose?
   puts "#{Tty.blue}==>#{Tty.white} #{title}#{Tty.reset}"
   puts sput unless sput.empty?
 end
 
 def oh1 title
-  title = title.to_s[0, Tty.width - 4] unless ARGV.verbose?
+  title = title.to_s[0, Tty.width - 4] if $stdout.tty? unless ARGV.verbose?
   puts "#{Tty.green}==> #{Tty.reset}#{title}"
 end
 
@@ -112,6 +112,7 @@ def curl *args
   # See https://github.com/mxcl/homebrew/issues/6103
   args << "--insecure" if MacOS.version < 10.6
   args << "--verbose" if ENV['HOMEBREW_CURL_VERBOSE']
+  args << "--silent" unless $stdout.tty?
 
   safe_system curl, *args
 end
@@ -250,8 +251,27 @@ module MacOS extend self
     MACOS_VERSION
   end
 
+  def dev_tools_path
+    @dev_tools_path ||= if File.file? "/usr/bin/cc" and File.file? "/usr/bin/make"
+      # probably a safe enough assumption
+      "/usr/bin"
+    elsif File.file? "#{xcode_prefix}/usr/bin/make"
+      # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
+      "#{xcode_prefix}/usr/bin"
+    else
+      # yes this seems dumb, but we can't throw because the existance of
+      # dev tools is not mandatory for installing formula. Eventually we
+      # should make forumla specify if they need dev tools or not.
+      "/usr/bin"
+    end
+  end
+
   def default_cc
-    Pathname.new("/usr/bin/cc").realpath.basename.to_s
+    cc = Pathname.new("#{dev_tools_path}/cc")
+    # Xcode 4.3.0 has no /Applications/Xcode/Contents/Developer/usr/bin/cc
+    # Xcode 4.3.0 has no GCC
+    cc = Pathname.new("#{dev_tools_path}/llvm-gcc") unless cc.file?
+    cc.realpath.basename.to_s
   end
 
   def default_compiler
@@ -259,21 +279,27 @@ module MacOS extend self
       when /^gcc/ then :gcc
       when /^llvm/ then :llvm
       when "clang" then :clang
-      else :gcc # a hack, but a sensible one prolly
+      else
+        # guess :(
+        if xcode_version >= "4.2"
+          :llvm
+        else
+          :gcc
+        end
     end
   end
 
   def gcc_42_build_version
-    @gcc_42_build_version ||= if File.exist? "/usr/bin/gcc-4.2" \
-      and not Pathname.new("/usr/bin/gcc-4.2").realpath.basename.to_s =~ /^llvm/
-      `/usr/bin/gcc-4.2 --version` =~ /build (\d{4,})/
+    @gcc_42_build_version ||= if File.exist? "#{dev_tools_path}/gcc-4.2" \
+      and not Pathname.new("#{dev_tools_path}/gcc-4.2").realpath.basename.to_s =~ /^llvm/
+      `#{dev_tools_path}/gcc-4.2 --version` =~ /build (\d{4,})/
       $1.to_i
     end
   end
 
   def gcc_40_build_version
-    @gcc_40_build_version ||= if File.exist? "/usr/bin/gcc-4.0"
-      `/usr/bin/gcc-4.0 --version` =~ /build (\d{4,})/
+    @gcc_40_build_version ||= if File.exist? "#{dev_tools_path}/gcc-4.0"
+      `#{dev_tools_path}/gcc-4.0 --version` =~ /build (\d{4,})/
       $1.to_i
     end
   end
@@ -289,6 +315,9 @@ module MacOS extend self
         # we do this to support cowboys who insist on installing
         # only a subset of Xcode
         Pathname.new '/Developer'
+      elsif File.directory? '/Applications/Xcode.app/Contents/Developer'
+        # fallback for broken Xcode 4.3 installs
+        Pathname.new '/Applications/Xcode.app/Contents/Developer'
       else
         nil
       end
@@ -328,22 +357,22 @@ module MacOS extend self
   def llvm_build_version
     # for Xcode 3 on OS X 10.5 this will not exist
     # NOTE may not be true anymore but we can't test
-    @llvm_build_version ||= if File.exist? "/usr/bin/llvm-gcc"
-      `/usr/bin/llvm-gcc --version` =~ /LLVM build (\d{4,})/
+    @llvm_build_version ||= if File.exist? "#{dev_tools_path}/llvm-gcc"
+      `#{dev_tools_path}/llvm-gcc --version` =~ /LLVM build (\d{4,})/
       $1.to_i
     end
   end
 
   def clang_version
-    @clang_version ||= if File.exist? "/usr/bin/clang"
-      `/usr/bin/clang --version` =~ /clang version (\d\.\d)/
+    @clang_version ||= if File.exist? "#{dev_tools_path}/clang"
+      `#{dev_tools_path}/clang --version` =~ /clang version (\d\.\d)/
       $1
     end
   end
 
   def clang_build_version
-    @clang_build_version ||= if File.exist? "/usr/bin/clang"
-      `/usr/bin/clang --version` =~ %r[tags/Apple/clang-(\d{2,})]
+    @clang_build_version ||= if File.exist? "#{dev_tools_path}/clang"
+      `#{dev_tools_path}/clang --version` =~ %r[tags/Apple/clang-(\d{2,})]
       $1.to_i
     end
   end

@@ -1,8 +1,8 @@
 require 'formula'
 
 class Denyhosts < Formula
-  url 'http://downloads.sourceforge.net/project/denyhosts/denyhosts/2.6/DenyHosts-2.6.tar.gz'
   homepage 'http://denyhosts.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/project/denyhosts/denyhosts/2.6/DenyHosts-2.6.tar.gz'
   md5 'fc2365305a9402886a2b0173d1beb7df'
 
   def patches
@@ -35,17 +35,14 @@ class Denyhosts < Formula
                      "--install-data=#{libexec}"
     libexec.install 'daemon-control'
 
-    # Don't overwrite the config file if it exists---the user may have tweaked
-    # it.
+    # Don't overwrite the config file; the user may have tweaked it.
     etc.install 'denyhosts.cfg' unless (etc + 'denyhosts.cfg').exist?
 
-    sbin.mkpath
-    ln_s libexec + 'denyhosts.py', sbin + 'denyhosts'
-    ln_s libexec + 'daemon-control', sbin + 'daemon-control'
+    sbin.install_symlink libexec+'daemon-control'
+    sbin.install_symlink libexec+'denyhosts.py' => 'denyhosts'
 
-    plist = prefix + 'org.denyhosts.cron.plist'
-    plist.write cron_plist
-    plist.chmod 0644
+    plist_path.write cron_plist
+    plist_path.chmod 0644
   end
 
   def cron_plist
@@ -55,7 +52,7 @@ class Denyhosts < Formula
       <plist version="1.0">
       <dict>
         <key>Label</key>
-        <string>org.denyhosts.cron</string>
+        <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
           <string>#{HOMEBREW_PREFIX}/sbin/denyhosts</string>
@@ -83,7 +80,7 @@ class Denyhosts < Formula
       /etc/hosts.deny every 10 minutes. It will need to be run by the user that
       owns /etc/hosts.deny, usually root, and can be set to load at startup
       via:
-        sudo cp #{prefix}/org.denyhosts.cron.plist /Library/LaunchDaemons/
+        sudo cp #{plist_path} /Library/LaunchDaemons/
 
     EOS
   end

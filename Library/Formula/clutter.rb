@@ -2,8 +2,8 @@ require 'formula'
 
 class Clutter < Formula
   homepage 'http://clutter-project.org/'
-  url 'http://source.clutter-project.org/sources/clutter/1.6/clutter-1.6.14.tar.bz2'
-  sha256 '0564e57ca8eb24e76014627c0bb28a80a6c01b620ba14bc4198365562549576d'
+  url 'http://source.clutter-project.org/sources/clutter/1.6/clutter-1.6.20.tar.bz2'
+  sha256 'c4e40c7a553a0437a3b8c54da440bf54b44114bd83d68d4eeea425fed90e046e'
 
   depends_on 'pkg-config' => :build
   depends_on 'atk'
@@ -17,7 +17,8 @@ class Clutter < Formula
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--with-flavour=osx",
-                          "--with-imagebackend=quartz"
+                          "--with-imagebackend=quartz",
+                          "--disable-introspection"
     system "make install"
   end
 end

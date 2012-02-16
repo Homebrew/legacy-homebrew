@@ -182,11 +182,13 @@ def check_gcc_versions
   gcc_40 = MacOS.gcc_40_build_version
 
   if gcc_42 == nil
-    puts <<-EOS.undent
-      We couldn't detect gcc 4.2.x. Some formulae require this compiler.
-      NOTE: Versions of XCode newer than 4.2 don't include gcc 4.2.x.
+    # Don't show this warning on Xcode 4.2+
+    if MacOS.xcode_version < "4.2"
+      puts <<-EOS.undent
+        We couldn't detect gcc 4.2.x. Some formulae require this compiler.
 
-    EOS
+      EOS
+    end
   elsif gcc_42 < RECOMMENDED_GCC_42
     puts <<-EOS.undent
       Your gcc 4.2.x version is older than the recommended version. It may be advisable
@@ -695,17 +697,6 @@ def check_for_CLICOLOR_FORCE
   end
 end
 
-def check_for_GREP_OPTIONS
-  target_var = ENV['GREP_OPTIONS'].to_s
-  unless target_var.empty? or target_var == '--color=auto'
-    puts <<-EOS.undent
-    GREP_OPTIONS was set to \"#{target_var}\".
-    Having GREP_OPTIONS set this way can cause CMake builds to fail.
-
-    EOS
-  end
-end
-
 def check_for_other_frameworks
   # Other frameworks that are known to cause problems when present
   ["/Library/Frameworks/expat.framework", "/Library/Frameworks/libexpat.framework"].each do |f|
@@ -813,6 +804,22 @@ def check_for_enthought_python
   EOS
 end
 
+def check_for_osx_gcc_installer
+  # Use the existence of Carbon headers to make a guess as to whether
+  # the osx-gcc-installer was used in lieu of Xcode.
+  unless File.exist? "/System/Library/Frameworks/Carbon.framework/Headers/Carbon.h"
+    puts <<-EOS.undent
+      It appears that you are using the osx-gcc-installer.
+
+      This is unsupported, and software that require headers and other
+      resources that are normally provided by Xcode will fail to compile.
+
+      We recommend that you install Xcode.
+
+    EOS
+  end
+end
+
 module Homebrew extend self
   def doctor
     old_stdout = $stdout
@@ -845,7 +852,6 @@ module Homebrew extend self
       check_for_dyld_vars
       check_for_MACOSX_DEPLOYMENT_TARGET
       check_for_CLICOLOR_FORCE
-      check_for_GREP_OPTIONS
       check_for_symlinked_cellar
       check_for_multiple_volumes
       check_for_git
@@ -859,6 +865,7 @@ module Homebrew extend self
       check_for_leopard_ssl
       check_git_version
       check_for_enthought_python
+      check_for_osx_gcc_installer
     ensure
       $stdout = old_stdout
     end

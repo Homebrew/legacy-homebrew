@@ -1,11 +1,11 @@
 require 'formula'
 
 class Cdargs < Formula
-  url 'http://www.skamphausen.de/downloads/cdargs/cdargs-1.35.tar.gz'
   homepage 'http://www.skamphausen.de/cgi-bin/ska/CDargs'
+  url 'http://www.skamphausen.de/downloads/cdargs/cdargs-1.35.tar.gz'
   md5 '50be618d67f0b9f2439526193c69c567'
 
-  fails_with_llvm "Bus error in ld on SL 10.6.4"
+  fails_with_llvm "Bus error in ld on SL 10.6.4", :build => 2334
 
   # fixes zsh usage using the patch provided at the cdargs homepage
   # (See http://www.skamphausen.de/cgi-bin/ska/CDargs)
@@ -21,8 +21,7 @@ class Cdargs < Formula
     rm Dir['contrib/Makefile*']
     prefix.install 'contrib'
 
-    (etc+'bash_completion.d').mkpath
-    ln_sf prefix+'contrib/cdargs-bash.sh', etc+'bash_completion.d/cdargs-bash.sh'
+    (etc+'bash_completion.d').install_symlink prefix+'contrib/cdargs-bash.sh'
   end
 
   def caveats; <<-EOS.undent
