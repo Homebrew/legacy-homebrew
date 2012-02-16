@@ -131,7 +131,12 @@ Dir.chdir "/usr/local" do
 end
 
 warn "/usr/local/bin is not in your PATH." unless ENV['PATH'].split(':').include? '/usr/local/bin'
-warn "Now install Xcode: http://developer.apple.com/technologies/xcode.html" unless Kernel.system "/usr/bin/which -s gcc"
+
+if macos_version < 10.7
+  warn "Now install Xcode: http://developer.apple.com/technologies/xcode.html" unless Kernel.system "/usr/bin/which -s gcc"
+else
+  warn "Install \"Command Line Tools for Xcode\": http://developer.apple.com/downloads" unless File.file? "/usr/bin/xcrun"
+end
 
 unless badlibs.empty?
   warn "The following *evil* dylibs exist in /usr/local/lib"
