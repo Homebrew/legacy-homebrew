@@ -687,16 +687,6 @@ def check_for_MACOSX_DEPLOYMENT_TARGET
   end
 end
 
-def check_for_CLICOLOR_FORCE
-  if ENV['CLICOLOR_FORCE']
-    puts <<-EOS.undent
-    Having CLICOLOR_FORCE set can cause some builds to fail.
-    You may want to unset it.
-
-    EOS
-  end
-end
-
 def check_for_other_frameworks
   # Other frameworks that are known to cause problems when present
   ["/Library/Frameworks/expat.framework", "/Library/Frameworks/libexpat.framework"].each do |f|
@@ -851,7 +841,6 @@ module Homebrew extend self
       check_for_config_scripts
       check_for_dyld_vars
       check_for_MACOSX_DEPLOYMENT_TARGET
-      check_for_CLICOLOR_FORCE
       check_for_symlinked_cellar
       check_for_multiple_volumes
       check_for_git
