@@ -19,7 +19,7 @@ class Abyss < Formula
   end
 
   def test
-    system "ABYSS --version"
+    system "#{bin}/ABYSS --version"
   end
 
   def patches
