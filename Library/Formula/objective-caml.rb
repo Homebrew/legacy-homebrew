@@ -7,7 +7,7 @@ class ObjectiveCaml < Formula
 
   bottle do
     url 'https://downloads.sf.net/project/machomebrew/Bottles/objective-caml-3.12.1-bottle.tar.gz'
-    sha1 '9bab332759a8262b07b2df46d09ab7c2026837cb'
+    sha1 'f32709be6cba5639a3f7185835963d630d6f8b59'
   end
 
   # Don't strip symbols, so dynamic linking doesn't break.
