@@ -75,16 +75,29 @@ def audit_formula_text name, text
   end
 
   # Empty checksums
-  if text =~ /md5\s+(\'\'|\"\")/
+  if text =~ /md5\s+(''|"")/
     problems << " * md5 is empty"
   end
 
-  if text =~ /sha1\s+(\'\'|\"\")/
+  if text =~ /sha1\s+(''|"")/
     problems << " * sha1 is empty"
   end
 
-  if text =~ /sha256\s+(\'\'|\"\")/
+  if text =~ /sha256\s+(''|"")/
     problems << " * sha256 is empty"
+  end
+
+  # Checksum sanity check
+  if text =~ /md5\s+['"](.+)['"]/ and $1 != '#{md5}' and $1 !~ /[a-f0-9]{32}/
+    problems << " * md5 contains invalid or incorrect number of characters"
+  end
+
+  if text =~ /sha1\s+['"](.+)['"]/ and $1 != '#{sha1}' and $1 !~ /[a-f0-9]{40}/
+    problems << " * sha1 contains invalid or incorrect number of characters"
+  end
+
+  if text =~ /sha256\s+['"](.+)['"]/ and $1 != '#{sha256}' and $1 !~ /[a-f0-9]{64}/
+    problems << " * sha256 contains invalid or incorrect number of characters"
   end
 
   # Commented-out depends_on
