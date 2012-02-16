@@ -7,6 +7,7 @@ module HomebrewEnvExtension
     delete('CDPATH')
     delete('CPPFLAGS')
     delete('LDFLAGS')
+    delete('GREP_OPTIONS') # can break CMake (lol)
 
     self['MAKEFLAGS'] = "-j#{self.make_jobs}"
 
