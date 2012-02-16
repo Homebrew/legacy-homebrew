@@ -8,6 +8,7 @@ module HomebrewEnvExtension
     delete('CPPFLAGS')
     delete('LDFLAGS')
     delete('GREP_OPTIONS') # can break CMake (lol)
+    delete('CLICOLOR_FORCE') # autotools doesn't like this
 
     self['MAKEFLAGS'] = "-j#{self.make_jobs}"
 
