@@ -3,7 +3,7 @@ require 'formula'
 class Dmd < Formula
   homepage 'http://www.digitalmars.com/d/'
   url 'http://cloud.github.com/downloads/D-Programming-Language/dmd/dmd.2.058.zip'
-  md5 '860002b3a28726d1e4b858a06898c66e'
+  md5 '81a0fe7b635d3a38ecbefff6048a37fe'
 
   def doc
     #use d and not dmd, rationale: meh
