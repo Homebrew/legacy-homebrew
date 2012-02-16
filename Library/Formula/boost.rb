@@ -17,9 +17,7 @@ class Boost < Formula
 
   # Both clang and llvm-gcc provided by XCode 4.1 compile Boost 1.47.0 properly.
   # Moreover, Apple LLVM compiler 2.1 is now among primary test compilers.
-  if MacOS.xcode_version < "4.1"
-    fails_with_llvm "LLVM-GCC causes errors with dropped arguments to functions when linking with boost"
-  end
+  fails_with_llvm "Dropped arguments to functions when linking with boost", :build => 2335
 
   def options
     [
