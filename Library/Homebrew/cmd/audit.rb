@@ -74,24 +74,6 @@ def audit_formula_text name, text
     problems << " * \"#{$1}\" should be \"\#{#{$2}}\""
   end
 
-  # Empty checksums
-  if text =~ /(md5|sha1|sha256)\s+(''|"")/
-    problems << " * #{$1} is empty"
-  end
-
-  # Checksum sanity check
-  if text =~ /md5\s+['"](.+)['"]/ and $1 != '#{md5}' and $1 !~ /[a-f0-9]{32}/
-    problems << " * md5 contains invalid or incorrect number of characters"
-  end
-
-  if text =~ /sha1\s+['"](.+)['"]/ and $1 != '#{sha1}' and $1 !~ /[a-f0-9]{40}/
-    problems << " * sha1 contains invalid or incorrect number of characters"
-  end
-
-  if text =~ /sha256\s+['"](.+)['"]/ and $1 != '#{sha256}' and $1 !~ /[a-f0-9]{64}/
-    problems << " * sha256 contains invalid or incorrect number of characters"
-  end
-
   # Commented-out depends_on
   if text =~ /#\s*depends_on\s+(.+)\s*$/
     problems << " * Commented-out dep #{$1}."
@@ -304,6 +286,26 @@ def audit_formula_instance f
   end
 
   problems += [' * invalid or missing version'] if f.version.to_s.empty?
+
+  %w[md5 sha1 sha256].each do |checksum|
+    hash = f.instance_variable_get("@#{checksum}")
+    next if hash.nil?
+    hash = hash.strip
+
+    len = case checksum
+      when 'md5' then 32
+      when 'sha1' then 40
+      when 'sha256' then 64
+    end
+
+    if hash.empty?
+      problems << " * #{checksum} is empty"
+    else
+      problems << " * #{checksum} should be #{len} characters" unless hash.length == len
+      problems << " * #{checksum} contains invalid characters" unless hash =~ /^[a-fA-F0-9]+$/
+      problems << " * #{checksum} should be lowercase" unless hash == hash.downcase
+    end
+  end
 
   return problems
 end
