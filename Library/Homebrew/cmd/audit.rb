@@ -312,6 +312,9 @@ module Homebrew extend self
   def audit
     errors = false
 
+    brew_count = 0
+    problem_count = 0
+
     ff.each do |f|
       problems = []
 
@@ -353,9 +356,14 @@ module Homebrew extend self
         puts "#{f.name}:"
         puts problems * "\n"
         puts
+        brew_count += 1
+        problem_count += problems.size
       end
     end
 
-    exit 1 if errors
+    if errors
+      puts "#{problem_count} problems in #{brew_count} brews"
+      exit 1
+    end
   end
 end
