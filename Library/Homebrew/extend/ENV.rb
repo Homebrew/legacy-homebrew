@@ -96,7 +96,7 @@ module HomebrewEnvExtension
     else
       # otherwise lets try and figure it out ourselves
       fn = "#{MacOS.dev_tools_path}/#{tool}"
-      if File.file? fn
+      if File.executable? fn
         fn
       else
         nil
