@@ -7,6 +7,10 @@ class Cdrtools < Formula
 
   depends_on 'smake' => :build
 
+  def patches
+    "http://fink.cvs.sourceforge.net/viewvc/fink/dists/10.7/stable/main/finkinfo/devel/smake.patch?revision=1.1&content-type=text%2Fplain"
+  end
+
   def install
     system "smake", "INS_BASE=#{prefix}", "INS_RBASE=#{prefix}", "install"
   end
