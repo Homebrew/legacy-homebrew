@@ -5,8 +5,9 @@ class Gearman < Formula
   url 'http://launchpad.net/gearmand/trunk/0.28/+download/gearmand-0.28.tar.gz'
   md5 '43fc281297489a53d4ee081e33c728db'
 
-  depends_on 'libevent'
   depends_on 'boost'
+  depends_on 'libevent'
+  depends_on 'ossp-uuid'
 
   def install
     system "./configure", "--prefix=#{prefix}"
