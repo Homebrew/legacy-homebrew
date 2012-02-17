@@ -7,12 +7,18 @@ class Postgis < Formula
 
   head 'http://svn.osgeo.org/postgis/trunk/', :using => :svn
 
+  devel do
+    url 'http://postgis.org/download/postgis-2.0.0alpha5.tar.gz'
+    md5 'd47923c07b590571d9b9af6cd7c07813'
+    version '2.0.0alpha5'
+  end
+
   depends_on 'postgresql'
   depends_on 'proj'
   depends_on 'geos'
 
   # For GeoJSON and raster handling
-  if ARGV.build_head?
+  if ARGV.build_head? or ARGV.build_devel?
     depends_on 'gdal'
     depends_on 'json-c'
   end
@@ -35,8 +41,7 @@ class Postgis < Formula
       "--with-pgconfig=#{postgresql.bin}/pg_config"
     ]
 
-    if ARGV.build_head?
-      system './autogen.sh'
+    if ARGV.build_head? or ARGV.build_devel?
       jsonc   = Formula.factory 'json-c'
       args << "--with-jsondir=#{jsonc.prefix}"
       # Unfortunately, NLS support causes all kinds of headaches because
@@ -46,6 +51,7 @@ class Postgis < Formula
       args << '--disable-nls'
     end
 
+    system './autogen.sh' if ARGV.build_head?
     system './configure', *args
     system 'make'
 
@@ -68,7 +74,7 @@ class Postgis < Formula
     # Install version-specific SQL scripts and tools first. Some of the
     # installation routines require command line tools to still be present
     # inside the build prefix.
-    if ARGV.build_head?
+    if ARGV.build_head? or ARGV.build_devel?
       # Install the liblwgeom library
       system 'make install -C liblwgeom'
 
@@ -158,7 +164,7 @@ class Postgis < Formula
         #{postgresql.lib}
     EOS
 
-    if ARGV.build_head?
+    if ARGV.build_head? or ARGV.build_devel?
       s += <<-EOS.undent
         PostGIS extension modules installed to:
           #{postgresql.share}/postgres/extension
