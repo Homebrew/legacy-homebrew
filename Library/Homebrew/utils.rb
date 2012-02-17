@@ -319,7 +319,16 @@ module MacOS extend self
         # fallback for broken Xcode 4.3 installs
         Pathname.new '/Applications/Xcode.app/Contents/Developer'
       else
-        nil
+        # Ask Spotlight where Xcode is. If the user didn't install the
+        # helper tools and installed Xcode in a non-conventional place, this
+        # is our only option. See: http://superuser.com/questions/390757
+        path = `mdfind "kMDItemDisplayName==Xcode&&kMDItemKind==Application"`
+        path = "#{path}/Contents/Developer"
+        if path.empty? or not File.directory? path
+          nil
+        else
+          path
+        end
       end
     end
   end
