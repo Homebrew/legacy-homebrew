@@ -348,7 +348,7 @@ class Formula
     return name if name.kind_of? Formula
 
     # If a URL is passed, download to the cache and install
-    if name =~ %r[(https?|ftp)://]
+    if name.to_s =~ %r[(https?|ftp)://]
       url = name
       name = Pathname.new(name).basename
       target_file = HOMEBREW_CACHE_FORMULA+name
