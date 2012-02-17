@@ -89,14 +89,14 @@ module HomebrewEnvExtension
   def xcrun tool
     if File.executable? "/usr/bin/#{tool}"
       "/usr/bin/#{tool}"
-    elsif system "/usr/bin/xcrun -find #{tool} 2>1 1>/dev/null"
+    elsif system "#{MacOS.xcrun} -find #{tool} 2>1 1>/dev/null"
       # xcrun was provided first with Xcode 4.3 and allows us to proxy
       # tool usage thus avoiding various bugs
       "/usr/bin/xcrun #{tool}"
     else
       # otherwise lets try and figure it out ourselves
       fn = "#{MacOS.dev_tools_path}/#{tool}"
-      if File.file? fn
+      if File.executable? fn
         fn
       else
         nil
@@ -106,10 +106,10 @@ module HomebrewEnvExtension
 
   # if your formula doesn't like CC having spaces use this
   def expand_xcrun
-    ENV['CC'] =~ %r{/usr/bin/xcrun (.*)}
-    ENV['CC'] = `/usr/bin/xcrun -find #{$1}`.chomp if $1
-    ENV['CXX'] =~ %r{/usr/bin/xcrun (.*)}
-    ENV['CXX'] = `/usr/bin/xcrun -find #{$1}`.chomp if $1
+    ENV['CC'] =~ %r{#{MacOS.xcrun} (.*)}
+    ENV['CC'] = `#{MacOS.xcrun} -find #{$1}`.chomp if $1
+    ENV['CXX'] =~ %r{#{MacOS.xcrun} (.*)}
+    ENV['CXX'] = `#{MacOS.xcrun} -find #{$1}`.chomp if $1
   end
 
   def gcc args = {}
@@ -126,7 +126,7 @@ module HomebrewEnvExtension
       raise "GCC could not be found" if not File.exist? ENV['CC']
     end
 
-    if not ENV['CC'] =~ %r{^/usr/bin/xcrun}
+    if not ENV['CC'] =~ /^[^\s]*xcrun /
       raise "GCC could not be found" if Pathname.new(ENV['CC']).realpath.to_s =~ /llvm/
     end
 
