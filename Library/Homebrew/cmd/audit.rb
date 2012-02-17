@@ -84,8 +84,8 @@ def audit_formula_text name, text
     problems << " * Trailing whitespace was found."
   end
 
-  if text =~ /if\s+ARGV\.include\?\s+'--HEAD'/
-    problems << " * Use \"if ARGV.build_head?\" instead"
+  if text =~ /if\s+ARGV\.include\?\s+'--(HEAD|devel)'/
+    problems << " * Use \"if ARGV.build_#{$1.downcase}?\" instead"
   end
 
   if text =~ /make && make/
