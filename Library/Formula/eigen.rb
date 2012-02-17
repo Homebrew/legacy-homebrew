@@ -10,7 +10,7 @@ class Eigen < Formula
   def install
     mkdir 'eigen-build'
     Dir.chdir 'eigen-build' do
-      system "cmake ..  #{std_cmake_parameters} -DCMAKE_BUILD_TYPE=Release -Dpkg_config_libdir=#{lib} -DEIGEN_Fortran_COMPILER_WORKS=TRUE"
+      system "cmake ..  #{std_cmake_parameters} -DCMAKE_BUILD_TYPE=Release -Dpkg_config_libdir=#{lib} -DEIGEN_BUILD_BTL=FALSE -DEIGEN_Fortran_COMPILER_WORKS=FALSE"
       system "make install"
     end
   end
