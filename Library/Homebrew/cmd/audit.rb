@@ -24,7 +24,7 @@ def audit_formula_text name, text
   end
 
   # cmake, pkg-config, and scons are build-time deps
-  if text =~ /depends_on ['"](cmake|pkg-config|scons|smake)['"]$/
+  if text =~ /depends_on ['"](boost-build|cmake|pkg-config|scons|smake)['"]$/
     problems << " * #{$1} dependency should be \"depends_on '#{$1}' => :build\""
   end
 
@@ -75,16 +75,21 @@ def audit_formula_text name, text
   end
 
   # Empty checksums
-  if text =~ /md5\s+(\'\'|\"\")/
-    problems << " * md5 is empty"
+  if text =~ /(md5|sha1|sha256)\s+(''|"")/
+    problems << " * #{$1} is empty"
   end
 
-  if text =~ /sha1\s+(\'\'|\"\")/
-    problems << " * sha1 is empty"
+  # Checksum sanity check
+  if text =~ /md5\s+['"](.+)['"]/ and $1 != '#{md5}' and $1 !~ /[a-f0-9]{32}/
+    problems << " * md5 contains invalid or incorrect number of characters"
   end
 
-  if text =~ /sha256\s+(\'\'|\"\")/
-    problems << " * sha256 is empty"
+  if text =~ /sha1\s+['"](.+)['"]/ and $1 != '#{sha1}' and $1 !~ /[a-f0-9]{40}/
+    problems << " * sha1 contains invalid or incorrect number of characters"
+  end
+
+  if text =~ /sha256\s+['"](.+)['"]/ and $1 != '#{sha256}' and $1 !~ /[a-f0-9]{64}/
+    problems << " * sha256 contains invalid or incorrect number of characters"
   end
 
   # Commented-out depends_on
@@ -199,6 +204,11 @@ def audit_formula_urls f
     problems << " * The homepage should start with http or https."
   end
 
+  # Google Code homepages should end in a slash
+  if f.homepage =~ %r[^https?://code\.google\.com/p/[^/]+[^/]$]
+    problems << " * Google Code homepage should end with a slash."
+  end
+
   urls = [(f.url rescue nil), (f.head rescue nil)].reject {|p| p.nil?}
   urls.uniq! # head-only formulae result in duplicate entries
 
@@ -251,6 +261,24 @@ def audit_formula_urls f
   return problems
 end
 
+def audit_formula_specs text
+  problems = []
+
+  if text =~ /devel .+(url '.+').+(url '.+')/m
+    problems << " * 'devel' block found before stable 'url'"
+  end
+
+  if text =~ /devel .+(head '.+')/m
+    problems << " * 'devel' block found before 'head'"
+  end
+
+  if text =~ /devel do\s+end/
+    problems << " * Empty 'devel' block found"
+  end
+
+  return problems
+end
+
 def audit_formula_instance f
   problems = []
 
@@ -270,15 +298,12 @@ def audit_formula_instance f
     end
 
     case d
-    when "git", "python", "ruby", "emacs", "mysql", "postgresql"
+    when "git", "python", "ruby", "emacs", "mysql", "postgresql", "mercurial"
       problems << " * Don't use #{d} as a dependency; we allow non-Homebrew\n   #{d} installs."
     end
   end
 
-  # Google Code homepages should end in a slash
-  if f.homepage =~ %r[^https?://code\.google\.com/p/[^/]+[^/]$]
-    problems << " * Google Code homepage should end with a slash."
-  end
+  problems += [' * invalid or missing version'] if f.version.to_s.empty?
 
   return problems
 end
@@ -290,7 +315,7 @@ module Homebrew extend self
     ff.each do |f|
       problems = []
 
-      if f.unstable and f.stable.nil?
+      if f.unstable and f.standard.nil?
         problems += [' * head-only formula']
       end
 
@@ -310,9 +335,10 @@ module Homebrew extend self
         problems << " * 'DATA' was found, but no '__END__'"
       end
 
-      problems << " * File should end with a newline" if text =~ /.+\z/
-
-      problems += [' * invalid or missing version'] if f.version.to_s.empty?
+      # files should end with a newline
+      if text =~ /.+\z/
+        problems << " * File should end with a newline"
+      end
 
       # Don't try remaining audits on text in __END__
       text_without_patch = (text.split("__END__")[0]).strip()
@@ -320,6 +346,7 @@ module Homebrew extend self
       problems += audit_formula_text(f.name, text_without_patch)
       problems += audit_formula_options(f, text_without_patch)
       problems += audit_formula_version(f, text_without_patch)
+      problems += audit_formula_specs(text_without_patch)
 
       unless problems.empty?
         errors = true

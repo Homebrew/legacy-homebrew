@@ -15,9 +15,9 @@ class Clojure < Formula
     CLOJURE=$CLASSPATH:#{prefix}/clojure-1.3.0.jar:${PWD}
 
     if [ "$#" -eq 0 ]; then
-        java -cp $CLOJURE clojure.main --repl
+        java -cp "$CLOJURE" clojure.main --repl
     else
-        java -cp $CLOJURE clojure.main "$@"
+        java -cp "$CLOJURE" clojure.main "$@"
     fi
     EOS
   end

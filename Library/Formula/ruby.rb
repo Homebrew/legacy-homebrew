@@ -55,10 +55,9 @@ class Ruby < Formula
     (ruby_lib+'vendor_ruby').mkpath
     (ruby_lib+'gems').mkpath
 
-    (lib+'ruby').mkpath
-    ln_s (ruby_lib+'site_ruby'), (lib+'ruby')
-    ln_s (ruby_lib+'vendor_ruby'), (lib+'ruby')
-    ln_s (ruby_lib+'gems'), (lib+'ruby')
+    (lib+'ruby').install_symlink ruby_lib+'site_ruby',
+                                 ruby_lib+'vendor_ruby',
+                                 ruby_lib+'gems'
 
     system "./configure", *args
     system "make"

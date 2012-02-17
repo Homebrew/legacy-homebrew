@@ -2,6 +2,8 @@ require 'keg'
 
 module Homebrew extend self
   def uninstall
+    raise KegUnspecifiedError if ARGV.named.empty?
+
     unless ARGV.force?
       ARGV.kegs.each do |keg|
         puts "Uninstalling #{keg}..."
