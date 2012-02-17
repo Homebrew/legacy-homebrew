@@ -6,8 +6,8 @@ class Nginx < Formula
   md5 'd0ceefeb2a68ecb19e78ee894a5b52a3'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.1.14.tar.gz'
-    md5 '16d523e395778ef35b49a2fa6ad18af0'
+    url 'http://nginx.org/download/nginx-1.1.15.tar.gz'
+    md5 '7826818cbcbae2e31925a3b3fcf2bc59'
   end
 
   depends_on 'pcre'

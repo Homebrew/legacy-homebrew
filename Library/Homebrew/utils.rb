@@ -267,13 +267,9 @@ module MacOS extend self
   end
 
   def default_cc
-    cc = if !File.file? "/usr/bin/cc" and xcode_version > 4.3
-      # there is no cc file in Xcode 4.3.0 in the /Developer/usr/bin directory
-      "llvm-gcc"
-    else
-      "cc"
-    end
-    Pathname.new("#{dev_tools_path}/cc").realpath.basename.to_s
+    cc = `/usr/bin/xcrun -find cc 2> /dev/null`.chomp
+    cc = "#{dev_tools_path}/cc" if cc.empty?
+    Pathname.new(cc).realpath.basename.to_s
   end
 
   def default_compiler
@@ -283,7 +279,9 @@ module MacOS extend self
       when "clang" then :clang
       else
         # guess :(
-        if xcode_version > 4.2
+        if xcode_version >= "4.3"
+          :clang
+        elsif xcode_version >= "4.2"
           :llvm
         else
           :gcc
