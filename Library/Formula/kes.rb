@@ -1,8 +1,10 @@
 require 'formula'
 
 class Kes < Formula
-  head 'https://github.com/epilnivek/kes.git'
   homepage 'https://github.com/epilnivek/kes'
+  head 'https://github.com/epilnivek/kes.git'
+  # Requested stable version:
+  # https://github.com/epilnivek/kes/issues/8
 
   def install
     system "make"
