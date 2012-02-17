@@ -6,7 +6,7 @@ class Tig < Formula
   md5 '4fa9e33c5daa76b6fed11e068405356f'
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--sysconfdir=#{etc}"
     system "make install"
     system "make install-doc-man"
 
