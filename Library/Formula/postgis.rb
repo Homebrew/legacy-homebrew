@@ -1,5 +1,9 @@
 require 'formula'
 
+def build_gui?
+  ARGV.include? '--with-gui'
+end
+
 class Postgis < Formula
   url 'http://postgis.refractions.net/download/postgis-1.5.3.tar.gz'
   homepage 'http://postgis.refractions.net/'
@@ -17,10 +21,18 @@ class Postgis < Formula
   depends_on 'proj'
   depends_on 'geos'
 
+  depends_on 'gtk+' if build_gui?
+
   # For GeoJSON and raster handling
   if ARGV.build_head? or ARGV.build_devel?
     depends_on 'gdal'
     depends_on 'json-c'
+  end
+
+  def options
+    [
+      ['--with-gui', 'Build shp2pgsql-gui in addition to command line tools']
+    ]
   end
 
   # PostGIS command line tools intentionally have unused symbols in
@@ -40,6 +52,7 @@ class Postgis < Formula
       # Postgresql keg.
       "--with-pgconfig=#{postgresql.bin}/pg_config"
     ]
+    args << '--with-gui' if build_gui?
 
     if ARGV.build_head? or ARGV.build_devel?
       jsonc   = Formula.factory 'json-c'
@@ -91,6 +104,7 @@ class Postgis < Formula
         loader/.libs/shp2pgsql
         raster/loader/.libs/raster2pgsql
       ]
+      bin.install 'loader/.libs/shp2pgsql-gui' if build_gui?
 
       # Install PostGIS 2.0 SQL scripts
       postgis_sql.install %w[
@@ -120,6 +134,7 @@ class Postgis < Formula
         loader/shp2pgsql
         utils/new_postgis_restore.pl
       ]
+      bin.install 'loader/shp2pgsql-gui' if build_gui?
 
       # Install PostGIS 1.x upgrade scripts
       postgis_sql.install %w[
