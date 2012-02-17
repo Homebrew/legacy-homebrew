@@ -11,4 +11,8 @@ class Mosquitto < Formula
     system "cmake . #{std_cmake_parameters}"
     system "make install"
   end
+
+  def test
+    system "mosquitto -h > /dev/null ; [ $? -eq 3 ]"
+  end
 end
