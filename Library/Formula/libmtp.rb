@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libmtp < Formula
-  url 'http://downloads.sourceforge.net/project/libmtp/libmtp/1.0.1/libmtp-1.0.1.tar.gz'
   homepage 'http://libmtp.sourceforge.net/'
-  md5 'd540a0ef033483bd10b7f83f7a84e4a7'
+  url 'http://downloads.sourceforge.net/project/libmtp/libmtp/1.1.2/libmtp-1.1.2.tar.gz'
+  md5 '6dc708757e3fd3ccce7445b4f2171263'
 
   depends_on "libusb-compat"
 
