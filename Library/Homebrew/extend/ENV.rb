@@ -5,8 +5,9 @@ module HomebrewEnvExtension
   def setup_build_environment
     # Clear CDPATH to avoid make issues that depend on changing directories
     delete('CDPATH')
-    delete('CPPFLAGS')
-    delete('LDFLAGS')
+    delete('GREP_OPTIONS') # can break CMake (lol)
+    delete('CLICOLOR_FORCE') # autotools doesn't like this
+    remove_cc_etc
 
     self['MAKEFLAGS'] = "-j#{self.make_jobs}"
 
@@ -18,12 +19,14 @@ module HomebrewEnvExtension
       self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
     end
 
-    # llvm allows -O4 however it often fails to link and is very slow
-    self['CFLAGS'] = self['CXXFLAGS'] = "-O3 #{SAFE_CFLAGS_FLAGS}"
+    # Os is the default Apple uses for all its stuff so let's trust them
+    self['CFLAGS'] = self['CXXFLAGS'] = "-Os #{SAFE_CFLAGS_FLAGS}"
 
+    # set us up for the user's compiler choice
     self.send self.compiler
+
     # we must have a working compiler!
-    unless File.exist? ENV['CC'] and File.exist? ENV['CXX']
+    unless ENV['CC']
       @compiler = MacOS.default_compiler
       self.send @compiler
       ENV['CC']  = '/usr/bin/cc'
@@ -74,38 +77,75 @@ module HomebrewEnvExtension
   end
 
   def gcc_4_0_1
-    self['CC'] = '/usr/bin/gcc-4.0'
-    self['CXX'] = '/usr/bin/g++-4.0'
+    # we don't use xcrun because gcc 4.0 has not been provided since Xcode 4
+    self['CC'] =  "#{MacOS.dev_tools_path}/gcc-4.0"
+    self['CXX'] = "#{MacOS.dev_tools_path}/g++-4.0"
     replace_in_cflags '-O4', '-O3'
     set_cpu_cflags 'nocona -mssse3', :core => 'prescott', :bottle => 'generic'
     @compiler = :gcc
   end
   alias_method :gcc_4_0, :gcc_4_0_1
 
+  def xcrun tool
+    if File.executable? "/usr/bin/#{tool}"
+      "/usr/bin/#{tool}"
+    elsif system "/usr/bin/xcrun -find #{tool} 2>1 1>/dev/null"
+      # xcrun was provided first with Xcode 4.3 and allows us to proxy
+      # tool usage thus avoiding various bugs
+      "/usr/bin/xcrun #{tool}"
+    else
+      # otherwise lets try and figure it out ourselves
+      fn = "#{MacOS.dev_tools_path}/#{tool}"
+      if File.file? fn
+        fn
+      else
+        nil
+      end
+    end
+  end
+
+  # if your formula doesn't like CC having spaces use this
+  def expand_xcrun
+    ENV['CC'] =~ %r{/usr/bin/xcrun (.*)}
+    ENV['CC'] = `/usr/bin/xcrun -find #{$1}`.chomp if $1
+    ENV['CXX'] =~ %r{/usr/bin/xcrun (.*)}
+    ENV['CXX'] = `/usr/bin/xcrun -find #{$1}`.chomp if $1
+  end
+
   def gcc args = {}
-    gcc_path = Pathname.new "/usr/bin/gcc-4.2"
-    gxx_path = Pathname.new "/usr/bin/g++-4.2"
-    self['CC']  = gcc_path.exist? ? gcc_path : HOMEBREW_PREFIX+'bin/gcc-4.2'
-    self['CXX'] = gxx_path.exist? ? gxx_path : HOMEBREW_PREFIX+'bin/g++-4.2'
+    # Apple stopped shipping gcc-4.2 with Xcode 4.2
+    # However they still provide a gcc symlink to llvm
+    # But we don't want LLVM of course.
+
+    ENV['CC'] = xcrun "gcc-4.2"
+    ENV['CXX'] = xcrun "g++-4.2"
+
+    unless ENV['CC']
+      ENV['CC'] = "#{HOMEBREW_PREFIX}/bin/gcc-4.2"
+      ENV['CXX'] = "#{HOMEBREW_PREFIX}/bin/g++-4.2"
+      raise "GCC could not be found" if not File.exist? ENV['CC']
+    end
+
+    if not ENV['CC'] =~ %r{^/usr/bin/xcrun}
+      raise "GCC could not be found" if Pathname.new(ENV['CC']).realpath.to_s =~ /llvm/
+    end
+
     replace_in_cflags '-O4', '-O3'
     set_cpu_cflags 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott', :bottle => 'generic'
     @compiler = :gcc
-
-    raise "GCC could not be found" if not File.exist? ENV['CC'] \
-                                   or (Pathname.new(ENV['CC']).realpath.to_s =~ /llvm/)
   end
   alias_method :gcc_4_2, :gcc
 
   def llvm
-    self['CC']  = "/usr/bin/llvm-gcc"
-    self['CXX'] = "/usr/bin/llvm-g++"
+    self['CC']  = xcrun "llvm-gcc"
+    self['CXX'] = xcrun "llvm-g++"
     set_cpu_cflags 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott'
     @compiler = :llvm
   end
 
   def clang args = {}
-    self['CC']  = "/usr/bin/clang"
-    self['CXX'] = "/usr/bin/clang++"
+    self['CC']  = xcrun "clang"
+    self['CXX'] = xcrun "clang++"
     replace_in_cflags(/-Xarch_i386 (-march=\S*)/, '\1')
     # Clang mistakenly enables AES-NI on plain Nehalem
     set_cpu_cflags 'native', :nehalem => 'native -Xclang -target-feature -Xclang -aes'
@@ -121,21 +161,21 @@ module HomebrewEnvExtension
         self['FCFLAGS'] = self['CFLAGS'] unless self['FCFLAGS']
         self['FFLAGS'] = self['CFLAGS'] unless self['FFLAGS']
       elsif not self['FCFLAGS'] or self['FFLAGS']
-        opoo <<-EOS
-No Fortran optimization information was provided.  You may want to consider
-setting FCFLAGS and FFLAGS or pass the `--default-fortran-flags` option to
-`brew install` if your compiler is compatible with GCC.
+        opoo <<-EOS.undent
+          No Fortran optimization information was provided.  You may want to consider
+          setting FCFLAGS and FFLAGS or pass the `--default-fortran-flags` option to
+          `brew install` if your compiler is compatible with GCC.
 
-If you like the default optimization level of your compiler, ignore this
-warning.
+          If you like the default optimization level of your compiler, ignore this
+          warning.
         EOS
       end
 
     elsif `/usr/bin/which gfortran`.chomp.size > 0
-      ohai <<-EOS
-Using Homebrew-provided fortran compiler.
-    This may be changed by setting the FC environment variable.
-      EOS
+      ohai <<-EOS.undent
+        Using Homebrew-provided fortran compiler.
+        This may be changed by setting the FC environment variable.
+        EOS
       self['FC'] = `/usr/bin/which gfortran`.chomp
       self['F77'] = self['FC']
 
@@ -212,7 +252,7 @@ Please take one of the following actions:
   def cxx;     self['CXX'] or "g++"; end
   def cflags;  self['CFLAGS'];       end
   def cxxflags;self['CXXFLAGS'];     end
-  def cppflags;self['CPPFLAGS'];      end
+  def cppflags;self['CPPFLAGS'];     end
   def ldflags; self['LDFLAGS'];      end
 
   def m64
