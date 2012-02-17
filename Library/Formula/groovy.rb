@@ -2,8 +2,8 @@ require 'formula'
 
 class Groovy < Formula
   homepage 'http://groovy.codehaus.org/'
-  url 'http://dist.groovy.codehaus.org/distributions/groovy-binary-1.8.5.zip'
-  md5 '0c8759563be35e26fcebff240de4ca21'
+  url 'http://dist.groovy.codehaus.org/distributions/groovy-binary-1.8.6.zip'
+  #md5 '0c8759563be35e26fcebff240de4ca21'
 
   def install
     # Don't need Windows files.
