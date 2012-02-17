@@ -15,17 +15,6 @@ class Qt < Formula
 
   def options
     [
-      ['--with-openssl', "Enable run-time OpenSSL support."],
-      ['--with-largefile', "Enables Qt to access files larger than 4 GB."],
-      ['--with-xmlpatterns', "Build the QtXmlPatterns module.\n\tQtXmlPatterns is built if a decent C++ compiler is used and exceptions are enabled."],
-      ['--with-multimedia', "Build the QtMultimedia module and the platform audio backend."],
-      ['--with-phonon', "Build the Phonon module and the platform phonon plugin.\n\tPhonon is built if a decent C++ compiler is used."],
-      ['--with-svg', "Build the SVG module."],
-      ['--with-webkit', "Build the WebKit module.\n\tWebKit is built if a decent C++ compiler is used."],
-      ['--with-javascript-jit', "Build the JavaScriptCore JIT compiler."],
-      ['--with-script', "Build the QtScript module."],
-      ['--with-scripttools', "Build the QtScriptTools module."],
-      ['--with-declarative', "Build the declarative module and debugging support."],
       ['--with-qtdbus', "Enable QtDBus module."],
       ['--with-qt3support', "Enable deprecated Qt3Support module."],
       ['--with-demos-examples', "Enable Qt demos and examples."],
@@ -59,53 +48,6 @@ class Qt < Formula
     # See: https://github.com/mxcl/homebrew/issues/issue/744
     args << "-system-sqlite" if MacOS.leopard?
     args << "-plugin-sql-mysql" if (HOMEBREW_CELLAR+"mysql").directory?
-
-    if ARGV.include? '--with-openssl'
-      args << "-openssl"
-    end
-
-    if ARGV.include? '--with-largefile'
-      args << "-largefile"
-    end
-
-    if ARGV.include? '--with-xmlpatterns'
-      args << "-xmlpatterns"
-    end
-
-    if ARGV.include? '--with-multimedia'
-      args << "-multimedia"
-      args << "-audio-backend"
-    end
-
-    if ARGV.include? '--with-phonon'
-      args << "-phonon"
-      args << "-phonon-backend"
-    end
-
-    if ARGV.include? '--with-svg'
-      args << "-svg"
-    end
-
-    if ARGV.include? '--with-webkit'
-      args << "-webkit"
-    end
-
-    if ARGV.include? '--with-javascript-jit'
-      args << "-javascript-jit"
-    end
-
-    if ARGV.include? '--with-script'
-      args << "-script"
-    end
-
-    if ARGV.include? '--with-scripttools'
-      args << "-scripttools"
-    end
-
-    if ARGV.include? '--with-declarative'
-      args << "-declarative"
-      args << "-declarative-debug"
-    end
 
     if ARGV.include? '--with-qtdbus'
       args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
