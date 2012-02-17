@@ -1,9 +1,9 @@
 require 'formula'
 
 class Eigen < Formula
-  url 'http://bitbucket.org/eigen/eigen/get/3.0.4.tar.bz2'
+  url 'http://bitbucket.org/eigen/eigen/get/3.0.5.tar.bz2'
   homepage 'http://eigen.tuxfamily.org/'
-  md5 'c4a403660311ad8d62a28c118883310f'
+  md5 '43070952464a5bf21694e082e7fb8fce'
 
   depends_on 'cmake' => :build
 
