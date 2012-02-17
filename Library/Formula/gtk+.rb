@@ -21,7 +21,8 @@ class Gtkx < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-glibtest",
-                          "--disable-introspection"
+                          "--disable-introspection",
+                          "--disable-visibility"
     system "make install"
   end
 
