@@ -3,16 +3,18 @@ require 'pathname'
 # we enhance pathname to make our code more readable
 class Pathname
   def install *sources
+    results = []
     sources.each do |src|
       case src
       when Array
-        src.collect {|src| install_p(src) }
+        src.each {|s| results << install_p(s) }
       when Hash
-        src.collect {|src, new_basename| install_p(src, new_basename) }
+        src.each {|s, new_basename| results << install_p(s, new_basename) }
       else
-        install_p(src)
+        results << install_p(src)
       end
     end
+    return results
   end
 
   def install_p src, new_basename = nil
@@ -50,16 +52,18 @@ class Pathname
 
   # Creates symlinks to sources in this folder.
   def install_symlink *sources
+    results = []
     sources.each do |src|
       case src
       when Array
-        src.collect {|src| install_symlink_p(src) }
+        src.each {|s| results << install_symlink_p(s) }
       when Hash
-        src.collect {|src, new_basename| install_symlink_p(src, new_basename) }
+        src.each {|s, new_basename| results << install_symlink_p(s, new_basename) }
       else
-        install_symlink_p(src)
+        results << install_symlink_p(src)
       end
     end
+    return results
   end
 
   def install_symlink_p src, new_basename = nil
