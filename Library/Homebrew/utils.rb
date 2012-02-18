@@ -266,17 +266,18 @@ module MacOS extend self
     end
   end
 
-  def xcrun
-    @xcrun ||= begin
-      path = "#{xcode_prefix}/usr/bin/xcrun"
-      path = "xcrun" unless File.file? path # just in case
-      path
-    end
-  end
-
   def default_cc
-    cc = `#{xcrun} -find cc 2> /dev/null`.chomp
-    cc = "#{dev_tools_path}/cc" if cc.empty?
+    cc = `/usr/bin/xcrun -find cc 2> /dev/null`.chomp
+    cc = "#{dev_tools_path}/cc" if cc.empty? or not $?.success?
+
+    unless File.executable? cc
+      # If xcode-select isn't setup then xcrun fails and on Xcode 4.3
+      # the cc binary is not at #{dev_tools_path}. This return is almost
+      # worthless however since in this particular setup nothing much builds
+      # but I wrote the code now and maybe we'll fix the other issues later.
+      cc = "#{xcode_prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc"
+    end
+
     Pathname.new(cc).realpath.basename.to_s rescue nil
   end
 
