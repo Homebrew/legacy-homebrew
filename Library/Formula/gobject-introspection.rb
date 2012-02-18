@@ -6,6 +6,7 @@ class GobjectIntrospection < Formula
   md5 'f71e80054048546d282af5f205a08a14'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
   depends_on 'glib'
   depends_on 'libffi'
 
