@@ -6,6 +6,7 @@ class GdkPixbuf < Formula
   sha256 'da7a3f00db360913716368e19e336402755cafa93769f3cfa28a969303e4bee1'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
   depends_on 'glib'
   depends_on 'jasper'
   depends_on 'libtiff'
