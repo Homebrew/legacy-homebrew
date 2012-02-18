@@ -267,11 +267,18 @@ module MacOS extend self
   end
 
   def default_cc
-    cc = Pathname.new("#{dev_tools_path}/cc")
-    # Xcode 4.3.0 has no /Applications/Xcode/Contents/Developer/usr/bin/cc
-    # Xcode 4.3.0 has no GCC
-    cc = Pathname.new("#{dev_tools_path}/llvm-gcc") unless cc.file?
-    cc.realpath.basename.to_s
+    cc = `/usr/bin/xcrun -find cc 2> /dev/null`.chomp
+    cc = "#{dev_tools_path}/cc" if cc.empty? or not $?.success?
+
+    unless File.executable? cc
+      # If xcode-select isn't setup then xcrun fails and on Xcode 4.3
+      # the cc binary is not at #{dev_tools_path}. This return is almost
+      # worthless however since in this particular setup nothing much builds
+      # but I wrote the code now and maybe we'll fix the other issues later.
+      cc = "#{xcode_prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc"
+    end
+
+    Pathname.new(cc).realpath.basename.to_s rescue nil
   end
 
   def default_compiler
@@ -281,7 +288,9 @@ module MacOS extend self
       when "clang" then :clang
       else
         # guess :(
-        if xcode_version >= "4.2"
+        if xcode_version >= "4.3"
+          :clang
+        elsif xcode_version >= "4.2"
           :llvm
         else
           :gcc
@@ -304,10 +313,9 @@ module MacOS extend self
     end
   end
 
-  # usually /Developer
   def xcode_prefix
     @xcode_prefix ||= begin
-      path = `/usr/bin/xcode-select -print-path 2>&1`.chomp
+      path = `/usr/bin/xcode-select -print-path 2>/dev/null`.chomp
       path = Pathname.new path
       if path.directory? and path.absolute?
         path
@@ -319,7 +327,16 @@ module MacOS extend self
         # fallback for broken Xcode 4.3 installs
         Pathname.new '/Applications/Xcode.app/Contents/Developer'
       else
-        nil
+        # Ask Spotlight where Xcode is. If the user didn't install the
+        # helper tools and installed Xcode in a non-conventional place, this
+        # is our only option. See: http://superuser.com/questions/390757
+        path = `mdfind "kMDItemDisplayName==Xcode&&kMDItemKind==Application"`
+        path = "#{path}/Contents/Developer"
+        if path.empty? or not File.directory? path
+          nil
+        else
+          path
+        end
       end
     end
   end

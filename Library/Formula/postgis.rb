@@ -1,11 +1,7 @@
 require 'formula'
 
-def raster?
-  ARGV.include? '--with-raster'
-end
-
-def topology?
-  ARGV.include? '--with-topology'
+def build_gui?
+  ARGV.include? '--with-gui'
 end
 
 class Postgis < Formula
@@ -15,61 +11,131 @@ class Postgis < Formula
 
   head 'http://svn.osgeo.org/postgis/trunk/', :using => :svn
 
+  devel do
+    url 'http://postgis.org/download/postgis-2.0.0alpha5.tar.gz'
+    md5 'd47923c07b590571d9b9af6cd7c07813'
+    version '2.0.0alpha5'
+  end
+
   depends_on 'postgresql'
   depends_on 'proj'
   depends_on 'geos'
-  depends_on 'gdal' if raster?
 
-  # For libintl
-  depends_on 'gettext' if ARGV.build_head?
+  depends_on 'gtk+' if build_gui?
+
+  # For GeoJSON and raster handling
+  if ARGV.build_head? or ARGV.build_devel?
+    depends_on 'gdal'
+    depends_on 'json-c'
+  end
 
   def options
     [
-      ['--with-raster', 'Enable PostGIS Raster extension (HEAD builds only).'],
-      ['--with-topology', 'Enable PostGIS Topology extension (HEAD builds only).']
+      ['--with-gui', 'Build shp2pgsql-gui in addition to command line tools']
     ]
   end
 
+  # PostGIS command line tools intentionally have unused symbols in
+  # them---these are callbacks for liblwgeom.
+  skip_clean :all
+
   def install
     ENV.deparallelize
+    postgresql = Formula.factory 'postgresql'
 
     args = [
       "--disable-dependency-tracking",
       "--prefix=#{prefix}",
-      "--with-projdir=#{HOMEBREW_PREFIX}"
+      "--with-projdir=#{HOMEBREW_PREFIX}",
+      # This is against Homebrew guidelines, but we have to do it as the
+      # PostGIS plugin libraries can only be properly inserted into Homebrew's
+      # Postgresql keg.
+      "--with-pgconfig=#{postgresql.bin}/pg_config"
     ]
+    args << '--with-gui' if build_gui?
 
-    # Apple ships a postgres client in Lion, conflicts with installed PostgreSQL server.
-    if MacOS.lion?
-      postgresql = Formula.factory 'postgresql'
-      args << "--with-pgconfig=#{postgresql.bin}/pg_config"
+    if ARGV.build_head? or ARGV.build_devel?
+      jsonc   = Formula.factory 'json-c'
+      args << "--with-jsondir=#{jsonc.prefix}"
+      # Unfortunately, NLS support causes all kinds of headaches because
+      # PostGIS gets all of it's compiler flags from the PGXS makefiles. This
+      # makes it nigh impossible to tell the buildsystem where our keg-only
+      # gettext installations are.
+      args << '--disable-nls'
     end
 
-    if ARGV.build_head?
-      system "./autogen.sh"
-      gettext = Formula.factory 'gettext'
-      args << "--with-gettext=#{gettext.prefix}"
-      args << "--with-raster" if raster?
-      args << "--with-topology" if topology?
-    end
+    system './autogen.sh' if ARGV.build_head?
+    system './configure', *args
+    system 'make'
 
-    system "./configure", *args
-    system "make install"
+    # __DON'T RUN MAKE INSTALL!__
+    #
+    # PostGIS includes the PGXS makefiles and so will install __everything__
+    # into the Postgres keg instead of the PostGIS keg. Unfortunately, some
+    # things have to be inside the Postgres keg in order to be function. So, we
+    # install the bare minimum of stuff and then manually move everything else
+    # to the prefix.
 
-    # Copy generated SQL files to the share folder
+    # Install PostGIS plugin libraries into the Postgres keg so that they can
+    # be loaded and so PostGIS databases will continue to function even if
+    # PostGIS is removed.
+    postgresql.lib.install Dir['postgis/postgis*.so']
+
+    # Stand-alone SQL files will be installed the share folder
     postgis_sql = share + 'postgis'
-    # Install common SQL scripts
-    postgis_sql.install %w[spatial_ref_sys.sql postgis/postgis.sql postgis/uninstall_postgis.sql]
 
-    if ARGV.build_head?
+    # Install version-specific SQL scripts and tools first. Some of the
+    # installation routines require command line tools to still be present
+    # inside the build prefix.
+    if ARGV.build_head? or ARGV.build_devel?
+      # Install the liblwgeom library
+      system 'make install -C liblwgeom'
+
+      # Install raster plugin to Postgres keg
+      postgresql.lib.install Dir['raster/rt_pg/rtpostgis*.so']
+
+      # Install extension scripts to the Postgres keg.
+      # `CREATE EXTENSION postgis;` won't work if these are located elsewhere.
+      system 'make install -C extensions'
+
+      # Damn you libtool. Damn you to hell.
+      bin.install %w[
+        loader/.libs/pgsql2shp
+        loader/.libs/shp2pgsql
+        raster/loader/.libs/raster2pgsql
+      ]
+      bin.install 'loader/.libs/shp2pgsql-gui' if build_gui?
+
       # Install PostGIS 2.0 SQL scripts
       postgis_sql.install %w[
-        postgis/legacy.sql postgis/legacy_compatibility_layer.sql postgis/uninstall_legacy.sql
+        postgis/legacy.sql
+        postgis/legacy_compatibility_layer.sql
+        postgis/uninstall_legacy.sql
         postgis/postgis_upgrade_20_minor.sql
       ]
-      postgis_sql.install 'raster/rt_pg/rtpostgis.sql' if raster?
-      postgis_sql.install 'topology/topology.sql' if topology?
+
+      postgis_sql.install %w[
+        raster/rt_pg/rtpostgis.sql
+        raster/rt_pg/rtpostgis_drop.sql
+        raster/rt_pg/rtpostgis_upgrade_20_minor.sql
+        raster/rt_pg/rtpostgis_upgrade.sql
+        raster/rt_pg/rtpostgis_upgrade_cleanup.sql
+        raster/rt_pg/uninstall_rtpostgis.sql
+      ]
+
+      postgis_sql.install %w[
+        topology/topology.sql
+        topology/topology_upgrade_20_minor.sql
+        topology/uninstall_topology.sql
+      ]
     else
+      bin.install %w[
+        loader/pgsql2shp
+        loader/shp2pgsql
+        utils/new_postgis_restore.pl
+      ]
+      bin.install 'loader/shp2pgsql-gui' if build_gui?
+
       # Install PostGIS 1.x upgrade scripts
       postgis_sql.install %w[
         postgis/postgis_upgrade_13_to_15.sql
@@ -78,20 +144,48 @@ class Postgis < Formula
       ]
     end
 
-    # Copy loader and utils binaries to bin folder
+    # Common tools
     bin.install %w[
-      loader/pgsql2shp loader/shp2pgsql utils/create_undef.pl
-      utils/new_postgis_restore.pl utils/postgis_proc_upgrade.pl
-      utils/postgis_restore.pl utils/profile_intersects.pl
-      utils/test_estimation.pl utils/test_joinestimation.pl
+      utils/create_undef.pl
+      utils/postgis_proc_upgrade.pl
+      utils/postgis_restore.pl
+      utils/profile_intersects.pl
+      utils/test_estimation.pl
+      utils/test_geography_estimation.pl
+      utils/test_geography_joinestimation.pl
+      utils/test_joinestimation.pl
+    ]
+
+    # Common SQL scripts
+    postgis_sql.install %w[
+      spatial_ref_sys.sql
+      postgis/postgis.sql
+      postgis/uninstall_postgis.sql
     ]
   end
 
-  def caveats; <<-EOS.undent
-    To create a spatially-enabled database, see the documentation:
-      http://postgis.refractions.net/documentation/manual-1.5/ch02.html#id2630392
-    and to upgrade your existing spatial databases, see here:
-      http://postgis.refractions.net/documentation/manual-1.5/ch02.html#upgrading
+  def caveats;
+    postgresql = Formula.factory 'postgresql'
+
+    s = <<-EOS.undent
+      To create a spatially-enabled database, see the documentation:
+        http://postgis.refractions.net/documentation/manual-1.5/ch02.html#id2630392
+      and to upgrade your existing spatial databases, see here:
+        http://postgis.refractions.net/documentation/manual-1.5/ch02.html#upgrading
+
+      PostGIS SQL scripts installed to:
+        #{HOMEBREW_PREFIX}/share/postgis
+      PostGIS plugin libraries installed to:
+        #{postgresql.lib}
     EOS
+
+    if ARGV.build_head? or ARGV.build_devel?
+      s += <<-EOS.undent
+        PostGIS extension modules installed to:
+          #{postgresql.share}/postgres/extension
+      EOS
+    end
+
+    s
   end
 end
