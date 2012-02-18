@@ -1,37 +1,43 @@
 require 'formula'
 
 class Wireshark < Formula
+  homepage 'http://www.wireshark.org'
   url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.6.5.tar.bz2'
   md5 '794948a10d387fc8e37d824ea11dbac9'
-  homepage 'http://www.wireshark.org'
 
   devel do
     url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.7.0.tar.bz2'
     md5 'c9f646a15fed6e31c4aa88322b8cce2a'
   end
 
+  depends_on 'pkg-config' => :build
   depends_on 'gnutls' => :optional
+  depends_on 'c-ares' => :optional
   depends_on 'pcre' => :optional
   depends_on 'glib'
-  depends_on 'gtk+' if ARGV.include? "--with-x"
+  depends_on 'gtk+' if ARGV.include? '--with-x'
 
   def options
-    [["--with-x", "Include X11 support"]]
+    [
+      ['--with-x', 'Include X11 support'],
+      ['--with-python', 'Enable experimental python bindings']
+    ]
   end
 
   def install
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
 
-    # don't build python bindings, results in runtime errors
-    # e.g. "dlsym(0x8fe467fc, py_create_dissector_handle): symbol not found"
-    args << "--without-python"
+    # Optionally enable experimental python bindings; is known to cause
+    # some runtime issues, e.g.
+    # "dlsym(0x8fe467fc, py_create_dissector_handle): symbol not found"
+    args << '--without-python' unless ARGV.include? '--with-python'
 
     # actually just disables the GTK GUI
-    args << "--disable-wireshark" if not ARGV.include? "--with-x"
+    args << '--disable-wireshark' unless ARGV.include? '--with-x'
 
     system "./configure", *args
     system "make"
-    ENV.j1 # Install failed otherwise.
+    ENV.deparallelize # parallel install fails
     system "make install"
   end
 
