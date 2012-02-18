@@ -135,7 +135,7 @@ module HomebrewEnvExtension
       raise "GCC could not be found" if not File.exist? ENV['CC']
     end
 
-    if not ENV['CC'] =~ %{^/usr/bin/xcrun }
+    if not ENV['CC'] =~ %r{^/usr/bin/xcrun }
       raise "GCC could not be found" if Pathname.new(ENV['CC']).realpath.to_s =~ /llvm/
     end
 
