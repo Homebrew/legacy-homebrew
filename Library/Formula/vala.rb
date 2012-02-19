@@ -7,6 +7,7 @@ class Vala < Formula
   md5 '639c8a85e184647a2c912a4f6ac28ed1'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
   depends_on 'gettext'
   depends_on 'glib'
 
