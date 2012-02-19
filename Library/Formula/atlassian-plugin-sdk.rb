@@ -1,9 +1,9 @@
 require 'formula'
 
 class AtlassianPluginSdk < Formula
-  url 'https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/amps/atlassian-plugin-sdk/3.7.2/atlassian-plugin-sdk-3.7.2.tar.gz'
   homepage 'https://developer.atlassian.com/display/DOCS/Atlassian+Plugin+SDK+Documentation'
-  md5 '3042e6f3a391ce7d0e789533e8df965d'
+  url 'https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/amps/atlassian-plugin-sdk/3.7.3/atlassian-plugin-sdk-3.7.3.tar.gz'
+  md5 'aa231e2a1c3789f6540d549aaf1447a7'
 
   def install
     # Remove windows files
@@ -17,11 +17,7 @@ class AtlassianPluginSdk < Formula
     libexec.install Dir['*']
 
     # Symlink binaries
-    bin.mkpath
-    Dir["#{libexec}/bin/*"].each do |f|
-      ln_s f, bin+File.basename(f)
-    end
-
+    bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
   def caveats

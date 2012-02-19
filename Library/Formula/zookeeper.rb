@@ -1,10 +1,11 @@
 require 'formula'
 
 class Zookeeper < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.3.4/zookeeper-3.3.4.tar.gz'
-  head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
   homepage 'http://zookeeper.apache.org/'
-  md5 '4f3ce9fc78ec3dea1ddca2bf6bab308d'
+  url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.3/zookeeper-3.4.3.tar.gz'
+  md5 'e43b96df6e29cb43518d2fcd1867486c'
+
+  head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
 
   def options
     [

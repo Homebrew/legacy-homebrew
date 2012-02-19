@@ -4,14 +4,16 @@ module Homebrew extend self
   def versions
     raise "Please `brew install git` first" unless system "/usr/bin/which -s git"
 
+    raise FormulaUnspecifiedError if ARGV.named.empty?
+
     ARGV.formulae.all? do |f|
       if ARGV.include? '--compact'
         puts f.versions * " "
       else
         f.versions do |version, sha|
-          print Tty.white
+          print Tty.white.to_s
           print "#{version.ljust(8)} "
-          print Tty.reset
+          print Tty.reset.to_s
           puts "git checkout #{sha} #{f.pretty_relative_path}"
         end
       end
@@ -62,9 +64,18 @@ class Formula
       mktemp do
         path = Pathname.new(Pathname.pwd+"#{name}.rb")
         path.write text_from_sha(sha)
-        # FIXME: shouldn't have to do this?
-        Object.send(:remove_const, "#{name.capitalize}")
-        Formula.factory(path).version
-      end rescue nil
+
+        # Unload the class so Formula#version returns the correct value
+        # FIXME shouldn't have to do this?
+        begin
+          version = nostdout { Formula.factory(path).version }
+          Object.send(:remove_const, Formula.class_s(name))
+          version
+        rescue SyntaxError, TypeError, NameError, ArgumentError
+          # We rescue these so that we can skip bad versions and
+          # continue walking the history
+          nil
+        end
+      end
     end
 end

@@ -188,7 +188,7 @@ class CurlUnsafeDownloadStrategy < CurlDownloadStrategy
 end
 
 # This strategy extracts our binary packages.
-class CurlBottleDownloadStrategy <CurlDownloadStrategy
+class CurlBottleDownloadStrategy < CurlDownloadStrategy
   def initialize url, name, version, specs
     super
     @tarball_path = HOMEBREW_CACHE/"#{name}-#{version}.bottle#{ext}"
@@ -199,7 +199,7 @@ class CurlBottleDownloadStrategy <CurlDownloadStrategy
   end
 end
 
-class SubversionDownloadStrategy <AbstractDownloadStrategy
+class SubversionDownloadStrategy < AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
     @unique_token="#{name}--svn" unless name.to_s.empty? or name == '__UNKNOWN__'
@@ -416,7 +416,7 @@ class CVSDownloadStrategy < AbstractDownloadStrategy
   end
 
   def stage
-    FileUtils.cp_r Dir[@co+"*"], Dir.pwd
+    FileUtils.cp_r Dir[@co+"{.}"], Dir.pwd
 
     require 'find'
     Find.find(Dir.pwd) do |path|
@@ -446,7 +446,7 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
   def cached_location; @clone; end
 
   def fetch
-    raise "You must install Mercurial: brew install mercurial" unless system "/usr/bin/which hg"
+    raise "You must install Mercurial: brew install mercurial" unless system "/usr/bin/which -s hg"
 
     ohai "Cloning #{@url}"
 
@@ -488,7 +488,7 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
 
   def fetch
     raise "You must install bazaar first" \
-          unless system "/usr/bin/which bzr"
+          unless system "/usr/bin/which -s bzr"
 
     ohai "Cloning #{@url}"
     unless @clone.exist?
@@ -532,7 +532,7 @@ class FossilDownloadStrategy < AbstractDownloadStrategy
 
   def fetch
     raise "You must install fossil first" \
-          unless system "/usr/bin/which fossil"
+          unless system "/usr/bin/which -s fossil"
 
     ohai "Cloning #{@url}"
     unless @clone.exist?

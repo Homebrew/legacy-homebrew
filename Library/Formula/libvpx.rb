@@ -1,10 +1,9 @@
 require 'formula'
 
 class Libvpx < Formula
-  url 'http://webm.googlecode.com/files/libvpx-v0.9.7-p1.tar.bz2'
-  sha1 'dacfefaf3363f781de43858f09cdd0b0d469e6fc'
+  url 'http://webm.googlecode.com/files/libvpx-v1.0.0.tar.bz2'
+  sha256 '07cedb0a19a44e6d81d75f52eea864f59ef10c6c725cb860431bec6641eafe21'
   homepage 'http://www.webmproject.org/code/'
-  version '0.9.7-p1'
 
   depends_on 'yasm' => :build
 
@@ -18,9 +17,6 @@ class Libvpx < Formula
   end
 
   def install
-    macbuild = Pathname.pwd+'macbuild'
-    mkdir macbuild
-    Dir.chdir macbuild
     args = ["--prefix=#{prefix}",
             "--enable-pic",
             "--enable-vp8"]
@@ -28,10 +24,16 @@ class Libvpx < Formula
     args << "--enable-mem-tracker" if ARGV.include? "--mem-tracker"
     args << "--enable-postproc" if ARGV.include? "--postproc"
     args << "--enable-postproc-visualizer" if ARGV.include? "--visualizer"
-    # Configure detects 32-bit CPUs incorrectly.
-    args << "--target=generic-gnu" unless MacOS.prefer_64_bit?
-    system "../configure", *args
-    system "make"
-    system "make install"
+
+    # Unless the arch is specified, configure tries to build universal.
+    # Patches welcome to detect and apply the real arch strings on each platform.
+    args << "--target=generic-gnu"
+
+    mkdir 'macbuild'
+    cd 'macbuild' do
+      system "../configure", *args
+      system "make"
+      system "make install"
+    end
   end
 end
