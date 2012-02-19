@@ -24,6 +24,8 @@ class Gnupg < Formula
   end
 
   def install
+    ENV.append 'CFLAGS', '-std=gnu89' if ENV.compiler == :clang
+
     if ARGV.include? '--idea'
       opoo "You are building with support for the patented IDEA cipher."
       d=Pathname.getwd
