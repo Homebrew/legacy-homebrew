@@ -6,8 +6,9 @@ class Dpkg < Formula
   md5 '0cd6f20a574d0df31298e70fc3b26173'
 
   depends_on 'pkg-config' => :build
+  depends_on 'gnu-tar' => :build
 
-  #Fixes the PERL_LIBDIR
+  #Fixes the PERL_LIBDIR and uses gtar instead of tar
   def patches; DATA; end
 
   def install
@@ -40,3 +41,17 @@ index a4e8516..de7f226 100755
  
  for ac_prog in pod2man
  do
+diff --git a/lib/dpkg/dpkg.h b/lib/dpkg/dpkg.h
+index 3e39ccb..2d51843 100644
+--- a/lib/dpkg/dpkg.h
++++ b/lib/dpkg/dpkg.h
+@@ -97,7 +97,7 @@ DPKG_BEGIN_DECLS
+ #define DPKG		"dpkg"
+ #define DEBSIGVERIFY	"/usr/bin/debsig-verify"
+ 
+-#define TAR		"tar"
++#define TAR		"gtar"
+ #define RM		"rm"
+ #define FIND		"find"
+ #define DIFF		"diff"
+
