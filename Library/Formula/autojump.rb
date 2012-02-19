@@ -14,7 +14,7 @@ class Autojump < Formula
     man1.install 'autojump.1'
     (prefix+'etc').install 'autojump.sh' => 'autojump'
     (prefix+'etc').install 'autojump.bash', 'autojump.zsh'
-    (prefix+'share/zsh/functions').install '_j'
+    (share+'zsh/functions').install '_j'
   end
 
   def caveats; <<-EOS.undent
