@@ -220,8 +220,11 @@ def check_gcc_versions
 
   unless File.exist? '/usr/bin/cc'
     puts <<-EOS.undent
-      You have no /usr/bin/cc. This will cause numerous build issues. Please
-      reinstall Xcode.
+      You have no /usr/bin/cc.
+      This means you probably can't build *anything*. You need to install the CLI
+      Tools for Xcode. You can either download this from http://connect.apple.com/
+      or install them from inside Xcode’s preferences. Homebrew does not require
+      all of Xcode! You only need the CLI tools package!
     EOS
   end
 end
