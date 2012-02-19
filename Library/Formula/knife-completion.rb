@@ -1,15 +1,14 @@
 require 'formula'
 
-class BashCompletionGithubGistFormula < GithubGistFormula
-  def install
-    (prefix+'etc/bash_completion.d').install Dir['*']
-  end
-end
-
-class KnifeCompletion < BashCompletionGithubGistFormula
+class KnifeCompletion < GithubGistFormula
   url 'https://raw.github.com/gist/1050685/b616645a4c9f56fb52d8fc65703e746f9e8ffd7c/knife'
   homepage 'https://gist.github.com/1050685'
   md5 '488e4ce424c37d2e4efcf7041fdacfd8'
 
   depends_on 'bash-completion'
+
+  def install
+    (prefix+'etc/bash_completion.d').install Dir['*']
+  end
+
 end
