@@ -56,6 +56,11 @@ class SwiProlog < Formula
     system "make install"
   end
 
+  def patches
+    #fixes xpce on OSX
+    DATA
+  end
+  
   def caveats; <<-EOS.undent
     By default, this formula installs the JPL bridge.
     On 10.6, this requires the "Java Developer Update" from Apple:
@@ -65,3 +70,20 @@ class SwiProlog < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/packages/xpce/src/unx/process.c b/packages/xpce/src/unx/process.c
+index 9ed06a6..06dd15b 100644
+--- a/packages/xpce/src/unx/process.c
++++ b/packages/xpce/src/unx/process.c
+@@ -85,8 +85,13 @@ reduced to the facility to terminate the inferior process.
+ #ifdef __WINDOWS__
+ #define environ _environ	/* declared in STDLIB.H */
+ #else
++#ifdef __APPLE__               /* OSX does not export environ */
++#include <crt_externs.h>
++#define environ (*_NSGetEnviron())
++#else
+ extern char **environ;		/* Unix version */
+ #endif
++#endif
