@@ -10,7 +10,7 @@ class Libgnomecanvas < Formula
   depends_on 'libglade'
   depends_on 'libart'
   depends_on 'gettext'
-  depends_on 'gtk'
+  depends_on 'gtk+'
 
   def install
     system "./configure", "--disable-dependency-tracking",
