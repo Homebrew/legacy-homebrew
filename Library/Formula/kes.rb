@@ -7,7 +7,10 @@ class Kes < Formula
 
   head 'https://github.com/epilnivek/kes.git'
 
+  depends_on 'readline'
+
   def install
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}", "--with-readline"
     system "make"
     bin.install 'es'
     man1.install 'doc/es.1'
