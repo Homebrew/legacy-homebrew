@@ -17,7 +17,8 @@ module Homebrew extend self
 
       puts "Testing #{f.name}"
       begin
-        f.test
+        # tests can also return false to indicate failure
+        puts "#{f.name}: failed" if f.test == false
       rescue
         puts "#{f.name}: failed"
       end
