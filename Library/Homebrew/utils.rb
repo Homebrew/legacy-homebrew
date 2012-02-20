@@ -438,7 +438,7 @@ module MacOS extend self
   end
 
   def lion?
-    10.7 <= MACOS_VERSION #Actually Lion or newer
+    10.7 <= MACOS_VERSION # Actually Lion or newer
   end
 
   def mountain_lion?
