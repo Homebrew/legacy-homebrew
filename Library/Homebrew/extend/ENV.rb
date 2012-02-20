@@ -75,6 +75,11 @@ module HomebrewEnvExtension
     remove_from_cflags(/-O./)
     append_to_cflags '-g -O0'
   end
+  def O1
+    # Sometimes even O2 doesn't work :(
+    remove_from_cflags(/-O./)
+    append_to_cflags '-O1'
+  end
 
   def gcc_4_0_1
     # we don't use xcrun because gcc 4.0 has not been provided since Xcode 4
@@ -96,10 +101,19 @@ module HomebrewEnvExtension
     else
       # otherwise lets try and figure it out ourselves
       fn = "#{MacOS.dev_tools_path}/#{tool}"
-      if File.file? fn
+      if File.executable? fn
         fn
       else
-        nil
+        # This is for the use-case where xcode-select is not set up with
+        # Xcode 4.3. The tools in Xcode 4.3 are split over two locations,
+        # usually xcrun would figure that out for us, but it won't work if
+        # xcode-select is not configured properly.
+        fn = "#{MacOS.xcode_prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin/#{tool}"
+        if File.executable? fn
+          fn
+        else
+          nil
+        end
       end
     end
   end
@@ -126,7 +140,7 @@ module HomebrewEnvExtension
       raise "GCC could not be found" if not File.exist? ENV['CC']
     end
 
-    if not ENV['CC'] =~ %r{^/usr/bin/xcrun}
+    if not ENV['CC'] =~ %r{^/usr/bin/xcrun }
       raise "GCC could not be found" if Pathname.new(ENV['CC']).realpath.to_s =~ /llvm/
     end
 

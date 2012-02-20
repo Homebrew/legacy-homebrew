@@ -13,7 +13,8 @@ module Homebrew extend self
 
     ARGV.formulae.each do |f|
       if f.linked_keg.directory?
-        raise "#{f} already installed\nTry: brew upgrade #{f}"
+        ohai "#{f} already installed"
+        puts "Try: brew upgrade #{f}"
       end
     end unless ARGV.force?
 
