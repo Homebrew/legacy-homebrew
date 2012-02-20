@@ -28,11 +28,16 @@ class Cassandra < Formula
     rm Dir["bin/*.bat"]
 
     (etc+"cassandra").install Dir["conf/*"]
-    prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc,lib/licenses}"]
+    prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc,pylib,lib/licenses}"]
     prefix.install Dir["lib/*.jar"]
 
     plist_path.write startup_plist
     plist_path.chmod 0644
+  end
+
+  def patches
+    # let cqlsh know where to find cqlshlib
+    DATA
   end
 
   def caveats; <<-EOS.undent
@@ -40,6 +45,13 @@ class Cassandra < Formula
       mkdir -p ~/Library/LaunchAgents
       cp #{plist_path} ~/Library/LaunchAgents/
       launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+
+    If you plan to use the CQL shell (cqlsh), you will need the Python CQL library
+    installed. Since Homebrew prefers using pip for Python packages, you can
+    install that using:
+
+      pip install cql
+
     EOS
   end
 
@@ -70,3 +82,18 @@ class Cassandra < Formula
     EOPLIST
   end
 end
+
+__END__
+diff --git a/bin/cqlsh b/bin/cqlsh
+index 0f02a0c..f7fb469 100755
+--- a/bin/cqlsh
++++ b/bin/cqlsh
+@@ -47,7 +47,7 @@ import ConfigParser
+ 
+ # cqlsh should run correctly when run out of a Cassandra source tree,
+ # out of an unpacked Cassandra tarball, and after a proper package install.
+-cqlshlibdir = os.path.join(os.path.dirname(__file__), '..', 'pylib')
++cqlshlibdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'pylib')
+ if os.path.isdir(cqlshlibdir):
+     sys.path.insert(0, cqlshlibdir)
+ 
