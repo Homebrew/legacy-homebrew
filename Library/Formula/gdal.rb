@@ -198,6 +198,13 @@ class Gdal < Formula
     # Fortunately, this can be remedied using LDFLAGS.
     ENV.append 'LDFLAGS', '-lsqlite3'
 
+    # Reset ARCHFLAGS to match how we build.
+    if MacOS.prefer_64_bit?
+      ENV['ARCHFLAGS'] = "-arch x86_64"
+    else
+      ENV['ARCHFLAGS'] = "-arch i386"
+    end
+
     system "./configure", "--prefix=#{prefix}", *get_configure_args
     system "make"
     system "make install"
