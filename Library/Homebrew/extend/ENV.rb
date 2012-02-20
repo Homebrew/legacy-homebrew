@@ -20,7 +20,7 @@ module HomebrewEnvExtension
     end
 
     # Os is the default Apple uses for all its stuff so let's trust them
-    self['CFLAGS'] = self['CXXFLAGS'] = "-Os #{SAFE_CFLAGS_FLAGS}"
+    set_cflags "-Os #{SAFE_CFLAGS_FLAGS}"
 
     # set us up for the user's compiler choice
     self.send self.compiler
@@ -315,6 +315,8 @@ Please take one of the following actions:
   def append_to_cflags f
     append 'CFLAGS', f
     append 'CXXFLAGS', f
+    append 'OBJCFLAGS', f
+    append 'OBJCXXFLAGS', f
   end
 
   def remove key, value
@@ -326,11 +328,20 @@ Please take one of the following actions:
   def remove_from_cflags f
     remove 'CFLAGS', f
     remove 'CXXFLAGS', f
+    remove 'OBJCFLAGS', f
+    remove 'OBJCXXFLAGS', f
   end
 
   def replace_in_cflags before, after
-    %w{CFLAGS CXXFLAGS}.each do |key|
+    %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}.each do |key|
       self[key] = self[key].sub before, after if self[key]
+    end
+  end
+
+  # Convenience method to set all C compiler flags in one shot.
+  def set_cflags f
+    %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}.each do |key|
+      self[key] = f
     end
   end
 
@@ -389,7 +400,7 @@ Please take one of the following actions:
   end
 
   def remove_cc_etc
-    keys = %w{CC CXX LD CPP CFLAGS CXXFLAGS LDFLAGS CPPFLAGS}
+    keys = %w{CC CXX LD CPP CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS}
     removed = Hash[*keys.map{ |key| [key, ENV[key]] }.flatten]
     keys.each do |key|
       ENV[key] = nil
