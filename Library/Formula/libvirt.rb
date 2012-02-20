@@ -2,8 +2,8 @@ require 'formula'
 
 class Libvirt < Formula
   homepage 'http://www.libvirt.org'
-  url 'ftp://libvirt.org/libvirt/libvirt-0.9.9.tar.gz'
-  sha256 'f3253567dc0f22b1bd72121c4163b0caf17f5beb55adaa4104c7e4636e7edf94'
+  url 'ftp://libvirt.org/libvirt/libvirt-0.9.10.tar.gz'
+  sha256 '5b81d9f054ee4b395b0ab4f59845d082baaa6d6c2a038c966309156dde16e11d'
 
   depends_on "gnutls"
   depends_on "yajl"
@@ -12,6 +12,13 @@ class Libvirt < Formula
     # Definitely needed on Leopard, but not on Snow Leopard.
     depends_on "readline"
     depends_on "libxml2"
+  end
+
+  # Includes a patch by Lincoln Myers <lincoln_myers@yahoo.com>,
+  # fixing a recently introduced compilation bug on OSX.
+  # Patch is already included upstream, and will be in libvirt 0.9.11.
+  def patches
+    DATA
   end
 
   fails_with_llvm "Undefined symbols when linking", :build => "2326"
@@ -59,3 +66,22 @@ class Libvirt < Formula
   end
 end
 
+__END__
+# Fix for OSX by Lincoln Myers <lincoln_myers@yahoo.com>
+--- a/src/util/virfile.h
++++ b/src/util/virfile.h
+@@ -58,10 +58,10 @@ typedef virFileWrapperFd *virFileWrapperFdPtr;
+
+ int virFileDirectFdFlag(void);
+
+-enum {
++enum virFileWrapperFdFlags {
+     VIR_FILE_WRAPPER_BYPASS_CACHE   = (1 << 0),
+     VIR_FILE_WRAPPER_NON_BLOCKING   = (1 << 1),
+-} virFileWrapperFdFlags;
++};
+
+ virFileWrapperFdPtr virFileWrapperFdNew(int *fd,
+                                         const char *name,
+--
+1.7.8.3
