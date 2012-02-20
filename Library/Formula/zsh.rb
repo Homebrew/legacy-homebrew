@@ -34,7 +34,7 @@ class Zsh < Formula
   end
 
   def test
-    system "HOME=\"#{prefix}\" make check"
+    system "#{bin}/zsh --version"
   end
 
   def caveats; <<-EOS.undent
