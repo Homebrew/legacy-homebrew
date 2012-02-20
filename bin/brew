@@ -65,7 +65,7 @@ begin
              'dr' => :doctor,
              '--repo' => '--repository',
              'environment' => '--env', # same as gem
-             'stale' => :outdated
+             'stale' => :outdated # We don't like stale beer!
              }
 
   cmd = ARGV.shift
