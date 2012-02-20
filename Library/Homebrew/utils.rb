@@ -441,6 +441,10 @@ module MacOS extend self
     10.7 <= MACOS_VERSION #Actually Lion or newer
   end
 
+  def mountain_lion?
+    10.8 <= MACOS_VERSION # Actually Mountain Lion or newer
+  end
+  
   def prefer_64_bit?
     Hardware.is_64_bit? and 10.6 <= MACOS_VERSION
   end
