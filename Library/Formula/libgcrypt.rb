@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libgcrypt < Formula
+  homepage 'http://gnupg.org/'
   url 'ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.5.0.tar.bz2'
   sha1 '3e776d44375dc1a710560b98ae8437d5da6e32cf'
-  homepage 'http://directory.fsf.org/project/libgcrypt/'
 
   depends_on 'libgpg-error'
 
