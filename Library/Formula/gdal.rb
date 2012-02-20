@@ -197,6 +197,11 @@ class Gdal < Formula
     #
     # Fortunately, this can be remedied using LDFLAGS.
     ENV.append 'LDFLAGS', '-lsqlite3'
+    if Hardware.is_32_bit?
+      ENV['ARCHFLAGS'] = "-arch i386"
+    else
+      ENV['ARCHFLAGS'] = "-arch x86_64"
+    end
 
     system "./configure", "--prefix=#{prefix}", *get_configure_args
     system "make"
