@@ -24,8 +24,10 @@ class Dmd < Formula
     man5.install man1+'dmd.conf.5' # oops
     (share+'d/examples').install Dir['samples/d/*.d']
 
+    # Rewrite the DFLAGS to point to the prefix.
     # @adamv: this should not go into bin!
-    # but I'm too lazy to fix since I'm just pulling a change
+    # But I'm too lazy to figure out how to fix right now.
+    rm bin+'dmd.conf'
     (bin+'dmd.conf').write <<-EOS.undent
       [Environment]
       DFLAGS=-I#{prefix}/src/phobos -I#{prefix}/src/druntime/import
