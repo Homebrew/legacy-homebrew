@@ -224,21 +224,10 @@ class Formula
         # so load any deps before this point! And exit asap afterwards
         yield self
       rescue RuntimeError, SystemCallError => e
-        if not ARGV.debug?
-          %w(config.log CMakeCache.txt).each do |fn|
-            (HOMEBREW_LOGS/name).install(fn) if File.file?(fn)
-          end
-          raise
+        %w(config.log CMakeCache.txt).each do |fn|
+          (HOMEBREW_LOGS/name).install(fn) if File.file?(fn)
         end
-
-        onoe e.inspect
-        puts e.backtrace unless e.kind_of? BuildError
-        ohai "Rescuing build..."
-        puts "When you exit this shell Homebrew will attempt to finalise the installation."
-        puts "If nothing is installed or the shell exits with a non-zero error code,"
-        puts "Homebrew will abort. The installation prefix is:"
-        puts prefix
-        interactive_shell self
+        raise
       end
     end
   end
