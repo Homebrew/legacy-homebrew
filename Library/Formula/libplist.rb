@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libplist < Formula
-  url 'http://cgit.sukimashita.com/libplist.git/snapshot/libplist-1.6.tar.bz2'
   homepage 'http://cgit.sukimashita.com/libplist.git/'
-  md5 '78fe4b8fb50e0bad267ffc6e77081cbe'
+  url 'http://cgit.sukimashita.com/libplist.git/snapshot/libplist-1.8.tar.bz2'
+  md5 '2a9e0258847d50f9760dc3ece25f4dc6'
 
   depends_on 'cmake' => :build
   depends_on 'libxml2'
