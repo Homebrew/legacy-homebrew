@@ -1,10 +1,10 @@
 require 'formula'
 
 class Zile < Formula
-  url 'http://ftpmirror.gnu.org/zile/zile-2.4.2.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/zile/zile-2.4.2.tar.gz'
+  url 'http://ftpmirror.gnu.org/zile/zile-2.4.6.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/zile/zile-2.4.6.tar.gz'
   homepage 'http://www.gnu.org/software/zile/'
-  md5 '2a68ac77cebbeca1eacf170ba9072dbe'
+  md5 '508d14a3410d7dde89088eca06dad69'
 
   depends_on 'bdw-gc'
 
