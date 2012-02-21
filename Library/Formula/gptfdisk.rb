@@ -11,9 +11,6 @@ class Gptfdisk < Formula
   def patches; DATA; end
 
   def install
-    icu4c = Formula.factory('icu4c')
-    ENV.append 'LDFLAGS',"-L#{icu4c.lib}"
-    ENV.append 'CXXFLAGS',"-O2 -Wall -D_FILE_OFFSET_BITS=64 -D USE_UTF16  -I#{icu4c.include} -g"
     system "make -f Makefile.mac"
     sbin.install ['gdisk','cgdisk','sgdisk','fixparts']
     man8.install ['gdisk.8','cgdisk.8','sgdisk.8','fixparts.8']
@@ -24,22 +21,23 @@ class Gptfdisk < Formula
   end
 end
 __END__
-diff -u a/Makefile.mac b/Makefile.mac 
+diff -u a/Makefile.mac b/Makefile.mac
 --- a/Makefile.mac	2012-01-22 20:44:28.000000000 +0100
-+++ b/Makefile.mac	2012-02-20 14:06:04.000000000 +0100
-@@ -1,11 +1,6 @@
++++ b/Makefile.mac	2012-02-21 01:00:34.000000000 +0100
+@@ -1,11 +1,7 @@
 -CC=gcc
 -CXX=g++
  CFLAGS=-O2 -D_FILE_OFFSET_BITS=64 -g
 -CXXFLAGS=-O2 -Wall -D_FILE_OFFSET_BITS=64 -D USE_UTF16 -I/sw/include -I/usr/local/include -I/opt/local/include -g
 -#CXXFLAGS=-O2 -Wall -D_FILE_OFFSET_BITS=64 -I /usr/local/include -I/opt/local/include -g
++CXXFLAGS+=-O2 -Wall -D_FILE_OFFSET_BITS=64 -D USE_UTF16 -g
  LIB_NAMES=crc32 support guid gptpart mbrpart basicmbr mbr gpt bsd parttypes attributes diskio diskio-unix
  MBR_LIBS=support diskio diskio-unix basicmbr mbrpart
 -#LIB_SRCS=$(NAMES:=.cc)
  LIB_OBJS=$(LIB_NAMES:=.o)
  MBR_LIB_OBJS=$(MBR_LIBS:=.o)
  LIB_HEADERS=$(LIB_NAMES:=.h)
-@@ -14,17 +9,14 @@
+@@ -14,17 +10,14 @@
  all:	gdisk sgdisk cgdisk fixparts
  
  gdisk:	$(LIB_OBJS) gpttext.o gdisk.o
