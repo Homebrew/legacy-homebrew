@@ -1,14 +1,18 @@
 require 'formula'
 
 class Minc < Formula
-  url 'http://packages.bic.mni.mcgill.ca/tgz/minc-2.1.00.tar.gz'
-  homepage 'http://www.nmr.mgh.harvard.edu/~rhoge/minc/'
-  md5 '1ef2402abc8f49d870d9f610eb5ad4c8'
+  url 'https://github.com/downloads/andrewjanke/minc/minc-2.1.10.tar.gz'
+  homepage 'http://en.wikibooks.org/wiki/MINC'
+  md5 '64032918928393ee6e1da7e8af3433d8'
+
+  head 'https://github.com/andrewjanke/minc.git'
+
+  #fails_with_clang "Throws 'non-void function 'miget_real_value_hyperslab' should return a value' error during build.", :build => 318
 
   depends_on 'netcdf'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end
