@@ -94,7 +94,7 @@ module HomebrewEnvExtension
   def xcrun tool
     if File.executable? "/usr/bin/#{tool}"
       "/usr/bin/#{tool}"
-    elsif system "/usr/bin/xcrun -find #{tool} 2>1 1>/dev/null"
+    elsif not MacOS.xctools_fucked? and system "/usr/bin/xcrun -find #{tool} 2>1 1>/dev/null"
       # xcrun was provided first with Xcode 4.3 and allows us to proxy
       # tool usage thus avoiding various bugs
       "/usr/bin/xcrun #{tool}"
@@ -126,7 +126,7 @@ module HomebrewEnvExtension
     ENV['CXX'] = `/usr/bin/xcrun -find #{$1}`.chomp if $1
   end
 
-  def gcc args = {}
+  def gcc
     # Apple stopped shipping gcc-4.2 with Xcode 4.2
     # However they still provide a gcc symlink to llvm
     # But we don't want LLVM of course.
@@ -157,12 +157,13 @@ module HomebrewEnvExtension
     @compiler = :llvm
   end
 
-  def clang args = {}
+  def clang
     self['CC']  = xcrun "clang"
     self['CXX'] = xcrun "clang++"
     replace_in_cflags(/-Xarch_i386 (-march=\S*)/, '\1')
     # Clang mistakenly enables AES-NI on plain Nehalem
     set_cpu_cflags 'native', :nehalem => 'native -Xclang -target-feature -Xclang -aes'
+    append_to_cflags '-Qunused-arguments'
     @compiler = :clang
   end
 
@@ -253,6 +254,7 @@ Please take one of the following actions:
   # we've seen some packages fail to build when warnings are disabled!
   def enable_warnings
     remove_from_cflags '-w'
+    remove_from_cflags '-Qunused-arguments'
   end
 
   # Snow Leopard defines an NCURSES value the opposite of most distros
@@ -340,14 +342,16 @@ Please take one of the following actions:
     remove_from_cflags %r{-mssse3}
     remove_from_cflags %r{-msse4(\.\d)?}
     append_to_cflags xarch unless xarch.empty?
-    # Don't set -msse3 and older flags because -march does that for us
+
     if ARGV.build_bottle?
-      if map.has_key?(:bottle)
-        append_to_cflags '-mtune=' + map.fetch(:bottle)
-      end
+      append_to_cflags '-mtune=' + map.fetch(:bottle) if map.has_key? :bottle
     else
+      # Don't set -msse3 and older flags because -march does that for us
       append_to_cflags '-march=' + map.fetch(Hardware.intel_family, default)
     end
+
+    # not really a 'CPU' cflag, but is only used with clang
+    remove_from_cflags '-Qunused-arguments'
   end
 
   # actually c-compiler, so cc would be a better name
