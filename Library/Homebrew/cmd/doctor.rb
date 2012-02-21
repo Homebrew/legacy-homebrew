@@ -350,15 +350,16 @@ def check_user_path
         # only show the doctor message if there are any conflicts
         # rationale: a default install should not trigger any brew doctor messages
         conflicts = Dir["#{HOMEBREW_PREFIX}/bin/*"].
-            select {|fn| File.exist? "/usr/bin/#{File.basename fn}"}.
-            map {|fn| File.basename fn}
+            map{ |fn| File.basename fn }.
+            select{ |bn| File.exist? "/usr/bin/#{bn}" }
+
         if conflicts.size
           ohai "/usr/bin occurs before #{HOMEBREW_PREFIX}/bin"
           puts <<-EOS.undent
             This means that system-provided programs will be used instead of those
             provided by Homebrew. The following tools exist at both paths:
 
-                #{conflicts * "\n    "}
+                #{conflicts * "\n                "}
 
             Consider editing your .bashrc to put #{HOMEBREW_PREFIX}/bin
             ahead of /usr/bin in your PATH.
