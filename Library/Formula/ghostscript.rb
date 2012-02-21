@@ -16,12 +16,6 @@ class Ghostscript < Formula
   depends_on 'jpeg'
   depends_on 'libtiff'
 
-  # The patches fix compilation against libpng 1.5, provided by Lion.
-  # Patch by @CharlieRoot
-  def patches
-    DATA unless ARGV.build_head?
-  end
-
   def move_included_source_copies
     # If the install version of any of these doesn't match
     # the version included in ghostscript, we get errors
@@ -66,5 +60,3 @@ class Ghostscript < Formula
     (man+'de').rmtree
   end
 end
-
-__END__
