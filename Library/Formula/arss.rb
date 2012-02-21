@@ -9,7 +9,7 @@ class Arss < Formula
   depends_on 'fftw'
 
   def install
-    Dir.chdir "src" do
+    cd "src" do
       system "cmake . #{std_cmake_parameters}"
       system "make install"
     end

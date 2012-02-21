@@ -1,12 +1,12 @@
 require 'formula'
 
 class Libmikmod < Formula
-  url 'https://github.com/mistydemeo/libmikmod.git', :tag => '446324a45a6d165b1941a4758f6cd221301b479e'
   homepage 'http://mikmod.raphnet.net/'
+  url 'https://github.com/mistydemeo/libmikmod.git', :tag => '446324a45a6d165b1941a4758f6cd221301b479e'
   version '3.2.0b2'
 
   def options
-    [[ '--with-debug', 'Enable debugging symbols and build without optimization' ]]
+    [[ '--with-debug', 'Enable debugging symbols and build without optimization']]
   end
 
   def patches
@@ -68,8 +68,8 @@ class Libmikmod < Formula
     # autoreconf w/glibtoolize will fix PIC flags, flat_namespace from 2005 era code.
     system "autoreconf -ivf"
     # An oos build is recommended in the documentation.
-    Dir.mkdir 'macbuild'
-    Dir.chdir 'macbuild' do
+    mkdir 'macbuild'
+    cd 'macbuild' do
       system "../configure", *args
       system "make"
       system "make install"

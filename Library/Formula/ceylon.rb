@@ -17,7 +17,7 @@ class Ceylon < Formula
   end
 
   def test
-    Dir.chdir "#{libexec}/samples/helloworld" do
+    cd "#{libexec}/samples/helloworld" do
       system "#{bin}/ceylonc", "com.acme.helloworld"
       system "#{bin}/ceylond", "-private", "com.acme.helloworld"
       system "#{bin}/ceylon", "com.acme.helloworld/1.0.0", "John"

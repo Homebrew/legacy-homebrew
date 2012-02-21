@@ -1,9 +1,9 @@
 require 'formula'
 
 class Xu4 < Formula
+  homepage 'http://xu4.sourceforge.net/'
   url 'http://xu4.svn.sourceforge.net/svnroot/xu4/trunk/u4',
           :revision => '2999'
-  homepage 'http://xu4.sourceforge.net/'
   version 'r2999'
 
   head 'http://xu4.svn.sourceforge.net/svnroot/xu4/trunk/u4'
@@ -26,7 +26,7 @@ class Xu4 < Formula
     ohai "Downloading support files"
     ultima_zips.each { |f| curl f, "-O" }
 
-    Dir.chdir 'src' do
+    cd 'src' do
       # Copy over SDL's ObjC main files
       `cp -R #{Formula.factory('sdl').libexec}/* macosx`
 

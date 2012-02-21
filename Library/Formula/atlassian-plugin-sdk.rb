@@ -9,7 +9,7 @@ class AtlassianPluginSdk < Formula
     # Remove windows files
     rm_f Dir["bin/*.bat"]
 
-    Dir.chdir "apache-maven/maven-docs" do
+    cd "apache-maven/maven-docs" do
       prefix.install %w{ NOTICE.txt LICENSE.txt README.txt }
     end
 

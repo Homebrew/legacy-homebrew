@@ -10,7 +10,7 @@ class Libftdi < Formula
 
   def install
     mkdir 'libftdi-build'
-    Dir.chdir 'libftdi-build' do
+    cd 'libftdi-build' do
       system "../configure", "--prefix=#{prefix}"
       system "make"
       system "make install"
