@@ -6,6 +6,8 @@ class Scotch < Formula
   version '5.1.12'
   md5 'f873ff2bad519f9be7bc7b117bbe0bc4'
 
+  depends_on 'open-mpi'
+
   def install
     Dir.chdir 'src'
     ln_s 'Make.inc/Makefile.inc.i686_mac_darwin8', 'Makefile.inc'
