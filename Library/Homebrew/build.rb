@@ -8,6 +8,8 @@ ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| File.expand_path p }
 
 require 'global'
 
+require 'debrew' if ARGV.debug?
+
 at_exit do
   # the whole of everything must be run in at_exit because the formula has to
   # be the run script as __END__ must work for *that* formula.
@@ -31,6 +33,7 @@ at_exit do
   rescue Exception => e
     if ENV['HOMEBREW_ERROR_PIPE']
       pipe = IO.new(ENV['HOMEBREW_ERROR_PIPE'].to_i, 'w')
+      e.continuation = nil if ARGV.debug?
       Marshal.dump(e, pipe)
       pipe.close
       exit! 1
@@ -74,7 +77,15 @@ def install f
       exit $?
     else
       f.prefix.mkpath
-      f.install
+      begin
+        f.install
+      rescue Exception => e
+        if ARGV.debug?
+          debrew e, f
+        else
+          raise e
+        end
+      end
       FORMULA_META_FILES.each do |filename|
         next if File.directory? filename
         target_file = filename
