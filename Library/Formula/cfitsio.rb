@@ -29,7 +29,7 @@ class Cfitsio < Formula
       # fetch, compile and install examples programs
       CfitsioExamples.new.brew do
         mkdir 'bin'
-        Dir.glob('*.c').each do |f|
+        Dir['*.c'].each do |f|
           # compressed_fits.c does not work (obsolete function call)
           next if f == 'compress_fits.c'
           system "#{ENV.cc} #{f} -I#{include} -L#{lib} -lcfitsio -lm -o bin/#{f.sub('.c','')}"

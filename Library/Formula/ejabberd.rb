@@ -1,8 +1,8 @@
 require 'formula'
 
 class Ejabberd < Formula
-  url "http://www.process-one.net/downloads/ejabberd/2.1.10/ejabberd-2.1.10.tar.gz"
   homepage 'http://www.ejabberd.im'
+  url "http://www.process-one.net/downloads/ejabberd/2.1.10/ejabberd-2.1.10.tar.gz"
   md5 '70f0e17983114c62893e43b6ef2e9d0c'
 
   depends_on "openssl" if MacOS.leopard?
@@ -27,7 +27,7 @@ class Ejabberd < Formula
       end
     end
 
-    Dir.chdir "src" do
+    cd "src" do
       args = ["--prefix=#{prefix}",
               "--sysconfdir=#{etc}",
               "--localstatedir=#{var}"]

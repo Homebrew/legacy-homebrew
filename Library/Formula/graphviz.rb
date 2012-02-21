@@ -38,7 +38,7 @@ class Graphviz < Formula
     system "make install"
 
     # build Graphviz.app
-    Dir.chdir "macosx" do
+    cd "macosx" do
       system "xcodebuild", "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"
     end
     prefix.install "macosx/build/Release/Graphviz.app"

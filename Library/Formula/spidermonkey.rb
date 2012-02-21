@@ -42,7 +42,7 @@ class Spidermonkey < Formula
       system "make install"
     end
 
-    Dir.chdir "js/src" do
+    cd "js/src" do
       # Fixes a bug with linking against CoreFoundation. Tests all pass after
       # building like this. See: http://openradar.appspot.com/7209349
       inreplace "configure.in", "LDFLAGS=\"$LDFLAGS -framework Cocoa\"", ""
@@ -55,8 +55,7 @@ class Spidermonkey < Formula
     end
 
     mkdir "brew-build"
-
-    Dir.chdir "brew-build" do
+    cd "brew-build" do
       system "../js/src/configure", "--prefix=#{prefix}",
                                     "--enable-readline",
                                     "--enable-threadsafe",
@@ -74,7 +73,6 @@ class Spidermonkey < Formula
 
   def caveats; <<-EOS.undent
     This formula installs Spidermonkey 1.8.5.
-
     If you are trying to compile MongoDB from scratch, you will need 1.7.x instead.
     EOS
   end

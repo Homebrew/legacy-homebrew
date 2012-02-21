@@ -4,6 +4,7 @@ class Netpbm < Formula
   homepage 'http://netpbm.sourceforge.net'
   url 'http://sourceforge.net/projects/netpbm/files/super_stable/10.35.82/netpbm-10.35.82.tgz'
   md5 'fcae2fc7928ad7d31b0540ec0c3e710b'
+
   head 'http://netpbm.svn.sourceforge.net/svnroot/netpbm/trunk'
 
   depends_on "libtiff"
@@ -40,7 +41,7 @@ class Netpbm < Formula
     stage_dir = Pathname(Dir.pwd) + 'stage'
     system "make", "package", "pkgdir=#{stage_dir}"
 
-    Dir.chdir stage_dir do
+    cd stage_dir do
       prefix.install %w{ bin include lib misc }
       # do man pages explicitly; otherwise a junk file is installed in man/web
       man1.install Dir['man/man1/*.1']

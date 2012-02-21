@@ -20,7 +20,7 @@ class Dcmtk < Formula
     args << '-DDCMTK_WITH_DOXYGEN=YES' if ARGV.include? '--with-docs'
 
     mkdir 'build'
-    Dir.chdir 'build' do
+    cd 'build' do
       system 'cmake', '..', *args
       system 'make DOXYGEN' if ARGV.include? '--with-docs'
       system 'make install'
