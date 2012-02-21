@@ -13,7 +13,8 @@ module Homebrew extend self
 
     ARGV.formulae.each do |f|
       if f.linked_keg.directory?
-        raise "#{f} already installed\nTry: brew upgrade #{f}"
+        ohai "#{f} already installed"
+        puts "Try: brew upgrade #{f}"
       end
     end unless ARGV.force?
 
@@ -104,7 +105,6 @@ module Homebrew extend self
           fi = FormulaInstaller.new(f)
           fi.install
           fi.caveats
-          f.linked_keg.unlink if f.linked_keg.directory? and f.linked_keg.realpath == f.prefix
           fi.finish
         rescue FormulaAlreadyInstalledError => e
           opoo e.message

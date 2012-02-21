@@ -266,9 +266,17 @@ module MacOS extend self
     end
   end
 
+  def xctools_fucked?
+    # Xcode 4.3 tools hang if "/" is set
+    `/usr/bin/xcode-select -print-path 2>/dev/null`.chomp == "/"
+  end
+
   def default_cc
-    cc = `/usr/bin/xcrun -find cc 2> /dev/null`.chomp
-    cc = "#{dev_tools_path}/cc" if cc.empty? or not $?.success?
+    cc = unless xctools_fucked?
+      out = `/usr/bin/xcrun -find cc 2> /dev/null`.chomp
+      out if $?.success?
+    end
+    cc = "#{dev_tools_path}/cc" if cc.nil? or cc.empty?
 
     unless File.executable? cc
       # If xcode-select isn't setup then xcrun fails and on Xcode 4.3
@@ -317,7 +325,7 @@ module MacOS extend self
     @xcode_prefix ||= begin
       path = `/usr/bin/xcode-select -print-path 2>/dev/null`.chomp
       path = Pathname.new path
-      if path.directory? and path.absolute?
+      if $?.success? and path.directory? and path.absolute?
         path
       elsif File.directory? '/Developer'
         # we do this to support cowboys who insist on installing
@@ -343,9 +351,12 @@ module MacOS extend self
 
   def xcode_version
     @xcode_version ||= begin
+      # Xcode 4.3 xc* tools hang indefinately if xcode-select path is set thus
+      raise if `xcode-select -print-path 2>/dev/null`.chomp == "/"
+
       raise unless system "/usr/bin/which -s xcodebuild"
-      `xcodebuild -version 2>&1` =~ /Xcode (\d(\.\d)*)/
-      raise if $1.nil?
+      `xcodebuild -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
+      raise if $1.nil? or not $?.success?
       $1
     rescue
       # for people who don't have xcodebuild installed due to using

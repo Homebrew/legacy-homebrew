@@ -18,8 +18,8 @@ module Homebrew extend self
       value = env[k]
       if value
         results = value
-        if value =~ /^[^\s]*xcrun (.*)/
-          path = `#{MacOS.xcrun} -find #{$1}`
+        if value =~ %r{/usr/bin/xcrun (.*)}
+          path = `/usr/bin/xcrun -find #{$1}`
           results += " => #{path}"
         elsif File.exists? value and File.symlink? value
           results += " => #{Pathname.new(value).realpath}"
