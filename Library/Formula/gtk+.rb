@@ -9,6 +9,7 @@ class Gtkx < Formula
   #sha256 '24fbfd9d7f45a57df80cbc7ac8185672f0cdc9f259dc3680b0d35401fc906860'
   
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
   depends_on 'glib'
   depends_on 'jpeg'
   depends_on 'libtiff'
