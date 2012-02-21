@@ -254,6 +254,7 @@ Please take one of the following actions:
   # we've seen some packages fail to build when warnings are disabled!
   def enable_warnings
     remove_from_cflags '-w'
+    remove_from_cflags '-Qunused-arguments'
   end
 
   # Snow Leopard defines an NCURSES value the opposite of most distros
@@ -350,7 +351,7 @@ Please take one of the following actions:
     end
 
     # not really a 'CPU' cflag, but is only used with clang
-    remove_from_cflags %r{ -Qunused-arguments}
+    remove_from_cflags '-Qunused-arguments'
   end
 
   # actually c-compiler, so cc would be a better name
