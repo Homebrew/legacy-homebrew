@@ -10,6 +10,11 @@ class Redis < Formula
   fails_with_llvm 'Fails with "reference out of range from _linenoise"', :build => 2334
 
   def install
+    if MacOS.default_compiler == :clang
+      # auto-retest next clang version, submit patch if fails!
+      ENV.llvm if MacOS.clang_version.to_f <= 3.1
+    end
+
     # Architecture isn't detected correctly on 32bit Snow Leopard without help
     ENV["OBJARCH"] = MacOS.prefer_64_bit? ? "-arch x86_64" : "-arch i386"
 
