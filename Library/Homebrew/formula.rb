@@ -256,10 +256,10 @@ class Formula
       if llvm.build.to_i >= 2336
         if MacOS.xcode_version < "4.2"
           opoo "Formula will not build with LLVM, using GCC"
-          ENV.gcc :force => true
+          ENV.gcc
         else
           opoo "Formula will not build with LLVM, trying Clang"
-          ENV.clang :force => true
+          ENV.clang
         end
         return
       end

@@ -126,7 +126,7 @@ module HomebrewEnvExtension
     ENV['CXX'] = `/usr/bin/xcrun -find #{$1}`.chomp if $1
   end
 
-  def gcc args = {}
+  def gcc
     # Apple stopped shipping gcc-4.2 with Xcode 4.2
     # However they still provide a gcc symlink to llvm
     # But we don't want LLVM of course.
@@ -157,7 +157,7 @@ module HomebrewEnvExtension
     @compiler = :llvm
   end
 
-  def clang args = {}
+  def clang
     self['CC']  = xcrun "clang"
     self['CXX'] = xcrun "clang++"
     replace_in_cflags(/-Xarch_i386 (-march=\S*)/, '\1')
