@@ -77,8 +77,9 @@ abort "Don't run this as root!" if Process.uid == 0
 abort <<-EOABORT unless `groups`.split.include? "admin"
 This script requires the user #{ENV['USER']} to be an Administrator. If this
 sucks for you then you can install Homebrew in your home directory or however
-you please; please refer to the website. If you still want to use this script
-set your user to be an Administrator in System Preferences or `su'.
+you please; please refer to our homepage. If you still want to use this script
+set your user to be an Administrator in System Preferences or `su' to a
+non-root user with Administrator privileges.
 EOABORT
 
 ohai "This script will install:"
