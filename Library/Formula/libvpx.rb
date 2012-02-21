@@ -17,9 +17,6 @@ class Libvpx < Formula
   end
 
   def install
-    macbuild = Pathname.pwd+'macbuild'
-    mkdir macbuild
-    Dir.chdir macbuild
     args = ["--prefix=#{prefix}",
             "--enable-pic",
             "--enable-vp8"]
@@ -27,10 +24,16 @@ class Libvpx < Formula
     args << "--enable-mem-tracker" if ARGV.include? "--mem-tracker"
     args << "--enable-postproc" if ARGV.include? "--postproc"
     args << "--enable-postproc-visualizer" if ARGV.include? "--visualizer"
-    # Configure detects 32-bit CPUs incorrectly.
-    args << "--target=generic-gnu" unless MacOS.prefer_64_bit?
-    system "../configure", *args
-    system "make"
-    system "make install"
+
+    # Unless the arch is specified, configure tries to build universal.
+    # Patches welcome to detect and apply the real arch strings on each platform.
+    args << "--target=generic-gnu"
+
+    mkdir 'macbuild'
+    cd 'macbuild' do
+      system "../configure", *args
+      system "make"
+      system "make install"
+    end
   end
 end

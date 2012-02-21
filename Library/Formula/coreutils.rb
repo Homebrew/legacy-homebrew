@@ -17,6 +17,8 @@ class Coreutils < Formula
   mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.15.tar.xz'
   sha256 '837eb377414eae463fee17d0f77e6d76bed79b87bc97ef0c23887710107fd49c'
 
+  depends_on 'xz' => :build
+
   def install
     system "./configure", "--prefix=#{prefix}", "--program-prefix=g"
     system "make install"
