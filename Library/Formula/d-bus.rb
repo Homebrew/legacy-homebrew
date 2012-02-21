@@ -17,7 +17,8 @@ class DBus < Formula
                           "--disable-doxygen-docs",
                           "--enable-launchd",
                           "--with-launchd-agent-dir=#{prefix}",
-                          "--without-x"
+                          "--without-x",
+                          "--disable-tests"
     system "make"
     ENV.deparallelize
     system "make install"
