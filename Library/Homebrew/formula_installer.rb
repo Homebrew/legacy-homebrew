@@ -15,8 +15,7 @@ class FormulaInstaller
     @f = ff
     @show_header = true
     @ignore_deps = ARGV.include? '--ignore-dependencies' || ARGV.interactive?
-    @install_bottle = !ff.bottle_url.nil? && !ARGV.build_from_source? &&
-                      Pathname.new(ff.bottle_url).version == ff.version
+    @install_bottle = !ARGV.build_from_source? && ff.bottle_up_to_date?
   end
 
   def install
@@ -67,7 +66,7 @@ class FormulaInstaller
     fi.show_header = false
     oh1 "Installing #{f} dependency: #{dep}"
     fi.install
-    dep.linked_keg.unlink if dep.linked_keg
+    Keg.new(dep.linked_keg.realpath).unlink if dep.linked_keg.directory?
     fi.caveats
     fi.finish
   end
@@ -83,9 +82,10 @@ class FormulaInstaller
       ohai 'Caveats', f.keg_only_text
       @show_summary_heading = true
     else
+      audit_bin
+      audit_lib
       check_manpages
       check_infopages
-      check_jars
       check_m4
     end
   end
@@ -245,16 +245,54 @@ class FormulaInstaller
 
   def check_jars
     # Check for Jars in lib
-    if File.exist?(f.lib)
-      unless f.lib.children.select{|g| g.to_s =~ /\.jar$/}.empty?
-        opoo 'JARs were installed to "lib".'
-        puts "Installing JARs to \"lib\" can cause conflicts between packages."
-        puts "For Java software, it is typically better for the formula to"
-        puts "install to \"libexec\" and then symlink or wrap binaries into \"bin\"."
-        puts "See \"activemq\", \"jruby\", etc. for examples."
-        @show_summary_heading = true
-      end
+    return unless File.exist? f.lib
+
+    unless f.lib.children.select{|g| g.to_s =~ /\.jar$/}.empty?
+      opoo 'JARs were installed to "lib".'
+      puts "Installing JARs to \"lib\" can cause conflicts between packages."
+      puts "For Java software, it is typically better for the formula to"
+      puts "install to \"libexec\" and then symlink or wrap binaries into \"bin\"."
+      puts "See \"activemq\", \"jruby\", etc. for examples."
+      @show_summary_heading = true
     end
+  end
+
+  def check_non_libraries
+    return unless File.exist? f.lib
+
+    valid_libraries = %w(.a .dylib .framework .la .so)
+    non_libraries = f.lib.children.select do |g|
+      next if g.directory?
+      extname = g.extname
+      (extname != ".jar") and (not valid_libraries.include? extname)
+    end
+
+    unless non_libraries.empty?
+      opoo 'Non-libraries were installed to "lib".'
+      puts "Installing non-libraries to \"lib\" is bad practice."
+      puts "The offending files are:"
+      puts non_libraries
+      @show_summary_heading = true
+    end
+  end
+
+  def audit_bin
+    return unless File.exist? f.bin
+
+    non_exes = f.bin.children.select {|g| not File.executable? g}
+
+    unless non_exes.empty?
+      opoo 'Non-executables were installed to "bin".'
+      puts "Installing non-executables to \"bin\" is bad practice."
+      puts "The offending files are:"
+      puts non_exes
+      @show_summary_heading = true
+    end
+  end
+
+  def audit_lib
+    check_jars
+    check_non_libraries
   end
 
   def check_m4

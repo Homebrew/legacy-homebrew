@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ungif < Formula
-  url 'http://sourceforge.net/projects/giflib/files/libungif%204.x/libungif-4.1.4/libungif-4.1.4.tar.bz2'
-  md5 '76865bc1bed90ecb5992a1edcc4d6c15'
   homepage 'http://sourceforge.net/projects/giflib/'
+  url 'http://downloads.sourceforge.net/project/giflib/giflib%204.x/giflib-4.1.6/giflib-4.1.6.tar.bz2'
+  md5 '7125644155ae6ad33dbc9fc15a14735f'
 
   def install
     ENV.j1

@@ -1,12 +1,13 @@
 require 'formula'
 
 class Mecab < Formula
-  url 'http://mecab.googlecode.com/files/mecab-0.99.tar.gz'
   homepage 'http://mecab.sourceforge.net/'
-  sha1 '08e55c28787c18774017bc788fdca9a16b96da97'
+  url 'http://mecab.googlecode.com/files/mecab-0.993.tar.gz'
+  sha1 '7e5daa765e83fe0f5d46f33a3b96dfab49299946'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

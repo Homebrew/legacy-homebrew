@@ -44,11 +44,13 @@ class Pango < Formula
 
   def install
     ENV.x11
-    system "./configure", "--disable-dependency-tracking", "--disable-debug",
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-debug",
                           "--prefix=#{prefix}",
                           "--enable-man",
                           "--with-x",
-                          "--with-html-dir=#{share}/doc"
+                          "--with-html-dir=#{share}/doc",
+                          "--disable-introspection"
     system "make"
     system "make install"
   end

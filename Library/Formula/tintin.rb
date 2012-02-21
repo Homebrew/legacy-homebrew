@@ -1,16 +1,14 @@
 require 'formula'
 
 class Tintin < Formula
-  url 'http://downloads.sourceforge.net/project/tintin/TinTin%2B%2B%20Source%20Code/2.00.7/tintin-2.00.7.tar.gz'
   homepage 'http://tintin.sf.net'
-  sha256 '33f2da2cf373916b8b41bed3696122477f06d3fd46809d7706cf30d0909a2c1c'
+  url 'http://downloads.sourceforge.net/project/tintin/TinTin%2B%2B%20Source%20Code/2.00.8/tintin-2.00.8.tar.gz'
+  sha256 'e364a7fa7ed35a2d166a081cce4682d5fe2481ee9ce72c6a409903d097e1ae45'
 
-  # From version 1.91.1, pcre is required to compile TinTin++
-  #   http://tintin.sourceforge.net/board/viewtopic.php?t=786
   depends_on 'pcre'
 
+  # This puts brew's environ (CPPFLAGS and CFLAGS) in generated Makefile
   def patches
-    # This puts brew's environ (CPPFLAGS and CFLAGS) in generated Makefile
     DATA
   end
 

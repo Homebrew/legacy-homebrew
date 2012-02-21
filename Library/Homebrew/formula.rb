@@ -57,6 +57,10 @@ class Formula
     return false
   end
 
+  def bottle_up_to_date?
+    !bottle_url.nil? && Pathname.new(bottle_url).version == version
+  end
+
   def explicitly_requested?
     # `ARGV.formulae` will throw an exception if it comes up with an empty list.
     # FIXME: `ARGV.formulae` shouldn't be throwing exceptions, see issue #8823
@@ -65,8 +69,7 @@ class Formula
   end
 
   def linked_keg
-    keg = Pathname.new(HOMEBREW_REPOSITORY/"Library/LinkedKegs"/@name)
-    if keg.exist? then Keg.new(keg.realpath) else nil end
+    HOMEBREW_REPOSITORY/'Library/LinkedKegs'/@name
   end
 
   def installed_prefix
@@ -253,10 +256,10 @@ class Formula
       if llvm.build.to_i >= 2336
         if MacOS.xcode_version < "4.2"
           opoo "Formula will not build with LLVM, using GCC"
-          ENV.gcc :force => true
+          ENV.gcc
         else
           opoo "Formula will not build with LLVM, trying Clang"
-          ENV.clang :force => true
+          ENV.clang
         end
         return
       end
@@ -343,6 +346,9 @@ class Formula
   def self.factory name
     # If an instance of Formula is passed, just return it
     return name if name.kind_of? Formula
+
+    # Otherwise, convert to String in case a Pathname comes in
+    name = name.to_s
 
     # If a URL is passed, download to the cache and install
     if name =~ %r[(https?|ftp)://]
