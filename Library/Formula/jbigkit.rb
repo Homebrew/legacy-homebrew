@@ -24,12 +24,12 @@ class Jbigkit < Formula
 
     # Install the files using three common styles of syntax:
     prefix.install %w[contrib examples]
-    Dir.chdir 'pbmtools' do
+    cd 'pbmtools' do
       bin.install %w(pbmtojbg jbgtopbm pbmtojbg85 jbgtopbm85)
       man1.install %w(pbmtojbg.1 jbgtopbm.1)
       man5.install %w(pbm.5 pgm.5)
     end
-    Dir.chdir 'libjbig' do
+    cd 'libjbig' do
       lib.install Dir['lib*.a']
       (prefix+'src').install Dir['j*.c', 'j*.txt']
       include.install Dir['j*.h']

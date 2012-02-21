@@ -1,9 +1,10 @@
 require 'formula'
 
 class Mcabber < Formula
-  url 'http://mcabber.com/files/mcabber-0.10.1.tar.bz2'
   homepage 'http://mcabber.com/'
+  url 'http://mcabber.com/files/mcabber-0.10.1.tar.bz2'
   md5 'fe96beab30f535d5d6270fd1719659b4'
+
   head 'http://mcabber.com/hg/', :using => :hg
 
   depends_on 'pkg-config' => :build
@@ -27,7 +28,7 @@ class Mcabber < Formula
     if ARGV.build_head? then
       ENV['LIBTOOLIZE'] = '/usr/bin/glibtoolize'
       ENV['ACLOCAL'] = "/usr/bin/aclocal -I #{HOMEBREW_PREFIX}/share/aclocal"
-      Dir.chdir 'mcabber'
+      cd 'mcabber' # Not using block form on purpose
       inreplace 'autogen.sh', 'libtoolize', '$LIBTOOLIZE'
       inreplace 'autogen.sh', 'aclocal', '$ACLOCAL'
       system "./autogen.sh"

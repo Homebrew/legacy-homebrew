@@ -15,16 +15,17 @@ class Io < Formula
   def install
     ENV.j1
     mkdir 'buildroot'
-    Dir.chdir 'buildroot'
-    system "cmake .. #{std_cmake_parameters}"
-    system 'make'
-    output = %x[./_build/binaries/io ../libs/iovm/tests/correctness/run.io]
-    if $?.exitstatus != 0
-      opoo "Test suite not 100% successful:\n#{output}"
-    else
-      ohai "Test suite ran successfully:\n#{output}"
+    cd 'buildroot' do
+      system "cmake .. #{std_cmake_parameters}"
+      system 'make'
+      output = %x[./_build/binaries/io ../libs/iovm/tests/correctness/run.io]
+      if $?.exitstatus != 0
+        opoo "Test suite not 100% successful:\n#{output}"
+      else
+        ohai "Test suite ran successfully:\n#{output}"
+      end
+      system 'make install'
+      doc.install Dir['docs/*']
     end
-    system 'make install'
-    doc.install Dir['docs/*']
   end
 end

@@ -1,8 +1,8 @@
 require 'formula'
 
 class Ace < Formula
-  url 'http://download.dre.vanderbilt.edu/previous_versions/ACE-6.0.3.tar.bz2'
   homepage 'http://www.cse.wustl.edu/~schmidt/ACE.html'
+  url 'http://download.dre.vanderbilt.edu/previous_versions/ACE-6.0.3.tar.bz2'
   md5 'c38cff517ee80825a37f3b1e84f15229'
 
   def install
@@ -32,9 +32,10 @@ class Ace < Formula
     ENV['DYLD_LIBRARY_PATH']="#{root}/ace:#{root}/lib"
 
     # Done! We go ahead and build.
-    Dir.chdir "ace"
-    system "make", "-f", "GNUmakefile.ACE", "INSTALL_PREFIX=#{prefix}",
-       "LDFLAGS=", "DESTDIR=", "INST_DIR=/ace",
-       "debug=0", "shared_libs=1", "static_libs=0", "install"
+    cd "ace" do
+      system "make", "-f", "GNUmakefile.ACE", "INSTALL_PREFIX=#{prefix}",
+         "LDFLAGS=", "DESTDIR=", "INST_DIR=/ace",
+         "debug=0", "shared_libs=1", "static_libs=0", "install"
+    end
   end
 end

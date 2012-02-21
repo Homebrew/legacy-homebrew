@@ -20,7 +20,7 @@ class BerkeleyDb < Formula
     args << "--enable-java" unless ARGV.include? "--without-java"
 
     # BerkeleyDB requires you to build everything from the build_unix subdirectory
-    Dir.chdir 'build_unix' do
+    cd 'build_unix' do
       system "../dist/configure", *args
       system "make install"
 
