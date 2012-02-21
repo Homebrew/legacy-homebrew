@@ -105,7 +105,6 @@ module Homebrew extend self
           fi = FormulaInstaller.new(f)
           fi.install
           fi.caveats
-          f.linked_keg.unlink if f.linked_keg.directory? and f.linked_keg.realpath == f.prefix
           fi.finish
         rescue FormulaAlreadyInstalledError => e
           opoo e.message

@@ -158,6 +158,12 @@ class FormulaInstaller
   end
 
   def link
+    if f.linked_keg.directory? and f.linked_keg.realpath == f.prefix
+      opoo "This keg was marked linked already, continuing anyway"
+      # otherwise Keg.link will bail
+      f.linked_keg.unlink
+    end
+
     Keg.new(f.prefix).link
   rescue Exception => e
     onoe "The linking step did not complete successfully"
