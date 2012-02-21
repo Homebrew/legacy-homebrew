@@ -11,6 +11,15 @@ class Nmap < Formula
 
   fails_with_llvm :build => 2334
 
+  # The configure script has a C file to test for some functionality that uses
+  # void main(void). This does not compile with clang but does compile with
+  # GCC/gcc-llvm. This small patch fixes the issues so that the project will
+  # compile without issues with clang as well. See:
+  # https://github.com/mxcl/homebrew/issues/10300
+  def patches
+    DATA
+  end
+
   def install
     ENV.deparallelize
 
@@ -24,16 +33,6 @@ class Nmap < Formula
     system "./configure", *args
     system "make" # separate steps required otherwise the build fails
     system "make install"
-  end
-
-  def patches
-      # The configure script has a C file to test for some functionality that
-      # uses void main(void). This does not compile with clang but does compile
-      # with GCC/gcc-llvm. This small patch fixes the issues so that the
-      # project will compile without issues with clang as well.
-      #
-      # See: https://github.com/mxcl/homebrew/issues/10300
-      DATA
   end
 end
 
