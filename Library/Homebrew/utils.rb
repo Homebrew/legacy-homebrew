@@ -266,9 +266,17 @@ module MacOS extend self
     end
   end
 
+  def xctools_fucked?
+    # Xcode 4.3 tools hang if "/" is set
+    `/usr/bin/xcode-select -print-path 2>/dev/null`.chomp == "/"
+  end
+
   def default_cc
-    cc = `/usr/bin/xcrun -find cc 2> /dev/null`.chomp
-    cc = "#{dev_tools_path}/cc" if cc.empty? or not $?.success?
+    cc = unless xctools_fucked?
+      out = `/usr/bin/xcrun -find cc 2> /dev/null`.chomp
+      out if $?.success?
+    end
+    cc = "#{dev_tools_path}/cc" if cc.nil? or cc.empty?
 
     unless File.executable? cc
       # If xcode-select isn't setup then xcrun fails and on Xcode 4.3

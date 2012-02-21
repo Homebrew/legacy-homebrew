@@ -94,7 +94,7 @@ module HomebrewEnvExtension
   def xcrun tool
     if File.executable? "/usr/bin/#{tool}"
       "/usr/bin/#{tool}"
-    elsif system "/usr/bin/xcrun -find #{tool} 2>1 1>/dev/null"
+    elsif not MacOS.xctools_fucked? and system "/usr/bin/xcrun -find #{tool} 2>1 1>/dev/null"
       # xcrun was provided first with Xcode 4.3 and allows us to proxy
       # tool usage thus avoiding various bugs
       "/usr/bin/xcrun #{tool}"
