@@ -11,10 +11,15 @@ class Cdrdao < Formula
   depends_on 'mad'
   depends_on 'lame'
 
-  # fixes build problems under 10.6
+  # first patch fixes build problems under 10.6
   # see http://sourceforge.net/tracker/index.php?func=detail&aid=2981804&group_id=2171&atid=302171
+  # second patch fixes device autodetection on OS X
+  # see http://trac.macports.org/ticket/27819
+  # upstream bug report:
+  # http://sourceforge.net/tracker/?func=detail&aid=3381672&group_id=2171&atid=102171
   def patches
-    "http://sourceforge.net/tracker/download.php?group_id=2171&atid=302171&file_id=369387&aid=2981804"
+    { :p1 => "http://sourceforge.net/tracker/download.php?group_id=2171&atid=302171&file_id=369387&aid=2981804",
+      :p0 => "http://trac.macports.org/export/90637/trunk/dports/sysutils/cdrdao/files/cdrdao-device-default-bufsize.patch" }
   end
 
   fails_with_llvm "Segfault while linking", :build => 2326
