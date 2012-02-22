@@ -234,7 +234,7 @@ class Brewery
     # along with several others from the same network, and not worry about
     # folder names clashing with each other.
     @id = args[:id] || [owner, name].join('-')
-    @url = args[:url] || "git://github.com/#{owner}/#{name}.git"
+    @url = args[:url] || "https://github.com/#{owner}/#{name}.git"
   end
 
   def to_hash
