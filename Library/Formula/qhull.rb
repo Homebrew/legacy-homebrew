@@ -1,8 +1,8 @@
 require 'formula'
 
 class Qhull < Formula
-  url 'http://www.qhull.org/download/qhull-2011.1-src.tgz'
   homepage 'http://www.qhull.org/'
+  url 'http://www.qhull.org/download/qhull-2011.1-src.tgz'
   md5 'a65061cf2a6e6581182f4df0f3667a8e'
 
   depends_on 'cmake' => :build
@@ -21,7 +21,7 @@ class Qhull < Formula
   end
 
   def install
-    system "cmake . #{std_cmake_parameters} -DMAN_INSTALL_DIR=#{man1}"
+    system "cmake #{std_cmake_parameters} -DMAN_INSTALL_DIR=#{man1} ."
     system "make install"
   end
 end

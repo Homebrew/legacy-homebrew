@@ -9,7 +9,7 @@ class Qimageblitz < Formula
   depends_on 'qt'
 
   def install
-    system "cmake . #{std_cmake_parameters}"
+    system "cmake #{std_cmake_parameters} ."
     system "make install"
   end
 end
