@@ -1,8 +1,8 @@
 require 'formula'
 
 class Weechat < Formula
-  url 'http://www.weechat.org/files/src/weechat-0.3.6.tar.bz2'
   homepage 'http://www.weechat.org'
+  url 'http://www.weechat.org/files/src/weechat-0.3.6.tar.bz2'
   md5 'db2392b8e31738f79f0898f77eda8daa'
 
   head 'git://git.sv.gnu.org/weechat.git'
@@ -28,7 +28,8 @@ class Weechat < Formula
                     "-DENABLE_RUBY=OFF",
                     "-DENABLE_PERL=OFF",
                     "-DENABLE_PYTHON=OFF",
-                    std_cmake_parameters, "."
+                    std_cmake_parameters,
+                    "."
     system "make install"
   end
 end

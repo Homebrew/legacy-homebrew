@@ -14,11 +14,11 @@ class Chromaprint < Formula
 
   def install
     if ARGV.include? '--without-examples'
-      parameters = std_cmake_parameters
+      args = std_cmake_parameters
     else
-      parameters = std_cmake_parameters + ' -DBUILD_EXAMPLES=ON'
+      args = std_cmake_parameters + ' -DBUILD_EXAMPLES=ON'
     end
-    system "cmake . #{parameters}"
+    system "cmake #{args} ."
     system "make install"
   end
 end
