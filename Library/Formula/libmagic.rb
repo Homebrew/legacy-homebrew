@@ -9,8 +9,6 @@ class Libmagic < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-fsect-man5"
-    system "make"
-    ENV.j1 # Remove some warnings during install
     system "make install"
 
     # don't dupe this system utility and this formula is called "libmagic" not "file"
