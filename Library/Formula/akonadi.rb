@@ -1,8 +1,8 @@
 require 'formula'
 
 class Akonadi < Formula
-  url 'http://download.akonadi-project.org/akonadi-1.5.0.tar.bz2'
   homepage 'http://pim.kde.org/akonadi/'
+  url 'http://download.akonadi-project.org/akonadi-1.5.0.tar.bz2'
   md5 '8b0d43b0e947b876a461d90f4b877f54'
 
   depends_on 'cmake' => :build
@@ -14,7 +14,7 @@ class Akonadi < Formula
   depends_on 'qt'
 
   def install
-    system "cmake . #{std_cmake_parameters}"
+    system "cmake #{std_cmake_parameters} ."
     system "make install"
   end
 end
