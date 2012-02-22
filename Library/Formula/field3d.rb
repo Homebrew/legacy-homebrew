@@ -41,8 +41,7 @@ class Field3d < Formula
     end
 
     # Build the docs with cmake
-    mkdir 'macbuild'
-    cd 'macbuild' do
+    mkdir 'macbuild' do
       system "cmake .."
       system "make doc"
     end

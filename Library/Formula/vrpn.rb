@@ -28,14 +28,9 @@ class Vrpn < Formula
     end
     args << ".."
 
-    mkdir "build"
-    cd "build" do
+    mkdir "build" do
       system "cmake", *args
-
-      if ARGV.include? '--docs'
-        system "make doc"
-      end
-
+      system "make doc" if ARGV.include? '--docs'
       system "make install"
     end
   end

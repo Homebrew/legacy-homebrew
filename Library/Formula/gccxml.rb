@@ -8,9 +8,8 @@ class Gccxml < Formula
   depends_on 'cmake' => :build
 
   def install
-    mkdir 'gccxml-build'
-    cd 'gccxml-build' do
-      system "cmake .. #{std_cmake_parameters}"
+    mkdir 'gccxml-build' do
+      system "cmake #{std_cmake_parameters} .."
       system "make"
       system "make install"
     end

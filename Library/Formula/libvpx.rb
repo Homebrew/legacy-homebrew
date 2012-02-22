@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libvpx < Formula
+  homepage 'http://www.webmproject.org/code/'
   url 'http://webm.googlecode.com/files/libvpx-v1.0.0.tar.bz2'
   sha256 '07cedb0a19a44e6d81d75f52eea864f59ef10c6c725cb860431bec6641eafe21'
-  homepage 'http://www.webmproject.org/code/'
 
   depends_on 'yasm' => :build
 
@@ -29,8 +29,7 @@ class Libvpx < Formula
     # Patches welcome to detect and apply the real arch strings on each platform.
     args << "--target=generic-gnu"
 
-    mkdir 'macbuild'
-    cd 'macbuild' do
+    mkdir 'macbuild' do
       system "../configure", *args
       system "make"
       system "make install"

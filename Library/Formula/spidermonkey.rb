@@ -54,8 +54,7 @@ class Spidermonkey < Formula
         "-install_name #{lib}/$(SHARED_LIBRARY) "
     end
 
-    mkdir "brew-build"
-    cd "brew-build" do
+    mkdir "brew-build" do
       system "../js/src/configure", "--prefix=#{prefix}",
                                     "--enable-readline",
                                     "--enable-threadsafe",
