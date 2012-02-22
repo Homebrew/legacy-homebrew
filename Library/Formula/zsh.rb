@@ -2,7 +2,9 @@ require 'formula'
 
 class Zsh < Formula
   homepage 'http://www.zsh.org/'
-  url 'http://sourceforge.net/projects/zsh/files/zsh-dev/4.3.16/zsh-4.3.16.tar.gz'
+  url 'http://www.zsh.org/pub/zsh-4.3.16.tar.gz'
+  # switch back to sourceforge when 4.3.16 mirrors out
+  # url 'http://sourceforge.net/projects/zsh/files/zsh-dev/4.3.16/zsh-4.3.16.tar.gz'
   md5 '95fc26c6f163178484860d31de98ac13'
 
   depends_on 'gdbm'
