@@ -7,20 +7,14 @@ class GhostscriptFonts < Formula
 end
 
 class Ghostscript < Formula
-  url 'http://downloads.ghostscript.com/public/ghostscript-9.04.tar.bz2'
+  url 'http://downloads.ghostscript.com/public/ghostscript-9.05.tar.gz'
   head 'git://git.ghostscript.com/ghostpdl.git'
   homepage 'http://www.ghostscript.com/'
-  md5 '9f6899e821ab6d78ab2c856f10fa3023'
+  md5 'f7c6f0431ca8d44ee132a55d583212c1'
 
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
   depends_on 'libtiff'
-
-  # The patches fix compilation against libpng 1.5, provided by Lion.
-  # Patch by @CharlieRoot
-  def patches
-    DATA unless ARGV.build_head?
-  end
 
   def move_included_source_copies
     # If the install version of any of these doesn't match
@@ -66,19 +60,3 @@ class Ghostscript < Formula
     (man+'de').rmtree
   end
 end
-
-__END__
-diff --git a/base/Makefile.in b/base/Makefile.in
-index 5b7847d..85e1a32 100644
---- a/base/Makefile.in
-+++ b/base/Makefile.in
-@@ -375,7 +375,7 @@ LDFLAGS=@LDFLAGS@ $(XLDFLAGS)
- # Solaris may need -lnsl -lsocket -lposix4.
- # (Libraries required by individual drivers are handled automatically.)
- 
--EXTRALIBS=@LIBS@ @DYNAMIC_LIBS@ @FONTCONFIG_LIBS@
-+EXTRALIBS=@LIBS@ @DYNAMIC_LIBS@ @FONTCONFIG_LIBS@ @FT_LIBS@
- 
- # Define the standard libraries to search at the end of linking.
- # Most platforms require -lpthread for the POSIX threads library;
-
