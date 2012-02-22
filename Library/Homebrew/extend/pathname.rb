@@ -270,6 +270,8 @@ class Pathname
   # perhaps confusingly, this Pathname object becomes the symlink pointing to
   # the src paramter.
   def make_relative_symlink src
+    src = Pathname.new(src) unless src.kind_of? Pathname
+
     self.dirname.mkpath
     Dir.chdir self.dirname do
       # TODO use Ruby function so we get exceptions
