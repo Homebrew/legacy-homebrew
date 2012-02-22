@@ -12,10 +12,7 @@ module Homebrew extend self
     end unless ARGV.force?
 
     ARGV.formulae.each do |f|
-      if f.linked_keg.directory?
-        ohai "#{f} already installed"
-        puts "Try: brew upgrade #{f}"
-      end
+      opoo "#{f} already installed" if f.linked_keg.directory?
     end unless ARGV.force?
 
     if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
