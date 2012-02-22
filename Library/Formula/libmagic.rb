@@ -1,18 +1,17 @@
 require 'formula'
 
 class Libmagic < Formula
-  url 'ftp://ftp.astron.com/pub/file/file-5.09.tar.gz'
+  url 'ftp://ftp.astron.com/pub/file/file-5.10.tar.gz'
   homepage 'http://www.darwinsys.com/file/'
-  md5 '6fd7cd6c4281e68fe9ec6644ce0fac6f'
+  sha1 '72fd435e78955ee122b7b3d323ff2f92e6263e89'
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    # don't dupe this system utility -- call it gfile
+    # and this formula is called "libmagic" not "file"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
+                          "--enable-fsect-man5", "--program-prefix=g"
     system "make"
     ENV.j1 # Remove some warnings during install
     system "make install"
-
-    # don't dupe this system utility and this formula is called "libmagic" not "file"
-    rm bin/"file"
-    rm man1/"file.1"
   end
 end
