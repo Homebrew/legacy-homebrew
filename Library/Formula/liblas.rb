@@ -15,8 +15,7 @@ class Liblas < Formula
   end
 
   def install
-    mkdir 'macbuild'
-    cd 'macbuild' do
+    mkdir 'macbuild' do
       # CMake finds boost, but variables like this were set in the last
       # version of this formula. Now using the variables listed here:
       #   http://liblas.org/compilation.html

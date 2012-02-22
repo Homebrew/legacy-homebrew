@@ -10,8 +10,7 @@ class Libgit2 < Formula
   depends_on 'cmake' => :build
 
   def install
-    mkdir 'build'
-    cd 'build' do
+    mkdir 'build' do
       system "cmake #{std_cmake_parameters} -DBUILD_TESTS=NO .."
       system "make install"
     end

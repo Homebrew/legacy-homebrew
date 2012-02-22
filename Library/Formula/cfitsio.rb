@@ -2,15 +2,15 @@ require 'formula'
 
 class CfitsioExamples < Formula
   url 'http://heasarc.gsfc.nasa.gov/docs/software/fitsio/cexamples/cexamples.zip'
-  md5 '31a5f5622a111f25bee5a3fda2fdac28'
   version '2010.08.19'
+  md5 '31a5f5622a111f25bee5a3fda2fdac28'
 end
 
 class Cfitsio < Formula
-  url 'ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio3290.tar.gz'
   homepage 'http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html'
-  md5 'bba93808486cf5edac236a941283b3c3'
+  url 'ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio3290.tar.gz'
   version '3.29'
+  md5 'bba93808486cf5edac236a941283b3c3'
 
   def options
     [['--with-examples', "Compile and install example programs."]]
@@ -24,7 +24,7 @@ class Cfitsio < Formula
 
     if ARGV.include? '--with-examples'
       system "make fpack funpack"
-      bin.install ['fpack', 'funpack']
+      bin.install 'fpack', 'funpack'
 
       # fetch, compile and install examples programs
       CfitsioExamples.new.brew do

@@ -15,8 +15,7 @@ class Podofo < Formula
   def install
     ENV.x11 # For Freetype and Fontconfig
 
-    mkdir 'build'
-    cd 'build' do
+    mkdir 'build' do
       # Build shared to simplify linking for other programs.
       system "cmake #{std_cmake_parameters} -DPODOFO_BUILD_SHARED:BOOL=TRUE .."
       system "make install"

@@ -8,8 +8,7 @@ class Libwbxml < Formula
   depends_on 'cmake' => :build
 
   def install
-    mkdir "build"
-    cd "build" do
+    mkdir "build" do
       system "cmake #{std_cmake_parameters} .."
       system "make install"
     end

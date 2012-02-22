@@ -8,8 +8,7 @@ class Aften < Formula
   depends_on 'cmake' => :build
 
   def install
-    mkdir 'default'
-    cd 'default' do
+    mkdir 'default' do
       system "cmake #{std_cmake_parameters} .."
       system "make install"
     end

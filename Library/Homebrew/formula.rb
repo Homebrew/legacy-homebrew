@@ -123,6 +123,16 @@ class Formula
   def plist_name; 'homebrew.mxcl.'+name end
   def plist_path; prefix+(plist_name+'.plist') end
 
+  # A version of mkdir that also changes to that folder in a block
+  def mkdir name, &block
+    FileUtils.mkdir name
+    if block_given?
+      FileUtils.chdir name do
+        yield
+      end
+    end
+  end
+
   # Use the @spec_to_use to detect the download strategy.
   # Can be overriden to force a custom download strategy
   def download_strategy

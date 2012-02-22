@@ -12,14 +12,13 @@ class OpenMesh < Formula
   depends_on 'glew'
 
   def install
-    mkdir 'openmesh-build'
-    cd 'openmesh-build' do
+    mkdir 'openmesh-build' do
       system "cmake -DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=Release .."
       system "make install"
     end
   end
 
   def test
-    system("#{bin}/mconvert", '-help')
+    system "#{bin}/mconvert", '-help'
   end
 end
