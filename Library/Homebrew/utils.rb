@@ -449,11 +449,15 @@ module MacOS extend self
   end
 
   def lion?
-    10.7 <= MACOS_VERSION #Actually Lion or newer
+    10.7 <= MACOS_VERSION # Actually Lion or newer
+  end
+
+  def mountain_lion?
+    10.8 <= MACOS_VERSION # Actually Mountain Lion or newer
   end
 
   def prefer_64_bit?
-    Hardware.is_64_bit? and 10.6 <= MACOS_VERSION
+    Hardware.is_64_bit? and not leopard?
   end
 
   def bottles_supported?
