@@ -2,8 +2,8 @@ require 'formula'
 
 class Hadoop < Formula
   homepage 'http://hadoop.apache.org/common/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=hadoop/core/hadoop-0.21.0/hadoop-0.21.0.tar.gz'
-  md5 'ec0f791f866f82a7f2c1319a54f4db97'
+  url 'http://www.apache.org/dyn/closer.cgi?path=hadoop/core/hadoop-1.0.0/hadoop-1.0.0.tar.gz'
+  md5 'fa150612de0efe80be88144c28225780'
 
   def shim_script target
     <<-EOS.undent
@@ -14,7 +14,7 @@ class Hadoop < Formula
 
   def install
     rm_f Dir["bin/*.bat"]
-    libexec.install %w[bin conf lib webapps mapred]
+    libexec.install %w[bin conf lib webapps]
     libexec.install Dir['*.jar']
     bin.mkpath
     Dir["#{libexec}/bin/*"].each do |b|
