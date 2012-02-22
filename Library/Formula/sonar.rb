@@ -11,7 +11,7 @@ class Sonar < Formula
 
     if MacOS.prefer_64_bit?
       rm_rf Dir['bin/macosx-universal-32']
-    else 
+    else
       rm_rf Dir['bin/macosx-universal-64']
     end
 
@@ -21,7 +21,7 @@ class Sonar < Formula
 
     if MacOS.prefer_64_bit?
       bin.install_symlink "#{libexec}/bin/macosx-universal-64/sonar.sh" => "sonar"
-    else 
+    else
       bin.install_symlink "#{libexec}/bin/macosx-universal-32/sonar.sh" => "sonar"
     end
   end
