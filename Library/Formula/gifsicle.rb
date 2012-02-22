@@ -6,6 +6,7 @@ class Gifsicle < Formula
   md5 '3d9e45873daaf960a35d1b89505f1101'
 
   def install
+    ENV.x11
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-all"
