@@ -2,19 +2,14 @@ require 'formula'
 
 class Redis < Formula
   homepage 'http://redis.io/'
-  url 'http://redis.googlecode.com/files/redis-2.4.7.tar.gz'
-  md5 '6afffb6120724183e40f1cac324ac71c'
+  url 'http://redis.googlecode.com/files/redis-2.4.8.tar.gz'
+  md5 'ac776d25f238b142d3d526cfcdc621ab'
 
   head 'https://github.com/antirez/redis.git', :branch => 'unstable'
 
   fails_with_llvm 'Fails with "reference out of range from _linenoise"', :build => 2334
 
   def install
-    if MacOS.default_compiler == :clang
-      # auto-retest next clang version, submit patch if fails!
-      ENV.llvm if MacOS.clang_version.to_f <= 3.1
-    end
-
     # Architecture isn't detected correctly on 32bit Snow Leopard without help
     ENV["OBJARCH"] = MacOS.prefer_64_bit? ? "-arch x86_64" : "-arch i386"
 
