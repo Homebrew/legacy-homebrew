@@ -13,10 +13,10 @@ class BaliPhy < Formula
 
   def install
     # docs say build oos
-    mkdir 'macbuild'
-    cd 'macbuild' do
+    mkdir 'macbuild' do
       system "../configure", "--disable-debug", "--disable-dependency-tracking",
-                             "--prefix=#{prefix}", "--enable-cairo"
+                             "--prefix=#{prefix}",
+                             "--enable-cairo"
       system "make install"
     end
   end

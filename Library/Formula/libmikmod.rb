@@ -68,8 +68,7 @@ class Libmikmod < Formula
     # autoreconf w/glibtoolize will fix PIC flags, flat_namespace from 2005 era code.
     system "autoreconf -ivf"
     # An oos build is recommended in the documentation.
-    mkdir 'macbuild'
-    cd 'macbuild' do
+    mkdir 'macbuild' do
       system "../configure", *args
       system "make"
       system "make install"
