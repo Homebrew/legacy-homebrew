@@ -9,15 +9,7 @@ class Skktools < Formula
 
   def install
 
-    args = ["--with-skkdic-expr2",
-            "--prefix=#{prefix}",
-           ]
-
-    glib = Formula.factory('glib')
-    ENV.append 'CFLAGS', "-I#{HOMEBREW_PREFIX}/include"
-    ENV.append 'CFLAGS', "-I#{glib.include}/glib-2.0 -I#{glib.include}/glib-2.0/glib -I#{glib.lib}/glib-2.0/include -lglib-2.0 -lintl -liconv"
-
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}", "--with-skkdic-expr2"
 
     # replace Makefile Target
     inreplace 'Makefile' do |s|
