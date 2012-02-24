@@ -33,7 +33,7 @@ class Subversion < Formula
   def patches
     # patch for unicode path
     p = { :p0 =>
-      "https://raw.github.com/gist/1900750/patch-path.c.diff"
+      "https://raw.github.com/gist/1900750/4888cafcf58f7355e2656fe192a77e2b6726e338/patch-path.c.diff"
     }
 
     return p
