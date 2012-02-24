@@ -20,6 +20,7 @@ class Clisp < Formula
 
   def install
     ENV.j1 # This build isn't parallel safe.
+    ENV.remove_from_cflags /-O./
 
     # Clisp requires to select word size explicitly this way,
     # set it in CFLAGS won't work.
