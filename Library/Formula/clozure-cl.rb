@@ -10,7 +10,7 @@ class ClozureCl < Formula
   def install
     # Get rid of all the .svn dirs, that for some reason are
     # included in the tarball
-    Find.find(Dir.pwd) do |path|
+    Find.find(buildpath) do |path|
       if File.directory?(path) && File.basename(path) == '.svn'
         rm_rf path
         Find.prune

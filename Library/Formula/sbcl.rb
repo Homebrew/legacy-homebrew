@@ -64,15 +64,13 @@ class Sbcl < Formula
       value =~ /[\x80-\xff]/
     end
 
-    build_directory = pwd
-
     SbclBootstrapBinaries.new.brew {
       # We only need the binaries for bootstrapping, so don't install anything:
       command = Dir.pwd + "/src/runtime/sbcl"
       core = Dir.pwd + "/output/sbcl.core"
       xc_cmdline = "#{command} --core #{core} --disable-debugger --no-userinit --no-sysinit"
 
-      cd build_directory do
+      cd buildpath do
         if ARGV.build_32_bit?
           system "SBCL_ARCH=x86 ./make.sh --prefix='#{prefix}' --xc-host='#{xc_cmdline}'"
         else

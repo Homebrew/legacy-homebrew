@@ -45,8 +45,7 @@ class Llvm < Formula
     end
 
     if build_clang? or build_analyzer?
-      clang_dir = Pathname.new(Dir.pwd)+'tools/clang'
-      Clang.new("clang").brew { clang_dir.install Dir['*'] }
+      Clang.new("clang").brew { (buildpath+'tools/clang').install Dir['*'] }
     end
 
     if build_universal?

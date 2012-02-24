@@ -27,15 +27,19 @@ class Ace < Formula
     ln_sf makefile, "include/makeinclude/platform_macros.GNU"
 
     # Set up the environment the way ACE expects during build.
-    root=Dir.pwd
-    ENV['ACE_ROOT']=root
-    ENV['DYLD_LIBRARY_PATH']="#{root}/ace:#{root}/lib"
+    ENV['ACE_ROOT'] = buildpath
+    ENV['DYLD_LIBRARY_PATH'] = "#{buildpath}/ace:#{buildpath}/lib"
 
     # Done! We go ahead and build.
     cd "ace" do
-      system "make", "-f", "GNUmakefile.ACE", "INSTALL_PREFIX=#{prefix}",
-         "LDFLAGS=", "DESTDIR=", "INST_DIR=/ace",
-         "debug=0", "shared_libs=1", "static_libs=0", "install"
+      system "make", "-f", "GNUmakefile.ACE",
+                           "INSTALL_PREFIX=#{prefix}",
+                           "LDFLAGS=",
+                           "DESTDIR=",
+                           "INST_DIR=/ace",
+                           "debug=0",
+                           "shared_libs=1", "static_libs=0",
+                           "install"
     end
   end
 end
