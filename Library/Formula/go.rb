@@ -22,7 +22,11 @@ class Go < Formula
     prefix.install %w[src include test doc misc lib favicon.ico AUTHORS]
     cd prefix do
       mkdir %w[pkg bin]
-      File.open('VERSION', 'w') {|f| f.write('release.r60.3 9516') }
+
+      # The version check is due to:
+      # http://codereview.appspot.com/5654068
+      version = ARGV.build_head? ? 'default' : 'release.r60.3 9516'
+      File.open('VERSION', 'w') {|f| f.write(version) }
 
       # Tests take a very long time to run. Build only
       cd 'src' do
