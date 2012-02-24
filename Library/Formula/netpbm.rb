@@ -37,11 +37,8 @@ class Netpbm < Formula
 
     ENV.deparallelize
     system "make"
-
-    stage_dir = Pathname(Dir.pwd) + 'stage'
-    system "make", "package", "pkgdir=#{stage_dir}"
-
-    cd stage_dir do
+    system "make", "package", "pkgdir=#{buildpath}/stage"
+    cd 'stage' do
       prefix.install %w{ bin include lib misc }
       # do man pages explicitly; otherwise a junk file is installed in man/web
       man1.install Dir['man/man1/*.1']

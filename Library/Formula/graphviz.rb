@@ -46,8 +46,7 @@ class Graphviz < Formula
 
   def test
     mktemp do
-      p = Pathname.new Dir.pwd
-      (p+'sample.dot').write <<-EOS.undent
+      (Pathname.pwd+'sample.dot').write <<-EOS.undent
       digraph G {
         a -> b
       }
