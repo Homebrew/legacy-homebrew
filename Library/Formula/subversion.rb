@@ -87,9 +87,6 @@ class Subversion < Formula
     args << "--with-ruby-sitedir=#{lib}/ruby" if build_ruby?
     args << "--with-unicode-path" if with_unicode_path?
     
-    # Undo a bit of the MacPorts patch
-    # inreplace "configure", "@@DESTROOT@@/", ""
-
     system "./configure", *args
     system "make"
     system "make install"
