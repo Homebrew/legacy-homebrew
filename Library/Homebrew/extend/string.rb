@@ -17,7 +17,8 @@ module StringInreplaceExtension
   # value with "new_value", or removes the definition entirely.
   def change_make_var! flag, new_value
     new_value = "#{flag}=#{new_value}"
-    gsub! Regexp.new("^#{flag}[ \\t]*=[ \\t]*(.*)$"), new_value
+    sub = gsub! Regexp.new("^#{flag}[ \\t]*=[ \\t]*(.*)$"), new_value
+    opoo "inreplace: changing '#{flag}' to '#{new_value}' failed" if sub.nil?
   end
 
   # Removes variable assignments completely.
@@ -26,7 +27,8 @@ module StringInreplaceExtension
     flags = [flags] unless flags.kind_of? Array
     flags.each do |flag|
       # Also remove trailing \n, if present.
-      gsub! Regexp.new("^#{flag}[ \\t]*=(.*)$\n?"), ""
+      sub = gsub! Regexp.new("^#{flag}[ \\t]*=(.*)$\n?"), ""
+      opoo "inreplace: removing '#{flag}' failed" if sub.nil?
     end
   end
 

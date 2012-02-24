@@ -216,7 +216,11 @@ def inreplace path, before=nil, after=nil
       s.extend(StringInreplaceExtension)
       yield s
     else
-      s.gsub!(before, after)
+      sub = s.gsub!(before, after)
+      if sub.nil?
+        opoo "inreplace in '#{path}' failed"
+        puts "Expected replacement of '#{before}' with '#{after}'"
+      end
     end
 
     f.reopen(path, 'w').write(s)
