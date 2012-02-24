@@ -33,12 +33,14 @@ class Ganglia < Formula
       system "/bin/sh ../autogen.sh --download"
     end
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--sbindir=#{bin}",
                           "--sysconfdir=#{etc}",
                           "--with-gexec",
-                          "--with-gmetad"
+                          "--with-gmetad",
+                          "--with-libpcre=#{HOMEBREW_PREFIX}"
 
     # build and install
     system "make install"
