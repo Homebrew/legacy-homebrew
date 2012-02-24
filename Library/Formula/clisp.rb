@@ -12,7 +12,11 @@ class Clisp < Formula
 
   skip_clean :all # otherwise abort trap
 
-  fails_with_llvm "Fails during configure with LLVM GCC from XCode 4 on Snow Leopard"
+  fails_with_llvm "Configure fails on XCode 4/Snow Leopard.", :build => 2334
+
+  def patches
+    { :p0 => "https://trac.macports.org/export/89054/trunk/dports/lang/clisp/files/patch-src_lispbibl_d.diff" }
+  end
 
   def install
     ENV.j1 # This build isn't parallel safe.

@@ -12,19 +12,15 @@ class Groovyserv < Formula
   def install
     system 'gradle clean executables'
 
-    # Install executables in libexec to avoid conflicts
-    Dir::chdir Dir['build/executables/'].first do
-      libexec.install %w{bin lib}
-    end
     prefix.install %w{LICENSE.txt README.txt NOTICE.txt}
+
+    # Install executables in libexec to avoid conflicts
+    libexec.install Dir["build/executables/{bin,lib}"]
 
     # Remove windows files
     rm_f Dir["#{libexec}/bin/*.bat"]
 
     # Symlink binaries
-    bin.mkpath
-    Dir["#{libexec}/bin/*"].each do |f|
-      ln_s f, bin + File.basename(f)
-    end
+    bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 end

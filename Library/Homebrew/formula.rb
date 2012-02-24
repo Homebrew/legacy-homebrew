@@ -1,98 +1,6 @@
 require 'download_strategy'
 require 'fileutils'
-
-# Defines a URL and download method for a stable or HEAD build
-class SoftwareSpecification
-  attr_reader :url, :specs, :using
-
-  VCS_SYMBOLS = {
-    :bzr     => BazaarDownloadStrategy,
-    :curl    => CurlDownloadStrategy,
-    :cvs     => CVSDownloadStrategy,
-    :git     => GitDownloadStrategy,
-    :hg      => MercurialDownloadStrategy,
-    :nounzip => NoUnzipCurlDownloadStrategy,
-    :post    => CurlPostDownloadStrategy,
-    :svn     => SubversionDownloadStrategy,
-  }
-
-  def initialize url, specs=nil
-    raise "No url provided" if url.nil?
-    @url = url
-    unless specs.nil?
-      # Get download strategy hint, if any
-      @using = specs.delete :using
-      # The rest of the specs are for source control
-      @specs = specs
-    end
-  end
-
-  # Returns a suitable DownloadStrategy class that can be
-  # used to retreive this software package.
-  def download_strategy
-    return detect_download_strategy(@url) if @using.nil?
-
-    # If a class is passed, assume it is a download strategy
-    return @using if @using.kind_of? Class
-
-    detected = VCS_SYMBOLS[@using]
-    raise "Unknown strategy #{@using} was requested." unless detected
-    return detected
-  end
-
-  def detect_version
-    Pathname.new(@url).version
-  end
-end
-
-
-# Used to annotate formulae that duplicate OS X provided software
-# or cause conflicts when linked in.
-class KegOnlyReason
-  attr_reader :reason, :explanation
-
-  def initialize reason, explanation=nil
-    @reason = reason
-    @explanation = explanation
-  end
-
-  def to_s
-    if @reason == :provided_by_osx
-      <<-EOS.strip
-Mac OS X already provides this program and installing another version in
-parallel can cause all kinds of trouble.
-
-#{@explanation}
-EOS
-    else
-      @reason.strip
-    end
-  end
-end
-
-
-# Used to annotate formulae that won't build correctly with LLVM.
-class FailsWithLLVM
-  attr_reader :msg, :data, :build
-
-  def initialize msg=nil, data=nil
-    if msg.nil? or msg.kind_of? Hash
-      @msg = "(No specific reason was given)"
-      data = msg
-    else
-      @msg = msg
-    end
-    @data = data
-    @build = data.delete :build rescue nil
-  end
-
-  def reason
-    s = @msg
-    s += "Tested with LLVM build #{@build}" unless @build == nil
-    s += "\n"
-    return s
-  end
-end
+require 'formula_support'
 
 
 # Derive and define at least @url, see Library/Formula for examples
@@ -100,19 +8,19 @@ class Formula
   include FileUtils
 
   attr_reader :name, :path, :url, :version, :homepage, :specs, :downloader
-  attr_reader :stable, :unstable
-  attr_reader :bottle, :bottle_sha1, :head
+  attr_reader :standard, :unstable
+  attr_reader :bottle_url, :bottle_sha1, :head
 
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
     set_instance_variable 'homepage'
     set_instance_variable 'url'
-    set_instance_variable 'bottle'
+    set_instance_variable 'bottle_url'
     set_instance_variable 'bottle_sha1'
     set_instance_variable 'head'
     set_instance_variable 'specs'
 
-    set_instance_variable 'stable'
+    set_instance_variable 'standard'
     set_instance_variable 'unstable'
 
     if @head and (not @url or ARGV.build_head?)
@@ -120,10 +28,10 @@ class Formula
       @version = 'HEAD'
       @spec_to_use = @unstable
     else
-      if @stable.nil?
+      if @standard.nil?
         @spec_to_use = SoftwareSpecification.new(@url, @specs)
       else
-        @spec_to_use = @stable
+        @spec_to_use = @standard
       end
     end
 
@@ -149,11 +57,19 @@ class Formula
     return false
   end
 
+  def bottle_up_to_date?
+    !bottle_url.nil? && Pathname.new(bottle_url).version == version
+  end
+
   def explicitly_requested?
     # `ARGV.formulae` will throw an exception if it comes up with an empty list.
     # FIXME: `ARGV.formulae` shouldn't be throwing exceptions, see issue #8823
    return false if ARGV.named.empty?
    ARGV.formulae.include? self
+  end
+
+  def linked_keg
+    HOMEBREW_REPOSITORY/'Library/LinkedKegs'/@name
   end
 
   def installed_prefix
@@ -202,6 +118,10 @@ class Formula
   def etc; HOMEBREW_PREFIX+'etc' end
   # generally we don't want var stuff inside the keg
   def var; HOMEBREW_PREFIX+'var' end
+
+  # plist name, i.e. the name of the launchd service
+  def plist_name; 'homebrew.mxcl.'+name end
+  def plist_path; prefix+(plist_name+'.plist') end
 
   # Use the @spec_to_use to detect the download strategy.
   # Can be overriden to force a custom download strategy
@@ -330,12 +250,17 @@ class Formula
 
   def handle_llvm_failure llvm
     if ENV.compiler == :llvm
-      # version 2335 is the latest version as of Xcode 4.1, so it is the
+      # version 2336 is the latest version as of Xcode 4.2, so it is the
       # latest version we have tested against so we will switch to GCC and
-      # bump this integer when Xcode 4.2 is released. TODO do that!
-      if llvm.build.to_i >= 2335
-        opoo "Formula will not build with LLVM, using GCC"
-        ENV.gcc :force => true
+      # bump this integer when Xcode 4.3 is released. TODO do that!
+      if llvm.build.to_i >= 2336
+        if MacOS.xcode_version < "4.2"
+          opoo "Formula will not build with LLVM, using GCC"
+          ENV.gcc
+        else
+          opoo "Formula will not build with LLVM, trying Clang"
+          ENV.clang
+        end
         return
       end
       opoo "Building with LLVM, but this formula is reported to not work with LLVM:"
@@ -421,6 +346,9 @@ class Formula
   def self.factory name
     # If an instance of Formula is passed, just return it
     return name if name.kind_of? Formula
+
+    # Otherwise, convert to String in case a Pathname comes in
+    name = name.to_s
 
     # If a URL is passed, download to the cache and install
     if name =~ %r[(https?|ftp)://]
@@ -573,7 +501,7 @@ private
     downloader = @downloader
     # Don't attempt mirrors if this install is not pointed at a "stable" URL.
     # This can happen when options like `--HEAD` are invoked.
-    mirror_list =  @spec_to_use == @stable ? mirrors : []
+    mirror_list =  @spec_to_use == @standard ? mirrors : []
 
     # Ensure the cache exists
     HOMEBREW_CACHE.mkpath
@@ -721,7 +649,7 @@ EOF
 
   class << self
     # The methods below define the formula DSL.
-    attr_reader :stable, :unstable
+    attr_reader :standard, :unstable
 
     def self.attr_rw(*attrs)
       attrs.each do |attr|
@@ -735,7 +663,7 @@ EOF
 
     attr_rw :version, :homepage, :mirrors, :specs, :deps, :external_deps
     attr_rw :keg_only_reason, :fails_with_llvm_reason, :skip_clean_all
-    attr_rw :bottle, :bottle_sha1
+    attr_rw :bottle_url, :bottle_sha1
     attr_rw(*CHECKSUM_TYPES)
 
     def head val=nil, specs=nil
@@ -747,9 +675,39 @@ EOF
 
     def url val=nil, specs=nil
       return @url if val.nil?
-      @stable = SoftwareSpecification.new(val, specs)
+      @standard = SoftwareSpecification.new(val, specs)
       @url = val
       @specs = specs
+    end
+
+    def stable &block
+      raise "url and md5 must be specified in a block" unless block_given?
+      instance_eval &block unless ARGV.build_devel? or ARGV.build_head?
+    end
+
+    def devel &block
+      raise "url and md5 must be specified in a block" unless block_given?
+
+      if ARGV.build_devel?
+        # clear out mirrors from the stable release
+        @mirrors = nil
+
+        instance_eval &block
+      end
+    end
+
+    def bottle url=nil, &block
+      if block_given?
+        eval <<-EOCLASS
+        module BottleData
+          def self.url url; @url = url; end
+          def self.sha1 sha1; @sha1 = sha1; end
+          def self.return_data; [@url,@sha1]; end
+        end
+        EOCLASS
+        BottleData.instance_eval &block
+        @bottle_url, @bottle_sha1 = BottleData.return_data
+      end
     end
 
     def mirror val, specs=nil
@@ -804,17 +762,6 @@ EOF
 
     def skip_clean_paths
       @skip_clean_paths or []
-    end
-
-    # 'aka' is no longer used to define aliases, so have it print out
-    # a notice about the change. This will alert people with private
-    # formulae that they need to update.
-    # This notice will be removed in version 0.9
-    def aka args
-      onoe "#{name}: 'aka' is no longer used to define aliases"
-      puts "To define an alias, create a relative symlink from"
-      puts "Aliases to Formula. The name of the symlink will be"
-      puts "detected as an alias for the target formula."
     end
 
     def keg_only reason, explanation=nil

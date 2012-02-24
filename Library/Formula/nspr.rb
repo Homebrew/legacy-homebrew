@@ -22,6 +22,21 @@ class Nspr < Formula
 
       system "make"
       system "make install"
+      (lib+'pkgconfig/nspr.pc').write pkg_file
     end
+  end
+
+  def pkg_file; <<-EOF
+prefix=#{HOMEBREW_PREFIX}
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/nspr
+
+Name: NSPR
+Description: Netscape Portable Runtime
+Version: 4.8.8
+Libs: -L${libdir} -lplds4 -lplc4 -lnspr4
+Cflags: -I${includedir}
+EOF
   end
 end

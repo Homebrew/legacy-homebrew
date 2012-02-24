@@ -13,13 +13,18 @@ class Ledger < Formula
   depends_on 'pcre'
   depends_on 'expat'
 
+  def options
+    [['--no-python', 'Disable Python support']]
+  end
+
   def install
     unless 'HEAD' == @version
       system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     else
       # gmp installs x86_64 only
       inreplace 'acprep', "'-arch', 'i386', ", "" if Hardware.is_64_bit?
-      system "./acprep -j#{ENV.make_jobs} opt make -- --prefix=#{prefix}"
+      no_python = ((ARGV.include? '--no-python') ? '--no-python' : '')
+      system "./acprep #{no_python} -j#{ENV.make_jobs} opt make -- --prefix=#{prefix}"
     end
     system 'make'
     ENV.deparallelize

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ffmbc < Formula
-  url 'http://ffmbc.googlecode.com/files/FFmbc-0.7-rc4.tar.bz2'
   homepage 'http://code.google.com/p/ffmbc/'
-  md5 '45f68c3096c2ad0321fd4bacb7127be6'
+  url 'http://ffmbc.googlecode.com/files/FFmbc-0.7-rc5.tar.bz2'
+  md5 '42881eaf4f012c0d32f1bebde2bbb70d'
 
   depends_on 'yasm' => :build
   depends_on 'x264' => :optional
@@ -38,11 +38,11 @@ class Ffmbc < Formula
 
     # ffmbc's lib and bin names conflict with ffmpeg and libav
     # This formula will only install the commandline tools
-    File.rename "ffprobe", "ffprobe-bc"
-    bin.install ["ffmbc","ffprobe-bc"]
+    mv "ffprobe", "ffprobe-bc"
+    bin.install "ffmbc", "ffprobe-bc"
     Dir.chdir "doc"
-    File.rename "ffprobe.1", "ffprobe-bc.1"
-    man1.install ["ffmbc.1", "ffprobe-bc.1"]
+    mv.rename "ffprobe.1", "ffprobe-bc.1"
+    man1.install "ffmbc.1", "ffprobe-bc.1"
   end
 
   def caveats

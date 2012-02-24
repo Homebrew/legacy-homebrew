@@ -3,7 +3,7 @@ require 'formula'
 class SuiteSparse < Formula
   homepage 'http://www.cise.ufl.edu/research/sparse/SuiteSparse'
   url 'http://www.cise.ufl.edu/research/sparse/SuiteSparse/SuiteSparse-3.7.0.tar.gz'
-  md5 'e7579ba6ab4265b751753649cb63664d'
+  md5 'ecb1d1cc1101cf31f077bab46678e791'
 
   depends_on "metis"
   depends_on "tbb"

@@ -7,6 +7,13 @@ class Apc < Formula
 
   depends_on 'pcre'
 
+  def patches
+    # fixes "PHP Fatal error:  Unknown: apc_fcntl_unlock failed: in Unknown on line 0"
+    # this has been fixed in the APC trunk but has not been released yet (as of 3.1.9)
+    # https://bugs.php.net/bug.php?id=59750
+    DATA
+  end
+
   def install
     Dir.chdir "APC-#{version}" do
       system "phpize"
@@ -35,3 +42,18 @@ class Apc < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/APC-3.1.9/apc_lock.h b/APC-3.1.9/apc_lock.h
+index 77f66d5..aafa3b7 100644
+--- a/APC-3.1.9/apc_lock.h
++++ b/APC-3.1.9/apc_lock.h
+@@ -154,7 +154,7 @@
+ # define apc_lck_nb_lock(a)    apc_fcntl_nonblocking_lock(a TSRMLS_CC)
+ # define apc_lck_rdlock(a)     apc_fcntl_rdlock(a TSRMLS_CC)
+ # define apc_lck_unlock(a)     apc_fcntl_unlock(a TSRMLS_CC)
+-# define apc_lck_rdunlock(a)   apc_fcntl_unlock(&a TSRMLS_CC)
++# define apc_lck_rdunlock(a)   apc_fcntl_unlock(a TSRMLS_CC)
+ #endif
+ 
+ #endif

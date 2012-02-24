@@ -182,11 +182,13 @@ def check_gcc_versions
   gcc_40 = MacOS.gcc_40_build_version
 
   if gcc_42 == nil
-    puts <<-EOS.undent
-      We couldn't detect gcc 4.2.x. Some formulae require this compiler.
-      NOTE: Versions of XCode newer than 4.2 don't include gcc 4.2.x.
+    # Don't show this warning on Xcode 4.2+
+    if MacOS.xcode_version < "4.2"
+      puts <<-EOS.undent
+        We couldn't detect gcc 4.2.x. Some formulae require this compiler.
 
-    EOS
+      EOS
+    end
   elsif gcc_42 < RECOMMENDED_GCC_42
     puts <<-EOS.undent
       Your gcc 4.2.x version is older than the recommended version. It may be advisable
@@ -218,8 +220,11 @@ def check_gcc_versions
 
   unless File.exist? '/usr/bin/cc'
     puts <<-EOS.undent
-      You have no /usr/bin/cc. This will cause numerous build issues. Please
-      reinstall Xcode.
+      You have no /usr/bin/cc.
+      This means you probably can't build *anything*. You need to install the CLI
+      Tools for Xcode. You can either download this from http://connect.apple.com/
+      or install them from inside Xcode’s preferences. Homebrew does not require
+      all of Xcode! You only need the CLI tools package!
     EOS
   end
 end
@@ -344,15 +349,21 @@ def check_user_path
       unless seen_prefix_bin
         # only show the doctor message if there are any conflicts
         # rationale: a default install should not trigger any brew doctor messages
-        if Dir["#{HOMEBREW_PREFIX}/bin/*"].any? {|fn| File.exist? "/usr/bin/#{File.basename fn}"}
+        conflicts = Dir["#{HOMEBREW_PREFIX}/bin/*"].
+            map{ |fn| File.basename fn }.
+            select{ |bn| File.exist? "/usr/bin/#{bn}" }
+
+        if conflicts.size
           ohai "/usr/bin occurs before #{HOMEBREW_PREFIX}/bin"
           puts <<-EOS.undent
             This means that system-provided programs will be used instead of those
-            provided by Homebrew. This is an issue if you eg. brew installed Python.
+            provided by Homebrew. The following tools exist at both paths:
 
-            Consider editing your .bashrc to put:
-              #{HOMEBREW_PREFIX}/bin
+                #{conflicts * "\n                "}
+
+            Consider editing your .bashrc to put #{HOMEBREW_PREFIX}/bin
             ahead of /usr/bin in your PATH.
+
           EOS
         end
       end
@@ -685,27 +696,6 @@ def check_for_MACOSX_DEPLOYMENT_TARGET
   end
 end
 
-def check_for_CLICOLOR_FORCE
-  if ENV['CLICOLOR_FORCE']
-    puts <<-EOS.undent
-    Having CLICOLOR_FORCE set can cause some builds to fail.
-    You may want to unset it.
-
-    EOS
-  end
-end
-
-def check_for_GREP_OPTIONS
-  target_var = ENV['GREP_OPTIONS'].to_s
-  unless target_var.empty? or target_var == '--color=auto'
-    puts <<-EOS.undent
-    GREP_OPTIONS was set to \"#{target_var}\".
-    Having GREP_OPTIONS set this way can cause CMake builds to fail.
-
-    EOS
-  end
-end
-
 def check_for_other_frameworks
   # Other frameworks that are known to cause problems when present
   ["/Library/Frameworks/expat.framework", "/Library/Frameworks/libexpat.framework"].each do |f|
@@ -752,10 +742,11 @@ end
 
 def check_git_status
   HOMEBREW_REPOSITORY.cd do
-    cmd = `git status -s Library/Homebrew/`.chomp
+    cmd = `git status -s Library/Homebrew/ 2> /dev/null`.chomp
     if system "/usr/bin/which -s git" and File.directory? '.git' and not cmd.empty?
       ohai "You have uncommitted modifications to Homebrew's core."
-      puts "Unless you know what you are doing, you should: git reset --hard"
+      puts "Unless you know what you are doing, you should run:"
+      puts "cd "+HOMEBREW_REPOSITORY+" && git reset --hard"
       puts
     end
   end
@@ -843,8 +834,6 @@ module Homebrew extend self
       check_for_config_scripts
       check_for_dyld_vars
       check_for_MACOSX_DEPLOYMENT_TARGET
-      check_for_CLICOLOR_FORCE
-      check_for_GREP_OPTIONS
       check_for_symlinked_cellar
       check_for_multiple_volumes
       check_for_git

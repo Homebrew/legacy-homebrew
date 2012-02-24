@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libftdi < Formula
-  url "http://www.intra2net.com/en/developer/libftdi/download/libftdi-0.18.tar.gz"
   homepage 'http://www.intra2net.com/en/developer/libftdi'
-  md5 '916f65fa68d154621fc0cf1f405f2726'
+  url "http://www.intra2net.com/en/developer/libftdi/download/libftdi-0.19.tar.gz"
+  md5 'e6e25f33b4327b1b7aa1156947da45f3'
 
   depends_on 'boost'
   depends_on 'libusb-compat'

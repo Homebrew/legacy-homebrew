@@ -1,9 +1,9 @@
 require 'formula'
 
 class Bazaar < Formula
+  homepage 'http://bazaar-vcs.org/'
   url 'http://launchpad.net/bzr/2.4/2.4.2/+download/bzr-2.4.2.tar.gz'
   md5 'cfc06fddd348445c65a247c0b33a05db'
-  homepage 'http://bazaar-vcs.org/'
 
   def options
     [["--system", "Install using the OS X system Python."]]
@@ -34,10 +34,9 @@ class Bazaar < Formula
 
     system "make"
     inreplace "bzr", "#! /usr/bin/env python", "#!/usr/bin/python" if ARGV.include? "--system"
-    libexec.install ['bzr', 'bzrlib']
+    libexec.install 'bzr', 'bzrlib'
 
-    bin.mkpath
-    ln_s libexec+'bzr', bin+'bzr'
+    bin.install_symlink libexec+'bzr'
   end
 
   def caveats

@@ -1,16 +1,21 @@
 require 'formula'
 
 class SbclBootstrapBinaries < Formula
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.49/sbcl-1.0.49-x86-darwin-binary.tar.bz2'
-  md5 '6ffae170cfa0f1858efb37aa7544aba6'
-  version "1.0.49"
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.55/sbcl-1.0.55-x86-darwin-binary.tar.bz2'
+  md5 '941351112392a77dd62bdcb9fb62e4e4'
+  version "1.0.55"
 end
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.53/sbcl-1.0.53-source.tar.bz2'
-  md5 '28bdb8d65b240bcc45370f19b781f9b8'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.55/sbcl-1.0.55-source.tar.bz2'
+  md5 '128fb15c80e8e3f8d4024bd8e04635e0'
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
+
+  bottle do
+    url 'https://downloads.sf.net/project/machomebrew/Bottles/sbcl-1.0.55-bottle.tar.gz'
+    sha1 '3c13225c8fe3eabf54e9d368e6b74318a5546430'
+  end
 
   fails_with_llvm "Compilation fails with LLVM.", :build => 2334
 
@@ -28,10 +33,10 @@ class Sbcl < Formula
 
   def patches
     { :p0 => [
-        "https://trac.macports.org/export/87593/trunk/dports/lang/sbcl/files/patch-base-target-features.diff",
-        "https://trac.macports.org/export/87593/trunk/dports/lang/sbcl/files/patch-make-doc.diff",
-        "https://trac.macports.org/export/87593/trunk/dports/lang/sbcl/files/patch-posix-tests.diff",
-        "https://trac.macports.org/export/87593/trunk/dports/lang/sbcl/files/patch-use-mach-exception-handler.diff"
+        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-base-target-features.diff",
+        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-make-doc.diff",
+        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-posix-tests.diff",
+        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-use-mach-exception-handler.diff"
     ]}
   end
 

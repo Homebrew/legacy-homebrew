@@ -1,9 +1,9 @@
 require 'formula'
 
 class Bagit < Formula
-  url 'http://downloads.sourceforge.net/project/loc-xferutils/loc-bil-java-library/3.13/bagit-3.13-bin.zip'
+  url 'http://downloads.sourceforge.net/project/loc-xferutils/loc-bil-java-library/4.0/bagit-4.0-bin.zip'
   homepage 'http://sourceforge.net/project/loc-xferutils'
-  md5 'ff5bbbe554a2cb70cc1881f925850a28'
+  md5 '956734479af87fe6d8545032d8b8b12e'
 
   skip_clean 'logs'
 

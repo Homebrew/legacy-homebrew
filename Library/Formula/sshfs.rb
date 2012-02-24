@@ -12,7 +12,9 @@ class Sshfs < Formula
 
   def install
     ENV['ACLOCAL'] = "/usr/bin/aclocal -I/usr/share/aclocal -I#{HOMEBREW_PREFIX}/share/aclocal"
-    system "autoreconf", "--force", "--install"
+    ENV['AUTOCONF'] = "/usr/bin/autoconf"
+    ENV['AUTOMAKE'] = "/usr/bin/automake"
+    system "/usr/bin/autoreconf", "--force", "--install"
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
