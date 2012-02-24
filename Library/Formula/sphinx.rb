@@ -24,7 +24,6 @@ class Sphinx < Formula
     Libstemmer.new.brew { mv Dir['*'], lstem }
 
     args = ["--prefix=#{prefix}",
-            "--disable-debug",
             "--disable-dependency-tracking",
             "--localstatedir=#{var}"]
 
