@@ -21,7 +21,8 @@ class Go < Formula
     prefix.install %w[src include test doc misc lib favicon.ico AUTHORS]
     Dir.chdir prefix
     mkdir %w[pkg bin]
-    File.open('VERSION', 'w') {|f| f.write('release.r60.3 9516') }
+    version = ARGV.build_head? ? 'default' : 'release.r60.3 9516'
+    File.open('VERSION', 'w') {|f| f.write(version) }
 
     Dir.chdir 'src' do
       # Tests take a very long time to run. Build only
