@@ -143,7 +143,7 @@ class Subversion < Formula
         This unicode-path version implements a hack to deal with composed/decomposed
         unicode handling on Mac OS X which is different from linux and windows.
         It is an implementation of solution 1 from
-        http://svn.collab.net/repos/svn/trunk/notes/unicode-composition-for-filenames
+        http://svn.apache.org/repos/asf/subversion/trunk/notes/unicode-composition-for-filenames
         which _WILL_ break some setups. Please be sure you understand what you
         are asking for when you install this version.
 
