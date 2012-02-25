@@ -1,5 +1,4 @@
 require 'formula'
-require 'hardware'
 
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'

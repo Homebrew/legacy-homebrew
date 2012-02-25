@@ -1,6 +1,7 @@
 require 'download_strategy'
 require 'fileutils'
 require 'formula_support'
+require 'hardware'
 
 
 # Derive and define at least @url, see Library/Formula for examples
