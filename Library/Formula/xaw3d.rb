@@ -12,8 +12,7 @@ class Xaw3d < Formula
     ENV.x11
     inreplace 'lib/Xaw3d/Imakefile', 'XCOMM EXTRA_INCLUDES', 'EXTRA_INCLUDES'
     cd 'lib/Xaw3d' do
-      mkdir 'X11'
-      cd 'X11' do
+      mkdir 'X11' do
         # TODO - surely this symlink can be made without the cd
         ln_s '..', 'Xaw3d'
       end

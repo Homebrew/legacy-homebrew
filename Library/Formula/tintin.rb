@@ -7,33 +7,16 @@ class Tintin < Formula
 
   depends_on 'pcre'
 
-  # This puts brew's environ (CPPFLAGS and CFLAGS) in generated Makefile
-  def patches
-    DATA
-  end
-
   def install
-    Dir.chdir "src"
-    system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    # find Homebrew's libpcre
+    ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
+
+    cd 'src' do
+      system "./configure", "--prefix=#{prefix}"
+      system "make", "CFLAGS=#{ENV.cflags}",
+                     "INCS=#{ENV.cppflags}",
+                     "LDFLAGS=#{ENV.ldflags}",
+                     "install"
+    end
   end
 end
-
-__END__
-diff --git a/src/Makefile.in b/src/Makefile.in
-index 067b5ff..d55bc74 100644
---- a/src/Makefile.in
-+++ b/src/Makefile.in
-@@ -31,11 +31,11 @@ docdir = @prefix@/doc
- 
- #this is the standard CFLAGS options, this is what most people should use
- 
--CFLAGS += $(DEFINES) @BIG5@
-+CFLAGS += $(DEFINES) @CFLAGS@ @BIG5@
- 
- LDFLAGS = @LDFLAGS@
- 
--INCS = @MYINCLUDE@
-+INCS = @CPPFLAGS@ @MYINCLUDE@
- 
- LIBS = @MYLIB@ @LIBS@

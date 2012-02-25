@@ -10,14 +10,14 @@ class Jruby < Formula
     rm Dir['bin/*.{bat,dll,exe}']
 
     # Prefix a 'j' on some commands
-    Dir.chdir 'bin' do
+    cd 'bin' do
       Dir['*'].each do |file|
         mv file, "j#{file}" unless file.match /^[j]/
       end
     end
 
     # Only keep the OS X native libraries
-    Dir.chdir 'lib/native' do
+    cd 'lib/native' do
       Dir['*'].each do |file|
         rm_rf file unless file.downcase == 'darwin'
       end

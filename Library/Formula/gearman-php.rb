@@ -8,7 +8,7 @@ class GearmanPhp < Formula
   depends_on 'gearman'
 
   def install
-    Dir.chdir "gearman-#{version}" do
+    cd "gearman-#{version}" do
       system "phpize"
       system "./configure", "--prefix=#{prefix}",
                             "--with-gearman=#{Formula.factory('gearman').prefix}"
