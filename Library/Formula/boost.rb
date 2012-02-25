@@ -37,6 +37,10 @@ class Boost < Formula
     # #define foreach BOOST_FOREACH causes compile error "'boost::BOOST_FOREACH'
     # has not been declared" on its line if it appears after #include
     # <boost/foreach.hpp> and before certain other boost headers.
+    #
+    # https://svn.boost.org/trac/boost/ticket/6151
+    # Threading detection broken in GCC 4.7 experimental.
+    # Add check for _GLIBCXX_HAS_GTHREADS.
     DATA unless ARGV.build_head?
   end
 
@@ -159,3 +163,18 @@ Index: /boost/foreach.hpp
 +inline boost::BOOST_FOREACH::is_noncopyable<T> *
  boost_foreach_is_noncopyable(T *&, BOOST_FOREACH_TAG_DEFAULT) { return 0; }
 
+Index: /boost/config/stdlib/libstdcpp3.hpp
+===================================================================
+--- /boost/config/stdlib/libstdcpp3.hpp  (revision 70754)
++++ /boost/config/stdlib/libstdcpp3.hpp  (working copy)
+@@ -33,7 +33,9 @@
+ 
+ #ifdef __GLIBCXX__ // gcc 3.4 and greater:
+ #  if defined(_GLIBCXX_HAVE_GTHR_DEFAULT) \
+-        || defined(_GLIBCXX__PTHREADS)
++        || defined(_GLIBCXX__PTHREADS) \
++        || defined(_GLIBCXX_HAS_GTHREADS) \
++        || defined(_WIN32)
+       //
+       // If the std lib has thread support turned on, then turn it on in Boost
+       // as well.  We do this because some gcc-3.4 std lib headers define _REENTANT
