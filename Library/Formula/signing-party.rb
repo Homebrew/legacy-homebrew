@@ -1,8 +1,8 @@
 require 'formula'
 
 class SigningParty < Formula
-  url 'http://ftp.debian.org/debian/pool/main/s/signing-party/signing-party_1.1.4.orig.tar.gz'
   homepage 'http://pgp-tools.alioth.debian.org/'
+  url 'http://ftp.debian.org/debian/pool/main/s/signing-party/signing-party_1.1.4.orig.tar.gz'
   md5 '675f8f1edd01baa8b58a743927d13750'
 
   depends_on 'gnupg' unless system "/usr/bin/which -s gpg"
@@ -36,7 +36,7 @@ class SigningParty < Formula
     end
 
     cd 'gpg-mailkeys' do
-      inreplace 'gpg-mailkeys', 
+      inreplace 'gpg-mailkeys',
         %q[`getent passwd $USER | cut -d: -f5 | cut -d, -f1`],
         %q[`osascript -e "long user name of (system info)" 2>/dev/null`]
 
