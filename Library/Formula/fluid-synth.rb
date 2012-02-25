@@ -17,10 +17,10 @@ class FluidSynth < Formula
   end
 
   def install
-    Dir.mkdir 'macbuild'
-    Dir.chdir 'macbuild'
-    system "cmake #{std_cmake_parameters} -Denable-framework=OFF -DLIB_SUFFIX= .."
-    system "make install"
+    mkdir 'build' do
+      system "cmake #{std_cmake_parameters} -Denable-framework=OFF -DLIB_SUFFIX= .."
+      system "make install"
+    end
   end
 end
 
