@@ -11,6 +11,14 @@ class Libsndfile < Formula
     [["--universal", "Build a universal binary."]]
   end
 
+  def patches
+    # libsndfile doesn't find Carbon.h using XCode 4.3:
+    #=> upstream has already removed Carbon.h but this hasn't been
+    #=> reflected in a packaged release yet. This patch is
+    #=> probably only needed temporarily.
+    DATA
+  end
+
   def install
     ENV.universal_binary if ARGV.build_universal?
 
@@ -18,3 +26,15 @@ class Libsndfile < Formula
     system "make install"
   end
 end
+
+__END__
+--- a/programs/sndfile-play.c 2011-03-28 01:15:31.000000000 -0400
++++ b/programs/sndfile-play.c 2012-02-22 11:32:20.000000000 -0500
+@@ -58,7 +58,6 @@
+  #include  <sys/soundcard.h>
+ 
+ #elif (defined (__MACH__) && defined (__APPLE__))
+- #include <Carbon.h>
+  #include <CoreAudio/AudioHardware.h>
+ 
+ #elif defined (HAVE_SNDIO_H)
