@@ -6,7 +6,7 @@ class Bashreduce < Formula
 
   def install
     bin.install "br"
-    Dir.chdir 'brutils' do
+    cd 'brutils' do
       system "make", "CFLAGS=#{ENV.cflags}", "BINDIR=#{bin}"
       bin.install "brp", "brm"
     end

@@ -15,7 +15,7 @@ class Newlisp < Formula
     system "make"
 
     # Many .lsp files assume the interpreter will be installed in /usr/bin
-    Dir.glob("**/*.lsp") do |f|
+    Dir["**/*.lsp"].each do |f|
       inreplace f do |s|
         s.gsub! "!#/usr/bin/newlisp", "!#/usr/bin/env newlisp"
         s.gsub! "/usr/bin/newlisp", "#{bin}/newlisp"

@@ -60,7 +60,7 @@ def install_wx_python
       "BUILD_GIZMOS=1",
       "BUILD_STC=1"
     ]
-    Dir.chdir "wxPython" do
+    cd "wxPython" do
       if ARGV.build_devel?
         ENV.append_to_cflags '-arch x86_64' if MacOS.prefer_64_bit?
 

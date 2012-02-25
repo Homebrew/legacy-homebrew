@@ -62,7 +62,7 @@ def install f
       if ARGV.flag? '--git'
         system "git init"
         system "git add -A"
-        puts "This folder is now a git repo. Make your changes and then use:"
+        puts "This directory is now a git repo. Make your changes and then use:"
         puts "  git diff | pbcopy"
         puts "to copy the diff to the clipboard."
       end

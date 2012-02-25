@@ -1,9 +1,9 @@
 require 'formula'
 
 class Platypus < Formula
+  homepage 'http://www.sveinbjorn.org/platypus'
   url 'http://www.sveinbjorn.org/files/software/platypus.src.zip'
   version '4.4'
-  homepage 'http://www.sveinbjorn.org/platypus'
   md5 'e6fe23f7037a873394b70bcc62843940'
 
   def install
@@ -20,11 +20,10 @@ class Platypus < Formula
 
     # Install binary and man page
     bin.install "build/Deployment/platypus"
-    Dir.chdir('CommandLineTool') do
-      man1.install "platypus.1"
-    end
+    man1.install "CommandLineTool/platypus.1"
+
     # Install sub-binary parts to share
-    Dir.chdir('build/Deployment/ScriptExec.app/Contents') do
+    cd 'build/Deployment/ScriptExec.app/Contents' do
       (share + 'platypus').install "MacOS/ScriptExec"
       (share + 'platypus/MainMenu.nib').install "Resources/English.lproj/MainMenu.nib/keyedobjects.nib"
     end
