@@ -16,6 +16,10 @@ class Riak < Formula
 
   skip_clean :all
 
+  def options
+    [['--32-bit', 'Build 32-bit only.']]
+  end
+
   def install
     libexec.install Dir['*']
 
