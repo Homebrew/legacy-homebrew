@@ -1,5 +1,4 @@
 require 'formula'
-require 'hardware'
 
 def no_magick?
   ARGV.include? '--without-graphicsmagick'
