@@ -10,6 +10,7 @@ class Aalib < Formula
   end
 
   def install
+    ENV.x11
     ENV.ncurses_define
     system 'autoreconf --force --install'
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
