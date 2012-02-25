@@ -1,32 +1,48 @@
 require 'formula'
 
 class StoneSoup < Formula
-  url 'http://sourceforge.net/projects/crawl-ref/files/Stone%20Soup/0.7.2/stone_soup-0.7.2.tar.bz2'
+  url 'http://sourceforge.net/projects/crawl-ref/files/Stone%20Soup/0.9.0/stone_soup-0.9.0.tar.bz2'
   homepage 'http://crawl.develz.org/wordpress/'
-  md5 'ffb54c88d280f036a3819cba23bc4489'
+  md5 '8c5a5d44b18733076cc95925315107bc'
 
   # Keep empty folders for save games and such
   skip_clean :all
 
+  def options
+    [['--with-tiles', 'compile the tiles version']]
+  end
+
   def install
+    ENV.x11
     Dir.chdir "source"
 
-    # Hacks here by Adam V (@flangy) aided by @mistydemeo
-    # Arch / SDK detection is somewhat bogus: 32 vs 64-bit is detected wrong
-    # and the 10.4 SDK is selected too aggressively.
-    # Fix up what it detects
-    target_arch = MacOS.prefer_64_bit? ? "x86_64" : "i386"
-
-    inreplace "makefile" do |s|
-      s.gsub!(
-        "CC = $(GCC) -arch $(ARCH) -isysroot $(SDKROOT) -mmacosx-version-min=$(SDK_VER)",
-        "CC = #{ENV.cc} -arch #{target_arch} -isysroot #{MacOS.xcode_prefix}/SDKs/MacOSX#{MACOS_VERSION}.sdk -mmacosx-version-min=#{MACOS_VERSION}"
-        )
-      s.gsub!(
-        "CXX = $(GXX) -arch $(ARCH) -isysroot $(SDKROOT) -mmacosx-version-min=$(SDK_VER)",
-        "CXX = #{ENV.cxx} -arch #{target_arch} -isysroot #{MacOS.xcode_prefix}/SDKs/MacOSX#{MACOS_VERSION}.sdk -mmacosx-version-min=#{MACOS_VERSION}"
-        )
+    if ARGV.include? '--with-tiles'
+      # works out of the box
+      system "make", "prefix=#{prefix}", "SAVEDIR=saves/", "DATADIR=data/", "TILES=y", "install"
+    else
+      # if XCode 4 is installed on Snow Leopard, then forcing the framework breaks the build, so remove it.
+      # Xcode3 should be fine out of the box.
+      if File.directory? "/Developer-old"
+        inreplace "makefile" do |s|
+          s.gsub!(
+                  "CC = $(GCC) $(CFLAGS_ARCH) -isysroot $(SDKROOT) -mmacosx-version-min=$(SDK_VER)",
+                  "CC = $(GCC) $(CFLAGS_ARCH)"
+                  )
+          s.gsub!(
+                  "CXX = $(GXX) $(CFLAGS_ARCH) -isysroot $(SDKROOT) -mmacosx-version-min=$(SDK_VER)",
+                  "CXX = $(GXX) $(CFLAGS_ARCH)"
+                  )
+          s.gsub!(
+                  "DEPCC = $(GCC) $(or $(CFLAGS_DEPCC_ARCH),$(CFLAGS_ARCH)) -isysroot $(SDKROOT) -mmacosx-version-min=$(SDK_VER)",
+                  "DEPCC = $(GCC) $(or $(CFLAGS_DEPCC_ARCH),$(CFLAGS_ARCH))"
+                  )
+          s.gsub!(
+                  "DEPCXX = $(GXX) $(or $(CFLAGS_DEPCC_ARCH),$(CFLAGS_ARCH)) -isysroot $(SDKROOT) -mmacosx-version-min=$(SDK_VER)",
+                  "DEPCXX = $(GXX) $(or $(CFLAGS_DEPCC_ARCH),$(CFLAGS_ARCH))"
+                  )
+        end
+        system "make", "prefix=#{prefix}", "SAVEDIR=saves/", "DATADIR=data/", "install"
+      end
     end
-    system "make", "prefix=#{prefix}", "SAVEDIR=saves/", "DATADIR=data/", "install"
   end
 end
