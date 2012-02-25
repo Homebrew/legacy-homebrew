@@ -586,13 +586,17 @@ EOF
   end
 
   def patch
-    return if patches.nil?
+    # Only call `patches` once.
+    # If there is code in `patches`, which is not recommended, we only
+    # want to run that code once.
+    the_patches = patches
+    return if the_patches.nil?
 
-    if not patches.kind_of? Hash
+    if not the_patches.kind_of? Hash
       # We assume -p1
-      patch_defns = { :p1 => patches }
+      patch_defns = { :p1 => the_patches }
     else
-      patch_defns = patches
+      patch_defns = the_patches
     end
 
     patch_list=[]
