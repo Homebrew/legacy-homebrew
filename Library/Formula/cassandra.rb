@@ -31,15 +31,15 @@ class Cassandra < Formula
     prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc,lib/licenses}"]
     prefix.install Dir["lib/*.jar"]
 
-    (prefix+'org.apache.cassandra.plist').write startup_plist
-    (prefix+'org.apache.cassandra.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent
     If this is your first install, automatically load on login with:
       mkdir -p ~/Library/LaunchAgents
-      cp #{prefix}/org.apache.cassandra.plist ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/org.apache.cassandra.plist
+      cp #{plist_path} ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
     EOS
   end
 
@@ -52,11 +52,11 @@ class Cassandra < Formula
     <true/>
 
     <key>Label</key>
-    <string>org.apache.cassandra</string>
+    <string>#{plist_name}</string>
 
     <key>ProgramArguments</key>
     <array>
-        <string>#{bin}/cassandra</string>
+        <string>#{HOMEBREW_PREFIX}/bin/cassandra</string>
         <string>-f</string>
     </array>
 

@@ -15,11 +15,12 @@ class Clisp < Formula
   fails_with_llvm "Configure fails on XCode 4/Snow Leopard.", :build => 2334
 
   def patches
-    { :p0 => "https://svn.macports.org/repository/macports/!svn/bc/89054/trunk/dports/lang/clisp/files/patch-src_lispbibl_d.diff" }
+    { :p0 => "https://trac.macports.org/export/89054/trunk/dports/lang/clisp/files/patch-src_lispbibl_d.diff" }
   end
 
   def install
     ENV.j1 # This build isn't parallel safe.
+    ENV.remove_from_cflags /-O./
 
     # Clisp requires to select word size explicitly this way,
     # set it in CFLAGS won't work.

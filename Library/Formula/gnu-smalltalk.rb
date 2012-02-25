@@ -20,7 +20,7 @@ class GnuSmalltalk < Formula
 
   depends_on 'readline'
 
-  fails_with_llvm "Codegen problems with LLVM"
+  fails_with_llvm "Codegen problems with LLVM", :build => 2334
 
   def install
     # 64-bit version doesn't build, so force 32 bits.
@@ -41,9 +41,8 @@ class GnuSmalltalk < Formula
 
     # GNU Smalltalk thinks it needs GNU awk, but it works fine
     # with OS X awk, so let's trick configure.
-    here = Dir.pwd
-    system "ln -s /usr/bin/awk #{here}/gawk"
-    ENV['AWK'] = "#{here}/gawk"
+    system "ln -s /usr/bin/awk #{buildpath}/gawk"
+    ENV['AWK'] = "#{buildpath}/gawk"
 
     ENV['FFI_CFLAGS'] = '-I/usr/include/ffi'
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
