@@ -1,5 +1,4 @@
 require 'formula'
-require 'hardware'
 
 class Riak < Formula
   homepage 'http://wiki.basho.com/Riak.html'

@@ -1,5 +1,4 @@
 require 'formula'
-require 'hardware'
 
 class Qt < Formula
   homepage 'http://qt.nokia.com/'
