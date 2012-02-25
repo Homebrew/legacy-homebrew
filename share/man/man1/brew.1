@@ -168,7 +168,7 @@ Install \fIformula\fR\.
 If \fB\-\-force\fR is passed, will install \fIformula\fR even if it is already installed\. This can be used to re\-install a formula without removing it first\.
 .
 .IP
-If \fB\-\-debug\fR is passed and brewing fails, open a shell inside the temporary folder used for compiling\.
+If \fB\-\-debug\fR is passed and brewing fails, open a shell inside the temporary directory used for compiling\.
 .
 .IP
 If \fB\-\-ignore\-dependencies\fR is passed, skip installing any dependencies of any kind\. If they are not already present, the formula will probably fail to install\.
@@ -316,7 +316,7 @@ Display Homebrew\'s download cache\. \fIDefault:\fR \fB~/Library/Caches/Homebrew
 .
 .TP
 \fB\-\-cache\fR \fIformula\fR
-Display the file or folder used to cache \fIformula\fR\.
+Display the file or directory used to cache \fIformula\fR\.
 .
 .TP
 \fB\-\-cellar\fR
@@ -324,7 +324,7 @@ Display Homebrew\'s Cellar path\. \fIDefault:\fR \fB/usr/local/Cellar\fR
 .
 .TP
 \fB\-\-cellar\fR \fIformula\fR
-Display the location in the cellar where \fIformula\fR would be installed, without any sort of versioned folder as the last path\.
+Display the location in the cellar where \fIformula\fR would be installed, without any sort of versioned directory as the last path\.
 .
 .TP
 \fB\-\-config\fR
@@ -340,7 +340,7 @@ Display the location in the cellar where \fIformula\fR is or would be installed\
 .
 .TP
 \fB\-\-repository\fR
-Display where Homebrew\'s \fB\.git\fR folder is located\. For standard installs, the \fBprefix\fR and \fBrepository\fR are the same folder\.
+Display where Homebrew\'s \fB\.git\fR directory is located\. For standard installs, the \fBprefix\fR and \fBrepository\fR are the same directory\.
 .
 .TP
 \fB\-v\fR, \fB\-\-version\fR
@@ -373,10 +373,10 @@ If set, instructs Homebrew to compile from source even when a formula provides a
 .
 .TP
 HOMEBREW_CACHE
-If set, instructs Homebrew to use the give folder as the download cache\. Otherwise, \fB~/Library/Caches/Homebrew\fR is used\.
+If set, instructs Homebrew to use the give directory as the download cache\. Otherwise, \fB~/Library/Caches/Homebrew\fR is used\.
 .
 .IP
-This can be used to keep downloads out of your home folder, if you have it mounted on an SSD or are using FileVault for instance\.
+This can be used to keep downloads out of your home directory, if you have it mounted on an SSD or are using FileVault for instance\.
 .
 .TP
 HOMEBREW_CURL_VERBOSE
@@ -396,10 +396,10 @@ When \fBbrew install \-d\fR or \fBbrew install \-i\fR drops into a shell, \fBHOM
 .
 .TP
 HOMEBREW_EDITOR
-If set, Homebrew will use this editor when editing a single formula, or several formulae in the same folder\.
+If set, Homebrew will use this editor when editing a single formula, or several formulae in the same directory\.
 .
 .IP
-\fINOTE\fR: \fBbrew edit\fR will open all of Homebrew as discontinuous files and folders\. TextMate can handle this correctly in project mode, but many editors will do strange things in this case\.
+\fINOTE\fR: \fBbrew edit\fR will open all of Homebrew as discontinuous files and directories\. TextMate can handle this correctly in project mode, but many editors will do strange things in this case\.
 .
 .TP
 HOMEBREW_KEEP_INFO
@@ -424,7 +424,7 @@ Set this to force Homebrew to use a particular svn binary\.
 .
 .TP
 HOMEBREW_TEMP
-If set, instructs Homebrew to use \fBHOMEBREW_TEMP\fR as the temporary folder for building packages\. This may be needed if your system temp folder and Homebrew Prefix are on different volumes, as OS X has trouble moving symlinks across volumes when the target does not yet exist\.
+If set, instructs Homebrew to use \fBHOMEBREW_TEMP\fR as the temporary directory for building packages\. This may be needed if your system temp directory and Homebrew Prefix are on different volumes, as OS X has trouble moving symlinks across volumes when the target does not yet exist\.
 .
 .IP
 This issue typically occurs when using FileVault or custom SSD configurations\.
