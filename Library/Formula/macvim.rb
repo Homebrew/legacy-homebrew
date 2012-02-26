@@ -14,7 +14,8 @@ class Macvim < Formula
     ["--with-cscope", "Build with Cscope support."],
     ["--with-envycoder", "Build with Envy Code R Bold font."],
     ["--override-system-vim", "Override system vim."],
-    ["--enable-clipboard", "Enable System clipboard handling in the terminal."]
+    ["--enable-clipboard", "Enable System clipboard handling in the terminal."],
+    ["--with-ruby-command=...", "Use a different Ruby command."]
   ]
   end
 
@@ -33,6 +34,9 @@ class Macvim < Formula
     arch = MacOS.prefer_64_bit? ? 'x86_64' : 'i386'
     ENV['ARCHFLAGS'] = "-arch #{arch}"
 
+    ruby_command = ARGV.options_only.detect { |v| v =~ /^--with-ruby-command=(.*)$/ } && $1
+    ruby_command ||= "/usr/bin/ruby"
+
     args = ["--with-features=huge",
             "--with-tlib=ncurses",
             "--enable-multibyte",
@@ -40,7 +44,8 @@ class Macvim < Formula
             "--enable-perlinterp",
             "--enable-pythoninterp",
             "--enable-rubyinterp",
-            "--enable-tclinterp"]
+            "--enable-tclinterp",
+            "--with-ruby-command=#{ruby_command}"]
 
     args << "--enable-cscope" if ARGV.include? "--with-cscope"
     args << "--enable-clipboard" if ARGV.include? "--enable-clipboard"
