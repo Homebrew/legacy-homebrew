@@ -25,11 +25,9 @@ class Qt < Formula
   depends_on "d-bus" if ARGV.include? '--with-qtdbus'
   depends_on 'sqlite' if MacOS.leopard?
 
+  # Fix compilation with llvm-gcc. Remove for 4.8.1.
   def patches
-    [
-      # Fix compilation with llvm-gcc. Remove for 4.8.1.
-      "https://qt.gitorious.org/qt/qt/commit/448ab7cd150ab7bb7d12bcac76bc2ce1c72298bd?format=patch"
-    ]
+    "https://qt.gitorious.org/qt/qt/commit/448ab7cd150ab7bb7d12bcac76bc2ce1c72298bd?format=patch"
   end
 
   def install
@@ -105,7 +103,7 @@ class Qt < Formula
     # The pkg-config files installed suggest that geaders can be found in the
     # `include` directory. Make this so by creating symlinks from `include` to
     # the Frameworks' Headers folders.
-    Dir["#{lib}/*.framework/Headers"].each do |path|
+    Pathname.glob(lib + '*.framework/Headers').each do |path|
       framework_name = File.basename(File.dirname(path), '.framework')
       ln_s path.realpath, include+framework_name
     end
