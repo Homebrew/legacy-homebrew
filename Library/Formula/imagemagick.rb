@@ -47,12 +47,14 @@ end
 
 
 class Imagemagick < Formula
+  homepage 'http://www.imagemagick.org'
+
   # Using an unofficial Git mirror to work around:
   # * Stable tarballs disappearing
   # * Bad https cert on official SVN repo
   url 'https://github.com/trevor/ImageMagick/tarball/6.7.1-1'
   md5 '9c71dfbddc42b78a0d8db8acdb534d37'
-  homepage 'http://www.imagemagick.org'
+
   head 'https://github.com/trevor/ImageMagick.git'
 
   bottle do
@@ -94,7 +96,6 @@ class Imagemagick < Formula
 
   def install
     ENV.x11 # Add to PATH for freetype-config on Snow Leopard
-    ENV.O3 # takes forever otherwise
 
     args = [ "--disable-osx-universal-binary",
              "--without-perl", # I couldn't make this compile
