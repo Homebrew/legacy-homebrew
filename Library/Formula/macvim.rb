@@ -51,13 +51,10 @@ class Macvim < Formula
       inreplace "src/MacVim/icons/Makefile", "$(MAKE) -C makeicns", ""
       inreplace "src/MacVim/icons/make_icons.py", "dont_create = False", "dont_create = True"
     end
-
-    # TODO: This seems to be different in snapshot-62
+    
     unless ARGV.include? "--with-envycoder"
-      # Remove the font from the build dependencies
-      inreplace "src/MacVim/icons/Makefile",
-        '$(OUTDIR)/MacVim-generic.icns: make_icons.py vim-noshadow-512.png loadfont.so Envy\ Code\ R\ Bold.ttf',
-        "$(OUTDIR)/MacVim-generic.icns: make_icons.py vim-noshadow-512.png loadfont.so"
+      # Reference: https://github.com/b4winckler/macvim/wiki/building
+      system "make getenvy"
     end
 
     system "make"
