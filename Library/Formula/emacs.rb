@@ -1,15 +1,16 @@
 require 'formula'
 
 class Emacs < Formula
-  url 'http://ftpmirror.gnu.org/emacs/emacs-23.3b.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/emacs/emacs-23.3b.tar.bz2'
-  md5 '917ce0054ef63773078a6e99b55df1ee'
   homepage 'http://www.gnu.org/software/emacs/'
+  url 'http://ftpmirror.gnu.org/emacs/emacs-23.4.tar.bz2'
+  mirror '  http://ftp.gnu.org/pub/gnu/emacs/emacs-23.4.tar.bz2'
+  md5 '070c68ad8e3c31fb3cb2414feaf5e6f0'
 
   fails_with_llvm "Duplicate symbol errors while linking.", :build => 2334
 
-  # Stripping on Xcode 4 causes malformed object errors
-  skip_clean ["bin/emacs", "bin/emacs-23.3", "bin/emacs-24.0.50"]
+  # Stripping on Xcode 4 causes malformed object errors.
+  # Just skip everything.
+  skip_clean :all
 
   if ARGV.include? "--use-git-head"
     head 'git://git.sv.gnu.org/emacs.git'
@@ -31,7 +32,6 @@ class Emacs < Formula
 
     # Fix for building with Xcode 4; harmless on Xcode 3.x.
     unless ARGV.build_head?
-      p << "http://repo.or.cz/w/emacs.git/commitdiff_plain/c8bba48c5889c4773c62a10f7c3d4383881f11c1"
       p << DATA
     end
 
@@ -127,21 +127,6 @@ class Emacs < Formula
 end
 
 __END__
-# Fix for address randomization on Darwin. Based on:
-# http://repo.or.cz/w/emacs.git/patch/f2cea124dffac9ca4b8ce1dbb9b746f8e81109a3
-diff --git a/src/s/darwin.h b/src/s/darwin.h
-index 2b0addb..89d010a 100644
---- a/src/s/darwin.h
-+++ b/src/s/darwin.h
-@@ -181,7 +181,7 @@ along with GNU Emacs.  If not, see <http://www.gnu.org/licenses/>.  */
-    end of the header for adding load commands.  Needed for dumping.
-    0x690 is the total size of 30 segment load commands (at 56
-    each); under Cocoa 31 commands are required.  */
--#define LD_SWITCH_SYSTEM_TEMACS -prebind LIBS_NSGUI -Xlinker -headerpad -Xlinker HEADERPAD_EXTRA
-+#define LD_SWITCH_SYSTEM_TEMACS -fno-pie -prebind LIBS_NSGUI -Xlinker -headerpad -Xlinker HEADERPAD_EXTRA
- 
- #define C_SWITCH_SYSTEM_TEMACS -Dtemacs
-
 # Fix for the titlebar issue on Mac OS X 10.7
 diff --git a/src/nsterm.m b/src/nsterm.m
 index 30b73c2..234b8b5 100644
