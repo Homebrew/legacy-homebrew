@@ -58,8 +58,8 @@ class Python < Formula
     end
 
     # allow sqlite3 module to load extensions
-    inreplace "setup.py",
-      'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', ''
+    #inreplace "setup.py",
+    #  'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', ''
 
     system "./configure", *args
 
