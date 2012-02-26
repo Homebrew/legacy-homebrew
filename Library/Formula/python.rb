@@ -168,10 +168,10 @@ class Python < Formula
 
   # Ask python's distutils what is the effective path to the site-packages
   def effective_site_packages
-    if `which python`.chomp.empty?
-      return ""
+    @effective_site_packages ||= if `which python`.chomp.empty?
+      ""
     else
-      return `python -c 'import distutils.sysconfig as c; print(c.get_python_lib())'`.chomp
+      `python -c 'import distutils.sysconfig as c; print(c.get_python_lib())'`.chomp
     end
   end
 
