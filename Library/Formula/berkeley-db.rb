@@ -1,8 +1,8 @@
 require 'formula'
 
 class BerkeleyDb < Formula
-  url 'http://download.oracle.com/berkeley-db/db-5.3.15.tar.gz'
   homepage 'http://www.oracle.com/technology/products/berkeley-db/index.html'
+  url 'http://download.oracle.com/berkeley-db/db-5.3.15.tar.gz'
   md5 '5493fb5f7cc3915887c836b096f18773'
 
   def options
@@ -12,7 +12,6 @@ class BerkeleyDb < Formula
   def install
     # BerkeleyDB dislikes parallel builds
     ENV.deparallelize
-    ENV.O3 # takes an hour or more with link time optimisation
 
     args = ["--disable-debug",
             "--prefix=#{prefix}", "--mandir=#{man}",
