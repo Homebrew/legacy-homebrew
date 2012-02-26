@@ -250,15 +250,17 @@ class FormulaInstaller
   end
 
   def check_jars
-    # Check for Jars in lib
     return unless File.exist? f.lib
 
-    unless f.lib.children.select{|g| g.to_s =~ /\.jar$/}.empty?
+    jars = f.lib.children.select{|g| g.to_s =~ /\.jar$/}
+    unless jars.empty?
       opoo 'JARs were installed to "lib".'
       puts "Installing JARs to \"lib\" can cause conflicts between packages."
       puts "For Java software, it is typically better for the formula to"
       puts "install to \"libexec\" and then symlink or wrap binaries into \"bin\"."
       puts "See \"activemq\", \"jruby\", etc. for examples."
+      puts "The offending files are:"
+      puts jars
       @show_summary_heading = true
     end
   end
