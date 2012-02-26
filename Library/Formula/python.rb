@@ -170,6 +170,11 @@ class Python < Formula
   def scripts_folder
     HOMEBREW_PREFIX+"share/python"
   end
+
+  def test
+    # See: https://github.com/mxcl/homebrew/pull/10487
+    system "#{bin}/python -c 'from decimal import Decimal; print Decimal(4) / Decimal(2)'"
+  end
 end
 
 __END__
