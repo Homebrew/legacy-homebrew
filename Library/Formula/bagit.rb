@@ -9,10 +9,17 @@ class Bagit < Formula
 
   def install
     prefix.install %w{conf logs}
+
     libexec.install Dir['lib/*']
-    inreplace "bin/bag", "$APP_HOME/lib", "$APP_HOME/libexec"
+
+    # Point to libexec, and move conf file
+    inreplace "bin/bag" do |s|
+      s.gsub! "$APP_HOME/lib", "$APP_HOME/libexec"
+      s.gsub! "/bin/$APP_NAME.classworlds.conf", "/conf/$APP_NAME.classworlds.conf"
+    end
     inreplace "bin/bag.classworlds.conf", "${app.home}/lib", "${app.home}/libexec"
-    rm "bin/bag.bat"
-    bin.install Dir['bin/*']
+
+    bin.install 'bin/bag'
+    (prefix+'conf').install 'bin/bag.classworlds.conf'
   end
 end
