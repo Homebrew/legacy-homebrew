@@ -40,6 +40,16 @@ class Python < Formula
   skip_clean ['bin', 'lib']
 
   def install
+    # Python requires gcc-llvm and -fwrapv for proper Decimal division
+    # See: http://stackoverflow.com/questions/7590137/dividing-decimals-yields-invalid-results-in-python-2-5-to-2-7
+    # FIXME This should be replaced with fails_with_clang once available
+    if ENV.compiler == :clang
+      opoo "Python does not build properly with Clang, using LLVM."
+      ENV.llvm
+    end
+
+    ENV.append_to_cflags "-fwrapv"
+
     if build_framework? and ARGV.include? "--static"
       onoe "Cannot specify both framework and static."
       exit 99
