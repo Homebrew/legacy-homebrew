@@ -1,10 +1,11 @@
 require 'formula'
 
 class Vala < Formula
-  head 'git://git.gnome.org/vala'
-  url 'http://download.gnome.org/sources/vala/0.15/vala-0.15.1.tar.xz'
   homepage 'http://live.gnome.org/Vala'
-  md5 '639c8a85e184647a2c912a4f6ac28ed1'
+  url 'http://download.gnome.org/sources/vala/0.15/vala-0.15.2.tar.xz'
+  md5 '773562e7ba7bc0b40d87b7ad2db72443'
+
+  head 'git://git.gnome.org/vala'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
