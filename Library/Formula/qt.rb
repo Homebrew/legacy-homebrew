@@ -28,7 +28,9 @@ class Qt < Formula
   def patches
     [
       # Fix compilation with llvm-gcc. Remove for 4.8.1.
-      "https://qt.gitorious.org/qt/qt/commit/448ab7cd150ab7bb7d12bcac76bc2ce1c72298bd?format=patch"
+      "https://qt.gitorious.org/qt/qt/commit/448ab7cd150ab7bb7d12bcac76bc2ce1c72298bd?format=patch",
+      # Fix XCode4 support for qmake. Remove when fixed.
+      "https://qt.gitorious.org/qt/qt/commit/5928ebd9105c4e06b8e5d511b7ed17bb5968fd04?format=patch"
     ]
   end
 
