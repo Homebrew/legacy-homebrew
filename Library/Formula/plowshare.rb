@@ -3,7 +3,6 @@ require 'formula'
 class Plowshare < Formula
   homepage 'http://code.google.com/p/plowshare/'
   url 'http://plowshare.googlecode.com/files/plowshare-snapshot-git20120225.tar.gz'
-  version '20120225'
   sha1 'f47806261e620a9c1c6e5c9323f3471aabbe058b'
 
   head 'https://code.google.com/p/plowshare/', :using => :git
