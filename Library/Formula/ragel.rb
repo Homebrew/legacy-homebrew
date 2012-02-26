@@ -11,6 +11,11 @@ class Ragel < Formula
   md5 'f4423e0d8a6538dd4e61498fcfad3cec'
 
   def install
+    # fix build with clang
+    inreplace ["aapl/avlcommon.h", "aapl/bstcommon.h", "aapl/bubblesort.h", "aapl/mergesort.h"], /([^:.])(compare)/, '\1this->\2'
+    # fix build with libc++
+    inreplace 'ragel/javacodegen.cpp', /setiosflags/, 'std::\&'
+
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
 
