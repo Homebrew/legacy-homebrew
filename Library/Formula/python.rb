@@ -14,8 +14,8 @@ class Distribute < Formula
 end
 
 class Python < Formula
-  url 'http://www.python.org/ftp/python/2.7.2/Python-2.7.2.tar.bz2'
   homepage 'http://www.python.org/'
+  url 'http://www.python.org/ftp/python/2.7.2/Python-2.7.2.tar.bz2'
   md5 'ba7b2f11ffdbf195ee0d111b9455a5bd'
 
   depends_on 'readline' => :optional # Prefer over OS X's libedit
@@ -31,8 +31,8 @@ class Python < Formula
   end
 
   def patches
-    # fix for recognizing gdbm 1.9.x databases
-    # patch is already upstream: http://hg.python.org/cpython/rev/14cafb8d1480
+    # Fix for recognizing gdbm 1.9.x databases; already upstream:
+    # http://hg.python.org/cpython/rev/14cafb8d1480
     DATA
   end
 
@@ -40,8 +40,8 @@ class Python < Formula
   skip_clean ['bin', 'lib']
 
   def install
-    # Python requires -fwrapv for proper Decimal division
-    # See: http://stackoverflow.com/questions/7590137/dividing-decimals-yields-invalid-results-in-python-2-5-to-2-7
+    # Python requires -fwrapv for proper Decimal division. See:
+    # http://stackoverflow.com/questions/7590137/dividing-decimals-yields-invalid-results-in-python-2-5-to-2-7
     ENV.append_to_cflags "-fwrapv"
 
     if build_framework? and ARGV.include? "--static"
