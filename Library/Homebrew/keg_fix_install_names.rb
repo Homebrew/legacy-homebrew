@@ -5,7 +5,7 @@ class Keg
     mach_o_files.each do |file|
       bad_install_names_for file do |id, bad_names|
         file.ensure_writable do
-          system "install_name_tool", "-id", id, file if file.dylib?
+          system MacOS.locate("install_name_tool"), "-id", id, file if file.dylib?
 
           bad_names.each do |bad_name|
             new_name = bad_name
@@ -14,7 +14,7 @@ class Keg
             # First check to see if the dylib is present in the current
             # directory, so we can skip the more expensive search.
             if (file.parent + new_name).exist?
-              system "install_name_tool", "-change", bad_name, "@loader_path/#{new_name}", file
+              system MacOS.locate("install_name_tool"), "-change", bad_name, "@loader_path/#{new_name}", file
             else
               # Otherwise, try and locate the appropriate dylib by walking
               # the entire 'lib' tree recursively.
@@ -23,7 +23,7 @@ class Keg
               end
 
               if abs_name and abs_name.exist?
-                system "install_name_tool", "-change", bad_name, abs_name, file
+                system MacOS.locate("install_name_tool"), "-change", bad_name, abs_name, file
               else
                 opoo "Could not fix install names for #{file}"
               end
@@ -40,7 +40,7 @@ class Keg
 
   def bad_install_names_for file
     ENV['HOMEBREW_MACH_O_FILE'] = file.to_s # solves all shell escaping problems
-    install_names = `otool -L "$HOMEBREW_MACH_O_FILE"`.split "\n"
+    install_names = `#{MacOS.locate("otool")} -L "$HOMEBREW_MACH_O_FILE"`.split "\n"
 
     install_names.shift # first line is fluff
     install_names.map!{ |s| OTOOL_RX =~ s && $1 }

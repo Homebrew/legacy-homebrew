@@ -91,3 +91,8 @@ unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
   $:.unshift(File.expand_path("#{__FILE__}/../compat"))
   require 'compatibility'
 end
+
+# For Xcode-only installs, we add the path of the included unix tools (like git)
+if MacOS.dev_tools_path.to_s != '/usr/bin'
+  ENV['PATH'] = ENV['PATH'].to_s + ':' + MacOS.dev_tools_path
+end

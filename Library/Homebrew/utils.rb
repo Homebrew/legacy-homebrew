@@ -254,41 +254,139 @@ module MacOS extend self
     end
   end
 
+  def clt_installed?
+    # If the command line tools are installed, most unix standard
+    # tools, libs and headers are in /usr.
+    # Returns true, also for older Xcode/OSX versions that had everything in /usr
+    # Beginning with Xcode 4.3, the dev tools are no longer installed
+    # in /usr and SDKs no longer in /Developer by default.
+    # But Apple provides an optional "Command Line Tools for Xcode" package.
+    not clt_version.empty? or dev_tools_path == Pathname.new("/usr/bin")
+  end
+
+  def clt_version
+    # Version string (a pretty damn long one) of the CLT package.
+    # Note, that different ways to install the CLTs lead to different
+    # version numbers.
+    @clt_version ||= begin
+      # CLT installed via stand-alone website download
+      clt_pkginfo_stand_alone = `pkgutil --pkg-info com.apple.pkg.DeveloperToolsCLILeo 2>/dev/null`.strip
+      # CLT installed via preferences from within Xcode
+      clt_pkginfo_from_xcode = `pkgutil --pkg-info com.apple.pkg.DeveloperToolsCLI 2>/dev/null`.strip
+      if not clt_pkginfo_stand_alone.empty?
+        clt_pkginfo_stand_alone =~ /version: (.*)$/
+        $1
+      elsif not clt_pkginfo_from_xcode.empty?
+        clt_pkginfo_from_xcode =~ /version: (.*)$/
+        $1
+      else
+        # We return "" instead of nil because we want clt_installed? to be true on older Macs.
+        # So clt_version.empty? does not mean there are no unix tools in /usr, it just means
+        # that the "Command Line Tools for Xcode" package is not installed
+        "" # No CLT or recipe available to pkgutil.
+      end
+    end
+  end
+
+  def locate tool
+    # Don't call tools (cc, make, strip, etc.) directly!
+    # Give the name of the binary you look for as a string to this method
+    # in order to get the full path back as a Pathname.
+    tool = tool.to_s
+
+    @locate_cache ||= {}
+    return @locate_cache[tool] if @locate_cache.has_key? tool
+
+    if File.executable? "/usr/bin/#{tool}"
+      path = Pathname.new "/usr/bin/#{tool}"
+    elsif not MacOS.xctools_fucked? and system "/usr/bin/xcrun -find #{tool} 1>/dev/null 2>&1"
+      # xcrun was provided first with Xcode 4.3 and allows us to proxy
+      # tool usage thus avoiding various bugs
+      p = `/usr/bin/xcrun -find #{tool}`.chomp
+      if File.executable?  p
+        path = Pathname.new  p
+      else
+        path = nil
+      end
+    else
+      # otherwise lets try and figure it out ourselves
+      p = "#{MacOS.dev_tools_path}/#{tool}"
+      if File.executable?  p
+        path = Pathname.new  p
+      else
+        # This is for the use-case where xcode-select is not set up with
+        # Xcode 4.3+. The tools in Xcode 4.3+ are split over two locations,
+        # usually xcrun would figure that out for us, but it won't work if
+        # xcode-select is not configured properly (i.e. xctools_fucked?).
+        p = "#{MacOS.xcode_prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin/#{tool}"
+        if File.executable?  p
+          path Pathname.new  p
+        else
+          path = nil
+        end
+      end
+    end
+    @locate_cache[tool] = path
+    return path
+  end
+
   def dev_tools_path
-    @dev_tools_path ||= if File.file? "/usr/bin/cc" and File.file? "/usr/bin/make"
-      # probably a safe enough assumption
-      "/usr/bin"
-    elsif File.file? "#{xcode_prefix}/usr/bin/make"
+    @dev_tools_path ||= if File.exist? "/usr/bin/cc" and File.exist? "/usr/bin/make"
+      # probably a safe enough assumption (the unix way)
+      Pathname.new "/usr/bin"
+    elsif not xctools_fucked?
+      # The new way of finding stuff via locate:
+      Pathname.new(locate 'make').dirname
+    elsif File.exist? "#{xcode_prefix}/usr/bin/make"
       # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
-      "#{xcode_prefix}/usr/bin"
+      Pathname.new "#{xcode_prefix}/usr/bin"
     else
       # yes this seems dumb, but we can't throw because the existance of
       # dev tools is not mandatory for installing formula. Eventually we
       # should make formula specify if they need dev tools or not.
-      "/usr/bin"
+      Pathname.new "/usr/bin"
+    end
+  end
+
+  def xctoolchain_path
+    # Beginning with Xcode 4.3, clang and some other tools are located in a xctoolchain dir.
+    @xctoolchain_path ||= begin
+      path = Pathname.new("#{MacOS.xcode_prefix}/Toolchains/XcodeDefault.xctoolchain")
+      if path.exist?
+        path
+      else
+        # ok, there are no Toolchains in xcode_prefix
+        # and that's ok as long as everything is in dev_tools_path="/usr/bin" (i.e. clt_installed?)
+        nil
+      end
+    end
+  end
+
+  def sdk_path(v=MacOS.version)
+    # The path of the MacOSX SDK.
+    if not MacOS.xctools_fucked?
+      path = `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.chomp
+    elsif File.directory? '/Developer/SDKs/MacOS#{v}.sdk'
+      # the old default (or wild wild west style)
+      path = "/Developer/SDKs/MacOS#{v}.sdk"
+    elsif File.directory? "#{xcode_prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
+      # xcode_prefix is pretty smart, so lets look inside to find the sdk
+      path = "#{xcode_prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
+    end
+    if path.nil? or path.empty? or not File.directory? path
+      nil
+    else
+      Pathname.new path
     end
   end
 
   def xctools_fucked?
     # Xcode 4.3 tools hang if "/" is set
-    `/usr/bin/xcode-select -print-path 2>/dev/null`.chomp == "/"
+    @xctools_fucked ||= `/usr/bin/xcode-select -print-path 2>/dev/null`.chomp == "/"
   end
 
   def default_cc
-    cc = unless xctools_fucked?
-      out = `/usr/bin/xcrun -find cc 2> /dev/null`.chomp
-      out if $?.success?
-    end
-    cc = "#{dev_tools_path}/cc" if cc.nil? or cc.empty?
-
-    unless File.executable? cc
-      # If xcode-select isn't setup then xcrun fails and on Xcode 4.3
-      # the cc binary is not at #{dev_tools_path}. This return is almost
-      # worthless however since in this particular setup nothing much builds
-      # but I wrote the code now and maybe we'll fix the other issues later.
-      cc = "#{xcode_prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc"
-    end
-
+    cc = locate 'cc'
     Pathname.new(cc).realpath.basename.to_s rescue nil
   end
 
@@ -341,18 +439,45 @@ module MacOS extend self
         # Ask Spotlight where Xcode is. If the user didn't install the
         # helper tools and installed Xcode in a non-conventional place, this
         # is our only option. See: http://superuser.com/questions/390757
-        path = `mdfind "kMDItemDisplayName==Xcode&&kMDItemKind==Application"`
+        path = `mdfind "kMDItemCFBundleIdentifier == 'com.apple.dt.Xcode'"`.strip
+        if path.empty?
+          # Xcode 3 had a different identifier
+          path = `mdfind "kMDItemCFBundleIdentifier == 'com.apple.Xcode'"`.strip
+        end
         path = "#{path}/Contents/Developer"
         if path.empty? or not File.directory? path
           nil
         else
-          path
+          Pathname.new path
         end
       end
     end
   end
 
-  def xcode_version
+  def xcode_installed?
+    # Telling us whether the Xcode.app is installed or not.
+    @xcode_installed ||= begin
+      if File.directory? '/Applications/Xcode.app'
+        true
+      elsif File.directory? '/Developer/Applications/Xcode.app' # old style
+        true
+      elsif not `mdfind "kMDItemCFBundleIdentifier == 'com.apple.dt.Xcode'"`.strip.empty?
+        # Xcode 4
+        true
+      elsif not `mdfind "kMDItemCFBundleIdentifier == 'com.apple.Xcode'"`.strip.empty?
+        # Xcode 3
+        true
+      else
+        false
+      end
+    end
+  end
+
+
+ def xcode_version
+    # may return a version string
+    # that is guessed based on the compiler, so do not
+    # use it in order to check if Xcode is installed.
     @xcode_version ||= begin
       return "0" unless MACOS
 
@@ -417,27 +542,28 @@ module MacOS extend self
   def llvm_build_version
     # for Xcode 3 on OS X 10.5 this will not exist
     # NOTE may not be true anymore but we can't test
-    @llvm_build_version ||= if File.exist? "#{dev_tools_path}/llvm-gcc"
-      `#{dev_tools_path}/llvm-gcc --version` =~ /LLVM build (\d{4,})/
+    @llvm_build_version ||= if locate("llvm-gcc")
+      `#{locate("llvm-gcc")} --version` =~ /LLVM build (\d{4,})/
       $1.to_i
     end
   end
 
   def clang_version
-    @clang_version ||= if File.exist? "#{dev_tools_path}/clang"
-      `#{dev_tools_path}/clang --version` =~ /clang version (\d\.\d)/
+    @clang_version ||= if locate("clang")
+      `#{locate("clang")} --version` =~ /clang version (\d\.\d)/
       $1
     end
   end
 
   def clang_build_version
-    @clang_build_version ||= if File.exist? "#{dev_tools_path}/clang"
-      `#{dev_tools_path}/clang --version` =~ %r[tags/Apple/clang-(\d{2,})]
+    @clang_build_version ||= if locate("clang")
+      `#{locate("clang")} --version` =~ %r[tags/Apple/clang-(\d{2,})]
       $1.to_i
     end
   end
 
   def x11_installed?
+    # Even if only Xcode (without CLT) is installed, this dylib is there.
     Pathname.new('/usr/X11/lib/libpng.dylib').exist?
   end
 
