@@ -9,7 +9,7 @@ class Libiptcdata < Formula
   depends_on 'libiconv'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end
