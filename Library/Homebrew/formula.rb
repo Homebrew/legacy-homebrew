@@ -1,6 +1,7 @@
 require 'download_strategy'
 require 'fileutils'
 require 'formula_support'
+require 'hardware'
 
 
 # Derive and define at least @url, see Library/Formula for examples
@@ -585,13 +586,17 @@ EOF
   end
 
   def patch
-    return if patches.nil?
+    # Only call `patches` once.
+    # If there is code in `patches`, which is not recommended, we only
+    # want to run that code once.
+    the_patches = patches
+    return if the_patches.nil?
 
-    if not patches.kind_of? Hash
+    if not the_patches.kind_of? Hash
       # We assume -p1
-      patch_defns = { :p1 => patches }
+      patch_defns = { :p1 => the_patches }
     else
-      patch_defns = patches
+      patch_defns = the_patches
     end
 
     patch_list=[]
@@ -740,7 +745,7 @@ EOF
 
     def depends_on name
       @deps ||= []
-      @external_deps ||= {:python => [], :perl => [], :ruby => [], :jruby => []}
+      @external_deps ||= {:python => [], :perl => [], :ruby => [], :jruby => [], :chicken => [], :rbx => [], :node => []}
 
       case name
       when String, Formula
@@ -748,7 +753,7 @@ EOF
       when Hash
         key, value = name.shift
         case value
-        when :python, :perl, :ruby, :jruby
+        when :python, :perl, :ruby, :jruby, :chicken, :rbx, :node
           @external_deps[value] << key
         when :optional, :recommended, :build
           @deps << key

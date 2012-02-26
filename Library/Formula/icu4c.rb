@@ -13,7 +13,15 @@ class Icu4c < Formula
 
   keg_only "Conflicts; see: https://github.com/mxcl/homebrew/issues/issue/167"
 
+  def options
+    [
+      ["--universal", "Build universal binaries."]
+    ]
+  end
+
   def install
+    ENV.universal_binary if ARGV.build_universal?
+
     ENV.append "LDFLAGS", "-headerpad_max_install_names"
     args = ["--prefix=#{prefix}", "--disable-samples", "--enable-static"]
     args << "--with-library-bits=64" if MacOS.prefer_64_bit?

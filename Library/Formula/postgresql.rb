@@ -1,5 +1,4 @@
 require 'formula'
-require 'hardware'
 
 class Postgresql < Formula
   homepage 'http://www.postgresql.org/'

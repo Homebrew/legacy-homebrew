@@ -250,15 +250,17 @@ class FormulaInstaller
   end
 
   def check_jars
-    # Check for Jars in lib
     return unless File.exist? f.lib
 
-    unless f.lib.children.select{|g| g.to_s =~ /\.jar$/}.empty?
+    jars = f.lib.children.select{|g| g.to_s =~ /\.jar$/}
+    unless jars.empty?
       opoo 'JARs were installed to "lib".'
       puts "Installing JARs to \"lib\" can cause conflicts between packages."
       puts "For Java software, it is typically better for the formula to"
       puts "install to \"libexec\" and then symlink or wrap binaries into \"bin\"."
       puts "See \"activemq\", \"jruby\", etc. for examples."
+      puts "The offending files are:"
+      puts jars
       @show_summary_heading = true
     end
   end
@@ -319,7 +321,10 @@ def external_dep_check dep, type
     when :python then %W{/usr/bin/env python -c import\ #{dep}}
     when :jruby then %W{/usr/bin/env jruby -rubygems -e require\ '#{dep}'}
     when :ruby then %W{/usr/bin/env ruby -rubygems -e require\ '#{dep}'}
+    when :rbx then %W{/usr/bin/env rbx -rubygems -e require\ '#{dep}'}
     when :perl then %W{/usr/bin/env perl -e use\ #{dep}}
+    when :chicken then %W{/usr/bin/env csi -e (use #{dep})}
+    when :node then %W{/usr/bin/env node -e require('#{dep}');}
   end
 end
 
@@ -343,7 +348,7 @@ class Formula
   end
 
   def check_external_deps
-    [:ruby, :python, :perl, :jruby].each do |type|
+    [:ruby, :python, :perl, :jruby, :rbx, :chicken, :node].each do |type|
       self.external_deps[type].each do |dep|
         unless quiet_system(*external_dep_check(dep, type))
           raise UnsatisfiedExternalDependencyError.new(dep, type)

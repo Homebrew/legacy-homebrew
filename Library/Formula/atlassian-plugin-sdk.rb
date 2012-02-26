@@ -9,10 +9,6 @@ class AtlassianPluginSdk < Formula
     # Remove windows files
     rm_f Dir["bin/*.bat"]
 
-    cd "apache-maven/maven-docs" do
-      prefix.install %w{ NOTICE.txt LICENSE.txt README.txt }
-    end
-
     # Install jars in libexec to avoid conflicts
     libexec.install Dir['*']
 
