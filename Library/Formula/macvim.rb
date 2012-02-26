@@ -54,7 +54,7 @@ class Macvim < Formula
     
     unless ARGV.include? "--with-envycoder"
       # Reference: https://github.com/b4winckler/macvim/wiki/building
-      system "make getenvy"
+      system "cd src/MacVim/icons && make getenvy"
     end
 
     system "make"
