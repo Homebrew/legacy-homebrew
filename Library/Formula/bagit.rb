@@ -8,7 +8,7 @@ class Bagit < Formula
   skip_clean 'logs'
 
   def install
-    prefix.install %w{ LICENSE.txt README.txt conf logs}
+    prefix.install %w{conf logs}
     libexec.install Dir['lib/*']
     inreplace "bin/bag", "$APP_HOME/lib", "$APP_HOME/libexec"
     inreplace "bin/bag.classworlds.conf", "${app.home}/lib", "${app.home}/libexec"
