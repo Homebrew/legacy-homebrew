@@ -40,8 +40,10 @@ class Python < Formula
   skip_clean ['bin', 'lib']
 
   def install
-    # Python requires -fwrapv for proper Decimal division. See:
+    # Python requires -fwrapv for proper Decimal division with Clang. See:
+    # https://github.com/mxcl/homebrew/pull/10487
     # http://stackoverflow.com/questions/7590137/dividing-decimals-yields-invalid-results-in-python-2-5-to-2-7
+    # https://trac.macports.org/changeset/87442
     ENV.append_to_cflags "-fwrapv"
 
     if build_framework? and ARGV.include? "--static"
