@@ -6,14 +6,19 @@ class Recode < Formula
   md5 'be3f40ad2e93dae5cd5f628264bf1877'
 
   depends_on "gettext"
+  depends_on "libtool" if MacOS.xcode_version >= "4.3"
 
   def patches
     # Patches from MacPorts
+    # No reason for patch given, no link to patches given. Someone shoot that guy :P
     { :p0 => DATA }
   end
 
   def install
-    if MacOS.leopard?
+    if MacOS.xcode_version >= "4.3"
+      d = "#{HOMEBREW_PREFIX}/share/libtool/config"
+      cp ["#{d}/config.guess", "#{d}/config.sub"], "."
+    elsif MacOS.leopard?
       cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config.*"], "."
     else
       cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config/config.*"], "."
