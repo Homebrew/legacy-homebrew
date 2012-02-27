@@ -7,6 +7,7 @@ class Urweb < Formula
   head 'http://hg.impredicative.com/urweb', :using => :hg
 
   depends_on 'mlton'
+  depends_on "automake" if MacOS.xcode_version >= "4.3"
 
   def install
     system "aclocal && autoreconf -i --force"

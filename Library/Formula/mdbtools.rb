@@ -9,6 +9,11 @@ class Mdbtools < Formula
   depends_on 'glib'
   depends_on 'gawk' => :optional # To generate docs
 
+  if MacOS.xcode_version >= "4.3"
+    depends_on "automake"
+    depends_on "libtool"
+  end
+
   def install
     inreplace 'autogen.sh', 'libtool', 'glibtool'
 

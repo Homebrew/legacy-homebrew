@@ -9,6 +9,11 @@ class Sleuthkit < Formula
   depends_on 'afflib' => :optional
   depends_on 'libewf' => :optional
 
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake"
+    depends_on "libtool"
+  end
+
   def install
     if ARGV.build_head?
       system "glibtoolize"

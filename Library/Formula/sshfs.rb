@@ -6,15 +6,15 @@ class Sshfs < Formula
   version '2.3.0'
 
   depends_on 'pkg-config' => :build
-
   depends_on 'fuse4x'
   depends_on 'glib'
+  depends_on "automake" if MacOS.xcode_version >= "4.3"
 
   def install
-    ENV['ACLOCAL'] = "/usr/bin/aclocal -I/usr/share/aclocal -I#{HOMEBREW_PREFIX}/share/aclocal"
-    ENV['AUTOCONF'] = "/usr/bin/autoconf"
-    ENV['AUTOMAKE'] = "/usr/bin/automake"
-    system "/usr/bin/autoreconf", "--force", "--install"
+    ENV['ACLOCAL'] = "aclocal -I/usr/share/aclocal -I#{HOMEBREW_PREFIX}/share/aclocal"
+    ENV['AUTOCONF'] = "autoconf"
+    ENV['AUTOMAKE'] = "automake"
+    system "autoreconf", "--force", "--install"
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

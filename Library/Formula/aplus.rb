@@ -11,16 +11,21 @@ class Aplus < Formula
     DATA
   end
 
+  if MacOS.xcode_version >= "4.3"
+    depends_on "automake"
+    depends_on "libtool"
+  end
+
   def install
     # replace placeholder w/ actual prefix
     ["src/lisp.0/aplus.el", "src/lisp.1/aplus.el"].each do |path|
       chmod 0644, path
       inreplace path, "/usr/local/aplus-fsf-4.20", prefix
     end
-    system "/usr/bin/aclocal -I config"
-    system "/usr/bin/glibtoolize --force --copy"
-    system "/usr/bin/automake --foreign --add-missing --copy"
-    system "/usr/bin/autoconf"
+    system "aclocal -I config"
+    system "glibtoolize --force --copy"
+    system "automake --foreign --add-missing --copy"
+    system "autoconf"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "/usr/bin/make"
