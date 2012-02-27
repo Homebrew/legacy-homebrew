@@ -9,8 +9,8 @@ class Libtool < Formula
   mirror 'http://ftp.gnu.org/gnu/libtool/libtool-2.4.tar.gz'
   md5 'b32b04148ecdd7344abc6fe8bd1bb021'
 
-  if MacOS.xcode_version.to_f < 4.3 or File.file? "/usr/bin/libtoolize"
-    keg_only "Xcode (up to and including 4.2) provides (a rather old) Autoconf."
+  if MacOS.xcode_version.to_f < 4.3 or File.file? "/usr/bin/glibtoolize"
+    keg_only "Xcode (up to and including 4.2) provides (a rather old) Libtool."
   end
 
   def install
@@ -27,6 +27,6 @@ class Libtool < Formula
   end
 
   def test
-    system "#{HOMEBREW_PREFIX}/bin/glibtoolize --version"
+    system "#{bin}/glibtoolize --version"
   end
 end
