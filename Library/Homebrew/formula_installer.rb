@@ -83,6 +83,7 @@ class FormulaInstaller
       @show_summary_heading = true
     else
       audit_bin
+      audit_sbin
       audit_lib
       check_manpages
       check_infopages
@@ -287,11 +288,25 @@ class FormulaInstaller
   def audit_bin
     return unless File.exist? f.bin
 
-    non_exes = f.bin.children.select {|g| not File.executable? g}
+    non_exes = f.bin.children.select {|g| File.directory? g or not File.executable? g}
 
     unless non_exes.empty?
       opoo 'Non-executables were installed to "bin".'
       puts "Installing non-executables to \"bin\" is bad practice."
+      puts "The offending files are:"
+      puts non_exes
+      @show_summary_heading = true
+    end
+  end
+
+  def audit_sbin
+    return unless File.exist? f.sbin
+
+    non_exes = f.sbin.children.select {|g| File.directory? g or not File.executable? g}
+
+    unless non_exes.empty?
+      opoo 'Non-executables were installed to "sbin".'
+      puts "Installing non-executables to \"sbin\" is bad practice."
       puts "The offending files are:"
       puts non_exes
       @show_summary_heading = true
