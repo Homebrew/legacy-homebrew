@@ -53,7 +53,8 @@ class Imagemagick < Formula
   url 'http://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.7.5-7.tar.bz2'
   sha256 'fe88eb9f3ce832b0027b58a04c26871886a0721779b5c0044213018c6a6ba49f'
 
-  head 'https://github.com/trevor/ImageMagick.git'
+  head 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
+    :using => UnsafeSubversionDownloadStrategy
 
   bottle do
     url 'http://downloads.sf.net/project/machomebrew/Bottles/imagemagick-6.7.1-1-bottle.tar.gz'
