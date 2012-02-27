@@ -22,11 +22,11 @@ def disable_openmp?
 end
 
 def enable_hdri?
-    ARGV.include? '--enable-hdri'
+  ARGV.include? '--enable-hdri'
 end
 
 def magick_plus_plus?
-    ARGV.include? '--with-magick-plus-plus'
+  ARGV.include? '--with-magick-plus-plus'
 end
 
 def use_exr?
@@ -34,15 +34,15 @@ def use_exr?
 end
 
 def quantum_depth_8?
-    ARGV.include? '--with-quantum-depth-8'
+  ARGV.include? '--with-quantum-depth-8'
 end
 
 def quantum_depth_16?
-    ARGV.include? '--with-quantum-depth-16'
+  ARGV.include? '--with-quantum-depth-16'
 end
 
 def quantum_depth_32?
-    ARGV.include? '--with-quantum-depth-32'
+  ARGV.include? '--with-quantum-depth-32'
 end
 
 
