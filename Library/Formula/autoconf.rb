@@ -1,8 +1,9 @@
 require 'formula'
 
 class Autoconf < Formula
-  url 'http://ftpmirror.gnu.org/autoconf/autoconf-2.68.tar.gz'
   homepage 'http://www.gnu.org/software/autoconf'
+  url 'http://ftpmirror.gnu.org/autoconf/autoconf-2.68.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/autoconf/autoconf-2.68.tar.gz'
   md5 'c3b5247592ce694f7097873aa07d66fe'
 
   def patches
