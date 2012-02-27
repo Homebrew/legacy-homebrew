@@ -15,6 +15,7 @@ class Pcb < Formula
   depends_on 'gd'
   depends_on 'glib'
   depends_on 'gtkglext'
+  depends_on "automake" if MacOS.xcode_version >= "4.3"
 
   # See comments in intltool formula
   depends_on 'XML::Parser' => :perl
