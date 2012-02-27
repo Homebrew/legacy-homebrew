@@ -6,13 +6,13 @@ class Autoconf < Formula
   mirror 'http://ftp.gnu.org/gnu/autoconf/autoconf-2.68.tar.gz'
   md5 'c3b5247592ce694f7097873aa07d66fe'
 
+  if MacOS.xcode_version.to_f < 4.3 or File.file? "/usr/bin/autoconf"
+    keg_only "Xcode (up to and including 4.2) provides (a rather old) Autoconf."
+  end
+
   def patches
     # force autoreconf to look for and use our glibtoolize
     DATA
-  end
-
-  if MacOS.xcode_version.to_f < 4.3 or File.file? "/usr/bin/autoconf"
-    keg_only "Xcode (up to and including 4.2) provides (a rather old) Autoconf."
   end
 
   def install
@@ -21,7 +21,7 @@ class Autoconf < Formula
   end
 
   def test
-    system "#{HOMEBREW_PREFIX}/bin/autoconf --version"
+    system "#{bin}/autoconf --version"
   end
 end
 

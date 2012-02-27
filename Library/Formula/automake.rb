@@ -24,11 +24,6 @@ class Automake < Formula
   end
 
   def test
-    # This test will fail and we won't accept that! It's enough to just
-    # replace "false" with the main program this formula installs, but
-    # it'd be nice if you were more thorough. Test the test with
-    # `brew test automake`. Remove this comment before submitting
-    # your pull request!
-    system "#{HOMEBREW_PREFIX}/bin/automake --version"
+    system "#{bin}/automake --version"
   end
 end
