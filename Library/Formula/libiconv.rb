@@ -13,8 +13,8 @@ class Libiconv < Formula
 
   def patches
     { :p1 => [
-      'http://svn.macports.org/repository/macports/trunk/dports/textproc/libiconv/files/patch-Makefile.devel',
-      'http://svn.macports.org/repository/macports/trunk/dports/textproc/libiconv/files/patch-utf8mac.diff',
+      'https://trac.macports.org/export/89276/trunk/dports/textproc/libiconv/files/patch-Makefile.devel',
+      'https://trac.macports.org/export/89276/trunk/dports/textproc/libiconv/files/patch-utf8mac.diff',
       DATA
     ]}
   end

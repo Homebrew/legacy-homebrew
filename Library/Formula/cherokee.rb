@@ -32,7 +32,8 @@ class Cherokee < Formula
                           "--sysconfdir=#{etc}",
                           "--localstatedir=#{var}/cherokee",
                           "--with-wwwuser=#{ENV['USER']}",
-                          "--with-wwwgroup=www"
+                          "--with-wwwgroup=www",
+                          "--enable-internal-pcre"
     system "make install"
 
     prefix.install "org.cherokee.webserver.plist"

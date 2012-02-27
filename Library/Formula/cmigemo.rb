@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cmigemo < Formula
+  homepage 'http://www.kaoriya.net/software/cmigemo'
   url 'http://cmigemo.googlecode.com/files/cmigemo-default-src-20110227.zip'
   md5 '6e9b6f6ec96d4eb8bdd18e52b91e1b85'
-  homepage 'http://www.kaoriya.net/software/cmigemo'
 
   depends_on 'nkf' => :build
 
@@ -17,7 +17,7 @@ class Cmigemo < Formula
     system "./configure"
     system "make osx"
     system "make osx-dict"
-    Dir.chdir('dict') do
+    cd 'dict' do
       system "make utf-8"
     end
     ENV.j1 # Install can fail on multi-core machines unless serialized
