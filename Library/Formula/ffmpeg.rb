@@ -31,6 +31,7 @@ class Ffmpeg < Formula
   depends_on 'libvpx' => :optional
   depends_on 'xvid' => :optional
   depends_on 'opencore-amr' => :optional
+  depends_on 'libass' => :optional
 
   depends_on 'sdl' if ffplay?
 
@@ -55,6 +56,7 @@ class Ffmpeg < Formula
     args << "--enable-libxvid" if Formula.factory('xvid').installed?
     args << "--enable-libopencore-amrnb" if Formula.factory('opencore-amr').installed?
     args << "--enable-libopencore-amrwb" if Formula.factory('opencore-amr').installed?
+    args << "--enable-libass" if Formula.factory('libass').installed?
     args << "--disable-ffplay" unless ffplay?
 
     # For 32-bit compilation under gcc 4.2, see:
