@@ -620,6 +620,8 @@ def check_git_newline_settings
 end
 
 def check_for_autoconf
+  return if MacOS.xcode_version >= "4.3"
+
   autoconf = `/usr/bin/which autoconf`.chomp
   safe_autoconfs = %w[/usr/bin/autoconf /Developer/usr/bin/autoconf]
   unless autoconf.empty? or safe_autoconfs.include? autoconf
