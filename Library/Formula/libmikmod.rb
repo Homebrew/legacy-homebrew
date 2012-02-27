@@ -17,7 +17,7 @@ class Libmikmod < Formula
 
   if MacOS.xcode_version >= "4.3"
     depends_on "automake"
-    depedns_on "libtool"
+    depends_on "libtool"
   end
 
   def install
