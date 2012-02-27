@@ -8,12 +8,12 @@ class Clhep < Formula
   depends_on 'cmake' => :build
 
   def install
-    mkdir 'clhep-build'
-    cd 'clhep-build'
-    system "cmake ../CLHEP #{std_cmake_parameters} -DCMAKE_PREFIX_PATH=#{prefix}"
-    ENV.j1
-    system "make"
-    system "make install"
+    mkdir 'clhep-build' do
+      system "cmake ../CLHEP #{std_cmake_parameters}"
+      ENV.j1
+      system "make"
+      system "make install"
+    end
   end
 end
 
