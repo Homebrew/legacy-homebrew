@@ -15,6 +15,8 @@ class Recode < Formula
   end
 
   def install
+    ENV.append 'LDFLAGS', '-liconv'
+
     if MacOS.xcode_version >= "4.3"
       d = "#{HOMEBREW_PREFIX}/share/libtool/config"
       cp ["#{d}/config.guess", "#{d}/config.sub"], "."
