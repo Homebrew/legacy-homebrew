@@ -9,6 +9,9 @@ module HomebrewEnvExtension
     delete('CLICOLOR_FORCE') # autotools doesn't like this
     remove_cc_etc
 
+    # make any aclocal stuff installed in Homebrew available
+    ENV['ACLOCAL_PATH'] = "#{HOMEBREW_PREFIX}/share/aclocal" if MacOS.xcode_version < "4.3"
+
     self['MAKEFLAGS'] = "-j#{self.make_jobs}"
 
     unless HOMEBREW_PREFIX.to_s == '/usr/local'
