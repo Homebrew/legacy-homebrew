@@ -16,7 +16,7 @@ class Automake < Formula
                           "--prefix=#{prefix}"
     system "make install"
 
-    share/"aclocal-#{version}/dirlist".write <<-EOS.undent
+    (share/"aclocal-#{version}/dirlist").write <<-EOS.undent
       /usr/share/aclocal
       #{HOMEBREW_PREFIX}/share/aclocal
       EOS
