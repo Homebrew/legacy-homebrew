@@ -319,6 +319,8 @@ class FormulaInstaller
   end
 
   def check_m4
+    return if MacOS.xcode_version.to_f >= 4.3
+
     # Check for m4 files
     if Dir[f.share+"aclocal/*.m4"].length > 0 and not in_aclocal_dirlist?
       opoo 'm4 macros were installed to "share/aclocal".'
