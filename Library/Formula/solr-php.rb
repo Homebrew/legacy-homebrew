@@ -1,12 +1,12 @@
 require 'formula'
 
 class SolrPhp < Formula
-  url 'http://pecl.php.net/get/solr-1.0.1.tgz'
   homepage 'http://pecl.php.net/package/solr'
+  url 'http://pecl.php.net/get/solr-1.0.1.tgz'
   md5 '538adecfd52a79feae777870edcfd5d7'
 
   def install
-    Dir.chdir "solr-#{version}" do
+    cd "solr-#{version}" do
       system "phpize"
       system "./configure", "--prefix=#{prefix}"
       system "make"

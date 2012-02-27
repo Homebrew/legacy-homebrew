@@ -24,7 +24,7 @@ class Coreutils < Formula
     system "make install"
 
     # create a gnubin dir that has all the commands without program-prefix
-    mkdir_p libexec+'gnubin'
+    (libexec+'gnubin').mkpath
     $commands.each do |g|
       ln_sf "../../bin/g#{g}", libexec+"gnubin/#{g}"
     end

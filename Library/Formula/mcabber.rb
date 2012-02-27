@@ -1,9 +1,10 @@
 require 'formula'
 
 class Mcabber < Formula
-  url 'http://mcabber.com/files/mcabber-0.10.1.tar.bz2'
   homepage 'http://mcabber.com/'
+  url 'http://mcabber.com/files/mcabber-0.10.1.tar.bz2'
   md5 'fe96beab30f535d5d6270fd1719659b4'
+
   head 'http://mcabber.com/hg/', :using => :hg
 
   depends_on 'pkg-config' => :build
@@ -16,6 +17,11 @@ class Mcabber < Formula
   depends_on 'aspell' if ARGV.include? '--enable-aspell'
   depends_on 'enchant' if ARGV.include? '--enable-enchant'
 
+  if MacOS.xcode_version >= "4.3" and ARGV.build_head?
+    depends_on "automake"
+    depends_on "libtool"
+  end
+
   def options
     [
       ["--enable-enchant", "Enable spell checking support via enchant"],
@@ -25,9 +31,9 @@ class Mcabber < Formula
 
   def install
     if ARGV.build_head? then
-      ENV['LIBTOOLIZE'] = '/usr/bin/glibtoolize'
-      ENV['ACLOCAL'] = "/usr/bin/aclocal -I #{HOMEBREW_PREFIX}/share/aclocal"
-      Dir.chdir 'mcabber'
+      ENV['LIBTOOLIZE'] = 'glibtoolize'
+      ENV['ACLOCAL'] = "aclocal -I #{HOMEBREW_PREFIX}/share/aclocal"
+      cd 'mcabber' # Not using block form on purpose
       inreplace 'autogen.sh', 'libtoolize', '$LIBTOOLIZE'
       inreplace 'autogen.sh', 'aclocal', '$ACLOCAL'
       system "./autogen.sh"

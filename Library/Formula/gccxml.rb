@@ -1,16 +1,15 @@
 require 'formula'
 
 class Gccxml < Formula
+  homepage 'http://www.gccxml.org/HTML/Index.html'
   url "cvs://:pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML:gccxml"
   version 'HEAD'
-  homepage 'http://www.gccxml.org/HTML/Index.html'
 
   depends_on 'cmake' => :build
 
   def install
-    mkdir 'gccxml-build'
-    Dir.chdir 'gccxml-build' do
-      system "cmake .. #{std_cmake_parameters}"
+    mkdir 'gccxml-build' do
+      system "cmake #{std_cmake_parameters} .."
       system "make"
       system "make install"
     end

@@ -40,9 +40,10 @@ class Ffmbc < Formula
     # This formula will only install the commandline tools
     mv "ffprobe", "ffprobe-bc"
     bin.install "ffmbc", "ffprobe-bc"
-    Dir.chdir "doc"
-    mv.rename "ffprobe.1", "ffprobe-bc.1"
-    man1.install "ffmbc.1", "ffprobe-bc.1"
+    cd "doc" do
+      mv "ffprobe.1", "ffprobe-bc.1"
+      man1.install "ffmbc.1", "ffprobe-bc.1"
+    end
   end
 
   def caveats
