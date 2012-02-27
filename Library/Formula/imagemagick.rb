@@ -49,11 +49,9 @@ end
 class Imagemagick < Formula
   homepage 'http://www.imagemagick.org'
 
-  # Using an unofficial Git mirror to work around:
-  # * Stable tarballs disappearing
-  # * Bad https cert on official SVN repo
-  url 'https://github.com/trevor/ImageMagick/tarball/6.7.1-1'
-  md5 '9c71dfbddc42b78a0d8db8acdb534d37'
+  # upstream's stable tarballs tend to disappear, so we provide our own mirror
+  url 'http://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.7.5-7.tar.bz2'
+  sha256 'fe88eb9f3ce832b0027b58a04c26871886a0721779b5c0044213018c6a6ba49f'
 
   head 'https://github.com/trevor/ImageMagick.git'
 
