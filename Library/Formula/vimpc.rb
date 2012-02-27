@@ -10,6 +10,7 @@ class Vimpc < Formula
   depends_on 'pkg-config' => :build
   depends_on 'pcre++'
   depends_on 'libmpdclient'
+  depends_on "automake" if ARGV.build_head? and MacOS.xcode_version >= "4.3"
 
   def install
     if ARGV.build_head?

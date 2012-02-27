@@ -2,6 +2,7 @@ require 'formula'
 
 class Macvim < Formula
   homepage 'http://code.google.com/p/macvim/'
+<<<<<<< HEAD
   #url 'https://github.com/b4winckler/macvim/tarball/snapshot-63'
   url 'https://github.com/alloy/macvim.git'
   version '7.3-63'
@@ -10,12 +11,9 @@ class Macvim < Formula
 
   def options
   [
-    # Building custom icons fails for many users, so off by default.
     ["--custom-icons", "Try to generate custom document icons."],
     ["--with-cscope", "Build with Cscope support."],
-    ["--with-envycoder", "Build with Envy Code R Bold font."],
     ["--override-system-vim", "Override system vim."],
-    ["--enable-clipboard", "Enable System clipboard handling in the terminal."]
   ]
   end
 
@@ -44,22 +42,17 @@ class Macvim < Formula
             "--enable-tclinterp"]
 
     args << "--enable-cscope" if ARGV.include? "--with-cscope"
-    args << "--enable-clipboard" if ARGV.include? "--enable-clipboard"
 
     system "./configure", *args
 
+    # Building custom icons fails for many users, so off by default.
     unless ARGV.include? "--custom-icons"
       inreplace "src/MacVim/icons/Makefile", "$(MAKE) -C makeicns", ""
       inreplace "src/MacVim/icons/make_icons.py", "dont_create = False", "dont_create = True"
     end
 
-    # TODO: This seems to be different in snapshot-62
-    unless ARGV.include? "--with-envycoder"
-      # Remove the font from the build dependencies
-      inreplace "src/MacVim/icons/Makefile",
-        '$(OUTDIR)/MacVim-generic.icns: make_icons.py vim-noshadow-512.png loadfont.so Envy\ Code\ R\ Bold.ttf',
-        "$(OUTDIR)/MacVim-generic.icns: make_icons.py vim-noshadow-512.png loadfont.so"
-    end
+    # Reference: https://github.com/b4winckler/macvim/wiki/building
+    system "cd src/MacVim/icons && make getenvy"
 
     system "make"
 

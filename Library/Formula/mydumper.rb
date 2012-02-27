@@ -1,8 +1,8 @@
 require 'formula'
 
 class Mydumper < Formula
-  url 'http://launchpadlibrarian.net/77098505/mydumper-0.5.1.tar.gz'
   homepage 'http://www.mydumper.org/'
+  url 'http://launchpadlibrarian.net/77098505/mydumper-0.5.1.tar.gz'
   md5 'b4df42dfe23f308ab13eb6ecb73a0d21'
 
   depends_on 'pkg-config' => :build
@@ -20,7 +20,7 @@ class Mydumper < Formula
       puts "Without the client libraries, this formula will fail to compile."
     end
 
-    system "cmake . #{std_cmake_parameters}"
+    system "cmake #{std_cmake_parameters} ."
     system "make install"
   end
 

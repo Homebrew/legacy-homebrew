@@ -39,7 +39,7 @@ class Asymptote < Formula
   def test
     ENV['TEXMFHOME'] = "#{HOMEBREW_PREFIX}/share/texmf"
     mktemp do
-      (Pathname.new(Dir.getwd) + 'asy_test.tex').write <<-EOS.undent
+      (Pathname.pwd+'asy_test.tex').write <<-EOS.undent
         \\nonstopmode
 
         \\documentclass{minimal}

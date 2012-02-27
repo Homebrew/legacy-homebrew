@@ -11,7 +11,7 @@ class Ann < Formula
   end
 
   def test
-    Dir.chdir "#{prefix}/sample" do
+    cd "#{prefix}/sample" do
       system "#{bin}/ann_sample", "-df", "data.pts", "-qf", "query.pts"
     end
   end

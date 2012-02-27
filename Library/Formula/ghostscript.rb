@@ -31,10 +31,8 @@ class Ghostscript < Formula
   def install
     ENV.libpng
     ENV.deparallelize
-    # O4 takes an ungodly amount of time
-    ENV.O3
     # ghostscript configure ignores LDFLAGs apparently
-    ENV['LIBS']="-L/usr/X11/lib"
+    ENV['LIBS'] = "-L/usr/X11/lib"
 
     src_dir = ARGV.build_head? ? "gs" : "."
 
