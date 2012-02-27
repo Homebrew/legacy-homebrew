@@ -9,7 +9,7 @@ class Luarocks < Formula
 
   depends_on use_luajit? ? 'luajit' : 'lua'
 
-  fails_with_llvm "Lua itself compiles with llvm, but may fail when other software trys to link."
+  fails_with_llvm "Lua itself compiles with llvm, but may fail when other software tries to link."
 
   def patches
     DATA if HOMEBREW_PREFIX.to_s == '/usr/local'

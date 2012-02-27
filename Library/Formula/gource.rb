@@ -2,8 +2,8 @@ require 'formula'
 
 class Gource < Formula
   homepage 'http://code.google.com/p/gource/'
-  url 'https://github.com/acaudwell/Gource.git', :tag => "gource-0.35"
-  version "0.35"
+  url 'https://github.com/acaudwell/Gource.git', :tag => "gource-0.37"
+  version "0.37"
   head 'https://github.com/acaudwell/Gource.git'
 
   depends_on 'pkg-config' => :build
@@ -29,7 +29,7 @@ class Gource < Formula
   end
 
   def test
-    Dir.chdir HOMEBREW_REPOSITORY do
+    cd HOMEBREW_REPOSITORY do
       system "#{bin}/gource"
     end
   end

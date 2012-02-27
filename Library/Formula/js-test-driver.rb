@@ -1,15 +1,16 @@
 require 'formula'
 
 class JsTestDriver < Formula
-  url 'http://js-test-driver.googlecode.com/files/JsTestDriver-1.3.2.jar'
   homepage 'http://code.google.com/p/js-test-driver/'
-  md5 'c3e65522aac33c2116be918c80cf303c'
+  url 'http://js-test-driver.googlecode.com/files/JsTestDriver-1.3.4-a.jar'
+  version '1.3.4-a'
+  md5 'cc3d62d817d0887c7f78e14db81d8c24'
 
   def install
-    libexec.install "JsTestDriver-1.3.2.jar"
+    libexec.install "JsTestDriver-1.3.4-a.jar"
     (bin+'js-test-driver').write <<-EOS.undent
-      #!/bin/sh
-      java -jar "#{libexec}/JsTestDriver-1.3.2.jar" $@
+      #!/bin/bash
+      java -jar "#{libexec}/JsTestDriver-1.3.4-a.jar" "$@"
     EOS
   end
 end

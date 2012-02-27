@@ -30,12 +30,42 @@ module Homebrew extend self
   end
 
   def sha
-    sha = `cd #{HOMEBREW_REPOSITORY} && git rev-parse --verify HEAD 2> /dev/null`.chomp
+    sha = HOMEBREW_REPOSITORY.cd do
+      `git rev-parse --verify -q HEAD 2>/dev/null`.chomp
+    end
     if sha.empty? then "(none)" else sha end
   end
 
-  def system_ruby
-    Pathname.new('/usr/bin/ruby').realpath.to_s
+  def describe_perl
+    perl = `which perl`.chomp
+    return "N/A" if perl.empty?
+
+    real_perl = Pathname.new(perl).realpath.to_s
+    return perl if perl == real_perl
+    return "#{perl} => #{real_perl}"
+  end
+
+  def describe_python
+    python = `which python`.chomp
+    return "N/A" if python.empty?
+
+    real_python = Pathname.new(python).realpath.to_s
+
+    return python if python == real_python
+    return "#{python} => #{real_python}"
+  end
+
+  def describe_ruby
+    ruby = `which ruby`.chomp
+    return "N/A" if ruby.empty?
+
+    real_ruby = Pathname.new(ruby).realpath.to_s
+    return ruby if ruby == real_ruby
+    return "#{ruby} => #{real_ruby}"
+  end
+
+  def real_path a_path
+    Pathname.new(a_path).realpath.to_s
   end
 
   def config_s; <<-EOS.undent
@@ -43,20 +73,21 @@ module Homebrew extend self
     HEAD: #{sha}
     HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}
     HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}
-    HOMEBREW_REPOSITORY: #{HOMEBREW_REPOSITORY}
-    HOMEBREW_LIBRARY_PATH: #{HOMEBREW_LIBRARY_PATH}
     Hardware: #{Hardware.cores_as_words}-core #{Hardware.bits}-bit #{Hardware.intel_family}
     OS X: #{MACOS_FULL_VERSION}
     Kernel Architecture: #{`uname -m`.chomp}
-    Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
-    /usr/bin/ruby => #{system_ruby}
     Xcode: #{xcode_version}
     GCC-4.0: #{gcc_40 ? "build #{gcc_40}" : "N/A"}
     GCC-4.2: #{gcc_42 ? "build #{gcc_42}" : "N/A"}
     LLVM: #{llvm ? "build #{llvm}" : "N/A"}
-    Clang: #{clang ? "#{clang}-#{clang_build}" : "N/A"}
+    Clang: #{clang ? "#{clang} build #{clang_build}" : "N/A"}
     MacPorts or Fink? #{macports_or_fink_installed?}
     X11 installed? #{x11_installed?}
+    System Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
+    /usr/bin/ruby => #{real_path("/usr/bin/ruby")}
+    Which Perl:   #{describe_perl}
+    Which Python: #{describe_python}
+    Which Ruby:   #{describe_ruby}
     EOS
   end
 end

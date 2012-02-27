@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mpd < Formula
-  url 'http://downloads.sourceforge.net/project/musicpd/mpd/0.16.5/mpd-0.16.5.tar.bz2'
+  url 'http://sourceforge.net/projects/musicpd/files/mpd/0.16.7/mpd-0.16.7.tar.bz2'
   homepage 'http://mpd.wikia.com'
-  md5 'f7564cff12035f6a1112cce770655df7'
+  sha1 '878f3ce82d4f00f6cbad63a625b2c0274c4a704a'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'

@@ -1,10 +1,10 @@
 require 'formula'
 
 class Mksh < Formula
-  url 'https://www.mirbsd.org/MirOS/dist/mir/mksh/mksh-R40c.cpio.gz'
+  url 'https://www.mirbsd.org/MirOS/dist/mir/mksh/mksh-R40d.cpio.gz'
   homepage 'https://www.mirbsd.org/mksh.htm'
-  md5 '43a79f721091833bdab3d00fbfe54a14'
-  version '0.40c'
+  md5 'c6428401103367730a95b99284bf47dc'
+  version '0.40d'
 
   def install
     system 'sh ./Build.sh -combine'

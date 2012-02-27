@@ -14,6 +14,7 @@ class Abcde < Formula
   depends_on 'mkcue'
 
   def install
+    # Makefile hardcodes installing files owned by root; don't do this.
     inreplace 'Makefile', '-o 0', ''
     system "export prefix=#{prefix};export DESTDIR=$prefix;make -e install"
   end

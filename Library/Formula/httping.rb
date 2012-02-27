@@ -1,9 +1,14 @@
 require 'formula'
 
 class Httping < Formula
-  url 'http://www.vanheusden.com/httping/httping-1.4.1.tgz'
+  url 'http://www.vanheusden.com/httping/httping-1.4.4.tgz'
   homepage 'http://www.vanheusden.com/httping/'
-  md5 'bde1ff3c01343d2371d8f34fbf8a1d9a'
+  md5 'e36bb30bd758c766d7260bdde6fe6450'
+
+  def patches
+    # fixes conflicting definitions of strdup()
+    { :p0 => 'https://trac.macports.org/export/88419/trunk/dports/net/httping/files/patch-strndup.diff' }
+  end
 
   def install
     system "make install PREFIX=#{prefix}"

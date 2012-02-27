@@ -76,8 +76,10 @@ class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
   def tool
     case type
       when :python then 'easy_install'
-      when :ruby, :jruby then 'rubygems'
+      when :ruby, :jruby, :rbx then 'rubygems'
       when :perl then 'cpan'
+      when :node then 'npm'
+      when :chicken then 'chicken-install'
     end
   end
 
@@ -91,6 +93,12 @@ class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
         "cpan -i"
       when :jruby
         "jruby -S gem install"
+      when :rbx
+        "rbx gem install"
+      when :node
+        "npm install"
+      when :chicken
+        "chicken-install"
     end
   end
 end

@@ -5,6 +5,7 @@ class Bullet < Formula
   homepage 'http://bulletphysics.org/wordpress/'
   sha1 '49b4b362a0c8d279e32b946ef9578b1dd8c5987c'
   version '2.79'
+  head 'http://bullet.googlecode.com/svn/trunk/', :using => :svn
 
   depends_on 'cmake' => :build
 

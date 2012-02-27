@@ -6,6 +6,8 @@ class Glew < Formula
   md5 'fb7a8bb79187ac98a90b57f0f27a3e84'
 
   def install
-    system "make", "GLEW_DEST=#{prefix}", "install"
+    # Installs libGLEW, two cli apps, and libGLEWmx
+    system "make", "GLEW_DEST=#{prefix}", "all"
+    system "make", "GLEW_DEST=#{prefix}", "install.all"
   end
 end

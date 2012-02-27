@@ -34,9 +34,12 @@ class Gpac < Formula
 
   def install
     ENV.deparallelize
+
     args = ["--disable-wx",
             "--prefix=#{prefix}",
             "--mandir=#{man}",
+            # gpac build system is barely functional
+            "--extra-cflags=-I/usr/X11/include",
             # Force detection of X libs on 64-bit kernel
             "--extra-ldflags=-L/usr/X11/lib"]
     args << "--use-ffmpeg=no" unless ARGV.build_head?
@@ -47,7 +50,7 @@ class Gpac < Formula
 
     system "chmod", "+rw", "Makefile"
     ["MP4Box","MP4Client"].each do |name|
-      filename = "applications/#{name}/Makefile"
+      filename = "applications/#{name.downcase}/Makefile"
       system "chmod", "+rw", filename
 
       if ARGV.include? '--with-lowercase'
