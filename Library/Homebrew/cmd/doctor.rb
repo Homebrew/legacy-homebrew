@@ -255,6 +255,24 @@ def __check_subdir_access base
   end
 end
 
+def check_access_usr_local
+  return unless HOMEBREW_PREFIX.to_s == '/usr/local'
+
+  unless Pathname('/usr/local').writable?
+    puts <<-EOS.undent
+    The /usr/local directory is not writable.
+
+    Even if this folder was writable when you installed Homebrew, other
+    software may change permissions on this folder. Some versions of the
+    "InstantOn" component of Airfoil are known to do this.
+
+    You should probably change the ownership and permissions of /usr/local
+    back to your user account.
+
+    EOS
+  end
+end
+
 def check_access_share_locale
   __check_subdir_access 'share/locale'
 end
@@ -826,6 +844,7 @@ module Homebrew extend self
       check_for_other_package_managers
       check_for_x11
       check_for_nonstandard_x11
+      check_access_usr_local
       check_access_include
       check_access_etc
       check_access_share
