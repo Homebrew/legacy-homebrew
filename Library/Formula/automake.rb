@@ -13,8 +13,7 @@ class Automake < Formula
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
 
     (share/"aclocal/dirlist").write <<-EOS.undent
