@@ -12,9 +12,9 @@ class Postgis < Formula
   head 'http://svn.osgeo.org/postgis/trunk/', :using => :svn
 
   devel do
-    url 'http://postgis.org/download/postgis-2.0.0alpha5.tar.gz'
-    md5 'd47923c07b590571d9b9af6cd7c07813'
-    version '2.0.0alpha5'
+    url 'http://postgis.org/download/postgis-2.0.0alpha6.tar.gz'
+    md5 '1895d14c26c2458004d9b4f77931958c'
+    version '2.0.0alpha6'
   end
 
   depends_on 'postgresql'
@@ -31,6 +31,7 @@ class Postgis < Formula
 
   def options
     [
+      ['--devel', 'Build unstable snapshots of PostGIS 2.0'],
       ['--with-gui', 'Build shp2pgsql-gui in addition to command line tools']
     ]
   end

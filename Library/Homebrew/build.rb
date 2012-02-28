@@ -49,7 +49,12 @@ def install f
       ENV.prepend 'LDFLAGS', "-L#{dep.lib}"
       ENV.prepend 'CPPFLAGS', "-I#{dep.include}"
       ENV.prepend 'PATH', "#{dep.bin}", ':'
-      ENV.prepend 'PKG_CONFIG_PATH', dep.lib+'pkgconfig', ':'
+
+      pcdir = dep.lib/'pkgconfig'
+      ENV.prepend 'PKG_CONFIG_PATH', pcdir, ':' if pcdir.directory?
+
+      acdir = dep.share/'aclocal'
+      ENV.prepend 'ACLOCAL_PATH', acdir, ':' if acdir.directory?
     end
   end
 
@@ -62,7 +67,7 @@ def install f
       if ARGV.flag? '--git'
         system "git init"
         system "git add -A"
-        puts "This folder is now a git repo. Make your changes and then use:"
+        puts "This directory is now a git repo. Make your changes and then use:"
         puts "  git diff | pbcopy"
         puts "to copy the diff to the clipboard."
       end
