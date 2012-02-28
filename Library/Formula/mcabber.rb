@@ -17,9 +17,9 @@ class Mcabber < Formula
   depends_on 'aspell' if ARGV.include? '--enable-aspell'
   depends_on 'enchant' if ARGV.include? '--enable-enchant'
 
-  if MacOS.xcode_version >= "4.3" and ARGV.build_head?
-    depends_on "automake"
-    depends_on "libtool"
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   def options

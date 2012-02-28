@@ -10,6 +10,11 @@ class Libusb < Formula
     [["--universal", "Build a universal binary."]]
   end
 
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
     ENV.universal_binary if ARGV.build_universal?
     system "./autogen.sh" if ARGV.build_head?

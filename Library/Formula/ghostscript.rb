@@ -17,6 +17,11 @@ class Ghostscript < Formula
   depends_on 'jpeg'
   depends_on 'libtiff'
 
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def move_included_source_copies
     # If the install version of any of these doesn't match
     # the version included in ghostscript, we get errors
