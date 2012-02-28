@@ -66,8 +66,7 @@ class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
     <<-EOS.undent
       Unsatisfied external dependency: #{formula}
       Homebrew does not provide #{type.to_s.capitalize} dependencies, #{tool} does:
-
-          #{command_line} #{formula}
+        #{command_line} #{formula}
       EOS
   end
 
