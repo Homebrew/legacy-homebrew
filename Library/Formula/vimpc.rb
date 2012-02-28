@@ -12,6 +12,11 @@ class Vimpc < Formula
   depends_on 'libmpdclient'
   depends_on "automake" if ARGV.build_head? and MacOS.xcode_version >= "4.3"
 
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
     if ARGV.build_head?
       ENV['ACLOCAL_FLAGS'] = "-I #{HOMEBREW_PREFIX}/share/aclocal"

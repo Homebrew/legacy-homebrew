@@ -9,6 +9,11 @@ class Elinks < Formula
 
   fails_with_llvm :build => 2326
 
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   # enables 256 colors, per the manual
   def patches
     DATA

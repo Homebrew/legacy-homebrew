@@ -96,6 +96,12 @@ class Tesseract < Formula
   depends_on 'libtiff'
   depends_on 'leptonica'
 
+  if MacOS.xcode_version >= "4.3"
+    # when and if the tarball provides configure, remove autogen.sh and these deps
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   fails_with_llvm "Executable 'tesseract' segfaults on 10.6 when compiled with llvm-gcc", :build => "2206"
 
   # mftraining has a missing symbols error when cleaned

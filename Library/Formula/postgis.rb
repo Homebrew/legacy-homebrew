@@ -29,6 +29,11 @@ class Postgis < Formula
     depends_on 'json-c'
   end
 
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def options
     [
       ['--devel', 'Build unstable snapshots of PostGIS 2.0'],

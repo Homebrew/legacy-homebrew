@@ -26,7 +26,6 @@ class Pcb < Formula
 
   def install
     ENV.x11
-    ENV.append 'ACLOCAL_FLAGS', "-I#{HOMEBREW_PREFIX}/share/aclocal"
 
     system "./autogen.sh" if ARGV.build_head?
 
