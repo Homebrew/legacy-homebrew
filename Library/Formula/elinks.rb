@@ -9,6 +9,11 @@ class Elinks < Formula
 
   fails_with_llvm :build => 2326
 
+  # enables 256 colors, per the manual
+  def patches
+    DATA
+  end
+
   def install
     ENV.deparallelize
     ENV.delete('LD')
@@ -17,3 +22,19 @@ class Elinks < Formula
     system "make install"
   end
 end
+
+__END__
+diff --git a/features.conf b/features.conf
+index 1c0095c..7ee8b0d 100644
+--- a/features.conf
++++ b/features.conf
+@@ -501,7 +501,7 @@ CONFIG_88_COLORS=no
+ #
+ # Default: disabled
+ 
+-CONFIG_256_COLORS=no
++CONFIG_256_COLORS=yes
+ 
+ 
+ ### Ex-mode Interface
+

@@ -8,15 +8,16 @@ class Lsdvd < Formula
   depends_on 'libdvdread'
   depends_on 'libdvdcss' => :optional
 
+  def patches
+    {:p0 => [
+       "https://trac.macports.org/export/89276/trunk/dports/sysutils/lsdvd/files/patch-configure.diff",
+       "https://trac.macports.org/export/89276/trunk/dports/sysutils/lsdvd/files/patch-lsdvd_c.diff"
+    ]}
+  end
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--mandir=#{man}"
     system "make install"
-  end
-  def patches
-    {:p0 => [
-       "http://svn.macports.org/repository/macports/trunk/dports/sysutils/lsdvd/files/patch-configure.diff",
-       "http://svn.macports.org/repository/macports/trunk/dports/sysutils/lsdvd/files/patch-lsdvd_c.diff"
-    ]}
   end
 end

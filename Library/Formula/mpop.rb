@@ -5,8 +5,16 @@ class Mpop < Formula
   homepage 'http://mpop.sourceforge.net/'
   md5 '40a48d486121a15075faee944a7b8fb7'
 
+  def options
+    [['--with-macosx-keyring', "Support Mac OS X Keyring"]]
+  end
+
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    args = [ "--prefix=#{prefix}",
+            "--disable-debug",
+            "--disable-dependency-tracking"]
+    args << "--with-macosx-keyring" if ARGV.include? '--with-macosx-keyring'
+    system "./configure", *args
     system "make install"
   end
 end

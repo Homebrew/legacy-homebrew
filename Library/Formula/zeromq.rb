@@ -5,10 +5,10 @@ def pgm_flags
 end
 
 class Zeromq < Formula
-  url 'http://download.zeromq.org/zeromq-2.1.10.tar.gz'
+  url 'http://download.zeromq.org/zeromq-2.1.11.tar.gz'
   head 'https://github.com/zeromq/libzmq.git'
   homepage 'http://www.zeromq.org/'
-  md5 'f034096095fa76041166a8861e9d71b7'
+  md5 'f0f9fd62acb1f0869d7aa80379b1f6b7'
 
   fails_with_llvm "Compiling with LLVM gives a segfault while linking.",
                   :build => 2326 if MacOS.snow_leopard?

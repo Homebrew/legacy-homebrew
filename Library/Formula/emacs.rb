@@ -1,15 +1,16 @@
 require 'formula'
 
 class Emacs < Formula
-  url 'http://ftpmirror.gnu.org/emacs/emacs-23.3b.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/emacs/emacs-23.3b.tar.bz2'
-  md5 '917ce0054ef63773078a6e99b55df1ee'
   homepage 'http://www.gnu.org/software/emacs/'
+  url 'http://ftpmirror.gnu.org/emacs/emacs-23.4.tar.bz2'
+  mirror '  http://ftp.gnu.org/pub/gnu/emacs/emacs-23.4.tar.bz2'
+  md5 '070c68ad8e3c31fb3cb2414feaf5e6f0'
 
   fails_with_llvm "Duplicate symbol errors while linking.", :build => 2334
 
-  # Stripping on Xcode 4 causes malformed object errors
-  skip_clean ["bin/emacs", "bin/emacs-23.3", "bin/emacs-24.0.50"]
+  # Stripping on Xcode 4 causes malformed object errors.
+  # Just skip everything.
+  skip_clean :all
 
   if ARGV.include? "--use-git-head"
     head 'git://git.sv.gnu.org/emacs.git'
@@ -31,19 +32,12 @@ class Emacs < Formula
 
     # Fix for building with Xcode 4; harmless on Xcode 3.x.
     unless ARGV.build_head?
-      p << "http://repo.or.cz/w/emacs.git/commitdiff_plain/c8bba48c5889c4773c62a10f7c3d4383881f11c1"
-      # Fix for address randomization on Darwin. Based on:
-      #   http://repo.or.cz/w/emacs.git/patch/f2cea124dffac9ca4b8ce1dbb9b746f8e81109a3
-      p << "https://raw.github.com/gist/1098107"
-      # Fix for the titlebar issue on Mac OS X 10.7
-      p << "https://raw.github.com/gist/1102744"
-      # Fix for Shift key for IME users
-      p << "https://raw.github.com/gist/1212776"
+      p << DATA
     end
 
     if ARGV.include? "--cocoa"
       # Fullscreen patch, works against 23.3 and HEAD.
-      p << "https://raw.github.com/gist/1012927"
+      p << "https://raw.github.com/gist/1746342/702dfe9e2dd79fddd536aa90d561efdeec2ba716"
     end
 
     return p
@@ -131,3 +125,34 @@ class Emacs < Formula
     return s
   end
 end
+
+__END__
+# Fix for the titlebar issue on Mac OS X 10.7
+diff --git a/src/nsterm.m b/src/nsterm.m
+index 30b73c2..234b8b5 100644
+--- a/src/nsterm.m
++++ b/src/nsterm.m
+@@ -5107,6 +5107,9 @@ ns_term_shutdown (int sig)
+   win = [[EmacsWindow alloc]
+             initWithContentRect: r
+                       styleMask: (NSResizableWindowMask |
++#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_7
++                                  NSTitledWindowMask |
++#endif
+                                   NSMiniaturizableWindowMask |
+                                   NSClosableWindowMask)
+                         backing: NSBackingStoreBuffered
+
+# Fix for Shift key for IME users
+diff --git a/src/nsterm.m b/src/nsterm.m
+index 30b73c2..f0c154e 100644
+--- a/src/nsterm.m
++++ b/src/nsterm.m
+@@ -4489,6 +4489,7 @@ ns_term_shutdown (int sig)
+ 
+       /* if it was a function key or had modifiers, pass it directly to emacs */
+       if (fnKeysym || (emacs_event->modifiers
++                       && (emacs_event->modifiers != shift_modifier)
+                        && [[theEvent charactersIgnoringModifiers] length] > 0))
+ /*[[theEvent characters] length] */
+         {

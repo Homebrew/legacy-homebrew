@@ -14,9 +14,18 @@ class Lua < Formula
   # Be sure to build a dylib, or else runtime modules will pull in another static copy of liblua = crashy
   # See: https://github.com/mxcl/homebrew/pull/5043
   def patches
-    DATA
+    # completion provided by advanced readline power patch from
+    # http://lua-users.org/wiki/LuaPowerPatches
+    if ARGV.include? '--completion'
+      [DATA, 'http://luajit.org/patches/lua-5.1.4-advanced_readline.patch']
+    else
+      DATA
+    end
   end
 
+  def options
+    [['--completion', 'Enables advanced readline support']]
+  end
 
   def install
     # Apply patch-level 2

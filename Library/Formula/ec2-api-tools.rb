@@ -31,7 +31,7 @@ class AmazonWebServicesFormula < Formula
        * On Bash, add them to `~/.bash_profile`.
        * On Zsh, add them to `~/.zprofile` instead.
 
-      export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Home"
+      export JAVA_HOME="$(/usr/libexec/java_home)"
       export EC2_PRIVATE_KEY="$(/bin/ls $HOME/.ec2/pk-*.pem)"
       export EC2_CERT="$(/bin/ls $HOME/.ec2/cert-*.pem)"
       export #{var_name}="#{var_value}"
@@ -41,8 +41,8 @@ end
 
 class Ec2ApiTools < AmazonWebServicesFormula
   homepage 'http://aws.amazon.com/developertools/351'
-  url 'http://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.5.0.1.zip'
-  md5 '578025392f7dcfbf0570d2bfa9c06533'
+  url 'http://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.5.2.3.zip'
+  md5 'fa1e050b35ce9e7f4a2017f251c5e2bb'
 
   def install
     standard_install
