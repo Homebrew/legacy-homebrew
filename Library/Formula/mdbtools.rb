@@ -2,8 +2,8 @@ require 'formula'
 
 class Mdbtools < Formula
   homepage 'http://sourceforge.net/projects/mdbtools/'
-  # Last stable release won't build on OS X, but HEAD from CVS does.
-  head "cvs://:pserver:anonymous@mdbtools.cvs.sourceforge.net:/cvsroot/mdbtools:mdbtools"
+  # Use the github repo of the author instead of project CVS
+  head "https://github.com/brianb/mdbtools.git"
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
@@ -16,6 +16,12 @@ class Mdbtools < Formula
 
   def install
     inreplace 'autogen.sh', 'libtool', 'glibtool'
+
+    %w{src/libmdb/Makefile.am src/libmdb/Makefile.am src/sql/Makefile.am}.each do |f|
+      inreplace f, /,?\s*--version-script=.*?(?:[ \t,]|$)/, ''
+    end
+
+    inreplace 'configure.in', /\s*--as-needed/, ''
 
     system "NOCONFIGURE='yes' ACLOCAL_FLAGS='-I#{HOMEBREW_PREFIX}/share/aclocal' ./autogen.sh"
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
