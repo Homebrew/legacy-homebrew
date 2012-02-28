@@ -14,8 +14,9 @@ class Libtool < Formula
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--program-prefix=g",
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--program-prefix=g",
                           "--enable-ltdl-install"
     system "make install"
   end
