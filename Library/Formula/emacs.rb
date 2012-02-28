@@ -3,7 +3,7 @@ require 'formula'
 class Emacs < Formula
   homepage 'http://www.gnu.org/software/emacs/'
   url 'http://ftpmirror.gnu.org/emacs/emacs-23.4.tar.bz2'
-  mirror '  http://ftp.gnu.org/pub/gnu/emacs/emacs-23.4.tar.bz2'
+  mirror 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.4.tar.bz2'
   md5 '070c68ad8e3c31fb3cb2414feaf5e6f0'
 
   fails_with_llvm "Duplicate symbol errors while linking.", :build => 2334
