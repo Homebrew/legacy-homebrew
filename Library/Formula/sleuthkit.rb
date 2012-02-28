@@ -10,8 +10,8 @@ class Sleuthkit < Formula
   depends_on 'libewf' => :optional
 
   if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake"
-    depends_on "libtool"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   def install
