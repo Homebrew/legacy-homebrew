@@ -57,8 +57,8 @@ class Imagemagick < Formula
     :using => UnsafeSubversionDownloadStrategy
 
   bottle do
-    url 'http://downloads.sf.net/project/machomebrew/Bottles/imagemagick-6.7.1-1-bottle.tar.gz'
-    sha1 'd63cbdfb4e314f17ed1d553e5e1c7f3eebf1654b'
+    url 'https://downloads.sf.net/project/machomebrew/Bottles/imagemagick-6.7.5-7-bottle.tar.gz'
+    sha1 'ad1647061a1d7bc4a0fee0d90c16005f40d97683'
   end
 
   depends_on 'jpeg'
