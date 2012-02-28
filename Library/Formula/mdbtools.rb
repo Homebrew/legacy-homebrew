@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mdbtools < Formula
+  url "https://github.com/brianb/mdbtools/tarball/0.7_rc1"
   homepage 'http://sourceforge.net/projects/mdbtools/'
   # Use the github repo of the author instead of project CVS
   head "https://github.com/brianb/mdbtools.git"
@@ -24,7 +25,7 @@ class Mdbtools < Formula
     inreplace 'configure.in', /\s*--as-needed/, ''
 
     system "NOCONFIGURE='yes' ACLOCAL_FLAGS='-I#{HOMEBREW_PREFIX}/share/aclocal' ./autogen.sh"
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}", "--disable-glibtest"
     system "make install"
   end
 end
