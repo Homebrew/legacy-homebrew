@@ -15,8 +15,8 @@ class Libimobiledevice < Formula
   depends_on 'gnutls'
 
   if MacOS.xcode_version >= "4.3" and ARGV.build_head?
-    depends_on 'libtool'
-    depends_on 'autoconf'
+    depends_on 'libtool' => :build
+    depends_on 'autoconf' => :build
   end
 
   def install

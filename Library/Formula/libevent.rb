@@ -9,8 +9,13 @@ class Libevent < Formula
 
   fails_with_llvm "Undefined symbol '_current_base' reported during linking.", :build => 2326
 
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
-    ENV.j1 # Needed for Mac Pro compilation
+    ENV.j1
     system "./autogen.sh" if ARGV.build_head?
     system "./configure", "--prefix=#{prefix}"
     system "make"

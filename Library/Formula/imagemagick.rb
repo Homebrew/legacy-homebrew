@@ -22,11 +22,11 @@ def disable_openmp?
 end
 
 def enable_hdri?
-    ARGV.include? '--enable-hdri'
+  ARGV.include? '--enable-hdri'
 end
 
 def magick_plus_plus?
-    ARGV.include? '--with-magick-plus-plus'
+  ARGV.include? '--with-magick-plus-plus'
 end
 
 def use_exr?
@@ -34,32 +34,31 @@ def use_exr?
 end
 
 def quantum_depth_8?
-    ARGV.include? '--with-quantum-depth-8'
+  ARGV.include? '--with-quantum-depth-8'
 end
 
 def quantum_depth_16?
-    ARGV.include? '--with-quantum-depth-16'
+  ARGV.include? '--with-quantum-depth-16'
 end
 
 def quantum_depth_32?
-    ARGV.include? '--with-quantum-depth-32'
+  ARGV.include? '--with-quantum-depth-32'
 end
 
 
 class Imagemagick < Formula
   homepage 'http://www.imagemagick.org'
 
-  # Using an unofficial Git mirror to work around:
-  # * Stable tarballs disappearing
-  # * Bad https cert on official SVN repo
-  url 'https://github.com/trevor/ImageMagick/tarball/6.7.1-1'
-  md5 '9c71dfbddc42b78a0d8db8acdb534d37'
+  # upstream's stable tarballs tend to disappear, so we provide our own mirror
+  url 'http://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.7.5-7.tar.bz2'
+  sha256 'fe88eb9f3ce832b0027b58a04c26871886a0721779b5c0044213018c6a6ba49f'
 
-  head 'https://github.com/trevor/ImageMagick.git'
+  head 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
+    :using => UnsafeSubversionDownloadStrategy
 
   bottle do
-    url 'http://downloads.sf.net/project/machomebrew/Bottles/imagemagick-6.7.1-1-bottle.tar.gz'
-    sha1 'd63cbdfb4e314f17ed1d553e5e1c7f3eebf1654b'
+    url 'https://downloads.sf.net/project/machomebrew/Bottles/imagemagick-6.7.5-7-bottle.tar.gz'
+    sha1 'ad1647061a1d7bc4a0fee0d90c16005f40d97683'
   end
 
   depends_on 'jpeg'
