@@ -16,13 +16,18 @@ def no_python?
   ARGV.include? "--without-python"
 end
 
+def which_python
+  "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+end
+
+
 def opencl?
   ARGV.include? "--enable-opencl"
 end
 
 class Gdal < Formula
-  url 'http://download.osgeo.org/gdal/gdal-1.9.0.tar.gz'
   homepage 'http://www.gdal.org/'
+  url 'http://download.osgeo.org/gdal/gdal-1.9.0.tar.gz'
   md5 '1853f3d8eb5232ae030abe007840cade'
 
   head 'https://svn.osgeo.org/gdal/trunk/gdal', :using => :svn
@@ -202,7 +207,7 @@ class Gdal < Formula
       # install to anywhere that is not on the PYTHONPATH.
       #
       # Really setuptools, we're all consenting adults here...
-      python_lib = lib + "python"
+      python_lib = lib + which_python + 'site-packages'
       ENV.append 'PYTHONPATH', python_lib
 
       # setuptools is also apparently incapable of making the directory it's
@@ -217,7 +222,7 @@ class Gdal < Formula
         ENV.append_to_cflags '-arch i386'
       end
 
-      Dir.chdir 'swig/python' do
+      cd 'swig/python' do
         system "python", "setup.py", "install_lib", "--install-dir=#{python_lib}"
         bin.install Dir['scripts/*']
       end
@@ -229,10 +234,13 @@ class Gdal < Formula
       <<-EOS
 This version of GDAL was built with Python support.  In addition to providing
 modules that makes GDAL functions available to Python scripts, the Python
-binding provides ~18 additional command line tools.  However, both the Python
-bindings and the additional tools will be unusable unless the following
-directory is added to the PYTHONPATH:
-    #{HOMEBREW_PREFIX}/lib/python
+binding provides ~18 additional command line tools.
+
+Unless you are using Homebrew's Python, both the bindings and the
+additional tools will be unusable unless the following directory is added to
+the PYTHONPATH:
+
+    #{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages
       EOS
     end
   end

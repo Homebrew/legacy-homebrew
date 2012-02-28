@@ -1,12 +1,12 @@
 require 'formula'
 
 class Libmikmod < Formula
-  url 'https://github.com/mistydemeo/libmikmod.git', :tag => '446324a45a6d165b1941a4758f6cd221301b479e'
   homepage 'http://mikmod.raphnet.net/'
+  url 'https://github.com/mistydemeo/libmikmod.git', :tag => '446324a45a6d165b1941a4758f6cd221301b479e'
   version '3.2.0b2'
 
   def options
-    [[ '--with-debug', 'Enable debugging symbols and build without optimization' ]]
+    [[ '--with-debug', 'Enable debugging symbols and build without optimization']]
   end
 
   def patches
@@ -15,11 +15,16 @@ class Libmikmod < Formula
     DATA unless Formula.factory('esound').installed?
   end
 
+  if MacOS.xcode_version >= "4.3"
+    depends_on "automake"
+    depends_on "libtool"
+  end
+
   def install
     ENV.no_optimization if ARGV.include? '--with-debug'  # leave code unoptimzed 4 debug
-    ENV['LIBTOOLIZE'] = '/usr/bin/glibtoolize'           # system libtoolize for autoreconf
+    ENV['LIBTOOLIZE'] = 'glibtoolize'           # system libtoolize for autoreconf
     acpath = "#{HOMEBREW_PREFIX}/share/aclocal"          # esd.m4 if installed would be here
-    ENV['ACLOCAL'] = "/usr/bin/aclocal -I #{acpath}" if Formula.factory('esound').installed?
+    ENV['ACLOCAL'] = "aclocal -I #{acpath}" if Formula.factory('esound').installed?
 
     # Macports patched libmikmod-3.2.0-beta2.tar.bz2 in 2004.  Most of their work
     # was merged into the upstream source by 2005 when the devs moved to sourceforge.
@@ -68,8 +73,7 @@ class Libmikmod < Formula
     # autoreconf w/glibtoolize will fix PIC flags, flat_namespace from 2005 era code.
     system "autoreconf -ivf"
     # An oos build is recommended in the documentation.
-    Dir.mkdir 'macbuild'
-    Dir.chdir 'macbuild' do
+    mkdir 'macbuild' do
       system "../configure", *args
       system "make"
       system "make install"

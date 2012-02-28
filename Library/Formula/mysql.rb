@@ -18,6 +18,8 @@ class Mysql < Formula
       ['--with-tests', "Build with unit tests."],
       ['--with-embedded', "Build the embedded server."],
       ['--with-libedit', "Compile with EditLine wrapper instead of readline"],
+      ['--with-archive-storage-engine', "Compile with the ARCHIVE storage engine enabled"],
+      ['--with-blackhole-storage-engine', "Compile with the BLACKHOLE storage engine enabled"],
       ['--universal', "Make mysql a universal binary"],
       ['--enable-local-infile', "Build with local infile loading support"]
     ]
@@ -57,6 +59,12 @@ class Mysql < Formula
     # Compile with readline unless libedit is explicitly chosen
     args << "-DWITH_READLINE=yes" unless ARGV.include? '--with-libedit'
 
+    # Compile with ARCHIVE engine enabled if chosen
+    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if ARGV.include? '--with-archive-storage-engine'
+
+    # Compile with BLACKHOLE engine enabled if chosen
+    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if ARGV.include? '--with-blackhole-storage-engine'
+
     # Make universal for binding to universal applications
     args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if ARGV.build_universal?
 
@@ -67,8 +75,8 @@ class Mysql < Formula
     system "make"
     system "make install"
 
-    (prefix+'com.mysql.mysqld.plist').write startup_plist
-    (prefix+'com.mysql.mysqld.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
 
     # Don't create databases inside of the prefix!
     # See: https://github.com/mxcl/homebrew/issues/4975
@@ -113,13 +121,13 @@ class Mysql < Formula
     To launch on startup:
     * if this is your first install:
         mkdir -p ~/Library/LaunchAgents
-        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-    * if this is an upgrade and you already have the com.mysql.mysqld.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
-        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+    * if this is an upgrade and you already have the #{plist_path.basename} loaded:
+        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     You may also need to edit the plist to use the correct "UserName".
 
@@ -134,9 +142,9 @@ class Mysql < Formula
       <key>KeepAlive</key>
       <true/>
       <key>Label</key>
-      <string>com.mysql.mysqld</string>
+      <string>#{plist_name}</string>
       <key>Program</key>
-      <string>#{bin}/mysqld_safe</string>
+      <string>#{HOMEBREW_PREFIX}/bin/mysqld_safe</string>
       <key>RunAtLoad</key>
       <true/>
       <key>UserName</key>

@@ -2,15 +2,15 @@ require 'formula'
 
 class GstPluginsBase < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-0.10.34.tar.bz2'
-  sha256 '7f347a60cd4317c7ea44c23e52d6e6233d2fa278b3fe3df7cbefe2bc2e253989'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-0.10.35.tar.bz2'
+  md5 '1d300983525f4f09030eb3ba47cb04b0'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'gstreamer'
 
   # The set of optional dependencies is based on the intersection of
-  # gst-plugins-base-0.10.32/REQUIREMENTS and Homebrew formulas
+  # gst-plugins-base-0.10.35/REQUIREMENTS and Homebrew formulas
   depends_on 'orc' => :optional
   depends_on 'gtk+' => :optional
   depends_on 'libogg' => :optional

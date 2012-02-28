@@ -16,8 +16,11 @@ class R < Formula
   url 'http://cran.r-project.org/src/base/R-2/R-2.14.1.tar.gz'
   md5 'ba5b6fb15b660670ea29b885348f322a'
 
-  depends_on 'valgrind' if valgrind?
   depends_on 'readline'
+  depends_on 'libtiff'
+  depends_on 'jpeg'
+
+  depends_on 'valgrind' if valgrind?
 
   def options
     [

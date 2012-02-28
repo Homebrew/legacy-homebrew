@@ -2,13 +2,17 @@ require 'formula'
 
 class GitExtras < Formula
   homepage 'https://github.com/visionmedia/git-extras'
-  url 'https://github.com/visionmedia/git-extras/tarball/0.8.0'
-  sha1 'e3b162377203ec3131b8e7f297074687f4cb3cca'
+  url 'https://github.com/visionmedia/git-extras/tarball/1.4.0'
+  sha1 '9471ae1df77e561980983e2ae7e7d1f6b74e95bc'
+
   head 'https://github.com/visionmedia/git-extras.git', :branch => 'master'
 
   def install
-    inreplace 'Makefile', '/usr/local', prefix
-    bin.mkpath
-    system "make", "install"
+    # fixed in HEAD to respect PREFIX
+    inreplace 'Makefile' do |s|
+      s.gsub! '/etc/bash_completion.d', "#{prefix}/etc/bash_completion.d"
+    end unless ARGV.build_head?
+
+    system "make", "PREFIX=#{prefix}", "install"
   end
 end

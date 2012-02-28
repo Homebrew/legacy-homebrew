@@ -13,10 +13,10 @@ class Dotless < Formula
       puts "http://www.go-mono.com/mono-downloads/download.html"
     end
 
-    (bin + 'dotless').write <<-EOF
-#!/bin/bash
-exec #{mono_path} #{libexec}/dotless.Compiler.exe $@
-EOF
+    (bin+'dotless').write <<-EOF.undent
+      #!/bin/bash
+      exec "#{mono_path}" "#{libexec}/dotless.Compiler.exe" "$@"
+    EOF
 
     libexec.install Dir['*.exe']
     (share+'dotless').install Dir['*.txt']
