@@ -4,7 +4,7 @@ def build_tests?; ARGV.include? '--test'; end
 
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/'
-  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.30/glib-2.31.6.tar.xz'
+  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.31/glib-2.31.6.tar.xz'
   sha256 '26f082d3dfa017c73049a7f09333dd2114abd32849fd601394e35f4f8b34e49a'
 
   depends_on 'gettext'
