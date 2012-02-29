@@ -243,15 +243,33 @@ def __check_subdir_access base
   cant_read.sort!
   if cant_read.length > 0
     puts <<-EOS.undent
-    Some folders in #{target} aren't writable.
+    Some directories in #{target} aren't writable.
     This can happen if you "sudo make install" software that isn't managed
     by Homebrew. If a brew tries to add locale information to one of these
-    folders, then the install will fail during the link step.
+    directories, then the install will fail during the link step.
     You should probably `chown` them:
 
     EOS
     puts *cant_read.collect { |f| "    #{f}" }
     puts
+  end
+end
+
+def check_access_usr_local
+  return unless HOMEBREW_PREFIX.to_s == '/usr/local'
+
+  unless Pathname('/usr/local').writable?
+    puts <<-EOS.undent
+    The /usr/local directory is not writable.
+
+    Even if this folder was writable when you installed Homebrew, other
+    software may change permissions on this folder. Some versions of the
+    "InstantOn" component of Airfoil are known to do this.
+
+    You should probably change the ownership and permissions of /usr/local
+    back to your user account.
+
+    EOS
   end
 end
 
@@ -283,25 +301,25 @@ end
 
 def check_access_pkgconfig
   __check_folder_access 'lib/pkgconfig',
-  'If a brew tries to write a .pc file to this folder, the install will\n'+
+  'If a brew tries to write a .pc file to this directory, the install will\n'+
   'fail during the link step.'
 end
 
 def check_access_include
   __check_folder_access 'include',
-  'If a brew tries to write a header file to this folder, the install will\n'+
+  'If a brew tries to write a header file to this directory, the install will\n'+
   'fail during the link step.'
 end
 
 def check_access_etc
   __check_folder_access 'etc',
-  'If a brew tries to write a file to this folder, the install will\n'+
+  'If a brew tries to write a file to this directory, the install will\n'+
   'fail during the link step.'
 end
 
 def check_access_share
   __check_folder_access 'share',
-  'If a brew tries to write a file to this folder, the install will\n'+
+  'If a brew tries to write a file to this directory, the install will\n'+
   'fail during the link step.'
 end
 
@@ -331,7 +349,7 @@ def check_xcode_prefix
   return if prefix.nil?
   if prefix.to_s.match(' ')
     puts <<-EOS.undent
-      Xcode is installed to a folder with a space in the name.
+      Xcode is installed to a directory with a space in the name.
       This may cause some formulae, such as libiconv, to fail to build.
 
     EOS
@@ -501,13 +519,16 @@ def check_for_config_scripts
 
   unless config_scripts.empty?
     puts <<-EOS.undent
-      Some "config" scripts were found in your path, but not in system or Homebrew folders.
+      Some "config" scripts were found in your path, but not in system or
+      Homebrew directories.
 
-      `./configure` scripts often look for *-config scripts to determine if software packages
-      are installed, and what additional flags to use when compiling and linking.
+      `./configure` scripts often look for *-config scripts to determine if
+      software packages are installed, and what additional flags to use when
+      compiling and linking.
 
-      Having additional scripts in your path can confuse software installed via Homebrew if
-      the config script overrides a system or Homebrew provided script of the same name.
+      Having additional scripts in your path can confuse software installed via
+      Homebrew if the config script overrides a system or Homebrew provided
+      script of the same name.
 
     EOS
 
@@ -537,7 +558,7 @@ def check_for_symlinked_cellar
                       which resolves to: #{HOMEBREW_CELLAR.realpath}
 
       The recommended Homebrew installations are either:
-      (A) Have Cellar be a real folder inside of your HOMEBREW_PREFIX
+      (A) Have Cellar be a real directory inside of your HOMEBREW_PREFIX
       (B) Symlink "bin/brew" into your prefix, but don't symlink "Cellar".
 
       Older installations of Homebrew may have created a symlinked Cellar, but this can
@@ -566,7 +587,7 @@ def check_for_multiple_volumes
 
   unless where_cellar == where_temp
     puts <<-EOS.undent
-      Your Cellar & TEMP folders are on different volumes.
+      Your Cellar and TEMP directories are on different volumes.
 
       OS X won't move relative symlinks across volumes unless the target file
       already exists.
@@ -574,7 +595,7 @@ def check_for_multiple_volumes
       Brews known to be affected by this are Git and Narwhal.
 
       You should set the "HOMEBREW_TEMP" environmental variable to a suitable
-      folder on the same volume as your Cellar.
+      directory on the same volume as your Cellar.
 
     EOS
   end
@@ -617,6 +638,8 @@ def check_git_newline_settings
 end
 
 def check_for_autoconf
+  return if MacOS.xcode_version >= "4.3"
+
   autoconf = `/usr/bin/which autoconf`.chomp
   safe_autoconfs = %w[/usr/bin/autoconf /Developer/usr/bin/autoconf]
   unless autoconf.empty? or safe_autoconfs.include? autoconf
@@ -797,7 +820,7 @@ def check_for_enthought_python
     Enthought Python was found in your PATH.
 
     This can cause build problems, as this software installs its own
-    copies of iconv and libxml2 into folders that are picked up by
+    copies of iconv and libxml2 into directories that are picked up by
     other build systems.
 
   EOS
@@ -821,6 +844,7 @@ module Homebrew extend self
       check_for_other_package_managers
       check_for_x11
       check_for_nonstandard_x11
+      check_access_usr_local
       check_access_include
       check_access_etc
       check_access_share

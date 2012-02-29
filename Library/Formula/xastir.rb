@@ -1,8 +1,8 @@
 require 'formula'
 
 class Xastir < Formula
-  url 'http://downloads.sourceforge.net/xastir/xastir-2.0.0.tar.gz'
   homepage 'http://www.xastir.org/'
+  url 'http://downloads.sourceforge.net/xastir/xastir-2.0.0.tar.gz'
   md5 '3e660b8168c9037b06e20b0579af3c80'
 
   depends_on 'proj'
@@ -15,7 +15,11 @@ class Xastir < Formula
   depends_on 'graphicsmagick'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    # find Homebrew's libpcre
+    ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
+
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end

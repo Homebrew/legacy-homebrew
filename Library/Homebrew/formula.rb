@@ -1,6 +1,7 @@
 require 'download_strategy'
 require 'fileutils'
 require 'formula_support'
+require 'hardware'
 
 
 # Derive and define at least @url, see Library/Formula for examples
@@ -10,6 +11,10 @@ class Formula
   attr_reader :name, :path, :url, :version, :homepage, :specs, :downloader
   attr_reader :standard, :unstable
   attr_reader :bottle_url, :bottle_sha1, :head
+
+  # The build folder, usually in /tmp.
+  # Will only be non-nil during the stage method.
+  attr_reader :buildpath
 
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
@@ -122,6 +127,16 @@ class Formula
   # plist name, i.e. the name of the launchd service
   def plist_name; 'homebrew.mxcl.'+name end
   def plist_path; prefix+(plist_name+'.plist') end
+
+  # A version of mkdir that also changes to that folder in a block
+  def mkdir name, &block
+    FileUtils.mkdir name
+    if block_given?
+      FileUtils.chdir name do
+        yield
+      end
+    end
+  end
 
   # Use the @spec_to_use to detect the download strategy.
   # Can be overriden to force a custom download strategy
@@ -448,6 +463,7 @@ protected
         rd.close
         $stdout.reopen wr
         $stderr.reopen wr
+        args.collect!{|arg| arg.to_s}
         exec(cmd, *args) rescue nil
         exit! 1 # never gets here unless exec threw or failed
       end
@@ -562,18 +578,25 @@ EOF
     verify_download_integrity fetched if fetched.kind_of? Pathname
     mktemp do
       downloader.stage
+      # Set path after the downloader changes the working folder.
+      @buildpath = Pathname.pwd
       yield
+      @buildpath = nil
     end
   end
 
   def patch
-    return if patches.nil?
+    # Only call `patches` once.
+    # If there is code in `patches`, which is not recommended, we only
+    # want to run that code once.
+    the_patches = patches
+    return if the_patches.nil?
 
-    if not patches.kind_of? Hash
+    if not the_patches.kind_of? Hash
       # We assume -p1
-      patch_defns = { :p1 => patches }
+      patch_defns = { :p1 => the_patches }
     else
-      patch_defns = patches
+      patch_defns = the_patches
     end
 
     patch_list=[]
@@ -722,7 +745,7 @@ EOF
 
     def depends_on name
       @deps ||= []
-      @external_deps ||= {:python => [], :perl => [], :ruby => [], :jruby => []}
+      @external_deps ||= {:python => [], :perl => [], :ruby => [], :jruby => [], :chicken => [], :rbx => [], :node => []}
 
       case name
       when String, Formula
@@ -730,7 +753,7 @@ EOF
       when Hash
         key, value = name.shift
         case value
-        when :python, :perl, :ruby, :jruby
+        when :python, :perl, :ruby, :jruby, :chicken, :rbx, :node
           @external_deps[value] << key
         when :optional, :recommended, :build
           @deps << key

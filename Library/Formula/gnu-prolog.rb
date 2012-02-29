@@ -12,7 +12,7 @@ class GnuProlog < Formula
   def install
     ENV.j1 # make won't run in parallel
 
-    Dir.chdir 'src' do
+    cd 'src' do
       # Applies fix as seen here:
       # http://lists.gnu.org/archive/html/users-prolog/2011-07/msg00013.html
       inreplace "configure", "darwin10", "darwin1"
@@ -23,4 +23,3 @@ class GnuProlog < Formula
     end
   end
 end
-

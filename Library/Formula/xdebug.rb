@@ -6,7 +6,7 @@ class Xdebug < Formula
   md5 '779f4a66acdccd673553769e403674c4'
 
   def install
-    Dir.chdir "xdebug-#{version}" do
+    cd "xdebug-#{version}" do
       # See https://github.com/mxcl/homebrew/issues/issue/69
       ENV.universal_binary
 

@@ -12,6 +12,7 @@ class Pixman < Formula
   end
 
   def install
+    ENV.x11
     ENV.universal_binary if ARGV.build_universal?
     if ENV.compiler == :llvm
       if MacOS.xcode_version >= "4.1"
