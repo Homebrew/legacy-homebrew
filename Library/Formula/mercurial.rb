@@ -4,6 +4,7 @@ class Mercurial < Formula
   homepage 'http://mercurial.selenic.com/'
   url 'http://mercurial.selenic.com/release/mercurial-2.1.tar.gz'
   sha1 'f649a0b33e0cafb3e5867a2e970f41eb887d3fab'
+
   head 'http://selenic.com/repo/hg', :using => :hg
 
   depends_on 'docutils' => :python if ARGV.build_head? or ARGV.include? "--doc"
@@ -31,9 +32,7 @@ class Mercurial < Formula
 
     # Make Mercurial into the Cellar.
     # The documentation must be built when using HEAD
-    if ARGV.build_head? or ARGV.include? "--doc"
-      system "make", "doc"
-    end
+    system "make", "doc" if ARGV.build_head? or ARGV.include? "--doc"
     system "make", "PREFIX=#{prefix}", "build"
     system "make", "PREFIX=#{prefix}", "install-bin"
 
@@ -57,18 +56,14 @@ class Mercurial < Formula
   end
 
   def caveats
-    s = ""
-    if ARGV.build_head?
-      s += <<-EOS.undent
-        As mercurial is required to get its own repository, there are now two
-        installations of mercurial on this machine.
-        If the previous installation has been done through Homebrew, the old version
-        needs to be removed and the new one needs to be linked :
+    if ARGV.build_head? then <<-EOS.undent
+      Mercurial is required to fetch its own repository, so there are now two
+      installations of mercurial on this machine. If the previous installation
+      was done via Homebrew, the old version may need to be cleaned up and new
+      version linked:
 
           brew cleanup mercurial && brew link mercurial
-
       EOS
     end
-    return s
   end
 end
