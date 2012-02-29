@@ -1,10 +1,10 @@
 require 'formula'
 
 class Sedna < Formula
-  url 'http://www.modis.ispras.ru/FTPContent/sedna/current/sedna-3.4.66-src-darwin.tar.gz'
   homepage 'http://modis.ispras.ru/sedna/index.html'
-  md5 '8c0006dbfb0ab89a63b4ae93e35f2213'
+  url 'http://www.modis.ispras.ru/FTPContent/sedna/current/sedna-3.4.66-src-darwin.tar.gz'
   version '3.4.66'
+  md5 '8c0006dbfb0ab89a63b4ae93e35f2213'
 
   depends_on 'cmake' => :build
 
@@ -12,7 +12,7 @@ class Sedna < Formula
     path = pwd
     # Build needs to be created from outside the source directory.
     mktemp do
-      system "cmake #{path} #{std_cmake_parameters}"
+      system "cmake #{std_cmake_parameters} #{path}"
       system "make install"
     end
   end

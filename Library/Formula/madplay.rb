@@ -12,7 +12,7 @@ class Madplay < Formula
   depends_on 'libid3tag'
 
   def patches
-    {:p0 => "http://svn.macports.org/repository/macports/trunk/dports/audio/madplay/files/patch-audio_carbon.c"}
+    {:p0 => "https://trac.macports.org/export/89276/trunk/dports/audio/madplay/files/patch-audio_carbon.c"}
   end
 
   def install

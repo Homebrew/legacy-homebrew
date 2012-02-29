@@ -1,16 +1,11 @@
 require 'formula'
 
 class Synfig < Formula
-  url 'https://downloads.sourceforge.net/project/synfig/synfig/0.63.02/synfig-0.63.02.tar.gz'
+  url 'http://downloads.sourceforge.net/project/synfig/synfig/0.63.03/synfig-0.63.03.tar.gz'
   homepage 'http://synfig.org'
-  md5 '4286d5e1887275107d760d1b678aec24'
+  md5 '9bd77cd2fc2381adfbd50a7b9c1c6e7c'
 
   head 'git://synfig.git.sourceforge.net/gitroot/synfig/synfig', :using => :git
-
-  def patches
-    # this patches synfig to work with libpng 1.5 per http://sourceforge.net/tracker/?func=detail&aid=3427945&group_id=144022&atid=757416
-    { :p2 => "http://sourceforge.net/tracker/download.php?group_id=144022&atid=757416&file_id=426842&aid=3427945" }
-  end
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'

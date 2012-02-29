@@ -40,7 +40,7 @@ class Ice < Formula
       s.change_make_var! "CXXFLAGS", "#{ENV.cflags} -Wall -D_REENTRANT"
     end
 
-    Dir.chdir "cpp" do
+    cd "cpp" do
       system "make"
       system "make install"
     end

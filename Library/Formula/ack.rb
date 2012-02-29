@@ -11,5 +11,6 @@ class Ack < Formula
     man1.install 'ack.1'
     bin.install 'ack'
     (prefix+'etc/bash_completion.d').install 'etc/ack.bash_completion.sh'
+    (share+'zsh/functions').install 'etc/ack.zsh_completion' => '_ack'
   end
 end

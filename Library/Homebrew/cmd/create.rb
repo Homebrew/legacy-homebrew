@@ -20,7 +20,7 @@ module Homebrew extend self
           :autotools
         end
 
-        if fc.name.to_s.strip.empty?
+        if fc.name.nil? or fc.name.to_s.strip.empty?
           path = Pathname.new url
           print "Formula name [#{path.stem}]: "
           fc.name = __gets || path.stem
@@ -67,7 +67,7 @@ class FormulaCreator
     path = Pathname.new url
     /(.*?)[-_.]?#{path.version}/.match path.basename
     @name = $1
-    @path = Formula.path $1
+    @path = Formula.path $1 unless $1.nil?
   end
 
   def version
@@ -98,9 +98,11 @@ class FormulaCreator
   def template; <<-EOS.undent
     require 'formula'
 
+    # REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
+
     class #{Formula.class_s name} < Formula
-      url '#{url}'
       homepage ''
+      url '#{url}'
       md5 '#{md5}'
 
     <% if mode == :cmake %>
@@ -120,6 +122,7 @@ class FormulaCreator
                               "--prefix=\#{prefix}"
         # system "cmake . \#{std_cmake_parameters}"
     <% end %>
+        # if this fails, try separate make/make install steps
         system "make install"
       end
 
@@ -127,8 +130,7 @@ class FormulaCreator
         # This test will fail and we won't accept that! It's enough to just
         # replace "false" with the main program this formula installs, but
         # it'd be nice if you were more thorough. Test the test with
-        # `brew test #{name}`. Remove this comment before submitting
-        # your pull request!
+        # `brew test #{name}`.
         system "false"
       end
     end

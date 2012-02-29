@@ -20,6 +20,7 @@ class Sox < Formula
   end
 
   def install
+    ENV.x11  # For libpng, used for the optional "spectrogram" effect.
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-gomp"
