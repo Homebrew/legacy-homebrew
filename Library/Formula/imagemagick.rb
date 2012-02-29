@@ -62,6 +62,7 @@ class Imagemagick < Formula
   end
 
   depends_on 'jpeg'
+  depends_on 'pkg-config' => :build
 
   depends_on 'ghostscript' => :recommended if ghostscript_srsly?
 
