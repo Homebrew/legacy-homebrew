@@ -98,6 +98,8 @@ class FormulaCreator
   def template; <<-EOS.undent
     require 'formula'
 
+    # REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
+
     class #{Formula.class_s name} < Formula
       homepage ''
       url '#{url}'
@@ -120,6 +122,7 @@ class FormulaCreator
                               "--prefix=\#{prefix}"
         # system "cmake . \#{std_cmake_parameters}"
     <% end %>
+        # if this fails, try separate make/make install steps
         system "make install"
       end
 
@@ -127,8 +130,7 @@ class FormulaCreator
         # This test will fail and we won't accept that! It's enough to just
         # replace "false" with the main program this formula installs, but
         # it'd be nice if you were more thorough. Test the test with
-        # `brew test #{name}`. Remove this comment before submitting
-        # your pull request!
+        # `brew test #{name}`.
         system "false"
       end
     end
