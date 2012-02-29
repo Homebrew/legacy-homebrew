@@ -51,54 +51,12 @@ class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError
   end
 end
 
-class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
-  attr :type
+class UnsatisfiedRequirement < Homebrew::InstallationError
+  attr :dep
 
-  def initialize formula, type
-    @type = type
-    super formula, get_message(formula)
-  end
-
-  def get_message formula
-    <<-EOS.undent
-      Unsatisfied external dependency: #{formula}
-      Homebrew does not provide #{type.to_s.capitalize} dependencies, #{tool} does:
-        #{command_line} #{formula}
-      EOS
-  end
-
-  private
-
-  def tool
-    case type
-      when :python then 'easy_install'
-      when :ruby, :jruby, :rbx then 'rubygems'
-      when :perl then 'cpan'
-      when :node then 'npm'
-      when :chicken then 'chicken-install'
-      when :lua then "luarocks"
-    end
-  end
-
-  def command_line
-    case type
-      when :python
-        "easy_install"
-      when :ruby
-        "gem install"
-      when :perl
-        "cpan -i"
-      when :jruby
-        "jruby -S gem install"
-      when :rbx
-        "rbx gem install"
-      when :node
-        "npm install"
-      when :chicken
-        "chicken-install"
-      when :lua
-        "luarocks install"
-    end
+  def initialize formula, dep
+    @dep = dep
+    super formula, "An unsatisfied requirement failed this build."
   end
 end
 

@@ -146,8 +146,8 @@ get '/formula/:name' do
     s << <<-HTML
             <dt>Depends on</td>
     HTML
-    klass.deps.each do |name|
-      s << "<dd>#{link_to_formula(name)}</dd>"
+    klass.deps.each do |dep|
+      s << "<dd>#{link_to_formula(dep.name)}</dd>"
     end
   end
 
