@@ -35,6 +35,7 @@ class Keg < Pathname
       next unless dst.symlink?
       dst.uninstall_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
       dst.unlink
+      dst.parent.rmdir_if_possible
       n+=1
       Find.prune if src.directory?
     end
