@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cc65 < Formula
-  url 'ftp://ftp.musoftware.de/pub/uz/cc65/cc65-sources-2.13.2.tar.bz2'
+  url 'ftp://ftp.musoftware.de/pub/uz/cc65/cc65-sources-2.13.3.tar.bz2'
   homepage 'http://www.cc65.org/'
-  md5 'cbf9e25db21002371222ae025a6a1850'
+  md5 '99de534c4a9e04b45a82c239ed4ded20'
 
   head 'svn://svn.cc65.org/cc65/trunk'
 

@@ -82,9 +82,11 @@ class FormulaInstaller
       ohai 'Caveats', f.keg_only_text
       @show_summary_heading = true
     else
+      audit_bin
+      audit_sbin
+      audit_lib
       check_manpages
       check_infopages
-      check_jars
       check_m4
     end
   end
@@ -157,6 +159,12 @@ class FormulaInstaller
   end
 
   def link
+    if f.linked_keg.directory? and f.linked_keg.realpath == f.prefix
+      opoo "This keg was marked linked already, continuing anyway"
+      # otherwise Keg.link will bail
+      f.linked_keg.unlink
+    end
+
     Keg.new(f.prefix).link
   rescue Exception => e
     onoe "The linking step did not complete successfully"
@@ -225,7 +233,7 @@ class FormulaInstaller
   def check_manpages
     # Check for man pages that aren't in share/man
     if (f.prefix+'man').exist?
-      opoo 'A top-level "man" folder was found.'
+      opoo 'A top-level "man" directory was found.'
       puts "Homebrew requires that man pages live under share."
       puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
       @show_summary_heading = true
@@ -235,7 +243,7 @@ class FormulaInstaller
   def check_infopages
     # Check for info pages that aren't in share/info
     if (f.prefix+'info').exist?
-      opoo 'A top-level "info" folder was found.'
+      opoo 'A top-level "info" directory was found.'
       puts "Homebrew suggests that info pages live under share."
       puts 'This can often be fixed by passing "--infodir=#{info}" to configure.'
       @show_summary_heading = true
@@ -243,20 +251,76 @@ class FormulaInstaller
   end
 
   def check_jars
-    # Check for Jars in lib
-    if File.exist?(f.lib)
-      unless f.lib.children.select{|g| g.to_s =~ /\.jar$/}.empty?
-        opoo 'JARs were installed to "lib".'
-        puts "Installing JARs to \"lib\" can cause conflicts between packages."
-        puts "For Java software, it is typically better for the formula to"
-        puts "install to \"libexec\" and then symlink or wrap binaries into \"bin\"."
-        puts "See \"activemq\", \"jruby\", etc. for examples."
-        @show_summary_heading = true
-      end
+    return unless File.exist? f.lib
+
+    jars = f.lib.children.select{|g| g.to_s =~ /\.jar$/}
+    unless jars.empty?
+      opoo 'JARs were installed to "lib".'
+      puts "Installing JARs to \"lib\" can cause conflicts between packages."
+      puts "For Java software, it is typically better for the formula to"
+      puts "install to \"libexec\" and then symlink or wrap binaries into \"bin\"."
+      puts "See \"activemq\", \"jruby\", etc. for examples."
+      puts "The offending files are:"
+      puts jars
+      @show_summary_heading = true
     end
   end
 
+  def check_non_libraries
+    return unless File.exist? f.lib
+
+    valid_libraries = %w(.a .dylib .framework .la .so)
+    non_libraries = f.lib.children.select do |g|
+      next if g.directory?
+      extname = g.extname
+      (extname != ".jar") and (not valid_libraries.include? extname)
+    end
+
+    unless non_libraries.empty?
+      opoo 'Non-libraries were installed to "lib".'
+      puts "Installing non-libraries to \"lib\" is bad practice."
+      puts "The offending files are:"
+      puts non_libraries
+      @show_summary_heading = true
+    end
+  end
+
+  def audit_bin
+    return unless File.exist? f.bin
+
+    non_exes = f.bin.children.select {|g| File.directory? g or not File.executable? g}
+
+    unless non_exes.empty?
+      opoo 'Non-executables were installed to "bin".'
+      puts "Installing non-executables to \"bin\" is bad practice."
+      puts "The offending files are:"
+      puts non_exes
+      @show_summary_heading = true
+    end
+  end
+
+  def audit_sbin
+    return unless File.exist? f.sbin
+
+    non_exes = f.sbin.children.select {|g| File.directory? g or not File.executable? g}
+
+    unless non_exes.empty?
+      opoo 'Non-executables were installed to "sbin".'
+      puts "Installing non-executables to \"sbin\" is bad practice."
+      puts "The offending files are:"
+      puts non_exes
+      @show_summary_heading = true
+    end
+  end
+
+  def audit_lib
+    check_jars
+    check_non_libraries
+  end
+
   def check_m4
+    return if MacOS.xcode_version.to_f >= 4.3
+
     # Check for m4 files
     if Dir[f.share+"aclocal/*.m4"].length > 0 and not in_aclocal_dirlist?
       opoo 'm4 macros were installed to "share/aclocal".'
@@ -274,7 +338,10 @@ def external_dep_check dep, type
     when :python then %W{/usr/bin/env python -c import\ #{dep}}
     when :jruby then %W{/usr/bin/env jruby -rubygems -e require\ '#{dep}'}
     when :ruby then %W{/usr/bin/env ruby -rubygems -e require\ '#{dep}'}
+    when :rbx then %W{/usr/bin/env rbx -rubygems -e require\ '#{dep}'}
     when :perl then %W{/usr/bin/env perl -e use\ #{dep}}
+    when :chicken then %W{/usr/bin/env csi -e (use #{dep})}
+    when :node then %W{/usr/bin/env node -e require('#{dep}');}
   end
 end
 
@@ -298,7 +365,7 @@ class Formula
   end
 
   def check_external_deps
-    [:ruby, :python, :perl, :jruby].each do |type|
+    [:ruby, :python, :perl, :jruby, :rbx, :chicken, :node].each do |type|
       self.external_deps[type].each do |dep|
         unless quiet_system(*external_dep_check(dep, type))
           raise UnsatisfiedExternalDependencyError.new(dep, type)

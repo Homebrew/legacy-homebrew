@@ -1,8 +1,8 @@
 require 'formula'
 
 class Vtk < Formula
-  url 'http://www.vtk.org/files/release/5.8/vtk-5.8.0.tar.gz'
   homepage 'http://www.vtk.org'
+  url 'http://www.vtk.org/files/release/5.8/vtk-5.8.0.tar.gz'
   md5 '37b7297d02d647cc6ca95b38174cb41f'
 
   depends_on 'cmake' => :build
@@ -64,9 +64,9 @@ class Vtk < Formula
     args << "-DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=ON"
     ENV['DYLD_LIBRARY_PATH'] = `pwd`.strip + "/build/bin"
 
-    system "mkdir build"
     args << ".."
-    Dir.chdir 'build' do
+
+    mkdir 'build' do
       system "cmake", *args
       # Work-a-round to avoid:
       #   ld: file not found: /usr/local/Cellar/vtk/5.8.0/lib/vtk-5.8/libvtkDICOMParser.5.8.dylib for architecture x86_64"

@@ -9,9 +9,14 @@ class Mercurial < Formula
   depends_on 'docutils' => :python if ARGV.build_head? or ARGV.include? "--doc"
 
   def options
-    [
-      ["--doc", "build the documentation. Depends on 'docutils' module."],
-    ]
+    [["--doc", "build the documentation. Depends on 'docutils' module."]]
+  end
+
+  # Remove the error codes on things like "no changes found"
+  # Will be in next release
+  # See: http://selenic.com/hg/rev/a3dcc59054ca
+  def patches
+    "http://selenic.com/hg/raw-rev/a3dcc59054ca"
   end
 
   def install

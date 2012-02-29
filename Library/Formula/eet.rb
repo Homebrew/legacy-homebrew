@@ -11,6 +11,11 @@ class Eet < Formula
   depends_on 'jpeg'
   depends_on 'lzlib'
 
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
     system "./autogen.sh" if ARGV.build_head?
     system "./configure", "--disable-dependency-tracking",

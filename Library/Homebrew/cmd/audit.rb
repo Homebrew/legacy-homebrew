@@ -23,8 +23,10 @@ def audit_formula_text name, text
     problems << " * Check indentation of 'depends_on'."
   end
 
-  # cmake, pkg-config, and scons are build-time deps
-  if text =~ /depends_on ['"](boost-build|cmake|pkg-config|scons|smake)['"]$/
+  # build tools should be flagged properly
+  build_deps = %w{autoconf automake boost-build cmake
+                  imake libtool pkg-config scons smake}
+  if text =~ /depends_on ['"](#{build_deps*'|'})['"]$/
     problems << " * #{$1} dependency should be \"depends_on '#{$1}' => :build\""
   end
 
@@ -74,24 +76,6 @@ def audit_formula_text name, text
     problems << " * \"#{$1}\" should be \"\#{#{$2}}\""
   end
 
-  # Empty checksums
-  if text =~ /(md5|sha1|sha256)\s+(''|"")/
-    problems << " * #{$1} is empty"
-  end
-
-  # Checksum sanity check
-  if text =~ /md5\s+['"](.+)['"]/ and $1 != '#{md5}' and $1 !~ /[a-f0-9]{32}/
-    problems << " * md5 contains invalid or incorrect number of characters"
-  end
-
-  if text =~ /sha1\s+['"](.+)['"]/ and $1 != '#{sha1}' and $1 !~ /[a-f0-9]{40}/
-    problems << " * sha1 contains invalid or incorrect number of characters"
-  end
-
-  if text =~ /sha256\s+['"](.+)['"]/ and $1 != '#{sha256}' and $1 !~ /[a-f0-9]{64}/
-    problems << " * sha256 contains invalid or incorrect number of characters"
-  end
-
   # Commented-out depends_on
   if text =~ /#\s*depends_on\s+(.+)\s*$/
     problems << " * Commented-out dep #{$1}."
@@ -102,8 +86,8 @@ def audit_formula_text name, text
     problems << " * Trailing whitespace was found."
   end
 
-  if text =~ /if\s+ARGV\.include\?\s+'--HEAD'/
-    problems << " * Use \"if ARGV.build_head?\" instead"
+  if text =~ /if\s+ARGV\.include\?\s+'--(HEAD|devel)'/
+    problems << " * Use \"if ARGV.build_#{$1.downcase}?\" instead"
   end
 
   if text =~ /make && make/
@@ -120,7 +104,7 @@ def audit_formula_text name, text
   end unless name == "gfortran" # Gfortran itself has this text in the caveats
 
   # xcodebuild should specify SYMROOT
-  if text =~ /xcodebuild/ and not text =~ /SYMROOT=/
+  if text =~ /system\s+['"]xcodebuild/ and not text =~ /SYMROOT=/
     problems << " * xcodebuild should be passed an explicit \"SYMROOT\""
   end
 
@@ -299,11 +283,34 @@ def audit_formula_instance f
 
     case d
     when "git", "python", "ruby", "emacs", "mysql", "postgresql", "mercurial"
-      problems << " * Don't use #{d} as a dependency; we allow non-Homebrew\n   #{d} installs."
+      problems << <<-EOS
+ * Don't use #{d} as a dependency. We allow non-Homebrew
+   #{d} installations.
+EOS
     end
   end
 
   problems += [' * invalid or missing version'] if f.version.to_s.empty?
+
+  %w[md5 sha1 sha256].each do |checksum|
+    hash = f.instance_variable_get("@#{checksum}")
+    next if hash.nil?
+    hash = hash.strip
+
+    len = case checksum
+      when 'md5' then 32
+      when 'sha1' then 40
+      when 'sha256' then 64
+    end
+
+    if hash.empty?
+      problems << " * #{checksum} is empty"
+    else
+      problems << " * #{checksum} should be #{len} characters" unless hash.length == len
+      problems << " * #{checksum} contains invalid characters" unless hash =~ /^[a-fA-F0-9]+$/
+      problems << " * #{checksum} should be lowercase" unless hash == hash.downcase
+    end
+  end
 
   return problems
 end
@@ -311,6 +318,9 @@ end
 module Homebrew extend self
   def audit
     errors = false
+
+    brew_count = 0
+    problem_count = 0
 
     ff.each do |f|
       problems = []
@@ -353,9 +363,14 @@ module Homebrew extend self
         puts "#{f.name}:"
         puts problems * "\n"
         puts
+        brew_count += 1
+        problem_count += problems.size
       end
     end
 
-    exit 1 if errors
+    if errors
+      puts "#{problem_count} problems in #{brew_count} brews"
+      exit 1
+    end
   end
 end

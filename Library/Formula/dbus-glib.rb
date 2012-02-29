@@ -2,8 +2,8 @@ require 'formula'
 
 class DbusGlib < Formula
   homepage 'http://library.gnome.org/devel/dbus-glib/'
-  url 'http://dbus.freedesktop.org/releases/dbus-glib/dbus-glib-0.92.tar.gz'
-  sha1 '69aa860251a2c916907ac7b34d5a40196cf073ff'
+  url 'http://dbus.freedesktop.org/releases/dbus-glib/dbus-glib-0.98.tar.gz'
+  sha1 '203f02e41eba1aeac8986e655d794c8833e437bf'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
