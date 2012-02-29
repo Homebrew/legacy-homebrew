@@ -2,8 +2,8 @@ require 'formula'
 
 class Shen < Formula
   homepage 'http://www.shenlanguage.org/'
-  url 'http://www.shenlanguage.org/download/Shen3.0.zip'
-  md5 'ea14b335772ede6a50c5e03d86dbd9c6'
+  url 'http://www.shenlanguage.org/download/Shen3.1.zip'
+  md5 'af5cf93107ead37373e2e520bccd3b08'
 
   if ARGV.include? "--sbcl"
     depends_on 'sbcl'
