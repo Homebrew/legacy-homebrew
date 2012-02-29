@@ -5,6 +5,8 @@ class Xpdf < Formula
   url 'ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.03.tar.gz'
   md5 'af75f772bee0e5ae4a811ff9d03eac5a'
 
+  depends_on 'lesstif'
+
   # see: http://gnats.netbsd.org/45562
   def patches; DATA; end
 
