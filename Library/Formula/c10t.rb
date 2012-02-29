@@ -1,10 +1,8 @@
 require 'formula'
 
-# Minecraft cartography tool
-
 class C10t < Formula
-  url 'https://github.com/udoprog/c10t/tarball/1.7'
   homepage 'https://github.com/udoprog/c10t'
+  url 'https://github.com/udoprog/c10t/tarball/1.7'
   md5 '8ba305e2c274469eb8e709f5c68e0c56'
 
   depends_on 'cmake' => :build
@@ -20,7 +18,7 @@ class C10t < Formula
   def install
     inreplace 'CMakeLists.txt', 'boost_thread', 'boost_thread-mt'
     inreplace 'test/CMakeLists.txt', 'boost_unit_test_framework', 'boost_unit_test_framework-mt'
-    system "cmake . #{std_cmake_parameters}"
+    system "cmake #{std_cmake_parameters} ."
     system "make"
     bin.install "c10t"
   end

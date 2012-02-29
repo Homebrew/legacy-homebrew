@@ -4,6 +4,8 @@ module Homebrew extend self
   def versions
     raise "Please `brew install git` first" unless system "/usr/bin/which -s git"
 
+    raise FormulaUnspecifiedError if ARGV.named.empty?
+
     ARGV.formulae.all? do |f|
       if ARGV.include? '--compact'
         puts f.versions * " "
@@ -69,7 +71,7 @@ class Formula
           version = nostdout { Formula.factory(path).version }
           Object.send(:remove_const, Formula.class_s(name))
           version
-        rescue SyntaxError, TypeError
+        rescue SyntaxError, TypeError, NameError, ArgumentError
           # We rescue these so that we can skip bad versions and
           # continue walking the history
           nil

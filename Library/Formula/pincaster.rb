@@ -16,14 +16,14 @@ class Pincaster < Formula
 
     etc.install "pincaster.conf"
     (var+"db/pincaster/").mkpath
-    (prefix+'com.github.pincaster.plist').write startup_plist
-    (prefix+'com.github.pincaster.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats
     <<-EOS.undent
       Automatically load on login with:
-        launchctl load -w #{prefix}/com.github.pincaster.plist
+        launchctl load -w #{plist_path}
 
       To start pincaster manually:
         pincaster #{etc}/pincaster.conf
@@ -39,10 +39,10 @@ class Pincaster < Formula
     <key>KeepAlive</key>
     <true/>
     <key>Label</key>
-    <string>com.github.pincaster</string>
+    <string>#{plist_name}</string>
     <key>ProgramArguments</key>
     <array>
-      <string>#{bin}/pincaster</string>
+      <string>#{HOMEBREW_PREFIX}/bin/pincaster</string>
       <string>#{etc}/pincaster.conf</string>
     </array>
     <key>RunAtLoad</key>

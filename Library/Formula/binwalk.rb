@@ -1,18 +1,17 @@
 require 'formula'
 
 class Binwalk < Formula
-  url      'http://binwalk.googlecode.com/files/binwalk-0.4.1.tar.gz'
   homepage 'http://code.google.com/p/binwalk/'
-  md5      '95e04f44b4664ba2a7cbe370e1439530'
+  url 'http://binwalk.googlecode.com/files/binwalk-0.4.2.tar.gz'
+  md5 '9559d114760f6a58825004b4379fd95f'
 
   depends_on 'libmagic'
 
   def install
-    Dir.chdir "src"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
-    system "make"
-    system "make install"
+    cd "src" do
+      system "./configure", "--prefix=#{prefix}"
+      system "make"
+      system "make install"
+    end
   end
 end

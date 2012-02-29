@@ -36,8 +36,8 @@ class Ddclient < Formula
     (var + 'run/ddclient').mkpath
 
     # Write the launchd script
-    (prefix + 'org.ddclient.plist').write startup_plist
-    (prefix + 'org.ddclient.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS
@@ -51,21 +51,21 @@ For ddclient to work, you will need to do the following:
 
 2) Install the launchd item in /Library/LaunchDaemons, like so:
 
-   sudo cp -vf #{prefix}/org.ddclient.plist /Library/LaunchDaemons/
-   sudo chown -v root:wheel /Library/LaunchDaemons/org.ddclient.plist
+   sudo cp -vf #{plist_path} /Library/LaunchDaemons/
+   sudo chown -v root:wheel /Library/LaunchDaemons/#{plist_path.basename}
 
 3) Start the daemon using:
 
-  sudo launchctl load /Library/LaunchDaemons/org.ddclient.plist
+  sudo launchctl load /Library/LaunchDaemons/#{plist_path.basename}
 
 The next reboot of the system will automatically start ddclient.
 
 You can adjust the execution interval by changing the value of
-StartInterval (in seconds) in /Library/LaunchDaemons/org.ddclient.plist,
+StartInterval (in seconds) in /Library/LaunchDaemons/#{plist_path.basename},
 and then
 
-   sudo launchctl unload /Library/LaunchDaemons/org.ddclient.plist
-   sudo launchctl load /Library/LaunchDaemons/org.ddclient.plist
+   sudo launchctl unload /Library/LaunchDaemons/#{plist_path.basename}
+   sudo launchctl load /Library/LaunchDaemons/#{plist_path.basename}
 EOS
   end
 
@@ -76,10 +76,10 @@ EOS
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>org.ddclient</string>
+  <string>#{plist_name}</string>
   <key>ProgramArguments</key>
   <array>
-    <string>#{sbin}/ddclient</string>
+    <string>#{HOMEBREW_PREFIX}/sbin/ddclient</string>
     <string>-file</string>
     <string>#{etc}/ddclient/ddclient.conf</string>
   </array>

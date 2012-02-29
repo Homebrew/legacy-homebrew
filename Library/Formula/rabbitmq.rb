@@ -35,21 +35,21 @@ class Rabbitmq < Formula
     # therefore need to add this path for erl -pa
     inreplace sbin+'rabbitmq-env', '${SCRIPT_DIR}/..', target_dir
 
-    (prefix+'com.rabbitmq.rabbitmq-server.plist').write startup_plist
-    (prefix+'com.rabbitmq.rabbitmq-server.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats
     <<-EOS.undent
     If this is your first install, automatically load on login with:
         mkdir -p ~/Library/LaunchAgents
-        cp #{prefix}/com.rabbitmq.rabbitmq-server.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/com.rabbitmq.rabbitmq-server.plist
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-    If this is an upgrade and you already have the com.rabbitmq.rabbitmq-server.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/com.rabbitmq.rabbitmq-server.plist
-        cp #{prefix}/com.rabbitmq.rabbitmq-server.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/com.rabbitmq.rabbitmq-server.plist
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
+        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
       To start rabbitmq-server manually:
         rabbitmq-server
@@ -64,9 +64,9 @@ class Rabbitmq < Formula
 <plist version="1.0">
   <dict>
     <key>Label</key>
-    <string>com.rabbitmq.rabbitmq-server</string>
+    <string>#{plist_name}</string>
     <key>Program</key>
-    <string>/usr/local/sbin/rabbitmq-server</string>
+    <string>#{HOMEBREW_PREFIX}/sbin/rabbitmq-server</string>
     <key>RunAtLoad</key>
     <true/>
     <key>UserName</key>

@@ -25,13 +25,12 @@ class Erlang < Formula
   # Download tarball from GitHub; it is served faster than the official tarball.
   url 'https://github.com/erlang/otp/tarball/OTP_R15B'
   md5 '91c939a56e7f3c492b4ce99c8babe3b2'
-  version 'R15B'
 
   bottle do
     # Bottle built on OS X 10.7.2 using Xcode 4.1 using:
     #
     #     brew install erlang --build-bottle --use-gcc
-    url 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15-bottle.tar.gz'
+    url 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B-bottle.tar.gz'
     sha1 '4c81febc679dc9e9c27e66317fc317df9a5a40e7'
   end
 
