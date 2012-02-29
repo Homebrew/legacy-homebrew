@@ -10,12 +10,15 @@ class Sshfs < Formula
   depends_on 'glib'
   depends_on "automake" if MacOS.xcode_version >= "4.3"
 
-  def install
-    ENV['ACLOCAL'] = "aclocal -I/usr/share/aclocal -I#{HOMEBREW_PREFIX}/share/aclocal"
-    ENV['AUTOCONF'] = "autoconf"
-    ENV['AUTOMAKE'] = "automake"
-    system "autoreconf", "--force", "--install"
+  if MacOS.xcode_version >= "4.3"
+    # remove the autoreconf if possible, no comment provided about why it is there
+    # so we have no basis to make a decision at this point.
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
+  def install
+    system "autoreconf", "--force", "--install"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

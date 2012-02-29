@@ -7,6 +7,13 @@ class Glog < Formula
 
   depends_on 'gflags'
 
+  if MacOS.xcode_version >= "4.3"
+    # remove the autoreconf if possible, no comment provided about why it is there
+    # so we have no basis to make a decision at this point.
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
     system "autoreconf -f -i"
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
