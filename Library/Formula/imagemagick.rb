@@ -61,6 +61,7 @@ class Imagemagick < Formula
     sha1 'ad1647061a1d7bc4a0fee0d90c16005f40d97683'
   end
 
+  depends_on 'pkg-config' => :build
   depends_on 'jpeg'
 
   depends_on 'ghostscript' => :recommended if ghostscript_srsly?
