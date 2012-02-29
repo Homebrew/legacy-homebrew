@@ -383,6 +383,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
         safe_system 'git', 'submodule', '--quiet', 'foreach', '--recursive', sub_cmd
       end
     end
+    ENV['GIT_DIR'] = cached_location+'.git'
   end
 end
 
