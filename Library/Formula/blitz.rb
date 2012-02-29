@@ -7,6 +7,11 @@ class Blitz < Formula
 
   head 'http://blitz.hg.sourceforge.net:8000/hgroot/blitz/blitz', :using => :hg
 
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake"
+    depends_on "libtool"
+  end
+
   def install
     system "/usr/bin/autoreconf", "-fi" if ARGV.build_head?
 

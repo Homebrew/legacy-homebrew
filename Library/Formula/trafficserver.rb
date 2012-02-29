@@ -15,6 +15,11 @@ class Trafficserver < Formula
 
   depends_on 'pcre'
 
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
     system "autoreconf -i" if ARGV.build_head?
 

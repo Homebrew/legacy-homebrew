@@ -41,6 +41,11 @@ class Zookeeper < Formula
     EOS
   end
 
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
     # Don't try to build extensions for PPC
     if Hardware.is_32_bit?
