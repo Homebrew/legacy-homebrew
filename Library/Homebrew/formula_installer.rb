@@ -342,6 +342,7 @@ def external_dep_check dep, type
     when :perl then %W{/usr/bin/env perl -e use\ #{dep}}
     when :chicken then %W{/usr/bin/env csi -e (use #{dep})}
     when :node then %W{/usr/bin/env node -e require('#{dep}');}
+    when :lua then %W{/usr/bin/env luarocks show #{dep}}
   end
 end
 
@@ -365,7 +366,7 @@ class Formula
   end
 
   def check_external_deps
-    [:ruby, :python, :perl, :jruby, :rbx, :chicken, :node].each do |type|
+    [:ruby, :python, :perl, :jruby, :rbx, :chicken, :node, :lua].each do |type|
       self.external_deps[type].each do |dep|
         unless quiet_system(*external_dep_check(dep, type))
           raise UnsatisfiedExternalDependencyError.new(dep, type)

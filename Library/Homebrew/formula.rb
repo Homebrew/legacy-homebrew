@@ -745,7 +745,7 @@ EOF
 
     def depends_on name
       @deps ||= []
-      @external_deps ||= {:python => [], :perl => [], :ruby => [], :jruby => [], :chicken => [], :rbx => [], :node => []}
+      @external_deps ||= {:python => [], :perl => [], :ruby => [], :jruby => [], :chicken => [], :rbx => [], :node => [], :lua => []}
 
       case name
       when String, Formula
@@ -753,7 +753,7 @@ EOF
       when Hash
         key, value = name.shift
         case value
-        when :python, :perl, :ruby, :jruby, :chicken, :rbx, :node
+        when :python, :perl, :ruby, :jruby, :chicken, :rbx, :node, :lua
           @external_deps[value] << key
         when :optional, :recommended, :build
           @deps << key

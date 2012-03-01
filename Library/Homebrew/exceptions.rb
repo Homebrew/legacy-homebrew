@@ -79,6 +79,7 @@ class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
       when :perl then 'cpan'
       when :node then 'npm'
       when :chicken then 'chicken-install'
+      when :lua then "luarocks"
     end
   end
 
@@ -98,6 +99,8 @@ class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
         "npm install"
       when :chicken
         "chicken-install"
+      when :lua
+        "luarocks install"
     end
   end
 end
