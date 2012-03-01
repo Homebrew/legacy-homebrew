@@ -199,6 +199,9 @@ def check_xcode_exists
 end
 
 def check_for_latest_xcode
+  # the check_xcode_exists check is enough
+  return if MacOS.xcode_version.nil?
+
   latest_xcode = case MacOS.version
     when 10.5 then "3.1.4"
     when 10.6 then "3.2.6"
