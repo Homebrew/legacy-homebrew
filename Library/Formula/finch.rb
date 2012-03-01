@@ -22,12 +22,20 @@ class Finch < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-gtkui",
+                          "--without-x",
+                          "--disable-farsight",
                           "--disable-gstreamer",
                           "--disable-vv",
                           "--disable-meanwhile",
                           "--disable-avahi",
                           "--disable-dbus",
-                          "--disable-perl"
+                          "--disable-perl",
+                          "--disable-nm",
+                          "--disable-screensaver",
+                          "--disable-sm", 
+                          "--disable-startup-notification", 
+                          "--disable-schemas-install",
+
     system "make install"
   end
 end
