@@ -243,6 +243,21 @@ For the full command list, see the COMMANDS section.
   * `search --macports`|`--fink` <text>:
     Search for <text> on the MacPorts or Fink package search page.
 
+  * `tap list`:
+    List all repositories that have been locally cloned and whose formulae are
+    available for brewing.  Also list all repositories in the Homebrew-Alt
+    network that can be cloned using `brew tap add`.
+
+  * `tap add` <repository>:
+    Clone a repository so that the formulae it contains will be accessable to
+    other `brew tap` subcommands. <repository> is the name given by `brew tap
+    list` but case-sensitive partial matching is also used. See examples
+    section for details on partial matching.
+
+  * `tap remove` <repository>:
+    Remove a cloned repository from the system. <repository> follows the
+    same rules outlined above for `brew tap add`
+
   * `test` <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
     test method. There is no standard output or return code, but it should

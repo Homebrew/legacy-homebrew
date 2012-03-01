@@ -1,49 +1,66 @@
+require 'taproom'
+
 module Homebrew extend self
   def update
     abort "Please `brew install git' first." unless system "/usr/bin/which -s git"
 
-    updater = RefreshBrew.new
+    # Update external repositories first, then the Homebrew core---this way
+    # core changes are most visible.
+    HOMEBREW_TAPROOM.update_menu!
+    HOMEBREW_TAPROOM.tapped.each do |brewery|
+      updater = RefreshBrew.new HOMEBREW_TAPROOM.path + brewery.id, brewery.url, brewery.master
+
+      if updater.update_from_masterbrew!
+        puts "Updated #{brewery.id}."
+        updater.report
+      else
+        puts "#{brewery.id} already up-to-date."
+      end
+    end
+
+    updater = RefreshCore.new HOMEBREW_REPOSITORY, 'https://github.com/mxcl/homebrew.git'
     if updater.update_from_masterbrew!
       updater.report
     else
-      puts "Already up-to-date."
+      puts "Homebrew core already up-to-date."
     end
   end
 end
 
 class RefreshBrew
-  REPOSITORY_URL = "https://github.com/mxcl/homebrew.git"
-  FORMULA_DIR = 'Library/Formula/'
-  EXAMPLE_DIR = 'Library/Contributions/examples/'
-
+  attr_reader :repository_path, :repository_url, :branch
+  attr_reader :formula_dir
   attr_reader :added_formulae, :updated_formulae, :deleted_formulae, :installed_formulae
-  attr_reader :added_examples, :deleted_examples
   attr_reader :initial_revision, :current_revision
 
-  def initialize
+  def initialize repo, url, branch = 'master'
+    @repository_path = repo
+    @repositry_url = url
+    @branch = branch
+
+    @formula_dir = ''
     @added_formulae, @updated_formulae, @deleted_formulae, @installed_formulae = [], [], [], []
-    @added_examples, @deleted_examples = [], [], []
     @initial_revision, @current_revision = nil
   end
 
   # Performs an update of the homebrew source. Returns +true+ if a newer
   # version was available, +false+ if already up-to-date.
   def update_from_masterbrew!
-    HOMEBREW_REPOSITORY.cd do
+    repository_path.cd do
       if git_repo?
-        safe_system "git checkout -q master"
+        safe_system "git checkout -q #{branch}"
         @initial_revision = read_revision
         # originally we fetched by URL but then we decided that we should
         # use origin so that it's easier for forks to operate seamlessly
         unless `git remote`.split.include? 'origin'
-          safe_system "git remote add origin #{REPOSITORY_URL}"
+          safe_system "git remote add origin #{repository_url}"
         end
       else
         begin
           safe_system "git init"
-          safe_system "git remote add origin #{REPOSITORY_URL}"
+          safe_system "git remote add origin #{repository_url}"
           safe_system "git fetch origin"
-          safe_system "git reset --hard origin/master"
+          safe_system "git reset --hard origin/#{branch}"
         rescue Exception
           safe_system "/bin/rm -rf .git"
           raise
@@ -51,7 +68,7 @@ class RefreshBrew
       end
 
       # specify a refspec so that 'origin/master' gets updated
-      refspec = "refs/heads/master:refs/remotes/origin/master"
+      refspec = "refs/heads/#{branch}:refs/remotes/origin/#{branch}"
       rebase = "--rebase" if ARGV.include? "--rebase"
       execute "git pull #{rebase} origin #{refspec}"
       @current_revision = read_revision
@@ -62,7 +79,7 @@ class RefreshBrew
       # Added (A), Copied (C), Deleted (D), Modified (M), Renamed (R)
       @changes_map = Hash.new {|h,k| h[k] = [] }
 
-      changes = HOMEBREW_REPOSITORY.cd do
+      changes = repository_path.cd do
         execute("git diff-tree -r --name-status -z #{initial_revision} #{current_revision}").split("\0")
       end
 
@@ -71,22 +88,9 @@ class RefreshBrew
         @changes_map[status] << file
       end
 
-      if @changes_map.any?
-        @added_formulae   = changed_items('A', FORMULA_DIR)
-        @deleted_formulae = changed_items('D', FORMULA_DIR)
-        @updated_formulae = changed_items('M', FORMULA_DIR)
-        @added_examples   = changed_items('A', EXAMPLE_DIR)
-        @deleted_examples = changed_items('D', EXAMPLE_DIR)
-        @added_internal_commands = changed_items('A', "Library/Homebrew/cmd")
-        @deleted_internal_commands = changed_items('D', "Library/Homebrew/cmd")
-
-        @installed_formulae = HOMEBREW_CELLAR.children.
-          select{ |pn| pn.directory? }.
-          map{ |pn| pn.basename.to_s }.sort if HOMEBREW_CELLAR.directory?
-
-        return true
-      end
+      return recieved_changes?
     end
+
     # assume nothing was updated
     return false
   end
@@ -107,16 +111,20 @@ class RefreshBrew
     !@deleted_formulae.empty?
   end
 
-  def pending_examples_changes?
-    !@updated_examples.empty?
-  end
+  def recieved_changes?
+    if @changes_map.any?
+      @added_formulae   = changed_items('A', formula_dir)
+      @deleted_formulae = changed_items('D', formula_dir)
+      @updated_formulae = changed_items('M', formula_dir)
 
-  def pending_new_examples?
-    !@added_examples.empty?
-  end
+      @installed_formulae = HOMEBREW_CELLAR.children.
+        select{ |pn| pn.directory? }.
+        map{ |pn| pn.basename.to_s }.sort if HOMEBREW_CELLAR.directory?
 
-  def deleted_examples?
-    !@deleted_examples.empty?
+      return true
+    end
+
+    return false
   end
 
   def report
@@ -132,26 +140,6 @@ class RefreshBrew
     if pending_formulae_changes?
       ohai "Updated formulae"
       puts_columns updated_formulae, installed_formulae
-    end
-
-    unless @added_internal_commands.empty?
-      ohai "New commands"
-      puts_columns @added_internal_commands
-    end
-    unless @deleted_internal_commands.empty?
-      ohai "Removed commands"
-      puts_columns @deleted_internal_commands
-    end
-
-    # external commands aren't generally documented but the distinction
-    # is loose. They are less "supported" and more "playful".
-    if pending_new_examples?
-      ohai "New external commands"
-      puts_columns added_examples
-    end
-    if deleted_examples?
-      ohai "Removed external commands"
-      puts_columns deleted_examples
     end
   end
 
@@ -182,5 +170,66 @@ class RefreshBrew
     end
     ohai(cmd, out) if ARGV.verbose?
     out
+  end
+end
+
+class RefreshCore < RefreshBrew
+  attr_reader :added_examples, :deleted_examples
+
+  def initialize repo, url, branch = 'master'
+    super repo, url, branch
+    @formula_dir = 'Library/Formula/'
+    @added_examples, @deleted_examples = [], [], []
+  end
+
+  def pending_examples_changes?
+    !@updated_examples.empty?
+  end
+
+  def pending_new_examples?
+    !@added_examples.empty?
+  end
+
+  def deleted_examples?
+    !@deleted_examples.empty?
+  end
+
+  def recieved_changes?
+    result = super
+
+    if @changes_map.any?
+      @added_examples   = changed_items('A', 'Library/Contributions/examples/')
+      @deleted_examples = changed_items('D', 'Library/Contributions/examples/')
+      @added_internal_commands = changed_items('A', "Library/Homebrew/cmd")
+      @deleted_internal_commands = changed_items('D', "Library/Homebrew/cmd")
+
+      result = true
+    end
+
+    return result
+  end
+
+  def report
+    super
+
+    unless @added_internal_commands.empty?
+      ohai "New commands"
+      puts_columns @added_internal_commands
+    end
+    unless @deleted_internal_commands.empty?
+      ohai "Removed commands"
+      puts_columns @deleted_internal_commands
+    end
+
+    # external commands aren't generally documented but the distinction
+    # is loose. They are less "supported" and more "playful".
+    if pending_new_examples?
+      ohai "New external commands"
+      puts_columns added_examples
+    end
+    if deleted_examples?
+      ohai "Removed external commands"
+      puts_columns deleted_examples
+    end
   end
 end

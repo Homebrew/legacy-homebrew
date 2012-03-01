@@ -2,6 +2,7 @@ require 'download_strategy'
 require 'fileutils'
 require 'formula_support'
 require 'hardware'
+require 'taproom'
 
 
 # Derive and define at least @url, see Library/Formula for examples
@@ -344,7 +345,11 @@ class Formula
     possible_alias = HOMEBREW_REPOSITORY+"Library/Aliases/#{name}"
     possible_cached_formula = HOMEBREW_CACHE_FORMULA+"#{name}.rb"
 
-    if name.include? "/"
+    if HOMEBREW_TAPROOM.has_brewfile? name
+      # Check external repositories first because they use '/' in a special
+      # context.
+      HOMEBREW_TAPROOM.get_brewfile name
+    elsif name.include? "/"
       # Don't resolve paths or URLs
       name
     elsif formula_with_that_name.file? and formula_with_that_name.readable?
@@ -434,10 +439,37 @@ class Formula
   end
 
   def self.expand_deps f
-    f.deps.map do |dep|
+    expanded_deps = f.deps.map do |dep|
       dep = Formula.factory dep
       expand_deps(dep) << dep
     end
+
+    unless f.external_deps[:alt].nil? or f.external_deps[:alt].empty?
+      expanded_deps += f.external_deps[:alt].map do |dep|
+        begin
+          dep = HOMEBREW_TAPROOM.get_brewfile dep
+        rescue FormulaUnavailableError => e
+          begin
+            # A formula may not be available, because the repository it belongs to
+            # may not be checked out. Try tapping the repository and searching for
+            # the brewfile again.
+            brewery = (dep.split '/').first
+            ohai "Tapping #{brewery} to satisfy dependency #{dep}"
+            HOMEBREW_TAPROOM.tap! brewery
+            dep = HOMEBREW_TAPROOM.get_brewfile dep
+          rescue
+            # Our heroic efforts failed, time to give up and throw the original
+            # error.
+            raise e
+          end
+        end
+
+        dep = Formula.factory dep
+        expand_deps(dep) << dep
+      end
+    end
+
+    return expanded_deps
   end
 
 protected
@@ -745,7 +777,7 @@ EOF
 
     def depends_on name
       @deps ||= []
-      @external_deps ||= {:python => [], :perl => [], :ruby => [], :jruby => [], :chicken => [], :rbx => [], :node => []}
+      @external_deps ||= {:python => [], :perl => [], :ruby => [], :jruby => [], :chicken => [], :rbx => [], :node => [], :alt => []}
 
       case name
       when String, Formula
@@ -753,7 +785,7 @@ EOF
       when Hash
         key, value = name.shift
         case value
-        when :python, :perl, :ruby, :jruby, :chicken, :rbx, :node
+        when :python, :perl, :ruby, :jruby, :chicken, :rbx, :node, :alt
           @external_deps[value] << key
         when :optional, :recommended, :build
           @deps << key
