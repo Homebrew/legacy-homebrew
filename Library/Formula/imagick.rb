@@ -4,6 +4,13 @@ class Imagick < Formula
   homepage 'http://pecl.php.net/package/imagick'
   url 'http://pecl.php.net/get/imagick-3.0.1.tgz'
   md5 'e2167713316639705202cf9b6cb1fdb1'
+  version '3.0.1'
+  
+  devel do
+    url 'http://pecl.php.net/get/imagick-3.1.0RC1.tgz'
+    md5 '4304f89096398cc409ca4512c46051fd'
+    version '3.1.0RC1'
+  end
 
   depends_on 'imagemagick'
 
