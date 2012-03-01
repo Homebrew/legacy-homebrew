@@ -443,7 +443,7 @@ def check_which_pkg_config
   binary = `/usr/bin/which pkg-config`.chomp
   return if binary.empty?
 
-  unless binary == "#{HOMEBREW_PREFIX}/bin/pkg-config"
+  unless binary.gsub!("//","/") == "#{HOMEBREW_PREFIX}/bin/pkg-config"
     puts <<-EOS.undent
       You have a non-brew 'pkg-config' in your PATH:
         #{binary}
