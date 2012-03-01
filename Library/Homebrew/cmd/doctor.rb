@@ -209,7 +209,7 @@ def check_for_latest_xcode
   end
   if MacOS.xcode_version < latest_xcode then <<-EOS.undent
     Your Xcode version is outdated
-    Please install Xcode #{v}.
+    Please install Xcode #{latest_xcode}.
     EOS
   end
 end
