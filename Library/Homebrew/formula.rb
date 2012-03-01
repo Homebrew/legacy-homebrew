@@ -797,14 +797,14 @@ EOF
   end
 end
 
-# see ack.rb for an example usage
+# See youtube-dl.rb for an example
 class ScriptFileFormula < Formula
   def install
     bin.install Dir['*']
   end
 end
 
-# see flac.rb for example usage
+# See flac.rb for an example
 class GithubGistFormula < ScriptFileFormula
   def initialize name='__UNKNOWN__', path=nil
     super name, path
