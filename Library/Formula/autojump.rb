@@ -13,8 +13,21 @@ class Autojump < Formula
     bin.install 'autojump'
     man1.install 'autojump.1'
     (prefix+'etc').install 'autojump.sh' => 'autojump'
-    (prefix+'etc').install 'autojump.bash', 'autojump.zsh'
-    (share+'zsh/functions').install '_j'
+    (prefix+'etc').install 'autojump.bash'
+
+    # conditional install of zsh: include if running zsh
+    zsh = !`which zsh`.empty?
+    if zsh
+      (prefix+'etc').install 'autojump.zsh'
+      # install autocompletion helper to first writable dir in fpath
+      fpath_dirs = `/usr/bin/env zsh -c 'echo $fpath'`.split(' ')
+      fpath_dirs.each { |dir|
+        local_dir = dir.sub(prefix, '')
+        if (HOMEBREW_PREFIX).install '_j'
+          break
+        end
+      }
+    end
   end
 
   def caveats; <<-EOS.undent
