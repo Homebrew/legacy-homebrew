@@ -198,6 +198,19 @@ def check_xcode_exists
   end
 end
 
+def check_for_latest_xcode
+  latest_xcode = case MacOS.version
+    when 10.5 then "3.1.4"
+    when 10.6 then "3.2.6"
+    else "4.3"
+  end
+  if MacOS.xcode_version < latest_xcode then <<-EOS.undent
+    Your Xcode version is outdated
+    Please install Xcode #{v}.
+    EOS
+  end
+end
+
 def check_cc
   unless File.exist? '/usr/bin/cc'
     <<-EOS.undent
