@@ -356,6 +356,24 @@ def check_xcode_prefix
   end
 end
 
+def check_xcode_select_path
+  path = `xcode-select -print-path 2>/dev/null`.chomp
+  unless File.directory? path and File.file? "#{path}/usr/bin/xcodebuild"
+    # won't guess at the path they should use because it's too hard to get right
+    ohai "Your Xcode is configured with an invalid path."
+    puts <<-EOS.undent
+      You should change it to the correct path. Please note that there is no correct
+      path at this time if you have *only* installed the Command Line Tools for Xcode.
+      If your Xcode is pre-4.3 or you installed the whole of Xcode 4.3 then one of
+      these is (probably) what you want:
+
+          sudo xcode-select -switch /Developer
+          sudo xcode-select -switch /Application/Xcode.app
+
+    EOS
+  end
+end
+
 def check_user_path
   seen_prefix_bin = false
   seen_prefix_sbin = false
@@ -835,6 +853,7 @@ module Homebrew extend self
       check_usr_bin_ruby
       check_homebrew_prefix
       check_xcode_prefix
+      check_xcode_select_path
       check_for_macgpg2
       check_for_stray_dylibs
       check_for_stray_static_libs
