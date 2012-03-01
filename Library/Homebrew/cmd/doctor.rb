@@ -255,6 +255,24 @@ def __check_subdir_access base
   end
 end
 
+def check_access_usr_local
+  return unless HOMEBREW_PREFIX.to_s == '/usr/local'
+
+  unless Pathname('/usr/local').writable?
+    puts <<-EOS.undent
+    The /usr/local directory is not writable.
+
+    Even if this folder was writable when you installed Homebrew, other
+    software may change permissions on this folder. Some versions of the
+    "InstantOn" component of Airfoil are known to do this.
+
+    You should probably change the ownership and permissions of /usr/local
+    back to your user account.
+
+    EOS
+  end
+end
+
 def check_access_share_locale
   __check_subdir_access 'share/locale'
 end
@@ -333,6 +351,24 @@ def check_xcode_prefix
     puts <<-EOS.undent
       Xcode is installed to a directory with a space in the name.
       This may cause some formulae, such as libiconv, to fail to build.
+
+    EOS
+  end
+end
+
+def check_xcode_select_path
+  path = `xcode-select -print-path 2>/dev/null`.chomp
+  unless File.directory? path and File.file? "#{path}/usr/bin/xcodebuild"
+    # won't guess at the path they should use because it's too hard to get right
+    ohai "Your Xcode is configured with an invalid path."
+    puts <<-EOS.undent
+      You should change it to the correct path. Please note that there is no correct
+      path at this time if you have *only* installed the Command Line Tools for Xcode.
+      If your Xcode is pre-4.3 or you installed the whole of Xcode 4.3 then one of
+      these is (probably) what you want:
+
+          sudo xcode-select -switch /Developer
+          sudo xcode-select -switch /Application/Xcode.app
 
     EOS
   end
@@ -817,6 +853,7 @@ module Homebrew extend self
       check_usr_bin_ruby
       check_homebrew_prefix
       check_xcode_prefix
+      check_xcode_select_path
       check_for_macgpg2
       check_for_stray_dylibs
       check_for_stray_static_libs
@@ -826,6 +863,7 @@ module Homebrew extend self
       check_for_other_package_managers
       check_for_x11
       check_for_nonstandard_x11
+      check_access_usr_local
       check_access_include
       check_access_etc
       check_access_share

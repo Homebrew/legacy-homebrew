@@ -38,9 +38,9 @@ module Homebrew extend self
 
   def describe_x11
     return "N/A" unless x11_installed?
-    return case x11_path = Pathname.new("/usr/x11").realpath.to_s
-    when "/usr/x11" then "/usr/x11"
-    else "/usr/x11 => #{x11_path}"
+    return case x11_path = Pathname.new("/usr/X11").realpath.to_s
+    when "/usr/X11" then "/usr/X11"
+    else "/usr/X11 => #{x11_path}"
     end
   end
 

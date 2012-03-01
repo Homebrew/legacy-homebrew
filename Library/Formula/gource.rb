@@ -13,13 +13,19 @@ class Gource < Formula
   depends_on 'pcre'
   depends_on 'glew'
 
+  if MacOS.xcode_version >= "4.3"
+    # download a tarball with configure and remove the need for these!
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
     ENV.x11 # Put freetype-config in path
 
     # For non-/usr/local installs
     ENV.append "CXXFLAGS", "-I#{HOMEBREW_PREFIX}/include"
 
-    system "autoreconf -f -i" unless File.exist? "configure"
+    system "autoreconf -f -i"
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

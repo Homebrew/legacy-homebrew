@@ -7,7 +7,11 @@ class Fuse4x < Formula
 
   depends_on 'gettext'
   depends_on 'fuse4x-kext'
-  depends_on "automake" if MacOS.xcode_version >= "4.3"
+
+  if MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   def install
     # Build universal if the hardware can handle it---otherwise 32 bit only
