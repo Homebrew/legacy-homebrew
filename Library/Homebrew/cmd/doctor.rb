@@ -209,7 +209,7 @@ def check_for_latest_xcode
   end
   if MacOS.xcode_version < latest_xcode then <<-EOS.undent
     Your Xcode version is outdated
-    Please install Xcode #{v}.
+    Please install Xcode #{latest_xcode}.
     EOS
   end
 end
@@ -357,7 +357,7 @@ def check_xcode_select_path
       these is (probably) what you want:
 
           sudo xcode-select -switch /Developer
-          sudo xcode-select -switch /Application/Xcode.app
+          sudo xcode-select -switch /Applications/Xcode.app
     EOS
   end
 end
