@@ -1,22 +1,17 @@
 require 'formula'
 
 class Avocadodb < Formula
-  url "https://github.com/triAGENS/AvocadoDB/zipball/v0.1.2"
+  url "https://github.com/triAGENS/AvocadoDB/zipball/v0.2.2"
   head "https://github.com/triAGENS/AvocadoDB.git"
 
   homepage 'http://www.avocadodb.org/'
-  sha1 '3867395bd7bd3dcd847ff0103971bf0095a20086'
+  sha1 '497d175e703be57a0b4bd227c7dbd75b58631c3c'
 
   depends_on 'libev'
   depends_on 'v8'
-  depends_on 'boost'
-
-  # force distributor to bundle a configure and not depend on automake!
-  depends_on "automake" if MacOS.xcode_version >= "4.3"
+  depends_on 'boost' => :build
 
   def install
-    system "make setup"
-
     system "./configure", "--prefix=#{prefix}",
                           "--disable-all-in-one",
                           "--disable-debug",
@@ -30,8 +25,8 @@ class Avocadodb < Formula
   end
 
   def caveats; <<-EOS.undent
-    Please note that this is a very early version if AvocadoDB. There will be
-    bugs and we'd realy appreciate it if you report them:
+    Please note that this is a very early version of AvocadoDB. There will be
+    bugs and it would be really appreciated it if you report them:
 
       https://github.com/triAGENS/AvocadoDB/issues
 
