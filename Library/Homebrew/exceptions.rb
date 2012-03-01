@@ -66,8 +66,7 @@ class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
     <<-EOS.undent
       Unsatisfied external dependency: #{formula}
       Homebrew does not provide #{type.to_s.capitalize} dependencies, #{tool} does:
-
-          #{command_line} #{formula}
+        #{command_line} #{formula}
       EOS
   end
 
@@ -76,8 +75,11 @@ class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
   def tool
     case type
       when :python then 'easy_install'
-      when :ruby, :jruby then 'rubygems'
+      when :ruby, :jruby, :rbx then 'rubygems'
       when :perl then 'cpan'
+      when :node then 'npm'
+      when :chicken then 'chicken-install'
+      when :lua then "luarocks"
     end
   end
 
@@ -91,6 +93,14 @@ class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
         "cpan -i"
       when :jruby
         "jruby -S gem install"
+      when :rbx
+        "rbx gem install"
+      when :node
+        "npm install"
+      when :chicken
+        "chicken-install"
+      when :lua
+        "luarocks install"
     end
   end
 end

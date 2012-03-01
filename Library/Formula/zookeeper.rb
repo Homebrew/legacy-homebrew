@@ -1,10 +1,11 @@
 require 'formula'
 
 class Zookeeper < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.2/zookeeper-3.4.2.tar.gz'
-  head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
   homepage 'http://zookeeper.apache.org/'
-  md5 '726d9301c03f84a126a1d559f03df4a4'
+  url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.3/zookeeper-3.4.3.tar.gz'
+  md5 'e43b96df6e29cb43518d2fcd1867486c'
+
+  head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
 
   def options
     [
@@ -38,6 +39,11 @@ class Zookeeper < Formula
       log4j.appender.zklog.layout = org.apache.log4j.PatternLayout
       log4j.appender.zklog.layout.ConversionPattern = %d{yyyy-MM-dd HH:mm:ss} %c{1} [%p] %m%n
     EOS
+  end
+
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   def install

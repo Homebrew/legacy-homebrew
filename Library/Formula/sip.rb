@@ -30,17 +30,22 @@ class Sip < Formula
     inreplace 'build.py', /@SIP_VERSION@/, (sip_version.gsub '.', ',')
 
     system "python", "build.py", "prepare"
+    # Set --destdir such that the python modules will be in the HOMEBREWPREFIX/lib/pythonX.Y/site-packages
     system "python", "configure.py",
-                              "--destdir=#{lib}/python",
+                              "--destdir=#{lib}/#{which_python}/site-packages",
                               "--bindir=#{bin}",
                               "--incdir=#{include}"
     system "make install"
   end
 
   def caveats; <<-EOS.undent
-    This formula won't function until you amend your PYTHONPATH like so:
-      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/python:$PYTHONPATH
+    For non-homebrew Python, you need to amend your PYTHONPATH like so:
+      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
     EOS
+  end
+
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 end
 
