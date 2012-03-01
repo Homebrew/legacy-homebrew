@@ -34,7 +34,7 @@ class Auctex < Formula
       exit 1
     end
 
-    brew_lispdir = share + 'emacs' + 'site-lisp'
+    brew_lispdir = share + 'emacs/site-lisp'
     brew_texmf = share + 'texmf'
     # configure fails if the texmf dir is not there yet
     brew_texmf.mkpath
