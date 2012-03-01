@@ -7,6 +7,7 @@ class Ejabberd < Formula
 
   depends_on "openssl" if MacOS.leopard?
   depends_on "erlang"
+  depends_on "openssl" if MACOS_VERSION < 10.6 
 
   def options
     [
