@@ -376,7 +376,7 @@ def check_user_path_1
             map{ |fn| File.basename fn }.
             select{ |bn| File.exist? "/usr/bin/#{bn}" }
 
-        if conflicts.size
+        if conflicts.size > 0
           out = <<-EOS.undent
             /usr/bin occurs before #{HOMEBREW_PREFIX}/bin
             This means that system-provided programs will be used instead of those
