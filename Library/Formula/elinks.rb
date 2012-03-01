@@ -2,8 +2,8 @@ require 'formula'
 
 class Elinks < Formula
   homepage 'http://elinks.or.cz/'
-  url 'http://elinks.or.cz/download/elinks-0.11.7.tar.bz2'
-  md5 'fcd087a6d2415cd4c6fd1db53dceb646'
+  url 'http://elinks.or.cz/download/elinks-0.12pre5.tar.bz2'
+  md5 '92790144290131ac5e63b44548b45e08'
 
   head 'http://elinks.cz/elinks.git', :using => :git
 
