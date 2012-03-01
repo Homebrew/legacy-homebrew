@@ -16,7 +16,7 @@ module Homebrew extend self
 
     %w[ CC CXX LD ].each do |k|
       value = env[k]
-      if value
+      if value and $stdout.tty?
         results = value
         if value =~ %r{/usr/bin/xcrun (.*)}
           path = `/usr/bin/xcrun -find #{$1}`
@@ -24,15 +24,20 @@ module Homebrew extend self
         elsif File.exists? value and File.symlink? value
           results += " => #{Pathname.new(value).realpath}"
         end
-        puts "#{k}: #{results}"
+        env[k] = results
       end
     end
 
-    %w[ CFLAGS CXXFLAGS CPPFLAGS LDFLAGS MACOSX_DEPLOYMENT_TARGET MAKEFLAGS PKG_CONFIG_PATH
+    %w[ CC CXX LD CFLAGS CXXFLAGS CPPFLAGS LDFLAGS MACOSX_DEPLOYMENT_TARGET MAKEFLAGS PKG_CONFIG_PATH
         HOMEBREW_BUILD_FROM_SOURCE HOMEBREW_DEBUG HOMEBREW_MAKE_JOBS HOMEBREW_VERBOSE
         HOMEBREW_USE_CLANG HOMEBREW_USE_GCC HOMEBREW_USE_LLVM HOMEBREW_SVN ].each do |k|
       value = env[k]
-      puts "#{k}: #{value}" if value
+      out = if $stdout.tty?
+        "#{k}: #{value}"
+      else
+        "export #{k}=\"#{value}\""
+      end
+      puts out if value
     end
   end
 end
