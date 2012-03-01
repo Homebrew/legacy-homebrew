@@ -31,7 +31,7 @@ class Auctex < Formula
         You can obtain the TeX distribution for Mac OS X from
             http://www.tug.org/mactex/
       EOS
-      Process.exit
+      exit 1
     end
 
     brew_lispdir = share + 'emacs' + 'site-lisp'
