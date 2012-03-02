@@ -313,6 +313,17 @@ class Pathname
     end
     system '/usr/bin/install-info', '--delete', '--quiet', self.to_s, (self.dirname+'dir').to_s
   end
+
+  def find_formula pwd = self
+    children.map{ |child| child.relative_path_from(pwd) }.each do |pn|
+      yield pn if pn.to_s =~ /.rb$/
+    end
+    children.each do |child|
+      child.find_formula(pwd) do |pn|
+        yield pn
+      end if child.directory?
+    end
+  end
 end
 
 # sets $n and $d so you can observe creation of stuff
