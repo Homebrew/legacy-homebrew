@@ -2,8 +2,8 @@ require 'formula'
 
 class Mercurial < Formula
   homepage 'http://mercurial.selenic.com/'
-  url 'http://mercurial.selenic.com/release/mercurial-2.1.tar.gz'
-  sha1 'f649a0b33e0cafb3e5867a2e970f41eb887d3fab'
+  url 'http://mercurial.selenic.com/release/mercurial-2.1.1.tar.gz'
+  sha1 'd6cc4b649b6705113732e62756788542897ba008'
 
   head 'http://selenic.com/repo/hg', :using => :hg
 
@@ -13,11 +13,9 @@ class Mercurial < Formula
     [["--doc", "build the documentation. Depends on 'docutils' module."]]
   end
 
-  # Remove the error codes on things like "no changes found"
-  # Will be in next release
-  # See: http://selenic.com/hg/rev/a3dcc59054ca
   def patches
-    "http://selenic.com/hg/raw-rev/a3dcc59054ca"
+    # Fix xcodebuild handling in setup.py; is present in HEAD
+    "http://selenic.com/hg/raw-rev/5536770b3c88" unless ARGV.build_head?
   end
 
   def install
