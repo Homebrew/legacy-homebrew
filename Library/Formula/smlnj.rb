@@ -2,9 +2,9 @@ require 'formula'
 
 class Smlnj < Formula
   homepage 'http://www.smlnj.org/'
-  url 'http://smlnj.cs.uchicago.edu/dist/working/110.73/config.tgz'
-  version '110.73'
-  md5 '19dc682fa29441b0980b50b9842861bb'
+  url 'http://smlnj.cs.uchicago.edu/dist/working/110.74/config.tgz'
+  version '110.74'
+  md5 '9c4f80eb53240b583eb96d8f8c556cf8'
 
   def targets
 <<-EOS
