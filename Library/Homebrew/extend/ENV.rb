@@ -9,6 +9,9 @@ module HomebrewEnvExtension
     delete('CLICOLOR_FORCE') # autotools doesn't like this
     remove_cc_etc
 
+    # make any aclocal stuff installed in Homebrew available
+    ENV['ACLOCAL_PATH'] = "#{HOMEBREW_PREFIX}/share/aclocal" if MacOS.xcode_version < "4.3"
+
     self['MAKEFLAGS'] = "-j#{self.make_jobs}"
 
     unless HOMEBREW_PREFIX.to_s == '/usr/local'
@@ -94,7 +97,7 @@ module HomebrewEnvExtension
   def xcrun tool
     if File.executable? "/usr/bin/#{tool}"
       "/usr/bin/#{tool}"
-    elsif not MacOS.xctools_fucked? and system "/usr/bin/xcrun -find #{tool} 2>1 1>/dev/null"
+    elsif not MacOS.xctools_fucked? and system "/usr/bin/xcrun -find #{tool} 1>/dev/null 2>&1"
       # xcrun was provided first with Xcode 4.3 and allows us to proxy
       # tool usage thus avoiding various bugs
       "/usr/bin/xcrun #{tool}"

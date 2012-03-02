@@ -66,8 +66,7 @@ class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
     <<-EOS.undent
       Unsatisfied external dependency: #{formula}
       Homebrew does not provide #{type.to_s.capitalize} dependencies, #{tool} does:
-
-          #{command_line} #{formula}
+        #{command_line} #{formula}
       EOS
   end
 
@@ -80,6 +79,7 @@ class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
       when :perl then 'cpan'
       when :node then 'npm'
       when :chicken then 'chicken-install'
+      when :lua then "luarocks"
     end
   end
 
@@ -99,6 +99,8 @@ class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
         "npm install"
       when :chicken
         "chicken-install"
+      when :lua
+        "luarocks install"
     end
   end
 end
