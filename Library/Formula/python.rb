@@ -45,6 +45,11 @@ class Python < Formula
     # http://stackoverflow.com/questions/7590137/dividing-decimals-yields-invalid-results-in-python-2-5-to-2-7
     # https://trac.macports.org/changeset/87442
     ENV.append_to_cflags "-fwrapv"
+    
+    # System Python is compiled with this set to the current OS version, but Python defaults to 10.5 (or lower).
+    # If they don't match, a brew-installed Virtualenv encounters a distutils exception when creating an environment
+    # using a system python (ie virtualenv -p /usr/bin/python2.6).
+    ENV['MACOSX_DEPLOYMENT_TARGET'] = "#{MACOS_VERSION}"
 
     if build_framework? and ARGV.include? "--static"
       onoe "Cannot specify both framework and static."
