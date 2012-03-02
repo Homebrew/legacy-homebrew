@@ -43,6 +43,10 @@ class Ghc < Formula
       end
     end
 
+    # Fix linker verbosity, per http://hackage.haskell.org/trac/ghc/ticket/5128
+    inreplace 'ghc/ghc.wrapper', 'exec "$executablename"',
+      'exec "$executablename" -optl"-Wl,-read_only_relocs,suppress"'
+
     system "./configure --prefix=#{prefix}"
     system "make install"
   end
