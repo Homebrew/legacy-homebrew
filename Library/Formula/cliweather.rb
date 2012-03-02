@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cliweather < Formula
-  url 'http://pub.lambda.ath.cx/patrick/cliweather/static/downloads/cliweather-2011.05.05.tar.gz'
+  url 'https://github.com/plukevdh/cliweather/tarball/v3.2.2012'
   homepage 'http://closure.ath.cx/cliweather'
-  md5 'faf9f16e86e48906708b07f381cedebc'
+  md5 'b31478a45f4edd68572e010938d63f73'
 
   def install
     bin.install "cliweather"
