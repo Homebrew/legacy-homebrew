@@ -15,11 +15,10 @@ class Apc < Formula
   end
 
   def install
-    Dir.chdir "APC-#{version}" do
+    cd "APC-#{version}" do
       system "phpize"
       system "./configure", "--prefix=#{prefix}"
       system "make"
-
       prefix.install %w(modules/apc.so apc.php)
     end
   end

@@ -23,7 +23,7 @@ class Hadoop < Formula
     end
 
     inreplace "#{libexec}/conf/hadoop-env.sh",
-      "# export JAVA_HOME=/usr/lib/j2sdk1.6-sun",
+      "# export JAVA_HOME=/usr/lib/j2sdk1.5-sun",
       "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
   end
 

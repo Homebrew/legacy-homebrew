@@ -24,7 +24,9 @@ def audit_formula_text name, text
   end
 
   # build tools should be flagged properly
-  if text =~ /depends_on ['"](boost-build|cmake|imake|pkg-config|scons|smake)['"]$/
+  build_deps = %w{autoconf automake boost-build cmake
+                  imake libtool pkg-config scons smake}
+  if text =~ /depends_on ['"](#{build_deps*'|'})['"]$/
     problems << " * #{$1} dependency should be \"depends_on '#{$1}' => :build\""
   end
 
@@ -95,11 +97,6 @@ def audit_formula_text name, text
   if text =~ /^[ ]*\t/
     problems << " * Use spaces instead of tabs for indentation"
   end
-
-  # Formula depends_on gfortran
-  if text =~ /^\s*depends_on\s*(\'|\")gfortran(\'|\").*/
-    problems << " * Use ENV.fortran during install instead of depends_on 'gfortran'"
-  end unless name == "gfortran" # Gfortran itself has this text in the caveats
 
   # xcodebuild should specify SYMROOT
   if text =~ /system\s+['"]xcodebuild/ and not text =~ /SYMROOT=/
@@ -285,6 +282,8 @@ def audit_formula_instance f
  * Don't use #{d} as a dependency. We allow non-Homebrew
    #{d} installations.
 EOS
+    when 'gfortran'
+      problems << " * Use ENV.fortran during install instead of depends_on 'gfortran'"
     end
   end
 

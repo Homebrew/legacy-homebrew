@@ -13,6 +13,9 @@ class Imapfilter < Formula
       s.change_make_var! 'CFLAGS', "#{s.get_make_var 'CFLAGS'} #{ENV.cflags}"
     end
 
+    # find Homebrew's libpcre
+    ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
+
     ENV.append 'LDFLAGS', '-liconv'
     system "make", "LDFLAGS=#{ENV.ldflags}"
     system "make", "PREFIX=#{prefix}", "MANDIR=#{man}", "install"

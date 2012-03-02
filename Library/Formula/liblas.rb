@@ -1,8 +1,8 @@
 require 'formula'
 
 class Liblas < Formula
-  url 'http://download.osgeo.org/liblas/libLAS-1.6.1.tar.gz'
   homepage 'http://liblas.org'
+  url 'http://download.osgeo.org/liblas/libLAS-1.6.1.tar.gz'
   sha1 '0eada80c6de49e9e866f746645cb227034c3af4a'
 
   depends_on 'cmake' => :build
@@ -15,8 +15,7 @@ class Liblas < Formula
   end
 
   def install
-    mkdir 'macbuild'
-    Dir.chdir 'macbuild' do
+    mkdir 'macbuild' do
       # CMake finds boost, but variables like this were set in the last
       # version of this formula. Now using the variables listed here:
       #   http://liblas.org/compilation.html
