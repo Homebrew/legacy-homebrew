@@ -44,9 +44,7 @@ class Llvm < Formula
       exit 1
     end
 
-    if build_clang? or build_analyzer?
-      Clang.new("clang").brew { (buildpath+'tools/clang').install Dir['*'] }
-    end
+    Clang.new("clang").brew { clang_dir.install Dir['*'] } if build_clang? or build_analyzer?
 
     if build_universal?
       ENV['UNIVERSAL'] = '1'
@@ -104,6 +102,10 @@ class Llvm < Formula
     Instead, try:
         brew rm llvm && brew install llvm
     EOS
+  end
+
+  def clang_dir
+    buildpath/'tools/clang'
   end
 end
 

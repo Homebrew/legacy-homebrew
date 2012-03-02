@@ -10,6 +10,13 @@ class Aalib < Formula
     DATA
   end
 
+  if MacOS.xcode_version >= "4.3"
+    # remove the autoreconf if possible, no comment provided about why it is there
+    # so we have no basis to make a decision at this point.
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
     # Build fails some of the time without `ENV.x11`!
     # See: https://github.com/mxcl/homebrew/pull/10356
