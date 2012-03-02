@@ -9,8 +9,4 @@ class SaxonB < Formula
     system "mkdir saxon-b; mv *.jar doc notices saxon-b/"
     share.install Dir['*']
   end
-
-  def test
-    system "false"
-  end
 end
