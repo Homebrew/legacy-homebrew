@@ -715,11 +715,18 @@ def check_tmpdir
 end
 
 def check_missing_deps
-  s = `brew missing`.strip
+  s = []
+  `brew missing`.each_line do |line|
+    line =~ /(.*): (.*)/
+    s << $2
+  end
   if s.length > 0 then <<-EOS.undent
-    You have missing dependencies for install formula
-    You should `brew install` these missing dependencies:
-    #{s}
+    Some installed formula are missing dependencies.
+    You should `brew install` the missing dependencies:
+
+        brew install #{s * " "}
+
+    Run `brew missing` for more details.
     EOS
   end
 end
