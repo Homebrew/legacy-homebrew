@@ -9,8 +9,7 @@ class Glib < Formula
 
   depends_on 'gettext'
   depends_on 'libffi'
-
-  fails_with_llvm "Undefined symbol errors while linking", :build => 2334
+  depends_on "llvm"
 
   def patches
     mp = "https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/"
@@ -39,6 +38,12 @@ class Glib < Formula
 
     # indeed, amazingly, -w causes gcc to emit spurious errors for this package!
     ENV.enable_warnings
+
+    # FIXME This should be replaced with fails_with_clang once available
+    if ENV.compiler == :clang
+      opoo "Formula will not build with Clang, using LLVM."
+      ENV.llvm
+    end
 
     args = ["--disable-dependency-tracking", "--disable-rebuilds",
             "--prefix=#{prefix}",
