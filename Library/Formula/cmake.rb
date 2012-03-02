@@ -5,10 +5,11 @@ class Cmake < Formula
   md5 'e1b237aeaed880f65dec9c20602452f6'
   homepage 'http://www.cmake.org/'
 
-  bottle do
-    url 'https://downloads.sf.net/project/machomebrew/Bottles/cmake-2.8.7-bottle.tar.gz'
-    sha1 'f218ed64ce6e7a5d3670acdd6a18e5ed95421d1f'
+  def patches
+      # Patch for Xcode 4.3
+      { :p0 => "https://raw.github.com/gist/1958550/cmake-xcode-4.3-compat.patch" }
   end
+
 
   def install
     # A framework-installed expat will be detected and mess things up.
