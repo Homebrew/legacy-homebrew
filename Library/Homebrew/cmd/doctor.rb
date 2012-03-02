@@ -732,9 +732,9 @@ def check_missing_deps
 end
 
 def check_git_status
+  return unless system "/usr/bin/which -s git"
   HOMEBREW_REPOSITORY.cd do
-    cmd = `git status -s Library/Homebrew/ 2> /dev/null`.chomp
-    if system "/usr/bin/which -s git" and File.directory? '.git' and not cmd.empty? then <<-EOS.undent
+    unless `git status -s -- Library/Homebrew/ 2>/dev/null`.chomp.empty? then <<-EOS.undent
       You have uncommitted modifications to Homebrew's core.
       Unless you know what you are doing, you should run:
         cd #{HOMEBREW_REPOSITORY} && git reset --hard
