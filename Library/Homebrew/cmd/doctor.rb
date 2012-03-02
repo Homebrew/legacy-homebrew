@@ -257,8 +257,8 @@ def check_access_usr_local
 
   unless Pathname('/usr/local').writable? then <<-EOS.undent
     The /usr/local directory is not writable.
-    Even if this folder was writable when you installed Homebrew, other
-    software may change permissions on this folder. Some versions of the
+    Even if this directory was writable when you installed Homebrew, other
+    software may change permissions on this directory. Some versions of the
     "InstantOn" component of Airfoil are known to do this.
 
     You should probably change the ownership and permissions of /usr/local
