@@ -718,7 +718,7 @@ def check_missing_deps
   s = []
   `brew missing`.each_line do |line|
     line =~ /(.*): (.*)/
-    s << $2
+    s << $2 unless s.include? $2
   end
   if s.length > 0 then <<-EOS.undent
     Some installed formula are missing dependencies.
