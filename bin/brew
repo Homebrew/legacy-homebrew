@@ -118,6 +118,9 @@ rescue BuildError => e
   ohai "Environment"
   puts Homebrew.config_s
   ohai "Build Flags"
+  puts %["--use-clang" was specified] if ARGV.include? '--use-clang'
+  puts %["--use-llvm" was specified] if ARGV.include? '--use-llvm'
+  puts %["--use-gcc" was specified] if ARGV.include? '--use-gcc'
   Homebrew.dump_build_env e.env
   puts
   onoe e
