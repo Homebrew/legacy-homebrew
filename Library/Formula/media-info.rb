@@ -6,8 +6,8 @@ end
 
 class MediaInfo < Formula
   homepage 'http://mediainfo.sourceforge.net'
-  url 'http://downloads.sourceforge.net/mediainfo/MediaInfo_CLI_0.7.52_GNU_FromSource.tar.bz2'
-  md5 '088e62c8f2992c776a881fd6813f150f'
+  url 'http://downloads.sourceforge.net/mediainfo/MediaInfo_CLI_0.7.53_GNU_FromSource.tar.bz2'
+  md5 '0b556ac5370d939a4ee07732bc9281b1'
 
   def options
     [["--with-libcurl", "Build with libcurl support."]]
