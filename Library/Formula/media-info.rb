@@ -1,17 +1,9 @@
 require 'formula'
 
-def libcurl?
-  ARGV.include? '--with-libcurl'
-end
-
 class MediaInfo < Formula
   homepage 'http://mediainfo.sourceforge.net'
   url 'http://downloads.sourceforge.net/mediainfo/MediaInfo_CLI_0.7.53_GNU_FromSource.tar.bz2'
   md5 '0b556ac5370d939a4ee07732bc9281b1'
-
-  def options
-    [["--with-libcurl", "Build with libcurl support."]]
-  end
 
   depends_on 'pkg-config' => :build
 
@@ -25,8 +17,8 @@ class MediaInfo < Formula
     cd "MediaInfoLib/Project/GNU/Library" do
       args = ["--disable-debug",
               "--disable-dependency-tracking",
+              "--with-libcurl",
               "--prefix=#{prefix}"]
-      args << "--with-libcurl" if libcurl?
       system "./configure", *args
       system "make install"
     end
