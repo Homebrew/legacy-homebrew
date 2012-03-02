@@ -208,7 +208,7 @@ def check_for_latest_xcode
     else "4.3"
   end
   if MacOS.xcode_version < latest_xcode then <<-EOS.undent
-    Your Xcode version is outdated
+    You have Xcode-#{MacOS.xcode_version}, which is outdated.
     Please install Xcode #{latest_xcode}.
     EOS
   end
@@ -257,8 +257,8 @@ def check_access_usr_local
 
   unless Pathname('/usr/local').writable? then <<-EOS.undent
     The /usr/local directory is not writable.
-    Even if this folder was writable when you installed Homebrew, other
-    software may change permissions on this folder. Some versions of the
+    Even if this directory was writable when you installed Homebrew, other
+    software may change permissions on this directory. Some versions of the
     "InstantOn" component of Airfoil are known to do this.
 
     You should probably change the ownership and permissions of /usr/local
@@ -715,19 +715,26 @@ def check_tmpdir
 end
 
 def check_missing_deps
-  s = `brew missing`.strip
+  s = []
+  `brew missing`.each_line do |line|
+    line =~ /(.*): (.*)/
+    s << $2 unless s.include? $2
+  end
   if s.length > 0 then <<-EOS.undent
-    You have missing dependencies for install formula
-    You should `brew install` these missing dependencies:
-    #{s}
+    Some installed formula are missing dependencies.
+    You should `brew install` the missing dependencies:
+
+        brew install #{s * " "}
+
+    Run `brew missing` for more details.
     EOS
   end
 end
 
 def check_git_status
+  return unless system "/usr/bin/which -s git"
   HOMEBREW_REPOSITORY.cd do
-    cmd = `git status -s Library/Homebrew/ 2> /dev/null`.chomp
-    if system "/usr/bin/which -s git" and File.directory? '.git' and not cmd.empty? then <<-EOS.undent
+    unless `git status -s -- Library/Homebrew/ 2>/dev/null`.chomp.empty? then <<-EOS.undent
       You have uncommitted modifications to Homebrew's core.
       Unless you know what you are doing, you should run:
         cd #{HOMEBREW_REPOSITORY} && git reset --hard
