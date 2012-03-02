@@ -15,7 +15,7 @@ class Iozone < Formula
 
   def patches
     # adds O_DIRECT support when using -I flag
-    "https://raw.github.com/gist/1939253/iozone_directio_osx.patch"
+    DATA
   end
 
   def install
@@ -28,3 +28,16 @@ class Iozone < Formula
     `iozone -I -s 16M | grep -c O_DIRECT`.chomp == '1'
   end
 end
+
+__END__
+--- a/iozone3_398/src/current/iozone.c      2011-12-16 09:17:05.000000000 -0800
++++ b/iozone3_398/src/current/iozone.c      2012-02-28 16:57:58.000000000 -0800
+@@ -1810,7 +1810,7 @@
+ 			break;
+ #endif
+ #if ! defined(DONT_HAVE_O_DIRECT)
+-#if defined(linux) || defined(__AIX__) || defined(IRIX) || defined(IRIX64) || defined(Windows) || defined(__FreeBSD__) || defined(solaris)
++#if defined(linux) || defined(__AIX__) || defined(IRIX) || defined(IRIX64) || defined(Windows) || defined(__FreeBSD__) || defined(solaris) || defined(macosx)
+ 			direct_flag++;
+ 			sprintf(splash[splash_line++],"\tO_DIRECT feature enabled\n");
+ 			break;
