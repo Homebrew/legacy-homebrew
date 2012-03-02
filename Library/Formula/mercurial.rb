@@ -14,10 +14,17 @@ class Mercurial < Formula
   end
 
   # Remove the error codes on things like "no changes found"
-  # Will be in next release
-  # See: http://selenic.com/hg/rev/a3dcc59054ca
+  # Will be in next release.  See: http://selenic.com/hg/rev/a3dcc59054ca
+  #
+  # Fixes how setup.py handles garbage from xcodebuild -version.
+  # Will be in next release.  See: http://selenic.com/hg/rev/82ce91a9fd94
   def patches
-    "http://selenic.com/hg/raw-rev/a3dcc59054ca"
+    unless ARGV.build_head?
+      [
+        "http://selenic.com/hg/raw-rev/a3dcc59054ca",
+        "http://selenic.com/hg/raw-rev/82ce91a9fd94"
+      ]
+    end
   end
 
   def install
