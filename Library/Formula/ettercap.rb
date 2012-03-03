@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ettercap < Formula
-  url 'http://downloads.sourceforge.net/project/ettercap/ettercap/0.7.4-Lazarus/ettercap-0.7.4.tar.gz'
+  url 'http://downloads.sourceforge.net/project/ettercap/ettercap/0.7.4-Lazarus/ettercap-0.7.4.1.tar.gz'
   homepage 'http://ettercap.sourceforge.net'
-  md5 'c3a0d91975673c6dfdf8682bcfb661d3'
+  md5 '8e13ff5504b5bb4f1fc6a465d57ce7ea'
 
   depends_on 'pcre'
   depends_on 'libnet'
