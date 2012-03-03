@@ -6,7 +6,6 @@ class Zsh < Formula
   md5 '9074077945550d6684ebe18b3b167d52'
 
   depends_on 'gdbm'
-  depends_on 'libiconv'
   depends_on 'pcre'
 
   skip_clean :all
