@@ -1,12 +1,12 @@
 require 'formula'
 
 class PgTop < Formula
-  url 'http://pgfoundry.org/frs/download.php/1781/pg_top-3.6.2.tar.gz'
   homepage 'http://ptop.projects.postgresql.org/'
+  url 'http://pgfoundry.org/frs/download.php/1781/pg_top-3.6.2.tar.gz'
   md5 '12ddb50cf83e3027d182a1381d388f1d'
 
   def install
-    unless `/usr/bin/which pg_config`.size > 0
+    unless which 'pg_config'
       opoo "No pg_config was detected."
       puts <<-EOS.undent
         pg_top requires postgresql in order to compile, but pg_config was not

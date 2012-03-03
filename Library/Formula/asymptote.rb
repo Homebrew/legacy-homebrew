@@ -1,7 +1,5 @@
 require 'formula'
 
-def TeX_installed?; return `which latex`.chomp != ''; end
-
 class Asymptote < Formula
   homepage 'http://asymptote.sourceforge.net/'
   url 'http://downloads.sourceforge.net/asymptote/asymptote-2.15.src.tgz'
@@ -11,7 +9,7 @@ class Asymptote < Formula
   depends_on 'bdw-gc'
 
   def install
-    unless TeX_installed?
+    unless which 'latex'
       onoe <<-EOS.undent
         Asymptote requires a TeX/LaTeX installation; aborting now.
         You can obtain the TeX distribution for Mac OS X from

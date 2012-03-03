@@ -5,7 +5,7 @@ class SigningParty < Formula
   url 'http://ftp.debian.org/debian/pool/main/s/signing-party/signing-party_1.1.4.orig.tar.gz'
   md5 '675f8f1edd01baa8b58a743927d13750'
 
-  depends_on 'gnupg' unless system "/usr/bin/which -s gpg"
+  depends_on 'gnupg' unless which 'gpg'
   depends_on 'dialog'
   depends_on 'qprint'
   depends_on 'MIME::Tools' => :perl

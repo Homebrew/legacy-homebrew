@@ -8,7 +8,7 @@ class Pgtap < Formula
   skip_clean :all
 
   def install
-    unless `/usr/bin/which pg_config`.size > 0
+    unless which 'pg_config'
       opoo "No pg_config was detected."
       puts <<-EOS.undent
         pg_top requires postgresql in order to compile, but pg_config was not

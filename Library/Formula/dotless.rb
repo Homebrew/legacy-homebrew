@@ -6,11 +6,12 @@ class Dotless < Formula
   md5 "dd06170b2e6a8f943f715977cfcd254d"
 
   def install
-    mono_path = `/usr/bin/which mono`.strip
-    if mono_path.size == 0
+    mono_path = which 'mono'
+    unless mono_path
       opoo "mono not found in path"
       puts "You need to install Mono to run this software:"
       puts "http://www.go-mono.com/mono-downloads/download.html"
+      exit 1
     end
 
     (bin+'dotless').write <<-EOF.undent
