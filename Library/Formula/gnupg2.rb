@@ -1,8 +1,8 @@
 require 'formula'
 
 class Gnupg2 < Formula
-  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.18.tar.bz2'
   homepage 'http://www.gnupg.org/'
+  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.18.tar.bz2'
   sha1 '5ec2f718760cc3121970a140aeea004b64545c46'
 
   depends_on 'libgpg-error'
@@ -28,7 +28,8 @@ class Gnupg2 < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
                           "--enable-symcryptrun",
-                          "--disable-agent"
+                          "--disable-agent",
+                          "--with-agent-pgm=#{HOMEBREW_PREFIX}/bin/gpg-agent"
     system "make"
     system "make check"
     system "make install"
