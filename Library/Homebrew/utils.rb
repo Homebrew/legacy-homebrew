@@ -138,6 +138,15 @@ def puts_columns items, star_items=[]
   end
 end
 
+def which cmd
+  path = `/usr/bin/which #{cmd}`.chomp
+  if path.empty?
+    nil
+  else
+    Pathname.new(path)
+  end
+end
+
 def which_editor
   editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
   # If an editor wasn't set, try to pick a sane default
