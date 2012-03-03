@@ -1,4 +1,4 @@
-require Formula.path("base_kde_formula")
+require 'base_kde_formula'
 
 class Kdelibs < BaseKdeFormula
   url 'ftp://ftp.kde.org/pub/kde/stable/4.8.0/src/kdelibs-4.8.0.tar.bz2'
