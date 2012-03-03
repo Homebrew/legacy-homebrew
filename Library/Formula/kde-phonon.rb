@@ -1,6 +1,7 @@
 require 'formula'
 
 class KdePhonon < Formula
+  # yes, phonon-src is only shipped as .tar.xz file.
   url 'ftp://ftp.kde.org/pub/kde/stable/phonon/4.6.0/src/phonon-4.6.0.tar.xz'
   homepage 'http://phonon.kde.org/'
   md5 'bbe0c1c62ed14c31479c4c1a6cf1e173'
