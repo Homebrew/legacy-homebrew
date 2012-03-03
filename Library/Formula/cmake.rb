@@ -10,6 +10,11 @@ class Cmake < Formula
     sha1 'f218ed64ce6e7a5d3670acdd6a18e5ed95421d1f'
   end
 
+  def patches
+    # Fix to work with Xcode 4.3
+      { :p0 => "https://raw.github.com/gist/1958550/9c03b16c370d458a7410fd045cdb3720407c1e58/cmake-xcode-4.3-compat.patch" }
+  end
+
   def install
     # A framework-installed expat will be detected and mess things up.
     if File.exist? "/Library/Frameworks/expat.framework"
