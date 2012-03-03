@@ -21,8 +21,7 @@ class Auctex < Formula
   end
 
   def install
-    # based on the asymtote formula LaTeX check
-    if `which latex`.chomp == ''
+    unless which 'latex'
       onoe <<-EOS.undent
         AUCTeX requires a TeX/LaTeX installation; aborting now.
         You can obtain the TeX distribution for Mac OS X from
