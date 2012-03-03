@@ -45,7 +45,7 @@ do
   ronn --roff --pipe --organization='Homebrew' --manual='brew' $i > $target_file
 done
 
-test "$1" = '--verbose' || \
-test "$1" = '-v' && {
+if test "$1" = '--verbose' || test "$1" = '-v'
+then
   man brew
-}
+fi
