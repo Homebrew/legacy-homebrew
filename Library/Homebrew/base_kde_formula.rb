@@ -32,6 +32,7 @@ class BaseKdeFormula < Formula
   def extra_prefix_path
   end
   def kde_default_cmake_args
+    raise "std_cmake_parameters has changed... #{std_cmake_parameters}" if std_cmake_parameters != "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None -Wno-dev"
     s = extra_prefix_path
     if s.nil?
       s = kdedir
