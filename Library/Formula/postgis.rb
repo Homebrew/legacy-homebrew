@@ -17,7 +17,6 @@ class Postgis < Formula
     version '2.0.0beta1'
   end
 
-  depends_on 'postgresql'
   depends_on 'proj'
   depends_on 'geos'
 
