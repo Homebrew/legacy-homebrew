@@ -29,8 +29,16 @@ class BaseKdeFormula < Formula
   def extra_cmake_args
     ""
   end
+  def extra_prefix_path
+  end
   def kde_default_cmake_args
-    "-DCMAKE_INSTALL_PREFIX=#{kdedir} -DCMAKE_PREFIX_PATH=#{qjson_prefix}:#{gettext_prefix} -DDOCBOOKXML_CURRENTDTD_DIR=#{docbook_dtd} -DDOCBOOKXSL_DIR=#{docbook_xsl} -DBUILD_doc=FALSE"
+    s = extra_prefix_path
+    if s.nil?
+      s = kdedir
+    else
+      s += ":#{kdedir}"
+    end
+    "-DCMAKE_INSTALL_PREFIX=#{kdedir} -DCMAKE_PREFIX_PATH=#{s}:#{qjson_prefix}:#{gettext_prefix} -DDOCBOOKXML_CURRENTDTD_DIR=#{docbook_dtd} -DDOCBOOKXSL_DIR=#{docbook_xsl} -DBUILD_doc=FALSE"
   end
   def default_install
     ENV.x11
