@@ -3,7 +3,7 @@ require 'base_kde_formula'
 class Kdelibs < BaseKdeFormula
   url 'ftp://ftp.kde.org/pub/kde/stable/4.8.0/src/kdelibs-4.8.0.tar.bz2'
   homepage 'http://www.kde.org/'
-  #md5 '46baa210a6f5a0d6af4b7602a4b00994'
+  md5 'c19858c68f9a209ae521d7fb3c34747b'
 
   depends_on 'gettext'
   depends_on 'pcre'
