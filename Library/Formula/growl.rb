@@ -9,11 +9,11 @@ class ISO8601ParserUnparser < Formula
 end
 
 class Growl < Formula
-  url 'http://growl.info/hg/growl/archive/4d49890e785a.tar.bz2'
+  url 'http://growl.info/hg/growl/archive/c9bc72de2621.tar.bz2'
   head 'https://code.google.com/p/growl/', :using => :hg
   homepage 'http://www.growl.info/'
-  sha1 'ae9fcf34a7f666bcc608285f8ee6fe4955474060'
-  version '1.3.2'
+  sha1 '8e7118cee3f992aba4a3f2b80d1c446d5df067cb'
+  version '1.3.3'
   
   depends_on 'osx/plist' => :ruby unless ARGV.include? "--disable-hardware"
 
@@ -27,14 +27,6 @@ class Growl < Formula
 
   def patches
     p = []
-    # Fix case sensitivity and tarball usage
-    p << "https://raw.github.com/gist/1373382/"
-    p << "https://raw.github.com/gist/1374166/"
-
-    unless ARGV.include? "--disable-hardware"
-      # Fix case sensitivity in HardwareGrowler.app
-      p << "https://raw.github.com/gist/1380233/"
-    end
 
     unless ARGV.include? "--enable-codesign"
       # Disable code sign in Growl.app
