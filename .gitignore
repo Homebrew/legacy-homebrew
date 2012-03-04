@@ -9,3 +9,4 @@
 .DS_Store
 /Library/LinkedKegs
 /Library/Taps
+/Library/Formula/.gitignore
