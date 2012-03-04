@@ -30,14 +30,14 @@ module Homebrew extend self
       if $?.success?
         gitignores << relative_pathname.basename.to_s
       else
-        opoo "#{relative_pathname.basename, ".rb"} conflicts"
+        opoo "#{relative_pathname.basename('.rb')} conflicts"
       end
     end
 
     tf = Tempfile.new("brew-tap")
     tf.write(gitignores.uniq.join("\n"))
     tf.close
-    mv tf.path, "#{HOMEBREW_PREFIX}/Library/Formula/.gitignore"
+    mv tf.path, "#{HOMEBREW_LIBRARY}/Formula/.gitignore"
   end
 
   private
