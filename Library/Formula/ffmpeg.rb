@@ -37,18 +37,15 @@ class Ffmpeg < Formula
 
   def install
     ENV.x11
+    raise "ENV.cc == #{ENV.cc}" unless ENV.cc == 'clang'
     args = ["--prefix=#{prefix}",
             "--enable-shared",
             "--enable-gpl",
             "--enable-version3",
             "--enable-nonfree",
             "--enable-hardcoded-tables",
-<<<<<<< HEAD
-            "--cc=clang"]
-=======
             "--enable-libfreetype",
             "--cc=#{ENV.cc}"]
->>>>>>> 0e8ea8aae9dadda53d0dc0cf680d383981770be9
 
     args << "--enable-libx264" if Formula.factory('x264').installed?
     args << "--enable-libfaac" if Formula.factory('faac').installed?
