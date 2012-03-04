@@ -51,7 +51,7 @@ For the full command list, see the COMMANDS section.
   * `cat` <formula>:
     Display the source to <formula>.
 
-  * `cleanup [--force] [-n]` [<formula>]:
+  * `cleanup [--force] [-n]` [<formulae>]:
     For all installed or specific formulae, remove any older versions from the
     cellar. By default, does not remove out-of-date keg-only brews, as other
     software may link directly to specific versions.
@@ -145,7 +145,7 @@ For the full command list, see the COMMANDS section.
     it first.
 
     If `--debug` is passed and brewing fails, open a shell inside the
-    temporary folder used for compiling.
+    temporary directory used for compiling.
 
     If `--ignore-dependencies` is passed, skip installing any dependencies of
     any kind. If they are not already present, the formula will probably fail
@@ -204,7 +204,7 @@ For the full command list, see the COMMANDS section.
     Show the git log for the given formulae. Options that `git-log`(1)
     recognizes can be passed before the formula list.
 
-  * `missing [<formulae>]`:
+  * `missing` [<formulae>]:
     Check the given <formulae> for missing dependencies.
 
     If no <formulae> are given, check all installed brews.
@@ -272,22 +272,25 @@ For the full command list, see the COMMANDS section.
 
     If `--installed` is passed, only list installed formulae.
 
-  * `versions` <formulae>:
+  * `versions [--compact]` <formulae>:
     List previous versions of <formulae>, along with a command to checkout
     each version.
+
+    If `--compact` is passed, show all options on a single line separated by
+    spaces.
 
   * `--cache`:
     Display Homebrew's download cache. *Default:* `~/Library/Caches/Homebrew`
 
   * `--cache` <formula>:
-    Display the file or folder used to cache <formula>.
+    Display the file or directory used to cache <formula>.
 
   * `--cellar`:
     Display Homebrew's Cellar path. *Default:* `/usr/local/Cellar`
 
   * `--cellar` <formula>:
     Display the location in the cellar where <formula> would be installed,
-    without any sort of versioned folder as the last path.
+    without any sort of versioned directory as the last path.
 
   * `--config`:
     Show Homebrew and system configuration useful for debugging. If you file
@@ -301,8 +304,8 @@ For the full command list, see the COMMANDS section.
     Display the location in the cellar where <formula> is or would be installed.
 
   * `--repository`:
-    Display where Homebrew's `.git` folder is located. For standard installs,
-    the `prefix` and `repository` are the same folder.
+    Display where Homebrew's `.git` directory is located. For standard installs,
+    the `prefix` and `repository` are the same directory.
 
   * `-v`, `--version`:
     Print the version number of brew to standard error and exit.
@@ -330,10 +333,10 @@ creating your own can be found on the wiki:
     provides a bottle.
 
   * HOMEBREW\_CACHE:
-    If set, instructs Homebrew to use the give folder as the download cache.
+    If set, instructs Homebrew to use the give directory as the download cache.
     Otherwise, `~/Library/Caches/Homebrew` is used.
 
-    This can be used to keep downloads out of your home folder, if you have
+    This can be used to keep downloads out of your home directory, if you have
     it mounted on an SSD or are using FileVault for instance.
 
   * HOMEBREW\_CURL\_VERBOSE:
@@ -355,15 +358,18 @@ creating your own can be found on the wiki:
 
   * HOMEBREW\_EDITOR:
     If set, Homebrew will use this editor when editing a single formula, or
-    several formulae in the same folder.
+    several formulae in the same directory.
 
     *NOTE*: `brew edit` will open all of Homebrew as discontinuous files and
-    folders. TextMate can handle this correctly in project mode, but many
+    directories. TextMate can handle this correctly in project mode, but many
     editors will do strange things in this case.
 
   * HOMEBREW\_KEEP\_INFO:
     If set, Homebrew will not remove files from `share/info`, allowing them
-    to be linked from the Cellar.
+    to be linked from the Cellar. To access these info files, prepend
+    `share/info` to your `INFOPATH` environment variable.
+
+    *Example:* `export INFOPATH='/usr/local/share/info:/usr/share/info'`
 
   * HOMEBREW\_MAKE\_JOBS:
     If set, instructs Homebrew to use the value of `HOMEBREW_MAKE_JOBS` as
@@ -378,8 +384,8 @@ creating your own can be found on the wiki:
     Set this to force Homebrew to use a particular svn binary.
 
   * HOMEBREW\_TEMP:
-    If set, instructs Homebrew to use `HOMEBREW_TEMP` as the temporary folder
-    for building packages. This may be needed if your system temp folder and
+    If set, instructs Homebrew to use `HOMEBREW_TEMP` as the temporary directory
+    for building packages. This may be needed if your system temp directory and
     Homebrew Prefix are on different volumes, as OS X has trouble moving
     symlinks across volumes when the target does not yet exist.
 

@@ -58,12 +58,12 @@ class BaseKdeFormula < Formula
   end
   def default_install
     ENV.x11
-    mkdir 'build'
-    cd 'build'
-    # this has to be installed along with this kdelibs. // kde4-config --prefix
-    system "cmake", *kde_default_cmake_args
-    system "make"
-    system "make install"
+    mkdir 'build' do
+      # this has to be installed along with this kdelibs. // kde4-config --prefix
+      system "cmake", *kde_default_cmake_args
+      system "make"
+      system "make install"
+    end
   end
   def install
     default_install

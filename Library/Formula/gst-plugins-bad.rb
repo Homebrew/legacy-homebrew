@@ -21,6 +21,7 @@ class GstPluginsBad < Formula
   depends_on 'faad2' => :optional
   depends_on 'libsndfile' => :optional
   depends_on 'schroedinger' => :optional
+  depends_on 'rtmpdump' => :optional
 
   def install
     ENV.append "CFLAGS", "-no-cpp-precomp -funroll-loops -fstrict-aliasing"

@@ -8,11 +8,15 @@ class Atk < Formula
   depends_on 'pkg-config' => :build
   depends_on 'glib'
 
+  def options
+    [["--universal", "Builds a universal binary"]]
+  end
+
   def install
-    args = ["--prefix=#{prefix}",
-            "--disable-dependency-tracking",
-            "--enable-introspection=no"]
-    system "./configure", *args
+    ENV.universal_binary if ARGV.build_universal?
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--enable-introspection=no"
     system "make"
     system "make install"
   end

@@ -1,32 +1,18 @@
-require 'formula'
+require 'base_kde_formula'
 
-class Digikam < Formula
-  url 'http://downloads.sourceforge.net/project/digikam/digikam/2.3.0/digikam-2.3.0.tar.bz2?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fdigikam%2Ffiles%2F&ts=1325610399&use_mirror=superb-sea2'
-  version '2.3.0'
+class Digikam < BaseKdeFormula
+  url 'http://downloads.sourceforge.net/project/digikam/digikam/2.6.0-beta1/digikam-2.6.0-beta1.tar.bz2?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fdigikam%2Ffiles%2Fdigikam%2F2.6.0-beta1%2Fdigikam-2.6.0-beta1.tar.bz2%2Fdownload&ts=1330831805&use_mirror=superb-dca2'
+  version '2.6.0-beta1'
   homepage 'http://www.digikam.org/'
-  md5 '45e635c0079a608c2d5508be8127d388'
+  #md5 '45e635c0079a608c2d5508be8127d388'
 
-  depends_on 'cmake' => :build
-  depends_on 'automoc4' => :build
   depends_on 'kdelibs'
   depends_on 'kde-runtime'
   depends_on 'opencv'
   depends_on 'marble'
+  depends_on 'libkexiv2'
 
-  def install
-    ENV.x11
-    mkdir 'build'
-    cd 'build'
-    gettext_prefix = Formula.factory('gettext').prefix
-    kdelibs_prefix = Formula.factory('kdelibs').prefix
-    # this has to be installed along with this kdelibs. // kde4-config --prefix
-    system "cmake .. -DCMAKE_INSTALL_PREFIX=#{kdelibs_prefix} -DBUILD_doc=FALSE -DBUNDLE_INSTALL_DIR=#{bin} -DCMAKE_PREFIX_PATH=#{gettext_prefix} "
-    system "make install"
+  def extra_prefix_path
+    "#{kdedir}/include/libkexiv2"
   end
-
-  def caveats; <<-EOS.undent
-    Remember to run brew linkapps.
-    EOS
-  end
-
 end

@@ -37,7 +37,7 @@ class Nagios < Formula
     # Install config
     system "make install-config"
     system "make install-webconf"
-    (share+'org.nagios.plist').write startup_plist
+    (share+plist_path).write startup_plist
 
     # Symlink plugins
     libexec.rmdir
@@ -53,7 +53,7 @@ class Nagios < Formula
             <key>KeepAlive</key>
             <true/>
             <key>Label</key>
-            <string>org.nagios</string>
+            <string>#{plist_name}</string>
             <key>ProgramArguments</key>
             <array>
                     <string>#{HOMEBREW_PREFIX}/bin/nagios</string>
@@ -97,8 +97,8 @@ class Nagios < Formula
 
     If you want to run nagios automatically at startup:
 
-      sudo cp #{share}/org.nagios.plist /Library/LaunchDaemons/
-      sudo launchctl load -w /Library/LaunchDaemons/org.nagios.plist
+      sudo cp #{share}/#{plist_path.basename} /Library/LaunchDaemons/
+      sudo launchctl load -w /Library/LaunchDaemons/#{plist_path.basename}
 
     ...or simply run it on demand:
 
