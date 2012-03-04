@@ -283,7 +283,6 @@ class Formula
   end
 
   def self.canonical_name name
-    # Cast pathnames to strings.
     name = name.to_s if name.kind_of? Pathname
 
     formula_with_that_name = HOMEBREW_REPOSITORY+"Library/Formula/#{name}.rb"
@@ -291,7 +290,13 @@ class Formula
     possible_cached_formula = HOMEBREW_CACHE_FORMULA+"#{name}.rb"
 
     if name.include? "/"
-      # Don't resolve paths or URLs
+      if name =~ %r{(.+)/(.+)/(.+)}
+        tapd = HOMEBREW_REPOSITORY/"Library/Taps/#$1-#$2"
+        tapd.find_formula do |relative_pathname|
+          return "#{tapd}/#{relative_pathname}" if relative_pathname.stem.to_s == $3
+        end if tapd.directory?
+      end
+      # Otherwise don't resolve paths or URLs
       name
     elsif formula_with_that_name.file? and formula_with_that_name.readable?
       name
