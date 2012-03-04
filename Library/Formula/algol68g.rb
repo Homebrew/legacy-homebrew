@@ -5,8 +5,10 @@ class Algol68g < Formula
   url 'http://jmvdveer.home.xs4all.nl/algol68g-2.3.7.tar.gz'
   md5 '8a1c2f169b7aaa9d9155b42b6b5a12bf'
 
+  depends_on 'gsl' => :optional
+
   def install
-    system "./configure", "--bindir=#{bin}", "--mandir=#{man}"
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 
