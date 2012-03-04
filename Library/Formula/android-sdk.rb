@@ -47,8 +47,16 @@ class AndroidSdk < Formula
 
   def caveats; <<-EOS.undent
     Now run the `android' tool to install the actual SDK stuff.
+
+    NOTE you should tell Eclipse, IntelliJ etc. to use the Android-SDK found
+    here: #{prefix}
+
     You will have to install the platform-tools EVERY time this formula updates.
     If you want to try and fix this then see the comment in this formula.
+
+    You may need to add the following to your .bashrc:
+
+       export ANDROID_SDK_ROOT=#{prefix}
     EOS
   end
 

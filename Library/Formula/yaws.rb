@@ -22,12 +22,12 @@ class Yaws < Formula
       end
     end
 
-    Dir.chdir 'yaws' do
+    cd 'yaws' do
       system "./configure", "--prefix=#{prefix}"
       system "make install"
 
       if ARGV.include? '--with-yapp'
-        Dir.chdir 'applications/yapp' do
+        cd 'applications/yapp' do
           system "make"
           system "make install"
         end

@@ -1,11 +1,11 @@
 require 'formula'
-class Shen < Formula
-  url 'http://www.shenlanguage.org/download/Shen3.0.zip'
-  homepage 'http://www.lambdassociates.org/'
-  md5 'ea14b335772ede6a50c5e03d86dbd9c6'
 
-  case
-    when ARGV.include?("--sbcl") then
+class Shen < Formula
+  homepage 'http://www.shenlanguage.org/'
+  url 'http://www.shenlanguage.org/download/Shen3.1.zip'
+  md5 'af5cf93107ead37373e2e520bccd3b08'
+
+  if ARGV.include? "--sbcl"
     depends_on 'sbcl'
   else
     depends_on 'clisp'
@@ -28,6 +28,6 @@ class Shen < Formula
       prefix.install ['Platforms/CLisp/Shen.mem']
     end
     system "chmod 755 shen"
-    bin.install ['shen']
+    bin.install 'shen'
   end
 end

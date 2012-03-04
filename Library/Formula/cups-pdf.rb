@@ -1,8 +1,8 @@
 require 'formula'
 
 class CupsPdf < Formula
-  url 'http://www.cups-pdf.de/src/cups-pdf_2.5.1.tar.gz'
-  md5 '4b4cf1a249d02a38045db74b5f259aac'
+  url 'http://www.cups-pdf.de/src/cups-pdf_2.6.1.tar.gz'
+  md5 '65f3fd525c4a9b1d736b91594b3166d5'
   homepage 'http://www.cups-pdf.de/'
 
   # Patch derived from MacPorts.
@@ -25,6 +25,7 @@ class CupsPdf < Formula
       sudo chown root #{lib}/cups/backend/cups-pdf
       sudo ln -sf #{etc}/cups/cups-pdf.conf /etc/cups/cups-pdf.conf
       sudo ln -sf #{lib}/cups/backend/cups-pdf /usr/libexec/cups/backend/cups-pdf
+      sudo chmod -h 0700 /usr/libexec/cups/backend/cups-pdf
       sudo ln -sf #{share}/cups/model/CUPS-PDF.ppd /usr/share/cups/model/CUPS-PDF.ppd
 
       sudo mkdir -p /var/spool/cups-pdf/${USER}

@@ -10,7 +10,7 @@ class Mupdf < Formula
   depends_on 'jbig2dec'
 
   def patches
-    # Fix up the Makefile so it doesnt mess with our CFLAGS.
+    # Fix up the Makefile so it doesn't mess with our CFLAGS.
     DATA
   end
 

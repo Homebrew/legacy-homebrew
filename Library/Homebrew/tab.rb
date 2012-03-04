@@ -17,7 +17,8 @@ class Tab < OpenStruct
 
     Tab.new :used_options => formula_options & arg_options,
             :unused_options => formula_options - arg_options,
-            :tabfile => f.prefix + 'INSTALL_RECEIPT.json'
+            :tabfile => f.prefix + 'INSTALL_RECEIPT.json',
+            :built_bottle => !!args.build_bottle?
   end
 
   def self.from_file path
@@ -33,13 +34,19 @@ class Tab < OpenStruct
     if path.exist?
       self.from_file path
     else
-      self.dummy_tab Formula.factory(keg.parent.basename)
+      begin
+        self.dummy_tab Formula.factory(keg.parent.basename)
+      rescue FormulaUnavailableError
+        Tab.new :used_options => [],
+                :unused_options => [],
+                :built_bottle => false
+      end
     end
   end
 
   def self.for_formula f
     f = Formula.factory f unless f.kind_of? Formula
-    path = HOMEBREW_REPOSITORY + 'Library' + 'LinkedKegs' + f.name + 'INSTALL_RECEIPT.json'
+    path = f.linked_keg/'INSTALL_RECEIPT.json'
 
     if path.exist?
       self.from_file path
@@ -58,7 +65,8 @@ class Tab < OpenStruct
 
   def self.dummy_tab f
     Tab.new :used_options => [],
-            :unused_options => f.options.map { |o, _| o}
+            :unused_options => f.options.map { |o, _| o},
+            :built_bottle => false
   end
 
   def installed_with? opt
@@ -72,7 +80,8 @@ class Tab < OpenStruct
   def to_json
     MultiJson.encode({
       :used_options => used_options,
-      :unused_options => unused_options
+      :unused_options => unused_options,
+      :built_bottle => built_bottle
     })
   end
 

@@ -1,8 +1,8 @@
 require 'formula'
 
 class Metasploit < Formula
-  url "http://updates.metasploit.com/data/releases/framework-4.1.0.tar.bz2"
   homepage 'http://www.metasploit.com/framework/'
+  url "http://updates.metasploit.com/data/releases/framework-4.1.0.tar.bz2"
   sha1 'f978b82d0b5d65e2958006aa9a6fca01573b9539'
 
   head "https://www.metasploit.com/svn/framework3/trunk/", :using => :svn
@@ -14,8 +14,7 @@ class Metasploit < Formula
 
   def install
     libexec.install Dir["msf*",'data','external','lib','modules','plugins','scripts','test','tools']
-    bin.mkpath
-    Dir["#{libexec}/msf*"].each {|f| ln_s f, bin}
+    bin.install_symlink Dir["#{libexec}/msf*"]
   end
 
   def caveats; <<-EOS.undent
