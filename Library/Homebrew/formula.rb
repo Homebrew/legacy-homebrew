@@ -2,6 +2,7 @@ require 'download_strategy'
 require 'formula_support'
 require 'hardware'
 require 'extend/fileutils'
+require 'formula_specialties'
 
 
 # Derive and define at least @url, see Library/Formula for examples
@@ -762,20 +763,5 @@ private
     def fails_with_llvm msg=nil, data=nil
       @fails_with_llvm_reason = FailsWithLLVM.new(msg, data)
     end
-  end
-end
-
-# See youtube-dl.rb for an example
-class ScriptFileFormula < Formula
-  def install
-    bin.install Dir['*']
-  end
-end
-
-# See flac.rb for an example
-class GithubGistFormula < ScriptFileFormula
-  def initialize name='__UNKNOWN__', path=nil
-    super name, path
-    @version=File.basename(File.dirname(url))[0,6]
   end
 end
