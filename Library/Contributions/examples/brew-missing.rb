@@ -4,8 +4,12 @@ require "cmd/outdated"
 def installed_brews
   formulae = []
   HOMEBREW_CELLAR.subdirs.each do |rack|
-    f = Formula.factory rack.basename.to_s rescue nil
-    formulae << f if f and f.installed?
+    begin
+      f = Formula.factory rack.basename.to_s
+      formulae << f if f and f.installed?
+    rescue
+      puts "Formula not found: #{rack}"
+    end
   end
   formulae
 end
