@@ -8,7 +8,7 @@ def installed_brews
       f = Formula.factory rack.basename.to_s
       formulae << f if f and f.installed?
     rescue
-      puts "Formula not found: #{rack}"
+      $stderr.puts "Formula not found: #{rack}"
     end
   end
   formulae
