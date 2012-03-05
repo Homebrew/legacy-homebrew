@@ -357,7 +357,7 @@ def check_xcode_select_path
       these is (probably) what you want:
 
           sudo xcode-select -switch /Developer
-          sudo xcode-select -switch /Applications/Xcode.app
+          sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
     EOS
   end
 end
