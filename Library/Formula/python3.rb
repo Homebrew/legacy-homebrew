@@ -154,6 +154,14 @@ class Python3 < Formula
     return lib
   end
 
+  # include folder,taking into account whether we are a Framework build or not
+  def effective_include
+    # If we're installed or installing as a Framework, then use that location.
+    return prefix+"Frameworks/Python.framework/Versions/3.2/include" if as_framework?
+    # Otherwise use just 'include'
+    return include
+  end
+
   # The Cellar location of site-packages
   def site_packages
     effective_lib+"python3.2/site-packages"

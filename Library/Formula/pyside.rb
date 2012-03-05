@@ -14,7 +14,6 @@ class Pyside < Formula
   md5 '233f0c6d2b3daf58cf88877d7f74557b'
 
   depends_on 'cmake' => :build
-
   depends_on 'shiboken'
 
   def install
@@ -25,7 +24,7 @@ class Pyside < Formula
     ENV.append_to_cflags "-F#{qt.prefix}/Frameworks"
 
     # Also need `ALTERNATIVE_QT_INCLUDE_DIR` to prevent "missing file" errors.
-    system "cmake . #{std_cmake_parameters} -DALTERNATIVE_QT_INCLUDE_DIR=#{qt.prefix}/Frameworks -DSITE_PACKAGE=#{site_package_dir} -DBUILD_TESTS=NO"
+    system "cmake #{std_cmake_parameters} -DALTERNATIVE_QT_INCLUDE_DIR=#{qt.prefix}/Frameworks -DSITE_PACKAGE=#{site_package_dir} -DBUILD_TESTS=NO ."
     system 'make install'
   end
 

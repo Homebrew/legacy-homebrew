@@ -1,19 +1,20 @@
 require 'formula'
 
 class Loudmouth < Formula
-  url 'http://mcabber.com/files/loudmouth-1.4.3+gitb5a9de5b.20100413.tar.bz2'
-  version '1.5.0-pre'
   homepage 'http://www.loudmouth-project.org/'
-  md5 'd9693855e1d8226144937decd25633d2'
-
-  head 'https://github.com/engineyard/loudmouth.git'
+  url 'http://mcabber.com/files/loudmouth-1.4.3-20111204.tar.bz2'
+  sha1 '38010a74d28fa06624b7461e515aec47c0ff140e'
+  version '1.4.3.111204'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
-  depends_on 'gnutls' => :optional
+  depends_on 'gnutls'
+  depends_on 'libidn'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

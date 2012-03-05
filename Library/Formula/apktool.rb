@@ -6,9 +6,9 @@ class ApktoolExecutables < Formula
 end
 
 class Apktool < Formula
-  url 'http://android-apktool.googlecode.com/files/apktool1.4.1.tar.bz2'
-  sha1 '4e5f709e5f86c3ef72dbc32041d1aebd957098b4'
   homepage 'http://android-apktool.googlecode.com/'
+  url 'http://android-apktool.googlecode.com/files/apktool1.4.3.tar.bz2'
+  sha1 '7c0b85882c1fab7660258ab344e3a43b17e10741'
 
   def install
     libexec.install 'apktool.jar'
@@ -16,7 +16,7 @@ class Apktool < Formula
     ApktoolExecutables.new.brew do |f|
       # Make apktool look for jar in libexec
       inreplace 'apktool', /^libdir=.*$/, "libdir=\"#{libexec}\""
-      bin.install ['aapt', 'apktool']
+      bin.install 'aapt', 'apktool'
     end
   end
 end

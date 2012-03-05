@@ -18,7 +18,7 @@ class PysideTools < Formula
   depends_on 'pyside'
 
   def install
-    system "cmake . #{std_cmake_parameters} -DSITE_PACKAGE=#{site_package_dir}"
+    system "cmake #{std_cmake_parameters} -DSITE_PACKAGE=#{site_package_dir} ."
     system "make install"
   end
 end
