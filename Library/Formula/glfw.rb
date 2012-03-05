@@ -6,7 +6,6 @@ class Glfw < Formula
   md5 'f0e40049cc3ef30cb145047a7631ab3f'
 
   def install
-    ENV.prepend 'PREFIX', "#{prefix}"
-    system "make cocoa-install"
+    system "make", "PREFIX=#{prefix}", "cocoa-install"
   end
 end
