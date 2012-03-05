@@ -8,6 +8,8 @@ class Socat < Formula
   depends_on 'readline'
 
   def install
+    ENV.llvm if MacOS.default_compiler == :clang and MacOS.clang_version.to_f <= 3.1
+
     # Lion requires this flag in some cases
     ENV.append "CFLAGS", "-D__APPLE_USE_RFC_3542" if 10.7 <= MACOS_VERSION
 
