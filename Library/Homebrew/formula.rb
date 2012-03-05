@@ -1,12 +1,12 @@
 require 'download_strategy'
-require 'fileutils'
 require 'formula_support'
 require 'hardware'
+require 'extend/fileutils'
 
 
 # Derive and define at least @url, see Library/Formula for examples
 class Formula
-  include FileUtils
+  include Homebrew::FileUtils
 
   attr_reader :name, :path, :url, :version, :homepage, :specs, :downloader
   attr_reader :standard, :unstable
@@ -127,16 +127,6 @@ class Formula
   # plist name, i.e. the name of the launchd service
   def plist_name; 'homebrew.mxcl.'+name end
   def plist_path; prefix+(plist_name+'.plist') end
-
-  # A version of mkdir that also changes to that folder in a block
-  def mkdir name, &block
-    FileUtils.mkdir name
-    if block_given?
-      FileUtils.chdir name do
-        yield
-      end
-    end
-  end
 
   # Use the @spec_to_use to detect the download strategy.
   # Can be overriden to force a custom download strategy
@@ -441,6 +431,7 @@ class Formula
   end
 
 protected
+
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
@@ -485,33 +476,8 @@ protected
     raise BuildError.new(self, cmd, args, $?)
   end
 
-private
-  # Create a temporary directory then yield. When the block returns,
-  # recursively delete the temporary directory.
-  def mktemp
-    # I used /tmp rather than `mktemp -td` because that generates a directory
-    # name with exotic characters like + in it, and these break badly written
-    # scripts that don't escape strings before trying to regexp them :(
+public
 
-    # If the user has FileVault enabled, then we can't mv symlinks from the
-    # /tmp volume to the other volume. So we let the user override the tmp
-    # prefix if they need to.
-    tmp_prefix = ENV['HOMEBREW_TEMP'] || '/tmp'
-    tmp=Pathname.new `/usr/bin/mktemp -d #{tmp_prefix}/homebrew-#{name}-#{version}-XXXX`.strip
-    raise "Couldn't create build sandbox" if not tmp.directory? or $? != 0
-    begin
-      wd=Dir.pwd
-      Dir.chdir tmp
-      yield
-    ensure
-      Dir.chdir wd
-      tmp.rmtree
-    end
-  end
-
-  CHECKSUM_TYPES=[:md5, :sha1, :sha256].freeze
-
-  public
   # For brew-fetch and others.
   def fetch
     downloader = @downloader
@@ -571,7 +537,9 @@ EOF
     end
   end
 
-  private
+private
+
+  CHECKSUM_TYPES=[:md5, :sha1, :sha256].freeze
 
   def stage
     fetched, downloader = fetch
