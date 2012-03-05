@@ -87,8 +87,19 @@ class BuildError < Homebrew::InstallationError
     formula_name = $1
     error_line = $2
 
+    path = HOMEBREW_REPOSITORY/"Library/Formula/#{formula_name}.rb"
+    if path.symlink? and path.realpath.to_s =~ %r{^#{HOMEBREW_REPOSITORY}/Library/Taps/(\w+)-(\w+)/}
+      repo = "#$1/homebrew-#$2"
+      repo_path = path.realpath.relative_path_from(HOMEBREW_REPOSITORY/"Library/Taps/#$1-#$2").parent.to_s
+      issues_url = "https://github.com/#$1/homebrew-#$2/issues/new"
+    else
+      repo = "mxcl/master"
+      repo_path = "Library/Formula"
+      issues_url = ISSUES_URL
+    end
+
     ohai "Exit Status: #{e.exit_status}"
-    puts "http://github.com/mxcl/homebrew/blob/master/Library/Formula/#{formula_name}.rb#L#{error_line}"
+    puts "https://github.com/#{repo}/blob/master/#{repo_path}/#{formula_name}.rb#L#{error_line}"
     ohai "Environment"
     puts Homebrew.config_s
     ohai "Build Flags"
@@ -101,11 +112,11 @@ class BuildError < Homebrew::InstallationError
     issues = GitHub.issues_for_formula formula_name
     if issues.empty?
       puts "If `brew doctor' does not help diagnose the issue, please report the bug:"
-      puts "    #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
+      puts "    #{Tty.em}#{issues_url}#{Tty.reset}"
     else
       puts "These existing issues may help you:", *issues.map{ |s| "    #{Tty.em}#{s}#{Tty.reset}" }
       puts "Otherwise, please report the bug:"
-      puts "    #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
+      puts "    #{Tty.em}#{issues_url}#{Tty.reset}"
     end
     if e.was_running_configure?
       puts "We saved the configure log, please gist it if you report the issue:"
