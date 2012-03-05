@@ -678,11 +678,8 @@ private
 
     def devel &block
       raise "url and md5 must be specified in a block" unless block_given?
-
       if ARGV.build_devel?
-        # clear out mirrors from the stable release
-        @mirrors = nil
-
+        @mirrors = nil # clear out mirrors from the stable release
         instance_eval &block
       end
     end
