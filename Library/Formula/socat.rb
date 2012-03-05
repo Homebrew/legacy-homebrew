@@ -1,20 +1,20 @@
 require 'formula'
 
 class Socat < Formula
-  url 'http://www.dest-unreach.org/socat/download/socat-1.7.1.3.tar.bz2'
   homepage 'http://www.dest-unreach.org/socat/'
-  md5 '2081987fb0cb0290b8105574058cb329'
+  url 'http://www.dest-unreach.org/socat/download/socat-1.7.2.0.tar.bz2'
+  md5 'eb563dd00b9d39a49fb62a677fc941fe'
 
   depends_on 'readline'
 
+  def patches
+    # see https://trac.macports.org/ticket/32044; socat devs are aware
+    { :p0 => "https://trac.macports.org/export/90442/trunk/dports/sysutils/socat/files/patch-xioexit.c.diff" }
+  end
+
   def install
-    ENV.llvm if MacOS.default_compiler == :clang and MacOS.clang_version.to_f <= 3.1
-
-    # Lion requires this flag in some cases
-    ENV.append "CFLAGS", "-D__APPLE_USE_RFC_3542" if 10.7 <= MACOS_VERSION
-
-    ENV.enable_warnings # -wall causes build to fail
-    system "./configure", "--disable-debug", "--prefix=#{prefix}", "--mandir=#{man}"
+    ENV.enable_warnings # -w causes build to fail
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make install"
   end
 end
