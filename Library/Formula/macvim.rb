@@ -12,7 +12,7 @@ class Macvim < Formula
   [
     ["--custom-icons", "Try to generate custom document icons."],
     ["--with-cscope", "Build with Cscope support."],
-    ["--override-system-vim", "Override system vim."],
+    ["--without-system-ruby", "Build without system ruby."],
   ]
   end
 
@@ -30,6 +30,10 @@ class Macvim < Formula
     # PPC support (which isn't needed in Homebrew-supported systems.)
     arch = MacOS.prefer_64_bit? ? 'x86_64' : 'i386'
     ENV['ARCHFLAGS'] = "-arch #{arch}"
+
+    # --with-ruby-command doesn't work
+    # https://github.com/adamv/homebrew-alt/issues/163
+    system "brew unlink ruby" unless ARGV.include? "--without-system-ruby"
 
     args = ["--with-features=huge",
             "--with-tlib=ncurses",
@@ -60,6 +64,9 @@ class Macvim < Formula
               "VIM_APP_DIR=#{prefix}"
     bin.install "src/MacVim/mvim"
 
+    # Relink ruby after make
+    system "brew link ruby" unless ARGV.include? "--without-system-ruby"
+
     # Create MacVim vimdiff, view, ex equivalents
     executables = %w[mvimdiff mview mvimex]
     executables += %w[vi vim vimdiff view vimex] if ARGV.include? "--override-system-vim"
@@ -70,7 +77,7 @@ class Macvim < Formula
     MacVim.app installed to:
       #{prefix}
 
-    To link the application to a normal Mac OS X location:
+    To link the application to ~/Applications:
         brew linkapps
     or:
         ln -s #{prefix}/MacVim.app /Applications
