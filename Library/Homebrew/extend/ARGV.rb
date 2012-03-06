@@ -103,6 +103,16 @@ module HomebrewArgvExtension
     return false
   end
 
+  # eg. `foo -ns -i --bar` has three switches, n, s and i
+  def switch? switch_character
+    return false if switch_character.length > 1
+    options_only.each do |arg|
+      next if arg[1..1] == '-'
+      return true if arg.include? switch_character
+    end
+    return false
+  end
+
   def usage
     require 'cmd/help'
     Homebrew.help_s
