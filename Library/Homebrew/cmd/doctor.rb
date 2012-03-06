@@ -795,6 +795,22 @@ def check_for_bad_python_symlink
   end
 end
 
+def check_for_outdated_homebrew
+  HOMEBREW_PREFIX.cd do
+    timestamp = if File.directory? ".git"
+      `git log -1 --format="%ct" HEAD`.to_i
+    else
+      (HOMEBREW_PREFIX/"Library").mtime.to_i
+    end
+
+    if Time.now.to_i - timestamp > 60 * 60 * 24 then <<-EOS.undent
+      Your Homebrew is outdated
+      You haven't updated for at least 24 hours, this is a long time in brewland!
+      EOS
+    end
+  end
+end
+
 end # end class Checks
 
 module Homebrew extend self
