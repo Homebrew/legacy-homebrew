@@ -44,7 +44,8 @@ class Formula
     @name=name
     validate_variable :name
 
-    @path = path.nil? ? nil : Pathname.new(path)
+    # If we got an explicit path, use that, else determine from the name
+    @path = path.nil? ? self.class.path(name) : Pathname.new(path)
 
     set_instance_variable 'version'
     @version ||= @spec_to_use.detect_version
@@ -83,14 +84,6 @@ class Formula
       head_prefix
     else
       prefix
-    end
-  end
-
-  def path
-    if @path.nil?
-      return self.class.path(name)
-    else
-      return @path
     end
   end
 
