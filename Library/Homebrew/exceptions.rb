@@ -98,17 +98,17 @@ class BuildError < Homebrew::InstallationError
       issues_url = ISSUES_URL
     end
 
-    ohai "Exit Status: #{e.exit_status}"
-    puts "https://github.com/#{repo}/blob/master/#{repo_path}/#{formula_name}.rb#L#{error_line}"
-    ohai "Environment"
-    puts Homebrew.config_s
-    ohai "Build Flags"
+    if ARGV.verbose?
+      ohai "Exit Status: #{e.exit_status}"
+      puts "https://github.com/#{repo}/blob/master/#{repo_path}/#{formula_name}.rb#L#{error_line}"
+    end
+    ohai "Build Environment"
+    Homebrew.dump_build_config
     puts %["--use-clang" was specified] if ARGV.include? '--use-clang'
     puts %["--use-llvm" was specified] if ARGV.include? '--use-llvm'
     puts %["--use-gcc" was specified] if ARGV.include? '--use-gcc'
     Homebrew.dump_build_env e.env
-    puts
-    onoe e
+    onoe "#{e.to_s.strip} (#{formula_name}.rb:#{error_line})"
     issues = GitHub.issues_for_formula formula_name
     if issues.empty?
       puts "If `brew doctor' does not help diagnose the issue, please report the bug:"
