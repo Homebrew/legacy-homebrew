@@ -23,6 +23,9 @@ class Mercurial < Formula
     # System-provided Python.
     ENV.minimal_optimization
 
+    # install the completion script
+    (prefix + 'etc/bash_completion.d').install 'contrib/bash_completion' => 'hg-completion.bash'
+
     # Force the binary install path to the Cellar
     inreplace "Makefile",
       "setup.py $(PURE) install",
