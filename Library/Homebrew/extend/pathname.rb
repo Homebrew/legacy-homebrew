@@ -100,6 +100,7 @@ class Pathname
 
   # extended to support common double extensions
   def extname
+    return $1 if to_s =~ /(\.bottle\.tar\.gz)$/
     /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
     return $1 if $1
     return File.extname(to_s)
