@@ -15,7 +15,7 @@ module Homebrew extend self
         exec_editor HOMEBREW_REPOSITORY
       end
     else
-      # Don't use ARGV.formulae as that will throw if the file doesn't parse
+      # Don't use ARGV.formulae! as that will throw if the file doesn't parse
       paths = ARGV.named.map do |name|
         HOMEBREW_REPOSITORY+"Library/Formula/#{Formula.canonical_name name}.rb"
       end

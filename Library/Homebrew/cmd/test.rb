@@ -2,7 +2,7 @@ module Homebrew extend self
   def test
     raise KegUnspecifiedError if ARGV.named.empty?
 
-    ARGV.formulae.each do |f|
+    ARGV.formulae!.each do |f|
       # Cannot test uninstalled formulae
       unless f.installed?
         puts "#{f.name} not installed"

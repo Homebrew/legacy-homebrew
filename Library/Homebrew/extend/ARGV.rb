@@ -9,8 +9,25 @@ module HomebrewArgvExtension
 
   def formulae
     require 'formula'
+    @formulae ||= downcased_unique_named.map do |name|
+      begin
+        Formula.factory name
+      rescue FormulaUnavailableError
+        nil
+      end
+    end.compact
+  end
+
+  def formulae!
+    require 'formula'
+    unless @formulae.nil? || unknown.empty?
+      raise FormulaUnavailableError.new(unknown.first)
+    end
     @formulae ||= downcased_unique_named.map{ |name| Formula.factory name }
-    return @formulae
+  end
+
+  def unknown
+    @unknown ||= named - formulae
   end
 
   def kegs

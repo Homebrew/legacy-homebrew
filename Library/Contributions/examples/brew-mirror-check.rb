@@ -35,7 +35,7 @@ MD5 sums.
       exit 0
     end
 
-    formulae = ARGV.formulae
+    formulae = ARGV.formulae!
     raise FormulaUnspecifiedError if formulae.empty?
 
     formulae.each do |f|
