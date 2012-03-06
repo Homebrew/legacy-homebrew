@@ -1,18 +1,11 @@
 require 'formula'
 
 class Portmidi < Formula
-  url 'http://downloads.sourceforge.net/project/portmedia/portmidi/200/portmidi-src-200.zip'
   homepage 'http://sourceforge.net/apps/trac/portmedia/wiki/portmidi'
+  url 'http://downloads.sourceforge.net/project/portmedia/portmidi/200/portmidi-src-200.zip'
   md5 '26053a105d938395227bb6ae1d78643b'
 
   depends_on 'cmake' => :build
-
-  def caveats
-    <<-EOS.undent
-      NOTE: "brew install -v portmidi" will fail! You must install
-      in non-verbose mode for this to succeed.
-    EOS
-  end
 
   def install
     # PATCH for Snow Leopard, see https://github.com/halfbyte/portmidi
