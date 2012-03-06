@@ -14,7 +14,13 @@ class ModWsgi < Formula
 
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
 
+    # We need apxs to specify the right compiler to its libtool, but
+    # doing so causes libtool to die unless this flag is also set
+    ENV['LTFLAGS'] = '--tag=CC'
+
     inreplace 'Makefile' do |s|
+      # APXS uses just "gcc" unless we specify CC this way
+      s.gsub! '$(APXS)', "$(APXS) -S CC=#{ENV.cc}"
       # Remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
       cflags = s.get_make_var("CFLAGS")
       cflags.gsub! "-Wc,'-arch ppc7400'", ""
