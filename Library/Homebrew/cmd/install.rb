@@ -11,7 +11,7 @@ module Homebrew extend self
       raise "No available formula for #{name}\n#{msg}" if msg
     end unless ARGV.force?
 
-    ARGV.formulae.each do |f|
+    ARGV.formulae!.each do |f|
       opoo "#{f} already installed" if f.linked_keg.directory?
     end unless ARGV.force?
 
@@ -21,7 +21,7 @@ module Homebrew extend self
       abort "Cowardly refusing to `sudo brew install'"
     end
 
-    install_formulae ARGV.formulae
+    install_formulae ARGV.formulae!
   end
 
   def check_ppc

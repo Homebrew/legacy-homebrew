@@ -11,7 +11,7 @@ module Homebrew extend self
         keg.uninstall
       end
     else
-      ARGV.formulae.each do |f|
+      ARGV.formulae!.each do |f|
         if f.rack.directory?
           puts "Uninstalling #{f}..."
           f.rack.children.each do |keg|

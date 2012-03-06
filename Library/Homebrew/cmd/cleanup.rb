@@ -15,7 +15,7 @@ module Homebrew extend self
       # seems like a good time to do some additional cleanup
       Homebrew.prune unless ARGV.include? '-n'
     else
-      ARGV.formulae.each do |f|
+      ARGV.formulae!.each do |f|
         cleanup_formula f
       end
     end

@@ -6,7 +6,7 @@ module Homebrew extend self
 
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
-    ARGV.formulae.all? do |f|
+    ARGV.formulae!.all? do |f|
       if ARGV.include? '--compact'
         puts f.versions * " "
       else

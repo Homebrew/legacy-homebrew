@@ -16,7 +16,7 @@ module Homebrew extend self
     elsif valid_url ARGV[0]
       info_formula Formula.factory(ARGV.shift)
     else
-      ARGV.formulae.each{ |f| info_formula f }
+      ARGV.formulae!.each{ |f| info_formula f }
     end
   end
 

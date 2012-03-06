@@ -10,7 +10,7 @@ module Homebrew extend self
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
     uses = Formula.all.select do |f|
-      ARGV.formulae.all? do |ff|
+      ARGV.formulae!.all? do |ff|
         # For each formula given, show which other formulas depend on it.
         # We only go one level up, ie. direct dependencies.
         f.deps.include? ff.name
