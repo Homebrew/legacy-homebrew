@@ -32,6 +32,22 @@ class Fontforge < Formula
       s.gsub! "ln -s /usr/local/bin/fontforge", "ln -s $(bindir)/fontforge"
     end
 
+    carbon_files_path = "/System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/CarbonCore.framework/Versions/Current/Headers/Files.h"
+    carbon_events_path = "/System/Library/Frameworks/Carbon.framework/Versions/Current/Frameworks/HIToolbox.framework/Versions/Current/Headers/CarbonEvents.h"
+
+    inreplace "fontforge/macbinary.c" do |s|
+      s.gsub! "/Developer/Headers/FlatCarbon/Files.h", carbon_files_path
+    end
+
+    inreplace "fontforge/startui.c" do |s|
+      s.gsub! "/Developer/Headers/FlatCarbon/CarbonEvents.h", carbon_events_path
+      s.gsub! "/Developer/Headers/FlatCarbon/Files.h", carbon_files_path
+    end
+
+    inreplace "gutils/giomime.c" do |s|
+      s.gsub! "/Developer/Headers/FlatCarbon/Files.h", carbon_files_path
+    end
+
     system "make"
     system "make install"
   end
