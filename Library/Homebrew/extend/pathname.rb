@@ -273,15 +273,10 @@ class Pathname
 
     self.dirname.mkpath
     Dir.chdir self.dirname do
-      # TODO use Ruby function so we get exceptions
-      # NOTE Ruby functions may work, but I had a lot of problems
-      rv = system 'ln', '-sf', src.relative_path_from(self.dirname), self.basename
-      unless rv and $? == 0
-        raise <<-EOS.undent
-          Could not create symlink #{to_s}.
-          Check that you have permissions on #{self.dirname}
-          EOS
-      end
+      # NOTE only system ln -s will create RELATIVE symlinks
+      system 'ln', '-s', src.relative_path_from(self.dirname), self.basename
+      # ln outputs useful error message for us
+      raise "Could not create symlink: #{to_s}." unless $?.success?
     end
   end
 
