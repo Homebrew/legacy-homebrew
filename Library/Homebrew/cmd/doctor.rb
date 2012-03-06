@@ -782,6 +782,17 @@ def check_for_enthought_python
   end
 end
 
+def check_for_bad_python_symlink
+  return unless system "/usr/bin/which -s python"
+  # Indeed Python --version outputs to stderr (WTF?)
+  `python --version 2>&1` =~ /Python (\d+)\./
+  unless $1 == "2" then <<-EOS.undent
+    python is symlinked to python#$1
+    This will confuse build scripts and in general lead to subtle breakage.
+    EOS
+  end
+end
+
 end # end class Checks
 
 module Homebrew extend self
