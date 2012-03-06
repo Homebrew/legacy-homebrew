@@ -718,7 +718,9 @@ def check_missing_deps
   s = []
   `brew missing`.each_line do |line|
     line =~ /(.*): (.*)/
-    s << $2 unless s.include? $2
+    $2.split.each do |dep|
+        s << dep unless s.include? dep
+    end
   end
   if s.length > 0 then <<-EOS.undent
     Some installed formula are missing dependencies.
@@ -778,6 +780,17 @@ def check_for_enthought_python
     This can cause build problems, as this software installs its own
     copies of iconv and libxml2 into directories that are picked up by
     other build systems.
+    EOS
+  end
+end
+
+def check_for_bad_python_symlink
+  return unless system "/usr/bin/which -s python"
+  # Indeed Python --version outputs to stderr (WTF?)
+  `python --version 2>&1` =~ /Python (\d+)\./
+  unless $1 == "2" then <<-EOS.undent
+    python is symlinked to python#$1
+    This will confuse build scripts and in general lead to subtle breakage.
     EOS
   end
 end

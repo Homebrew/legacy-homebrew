@@ -11,7 +11,7 @@ class Groovy < Formula
     rm_f Dir["bin/*.bat","bin/groovy.{icns,ico}"]
 
     prefix.install %w{ LICENSE.txt NOTICE.txt }
-    libexec.install %w[bin conf lib]
+    libexec.install %w[bin conf lib embeddable]
 
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end

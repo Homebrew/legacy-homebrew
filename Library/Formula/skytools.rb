@@ -6,7 +6,7 @@ class Skytools < Formula
   md5 '94f3391d5b3c3ac6c2edcbfbda705573'
 
   def install
-    unless `/usr/bin/which pg_config`.size > 0
+    unless which 'pg_config'
       opoo "No pg_config was detected."
       puts <<-EOS.undent
         pg_top requires postgresql in order to compile, but pg_config was not
