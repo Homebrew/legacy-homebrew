@@ -12,6 +12,14 @@ class Beanstalk < Formula
     {:p1 => "http://github.com/kr/beanstalkd/commit/80da772efeeaabb12893f52a93da74ca9e69206d.patch"}
   end
 
+  def patches
+    #by kr: fix cpu use on freebsd and darwin
+    #commit: https://github.com/kr/beanstalkd/commit/80da772efeeaabb12893f52a93da74ca9e69206d
+    #bug report: https://github.com/kr/beanstalkd/issues/96
+
+    { :p1 => "http://github.com/kr/beanstalkd/commit/80da772efeeaabb12893f52a93da74ca9e69206d.patch" }
+  end
+
   def install
     system "make install PREFIX=#{prefix}"
   end
