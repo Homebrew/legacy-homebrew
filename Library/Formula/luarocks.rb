@@ -4,8 +4,8 @@ def use_luajit?; ARGV.include? '--with-luajit'; end
 
 class Luarocks < Formula
   homepage 'http://luarocks.org'
-  url 'http://luarocks.org/releases/luarocks-2.0.7.1.tar.gz'
-  md5 '37003e5c78792e353acde684426bdeac'
+  url 'http://luarocks.org/releases/luarocks-2.0.8.tar.gz'
+  md5 '07cf84e352d86fe161f7b2ec43f360cc'
 
   depends_on use_luajit? ? 'luajit' : 'lua'
 

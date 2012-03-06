@@ -1,8 +1,5 @@
 require 'formula'
 
-# Require ec2-api-tools to get the base class
-require "#{File.dirname __FILE__}/ec2-api-tools.rb"
-
 class AutoScaling < AmazonWebServicesFormula
   version  '1.0.49.1'
   homepage 'http://aws.amazon.com/developertools/2535'
