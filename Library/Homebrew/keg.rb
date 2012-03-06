@@ -9,7 +9,7 @@ class Keg < Pathname
 
   # locale-specific directories have the form language[_territory][.codeset][@modifier]
   LOCALEDIR_RX = /(locale|man)\/([a-z]{2}|C|POSIX)(_[A-Z]{2})?(\.[a-zA-Z\-0-9]+(@.+)?)?/
-  INFOFILE_RX = %r[/share/info/[^.].*?\.info$]
+  INFOFILE_RX = %r[info/[^.].*?\.info$]
 
   # if path is a file in a keg then this will return the containing Keg object
   def self.for path
@@ -68,20 +68,23 @@ class Keg < Pathname
     # yeah indeed, you have to force anything you need in the main tree into
     # these dirs REMEMBER that *NOT* everything needs to be in the main tree
     link_dir('etc') {:mkpath}
-    link_dir('bin') {:skip}
-    link_dir('sbin') {:link}
+    link_dir('bin') { |path| :skip if path.directory? }
+    link_dir('sbin') { |path| :skip if path.directory? }
     link_dir('include') {:link}
 
     link_dir('share') do |path|
-      if path.to_s =~ LOCALEDIR_RX
-        :mkpath
-      elsif share_mkpaths.include? path.to_s
-        :mkpath
+      case path.to_s
+      when 'locale/locale.alias' then :skip
+      when INFOFILE_RX then :info if ENV['HOMEBREW_KEEP_INFO']
+      when LOCALEDIR_RX then :mkpath
+      when *share_mkpaths then :mkpath
+      else :link
       end
     end
 
     link_dir('lib') do |path|
       case path.to_s
+      when 'charset.alias' then :skip
       # pkg-config database gets explicitly created
       when 'pkgconfig' then :mkpath
       # lib/language folders also get explicitly created
@@ -131,10 +134,17 @@ protected
       dst.extend ObserverPathnameExtension
 
       if src.file?
-        # Do the symlink.
-        dst.make_relative_symlink src unless File.basename(src) == '.DS_Store'
-        # Install info file entries in the info directory file
-        dst.install_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
+        Find.prune if File.basename(src) == '.DS_Store'
+
+        case yield src.relative_path_from(root)
+        when :skip
+          Find.prune
+        when :info
+          dst.make_relative_symlink(src)
+          dst.install_info
+        else
+          dst.make_relative_symlink(src)
+        end
       elsif src.directory?
         # if the dst dir already exists, then great! walk the rest of the tree tho
         next if dst.directory? and not dst.symlink?
