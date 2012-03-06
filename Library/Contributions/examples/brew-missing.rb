@@ -29,7 +29,7 @@ def main
 
     unless missing_deps.empty?
       print "#{f.name}: " if formulae_to_check.size > 1
-      puts "#{missing_deps * ', '}"
+      puts "#{missing_deps * ' '}"
     end
   end
 end
