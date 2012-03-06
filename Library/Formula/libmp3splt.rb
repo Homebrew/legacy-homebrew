@@ -6,19 +6,21 @@ class Libmp3splt < Formula
   md5 '62025951f483334f14f1b9be58162094'
 
   depends_on 'pkg-config' => :build
-  depends_on 'automake' => :build
+  depends_on 'automake' => :build unless MacOS.lion?
   depends_on 'gettext'
   depends_on 'pcre'
   depends_on 'libid3tag'
   depends_on 'mad'
   depends_on 'libvorbis'
 
+  # autogen.sh calls `libtoolize`, while OS X installs under the name `glibtoolize`
+  # reported upstream at https://sourceforge.net/tracker/?func=detail&aid=3497957&group_id=55130&atid=476061
   def patches
     DATA
   end
 
   def install
-    if !(MacOS.version >= 10.7)
+    if !MacOS.lion?
       system "./autogen.sh"
       system "autoconf"
     end
