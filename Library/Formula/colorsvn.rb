@@ -8,6 +8,7 @@ class Colorsvn < Formula
   def install
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}", "--sysconfdir=#{etc}"
     inreplace "colorsvn.1", "/etc", etc
+    inreplace "colorsvn-original", "/etc", etc
     system "make"
     system "make install"
   end
