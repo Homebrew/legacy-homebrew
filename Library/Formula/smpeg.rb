@@ -7,6 +7,11 @@ class Smpeg < Formula
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
 
+  if MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
     system "./autogen.sh"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
