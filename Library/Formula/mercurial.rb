@@ -10,7 +10,10 @@ class Mercurial < Formula
   depends_on 'docutils' => :python if ARGV.build_head? or ARGV.include? "--doc"
 
   def options
-    [["--doc", "build the documentation. Depends on 'docutils' module."]]
+  [
+    ["--doc", "build the documentation. Depends on 'docutils' module."],
+    ["--hard-code-python", "keep the hard-coded Python invocation."],
+  ]
   end
 
   def patches
@@ -46,7 +49,8 @@ class Mercurial < Formula
     bin.install_symlink libexec+'hg'
 
     # Remove the hard-coded python invocation from hg
-    inreplace bin+'hg', %r[#!/.*/python(/.*)?], '#!/usr/bin/env python'
+    inreplace bin+'hg', %r[#!/.*/python(/.*)?], '#!/usr/bin/env python' \
+      if not ARGV.include? "--hard-code-python"
 
     # Install some contribs
     bin.install 'contrib/hgk'
