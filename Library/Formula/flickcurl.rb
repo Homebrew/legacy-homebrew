@@ -6,8 +6,7 @@ class Flickcurl < Formula
   md5 '33106156f9a9e538b5787f92db717f5d'
 
   depends_on 'pkg-config' => :build
-  depends_on 'libxml2'  => :build
-  depends_on 'curl' => :build
+  depends_on 'libxml2'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
@@ -16,6 +15,6 @@ class Flickcurl < Formula
   end
 
   def test
-    system "/usr/local/Cellar/flickcurl/1.22/bin/flickcurl -h"
+    system "#{bin}/flickcurl -h"
   end
 end
