@@ -31,8 +31,16 @@ module HomebrewArgvExtension
       linked_keg_ref = HOMEBREW_REPOSITORY/"Library/LinkedKegs"/name
 
       if not linked_keg_ref.symlink?
-        raise MultipleVersionsInstalledError.new(name) if dirs.length > 1
-        Keg.new(dirs.first)
+        if dirs.length == 1
+          Keg.new(dirs.first)
+        else
+          prefix = Formula.factory(canonical_name).prefix
+          if prefix.directory?
+            Keg.new(prefix)
+          else
+            raise MultipleVersionsInstalledError.new(name)
+          end
+        end
       else
         Keg.new(linked_keg_ref.realpath)
       end
@@ -99,6 +107,16 @@ module HomebrewArgvExtension
       return true if arg == flag
       next if arg[1..1] == '-'
       return true if arg.include? flag[2..2]
+    end
+    return false
+  end
+
+  # eg. `foo -ns -i --bar` has three switches, n, s and i
+  def switch? switch_character
+    return false if switch_character.length > 1
+    options_only.each do |arg|
+      next if arg[1..1] == '-'
+      return true if arg.include? switch_character
     end
     return false
   end

@@ -1,8 +1,7 @@
 require 'fileutils'
 
 # We enhance FileUtils to make our Formula code more readable.
-module Homebrew::FileUtils
-  include FileUtils
+module FileUtils extend self
 
   # Create a temporary directory then yield. When the block returns,
   # recursively delete the temporary directory.
@@ -29,7 +28,7 @@ module Homebrew::FileUtils
 
   # A version of mkdir that also changes to that folder in a block.
   def mkdir name, &block
-    super(name)
+    FileUtils.mkdir(name)
     if block_given?
       chdir name do
         yield
