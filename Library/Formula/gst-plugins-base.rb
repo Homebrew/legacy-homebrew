@@ -19,7 +19,6 @@ class GstPluginsBase < Formula
   depends_on 'libvorbis' => :optional
 
   def install
-    system "autoreconf -f -i" unless File.exist? "configure"
     # gnome-vfs turned off due to lack of formula for it. MacPorts has it.
     system "./configure", "--prefix=#{prefix}", "--disable-debug",
       "--disable-dependency-tracking", "--enable-experimental",

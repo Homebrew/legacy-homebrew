@@ -1,13 +1,11 @@
 require 'formula'
 
 class Tarsnap < Formula
-  url 'https://www.tarsnap.com/download/tarsnap-autoconf-1.0.31.tgz'
   homepage 'http://www.tarsnap.com/'
-  sha256 '3b461e1e76b92c1538a6322d8dbaa8e5285dae2029b4470357cb57e321625d95'
+  url 'https://www.tarsnap.com/download/tarsnap-autoconf-1.0.32.tgz'
+  sha256 '8b7c7de5277e6cac55040e0d0e0c8b0952aa77278f7e14f05f00d6aef46d265d'
 
   depends_on 'xz' => :optional
-
-  fails_with_llvm "Compilation hangs."
 
   def install
     system "./configure", "--disable-dependency-tracking",

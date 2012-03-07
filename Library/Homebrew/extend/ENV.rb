@@ -9,6 +9,9 @@ module HomebrewEnvExtension
     delete('CLICOLOR_FORCE') # autotools doesn't like this
     remove_cc_etc
 
+    # make any aclocal stuff installed in Homebrew available
+    ENV['ACLOCAL_PATH'] = "#{HOMEBREW_PREFIX}/share/aclocal" if MacOS.xcode_version < "4.3"
+
     self['MAKEFLAGS'] = "-j#{self.make_jobs}"
 
     unless HOMEBREW_PREFIX.to_s == '/usr/local'
@@ -20,7 +23,7 @@ module HomebrewEnvExtension
     end
 
     # Os is the default Apple uses for all its stuff so let's trust them
-    self['CFLAGS'] = self['CXXFLAGS'] = "-Os #{SAFE_CFLAGS_FLAGS}"
+    set_cflags "-Os #{SAFE_CFLAGS_FLAGS}"
 
     # set us up for the user's compiler choice
     self.send self.compiler
@@ -94,7 +97,7 @@ module HomebrewEnvExtension
   def xcrun tool
     if File.executable? "/usr/bin/#{tool}"
       "/usr/bin/#{tool}"
-    elsif system "/usr/bin/xcrun -find #{tool} 2>1 1>/dev/null"
+    elsif not MacOS.xctools_fucked? and system "/usr/bin/xcrun -find #{tool} 1>/dev/null 2>&1"
       # xcrun was provided first with Xcode 4.3 and allows us to proxy
       # tool usage thus avoiding various bugs
       "/usr/bin/xcrun #{tool}"
@@ -126,7 +129,7 @@ module HomebrewEnvExtension
     ENV['CXX'] = `/usr/bin/xcrun -find #{$1}`.chomp if $1
   end
 
-  def gcc args = {}
+  def gcc
     # Apple stopped shipping gcc-4.2 with Xcode 4.2
     # However they still provide a gcc symlink to llvm
     # But we don't want LLVM of course.
@@ -157,12 +160,13 @@ module HomebrewEnvExtension
     @compiler = :llvm
   end
 
-  def clang args = {}
+  def clang
     self['CC']  = xcrun "clang"
     self['CXX'] = xcrun "clang++"
     replace_in_cflags(/-Xarch_i386 (-march=\S*)/, '\1')
     # Clang mistakenly enables AES-NI on plain Nehalem
     set_cpu_cflags 'native', :nehalem => 'native -Xclang -target-feature -Xclang -aes'
+    append_to_cflags '-Qunused-arguments'
     @compiler = :clang
   end
 
@@ -253,6 +257,7 @@ Please take one of the following actions:
   # we've seen some packages fail to build when warnings are disabled!
   def enable_warnings
     remove_from_cflags '-w'
+    remove_from_cflags '-Qunused-arguments'
   end
 
   # Snow Leopard defines an NCURSES value the opposite of most distros
@@ -313,6 +318,8 @@ Please take one of the following actions:
   def append_to_cflags f
     append 'CFLAGS', f
     append 'CXXFLAGS', f
+    append 'OBJCFLAGS', f
+    append 'OBJCXXFLAGS', f
   end
 
   def remove key, value
@@ -324,11 +331,20 @@ Please take one of the following actions:
   def remove_from_cflags f
     remove 'CFLAGS', f
     remove 'CXXFLAGS', f
+    remove 'OBJCFLAGS', f
+    remove 'OBJCXXFLAGS', f
   end
 
   def replace_in_cflags before, after
-    %w{CFLAGS CXXFLAGS}.each do |key|
+    %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}.each do |key|
       self[key] = self[key].sub before, after if self[key]
+    end
+  end
+
+  # Convenience method to set all C compiler flags in one shot.
+  def set_cflags f
+    %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}.each do |key|
+      self[key] = f
     end
   end
 
@@ -340,14 +356,16 @@ Please take one of the following actions:
     remove_from_cflags %r{-mssse3}
     remove_from_cflags %r{-msse4(\.\d)?}
     append_to_cflags xarch unless xarch.empty?
-    # Don't set -msse3 and older flags because -march does that for us
+
     if ARGV.build_bottle?
-      if map.has_key?(:bottle)
-        append_to_cflags '-mtune=' + map.fetch(:bottle)
-      end
+      append_to_cflags '-mtune=' + map.fetch(:bottle) if map.has_key? :bottle
     else
+      # Don't set -msse3 and older flags because -march does that for us
       append_to_cflags '-march=' + map.fetch(Hardware.intel_family, default)
     end
+
+    # not really a 'CPU' cflag, but is only used with clang
+    remove_from_cflags '-Qunused-arguments'
   end
 
   # actually c-compiler, so cc would be a better name
@@ -385,7 +403,7 @@ Please take one of the following actions:
   end
 
   def remove_cc_etc
-    keys = %w{CC CXX LD CPP CFLAGS CXXFLAGS LDFLAGS CPPFLAGS}
+    keys = %w{CC CXX LD CPP CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS}
     removed = Hash[*keys.map{ |key| [key, ENV[key]] }.flatten]
     keys.each do |key|
       ENV[key] = nil

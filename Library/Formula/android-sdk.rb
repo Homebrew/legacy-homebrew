@@ -7,7 +7,7 @@ class AndroidSdk < Formula
   version 'r16'
 
   def self.var_dirs
-    %w[platforms samples temp add-ons bin]
+    %w[platforms samples temp add-ons]
     # TODO docs, google-market_licensing and platform-tools
     # See the long comment below for the associated problems
   end
@@ -53,16 +53,17 @@ class AndroidSdk < Formula
 
     You will have to install the platform-tools EVERY time this formula updates.
     If you want to try and fix this then see the comment in this formula.
+
+    You may need to add the following to your .bashrc:
+
+       export ANDROID_SDK_ROOT=#{prefix}
     EOS
   end
 
-  # The `android' tool insists on deleting /usr/local/Cellar/android-sdl/rx/platform-tools
+  # The `android' tool insists on deleting #{prefix}/platform-tools
   # and then installing the new one. So it is impossible for us to redirect
   # the SDK location to var so that the platform-tools don't have to be
-  # freshly installed EVERY FUCKING time the base SDK updates.
-  # My disgust at Google's ineptitude here knows NO bounds. I can only LOL.
-  # And I do LOL. A lot. In Google's general direction. I can't stop LOLing.
-  # In fact, I may have LOLd myself into insanity.
+  # freshly installed EVERY DANG time the base SDK updates.
 
   # Ideas: make android a script that calls the actual android tool, but after
   # that tool exits it repairs the directory locations?

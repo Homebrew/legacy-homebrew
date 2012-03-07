@@ -15,14 +15,15 @@ class Gtkx < Formula
   depends_on 'jasper' => :optional
   depends_on 'atk' => :optional
 
-  fails_with_llvm "Undefined symbols when linking", :build => "2326" unless MacOS.lion?
+  fails_with_llvm "Undefined symbols when linking", :build => 2326
 
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-glibtest",
-                          "--disable-introspection"
+                          "--disable-introspection",
+                          "--disable-visibility"
     system "make install"
   end
 

@@ -17,7 +17,7 @@ class Lilypond < Formula
   skip_clean :all
 
   def install
-    abort caveats unless quiet_system "/usr/bin/which -s mpost"
+    abort caveats unless which "mpost"
 
     gs = Formula.factory('ghostscript')
     system "./configure", "--prefix=#{prefix}",
