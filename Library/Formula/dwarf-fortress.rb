@@ -1,10 +1,10 @@
 require 'formula'
 
 class DwarfFortress < Formula
-  url 'http://www.bay12games.com/dwarves/df_34_02_osx.tar.bz2'
+  url 'http://www.bay12games.com/dwarves/df_34_05_osx.tar.bz2'
   homepage 'http://www.bay12games.com/dwarves/'
-  md5 'a3ca35ec3d74f1c179db48a70be648b5'
-  version '0.34.02'
+  md5 '470dd5b1f75bdc2f567a10127b3708bf'
+  version '0.34.05'
 
   def script; <<-EOS.undent
     #!/bin/sh
