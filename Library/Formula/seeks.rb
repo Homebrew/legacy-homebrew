@@ -24,5 +24,6 @@ class Seeks < Formula
     system "make"
     system "make install"
     system "sed -i -e 's/^#\(activated-plugin httpserv\)$/\1/' #{prefix}/etc/config"
+    system "sed -i -e 's/^# automatic-proxy-disable 1$/automatic-proxy-disable 0/' #{prefix}/etc/config"
   end
 end
