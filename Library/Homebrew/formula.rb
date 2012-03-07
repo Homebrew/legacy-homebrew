@@ -6,7 +6,7 @@ require 'extend/fileutils'
 
 # Derive and define at least @url, see Library/Formula for examples
 class Formula
-  include Homebrew::FileUtils
+  include FileUtils
 
   attr_reader :name, :path, :url, :version, :homepage, :specs, :downloader
   attr_reader :standard, :unstable
