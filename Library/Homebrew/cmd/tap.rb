@@ -21,21 +21,28 @@ module Homebrew extend self
     raise "Already tapped!" if tapd.directory?
     abort unless system "git clone https://github.com/#{user}/homebrew-#{repo} #{tapd}"
 
-    gitignores = (HOMEBREW_LIBRARY/"Formula/.gitignore").read.split rescue []
+    files = []
+    tapd.find_formula{ |file| files << Pathname.new("#{user}-#{repo}").join(file) }
+    link_tap_formula(files)
+  end
 
-    cd HOMEBREW_LIBRARY/"Formula"
-    tapd.find_formula do |relative_pathname|
-      # using the system ln is the only way to get relative symlinks
-      system "ln -s ../Taps/#{user}-#{repo}/#{relative_pathname} 2>/dev/null"
-      if $?.success?
-        gitignores << relative_pathname.basename.to_s
-      else
-        opoo "#{relative_pathname.basename('.rb')} conflicts"
+  def link_tap_formula formulae
+    ignores = (HOMEBREW_LIBRARY/"Formula/.gitignore").read.split rescue []
+
+    cd HOMEBREW_LIBRARY/"Formula" do
+      formulae.each do |formula|
+        # using the system ln is the only way to get relative symlinks
+        system "ln -s ../Taps/#{formula} 2>/dev/null"
+        if $?.success?
+          ignores << formula.basename.to_s
+        else
+          opoo "#{formula.basename('.rb')} conflicts"
+        end
       end
     end
 
     tf = Tempfile.new("brew-tap")
-    tf.write(gitignores.uniq.join("\n"))
+    tf.write(ignores.uniq.join("\n"))
     tf.close
     mv tf.path, "#{HOMEBREW_LIBRARY}/Formula/.gitignore"
   end
