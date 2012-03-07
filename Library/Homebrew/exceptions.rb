@@ -42,10 +42,7 @@ module Homebrew
   end
 end
 
-class FormulaAlreadyInstalledError < Homebrew::InstallationError
-  def message
-    "Formula already installed: #{formula}"
-  end
+class CannotInstallFormulaError < RuntimeError
 end
 
 class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError
