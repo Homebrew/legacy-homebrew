@@ -51,14 +51,19 @@ For the full command list, see the COMMANDS section.
   * `cat` <formula>:
     Display the source to <formula>.
 
-  * `cleanup [--force] [-n]` [<formulae>]:
+  * `cleanup [--force] [-ns]` [<formulae>]:
     For all installed or specific formulae, remove any older versions from the
     cellar. By default, does not remove out-of-date keg-only brews, as other
-    software may link directly to specific versions.
+    software may link directly to specific versions. In addition old downloads from
+    the Homebrew download-cache are deleted.
 
     If `--force` is passed, remove out-of-date keg-only brews as well.
 
     If `-n` is passed, show what would be removed, but do not actually remove anything.
+
+    If `-s` is passed, scrubs the cache, removing downloads for even the latest
+    versions of formula. Note downloads for any installed formula will still not be
+    deleted. If you want to delete those too: `rm -rf $(brew --cache)`
 
   * `create [--autotools|--cmake] [--no-fetch]` <URL>:
     Generate a formula for the downloadable file at <URL> and open it in

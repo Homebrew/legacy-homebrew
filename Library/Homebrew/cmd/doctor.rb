@@ -349,6 +349,11 @@ def check_xcode_select_path
   path = `xcode-select -print-path 2>/dev/null`.chomp
   unless File.directory? path and File.file? "#{path}/usr/bin/xcodebuild"
     # won't guess at the path they should use because it's too hard to get right
+    # We specify /Applications/Xcode.app/Contents/Developer even though
+    # /Applications/Xcode.app should work because people don't install the new CLI
+    # tools and then it doesn't work. Lets hope the location doesn't change in the
+    # future.
+
     <<-EOS.undent
       Your Xcode is configured with an invalid path.
       You should change it to the correct path. Please note that there is no correct
@@ -357,7 +362,7 @@ def check_xcode_select_path
       these is (probably) what you want:
 
           sudo xcode-select -switch /Developer
-          sudo xcode-select -switch /Applications/Xcode.app
+          sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
     EOS
   end
 end
@@ -718,7 +723,9 @@ def check_missing_deps
   s = []
   `brew missing`.each_line do |line|
     line =~ /(.*): (.*)/
-    s << $2 unless s.include? $2
+    $2.split.each do |dep|
+        s << dep unless s.include? dep
+    end
   end
   if s.length > 0 then <<-EOS.undent
     Some installed formula are missing dependencies.
@@ -779,6 +786,33 @@ def check_for_enthought_python
     copies of iconv and libxml2 into directories that are picked up by
     other build systems.
     EOS
+  end
+end
+
+def check_for_bad_python_symlink
+  return unless system "/usr/bin/which -s python"
+  # Indeed Python --version outputs to stderr (WTF?)
+  `python --version 2>&1` =~ /Python (\d+)\./
+  unless $1 == "2" then <<-EOS.undent
+    python is symlinked to python#$1
+    This will confuse build scripts and in general lead to subtle breakage.
+    EOS
+  end
+end
+
+def check_for_outdated_homebrew
+  HOMEBREW_PREFIX.cd do
+    timestamp = if File.directory? ".git"
+      `git log -1 --format="%ct" HEAD`.to_i
+    else
+      (HOMEBREW_PREFIX/"Library").mtime.to_i
+    end
+
+    if Time.now.to_i - timestamp > 60 * 60 * 24 then <<-EOS.undent
+      Your Homebrew is outdated
+      You haven't updated for at least 24 hours, this is a long time in brewland!
+      EOS
+    end
   end
 end
 

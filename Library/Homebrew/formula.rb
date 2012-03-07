@@ -1,7 +1,7 @@
 require 'download_strategy'
-require 'fileutils'
 require 'formula_support'
 require 'hardware'
+require 'extend/fileutils'
 
 
 # Derive and define at least @url, see Library/Formula for examples
@@ -44,7 +44,8 @@ class Formula
     @name=name
     validate_variable :name
 
-    @path = path.nil? ? nil : Pathname.new(path)
+    # If we got an explicit path, use that, else determine from the name
+    @path = path.nil? ? self.class.path(name) : Pathname.new(path)
 
     set_instance_variable 'version'
     @version ||= @spec_to_use.detect_version
@@ -86,14 +87,6 @@ class Formula
     end
   end
 
-  def path
-    if @path.nil?
-      return self.class.path(name)
-    else
-      return @path
-    end
-  end
-
   def prefix
     validate_variable :name
     validate_variable :version
@@ -127,16 +120,6 @@ class Formula
   # plist name, i.e. the name of the launchd service
   def plist_name; 'homebrew.mxcl.'+name end
   def plist_path; prefix+(plist_name+'.plist') end
-
-  # A version of mkdir that also changes to that folder in a block
-  def mkdir name, &block
-    FileUtils.mkdir name
-    if block_given?
-      FileUtils.chdir name do
-        yield
-      end
-    end
-  end
 
   # Use the @spec_to_use to detect the download strategy.
   # Can be overriden to force a custom download strategy
@@ -198,7 +181,7 @@ class Formula
     validate_variable :name
     validate_variable :version
 
-    handle_llvm_failure(fails_with_llvm?) if fails_with_llvm?
+    fails_with_llvm?.handle_failure if fails_with_llvm?
 
     stage do
       begin
@@ -261,40 +244,6 @@ class Formula
   # less consistent and the standard parameters are more memorable.
   def std_cmake_parameters
     "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None -Wno-dev"
-  end
-
-  def handle_llvm_failure llvm
-    if ENV.compiler == :llvm
-      # version 2336 is the latest version as of Xcode 4.2, so it is the
-      # latest version we have tested against so we will switch to GCC and
-      # bump this integer when Xcode 4.3 is released. TODO do that!
-      if llvm.build.to_i >= 2336
-        if MacOS.xcode_version < "4.2"
-          opoo "Formula will not build with LLVM, using GCC"
-          ENV.gcc
-        else
-          opoo "Formula will not build with LLVM, trying Clang"
-          ENV.clang
-        end
-        return
-      end
-      opoo "Building with LLVM, but this formula is reported to not work with LLVM:"
-      puts
-      puts llvm.reason
-      puts
-      puts <<-EOS.undent
-        We are continuing anyway so if the build succeeds, please open a ticket with
-        the following information: #{MacOS.llvm_build_version}-#{MACOS_VERSION}. So
-        that we can update the formula accordingly. Thanks!
-        EOS
-      puts
-      if MacOS.xcode_version < "4.2"
-        puts "If it doesn't work you can: brew install --use-gcc"
-      else
-        puts "If it doesn't work you can try: brew install --use-clang"
-      end
-      puts
-    end
   end
 
   def self.class_s name
@@ -441,6 +390,7 @@ class Formula
   end
 
 protected
+
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
@@ -485,33 +435,8 @@ protected
     raise BuildError.new(self, cmd, args, $?)
   end
 
-private
-  # Create a temporary directory then yield. When the block returns,
-  # recursively delete the temporary directory.
-  def mktemp
-    # I used /tmp rather than `mktemp -td` because that generates a directory
-    # name with exotic characters like + in it, and these break badly written
-    # scripts that don't escape strings before trying to regexp them :(
+public
 
-    # If the user has FileVault enabled, then we can't mv symlinks from the
-    # /tmp volume to the other volume. So we let the user override the tmp
-    # prefix if they need to.
-    tmp_prefix = ENV['HOMEBREW_TEMP'] || '/tmp'
-    tmp=Pathname.new `/usr/bin/mktemp -d #{tmp_prefix}/homebrew-#{name}-#{version}-XXXX`.strip
-    raise "Couldn't create build sandbox" if not tmp.directory? or $? != 0
-    begin
-      wd=Dir.pwd
-      Dir.chdir tmp
-      yield
-    ensure
-      Dir.chdir wd
-      tmp.rmtree
-    end
-  end
-
-  CHECKSUM_TYPES=[:md5, :sha1, :sha256].freeze
-
-  public
   # For brew-fetch and others.
   def fetch
     downloader = @downloader
@@ -571,7 +496,9 @@ EOF
     end
   end
 
-  private
+private
+
+  CHECKSUM_TYPES=[:md5, :sha1, :sha256].freeze
 
   def stage
     fetched, downloader = fetch
@@ -660,10 +587,9 @@ EOF
   end
 
   def set_instance_variable(type)
-    unless instance_variable_defined? "@#{type}"
-      class_value = self.class.send(type)
-      instance_variable_set("@#{type}", class_value) if class_value
-    end
+    return if instance_variable_defined? "@#{type}"
+    class_value = self.class.send(type)
+    instance_variable_set("@#{type}", class_value) if class_value
   end
 
   def method_added method
@@ -710,11 +636,8 @@ EOF
 
     def devel &block
       raise "url and md5 must be specified in a block" unless block_given?
-
       if ARGV.build_devel?
-        # clear out mirrors from the stable release
-        @mirrors = nil
-
+        @mirrors = nil # clear out mirrors from the stable release
         instance_eval &block
       end
     end
@@ -797,17 +720,4 @@ EOF
   end
 end
 
-# See youtube-dl.rb for an example
-class ScriptFileFormula < Formula
-  def install
-    bin.install Dir['*']
-  end
-end
-
-# See flac.rb for an example
-class GithubGistFormula < ScriptFileFormula
-  def initialize name='__UNKNOWN__', path=nil
-    super name, path
-    @version=File.basename(File.dirname(url))[0,6]
-  end
-end
+require 'formula_specialties'
