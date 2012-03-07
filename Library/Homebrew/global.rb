@@ -9,15 +9,26 @@ ARGV.extend(HomebrewArgvExtension)
 HOMEBREW_VERSION = '0.8.1'
 HOMEBREW_WWW = 'http://mxcl.github.com/homebrew/'
 
-HOMEBREW_CACHE = if ENV['HOMEBREW_CACHE']
-  Pathname.new(ENV['HOMEBREW_CACHE'])
-elsif Process.uid == 0
-  # technically this is not the correct place, this cache is for *all users*
-  # so in that case, maybe we should always use it, root or not?
-  Pathname.new("/Library/Caches/Homebrew")
-else
-  Pathname.new("~/Library/Caches/Homebrew").expand_path
+def cache
+  if ENV['HOMEBREW_CACHE']
+    Pathname.new(ENV['HOMEBREW_CACHE'])
+  else
+    root_library = Pathname.new("/Library/Caches/Homebrew")
+    if Process.uid == 0
+      root_library
+    else
+      home_library = Pathname.new("~/Library/Caches/Homebrew").expand_path
+      if not home_library.writable?
+        root_library
+      else
+        home_library
+      end
+    end
+  end
 end
+
+HOMEBREW_CACHE = cache
+undef cache
 
 # Where brews installed via URL are cached
 HOMEBREW_CACHE_FORMULA = HOMEBREW_CACHE+"Formula"
