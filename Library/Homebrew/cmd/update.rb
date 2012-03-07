@@ -1,3 +1,5 @@
+require 'cmd/tap'
+
 module Homebrew extend self
 
   def update
@@ -14,6 +16,7 @@ module Homebrew extend self
     master_updater.pull!
     report.merge!(master_updater.report)
 
+    new_files = []
     Dir["Library/Taps/*"].each do |tapd|
       cd tapd do
         updater = Updater.new
@@ -23,6 +26,7 @@ module Homebrew extend self
         end
       end
     end
+    Homebrew.link_tap_formula(report.new_tapped_formula)
 
     if report.empty?
       puts "Already up-to-date."
@@ -115,6 +119,14 @@ class Report < Hash
     dump_formula_report :R, "Renamed Formula"
 #    dump_new_commands
 #    dump_deleted_commands
+  end
+
+  def new_tapped_formula
+    fetch(:A, []).map do |path|
+      case path when %r{^Library/Taps(/\w+-\w+/.*)}
+        Pathname.new($1)
+      end
+    end.compact
   end
 
   def select_formula key
