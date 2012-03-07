@@ -91,14 +91,19 @@ class FormulaInstaller
   end
 
   def install_dependency dep
+    outdated_keg = Keg.new(dep.linked_keg.realpath) rescue nil
+
     fi = FormulaInstaller.new dep
     fi.ignore_deps = true
     fi.show_header = false
     oh1 "Installing #{f} dependency: #{dep}"
+    outdated_keg.unlink if outdated_keg
     fi.install
-    Keg.new(dep.linked_keg.realpath).unlink if dep.linked_keg.directory?
     fi.caveats
     fi.finish
+  ensure
+    # restore previous installation state if build failed
+    outdated_keg.link if outdated_keg and not dep.installed? rescue nil
   end
 
   def caveats
