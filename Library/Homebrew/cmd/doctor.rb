@@ -349,6 +349,11 @@ def check_xcode_select_path
   path = `xcode-select -print-path 2>/dev/null`.chomp
   unless File.directory? path and File.file? "#{path}/usr/bin/xcodebuild"
     # won't guess at the path they should use because it's too hard to get right
+    # We specify /Applications/Xcode.app/Contents/Developer even though
+    # /Applications/Xcode.app should work because people don't install the new CLI
+    # tools and then it doesn't work. Lets hope the location doesn't change in the
+    # future.
+
     <<-EOS.undent
       Your Xcode is configured with an invalid path.
       You should change it to the correct path. Please note that there is no correct
@@ -357,7 +362,7 @@ def check_xcode_select_path
       these is (probably) what you want:
 
           sudo xcode-select -switch /Developer
-          sudo xcode-select -switch /Applications/Xcode.app
+          sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
     EOS
   end
 end
