@@ -83,7 +83,7 @@ begin
     Homebrew.send cmd.to_s.gsub('-', '_')
   else
     # Check for git commands
-    if %w[branch checkout pull push rebase reset].include? cmd
+    if %w[branch checkout push rebase reset].include? cmd
       onoe "Unknown command: #{cmd} (did you mean `git #{cmd}'?)"
       exit 1
     else
