@@ -11,10 +11,6 @@ module Homebrew extend self
       raise "No available formula for #{name}\n#{msg}" if msg
     end unless ARGV.force?
 
-    ARGV.formulae.each do |f|
-      opoo "#{f} already installed" if f.linked_keg.directory?
-    end unless ARGV.force?
-
     if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
       # note we only abort if Homebrew is *not* installed as sudo and the user
       # calls brew as root. The fix is to chown brew to root.
@@ -84,29 +80,16 @@ module Homebrew extend self
     unless formulae.empty?
       perform_preinstall_checks
       formulae.each do |f|
-        # Check formula status and skip if necessary---a formula passed on the
-        # command line may have been installed to satisfy a dependency.
-        next if f.installed? unless ARGV.force?
-
-        # Building head-only without --HEAD is an error
-        if not ARGV.build_head? and f.standard.nil?
-          raise "This is a head-only formula; install with `brew install --HEAD #{f.name}`"
-        end
-
-        # Building stable-only with --HEAD is an error
-        if ARGV.build_head? and f.unstable.nil?
-           raise "No head is defined for #{f.name}"
-        end
-
         begin
           fi = FormulaInstaller.new(f)
           fi.install
           fi.caveats
           fi.finish
-        rescue FormulaAlreadyInstalledError => e
-          opoo e.message
+        rescue CannotInstallFormulaError => e
+          onoe e.message
         end
       end
     end
   end
+
 end
