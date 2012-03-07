@@ -100,6 +100,7 @@ class Pathname
 
   # extended to support common double extensions
   def extname
+    return $1 if to_s =~ /(\.bottle\.tar\.gz)$/
     /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
     return $1 if $1
     return File.extname(to_s)
@@ -270,6 +271,8 @@ class Pathname
   # perhaps confusingly, this Pathname object becomes the symlink pointing to
   # the src paramter.
   def make_relative_symlink src
+    src = Pathname.new(src) unless src.kind_of? Pathname
+
     self.dirname.mkpath
     Dir.chdir self.dirname do
       # TODO use Ruby function so we get exceptions

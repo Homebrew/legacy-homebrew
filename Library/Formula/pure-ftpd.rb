@@ -7,7 +7,9 @@ class PureFtpd < Formula
 
   def install
     args = ["--disable-dependency-tracking",
-            "--prefix=#{prefix}", "--mandir=#{man}", "--sysconfdir=#{etc}",
+            "--prefix=#{prefix}",
+            "--mandir=#{man}",
+            "--sysconfdir=#{etc}",
             "--with-pam",
             "--with-altlog",
             "--with-puredb",
@@ -22,8 +24,8 @@ class PureFtpd < Formula
             "--with-tls",
             "--with-bonjour"]
 
-    args << "--with-pgsql" if `/usr/bin/which pg_config`.size > 0
-    args << "--with-mysql" if `/usr/bin/which mysql`.size > 0
+    args << "--with-pgsql" if which 'pg_config'
+    args << "--with-mysql" if which 'mysql'
 
     system "./configure", *args
     system "make install"
@@ -31,25 +33,23 @@ class PureFtpd < Formula
     plist_path.chmod 0644
   end
 
-  def caveats
-    <<-EOS.undent
+  def caveats; <<-EOS.undent
     If this is your first install, automatically load on login with:
-        mkdir -p ~/Library/LaunchAgents
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+      mkdir -p ~/Library/LaunchAgents
+      cp #{plist_path} ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     If this is an upgrade and you already have the #{plist_path.basename} loaded:
-        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+      launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+      cp #{plist_path} ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-      To start pure-ftpd manually:
-        pure-ftpd <options>
+    To start pure-ftpd manually:
+      pure-ftpd <options>
     EOS
   end
 
-  def startup_plist
-    return <<-EOPLIST
+  def startup_plist; <<-EOPLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">

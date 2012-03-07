@@ -1,6 +1,7 @@
 require 'download_strategy'
-require 'fileutils'
 require 'formula_support'
+require 'hardware'
+require 'extend/fileutils'
 
 
 # Derive and define at least @url, see Library/Formula for examples
@@ -10,6 +11,10 @@ class Formula
   attr_reader :name, :path, :url, :version, :homepage, :specs, :downloader
   attr_reader :standard, :unstable
   attr_reader :bottle_url, :bottle_sha1, :head
+
+  # The build folder, usually in /tmp.
+  # Will only be non-nil during the stage method.
+  attr_reader :buildpath
 
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
@@ -39,7 +44,8 @@ class Formula
     @name=name
     validate_variable :name
 
-    @path = path.nil? ? nil : Pathname.new(path)
+    # If we got an explicit path, use that, else determine from the name
+    @path = path.nil? ? self.class.path(name) : Pathname.new(path)
 
     set_instance_variable 'version'
     @version ||= @spec_to_use.detect_version
@@ -78,14 +84,6 @@ class Formula
       head_prefix
     else
       prefix
-    end
-  end
-
-  def path
-    if @path.nil?
-      return self.class.path(name)
-    else
-      return @path
     end
   end
 
@@ -183,7 +181,7 @@ class Formula
     validate_variable :name
     validate_variable :version
 
-    handle_llvm_failure(fails_with_llvm?) if fails_with_llvm?
+    fails_with_llvm?.handle_failure if fails_with_llvm?
 
     stage do
       begin
@@ -246,40 +244,6 @@ class Formula
   # less consistent and the standard parameters are more memorable.
   def std_cmake_parameters
     "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None -Wno-dev"
-  end
-
-  def handle_llvm_failure llvm
-    if ENV.compiler == :llvm
-      # version 2336 is the latest version as of Xcode 4.2, so it is the
-      # latest version we have tested against so we will switch to GCC and
-      # bump this integer when Xcode 4.3 is released. TODO do that!
-      if llvm.build.to_i >= 2336
-        if MacOS.xcode_version < "4.2"
-          opoo "Formula will not build with LLVM, using GCC"
-          ENV.gcc :force => true
-        else
-          opoo "Formula will not build with LLVM, trying Clang"
-          ENV.clang :force => true
-        end
-        return
-      end
-      opoo "Building with LLVM, but this formula is reported to not work with LLVM:"
-      puts
-      puts llvm.reason
-      puts
-      puts <<-EOS.undent
-        We are continuing anyway so if the build succeeds, please open a ticket with
-        the following information: #{MacOS.llvm_build_version}-#{MACOS_VERSION}. So
-        that we can update the formula accordingly. Thanks!
-        EOS
-      puts
-      if MacOS.xcode_version < "4.2"
-        puts "If it doesn't work you can: brew install --use-gcc"
-      else
-        puts "If it doesn't work you can try: brew install --use-clang"
-      end
-      puts
-    end
   end
 
   def self.class_s name
@@ -426,6 +390,7 @@ class Formula
   end
 
 protected
+
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
@@ -448,6 +413,7 @@ protected
         rd.close
         $stdout.reopen wr
         $stderr.reopen wr
+        args.collect!{|arg| arg.to_s}
         exec(cmd, *args) rescue nil
         exit! 1 # never gets here unless exec threw or failed
       end
@@ -469,33 +435,8 @@ protected
     raise BuildError.new(self, cmd, args, $?)
   end
 
-private
-  # Create a temporary directory then yield. When the block returns,
-  # recursively delete the temporary directory.
-  def mktemp
-    # I used /tmp rather than `mktemp -td` because that generates a directory
-    # name with exotic characters like + in it, and these break badly written
-    # scripts that don't escape strings before trying to regexp them :(
+public
 
-    # If the user has FileVault enabled, then we can't mv symlinks from the
-    # /tmp volume to the other volume. So we let the user override the tmp
-    # prefix if they need to.
-    tmp_prefix = ENV['HOMEBREW_TEMP'] || '/tmp'
-    tmp=Pathname.new `/usr/bin/mktemp -d #{tmp_prefix}/homebrew-#{name}-#{version}-XXXX`.strip
-    raise "Couldn't create build sandbox" if not tmp.directory? or $? != 0
-    begin
-      wd=Dir.pwd
-      Dir.chdir tmp
-      yield
-    ensure
-      Dir.chdir wd
-      tmp.rmtree
-    end
-  end
-
-  CHECKSUM_TYPES=[:md5, :sha1, :sha256].freeze
-
-  public
   # For brew-fetch and others.
   def fetch
     downloader = @downloader
@@ -555,25 +496,34 @@ EOF
     end
   end
 
-  private
+private
+
+  CHECKSUM_TYPES=[:md5, :sha1, :sha256].freeze
 
   def stage
     fetched, downloader = fetch
     verify_download_integrity fetched if fetched.kind_of? Pathname
     mktemp do
       downloader.stage
+      # Set path after the downloader changes the working folder.
+      @buildpath = Pathname.pwd
       yield
+      @buildpath = nil
     end
   end
 
   def patch
-    return if patches.nil?
+    # Only call `patches` once.
+    # If there is code in `patches`, which is not recommended, we only
+    # want to run that code once.
+    the_patches = patches
+    return if the_patches.nil?
 
-    if not patches.kind_of? Hash
+    if not the_patches.kind_of? Hash
       # We assume -p1
-      patch_defns = { :p1 => patches }
+      patch_defns = { :p1 => the_patches }
     else
-      patch_defns = patches
+      patch_defns = the_patches
     end
 
     patch_list=[]
@@ -637,10 +587,9 @@ EOF
   end
 
   def set_instance_variable(type)
-    unless instance_variable_defined? "@#{type}"
-      class_value = self.class.send(type)
-      instance_variable_set("@#{type}", class_value) if class_value
-    end
+    return if instance_variable_defined? "@#{type}"
+    class_value = self.class.send(type)
+    instance_variable_set("@#{type}", class_value) if class_value
   end
 
   def method_added method
@@ -687,11 +636,8 @@ EOF
 
     def devel &block
       raise "url and md5 must be specified in a block" unless block_given?
-
       if ARGV.build_devel?
-        # clear out mirrors from the stable release
-        @mirrors = nil
-
+        @mirrors = nil # clear out mirrors from the stable release
         instance_eval &block
       end
     end
@@ -722,7 +668,7 @@ EOF
 
     def depends_on name
       @deps ||= []
-      @external_deps ||= {:python => [], :perl => [], :ruby => [], :jruby => []}
+      @external_deps ||= {:python => [], :perl => [], :ruby => [], :jruby => [], :chicken => [], :rbx => [], :node => [], :lua => []}
 
       case name
       when String, Formula
@@ -730,7 +676,7 @@ EOF
       when Hash
         key, value = name.shift
         case value
-        when :python, :perl, :ruby, :jruby
+        when :python, :perl, :ruby, :jruby, :chicken, :rbx, :node, :lua
           @external_deps[value] << key
         when :optional, :recommended, :build
           @deps << key
@@ -774,17 +720,4 @@ EOF
   end
 end
 
-# see ack.rb for an example usage
-class ScriptFileFormula < Formula
-  def install
-    bin.install Dir['*']
-  end
-end
-
-# see flac.rb for example usage
-class GithubGistFormula < ScriptFileFormula
-  def initialize name='__UNKNOWN__', path=nil
-    super name, path
-    @version=File.basename(File.dirname(url))[0,6]
-  end
-end
+require 'formula_specialties'

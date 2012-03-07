@@ -9,6 +9,11 @@ class Schroedinger < Formula
   depends_on 'pkg-config' => :build
   depends_on 'orc'
 
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
     system "autoreconf -i -f" if ARGV.build_head?
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"

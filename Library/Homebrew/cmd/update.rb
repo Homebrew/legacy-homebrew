@@ -29,6 +29,9 @@ class RefreshBrew
   # Performs an update of the homebrew source. Returns +true+ if a newer
   # version was available, +false+ if already up-to-date.
   def update_from_masterbrew!
+    # ensure GIT_CONFIG is unset as we need to operate on .git/config
+    ENV.delete('GIT_CONFIG')
+
     HOMEBREW_REPOSITORY.cd do
       if git_repo?
         safe_system "git checkout -q master"
@@ -41,6 +44,7 @@ class RefreshBrew
       else
         begin
           safe_system "git init"
+          safe_system "git config core.autocrlf false"
           safe_system "git remote add origin #{REPOSITORY_URL}"
           safe_system "git fetch origin"
           safe_system "git reset --hard origin/master"
@@ -50,6 +54,8 @@ class RefreshBrew
         end
       end
 
+      # ensure we don't munge line endings on checkout
+      safe_system "git config core.autocrlf false"
       # specify a refspec so that 'origin/master' gets updated
       refspec = "refs/heads/master:refs/remotes/origin/master"
       rebase = "--rebase" if ARGV.include? "--rebase"
