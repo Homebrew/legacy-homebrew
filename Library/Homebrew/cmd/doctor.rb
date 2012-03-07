@@ -718,7 +718,9 @@ def check_missing_deps
   s = []
   `brew missing`.each_line do |line|
     line =~ /(.*): (.*)/
-    s << $2 unless s.include? $2
+    $2.split.each do |dep|
+        s << dep unless s.include? dep
+    end
   end
   if s.length > 0 then <<-EOS.undent
     Some installed formula are missing dependencies.
@@ -790,6 +792,22 @@ def check_for_bad_python_symlink
     python is symlinked to python#$1
     This will confuse build scripts and in general lead to subtle breakage.
     EOS
+  end
+end
+
+def check_for_outdated_homebrew
+  HOMEBREW_PREFIX.cd do
+    timestamp = if File.directory? ".git"
+      `git log -1 --format="%ct" HEAD`.to_i
+    else
+      (HOMEBREW_PREFIX/"Library").mtime.to_i
+    end
+
+    if Time.now.to_i - timestamp > 60 * 60 * 24 then <<-EOS.undent
+      Your Homebrew is outdated
+      You haven't updated for at least 24 hours, this is a long time in brewland!
+      EOS
+    end
   end
 end
 
