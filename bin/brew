@@ -82,14 +82,8 @@ begin
   elsif require? HOMEBREW_REPOSITORY/"Library/Homebrew/cmd"/cmd
     Homebrew.send cmd.to_s.gsub('-', '_')
   else
-    # Check for git commands
-    if %w[branch checkout pull push rebase reset].include? cmd
-      onoe "Unknown command: #{cmd} (did you mean `git #{cmd}'?)"
-      exit 1
-    else
-      onoe "Unknown command: #{cmd}"
-      exit 1
-    end
+    onoe "Unknown command: #{cmd}"
+    exit 1
   end
 
 rescue FormulaUnspecifiedError
