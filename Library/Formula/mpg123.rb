@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mpg123 < Formula
-  url 'http://downloads.sourceforge.net/project/mpg123/mpg123/1.13.4/mpg123-1.13.4.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/mpg123/mpg123/1.13.5/mpg123-1.13.5.tar.bz2'
   homepage 'http://www.mpg123.de/'
-  md5 '073620b3938c4cb9c4f70e8fe3e114b8'
+  sha1 '4dd627d36fce9d4be1268ac2ec4af04040af4385'
 
   def skip_clean? path
     # mpg123 can't find its plugins if there are no la files
@@ -25,10 +25,9 @@ class Mpg123 < Formula
 
     system "./configure", *args
 
-    # ./configure incorrectly detects 10.5 as 10.4; fix it.
     ['.', 'src', 'src/output', 'src/libmpg123'].each do |path|
       inreplace "#{path}/Makefile" do |s|
-        s.gsub! "-mmacosx-version-min=10.4 -isysroot /Developer/SDKs/MacOSX10.4u.sdk", ""
+        # why do we do this?
         s.change_make_var! "LDFLAGS", "-Wl,-read_only_relocs,suppress"
       end
     end
