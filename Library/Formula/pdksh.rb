@@ -7,8 +7,7 @@ class Pdksh < Formula
 
   # sort command that works with leopard+
   def patches
-    { :p0 => "https://trac.macports.org/export/90549/trunk/dports/shells/pdksh/files/patch-siglist.sh.diff"
-    }
+    { :p0 => "https://trac.macports.org/export/90549/trunk/dports/shells/pdksh/files/patch-siglist.sh.diff" }
   end
 
   def install
