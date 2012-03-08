@@ -64,6 +64,13 @@ class Formula
     return false
   end
 
+  def bottle_for_current_osx_version?
+    return true if /#{MacOS.cat}\.bottle\.tar\.gz$/.match(bottle_url)
+    # old brew bottle style
+    return true if MacOS.lion? && /-bottle\.tar\.gz$/.match(bottle_url)
+    return false
+  end
+
   def bottle_up_to_date?
     !bottle_url.nil? && Pathname.new(bottle_url).version == version
   end
