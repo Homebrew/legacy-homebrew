@@ -17,10 +17,11 @@ class Convertlit < Formula
     cd "lib" do
       system "make"
     end
-    cd "../clit18" do
+    
+    cd "clit18" do
       system "make"
     end
-
-    bin.install 'clit'
+    
+    bin.install 'clit18/clit'
   end
 end
