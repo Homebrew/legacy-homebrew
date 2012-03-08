@@ -31,8 +31,16 @@ module HomebrewArgvExtension
       linked_keg_ref = HOMEBREW_REPOSITORY/"Library/LinkedKegs"/name
 
       if not linked_keg_ref.symlink?
-        raise MultipleVersionsInstalledError.new(name) if dirs.length > 1
-        Keg.new(dirs.first)
+        if dirs.length == 1
+          Keg.new(dirs.first)
+        else
+          prefix = Formula.factory(canonical_name).prefix
+          if prefix.directory?
+            Keg.new(prefix)
+          else
+            raise MultipleVersionsInstalledError.new(name)
+          end
+        end
       else
         Keg.new(linked_keg_ref.realpath)
       end
