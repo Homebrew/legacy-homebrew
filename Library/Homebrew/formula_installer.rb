@@ -15,7 +15,7 @@ class FormulaInstaller
     @f = ff
     @show_header = true
     @ignore_deps = ARGV.include? '--ignore-dependencies' || ARGV.interactive?
-    @install_bottle = !ARGV.build_from_source? && ff.bottle_up_to_date?
+    @install_bottle = !ARGV.build_from_source? && ff.bottle_up_to_date? && ff.bottle_for_current_osx_version?
 
     check_install_sanity
   end

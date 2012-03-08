@@ -3,7 +3,7 @@ require 'tab'
 
 module Homebrew extend self
   def formula_bottle_name f
-    "#{f.name}-#{f.version}-bottle.tar.gz"
+    "#{f.name}-#{f.version}.#{MacOS.cat}.bottle.tar.gz"
   end
 
   def bottle_formula f

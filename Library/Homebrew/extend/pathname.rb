@@ -100,7 +100,9 @@ class Pathname
 
   # extended to support common double extensions
   def extname
-    return $1 if to_s =~ /(\.bottle\.tar\.gz)$/
+    return $1 if to_s =~ /(\.[a-z]+\.bottle\.tar\.gz)$/
+    # old brew bottle style
+    return $1 if to_s =~ /(-bottle\.tar\.gz)$/
     /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
     return $1 if $1
     return File.extname(to_s)
@@ -205,19 +207,14 @@ class Pathname
     /_((\d+\.)+\d+[abc]?)[.]orig$/.match stem
     return $1 if $1
 
-    # brew bottle style e.g. qt-4.7.3-bottle.tar.gz
-    /-((\d+\.)*\d+(-\d)*)-bottle$/.match stem
-    return $1 if $1
-
     # eg. otp_src_R13B (this is erlang's style)
     # eg. astyle_1.23_macosx.tar.gz
     stem.scan(/_([^_]+)/) do |match|
       return match.first if /\d/.match $1
     end
 
-    # erlang bottle style, booya
-    # e.g. erlang-R14B03-bottle.tar.gz
-    /-([^-]+)-bottle$/.match stem
+    # old erlang bottle style e.g. erlang-R14B03-bottle.tar.gz
+    /-([^-]+)/.match stem
     return $1 if $1
 
     nil
