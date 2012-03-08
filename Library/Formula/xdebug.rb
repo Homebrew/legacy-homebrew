@@ -5,6 +5,9 @@ class Xdebug < Formula
   url 'http://www.xdebug.org/files/xdebug-2.1.3.tgz'
   md5 '779f4a66acdccd673553769e403674c4'
 
+  # required by phpize
+  depends_on 'autoconf'
+ 
   def install
     cd "xdebug-#{version}" do
       # See https://github.com/mxcl/homebrew/issues/issue/69
