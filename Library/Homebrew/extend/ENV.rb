@@ -274,6 +274,11 @@ Please take one of the following actions:
   def cppflags;self['CPPFLAGS'];     end
   def ldflags; self['LDFLAGS'];      end
 
+  # Shortcuts for lists of common flags
+  def cc_flag_vars
+    %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}
+  end
+
   def m64
     append_to_cflags '-m64'
     append 'LDFLAGS', '-arch x86_64'
@@ -298,52 +303,54 @@ Please take one of the following actions:
   def prepend key, value, separator = ' '
     # Value should be a string, but if it is a pathname then coerce it.
     value = value.to_s
-    unless self[key].to_s.empty?
-      self[key] = value + separator + self[key]
-    else
-      self[key] = value
+
+    [*key].each do |key|
+      unless self[key].to_s.empty?
+        self[key] = value + separator + self[key]
+      else
+        self[key] = value
+      end
     end
   end
 
   def append key, value, separator = ' '
     # Value should be a string, but if it is a pathname then coerce it.
     value = value.to_s
-    unless self[key].to_s.empty?
-      self[key] = self[key] + separator + value
-    else
-      self[key] = value
+
+    [*key].each do |key|
+      unless self[key].to_s.empty?
+        self[key] = self[key] + separator + value
+      else
+        self[key] = value
+      end
     end
   end
 
   def append_to_cflags f
-    append 'CFLAGS', f
-    append 'CXXFLAGS', f
-    append 'OBJCFLAGS', f
-    append 'OBJCXXFLAGS', f
+    append cc_flag_vars, f
   end
 
   def remove key, value
-    return if self[key].nil?
-    self[key] = self[key].sub value, '' # can't use sub! on ENV
-    self[key] = nil if self[key].empty? # keep things clean
+    [*key].each do |key|
+      next if self[key].nil?
+      self[key] = self[key].sub value, '' # can't use sub! on ENV
+      self[key] = nil if self[key].empty? # keep things clean
+    end
   end
 
   def remove_from_cflags f
-    remove 'CFLAGS', f
-    remove 'CXXFLAGS', f
-    remove 'OBJCFLAGS', f
-    remove 'OBJCXXFLAGS', f
+    remove cc_flag_vars, f
   end
 
   def replace_in_cflags before, after
-    %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}.each do |key|
+    cc_flag_vars.each do |key|
       self[key] = self[key].sub before, after if self[key]
     end
   end
 
   # Convenience method to set all C compiler flags in one shot.
   def set_cflags f
-    %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}.each do |key|
+    cc_flag_vars.each do |key|
       self[key] = f
     end
   end
