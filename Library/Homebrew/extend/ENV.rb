@@ -176,8 +176,14 @@ module HomebrewEnvExtension
       self['F77'] = self['FC'] unless self['F77']
 
       if ARGV.include? '--default-fortran-flags'
-        self['FCFLAGS'] = self['CFLAGS'] unless self['FCFLAGS']
-        self['FFLAGS'] = self['CFLAGS'] unless self['FFLAGS']
+        flags_to_set = []
+        flags_to_set << 'FCFLAGS' unless self['FCFLAGS']
+        flags_to_set << 'FFLAGS' unless self['FFLAGS']
+
+        flags_to_set.each {|key| self[key] = cflags}
+
+        # Ensure we use architecture optimizations for GCC 4.2.x
+        set_cpu_flags flags_to_set, 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott', :bottle => 'generic'
       elsif not self['FCFLAGS'] or self['FFLAGS']
         opoo <<-EOS.undent
           No Fortran optimization information was provided.  You may want to consider
@@ -197,8 +203,9 @@ module HomebrewEnvExtension
       self['FC'] = `/usr/bin/which gfortran`.chomp
       self['F77'] = self['FC']
 
-      self['FCFLAGS'] = self['CFLAGS']
-      self['FFLAGS'] = self['CFLAGS']
+      fc_flag_vars.each {|key| self[key] = cflags}
+      # Ensure we use architecture optimizations for GCC 4.2.x
+      set_cpu_flags fc_flag_vars, 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott', :bottle => 'generic'
 
     else
       onoe <<-EOS
@@ -277,6 +284,9 @@ Please take one of the following actions:
   # Shortcuts for lists of common flags
   def cc_flag_vars
     %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}
+  end
+  def fc_flag_vars
+    %w{FCFLAGS FFLAGS}
   end
 
   def m64
