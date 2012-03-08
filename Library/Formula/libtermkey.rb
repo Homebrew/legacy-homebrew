@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libtermkey < Formula
-  url 'http://www.leonerd.org.uk/code/libtermkey/libtermkey-0.8.tar.gz'
+  url 'http://www.leonerd.org.uk/code/libtermkey/libtermkey-0.13.tar.gz'
   homepage 'http://www.leonerd.org.uk/code/libtermkey/'
-  md5 '802616eec246e983fc31462afa9d92cf'
+  md5 'f3bd5912c7a0d9b3eede126528c25665'
 
   def install
     inreplace 'Makefile' do |s|
