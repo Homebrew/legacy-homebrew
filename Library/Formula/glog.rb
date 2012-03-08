@@ -1,9 +1,9 @@
 require 'formula'
 
 class Glog < Formula
-  url 'http://google-glog.googlecode.com/files/glog-0.3.1-1.tar.gz'
+  url 'http://google-glog.googlecode.com/files/glog-0.3.2.tar.gz'
   homepage 'http://code.google.com/p/google-glog/'
-  md5 '06f525c117fc37b19d12a527c65eab1d'
+  md5 '897fbff90d91ea2b6d6e78c8cea641cc'
 
   depends_on 'gflags'
 
