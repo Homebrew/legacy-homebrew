@@ -29,7 +29,7 @@ class Lua < Formula
 
   def install
     # Apply patch-level 2
-    curl "http://www.lua.org/ftp/patch-lua-5.1.4-3", "-O"
+    curl "https://raw.github.com/gist/2001138/2dce9786968d5e518682d2564fa41d2ea284dd50/patch-lua-.5.1.4-3", "-O"
     safe_system '/usr/bin/patch', '-d', 'src', '-i', '../patch-lua-5.1.4-3'
     # we could use the patches method if it supported additional arguments (-d in our case)
 
