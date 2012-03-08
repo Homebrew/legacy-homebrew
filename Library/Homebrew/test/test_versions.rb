@@ -165,8 +165,23 @@ class VersionTests < Test::Unit::TestCase
   end
 
   def test_bottle_style
-    check 'https://downloads.sourceforge.net/project/machomebrew/Bottles/qt-4.7.3-bottle.tar.gz',
+    check 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.8.0.lion.bottle.tar.gz',
+      '4.8.0'
+  end
+
+  def test_erlang_bottle_style
+    check 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B.lion.bottle.tar.gz',
+      'R15B'
+  end
+
+  def test_old_bottle_style
+    check 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.7.3-bottle.tar.gz',
       '4.7.3'
+  end
+
+  def test_old_erlang_bottle_style
+    check 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B-bottle.tar.gz',
+      'R15B'
   end
 
   def test_imagemagick_bottle_style
