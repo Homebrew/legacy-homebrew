@@ -15,7 +15,7 @@ class Ledger < Formula
   depends_on 'expat'
 
   def options
-    [['--no-python', 'Disable Python support']
+    [['--no-python', 'Disable Python support'],
      ['--clang', 'Build with clang']]
   end
 
