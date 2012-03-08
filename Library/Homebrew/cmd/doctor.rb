@@ -836,5 +836,6 @@ module Homebrew extend self
     end
 
     puts "Your system is raring to brew." if raring_to_brew
+    exit raring_to_brew ? 0 : 1
   end
 end
