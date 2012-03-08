@@ -11,6 +11,8 @@ class GdkPixbuf < Formula
   depends_on 'jasper'
   depends_on 'libtiff'
 
+  skip_clean 'lib/gdk-pixbuf-2.0'
+
   def options
     [["--universal", "Build a universal binary."]]
   end
