@@ -3,6 +3,7 @@ require 'formula'
 require 'keg'
 require 'set'
 require 'tab'
+require 'bottles'
 
 class FormulaInstaller
   attr :f
@@ -15,7 +16,7 @@ class FormulaInstaller
     @f = ff
     @show_header = true
     @ignore_deps = ARGV.include? '--ignore-dependencies' || ARGV.interactive?
-    @install_bottle = !ARGV.build_from_source? && ff.bottle_up_to_date? && ff.bottle_for_current_osx_version?
+    @install_bottle = install_bottle? ff
 
     check_install_sanity
   end

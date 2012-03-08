@@ -503,10 +503,6 @@ module MacOS extend self
   def prefer_64_bit?
     Hardware.is_64_bit? and not leopard?
   end
-
-  def bottles_supported?
-    HOMEBREW_PREFIX.to_s == '/usr/local' and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar'
-  end
 end
 
 module GitHub extend self

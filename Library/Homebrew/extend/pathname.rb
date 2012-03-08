@@ -1,4 +1,5 @@
 require 'pathname'
+require 'bottles'
 
 # we enhance pathname to make our code more readable
 class Pathname
@@ -100,9 +101,9 @@ class Pathname
 
   # extended to support common double extensions
   def extname
-    return $1 if to_s =~ /(\.[a-z]+\.bottle\.tar\.gz)$/
+    return $1 if to_s =~ bottle_regex
     # old brew bottle style
-    return $1 if to_s =~ /(-bottle\.tar\.gz)$/
+    return $1 if to_s =~ old_bottle_regex
     /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
     return $1 if $1
     return File.extname(to_s)
