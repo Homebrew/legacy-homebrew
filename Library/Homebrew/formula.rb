@@ -192,14 +192,9 @@ class Formula
         yield self
       rescue Interrupt, RuntimeError, SystemCallError => e
         unless ARGV.debug?
-          logs = File.expand_path '~/Library/Logs/Homebrew/'
-          if File.exist? 'config.log'
-            mkdir_p logs
-            mv 'config.log', logs
-          end
-          if File.exist? 'CMakeCache.txt'
-            mkdir_p logs
-            mv 'CMakeCache.txt', logs
+          %w(config.log CMakeCache.txt).select{|f| File.exist? f}.each do |f|
+            HOMEBREW_LOGS.install f
+            ohai "#{f} was copied to #{HOMEBREW_LOGS}"
           end
           raise
         end
