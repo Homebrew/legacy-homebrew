@@ -24,4 +24,8 @@ class Wget < Formula
     system "./configure", *args
     system "make install"
   end
+
+  def test
+    system "wget --version"
+  end
 end
