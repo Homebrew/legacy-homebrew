@@ -1,17 +1,14 @@
 require 'formula'
+require 'bottles'
 require 'tab'
 
 module Homebrew extend self
-  def formula_bottle_name f
-    "#{f.name}-#{f.version}.#{MacOS.cat}.bottle.tar.gz"
-  end
-
   def bottle_formula f
     return onoe "Formula not installed: #{f.name}" unless f.installed?
-    return onoe "Formula not installed with '--build-bottle': #{f.name}" unless Tab.for_formula(f).built_bottle
+    return onoe "Formula not installed with '--build-bottle': #{f.name}" unless built_bottle? f
 
     directory = Pathname.pwd
-    filename = formula_bottle_name f
+    filename = bottle_filename f
 
     HOMEBREW_CELLAR.cd do
       ohai "Bottling #{f.name} #{f.version}..."
