@@ -22,9 +22,20 @@ class Nginx < Formula
 
   def options
     [
+      ['--with-upload',    "Compile with support for Nginx upload module"],
       ['--with-passenger', "Compile with support for Phusion Passenger module"],
       ['--with-webdav',    "Compile with support for WebDAV module"]
     ]
+  end
+
+  def upload_config_args
+    ohai "fetching nginx_upload_module"
+    `rm -rf /tmp/nginx_upload_module-2.2.0; curl --silent http://www.grid.net.ru/nginx/download/nginx_upload_module-2.2.0.tar.gz | tar xzf - --directory=/tmp`
+    if File.exists?('/tmp/nginx_upload_module-2.2.0/config')
+      return "--add-module=/tmp/nginx_upload_module-2.2.0"
+    end
+    onoe "Unable to install nginx with upload support. Could not fetch nginx_upload_module."
+    exit
   end
 
   def passenger_config_args
@@ -48,6 +59,7 @@ class Nginx < Formula
             "--pid-path=#{var}/run/nginx.pid",
             "--lock-path=#{var}/nginx/nginx.lock"]
 
+    args << upload_config_args if ARGV.include? '--with-upload'
     args << passenger_config_args if ARGV.include? '--with-passenger'
     args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
 
