@@ -14,15 +14,15 @@ end
 class RefreshBrew
   REPOSITORY_URL = "https://github.com/mxcl/homebrew.git"
   FORMULA_DIR = 'Library/Formula/'
-  EXAMPLE_DIR = 'Library/Contributions/examples/'
+  EXTERNAL_CMD_DIR = 'Library/Contributions/cmds/'
 
   attr_reader :added_formulae, :updated_formulae, :deleted_formulae, :installed_formulae
-  attr_reader :added_examples, :deleted_examples
+  attr_reader :added_external_commands, :deleted_external_commands
   attr_reader :initial_revision, :current_revision
 
   def initialize
     @added_formulae, @updated_formulae, @deleted_formulae, @installed_formulae = [], [], [], []
-    @added_examples, @deleted_examples = [], [], []
+    @added_external_commands, @deleted_external_commands = [], [], []
     @initial_revision, @current_revision = nil
   end
 
@@ -81,8 +81,8 @@ class RefreshBrew
         @added_formulae   = changed_items('A', FORMULA_DIR)
         @deleted_formulae = changed_items('D', FORMULA_DIR)
         @updated_formulae = changed_items('M', FORMULA_DIR)
-        @added_examples   = changed_items('A', EXAMPLE_DIR)
-        @deleted_examples = changed_items('D', EXAMPLE_DIR)
+        @added_external_commands = changed_items('A', EXTERNAL_CMD_DIR)
+        @deleted_external_commands = changed_items('D', EXTERNAL_CMD_DIR)
         @added_internal_commands = changed_items('A', "Library/Homebrew/cmd")
         @deleted_internal_commands = changed_items('D', "Library/Homebrew/cmd")
 
@@ -113,16 +113,16 @@ class RefreshBrew
     !@deleted_formulae.empty?
   end
 
-  def pending_examples_changes?
-    !@updated_examples.empty?
+  def pending_external_commands_changes?
+    !@updated_external_commands.empty?
   end
 
-  def pending_new_examples?
-    !@added_examples.empty?
+  def pending_new_external_commands?
+    !@added_external_commands.empty?
   end
 
-  def deleted_examples?
-    !@deleted_examples.empty?
+  def deleted_external_commands?
+    !@deleted_external_commands.empty?
   end
 
   def report
@@ -151,13 +151,13 @@ class RefreshBrew
 
     # external commands aren't generally documented but the distinction
     # is loose. They are less "supported" and more "playful".
-    if pending_new_examples?
+    if pending_new_external_commands?
       ohai "New external commands"
-      puts_columns added_examples
+      puts_columns added_external_commands
     end
-    if deleted_examples?
+    if deleted_external_commands?
       ohai "Removed external commands"
-      puts_columns deleted_examples
+      puts_columns deleted_external_commands
     end
   end
 
