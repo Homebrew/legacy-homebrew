@@ -15,5 +15,8 @@ class Play < Formula
     rm Dir['*.bat']
     libexec.install Dir['*']
     bin.install_symlink libexec+'play'
+    
+    # For some reason, play is attempting to unfuck things if the play script is a symlink.
+    inreplace "#{libexec}/play", "dir=`dirname $PRG`", "dir=#{libexec}" if ARGV.build_devel?
   end
 end
