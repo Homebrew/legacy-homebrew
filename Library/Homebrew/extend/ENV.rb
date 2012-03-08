@@ -355,24 +355,30 @@ Please take one of the following actions:
     end
   end
 
-  def set_cpu_cflags default, map = {}
+  # Sets architecture-specific flags for every environment variable
+  # given in the list `flags`.
+  def set_cpu_flags flags, default, map = {}
     cflags =~ %r{(-Xarch_i386 )-march=}
     xarch = $1.to_s
-    remove_from_cflags %r{(-Xarch_i386 )?-march=\S*}
-    remove_from_cflags %r{( -Xclang \S+)+}
-    remove_from_cflags %r{-mssse3}
-    remove_from_cflags %r{-msse4(\.\d)?}
-    append_to_cflags xarch unless xarch.empty?
+    remove flags, %r{(-Xarch_i386 )?-march=\S*}
+    remove flags, %r{( -Xclang \S+)+}
+    remove flags, %r{-mssse3}
+    remove flags, %r{-msse4(\.\d)?}
+    append flags, xarch unless xarch.empty?
 
     if ARGV.build_bottle?
-      append_to_cflags '-mtune=' + map.fetch(:bottle) if map.has_key? :bottle
+      append flags, '-mtune=' + map.fetch(:bottle) if map.has_key? :bottle
     else
       # Don't set -msse3 and older flags because -march does that for us
-      append_to_cflags '-march=' + map.fetch(Hardware.intel_family, default)
+      append flags, '-march=' + map.fetch(Hardware.intel_family, default)
     end
 
     # not really a 'CPU' cflag, but is only used with clang
-    remove_from_cflags '-Qunused-arguments'
+    remove flags, '-Qunused-arguments'
+  end
+
+  def set_cpu_cflags default, map = {}
+    set_cpu_flags cc_flag_vars, default, map
   end
 
   # actually c-compiler, so cc would be a better name
