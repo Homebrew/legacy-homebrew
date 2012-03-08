@@ -434,6 +434,16 @@ module MacOS extend self
       $1.to_i
     end
   end
+  
+  def perl_version
+    if leopard?
+       perl_version = "5.8.8"
+     elsif mountain_lion?
+       perl_version = "5.12"
+     else
+       perl_version = "5.10.0"
+     end
+  end
 
   def x11_installed?
     Pathname.new('/usr/X11/lib/libpng.dylib').exist?
@@ -480,12 +490,19 @@ module MacOS extend self
 
   def lion?
     10.7 <= MACOS_VERSION # Actually Lion or newer
+<<<<<<< HEAD
+=======
+  end
+
+  def mountain_lion?
+    10.8 <= MACOS_VERSION # Actually Mountain Lion or newer
+>>>>>>> upstream/master
   end
 
   def mountain_lion?
     10.8 <= MACOS_VERSION # Actually Mountain Lion or newer
   end
-
+  
   def prefer_64_bit?
     Hardware.is_64_bit? and not leopard?
   end
