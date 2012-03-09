@@ -53,18 +53,10 @@ ensure
   system "/bin/stty -raw echo"
 end
 
-def badlibs
-  @badlibs ||= begin
-    Dir['/usr/local/lib/*.dylib'].select do |dylib|
-      ENV['dylib'] = dylib
-      File.file? dylib and not File.symlink? dylib and `/usr/bin/file "$dylib"` =~ /shared library/
-    end
-  end
-end
-
 def macos_version
   @macos_version ||= /(10\.\d+)(\.\d+)?/.match(`/usr/bin/sw_vers -productVersion`).captures.first.to_f
 end
+
 
 # The block form of Dir.chdir fails later if Dir.CWD doesn't exist which I
 # guess is fair enough. Also sudo prints a warning message for no good reason
@@ -137,12 +129,6 @@ if macos_version < 10.7
   warn "Now install Xcode: http://developer.apple.com/technologies/xcode.html" unless Kernel.system "/usr/bin/which -s gcc"
 else
   warn "Install \"Command Line Tools for Xcode\": http://developer.apple.com/downloads" unless File.file? "/usr/bin/xcrun"
-end
-
-unless badlibs.empty?
-  warn "The following *evil* dylibs exist in /usr/local/lib"
-  puts "They may break builds or worse. You should consider deleting them:"
-  puts *badlibs
 end
 
 ohai "Installation successful!"
