@@ -14,6 +14,7 @@ class Git < Formula
   homepage 'http://git-scm.com'
   url 'http://git-core.googlecode.com/files/git-1.7.9.3.tar.gz'
   sha1 '6216153da1139c25cb96cfb4441eff327013ec4f'
+  head 'https://github.com/git/git.git'
 
   depends_on 'pcre' if ARGV.include? '--with-pcre'
 
