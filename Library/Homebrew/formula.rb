@@ -655,12 +655,27 @@ private
         eval <<-EOCLASS
         module BottleData
           def self.url url; @url = url; end
-          def self.sha1 sha1; @sha1 = sha1; end
-          def self.return_data; [@url,@sha1]; end
+          def self.sha1 sha1
+            case sha1
+            when Hash
+              key, value = sha1.shift
+              @sha1 = key if value == MacOS.cat
+            when String
+              @sha1 = sha1
+            end
+          end
+          def self.return_data
+            if @sha1 && @url
+              [@url,@sha1]
+            elsif @sha1
+              [nil,@sha1]
+            end
+          end
         end
         EOCLASS
         BottleData.instance_eval &block
         @bottle_url, @bottle_sha1 = BottleData.return_data
+        @bottle_url ||= "https://downloads.sf.net/project/machomebrew/Bottles/#{name.downcase}-#{@version||@standard.detect_version}.bottle-#{MacOS.cat}.tar.gz" if @bottle_sha1
       end
     end
 
