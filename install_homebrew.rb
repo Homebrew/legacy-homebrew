@@ -126,9 +126,9 @@ end
 warn "/usr/local/bin is not in your PATH." unless ENV['PATH'].split(':').include? '/usr/local/bin'
 
 if macos_version < 10.7
-  warn "Now install Xcode: http://developer.apple.com/technologies/xcode.html" unless Kernel.system "/usr/bin/which -s gcc"
+  warn "Now install Xcode: https://developer.apple.com/xcode/" unless File.exist? "/usr/bin/cc"
 else
-  warn "Install \"Command Line Tools for Xcode\": http://developer.apple.com/downloads" unless File.file? "/usr/bin/xcrun"
+  warn "Now install the \"Command Line Tools for Xcode\": http://connect.apple.com" unless File.file? "/usr/bin/xcrun"
 end
 
 ohai "Installation successful!"
