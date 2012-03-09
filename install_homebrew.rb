@@ -88,7 +88,7 @@ puts "/usr/local/bin/brew"
 puts "/usr/local/Library/Formula/..."
 puts "/usr/local/Library/Homebrew/..."
 
-chmods = %w(bin etc include lib libexec Library sbin share var . share/locale share/man share/info share/doc share/aclocal).
+chmods = %w(bin etc include lib lib/pkgconfig Library sbin share var . share/locale share/man share/man/man1 share/info share/doc share/aclocal).
             map{ |d| "/usr/local/#{d}" }.
             select{ |d| File.directory? d and not File.writable? d }
 chgrps = chmods.reject{ |d| File.stat(d).grpowned? }
