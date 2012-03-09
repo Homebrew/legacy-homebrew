@@ -7,6 +7,18 @@
 # If you do fork, please ensure you add a comment here that explains what the
 # changes are intended to do and how well you tested them.
 #
+# 30th March 2010:
+#   Added a check to make sure user is in the staff group. This was a problem
+#   for me, and I think it was due to me migrating my account over several
+#   versions of OS X. I cannot verify that for sure, and it was tested on
+#   10.6.2 using the Directory Service command line utility and my laptop.
+#
+#   My assumptions are:
+#     - you are running OS X 10.6.x
+#     - your machine is not managed as part of a group using networked
+#       Directory Services
+#     - you have not recently killed any baby seals or kittens
+#
 # 14th March 2010:
 #   Adapted CodeButler's fork: http://gist.github.com/331512
 #
@@ -74,6 +86,10 @@ chmods = %w(bin etc include lib sbin share var . share/locale share/man share/in
             select{ |d| File.directory? d and not File.writable? d }
 chgrps = chmods.reject{ |d| File.stat(d).grpowned? }
 
+unless `groups`.split.include?("staff")
+  ohai "The user #{`whoami`.strip} will be added to the staff group."
+end
+
 unless chmods.empty?
   ohai "The following directories will be made group writable:"
   puts *chmods
@@ -86,6 +102,10 @@ end
 puts
 puts "Press enter to continue"
 abort unless getc == 13
+
+unless `groups`.split.include?("staff")
+  sudo "dscl /Local/Default -append /Groups/staff GroupMembership #{`whoami`.strip}"
+end
 
 if File.directory? "/usr/local"
   sudo "/bin/chmod", "g+w", *chmods unless chmods.empty?
