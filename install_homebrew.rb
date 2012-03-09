@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 #
 # This script installs to /usr/local only. To install elsewhere you can just
-# untar http://github.com/mxcl/homebrew/tarball/master anywhere you like.
+# untar https://github.com/mxcl/homebrew/tarball/master anywhere you like.
 #
 #
 # 30th March 2010:
@@ -126,7 +126,7 @@ Dir.chdir "/usr/local" do
   ohai "Downloading and Installing Homebrew..."
   # -m to stop tar erroring out if it can't modify the mtime for root owned directories
   # pipefail to cause the exit status from curl to propogate if it fails
-  system "/bin/bash -o pipefail -c '/usr/bin/curl -sSfL http://github.com/mxcl/homebrew/tarball/master | /usr/bin/tar xz -m --strip 1'"
+  system "/bin/bash -o pipefail -c '/usr/bin/curl -sSfL https://github.com/mxcl/homebrew/tarball/master | /usr/bin/tar xz -m --strip 1'"
 end
 
 ohai "Installation successful!"
