@@ -26,6 +26,6 @@ class Wget < Formula
   end
 
   def test
-    system "wget --version"
+    system "#{bin}/wget -O - www.google.com"
   end
 end
