@@ -20,7 +20,7 @@ class UtilTests < Test::Unit::TestCase
     if `sw_vers -productVersion` =~ /10\.(\d+)/ and $1.to_i >= 7
       assert_equal 2, arches.length
       assert arches.include?(:x86_64)
-    elsif `sw_vers -productVersion` =~ /10\.(\d+)/ and $1.to_i = 6
+    elsif `sw_vers -productVersion` =~ /10\.(\d+)/ and $1.to_i == 6
       assert_equal 3, arches.length
       assert arches.include?(:x86_64)
       assert arches.include?(:ppc7400)
