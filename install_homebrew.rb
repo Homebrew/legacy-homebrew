@@ -106,7 +106,9 @@ end
 if STDIN.tty?
   puts
   puts "Press enter to continue"
-  abort unless getc == 13
+  c = getc
+  # we test for \r and \n because some stuff does \r instead
+  abort unless c == 13 or c == 10
 end
 
 if File.directory? "/usr/local"
