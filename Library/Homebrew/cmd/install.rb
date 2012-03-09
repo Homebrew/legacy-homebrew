@@ -87,7 +87,6 @@ module Homebrew extend self
           fi.finish
         rescue CannotInstallFormulaError => e
           onoe e.message
-          exit 1
         end
       end
     end
