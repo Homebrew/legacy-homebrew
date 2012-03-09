@@ -71,10 +71,10 @@ def sudo *args
 end
 
 def getc  # NOTE only tested on OS X
-  system "stty raw -echo"
+  system "/bin/stty raw -echo"
   STDIN.getc
 ensure
-  system "stty -raw echo"
+  system "/bin/stty -raw echo"
 end
 
 ####################################################################### script
