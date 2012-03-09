@@ -88,7 +88,7 @@ puts "/usr/local/bin/brew"
 puts "/usr/local/Library/Formula/..."
 puts "/usr/local/Library/Homebrew/..."
 
-chmods = %w( . bin etc include lib lib/pkgconfig Library sbin share var share/locale share/man
+chmods = %w( . bin etc include lib lib/pkgconfig Library sbin share var var/log share/locale share/man
              share/man/man1 share/man/man2 share/man/man3 share/man/man4
              share/man/man5 share/man/man6 share/man/man7 share/man/man8
              share/info share/doc share/aclocal ).
