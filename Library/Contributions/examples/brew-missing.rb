@@ -16,16 +16,20 @@ def main
   # Names of outdated brews; they count as installed.
   outdated = Homebrew.outdated_brews.collect{ |b| b.name }
 
-  formuale_to_check = ARGV.formulae rescue installed_brews
+  formulae_to_check = if ARGV.named.empty?
+    installed_brews
+  else
+    ARGV.formulae
+  end
 
-  formuale_to_check.each do |f|
+  formulae_to_check.each do |f|
     missing_deps = f.recursive_deps.map{ |g| g.name }.uniq.reject do |dep_name|
       Formula.factory(dep_name).installed? or outdated.include?(dep_name)
     end
 
     unless missing_deps.empty?
-      print "#{f.name}: " if formuale_to_check.size > 1
-      puts "#{missing_deps * ', '}"
+      print "#{f.name}: " if formulae_to_check.size > 1
+      puts "#{missing_deps * ' '}"
     end
   end
 end

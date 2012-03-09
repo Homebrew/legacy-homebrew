@@ -11,8 +11,8 @@ class Mydumper < Formula
   depends_on 'pcre'
 
   def install
-    if `which mysql_config`.chomp.empty?
-      opoo "`mysql_config` not found"
+    unless which 'mysql_config'
+      opoo "`mysql_config` was not found"
       puts "This software requires the MySQL client libraries."
       puts "You can install them via Homebrew with one of these:"
       puts "  brew install mysql-connector-c"
