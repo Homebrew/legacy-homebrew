@@ -88,6 +88,7 @@ class Keg < Pathname
       # pkg-config database gets explicitly created
       when 'pkgconfig' then :mkpath
       # lib/language folders also get explicitly created
+      when /^gdk-pixbuf/ then :mkpath
       when 'ghc' then :mkpath
       when 'lua' then :mkpath
       when 'node' then :mkpath
