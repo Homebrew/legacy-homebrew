@@ -3,6 +3,7 @@ require 'formula'
 require 'keg'
 require 'set'
 require 'tab'
+require 'bottles'
 
 class FormulaInstaller
   attr :f
@@ -15,7 +16,7 @@ class FormulaInstaller
     @f = ff
     @show_header = true
     @ignore_deps = ARGV.include? '--ignore-dependencies' || ARGV.interactive?
-    @install_bottle = !ARGV.build_from_source? && ff.bottle_up_to_date?
+    @install_bottle = install_bottle? ff
 
     check_install_sanity
   end
@@ -51,9 +52,16 @@ class FormulaInstaller
       EOS
     end
 
-    unless ignore_deps
-      f.check_external_deps
+    f.external_deps.each do |dep|
+      unless dep.satisfied?
+        puts dep.message
+        if dep.fatal? and not ignore_deps
+          raise UnsatisfiedRequirement.new(f, dep)
+        end
+      end
+    end
 
+    unless ignore_deps
       needed_deps = f.recursive_deps.reject{ |d| d.installed? }
       unless needed_deps.empty?
         needed_deps.each do |dep|
@@ -368,20 +376,6 @@ class FormulaInstaller
 end
 
 
-def external_dep_check dep, type
-  case type
-    when :python then %W{/usr/bin/env python -c import\ #{dep}}
-    when :jruby then %W{/usr/bin/env jruby -rubygems -e require\ '#{dep}'}
-    when :ruby then %W{/usr/bin/env ruby -rubygems -e require\ '#{dep}'}
-    when :rbx then %W{/usr/bin/env rbx -rubygems -e require\ '#{dep}'}
-    when :perl then %W{/usr/bin/env perl -e use\ #{dep}}
-    when :chicken then %W{/usr/bin/env csi -e (use #{dep})}
-    when :node then %W{/usr/bin/env node -e require('#{dep}');}
-    when :lua then %W{/usr/bin/env luarocks show #{dep}}
-  end
-end
-
-
 class Formula
   def keg_only_text
     # Add indent into reason so undent won't truncate the beginnings of lines
@@ -398,15 +392,5 @@ class Formula
         LDFLAGS  -L#{lib}
         CPPFLAGS -I#{include}
     EOS
-  end
-
-  def check_external_deps
-    [:ruby, :python, :perl, :jruby, :rbx, :chicken, :node, :lua].each do |type|
-      self.external_deps[type].each do |dep|
-        unless quiet_system(*external_dep_check(dep, type))
-          raise UnsatisfiedExternalDependencyError.new(dep, type)
-        end
-      end if self.external_deps[type]
-    end
   end
 end
