@@ -1,0 +1,3 @@
+#!/bin/bash
+
+grep $@ $HOMEBREW_REPOSITORY/Library/Formula/*
