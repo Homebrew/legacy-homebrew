@@ -52,7 +52,9 @@ class Formula
     set_instance_variable 'version'
     # Otherwise detect the version from the URL
     @version ||= @spec_to_use.detect_version
-    validate_variable :version
+    # Only validate if a version was set; GitHubGistFormula needs to get
+    # the URL to determine the version
+    validate_variable :version if @version
 
     CHECKSUM_TYPES.each { |type| set_instance_variable type }
 
