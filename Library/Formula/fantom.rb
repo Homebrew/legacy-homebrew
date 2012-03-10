@@ -15,7 +15,7 @@ class Fantom < Formula
     rm_rf "examples" unless ARGV.include? '--with-examples'
     rm_rf "src" unless ARGV.include? '--with-src'
 
-    libexec.install Dir['*']    
+    libexec.install Dir['*']
     system "chmod 0755 #{libexec}/bin/*"
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end

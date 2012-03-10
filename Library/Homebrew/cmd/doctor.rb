@@ -208,7 +208,7 @@ def check_for_latest_xcode
     else "4.3"
   end
   if MacOS.xcode_version < latest_xcode then <<-EOS.undent
-    You have Xcode-#{MacOS.xcode_version}, which is outdated.
+    You have Xcode #{MacOS.xcode_version}, which is outdated.
     Please install Xcode #{latest_xcode}.
     EOS
   end
@@ -836,5 +836,6 @@ module Homebrew extend self
     end
 
     puts "Your system is raring to brew." if raring_to_brew
+    exit raring_to_brew ? 0 : 1
   end
 end

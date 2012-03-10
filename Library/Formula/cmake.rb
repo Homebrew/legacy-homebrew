@@ -5,9 +5,15 @@ class Cmake < Formula
   md5 'e1b237aeaed880f65dec9c20602452f6'
   homepage 'http://www.cmake.org/'
 
+  # Fix issues with Xcode 4.3. Remove for 2.8.8.
+  def patches
+    [ 'https://github.com/Kitware/CMake/commit/5663e.patch',
+      'https://github.com/Kitware/CMake/commit/4693c.patch' ]
+  end
+
   bottle do
     url 'https://downloads.sf.net/project/machomebrew/Bottles/cmake-2.8.7-bottle.tar.gz'
-    sha1 'f218ed64ce6e7a5d3670acdd6a18e5ed95421d1f'
+    sha1 '3a57f6f44186e0dba34ef8b8fb4a9047e9e5d8a3'
   end
 
   def install

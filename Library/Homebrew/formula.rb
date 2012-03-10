@@ -1,6 +1,7 @@
 require 'download_strategy'
 require 'formula_support'
 require 'hardware'
+require 'bottles'
 require 'extend/fileutils'
 
 
@@ -24,7 +25,6 @@ class Formula
     set_instance_variable 'bottle_sha1'
     set_instance_variable 'head'
     set_instance_variable 'specs'
-
     set_instance_variable 'standard'
     set_instance_variable 'unstable'
 
@@ -41,19 +41,21 @@ class Formula
     end
 
     raise "No url provided for formula #{name}" if @url.nil?
-    @name=name
+    @name = name
     validate_variable :name
 
     # If we got an explicit path, use that, else determine from the name
     @path = path.nil? ? self.class.path(name) : Pathname.new(path)
 
+    # Use a provided version, if any
     set_instance_variable 'version'
+    # Otherwise detect the version from the URL
     @version ||= @spec_to_use.detect_version
-    validate_variable :version if @version
+    validate_variable :version
 
     CHECKSUM_TYPES.each { |type| set_instance_variable type }
 
-    @downloader=download_strategy.new @spec_to_use.url, name, version, @spec_to_use.specs
+    @downloader = download_strategy.new @spec_to_use.url, name, version, @spec_to_use.specs
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -61,10 +63,6 @@ class Formula
     return installed_prefix.children.length > 0
   rescue
     return false
-  end
-
-  def bottle_up_to_date?
-    !bottle_url.nil? && Pathname.new(bottle_url).version == version
   end
 
   def explicitly_requested?
@@ -191,14 +189,9 @@ class Formula
         yield self
       rescue Interrupt, RuntimeError, SystemCallError => e
         unless ARGV.debug?
-          logs = File.expand_path '~/Library/Logs/Homebrew/'
-          if File.exist? 'config.log'
-            mkdir_p logs
-            mv 'config.log', logs
-          end
-          if File.exist? 'CMakeCache.txt'
-            mkdir_p logs
-            mv 'CMakeCache.txt', logs
+          %w(config.log CMakeCache.txt).select{|f| File.exist? f}.each do |f|
+            HOMEBREW_LOGS.install f
+            ohai "#{f} was copied to #{HOMEBREW_LOGS}"
           end
           raise
         end
