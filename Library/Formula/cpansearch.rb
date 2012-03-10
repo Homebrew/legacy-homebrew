@@ -2,8 +2,8 @@ require 'formula'
 
 class Cpansearch < Formula
   homepage 'https://github.com/c9s/cpansearch'
-  url 'https://github.com/c9s/cpansearch/tarball/0.1'
-  md5 '470acb92617d77d7c9809effa3edde6d'
+  url 'https://github.com/c9s/cpansearch/tarball/0.1.1'
+  md5 '097e8e107b261a5c4f62af7424f08a1f'
   head 'https://github.com/c9s/cpansearch.git', :using => :git
 
   depends_on 'glib'
