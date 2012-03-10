@@ -1,7 +1,7 @@
 require 'formula'
 
 class Iksemel < Formula
-  homepage ''
+  homepage 'http://code.google.com/p/iksemel/'
   url 'http://iksemel.googlecode.com/files/iksemel-1.4.tar.gz'
   md5 '532e77181694f87ad5eb59435d11c1ca'
 
@@ -9,6 +9,8 @@ class Iksemel < Formula
   depends_on 'pkg-config' => :build
   
   def patches
+    # Fix to use pkg-config to find gnutls vice the no longer existent libgnutls-config.
+    # Next release fixes this.
     DATA
   end
   
