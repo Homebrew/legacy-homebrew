@@ -377,9 +377,7 @@ Please take one of the following actions:
     append flags, xarch unless xarch.empty?
 
     if ARGV.build_bottle?
-      ohai "Building a universal bottle."
       append flags, '-mtune=' + map.fetch(:bottle) if map.has_key? :bottle
-      universal_binary
     else
       # Don't set -msse3 and older flags because -march does that for us
       append flags, '-march=' + map.fetch(Hardware.intel_family, default)

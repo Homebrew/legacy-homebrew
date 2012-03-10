@@ -85,7 +85,7 @@ module HomebrewArgvExtension
   end
 
   def build_universal?
-    include? '--universal' or build_bottle?
+    include? '--universal'
   end
 
   # Request a 32-bit only build.
