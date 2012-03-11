@@ -79,7 +79,7 @@ class OpenBabel < Formula
         system "ruby", "extconf.rb",
                "--with-openbabel-include=#{include}",
                "--with-openbabel-lib=#{lib}"
-               
+
         # Don't build i386 version when libopenbabel can't link to it.
         inreplace "Makefile", '-arch i386 ', ''
 
