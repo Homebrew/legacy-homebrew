@@ -1,7 +1,7 @@
 require 'base_kde_formula'
 
 class KdeWallpapers < BaseKdeFormula
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.0/src/kde-wallpapers-4.8.0.tar.bz2'
   homepage 'http://kde.org/'
-  md5 'e3606013a1406ba87293aa5948a6c123'
+  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.1/src/kde-wallpapers-4.8.1.tar.xz'
+  sha1 'daff0ab5f7f66d7eb1d71dcaffe0c291a3753b5f'
 end

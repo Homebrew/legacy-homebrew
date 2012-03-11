@@ -1,9 +1,9 @@
 require 'base_kde_formula'
 
 class Kdelibs < BaseKdeFormula
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.0/src/kdelibs-4.8.0.tar.bz2'
   homepage 'http://www.kde.org/'
-  md5 'c19858c68f9a209ae521d7fb3c34747b'
+  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.1/src/kdelibs-4.8.1.tar.xz'
+  sha1 'da4e13f63ac340619351e9a2f4211cce8ec4fdf8'
 
   depends_on 'gettext'
   depends_on 'pcre'

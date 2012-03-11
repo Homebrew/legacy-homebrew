@@ -1,8 +1,8 @@
 require 'base_kde_formula'
 
 class Korundum < BaseKdeFormula
-  url 'http://download.kde.org/stable/4.8.0/src/korundum-4.8.0.tar.bz2'
   homepage 'http://kde.org'
-  #md5 'edfd9bafc3e63dacad63a6c577dcb43c'
+  url 'http://download.kde.org/stable/4.8.1/src/korundum-4.8.1.tar.xz'
+  sha1 '10788c362d209785ce800d70c3b8823af49cf16c'
   depends_on 'kdelibs'
 end
