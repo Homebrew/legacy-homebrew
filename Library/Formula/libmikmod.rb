@@ -72,7 +72,7 @@ class Libmikmod < Formula
     args << ((ARGV.include? '--with-debug') ? '--enable-debug' : '--disable-debug')
     # autoreconf w/glibtoolize will fix PIC flags, flat_namespace from 2005 era code.
     system "autoreconf -ivf"
-    # An oos build is recommended in the documentation.
+
     mkdir 'macbuild' do
       system "../configure", *args
       system "make"
