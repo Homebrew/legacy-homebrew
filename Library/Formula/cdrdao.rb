@@ -1,8 +1,8 @@
 require 'formula'
 
 class Cdrdao < Formula
-  url 'http://downloads.sourceforge.net/project/cdrdao/cdrdao/1.2.3/cdrdao-1.2.3.tar.bz2'
   homepage 'http://cdrdao.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/project/cdrdao/cdrdao/1.2.3/cdrdao-1.2.3.tar.bz2'
   md5 '8d15ba6280bb7ba2f4d6be31d28b3c0c'
 
   depends_on 'pkg-config' => :build
@@ -10,6 +10,8 @@ class Cdrdao < Formula
   depends_on 'libvorbis'
   depends_on 'mad'
   depends_on 'lame'
+
+  fails_with_llvm "Segfault while linking", :build => 2326
 
   # first patch fixes build problems under 10.6
   # see http://sourceforge.net/tracker/index.php?func=detail&aid=2981804&group_id=2171&atid=302171
@@ -21,8 +23,6 @@ class Cdrdao < Formula
     { :p1 => "http://sourceforge.net/tracker/download.php?group_id=2171&atid=302171&file_id=369387&aid=2981804",
       :p0 => "http://trac.macports.org/export/90637/trunk/dports/sysutils/cdrdao/files/cdrdao-device-default-bufsize.patch" }
   end
-
-  fails_with_llvm "Segfault while linking", :build => 2326
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
