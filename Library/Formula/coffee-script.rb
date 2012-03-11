@@ -1,15 +1,31 @@
 require 'formula'
 
+class NodeRequired < Requirement
+  def message; <<-EOS.undent
+    CoffeeScript rqeuires Node to be installed.
+    You can install using Homebrew:
+      brew install node
+
+    If you are installing the --HEAD version of CoffeeScript,
+    you may need the --HEAD version of node:
+      brew install --HEAD node
+    EOS
+  end
+  def satisified?
+    which 'node'
+  end
+  def fatal?
+    true
+  end
+end
+
 class CoffeeScript < Formula
   url 'http://github.com/jashkenas/coffee-script/tarball/1.2.0'
   head 'https://github.com/jashkenas/coffee-script.git'
   homepage 'http://jashkenas.github.com/coffee-script/'
   md5 '5dfc3ee21214f1b7e86c0535f5386a35'
 
-  # head coffee-script usually depends on head node and
-  # since there isn't a way to specify that just remove
-  # the depends_on
-  depends_on 'node' unless ARGV.build_head?
+  depends_on NodeRequired.new
 
   def install
     bin.mkpath
