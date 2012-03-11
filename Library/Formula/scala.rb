@@ -24,12 +24,6 @@ class Scala < Formula
     [['--with-docs', 'Also install library documentation']]
   end
 
-  def caveats; <<-EOS.undent
-    Bash completion has been installed to:
-      #{etc}/bash_completion.d
-    EOS
-  end
-
   def install
     rm_f Dir["bin/*.bat"]
     doc.install Dir['doc/*']
@@ -37,9 +31,12 @@ class Scala < Formula
     libexec.install Dir['*']
     bin.install_symlink Dir["#{libexec}/bin/*"]
     ScalaCompletion.new.brew { (prefix+'etc/bash_completion.d').install 'scala' }
+    ScalaDocs.new.brew { doc.install Dir['*'] } if ARGV.include? '--with-docs'
+  end
 
-    if ARGV.include? '--with-docs'
-      ScalaDocs.new.brew { doc.install Dir['*'] }
-    end
+  def caveats; <<-EOS.undent
+    Bash completion has been installed to:
+      #{etc}/bash_completion.d
+    EOS
   end
 end
