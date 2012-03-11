@@ -1,48 +1,9 @@
 require 'formula'
 
-# This formula serves as the base class for several very similar
-# formulae for Amazon Web Services related tools.
-
-class AmazonWebServicesFormula < Formula
-  # Use this method to peform a standard install for Java-based tools,
-  # keeping the .jars out of HOMEBREW_PREFIX/lib
-  def standard_install
-    rm Dir['bin/*.cmd'] # Remove Windows versions
-    prefix.install "bin"
-    # Put the .jars in prefix/jars/lib, which isn't linked to the Cellar
-    # This will prevent conflicts with other versions of these jars.
-    (prefix+'jars').install 'lib'
-    (prefix+'jars/bin').make_symlink '../bin'
-  end
-
-  # Use this method to generate standard caveats.
-  def standard_instructions var_name, var_value=prefix+'jars'
-    <<-EOS.undent
-      Before you can use these tools you must export some variables to your $SHELL
-      and download your X.509 certificate and private key from Amazon Web Services.
-
-      Your certificate and private key are available at:
-      http://aws-portal.amazon.com/gp/aws/developer/account/index.html?action=access-key
-
-      Download two ".pem" files, one starting with `pk-`, and one starting with `cert-`.
-      You need to put both into a folder in your home directory, `~/.ec2`.
-
-      To export the needed variables, add them to your dotfiles.
-       * On Bash, add them to `~/.bash_profile`.
-       * On Zsh, add them to `~/.zprofile` instead.
-
-      export JAVA_HOME="$(/usr/libexec/java_home)"
-      export EC2_PRIVATE_KEY="$(/bin/ls $HOME/.ec2/pk-*.pem)"
-      export EC2_CERT="$(/bin/ls $HOME/.ec2/cert-*.pem)"
-      export #{var_name}="#{var_value}"
-    EOS
-  end
-end
-
 class Ec2ApiTools < AmazonWebServicesFormula
   homepage 'http://aws.amazon.com/developertools/351'
-  url 'http://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.5.2.3.zip'
-  md5 'fa1e050b35ce9e7f4a2017f251c5e2bb'
+  url 'http://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.5.2.4.zip'
+  md5 '928967de271e15d3d1518730f384600f'
 
   def install
     standard_install

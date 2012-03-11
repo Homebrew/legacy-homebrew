@@ -1,14 +1,13 @@
 require 'formula'
 
 class GoGui < Formula
-  url 'http://downloads.sourceforge.net/project/gogui/gogui/1.2.2/gogui-1.2.2.zip'
   homepage 'http://gogui.sourceforge.net'
-  md5 'a222d7f5f654341dc55016fd4c1d512f'
+  url 'http://downloads.sourceforge.net/project/gogui/gogui/1.4.2/gogui-1.4.2.zip'
+  md5 '0f5e95deff548699c368b71e088bea58'
 
   def install
-    system "ant"
-    system "ant", "gogui.app"
-    prefix.install ['build/GoGui.app']
+    system "ant", "gogui.app", "-Ddoc-uptodate=true"
+    prefix.install 'build/GoGui.app'
   end
 
   def caveats; <<-EOS.undent
