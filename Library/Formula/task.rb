@@ -7,6 +7,12 @@ class Task < Formula
 
   skip_clean :all
 
+  devel do
+    url 'http://www.taskwarrior.org/download/task-2.0.0.RC1.tar.gz'
+    md5 '42333fa5a0ab3a6b058146182cbb7b1a'
+    version '2.0.0.rc1'
+  end
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
