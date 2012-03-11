@@ -188,4 +188,27 @@ class VersionTests < Test::Unit::TestCase
     check 'http://downloads.sf.net/project/machomebrew/Bottles/imagemagick-6.7.1-1-bottle.tar.gz',
       '6.7.1-1'
   end
+
+  def test_dash_version_dash_style
+    check 'http://www.antlr.org/download/antlr-3.4-complete.jar', '3.4'
+  end
+
+  def test_more_versions
+    check 'http://pypy.org/download/pypy-1.4.1-osx.tar.bz2', '1.4.1'
+    check 'http://www.openssl.org/source/openssl-0.9.8s.tar.gz', '0.9.8s'
+    check 'ftp://ftp.visi.com/users/hawkeyd/X/Xaw3d-1.5E.tar.gz', '1.5E'
+    check 'http://downloads.sourceforge.net/project/assimp/assimp-2.0/assimp--2.0.863-sdk.zip',
+      '2.0.863'
+    check 'http://common-lisp.net/project/cmucl/downloads/release/20c/cmucl-20c-x86-darwin.tar.bz2',
+      '20c'
+    check 'http://downloads.sourceforge.net/project/fann/fann/2.1.0beta/fann-2.1.0beta.zip',
+      '2.1.0beta'
+    check 'ftp://iges.org/grads/2.0/grads-2.0.1-bin-darwin9.8-intel.tar.gz', '2.0.1'
+    check 'http://haxe.org/file/haxe-2.08-osx.tar.gz', '2.08'
+    check 'ftp://ftp.cac.washington.edu/imap/imap-2007f.tar.gz', '2007f'
+    check 'http://sourceforge.net/projects/x3270/files/x3270/3.3.12ga7/suite3270-3.3.12ga7-src.tgz',
+      '3.3.12ga7'
+    check 'http://www.gedanken.demon.co.uk/download-wwwoffle/wwwoffle-2.9h.tgz', '2.9h'
+    check 'http://synergy.googlecode.com/files/synergy-1.3.6p2-MacOSX-Universal.zip', '1.3.6p2'
+  end
 end

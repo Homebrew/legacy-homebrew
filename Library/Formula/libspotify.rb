@@ -1,9 +1,8 @@
 require 'formula'
 
 class Libspotify < Formula
-  url "http://developer.spotify.com/download/libspotify/libspotify-10.1.16-Darwin-universal.zip"
-  version '10.1.16'
   homepage 'http://developer.spotify.com/en/libspotify/overview/'
+  url "http://developer.spotify.com/download/libspotify/libspotify-10.1.16-Darwin-universal.zip"
   md5 'd26c3f34b7416ffcfdf27b525b7febeb'
 
   def install
