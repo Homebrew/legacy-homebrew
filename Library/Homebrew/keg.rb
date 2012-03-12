@@ -68,13 +68,13 @@ class Keg < Pathname
     # yeah indeed, you have to force anything you need in the main tree into
     # these dirs REMEMBER that *NOT* everything needs to be in the main tree
     link_dir('etc') {:mkpath}
-    link_dir('bin') { |path| :skip if path.directory? }
-    link_dir('sbin') { |path| :skip if path.directory? }
+    link_dir('bin') {:skip_dir}
+    link_dir('sbin') {:skip_dir}
     link_dir('include') {:link}
 
     link_dir('share') do |path|
       case path.to_s
-      when 'locale/locale.alias' then :skip
+      when 'locale/locale.alias' then :skip_file
       when INFOFILE_RX then :info if ENV['HOMEBREW_KEEP_INFO']
       when LOCALEDIR_RX then :mkpath
       when *share_mkpaths then :mkpath
@@ -84,7 +84,7 @@ class Keg < Pathname
 
     link_dir('lib') do |path|
       case path.to_s
-      when 'charset.alias' then :skip
+      when 'charset.alias' then :skip_file
       # pkg-config database gets explicitly created
       when 'pkgconfig' then :mkpath
       # lib/language folders also get explicitly created
@@ -138,7 +138,7 @@ protected
         Find.prune if File.basename(src) == '.DS_Store'
 
         case yield src.relative_path_from(root)
-        when :skip
+        when :skip_file
           Find.prune
         when :info
           dst.make_relative_symlink(src)
@@ -155,7 +155,7 @@ protected
         Find.prune if src.extname.to_s == '.app'
 
         case yield src.relative_path_from(root)
-        when :skip
+        when :skip_dir
           Find.prune
         when :mkpath
           dst.mkpath unless resolve_any_conflicts(dst)
