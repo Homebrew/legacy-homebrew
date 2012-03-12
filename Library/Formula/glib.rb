@@ -4,9 +4,10 @@ def build_tests?; ARGV.include? '--test'; end
 
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/'
-  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.30/glib-2.30.2.tar.bz2'
-  sha256 '94b1f1a1456c67060ca868d299bef3f7268a2c1c5c360aabb7149d4d9b2fdcd3'
+  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.30/glib-2.30.3.tar.xz'
+  sha256 'e6cbb27c71c445993346e785e8609cc75cea2941e32312e544872feba572dd27'
 
+  depends_on 'xz' => :build
   depends_on 'gettext'
   depends_on 'libffi'
 
@@ -14,17 +15,14 @@ class Glib < Formula
 
   def patches
     mp = "https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/"
-    {
-      :p0 => [
+    { :p0 => [
         mp+"patch-configure.diff",
         mp+"patch-glib-2.0.pc.in.diff",
         mp+"patch-glib_gunicollate.c.diff",
         mp+"patch-gi18n.h.diff",
         mp+"patch-gio_xdgmime_xdgmime.c.diff",
         mp+"patch-gio_gdbusprivate.c.diff"
-      ],
-      :p1 => [ DATA ]
-    }
+      ]}
   end
 
   def options
@@ -50,16 +48,6 @@ class Glib < Formula
     # so we must follow suit if we use their patches
     inreplace ['gio/xdgmime/xdgmime.c', 'gio/gdbusprivate.c'] do |s|
       s.gsub! '@@PREFIX@@', HOMEBREW_PREFIX
-    end
-
-    if ARGV.build_universal?
-      # autoconf 2.61 is fine don't worry about it
-      inreplace ["aclocal.m4", "configure.ac"] do |s|
-        s.gsub! "AC_PREREQ([2.62])", "AC_PREREQ([2.61])"
-      end
-
-      # Run autoconf so universal builds will work
-      system "autoconf"
     end
 
     # glib and pkg-config <= 0.26 have circular dependencies, so we should build glib without pkg-config
@@ -102,20 +90,3 @@ class Glib < Formula
     (share+'gtk-doc').rmtree
   end
 end
-
-# glib is being overzealous about trying to detect situations where you use headers from one version
-# of iconv with libraries from another. The libiconv that comes with OS X is actually GNU libiconv,
-# but symbols have standard name like iconv_open instead of libiconv_open, and glib gets a bit
-# confused. This patch solves the problem by disabling glib's faulty check.
-# Bug filed with upstream at https://bugzilla.gnome.org/show_bug.cgi?id=665705
-__END__
-diff --git a/glib/gconvert.c b/glib/gconvert.c
-index b363bca..9924c6c 100644
---- a/glib/gconvert.c
-+++ b/glib/gconvert.c
-@@ -62,7 +62,6 @@
- #error GNU libiconv in use but included iconv.h not from libiconv
- #endif
- #if !defined(USE_LIBICONV_GNU) && defined (_LIBICONV_H)
--#error GNU libiconv not in use but included iconv.h is from libiconv
- #endif
