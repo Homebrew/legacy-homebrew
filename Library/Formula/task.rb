@@ -14,7 +14,7 @@ class Task < Formula
   end
 
   if ARGV.build_devel?
-    depends_on "cmake"
+    depends_on "cmake" => :build
   end
 
   def install
