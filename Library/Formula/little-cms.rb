@@ -10,7 +10,7 @@ class LittleCms < Formula
   depends_on 'libtiff' => :optional
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug"
+    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--with-python"
     system "make install"
   end
 end
