@@ -7,7 +7,7 @@ class Astyle < Formula
 
   def install
     cd 'src' do
-      system "make -f ../build/mac/Makefile"
+      system "make", "CXX=#{ENV.cxx}", "-f", "../build/mac/Makefile"
       bin.install "bin/astyle"
     end
   end
