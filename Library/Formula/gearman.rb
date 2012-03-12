@@ -9,9 +9,10 @@ class Gearman < Formula
   depends_on 'libevent'
   depends_on 'ossp-uuid'
 
+  # gearman-0.28 build error "ld: library not found for -lrt"
+  # see https://bugs.launchpad.net/gearmand/+bug/951198
+  # fixed upstream for 0.29
   def patches
-    # gearman-0.28 build error "ld: library not found for -lrt"
-    # see https://bugs.launchpad.net/gearmand/+bug/951198
     DATA
   end
 
