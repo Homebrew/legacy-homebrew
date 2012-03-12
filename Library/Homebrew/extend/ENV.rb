@@ -176,8 +176,14 @@ module HomebrewEnvExtension
       self['F77'] = self['FC'] unless self['F77']
 
       if ARGV.include? '--default-fortran-flags'
-        self['FCFLAGS'] = self['CFLAGS'] unless self['FCFLAGS']
-        self['FFLAGS'] = self['CFLAGS'] unless self['FFLAGS']
+        flags_to_set = []
+        flags_to_set << 'FCFLAGS' unless self['FCFLAGS']
+        flags_to_set << 'FFLAGS' unless self['FFLAGS']
+
+        flags_to_set.each {|key| self[key] = cflags}
+
+        # Ensure we use architecture optimizations for GCC 4.2.x
+        set_cpu_flags flags_to_set, 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott', :bottle => 'generic'
       elsif not self['FCFLAGS'] or self['FFLAGS']
         opoo <<-EOS.undent
           No Fortran optimization information was provided.  You may want to consider
@@ -197,8 +203,9 @@ module HomebrewEnvExtension
       self['FC'] = `/usr/bin/which gfortran`.chomp
       self['F77'] = self['FC']
 
-      self['FCFLAGS'] = self['CFLAGS']
-      self['FFLAGS'] = self['CFLAGS']
+      fc_flag_vars.each {|key| self[key] = cflags}
+      # Ensure we use architecture optimizations for GCC 4.2.x
+      set_cpu_flags fc_flag_vars, 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott', :bottle => 'generic'
 
     else
       onoe <<-EOS
@@ -274,6 +281,14 @@ Please take one of the following actions:
   def cppflags;self['CPPFLAGS'];     end
   def ldflags; self['LDFLAGS'];      end
 
+  # Shortcuts for lists of common flags
+  def cc_flag_vars
+    %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}
+  end
+  def fc_flag_vars
+    %w{FCFLAGS FFLAGS}
+  end
+
   def m64
     append_to_cflags '-m64'
     append 'LDFLAGS', '-arch x86_64'
@@ -298,74 +313,82 @@ Please take one of the following actions:
   def prepend key, value, separator = ' '
     # Value should be a string, but if it is a pathname then coerce it.
     value = value.to_s
-    unless self[key].to_s.empty?
-      self[key] = value + separator + self[key]
-    else
-      self[key] = value
+
+    [*key].each do |key|
+      unless self[key].to_s.empty?
+        self[key] = value + separator + self[key]
+      else
+        self[key] = value
+      end
     end
   end
 
   def append key, value, separator = ' '
     # Value should be a string, but if it is a pathname then coerce it.
     value = value.to_s
-    unless self[key].to_s.empty?
-      self[key] = self[key] + separator + value
-    else
-      self[key] = value
+
+    [*key].each do |key|
+      unless self[key].to_s.empty?
+        self[key] = self[key] + separator + value
+      else
+        self[key] = value
+      end
     end
   end
 
   def append_to_cflags f
-    append 'CFLAGS', f
-    append 'CXXFLAGS', f
-    append 'OBJCFLAGS', f
-    append 'OBJCXXFLAGS', f
+    append cc_flag_vars, f
   end
 
   def remove key, value
-    return if self[key].nil?
-    self[key] = self[key].sub value, '' # can't use sub! on ENV
-    self[key] = nil if self[key].empty? # keep things clean
+    [*key].each do |key|
+      next if self[key].nil?
+      self[key] = self[key].sub value, '' # can't use sub! on ENV
+      self[key] = nil if self[key].empty? # keep things clean
+    end
   end
 
   def remove_from_cflags f
-    remove 'CFLAGS', f
-    remove 'CXXFLAGS', f
-    remove 'OBJCFLAGS', f
-    remove 'OBJCXXFLAGS', f
+    remove cc_flag_vars, f
   end
 
   def replace_in_cflags before, after
-    %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}.each do |key|
+    cc_flag_vars.each do |key|
       self[key] = self[key].sub before, after if self[key]
     end
   end
 
   # Convenience method to set all C compiler flags in one shot.
   def set_cflags f
-    %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}.each do |key|
+    cc_flag_vars.each do |key|
       self[key] = f
     end
   end
 
-  def set_cpu_cflags default, map = {}
+  # Sets architecture-specific flags for every environment variable
+  # given in the list `flags`.
+  def set_cpu_flags flags, default, map = {}
     cflags =~ %r{(-Xarch_i386 )-march=}
     xarch = $1.to_s
-    remove_from_cflags %r{(-Xarch_i386 )?-march=\S*}
-    remove_from_cflags %r{( -Xclang \S+)+}
-    remove_from_cflags %r{-mssse3}
-    remove_from_cflags %r{-msse4(\.\d)?}
-    append_to_cflags xarch unless xarch.empty?
+    remove flags, %r{(-Xarch_i386 )?-march=\S*}
+    remove flags, %r{( -Xclang \S+)+}
+    remove flags, %r{-mssse3}
+    remove flags, %r{-msse4(\.\d)?}
+    append flags, xarch unless xarch.empty?
 
     if ARGV.build_bottle?
-      append_to_cflags '-mtune=' + map.fetch(:bottle) if map.has_key? :bottle
+      append flags, '-mtune=' + map.fetch(:bottle) if map.has_key? :bottle
     else
       # Don't set -msse3 and older flags because -march does that for us
-      append_to_cflags '-march=' + map.fetch(Hardware.intel_family, default)
+      append flags, '-march=' + map.fetch(Hardware.intel_family, default)
     end
 
     # not really a 'CPU' cflag, but is only used with clang
-    remove_from_cflags '-Qunused-arguments'
+    remove flags, '-Qunused-arguments'
+  end
+
+  def set_cpu_cflags default, map = {}
+    set_cpu_flags cc_flag_vars, default, map
   end
 
   # actually c-compiler, so cc would be a better name

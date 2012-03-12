@@ -264,6 +264,20 @@ module MacOS extend self
     MACOS_VERSION
   end
 
+  def cat
+    if mountain_lion?
+      :mountainlion
+    elsif lion?
+      :lion
+    elsif snow_leopard?
+      :snowleopard
+    elsif leopard?
+      :leopard
+    else
+      nil
+    end
+  end
+
   def dev_tools_path
     @dev_tools_path ||= if File.file? "/usr/bin/cc" and File.file? "/usr/bin/make"
       # probably a safe enough assumption
@@ -488,10 +502,6 @@ module MacOS extend self
 
   def prefer_64_bit?
     Hardware.is_64_bit? and not leopard?
-  end
-
-  def bottles_supported?
-    lion? and HOMEBREW_PREFIX.to_s == '/usr/local' and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar'
   end
 end
 

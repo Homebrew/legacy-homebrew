@@ -208,7 +208,7 @@ def check_for_latest_xcode
     else "4.3"
   end
   if MacOS.xcode_version < latest_xcode then <<-EOS.undent
-    You have Xcode-#{MacOS.xcode_version}, which is outdated.
+    You have Xcode #{MacOS.xcode_version}, which is outdated.
     Please install Xcode #{latest_xcode}.
     EOS
   end
@@ -801,11 +801,11 @@ def check_for_bad_python_symlink
 end
 
 def check_for_outdated_homebrew
-  HOMEBREW_PREFIX.cd do
+  HOMEBREW_REPOSITORY.cd do
     timestamp = if File.directory? ".git"
       `git log -1 --format="%ct" HEAD`.to_i
     else
-      (HOMEBREW_PREFIX/"Library").mtime.to_i
+      (HOMEBREW_REPOSITORY/"Library").mtime.to_i
     end
 
     if Time.now.to_i - timestamp > 60 * 60 * 24 then <<-EOS.undent
