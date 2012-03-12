@@ -1,3 +1,5 @@
+require 'bottles'
+
 module HomebrewArgvExtension
   def named
     @named ||= reject{|arg| arg[0..0] == '-'}
@@ -17,20 +19,34 @@ module HomebrewArgvExtension
     require 'keg'
     require 'formula'
     @kegs ||= downcased_unique_named.collect do |name|
-      n = Formula.canonical_name(name)
-      rack = HOMEBREW_CELLAR + if n.include? "/"
+      canonical_name = Formula.canonical_name(name)
+      rack = HOMEBREW_CELLAR + if canonical_name.include? "/"
         # canonical_name returns a path if it was a formula installed via a
         # URL. And we only want the name. FIXME that function is insane.
-        Pathname.new(n).stem
+        Pathname.new(canonical_name).stem
       else
-        n
+        canonical_name
       end
       dirs = rack.children.select{ |pn| pn.directory? } rescue []
       raise NoSuchKegError.new(name) if not rack.directory? or dirs.length == 0
-      raise MultipleVersionsInstalledError.new(name) if dirs.length > 1
-      Keg.new dirs.first
+
+      linked_keg_ref = HOMEBREW_REPOSITORY/"Library/LinkedKegs"/name
+
+      if not linked_keg_ref.symlink?
+        if dirs.length == 1
+          Keg.new(dirs.first)
+        else
+          prefix = Formula.factory(canonical_name).prefix
+          if prefix.directory?
+            Keg.new(prefix)
+          else
+            raise MultipleVersionsInstalledError.new(name)
+          end
+        end
+      else
+        Keg.new(linked_keg_ref.realpath)
+      end
     end
-    return @kegs
   end
 
   # self documenting perhaps?
@@ -80,12 +96,12 @@ module HomebrewArgvExtension
   end
 
   def build_bottle?
-    MacOS.bottles_supported? and include? '--build-bottle'
+    bottles_supported? and include? '--build-bottle'
   end
 
   def build_from_source?
     flag? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE'] \
-      or not MacOS.bottles_supported? or not options_only.empty?
+      or not bottles_supported? or not options_only.empty?
   end
 
   def flag? flag
@@ -93,6 +109,16 @@ module HomebrewArgvExtension
       return true if arg == flag
       next if arg[1..1] == '-'
       return true if arg.include? flag[2..2]
+    end
+    return false
+  end
+
+  # eg. `foo -ns -i --bar` has three switches, n, s and i
+  def switch? switch_character
+    return false if switch_character.length > 1
+    options_only.each do |arg|
+      next if arg[1..1] == '-'
+      return true if arg.include? switch_character
     end
     return false
   end

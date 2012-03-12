@@ -1,9 +1,9 @@
 require 'base_kde_formula'
 
 class Akonadi < BaseKdeFormula
-  url 'http://mirrors.isc.org/pub/kde/stable/akonadi/src/akonadi-1.7.0.tar.bz2'
   homepage 'http://pim.kde.org/akonadi/'
-  md5 '804309dca70ede35b4a654ab764e9079'
+  url 'ftp://ftp.kde.org/pub/kde/stable/akonadi/src/akonadi-1.7.1.tar.bz2'
+  md5 '54e0556d73c22c7b3393069071e0b717'
 
   depends_on 'shared-mime-info'
   depends_on 'mysql'

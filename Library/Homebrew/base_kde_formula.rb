@@ -38,17 +38,18 @@ class BaseKdeFormula < Formula
     else
       s += ":#{kdedir}"
     end
-    cmake_args = ['..',
+    cmake_args = [
+      "-DCMAKE_PREFIX_PATH=#{s}:#{qjson_prefix}:#{gettext_prefix}",
       '-DCMAKE_OSX_ARCHITECTURES="i386;x86_64"',
       "-DCMAKE_INSTALL_PREFIX=#{kdedir}",
       '-DCMAKE_BUILD_TYPE=None',
       '-Wno-dev',
       '-DKDE_DEFAULT_HOME=Library/Preferences/KDE',
-      "-DCMAKE_PREFIX_PATH=#{s}:#{qjson_prefix}:#{gettext_prefix}",
       "-DDOCBOOKXML_CURRENTDTD_DIR=#{docbook_dtd}",
       "-DDOCBOOKXSL_DIR=#{docbook_xsl}",
       "-DBUILD_doc=FALSE",
-      "-DBUNDLE_INSTALL_DIR=#{bin}"
+      "-DBUNDLE_INSTALL_DIR=#{bin}",
+      '..'
     ]
     if extra_cmake_args.class == String
       cmake_args += extra_cmake_args.split
@@ -59,12 +60,12 @@ class BaseKdeFormula < Formula
   def default_install
     ENV.x11
     ENV.j1
-    mkdir 'build' do
-      # this has to be installed along with this kdelibs. // kde4-config --prefix
-      system "cmake", *kde_default_cmake_args
-      system "make"
-      system "make install"
-    end
+    mkdir 'build'
+    cd 'build'
+    # this has to be installed along with this kdelibs. // kde4-config --prefix
+    system "cmake", *kde_default_cmake_args
+    system "make"
+    system "make install"
   end
   def install
     default_install

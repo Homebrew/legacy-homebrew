@@ -9,7 +9,13 @@ ARGV.extend(HomebrewArgvExtension)
 class EnvironmentTests < Test::Unit::TestCase
   def test_ENV_options
     ENV.gcc_4_0
-    ENV.gcc_4_2
+    begin
+      ENV.gcc_4_2
+    rescue RuntimeError => e
+      if `sw_vers -productVersion` =~ /10\.(\d+)/ and $1.to_i < 7
+        raise e
+      end
+    end
     ENV.O3
     ENV.minimal_optimization
     ENV.no_optimization

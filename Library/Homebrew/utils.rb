@@ -138,6 +138,15 @@ def puts_columns items, star_items=[]
   end
 end
 
+def which cmd
+  path = `/usr/bin/which #{cmd}`.chomp
+  if path.empty?
+    nil
+  else
+    Pathname.new(path)
+  end
+end
+
 def which_editor
   editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
   # If an editor wasn't set, try to pick a sane default
@@ -253,6 +262,20 @@ end
 module MacOS extend self
   def version
     MACOS_VERSION
+  end
+
+  def cat
+    if mountain_lion?
+      :mountainlion
+    elsif lion?
+      :lion
+    elsif snow_leopard?
+      :snowleopard
+    elsif leopard?
+      :leopard
+    else
+      nil
+    end
   end
 
   def dev_tools_path
@@ -479,10 +502,6 @@ module MacOS extend self
 
   def prefer_64_bit?
     Hardware.is_64_bit? and not leopard?
-  end
-
-  def bottles_supported?
-    lion? and HOMEBREW_PREFIX.to_s == '/usr/local' and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar'
   end
 end
 

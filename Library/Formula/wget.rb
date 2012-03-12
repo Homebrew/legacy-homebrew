@@ -24,4 +24,8 @@ class Wget < Formula
     system "./configure", *args
     system "make install"
   end
+
+  def test
+    system "#{bin}/wget -O - www.google.com"
+  end
 end

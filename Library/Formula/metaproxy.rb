@@ -1,9 +1,9 @@
 require 'formula'
 
 class Metaproxy < Formula
-  url 'http://ftp.indexdata.dk/pub/metaproxy/metaproxy-1.2.1.tar.gz'
+  url 'http://ftp.indexdata.dk/pub/metaproxy/metaproxy-1.3.25.tar.gz'
   homepage 'http://www.indexdata.com/metaproxy'
-  md5 '201af5bc981de16d16d27e0287c6a495'
+  md5 '085df43c5b31adef9c2fac6ba0325061'
 
   depends_on 'yazpp'
   depends_on 'boost'
