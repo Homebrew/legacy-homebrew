@@ -1,10 +1,23 @@
 require 'formula'
 
+class LionInstalled < Requirement
+  def message; <<-EOS.undent
+    OS X Lion is required to install ssh-agent-locker.
+    EOS
+  end
+  def satisfied?
+    MACOS_VERSION >= 10.7
+  end
+  def fatal?
+    true
+  end
+end
+
 class SshAgentLocker < Formula
   url 'https://github.com/gdcbyers/ssh-agent-locker/tarball/v0.1.0'
   homepage 'https://github.com/gdcbyers/ssh-agent-locker'
   md5 '37685d3a1e7b3ec29d0e9f0562367fe0'
-  version '0.1.0'
+  depends_on LionInstalled.new
 
   def install
     system "xcodebuild SYMROOT=build"
