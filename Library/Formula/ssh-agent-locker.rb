@@ -44,14 +44,14 @@ If this is your first install, automatically load on login with:
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Label</key>
-	<string>com.seaandco.geoff.ssh-agent-locker</string>
-	<key>RunAtLoad</key>
-	<true/>
-	<key>ProgramArguments</key>
-	<array>
-		<string>/usr/local/bin/ssh-agent-locker</string>
-	</array>
+  <key>Label</key>
+  <string>com.seaandco.geoff.ssh-agent-locker</string>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/local/bin/ssh-agent-locker</string>
+  </array>
 </dict>
 </plist>
     EOPLIST
