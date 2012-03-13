@@ -91,6 +91,11 @@ class Glib < Formula
   end
 
   def test
+    unless Formula.factory("pkg-config").installed?
+      puts "pkg-config is required to run this test, but is not installed"
+      exit 1
+    end
+
     mktemp do
       (Pathname.pwd/'test.c').write <<-EOS.undent
         #include <string.h>
@@ -107,7 +112,7 @@ class Glib < Formula
             return (strcmp(str, result_2) == 0) ? 0 : 1;
         }
         EOS
-      system "clang", "-o", "test", "test.c",
+      system ENV.cc, "-o", "test", "test.c",
         *`pkg-config --cflags --libs glib-2.0`.split
       system "./test"
     end
