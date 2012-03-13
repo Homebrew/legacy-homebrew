@@ -17,10 +17,8 @@ class Ganglia < Formula
     DATA
   end
 
-  if MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
     # ENV var needed to confirm putting the config in the prefix until 3.2

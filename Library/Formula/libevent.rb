@@ -9,7 +9,7 @@ class Libevent < Formula
 
   fails_with_llvm "Undefined symbol '_current_base' reported during linking.", :build => 2326
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+  if ARGV.build_head?
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end

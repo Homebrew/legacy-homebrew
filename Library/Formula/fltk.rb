@@ -10,6 +10,8 @@ class Fltk < Formula
     md5 '9c5eb9eb8642be56cb68e7c5b1c98611'
   end
 
+  depends_on 'autoconf' => :build if ARGV.build_head?
+
   depends_on 'jpeg'
 
   def install

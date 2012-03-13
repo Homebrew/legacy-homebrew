@@ -8,12 +8,10 @@ class Owfs < Formula
 
   depends_on 'libusb-compat'
 
-  if MacOS.xcode_version >= "4.3"
-    # remove the autoreconf if possible, no comment provided about why it is there
-    # so we have no basis to make a decision at this point.
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  # remove the autoreconf if possible, no comment provided about why it is there
+  # so we have no basis to make a decision at this point.
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
     system "autoreconf -ivf"

@@ -7,6 +7,8 @@ class Ctags < Formula
 
   head 'https://ctags.svn.sourceforge.net/svnroot/ctags/trunk'
 
+  depends_on 'autoconf' => :build if ARGV.build_head?
+
   # true for both 5.8 and head
   fails_with_llvm "Resulting executable generates erroneous tag files", :build => 2335
 

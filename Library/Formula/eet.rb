@@ -11,7 +11,7 @@ class Eet < Formula
   depends_on 'jpeg'
   depends_on 'lzlib'
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+  if ARGV.build_head?
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end

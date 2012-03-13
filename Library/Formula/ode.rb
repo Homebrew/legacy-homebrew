@@ -7,11 +7,9 @@ class Ode < Formula
   homepage 'http://www.ode.org/'
   head 'http://opende.svn.sourceforge.net/svnroot/opende/trunk'
 
-  if MacOS.xcode_version >= "4.3"
-    # find a proper tarball with configure and remove autogen and these deps
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  # find a proper tarball with configure and remove autogen and these deps
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
     ENV.j1

@@ -4,10 +4,8 @@ class Osm2pgsql < Formula
   head 'http://svn.openstreetmap.org/applications/utils/export/osm2pgsql/', :using => :svn
   homepage 'http://wiki.openstreetmap.org/wiki/Osm2pgsql'
 
-  if MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   depends_on "geos"
   depends_on "proj"

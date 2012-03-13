@@ -7,8 +7,11 @@ class Fish < Formula
 
   head 'git://gitorious.org/fish-shell/fish-shell.git'
 
-  # Indeed, the head build always builds documentation
-  depends_on 'doxygen' if ARGV.build_head?
+  if ARGV.build_head?
+    # Indeed, the head build always builds documentation
+    depends_on 'doxygen'
+    depends_on 'autoconf' => :build
+  end
 
   depends_on 'readline'
   skip_clean 'share/doc'

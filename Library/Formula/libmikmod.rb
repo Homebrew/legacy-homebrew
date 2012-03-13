@@ -15,10 +15,8 @@ class Libmikmod < Formula
     DATA unless Formula.factory('esound').installed?
   end
 
-  if MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
     ENV.no_optimization if ARGV.include? '--with-debug'  # leave code unoptimzed 4 debug

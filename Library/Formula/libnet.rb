@@ -6,11 +6,9 @@ class Libnet < Formula
   head 'https://github.com/sam-github/libnet.git'
   homepage 'https://github.com/sam-github/libnet'
 
-  if MacOS.xcode_version >= "4.3"
-    # when and if the tarball provides configure, remove autogen.sh and these deps
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  # when and if the tarball provides configure, remove autogen.sh and these deps
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
     cd 'libnet'

@@ -14,7 +14,7 @@ class Libimobiledevice < Formula
   depends_on 'usbmuxd'
   depends_on 'gnutls'
 
-  if MacOS.xcode_version >= "4.3" and ARGV.build_head?
+  if ARGV.build_head?
     depends_on 'libtool' => :build
     depends_on 'autoconf' => :build
   end
@@ -23,7 +23,6 @@ class Libimobiledevice < Formula
     if ARGV.build_head?
       # fix the m4 problem with the missing pkg.m4
       ENV['LIBTOOLIZE'] = "glibtoolize"
-      ENV['ACLOCAL'] = "aclocal -I m4 -I #{HOMEBREW_PREFIX}/share/aclocal"
       ENV.prepend "CFLAGS", "-I#{HOMEBREW_PREFIX}/include"
 
       system "autoreconf -ivf"
