@@ -3,7 +3,6 @@ require 'formula'
 class Sedna < Formula
   homepage 'http://modis.ispras.ru/sedna/index.html'
   url 'http://www.modis.ispras.ru/FTPContent/sedna/current/sedna-3.4.66-src-darwin.tar.gz'
-  version '3.4.66'
   md5 '8c0006dbfb0ab89a63b4ae93e35f2213'
 
   depends_on 'cmake' => :build
