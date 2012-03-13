@@ -6,8 +6,25 @@ class Jwhois < Formula
   homepage 'http://directory.fsf.org/project/jwhois/'
   md5 '977d0ba90ee058a7998c94d933fc9546'
 
-  # No whois entry in /etc/services. Use nicname instead.
-  def patches; DATA; end
+  # Patches provided by RedHat/RHEL
+  # for more information see https://github.com/rmoriz/jwhois4-patches
+  #
+  def patches
+    { :p1 => [
+          'https://raw.github.com/rmoriz/jwhois4-patches/jwhois-4.0-18.el6/contents/jwhois-4.0-connect.patch',
+          'https://raw.github.com/rmoriz/jwhois4-patches/jwhois-4.0-18.el6/contents/jwhois-4.0-ipv6match.patch',
+          'https://raw.github.com/rmoriz/jwhois4-patches/jwhois-4.0-18.el6/contents/jwhois-4.0-conf.patch',
+          'https://raw.github.com/rmoriz/jwhois4-patches/jwhois-4.0-18.el6/contents/jwhois-4.0-gi.patch',
+          'https://raw.github.com/rmoriz/jwhois4-patches/jwhois-4.0-18.el6/contents/jwhois-4.0-enum.patch',
+          'https://raw.github.com/rmoriz/jwhois4-patches/jwhois-4.0-18.el6/contents/jwhois-4.0-fclose.patch',
+          'https://raw.github.com/rmoriz/jwhois4-patches/jwhois-4.0-18.el6/contents/jwhois-4.0-conf_update.patch',
+          'https://raw.github.com/rmoriz/jwhois4-patches/jwhois-4.0-18.el6/contents/jwhois-4.0-conf_update2.patch',
+          'https://raw.github.com/rmoriz/jwhois4-patches/jwhois-4.0-18.el6/contents/jwhois-4.0-dotster.patch',
+          'https://raw.github.com/rmoriz/jwhois4-patches/jwhois-4.0-18.el6/contents/jwhois-4.0-conf_update3.patch',
+          'https://raw.github.com/rmoriz/jwhois4-patches/jwhois-4.0-18.el6/contents/jwhois-4.0-conf_update4.patch'
+       ]
+    }
+  end
 
   def install
     # link fails on libiconv if not added here
@@ -17,19 +34,3 @@ class Jwhois < Formula
     system "make install"
   end
 end
-
-
-__END__
-diff --git a/src/dns.c b/src/dns.c
-index a818237..b5fe9c8 100644
---- a/src/dns.c
-+++ b/src/dns.c
-@@ -113,7 +113,7 @@ int
- lookup_host_addrinfo(struct addrinfo **res, const char *host, int port)
- {
-   struct addrinfo hints;
--  char ascport[10] = "whois";
-+  char ascport[10] = "nicname";
-   int error;
- 
-   memset(&hints, 0, sizeof(hints));
