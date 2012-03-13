@@ -1,9 +1,10 @@
 require 'formula'
 
 class FlexSdk < Formula
-  url 'http://fpdownload.adobe.com/pub/flex/sdk/builds/flex4.6/flex_sdk_4.6.0.23201_mpl.zip'
+  url 'http://fpdownload.adobe.com/pub/flex/sdk/builds/flex3/flex_sdk_3.0.0.477A_mpl.zip'
+  version '3.0A'
   homepage 'http://opensource.adobe.com/wiki/display/flexsdk/Flex+SDK'
-  md5 'ff7b362fff908b620573405510541ce0'
+  md5 '59131fceb024aad67e12115754df96d8'
 
   def install
     libexec.install Dir['*']
