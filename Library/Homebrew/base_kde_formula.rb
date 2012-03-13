@@ -20,7 +20,7 @@ class BaseKdeFormula < Formula
     Formula.factory('docbook').prefix
   end
   def docbook_dtd
-    "#{docbook_prefix}/docbook/xml/4.5"
+    "#{docbook_prefix}/docbook/xml/5.0"
   end
   def docbook_xsl
     Dir.glob("#{docbook_prefix}/docbook/xsl/*").first
@@ -39,12 +39,12 @@ class BaseKdeFormula < Formula
       s += ":#{kdedir}"
     end
     cmake_args = [
+      "-DCMAKE_PREFIX_PATH=#{s}:#{qjson_prefix}:#{gettext_prefix}",
+      '-DCMAKE_OSX_ARCHITECTURES="i386;x86_64"',
       "-DCMAKE_INSTALL_PREFIX=#{kdedir}",
       '-DCMAKE_BUILD_TYPE=None',
       '-Wno-dev',
       '-DKDE_DEFAULT_HOME=Library/Preferences/KDE',
-      '-DCMAKE_OSX_ARCHITECTURES=x86_64',
-      "-DCMAKE_PREFIX_PATH=#{s}:#{qjson_prefix}:#{gettext_prefix}",
       "-DDOCBOOKXML_CURRENTDTD_DIR=#{docbook_dtd}",
       "-DDOCBOOKXSL_DIR=#{docbook_xsl}",
       "-DBUILD_doc=FALSE",
@@ -59,12 +59,13 @@ class BaseKdeFormula < Formula
   end
   def default_install
     ENV.x11
+    ENV.j1
     mkdir 'build'
     cd 'build'
-      # this has to be installed along with this kdelibs. // kde4-config --prefix
-      system "cmake", *kde_default_cmake_args
-      system "make"
-      system "make install"
+    # this has to be installed along with this kdelibs. // kde4-config --prefix
+    system "cmake", *kde_default_cmake_args
+    system "make"
+    system "make install"
   end
   def install
     default_install
