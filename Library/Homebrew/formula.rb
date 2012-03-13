@@ -1,6 +1,8 @@
 require 'download_strategy'
+require 'dependencies'
 require 'formula_support'
 require 'hardware'
+require 'bottles'
 require 'extend/fileutils'
 
 
@@ -50,7 +52,9 @@ class Formula
     set_instance_variable 'version'
     # Otherwise detect the version from the URL
     @version ||= @spec_to_use.detect_version
-    validate_variable :version
+    # Only validate if a version was set; GitHubGistFormula needs to get
+    # the URL to determine the version
+    validate_variable :version if @version
 
     CHECKSUM_TYPES.each { |type| set_instance_variable type }
 
@@ -62,10 +66,6 @@ class Formula
     return installed_prefix.children.length > 0
   rescue
     return false
-  end
-
-  def bottle_up_to_date?
-    !bottle_url.nil? && Pathname.new(bottle_url).version == version
   end
 
   def explicitly_requested?
@@ -192,14 +192,9 @@ class Formula
         yield self
       rescue Interrupt, RuntimeError, SystemCallError => e
         unless ARGV.debug?
-          logs = File.expand_path '~/Library/Logs/Homebrew/'
-          if File.exist? 'config.log'
-            mkdir_p logs
-            mv 'config.log', logs
-          end
-          if File.exist? 'CMakeCache.txt'
-            mkdir_p logs
-            mv 'CMakeCache.txt', logs
+          %w(config.log CMakeCache.txt).select{|f| File.exist? f}.each do |f|
+            HOMEBREW_LOGS.install f
+            ohai "#{f} was copied to #{HOMEBREW_LOGS}"
           end
           raise
         end
@@ -365,17 +360,10 @@ class Formula
     HOMEBREW_REPOSITORY+"Library/Formula/#{name.downcase}.rb"
   end
 
-  def mirrors
-    self.class.mirrors or []
-  end
+  def mirrors;       self.class.mirrors or []; end
 
-  def deps
-    self.class.deps or []
-  end
-
-  def external_deps
-    self.class.external_deps or {}
-  end
+  def deps;          self.class.dependencies.deps;          end
+  def external_deps; self.class.dependencies.external_deps; end
 
   # deps are in an installable order
   # which means if a depends on b then b will be ordered before a in this list
@@ -385,8 +373,8 @@ class Formula
 
   def self.expand_deps f
     f.deps.map do |dep|
-      dep = Formula.factory dep
-      expand_deps(dep) << dep
+      f_dep = Formula.factory dep.to_s
+      expand_deps(f_dep) << f_dep
     end
   end
 
@@ -611,7 +599,7 @@ private
       end
     end
 
-    attr_rw :version, :homepage, :mirrors, :specs, :deps, :external_deps
+    attr_rw :version, :homepage, :mirrors, :specs
     attr_rw :keg_only_reason, :fails_with_llvm_reason, :skip_clean_all
     attr_rw :bottle_url, :bottle_sha1
     attr_rw(*CHECKSUM_TYPES)
@@ -667,29 +655,12 @@ private
       @mirrors.uniq!
     end
 
-    def depends_on name
-      @deps ||= []
-      @external_deps ||= {:python => [], :perl => [], :ruby => [], :jruby => [], :chicken => [], :rbx => [], :node => [], :lua => []}
+    def dependencies
+      @dependencies ||= DependencyCollector.new
+    end
 
-      case name
-      when String, Formula
-        @deps << name
-      when Hash
-        key, value = name.shift
-        case value
-        when :python, :perl, :ruby, :jruby, :chicken, :rbx, :node, :lua
-          @external_deps[value] << key
-        when :optional, :recommended, :build
-          @deps << key
-        else
-          raise "Unsupported dependency type #{value}"
-        end
-      when Symbol
-        opoo "#{self.name} -- #{name}: Using symbols for deps is deprecated; use a string instead"
-        @deps << name.to_s
-      else
-        raise "Unsupported type #{name.class}"
-      end
+    def depends_on dep
+      dependencies.add(dep)
     end
 
     def skip_clean paths

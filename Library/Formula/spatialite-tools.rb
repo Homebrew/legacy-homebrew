@@ -9,7 +9,8 @@ class SpatialiteTools < Formula
   depends_on 'libspatialite'
 
   def install
-    ENV.append 'LDFLAGS', '-liconv' # Fixes 3328. Can be removed in some future release.
+    # See: https://github.com/mxcl/homebrew/issues/3328
+    ENV.append 'LDFLAGS', '-liconv'
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--target=macosx"
