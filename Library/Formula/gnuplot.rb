@@ -2,8 +2,8 @@ require 'formula'
 
 class Gnuplot < Formula
   homepage 'http://www.gnuplot.info'
-  url 'http://downloads.sourceforge.net/project/gnuplot/gnuplot/4.4.4/gnuplot-4.4.4.tar.gz'
-  md5 '97a43328e81e57ebed7f135ca0c07e82'
+  url 'http://downloads.sourceforge.net/project/gnuplot/gnuplot/4.6.0/gnuplot-4.6.0.tar.gz'
+  md5 '8e6e92b4596ea0eb75e16a57fc79efec'
   head 'cvs://:pserver:anonymous@gnuplot.cvs.sourceforge.net:/cvsroot/gnuplot:gnuplot', :using => :cvs
 
   depends_on 'pkg-config' => :build
