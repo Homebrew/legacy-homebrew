@@ -1,9 +1,9 @@
 require 'formula'
 
 class Leiningen < Formula
-  url 'http://github.com/technomancy/leiningen/tarball/1.6.2'
+  url 'http://github.com/technomancy/leiningen/tarball/1.7.0'
   homepage 'http://github.com/technomancy/leiningen'
-  md5 '27b8a48619be7b1e080a1a2ad3777024'
+  md5 '1daab06f9c0504418160f544f6c25886'
 
   head 'https://github.com/technomancy/leiningen.git', :using => :git
 
