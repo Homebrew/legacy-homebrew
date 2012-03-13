@@ -552,6 +552,16 @@ def check_for_dyld_vars
   end
 end
 
+def check_for_DYLD_INSERT_LIBRARIES
+  if ENV['DYLD_INSERT_LIBRARIES']
+    <<-EOS.undent
+      Setting DYLD_INSERT_LIBRARIES can cause Go builds to fail.
+      Having this set is common if you use this software:
+        http://asepsis.binaryage.com/
+    EOS
+  end
+end
+
 def check_for_symlinked_cellar
   if HOMEBREW_CELLAR.symlink?
     <<-EOS.undent
