@@ -14,14 +14,13 @@ class Glib < Formula
   fails_with_llvm "Undefined symbol errors while linking", :build => 2334
 
   def patches
-    mp = "https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/"
-    { :p0 => [
-        mp+"patch-configure.diff",
-        mp+"patch-glib-2.0.pc.in.diff",
-        mp+"patch-glib_gunicollate.c.diff",
-        mp+"patch-gi18n.h.diff",
-        mp+"patch-gio_xdgmime_xdgmime.c.diff",
-        mp+"patch-gio_gdbusprivate.c.diff"
+    { :p0 => %W[
+      https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/patch-configure.diff
+      https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/patch-glib-2.0.pc.in.diff
+      https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/patch-glib_gunicollate.c.diff
+      https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/patch-gi18n.h.diff
+      https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/patch-gio_xdgmime_xdgmime.c.diff
+      https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/patch-gio_gdbusprivate.c.diff
       ]}
   end
 
@@ -64,7 +63,7 @@ class Glib < Formula
     system "./configure", *args
 
     # Fix for 64-bit support, from MacPorts
-    curl "https://svn.macports.org/repository/macports/!svn/bc/87537/trunk/dports/devel/glib2/files/config.h.ed", "-O"
+    curl "https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/config.h.ed", "-O"
     system "ed - config.h < config.h.ed"
 
     system "make"
