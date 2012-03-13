@@ -10,4 +10,11 @@ class Akonadi < BaseKdeFormula
   depends_on 'soprano'
   depends_on 'boost'
   depends_on 'qt'
+
+  def patches
+    {:p0 => [
+      "http://bugsfiles.kde.org/attachment.cgi?id=69519"
+    ]}
+  end
+  
 end
