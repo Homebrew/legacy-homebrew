@@ -1,3 +1,10 @@
+require 'extend/ENV'
+require 'hardware'
+require 'keg'
+
+ENV.extend(HomebrewEnvExtension)
+ENV.setup_build_environment
+
 module Homebrew extend self
   def test
     raise KegUnspecifiedError if ARGV.named.empty?
