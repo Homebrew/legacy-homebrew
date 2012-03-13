@@ -1,3 +1,5 @@
+require 'keg'
+
 module Homebrew extend self
   # $n and $d are used by the ObserverPathnameExtension to keep track of
   # certain filesystem actions.
@@ -7,11 +9,16 @@ module Homebrew extend self
     $d = 0
     dirs = []
 
-    %w[bin sbin etc lib include share].map{ |d| HOMEBREW_PREFIX+d }.each do |path|
+    %w[bin sbin etc lib include share Library/LinkedKegs].map{ |d| HOMEBREW_PREFIX+d }.each do |path|
       path.find do |path|
         path.extend ObserverPathnameExtension
         if path.symlink?
-          path.unlink unless path.resolved_path_exists?
+          unless path.resolved_path_exists?
+            if ENV['HOMEBREW_KEEP_INFO'] and path.to_s =~ Keg::INFOFILE_RX
+              path.uninstall_info
+            end
+            path.unlink
+          end
         elsif path.directory?
           dirs << path
         end

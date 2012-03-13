@@ -5,6 +5,7 @@ HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] = File.expand_path(__FILE__)
 
 require 'pathname'
 HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.dirname.parent.join("Library/Homebrew").to_s
+$:.unshift(HOMEBREW_LIBRARY_PATH + '/vendor')
 $:.unshift(HOMEBREW_LIBRARY_PATH)
 require 'global'
 
@@ -81,12 +82,8 @@ begin
   elsif require? HOMEBREW_REPOSITORY/"Library/Homebrew/cmd"/cmd
     Homebrew.send cmd.to_s.gsub('-', '_')
   else
-    # Check for git commands
-    if %w[branch checkout pull push rebase reset].include? cmd
-      onoe "Unknown command: #{cmd} (did you mean `git #{cmd}'?)"
-    else
-      onoe "Unknown command: #{cmd}"
-    end
+    onoe "Unknown command: #{cmd}"
+    exit 1
   end
 
 rescue FormulaUnspecifiedError
@@ -103,38 +100,7 @@ rescue Interrupt => e
   puts # seemingly a newline is typical
   exit 130
 rescue BuildError => e
-  require 'cmd/--config'
-  require 'cmd/--env'
-
-  e.backtrace[1] =~ %r{Library/Formula/(.+)\.rb:(\d+)}
-  formula_name = $1
-  error_line = $2
-
-  ohai "Exit Status: #{e.exit_status}"
-  puts "http://github.com/mxcl/homebrew/blob/master/Library/Formula/#{formula_name}.rb#L#{error_line}"
-  ohai "Environment"
-  puts Homebrew.config_s
-  ohai "Build Flags"
-  Homebrew.dump_build_env e.env
-  puts
-  onoe e
-  puts PLEASE_REPORT_BUG
-  # this feature can be slow (depends on network conditions and if github is up)
-  # so ideally we'd show feedback, eg. "checking for existing issues..." and
-  # then replace that string with the following when the github api returns
-  issues = GitHub.issues_for_formula formula_name
-  puts "These existing issues may help you:", *issues unless issues.empty?
-  if e.was_running_configure?
-    puts "It looks like an autotools configure failed."
-    puts "Consider re-running the install with '-vd' to keep 'config.log' around:"
-    puts "    brew install -vd #{formula_name}"
-    puts "Gist 'config.log' and any error output when reporting an issue."
-    puts "Remember to include your config information: brew --config"
-  end
-  puts
-  puts "Also try:"
-  puts "  `brew doctor` to check your setup for common problems."
-  puts "  `brew missing` to check installed packages for missing deps."
+  e.dump
   exit 1
 rescue RuntimeError, SystemCallError => e
   onoe e
@@ -142,7 +108,8 @@ rescue RuntimeError, SystemCallError => e
   exit 1
 rescue Exception => e
   onoe e
-  puts PLEASE_REPORT_BUG
+  puts "#{Tty.white}Please report this bug:"
+  puts "    #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
   puts e.backtrace
   exit 1
 end

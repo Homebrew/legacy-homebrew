@@ -1,26 +1,43 @@
 require 'formula'
 
 class Zsh < Formula
-  url 'http://downloads.sourceforge.net/project/zsh/zsh-dev/4.3.11/zsh-4.3.11.tar.gz'
   homepage 'http://www.zsh.org/'
-  md5 '127e2a3b9100d6f2fddb6a32cd4aca40'
+  url 'http://sourceforge.net/projects/zsh/files/zsh-dev/4.3.17/zsh-4.3.17.tar.gz'
+  md5 '9074077945550d6684ebe18b3b167d52'
 
-  depends_on 'gdbm' => :optional
+  depends_on 'gdbm'
+  depends_on 'pcre'
 
   skip_clean :all
 
   def install
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--disable-dependency-tracking",
-                          # don't version stuff in Homebrew, we already do that!
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-etcdir",
                           "--enable-fndir=#{share}/zsh/functions",
-                          "--enable-scriptdir=#{share}/zsh/scripts"
+                          "--enable-site-fndir=#{share}/zsh/site-functions",
+                          "--enable-scriptdir=#{share}/zsh/scripts",
+                          "--enable-site-scriptdir=#{share}/zsh/site-scripts",
+                          "--enable-cap",
+                          "--enable-function-subdirs",
+                          "--enable-maildir-support",
+                          "--enable-multibyte",
+                          "--enable-pcre",
+                          "--enable-zsh-secure-free",
+                          "--with-tcsetpgrp"
 
-    # Again, don't version installation directories
+    # Do not version installation directories.
     inreplace ["Makefile", "Src/Makefile"],
       "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
     system "make install"
+  end
+
+  def test
+    system "#{bin}/zsh --version"
+  end
+
+  def caveats; <<-EOS.undent
+    To use this build of Zsh as your login shell, add it to /etc/shells.
+    EOS
   end
 end

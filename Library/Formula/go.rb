@@ -1,32 +1,41 @@
 require 'formula'
-require 'hardware'
 
 class Go < Formula
-  if ARGV.include? "--use-git-head"
-    head 'https://github.com/tav/go.git', :tag => 'release'
-  else
-    head 'http://go.googlecode.com/hg/', :revision => 'release'
-  end
   homepage 'http://golang.org'
+  version 'r60.3'
 
-  def options
-    [["--use-git-head", "Use git mirror instead of official hg repository"]]
+  if ARGV.include? "--use-git"
+    url 'https://github.com/tav/go.git', :tag => 'release.r60.3'
+    head 'https://github.com/tav/go.git'
+  else
+    url 'http://go.googlecode.com/hg/', :revision => 'release.r60.3'
+    head 'http://go.googlecode.com/hg/'
   end
 
   skip_clean 'bin'
 
+  def options
+    [["--use-git", "Use git mirror instead of official hg repository"]]
+  end
+
   def install
-    ENV.j1 # https://github.com/mxcl/homebrew/issues/#issue/237
     prefix.install %w[src include test doc misc lib favicon.ico AUTHORS]
-    Dir.chdir prefix
-    mkdir %w[pkg bin]
+    cd prefix do
+      mkdir %w[pkg bin]
 
-    Dir.chdir 'src' do
-      system "./all.bash"
+      # The version check is due to:
+      # http://codereview.appspot.com/5654068
+      version = ARGV.build_head? ? 'default' : 'release.r60.3 9516'
+      File.open('VERSION', 'w') {|f| f.write(version) }
+
+      # Tests take a very long time to run. Build only
+      cd 'src' do
+        system "./make.bash"
+      end
+
+      # Don't need the src folder, but do keep the Makefiles as Go projects use these
+      Dir['src/*'].each{|f| rm_rf f unless f.match(/^src\/(pkg|Make)/) }
+      rm_rf %w[include test]
     end
-
-    # Keep the makefiles - https://github.com/mxcl/homebrew/issues/issue/1404
-    Dir['src/*'].each{|f| rm_rf f unless f.match(/^src\/(pkg|Make)/) }
-    rm_rf %w[include test]
   end
 end

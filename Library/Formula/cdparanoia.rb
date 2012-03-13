@@ -7,8 +7,8 @@ class Cdparanoia < Formula
 
   def patches
     [
-     "http://trac.macports.org/export/70964/trunk/dports/audio/cdparanoia/files/osx_interface.patch",
-     "http://trac.macports.org/export/70964/trunk/dports/audio/cdparanoia/files/patch-paranoia_paranoia.c.10.4.diff"
+     "https://trac.macports.org/export/70964/trunk/dports/audio/cdparanoia/files/osx_interface.patch",
+     "https://trac.macports.org/export/70964/trunk/dports/audio/cdparanoia/files/patch-paranoia_paranoia.c.10.4.diff"
     ]
   end
 
@@ -16,8 +16,10 @@ class Cdparanoia < Formula
 
   def install
     system "autoconf"
+    # Libs are installed as keg-only because most software that searches for cdparanoia
+    # will fail to link against it cleanly due to our patches
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-           "--prefix=#{prefix}", "--mandir=#{man}"
+           "--prefix=#{prefix}", "--mandir=#{man}", "--libdir=#{libexec}"
     system "make all"
     system "make install"
   end

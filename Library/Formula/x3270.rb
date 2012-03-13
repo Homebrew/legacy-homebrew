@@ -1,10 +1,9 @@
 require 'formula'
 
 class X3270 < Formula
-  url 'http://sourceforge.net/projects/x3270/files/x3270/3.3.11ga6/suite3270-3.3.11ga6-src.tgz'
   homepage 'http://x3270.bgp.nu/'
-  md5 '01d6d3809a457e6f6bd3731642e0c02d'
-  version '3.3.11ga6'
+  url 'http://sourceforge.net/projects/x3270/files/x3270/3.3.12ga7/suite3270-3.3.12ga7-src.tgz'
+  md5 '5a501ed84d522c02d3c7ed3e36a00d0a'
 
   def options
     [
@@ -16,8 +15,8 @@ class X3270 < Formula
   end
 
   def make_directory(directory)
-    Dir.chdir directory do
-      system "./configure", 	"--prefix=#{prefix}"
+    cd directory do
+      system "./configure", "--prefix=#{prefix}"
       system "make"
       system "make install"
       system "make install.man"

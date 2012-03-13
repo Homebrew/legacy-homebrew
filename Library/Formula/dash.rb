@@ -1,10 +1,12 @@
 require 'formula'
 
 class Dash < Formula
-  url 'http://gondor.apana.org.au/~herbert/dash/files/dash-0.5.6.1.tar.gz'
+  url 'http://gondor.apana.org.au/~herbert/dash/files/dash-0.5.7.tar.gz'
   homepage 'http://gondor.apana.org.au/~herbert/dash/'
-  sha1 '06944456a1e3a2cbc325bffd0c898eff198b210a'
+  sha1 'a3ebc16f2e2c7ae8adf64e5e62ae3dcb631717c6'
   head 'https://git.kernel.org/pub/scm/utils/dash/dash.git', :using => :git
+
+  depends_on "automake" if MacOS.xcode_version >= "4.3" and ARGV.build_head?
 
   def install
     if ARGV.build_head?
@@ -13,8 +15,16 @@ class Dash < Formula
     end
 
     system "./configure", "--prefix=#{prefix}",
-                          "--with-libedit"
+                          "--with-libedit",
+                          "--disable-dependency-tracking",
+                          "--enable-fnmatch",
+                          "--enable-glob"
     system "make"
     system "make install"
+  end
+
+  def test
+    system "#{HOMEBREW_PREFIX}/bin/dash -c \"echo Hello!\""
+    puts "  ^--- That works."
   end
 end

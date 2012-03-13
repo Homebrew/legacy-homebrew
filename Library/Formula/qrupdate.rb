@@ -1,8 +1,8 @@
 require 'formula'
 
 class Qrupdate < Formula
-  url 'http://downloads.sourceforge.net/qrupdate/qrupdate-1.1.1.tar.gz'
   homepage 'http://sourceforge.net/projects/qrupdate/'
+  url 'http://downloads.sourceforge.net/qrupdate/qrupdate-1.1.1.tar.gz'
   sha1 '8fbaba202b0d4bf80852b2dc6c8d1d4b90b816d4'
 
   depends_on 'dotwrp'
@@ -21,7 +21,7 @@ class Qrupdate < Formula
     inreplace 'Makefile' do |s|
       s.gsub! 'install -D', 'install'
     end
-    mkdir_p lib
+    lib.mkpath
     system "make -j 1 install"
   end
 end

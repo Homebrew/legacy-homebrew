@@ -2,12 +2,12 @@ require 'formula'
 
 module Homebrew extend self
   def outdated
-    outdated_brews.each do |keg, name, version|
+    outdated_brews.each do |f|
       if $stdout.tty? and not ARGV.flag? '--quiet'
-        versions = keg.cd{ Dir['*'] }.join(', ')
-        puts "#{name} (#{versions} < #{version})"
+        versions = f.rack.cd{ Dir['*'] }.join(', ')
+        puts "#{f.name} (#{versions} < #{f.version})"
       else
-        puts name
+        puts f.name
       end
     end
   end
@@ -22,7 +22,7 @@ module Homebrew extend self
 
       name = rack.basename.to_s
       f = Formula.factory name rescue nil
-      [rack, name, f.version] if f and not f.installed?
+      f if f and not f.installed?
     end.compact
   end
 end

@@ -15,6 +15,7 @@ class Libnids < Formula
 
   depends_on 'libnet' if use_libnet?
   depends_on 'glib' if use_glib?
+  depends_on 'pkg-config' => :build
 
   def options
     [

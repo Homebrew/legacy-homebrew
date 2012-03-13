@@ -1,9 +1,17 @@
 require 'formula'
+require 'cmd/outdated'
 
 def ff
   if ARGV.include? "--all"
     Formula.all
+  elsif ARGV.include? "--installed"
+    # outdated brews count as installed
+    outdated = Homebrew.outdated_brews.collect{ |b| b.name }
+    Formula.all.select do |f|
+      f.installed? or outdated.include? f.name
+    end
   else
+    raise FormulaUnspecifiedError if ARGV.named.empty?
     ARGV.formulae
   end
 end
@@ -11,7 +19,7 @@ end
 module Homebrew extend self
   def options
     ff.each do |f|
-      f.options rescue next
+      next if f.options.empty?
       if ARGV.include? '--compact'
         puts f.options.collect {|o| o[0]} * " "
       else

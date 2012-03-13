@@ -1,9 +1,9 @@
 require 'formula'
 
 class Skipfish < Formula
-  url 'http://skipfish.googlecode.com/files/skipfish-1.88b.tgz'
+  url 'http://skipfish.googlecode.com/files/skipfish-2.03b.tgz'
   homepage 'http://code.google.com/p/skipfish/'
-  md5 'd8ee6243d83f48bd9dd833b2c9b91a4e'
+  md5 'ff860b840ec7e579e9fac08e4fd8f4e2'
 
   depends_on 'libidn'
 
@@ -15,7 +15,7 @@ class Skipfish < Formula
       "#define ASSETS_DIR	       \"#{libexec}/assets\""
     system "make"
     bin.install "skipfish"
-    libexec.install ["dictionaries", "assets"]
+    libexec.install "assets", "dictionaries"
   end
 
   def caveats; <<-EOS.undent

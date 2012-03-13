@@ -2,16 +2,14 @@ require 'formula'
 
 class Pngcrush < Formula
   homepage 'http://pmt.sourceforge.net/pngcrush/'
-  url 'http://downloads.sourceforge.net/project/pmt/pngcrush/1.7.13/pngcrush-1.7.13.tar.bz2'
-  md5 'c0816dfc9318d7325008608d321a9228'
+  url 'http://downloads.sourceforge.net/project/pmt/pngcrush/1.7.24/pngcrush-1.7.24.tar.bz2'
+  md5 '9f29bd4bc05ae1415e5ad10241798794'
 
   def install
-    # use our CFLAGS, LDFLAGS, CC, and LD
-    inreplace 'Makefile' do |s|
-      s.remove_make_var! %w[CFLAGS LDFLAGS CC LD]
-    end
-
-    system "make"
+    system "make", "CC=#{ENV.cc}",
+                   "LD=#{ENV.cc}",
+                   "CFLAGS=#{ENV.cflags}",
+                   "LDFLAGS=#{ENV.ldflags}"
     bin.install 'pngcrush'
   end
 end

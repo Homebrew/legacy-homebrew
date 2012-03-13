@@ -1,31 +1,35 @@
 require 'formula'
 
 class Weechat < Formula
-  head 'git://git.sv.gnu.org/weechat.git'
-  url 'http://www.weechat.org/files/src/weechat-0.3.4.tar.bz2'
   homepage 'http://www.weechat.org'
-  md5 '79207fea567548462fe36397e633d287'
+  url 'http://www.weechat.org/files/src/weechat-0.3.7.tar.bz2'
+  md5 '62bb5002b2ba9e5816dfeededc3fa276'
+
+  head 'git://git.sv.gnu.org/weechat.git'
 
   depends_on 'cmake' => :build
   depends_on 'gnutls'
 
   def install
     # Remove all arch flags from the PERL_*FLAGS as we specify them ourselves.
-    # This messes up because the system perl is a fat binary with 32,64 and PPC
+    # This messes up because the system perl is a fat binary with 32, 64 and PPC
     # compiles, but our deps don't have that.
-    archs = ['-arch ppc', '-arch i386', '-arch x86_64']
+    archs = ['-arch ppc', '-arch i386', '-arch x86_64'].join('|')
+
     inreplace  "src/plugins/scripts/perl/CMakeLists.txt",
       'IF(PERL_FOUND)',
       'IF(PERL_FOUND)' +
-      %Q{\n  STRING(REGEX REPLACE "#{archs.join '|'}" "" PERL_CFLAGS "${PERL_CFLAGS}")} +
-      %Q{\n  STRING(REGEX REPLACE "#{archs.join '|'}" "" PERL_LFLAGS "${PERL_LFLAGS}")}
+      %Q{\n  STRING(REGEX REPLACE "#{archs}" "" PERL_CFLAGS "${PERL_CFLAGS}")} +
+      %Q{\n  STRING(REGEX REPLACE "#{archs}" "" PERL_LFLAGS "${PERL_LFLAGS}")}
 
-    #FIXME: Compiling perl module doesn't work
-    #NOTE: -DPREFIX has to be specified because weechat devs enjoy being non-standard
+    # -DPREFIX has to be specified because weechat devs enjoy being non-standard
+    # Compiling langauge module doesn't work. Feel free to add options to enable these.
     system "cmake", "-DPREFIX=#{prefix}",
                     "-DENABLE_RUBY=OFF",
                     "-DENABLE_PERL=OFF",
-                    std_cmake_parameters, "."
+                    "-DENABLE_PYTHON=OFF",
+                    std_cmake_parameters,
+                    "."
     system "make install"
   end
 end

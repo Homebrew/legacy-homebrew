@@ -1,9 +1,9 @@
 require 'formula'
 
 class Dar < Formula
-  url 'http://downloads.sourceforge.net/project/dar/dar/2.3.10/dar-2.3.10.tar.gz'
+  url 'http://downloads.sourceforge.net/project/dar/dar/2.4.2/dar-2.4.2.tar.gz'
   homepage 'http://dar.linux.free.fr/doc/index.html'
-  md5 'f134276bb9dc761dbb318c5511e65833'
+  md5 'b23c0509513b895f4ab9ce9191b2f65b'
 
   depends_on 'gettext'
 

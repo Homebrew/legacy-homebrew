@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gflags < Formula
-  url 'http://google-gflags.googlecode.com/files/gflags-1.3.tar.gz'
+  url 'http://google-gflags.googlecode.com/files/gflags-1.6.tar.gz'
   homepage 'http://code.google.com/p/google-gflags/'
-  md5 '6da3d3b9cd82c222b521ae686b6cfa8b'
+  sha1 '3901cbc03fdfec0ae661502e0314ac88f339d95e'
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"

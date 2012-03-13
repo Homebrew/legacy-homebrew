@@ -16,7 +16,7 @@ class Nethack < Formula
   version '3.4.3'
   md5 '21479c95990eefe7650df582426457f9'
 
-  fails_with_llvm
+  fails_with_llvm :build => 2334
 
   # Don't remove save folder
   skip_clean 'libexec/save'
@@ -39,7 +39,7 @@ class Nethack < Formula
     # Make the data first, before we munge the CFLAGS
     system "cd dat;make"
 
-    Dir.chdir 'dat' do
+    cd 'dat' do
       %w(perm logfile).each do |f|
         system "touch", f
         libexec.install f

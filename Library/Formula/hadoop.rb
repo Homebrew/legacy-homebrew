@@ -1,14 +1,14 @@
 require 'formula'
 
 class Hadoop < Formula
-  url 'http://www.gtlib.gatech.edu/pub/apache/hadoop/core/hadoop-0.21.0/hadoop-0.21.0.tar.gz'
   homepage 'http://hadoop.apache.org/common/'
-  md5 'ec0f791f866f82a7f2c1319a54f4db97'
+  url 'http://www.apache.org/dyn/closer.cgi?path=hadoop/core/hadoop-1.0.0/hadoop-1.0.0.tar.gz'
+  md5 'fa150612de0efe80be88144c28225780'
 
   def shim_script target
     <<-EOS.undent
     #!/bin/bash
-    exec #{libexec}/bin/#{target} $@
+    exec "#{libexec}/bin/#{target}" "$@"
     EOS
   end
 
@@ -23,8 +23,8 @@ class Hadoop < Formula
     end
 
     inreplace "#{libexec}/conf/hadoop-env.sh",
-      "# export JAVA_HOME=/usr/lib/j2sdk1.6-sun",
-      "export JAVA_HOME=$(/usr/libexec/java_home)"
+      "# export JAVA_HOME=/usr/lib/j2sdk1.5-sun",
+      "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
   end
 
   def caveats; <<-EOS.undent

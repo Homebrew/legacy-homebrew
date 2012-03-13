@@ -1,15 +1,18 @@
 require 'formula'
 
 class Libicns < Formula
-  url 'http://downloads.sourceforge.net/project/icns/icns/libicns-0.7.1/libicns-0.7.1.tar.gz'
   homepage 'http://icns.sourceforge.net/'
-  md5 'ff4624353a074c6cb51e41d145070e10'
+  url 'http://downloads.sourceforge.net/project/icns/icns/libicns-0.8.0/libicns-0.8.0.tar.gz'
+  sha256 '8a720d45f6cf3cb88255d80965e486857b77b894a345e9a6b321cb03aa3d064a'
 
-  depends_on 'jasper'	# or openjpeg
+  depends_on 'jasper'
 
   def install
+    # Fix for libpng 1.5 on Lion, may not be needed in head version of libicns
+    inreplace 'icnsutils/png2icns.c', 'png_set_gray_1_2_4_to_8', 'png_set_expand_gray_1_2_4_to_8'
+
     ENV.libpng
-    ENV.universal_binary	# build fat so wine can use it
+    ENV.universal_binary # Also build 32-bit so Wine can use it
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

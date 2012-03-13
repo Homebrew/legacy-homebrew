@@ -4,7 +4,6 @@ class Sdelta3 < Formula
   url 'ftp://ftp.berlios.de//pub/sdelta/files/sdelta3-20100323.tar.bz2'
   homepage 'http://sdelta.berlios.de/'
   md5 'f419f4e7ade7751cf2feacbebfbc8aa9'
-  version '20100323'
 
   def patches; DATA; end
 

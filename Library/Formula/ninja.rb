@@ -1,11 +1,11 @@
 require 'formula'
 
 class Ninja < Formula
-  head 'https://github.com/alexgartrell/ninja.git'
+  head 'https://github.com/martine/ninja.git'
   homepage 'https://github.com/martine/ninja'
 
   def install
-    system "./bootstrap.sh"
+    system "./bootstrap.py"
     bin.install "ninja"
   end
 end

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mkvalidator < Formula
-  url 'http://downloads.sourceforge.net/project/matroska/mkvalidator/mkvalidator-0.3.3.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/matroska/mkvalidator/mkvalidator-0.3.7.tar.bz2'
   homepage 'http://www.matroska.org/downloads/mkvalidator.html'
-  md5 'f63cac5127e196e94ebdb0fe30ccf352'
+  sha1 '4dada51d23255dffb4176450b410d6326a72d845'
 
   def install
     ENV.j1 # Otherwise there are races

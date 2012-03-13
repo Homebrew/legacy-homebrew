@@ -1,9 +1,10 @@
 require 'formula'
 
 class TodoTxt < Formula
-  url 'https://github.com/downloads/ginatrapani/todo.txt-cli/todo.txt_cli-2.7.tar.gz'
+  url 'https://github.com/downloads/ginatrapani/todo.txt-cli/todo.txt_cli-2.8.tar.gz'
   homepage 'http://todotxt.com/'
-  md5 'b4ef313bbb8f185fe4a21ce07ad6933d'
+  md5 '065b848d0c300dd024a4ece86a68c0fa'
+  head 'https://github.com/ginatrapani/todo.txt-cli.git'
 
   def install
     bin.install 'todo.sh'

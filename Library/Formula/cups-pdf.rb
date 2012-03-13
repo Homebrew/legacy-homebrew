@@ -1,35 +1,39 @@
 require 'formula'
 
 class CupsPdf < Formula
-  url 'http://www.cups-pdf.de/src/cups-pdf_2.5.1.tar.gz'
-  md5 '4b4cf1a249d02a38045db74b5f259aac'
+  url 'http://www.cups-pdf.de/src/cups-pdf_2.6.1.tar.gz'
+  md5 '65f3fd525c4a9b1d736b91594b3166d5'
   homepage 'http://www.cups-pdf.de/'
 
   # Patch derived from MacPorts.
   def patches; DATA; end
 
   def install
-    system "gcc -O9 -o cups-pdf src/cups-pdf.c"
+    system "#{ENV.cc} #{ENV.cflags} -o cups-pdf src/cups-pdf.c"
 
     (etc+'cups').install "extra/cups-pdf.conf"
     (lib+'cups/backend').install "cups-pdf"
     (share+'cups/model').install "extra/CUPS-PDF.ppd"
   end
 
-  def caveats; <<-EOF
-    In order to use cups-pdf with the Mac OS X printing system change the file
-    permissions, symlink the necessary files to their System location and
-    have cupsd re-read its configuration using:
+  def caveats; <<-EOF.undent
+      In order to use cups-pdf with the Mac OS X printing system change the file
+      permissions, symlink the necessary files to their System location and
+      have cupsd re-read its configuration using:
 
-    chmod 0700 #{(lib+'cups/backend')}/cups-pdf
-    sudo chown root #{(lib+'cups/backend')}/cups-pdf
-    sudo ln -sf #{(etc+'cups')}/cups-pdf.conf /etc/cups/cups-pdf.conf
-    sudo ln -sf #{(lib+'cups/backend')}/cups-pdf /usr/libexec/cups/backend/cups-pdf
-    sudo ln -sf #{(share+'cups/model')}/CUPS-PDF.ppd /usr/share/cups/model/CUPS-PDF.ppd
-    sudo killall -HUP cupsd
+      chmod 0700 #{lib}/cups/backend/cups-pdf
+      sudo chown root #{lib}/cups/backend/cups-pdf
+      sudo ln -sf #{etc}/cups/cups-pdf.conf /etc/cups/cups-pdf.conf
+      sudo ln -sf #{lib}/cups/backend/cups-pdf /usr/libexec/cups/backend/cups-pdf
+      sudo chmod -h 0700 /usr/libexec/cups/backend/cups-pdf
+      sudo ln -sf #{share}/cups/model/CUPS-PDF.ppd /usr/share/cups/model/CUPS-PDF.ppd
 
-    NOTE: When uninstalling cups-pdf these symlinks need to be removed manually.
-EOF
+      sudo mkdir -p /var/spool/cups-pdf/${USER}
+      ln -s /var/spool/cups-pdf/${USER} ${HOME}/Documents/cups-pdf
+      sudo killall -HUP cupsd
+
+      NOTE: When uninstalling cups-pdf these symlinks need to be removed manually.
+    EOF
   end
 end
 

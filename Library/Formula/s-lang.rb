@@ -9,8 +9,7 @@ class SLang < Formula
   depends_on 'oniguruma' => :optional
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
+    system "./configure", "--prefix=#{prefix}",
                           "--with-png=/usr/X11"
     ENV.j1
     system "make"

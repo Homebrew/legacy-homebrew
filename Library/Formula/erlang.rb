@@ -1,32 +1,40 @@
 require 'formula'
 
 class ErlangManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R14B03.tar.gz'
-  md5 '357f54b174bb29d41fee97c063a47e8f'
+  url 'http://erlang.org/download/otp_doc_man_R15B.tar.gz'
+  md5 '9738da523737712a9db87db0dee05338'
 end
 
 class ErlangHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R14B03.tar.gz'
-  md5 'c9033bc35dbe4631dd2d14a6183b966a'
+  url 'http://erlang.org/download/otp_doc_html_R15B.tar.gz'
+  md5 '80553f4730b04aad4c9994590bad3fe6'
 end
 
 class ErlangHeadManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R14B03.tar.gz'
-  md5 '357f54b174bb29d41fee97c063a47e8f'
+  url 'http://erlang.org/download/otp_doc_man_R15B.tar.gz'
+  md5 '9738da523737712a9db87db0dee05338'
 end
 
 class ErlangHeadHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R14B03.tar.gz'
-  md5 'c9033bc35dbe4631dd2d14a6183b966a'
+  url 'http://erlang.org/download/otp_doc_html_R15B.tar.gz'
+  md5 '80553f4730b04aad4c9994590bad3fe6'
 end
 
 class Erlang < Formula
-  # Download from GitHub. Much faster than official tarball.
-  url "https://github.com/erlang/otp.git", :tag => "OTP_R14B03"
-  version 'R14B03'
   homepage 'http://www.erlang.org'
+  # Download tarball from GitHub; it is served faster than the official tarball.
+  url 'https://github.com/erlang/otp/tarball/OTP_R15B'
+  md5 '91c939a56e7f3c492b4ce99c8babe3b2'
 
-  head "https://github.com/erlang/otp.git", :branch => "dev"
+  bottle do
+    # Bottle built on OS X 10.7.2 using Xcode 4.1 using:
+    #
+    #     brew install erlang --build-bottle --use-gcc
+    url 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B-bottle.tar.gz'
+    sha1 '4c81febc679dc9e9c27e66317fc317df9a5a40e7'
+  end
+
+  head 'https://github.com/erlang/otp.git', :branch => 'dev'
 
   # We can't strip the beam executables or any plugins, there isn't really
   # anything else worth stripping and it takes a really, long time to run
@@ -38,17 +46,23 @@ class Erlang < Formula
   def options
     [
       ['--disable-hipe', "Disable building hipe; fails on various OS X systems."],
+      ['--halfword', 'Enable halfword emulator (64-bit builds only)'],
       ['--time', '"brew test --time" to include a time-consuming test.'],
       ['--no-docs', 'Do not install documentation.']
     ]
   end
 
-  fails_with_llvm "See https://github.com/mxcl/homebrew/issues/issue/120", :build => 2326
+  fails_with_llvm :build => 2334
 
   def install
-    ENV.deparallelize
+    ohai "Compilation may take a very long time; use `brew install -v erlang` to see progress"
+    if ENV.compiler == :llvm
+      # Don't use optimizations. Fixes build on Lion/Xcode 4.2
+      ENV.remove_from_cflags /-O./
+      ENV.append_to_cflags '-O0'
+    end
 
-    # If building from GitHub, this step is required (but not for tarball downloads.)
+    # Do this if building from a checkout to generate configure
     system "./otp_build autoconf" if File.exist? "otp_build"
 
     args = ["--disable-debug",
@@ -56,6 +70,7 @@ class Erlang < Formula
             "--enable-kernel-poll",
             "--enable-threads",
             "--enable-dynamic-ssl-lib",
+            "--enable-shared-zlib",
             "--enable-smp-support"]
 
     unless ARGV.include? '--disable-hipe'
@@ -65,7 +80,10 @@ class Erlang < Formula
       args << '--enable-hipe'
     end
 
-    args << "--enable-darwin-64bit" if MacOS.prefer_64_bit?
+    if MacOS.prefer_64_bit?
+      args << "--enable-darwin-64bit"
+      args << "--enable-halfword-emulator" if ARGV.include? '--halfword' # Does not work with HIPE yet. Added for testing only
+    end
 
     system "./configure", *args
     system "touch lib/wx/SKIP" if MacOS.snow_leopard?
@@ -82,12 +100,12 @@ class Erlang < Formula
   end
 
   def test
-    `erl -noshell -eval 'crypto:start().' -s init stop`
+    `#{bin}/erl -noshell -eval 'crypto:start().' -s init stop`
 
     # This test takes some time to run, but per bug #120 should finish in
     # "less than 20 minutes". It takes a few minutes on a Mac Pro (2009).
     if ARGV.include? "--time"
-      `dialyzer --build_plt -r #{lib}/erlang/lib/kernel-2.14.1/ebin/`
+      `#{bin}/dialyzer --build_plt -r #{lib}/erlang/lib/kernel-2.15/ebin/`
     end
   end
 end

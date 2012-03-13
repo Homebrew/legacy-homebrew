@@ -1,15 +1,15 @@
 require 'formula'
 
 class Ruby < Formula
-  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p180.tar.bz2'
+  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p125.tar.gz'
   homepage 'http://www.ruby-lang.org/en/'
   head 'http://svn.ruby-lang.org/repos/ruby/trunk/', :using => :svn
-  md5 '68510eeb7511c403b91fe5476f250538'
+  sha256 '8b3c035cf4f0ad6420f447d6a48e8817e5384d0504514939aeb156e251d44cce'
 
   depends_on 'readline'
   depends_on 'libyaml'
 
-  fails_with_llvm
+  fails_with_llvm :build => 2326
 
   # Stripping breaks dynamic linking
   skip_clean :all
@@ -41,9 +41,7 @@ class Ruby < Formula
 
     system "autoconf" unless File.exists? 'configure'
 
-    # Configure claims that "--with-readline-dir" is unused, but it works.
     args = ["--prefix=#{prefix}",
-            "--with-readline-dir=#{Formula.factory('readline').prefix}",
             "--disable-debug",
             "--disable-dependency-tracking",
             "--enable-shared"]
@@ -57,10 +55,9 @@ class Ruby < Formula
     (ruby_lib+'vendor_ruby').mkpath
     (ruby_lib+'gems').mkpath
 
-    (lib+'ruby').mkpath
-    ln_s (ruby_lib+'site_ruby'), (lib+'ruby')
-    ln_s (ruby_lib+'vendor_ruby'), (lib+'ruby')
-    ln_s (ruby_lib+'gems'), (lib+'ruby')
+    (lib+'ruby').install_symlink ruby_lib+'site_ruby',
+                                 ruby_lib+'vendor_ruby',
+                                 ruby_lib+'gems'
 
     system "./configure", *args
     system "make"
@@ -70,10 +67,6 @@ class Ruby < Formula
   end
 
   def caveats; <<-EOS.undent
-    Consider using RVM or Cinderella to manage Ruby environments:
-      * RVM: http://rvm.beginrescueend.com/
-      * Cinderella: http://www.atmos.org/cinderella/
-
     NOTE: By default, gem installed binaries will be placed into:
       #{bin}
 

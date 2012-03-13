@@ -9,9 +9,9 @@ class Lablgtk < Formula
   depends_on 'gtk+'
 
   def install
-    system "./configure", "--bindir=#{bin}", "--libdir=#{lib}", "--mandir=#{man}"
-    system "make world"
+    system "./configure", "--bindir=#{bin}", "--libdir=#{lib}", "--mandir=#{man}", "--with-libdir=#{lib}/ocaml"
     ENV.j1
+    system "make world"
     system "make install"
   end
 end

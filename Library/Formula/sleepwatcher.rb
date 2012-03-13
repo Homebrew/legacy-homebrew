@@ -1,9 +1,9 @@
 require 'formula'
 
 class Sleepwatcher < Formula
-  url 'http://www.bernhard-baehr.de/sleepwatcher_2.1.1.tgz'
   homepage 'http://www.bernhard-baehr.de/'
-  md5 '6770e615a89874fa07a8bdfc94ead19f'
+  url 'http://www.bernhard-baehr.de/sleepwatcher_2.2.tgz'
+  md5 '2a9235c7da4ad4ed9fb3181203849ded'
 
   def install
     # Adjust Makefile to build native binary only
@@ -19,7 +19,7 @@ class Sleepwatcher < Formula
     end
 
     # Build and install binary
-    Dir.chdir "sources" do
+    cd "sources" do
       system "mv", "../sleepwatcher.8", "."
       system "make", "install", "PREFIX=#{prefix}"
     end

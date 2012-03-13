@@ -1,11 +1,11 @@
 require 'formula'
 
 class Aria2 < Formula
-  url 'http://downloads.sourceforge.net/project/aria2/stable/aria2-1.11.1/aria2-1.11.1.tar.bz2'
-  md5 'da785645a6d92450b0a54f384202ba6b'
   homepage 'http://aria2.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/project/aria2/stable/aria2-1.14.2/aria2-1.14.2.tar.bz2'
+  md5 '19b1a9f83a09c6ef5c7ab87e4e0f7974'
 
-  fails_with_llvm "1.8.2 didn't work w/ LLVM"
+  depends_on 'pkg-config' => :build
 
   def install
     system "./configure", "--disable-dependency-tracking",

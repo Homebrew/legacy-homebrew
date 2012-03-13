@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cassandra < Formula
-  url 'http://www.mirrorservice.org/sites/ftp.apache.org/cassandra/0.8.0/apache-cassandra-0.8.0-bin.tar.gz'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.0.7/apache-cassandra-1.0.7-bin.tar.gz'
   homepage 'http://cassandra.apache.org'
-  md5 'ea97a815c3ee8c08ad408eb075f495cf'
+  sha1 '8ae535821b29eead5b7dc7788a0e66ecf1ac267e'
 
   def install
     (var+"lib/cassandra").mkpath
@@ -30,5 +30,43 @@ class Cassandra < Formula
     (etc+"cassandra").install Dir["conf/*"]
     prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc,lib/licenses}"]
     prefix.install Dir["lib/*.jar"]
+
+    plist_path.write startup_plist
+    plist_path.chmod 0644
+  end
+
+  def caveats; <<-EOS.undent
+    If this is your first install, automatically load on login with:
+      mkdir -p ~/Library/LaunchAgents
+      cp #{plist_path} ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+    EOS
+  end
+
+  def startup_plist; <<-EOPLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>Label</key>
+    <string>#{plist_name}</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>#{HOMEBREW_PREFIX}/bin/cassandra</string>
+        <string>-f</string>
+    </array>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>WorkingDirectory</key>
+    <string>#{var}/lib/cassandra</string>
+  </dict>
+</plist>
+    EOPLIST
   end
 end

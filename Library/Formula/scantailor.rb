@@ -1,9 +1,15 @@
 require 'formula'
 
 class Scantailor < Formula
-  url 'http://downloads.sourceforge.net/project/scantailor/scantailor/0.9.9.2/scantailor-0.9.9.2.tar.gz'
   homepage 'http://scantailor.sourceforge.net/'
-  md5 '0944b12c936019fe12269c7a356d60d0'
+  url 'http://downloads.sourceforge.net/project/scantailor/scantailor/0.9.11/scantailor-0.9.11.tar.gz'
+  md5 '15984c8828ecb2de542ac94e3c41a810'
+
+  devel do
+    url 'http://downloads.sourceforge.net/project/scantailor/scantailor-devel/enhanced/scantailor-enhanced-20111213.tar.gz'
+    version 'enhanced-20111213'
+    md5 'bcba593dcba17880429884fe2bfb1d2a'
+  end
 
   depends_on 'cmake' => :build
   depends_on 'qt'
@@ -12,7 +18,7 @@ class Scantailor < Formula
   depends_on 'libtiff'
 
   def install
-    system "cmake . #{std_cmake_parameters} -DPNG_INCLUDE_DIR=/usr/X11/include"
+    system "cmake #{std_cmake_parameters} -DPNG_INCLUDE_DIR=/usr/X11/include ."
     system "make install"
   end
 end

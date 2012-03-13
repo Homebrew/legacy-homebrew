@@ -1,13 +1,13 @@
 require 'formula'
 
 class NetSnmp < Formula
-  url 'http://downloads.sourceforge.net/project/net-snmp/net-snmp/5.6/net-snmp-5.6.tar.gz'
   homepage 'http://www.net-snmp.org/'
-  md5 '89b3a7a77e68daef925abee43a3f7018'
+  url 'http://sourceforge.net/projects/net-snmp/files/net-snmp/5.7.1/net-snmp-5.7.1.tar.gz'
+  md5 'c95d08fd5d93df0c11a2e1bdf0e01e0b'
 
   def install
     system "./configure", "--prefix=#{prefix}",
-                          "--with-persistent-directory=/var/db/net-snmp",
+                          "--with-persistent-directory=#{var}/db/net-snmp",
                           "--with-defaults",
                           "--without-rpm",
                           "--with-mib-modules=host ucd-snmp/diskio",

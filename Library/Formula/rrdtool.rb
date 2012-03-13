@@ -1,9 +1,9 @@
 require 'formula'
 
 class Rrdtool < Formula
-  url 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.4.4.tar.gz'
+  url 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.4.5.tar.gz'
   homepage 'http://oss.oetiker.ch/rrdtool/index.en.html'
-  md5 '93ad2fc2e9ddcd7d99c611fe30284a54'
+  md5 '4d116dba9a0888d8aaac179e35d3980a'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
@@ -32,7 +32,7 @@ class Rrdtool < Formula
     opoo "Using system Ruby. RRD module will be installed to /Library/Ruby/..." if which_ruby == "/usr/bin/ruby"
     opoo "Using system Perl. RRD module will be installed to /Library/Perl/..." if which_perl == "/usr/bin/perl"
 
-    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--mandir=#{man}"]
     args << "--enable-perl-site-install" if which_perl == "/usr/bin/perl"
     args << "--enable-ruby-site-install" if which_ruby == "/usr/bin/ruby"
 

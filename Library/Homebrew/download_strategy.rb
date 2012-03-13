@@ -55,12 +55,16 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     unless @tarball_path.exist?
       begin
         _fetch
-      rescue Exception
+      rescue Exception => e
         ignore_interrupts { @tarball_path.unlink if @tarball_path.exist? }
-        raise
+        if e.kind_of? ErrorDuringExecution
+          raise CurlDownloadStrategyError, "Download failed: #{@url}"
+        else
+          raise
+        end
       end
     else
-      puts "File already downloaded and cached to #{HOMEBREW_CACHE}"
+      puts "File already downloaded in #{File.dirname(@tarball_path)}"
     end
     return @tarball_path # thus performs checksum verification
   end
@@ -72,8 +76,8 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       # Use more than 4 characters to not clash with magicbytes
       magic_bytes = "____pkg"
     else
-      # get the first four bytes
-      File.open(@tarball_path) { |f| magic_bytes = f.read(4) }
+      # get the first six bytes
+      File.open(@tarball_path) { |f| magic_bytes = f.read(6) }
     end
 
     # magic numbers stolen from /usr/share/file/magic/
@@ -84,6 +88,10 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     when /^\037\213/, /^BZh/, /^\037\235/  # gzip/bz2/compress compressed
       # TODO check if it's really a tar archive
       safe_system '/usr/bin/tar', 'xf', @tarball_path
+      chdir
+    when /^\xFD7zXZ\x00/ # xz compressed
+      raise "You must install XZutils: brew install xz" unless system "/usr/bin/which -s xz"
+      safe_system "xz -dc \"#{@tarball_path}\" | /usr/bin/tar xf -"
       chdir
     when '____pkg'
       safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, File.basename(@url)
@@ -113,7 +121,7 @@ private
 
   def ext
     # GitHub uses odd URLs for zip files, so check for those
-    rx=%r[http://(www\.)?github\.com/.*/(zip|tar)ball/]
+    rx=%r[https?://(www\.)?github\.com/.*/(zip|tar)ball/]
     if rx.match @url
       if $2 == 'zip'
         '.zip'
@@ -123,6 +131,25 @@ private
     else
       Pathname.new(@url).extname
     end
+  end
+end
+
+# Detect and download from Apache Mirror
+class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
+  def _fetch
+    # Fetch mirror list site
+    require 'open-uri'
+    mirror_list = open(@url).read()
+
+    # Parse out suggested mirror
+    #   Yep, this is ghetto, grep the first <strong></strong> element content
+    mirror_url = mirror_list[/<strong>([^<]+)/, 1]
+
+    raise "Couldn't determine mirror. Try again later." if mirror_url.nil?
+
+    ohai "Best Mirror #{mirror_url}"
+    # Start download from that mirror
+    curl mirror_url, '-o', @tarball_path
   end
 end
 
@@ -160,10 +187,23 @@ class CurlUnsafeDownloadStrategy < CurlDownloadStrategy
   end
 end
 
-class SubversionDownloadStrategy <AbstractDownloadStrategy
+# This strategy extracts our binary packages.
+class CurlBottleDownloadStrategy < CurlDownloadStrategy
+  def initialize url, name, version, specs
+    super
+    @tarball_path = HOMEBREW_CACHE/"#{name}-#{version}.#{MacOS.cat}.bottle#{ext}"
+  end
+  def stage
+    ohai "Pouring #{File.basename(@tarball_path)}"
+    super
+  end
+end
+
+class SubversionDownloadStrategy < AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
     @unique_token="#{name}--svn" unless name.to_s.empty? or name == '__UNKNOWN__'
+    @unique_token += "-HEAD" if ARGV.include? '--HEAD'
     @co=HOMEBREW_CACHE+@unique_token
   end
 
@@ -206,16 +246,14 @@ class SubversionDownloadStrategy <AbstractDownloadStrategy
     end
   end
 
-  def _fetch_command svncommand, url, target
-    [svn, svncommand, '--force', url, target]
-  end
-
   def fetch_repo target, url, revision=nil, ignore_externals=false
     # Use "svn up" when the repository already exists locally.
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
     svncommand = target.exist? ? 'up' : 'checkout'
-    args = _fetch_command svncommand, url, target
+    args = [svn, svncommand, '--force']
+    args << url if !target.exist?
+    args << target
     args << '-r' << revision if revision
     args << '--ignore-externals' if ignore_externals
     quiet_safe_system(*args)
@@ -248,6 +286,22 @@ class StrictSubversionDownloadStrategy < SubversionDownloadStrategy
   end
 end
 
+# Download from SVN servers with invalid or self-signed certs
+class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
+  def fetch_repo target, url, revision=nil, ignore_externals=false
+    # Use "svn up" when the repository already exists locally.
+    # This saves on bandwidth and will have a similar effect to verifying the
+    # cache as it will make any changes to get the right revision.
+    svncommand = target.exist? ? 'up' : 'checkout'
+    args = [svn, svncommand, '--non-interactive', '--trust-server-cert', '--force']
+    args << url if !target.exist?
+    args << target
+    args << '-r' << revision if revision
+    args << '--ignore-externals' if ignore_externals
+    quiet_safe_system(*args)
+  end
+end
+
 class GitDownloadStrategy < AbstractDownloadStrategy
   def initialize url, name, version, specs
     super
@@ -260,13 +314,19 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 
   def support_depth?
+    !commit_history_required? and depth_supported_host?
+  end
+
+  def commit_history_required?
+    @spec == :sha
+  end
+
+  def depth_supported_host?
     @url =~ %r(git://) or @url =~ %r(https://github.com/)
   end
 
   def fetch
-    raise "You must install Git:\n\n"+
-          "  brew install git\n" \
-          unless system "/usr/bin/which git"
+    raise "You must install Git: brew install git" unless system "/usr/bin/which -s git"
 
     ohai "Cloning #{@url}"
 
@@ -274,7 +334,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
       Dir.chdir(@clone) do
         # Check for interupted clone from a previous install
         unless system 'git', 'status', '-s'
-          ohai "Removing invalid .git repo from cache"
+          puts "Removing invalid .git repo from cache"
           FileUtils.rm_rf @clone
         end
       end
@@ -289,8 +349,8 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     else
       puts "Updating #{@clone}"
       Dir.chdir(@clone) do
-        quiet_safe_system 'git', 'fetch', @url
-        # If we're going to checkout a tag, then we need to fetch new tags too.
+        safe_system 'git', 'remote', 'set-url', 'origin', @url
+        quiet_safe_system 'git', 'fetch', 'origin'
         quiet_safe_system 'git', 'fetch', '--tags' if @spec == :tag
       end
     end
@@ -304,9 +364,14 @@ class GitDownloadStrategy < AbstractDownloadStrategy
         case @spec
         when :branch
           nostdout { quiet_safe_system 'git', 'checkout', "origin/#{@ref}" }
-        when :tag
+        when :tag, :sha
           nostdout { quiet_safe_system 'git', 'checkout', @ref }
         end
+      else
+        # otherwise the checkout-index won't checkout HEAD
+        # https://github.com/mxcl/homebrew/issues/7124
+        # must specify origin/HEAD, otherwise it resets to the current local HEAD
+        quiet_safe_system "git", "reset", "--hard", "origin/HEAD"
       end
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
       safe_system 'git', 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
@@ -318,6 +383,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
         safe_system 'git', 'submodule', '--quiet', 'foreach', '--recursive', sub_cmd
       end
     end
+    ENV['GIT_DIR'] = cached_location+'.git'
   end
 end
 
@@ -351,7 +417,7 @@ class CVSDownloadStrategy < AbstractDownloadStrategy
   end
 
   def stage
-    FileUtils.cp_r Dir[@co+"*"], Dir.pwd
+    FileUtils.cp_r Dir[@co+"{.}"], Dir.pwd
 
     require 'find'
     Find.find(Dir.pwd) do |path|
@@ -381,7 +447,7 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
   def cached_location; @clone; end
 
   def fetch
-    raise "You must `easy_install mercurial'" unless system "/usr/bin/which hg"
+    raise "You must install Mercurial: brew install mercurial" unless system "/usr/bin/which -s hg"
 
     ohai "Cloning #{@url}"
 
@@ -423,7 +489,7 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
 
   def fetch
     raise "You must install bazaar first" \
-          unless system "/usr/bin/which bzr"
+          unless system "/usr/bin/which -s bzr"
 
     ohai "Cloning #{@url}"
     unless @clone.exist?
@@ -437,17 +503,22 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
   end
 
   def stage
-    dst=Dir.getwd
-    Dir.chdir @clone do
-      if @spec and @ref
-        ohai "Checking out #{@spec} #{@ref}"
-        Dir.chdir @clone do
-          safe_system 'bzr', 'export', '-r', @ref, dst
-        end
-      else
-        safe_system 'bzr', 'export', dst
-      end
-    end
+    # FIXME: The export command doesn't work on checkouts
+    # See https://bugs.launchpad.net/bzr/+bug/897511
+    FileUtils.cp_r Dir[@clone+"{.}"], Dir.pwd
+    FileUtils.rm_r Dir[Dir.pwd+"/.bzr"]
+
+    #dst=Dir.getwd
+    #Dir.chdir @clone do
+    #  if @spec and @ref
+    #    ohai "Checking out #{@spec} #{@ref}"
+    #    Dir.chdir @clone do
+    #      safe_system 'bzr', 'export', '-r', @ref, dst
+    #    end
+    #  else
+    #    safe_system 'bzr', 'export', dst
+    #  end
+    #end
   end
 end
 
@@ -462,7 +533,7 @@ class FossilDownloadStrategy < AbstractDownloadStrategy
 
   def fetch
     raise "You must install fossil first" \
-          unless system "/usr/bin/which fossil"
+          unless system "/usr/bin/which -s fossil"
 
     ohai "Cloning #{@url}"
     unless @clone.exist?
@@ -501,6 +572,7 @@ def detect_download_strategy url
   when %r[^https?://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
   when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
   when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
+  when %r[^http://www.apache.org/dyn/closer.cgi] then CurlApacheMirrorDownloadStrategy
     # Otherwise just try to download
   else CurlDownloadStrategy
   end

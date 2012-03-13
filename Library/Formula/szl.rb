@@ -8,6 +8,7 @@ class Szl < Formula
   depends_on 'binutils' # For objdump
   depends_on 'icu4c'
   depends_on 'protobuf' # for protoc
+  depends_on 'pcre'
 
   def install
     ENV['OBJDUMP'] = "#{HOMEBREW_PREFIX}/bin/gobjdump"

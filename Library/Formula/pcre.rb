@@ -1,11 +1,12 @@
 require 'formula'
 
 class Pcre < Formula
-  url 'ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.12.tar.bz2'
   homepage 'http://www.pcre.org/'
-  md5 'f14a9fef3c92f3fc6c5ac92d7a2c7eb3'
+  url 'ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.21.tar.bz2'
+  mirror 'http://downloads.sourceforge.net/project/pcre/pcre/8.21/pcre-8.21.tar.bz2'
+  md5 '0a7b592bea64b7aa7f4011fc7171a730'
 
-  fails_with_llvm "Bus error in ld on SL 10.6.4"
+  fails_with_llvm "Bus error in ld on SL 10.6.4", :build => 2326
 
   def options
     [["--universal", "Build a universal binary."]]
