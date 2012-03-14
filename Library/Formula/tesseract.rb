@@ -115,6 +115,10 @@ class Tesseract < Formula
 
   def install
     system "/bin/sh autogen.sh"
+
+    # explicitly state leptonica header location, as the makefile defaults to /usr/local/include,
+    # which doesn't work for non-default homebrew location
+    ENV['LIBLEPT_HEADERSDIR'] = "#{HOMEBREW_PREFIX}/include"
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
     if ARGV.include? "--all-languages"
