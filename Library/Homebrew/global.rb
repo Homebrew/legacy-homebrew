@@ -13,22 +13,29 @@ def cache
   if ENV['HOMEBREW_CACHE']
     Pathname.new(ENV['HOMEBREW_CACHE'])
   else
-    root_library = Pathname.new("/Library/Caches/Homebrew")
-    if Process.uid == 0
-      root_library
+    # we do this for historic reasons, however the cache *should* be the same
+    # directory whichever user is used and whatever instance of brew is executed
+    home_cache = Pathname.new("~/Library/Caches/Homebrew").expand_path
+    if home_cache.directory? and home_cache.writable?
+      home_cache
     else
-      home_library = Pathname.new("~/Library/Caches/Homebrew").expand_path
-      if not home_library.writable?
-        root_library
-      else
-        home_library
+      root_cache = Pathname.new("/Library/Caches/Homebrew")
+      class << root_cache
+        alias :oldmkpath :mkpath
+        def mkpath
+          unless exist?
+            oldmkpath
+            chmod 0777
+          end
+        end
       end
+      root_cache
     end
   end
 end
 
 HOMEBREW_CACHE = cache
-undef cache
+undef cache # we use a function to prevent adding home_cache to the global scope
 
 # Where brews installed via URL are cached
 HOMEBREW_CACHE_FORMULA = HOMEBREW_CACHE+"Formula"
@@ -50,6 +57,9 @@ HOMEBREW_CELLAR = if (HOMEBREW_PREFIX+"Cellar").exist?
 else
   HOMEBREW_REPOSITORY+"Cellar"
 end
+
+HOMEBREW_LOGS = Pathname.new('~/Library/Logs/Homebrew/').expand_path
+
 
 MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
 MACOS_VERSION = /(10\.\d+)(\.\d+)?/.match(MACOS_FULL_VERSION).captures.first.to_f

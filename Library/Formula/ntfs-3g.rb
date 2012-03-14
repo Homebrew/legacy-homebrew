@@ -1,15 +1,16 @@
 require 'formula'
 
 class Ntfs3g < Formula
-  url 'http://tuxera.com/opensource/ntfs-3g_ntfsprogs-2011.4.12.tgz'
   homepage 'http://www.tuxera.com/community/ntfs-3g-download/'
-  md5 '9c4ce318373b15332239a77a9d2a39fe'
+  url 'http://tuxera.com/opensource/ntfs-3g_ntfsprogs-2012.1.15.tgz'
+  md5 '341acae00a290cab9b00464db65015cc'
 
   depends_on 'pkg-config' => :build
   depends_on 'fuse4x'
 
   def patches
-    # From macports: trunk/dports/fuse/ntfs-3g/files/patch-configure.diff
+    # From macports:
+    # http://trunk/dports/fuse/ntfs-3g/files/patch-configure.diff
     # Modify configure such that it does not modify the default PKG_CONFIG_PATH
     { :p0 => DATA }
   end

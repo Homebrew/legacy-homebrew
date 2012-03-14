@@ -9,7 +9,7 @@ end
 def audit_formula_text name, text
   problems = []
 
-  if text =~ /<(Formula|AmazonWebServicesFormula)/
+  if text =~ /<(Formula|AmazonWebServicesFormula|ScriptFileFormula|GithubGistFormula)/
     problems << " * Use a space in class inheritance: class Foo < #{$1}"
   end
 

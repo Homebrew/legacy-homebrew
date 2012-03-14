@@ -1,10 +1,10 @@
 require 'formula'
 
 class Xboard < Formula
-  url 'http://ftpmirror.gnu.org/xboard/xboard-4.5.3.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/xboard/xboard-4.5.3.tar.gz'
+  url 'http://ftpmirror.gnu.org/xboard/xboard-4.6.0.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/xboard/xboard-4.6.0.tar.gz'
   homepage 'http://www.gnu.org/software/xboard/'
-  md5 '48a623643fc6ad2b3d1963165bca76dc'
+  md5 '80b445539bef9950cbc2df9ed8f21f0d'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'

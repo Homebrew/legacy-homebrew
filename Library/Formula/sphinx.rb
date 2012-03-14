@@ -11,7 +11,6 @@ end
 class Sphinx < Formula
   homepage 'http://www.sphinxsearch.com'
   url 'http://sphinxsearch.com/files/sphinx-2.0.3-release.tar.gz'
-  version '2.0.3'
   md5 'a1293aecd5034aa797811610beb7ba89'
 
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'

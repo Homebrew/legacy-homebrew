@@ -15,8 +15,6 @@ class Uwsgi < Formula
     ENV.append 'CFLAGS', flags
     ENV.append 'LDFLAGS', flags
 
-    inreplace 'uwsgiconfig.py', "PYLIB_PATH = ''", "PYLIB_PATH = '#{%x[python-config --ldflags].chomp[/-L(.*?) -l/, 1]}'"
-
     system "python uwsgiconfig.py --build"
     bin.install "uwsgi"
   end

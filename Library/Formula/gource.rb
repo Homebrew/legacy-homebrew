@@ -2,8 +2,8 @@ require 'formula'
 
 class Gource < Formula
   homepage 'http://code.google.com/p/gource/'
-  url 'https://github.com/acaudwell/Gource.git', :tag => "gource-0.37"
-  version "0.37"
+  url 'http://gource.googlecode.com/files/gource-0.37.tar.gz'
+  sha1 '87d88b5cbf312e160e55582f8e187c87b3df097d'
   head 'https://github.com/acaudwell/Gource.git'
 
   depends_on 'pkg-config' => :build
@@ -13,8 +13,7 @@ class Gource < Formula
   depends_on 'pcre'
   depends_on 'glew'
 
-  if MacOS.xcode_version >= "4.3"
-    # download a tarball with configure and remove the need for these!
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
@@ -25,7 +24,7 @@ class Gource < Formula
     # For non-/usr/local installs
     ENV.append "CXXFLAGS", "-I#{HOMEBREW_PREFIX}/include"
 
-    system "autoreconf -f -i"
+    system "autoreconf -f -i" if ARGV.build_head?
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
