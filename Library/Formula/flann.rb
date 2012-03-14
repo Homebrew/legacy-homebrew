@@ -34,7 +34,7 @@ class Flann < Formula
       args << '-DBUILD_PYTHON_BINDINGS:BOOL=OFF'
     end
 
-    args << '-DNVCC_COMPILER_BINDIR=/usr/bin/llvm-gcc-4.2'
+    args << "-DNVCC_COMPILER_BINDIR=#{ENV.cc}"
 
     inreplace 'CMakeLists.txt', 'add_subdirectory( examples )', '' unless ARGV.include? '--with-examples'
 
