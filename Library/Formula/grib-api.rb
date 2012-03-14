@@ -11,7 +11,10 @@ class GribApi < Formula
     ENV.deparallelize
     ENV.no_optimization
     ENV.fortran
-    ENV.llvm
+
+    # When `fails_with` is available, the following line can be
+    # changed to `fails_with :clang`.
+    ENV.llvm if ENV.compiler == :clang
 
     system "./configure", "--prefix=#{prefix}"
     system "make"
