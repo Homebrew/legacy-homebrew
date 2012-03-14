@@ -14,6 +14,7 @@ class Cairo < Formula
   fails_with_llvm "Throws an 'lto could not merge' error during build.", :build => 2336
 
   def install
+    ENV.x11
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
