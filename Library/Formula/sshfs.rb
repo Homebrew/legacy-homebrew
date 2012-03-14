@@ -2,8 +2,8 @@ require 'formula'
 
 class Sshfs < Formula
   homepage 'http://fuse.sourceforge.net/sshfs.html'
-  url 'https://github.com/fuse4x/sshfs.git', :tag => 'sshfs_2_3_0'
-  version '2.3.0'
+  url 'https://github.com/fuse4x/sshfs.git', :tag => 'sshfs_2_4_0'
+  version '2.4.0'
 
   depends_on 'pkg-config' => :build
   depends_on 'fuse4x'
