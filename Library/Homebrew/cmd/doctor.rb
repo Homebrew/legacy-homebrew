@@ -879,22 +879,19 @@ end # end class Checks
 
 module Homebrew extend self
   def doctor
-    raring_to_brew = true
-
     checks = Checks.new
 
     checks.methods.select{ |method| method =~ /^check_/ }.sort.each do |method|
       out = checks.send(method)
       unless out.nil? or out.empty?
-        puts unless raring_to_brew
+        puts unless Homebrew.failed?
         lines = out.to_s.split('\n')
         opoo lines.shift
         puts lines
-        raring_to_brew = false
+        Homebrew.failed = true
       end
     end
 
-    puts "Your system is raring to brew." if raring_to_brew
-    exit raring_to_brew ? 0 : 1
+    puts "Your system is raring to brew." unless Homebrew.failed?
   end
 end
