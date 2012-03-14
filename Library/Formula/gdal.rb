@@ -26,8 +26,8 @@ def opencl?
 end
 
 class Gdal < Formula
-  url 'http://download.osgeo.org/gdal/gdal-1.9.0.tar.gz'
   homepage 'http://www.gdal.org/'
+  url 'http://download.osgeo.org/gdal/gdal-1.9.0.tar.gz'
   md5 '1853f3d8eb5232ae030abe007840cade'
 
   head 'https://svn.osgeo.org/gdal/trunk/gdal', :using => :svn
@@ -222,7 +222,7 @@ class Gdal < Formula
         ENV.append_to_cflags '-arch i386'
       end
 
-      Dir.chdir 'swig/python' do
+      cd 'swig/python' do
         system "python", "setup.py", "install_lib", "--install-dir=#{python_lib}"
         bin.install Dir['scripts/*']
       end

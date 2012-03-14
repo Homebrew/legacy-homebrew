@@ -1,18 +1,23 @@
 require 'formula'
 
 class Gnuplot < Formula
-  url 'http://downloads.sourceforge.net/project/gnuplot/gnuplot/4.4.4/gnuplot-4.4.4.tar.gz'
   homepage 'http://www.gnuplot.info'
+  url 'http://downloads.sourceforge.net/project/gnuplot/gnuplot/4.4.4/gnuplot-4.4.4.tar.gz'
   md5 '97a43328e81e57ebed7f135ca0c07e82'
   head 'cvs://:pserver:anonymous@gnuplot.cvs.sourceforge.net:/cvsroot/gnuplot:gnuplot', :using => :cvs
 
   depends_on 'pkg-config' => :build
   depends_on 'readline'
-  depends_on 'pango' # cairo support
+  depends_on 'pango'
   depends_on 'pdflib-lite' if ARGV.include? "--pdf"
   depends_on 'lua' unless ARGV.include? '--nolua'
   depends_on 'gd' unless ARGV.include? "--nogd"
   depends_on 'wxmac' if ARGV.include? "--wx"
+
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   def options
     [
@@ -51,6 +56,6 @@ class Gnuplot < Formula
   end
 
   def test
-    system "gnuplot --version"
+    system "#{bin}/gnuplot --version"
   end
 end

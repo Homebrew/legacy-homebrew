@@ -1,10 +1,15 @@
 def blacklisted? name
   case name.downcase
-  when 'vim', 'screen', /^rubygems?$/ then <<-EOS.undent
+  when /^vim?$/, 'screen', /^rubygems?$/ then <<-EOS.undent
     Apple distributes #{name} with OS X, you can find it in /usr/bin.
     EOS
   when 'libarchive', 'libpcap' then <<-EOS.undent
     Apple distributes #{name} with OS X, you can find it in /usr/lib.
+    EOS
+  when 'libiconv' then <<-EOS.undent
+    Apple distributes #{name} with OS X, you can find it in /usr/lib.
+    Some build scripts fail to detect it correctly, please check existing
+    formulae for solutions.
     EOS
   when 'libxml', 'libxlst' then <<-EOS.undent
     Apple distributes #{name} with OS X, you can find it in /usr/lib.

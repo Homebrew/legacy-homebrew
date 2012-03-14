@@ -91,7 +91,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       chdir
     when /^\xFD7zXZ\x00/ # xz compressed
       raise "You must install XZutils: brew install xz" unless system "/usr/bin/which -s xz"
-      safe_system "xz -dc #{@tarball_path} | /usr/bin/tar xf -"
+      safe_system "xz -dc \"#{@tarball_path}\" | /usr/bin/tar xf -"
       chdir
     when '____pkg'
       safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, File.basename(@url)
@@ -191,7 +191,7 @@ end
 class CurlBottleDownloadStrategy < CurlDownloadStrategy
   def initialize url, name, version, specs
     super
-    @tarball_path = HOMEBREW_CACHE/"#{name}-#{version}.bottle#{ext}"
+    @tarball_path = HOMEBREW_CACHE/"#{name}-#{version}.#{MacOS.cat}.bottle#{ext}"
   end
   def stage
     ohai "Pouring #{File.basename(@tarball_path)}"
@@ -383,6 +383,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
         safe_system 'git', 'submodule', '--quiet', 'foreach', '--recursive', sub_cmd
       end
     end
+    ENV['GIT_DIR'] = cached_location+'.git'
   end
 end
 

@@ -9,7 +9,7 @@ class Keg < Pathname
 
   # locale-specific directories have the form language[_territory][.codeset][@modifier]
   LOCALEDIR_RX = /(locale|man)\/([a-z]{2}|C|POSIX)(_[A-Z]{2})?(\.[a-zA-Z\-0-9]+(@.+)?)?/
-  INFOFILE_RX = %r[/share/info/[^.].*?\.info$]
+  INFOFILE_RX = %r[info/[^.].*?\.info$]
 
   # if path is a file in a keg then this will return the containing Keg object
   def self.for path
@@ -35,6 +35,7 @@ class Keg < Pathname
       next unless dst.symlink?
       dst.uninstall_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
       dst.unlink
+      dst.parent.rmdir_if_possible
       n+=1
       Find.prune if src.directory?
     end
@@ -67,23 +68,27 @@ class Keg < Pathname
     # yeah indeed, you have to force anything you need in the main tree into
     # these dirs REMEMBER that *NOT* everything needs to be in the main tree
     link_dir('etc') {:mkpath}
-    link_dir('bin') {:skip}
-    link_dir('sbin') {:link}
+    link_dir('bin') {:skip_dir}
+    link_dir('sbin') {:skip_dir}
     link_dir('include') {:link}
 
     link_dir('share') do |path|
-      if path.to_s =~ LOCALEDIR_RX
-        :mkpath
-      elsif share_mkpaths.include? path.to_s
-        :mkpath
+      case path.to_s
+      when 'locale/locale.alias' then :skip_file
+      when INFOFILE_RX then :info if ENV['HOMEBREW_KEEP_INFO']
+      when LOCALEDIR_RX then :mkpath
+      when *share_mkpaths then :mkpath
+      else :link
       end
     end
 
     link_dir('lib') do |path|
       case path.to_s
+      when 'charset.alias' then :skip_file
       # pkg-config database gets explicitly created
       when 'pkgconfig' then :mkpath
       # lib/language folders also get explicitly created
+      when /^gdk-pixbuf/ then :mkpath
       when 'ghc' then :mkpath
       when 'lua' then :mkpath
       when 'node' then :mkpath
@@ -130,10 +135,17 @@ protected
       dst.extend ObserverPathnameExtension
 
       if src.file?
-        # Do the symlink.
-        dst.make_relative_symlink src unless File.basename(src) == '.DS_Store'
-        # Install info file entries in the info directory file
-        dst.install_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
+        Find.prune if File.basename(src) == '.DS_Store'
+
+        case yield src.relative_path_from(root)
+        when :skip_file
+          Find.prune
+        when :info
+          dst.make_relative_symlink(src)
+          dst.install_info
+        else
+          dst.make_relative_symlink(src)
+        end
       elsif src.directory?
         # if the dst dir already exists, then great! walk the rest of the tree tho
         next if dst.directory? and not dst.symlink?
@@ -143,7 +155,7 @@ protected
         Find.prune if src.extname.to_s == '.app'
 
         case yield src.relative_path_from(root)
-        when :skip
+        when :skip_dir
           Find.prune
         when :mkpath
           dst.mkpath unless resolve_any_conflicts(dst)

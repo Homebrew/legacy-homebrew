@@ -1,12 +1,12 @@
 require 'formula'
 
 class MemcachePhp < Formula
-  url 'http://pecl.php.net/get/memcache-2.2.6.tgz'
   homepage 'http://pecl.php.net/package/memcache'
+  url 'http://pecl.php.net/get/memcache-2.2.6.tgz'
   md5 '9542f1886b72ffbcb039a5c21796fe8a'
 
   def install
-    Dir.chdir "memcache-#{version}" do
+    cd "memcache-#{version}" do
       system "phpize"
       system "./configure", "--prefix=#{prefix}"
       system "make"
