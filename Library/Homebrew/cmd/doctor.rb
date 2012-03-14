@@ -340,7 +340,7 @@ def check_xcode_prefix
   if prefix.to_s.match(' ')
     <<-EOS.undent
       Xcode is installed to a directory with a space in the name.
-      This will cause some formulae, such as libiconv, to fail to build.
+      This will cause some formulae to fail to build.
     EOS
   end
 end
