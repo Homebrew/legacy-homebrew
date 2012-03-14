@@ -7,6 +7,8 @@ class Glib < Formula
   url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.30/glib-2.30.2.tar.bz2'
   sha256 '94b1f1a1456c67060ca868d299bef3f7268a2c1c5c360aabb7149d4d9b2fdcd3'
 
+  depends_on 'autoconf' => :build if ARGV.build_universal?
+
   depends_on 'gettext'
   depends_on 'libffi'
 

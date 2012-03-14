@@ -8,11 +8,9 @@ class Libdvdread < Formula
 
   depends_on 'libdvdcss' => :optional
 
-  if MacOS.xcode_version >= "4.3"
-    # when and if the tarball provides configure, remove autogen.sh and these deps
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  # when and if the tarball provides configure, remove autogen.sh and these deps
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
     if Formula.factory("libdvdcss").installed?

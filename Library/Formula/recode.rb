@@ -5,8 +5,9 @@ class Recode < Formula
   homepage 'http://www.gnu.org/software/recode/'
   md5 'be3f40ad2e93dae5cd5f628264bf1877'
 
+  depends_on "libtool" => :build
+
   depends_on "gettext"
-  depends_on "libtool" if MacOS.xcode_version >= "4.3"
 
   def patches
     # Patches from MacPorts

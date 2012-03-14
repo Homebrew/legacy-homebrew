@@ -6,15 +6,15 @@ class Libagg < Formula
   md5 '0229a488bc47be10a2fee6cf0b2febd6'
 
   depends_on 'pkg-config' => :build
+  depends_on "automake" => :build
+
   depends_on 'sdl'
-  depends_on "automake" if MacOS.xcode_version >= "4.3"
 
   def install
     ENV.x11 # For freetype
 
     # No configure script. We need to run autoreconf, and aclocal and automake
     # need some direction.
-    ENV['ACLOCAL'] = "aclocal -I#{HOMEBREW_PREFIX}/share/aclocal" # To find SDL m4 files
     # This part snatched from MacPorts
     ENV['AUTOMAKE'] = "automake --foreign --add-missing --ignore-deps"
     system "autoreconf -fi"

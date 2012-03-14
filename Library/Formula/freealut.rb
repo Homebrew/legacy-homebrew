@@ -8,11 +8,9 @@ class Freealut < Formula
   # Adds the OpenAL frameworks to the library list so linking succeeds
   def patches; DATA; end
 
-  if MacOS.xcode_version >= "4.3"
-    # when and if the tarball provides configure, remove autogen.sh and these deps
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  # when and if the tarball provides configure, remove autogen.sh and these deps
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
     system "./autogen.sh"

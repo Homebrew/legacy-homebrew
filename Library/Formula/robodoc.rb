@@ -6,7 +6,7 @@ class Robodoc < Formula
   homepage 'http://rfsber.home.xs4all.nl/Robo/robodoc.html'
   head 'https://github.com/gumpu/ROBODoc.git'
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+  if ARGV.build_head?
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end

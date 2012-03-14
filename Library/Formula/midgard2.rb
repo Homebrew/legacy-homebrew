@@ -11,9 +11,7 @@ class Midgard2 < Formula
   depends_on 'dbus-glib'
   depends_on 'libgda'
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    # remove the autoreconf if possible, no comment provided about why it is there
-    # so we have no basis to make a decision at this point.
+  if ARGV.build_head?
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end

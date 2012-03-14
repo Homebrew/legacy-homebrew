@@ -10,9 +10,8 @@ class Vimpc < Formula
   depends_on 'pkg-config' => :build
   depends_on 'pcre++'
   depends_on 'libmpdclient'
-  depends_on "automake" if ARGV.build_head? and MacOS.xcode_version >= "4.3"
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+  if ARGV.build_head?
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end

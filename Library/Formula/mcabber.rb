@@ -17,7 +17,7 @@ class Mcabber < Formula
   depends_on 'aspell' if ARGV.include? '--enable-aspell'
   depends_on 'enchant' if ARGV.include? '--enable-enchant'
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+  if ARGV.build_head?
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
@@ -32,7 +32,6 @@ class Mcabber < Formula
   def install
     if ARGV.build_head? then
       ENV['LIBTOOLIZE'] = 'glibtoolize'
-      ENV['ACLOCAL'] = "aclocal -I #{HOMEBREW_PREFIX}/share/aclocal"
       cd 'mcabber' # Not using block form on purpose
       inreplace 'autogen.sh', 'libtoolize', '$LIBTOOLIZE'
       inreplace 'autogen.sh', 'aclocal', '$ACLOCAL'

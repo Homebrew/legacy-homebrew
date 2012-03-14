@@ -13,11 +13,10 @@ class Logstalgia < Formula
   depends_on 'jpeg'
   depends_on 'pcre'
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+  if ARGV.build_head?
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
-
 
   def install
     ENV.x11 # Put freetype-config in path
