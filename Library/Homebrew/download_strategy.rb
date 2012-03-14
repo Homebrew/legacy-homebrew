@@ -91,7 +91,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       chdir
     when /^\xFD7zXZ\x00/ # xz compressed
       raise "You must install XZutils: brew install xz" unless system "/usr/bin/which -s xz"
-      safe_system "xz -dc #{@tarball_path} | /usr/bin/tar xf -"
+      safe_system "xz -dc \"#{@tarball_path}\" | /usr/bin/tar xf -"
       chdir
     when '____pkg'
       safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, File.basename(@url)

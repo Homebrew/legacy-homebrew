@@ -3,7 +3,6 @@ require 'formula'
 class Privoxy < Formula
   homepage 'http://www.privoxy.org'
   url 'http://downloads.sourceforge.net/project/ijbswa/Sources/3.0.19%20%28stable%29/privoxy-3.0.19-stable-src.tar.gz'
-  version '3.0.19'
   sha1 'a82287cbf48375ef449d021473a366baeca49250'
 
   if MacOS.xcode_version >= "4.3"

@@ -340,7 +340,7 @@ def check_xcode_prefix
   if prefix.to_s.match(' ')
     <<-EOS.undent
       Xcode is installed to a directory with a space in the name.
-      This will cause some formulae, such as libiconv, to fail to build.
+      This will cause some formulae to fail to build.
     EOS
   end
 end
@@ -548,6 +548,16 @@ def check_for_dyld_vars
     <<-EOS.undent
       Setting DYLD_LIBRARY_PATH can break dynamic linking.
       You should probably unset it.
+    EOS
+  end
+end
+
+def check_for_DYLD_INSERT_LIBRARIES
+  if ENV['DYLD_INSERT_LIBRARIES']
+    <<-EOS.undent
+      Setting DYLD_INSERT_LIBRARIES can cause Go builds to fail.
+      Having this set is common if you use this software:
+        http://asepsis.binaryage.com/
     EOS
   end
 end
@@ -801,11 +811,11 @@ def check_for_bad_python_symlink
 end
 
 def check_for_outdated_homebrew
-  HOMEBREW_PREFIX.cd do
+  HOMEBREW_REPOSITORY.cd do
     timestamp = if File.directory? ".git"
       `git log -1 --format="%ct" HEAD`.to_i
     else
-      (HOMEBREW_PREFIX/"Library").mtime.to_i
+      (HOMEBREW_REPOSITORY/"Library").mtime.to_i
     end
 
     if Time.now.to_i - timestamp > 60 * 60 * 24 then <<-EOS.undent
