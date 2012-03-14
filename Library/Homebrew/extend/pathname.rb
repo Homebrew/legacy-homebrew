@@ -1,4 +1,5 @@
 require 'pathname'
+require 'bottles'
 
 # we enhance pathname to make our code more readable
 class Pathname
@@ -100,6 +101,9 @@ class Pathname
 
   # extended to support common double extensions
   def extname
+    return $1 if to_s =~ bottle_regex
+    # old brew bottle style
+    return $1 if to_s =~ old_bottle_regex
     /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
     return $1 if $1
     return File.extname(to_s)
@@ -150,21 +154,21 @@ class Pathname
     end
 
     # github tarballs, like v1.2.3
-    %r[github.com/.*/(zip|tar)ball/v?((\d\.)+\d+)$].match to_s
+    %r[github.com/.*/(zip|tar)ball/v?((\d+\.)+\d+)$].match to_s
     return $2 if $2
 
     # eg. https://github.com/sam-github/libnet/tarball/libnet-1.1.4
-    %r[github.com/.*/(zip|tar)ball/.*-((\d\.)+\d+)$].match to_s
+    %r[github.com/.*/(zip|tar)ball/.*-((\d+\.)+\d+)$].match to_s
     return $2 if $2
 
     # dashed version
     # eg. github.com/isaacs/npm/tarball/v0.2.5-1
-    %r[github.com/.*/(zip|tar)ball/v?((\d\.)+\d+-(\d+))$].match to_s
+    %r[github.com/.*/(zip|tar)ball/v?((\d+\.)+\d+-(\d+))$].match to_s
     return $2 if $2
 
     # underscore version
     # eg. github.com/petdance/ack/tarball/1.93_02
-    %r[github.com/.*/(zip|tar)ball/v?((\d\.)+\d+_(\d+))$].match to_s
+    %r[github.com/.*/(zip|tar)ball/v?((\d+\.)+\d+_(\d+))$].match to_s
     return $2 if $2
 
     # eg. boost_1_39_0
@@ -204,19 +208,14 @@ class Pathname
     /_((\d+\.)+\d+[abc]?)[.]orig$/.match stem
     return $1 if $1
 
-    # brew bottle style e.g. qt-4.7.3-bottle.tar.gz
-    /-((\d+\.)*\d+(-\d)*)-bottle$/.match stem
-    return $1 if $1
-
     # eg. otp_src_R13B (this is erlang's style)
     # eg. astyle_1.23_macosx.tar.gz
     stem.scan(/_([^_]+)/) do |match|
       return match.first if /\d/.match $1
     end
 
-    # erlang bottle style, booya
-    # e.g. erlang-R14B03-bottle.tar.gz
-    /-([^-]+)-bottle$/.match stem
+    # old erlang bottle style e.g. erlang-R14B03-bottle.tar.gz
+    /-([^-]+)/.match stem
     return $1 if $1
 
     nil

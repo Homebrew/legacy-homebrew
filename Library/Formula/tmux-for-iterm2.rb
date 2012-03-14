@@ -1,9 +1,9 @@
 require 'formula'
 
 class TmuxForIterm2 < Formula
-  url 'http://iterm2.googlecode.com/files/tmux-for-iTerm2-20120108.tar.gz'
+  url 'http://iterm2.googlecode.com/files/tmux-for-iTerm2-20120203.tar.gz'
   homepage 'http://www.iterm2.com/'
-  md5 'f15d9f567b9b029482bb7b3227ee7ac3'
+  md5 '59305a26bdd0245054fe719e6b2a960e'
 
   depends_on 'libevent'
 

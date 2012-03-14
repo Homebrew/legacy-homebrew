@@ -2,14 +2,14 @@ require 'formula'
 
 class XapianBindings < Formula
   homepage 'http://xapian.org'
-  url 'http://oligarchy.co.uk/xapian/1.2.7/xapian-bindings-1.2.7.tar.gz'
-  sha1 '79e9f0b01f1af3440d10d00469dbe248784ffa1c'
+  url 'http://oligarchy.co.uk/xapian/1.2.8/xapian-bindings-1.2.8.tar.gz'
+  sha1 '92cf39c9c00a52a33727e47a1a7aaee2a1b23c2f'
 end
 
 class Xapian < Formula
   homepage 'http://xapian.org'
-  url 'http://oligarchy.co.uk/xapian/1.2.7/xapian-core-1.2.7.tar.gz'
-  sha1 'c6c5c5b14d5d64481858ac2b181429a9b8bdc9a1'
+  url 'http://oligarchy.co.uk/xapian/1.2.8/xapian-core-1.2.8.tar.gz'
+  sha1 '4bdd3845278812d467b8d0fb73ee27a5be05b2d9'
 
   def options
     [

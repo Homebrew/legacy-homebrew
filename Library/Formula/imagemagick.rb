@@ -13,6 +13,10 @@ def use_wmf?
   ARGV.include? '--use-wmf'
 end
 
+def use_rsvg?
+  ARGV.include? '--use-rsvg'
+end
+
 def use_lqr?
   ARGV.include? '--use-lqr'
 end
@@ -61,6 +65,7 @@ class Imagemagick < Formula
     sha1 'ad1647061a1d7bc4a0fee0d90c16005f40d97683'
   end
 
+  depends_on 'pkg-config' => :build
   depends_on 'jpeg'
 
   depends_on 'ghostscript' => :recommended if ghostscript_srsly?
@@ -70,6 +75,7 @@ class Imagemagick < Formula
   depends_on 'jasper' => :optional
 
   depends_on 'libwmf' if use_wmf?
+  depends_on 'librsvg' if use_rsvg?
   depends_on 'liblqr' if use_lqr?
   depends_on 'openexr' if use_exr?
 
@@ -82,6 +88,7 @@ class Imagemagick < Formula
     [
       ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
       ['--use-wmf', 'Compile with libwmf support.'],
+      ['--use-rsvg', 'Compile with librsvg support.'],
       ['--use-lqr', 'Compile with liblqr support.'],
       ['--use-exr', 'Compile with openexr support.'],
       ['--disable-openmp', 'Disable OpenMP.'],
@@ -120,6 +127,7 @@ class Imagemagick < Formula
     end
 
     args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
+    args << "--with-rsvg" if use_rsvg?
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'

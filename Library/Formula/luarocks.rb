@@ -4,15 +4,19 @@ def use_luajit?; ARGV.include? '--with-luajit'; end
 
 class Luarocks < Formula
   homepage 'http://luarocks.org'
-  url 'http://luarocks.org/releases/luarocks-2.0.7.1.tar.gz'
-  md5 '37003e5c78792e353acde684426bdeac'
+  url 'http://luarocks.org/releases/luarocks-2.0.8.tar.gz'
+  md5 '07cf84e352d86fe161f7b2ec43f360cc'
 
   depends_on use_luajit? ? 'luajit' : 'lua'
 
   fails_with_llvm "Lua itself compiles with llvm, but may fail when other software tries to link."
 
   def patches
-    DATA if HOMEBREW_PREFIX.to_s == '/usr/local'
+    p = []
+    p << DATA if HOMEBREW_PREFIX.to_s == '/usr/local'
+    # Allow parallel builds; will be in 2.0.9
+    p << "https://github.com/keplerproject/luarocks/commit/0431ed91571e4b7986a1178df48232abff7c0916.patch"
+    p
   end
 
   def options
@@ -32,7 +36,6 @@ class Luarocks < Formula
 
     system "./configure", *args
     system "make"
-    ENV.j1 # 2.0.4.1 worked in parallel but 2.0.7.1 does not
     system "make install"
   end
 

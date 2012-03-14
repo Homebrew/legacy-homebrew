@@ -124,14 +124,18 @@ end
 
 class ExternalDepsTests < Test::Unit::TestCase
   def check_deps_fail f
-    assert_raises(UnsatisfiedExternalDependencyError) do
-      f.new.check_external_deps
+    assert_raises(UnsatisfiedRequirement) do
+      f.new.external_deps.each do |dep|
+        raise UnsatisfiedRequirement.new(f, dep) unless dep.satisfied?
+      end
     end
   end
 
   def check_deps_pass f
     assert_nothing_raised do
-      f.new.check_external_deps
+      f.new.external_deps.each do |dep|
+        raise UnsatisfiedRequirement.new(f, dep) unless dep.satisfied?
+      end
     end
   end
 

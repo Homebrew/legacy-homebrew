@@ -9,7 +9,7 @@ end
 def audit_formula_text name, text
   problems = []
 
-  if text =~ /<(Formula|AmazonWebServicesFormula)/
+  if text =~ /<(Formula|AmazonWebServicesFormula|ScriptFileFormula|GithubGistFormula)/
     problems << " * Use a space in class inheritance: class Foo < #{$1}"
   end
 
@@ -97,11 +97,6 @@ def audit_formula_text name, text
   if text =~ /^[ ]*\t/
     problems << " * Use spaces instead of tabs for indentation"
   end
-
-  # Formula depends_on gfortran
-  if text =~ /^\s*depends_on\s*(\'|\")gfortran(\'|\").*/
-    problems << " * Use ENV.fortran during install instead of depends_on 'gfortran'"
-  end unless name == "gfortran" # Gfortran itself has this text in the caveats
 
   # xcodebuild should specify SYMROOT
   if text =~ /system\s+['"]xcodebuild/ and not text =~ /SYMROOT=/
@@ -287,6 +282,8 @@ def audit_formula_instance f
  * Don't use #{d} as a dependency. We allow non-Homebrew
    #{d} installations.
 EOS
+    when 'gfortran'
+      problems << " * Use ENV.fortran during install instead of depends_on 'gfortran'"
     end
   end
 

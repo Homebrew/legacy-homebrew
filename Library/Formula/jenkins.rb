@@ -2,9 +2,9 @@ require 'formula'
 
 class Jenkins < Formula
   homepage 'http://jenkins-ci.org'
-  url 'http://mirrors.jenkins-ci.org/war/1.451/jenkins.war', :using => :nounzip
-  version '1.451'
-  md5 '3f3a60fa54fa85bd9a56cec0a768ef78'
+  url 'http://mirrors.jenkins-ci.org/war/1.454/jenkins.war', :using => :nounzip
+  version '1.454'
+  md5 '6f8bbe0a4bddab9590f65b83cf26744a'
   head 'https://github.com/jenkinsci/jenkins.git'
 
   def install
@@ -43,6 +43,7 @@ EOS
     <string>/usr/bin/java</string>
     <string>-jar</string>
     <string>#{HOMEBREW_PREFIX}/lib/jenkins.war</string>
+    <string>--httpListenAddress=127.0.0.1</string>
     </array>
     <key>RunAtLoad</key>
     <true/>
