@@ -2,8 +2,8 @@ require 'formula'
 
 class CloudbeesSdk < Formula
   homepage 'http://wiki.cloudbees.com/bin/view/RUN/BeesSDK'
-  url 'http://cloudbees-downloads.s3.amazonaws.com/sdk/cloudbees-sdk-0.7.4-dist.zip'
-  md5 'fd56b54349345588707dc09c1e0120f6'
+  url 'http://cloudbees-downloads.s3.amazonaws.com/sdk/cloudbees-sdk-0.8.1-dist.zip'
+  md5 '82cf3a8c002bebcf5d123a3803bba5d8'
 
   def shim_script target
     <<-EOS.undent
