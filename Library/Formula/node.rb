@@ -21,7 +21,7 @@ class Node < Formula
   skip_clean :all
 
   def options
-    [["--debug", "Build with debugger hooks."]]
+    [["--enable-debug", "Build with debugger hooks."]]
   end
 
   def install
@@ -34,7 +34,7 @@ class Node < Formula
 
     # Why skip npm install? Read https://github.com/mxcl/homebrew/pull/8784.
     args = ["--prefix=#{prefix}", "--without-npm"]
-    args << "--debug" if ARGV.include? '--debug'
+    args << "--debug" if ARGV.include? '--enable-debug'
 
     system "./configure", *args
     system "make install"
