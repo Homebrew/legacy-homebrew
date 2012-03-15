@@ -12,7 +12,7 @@ class Pyqt < Formula
   depends_on 'qt'
 
   def install
-    ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/python", ':'
+    ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages", ':'
 
     system "python", "./configure.py", "--confirm-license",
                                        "--bindir=#{bin}",

@@ -208,7 +208,7 @@ def check_for_latest_xcode
     else "4.3"
   end
   if MacOS.xcode_version < latest_xcode then <<-EOS.undent
-    You have Xcode-#{MacOS.xcode_version}, which is outdated.
+    You have Xcode #{MacOS.xcode_version}, which is outdated.
     Please install Xcode #{latest_xcode}.
     EOS
   end
@@ -220,7 +220,7 @@ def check_cc
       You have no /usr/bin/cc.
       This means you probably can't build *anything*. You need to install the CLI
       Tools for Xcode. You can either download this from http://connect.apple.com/
-      or install them from inside Xcode’s preferences. Homebrew does not require
+      or install them from inside Xcode's preferences. Homebrew does not require
       all of Xcode! You only need the CLI tools package!
     EOS
   end
@@ -340,7 +340,7 @@ def check_xcode_prefix
   if prefix.to_s.match(' ')
     <<-EOS.undent
       Xcode is installed to a directory with a space in the name.
-      This will cause some formulae, such as libiconv, to fail to build.
+      This will cause some formulae to fail to build.
     EOS
   end
 end
@@ -349,6 +349,11 @@ def check_xcode_select_path
   path = `xcode-select -print-path 2>/dev/null`.chomp
   unless File.directory? path and File.file? "#{path}/usr/bin/xcodebuild"
     # won't guess at the path they should use because it's too hard to get right
+    # We specify /Applications/Xcode.app/Contents/Developer even though
+    # /Applications/Xcode.app should work because people don't install the new CLI
+    # tools and then it doesn't work. Lets hope the location doesn't change in the
+    # future.
+
     <<-EOS.undent
       Your Xcode is configured with an invalid path.
       You should change it to the correct path. Please note that there is no correct
@@ -357,7 +362,9 @@ def check_xcode_select_path
       these is (probably) what you want:
 
           sudo xcode-select -switch /Developer
-          sudo xcode-select -switch /Applications/Xcode.app
+          sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
+
+      DO NOT SET / OR EVERYTHING BREAKS!
     EOS
   end
 end
@@ -543,6 +550,16 @@ def check_for_dyld_vars
     <<-EOS.undent
       Setting DYLD_LIBRARY_PATH can break dynamic linking.
       You should probably unset it.
+    EOS
+  end
+end
+
+def check_for_DYLD_INSERT_LIBRARIES
+  if ENV['DYLD_INSERT_LIBRARIES']
+    <<-EOS.undent
+      Setting DYLD_INSERT_LIBRARIES can cause Go builds to fail.
+      Having this set is common if you use this software:
+        http://asepsis.binaryage.com/
     EOS
   end
 end
@@ -796,11 +813,11 @@ def check_for_bad_python_symlink
 end
 
 def check_for_outdated_homebrew
-  HOMEBREW_PREFIX.cd do
+  HOMEBREW_REPOSITORY.cd do
     timestamp = if File.directory? ".git"
       `git log -1 --format="%ct" HEAD`.to_i
     else
-      (HOMEBREW_PREFIX/"Library").mtime.to_i
+      (HOMEBREW_REPOSITORY/"Library").mtime.to_i
     end
 
     if Time.now.to_i - timestamp > 60 * 60 * 24 then <<-EOS.undent
@@ -831,5 +848,6 @@ module Homebrew extend self
     end
 
     puts "Your system is raring to brew." if raring_to_brew
+    exit raring_to_brew ? 0 : 1
   end
 end
