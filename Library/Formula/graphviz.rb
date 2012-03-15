@@ -5,14 +5,15 @@ def build_bindings?
 end
 
 class Graphviz < Formula
+  homepage 'http://graphviz.org/'
   url 'http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.28.0.tar.gz'
   md5 '8d26c1171f30ca3b1dc1b429f7937e58'
-  homepage 'http://graphviz.org/'
 
   depends_on 'pkg-config' => :build
-
   depends_on 'pango' if ARGV.include? '--with-pangocairo'
   depends_on 'swig' if build_bindings?
+
+  # fails_with_clang
 
   def options
     [["--with-pangocairo", "Build with Pango/Cairo for alternate PDF output"],
@@ -33,6 +34,10 @@ class Graphviz < Formula
             "--with-quartz"]
     args << "--disable-swig" unless build_bindings?
     args << "--without-pangocairo" unless ARGV.include? '--with-pangocairo'
+
+    # Compilation currently fails with the newer versions of clang
+    # shipped with Xcode 4.3+
+    ENV.llvm if MacOS.clang_version.to_f <= 3.1
 
     system "./configure", *args
     system "make install"
