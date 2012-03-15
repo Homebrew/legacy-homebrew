@@ -220,7 +220,7 @@ def check_cc
       You have no /usr/bin/cc.
       This means you probably can't build *anything*. You need to install the CLI
       Tools for Xcode. You can either download this from http://connect.apple.com/
-      or install them from inside Xcode’s preferences. Homebrew does not require
+      or install them from inside Xcode's preferences. Homebrew does not require
       all of Xcode! You only need the CLI tools package!
     EOS
   end
@@ -363,6 +363,8 @@ def check_xcode_select_path
 
           sudo xcode-select -switch /Developer
           sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
+
+      DO NOT SET / OR EVERYTHING BREAKS!
     EOS
   end
 end

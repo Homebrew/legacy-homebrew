@@ -6,9 +6,9 @@ class ProjDatumgrid < Formula
 end
 
 class Proj < Formula
-  url 'http://download.osgeo.org/proj/proj-4.7.0.tar.gz'
+  url 'http://download.osgeo.org/proj/proj-4.8.0.tar.gz'
   homepage 'http://trac.osgeo.org/proj/'
-  md5 '927d34623b52e0209ba2bfcca18fe8cd'
+  md5 'd815838c92a29179298c126effbb1537'
 
   fails_with_llvm :build => 2334
 
