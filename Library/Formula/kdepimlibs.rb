@@ -9,5 +9,4 @@ class Kdepimlibs < BaseKdeFormula
   depends_on 'akonadi'
   depends_on 'libical'
   depends_on 'kdelibs'
-  depends_on 'nepomuk' # part of kdelibs ?
 end
