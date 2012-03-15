@@ -363,6 +363,8 @@ def check_xcode_select_path
 
           sudo xcode-select -switch /Developer
           sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
+
+      DO NOT SET / OR EVERYTHING BREAKS!
     EOS
   end
 end
