@@ -38,6 +38,12 @@ class FormulaInstaller
     if ARGV.build_head? and f.unstable.nil?
       raise CannotInstallFormulaError, "No head is defined for #{f.name}"
     end
+
+    f.recursive_deps.each do |dep|
+      if dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
+        raise CannotInstallFormulaError, "You must `brew link #{dep}' before #{f} can be installed"
+      end
+    end unless ignore_deps
   end
 
   def install
