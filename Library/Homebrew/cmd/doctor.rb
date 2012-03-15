@@ -166,6 +166,21 @@ def check_for_other_package_managers
   end
 end
 
+def check_for_broken_symlinks
+  broken_symlinks = []
+  %w[lib include sbin bin etc share].each do |d|
+    d = HOMEBREW_PREFIX/d
+    d.find do |pn|
+      broken_symlinks << pn if pn.symlink? and pn.readlink.expand_path.to_s =~ /^#{HOMEBREW_PREFIX}/ and not pn.exist?
+    end
+  end
+  unless broken_symlinks.empty? then <<-EOS.undent
+    Broken symlinks were found. Remove them with `brew prune':
+      #{broken_symlinks * "\n      "}
+    EOS
+  end
+end
+
 def check_gcc_42
   if MacOS.gcc_42_build_version == nil
     # Don't show this warning on Xcode 4.2+
