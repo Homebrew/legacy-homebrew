@@ -5,7 +5,7 @@ class Couchdb < Formula
   homepage "http://couchdb.apache.org/"
   md5 'cd126219b9cb69a4c521abd6960807a6'
 
-  head 'http://svn.apache.org/repos/asf/couchdb/trunk'
+  head 'http://git-wip-us.apache.org/repos/asf/couchdb.git', :using => :git
 
   depends_on 'help2man' => :build
   depends_on 'spidermonkey'
@@ -19,7 +19,7 @@ class Couchdb < Formula
                           "--localstatedir=#{var}",
                           "--sysconfdir=#{etc}",
                           "--with-erlang=#{HOMEBREW_PREFIX}/lib/erlang/usr/include",
-                          "--with-js-include=#{HOMEBREW_PREFIX}/include",
+                          "--with-js-include=#{HOMEBREW_PREFIX}/include/js",
                           "--with-js-lib=#{HOMEBREW_PREFIX}/lib"
     system "make"
     system "make install"
