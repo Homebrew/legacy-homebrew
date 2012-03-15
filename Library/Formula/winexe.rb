@@ -11,9 +11,7 @@ class Winexe < Formula
   # virtually everywhere, but for some reason it only breaks it on OS X.
   # http://miskstuf.tumblr.com/post/6840077505/winexe-1-00-linux-macos-windows-7-finally-working
   # Added by @vspy
-  def patches
-    {:p1 => DATA}
-  end
+  def patches; DATA; end
 
   def install
     cd "source4" do
