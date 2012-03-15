@@ -26,12 +26,14 @@ class GstPluginsGood < Formula
   depends_on 'taglib' => :optional
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                           "--prefix=#{prefix}",
-                           "--disable-schemas-install",
-                           "--disable-gtk-doc",
-                           "--disable-goom",
-                           "--with-default-videosink=ximagesink"
+    ENV['OBJC'] = ENV.cc
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--disable-schemas-install",
+                          "--disable-gtk-doc",
+                          "--disable-goom",
+                          "--with-default-videosink=ximagesink"
     system "make"
     system "make install"
   end
