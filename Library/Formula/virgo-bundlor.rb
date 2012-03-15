@@ -8,7 +8,7 @@ class VirgoBundlor < Formula
 	version "1.1.0.M04"
 
 	# have to add &dummy so file name is correct when downloaded
-	url "http://www.eclipse.org/downloads/download.php?r=1&protocol=http&file=/virgo/milestone/BNDLR/#{version}/bundlor-#{version}.zip"
+        url "http://eclipse.ialto.com/virgo/milestone/BNDLR/#{version}/bundlor-#{version}.zip"
 	md5 '4dbc1723caa5041db5295d011e73c7d6'
 
   def install
