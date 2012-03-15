@@ -7,9 +7,14 @@ class Libdlna < Formula
 
   depends_on 'ffmpeg'
 
+  # Patches exist in the gentoo repository, but since the project isn't under active
+  # development they may never get pulled officially.
+  # fixes ffmpeg locations & missing symbols for newer versions of libavformat
   def patches
-    # fixes ffmpeg locations
-    "https://gist.github.com/raw/356431/fbddfeee80d9224f6c67886b119fbd813f3c0ffa/libdlna.patch"
+    [
+      "https://gist.github.com/raw/356431/fbddfeee80d9224f6c67886b119fbd813f3c0ffa/libdlna.patch",
+      "https://gist.github.com/raw/1434147/293ec631536bc34a6e2dd49bb0f30c86f02b1107/libdlna023_fix_symbols.patch"
+    ]
   end
 
   def install

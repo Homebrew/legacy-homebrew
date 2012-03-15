@@ -1,10 +1,10 @@
 require 'formula'
 
 class Openttd < Formula
-  url 'http://us.binaries.openttd.org/binaries/releases/1.1.0/openttd-1.1.0-source.tar.gz'
-  head 'git://git.openttd.org/openttd/trunk.git'
   homepage 'http://www.openttd.org/'
-  md5 'd5ca3357e5c7f995aa43414ff4d93cfb'
+  url 'http://us.binaries.openttd.org/binaries/releases/1.1.5/openttd-1.1.5-source.tar.gz'
+  md5 '6bad4750c09782e04a987a326d798d8a'
+  head 'git://git.openttd.org/openttd/trunk.git'
 
   depends_on 'lzo'
   depends_on 'xz'

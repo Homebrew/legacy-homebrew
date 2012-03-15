@@ -74,9 +74,23 @@ class Formula
   # This used to be called in "def install", but should now be used
   # up in the DSL section.
   def fails_with_llvm msg=nil, data=nil
-    handle_llvm_failure FailsWithLLVM.new(msg, data)
+    FailsWithLLVM.new(msg, data).handle_failure
   end
 end
 
 class UnidentifiedFormula < Formula
+end
+
+module HomebrewEnvExtension extend self
+  def use_clang?
+    compiler == :clang
+  end
+
+  def use_gcc?
+    compiler == :gcc
+  end
+
+  def use_llvm?
+    compiler == :llvm
+  end
 end

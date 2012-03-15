@@ -8,6 +8,12 @@ class Rabbitmq < Formula
   depends_on 'erlang'
   depends_on 'simplejson' => :python if MacOS.leopard?
 
+  def patches
+      # Fixes build on 10.5, already fixed upstream but was not in 2.7.1 release
+      # https://github.com/rabbitmq/rabbitmq-public-umbrella/commit/b46edc7433
+      DATA
+  end
+
   def install
     # Building the manual requires additional software, so skip it.
     inreplace "Makefile", "install: install_bin install_docs", "install: install_bin"
@@ -35,21 +41,21 @@ class Rabbitmq < Formula
     # therefore need to add this path for erl -pa
     inreplace sbin+'rabbitmq-env', '${SCRIPT_DIR}/..', target_dir
 
-    (prefix+'com.rabbitmq.rabbitmq-server.plist').write startup_plist
-    (prefix+'com.rabbitmq.rabbitmq-server.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats
     <<-EOS.undent
     If this is your first install, automatically load on login with:
         mkdir -p ~/Library/LaunchAgents
-        cp #{prefix}/com.rabbitmq.rabbitmq-server.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/com.rabbitmq.rabbitmq-server.plist
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-    If this is an upgrade and you already have the com.rabbitmq.rabbitmq-server.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/com.rabbitmq.rabbitmq-server.plist
-        cp #{prefix}/com.rabbitmq.rabbitmq-server.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/com.rabbitmq.rabbitmq-server.plist
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
+        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
       To start rabbitmq-server manually:
         rabbitmq-server
@@ -64,9 +70,9 @@ class Rabbitmq < Formula
 <plist version="1.0">
   <dict>
     <key>Label</key>
-    <string>com.rabbitmq.rabbitmq-server</string>
+    <string>#{plist_name}</string>
     <key>Program</key>
-    <string>/usr/local/sbin/rabbitmq-server</string>
+    <string>#{HOMEBREW_PREFIX}/sbin/rabbitmq-server</string>
     <key>RunAtLoad</key>
     <true/>
     <key>UserName</key>
@@ -82,3 +88,27 @@ class Rabbitmq < Formula
     EOPLIST
   end
 end
+
+__END__
+diff --git a/plugins-src/do-package.mk b/plugins-src/do-package.mk
+index d7f8752..023042a 100644
+--- a/plugins-src/do-package.mk
++++ b/plugins-src/do-package.mk
+@@ -286,7 +286,7 @@ $(eval $(foreach D,$(TEST_SOURCE_DIRS),$(call package_source_dir_targets,$(D),$(
+ define run_broker
+ 	rm -rf $(TEST_TMPDIR)
+ 	mkdir -p $(foreach D,log plugins $(NODENAME),$(TEST_TMPDIR)/$(D))
+-	cp -a $(PACKAGE_DIR)/dist/*.ez $(TEST_TMPDIR)/plugins
++	cp -p $(PACKAGE_DIR)/dist/*.ez $(TEST_TMPDIR)/plugins
+ 	$(call copy,$(3),$(TEST_TMPDIR)/plugins)
+ 	rm -f $(TEST_TMPDIR)/plugins/rabbit_common*.ez
+ 	for plugin in \
+@@ -375,7 +375,7 @@ $(APP_DONE): $(EBIN_BEAMS) $(INCLUDE_HRLS) $(APP_FILE) $(CONSTRUCT_APP_PREREQS)
+ 	mkdir -p $(APP_DIR)/ebin $(APP_DIR)/include
+ 	@echo [elided] copy beams to ebin
+ 	@$(call copy,$(EBIN_BEAMS),$(APP_DIR)/ebin)
+-	cp -a $(APP_FILE) $(APP_DIR)/ebin/$(APP_NAME).app
++	cp -p $(APP_FILE) $(APP_DIR)/ebin/$(APP_NAME).app
+ 	$(call copy,$(INCLUDE_HRLS),$(APP_DIR)/include)
+ 	$(construct_app_commands)
+ 	touch $$@

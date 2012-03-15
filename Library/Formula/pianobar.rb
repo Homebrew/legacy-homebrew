@@ -1,10 +1,9 @@
 require 'formula'
 
 class Pianobar < Formula
-  url 'https://github.com/PromyLOPh/pianobar/tarball/2011.12.11'
-  version '2011.12.11'
   homepage 'https://github.com/PromyLOPh/pianobar/'
-  md5 'c8573c133851ff54649d1ab45c7b855c'
+  url 'https://github.com/PromyLOPh/pianobar/tarball/2012.01.10'
+  md5 'a703227c079cb0fe20ac4abbdfbc6f08'
 
   head 'https://github.com/PromyLOPh/pianobar.git'
 
@@ -18,7 +17,7 @@ class Pianobar < Formula
   fails_with_llvm "Reports of this not compiling on Xcode 4", :build => 2334
 
   def install
-    # we discard Homebrew's CFLAGS as Pianobar reportdely doesn't like them
+    # Discard Homebrew's CFLAGS as Pianobar reportedly doesn't like them
     ENV['CFLAGS'] = "-O2 -DNDEBUG " +
               # fixes a segfault: https://github.com/PromyLOPh/pianobar/issues/138
               "-D_DARWIN_C_SOURCE " +

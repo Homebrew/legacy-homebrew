@@ -1,9 +1,9 @@
 require 'formula'
 
 class Synfigstudio < Formula
-  url 'http://downloads.sourceforge.net/project/synfig/synfigstudio/0.63.02/synfigstudio-0.63.02.tar.gz'
   homepage 'http://synfig.org'
-  md5 '939595974cc56551fa89ae4f4dddbfb0'
+  url 'http://downloads.sourceforge.net/project/synfig/synfigstudio/0.63.03/synfigstudio-0.63.03.tar.gz'
+  md5 'a166ff4917b0e058cae96e51aa273080'
 
   skip_clean :all # So modules will load
 
@@ -14,8 +14,8 @@ class Synfigstudio < Formula
   depends_on 'synfig'
 
   def install
-    system "autoreconf --install --force"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end

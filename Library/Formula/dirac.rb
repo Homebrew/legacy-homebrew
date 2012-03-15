@@ -8,6 +8,9 @@ class Dirac < Formula
   fails_with_llvm :build => 2334
 
   def install
+    # BSD cp doesn't have '-d'
+    inreplace 'doc/Makefile.in', 'cp -dR', 'cp -R'
+
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end

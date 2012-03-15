@@ -1,5 +1,6 @@
 require 'formula'
 require 'tab'
+require 'keg'
 
 module Homebrew extend self
   def info
@@ -56,18 +57,15 @@ module Homebrew extend self
       kegs.each do |keg|
         next if keg.basename.to_s == '.DS_Store'
         print "#{keg} (#{keg.abv})"
-        print " *" if f.installed_prefix == keg and kegs.length > 1
+        print " *" if Keg.new(keg).linked? and kegs.length > 1
         puts
+        tab = Tab.for_keg keg
+        unless tab.used_options.empty?
+          puts "  Installed with: #{tab.used_options*', '}"
+        end
       end
     else
       puts "Not installed"
-    end
-
-    if f.installed?
-      tab = Tab.for_formula f
-      unless tab.used_options.empty?
-        puts "Installed with: #{tab.used_options*', '}"
-      end
     end
 
     the_caveats = (f.caveats || "").strip

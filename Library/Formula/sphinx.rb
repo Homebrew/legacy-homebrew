@@ -9,10 +9,10 @@ class Libstemmer < Formula
 end
 
 class Sphinx < Formula
-  url 'http://sphinxsearch.com/files/sphinx-2.0.3-release.tar.gz'
-  version '2.0.3'
   homepage 'http://www.sphinxsearch.com'
+  url 'http://sphinxsearch.com/files/sphinx-2.0.3-release.tar.gz'
   md5 'a1293aecd5034aa797811610beb7ba89'
+
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
   fails_with_llvm "ld: rel32 out of range in _GetPrivateProfileString from /usr/lib/libodbc.a(SQLGetPrivateProfileString.o)",
@@ -20,8 +20,7 @@ class Sphinx < Formula
 
   def install
     lstem = Pathname.pwd+'libstemmer_c'
-    lstem.mkpath
-    Libstemmer.new.brew { mv Dir['*'], lstem }
+    Libstemmer.new.brew { lstem.install Dir['*'] }
 
     args = ["--prefix=#{prefix}",
             "--disable-debug",
@@ -32,15 +31,14 @@ class Sphinx < Formula
     args << "--with-libstemmer"
 
     # configure script won't auto-select PostgreSQL
-    args << "--with-pgsql" if `/usr/bin/which pg_config`.size > 0
-    args << "--without-mysql" unless `/usr/bin/which mysql`.size > 0
+    args << "--with-pgsql" if which 'pg_config'
+    args << "--without-mysql" unless which 'mysql'
 
     system "./configure", *args
     system "make install"
   end
 
-  def caveats
-    <<-EOS.undent
+  def caveats; <<-EOS.undent
     Sphinx has been compiled with libstemmer support.
 
     Sphinx depends on either MySQL or PostreSQL as a datasource.

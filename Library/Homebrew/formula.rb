@@ -1,98 +1,9 @@
 require 'download_strategy'
-require 'fileutils'
-
-# Defines a URL and download method for a stable or HEAD build
-class SoftwareSpecification
-  attr_reader :url, :specs, :using
-
-  VCS_SYMBOLS = {
-    :bzr     => BazaarDownloadStrategy,
-    :curl    => CurlDownloadStrategy,
-    :cvs     => CVSDownloadStrategy,
-    :git     => GitDownloadStrategy,
-    :hg      => MercurialDownloadStrategy,
-    :nounzip => NoUnzipCurlDownloadStrategy,
-    :post    => CurlPostDownloadStrategy,
-    :svn     => SubversionDownloadStrategy,
-  }
-
-  def initialize url, specs=nil
-    raise "No url provided" if url.nil?
-    @url = url
-    unless specs.nil?
-      # Get download strategy hint, if any
-      @using = specs.delete :using
-      # The rest of the specs are for source control
-      @specs = specs
-    end
-  end
-
-  # Returns a suitable DownloadStrategy class that can be
-  # used to retreive this software package.
-  def download_strategy
-    return detect_download_strategy(@url) if @using.nil?
-
-    # If a class is passed, assume it is a download strategy
-    return @using if @using.kind_of? Class
-
-    detected = VCS_SYMBOLS[@using]
-    raise "Unknown strategy #{@using} was requested." unless detected
-    return detected
-  end
-
-  def detect_version
-    Pathname.new(@url).version
-  end
-end
-
-
-# Used to annotate formulae that duplicate OS X provided software
-# or cause conflicts when linked in.
-class KegOnlyReason
-  attr_reader :reason, :explanation
-
-  def initialize reason, explanation=nil
-    @reason = reason
-    @explanation = explanation
-  end
-
-  def to_s
-    if @reason == :provided_by_osx
-      <<-EOS.strip
-Mac OS X already provides this program and installing another version in
-parallel can cause all kinds of trouble.
-
-#{@explanation}
-EOS
-    else
-      @reason.strip
-    end
-  end
-end
-
-
-# Used to annotate formulae that won't build correctly with LLVM.
-class FailsWithLLVM
-  attr_reader :msg, :data, :build
-
-  def initialize msg=nil, data=nil
-    if msg.nil? or msg.kind_of? Hash
-      @msg = "(No specific reason was given)"
-      data = msg
-    else
-      @msg = msg
-    end
-    @data = data
-    @build = data.delete :build rescue nil
-  end
-
-  def reason
-    s = @msg
-    s += "Tested with LLVM build #{@build}" unless @build == nil
-    s += "\n"
-    return s
-  end
-end
+require 'dependencies'
+require 'formula_support'
+require 'hardware'
+require 'bottles'
+require 'extend/fileutils'
 
 
 # Derive and define at least @url, see Library/Formula for examples
@@ -100,19 +11,22 @@ class Formula
   include FileUtils
 
   attr_reader :name, :path, :url, :version, :homepage, :specs, :downloader
-  attr_reader :stable, :unstable
-  attr_reader :bottle, :bottle_sha1, :head
+  attr_reader :standard, :unstable
+  attr_reader :bottle_url, :bottle_sha1, :head
+
+  # The build folder, usually in /tmp.
+  # Will only be non-nil during the stage method.
+  attr_reader :buildpath
 
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
     set_instance_variable 'homepage'
     set_instance_variable 'url'
-    set_instance_variable 'bottle'
+    set_instance_variable 'bottle_url'
     set_instance_variable 'bottle_sha1'
     set_instance_variable 'head'
     set_instance_variable 'specs'
-
-    set_instance_variable 'stable'
+    set_instance_variable 'standard'
     set_instance_variable 'unstable'
 
     if @head and (not @url or ARGV.build_head?)
@@ -120,26 +34,31 @@ class Formula
       @version = 'HEAD'
       @spec_to_use = @unstable
     else
-      if @stable.nil?
+      if @standard.nil?
         @spec_to_use = SoftwareSpecification.new(@url, @specs)
       else
-        @spec_to_use = @stable
+        @spec_to_use = @standard
       end
     end
 
     raise "No url provided for formula #{name}" if @url.nil?
-    @name=name
+    @name = name
     validate_variable :name
 
-    @path = path.nil? ? nil : Pathname.new(path)
+    # If we got an explicit path, use that, else determine from the name
+    @path = path.nil? ? self.class.path(name) : Pathname.new(path)
 
+    # Use a provided version, if any
     set_instance_variable 'version'
+    # Otherwise detect the version from the URL
     @version ||= @spec_to_use.detect_version
+    # Only validate if a version was set; GitHubGistFormula needs to get
+    # the URL to determine the version
     validate_variable :version if @version
 
     CHECKSUM_TYPES.each { |type| set_instance_variable type }
 
-    @downloader=download_strategy.new @spec_to_use.url, name, version, @spec_to_use.specs
+    @downloader = download_strategy.new @spec_to_use.url, name, version, @spec_to_use.specs
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -156,20 +75,16 @@ class Formula
    ARGV.formulae.include? self
   end
 
+  def linked_keg
+    HOMEBREW_REPOSITORY/'Library/LinkedKegs'/@name
+  end
+
   def installed_prefix
     head_prefix = HOMEBREW_CELLAR+@name+'HEAD'
     if @version == 'HEAD' || head_prefix.directory?
       head_prefix
     else
       prefix
-    end
-  end
-
-  def path
-    if @path.nil?
-      return self.class.path(name)
-    else
-      return @path
     end
   end
 
@@ -202,6 +117,10 @@ class Formula
   def etc; HOMEBREW_PREFIX+'etc' end
   # generally we don't want var stuff inside the keg
   def var; HOMEBREW_PREFIX+'var' end
+
+  # plist name, i.e. the name of the launchd service
+  def plist_name; 'homebrew.mxcl.'+name end
+  def plist_path; prefix+(plist_name+'.plist') end
 
   # Use the @spec_to_use to detect the download strategy.
   # Can be overriden to force a custom download strategy
@@ -263,7 +182,7 @@ class Formula
     validate_variable :name
     validate_variable :version
 
-    handle_llvm_failure(fails_with_llvm?) if fails_with_llvm?
+    fails_with_llvm?.handle_failure if fails_with_llvm?
 
     stage do
       begin
@@ -272,15 +191,11 @@ class Formula
         # so load any deps before this point! And exit asap afterwards
         yield self
       rescue Interrupt, RuntimeError, SystemCallError => e
+        puts if Interrupt === e # don't print next to the ^C
         unless ARGV.debug?
-          logs = File.expand_path '~/Library/Logs/Homebrew/'
-          if File.exist? 'config.log'
-            mkdir_p logs
-            mv 'config.log', logs
-          end
-          if File.exist? 'CMakeCache.txt'
-            mkdir_p logs
-            mv 'CMakeCache.txt', logs
+          %w(config.log CMakeCache.txt).select{|f| File.exist? f}.each do |f|
+            HOMEBREW_LOGS.install f
+            puts "#{f} was copied to #{HOMEBREW_LOGS}"
           end
           raise
         end
@@ -326,35 +241,6 @@ class Formula
   # less consistent and the standard parameters are more memorable.
   def std_cmake_parameters
     "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None -Wno-dev"
-  end
-
-  def handle_llvm_failure llvm
-    if ENV.compiler == :llvm
-      # version 2335 is the latest version as of Xcode 4.1, so it is the
-      # latest version we have tested against so we will switch to GCC and
-      # bump this integer when Xcode 4.2 is released. TODO do that!
-      if llvm.build.to_i >= 2335
-        opoo "Formula will not build with LLVM, using GCC"
-        ENV.gcc :force => true
-        return
-      end
-      opoo "Building with LLVM, but this formula is reported to not work with LLVM:"
-      puts
-      puts llvm.reason
-      puts
-      puts <<-EOS.undent
-        We are continuing anyway so if the build succeeds, please open a ticket with
-        the following information: #{MacOS.llvm_build_version}-#{MACOS_VERSION}. So
-        that we can update the formula accordingly. Thanks!
-        EOS
-      puts
-      if MacOS.xcode_version < "4.2"
-        puts "If it doesn't work you can: brew install --use-gcc"
-      else
-        puts "If it doesn't work you can try: brew install --use-clang"
-      end
-      puts
-    end
   end
 
   def self.class_s name
@@ -422,6 +308,9 @@ class Formula
     # If an instance of Formula is passed, just return it
     return name if name.kind_of? Formula
 
+    # Otherwise, convert to String in case a Pathname comes in
+    name = name.to_s
+
     # If a URL is passed, download to the cache and install
     if name =~ %r[(https?|ftp)://]
       url = name
@@ -472,17 +361,10 @@ class Formula
     HOMEBREW_REPOSITORY+"Library/Formula/#{name.downcase}.rb"
   end
 
-  def mirrors
-    self.class.mirrors or []
-  end
+  def mirrors;       self.class.mirrors or []; end
 
-  def deps
-    self.class.deps or []
-  end
-
-  def external_deps
-    self.class.external_deps or {}
-  end
+  def deps;          self.class.dependencies.deps;          end
+  def external_deps; self.class.dependencies.external_deps; end
 
   # deps are in an installable order
   # which means if a depends on b then b will be ordered before a in this list
@@ -492,12 +374,13 @@ class Formula
 
   def self.expand_deps f
     f.deps.map do |dep|
-      dep = Formula.factory dep
-      expand_deps(dep) << dep
+      f_dep = Formula.factory dep.to_s
+      expand_deps(f_dep) << f_dep
     end
   end
 
 protected
+
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
@@ -520,6 +403,7 @@ protected
         rd.close
         $stdout.reopen wr
         $stderr.reopen wr
+        args.collect!{|arg| arg.to_s}
         exec(cmd, *args) rescue nil
         exit! 1 # never gets here unless exec threw or failed
       end
@@ -541,39 +425,14 @@ protected
     raise BuildError.new(self, cmd, args, $?)
   end
 
-private
-  # Create a temporary directory then yield. When the block returns,
-  # recursively delete the temporary directory.
-  def mktemp
-    # I used /tmp rather than `mktemp -td` because that generates a directory
-    # name with exotic characters like + in it, and these break badly written
-    # scripts that don't escape strings before trying to regexp them :(
+public
 
-    # If the user has FileVault enabled, then we can't mv symlinks from the
-    # /tmp volume to the other volume. So we let the user override the tmp
-    # prefix if they need to.
-    tmp_prefix = ENV['HOMEBREW_TEMP'] || '/tmp'
-    tmp=Pathname.new `/usr/bin/mktemp -d #{tmp_prefix}/homebrew-#{name}-#{version}-XXXX`.strip
-    raise "Couldn't create build sandbox" if not tmp.directory? or $? != 0
-    begin
-      wd=Dir.pwd
-      Dir.chdir tmp
-      yield
-    ensure
-      Dir.chdir wd
-      tmp.rmtree
-    end
-  end
-
-  CHECKSUM_TYPES=[:md5, :sha1, :sha256].freeze
-
-  public
   # For brew-fetch and others.
   def fetch
     downloader = @downloader
     # Don't attempt mirrors if this install is not pointed at a "stable" URL.
     # This can happen when options like `--HEAD` are invoked.
-    mirror_list =  @spec_to_use == @stable ? mirrors : []
+    mirror_list =  @spec_to_use == @standard ? mirrors : []
 
     # Ensure the cache exists
     HOMEBREW_CACHE.mkpath
@@ -627,25 +486,34 @@ EOF
     end
   end
 
-  private
+private
+
+  CHECKSUM_TYPES=[:md5, :sha1, :sha256].freeze
 
   def stage
     fetched, downloader = fetch
     verify_download_integrity fetched if fetched.kind_of? Pathname
     mktemp do
       downloader.stage
+      # Set path after the downloader changes the working folder.
+      @buildpath = Pathname.pwd
       yield
+      @buildpath = nil
     end
   end
 
   def patch
-    return if patches.nil?
+    # Only call `patches` once.
+    # If there is code in `patches`, which is not recommended, we only
+    # want to run that code once.
+    the_patches = patches
+    return if the_patches.nil?
 
-    if not patches.kind_of? Hash
+    if not the_patches.kind_of? Hash
       # We assume -p1
-      patch_defns = { :p1 => patches }
+      patch_defns = { :p1 => the_patches }
     else
-      patch_defns = patches
+      patch_defns = the_patches
     end
 
     patch_list=[]
@@ -709,10 +577,9 @@ EOF
   end
 
   def set_instance_variable(type)
-    unless instance_variable_defined? "@#{type}"
-      class_value = self.class.send(type)
-      instance_variable_set("@#{type}", class_value) if class_value
-    end
+    return if instance_variable_defined? "@#{type}"
+    class_value = self.class.send(type)
+    instance_variable_set("@#{type}", class_value) if class_value
   end
 
   def method_added method
@@ -721,7 +588,7 @@ EOF
 
   class << self
     # The methods below define the formula DSL.
-    attr_reader :stable, :unstable
+    attr_reader :standard, :unstable
 
     def self.attr_rw(*attrs)
       attrs.each do |attr|
@@ -733,9 +600,9 @@ EOF
       end
     end
 
-    attr_rw :version, :homepage, :mirrors, :specs, :deps, :external_deps
+    attr_rw :version, :homepage, :mirrors, :specs
     attr_rw :keg_only_reason, :fails_with_llvm_reason, :skip_clean_all
-    attr_rw :bottle, :bottle_sha1
+    attr_rw :bottle_url, :bottle_sha1
     attr_rw(*CHECKSUM_TYPES)
 
     def head val=nil, specs=nil
@@ -747,9 +614,36 @@ EOF
 
     def url val=nil, specs=nil
       return @url if val.nil?
-      @stable = SoftwareSpecification.new(val, specs)
+      @standard = SoftwareSpecification.new(val, specs)
       @url = val
       @specs = specs
+    end
+
+    def stable &block
+      raise "url and md5 must be specified in a block" unless block_given?
+      instance_eval &block unless ARGV.build_devel? or ARGV.build_head?
+    end
+
+    def devel &block
+      raise "url and md5 must be specified in a block" unless block_given?
+      if ARGV.build_devel?
+        @mirrors = nil # clear out mirrors from the stable release
+        instance_eval &block
+      end
+    end
+
+    def bottle url=nil, &block
+      if block_given?
+        eval <<-EOCLASS
+        module BottleData
+          def self.url url; @url = url; end
+          def self.sha1 sha1; @sha1 = sha1; end
+          def self.return_data; [@url,@sha1]; end
+        end
+        EOCLASS
+        BottleData.instance_eval &block
+        @bottle_url, @bottle_sha1 = BottleData.return_data
+      end
     end
 
     def mirror val, specs=nil
@@ -762,29 +656,12 @@ EOF
       @mirrors.uniq!
     end
 
-    def depends_on name
-      @deps ||= []
-      @external_deps ||= {:python => [], :perl => [], :ruby => [], :jruby => []}
+    def dependencies
+      @dependencies ||= DependencyCollector.new
+    end
 
-      case name
-      when String, Formula
-        @deps << name
-      when Hash
-        key, value = name.shift
-        case value
-        when :python, :perl, :ruby, :jruby
-          @external_deps[value] << key
-        when :optional, :recommended, :build
-          @deps << key
-        else
-          raise "Unsupported dependency type #{value}"
-        end
-      when Symbol
-        opoo "#{self.name} -- #{name}: Using symbols for deps is deprecated; use a string instead"
-        @deps << name.to_s
-      else
-        raise "Unsupported type #{name.class}"
-      end
+    def depends_on dep
+      dependencies.add(dep)
     end
 
     def skip_clean paths
@@ -806,17 +683,6 @@ EOF
       @skip_clean_paths or []
     end
 
-    # 'aka' is no longer used to define aliases, so have it print out
-    # a notice about the change. This will alert people with private
-    # formulae that they need to update.
-    # This notice will be removed in version 0.9
-    def aka args
-      onoe "#{name}: 'aka' is no longer used to define aliases"
-      puts "To define an alias, create a relative symlink from"
-      puts "Aliases to Formula. The name of the symlink will be"
-      puts "detected as an alias for the target formula."
-    end
-
     def keg_only reason, explanation=nil
       @keg_only_reason = KegOnlyReason.new(reason, explanation.to_s.chomp)
     end
@@ -827,17 +693,4 @@ EOF
   end
 end
 
-# see ack.rb for an example usage
-class ScriptFileFormula < Formula
-  def install
-    bin.install Dir['*']
-  end
-end
-
-# see flac.rb for example usage
-class GithubGistFormula < ScriptFileFormula
-  def initialize name='__UNKNOWN__', path=nil
-    super name, path
-    @version=File.basename(File.dirname(url))[0,6]
-  end
-end
+require 'formula_specialties'

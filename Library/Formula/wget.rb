@@ -16,11 +16,16 @@ class Wget < Formula
   def install
     args = ["--disable-debug",
             "--prefix=#{prefix}",
+            "--sysconfdir=#{etc}",
             "--with-ssl=openssl"]
 
     args << "--disable-iri" unless ARGV.include? "--enable-iri"
 
     system "./configure", *args
     system "make install"
+  end
+
+  def test
+    system "#{bin}/wget -O - www.google.com"
   end
 end

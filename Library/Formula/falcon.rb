@@ -12,7 +12,6 @@ class Falcon < Formula
 
   def options
     [
-      ['--manpages', "Install manpages"],
       ['--editline', "Use editline instead of readline"],
       ['--feathers', "Include feathers (extra libraries)"]
     ]
@@ -24,16 +23,10 @@ class Falcon < Formula
             "-DFALCON_BIN_DIR=#{bin}",
             "-DFALCON_LIB_DIR=#{lib}",
             "-DFALCON_MAN_DIR=#{man1}",
+            "-DFALCON_WITH_MANPAGES=ON",
             "-DFALCON_WITH_INTERNAL_PCRE=ON",
             "-DFALCON_WITH_INTERNAL_ZLIB=ON",
-            "-DFALCON_WITH_INTERNAL=ON" ]
-
-    if ARGV.include? '--manpages'
-      args << "-DFALCON_WITH_MANPAGES=ON"
-      args << "-DFALCON_MAN_DIR=#{man1}"
-    else
-      args << "-DFALCON_WITH_MANPAGES=OFF"
-    end
+            "-DFALCON_WITH_INTERNAL=ON"]
 
     if ARGV.include? '--editline'
       args << "-DFALCON_WITH_EDITLINE=ON"

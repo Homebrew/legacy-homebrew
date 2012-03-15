@@ -4,7 +4,7 @@ module Homebrew extend self
   def edit
     # If no brews are listed, open the project root in an editor.
     if ARGV.named.empty?
-      editor = which_editor
+      editor = File.basename which_editor
       if editor == "mate"
         # If the user is using TextMate, give a nice project view instead.
         exec 'mate', HOMEBREW_REPOSITORY+"bin/brew",
