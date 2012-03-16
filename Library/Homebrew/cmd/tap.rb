@@ -36,7 +36,9 @@ module Homebrew extend self
         if $?.success?
           ignores << formula.basename.to_s
         else
-          opoo "#{formula.basename('.rb')} conflicts"
+          from = Pathname.new("../Taps").join(formula).tap_ref
+          to = HOMEBREW_LIBRARY.join("Formula/#{formula.basename}").tap_ref
+          opoo "Could not tap #{Tty.white}#{from}#{Tty.reset} over #{Tty.white}#{to}#{Tty.reset}"
         end
       end
     end
@@ -55,4 +57,18 @@ module Homebrew extend self
     [$1, $3]
   end
 
+end
+
+
+class Pathname
+  def tap_ref
+    case self.realpath.to_s
+    when %r{^#{HOMEBREW_LIBRARY}/Taps/(\w+)-(\w+)/(.+)}
+      "#$1/#$2/#{File.basename($3, '.rb')}"
+    when %r{^#{HOMEBREW_LIBRARY}/Formula/(.+)}
+      "mxcl/master/#{File.basename($1, '.rb')}"
+    else
+      self.basenname('.rb').to_s
+    end
+  end
 end
