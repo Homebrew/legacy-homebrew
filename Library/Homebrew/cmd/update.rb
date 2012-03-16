@@ -1,6 +1,6 @@
 module Homebrew extend self
   def update
-    abort "Please `brew install git' first." unless system "/usr/bin/which -s git"
+    abort "Please `brew install git' first." unless which_s "git"
 
     updater = RefreshBrew.new
     if updater.update_from_masterbrew!
