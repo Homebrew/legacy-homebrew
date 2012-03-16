@@ -1,13 +1,27 @@
 require 'formula'
 
-class Nu < Formula
-  url 'http://programming.nu/releases/Nu-0.4.0.tgz'
-  homepage 'http://programming.nu'
-  md5 '94d181e94cd661569103290183e89477'
+class NeedsLion < Requirement
+  def satisfied?
+    MacOS.lion?
+  end
+  def message
+    "Nu requires Mac OS X 10.7 or newer"
+  end
+  def fatal?
+    true
+  end
+end
 
+class Nu < Formula
+  homepage 'http://programming.nu'
+  url 'http://programming.nu/releases/Nu-2.0.1.tgz'
+  md5 '8ceee36a3e89cab8d00f543fb61f7ffb'
+
+  depends_on NeedsLion.new
   depends_on 'pcre'
 
   def install
+
     ENV['PREFIX'] = prefix
 
     inreplace "Makefile" do |s|
