@@ -172,17 +172,21 @@ index 0d2045a..2fdd5ce 100644
  then
    if test "$user" != "root" -o $SET_USER = 1
    then
+
+# Remove optimization flags from `mysql-config --cflags`
+# This facilitates easy compilation of gems using a brewed mysql
 diff --git a/scripts/mysql_config.sh b/scripts/mysql_config.sh
-index 9296075..a600de2 100644
+index 9296075..70c18db 100644
 --- a/scripts/mysql_config.sh
 +++ b/scripts/mysql_config.sh
-@@ -137,7 +137,8 @@ for remove in DDBUG_OFF DSAFE_MUTEX DUNIV_MUST_NOT_INLINE DFORCE_INIT_OF_VARS \
+@@ -137,7 +137,9 @@ for remove in DDBUG_OFF DSAFE_MUTEX DUNIV_MUST_NOT_INLINE DFORCE_INIT_OF_VARS \
                DEXTRA_DEBUG DHAVE_purify O 'O[0-9]' 'xO[0-9]' 'W[-A-Za-z]*' \
                'mtune=[-A-Za-z0-9]*' 'mcpu=[-A-Za-z0-9]*' 'march=[-A-Za-z0-9]*' \
                Xa xstrconst "xc99=none" AC99 \
 -              unroll2 ip mp restrict
 +              unroll2 ip mp restrict \
-+              mmmx 'msse[0-9.]*' 'mfpmath=sse' w pipe 'fomit-frame-pointer' 'mmacosx-version-min=10.[0-9]'
++              mmmx 'msse[0-9.]*' 'mfpmath=sse' w pipe 'fomit-frame-pointer' 'mmacosx-version-min=10.[0-9]' \
++              aes Os
  do
    # The first option we might strip will always have a space before it because
    # we set -I$pkgincludedir as the first option
