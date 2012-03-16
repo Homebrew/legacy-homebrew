@@ -339,10 +339,12 @@ class Pathname
     end
 
     [self/:Formula, self/:HomebrewFormula, self].each do |d|
-      d.children.map{ |child| child.relative_path_from(self) }.each do |pn|
-        yield pn if pn.to_s =~ /.rb$/
+      if d.exist?
+        d.children.map{ |child| child.relative_path_from(self) }.each do |pn|
+          yield pn if pn.to_s =~ /.rb$/
+        end
         break
-      end if d.exist?
+      end
     end
   end
 end
