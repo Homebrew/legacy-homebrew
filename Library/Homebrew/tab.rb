@@ -17,8 +17,9 @@ class Tab < OpenStruct
 
     Tab.new :used_options => formula_options & arg_options,
             :unused_options => formula_options - arg_options,
-            :tabfile => f.prefix + 'INSTALL_RECEIPT.json',
-            :built_bottle => !!args.build_bottle?
+            :tabfile => f.prefix + "INSTALL_RECEIPT.json",
+            :built_bottle => !!args.build_bottle?,
+            :tapped_from => f.tap
   end
 
   def self.from_file path
@@ -39,7 +40,8 @@ class Tab < OpenStruct
       rescue FormulaUnavailableError
         Tab.new :used_options => [],
                 :unused_options => [],
-                :built_bottle => false
+                :built_bottle => false,
+                :tapped_from => ""
       end
     end
   end
@@ -66,7 +68,8 @@ class Tab < OpenStruct
   def self.dummy_tab f
     Tab.new :used_options => [],
             :unused_options => f.options.map { |o, _| o},
-            :built_bottle => false
+            :built_bottle => false,
+            :tapped_from => ""
   end
 
   def installed_with? opt
@@ -81,7 +84,8 @@ class Tab < OpenStruct
     MultiJson.encode({
       :used_options => used_options,
       :unused_options => unused_options,
-      :built_bottle => built_bottle
+      :built_bottle => built_bottle,
+      :tapped_from => tapped_from
     })
   end
 
