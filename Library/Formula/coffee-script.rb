@@ -11,8 +11,8 @@ class NodeRequired < Requirement
       brew install --HEAD node
     EOS
   end
-  def satisified?
-    which 'node'
+  def satisfied?
+    Formula.factory("node").installed? or which('node')
   end
   def fatal?
     true
