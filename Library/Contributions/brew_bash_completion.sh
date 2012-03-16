@@ -81,8 +81,8 @@ __brew_complete_formulae ()
 {
 	local cur="${COMP_WORDS[COMP_CWORD]}"
 	local ff=$(\ls $(brew --repository)/Library/Formula 2>/dev/null | sed 's/\.rb//g')
-        local af=$(\ls $(brew --repository)/Library/Aliases 2>/dev/null | sed 's/\.rb//g')
-        COMPREPLY=($(compgen -W "$ff $af" -- "$cur"))
+	local af=$(\ls $(brew --repository)/Library/Aliases 2>/dev/null | sed 's/\.rb//g')
+	COMPREPLY=($(compgen -W "$ff $af" -- "$cur"))
 }
 
 __brew_complete_installed ()
@@ -97,6 +97,11 @@ __brew_complete_outdated ()
 	local cur="${COMP_WORDS[COMP_CWORD]}"
 	local od=$(brew outdated --quiet)
 	COMPREPLY=($(compgen -W "$od" -- "$cur"))
+}
+
+__brew_complete_taps ()
+{
+	__brewcomp "$(\ls $(brew --repository)/Library/Taps 2>/dev/null | sed 's/-/\//g')"
 }
 
 _brew_cleanup ()
@@ -334,8 +339,8 @@ _brew_versions ()
 
 __brew_ps1 ()
 {
-    [[ -n $HOMEBREW_DEBUG_INSTALL ]] &&
-    printf "${1:- (%s)}" "$HOMEBREW_DEBUG_INSTALL|DEBUG"
+	[[ -n $HOMEBREW_DEBUG_INSTALL ]] &&
+	printf "${1:- (%s)}" "$HOMEBREW_DEBUG_INSTALL|DEBUG"
 }
 
 _brew ()
@@ -383,9 +388,11 @@ _brew ()
 			outdated
 			prune
 			search
+			tap
 			test
 			uninstall remove rm
 			unlink
+			untap
 			update
 			upgrade
 			uses
@@ -415,6 +422,7 @@ _brew ()
 	outdated)		_brew_outdated ;;
 	search|-S)		_brew_search ;;
 	uninstall|remove|rm) 	_brew_uninstall ;;
+	untap)			__brew_complete_taps ;;
 	update)			_brew_update ;;
 	uses)			_brew_uses ;;
 	versions)		_brew_versions ;;
