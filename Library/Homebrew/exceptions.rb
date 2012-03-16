@@ -24,10 +24,24 @@ end
 
 class FormulaUnavailableError < RuntimeError
   attr :name
+  attr :dependent, true
+
+  def dependent_s
+    "(dependency of #{dependent})" if dependent and dependent != name
+  end
+
+  def to_s
+    if name =~ %r{(\w+)/(\w+)/(\w+)} then <<-EOS.undent
+      No available formula for #$3 #{dependent_s}
+      Please tap it and then try again: brew tap #$1/#$2
+      EOS
+    else
+      "No available formula for #{name} #{dependent_s}"
+    end
+  end
 
   def initialize name
     @name = name
-    super "No available formula for #{name}"
   end
 end
 
