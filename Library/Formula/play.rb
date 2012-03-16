@@ -8,8 +8,10 @@ class Play < Formula
   def install
     rm Dir['*.bat'] # remove windows' bat files
     libexec.install Dir['*']
-    inreplace libexec+"play", "$dir/", "$dir/../libexec/"
-    inreplace libexec+"play", "dir=`dirname $PRG`", "dir=`dirname $0` && dir=$dir/`dirname $PRG`"
+    inreplace libexec+"play" do |s|
+      s.gsub! "$dir/", "$dir/../libexec/"
+      s.gsub! "dir=`dirname $PRG`", "dir=`dirname $0` && dir=$dir/`dirname $PRG`"
+    end
     bin.install_symlink libexec+'play'
   end
 end
