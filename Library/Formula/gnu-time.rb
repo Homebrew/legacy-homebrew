@@ -7,6 +7,11 @@ class GnuTime < Formula
   md5 'e38d2b8b34b1ca259cf7b053caac32b3'
 
   def install
+    if MacOS.default_compiler == :clang
+      # auto-retest next clang version, submit patch if fails!
+      ENV.llvm if MacOS.clang_version.to_f <= 3.1
+    end
+
     system "./configure", "--program-prefix=g",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
