@@ -1,4 +1,3 @@
-require 'tempfile'
 
 HOMEBREW_LIBRARY = HOMEBREW_REPOSITORY/"Library"
 
@@ -43,10 +42,7 @@ module Homebrew extend self
       end
     end
 
-    tf = Tempfile.new("brew-tap")
-    tf.write(ignores.uniq.join("\n"))
-    tf.close
-    mv tf.path, "#{HOMEBREW_LIBRARY}/Formula/.gitignore"
+    HOMEBREW_LIBRARY.join("Formula/.gitignore").atomic_write(ignores.uniq.join("\n"))
   end
 
   private
