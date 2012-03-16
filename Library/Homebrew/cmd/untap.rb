@@ -1,5 +1,4 @@
-require 'cmd/tap' # for Pathname.recursive_formula
-require 'tempfile'
+require 'cmd/tap' # for tap_args
 
 module Homebrew extend self
   def untap
@@ -18,9 +17,6 @@ module Homebrew extend self
     end
     rm_rf tapd
 
-    tf = Tempfile.new("brew-untap")
-    tf.write(gitignores.join("\n"))
-    tf.close
-    mv tf.path, "#{HOMEBREW_PREFIX}/Library/Formula/.gitignore"
+    HOMEBREW_REPOSITORY.join("Library/Formula/.gitignore").atomic_write(gitignores * "\n")
   end
 end

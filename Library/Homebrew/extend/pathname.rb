@@ -90,6 +90,15 @@ class Pathname
     File.open(self, 'w') {|f| f.write content }
   end
 
+  # NOTE always overwrites
+  def atomic_write content
+    require 'tempfile'
+    tf = Tempfile.new(self.basename.to_s)
+    tf.write(content)
+    tf.close
+    FileUtils.mv tf.path, self.to_s
+  end
+
   def cp dst
     if file?
       FileUtils.cp to_s, dst
