@@ -19,24 +19,33 @@ module Homebrew extend self
 
     files = []
     tapd.find_formula{ |file| files << Pathname.new("#{user}-#{repo}").join(file) }
-    link_tap_formula(files)
+    tapped = link_tap_formula(files)
+    puts "Tapped #{tapped} formula"
   end
 
   def link_tap_formula formulae
     ignores = (HOMEBREW_LIBRARY/"Formula/.gitignore").read.split rescue []
+    tapped = 0
 
     cd HOMEBREW_LIBRARY/"Formula" do
       formulae.each do |formula|
+        from = HOMEBREW_LIBRARY.join("Taps/#{formula}").tap_ref
+        to = HOMEBREW_LIBRARY.join("Formula/#{formula.basename}").tap_ref
+
+        # Unexpected, but possible, lets proceed as if nothing happened
+        formula.delete if from == to
+
         # using the system ln is the only way to get relative symlinks
         system "ln -s ../Taps/#{formula} 2>/dev/null"
         if $?.success?
           ignores << formula.basename.to_s
+          tapped += 1
         else
-          from = Pathname.new("../Taps").join(formula).tap_ref
-          to = HOMEBREW_LIBRARY.join("Formula/#{formula.basename}").tap_ref
           opoo "Could not tap #{Tty.white}#{from}#{Tty.reset} over #{Tty.white}#{to}#{Tty.reset}"
         end
       end
+
+      tapped
     end
 
     HOMEBREW_LIBRARY.join("Formula/.gitignore").atomic_write(ignores.uniq.join("\n"))
@@ -55,13 +64,13 @@ end
 
 class Pathname
   def tap_ref
-    case self.realpath.to_s
+    case self.to_s
     when %r{^#{HOMEBREW_LIBRARY}/Taps/(\w+)-(\w+)/(.+)}
       "#$1/#$2/#{File.basename($3, '.rb')}"
     when %r{^#{HOMEBREW_LIBRARY}/Formula/(.+)}
       "mxcl/master/#{File.basename($1, '.rb')}"
     else
-      self.basenname('.rb').to_s
+      nil
     end
   end
 end
