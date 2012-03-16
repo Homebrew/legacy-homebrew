@@ -44,11 +44,11 @@ module Homebrew extend self
           opoo "Could not tap #{Tty.white}#{from}#{Tty.reset} over #{Tty.white}#{to}#{Tty.reset}"
         end
       end
-
-      tapped
     end
 
     HOMEBREW_LIBRARY.join("Formula/.gitignore").atomic_write(ignores.uniq.join("\n"))
+
+    tapped
   end
 
   private
