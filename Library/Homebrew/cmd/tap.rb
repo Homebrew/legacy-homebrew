@@ -1,6 +1,3 @@
-
-HOMEBREW_LIBRARY = HOMEBREW_REPOSITORY/"Library"
-
 module Homebrew extend self
 
   def tap
