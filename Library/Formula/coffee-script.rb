@@ -12,7 +12,7 @@ class NodeRequired < Requirement
     EOS
   end
   def satisified?
-    which 'node'
+    Formula.factory("node").installed? or which('node')
   end
   def fatal?
     true
