@@ -5,6 +5,11 @@ class Imagick < Formula
   url 'http://pecl.php.net/get/imagick-3.0.1.tgz'
   md5 'e2167713316639705202cf9b6cb1fdb1'
 
+  devel do
+    url 'http://pecl.php.net/get/imagick-3.1.0RC1.tgz'
+    md5 '4304f89096398cc409ca4512c46051fd'
+  end
+
   depends_on 'imagemagick'
 
   def install
@@ -17,10 +22,10 @@ class Imagick < Formula
   end
 
   def caveats; <<-EOS.undent
-    To finish installing Imagick:
-      Edit php.ini file
-      extension="#{lib}/php/extensions/imagick.so"
-      Restart your webserver
-    EOS
+To finish installing Imagick:
+Edit php.ini file
+extension="#{lib}/php/extensions/imagick.so"
+Restart your webserver
+EOS
   end
 end
