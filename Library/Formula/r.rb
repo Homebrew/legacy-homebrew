@@ -36,8 +36,6 @@ class R < Formula
 
     ENV.fortran
     ENV.x11 # So PNG gets added to the x11 and cairo plotting devices
-    ENV['OBJC'] = ENV['CC']
-    ENV['OBJCFLAGS'] = ENV['CFLAGS']
 
     args = [
       "--prefix=#{prefix}",
