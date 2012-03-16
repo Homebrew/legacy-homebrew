@@ -11,6 +11,7 @@ class Osm2pgsql < Formula
 
   depends_on "geos"
   depends_on "proj"
+  depends_on "protobuf-c"
 
   def install
     system "./autogen.sh"
