@@ -90,6 +90,15 @@ class Pathname
     File.open(self, 'w') {|f| f.write content }
   end
 
+  # NOTE always overwrites
+  def atomic_write content
+    require 'tempfile'
+    tf = Tempfile.new(self.basename.to_s)
+    tf.write(content)
+    tf.close
+    FileUtils.mv tf.path, self.to_s
+  end
+
   def cp dst
     if file?
       FileUtils.cp to_s, dst
@@ -273,15 +282,10 @@ class Pathname
 
     self.dirname.mkpath
     Dir.chdir self.dirname do
-      # TODO use Ruby function so we get exceptions
-      # NOTE Ruby functions may work, but I had a lot of problems
-      rv = system 'ln', '-sf', src.relative_path_from(self.dirname), self.basename
-      unless rv and $? == 0
-        raise <<-EOS.undent
-          Could not create symlink #{to_s}.
-          Check that you have permissions on #{self.dirname}
-          EOS
-      end
+      # NOTE only system ln -s will create RELATIVE symlinks
+      system 'ln', '-s', src.relative_path_from(self.dirname), self.basename
+      # ln outputs useful error message for us
+      raise "Could not create symlink: #{to_s}." unless $?.success?
     end
   end
 
@@ -312,6 +316,36 @@ class Pathname
       raise "Cannot uninstall info entry for unbrewed info file '#{self}'"
     end
     system '/usr/bin/install-info', '--delete', '--quiet', self.to_s, (self.dirname+'dir').to_s
+  end
+
+  def all_formula pwd = self
+    children.map{ |child| child.relative_path_from(pwd) }.each do |pn|
+      yield pn if pn.to_s =~ /.rb$/
+    end
+    children.each do |child|
+      child.all_formula(pwd) do |pn|
+        yield pn
+      end if child.directory?
+    end
+  end
+
+  def find_formula
+    # remove special casing once tap is established and alt removed
+    if self == HOMEBREW_LIBRARY/"Taps/adamv-alt"
+      all_formula do |file|
+        yield file
+      end
+      return
+    end
+
+    [self/:Formula, self/:HomebrewFormula, self].each do |d|
+      if d.exist?
+        d.children.map{ |child| child.relative_path_from(self) }.each do |pn|
+          yield pn if pn.to_s =~ /.rb$/
+        end
+        break
+      end
+    end
   end
 end
 
