@@ -31,7 +31,7 @@ class FormulaUnavailableError < RuntimeError
   end
 
   def to_s
-    if name =~ %r{(\w+)/(\w+)/(\w+)} then <<-EOS.undent
+    if name =~ %r{(\w+)/(\w+)/([^/]+)} then <<-EOS.undent
       No available formula for #$3 #{dependent_s}
       Please tap it and then try again: brew tap #$1/#$2
       EOS
