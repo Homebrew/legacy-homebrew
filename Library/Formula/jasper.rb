@@ -1,8 +1,8 @@
 require 'formula'
 
 class Jasper < Formula
-  url 'http://slackware.sukkology.net/packages/jasper/jasper-1.900.1.zip'
   homepage 'http://slackware.sukkology.net/packages/jasper/'
+  url 'http://slackware.sukkology.net/packages/jasper/jasper-1.900.1.zip'
   md5 'a342b2b4495b3e1394e161eb5d85d754'
 
   depends_on 'jpeg'
@@ -11,9 +11,11 @@ class Jasper < Formula
     [["--universal", "Build a universal binary."]]
   end
 
-  def patches
-    DATA
-  end
+  # The following patch fixes a bug (still in upstream as of jasper 1.900.1)
+  # where an assertion fails when Jasper is fed certain JPEG-2000 files with
+  # an alpha channel. See:
+  # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=469786
+  def patches; DATA; end
 
   fails_with_llvm "Undefined symbols when linking", :build => "2326"
 
@@ -28,9 +30,6 @@ class Jasper < Formula
   end
 end
 
-# The following patch fixes a bug (still in upstream as of jasper 1.900.1) where an assertion fails
-# when Jasper is fed certain JPEG-2000 files with an alpha channel.
-# see http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=469786
 __END__
 diff --git a/src/libjasper/jpc/jpc_dec.c b/src/libjasper/jpc/jpc_dec.c
 index fa72a0e..1f4845f 100644
