@@ -24,8 +24,8 @@ def audit_formula_text name, text
   end
 
   # build tools should be flagged properly
-  build_deps = %w{autoconf automake boost-build cmake
-                  imake libtool pkg-config scons smake}
+  build_deps = %w{autoconf automake boost-build bsdmake
+                  cmake imake libtool pkg-config scons smake}
   if text =~ /depends_on ['"](#{build_deps*'|'})['"]$/
     problems << " * #{$1} dependency should be \"depends_on '#{$1}' => :build\""
   end
@@ -125,16 +125,31 @@ def audit_formula_text name, text
   return problems
 end
 
+INSTALL_OPTIONS = %W[
+  --build-from-source
+  --debug
+  --devel
+  --force
+  --fresh
+  --HEAD
+  --ignore-dependencies
+  --interactive
+  --use-clang
+  --use-gcc
+  --use-llvm
+  --verbose
+].freeze
+
 def audit_formula_options f, text
   problems = []
 
-  # Find possible options
+  # Textually find options checked for in the formula
   options = []
   text.scan(/ARGV\.include\?[ ]*\(?(['"])(.+?)\1/) { |m| options << m[1] }
   options.reject! {|o| o.include? "#"}
-  options.uniq!
+  options.uniq! # May be checked more than once
 
-  # Find documented options
+  # Find declared options
   begin
     opts = f.options
     documented_options = []
@@ -156,6 +171,9 @@ def audit_formula_options f, text
       next if o == '--universal' and text =~ /ARGV\.build_universal\?/
       next if o == '--32-bit' and text =~ /ARGV\.build_32_bit\?/
       problems << " * Option #{o} is unused" unless options.include? o
+      if INSTALL_OPTIONS.include? o
+        problems << " * Option #{o} shadows an install option; should be renamed"
+      end
     end
   end
 
