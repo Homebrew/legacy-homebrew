@@ -5,7 +5,7 @@ class Bsdiff < Formula
   homepage 'http://www.daemonology.net/bsdiff'
   md5 'e6d812394f0e0ecc8d5df255aa1db22a'
 
-  depends_on 'bsdmake' if MacOS.xcode_version.to_f >= 4.3
+  depends_on 'bsdmake' => :build if MacOS.xcode_version.to_f >= 4.3
 
   def patches
     DATA

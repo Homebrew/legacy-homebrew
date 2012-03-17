@@ -24,8 +24,8 @@ def audit_formula_text name, text
   end
 
   # build tools should be flagged properly
-  build_deps = %w{autoconf automake boost-build cmake
-                  imake libtool pkg-config scons smake}
+  build_deps = %w{autoconf automake boost-build bsdmake
+                  cmake imake libtool pkg-config scons smake}
   if text =~ /depends_on ['"](#{build_deps*'|'})['"]$/
     problems << " * #{$1} dependency should be \"depends_on '#{$1}' => :build\""
   end
