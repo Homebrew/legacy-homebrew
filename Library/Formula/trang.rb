@@ -5,14 +5,11 @@ class Trang < Formula
   url 'http://jing-trang.googlecode.com/files/trang-20091111.zip'
   md5 '9d31799b948c350850eb9dd14e5b832d'
 
-  def wrapper target; <<-EOS.undent
-    #!/bin/bash
-    java -jar #{libexec}/trang.jar "$@"
-    EOS
-  end
-
   def install
     libexec.install Dir["*"]
-    (bin+'trang').write wrapper('trang')
+    (bin+'trang').write <<-EOS.undent
+      #!/bin/bash
+      java -jar "#{libexec}/trang.jar" "$@"
+    EOS
   end
 end
