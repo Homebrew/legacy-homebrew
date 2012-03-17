@@ -861,6 +861,26 @@ def check_for_unlinked_but_not_keg_only
   end
 end
 
+def check_os_version
+  if MACOS_FULL_VERSION =~ /^10\.6(\.|$)/
+    unless (MACOS_FULL_VERSION == "10.6.8")
+      return <<-EOS.undent
+        Please update Snow Leopard.
+        10.6.8 is the supported version of Snow Leopard.
+        You are still running #{MACOS_FULL_VERSION}.
+      EOS
+    end
+  elsif MACOS_FULL_VERSION =~ /^10\.5(\.|$)/
+    unless (MACOS_FULL_VERSION == "10.5.8")
+      return <<-EOS.undent
+        Please update Leopard.
+        10.5.8 is the supported version of Leopard.
+        You are still running #{MACOS_FULL_VERSION}.
+      EOS
+    end
+  end
+end
+
 end # end class Checks
 
 module Homebrew extend self
