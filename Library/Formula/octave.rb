@@ -18,10 +18,10 @@ def snow_leopard_64?
 end
 
 class Octave < Formula
-  url 'http://ftpmirror.gnu.org/octave/octave-3.4.3.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/octave/octave-3.4.3.tar.bz2'
   homepage 'http://www.gnu.org/software/octave/index.html'
-  md5 '185b08f4e4a7b646d76e4d33b77fa87e'
+  url 'http://ftpmirror.gnu.org/octave/octave-3.6.1.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/octave/octave-3.6.1.tar.bz2'
+  md5 'b543dd5ca743cba8c1d3474b1b99ae41'
 
   depends_on 'pkg-config' => :build
   depends_on 'gnu-sed' => :build
@@ -61,14 +61,6 @@ class Octave < Formula
     ]
   end
 
-  def patches
-    # Upstream patch that fixes a bug that causes the build to fail when BSD
-    # sed is used instead of GNU sed. See changeset 13791:4cf7356a99d0. See
-    # http://hg.savannah.gnu.org/hgweb/octave/rev/4cf7356a99d0 for more
-    # information.
-    DATA
-  end
-
   def install
     ENV.fortran
 
@@ -95,7 +87,7 @@ class Octave < Formula
 
   def caveats
     native_caveats = <<-EOS.undent
-      Octave 3.4.0 supports "native" plotting using OpenGL and FLTK. You can activate
+      Octave supports "native" plotting using OpenGL and FLTK. You can activate
       it for all future figures using the Octave command
 
           graphics_toolkit ("fltk")
@@ -116,15 +108,3 @@ class Octave < Formula
     s = native_caveats + s unless no_native?
   end
 end
-
-__END__
---- a/src/find-defun-files.sh	Wed Nov 02 09:24:48 2011 -0700
-+++ b/src/find-defun-files.sh	Wed Nov 02 12:40:29 2011 -0400
-@@ -21,6 +21,6 @@
-     file="$srcdir/$arg"
-   fi
-   if [ "`$EGREP -l "$DEFUN_PATTERN" $file`" ]; then
--    echo "$file" | $SED 's,.*/,,; s/\.\(cc\|yy\|ll\)$/.df/';
-+    echo "$file" | $SED 's,.*/,,; s/\.cc$/.df/; s/\.ll$/.df/; s/\.yy$/.df/';
-   fi
- done

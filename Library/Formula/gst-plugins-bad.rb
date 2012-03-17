@@ -25,7 +25,6 @@ class GstPluginsBad < Formula
 
   def install
     ENV.append "CFLAGS", "-no-cpp-precomp -funroll-loops -fstrict-aliasing"
-    ENV['OBJC'] = ENV.cc
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",

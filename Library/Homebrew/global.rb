@@ -6,7 +6,7 @@ require 'exceptions'
 
 ARGV.extend(HomebrewArgvExtension)
 
-HOMEBREW_VERSION = '0.8.1'
+HOMEBREW_VERSION = '0.9'
 HOMEBREW_WWW = 'http://mxcl.github.com/homebrew/'
 
 def cache
@@ -49,6 +49,7 @@ end
 
 HOMEBREW_PREFIX = Pathname.new(HOMEBREW_BREW_FILE).dirname.parent # Where we link under
 HOMEBREW_REPOSITORY = Pathname.new(HOMEBREW_BREW_FILE).realpath.dirname.parent # Where .git is found
+HOMEBREW_LIBRARY = HOMEBREW_REPOSITORY/"Library"
 
 # Where we store built products; /usr/local/Cellar if it exists,
 # otherwise a Cellar relative to the Repository.
@@ -59,7 +60,6 @@ else
 end
 
 HOMEBREW_LOGS = Pathname.new('~/Library/Logs/Homebrew/').expand_path
-
 
 MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
 MACOS_VERSION = /(10\.\d+)(\.\d+)?/.match(MACOS_FULL_VERSION).captures.first.to_f
