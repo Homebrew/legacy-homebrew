@@ -12,9 +12,9 @@ class Postgis < Formula
   head 'http://svn.osgeo.org/postgis/trunk/', :using => :svn
 
   devel do
-    url 'http://postgis.org/download/postgis-2.0.0beta1.tar.gz'
-    md5 'd9bac5b3c25028b4f5d48a148d2d9fdd'
-    version '2.0.0beta1'
+    url 'http://postgis.org/download/postgis-2.0.0beta3.tar.gz'
+    md5 'a6335ff05c6527380147cdef99dd192a'
+    version '2.0.0beta3'
   end
 
   depends_on 'postgresql'

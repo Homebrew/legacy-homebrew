@@ -24,10 +24,24 @@ end
 
 class FormulaUnavailableError < RuntimeError
   attr :name
+  attr :dependent, true
+
+  def dependent_s
+    "(dependency of #{dependent})" if dependent and dependent != name
+  end
+
+  def to_s
+    if name =~ %r{(\w+)/(\w+)/([^/]+)} then <<-EOS.undent
+      No available formula for #$3 #{dependent_s}
+      Please tap it and then try again: brew tap #$1/#$2
+      EOS
+    else
+      "No available formula for #{name} #{dependent_s}"
+    end
+  end
 
   def initialize name
     @name = name
-    super "No available formula for #{name}"
   end
 end
 
@@ -51,54 +65,12 @@ class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError
   end
 end
 
-class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
-  attr :type
+class UnsatisfiedRequirement < Homebrew::InstallationError
+  attr :dep
 
-  def initialize formula, type
-    @type = type
-    super formula, get_message(formula)
-  end
-
-  def get_message formula
-    <<-EOS.undent
-      Unsatisfied external dependency: #{formula}
-      Homebrew does not provide #{type.to_s.capitalize} dependencies, #{tool} does:
-        #{command_line} #{formula}
-      EOS
-  end
-
-  private
-
-  def tool
-    case type
-      when :python then 'easy_install'
-      when :ruby, :jruby, :rbx then 'rubygems'
-      when :perl then 'cpan'
-      when :node then 'npm'
-      when :chicken then 'chicken-install'
-      when :lua then "luarocks"
-    end
-  end
-
-  def command_line
-    case type
-      when :python
-        "easy_install"
-      when :ruby
-        "gem install"
-      when :perl
-        "cpan -i"
-      when :jruby
-        "jruby -S gem install"
-      when :rbx
-        "rbx gem install"
-      when :node
-        "npm install"
-      when :chicken
-        "chicken-install"
-      when :lua
-        "luarocks install"
-    end
+  def initialize formula, dep
+    @dep = dep
+    super formula, "An unsatisfied requirement failed this build."
   end
 end
 
@@ -129,25 +101,36 @@ class BuildError < Homebrew::InstallationError
     formula_name = $1
     error_line = $2
 
-    ohai "Exit Status: #{e.exit_status}"
-    puts "http://github.com/mxcl/homebrew/blob/master/Library/Formula/#{formula_name}.rb#L#{error_line}"
-    ohai "Environment"
-    puts Homebrew.config_s
-    ohai "Build Flags"
+    path = HOMEBREW_REPOSITORY/"Library/Formula/#{formula_name}.rb"
+    if path.symlink? and path.realpath.to_s =~ %r{^#{HOMEBREW_REPOSITORY}/Library/Taps/(\w+)-(\w+)/}
+      repo = "#$1/homebrew-#$2"
+      repo_path = path.realpath.relative_path_from(HOMEBREW_REPOSITORY/"Library/Taps/#$1-#$2").parent.to_s
+      issues_url = "https://github.com/#$1/homebrew-#$2/issues/new"
+    else
+      repo = "mxcl/master"
+      repo_path = "Library/Formula"
+      issues_url = ISSUES_URL
+    end
+
+    if ARGV.verbose?
+      ohai "Exit Status: #{e.exit_status}"
+      puts "https://github.com/#{repo}/blob/master/#{repo_path}/#{formula_name}.rb#L#{error_line}"
+    end
+    ohai "Build Environment"
+    Homebrew.dump_build_config
     puts %["--use-clang" was specified] if ARGV.include? '--use-clang'
     puts %["--use-llvm" was specified] if ARGV.include? '--use-llvm'
     puts %["--use-gcc" was specified] if ARGV.include? '--use-gcc'
     Homebrew.dump_build_env e.env
-    puts
-    onoe e
+    onoe "#{e.to_s.strip} (#{formula_name}.rb:#{error_line})"
     issues = GitHub.issues_for_formula formula_name
     if issues.empty?
       puts "If `brew doctor' does not help diagnose the issue, please report the bug:"
-      puts "    #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
+      puts "    #{Tty.em}#{issues_url}#{Tty.reset}"
     else
       puts "These existing issues may help you:", *issues.map{ |s| "    #{Tty.em}#{s}#{Tty.reset}" }
       puts "Otherwise, please report the bug:"
-      puts "    #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
+      puts "    #{Tty.em}#{issues_url}#{Tty.reset}"
     end
     if e.was_running_configure?
       puts "We saved the configure log, please gist it if you report the issue:"

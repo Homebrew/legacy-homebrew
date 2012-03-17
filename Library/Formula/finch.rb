@@ -1,6 +1,5 @@
 require 'formula'
 
-# Finch is a command-line-only IM client from Pidgin
 class Finch < Formula
   homepage 'http://developer.pidgin.im/wiki/Using%20Finch'
   url 'http://sourceforge.net/projects/pidgin/files/Pidgin/2.7.11/pidgin-2.7.11.tar.bz2'

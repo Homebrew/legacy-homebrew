@@ -8,7 +8,6 @@ class Box2d < Formula
   depends_on 'cmake' => :build
 
   def install
-    # docs say build oos
     cd 'Build' do
       system "cmake -DBOX2D_INSTALL=ON -DBOX2D_BUILD_SHARED=ON #{std_cmake_parameters} .."
       system "make install"
