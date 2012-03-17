@@ -1,16 +1,15 @@
 require 'formula'
 
+# Upstream recommends using 7.2alpha6 over 7.1
 class BdwGc < Formula
-  # upstream recommends using 7.2alpha6 over 7.1
   homepage 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/'
   url 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.2alpha6.tar.gz'
   md5 '319d0b18cc4eb735c8038ece9df055e4'
   version '7.2alpha6'
 
+  # fix inline ASM issues with LLVM and Makefile double-install
+  # both fixes already upstream
   def patches
-    # fix inline ASM issues with LLVM
-    # fix Makefile double-install
-    # both fixes already upstream
     DATA
   end
 
