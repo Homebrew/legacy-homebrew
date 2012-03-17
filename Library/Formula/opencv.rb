@@ -13,7 +13,6 @@ class Opencv < Formula
   md5 '82e4b6bfa349777233eea09b075e931e'
   homepage 'http://opencv.willowgarage.com/wiki/'
 
-
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
 
@@ -30,7 +29,10 @@ class Opencv < Formula
   def patches
     # Fix conflict when OpenEXR is installed. See:
     #   http://tech.groups.yahoo.com/group/OpenCV/message/83201
-    DATA
+    # fix compile on llvm-gcc-4.2. See
+    #     "https://code.ros.org/trac/opencv/ticket/1431"
+    #     "https://code.ros.org/trac/opencv/ticket/1432"
+     DATA
   end
 
   depends_on 'qt' if ARGV.include? '--with-qt'
@@ -102,4 +104,69 @@ index 642000b..b1414f1 100644
 +using Imf::PixelType;
  
  /* libpng version only */
+
+
+Fix compile on llvm-gcc-4.2. See
+  https://code.ros.org/trac/opencv/ticket/1431
+  https://code.ros.org/trac/opencv/ticket/1432
+
+diff --git a/modules/flann/include/opencv2/flann/any.h b/modules/flann/include/opencv2/flann/any.h
+index 46e1116..0a5f468 100644
+--- a/modules/flann/include/opencv2/flann/any.h
++++ b/modules/flann/include/opencv2/flann/any.h
+@@ -114,7 +114,7 @@ struct choose_policy<any>
+ #define SMALL_POLICY(TYPE) \
+     template<> \
+     struct choose_policy<TYPE> { typedef small_any_policy<TYPE> type; \
+-    };
++    }
  
+ SMALL_POLICY(signed char);
+ SMALL_POLICY(unsigned char);
+diff --git a/modules/flann/include/opencv2/flann/defines.h b/modules/flann/include/opencv2/flann/defines.h
+index c71e149..7bd8964 100644
+--- a/modules/flann/include/opencv2/flann/defines.h
++++ b/modules/flann/include/opencv2/flann/defines.h
+@@ -120,7 +120,7 @@ enum flann_log_level_t
+     FLANN_LOG_FATAL = 1,
+     FLANN_LOG_ERROR = 2,
+     FLANN_LOG_WARN = 3,
+-    FLANN_LOG_INFO = 4,
++    FLANN_LOG_INFO = 4
+ };
+ 
+ enum flann_distance_t
+
+
+diff --git a/modules/flann/include/opencv2/flann/any.h b/modules/flann/include/opencv2/flann/any.h
+index 0a5f468..9f9a4dd 100644
+--- a/modules/flann/include/opencv2/flann/any.h
++++ b/modules/flann/include/opencv2/flann/any.h
+@@ -30,6 +30,12 @@ struct empty_any
+ {
+ };
+ 
++inline std::ostream& operator <<(std::ostream& out, const empty_any&)
++{
++  out<<"[empty_any]";
++  return out;
++}
++
+ struct base_any_policy
+ {
+     virtual void static_delete(void** x) = 0;
+diff --git a/modules/flann/include/opencv2/flann/lsh_index.h b/modules/flann/include/opencv2/flann/lsh_index.h
+index a777990..77f15d5 100644
+--- a/modules/flann/include/opencv2/flann/lsh_index.h
++++ b/modules/flann/include/opencv2/flann/lsh_index.h
+@@ -56,6 +56,10 @@ namespace cvflann
+ 
+ struct LshIndexParams : public IndexParams
+ {
++    LshIndexParams()
++    {
++    }
++
+     LshIndexParams(unsigned int table_number, unsigned int key_size, unsigned int multi_probe_level)
+     {
+         (* this)["algorithm"] = FLANN_INDEX_LSH;
