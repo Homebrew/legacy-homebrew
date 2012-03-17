@@ -166,6 +166,21 @@ def check_for_other_package_managers
   end
 end
 
+def check_for_broken_symlinks
+  broken_symlinks = []
+  %w[lib include sbin bin etc share].each do |d|
+    d = HOMEBREW_PREFIX/d
+    d.find do |pn|
+      broken_symlinks << pn if pn.symlink? and pn.readlink.expand_path.to_s =~ /^#{HOMEBREW_PREFIX}/ and not pn.exist?
+    end
+  end
+  unless broken_symlinks.empty? then <<-EOS.undent
+    Broken symlinks were found. Remove them with `brew prune':
+      #{broken_symlinks * "\n      "}
+    EOS
+  end
+end
+
 def check_gcc_42
   if MacOS.gcc_42_build_version == nil
     # Don't show this warning on Xcode 4.2+
@@ -215,13 +230,12 @@ def check_for_latest_xcode
 end
 
 def check_cc
-  unless File.exist? '/usr/bin/cc'
-    <<-EOS.undent
-      You have no /usr/bin/cc.
-      This means you probably can't build *anything*. You need to install the CLI
-      Tools for Xcode. You can either download this from http://connect.apple.com/
-      or install them from inside Xcode's preferences. Homebrew does not require
-      all of Xcode! You only need the CLI tools package!
+  unless File.exist? '/usr/bin/cc' then <<-EOS.undent
+    You have no /usr/bin/cc.
+    This means you probably can't build *anything*. You need to install the Command
+    Line Tools for Xcode. You can either download this from http://connect.apple.com
+    or install them from inside Xcode's Download preferences. Homebrew does not
+    require all of Xcode! You only need the Command Line Tools package!
     EOS
   end
 end
@@ -825,6 +839,25 @@ def check_for_outdated_homebrew
       You haven't updated for at least 24 hours, this is a long time in brewland!
       EOS
     end
+  end
+end
+
+def check_for_unlinked_but_not_keg_only
+  unlinked = HOMEBREW_CELLAR.children.reject do |rack|
+    if not (HOMEBREW_REPOSITORY/"Library/LinkedKegs"/rack.basename).directory?
+      Formula.factory(rack.basename).keg_only? rescue nil
+    else
+      true
+    end
+  end.map{ |pn| pn.basename }
+
+  if not unlinked.empty? then <<-EOS.undent
+    You have unlinked kegs in your Cellar
+    Leaving kegs unlinked can lead to build-trouble and cause brews that depend on
+    those kegs to fail to run properly once built.
+
+        #{unlinked * "\n        "}
+    EOS
   end
 end
 

@@ -44,6 +44,12 @@ class FormulaInstaller
         raise CannotInstallFormulaError, "You must `brew link #{dep}' before #{f} can be installed"
       end
     end unless ignore_deps
+
+  rescue FormulaUnavailableError => e
+    # this is sometimes wrong if the dependency chain is more than one deep
+    # but can't easily fix this without a rewrite FIXME-brew2
+    e.dependent = f.name
+    raise
   end
 
   def install
@@ -214,11 +220,14 @@ class FormulaInstaller
       f.linked_keg.unlink
     end
 
-    Keg.new(f.prefix).link
+    keg = Keg.new(f.prefix)
+    keg.link
   rescue Exception => e
     onoe "The linking step did not complete successfully"
     puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
     puts "You can try again using `brew link #{f.name}'"
+    keg.unlink
+
     ohai e, e.backtrace if ARGV.debug?
     @show_summary_heading = true
   end
