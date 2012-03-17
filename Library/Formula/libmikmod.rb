@@ -9,15 +9,15 @@ class Libmikmod < Formula
     [[ '--with-debug', 'Enable debugging symbols and build without optimization']]
   end
 
-  def patches
-    # When aclocal is run on configure.in, it is told to use a macro AM_PATH_ESD that
-    # only exists if esound is installed.  Here CoreAudio is used not esound.
-    DATA unless Formula.factory('esound').installed?
-  end
-
   if MacOS.xcode_version >= "4.3"
     depends_on "automake" => :build
     depends_on "libtool" => :build
+  end
+
+  # When aclocal is run on configure.in, it is told to use a macro AM_PATH_ESD that
+  # only exists if esound is installed.  Here CoreAudio is used not esound.
+  def patches
+    DATA unless Formula.factory('esound').installed?
   end
 
   def install
