@@ -12,4 +12,10 @@ class Eff < Formula
     system "make"
     system "make install"
   end
+
+  def caveats; <<-EOS.undent
+    The authors of eff recommend installing ledit or rlwrap. The eff command
+    makes use of these tools automatically.
+    EOS
+  end
 end
