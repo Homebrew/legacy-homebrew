@@ -1,17 +1,18 @@
 require 'formula'
 
 class Gdb < Formula
-  url 'http://ftpmirror.gnu.org/gdb/gdb-7.3.1.tar.bz2'
   homepage 'http://www.gnu.org/software/gdb/'
+  url 'http://ftpmirror.gnu.org/gdb/gdb-7.3.1.tar.bz2'
   md5 'b89a5fac359c618dda97b88645ceab47'
 
-  def install
-    args = ["--prefix=#{prefix}",
-            "--disable-debug",
-            "--disable-dependency-tracking",
-            "--with-python=/usr"]
+  depends_on 'readline'
 
-    system "./configure", *args
+  def install
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--with-python=/usr",
+                          "--with-system-readline"
     system "make"
     system "make install"
   end
