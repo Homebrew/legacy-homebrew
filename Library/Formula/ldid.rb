@@ -1,17 +1,16 @@
 require 'formula'
 
 class Ldid < Formula
-  url 'http://svn.telesphoreo.org/trunk/data/ldid/ldid-1.0.610.tgz'
   homepage 'http://www.saurik.com/id/8'
+  url 'http://svn.telesphoreo.org/trunk/data/ldid/ldid-1.0.610.tgz'
   md5 '634c2f8b8a084046883e3793f6580e07'
 
-  def patches
-    DATA
-  end
+  # Adds support for armv7 binaries
+  def patches; DATA; end
 
   def install
     system "#{ENV.cxx} -I . -o util/ldid{,.cpp} -x c util/{lookup2,sha1}.c"
-    bin.install ["util/ldid"]
+    bin.install "util/ldid"
   end
 end
 

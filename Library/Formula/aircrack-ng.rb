@@ -19,7 +19,7 @@ class AircrackNg < Formula
       "http://standards.ieee.org/regauth/oui/oui.txt",
       "http://standards.ieee.org/develop/regauth/oui/oui.txt"
 
-    system "make"
+    system "make", "CC=#{ENV.cc}"
     system "make", "prefix=#{prefix}", "mandir=#{man1}", "install"
   end
 
