@@ -7,22 +7,31 @@ module Homebrew extend self
 
     raise "No such tap!" unless tapd.directory?
 
-    gitignores = (HOMEBREW_LIBRARY/"Formula/.gitignore").read.split rescue []
-    untapped = 0
+    files = []
+    tapd.find_formula{ |file| files << Pathname.new("#{user}-#{repo}").join(file) }
+    untapped = unlink_tap_formula(files)
+    rm_rf tapd
+    puts "Untapped #{untapped} formula"
+  end
 
-    tapd.find_formula do |pn|
-      bn = pn.basename.to_s
+  def unlink_tap_formula formulae
+    untapped = 0
+    gitignores = (HOMEBREW_LIBRARY/"Formula/.gitignore").read.split rescue []
+
+    formulae.each do |formula|
+      tapd = (HOMEBREW_LIBRARY/"Taps/#{formula}").dirname
+      bn = formula.basename.to_s
       pn = HOMEBREW_LIBRARY/"Formula/#{bn}"
-      if pn.symlink? and pn.realpath.to_s =~ %r[^#{tapd.realpath}]
+
+      if pn.symlink? and pn.realpath.to_s =~ %r[^#{tapd}]
         pn.delete
         gitignores.delete(bn)
         untapped += 1
       end
     end
-    rm_rf tapd
 
     HOMEBREW_REPOSITORY.join("Library/Formula/.gitignore").atomic_write(gitignores * "\n")
 
-    puts "Untapped #{untapped} formula"
+    untapped
   end
 end
