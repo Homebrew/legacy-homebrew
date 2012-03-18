@@ -34,7 +34,7 @@ module Homebrew extend self
         to = HOMEBREW_LIBRARY.join("Formula/#{formula.basename}")
 
         # Unexpected, but possible, lets proceed as if nothing happened
-        formula.delete if to.symlink? and to.realpath == from
+        to.delete if to.symlink? and to.realpath == from
 
         # using the system ln is the only way to get relative symlinks
         system "ln -s ../Taps/#{formula} 2>/dev/null"
