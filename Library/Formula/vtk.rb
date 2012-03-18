@@ -57,6 +57,17 @@ class Vtk < Formula
     if ARGV.include? '--tcl'
       args << "-DVTK_WRAP_TCL:BOOL=ON"
     end
+    
+    # default to cocoa for everything except x11
+    args << "-DVTK_USE_COCOA:BOOL=ON" unless ARGV.include? "--x11"
+
+    if ARGV.include? '--x11'
+      args << "-DOPENGL_INCLUDE_DIR:PATH='/usr/X11R6/include'"
+      args << "-DOPENGL_gl_LIBRARY:FILEPATH='/usr/X11R6/lib/libGL.dylib'"
+      args << "-DOPENGL_glu_LIBRARY:FILEPATH='/usr/X11R6/lib/libGLU.dylib"
+      args << "-DVTK_USE_COCOA:BOOL=OFF"
+      args << "-DVTK_USE_X:BOOL=ON"
+    end
 
     # default to cocoa for everything except x11
     args << "-DVTK_USE_COCOA:BOOL=ON" unless ARGV.include? "--x11"
