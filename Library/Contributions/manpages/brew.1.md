@@ -322,10 +322,10 @@ scripts that reside somewhere in the PATH, named `brew-<cmdname>` or
 `brew-<cmdname>.rb`, which can be invoked like `brew cmdname`. This allows you
 to create your own commands without modifying Homebrew's internals.
 
-A number of (useful, but unsupported) example commands are included and enabled
+A number of (useful, but unsupported) external commands are included and enabled
 by default:
 
-    $ ls `brew --repository`/Library/Contributions/examples
+    $ ls `brew --repository`/Library/Contributions/cmds
 
 Documentation for the included external commands as well as instructions for
 creating your own can be found on the wiki:
