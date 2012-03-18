@@ -71,7 +71,7 @@ begin
   cmd = aliases[cmd] if aliases[cmd]
 
   # Add example external commands to PATH before checking.
-  ENV['PATH'] += ":#{HOMEBREW_REPOSITORY}/Library/Contributions/examples"
+  ENV['PATH'] += ":#{HOMEBREW_REPOSITORY}/Library/Contributions/cmds"
   if system "/usr/bin/which -s brew-#{cmd}"
     %w[CACHE CELLAR LIBRARY_PATH PREFIX REPOSITORY].each do |e|
       ENV["HOMEBREW_#{e}"] = Object.const_get "HOMEBREW_#{e}"
