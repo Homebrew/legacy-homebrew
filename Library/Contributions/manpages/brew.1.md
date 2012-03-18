@@ -145,9 +145,8 @@ For the full command list, see the COMMANDS section.
     <formula> is usually the name of the formula to install, but may also be
     the URL for an arbitrary formula.
 
-    If `--force` is passed, will install <formula> even if it is already
-    installed. This can be used to re-install a formula without removing
-    it first.
+    If `--force` is passed, will install <formula> if it exists, even if it
+    is blacklisted.
 
     If `--debug` is passed and brewing fails, open a shell inside the
     temporary directory used for compiling.
