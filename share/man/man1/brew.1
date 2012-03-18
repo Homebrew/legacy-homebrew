@@ -353,13 +353,13 @@ Print the version number of brew to standard error and exit\.
 Homebrew, like \fBgit\fR(1), supports external commands\. These are executable scripts that reside somewhere in the PATH, named \fBbrew\-<cmdname>\fR or \fBbrew\-<cmdname>\.rb\fR, which can be invoked like \fBbrew cmdname\fR\. This allows you to create your own commands without modifying Homebrew\'s internals\.
 .
 .P
-A number of (useful, but unsupported) example commands are included and enabled by default:
+A number of (useful, but unsupported) external commands are included and enabled by default:
 .
 .IP "" 4
 .
 .nf
 
-$ ls `brew \-\-repository`/Library/Contributions/examples
+$ ls `brew \-\-repository`/Library/Contributions/cmds
 .
 .fi
 .

@@ -374,7 +374,7 @@ _brew ()
     done
 
     if [[ $i -eq $COMP_CWORD ]]; then
-        local ext=$(\ls $(brew --repository)/Library/Contributions/examples \
+        local ext=$(\ls $(brew --repository)/Library/Contributions/cmds \
                 2>/dev/null | sed -e "s/\.rb//g" -e "s/brew-//g")
         __brewcomp "
             --cache --cellar --config
