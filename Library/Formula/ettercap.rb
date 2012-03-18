@@ -11,9 +11,7 @@ class Ettercap < Formula
   # The below DATA patch fixes an issue where the linker doesn't get passed the ettercap-built
   # 'libwdg' archive which is used for the ncurses interface, thus causing a build failure.
   # See https://github.com/mxcl/homebrew/pull/9540
-  def patches
-    { :p0 => DATA }
-  end
+  def patches; DATA; end
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
@@ -32,8 +30,8 @@ class Ettercap < Formula
 end
 
 __END__
---- src/Makefile.in	2009-12-20 14:09:50.000000000 -0500
-+++ src/Makefile.in.new	2009-12-20 14:10:42.000000000 -0500
+--- a/src/Makefile.in	2009-12-20 14:09:50.000000000 -0500
++++ b/src/Makefile.in	2009-12-20 14:10:42.000000000 -0500
 @@ -47,7 +47,7 @@
  bin_PROGRAMS = ettercap$(EXEEXT)
  @HAVE_DN_EXPAND_TRUE@am__append_1 = dissectors/ec_dns.c
