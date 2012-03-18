@@ -844,7 +844,9 @@ end
 
 def check_for_unlinked_but_not_keg_only
   unlinked = HOMEBREW_CELLAR.children.reject do |rack|
-    if not (HOMEBREW_REPOSITORY/"Library/LinkedKegs"/rack.basename).directory?
+    if not rack.directory?
+      true
+    elsif not (HOMEBREW_REPOSITORY/"Library/LinkedKegs"/rack.basename).directory?
       Formula.factory(rack.basename).keg_only? rescue nil
     else
       true
