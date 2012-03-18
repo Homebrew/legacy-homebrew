@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libcaca < Formula
+  homepage 'http://caca.zoy.org/wiki/libcaca'
   url 'http://caca.zoy.org/files/libcaca/libcaca-0.99.beta17.tar.gz'
   version '0.99b17'
-  homepage 'http://caca.zoy.org/wiki/libcaca'
   md5 '790d6e26b7950e15909fdbeb23a7ea87'
 
   depends_on 'pkg-config' => :build
@@ -11,10 +11,8 @@ class Libcaca < Formula
 
   fails_with_llvm "unsupported inline asm: input constraint with a matching output constraint of incompatible type!"
 
-  def patches
-    # Make libcaca build with clang; see http://caca.zoy.org/ticket/90
-    { :p0 => DATA }
-  end
+  # Make libcaca build with clang; see http://caca.zoy.org/ticket/90
+  def patches; DATA; end
 
   def install
     # Some people can't compile when Java is enabled. See:
@@ -38,8 +36,8 @@ class Libcaca < Formula
 end
 
 __END__
---- caca/caca.h.orig    2011-07-05 00:09:51.000000000 -0700
-+++ caca/caca.h 2011-07-05 00:10:10.000000000 -0700
+--- a/caca/caca.h 2011-07-05 00:09:51.000000000 -0700
++++ b/caca/caca.h 2011-07-05 00:10:10.000000000 -0700
 @@ -645,7 +645,7 @@ typedef struct cucul_buffer cucul_buffer
  #       define CACA_DEPRECATED
  #   endif
