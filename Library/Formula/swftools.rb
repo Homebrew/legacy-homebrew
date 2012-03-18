@@ -8,6 +8,10 @@ class Swftools < Formula
   depends_on 'jpeg'
   depends_on 'lame' => :optional
 
+  def patches
+    {:p0 => "http://svn.macports.org/repository/macports/trunk/dports/graphics/swftools/files/patch-configure.diff"}
+  end
+  
   def install
     ENV.x11 # Add to PATH for freetype-config on Snow Leopard
     ENV.minimal_optimization
