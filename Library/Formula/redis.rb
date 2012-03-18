@@ -7,7 +7,10 @@ class Redis < Formula
 
   head 'https://github.com/antirez/redis.git', :branch => 'unstable'
 
-  fails_with_llvm 'Fails with "reference out of range from _linenoise"', :build => 2334
+  fails_with :llvm do
+    build 2334
+    cause 'Fails with "reference out of range from _linenoise"'
+  end
 
   def install
     # Architecture isn't detected correctly on 32bit Snow Leopard without help

@@ -6,16 +6,19 @@ class Emacs < Formula
   mirror 'http://ftp.gnu.org/pub/gnu/emacs/emacs-23.4.tar.bz2'
   md5 '070c68ad8e3c31fb3cb2414feaf5e6f0'
 
-  fails_with_llvm "Duplicate symbol errors while linking.", :build => 2334
+  if ARGV.include? "--use-git-head"
+    head 'git://git.sv.gnu.org/emacs.git'
+  else
+    head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
+  end
 
   # Stripping on Xcode 4 causes malformed object errors.
   # Just skip everything.
   skip_clean :all
 
-  if ARGV.include? "--use-git-head"
-    head 'git://git.sv.gnu.org/emacs.git'
-  else
-    head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
+  fails_with :llvm do
+    build 2334
+    cause "Duplicate symbol errors while linking."
   end
 
   def options

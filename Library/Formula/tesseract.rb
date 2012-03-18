@@ -102,8 +102,10 @@ class Tesseract < Formula
     depends_on "libtool" => :build
   end
 
-  fails_with_llvm "Executable 'tesseract' segfaults on 10.6 when compiled with llvm-gcc",
-                  :build => "2206"
+  fails_with :llvm do
+    build 2206
+    cause "Executable 'tesseract' segfaults on 10.6 when compiled with llvm-gcc"
+  end
 
   # mftraining has a missing symbols error when cleaned
   skip_clean 'bin'

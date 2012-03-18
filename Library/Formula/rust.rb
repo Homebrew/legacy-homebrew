@@ -5,6 +5,11 @@ class Rust < Formula
   homepage 'http://www.rust-lang.org/'
   md5 '47be90f952ec01c3088af58be78fd618'
 
+  fails_with :clang do
+    build 318
+    cause "cannot initialize a parameter of type 'volatile long long *' with an rvalue of type 'int *'"
+  end
+
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make"
