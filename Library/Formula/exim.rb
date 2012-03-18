@@ -5,7 +5,7 @@ class NoBdb5 < Requirement
     This software can fail to compile when Berkeley-DB 5.x is installed.
     You may need to try:
       brew unlink berkeley-db
-      brew install dsniff
+      brew install exim
       brew link berkeley-db
     EOS
   end
