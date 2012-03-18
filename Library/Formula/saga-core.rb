@@ -8,7 +8,6 @@ class SagaCore < Formula
   head 'https://svn.cct.lsu.edu/repos/saga/core/trunk/', :using => :svn
 
   depends_on 'boost'
-  depends_on 'postgresql'
 
   def install
     system "./configure", "--prefix=#{prefix}",
