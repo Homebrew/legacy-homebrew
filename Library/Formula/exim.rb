@@ -1,11 +1,15 @@
 require 'formula'
 
 class Exim < Formula
-  url 'http://ftp.exim.org/pub/exim/exim4/exim-4.72.tar.gz'
+  url 'http://ftp.exim.org/pub/exim/exim4/exim-4.77.tar.gz'
   homepage 'http://exim.org'
-  sha1 '261c02c95b4d3aada73840b01f836e6874841c44'
+  sha1 '2c1ba6b8f627b71b3b58fc0cc56e394590dcd1dc'
 
   depends_on 'pcre'
+
+  def options
+    [['--support-maildir', 'Support delivery in Maildir format']]
+  end
 
   def install
     cp 'src/EDITME', 'Local/Makefile'
@@ -16,6 +20,7 @@ class Exim < Formula
       s.gsub! '/usr/exim/configure', etc+'exim.conf'
       s.gsub! '/usr/exim', prefix
       s.gsub! '/var/spool/exim', var+'spool/exim'
+      s << "SUPPORT_MAILDIR=yes\n" if ARGV.include? '--support-maildir'
 
       # For non-/usr/local HOMEBREW_PREFIX
       s << "LOOKUP_INCLUDE=-I#{HOMEBREW_PREFIX}/include\n"
@@ -29,7 +34,10 @@ class Exim < Formula
     # The compile script ignores CPPFLAGS
     ENV.append "CFLAGS", ENV['CPPFLAGS']
 
+    previous_makeflags = ENV['MAKEFLAGS']
+    ENV.deparallelize
     system "make"
+    ENV['MAKEFLAGS'] = previous_makeflags
     system "make INSTALL_ARG=-no_chown install"
     (man8).install 'doc/exim.8'
     (bin+'exim_ctl').write startup_script
