@@ -7,9 +7,13 @@ class BaliPhy < Formula
 
   depends_on 'gsl'
 
-# fails_with_clang
-#     io.H:25:31: error: use of undeclared identifier 'push_back'
-#       void operator()(const T& t){push_back(t);}
+  fails_with :clang do
+    build 318
+    cause <<-EOS.undent
+      io.H:25:31: error: use of undeclared identifier 'push_back'
+      void operator()(const T& t){push_back(t);}
+      EOS
+  end
 
   def install
     mkdir 'macbuild' do

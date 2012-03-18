@@ -7,7 +7,10 @@ class Celt < Formula
 
   depends_on 'libogg' => :optional
 
-  fails_with_llvm "'make check' fails", :build => 2335
+  fails_with :llvm do
+    build 2335
+    cause "'make check' fails"
+  end
 
   def install
     system "./configure", "--disable-dependency-tracking",
