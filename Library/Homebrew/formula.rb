@@ -291,7 +291,7 @@ class Formula
 
     if name.include? "/"
       if name =~ %r{(.+)/(.+)/(.+)}
-        tapd = HOMEBREW_REPOSITORY/"Library/Taps/#$1-#$2"
+        tapd = HOMEBREW_REPOSITORY/"Library/Taps"/"#$1-#$2".downcase
         tapd.find_formula do |relative_pathname|
           return "#{tapd}/#{relative_pathname}" if relative_pathname.stem.to_s == $3
         end if tapd.directory?
