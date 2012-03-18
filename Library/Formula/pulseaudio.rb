@@ -11,6 +11,7 @@ class Pulseaudio < Formula
   depends_on 'libsndfile'
   depends_on 'speex'
   depends_on 'json-c'
+  depends_on 'libsamplerate'
 
   def install
     args = ["--prefix=#{prefix}",
