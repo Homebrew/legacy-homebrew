@@ -8,16 +8,17 @@ class Curlftpfs < Formula
 
   depends_on 'pkg-config' => :build
 
+  if MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   depends_on 'fuse4x'
   depends_on 'glib'
 
   def install
-    if ARGV.build_head?
-      cp 'README.rst', 'README'
-    end
-    ENV['ACLOCAL'] = "/usr/bin/aclocal -I/usr/share/aclocal -I#{HOMEBREW_PREFIX}/share/aclocal"
     system "autoreconf", "--force", "--install"
-    ENV.append 'CFLAGS', '-D__off_t=off_t'
+    ENV.append 'CPPFLAGS', '-D__off_t=off_t'
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
