@@ -6,12 +6,12 @@ class Treecc < Formula
   md5 'def09f2132f87d6a38a0718e2f14ee61'
 
   def install
-    system "./configure --prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     system "make"
-    bin.install [ "treecc" ]
+    bin.install "treecc"
   end
 
   def test
-    system "treecc -v"
+    system "#{bin}/treecc -v"
   end
 end
