@@ -42,7 +42,7 @@ module Homebrew extend self
   end
 
   def search_tap user, repo, rx
-    return [] if (HOMEBREW_LIBRARY/"Taps/#{user}-#{repo}").directory?
+    return [] if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}").directory?
 
     require 'open-uri'
     require 'yaml'
