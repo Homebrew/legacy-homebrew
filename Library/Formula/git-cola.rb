@@ -1,11 +1,10 @@
 require 'formula'
 
 class GitCola < Formula
-  url 'https://github.com/downloads/git-cola/git-cola/git-cola-1.7.4.1.tar.gz'
-  homepage 'http://git-cola.github.com/'
-  md5 'd0f667c91e12a707df73060bf0822c27'
-
   head 'https://github.com/git-cola/git-cola.git'
+  url 'https://github.com/git-cola/git-cola.git', :tag => 'v1.7.6'
+  version '1.7.6'
+  homepage 'http://git-cola.github.com/'
 
   depends_on 'pyqt'
 
