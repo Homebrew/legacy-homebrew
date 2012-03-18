@@ -664,7 +664,7 @@ private
             key, value = sha1.shift
             @sha1 = key if value == MacOS.cat
           when String
-            @sha1 = sha1
+            @sha1 = sha1 if MacOS.lion?
           end
         end
 
