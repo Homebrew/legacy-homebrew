@@ -15,9 +15,9 @@ class Gnupg2 < Formula
   depends_on 'dirmngr' => :optional
   depends_on 'libusb-compat' => :optional
 
-  def patches
-    DATA
-  end
+  # fix configure's failure to detect libcurl
+  # http://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=commit;h=57ef0d6
+  def patches; DATA; end
 
   def install
     (var+'run').mkpath
@@ -41,8 +41,6 @@ class Gnupg2 < Formula
 end
 
 __END__
-# fix configure's failure to detect libcurl
-# http://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=commit;h=57ef0d6
 diff --git a/configure b/configure
 index 3df3900..35c474f 100755
 --- a/configure
