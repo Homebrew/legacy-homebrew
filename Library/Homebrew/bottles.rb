@@ -47,3 +47,7 @@ end
 def old_bottle_regex
   /(-bottle\.tar\.gz)$/
 end
+
+def bottle_base_url
+  "https://downloads.sf.net/project/machomebrew/Bottles/"
+end

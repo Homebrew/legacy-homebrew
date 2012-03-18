@@ -651,32 +651,35 @@ private
     end
 
     def bottle url=nil, &block
-      if block_given?
-        eval <<-EOCLASS
-        module BottleData
-          def self.url url; @url = url; end
-          def self.sha1 sha1
-            case sha1
-            when Hash
-              key, value = sha1.shift
-              @sha1 = key if value == MacOS.cat
-            when String
-              @sha1 = sha1
-            end
-          end
-          def self.return_data
-            if @sha1 && @url
-              [@url,@sha1]
-            elsif @sha1
-              [nil,@sha1]
-            end
+      return unless block_given?
+
+      bottle_block = Class.new do
+        def self.url url
+          @url = url
+        end
+
+        def self.sha1 sha1
+          case sha1
+          when Hash
+            key, value = sha1.shift
+            @sha1 = key if value == MacOS.cat
+          when String
+            @sha1 = sha1
           end
         end
-        EOCLASS
-        BottleData.instance_eval &block
-        @bottle_url, @bottle_sha1 = BottleData.return_data
-        @bottle_url ||= "https://downloads.sf.net/project/machomebrew/Bottles/#{name.downcase}-#{@version||@standard.detect_version}.bottle-#{MacOS.cat}.tar.gz" if @bottle_sha1
+
+        def self.url_sha1
+          if @sha1 && @url
+            return @url, @sha1
+          elsif @sha1
+            return nil, @sha1
+          end
+        end
       end
+
+      bottle_block.instance_eval &block
+      @bottle_url, @bottle_sha1 = bottle_block.url_sha1
+      @bottle_url ||= "#{bottle_base_url}/#{name.downcase}-#{@version||@standard.detect_version}#{bottle_native_suffix}" if @bottle_sha1
     end
 
     def mirror val, specs=nil
