@@ -191,7 +191,14 @@ end
 class CurlBottleDownloadStrategy < CurlDownloadStrategy
   def initialize url, name, version, specs
     super
-    @tarball_path = HOMEBREW_CACHE/"#{name}-#{version}.#{MacOS.cat}.bottle#{ext}"
+    @tarball_path = HOMEBREW_CACHE/"#{name}-#{version}#{ext}"
+
+    unless @tarball_path.exist?
+      old_bottle_path = HOMEBREW_CACHE/"#{name}-#{version}#{bottle_suffix}"
+      old_bottle_path = HOMEBREW_CACHE/"#{name}-#{version}-bottle.tar.gz" unless old_bottle_path.exist?
+      old_bottle_path = HOMEBREW_CACHE/"#{name}-#{version}.#{MacOS.cat}.bottle-bottle.tar.gz" unless old_bottle_path.exist?
+      FileUtils.mv old_bottle_path, @tarball_path if old_bottle_path.exist?
+    end
   end
   def stage
     ohai "Pouring #{File.basename(@tarball_path)}"
