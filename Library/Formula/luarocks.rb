@@ -9,7 +9,9 @@ class Luarocks < Formula
 
   depends_on use_luajit? ? 'luajit' : 'lua'
 
-  fails_with_llvm "Lua itself compiles with llvm, but may fail when other software tries to link."
+  fails_with :llvm do
+    cause "Lua itself compiles with llvm, but may fail when other software tries to link."
+  end
 
   def patches
     p = []
