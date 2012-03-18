@@ -3,8 +3,12 @@ require 'testing_env'
 require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
 ARGV.extend(HomebrewArgvExtension)
 
+require 'extend/ENV'
+ENV.extend(HomebrewEnvExtension)
+
 require 'test/testball'
-require 'utils'
+
+require 'hardware'
 
 class AbstractDownloadStrategy
   attr_reader :url
@@ -61,5 +65,68 @@ class FormulaTests < Test::Unit::TestCase
 
     assert_equal f.url, "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
     assert_equal downloader.url, "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+  end
+
+  def test_compiler_selection
+    %W{HOMEBREW_USE_CLANG HOMEBEW_USE_LLVM HOMEBREW_USE_GCC}.each { |e| ENV.delete(e) }
+
+    f = TestAllCompilerFailures.new
+    assert f.fails_with? :clang
+    assert f.fails_with? :llvm
+    assert f.fails_with? :gcc
+    cs = CompilerSelector.new(f)
+    cs.select_compiler
+    assert_equal MacOS.default_compiler, ENV.compiler
+
+    f = TestNoCompilerFailures.new
+    assert !(f.fails_with? :clang)
+    assert !(f.fails_with? :llvm)
+    assert !(f.fails_with? :gcc)
+    cs = CompilerSelector.new(f)
+    cs.select_compiler
+    assert_equal MacOS.default_compiler, ENV.compiler
+
+    f = TestLLVMFailure.new
+    assert !(f.fails_with? :clang)
+    assert f.fails_with? :llvm
+    assert !(f.fails_with? :gcc)
+    cs = CompilerSelector.new(f)
+    cs.select_compiler
+    assert ENV.compiler, case MacOS.clang_build_version
+    when 0..210 then :gcc
+    else :clang
+    end
+
+    f = TestMixedCompilerFailures.new
+    assert f.fails_with? :clang
+    assert !(f.fails_with? :llvm)
+    assert f.fails_with? :gcc
+    cs = CompilerSelector.new(f)
+    cs.select_compiler
+    assert_equal :llvm, ENV.compiler
+
+    f = TestMoreMixedCompilerFailures.new
+    assert !(f.fails_with? :clang)
+    assert f.fails_with? :llvm
+    assert f.fails_with? :gcc
+    cs = CompilerSelector.new(f)
+    cs.select_compiler
+    assert_equal :clang, ENV.compiler
+
+    f = TestEvenMoreMixedCompilerFailures.new
+    assert f.fails_with? :clang
+    assert f.fails_with? :llvm
+    assert !(f.fails_with? :gcc)
+    cs = CompilerSelector.new(f)
+    cs.select_compiler
+    assert_equal :clang, ENV.compiler
+
+    f = TestBlockWithoutBuildCompilerFailure.new
+    assert f.fails_with? :clang
+    assert !(f.fails_with? :llvm)
+    assert !(f.fails_with? :gcc)
+    cs = CompilerSelector.new(f)
+    cs.select_compiler
+    assert_equal MacOS.default_compiler, ENV.compiler
   end
 end
