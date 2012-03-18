@@ -31,6 +31,8 @@ module Homebrew extend self
       $found = search_results.length
       puts_columns search_tap "adamv", "alt", rx
       puts_columns search_tap "josegonzalez", "php", rx
+      puts_columns search_tap "Homebrew", "versions", rx
+      puts_columns search_tap "Homebrew", "dupes", rx
 
       if $found == 0 and not blacklisted? query
         puts "No formula found for \"#{query}\". Searching open pull requests..."
