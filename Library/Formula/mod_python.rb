@@ -6,9 +6,7 @@ class ModPython < Formula
   md5 'a3b0150176b726bd2833dac3a7837dc5'
 
   # patch-src-connobject.c.diff from MacPorts
-  def patches
-    { :p0 => DATA }
-  end
+  def patches; DATA; end
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
@@ -42,8 +40,8 @@ class ModPython < Formula
 end
 
 __END__
---- src/connobject.c	2006-12-03 05:36:37.000000000 +0100
-+++ src/connobject.c	2008-07-30 12:30:10.000000000 +0200
+--- a/src/connobject.c	2006-12-03 05:36:37.000000000 +0100
++++ b/src/connobject.c	2008-07-30 12:30:10.000000000 +0200
 @@ -139,7 +139,7 @@
      bytes_read = 0;
  
