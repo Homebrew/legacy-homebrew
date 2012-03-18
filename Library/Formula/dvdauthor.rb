@@ -16,7 +16,7 @@ class Dvdauthor < Formula
   # http://bugs.gentoo.org/355039
   # https://github.com/ldo/dvdauthor/commit/c82aaa4eb1a1c36bf7e2b7ae3c9140d0bf8000b5
   def patches
-    { :p0 => DATA }
+    DATA
   end
 
   def install
@@ -31,8 +31,8 @@ class Dvdauthor < Formula
 end
 
 __END__
---- src/spuunmux.c.orig	2010-05-10 11:27:55.000000000 +0400
-+++ src/spuunmux.c	2011-03-17 11:20:25.000000000 +0300
+--- a/src/spuunmux.c	2010-05-10 11:27:55.000000000 +0400
++++ b/src/spuunmux.c	2011-03-17 11:20:25.000000000 +0300
 @@ -39,6 +39,7 @@
  #include <netinet/in.h>
  
