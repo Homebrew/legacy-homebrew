@@ -1,5 +1,17 @@
 require 'formula'
 require 'utils'
+require 'extend/ENV'
+
+# Some formulae use ENV in patches, so set up an environment
+ENV.extend(HomebrewEnvExtension)
+ENV.setup_build_environment
+
+class Module
+  def redefine_const(name, value)
+    __send__(:remove_const, name) if const_defined?(name)
+    const_set(name, value)
+  end
+end
 
 def ff
   return Formula.all if ARGV.named.empty?
@@ -194,6 +206,19 @@ def audit_formula_version f, text
   return []
 end
 
+def audit_formula_patches f
+  problems = []
+  patches = Patches.new(f.patches)
+  patches.each do |p|
+    next unless p.external?
+    if p.url =~ %r[raw\.github\.com]
+      problems << " * Using raw GitHub URLs is not recommended:"
+      problems << " * #{p.url}"
+    end
+  end
+  return problems
+end
+
 def audit_formula_urls f
   problems = []
 
@@ -330,6 +355,17 @@ EOS
   return problems
 end
 
+# Formula extensions for auditing
+class Formula
+  def head_only?
+    @unstable and @standard.nil?
+  end
+
+  def formula_text
+    File.open(@path, "r") { |afile| return afile.read }
+  end
+end
+
 module Homebrew extend self
   def audit
     errors = false
@@ -338,22 +374,21 @@ module Homebrew extend self
     problem_count = 0
 
     ff.each do |f|
+      # We need to do this in case the formula defines a patch that uses DATA.
+      f.class.redefine_const :DATA, ""
+
       problems = []
-
-      if f.unstable and f.standard.nil?
-        problems += [' * head-only formula']
-      end
-
+      problems += [' * head-only formula'] if f.head_only?
       problems += audit_formula_instance f
       problems += audit_formula_urls f
+      problems += audit_formula_patches f
 
       perms = File.stat(f.path).mode
       if perms.to_s(8) != "100644"
         problems << " * permissions wrong; chmod 644 #{f.path}"
       end
 
-      text = ""
-      File.open(f.path, "r") { |afile| text = afile.read }
+      text = f.formula_text
 
       # DATA with no __END__
       if (text =~ /\bDATA\b/) and not (text =~ /^\s*__END__\s*$/)
