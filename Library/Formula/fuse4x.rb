@@ -19,8 +19,11 @@ class Fuse4x < Formula
 
     system "autoreconf", "--force", "--install"
 
-    ENV.append_to_cflags "-D_DARWIN_USE_64_BIT_INODE" # force 64bit inodes on 10.5. On 10.6+ this is no-op.
-    system "./configure", "--disable-dependency-tracking", "--disable-debug", "--disable-static", "--prefix=#{prefix}"
+    # force 64bit inodes on 10.5. On 10.6+ this is no-op.
+    ENV.append_to_cflags "-D_DARWIN_USE_64_BIT_INODE"
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-static",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end
