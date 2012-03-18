@@ -58,6 +58,12 @@ def install f
     end
   end
 
+  if f.fails_with? ENV.compiler
+    cs = CompilerSelector.new f
+    cs.select_compiler
+    cs.advise
+  end
+
   f.brew do
     if ARGV.flag? '--interactive'
       ohai "Entering interactive mode"
