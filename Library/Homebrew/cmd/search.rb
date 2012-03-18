@@ -49,6 +49,7 @@ module Homebrew extend self
 
     results = []
     open "http://github.com/api/v2/yaml/blob/all/#{user}/homebrew-#{repo}/master" do |f|
+      user.downcase! if user == "Homebrew" # special handling for the Homebrew organization
       YAML::load(f.read)["blobs"].each do |file, _|
         name = File.basename(file, '.rb')
         if file =~ /\.rb$/ and name =~ rx
