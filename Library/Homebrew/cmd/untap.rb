@@ -3,6 +3,14 @@ require 'cmd/tap' # for tap_args
 module Homebrew extend self
   def untap
     user, repo = tap_args
+
+    # we consistently downcase in tap to ensure we are not bitten by case-insensive
+    # filesystem issues. Which is the default on mac. The problem being the
+    # filesystem cares, but our regexps don't. So unless we resolve *every* path
+    # we will get bitten.
+    user.downcase!
+    repo.downcase!
+
     tapd = HOMEBREW_LIBRARY/"Taps/#{user}-#{repo}"
 
     raise "No such tap!" unless tapd.directory?
