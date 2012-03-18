@@ -247,6 +247,11 @@ For the full command list, see the COMMANDS section.
   * `search --macports`|`--fink` <text>:
     Search for <text> on the MacPorts or Fink package search page.
 
+  * `tap` [<tap>]:
+    Tap a new formula repository from GitHub, or list existing taps.
+
+    <tap> is of the form <user>/<repo>, e.g. `brew tap homebrew/dupes`.
+
   * `test` <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
     test method. There is no standard output or return code, but it should
@@ -258,6 +263,9 @@ For the full command list, see the COMMANDS section.
   * `unlink` <formula>:
     Unsymlink <formula> from the Homebrew prefix. This can be useful for
     temporarily disabling a formula: `brew unlink foo && commands && brew link foo`.
+
+  * `untap` <tap>:
+    Remove a tapped repository.
 
   * `update [--rebase]`:
     Fetch the newest version of Homebrew and all formulae from GitHub using
