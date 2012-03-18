@@ -443,10 +443,14 @@ public
 
   # For brew-fetch and others.
   def fetch
-    downloader = @downloader
-    # Don't attempt mirrors if this install is not pointed at a "stable" URL.
-    # This can happen when options like `--HEAD` are invoked.
-    mirror_list =  @spec_to_use == @standard ? mirrors : []
+    if install_bottle? self
+      downloader = CurlBottleDownloadStrategy.new bottle_url, name, version, nil
+    else
+      downloader = @downloader
+      # Don't attempt mirrors if this install is not pointed at a "stable" URL.
+      # This can happen when options like `--HEAD` are invoked.
+      mirror_list =  @spec_to_use == @standard ? mirrors : []
+    end
 
     # Ensure the cache exists
     HOMEBREW_CACHE.mkpath
