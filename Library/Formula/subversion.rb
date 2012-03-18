@@ -4,6 +4,7 @@ def build_java?;      ARGV.include? "--java";   end
 def build_perl?;      ARGV.include? "--perl";   end
 def build_python?;    ARGV.include? "--python"; end
 def build_ruby?;      ARGV.include? "--ruby";   end
+def with_unicode_path?; ARGV.include? '--unicode-path'; end
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
@@ -25,7 +26,17 @@ class Subversion < Formula
       ['--python', 'Build Python bindings.'],
       ['--ruby', 'Build Ruby bindings.'],
       ['--universal', 'Build as a Universal Intel binary.'],
+      ['--unicode-path', 'Include support for OS X unicode (but see caveats!)']
     ]
+  end
+
+  def patches
+    # patch for unicode path
+    p = { :p0 =>
+      "https://raw.github.com/gist/1900750/4888cafcf58f7355e2656fe192a77e2b6726e338/patch-path.c.diff"
+    }
+
+    return p
   end
 
   def check_neon_arch
@@ -74,7 +85,8 @@ class Subversion < Formula
 
     args << "--enable-javahl" << "--without-jikes" if build_java?
     args << "--with-ruby-sitedir=#{lib}/ruby" if build_ruby?
-
+    args << "--with-unicode-path" if with_unicode_path?
+    
     system "./configure", *args
     system "make"
     system "make install"
@@ -125,7 +137,20 @@ class Subversion < Formula
 
   def caveats
     s = ""
+    
+    if with_unicode_path?
+      s += <<-EOS.undent
+        This unicode-path version implements a hack to deal with composed/decomposed
+        unicode handling on Mac OS X which is different from linux and windows.
+        It is an implementation of solution 1 from
+        http://svn.apache.org/repos/asf/subversion/trunk/notes/unicode-composition-for-filenames
+        which _WILL_ break some setups. Please be sure you understand what you
+        are asking for when you install this version.
 
+      EOS
+    end
+
+    
     if build_python?
       s += <<-EOS.undent
         You may need to add the Python bindings to your PYTHONPATH from:
