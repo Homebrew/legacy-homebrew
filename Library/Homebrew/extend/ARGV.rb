@@ -52,7 +52,9 @@ module HomebrewArgvExtension
     if rack
       raise <<-EOS.undent
         Multiple kegs installed to #{rack}
-        Please remove all but one and then try again.
+        However we don't know which one you refer to.
+        Please delete (with rm -rf!) all but one and then try again.
+        Sorry, we know this is lame.
       EOS
     else
       raise
