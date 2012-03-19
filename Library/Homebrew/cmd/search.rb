@@ -28,11 +28,39 @@ module Homebrew extend self
         puts msg
       end
 
-      if search_results.empty? and not blacklisted? query
+      $found = search_results.length
+      puts_columns search_tap "adamv", "alt", rx
+      puts_columns search_tap "josegonzalez", "php", rx
+      puts_columns search_tap "Homebrew", "versions", rx
+      puts_columns search_tap "Homebrew", "dupes", rx
+
+      if $found == 0 and not blacklisted? query
         puts "No formula found for \"#{query}\". Searching open pull requests..."
         GitHub.find_pull_requests(rx) { |pull| puts pull }
       end
     end
+  end
+
+  def search_tap user, repo, rx
+    return [] if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}").directory?
+
+    require 'open-uri'
+    require 'yaml'
+
+    results = []
+    open "http://github.com/api/v2/yaml/blob/all/#{user}/homebrew-#{repo}/master" do |f|
+      user.downcase! if user == "Homebrew" # special handling for the Homebrew organization
+      YAML::load(f.read)["blobs"].each do |file, _|
+        name = File.basename(file, '.rb')
+        if file =~ /\.rb$/ and name =~ rx
+          results << "#{user}/#{repo}/#{name}"
+          $found += 1
+        end
+      end
+    end
+    results
+  rescue
+    []
   end
 
   def search_brews rx

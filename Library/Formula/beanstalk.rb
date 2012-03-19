@@ -9,10 +9,10 @@ class Beanstalk < Formula
   # bug report: https://github.com/kr/beanstalkd/issues/96
   # Will be in next release
   def patches
-    {:p1 => "http://github.com/kr/beanstalkd/commit/80da772efeeaabb12893f52a93da74ca9e69206d.patch"}
+    "http://github.com/kr/beanstalkd/commit/80da772efeeaabb12893f52a93da74ca9e69206d.patch"
   end
 
   def install
-    system "make install PREFIX=#{prefix}"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 end

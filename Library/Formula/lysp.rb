@@ -1,19 +1,18 @@
 require 'formula'
 
 class Lysp < Formula
-  url 'http://www.piumarta.com/software/lysp/lysp-1.0.tar.gz'
   homepage 'http://www.piumarta.com/software/lysp/'
+  url 'http://www.piumarta.com/software/lysp/lysp-1.0.tar.gz'
   md5 '1cd5df2f83956c5ce58a7394b9d8b92e'
 
   depends_on 'bdw-gc'
 
-  def patches
-    DATA
-  end
+  # Use our CFLAGS
+  def patches; DATA; end
 
   def install
     system "make"
-    bin.install ["lysp", "gclysp"]
+    bin.install "lysp", "gclysp"
   end
 end
 
