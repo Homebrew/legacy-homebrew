@@ -132,4 +132,5 @@ else
 end
 
 ohai "Installation successful!"
+puts "You should run `brew doctor' *before* you install anything."
 puts "Now type: brew help"
