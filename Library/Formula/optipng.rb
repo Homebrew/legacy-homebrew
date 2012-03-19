@@ -6,11 +6,7 @@ class Optipng < Formula
   md5 '9b2f526ce79ea779c7004c7964ee8bcc'
 
   def install
-    inreplace 'src/scripts/unix.mak.in' do |s|
-      s.change_make_var! 'mandir', man
-    end
-
-    system "./configure", "--with-system-zlib", "--prefix=#{prefix}"
+    system "./configure", "--with-system-zlib", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make install"
   end
 end
