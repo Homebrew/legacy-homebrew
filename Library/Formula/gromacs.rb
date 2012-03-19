@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gromacs < Formula
-  url 'ftp://ftp.gromacs.org/pub/gromacs/gromacs-4.5.4.tar.gz'
+  url 'ftp://ftp.gromacs.org/pub/gromacs/gromacs-4.5.5.tar.gz'
   homepage 'http://www.gromacs.org/'
-  md5 '5013de941017e014b92d41f82c7e86d6'
+  md5 '6a87e7cdfb25d81afa9fea073eb28468'
 
   depends_on 'fftw'
 
