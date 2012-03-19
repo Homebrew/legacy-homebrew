@@ -113,6 +113,9 @@ class Zookeeper < Formula
       (bin+bin_name).write shim_script(script_name)
     }
 
+    # Remove "-q 1" option from zkServer.sh - it breaks the status command on OS X
+    inreplace("#{libexec}/bin/zkServer.sh", '-q 1 ', '')
+
     # Install default config files
     defaults = etc+'zookeeper/defaults'
     defaults.write(default_zk_env) unless defaults.exist?
