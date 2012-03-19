@@ -10,6 +10,11 @@ module Homebrew extend self
     end
 
     ARGV.kegs.each do |keg|
+      if keg.linked_keg_record.directory? and keg.linked_keg_record.realpath == keg
+        opoo "Already linked: #{keg}"
+        next
+      end
+
       print "Linking #{keg}... " do
         puts if ARGV.verbose?
         puts "#{keg.link} symlinks created"

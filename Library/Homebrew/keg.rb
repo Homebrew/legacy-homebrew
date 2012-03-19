@@ -102,9 +102,9 @@ class Keg < Pathname
       end
     end
 
-    (HOMEBREW_REPOSITORY/"Library/LinkedKegs"/fname).make_relative_symlink(self)
+    linked_keg_record.make_relative_symlink(self)
 
-    return $n+$d
+    return $n + $d
   end
 
 protected
@@ -121,6 +121,14 @@ protected
     end
   rescue NotAKegError
     puts "Won't resolve conflicts for symlink #{dst} as it doesn't resolve into the Cellar" if ARGV.verbose?
+  end
+
+  def make_relative_symlink dst, src
+    if dst.exist? and dst.realpath == src.realpath
+      puts "Skipping; already exists: #{dst}" if ARGV.verbose?
+    else
+      dst.make_relative_symlink src
+    end
   end
 
   # symlinks the contents of self+foo recursively into /usr/local/foo
@@ -141,10 +149,10 @@ protected
         when :skip_file
           Find.prune
         when :info
-          dst.make_relative_symlink(src)
+          make_relative_symlink dst, src
           dst.install_info
         else
-          dst.make_relative_symlink(src)
+          make_relative_symlink dst, src
         end
       elsif src.directory?
         # if the dst dir already exists, then great! walk the rest of the tree tho
@@ -161,7 +169,7 @@ protected
           dst.mkpath unless resolve_any_conflicts(dst)
         else
           unless resolve_any_conflicts(dst)
-            dst.make_relative_symlink(src)
+            make_relative_symlink dst, src
             Find.prune
           end
         end
