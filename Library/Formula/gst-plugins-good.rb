@@ -26,7 +26,6 @@ class GstPluginsGood < Formula
   depends_on 'taglib' => :optional
 
   def install
-    ENV['OBJC'] = ENV.cc
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
