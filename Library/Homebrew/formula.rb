@@ -291,7 +291,7 @@ class Formula
 
     if name.include? "/"
       if name =~ %r{(.+)/(.+)/(.+)}
-        tapd = HOMEBREW_REPOSITORY/"Library/Taps/#$1-#$2"
+        tapd = HOMEBREW_REPOSITORY/"Library/Taps"/"#$1-#$2".downcase
         tapd.find_formula do |relative_pathname|
           return "#{tapd}/#{relative_pathname}" if relative_pathname.stem.to_s == $3
         end if tapd.directory?
@@ -443,10 +443,14 @@ public
 
   # For brew-fetch and others.
   def fetch
-    downloader = @downloader
-    # Don't attempt mirrors if this install is not pointed at a "stable" URL.
-    # This can happen when options like `--HEAD` are invoked.
-    mirror_list =  @spec_to_use == @standard ? mirrors : []
+    if install_bottle? self
+      downloader = CurlBottleDownloadStrategy.new bottle_url, name, version, nil
+    else
+      downloader = @downloader
+      # Don't attempt mirrors if this install is not pointed at a "stable" URL.
+      # This can happen when options like `--HEAD` are invoked.
+      mirror_list =  @spec_to_use == @standard ? mirrors : []
+    end
 
     # Ensure the cache exists
     HOMEBREW_CACHE.mkpath
@@ -647,17 +651,35 @@ private
     end
 
     def bottle url=nil, &block
-      if block_given?
-        eval <<-EOCLASS
-        module BottleData
-          def self.url url; @url = url; end
-          def self.sha1 sha1; @sha1 = sha1; end
-          def self.return_data; [@url,@sha1]; end
+      return unless block_given?
+
+      bottle_block = Class.new do
+        def self.url url
+          @url = url
         end
-        EOCLASS
-        BottleData.instance_eval &block
-        @bottle_url, @bottle_sha1 = BottleData.return_data
+
+        def self.sha1 sha1
+          case sha1
+          when Hash
+            key, value = sha1.shift
+            @sha1 = key if value == MacOS.cat
+          when String
+            @sha1 = sha1 if MacOS.lion?
+          end
+        end
+
+        def self.url_sha1
+          if @sha1 && @url
+            return @url, @sha1
+          elsif @sha1
+            return nil, @sha1
+          end
+        end
       end
+
+      bottle_block.instance_eval &block
+      @bottle_url, @bottle_sha1 = bottle_block.url_sha1
+      @bottle_url ||= "#{bottle_base_url}/#{name.downcase}-#{@version||@standard.detect_version}#{bottle_native_suffix}" if @bottle_sha1
     end
 
     def mirror val, specs=nil

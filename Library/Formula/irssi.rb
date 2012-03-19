@@ -11,10 +11,8 @@ class Irssi < Formula
   # Don't strip, to allow dynamic loading of modules
   skip_clean 'bin'
 
-  def patches
-    # Fix Perl build flags and paths in man page
-    DATA
-  end
+  # Fix Perl build flags and paths in man page
+  def patches; DATA; end
 
   def install
     system "./configure", "--prefix=#{prefix}",
