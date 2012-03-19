@@ -10,20 +10,29 @@ class Zsh < Formula
 
   skip_clean :all
 
+  def options
+    [['--disable-etcdir', 'Disable the reading of Zsh rc files in /etc']]
+  end
+
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-etcdir",
-                          "--enable-fndir=#{share}/zsh/functions",
-                          "--enable-site-fndir=#{share}/zsh/site-functions",
-                          "--enable-scriptdir=#{share}/zsh/scripts",
-                          "--enable-site-scriptdir=#{share}/zsh/site-scripts",
-                          "--enable-cap",
-                          "--enable-function-subdirs",
-                          "--enable-maildir-support",
-                          "--enable-multibyte",
-                          "--enable-pcre",
-                          "--enable-zsh-secure-free",
-                          "--with-tcsetpgrp"
+    args = %W[
+      -prefix=#{prefix}
+      --enable-fndir=#{share}/zsh/functions
+      --enable-site-fndir=#{share}/zsh/site-functions
+      --enable-scriptdir=#{share}/zsh/scripts
+      --enable-site-scriptdir=#{share}/zsh/site-scripts
+      --enable-cap
+      --enable-function-subdirs
+      --enable-maildir-support
+      --enable-multibyte
+      --enable-pcre
+      --enable-zsh-secure-free
+      --with-tcsetpgrp
+    ]
+
+    args << '--disable-etcdir' if ARGV.include? '--disable-etcdir'
+
+    system "./configure", *args
 
     # Do not version installation directories.
     inreplace ["Makefile", "Src/Makefile"],
@@ -38,6 +47,15 @@ class Zsh < Formula
 
   def caveats; <<-EOS.undent
     To use this build of Zsh as your login shell, add it to /etc/shells.
+
+    If you have administrator privileges, you must fix an Apple miss
+    configuration in Mac OS X 10.7 Lion by renaming /etc/zshenv to
+    /etc/zprofile, or Zsh will have the wrong PATH when executed
+    non-interactively by scripts.
+
+    Alternatively, install Zsh with /etc disabled:
+
+      brew install --disable-etcdir zsh
     EOS
   end
 end
