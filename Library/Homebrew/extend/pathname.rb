@@ -283,9 +283,14 @@ class Pathname
     self.dirname.mkpath
     Dir.chdir self.dirname do
       # NOTE only system ln -s will create RELATIVE symlinks
-      system 'ln', '-s', src.relative_path_from(self.dirname), self.basename
-      # ln outputs useful error message for us
-      raise "Could not create symlink: #{to_s}." unless $?.success?
+      quiet_system 'ln', '-s', src.relative_path_from(self.dirname), self.basename
+      if not $?.success?
+        raise <<-EOS.undent
+          Could not symlink file: #{src.expand_path}
+          Check #{self} does not already exist.
+          Check #{dirname} is writable.
+        EOS
+      end
     end
   end
 
