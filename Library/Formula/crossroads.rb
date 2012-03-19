@@ -1,13 +1,9 @@
 require 'formula'
 
-def pgm_flags
-  return ARGV.include?('--with-pgm') ? "--with-pgm" : ""
-end
-
 class Crossroads < Formula
   url 'http://download.crossroads.io/libxs-1.0.0.tar.gz'
   head 'git://github.com/crossroads-io/libxs.git'
-  homepage 'http://http://www.crossroads.io/'
+  homepage 'http://www.crossroads.io/'
   md5 '12aaeaa76bd8a378246f2602c4d8d912'
 
   fails_with_llvm "Compiling with LLVM gives a segfault while linking.",
