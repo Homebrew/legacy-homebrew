@@ -16,6 +16,7 @@ module HomebrewArgvExtension
   end
 
   def kegs
+    rack = nil
     require 'keg'
     require 'formula'
     @kegs ||= downcased_unique_named.collect do |name|
@@ -46,6 +47,15 @@ module HomebrewArgvExtension
       else
         Keg.new(linked_keg_ref.realpath)
       end
+    end
+  rescue FormulaUnavailableError
+    if rack
+      raise <<-EOS.undent
+        Multiple kegs installed to #{rack}
+        Please remove all but one and then try again.
+      EOS
+    else
+      raise
     end
   end
 
