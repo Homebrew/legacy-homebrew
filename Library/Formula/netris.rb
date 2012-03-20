@@ -1,8 +1,10 @@
 require 'formula'
 
 class Netris < Formula
-  url 'ftp://ftp.netris.org/pub/netris/netris-0.52.tar.gz'
   homepage 'http://www.netris.org/'
+  url 'http://ftp.de.debian.org/debian/pool/main/n/netris/netris_0.52.orig.tar.gz'
+  # Official site is non-responsive - 3/19/2012 - @adamv
+  # url 'ftp://ftp.netris.org/pub/netris/netris-0.52.tar.gz'
   md5 'b55af5697175ee06f7c6e40101979c38'
 
   # Debian has been applying fixes and security patches, so let's re-use their work.
