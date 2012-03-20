@@ -14,6 +14,7 @@ class Vtk < Formula
     ['--qt', "Enable Qt extension."],
     ['--qt-extern', "Enable Qt extension (via external Qt)"],
     ['--tcl', "Enable Tcl wrapping."],
+    ['--x11', "Enable X11 extension."]
   ]
   end
 
@@ -21,7 +22,6 @@ class Vtk < Formula
     args = std_cmake_parameters.split + [
              "-DVTK_REQUIRED_OBJCXX_FLAGS:STRING=''",
              "-DVTK_USE_CARBON:BOOL=OFF",
-             "-DVTK_USE_COCOA:BOOL=ON",
              "-DBUILD_TESTING:BOOL=OFF",
              "-DBUILD_EXAMPLES:BOOL=OFF",
              "-DBUILD_SHARED_LIBS:BOOL=ON",
@@ -56,6 +56,17 @@ class Vtk < Formula
 
     if ARGV.include? '--tcl'
       args << "-DVTK_WRAP_TCL:BOOL=ON"
+    end
+
+    # default to cocoa for everything except x11
+    args << "-DVTK_USE_COCOA:BOOL=ON" unless ARGV.include? "--x11"
+
+    if ARGV.include? '--x11'
+      args << "-DOPENGL_INCLUDE_DIR:PATH='/usr/X11R6/include'"
+      args << "-DOPENGL_gl_LIBRARY:FILEPATH='/usr/X11R6/lib/libGL.dylib'"
+      args << "-DOPENGL_glu_LIBRARY:FILEPATH='/usr/X11R6/lib/libGLU.dylib"
+      args << "-DVTK_USE_COCOA:BOOL=OFF"
+      args << "-DVTK_USE_X:BOOL=ON"
     end
 
     # Hack suggested at http://www.vtk.org/pipermail/vtk-developers/2006-February/003983.html

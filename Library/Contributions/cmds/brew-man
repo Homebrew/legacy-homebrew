@@ -24,7 +24,7 @@ test "$1" = '-l' && {
   exit 0
 }
 
-/usr/bin/which -s ronn || die "You need to \"gem install ronn\" and put it in your path."
+/usr/bin/which ronn &>/dev/null || die "You need to \"gem install ronn\" and put it in your path."
 
 test "$1" = '--server' || \
 test "$1" = '-s' && {

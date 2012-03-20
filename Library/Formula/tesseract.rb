@@ -102,19 +102,23 @@ class Tesseract < Formula
     depends_on "libtool" => :build
   end
 
-  fails_with_llvm "Executable 'tesseract' segfaults on 10.6 when compiled with llvm-gcc", :build => "2206"
+  fails_with_llvm "Executable 'tesseract' segfaults on 10.6 when compiled with llvm-gcc",
+                  :build => "2206"
 
   # mftraining has a missing symbols error when cleaned
   skip_clean 'bin'
 
   def options
-    [
-      ["--all-languages", "Install recognition data for all languages"]
-    ]
+    [["--all-languages", "Install recognition data for all languages"]]
   end
 
   def install
     system "/bin/sh autogen.sh"
+
+    # explicitly state leptonica header location, as the makefile defaults to /usr/local/include,
+    # which doesn't work for non-default homebrew location
+    ENV['LIBLEPT_HEADERSDIR'] = "#{HOMEBREW_PREFIX}/include"
+
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
     if ARGV.include? "--all-languages"

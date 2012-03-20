@@ -1,13 +1,12 @@
 require 'formula'
 
 class Tcpreplay < Formula
-  url 'http://downloads.sourceforge.net/project/tcpreplay/tcpreplay/3.4.4/tcpreplay-3.4.4.tar.gz'
   homepage 'http://tcpreplay.synfin.net'
+  url 'http://downloads.sourceforge.net/project/tcpreplay/tcpreplay/3.4.4/tcpreplay-3.4.4.tar.gz'
   sha1 '9e4cca81cfbfb919f8759e1a27ce1b3b963ff3b8'
 
-  def patches
-    DATA
-  end
+  # Hard-code use of dylib instead of so
+  def patches; DATA; end
 
   def install
     system "./configure", "--disable-dependency-tracking", "--disable-debug",
