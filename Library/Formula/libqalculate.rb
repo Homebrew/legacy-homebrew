@@ -22,7 +22,7 @@ class Libqalculate < Formula
   end
 
   def test
-    system "#{prefix}/bin/qalc", "(2+2)/4 hours to minutes"
+    system "#{bin}/qalc", "(2+2)/4 hours to minutes"
   end
 end
 
