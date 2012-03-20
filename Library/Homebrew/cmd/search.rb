@@ -28,15 +28,17 @@ module Homebrew extend self
         puts msg
       end
 
-      $found = search_results.length
-      puts_columns search_tap "adamv", "alt", rx
-      puts_columns search_tap "josegonzalez", "php", rx
-      puts_columns search_tap "Homebrew", "versions", rx
-      puts_columns search_tap "Homebrew", "dupes", rx
+      if query
+        $found = search_results.length
+        puts_columns search_tap "adamv", "alt", rx
+        puts_columns search_tap "josegonzalez", "php", rx
+        puts_columns search_tap "Homebrew", "versions", rx
+        puts_columns search_tap "Homebrew", "dupes", rx
 
-      if $found == 0 and not blacklisted? query
-        puts "No formula found for \"#{query}\". Searching open pull requests..."
-        GitHub.find_pull_requests(rx) { |pull| puts pull }
+        if $found == 0 and not blacklisted? query
+          puts "No formula found for \"#{query}\". Searching open pull requests..."
+          GitHub.find_pull_requests(rx) { |pull| puts pull }
+        end
       end
     end
   end
