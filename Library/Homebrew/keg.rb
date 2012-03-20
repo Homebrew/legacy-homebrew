@@ -9,7 +9,7 @@ class Keg < Pathname
 
   # locale-specific directories have the form language[_territory][.codeset][@modifier]
   LOCALEDIR_RX = /(locale|man)\/([a-z]{2}|C|POSIX)(_[A-Z]{2})?(\.[a-zA-Z\-0-9]+(@.+)?)?/
-  INFOFILE_RX = %r[info/[^.].*?\.info$]
+  INFOFILE_RX = %r[info/([^.].*?\.info|dir)$]
 
   # if path is a file in a keg then this will return the containing Keg object
   def self.for path
