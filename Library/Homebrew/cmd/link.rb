@@ -16,7 +16,6 @@ module Homebrew extend self
       end
 
       print "Linking #{keg}... " do
-        puts if ARGV.verbose?
         puts "#{keg.link} symlinks created"
       end
     end
