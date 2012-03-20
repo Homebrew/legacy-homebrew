@@ -38,6 +38,18 @@ class FormulaInstaller
     if ARGV.build_head? and f.unstable.nil?
       raise CannotInstallFormulaError, "No head is defined for #{f.name}"
     end
+
+    f.recursive_deps.each do |dep|
+      if dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
+        raise CannotInstallFormulaError, "You must `brew link #{dep}' before #{f} can be installed"
+      end
+    end unless ignore_deps
+
+  rescue FormulaUnavailableError => e
+    # this is sometimes wrong if the dependency chain is more than one deep
+    # but can't easily fix this without a rewrite FIXME-brew2
+    e.dependent = f.name
+    raise
   end
 
   def install
@@ -208,11 +220,14 @@ class FormulaInstaller
       f.linked_keg.unlink
     end
 
-    Keg.new(f.prefix).link
+    keg = Keg.new(f.prefix)
+    keg.link
   rescue Exception => e
     onoe "The linking step did not complete successfully"
     puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
     puts "You can try again using `brew link #{f.name}'"
+    keg.unlink
+
     ohai e, e.backtrace if ARGV.debug?
     @show_summary_heading = true
   end
@@ -238,10 +253,8 @@ class FormulaInstaller
   end
 
   def pour
-    HOMEBREW_CACHE.mkpath
-    downloader = CurlBottleDownloadStrategy.new f.bottle_url, f.name, f.version, nil
-    downloader.fetch
-    f.verify_download_integrity downloader.tarball_path, f.bottle_sha1, "SHA1"
+    fetched, downloader = f.fetch
+    f.verify_download_integrity fetched, f.bottle_sha1, "SHA1"
     HOMEBREW_CELLAR.cd do
       downloader.stage
     end

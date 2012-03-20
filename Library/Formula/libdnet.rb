@@ -10,6 +10,10 @@ class Libdnet < Formula
     depends_on "libtool" => :build
   end
 
+  def options
+    [['--with-python', 'Build Python module too.']]
+  end
+
   def install
     # "manual" autoreconf to get '.dylib' extension on shared lib
     system "aclocal --force -I config"
@@ -18,9 +22,11 @@ class Libdnet < Formula
     system "autoheader --force"
     system "automake --add-missing --copy --force-missing"
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+    args = ["--disable-debug", "--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--mandir=#{man}"]
+    args << "--with-python" if ARGV.include? "--with-python"
+    system "./configure", *args
     system "make install"
   end
 end

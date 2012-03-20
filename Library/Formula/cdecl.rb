@@ -12,8 +12,10 @@ class Cdecl < Formula
     bin.mkpath
     man1.mkpath
 
+    ENV.append 'CFLAGS', '-DBSD -DUSE_READLINE -std=gnu89'
+
     system "make", "CC=#{ENV.cc}",
-                   "CFLAGS=#{ENV.cflags} -DBSD -DUSE_READLINE",
+                   "CFLAGS=#{ENV.cflags}",
                    "LIBS=-lreadline",
                    "BINDIR=#{bin}",
                    "MANDIR=#{man1}",
