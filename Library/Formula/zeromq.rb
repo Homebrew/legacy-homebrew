@@ -18,10 +18,15 @@ class Zeromq < Formula
     depends_on "libtool" => :build
   end
 
+  if ARGV.include?('--with-valgrind')
+    depends_on "valgrind" => :build
+  end
+
   def options
     [
       ['--with-pgm', 'Build with PGM extension'],
-      ['--universal', 'Build as a Universal Intel binary.']
+      ['--universal', 'Build as a Universal Intel binary.'],
+      ['--with-valgrind', 'Make Valgrind happy.']
     ]
   end
 
@@ -43,6 +48,10 @@ class Zeromq < Formula
 
   def install
     system "./autogen.sh" if ARGV.build_head?
+
+    if ARGV.include?('--with-valgrind')
+      ENV.append 'CPPFLAGS', '-DZMQ_MAKE_VALGRIND_HAPPY'
+    end
 
     if ARGV.build_universal?
       build_fat
