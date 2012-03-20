@@ -34,6 +34,7 @@ module HomebrewEnvExtension
       self.send @compiler
       ENV['CC']  = '/usr/bin/cc'
       ENV['CXX'] = '/usr/bin/c++'
+      ENV['OBJC'] = ENV['CC']
     end
 
     # In rare cases this may break your builds, as the tool for some reason wants
@@ -88,6 +89,7 @@ module HomebrewEnvExtension
     # we don't use xcrun because gcc 4.0 has not been provided since Xcode 4
     self['CC'] =  "#{MacOS.dev_tools_path}/gcc-4.0"
     self['CXX'] = "#{MacOS.dev_tools_path}/g++-4.0"
+    self['OBJC'] = self['CC']
     replace_in_cflags '-O4', '-O3'
     set_cpu_cflags 'nocona -mssse3', :core => 'prescott', :bottle => 'generic'
     @compiler = :gcc
@@ -127,6 +129,7 @@ module HomebrewEnvExtension
     ENV['CC'] = `/usr/bin/xcrun -find #{$1}`.chomp if $1
     ENV['CXX'] =~ %r{/usr/bin/xcrun (.*)}
     ENV['CXX'] = `/usr/bin/xcrun -find #{$1}`.chomp if $1
+    ENV['OBJC'] = ENV['CC']
   end
 
   def gcc
@@ -136,10 +139,12 @@ module HomebrewEnvExtension
 
     ENV['CC'] = xcrun "gcc-4.2"
     ENV['CXX'] = xcrun "g++-4.2"
+    ENV['OBJC'] = ENV['CC']
 
     unless ENV['CC']
       ENV['CC'] = "#{HOMEBREW_PREFIX}/bin/gcc-4.2"
       ENV['CXX'] = "#{HOMEBREW_PREFIX}/bin/g++-4.2"
+      ENV['OBJC'] = ENV['CC']
       raise "GCC could not be found" if not File.exist? ENV['CC']
     end
 
@@ -156,6 +161,7 @@ module HomebrewEnvExtension
   def llvm
     self['CC']  = xcrun "llvm-gcc"
     self['CXX'] = xcrun "llvm-g++"
+    self['OBJC'] = self['CC']
     set_cpu_cflags 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott'
     @compiler = :llvm
   end
@@ -163,6 +169,7 @@ module HomebrewEnvExtension
   def clang
     self['CC']  = xcrun "clang"
     self['CXX'] = xcrun "clang++"
+    self['OBJC'] = self['CC']
     replace_in_cflags(/-Xarch_i386 (-march=\S*)/, '\1')
     # Clang mistakenly enables AES-NI on plain Nehalem
     set_cpu_cflags 'native', :nehalem => 'native -Xclang -target-feature -Xclang -aes'

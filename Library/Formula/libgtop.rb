@@ -1,19 +1,23 @@
 require 'formula'
 
 class Libgtop < Formula
-  url 'ftp://ftp.gnome.org/pub/gnome/sources/libgtop/2.28/libgtop-2.28.1.tar.gz'
   homepage 'http://library.gnome.org/devel/libgtop/stable/'
-  md5 'a035abf8cf7877a9950b6483aa7b96fd'
+  url 'http://ftp.gnome.org/pub/gnome/sources/libgtop/2.28/libgtop-2.28.4.tar.xz'
+  md5 'c8aee3c9bde9033303147e993aa1b932'
 
+  depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'intltool'
 
+  # Patch per MacPorts:
+  # https://trac.macports.org/ticket/21165
   def patches; DATA; end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

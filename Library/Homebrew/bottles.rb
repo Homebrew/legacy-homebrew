@@ -10,14 +10,7 @@ def bottles_supported?
 end
 
 def install_bottle? f
-  !ARGV.build_from_source? && bottle_current?(f) && bottle_native?(f)
-end
-
-def bottle_native? f
-  return true if bottle_native_regex.match(f.bottle_url)
-  # old brew bottle style
-  return true if MacOS.lion? && old_bottle_regex.match(f.bottle_url)
-  return false
+  !ARGV.build_from_source? && bottle_current?(f)
 end
 
 def built_bottle? f
@@ -25,7 +18,7 @@ def built_bottle? f
 end
 
 def bottle_current? f
-  !f.bottle_url.nil? && Pathname.new(f.bottle_url).version == f.version
+  f.bottle_url && f.bottle_sha1 && Pathname.new(f.bottle_url).version == f.version
 end
 
 def bottle_native_suffix
@@ -46,4 +39,8 @@ end
 
 def old_bottle_regex
   /(-bottle\.tar\.gz)$/
+end
+
+def bottle_base_url
+  "https://downloads.sf.net/project/machomebrew/Bottles/"
 end

@@ -5,10 +5,34 @@ def build_perl?;      ARGV.include? "--perl";   end
 def build_python?;    ARGV.include? "--python"; end
 def build_ruby?;      ARGV.include? "--ruby";   end
 
+class UniversalNeon < Requirement
+  def message; <<-EOS.undent
+      A universal build was requested, but neon was already built for a single arch.
+      You may need to `brew rm neon` first.
+    EOS
+  end
+  def satisfied?
+    f = Formula.factory('neon')
+    !f.installed? || archs_for_command(f.lib+'libneon.dylib').universal?
+  end
+end
+
+class UniversalSqlite < Requirement
+  def message; <<-EOS.undent
+      A universal build was requested, but sqlite was already built for a single arch.
+      You may need to `brew rm sqlite` first.
+    EOS
+  end
+  def satisfied?
+    f = Formula.factory('sqlite')
+    !f.installed? || archs_for_command(f.lib+'libsqlite3.dylib').universal?
+  end
+end
+
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.7.3.tar.bz2'
-  sha1 '624d4070361c0e8d7cf4f5c667629e72459b122d'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.7.4.tar.bz2'
+  sha1 '57a3cd351c1dbedddd020e7a1952df6cd2674527'
 
   depends_on 'pkg-config' => :build
 
@@ -18,6 +42,11 @@ class Subversion < Formula
   depends_on 'neon'
   depends_on 'sqlite'
 
+  if ARGV.build_universal?
+    depends_on UniversalNeon.new
+    depends_on UniversalSqlite.new
+  end
+
   def options
     [
       ['--java', 'Build Java bindings.'],
@@ -26,18 +55,6 @@ class Subversion < Formula
       ['--ruby', 'Build Ruby bindings.'],
       ['--universal', 'Build as a Universal Intel binary.'],
     ]
-  end
-
-  def check_neon_arch
-    # Check that Neon was built universal if we are building w/ --universal
-    neon = Formula.factory('neon')
-    if neon.installed?
-      neon_arch = archs_for_command(neon.lib+'libneon.dylib')
-      unless neon_arch.universal?
-        opoo "A universal build was requested, but neon was already built for a single arch."
-        puts "You may need to `brew rm neon` first."
-      end
-    end
   end
 
   def install
@@ -53,10 +70,7 @@ class Subversion < Formula
       end
     end
 
-    if ARGV.build_universal?
-      ENV.universal_binary
-      check_neon_arch
-    end
+    ENV.universal_binary if ARGV.build_universal?
 
     # Use existing system zlib
     # Use dep-provided other libraries

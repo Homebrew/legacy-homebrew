@@ -1,7 +1,7 @@
 require 'formula'
 
 class FluidSynth < Formula
-  homepage 'http://www.fluidsynth.org/'
+  homepage 'http://www.fluidsynth.org'
   url 'http://sourceforge.net/projects/fluidsynth/files/fluidsynth-1.1.5/fluidsynth-1.1.5.tar.gz'
   sha1 '2f98696ca0a6757684f0a881bf92b3149536fdf2'
 
@@ -10,11 +10,10 @@ class FluidSynth < Formula
   depends_on 'glib'
   depends_on 'libsndfile' => :optional
 
-  def patches
-    # Fixes missing CoreAudio include on Lion.  Here is the upstream report:
-    # https://sourceforge.net/apps/trac/fluidsynth/ticket/105
-    DATA
-  end
+  # Fixes missing CoreAudio include on Lion.
+  # Patch has been accepted upstream.
+  # https://sourceforge.net/apps/trac/fluidsynth/ticket/105
+  def patches; DATA; end
 
   def install
     mkdir 'build' do
