@@ -2,18 +2,11 @@ require 'formula'
 
 class Bcwipe < Formula
   homepage 'http://www.jetico.com/linux/bcwipe-help/'
-  url 'http://www.jetico.com/linux/BCWipe-1.9-8.tar.gz'
-  md5 'b8ecc0a62856e7c752020bdfafc89c75'
+  url 'http://www.jetico.com/linux/BCWipe-1.9-9.tar.gz'
+  md5 '1377971bafce72238d1a062e2305c1c0'
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
-
-    # This does not get detected properly.
-    # Should be reported upstream!
-    inreplace "config.h", "/* #undef HAVE_GETTIMEOFDAY */", "#define HAVE_GETTIMEOFDAY 1"
-
+    system "./configure", "--prefix=#{prefix}"
     system "make", "CFLAGS=#{ENV.cflags}", "LDFLAGS=#{ENV.ldflags}", "install"
   end
 end
