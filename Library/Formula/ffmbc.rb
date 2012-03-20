@@ -2,8 +2,8 @@ require 'formula'
 
 class Ffmbc < Formula
   homepage 'http://code.google.com/p/ffmbc/'
-  url 'http://ffmbc.googlecode.com/files/FFmbc-0.7-rc5.tar.bz2'
-  md5 '42881eaf4f012c0d32f1bebde2bbb70d'
+  url 'http://ffmbc.googlecode.com/files/FFmbc-0.7-rc7.tar.bz2'
+  md5 '547bb7b7963224dd66dffa8b25e623b3'
 
   depends_on 'yasm' => :build
   depends_on 'x264' => :optional
@@ -40,9 +40,10 @@ class Ffmbc < Formula
     # This formula will only install the commandline tools
     mv "ffprobe", "ffprobe-bc"
     bin.install "ffmbc", "ffprobe-bc"
-    Dir.chdir "doc"
-    mv.rename "ffprobe.1", "ffprobe-bc.1"
-    man1.install "ffmbc.1", "ffprobe-bc.1"
+    cd "doc" do
+      mv "ffprobe.1", "ffprobe-bc.1"
+      man1.install "ffmbc.1", "ffprobe-bc.1"
+    end
   end
 
   def caveats

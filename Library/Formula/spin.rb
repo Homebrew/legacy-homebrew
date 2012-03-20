@@ -1,28 +1,26 @@
 require 'formula'
 
 class Spin < Formula
-  url 'http://spinroot.com/spin/Src/spin610.tar.gz'
   homepage 'http://spinroot.com/spin/whatispin.html'
-  md5 '89c0d322c3a5aded1fda9b0d30327d19'
+  url 'http://spinroot.com/spin/Src/spin610.tar.gz'
   version '6.1.0'
+  md5 '89c0d322c3a5aded1fda9b0d30327d19'
 
   fails_with_llvm :build => 2334
 
+  # replace -DPC with -DMAC in makefile CFLAGS
   def patches
-    # replace -DPC with -DMAC in makefile CFLAGS
     DATA
   end
 
   def install
     ENV.deparallelize
 
-    # Compile and install the binary.
     cd("Src#{version}") do
       system "make"
       bin.install "spin"
     end
 
-    # Copy the man page.
     man1.install "Man/spin.1"
   end
 end

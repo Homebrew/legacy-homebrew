@@ -2,12 +2,12 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.0.12.tar.gz'
-  md5 'd0ceefeb2a68ecb19e78ee894a5b52a3'
+  url 'http://nginx.org/download/nginx-1.0.14.tar.gz'
+  md5 '019844e48c34952253ca26dd6e28c35c'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.1.14.tar.gz'
-    md5 '16d523e395778ef35b49a2fa6ad18af0'
+    url 'http://nginx.org/download/nginx-1.1.17.tar.gz'
+    md5 'b4c1c855d130352586ffc9a945ea6c00'
   end
 
   depends_on 'pcre'

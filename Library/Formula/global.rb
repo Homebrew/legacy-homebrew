@@ -11,7 +11,7 @@ class Global < Formula
     system "make install"
 
     # we copy these in already
-    Dir.chdir(share+'gtags') do
+    cd share+'gtags' do
       rm %w[README COPYING LICENSE INSTALL ChangeLog AUTHORS]
     end
   end

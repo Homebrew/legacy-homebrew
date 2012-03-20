@@ -1,8 +1,8 @@
 require 'formula'
 
 class Gnupg2 < Formula
-  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.18.tar.bz2'
   homepage 'http://www.gnupg.org/'
+  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.18.tar.bz2'
   sha1 '5ec2f718760cc3121970a140aeea004b64545c46'
 
   depends_on 'libgpg-error'
@@ -15,9 +15,9 @@ class Gnupg2 < Formula
   depends_on 'dirmngr' => :optional
   depends_on 'libusb-compat' => :optional
 
-  def patches
-    DATA
-  end
+  # fix configure's failure to detect libcurl
+  # http://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=commit;h=57ef0d6
+  def patches; DATA; end
 
   def install
     (var+'run').mkpath
@@ -28,7 +28,8 @@ class Gnupg2 < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
                           "--enable-symcryptrun",
-                          "--disable-agent"
+                          "--disable-agent",
+                          "--with-agent-pgm=#{HOMEBREW_PREFIX}/bin/gpg-agent"
     system "make"
     system "make check"
     system "make install"
@@ -40,8 +41,6 @@ class Gnupg2 < Formula
 end
 
 __END__
-# fix configure's failure to detect libcurl
-# http://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=commit;h=57ef0d6
 diff --git a/configure b/configure
 index 3df3900..35c474f 100755
 --- a/configure

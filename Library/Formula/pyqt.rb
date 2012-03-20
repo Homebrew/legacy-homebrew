@@ -12,20 +12,24 @@ class Pyqt < Formula
   depends_on 'qt'
 
   def install
-    ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/python", ':'
+    ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages", ':'
 
     system "python", "./configure.py", "--confirm-license",
                                        "--bindir=#{bin}",
-                                       "--destdir=#{lib}/python",
+                                       "--destdir=#{lib}/#{which_python}/site-packages",
                                        "--sipdir=#{share}/sip"
     system "make"
     system "make install"
   end
 
-  def caveats; <<-EOS
-This formula won't function until you amend your PYTHONPATH like so:
-    export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/python:$PYTHONPATH
-EOS
+  def caveats; <<-EOS.undent
+    For non-homebrew Python, you need to amend your PYTHONPATH like so:
+      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
+    EOS
+  end
+
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 
   def test

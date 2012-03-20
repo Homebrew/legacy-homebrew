@@ -1,8 +1,8 @@
 require 'formula'
 
 class Babl < Formula
-  url 'ftp://ftp.gimp.org/pub/babl/0.1/babl-0.1.6.tar.bz2'
   homepage 'http://www.gegl.org/babl/'
+  url 'ftp://ftp.gimp.org/pub/babl/0.1/babl-0.1.6.tar.bz2'
   md5 'dc960981a5ec5330fc1c177be9f59068'
 
   head 'git://git.gnome.org/babl'
@@ -10,27 +10,26 @@ class Babl < Formula
   depends_on 'pkg-config' => :build
 
   def options
-  [
-    ["--universal", "Builds a universal binary"],
-  ]
+    [["--universal", "Builds a universal binary"]]
   end
 
   def patches
-    # Fixes an error when compiling with clang
-    # The fix was found on macports: https://trac.macports.org/browser/trunk/dports/graphics/babl/files/clang.patch
+    # Fixes an error when compiling with clang. See:
+    # https://trac.macports.org/browser/trunk/dports/graphics/babl/files/clang.patch
     { :p0 => DATA }
   end
 
   def install
     if ARGV.build_universal?
       ENV.universal_binary
-      opoo 'Compilation may fail at babl-cpuaccel.c using gcc for a universal build' if ENV.compiler == :gcc
+      if ENV.compiler == :gcc
+        opoo 'Compilation may fail at babl-cpuaccel.c using gcc for a universal build'
+      end
     end
 
-    argv = ["--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"]
-
-    system "./configure", *argv
-    system "/usr/bin/make install"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
+    system "make install"
   end
 end
 

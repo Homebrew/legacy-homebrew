@@ -73,17 +73,69 @@ class GoodJRubyBall <TestBall
   end
 end
 
+class BadChickenBall <TestBall
+  depends_on "notapackage" => :chicken
+
+  def initialize name=nil
+    super "uses_chicken_ball"
+  end
+end
+
+class GoodChickenBall <TestBall
+  depends_on "extras" => :chicken
+
+  def initialize name=nil
+    super "uses_chicken_ball"
+  end
+end
+
+class BadRubiniusBall <TestBall
+  depends_on "notapackage" => :rbx
+
+  def initialize name=nil
+    super "uses_rubinius_ball"
+  end
+end
+
+class GoodRubiniusBall <TestBall
+  depends_on "date" => :rbx
+
+  def intialize
+    super "uses_rubinius_ball"
+  end
+end
+
+class BadNodeBall <TestBall
+  depends_on "notapackage" => :node
+
+  def initialize
+    super "uses_node_ball"
+  end
+end
+
+class GoodNodeBall <TestBall
+  depends_on "util" => :node
+
+  def initialize
+    super "uses_node_balls"
+  end
+end
+
 
 class ExternalDepsTests < Test::Unit::TestCase
   def check_deps_fail f
-    assert_raises(UnsatisfiedExternalDependencyError) do
-      f.new.check_external_deps
+    assert_raises(UnsatisfiedRequirement) do
+      f.new.external_deps.each do |dep|
+        raise UnsatisfiedRequirement.new(f, dep) unless dep.satisfied?
+      end
     end
   end
 
   def check_deps_pass f
     assert_nothing_raised do
-      f.new.check_external_deps
+      f.new.external_deps.each do |dep|
+        raise UnsatisfiedRequirement.new(f, dep) unless dep.satisfied?
+      end
     end
   end
 
@@ -119,5 +171,32 @@ class ExternalDepsTests < Test::Unit::TestCase
 
   def test_good_jruby_deps
     check_deps_pass GoodJRubyBall unless `/usr/bin/which jruby`.chomp.empty?
+  end
+
+  # Only run these next two tests if rubinius is installed.
+  def test_bad_rubinius_deps
+    check_deps_fail BadRubiniusBall unless `/usr/bin/which rbx`.chomp.empty?
+  end
+
+  def test_good_rubinius_deps
+    check_deps_pass GoodRubiniusBall unless `/usr/bin/which rbx`.chomp.empty?
+  end
+
+  # Only run these next two tests if chicken scheme is installed.
+  def test_bad_chicken_deps
+    check_deps_fail BadChickenBall unless `/usr/bin/which csc`.chomp.empty?
+  end
+
+  def test_good_chicken_deps
+    check_deps_pass GoodChickenBall unless `/usr/bin/which csc`.chomp.empty?
+  end
+
+  # Only run these next two tests if node.js is installed.
+  def test_bad_node_deps
+    check_deps_fail BadNodeBall unless `/usr/bin/which node`.chomp.empty?
+  end
+
+  def test_good_node_deps
+    check_deps_pass GoodNodeBall unless `/usr/bin/which node`.chomp.empty?
   end
 end

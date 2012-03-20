@@ -6,18 +6,36 @@ require 'exceptions'
 
 ARGV.extend(HomebrewArgvExtension)
 
-HOMEBREW_VERSION = '0.8.1'
+HOMEBREW_VERSION = '0.9'
 HOMEBREW_WWW = 'http://mxcl.github.com/homebrew/'
 
-HOMEBREW_CACHE = if ENV['HOMEBREW_CACHE']
-  Pathname.new(ENV['HOMEBREW_CACHE'])
-elsif Process.uid == 0
-  # technically this is not the correct place, this cache is for *all users*
-  # so in that case, maybe we should always use it, root or not?
-  Pathname.new("/Library/Caches/Homebrew")
-else
-  Pathname.new("~/Library/Caches/Homebrew").expand_path
+def cache
+  if ENV['HOMEBREW_CACHE']
+    Pathname.new(ENV['HOMEBREW_CACHE'])
+  else
+    # we do this for historic reasons, however the cache *should* be the same
+    # directory whichever user is used and whatever instance of brew is executed
+    home_cache = Pathname.new("~/Library/Caches/Homebrew").expand_path
+    if home_cache.directory? and home_cache.writable?
+      home_cache
+    else
+      root_cache = Pathname.new("/Library/Caches/Homebrew")
+      class << root_cache
+        alias :oldmkpath :mkpath
+        def mkpath
+          unless exist?
+            oldmkpath
+            chmod 0777
+          end
+        end
+      end
+      root_cache
+    end
+  end
 end
+
+HOMEBREW_CACHE = cache
+undef cache # we use a function to prevent adding home_cache to the global scope
 
 # Where brews installed via URL are cached
 HOMEBREW_CACHE_FORMULA = HOMEBREW_CACHE+"Formula"
@@ -31,6 +49,7 @@ end
 
 HOMEBREW_PREFIX = Pathname.new(HOMEBREW_BREW_FILE).dirname.parent # Where we link under
 HOMEBREW_REPOSITORY = Pathname.new(HOMEBREW_BREW_FILE).realpath.dirname.parent # Where .git is found
+HOMEBREW_LIBRARY = HOMEBREW_REPOSITORY/"Library"
 
 # Where we store built products; /usr/local/Cellar if it exists,
 # otherwise a Cellar relative to the Repository.
@@ -40,10 +59,20 @@ else
   HOMEBREW_REPOSITORY+"Cellar"
 end
 
-MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
-MACOS_VERSION = /(10\.\d+)(\.\d+)?/.match(MACOS_FULL_VERSION).captures.first.to_f
+HOMEBREW_LOGS = Pathname.new('~/Library/Logs/Homebrew/').expand_path
 
-HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; Mac OS X #{MACOS_FULL_VERSION})"
+if RUBY_PLATFORM =~ /darwin/
+  MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
+  MACOS_VERSION = /(10\.\d+)(\.\d+)?/.match(MACOS_FULL_VERSION).captures.first.to_f
+  OS_VERSION = "Mac OS X #{MACOS_FULL_VERSION}"
+  MACOS = true
+else
+  MACOS_FULL_VERSION = MACOS_VERSION = 0
+  OS_VERSION = RUBY_PLATFORM
+  MACOS = false
+end
+
+HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; #{OS_VERSION})"
 
 HOMEBREW_CURL_ARGS = '-qf#LA'
 

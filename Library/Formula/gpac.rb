@@ -34,9 +34,12 @@ class Gpac < Formula
 
   def install
     ENV.deparallelize
+
     args = ["--disable-wx",
             "--prefix=#{prefix}",
             "--mandir=#{man}",
+            # gpac build system is barely functional
+            "--extra-cflags=-I/usr/X11/include",
             # Force detection of X libs on 64-bit kernel
             "--extra-ldflags=-L/usr/X11/lib"]
     args << "--use-ffmpeg=no" unless ARGV.build_head?

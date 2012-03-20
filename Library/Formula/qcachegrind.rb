@@ -1,19 +1,14 @@
 require 'formula'
 
 class Qcachegrind < Formula
-  url 'http://kcachegrind.sourceforge.net/kcachegrind-0.7.0.tar.gz'
   homepage 'http://kcachegrind.sourceforge.net/'
-  md5 '0001385bbc630afa353619de8768e946'
+  url 'http://kcachegrind.sourceforge.net/kcachegrind-0.7.1.tgz'
+  md5 '39376990a9ea2e9f1b75f43f9104fd70'
 
   depends_on 'graphviz' => :optional
+  depends_on 'qt'
 
   def install
-    qt = Formula.factory 'qt'
-    unless (qt.lib + 'Qt3Support.framework').exist?
-      onoe 'QCachegrind requires Qt3Support. `brew install qt --with-qt3support`'
-      exit 1
-    end
-
     cd 'qcachegrind'
     system 'qmake -spec macx-g++ -config release'
     system 'make'
@@ -21,6 +16,6 @@ class Qcachegrind < Formula
   end
 
   def test
-    system 'qcachegrind'
+    system "#{bin}/qcachegrind"
   end
 end

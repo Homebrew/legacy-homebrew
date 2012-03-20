@@ -17,12 +17,14 @@ class Coreutils < Formula
   mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.15.tar.xz'
   sha256 '837eb377414eae463fee17d0f77e6d76bed79b87bc97ef0c23887710107fd49c'
 
+  depends_on 'xz' => :build
+
   def install
     system "./configure", "--prefix=#{prefix}", "--program-prefix=g"
     system "make install"
 
     # create a gnubin dir that has all the commands without program-prefix
-    mkdir_p libexec+'gnubin'
+    (libexec+'gnubin').mkpath
     $commands.each do |g|
       ln_sf "../../bin/g#{g}", libexec+"gnubin/#{g}"
     end
