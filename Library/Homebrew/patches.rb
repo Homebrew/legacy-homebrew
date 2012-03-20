@@ -9,7 +9,7 @@ class Patches
       # DATA.each does each line, which doesn't work so great
       urls = [urls] unless urls.kind_of? Array
       urls.each_with_index do |url, n|
-        @patches << Patch.new(patch_p, '%03d-homebrew.diff' % n, url)
+        @patches << Patch.new(patch_p, "%03d_#{patch_p}-homebrew.diff" % n, url)
       end
     end
   end
