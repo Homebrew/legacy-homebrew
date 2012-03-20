@@ -145,9 +145,8 @@ For the full command list, see the COMMANDS section.
     <formula> is usually the name of the formula to install, but may also be
     the URL for an arbitrary formula.
 
-    If `--force` is passed, will install <formula> even if it is already
-    installed. This can be used to re-install a formula without removing
-    it first.
+    If `--force` is passed, will install <formula> if it exists, even if it
+    is blacklisted.
 
     If `--debug` is passed and brewing fails, open a shell inside the
     temporary directory used for compiling.
@@ -248,6 +247,11 @@ For the full command list, see the COMMANDS section.
   * `search --macports`|`--fink` <text>:
     Search for <text> on the MacPorts or Fink package search page.
 
+  * `tap` [<tap>]:
+    Tap a new formula repository from GitHub, or list existing taps.
+
+    <tap> is of the form <user>/<repo>, e.g. `brew tap homebrew/dupes`.
+
   * `test` <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
     test method. There is no standard output or return code, but it should
@@ -259,6 +263,9 @@ For the full command list, see the COMMANDS section.
   * `unlink` <formula>:
     Unsymlink <formula> from the Homebrew prefix. This can be useful for
     temporarily disabling a formula: `brew unlink foo && commands && brew link foo`.
+
+  * `untap` <tap>:
+    Remove a tapped repository.
 
   * `update [--rebase]`:
     Fetch the newest version of Homebrew and all formulae from GitHub using
@@ -322,10 +329,10 @@ scripts that reside somewhere in the PATH, named `brew-<cmdname>` or
 `brew-<cmdname>.rb`, which can be invoked like `brew cmdname`. This allows you
 to create your own commands without modifying Homebrew's internals.
 
-A number of (useful, but unsupported) example commands are included and enabled
+A number of (useful, but unsupported) external commands are included and enabled
 by default:
 
-    $ ls `brew --repository`/Library/Contributions/examples
+    $ ls `brew --repository`/Library/Contributions/cmds
 
 Documentation for the included external commands as well as instructions for
 creating your own can be found on the wiki:
