@@ -1,9 +1,10 @@
 require 'formula'
 
 class Csup < Formula
-  url 'http://mu.org/~mux/csup-snap-20060318.tgz'
-  homepage 'http://mu.org/~mux/csup.html'
-  md5 '9218f06f13ed28d1086eec413a734915'
+  homepage 'https://bitbucket.org/mux/csup'
+  url 'https://bitbucket.org/mux/csup/get/REL_20120305.tar.gz'
+  md5 '24be262075ce8f268caf86ffe20fe268'
+  head 'https://bitbucket.org/mux/csup', :using => :hg
 
   def install
     system "make"
@@ -12,6 +13,6 @@ class Csup < Formula
   end
 
   def test
-    system "csup -v"
+    system "#{bin}/csup -v"
   end
 end
