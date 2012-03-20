@@ -75,7 +75,7 @@ class Keg < Pathname
     link_dir('share') do |path|
       case path.to_s
       when 'locale/locale.alias' then :skip_file
-      when INFOFILE_RX then :info if ENV['HOMEBREW_KEEP_INFO']
+      when INFOFILE_RX then ENV['HOMEBREW_KEEP_INFO'] ? :info : :skip_file
       when LOCALEDIR_RX then :mkpath
       when *share_mkpaths then :mkpath
       else :link
@@ -146,7 +146,7 @@ protected
         Find.prune if File.basename(src) == '.DS_Store'
 
         case yield src.relative_path_from(root)
-        when :skip_file
+        when :skip_file, nil
           Find.prune
         when :info
           make_relative_symlink dst, src
