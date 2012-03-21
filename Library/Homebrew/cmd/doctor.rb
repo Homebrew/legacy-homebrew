@@ -182,10 +182,18 @@ def check_for_broken_symlinks
 end
 
 def check_for_latest_xcode
-  if MacOS.xcode_version.nil? then return <<-EOS.undent
-    We couldn't detect any version of Xcode.
-    If you downloaded Xcode from the App Store, you may need to run the installer.
-    EOS
+  if MacOS.xcode_version.nil?
+    if MacOS.version >= 10.7 then return <<-EOS.undent
+      We couldn't detect any version of Xcode.
+      The latest Xcode can be obtained from the Mac App Store.
+      Alternatively, the Command Line Tools package can be obtained from
+        http://connect.apple.com
+      EOS
+    else return <<-EOS.undent
+      We couldn't detect any version of Xcode.
+      The latest Xcode can be obtained from http://connect.apple.com
+      EOS
+    end
   end
 
   latest_xcode = case MacOS.version
