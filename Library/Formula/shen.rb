@@ -18,7 +18,7 @@ class Shen < Formula
   def install
     if ARGV.include?("--sbcl") then
       system "cp K\\ Lambda/* Platforms/SBCL"
-      safe_system "cd Platforms/SBCL; sbcl --load install.lsp"
+      safe_system "cd Platforms/SBCL; sbcl --no-userinit --load install.lsp"
       system "mv Platforms/SBCL/Shen.exe shen"
     else
       system "cp K\\ Lambda/* Platforms/CLisp"
