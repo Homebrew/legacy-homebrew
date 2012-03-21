@@ -5,6 +5,8 @@ class Mpd < Formula
   homepage 'http://mpd.wikia.com'
   sha1 '878f3ce82d4f00f6cbad63a625b2c0274c4a704a'
 
+  head "git://git.musicpd.org/master/mpd.git"
+
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'libid3tag'
@@ -23,6 +25,10 @@ class Mpd < Formula
   end
 
   def install
+    if ARGV.build_head?
+      system "./autogen.sh"
+    end
+
     # make faad.h findable (when brew is used elsewhere than /usr/local/)
     ENV.append 'CFLAGS', "-I#{HOMEBREW_PREFIX}/include"
 
