@@ -3,7 +3,7 @@ require 'formula'
 class Shen < Formula
   homepage 'http://www.shenlanguage.org/'
   url 'http://www.shenlanguage.org/download/Shen3.1.zip'
-  md5 'ecc1ed39c499417b9408157982559319'
+  md5 'af5cf93107ead37373e2e520bccd3b08'
 
   if ARGV.include? "--sbcl"
     depends_on 'sbcl'
