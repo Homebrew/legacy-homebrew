@@ -87,7 +87,8 @@ module HomebrewEnvExtension
 
   def gcc_4_0_1
     # we don't use xcrun because gcc 4.0 has not been provided since Xcode 4
-    self['CC'] =  "#{MacOS.dev_tools_path}/gcc-4.0"
+    self['CC'] = "#{MacOS.dev_tools_path}/gcc-4.0"
+    self['LD'] = self['CC']
     self['CXX'] = "#{MacOS.dev_tools_path}/g++-4.0"
     self['OBJC'] = self['CC']
     replace_in_cflags '-O4', '-O3'
@@ -129,6 +130,7 @@ module HomebrewEnvExtension
     self['CC'] = `/usr/bin/xcrun -find #{$1}`.chomp if $1
     self['CXX'] =~ %r{/usr/bin/xcrun (.*)}
     self['CXX'] = `/usr/bin/xcrun -find #{$1}`.chomp if $1
+    self['LD'] = self['CC']
     self['OBJC'] = self['CC']
   end
 
@@ -138,11 +140,13 @@ module HomebrewEnvExtension
     # But we don't want LLVM of course.
 
     self['CC'] = xcrun "gcc-4.2"
+    self['LD'] = self['CC']
     self['CXX'] = xcrun "g++-4.2"
     self['OBJC'] = self['CC']
 
     unless self['CC']
       self['CC'] = "#{HOMEBREW_PREFIX}/bin/gcc-4.2"
+      self['LD'] = self['CC']
       self['CXX'] = "#{HOMEBREW_PREFIX}/bin/g++-4.2"
       self['OBJC'] = self['CC']
       raise "GCC could not be found" if not File.exist? self['CC']
@@ -159,7 +163,8 @@ module HomebrewEnvExtension
   alias_method :gcc_4_2, :gcc
 
   def llvm
-    self['CC']  = xcrun "llvm-gcc"
+    self['CC'] = xcrun "llvm-gcc"
+    self['LD'] = self['CC']
     self['CXX'] = xcrun "llvm-g++"
     self['OBJC'] = self['CC']
     set_cpu_cflags 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott'
@@ -167,7 +172,8 @@ module HomebrewEnvExtension
   end
 
   def clang
-    self['CC']  = xcrun "clang"
+    self['CC'] = xcrun "clang"
+    self['LD'] = self['CC']
     self['CXX'] = xcrun "clang++"
     self['OBJC'] = self['CC']
     replace_in_cflags(/-Xarch_i386 (-march=\S*)/, '\1')
