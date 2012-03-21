@@ -71,7 +71,7 @@ class Dependency
   end
 
   def ==(other_dep)
-    @name = other_dep.to_s
+    @name == other_dep.to_s
   end
 
   def options
