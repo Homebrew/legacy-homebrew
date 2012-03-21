@@ -1,9 +1,9 @@
 require 'formula'
 
 class Aplus < Formula
+  homepage 'http://www.aplusdev.org/'
   url 'http://mirrors.kernel.org/debian/pool/main/a/aplus-fsf/aplus-fsf_4.22.1.orig.tar.gz'
   mirror 'http://ftp.us.debian.org/debian/pool/main/a/aplus-fsf/aplus-fsf_4.22.1.orig.tar.gz'
-  homepage 'http://www.aplusdev.org/'
   md5 'c45df4f3e816d7fe957deed9b81f66c3'
 
   # Fix the missing CoreServices include (via Fink version of aplus)
@@ -28,10 +28,9 @@ class Aplus < Formula
     system "autoconf"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "/usr/bin/make"
-    # make install breaks with -j option
-    ENV.j1
-    system "/usr/bin/make", "install"
+    system "make"
+    ENV.j1 # make install breaks with -j option
+    system "make", "install"
   end
 
   def caveats
