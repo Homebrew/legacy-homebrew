@@ -24,6 +24,7 @@ class Emacs < Formula
       ["--srgb", "Enable sRGB colors in the Cocoa version of emacs"],
       ["--with-x", "Include X11 support"],
       ["--use-git-head", "Use Savannah git mirror for HEAD builds"],
+      ['--default-names', "Do NOT rename ctags to emacs-ctags"],
     ]
   end
 
@@ -33,6 +34,12 @@ class Emacs < Formula
     # Fix for building with Xcode 4; harmless on Xcode 3.x.
     unless ARGV.build_head?
       p << DATA
+    end
+
+    # Renames ctags to emacs-ctags for removing conflict with exuberant ctags
+    # Works against HEAD
+    unless ARGV.include? '--default-names'
+      p << "https://raw.github.com/gist/2144302/8d9a1655284a87b6c8a1402408da63a277b60f2c/emacs-ctags.diff"
     end
 
     if ARGV.include? "--cocoa"
@@ -124,8 +131,17 @@ class Emacs < Formula
       http://git.savannah.gnu.org/cgit/emacs.git for the mirror's status. The Emacs
       devs do not provide support for the git mirror, and they might reject bug
       reports filed with git version information. Use it at your own risk.
+
     EOS
 
+    unless ARGV.include? "--default-names"
+      s += <<-EOS.undent
+      ctags has been installed as emacs-ctags. To installed with default name use:
+
+        brew install emacs --default-names
+
+      EOS
+    end
     return s
   end
 end
