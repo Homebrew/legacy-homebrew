@@ -13,6 +13,12 @@ class Dpkg < Formula
   def patches; DATA; end
 
   def install
+    # FIXME This should be replaced with fails_with_clang once available
+    if ENV.compiler == :clang
+      opoo "Formula will not build with Clang, using LLVM."
+      ENV.llvm
+    end
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-compiler-warnings",
