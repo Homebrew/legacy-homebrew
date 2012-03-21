@@ -181,41 +181,20 @@ def check_for_broken_symlinks
   end
 end
 
-def check_gcc_42
-  if MacOS.gcc_42_build_version == nil
-    # Don't show this warning on Xcode 4.2+
-    if MacOS.xcode_version < "4.2"
-      "We couldn't detect gcc 4.2.x. Some formulae require this compiler."
-    end
-  elsif MacOS.gcc_42_build_version < RECOMMENDED_GCC_42
-    <<-EOS.undent
-      Your gcc 4.2.x version is older than the recommended version.
-      It may be advisable to upgrade to the latest release of Xcode.
-    EOS
-  end
-end
-
-def check_xcode_exists
-  if MacOS.xcode_version == nil
-      <<-EOS.undent
-        We couldn't detect any version of Xcode.
-        If you downloaded Xcode from the App Store, you may need to run the installer.
-      EOS
-  elsif MacOS.xcode_version < "4.0"
-    if MacOS.gcc_40_build_version == nil
-      "We couldn't detect gcc 4.0.x. Some formulae require this compiler."
-    elsif MacOS.gcc_40_build_version < RECOMMENDED_GCC_40
-      <<-EOS.undent
-        Your gcc 4.0.x version is older than the recommended version.
-        It may be advisable to upgrade to the latest release of Xcode.
-      EOS
-    end
-  end
-end
-
 def check_for_latest_xcode
-  # the check_xcode_exists check is enough
-  return if MacOS.xcode_version.nil?
+  if MacOS.xcode_version.nil?
+    if MacOS.version >= 10.7 then return <<-EOS.undent
+      We couldn't detect any version of Xcode.
+      The latest Xcode can be obtained from the Mac App Store.
+      Alternatively, the Command Line Tools package can be obtained from
+        http://connect.apple.com
+      EOS
+    else return <<-EOS.undent
+      We couldn't detect any version of Xcode.
+      The latest Xcode can be obtained from http://connect.apple.com
+      EOS
+    end
+  end
 
   latest_xcode = case MacOS.version
     when 10.5 then "3.1.4"

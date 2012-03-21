@@ -149,6 +149,7 @@ protected
         when :skip_file, nil
           Find.prune
         when :info
+          next if File.basename(src) == 'dir' # skip historical local 'dir' files
           make_relative_symlink dst, src
           dst.install_info
         else
