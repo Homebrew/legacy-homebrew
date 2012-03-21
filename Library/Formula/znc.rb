@@ -8,24 +8,25 @@ class Znc < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'c-ares' => :optional
-  depends_on "automake" if ARGV.build_head? and MacOS.xcode_version >= "4.3"
 
   skip_clean 'bin/znc'
   skip_clean 'bin/znc-config'
   skip_clean 'bin/znc-buildmod'
+
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   def options
     [['--enable-debug', "Compile ZNC with --enable-debug"]]
   end
 
   def install
-    if ARGV.build_head?
-      ENV['ACLOCAL_FLAGS'] = "--acdir=#{HOMEBREW_PREFIX}/share/aclocal"
-      system "./autogen.sh"
-    end
-
     args = ["--prefix=#{prefix}", "--enable-extra"]
     args << "--enable-debug" if ARGV.include? '--enable-debug'
+
+    system "./autogen.sh" if ARGV.build_head?
     system "./configure", *args
     system "make install"
   end

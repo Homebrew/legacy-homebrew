@@ -9,15 +9,15 @@ class Libmikmod < Formula
     [[ '--with-debug', 'Enable debugging symbols and build without optimization']]
   end
 
-  def patches
-    # When aclocal is run on configure.in, it is told to use a macro AM_PATH_ESD that
-    # only exists if esound is installed.  Here CoreAudio is used not esound.
-    DATA unless Formula.factory('esound').installed?
+  if MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
-  if MacOS.xcode_version >= "4.3"
-    depends_on "automake"
-    depends_on "libtool"
+  # When aclocal is run on configure.in, it is told to use a macro AM_PATH_ESD that
+  # only exists if esound is installed.  Here CoreAudio is used not esound.
+  def patches
+    DATA unless Formula.factory('esound').installed?
   end
 
   def install
@@ -72,7 +72,7 @@ class Libmikmod < Formula
     args << ((ARGV.include? '--with-debug') ? '--enable-debug' : '--disable-debug')
     # autoreconf w/glibtoolize will fix PIC flags, flat_namespace from 2005 era code.
     system "autoreconf -ivf"
-    # An oos build is recommended in the documentation.
+
     mkdir 'macbuild' do
       system "../configure", *args
       system "make"

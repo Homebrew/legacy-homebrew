@@ -10,14 +10,14 @@ class Mdbtools < Formula
   depends_on 'gawk' => :optional # To generate docs
 
   if MacOS.xcode_version >= "4.3"
-    depends_on "automake"
-    depends_on "libtool"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   def install
     inreplace 'autogen.sh', 'libtool', 'glibtool'
 
-    system "NOCONFIGURE='yes' ACLOCAL_FLAGS='-I#{HOMEBREW_PREFIX}/share/aclocal' ./autogen.sh"
+    system "NOCONFIGURE='yes' ./autogen.sh"
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make install"
   end

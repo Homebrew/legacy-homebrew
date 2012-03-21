@@ -5,17 +5,18 @@ require 'formula'
 
 class Libtool < Formula
   homepage 'http://www.gnu.org/software/libtool/'
-  url 'http://ftpmirror.gnu.org/libtool/libtool-2.4.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/libtool/libtool-2.4.tar.gz'
-  md5 'b32b04148ecdd7344abc6fe8bd1bb021'
+  url 'http://ftpmirror.gnu.org/libtool/libtool-2.4.2.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/libtool/libtool-2.4.2.tar.gz'
+  sha1 '22b71a8b5ce3ad86e1094e7285981cae10e6ff88'
 
   if MacOS.xcode_version.to_f < 4.3 or File.file? "/usr/bin/glibtoolize"
     keg_only "Xcode (up to and including 4.2) provides (a rather old) Libtool."
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--program-prefix=g",
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--program-prefix=g",
                           "--enable-ltdl-install"
     system "make install"
   end

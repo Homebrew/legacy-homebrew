@@ -7,6 +7,11 @@ class Sdl < Formula
 
   head 'http://hg.libsdl.org/SDL', :using => :hg
 
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   # we have to do this because most build scripts assume that all sdl modules
   # are installed to the same prefix. Consequently SDL stuff cannot be
   # keg-only but I doubt that will be needed.
