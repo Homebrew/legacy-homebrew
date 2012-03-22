@@ -101,6 +101,10 @@ class Llvm < Formula
     end if build_analyzer?
   end
 
+  def test
+    system "#{bin}/llvm-config --version"
+  end
+
   def caveats; <<-EOS.undent
     If you already have LLVM installed, then "brew upgrade llvm" might not work.
     Instead, try:
