@@ -23,6 +23,7 @@ class Llvm < Formula
 
   bottle do
     sha1 'f6feaab7d1e4f45cd5f0b63d465e65f491fcc27c' => :lion
+    sha1 '0b4a9baac5cd07192f992ef3621371e9cde3979a' => :snowleopard
   end
 
   def patches
