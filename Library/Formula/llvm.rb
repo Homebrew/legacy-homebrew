@@ -21,6 +21,10 @@ class Llvm < Formula
   url       'http://llvm.org/releases/3.0/llvm-3.0.tar.gz'
   md5       'a8e5f5f1c1adebae7b4a654c376a6005'
 
+  bottle do
+    sha1 'f6feaab7d1e4f45cd5f0b63d465e65f491fcc27c' => :lion
+  end
+
   def patches
     # changes the link options for the shared library build
     # to use the preferred way to build libraries in Mac OS X
