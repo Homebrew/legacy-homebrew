@@ -13,7 +13,24 @@ class KyotoCabinet < Formula
     p
   end
 
+  def options
+  [
+    ["--with-libc++", "Link with libc++. Requires clang."]
+  ]
+  end
+
   def install
+
+    if ARGV.include? "--with-libc++"
+      if ENV.compiler != :clang
+        onoe '--use-clang is required for building with libc++'
+        exit 1
+      else
+        ENV.append 'CXXFLAGS', '-std=c++11'
+        ENV.append 'CXXFLAGS', '-stdlib=libc++'
+      end
+    end
+
     system "./configure", "--disable-debug", "--prefix=#{prefix}"
     system "make" # Separate steps required
     system "make install"
