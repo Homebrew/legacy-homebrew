@@ -8,7 +8,7 @@ class Blahtexml < Formula
   depends_on 'xerces-c'
 
   def install
-    system "/usr/bin/make blahtex-mac blahtexml-mac"
+    system "make blahtex-mac blahtexml-mac"
     bin.install 'blahtex', 'blahtexml'
   end
 end

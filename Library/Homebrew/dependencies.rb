@@ -36,7 +36,7 @@ class DependencyCollector
       when Array
         @deps << Dependency.new(key, value)
       when *LANGUAGE_MODULES
-        @external_deps << LanguageModuleDependency.new(key, value)
+        @external_deps << LanguageModuleDependency.new(value, key)
       else
         # :optional, :recommended, :build, :universal and "32bit" are predefined
         @deps << Dependency.new(key, [value])
@@ -71,7 +71,7 @@ class Dependency
   end
 
   def ==(other_dep)
-    @name = other_dep.to_s
+    @name == other_dep.to_s
   end
 
   def options
@@ -92,9 +92,10 @@ end
 
 # A dependency on a language-specific module.
 class LanguageModuleDependency < Requirement
-  def initialize module_name, type
+  def initialize language, module_name, import_name=nil
+    @language = language
     @module_name = module_name
-    @type = type
+    @import_name = import_name || module_name
   end
 
   def fatal?; true; end
@@ -105,26 +106,26 @@ class LanguageModuleDependency < Requirement
 
   def message; <<-EOS.undent
     Unsatisfied dependency: #{@module_name}
-    Homebrew does not provide #{@type.to_s.capitalize} dependencies; install with:
+    Homebrew does not provide #{@language.to_s.capitalize} dependencies; install with:
       #{command_line} #{@module_name}
     EOS
   end
 
   def the_test
-    case @type
-      when :chicken then %W{/usr/bin/env csi -e (use #{@module_name})}
-      when :jruby then %W{/usr/bin/env jruby -rubygems -e require\ '#{@module_name}'}
-      when :lua then %W{/usr/bin/env luarocks show #{@module_name}}
-      when :node then %W{/usr/bin/env node -e require('#{@module_name}');}
-      when :perl then %W{/usr/bin/env perl -e use\ #{@module_name}}
-      when :python then %W{/usr/bin/env python -c import\ #{@module_name}}
-      when :ruby then %W{/usr/bin/env ruby -rubygems -e require\ '#{@module_name}'}
-      when :rbx then %W{/usr/bin/env rbx -rubygems -e require\ '#{@module_name}'}
+    case @language
+      when :chicken then %W{/usr/bin/env csi -e (use #{@import_name})}
+      when :jruby then %W{/usr/bin/env jruby -rubygems -e require\ '#{@import_name}'}
+      when :lua then %W{/usr/bin/env luarocks show #{@import_name}}
+      when :node then %W{/usr/bin/env node -e require('#{@import_name}');}
+      when :perl then %W{/usr/bin/env perl -e use\ #{@import_name}}
+      when :python then %W{/usr/bin/env python -c import\ #{@import_name}}
+      when :ruby then %W{/usr/bin/env ruby -rubygems -e require\ '#{@import_name}'}
+      when :rbx then %W{/usr/bin/env rbx -rubygems -e require\ '#{@import_name}'}
     end
   end
 
   def command_line
-    case @type
+    case @language
       when :chicken then "chicken-install"
       when :jruby   then "jruby -S gem install"
       when :lua     then "luarocks install"
