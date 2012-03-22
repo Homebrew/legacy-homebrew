@@ -8,8 +8,12 @@ class GnomeDocUtils < Formula
   depends_on 'pkg-config' => :build
   depends_on 'intltool'
   depends_on 'docbook'
-  depends_on 'libxml2' # --with-python
   depends_on 'gettext'
+
+  # libxml2 must be installed --with-python, and since it is keg-only, the
+  # Python module must also be symlinked into site-packages or put on the
+  # PYTHONPATH.
+  depends_on 'libxml2'
 
   fails_with_llvm "Undefined symbols when linking", :build => "2326"
 
