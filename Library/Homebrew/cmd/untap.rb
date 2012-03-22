@@ -31,7 +31,7 @@ module Homebrew extend self
       bn = formula.basename.to_s
       pn = HOMEBREW_LIBRARY/"Formula/#{bn}"
 
-      if pn.symlink? and pn.realpath.to_s =~ %r[^#{tapd}]
+      if pn.symlink? and (!pn.exist? or pn.realpath.to_s =~ %r[^#{tapd}])
         pn.delete
         gitignores.delete(bn)
         untapped += 1
