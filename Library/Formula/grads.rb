@@ -6,10 +6,9 @@ class GradsSupplementary < Formula
 end
 
 class Grads < Formula
-  url 'ftp://iges.org/grads/2.0/grads-2.0.1-bin-darwin9.8-intel.tar.gz'
   homepage 'http://www.iges.org/grads/grads.html'
+  url 'ftp://iges.org/grads/2.0/grads-2.0.1-bin-darwin9.8-intel.tar.gz'
   md5 '3c94e4e2f840a323df24df5264e159ff'
-  version '2.0.1'
 
   def install
     bin.install ['bin/bufrscan', 'bin/grads', 'bin/grib2scan', 'bin/gribmap', 'bin/gribscan', 'bin/gxeps', 'bin/gxps', 'bin/gxtran', 'bin/stnmap', 'bin/wgrib']

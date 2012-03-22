@@ -6,6 +6,11 @@ class Robodoc < Formula
   homepage 'http://rfsber.home.xs4all.nl/Robo/robodoc.html'
   head 'https://github.com/gumpu/ROBODoc.git'
 
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
     system "autoreconf", "-f", "-i" if ARGV.build_head?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"

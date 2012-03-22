@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "February 2012" "Homebrew" "brew"
+.TH "BREW" "1" "March 2012" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -61,14 +61,17 @@ If no \fIformulae\fR are provided, all of them are checked\.
 Display the source to \fIformula\fR\.
 .
 .TP
-\fBcleanup [\-\-force] [\-n]\fR [\fIformulae\fR]
-For all installed or specific formulae, remove any older versions from the cellar\. By default, does not remove out\-of\-date keg\-only brews, as other software may link directly to specific versions\.
+\fBcleanup [\-\-force] [\-ns]\fR [\fIformulae\fR]
+For all installed or specific formulae, remove any older versions from the cellar\. By default, does not remove out\-of\-date keg\-only brews, as other software may link directly to specific versions\. In addition old downloads from the Homebrew download\-cache are deleted\.
 .
 .IP
 If \fB\-\-force\fR is passed, remove out\-of\-date keg\-only brews as well\.
 .
 .IP
 If \fB\-n\fR is passed, show what would be removed, but do not actually remove anything\.
+.
+.IP
+If \fB\-s\fR is passed, scrubs the cache, removing downloads for even the latest versions of formula\. Note downloads for any installed formula will still not be deleted\. If you want to delete those too: \fBrm \-rf $(brew \-\-cache)\fR
 .
 .TP
 \fBcreate [\-\-autotools|\-\-cmake] [\-\-no\-fetch]\fR \fIURL\fR
@@ -165,7 +168,7 @@ Install \fIformula\fR\.
 \fIformula\fR is usually the name of the formula to install, but may also be the URL for an arbitrary formula\.
 .
 .IP
-If \fB\-\-force\fR is passed, will install \fIformula\fR even if it is already installed\. This can be used to re\-install a formula without removing it first\.
+If \fB\-\-force\fR is passed, will install \fIformula\fR if it exists, even if it is blacklisted\.
 .
 .IP
 If \fB\-\-debug\fR is passed and brewing fails, open a shell inside the temporary directory used for compiling\.
@@ -272,6 +275,13 @@ Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is su
 Search for \fItext\fR on the MacPorts or Fink package search page\.
 .
 .TP
+\fBtap\fR [\fItap\fR]
+Tap a new formula repository from GitHub, or list existing taps\.
+.
+.IP
+\fItap\fR is of the form \fIuser\fR/\fIrepo\fR, e\.g\. \fBbrew tap homebrew/dupes\fR\.
+.
+.TP
 \fBtest\fR \fIformula\fR
 A few formulae provide a test method\. \fBbrew test <formula>\fR runs this test method\. There is no standard output or return code, but it should generally indicate to the user if something is wrong with the installed formula\.
 .
@@ -281,6 +291,10 @@ Example: \fBbrew install jruby && brew test jruby\fR
 .TP
 \fBunlink\fR \fIformula\fR
 Unsymlink \fIformula\fR from the Homebrew prefix\. This can be useful for temporarily disabling a formula: \fBbrew unlink foo && commands && brew link foo\fR\.
+.
+.TP
+\fBuntap\fR \fItap\fR
+Remove a tapped repository\.
 .
 .TP
 \fBupdate [\-\-rebase]\fR
@@ -350,13 +364,13 @@ Print the version number of brew to standard error and exit\.
 Homebrew, like \fBgit\fR(1), supports external commands\. These are executable scripts that reside somewhere in the PATH, named \fBbrew\-<cmdname>\fR or \fBbrew\-<cmdname>\.rb\fR, which can be invoked like \fBbrew cmdname\fR\. This allows you to create your own commands without modifying Homebrew\'s internals\.
 .
 .P
-A number of (useful, but unsupported) example commands are included and enabled by default:
+A number of (useful, but unsupported) external commands are included and enabled by default:
 .
 .IP "" 4
 .
 .nf
 
-$ ls `brew \-\-repository`/Library/Contributions/examples
+$ ls `brew \-\-repository`/Library/Contributions/cmds
 .
 .fi
 .

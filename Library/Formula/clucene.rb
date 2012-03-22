@@ -14,7 +14,7 @@ class Clucene < Formula
                             "--prefix=#{prefix}"
     end
 
-    # Install in parallel. See:
+    # Serialize the install step. See:
     # https://github.com/mxcl/homebrew/issues/8712
     ENV.j1
     system "make install"

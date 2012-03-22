@@ -1,26 +1,32 @@
 require 'formula'
 
-def TeX_installed?; return `which latex`.chomp != ''; end
+class TexInstalled < Requirement
+  def message; <<-EOS.undent
+    A TeX/LaTeX installation is required to install.
+    You can obtain the TeX distribution for Mac OS X from:
+        http://www.tug.org/mactex/
+    EOS
+  end
+  def satisfied?
+    which 'latex'
+  end
+  def fatal?
+    true
+  end
+end
 
 class Asymptote < Formula
   homepage 'http://asymptote.sourceforge.net/'
   url 'http://downloads.sourceforge.net/asymptote/asymptote-2.15.src.tgz'
   md5 '1adb969a4d7b17a3ae98728d1956bd77'
 
+  depends_on TexInstalled.new
+
   depends_on 'readline'
   depends_on 'bdw-gc'
 
   def install
-    unless TeX_installed?
-      onoe <<-EOS.undent
-        Asymptote requires a TeX/LaTeX installation; aborting now.
-        You can obtain the TeX distribution for Mac OS X from
-            http://www.tug.org/mactex/
-      EOS
-      exit 1
-    end
-
-    texmfhome = share + 'texmf'
+    texmfhome = share+'texmf'
 
     # see: https://sourceforge.net/tracker/?func=detail&aid=3486838&group_id=120000&atid=685683
     inreplace 'configure', '--no-var-tracking', '' if ENV.compiler == :clang
