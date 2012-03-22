@@ -15,12 +15,11 @@ class Appledoc < Formula
   def caveats; <<-EOS
 Make the documentation templates available to `appledoc':
 
-    mkdir -p "#{ENV['HOME']}/Library/Application Support/appledoc"
-    ln -sf "#{prefix}/Templates" "~/Library/Application Support/appledoc"
+    ln -sf "#{prefix}/Templates" "#{ENV['HOME']}/Library/Application Support/appledoc"
 
 If you have edited the templates yourself, you should check for important changes.
 
-NOTE someone should patch this tool so thic caveat is unecessary.
+NOTE someone should patch this tool so this caveat is unecessary.
 EOS
   end
 
