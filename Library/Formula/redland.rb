@@ -16,7 +16,8 @@ class Redland < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-sqlite=yes",
-                          "--with-mysql=no",
+                          "--enable-modular=no", # see http://bugs.librdf.org/mantis/view.php?id=460
+                          "--with-mysql=no", # why?
                           "--with-bdb=#{HOMEBREW_PREFIX}"
     system "make install"
   end
