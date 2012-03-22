@@ -5,13 +5,10 @@ class Fuse4x < Formula
   url 'https://github.com/fuse4x/fuse.git', :tag => "fuse4x_0_9_0"
   version "0.9.0"
 
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on 'gettext'
   depends_on 'fuse4x-kext'
-
-  if MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
 
   def install
     # Build universal if the hardware can handle it---otherwise 32 bit only
