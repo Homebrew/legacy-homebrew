@@ -8,7 +8,7 @@ class KyotoCabinet < Formula
   def patches
     p = []
     if ENV.compiler == :clang
-      p << 'https://raw.github.com/gist/9b24c8fffc234d75b732/f910b0cffd4758312af06974482622e0a9b8b37a/lock.patch'
+      p << 'https://gist.github.com/raw/9b24c8fffc234d75b732/f910b0cffd4758312af06974482622e0a9b8b37a/lock.patch'
     end
     p
   end
