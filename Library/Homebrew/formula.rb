@@ -631,7 +631,7 @@ private
 
       bottle_block.instance_eval &block
       @bottle_url, @bottle_sha1 = bottle_block.url_sha1
-      @bottle_url ||= "#{bottle_base_url}/#{name.downcase}-#{@version||@standard.detect_version}#{bottle_native_suffix}" if @bottle_sha1
+      @bottle_url ||= "#{bottle_base_url}#{name.downcase}-#{@version||@standard.detect_version}#{bottle_native_suffix}" if @bottle_sha1
     end
 
     def mirror val, specs=nil
