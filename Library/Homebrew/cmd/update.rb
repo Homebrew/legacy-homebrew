@@ -97,7 +97,7 @@ class Updater
   private
 
   def read_current_revision
-    `git rev-parse HEAD`.chomp
+    `git rev-parse -q --verify HEAD`.chomp
   end
 
   def `(cmd)
