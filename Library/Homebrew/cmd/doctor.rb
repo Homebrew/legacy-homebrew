@@ -36,6 +36,19 @@ def path_folders
 end
 
 
+# See https://github.com/mxcl/homebrew/pull/9986
+def check_path_for_trailing_slashes
+  bad_paths = ENV['PATH'].split(':').select{|p| p[p.length-1, p.length] == '/'}
+  return if bad_paths.empty?
+  s = <<-EOS.undent
+    Some directories in your path end in a slash.
+    Directories in your path should not end in a slash. This can break other
+    doctor checks. The following directories should be edited:
+  EOS
+  bad_paths.each{|p| s << "    #{p}"}
+  s
+end
+
 # Installing MacGPG2 interferes with Homebrew in a big way
 # http://sourceforge.net/projects/macgpg2/files/
 def check_for_macgpg2
