@@ -6,6 +6,8 @@ class Gist < Formula
   md5 '88c3fdb6c1503c36942b62f8684c1798'
   head 'https://github.com/defunkt/gist.git'
 
+  depends_on 'json' => :ruby
+
   def install
     system "rake", "install", "prefix=#{prefix}"
   end
