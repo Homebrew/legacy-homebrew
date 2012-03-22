@@ -16,7 +16,7 @@ class Appledoc < Formula
 Make the documentation templates available to `appledoc':
 
     mkdir -p "#{ENV['HOME']}/Library/Application Support/appledoc"
-    ln -sf "#{prefix}/Templates" "~/Library/Application Support/appledoc"
+    ln -sf "#{prefix}/Templates" "#{ENV['HOME']}/Library/Application Support/appledoc"
 
 If you have edited the templates yourself, you should check for important changes.
 
