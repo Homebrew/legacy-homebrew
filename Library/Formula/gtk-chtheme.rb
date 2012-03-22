@@ -18,10 +18,6 @@ class GtkChtheme < Formula
     # we need to disable errors for it to compile properly
     inreplace 'Makefile', '-DGTK_DISABLE_DEPRECATED', ''
 
-#    inreplace 'Metadata' do |s|
-#      s.change_make_var! "PREFIX", HOMEBREW_PREFIX
-#    end
-#    system "make install" # if this fails, try separate make/make install steps
     system "make", "PREFIX=#{prefix}", "install"
   end
 
