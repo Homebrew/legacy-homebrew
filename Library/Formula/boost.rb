@@ -74,7 +74,7 @@ class Boost < Formula
             "-j#{ENV.make_jobs}",
             "--layout=tagged",
             "--user-config=user-config.jam",
-            "threading=multi",
+            "threading=multi,single/link=static",
             "install"]
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if ARGV.include? "--universal"
