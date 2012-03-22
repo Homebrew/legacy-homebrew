@@ -35,6 +35,7 @@ module Homebrew extend self
       previous_sha1 = f.instance_variable_get(:@sha1).to_s.downcase
       previous_sha2 = f.instance_variable_get(:@sha256).to_s.downcase unless bottle
 
+      ohai "Downloaded to: #{the_tarball}"
       puts "MD5:  #{the_tarball.md5}" unless bottle
       puts "SHA1: #{the_tarball.sha1}"
       puts "SHA256: #{the_tarball.sha2}" unless bottle
