@@ -7,7 +7,7 @@ class AndroidSdk < Formula
   version 'r17'
 
   def self.var_dirs
-    %w[platforms samples temp add-ons sources system-images]
+    %w[platforms samples temp add-ons sources system-images extras]
     # TODO docs and platform-tools
     # See the long comment below for the associated problems
   end
