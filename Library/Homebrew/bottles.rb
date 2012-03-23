@@ -6,7 +6,7 @@ def bottle_filename f
 end
 
 def bottles_supported?
-  HOMEBREW_PREFIX.to_s == '/usr/local' and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar'
+  HOMEBREW_PREFIX.to_s == '/usr/local' and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar' and Hardware.is_64_bit? || !MacOS.snow_leopard?
 end
 
 def install_bottle? f
