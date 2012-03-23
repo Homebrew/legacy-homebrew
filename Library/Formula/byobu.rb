@@ -5,6 +5,8 @@ class Byobu < Formula
   homepage 'http://launchpad.net/byobu'
   md5 '15c3d0fd2923fba0a6d77fc52d59b81a'
 
+  depends_on 'coreutils'
+  
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make install"
