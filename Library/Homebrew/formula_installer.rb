@@ -7,13 +7,15 @@ require 'bottles'
 
 class FormulaInstaller
   attr :f
+  attr :tab
   attr :show_summary_heading, true
   attr :ignore_deps, true
   attr :install_bottle, true
   attr :show_header, true
 
-  def initialize ff
+  def initialize ff, tab=nil
     @f = ff
+    @tab = tab
     @show_header = true
     @ignore_deps = ARGV.include? '--ignore-dependencies' || ARGV.interactive?
     @install_bottle = install_bottle? ff
@@ -111,9 +113,10 @@ class FormulaInstaller
   end
 
   def install_dependency dep
+    dep_tab = Tab.for_formula(dep)
     outdated_keg = Keg.new(dep.linked_keg.realpath) rescue nil
 
-    fi = FormulaInstaller.new dep
+    fi = FormulaInstaller.new(dep, dep_tab)
     fi.ignore_deps = true
     fi.show_header = false
     oh1 "Installing #{f} dependency: #{dep}"
@@ -179,8 +182,7 @@ class FormulaInstaller
 
     args = ARGV.clone
     unless args.include? '--fresh'
-      previous_install = Tab.for_formula f
-      args.concat previous_install.used_options
+      args.concat tab.used_options unless tab.nil?
       args.uniq! # Just in case some dupes were added
     end
 
