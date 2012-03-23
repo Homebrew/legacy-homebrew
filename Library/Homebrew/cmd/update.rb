@@ -84,10 +84,15 @@ class Updater
     map = Hash.new{ |h,k| h[k] = [] }
 
     if initial_revision && initial_revision != current_revision
-      changes = `git diff-tree -r --name-status -z #{initial_revision} #{current_revision}`.split("\0")
-      changes.each_slice(2) do |status, file|
-        file = Pathname.pwd.join(file).relative_path_from(HOMEBREW_REPOSITORY)
-        map[status.to_sym] << file.to_s
+      changes = `git diff-tree -r --name-status -M85% -z #{initial_revision} #{current_revision}`.split("\0")
+      changes.each_cons(3) do |status, src, dst|
+        next unless status =~ /^[AMDR](\d{3})?$/
+        path = case status = status[0,1]
+          when 'R' then dst
+          else src
+          end
+        path = Pathname.pwd.join(path).relative_path_from(HOMEBREW_REPOSITORY)
+        map[status.to_sym] << path.to_s
       end
     end
 
@@ -97,7 +102,7 @@ class Updater
   private
 
   def read_current_revision
-    `git rev-parse HEAD`.chomp
+    `git rev-parse -q --verify HEAD`.chomp
   end
 
   def `(cmd)

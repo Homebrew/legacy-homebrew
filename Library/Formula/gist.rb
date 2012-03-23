@@ -2,8 +2,8 @@ require 'formula'
 
 class Gist < Formula
   homepage 'https://github.com/defunkt/gist'
-  url 'https://github.com/defunkt/gist/tarball/v3.0.1'
-  md5 '88c3fdb6c1503c36942b62f8684c1798'
+  url 'https://github.com/defunkt/gist/tarball/v3.1.0'
+  md5 'fde73d0653ff9bf07f0b9e2f72090f20'
   head 'https://github.com/defunkt/gist.git'
 
   def install
