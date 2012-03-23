@@ -7,9 +7,9 @@ class Mednafen < Formula
   version '0.8.D.3'
 
   devel do
-    url 'http://forum.fobby.net/index.php?t=getfile&id=304'
-    md5 '0327b3b0f8413f1ed446c4d8b9b897f0'
-    version '0.9.18-WIP'
+    url 'http://forum.fobby.net/index.php?t=getfile&id=345'
+    md5 '64be12196aa02828539af677b0e2a66c'
+    version '0.9.19-WIP'
   end
 
   depends_on 'pkg-config' => :build
@@ -22,6 +22,12 @@ class Mednafen < Formula
     [
       ["--with-psx", "Build experimental PlayStation emulator"]
     ]
+  end
+
+  def patches
+    # see http://forum.fobby.net/index.php?t=msg&&th=701&goto=2420#msg_2420
+    # will probably be fixed in the next version
+    DATA if ARGV.build_devel?
   end
 
   def install
@@ -45,3 +51,17 @@ class Mednafen < Formula
     system "make install"
   end
 end
+
+__END__
+diff -Naur mednafen.orig/mednafen/drivers/shader.cpp mednafen.wip/mednafen/drivers/shader.cpp
+--- mednafen.orig/mednafen/drivers/shader.cpp	2012-01-26 04:04:57.000000000 +0100
++++ mednafen.wip/mednafen/drivers/shader.cpp	2012-02-08 10:34:38.000000000 +0100
+@@ -70,7 +70,7 @@
+  switch(ipolate_axis & 3)
+  {
+   case 0:
+-	ret += std::string("gl_FragColor = texture2D(Tex0, gl_TexCoord[0]);\n");
++	ret += std::string("gl_FragColor = texture2D(Tex0, vec2(gl_TexCoord[0]));\n");
+ 	break;
+ 
+   case 1:
