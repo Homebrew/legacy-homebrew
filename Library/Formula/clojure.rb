@@ -24,7 +24,7 @@ class Clojure < Formula
       	  java -cp $CLOJURE clojure.main --repl
       	fi
     else
-        java -cp $CLOJURE clojure.main "$@"
+        java -cp "$CLOJURE" clojure.main "$@"
     fi
     EOS
   end

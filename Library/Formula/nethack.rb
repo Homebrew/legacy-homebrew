@@ -9,10 +9,11 @@ require 'formula'
 # The patch applied incorporates the patch-ac above, the OS X
 # instructions from the Wiki, and whatever else needed to be
 # done.
+# - @adamv
 
 class Nethack < Formula
-  url 'http://downloads.sourceforge.net/project/nethack/nethack/3.4.3/nethack-343-src.tgz'
   homepage 'http://www.nethack.org/index.html'
+  url 'http://downloads.sourceforge.net/project/nethack/nethack/3.4.3/nethack-343-src.tgz'
   version '3.4.3'
   md5 '21479c95990eefe7650df582426457f9'
 
@@ -39,7 +40,7 @@ class Nethack < Formula
     # Make the data first, before we munge the CFLAGS
     system "cd dat;make"
 
-    Dir.chdir 'dat' do
+    cd 'dat' do
       %w(perm logfile).each do |f|
         system "touch", f
         libexec.install f
@@ -56,6 +57,10 @@ class Nethack < Formula
 
     bin.install 'src/nethack'
     (libexec+'save').mkpath
+
+    # These need to be group-writable in multi-user situations
+    system "chmod", "g+w", libexec
+    system "chmod", "g+w", libexec+'save'
   end
 end
 

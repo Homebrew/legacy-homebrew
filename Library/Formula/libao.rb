@@ -9,7 +9,8 @@ class Libao < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--enable-static"
     system "make install"
   end
 end

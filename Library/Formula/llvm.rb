@@ -11,15 +11,20 @@ def build_jit?; ARGV.include? '--jit'; end
 class Clang < Formula
   homepage  'http://llvm.org/'
   head      'http://llvm.org/git/clang.git', :using => :git
-  url       'http://llvm.org/releases/2.9/clang-2.9.tgz'
-  md5       '634de18d04b7a4ded19ec4c17d23cfca'
+  url       'http://llvm.org/releases/3.0/clang-3.0.tar.gz'
+  md5       '43350706ae6cf05d0068885792ea0591'
 end
 
 class Llvm < Formula
   homepage  'http://llvm.org/'
   head      'http://llvm.org/git/llvm.git', :using => :git
-  url       'http://llvm.org/releases/2.9/llvm-2.9.tgz'
-  md5       '793138412d2af2c7c7f54615f8943771'
+  url       'http://llvm.org/releases/3.0/llvm-3.0.tar.gz'
+  md5       'a8e5f5f1c1adebae7b4a654c376a6005'
+
+  bottle do
+    sha1 'f6feaab7d1e4f45cd5f0b63d465e65f491fcc27c' => :lion
+    sha1 '0b4a9baac5cd07192f992ef3621371e9cde3979a' => :snowleopard
+  end
 
   def patches
     # changes the link options for the shared library build
@@ -44,10 +49,7 @@ class Llvm < Formula
       exit 1
     end
 
-    if build_clang? or build_analyzer?
-      clang_dir = Pathname.new(Dir.pwd)+'tools/clang'
-      Clang.new("clang").brew { clang_dir.install Dir['*'] }
-    end
+    Clang.new("clang").brew { clang_dir.install Dir['*'] } if build_clang? or build_analyzer?
 
     if build_universal?
       ENV['UNIVERSAL'] = '1'
@@ -56,8 +58,15 @@ class Llvm < Formula
 
     ENV['REQUIRES_RTTI'] = '1' if build_rtti?
 
-    configure_options = ["--prefix=#{prefix}",
-                         "--enable-optimized"]
+    configure_options = [
+      "--prefix=#{prefix}",
+      "--enable-optimized",
+      # As of LLVM 3.0, the only bindings offered are for OCaml and attempting
+      # to build these when Homebrew's OCaml is installed results in errors.
+      #
+      # See issue #8947 for details.
+      "--enable-bindings=none"
+    ]
 
     if build_all_targets?
       configure_options << "--enable-targets=all"
@@ -73,12 +82,12 @@ class Llvm < Formula
     system "make" # separate steps required, otherwise the build fails
     system "make install"
 
-    Dir.chdir clang_dir do
+    cd clang_dir do
       system "make install"
       bin.install 'tools/scan-build/set-xcode-analyzer'
     end if build_clang? or build_analyzer?
 
-    Dir.chdir clang_dir do
+    cd clang_dir do
       bin.install 'tools/scan-build/scan-build'
       bin.install 'tools/scan-build/ccc-analyzer'
       bin.install 'tools/scan-build/c++-analyzer'
@@ -93,11 +102,19 @@ class Llvm < Formula
     end if build_analyzer?
   end
 
+  def test
+    system "#{bin}/llvm-config --version"
+  end
+
   def caveats; <<-EOS.undent
     If you already have LLVM installed, then "brew upgrade llvm" might not work.
     Instead, try:
         brew rm llvm && brew install llvm
     EOS
+  end
+
+  def clang_dir
+    buildpath/'tools/clang'
   end
 end
 

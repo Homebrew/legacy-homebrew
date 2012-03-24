@@ -1,15 +1,15 @@
 require 'formula'
 
 class Cmigemo < Formula
+  homepage 'http://www.kaoriya.net/software/cmigemo'
   url 'http://cmigemo.googlecode.com/files/cmigemo-default-src-20110227.zip'
   md5 '6e9b6f6ec96d4eb8bdd18e52b91e1b85'
-  homepage 'http://www.kaoriya.net/software/cmigemo'
 
   depends_on 'nkf' => :build
 
   # Patch per discussion at: https://github.com/mxcl/homebrew/pull/7005
   def patches
-    "https://raw.github.com/gist/1145129/d6b4ad34f3763cac352dbc6d96cf6aa2566e4b7a/wordbuf.c.patch"
+    DATA
   end
 
   def install
@@ -17,7 +17,7 @@ class Cmigemo < Formula
     system "./configure"
     system "make osx"
     system "make osx-dict"
-    Dir.chdir('dict') do
+    cd 'dict' do
       system "make utf-8"
     end
     ENV.j1 # Install can fail on multi-core machines unless serialized
@@ -30,3 +30,15 @@ class Cmigemo < Formula
     EOS
   end
 end
+
+__END__
+--- a/src/wordbuf.c	2011-08-15 02:57:05.000000000 +0900
++++ b/src/wordbuf.c	2011-08-15 02:57:17.000000000 +0900
+@@ -9,6 +9,7 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <limits.h>
+ #include "wordbuf.h"
+ 
+ #define WORDLEN_DEF 64

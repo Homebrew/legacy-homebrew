@@ -1,9 +1,9 @@
 require 'formula'
 
 class RubyBuild < Formula
-  url 'https://github.com/sstephenson/ruby-build/tarball/v20111030'
   homepage 'https://github.com/sstephenson/ruby-build'
-  md5 '3e0dd83a807de34ba83876cf25630fd1'
+  url 'https://github.com/sstephenson/ruby-build/tarball/v20120216'
+  md5 'a65e73dee5929ffe4366352a9240f0b6'
 
   head 'https://github.com/sstephenson/ruby-build.git'
 

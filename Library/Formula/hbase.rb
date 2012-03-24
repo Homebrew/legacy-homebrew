@@ -1,16 +1,16 @@
 require 'formula'
 
 class Hbase < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=hbase/hbase-0.90.3/hbase-0.90.3.tar.gz'
+  url 'http://www.apache.org/dyn/closer.cgi?path=hbase/hbase-0.92.0/hbase-0.92.0.tar.gz'
   homepage 'http://hbase.apache.org'
-  md5 '834aa50df08886515939ad6af0a55885'
+  md5 'ad59737c9f866aa283c685422e45e0a4'
 
   depends_on 'hadoop'
 
   def shim_script target
     <<-EOS.undent
       #!/bin/bash
-      exec #{libexec}/bin/#{target} $@
+      exec "#{libexec}/bin/#{target}" "$@"
     EOS
   end
 
@@ -26,7 +26,7 @@ class Hbase < Formula
 
     inreplace "#{libexec}/conf/hbase-env.sh",
       "# export JAVA_HOME=/usr/java/jdk1.6.0/",
-      "export JAVA_HOME=$(/usr/libexec/java_home)"
+      "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
   end
 
   def caveats; <<-EOS.undent

@@ -14,7 +14,7 @@ class Wkhtmltopdf < Formula
       s.gsub! 'include($$join(TEMP, "/"))', ''
     end
 
-    # Always creates a uselles .app doh,
+    # Always creates a useless .app doh,
     # AFAIK this is fixed in 0.10.0beta
     wkhtml_bin = 'wkhtmltopdf.app/Contents/MacOS/wkhtmltopdf'
     wkhtml_man = "#{name}.1"

@@ -5,7 +5,7 @@ class Gpsim < Formula
   homepage 'http://gpsim.sourceforge.net/'
   md5 '36e2aeac30fad773f5fb934c867b42b7'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'popt'
   depends_on 'glib'
 

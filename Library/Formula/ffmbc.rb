@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ffmbc < Formula
-  url 'http://ffmbc.googlecode.com/files/FFmbc-0.7-rc4.tar.bz2'
   homepage 'http://code.google.com/p/ffmbc/'
-  md5 '45f68c3096c2ad0321fd4bacb7127be6'
+  url 'http://ffmbc.googlecode.com/files/FFmbc-0.7-rc7.tar.bz2'
+  md5 '547bb7b7963224dd66dffa8b25e623b3'
 
   depends_on 'yasm' => :build
   depends_on 'x264' => :optional
@@ -16,11 +16,13 @@ class Ffmbc < Formula
   depends_on 'xvid' => :optional
 
   def install
+    ENV.x11
     args = ["--prefix=#{prefix}",
             "--disable-debug",
             "--disable-shared",
             "--enable-gpl",
             "--enable-nonfree",
+            "--enable-libfreetype",
             "--cc=#{ENV.cc}"]
 
     args << "--enable-libx264" if Formula.factory('x264').installed?
@@ -36,11 +38,12 @@ class Ffmbc < Formula
 
     # ffmbc's lib and bin names conflict with ffmpeg and libav
     # This formula will only install the commandline tools
-    File.rename "ffprobe", "ffprobe-bc"
-    bin.install ["ffmbc","ffprobe-bc"]
-    Dir.chdir "doc"
-    File.rename "ffprobe.1", "ffprobe-bc.1"
-    man1.install ["ffmbc.1", "ffprobe-bc.1"]
+    mv "ffprobe", "ffprobe-bc"
+    bin.install "ffmbc", "ffprobe-bc"
+    cd "doc" do
+      mv "ffprobe.1", "ffprobe-bc.1"
+      man1.install "ffmbc.1", "ffprobe-bc.1"
+    end
   end
 
   def caveats

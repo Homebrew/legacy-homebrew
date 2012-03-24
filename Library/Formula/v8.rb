@@ -1,10 +1,12 @@
 require 'formula'
 
 class V8 < Formula
-  head 'https://github.com/v8/v8.git', :using => :git
-  url 'https://github.com/v8/v8/tarball/3.7.0'
   homepage 'http://code.google.com/p/v8/'
-  sha1 "8b22460558b39d0016cf372b08112f3636a08f25"
+  # Use the official github mirror, it is easier to find tags there
+  url 'https://github.com/v8/v8/tarball/3.8.9'
+  sha1 'a99d3d1259f56baeb16b937c315e8fa158eaa7ba'
+
+  head 'https://github.com/v8/v8.git', :using => :git
 
   depends_on 'scons' => :build
 
@@ -20,10 +22,10 @@ class V8 < Formula
                     "console=readline",
                     "sample=shell"
 
-    include.install Dir['include/*']
-    lib.install Dir['libv8.*']
+    prefix.install 'include'
+    lib.install 'libv8.dylib'
     bin.install 'shell' => 'v8'
 
-    system "install_name_tool -change libv8.dylib #{lib}/libv8.dylib #{bin}/v8"
+    system "install_name_tool", "-change", "libv8.dylib", "#{lib}/libv8.dylib", "#{bin}/v8"
   end
 end

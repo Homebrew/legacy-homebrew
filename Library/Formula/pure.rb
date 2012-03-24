@@ -1,14 +1,15 @@
 require 'formula'
 
 class Pure < Formula
-  url 'http://pure-lang.googlecode.com/files/pure-0.47.tar.gz'
   homepage 'http://code.google.com/p/pure-lang/'
-  sha1 'f47915ffa9fd0c7dee40f364a5751bfd4f945bf1'
+  url 'http://pure-lang.googlecode.com/files/pure-0.52.tar.gz'
+  sha1 '397755f5ff78ae08111188e0bb6bdc434506730b'
 
   depends_on 'wget'
   depends_on 'llvm'
   depends_on 'gmp'
   depends_on 'readline'
+  depends_on 'mpfr'
 
   def install
     system "./configure", "--disable-debug",

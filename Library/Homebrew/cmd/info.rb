@@ -1,5 +1,6 @@
 require 'formula'
 require 'tab'
+require 'keg'
 
 module Homebrew extend self
   def info
@@ -19,21 +20,30 @@ module Homebrew extend self
     end
   end
 
-  def github_info name
-    formula_name = Formula.path(name).basename
-    user = 'mxcl'
-    branch = 'master'
-
+  def github_fork
     if system "/usr/bin/which -s git"
-      gh_user=`git config --global github.user 2>/dev/null`.chomp
-      /^\*\s*(.*)/.match(`git --git-dir=#{HOMEBREW_REPOSITORY}/.git branch 2>/dev/null`)
-      unless $1.nil? || $1.empty? || $1.chomp == 'master' || gh_user.empty?
-        branch = $1.chomp
-        user = gh_user
+      if `git remote -v` =~ %r{origin\s+(https?://|git@)github.com[:/](.+)/homebrew}
+        $2
       end
     end
+  end
 
-    "http://github.com/#{user}/homebrew/commits/#{branch}/Library/Formula/#{formula_name}"
+  def github_info name
+    path = Formula.path(name).realpath
+
+    if path.to_s =~ %r{#{HOMEBREW_REPOSITORY}/Library/Taps/(\w+)-(\w+)/(.*)}
+      user = $1
+      repo = "homebrew-#$2"
+      path = $3
+    else
+      path.parent.cd do
+        user = github_fork
+      end
+      repo = "homebrew"
+      path = "Library/Formula/#{path.basename}"
+    end
+
+    "https://github.com/#{user}/#{repo}/commits/master/#{path}"
   end
 
   def info_formula f
@@ -56,28 +66,26 @@ module Homebrew extend self
       kegs.each do |keg|
         next if keg.basename.to_s == '.DS_Store'
         print "#{keg} (#{keg.abv})"
-        print " *" if f.installed_prefix == keg and kegs.length > 1
+        print " *" if Keg.new(keg).linked? and kegs.length > 1
         puts
+        tab = Tab.for_keg keg
+        unless tab.used_options.empty?
+          puts "  Installed with: #{tab.used_options*', '}"
+        end
       end
     else
       puts "Not installed"
     end
 
-    if f.installed?
-      tab = Tab.for_formula f
-      unless tab.used_options.empty?
-        puts "Installed with: #{tab.used_options*', '}"
-      end
-    end
-
-    if f.caveats
-      puts
-      puts f.caveats
-      puts
-    end
-
     history = github_info f.name
     puts history if history
+
+    the_caveats = (f.caveats || "").strip
+    unless the_caveats.empty?
+      puts
+      ohai "Caveats"
+      puts f.caveats
+    end
 
   rescue FormulaUnavailableError
     # check for DIY installation

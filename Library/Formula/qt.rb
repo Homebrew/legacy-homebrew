@@ -1,21 +1,16 @@
 require 'formula'
-require 'hardware'
 
 class Qt < Formula
-  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.4.tar.gz'
-  md5 '9831cf1dfa8d0689a06c2c54c5c65aaf'
   homepage 'http://qt.nokia.com/'
-  bottle 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.7.4-bottle.tar.gz'
-  bottle_sha1 '3195cddb76c0d13b4500dc75cc55f20f00c10ef1'
+  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.8.0.tar.gz'
+  md5 'e8a5fdbeba2927c948d9f477a6abe904'
+
+  bottle do
+    url 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.8.0-bottle.tar.gz'
+    sha1 '2bfe00c5112b0d2a680cd01144701f8937846096'
+  end
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
-
-  def patches
-    [
-      # Stop complaining about using Lion
-      "https://qt.gitorious.org/qt/qt/commit/1766bbdb53e1e20a1bbfb523bbbbe38ea7ab7b3d?format=patch"
-    ]
-  end
 
   def options
     [
@@ -30,7 +25,15 @@ class Qt < Formula
   depends_on "d-bus" if ARGV.include? '--with-qtdbus'
   depends_on 'sqlite' if MacOS.leopard?
 
+  # Fix compilation with llvm-gcc. Remove for 4.8.1.
+  def patches
+    "https://qt.gitorious.org/qt/qt/commit/448ab7cd150ab7bb7d12bcac76bc2ce1c72298bd?format=patch"
+  end
+
   def install
+    # Needed for Qt 4.8.0 due to attempting to link moc with gcc.
+    ENV['LD'] = ENV['CXX']
+
     ENV.x11
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
     args = ["-prefix", prefix,
@@ -69,12 +72,15 @@ class Qt < Formula
     if ARGV.include? '--with-debug-and-release'
       args << "-debug-and-release"
       # Debug symbols need to find the source so build in the prefix
-      Dir.chdir '..'
-      mv "qt-everywhere-opensource-src-#{version}", "#{prefix}/src"
-      Dir.chdir "#{prefix}/src"
+      mv "../qt-everywhere-opensource-src-#{version}", "#{prefix}/src"
+      cd "#{prefix}/src"
     else
       args << "-release"
     end
+
+    # Compilation currently fails with the newer versions of clang
+    # shipped with Xcode 4.3+
+    ENV.llvm if MacOS.clang_version.to_f <= 3.1
 
     system "./configure", *args
     system "make"
@@ -93,6 +99,7 @@ class Qt < Formula
     # Some config scripts will only find Qt in a "Frameworks" folder
     # VirtualBox is an example of where this is needed
     # See: https://github.com/mxcl/homebrew/issues/issue/745
+    # TODO - surely this link can be made without the `cd`
     cd prefix do
       ln_s lib, "Frameworks"
     end
