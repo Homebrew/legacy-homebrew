@@ -107,9 +107,39 @@ __brew_complete_outdated ()
     COMPREPLY=($(compgen -W "$od" -- "$cur"))
 }
 
-__brew_complete_taps ()
+__brew_complete_tapped ()
 {
     __brewcomp "$(\ls $(brew --repository)/Library/Taps 2>/dev/null | sed 's/-/\//g')"
+}
+
+__brew_complete_taps ()
+{
+    if [[ -z "$__brew_cached_taps" ]]; then
+        __brew_cached_taps="$(/usr/bin/ruby -e '
+            require "open-uri"
+            require "yaml"
+
+            begin
+              uri = URI.parse("http://github.com/api/v2/yaml/repos/search/homebrew")
+
+              open uri do |f|
+                YAML::load(f.read)["repositories"].each do |repo|
+                  if repo[:name] =~ /^homebrew-(\w+)$/
+                    puts tap = if repo[:username] == "Homebrew"
+                      "homebrew/#{$1}"
+                    else
+                      repo[:username]+"/"+$1
+                    end
+                  end
+                end
+              end
+            rescue
+              nil
+            end
+        ' 2>/dev/null)"
+    fi
+
+    __brewcomp "$__brew_cached_taps"
 }
 
 _brew_cleanup ()
@@ -431,8 +461,9 @@ _brew ()
     options)                    _brew_options ;;
     outdated)                   _brew_outdated ;;
     search|-S)                  _brew_search ;;
+    tap)                        __brew_complete_taps ;;
     uninstall|remove|rm)        _brew_uninstall ;;
-    untap)                      __brew_complete_taps ;;
+    untap)                      __brew_complete_tapped ;;
     update)                     _brew_update ;;
     uses)                       _brew_uses ;;
     versions)                   _brew_versions ;;
