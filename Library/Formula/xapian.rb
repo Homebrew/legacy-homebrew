@@ -52,11 +52,11 @@ class Xapian < Formula
       args << arg_for_lang('java')
 
       if ARGV.include? '--python'
-        python_lib = lib + "python"
+        python_lib = lib/which_python/'site-packages'
         python_lib.mkpath
         ENV.append 'PYTHONPATH', python_lib
         ENV['OVERRIDE_MACOSX_DEPLOYMENT_TARGET'] = '10.4'
-        ENV['PYTHON_LIB'] = "#{python_lib}"
+        ENV['PYTHON_LIB'] = python_lib
         args << "--with-python"
       else
         args << "--without-python"
@@ -76,12 +76,14 @@ class Xapian < Formula
   end
 
   def caveats
-    s = ""
-    if ARGV.include? "--python"
-      s += <<-EOS.undent
-        The Python bindings won't function until you amend your PYTHONPATH like so:
-          export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/python:$PYTHONPATH
+    if ARGV.include? "--python" then <<-EOS.undent
+      The Python bindings won't function until you amend your PYTHONPATH like so:
+        export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
       EOS
     end
+  end
+
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 end
