@@ -19,9 +19,9 @@ class Clojure < Formula
     if [ "$#" -eq 0 ]; then
         rlwrap -v
       	if [ "$?" -eq 0 ]; then
-      	  exec rlwrap -r -c -b "$breakchars" -f "$HOME"/.clj_completions java -cp $CLOJURE clojure.main --repl
+      	  exec rlwrap -r -c -b "$breakchars" -f "$HOME"/.clj_completions java -cp "$CLOJURE" clojure.main --repl
       	else
-      	  java -cp $CLOJURE clojure.main --repl
+      	  java -cp "$CLOJURE" clojure.main --repl
       	fi
     else
         java -cp "$CLOJURE" clojure.main "$@"
