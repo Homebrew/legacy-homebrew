@@ -8,6 +8,12 @@ class BashCompletion < Formula
 
   depends_on "automake" if ARGV.build_head? and MacOS.xcode_version >= "4.3"
 
+  def patches
+    # The Mac version of man(1) supports the --path option, so we should
+    # use it to set the path to search for man completions
+    # This is filed upstream http://alioth.debian.org/tracker/index.php?func=detail&aid=313584&group_id=100114&atid=413095
+    DATA
+  end
   def install
     inreplace "bash_completion" do |s|
       s.gsub! '/etc/bash_completion', "#{etc}/bash_completion"
@@ -64,3 +70,20 @@ class BashCompletion < Formula
     end
   end
 end
+
+
+__END__
+diff --git a/completions/man b/completions/man
+index 9e5cd3a..d1642cf 100644
+--- a/completions/man
++++ b/completions/man
+@@ -27,7 +27,7 @@ _man()
+     fi
+ 
+     uname=$( uname -s )
+-    if [[ $uname == @(Linux|GNU|GNU/*|FreeBSD|Cygwin|CYGWIN_*) ]]; then
++    if [[ $uname == @(Linux|Darwin|GNU|GNU/*|FreeBSD|Cygwin|CYGWIN_*) ]]; then
+         manpath=$( manpath 2>/dev/null || command man --path )
+     else
+         manpath=$MANPATH
+
