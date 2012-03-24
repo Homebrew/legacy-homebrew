@@ -1,8 +1,8 @@
 require 'formula'
 
 class SdlSound < Formula
-  url 'http://icculus.org/SDL_sound/downloads/SDL_sound-1.0.3.tar.gz'
   homepage 'http://icculus.org/SDL_sound/'
+  url 'http://icculus.org/SDL_sound/downloads/SDL_sound-1.0.3.tar.gz'
   md5 'aa09cd52df85d29bee87a664424c94b5'
   head 'http://hg.icculus.org/icculus/SDL_sound', :using => :hg
 
@@ -15,8 +15,21 @@ class SdlSound < Formula
   depends_on 'speex' => :optional
   depends_on 'physfs' => :optional
 
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
-    system "./bootstrap" if ARGV.build_head?
+    if ARGV.build_head?
+      # Set the environment and call autoreconf, because boostrap.sh
+      # uses /usr/bin/glibtoolize and a non-standard flag to automake.
+      ENV['LIBTOOLIZE'] = 'glibtoolize'
+      ENV['ACLOCAL'] = "aclocal -I #{HOMEBREW_PREFIX}/share/aclocal"
+      ENV['AUTOMAKE'] = 'automake --foreign'
+      system "autoreconf -ivf"
+    end
+
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
                           "--disable-sdltest"
