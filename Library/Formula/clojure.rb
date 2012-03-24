@@ -11,11 +11,18 @@ class Clojure < Formula
     # Clojure wrapper script.
     # With no arguments runs Clojure's REPL.
 
+    breakchars="(){}[],^%$#@\"\";:''|\\"
     # Put the Clojure jar from the cellar and the current folder in the classpath.
-    CLOJURE=$CLASSPATH:#{prefix}/clojure-1.3.0.jar:${PWD}
+    CLOJURE=$CLASSPATH:#{prefix}/clojure-1.3.0.jar
+    for file in ${PWD}/*.*; do CLOJURE=$CLOJURE:"$file"; done
 
     if [ "$#" -eq 0 ]; then
-        java -cp "$CLOJURE" clojure.main --repl
+        rlwrap -v
+      	if [ "$?" -eq 0 ]; then
+      	  exec rlwrap -r -c -b "$breakchars" -f "$HOME"/.clj_completions java -cp "$CLOJURE" clojure.main --repl
+      	else
+      	  java -cp "$CLOJURE" clojure.main --repl
+      	fi
     else
         java -cp "$CLOJURE" clojure.main "$@"
     fi
