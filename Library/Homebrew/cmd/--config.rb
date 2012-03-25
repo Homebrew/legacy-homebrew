@@ -97,7 +97,7 @@ module Homebrew extend self
     puts "/usr/bin/ruby => #{ruby.realpath}" unless ruby.realpath.to_s =~ %r{^/System}
 
     ponk = macports_or_fink_installed?
-    puts "MacPorts/Fink: #{ponk?}" if ponk
+    puts "MacPorts/Fink: #{ponk}" if ponk
 
     x11 = describe_x11
     puts "X11: #{x11}" unless x11 == "/usr/X11"

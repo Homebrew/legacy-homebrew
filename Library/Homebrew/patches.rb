@@ -42,6 +42,7 @@ end
 class Patch
   attr_reader :compression
   attr_reader :url
+  attr_reader :download_filename
 
   def initialize patch_p, filename, url
     @patch_p = patch_p
