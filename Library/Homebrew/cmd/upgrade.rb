@@ -49,9 +49,10 @@ module Homebrew extend self
   end
 
   def upgrade_formula f
+    tab = Tab.for_formula(f)
     outdated_keg = Keg.new(f.linked_keg.realpath) rescue nil
 
-    installer = FormulaInstaller.new f
+    installer = FormulaInstaller.new(f, tab)
     installer.show_header = false
 
     oh1 "Upgrading #{f.name}"
