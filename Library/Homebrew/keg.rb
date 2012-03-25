@@ -29,7 +29,7 @@ class Keg < Pathname
 
   def unlink
     n=0
-    Pathname.new(self).find do |src|
+    %w[bin etc lib include sbin share var].map{ |d| self/d }.each do |src|
       next if src == self
       dst=HOMEBREW_PREFIX+src.relative_path_from(self)
       next unless dst.symlink?
