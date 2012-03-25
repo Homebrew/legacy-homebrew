@@ -29,15 +29,17 @@ class Keg < Pathname
 
   def unlink
     n=0
-    Pathname.new(self).find do |src|
-      next if src == self
-      dst=HOMEBREW_PREFIX+src.relative_path_from(self)
-      next unless dst.symlink?
-      dst.uninstall_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
-      dst.unlink
-      dst.parent.rmdir_if_possible
-      n+=1
-      Find.prune if src.directory?
+    %w[bin etc lib include sbin share var].map{ |d| self/d }.each do |src|
+      src.find do |src|
+        next if src == self
+        dst=HOMEBREW_PREFIX+src.relative_path_from(self)
+        next unless dst.symlink?
+        dst.uninstall_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
+        dst.unlink
+        dst.parent.rmdir_if_possible
+        n+=1
+        Find.prune if src.directory?
+      end
     end
     linked_keg_record.unlink if linked_keg_record.exist?
     n
