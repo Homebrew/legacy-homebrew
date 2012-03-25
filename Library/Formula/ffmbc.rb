@@ -2,8 +2,8 @@ require 'formula'
 
 class Ffmbc < Formula
   homepage 'http://code.google.com/p/ffmbc/'
-  url 'http://ffmbc.googlecode.com/files/FFmbc-0.7-rc6.tar.bz2'
-  md5 '211cc8afe63d9a79409ad2f9394f58f6'
+  url 'http://ffmbc.googlecode.com/files/FFmbc-0.7-rc7.tar.bz2'
+  md5 '547bb7b7963224dd66dffa8b25e623b3'
 
   depends_on 'yasm' => :build
   depends_on 'x264' => :optional

@@ -4,7 +4,7 @@ require 'formula_support'
 require 'hardware'
 require 'bottles'
 require 'extend/fileutils'
-
+require 'patches'
 
 # Derive and define at least @url, see Library/Formula for examples
 class Formula
@@ -521,71 +521,23 @@ private
   end
 
   def patch
-    # Only call `patches` once.
-    # If there is code in `patches`, which is not recommended, we only
-    # want to run that code once.
-    the_patches = patches
-    return if the_patches.nil?
-
-    if not the_patches.kind_of? Hash
-      # We assume -p1
-      patch_defns = { :p1 => the_patches }
-    else
-      patch_defns = the_patches
-    end
-
-    patch_list=[]
-    n=0
-    patch_defns.each do |arg, urls|
-      # DATA.each does each line, which doesn't work so great
-      urls = [urls] unless urls.kind_of? Array
-
-      urls.each do |url|
-        p = {:filename => '%03d-homebrew.diff' % n+=1, :compression => false}
-
-        if defined? DATA and url == DATA
-          pn = Pathname.new p[:filename]
-          pn.write(DATA.read.to_s.gsub("HOMEBREW_PREFIX", HOMEBREW_PREFIX))
-        elsif url =~ %r[^\w+\://]
-          out_fn = p[:filename]
-          case url
-          when /\.gz$/
-            p[:compression] = :gzip
-            out_fn += '.gz'
-          when /\.bz2$/
-            p[:compression] = :bzip2
-            out_fn += '.bz2'
-          end
-          p[:curl_args] = [url, '-o', out_fn]
-        else
-          # it's a file on the local filesystem
-          p[:filename] = url
-        end
-
-        p[:args] = ["-#{arg}", '-i', p[:filename]]
-
-        patch_list << p
-      end
-    end
-
+    patch_list = Patches.new(patches)
     return if patch_list.empty?
 
-    external_patches = patch_list.collect{|p| p[:curl_args]}.select{|p| p}.flatten
-    unless external_patches.empty?
+    unless patch_list.external_curl_args.empty?
       ohai "Downloading patches"
       # downloading all at once is much more efficient, especially for FTP
-      curl(*external_patches)
+      curl(*patch_list.external_curl_args)
     end
 
     ohai "Patching"
     patch_list.each do |p|
-      case p[:compression]
-        when :gzip  then safe_system "/usr/bin/gunzip",  p[:filename]+'.gz'
-        when :bzip2 then safe_system "/usr/bin/bunzip2", p[:filename]+'.bz2'
+      case p.compression
+        when :gzip  then safe_system "/usr/bin/gunzip",  p.download_filename
+        when :bzip2 then safe_system "/usr/bin/bunzip2", p.download_filename
       end
-      # -f means it doesn't prompt the user if there are errors, if just
-      # exits with non-zero status
-      safe_system '/usr/bin/patch', '-f', *(p[:args])
+      # -f means don't prompt the user if there are errors; just exit with non-zero status
+      safe_system '/usr/bin/patch', '-f', *(p.patch_args)
     end
   end
 
@@ -679,7 +631,7 @@ private
 
       bottle_block.instance_eval &block
       @bottle_url, @bottle_sha1 = bottle_block.url_sha1
-      @bottle_url ||= "#{bottle_base_url}/#{name.downcase}-#{@version||@standard.detect_version}#{bottle_native_suffix}" if @bottle_sha1
+      @bottle_url ||= "#{bottle_base_url}#{name.downcase}-#{@version||@standard.detect_version}#{bottle_native_suffix}" if @bottle_sha1
     end
 
     def mirror val, specs=nil
