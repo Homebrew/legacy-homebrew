@@ -36,6 +36,19 @@ def path_folders
 end
 
 
+# See https://github.com/mxcl/homebrew/pull/9986
+def check_path_for_trailing_slashes
+  bad_paths = ENV['PATH'].split(':').select{|p| p[p.length-1, p.length] == '/'}
+  return if bad_paths.empty?
+  s = <<-EOS.undent
+    Some directories in your path end in a slash.
+    Directories in your path should not end in a slash. This can break other
+    doctor checks. The following directories should be edited:
+  EOS
+  bad_paths.each{|p| s << "    #{p}"}
+  s
+end
+
 # Installing MacGPG2 interferes with Homebrew in a big way
 # http://sourceforge.net/projects/macgpg2/files/
 def check_for_macgpg2
@@ -166,41 +179,35 @@ def check_for_other_package_managers
   end
 end
 
-def check_gcc_42
-  if MacOS.gcc_42_build_version == nil
-    # Don't show this warning on Xcode 4.2+
-    if MacOS.xcode_version < "4.2"
-      "We couldn't detect gcc 4.2.x. Some formulae require this compiler."
+def check_for_broken_symlinks
+  broken_symlinks = []
+  %w[lib include sbin bin etc share].each do |d|
+    d = HOMEBREW_PREFIX/d
+    d.find do |pn|
+      broken_symlinks << pn if pn.symlink? and pn.readlink.expand_path.to_s =~ /^#{HOMEBREW_PREFIX}/ and not pn.exist?
     end
-  elsif MacOS.gcc_42_build_version < RECOMMENDED_GCC_42
-    <<-EOS.undent
-      Your gcc 4.2.x version is older than the recommended version.
-      It may be advisable to upgrade to the latest release of Xcode.
+  end
+  unless broken_symlinks.empty? then <<-EOS.undent
+    Broken symlinks were found. Remove them with `brew prune':
+      #{broken_symlinks * "\n      "}
     EOS
   end
 end
 
-def check_xcode_exists
-  if MacOS.xcode_version == nil
-      <<-EOS.undent
-        We couldn't detect any version of Xcode.
-        If you downloaded Xcode from the App Store, you may need to run the installer.
+def check_for_latest_xcode
+  if MacOS.xcode_version.nil?
+    if MacOS.version >= 10.7 then return <<-EOS.undent
+      We couldn't detect any version of Xcode.
+      The latest Xcode can be obtained from the Mac App Store.
+      Alternatively, the Command Line Tools package can be obtained from
+        http://connect.apple.com
       EOS
-  elsif MacOS.xcode_version < "4.0"
-    if MacOS.gcc_40_build_version == nil
-      "We couldn't detect gcc 4.0.x. Some formulae require this compiler."
-    elsif MacOS.gcc_40_build_version < RECOMMENDED_GCC_40
-      <<-EOS.undent
-        Your gcc 4.0.x version is older than the recommended version.
-        It may be advisable to upgrade to the latest release of Xcode.
+    else return <<-EOS.undent
+      We couldn't detect any version of Xcode.
+      The latest Xcode can be obtained from http://connect.apple.com
       EOS
     end
   end
-end
-
-def check_for_latest_xcode
-  # the check_xcode_exists check is enough
-  return if MacOS.xcode_version.nil?
 
   latest_xcode = case MacOS.version
     when 10.5 then "3.1.4"
@@ -215,13 +222,12 @@ def check_for_latest_xcode
 end
 
 def check_cc
-  unless File.exist? '/usr/bin/cc'
-    <<-EOS.undent
-      You have no /usr/bin/cc.
-      This means you probably can't build *anything*. You need to install the CLI
-      Tools for Xcode. You can either download this from http://connect.apple.com/
-      or install them from inside Xcode’s preferences. Homebrew does not require
-      all of Xcode! You only need the CLI tools package!
+  unless File.exist? '/usr/bin/cc' then <<-EOS.undent
+    You have no /usr/bin/cc.
+    This means you probably can't build *anything*. You need to install the Command
+    Line Tools for Xcode. You can either download this from http://connect.apple.com
+    or install them from inside Xcode's Download preferences. Homebrew does not
+    require all of Xcode! You only need the Command Line Tools package!
     EOS
   end
 end
@@ -363,6 +369,8 @@ def check_xcode_select_path
 
           sudo xcode-select -switch /Developer
           sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
+
+      DO NOT SET / OR EVERYTHING BREAKS!
     EOS
   end
 end
@@ -608,7 +616,7 @@ def check_for_multiple_volumes
 end
 
 def check_for_git
-  unless system "/usr/bin/which -s git" then <<-EOS.undent
+  unless which_s "git" then <<-EOS.undent
     Git could not be found in your PATH.
     Homebrew uses Git for several internal functions, and some formulae use Git
     checkouts instead of stable tarballs. You may want to install Git:
@@ -618,7 +626,7 @@ def check_for_git
 end
 
 def check_git_newline_settings
-  return unless system "/usr/bin/which -s git"
+  return unless which_s "git"
 
   autocrlf = `git config --get core.autocrlf`.chomp
   safecrlf = `git config --get core.safecrlf`.chomp
@@ -749,7 +757,7 @@ def check_missing_deps
 end
 
 def check_git_status
-  return unless system "/usr/bin/which -s git"
+  return unless which_s "git"
   HOMEBREW_REPOSITORY.cd do
     unless `git status -s -- Library/Homebrew/ 2>/dev/null`.chomp.empty? then <<-EOS.undent
       You have uncommitted modifications to Homebrew's core.
@@ -778,7 +786,7 @@ end
 
 def check_git_version
   # see https://github.com/blog/642-smart-http-support
-  return unless system "/usr/bin/which -s git"
+  return unless which_s "git"
   `git --version`.chomp =~ /git version (\d)\.(\d)\.(\d)/
 
   if $2.to_i < 6 or $2.to_i == 6 and $3.to_i < 6 then <<-EOS.undent
@@ -790,7 +798,7 @@ def check_git_version
 end
 
 def check_for_enthought_python
-  if system "/usr/bin/which -s enpkg" then <<-EOS.undent
+  if which_s "enpkg" then <<-EOS.undent
     Enthought Python was found in your PATH.
     This can cause build problems, as this software installs its own
     copies of iconv and libxml2 into directories that are picked up by
@@ -800,7 +808,7 @@ def check_for_enthought_python
 end
 
 def check_for_bad_python_symlink
-  return unless system "/usr/bin/which -s python"
+  return unless which_s "python"
   # Indeed Python --version outputs to stderr (WTF?)
   `python --version 2>&1` =~ /Python (\d+)\./
   unless $1 == "2" then <<-EOS.undent
@@ -821,6 +829,47 @@ def check_for_outdated_homebrew
     if Time.now.to_i - timestamp > 60 * 60 * 24 then <<-EOS.undent
       Your Homebrew is outdated
       You haven't updated for at least 24 hours, this is a long time in brewland!
+      EOS
+    end
+  end
+end
+
+def check_for_unlinked_but_not_keg_only
+  unlinked = HOMEBREW_CELLAR.children.reject do |rack|
+    if not rack.directory?
+      true
+    elsif not (HOMEBREW_REPOSITORY/"Library/LinkedKegs"/rack.basename).directory?
+      Formula.factory(rack.basename).keg_only? rescue nil
+    else
+      true
+    end
+  end.map{ |pn| pn.basename }
+
+  if not unlinked.empty? then <<-EOS.undent
+    You have unlinked kegs in your Cellar
+    Leaving kegs unlinked can lead to build-trouble and cause brews that depend on
+    those kegs to fail to run properly once built.
+
+        #{unlinked * "\n        "}
+    EOS
+  end
+end
+
+def check_os_version
+  if MACOS_FULL_VERSION =~ /^10\.6(\.|$)/
+    unless (MACOS_FULL_VERSION == "10.6.8")
+      return <<-EOS.undent
+        Please update Snow Leopard.
+        10.6.8 is the supported version of Snow Leopard.
+        You are still running #{MACOS_FULL_VERSION}.
+      EOS
+    end
+  elsif MACOS_FULL_VERSION =~ /^10\.5(\.|$)/
+    unless (MACOS_FULL_VERSION == "10.5.8")
+      return <<-EOS.undent
+        Please update Leopard.
+        10.5.8 is the supported version of Leopard.
+        You are still running #{MACOS_FULL_VERSION}.
       EOS
     end
   end

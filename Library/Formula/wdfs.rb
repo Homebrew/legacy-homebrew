@@ -5,6 +5,7 @@ class Wdfs < Formula
   homepage 'http://noedler.de/projekte/wdfs/'
   md5 '628bb44194d04c1cf8aacc446ed0a230'
 
+  depends_on 'pkg-config' => :build
   depends_on 'neon'
   depends_on 'fuse4x'
 
@@ -15,6 +16,6 @@ class Wdfs < Formula
   end
 
   def test
-    system "wdfs -v"
+    system "#{bin}/wdfs -v"
   end
 end

@@ -7,6 +7,9 @@ class Aria2 < Formula
 
   depends_on 'pkg-config' => :build
 
+  # Leopard's libxml2 is too old.
+  depends_on 'libxml2' if MacOS.leopard?
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

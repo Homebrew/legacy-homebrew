@@ -21,6 +21,11 @@ class Llvm < Formula
   url       'http://llvm.org/releases/3.0/llvm-3.0.tar.gz'
   md5       'a8e5f5f1c1adebae7b4a654c376a6005'
 
+  bottle do
+    sha1 'f6feaab7d1e4f45cd5f0b63d465e65f491fcc27c' => :lion
+    sha1 '0b4a9baac5cd07192f992ef3621371e9cde3979a' => :snowleopard
+  end
+
   def patches
     # changes the link options for the shared library build
     # to use the preferred way to build libraries in Mac OS X
@@ -95,6 +100,10 @@ class Llvm < Formula
       bin.install 'tools/scan-view/startfile.py'
       bin.install 'tools/scan-view/Resources'
     end if build_analyzer?
+  end
+
+  def test
+    system "#{bin}/llvm-config --version"
   end
 
   def caveats; <<-EOS.undent

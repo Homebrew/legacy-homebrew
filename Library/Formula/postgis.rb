@@ -12,9 +12,9 @@ class Postgis < Formula
   head 'http://svn.osgeo.org/postgis/trunk/', :using => :svn
 
   devel do
-    url 'http://postgis.org/download/postgis-2.0.0beta2.tar.gz'
-    md5 '9ce4c4983d1a5b2a0f4db600b6269381'
-    version '2.0.0beta2'
+    url 'http://postgis.org/download/postgis-2.0.0beta4.tar.gz'
+    md5 'bcf5215d55b2002c752d68c1d1319077'
+    version '2.0.0beta4'
   end
 
   depends_on 'postgresql'
@@ -116,7 +116,7 @@ class Postgis < Formula
       # Install PostGIS 2.0 SQL scripts
       postgis_sql.install %w[
         postgis/legacy.sql
-        postgis/legacy_compatibility_layer.sql
+        postgis/legacy_minimal.sql
         postgis/uninstall_legacy.sql
         postgis/postgis_upgrade_20_minor.sql
       ]

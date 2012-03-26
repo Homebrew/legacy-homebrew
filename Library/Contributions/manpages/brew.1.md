@@ -142,12 +142,11 @@ For the full command list, see the COMMANDS section.
   * `install [--force] [--debug] [--ignore-dependencies] [--fresh] [--use-clang] [--use-gcc] [--use-llvm] [--build-from-source] [--devel] [--HEAD]` <formula>:
     Install <formula>.
 
-    <formula> is usually the name of the formula to install, but may also be
-    the URL for an arbitrary formula.
+    <formula> is usually the name of the formula to install, but it can be specified
+    several different ways. See [SPECIFYING FORMULAE][].
 
-    If `--force` is passed, will install <formula> even if it is already
-    installed. This can be used to re-install a formula without removing
-    it first.
+    If `--force` is passed, will install <formula> if it exists, even if it
+    is blacklisted.
 
     If `--debug` is passed and brewing fails, open a shell inside the
     temporary directory used for compiling.
@@ -248,6 +247,11 @@ For the full command list, see the COMMANDS section.
   * `search --macports`|`--fink` <text>:
     Search for <text> on the MacPorts or Fink package search page.
 
+  * `tap` [<tap>]:
+    Tap a new formula repository from GitHub, or list existing taps.
+
+    <tap> is of the form <user>/<repo>, e.g. `brew tap homebrew/dupes`.
+
   * `test` <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
     test method. There is no standard output or return code, but it should
@@ -259,6 +263,9 @@ For the full command list, see the COMMANDS section.
   * `unlink` <formula>:
     Unsymlink <formula> from the Homebrew prefix. This can be useful for
     temporarily disabling a formula: `brew unlink foo && commands && brew link foo`.
+
+  * `untap` <tap>:
+    Remove a tapped repository.
 
   * `update [--rebase]`:
     Fetch the newest version of Homebrew and all formulae from GitHub using
@@ -322,14 +329,32 @@ scripts that reside somewhere in the PATH, named `brew-<cmdname>` or
 `brew-<cmdname>.rb`, which can be invoked like `brew cmdname`. This allows you
 to create your own commands without modifying Homebrew's internals.
 
-A number of (useful, but unsupported) example commands are included and enabled
+A number of (useful, but unsupported) external commands are included and enabled
 by default:
 
-    $ ls `brew --repository`/Library/Contributions/examples
+    $ ls `brew --repository`/Library/Contributions/cmds
 
 Documentation for the included external commands as well as instructions for
 creating your own can be found on the wiki:
 <http://wiki.github.com/mxcl/homebrew/External-Commands>
+
+## SPECIFYING FORMULAE
+
+Many Homebrew commands accept one or more <formula> arguments. These arguments
+can take several different forms:
+
+  * The name of a formula:
+    e.g. `git`, `node`, `wget`.
+
+  * The fully-qualified name of a tapped formula:
+    Sometimes a formula from a tapped repository may conflict with one in mxcl/master.
+    You can still access these formulae by using a special syntax, e.g.
+    `homebrew/dupes/vim` or `homebrew/versions/node4`.
+
+  * An arbitrary URL:
+    Homebrew can install formulae via URL, e.g.
+    `https://raw.github.com/mxcl/homebrew/master/Library/Formula/git.rb`.
+    The formula file will be cached for later use.
 
 ## ENVIRONMENT
 

@@ -12,11 +12,11 @@ class Luajit < Formula
   fails_with_llvm "_Unwind_Exception_Class undeclared", :build => 2336
 
   def options
-    [["--debug", "Build with debugging symbols."]]
+    [["--enable-debug", "Build with debugging symbols."]]
   end
 
   def install
-    if ARGV.include? '--debug'
+    if ARGV.include? '--enable-debug'
       system "make", "CCDEBUG=-g", "PREFIX=#{prefix}",
              "TARGET_CC=#{ENV['CC']}",
              "amalg"

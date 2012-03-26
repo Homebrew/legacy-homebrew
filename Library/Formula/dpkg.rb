@@ -1,16 +1,24 @@
 require 'formula'
 
 class Dpkg < Formula
-  url 'http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.15.8.12.tar.bz2'
   homepage 'http://en.wikipedia.org/wiki/Dpkg'
+  url 'http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.15.8.12.tar.bz2'
   md5 '0cd6f20a574d0df31298e70fc3b26173'
 
   depends_on 'pkg-config' => :build
+  depends_on 'gnu-tar'
 
-  #Fixes the PERL_LIBDIR
+  # Fixes the PERL_LIBDIR.
+  # Uses Homebrew-install gnu-tar instead of bsd tar.
   def patches; DATA; end
 
   def install
+    # FIXME This should be replaced with fails_with_clang once available
+    if ENV.compiler == :clang
+      opoo "Formula will not build with Clang, using LLVM."
+      ENV.llvm
+    end
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-compiler-warnings",
@@ -40,3 +48,16 @@ index a4e8516..de7f226 100755
  
  for ac_prog in pod2man
  do
+diff --git a/lib/dpkg/dpkg.h b/lib/dpkg/dpkg.h
+index ba6066c..89a66ba 100644
+--- a/lib/dpkg/dpkg.h
++++ b/lib/dpkg/dpkg.h
+@@ -97,7 +97,7 @@
+ #define DPKG  	"dpkg"
+ #define DEBSIGVERIFY	"/usr/bin/debsig-verify"
+ 
+-#define TAR		"tar"
++#define TAR		"gnutar"
+ #define RM		"rm"
+ #define FIND		"find"
+ #define DIFF		"diff"
