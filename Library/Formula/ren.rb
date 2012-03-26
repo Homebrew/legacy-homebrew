@@ -1,5 +1,4 @@
 require 'formula'
-require 'tmpdir'
 
 class Ren < Formula
   homepage 'http://pdb.finkproject.org/pdb/package.php/ren'
