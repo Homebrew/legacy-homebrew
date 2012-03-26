@@ -1,8 +1,13 @@
 require 'formula'
 
 class Socat < Formula
+<<<<<<< HEAD
+  url 'http://www.dest-unreach.org/socat/download/socat-1.7.2.0.tar.bz2'
+  homepage 'http://www.dest-unreach.org/socat/'
+=======
   homepage 'http://www.dest-unreach.org/socat/'
   url 'http://www.dest-unreach.org/socat/download/socat-1.7.2.0.tar.bz2'
+>>>>>>> dfd4656021eedb01ad7bf8626190cc36e3174a58
   md5 'eb563dd00b9d39a49fb62a677fc941fe'
 
   depends_on 'readline'

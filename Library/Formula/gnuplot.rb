@@ -12,7 +12,7 @@ class Gnuplot < Formula
   depends_on 'pdflib-lite' if ARGV.include? "--pdf"
   depends_on 'lua' unless ARGV.include? '--nolua'
   depends_on 'gd' unless ARGV.include? "--nogd"
-  depends_on 'wxmac' if ARGV.include? "--wx"
+  #depends_on 'wxmac' if ARGV.include? "--wx"
 
   if ARGV.build_head? and MacOS.xcode_version >= "4.3"
     depends_on "automake" => :build

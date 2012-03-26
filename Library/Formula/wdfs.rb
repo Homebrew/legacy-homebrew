@@ -1,8 +1,8 @@
 require 'formula'
 
 class Wdfs < Formula
-  homepage 'http://noedler.de/projekte/wdfs/'
   url 'http://noedler.de/projekte/wdfs/wdfs-1.4.2.tar.gz'
+  homepage 'http://noedler.de/projekte/wdfs/'
   md5 '628bb44194d04c1cf8aacc446ed0a230'
 
   depends_on 'pkg-config' => :build
