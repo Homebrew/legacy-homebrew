@@ -2,7 +2,7 @@ require 'formula'
 
 class Wrk < Formula
   homepage 'https://github.com/wg/wrk'
-  url 'https://github.com/wg/wrk/zipball/master'
+  url 'https://github.com/wg/wrk/tarball/1.0.0'
   md5 '6fa352588291937b182e22fc24a205ac'
   version '1.0.0'
 
