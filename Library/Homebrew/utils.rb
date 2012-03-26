@@ -438,6 +438,8 @@ module MacOS extend self
           "4.2"
         when 31
           "4.3"
+        when 40
+          "4.4"
         else
           "4.3"
         end
