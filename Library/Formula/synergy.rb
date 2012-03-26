@@ -16,7 +16,6 @@ class Synergy < Formula
   end
 
   def install
-    bin.install 'synergyc'
-    bin.install 'synergys'
+    bin.install 'synergyc', 'synergys'
   end
 end

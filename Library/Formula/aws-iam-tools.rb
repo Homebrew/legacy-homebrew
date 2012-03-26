@@ -36,7 +36,8 @@ class AwsIamTools < AmazonWebServicesFormula
       To export the needed variables, add them to your dotfiles.
         * On Bash, add them to `~/.bash_profile`.
         * On Zsh, add them to `~/.zprofile` instead.
-      export JAVA_HOME="/Library/Java/Home/"
+
+      export JAVA_HOME="$(/usr/libexec/java_home)"
       export AWS_IAM_HOME="#{prefix}/jars"
       export AWS_CREDENTIAL_FILE=$HOME/.aws-credentials-master
     EOS

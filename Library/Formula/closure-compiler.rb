@@ -9,7 +9,7 @@ class ClosureCompiler < Formula
     libexec.install "compiler.jar"
     (bin+'closure').write <<-EOS.undent
       #!/bin/bash
-      java -jar #{libexec}/compiler.jar $@
+      java -jar "#{libexec}/compiler.jar" "$@"
     EOS
   end
 end

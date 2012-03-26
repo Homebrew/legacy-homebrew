@@ -14,7 +14,7 @@ class GambitScheme < Formula
 
   skip_clean :all
 
-  fails_with_llvm "ld crashes during the build process or segfault at runtime"
+  fails_with_llvm "ld crashes during the build process or segfault at runtime", :build => 2335
 
   def install
     ENV.O2 # Gambit Scheme doesn't like full optimizations

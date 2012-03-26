@@ -1,15 +1,9 @@
 require 'formula'
 
 class Hydra < Formula
-  url 'http://www.thc.org/releases/hydra-6.5-src.tar.gz'
+  url 'http://www.thc.org/releases/hydra-7.2-src.tar.gz'
   homepage 'http://www.thc.org/thc-hydra/'
-  md5 '69a5afbbcbe3b1fdd31f9bf616480336'
-  version "6.5+diff1"
-
-  # This patch is provided by the original authors of this software
-  def patches
-    { :p0 => "http://www.thc.org/thc-hydra/hydra-6.5-fix.diff" }
-  end
+  sha1 '1f31cc2ee3605b5e46edce48ec23f6065c8df7f1'
 
   def install
     system "./configure", "--prefix=#{prefix}"

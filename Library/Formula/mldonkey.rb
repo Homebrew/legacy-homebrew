@@ -6,6 +6,7 @@ class Mldonkey < Formula
   md5 '072726d158ba1e936c554be341e7ceff'
 
   depends_on 'objective-caml'
+
   if ARGV.include? "--with-x"
     depends_on 'librsvg'
     depends_on 'lablgtk'
@@ -19,6 +20,7 @@ class Mldonkey < Formula
     args = ["--prefix=#{prefix}"]
 
     if ARGV.include? "--with-x"
+      ENV.x11
       args << "--enable-gui=newgui2"
     end
 

@@ -12,11 +12,21 @@ def use_wmf?
   ARGV.include? '--use-wmf'
 end
 
+def quantum_depth
+  if ARGV.include? '--with-quantum-depth-32'
+    32
+  elsif ARGV.include? '--with-quantum-depth-16'
+    16
+  elsif ARGV.include? '--with-quantum-depth-8'
+    8
+  end
+end
+
 class Graphicsmagick < Formula
-  url 'http://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.12/GraphicsMagick-1.3.12.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.13/GraphicsMagick-1.3.13.tar.bz2'
   head 'hg://http://graphicsmagick.hg.sourceforge.net:8000/hgroot/graphicsmagick/graphicsmagick'
   homepage 'http://www.graphicsmagick.org/'
-  md5 '55182f371f82d5f9367bce04e59bbf25'
+  md5 '1b5128e1868317ec7eb11a718f261a41'
 
   depends_on 'jpeg'
   depends_on 'libwmf' if use_wmf?
@@ -37,6 +47,9 @@ class Graphicsmagick < Formula
       ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
       ['--without-magick-plus-plus', "Don't build C++ library."],
       ['--use-wmf', 'Compile with libwmf support.'],
+      ['--with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'],
+      ['--with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'],
+      ['--with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'],
     ]
   end
 
@@ -54,6 +67,7 @@ class Graphicsmagick < Formula
     args << "--with-gslib" if ghostscript_srsly?
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
               unless ghostscript_fonts?
+    args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
 
     system "./configure", *args
     system "make install"

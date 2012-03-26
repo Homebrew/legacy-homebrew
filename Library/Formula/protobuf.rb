@@ -12,6 +12,10 @@ class Protobuf < Formula
   end
 
   def install
+    # Don't build in debug mode. See:
+    # https://github.com/mxcl/homebrew/issues/9279
+    # http://code.google.com/p/protobuf/source/browse/trunk/configure.ac#61
+    ENV.prepend 'CXXFLAGS', '-DNDEBUG'
     ENV.universal_binary if ARGV.build_universal?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

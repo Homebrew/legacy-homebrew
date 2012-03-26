@@ -18,15 +18,10 @@ class OpenTyrian < Formula
 
     system "make release"
     libexec.install "opentyrian"
-    # Use a startup script to find the game data
-    (bin+'opentyrian').write startup_script
-  end
-
-  def startup_script
-<<-END
-#!/bin/bash
-#{libexec}/opentyrian --data=#{libexec} $*
-END
+    (bin+'opentyrian').write <<-END.undent
+      #!/bin/bash
+      "#{libexec}/opentyrian" --data="#{libexec}" "$@"
+    END
   end
 
   def caveats

@@ -39,7 +39,7 @@ class Nethack < Formula
     # Make the data first, before we munge the CFLAGS
     system "cd dat;make"
 
-    Dir.chdir 'dat' do
+    cd 'dat' do
       %w(perm logfile).each do |f|
         system "touch", f
         libexec.install f

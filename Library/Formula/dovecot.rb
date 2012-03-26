@@ -24,18 +24,18 @@ For Dovecot to work, you will need to do the following:
 
 2) If required by the configuration above, create a dovecot user and group
 
-3) possibly create a launchd item in /Library/LaunchDaemons/org.dovecot.plist, like so:
+3) possibly create a launchd item in /Library/LaunchDaemons/#{plist_path.basename}, like so:
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
         <key>Label</key>
-        <string>org.dovecot</string>
+        <string>#{plist_name}</string>
         <key>OnDemand</key>
         <false/>
         <key>ProgramArguments</key>
         <array>
-                <string>#{sbin}/dovecot</string>
+                <string>#{HOMEBREW_PREFIX}/sbin/dovecot</string>
                 <string>-F</string>
         </array>
         <key>RunAtLoad</key>
@@ -46,7 +46,7 @@ For Dovecot to work, you will need to do the following:
 </plist>
 
 Source: http://wiki.dovecot.org/LaunchdInstall
-4) start the server using: sudo launchctl load /Library/LaunchDaemons/org.dovecot.plist
+4) start the server using: sudo launchctl load /Library/LaunchDaemons/#{plist_path.basename}
     EOS
   end
 end

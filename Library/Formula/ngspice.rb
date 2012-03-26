@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ngspice < Formula
-  url 'http://downloads.sourceforge.net/project/ngspice/ng-spice-rework/22/ngspice-22.tar.gz'
+  url 'http://downloads.sourceforge.net/project/ngspice/ng-spice-rework/24/ngspice-24.tar.gz'
   homepage 'http://ngspice.sourceforge.net/'
-  md5 'b55cdd80a56692fe6ce13f7a33c64d08'
+  md5 'e9ed7092da3e3005aebd892996b2bd5f'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

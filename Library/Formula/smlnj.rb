@@ -1,10 +1,10 @@
 require 'formula'
 
 class Smlnj < Formula
-  url 'http://smlnj.cs.uchicago.edu/dist/working/110.73/config.tgz'
   homepage 'http://www.smlnj.org/'
-  md5 '19dc682fa29441b0980b50b9842861bb'
+  url 'http://smlnj.cs.uchicago.edu/dist/working/110.73/config.tgz'
   version '110.73'
+  md5 '19dc682fa29441b0980b50b9842861bb'
 
   def targets
 <<-EOS
@@ -32,11 +32,11 @@ EOS
     # smlnj is much easier to build if we do so in the directory where it
     # will be installed.  Thus, we're moving it to the prefix to be built
     # there.
-    Dir.chdir '..'
+    cd '..'
     libexec.install 'config'
     rm (libexec+'config/targets') # Rewrite targets list
     (libexec+'config/targets').write targets
-    Dir.chdir libexec
+    cd libexec
     system 'config/install.sh'
   end
 

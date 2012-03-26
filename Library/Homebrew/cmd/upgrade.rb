@@ -39,7 +39,7 @@ module Homebrew extend self
       installer.show_header = false
       oh1 "Upgrading #{f.name}"
       installer.install
-      Keg.new("#{f.rack}/#{f.version}").unlink
+      Keg.new(f.linked_keg.realpath).unlink if f.linked_keg.directory?
       installer.caveats
       installer.finish # includes link step
     end

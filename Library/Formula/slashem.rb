@@ -3,8 +3,8 @@ require 'formula'
 class Slashem < Formula
   homepage 'http://slashem.sourceforge.net'
   url 'http://downloads.sourceforge.net/project/slashem/slashem-source/0.0.8E0F1/se008e0f1.tar.gz'
-  version "0.0.8E0F1"
   md5 'cdfceaf7888246934dec8e256ac0a738'
+  version "0.0.8E0F1"
 
   skip_clean 'slashemdir/save'
 
@@ -21,7 +21,7 @@ class Slashem < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-mandir=#{man}",
-                          "--with-group=staff",
+                          "--with-group=admin",
                           "--with-owner=#{`echo $USER`}"
     system "make install"
 

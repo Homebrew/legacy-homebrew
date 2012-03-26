@@ -25,6 +25,8 @@ class Gmt < Formula
     system "make"
     system "make install-gmt"
     system "make install-data"
+    system "make install-suppl"
+    system "make install-man"
 
     Gshhs.new.brew { (share+name).install Dir['share/*'] }
   end

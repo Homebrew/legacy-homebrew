@@ -7,6 +7,8 @@ require 'formula'
 
 module Homebrew extend self
   def uses
+    raise FormulaUnspecifiedError if ARGV.named.empty?
+
     uses = Formula.all.select do |f|
       ARGV.formulae.all? do |ff|
         # For each formula given, show which other formulas depend on it.
@@ -14,12 +16,14 @@ module Homebrew extend self
         f.deps.include? ff.name
       end
     end
+
     if ARGV.include? "--installed"
       uses = uses.select do |f|
         keg = HOMEBREW_CELLAR/f
         keg.directory? and not keg.subdirs.empty?
       end
     end
+
     puts_columns uses.map{|f| f.to_s}.sort
   end
 end

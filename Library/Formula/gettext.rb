@@ -1,10 +1,10 @@
 require 'formula'
 
 class Gettext < Formula
+  homepage 'http://www.gnu.org/software/gettext/'
   url 'http://ftpmirror.gnu.org/gettext/gettext-0.18.1.1.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/gettext/gettext-0.18.1.1.tar.gz'
   md5 '3dd55b952826d2b32f51308f2f91aa89'
-  homepage 'http://www.gnu.org/software/gettext/'
 
   keg_only "OS X provides the BSD gettext library and some software gets confused if both are in the library path."
 
@@ -30,8 +30,6 @@ class Gettext < Formula
 
   def install
     ENV.libxml2
-    ENV.O3 # Issues with LLVM & O4 on Mac Pro 10.6
-
     ENV.universal_binary if ARGV.build_universal?
 
     system "./configure", "--disable-dependency-tracking", "--disable-debug",

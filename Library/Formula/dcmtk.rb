@@ -19,8 +19,7 @@ class Dcmtk < Formula
     args = std_cmake_parameters.split
     args << '-DDCMTK_WITH_DOXYGEN=YES' if ARGV.include? '--with-docs'
 
-    mkdir 'build'
-    Dir.chdir 'build' do
+    mkdir 'build' do
       system 'cmake', '..', *args
       system 'make DOXYGEN' if ARGV.include? '--with-docs'
       system 'make install'

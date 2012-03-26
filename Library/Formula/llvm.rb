@@ -45,8 +45,7 @@ class Llvm < Formula
     end
 
     if build_clang? or build_analyzer?
-      clang_dir = Pathname.new(Dir.pwd)+'tools/clang'
-      Clang.new("clang").brew { clang_dir.install Dir['*'] }
+      Clang.new("clang").brew { (buildpath+'tools/clang').install Dir['*'] }
     end
 
     if build_universal?
@@ -80,12 +79,12 @@ class Llvm < Formula
     system "make" # separate steps required, otherwise the build fails
     system "make install"
 
-    Dir.chdir clang_dir do
+    cd clang_dir do
       system "make install"
       bin.install 'tools/scan-build/set-xcode-analyzer'
     end if build_clang? or build_analyzer?
 
-    Dir.chdir clang_dir do
+    cd clang_dir do
       bin.install 'tools/scan-build/scan-build'
       bin.install 'tools/scan-build/ccc-analyzer'
       bin.install 'tools/scan-build/c++-analyzer'

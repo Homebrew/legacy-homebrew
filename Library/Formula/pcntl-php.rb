@@ -1,17 +1,18 @@
 require 'formula'
 
 class PcntlPhp < Formula
-  url 'http://museum.php.net/php5/php-5.3.6.tar.gz'
   homepage 'http://php.net/manual/en/book.pcntl.php'
+  url 'http://museum.php.net/php5/php-5.3.6.tar.gz'
   md5 '88a2b00047bc53afbbbdf10ebe28a57e'
 
   def install
-    Dir.chdir "ext/pcntl"
-    system "phpize"
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
-    system "make"
-    prefix.install "modules/pcntl.so"
+    cd "ext/pcntl" do
+      system "phpize"
+      system "./configure", "--disable-dependency-tracking",
+                            "--prefix=#{prefix}"
+      system "make"
+      prefix.install "modules/pcntl.so"
+    end
   end
 
   def caveats; <<-EOS.undent

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Vimpc < Formula
-  url 'http://downloads.sourceforge.net/project/vimpc/Release%200.04/vimpc-0.04.tar.gz'
   homepage 'http://sourceforge.net/projects/vimpc/'
-  md5 '5ccc7b8fa3cde6f750b12b39c39778a7'
+  url 'http://downloads.sourceforge.net/project/vimpc/Release%200.05/vimpc-0.05.tar.gz'
+  md5 'f96cdc10827ddfbb53318e9ab4bab93b'
 
   head 'https://github.com/richoH/vimpc.git'
 
@@ -23,6 +23,6 @@ class Vimpc < Formula
   end
 
   def test
-    system "vimpc -v"
+    system "#{bin}/vimpc -v"
   end
 end

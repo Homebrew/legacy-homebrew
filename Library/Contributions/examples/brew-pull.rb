@@ -70,7 +70,7 @@ HOMEBREW_REPOSITORY.cd do
           formula = File.basename(filename, '.rb')
           ohai "Installing #{formula}"
           # Not sure if this is the best way to install?
-          safe_system 'brew', 'install', '--force', '--build-from-source', formula
+          safe_system 'brew', 'install', '--force', '--build-bottle', formula
         end
       end
     end

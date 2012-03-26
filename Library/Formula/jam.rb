@@ -1,8 +1,8 @@
 require 'formula'
 
 class Jam < Formula
-  url 'ftp://ftp.perforce.com/jam/jam-2.5.zip'
   homepage 'http://www.perforce.com/jam/jam.html'
+  url 'ftp://ftp.perforce.com/jam/jam-2.5.zip'
   md5 'f92caadb62fe4cb0b152eff508c9d450'
 
   def install
@@ -14,6 +14,6 @@ class Jam < Formula
     end
 
     system "make"
-    bin.install ["bin.macosx/jam", "bin.macosx/mkjambase"]
+    bin.install "bin.macosx/jam", "bin.macosx/mkjambase"
   end
 end

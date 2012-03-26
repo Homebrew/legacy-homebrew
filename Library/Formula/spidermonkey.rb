@@ -2,17 +2,25 @@ require 'formula'
 
 # Private older version of autoconf required to compile Spidermonkey
 class Autoconf213 < Formula
+  homepage 'http://www.gnu.org/software/autoconf/'
   url 'http://ftpmirror.gnu.org/autoconf/autoconf-2.13.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/autoconf/autoconf-2.13.tar.gz'
   md5 '9de56d4a161a723228220b0f425dc711'
-  homepage 'http://www.gnu.org/software/autoconf/'
 end
 
 class Spidermonkey < Formula
   homepage 'https://developer.mozilla.org/en/SpiderMonkey'
   url 'http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz'
-  md5 'a4574365938222adca0a6bd33329cb32'
   version '1.8.5'
+
+  # Don't provide an md5 for the HEAD build
+  unless ARGV.build_head?
+    md5 'a4574365938222adca0a6bd33329cb32'
+  end
+
+  # This is terribly, terribly slow the first time.
+  # head 'https://hg.mozilla.org/tracemonkey', :using => :hg
+  head 'https://hg.mozilla.org/tracemonkey/archive/tip.tar.gz', :using => :curl
 
   depends_on 'readline'
   depends_on 'nspr'
@@ -34,7 +42,7 @@ class Spidermonkey < Formula
       system "make install"
     end
 
-    Dir.chdir "js/src" do
+    cd "js/src" do
       # Fixes a bug with linking against CoreFoundation. Tests all pass after
       # building like this. See: http://openradar.appspot.com/7209349
       inreplace "configure.in", "LDFLAGS=\"$LDFLAGS -framework Cocoa\"", ""
@@ -46,9 +54,7 @@ class Spidermonkey < Formula
         "-install_name #{lib}/$(SHARED_LIBRARY) "
     end
 
-    mkdir "brew-build"
-
-    Dir.chdir "brew-build" do
+    mkdir "brew-build" do
       system "../js/src/configure", "--prefix=#{prefix}",
                                     "--enable-readline",
                                     "--enable-threadsafe",
@@ -66,7 +72,6 @@ class Spidermonkey < Formula
 
   def caveats; <<-EOS.undent
     This formula installs Spidermonkey 1.8.5.
-
     If you are trying to compile MongoDB from scratch, you will need 1.7.x instead.
     EOS
   end

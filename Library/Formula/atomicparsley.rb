@@ -5,6 +5,8 @@ class Atomicparsley < Formula
   homepage 'http://bitbucket.org/wez/atomicparsley/overview/'
   md5 '2ce6f39cedc959f46b5515920c35d0d7'
 
+  head 'https://bitbucket.org/wez/atomicparsley', :using => :hg
+
   def install
     system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}",

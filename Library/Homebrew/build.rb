@@ -23,6 +23,9 @@ at_exit do
     ENV.setup_build_environment
     # we must do this or tools like pkg-config won't get found by configure scripts etc.
     ENV.prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? "#{HOMEBREW_PREFIX}/bin"
+    # this is a safety measure for Xcode 4.3 which started not installing
+    # dev tools into /usr/bin as a default
+    ENV.prepend 'PATH', MacOS.dev_tools_path, ':' unless ORIGINAL_PATHS.include? MacOS.dev_tools_path
 
     install(Formula.factory($0))
   rescue Exception => e
@@ -59,7 +62,7 @@ def install f
       if ARGV.flag? '--git'
         system "git init"
         system "git add -A"
-        puts "This folder is now a git repo. Make your changes and then use:"
+        puts "This directory is now a git repo. Make your changes and then use:"
         puts "  git diff | pbcopy"
         puts "to copy the diff to the clipboard."
       end

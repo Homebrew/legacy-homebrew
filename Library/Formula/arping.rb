@@ -1,8 +1,8 @@
 require 'formula'
 
 class Arping < Formula
-  url 'https://github.com/ThomasHabets/arping/tarball/arping-2.09'
   homepage 'https://github.com/ThomasHabets/arping'
+  url 'https://github.com/ThomasHabets/arping/tarball/arping-2.09'
   md5 '8a10b23655ffbe93667691fb881afbf4'
 
   depends_on 'libnet'
@@ -13,14 +13,9 @@ class Arping < Formula
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
-
-    # See patches comment
-    inreplace 'Makefile' do |s|
-      s.change_make_var! "LIBS", " -lnet"
-    end
-
-    system "make"
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

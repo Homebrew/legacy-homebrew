@@ -15,16 +15,16 @@ class CouchdbLucene < Formula
     system "mv couchdb-lucene-#{version}/* #{prefix}"
 
     (etc + "couchdb/local.d/couchdb-lucene.ini").write ini_file
-    (prefix+"couchdb-lucene.plist").write plist_file
-    (prefix+"couchdb-lucene.plist").chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent
     You can enable couchdb-lucene to automatically load on login with:
 
       mkdir -p ~/Library/LaunchAgents
-      cp "#{prefix}/couchdb-lucene.plist" ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/couchdb-lucene.plist
+      cp "#{plist_path}" ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     Or start it manually with:
       #{bin}/run
@@ -44,7 +44,7 @@ _fti = {couch_httpd_external, handle_external_req, <<"fti">>}
 EOS
   end
 
-  def plist_file
+  def startup_plist
     return <<-EOS
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
@@ -52,7 +52,7 @@ EOS
 <plist version="1.0">
   <dict>
     <key>Label</key>
-    <string>couchdb-lucene</string>
+    <string>#{plist_name}</string>
     <key>EnvironmentVariables</key>
     <dict>
       <key>HOME</key>
@@ -62,7 +62,7 @@ EOS
     </dict>
     <key>ProgramArguments</key>
     <array>
-      <string>#{bin}/run</string>
+      <string>#{HOMEBREW_PREFIX}/bin/run</string>
     </array>
     <key>UserName</key>
     <string>#{`whoami`.chomp}</string>

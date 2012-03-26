@@ -5,9 +5,9 @@ def ffplay?
 end
 
 class Ffmpeg < Formula
-  url 'http://ffmpeg.org/releases/ffmpeg-0.9.1.tar.bz2'
+  url 'http://ffmpeg.org/releases/ffmpeg-0.10.tar.bz2'
   homepage 'http://ffmpeg.org/'
-  sha1 '89326f93902aee49dac659a63b39b0f69be0e7ee'
+  sha1 'a3a7fe25db760a99d51266b33386da9c8552feef'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
@@ -74,40 +74,12 @@ class Ffmpeg < Formula
       end
     end
 
-    write_version_file if ARGV.build_head?
-
     system "make install"
 
     if ARGV.include? "--with-tools"
       system "make alltools"
       bin.install Dir['tools/*'].select {|f| File.executable? f}
     end
-  end
-
-  # Makefile expects to run in git repo and generate a version number
-  # with 'git describe' command (see version.sh) but Homebrew build
-  # runs in temp copy created via git checkout-index, so 'git describe'
-  # does not work. Work around by writing VERSION file in build directory
-  # to be picked up by version.sh.  Note that VERSION file will already
-  # exist in release versions, so this only applies to git HEAD builds.
-  def write_version_file
-    return if File.exists?("VERSION")
-    git_tag = "UNKNOWN"
-    Dir.chdir(cached_download) do
-      ver = `./version.sh`.chomp
-      if not $?.success? or ver == "UNKNOWN"
-        # fall back to git
-        ver = `git describe --tags --match N --always`.chomp
-        if not $?.success?
-          opoo "Could not determine build version from git repository - set to #{git_tag}"
-        else
-          git_tag = "git-#{ver}"
-        end
-      else
-        git_tag = ver
-      end
-    end
-    File.open("VERSION","w") {|f| f.puts git_tag}
   end
 
 end

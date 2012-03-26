@@ -1,9 +1,9 @@
 require 'formula'
 
 class CmuPocketsphinx < Formula
-  url 'http://downloads.sourceforge.net/project/cmusphinx/pocketsphinx/0.6.1/pocketsphinx-0.6.1.tar.gz'
+  url 'http://sourceforge.net/projects/cmusphinx/files/pocketsphinx/0.7/pocketsphinx-0.7.tar.gz'
   homepage 'http://cmusphinx.sourceforge.net/'
-  md5 'f5c737819b61a135dd0cc3cab573ae7a'
+  md5 '3c42d6fed086801240a329af57422f50'
 
   depends_on 'pkg-config' => :build
   depends_on 'cmu-sphinxbase'

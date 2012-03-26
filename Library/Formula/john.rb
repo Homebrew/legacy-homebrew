@@ -15,7 +15,7 @@ class John < Formula
     ENV.deparallelize
     arch = Hardware.is_64_bit? ? '64' : 'sse2'
 
-    Dir.chdir 'src' do
+    cd 'src' do
       system "make clean macosx-x86-#{arch}"
     end
 

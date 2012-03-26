@@ -10,7 +10,7 @@ class Squashfs < Formula
    end
 
   def install
-    Dir.chdir 'squashfs-tools' do
+    cd 'squashfs-tools' do
       system "make"
       bin.install %w{mksquashfs unsquashfs}
     end

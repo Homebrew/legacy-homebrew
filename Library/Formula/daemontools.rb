@@ -6,7 +6,7 @@ class Daemontools < Formula
   md5 '1871af2453d6e464034968a0fbcb2bfc'
 
   def install
-    Dir.chdir "daemontools-0.76" do
+    cd "daemontools-0.76" do
       system "package/compile"
       bin.install Dir["command/*"]
     end

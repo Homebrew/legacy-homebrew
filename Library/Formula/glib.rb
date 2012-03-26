@@ -67,7 +67,7 @@ class Glib < Formula
     # Note that this *may* need to be updated if any new dependencies are added in the future
     # See http://permalink.gmane.org/gmane.comp.package-management.pkg-config/627
     ENV['ZLIB_CFLAGS'] = ''
-    ENV['ZLIB_LIBZ'] = '-l'
+    ENV['ZLIB_LIBS'] = '-lz'
     # libffi include paths are dramatically ugly
     libffi = Formula.factory('libffi')
     ENV['LIBFFI_CFLAGS'] = "-I #{libffi.lib}/libffi-#{libffi.version}/include"

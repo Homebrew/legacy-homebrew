@@ -12,6 +12,11 @@ class Sbcl < Formula
   md5 '128fb15c80e8e3f8d4024bd8e04635e0'
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
+  bottle do
+    url 'https://downloads.sf.net/project/machomebrew/Bottles/sbcl-1.0.55-bottle.tar.gz'
+    sha1 '3c13225c8fe3eabf54e9d368e6b74318a5546430'
+  end
+
   fails_with_llvm "Compilation fails with LLVM.", :build => 2334
 
   skip_clean 'bin'
@@ -59,20 +64,18 @@ class Sbcl < Formula
       value =~ /[\x80-\xff]/
     end
 
-    build_directory = Dir.pwd
-
     SbclBootstrapBinaries.new.brew {
       # We only need the binaries for bootstrapping, so don't install anything:
       command = Dir.pwd + "/src/runtime/sbcl"
       core = Dir.pwd + "/output/sbcl.core"
       xc_cmdline = "#{command} --core #{core} --disable-debugger --no-userinit --no-sysinit"
 
-      Dir.chdir(build_directory)
-
-      if ARGV.build_32_bit?
-        system "SBCL_ARCH=x86 ./make.sh --prefix='#{prefix}' --xc-host='#{xc_cmdline}'"
-      else
-        system "./make.sh --prefix='#{prefix}' --xc-host='#{xc_cmdline}'"
+      cd buildpath do
+        if ARGV.build_32_bit?
+          system "SBCL_ARCH=x86 ./make.sh --prefix='#{prefix}' --xc-host='#{xc_cmdline}'"
+        else
+          system "./make.sh --prefix='#{prefix}' --xc-host='#{xc_cmdline}'"
+        end
       end
     }
 

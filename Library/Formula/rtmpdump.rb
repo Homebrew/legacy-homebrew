@@ -5,20 +5,24 @@ class Rtmpdump < Formula
   homepage 'http://rtmpdump.mplayerhq.hu'
   md5 'eb961f31cd55f0acf5aad1a7b900ef59'
 
+  head 'git://git.ffmpeg.org/rtmpdump'
+
   depends_on 'openssl' if MacOS.leopard?
 
-  fails_with_llvm "Crashes at runtime" if MacOS.lion?
+  # note: as of LLVM build 2336, this still has runtime issues
+  fails_with_llvm "Crashes at runtime"
 
   # Use dylib instead of so
-  def patches; DATA; end
+  def patches; DATA; end unless ARGV.build_head?
 
   def install
     ENV.deparallelize
+    sys_type = ARGV.build_head? ? "darwin" : "posix"
     system "make", "CC=#{ENV.cc}",
                    "XCFLAGS=#{ENV.cflags}",
                    "XLDFLAGS=#{ENV.ldflags}",
                    "MANDIR=#{man}",
-                   "SYS=posix",
+                   "SYS=#{sys_type}",
                    "prefix=#{prefix}",
                    "install"
   end

@@ -80,8 +80,7 @@ class Salt < Formula
   end
 
   def install_subbrew(subbrew, installdir)
-    s = subbrew.new
-    s.brew do
+    subbrew.new.brew do
       d = File.basename Dir.pwd
       (installdir + d).install Dir['*']
       # the fitmodel file will link by default to the first dir

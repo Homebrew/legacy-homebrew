@@ -12,13 +12,11 @@ class Irssi < Formula
   skip_clean 'bin'
 
   def patches
-    # Fix Perl path and path in man page
+    # Fix Perl build flags and paths in man page
     DATA
   end
 
   def install
-    ENV.append 'ARCHFLAGS', ' ' # wtf?
-
     system "./configure", "--prefix=#{prefix}",
                           "--sysconfdir=#{etc}",
                           "--with-perl=yes",

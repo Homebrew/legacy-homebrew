@@ -1,15 +1,15 @@
 require 'formula'
 
 class Noweb < Formula
+  homepage 'http://www.cs.tufts.edu/~nr/noweb/'
   url 'ftp://www.eecs.harvard.edu/pub/nr/noweb.tgz'
   version '2.11b'
-  homepage 'http://www.cs.tufts.edu/~nr/noweb/'
   md5 '1df580723497b2f2efde07646abf764c'
 
   depends_on 'icon'
 
   def install
-    Dir.chdir "src" do
+    cd "src" do
       system "bash", "awkname", "awk"
       system "make LIBSRC=icon ICONC=icont CFLAGS='-U_POSIX_C_SOURCE -D_POSIX_C_SOURCE=1'"
 

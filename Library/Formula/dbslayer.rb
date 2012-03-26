@@ -1,10 +1,10 @@
 require 'formula'
 
 class Dbslayer < Formula
-  url 'http://code.nytimes.com/downloads/dbslayer-beta-12.tgz'
   homepage 'http://code.nytimes.com/projects/dbslayer/wiki'
-  md5 'a529ea503c244d723166f78c75df3bb3'
+  url 'http://code.nytimes.com/downloads/dbslayer-beta-12.tgz'
   version '0.12.b'
+  md5 'a529ea503c244d723166f78c75df3bb3'
 
   def install
     unless `/usr/bin/which mysql_config`.size > 0
@@ -17,8 +17,7 @@ class Dbslayer < Formula
     system "make install"
   end
 
-  def caveats
-    <<-EOS.undent
+  def caveats; <<-EOS.undent
     DBSlayer depends on a MySQL client library.
 
     You can install this with Homebrew using:

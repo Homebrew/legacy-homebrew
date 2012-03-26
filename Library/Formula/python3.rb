@@ -124,10 +124,12 @@ class Python3 < Formula
       Apple's Tcl/Tk is not recommended for use with 64-bit Python.
       For more information see: http://www.python.org/download/mac/tcltk/
 
-      A "distutils.cfg" has been written, specifing the install-scripts folder as:
+      A "distutils.cfg" has been written to:
+        #{effective_lib}/python3.2/distutils
+      specifing the install-scripts folder as:
         #{scripts_folder}
 
-      If you install Python packages via "python setup.py install", easy_install, pip,
+      If you install Python packages via "python3 setup.py install", easy_install, pip,
       any provided scripts will go into the install-scripts folder above, so you may
       want to add it to your PATH.
 
@@ -150,6 +152,14 @@ class Python3 < Formula
     return prefix+"Frameworks/Python.framework/Versions/3.2/lib" if as_framework?
     # Otherwise use just 'lib'
     return lib
+  end
+
+  # include folder,taking into account whether we are a Framework build or not
+  def effective_include
+    # If we're installed or installing as a Framework, then use that location.
+    return prefix+"Frameworks/Python.framework/Versions/3.2/include" if as_framework?
+    # Otherwise use just 'include'
+    return include
   end
 
   # The Cellar location of site-packages

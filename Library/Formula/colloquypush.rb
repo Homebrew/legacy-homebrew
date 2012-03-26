@@ -7,8 +7,9 @@ class Colloquypush < Formula
   depends_on 'znc'
 
   def install
-    Dir.chdir("znc")
-    system "znc-buildmod", "colloquy.cpp"
-    system "install", "-m", "0755", "colloquy.so", %x[znc-config --moddir].strip()
+    cd "znc" do
+      system "znc-buildmod", "colloquy.cpp"
+      system "install", "-m", "0755", "colloquy.so", %x[znc-config --moddir].strip()
+    end
   end
 end

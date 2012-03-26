@@ -1,10 +1,11 @@
 require 'formula'
 
 class Io < Formula
+  homepage 'http://iolanguage.com/'
   url 'https://github.com/stevedekorte/io/tarball/2011.09.12'
   md5 'b5c4b4117e43b4bbe571e4e12018535b'
+
   head 'https://github.com/stevedekorte/io.git'
-  homepage 'http://iolanguage.com/'
 
   depends_on 'cmake' => :build
   depends_on 'libsgml'
@@ -14,17 +15,17 @@ class Io < Formula
 
   def install
     ENV.j1
-    mkdir 'buildroot'
-    Dir.chdir 'buildroot'
-    system "cmake .. #{std_cmake_parameters}"
-    system 'make'
-    output = %x[./_build/binaries/io ../libs/iovm/tests/correctness/run.io]
-    if $?.exitstatus != 0
-      opoo "Test suite not 100% successful:\n#{output}"
-    else
-      ohai "Test suite ran successfully:\n#{output}"
+    mkdir 'buildroot' do
+      system "cmake #{std_cmake_parameters} .."
+      system 'make'
+      output = %x[./_build/binaries/io ../libs/iovm/tests/correctness/run.io]
+      if $?.exitstatus != 0
+        opoo "Test suite not 100% successful:\n#{output}"
+      else
+        ohai "Test suite ran successfully:\n#{output}"
+      end
+      system 'make install'
+      doc.install Dir['docs/*']
     end
-    system 'make install'
-    doc.install Dir['docs/*']
   end
 end

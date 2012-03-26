@@ -1,8 +1,8 @@
 require 'formula'
 
 class Abuse < Formula
-  url 'http://abuse.zoy.org/raw-attachment/wiki/download/abuse-0.8.tar.gz'
   homepage 'http://abuse.zoy.org/'
+  url 'http://abuse.zoy.org/raw-attachment/wiki/download/abuse-0.8.tar.gz'
   head 'svn://svn.zoy.org/abuse/abuse/trunk'
   md5 'ec678b8dc8d00e0382d8c805c6438489'
 
@@ -11,9 +11,8 @@ class Abuse < Formula
   depends_on 'libvorbis'
 
   def startup_script; <<-EOS.undent
-    #!/bin/sh
-
-    #{libexec}/abuse-bin -datadir #{share}/abuse $*
+    #!/bin/bash
+    #{libexec}/abuse-bin -datadir "#{share}/abuse" "$@"
     EOS
   end
 
