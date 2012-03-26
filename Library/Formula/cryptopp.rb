@@ -14,4 +14,9 @@ class Cryptopp < Formula
     lib.install "libcryptopp.a"
     (include+'cryptopp').install Dir["*.h"]
   end
+
+  def patches
+    # adds "this->" qualifiers to allow compilation with clang++
+    "https://raw.github.com/gist/2039165/ca2b7317e093a155dd08c107eaf45f1abbb8dc96/cryptopp521-522.patch"
+  end
 end
