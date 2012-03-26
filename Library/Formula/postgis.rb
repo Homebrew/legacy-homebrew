@@ -12,9 +12,9 @@ class Postgis < Formula
   head 'http://svn.osgeo.org/postgis/trunk/', :using => :svn
 
   devel do
-    url 'http://postgis.org/download/postgis-2.0.0alpha6.tar.gz'
-    md5 '1895d14c26c2458004d9b4f77931958c'
-    version '2.0.0alpha6'
+    url 'http://postgis.org/download/postgis-2.0.0beta3.tar.gz'
+    md5 'a6335ff05c6527380147cdef99dd192a'
+    version '2.0.0beta3'
   end
 
   depends_on 'postgresql'
@@ -27,6 +27,11 @@ class Postgis < Formula
   if ARGV.build_head? or ARGV.build_devel?
     depends_on 'gdal'
     depends_on 'json-c'
+  end
+
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   def options
@@ -46,7 +51,8 @@ class Postgis < Formula
 
     args = [
       "--disable-dependency-tracking",
-      "--prefix=#{prefix}",
+      # Can't use --prefix, PostGIS disrespects it and flat-out refuses to
+      # accept it with the 2.0 beta.
       "--with-projdir=#{HOMEBREW_PREFIX}",
       # This is against Homebrew guidelines, but we have to do it as the
       # PostGIS plugin libraries can only be properly inserted into Homebrew's
@@ -90,7 +96,8 @@ class Postgis < Formula
     # inside the build prefix.
     if ARGV.build_head? or ARGV.build_devel?
       # Install the liblwgeom library
-      system 'make install -C liblwgeom'
+      lib.install Dir['liblwgeom/.libs/*.dylib', 'liblwgeom/.libs/*.a']
+      include.install 'liblwgeom/liblwgeom.h'
 
       # Install raster plugin to Postgres keg
       postgresql.lib.install Dir['raster/rt_pg/rtpostgis*.so']
@@ -99,7 +106,6 @@ class Postgis < Formula
       # `CREATE EXTENSION postgis;` won't work if these are located elsewhere.
       system 'make install -C extensions'
 
-      # Damn you libtool. Damn you to hell.
       bin.install %w[
         loader/.libs/pgsql2shp
         loader/.libs/shp2pgsql
@@ -187,6 +193,6 @@ class Postgis < Formula
       EOS
     end
 
-    s
+    return s
   end
 end

@@ -13,8 +13,8 @@ class Drush < Formula
   head 'git://git.drupal.org/project/drush.git'
 
   def install
-    prefix.install Dir['*'] # No lib folder, so this is OK for now.
-    bin.install_symlink prefix+'drush'
-    DrushMake.new.brew { (prefix+'commands/drush_make').install Dir['*'] }
+    libexec.install Dir['*']
+    bin.install_symlink libexec+'drush'
+    DrushMake.new.brew { (libexec+'commands/drush_make').install Dir['*'] }
   end
 end

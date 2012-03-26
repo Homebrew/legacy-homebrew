@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pixman < Formula
-  homepage 'http://www.cairographics.org/'
-  url 'http://cairographics.org/releases/pixman-0.24.2.tar.gz'
-  sha1 'acfc724d8032d3c0677b4466807e120e0c867678'
+  homepage 'http://cairographics.org/'
+  url 'http://cairographics.org/releases/pixman-0.24.4.tar.gz'
+  sha1 'efaa09789128ebc42d17a11d2e350b7217a7cd05'
 
   depends_on 'pkg-config' => :build
 
@@ -12,6 +12,7 @@ class Pixman < Formula
   end
 
   def install
+    ENV.x11
     ENV.universal_binary if ARGV.build_universal?
     if ENV.compiler == :llvm
       if MacOS.xcode_version >= "4.1"

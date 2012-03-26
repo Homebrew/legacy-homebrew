@@ -1,8 +1,8 @@
 require 'formula'
 
 class GpgAgent < Formula
-  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.18.tar.bz2'
   homepage 'http://www.gnupg.org/'
+  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.18.tar.bz2'
   sha1 '5ec2f718760cc3121970a140aeea004b64545c46'
 
   depends_on 'libgpg-error'
@@ -12,16 +12,15 @@ class GpgAgent < Formula
   depends_on 'pth'
   depends_on 'pinentry'
 
-  def patches
-    DATA # fix package name to avoid conflicts
-  end
+  # fix package name to avoid conflicts
+  def patches; DATA; end
 
   def install
     # so we don't use Clang's internal stdint.h
     ENV['gl_cv_absolute_stdint_h'] = '/usr/include/stdint.h'
 
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--enable-agent-only"
     system "make install"
   end

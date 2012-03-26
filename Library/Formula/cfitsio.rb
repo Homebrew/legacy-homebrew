@@ -17,7 +17,6 @@ class Cfitsio < Formula
   end
 
   def install
-    # --disable-debug and --disable-dependency-tracking are not recognized by configure
     system "./configure", "--prefix=#{prefix}"
     system "make shared"
     system "make install"

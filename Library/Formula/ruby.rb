@@ -42,8 +42,6 @@ class Ruby < Formula
     system "autoconf" unless File.exists? 'configure'
 
     args = ["--prefix=#{prefix}",
-            "--disable-debug",
-            "--disable-dependency-tracking",
             "--enable-shared"]
 
     args << "--program-suffix=19" if ARGV.include? "--with-suffix"

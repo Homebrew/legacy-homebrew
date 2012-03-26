@@ -15,9 +15,6 @@ class X264 < Formula
   end
 
   def install
-    # Having this set can fail the endian test!
-    ENV['GREP_OPTIONS'] = ''
-
     args = ["--prefix=#{prefix}", "--enable-shared"]
     args << "--bit-depth=10" if ARGV.include?('--10-bit')
 

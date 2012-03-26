@@ -6,15 +6,15 @@ end
 
 class RBashCompletion < Formula
   # This is the same script that Debian packages use.
-  url 'http://rcompletion.googlecode.com/svn-history/r12/trunk/bash_completion/R', :using => :curl
-  version 'r12'
-  md5 '3c8f6cf1c07e052074ee843be00fa5d6'
+  url 'http://rcompletion.googlecode.com/svn-history/r28/trunk/bash_completion/R', :using => :curl
+  version 'r28'
+  md5 'd5493f7a8422147c2f5c63c6a18ebda4'
 end
 
 class R < Formula
   homepage 'http://www.r-project.org'
-  url 'http://cran.r-project.org/src/base/R-2/R-2.14.1.tar.gz'
-  md5 'ba5b6fb15b660670ea29b885348f322a'
+  url 'http://cran.r-project.org/src/base/R-2/R-2.14.2.tar.gz'
+  md5 'f5c8657543a293a80d025be58cf1ef71'
 
   depends_on 'readline'
   depends_on 'libtiff'
@@ -29,15 +29,9 @@ class R < Formula
   end
 
   def install
-    if valgrind?
-      ENV.remove_from_cflags /-O./
-      ENV.append_to_cflags '-O0'
-    end
-
+    ENV.Og if valgrind?
     ENV.fortran
     ENV.x11 # So PNG gets added to the x11 and cairo plotting devices
-    ENV['OBJC'] = ENV['CC']
-    ENV['OBJCFLAGS'] = ENV['CFLAGS']
 
     args = [
       "--prefix=#{prefix}",

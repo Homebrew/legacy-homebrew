@@ -13,11 +13,12 @@ class Macvim < Formula
     ["--custom-icons", "Try to generate custom document icons."],
     ["--with-cscope", "Build with Cscope support."],
     ["--override-system-vim", "Override system vim."],
-    ["--enable-clipboard", "Enable System clipboard handling in the terminal."]
+    ["--with-lua", "Build with Lua scripting support."]
   ]
   end
 
   depends_on 'cscope' if ARGV.include? '--with-cscope'
+  depends_on 'lua' if ARGV.include? '--with-lua'
 
   def install
     # MacVim's Xcode project gets confused by $CC, so remove it
@@ -42,7 +43,11 @@ class Macvim < Formula
             "--enable-tclinterp"]
 
     args << "--enable-cscope" if ARGV.include? "--with-cscope"
-    args << "--enable-clipboard" if ARGV.include? "--enable-clipboard"
+
+    if ARGV.include? "--with-lua"
+      args << "--enable-luainterp"
+      args << "--with-lua-prefix=#{HOMEBREW_PREFIX}"
+    end
 
     system "./configure", *args
 

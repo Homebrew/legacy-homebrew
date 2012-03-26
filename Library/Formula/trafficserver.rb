@@ -1,9 +1,9 @@
 require 'formula'
 
 class Trafficserver < Formula
-  url 'http://www.apache.org/dyn/closer.cgi/trafficserver/trafficserver-3.0.2.tar.bz2'
+  url 'http://www.apache.org/dyn/closer.cgi/trafficserver/trafficserver-3.0.4.tar.bz2'
   homepage 'http://trafficserver.apache.org/'
-  md5 '0f8e5ce658d28511001c6585d1e1813a'
+  md5 '90e259fb09cb7439c6908f1f5344c40f'
 
   head 'http://svn.apache.org/repos/asf/trafficserver/traffic/trunk/'
 
@@ -14,6 +14,11 @@ class Trafficserver < Formula
   end
 
   depends_on 'pcre'
+
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   def install
     system "autoreconf -i" if ARGV.build_head?

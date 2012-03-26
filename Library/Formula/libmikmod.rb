@@ -9,17 +9,22 @@ class Libmikmod < Formula
     [[ '--with-debug', 'Enable debugging symbols and build without optimization']]
   end
 
+  if MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  # When aclocal is run on configure.in, it is told to use a macro AM_PATH_ESD that
+  # only exists if esound is installed.  Here CoreAudio is used not esound.
   def patches
-    # When aclocal is run on configure.in, it is told to use a macro AM_PATH_ESD that
-    # only exists if esound is installed.  Here CoreAudio is used not esound.
     DATA unless Formula.factory('esound').installed?
   end
 
   def install
     ENV.no_optimization if ARGV.include? '--with-debug'  # leave code unoptimzed 4 debug
-    ENV['LIBTOOLIZE'] = '/usr/bin/glibtoolize'           # system libtoolize for autoreconf
+    ENV['LIBTOOLIZE'] = 'glibtoolize'           # system libtoolize for autoreconf
     acpath = "#{HOMEBREW_PREFIX}/share/aclocal"          # esd.m4 if installed would be here
-    ENV['ACLOCAL'] = "/usr/bin/aclocal -I #{acpath}" if Formula.factory('esound').installed?
+    ENV['ACLOCAL'] = "aclocal -I #{acpath}" if Formula.factory('esound').installed?
 
     # Macports patched libmikmod-3.2.0-beta2.tar.bz2 in 2004.  Most of their work
     # was merged into the upstream source by 2005 when the devs moved to sourceforge.
@@ -67,7 +72,7 @@ class Libmikmod < Formula
     args << ((ARGV.include? '--with-debug') ? '--enable-debug' : '--disable-debug')
     # autoreconf w/glibtoolize will fix PIC flags, flat_namespace from 2005 era code.
     system "autoreconf -ivf"
-    # An oos build is recommended in the documentation.
+
     mkdir 'macbuild' do
       system "../configure", *args
       system "make"
