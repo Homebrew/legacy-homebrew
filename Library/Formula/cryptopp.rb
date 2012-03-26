@@ -14,4 +14,10 @@ class Cryptopp < Formula
     lib.install "libcryptopp.a"
     (include+'cryptopp').install Dir["*.h"]
   end
+
+  def patches
+    # adds "this->" qualifiers to allow compilation with clang++
+    # Upgrades release (SVN rev. 521) to SVN rev. 522, patch will be included in next version
+    "https://raw.github.com/gist/2039165/ca2b7317e093a155dd08c107eaf45f1abbb8dc96/cryptopp521-522.patch"
+  end
 end
