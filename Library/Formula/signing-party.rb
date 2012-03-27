@@ -21,7 +21,7 @@ class SigningParty < Formula
     doc.install 'README'
 
     cd 'caff' do
-      inreplace 'caffrc.sample', '/usr/share/doc/signing-party', doc
+      inreplace 'caff', '/usr/share/doc/signing-party', HOMEBREW_PREFIX/'share/doc/signing-party'
       system "make"
       man1.install Dir['*.1']
       bin.install 'caff'
