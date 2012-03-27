@@ -3,7 +3,7 @@ require 'formula'
 class Fox < Formula
   homepage 'http://www.fox-toolkit.org/'
   url 'ftp://ftp.fox-toolkit.org/pub/fox-1.6.44.tar.gz'
-  md5 '6ccc8cbcfa6e4c8b6e4deeeb39c36434'
+  md5 '5d3658faf0855826ff6ce8f95e413949'
 
   # Development and stable branches are incompatible
   devel do
