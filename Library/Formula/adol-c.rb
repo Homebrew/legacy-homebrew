@@ -8,12 +8,19 @@ class AdolC < Formula
   homepage 'http://www.coin-or.org/projects/ADOL-C.xml'
   md5 'c06013e6023ac9c7066738a84b9dafa5'
 
+  def options
+    [
+        ['--enable-sparse', "build sparse drivers"]
+    ]
+  end
+
   if enable_sparse?
     # As of version 2.3.0, Colpack no longer has to be downloaded to a subfolder
     # of Adol-C. But we need recent versions of automake and autoconf.
-    depends_on 'colpack'
-    depends_on 'automake'
-    depends_on 'autoconf'
+    #depends_on 'colpack'  => :build
+    depends_on 'automake' => :build
+    depends_on 'autoconf' => :build
+    depends_on 'libtool'  => :build
   end
 
   def install
@@ -26,6 +33,7 @@ class AdolC < Formula
       args = args + ["--enable-sparse"]
     end
 
+    system "autoreconf -fi"
     system "./configure", *args
     system "make install"
   end
