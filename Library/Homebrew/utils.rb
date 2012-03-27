@@ -161,6 +161,8 @@ def which_editor
   return 'mate' if which_s "mate"
   # Find # BBEdit / TextWrangler
   return 'edit' if which_s "edit"
+  # Find Sublime Text
+  return 'subl' if which_s "subl"
   # Default to vim
   return '/usr/bin/vim'
 end
