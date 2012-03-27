@@ -11,18 +11,22 @@ class Gmt < Formula
   url 'ftp://ftp.soest.hawaii.edu/gmt/gmt-4.5.7.tar.bz2'
   md5 'fc8a4a546ff8572c225aa7bdb56bbdf8'
 
+  depends_on 'gdal'
   depends_on 'netcdf'
 
   def install
-    ENV.j1 # Parallel builds don't work due to missing makefile dependencies
+    ENV.deparallelize # Parallel builds don't work due to missing makefile dependencies
 
-    system "./configure", "--prefix=#{prefix}",
-                          "--datadir=#{share}/#{name}",
-                          "--enable-netcdf=#{HOMEBREW_PREFIX}",
-                          "--enable-shared",
-                          "--enable-triangle",
-                          "--disable-xgrid",
-                          "--disable-mex"
+    args = ["--prefix=#{prefix}",
+            "--datadir=#{share}/#{name}",
+            "--enable-gdal=#{HOMEBREW_PREFIX}",
+            "--enable-netcdf=#{HOMEBREW_PREFIX}",
+            "--enable-shared",
+            "--enable-triangle",
+            "--disable-xgrid",
+            "--disable-mex"]
+
+    system "./configure", *args
     system "make"
     system "make install-gmt"
     system "make install-data"
