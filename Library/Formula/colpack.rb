@@ -5,9 +5,9 @@ class Colpack < Formula
   homepage 'http://www.cscapes.org/coloringpage/software.htm'
   md5 'bee15e629c63ba85ea3f987ea40bc795'
 
-  depends_on 'autoconf'
-  depends_on 'automake'
-  depends_on 'libtool'
+  depends_on 'autoconf' => :build
+  depends_on 'automake' => :build
+  depends_on 'libtool'  => :build
 
   def install
     system "autoreconf -fi"
