@@ -13,9 +13,10 @@ class Libgpod < Formula
   depends_on 'sqlite'
 
   def patches
-    # fixes sys/mount.h calls
-    "https://raw.github.com/gist/d030f697aaca3f917b4a/93476cd60ef1e411695211f31a2f486b021dbb9a/gistfile1.diff"
+    # patching sys/mount.h calls
+    DATA
   end
+  
 
   def install
     system "./configure", "--prefix=#{prefix}"
@@ -29,3 +30,27 @@ class Libgpod < Formula
       ]
   end
 end
+
+
+__END__
+diff --git a/tools/generic-callout.c b/tools/generic-callout.c
+index 62bd08c..c6aa98b 100644
+--- a/tools/generic-callout.c
++++ b/tools/generic-callout.c
+@@ -601,7 +601,7 @@ static char *mount_ipod (const char *dev_path, const char *fstype)
+                 return NULL;
+         }
+         g_assert (tmpname == filename);
+-        result = mount (dev_path, tmpname, fstype, 0, NULL);
++        result = mount (dev_path, tmpname, 0, NULL);
+         if (result != 0) {
+                 g_debug("failed to mount device %s at %s: %s",
+                         dev_path, tmpname, strerror(errno));
+@@ -740,7 +740,7 @@ int itdb_callout_set_ipod_properties (ItdbBackend *backend, const char *dev,
+          */
+         mounted_ipod_set_properties (backend, ipod_mountpoint);
+ 
+-        umount (ipod_mountpoint);
++        unmount (ipod_mountpoint, 0);
+         g_rmdir (ipod_mountpoint);
+         g_free (ipod_mountpoint);
