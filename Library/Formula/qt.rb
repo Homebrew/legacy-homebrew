@@ -115,6 +115,10 @@ class Qt < Formula
     end
   end
 
+  def test
+    "#{bin}/qmake --version"
+  end
+
   def caveats; <<-EOS.undent
     We agreed to the Qt opensource license for you.
     If this is unacceptable you should uninstall.
