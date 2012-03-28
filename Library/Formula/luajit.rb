@@ -15,6 +15,11 @@ class Luajit < Formula
     [["--enable-debug", "Build with debugging symbols."]]
   end
 
+  def patches
+    # Hotfix#1 is recommended by the LuaJIT developers
+    "http://luajit.org/download/beta9_hotfix1.patch"
+  end
+
   def install
     if ARGV.include? '--enable-debug'
       system "make", "CCDEBUG=-g", "PREFIX=#{prefix}",
