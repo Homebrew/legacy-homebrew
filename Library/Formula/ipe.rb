@@ -16,6 +16,7 @@ class Ipe < Formula
     end
   end
 
+  # configure library paths for Qt and Lua using pkg-config
   def patches
     { :p0 => DATA }
   end
@@ -34,7 +35,7 @@ __END__
 -QT_LIBS    ?= -F/Library/Frameworks -L/Library/Frameworks \
 -	      -framework QtCore -framework ApplicationServices \
 -	      -framework QtGui -framework AppKit -framework Cocoa -lz -lm
-+LUA_LIBS   ?= -L/usr/local/lib -llua -lm
++LUA_LIBS   ?= $(shell pkg-config --libs lua)
 +QT_CFLAGS  ?= $(shell pkg-config --cflags QtGui QtCore)
 +QT_LIBS    ?= $(shell pkg-config --libs QtGui QtCore)
  MOC	   ?= moc
