@@ -22,6 +22,7 @@ class GitFlow < Formula
 
     GitFlowCompletion.new.brew do
       (prefix+'etc/bash_completion.d').install "git-flow-completion.bash"
+      (share+'zsh/functions').install "git-flow-completion.zsh"
     end
   end
 end

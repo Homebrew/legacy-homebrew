@@ -13,6 +13,12 @@ class Mkvtoolnix < Formula
   depends_on 'lzo' => :optional
 
   def install
+    # FIXME This should be replaced with fails_with_clang once available
+    # build 318
+    if ENV.compiler == :clang
+      opoo "Formula will not build with Clang, using LLVM."
+      ENV.llvm
+    end
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--with-boost-libdir=#{HOMEBREW_PREFIX}/lib", # For non-/usr/local prefix

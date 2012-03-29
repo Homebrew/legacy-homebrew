@@ -24,9 +24,8 @@ class Grass < Formula
 
   depends_on "cairo" if MacOS.leopard?
 
-  def patches
-    DATA
-  end
+  # Patch to ensure 32 bit system python is used for wxWidgets
+  def patches; DATA; end
 
   def options
     [
@@ -122,8 +121,6 @@ has been modified to use the OS X system Python and to start it in 32 bit mode.
 end
 
 __END__
-Patch to ensure 32 bit system python is used for wxWidgets
-
 diff --git a/lib/init/init.sh b/lib/init/init.sh
 index 8c87fe1..2d1a2a3 100644
 --- a/lib/init/init.sh

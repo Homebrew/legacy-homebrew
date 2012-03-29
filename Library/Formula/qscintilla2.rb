@@ -9,7 +9,7 @@ class Qscintilla2 < Formula
   depends_on 'sip'
 
   def install
-    ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/python", ':'
+    ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages", ':'
 
     cd 'Qt4' do
       inreplace 'qscintilla.pro' do |s|
@@ -27,7 +27,7 @@ class Qscintilla2 < Formula
     cd 'Python' do
       system 'python', 'configure.py', "-o", lib, "-n", include,
                        "--apidir=#{prefix}/qsci",
-                       "--destdir=#{lib}/python/PyQt4",
+                       "--destdir=#{lib}/#{which_python}/site-packages/PyQt4",
                        "--sipdir=#{share}/sip"
       system 'make'
       system 'make', 'install'
@@ -35,9 +35,12 @@ class Qscintilla2 < Formula
   end
 
   def caveats; <<-EOS.undent
-    This formula includes a Python module that will not be functional until you
-    amend your PYTHONPATH:
-        export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/python:$PYTHONPATH
+    For non-Homebrew Python, you need to amend your PYTHONPATH like so:
+      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
     EOS
+  end
+
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 end

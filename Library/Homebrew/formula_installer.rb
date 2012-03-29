@@ -3,27 +3,79 @@ require 'formula'
 require 'keg'
 require 'set'
 require 'tab'
+require 'bottles'
 
 class FormulaInstaller
   attr :f
+  attr :tab
   attr :show_summary_heading, true
   attr :ignore_deps, true
   attr :install_bottle, true
   attr :show_header, true
 
-  def initialize ff
+  def initialize ff, tab=nil
     @f = ff
+    @tab = tab
     @show_header = true
     @ignore_deps = ARGV.include? '--ignore-dependencies' || ARGV.interactive?
-    @install_bottle = !ARGV.build_from_source? && ff.bottle_up_to_date?
+    @install_bottle = install_bottle? ff
+
+    check_install_sanity
+  end
+
+  def check_install_sanity
+    if f.installed?
+      raise CannotInstallFormulaError, "#{f}-#{f.version} already installed"
+    end
+
+    # Building head-only without --HEAD is an error
+    if not ARGV.build_head? and f.standard.nil?
+      raise CannotInstallFormulaError, <<-EOS.undent
+        #{f} is a head-only formula
+        Install with `brew install --HEAD #{f.name}
+      EOS
+    end
+
+    # Building stable-only with --HEAD is an error
+    if ARGV.build_head? and f.unstable.nil?
+      raise CannotInstallFormulaError, "No head is defined for #{f.name}"
+    end
+
+    f.recursive_deps.each do |dep|
+      if dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
+        raise CannotInstallFormulaError, "You must `brew link #{dep}' before #{f} can be installed"
+      end
+    end unless ignore_deps
+
+  rescue FormulaUnavailableError => e
+    # this is sometimes wrong if the dependency chain is more than one deep
+    # but can't easily fix this without a rewrite FIXME-brew2
+    e.dependent = f.name
+    raise
   end
 
   def install
-    raise FormulaAlreadyInstalledError, f if f.installed? and not ARGV.force?
+    # not in initialize so upgrade can unlink the active keg before calling this
+    # function but after instantiating this class so that it can avoid having to
+    # relink the active keg if possible (because it is slow).
+    if f.linked_keg.directory?
+      # some other version is already installed *and* linked
+      raise CannotInstallFormulaError, <<-EOS.undent
+        #{f}-#{f.linked_keg.realpath.basename} already installed
+        To install this version, first `brew unlink #{f}'
+      EOS
+    end
+
+    f.external_deps.each do |dep|
+      unless dep.satisfied?
+        puts dep.message
+        if dep.fatal? and not ignore_deps
+          raise UnsatisfiedRequirement.new(f, dep)
+        end
+      end
+    end
 
     unless ignore_deps
-      f.check_external_deps
-
       needed_deps = f.recursive_deps.reject{ |d| d.installed? }
       unless needed_deps.empty?
         needed_deps.each do |dep|
@@ -61,14 +113,20 @@ class FormulaInstaller
   end
 
   def install_dependency dep
-    fi = FormulaInstaller.new dep
+    dep_tab = Tab.for_formula(dep)
+    outdated_keg = Keg.new(dep.linked_keg.realpath) rescue nil
+
+    fi = FormulaInstaller.new(dep, dep_tab)
     fi.ignore_deps = true
     fi.show_header = false
     oh1 "Installing #{f} dependency: #{dep}"
+    outdated_keg.unlink if outdated_keg
     fi.install
-    Keg.new(dep.linked_keg.realpath).unlink if dep.linked_keg.directory?
     fi.caveats
     fi.finish
+  ensure
+    # restore previous installation state if build failed
+    outdated_keg.link if outdated_keg and not dep.installed? rescue nil
   end
 
   def caveats
@@ -124,8 +182,7 @@ class FormulaInstaller
 
     args = ARGV.clone
     unless args.include? '--fresh'
-      previous_install = Tab.for_formula f
-      args.concat previous_install.used_options
+      args.concat tab.used_options unless tab.nil?
       args.uniq! # Just in case some dupes were added
     end
 
@@ -165,11 +222,14 @@ class FormulaInstaller
       f.linked_keg.unlink
     end
 
-    Keg.new(f.prefix).link
+    keg = Keg.new(f.prefix)
+    keg.link
   rescue Exception => e
     onoe "The linking step did not complete successfully"
     puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
     puts "You can try again using `brew link #{f.name}'"
+    keg.unlink
+
     ohai e, e.backtrace if ARGV.debug?
     @show_summary_heading = true
   end
@@ -195,10 +255,8 @@ class FormulaInstaller
   end
 
   def pour
-    HOMEBREW_CACHE.mkpath
-    downloader = CurlBottleDownloadStrategy.new f.bottle_url, f.name, f.version, nil
-    downloader.fetch
-    f.verify_download_integrity downloader.tarball_path, f.bottle_sha1, "SHA1"
+    fetched, downloader = f.fetch
+    f.verify_download_integrity fetched, f.bottle_sha1, "SHA1"
     HOMEBREW_CELLAR.cd do
       downloader.stage
     end
@@ -333,20 +391,6 @@ class FormulaInstaller
 end
 
 
-def external_dep_check dep, type
-  case type
-    when :python then %W{/usr/bin/env python -c import\ #{dep}}
-    when :jruby then %W{/usr/bin/env jruby -rubygems -e require\ '#{dep}'}
-    when :ruby then %W{/usr/bin/env ruby -rubygems -e require\ '#{dep}'}
-    when :rbx then %W{/usr/bin/env rbx -rubygems -e require\ '#{dep}'}
-    when :perl then %W{/usr/bin/env perl -e use\ #{dep}}
-    when :chicken then %W{/usr/bin/env csi -e (use #{dep})}
-    when :node then %W{/usr/bin/env node -e require('#{dep}');}
-    when :lua then %W{/usr/bin/env luarocks show #{dep}}
-  end
-end
-
-
 class Formula
   def keg_only_text
     # Add indent into reason so undent won't truncate the beginnings of lines
@@ -363,15 +407,5 @@ class Formula
         LDFLAGS  -L#{lib}
         CPPFLAGS -I#{include}
     EOS
-  end
-
-  def check_external_deps
-    [:ruby, :python, :perl, :jruby, :rbx, :chicken, :node, :lua].each do |type|
-      self.external_deps[type].each do |dep|
-        unless quiet_system(*external_dep_check(dep, type))
-          raise UnsatisfiedExternalDependencyError.new(dep, type)
-        end
-      end if self.external_deps[type]
-    end
   end
 end
