@@ -2,8 +2,9 @@ require 'formula'
 
 class Mercurial < Formula
   homepage 'http://mercurial.selenic.com/'
-  url 'http://mercurial.selenic.com/release/mercurial-2.1.tar.gz'
-  sha1 'f649a0b33e0cafb3e5867a2e970f41eb887d3fab'
+  url 'http://mercurial.selenic.com/release/mercurial-2.1.1.tar.gz'
+  sha1 'd6cc4b649b6705113732e62756788542897ba008'
+
   head 'http://selenic.com/repo/hg', :using => :hg
 
   depends_on 'docutils' => :python if ARGV.build_head? or ARGV.include? "--doc"
@@ -12,17 +13,18 @@ class Mercurial < Formula
     [["--doc", "build the documentation. Depends on 'docutils' module."]]
   end
 
-  # Remove the error codes on things like "no changes found"
-  # Will be in next release
-  # See: http://selenic.com/hg/rev/a3dcc59054ca
   def patches
-    "http://selenic.com/hg/raw-rev/a3dcc59054ca"
+    # Fix xcodebuild handling in setup.py; is present in HEAD
+    "http://selenic.com/hg/raw-rev/5536770b3c88" unless ARGV.build_head?
   end
 
   def install
     # Don't add compiler specific flags so we can build against
     # System-provided Python.
     ENV.minimal_optimization
+
+    # install the completion script
+    (prefix + 'etc/bash_completion.d').install 'contrib/bash_completion' => 'hg-completion.bash'
 
     # Force the binary install path to the Cellar
     inreplace "Makefile",
@@ -31,9 +33,7 @@ class Mercurial < Formula
 
     # Make Mercurial into the Cellar.
     # The documentation must be built when using HEAD
-    if ARGV.build_head? or ARGV.include? "--doc"
-      system "make", "doc"
-    end
+    system "make", "doc" if ARGV.build_head? or ARGV.include? "--doc"
     system "make", "PREFIX=#{prefix}", "build"
     system "make", "PREFIX=#{prefix}", "install-bin"
 
@@ -46,7 +46,7 @@ class Mercurial < Formula
     bin.install_symlink libexec+'hg'
 
     # Remove the hard-coded python invocation from hg
-    inreplace bin+'hg', %r[#!/.*/python/.*], '#!/usr/bin/env python'
+    inreplace bin+'hg', %r[#!/.*/python(/.*)?], '#!/usr/bin/env python'
 
     # Install some contribs
     bin.install 'contrib/hgk'
@@ -57,18 +57,14 @@ class Mercurial < Formula
   end
 
   def caveats
-    s = ""
-    if ARGV.build_head?
-      s += <<-EOS.undent
-        As mercurial is required to get its own repository, there are now two
-        installations of mercurial on this machine.
-        If the previous installation has been done through Homebrew, the old version
-        needs to be removed and the new one needs to be linked :
+    if ARGV.build_head? then <<-EOS.undent
+      Mercurial is required to fetch its own repository, so there are now two
+      installations of mercurial on this machine. If the previous installation
+      was done via Homebrew, the old version may need to be cleaned up and new
+      version linked:
 
           brew cleanup mercurial && brew link mercurial
-
       EOS
     end
-    return s
   end
 end

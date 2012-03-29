@@ -1,9 +1,8 @@
 require 'formula'
 
 class Haxe < Formula
-  url 'http://haxe.org/file/haxe-2.08-osx.tar.gz'
-  version '2.08'
   homepage 'http://haxe.org/'
+  url 'http://haxe.org/file/haxe-2.08-osx.tar.gz'
   sha1 'e8758ea9155bf27606348d02240c2af1fecee67b'
 
   def install

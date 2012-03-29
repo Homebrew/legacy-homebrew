@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mtr < Formula
-  url 'ftp://ftp.bitwizard.nl/mtr/mtr-0.80.tar.gz'
+  url 'ftp://ftp.bitwizard.nl/mtr/mtr-0.82.tar.gz'
   homepage 'http://www.bitwizard.nl/mtr/'
-  md5 'fa68528eaec1757f52bacf9fea8c68a9'
+  sha1 'f1319de27324d85898a9df0a293a438bbaaa12b5'
 
   depends_on 'gtk+' unless ARGV.include? "--no-gtk"
 

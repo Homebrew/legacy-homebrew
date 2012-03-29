@@ -1,8 +1,8 @@
 require 'formula'
 
 class Xar < Formula
-  url 'http://xar.googlecode.com/files/xar-1.5.2.tar.gz'
   homepage 'http://code.google.com/p/xar/'
+  url 'http://xar.googlecode.com/files/xar-1.5.2.tar.gz'
   md5 '8eabb055d3387b8edc30ecfb08d2e80d'
 
   # Known issue upstream:
@@ -12,7 +12,9 @@ class Xar < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make"
     system "make install"
   end

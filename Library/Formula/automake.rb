@@ -16,9 +16,10 @@ class Automake < Formula
     system "./configure", "--prefix=#{prefix}"
     system "make install"
 
+    # our aclocal must go first: https://github.com/mxcl/homebrew/issues/10618
     (share/"aclocal/dirlist").write <<-EOS.undent
-      /usr/share/aclocal
       #{HOMEBREW_PREFIX}/share/aclocal
+      /usr/share/aclocal
       EOS
   end
 

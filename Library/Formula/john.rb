@@ -1,13 +1,11 @@
 require 'formula'
 
 class John < Formula
-  url 'http://www.openwall.com/john/g/john-1.7.8.tar.bz2'
   homepage 'http://www.openwall.com/john/'
-  md5 'e6d7f261829610d6949c706ebac0517c'
+  url 'http://www.openwall.com/john/g/john-1.7.9.tar.bz2'
+  md5 '45f54fc59386ecd67daaef9f19781d93'
 
-  def patches
-    { :p0 => DATA }
-  end
+  def patches; DATA; end
 
   fails_with_llvm :build => 2334
 
@@ -28,9 +26,9 @@ end
 
 
 __END__
---- src/john.c.orig	2010-01-01 22:58:55.000000000 -0500
-+++ src/john.c	2010-01-01 22:59:11.000000000 -0500
-@@ -249,7 +249,7 @@ static void john_init(char *name, int ar
+--- a/src/john.c	2010-01-01 22:58:55.000000000 -0500
++++ b/src/john.c	2010-01-01 22:59:11.000000000 -0500
+@@ -290,7 +290,7 @@ static void john_init(char *name, int ar
  		cfg_init(CFG_PRIVATE_ALT_NAME, 1);
  #endif
  		cfg_init(CFG_FULL_NAME, 1);

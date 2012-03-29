@@ -12,7 +12,6 @@ class BaliPhy < Formula
 #       void operator()(const T& t){push_back(t);}
 
   def install
-    # docs say build oos
     mkdir 'macbuild' do
       system "../configure", "--disable-debug", "--disable-dependency-tracking",
                              "--prefix=#{prefix}",

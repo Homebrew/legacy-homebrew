@@ -138,15 +138,29 @@ def puts_columns items, star_items=[]
   end
 end
 
+def which cmd, silent=false
+  cmd += " 2>/dev/null" if silent
+  path = `/usr/bin/which #{cmd}`.chomp
+  if path.empty?
+    nil
+  else
+    Pathname.new(path)
+  end
+end
+
+def which_s cmd
+  which cmd, true
+end
+
 def which_editor
   editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
   # If an editor wasn't set, try to pick a sane default
   return editor unless editor.nil?
 
   # Find Textmate
-  return 'mate' if system "/usr/bin/which -s mate"
+  return 'mate' if which_s "mate"
   # Find # BBEdit / TextWrangler
-  return 'edit' if system "/usr/bin/which -s edit"
+  return 'edit' if which_s "edit"
   # Default to vim
   return '/usr/bin/vim'
 end
@@ -255,6 +269,20 @@ module MacOS extend self
     MACOS_VERSION
   end
 
+  def cat
+    if mountain_lion?
+      :mountainlion
+    elsif lion?
+      :lion
+    elsif snow_leopard?
+      :snowleopard
+    elsif leopard?
+      :leopard
+    else
+      nil
+    end
+  end
+
   def dev_tools_path
     @dev_tools_path ||= if File.file? "/usr/bin/cc" and File.file? "/usr/bin/make"
       # probably a safe enough assumption
@@ -355,10 +383,20 @@ module MacOS extend self
 
   def xcode_version
     @xcode_version ||= begin
+      return "0" unless MACOS
+
+      # this shortcut makes xcode_version work for people who don't realise you
+      # need to install the CLI tools
+      xcode43build = "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild"
+      if File.file? xcode43build
+        `#{xcode43build} -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
+        return $1 if $1
+      end
+
       # Xcode 4.3 xc* tools hang indefinately if xcode-select path is set thus
       raise if `xcode-select -print-path 2>/dev/null`.chomp == "/"
 
-      raise unless system "/usr/bin/which -s xcodebuild"
+      raise unless which_s "xcodebuild"
       `xcodebuild -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
       raise if $1.nil? or not $?.success?
       $1
@@ -366,8 +404,8 @@ module MacOS extend self
       # For people who's xcode-select is unset, or who have installed
       # xcode-gcc-installer or whatever other combinations we can try and
       # supprt. See https://github.com/mxcl/homebrew/wiki/Xcode
-      case nil
-      when 0..2063 then "3.1.0"
+      case llvm_build_version.to_i
+      when 1..2063 then "3.1.0"
       when 2064..2065 then "3.1.4"
       when 2366..2325
         # we have no data for this range so we are guessing
@@ -382,7 +420,9 @@ module MacOS extend self
         "4.0"
       else
         case (clang_version.to_f * 10).to_i
-        when 0..14
+        when 0
+          "dunno"
+        when 1..14
           "3.2.2"
         when 15
           "3.2.4"
@@ -435,9 +475,10 @@ module MacOS extend self
     # http://github.com/mxcl/homebrew/issues/#issue/13
     # http://github.com/mxcl/homebrew/issues/#issue/41
     # http://github.com/mxcl/homebrew/issues/#issue/48
+    return false unless MACOS
 
     %w[port fink].each do |ponk|
-      path = `/usr/bin/which -s #{ponk}`
+      path = `/usr/bin/which #{ponk} 2>/dev/null`
       return ponk unless path.empty?
     end
 
@@ -479,10 +520,6 @@ module MacOS extend self
 
   def prefer_64_bit?
     Hardware.is_64_bit? and not leopard?
-  end
-
-  def bottles_supported?
-    lion? and HOMEBREW_PREFIX.to_s == '/usr/local' and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar'
   end
 end
 
