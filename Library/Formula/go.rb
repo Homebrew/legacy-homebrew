@@ -5,6 +5,7 @@ class Go < Formula
   version '1.0'
 
   if ARGV.include? "--use-git"
+    opoo 'The unofficial git mirror may be outdated'
     url 'https://github.com/tav/go.git', :tag => 'go1'
     head 'https://github.com/tav/go.git'
   else
