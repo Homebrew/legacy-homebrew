@@ -17,13 +17,18 @@ class AdolC < Formula
   if enable_sparse?
     # As of version 2.3.0, Colpack no longer has to be downloaded to a subfolder
     # of Adol-C. But we need recent versions of automake and autoconf.
-    depends_on 'colpack'  => :build
+    #depends_on 'colpack'  => :build
     depends_on 'automake' => :build
     depends_on 'autoconf' => :build
     depends_on 'libtool'  => :build
   end
 
   def install
+
+    system "autoreconf -fi"
+
+    # Don't install libs to lib64/
+    inreplace 'configure', 'lib64', 'lib'
 
     args = ["--disable-debug",
             "--disable-dependency-tracking",
@@ -33,7 +38,6 @@ class AdolC < Formula
       args = args + ["--enable-sparse"]
     end
 
-    system "autoreconf -fi"
     system "./configure", *args
     system "make install"
   end
