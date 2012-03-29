@@ -24,7 +24,8 @@ class Gnuplot < Formula
       ["--pdf", "Build with pdflib-lite support."],
       ["--wx", "Build with wxWidgets support."],
       ["--nolua", "Build without lua support."],
-      ["--nogd", "Build without gd support."]
+      ["--nogd", "Build without gd support."],
+      ["--nolisp", "Build without emacs lisp support."]
     ]
   end
 
@@ -42,6 +43,7 @@ class Gnuplot < Formula
     args << "--disable-wxwidgets" unless ARGV.include? "--wx"
     args << "--with-pdf=#{pdflib.prefix}" if ARGV.include? '--pdf'
     args << "--without-lua" if ARGV.include? "--nolua"
+    args << "--without-lisp-files" if ARGV.include? "--nolisp"
 
     if ARGV.include? '--nogd'
       args << '--without-gd'
