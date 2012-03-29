@@ -1,12 +1,12 @@
 require 'formula'
 
 class Mpg123 < Formula
-  url 'http://downloads.sourceforge.net/project/mpg123/mpg123/1.13.5/mpg123-1.13.5.tar.bz2'
   homepage 'http://www.mpg123.de/'
-  sha1 '4dd627d36fce9d4be1268ac2ec4af04040af4385'
+  url 'http://downloads.sourceforge.net/project/mpg123/mpg123/1.13.7/mpg123-1.13.7.tar.bz2'
+  sha1 '33b71c932b87004f3c8fed527b1f9a4b5f4337b2'
 
+  # mpg123 can't find its plugins if there are no la files
   def skip_clean? path
-    # mpg123 can't find its plugins if there are no la files
     path.extname == '.la'
   end
 
