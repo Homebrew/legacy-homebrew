@@ -293,7 +293,7 @@ module MacOS extend self
     else
       # yes this seems dumb, but we can't throw because the existance of
       # dev tools is not mandatory for installing formula. Eventually we
-      # should make forumla specify if they need dev tools or not.
+      # should make formula specify if they need dev tools or not.
       "/usr/bin"
     end
   end
