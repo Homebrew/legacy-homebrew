@@ -67,9 +67,11 @@ module Homebrew extend self
     installer.finish
   rescue CannotInstallFormulaError => e
     onoe e
+    Homebrew.failed = true
   rescue BuildError => e
     e.dump
     puts
+    Homebrew.failed = true
   ensure
     # restore previous installation state if build failed
     outdated_keg.link if outdated_keg and not f.installed? rescue nil
