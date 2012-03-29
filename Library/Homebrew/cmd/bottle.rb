@@ -17,8 +17,7 @@ module Homebrew extend self
       safe_system 'tar', 'czf', directory/filename, "#{f.name}/#{f.version}"
       puts "./#{filename}"
       puts "bottle do"
-      puts "  url '#{bottle_base_url}#{filename}'"
-      puts "  sha1 '#{(directory/filename).sha1}'"
+      puts "  sha1 '#{(directory/filename).sha1}' => :#{MacOS.cat}"
       puts "end"
     end
   end
