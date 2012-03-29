@@ -80,6 +80,11 @@ class Qt < Formula
     # Compilation currently fails with the newer versions of clang
     # shipped with Xcode 4.3+
     ENV.llvm if MacOS.clang_version.to_f <= 3.1
+    
+    # Compilation currently fails for x86_64 with llvm-gcc: does 
+    # not find std::terminate() symbol when compiling Moc
+    args << '-lstdc++'
+    
 
     # Needed for Qt 4.8.0 due to attempting to link moc with gcc.
     ENV['LD'] = ENV['CXX']
