@@ -2,13 +2,13 @@ require 'formula'
 
 class Go < Formula
   homepage 'http://golang.org'
-  version 'r60.3'
+  version '1.0'
 
   if ARGV.include? "--use-git"
-    url 'https://github.com/tav/go.git', :tag => 'release.r60.3'
+    url 'https://github.com/tav/go.git', :tag => 'go1'
     head 'https://github.com/tav/go.git'
   else
-    url 'http://go.googlecode.com/hg/', :revision => 'release.r60.3'
+    url 'http://go.googlecode.com/hg/', :revision => 'go1'
     head 'http://go.googlecode.com/hg/'
   end
 
@@ -25,7 +25,7 @@ class Go < Formula
 
       # The version check is due to:
       # http://codereview.appspot.com/5654068
-      version = ARGV.build_head? ? 'default' : 'release.r60.3 9516'
+      version = ARGV.build_head? ? 'default' : 'go1'
       File.open('VERSION', 'w') {|f| f.write(version) }
 
       # Tests take a very long time to run. Build only
