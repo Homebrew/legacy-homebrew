@@ -1,8 +1,5 @@
 require 'formula'
 
-# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
 class Mpfi < Formula
   homepage 'http://perso.ens-lyon.fr/nathalie.revol/software.html'
   url 'https://gforge.inria.fr/frs/download.php/30130/mpfi-1.5.1.tar.gz'
