@@ -8,7 +8,18 @@ class SdlImage < Formula
 
   depends_on 'sdl'
 
+  def options
+    [
+     ["--universal", "Build for both 32 & 64 bit Intel."],
+    ]
+  end
+
   def install
+    if ARGV.include? '--universal'
+      ENV['CFLAGS'] += " -arch i386 -arch x86_64"
+      ENV['LDFLAGS'] = "-arch i386 -arch x86_64"
+    end
+
     ENV.x11 # For Freetype
     Sdl.use_homebrew_prefix 'SDL_image.pc.in'
 
