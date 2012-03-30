@@ -2,9 +2,9 @@ require 'formula'
 
 class Gdb < Formula
   homepage 'http://www.gnu.org/software/gdb/'
-  url 'http://ftpmirror.gnu.org/gdb/gdb-7.3.1.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/gdb/gdb-7.3.1.tar.bz2'
-  md5 'b89a5fac359c618dda97b88645ceab47'
+  url 'http://ftpmirror.gnu.org/gdb/gdb-7.4.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/gdb/gdb-7.4.tar.bz2'
+  md5 '95a9a8305fed4d30a30a6dc28ff9d060'
 
   depends_on 'readline'
 
