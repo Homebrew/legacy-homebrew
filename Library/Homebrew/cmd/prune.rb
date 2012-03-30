@@ -10,17 +10,19 @@ module Homebrew extend self
     dirs = []
 
     %w[bin sbin etc lib include share Library/LinkedKegs].map{ |d| HOMEBREW_PREFIX+d }.each do |path|
-      path.find do |path|
-        path.extend ObserverPathnameExtension
-        if path.symlink?
-          unless path.resolved_path_exists?
-            if ENV['HOMEBREW_KEEP_INFO'] and path.to_s =~ Keg::INFOFILE_RX
-              path.uninstall_info
+      if File.exists? path
+        path.find do |path|
+          path.extend ObserverPathnameExtension
+          if path.symlink?
+            unless path.resolved_path_exists?
+              if ENV['HOMEBREW_KEEP_INFO'] and path.to_s =~ Keg::INFOFILE_RX
+                path.uninstall_info
+              end
+              path.unlink
             end
-            path.unlink
+          elsif path.directory?
+            dirs << path
           end
-        elsif path.directory?
-          dirs << path
         end
       end
     end
