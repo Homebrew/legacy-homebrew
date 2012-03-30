@@ -8,8 +8,8 @@ class Pdal < Formula
   def options
   [
     ['--embed-boost', 'Use embedded Boost?'],
-    ['--with-gdal', 'Use GDAL?'],
-    ['--with-geotiff', 'Use GeoTIFF?'],
+#    ['--with-gdal', 'Use GDAL?'],
+#    ['--with-geotiff', 'Use GeoTIFF?'],
     ['--with-iconv', 'Use ICONV?'],
     ['--with-laszip', 'Use LASZIP?'],
     ['--with-libxml2', 'Use libXML2?'],
@@ -27,9 +27,8 @@ class Pdal < Formula
   depends_on 'cmake' => :build
   depends_on 'boost' unless ARGV.include? '--embed-boost'
 
-  depends_on 'libgeotiff' if ARGV.include? '--with-geotiff'
-  depends_on 'libgeotiff' if ARGV.include? '--with-gdal'
-  depends_on 'gdal' if ARGV.include? '--with-gdal'
+#  depends_on 'libgeotiff' if ARGV.include? '--with-geotiff' || '--with-gdal'
+#  depends_on 'gdal' if ARGV.include? '--with-gdal'
   depends_on 'iconv' if ARGV.include? '--with-iconv'
   depends_on 'laszip' if ARGV.include? '--with-laszip'
   depends_on 'libxml2' if ARGV.include? '--with-libxml2'
@@ -38,8 +37,7 @@ class Pdal < Formula
   depends_on 'p2k' if ARGV.include? '--with-p2g'
   depends_on 'pkgconfig' if ARGV.include? '--with-pkgconfig'
   depends_on 'python' if ARGV.include? '--with-python'
-  depends_on 'swig' if ARGV.include? '--with-swig-csharp'
-  depends_on 'swig' if ARGV.include? '--with-swig-python'
+  depends_on 'swig' if ARGV.include? '--with-swig-csharp' || '--with-swig-python'
 
   def install
     args = std_cmake_parameters.split
@@ -96,14 +94,23 @@ class Pdal < Formula
       args << "-DWITH_TESTS:BOOL=ON"
     end
 
-    system "mkdir build"
+#    system "mkdir build"
     args << ".."
 
-    Dir.chdir 'build' do
+    mkdir 'build' do
       ENV['Boost_INCLUDE_DIR'] = "#{HOMEBREW_PREFIX}/include"
       ENV['Boost_LIBRARYS_DIRS'] = "#{HOMEBREW_PREFIX}/lib"
       system "cmake", *args
       system "make install"
     end
+  end
+
+  def caveats
+    <<-EOS
+There is currently a bug when attempting to build with the latest
+release versions of GDAL and libgeotiff. If this functionality is
+required, it is best to build from trunk of the respective SVN
+repositories.
+   EOS
   end
 end
