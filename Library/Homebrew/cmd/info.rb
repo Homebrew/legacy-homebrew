@@ -66,7 +66,7 @@ module Homebrew extend self
       kegs.each do |keg|
         next if keg.basename.to_s == '.DS_Store'
         print "#{keg} (#{keg.abv})"
-        print " *" if Keg.new(keg).linked? and kegs.length > 1
+        print " *" if Keg.new(keg).linked?
         puts
         tab = Tab.for_keg keg
         unless tab.used_options.empty?

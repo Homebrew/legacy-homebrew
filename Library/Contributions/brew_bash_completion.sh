@@ -10,30 +10,10 @@
 #    $(brew --prefix)/etc/bash_completion.d
 #    $(brew --prefix)/share/bash-completion/completions
 #
-# and bash-completion will source it automatically.
-#
-# The __brew_ps1() function can be used to annotate your PS1 with
-# Homebrew debugging information; it behaves similarly to the __git_ps1()
-# function provided by the git's bash completion script.
-#
-# For example, the prompt string
-#
-#     PS1='\u@\h \W $(__brew_ps1 "(%s)") $'
-#
-# would result in a prompt like
-#
-#    user@hostname cwd $
-#
-# but if you are currently engaged in an interactive or debug install,
-# (i.e., you invoked `brew install` with either '-i' or '-d'), then the
-# prompt would look like
-#
-#     user@hostname cwd (<formula_name>|DEBUG) $
-#
-# You can customize the output string, e.g. $(__brew_ps1 "[%s]") would
-# output "[<formula_name>|DEBUG]". The default (if you do not provide a
-# format argument) is to print "(<formula_name>|DEBUG)" prefixed with a
-# single space.
+# Installing to etc/bash_completion.d will cause bash-completion to load
+# it automatically at shell startup time. If you choose to install it to
+# share/bash-completion/completions, it will be loaded on-demand (i.e. the
+# first time you invoke the `brew` command in a shell session).
 
 __brewcomp_words_include ()
 {
@@ -107,9 +87,39 @@ __brew_complete_outdated ()
     COMPREPLY=($(compgen -W "$od" -- "$cur"))
 }
 
-__brew_complete_taps ()
+__brew_complete_tapped ()
 {
     __brewcomp "$(\ls $(brew --repository)/Library/Taps 2>/dev/null | sed 's/-/\//g')"
+}
+
+__brew_complete_taps ()
+{
+    if [[ -z "$__brew_cached_taps" ]]; then
+        __brew_cached_taps="$(/usr/bin/ruby -e '
+            require "open-uri"
+            require "yaml"
+
+            begin
+              uri = URI.parse("http://github.com/api/v2/yaml/repos/search/homebrew")
+
+              open uri do |f|
+                YAML::load(f.read)["repositories"].each do |repo|
+                  if repo[:name] =~ /^homebrew-(\w+)$/
+                    puts tap = if repo[:username] == "Homebrew"
+                      "homebrew/#{$1}"
+                    else
+                      repo[:username]+"/"+$1
+                    end
+                  end
+                end
+              end
+            rescue
+              nil
+            end
+        ' 2>/dev/null)"
+    fi
+
+    __brewcomp "$__brew_cached_taps"
 }
 
 _brew_cleanup ()
@@ -345,12 +355,6 @@ _brew_versions ()
     __brew_complete_formulae
 }
 
-__brew_ps1 ()
-{
-    [[ -n $HOMEBREW_DEBUG_INSTALL ]] &&
-    printf "${1:- (%s)}" "$HOMEBREW_DEBUG_INSTALL|DEBUG"
-}
-
 _brew ()
 {
     local i=1 cmd
@@ -431,8 +435,9 @@ _brew ()
     options)                    _brew_options ;;
     outdated)                   _brew_outdated ;;
     search|-S)                  _brew_search ;;
+    tap)                        __brew_complete_taps ;;
     uninstall|remove|rm)        _brew_uninstall ;;
-    untap)                      __brew_complete_taps ;;
+    untap)                      __brew_complete_tapped ;;
     update)                     _brew_update ;;
     uses)                       _brew_uses ;;
     versions)                   _brew_versions ;;
