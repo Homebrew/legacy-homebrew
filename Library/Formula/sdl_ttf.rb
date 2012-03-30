@@ -9,16 +9,12 @@ class SdlTtf < Formula
 
   def options
     [
-     ["--universal", "Build for both 32 & 64 bit Intel."],
+     ['--universal', 'Build universal binaries.'],
     ]
   end
 
   def install
-    if ARGV.include? '--universal'
-      ENV['CFLAGS'] += " -arch i386 -arch x86_64"
-      ENV['LDFLAGS'] = "-arch i386 -arch x86_64"
-    end
-
+    ENV.universal_binary if ARGV.build_universal?
     ENV.x11 # For Freetype
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
