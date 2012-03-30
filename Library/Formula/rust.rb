@@ -1,9 +1,9 @@
 require 'formula'
 
 class Rust < Formula
-  url 'http://dl.rust-lang.org/dist/rust-0.1.tar.gz'
+  url 'http://dl.rust-lang.org/dist/rust-0.2.tar.gz'
   homepage 'http://www.rust-lang.org/'
-  md5 '80b655bcceaf2192c502a692c8c1eb20'
+  md5 '47be90f952ec01c3088af58be78fd618'
 
   def install
     system "./configure", "--prefix=#{prefix}"
