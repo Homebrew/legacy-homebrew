@@ -1,10 +1,10 @@
 require 'formula'
 
 class Bullet < Formula
-  url 'http://bullet.googlecode.com/files/bullet-2.79-rev2440.tgz'
+  url 'http://bullet.googlecode.com/files/bullet-2.80-rev2531.tgz'
   homepage 'http://bulletphysics.org/wordpress/'
-  sha1 '49b4b362a0c8d279e32b946ef9578b1dd8c5987c'
-  version '2.79'
+  sha1 '65a7dbb852cc3b92f40d79a2a368233442747228'
+  version '2.80'
   head 'http://bullet.googlecode.com/svn/trunk/', :using => :svn
 
   depends_on 'cmake' => :build
