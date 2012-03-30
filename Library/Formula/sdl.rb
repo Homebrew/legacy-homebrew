@@ -19,8 +19,14 @@ class Sdl < Formula
     inreplace files, '@prefix@', HOMEBREW_PREFIX
   end
 
+  def options
+    [['--universal', 'Build universal binaries.']]
+  end
+
   def install
     Sdl.use_homebrew_prefix %w[sdl.pc.in sdl-config.in]
+
+    ENV.universal_binary if ARGV.build_universal?
 
     # Sdl assumes X11 is present on UNIX
     ENV.x11
