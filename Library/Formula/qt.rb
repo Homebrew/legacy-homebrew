@@ -25,15 +25,14 @@ class Qt < Formula
   depends_on "d-bus" if ARGV.include? '--with-qtdbus'
   depends_on 'sqlite' if MacOS.leopard?
 
-  # Fix compilation with llvm-gcc. Remove for 4.8.1.
   def patches
-    "https://qt.gitorious.org/qt/qt/commit/448ab7cd150ab7bb7d12bcac76bc2ce1c72298bd?format=patch"
+    # Fix compilation with llvm-gcc. Remove for 4.8.1.
+    [ "https://qt.gitorious.org/qt/qt/commit/448ab?format=patch",
+    # Fix Xcode 4 generation. Remove for 4.8.1.
+      "https://qt.gitorious.org/qt/qt/commit/b5871?format=patch" ]
   end
 
   def install
-    # Needed for Qt 4.8.0 due to attempting to link moc with gcc.
-    ENV['LD'] = ENV['CXX']
-
     ENV.x11
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
     args = ["-prefix", prefix,
@@ -82,6 +81,9 @@ class Qt < Formula
     # shipped with Xcode 4.3+
     ENV.llvm if MacOS.clang_version.to_f <= 3.1
 
+    # Needed for Qt 4.8.0 due to attempting to link moc with gcc.
+    ENV['LD'] = ENV['CXX']
+
     system "./configure", *args
     system "make"
     ENV.j1
@@ -111,6 +113,10 @@ class Qt < Formula
       framework_name = File.basename(File.dirname(path), '.framework')
       ln_s path.realpath, include+framework_name
     end
+  end
+
+  def test
+    "#{bin}/qmake --version"
   end
 
   def caveats; <<-EOS.undent

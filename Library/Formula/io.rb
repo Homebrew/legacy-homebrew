@@ -8,7 +8,6 @@ class Io < Formula
   head 'https://github.com/stevedekorte/io.git'
 
   depends_on 'cmake' => :build
-  depends_on 'libsgml'
   depends_on 'ossp-uuid'
   depends_on 'libevent'
   depends_on 'yajl'
