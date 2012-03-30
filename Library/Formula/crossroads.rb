@@ -1,10 +1,10 @@
 require 'formula'
 
 class Crossroads < Formula
-  url 'http://download.crossroads.io/libxs-1.0.0.tar.gz'
+  url 'http://download.crossroads.io/libxs-1.0.1.tar.gz'
   head 'git://github.com/crossroads-io/libxs.git'
   homepage 'http://www.crossroads.io/'
-  md5 '12aaeaa76bd8a378246f2602c4d8d912'
+  md5 '915aaf168f4a47d8ccf6d03b33845038'
 
   fails_with_llvm "Compiling with LLVM gives a segfault while linking.",
                   :build => 2326 if MacOS.snow_leopard?
