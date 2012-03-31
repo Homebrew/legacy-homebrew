@@ -8,7 +8,7 @@ class Eigen < Formula
   depends_on 'cmake' => :build
 
   def install
-    ENV.fortran
+#    ENV.fortran
     mkdir 'eigen-build' do
       system "cmake #{std_cmake_parameters} -DCMAKE_BUILD_TYPE=Release -Dpkg_config_libdir=#{lib} .."
       system "make install"
