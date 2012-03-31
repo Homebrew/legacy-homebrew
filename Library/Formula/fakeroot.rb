@@ -1,9 +1,13 @@
 require 'formula'
 
 class Fakeroot < Formula
-  homepage 'http://mackyle.github.com/fakeroot/'
-  url 'https://github.com/mackyle/fakeroot/tarball/1f42602a60deb702f276732b478fb5ce695d82d8'
-  md5 '5fd8f5958c6aff3d10b0eae0d95c8698'
+  homepage 'http://packages.qa.debian.org/f/fakeroot.html'
+  url 'http://ftp.debian.org/debian/pool/main/f/fakeroot/fakeroot_1.18.2.orig.tar.bz2'
+  md5 '79f32331358ad58499704ea5e19fd0ae'
+
+  def patches
+    DATA
+  end
 
   def install
     system "./bootstrap"
@@ -16,3 +20,15 @@ class Fakeroot < Formula
     system "fakeroot -v"
   end
 end
+
+__END__
+diff --git a/doc/Makefile.am b/doc/Makefile.am
+index bf5ce07..31f2717 100644
+--- a/doc/Makefile.am
++++ b/doc/Makefile.am
+@@ -1,5 +1,5 @@
+ AUTOMAKE_OPTIONS=foreign
+-SUBDIRS = de es fr sv nl
++#SUBDIRS = de es fr sv nl
+
+ man_MANS = faked.1 fakeroot.1
