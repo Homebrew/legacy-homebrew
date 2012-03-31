@@ -1,12 +1,16 @@
 require 'formula'
 
 class Renameutils < Formula
-  url 'http://nongnu.uib.no/renameutils/renameutils-0.10.0.tar.gz'
   homepage 'http://www.nongnu.org/renameutils/'
-  md5 '77f2bb9a18bb25c7cc3c23b64f2d394b'
+  url 'http://nongnu.uib.no/renameutils/renameutils-0.11.0.tar.gz'
+  md5 'a3258f875d6077a06b6889de3a317dce'
+
+  depends_on 'readline' # Use instead of system libedit
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-packager=Homebrew"
     system "make"
     ENV.deparallelize # parallel install fails
     system "make install"
