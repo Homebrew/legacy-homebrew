@@ -14,7 +14,4 @@ class Mpfi < Formula
     system "make install"
   end
 
-  def test
-    system "make check"
-  end
 end
