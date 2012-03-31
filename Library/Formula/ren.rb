@@ -7,9 +7,8 @@ class Ren < Formula
 
   def install
     system "make"
-    system "install -d -m 0755 #{prefix}/bin #{prefix}/share/man/man1"
-    system "install -m 0755 ren #{prefix}/bin"
-    system "install -m 0644 ren.1 #{prefix}/share/man/man1"
+    bin.install "ren"
+    man1.install "ren.1"
   end
 
   def test
