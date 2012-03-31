@@ -9,13 +9,13 @@ class Pathname
       case src
       when Array
         if src.empty?
-          opoo "install was passed an empty array"
+          opoo "tried to install empty array to #{self}"
           return []
         end
         src.each {|s| results << install_p(s) }
       when Hash
         if src.empty?
-          opoo "install was passed an empty hash"
+          opoo "tried to install empty hash to #{self}"
           return []
         end
         src.each {|s, new_basename| results << install_p(s, new_basename) }
