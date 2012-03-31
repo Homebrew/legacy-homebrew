@@ -6,6 +6,15 @@ class Renameutils < Formula
   md5 'a3258f875d6077a06b6889de3a317dce'
 
   depends_on 'readline' # Use instead of system libedit
+  depends_on 'coreutils'
+
+  # Use the GNU versions of certain system utilities. See:
+  # https://trac.macports.org/ticket/24525
+  def patches
+    { :p0 =>
+      "https://trac.macports.org/export/91404/trunk/dports/sysutils/renameutils/files/patch-use_coreutils.diff"
+    }
+  end
 
   def install
     system "./configure", "--disable-dependency-tracking",
