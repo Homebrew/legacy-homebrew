@@ -6,7 +6,7 @@ class NeedsSnowLeopardOrNewer < Requirement
   end
 
   def message
-    "phantomjs requires Mac OS X 10.6 (Snow Leopard) or newer."
+    "PhantomJS requires Mac OS X 10.6 (Snow Leopard) or newer."
   end
 end
 
@@ -19,5 +19,11 @@ class Phantomjs < Formula
 
   def install
     bin.install "bin/phantomjs"
+  end
+  
+  def caveats; <<-EOS.undent
+    This version of PhantomJS does not hide the dock icon.
+    For more information see: http://code.google.com/p/phantomjs/issues/detail?id=281
+    EOS
   end
 end
