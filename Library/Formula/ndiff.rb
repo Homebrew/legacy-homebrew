@@ -8,17 +8,12 @@ class Ndiff < Formula
   def install
     ENV.j1
 
-    system "./configure", "--prefix=#{prefix}"
-    system "make"
-    system "install", "-d", "#{prefix}/bin"
-    system "install", "-d", "#{prefix}/man"
-    system "install", "-d", "#{prefix}/man/man1"
-    system "install", "-d", "#{prefix}/share/man"
-    system "install", "-d", "#{prefix}/share/man/man1"
+    system "./configure", "--prefix=.", "--mandir=."
+    system "install -d bin"
+    system "install -d man/man1"
     system "make install"
-    system "mv", "#{prefix}/man/man1/ndiff.1", "#{man}/man1/ndiff.1"
-    system "rmdir", "#{prefix}/man/man1"
-    system "rmdir", "#{prefix}/man"
+    bin.install "bin/ndiff"
+    man1.install "man/man1/ndiff.1"
   end
 
   def test
