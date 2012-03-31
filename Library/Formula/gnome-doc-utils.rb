@@ -18,11 +18,14 @@ class GnomeDocUtils < Formula
   fails_with_llvm "Undefined symbols when linking", :build => "2326"
 
   def install
-    args = ["--prefix=#{prefix}",
-            "--disable-scrollkeeper",
-            "--enable-build-utils=yes"]
+    # TODO this should possibly be moved up into build.rb
+    pydir = 'python' + `python -c 'import sys;print(sys.version[:3])'`.strip
+    libxml2 = Formula.factory('libxml2')
+    ENV.prepend 'PYTHONPATH', libxml2.lib/pydir/'site-packages', ':'
 
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-scrollkeeper",
+                          "--enable-build-utils=yes"
 
     # Compilation doesn't work right if we jump straight to make install
     system "make"

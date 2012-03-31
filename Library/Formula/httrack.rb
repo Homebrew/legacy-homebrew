@@ -2,8 +2,8 @@ require 'formula'
 
 class Httrack < Formula
   homepage 'http://www.httrack.com/'
-  url 'http://download.httrack.com/httrack-3.45.2.tar.gz'
-  md5 '2306eff5b283808084be4716c84b9ef5'
+  url 'http://download.httrack.com/httrack-3.45.3.tar.gz'
+  md5 'd053e0f5ce8483313d37bb6adf00fad0'
 
   def install
     ENV.deparallelize
