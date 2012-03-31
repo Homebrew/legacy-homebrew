@@ -1,10 +1,10 @@
 require 'formula'
 
 class Luajit < Formula
-  url 'http://luajit.org/download/LuaJIT-2.0.0-beta9.tar.gz'
-  head 'http://luajit.org/git/luajit-2.0.git', :using => :git
   homepage 'http://luajit.org/luajit.html'
+  url 'http://luajit.org/download/LuaJIT-2.0.0-beta9.tar.gz'
   md5 'e7e03e67e2550817358bc28b44270c6d'
+  head 'http://luajit.org/git/luajit-2.0.git', :using => :git
 
   # Skip cleaning both empty folders and bin/libs so external symbols still work.
   skip_clean :all
@@ -13,6 +13,11 @@ class Luajit < Formula
 
   def options
     [["--enable-debug", "Build with debugging symbols."]]
+  end
+
+  def patches
+    # Hotfix#1 is recommended by the LuaJIT developers
+    "http://luajit.org/download/beta9_hotfix1.patch"
   end
 
   def install
