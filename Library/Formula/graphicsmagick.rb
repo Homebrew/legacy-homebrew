@@ -36,7 +36,7 @@ class Graphicsmagick < Formula
   depends_on 'ghostscript' => :recommended if ghostscript_srsly?
   depends_on 'xz' => :optional
 
-  fails_with_llvm
+  fails_with_llvm "Undefined symbols when linking", :build => "2326"
 
   def skip_clean? path
     path.extname == '.la'
@@ -55,6 +55,15 @@ class Graphicsmagick < Formula
 
   def install
     ENV.x11
+
+    # Force CLang instead of LLVM-GCC on Lion, if XCode has been upgraded
+    if ENV.compiler == :llvm
+      if MacOS.xcode_version >= "4.1"
+        ENV.clang
+      else
+        ENV.gcc_4_2
+      end
+    end
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
