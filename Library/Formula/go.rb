@@ -2,13 +2,13 @@ require 'formula'
 
 class Go < Formula
   homepage 'http://golang.org'
-  version 'r60.3'
+  url 'http://go.googlecode.com/files/go.go1.src.tar.gz'
+  sha1 '6023623d083db1980965335b8ac4fa8b428fa484'
+  version 'go1'
 
   if ARGV.include? "--use-git"
-    url 'https://github.com/tav/go.git', :tag => 'release.r60.3'
     head 'https://github.com/tav/go.git'
   else
-    url 'http://go.googlecode.com/hg/', :revision => 'release.r60.3'
     head 'http://go.googlecode.com/hg/'
   end
 
@@ -19,23 +19,25 @@ class Go < Formula
   end
 
   def install
-    prefix.install %w[src include test doc misc lib favicon.ico AUTHORS]
-    cd prefix do
-      mkdir %w[pkg bin]
+    prefix.install Dir['*']
 
+    cd prefix do
       # The version check is due to:
       # http://codereview.appspot.com/5654068
-      version = ARGV.build_head? ? 'default' : 'release.r60.3 9516'
-      File.open('VERSION', 'w') {|f| f.write(version) }
-
-      # Tests take a very long time to run. Build only
-      cd 'src' do
-        system "./make.bash"
+      if ARGV.build_head? then
+        File.open('VERSION', 'w') {|f| f.write('default') }
       end
 
-      # Don't need the src folder, but do keep the Makefiles as Go projects use these
-      Dir['src/*'].each{|f| rm_rf f unless f.match(/^src\/(pkg|Make)/) }
-      rm_rf %w[include test]
+      # Build only. Run `brew test go` to run distrib's tests.
+      cd 'src' do
+        system './make.bash'
+      end
+    end
+  end
+
+  def test
+    cd "#{prefix}/src" do
+      system './run.bash --no-rebuild'
     end
   end
 end
