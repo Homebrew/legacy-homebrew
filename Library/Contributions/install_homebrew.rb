@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # This script installs to /usr/local only. To install elsewhere you can just
 # untar https://github.com/mxcl/homebrew/tarball/master anywhere you like.
 

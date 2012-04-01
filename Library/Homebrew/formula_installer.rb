@@ -190,7 +190,7 @@ class FormulaInstaller
       begin
         read.close
         exec '/usr/bin/nice',
-             '/usr/bin/ruby',
+             `/usr/bin/which ruby`.chomp,
              '-I', Pathname.new(__FILE__).dirname,
              '-rbuild',
              '--',

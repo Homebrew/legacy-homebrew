@@ -20,7 +20,9 @@ class Rubinius < Formula
     # Set to stop Rubinius messing with our prefix.
     ENV["RELEASE"] = "1"
 
-    system "/usr/bin/ruby", "./configure",
+    which_ruby = `/usr/bin/which ruby`.chomp
+
+    system which_ruby, "./configure",
                           "--skip-system", # download and use the prebuilt LLVM
                           "--bindir", bin,
                           "--prefix", prefix,
@@ -31,7 +33,7 @@ class Rubinius < Formula
 
     ohai "config.rb", File.open('config.rb').to_a if ARGV.debug? or ARGV.verbose?
 
-    system "/usr/bin/ruby", "-S", "rake", "install"
+    system which_ruby, "-S", "rake", "install"
 
     # Remove conflicting command aliases
     bin.children.select(&:symlink?).each(&:unlink)

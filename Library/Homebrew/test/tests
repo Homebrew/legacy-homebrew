@@ -4,20 +4,20 @@
 cd `dirname $0`
 
 EXIT=0
-/usr/bin/ruby test_bucket.rb $* || EXIT=1
-/usr/bin/ruby test_formula.rb $* || EXIT=1
-/usr/bin/ruby test_versions.rb $* || EXIT=1
-/usr/bin/ruby test_checksums.rb $* || EXIT=1
-/usr/bin/ruby test_inreplace.rb $* || EXIT=1
-/usr/bin/ruby test_hardware.rb $* || EXIT=1
-/usr/bin/ruby test_formula_install.rb $* || EXIT=1
-/usr/bin/ruby test_patching.rb $* || EXIT=1
-/usr/bin/ruby test_external_deps.rb $* || EXIT=1
-/usr/bin/ruby test_pathname_install.rb $* || EXIT=1
-/usr/bin/ruby test_utils.rb $* || EXIT=1
-/usr/bin/ruby test_ARGV.rb $* || EXIT=1
-/usr/bin/ruby test_ENV.rb $* || EXIT=1
-/usr/bin/ruby test_updater.rb $* || EXIT=1
-/usr/bin/ruby test_string.rb $* || EXIT=1
+/usr/bin/env ruby test_bucket.rb $* || EXIT=1
+/usr/bin/env ruby test_formula.rb $* || EXIT=1
+/usr/bin/env ruby test_versions.rb $* || EXIT=1
+/usr/bin/env ruby test_checksums.rb $* || EXIT=1
+/usr/bin/env ruby test_inreplace.rb $* || EXIT=1
+/usr/bin/env ruby test_hardware.rb $* || EXIT=1
+/usr/bin/env ruby test_formula_install.rb $* || EXIT=1
+/usr/bin/env ruby test_patching.rb $* || EXIT=1
+/usr/bin/env ruby test_external_deps.rb $* || EXIT=1
+/usr/bin/env ruby test_pathname_install.rb $* || EXIT=1
+/usr/bin/env ruby test_utils.rb $* || EXIT=1
+/usr/bin/env ruby test_ARGV.rb $* || EXIT=1
+/usr/bin/env ruby test_ENV.rb $* || EXIT=1
+/usr/bin/env ruby test_updater.rb $* || EXIT=1
+/usr/bin/env ruby test_string.rb $* || EXIT=1
 
 exit $EXIT

@@ -5,7 +5,7 @@ Dir.chdir HOMEBREW_REPOSITORY + "Library/Homebrew/test"
 $tests_passed = true
 
 def test t
-  test_passed = system "/usr/bin/ruby test_#{t}.rb"
+  test_passed = system "/usr/bin/env ruby test_#{t}.rb"
   $tests_passed &&= test_passed
   puts; puts "#" * 80; puts
 end
