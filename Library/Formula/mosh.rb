@@ -8,7 +8,9 @@ class Mosh < Formula
   depends_on 'gmp'
   depends_on 'oniguruma'
 
-  fails_with_llvm "Inline asm errors"
+  fails_with :llvm do
+    cause "Inline asm errors"
+  end
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

@@ -13,7 +13,10 @@ class Id3lib < Formula
     p << "https://trac.macports.org/export/90780/trunk/dports/audio/id3lib/files/id3lib-main.patch"
   end
 
-  fails_with_llvm "Segfault during linking", :build => 2326
+  fails_with :llvm do
+    build 2326
+    cause "Segfault during linking"
+  end
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
