@@ -20,6 +20,16 @@ class Opencolorio < Formula
     ]
   end
 
+  def patches
+    # install Python library into site-packages
+    # can be removed in the next version
+    [
+      "https://github.com/imageworks/OpenColorIO/commit/480c5313f3b377755506e2a2b2b13e6e7988ff86.patch",
+      "https://github.com/imageworks/OpenColorIO/commit/cfd4adecb630a08dba7cf7d08d5fd874bc8af120.patch",
+      "https://github.com/imageworks/OpenColorIO/commit/a7fbf812291c705e7af39dfac7882c109c589387.patch"
+    ]
+  end
+
   def install
     args = std_cmake_parameters.split
     args << "-DOCIO_BUILD_JNIGLUE=ON" if ARGV.include? '--with-java'
