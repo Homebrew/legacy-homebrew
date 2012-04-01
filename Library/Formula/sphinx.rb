@@ -20,14 +20,17 @@ class Sphinx < Formula
     cause "ld: rel32 out of range in _GetPrivateProfileString from /usr/lib/libodbc.a(SQLGetPrivateProfileString.o)"
   end
 
-  # Patch the configure script to run under clang, preventing the error:
-  #   configure: error: Gcc version error. Minspec is 3.4
-  # Reported upstream:
-  # * http://sphinxsearch.com/bugs/view.php?id=1123
-  # Discussion:
-  # * https://github.com/mxcl/homebrew/issues/10016
-  # * https://github.com/mxcl/homebrew/pull/10698
-  def patches; DATA; end
+  fails_with :clang do
+    build 318
+    cause <<-EOS.undent
+      configure: error: Gcc version error. Minspec is 3.4
+      http://sphinxsearch.com/bugs/view.php?id=1123
+
+      sphinxexpr.cpp:1799:11: error: use of undeclared identifier 'ExprEval'
+      https://github.com/mxcl/homebrew/issues/10016
+      https://github.com/mxcl/homebrew/pull/10698
+      EOS
+  end
 
   def install
     lstem = Pathname.pwd+'libstemmer_c'
@@ -44,14 +47,6 @@ class Sphinx < Formula
     # configure script won't auto-select PostgreSQL
     args << "--with-pgsql" if which 'pg_config'
     args << "--without-mysql" unless which 'mysql'
-
-    # Sphinx 2.0.3 does not build under clang 3.1. It fails with:
-    #   sphinxexpr.cpp:1799:11: error: use of undeclared identifier 'ExprEval'
-    # Discussion:
-    # * https://github.com/mxcl/homebrew/issues/10016
-    # * https://github.com/mxcl/homebrew/pull/10698
-    # FIXME This should be replaced with fails_with_clang once available
-    ENV.llvm if ENV.compiler == :clang
 
     system "./configure", *args
     system "make install"
