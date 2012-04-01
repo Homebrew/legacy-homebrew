@@ -6,7 +6,9 @@ class Chicken < Formula
   homepage 'http://www.call-cc.org/'
   head 'git://code.call-cc.org/chicken-core'
 
-  fails_with_llvm "Compilation hangs. See http://lists.gnu.org/archive/html/chicken-users/2010-12/msg00158.html"
+  fails_with :llvm do
+    cause "Compilation hangs; see http://lists.gnu.org/archive/html/chicken-users/2010-12/msg00158.html"
+  end
 
   def install
     ENV.deparallelize

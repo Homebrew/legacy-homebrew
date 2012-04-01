@@ -9,7 +9,9 @@ class Nmap < Formula
   # Leopard's version of OpenSSL isn't new enough
   depends_on "openssl" if MacOS.leopard?
 
-  fails_with_llvm :build => 2334
+  fails_with :llvm do
+    build 2334
+  end
 
   # The configure script has a C file to test for some functionality that uses
   # void main(void). This does not compile with clang but does compile with
