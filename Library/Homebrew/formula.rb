@@ -5,6 +5,7 @@ require 'hardware'
 require 'bottles'
 require 'extend/fileutils'
 require 'patches'
+require 'compilers'
 
 # Derive and define at least @url, see Library/Formula for examples
 class Formula
@@ -156,14 +157,12 @@ class Formula
     self.class.keg_only_reason || false
   end
 
-  def fails_with_llvm?
-    llvm = self.class.fails_with_llvm_reason
-    if llvm
-      if llvm.build and MacOS.llvm_build_version.to_i > llvm.build.to_i
-        false
-      else
-        llvm
-      end
+  def fails_with? cc
+    return false if self.class.cc_failures.nil?
+    cc = Compiler.new(cc) unless cc.is_a? Compiler
+    return self.class.cc_failures.find do |failure|
+      next unless failure.compiler == cc.name
+      failure.build.zero? or failure.build >= cc.build
     end
   end
 
@@ -181,8 +180,6 @@ class Formula
   def brew
     validate_variable :name
     validate_variable :version
-
-    fails_with_llvm?.handle_failure if fails_with_llvm?
 
     stage do
       begin
@@ -571,8 +568,8 @@ private
     end
 
     attr_rw :version, :homepage, :mirrors, :specs
-    attr_rw :keg_only_reason, :fails_with_llvm_reason, :skip_clean_all
-    attr_rw :bottle_url, :bottle_sha1
+    attr_rw :keg_only_reason, :skip_clean_all, :bottle_url, :bottle_sha1
+    attr_rw :cc_failures
     attr_rw(*CHECKSUM_TYPES)
 
     def head val=nil, specs=nil
@@ -675,8 +672,13 @@ private
       @keg_only_reason = KegOnlyReason.new(reason, explanation.to_s.chomp)
     end
 
-    def fails_with_llvm msg=nil, data=nil
-      @fails_with_llvm_reason = FailsWithLLVM.new(msg, data)
+    def fails_with compiler, &block
+      @cc_failures ||= CompilerFailures.new
+      @cc_failures << if block_given?
+        CompilerFailure.new(compiler, &block)
+      else
+        CompilerFailure.new(compiler)
+      end
     end
   end
 end

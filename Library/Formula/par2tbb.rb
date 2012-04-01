@@ -7,6 +7,10 @@ class Par2tbb < Formula
 
   depends_on 'tbb'
 
+  fails_with :clang do
+    build 318
+  end
+
   def install
     # par2tbb ships with bad timestamps and
     # doesn't respect --disable-maintainer-mode
@@ -16,12 +20,6 @@ class Par2tbb < Formula
     # par2tbb expects to link against 10.4 / 10.5 SDKs,
     # but only 10.6+ are available on Xcode4
     inreplace 'Makefile.am', /^.*-mmacosx-version.*$/, ''
-
-    # FIXME This should be replaced with fails_with_clang once available
-    if ENV.compiler == :clang
-      opoo "Formula will not build with Clang, using LLVM."
-      ENV.llvm
-    end
 
     if Formula.factory('par2').installed?
       opoo "par2tbb conflicts with par2. Your par2 binaries will be overwritten.

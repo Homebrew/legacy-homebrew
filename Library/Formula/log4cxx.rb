@@ -5,8 +5,10 @@ class Log4cxx < Formula
   homepage 'http://logging.apache.org/log4cxx/index.html'
   md5 'b30ffb8da3665178e68940ff7a61084c'
 
-  fails_with_llvm "Fails with \"collect2: ld terminated with signal 11 [Segmentation fault]\".",
-    :build => 2334
+  fails_with :llvm do
+    build 2334
+    cause "Fails with 'collect2: ld terminated with signal 11 [Segmentation fault]'"
+  end
 
   def options
     [

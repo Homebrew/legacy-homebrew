@@ -10,12 +10,14 @@ class Zeromq < Formula
   homepage 'http://www.zeromq.org/'
   md5 'f0f9fd62acb1f0869d7aa80379b1f6b7'
 
-  fails_with_llvm "Compiling with LLVM gives a segfault while linking.",
-                  :build => 2326 if MacOS.snow_leopard?
-
   if ARGV.build_head? and MacOS.xcode_version >= "4.3"
     depends_on "automake" => :build
     depends_on "libtool" => :build
+  end
+
+  fails_with :llvm do
+    build 2326
+    cause "Segfault while linking"
   end
 
   def options

@@ -8,7 +8,9 @@ class Qemu < Formula
   depends_on 'jpeg'
   depends_on 'gnutls'
 
-  fails_with_llvm "Segmentation faults occur at run-time with LLVM using qemu-system-arm."
+  fails_with :llvm do
+    cause "Segmentation faults occur at run-time with LLVM using qemu-system-arm."
+  end
 
   def install
     system "./configure", "--prefix=#{prefix}",
