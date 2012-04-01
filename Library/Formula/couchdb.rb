@@ -49,10 +49,6 @@ class Couchdb < Formula
   end
 
   def caveats; <<-EOS.undent
-    If you are getting bus errors or segmentation faults, consider
-    ensuring that you have a keg-only OpenSSL installed and Erlang
-    linked against this.
-
     If this is your first install, automatically load on login with:
         mkdir -p ~/Library/LaunchAgents
         cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist ~/Library/LaunchAgents/
@@ -71,6 +67,17 @@ class Couchdb < Formula
 
     Or start manually as the current user with:
         couchdb
+    
+    If you are getting bus errors or segmentation faults, ensure
+    that you have installed keg-only OpenSSL prior to brewing Erlang.
+    You can check if Erlang is using otool:
+    
+        otool -l `mdfind -name crypto.so | grep Cellar` | grep openssl
+    
+    Output should be similar to:
+    
+       name /usr/local/Cellar/openssl/1.0.1/lib/libcrypto.1.0.0.dylib (offset 24)
+       name /usr/local/Cellar/openssl/1.0.1/lib/libssl.1.0.0.dylib (offset 24)
     EOS
   end
 end
