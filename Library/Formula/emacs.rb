@@ -163,3 +163,42 @@ index 30b73c2..f0c154e 100644
                         && [[theEvent charactersIgnoringModifiers] length] > 0))
  /*[[theEvent characters] length] */
          {
+
+# Fix "method should return a value" errors when building with Xcode 4.3,
+# See: https://github.com/mxcl/homebrew/issues/11263
+diff -ur a/src/nsfont.m b/src/nsfont.m
+--- a/src/nsfont.m  2012-01-11 04:35:01.000000000 -0800
++++ b/src/nsfont.m  2012-01-11 04:35:01.000000000 -0800
+@@ -1278,7 +1278,7 @@
+       }
+ 
+     CGContextRestoreGState (gcontext);
+-    return;
++    return 0;
+   }
+ #endif  /* NS_IMPL_COCOA */
+ 
+diff -ur a/src/nsimage.m b/src/nsimage.m
+--- a/src/nsimage.m 2012-01-11 04:35:01.000000000 -0800
++++ b/src/nsimage.m 2012-01-11 04:35:01.000000000 -0800
+@@ -334,7 +334,7 @@
+   NSColor *rgbColor;
+ 
+   if (bmRep == nil || color == nil)
+-    return;
++    return nil;
+ 
+   if ([color colorSpaceName] != NSCalibratedRGBColorSpace)
+     rgbColor = [color colorUsingColorSpaceName: NSCalibratedRGBColorSpace];
+diff -ur a/src/nsterm.m b/src/nsterm.m
+--- a/src/nsterm.m  2012-01-11 04:35:01.000000000 -0800
++++ b/src/nsterm.m  2012-01-11 04:35:01.000000000 -0800
+@@ -5431,7 +5431,7 @@
+   NSTRACE (performDragOperation);
+ 
+   if (!emacs_event)
+-    return;
++    return NO;
+ 
+   position = [self convertPoint: [sender draggingLocation] fromView: nil];
+   x = lrint (position.x);  y = lrint (position.y);
