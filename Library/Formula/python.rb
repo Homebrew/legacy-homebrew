@@ -9,13 +9,13 @@ def as_framework?
 end
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.24.tar.gz'
-  md5 '17722b22141aba8235787f79800cc452'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.25.tar.gz'
+  md5 'a690874b9964d958a3200485eb827b1d'
 end
 
 class Python < Formula
-  url 'http://www.python.org/ftp/python/2.7.2/Python-2.7.2.tar.bz2'
   homepage 'http://www.python.org/'
+  url 'http://www.python.org/ftp/python/2.7.2/Python-2.7.2.tar.bz2'
   md5 'ba7b2f11ffdbf195ee0d111b9455a5bd'
 
   depends_on 'readline' => :optional # Prefer over OS X's libedit
@@ -26,14 +26,13 @@ class Python < Formula
     [
       ["--framework", "Do a 'Framework' build instead of a UNIX-style build."],
       ["--universal", "Build for both 32 & 64 bit Intel."],
-      ["--static", "Build static libraries."],
-      ["--no-poll", "Remove HAVE_POLL.* options from build."]
+      ["--static", "Build static libraries."]
     ]
   end
 
   def patches
-    # fix for recognizing gdbm 1.9.x databases
-    # patch is already upstream: http://hg.python.org/cpython/rev/14cafb8d1480
+    # Fix for recognizing gdbm 1.9.x databases; already upstream:
+    # http://hg.python.org/cpython/rev/14cafb8d1480
     DATA
   end
 
@@ -41,6 +40,12 @@ class Python < Formula
   skip_clean ['bin', 'lib']
 
   def install
+    # Python requires -fwrapv for proper Decimal division with Clang. See:
+    # https://github.com/mxcl/homebrew/pull/10487
+    # http://stackoverflow.com/questions/7590137/dividing-decimals-yields-invalid-results-in-python-2-5-to-2-7
+    # https://trac.macports.org/changeset/87442
+    ENV.append_to_cflags "-fwrapv"
+
     if build_framework? and ARGV.include? "--static"
       onoe "Cannot specify both framework and static."
       exit 99
@@ -64,9 +69,9 @@ class Python < Formula
 
     system "./configure", *args
 
-    if ARGV.include? '--no-poll'
-      inreplace 'pyconfig.h', /.*?(HAVE_POLL[_A-Z]*).*/, '#undef \1'
-    end
+    # HAVE_POLL is "broken" on OS X
+    # See: http://trac.macports.org/ticket/18376
+    inreplace 'pyconfig.h', /.*?(HAVE_POLL[_A-Z]*).*/, '#undef \1'
 
     system "make"
     ENV.j1 # Installs must be serialized
@@ -149,6 +154,14 @@ class Python < Formula
     return lib
   end
 
+  # include folder,taking into account whether we are a Framework build or not
+  def effective_include
+    # If we're installed or installing as a Framework, then use that location.
+    return prefix+"Frameworks/Python.framework/Versions/2.7/include" if as_framework?
+    # Otherwise use just 'include'
+    return include
+  end
+
   # The Cellar location of site-packages
   def site_packages
     effective_lib+"python2.7/site-packages"
@@ -162,6 +175,11 @@ class Python < Formula
   # Where distribute will install executable scripts
   def scripts_folder
     HOMEBREW_PREFIX+"share/python"
+  end
+
+  def test
+    # See: https://github.com/mxcl/homebrew/pull/10487
+    system "#{bin}/python -c 'from decimal import Decimal; print Decimal(4) / Decimal(2)'"
   end
 end
 

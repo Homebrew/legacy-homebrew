@@ -11,7 +11,7 @@ class Libmms < Formula
   def patches
     # see https://trac.macports.org/ticket/27988
     if MacOS.leopard?
-      { :p0 => "https://svn.macports.org/repository/macports/!svn/bc/87883/trunk/dports/multimedia/libmms/files/src_mms-common.h.patch" }
+      { :p0 => "https://trac.macports.org/export/87883/trunk/dports/multimedia/libmms/files/src_mms-common.h.patch" }
     end
   end
 

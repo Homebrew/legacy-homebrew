@@ -1,10 +1,16 @@
 require 'formula'
 
 class Node < Formula
-  url 'http://nodejs.org/dist/v0.6.6/node-v0.6.6.tar.gz'
-  head 'https://github.com/joyent/node.git'
   homepage 'http://nodejs.org/'
-  md5 '43836ebd6e8e9059c4584e3b5ab50009'
+  url 'http://nodejs.org/dist/v0.6.14/node-v0.6.14.tar.gz'
+  md5 '3033a866e230cca64e212ee8f2af27dd'
+
+  head 'https://github.com/joyent/node.git'
+
+  devel do
+    url 'http://nodejs.org/dist/v0.7.7/node-v0.7.7.tar.gz'
+    md5 '6cce285f9e01c9678b4a3e7d034563c9'
+  end
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.leopard?
@@ -15,18 +21,20 @@ class Node < Formula
   skip_clean :all
 
   def options
-    [["--debug", "Build with debugger hooks."]]
+    [["--enable-debug", "Build with debugger hooks."]]
   end
 
   def install
-    inreplace 'wscript' do |s|
-      s.gsub! '/usr/local', HOMEBREW_PREFIX
-      s.gsub! '/opt/local/lib', '/usr/lib'
+    unless ARGV.build_devel?
+      inreplace 'wscript' do |s|
+        s.gsub! '/usr/local', HOMEBREW_PREFIX
+        s.gsub! '/opt/local/lib', '/usr/lib'
+      end
     end
 
     # Why skip npm install? Read https://github.com/mxcl/homebrew/pull/8784.
     args = ["--prefix=#{prefix}", "--without-npm"]
-    args << "--debug" if ARGV.include? '--debug'
+    args << "--debug" if ARGV.include? '--enable-debug'
 
     system "./configure", *args
     system "make install"

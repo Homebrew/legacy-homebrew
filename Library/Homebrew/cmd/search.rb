@@ -9,7 +9,14 @@ module Homebrew extend self
       exec "open", "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
     else
       query = ARGV.first
-      search_results = search_brews query
+      rx = case query
+      when nil then ""
+      when %r{^/(.*)/$} then Regexp.new($1)
+      else
+        /.*#{Regexp.escape query}.*/i
+      end
+
+      search_results = search_brews rx
       puts_columns search_results
 
       if not query.to_s.empty? and $stdout.tty? and msg = blacklisted?(query)
@@ -20,19 +27,51 @@ module Homebrew extend self
         end
         puts msg
       end
+
+      if query
+        $found = search_results.length
+
+        # TODO parallelize!
+        puts_columns search_tap "adamv", "alt", rx
+        puts_columns search_tap "josegonzalez", "php", rx
+        puts_columns search_tap "Homebrew", "versions", rx
+        puts_columns search_tap "Homebrew", "dupes", rx
+        puts_columns search_tap "Homebrew", "games", rx
+
+        if $found == 0 and not blacklisted? query
+          puts "No formula found for \"#{query}\". Searching open pull requests..."
+          GitHub.find_pull_requests(rx) { |pull| puts pull }
+        end
+      end
     end
   end
 
-  def search_brews text
-    if text.to_s.empty?
+  def search_tap user, repo, rx
+    return [] if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}").directory?
+
+    require 'open-uri'
+    require 'yaml'
+
+    results = []
+    open "http://github.com/api/v2/yaml/blob/all/#{user}/homebrew-#{repo}/master" do |f|
+      user.downcase! if user == "Homebrew" # special handling for the Homebrew organization
+      YAML::load(f.read)["blobs"].each do |file, _|
+        name = File.basename(file, '.rb')
+        if file =~ /\.rb$/ and name =~ rx
+          results << "#{user}/#{repo}/#{name}"
+          $found += 1
+        end
+      end
+    end
+    results
+  rescue
+    []
+  end
+
+  def search_brews rx
+    if rx.to_s.empty?
       Formula.names
     else
-      rx = if text =~ %r{^/(.*)/$}
-        Regexp.new($1)
-      else
-        /.*#{Regexp.escape text}.*/i
-      end
-
       aliases = Formula.aliases
       results = (Formula.names+aliases).grep rx
 
@@ -45,5 +84,4 @@ module Homebrew extend self
       end
     end
   end
-
 end

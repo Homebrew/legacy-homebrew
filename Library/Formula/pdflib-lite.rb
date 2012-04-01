@@ -6,7 +6,7 @@ class PdflibLite < Formula
   md5 '34a1cc89e2cfdc1e43ba57019e442a90'
 
   def install
-    # Without the following substituion, pdflib-lite runs into weird
+    # Without the following substitution, pdflib-lite runs into weird
     # build errors due to bad interactions with the TIFF headers.
     # This workaround comes from the MacPorts.org portfile for pdflib.
     ENV['CPPFLAGS'] = "-isystem#{prefix}"

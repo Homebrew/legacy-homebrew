@@ -1,10 +1,11 @@
 require 'formula'
 
 class Redis < Formula
-  url 'http://redis.googlecode.com/files/redis-2.4.5.tar.gz'
-  head 'https://github.com/antirez/redis.git', :branch => 'unstable'
   homepage 'http://redis.io/'
-  md5 'babeb1a1d05281b5e00ca0a519cfc3f9'
+  url 'http://redis.googlecode.com/files/redis-2.4.10.tar.gz'
+  md5 '71938de99cbb4fdefd74d7571831fa28'
+
+  head 'https://github.com/antirez/redis.git', :branch => 'unstable'
 
   fails_with_llvm 'Fails with "reference out of range from _linenoise"', :build => 2334
 
@@ -26,25 +27,26 @@ class Redis < Formula
     inreplace "redis.conf" do |s|
       s.gsub! "/var/run/redis.pid", "#{var}/run/redis.pid"
       s.gsub! "dir ./", "dir #{var}/db/redis/"
+      s.gsub! "\# bind 127.0.0.1", "bind 127.0.0.1"
     end
 
     doc.install Dir["doc/*"]
     etc.install "redis.conf"
-    (prefix+'io.redis.redis-server.plist').write startup_plist
-    (prefix+'io.redis.redis-server.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats
     <<-EOS.undent
     If this is your first install, automatically load on login with:
         mkdir -p ~/Library/LaunchAgents
-        cp #{prefix}/io.redis.redis-server.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/io.redis.redis-server.plist
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-    If this is an upgrade and you already have the io.redis.redis-server.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/io.redis.redis-server.plist
-        cp #{prefix}/io.redis.redis-server.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/io.redis.redis-server.plist
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
+        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
       To start redis manually:
         redis-server #{etc}/redis.conf
@@ -63,10 +65,10 @@ class Redis < Formula
     <key>KeepAlive</key>
     <true/>
     <key>Label</key>
-    <string>io.redis.redis-server</string>
+    <string>#{plist_name}</string>
     <key>ProgramArguments</key>
     <array>
-      <string>#{bin}/redis-server</string>
+      <string>#{HOMEBREW_PREFIX}/bin/redis-server</string>
       <string>#{etc}/redis.conf</string>
     </array>
     <key>RunAtLoad</key>

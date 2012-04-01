@@ -8,8 +8,8 @@ require 'formula'
 # which causes panic and terror to flood the Homebrew issue tracker.
 
 class Sip < Formula
-  url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.13.1.tar.gz'
-  md5 '9222545ebe349f68a00d5cc9fb89b805'
+  url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.13.2.tar.gz'
+  sha1 'd6c0835738438f8ccff012164a6c6192abc52792'
   head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
 
@@ -30,17 +30,22 @@ class Sip < Formula
     inreplace 'build.py', /@SIP_VERSION@/, (sip_version.gsub '.', ',')
 
     system "python", "build.py", "prepare"
+    # Set --destdir such that the python modules will be in the HOMEBREWPREFIX/lib/pythonX.Y/site-packages
     system "python", "configure.py",
-                              "--destdir=#{lib}/python",
+                              "--destdir=#{lib}/#{which_python}/site-packages",
                               "--bindir=#{bin}",
                               "--incdir=#{include}"
     system "make install"
   end
 
   def caveats; <<-EOS.undent
-    This formula won't function until you amend your PYTHONPATH like so:
-      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/python:$PYTHONPATH
+    For non-homebrew Python, you need to amend your PYTHONPATH like so:
+      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
     EOS
+  end
+
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 end
 

@@ -1,10 +1,11 @@
 require 'formula'
 
 class Vrpn < Formula
+  homepage 'http://vrpn.org'
   url 'ftp://ftp.cs.unc.edu/pub/packages/GRIP/vrpn/vrpn_07_29.zip'
   md5 '422f13fc9cbb62d36c96f3cc3b06cec9'
+
   head 'git://git.cs.unc.edu/vrpn.git'
-  homepage 'http://vrpn.org'
 
   depends_on 'libusb' # for HID support
   depends_on 'cmake' => :build
@@ -27,14 +28,9 @@ class Vrpn < Formula
     end
     args << ".."
 
-    Dir.mkdir "build"
-    Dir.chdir "build" do
+    mkdir "build" do
       system "cmake", *args
-
-      if ARGV.include? '--docs'
-        system "make doc"
-      end
-
+      system "make doc" if ARGV.include? '--docs'
       system "make install"
     end
   end

@@ -10,15 +10,11 @@ end
 
 class Pyside < Formula
   homepage 'http://www.pyside.org'
-  url 'http://www.pyside.org/files/pyside-qt4.7+1.0.9.tar.bz2'
-  md5 '63d1104cf245d9eea307434c94e15443'
+  url 'http://www.pyside.org/files/pyside-qt4.7+1.1.0.tar.bz2'
+  md5 '233f0c6d2b3daf58cf88877d7f74557b'
 
   depends_on 'cmake' => :build
-
   depends_on 'shiboken'
-  depends_on 'generatorrunner'
-  depends_on 'apiextractor'
-  depends_on 'qt'
 
   def install
     # The build will be unable to find Qt headers buried inside frameworks
@@ -28,7 +24,7 @@ class Pyside < Formula
     ENV.append_to_cflags "-F#{qt.prefix}/Frameworks"
 
     # Also need `ALTERNATIVE_QT_INCLUDE_DIR` to prevent "missing file" errors.
-    system "cmake . #{std_cmake_parameters} -DALTERNATIVE_QT_INCLUDE_DIR=#{qt.prefix}/Frameworks -DSITE_PACKAGE=#{site_package_dir} -DBUILD_TESTS=NO"
+    system "cmake #{std_cmake_parameters} -DALTERNATIVE_QT_INCLUDE_DIR=#{qt.prefix}/Frameworks -DSITE_PACKAGE=#{site_package_dir} -DBUILD_TESTS=NO ."
     system 'make install'
   end
 

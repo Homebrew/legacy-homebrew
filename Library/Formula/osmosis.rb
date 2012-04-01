@@ -1,8 +1,8 @@
 require 'formula'
 
 class Osmosis < Formula
-  url 'http://bretth.dev.openstreetmap.org/osmosis-build/osmosis-0.39.zip'
   homepage 'http://wiki.openstreetmap.org/wiki/Osmosis'
+  url 'http://bretth.dev.openstreetmap.org/osmosis-build/osmosis-0.39.zip'
   md5 'd3668ec3cf713246929de1b2f75eadef'
 
   def patches
@@ -11,8 +11,8 @@ class Osmosis < Formula
   end
 
   def install
-    bin.install Dir['bin/osmosis']
-    %w(lib config script).each { |d| libexec.install d }
+    bin.install 'bin/osmosis'
+    libexec.install %w(lib config script)
   end
 end
 

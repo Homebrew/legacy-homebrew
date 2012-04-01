@@ -9,9 +9,9 @@ class PopplerData < Formula
 end
 
 class Poppler < Formula
-  url 'http://poppler.freedesktop.org/poppler-0.18.2.tar.gz'
   homepage 'http://poppler.freedesktop.org'
-  md5 '38616927823ef01937aab26872e957e4'
+  url 'http://poppler.freedesktop.org/poppler-0.18.4.tar.gz'
+  md5 '12658f3308597e57f3faff538cc73baf'
 
   depends_on 'pkg-config' => :build
   depends_on 'qt' if qt?

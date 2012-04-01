@@ -10,9 +10,6 @@ class Vpnc < Formula
 
   fails_with_llvm :build => 2334
 
-  skip_clean 'etc'
-  skip_clean 'var'
-
   def options
     [["--hybrid", "Use vpnc hybrid authentication."]]
   end

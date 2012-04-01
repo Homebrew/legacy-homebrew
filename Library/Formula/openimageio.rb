@@ -3,7 +3,6 @@ require 'formula'
 class Openimageio < Formula
   url 'https://github.com/OpenImageIO/oiio/tarball/Release-0.9.0'
   md5 'b9dc646c57c2137d7a9fe8bbb91e0ae7'
-  version "0.9.0"
   homepage 'http://openimageio.org'
 
   depends_on 'cmake' => :build

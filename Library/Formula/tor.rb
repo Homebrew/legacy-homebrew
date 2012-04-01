@@ -1,19 +1,18 @@
 require 'formula'
 
 class Tor < Formula
-  url 'https://www.torproject.org/dist/tor-0.2.2.35.tar.gz'
   homepage 'https://www.torproject.org/'
+  url 'https://www.torproject.org/dist/tor-0.2.2.35.tar.gz'
   md5 'dcecf699c4b929319d5f1ce0358d4835'
 
   depends_on 'libevent'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
 
-    (prefix+'org.tor.plist').write startup_plist
-    (prefix+'org.tor.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def startup_plist
@@ -23,7 +22,7 @@ class Tor < Formula
 <plist version="1.0">
   <dict>
     <key>Label</key>
-    <string>org.tor</string>
+    <string>#{plist_name}</string>
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
@@ -32,7 +31,7 @@ class Tor < Formula
     <string>#{`whoami`.chomp}</string>
     <key>ProgramArguments</key>
     <array>
-        <string>#{bin}/tor</string>
+        <string>#{HOMEBREW_PREFIX}/bin/tor</string>
     </array>
     <key>WorkingDirectory</key>
     <string>#{HOMEBREW_PREFIX}</string>
@@ -44,8 +43,8 @@ class Tor < Formula
   def caveats; <<-EOS.undent
     You can start tor automatically on login with:
       mkdir -p ~/Library/LaunchAgents
-      cp #{prefix}/org.tor.plist ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/org.tor.plist
+      cp #{plist_path} ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
     EOS
   end
 end

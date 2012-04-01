@@ -1,11 +1,12 @@
 require 'formula'
 
 class Dia < Formula
-  url 'http://ftp.gnome.org/pub/gnome/sources/dia/0.97/dia-0.97.1.tar.bz2'
   homepage 'http://live.gnome.org/Dia'
-  sha256 '8dfe8b2c9d87baf29834c8de5e3ec91497c2b17f2b77fb1b867afddf5c429142'
+  url 'http://ftp.gnome.org/pub/gnome/sources/dia/0.97/dia-0.97.2.tar.xz'
+  sha256 'a761478fb98697f71b00d3041d7c267f3db4b94fe33ac07c689cb89c4fe5eae1'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
   depends_on 'intltool'
   depends_on 'gettext'
   depends_on 'pango'
@@ -13,7 +14,12 @@ class Dia < Formula
   depends_on 'gtk+'
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    ENV.x11
+    # fix for Leopard, potentially others with isspecial defined elswhere
+    inreplace 'objects/GRAFCET/boolequation.c', 'isspecial', 'char_isspecial'
+    system "./configure", "--enable-debug=no",
+                          "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
     rm_rf share+"applications"
   end

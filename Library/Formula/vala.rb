@@ -1,18 +1,20 @@
 require 'formula'
 
 class Vala < Formula
-  head 'git://git.gnome.org/vala'
-  url 'http://download.gnome.org/sources/vala/0.14/vala-0.14.1.tar.xz'
   homepage 'http://live.gnome.org/Vala'
-  sha256 'bef8c803e6e84d6dd2c6e771b72245ae268f49f554f3d00b2c4a0b7a28f4a439'
+  url 'http://download.gnome.org/sources/vala/0.16/vala-0.16.0.tar.xz'
+  md5 '84b742e9cca4c90fde3026c3793c03c1'
+
+  head 'git://git.gnome.org/vala'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
   depends_on 'gettext'
   depends_on 'glib'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
-    system "make" # Single step fails to compile for 0.8.0
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "make" # Fails to compile as a single step
     system "make install"
   end
 

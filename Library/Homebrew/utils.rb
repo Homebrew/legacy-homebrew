@@ -33,13 +33,13 @@ end
 
 # args are additional inputs to puts until a nil arg is encountered
 def ohai title, *sput
-  title = title.to_s[0, Tty.width - 4] unless ARGV.verbose?
+  title = title.to_s[0, Tty.width - 4] if $stdout.tty? unless ARGV.verbose?
   puts "#{Tty.blue}==>#{Tty.white} #{title}#{Tty.reset}"
   puts sput unless sput.empty?
 end
 
 def oh1 title
-  title = title.to_s[0, Tty.width - 4] unless ARGV.verbose?
+  title = title.to_s[0, Tty.width - 4] if $stdout.tty? unless ARGV.verbose?
   puts "#{Tty.green}==> #{Tty.reset}#{title}"
 end
 
@@ -112,6 +112,7 @@ def curl *args
   # See https://github.com/mxcl/homebrew/issues/6103
   args << "--insecure" if MacOS.version < 10.6
   args << "--verbose" if ENV['HOMEBREW_CURL_VERBOSE']
+  args << "--silent" unless $stdout.tty?
 
   safe_system curl, *args
 end
@@ -137,15 +138,29 @@ def puts_columns items, star_items=[]
   end
 end
 
+def which cmd, silent=false
+  cmd += " 2>/dev/null" if silent
+  path = `/usr/bin/which #{cmd}`.chomp
+  if path.empty?
+    nil
+  else
+    Pathname.new(path)
+  end
+end
+
+def which_s cmd
+  which cmd, true
+end
+
 def which_editor
   editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
   # If an editor wasn't set, try to pick a sane default
   return editor unless editor.nil?
 
   # Find Textmate
-  return 'mate' if system "/usr/bin/which -s mate"
+  return 'mate' if which_s "mate"
   # Find # BBEdit / TextWrangler
-  return 'edit' if system "/usr/bin/which -s edit"
+  return 'edit' if which_s "edit"
   # Default to vim
   return '/usr/bin/vim'
 end
@@ -215,7 +230,11 @@ def inreplace path, before=nil, after=nil
       s.extend(StringInreplaceExtension)
       yield s
     else
-      s.gsub!(before, after)
+      sub = s.gsub!(before, after)
+      if sub.nil?
+        opoo "inreplace in '#{path}' failed"
+        puts "Expected replacement of '#{before}' with '#{after}'"
+      end
     end
 
     f.reopen(path, 'w').write(s)
@@ -250,8 +269,56 @@ module MacOS extend self
     MACOS_VERSION
   end
 
+  def cat
+    if mountain_lion?
+      :mountainlion
+    elsif lion?
+      :lion
+    elsif snow_leopard?
+      :snowleopard
+    elsif leopard?
+      :leopard
+    else
+      nil
+    end
+  end
+
+  def dev_tools_path
+    @dev_tools_path ||= if File.file? "/usr/bin/cc" and File.file? "/usr/bin/make"
+      # probably a safe enough assumption
+      "/usr/bin"
+    elsif File.file? "#{xcode_prefix}/usr/bin/make"
+      # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
+      "#{xcode_prefix}/usr/bin"
+    else
+      # yes this seems dumb, but we can't throw because the existance of
+      # dev tools is not mandatory for installing formula. Eventually we
+      # should make formula specify if they need dev tools or not.
+      "/usr/bin"
+    end
+  end
+
+  def xctools_fucked?
+    # Xcode 4.3 tools hang if "/" is set
+    `/usr/bin/xcode-select -print-path 2>/dev/null`.chomp == "/"
+  end
+
   def default_cc
-    Pathname.new("/usr/bin/cc").realpath.basename.to_s
+    cc = unless xctools_fucked?
+      out = `/usr/bin/xcrun -find cc 2> /dev/null`.chomp
+      out if $?.success?
+    end
+    cc = "#{dev_tools_path}/cc" if cc.nil? or cc.empty?
+
+    unless File.executable? cc
+      # If xcode-select isn't setup then xcrun fails and on Xcode 4.3
+      # the cc binary is not at #{dev_tools_path}. This return is almost
+      # worthless however since in this particular setup nothing much builds
+      # but I wrote the code now and maybe we'll fix the other issues later.
+      cc = "#{xcode_prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc"
+    end
+
+    Pathname.new(cc).realpath.basename.to_s rescue nil
   end
 
   def default_compiler
@@ -259,54 +326,86 @@ module MacOS extend self
       when /^gcc/ then :gcc
       when /^llvm/ then :llvm
       when "clang" then :clang
-      else :gcc # a hack, but a sensible one prolly
+      else
+        # guess :(
+        if xcode_version >= "4.3"
+          :clang
+        elsif xcode_version >= "4.2"
+          :llvm
+        else
+          :gcc
+        end
     end
   end
 
   def gcc_42_build_version
-    @gcc_42_build_version ||= if File.exist? "/usr/bin/gcc-4.2" \
-      and not Pathname.new("/usr/bin/gcc-4.2").realpath.basename.to_s =~ /^llvm/
-      `/usr/bin/gcc-4.2 --version` =~ /build (\d{4,})/
+    @gcc_42_build_version ||= if File.exist? "#{dev_tools_path}/gcc-4.2" \
+      and not Pathname.new("#{dev_tools_path}/gcc-4.2").realpath.basename.to_s =~ /^llvm/
+      `#{dev_tools_path}/gcc-4.2 --version` =~ /build (\d{4,})/
       $1.to_i
     end
   end
 
   def gcc_40_build_version
-    @gcc_40_build_version ||= if File.exist? "/usr/bin/gcc-4.0"
-      `/usr/bin/gcc-4.0 --version` =~ /build (\d{4,})/
+    @gcc_40_build_version ||= if File.exist? "#{dev_tools_path}/gcc-4.0"
+      `#{dev_tools_path}/gcc-4.0 --version` =~ /build (\d{4,})/
       $1.to_i
     end
   end
 
-  # usually /Developer
   def xcode_prefix
     @xcode_prefix ||= begin
-      path = `/usr/bin/xcode-select -print-path 2>&1`.chomp
+      path = `/usr/bin/xcode-select -print-path 2>/dev/null`.chomp
       path = Pathname.new path
-      if path.directory? and path.absolute?
+      if $?.success? and path.directory? and path.absolute?
         path
       elsif File.directory? '/Developer'
         # we do this to support cowboys who insist on installing
         # only a subset of Xcode
         Pathname.new '/Developer'
+      elsif File.directory? '/Applications/Xcode.app/Contents/Developer'
+        # fallback for broken Xcode 4.3 installs
+        Pathname.new '/Applications/Xcode.app/Contents/Developer'
       else
-        nil
+        # Ask Spotlight where Xcode is. If the user didn't install the
+        # helper tools and installed Xcode in a non-conventional place, this
+        # is our only option. See: http://superuser.com/questions/390757
+        path = `mdfind "kMDItemDisplayName==Xcode&&kMDItemKind==Application"`
+        path = "#{path}/Contents/Developer"
+        if path.empty? or not File.directory? path
+          nil
+        else
+          path
+        end
       end
     end
   end
 
   def xcode_version
     @xcode_version ||= begin
-      raise unless system "/usr/bin/which -s xcodebuild"
-      `xcodebuild -version 2>&1` =~ /Xcode (\d(\.\d)*)/
-      raise if $1.nil?
+      return "0" unless MACOS
+
+      # this shortcut makes xcode_version work for people who don't realise you
+      # need to install the CLI tools
+      xcode43build = "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild"
+      if File.file? xcode43build
+        `#{xcode43build} -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
+        return $1 if $1
+      end
+
+      # Xcode 4.3 xc* tools hang indefinately if xcode-select path is set thus
+      raise if `xcode-select -print-path 2>/dev/null`.chomp == "/"
+
+      raise unless which_s "xcodebuild"
+      `xcodebuild -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
+      raise if $1.nil? or not $?.success?
       $1
     rescue
-      # for people who don't have xcodebuild installed due to using
-      # some variety of minimal installer, let's try and guess their
-      # Xcode version
+      # For people who's xcode-select is unset, or who have installed
+      # xcode-gcc-installer or whatever other combinations we can try and
+      # supprt. See https://github.com/mxcl/homebrew/wiki/Xcode
       case llvm_build_version.to_i
-      when 0..2063 then "3.1.0"
+      when 1..2063 then "3.1.0"
       when 2064..2065 then "3.1.4"
       when 2366..2325
         # we have no data for this range so we are guessing
@@ -320,7 +419,26 @@ module MacOS extend self
         # https://github.com/mxcl/homebrew/wiki/Xcode
         "4.0"
       else
-        "4.2"
+        case (clang_version.to_f * 10).to_i
+        when 0
+          "dunno"
+        when 1..14
+          "3.2.2"
+        when 15
+          "3.2.4"
+        when 16
+          "3.2.5"
+        when 17..20
+          "4.0"
+        when 21
+          "4.1"
+        when 22..30
+          "4.2"
+        when 31
+          "4.3"
+        else
+          "4.3"
+        end
       end
     end
   end
@@ -328,23 +446,23 @@ module MacOS extend self
   def llvm_build_version
     # for Xcode 3 on OS X 10.5 this will not exist
     # NOTE may not be true anymore but we can't test
-    @llvm_build_version ||= if File.exist? "/usr/bin/llvm-gcc"
-      `/usr/bin/llvm-gcc --version` =~ /LLVM build (\d{4,})/
+    @llvm_build_version ||= if File.exist? "#{dev_tools_path}/llvm-gcc"
+      `#{dev_tools_path}/llvm-gcc --version` =~ /LLVM build (\d{4,})/
       $1.to_i
     end
   end
 
   def clang_version
-    @clang_version ||= if File.exist? "/usr/bin/clang"
-      `/usr/bin/clang --version` =~ /clang version (\d\.\d)/
+    @clang_version ||= if File.exist? "#{dev_tools_path}/clang"
+      `#{dev_tools_path}/clang --version` =~ /clang version (\d\.\d)/
       $1
     end
   end
 
   def clang_build_version
-    @clang_build_version ||= if File.exist? "/usr/bin/clang"
-      `/usr/bin/clang --version` =~ %r[tags/Apple/clang-(\d+(\.\d+)*)]
-      $1
+    @clang_build_version ||= if File.exist? "#{dev_tools_path}/clang"
+      `#{dev_tools_path}/clang --version` =~ %r[tags/Apple/clang-(\d{2,})]
+      $1.to_i
     end
   end
 
@@ -357,9 +475,10 @@ module MacOS extend self
     # http://github.com/mxcl/homebrew/issues/#issue/13
     # http://github.com/mxcl/homebrew/issues/#issue/41
     # http://github.com/mxcl/homebrew/issues/#issue/48
+    return false unless MACOS
 
     %w[port fink].each do |ponk|
-      path = `/usr/bin/which -s #{ponk}`
+      path = `/usr/bin/which #{ponk} 2>/dev/null`
       return ponk unless path.empty?
     end
 
@@ -392,11 +511,15 @@ module MacOS extend self
   end
 
   def lion?
-    10.7 <= MACOS_VERSION #Actually Lion or newer
+    10.7 <= MACOS_VERSION # Actually Lion or newer
+  end
+
+  def mountain_lion?
+    10.8 <= MACOS_VERSION # Actually Mountain Lion or newer
   end
 
   def prefer_64_bit?
-    Hardware.is_64_bit? and 10.6 <= MACOS_VERSION
+    Hardware.is_64_bit? and not leopard?
   end
 end
 
@@ -426,5 +549,21 @@ module GitHub extend self
     issues
   rescue
     []
+  end
+
+  def find_pull_requests rx
+    require 'open-uri'
+    require 'vendor/multi_json'
+
+    query = rx.source.delete('.*').gsub('\\', '')
+    uri = URI.parse("http://github.com/api/v2/json/issues/search/mxcl/homebrew/open/#{query}")
+
+    open uri do |f|
+      MultiJson.decode(f.read)["issues"].each do |pull|
+        yield pull['pull_request_url'] if rx.match pull['title'] and pull["pull_request_url"]
+      end
+    end
+  rescue
+    nil
   end
 end

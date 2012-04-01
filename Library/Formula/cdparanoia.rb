@@ -7,8 +7,8 @@ class Cdparanoia < Formula
 
   def patches
     [
-     "http://trac.macports.org/export/70964/trunk/dports/audio/cdparanoia/files/osx_interface.patch",
-     "http://trac.macports.org/export/70964/trunk/dports/audio/cdparanoia/files/patch-paranoia_paranoia.c.10.4.diff"
+     "https://trac.macports.org/export/70964/trunk/dports/audio/cdparanoia/files/osx_interface.patch",
+     "https://trac.macports.org/export/70964/trunk/dports/audio/cdparanoia/files/patch-paranoia_paranoia.c.10.4.diff"
     ]
   end
 

@@ -1,8 +1,8 @@
 require 'formula'
 
 class Nvi < Formula
-  url 'http://www.kotnet.org/~skimo/nvi/devel/nvi-1.81.6.tar.bz2'
   homepage 'https://sites.google.com/a/bostic.com/keithbostic/nvi'
+  url 'http://www.kotnet.org/~skimo/nvi/devel/nvi-1.81.6.tar.bz2'
   md5 '88d1e23115ee9f2961186b62e55f5704'
 
   depends_on 'berkeley-db'
@@ -14,7 +14,7 @@ class Nvi < Formula
   end
 
   def install
-    Dir.chdir('dist') do
+    cd 'dist' do
       system "./configure", "--prefix=#{prefix}",
                             "--program-prefix=n",
                             "--disable-dependency-tracking"
