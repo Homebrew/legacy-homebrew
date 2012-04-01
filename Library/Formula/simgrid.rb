@@ -9,13 +9,11 @@ class Simgrid < Formula
   depends_on 'pcre'
   depends_on 'graphviz'
 
-  def install
-    # FIXME This should be replaced with fails_with_clang once available
-    if ENV.compiler == :clang
-      opoo "Formula will not build with Clang, using LLVM."
-      ENV.llvm
-    end
+  fails_with :clang do
+    build 318
+  end
 
+  def install
     system "cmake -Denable_debug=on -Denable_compile_optimizations=off #{std_cmake_parameters} ."
     system "make install"
   end
