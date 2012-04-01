@@ -11,4 +11,8 @@ class Fann < Formula
     system "cmake . #{std_cmake_parameters}"
     system "make install"
   end
+
+  def test
+    system "false"
+  end
 end
