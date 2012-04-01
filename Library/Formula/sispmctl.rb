@@ -14,6 +14,6 @@ class Sispmctl < Formula
   end
 
   def test
-    system "sispmctl -v"
+    system "sispmctl"
   end
 end
