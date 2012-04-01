@@ -21,6 +21,14 @@ class Emacs < Formula
     cause "Duplicate symbol errors while linking."
   end
 
+  fails_with :clang do
+    build 318
+    cause <<-EOS.undent
+      Non-void functions should return values.
+      http://lists.gnu.org/archive/html/emacs-devel/2010-11/msg00133.html
+      EOS
+  end unless ARGV.build_head?
+
   def options
     [
       ["--cocoa", "Build a Cocoa version of emacs"],
