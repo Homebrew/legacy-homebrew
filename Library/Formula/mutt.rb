@@ -13,6 +13,7 @@ class Mutt < Formula
       ['--enable-debug', "Build with debug option enabled"],
       ['--sidebar-patch', "Apply sidebar (folder list) patch"],
       ['--trash-patch', "Apply trash folder patch"],
+      ['--purge-patch', "Apply purge message patch (requires trash)"],
       ['--with-slang', "Build against slang instead of ncurses"],
       ['--ignore-thread-patch', "Apply ignore-thread patch"],
       ['--pgp-verbose-mime-patch', "Apply PGP verbose mime patch"]
@@ -23,6 +24,7 @@ class Mutt < Formula
     urls = [
       ['--sidebar-patch', 'https://raw.github.com/nedos/mutt-sidebar-patch/master/mutt-sidebar.patch'],
       ['--trash-patch', 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-5/features/trash-folder'],
+      ['--purge-patch', 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-5/features/purge-message'],
       ['--ignore-thread-patch', 'http://ben.at.tanjero.com/patches/ignore-thread-1.5.21.patch'],
       ['--pgp-verbose-mime-patch',
           'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-5/features-old/patch-1.5.4.vk.pgp_verbose_mime'],
