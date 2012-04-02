@@ -8,6 +8,10 @@ class Metapixel < Formula
   depends_on 'jpeg'
   depends_on 'giflib'
 
+  def patches
+    ["https://gist.github.com/raw/2281924/fab0b1bb8b45a4b8c2be200d56dd9db3b0a99e17/metapixel_1.0.2-libpng1.5.patch"]
+  end
+
   def install
     man1.mkpath
     # separate steps
