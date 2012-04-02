@@ -14,7 +14,10 @@ class GambitScheme < Formula
 
   skip_clean :all
 
-  fails_with_llvm "ld crashes during the build process or segfault at runtime", :build => 2335
+  fails_with :llvm do
+    build 2335
+    cause "ld crashes during the build process or segfault at runtime"
+  end
 
   def install
     args = ["--disable-debug",

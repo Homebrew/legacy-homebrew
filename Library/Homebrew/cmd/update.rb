@@ -80,14 +80,21 @@ class Updater
     @current_revision = read_current_revision
   end
 
+  # Matches raw git diff format (see `man git-diff-tree`)
+  DIFFTREE_RX = /^:[0-7]{6} [0-7]{6} [0-9a-fA-F]{40} [0-9a-fA-F]{40} ([ACDMR])\d{0,3}\t(.+?)(?:\t(.+))?$/
+
   def report
     map = Hash.new{ |h,k| h[k] = [] }
 
     if initial_revision && initial_revision != current_revision
-      changes = `git diff-tree -r --name-status -z #{initial_revision} #{current_revision}`.split("\0")
-      changes.each_slice(2) do |status, file|
-        file = Pathname.pwd.join(file).relative_path_from(HOMEBREW_REPOSITORY)
-        map[status.to_sym] << file.to_s
+      `git diff-tree -r --raw -M85% #{initial_revision} #{current_revision}`.each_line do |line|
+        DIFFTREE_RX.match line
+        path = case status = $1.to_sym
+          when :R then $3
+          else $2
+          end
+        path = Pathname.pwd.join(path).relative_path_from(HOMEBREW_REPOSITORY)
+        map[status] << path.to_s
       end
     end
 
@@ -97,7 +104,7 @@ class Updater
   private
 
   def read_current_revision
-    `git rev-parse HEAD`.chomp
+    `git rev-parse -q --verify HEAD`.chomp
   end
 
   def `(cmd)

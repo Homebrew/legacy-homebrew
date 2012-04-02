@@ -1,14 +1,14 @@
 require 'formula'
 
 class Fann < Formula
-  homepage 'http://leenissen.dk/fann'
-  url 'http://downloads.sourceforge.net/project/fann/fann/2.1.0beta/fann-2.1.0beta.zip'
-  md5 '9c53d96ce415c927cb97b8f9de2ea881'
+  homepage 'http://leenissen.dk/fann/wp/'
+  url 'http://downloads.sourceforge.net/project/fann/fann/2.2.0/FANN-2.2.0-Source.tar.gz'
+  md5 'c9d6c8da5bb70276352a1718a668562c'
+
+  depends_on 'cmake' => :build
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-           "--prefix=#{prefix}"
-    system "make"
+    system "cmake . #{std_cmake_parameters}"
     system "make install"
   end
 end

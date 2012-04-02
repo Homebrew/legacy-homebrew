@@ -7,6 +7,8 @@ class Pixman < Formula
 
   depends_on 'pkg-config' => :build
 
+  fails_with :llvm
+
   def options
     [["--universal", "Build a universal binary."]]
   end
@@ -14,13 +16,6 @@ class Pixman < Formula
   def install
     ENV.x11
     ENV.universal_binary if ARGV.build_universal?
-    if ENV.compiler == :llvm
-      if MacOS.xcode_version >= "4.1"
-        ENV.clang
-      else
-        ENV.gcc_4_2
-      end
-    end
 
     # Disable gtk as it is only used to build tests
     system "./configure", "--disable-dependency-tracking",

@@ -19,8 +19,10 @@ class SwiProlog < Formula
     depends_on 'expat'
   end
 
-  fails_with_llvm "Exported procedure chr_translate:chr_translate_line_info/3 is not defined",
-    :build => 2335
+  fails_with :llvm do
+    build 2335
+    cause "Exported procedure chr_translate:chr_translate_line_info/3 is not defined"
+  end
 
   def options
     [['--lite', "Don't install any packages; overrides --with-jpl"],

@@ -4,8 +4,16 @@ require 'tab'
 
 module Homebrew extend self
   def bottle_formula f
-    return onoe "Formula not installed: #{f.name}" unless f.installed?
-    return onoe "Formula not installed with '--build-bottle': #{f.name}" unless built_bottle? f
+    unless f.installed?
+      onoe "Formula not installed: #{f.name}"
+      Homebrew.failed = true
+      return
+    end
+
+    unless built_bottle? f
+      onoe "Formula not installed with '--build-bottle': #{f.name}"
+      Homebrew.failed = true
+    end
 
     directory = Pathname.pwd
     filename = bottle_filename f
@@ -17,8 +25,7 @@ module Homebrew extend self
       safe_system 'tar', 'czf', directory/filename, "#{f.name}/#{f.version}"
       puts "./#{filename}"
       puts "bottle do"
-      puts "  url '#{bottle_base_url}#{filename}'"
-      puts "  sha1 '#{(directory/filename).sha1}'"
+      puts "  sha1 '#{(directory/filename).sha1}' => :#{MacOS.cat}"
       puts "end"
     end
   end
