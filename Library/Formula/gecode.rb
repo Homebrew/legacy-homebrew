@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gecode < Formula
-  url 'http://www.gecode.org/download/gecode-3.7.2.tar.gz'
   homepage 'http://www.gecode.org/'
-  md5 '8d505801f5730bd1b639fb2213b24919'
+  url 'http://www.gecode.org/download/gecode-3.7.3.tar.gz'
+  md5 '7a5cb9945e0bb48f222992f2106130ac'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-examples"
