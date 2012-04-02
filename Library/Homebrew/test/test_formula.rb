@@ -77,6 +77,7 @@ class FormulaTests < Test::Unit::TestCase
     cs = CompilerSelector.new(f)
     cs.select_compiler
     assert_equal MacOS.default_compiler, ENV.compiler
+    ENV.send MacOS.default_compiler
 
     f = TestNoCompilerFailures.new
     assert !(f.fails_with? :clang)
@@ -85,6 +86,7 @@ class FormulaTests < Test::Unit::TestCase
     cs = CompilerSelector.new(f)
     cs.select_compiler
     assert_equal MacOS.default_compiler, ENV.compiler
+    ENV.send MacOS.default_compiler
 
     f = TestLLVMFailure.new
     assert !(f.fails_with? :clang)
@@ -96,6 +98,7 @@ class FormulaTests < Test::Unit::TestCase
     when 0..210 then :gcc
     else :clang
     end
+    ENV.send MacOS.default_compiler
 
     f = TestMixedCompilerFailures.new
     assert f.fails_with? :clang
@@ -104,6 +107,7 @@ class FormulaTests < Test::Unit::TestCase
     cs = CompilerSelector.new(f)
     cs.select_compiler
     assert_equal :llvm, ENV.compiler
+    ENV.send MacOS.default_compiler
 
     f = TestMoreMixedCompilerFailures.new
     assert !(f.fails_with? :clang)
@@ -112,6 +116,7 @@ class FormulaTests < Test::Unit::TestCase
     cs = CompilerSelector.new(f)
     cs.select_compiler
     assert_equal :clang, ENV.compiler
+    ENV.send MacOS.default_compiler
 
     f = TestEvenMoreMixedCompilerFailures.new
     assert f.fails_with? :clang
@@ -120,6 +125,7 @@ class FormulaTests < Test::Unit::TestCase
     cs = CompilerSelector.new(f)
     cs.select_compiler
     assert_equal :clang, ENV.compiler
+    ENV.send MacOS.default_compiler
 
     f = TestBlockWithoutBuildCompilerFailure.new
     assert f.fails_with? :clang
@@ -128,5 +134,6 @@ class FormulaTests < Test::Unit::TestCase
     cs = CompilerSelector.new(f)
     cs.select_compiler
     assert_equal MacOS.default_compiler, ENV.compiler
+    ENV.send MacOS.default_compiler
   end
 end
