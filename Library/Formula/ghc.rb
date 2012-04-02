@@ -26,6 +26,14 @@ class Ghc < Formula
   # See: http://hackage.haskell.org/trac/ghc/ticket/2458
   skip_clean ['bin', 'lib']
 
+  fails_with :clang do
+    build 318
+    cause <<-EOS.undent
+      Building with Clang configures GHC to use Clang as its preprocessor,
+      which causes subsequent GHC-based builds to fail.
+      EOS
+  end
+
   def options
     [['--64bit', 'Install 64-bit version of GHC (experimental).']]
   end

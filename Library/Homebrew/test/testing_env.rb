@@ -9,6 +9,7 @@ ABS__FILE__=File.expand_path(__FILE__)
 $:.push(File.expand_path(__FILE__+'/../..'))
 require 'extend/pathname'
 require 'exceptions'
+require 'utils'
 
 # these are defined in global.rb, but we don't want to break our actual
 # homebrew tree, and we do want to test everything :)

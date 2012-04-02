@@ -10,7 +10,9 @@ class Mplayer < Formula
   depends_on 'pkg-config' => :build
   depends_on 'yasm' => :build
 
-  fails_with_llvm "Missing symbols error while linking"
+  fails_with :llvm do
+    cause "Missing symbols error while linking"
+  end
 
   def patches
     # When building from SVN HEAD, configure prompts the user to pull FFmpeg

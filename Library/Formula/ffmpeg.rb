@@ -11,15 +11,6 @@ class Ffmpeg < Formula
 
   head 'git://git.videolan.org/ffmpeg.git'
 
-  fails_with_llvm 'Undefined symbols when linking libavfilter'
-
-  def options
-    [
-      ["--with-tools", "Install additional FFmpeg tools."],
-      ["--with-ffplay", "Build ffplay."]
-    ]
-  end
-
   depends_on 'yasm' => :build
   depends_on 'x264' => :optional
   depends_on 'faac' => :optional
@@ -34,6 +25,17 @@ class Ffmpeg < Formula
   depends_on 'libass' => :optional
 
   depends_on 'sdl' if ffplay?
+
+  fails_with :llvm do
+    cause 'Undefined symbols when linking libavfilter'
+  end
+
+  def options
+    [
+      ["--with-tools", "Install additional FFmpeg tools."],
+      ["--with-ffplay", "Build ffplay."]
+    ]
+  end
 
   def install
     ENV.x11

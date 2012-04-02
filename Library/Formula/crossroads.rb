@@ -6,8 +6,10 @@ class Crossroads < Formula
   md5 '915aaf168f4a47d8ccf6d03b33845038'
   head 'https://github.com/crossroads-io/libxs.git'
 
-  fails_with_llvm "Compiling with LLVM gives a segfault while linking.",
-                  :build => 2326 if MacOS.snow_leopard?
+  fails_with :llvm do
+    build 2326
+    cause "Compiling with LLVM gives a segfault while linking."
+  end
 
   if ARGV.build_head? and MacOS.xcode_version >= "4.3"
     depends_on "automake" => :build
