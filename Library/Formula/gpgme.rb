@@ -10,7 +10,9 @@ class Gpgme < Formula
   depends_on 'libassuan'
   depends_on 'pth'
 
-  fails_with_llvm :build => 2334
+  fails_with :llvm do
+    build 2334
+  end
 
   def install
     system "./configure", "--disable-dependency-tracking",

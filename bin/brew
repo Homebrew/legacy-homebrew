@@ -112,4 +112,6 @@ rescue Exception => e
   puts "    #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
   puts e.backtrace
   exit 1
+else
+  exit 1 if Homebrew.failed?
 end

@@ -14,14 +14,17 @@ class Libvirt < Formula
     depends_on "libxml2"
   end
 
+  fails_with :llvm do
+    build 2326
+    cause "Undefined symbols when linking"
+  end
+
   # Includes a patch by Lincoln Myers <lincoln_myers@yahoo.com>,
   # fixing a recently introduced compilation bug on OSX.
   # Patch is already included upstream, and will be in libvirt 0.9.11.
   def patches
     DATA
   end
-
-  fails_with_llvm "Undefined symbols when linking", :build => "2326"
 
   def options
     [['--without-libvirtd', 'Build only the virsh client and development libraries.']]

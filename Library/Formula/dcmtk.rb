@@ -12,7 +12,9 @@ class Dcmtk < Formula
     [['--with-docs', 'Install development libraries/headers and HTML docs']]
   end
 
-  # fails_with_clang: https://github.com/mxcl/homebrew/issues/10884#issuecomment-4467514
+  fails_with :clang do
+    build 318
+  end
 
   def install
     ENV.m64 if MacOS.prefer_64_bit?

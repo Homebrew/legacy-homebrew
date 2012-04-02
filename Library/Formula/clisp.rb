@@ -11,7 +11,10 @@ class Clisp < Formula
 
   skip_clean :all # otherwise abort trap
 
-  fails_with_llvm "Configure fails on XCode 4/Snow Leopard.", :build => 2334
+  fails_with :llvm do
+    build 2334
+    cause "Configure fails on XCode 4/Snow Leopard."
+  end
 
   def patches
     { :p0 => "https://trac.macports.org/export/89054/trunk/dports/lang/clisp/files/patch-src_lispbibl_d.diff",

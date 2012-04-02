@@ -5,20 +5,11 @@ def ffplay?
 end
 
 class Ffmpeg < Formula
-  url 'http://ffmpeg.org/releases/ffmpeg-0.10.tar.bz2'
+  url 'http://ffmpeg.org/releases/ffmpeg-0.10.2.tar.bz2'
   homepage 'http://ffmpeg.org/'
-  sha1 'a3a7fe25db760a99d51266b33386da9c8552feef'
+  sha1 '743f44a71f93b14c9b26ca2424b0da8457cef4be'
 
   head 'git://git.videolan.org/ffmpeg.git'
-
-  fails_with_llvm 'Undefined symbols when linking libavfilter'
-
-  def options
-    [
-      ["--with-tools", "Install additional FFmpeg tools."],
-      ["--with-ffplay", "Build ffplay."]
-    ]
-  end
 
   depends_on 'yasm' => :build
   depends_on 'x264' => :optional
@@ -34,6 +25,17 @@ class Ffmpeg < Formula
   depends_on 'libass' => :optional
 
   depends_on 'sdl' if ffplay?
+
+  fails_with :llvm do
+    cause 'Undefined symbols when linking libavfilter'
+  end
+
+  def options
+    [
+      ["--with-tools", "Install additional FFmpeg tools."],
+      ["--with-ffplay", "Build ffplay."]
+    ]
+  end
 
   def install
     ENV.x11
