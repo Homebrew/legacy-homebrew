@@ -21,7 +21,10 @@ class Wine < Formula
   depends_on 'jpeg'
   depends_on 'libicns'
 
-  fails_with_llvm 'llvm-gcc does not respect force_align_arg_pointer', :build => 2336
+  fails_with :llvm do
+    build 2336
+    cause 'llvm-gcc does not respect force_align_arg_pointer'
+  end
 
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
   # configure: libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
