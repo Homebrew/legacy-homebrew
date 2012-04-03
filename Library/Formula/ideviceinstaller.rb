@@ -1,7 +1,6 @@
 require 'formula'
 
 class Ideviceinstaller < Formula
-<<<<<<< HEAD
   url 'http://cgit.sukimashita.com/ideviceinstaller.git', :using => :git, :tag => '1.0.0'
   head 'http://cgit.sukimashita.com/ideviceinstaller.git', :using => :git
   homepage 'http://www.sukimashita.com/'
