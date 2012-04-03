@@ -5,7 +5,11 @@ class Nload < Formula
   homepage 'http://www.roland-riegel.de/nload/'
   md5 '3c733c528f244ca5a4f76bf185729c39'
 
-  depends_on "automake"
+  fails_with :llvm do
+    build 2334
+  end
+
+  depends_on "automake" => :build if MacOS.xcode_version.to_f >= 4.3
 
   # Patching configure.in file to make configure compile on Mac OS.
   # Patch taken from MacPorts.
