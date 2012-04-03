@@ -12,8 +12,8 @@ class Formula
   include FileUtils
 
   attr_reader :name, :path, :url, :version, :homepage, :specs, :downloader
-  attr_reader :standard, :unstable
-  attr_reader :bottle_url, :bottle_sha1, :head
+  attr_reader :standard, :unstable, :head
+  attr_reader :bottle_version, :bottle_url, :bottle_sha1
 
   # The build folder, usually in /tmp.
   # Will only be non-nil during the stage method.
@@ -23,6 +23,7 @@ class Formula
   def initialize name='__UNKNOWN__', path=nil
     set_instance_variable 'homepage'
     set_instance_variable 'url'
+    set_instance_variable 'bottle_version'
     set_instance_variable 'bottle_url'
     set_instance_variable 'bottle_sha1'
     set_instance_variable 'head'
@@ -568,8 +569,8 @@ private
     end
 
     attr_rw :version, :homepage, :mirrors, :specs
-    attr_rw :keg_only_reason, :skip_clean_all, :bottle_url, :bottle_sha1
-    attr_rw :cc_failures
+    attr_rw :keg_only_reason, :skip_clean_all, :cc_failures
+    attr_rw :bottle_version, :bottle_url, :bottle_sha1
     attr_rw(*CHECKSUM_TYPES)
 
     def head val=nil, specs=nil
@@ -603,6 +604,10 @@ private
       return unless block_given?
 
       bottle_block = Class.new do
+        def self.version version
+          @version = version
+        end
+
         def self.url url
           @url = url
         end
@@ -617,18 +622,16 @@ private
           end
         end
 
-        def self.url_sha1
-          if @sha1 && @url
-            return @url, @sha1
-          elsif @sha1
-            return nil, @sha1
-          end
+        def self.data
+          @version = 0 unless @version
+          return @version, @url, @sha1 if @sha1 && @url
+          return @version, nil, @sha1 if @sha1
         end
       end
 
       bottle_block.instance_eval &block
-      @bottle_url, @bottle_sha1 = bottle_block.url_sha1
-      @bottle_url ||= "#{bottle_base_url}#{name.downcase}-#{@version||@standard.detect_version}#{bottle_native_suffix}" if @bottle_sha1
+      @bottle_version, @bottle_url, @bottle_sha1 = bottle_block.data
+      @bottle_url ||= bottle_base_url + bottle_filename(self) if @bottle_sha1
     end
 
     def mirror val, specs=nil
