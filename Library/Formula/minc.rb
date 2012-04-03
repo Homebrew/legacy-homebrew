@@ -7,13 +7,17 @@ class Minc < Formula
 
   head 'https://github.com/BIC-MNI/minc.git'
 
-  #fails_with_clang "Throws 'non-void function 'miget_real_value_hyperslab' should return a value' error during build.", :build => 318
-
   depends_on 'netcdf'
 
   if MacOS.xcode_version >= "4.3"
     depends_on "automake" => :build
     depends_on "libtool" => :build
+  end
+
+  fails_with :clang do
+    # TODO This is an easy fix, someone send it upstream!
+    build 318
+    cause "Throws 'non-void function 'miget_real_value_hyperslab' should return a value'"
   end
 
   def install

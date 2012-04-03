@@ -12,6 +12,10 @@ class Qt < Formula
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
 
+  fails_with :clang do
+    build 318
+  end
+
   def options
     [
       ['--with-qtdbus', "Enable QtDBus module."],
@@ -76,10 +80,6 @@ class Qt < Formula
     else
       args << "-release"
     end
-
-    # Compilation currently fails with the newer versions of clang
-    # shipped with Xcode 4.3+
-    ENV.llvm if MacOS.clang_version.to_f <= 3.1
 
     # Needed for Qt 4.8.0 due to attempting to link moc with gcc.
     ENV['LD'] = ENV['CXX']

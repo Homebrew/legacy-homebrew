@@ -10,7 +10,9 @@ class Redland < Formula
   depends_on 'rasqal'
   depends_on 'berkeley-db' => :optional
 
-  fails_with_llvm :build => 2334
+  fails_with :llvm do
+    build 2334
+  end
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

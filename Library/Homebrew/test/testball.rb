@@ -39,3 +39,85 @@ class ConfigureFails <Formula
     system "./configure"
   end
 end
+
+class TestAllCompilerFailures < Formula
+  def initialize name=nil
+    @url="file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+    @homepage = 'http://example.com/'
+    super "compilerfailures"
+  end
+
+  fails_with :clang
+  fails_with :llvm
+  fails_with :gcc
+end
+
+class TestNoCompilerFailures < Formula
+  def initialize name=nil
+    @url="file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+    @homepage = 'http://example.com/'
+    super "nocompilerfailures"
+  end
+
+  fails_with(:clang) { build 42 }
+  fails_with(:llvm) { build 42 }
+  fails_with(:gcc) { build 42 }
+end
+
+class TestLLVMFailure < Formula
+  def initialize name=nil
+    @url="file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+    @homepage = 'http://example.com/'
+    super "llvmfailure"
+  end
+
+  fails_with :llvm
+end
+
+class TestMixedCompilerFailures < Formula
+  def initialize name=nil
+    @url="file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+    @homepage = 'http://example.com/'
+    super "mixedcompilerfailures"
+  end
+
+  fails_with(:clang) { build MacOS.clang_build_version }
+  fails_with(:llvm) { build 42 }
+  fails_with(:gcc) { build 5666 }
+end
+
+class TestMoreMixedCompilerFailures < Formula
+  def initialize name=nil
+    @url="file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+    @homepage = 'http://example.com/'
+    super "moremixedcompilerfailures"
+  end
+
+  fails_with(:clang) { build 42 }
+  fails_with(:llvm) { build 2336 }
+  fails_with(:gcc) { build 5666 }
+end
+
+class TestEvenMoreMixedCompilerFailures < Formula
+  def initialize name=nil
+    @url="file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+    @homepage = 'http://example.com/'
+    super "evenmoremixedcompilerfailures"
+  end
+
+  fails_with :clang
+  fails_with(:llvm) { build 2336 }
+  fails_with(:gcc) { build 5648 }
+end
+
+class TestBlockWithoutBuildCompilerFailure < Formula
+  def initialize name=nil
+    @url="file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+    @homepage = 'http://example.com/'
+    super "blockwithoutbuildcompilerfailure"
+  end
+
+  fails_with :clang do
+    cause "failure"
+  end
+end
