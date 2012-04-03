@@ -17,14 +17,16 @@ class Phantomjs < Formula
 
   depends_on NeedsSnowLeopardOrNewer.new
 
-  def install
-    bin.install "bin/phantomjs"
+  def script; <<-EOS.undent
+    #!/bin/sh
+    # phantomjs wrapper script to hide dock icon
+    # See http://code.google.com/p/phantomjs/issues/detail?id=281
+    exec #{libexec}/phantomjs "$@"
+    EOS
   end
 
-  def caveats; <<-EOS.undent
-    PhantomJS in Homebrew currently does not hide the dock icon.
-    For more information see:
-    http://code.google.com/p/phantomjs/issues/detail?id=281
-    EOS
+  def install
+    libexec.install ['bin/phantomjs', 'bin/Info.plist']
+    (bin+'phantomjs').write script
   end
 end
