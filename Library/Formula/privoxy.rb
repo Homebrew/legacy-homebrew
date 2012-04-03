@@ -22,7 +22,8 @@ class Privoxy < Formula
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}/privoxy"
+                          "--sysconfdir=#{etc}/privoxy",
+                          "--localstatedir=#{var}"
     system "make"
     system "make install"
   end
