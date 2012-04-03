@@ -26,9 +26,20 @@ class Mapnik < Formula
            "JOBS=#{ENV.make_jobs}",
            "PREFIX=#{prefix}",
            "ICU_INCLUDES=#{icu.include}",
-           "ICU_LIBS=#{icu.lib}"
+           "ICU_LIBS=#{icu.lib}",
+           "PYTHON_PREFIX=#{prefix}"  # Install to Homebrew's site-packages
     system "python",
            "scons/scons.py",
            "install"
+  end
+
+  def caveats; <<-EOS.undent
+    For non-homebrew Python, you need to amend your PYTHONPATH like so:
+      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
+    EOS
+  end
+
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 end
