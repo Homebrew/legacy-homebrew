@@ -8,9 +8,23 @@ class Curl < Formula
   keg_only :provided_by_osx,
             "The libcurl provided by Leopard is too old for CouchDB to use."
 
+  depends_on 'libssh2' if ARGV.include? "--with-ssh"
+
+  def options
+  [
+    ["--with-ssh", "build with scp and sftp support."],
+  ]
+  end
+
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    if ARGV.include? "--with-ssh" then
+      system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                            "--with-ssl", "--with-libssh2",
+                            "--prefix=#{prefix}"
+    else
+      system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                            "--prefix=#{prefix}"
+    end
     system "make install"
   end
 end
