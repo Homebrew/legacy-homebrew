@@ -8,8 +8,8 @@ class Bibutils < Formula
   def install
     system "./configure --install-dir #{prefix}"
 
+    # The configure script replaces the CC variable wrong, so fix it here
     inreplace 'Makefile' do |s|
-      # this is weird, but necessary
       s.change_make_var! 'CC', "CC=#{ENV.cc}"
     end
 

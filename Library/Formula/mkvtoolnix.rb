@@ -12,6 +12,10 @@ class Mkvtoolnix < Formula
   depends_on 'flac' => :optional
   depends_on 'lzo' => :optional
 
+  fails_with :clang do
+    build 318
+  end
+
   def install
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",

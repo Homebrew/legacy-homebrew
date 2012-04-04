@@ -2,11 +2,11 @@ require 'formula'
 
 class Openvpn < Formula
   homepage 'http://openvpn.net/'
-  url 'http://build.openvpn.net/downloads/releases/openvpn-2.2.1.tar.gz'
-  mirror 'http://swupdate.openvpn.org/community/releases/openvpn-2.2.1.tar.gz'
-  sha256 'a860858cc92d4573399bb2ff17ac62d9b4b8939e6af0b8cc69150ba39d6e94e0'
+  url 'http://build.openvpn.net/downloads/releases/openvpn-2.2.2.tar.gz'
+  mirror 'http://swupdate.openvpn.org/community/releases/openvpn-2.2.2.tar.gz'
+  sha256 '54ca8b260e2ea3b26e84c2282ccb5f8cb149edcfd424b686d5fb22b8dbbeac00'
 
-  depends_on 'lzo' => :recommended
+  depends_on 'lzo'
 
   # This patch fixes compilation on Lion
   # There is a long history of confusion between these two consts:
@@ -22,8 +22,8 @@ class Openvpn < Formula
 
     # Adjust sample file paths
     inreplace ["sample-config-files/openvpn-startup.sh", "sample-scripts/openvpn.init"] do |s|
-      s.gsub! "/etc/openvpn", (etc + 'openvpn')
-      s.gsub! "/var/run/openvpn", (var + 'run/openvpn')
+      s.gsub! "/etc/openvpn", etc+'openvpn'
+      s.gsub! "/var/run/openvpn", var+'run/openvpn'
     end
 
     # Install sample files

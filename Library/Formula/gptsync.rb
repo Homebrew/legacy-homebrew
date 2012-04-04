@@ -6,7 +6,7 @@ class Gptsync < Formula
   md5 '16f02fa5b5decdee17eebd5cd863b3f0'
 
   def install
-    Dir.chdir "gptsync" do
+    cd "gptsync" do
       system "make", "-f", "Makefile.unix", "CC=#{ENV.cc}"
       sbin.install 'gptsync', 'showpart'
       man8.install 'gptsync.8'

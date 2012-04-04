@@ -12,8 +12,8 @@ def as_framework?
 end
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.24.tar.gz'
-  md5 '17722b22141aba8235787f79800cc452'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.25.tar.gz'
+  md5 'a690874b9964d958a3200485eb827b1d'
 end
 
 class Python3 < Formula
@@ -152,6 +152,14 @@ class Python3 < Formula
     return prefix+"Frameworks/Python.framework/Versions/3.2/lib" if as_framework?
     # Otherwise use just 'lib'
     return lib
+  end
+
+  # include folder,taking into account whether we are a Framework build or not
+  def effective_include
+    # If we're installed or installing as a Framework, then use that location.
+    return prefix+"Frameworks/Python.framework/Versions/3.2/include" if as_framework?
+    # Otherwise use just 'include'
+    return include
   end
 
   # The Cellar location of site-packages

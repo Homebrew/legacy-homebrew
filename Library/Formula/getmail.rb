@@ -9,7 +9,7 @@ class Getmail < Formula
     scripts = %w[ getmail getmail_fetch getmail_maildir getmail_mbox ]
     libexec.install 'getmailcore'
     libexec_scripts = libexec.install scripts
-    bin.install_symlink *libexec_scripts
+    bin.install_symlink libexec_scripts
     man1.install Dir['docs/*.1']
   end
 end

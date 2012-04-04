@@ -3,18 +3,14 @@ require 'formula'
 class Mariadb < Formula
   # You probably don't want to have this and MySQL's formula linked at the same time
   # Just saying.
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.2.10/kvm-tarbake-jaunty-x86/mariadb-5.2.10.tar.gz'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.3.5-ga/kvm-tarbake-jaunty-x86/mariadb-5.3.5-ga.tar.gz'
   homepage 'http://mariadb.org/'
-  md5 'c47fa6448476b06bb15788d3f23e2ae8'
+  md5 '98ce0441b37c8d681855150495fdc03b'
 
   depends_on 'readline'
 
-  def patches
-    # upstream patches to fix compilation failures on OS X
-    # will be present in next release
-    { :p0 => ['http://bazaar.launchpad.net/~maria-captains/maria/5.2/diff/3085',
-              'http://bazaar.launchpad.net/~maria-captains/maria/5.2/diff/3075.1.1',
-              'http://bazaar.launchpad.net/~maria-captains/maria/5.2/diff/3094'] }
+  fails_with :clang do
+    build 318
   end
 
   def options
@@ -40,7 +36,6 @@ class Mariadb < Formula
       "--localstatedir=#{var}/mysql",
       "--sysconfdir=#{etc}",
       "--with-extra-charsets=complex",
-      "--without-readline",
       "--enable-assembler",
       "--enable-thread-safe-client",
       "--with-big-tables",

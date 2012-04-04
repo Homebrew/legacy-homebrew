@@ -78,6 +78,8 @@ class Cleaner
       elsif path.extname == '.la'
         # *.la files are stupid
         path.unlink unless @f.skip_clean? path
+      elsif path == @f.lib+'charset.alias'
+        path.unlink unless @f.skip_clean? path
       elsif not path.symlink?
         clean_file path
       end

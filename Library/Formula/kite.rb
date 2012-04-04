@@ -7,13 +7,12 @@ class Kite < Formula
 
   depends_on 'bdw-gc'
 
-  def patches
-    # patch to build against bdw-gc 7.2, sent upstream
-    DATA
-  end
+  # patch to build against bdw-gc 7.2, sent upstream
+  def patches; DATA; end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

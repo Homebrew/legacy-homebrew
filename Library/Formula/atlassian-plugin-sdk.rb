@@ -2,16 +2,12 @@ require 'formula'
 
 class AtlassianPluginSdk < Formula
   homepage 'https://developer.atlassian.com/display/DOCS/Atlassian+Plugin+SDK+Documentation'
-  url 'https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/amps/atlassian-plugin-sdk/3.7.3/atlassian-plugin-sdk-3.7.3.tar.gz'
-  md5 'aa231e2a1c3789f6540d549aaf1447a7'
+  url 'https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/amps/atlassian-plugin-sdk/3.9.2/atlassian-plugin-sdk-3.9.2.tar.gz'
+  md5 '5b3c909a3911a883a7d8e2145a977c11'
 
   def install
     # Remove windows files
     rm_f Dir["bin/*.bat"]
-
-    Dir.chdir "apache-maven/maven-docs" do
-      prefix.install %w{ NOTICE.txt LICENSE.txt README.txt }
-    end
 
     # Install jars in libexec to avoid conflicts
     libexec.install Dir['*']

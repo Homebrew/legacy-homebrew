@@ -149,7 +149,8 @@ class BeerTasting < Test::Unit::TestCase
         
         abcd=orig_abcd=HOMEBREW_CACHE+'abcd'
         FileUtils.cp ABS__FILE__, abcd
-        abcd=HOMEBREW_PREFIX.install abcd
+        installed_paths=HOMEBREW_PREFIX.install abcd
+        abcd = installed_paths[0]
         assert (HOMEBREW_PREFIX+orig_abcd.basename).exist?
         assert abcd.exist?
         assert_equal HOMEBREW_PREFIX+'abcd', abcd

@@ -5,7 +5,10 @@ class Libexif < Formula
   homepage 'http://libexif.sourceforge.net/'
   md5 '19844ce6b5d075af16f0d45de1e8a6a3'
 
-  fails_with_llvm "segfault with llvm", :build => 2334
+  fails_with :llvm do
+    build 2334
+    cause "segfault with llvm"
+  end
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"

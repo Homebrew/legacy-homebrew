@@ -7,8 +7,8 @@ class Scantailor < Formula
 
   devel do
     url 'http://downloads.sourceforge.net/project/scantailor/scantailor-devel/enhanced/scantailor-enhanced-20111213.tar.gz'
-    md5 'bcba593dcba17880429884fe2bfb1d2a'
     version 'enhanced-20111213'
+    md5 'bcba593dcba17880429884fe2bfb1d2a'
   end
 
   depends_on 'cmake' => :build
@@ -18,7 +18,7 @@ class Scantailor < Formula
   depends_on 'libtiff'
 
   def install
-    system "cmake . #{std_cmake_parameters} -DPNG_INCLUDE_DIR=/usr/X11/include"
+    system "cmake #{std_cmake_parameters} -DPNG_INCLUDE_DIR=/usr/X11/include ."
     system "make install"
   end
 end
