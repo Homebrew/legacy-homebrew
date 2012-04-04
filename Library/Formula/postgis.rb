@@ -159,7 +159,7 @@ class Postgis < Formula
       PostGIS plugin libraries installed to:
         #{postgresql.lib}
       PostGIS extension modules installed to:
-        #{postgresql.share}/postgres/extension
+        #{postgresql.share}/postgresql/extension
     EOS
   end
 end
