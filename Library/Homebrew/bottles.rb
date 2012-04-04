@@ -26,7 +26,7 @@ def bottle_current? f
 end
 
 def bottle_new_version f
-  return 0 unless f.bottle_version
+  return 0 unless bottle_current? f
   f.bottle_version + 1
 end
 
