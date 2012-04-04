@@ -91,7 +91,7 @@ private
   # Write the given file object (DATA) out to a local file for patch
   def write_data f
     pn = Pathname.new @patch_filename
-    pn.write(brew_var_substitution f.read.to_s)
+    pn.write(brew_var_substitution(f.read.to_s))
   end
 
   # Do any supported substitutions of HOMEBREW vars in a DATA patch
