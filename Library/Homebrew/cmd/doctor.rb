@@ -400,7 +400,7 @@ def check_user_path_1
 
                 #{conflicts * "\n                "}
 
-            Consider ammending your PATH so that #{HOMEBREW_PREFIX}/bin
+            Consider amending your PATH so that #{HOMEBREW_PREFIX}/bin
             is ahead of /usr/bin in your PATH.
           EOS
         end
@@ -418,7 +418,7 @@ def check_user_path_2
   unless $seen_prefix_bin
     <<-EOS.undent
       Homebrew's bin was not found in your path.
-      Consider ammending your PATH variable so it contains:
+      Consider amending your PATH variable so it contains:
         #{HOMEBREW_PREFIX}/bin
     EOS
   end
@@ -431,7 +431,7 @@ def check_user_path_3
     unless $seen_prefix_sbin
       <<-EOS.undent
         Homebrew's sbin was not found in your path.
-        Consider ammending your PATH variable so it contains:
+        Consider amending your PATH variable so it contains:
           #{HOMEBREW_PREFIX}/sbin
       EOS
     end

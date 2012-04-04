@@ -10,7 +10,7 @@ class Libxmlsec1 < Formula
   depends_on 'gnutls' => :optional
 
   # Add HOMEBREW_PREFIX/lib to dl load path
-  def patches; DATA;end
+  def patches; DATA; end
 
   def install
     libxml2 = Formula.factory('libxml2')
@@ -32,7 +32,7 @@ index 6e8a56a..0e7f06b 100644
      }
  
  #ifdef XMLSEC_DL_LIBLTDL
-+    lt_dlsearchpath("HOMEBREW_PREFIX/lib");
++    lt_dlsetsearchpath("HOMEBREW_PREFIX/lib");
      lib->handle = lt_dlopenext((char*)lib->filename);
      if(lib->handle == NULL) {
          xmlSecError(XMLSEC_ERRORS_HERE,
