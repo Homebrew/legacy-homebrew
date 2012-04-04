@@ -1,4 +1,5 @@
 require 'formula'
+require File.dirname(__FILE__) + '/brew-python.rb'
 
 # Was a Framework build requested?
 def build_framework?; ARGV.include? '--framework'; end
@@ -18,6 +19,7 @@ class Python < Formula
   url 'http://www.python.org/ftp/python/2.7.2/Python-2.7.2.tar.bz2'
   md5 'ba7b2f11ffdbf195ee0d111b9455a5bd'
 
+  depends_on 'brew-python'
   depends_on 'readline' => :optional # Prefer over OS X's libedit
   depends_on 'sqlite'   => :optional # Prefer over OS X's older version
   depends_on 'gdbm'     => :optional
@@ -63,6 +65,13 @@ class Python < Formula
       args << "--enable-shared" unless ARGV.include? '--static'
     end
 
+    if system_python_linked?
+      ohai "Removing #{user_sitecustomize}"
+      rm_f user_sitecustomize #.py[co]
+      rm_f user_sitecustomize('.pyc')
+      rm_f user_sitecustomize('.pyo')
+    end
+
     # allow sqlite3 module to load extensions
     inreplace "setup.py",
       'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', ''
@@ -104,6 +113,9 @@ class Python < Formula
       install-scripts=#{scripts_folder}
     EOF
 
+    # Customize python for homebrew.
+    ln_sf homebrew_sitecustomize, sitecustomize
+
     # Install distribute. The user can then do:
     # $ easy_install pip
     # $ pip install --upgrade distribute
@@ -138,12 +150,53 @@ class Python < Formula
           #{scripts_folder}/easy_install pip
           #{scripts_folder}/pip install --upgrade distribute
 
+      A "sitecustomize.py" symlink has been installed to:
+          #{sitecustomize}
+
+      It adds #{HOMEBREW_PREFIX}/lib/python to python's sys.path.
+      This allows python to find brew-installed python modules.
+      The symlink points to:
+          #{homebrew_sitecustomize}
+
       See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
+    EOS
+
+    module_caveats = <<-EOS.undent
+
+      Compiled python modules were found in:
+        #{homebrew_python}
+
+      Changing python versions means that these modules may need
+      to be reinstalled.
     EOS
 
     s = general_caveats
     s += framework_caveats if as_framework?
+    s += module_caveats if modules_need_upgrade?
     return s
+  end
+
+  def system_python_linked?
+    File.exists?(user_sitecustomize) and File.symlink?(user_sitecustomize)
+  end
+
+  def modules_need_upgrade?
+    system_python_version != '2.7' and modules.length > 0
+  end
+
+  def modules
+    toplevel = homebrew_python + '*.so'
+    nested = homebrew_python + '*/*.so'
+
+    Dir.glob(toplevel) + Dir.glob(nested)
+  end
+
+  def sitecustomize
+    effective_lib + 'python2.7/site-packages/sitecustomize.py'
+  end
+
+  def homebrew_sitecustomize
+    HOMEBREW_PREFIX + 'lib/python/sitecustomize.py'
   end
 
   # lib folder,taking into account whether we are a Framework build or not
