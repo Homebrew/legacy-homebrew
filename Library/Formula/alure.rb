@@ -16,7 +16,9 @@ class Alure < Formula
   depends_on 'fluidsynth'if ARGV.include?('--with-fluidsynth')|| all
 
   def install
-    system "cd build; cmake .. #{std_cmake_parameters}"
-    system "cd build; make install"
+    cd "build" do
+      system "cmake .. #{std_cmake_parameters}"
+      system "make install"
+    end
   end
 end
