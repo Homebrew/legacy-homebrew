@@ -6,6 +6,6 @@ class Dfc < Formula
   md5 'e9c5e862858ab2cd4a7b2270c26722ef'
 
   def install
-    system "make", "PREFIX=#{prefix}", "MANDIR=#{prefix}/share/man", "install"
+    system "make", "PREFIX=#{prefix}", "MANDIR=#{man}", "install"
   end
 end
