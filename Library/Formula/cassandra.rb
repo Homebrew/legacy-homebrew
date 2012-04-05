@@ -1,14 +1,17 @@
 require 'formula'
 
 class Cassandra < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.0.7/apache-cassandra-1.0.7-bin.tar.gz'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.0.8/apache-cassandra-1.0.8-bin.tar.gz'
   homepage 'http://cassandra.apache.org'
-  sha1 '8ae535821b29eead5b7dc7788a0e66ecf1ac267e'
+  sha1 '49647719d4813b879857073315ce0e8b67eca15a'
+
+  depends_on 'cql' => :python
 
   def install
     (var+"lib/cassandra").mkpath
     (var+"log/cassandra").mkpath
     (etc+"cassandra").mkpath
+    (share+"cassandra").mkpath
 
     inreplace "conf/cassandra.yaml", "/var/lib/cassandra", "#{var}/lib/cassandra"
     inreplace "conf/log4j-server.properties", "/var/log/cassandra", "#{var}/log/cassandra"
@@ -28,8 +31,10 @@ class Cassandra < Formula
     rm Dir["bin/*.bat"]
 
     (etc+"cassandra").install Dir["conf/*"]
-    prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc,lib/licenses}"]
+    prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc,pylib,lib/licenses}"]
     prefix.install Dir["lib/*.jar"]
+    (bin+'cqlshrc.sample').chmod 0644
+    mv [bin+'cqlshrc.sample', bin+'cassandra.in.sh', bin+'stop-server'], share+"cassandra"
 
     plist_path.write startup_plist
     plist_path.chmod 0644
