@@ -1,10 +1,10 @@
 require 'formula'
 
 class Bsdconv < Formula
-  url 'https://github.com/buganini/bsdconv/tarball/6.4'
+  url 'https://github.com/buganini/bsdconv/tarball/7.3'
   homepage 'https://github.com/buganini/bsdconv'
   head 'https://github.com/buganini/bsdconv.git'
-  md5 '08865f419a679b47f5c0491dd8f899c9'
+  md5 '29a4a350f4c6986df628f4210f2cbb37'
 
   def install
     system "make PREFIX=#{prefix}"
