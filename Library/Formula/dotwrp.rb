@@ -5,6 +5,8 @@ class Dotwrp < Formula
   homepage 'https://github.com/tenomoto/dotwrp'
   version '1.0'
 
+  depends_on "gfortran"
+
   def install
     ENV.fortran
 
