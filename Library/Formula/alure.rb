@@ -12,7 +12,7 @@ class Alure < Formula
   depends_on 'libogg'    if ARGV.include?('--with-libogg')    || all
   depends_on 'libsndfile'if ARGV.include?('--with-libsndfile')|| all
   depends_on 'flac'      if ARGV.include?('--with-flac')      || all
-  depends_on 'mpg123'    if ARGV.include?('--with-flac')      || all
+  depends_on 'mpg123'    if ARGV.include?('--with-mpg123')    || all
   depends_on 'fluidsynth'if ARGV.include?('--with-fluidsynth')|| all
 
   def install
