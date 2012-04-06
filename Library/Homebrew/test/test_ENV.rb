@@ -25,4 +25,11 @@ class EnvironmentTests < Test::Unit::TestCase
     assert !ENV.cc.empty?
     assert !ENV.cxx.empty?
   end
+
+  def test_switching_compilers
+    ENV.llvm
+    ENV.clang
+    assert_equal ENV['LD'], ENV['CC']
+    assert_equal ENV['OBJC'], ENV['CC']
+  end
 end

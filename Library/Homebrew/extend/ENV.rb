@@ -10,7 +10,7 @@ module HomebrewEnvExtension
     remove_cc_etc
 
     # make any aclocal stuff installed in Homebrew available
-    ENV['ACLOCAL_PATH'] = "#{HOMEBREW_PREFIX}/share/aclocal" if MacOS.xcode_version < "4.3"
+    self['ACLOCAL_PATH'] = "#{HOMEBREW_PREFIX}/share/aclocal" if MacOS.xcode_version < "4.3"
 
     self['MAKEFLAGS'] = "-j#{self.make_jobs}"
 
@@ -29,12 +29,12 @@ module HomebrewEnvExtension
     self.send self.compiler
 
     # we must have a working compiler!
-    unless ENV['CC']
+    unless self['CC']
       @compiler = MacOS.default_compiler
       self.send @compiler
-      ENV['CC']  = '/usr/bin/cc'
-      ENV['CXX'] = '/usr/bin/c++'
-      ENV['OBJC'] = ENV['CC']
+      self['CC']  = '/usr/bin/cc'
+      self['CXX'] = '/usr/bin/c++'
+      self['OBJC'] = self['CC']
     end
 
     # In rare cases this may break your builds, as the tool for some reason wants
@@ -87,7 +87,8 @@ module HomebrewEnvExtension
 
   def gcc_4_0_1
     # we don't use xcrun because gcc 4.0 has not been provided since Xcode 4
-    self['CC'] =  "#{MacOS.dev_tools_path}/gcc-4.0"
+    self['CC'] = "#{MacOS.dev_tools_path}/gcc-4.0"
+    self['LD'] = self['CC']
     self['CXX'] = "#{MacOS.dev_tools_path}/g++-4.0"
     self['OBJC'] = self['CC']
     replace_in_cflags '-O4', '-O3'
@@ -125,11 +126,12 @@ module HomebrewEnvExtension
 
   # if your formula doesn't like CC having spaces use this
   def expand_xcrun
-    ENV['CC'] =~ %r{/usr/bin/xcrun (.*)}
-    ENV['CC'] = `/usr/bin/xcrun -find #{$1}`.chomp if $1
-    ENV['CXX'] =~ %r{/usr/bin/xcrun (.*)}
-    ENV['CXX'] = `/usr/bin/xcrun -find #{$1}`.chomp if $1
-    ENV['OBJC'] = ENV['CC']
+    self['CC'] =~ %r{/usr/bin/xcrun (.*)}
+    self['CC'] = `/usr/bin/xcrun -find #{$1}`.chomp if $1
+    self['CXX'] =~ %r{/usr/bin/xcrun (.*)}
+    self['CXX'] = `/usr/bin/xcrun -find #{$1}`.chomp if $1
+    self['LD'] = self['CC']
+    self['OBJC'] = self['CC']
   end
 
   def gcc
@@ -137,19 +139,21 @@ module HomebrewEnvExtension
     # However they still provide a gcc symlink to llvm
     # But we don't want LLVM of course.
 
-    ENV['CC'] = xcrun "gcc-4.2"
-    ENV['CXX'] = xcrun "g++-4.2"
-    ENV['OBJC'] = ENV['CC']
+    self['CC'] = xcrun "gcc-4.2"
+    self['LD'] = self['CC']
+    self['CXX'] = xcrun "g++-4.2"
+    self['OBJC'] = self['CC']
 
-    unless ENV['CC']
-      ENV['CC'] = "#{HOMEBREW_PREFIX}/bin/gcc-4.2"
-      ENV['CXX'] = "#{HOMEBREW_PREFIX}/bin/g++-4.2"
-      ENV['OBJC'] = ENV['CC']
-      raise "GCC could not be found" if not File.exist? ENV['CC']
+    unless self['CC']
+      self['CC'] = "#{HOMEBREW_PREFIX}/bin/gcc-4.2"
+      self['LD'] = self['CC']
+      self['CXX'] = "#{HOMEBREW_PREFIX}/bin/g++-4.2"
+      self['OBJC'] = self['CC']
+      raise "GCC could not be found" if not File.exist? self['CC']
     end
 
-    if not ENV['CC'] =~ %r{^/usr/bin/xcrun }
-      raise "GCC could not be found" if Pathname.new(ENV['CC']).realpath.to_s =~ /llvm/
+    if not self['CC'] =~ %r{^/usr/bin/xcrun }
+      raise "GCC could not be found" if Pathname.new(self['CC']).realpath.to_s =~ /llvm/
     end
 
     replace_in_cflags '-O4', '-O3'
@@ -159,7 +163,8 @@ module HomebrewEnvExtension
   alias_method :gcc_4_2, :gcc
 
   def llvm
-    self['CC']  = xcrun "llvm-gcc"
+    self['CC'] = xcrun "llvm-gcc"
+    self['LD'] = self['CC']
     self['CXX'] = xcrun "llvm-g++"
     self['OBJC'] = self['CC']
     set_cpu_cflags 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott'
@@ -167,7 +172,8 @@ module HomebrewEnvExtension
   end
 
   def clang
-    self['CC']  = xcrun "clang"
+    self['CC'] = xcrun "clang"
+    self['LD'] = self['CC']
     self['CXX'] = xcrun "clang++"
     self['OBJC'] = self['CC']
     replace_in_cflags(/-Xarch_i386 (-march=\S*)/, '\1')
@@ -434,9 +440,9 @@ Please take one of the following actions:
 
   def remove_cc_etc
     keys = %w{CC CXX LD CPP CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS}
-    removed = Hash[*keys.map{ |key| [key, ENV[key]] }.flatten]
+    removed = Hash[*keys.map{ |key| [key, self[key]] }.flatten]
     keys.each do |key|
-      ENV[key] = nil
+      self[key] = nil
     end
     removed
   end

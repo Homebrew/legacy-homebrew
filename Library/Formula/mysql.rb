@@ -9,7 +9,10 @@ class Mysql < Formula
   depends_on 'readline'
   depends_on 'pidof'
 
-  fails_with_llvm "https://github.com/mxcl/homebrew/issues/issue/144", :build => 2326
+  fails_with :llvm do
+    build 2326
+    cause "https://github.com/mxcl/homebrew/issues/issue/144"
+  end
 
   skip_clean :all # So "INSTALL PLUGIN" can work.
 
@@ -25,9 +28,9 @@ class Mysql < Formula
     ]
   end
 
-  def patches
-    DATA
-  end
+  # Remove optimization flags from `mysql_config --cflags`
+  # This facilitates easy compilation of gems using a brewed mysql
+  def patches; DATA; end
 
   def install
     # Make sure the var/mysql directory exists
@@ -159,22 +162,6 @@ end
 
 
 __END__
-diff --git a/scripts/mysqld_safe.sh b/scripts/mysqld_safe.sh
-index 0d2045a..2fdd5ce 100644
---- a/scripts/mysqld_safe.sh
-+++ b/scripts/mysqld_safe.sh
-@@ -558,7 +558,7 @@ else
- fi
- 
- USER_OPTION=""
--if test -w / -o "$USER" = "root"
-+if test -w /sbin -o "$USER" = "root"
- then
-   if test "$user" != "root" -o $SET_USER = 1
-   then
-
-# Remove optimization flags from `mysql-config --cflags`
-# This facilitates easy compilation of gems using a brewed mysql
 diff --git a/scripts/mysql_config.sh b/scripts/mysql_config.sh
 index 9296075..70c18db 100644
 --- a/scripts/mysql_config.sh

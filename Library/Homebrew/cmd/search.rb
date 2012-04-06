@@ -30,10 +30,13 @@ module Homebrew extend self
 
       if query
         $found = search_results.length
+
+        # TODO parallelize!
         puts_columns search_tap "adamv", "alt", rx
         puts_columns search_tap "josegonzalez", "php", rx
         puts_columns search_tap "Homebrew", "versions", rx
         puts_columns search_tap "Homebrew", "dupes", rx
+        puts_columns search_tap "Homebrew", "games", rx
 
         if $found == 0 and not blacklisted? query
           puts "No formula found for \"#{query}\". Searching open pull requests..."
@@ -47,12 +50,12 @@ module Homebrew extend self
     return [] if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}").directory?
 
     require 'open-uri'
-    require 'yaml'
+    require 'vendor/multi_json'
 
     results = []
-    open "http://github.com/api/v2/yaml/blob/all/#{user}/homebrew-#{repo}/master" do |f|
+    open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |f|
       user.downcase! if user == "Homebrew" # special handling for the Homebrew organization
-      YAML::load(f.read)["blobs"].each do |file, _|
+      MultiJson.decode(f.read)["tree"].map{ |hash| hash['path'] }.compact.each do |file|
         name = File.basename(file, '.rb')
         if file =~ /\.rb$/ and name =~ rx
           results << "#{user}/#{repo}/#{name}"

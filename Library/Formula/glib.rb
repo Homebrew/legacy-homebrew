@@ -11,7 +11,10 @@ class Glib < Formula
   depends_on 'gettext'
   depends_on 'libffi'
 
-  fails_with_llvm "Undefined symbol errors while linking", :build => 2334
+  fails_with :llvm do
+    build 2334
+    cause "Undefined symbol errors while linking"
+  end
 
   def patches
     { :p0 => %W[

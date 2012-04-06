@@ -3,13 +3,14 @@ class Patches
   def initialize patches
     @patches = []
     return if patches.nil?
-
+    n = 0
     normalize_patches(patches).each do |patch_p, urls|
       # Wrap the urls list in an array if it isn't already;
       # DATA.each does each line, which doesn't work so great
       urls = [urls] unless urls.kind_of? Array
-      urls.each_with_index do |url, n|
+      urls.each do |url|
         @patches << Patch.new(patch_p, '%03d-homebrew.diff' % n, url)
+        n += 1
       end
     end
   end
@@ -41,6 +42,7 @@ end
 class Patch
   attr_reader :compression
   attr_reader :url
+  attr_reader :download_filename
 
   def initialize patch_p, filename, url
     @patch_p = patch_p
@@ -89,7 +91,7 @@ private
   # Write the given file object (DATA) out to a local file for patch
   def write_data f
     pn = Pathname.new @patch_filename
-    pn.write(brew_var_substitution f.read.to_s)
+    pn.write(brew_var_substitution(f.read.to_s))
   end
 
   # Do any supported substitutions of HOMEBREW vars in a DATA patch
