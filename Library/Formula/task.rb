@@ -13,5 +13,6 @@ class Task < Formula
     system "cmake #{std_cmake_parameters}"
     system "make install"
     (etc+'bash_completion.d').install 'scripts/bash/task_completion.sh'
+    (share+'zsh/functions').install   'scripts/zsh/_task'
   end
 end
