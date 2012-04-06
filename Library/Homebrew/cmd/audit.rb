@@ -195,20 +195,6 @@ def audit_formula_options f, text
   return problems
 end
 
-def audit_formula_version f, text
-  # Version as defined in the DSL (or nil)
-  version_text = f.class.send('version').to_s
-
-  # Version as determined from the URL
-  version_url = Pathname.new(f.url).version
-
-  if version_url == version_text
-    return [" * version #{version_text} is redundant with version scanned from url"]
-  end
-
-  return []
-end
-
 def audit_formula_patches f
   problems = []
   patches = Patches.new(f.patches)
@@ -238,8 +224,7 @@ def audit_formula_urls f
     problems << " * Google Code homepage should end with a slash."
   end
 
-  urls = [(f.url rescue nil), (f.head rescue nil)].reject {|p| p.nil?}
-  urls.uniq! # head-only formulae result in duplicate entries
+  urls = [(f.stable.url rescue nil), (f.devel.url rescue nil), (f.head.url rescue nil)].reject {|p| p.nil?}
 
   # Check GNU urls; doesn't apply to mirrors
   urls.each do |p|
@@ -249,10 +234,8 @@ def audit_formula_urls f
   end
 
   # the rest of the checks apply to mirrors as well
-  f.mirrors.each do |m|
-    mirror = m.values_at :url
-    urls << (mirror.to_s rescue nil)
-  end
+  mirrors = [(f.stable.mirrors rescue []), (f.devel.mirrors rescue [])].flatten.reject { |m| m.nil? }
+  urls.concat mirrors.map { |m| m[:url] }
 
   # Check SourceForge urls
   urls.each do |p|
@@ -290,19 +273,40 @@ def audit_formula_urls f
   return problems
 end
 
-def audit_formula_specs text
+def audit_formula_specs f
   problems = []
 
-  if text =~ /devel .+(url '.+').+(url '.+')/m
-    problems << " * 'devel' block found before stable 'url'"
-  end
+  [:stable, :devel].each do |spec|
+    s = f.send(spec)
+    next if s.nil?
 
-  if text =~ /devel .+(head '.+')/m
-    problems << " * 'devel' block found before 'head'"
-  end
+    if s.version.to_s.empty?
+      problems << " * invalid or missing #{spec} version"
+    else
+      version_text = s.version if s.explicit_version?
+      version_url = Pathname.new(s.url).version
+      if version_url == version_text
+        problems << " * #{spec} version #{version_text} is redundant with version scanned from URL"
+      end
+    end
 
-  if text =~ /devel do\s+end/
-    problems << " * Empty 'devel' block found"
+    cksum = s.checksum_type
+    unless cksum.nil?
+      hash = s.send(cksum).strip
+      len = case cksum
+      when :md5 then 32
+      when :sha1 then 40
+      when :sha256 then 64
+      end
+
+      if hash.empty?
+        problems << " * #{cksum} is empty"
+      else
+        problems << " * #{cksum} should be #{len} characters" unless hash.length == len
+        problems << " * #{cksum} contains invalid characters" unless hash =~ /^[a-fA-F0-9]+$/
+        problems << " * #{cksum} should be lowercase" unless hash == hash.downcase
+      end
+    end
   end
 
   return problems
@@ -337,35 +341,13 @@ EOS
     end
   end
 
-  problems += [' * invalid or missing version'] if f.version.to_s.empty?
-
-  %w[md5 sha1 sha256].each do |checksum|
-    hash = f.instance_variable_get("@#{checksum}")
-    next if hash.nil?
-    hash = hash.strip
-
-    len = case checksum
-      when 'md5' then 32
-      when 'sha1' then 40
-      when 'sha256' then 64
-    end
-
-    if hash.empty?
-      problems << " * #{checksum} is empty"
-    else
-      problems << " * #{checksum} should be #{len} characters" unless hash.length == len
-      problems << " * #{checksum} contains invalid characters" unless hash =~ /^[a-fA-F0-9]+$/
-      problems << " * #{checksum} should be lowercase" unless hash == hash.downcase
-    end
-  end
-
   return problems
 end
 
 # Formula extensions for auditing
 class Formula
   def head_only?
-    @unstable and @standard.nil?
+    @head and @stable.nil?
   end
 
   def formula_text
@@ -412,8 +394,7 @@ module Homebrew extend self
 
       problems += audit_formula_text(f.name, text_without_patch)
       problems += audit_formula_options(f, text_without_patch)
-      problems += audit_formula_version(f, text_without_patch)
-      problems += audit_formula_specs(text_without_patch)
+      problems += audit_formula_specs(f)
 
       unless problems.empty?
         errors = true
