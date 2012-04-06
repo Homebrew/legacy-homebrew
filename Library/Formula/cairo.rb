@@ -14,6 +14,8 @@ class Cairo < Formula
   fails_with_llvm "Throws an 'lto could not merge' error during build.", :build => 2336
 
   def install
+    ENV.append "LDFLAGS",  `pkg-config --libs-only-L pixman-1`.chomp
+    ENV.append "CPPFLAGS",  `pkg-config --cflags-only-I pixman-1`.chomp
     ENV.x11
     args = %W[
       --disable-dependency-tracking
