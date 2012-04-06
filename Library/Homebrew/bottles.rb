@@ -3,8 +3,8 @@ require 'extend/ARGV'
 
 def bottle_filename f, bottle_version=nil
   name = f.name.downcase
-  version = f.version || f.standard.detect_version
-  bottle_version = bottle_version || f.bottle_version
+  version = f.stable.version
+  bottle_version ||= f.bottle.revision.to_i
   "#{name}-#{version}#{bottle_native_suffix(bottle_version)}"
 end
 
@@ -22,7 +22,7 @@ def built_bottle? f
 end
 
 def bottle_current? f
-  f.bottle_url && f.bottle_sha1 && Pathname.new(f.bottle_url).version == f.version
+  f.bottle.url && f.bottle.has_checksum? && f.bottle.version == f.stable.version
 end
 
 def bottle_file_outdated? f, file
@@ -39,7 +39,7 @@ end
 
 def bottle_new_version f
   return 0 unless bottle_current? f
-  f.bottle_version + 1
+  f.bottle.revision + 1
 end
 
 def bottle_native_suffix version=nil

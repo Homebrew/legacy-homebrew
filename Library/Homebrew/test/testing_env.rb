@@ -52,4 +52,9 @@ def shutup
   end
 end
 
+unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
+  $:.unshift(File.expand_path("#{ABS__FILE__}/../../compat"))
+  require 'compatibility'
+end
+
 require 'test/unit' # must be after at_exit

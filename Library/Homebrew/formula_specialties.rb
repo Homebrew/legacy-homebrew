@@ -11,7 +11,9 @@ end
 class GithubGistFormula < ScriptFileFormula
   def initialize name='__UNKNOWN__', path=nil
     super name, path
-    @version=File.basename(File.dirname(url))[0,6]
+    @stable.version(File.basename(File.dirname(url))[0,6])
+    @version = @active_spec.version
+    validate_variable :version
   end
 end
 
