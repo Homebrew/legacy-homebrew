@@ -7,13 +7,12 @@ require 'extend/fileutils'
 require 'patches'
 require 'compilers'
 
-# Derive and define at least @url, see Library/Formula for examples
+
 class Formula
   include FileUtils
 
-  attr_reader :name, :path, :url, :version, :homepage, :specs, :downloader
-  attr_reader :standard, :unstable, :head
-  attr_reader :bottle_version, :bottle_url, :bottle_sha1
+  attr_reader :name, :path, :homepage, :downloader
+  attr_reader :stable, :bottle, :devel, :head, :active_spec
 
   # The build folder, usually in /tmp.
   # Will only be non-nil during the stage method.
@@ -21,49 +20,75 @@ class Formula
 
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
-    set_instance_variable 'homepage'
-    set_instance_variable 'url'
-    set_instance_variable 'bottle_version'
-    set_instance_variable 'bottle_url'
-    set_instance_variable 'bottle_sha1'
-    set_instance_variable 'head'
-    set_instance_variable 'specs'
-    set_instance_variable 'standard'
-    set_instance_variable 'unstable'
+    set_instance_variable :homepage
+    set_instance_variable :stable
+    set_instance_variable :bottle
+    set_instance_variable :devel
+    set_instance_variable :head
 
-    if @head and (not @url or ARGV.build_head?)
-      @url = @head
-      @version = 'HEAD'
-      @spec_to_use = @unstable
-    else
-      if @standard.nil?
-        @spec_to_use = SoftwareSpecification.new(@url, @specs)
-      else
-        @spec_to_use = @standard
-      end
-    end
-
-    raise "No url provided for formula #{name}" if @url.nil?
     @name = name
     validate_variable :name
 
-    # If we got an explicit path, use that, else determine from the name
-    @path = path.nil? ? self.class.path(name) : Pathname.new(path)
+    # Legacy formulae can set specs via class ivars
+    ensure_specs_set if @stable.nil?
 
-    # Use a provided version, if any
-    set_instance_variable 'version'
-    # Otherwise detect the version from the URL
-    @version ||= @spec_to_use.detect_version
-    # Only validate if a version was set; GitHubGistFormula needs to get
-    # the URL to determine the version
+    # If a checksum or version was set in the DSL, but no stable URL
+    # was defined, make @stable nil and save callers some trouble
+    @stable = nil if @stable and @stable.url.nil?
+
+    # Ensure the bottle URL is set. If it does not have a checksum,
+    # then a bottle is not available for the current platform.
+    if @bottle and @bottle.has_checksum?
+      @bottle.url ||= bottle_base_url + bottle_filename(self)
+    else
+      @bottle = nil
+    end
+
+    @active_spec = if @head and ARGV.build_head? then @head # --HEAD
+      elsif @devel and ARGV.build_devel? then @devel        # --devel
+      elsif @bottle and install_bottle?(self) then @bottle  # bottle available
+      elsif @stable.nil? and @head then @head               # head-only
+      else @stable                                          # default
+      end
+
+    @version = @active_spec.version
     validate_variable :version if @version
 
-    CHECKSUM_TYPES.each { |type| set_instance_variable type }
+    raise "No url provided for formula #{name}" if @active_spec.url.nil?
 
-    @downloader = download_strategy.new @spec_to_use.url, name, version, @spec_to_use.specs
-
-    @bottle_url ||= bottle_base_url + bottle_filename(self) if @bottle_sha1
+    # If we got an explicit path, use that, else determine from the name
+    @path = path.nil? ? self.class.path(name) : Pathname.new(path)
+    @downloader = download_strategy.new(@active_spec.url, name, @active_spec.version, @active_spec.specs)
   end
+
+  # Derive specs from class ivars
+  def ensure_specs_set
+    set_instance_variable :url
+    set_instance_variable :version
+    set_instance_variable :md5
+    set_instance_variable :sha1
+    set_instance_variable :sha256
+
+    unless @url.nil?
+      @stable = SoftwareSpec.new
+      @stable.url(@url)
+      @stable.version(@version)
+      @stable.md5(@md5)
+      @stable.sha1(@sha1)
+      @stable.sha256(@sha256)
+    end
+
+    if @head.kind_of? String
+      url = @head
+      @head = HeadSoftwareSpec.new
+      @head.url(url, self.class.instance_variable_get("@specs"))
+    end
+  end
+
+  def url;      @active_spec.url;           end
+  def version;  @active_spec.version;       end
+  def specs;    @active_spec.specs;         end
+  def mirrors;  @active_spec.mirrors or []; end
 
   # if the dir is there, but it's empty we consider it not installed
   def installed?
@@ -84,9 +109,18 @@ class Formula
   end
 
   def installed_prefix
-    head_prefix = HOMEBREW_CELLAR+@name+'HEAD'
-    if @version == 'HEAD' || head_prefix.directory?
+    devel_prefix = unless @devel.nil?
+      HOMEBREW_CELLAR/@name/@devel.version
+    end
+
+    head_prefix = unless @head.nil?
+      HOMEBREW_CELLAR/@name/@head.version
+    end
+
+    if @active_spec == @head || @head and head_prefix.directory?
       head_prefix
+    elsif @active_spec == @devel || @devel and devel_prefix.directory?
+      devel_prefix
     else
       prefix
     end
@@ -126,10 +160,10 @@ class Formula
   def plist_name; 'homebrew.mxcl.'+name end
   def plist_path; prefix+(plist_name+'.plist') end
 
-  # Use the @spec_to_use to detect the download strategy.
+  # Use the @active_spec to detect the download strategy.
   # Can be overriden to force a custom download strategy
   def download_strategy
-    @spec_to_use.download_strategy
+    @active_spec.download_strategy
   end
 
   def cached_download
@@ -388,8 +422,6 @@ class Formula
     HOMEBREW_REPOSITORY+"Library/Formula/#{name.downcase}.rb"
   end
 
-  def mirrors;       self.class.mirrors or []; end
-
   def deps;          self.class.dependencies.deps;          end
   def external_deps; self.class.dependencies.external_deps; end
 
@@ -456,19 +488,17 @@ public
 
   # For brew-fetch and others.
   def fetch
-    if install_bottle? self
-      downloader = CurlBottleDownloadStrategy.new bottle_url, name, version, nil
-      mirror_list = []
-    else
-      downloader = @downloader
-      # Don't attempt mirrors if this install is not pointed at a "stable" URL.
-      # This can happen when options like `--HEAD` are invoked.
-      mirror_list =  @spec_to_use == @standard ? mirrors : []
+    downloader = @downloader
+    mirror_list = case @active_spec
+    when @stable, @devel then @active_spec.mirrors
+    else []
     end
 
     # Ensure the cache exists
     HOMEBREW_CACHE.mkpath
 
+    # TODO teach download strategies to take a SoftwareSpec
+    # object, and move mirror handling into CurlDownloadStrategy
     begin
       fetched = downloader.fetch
     rescue CurlDownloadStrategyError => e
@@ -482,34 +512,27 @@ public
     return fetched, downloader
   end
 
-  # Detect which type of checksum is being used, or nil if none
-  def checksum_type
-    CHECKSUM_TYPES.detect { |type| instance_variable_defined?("@#{type}") }
-  end
-
   # For FormulaInstaller.
-  def verify_download_integrity fn, *args
-    require 'digest'
-    if args.length != 2
-      type = checksum_type || :md5
-      supplied = instance_variable_get("@#{type}")
-      # Convert symbol to readable string
-      type = type.to_s.upcase
-    else
-      supplied, type = args
-    end
+  def verify_download_integrity fn
+    # Checksums don't apply to HEAD
+    return if @active_spec == @head
 
+    type = @active_spec.checksum_type || :md5
+    supplied = @active_spec.send(type)
+    type = type.to_s.upcase
+
+    require 'digest'
     hasher = Digest.const_get(type)
     hash = fn.incremental_hash(hasher)
 
     if supplied and not supplied.empty?
-      message = <<-EOF
-#{type} mismatch
-Expected: #{supplied}
-Got: #{hash}
-Archive: #{fn}
-(To retry an incomplete download, remove the file above.)
-EOF
+      message = <<-EOS.undent
+        #{type} mismatch
+        Expected: #{supplied}
+        Got: #{hash}
+        Archive: #{fn}
+        (To retry an incomplete download, remove the file above.)
+        EOS
       raise message unless supplied.upcase == hash.upcase
     else
       opoo "Cannot verify package integrity"
@@ -519,8 +542,6 @@ EOF
   end
 
 private
-
-  CHECKSUM_TYPES=[:md5, :sha1, :sha256].freeze
 
   def stage
     fetched, downloader = fetch
@@ -571,7 +592,6 @@ private
 
   class << self
     # The methods below define the formula DSL.
-    attr_reader :standard, :unstable
 
     def self.attr_rw(*attrs)
       attrs.each do |attr|
@@ -583,79 +603,61 @@ private
       end
     end
 
-    attr_rw :version, :homepage, :mirrors, :specs
-    attr_rw :keg_only_reason, :skip_clean_all, :cc_failures
-    attr_rw :bottle_version, :bottle_url, :bottle_sha1
-    attr_rw(*CHECKSUM_TYPES)
+    attr_rw :homepage, :keg_only_reason, :skip_clean_all, :cc_failures
 
-    def head val=nil, specs=nil
-      return @head if val.nil?
-      @unstable = SoftwareSpecification.new(val, specs)
-      @head = val
-      @specs = specs
+    SoftwareSpec::CHECKSUM_TYPES.each do |cksum|
+      class_eval %Q{
+        def #{cksum}(val=nil)
+          unless val.nil?
+            @stable ||= SoftwareSpec.new
+            @stable.#{cksum}(val)
+          end
+          return @stable ? @stable.#{cksum} : @#{cksum}
+        end
+      }
     end
 
     def url val=nil, specs=nil
-      return @url if val.nil?
-      @standard = SoftwareSpecification.new(val, specs)
-      @url = val
-      @specs = specs
+      if val.nil?
+        return @stable.url if @stable
+        return @url if @url
+      end
+      @stable ||= SoftwareSpec.new
+      @stable.url(val, specs)
     end
 
     def stable &block
-      raise "url and md5 must be specified in a block" unless block_given?
-      instance_eval(&block) unless ARGV.build_devel? or ARGV.build_head?
-    end
-
-    def devel &block
-      raise "url and md5 must be specified in a block" unless block_given?
-      if ARGV.build_devel?
-        @mirrors = nil # clear out mirrors from the stable release
-        instance_eval(&block)
-      end
+      return @stable unless block_given?
+      instance_eval(&block)
     end
 
     def bottle url=nil, &block
-      return unless block_given?
+      return @bottle unless block_given?
+      @bottle ||= Bottle.new
+      @bottle.instance_eval(&block)
+    end
 
-      bottle_block = Class.new do
-        def self.version version
-          @version = version
-        end
+    def devel &block
+      return @devel unless block_given?
+      @devel ||= SoftwareSpec.new
+      @devel.instance_eval(&block)
+    end
 
-        def self.url url
-          @url = url
-        end
+    def head val=nil, specs=nil
+      return @head if val.nil?
+      @head ||= HeadSoftwareSpec.new
+      @head.url(val, specs)
+    end
 
-        def self.sha1 sha1
-          case sha1
-          when Hash
-            key, value = sha1.shift
-            @sha1 = key if value == MacOS.cat
-          when String
-            @sha1 = sha1 if MacOS.lion?
-          end
-        end
-
-        def self.data
-          @version = 0 unless @version
-          return @version, @url, @sha1 if @sha1 && @url
-          return @version, nil, @sha1 if @sha1
-        end
-      end
-
-      bottle_block.instance_eval(&block)
-      @bottle_version, @bottle_url, @bottle_sha1 = bottle_block.data
+    def version val=nil
+      return @version if val.nil?
+      @stable ||= SoftwareSpec.new
+      @stable.version(val)
     end
 
     def mirror val, specs=nil
-      @mirrors ||= []
-      @mirrors << {:url => val, :specs => specs}
-      # Added the uniq after some inspection with Pry---seems `mirror` gets
-      # called three times. The first two times only one copy of the input is
-      # left in `@mirrors`. On the final call, two copies are present. This
-      # happens with `@deps` as well. Odd.
-      @mirrors.uniq!
+      @stable ||= SoftwareSpec.new
+      @stable.mirror(val, specs)
     end
 
     def dependencies

@@ -29,7 +29,7 @@ class FormulaInstaller
     end
 
     # Building head-only without --HEAD is an error
-    if not ARGV.build_head? and f.standard.nil?
+    if not ARGV.build_head? and f.stable.nil?
       raise CannotInstallFormulaError, <<-EOS.undent
         #{f} is a head-only formula
         Install with `brew install --HEAD #{f.name}
@@ -37,7 +37,7 @@ class FormulaInstaller
     end
 
     # Building stable-only with --HEAD is an error
-    if ARGV.build_head? and f.unstable.nil?
+    if ARGV.build_head? and f.head.nil?
       raise CannotInstallFormulaError, "No head is defined for #{f.name}"
     end
 
@@ -261,7 +261,7 @@ class FormulaInstaller
 
   def pour
     fetched, downloader = f.fetch
-    f.verify_download_integrity fetched, f.bottle_sha1, "SHA1"
+    f.verify_download_integrity fetched
     HOMEBREW_CELLAR.cd do
       downloader.stage
     end

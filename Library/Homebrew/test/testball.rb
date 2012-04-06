@@ -94,3 +94,133 @@ class TestBlockWithoutBuildCompilerFailure < TestCompilerFailures
     cause "failure"
   end
 end
+
+class SpecTestBall < Formula
+  homepage 'http://example.com'
+  url 'file:///foo.com/testball-0.1.tbz'
+  mirror 'file:///foo.org/testball-0.1.tbz'
+  sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
+
+  head 'https://github.com/mxcl/homebrew.git', :tag => 'foo'
+
+  devel do
+    url 'file:///foo.com/testball-0.2.tbz'
+    mirror 'file:///foo.org/testball-0.2.tbz'
+    sha256 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
+  end
+
+  bottle do
+    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snowleopard
+    sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d' => :lion
+  end
+
+  def initialize name=nil
+    super "spectestball"
+  end
+end
+
+class AncientSpecTestBall < Formula
+  @homepage='http://example.com'
+  @url='file:///foo.com/testball-0.1.tbz'
+  @md5='060844753f2a3b36ecfc3192d307dab2'
+  @head='https://github.com/mxcl/homebrew.git'
+  @specs={ :tag => 'foo' }
+
+  def initialize name=nil
+    super "ancientspectestball"
+  end
+end
+
+class ExplicitVersionSpecTestBall < Formula
+  homepage 'http://example.com'
+  url 'file:///foo.com/testball-stable.tbz'
+  sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
+  version '0.3'
+
+  devel do
+    url 'file:///foo.com/testball-devel.tbz'
+    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
+    version '0.4'
+  end
+
+  bottle do
+    version '1'
+    url 'file:///foo.com/test-0.3.lion.bottle.tar.gz'
+    sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d'
+  end
+
+  def initialize name=nil
+    super "explicitversionspectestball"
+  end
+end
+
+class OldBottleSpecTestBall < Formula
+  homepage 'http://example.com'
+  url 'file:///foo.com/testball-0.1.tbz'
+  sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
+
+  bottle do
+    url 'file:///foo.com/testball-0.1-bottle.tar.gz'
+    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
+  end
+
+  def initialize name=nil
+    super "oldbottlespectestball"
+  end
+end
+
+class AncientBottleSpecTestBall < Formula
+  homepage 'http://example.com'
+  url 'file:///foo.com/testball-0.1.tbz'
+  sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
+
+  bottle 'file:///foo.com/testball-0.1-bottle.tar.gz'
+  bottle_sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
+
+  def initialize name=nil
+    super "ancientbottlespectestball"
+  end
+end
+
+class HeadOnlySpecTestBall < Formula
+  homepage 'http://example.com'
+  head 'https://github.com/mxcl/homebrew.git'
+
+  def initialize name=nil
+    super "headyonlyspectestball"
+  end
+end
+
+class IncompleteStableSpecTestBall < Formula
+  homepage 'http://example.com'
+  head 'https://github.com/mxcl/homebrew.git'
+  sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
+
+  def initialize name=nil
+    super "incompletestablespectestball"
+  end
+end
+
+class HeadOnlyWithVersionSpecTestBall < Formula
+  homepage 'http://example.com'
+  head 'https://github.com/mxcl/homebrew.git'
+  version '0.3'
+
+  def initialize name=nil
+    super "headonlywithversionspectestball"
+  end
+end
+
+class ExplicitStrategySpecTestBall < Formula
+  homepage 'http://example.com'
+  url 'file:///foo.com/testball-stable', :using => :hg, :tag => '0.2'
+  head 'file:///foo.com/testball-head', :using => :svn
+
+  devel do
+    url 'file:///foo.com/testball-devel', :using => :bzr, :tag => '0.3'
+  end
+
+  def initialize name=nil
+    super "explicitstrategyspectestball"
+  end
+end
