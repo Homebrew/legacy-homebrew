@@ -17,7 +17,8 @@ class Graylog2Server < Formula
     end
 
     inreplace "bin/graylog2ctl" do |s|
-      s.gsub! "$NOHUP java -jar ../graylog2-server.jar &", "$NOHUP java -DconfigPath=#{etc}/graylog2.conf -jar #{prefix}/graylog2-server.jar &"
+      s.gsub! "$NOHUP java -jar ../graylog2-server.jar &",
+              "$NOHUP java -jar #{prefix}/graylog2-server.jar -f #{etc}/graylog2.conf -p /tmp/graylog2.pid &"
     end
 
     etc.install "graylog2.conf"
