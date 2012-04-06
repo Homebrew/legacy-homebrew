@@ -443,6 +443,7 @@ public
   def fetch
     if install_bottle? self
       downloader = CurlBottleDownloadStrategy.new bottle_url, name, version, nil
+      mirror_list = []
     else
       downloader = @downloader
       # Don't attempt mirrors if this install is not pointed at a "stable" URL.
