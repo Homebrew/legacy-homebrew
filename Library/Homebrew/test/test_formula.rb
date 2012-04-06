@@ -19,15 +19,6 @@ class MostlyAbstractFormula <Formula
   @homepage = 'http://example.com/'
 end
 
-class TestBallOverrideBrew <Formula
-  def initialize
-    super "foo"
-  end
-  def brew
-  end
-end
-
-
 class FormulaTests < Test::Unit::TestCase
 
   def test_prefix
@@ -48,7 +39,17 @@ class FormulaTests < Test::Unit::TestCase
   end
 
   def test_cant_override_brew
-    assert_raises(RuntimeError) { TestBallOverrideBrew.new }
+    assert_raises(RuntimeError) do
+      eval <<-EOS
+      class TestBallOverrideBrew <Formula
+        def initialize
+          super "foo"
+        end
+        def brew
+        end
+      end
+      EOS
+    end
   end
   
   def test_abstract_formula
