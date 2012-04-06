@@ -551,8 +551,8 @@ private
     instance_variable_set("@#{type}", class_value) if class_value
   end
 
-  def method_added method
-    raise 'You cannot override Formula.brew' if method == 'brew'
+  def self.method_added method
+    raise 'You cannot override Formula.brew' if method == :brew
   end
 
   class << self
