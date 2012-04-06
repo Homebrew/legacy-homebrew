@@ -193,6 +193,11 @@ class VersionTests < Test::Unit::TestCase
     check 'http://www.antlr.org/download/antlr-3.4-complete.jar', '3.4'
   end
 
+  def check_ghc_style
+    check 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-x86_64-apple-darwin.tar.bz2', '7.0.4'
+    check 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2', '7.0.4'
+  end
+
   def test_more_versions
     check 'http://pypy.org/download/pypy-1.4.1-osx.tar.bz2', '1.4.1'
     check 'http://www.openssl.org/source/openssl-0.9.8s.tar.gz', '0.9.8s'
