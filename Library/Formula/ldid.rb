@@ -5,6 +5,11 @@ class Ldid < Formula
   url 'http://svn.telesphoreo.org/trunk/data/ldid/ldid-1.0.610.tgz'
   md5 '634c2f8b8a084046883e3793f6580e07'
 
+  fails_with :clang do
+    build 318
+    cause "Undefined symbols when linking"
+  end
+
   # Adds support for armv7 binaries
   def patches; DATA; end
 
