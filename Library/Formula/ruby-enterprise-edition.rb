@@ -7,7 +7,7 @@ class RubyEnterpriseEdition < Formula
 
   depends_on 'readline'
 
-  fails_with_llvm "fails with LLVM"
+  fails_with :llvm
 
   skip_clean 'bin/ruby'
 

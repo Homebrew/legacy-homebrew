@@ -6,7 +6,9 @@ class Spin < Formula
   version '6.1.0'
   md5 '89c0d322c3a5aded1fda9b0d30327d19'
 
-  fails_with_llvm :build => 2334
+  fails_with :llvm do
+    build 2334
+  end
 
   # replace -DPC with -DMAC in makefile CFLAGS
   def patches
