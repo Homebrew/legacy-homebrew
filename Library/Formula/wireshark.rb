@@ -2,8 +2,8 @@ require 'formula'
 
 class Wireshark < Formula
   homepage 'http://www.wireshark.org'
-  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.6.5.tar.bz2'
-  md5 '794948a10d387fc8e37d824ea11dbac9'
+  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.6.7.tar.bz2'
+  sha1 '392c4f35cd8d16287ba9eba3afec226fcadd9746'
 
   devel do
     url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.7.0.tar.bz2'
