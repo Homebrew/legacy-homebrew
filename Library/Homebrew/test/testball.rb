@@ -6,6 +6,7 @@ class TestBall <Formula
     @url="file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
     @homepage = 'http://example.com/'
     super "testball"
+    @path = Pathname.new(__FILE__)
   end
   def install
     prefix.install "bin"
