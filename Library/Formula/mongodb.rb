@@ -28,7 +28,7 @@ class Mongodb < Formula
     (var+'log/mongodb').mkpath
 
     # Write the configuration files and launchd script
-    (prefix+'mongod.conf').write mongodb_conf
+    (etc+'mongod.conf').write mongodb_conf
     plist_path.write startup_plist
     plist_path.chmod 0644
   end
