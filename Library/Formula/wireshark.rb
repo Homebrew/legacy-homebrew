@@ -6,8 +6,8 @@ class Wireshark < Formula
   sha1 '392c4f35cd8d16287ba9eba3afec226fcadd9746'
 
   devel do
-    url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.7.0.tar.bz2'
-    md5 'c9f646a15fed6e31c4aa88322b8cce2a'
+    url 'http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.7.1.tar.bz2'
+    sha1 '8f49b60c971ffd4857cb05afa82e22152261645f'
   end
 
   depends_on 'pkg-config' => :build
