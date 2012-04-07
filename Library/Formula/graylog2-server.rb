@@ -4,6 +4,8 @@ class Graylog2Server < Formula
   url 'https://github.com/downloads/Graylog2/graylog2-server/graylog2-server-0.9.6.tar.gz'
   homepage 'http://www.graylog2.org/'
   md5 'c04257c0617555b8fec1580fbfa9ba5a'
+  depends_on 'elasticsearch'
+  depends_on 'mongodb'
 
   def install
     mv "graylog2.conf.example", "graylog2.conf"
