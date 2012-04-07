@@ -16,6 +16,7 @@ class Gettext < Formula
   def options
   [
     ['--with-examples', 'Keep example files.'],
+    ['--with-js', 'Add javascript support.'],
     ['--universal', 'Build universal binaries.']
   ]
   end
@@ -28,6 +29,11 @@ class Gettext < Formula
       # Use a MacPorts patch to disable building examples at all,
       # rather than build them and remove them afterwards.
       p[:p0] << 'https://trac.macports.org/export/79183/trunk/dports/devel/gettext/files/patch-gettext-tools-Makefile.in'
+    end
+
+    if ARGV.include? '--with-js'
+      # Javascript support, see http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=590724
+      p[:p1] = 'https://raw.github.com/gist/2319273/4ae0c26fabdf8da9d93def30b0dbc43e9fdeab6c/gettext-0.18.1.1-js.patch'
     end
 
     return p
