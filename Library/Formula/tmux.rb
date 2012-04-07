@@ -31,4 +31,8 @@ class Tmux < Formula
       #{etc}/bash_completion.d/tmux
     EOS
   end
+
+  def test
+    !`@{bin}/tmux -V`.strip.chomp.empty?
+  end
 end
