@@ -1,30 +1,30 @@
 require 'formula'
 
 class ErlangManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R15B.tar.gz'
-  md5 '9738da523737712a9db87db0dee05338'
+  url 'http://www.erlang.org/download/otp_doc_man_R15B01.tar.gz'
+  md5 'd87412c2a1e6005bbe29dfe642a9ca20'
 end
 
 class ErlangHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R15B.tar.gz'
-  md5 '80553f4730b04aad4c9994590bad3fe6'
+  url 'http://www.erlang.org/download/otp_doc_html_R15B01.tar.gz'
+  md5 '7569cae680eecd64e7e5d952be788ee5'
 end
 
 class ErlangHeadManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R15B.tar.gz'
-  md5 '9738da523737712a9db87db0dee05338'
+  url 'http://www.erlang.org/download/otp_doc_man_R15B01.tar.gz'
+  md5 'd87412c2a1e6005bbe29dfe642a9ca20'
 end
 
 class ErlangHeadHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R15B.tar.gz'
-  md5 '80553f4730b04aad4c9994590bad3fe6'
+  url 'http://www.erlang.org/download/otp_doc_html_R15B01.tar.gz'
+  md5 '7569cae680eecd64e7e5d952be788ee5'
 end
 
 class Erlang < Formula
   homepage 'http://www.erlang.org'
   # Download tarball from GitHub; it is served faster than the official tarball.
-  url 'https://github.com/erlang/otp/tarball/OTP_R15B'
-  md5 '91c939a56e7f3c492b4ce99c8babe3b2'
+  url 'https://github.com/erlang/otp/tarball/OTP_R15B01'
+  md5 'ad811bb19a085b3d60d16ce576a28b68'
 
   bottle do
     # Bottle built on OS X 10.7.2 using Xcode 4.1 using:
