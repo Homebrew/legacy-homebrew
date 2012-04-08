@@ -515,7 +515,8 @@ def check_for_iconv
 end
 
 def check_for_config_scripts
-  real_cellar = HOMEBREW_CELLAR.exist? && HOMEBREW_CELLAR.realpath
+  return unless HOMEBREW_CELLAR.exist?
+  real_cellar = HOMEBREW_CELLAR.realpath
 
   config_scripts = []
 
@@ -835,6 +836,7 @@ def check_for_outdated_homebrew
 end
 
 def check_for_unlinked_but_not_keg_only
+  return unless HOMEBREW_CELLAR.exist?
   unlinked = HOMEBREW_CELLAR.children.reject do |rack|
     if not rack.directory?
       true
