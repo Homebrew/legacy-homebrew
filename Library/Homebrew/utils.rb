@@ -521,6 +521,25 @@ module MacOS extend self
   def prefer_64_bit?
     Hardware.is_64_bit? and not leopard?
   end
+
+  StandardCompilers = {
+    "3.1.4" => {:gcc_40_build_version=>5493, :gcc_42_build_version=>5577, :llvm_build_version=>2064},
+    "3.2.6" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"1.7", :clang_build_version=>77},
+    "4.0.0" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"2.0", :clang_build_version=>137},
+    "4.0.1" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"2.0", :clang_build_version=>137},
+    "4.0.2" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"2.0", :clang_build_version=>137},
+    "4.2.0" => {:llvm_build_version=>2336, :clang_version=>"3.0", :clang_build_version=>211},
+    "4.3.0" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
+    "4.3.1" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
+    "4.3.2" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318}
+  }
+
+  def compilers_standard?
+    xcode = MacOS.xcode_version
+    return unless StandardCompilers.keys.include? xcode
+
+    StandardCompilers[xcode].all? {|k,v| MacOS.send(k) == v}
+  end
 end
 
 module GitHub extend self

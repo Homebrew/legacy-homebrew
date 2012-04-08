@@ -232,6 +232,17 @@ def check_cc
   end
 end
 
+def check_standard_compilers
+  return if check_for_latest_xcode # only check if Xcode is up to date
+  if !MacOS.compilers_standard? then <<-EOS.undent
+    Your compilers are different from the standard versions for your Xcode.
+    If you have Xcode 4.3 or newer, you should install the Command Line Tools for
+    Xcode from within Xcode's Download preferences.
+    Otherwise, you should reinstall Xcode.
+    EOS
+  end
+end
+
 def __check_subdir_access base
   target = HOMEBREW_PREFIX+base
   return unless target.exist?
