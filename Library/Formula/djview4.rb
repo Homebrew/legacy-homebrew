@@ -21,7 +21,7 @@ class Djview4 < Formula
                           "--prefix=#{prefix}",
                           "--with-x=no",
                           "--disable-desktopfiles"
-    system "make"
+    system "make", "CC=#{ENV.cc}", "CXX=#{ENV.cxx}"
 
     # From the djview4.8 README:
     #     Note3: Do not use command "make install".

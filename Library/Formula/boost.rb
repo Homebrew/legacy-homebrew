@@ -14,9 +14,10 @@ class Boost < Formula
 
   depends_on "icu4c" if ARGV.include? "--with-icu"
 
-  # Both clang and llvm-gcc provided by XCode 4.1 compile Boost 1.47.0 properly.
-  # Moreover, Apple LLVM compiler 2.1 is now among primary test compilers.
-  fails_with_llvm "Dropped arguments to functions when linking with boost", :build => 2335
+  fails_with :llvm do
+    build 2335
+    cause "Dropped arguments to functions when linking with boost"
+  end
 
   def options
     [

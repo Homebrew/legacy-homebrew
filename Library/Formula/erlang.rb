@@ -43,6 +43,16 @@ class Erlang < Formula
   # may as well skip bin too, everything is just shell scripts
   skip_clean ['lib', 'bin']
 
+  if MacOS.xcode_version >= "4.3"
+    # remove the autoreconf if possible
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  fails_with :llvm do
+    build 2334
+  end
+
   def options
     [
       ['--disable-hipe', "Disable building hipe; fails on various OS X systems."],
@@ -50,14 +60,6 @@ class Erlang < Formula
       ['--time', '"brew test --time" to include a time-consuming test.'],
       ['--no-docs', 'Do not install documentation.']
     ]
-  end
-
-  fails_with_llvm :build => 2334
-
-  if MacOS.xcode_version >= "4.3"
-    # remove the autoreconf if possible
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
   end
 
   def install

@@ -400,7 +400,7 @@ def check_user_path_1
 
                 #{conflicts * "\n                "}
 
-            Consider ammending your PATH so that #{HOMEBREW_PREFIX}/bin
+            Consider amending your PATH so that #{HOMEBREW_PREFIX}/bin
             is ahead of /usr/bin in your PATH.
           EOS
         end
@@ -418,7 +418,7 @@ def check_user_path_2
   unless $seen_prefix_bin
     <<-EOS.undent
       Homebrew's bin was not found in your path.
-      Consider ammending your PATH variable so it contains:
+      Consider amending your PATH variable so it contains:
         #{HOMEBREW_PREFIX}/bin
     EOS
   end
@@ -431,7 +431,7 @@ def check_user_path_3
     unless $seen_prefix_sbin
       <<-EOS.undent
         Homebrew's sbin was not found in your path.
-        Consider ammending your PATH variable so it contains:
+        Consider amending your PATH variable so it contains:
           #{HOMEBREW_PREFIX}/sbin
       EOS
     end
@@ -879,22 +879,19 @@ end # end class Checks
 
 module Homebrew extend self
   def doctor
-    raring_to_brew = true
-
     checks = Checks.new
 
     checks.methods.select{ |method| method =~ /^check_/ }.sort.each do |method|
       out = checks.send(method)
       unless out.nil? or out.empty?
-        puts unless raring_to_brew
+        puts unless Homebrew.failed?
         lines = out.to_s.split('\n')
         opoo lines.shift
         puts lines
-        raring_to_brew = false
+        Homebrew.failed = true
       end
     end
 
-    puts "Your system is raring to brew." if raring_to_brew
-    exit raring_to_brew ? 0 : 1
+    puts "Your system is raring to brew." unless Homebrew.failed?
   end
 end

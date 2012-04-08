@@ -5,14 +5,15 @@ require 'hardware'
 require 'bottles'
 require 'extend/fileutils'
 require 'patches'
+require 'compilers'
 
 # Derive and define at least @url, see Library/Formula for examples
 class Formula
   include FileUtils
 
   attr_reader :name, :path, :url, :version, :homepage, :specs, :downloader
-  attr_reader :standard, :unstable
-  attr_reader :bottle_url, :bottle_sha1, :head
+  attr_reader :standard, :unstable, :head
+  attr_reader :bottle_version, :bottle_url, :bottle_sha1
 
   # The build folder, usually in /tmp.
   # Will only be non-nil during the stage method.
@@ -22,6 +23,7 @@ class Formula
   def initialize name='__UNKNOWN__', path=nil
     set_instance_variable 'homepage'
     set_instance_variable 'url'
+    set_instance_variable 'bottle_version'
     set_instance_variable 'bottle_url'
     set_instance_variable 'bottle_sha1'
     set_instance_variable 'head'
@@ -156,14 +158,12 @@ class Formula
     self.class.keg_only_reason || false
   end
 
-  def fails_with_llvm?
-    llvm = self.class.fails_with_llvm_reason
-    if llvm
-      if llvm.build and MacOS.llvm_build_version.to_i > llvm.build.to_i
-        false
-      else
-        llvm
-      end
+  def fails_with? cc
+    return false if self.class.cc_failures.nil?
+    cc = Compiler.new(cc) unless cc.is_a? Compiler
+    return self.class.cc_failures.find do |failure|
+      next unless failure.compiler == cc.name
+      failure.build.zero? or failure.build >= cc.build
     end
   end
 
@@ -181,8 +181,6 @@ class Formula
   def brew
     validate_variable :name
     validate_variable :version
-
-    fails_with_llvm?.handle_failure if fails_with_llvm?
 
     stage do
       begin
@@ -445,6 +443,7 @@ public
   def fetch
     if install_bottle? self
       downloader = CurlBottleDownloadStrategy.new bottle_url, name, version, nil
+      mirror_list = []
     else
       downloader = @downloader
       # Don't attempt mirrors if this install is not pointed at a "stable" URL.
@@ -552,8 +551,8 @@ private
     instance_variable_set("@#{type}", class_value) if class_value
   end
 
-  def method_added method
-    raise 'You cannot override Formula.brew' if method == 'brew'
+  def self.method_added method
+    raise 'You cannot override Formula.brew' if method == :brew
   end
 
   class << self
@@ -571,8 +570,8 @@ private
     end
 
     attr_rw :version, :homepage, :mirrors, :specs
-    attr_rw :keg_only_reason, :fails_with_llvm_reason, :skip_clean_all
-    attr_rw :bottle_url, :bottle_sha1
+    attr_rw :keg_only_reason, :skip_clean_all, :cc_failures
+    attr_rw :bottle_version, :bottle_url, :bottle_sha1
     attr_rw(*CHECKSUM_TYPES)
 
     def head val=nil, specs=nil
@@ -606,6 +605,10 @@ private
       return unless block_given?
 
       bottle_block = Class.new do
+        def self.version version
+          @version = version
+        end
+
         def self.url url
           @url = url
         end
@@ -620,18 +623,16 @@ private
           end
         end
 
-        def self.url_sha1
-          if @sha1 && @url
-            return @url, @sha1
-          elsif @sha1
-            return nil, @sha1
-          end
+        def self.data
+          @version = 0 unless @version
+          return @version, @url, @sha1 if @sha1 && @url
+          return @version, nil, @sha1 if @sha1
         end
       end
 
       bottle_block.instance_eval &block
-      @bottle_url, @bottle_sha1 = bottle_block.url_sha1
-      @bottle_url ||= "#{bottle_base_url}#{name.downcase}-#{@version||@standard.detect_version}#{bottle_native_suffix}" if @bottle_sha1
+      @bottle_version, @bottle_url, @bottle_sha1 = bottle_block.data
+      @bottle_url ||= bottle_base_url + bottle_filename(self) if @bottle_sha1
     end
 
     def mirror val, specs=nil
@@ -675,8 +676,13 @@ private
       @keg_only_reason = KegOnlyReason.new(reason, explanation.to_s.chomp)
     end
 
-    def fails_with_llvm msg=nil, data=nil
-      @fails_with_llvm_reason = FailsWithLLVM.new(msg, data)
+    def fails_with compiler, &block
+      @cc_failures ||= CompilerFailures.new
+      @cc_failures << if block_given?
+        CompilerFailure.new(compiler, &block)
+      else
+        CompilerFailure.new(compiler)
+      end
     end
   end
 end
