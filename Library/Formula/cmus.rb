@@ -20,6 +20,10 @@ class Cmus < Formula
   skip_clean 'bin/cmus-remote'
 
   def install
+    unless HOMEBREW_PREFIX.to_s == '/usr/local'
+      ENV['CFLAGS'] += " -isystem #{HOMEBREW_PREFIX}/include -L#{HOMEBREW_PREFIX}/lib"
+    end
+
     system "./configure", "prefix=#{prefix}", "mandir=#{man}"
     system "make install"
   end
