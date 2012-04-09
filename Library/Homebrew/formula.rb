@@ -443,6 +443,7 @@ public
   def fetch
     if install_bottle? self
       downloader = CurlBottleDownloadStrategy.new bottle_url, name, version, nil
+      mirror_list = []
     else
       downloader = @downloader
       # Don't attempt mirrors if this install is not pointed at a "stable" URL.
@@ -550,8 +551,8 @@ private
     instance_variable_set("@#{type}", class_value) if class_value
   end
 
-  def method_added method
-    raise 'You cannot override Formula.brew' if method == 'brew'
+  def self.method_added method
+    raise 'You cannot override Formula.brew' if method == :brew
   end
 
   class << self

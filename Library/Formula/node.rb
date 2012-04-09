@@ -27,6 +27,12 @@ class Node < Formula
   end
 
   def install
+    # This fixes an issue with npm segfaulting. See:
+    # https://github.com/joyent/node/issues/2061
+    # This can be removed when some version newer than 7.7 lands
+    # that has this fix. When updating this formula, please check!
+    ENV.append_to_cflags '-D__DARWIN_64_BIT_INO_T'
+
     unless ARGV.build_devel?
       inreplace 'wscript' do |s|
         s.gsub! '/usr/local', HOMEBREW_PREFIX
