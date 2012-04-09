@@ -1,10 +1,5 @@
 require 'formula'
 
-# this formula was created by Nathaniel Madura (nmadura at umich dot edu)
-# It is to make an Amanda (community edition) backup client for OS X
-# Amanda runs a specific user, instructions for creating that user on 
-# a 10.5+ machine are included in the caveats.
-
 class Amanda < Formula
   homepage 'http://amanda.org/'
   url 'http://downloads.sourceforge.net/project/amanda/amanda%20-%20stable/3.3.1/amanda-3.3.1.tar.gz'
@@ -13,19 +8,20 @@ class Amanda < Formula
   depends_on 'glib'
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
-  depends_on 'cairo' if ARGV.include? '--with-gnuplot'
+  depends_on 'gnuplot' if ARGV.include? '--with-amplot'
 
   def options
      [
-        ['--with-gnuplot', "Enable amanda plotting module."],
+        ['--with-amplot', "Enable amanda plotting module."],
      ]
   end
 
   def install
-#    ENV.append "PKG_CONFIG", "#{HOMEBREW_PREFIX}/bin/pkg-config"
-
     args = ["--prefix=#{prefix}",
+            "--sysconfdir=#{etc}",
+            "--localstatedir=#{var}",
             "--disable-dependency-tracking",
+            "--disable-installperms",
             # specify user and group to run amanda as, see caveats below
             "--with-user=amandabackup",
             "--with-group=admin",
@@ -36,22 +32,25 @@ class Amanda < Formula
             # cellar.
             "--without-amperldir"]
 
-    # cairo, or one of its dependencies does not appear to be installing on PPC
-    if ARGV.include? '--with-gnuplot'
-        args << "-I#{Formula.factory('cairo').lib}"
-        args << "-I#{Formula.factory('cairo').include}"
+    # gnuplot pulls in libgd and a bunch of other dependencies, and plotting by the client isn't necessary
+    if ARGV.include? '--with-amplot'
+      args << "--with-gnuplot=#{Formula.factory('gnuplot').bin}"
     end
 
     system "./configure", *args
     system "make"
-    # amanda wants setuid root
-    system "echo 'This package requires setuid root on amservice.'"
-    system "sudo make install"
+    system "make install"
   end
 
   def caveats
-    puts <<BEGIN
-Issue the following to create the correct user account
+    <<BEGIN
+1.
+amservice typically installs with setuid root, this has been disabled to comply with homebrew
+
+2.
+The username/group that amanda runs as is compiled into the package, they are amandabackup/admin
+Issue the following to create the correct user account:
+
 sudo dscl localhost -create /Local/Default/Users/amandabackup
 sudo dscl localhost -create /Local/Default/Users/amandabackup RecordName amandabackup
 sudo dscl localhost -create /Local/Default/Users/amandabackup UserShell /bin/bash
