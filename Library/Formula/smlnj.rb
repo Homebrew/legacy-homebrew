@@ -62,6 +62,14 @@ EOS
     Improvements are welcome.
     EOS
   end
+
+  def patches
+	  # fixes the install.sh script to use the correct SDK for OSX >
+		# 10.5. See:
+		# https://smlnj-gforge.cs.uchicago.edu/tracker/index.php?func=detail&aid=89&group_id=33&atid=215
+    DATA	
+	end
+
 end
 
 __END__
