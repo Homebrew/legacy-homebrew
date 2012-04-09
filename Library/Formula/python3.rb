@@ -64,7 +64,8 @@ class Python3 < Formula
     end
 
     if build_framework?
-      args << "--enable-framework=#{prefix}/Frameworks"
+      # */Library/Frameworks is a special path that triggers */Applications
+      args << "--enable-framework=#{prefix}/Library/Frameworks"
     else
       args << "--enable-shared" unless ARGV.include? '--static'
     end
@@ -73,6 +74,17 @@ class Python3 < Formula
     system "make"
     ENV.j1 # Installs must be serialized
     system "make install"
+
+    if as_framework?
+      # Move the apps and add the version suffix.
+      # Normally they're in a versioned folder, but linkapps does not preserve
+      # folder names or structure when linking.
+      python_vers = "3.2"
+      ['IDLE', 'Python Launcher'].each do |a|
+        mv(prefix+"Applications/Python 3.2/#{a}.app", prefix+"#{a} (3.2).app")
+      end
+      (prefix+'Applications').rmtree
+    end
 
     # Post-install, fix up the site-packages and install-scripts folders
     # so that user-installed Python software survives minor updates, such
@@ -117,7 +129,7 @@ class Python3 < Formula
       You may want to symlink this Framework to a standard OS X location,
       such as:
           mkdir ~/Frameworks
-          ln -s "#{prefix}/Frameworks/Python.framework" ~/Frameworks
+          ln -s "#{prefix}/Library/Frameworks/Python.framework" ~/Frameworks
     EOS
 
     general_caveats = <<-EOS.undent
@@ -149,7 +161,7 @@ class Python3 < Formula
   # lib folder,taking into account whether we are a Framework build or not
   def effective_lib
     # If we're installed or installing as a Framework, then use that location.
-    return prefix+"Frameworks/Python.framework/Versions/3.2/lib" if as_framework?
+    return prefix+"Library/Frameworks/Python.framework/Versions/3.2/lib" if as_framework?
     # Otherwise use just 'lib'
     return lib
   end
@@ -157,7 +169,7 @@ class Python3 < Formula
   # include folder,taking into account whether we are a Framework build or not
   def effective_include
     # If we're installed or installing as a Framework, then use that location.
-    return prefix+"Frameworks/Python.framework/Versions/3.2/include" if as_framework?
+    return prefix+"Library/Frameworks/Python.framework/Versions/3.2/include" if as_framework?
     # Otherwise use just 'include'
     return include
   end
