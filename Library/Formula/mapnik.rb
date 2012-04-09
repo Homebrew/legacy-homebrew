@@ -1,8 +1,8 @@
 require 'formula'
 
 class Mapnik < Formula
-  url 'https://github.com/downloads/mapnik/mapnik/mapnik-2.0.0.tar.bz2'
-  md5 '499c6a61544014b9bc2a7c978f963ef3'
+  url 'https://github.com/downloads/mapnik/mapnik/mapnik-v2.0.1.tar.bz2'
+  md5 'e3dd09991340e2568b99f46bac34b0a8'
   homepage 'http://www.mapnik.org/'
   head 'https://github.com/mapnik/mapnik.git'
 
