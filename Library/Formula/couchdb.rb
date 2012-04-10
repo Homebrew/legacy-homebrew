@@ -1,7 +1,7 @@
 require 'formula'
 
 class Couchdb < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=couchdb/source/1.1.1/apache-couchdb-1.1.1.tar.gz'
+  url 'http://www.apache.org/dyn/closer.cgi?path=couchdb/1.1.1/apache-couchdb-1.1.1.tar.gz'
   homepage "http://couchdb.apache.org/"
   md5 'cd126219b9cb69a4c521abd6960807a6'
 

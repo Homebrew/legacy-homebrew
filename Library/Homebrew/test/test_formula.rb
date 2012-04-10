@@ -96,10 +96,10 @@ class FormulaTests < Test::Unit::TestCase
     assert !(f.fails_with? :gcc)
     cs = CompilerSelector.new(f)
     cs.select_compiler
-    assert ENV.compiler, case MacOS.clang_build_version
+    assert_equal case MacOS.clang_build_version
     when 0..210 then :gcc
     else :clang
-    end
+    end, ENV.compiler
     ENV.send MacOS.default_compiler
 
     f = TestMixedCompilerFailures.new
