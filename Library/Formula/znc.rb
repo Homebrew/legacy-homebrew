@@ -1,13 +1,15 @@
 require 'formula'
 
 class Znc < Formula
-  url 'http://znc.in/releases/archive/znc-0.204.tar.gz'
-  md5 '7c7247423fc08b0c5c62759a50a9bca3'
+  url 'http://znc.in/releases/archive/znc-0.206.tar.gz'
+  md5 'b7d3f21da81abaeb553066b0e10beb53'
   homepage 'http://wiki.znc.in/ZNC'
   head 'https://github.com/znc/znc.git'
 
   depends_on 'pkg-config' => :build
   depends_on 'c-ares' => :optional
+  depends_on 'python3' => :optional
+  depends_on 'swig' => :optional
 
   skip_clean 'bin/znc'
   skip_clean 'bin/znc-config'
@@ -25,6 +27,12 @@ class Znc < Formula
   def install
     args = ["--prefix=#{prefix}", "--enable-extra"]
     args << "--enable-debug" if ARGV.include? '--enable-debug'
+    args << "--enable-tcl"
+
+    if Formula.factory('swig').installed?
+      args << "--enable-python" if Formula.factory('python3').installed?
+      #args << "--enable-perl" if ARGV.build_head?
+    end
 
     system "./autogen.sh" if ARGV.build_head?
     system "./configure", *args
