@@ -2,7 +2,7 @@ require 'formula'
 
 class Crossroads < Formula
   homepage 'http://www.crossroads.io/'
-  url 'https://download.crossroads.io/libxs-1.0.1.tar.gz'
+  url 'http://download.crossroads.io/libxs-1.0.1.tar.gz'
   md5 '915aaf168f4a47d8ccf6d03b33845038'
   head 'https://github.com/crossroads-io/libxs.git'
 
