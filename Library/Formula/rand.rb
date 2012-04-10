@@ -10,4 +10,8 @@ class Rand < Formula
     system "make install"
   end
 
+  def test
+    system "/bin/ls | #{prefix}/bin/rand"
+  end
+
 end
