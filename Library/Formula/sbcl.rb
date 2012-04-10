@@ -17,7 +17,10 @@ class Sbcl < Formula
     sha1 '3c13225c8fe3eabf54e9d368e6b74318a5546430'
   end
 
-  fails_with_llvm "Compilation fails with LLVM.", :build => 2334
+  fails_with :llvm do
+    build 2334
+    cause "Compilation fails with LLVM."
+  end
 
   skip_clean 'bin'
   skip_clean 'lib'

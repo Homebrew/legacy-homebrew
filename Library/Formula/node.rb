@@ -8,14 +8,16 @@ class Node < Formula
   head 'https://github.com/joyent/node.git'
 
   devel do
-    url 'http://nodejs.org/dist/v0.7.6/node-v0.7.6.tar.gz'
-    md5 '09f336ce0247bb316550cfe21ff92dd6'
+    url 'http://nodejs.org/dist/v0.7.7/node-v0.7.7.tar.gz'
+    md5 '6cce285f9e01c9678b4a3e7d034563c9'
   end
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.leopard?
 
-  fails_with_llvm :build => 2326
+  fails_with :llvm do
+    build 2326
+  end
 
   # Stripping breaks dynamic loading
   skip_clean :all
@@ -25,6 +27,12 @@ class Node < Formula
   end
 
   def install
+    # This fixes an issue with npm segfaulting. See:
+    # https://github.com/joyent/node/issues/2061
+    # This can be removed when some version newer than 7.7 lands
+    # that has this fix. When updating this formula, please check!
+    ENV.append_to_cflags '-D__DARWIN_64_BIT_INO_T'
+
     unless ARGV.build_devel?
       inreplace 'wscript' do |s|
         s.gsub! '/usr/local', HOMEBREW_PREFIX
