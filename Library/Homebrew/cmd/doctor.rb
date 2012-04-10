@@ -500,17 +500,20 @@ def check_for_gettext
 end
 
 def check_for_iconv
-  if %w[lib/libiconv.dylib
-        include/iconv.h ].any? { |f| File.exist? "#{HOMEBREW_PREFIX}/#{f}" }
+  iconv_files = %w[lib/iconv.dylib
+    include/iconv.h].select { |f| File.exist? "#{HOMEBREW_PREFIX}/#{f}" }
+  if !iconv_files.empty?
     <<-EOS.undent
-      libiconv was detected in your PREFIX.
+      The following libiconv files were detected in #{HOMEBREW_PREFIX}:
+      #{iconv_files.join "\n      "}
       Homebrew doesn't provide a libiconv formula, and expects to link against
       the system version in /usr/lib.
 
-      If you have a non-Homebrew provided libiconv, many formulae will fail
-      to compile or link, especially if it wasn't compiled with the proper
-      architectures.
+      If you have an alternate libiconv, many formulae will fail to compile or
+      link, especially if it wasn't compiled with the proper architectures.
     EOS
+  else
+    nil
   end
 end
 
