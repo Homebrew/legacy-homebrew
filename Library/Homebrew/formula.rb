@@ -332,8 +332,13 @@ class Formula
       # If name was a path or mapped to a cached formula
       if name.include? "/"
         require name
+        if !name.end_with? ".rb"
+          name += ".rb"
+        end
+        
         path = Pathname.new(name)
         name = path.stem
+        
         install_type = :from_path
         target_file = path.to_s
       else
