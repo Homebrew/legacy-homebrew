@@ -6,7 +6,6 @@ class Flickcurl < Formula
   md5 '33106156f9a9e538b5787f92db717f5d'
 
   depends_on 'pkg-config' => :build
-  depends_on 'libxml2'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
