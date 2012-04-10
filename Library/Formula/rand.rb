@@ -1,7 +1,7 @@
 require 'formula'
 
 class Rand < Formula
-  homepage ''
+  homepage 'http://www.elfga.com/~erik/'
   url 'http://www.elfga.com/~erik/files/rand-1.8.tar.bz2'
   md5 'b05fb52321811a4d120faa297ee1e375'
 
@@ -10,7 +10,4 @@ class Rand < Formula
     system "make install"
   end
 
-  def test
-    system "true"
-  end
 end
