@@ -6,20 +6,24 @@ class Clisp < Formula
   homepage 'http://clisp.cons.org/'
   md5 '1962b99d5e530390ec3829236d168649'
 
-  depends_on 'libiconv'
   depends_on 'libsigsegv'
   depends_on 'readline'
 
   skip_clean :all # otherwise abort trap
 
-  fails_with_llvm "Configure fails on XCode 4/Snow Leopard.", :build => 2334
+  fails_with :llvm do
+    build 2334
+    cause "Configure fails on XCode 4/Snow Leopard."
+  end
 
   def patches
-    { :p0 => "https://trac.macports.org/export/89054/trunk/dports/lang/clisp/files/patch-src_lispbibl_d.diff" }
+    { :p0 => "https://trac.macports.org/export/89054/trunk/dports/lang/clisp/files/patch-src_lispbibl_d.diff",
+      :p1 => DATA }
   end
 
   def install
     ENV.j1 # This build isn't parallel safe.
+    ENV.remove_from_cflags /-O./
 
     # Clisp requires to select word size explicitly this way,
     # set it in CFLAGS won't work.
@@ -58,3 +62,18 @@ class Clisp < Formula
     system "#{bin}/clisp --version"
   end
 end
+
+__END__
+diff --git a/src/stream.d b/src/stream.d
+index 5345ed6..cf14e29 100644
+--- a/src/stream.d
++++ b/src/stream.d
+@@ -3994,7 +3994,7 @@ global object iconv_range (object encoding, uintL start, uintL end, uintL maxint
+ nonreturning_function(extern, error_unencodable, (object encoding, chart ch));
+ 
+ /* Avoid annoying warning caused by a wrongly standardized iconv() prototype. */
+-#ifdef GNU_LIBICONV
++#if defined(GNU_LIBICONV) && !defined(__APPLE_CC__)
+   #undef iconv
+   #define iconv(cd,inbuf,inbytesleft,outbuf,outbytesleft) \
+     libiconv(cd,(ICONV_CONST char **)(inbuf),inbytesleft,outbuf,outbytesleft)

@@ -9,12 +9,13 @@ class Libgcrypt < Formula
 
   def patches
     if ENV.compiler == :clang
-      { :p0 => "https://trac.macports.org/export/85232/trunk/dports/devel/libgcrypt/files/clang-asm.patch" }
+      {:p0 =>
+      "https://trac.macports.org/export/85232/trunk/dports/devel/libgcrypt/files/clang-asm.patch"}
     end
   end
 
   def install
-    ENV.universal_binary	# build fat so wine can use it
+    ENV.universal_binary # build fat so wine can use it
 
     if ENV.compiler == :clang
       ENV.append 'CFLAGS', '-std=gnu89'
@@ -25,7 +26,7 @@ class Libgcrypt < Formula
                           "--prefix=#{prefix}",
                           "--disable-asm",
                           "--with-gpg-error-prefix=#{HOMEBREW_PREFIX}"
-    # Separate steps, or parallel builds fail
+    # Parallel builds work, but only when run as separate steps
     system "make"
     system "make check"
     system "make install"

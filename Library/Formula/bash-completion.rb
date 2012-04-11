@@ -6,6 +6,8 @@ class BashCompletion < Formula
   md5 'a1262659b4bbf44dc9e59d034de505ec'
   head 'git://git.debian.org/git/bash-completion/bash-completion.git'
 
+  depends_on "automake" if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+
   def install
     inreplace "bash_completion" do |s|
       s.gsub! '/etc/bash_completion', "#{etc}/bash_completion"

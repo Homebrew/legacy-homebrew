@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ht < Formula
-  url 'http://downloads.sourceforge.net/project/hte/ht-source/ht-2.0.18.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/hte/ht-source/ht-2.0.19.tar.bz2'
   homepage 'http://hte.sf.net/'
-  md5 '9cd5c52bb3fbae5c631875cd0de3318c'
+  sha1 '08cc1d82b74ea646e308e7b9629b03b5b79ca419'
 
   depends_on 'lzo'
 

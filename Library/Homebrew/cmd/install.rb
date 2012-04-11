@@ -11,10 +11,6 @@ module Homebrew extend self
       raise "No available formula for #{name}\n#{msg}" if msg
     end unless ARGV.force?
 
-    ARGV.formulae.each do |f|
-      opoo "#{f} already installed" if f.linked_keg.directory?
-    end unless ARGV.force?
-
     if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
       # note we only abort if Homebrew is *not* installed as sudo and the user
       # calls brew as root. The fix is to chown brew to root.
@@ -38,20 +34,10 @@ module Homebrew extend self
     raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable? or HOMEBREW_PREFIX.to_s == '/usr/local'
   end
 
-  def check_cc
-    if MacOS.snow_leopard?
-      if MacOS.llvm_build_version < RECOMMENDED_LLVM
-        opoo "You should upgrade to Xcode 3.2.6"
-      end
-    else
-      if (MacOS.gcc_40_build_version < RECOMMENDED_GCC_40) or (MacOS.gcc_42_build_version < RECOMMENDED_GCC_42)
-        opoo "You should upgrade to Xcode 3.1.4"
-      end
-    end
-  rescue
-    # the reason we don't abort is some formula don't require Xcode
-    # TODO allow formula to declare themselves as "not needing Xcode"
-    opoo "Xcode is not installed! Builds may fail!"
+  def check_xcode
+    require 'cmd/doctor'
+    xcode = Checks.new.check_for_latest_xcode
+    opoo xcode unless xcode.nil?
   end
 
   def check_macports
@@ -74,7 +60,7 @@ module Homebrew extend self
   def perform_preinstall_checks
     check_ppc
     check_writable_install_location
-    check_cc
+    check_xcode
     check_macports
     check_cellar
   end
@@ -84,29 +70,17 @@ module Homebrew extend self
     unless formulae.empty?
       perform_preinstall_checks
       formulae.each do |f|
-        # Check formula status and skip if necessary---a formula passed on the
-        # command line may have been installed to satisfy a dependency.
-        next if f.installed? unless ARGV.force?
-
-        # Building head-only without --HEAD is an error
-        if not ARGV.build_head? and f.standard.nil?
-          raise "This is a head-only formula; install with `brew install --HEAD #{f.name}`"
-        end
-
-        # Building stable-only with --HEAD is an error
-        if ARGV.build_head? and f.unstable.nil?
-           raise "No head is defined for #{f.name}"
-        end
-
         begin
           fi = FormulaInstaller.new(f)
           fi.install
           fi.caveats
           fi.finish
-        rescue FormulaAlreadyInstalledError => e
-          opoo e.message
+        rescue CannotInstallFormulaError => e
+          onoe e.message
+          Homebrew.failed = true
         end
       end
     end
   end
+
 end

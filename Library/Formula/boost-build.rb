@@ -2,8 +2,8 @@ require 'formula'
 
 class BoostBuild < Formula
   homepage 'http://boost.org/boost-build2/'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.48.0/boost_1_48_0.tar.bz2'
-  md5 'd1e9a7a7f532bb031a3c175d86688d95'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.49.0/boost_1_49_0.tar.bz2'
+  md5 '0d202cb811f934282dea64856a175698'
   version '2011.04-svn'
 
   head 'http://svn.boost.org/svn/boost/trunk/tools/build/v2/', :using => :svn

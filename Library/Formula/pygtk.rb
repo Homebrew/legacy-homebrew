@@ -24,7 +24,7 @@ class Pygtk < Formula
 
   def test
     mktemp do
-      (Pathname.new(Dir.pwd)+'test.py').write <<-EOS.undent
+      (Pathname.pwd+'test.py').write <<-EOS.undent
         #!/usr/bin/env python
         import pygtk
         pygtk.require('2.0')

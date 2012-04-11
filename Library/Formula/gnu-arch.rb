@@ -7,12 +7,9 @@ class GnuArch < Formula
   md5 'db31ee89bc4788eef1eba1cee6c176ef'
 
   def install
-    Dir.mkdir "build"
-    Dir.chdir "build" do
+    mkdir "build" do
       system "../src/configure", "--prefix=#{prefix}"
-
       ENV.j1 # don't run make in parallel
-
       system "make"
       system "make install"
     end

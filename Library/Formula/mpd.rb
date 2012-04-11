@@ -1,9 +1,11 @@
 require 'formula'
 
 class Mpd < Formula
-  url 'http://sourceforge.net/projects/musicpd/files/mpd/0.16.7/mpd-0.16.7.tar.bz2'
   homepage 'http://mpd.wikia.com'
-  sha1 '878f3ce82d4f00f6cbad63a625b2c0274c4a704a'
+  url 'http://sourceforge.net/projects/musicpd/files/mpd/0.16.8/mpd-0.16.8.tar.bz2'
+  sha1 '977c80db8dc64e65c2bc523f69a9a7a71adca2b1'
+
+  head "git://git.musicpd.org/master/mpd.git"
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
@@ -23,6 +25,8 @@ class Mpd < Formula
   end
 
   def install
+    system "./autogen.sh" if ARGV.build_head?
+
     # make faad.h findable (when brew is used elsewhere than /usr/local/)
     ENV.append 'CFLAGS', "-I#{HOMEBREW_PREFIX}/include"
 

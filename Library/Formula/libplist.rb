@@ -8,18 +8,14 @@ class Libplist < Formula
   depends_on 'cmake' => :build
   depends_on 'libxml2'
 
-  # Fix 3 Clang compile errors.
-  # Similar fixes were made upstream, so verify that these are still needed in 1.9.
+  # Fix 3 Clang compile errors.  Similar fixes are upstream. Reverify in 1.9
+  # 2nd patch disables SWIG and Cython python bindings
   def patches
     DATA
   end
 
   def install
     ENV.deparallelize # make fails on an 8-core Mac Pro
-
-    # Disable Python bindings.
-    inreplace "CMakeLists.txt", 'OPTION(ENABLE_PYTHON "Enable Python bindings (needs Swig)" ON)',
-                                '# Disabled Python Bindings'
     system "cmake #{std_cmake_parameters} -DCMAKE_INSTALL_NAME_DIR=#{lib} ."
     system "make install"
 
@@ -54,3 +50,17 @@ __END__
  	unsigned char *outbuf = (unsigned char*)malloc((len/4)*3+3);
  
  	unsigned char *line;
+
+--- a/CMakeLists.txt	2012-02-23 17:03:29.000000000 -0800
++++ b/CMakeLists.txt	2012-02-23 17:03:51.000000000 -0800
+@@ -17,8 +17,8 @@
+ 
+ FIND_PACKAGE( LibXml2 REQUIRED )
+ 
+-OPTION(ENABLE_SWIG "Enable SWIG Python bindings (needs Swig)" ON)
+-OPTION(ENABLE_CYTHON "Enable Cython Python bindings (needs Cython)" ON)
++OPTION(ENABLE_SWIG "Enable SWIG Python bindings (needs Swig)" OFF)
++OPTION(ENABLE_CYTHON "Enable Cython Python bindings (needs Cython)" OFF)
+ 
+ IF(ENABLE_SWIG)
+ 	FIND_PACKAGE( SWIG )

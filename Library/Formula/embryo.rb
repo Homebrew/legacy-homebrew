@@ -9,6 +9,11 @@ class Embryo < Formula
   depends_on 'pkg-config' => :build
   depends_on 'eina'
 
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
     system "./autogen.sh" if ARGV.build_head?
     system "./configure", "--disable-dependency-tracking",
