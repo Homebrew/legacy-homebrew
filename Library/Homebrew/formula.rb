@@ -140,6 +140,12 @@ class Formula
   # any e.g. configure options for this package
   def options; [] end
 
+  # full referenced command to start the process of this package
+  def start_command; nil end
+
+  # full referenced command to stop the process of this package
+  def stop_command; nil end
+
   # patches are automatically applied after extracting the tarball
   # return an array of strings, or if you need a patch level other than -p1
   # return a Hash eg.

@@ -89,6 +89,14 @@ class Postgresql < Formula
     end
   end
 
+  def start_command
+    "pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start"
+  end
+
+  def stop_command
+    "pg_ctl -D #{var}/postgres stop -s -m fast"
+  end
+
   def caveats
     s = <<-EOS
 # Build Notes
@@ -123,10 +131,12 @@ If this is an upgrade and you already have the #{plist_path.basename} loaded:
   launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
 Or start manually with:
-  pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start
+  brew start #{ name }
+  (it runs: #{ start_command })
 
 And stop with:
-  pg_ctl -D #{var}/postgres stop -s -m fast
+  brew stop #{ name }
+  (it runs: #{ stop_command })
 
 # Loading Extensions
 

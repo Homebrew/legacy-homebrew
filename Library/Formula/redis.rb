@@ -39,6 +39,10 @@ class Redis < Formula
     plist_path.chmod 0644
   end
 
+  def start_command
+    "redis-server #{etc}/redis.conf"
+  end
+
   def caveats
     <<-EOS.undent
     If this is your first install, automatically load on login with:
@@ -52,7 +56,8 @@ class Redis < Formula
         launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
       To start redis manually:
-        redis-server #{etc}/redis.conf
+        brew start #{ name }
+        (it runs: #{ start_command })
 
       To access the server:
         redis-cli
