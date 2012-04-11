@@ -12,7 +12,8 @@ class Openjpeg < Formula
   depends_on 'libtiff'
 
   def install
-    system "cmake #{std_cmake_parameters} ."
+    ENV.x11  # So it can find libpng
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end
