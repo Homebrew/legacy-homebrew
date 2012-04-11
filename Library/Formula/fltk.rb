@@ -12,6 +12,11 @@ class Fltk < Formula
 
   depends_on 'jpeg'
 
+  fails_with :clang do
+    build 318
+    cause "http://llvm.org/bugs/show_bug.cgi?id=10338"
+  end
+
   def install
     ENV.libpng
     system "autoconf" if ARGV.build_head?
