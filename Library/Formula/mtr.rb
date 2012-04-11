@@ -12,17 +12,24 @@ class Mtr < Formula
       ['--no-gtk', "Don't build with Gtk+ support"]
     ]
   end
-
+ 
   def install
     # We need to add this because nameserver8_compat.h has been removed in Snow Leopard
     ENV['LIBS'] = "-lresolv"
     args = ["--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"]
     args << "--without-gtk" if ARGV.include? "--no-gtk"
-    system "./configure", *args
+
+    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--without-gtk",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 
   def caveats
-    "Run mtr sudo'd in order to avoid the error: `unable to get raw sockets'"
+    system "chown root:wheel #{sbin}/mtr"
+    system "chmod u+s #{sbin}/mtr"
+  end
+
+  def test
+    system "mtr --version"
   end
 end
