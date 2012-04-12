@@ -94,7 +94,6 @@ class Pdal < Formula
       args << "-DWITH_TESTS:BOOL=ON"
     end
 
-#    system "mkdir build"
     args << ".."
 
     mkdir 'build' do
