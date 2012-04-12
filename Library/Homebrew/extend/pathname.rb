@@ -356,7 +356,7 @@ class Pathname
 
   def find_formula
     # remove special casing once tap is established and alt removed
-    if self == HOMEBREW_LIBRARY/"Taps/adamv-alt"
+    if self.to_s =~ %r{#{HOMEBREW_LIBRARY}/Taps/}
       all_formula do |file|
         yield file
       end
