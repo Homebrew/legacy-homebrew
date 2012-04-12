@@ -9,7 +9,7 @@ class Cfengine < Formula
 
   def install
     system "./configure", "--with-tokyocabinet", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}", "--with-workdir=#{prefix}"
     system "/usr/bin/make install"
   end
 
