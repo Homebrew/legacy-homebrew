@@ -11,6 +11,9 @@ class Libgphoto2 < Formula
   depends_on 'libexif' => :optional
 
   def install
+    if ARGV.include? '--HEAD'
+      system "autoreconf --install"
+    end
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end

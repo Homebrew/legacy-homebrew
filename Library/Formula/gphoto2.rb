@@ -13,6 +13,9 @@ class Gphoto2 < Formula
   depends_on 'readline'
 
   def install
+    if ARGV.include? '--HEAD'
+      system "autoreconf --install"
+    end
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-aalib"
