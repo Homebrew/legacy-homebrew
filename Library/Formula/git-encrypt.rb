@@ -12,9 +12,5 @@ class GitEncrypt < Formula
     bin.install ['gitcrypt']
   end
 
-  def test
-    # this will fail we won't accept that, make it test the program works!
-    system "/usr/bin/false"
-  end
 end
 
