@@ -6,7 +6,7 @@ class Libgphoto2 < Formula
   md5 'd20a32fe2bb7d802a6a8c3b6f7f97c5e'
   
   head "https://gphoto.svn.sourceforge.net/svnroot/gphoto/branches/libgphoto2-2_4/libgphoto2"
-  depends_on 'autopoint' => :build
+  depends_on 'gettext' => :build
   depends_on 'pkg-config' => :build
   depends_on 'libusb-compat'
   depends_on 'libexif' => :optional
