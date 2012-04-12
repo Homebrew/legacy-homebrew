@@ -55,7 +55,8 @@ class Hardware
   end
 
   def self.is_64_bit?
-    self.sysctl_bool("hw.cpu64bit_capable")
+    return @@is_64_bit if defined? @@is_64_bit
+    @@is_64_bit = self.sysctl_bool("hw.cpu64bit_capable")
   end
   
   def self.bits
