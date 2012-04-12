@@ -1,9 +1,9 @@
 require 'formula'
 
 class Memcached < Formula
-  url "http://memcached.googlecode.com/files/memcached-1.4.11.tar.gz"
+  url "http://memcached.googlecode.com/files/memcached-1.4.13.tar.gz"
   homepage 'http://memcached.org/'
-  sha1 '30ac7cf87d1714803c265ea543312a702e09eb99'
+  sha1 'd9a48d222de53a2603fbab6156d48d0e8936ee92'
 
   depends_on 'libevent'
 
@@ -22,20 +22,20 @@ class Memcached < Formula
     system "./configure", *args
     system "make install"
 
-    (prefix+'com.danga.memcached.plist').write startup_plist
-    (prefix+'com.danga.memcached.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent
     You can enable memcached to automatically load on login with:
         mkdir -p ~/Library/LaunchAgents
-        cp #{prefix}/com.danga.memcached.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/com.danga.memcached.plist
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-    If this is an upgrade and you already have the com.danga.memcached.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/com.danga.memcached.plist
-        cp #{prefix}/com.danga.memcached.plist ~/Library/LaunchAgents/com.danga.memcached.plist
-        launchctl load -w ~/Library/LaunchAgents/com.danga.memcached.plist
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
+        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     Or start it manually:
         #{HOMEBREW_PREFIX}/bin/memcached
@@ -51,7 +51,7 @@ class Memcached < Formula
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>com.danga.memcached</string>
+  <string>#{plist_name}</string>
   <key>KeepAlive</key>
   <true/>
   <key>ProgramArguments</key>

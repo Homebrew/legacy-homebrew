@@ -48,6 +48,12 @@ class Gfortran < Formula
     end
   end
 
+  # For more information about GFortran, see:
+  #
+  #     http://gcc.gnu.org/wiki/GFortran
+  #
+  # The homepage points to r.research.att.com because this site contains
+  # specific information about the binary distribution that we use.
   homepage 'http://r.research.att.com/tools/'
 
   def download_strategy

@@ -1,34 +1,30 @@
 require 'formula'
 
 class Jruby < Formula
-  url 'http://jruby.org.s3.amazonaws.com/downloads/1.6.5.1/jruby-bin-1.6.5.1.tar.gz'
   homepage 'http://www.jruby.org'
-  md5 '246a7aa2b7d7e6e9e8a0c2e282cbcfd0'
+  url 'http://jruby.org.s3.amazonaws.com/downloads/1.6.7/jruby-bin-1.6.7.tar.gz'
+  sha1 '926d4f5b85af075a76c0e59cb4ea34f5c6b770c9'
 
   def install
     # Remove Windows files
     rm Dir['bin/*.{bat,dll,exe}']
 
     # Prefix a 'j' on some commands
-    Dir.chdir 'bin' do
+    cd 'bin' do
       Dir['*'].each do |file|
-        mv file, "j#{file}" unless file.match /^[j_]/
+        mv file, "j#{file}" unless file.match /^[j]/
       end
     end
 
     # Only keep the OS X native libraries
-    Dir.chdir 'lib/native' do
+    cd 'lib/native' do
       Dir['*'].each do |file|
         rm_rf file unless file.downcase == 'darwin'
       end
     end
 
-    (prefix+'jruby').install Dir['*']
-
-    bin.mkpath
-    Dir["#{prefix}/jruby/bin/*"].each do |f|
-      ln_s f, bin+File.basename(f)
-    end
+    libexec.install Dir['*']
+    bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
   def test

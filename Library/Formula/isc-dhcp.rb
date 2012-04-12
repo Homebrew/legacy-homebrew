@@ -71,40 +71,40 @@ class IscDhcp < Formula
     end
 
     # sample launchd plists
-    (prefix+'org.isc.dhcpd.plist').write dhcpd_plist
-    (prefix+'org.isc.dhcpd.plist').chmod 0644
-    (prefix+'org.isc.dhcpd6.plist').write dhcpd6_plist
-    (prefix+'org.isc.dhcpd6.plist').chmod 0644
+    plist_path.write dhcpd_plist
+    plist_path.chmod 0644
+    (prefix+'homebrew.mxcl.dhcpd6.plist').write dhcpd6_plist
+    (prefix+'homebrew.mxcl.dhcpd6.plist').chmod 0644
   end
 
   def caveats
     <<-EOCAVEATS.undent
-    This install of dhcpd expects config files to be in /usr/local/etc.
-    All state files (leases and pids) are stored in /usr/local/var/dhcpd.
+    This install of dhcpd expects config files to be in #{etc}.
+    All state files (leases and pids) are stored in #{var}/dhcpd.
 
     Dhcpd needs to run as root since it listens on privileged ports.
     Sample launchd plists to achieve this have been provided at:
-      #{prefix}/org.isc.dhcpd.plist
+      #{plist_path}
     and:
-      #{prefix}/org.isc.dhcpd6.plist
+      #{prefix}/homebrew.mxcl.dhcpd6.plist
 
     There are two plists because a single dhcpd process may do either
     DHCPv4 or DHCPv6 but not both. Use one or both as needed.
 
     Copy the plists to /Library/LaunchDaemons and start the services with
       cd /Library/LaunchDaemons
-      launchctl load -w org.isc.dhcpd.plist
-      launchctl load -w org.isc.dhcpd6.plist
+      launchctl load -w #{plist_path.basename}
+      launchctl load -w homebrew.mxcl.dhcpd6.plist
 
     Note that you must create the appropriate config files before starting
     the services or dhcpd will refuse to run.
-      DHCPv4: /usr/local/etc/dhcpd.conf
-      DHCPv6: /usr/local/etc/dhcpd6.conf
+      DHCPv4: #{etc}/dhcpd.conf
+      DHCPv6: #{etc}/dhcpd6.conf
 
     Sample config files may be found in #{etc}.
     If you change the config, restart dhcpd with one or both of
-      launchctl stop org.isc.dhcpd
-      launchctl stop org.isc.dhcpd6
+      launchctl stop #{plist_name}
+      launchctl stop homebrew.mxcl.dhcpd6
     EOCAVEATS
   end
 
@@ -115,10 +115,10 @@ class IscDhcp < Formula
                     "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version='1.0'>
     <dict>
-    <key>Label</key><string>org.isc.dhcpd</string>
+    <key>Label</key><string>#{plist_name}</string>
     <key>ProgramArguments</key>
       <array>
-        <string>/usr/local/sbin/dhcpd</string>
+        <string>#{HOMEBREW_PREFIX}/sbin/dhcpd</string>
         <string>-f</string>
       </array>
     <key>Disabled</key><false/>
@@ -137,14 +137,14 @@ class IscDhcp < Formula
                     "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version='1.0'>
     <dict>
-    <key>Label</key><string>org.isc.dhcpd</string>
+    <key>Label</key><string>#{plist_name}</string>
     <key>ProgramArguments</key>
       <array>
-        <string>/usr/local/sbin/dhcpd</string>
+        <string>#{HOMEBREW_PREFIX}/sbin/dhcpd</string>
         <string>-f</string>
         <string>-6</string>
         <string>-cf</string>
-        <string>/usr/local/etc/dhcpd6.conf</string>
+        <string>#{etc}/dhcpd6.conf</string>
       </array>
     <key>Disabled</key><false/>
     <key>KeepAlive</key><true/>

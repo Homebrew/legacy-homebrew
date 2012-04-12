@@ -9,7 +9,7 @@ class TokyoTyrant < Formula
   depends_on 'lua' unless ARGV.include? "--no-lua"
 
   def options
-    [["--no-lua", "Disable Lua support (and don't force Lua install.)"]]
+    [["--no-lua", "Disable Lua support."]]
   end
 
   def install

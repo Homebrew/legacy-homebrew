@@ -6,6 +6,8 @@ class Proctools < Formula
   version '0.4pre1'
   md5 '714e4350749c680a7806635632d524b1'
 
+  depends_on 'bsdmake' => :build if MacOS.xcode_version.to_f >= 4.3
+
   def patches
     base = "https://trac.macports.org/export/89276/trunk/dports/sysutils/proctools/files"
     { :p0 => ["patch-pfind-Makefile.diff",
@@ -20,7 +22,7 @@ class Proctools < Formula
   end
 
   def install
-    system "/usr/bin/bsdmake"
+    system "bsdmake"
 
     ["pgrep/pgrep", "pkill/pkill", "pfind/pfind"].each do |prog|
       bin.install prog

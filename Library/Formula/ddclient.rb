@@ -1,43 +1,42 @@
 require 'formula'
 
 class Ddclient < Formula
-  url 'http://sourceforge.net/projects/ddclient/files/ddclient/ddclient-3.8.1/ddclient-3.8.1.tar.bz2'
   homepage 'http://sourceforge.net/apps/trac/ddclient'
+  url 'http://sourceforge.net/projects/ddclient/files/ddclient/ddclient-3.8.1/ddclient-3.8.1.tar.bz2'
   md5 '7fa417bc65f8f0e6ce78418a4f631988'
 
   def install
     # Adjust default paths in script
     inreplace 'ddclient' do |s|
-      s.gsub! "/etc/ddclient", (etc + 'ddclient')
-      s.gsub! "/var/cache/ddclient", (var + 'run/ddclient')
+      s.gsub! "/etc/ddclient", "#{etc}/ddclient"
+      s.gsub! "/var/cache/ddclient", "#{var}/run/ddclient"
     end
 
-    # Copy script to sbin
     sbin.install "ddclient"
 
     # Install sample files
     inreplace 'sample-ddclient-wrapper.sh',
-      "/etc/ddclient", (etc + 'ddclient')
+      "/etc/ddclient", "#{etc}/ddclient"
 
     inreplace 'sample-etc_cron.d_ddclient',
-      "/usr/sbin/ddclient", (sbin + 'ddclient')
+      "/usr/sbin/ddclient", "#{sbin}/ddclient"
 
     inreplace 'sample-etc_ddclient.conf',
-      "/var/run/ddclient.pid", (var + 'run/ddclient/pid')
+      "/var/run/ddclient.pid", "#{var}/run/ddclient/pid"
 
-    (share + 'doc/ddclient').install %w(
+    (share+'doc/ddclient').install %w(
       sample-ddclient-wrapper.sh
       sample-etc_cron.d_ddclient
       sample-etc_ddclient.conf
     )
 
     # Create etc & var paths
-    (etc + 'ddclient').mkpath
-    (var + 'run/ddclient').mkpath
+    (etc+'ddclient').mkpath
+    (var+'run/ddclient').mkpath
 
     # Write the launchd script
-    (prefix + 'org.ddclient.plist').write startup_plist
-    (prefix + 'org.ddclient.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS
@@ -51,21 +50,21 @@ For ddclient to work, you will need to do the following:
 
 2) Install the launchd item in /Library/LaunchDaemons, like so:
 
-   sudo cp -vf #{prefix}/org.ddclient.plist /Library/LaunchDaemons/
-   sudo chown -v root:wheel /Library/LaunchDaemons/org.ddclient.plist
+   sudo cp -vf #{plist_path} /Library/LaunchDaemons/
+   sudo chown -v root:wheel /Library/LaunchDaemons/#{plist_path.basename}
 
 3) Start the daemon using:
 
-  sudo launchctl load /Library/LaunchDaemons/org.ddclient.plist
+  sudo launchctl load /Library/LaunchDaemons/#{plist_path.basename}
 
 The next reboot of the system will automatically start ddclient.
 
 You can adjust the execution interval by changing the value of
-StartInterval (in seconds) in /Library/LaunchDaemons/org.ddclient.plist,
+StartInterval (in seconds) in /Library/LaunchDaemons/#{plist_path.basename},
 and then
 
-   sudo launchctl unload /Library/LaunchDaemons/org.ddclient.plist
-   sudo launchctl load /Library/LaunchDaemons/org.ddclient.plist
+   sudo launchctl unload /Library/LaunchDaemons/#{plist_path.basename}
+   sudo launchctl load /Library/LaunchDaemons/#{plist_path.basename}
 EOS
   end
 
@@ -76,10 +75,10 @@ EOS
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>org.ddclient</string>
+  <string>#{plist_name}</string>
   <key>ProgramArguments</key>
   <array>
-    <string>#{sbin}/ddclient</string>
+    <string>#{HOMEBREW_PREFIX}/sbin/ddclient</string>
     <string>-file</string>
     <string>#{etc}/ddclient/ddclient.conf</string>
   </array>

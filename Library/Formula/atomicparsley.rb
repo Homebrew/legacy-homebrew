@@ -5,6 +5,14 @@ class Atomicparsley < Formula
   homepage 'http://bitbucket.org/wez/atomicparsley/overview/'
   md5 '2ce6f39cedc959f46b5515920c35d0d7'
 
+  head 'https://bitbucket.org/wez/atomicparsley', :using => :hg
+
+  if MacOS.xcode_version >= "4.3"
+    # when and if the tarball provides configure, remove autogen.sh and these deps
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
     system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}",

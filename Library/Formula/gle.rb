@@ -1,10 +1,10 @@
 require 'formula'
 
 class Gle < Formula
-  url 'http://downloads.sourceforge.net/glx/gle-graphics-4.2.3bf-src.tar.gz'
-  version '4.2.3b'
   homepage 'http://glx.sourceforge.net/'
-  md5 '5884a1cbf7a0fe5d3a18a235d10f64a8'
+  url 'http://downloads.sourceforge.net/glx/gle-graphics-4.2.4cf-src.tar.gz'
+  version '4.2.4c'
+  md5 '5eef0a63ee0077237b8a36fe1a24407f'
 
   depends_on 'pkg-config' => :build
   depends_on 'jpeg' => :optional
@@ -18,7 +18,7 @@ class Gle < Formula
                           "--with-arch=#{arch}",
                           "--without-qt"
 
-    inreplace 'Makefile',"MKDIR_P", "mkdir -p"
+    inreplace 'Makefile', "MKDIR_P", "mkdir -p"
 
     system "make"
     ENV.deparallelize

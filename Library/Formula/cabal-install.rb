@@ -11,8 +11,6 @@ class CabalInstall < Formula
     ENV['PREFIX'] = "#{prefix}"
     system "sh bootstrap.sh"
 
-    cellar_etc = prefix + 'etc'
-    bash_completion_d = cellar_etc + 'bash_completion.d'
-    bash_completion_d.install 'bash-completion/cabal'
+    (prefix+'etc/bash_completion.d').install 'bash-completion/cabal'
   end
 end

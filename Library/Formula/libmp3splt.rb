@@ -1,29 +1,46 @@
 require 'formula'
 
 class Libmp3splt < Formula
-  url 'http://downloads.sourceforge.net/project/mp3splt/libmp3splt/0.6.1a/libmp3splt-0.6.1a.tar.gz'
+  url 'http://downloads.sourceforge.net/project/mp3splt/libmp3splt/0.7.1/libmp3splt-0.7.1.tar.gz'
   homepage 'http://mp3splt.sourceforge.net'
-  md5 'a6a00d83e49adf27abb7a0cb0ea384a4'
+  md5 '62025951f483334f14f1b9be58162094'
 
   depends_on 'pkg-config' => :build
+  depends_on 'automake' => :build unless MacOS.lion?
   depends_on 'gettext'
   depends_on 'pcre'
   depends_on 'libid3tag'
   depends_on 'mad'
   depends_on 'libvorbis'
 
+  # autogen.sh calls `libtoolize`, while OS X installs under the name `glibtoolize`
+  # reported upstream at https://sourceforge.net/tracker/?func=detail&aid=3497957&group_id=55130&atid=476061
   def patches
-    # fixes unneeded dependency on autopoint and uses glibtoolize instead of libtoolize
-    "https://gist.github.com/raw/1034717/931c582cba12d5afcbaa3edd6032baa25bebf5d8/autogen.sh.patch"
+    DATA
   end
 
   def install
-    ENV.append 'ACLOCAL_FLAGS', "-I#{HOMEBREW_PREFIX}/share/aclocal"
-    system "./autogen.sh"
-    system "autoconf"
-    system "automake"
+    if !MacOS.lion?
+      system "./autogen.sh"
+      system "autoconf"
+    end
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end
 end
+
+__END__
+diff --git a/autogen.sh b/autogen.sh
+index 68962f2..916b868 100755
+--- a/autogen.sh
++++ b/autogen.sh
+@@ -53,7 +53,7 @@ echo -n "1/6 Running autopoint... " \
+ && echo -n "3/6 Running autoheader... " \
+ && autoheader && echo "done" \
+ && echo -n "4/6 Running libtoolize... " \
+-&& libtoolize -c --force && echo "done" \
++&& glibtoolize -c --force && echo "done" \
+ && echo -n "5/6 Running autoconf... " \
+ && autoconf && echo "done" \
+ && echo -n "6/6 Running automake... " \

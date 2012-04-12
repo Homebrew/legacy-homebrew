@@ -1,5 +1,17 @@
 require 'formula'
 require 'utils'
+require 'extend/ENV'
+
+# Some formulae use ENV in patches, so set up an environment
+ENV.extend(HomebrewEnvExtension)
+ENV.setup_build_environment
+
+class Module
+  def redefine_const(name, value)
+    __send__(:remove_const, name) if const_defined?(name)
+    const_set(name, value)
+  end
+end
 
 def ff
   return Formula.all if ARGV.named.empty?
@@ -9,7 +21,7 @@ end
 def audit_formula_text name, text
   problems = []
 
-  if text =~ /<(Formula|AmazonWebServicesFormula)/
+  if text =~ /<(Formula|AmazonWebServicesFormula|ScriptFileFormula|GithubGistFormula)/
     problems << " * Use a space in class inheritance: class Foo < #{$1}"
   end
 
@@ -23,8 +35,10 @@ def audit_formula_text name, text
     problems << " * Check indentation of 'depends_on'."
   end
 
-  # cmake, pkg-config, and scons are build-time deps
-  if text =~ /depends_on ['"](boost-jam|cmake|pkg-config|scons|smake)['"]$/
+  # build tools should be flagged properly
+  build_deps = %w{autoconf automake boost-build bsdmake
+                  cmake imake libtool pkg-config scons smake}
+  if text =~ /depends_on ['"](#{build_deps*'|'})['"]$/
     problems << " * #{$1} dependency should be \"depends_on '#{$1}' => :build\""
   end
 
@@ -74,19 +88,6 @@ def audit_formula_text name, text
     problems << " * \"#{$1}\" should be \"\#{#{$2}}\""
   end
 
-  # Empty checksums
-  if text =~ /md5\s+(\'\'|\"\")/
-    problems << " * md5 is empty"
-  end
-
-  if text =~ /sha1\s+(\'\'|\"\")/
-    problems << " * sha1 is empty"
-  end
-
-  if text =~ /sha256\s+(\'\'|\"\")/
-    problems << " * sha256 is empty"
-  end
-
   # Commented-out depends_on
   if text =~ /#\s*depends_on\s+(.+)\s*$/
     problems << " * Commented-out dep #{$1}."
@@ -97,8 +98,8 @@ def audit_formula_text name, text
     problems << " * Trailing whitespace was found."
   end
 
-  if text =~ /if\s+ARGV\.include\?\s+'--HEAD'/
-    problems << " * Use \"if ARGV.build_head?\" instead"
+  if text =~ /if\s+ARGV\.include\?\s+'--(HEAD|devel)'/
+    problems << " * Use \"if ARGV.build_#{$1.downcase}?\" instead"
   end
 
   if text =~ /make && make/
@@ -109,13 +110,8 @@ def audit_formula_text name, text
     problems << " * Use spaces instead of tabs for indentation"
   end
 
-  # Formula depends_on gfortran
-  if text =~ /^\s*depends_on\s*(\'|\")gfortran(\'|\").*/
-    problems << " * Use ENV.fortran during install instead of depends_on 'gfortran'"
-  end unless name == "gfortran" # Gfortran itself has this text in the caveats
-
   # xcodebuild should specify SYMROOT
-  if text =~ /xcodebuild/ and not text =~ /SYMROOT=/
+  if text =~ /system\s+['"]xcodebuild/ and not text =~ /SYMROOT=/
     problems << " * xcodebuild should be passed an explicit \"SYMROOT\""
   end
 
@@ -141,16 +137,31 @@ def audit_formula_text name, text
   return problems
 end
 
+INSTALL_OPTIONS = %W[
+  --build-from-source
+  --debug
+  --devel
+  --force
+  --fresh
+  --HEAD
+  --ignore-dependencies
+  --interactive
+  --use-clang
+  --use-gcc
+  --use-llvm
+  --verbose
+].freeze
+
 def audit_formula_options f, text
   problems = []
 
-  # Find possible options
+  # Textually find options checked for in the formula
   options = []
   text.scan(/ARGV\.include\?[ ]*\(?(['"])(.+?)\1/) { |m| options << m[1] }
   options.reject! {|o| o.include? "#"}
-  options.uniq!
+  options.uniq! # May be checked more than once
 
-  # Find documented options
+  # Find declared options
   begin
     opts = f.options
     documented_options = []
@@ -172,6 +183,9 @@ def audit_formula_options f, text
       next if o == '--universal' and text =~ /ARGV\.build_universal\?/
       next if o == '--32-bit' and text =~ /ARGV\.build_32_bit\?/
       problems << " * Option #{o} is unused" unless options.include? o
+      if INSTALL_OPTIONS.include? o
+        problems << " * Option #{o} shadows an install option; should be renamed"
+      end
     end
   end
 
@@ -190,6 +204,19 @@ def audit_formula_version f, text
   end
 
   return []
+end
+
+def audit_formula_patches f
+  problems = []
+  patches = Patches.new(f.patches)
+  patches.each do |p|
+    next unless p.external?
+    if p.url =~ %r[raw\.github\.com]
+      problems << " * Using raw GitHub URLs is not recommended:"
+      problems << " * #{p.url}"
+    end
+  end
+  return problems
 end
 
 def audit_formula_urls f
@@ -294,36 +321,74 @@ def audit_formula_instance f
 
     case d
     when "git", "python", "ruby", "emacs", "mysql", "postgresql", "mercurial"
-      problems << " * Don't use #{d} as a dependency; we allow non-Homebrew\n   #{d} installs."
+      problems << <<-EOS
+ * Don't use #{d} as a dependency. We allow non-Homebrew
+   #{d} installations.
+EOS
+    when 'gfortran'
+      problems << " * Use ENV.fortran during install instead of depends_on 'gfortran'"
     end
   end
 
   problems += [' * invalid or missing version'] if f.version.to_s.empty?
 
+  %w[md5 sha1 sha256].each do |checksum|
+    hash = f.instance_variable_get("@#{checksum}")
+    next if hash.nil?
+    hash = hash.strip
+
+    len = case checksum
+      when 'md5' then 32
+      when 'sha1' then 40
+      when 'sha256' then 64
+    end
+
+    if hash.empty?
+      problems << " * #{checksum} is empty"
+    else
+      problems << " * #{checksum} should be #{len} characters" unless hash.length == len
+      problems << " * #{checksum} contains invalid characters" unless hash =~ /^[a-fA-F0-9]+$/
+      problems << " * #{checksum} should be lowercase" unless hash == hash.downcase
+    end
+  end
+
   return problems
+end
+
+# Formula extensions for auditing
+class Formula
+  def head_only?
+    @unstable and @standard.nil?
+  end
+
+  def formula_text
+    File.open(@path, "r") { |afile| return afile.read }
+  end
 end
 
 module Homebrew extend self
   def audit
     errors = false
 
+    brew_count = 0
+    problem_count = 0
+
     ff.each do |f|
+      # We need to do this in case the formula defines a patch that uses DATA.
+      f.class.redefine_const :DATA, ""
+
       problems = []
-
-      if f.unstable and f.standard.nil?
-        problems += [' * head-only formula']
-      end
-
+      problems += [' * head-only formula'] if f.head_only?
       problems += audit_formula_instance f
       problems += audit_formula_urls f
+      problems += audit_formula_patches f
 
       perms = File.stat(f.path).mode
       if perms.to_s(8) != "100644"
         problems << " * permissions wrong; chmod 644 #{f.path}"
       end
 
-      text = ""
-      File.open(f.path, "r") { |afile| text = afile.read }
+      text = f.formula_text
 
       # DATA with no __END__
       if (text =~ /\bDATA\b/) and not (text =~ /^\s*__END__\s*$/)
@@ -348,9 +413,14 @@ module Homebrew extend self
         puts "#{f.name}:"
         puts problems * "\n"
         puts
+        brew_count += 1
+        problem_count += problems.size
       end
     end
 
-    exit 1 if errors
+    if errors
+      puts "#{problem_count} problems in #{brew_count} brews"
+      Homebrew.failed = true
+    end
   end
 end

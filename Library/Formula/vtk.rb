@@ -1,8 +1,8 @@
 require 'formula'
 
 class Vtk < Formula
-  url 'http://www.vtk.org/files/release/5.8/vtk-5.8.0.tar.gz'
   homepage 'http://www.vtk.org'
+  url 'http://www.vtk.org/files/release/5.8/vtk-5.8.0.tar.gz'
   md5 '37b7297d02d647cc6ca95b38174cb41f'
 
   depends_on 'cmake' => :build
@@ -14,6 +14,7 @@ class Vtk < Formula
     ['--qt', "Enable Qt extension."],
     ['--qt-extern', "Enable Qt extension (via external Qt)"],
     ['--tcl', "Enable Tcl wrapping."],
+    ['--x11', "Enable X11 extension."]
   ]
   end
 
@@ -21,7 +22,6 @@ class Vtk < Formula
     args = std_cmake_parameters.split + [
              "-DVTK_REQUIRED_OBJCXX_FLAGS:STRING=''",
              "-DVTK_USE_CARBON:BOOL=OFF",
-             "-DVTK_USE_COCOA:BOOL=ON",
              "-DBUILD_TESTING:BOOL=OFF",
              "-DBUILD_EXAMPLES:BOOL=OFF",
              "-DBUILD_SHARED_LIBS:BOOL=ON",
@@ -58,17 +58,38 @@ class Vtk < Formula
       args << "-DVTK_WRAP_TCL:BOOL=ON"
     end
 
+    # default to cocoa for everything except x11
+    args << "-DVTK_USE_COCOA:BOOL=ON" unless ARGV.include? "--x11"
+
+    if ARGV.include? '--x11'
+      args << "-DOPENGL_INCLUDE_DIR:PATH='/usr/X11R6/include'"
+      args << "-DOPENGL_gl_LIBRARY:FILEPATH='/usr/X11R6/lib/libGL.dylib'"
+      args << "-DOPENGL_glu_LIBRARY:FILEPATH='/usr/X11R6/lib/libGLU.dylib"
+      args << "-DVTK_USE_COCOA:BOOL=OFF"
+      args << "-DVTK_USE_X:BOOL=ON"
+    end
+
     # Hack suggested at http://www.vtk.org/pipermail/vtk-developers/2006-February/003983.html
     # to get the right RPATH in the python libraries (the .so files in the vtk egg).
     # Also readable: http://vtk.1045678.n5.nabble.com/VTK-Python-Wrappers-on-Red-Hat-td1246159.html
     args << "-DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=ON"
     ENV['DYLD_LIBRARY_PATH'] = `pwd`.strip + "/build/bin"
 
-    system "mkdir build"
     args << ".."
-    Dir.chdir 'build' do
+
+    mkdir 'build' do
       system "cmake", *args
-      system "make install"
+      # Work-a-round to avoid:
+      #   ld: file not found: /usr/local/Cellar/vtk/5.8.0/lib/vtk-5.8/libvtkDICOMParser.5.8.dylib for architecture x86_64"
+      #   collect2: ld returned 1 exit status
+      #   make[2]: *** [bin/vtkpython] Error 1
+      # We symlink such that the DCMAKE_INSTALL_NAME_DIR is available and points to the current build/bin
+      mkpath "#{lib}" # create empty directories, because we need it here
+      system "ln -s " + ENV['DYLD_LIBRARY_PATH'] + " '#{lib}/vtk-5.8'"
+      system "make"
+      system "rm '#{lib}/vtk-5.8'" # Remove our symlink, was only needed to make make succeed.
+      # end work-a-round
+      system "make install" # Finally move libs in their places.
     end
   end
 end

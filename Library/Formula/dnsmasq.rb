@@ -31,8 +31,8 @@ class Dnsmasq < Formula
     system "make install PREFIX=#{prefix}"
 
     prefix.install "dnsmasq.conf.example"
-    (prefix + "uk.org.thekelleys.dnsmasq.plist").write startup_plist
-    (prefix + "uk.org.thekelleys.dnsmasq.plist").chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent
@@ -44,8 +44,8 @@ class Dnsmasq < Formula
     To load dnsmasq automatically on startup, install and load the provided launchd
     item as follows:
 
-      sudo cp #{prefix}/uk.org.thekelleys.dnsmasq.plist /Library/LaunchDaemons
-      sudo launchctl load -w /Library/LaunchDaemons/uk.org.thekelleys.dnsmasq.plist
+      sudo cp #{plist_path} /Library/LaunchDaemons
+      sudo launchctl load -w /Library/LaunchDaemons/#{plist_path.basename}
     EOS
   end
 
@@ -55,10 +55,10 @@ class Dnsmasq < Formula
     <plist version="1.0">
       <dict>
         <key>Label</key>
-        <string>uk.org.thekelleys.dnsmasq</string>
+        <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>/usr/local/sbin/dnsmasq</string>
+          <string>#{HOMEBREW_PREFIX}/sbin/dnsmasq</string>
           <string>--keep-in-foreground</string>
         </array>
         <key>KeepAlive</key>

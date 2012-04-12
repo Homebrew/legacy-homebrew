@@ -36,8 +36,71 @@ module Homebrew extend self
     if sha.empty? then "(none)" else sha end
   end
 
-  def system_ruby
-    Pathname.new('/usr/bin/ruby').realpath.to_s
+  def describe_x11
+    return "N/A" unless x11_installed?
+    return case x11_path = Pathname.new("/usr/X11").realpath.to_s
+    when "/usr/X11" then "/usr/X11"
+    else "/usr/X11 => #{x11_path}"
+    end
+  end
+
+  def describe_perl
+    perl = `which perl`.chomp
+    return "N/A" if perl.empty?
+
+    real_perl = Pathname.new(perl).realpath.to_s
+    return perl if perl == real_perl
+    return "#{perl} => #{real_perl}"
+  end
+
+  def describe_python
+    python = `which python`.chomp
+    return "N/A" if python.empty?
+
+    real_python = Pathname.new(python).realpath.to_s
+
+    return python if python == real_python
+    return "#{python} => #{real_python}"
+  end
+
+  def describe_ruby
+    ruby = `which ruby`.chomp
+    return "N/A" if ruby.empty?
+
+    real_ruby = Pathname.new(ruby).realpath.to_s
+    return ruby if ruby == real_ruby
+    return "#{ruby} => #{real_ruby}"
+  end
+
+  def real_path a_path
+    Pathname.new(a_path).realpath.to_s
+  end
+
+  def hardware
+    "CPU: #{Hardware.cores_as_words}-core #{Hardware.bits}-bit #{Hardware.intel_family}"
+  end
+
+  def kernel
+    `uname -m`.chomp
+  end
+
+  # we try to keep output minimal
+  def dump_build_config
+    puts "HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}" if HOMEBREW_PREFIX.to_s != "/usr/local"
+    puts "HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}" if HOMEBREW_CELLAR.to_s != "#{HOMEBREW_PREFIX}/Cellar"
+    puts hardware
+    puts "MacOS: #{MACOS_FULL_VERSION}-#{kernel}"
+    puts "Xcode: #{xcode_version}"
+    puts "/usr/bin/ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}" if RUBY_VERSION.to_f != 1.8
+
+    ruby = Pathname.new("/usr/bin/ruby")
+    puts "/usr/bin/ruby => #{ruby.realpath}" unless ruby.realpath.to_s =~ %r{^/System}
+
+    ponk = macports_or_fink_installed?
+    puts "MacPorts/Fink: #{ponk}" if ponk
+
+    x11 = describe_x11
+    puts "X11: #{x11}" unless x11 == "/usr/X11"
   end
 
   def config_s; <<-EOS.undent
@@ -45,18 +108,21 @@ module Homebrew extend self
     HEAD: #{sha}
     HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}
     HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}
-    Hardware: #{Hardware.cores_as_words}-core #{Hardware.bits}-bit #{Hardware.intel_family}
+    #{hardware}
     OS X: #{MACOS_FULL_VERSION}
-    Kernel Architecture: #{`uname -m`.chomp}
-    Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
-    /usr/bin/ruby => #{system_ruby}
+    Kernel Architecture: #{kernel}
     Xcode: #{xcode_version}
     GCC-4.0: #{gcc_40 ? "build #{gcc_40}" : "N/A"}
     GCC-4.2: #{gcc_42 ? "build #{gcc_42}" : "N/A"}
     LLVM: #{llvm ? "build #{llvm}" : "N/A"}
     Clang: #{clang ? "#{clang} build #{clang_build}" : "N/A"}
     MacPorts or Fink? #{macports_or_fink_installed?}
-    X11 installed? #{x11_installed?}
+    X11: #{describe_x11}
+    System Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
+    /usr/bin/ruby => #{real_path("/usr/bin/ruby")}
+    Which Perl:   #{describe_perl}
+    Which Python: #{describe_python}
+    Which Ruby:   #{describe_ruby}
     EOS
   end
 end

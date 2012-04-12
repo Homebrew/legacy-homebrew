@@ -6,13 +6,12 @@ class Shiboken < Formula
   md5 '9c9d696c8c426fb5abf28a6bd3759558'
 
   depends_on 'cmake' => :build
-
   depends_on 'generatorrunner'
 
   def install
     # Building the tests also runs them. Not building and running tests cuts
     # install time in half.
-    system "cmake . #{std_cmake_parameters} -DBUILD_TESTS=OFF"
+    system "cmake #{std_cmake_parameters} -DBUILD_TESTS=OFF ."
     system "make install"
   end
 end

@@ -2,6 +2,7 @@ require 'formula'
 require 'cmd/prune'
 
 module Homebrew extend self
+
   def cleanup
     if ARGV.named.empty?
       HOMEBREW_CELLAR.children.each do |rack|
@@ -12,8 +13,9 @@ module Homebrew extend self
           # instead of core formulae.
         end
       end
+      clean_cache
       # seems like a good time to do some additional cleanup
-      Homebrew.prune unless ARGV.include? '-n'
+      Homebrew.prune unless ARGV.switch? 'n'
     else
       ARGV.formulae.each do |f|
         cleanup_formula f
@@ -35,15 +37,29 @@ module Homebrew extend self
     if f.installed? and f.rack.directory?
       f.rack.children.each do |keg|
         if f.installed_prefix != keg
-          print "Removing #{keg}..."
-          rm_rf keg unless ARGV.include? '-n'
-          puts
+          puts "Removing #{keg}..."
+          rm_rf keg unless ARGV.switch? 'n'
         end
       end
     elsif f.rack.children.length > 1
       # If the cellar only has one version installed, don't complain
       # that we can't tell which one to keep.
       opoo "Skipping #{f.name}: most recent version #{f.version} not installed"
+    end
+  end
+
+  def clean_cache
+    HOMEBREW_CACHE.children.each do |pn|
+      next unless pn.file?
+      version = pn.version
+      name = pn.basename.to_s.match(/(.*)-(#{version})/).captures.first rescue nil
+      if name and version
+        f = Formula.factory(name) rescue nil
+        if not f or (f.version != version or ARGV.switch? "s" and not f.installed?)
+          puts "Removing #{pn}..."
+          rm pn unless ARGV.switch? 'n'
+        end
+      end
     end
   end
 
