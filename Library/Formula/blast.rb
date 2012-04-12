@@ -6,6 +6,10 @@ class Blast < Formula
   version '2.2.25'
   md5 '01256b808e3af49a5087945b6a8c8293'
 
+  fails_with :clang do
+    build 318
+  end
+
   def options
     [['--with-dll', "Create dynamic binaries instead of static"]]
   end
@@ -17,12 +21,6 @@ class Blast < Formula
   end
 
   def install
-    # FIXME This should be replaced with fails_with_clang once available
-    if ENV.compiler == :clang
-      opoo "Formula will not build with Clang, using LLVM."
-      ENV.llvm
-    end
-
     args = ["--prefix=#{prefix}"]
     args << "--with-dll" if ARGV.include? '--with-dll'
 

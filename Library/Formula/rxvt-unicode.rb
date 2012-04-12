@@ -7,7 +7,10 @@ class RxvtUnicode < Formula
 
   depends_on 'pkg-config' => :build
 
-  fails_with_llvm "memory fences not defined for your architecture", :build => 2336
+  fails_with :llvm do
+    build 2336
+    cause "memory fences not defined for your architecture"
+  end
 
   def patches
     # Patch hunks 1 and 2 allow perl support to compile on Intel.

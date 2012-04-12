@@ -11,7 +11,18 @@ class Glib < Formula
   depends_on 'gettext'
   depends_on 'libffi'
 
-  fails_with_llvm "Undefined symbol errors while linking", :build => 2334
+  fails_with :llvm do
+    build 2334
+    cause "Undefined symbol errors while linking"
+  end
+
+  fails_with :clang do
+    build 318
+    cause <<-EOS.undent
+      Software that links against a clang-built glib experiences runtime errors:
+        GLib-ERROR (recursed) **: The thread system is not yet initialized.
+      EOS
+  end
 
   def patches
     { :p0 => %W[

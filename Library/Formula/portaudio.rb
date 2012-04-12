@@ -7,7 +7,9 @@ class Portaudio < Formula
 
   depends_on 'pkg-config' => :build
 
-  fails_with_llvm :build => 2334
+  fails_with :llvm do
+    build 2334
+  end
 
   def options
     [["--universal", "Build a universal binary."]]

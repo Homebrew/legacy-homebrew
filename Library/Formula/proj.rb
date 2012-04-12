@@ -10,7 +10,9 @@ class Proj < Formula
   homepage 'http://trac.osgeo.org/proj/'
   md5 'd815838c92a29179298c126effbb1537'
 
-  fails_with_llvm :build => 2334
+  fails_with :llvm do
+    build 2334
+  end
 
   def skip_clean? path
     path.extname == '.la'

@@ -9,7 +9,9 @@ class Libcaca < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
 
-  fails_with_llvm "unsupported inline asm: input constraint with a matching output constraint of incompatible type!"
+  fails_with :llvm do
+    cause "Unsupported inline asm: input constraint with a matching output constraint of incompatible type"
+  end
 
   # Make libcaca build with clang; see http://caca.zoy.org/ticket/90
   def patches; DATA; end

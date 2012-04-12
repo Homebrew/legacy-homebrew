@@ -5,9 +5,11 @@ class John < Formula
   url 'http://www.openwall.com/john/g/john-1.7.9.tar.bz2'
   md5 '45f54fc59386ecd67daaef9f19781d93'
 
-  def patches; DATA; end
+  fails_with :llvm do
+    build 2334
+  end
 
-  fails_with_llvm :build => 2334
+  def patches; DATA; end
 
   def install
     ENV.deparallelize

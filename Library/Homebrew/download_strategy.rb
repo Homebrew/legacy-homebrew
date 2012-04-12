@@ -194,8 +194,7 @@ class CurlBottleDownloadStrategy < CurlDownloadStrategy
     @tarball_path = HOMEBREW_CACHE/"#{name}-#{version}#{ext}"
 
     unless @tarball_path.exist?
-      old_bottle_path = HOMEBREW_CACHE/"#{name}-#{version}#{bottle_suffix}"
-      old_bottle_path = HOMEBREW_CACHE/"#{name}-#{version}-bottle.tar.gz" unless old_bottle_path.exist?
+      old_bottle_path = HOMEBREW_CACHE/"#{name}-#{version}-bottle.tar.gz"
       old_bottle_path = HOMEBREW_CACHE/"#{name}-#{version}.#{MacOS.cat}.bottle-bottle.tar.gz" unless old_bottle_path.exist?
       FileUtils.mv old_bottle_path, @tarball_path if old_bottle_path.exist?
     end

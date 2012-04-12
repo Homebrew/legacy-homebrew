@@ -9,7 +9,10 @@ class Mysql < Formula
   depends_on 'readline'
   depends_on 'pidof'
 
-  fails_with_llvm "https://github.com/mxcl/homebrew/issues/issue/144", :build => 2326
+  fails_with :llvm do
+    build 2326
+    cause "https://github.com/mxcl/homebrew/issues/issue/144"
+  end
 
   skip_clean :all # So "INSTALL PLUGIN" can work.
 
