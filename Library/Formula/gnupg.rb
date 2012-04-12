@@ -1,20 +1,28 @@
 require 'formula'
 
-class GnupgIdea <Formula
+class GnupgIdea < Formula
   head 'http://www.gnupg.dk/contrib-dk/idea.c.gz', :using  => NoUnzipCurlDownloadStrategy
   md5 '9dc3bc086824a8c7a331f35e09a3e57f'
 end
 
-class Gnupg <Formula
-  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.10.tar.bz2'
+class Gnupg < Formula
   homepage 'http://www.gnupg.org/'
-  sha1 'fd1b6a5f3b2dd836b598a1123ac257b8f105615d'
+  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.12.tar.bz2'
+  sha1 '9b78e20328d35525af7b8a9c1cf081396910e937'
 
   def options
-    [["--idea", "Build with (patented) IDEA cipher"]]
+    [
+      ["--idea", "Build with (patented) IDEA cipher"],
+      ["--8192", "Build with support for private keys up to 8192 bits"],
+    ]
   end
 
   def install
+    if ENV.compiler == :clang
+      ENV.append 'CFLAGS', '-std=gnu89'
+      ENV.append 'CFLAGS', '-fheinous-gnu-extensions'
+    end
+
     if ARGV.include? '--idea'
       opoo "You are building with support for the patented IDEA cipher."
       d=Pathname.getwd
@@ -22,7 +30,9 @@ class Gnupg <Formula
       system 'gunzip', 'cipher/idea.c.gz'
     end
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    inreplace 'g10/keygen.c', 'max=4096', 'max=8192' if ARGV.include? '--8192'
+
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-asm"
     system "make"

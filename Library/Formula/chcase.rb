@@ -1,6 +1,6 @@
 require 'formula'
 
-class Chcase <ScriptFileFormula
+class Chcase < ScriptFileFormula
   url 'http://www.primaledge.ca/chcase'
   version '2.0'
   md5 '6d7e35fd597c60ba5ebbdd8d5e57eee7'

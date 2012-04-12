@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mftrace <Formula
+class Mftrace < Formula
   url 'http://lilypond.org/download/sources/mftrace/mftrace-1.2.16.tar.gz'
   homepage 'http://lilypond.org/mftrace/'
   md5 '1c65846471db8f10902b96b7b3120da5'

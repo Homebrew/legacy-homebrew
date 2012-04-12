@@ -1,16 +1,20 @@
 require 'formula'
 
-class Botan <Formula
-  url 'http://botan.randombit.net/files/Botan-1.8.9.tbz'
+class Botan < Formula
   homepage 'http://botan.randombit.net/'
-  md5 '2c1c55ae4f5bae9f6ad516e1ada2100f'
+  url 'http://files.randombit.net/botan/v1.10/Botan-1.10.1.tbz'
+  md5 '7ae93e205491a8e75115bfca983ff7f9'
+
+  def options
+    [['--enable-debug', "Enable debug build of Botan"]]
+  end
 
   def install
-    inreplace 'src/build-data/makefile/unix_shr.in' do |s|
-      s.change_make_var! 'SONAME', "#{lib}/$(LIBNAME)-$(SO_VERSION).%{so_suffix}"
-    end
+    args = ["--prefix=#{prefix}"]
+    args << "--cpu=x86_64" if MacOS.prefer_64_bit?
+    args << "--enable-debug" if ARGV.include? "--enable-debug"
 
-    system "./configure.py", "--prefix=#{prefix}"
+    system "./configure.py", *args
     system "make install"
   end
 end

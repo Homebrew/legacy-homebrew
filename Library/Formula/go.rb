@@ -1,53 +1,41 @@
 require 'formula'
-require 'hardware'
 
-class Go <Formula
-  head 'http://go.googlecode.com/hg/', :revision => 'release'
+class Go < Formula
   homepage 'http://golang.org'
+  url 'http://go.googlecode.com/files/go.go1.src.tar.gz'
+  version '1'
+  sha1 '6023623d083db1980965335b8ac4fa8b428fa484'
+
+  if ARGV.include? "--use-git"
+    head 'https://github.com/tav/go.git'
+  else
+    head 'http://go.googlecode.com/hg/'
+  end
 
   skip_clean 'bin'
 
-  def cruft
-    %w[src include test doc]
-  end
-
-  def which_arch
-    Hardware.is_64_bit? ? 'amd64' : '386'
+  def options
+    [["--use-git", "Use git mirror instead of official hg repository"]]
   end
 
   def install
-    ENV.j1 # http://github.com/mxcl/homebrew/issues/#issue/237
-    prefix.install %w[src include test doc misc]
-    Dir.chdir prefix
-    mkdir %w[pkg bin lib]
+    prefix.install Dir['*']
 
-    ENV['GOROOT'] = Dir.getwd
-    ENV['GOBIN'] = bin
-    ENV['GOARCH'] = which_arch
-    ENV['GOOS'] = 'darwin'
+    cd prefix do
+      # The version check is due to:
+      # http://codereview.appspot.com/5654068
+      (Pathname.pwd+'VERSION').write 'default' if ARGV.build_head?
 
-    ENV.prepend 'PATH', ENV['GOBIN'], ':'
-
-    Dir.chdir 'src' do
-      system "./all.bash"
-      # Keep the makefiles - http://github.com/mxcl/homebrew/issues/issue/1404
+      # Build only. Run `brew test go` to run distrib's tests.
+      cd 'src' do
+        system './make.bash'
+      end
     end
-
-    Dir['src/*'].each{|f| rm_rf f unless f.match(/^src\/Make/) }
-    rm_rf %w[include test doc]
   end
 
-  def caveats
-    <<-EOS.undent
-      In order to use Go, set the following in your ~/.profile:
-
-        export GOROOT=`brew --cellar`/go/#{version}
-        export GOBIN=#{HOMEBREW_PREFIX}/bin
-        export GOARCH=#{which_arch}
-        export GOOS=darwin
-
-      Presumably at some point the Go developers won't require us to
-      mutilate our shell environments in order to compile Go code...
-    EOS
+  def test
+    cd "#{prefix}/src" do
+      system './run.bash --no-rebuild'
+    end
   end
 end

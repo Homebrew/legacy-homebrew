@@ -1,24 +1,29 @@
 require 'formula'
 
-class SyslogNg <Formula
-  url 'http://www.balabit.com/downloads/files/syslog-ng/open-source-edition/3.0.8/source/syslog-ng_3.0.8.tar.gz'
+class SyslogNg < Formula
+  url 'http://www.balabit.com/downloads/files/syslog-ng/sources/3.2.5/source/syslog-ng_3.2.5.tar.gz'
   homepage 'http://www.balabit.com/network-security/syslog-ng/'
-  md5 '7107f5758dec4b774136f0f827b35258'
+  sha1 '5541cd6711b7a9d983601d8047b9a27d98ecbe9b'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'pcre'
   depends_on 'eventlog'
-
-  def patches
-    { :p0 =>
-      "http://trac.macports.org/export/70550/trunk/dports/sysutils/syslog-ng/files/patch-src-Makefile.in.diff"
-    }
-  end
+  depends_on 'glib'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    ENV.append 'LDFLAGS', '-levtlog -lglib-2.0' # help the linker find symbols
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--enable-dynamic-linking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}",
+                          "--localstatedir=#{var}"
+
+    # the HAVE_ENVIRON check in configure fails
+    # discussion for a fix is ongoing on the Homebrew mailing list, but for
+    # now this is sufficient
+    inreplace 'config.h', '#define HAVE_ENVIRON 1', ''
+
     system "make install"
   end
 end

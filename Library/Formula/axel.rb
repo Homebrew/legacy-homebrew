@@ -1,6 +1,6 @@
 require 'formula'
 
-class Axel <Formula
+class Axel < Formula
   url 'http://alioth.debian.org/frs/download.php/3016/axel-2.4.tar.bz2'
   homepage 'http://freshmeat.net/projects/axel/'
   md5 '5fd72e67a682d20874b9f6d073201c6a'

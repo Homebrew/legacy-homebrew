@@ -1,100 +1,178 @@
+require 'exceptions'
 require 'formula'
+require 'keg'
 require 'set'
+require 'tab'
+require 'bottles'
 
 class FormulaInstaller
-  @@attempted = Set.new
+  attr :f
+  attr :tab
+  attr :show_summary_heading, true
+  attr :ignore_deps, true
+  attr :install_bottle, true
+  attr :show_header, true
 
-  def initialize
-    @install_deps = true
+  def initialize ff, tab=nil
+    @f = ff
+    @tab = tab
+    @show_header = true
+    @ignore_deps = ARGV.include? '--ignore-dependencies' || ARGV.interactive?
+    @install_bottle = install_bottle? ff
+
+    check_install_sanity
   end
 
-  attr_writer :install_deps
-
-  def self.expand_deps f
-    deps = []
-    f.deps.collect do |dep|
-      dep = Formula.factory dep
-      deps += expand_deps dep
-      deps << dep
+  def check_install_sanity
+    if f.installed?
+      raise CannotInstallFormulaError, "#{f}-#{f.version} already installed"
     end
-    deps
-  end
 
-  def pyerr dep
-    brew_pip = ' brew install pip &&' unless Formula.factory('pip').installed?
-    <<-EOS.undent
-    Unsatisfied dependency, #{dep}
-    Homebrew does not provide Python dependencies, pip does:
-
-        #{brew_pip} pip install #{dep}
-    EOS
-  end
-  def plerr dep; <<-EOS.undent
-    Unsatisfied dependency, #{dep}
-    Homebrew does not provide Perl dependencies, cpan does:
-
-        cpan -i #{dep}
-    EOS
-  end
-  def rberr dep; <<-EOS.undent
-    Unsatisfied dependency "#{dep}"
-    Homebrew does not provide Ruby dependencies, rubygems does:
-
-        gem install #{dep}
-    EOS
-  end
-  def jrberr dep; <<-EOS.undent
-    Unsatisfied dependency "#{dep}"
-    Homebrew does not provide JRuby dependencies, rubygems does:
-
-        jruby -S gem install #{dep}
-    EOS
-  end
-
-  def check_external_deps f
-    return unless f.external_deps
-
-    f.external_deps[:python].each do |dep|
-      raise pyerr(dep) unless quiet_system "/usr/bin/env", "python", "-c", "import #{dep}"
+    # Building head-only without --HEAD is an error
+    if not ARGV.build_head? and f.standard.nil?
+      raise CannotInstallFormulaError, <<-EOS.undent
+        #{f} is a head-only formula
+        Install with `brew install --HEAD #{f.name}
+      EOS
     end
-    f.external_deps[:perl].each do |dep|
-      raise plerr(dep) unless quiet_system "/usr/bin/env", "perl", "-e", "use #{dep}"
+
+    # Building stable-only with --HEAD is an error
+    if ARGV.build_head? and f.unstable.nil?
+      raise CannotInstallFormulaError, "No head is defined for #{f.name}"
     end
-    f.external_deps[:ruby].each do |dep|
-      raise rberr(dep) unless quiet_system "/usr/bin/env", "ruby", "-rubygems", "-e", "require '#{dep}'"
-    end
-    f.external_deps[:jruby].each do |dep|
-      raise rberr(dep) unless quiet_system "/usr/bin/env", "jruby", "-rubygems", "-e", "require '#{dep}'"
-    end
+
+    f.recursive_deps.each do |dep|
+      if dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
+        raise CannotInstallFormulaError, "You must `brew link #{dep}' before #{f} can be installed"
+      end
+    end unless ignore_deps
+
+  rescue FormulaUnavailableError => e
+    # this is sometimes wrong if the dependency chain is more than one deep
+    # but can't easily fix this without a rewrite FIXME-brew2
+    e.dependent = f.name
+    raise
   end
 
-  def check_formula_deps f
-    FormulaInstaller.expand_deps(f).each do |dep|
-      begin
-        install_private dep unless dep.installed?
-      rescue
-        #TODO continue if this is an optional dep
-        raise
+  def install
+    # not in initialize so upgrade can unlink the active keg before calling this
+    # function but after instantiating this class so that it can avoid having to
+    # relink the active keg if possible (because it is slow).
+    if f.linked_keg.directory?
+      # some other version is already installed *and* linked
+      raise CannotInstallFormulaError, <<-EOS.undent
+        #{f}-#{f.linked_keg.realpath.basename} already installed
+        To install this version, first `brew unlink #{f}'
+      EOS
+    end
+
+    f.external_deps.each do |dep|
+      unless dep.satisfied?
+        puts dep.message
+        if dep.fatal? and not ignore_deps
+          raise UnsatisfiedRequirement.new(f, dep)
+        end
       end
     end
-  end
 
-  def install f
-    if @install_deps
-      check_external_deps f
-      check_formula_deps f
+    unless ignore_deps
+      needed_deps = f.recursive_deps.reject{ |d| d.installed? }
+      unless needed_deps.empty?
+        needed_deps.each do |dep|
+          if dep.explicitly_requested?
+            install_dependency dep
+          else
+            ARGV.filter_for_dependencies do
+              # Re-create the formula object so that args like `--HEAD` won't
+              # affect properties like the installation prefix. Also need to
+              # re-check installed status as the Formula may have changed.
+              dep = Formula.factory dep.path
+              install_dependency dep unless dep.installed?
+            end
+          end
+        end
+        # now show header as all the deps stuff has clouded the original issue
+        show_header = true
+      end
     end
-    install_private f
+
+    oh1 "Installing #{f}" if show_header
+
+    @@attempted ||= Set.new
+    raise FormulaInstallationAlreadyAttemptedError, f if @@attempted.include? f
+    @@attempted << f
+
+    if install_bottle
+      pour
+    else
+      build
+      clean
+    end
+
+    raise "Nothing was installed to #{f.prefix}" unless f.installed?
   end
 
-  private
+  def install_dependency dep
+    dep_tab = Tab.for_formula(dep)
+    outdated_keg = Keg.new(dep.linked_keg.realpath) rescue nil
 
-  def install_private f
-    return if @@attempted.include? f.name
-    @@attempted << f.name
+    fi = FormulaInstaller.new(dep, dep_tab)
+    fi.ignore_deps = true
+    fi.show_header = false
+    oh1 "Installing #{f} dependency: #{dep}"
+    outdated_keg.unlink if outdated_keg
+    fi.install
+    fi.caveats
+    fi.finish
+  ensure
+    # restore previous installation state if build failed
+    outdated_keg.link if outdated_keg and not dep.installed? rescue nil
+  end
+
+  def caveats
+    the_caveats = (f.caveats || "").strip
+    unless the_caveats.empty?
+      ohai "Caveats", f.caveats
+      @show_summary_heading = true
+    end
+
+    if f.keg_only?
+      ohai 'Caveats', f.keg_only_text
+      @show_summary_heading = true
+    else
+      audit_bin
+      audit_sbin
+      audit_lib
+      check_manpages
+      check_infopages
+      check_m4
+    end
+  end
+
+  def finish
+    ohai 'Finishing up' if ARGV.verbose?
+
+    unless f.keg_only?
+      link
+      check_PATH
+    end
+    fix_install_names
+
+    ohai "Summary" if ARGV.verbose? or show_summary_heading
+    print "#{f.prefix}: #{f.prefix.abv}"
+    print ", built in #{pretty_duration build_time}" if build_time
+    puts
+  end
+
+  def build_time
+    @build_time ||= Time.now - @start_time unless install_bottle or ARGV.interactive? or @start_time.nil?
+  end
+
+  def build
+    @start_time = Time.now
 
     # 1. formulae can modify ENV, so we must ensure that each
-    #    installation has a pristine ENV when it starts, forking now is 
+    #    installation has a pristine ENV when it starts, forking now is
     #    the easiest way to do this
     # 2. formulae have access to __END__ the only way to allow this is
     #    to make the formula script the executed script
@@ -102,24 +180,232 @@ class FormulaInstaller
     # I'm guessing this is not a good way to do this, but I'm no UNIX guru
     ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
 
-     begin #watch_out_for_spill do #disabled temporarily, see Issue #124
-      fork do
-        begin
-          read.close
-          exec '/usr/bin/nice', '/usr/bin/ruby', '-I', File.dirname(__FILE__), '-rinstall', f.path, '--', *ARGV.options_only
-        rescue => e
-          Marshal.dump(e, write)
-          write.close
-          exit! 1
-        end
-      end
-      ignore_interrupts do # because child proc will get it and marshall it back
+    args = ARGV.clone
+    unless args.include? '--fresh'
+      args.concat tab.used_options unless tab.nil?
+      args.uniq! # Just in case some dupes were added
+    end
+
+    fork do
+      begin
+        read.close
+        exec '/usr/bin/nice',
+             '/usr/bin/ruby',
+             '-I', Pathname.new(__FILE__).dirname,
+             '-rbuild',
+             '--',
+             f.path,
+             *args.options_only
+      rescue Exception => e
+        Marshal.dump(e, write)
         write.close
-        Process.wait
-        data = read.read
-        raise Marshal.load(data) unless data.nil? or data.empty?
-        raise "Suspicious installation failure" unless $?.success?
+        exit! 1
       end
     end
+
+    ignore_interrupts do # the fork will receive the interrupt and marshall it back
+      write.close
+      Process.wait
+      data = read.read
+      raise Marshal.load(data) unless data.nil? or data.empty?
+      raise "Suspicious installation failure" unless $?.success?
+
+      # Write an installation receipt (a Tab) to the prefix
+      Tab.for_install(f, args).write if f.installed?
+    end
+  end
+
+  def link
+    if f.linked_keg.directory? and f.linked_keg.realpath == f.prefix
+      opoo "This keg was marked linked already, continuing anyway"
+      # otherwise Keg.link will bail
+      f.linked_keg.unlink
+    end
+
+    keg = Keg.new(f.prefix)
+    keg.link
+  rescue Exception => e
+    onoe "The linking step did not complete successfully"
+    puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
+    puts "You can try again using `brew link #{f.name}'"
+    keg.unlink
+
+    ohai e, e.backtrace if ARGV.debug?
+    @show_summary_heading = true
+  end
+
+  def fix_install_names
+    Keg.new(f.prefix).fix_install_names
+  rescue Exception => e
+    onoe "Failed to fix install names"
+    puts "The formula built, but you may encounter issues using it or linking other"
+    puts "formula against it."
+    ohai e, e.backtrace if ARGV.debug?
+    @show_summary_heading = true
+  end
+
+  def clean
+    require 'cleaner'
+    Cleaner.new f
+  rescue Exception => e
+    opoo "The cleaning step did not complete successfully"
+    puts "Still, the installation was successful, so we will link it into your prefix"
+    ohai e, e.backtrace if ARGV.debug?
+    @show_summary_heading = true
+  end
+
+  def pour
+    fetched, downloader = f.fetch
+    f.verify_download_integrity fetched, f.bottle_sha1, "SHA1"
+    HOMEBREW_CELLAR.cd do
+      downloader.stage
+    end
+  end
+
+  ## checks
+
+  def paths
+    @paths ||= ENV['PATH'].split(':').map{ |p| File.expand_path p }
+  end
+
+  def in_aclocal_dirlist?
+    File.open("/usr/share/aclocal/dirlist") do |dirlist|
+      dirlist.grep(%r{^#{HOMEBREW_PREFIX}/share/aclocal$}).length > 0
+    end rescue false
+  end
+
+  def check_PATH
+    # warn the user if stuff was installed outside of their PATH
+    [f.bin, f.sbin].each do |bin|
+      if bin.directory? and bin.children.length > 0
+        bin = (HOMEBREW_PREFIX/bin.basename).realpath.to_s
+        unless paths.include? bin
+          opoo "#{bin} is not in your PATH"
+          puts "You can amend this by altering your ~/.bashrc file"
+          @show_summary_heading = true
+        end
+      end
+    end
+  end
+
+  def check_manpages
+    # Check for man pages that aren't in share/man
+    if (f.prefix+'man').exist?
+      opoo 'A top-level "man" directory was found.'
+      puts "Homebrew requires that man pages live under share."
+      puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
+      @show_summary_heading = true
+    end
+  end
+
+  def check_infopages
+    # Check for info pages that aren't in share/info
+    if (f.prefix+'info').exist?
+      opoo 'A top-level "info" directory was found.'
+      puts "Homebrew suggests that info pages live under share."
+      puts 'This can often be fixed by passing "--infodir=#{info}" to configure.'
+      @show_summary_heading = true
+    end
+  end
+
+  def check_jars
+    return unless File.exist? f.lib
+
+    jars = f.lib.children.select{|g| g.to_s =~ /\.jar$/}
+    unless jars.empty?
+      opoo 'JARs were installed to "lib".'
+      puts "Installing JARs to \"lib\" can cause conflicts between packages."
+      puts "For Java software, it is typically better for the formula to"
+      puts "install to \"libexec\" and then symlink or wrap binaries into \"bin\"."
+      puts "See \"activemq\", \"jruby\", etc. for examples."
+      puts "The offending files are:"
+      puts jars
+      @show_summary_heading = true
+    end
+  end
+
+  def check_non_libraries
+    return unless File.exist? f.lib
+
+    valid_libraries = %w(.a .dylib .framework .la .o .so)
+    non_libraries = f.lib.children.select do |g|
+      next if g.directory?
+      extname = g.extname
+      (extname != ".jar") and (not valid_libraries.include? extname)
+    end
+
+    unless non_libraries.empty?
+      opoo 'Non-libraries were installed to "lib".'
+      puts "Installing non-libraries to \"lib\" is bad practice."
+      puts "The offending files are:"
+      puts non_libraries
+      @show_summary_heading = true
+    end
+  end
+
+  def audit_bin
+    return unless File.exist? f.bin
+
+    non_exes = f.bin.children.select {|g| File.directory? g or not File.executable? g}
+
+    unless non_exes.empty?
+      opoo 'Non-executables were installed to "bin".'
+      puts "Installing non-executables to \"bin\" is bad practice."
+      puts "The offending files are:"
+      puts non_exes
+      @show_summary_heading = true
+    end
+  end
+
+  def audit_sbin
+    return unless File.exist? f.sbin
+
+    non_exes = f.sbin.children.select {|g| File.directory? g or not File.executable? g}
+
+    unless non_exes.empty?
+      opoo 'Non-executables were installed to "sbin".'
+      puts "Installing non-executables to \"sbin\" is bad practice."
+      puts "The offending files are:"
+      puts non_exes
+      @show_summary_heading = true
+    end
+  end
+
+  def audit_lib
+    check_jars
+    check_non_libraries
+  end
+
+  def check_m4
+    return if MacOS.xcode_version.to_f >= 4.3
+
+    # Check for m4 files
+    if Dir[f.share+"aclocal/*.m4"].length > 0 and not in_aclocal_dirlist?
+      opoo 'm4 macros were installed to "share/aclocal".'
+      puts "Homebrew does not append \"#{HOMEBREW_PREFIX}/share/aclocal\""
+      puts "to \"/usr/share/aclocal/dirlist\". If an autoconf script you use"
+      puts "requires these m4 macros, you'll need to add this path manually."
+      @show_summary_heading = true
+    end
+  end
+end
+
+
+class Formula
+  def keg_only_text
+    # Add indent into reason so undent won't truncate the beginnings of lines
+    reason = self.keg_only?.to_s.gsub(/[\n]/, "\n    ")
+    return <<-EOS.undent
+    This formula is keg-only, so it was not symlinked into #{HOMEBREW_PREFIX}.
+
+    #{reason}
+
+    Generally there are no consequences of this for you.
+    If you build your own software and it requires this formula, you'll need
+    to add its lib & include paths to your build variables:
+
+        LDFLAGS  -L#{lib}
+        CPPFLAGS -I#{include}
+    EOS
   end
 end

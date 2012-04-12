@@ -1,28 +1,46 @@
 require 'formula'
 
-class Memcached <Formula
-  url "http://memcached.googlecode.com/files/memcached-1.4.5.tar.gz"
-  homepage 'http://www.danga.com/memcached/'
-  sha1 'c7d6517764b82d23ae2de76b56c2494343c53f02'
+class Memcached < Formula
+  url "http://memcached.googlecode.com/files/memcached-1.4.13.tar.gz"
+  homepage 'http://memcached.org/'
+  sha1 'd9a48d222de53a2603fbab6156d48d0e8936ee92'
 
   depends_on 'libevent'
 
-  def install
-    system "./configure", "--prefix=#{prefix}"
-    system "make install"
-
-    (prefix+'com.danga.memcached.plist').write startup_plist
+  def options
+    [
+      ["--enable-sasl", "Enable SASL support -- disables ASCII protocol!"],
+      ["--enable-sasl-pwdb", "Enable SASL with memcached's own plain text password db support -- disables ASCII protocol!"],
+    ]
   end
 
-  def caveats; <<-EOS
-You can enabled memcached to automatically load on login with:
-    cp #{prefix}/com.danga.memcached.plist ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/com.danga.memcached.plist
+  def install
+    args = ["--prefix=#{prefix}"]
+    args << "--enable-sasl" if ARGV.include? "--enable-sasl"
+    args << "--enable-sasl-pwdb" if ARGV.include? "--enable-sasl-pwdb"
 
-Or start it manually:
-    #{HOMEBREW_PREFIX}/bin/memcached
+    system "./configure", *args
+    system "make install"
 
-Add "-d" to start it as a daemon.
+    plist_path.write startup_plist
+    plist_path.chmod 0644
+  end
+
+  def caveats; <<-EOS.undent
+    You can enable memcached to automatically load on login with:
+        mkdir -p ~/Library/LaunchAgents
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
+        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+
+    Or start it manually:
+        #{HOMEBREW_PREFIX}/bin/memcached
+
+    Add "-d" to start it as a daemon.
     EOS
   end
 
@@ -33,14 +51,14 @@ Add "-d" to start it as a daemon.
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>com.danga.memcached</string>
+  <string>#{plist_name}</string>
   <key>KeepAlive</key>
   <true/>
   <key>ProgramArguments</key>
   <array>
     <string>#{HOMEBREW_PREFIX}/bin/memcached</string>
     <string>-l</string>
-    <string>127.0.0.1</string>
+    <string>localhost</string>
   </array>
   <key>RunAtLoad</key>
   <true/>

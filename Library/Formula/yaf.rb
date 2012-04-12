@@ -1,16 +1,19 @@
 require 'formula'
 
-class Yaf <Formula
-  url 'http://tools.netsa.cert.org/releases/yaf-1.0.0.2.tar.gz'
+class Yaf < Formula
   homepage 'http://tools.netsa.cert.org/yaf/'
-  md5 '3ea2dd554025ba9978c914386dd59d9c'
+  url 'http://tools.netsa.cert.org/releases/yaf-2.1.2.tar.gz'
+  md5 '77ab8927db0cb28965d70dbceb65a1f4'
 
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'libfixbuf'
 
-  def install
-    fails_with_llvm "Please see http://github.com/mxcl/homebrew/issues/issue/2215 for details."
+  fails_with :llvm do
+    cause "Undefined symbols during compile"
+  end
 
+  def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"

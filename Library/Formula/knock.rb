@@ -1,6 +1,6 @@
 require 'formula'
 
-class Knock <Formula
+class Knock < Formula
   url 'http://www.zeroflux.org/proj/knock/files/knock-0.5.tar.gz'
   homepage 'http://www.zeroflux.org/projects/knock'
   md5 'ca09d61458974cff90a700aba6120891'

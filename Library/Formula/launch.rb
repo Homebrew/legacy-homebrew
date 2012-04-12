@@ -1,6 +1,6 @@
 require 'formula'
 
-class Launch <Formula
+class Launch < Formula
   url 'http://web.sabi.net/nriley/software/launch-1.1.tar.gz'
   homepage 'http://web.sabi.net/nriley/software/'
   md5 'bcd5179d5b519248a717aa73f3819e00'

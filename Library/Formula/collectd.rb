@@ -1,14 +1,23 @@
 require 'formula'
 
-class Collectd <Formula
-  url 'http://collectd.org/files/collectd-4.10.1.tar.bz2'
+class Collectd < Formula
+  url 'http://collectd.org/files/collectd-5.0.2.tar.bz2'
   homepage 'http://collectd.org/'
-  md5 '8cd79b4ebdb9dbeb51ba52d3463a06ef'
+  md5 '47f70ae20801f10be355dc8109d696aa'
+
+  depends_on 'pkg-config' => :build
 
   skip_clean :all
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    # Use system Python; doesn't compile against 2.7
+    args = ["--disable-debug", "--disable-dependency-tracking",
+            "--with-python=/usr/bin",
+            "--prefix=#{prefix}",
+            "--localstatedir=#{var}"]
+    args << "--disable-embedded-perl" if MacOS.leopard?
+
+    system "./configure", *args
     system "make install"
   end
 end

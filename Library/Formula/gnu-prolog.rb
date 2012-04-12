@@ -1,17 +1,32 @@
 require 'formula'
 
-class GnuProlog <Formula
-  url 'http://gprolog.univ-paris1.fr/unstable/gprolog-20100713.tgz'
+class GnuProlog < Formula
   homepage 'http://www.gprolog.org/'
-  md5 '0f882e352b886a5ddb59bcab457fa78e'
+  url 'http://gprolog.univ-paris1.fr/gprolog-1.4.0.tar.gz'
+  md5 'cc944e5637a04a9184c8aa46c947fd16'
 
   skip_clean :all
+
+  # Support OSX x86-64. See:
+  # https://github.com/mxcl/homebrew/pull/7428
+  # http://lists.gnu.org/archive/html/users-prolog/2011-09/msg00004.html
+  # Includes previous inreplace fix from:
+  # http://lists.gnu.org/archive/html/users-prolog/2011-07/msg00013.html
+  def patches
+    "https://gist.github.com/raw/1191268/35db85d5cfe5ecd5699286bdd945856ea9cee1a1/patch-x86_64-darwin.diff"
+  end
 
   def install
     ENV.j1 # make won't run in parallel
 
-    Dir.chdir 'src' do
-      system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    cd 'src' do
+      args = ["--prefix=#{prefix}"]
+
+      if MacOS.prefer_64_bit?
+        args << "--build=x86_64-apple-darwin" << "--host=x86_64-apple-darwin"
+      end
+
+      system "./configure", *args
       system "make"
       system "make install-strip"
     end

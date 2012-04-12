@@ -1,9 +1,9 @@
 require 'formula'
 
-class Ccache <Formula
-  url 'http://samba.org/ftp/ccache/ccache-2.4.tar.gz'
+class Ccache < Formula
+  url 'http://samba.org/ftp/ccache/ccache-3.1.6.tar.bz2'
   homepage 'http://ccache.samba.org/'
-  md5 '73c1ed1e767c1752dd0f548ec1e66ce7'
+  md5 '343dc9b642e1d2af1e6bd8e474dde92e'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
@@ -20,9 +20,9 @@ class Ccache <Formula
 
     %w[
       cc
-      gcc gcc2 gcc3 gcc-3.3 gcc-4.0
-      c++ c++3 c++-3.3 c++-4.0
-      g++ g++2 g++3 g++-3.3 g++-4.0
+      gcc gcc2 gcc3 gcc-3.3 gcc-4.0 gcc-4.2
+      c++ c++3 c++-3.3 c++-4.0 c++-4.2
+      g++ g++2 g++3 g++-3.3 g++-4.0 g++-4.2
     ].each do |prog|
       ln_s bin+"ccache", libexec + prog
     end
@@ -33,6 +33,10 @@ class Ccache <Formula
       To install symlinks for compilers that will automatically use
       ccache, add this folder to the front of your PATH:
         #{libexec}
+
+      If this is an upgrade and you have previously added the symlinks to
+      your PATH, you will need to modify it to the path specified above so
+      it points to the new version.
 
       NOTE: ccache can prevent some software from compiling.
     EOS

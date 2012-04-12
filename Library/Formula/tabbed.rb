@@ -1,6 +1,6 @@
 require 'formula'
 
-class Tabbed <Formula
+class Tabbed < Formula
   url 'http://dl.suckless.org/tools/tabbed-0.3.tar.gz'
   homepage 'http://tools.suckless.org/tabbed'
   md5 '4a30458f9adc38db549f735b8fb6451b'

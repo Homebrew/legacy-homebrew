@@ -1,31 +1,33 @@
 require 'formula'
 
-class Valgrind <Formula
+class Valgrind < Formula
   homepage 'http://www.valgrind.org/'
 
-  # 3.5.0 doesn't work well in Snow Leopard, or at all in 64-bit mode
+  # Valgrind 3.7.0 drops support for OS X 10.5
   if MACOS_VERSION >= 10.6
-    url "svn://svn.valgrind.org/valgrind/trunk", :revision => "11288"
-    version '3.6-pre'
+    url 'http://valgrind.org/downloads/valgrind-3.7.0.tar.bz2'
+    md5 'a855fda56edf05614f099dca316d1775'
   else
-    url 'http://www.valgrind.org/downloads/valgrind-3.5.0.tar.bz2'
-    md5 'f03522a4687cf76c676c9494fcc0a517'
+    url "http://valgrind.org/downloads/valgrind-3.6.1.tar.bz2"
+    md5 "2c3aa122498baecc9d69194057ca88f5"
   end
 
-  head "svn://svn.valgrind.org/valgrind/trunk"
-
-  depends_on 'pkg-config'
-  depends_on 'boost'
+  skip_clean 'lib'
 
   def install
-    system "./autogen.sh" if File.exists? "autogen.sh"
-
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
-    if snow_leopard_64?
+    if MacOS.prefer_64_bit?
       args << "--enable-only64bit" << "--build=amd64-darwin"
+    else
+      args << "--enable-only32bit"
     end
 
     system "./configure", *args
+    system "make"
     system "make install"
+  end
+
+  def test
+    system "valgrind ls -l"
   end
 end

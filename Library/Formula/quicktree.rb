@@ -1,6 +1,6 @@
 require 'formula'
 
-class Quicktree <Formula
+class Quicktree < Formula
   url 'ftp://ftp.sanger.ac.uk/pub4/resources/software/quicktree/quicktree.tar.gz'
   version '1.1'
   homepage 'http://www.sanger.ac.uk/resources/software/quicktree/'

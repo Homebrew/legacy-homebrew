@@ -1,22 +1,47 @@
 require 'formula'
 
-class R <Formula
-  url 'http://cran.r-project.org/src/base/R-2/R-2.11.1.tar.gz'
-  homepage 'http://www.R-project.org/'
-  md5 '7421108ade3e9223263394b9bbe277ce'
+def valgrind?
+  ARGV.include? '--with-valgrind'
+end
+
+class RBashCompletion < Formula
+  # This is the same script that Debian packages use.
+  url 'http://rcompletion.googlecode.com/svn-history/r28/trunk/bash_completion/R', :using => :curl
+  version 'r28'
+  md5 'd5493f7a8422147c2f5c63c6a18ebda4'
+end
+
+class R < Formula
+  homepage 'http://www.r-project.org'
+  url 'http://cran.r-project.org/src/base/R-2/R-2.15.0.tar.gz'
+  md5 '905f638990492618559202cc1e48a867'
+
+  depends_on 'readline'
+  depends_on 'libtiff'
+  depends_on 'jpeg'
+
+  depends_on 'valgrind' if valgrind?
+
+  def options
+    [
+      ['--with-valgrind', 'Compile an unoptimized build with support for the Valgrind debugger.']
+    ]
+  end
 
   def install
-    unless `/usr/bin/which gfortran`.chomp.size > 0
-      opoo 'No gfortran found in path'
-      puts "You'll need to `brew install gfortran` or otherwise have a copy"
-      puts "of gfortran in your path for this brew to work."
-    end
+    ENV.Og if valgrind?
+    ENV.fortran
+    ENV.x11 # So PNG gets added to the x11 and cairo plotting devices
 
-    ENV["FCFLAGS"] = ENV["CFLAGS"]
-    ENV["FFLAGS"]  = ENV["CFLAGS"]
+    args = [
+      "--prefix=#{prefix}",
+      "--with-aqua",
+      "--enable-R-framework",
+      "--with-lapack"
+    ]
+    args << '--with-valgrind-instrumentation=2' if valgrind?
 
-    system "./configure", "--prefix=#{prefix}", "--with-aqua", "--enable-R-framework",
-           "--with-lapack"
+    system "./configure", *args
     system "make"
     ENV.j1 # Serialized installs, please
     system "make install"
@@ -30,13 +55,22 @@ class R <Formula
     ln_s prefix+"R.framework/Resources/bin/Rscript", bin
     ln_s prefix+"R.framework/Resources/man1/R.1", man1
     ln_s prefix+"R.framework/Resources/man1/Rscript.1", man1
+
+    bash_dir = prefix + 'etc/bash_completion.d'
+    bash_dir.mkpath
+    RBashCompletion.new.brew { bash_dir.install 'R' }
   end
 
   def caveats; <<-EOS.undent
-    R requires a fortran compiler to install.
-    You can install gfortran using Homebrew:
-        brew install gfortran
+    R.framework was installed to:
+      #{prefix}/R.framework
 
+    To use this Framework with IDEs such as RStudio, it must be linked
+    to the standard OS X location:
+      ln -s "#{prefix}/R.framework" /Library/Frameworks
+
+    To enable rJava support, run the following command:
+      R CMD javareconf JAVA_CPPFLAGS=-I/System/Library/Frameworks/JavaVM.framework/Headers
     EOS
   end
 end

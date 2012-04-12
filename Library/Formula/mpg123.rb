@@ -1,12 +1,12 @@
 require 'formula'
 
-class Mpg123 <Formula
-  url 'http://downloads.sourceforge.net/project/mpg123/mpg123/1.12.1/mpg123-1.12.1.tar.bz2'
+class Mpg123 < Formula
   homepage 'http://www.mpg123.de/'
-  md5 'e7d810a75d22954169f1530a436aca4c'
+  url 'http://downloads.sourceforge.net/project/mpg123/mpg123/1.13.7/mpg123-1.13.7.tar.bz2'
+  sha1 '33b71c932b87004f3c8fed527b1f9a4b5f4337b2'
 
+  # mpg123 can't find its plugins if there are no la files
   def skip_clean? path
-    # mpg123 can't find its plugins if there are no la files
     path.extname == '.la'
   end
 
@@ -17,7 +17,7 @@ class Mpg123 <Formula
             "--with-audio=coreaudio",
             "--with-default-audio=coreaudio"]
 
-    if snow_leopard_64?
+    if MacOS.prefer_64_bit?
       args << "--with-cpu=x86-64"
     else
       args << "--with-cpu=sse_alone"
@@ -25,10 +25,9 @@ class Mpg123 <Formula
 
     system "./configure", *args
 
-    # ./configure incorrectly detects 10.5 as 10.4; fix it.
     ['.', 'src', 'src/output', 'src/libmpg123'].each do |path|
       inreplace "#{path}/Makefile" do |s|
-        s.gsub! "-mmacosx-version-min=10.4 -isysroot /Developer/SDKs/MacOSX10.4u.sdk", ""
+        # why do we do this?
         s.change_make_var! "LDFLAGS", "-Wl,-read_only_relocs,suppress"
       end
     end

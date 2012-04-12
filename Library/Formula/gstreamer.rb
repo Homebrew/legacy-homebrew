@@ -1,11 +1,11 @@
 require 'formula'
 
-class Gstreamer <Formula
+class Gstreamer < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-0.10.30.tar.bz2'
-  md5 'de01f73f71d97c5854badd363ca06509'
+  url 'http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-0.10.35.tar.bz2'
+  md5 '4a0a00edad7a2c83de5211ca679dfaf9'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'glib'
 

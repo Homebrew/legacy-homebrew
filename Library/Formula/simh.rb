@@ -1,6 +1,6 @@
 require 'formula'
 
-class Simh <Formula
+class Simh < Formula
   url 'http://simh.trailing-edge.com/sources/simhv38-1.zip'
   version '3.8-1'
   homepage 'http://simh.trailing-edge.com/'

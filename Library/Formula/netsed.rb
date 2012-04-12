@@ -1,6 +1,6 @@
 require 'formula'
 
-class Netsed <Formula
+class Netsed < Formula
   url 'http://packetstormsecurity.org/UNIX/misc/netsed.tgz'
   homepage 'http://www.securiteam.com/tools/5IP022A35W.html'
   version '0.01b'

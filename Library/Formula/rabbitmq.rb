@@ -1,20 +1,23 @@
 require 'formula'
 
-class Rabbitmq <Formula
-  homepage 'http://rabbitmq.com'
-  url 'http://mirror.rabbitmq.com/releases/rabbitmq-server/v1.8.1/rabbitmq-server-1.8.1.tar.gz'
-  md5 '2471bdf0ba77b73aed1cc8eddc10aa19'
+class Rabbitmq < Formula
+  homepage 'http://www.rabbitmq.com'
+  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.7.1/rabbitmq-server-2.7.1.tar.gz'
+  md5 '44eb09d2dff8ce641a1fe7f255a4c546'
 
   depends_on 'erlang'
-  depends_on 'simplejson' => :python if MACOS_VERSION < 10.6
+  depends_on 'simplejson' => :python if MacOS.leopard?
 
   def patches
-    # remove man pages pending necessary formulae to build them:
-    # xmlto, gnu-getopts, docbook-xml, docbook-xsl, docbook-4.5
-    DATA
+      # Fixes build on 10.5, already fixed upstream but was not in 2.7.1 release
+      # https://github.com/rabbitmq/rabbitmq-public-umbrella/commit/b46edc7433
+      DATA
   end
 
   def install
+    # Building the manual requires additional software, so skip it.
+    inreplace "Makefile", "install: install_bin install_docs", "install: install_bin"
+
     target_dir = "#{lib}/rabbitmq/erlang/lib/rabbitmq-#{version}"
     system "make"
     ENV['TARGET_DIR'] = target_dir
@@ -22,48 +25,90 @@ class Rabbitmq <Formula
     ENV['SBIN_DIR'] = sbin
     system "make install"
 
-    (etc + "rabbitmq").mkpath
-    (var + "lib/rabbitmq").mkpath
-    (var + "log/rabbitmq").mkpath
+    (etc+'rabbitmq').mkpath
+    (var+'lib/rabbitmq').mkpath
+    (var+'log/rabbitmq').mkpath
 
-    %w{rabbitmq-server rabbitmq-multi rabbitmqctl rabbitmq-env}.each do |script|
-      inreplace sbin+script do |contents|
-        contents.gsub! '/etc/rabbitmq', "#{etc}/rabbitmq"
-        contents.gsub! '/var/lib/rabbitmq', "#{var}/lib/rabbitmq"
-        contents.gsub! '/var/log/rabbitmq', "#{var}/log/rabbitmq"
+    %w{rabbitmq-server rabbitmqctl rabbitmq-env rabbitmq-plugins}.each do |script|
+      inreplace sbin+script do |s|
+        s.gsub! '/etc/rabbitmq', "#{etc}/rabbitmq"
+        s.gsub! '/var/lib/rabbitmq', "#{var}/lib/rabbitmq"
+        s.gsub! '/var/log/rabbitmq', "#{var}/log/rabbitmq"
       end
     end
 
     # RabbitMQ Erlang binaries are installed in lib/rabbitmq/erlang/lib/rabbitmq-x.y.z/ebin
     # therefore need to add this path for erl -pa
-    inreplace sbin+'rabbitmq-env', '${SCRIPT_DIR}/..', "#{target_dir}"
+    inreplace sbin+'rabbitmq-env', '${SCRIPT_DIR}/..', target_dir
+
+    plist_path.write startup_plist
+    plist_path.chmod 0644
+  end
+
+  def caveats
+    <<-EOS.undent
+    If this is your first install, automatically load on login with:
+        mkdir -p ~/Library/LaunchAgents
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
+        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+
+      To start rabbitmq-server manually:
+        rabbitmq-server
+    EOS
+  end
+
+  def startup_plist
+    return <<-EOPLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
+"http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>#{plist_name}</string>
+    <key>Program</key>
+    <string>#{HOMEBREW_PREFIX}/sbin/rabbitmq-server</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>UserName</key>
+    <string>#{`whoami`.chomp}</string>
+    <!-- need erl in the path -->
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>PATH</key>
+      <string>/usr/local/sbin:/usr/bin:/bin:/usr/local/bin</string>
+    </dict>
+  </dict>
+</plist>
+    EOPLIST
   end
 end
 
 __END__
-diff --git a/Makefile b/Makefile
-index a66d064..c774720 100644
---- a/Makefile
-+++ b/Makefile
-@@ -253,7 +253,7 @@ $(SOURCE_DIR)/%_usage.erl:
- 
- docs_all: $(MANPAGES) $(WEB_MANPAGES)
- 
--install: all docs_all install_dirs
-+install: all install_dirs
- 	cp -r ebin include LICENSE LICENSE-MPL-RabbitMQ INSTALL $(TARGET_DIR)
- 
- 	chmod 0755 scripts/*
-@@ -261,12 +261,6 @@ install: all docs_all install_dirs
- 		cp scripts/$$script $(TARGET_DIR)/sbin; \
- 		[ -e $(SBIN_DIR)/$$script ] || ln -s $(SCRIPTS_REL_PATH)/$$script $(SBIN_DIR)/$$script; \
- 	done
--	for section in 1 5; do \
--		mkdir -p $(MAN_DIR)/man$$section; \
--		for manpage in $(DOCS_DIR)/*.$$section.gz; do \
--			cp $$manpage $(MAN_DIR)/man$$section; \
--		done; \
--	done
- 
- install_dirs:
- 	@ OK=true && \
+diff --git a/plugins-src/do-package.mk b/plugins-src/do-package.mk
+index d7f8752..023042a 100644
+--- a/plugins-src/do-package.mk
++++ b/plugins-src/do-package.mk
+@@ -286,7 +286,7 @@ $(eval $(foreach D,$(TEST_SOURCE_DIRS),$(call package_source_dir_targets,$(D),$(
+ define run_broker
+ 	rm -rf $(TEST_TMPDIR)
+ 	mkdir -p $(foreach D,log plugins $(NODENAME),$(TEST_TMPDIR)/$(D))
+-	cp -a $(PACKAGE_DIR)/dist/*.ez $(TEST_TMPDIR)/plugins
++	cp -p $(PACKAGE_DIR)/dist/*.ez $(TEST_TMPDIR)/plugins
+ 	$(call copy,$(3),$(TEST_TMPDIR)/plugins)
+ 	rm -f $(TEST_TMPDIR)/plugins/rabbit_common*.ez
+ 	for plugin in \
+@@ -375,7 +375,7 @@ $(APP_DONE): $(EBIN_BEAMS) $(INCLUDE_HRLS) $(APP_FILE) $(CONSTRUCT_APP_PREREQS)
+ 	mkdir -p $(APP_DIR)/ebin $(APP_DIR)/include
+ 	@echo [elided] copy beams to ebin
+ 	@$(call copy,$(EBIN_BEAMS),$(APP_DIR)/ebin)
+-	cp -a $(APP_FILE) $(APP_DIR)/ebin/$(APP_NAME).app
++	cp -p $(APP_FILE) $(APP_DIR)/ebin/$(APP_NAME).app
+ 	$(call copy,$(INCLUDE_HRLS),$(APP_DIR)/include)
+ 	$(construct_app_commands)
+ 	touch $$@

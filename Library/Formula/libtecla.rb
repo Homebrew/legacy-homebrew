@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libtecla <Formula
+class Libtecla < Formula
   url 'http://www.astro.caltech.edu/~mcs/tecla/libtecla-1.6.1.tar.gz'
   homepage 'http://www.astro.caltech.edu/~mcs/tecla/index.html'
   md5 '1892c8db9fecd38ed686b3ccf72a569b'

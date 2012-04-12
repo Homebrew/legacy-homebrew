@@ -1,6 +1,6 @@
 require 'formula'
 
-class Foremost <Formula
+class Foremost < Formula
   url 'http://foremost.sourceforge.net/pkg/foremost-1.5.7.tar.gz'
   homepage 'http://foremost.sourceforge.net/'
   md5 '860119c49665c2a3fb2b0b1d3dbad02a'

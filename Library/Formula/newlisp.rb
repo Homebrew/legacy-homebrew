@@ -1,23 +1,33 @@
 require 'formula'
 
-class Newlisp <Formula
-  url 'http://www.newlisp.org/downloads/newlisp-10.2.8.tgz'
+class Newlisp < Formula
   homepage 'http://www.newlisp.org/'
-  md5 '4b728ce4d25cc6cbb4f53f8c98a02733'
+  url 'http://www.newlisp.org/downloads/newlisp-10.4.0.tgz'
+  md5 'a56ed9130a403520b08059f17b81965a'
 
   depends_on 'readline'
 
   def install
-    # Minimal install as describe in the README
-    system "./configure"
+    # Required to use our configuration
+    ENV.append_to_cflags "-DNEWCONFIG -c"
+
+    system "./configure-alt", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make"
 
-    bin.install 'newlisp'
+    # Many .lsp files assume the interpreter will be installed in /usr/bin
+    Dir["**/*.lsp"].each do |f|
+      inreplace f do |s|
+        s.gsub! "!#/usr/bin/newlisp", "!#/usr/bin/env newlisp"
+        s.gsub! "/usr/bin/newlisp", "#{bin}/newlisp"
+      end
+    end
+
+    system "make check"
+    system "make install"
   end
 
-  def caveats; <<-EOS.undent
-    Because of hardcoded paths in the newLISP source,
-    this formula does not install the Java-based IDE.
-    EOS
+  # Use the IDE to test a complete installation
+  def test
+    system "newlisp-edit"
   end
 end

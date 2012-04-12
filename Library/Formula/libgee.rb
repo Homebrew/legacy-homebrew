@@ -1,9 +1,9 @@
 require 'formula'
 
-class Libgee <Formula
-  url 'http://download.gnome.org/sources/libgee/0.5/libgee-0.5.2.tar.bz2'
+class Libgee < Formula
+  url 'http://download.gnome.org/sources/libgee/0.6/libgee-0.6.3.tar.bz2'
   homepage 'http://live.gnome.org/Libgee'
-  md5 'fc5a36eb5f61154a1456cbb8b1798e41'
+  sha256 'fc3479d692752289c6c1e312fdd79d1f9fdf5322d16fa8f4faf0d6a5e61c5af8'
 
   depends_on 'vala'
 

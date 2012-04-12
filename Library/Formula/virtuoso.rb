@@ -1,9 +1,9 @@
 require 'formula'
 
-class Virtuoso <Formula
-  url 'http://downloads.sourceforge.net/project/virtuoso/virtuoso/6.1.1/virtuoso-opensource-6.1.1.tar.gz'
+class Virtuoso < Formula
   homepage 'http://virtuoso.openlinksw.com/wiki/main/'
-  md5 '0695bffacf78e53733c27e96c9d7f9e7'
+  url 'http://downloads.sourceforge.net/project/virtuoso/virtuoso/6.1.5/virtuoso-opensource-6.1.5.tar.gz'
+  md5 '61b53395e14a11dd7e7715b50261b9eb'
 
   # If gawk isn't found, make fails deep into the process.
   depends_on 'gawk'
@@ -11,7 +11,7 @@ class Virtuoso <Formula
   skip_clean :all
 
   def install
-    ENV.m64 if snow_leopard_64?
+    ENV.m64 if MacOS.prefer_64_bit?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end

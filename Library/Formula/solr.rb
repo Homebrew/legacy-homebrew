@@ -1,31 +1,31 @@
 require 'formula'
 
-class Solr <Formula
-  url 'http://apache.deathculture.net/lucene/solr/1.4.1/apache-solr-1.4.1.tgz'
+class Solr < Formula
+  url 'http://www.apache.org/dyn/closer.cgi?path=lucene/solr/3.5.0/apache-solr-3.5.0.tgz'
   homepage 'http://lucene.apache.org/solr/'
-  md5 '258a020ed8c3f44e13b09e8ae46a1c84'
+  md5 'b7be2fc190b26377ced5ae6055ed43e2'
 
   def script; <<-EOS.undent
     #!/bin/sh
     if [ -z "$1" ]; then
       echo "Usage: $ solr path/to/config/dir"
     else
-      cd #{prefix}/example && java -Dsolr.solr.home=$1 -jar start.jar
+      cd #{libexec}/example && java -Dsolr.solr.home=$1 -jar start.jar
     fi
     EOS
   end
 
   def install
-    prefix.install Dir['*']
+    libexec.install Dir['*']
     (bin+'solr').write script
   end
 
   def caveats; <<-EOS.undent
     To start solr:
-      $ solr path/to/solr/config/dir
+        solr path/to/solr/config/dir
 
     See the solr homepage for more setup information:
-      $ brew home solr
+        brew home solr
     EOS
   end
 end

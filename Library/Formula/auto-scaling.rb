@@ -1,13 +1,10 @@
 require 'formula'
 
-# Require ec2-api-tools to get the base class
-require "#{File.dirname __FILE__}/ec2-api-tools.rb"
-
-class AutoScaling <AmazonWebServicesFormula
-  version  '1.0.9.0'
-  homepage 'http://developer.amazonwebservices.com/connect/entry.jspa?externalID=2535&categoryID=251'
-  url      'http://ec2-downloads.s3.amazonaws.com/AutoScaling-2009-05-15.zip'
-  md5      'a8410272127432d01d5f1a90d976b822'
+class AutoScaling < AmazonWebServicesFormula
+  version  '1.0.49.1'
+  homepage 'http://aws.amazon.com/developertools/2535'
+  url      'http://ec2-downloads.s3.amazonaws.com/AutoScaling-2011-01-01.zip'
+  md5      '9d94f533743c5e9c65dd76f69666e739'
 
   def install
     standard_install

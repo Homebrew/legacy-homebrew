@@ -1,9 +1,9 @@
 require 'formula'
 
-class Fftw <Formula
+class Fftw < Formula
   homepage 'http://www.fftw.org'
-  url 'http://www.fftw.org/fftw-3.2.2.tar.gz'
-  md5 'b616e5c91218cc778b5aa735fefb61ae'
+  url 'http://www.fftw.org/fftw-3.3.1.tar.gz'
+  md5 '76f5f3c7577613d0fbedaae77450ac91'
 
   def install
     args = ["--enable-shared",
@@ -13,7 +13,7 @@ class Fftw <Formula
             "--disable-dependency-tracking"]
 
     # check for gfortran
-    args << "--disable-fortran" if `/usr/bin/which gfortran`.chomp.empty?
+    args << "--disable-fortran" unless which 'gfortran'
 
     # single precision
     # enable-sse only works with single

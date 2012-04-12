@@ -1,9 +1,9 @@
 require 'formula'
 
-class GambitScheme <Formula
-  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.6/source/gambc-v4_6_0.tgz'
+class GambitScheme < Formula
   homepage 'http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page'
-  md5 '4f0e8b3e90a96f2203cbaf1e1cc1388a'
+  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.6/source/gambc-v4_6_5.tgz'
+  sha256 '54de513a78f0fb1841ef1411b8f2d64a2bd6810cee7554fe408b0ba79ff00910'
 
   def options
     [
@@ -12,23 +12,23 @@ class GambitScheme <Formula
     ]
   end
 
+  skip_clean :all
+
+  fails_with :llvm do
+    build 2335
+    cause "ld crashes during the build process or segfault at runtime"
+  end
+
   def install
-    fails_with_llvm "ld crashes during the build process"
-    # Gambit Scheme doesn't like full optimizations
-    ENV.O2
+    args = ["--disable-debug",
+            "--prefix=#{prefix}",
+            "--infodir=#{info}",
+            # Recommended to improve the execution speed and compactness
+            # of the generated executables. Increases compilation times.
+            "--enable-single-host"]
+    args << "--enable-shared" if ARGV.include? '--enable-shared'
 
-    configure_args = [
-      "--prefix=#{prefix}",
-      "--infodir=#{info}",
-      "--disable-debug",
-      # Recommended to improve the execution speed and compactness
-      # of the generated executables. Increases compilation times.
-      "--enable-single-host"
-    ]
-
-    configure_args << "--enable-shared" if ARGV.include? '--enable-shared'
-
-    system "./configure", *configure_args
+    system "./configure", *args
     system "make check" if ARGV.include? '--with-check'
 
     ENV.j1

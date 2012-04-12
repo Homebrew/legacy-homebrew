@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mktorrent <Formula
+class Mktorrent < Formula
   url      'http://downloads.sourceforge.net/mktorrent/mktorrent-1.0.tar.gz'
   homepage 'http://mktorrent.sourceforge.net/'
   md5      '0da00209da96a0dc39efbb6eb5b4d8ff'

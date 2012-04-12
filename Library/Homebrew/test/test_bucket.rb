@@ -5,7 +5,6 @@ ARGV.extend(HomebrewArgvExtension)
 
 require 'test/testball'
 require 'utils'
-require 'brew.h'
 
 class MockFormula <Formula
   def initialize url
@@ -33,8 +32,10 @@ class BeerTasting < Test::Unit::TestCase
     assert_nothing_raised do
       MockFormula.new 'test-0.1.tar.gz'
       MockFormula.new 'test-0.1.tar.bz2'
+      MockFormula.new 'test-0.1.tar.xz'
       MockFormula.new 'test-0.1.tgz'
       MockFormula.new 'test-0.1.bgz'
+      MockFormula.new 'test-0.1.txz'
       MockFormula.new 'test-0.1.zip'
     end
   end
@@ -79,19 +80,24 @@ class BeerTasting < Test::Unit::TestCase
   # end
   
   def test_brew_h
+    require 'cmd/info'
+    require 'cmd/prune'
+    require 'cleaner'
+
     nostdout do
       assert_nothing_raised do
         f=TestBall.new
-        make f.url
-        info f
-        clean f
-        prune
+        Homebrew.info_formula f
+        Cleaner.new f
+        Homebrew.prune
         #TODO test diy function too
       end
     end
   end
 
   def test_brew_cleanup
+    require 'cmd/cleanup'
+
     f1=TestBall.new
     f1.instance_eval { @version = "0.1" }
     f2=TestBall.new
@@ -110,7 +116,7 @@ class BeerTasting < Test::Unit::TestCase
     assert f3.installed?
 
     nostdout do
-      cleanup f3
+      Homebrew.cleanup_formula f3
     end
 
     assert !f1.installed?
@@ -143,7 +149,8 @@ class BeerTasting < Test::Unit::TestCase
         
         abcd=orig_abcd=HOMEBREW_CACHE+'abcd'
         FileUtils.cp ABS__FILE__, abcd
-        abcd=HOMEBREW_PREFIX.install abcd
+        installed_paths=HOMEBREW_PREFIX.install abcd
+        abcd = installed_paths[0]
         assert (HOMEBREW_PREFIX+orig_abcd.basename).exist?
         assert abcd.exist?
         assert_equal HOMEBREW_PREFIX+'abcd', abcd
@@ -169,10 +176,27 @@ class BeerTasting < Test::Unit::TestCase
   end
   
   def test_pathname_properties
-    foo1=HOMEBREW_CACHE+'foo-0.1.tar.gz'
+    foo1 = HOMEBREW_CACHE/'foo-0.1.tar.gz'
     
     assert_equal '.tar.gz', foo1.extname
     assert_equal 'foo-0.1', foo1.stem
     assert_equal '0.1', foo1.version
+
+    foo1 = HOMEBREW_CACHE/'foo-0.1.cpio.gz'
+    assert_equal '.cpio.gz', foo1.extname
+    assert_equal 'foo-0.1', foo1.stem
+    assert_equal '0.1', foo1.version
+  end
+
+  class MockMockFormula < Struct.new(:name); end
+
+  def test_formula_equality
+    f = MockFormula.new('http://example.com/test-0.1.tgz')
+    g = MockMockFormula.new('test')
+
+    assert f == f
+    assert f == g
+    assert f.eql? f
+    assert (not (f.eql? g))
   end
 end

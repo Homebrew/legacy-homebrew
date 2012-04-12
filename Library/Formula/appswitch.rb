@@ -1,6 +1,6 @@
 require 'formula'
 
-class Appswitch <Formula
+class Appswitch < Formula
   url 'http://web.sabi.net/nriley/software/appswitch-1.1.tar.gz'
   homepage 'http://web.sabi.net/nriley/software/'
   md5 '07cf9884a07939da487898cddba0c296'

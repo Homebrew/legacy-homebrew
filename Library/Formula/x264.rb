@@ -1,24 +1,31 @@
 require 'formula'
 
-class X264 <Formula
+class X264 < Formula
   homepage 'http://www.videolan.org/developers/x264.html'
-  url 'git://git.videolan.org/x264.git',
-        :tag => '20fa784d2d9e0d5e524d4e3834699e9ff9b57511'
+  # The version is _not_ 2245. See http://www.x264.nl/x264/changelog.txt for
+  # the revision numbers that are attached to each commit.
+  url 'http://download.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20120327-2245-stable.tar.bz2'
+  version 'r2184'
+  md5 '0660e5829dc7f621bb98124440e38924'
 
-  depends_on 'yasm'
+  head 'git://git.videolan.org/x264.git'
+
+  depends_on 'yasm' => :build
+
+  def options
+    [["--10-bit", "Make a 10-bit x264. (default: 8-bit)"]]
+  end
 
   def install
-    system "./version.sh"
-    system "./configure", "--prefix=#{prefix}",
-                          "--enable-shared"
+    args = ["--prefix=#{prefix}", "--enable-shared"]
+    args << "--bit-depth=10" if ARGV.include?('--10-bit')
 
-    inreplace 'config.mak' do |s|
-      ldflags = s.get_make_var 'LDFLAGS'
-      s.change_make_var! 'LDFLAGS', ldflags.gsub!(' -s', '')
+    system "./configure", *args
 
-      if snow_leopard_64?
+    if MacOS.prefer_64_bit?
+      inreplace 'config.mak' do |s|
         soflags = s.get_make_var 'SOFLAGS'
-        s.change_make_var! 'SOFLAGS', soflags.gsub!(' -Wl,-read_only_relocs,suppress', '')
+        s.change_make_var! 'SOFLAGS', soflags.gsub(' -Wl,-read_only_relocs,suppress', '')
       end
     end
 

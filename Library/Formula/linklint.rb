@@ -1,6 +1,6 @@
 require 'formula'
 
-class Linklint <Formula
+class Linklint < Formula
   url 'http://linklint.org/download/linklint-2.3.5.tar.gz'
   homepage 'http://linklint.org'
   md5 'c1ae0860199da59ded28771d1fa7b800'

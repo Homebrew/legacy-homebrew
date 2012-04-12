@@ -1,18 +1,18 @@
 require 'formula'
 
-class Task <Formula
-  url 'http://www.taskwarrior.org/download/task-1.9.2.tar.gz'
+class Task < Formula
   homepage 'http://www.taskwarrior.org/'
-  md5 'be98cc74fe03b8336250e0b7ed3cd8c7'
+  url 'http://www.taskwarrior.org/download/task-2.0.0.tar.gz'
+  sha1 'dc587363fbdc1dcac7f7e07b1bccfd1fb56b2435'
+
+  depends_on "cmake" => :build
 
   skip_clean :all
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "cmake #{std_cmake_parameters}"
     system "make install"
-
-    # Install the bash completion file
     (etc+'bash_completion.d').install 'scripts/bash/task_completion.sh'
+    (share+'zsh/functions').install   'scripts/zsh/_task'
   end
 end

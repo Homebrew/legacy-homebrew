@@ -1,6 +1,6 @@
 require 'formula'
 
-class Lynx <Formula
+class Lynx < Formula
   url 'http://lynx.isc.org/release/lynx2.8.7.tar.bz2'
   homepage 'http://lynx.isc.org/release/'
   md5 'cb936aef812e4e463ab86cbbe14d4db9'

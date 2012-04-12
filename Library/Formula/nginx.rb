@@ -1,29 +1,28 @@
 require 'formula'
 
 class Nginx < Formula
-  url 'http://nginx.org/download/nginx-0.7.67.tar.gz'
-  head 'http://nginx.org/download/nginx-0.8.49.tar.gz'
   homepage 'http://nginx.org/'
+  url 'http://nginx.org/download/nginx-1.0.14.tar.gz'
+  md5 '019844e48c34952253ca26dd6e28c35c'
 
-  unless ARGV.build_head?
-    md5 'b6e175f969d03a4d3c5643aaabc6a5ff'
-  else
-    md5 '1d335c28f35b0517211e4284a32fb2d5'
+  devel do
+    url 'http://nginx.org/download/nginx-1.1.18.tar.gz'
+    md5 '82f4b4b1fba68f5f83cc2c641fb6c4c5'
   end
 
   depends_on 'pcre'
 
   skip_clean 'logs'
 
+  # Changes default port to 8080
   def patches
-    # Changes default port to 8080
-    # Set configure to look in homebrew prefix for pcre
     DATA
   end
 
   def options
     [
-      ['--with-passenger', "Compile with support for Phusion Passenger module"]
+      ['--with-passenger', "Compile with support for Phusion Passenger module"],
+      ['--with-webdav',    "Compile with support for WebDAV module"]
     ]
   end
 
@@ -41,53 +40,74 @@ class Nginx < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}", "--with-http_ssl_module", "--with-pcre",
-            "--conf-path=#{etc}/nginx/nginx.conf", "--pid-path=#{var}/run/nginx.pid",
+    args = ["--prefix=#{prefix}",
+            "--with-http_ssl_module",
+            "--with-pcre",
+            "--with-cc-opt='-I#{HOMEBREW_PREFIX}/include'",
+            "--with-ld-opt='-L#{HOMEBREW_PREFIX}/lib'",
+            "--conf-path=#{etc}/nginx/nginx.conf",
+            "--pid-path=#{var}/run/nginx.pid",
             "--lock-path=#{var}/nginx/nginx.lock"]
+
     args << passenger_config_args if ARGV.include? '--with-passenger'
+    args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
 
     system "./configure", *args
+    system "make"
     system "make install"
+    man8.install "objs/nginx.8"
+
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
-  def caveats
-    <<-CAVEATS
-In the interest of allowing you to run `nginx` without `sudo`, the default
-port is set to localhost:8080.
+  def caveats; <<-EOS.undent
+    In the interest of allowing you to run `nginx` without `sudo`, the default
+    port is set to localhost:8080.
 
-If you want to host pages on your local machine to the public, you should
-change that to localhost:80, and run `sudo nginx`. You'll need to turn off
-any other web servers running port 80, of course.
-    CAVEATS
+    If you want to host pages on your local machine to the public, you should
+    change that to localhost:80, and run `sudo nginx`. You'll need to turn off
+    any other web servers running port 80, of course.
+
+    You can start nginx automatically on login running as your user with:
+      mkdir -p ~/Library/LaunchAgents
+      cp #{plist_path} ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+
+    Though note that if running as your user, the launch agent will fail if you
+    try to use a port below 1024 (such as http's default of 80.)
+    EOS
+  end
+
+  def startup_plist
+    return <<-EOPLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>#{plist_name}</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>UserName</key>
+    <string>#{`whoami`.chomp}</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>#{HOMEBREW_PREFIX}/sbin/nginx</string>
+        <string>-g</string>
+        <string>daemon off;</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>#{HOMEBREW_PREFIX}</string>
+  </dict>
+</plist>
+    EOPLIST
   end
 end
 
 __END__
---- a/auto/lib/pcre/conf
-+++ b/auto/lib/pcre/conf
-@@ -155,6 +155,22 @@ else
-             . auto/feature
-         fi
- 
-+        if [ $ngx_found = no ]; then
-+
-+            # Homebrew
-+            HOMEBREW_PREFIX=${NGX_PREFIX%Cellar*}
-+            ngx_feature="PCRE library in ${HOMEBREW_PREFIX}"
-+            ngx_feature_path="${HOMEBREW_PREFIX}/include"
-+
-+            if [ $NGX_RPATH = YES ]; then
-+                ngx_feature_libs="-R${HOMEBREW_PREFIX}/lib -L${HOMEBREW_PREFIX}/lib -lpcre"
-+            else
-+                ngx_feature_libs="-L${HOMEBREW_PREFIX}/lib -lpcre"
-+            fi
-+
-+            . auto/feature
-+        fi
-+
-         if [ $ngx_found = yes ]; then
-             CORE_DEPS="$CORE_DEPS $REGEX_DEPS"
-             CORE_SRCS="$CORE_SRCS $REGEX_SRCS"
 --- a/conf/nginx.conf
 +++ b/conf/nginx.conf
 @@ -33,7 +33,7 @@

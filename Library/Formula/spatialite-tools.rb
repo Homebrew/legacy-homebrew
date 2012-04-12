@@ -1,15 +1,17 @@
 require 'formula'
 
-class SpatialiteTools <Formula
-  url 'http://www.gaia-gis.it/spatialite-2.4.0-3/spatialite-tools-2.4.0.tar.gz'
-  version '2.4.0-rc3a'
-  homepage 'http://www.gaia-gis.it/spatialite/'
-  md5 '786b36b431142bfaca2a88bf23f7787c'
+class SpatialiteTools < Formula
+  homepage 'https://www.gaia-gis.it/fossil/spatialite-tools/index'
+  url 'http://www.gaia-gis.it/gaia-sins/spatialite-tools-3.0.0-stable.tar.gz'
+  md5 'b54f94eb5297c1cff1820c2a35752a9c'
 
+  depends_on 'pkg-config' => :build
   depends_on 'libspatialite'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    # See: https://github.com/mxcl/homebrew/issues/3328
+    ENV.append 'LDFLAGS', '-liconv'
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--target=macosx"
     system "make install"

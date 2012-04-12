@@ -10,19 +10,39 @@ require 'formula'
 # that Brew installs
 #
 
-class Gpac <Formula
+class Gpac < Formula
   url 'http://downloads.sourceforge.net/gpac/gpac-0.4.5.tar.gz'
   homepage 'http://gpac.sourceforge.net/index.php'
   md5 '755e8c438a48ebdb13525dd491f5b0d1'
+  head 'https://gpac.svn.sourceforge.net/svnroot/gpac/trunk/gpac', :using => :svn
 
+  depends_on 'a52dec' => :optional
+  depends_on 'jpeg' => :optional
+  depends_on 'faad2' => :optional
+  depends_on 'libogg' => :optional
+  depends_on 'libvorbis' => :optional
+  depends_on 'mad' => :optional
   depends_on 'sdl' => :optional
+  depends_on 'theora' => :optional
+
+  depends_on 'ffmpeg' => :optional if ARGV.build_head?
+  depends_on 'openjpeg' => :optional if ARGV.build_head?
 
   def install
     ENV.deparallelize
+
+    args = ["--disable-wx",
+            "--prefix=#{prefix}",
+            "--mandir=#{man}",
+            # gpac build system is barely functional
+            "--extra-cflags=-I/usr/X11/include",
+            # Force detection of X libs on 64-bit kernel
+            "--extra-ldflags=-L/usr/X11/lib"]
+    args << "--use-ffmpeg=no" unless ARGV.build_head?
+    args << "--use-openjpeg=no" unless ARGV.build_head?
+
     system "chmod +x configure"
-    system "./configure", "--disable-wx", "--use-ffmpeg=no",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+    system "./configure", *args
     system "make"
     system "make install"
   end

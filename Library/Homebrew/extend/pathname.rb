@@ -1,23 +1,36 @@
 require 'pathname'
+require 'bottles'
 
 # we enhance pathname to make our code more readable
 class Pathname
-  def install src
-    case src
-    when Array
-      src.collect {|src| install_p(src) }
-    when Hash
-      src.collect {|src, new_basename| install_p(src, new_basename) }
-    else
-      install_p(src)
+  def install *sources
+    results = []
+    sources.each do |src|
+      case src
+      when Array
+        if src.empty?
+          opoo "tried to install empty array to #{self}"
+          return []
+        end
+        src.each {|s| results << install_p(s) }
+      when Hash
+        if src.empty?
+          opoo "tried to install empty hash to #{self}"
+          return []
+        end
+        src.each {|s, new_basename| results << install_p(s, new_basename) }
+      else
+        results << install_p(src)
+      end
     end
+    return results
   end
 
   def install_p src, new_basename = nil
     if new_basename
       new_basename = File.basename(new_basename) # rationale: see Pathname.+
       dst = self+new_basename
-      return_value =Pathname.new(dst)
+      return_value = Pathname.new(dst)
     else
       dst = self
       return_value = self+File.basename(src)
@@ -46,11 +59,52 @@ class Pathname
     return return_value
   end
 
+  # Creates symlinks to sources in this folder.
+  def install_symlink *sources
+    results = []
+    sources.each do |src|
+      case src
+      when Array
+        src.each {|s| results << install_symlink_p(s) }
+      when Hash
+        src.each {|s, new_basename| results << install_symlink_p(s, new_basename) }
+      else
+        results << install_symlink_p(src)
+      end
+    end
+    return results
+  end
+
+  def install_symlink_p src, new_basename = nil
+    if new_basename.nil?
+      dst = self+File.basename(src)
+    else
+      dst = self+File.basename(new_basename)
+    end
+
+    src = src.to_s
+    dst = dst.to_s
+
+    mkpath
+    FileUtils.ln_s src, dst
+
+    return dst
+  end
+
   # we assume this pathname object is a file obviously
   def write content
     raise "Will not overwrite #{to_s}" if exist? and not ARGV.force?
     dirname.mkpath
     File.open(self, 'w') {|f| f.write content }
+  end
+
+  # NOTE always overwrites
+  def atomic_write content
+    require 'tempfile'
+    tf = Tempfile.new(self.basename.to_s)
+    tf.write(content)
+    tf.close
+    FileUtils.mv tf.path, self.to_s
   end
 
   def cp dst
@@ -62,9 +116,12 @@ class Pathname
     return dst
   end
 
-  # extended to support the double extensions .tar.gz and .tar.bz2
+  # extended to support common double extensions
   def extname
-    /(\.tar\.(gz|bz2))$/.match to_s
+    return $1 if to_s =~ bottle_regex
+    # old brew bottle style
+    return $1 if to_s =~ old_bottle_regex
+    /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
     return $1 if $1
     return File.extname(to_s)
   end
@@ -84,7 +141,7 @@ class Pathname
     raise unless e.errno == Errno::ENOTEMPTY::Errno or e.errno == Errno::EACCES::Errno
     false
   end
-  
+
   def chmod_R perms
     require 'fileutils'
     FileUtils.chmod_R perms, to_s
@@ -92,7 +149,7 @@ class Pathname
 
   def abv
     out=''
-    n=`find #{to_s} -type f | wc -l`.to_i
+    n=`find #{to_s} -type f ! -name .DS_Store | wc -l`.to_i
     out<<"#{n} files, " if n > 1
     out<<`/usr/bin/du -hd0 #{to_s} | cut -d"\t" -f1`.strip
   end
@@ -105,13 +162,31 @@ class Pathname
       # directories don't have extnames
       stem=basename.to_s
     else
-      stem=self.stem
+      # sourceforge /download
+      if %r[((?:sourceforge.net|sf.net)/.*)/download$].match to_s
+        stem=Pathname.new(dirname).stem
+      else
+        stem=self.stem
+      end
     end
 
-    # github tarballs are special
-    # we only support numbered tagged downloads
-    %r[github.com/.*/tarball/v?((\d\.)+\d+)$].match to_s
-    return $1 if $1
+    # github tarballs, like v1.2.3
+    %r[github.com/.*/(zip|tar)ball/v?((\d+\.)+\d+)$].match to_s
+    return $2 if $2
+
+    # eg. https://github.com/sam-github/libnet/tarball/libnet-1.1.4
+    %r[github.com/.*/(zip|tar)ball/.*-((\d+\.)+\d+)$].match to_s
+    return $2 if $2
+
+    # dashed version
+    # eg. github.com/isaacs/npm/tarball/v0.2.5-1
+    %r[github.com/.*/(zip|tar)ball/v?((\d+\.)+\d+-(\d+))$].match to_s
+    return $2 if $2
+
+    # underscore version
+    # eg. github.com/petdance/ack/tarball/1.93_02
+    %r[github.com/.*/(zip|tar)ball/v?((\d+\.)+\d+_(\d+))$].match to_s
+    return $2 if $2
 
     # eg. boost_1_39_0
     /((\d+_)+\d+)$/.match stem
@@ -121,7 +196,7 @@ class Pathname
     # eg. ruby-1.9.1-p243
     /-((\d+\.)*\d\.\d+-(p|rc|RC)?\d+)$/.match stem
     return $1 if $1
-    
+
     # eg. lame-398-1
     /-((\d)+-\d)/.match stem
     return $1 if $1
@@ -143,7 +218,7 @@ class Pathname
     return $1 if $1
 
     # eg foobar-4.5.0-bin
-    /-((\d+\.)+\d+[abc]?)[-.](bin|stable|src|sources?)$/.match stem
+    /-((\d+\.)+\d+[abc]?)[-._](bin|dist|stable|src|sources?)$/.match stem
     return $1 if $1
 
     # Debian style eg dash_0.5.5.1.orig.tar.gz
@@ -152,13 +227,17 @@ class Pathname
 
     # eg. otp_src_R13B (this is erlang's style)
     # eg. astyle_1.23_macosx.tar.gz
-    stem.scan /_([^_]+)/ do |match|
+    stem.scan(/_([^_]+)/) do |match|
       return match.first if /\d/.match $1
     end
 
+    # old erlang bottle style e.g. erlang-R14B03-bottle.tar.gz
+    /-([^-]+)/.match stem
+    return $1 if $1
+
     nil
   end
-  
+
   def incremental_hash(hasher)
     incr_hash = hasher.new
     self.open('r') do |f|
@@ -173,12 +252,12 @@ class Pathname
     require 'digest/md5'
     incremental_hash(Digest::MD5)
   end
-  
+
   def sha1
     require 'digest/sha1'
     incremental_hash(Digest::SHA1)
   end
-  
+
   def sha2
     require 'digest/sha2'
     incremental_hash(Digest::SHA2)
@@ -204,22 +283,92 @@ class Pathname
     (dirname+readlink).exist?
   end
 
-  def starts_with? prefix
-    prefix = prefix.to_s
-    self.to_s[0, prefix.length] == prefix
-  end
-
+  # perhaps confusingly, this Pathname object becomes the symlink pointing to
+  # the src paramter.
   def make_relative_symlink src
+    src = Pathname.new(src) unless src.kind_of? Pathname
+
     self.dirname.mkpath
     Dir.chdir self.dirname do
-      # TODO use Ruby function so we get exceptions
-      # NOTE Ruby functions may work, but I had a lot of problems
-      rv=system 'ln', '-sf', src.relative_path_from(self.dirname)
-      unless rv and $? == 0
-        raise <<-EOS
-Could not create symlink #{to_s}.
-Check that you have permssions on #{self.dirname}
-        EOS
+      # NOTE only system ln -s will create RELATIVE symlinks
+      quiet_system 'ln', '-s', src.relative_path_from(self.dirname), self.basename
+      if not $?.success?
+        if self.exist?
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            Target #{self} already exists. You may need to delete it.
+            EOS
+        elsif !dirname.writable?
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            #{dirname} is not writable. You should change its permissions.
+            EOS
+        else
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            #{self} may already exist.
+            #{dirname} may not be writable.
+            EOS
+        end
+      end
+    end
+  end
+
+  def / that
+    join that.to_s
+  end
+
+  def ensure_writable
+    saved_perms = nil
+    unless writable?
+      saved_perms = stat.mode
+      chmod 0644
+    end
+    yield
+  ensure
+    chmod saved_perms if saved_perms
+  end
+
+  def install_info
+    unless self.symlink?
+      raise "Cannot install info entry for unbrewed info file '#{self}'"
+    end
+    system '/usr/bin/install-info', '--quiet', self.to_s, (self.dirname+'dir').to_s
+  end
+
+  def uninstall_info
+    unless self.symlink?
+      raise "Cannot uninstall info entry for unbrewed info file '#{self}'"
+    end
+    system '/usr/bin/install-info', '--delete', '--quiet', self.to_s, (self.dirname+'dir').to_s
+  end
+
+  def all_formula pwd = self
+    children.map{ |child| child.relative_path_from(pwd) }.each do |pn|
+      yield pn if pn.to_s =~ /.rb$/
+    end
+    children.each do |child|
+      child.all_formula(pwd) do |pn|
+        yield pn
+      end if child.directory?
+    end
+  end
+
+  def find_formula
+    # remove special casing once tap is established and alt removed
+    if self == HOMEBREW_LIBRARY/"Taps/adamv-alt"
+      all_formula do |file|
+        yield file
+      end
+      return
+    end
+
+    [self/:Formula, self/:HomebrewFormula, self].each do |d|
+      if d.exist?
+        d.children.map{ |child| child.relative_path_from(self) }.each do |pn|
+          yield pn if pn.to_s =~ /.rb$/
+        end
+        break
       end
     end
   end
@@ -244,8 +393,15 @@ module ObserverPathnameExtension
   end
   def make_relative_symlink src
     super
-    puts "ln #{to_s}" if ARGV.verbose?
     $n+=1
+  end
+  def install_info
+    super
+    puts "info #{to_s}" if ARGV.verbose?
+  end
+  def uninstall_info
+    super
+    puts "uninfo #{to_s}" if ARGV.verbose?
   end
 end
 
