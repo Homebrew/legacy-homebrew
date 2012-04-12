@@ -18,4 +18,24 @@ class Libgphoto2 < Formula
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
+  
+  def patches
+    # increase fixed list limit from 1024 to 2048
+    DATA
+  end
 end
+
+__END__
+diff --git a/libgphoto2/gphoto2-list.c b/libgphoto2/gphoto2-list.c
+index cc1b0ba..f6569ad 100644
+--- a/libgphoto2/gphoto2-list.c
++++ b/libgphoto2/gphoto2-list.c
+@@ -72,7 +72,7 @@
+ 
+ #ifdef CAMERALIST_STRUCT_COMPATIBILITY
+ 
+-#define MAX_ENTRIES 1024
++#define MAX_ENTRIES 2048
+ #define MAX_LIST_STRING_LENGTH 128
+ struct _CameraList {
+        int  count;
