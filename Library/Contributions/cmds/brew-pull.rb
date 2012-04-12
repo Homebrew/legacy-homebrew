@@ -53,7 +53,7 @@ ARGV.named.each do|arg|
 
   safe_system 'git', *patch_args
 
-  issue = arg.to_i > 0 ? arg.to_i : url_match[2]
+  issue = arg.to_i > 0 ? arg.to_i : url_match[3]
   if issue and not ARGV.include? '--clean'
     ohai "Patch closes issue ##{issue}"
     message = `git log HEAD^.. --format=%B`
