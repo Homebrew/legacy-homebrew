@@ -15,8 +15,8 @@ end
 
 class Python < Formula
   homepage 'http://www.python.org/'
-  url 'http://www.python.org/ftp/python/2.7.2/Python-2.7.2.tar.bz2'
-  md5 'ba7b2f11ffdbf195ee0d111b9455a5bd'
+  url 'http://python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2'
+  md5 'c57477edd6d18bd9eeca2f21add73919'
 
   depends_on 'readline' => :optional # Prefer over OS X's libedit
   depends_on 'sqlite'   => :optional # Prefer over OS X's older version
@@ -28,12 +28,6 @@ class Python < Formula
       ["--universal", "Build for both 32 & 64 bit Intel."],
       ["--static", "Build static libraries."]
     ]
-  end
-
-  def patches
-    # Fix for recognizing gdbm 1.9.x databases; already upstream:
-    # http://hg.python.org/cpython/rev/14cafb8d1480
-    DATA
   end
 
   # Skip binaries so modules will load; skip lib because it is mostly Python files
@@ -182,15 +176,3 @@ class Python < Formula
     system "#{bin}/python -c 'from decimal import Decimal; print Decimal(4) / Decimal(2)'"
   end
 end
-
-__END__
-diff --git a/Lib/whichdb.py b/Lib/whichdb.py
---- a/Lib/whichdb.py
-+++ b/Lib/whichdb.py
-@@ -91,7 +91,7 @@ def whichdb(filename):
-         return ""
- 
-     # Check for GNU dbm
--    if magic == 0x13579ace:
-+    if magic in (0x13579ace, 0x13579acd, 0x13579acf):
-         return "gdbm"
