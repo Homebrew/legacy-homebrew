@@ -89,7 +89,7 @@ module HomebrewArgvExtension
   end
 
   def build_head?
-    flag? '--HEAD'
+    include? '--HEAD'
   end
 
   def build_devel?
