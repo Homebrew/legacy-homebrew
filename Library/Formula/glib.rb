@@ -16,6 +16,14 @@ class Glib < Formula
     cause "Undefined symbol errors while linking"
   end
 
+  fails_with :clang do
+    build 318
+    cause <<-EOS.undent
+      Software that links against a clang-built glib experiences runtime errors:
+        GLib-ERROR (recursed) **: The thread system is not yet initialized.
+      EOS
+  end
+
   def patches
     { :p0 => %W[
       https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/patch-configure.diff
