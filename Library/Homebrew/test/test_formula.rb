@@ -61,11 +61,12 @@ class FormulaTests < Test::Unit::TestCase
 
   def test_mirror_support
     HOMEBREW_CACHE.mkpath unless HOMEBREW_CACHE.exist?
-    f = TestBallWithMirror.new
-    tarball, downloader = f.fetch
-
-    assert_equal f.url, "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
-    assert_equal downloader.url, "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+    nostdout do
+      f = TestBallWithMirror.new
+      tarball, downloader = f.fetch
+      assert_equal f.url, "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
+      assert_equal downloader.url, "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+    end
   end
 
   def test_compiler_selection
@@ -95,10 +96,10 @@ class FormulaTests < Test::Unit::TestCase
     assert !(f.fails_with? :gcc)
     cs = CompilerSelector.new(f)
     cs.select_compiler
-    assert ENV.compiler, case MacOS.clang_build_version
+    assert_equal case MacOS.clang_build_version
     when 0..210 then :gcc
     else :clang
-    end
+    end, ENV.compiler
     ENV.send MacOS.default_compiler
 
     f = TestMixedCompilerFailures.new

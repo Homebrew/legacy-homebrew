@@ -232,6 +232,17 @@ def check_cc
   end
 end
 
+def check_standard_compilers
+  return if check_for_latest_xcode # only check if Xcode is up to date
+  if !MacOS.compilers_standard? then <<-EOS.undent
+    Your compilers are different from the standard versions for your Xcode.
+    If you have Xcode 4.3 or newer, you should install the Command Line Tools for
+    Xcode from within Xcode's Download preferences.
+    Otherwise, you should reinstall Xcode.
+    EOS
+  end
+end
+
 def __check_subdir_access base
   target = HOMEBREW_PREFIX+base
   return unless target.exist?
@@ -500,22 +511,26 @@ def check_for_gettext
 end
 
 def check_for_iconv
-  if %w[lib/libiconv.dylib
-        include/iconv.h ].any? { |f| File.exist? "#{HOMEBREW_PREFIX}/#{f}" }
+  iconv_files = %w[lib/iconv.dylib
+    include/iconv.h].select { |f| File.exist? "#{HOMEBREW_PREFIX}/#{f}" }
+  if !iconv_files.empty?
     <<-EOS.undent
-      libiconv was detected in your PREFIX.
+      The following libiconv files were detected in #{HOMEBREW_PREFIX}:
+      #{iconv_files.join "\n      "}
       Homebrew doesn't provide a libiconv formula, and expects to link against
       the system version in /usr/lib.
 
-      If you have a non-Homebrew provided libiconv, many formulae will fail
-      to compile or link, especially if it wasn't compiled with the proper
-      architectures.
+      If you have an alternate libiconv, many formulae will fail to compile or
+      link, especially if it wasn't compiled with the proper architectures.
     EOS
+  else
+    nil
   end
 end
 
 def check_for_config_scripts
-  real_cellar = HOMEBREW_CELLAR.exist? && HOMEBREW_CELLAR.realpath
+  return unless HOMEBREW_CELLAR.exist?
+  real_cellar = HOMEBREW_CELLAR.realpath
 
   config_scripts = []
 
@@ -835,6 +850,7 @@ def check_for_outdated_homebrew
 end
 
 def check_for_unlinked_but_not_keg_only
+  return unless HOMEBREW_CELLAR.exist?
   unlinked = HOMEBREW_CELLAR.children.reject do |rack|
     if not rack.directory?
       true
