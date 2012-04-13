@@ -12,6 +12,8 @@ class AircrackNg < Formula
     %w{ CFLAGS CXXFLAGS LDFLAGS OBJCFLAGS OBJCXXFLAGS }.each do |compiler_flag|
       ENV.remove compiler_flag, "-arch x86_64"
       ENV.append compiler_flag, "-arch i386"
+      ENV.remove compiler_flag, "-march=native" #oriol
+
     end
 
     # Fix incorrect OUI url
