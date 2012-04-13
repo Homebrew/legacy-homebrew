@@ -21,7 +21,7 @@ class GmapGsnap < Formula
 
     See the readme file for how to do this:
 
-    http://research-pub.gene.com/gmap/src/README'
+    http://research-pub.gene.com/gmap/src/README
 
     Databases will be installed to #{prefix}/share.
 
