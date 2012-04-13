@@ -1,15 +1,14 @@
 require 'formula'
 
 class GitEncrypt < Formula
-  version "HEAD"
-  url 'git://github.com/shadowhand/git-encrypt.git'
   homepage 'https://github.com/shadowhand/git-encrypt'
-  md5 ''
+  url 'https://github.com/shadowhand/git-encrypt.git', :tag => '0.3.0'
+  version '0.3.0'
+
+  head 'http://github.com/shadowhand/git-encrypt.git', :branch => 'master'
 
   def install
-    print "Symlink the file from #{prefix}"
-    bin.mkpath
-    bin.install ['gitcrypt']
+    bin.install 'gitcrypt'
   end
 
 end
