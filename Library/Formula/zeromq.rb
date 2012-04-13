@@ -5,17 +5,19 @@ def pgm_flags
 end
 
 class Zeromq < Formula
-  url 'http://download.zeromq.org/zeromq-2.1.11.tar.gz'
-  head 'https://github.com/zeromq/libzmq.git'
   homepage 'http://www.zeromq.org/'
-  md5 'f0f9fd62acb1f0869d7aa80379b1f6b7'
-
-  fails_with_llvm "Compiling with LLVM gives a segfault while linking.",
-                  :build => 2326 if MacOS.snow_leopard?
+  url 'http://download.zeromq.org/zeromq-2.2.0.tar.gz'
+  md5 '4a4b1da5a554ad8650f000c69d018f20'
+  head 'https://github.com/zeromq/libzmq.git'
 
   if ARGV.build_head? and MacOS.xcode_version >= "4.3"
     depends_on "automake" => :build
     depends_on "libtool" => :build
+  end
+
+  fails_with :llvm do
+    build 2326
+    cause "Segfault while linking"
   end
 
   def options

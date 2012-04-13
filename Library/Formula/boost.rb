@@ -8,15 +8,16 @@ class Boost < Formula
   head 'http://svn.boost.org/svn/boost/trunk', :using => :svn
 
   bottle do
-    url 'https://downloads.sf.net/project/machomebrew/Bottles/boost-1.49.0-bottle.tar.gz'
-    sha1 '6b706780670a8bec5b3e0355f5dfeeaa37d9a41e'
+    sha1 'da4d58fc81462b1e825912615dbbfc6f6b234be0' => :snowleopard
+    sha1 '6b706780670a8bec5b3e0355f5dfeeaa37d9a41e' => :lion
   end
 
   depends_on "icu4c" if ARGV.include? "--with-icu"
 
-  # Both clang and llvm-gcc provided by XCode 4.1 compile Boost 1.47.0 properly.
-  # Moreover, Apple LLVM compiler 2.1 is now among primary test compilers.
-  fails_with_llvm "Dropped arguments to functions when linking with boost", :build => 2335
+  fails_with :llvm do
+    build 2335
+    cause "Dropped arguments to functions when linking with boost"
+  end
 
   def options
     [

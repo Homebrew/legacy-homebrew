@@ -6,17 +6,24 @@ class Privoxy < Formula
   sha1 'a82287cbf48375ef449d021473a366baeca49250'
 
   if MacOS.xcode_version >= "4.3"
-    # remove the autoreconf if possible, no comment provided about why it is there
-    # so we have no basis to make a decision at this point.
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
 
+  depends_on 'pcre'
+
   def install
-    system "autoreconf -i"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    # Find Homebrew's libpcre
+    ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
+
+    # No configure script is shipped with the source
+    system "autoreconf", "-i"
+
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}/privoxy"
+                          "--sysconfdir=#{etc}/privoxy",
+                          "--localstatedir=#{var}"
     system "make"
     system "make install"
   end

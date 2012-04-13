@@ -11,7 +11,10 @@ class Cdrdao < Formula
   depends_on 'mad'
   depends_on 'lame'
 
-  fails_with_llvm "Segfault while linking", :build => 2326
+  fails_with :llvm do
+    build 2326
+    cause "Segfault while linking"
+  end
 
   # first patch fixes build problems under 10.6
   # see http://sourceforge.net/tracker/index.php?func=detail&aid=2981804&group_id=2171&atid=302171

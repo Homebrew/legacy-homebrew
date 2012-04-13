@@ -420,7 +420,7 @@ module Homebrew extend self
 
     if errors
       puts "#{problem_count} problems in #{brew_count} brews"
-      exit 1
+      Homebrew.failed = true
     end
   end
 end

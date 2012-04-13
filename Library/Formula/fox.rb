@@ -11,7 +11,9 @@ class Fox < Formula
     md5 '1cf2607d15ffad5b664cf65bfcd249bc'
   end
 
-  fails_with_llvm "Inline asm errors during build" if ARGV.build_devel?
+  fails_with :llvm do
+    cause "Inline asm errors during build"
+  end if ARGV.build_devel?
 
   def install
     ENV.x11

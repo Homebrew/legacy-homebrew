@@ -8,8 +8,16 @@ class Pathname
     sources.each do |src|
       case src
       when Array
+        if src.empty?
+          opoo "tried to install empty array to #{self}"
+          return []
+        end
         src.each {|s| results << install_p(s) }
       when Hash
+        if src.empty?
+          opoo "tried to install empty hash to #{self}"
+          return []
+        end
         src.each {|s, new_basename| results << install_p(s, new_basename) }
       else
         results << install_p(src)
@@ -285,11 +293,23 @@ class Pathname
       # NOTE only system ln -s will create RELATIVE symlinks
       quiet_system 'ln', '-s', src.relative_path_from(self.dirname), self.basename
       if not $?.success?
-        raise <<-EOS.undent
-          Could not symlink file: #{src.expand_path}
-          Check #{self} does not already exist.
-          Check #{dirname} is writable.
-        EOS
+        if self.exist?
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            Target #{self} already exists. You may need to delete it.
+            EOS
+        elsif !dirname.writable?
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            #{dirname} is not writable. You should change its permissions.
+            EOS
+        else
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            #{self} may already exist.
+            #{dirname} may not be writable.
+            EOS
+        end
       end
     end
   end

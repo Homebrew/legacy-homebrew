@@ -10,6 +10,12 @@ class Rtorrent < Formula
   depends_on 'libtorrent'
   depends_on 'xmlrpc-c' => :optional
 
+  # Upstream says this is fixed in 0.9.x series, so check if this is
+  # still needed when the next stable rtorrent release is made.
+  fails_with :clang do
+    build 318
+  end
+
   def install
     args = ["--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"]
     args << "--with-xmlrpc-c" if Formula.factory("xmlrpc-c").installed?

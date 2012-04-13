@@ -15,7 +15,10 @@ class Fontforge < Formula
     [['--without-python', 'Build without Python.']]
   end
 
-  fails_with_llvm "Compiling cvexportdlg.c fails with error: initializer element is not constant", :build => 2336
+  fails_with :llvm do
+    build 2336
+    cause "Compiling cvexportdlg.c fails with error: initializer element is not constant"
+  end
 
   def install
     args = ["--prefix=#{prefix}", "--enable-double", "--without-freetype-bytecode"]
