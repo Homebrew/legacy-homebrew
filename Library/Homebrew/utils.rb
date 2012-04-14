@@ -53,6 +53,10 @@ def onoe error
   puts lines unless lines.empty?
 end
 
+def ofail error
+  onoe error
+  exit 1
+end
 
 def pretty_duration s
   return "2 seconds" if s < 3 # avoids the plural problem ;)
