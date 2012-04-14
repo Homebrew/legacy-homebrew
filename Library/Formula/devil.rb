@@ -9,11 +9,13 @@ class Devil < Formula
   depends_on 'libtiff'
   depends_on 'little-cms'
   depends_on 'jasper'
+  depends_on 'pkg-config' => :build
 
   # fix compilation issue for iluc.c
   def patches; DATA; end
 
   def install
+    system "autoreconf"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--enable-ILU"
     system "make install"
@@ -32,4 +34,35 @@ __END__
 
  #include <IL/il.h>
  #include <IL/ilu.h>
+
+diff --git a/m4/devil-definitions.m4 b/m4/devil-definitions.m4
+index 7616e82..9bc7f69 100644
+--- a/m4/devil-definitions.m4
++++ b/m4/devil-definitions.m4
+@@ -243,16 +243,15 @@ AC_DEFUN([SETTLE_MNG],
+                                            [libmng]) ]) ]) 
+ 
+ AC_DEFUN([SETTLE_PNG],
+-         [DEVIL_IL_LIB([png.h],
+-                       [png12]) 
+-          AS_IF([test "x$have_png12" = "xno"],
+-                [DEVIL_IL_LIB([png.h],
+-                              [png]) 
+-                 lib_test_result="$have_png"],
+-                [lib_test_result="$have_png12"]) 
+-          AS_IF([test "x$lib_test_result" = "xyes"],
+-                [MAYBE_OPTIONAL_DEPENDENCY([IL],
+-                                           [libpng]) ]) ]) 
++         [PKG_CHECK_MODULES([LIBPNG],
++                            [libpng],
++                            [have_png="yes"],
++                            [have_png="no"])
++          MAYBE_OPTIONAL_DEPENDENCY([IL],
++                                    [libpng])
++          IL_LIBS="$LIBPNG_LIBS $IL_LIBS"
++          IL_CFLAGS="$LIBPNG_CFLAGS $IL_CFLAGS"
++          lib_test_result="$have_png"])
+ 
+ AC_DEFUN([SETTLE_TIFF],
+          [DEVIL_IL_LIB([tiffio.h],
 
