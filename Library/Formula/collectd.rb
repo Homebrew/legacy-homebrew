@@ -9,9 +9,12 @@ class Collectd < Formula
 
   skip_clean :all
 
+  # won't compile with Clang; use --use-gcc instead
+  fails_with :clang
+
   def install
     # Use system Python; doesn't compile against 2.7
-    args = ["--disable-debug", "--disable-dependency-tracking",
+    args = ["--disable-debug", "--disable-dependency-tracking", "-C",
             "--with-python=/usr/bin",
             "--prefix=#{prefix}",
             "--localstatedir=#{var}"]
