@@ -46,7 +46,7 @@ class Sphinx < Formula
 
     # configure script won't auto-select PostgreSQL
     args << "--with-pgsql" if which 'pg_config'
-    args << "--without-mysql" unless which 'mysql'
+    args << "--without-mysql" unless which 'mysql_config'
 
     system "./configure", *args
     system "make install"

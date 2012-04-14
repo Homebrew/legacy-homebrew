@@ -28,10 +28,10 @@ class Erlang < Formula
   md5 'ad811bb19a085b3d60d16ce576a28b68'
 
   bottle do
-    # Bottle built on OS X 10.7.2 using Xcode 4.1 using:
+    # Lion bottle built on OS X 10.7.2 using Xcode 4.1 using:
     #   brew install erlang --build-bottle --use-gcc
-    url 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B-bottle.tar.gz'
-    sha1 '4c81febc679dc9e9c27e66317fc317df9a5a40e7'
+    # sha1 '4c81febc679dc9e9c27e66317fc317df9a5a40e7'
+    sha1 '8a4adc813ca906c8e685ff571de03653f316146c' => :snowleopard
   end
 
   head 'https://github.com/erlang/otp.git', :branch => 'dev'
