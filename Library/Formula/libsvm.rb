@@ -9,7 +9,7 @@ class Libsvm < Formula
     inreplace 'Makefile', '-soname', '-install_name'
     inreplace 'Makefile', 'libsvm.so.$(SHVER)', 'libsvm.$(SHVER).dylib'
 
-    system "make"
+    system "make", "CFLAGS=#{ENV.cflags}"
     system "make lib"
     ln_s 'libsvm.2.dylib', 'libsvm.dylib'
 
