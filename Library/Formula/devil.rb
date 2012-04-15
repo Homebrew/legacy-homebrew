@@ -11,6 +11,15 @@ class Devil < Formula
   depends_on 'jasper'
   depends_on 'pkg-config' => :build
 
+  if MacOS.xcode_version.to_f >= 4.3
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  fails_with :clang do
+    cause "Clang fails to compile C++ code with the flag -std=gnu99"
+  end
+
   # fix compilation issue for iluc.c
   def patches; DATA; end
 
