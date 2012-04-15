@@ -8,10 +8,11 @@ class Movein < Formula
 
   def install
     bin.install ['movein']
-    man1.install gzip('movein')
+    man1.install gzip('movein.1')
   end
 
   def test
     system "ls #{bin}/movein"
+    system "man -P cat movein"
   end
 end
