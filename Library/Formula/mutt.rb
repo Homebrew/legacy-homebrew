@@ -15,7 +15,8 @@ class Mutt < Formula
       ['--trash-patch', "Apply trash folder patch"],
       ['--with-slang', "Build against slang instead of ncurses"],
       ['--ignore-thread-patch', "Apply ignore-thread patch"],
-      ['--pgp-verbose-mime-patch', "Apply PGP verbose mime patch"]
+      ['--pgp-verbose-mime-patch', "Apply PGP verbose mime patch"],
+      ['--enable-debug', "Build with debug option -d enabled"],
     ]
   end
 
@@ -36,23 +37,24 @@ class Mutt < Formula
   end
 
   def install
-    args = ["--disable-dependency-tracking",
-            "--disable-warnings",
-            "--prefix=#{prefix}",
-            "--with-ssl",
-            "--with-sasl",
-            "--with-gnutls",
-            "--with-gss",
-            "--enable-imap",
-            "--enable-smtp",
-            "--enable-pop",
-            "--enable-hcache",
-            "--with-tokyocabinet",
-            # This is just a trick to keep 'make install' from trying to chgrp
-            # the mutt_dotlock file (which we can't do if we're running as an
-            # unpriviledged user)
-            "--with-homespool=.mbox"]
-    args << "--with-slang" if ARGV.include? '--with-slang'
+    args = [
+        "--disable-dependency-tracking",
+        "--disable-warnings",
+        "--prefix=#{prefix}",
+        "--with-ssl",
+        "--with-sasl",
+        "--with-gnutls",
+        "--with-gss",
+        "--enable-imap",
+        "--enable-smtp",
+        "--enable-pop",
+        "--enable-hcache",
+        "--with-tokyocabinet",
+        # This is just a trick to keep 'make install' from trying to chgrp
+        # the mutt_dotlock file (which we can't do if we're running as an
+        # unpriviledged user)
+        "--with-homespool=.mbox",
+    ]
 
     if ARGV.include? '--enable-debug'
       args << "--enable-debug"
