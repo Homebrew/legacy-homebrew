@@ -8,8 +8,24 @@ class Mpfi < Formula
   depends_on 'gmp'
   depends_on 'mpfr'
 
+  def options
+    [["--32-bit", "Build 32-bit only."]]
+  end
+
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+
+    # Build 32-bit where appropriate, and help configure find 64-bit CPUs
+    # Note: This logic should match what the GMP formula does.
+    if MacOS.prefer_64_bit? and not ARGV.build_32_bit?
+      ENV.m64
+      args << "--build=x86_64-apple-darwin"
+    else
+      ENV.m32
+      args << "--build=none-apple-darwin"
+    end
+
+    system "./configure", *args
     system "make"
     system "make install"
   end
