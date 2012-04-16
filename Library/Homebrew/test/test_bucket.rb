@@ -171,6 +171,8 @@ class BeerTasting < Test::Unit::TestCase
         assert orig_abcd.exist?
 
         HOMEBREW_CACHE.chmod_R 0777
+
+        abcd.unlink # teardown
       end
     end
   end
