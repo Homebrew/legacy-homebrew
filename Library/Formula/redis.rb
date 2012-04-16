@@ -30,7 +30,7 @@ class Redis < Formula
       s.gsub! "\# bind 127.0.0.1", "bind 127.0.0.1"
     end
 
-    etc.install "redis.conf"
+    etc.install 'redis.conf' unless (etc/'redis.conf').exist?
     plist_path.write startup_plist
     plist_path.chmod 0644
   end
