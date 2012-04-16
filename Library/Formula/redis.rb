@@ -18,7 +18,7 @@ class Redis < Formula
 
     # Head and stable have different code layouts
     src = (buildpath/'src/Makefile').exist? ? buildpath/'src' : buildpath
-    system "make -C #{src}"
+    system "make", "-C", src, "CC=#{ENV.cc}"
 
     %w[benchmark cli server check-dump check-aof].each { |p| bin.install src/"redis-#{p}" }
     %w[run db/redis log].each { |p| (var+p).mkpath }
