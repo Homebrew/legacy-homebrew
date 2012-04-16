@@ -7,8 +7,14 @@ class Anacron < Formula
 
 
   def install
-    system "make"
-    system "make install PREFIX=#{prefix}"
+    args = ["PREFIX=#{prefix}",
+            "MANDIR=#{man}",
+            "BINDIR=#{sbin}",
+            "SPOOLDIR=#{HOMEBREW_PREFIX}/var/spool/anacron",
+            "ANACRONTAB=#{HOMEBREW_PREFIX}/etc/anacrontab"]
+
+    system "make", *args
+    system "make", "install", *args
 
     plist_path.write cron_plist
     plist_path.chmod 0644
@@ -53,7 +59,7 @@ class Anacron < Formula
       Here is example:
 
         SHELL=/bin/sh
-        PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+        PATH=#{HOMEBREW_PREFIX}/sbin:#{HOMEBREW_PREFIX}/bin:/sbin:/bin:/usr/sbin:/usr/bin
         # format: period delay job-identifier command
         1       5       cron.daily      run-parts /etc/cron.daily
         7       10      cron.weekly     run-parts /etc/cron.weekly
@@ -73,26 +79,6 @@ diff --git a/Makefile b/Makefile
 index 81dcc15..52bd115 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -20,15 +20,15 @@
- 
- 
- PREFIX = 
--BINDIR = $(PREFIX)/usr/sbin
--MANDIR = $(PREFIX)/usr/man
-+BINDIR = $(PREFIX)/sbin
-+MANDIR = $(PREFIX)/share/man
- CFLAGS = -Wall -pedantic -O2 -I.
- #CFLAGS = -Wall -O2 -g -DDEBUG
- 
- # If you change these, please update the man-pages too
- # Only absolute paths here, please
--SPOOLDIR = /var/spool/anacron
--ANACRONTAB = /etc/anacrontab
-+SPOOLDIR = /usr/local/var/spool/anacron
-+ANACRONTAB = /usr/local/etc/anacrontab
- 
- RELEASE = 2.3
- package_name = anacron-$(RELEASE)
 @@ -64,7 +64,7 @@ anacron: $(objects)
  
  .PHONY: installdirs
@@ -111,7 +97,7 @@ index a3561be..d55fbc6 100644
  .PP
  When executed, Anacron reads a list of jobs from a configuration file, normally
 -.I /etc/anacrontab
-+.I /usr/local/etc/anacrontab
++.I HOMEBREW_PREFIX/etc/anacrontab
  (see \fBanacrontab(5)\fR).  This file
  contains the list of jobs that Anacron controls.  Each
  job entry specifies a period in days, 
@@ -120,7 +106,7 @@ index a3561be..d55fbc6 100644
  .B -n
  Run jobs now.  Ignore the delay specifications in the
 -.I /etc/anacrontab
-+.I /usr/local/etc/anacrontab
++.I HOMEBREW_PREFIX/etc/anacrontab
  file.  This options implies \fB-s\fR.
  .TP
  .B -d
@@ -129,12 +115,12 @@ index a3561be..d55fbc6 100644
  .SH FILES
  .TP
 -.I /etc/anacrontab
-+.I /usr/local/etc/anacrontab
++.I HOMEBREW_PREFIX/etc/anacrontab
  Contains specifications of jobs.  See \fBanacrontab(5)\fR for a complete
  description.
  .TP
 -.I /var/spool/anacron
-+.I /usr/local/var/spool/anacron
++.I HOMEBREW_PREFIX/var/spool/anacron
  This directory is used by Anacron for storing timestamp files.
  .SH "SEE ALSO"
  .B anacrontab(5), cron(8), tzset(3)
@@ -146,11 +132,11 @@ index 93a67a0..d73f46e 100644
  .TH ANACRONTAB 5 1998-02-02 "Itai Tzur" "Anacron Users' Manual"
  .SH NAME
 -/etc/anacrontab \- configuration file for anacron
-+/usr/local/etc/anacrontab \- configuration file for anacron
++HOMEBREW_PREFIX/etc/anacrontab \- configuration file for anacron
  .SH DESCRIPTION
  The file
 -.I /etc/anacrontab
-+.I /usr/local/etc/anacrontab
++.I HOMEBREW_PREFIX/etc/anacrontab
  describes the jobs controlled by \fBanacron(8)\fR.  Its lines can be of
  three kinds:  job-description lines, environment
  assignments, or empty lines.
