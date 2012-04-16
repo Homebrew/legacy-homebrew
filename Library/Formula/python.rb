@@ -18,6 +18,7 @@ class Python < Formula
   url 'http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2'
   md5 'c57477edd6d18bd9eeca2f21add73919'
 
+  depends_on 'pkg-config' => :build
   depends_on 'readline' => :optional # Prefer over OS X's libedit
   depends_on 'sqlite'   => :optional # Prefer over OS X's older version
   depends_on 'gdbm'     => :optional

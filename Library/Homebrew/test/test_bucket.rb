@@ -86,7 +86,7 @@ class BeerTasting < Test::Unit::TestCase
 
     nostdout do
       assert_nothing_raised do
-        f=TestBall.new
+        f=TestBallWithRealPath.new
         Homebrew.info_formula f
         Cleaner.new f
         Homebrew.prune
