@@ -33,8 +33,8 @@ class Git < Formula
     ENV['V'] = '1' # build verbosely
     ENV['NO_R_TO_GCC_LINKER'] = '1' # pass arguments to LD correctly
     ENV['NO_GETTEXT'] = '1'
-    # workaround for users of perlbrew
-    ENV['PERL_PATH'] = which 'perl'
+    ENV['PERL_PATH'] = which 'perl' # workaround for users of perlbrew
+    ENV['PYTHON_PATH'] = which 'python' # python can be brewed or unbrewed
 
     # Clean XCode 4.x installs don't include Perl MakeMaker
     ENV['NO_PERL_MAKEMAKER']='1' if MacOS.lion?
