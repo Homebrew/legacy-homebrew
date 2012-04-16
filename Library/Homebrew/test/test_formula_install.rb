@@ -48,6 +48,7 @@ class InstallTests < Test::Unit::TestCase
     # tests use the same formula name without
     # stepping on each other.
     keg=Keg.new f.prefix
+    keg.unlink
     keg.uninstall
     assert !keg.exist?
     assert !f.installed?
