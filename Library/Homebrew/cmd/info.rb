@@ -22,14 +22,14 @@ module Homebrew extend self
 
   def github_fork
     if system "/usr/bin/which -s git"
-      if `git remote -v` =~ %r{origin\s+(https?://|git@)github.com[:/](.+)/homebrew}
+      if `git remote -v` =~ %r{origin\s+(https?://|git(?:@|://))github.com[:/](.+)/homebrew}
         $2
       end
     end
   end
 
-  def github_info name
-    path = Formula.path(name).realpath
+  def github_info f
+    path = f.path.realpath
 
     if path.to_s =~ %r{#{HOMEBREW_REPOSITORY}/Library/Taps/(\w+)-(\w+)/(.*)}
       user = $1
@@ -47,7 +47,7 @@ module Homebrew extend self
   end
 
   def info_formula f
-    exec 'open', github_info(f.name) if ARGV.flag? '--github'
+    exec 'open', github_info(f) if ARGV.flag? '--github'
 
     puts "#{f.name} #{f.version}"
     puts f.homepage
@@ -77,7 +77,7 @@ module Homebrew extend self
       puts "Not installed"
     end
 
-    history = github_info f.name
+    history = github_info(f)
     puts history if history
 
     the_caveats = (f.caveats || "").strip

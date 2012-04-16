@@ -8,6 +8,7 @@ EXIT=0
 /usr/bin/ruby test_formula.rb $* || EXIT=1
 /usr/bin/ruby test_versions.rb $* || EXIT=1
 /usr/bin/ruby test_checksums.rb $* || EXIT=1
+/usr/bin/ruby test_compilers.rb $* || EXIT=1
 /usr/bin/ruby test_inreplace.rb $* || EXIT=1
 /usr/bin/ruby test_hardware.rb $* || EXIT=1
 /usr/bin/ruby test_formula_install.rb $* || EXIT=1

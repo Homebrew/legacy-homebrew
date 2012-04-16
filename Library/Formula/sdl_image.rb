@@ -8,7 +8,12 @@ class SdlImage < Formula
 
   depends_on 'sdl'
 
+  def options
+    [['--universal', 'Build universal binaries.']]
+  end
+
   def install
+    ENV.universal_binary if ARGV.build_universal?
     ENV.x11 # For Freetype
     Sdl.use_homebrew_prefix 'SDL_image.pc.in'
 

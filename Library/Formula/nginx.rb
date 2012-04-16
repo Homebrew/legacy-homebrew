@@ -2,12 +2,12 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.0.14.tar.gz'
-  md5 '019844e48c34952253ca26dd6e28c35c'
+  url 'http://nginx.org/download/nginx-1.0.15.tar.gz'
+  md5 '17da4802209b83d9bebb0f0edd975dfc'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.1.18.tar.gz'
-    md5 '82f4b4b1fba68f5f83cc2c641fb6c4c5'
+    url 'http://nginx.org/download/nginx-1.1.19.tar.gz'
+    md5 '2cd87f2d8eed50f7e6bb217d760b3ad2'
   end
 
   depends_on 'pcre'
@@ -15,7 +15,6 @@ class Nginx < Formula
   skip_clean 'logs'
 
   # Changes default port to 8080
-  # Tell configure to look for pcre in HOMEBREW_PREFIX
   def patches
     DATA
   end
@@ -44,6 +43,8 @@ class Nginx < Formula
     args = ["--prefix=#{prefix}",
             "--with-http_ssl_module",
             "--with-pcre",
+            "--with-cc-opt='-I#{HOMEBREW_PREFIX}/include'",
+            "--with-ld-opt='-L#{HOMEBREW_PREFIX}/lib'",
             "--conf-path=#{etc}/nginx/nginx.conf",
             "--pid-path=#{var}/run/nginx.pid",
             "--lock-path=#{var}/nginx/nginx.lock"]
@@ -107,30 +108,6 @@ class Nginx < Formula
 end
 
 __END__
---- a/auto/lib/pcre/conf
-+++ b/auto/lib/pcre/conf
-@@ -155,6 +155,21 @@ else
-             . auto/feature
-         fi
-
-+        if [ $ngx_found = no ]; then
-+
-+            # Homebrew
-+            ngx_feature="PCRE library in HOMEBREW_PREFIX"
-+            ngx_feature_path="HOMEBREW_PREFIX/include"
-+
-+            if [ $NGX_RPATH = YES ]; then
-+                ngx_feature_libs="-RHOMEBREW_PREFIX/lib -LHOMEBREW_PREFIX/lib -lpcre"
-+            else
-+                ngx_feature_libs="-LHOMEBREW_PREFIX/lib -lpcre"
-+            fi
-+
-+            . auto/feature
-+        fi
-+
-         if [ $ngx_found = yes ]; then
-             CORE_DEPS="$CORE_DEPS $REGEX_DEPS"
-             CORE_SRCS="$CORE_SRCS $REGEX_SRCS"
 --- a/conf/nginx.conf
 +++ b/conf/nginx.conf
 @@ -33,7 +33,7 @@

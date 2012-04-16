@@ -12,15 +12,17 @@ class Sdl < Formula
     depends_on "libtool" => :build
   end
 
-  # we have to do this because most build scripts assume that all sdl modules
-  # are installed to the same prefix. Consequently SDL stuff cannot be
-  # keg-only but I doubt that will be needed.
-  def self.use_homebrew_prefix files
-    inreplace files, '@prefix@', HOMEBREW_PREFIX
+  def options
+    [['--universal', 'Build universal binaries.']]
   end
 
   def install
-    Sdl.use_homebrew_prefix %w[sdl.pc.in sdl-config.in]
+    # we have to do this because most build scripts assume that all sdl modules
+    # are installed to the same prefix. Consequently SDL stuff cannot be
+    # keg-only but I doubt that will be needed.
+    inreplace %w[sdl.pc.in sdl-config.in], '@prefix@', HOMEBREW_PREFIX
+
+    ENV.universal_binary if ARGV.build_universal?
 
     # Sdl assumes X11 is present on UNIX
     ENV.x11

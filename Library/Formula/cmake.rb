@@ -12,8 +12,8 @@ class Cmake < Formula
   end
 
   bottle do
-    url 'https://downloads.sf.net/project/machomebrew/Bottles/cmake-2.8.7-bottle.tar.gz'
-    sha1 '3a57f6f44186e0dba34ef8b8fb4a9047e9e5d8a3'
+    sha1 '53988412bf3ebdf85dc44e8f7656f58b927b644f' => :snowleopard
+    sha1 '3a57f6f44186e0dba34ef8b8fb4a9047e9e5d8a3' => :lion
   end
 
   def install
