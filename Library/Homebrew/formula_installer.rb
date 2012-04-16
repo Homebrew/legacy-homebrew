@@ -328,7 +328,7 @@ class FormulaInstaller
     return unless File.exist? f.lib
 
     valid_libraries = %w(.a .dylib .framework .la .o .so)
-    allowed_non_libraries = %w(.jar .prl)
+    allowed_non_libraries = %w(.jar .prl .pm)
     non_libraries = f.lib.children.select do |g|
       next if g.directory?
       extname = g.extname
