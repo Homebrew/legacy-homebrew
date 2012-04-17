@@ -5,8 +5,7 @@ def bottle_filename f, bottle_version=nil
   name = f.name.downcase
   version = f.version || f.standard.detect_version
   bottle_version = bottle_version || f.bottle_version
-  bottle_version_tag = bottle_version > 0 ? "-#{bottle_version}" : ""
-  "#{name}-#{version}#{bottle_version_tag}#{bottle_native_suffix}"
+  "#{name}-#{version}#{bottle_native_suffix(bottle_version)}"
 end
 
 def bottles_supported?
@@ -15,7 +14,7 @@ end
 
 def install_bottle? f
   return true if ARGV.include? '--install-bottle'
-  !ARGV.build_from_source? && bottle_current?(f)
+  not ARGV.build_from_source? and bottle_current?(f)
 end
 
 def built_bottle? f
@@ -31,24 +30,25 @@ def bottle_new_version f
   f.bottle_version + 1
 end
 
-def bottle_native_suffix
-  ".#{MacOS.cat}#{bottle_suffix}"
+def bottle_native_suffix version=nil
+  ".#{MacOS.cat}#{bottle_suffix(version)}"
 end
 
-def bottle_suffix
-  ".bottle.tar.gz"
+def bottle_suffix version=nil
+  version = version.to_i > 0 ? ".#{version}" : ""
+  ".bottle#{version}.tar.gz"
 end
 
 def bottle_native_regex
-  /((-\d+)?\.#{MacOS.cat}\.bottle\.tar\.gz)$/
+  /(\.#{MacOS.cat}\.bottle\.((\d+)?\.tar\.gz))$/
 end
 
 def bottle_regex
-  /((-\d+)?\.[a-z]+\.bottle\.tar\.gz)$/
+  /(\.[a-z]+\.bottle\.(\d+\.)?tar\.gz)$/
 end
 
 def old_bottle_regex
-  /(-bottle\.tar\.gz)$/
+  /((\.[a-z]+)?[\.-]bottle\.tar\.gz)$/
 end
 
 def bottle_base_url
