@@ -1,5 +1,18 @@
 require 'formula'
 
+class NeedsSnowLeopard < Requirement
+  def satisfied?
+    MacOS.snow_leopard?
+  end
+
+  def message; <<-EOS.undent
+    GHC requires OS X 10.6 or newer. The binary releases no longer work on
+    Leopard. See the following issue for details:
+        http://hackage.haskell.org/trac/ghc/ticket/6009
+    EOS
+  end
+end
+
 class Ghc < Formula
   homepage 'http://haskell.org/ghc/'
   if ARGV.include? '--64bit'
@@ -20,6 +33,8 @@ class Ghc < Formula
     end
   end
 
+  depends_on NeedsSnowLeopard.new
+
   # Avoid stripping the Haskell binaries & libraries.
   # See: http://hackage.haskell.org/trac/ghc/ticket/2458
   skip_clean ['bin', 'lib']
@@ -37,16 +52,6 @@ class Ghc < Formula
   end
 
   def install
-    if MacOS.leopard?
-      onoe <<-EOS.undent
-        GHC requires OS X 10.6 or newer. The binary releases no longer work on
-        Leopard. See the following issue for details:
-
-          http://hackage.haskell.org/trac/ghc/ticket/6009
-      EOS
-      exit 1
-    end
-
     if ARGV.build_devel?
       opoo "The current version of haskell-platform will NOT work with this version of GHC!"
     end
