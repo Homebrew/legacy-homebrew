@@ -13,6 +13,7 @@ module Homebrew extend self
 
   def install_tap user, repo
     raise "brew install git" unless system "/usr/bin/which -s git"
+    base = if ARGV.include? "--base" then ARGV.next else "https://github.com" end
 
     # we special case homebrew so users don't have to shift in a terminal
     repouser = if user == "homebrew" then "Homebrew" else user end
@@ -21,7 +22,7 @@ module Homebrew extend self
     # we downcase to avoid case-insensitive filesystem issues
     tapd = HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}"
     raise "Already tapped!" if tapd.directory?
-    abort unless system "git clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}"
+    abort unless system "git clone #{base}/#{repouser}/homebrew-#{repo} #{tapd}"
 
     files = []
     tapd.find_formula{ |file| files << tapd.basename.join(file) }
