@@ -169,6 +169,11 @@ class VersionTests < Test::Unit::TestCase
       '4.8.0'
   end
 
+  def test_versioned_bottle_style
+    check 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.8.1.lion.bottle.1.tar.gz',
+      '4.8.1'
+  end
+
   def test_erlang_bottle_style
     check 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B.lion.bottle.tar.gz',
       'R15B'
@@ -184,9 +189,19 @@ class VersionTests < Test::Unit::TestCase
       'R15B'
   end
 
+  def test_imagemagick_style
+    check 'http://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.7.5-7.tar.bz2',
+      '6.7.5-7'
+  end
+
   def test_imagemagick_bottle_style
-    check 'http://downloads.sf.net/project/machomebrew/Bottles/imagemagick-6.7.1-1-bottle.tar.gz',
-      '6.7.1-1'
+    check 'https://downloads.sf.net/project/machomebrew/Bottles/imagemagick-6.7.5-7.lion.bottle.tar.gz',
+      '6.7.5-7'
+  end
+
+  def test_imagemagick_versioned_bottle_style
+    check 'https://downloads.sf.net/project/machomebrew/Bottles/imagemagick-6.7.5-7.lion.bottle.1.tar.gz',
+      '6.7.5-7'
   end
 
   def test_dash_version_dash_style
