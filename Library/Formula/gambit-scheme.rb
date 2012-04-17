@@ -28,6 +28,14 @@ class GambitScheme < Formula
             "--enable-single-host"]
     args << "--enable-shared" if ARGV.include? '--enable-shared'
 
+    if ENV.compiler != :gcc
+      opoo <<-EOS.undent
+        Compiling Gambit Scheme with clang or LLVM-GCC takes a very long time.
+        If you have gcc, you can compile it much faster with:
+          brew install gambit-scheme --use-gcc
+      EOS
+    end
+
     system "./configure", *args
     system "make check" if ARGV.include? '--with-check'
 
