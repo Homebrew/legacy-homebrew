@@ -31,6 +31,9 @@ class Mongodb < Formula
     (prefix+'mongod.conf').write mongodb_conf
     plist_path.write startup_plist
     plist_path.chmod 0644
+
+    # copy the config file to etc if this is the first install.
+    etc.install prefix+'mongod.conf' unless File.exists? etc+"mongod.conf"
   end
 
   def caveats; <<-EOS.undent
@@ -48,8 +51,6 @@ class Mongodb < Formula
         mongod run --config #{prefix}/mongod.conf
 
     The launchctl plist above expects the config file to be at #{etc}/mongod.conf.
-    If this is a first install, you can copy one from #{prefix}/mongod.conf:
-        cp #{prefix}/mongod.conf #{etc}/mongod.conf
     EOS
   end
 

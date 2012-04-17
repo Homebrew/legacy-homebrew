@@ -14,6 +14,7 @@ def bottles_supported?
 end
 
 def install_bottle? f
+  return true if ARGV.include? '--install-bottle'
   !ARGV.build_from_source? && bottle_current?(f)
 end
 
