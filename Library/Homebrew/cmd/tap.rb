@@ -64,8 +64,7 @@ module Homebrew extend self
   def tap_args
     ARGV.first =~ %r{^(\w+)/(homebrew-)?(\w+)$}
     raise "Invalid usage" unless $1 and $3
-    url =  if ARGV[1] then ARGV[1] else "https://www.github.com/#{$1}/homebrew-#{$2}" end
-    [$1, $3, url]
+    [$1, $3, ARGV[1] || "https://www.github.com/#{$1}/homebrew-#{$3}"]
   end
 
 end
