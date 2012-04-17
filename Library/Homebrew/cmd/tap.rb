@@ -16,7 +16,6 @@ module Homebrew extend self
     base = if ARGV.include? "--base" then ARGV.next else "https://github.com" end
 
     # we special case homebrew so users don't have to shift in a terminal
-    repouser = if user == "homebrew" then "Homebrew" else user end
     user = "homebrew" if user == "Homebrew"
 
     # we downcase to avoid case-insensitive filesystem issues
@@ -64,7 +63,8 @@ module Homebrew extend self
   def tap_args
     ARGV.first =~ %r{^(\w+)/(homebrew-)?(\w+)$}
     raise "Invalid usage" unless $1 and $3
-    [$1, $3, ARGV[1] || "https://www.github.com/#{$1}/homebrew-#{$3}"]
+    repouser = if $1 == "homebrew" then "Homebrew" else $1 end
+    [$1, $3, ARGV[1] || "https://www.github.com/#{repouser}/homebrew-#{$3}"]
   end
 
 end
