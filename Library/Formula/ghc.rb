@@ -37,6 +37,16 @@ class Ghc < Formula
   end
 
   def install
+    if MacOS.leopard?
+      onoe <<-EOS.undent
+        GHC requires OS X 10.6 or newer. The binary releases no longer work on
+        Leopard. See the following issue for details:
+
+          http://hackage.haskell.org/trac/ghc/ticket/6009
+      EOS
+      exit 1
+    end
+
     if ARGV.build_devel?
       opoo "The current version of haskell-platform will NOT work with this version of GHC!"
     end
