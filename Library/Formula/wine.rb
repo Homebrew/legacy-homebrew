@@ -3,6 +3,11 @@ require 'formula'
 class WineGecko < Formula
   url 'http://downloads.sourceforge.net/wine/wine_gecko-1.4-x86.msi', :using => :nounzip
   sha1 'c30aa99621e98336eb4b7e2074118b8af8ea2ad5'
+
+  devel do
+    url 'http://downloads.sourceforge.net/wine/wine_gecko-1.5-x86.msi', :using => :nounzip
+    sha1 '07b2bc74d03c885bb39124a7641715314cd3ae71'
+  end
 end
 
 class Wine < Formula
@@ -12,10 +17,8 @@ class Wine < Formula
   head 'git://source.winehq.org/git/wine.git'
 
   devel do
-    # although right now the stable and devel series are in sync, there will be
-    # a new devel release soon enough, so let's keep this around
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.4.tar.bz2'
-    sha256 '99a437bb8bd350bb1499d59183635e58217e73d631379c43cfd0d6020428ee65'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.0.tar.bz2'
+    sha256 'ad15143d2f8b38e2b5b8569b46efd09f9d13ce558dad431e17c471ca1412742b'
   end
 
   depends_on 'jpeg'
@@ -34,10 +37,10 @@ class Wine < Formula
   # Including /usr/lib because wine, as of 1.3.15, tries to dlopen
   # libncurses.5.4.dylib, and fails to find it without the fallback path.
 
-  def wine_wrapper; <<-EOS
-#!/bin/sh
-DYLD_FALLBACK_LIBRARY_PATH="/usr/X11/lib:#{HOMEBREW_PREFIX}/lib:/usr/lib" "#{bin}/wine.bin" "$@"
-EOS
+  def wine_wrapper; <<-EOS.undent
+    #!/bin/sh
+    DYLD_FALLBACK_LIBRARY_PATH="/usr/X11/lib:#{HOMEBREW_PREFIX}/lib:/usr/lib" "#{bin}/wine.bin" "$@"
+    EOS
   end
 
   def install

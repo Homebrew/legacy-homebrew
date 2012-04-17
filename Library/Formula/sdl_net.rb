@@ -7,7 +7,12 @@ class SdlNet < Formula
 
   depends_on 'sdl'
 
+  def options
+    [['--universal', 'Build universal binaries.']]
+  end
+
   def install
+    ENV.universal_binary if ARGV.build_universal?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-sdltest"
