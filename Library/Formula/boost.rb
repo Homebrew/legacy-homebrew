@@ -25,6 +25,7 @@ class Boost < Formula
       ["--universal", "Build universal binaries"],
       ["--without-python", "Build without Python"],
       ["--with-icu", "Build regexp engine with icu support"],
+      ["--systemlayout", "Build boost using the system integrated naming convention"]
     ]
   end
 
@@ -73,10 +74,18 @@ class Boost < Formula
     args = ["--prefix=#{prefix}",
             "--libdir=#{lib}",
             "-j#{ENV.make_jobs}",
-            "--layout=tagged",
             "--user-config=user-config.jam",
             "threading=multi",
             "install"]
+
+    if ARGV.include? "--system-layout"
+      args << "--layout=system"
+      puts "Building with system layout."
+    else
+      args << "--layout=tagged"
+      puts "Building with tagged layout."
+    end
+
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if ARGV.include? "--universal"
     args << "--without-python" if ARGV.include? "--without-python"
