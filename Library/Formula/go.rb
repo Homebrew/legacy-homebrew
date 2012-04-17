@@ -7,7 +7,7 @@ class Go < Formula
   sha1 '6023623d083db1980965335b8ac4fa8b428fa484'
 
   if ARGV.include? "--use-git"
-    head 'https://github.com/tav/go.git'
+    head 'https://github.com/rsbx/go.git'
   else
     head 'http://go.googlecode.com/hg/'
   end
