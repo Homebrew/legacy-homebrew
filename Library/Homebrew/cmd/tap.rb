@@ -13,10 +13,6 @@ module Homebrew extend self
 
   def install_tap user, repo, url
     raise "brew install git" unless system "/usr/bin/which -s git"
-    base = if ARGV.include? "--base" then ARGV.next else "https://github.com" end
-
-    # we special case homebrew so users don't have to shift in a terminal
-    user = "homebrew" if user == "Homebrew"
 
     # we downcase to avoid case-insensitive filesystem issues
     tapd = HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}"
@@ -63,7 +59,10 @@ module Homebrew extend self
   def tap_args
     ARGV.first =~ %r{^(\w+)/(homebrew-)?(\w+)$}
     raise "Invalid usage" unless $1 and $3
+
+    # we special case homebrew so users don't have to shift in a terminal
     repouser = if $1 == "homebrew" then "Homebrew" else $1 end
+
     [$1, $3, ARGV[1] || "https://www.github.com/#{repouser}/homebrew-#{$3}"]
   end
 
