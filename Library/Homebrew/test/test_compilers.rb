@@ -8,17 +8,16 @@ ENV.extend(HomebrewEnvExtension)
 
 require 'test/testball'
 
-module CompilerTestsEnvExtension
-  def unset_use_cc
-    vars = %w{HOMEBREW_USE_CLANG HOMEBREW_USE_LLVM HOMEBREW_USE_GCC}
-    vars.each { |v| ENV.delete(v) }
-  end
-end
-ENV.extend(CompilerTestsEnvExtension)
-
 class CompilerTests < Test::Unit::TestCase
+  def setup
+    %w{HOMEBREW_USE_CLANG HOMEBREW_USE_LLVM HOMEBREW_USE_GCC}.each { |v| ENV.delete(v) }
+  end
+
+  def teardown
+    ENV.send MacOS.default_compiler
+  end
+
   def test_llvm_failure
-    ENV.unset_use_cc
     f = TestLLVMFailure.new
     cs = CompilerSelector.new(f)
 
@@ -32,12 +31,9 @@ class CompilerTests < Test::Unit::TestCase
       when 0..210 then :gcc
       else :clang
       end, ENV.compiler
-
-    ENV.send MacOS.default_compiler
   end
 
   def test_all_compiler_failures
-    ENV.unset_use_cc
     f = TestAllCompilerFailures.new
     cs = CompilerSelector.new(f)
 
@@ -48,12 +44,9 @@ class CompilerTests < Test::Unit::TestCase
     cs.select_compiler
 
     assert_equal MacOS.default_compiler, ENV.compiler
-
-    ENV.send MacOS.default_compiler
   end
 
   def test_no_compiler_failures
-    ENV.unset_use_cc
     f = TestNoCompilerFailures.new
     cs = CompilerSelector.new(f)
 
@@ -67,12 +60,9 @@ class CompilerTests < Test::Unit::TestCase
     cs.select_compiler
 
     assert_equal MacOS.default_compiler, ENV.compiler
-
-    ENV.send MacOS.default_compiler
   end
 
   def test_mixed_compiler_failures
-    ENV.unset_use_cc
     f = TestMixedCompilerFailures.new
     cs = CompilerSelector.new(f)
 
@@ -83,12 +73,9 @@ class CompilerTests < Test::Unit::TestCase
     cs.select_compiler
 
     assert_equal :llvm, ENV.compiler
-
-    ENV.send MacOS.default_compiler
   end
 
   def test_more_mixed_compiler_failures
-    ENV.unset_use_cc
     f = TestMoreMixedCompilerFailures.new
     cs = CompilerSelector.new(f)
 
@@ -99,12 +86,9 @@ class CompilerTests < Test::Unit::TestCase
     cs.select_compiler
 
     assert_equal :clang, ENV.compiler
-
-    ENV.send MacOS.default_compiler
   end
 
   def test_even_more_mixed_compiler_failures
-    ENV.unset_use_cc
     f = TestEvenMoreMixedCompilerFailures.new
     cs = CompilerSelector.new(f)
 
@@ -121,12 +105,9 @@ class CompilerTests < Test::Unit::TestCase
       when 0..210 then :gcc
       else :clang
       end, ENV.compiler
-
-    ENV.send MacOS.default_compiler
   end
 
   def test_block_with_no_build_compiler_failures
-    ENV.unset_use_cc
     f = TestBlockWithoutBuildCompilerFailure.new
     cs = CompilerSelector.new(f)
 
@@ -137,7 +118,5 @@ class CompilerTests < Test::Unit::TestCase
     cs.select_compiler
 
     assert_equal MacOS.default_compiler, ENV.compiler
-
-    ENV.send MacOS.default_compiler
   end
 end
