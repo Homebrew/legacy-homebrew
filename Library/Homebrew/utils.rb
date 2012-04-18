@@ -53,6 +53,10 @@ def onoe error
   puts lines unless lines.empty?
 end
 
+def ofail error
+  onoe error
+  exit 1
+end
 
 def pretty_duration s
   return "2 seconds" if s < 3 # avoids the plural problem ;)
@@ -523,7 +527,7 @@ module MacOS extend self
   end
 
   StandardCompilers = {
-    "3.1.4" => {:gcc_40_build_version=>5493, :gcc_42_build_version=>5577, :llvm_build_version=>2064},
+    "3.1.4" => {:gcc_40_build_version=>5493, :gcc_42_build_version=>5577},
     "3.2.6" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"1.7", :clang_build_version=>77},
     "4.0" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"2.0", :clang_build_version=>137},
     "4.0.1" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"2.0", :clang_build_version=>137},

@@ -2,8 +2,9 @@ require 'formula'
 
 class Fuse4x < Formula
   homepage 'http://fuse4x.org/'
-  url 'https://github.com/fuse4x/fuse.git', :tag => "fuse4x_0_9_0"
-  version "0.9.0"
+  url 'https://github.com/fuse4x/fuse/tarball/fuse4x_0_10_0'
+  md5 '10bacfd8318714de72a95e8baf62d6cd'
+  version "0.10.0"
 
   depends_on "automake" => :build
   depends_on "libtool" => :build

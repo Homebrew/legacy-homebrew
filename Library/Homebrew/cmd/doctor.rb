@@ -183,6 +183,7 @@ def check_for_broken_symlinks
   broken_symlinks = []
   %w[lib include sbin bin etc share].each do |d|
     d = HOMEBREW_PREFIX/d
+    next unless d.directory?
     d.find do |pn|
       broken_symlinks << pn if pn.symlink? and pn.readlink.expand_path.to_s =~ /^#{HOMEBREW_PREFIX}/ and not pn.exist?
     end
