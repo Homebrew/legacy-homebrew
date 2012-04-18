@@ -77,6 +77,8 @@ class Octave < Formula
       "--with-blas=#{'-ldotwrp ' if snow_leopard_64?}-framework Accelerate"
     ]
     args << "--without-framework-carbon" if MacOS.lion?
+    # avoid spurious 'invalid assignment to cs-list' erorrs on 32 bit installs:
+    args << 'CXXFLAGS=-O0' if !MacOS.prefer_64_bit?
 
     system "./configure", *args
     system "make all"
