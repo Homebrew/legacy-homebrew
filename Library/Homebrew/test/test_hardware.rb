@@ -15,7 +15,7 @@ class HardwareTests < Test::Unit::TestCase
   
   def test_hardware_intel_family
     if Hardware.cpu_type == :intel
-      assert [:core, :core2, :penryn, :nehalem, :sandybridge].include?(Hardware.intel_family)
+      assert [:core, :core2, :penryn, :nehalem, :arrandale, :sandybridge].include?(Hardware.intel_family)
     end
   end
 end
