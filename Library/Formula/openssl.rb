@@ -9,11 +9,12 @@ class Openssl < Formula
     "The OpenSSL provided by Leopard (0.9.7) is too old for some software."
 
   def install
-    args = [ "./Configure",
-                       "--prefix=#{prefix}",
-                       "--openssldir=#{etc}/openssl",
-                       "zlib-dynamic", "shared"
-                     ]
+    args = %W[./Configure
+               --prefix=#{prefix}
+               --openssldir=#{etc}/openssl
+               zlib-dynamic
+               shared
+             ]
 
     args << (MacOS.prefer_64_bit? ? "darwin64-x86_64-cc" : "darwin-i386-cc")
 
