@@ -17,14 +17,11 @@ class Redis < Formula
     ENV["OBJARCH"] = MacOS.prefer_64_bit? ? "-arch x86_64" : "-arch i386"
 
     # Head and stable have different code layouts
-    src = File.exists?('src/Makefile') ? 'src' : '.'
-    system "make -C #{src}"
+    src = (buildpath/'src/Makefile').exist? ? buildpath/'src' : buildpath
+    system "make", "-C", src, "CC=#{ENV.cc}"
 
-    %w( redis-benchmark redis-cli redis-server redis-check-dump redis-check-aof ).each { |p|
-      bin.install "#{src}/#{p}" rescue nil
-    }
-
-    %w( run db/redis log ).each { |p| (var+p).mkpath }
+    %w[benchmark cli server check-dump check-aof].each { |p| bin.install src/"redis-#{p}" }
+    %w[run db/redis log].each { |p| (var+p).mkpath }
 
     # Fix up default conf file to match our paths
     inreplace "redis.conf" do |s|
@@ -33,8 +30,7 @@ class Redis < Formula
       s.gsub! "\# bind 127.0.0.1", "bind 127.0.0.1"
     end
 
-    doc.install Dir["doc/*"]
-    etc.install "redis.conf"
+    etc.install 'redis.conf' unless (etc/'redis.conf').exist?
     plist_path.write startup_plist
     plist_path.chmod 0644
   end
