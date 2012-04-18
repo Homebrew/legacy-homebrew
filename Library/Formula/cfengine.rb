@@ -12,7 +12,7 @@ class Cfengine < Formula
                           "--prefix=#{prefix}",
                           "--with-workdir=#{var}/cfengine",
                           "--with-tokyocabinet"
-    system "/usr/bin/make install"
+    system "make install"
   end
 
   def test
