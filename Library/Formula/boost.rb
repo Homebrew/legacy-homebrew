@@ -25,7 +25,7 @@ class Boost < Formula
       ["--universal", "Build universal binaries"],
       ["--without-python", "Build without Python"],
       ["--with-icu", "Build regexp engine with icu support"],
-      ["--systemlayout", "Build boost using the system integrated naming convention"]
+      ["--system-layout", "Build boost using the system integrated naming convention"]
     ]
   end
 
