@@ -10,7 +10,12 @@ class Collectd < Formula
   skip_clean :all
 
   # won't compile with Clang; use --use-gcc instead
-  fails_with :clang
+  fails_with :clang do
+    build "3.1 build 318"
+    cause <<-EOS.undent
+      Clang interacts poorly with the collectd-bundled libltdl, the configure fails with "C compiler cannot build executables" in the inner ./configure run when using Clang
+      EOS
+  end
 
   def install
     # Use system Python; doesn't compile against 2.7
