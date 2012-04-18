@@ -9,6 +9,14 @@ class Collectd < Formula
 
   skip_clean :all
 
+  fails_with :clang do
+    build 318
+    cause <<-EOS.undent
+      Clang interacts poorly with the collectd-bundled libltdl,
+      causing configure to fail.
+      EOS
+  end
+
   def install
     # Use system Python; doesn't compile against 2.7
     # -C enables the cache and resolves permissions errors
