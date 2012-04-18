@@ -23,7 +23,7 @@ class Tmux < Formula
     system "make install"
 
     # Install bash completion scripts for use with bash-completion
-    (etc+'bash_completion.d').install "examples/bash_completion_tmux.sh" => 'tmux'
+    (prefix+'etc/bash_completion.d').install "examples/bash_completion_tmux.sh" => 'tmux'
 
     # Install vim syntax file as a plugin.
     (Pathname.pwd+'examples/ftdetect-tmux.vim').open('w') do |f|
