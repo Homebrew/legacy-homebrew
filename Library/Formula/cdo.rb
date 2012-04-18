@@ -10,7 +10,6 @@ class Cdo < Formula
   version '1.5.4'
   md5 'ceacb1acfa921a5bf1a3e4cda1097405'
 
-  depends_on 'szlib'
   depends_on 'netcdf'
   depends_on 'hdf5'
   depends_on 'grib-api' if grib2?
