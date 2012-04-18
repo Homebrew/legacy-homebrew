@@ -9,6 +9,7 @@ class E2fsprogs < Formula
   keg_only "This brew installs several commands which override OS X-provided file system commands."
 
   def install
+    ENV.append_to_cflags "--std=gnu89 -Wno-return-type" if ENV.compiler == :clang
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
