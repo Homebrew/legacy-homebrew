@@ -6,17 +6,9 @@ class Go < Formula
   version '1'
   sha1 '6023623d083db1980965335b8ac4fa8b428fa484'
 
-  if ARGV.include? "--use-git"
-    head 'https://github.com/tav/go.git'
-  else
-    head 'http://go.googlecode.com/hg/'
-  end
+  head 'http://go.googlecode.com/hg/'
 
   skip_clean 'bin'
-
-  def options
-    [["--use-git", "Use git mirror instead of official hg repository"]]
-  end
 
   def install
     prefix.install Dir['*']

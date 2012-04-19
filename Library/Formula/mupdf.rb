@@ -1,9 +1,26 @@
 require 'formula'
 
+class NeedsSnowLeopard < Requirement
+  def satisfied?
+    MACOS_VERSION >= 10.6
+  end
+
+  def message; <<-EOS.undent
+    The version of Freetype that comes with Leopard is too old to build MuPDF
+    against. It is possible to get MuPDF working on Leopard using the Freetype
+    formula from Homebrew-Dupes and some tweaks to the Makefile.
+
+    Doing so is left as an exercise for the reader.
+    EOS
+  end
+end
+
 class Mupdf < Formula
   homepage 'http://mupdf.com'
   url 'http://mupdf.googlecode.com/files/mupdf-0.9-source.tar.gz'
   md5 '76640ee16a797a27fe49cc0eaa87ce3a'
+
+  depends_on NeedsSnowLeopard.new
 
   depends_on 'jpeg'
   depends_on 'openjpeg'
@@ -15,15 +32,6 @@ class Mupdf < Formula
   end
 
   def install
-    if MacOS.leopard?
-      raise <<-EOS.undent
-        The version of Freetype that comes with Leopard is too old to build
-        MuPDF against. It is possible to get MuPDF working on Leopard using the
-        Freetype formula from Homebrew-Alt and some tweaks to the Makefile.
-        This is left as an exercise for the reader.
-      EOS
-    end
-
     ENV.x11 # For LibPNG and Freetype
     system "make install prefix=#{prefix}"
 
@@ -33,6 +41,12 @@ class Mupdf < Formula
     bin.entries.select{ |b| b.basename.to_s.match /^pdf/ }.each do |p|
       mv bin + p, bin + ('mu' + p.basename.to_s)
     end
+  end
+
+  def caveats; <<-EOS.undent
+    All MuPDF command line tools have been prefixed with `mu` to prevent name
+    clashes with other PDF packages.
+    EOS
   end
 end
 

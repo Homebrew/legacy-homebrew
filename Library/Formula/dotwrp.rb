@@ -1,9 +1,11 @@
 require 'formula'
 
 class Dotwrp < Formula
-  url 'https://github.com/tenomoto/dotwrp.git', :using => :git
   homepage 'https://github.com/tenomoto/dotwrp'
-  version '1.0'
+  url 'https://github.com/tenomoto/dotwrp/tarball/v1.0'
+  md5 '629f1f66fbb9837ee1e21a666a9688fa'
+
+  head 'https://github.com/tenomoto/dotwrp.git'
 
   def install
     ENV.fortran

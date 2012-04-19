@@ -293,11 +293,23 @@ class Pathname
       # NOTE only system ln -s will create RELATIVE symlinks
       quiet_system 'ln', '-s', src.relative_path_from(self.dirname), self.basename
       if not $?.success?
-        raise <<-EOS.undent
-          Could not symlink file: #{src.expand_path}
-          Check #{self} does not already exist.
-          Check #{dirname} is writable.
-        EOS
+        if self.exist?
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            Target #{self} already exists. You may need to delete it.
+            EOS
+        elsif !dirname.writable?
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            #{dirname} is not writable. You should change its permissions.
+            EOS
+        else
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            #{self} may already exist.
+            #{dirname} may not be writable.
+            EOS
+        end
       end
     end
   end
