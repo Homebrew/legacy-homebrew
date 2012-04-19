@@ -6,7 +6,7 @@ class Pngcrush < Formula
   md5 '582AB2B4C262B8837CC2D30BF7D14F33'
 
   def install
-    ENV.append_to_cflags "-I. -funroll-loops -fomit-frame-pointer -Wall -Wshadow -DZ_SOLO" if ENV.compiler == :clang
+    ENV.append_to_cflags "-I. -funroll-loops -fomit-frame-pointer -Wall -Wshadow -DZ_SOLO"
     system "make", "CC=#{ENV.cc}",
                    "LD=#{ENV.cc}",
                    "CFLAGS=#{ENV.cflags}",
