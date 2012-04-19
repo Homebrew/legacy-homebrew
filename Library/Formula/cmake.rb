@@ -1,19 +1,13 @@
 require 'formula'
 
 class Cmake < Formula
-  url 'http://www.cmake.org/files/v2.8/cmake-2.8.7.tar.gz'
-  md5 'e1b237aeaed880f65dec9c20602452f6'
+  url 'http://www.cmake.org/files/v2.8/cmake-2.8.8.tar.gz'
+  md5 'ba74b22c788a0c8547976b880cd02b17'
   homepage 'http://www.cmake.org/'
 
-  # Fix issues with Xcode 4.3. Remove for 2.8.8.
-  def patches
-    [ 'https://github.com/Kitware/CMake/commit/5663e.patch',
-      'https://github.com/Kitware/CMake/commit/4693c.patch' ]
-  end
-
   bottle do
-    sha1 '53988412bf3ebdf85dc44e8f7656f58b927b644f' => :snowleopard
-    sha1 '3a57f6f44186e0dba34ef8b8fb4a9047e9e5d8a3' => :lion
+    sha1 '8e00193226f3bb591c183e14094c7531318ddc6a' => :lion
+    sha1 '4d25a7ca3f41750d957fe1cfd53ecb37c713efad' => :snowleopard
   end
 
   def install
@@ -35,5 +29,9 @@ class Cmake < Formula
                           "--mandir=/share/man"
     system "make"
     system "make install"
+  end
+
+  def test
+    system "#{bin}/cmake -E echo testing"
   end
 end
