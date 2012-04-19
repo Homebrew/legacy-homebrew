@@ -5,7 +5,7 @@ class Synfig < Formula
   homepage 'http://synfig.org'
   md5 '9bd77cd2fc2381adfbd50a7b9c1c6e7c'
 
-  head 'git://synfig.git.sourceforge.net/gitroot/synfig/synfig', :using => :git
+  head 'git://synfig.git.sourceforge.net/gitroot/synfig/synfig'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
