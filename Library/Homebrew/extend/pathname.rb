@@ -214,8 +214,10 @@ class Pathname
     return $1 if $1
 
     # eg. foobar4.5.1
-    /((\d+\.)*\d+)$/.match stem
-    return $1 if $1
+    unless /^erlang-/.match basename
+      /((\d+\.)*\d+)$/.match stem
+      return $1 if $1
+    end
 
     # eg foobar-4.5.0-bin
     /-((\d+\.)+\d+[abc]?)[-._](bin|dist|stable|src|sources?)$/.match stem
