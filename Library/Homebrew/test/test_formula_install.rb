@@ -23,22 +23,12 @@ end
 
 class ConfigureTests < Test::Unit::TestCase
   def test_detect_failed_configure
-    tmperr = $stderr
-    tmpout = $stdout
-    require 'stringio'
-    $stderr = StringIO.new
-    $stdout = StringIO.new
-
     f = ConfigureFails.new
-
     begin
-      f.brew { f.install }
+      shutup { f.brew { f.install } }
     rescue BuildError => e
       assert e.was_running_configure?
     end
-
-    $stderr = tmperr
-    $stdout = tmpout
   end
 end
 
