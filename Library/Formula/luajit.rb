@@ -4,7 +4,8 @@ class Luajit < Formula
   homepage 'http://luajit.org/luajit.html'
   url 'http://luajit.org/download/LuaJIT-2.0.0-beta9.tar.gz'
   md5 'e7e03e67e2550817358bc28b44270c6d'
-  head 'http://luajit.org/git/luajit-2.0.git', :using => :git
+
+  head 'http://luajit.org/git/luajit-2.0.git'
 
   # Skip cleaning both empty folders and bin/libs so external symbols still work.
   skip_clean :all

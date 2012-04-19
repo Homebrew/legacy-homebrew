@@ -5,7 +5,7 @@ def use_python?
 end
 
 class Libemu < Formula
-  head 'http://git.carnivore.it/libemu.git', :using => :git
+  head 'http://git.carnivore.it/libemu.git'
   homepage 'http://libemu.carnivore.it/'
 
   depends_on 'pkg-config' => :build

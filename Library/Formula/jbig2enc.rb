@@ -2,7 +2,7 @@ require 'formula'
 
 class Jbig2enc < Formula
   homepage 'https://github.com/agl/jbig2enc'
-  url 'https://github.com/agl/jbig2enc.git', :using => :git,
+  url 'https://github.com/agl/jbig2enc.git',
       :tag => '17b36fad1e64a378f11eb934e8ca25f4b0008a4f'
   version '0.27-17b36fa'
 

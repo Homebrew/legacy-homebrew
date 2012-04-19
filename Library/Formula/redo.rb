@@ -1,7 +1,7 @@
 require 'formula'
 
 class RedoDocs < Formula
-  head 'https://github.com/apenwarr/redo.git', {:using => :git, :branch => 'man' }
+  head 'https://github.com/apenwarr/redo.git', :branch => 'man'
   version 'foo'
 end
 

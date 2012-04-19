@@ -6,7 +6,7 @@ class V8 < Formula
   url 'https://github.com/v8/v8/tarball/3.9.24'
   sha1 '111bf871bda84e72fdf93f2877d97591b918db2a'
 
-  head 'https://github.com/v8/v8.git', :using => :git
+  head 'https://github.com/v8/v8.git'
 
   depends_on 'scons' => :build
 
