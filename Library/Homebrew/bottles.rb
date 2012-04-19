@@ -22,8 +22,6 @@ def built_bottle? f
 end
 
 def bottle_current? f
-  puts Pathname.new(f.bottle_url).version
-  puts f.version
   f.bottle_url && f.bottle_sha1 && Pathname.new(f.bottle_url).version == f.version
 end
 
