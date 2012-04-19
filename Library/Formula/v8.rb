@@ -4,7 +4,7 @@ class V8 < Formula
   homepage 'http://code.google.com/p/v8/'
   # Use the official github mirror, it is easier to find tags there
   url 'https://github.com/v8/v8/tarball/3.9.24'
-  sha1 '634c5eed18599c57c695cf58acdda59d'
+  sha1 '111bf871bda84e72fdf93f2877d97591b918db2a'
 
   head 'https://github.com/v8/v8.git', :using => :git
 
