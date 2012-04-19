@@ -32,6 +32,8 @@ class Gdal < Formula
 
   head 'https://svn.osgeo.org/gdal/trunk/gdal', :using => :svn
 
+  depends_on 'doxygen' => :build
+
   depends_on 'jpeg'
   depends_on 'giflib'
   depends_on 'proj'
@@ -74,6 +76,8 @@ class Gdal < Formula
   def get_configure_args
     args = [
       # Base configuration.
+      "--prefix=#{prefix}",
+      "--mandir=#{man}",
       "--disable-debug",
       "--with-local=#{prefix}",
       "--with-threads",
@@ -205,7 +209,7 @@ class Gdal < Formula
       ENV['ARCHFLAGS'] = "-arch i386"
     end
 
-    system "./configure", "--prefix=#{prefix}", *get_configure_args
+    system "./configure", *get_configure_args
     system "make"
     system "make install"
 
@@ -234,6 +238,15 @@ class Gdal < Formula
         bin.install Dir['scripts/*']
       end
     end
+
+    # For some reason, the 1.9.0 source contains an empty `man` directory which
+    # fools Make into thinking there is nothing that needs to be done.
+    rmtree 'man'
+    system 'make', 'man'
+    system 'make', 'install-man'
+
+    # Clean up any stray doxygen files.
+    Dir[bin + '*.dox'].each { |p| rm p }
   end
 
   unless no_python?
