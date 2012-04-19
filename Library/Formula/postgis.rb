@@ -64,68 +64,31 @@ class Postgis < Formula
     system './configure', *args
     system 'make'
 
-    # __DON'T RUN MAKE INSTALL!__
-    #
     # PostGIS includes the PGXS makefiles and so will install __everything__
     # into the Postgres keg instead of the PostGIS keg. Unfortunately, some
     # things have to be inside the Postgres keg in order to be function. So, we
-    # install the bare minimum of stuff and then manually move everything else
-    # to the prefix.
+    # install everything to a staging directory and manually move the pieces
+    # into the appropriate prefixes.
+    mkdir 'stage'
+    system 'make', 'install', "DESTDIR=#{Dir.getwd}/stage"
 
     # Install PostGIS plugin libraries into the Postgres keg so that they can
     # be loaded and so PostGIS databases will continue to function even if
     # PostGIS is removed.
-    postgresql.lib.install Dir['postgis/postgis*.so']
-
-    # Stand-alone SQL files will be installed the share folder
-    postgis_sql = share + 'postgis'
-
-    # Install version-specific SQL scripts and tools first. Some of the
-    # installation routines require command line tools to still be present
-    # inside the build prefix.
-
-    # Install the liblwgeom library
-    lib.install Dir['liblwgeom/.libs/*.dylib', 'liblwgeom/.libs/*.a']
-    include.install 'liblwgeom/liblwgeom.h'
-
-    # Install raster plugin to Postgres keg
-    postgresql.lib.install Dir['raster/rt_pg/rtpostgis*.so']
+    postgresql.lib.install Dir['stage/**/*.so']
 
     # Install extension scripts to the Postgres keg.
     # `CREATE EXTENSION postgis;` won't work if these are located elsewhere.
-    system 'make install -C extensions'
+    (postgresql.share + 'postgresql' + 'extension').install Dir['stage/**/extension/*']
 
-    bin.install %w[
-      loader/.libs/pgsql2shp
-      loader/.libs/shp2pgsql
-      raster/loader/.libs/raster2pgsql
-    ]
-    bin.install 'loader/.libs/shp2pgsql-gui' if build_gui?
+    bin.install Dir['stage/**/bin/*']
+    lib.install Dir['stage/**/lib/*']
+    include.install Dir['stage/**/include/*']
 
-    # Install PostGIS 2.0 SQL scripts
-    postgis_sql.install %w[
-      postgis/legacy.sql
-      postgis/legacy_minimal.sql
-      postgis/uninstall_legacy.sql
-      postgis/postgis_upgrade_20_minor.sql
-    ]
+    # Stand-alone SQL files will be installed the share folder
+    (share + 'postgis').install Dir['stage/**/contrib/postgis-2.0/*']
 
-    postgis_sql.install %w[
-      raster/rt_pg/rtpostgis.sql
-      raster/rt_pg/rtpostgis_drop.sql
-      raster/rt_pg/rtpostgis_upgrade_20_minor.sql
-      raster/rt_pg/rtpostgis_upgrade.sql
-      raster/rt_pg/rtpostgis_upgrade_cleanup.sql
-      raster/rt_pg/uninstall_rtpostgis.sql
-    ]
-
-    postgis_sql.install %w[
-      topology/topology.sql
-      topology/topology_upgrade_20_minor.sql
-      topology/uninstall_topology.sql
-    ]
-
-    # Common tools
+    # Extension scripts
     bin.install %w[
       utils/create_undef.pl
       utils/postgis_proc_upgrade.pl
@@ -137,12 +100,7 @@ class Postgis < Formula
       utils/test_joinestimation.pl
     ]
 
-    # Common SQL scripts
-    postgis_sql.install %w[
-      spatial_ref_sys.sql
-      postgis/postgis.sql
-      postgis/uninstall_postgis.sql
-    ]
+    man1.install Dir['doc/**/*.1']
   end
 
   def caveats;
