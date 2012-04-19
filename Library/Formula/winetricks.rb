@@ -2,9 +2,9 @@ require 'formula'
 
 class Winetricks < ScriptFileFormula
   homepage 'http://code.google.com/p/winetricks/'
-  url 'http://winetricks.googlecode.com/svn-history/r795/trunk/src/winetricks', :using => :curl
-  version '20120308'
-  # this is the version stated in the file, but note that it is not always updated
+  url 'http://winetricks.googlecode.com/svn-history/r798/trunk/src/winetricks', :using => :curl
+  version '20120308-r798'
+  # since the version stated in the field is seldom updated, we append the revision number
 
   head 'http://winetricks.googlecode.com/svn/trunk/src/winetricks', :using => :curl
 
@@ -12,7 +12,7 @@ class Winetricks < ScriptFileFormula
 
   # Don't provide an md5 for the HEAD build
   unless ARGV.build_head?
-    sha256 'c6df4d7a8c0d4218507edd12607cec677378d6cf7371324d9cd4a07c923e1bae'
+    sha256 'cc71fbe6ada29a76693694a232cc4df49a9183f76d3e20eaf8123f94814d0126'
   end
 
   def caveats; <<-EOS.undent

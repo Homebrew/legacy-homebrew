@@ -2,8 +2,8 @@ require 'formula'
 
 class Libevent < Formula
   homepage 'http://www.monkey.org/~provos/libevent/'
-  url 'https://github.com/downloads/libevent/libevent/libevent-2.0.17-stable.tar.gz'
-  sha1 'cea3af2d4bd688784f270ac2ecae8ea6aaaa463f'
+  url 'https://github.com/downloads/libevent/libevent/libevent-2.0.18-stable.tar.gz'
+  sha1 '2a2cc87ce1945f43dfa5a5f9575fef3d14a8f57a'
 
   head 'git://levent.git.sourceforge.net/gitroot/levent/levent'
 

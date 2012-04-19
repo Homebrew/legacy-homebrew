@@ -74,6 +74,10 @@ class Dependency
     @name == other_dep.to_s
   end
 
+  def <=>(other_dep)
+    @name <=> other_dep.to_s
+  end
+
   def options
     @tags.select{|p|p.start_with? '--'}
   end
