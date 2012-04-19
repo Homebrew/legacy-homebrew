@@ -2,14 +2,14 @@ require 'formula'
 
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.6.14/node-v0.6.14.tar.gz'
-  md5 '3033a866e230cca64e212ee8f2af27dd'
+  url 'http://nodejs.org/dist/v0.6.15/node-v0.6.15.tar.gz'
+  md5 '852cfb1ed8125a4cdba456446d869d19'
 
   head 'https://github.com/joyent/node.git'
 
   devel do
-    url 'http://nodejs.org/dist/v0.7.7/node-v0.7.7.tar.gz'
-    md5 '6cce285f9e01c9678b4a3e7d034563c9'
+    url 'http://nodejs.org/dist/v0.7.8/node-v0.7.8.tar.gz'
+    md5 '552b1e97539f2d574a2c56b849dea6a5'
   end
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
@@ -27,12 +27,6 @@ class Node < Formula
   end
 
   def install
-    # This fixes an issue with npm segfaulting. See:
-    # https://github.com/joyent/node/issues/2061
-    # This can be removed when some version newer than 7.7 lands
-    # that has this fix. When updating this formula, please check!
-    ENV.append_to_cflags '-D__DARWIN_64_BIT_INO_T'
-
     unless ARGV.build_devel?
       inreplace 'wscript' do |s|
         s.gsub! '/usr/local', HOMEBREW_PREFIX

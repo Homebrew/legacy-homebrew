@@ -7,7 +7,7 @@ end
 class Zeromq < Formula
   homepage 'http://www.zeromq.org/'
   url 'http://download.zeromq.org/zeromq-2.2.0.tar.gz'
-  md5 '05fc17610630e952d29efe7564828888'
+  md5 '1b11aae09b19d18276d0717b2ea288f6'
   head 'https://github.com/zeromq/libzmq.git'
 
   if ARGV.build_head? and MacOS.xcode_version >= "4.3"

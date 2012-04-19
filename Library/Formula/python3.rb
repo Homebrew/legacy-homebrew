@@ -12,14 +12,14 @@ def as_framework?
 end
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.25.tar.gz'
-  md5 'a690874b9964d958a3200485eb827b1d'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.26.tar.gz'
+  md5 '841f4262a70107f85260362f5def8206'
 end
 
 class Python3 < Formula
-  url 'http://python.org/ftp/python/3.2.2/Python-3.2.2.tar.bz2'
   homepage 'http://www.python.org/'
-  md5 '9d763097a13a59ff53428c9e4d098a05'
+  url 'http://python.org/ftp/python/3.2.3/Python-3.2.3.tar.bz2'
+  md5 'cea34079aeb2e21e7b60ee82a0ac286b'
 
   depends_on 'pkg-config' => :build
 
@@ -37,12 +37,6 @@ class Python3 < Formula
 
   # Skip binaries so modules will load; skip lib because it is mostly Python files
   skip_clean ['bin', 'lib']
-
-  def patches
-    # fix for recognizing gdbm 1.9.x databases
-    # patch is already upstream: http://hg.python.org/cpython/rev/7a41855b6196
-    DATA
-  end
 
   # The Cellar location of site-packages
   # This location is different for Framework builds
@@ -177,15 +171,3 @@ class Python3 < Formula
     HOMEBREW_PREFIX+"share/python3"
   end
 end
-
-__END__
-diff --git a/Lib/dbm/__init__.py b/Lib/dbm/__init__.py
---- a/Lib/dbm/__init__.py
-+++ b/Lib/dbm/__init__.py
-@@ -166,7 +166,7 @@ def whichdb(filename):
-         return ""
- 
-     # Check for GNU dbm
--    if magic == 0x13579ace:
-+    if magic in (0x13579ace, 0x13579acd, 0x13579acf):
-         return "dbm.gnu"

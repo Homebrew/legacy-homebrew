@@ -6,8 +6,8 @@ class ObjectiveCaml < Formula
   md5 '227a3daaedb150bf5037a3db01f5bf42'
 
   bottle do
-    url 'https://downloads.sf.net/project/machomebrew/Bottles/objective-caml-3.12.1-bottle.tar.gz'
-    sha1 'f32709be6cba5639a3f7185835963d630d6f8b59'
+    sha1 'e5e28c74b859b8bb15a11f7f2a7a33608671b1b9' => :snowleopard
+    sha1 'f32709be6cba5639a3f7185835963d630d6f8b59' => :lion
   end
 
   # Don't strip symbols, so dynamic linking doesn't break.
