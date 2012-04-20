@@ -2,8 +2,8 @@ require 'formula'
 
 class AvroC < Formula
   homepage 'http://avro.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=avro/avro-1.6.1/c/avro-c-1.6.1.tar.gz'
-  md5 'd5c74692f9c4ff2f642b69fff56a6ae3'
+  url 'http://www.apache.org/dyn/closer.cgi?path=avro/avro-1.6.3/c/avro-c-1.6.3.tar.gz'
+  md5 'af3f15605b47d02719706e5d67de8e75'
 
   depends_on 'cmake' => :build
 
