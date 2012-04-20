@@ -55,6 +55,10 @@ class Emacs < Formula
   end
 
   def install
+    # HEAD builds are currently blowing up when built in parallel
+    # as of April 20 2012
+    ENV.j1 if ARGV.build_head?
+
     args = ["--prefix=#{prefix}",
             "--without-dbus",
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
