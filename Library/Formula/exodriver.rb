@@ -5,7 +5,7 @@ class Exodriver < Formula
   url 'https://github.com/labjack/exodriver/tarball/v2.0.4'
   md5 '9208085ee8a9166898dc812b9d7e1905'
 
-  head 'https://github.com/labjack/exodriver.git', :using => :git
+  head 'https://github.com/labjack/exodriver.git'
 
   depends_on 'libusb'
 

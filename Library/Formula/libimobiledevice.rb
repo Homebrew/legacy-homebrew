@@ -5,7 +5,7 @@ class Libimobiledevice < Formula
   url 'http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.1.tar.bz2'
   md5 'cdc13037e822d9ac2e109536701d153a'
 
-  head 'http://cgit.sukimashita.com/libimobiledevice.git', :using => :git
+  head 'http://cgit.sukimashita.com/libimobiledevice.git'
 
   depends_on 'pkg-config' => :build
   depends_on 'libtasn1'
