@@ -16,6 +16,12 @@ class Libdap < Formula
            "--disable-debug",
            "--disable-dependency-tracking",
            "--prefix=#{prefix}",
+           # __Always pass the curl prefix!__
+           # Otherwise, configure will fall back to pkg-config and on Leopard
+           # and Snow Leopard, the libcurl.pc file that ships with the system
+           # is seriously broken---too many arch flags. This will be carried
+           # over to `dap-config` and from there the contamination will spread.
+           "--with-curl=/usr",
            "--with-included-regex"
 
     system "make install"
