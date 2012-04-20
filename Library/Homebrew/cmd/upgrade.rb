@@ -54,6 +54,7 @@ module Homebrew extend self
 
     installer = FormulaInstaller.new(f, tab)
     installer.show_header = false
+    installer.install_bottle = install_bottle?(f) and tab.used_options.empty?
 
     oh1 "Upgrading #{f.name}"
 
