@@ -7,6 +7,8 @@ class Vtk < Formula
 
   depends_on 'cmake' => :build
   depends_on 'qt' if ARGV.include? '--qt'
+  depends_on 'sip' if ARGV.include? '--qt' and ARGV.include? '--python'
+  depends_on 'pyqt' if ARGV.include? '--qt' and ARGV.include? '--python' 
 
   def options
   [
@@ -46,6 +48,10 @@ class Vtk < Formula
         end
       end
       args << "-DVTK_WRAP_PYTHON:BOOL=ON"
+      if ARGV.include? '--qt' 
+        args << "-DVTK_WRAP_PYTHON_SIP:BOOL=ON"
+        args << "-DSIP_PYQT_DIR='#{HOMEBREW_PREFIX}/share/sip'"
+      end
     end
 
     if ARGV.include? '--qt' or ARGV.include? '--qt-extern'
