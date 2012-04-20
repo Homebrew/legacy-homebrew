@@ -7,6 +7,7 @@ class Forge < Formula
   homepage 'https://docs.jboss.org/author/display/FORGE/Home'
   url 'https://repository.jboss.org/nexus/content/repositories/releases/org/jboss/forge/forge-distribution/1.0.2.Final/forge-distribution-1.0.2.Final.zip'
   md5 '0853bc6c152d29975a01bfe0f5576bdb'
+  version "1.0.2.Final"
 
   # depends_on 'cmake' => :build
 
