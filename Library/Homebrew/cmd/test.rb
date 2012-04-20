@@ -7,12 +7,12 @@ ENV.setup_build_environment
 
 module Homebrew extend self
   def test
-    raise KegUnspecifiedError if ARGV.named.empty?
+    raise FormulaUnspecifiedError if ARGV.named.empty?
 
     ARGV.formulae.each do |f|
       # Cannot test uninstalled formulae
       unless f.installed?
-        puts "#{f.name} not installed"
+        puts "Testing requires the latest version of #{f.name}"
         Homebrew.failed = true
         next
       end
