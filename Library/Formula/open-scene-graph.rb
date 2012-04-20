@@ -25,9 +25,16 @@ class OpenSceneGraph < Formula
       EOS
   end
 
-  # The mini-Boost finder in FindCOLLADA doesn't find our boost, so fix it.
   def patches
-    return DATA
+    [
+      # The mini-Boost finder in FindCOLLADA doesn't find our boost, so fix it.
+      "https://raw.github.com/gist/2430359/55ff8ac017605e34aa36985d10d8df17ee370630/mini-Boost.patch",
+      # Lion replacement for CGDisplayBitsPerPixel(); 
+      # taken from: http://www.openscenegraph.org/projects/osg/changeset/12790/OpenSceneGraph/trunk/src/osgViewer/DarwinUtils.mm
+      # Issue at: https://github.com/mxcl/homebrew/issues/11391
+      # should be obsolete with some newer versions  (curren version is: 3.0.1)
+      "https://raw.github.com/gist/2430312/1be93c56169b43b66beb84a2b05538b335674f4b/displayBitsPerPixel_OSX10_7.patch"
+    ]
   end
 
   def install
@@ -60,26 +67,4 @@ class OpenSceneGraph < Formula
 
 end
 
-__END__
-diff --git a/CMakeModules/FindCOLLADA.cmake b/CMakeModules/FindCOLLADA.cmake
-index 428cb29..6206580 100644
---- a/CMakeModules/FindCOLLADA.cmake
-+++ b/CMakeModules/FindCOLLADA.cmake
-@@ -235,7 +235,7 @@ FIND_LIBRARY(COLLADA_STATIC_LIBRARY_DEBUG
-     )
 
-     FIND_LIBRARY(COLLADA_BOOST_FILESYSTEM_LIBRARY
--        NAMES libboost_filesystem boost_filesystem libboost_filesystem-vc90-mt libboost_filesystem-vc100-mt
-+        NAMES libboost_filesystem boost_filesystem boost_filesystem-mt libboost_filesystem-vc90-mt libboost_filesystem-vc100-mt
-         PATHS
-         ${COLLADA_DOM_ROOT}/external-libs/boost/lib/${COLLADA_BUILDNAME}
-         ${COLLADA_DOM_ROOT}/external-libs/boost/lib/mingw
-@@ -251,7 +251,7 @@ FIND_LIBRARY(COLLADA_STATIC_LIBRARY_DEBUG
-     )
-
-     FIND_LIBRARY(COLLADA_BOOST_SYSTEM_LIBRARY
--        NAMES libboost_system boost_system libboost_system-vc90-mt libboost_system-vc100-mt
-+        NAMES libboost_system boost_system boost_system-mt libboost_system-vc90-mt libboost_system-vc100-mt
-         PATHS
-         ${COLLADA_DOM_ROOT}/external-libs/boost/lib/${COLLADA_BUILDNAME}
-         ${COLLADA_DOM_ROOT}/external-libs/boost/lib/mingw
