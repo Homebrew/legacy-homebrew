@@ -52,12 +52,15 @@ class Gdal < Formula
                         # not geo-spatially enabled.
     depends_on "cfitsio"
     depends_on "epsilon"
+    depends_on "libdap"
+    def patches; DATA; end # Fix a bug in LibDAP detection.
 
     # Vector libraries
     depends_on "unixodbc" # OS X version is not complete enough
     depends_on "libspatialite"
     depends_on "xerces-c"
     depends_on "poppler"
+    depends_on "freexl"
 
     # Other libraries
     depends_on "xz" # get liblzma compression algorithm library from XZutils
@@ -108,13 +111,7 @@ class Gdal < Formula
       # Should be installed separately after GRASS installation using the
       # official GDAL GRASS plugin.
       "--without-grass",
-      "--without-libgrass",
-
-      # OPeNDAP support also explicitly disabled for now---causes the
-      # configuration of other components such as Curl and Spatialite to fail
-      # for unknown reasons.
-      "--with-dods-root=no"
-
+      "--without-libgrass"
     ]
 
     # Optional library support for additional formats.
@@ -129,7 +126,9 @@ class Gdal < Formula
         "--with-odbc=#{HOMEBREW_PREFIX}",
         "--with-spatialite=#{HOMEBREW_PREFIX}",
         "--with-xerces=#{HOMEBREW_PREFIX}",
-        "--with-poppler=#{HOMEBREW_PREFIX}"
+        "--with-poppler=#{HOMEBREW_PREFIX}",
+        "--with-freexl=#{HOMEBREW_PREFIX}",
+        "--with-dods-root=#{HOMEBREW_PREFIX}"
       ]
     else
       args.concat [
@@ -146,6 +145,8 @@ class Gdal < Formula
         "--without-libkml",
         "--without-poppler",
         "--without-podofo",
+        "--with-freexl=no",
+        "--with-dods-root=no",
 
         # The following libraries are either proprietary or available under
         # non-free licenses.  Interested users will have to install such
@@ -201,6 +202,8 @@ class Gdal < Formula
     #
     # Fortunately, this can be remedied using LDFLAGS.
     ENV.append 'LDFLAGS', '-lsqlite3'
+    # Needed by libdap
+    ENV.append 'CPPFLAGS', '-I/usr/include/libxml2' if complete?
 
     # Reset ARCHFLAGS to match how we build.
     if MacOS.prefer_64_bit?
@@ -265,3 +268,21 @@ the PYTHONPATH:
     end
   end
 end
+
+__END__
+Fix test for LibDAP >= 3.10.
+
+
+diff --git a/configure b/configure
+index 997bbbf..a1928d5 100755
+--- a/configure
++++ b/configure
+@@ -24197,7 +24197,7 @@ else
+ rm -f islibdappost310.*
+ echo '#include "Connect.h"' > islibdappost310.cpp
+ echo 'int main(int argc, char** argv) { return 0; } ' >> islibdappost310.cpp
+-if test -z "`${CXX} islibdappost310.cpp -c ${DODS_INC} 2>&1`" ; then
++if test -z "`${CXX} islibdappost310.cpp -c ${DODS_INC} ${CPPFLAGS} 2>&1`" ; then
+     DODS_INC="$DODS_INC -DLIBDAP_310 -DLIBDAP_39"
+     { $as_echo "$as_me:${as_lineno-$LINENO}: result: libdap >= 3.10" >&5
+ $as_echo "libdap >= 3.10" >&6; }
