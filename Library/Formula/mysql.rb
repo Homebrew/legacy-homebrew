@@ -30,6 +30,8 @@ class Mysql < Formula
 
   # Remove optimization flags from `mysql_config --cflags`
   # This facilitates easy compilation of gems using a brewed mysql
+  # CMake patch needed for CMake 2.8.8.
+  # Reported here: http://bugs.mysql.com/bug.php?id=65050
   def patches; DATA; end
 
   def install
@@ -177,3 +179,18 @@ index 9296075..70c18db 100644
  do
    # The first option we might strip will always have a space before it because
    # we set -I$pkgincludedir as the first option
+diff --git a/configure.cmake b/configure.cmake
+index c3cc787..6193481 100644
+--- a/configure.cmake
++++ b/configure.cmake
+@@ -149,7 +149,9 @@ IF(UNIX)
+   SET(CMAKE_REQUIRED_LIBRARIES
+     ${LIBM} ${LIBNSL} ${LIBBIND} ${LIBCRYPT} ${LIBSOCKET} ${LIBDL} ${CMAKE_THREAD_LIBS_INIT} ${LIBRT})
+
+-  LIST(REMOVE_DUPLICATES CMAKE_REQUIRED_LIBRARIES)
++  IF(CMAKE_REQUIRED_LIBRARIES)
++    LIST(REMOVE_DUPLICATES CMAKE_REQUIRED_LIBRARIES)
++  ENDIF()
+   LINK_LIBRARIES(${CMAKE_THREAD_LIBS_INIT})
+
+   OPTION(WITH_LIBWRAP "Compile with tcp wrappers support" OFF)
