@@ -5,7 +5,7 @@ class Couchdb < Formula
   homepage "http://couchdb.apache.org/"
   md5 'cd126219b9cb69a4c521abd6960807a6'
 
-  head 'http://git-wip-us.apache.org/repos/asf/couchdb.git', :using => :git
+  head 'http://git-wip-us.apache.org/repos/asf/couchdb.git'
 
   depends_on 'help2man' => :build
   depends_on 'spidermonkey'
