@@ -4,8 +4,8 @@ def build_tests?; ARGV.include? '--test'; end
 
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/'
-  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.30/glib-2.30.3.tar.xz'
-  sha256 'e6cbb27c71c445993346e785e8609cc75cea2941e32312e544872feba572dd27'
+  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.32/glib-2.32.1.tar.xz'
+  sha256 '484d5b7fc09f3fa398355adaf74b369768f5859866c299f229c99721990f8398'
 
   depends_on 'xz' => :build
   depends_on 'gettext'
@@ -25,42 +25,40 @@ class Glib < Formula
   end
 
   def patches
-    { :p0 => %W[
-      https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/patch-configure.diff
-      https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/patch-glib-2.0.pc.in.diff
-      https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/patch-glib_gunicollate.c.diff
-      https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/patch-gi18n.h.diff
-      https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/patch-gio_xdgmime_xdgmime.c.diff
-      https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/patch-gio_gdbusprivate.c.diff
+    # https://bugzilla.gnome.org/show_bug.cgi?id=673047
+    # https://bugzilla.gnome.org/show_bug.cgi?id=644473
+    # https://bugzilla.gnome.org/show_bug.cgi?id=673135
+    p = { :p1 => %W[
+        https://raw.github.com/gist/2235195/19cdaebdff7dcc94ccd9b3747d43a09318f0b846/glib-gunicollate.diff
+        https://raw.github.com/gist/2235202/26f885e079e4d61da26d239970301b818ddbb4ab/glib-gtimezone.diff
+        https://raw.github.com/gist/2246469/591586214960f7647b1454e7d547c3935988a0a7/glib-configurable-paths.diff
       ]}
+    p[:p0] = %W[
+        https://trac.macports.org/export/92183/trunk/dports/devel/glib2/files/patch-configure.diff
+      ] if ARGV.build_universal?
+    p
   end
 
   def options
   [
     ['--universal', 'Build universal binaries.'],
-    ['--test', 'Build a debug build and run tests. NOTE: Tests may hang on "unix-streams".']
+    ['--test', 'Build a debug build and run tests. NOTE: Not all tests succeed yet.']
   ]
   end
 
   def install
     ENV.universal_binary if ARGV.build_universal?
 
-    # indeed, amazingly, -w causes gcc to emit spurious errors for this package!
-    ENV.enable_warnings
+    # -w is said to causes gcc to emit spurious errors for this package
+    ENV.enable_warnings if ENV.compiler == :gcc
 
-    args = ["--disable-dependency-tracking", "--disable-rebuilds",
-            "--prefix=#{prefix}",
-            "--disable-dtrace"]
+    args = %W[
+      --disable-maintainer-mode
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+    ]
 
-    args << "--disable-debug" unless build_tests?
-
-    # MacPorts puts "@@PREFIX@@" in patches and does inreplace on the files,
-    # so we must follow suit if we use their patches
-    inreplace ['gio/xdgmime/xdgmime.c', 'gio/gdbusprivate.c'] do |s|
-      s.gsub! '@@PREFIX@@', HOMEBREW_PREFIX
-    end
-
-    # glib and pkg-config <= 0.26 have circular dependencies, so we should build glib without pkg-config
+    # glib and pkg-config 0.26 have circular dependencies, so we should build glib without pkg-config
     # The pkg-config dependency can be eliminated if certain env variables are set
     # Note that this *may* need to be updated if any new dependencies are added in the future
     # See http://permalink.gmane.org/gmane.comp.package-management.pkg-config/627
@@ -73,15 +71,13 @@ class Glib < Formula
 
     system "./configure", *args
 
-    # Fix for 64-bit support, from MacPorts
-    curl "https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/config.h.ed", "-O"
-    system "ed - config.h < config.h.ed"
+    if ARGV.build_universal?
+      system "curl 'https://trac.macports.org/export/92179/trunk/dports/devel/glib2/files/config.h.ed' | ed - config.h"
+    end
 
     system "make"
-    # Suppress a folder already exists warning during install
-    # Also needed for running tests
-    ENV.j1
-    system "make test" if build_tests?
+    # the spawn-multithreaded tests require more open files
+    system "ulimit -n 1024; make check" if build_tests?
     system "make install"
 
     # This sucks; gettext is Keg only to prevent conflicts with the wider
