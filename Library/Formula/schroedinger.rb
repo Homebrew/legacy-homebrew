@@ -1,10 +1,11 @@
 require 'formula'
 
 class Schroedinger < Formula
-  head  'git://diracvideo.org/git/schroedinger.git'
-  url 'http://diracvideo.org/download/schroedinger/schroedinger-1.0.9.tar.gz'
-  md5 'd67ec48b7c506db8c8b49156bf409e60'
   homepage 'http://diracvideo.org/'
+  url 'http://diracvideo.org/download/schroedinger/schroedinger-1.0.11.tar.gz'
+  md5 'da6af08e564ca1157348fb8d92efc891'
+
+  head  'git://diracvideo.org/git/schroedinger.git'
 
   depends_on 'pkg-config' => :build
   depends_on 'orc'
@@ -16,7 +17,19 @@ class Schroedinger < Formula
 
   def install
     system "autoreconf -i -f" if ARGV.build_head?
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
+
+    # Disable compiling the test suite.
+    # The test suite is known not to build against Orc 0.4.16 in Schroedinger 1.0.11.
+    # A fix is in upstream, so test when pulling 1.0.12 if this is still needed. See:
+    # http://www.mail-archive.com/schrodinger-devel@lists.sourceforge.net/msg00415.html
+
+    inreplace "Makefile" do |s|
+      s.change_make_var! "SUBDIRS", "schroedinger doc tools"
+      s.change_make_var! "DIST_SUBDIRS", "schroedinger doc tools"
+    end
+
     system "make install"
   end
 end
