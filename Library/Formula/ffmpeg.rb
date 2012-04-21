@@ -37,6 +37,11 @@ class Ffmpeg < Formula
     ]
   end
 
+  def patches
+    # fixes OpenAL build for OS X.
+    DATA
+  end
+
   def install
     ENV.x11
     args = ["--prefix=#{prefix}",
@@ -46,6 +51,8 @@ class Ffmpeg < Formula
             "--enable-nonfree",
             "--enable-hardcoded-tables",
             "--enable-libfreetype",
+            "--enable-openal",
+            "--extra-ldflags=-framework OpenAL",
             "--cc=#{ENV.cc}"]
 
     args << "--enable-libx264" if Formula.factory('x264').installed?
@@ -87,3 +94,42 @@ class Ffmpeg < Formula
   end
 
 end
+
+__END__
+diff -ru ffmpeg-0.10.2.orig/configure ffmpeg-0.10.2/configure
+--- ffmpeg-0.10.2.orig/configure        2012-04-20 22:55:30.000000000 -0700
++++ ffmpeg-0.10.2/configure     2012-04-20 22:55:38.000000000 -0700
+@@ -3167,11 +3167,12 @@
+                         die "ERROR: libx264 version must be >= 0.118."; }
+ enabled libxavs    && require  libxavs xavs.h xavs_encoder_encode -lxavs
+ enabled libxvid    && require  libxvid xvid.h xvid_global -lxvidcore
+-enabled openal     && { { for al_libs in "${OPENAL_LIBS}" "-lopenal" "-lOpenAL32"; do
+-                        check_lib 'AL/al.h' alGetError "${al_libs}" && break; done } ||
++enabled openal     && { al_header='AL/al.h'; test $target_os = "darwin" && al_header='OpenAL/al.h';
++                      { { for al_libs in "${OPENAL_LIBS}" "-lopenal" "-lOpenAL32"; do
++                        check_lib "${al_header}" alGetError "${al_libs}" && break; done } ||
+                         die "ERROR: openal not found"; } &&
+-                      { check_cpp_condition "AL/al.h" "defined(AL_VERSION_1_1)" ||
+-                        die "ERROR: openal version must be 1.1 or compatible"; }
++                      { check_cpp_condition "${al_header}" "defined(AL_VERSION_1_1)" ||
++                        die "ERROR: openal version must be 1.1 or compatible"; } }
+ enabled mlib       && require  mediaLib mlib_types.h mlib_VectorSub_S16_U8_Mod -lmlib
+ enabled openssl    && { check_lib openssl/ssl.h SSL_library_init -lssl -lcrypto ||
+                         check_lib openssl/ssl.h SSL_library_init -lssl32 -leay32 ||
+diff -ru ffmpeg-0.10.2.orig/libavdevice/openal-dec.c ffmpeg-0.10.2/libavdevice/openal-dec.c
+--- ffmpeg-0.10.2.orig/libavdevice/openal-dec.c 2012-04-20 22:55:30.000000000 -0700
++++ ffmpeg-0.10.2/libavdevice/openal-dec.c      2012-04-20 22:56:10.000000000 -0700
+@@ -21,8 +21,13 @@
+  * OpenAL 1.1 capture device for libavdevice
+  **/
+ 
++#ifdef __APPLE__
++#include <OpenAL/al.h>
++#include <OpenAL/alc.h>
++#else
+ #include <AL/al.h>
+ #include <AL/alc.h>
++#endif
+ 
+ #include "libavutil/opt.h"
+ #include "libavformat/internal.h"
