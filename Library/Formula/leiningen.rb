@@ -5,7 +5,7 @@ class Leiningen < Formula
   url 'http://github.com/technomancy/leiningen/tarball/1.7.1'
   md5 'd3f7deb045e0f3430f464553b77b6589'
 
-  head 'https://github.com/technomancy/leiningen.git', :using => :git
+  head 'https://github.com/technomancy/leiningen.git'
 
   def install
     bin.install "bin/lein"

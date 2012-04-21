@@ -1,9 +1,9 @@
 require 'formula'
 
 class Jailkit < Formula
-  url 'http://olivier.sessink.nl/jailkit/jailkit-2.11.tar.bz2'
+  url 'http://olivier.sessink.nl/jailkit/jailkit-2.14.tar.bz2'
   homepage 'http://olivier.sessink.nl/jailkit/'
-  md5 '263c6b7b86cf1323d69ca26b6b9f7556'
+  md5 '8bf28ca05b32a6ef074e0692561db027'
 
   def install
       system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"

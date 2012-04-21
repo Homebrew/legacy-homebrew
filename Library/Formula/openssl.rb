@@ -9,18 +9,20 @@ class Openssl < Formula
     "The OpenSSL provided by Leopard (0.9.7) is too old for some software."
 
   def install
-    system "./config", "--prefix=#{prefix}",
-                       "--openssldir=#{etc}/openssl",
-                       "zlib-dynamic", "shared"
+    args = %W[./Configure
+               --prefix=#{prefix}
+               --openssldir=#{etc}/openssl
+               zlib-dynamic
+               shared
+             ]
+
+    args << (MacOS.prefer_64_bit? ? "darwin64-x86_64-cc" : "darwin-i386-cc")
+
+    system "perl", *args
 
     ENV.deparallelize # Parallel compilation fails
     system "make"
     system "make test"
     system "make install MANDIR=#{man} MANSUFFIX=ssl"
-  end
-
-  def caveats; <<-EOS.undent
-    Note that the libraries built tend to be 32-bit only, even on Snow Leopard.
-    EOS
   end
 end

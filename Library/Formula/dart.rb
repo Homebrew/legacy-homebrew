@@ -2,8 +2,9 @@ require 'formula'
 
 class Dart < Formula
   homepage 'http://www.dartlang.org/'
-  url 'http://commondatastorage.googleapis.com/dart-dump-render-tree/sdk/dart-macos-2559.zip'
-  md5 '0569646b92aa059f1ca024f9504b32eb'
+  url 'https://gsdview.appspot.com/dart-editor-archive-integration/6722/dart-macos.zip'
+  version '6722'
+  md5 '0afac9764a19e6fd99d3bbe2ae755379'
 
   def shim_script target
     <<-EOS.undent
@@ -20,6 +21,17 @@ class Dart < Formula
   end
 
   def test
-    system "#{bin}/dart"
+    mktemp do
+      (Pathname.pwd+'sample.dart').write <<-EOS.undent
+      void main() {
+        Options opts = new Options();
+        for (String arg in opts.arguments) {
+          print(arg);
+        }
+      }
+      EOS
+
+      `#{bin}/dart sample.dart test message` == "test\nmessage\n"
+    end
   end
 end

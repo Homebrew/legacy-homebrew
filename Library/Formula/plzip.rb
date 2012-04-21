@@ -1,15 +1,17 @@
 require 'formula'
 
 class Plzip < Formula
-  url 'http://download.savannah.gnu.org/releases/lzip/plzip-0.8.tar.gz'
   homepage 'http://www.nongnu.org/lzip/plzip.html'
-  md5 '4e43d32bc69c247235b0195feb25aab4'
+  url 'http://download.savannah.gnu.org/releases/lzip/plzip-0.9.tar.gz'
+  sha1 '051d9094a4d7b98c76b92ad2e48e963ca5bf100f'
 
   depends_on 'lzlib'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "CXX=#{ENV.cxx}",
+                          "CXXFLAGS=#{ENV.cflags}"
+    system "make"
+    system "make check"
     system "make install"
   end
 end
