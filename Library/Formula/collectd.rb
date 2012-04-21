@@ -11,10 +11,14 @@ class Collectd < Formula
 
   def install
     # Use system Python; doesn't compile against 2.7
-    args = ["--disable-debug", "--disable-dependency-tracking",
-            "--with-python=/usr/bin",
-            "--prefix=#{prefix}",
-            "--localstatedir=#{var}"]
+    # -C enables the cache and resolves permissions errors
+    args = %W[-C
+              --disable-debug
+              --disable-dependency-tracking
+              --prefix=#{prefix}
+              --localstatedir=#{var}
+              --with-python=/usr/bin]
+
     args << "--disable-embedded-perl" if MacOS.leopard?
 
     system "./configure", *args
