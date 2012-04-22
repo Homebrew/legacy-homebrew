@@ -257,7 +257,9 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
     svncommand = target.exist? ? 'up' : 'checkout'
-    args = [svn, svncommand, '--force']
+    args = [svn, svncommand]
+    # SVN shipped with XCode 3.1.4 can't force a checkout.
+    args << '--force' unless MacOS.leopard? and svn == '/usr/bin/svn'
     args << url if !target.exist?
     args << target
     args << '-r' << revision if revision
