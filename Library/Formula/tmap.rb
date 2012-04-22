@@ -8,6 +8,10 @@ class Tmap < Formula
 
   head 'https://github.com/iontorrent/TMAP.git'
 
+  fails_with :clang do
+    build 318
+  end
+
   def install
     system "sh autogen.sh"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
