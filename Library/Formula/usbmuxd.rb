@@ -4,6 +4,8 @@ class Usbmuxd < Formula
   homepage 'http://marcansoft.com/blog/iphonelinux/usbmuxd/'
   url 'http://marcansoft.com/uploads/usbmuxd/usbmuxd-1.0.7.tar.bz2'
   md5 '6f431541f3177fa06aa6df9ceecb2da0'
+  
+  head 'http://cgit.sukimashita.com/usbmuxd.git', :using => :git
 
   depends_on 'cmake' => :build
   depends_on 'libusb'
