@@ -7,8 +7,8 @@ class Icu4c < Formula
   md5 'ea93970a0275be6b42f56953cd332c17'
 
   bottle do
-    url 'https://downloads.sf.net/project/machomebrew/Bottles/icu4c-4.8.1.1-bottle.tar.gz'
-    sha1 '51b6e6e735ea581a2736127414e600362846b7e1'
+    sha1 '1cedfcb295cf637ad98d4f891d5c87b072f3a870' => :snowleopard
+    sha1 '51b6e6e735ea581a2736127414e600362846b7e1' => :lion
   end
 
   keg_only "Conflicts; see: https://github.com/mxcl/homebrew/issues/issue/167"

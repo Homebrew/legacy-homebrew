@@ -8,8 +8,6 @@ ENV.extend(HomebrewEnvExtension)
 
 require 'test/testball'
 
-require 'hardware'
-
 class AbstractDownloadStrategy
   attr_reader :url
 end
@@ -18,15 +16,6 @@ class MostlyAbstractFormula <Formula
   @url=''
   @homepage = 'http://example.com/'
 end
-
-class TestBallOverrideBrew <Formula
-  def initialize
-    super "foo"
-  end
-  def brew
-  end
-end
-
 
 class FormulaTests < Test::Unit::TestCase
 
@@ -48,7 +37,17 @@ class FormulaTests < Test::Unit::TestCase
   end
 
   def test_cant_override_brew
-    assert_raises(RuntimeError) { TestBallOverrideBrew.new }
+    assert_raises(RuntimeError) do
+      eval <<-EOS
+      class TestBallOverrideBrew <Formula
+        def initialize
+          super "foo"
+        end
+        def brew
+        end
+      end
+      EOS
+    end
   end
   
   def test_abstract_formula
@@ -60,80 +59,11 @@ class FormulaTests < Test::Unit::TestCase
 
   def test_mirror_support
     HOMEBREW_CACHE.mkpath unless HOMEBREW_CACHE.exist?
-    f = TestBallWithMirror.new
-    tarball, downloader = f.fetch
-
-    assert_equal f.url, "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
-    assert_equal downloader.url, "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
-  end
-
-  def test_compiler_selection
-    %W{HOMEBREW_USE_CLANG HOMEBEW_USE_LLVM HOMEBREW_USE_GCC}.each { |e| ENV.delete(e) }
-
-    f = TestAllCompilerFailures.new
-    assert f.fails_with? :clang
-    assert f.fails_with? :llvm
-    assert f.fails_with? :gcc
-    cs = CompilerSelector.new(f)
-    cs.select_compiler
-    assert_equal MacOS.default_compiler, ENV.compiler
-    ENV.send MacOS.default_compiler
-
-    f = TestNoCompilerFailures.new
-    assert !(f.fails_with? :clang)
-    assert !(f.fails_with? :llvm)
-    assert !(f.fails_with? :gcc)
-    cs = CompilerSelector.new(f)
-    cs.select_compiler
-    assert_equal MacOS.default_compiler, ENV.compiler
-    ENV.send MacOS.default_compiler
-
-    f = TestLLVMFailure.new
-    assert !(f.fails_with? :clang)
-    assert f.fails_with? :llvm
-    assert !(f.fails_with? :gcc)
-    cs = CompilerSelector.new(f)
-    cs.select_compiler
-    assert ENV.compiler, case MacOS.clang_build_version
-    when 0..210 then :gcc
-    else :clang
+    nostdout do
+      f = TestBallWithMirror.new
+      tarball, downloader = f.fetch
+      assert_equal f.url, "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
+      assert_equal downloader.url, "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
     end
-    ENV.send MacOS.default_compiler
-
-    f = TestMixedCompilerFailures.new
-    assert f.fails_with? :clang
-    assert !(f.fails_with? :llvm)
-    assert f.fails_with? :gcc
-    cs = CompilerSelector.new(f)
-    cs.select_compiler
-    assert_equal :llvm, ENV.compiler
-    ENV.send MacOS.default_compiler
-
-    f = TestMoreMixedCompilerFailures.new
-    assert !(f.fails_with? :clang)
-    assert f.fails_with? :llvm
-    assert f.fails_with? :gcc
-    cs = CompilerSelector.new(f)
-    cs.select_compiler
-    assert_equal :clang, ENV.compiler
-    ENV.send MacOS.default_compiler
-
-    f = TestEvenMoreMixedCompilerFailures.new
-    assert f.fails_with? :clang
-    assert f.fails_with? :llvm
-    assert !(f.fails_with? :gcc)
-    cs = CompilerSelector.new(f)
-    cs.select_compiler
-    assert_equal :clang, ENV.compiler
-    ENV.send MacOS.default_compiler
-
-    f = TestBlockWithoutBuildCompilerFailure.new
-    assert f.fails_with? :clang
-    assert !(f.fails_with? :llvm)
-    assert !(f.fails_with? :gcc)
-    cs = CompilerSelector.new(f)
-    cs.select_compiler
-    assert_equal MacOS.default_compiler, ENV.compiler
-    ENV.send MacOS.default_compiler
   end
 end
