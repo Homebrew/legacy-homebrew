@@ -2,8 +2,8 @@ require 'formula'
 
 class Xmlto < Formula
   homepage 'http://cyberelk.net/tim/software/xmlto/'
-  url 'http://fedorahosted.org/releases/x/m/xmlto/xmlto-0.0.23.tar.bz2'
-  md5 '3001d6bb2bbc2c8f6c2301f05120f074'
+  url 'http://fedorahosted.org/releases/x/m/xmlto/xmlto-0.0.25.tar.bz2'
+  sha1 '5d1aecd59d519066f94b4591722767c4e41bdc0f'
 
   depends_on 'docbook'
   depends_on 'gnu-getopt'
