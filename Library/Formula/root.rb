@@ -9,11 +9,10 @@ class Root < Formula
   depends_on 'fftw' => :optional
 
   def install
-    ENV.x11 # if your formula requires any X11 headers
 
     system "./configure", "--prefix=#{prefix}", "--enable-roofit"
     system "make"
-    system "make install" # if this fails, try separate make/make install steps
+    system "make install"
 
     prefix.install ['test'] # needed to run test suite
 
