@@ -1,9 +1,9 @@
 require 'formula'
 
 class Dnsmasq < Formula
-  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.57.tar.gz'
   homepage 'http://www.thekelleys.org.uk/dnsmasq/doc.html'
-  md5 'd10faeb409717eae94718d7716ca63a4'
+  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.60.tar.gz'
+  md5 '5a09908e02724d759ac60d9cafd27de8'
 
   def options
     [['--with-idn', "Compile with IDN support"]]
