@@ -10,6 +10,7 @@ class Glib < Formula
   depends_on 'xz' => :build
   depends_on 'gettext'
   depends_on 'libffi'
+  depends_on 'libunistring'
 
   fails_with :llvm do
     build 2334
