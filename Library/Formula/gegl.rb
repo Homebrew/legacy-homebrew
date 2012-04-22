@@ -2,6 +2,7 @@ require 'formula'
 
 class Gegl < Formula
   url 'ftp://ftp.gimp.org/pub/gegl/0.1/gegl-0.1.8.tar.bz2'
+  head 'git://git.gnome.org/gegl'
   homepage 'http://www.gegl.org/'
   md5 'c8279b86b3d584ee4f503839fc500425'
 

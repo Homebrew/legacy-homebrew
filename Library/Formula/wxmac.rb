@@ -2,8 +2,11 @@ require 'formula'
 
 class Wxpython < Formula
   # For 2.8, we use this separate formula for wxPython. For 2.9 we use the combined one.
-  url 'http://downloads.sourceforge.net/wxpython/wxPython-src-2.8.12.1.tar.bz2'
-  md5 '8c06c5941477beee213b4f2fa78be620'
+  #url 'http://downloads.sourceforge.net/wxpython/wxPython-src-2.8.12.1.tar.bz2'
+  #md5 '8c06c5941477beee213b4f2fa78be620'
+  url 'http://sourceforge.net/projects/wxpython/files/wxPython/2.9.3.1/wxPython-src-2.9.3.1.tar.bz2'
+  md5 '11f5a423c05c43b4ff8c9f11f1986f04'
+
   head 'http://svn.wxwidgets.org/svn/wx/wxPython/trunk/', :using => StrictSubversionDownloadStrategy
   homepage 'http://www.wxpython.org'
 end
