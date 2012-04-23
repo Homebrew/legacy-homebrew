@@ -1,9 +1,9 @@
 require 'formula'
 
 class Rdesktop < Formula
-  url 'http://downloads.sourceforge.net/project/rdesktop/rdesktop/1.6.0/rdesktop-1.6.0.tar.gz'
+  url 'http://downloads.sourceforge.net/project/rdesktop/rdesktop/1.7.1/rdesktop-1.7.1.tar.gz'
   homepage 'http://www.rdesktop.org/'
-  md5 'c6fcbed7f0ad7e60ac5fcb2d324d8b16'
+  md5 'c4b39115951c4a6d74f511c99b18fcf9'
 
   def install
     ENV.x11
