@@ -19,13 +19,11 @@ class Pygtkglext < Formula
   def test
     mktemp do
       (Pathname.pwd+'test.py').write <<-EOS.undent
-        #!/usr/bin/env python
         import pygtk
         pygtk.require('2.0')
         import gtk.gtkgl
       EOS
-      system "chmod +x test.py"
-      system "./test.py"
+      system "python test.py"
     end
   end
 end
