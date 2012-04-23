@@ -2,10 +2,15 @@ require 'formula'
 
 class Yara < Formula
   homepage 'http://code.google.com/p/yara-project/'
-  url 'http://yara-project.googlecode.com/files/yara-1.4.tar.gz'
-  md5 'ecc744a67482dc9d717936ccd69dc39f'
+  url 'http://yara-project.googlecode.com/files/yara-1.6.tar.gz'
+  md5 'c54fe284181df90e0520810797821287'
 
   depends_on 'pcre'
+
+  fails_with :clang do
+    build 318
+		cause "Clang causes a linker error"
+  end
 
   def install
     # find Homebrew's libpcre
