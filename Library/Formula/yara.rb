@@ -7,6 +7,10 @@ class Yara < Formula
 
   depends_on 'pcre'
 
+	fails_with :clang do
+		build 318
+	end
+
   def install
     # find Homebrew's libpcre
     ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
