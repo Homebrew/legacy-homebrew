@@ -6,9 +6,20 @@ class AvroC < Formula
   md5 'af3f15605b47d02719706e5d67de8e75'
 
   depends_on 'cmake' => :build
+  depends_on 'xz'
+  depends_on 'asciidoc' if ARGV.include? '--asciidoc'
+
+  def options
+  [
+    ['--asciidoc', "Enable HTML documentation"],
+  ]
+  end
 
   def install
-    system "cmake #{std_cmake_parameters} ."
+    args = std_cmake_parameters.split + [
+#             '-DCMAKE_C_FLAGS="-O2 -march=native"',
+             '.']
+    system "cmake", *args
     system "make install"
   end
 end
