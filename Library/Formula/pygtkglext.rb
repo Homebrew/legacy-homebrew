@@ -6,6 +6,7 @@ class Pygtkglext < Formula
   md5 'dfbe2ceb05db9265a7d94b209fa8ad97'
 
   depends_on 'pygtk'
+  depends_on 'gtkglext'
   depends_on 'pygobject'
 
   def install
