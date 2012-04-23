@@ -9,7 +9,7 @@ class Pygtkglext < Formula
   depends_on 'pygobject'
 
   def install
-    system "export", "PYGTK_CODEGEN=\"`which pygobject-codegen-2.0`\""
+    ENV['PYGTK_CODEGEN'] = which 'pygobject-codegen-2.0'
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
