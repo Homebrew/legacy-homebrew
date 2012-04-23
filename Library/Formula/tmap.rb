@@ -2,9 +2,9 @@ require 'formula'
 
 class Tmap < Formula
   homepage 'http://github.com/iontorrent/TMAP'
-  url 'http://github.com/iontorrent/TMAP/tarball/tmap.0.3.8'
-  md5 'a441bcbb681f427bada3f16a220685e4'
-  version '0.3.8'
+  url 'http://github.com/iontorrent/TMAP/tarball/tmap.0.3.7'
+  md5 '2283f15ca05c27c534cef22850711bba'
+  version '0.3.7'
 
   head 'https://github.com/iontorrent/TMAP.git'
 
