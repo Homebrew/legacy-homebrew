@@ -43,6 +43,9 @@ class Erlang < Formula
   # may as well skip bin too, everything is just shell scripts
   skip_clean ['lib', 'bin']
 
+  # In some circumstances it's desirable to link against a non-Apple OpenSSL
+  depends_on 'openssl' if Formula.factory("openssl").installed?
+
   if MacOS.xcode_version >= "4.3"
     # remove the autoreconf if possible
     depends_on "automake" => :build
