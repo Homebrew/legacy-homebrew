@@ -17,8 +17,7 @@ class AvroC < Formula
 
   def install
     args = std_cmake_parameters.split + [
-#             '-DCMAKE_C_FLAGS="-O2 -march=native"',
-             '.']
+             '.',]
     system "cmake", *args
     system "make install"
   end
