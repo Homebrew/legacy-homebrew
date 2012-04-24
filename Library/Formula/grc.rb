@@ -40,7 +40,10 @@ class Grc < Formula
 
   def caveats; <<-EOS.undent
     New shell sessions will start using GRC after you run the following command:
-      echo 'source "`brew --prefix grc`/etc/grc.bashrc"' >> ~/.bashrc
+      echo 'source "`brew --prefix`/etc/grc.bashrc"' >> ~/.bashrc
+      
+    NOTE: If you are not using bash you will need to modify the corresponding rc 
+          file for your shell.
     EOS
   end
 end
