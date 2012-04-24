@@ -324,14 +324,10 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 
   def support_depth?
-    !commit_history_required? and depth_supported_host?
+    @spec != :revision and host_supports_depth?
   end
 
-  def commit_history_required?
-    @spec == :sha
-  end
-
-  def depth_supported_host?
+  def host_supports_depth?
     @url =~ %r(git://) or @url =~ %r(https://github.com/)
   end
 
@@ -352,16 +348,31 @@ class GitDownloadStrategy < AbstractDownloadStrategy
 
     unless @clone.exist?
       # Note: first-time checkouts are always done verbosely
-      git_args = %w(git clone)
-      git_args << "--depth" << "1" if support_depth?
-      git_args << @url << @clone
-      safe_system(*git_args)
+      clone_args = %w[git clone]
+      clone_args << '--single-branch'
+      clone_args << '--depth' << '1' if support_depth?
+
+      case @spec
+      when :branch, :tag
+        clone_args << '--branch' << @ref
+      end
+
+      clone_args << @url << @clone
+      safe_system(*clone_args)
     else
       puts "Updating #{@clone}"
       Dir.chdir(@clone) do
-        safe_system 'git', 'remote', 'set-url', 'origin', @url
-        quiet_safe_system 'git', 'fetch', 'origin'
-        quiet_safe_system 'git', 'fetch', '--tags' if @spec == :tag
+        safe_system 'git', 'config', 'remote.origin.url', @url
+
+        safe_system 'git', 'config', 'remote.origin.fetch', case @spec
+          when :branch then "+refs/heads/#{@ref}:refs/remotes/origin/#{@ref}"
+          when :tag then "+refs/tags/#{@ref}:refs/tags/#{@ref}"
+          else '+refs/heads/master:refs/remotes/origin/master'
+          end
+
+        git_args = %w[git fetch origin]
+        git_args << '--depth' << '1' if support_depth?
+        quiet_safe_system(*git_args)
       end
     end
   end
@@ -373,9 +384,9 @@ class GitDownloadStrategy < AbstractDownloadStrategy
         ohai "Checking out #{@spec} #{@ref}"
         case @spec
         when :branch
-          nostdout { quiet_safe_system 'git', 'checkout', "origin/#{@ref}" }
-        when :tag, :sha
-          nostdout { quiet_safe_system 'git', 'checkout', @ref }
+          nostdout { quiet_safe_system 'git', 'checkout', "origin/#{@ref}", '--' }
+        when :tag, :revision
+          nostdout { quiet_safe_system 'git', 'checkout', @ref, '--' }
         end
       else
         # otherwise the checkout-index won't checkout HEAD

@@ -3,7 +3,7 @@ require 'formula'
 class ReattachToUserNamespace < Formula
   head 'https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard.git'
   homepage 'https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard'
-  url 'https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard.git', :tag => 'dadea0aa48259c704d0b412b9588de2f5623e323'
+  url 'https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard.git', :revision => 'dadea0aa48259c704d0b412b9588de2f5623e323'
   version 'dadea0'
 
   def options
