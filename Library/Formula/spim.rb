@@ -1,7 +1,7 @@
 require 'formula'
 
 class Spim < Formula
-  homepage 'http://pages.cs.wisc.edu/~larus/spim.html'
+  homepage 'http://spimsimulator.sourceforge.net/'
   url 'http://patrickod.com/code/spim.tar.gz'
   version '8.0'
   md5 'cf3b40b9bc6eea3a7173b7c6bf834ce6'
