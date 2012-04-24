@@ -48,7 +48,7 @@ class Mongodb < Formula
         launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     Or start it manually:
-        mongod run --config #{prefix}/mongod.conf
+        mongod run --config #{etc}/mongod.conf
 
     The launchctl plist above expects the config file to be at #{etc}/mongod.conf.
     EOS
