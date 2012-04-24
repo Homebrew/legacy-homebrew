@@ -119,6 +119,7 @@ class Pathname
   # extended to support common double extensions
   def extname
     return $1 if to_s =~ bottle_regex
+    # old brew bottle style
     return $1 if to_s =~ old_bottle_regex
     /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
     return $1 if $1
