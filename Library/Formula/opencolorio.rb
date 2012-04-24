@@ -2,8 +2,8 @@ require 'formula'
 
 class Opencolorio < Formula
   homepage 'http://opencolorio.org/'
-  url 'https://github.com/imageworks/OpenColorIO/tarball/v1.0.6'
-  sha1 '1d7a195b684fbd0687a661aa532c5cc447215420'
+  url 'https://github.com/imageworks/OpenColorIO/tarball/v1.0.7'
+  sha1 '01befa5c4198254b8848946ba3c85cce9a0f38d4'
 
   head 'https://github.com/imageworks/OpenColorIO.git'
 
@@ -17,16 +17,6 @@ class Opencolorio < Formula
       ['--with-python', 'Build ocio with python2.7 bindings'],
       ['--with-java', 'Build ocio with java bindings'],
       ['--with-docs', 'Build the documentation.']
-    ]
-  end
-
-  def patches
-    # install Python library into site-packages
-    # can be removed in the next version
-    [
-      "https://github.com/imageworks/OpenColorIO/commit/480c5313f3b377755506e2a2b2b13e6e7988ff86.patch",
-      "https://github.com/imageworks/OpenColorIO/commit/cfd4adecb630a08dba7cf7d08d5fd874bc8af120.patch",
-      "https://github.com/imageworks/OpenColorIO/commit/a7fbf812291c705e7af39dfac7882c109c589387.patch"
     ]
   end
 

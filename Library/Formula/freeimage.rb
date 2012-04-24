@@ -15,11 +15,16 @@ class Freeimage < Formula
   md5 '450d2ff278690b0d1d7d7d58fad083cc'
   homepage 'http://sf.net/projects/freeimage'
 
+  def options
+    [[ '--universal', 'Build a universal binary' ]]
+  end
+
   def patches
     DATA
   end
 
   def install
+    ENV.universal_binary if ARGV.build_universal?
     system "gnumake -f Makefile.gnu"
     system "gnumake -f Makefile.gnu install PREFIX=#{prefix}"
     system "gnumake -f Makefile.fip"
@@ -71,7 +76,7 @@ __END__
  
  $(SHAREDLIB): $(MODULES)
 -	$(CC) -s -shared -Wl,-soname,$(VERLIBNAME) $(LDFLAGS) -o $@ $(MODULES) $(LIBRARIES)
-+	$(CXX) -dynamiclib -install_name $(LIBNAME) -current_version $(VER_MAJOR).$(VER_MINOR) -compatibility_version $(VER_MAJOR) -o $@ $(MODULES)
++	$(CXX) -dynamiclib -install_name $(LIBNAME) -current_version $(VER_MAJOR).$(VER_MINOR) -compatibility_version $(VER_MAJOR) $(LDFLAGS) -o $@ $(MODULES)
 
  install:
 	install -d $(INCDIR) $(INSTALLDIR)
@@ -125,7 +130,7 @@ __END__
  
  $(SHAREDLIB): $(MODULES)
 -	$(CC) -s -shared -Wl,-soname,$(VERLIBNAME) $(LDFLAGS) -o $@ $(MODULES) $(LIBRARIES)
-+	$(CXX) -dynamiclib -install_name $(LIBNAME) -current_version $(VER_MAJOR).$(VER_MINOR) -compatibility_version $(VER_MAJOR) -o $@ $(MODULES)
++	$(CXX) -dynamiclib -install_name $(LIBNAME) -current_version $(VER_MAJOR).$(VER_MINOR) -compatibility_version $(VER_MAJOR) $(LDFLAGS) -o $@ $(MODULES)
  
  install:
  	install -d $(INCDIR) $(INSTALLDIR)

@@ -8,8 +8,8 @@ class Node < Formula
   head 'https://github.com/joyent/node.git'
 
   devel do
-    url 'http://nodejs.org/dist/v0.7.7/node-v0.7.7.tar.gz'
-    md5 '6cce285f9e01c9678b4a3e7d034563c9'
+    url 'http://nodejs.org/dist/v0.7.8/node-v0.7.8.tar.gz'
+    md5 '552b1e97539f2d574a2c56b849dea6a5'
   end
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
