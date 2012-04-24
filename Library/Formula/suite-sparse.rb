@@ -7,6 +7,8 @@ class SuiteSparse < Formula
 
   depends_on "metis"
   depends_on "tbb"
+  depends_on "homebrew/dupes/openblas" if ARGV.include? "--openblas"
+  depends_on "homebrew/dupes/lapack" if ARGV.include? "--lapack" or ARGV.include? "--openblas"
 
   def install
     # SuiteSparse doesn't like to build in parallel
@@ -26,8 +28,18 @@ class SuiteSparse < Formula
 
     inreplace 'UFconfig/UFconfig.mk' do |s|
       # Libraries
-      s.change_make_var! "BLAS", "-Wl,-framework -Wl,Accelerate"
-      s.change_make_var! "LAPACK", "$(BLAS)"
+      if ARGV.include? "--openblas"
+        s.change_make_var! "BLAS", "openblas"
+      else
+        s.change_make_var! "BLAS", "-Wl,-framework -Wl,Accelerate"
+      end
+
+      if ARGV.include? "--openblas" or ARGV.include? "--lapack"
+        s.change_make_var! "LAPACK", "lapack"
+      else
+        s.change_make_var! "LAPACK", "$(BLAS)"
+      end
+        
       s.remove_make_var! "METIS_PATH"
       s.change_make_var! "METIS", metis.lib + 'libmetis.a'
       s.change_make_var! "SPQR_CONFIG", "-DHAVE_TBB"
