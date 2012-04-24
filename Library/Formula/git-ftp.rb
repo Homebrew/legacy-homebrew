@@ -7,9 +7,6 @@ class GitFtp < Formula
 
   head 'https://github.com/resmo/git-ftp.git'
 
-  depends_on 'git'
-  depends_on 'curl'
-
   def install
     system "make", "prefix=#{prefix}", "install"
   end
