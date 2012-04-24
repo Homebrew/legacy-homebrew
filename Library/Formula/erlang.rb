@@ -30,7 +30,7 @@ class Erlang < Formula
   bottle do
     # Lion bottle built on OS X 10.7.2 using Xcode 4.1 using:
     #   brew install erlang --build-bottle --use-gcc
-    sha1 '4dfc11ed455f8f866ab4627e8055488fa1954fa4' => :lion
+    # sha1 '4c81febc679dc9e9c27e66317fc317df9a5a40e7'
     sha1 '8a4adc813ca906c8e685ff571de03653f316146c' => :snowleopard
   end
 
