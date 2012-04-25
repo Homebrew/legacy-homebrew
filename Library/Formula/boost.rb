@@ -8,8 +8,8 @@ class Boost < Formula
   head 'http://svn.boost.org/svn/boost/trunk', :using => :svn
 
   bottle do
-    sha1 'da4d58fc81462b1e825912615dbbfc6f6b234be0' => :snowleopard
     sha1 '6b706780670a8bec5b3e0355f5dfeeaa37d9a41e' => :lion
+    sha1 '46945515d520009fbbc101e4ae19f28db1433752' => :snowleopard
   end
 
   depends_on "icu4c" if ARGV.include? "--with-icu"
