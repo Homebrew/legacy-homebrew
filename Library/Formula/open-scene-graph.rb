@@ -17,6 +17,11 @@ class OpenSceneGraph < Formula
   depends_on 'librsvg' => :optional
   depends_on 'collada-dom' => :optional
 
+  devel do
+    url 'http://www.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-3.1.1.zip'
+    md5 '079b9c1738057227b1804c6698fc9c89'
+  end
+
   fails_with :clang do
     build 318
     cause <<-EOS.undent
