@@ -16,7 +16,7 @@ class Zsh < Formula
 
   def install
     args = %W[
-      -prefix=#{prefix}
+      --prefix=#{prefix}
       --enable-fndir=#{share}/zsh/functions
       --enable-site-fndir=#{share}/zsh/site-functions
       --enable-scriptdir=#{share}/zsh/scripts
