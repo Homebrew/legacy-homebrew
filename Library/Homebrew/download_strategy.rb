@@ -194,8 +194,10 @@ class CurlBottleDownloadStrategy < CurlDownloadStrategy
     @tarball_path = HOMEBREW_CACHE/"#{name}-#{version}#{ext}"
 
     unless @tarball_path.exist?
+      # Stop people redownloading bottles just because I (Mike) was stupid.
       old_bottle_path = HOMEBREW_CACHE/"#{name}-#{version}-bottle.tar.gz"
       old_bottle_path = HOMEBREW_CACHE/"#{name}-#{version}.#{MacOS.cat}.bottle-bottle.tar.gz" unless old_bottle_path.exist?
+      old_bottle_path = HOMEBREW_CACHE/"#{name}-#{version}-7.#{MacOS.cat}.bottle.tar.gz" unless old_bottle_path.exist? or name != "imagemagick"
       FileUtils.mv old_bottle_path, @tarball_path if old_bottle_path.exist?
     end
   end
@@ -257,7 +259,9 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
     svncommand = target.exist? ? 'up' : 'checkout'
-    args = [svn, svncommand, '--force']
+    args = [svn, svncommand]
+    # SVN shipped with XCode 3.1.4 can't force a checkout.
+    args << '--force' unless MacOS.leopard? and svn == '/usr/bin/svn'
     args << url if !target.exist?
     args << target
     args << '-r' << revision if revision
@@ -566,12 +570,12 @@ def detect_download_strategy url
     # Standard URLs
   when %r[^bzr://] then BazaarDownloadStrategy
   when %r[^git://] then GitDownloadStrategy
+  when %r[^https?://.+\.git$] then GitDownloadStrategy
   when %r[^hg://] then MercurialDownloadStrategy
   when %r[^svn://] then SubversionDownloadStrategy
   when %r[^svn\+http://] then SubversionDownloadStrategy
   when %r[^fossil://] then FossilDownloadStrategy
     # Some well-known source hosts
-  when %r[^https?://github\.com/.+\.git$] then GitDownloadStrategy
   when %r[^https?://(.+?\.)?googlecode\.com/hg] then MercurialDownloadStrategy
   when %r[^https?://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
   when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
