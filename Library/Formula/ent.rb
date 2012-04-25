@@ -2,8 +2,8 @@ require 'formula'
 
 class Ent < Formula
   homepage 'http://www.fourmilab.ch/random/'
-  url 'http://www.fourmilab.ch/random/random.zip'
-  md5 '8104a83af1ea5b280da96c92da18eae4'
+  url 'http://github.com/psm14/ent/tarball/1.0'
+  md5 'e55a47343d029db275c67ff544c93405'
   version '1.0'
 
   def install
