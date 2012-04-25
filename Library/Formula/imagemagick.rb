@@ -84,6 +84,13 @@ class Imagemagick < Formula
     path.extname == '.la'
   end
 
+  def patches
+    # Fixes xml2-config that can be missing --prefix.  See issue #11789
+    # Remove if the final Mt. Lion xml2-config supports --prefix.
+    # Not reporting this upstream until the final Mt. Lion is released.
+    DATA
+  end
+
   def options
     [
       ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
@@ -148,3 +155,16 @@ class Imagemagick < Formula
     system "#{bin}/identify", "/Library/Application Support/Apple/iChat Icons/Flags/Argentina.gif"
   end
 end
+
+__END__
+--- a/configure	2012-02-25 09:03:23.000000000 -0800
++++ b/configure	2012-04-26 03:32:15.000000000 -0700
+@@ -31924,7 +31924,7 @@
+         # Debian installs libxml headers under /usr/include/libxml2/libxml with
+         # the shared library installed under /usr/lib, whereas the package
+         # installs itself under $prefix/libxml and $prefix/lib.
+-        xml2_prefix=`xml2-config --prefix`
++        xml2_prefix=/usr
+         if test -d "${xml2_prefix}/include/libxml2"; then
+             CPPFLAGS="$CPPFLAGS -I${xml2_prefix}/include/libxml2"
+         fi
