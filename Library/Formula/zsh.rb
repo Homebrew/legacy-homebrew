@@ -22,7 +22,6 @@ class Zsh < Formula
       --enable-scriptdir=#{share}/zsh/scripts
       --enable-site-scriptdir=#{share}/zsh/site-scripts
       --enable-cap
-      --enable-function-subdirs
       --enable-maildir-support
       --enable-multibyte
       --enable-pcre
