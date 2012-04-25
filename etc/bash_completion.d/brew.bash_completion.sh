@@ -1,0 +1,1 @@
+../../Library/Contributions/brew_bash_completion.sh
