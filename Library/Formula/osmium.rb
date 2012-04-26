@@ -18,16 +18,14 @@ class Osmium < Formula
 
   skip_clean :all
 
-  def patches
-    # don't use mremap (not supported on Darwin)
-    # See this commit
-    # https://github.com/kkaefer/osmium/commit/20773279ce5f22325577c9eb1737c6e34c8239da
-    "https://raw.github.com/gist/2419092/osmium.patch"
-  end
-
   def install
     cd 'osmjs' do
       system "make"
     end
+    include.install Dir['include/*']
+
+    system "make doc"
+    doc.install Dir['doc/*']
   end
+
 end
