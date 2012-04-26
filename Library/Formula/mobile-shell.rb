@@ -8,8 +8,10 @@ class MobileShell < Formula
   head 'https://github.com/keithw/mosh.git'
 
   depends_on 'pkg-config' => :build
+  depends_on 'autoconf' => :build if ARGV.build_head?
+
   depends_on 'protobuf'
-  depends_on 'boost'
+  depends_on 'boost' unless ARGV.build_head?
 
   def install
     system "./autogen.sh" if ARGV.build_head?
