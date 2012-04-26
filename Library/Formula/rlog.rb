@@ -1,13 +1,11 @@
 require 'formula'
 
 class Rlog < Formula
-  url 'http://rlog.googlecode.com/files/rlog-1.4.tar.gz'
   homepage 'http://www.arg0.net/rlog'
+  url 'http://rlog.googlecode.com/files/rlog-1.4.tar.gz'
   md5 'c29f74e0f50d66b20312d049b683ff82'
 
-  def patches
-    return { :p1 => DATA }
-  end
+  def patches; DATA; end
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"

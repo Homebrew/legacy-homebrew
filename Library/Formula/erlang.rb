@@ -1,37 +1,37 @@
 require 'formula'
 
 class ErlangManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R15B.tar.gz'
-  md5 '9738da523737712a9db87db0dee05338'
+  url 'http://erlang.org/download/otp_doc_man_R15B01.tar.gz'
+  md5 'd87412c2a1e6005bbe29dfe642a9ca20'
 end
 
 class ErlangHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R15B.tar.gz'
-  md5 '80553f4730b04aad4c9994590bad3fe6'
+  url 'http://erlang.org/download/otp_doc_html_R15B01.tar.gz'
+  md5 '7569cae680eecd64e7e5d952be788ee5'
 end
 
 class ErlangHeadManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R15B.tar.gz'
-  md5 '9738da523737712a9db87db0dee05338'
+  url 'http://erlang.org/download/otp_doc_man_R15B01.tar.gz'
+  md5 'd87412c2a1e6005bbe29dfe642a9ca20'
 end
 
 class ErlangHeadHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R15B.tar.gz'
-  md5 '80553f4730b04aad4c9994590bad3fe6'
+  url 'http://erlang.org/download/otp_doc_html_R15B01.tar.gz'
+  md5 '7569cae680eecd64e7e5d952be788ee5'
 end
 
 class Erlang < Formula
   homepage 'http://www.erlang.org'
   # Download tarball from GitHub; it is served faster than the official tarball.
-  url 'https://github.com/erlang/otp/tarball/OTP_R15B'
-  md5 '91c939a56e7f3c492b4ce99c8babe3b2'
+  url 'https://github.com/erlang/otp/tarball/OTP_R15B01'
+  version 'R15B01'
+  md5 'ad811bb19a085b3d60d16ce576a28b68'
 
   bottle do
-    # Bottle built on OS X 10.7.2 using Xcode 4.1 using:
-    #
-    #     brew install erlang --build-bottle --use-gcc
-    url 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B-bottle.tar.gz'
-    sha1 '4c81febc679dc9e9c27e66317fc317df9a5a40e7'
+    # Lion bottle built on OS X 10.7.2 using Xcode 4.1 using:
+    #   brew install erlang --build-bottle --use-gcc
+    sha1 '4dfc11ed455f8f866ab4627e8055488fa1954fa4' => :lion
+    sha1 '8a4adc813ca906c8e685ff571de03653f316146c' => :snowleopard
   end
 
   head 'https://github.com/erlang/otp.git', :branch => 'dev'
@@ -43,6 +43,16 @@ class Erlang < Formula
   # may as well skip bin too, everything is just shell scripts
   skip_clean ['lib', 'bin']
 
+  if MacOS.xcode_version >= "4.3"
+    # remove the autoreconf if possible
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  fails_with :llvm do
+    build 2334
+  end
+
   def options
     [
       ['--disable-hipe', "Disable building hipe; fails on various OS X systems."],
@@ -52,10 +62,9 @@ class Erlang < Formula
     ]
   end
 
-  fails_with_llvm :build => 2334
-
   def install
-    ohai "Compilation may take a very long time; use `brew install -v erlang` to see progress"
+    ohai "Compilation takes a long time; use `brew install -v erlang` to see progress" unless ARGV.verbose?
+
     if ENV.compiler == :llvm
       # Don't use optimizations. Fixes build on Lion/Xcode 4.2
       ENV.remove_from_cflags /-O./

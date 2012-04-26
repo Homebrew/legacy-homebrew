@@ -8,6 +8,9 @@ class Pound < Formula
   depends_on 'pcre'
 
   def install
+    # find Homebrew's libpcre
+    ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
+
     system "./configure", "--prefix=#{prefix}"
     system "make"
     # Manual install to get around group issues

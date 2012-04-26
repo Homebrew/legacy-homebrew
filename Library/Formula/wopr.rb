@@ -1,9 +1,9 @@
 require 'formula'
 
 class Wopr < Formula
-  url 'http://ilk.uvt.nl/downloads/pub/software/wopr-1.31.8.tar.gz'
   homepage 'http://ilk.uvt.nl/wopr'
-  md5 'cd9f79f46fc6f6c305b3fe1fed219ee1'
+  url 'http://software.ticc.uvt.nl/wopr-1.34.2.tar.gz'
+  md5 'e5db98a6b39358d05cddb88b7ae88d7a'
 
   depends_on 'pkg-config' => :build
   depends_on 'timbl'

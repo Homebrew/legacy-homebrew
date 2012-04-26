@@ -9,15 +9,16 @@ def as_framework?
 end
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.24.tar.gz'
-  md5 '17722b22141aba8235787f79800cc452'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.26.tar.gz'
+  md5 '841f4262a70107f85260362f5def8206'
 end
 
 class Python < Formula
-  url 'http://www.python.org/ftp/python/2.7.2/Python-2.7.2.tar.bz2'
   homepage 'http://www.python.org/'
-  md5 'ba7b2f11ffdbf195ee0d111b9455a5bd'
+  url 'http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2'
+  md5 'c57477edd6d18bd9eeca2f21add73919'
 
+  depends_on 'pkg-config' => :build
   depends_on 'readline' => :optional # Prefer over OS X's libedit
   depends_on 'sqlite'   => :optional # Prefer over OS X's older version
   depends_on 'gdbm'     => :optional
@@ -30,16 +31,16 @@ class Python < Formula
     ]
   end
 
-  def patches
-    # fix for recognizing gdbm 1.9.x databases
-    # patch is already upstream: http://hg.python.org/cpython/rev/14cafb8d1480
-    DATA
-  end
-
   # Skip binaries so modules will load; skip lib because it is mostly Python files
   skip_clean ['bin', 'lib']
 
   def install
+    # Python requires -fwrapv for proper Decimal division with Clang. See:
+    # https://github.com/mxcl/homebrew/pull/10487
+    # http://stackoverflow.com/questions/7590137/dividing-decimals-yields-invalid-results-in-python-2-5-to-2-7
+    # https://trac.macports.org/changeset/87442
+    ENV.append_to_cflags "-fwrapv"
+
     if build_framework? and ARGV.include? "--static"
       onoe "Cannot specify both framework and static."
       exit 99
@@ -148,6 +149,14 @@ class Python < Formula
     return lib
   end
 
+  # include folder,taking into account whether we are a Framework build or not
+  def effective_include
+    # If we're installed or installing as a Framework, then use that location.
+    return prefix+"Frameworks/Python.framework/Versions/2.7/include" if as_framework?
+    # Otherwise use just 'include'
+    return include
+  end
+
   # The Cellar location of site-packages
   def site_packages
     effective_lib+"python2.7/site-packages"
@@ -162,16 +171,9 @@ class Python < Formula
   def scripts_folder
     HOMEBREW_PREFIX+"share/python"
   end
-end
 
-__END__
-diff --git a/Lib/whichdb.py b/Lib/whichdb.py
---- a/Lib/whichdb.py
-+++ b/Lib/whichdb.py
-@@ -91,7 +91,7 @@ def whichdb(filename):
-         return ""
- 
-     # Check for GNU dbm
--    if magic == 0x13579ace:
-+    if magic in (0x13579ace, 0x13579acd, 0x13579acf):
-         return "gdbm"
+  def test
+    # See: https://github.com/mxcl/homebrew/pull/10487
+    system "#{bin}/python -c 'from decimal import Decimal; print Decimal(4) / Decimal(2)'"
+  end
+end

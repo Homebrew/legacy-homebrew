@@ -1,19 +1,20 @@
 require 'formula'
 
 class Ettercap < Formula
-  url 'http://downloads.sourceforge.net/project/ettercap/ettercap/0.7.4-Lazarus/ettercap-0.7.4.tar.gz'
+  url 'http://downloads.sourceforge.net/project/ettercap/ettercap/0.7.4-Lazarus/ettercap-0.7.4.1.tar.gz'
   homepage 'http://ettercap.sourceforge.net'
-  md5 'c3a0d91975673c6dfdf8682bcfb661d3'
+  md5 '8e13ff5504b5bb4f1fc6a465d57ce7ea'
 
   depends_on 'pcre'
   depends_on 'libnet'
 
+  # Stripping breaks plugin support
+  skip_clean 'bin'
+
   # The below DATA patch fixes an issue where the linker doesn't get passed the ettercap-built
   # 'libwdg' archive which is used for the ncurses interface, thus causing a build failure.
   # See https://github.com/mxcl/homebrew/pull/9540
-  def patches
-    { :p0 => DATA }
-  end
+  def patches; DATA; end
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
@@ -21,7 +22,7 @@ class Ettercap < Formula
                           "--mandir=#{man}",
                           "--infodir=#{info}",
                           "--disable-gtk",
-                          "--disable-plugins",
+                          "--enable-plugins",
                           "--with-openssl=/usr",
                           "--with-libpcap=/usr",
                           "--with-libncurses=/usr",
@@ -32,8 +33,8 @@ class Ettercap < Formula
 end
 
 __END__
---- src/Makefile.in	2009-12-20 14:09:50.000000000 -0500
-+++ src/Makefile.in.new	2009-12-20 14:10:42.000000000 -0500
+--- a/src/Makefile.in	2009-12-20 14:09:50.000000000 -0500
++++ b/src/Makefile.in	2009-12-20 14:10:42.000000000 -0500
 @@ -47,7 +47,7 @@
  bin_PROGRAMS = ettercap$(EXEEXT)
  @HAVE_DN_EXPAND_TRUE@am__append_1 = dissectors/ec_dns.c

@@ -17,7 +17,7 @@ end
 class TestZip <Formula
   def initialize
     zip=HOMEBREW_CACHE.parent+'test-0.1.zip'
-    Kernel.system '/usr/bin/zip', '-0', zip, ABS__FILE__
+    Kernel.system '/usr/bin/zip', '-q', '-0', zip, ABS__FILE__
     @url="file://#{zip}"
     @homepage = 'http://example.com/'
     super 'testzip'
@@ -86,7 +86,7 @@ class BeerTasting < Test::Unit::TestCase
 
     nostdout do
       assert_nothing_raised do
-        f=TestBall.new
+        f=TestBallWithRealPath.new
         Homebrew.info_formula f
         Cleaner.new f
         Homebrew.prune
@@ -149,7 +149,8 @@ class BeerTasting < Test::Unit::TestCase
         
         abcd=orig_abcd=HOMEBREW_CACHE+'abcd'
         FileUtils.cp ABS__FILE__, abcd
-        abcd=HOMEBREW_PREFIX.install abcd
+        installed_paths=HOMEBREW_PREFIX.install abcd
+        abcd = installed_paths[0]
         assert (HOMEBREW_PREFIX+orig_abcd.basename).exist?
         assert abcd.exist?
         assert_equal HOMEBREW_PREFIX+'abcd', abcd
@@ -170,6 +171,8 @@ class BeerTasting < Test::Unit::TestCase
         assert orig_abcd.exist?
 
         HOMEBREW_CACHE.chmod_R 0777
+
+        abcd.unlink # teardown
       end
     end
   end

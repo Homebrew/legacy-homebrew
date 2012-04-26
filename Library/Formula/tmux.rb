@@ -9,6 +9,11 @@ class Tmux < Formula
 
   depends_on 'libevent'
 
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
     system "sh", "autogen.sh" if ARGV.build_head?
 
@@ -25,5 +30,9 @@ class Tmux < Formula
     Bash completion script was installed to:
       #{etc}/bash_completion.d/tmux
     EOS
+  end
+
+  def test
+    system "#{bin}/tmux -V"
   end
 end

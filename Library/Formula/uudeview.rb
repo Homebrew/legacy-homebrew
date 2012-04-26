@@ -6,7 +6,9 @@ class Uudeview < Formula
   md5 '0161abaec3658095044601eae82bbc5b'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}","--disable-tcl"
+    system "./configure", "--prefix=#{prefix}",
+                          "--mandir=#{man}",
+                          "--disable-tcl"
     system "make install"
   end
 

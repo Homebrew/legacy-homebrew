@@ -2,22 +2,22 @@ require 'formula'
 
 class Jruby < Formula
   homepage 'http://www.jruby.org'
-  url 'http://jruby.org.s3.amazonaws.com/downloads/1.6.6/jruby-bin-1.6.6.tar.gz'
-  sha1 '21de8186235aba98572073041b82f3e3cd7004e4'
+  url 'http://jruby.org.s3.amazonaws.com/downloads/1.6.7/jruby-bin-1.6.7.tar.gz'
+  sha1 '926d4f5b85af075a76c0e59cb4ea34f5c6b770c9'
 
   def install
     # Remove Windows files
     rm Dir['bin/*.{bat,dll,exe}']
 
     # Prefix a 'j' on some commands
-    Dir.chdir 'bin' do
+    cd 'bin' do
       Dir['*'].each do |file|
         mv file, "j#{file}" unless file.match /^[j]/
       end
     end
 
     # Only keep the OS X native libraries
-    Dir.chdir 'lib/native' do
+    cd 'lib/native' do
       Dir['*'].each do |file|
         rm_rf file unless file.downcase == 'darwin'
       end

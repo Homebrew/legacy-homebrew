@@ -18,6 +18,10 @@ ARGV.extend ExtendArgvPlusYeast
 
 class ARGVTests < Test::Unit::TestCase
 
+  def teardown
+    ARGV.reset
+  end
+
   def test_ARGV
     assert ARGV.named.empty?
     
@@ -29,5 +33,19 @@ class ARGVTests < Test::Unit::TestCase
     assert_equal 1, ARGV.kegs.length
     assert_raises(FormulaUnavailableError) { ARGV.formulae }
   end
-  
+
+  def test_switch?
+    ARGV.unshift "-ns"
+    ARGV.unshift "-i"
+    ARGV.unshift "--bar"
+    assert ARGV.switch?('n')
+    assert ARGV.switch?('s')
+    assert ARGV.switch?('i')
+    assert !ARGV.switch?('b')
+    assert !ARGV.switch?('ns')
+    assert !ARGV.switch?('bar')
+    assert !ARGV.switch?('--bar')
+    assert !ARGV.switch?('-n')
+  end
+
 end

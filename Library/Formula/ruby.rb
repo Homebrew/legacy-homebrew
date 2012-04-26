@@ -1,15 +1,20 @@
 require 'formula'
 
 class Ruby < Formula
-  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p0.tar.bz2'
   homepage 'http://www.ruby-lang.org/en/'
-  head 'http://svn.ruby-lang.org/repos/ruby/trunk/', :using => :svn
-  sha256 'ca8ba4e564fc5f98b210a5784e43dfffef9471222849e46f8e848b37e9f38acf'
+  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p194.tar.gz'
+  sha256 '46e2fa80be7efed51bd9cdc529d1fe22ebc7567ee0f91db4ab855438cf4bd8bb'
 
+  head 'http://svn.ruby-lang.org/repos/ruby/trunk/', :using => :svn
+
+  depends_on 'pkg-config' => :build
   depends_on 'readline'
+  depends_on 'gdbm'
   depends_on 'libyaml'
 
-  fails_with_llvm :build => 2326
+  fails_with :llvm do
+    build 2326
+  end
 
   # Stripping breaks dynamic linking
   skip_clean :all
@@ -42,8 +47,6 @@ class Ruby < Formula
     system "autoconf" unless File.exists? 'configure'
 
     args = ["--prefix=#{prefix}",
-            "--disable-debug",
-            "--disable-dependency-tracking",
             "--enable-shared"]
 
     args << "--program-suffix=19" if ARGV.include? "--with-suffix"

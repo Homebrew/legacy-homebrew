@@ -60,8 +60,10 @@ def install_wx_python
       "BUILD_GIZMOS=1",
       "BUILD_STC=1"
     ]
-    Dir.chdir "wxPython" do
+    cd "wxPython" do
       if ARGV.build_devel?
+        ENV.append_to_cflags '-arch x86_64' if MacOS.prefer_64_bit?
+
         system "python", "setup.py",
                          "build_ext",
                          "WXPORT=osx_cocoa",
@@ -72,12 +74,8 @@ def install_wx_python
                          "WXPORT=osx_cocoa",
                          *opts
       else # for wx 2.8 force 32-bit install with the 10.6 sdk:
-        %w{ CFLAGS CXXFLAGS LDFLAGS }.each do |compiler_flag|
-          ENV.remove compiler_flag, "-arch x86_64"
-          ENV.append compiler_flag, "-arch i386"
-          # The python extension for wx2.8 has to be built with the 10.6 sdk, but we have no configure step, so:
-          ENV.append compiler_flag, "-isysroot /Developer/SDKs/MacOSX10.6.sdk -mmacosx-version-min=10.6"
-        end
+        ENV.append_to_cflags '-arch i386'
+
         system "arch",   "-i386",
                          "python",
                          "setup.py",
@@ -122,15 +120,10 @@ def install_wx_python
 
     unless ARGV.build_devel?
       # Force i386 wor wx 2.8
-      %w{ CFLAGS CXXFLAGS LDFLAGS OBJCFLAGS OBJCXXFLAGS }.each do |compiler_flag|
-        ENV.remove compiler_flag, "-arch x86_64"
-        ENV.append compiler_flag, "-arch i386"
-      end
+      ENV.m32
+
       # build will fail on Lion unless we use the 10.6 sdk (note wx 2.9 does fine)
-      if MacOS.lion?
-          args << "--with-macosx-sdk=/Developer/SDKs/MacOSX10.6.sdk"
-          args << "--with-macosx-version-min=10.6"
-      end
+      ENV.append_to_cflags '-isysroot /Developer/SDKs/MacOSX10.6.sdk -mmacosx-version-min=10.6' if MacOS.lion?
     end
 
     system "./configure", *args

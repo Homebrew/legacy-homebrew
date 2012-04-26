@@ -1,16 +1,17 @@
 require 'formula'
 
+# Upstream recommends using 7.2alpha6 over 7.1
 class BdwGc < Formula
-  # upstream recommends using 7.2alpha6 over 7.1
   homepage 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/'
   url 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.2alpha6.tar.gz'
   md5 '319d0b18cc4eb735c8038ece9df055e4'
   version '7.2alpha6'
 
+  # fix inline ASM issues with LLVM and Makefile double-install
+  # both fixes already upstream
+  # Third patch is upstream, https://github.com/ivmai/bdwgc/commit/c285b29
+  # and fixes compile with Clang when XCode-4.3.  Remove at gc-7.2alpha7.
   def patches
-    # fix inline ASM issues with LLVM
-    # fix Makefile double-install
-    # both fixes already upstream
     DATA
   end
 
@@ -74,3 +75,17 @@ index 09dea13..1f4356e 100644
  	include/gc_inline.h include/gc_mark.h include/gc_cpp.h \
  	include/weakpointer.h include/new_gc_alloc.h \
  	include/gc_allocator.h include/gc_backptr.h include/gc_gcj.h \
+diff --git a/misc.c b/misc.c
+index 2fd4166..8db6085 100644
+--- a/misc.c
++++ b/misc.c
+@@ -930,7 +930,8 @@ GC_API void GC_CALL GC_init(void)
+       GC_STATIC_ASSERT((word)(-1) > (word)0);
+       /* word should be unsigned */
+ #   endif
+-#   if !defined(__BORLANDC__) && !defined(__CC_ARM) /* Workaround */
++#   if !defined(__BORLANDC__) && !defined(__CC_ARM) \
++       && !(defined(__clang__) && defined(X86_64)) /* Workaround */
+       GC_STATIC_ASSERT((ptr_t)(word)(-1) > (ptr_t)0);
+       /* Ptr_t comparisons should behave as unsigned comparisons.       */
+ #   endif
