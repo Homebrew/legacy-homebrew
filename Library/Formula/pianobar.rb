@@ -2,8 +2,8 @@ require 'formula'
 
 class Pianobar < Formula
   homepage 'https://github.com/PromyLOPh/pianobar/'
-  url 'https://github.com/PromyLOPh/pianobar/tarball/2012.01.10'
-  md5 'a703227c079cb0fe20ac4abbdfbc6f08'
+  url 'https://github.com/PromyLOPh/pianobar/tarball/2012.04.24'
+  md5 'bbdb0f5e0bfd811496488e5c3b85a8fd'
 
   head 'https://github.com/PromyLOPh/pianobar.git'
 
@@ -34,5 +34,11 @@ class Pianobar < Formula
 
     # Install contrib folder too, why not.
     prefix.install Dir['contrib']
+  end
+
+  # (Temporary?) workaround for pandora protocol change
+  # For detail: https://github.com/PromyLOPh/pianobar/issues/236
+  def patches
+    "https://raw.github.com/gist/2500616/bf2fc7c339791be9dce8ebf0ecca3f6647c9e3f2/gistfile1"
   end
 end
