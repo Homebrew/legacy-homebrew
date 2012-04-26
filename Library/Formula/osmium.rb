@@ -21,11 +21,11 @@ class Osmium < Formula
   def install
     cd 'osmjs' do
       system "make"
+      bin.install 'osmjs'
     end
-    include.install Dir['include/*']
-
     system "make doc"
+
+    include.install Dir['include/*']
     doc.install Dir['doc/*']
   end
-
 end
