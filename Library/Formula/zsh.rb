@@ -16,13 +16,12 @@ class Zsh < Formula
 
   def install
     args = %W[
-      -prefix=#{prefix}
+      --prefix=#{prefix}
       --enable-fndir=#{share}/zsh/functions
       --enable-site-fndir=#{share}/zsh/site-functions
       --enable-scriptdir=#{share}/zsh/scripts
       --enable-site-scriptdir=#{share}/zsh/site-scripts
       --enable-cap
-      --enable-function-subdirs
       --enable-maildir-support
       --enable-multibyte
       --enable-pcre
