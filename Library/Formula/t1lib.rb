@@ -10,7 +10,7 @@ class T1lib < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make without_doc"
-    system "make install" # if this fails, try separate make/make install steps
+    system "make install"
   end
 
   def test
