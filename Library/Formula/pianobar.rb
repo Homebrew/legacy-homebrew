@@ -36,6 +36,8 @@ class Pianobar < Formula
     prefix.install Dir['contrib']
   end
 
+  # (Temporary?) workaround for pandora protocol change
+  # For detail: https://github.com/PromyLOPh/pianobar/issues/236
   def patches
     "https://raw.github.com/gist/2500616/bf2fc7c339791be9dce8ebf0ecca3f6647c9e3f2/gistfile1"
   end
