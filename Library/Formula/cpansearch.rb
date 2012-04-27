@@ -2,8 +2,8 @@ require 'formula'
 
 class Cpansearch < Formula
   homepage 'https://github.com/c9s/cpansearch'
-  url 'https://github.com/c9s/cpansearch/tarball/0.1'
-  md5 '470acb92617d77d7c9809effa3edde6d'
+  url 'https://github.com/c9s/cpansearch/tarball/0.1.1'
+  sha1 '8bfb303cf10b0cfcd09f42b4cb3c3911f37a47ee'
 
   head 'https://github.com/c9s/cpansearch.git'
 
