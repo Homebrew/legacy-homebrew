@@ -96,7 +96,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     when '____pkg'
       safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, File.basename(@url)
       chdir
-    when 'Rar!'
+    when /Rar!/
       quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, @tarball_path
     else
       # we are assuming it is not an archive, use original filename
