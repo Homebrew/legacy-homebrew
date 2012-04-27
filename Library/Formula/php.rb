@@ -22,7 +22,7 @@ class Php < Formula
   
   def options 
 	  [
-		['--setup-sql', 'Do first time setup for Mysql']
+		['--setup-sql', 'Do first time setup for Mysql'],
 		['--fix-path', 'Appends .bashrc to load /usr/local/bin before /usr/bin']
 	  ]
   end
@@ -61,7 +61,7 @@ class Php < Formula
     		system "launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist"
     		FileUtils.rm("#{ENV['HOME']}/Library/LaunchAgents/homebrew.mxcl.mysql.plist")
     	end
-		system "ln -s #{system 'brew --prefix mysql'}/homebrew.mxcl.mysql.plist ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist"
+		system "ln -s `brew --prefix mysql`/homebrew.mxcl.mysql.plist ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist"
 		system "launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist"
     end
     
@@ -71,6 +71,9 @@ class Php < Formula
     		f.puts "export PATH"
     	end
     end
+    
+    puts "Restarting apache"
+    system "sudo apachectl restart"
     	
   end
   
