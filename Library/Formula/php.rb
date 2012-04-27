@@ -23,6 +23,7 @@ class Php < Formula
   def options 
 	  [
 		['--setup-sql', 'Do first time setup for Mysql']
+		['--fix-path', 'Appends .bashrc to load /usr/local/bin before /usr/bin']
 	  ]
   end
   
@@ -63,6 +64,14 @@ class Php < Formula
 		system "ln -s #{system 'brew --prefix mysql'}/homebrew.mxcl.mysql.plist ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist"
 		system "launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist"
     end
+    
+    if ARGV.include? '--fix-path'
+    	open("#{ENV['HOME']}/.bashrc", 'a') do |f|
+    		f.puts "PATH=/usr/local/bin:$PATH\n"
+    		f.puts "export PATH"
+    	end
+    end
+    	
   end
   
   def patches
