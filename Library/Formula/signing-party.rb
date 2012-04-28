@@ -13,7 +13,7 @@ class GnupgInstalled < Requirement
     EOS
   end
 
-  def satisified?
+  def satisfied?
     which 'gpg' or which 'gpg2'
   end
 
