@@ -5,13 +5,25 @@ class Mcpp < Formula
   homepage 'http://mcpp.sourceforge.net/'
   md5 '512de48c87ab023a69250edc7a0c7b05'
 
+  # stpcpy is a macro on OS X; trying to define it as an extern is invalid.
+  def patches; DATA; end
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--enable-mcpplib"
     system "make install"
   end
-
-  def patches
-    "https://gist.github.com/raw/668341/e50827c8d9e8452befcab64bd8800b16d1f66d0e/mcpp-fix-stpcpy.patch"
-  end
 end
+
+__END__
+diff -ur mcpp-2.7.2-orig/src/internal.H mcpp-2.7.2/src/internal.H
+--- mcpp-2.7.2-orig/src/internal.H	2008-08-27 08:01:16.000000000 -0500
++++ mcpp-2.7.2/src/internal.H	2010-11-08 15:53:38.000000000 -0600
+@@ -557,6 +557,6 @@
+ #endif
+ #endif
+ 
+-#if HOST_HAVE_STPCPY
++#if HOST_HAVE_STPCPY && !defined(stpcpy)
+ extern char *   stpcpy( char * dest, const char * src);
+ #endif
