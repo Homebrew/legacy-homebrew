@@ -2,9 +2,9 @@ require 'formula'
 
 class Automake < Formula
   homepage 'http://www.gnu.org/software/automake/'
-  url 'http://ftpmirror.gnu.org/automake/automake-1.11.5.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/automake/automake-1.11.5.tar.gz'
-  sha1 '53949fa5b9776a5f4b6783486c037da64e374f4f'
+  url 'http://ftpmirror.gnu.org/automake/automake-1.12.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/automake/automake-1.12.tar.gz'
+  sha1 '735e5a755dd4ba24dbb345901198873b2686804d'
 
   depends_on "autoconf" => :build
 
