@@ -10,6 +10,11 @@ class Cmake < Formula
     sha1 '4d25a7ca3f41750d957fe1cfd53ecb37c713efad' => :snowleopard
   end
 
+  def patches
+    # Correct FindPkgConfig found variable. Remove for CMake 2.8.9.
+    "https://github.com/Kitware/CMake/commit/3ea850.patch"
+  end
+
   def install
     # A framework-installed expat will be detected and mess things up.
     if File.exist? "/Library/Frameworks/expat.framework"
