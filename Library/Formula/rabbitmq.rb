@@ -59,6 +59,14 @@ class Rabbitmq < Formula
 
       To start rabbitmq-server manually:
         rabbitmq-server
+
+    If you are unable to start the server because of a connection timeout:
+
+        ERROR: epmd error for host "yourhostname": timeout (timed out establishing tcp connection)
+
+      Then add your hostname to /etc/hosts:
+
+        127.0.0.1  yourhostname
     EOS
   end
 
