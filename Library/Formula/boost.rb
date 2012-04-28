@@ -1,5 +1,22 @@
 require 'formula'
 
+def needs_universal_python?
+  ARGV.build_universal? and not ARGV.include? "--without-python"
+end
+
+class UniversalPython < Requirement
+  def message; <<-EOS.undent
+    A universal build was requested, but Python is not a universal build
+
+    Boost compiles against the Python it finds in the path; if this Python
+    is not a universal build then linking will likely fail.
+    EOS
+  end
+  def satisfied?
+    archs_for_command("python").universal?
+  end
+end
+
 class Boost < Formula
   homepage 'http://www.boost.org'
   url 'http://downloads.sourceforge.net/project/boost/boost/1.49.0/boost_1_49_0.tar.bz2'
@@ -12,6 +29,7 @@ class Boost < Formula
     sha1 '46945515d520009fbbc101e4ae19f28db1433752' => :snowleopard
   end
 
+  depends_on UniversalPython.new if needs_universal_python?
   depends_on "icu4c" if ARGV.include? "--with-icu"
 
   fails_with :llvm do
@@ -29,15 +47,6 @@ class Boost < Formula
   end
 
   def install
-    if ARGV.build_universal? and not ARGV.include? "--without-python"
-      archs = archs_for_command("python")
-      unless archs.universal?
-        opoo "A universal build was requested, but Python is not a universal build"
-        puts "Boost compiles against the Python it finds in the path; if this Python"
-        puts "is not a universal build then linking will likely fail."
-      end
-    end
-
     # Adjust the name the libs are installed under to include the path to the
     # Homebrew lib directory so executables will work when installed to a
     # non-/usr/local location.
