@@ -6,7 +6,7 @@ class Gobby < Formula
   md5 '899d68ebe1af67c5a45b49328b86e23e'
 
   head 'git://git.0x539.de/git/gobby.git'
-  
+
   depends_on 'pkg-config' => :build
   depends_on 'gtkmm'
   depends_on 'libgsasl'
