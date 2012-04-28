@@ -2,7 +2,7 @@ require 'formula'
 
 class Pure < Formula
   homepage 'http://code.google.com/p/pure-lang/'
-  url 'http://pure-lang.googlecode.com/files/pure-0.52.tar.gz'
+  url 'http://pure-lang.googlecode.com/files/pure-0.53.tar.gz'
   sha1 '397755f5ff78ae08111188e0bb6bdc434506730b'
 
   depends_on 'wget'
@@ -17,6 +17,7 @@ class Pure < Formula
                           "--enable-release",
                           "--without-elisp"
     system "make"
+    system "make check"
     system "make install"
     system "make install-docs"
   end
