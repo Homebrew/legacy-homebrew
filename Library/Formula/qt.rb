@@ -6,8 +6,9 @@ class Qt < Formula
   md5 '7960ba8e18ca31f0c6e4895a312f92ff'
 
   bottle do
-    sha1 '6913b065d9e4647e4389269012bf9c7fe13dd726' => :snowleopard
-    sha1 'd523bfbc1c7e50cdd10b64b1b10db187ec7e7c2b' => :lion
+    version 1
+    sha1 '6ab958b8fbc0595837f12339eaae1e050413ea62' => :snowleopard
+    sha1 '29615109d8bdf97bdd3a193cba0589e7c24db10a' => :lion
   end
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
