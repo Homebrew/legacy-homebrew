@@ -70,33 +70,23 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def stage
-    if @tarball_path.extname == '.jar'
-      magic_bytes = nil
-    elsif @tarball_path.extname == '.pkg'
-      # Use more than 4 characters to not clash with magicbytes
-      magic_bytes = "____pkg"
-    else
-      # get the first six bytes
-      File.open(@tarball_path) { |f| magic_bytes = f.read(6) }
-    end
-
-    # magic numbers stolen from /usr/share/file/magic/
-    case magic_bytes
-    when /^PK\003\004/ # .zip archive
+    case @tarball_path.compression_type
+    when :zip
       quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @tarball_path
       chdir
-    when /^\037\213/, /^BZh/, /^\037\235/  # gzip/bz2/compress compressed
+    when :gzip, :bzip2, :compress
+      # Assume these are also tarred
       # TODO check if it's really a tar archive
       safe_system '/usr/bin/tar', 'xf', @tarball_path
       chdir
-    when /^\xFD7zXZ\x00/ # xz compressed
+    when :xz
       raise "You must install XZutils: brew install xz" unless which_s "xz"
       safe_system "xz -dc \"#{@tarball_path}\" | /usr/bin/tar xf -"
       chdir
-    when '____pkg'
+    when :pkg
       safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, File.basename(@url)
       chdir
-    when /Rar!/
+    when :rar
       quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, @tarball_path
     else
       # we are assuming it is not an archive, use original filename
