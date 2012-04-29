@@ -15,4 +15,13 @@ class Task < Formula
     (etc+'bash_completion.d').install 'scripts/bash/task_completion.sh'
     (share+'zsh/site-functions').install   'scripts/zsh/_task'
   end
+
+  def caveats; <<-EOS.undent
+    Bash completion has been installed to:
+      #{etc}/bash_completion.d
+
+    zsh completion has been installed to:
+      #{HOMEBREW_PREFIX}/share/zsh/site-functions
+    EOS
+  end
 end
