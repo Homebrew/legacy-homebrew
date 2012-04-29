@@ -20,7 +20,7 @@ class GitNow < Formula
 
   def caveats; <<-EOS.undent
    Zsh completion has been installed to:
-      #{share}/zsh/site-functions
+      #{HOMEBREW_PREFIX}/zsh/site-functions
     EOS
   end
 end
