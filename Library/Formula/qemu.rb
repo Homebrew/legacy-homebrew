@@ -1,19 +1,25 @@
 require 'formula'
 
 class Qemu < Formula
-  url 'http://wiki.qemu.org/download/qemu-0.15.0.tar.gz'
   homepage 'http://www.qemu.org/'
-  md5 'dbc55b014bcd21b98e347f6a90f7fb6d'
+  url 'http://wiki.qemu.org/download/qemu-1.0.1.tar.gz'
+  sha1 '4d08b5a83538fcd7b222bec6f1c584da8d12497a'
 
   depends_on 'jpeg'
   depends_on 'gnutls'
 
-  fails_with :llvm do
-    cause "Segmentation faults occur at run-time with LLVM using qemu-system-arm."
+  # Borrow these patches from MacPorts
+  def patches
+    { :p0 => [
+      "https://trac.macports.org/export/92470/trunk/dports/emulators/qemu/files/patch-configure.diff",
+      "https://trac.macports.org/export/92470/trunk/dports/emulators/qemu/files/patch-cocoa-uint16-redefined.diff"
+    ]}
   end
 
   def install
     system "./configure", "--prefix=#{prefix}",
+                          "--cc=#{ENV.cc}",
+                          "--host-cc=#{ENV.cc}",
                           "--disable-darwin-user",
                           "--enable-cocoa",
                           "--disable-bsd-user",
