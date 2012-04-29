@@ -63,7 +63,7 @@ def audit_formula_text name, text
   end
 
   # Prefer formula path shortcuts in Pathname+
-  if text =~ %r{\(\s*(prefix\s*\+\s*(['"])(bin|include|libexec|lib|sbin|share))}
+  if text =~ %r{\(\s*(prefix\s*\+\s*(['"])(bin|include|libexec|lib|sbin|share)[/'"])}
     problems << " * \"(#{$1}...#{$2})\" should be \"(#{$3}+...)\""
   end
 
