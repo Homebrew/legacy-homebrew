@@ -80,6 +80,7 @@ class Keg < Pathname
       when INFOFILE_RX then ENV['HOMEBREW_KEEP_INFO'] ? :info : :skip_file
       when LOCALEDIR_RX then :mkpath
       when *share_mkpaths then :mkpath
+      when /^zsh/ then :mkpath
       else :link
       end
     end
