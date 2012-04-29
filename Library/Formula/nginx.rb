@@ -1,5 +1,6 @@
 require 'formula'
 
+# Nginx + tcp_proxy Formula
 class Nginx < Formula
   homepage 'http://nginx.org/'
   url 'http://nginx.org/download/nginx-1.2.0.tar.gz'
@@ -17,7 +18,8 @@ class Nginx < Formula
   def options
     [
       ['--with-passenger', "Compile with support for Phusion Passenger module"],
-      ['--with-webdav',    "Compile with support for WebDAV module"]
+      ['--with-webdav',    "Compile with support for WebDAV module"],
+      ['--with-tcpproxy',    "Compile with support for Tcp Proxy module"]
     ]
   end
 
@@ -34,6 +36,11 @@ class Nginx < Formula
       exit
   end
 
+  def tcp_proxy_config_args
+      system "git clone https://github.com/yaoweibin/nginx_tcp_proxy_module.git /tmp/nginx_tcp_proxy"
+      return "--add-module=/tmp/nginx_tcp_proxy"
+  end
+
   def install
     args = ["--prefix=#{prefix}",
             "--with-http_ssl_module",
@@ -46,6 +53,11 @@ class Nginx < Formula
 
     args << passenger_config_args if ARGV.include? '--with-passenger'
     args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
+    args << tcp_proxy_config_args if ARGV.include? '--with-tcpproxy'
+
+    if ARGV.include? '--with-tcpproxy'
+      system "patch -p1 < /tmp/nginx_tcp_proxy/tcp.patch"
+    end
 
     system "./configure", *args
     system "make"
