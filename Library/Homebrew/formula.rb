@@ -525,17 +525,16 @@ private
     patch_list = Patches.new(patches)
     return if patch_list.empty?
 
-    unless patch_list.external_curl_args.empty?
+    if patch_list.external_patches?
       ohai "Downloading patches"
-      # downloading all at once is much more efficient, especially for FTP
-      curl(*patch_list.external_curl_args)
+      patch_list.download!
     end
 
     ohai "Patching"
     patch_list.each do |p|
       case p.compression
-        when :gzip  then safe_system "/usr/bin/gunzip",  p.download_filename
-        when :bzip2 then safe_system "/usr/bin/bunzip2", p.download_filename
+        when :gzip  then safe_system "/usr/bin/gunzip",  p.compressed_filename
+        when :bzip2 then safe_system "/usr/bin/bunzip2", p.compressed_filename
       end
       # -f means don't prompt the user if there are errors; just exit with non-zero status
       safe_system '/usr/bin/patch', '-f', *(p.patch_args)
