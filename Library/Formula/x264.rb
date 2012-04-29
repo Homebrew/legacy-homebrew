@@ -2,13 +2,11 @@ require 'formula'
 
 class X264 < Formula
   homepage 'http://www.videolan.org/developers/x264.html'
-  # The version is _not_ 2245. See http://www.x264.nl/x264/changelog.txt for
-  # the revision numbers that are attached to each commit.
   url 'http://download.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20120425-2245-stable.tar.bz2'
   sha1 '969e015e5df24091b5e62873808e6529a7f2fb7f'
-  version 'r2197'
+  version 'r2189' # use version.sh to find this with brew install -i --HEAD x264
 
-  head 'git://git.videolan.org/x264.git'
+  head 'http://git.videolan.org/git/x264.git', :branch => 'stable'
 
   depends_on 'yasm' => :build
 
@@ -17,9 +15,6 @@ class X264 < Formula
   end
 
   def install
-    # See https://github.com/mxcl/homebrew/issues/11248
-    ENV.O1 if ENV.compiler == :clang
-
     args = ["--prefix=#{prefix}", "--enable-shared"]
     args << "--bit-depth=10" if ARGV.include?('--10-bit')
 
