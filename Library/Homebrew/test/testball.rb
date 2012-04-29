@@ -13,6 +13,13 @@ class TestBall <Formula
   end
 end
 
+class TestBallWithRealPath < TestBall
+  def initialize name=nil
+    super "testballwithrealpath"
+    @path = Pathname.new(__FILE__)
+  end
+end
+
 class TestBallWithMirror < Formula
   # `url` is bogus---curl should fail to download it. The mirror is fine
   # though.
@@ -37,5 +44,53 @@ class ConfigureFails <Formula
 
   def install
     system "./configure"
+  end
+end
+
+class TestCompilerFailures < Formula
+  def initialize name=nil
+    @url="file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+    @homepage = 'http://example.com/'
+    super "compilerfailures"
+  end
+end
+
+class TestAllCompilerFailures < TestCompilerFailures
+  fails_with :clang
+  fails_with :llvm
+  fails_with :gcc
+end
+
+class TestNoCompilerFailures < TestCompilerFailures
+  fails_with(:clang) { build 42 }
+  fails_with(:llvm) { build 42 }
+  fails_with(:gcc) { build 42 }
+end
+
+class TestLLVMFailure < TestCompilerFailures
+  fails_with :llvm
+end
+
+class TestMixedCompilerFailures < TestCompilerFailures
+  fails_with(:clang) { build MacOS.clang_build_version }
+  fails_with(:llvm) { build 42 }
+  fails_with(:gcc) { build 5666 }
+end
+
+class TestMoreMixedCompilerFailures < TestCompilerFailures
+  fails_with(:clang) { build 42 }
+  fails_with(:llvm) { build 2336 }
+  fails_with(:gcc) { build 5666 }
+end
+
+class TestEvenMoreMixedCompilerFailures < TestCompilerFailures
+  fails_with :clang
+  fails_with(:llvm) { build 2336 }
+  fails_with(:gcc) { build 5648 }
+end
+
+class TestBlockWithoutBuildCompilerFailure < TestCompilerFailures
+  fails_with :clang do
+    cause "failure"
   end
 end

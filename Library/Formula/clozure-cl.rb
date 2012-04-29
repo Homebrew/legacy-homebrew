@@ -2,10 +2,10 @@ require 'formula'
 require 'find'
 
 class ClozureCl < Formula
-  url 'ftp://ftp.clozure.com/pub/release/1.7/ccl-1.7-darwinx86.tar.gz'
-  version '1.7'
+  url 'ftp://ftp.clozure.com/pub/release/1.8/ccl-1.8-darwinx86.tar.gz'
+  version '1.8'
   homepage 'http://ccl.clozure.com/'
-  md5 '4f7d8c48abc9355c69946ef125fa2aa5'
+  md5 'ff235d9cec6f45502e993096c80570b9'
 
   def install
     # Get rid of all the .svn dirs, that for some reason are

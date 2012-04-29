@@ -76,6 +76,16 @@ class Formula
   def fails_with_llvm msg=nil, data=nil
     FailsWithLLVM.new(msg, data).handle_failure
   end
+
+  def fails_with_llvm?
+    fails_with? :llvm
+  end
+
+  def self.fails_with_llvm msg=nil, data=nil
+    fails_with_llvm_reason = FailsWithLLVM.new(msg, data)
+    @cc_failures ||= CompilerFailures.new
+    @cc_failures << fails_with_llvm_reason
+  end
 end
 
 class UnidentifiedFormula < Formula
@@ -92,5 +102,54 @@ module HomebrewEnvExtension extend self
 
   def use_llvm?
     compiler == :llvm
+  end
+end
+
+class FailsWithLLVM
+  attr_reader :compiler, :build, :cause
+
+  def initialize msg=nil, data=nil
+    if msg.nil? or msg.kind_of? Hash
+      @cause = "(No specific reason was given)"
+      data = msg
+    else
+      @cause = msg
+    end
+    @build = (data.delete :build rescue nil).to_i
+    @compiler = :llvm
+  end
+
+  def handle_failure
+    return unless ENV.compiler == :llvm
+
+    # version 2336 is the latest version as of Xcode 4.2, so it is the
+    # latest version we have tested against so we will switch to GCC and
+    # bump this integer when Xcode 4.3 is released. TODO do that!
+    if build.to_i >= 2336
+      if MacOS.xcode_version < "4.2"
+        opoo "Formula will not build with LLVM, using GCC"
+        ENV.gcc
+      else
+        opoo "Formula will not build with LLVM, trying Clang"
+        ENV.clang
+      end
+      return
+    end
+    opoo "Building with LLVM, but this formula is reported to not work with LLVM:"
+    puts
+    puts cause
+    puts
+    puts <<-EOS.undent
+      We are continuing anyway so if the build succeeds, please open a ticket with
+      the following information: #{MacOS.llvm_build_version}-#{MACOS_VERSION}. So
+      that we can update the formula accordingly. Thanks!
+      EOS
+    puts
+    if MacOS.xcode_version < "4.2"
+      puts "If it doesn't work you can: brew install --use-gcc"
+    else
+      puts "If it doesn't work you can try: brew install --use-clang"
+    end
+    puts
   end
 end

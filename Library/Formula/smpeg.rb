@@ -19,9 +19,8 @@ class Smpeg < Formula
                           "--disable-gtktest",
                           "--disable-sdltest"
     system "make"
-    lib.install Dir[".libs/*.dylib"]
-    bin.install ".libs/plaympeg"
-    bin.install "./smpeg-config"
-    include.install Dir["*.h"]
+    # Install script is not +x by default for some reason
+    system "chmod +x ./install-sh"
+    system "make install"
   end
 end

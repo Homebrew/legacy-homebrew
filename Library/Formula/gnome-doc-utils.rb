@@ -15,7 +15,10 @@ class GnomeDocUtils < Formula
   # PYTHONPATH.
   depends_on 'libxml2'
 
-  fails_with_llvm "Undefined symbols when linking", :build => "2326"
+  fails_with :llvm do
+    build 2326
+    cause "Undefined symbols when linking"
+  end
 
   def install
     # TODO this should possibly be moved up into build.rb
