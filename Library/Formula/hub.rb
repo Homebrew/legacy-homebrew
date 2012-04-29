@@ -9,7 +9,7 @@ class Hub < Formula
   def install
     system "rake", "install", "prefix=#{prefix}"
     (prefix+'etc/bash_completion.d').install 'etc/hub.bash_completion.sh'
-    (share+'zsh/functions').install 'etc/hub.zsh_completion' => '_hub'
+    (share+'zsh/site-functions').install 'etc/hub.zsh_completion' => '_hub'
   end
 
   def caveats; <<-EOS.undent
@@ -17,7 +17,7 @@ class Hub < Formula
       #{etc}/bash_completion.d
 
     zsh completion has been installed to:
-      #{HOMEBREW_PREFIX}/share/zsh/functions
+      #{HOMEBREW_PREFIX}/share/zsh/site-functions
     EOS
   end
 end
