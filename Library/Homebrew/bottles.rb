@@ -25,6 +25,18 @@ def bottle_current? f
   f.bottle_url && f.bottle_sha1 && Pathname.new(f.bottle_url).version == f.version
 end
 
+def bottle_file_outdated? f, file
+  filename = file.basename.to_s
+  return nil unless (filename.match(bottle_regex) or filename.match(old_bottle_regex)) and f.bottle_url
+
+  bottle_ext = filename.match(bottle_native_regex).captures.first rescue nil
+  bottle_ext ||= filename.match(old_bottle_regex).captures.first rescue nil
+  bottle_url_ext = f.bottle_url.match(bottle_native_regex).captures.first rescue nil
+  bottle_url_ext ||= f.bottle_url.match(old_bottle_regex).captures.first rescue nil
+
+  bottle_ext && bottle_url_ext && bottle_ext != bottle_url_ext
+end
+
 def bottle_new_version f
   return 0 unless bottle_current? f
   f.bottle_version + 1
