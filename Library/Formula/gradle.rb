@@ -2,9 +2,9 @@ require 'formula'
 
 class Gradle < Formula
   homepage 'http://www.gradle.org/'
-  url 'http://services.gradle.org/distributions/gradle-1.0-rc-1-bin.zip'
-  md5 '2107b69855af16862da5e0a1779aed25'
-  version '1.0-rc-1'
+  url 'http://services.gradle.org/distributions/gradle-1.0-rc-3-bin.zip'
+  md5 '1a32e467930c05b3dca56a9543634511'
+  version '1.0-rc-3'
 
   def install
     rm_f Dir["bin/*.bat"]
