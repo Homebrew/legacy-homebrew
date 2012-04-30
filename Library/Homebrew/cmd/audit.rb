@@ -418,9 +418,6 @@ module Homebrew extend self
       end
     end
 
-    if errors
-      puts "#{problem_count} problems in #{brew_count} brews"
-      Homebrew.failed = true
-    end
+    ofail "#{problem_count} problems in #{brew_count} brews" if errors
   end
 end
