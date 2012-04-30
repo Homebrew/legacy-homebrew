@@ -97,7 +97,7 @@ class Keg < Pathname
       when /^ocaml/ then :mkpath
       when /^perl5/ then :mkpath
       when 'php' then :mkpath
-      when /^python[23]\.\d$/ then :mkpath
+      when /^python[23]\.\d/ then :mkpath
       when 'ruby' then :mkpath
       # Everything else is symlinked to the cellar
       else :link
