@@ -95,28 +95,7 @@ __brew_complete_tapped ()
 __brew_complete_taps ()
 {
     if [[ -z "$__brew_cached_taps" ]]; then
-        __brew_cached_taps="$(/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -e '
-            require "open-uri"
-            require "yaml"
-
-            begin
-              uri = URI.parse("http://github.com/api/v2/yaml/repos/search/homebrew")
-
-              open uri do |f|
-                YAML::load(f.read)["repositories"].each do |repo|
-                  if repo[:name] =~ /^homebrew-(\w+)$/
-                    puts tap = if repo[:username] == "Homebrew"
-                      "homebrew/#{$1}"
-                    else
-                      repo[:username]+"/"+$1
-                    end
-                  end
-                end
-              end
-            rescue
-              nil
-            end
-        ' 2>/dev/null)"
+        __brew_cached_taps="$(brew ls-taps)"
     fi
 
     __brewcomp "$__brew_cached_taps"
