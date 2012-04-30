@@ -9,6 +9,7 @@ class Libglade < Formula
   depends_on 'gtk+'
 
   def install
+    ENV.append 'LDFLAGS', '-lgmodule-2.0'
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
