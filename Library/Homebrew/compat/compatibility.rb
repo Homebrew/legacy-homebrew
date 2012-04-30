@@ -59,6 +59,7 @@ class Formula
   # in compatability because the naming is somewhat confusing
   def self.resolve_alias name
     opoo 'Formula.resolve_alias is deprecated and will eventually be removed'
+    opoo 'Use Formula.canonical_name instead.'
 
     # Don't resolve paths or URLs
     return name if name.include?("/")
