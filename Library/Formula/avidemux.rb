@@ -26,12 +26,20 @@ class Avidemux < Formula
   depends_on 'xvid'
   depends_on 'x264'
 
+  # Check if this still exists @ XCode-4.3.4 or 4.4.0.  I think it's fixed then
+  # by llvm in clang svn.  So this will have to persist for older clang.
+  fails_with :clang do
+    build 318
+    cause "error in backend: Couldn't allocate input reg for constraint"
+  end unless ARGV.include? '--with-debug'
+
   def options
     [[ '--with-debug', 'Enable debug build.' ]]
   end
 
   def patches
-    DATA if Hardware.is_32_bit?
+    # Symbols undefined due to optimization.  Fixed in head. Remove @ 2.5.7.
+    DATA if Hardware.is_32_bit? and not ARGV.build_head?
   end
 
   def install
@@ -63,8 +71,6 @@ class Avidemux < Formula
     end
 
 
-    # Force llvm if clang on a normal build, fails_with_clang (being sovled).
-    ENV.llvm if ENV.compiler == :clang and not ARGV.include? '--with-debug'
     # Build the core.
     gettext = Formula.factory('gettext')
     mkdir 'corebuild' do
