@@ -5,14 +5,12 @@ require 'tab'
 module Homebrew extend self
   def bottle_formula f
     unless f.installed?
-      onoe "Formula not installed: #{f.name}"
-      Homebrew.failed = true
+      return ofail "Formula not installed: #{f.name}"
       return
     end
 
     unless built_bottle? f
-      onoe "Formula not installed with '--build-bottle': #{f.name}"
-      Homebrew.failed = true
+      return ofail "Formula not installed with '--build-bottle': #{f.name}"
     end
 
     directory = Pathname.pwd

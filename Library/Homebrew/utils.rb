@@ -55,6 +55,11 @@ end
 
 def ofail error
   onoe error
+  Homebrew.failed = true
+end
+
+def odie error
+  onoe error
   exit 1
 end
 

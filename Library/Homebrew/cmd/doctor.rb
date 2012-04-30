@@ -904,9 +904,8 @@ module Homebrew extend self
       unless out.nil? or out.empty?
         puts unless Homebrew.failed?
         lines = out.to_s.split('\n')
-        opoo lines.shift
+        ofail lines.shift
         puts lines
-        Homebrew.failed = true
       end
     end
 
