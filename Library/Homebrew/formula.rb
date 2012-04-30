@@ -592,14 +592,14 @@ private
 
     def stable &block
       raise "url and md5 must be specified in a block" unless block_given?
-      instance_eval &block unless ARGV.build_devel? or ARGV.build_head?
+      instance_eval(&block) unless ARGV.build_devel? or ARGV.build_head?
     end
 
     def devel &block
       raise "url and md5 must be specified in a block" unless block_given?
       if ARGV.build_devel?
         @mirrors = nil # clear out mirrors from the stable release
-        instance_eval &block
+        instance_eval(&block)
       end
     end
 
@@ -632,7 +632,7 @@ private
         end
       end
 
-      bottle_block.instance_eval &block
+      bottle_block.instance_eval(&block)
       @bottle_version, @bottle_url, @bottle_sha1 = bottle_block.data
     end
 

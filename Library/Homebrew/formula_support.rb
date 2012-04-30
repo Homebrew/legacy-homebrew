@@ -19,7 +19,9 @@ class SoftwareSpecification
   def initialize url, specs=nil
     raise "No url provided" if url.nil?
     @url = url
-    unless specs.nil?
+    if specs.nil?
+      @using = nil
+    else
       # Get download strategy hint, if any
       @using = specs.delete :using
       # The rest of the specs are for source control
