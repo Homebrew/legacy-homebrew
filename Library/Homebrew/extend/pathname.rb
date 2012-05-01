@@ -117,6 +117,7 @@ class Pathname
   end
 
   # extended to support common double extensions
+  alias extname_old extname
   def extname
     return $1 if to_s =~ bottle_regex
     return $1 if to_s =~ old_bottle_regex
