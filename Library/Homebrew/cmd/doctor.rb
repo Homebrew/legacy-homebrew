@@ -53,7 +53,8 @@ end
 # http://sourceforge.net/projects/macgpg2/files/
 def check_for_macgpg2
   if File.exist? "/Applications/start-gpg-agent.app" or
-     File.exist? "/Library/Receipts/libiconv1.pkg"
+     File.exist? "/Library/Receipts/libiconv1.pkg" or
+     File.exist? "/usr/local/MacGPG2"
     <<-EOS.undent
       You may have installed MacGPG2 via the package installer.
       Several other checks in this script will turn up problems, such as stray
@@ -903,9 +904,8 @@ module Homebrew extend self
       unless out.nil? or out.empty?
         puts unless Homebrew.failed?
         lines = out.to_s.split('\n')
-        opoo lines.shift
+        ofail lines.shift
         puts lines
-        Homebrew.failed = true
       end
     end
 

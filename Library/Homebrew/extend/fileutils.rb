@@ -27,6 +27,7 @@ module FileUtils extend self
   end
 
   # A version of mkdir that also changes to that folder in a block.
+  alias mkdir_old mkdir
   def mkdir name, &block
     FileUtils.mkdir(name)
     if block_given?
