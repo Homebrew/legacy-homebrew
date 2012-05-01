@@ -1,57 +1,33 @@
 require 'formula'
 
 class Riak < Formula
-  url 'http://downloads.basho.com/riak/CURRENT/riak-1.0.2.tar.gz'
   homepage 'http://wiki.basho.com/Riak.html'
-  md5 '322a1c66374f83a50519401e0386b15b'
 
-  head 'https://github.com/basho/riak.git'
+  if Hardware.is_64_bit? and not ARGV.build_32_bit?
+    url 'http://downloads.basho.com.s3-website-us-east-1.amazonaws.com/riak/1.1/1.1.2/riak-1.1.2-osx-x86_64.tar.gz'
+    version '1.1.2-x86_64'
+    sha256 '84ca1068125abcbe9bcab47be3222ffbb7f8bca2125d5b6005af8ec33460a266'
+  else
+    url 'http://downloads.basho.com.s3-website-us-east-1.amazonaws.com/riak/1.1/1.1.2/riak-1.1.2-osx-i386.tar.gz'
+    version '1.1.2-i386'
+    sha256 'b2d1783aa1cf95870b4902c6770d9e17e272d3f24f49ae593811abe490a5aa91'
+  end
 
-  skip_clean 'libexec/log'
-  skip_clean 'libexec/log/sasl'
-  skip_clean 'libexec/data'
-  skip_clean 'libexec/data/dets'
-  skip_clean 'libexec/data/ring'
+  skip_clean :all
 
-  depends_on 'erlang'
-
-  # Enable use of Erlang R14B04
-  # This was fixed upstream, so when updating the version of Riak
-  # check if this fix is already in place.
-  def patches; DATA; end
+  def options
+    [['--32-bit', 'Build 32-bit only.']]
+  end
 
   def install
-    ENV.deparallelize
-    system "make all rel"
-    %w(riak riak-admin search-cmd).each do |file|
-      inreplace "rel/riak/bin/#{file}", /^RUNNER_BASE_DIR=.+$/, "RUNNER_BASE_DIR=#{libexec}"
+    libexec.install Dir['*']
+
+    # The scripts don't dereference symlinks correctly.
+    # Help them find stuff in libexec. - @adamv
+    inreplace Dir["#{libexec}/bin/*"] do |s|
+      s.change_make_var! "RUNNER_SCRIPT_DIR", "#{libexec}/bin"
     end
 
-    # Install most files to private libexec, and link in the binaries.
-    libexec.install Dir["rel/riak/*"]
-    bin.mkpath
-    ln_s libexec+'bin/riak', bin
-    ln_s libexec+'bin/riak-admin', bin
-    ln_s libexec+'bin/search-cmd', bin
-
-    (prefix + 'data/ring').mkpath
-    (prefix + 'data/dets').mkpath
-
-    # Install man pages
-    man1.install Dir["doc/man/man1/*"]
+    bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 end
-
-__END__
-diff --git a/rebar.config b/rebar.config
-index ee81bfc..31d2fae 100644
---- a/rebar.config
-+++ b/rebar.config
-@@ -1,6 +1,6 @@
- {sub_dirs, ["rel"]}.
- 
--{require_otp_vsn, "R14B0[23]"}.
-+{require_otp_vsn, "R14B0[234]"}.
- 
- {cover_enabled, true}.
- 

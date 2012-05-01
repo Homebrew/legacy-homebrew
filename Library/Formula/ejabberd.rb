@@ -1,15 +1,18 @@
 require 'formula'
 
 class Ejabberd < Formula
-  url "http://www.process-one.net/downloads/ejabberd/2.1.9/ejabberd-2.1.9.tar.gz"
   homepage 'http://www.ejabberd.im'
-  md5 '29ca14ea62f90736322e4e6720331352'
+  url "http://www.process-one.net/downloads/ejabberd/2.1.10/ejabberd-2.1.10.tar.gz"
+  md5 '70f0e17983114c62893e43b6ef2e9d0c'
 
   depends_on "openssl" if MacOS.leopard?
   depends_on "erlang"
 
   def options
-    [['--odbc', "Build with ODBC support."]]
+    [
+      ['--odbc', "Build with ODBC support."],
+      ['--32-bit', "Build 32-bit only."]
+    ]
   end
 
   def install
@@ -17,7 +20,14 @@ class Ejabberd < Formula
     ENV['MAN_DIR'] = man
     ENV['SBIN_DIR'] = sbin
 
-    Dir.chdir "src" do
+    if ARGV.build_32_bit?
+      %w{ CFLAGS LDFLAGS }.each do |compiler_flag|
+        ENV.remove compiler_flag, "-arch x86_64"
+        ENV.append compiler_flag, "-arch i386"
+      end
+    end
+
+    cd "src" do
       args = ["--prefix=#{prefix}",
               "--sysconfdir=#{etc}",
               "--localstatedir=#{var}"]

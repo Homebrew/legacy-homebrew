@@ -9,7 +9,7 @@ class Slrn < Formula
   depends_on 's-lang'
 
   def install
-    slrnpullcache = HOMEBREW_PREFIX+'var'+'spool'+'news'+'slrnpull'
+    slrnpullcache = HOMEBREW_PREFIX+'var/spool/news/slrnpull'
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-ssl",

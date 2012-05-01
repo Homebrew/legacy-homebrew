@@ -1,10 +1,10 @@
 require 'formula'
 
 class Neo4j < Formula
-  url 'http://dist.neo4j.org/neo4j-community-1.5-unix.tar.gz'
-  version 'community-1.5'
   homepage 'http://neo4j.org'
-  md5 '7a48947c8bccef033098e5872510cb72'
+  url 'http://dist.neo4j.org/neo4j-community-1.7-unix.tar.gz'
+  version 'community-1.7-unix'
+  md5 '664fc56157a2b1a8fb6e334705494343'
 
   def install
     # Remove windows files
@@ -17,8 +17,33 @@ class Neo4j < Formula
     libexec.install Dir['*']
 
     # Symlink binaries
-    bin.mkpath
-    ln_s "#{libexec}/bin/neo4j", bin+"neo4j"
-    ln_s "#{libexec}/bin/neo4j-shell", bin+"neo4j-shell"
+    bin.install_symlink Dir["#{libexec}/bin/neo4j{,-shell}"]
+  end
+
+  def caveats; <<-EOS.undent
+    Quick-start guide:
+
+        1. Start the server manually:
+            neo4j start
+
+        2. Open webadmin:
+            open http://localhost:7474/webadmin/
+
+        3. Start exploring the REST API:
+            curl -v http://localhost:7474/db/data/
+
+        4. Stop:
+            neo4j stop
+
+    To launch on startup, install launchd-agent to ~/Library/LaunchAgents/ with:
+        neo4j install
+
+    If this is an upgrade, see:
+        #{libexec}/UPGRADE.txt
+
+    The manual can be found in:
+        #{libexec}/doc/
+
+    EOS
   end
 end

@@ -9,8 +9,8 @@ class Flume < Formula
   def flume_script
       <<-EOS.undent
       #!/bin/bash
-      export FLUME_CONF_DIR=#{libexec}/conf
-      exec #{libexec}/bin/flume $@
+      export FLUME_CONF_DIR=${FLUME_CONF_DIR-#{libexec}/conf}
+      exec #{libexec}/bin/flume "$@"
       EOS
   end
 

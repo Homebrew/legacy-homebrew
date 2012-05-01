@@ -1,16 +1,17 @@
 require 'formula'
 
 class Csmith < Formula
-  url 'http://embed.cs.utah.edu/csmith/csmith-2.0.0.tar.gz'
   homepage 'http://embed.cs.utah.edu/csmith/'
-  md5 'ab0bee5da4d1c2b55c32789b716846cb'
+  url 'http://embed.cs.utah.edu/csmith/csmith-2.1.0.tar.gz'
+  md5 '3170ce73f0347d82c1206cf145cb49c7'
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
+    system "make"
+    ENV.j1 # 2.1.0 fails install without this
     system "make install"
     runtime = include+"csmith-#{version}/runtime"
-    runtime.mkdir
     runtime.install Dir['runtime/*.h']
   end
 

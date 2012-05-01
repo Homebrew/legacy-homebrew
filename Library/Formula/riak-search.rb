@@ -1,8 +1,8 @@
 require 'formula'
 
 class RiakSearch < Formula
-  url 'http://downloads.basho.com/riak-search/riak-search-0.14/riak_search-0.14.2.tar.gz'
   homepage 'http://riak.basho.com'
+  url 'http://downloads.basho.com/riak-search/riak-search-0.14/riak_search-0.14.2.tar.gz'
   md5 '4dc7cfbd2c985fcb1b73fc5ac8864031'
 
   head 'https://github.com/basho/riak_search.git'
@@ -24,11 +24,7 @@ class RiakSearch < Formula
 
     # Install most files to private libexec, and link in the binaries.
     libexec.install Dir["rel/riaksearch/*"]
-
-    bin.mkpath
-    ln_s libexec+'bin/riaksearch', bin
-    ln_s libexec+'bin/riaksearch-admin', bin
-    ln_s libexec+'bin/search-cmd', bin
+    bin.install_symlink Dir["#{libexec}/bin/*"]
 
     (prefix + 'data/ring').mkpath
     (prefix + 'data/dets').mkpath

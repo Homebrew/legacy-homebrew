@@ -22,6 +22,12 @@ class Phash < Formula
     ]
   end
 
+  # fix compilation on ffmpeg <= 0.7
+  # source: https://launchpad.net/ubuntu/+source/libphash/0.9.4-1.2
+  def patches
+    "https://launchpad.net/ubuntu/+archive/primary/+files/libphash_0.9.4-1.2.diff.gz"
+  end
+
   def install
     args = ["--disable-debug", "--disable-dependency-tracking",
             "--prefix=#{prefix}",

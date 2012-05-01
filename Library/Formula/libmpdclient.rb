@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libmpdclient < Formula
-  url 'http://downloads.sourceforge.net/project/musicpd/libmpdclient/2.5/libmpdclient-2.5.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/musicpd/libmpdclient/2.7/libmpdclient-2.7.tar.bz2'
   homepage 'http://mpd.wikia.com/wiki/ClientLib:libmpdclient'
-  sha1 '4e3c0925c92c27ddcb13113adc7ebe6dc975abc6'
+  sha1 'a8ec78f6a7ae051fbf1cc0f47564301423c281b0'
 
   def options
     [[ '--universal', 'Build a universal library.' ]]

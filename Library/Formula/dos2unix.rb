@@ -22,6 +22,9 @@ class Dos2unix < Formula
       args << "ENABLE_NLS="
     end
 
+    args << "CC=#{ENV.cc}"
+    args << "CPP=#{ENV.cc}"
+    args << "CFLAGS=#{ENV.cflags}"
     args << "install"
 
     system "make", *args

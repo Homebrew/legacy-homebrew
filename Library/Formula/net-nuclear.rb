@@ -10,21 +10,14 @@ end
 
 
 class NetNuclear < Formula
+  homepage 'http://studiostok.se/?page=netnuclear'
   url 'http://studiostok.se/files/netnuclear4-source.rar'
   version '4'
-  homepage 'http://studiostok.se/?page=netnuclear'
   md5 '061df954d0632f1cbc158dc0002e4b6c'
 
   depends_on 'sdl'
   depends_on 'sdl_mixer'
   depends_on 'sdl_net'
-
-  def startup_script
-      return <<-END
-#!/bin/bash
-#{libexec}/nuclear $*
-END
-  end
 
   def install
     inreplace 'Makefile' do |s|
@@ -37,8 +30,11 @@ END
     libexec.install 'nuclear'
 
     d = libexec
-    NetNuclearSoundsAndGraphics.new.brew { d.install ['sfx','gfx'] }
+    NetNuclearSoundsAndGraphics.new.brew { d.install 'sfx','gfx' }
 
-    (bin+'nuclear').write startup_script
+    (bin+'nuclear').write <<-END.undent
+      #!/bin/bash
+      "#{libexec}/nuclear" "$@"
+    END
   end
 end

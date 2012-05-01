@@ -9,7 +9,9 @@ class Scrollkeeper < Formula
   depends_on 'docbook'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
+    system "./configure", "--prefix=#{prefix}",
+                          "--mandir=#{man}",
+                          "--with-xml-catalog=#{etc}/xml/catalog"
     system "make"
     system "make install"
   end

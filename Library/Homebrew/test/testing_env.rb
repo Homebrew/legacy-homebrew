@@ -9,6 +9,7 @@ ABS__FILE__=File.expand_path(__FILE__)
 $:.push(File.expand_path(__FILE__+'/../..'))
 require 'extend/pathname'
 require 'exceptions'
+require 'utils'
 
 # these are defined in global.rb, but we don't want to break our actual
 # homebrew tree, and we do want to test everything :)
@@ -32,6 +33,23 @@ TEST_FOLDER = Pathname.new(ABS__FILE__).parent.realpath
 require 'fileutils'
 module Homebrew extend self
   include FileUtils
+end
+
+def shutup
+  if ARGV.verbose?
+    yield
+  else
+    begin
+      tmperr = $stderr.clone
+      tmpout = $stdout.clone
+      $stderr.reopen '/dev/null', 'w'
+      $stdout.reopen '/dev/null', 'w'
+      yield
+    ensure
+      $stderr.reopen tmperr
+      $stdout.reopen tmpout
+    end
+  end
 end
 
 require 'test/unit' # must be after at_exit

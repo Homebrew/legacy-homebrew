@@ -1,10 +1,9 @@
 require 'formula'
 
 class Pianobar < Formula
-  url 'https://github.com/PromyLOPh/pianobar/zipball/2011.11.11'
-  version '2011.11.11'
   homepage 'https://github.com/PromyLOPh/pianobar/'
-  md5 '74876f2956cad2a20bb919e79e5d0c87'
+  url 'https://github.com/PromyLOPh/pianobar/tarball/2012.04.24'
+  md5 'bbdb0f5e0bfd811496488e5c3b85a8fd'
 
   head 'https://github.com/PromyLOPh/pianobar.git'
 
@@ -15,10 +14,13 @@ class Pianobar < Formula
 
   skip_clean 'bin'
 
-  fails_with_llvm "Reports of this not compiling on Xcode 4", :build => 2334
+  fails_with :llvm do
+    build 2334
+    cause "Reports of this not compiling on Xcode 4"
+  end
 
   def install
-    # we discard Homebrew's CFLAGS as Pianobar reportdely doesn't like them
+    # Discard Homebrew's CFLAGS as Pianobar reportedly doesn't like them
     ENV['CFLAGS'] = "-O2 -DNDEBUG " +
               # fixes a segfault: https://github.com/PromyLOPh/pianobar/issues/138
               "-D_DARWIN_C_SOURCE " +
@@ -32,5 +34,11 @@ class Pianobar < Formula
 
     # Install contrib folder too, why not.
     prefix.install Dir['contrib']
+  end
+
+  # (Temporary?) workaround for pandora protocol change
+  # For detail: https://github.com/PromyLOPh/pianobar/issues/236
+  def patches
+    "https://raw.github.com/gist/2500616/bf2fc7c339791be9dce8ebf0ecca3f6647c9e3f2/gistfile1"
   end
 end

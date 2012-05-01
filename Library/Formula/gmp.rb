@@ -1,13 +1,14 @@
 require 'formula'
 
 class Gmp < Formula
-  url 'http://ftpmirror.gnu.org/gmp/gmp-5.0.2.tar.bz2'
   homepage 'http://gmplib.org/'
-  sha1 '2968220e1988eabb61f921d11e5d2db5431e0a35'
+  url 'http://ftpmirror.gnu.org/gmp/gmp-5.0.4.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/gmp/gmp-5.0.4.tar.bz2'
+  sha1 'ea4ea7c3f10436ef5ae7a75b3fad163a8b86edc0'
 
   def options
     [
-      ["--32-bit", "Force 32-bit."],
+      ["--32-bit", "Build 32-bit only."],
       ["--skip-check", "Do not run 'make check' to verify libraries."]
     ]
   end
@@ -16,13 +17,16 @@ class Gmp < Formula
     # Reports of problems using gcc 4.0 on Leopard
     # https://github.com/mxcl/homebrew/issues/issue/2302
     # Also force use of 4.2 on 10.6 in case a user has changed the default
-    ENV.gcc_4_2
+    # Do not force if xcode > 4.2 since it does not have /usr/bin/gcc-4.2 as default
+    unless MacOS.xcode_version >= "4.2"
+      ENV.gcc_4_2
+    end
 
     args = ["--prefix=#{prefix}", "--enable-cxx"]
 
     # Build 32-bit where appropriate, and help configure find 64-bit CPUs
     # see: http://gmplib.org/macos.html
-    if MacOS.prefer_64_bit? and not ARGV.include? "--32-bit"
+    if MacOS.prefer_64_bit? and not ARGV.build_32_bit?
       ENV.m64
       args << "--build=x86_64-apple-darwin"
     else

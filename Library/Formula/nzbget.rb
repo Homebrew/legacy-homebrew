@@ -7,7 +7,7 @@ class Nzbget < Formula
   head 'https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk', :using => :svn
 
   # Also depends on libxml2 but the one in OS X is fine
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'libsigc++'
   depends_on 'libpar2'
   depends_on 'gnutls'

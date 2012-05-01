@@ -5,14 +5,17 @@ class Cdparanoia < Formula
   homepage 'http://www.xiph.org/paranoia/'
   md5 'b304bbe8ab63373924a744eac9ebc652'
 
-  def patches
-    [
-     "http://trac.macports.org/export/70964/trunk/dports/audio/cdparanoia/files/osx_interface.patch",
-     "http://trac.macports.org/export/70964/trunk/dports/audio/cdparanoia/files/patch-paranoia_paranoia.c.10.4.diff"
-    ]
+  fails_with :llvm do
+    build 2326
+    cause '"File too small" error while linking'
   end
 
-  fails_with_llvm '"File too small" error while linking', :build => 2326
+  def patches
+    [
+     "https://trac.macports.org/export/70964/trunk/dports/audio/cdparanoia/files/osx_interface.patch",
+     "https://trac.macports.org/export/70964/trunk/dports/audio/cdparanoia/files/patch-paranoia_paranoia.c.10.4.diff"
+    ]
+  end
 
   def install
     system "autoconf"

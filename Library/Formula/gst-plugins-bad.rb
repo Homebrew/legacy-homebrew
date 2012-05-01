@@ -21,11 +21,14 @@ class GstPluginsBad < Formula
   depends_on 'faad2' => :optional
   depends_on 'libsndfile' => :optional
   depends_on 'schroedinger' => :optional
+  depends_on 'rtmpdump' => :optional
 
   def install
     ENV.append "CFLAGS", "-no-cpp-precomp -funroll-loops -fstrict-aliasing"
-    system "./configure", "--prefix=#{prefix}", "--disable-debug",
-                          "--disable-dependency-tracking", "--disable-sdl"
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--disable-sdl"
     system "make"
     system "make install"
   end

@@ -7,15 +7,22 @@ class Libxml2 < Formula
 
   keg_only :provided_by_osx
 
-  fails_with_llvm "Undefined symbols when linking", :build => "2326"
+  fails_with :llvm do
+    build 2326
+    cause "Undefined symbols when linking"
+  end
 
   def options
-    [['--with-python', 'Compile the libxml2 Python 2.x modules']]
+    [
+      ['--with-python', 'Compile the libxml2 Python 2.x modules'],
+      ['--universal', 'Build a universal binary.']
+    ]
   end
 
   def install
-    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+    ENV.universal_binary if ARGV.build_universal?
 
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
     if ARGV.include? '--with-python'
       python_prefix=`python-config --prefix`
       ohai "Installing Python module to #{python_prefix}"

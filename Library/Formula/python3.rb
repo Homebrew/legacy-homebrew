@@ -12,14 +12,14 @@ def as_framework?
 end
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.24.tar.gz'
-  md5 '17722b22141aba8235787f79800cc452'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.26.tar.gz'
+  md5 '841f4262a70107f85260362f5def8206'
 end
 
 class Python3 < Formula
-  url 'http://python.org/ftp/python/3.2.2/Python-3.2.2.tar.bz2'
   homepage 'http://www.python.org/'
-  md5 '9d763097a13a59ff53428c9e4d098a05'
+  url 'http://python.org/ftp/python/3.2.3/Python-3.2.3.tar.bz2'
+  md5 'cea34079aeb2e21e7b60ee82a0ac286b'
 
   depends_on 'pkg-config' => :build
 
@@ -37,12 +37,6 @@ class Python3 < Formula
 
   # Skip binaries so modules will load; skip lib because it is mostly Python files
   skip_clean ['bin', 'lib']
-
-  def patches
-    # fix for recognizing gdbm 1.9.x databases
-    # patch is already upstream: http://hg.python.org/cpython/rev/7a41855b6196
-    DATA
-  end
 
   # The Cellar location of site-packages
   # This location is different for Framework builds
@@ -102,7 +96,9 @@ class Python3 < Formula
       system "#{bin}/python3.2", "setup.py", "install"
 
       # Symlink to easy_install3 to match python3 command.
-      ln_s "#{scripts_folder}/easy_install", "#{scripts_folder}/easy_install3"
+      if !(scripts_folder+'easy_install3').exist?
+        ln_s "#{scripts_folder}/easy_install", "#{scripts_folder}/easy_install3"
+      end
     end
   end
 
@@ -122,10 +118,12 @@ class Python3 < Formula
       Apple's Tcl/Tk is not recommended for use with 64-bit Python.
       For more information see: http://www.python.org/download/mac/tcltk/
 
-      A "distutils.cfg" has been written, specifing the install-scripts folder as:
+      A "distutils.cfg" has been written to:
+        #{effective_lib}/python3.2/distutils
+      specifing the install-scripts folder as:
         #{scripts_folder}
 
-      If you install Python packages via "python setup.py install", easy_install, pip,
+      If you install Python packages via "python3 setup.py install", easy_install, pip,
       any provided scripts will go into the install-scripts folder above, so you may
       want to add it to your PATH.
 
@@ -150,6 +148,14 @@ class Python3 < Formula
     return lib
   end
 
+  # include folder,taking into account whether we are a Framework build or not
+  def effective_include
+    # If we're installed or installing as a Framework, then use that location.
+    return prefix+"Frameworks/Python.framework/Versions/3.2/include" if as_framework?
+    # Otherwise use just 'include'
+    return include
+  end
+
   # The Cellar location of site-packages
   def site_packages
     effective_lib+"python3.2/site-packages"
@@ -165,15 +171,3 @@ class Python3 < Formula
     HOMEBREW_PREFIX+"share/python3"
   end
 end
-
-__END__
-diff --git a/Lib/dbm/__init__.py b/Lib/dbm/__init__.py
---- a/Lib/dbm/__init__.py
-+++ b/Lib/dbm/__init__.py
-@@ -166,7 +166,7 @@ def whichdb(filename):
-         return ""
- 
-     # Check for GNU dbm
--    if magic == 0x13579ace:
-+    if magic in (0x13579ace, 0x13579acd, 0x13579acf):
-         return "dbm.gnu"

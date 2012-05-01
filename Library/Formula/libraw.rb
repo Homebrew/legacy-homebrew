@@ -1,21 +1,21 @@
 require 'formula'
 
 class LibrawDemosaicGPL2 < Formula
-  url 'http://www.libraw.org/data/LibRaw-demosaic-pack-GPL2-0.14.0.tar.gz'
-  sha1 '7bd82e7aa531fa2ae53864b5d4613e4000645b14'
+  url 'http://www.libraw.org/data/LibRaw-demosaic-pack-GPL2-0.14.6.tar.gz'
+  sha1 'cde9b65ba48b6111353964127532d2d2203edb9a'
 end
 
 class LibrawDemosaicGPL3 < Formula
-  url 'http://www.libraw.org/data/LibRaw-demosaic-pack-GPL3-0.14.0.tar.gz'
-  sha1 'a51410732f8c8485b250b5de742b77dc2616a743'
+  url 'http://www.libraw.org/data/LibRaw-demosaic-pack-GPL3-0.14.6.tar.gz'
+  sha1 'b89bb2f44dbd42c0aa2a4fee2c6c7bb2a73d6dac'
 end
 
 class Libraw < Formula
-  url 'http://www.libraw.org/data/LibRaw-0.14.0.tar.gz'
   homepage 'http://www.libraw.org/'
-  sha1 '8656af58fa2df52a671ab9864a6c1f862f2948d5'
+  url 'http://www.libraw.org/data/LibRaw-0.14.6.tar.gz'
+  sha1 '0a55901d17165cc7e902af9c376df9bab4c40833'
 
-  depends_on 'little-cms'
+  depends_on 'little-cms2'
 
   def install
     d = Pathname.getwd.dirname

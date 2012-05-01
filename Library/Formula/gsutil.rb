@@ -6,15 +6,14 @@ require 'formula'
 # https://github.com/mxcl/homebrew/issues/2560
 
 class Gsutil < Formula
-  url 'http://gsutil.googlecode.com/files/gsutil_09-06-2011.tar.gz'
   homepage 'http://code.google.com/p/gsutil/'
-  md5 'cbb5f16e50bc72df0d9aefa4ebdd08db'
-  version '09-06-2011'
+  url 'http://gsutil.googlecode.com/files/gsutil_01-13-2012.tar.gz'
+  sha1 'fe1aa1c5fe5b3d7d099fc37367d8fc15acb99435'
+  version '2012-01-13'
 
   def install
     libexec.install Dir["*"]
-    bin.mkpath
-    ln_s libexec+'gsutil', bin+'gsutil'
+    bin.install_symlink libexec+'gsutil'
   end
 
   def test

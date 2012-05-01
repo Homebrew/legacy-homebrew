@@ -8,6 +8,15 @@ class Librets < Formula
   depends_on 'boost'
 
   def install
+    # allow compilation against the OSX-provided SWIG 1.3.31
+    inreplace "configure",
+      "        check=\"1.3.33\"",
+      "        check=\"1.3.31\""
+
+    inreplace "project/build/ac-macros/swig.m4",
+      "    check=\"1.3.33\"",
+      "    check=\"1.3.31\""
+
     # Allow compilation against boost 1.46.0
     inreplace "project/librets/src/RetsExceptionContext.cpp",
       "#include <boost/filesystem/path.hpp>",

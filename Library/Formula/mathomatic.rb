@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mathomatic < Formula
-  url 'http://mathomatic.org/mathomatic-15.4.1.tar.bz2'
+  url 'http://mathomatic.org/mathomatic-15.7.1.tar.bz2'
   homepage 'http://www.mathomatic.org/'
-  md5 'c7bdb3c23db39f39d97d8c8eb137f8a6'
+  md5 'f8144e9c17edf688cbb296d20efaf808'
 
   def install
     ENV['prefix'] = prefix

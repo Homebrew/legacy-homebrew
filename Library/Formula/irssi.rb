@@ -11,14 +11,10 @@ class Irssi < Formula
   # Don't strip, to allow dynamic loading of modules
   skip_clean 'bin'
 
-  def patches
-    # Fix Perl path and path in man page
-    DATA
-  end
+  # Fix Perl build flags and paths in man page
+  def patches; DATA; end
 
   def install
-    ENV.append 'ARCHFLAGS', ' ' # wtf?
-
     system "./configure", "--prefix=#{prefix}",
                           "--sysconfdir=#{etc}",
                           "--with-perl=yes",
@@ -28,6 +24,8 @@ class Irssi < Formula
                           "--enable-ssl",
                           "--enable-ipv6",
                           "--with-socks"
+    # 'make' and 'make install' must be done separately on some systems
+    system "make"
     system "make install"
   end
 end

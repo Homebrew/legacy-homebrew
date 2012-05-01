@@ -36,11 +36,4 @@ class Rubinius < Formula
     # Remove conflicting command aliases
     bin.children.select(&:symlink?).each(&:unlink)
   end
-
-  def caveats; <<-EOS.undent
-    Consider using RVM or Cinderella to manage Ruby environments:
-      * RVM: http://rvm.beginrescueend.com/
-      * Cinderella: http://www.atmos.org/cinderella/
-    EOS
-  end
 end

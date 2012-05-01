@@ -11,4 +11,19 @@ class Whatmask < Formula
                           "--prefix=#{prefix}"
     system "make install"
   end
+
+  def test
+    %x[#{bin}/whatmask /24].eql? <<-EOS
+
+---------------------------------------------
+       TCP/IP SUBNET MASK EQUIVALENTS
+---------------------------------------------
+CIDR = .....................: /24
+Netmask = ..................: 255.255.255.0
+Netmask (hex) = ............: 0xffffff00
+Wildcard Bits = ............: 0.0.0.255
+Usable IP Addresses = ......: 254
+
+EOS
+  end
 end

@@ -2,8 +2,8 @@ require 'formula'
 
 class Dmd < Formula
   homepage 'http://www.digitalmars.com/d/'
-  url 'http://ftp.digitalmars.com/dmd.2.056.zip'
-  md5 '90cdeb8d4839ed1871fae37aeac0a5c8'
+  url 'http://cloud.github.com/downloads/D-Programming-Language/dmd/dmd.2.059.zip'
+  md5 '803b182e71c4b021dfd1811066201140'
 
   def doc
     #use d and not dmd, rationale: meh
@@ -11,26 +11,26 @@ class Dmd < Formula
   end
 
   def install
-    ohai "Installing dmd"
-
     # clean it up a little first
-    Dir['src/*.mak'].each {|f| File.unlink f}
+    rm Dir['src/*.mak']
     mv 'license.txt', 'COPYING'
     mv 'README.TXT', 'README'
     mv 'src/phobos/phoboslicense.txt', 'src/phobos/COPYING.phobos'
 
-    prefix.install 'osx/lib'
-    prefix.install 'osx/bin'
-    prefix.install 'src'
+    prefix.install 'osx/bin', 'osx/lib', 'src'
     man.install 'man/man1'
 
     (prefix+'src/dmd').rmtree # we don't need the dmd sources thanks
     man5.install man1+'dmd.conf.5' # oops
     (share+'d/examples').install Dir['samples/d/*.d']
 
-    (bin+'dmd.conf').open('w') do |f|
-      f.puts "[Environment]"
-      f.puts "DFLAGS=-I#{prefix}/src/phobos -I#{prefix}/src/druntime/import"
-    end
+    # Rewrite the DFLAGS to point to the prefix.
+    # @adamv: this should not go into bin!
+    # But I'm too lazy to figure out how to fix right now.
+    rm bin+'dmd.conf'
+    (bin+'dmd.conf').write <<-EOS.undent
+      [Environment]
+      DFLAGS=-I#{prefix}/src/phobos -I#{prefix}/src/druntime/import
+    EOS
   end
 end

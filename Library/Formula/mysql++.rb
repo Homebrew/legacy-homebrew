@@ -12,6 +12,7 @@ class Mysqlxx < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-field-limit=40",
+                          "--with-mysql-lib=#{HOMEBREW_PREFIX}/lib",
                           "--with-mysql-include=#{HOMEBREW_PREFIX}/include"
     system "make install"
   end

@@ -2,6 +2,7 @@ require 'formula'
 
 class Libosip < Formula
   url 'http://ftpmirror.gnu.org/osip/libosip2-3.3.0.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/osip/libosip2-3.3.0.tar.gz'
   homepage 'http://www.gnu.org/software/osip/'
   md5 '81493bb4d4ae6d55b71a0d4369339125'
 

@@ -10,7 +10,8 @@ class Ledit < Formula
 
   def install
     # like camlp5, this build fails if the jobs are parallelized
-    system "make -j 1 BINDIR=#{bin} LIBDIR=#{lib} MANDIR=#{man}"
+    ENV.deparallelize
+    system "make BINDIR=#{bin} LIBDIR=#{lib} MANDIR=#{man}"
     system "make install BINDIR=#{bin} LIBDIR=#{lib} MANDIR=#{man}"
   end
 end

@@ -5,8 +5,15 @@ class Keg
         dylib.ensure_writable do
           system "install_name_tool", "-id", id, dylib
           bad_names.each do |bad_name|
-            # we should be more careful here, check the path we point to exists etc.
-            system "install_name_tool", "-change", bad_name, "@loader_path/#{bad_name}", dylib
+            new_name = bad_name
+            new_name = Pathname.new(bad_name).basename unless (dylib.parent + new_name).exist?
+            # this fixes some problems, maybe not all. opencv seems to have badnames of the type
+            # "lib/libblah.dylib"
+            if (dylib.parent + new_name).exist?
+              system "install_name_tool", "-change", bad_name, "@loader_path/#{new_name}", dylib
+            else
+              opoo "Could not fix install names for #{dylib}"
+            end
           end
         end
       end

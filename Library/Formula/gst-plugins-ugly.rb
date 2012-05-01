@@ -31,11 +31,13 @@ class GstPluginsUgly < Formula
   depends_on 'pango' => :optional
   depends_on 'theora' => :optional
   depends_on 'libmms' => :optional
+  depends_on 'x264' => :optional
 
   def install
     ENV.append "CFLAGS", "-no-cpp-precomp -funroll-loops -fstrict-aliasing"
-    system "./configure", "--prefix=#{prefix}", "--disable-debug",
-                          "--disable-dependency-tracking", "--mandir=#{man}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make"
     system "make install"
   end

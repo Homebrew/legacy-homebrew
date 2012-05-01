@@ -3,11 +3,15 @@ require 'formula'
 class Mariadb < Formula
   # You probably don't want to have this and MySQL's formula linked at the same time
   # Just saying.
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.2.8/kvm-tarbake-jaunty-x86/mariadb-5.2.8.tar.gz'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.3.5-ga/kvm-tarbake-jaunty-x86/mariadb-5.3.5-ga.tar.gz'
   homepage 'http://mariadb.org/'
-  md5 '7b78be87df6a59ecd7a8c06a7e72eb83'
+  md5 '98ce0441b37c8d681855150495fdc03b'
 
   depends_on 'readline'
+
+  fails_with :clang do
+    build 318
+  end
 
   def options
     [
@@ -19,8 +23,7 @@ class Mariadb < Formula
   end
 
   def install
-    ENV['CXXFLAGS'] = ENV['CXXFLAGS'].gsub "-fomit-frame-pointer", ""
-    ENV['CXXFLAGS'] += " -O3 -fno-omit-frame-pointer -felide-constructors"
+    ENV.append 'CXXFLAGS', '-fno-omit-frame-pointer -felide-constructors'
 
     # Make universal for bindings to universal applications
     ENV.universal_binary if ARGV.build_universal?
@@ -33,7 +36,6 @@ class Mariadb < Formula
       "--localstatedir=#{var}/mysql",
       "--sysconfdir=#{etc}",
       "--with-extra-charsets=complex",
-      "--without-readline",
       "--enable-assembler",
       "--enable-thread-safe-client",
       "--with-big-tables",
@@ -52,14 +54,14 @@ class Mariadb < Formula
     system "./configure", *configure_args
     system "make install"
 
-    ln_s "#{libexec}/mysqld", bin
-    ln_s "#{share}/mysql/mysql.server", bin
+    bin.install_symlink "#{libexec}/mysqld"
+    bin.install_symlink "#{share}/mysql/mysql.server"
 
     (prefix+'mysql-test').rmtree unless ARGV.include? '--with-tests' # save 121MB!
     (prefix+'sql-bench').rmtree unless ARGV.include? '--with-bench'
 
-    (prefix+'com.mysql.mysqld.plist').write startup_plist
-    (prefix+'com.mysql.mysqld.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent
@@ -68,16 +70,16 @@ class Mariadb < Formula
         mysql_install_db
 
     If this is your first install, automatically load on login with:
-        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents
-        launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-    If this is an upgrade and you already have the com.mysql.mysqld.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
-        cp #{prefix}/com.mysql.mysqld.plist ~/Library/LaunchAgents
-        launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
+        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     Note on upgrading:
-        We overwrite any existing com.mysql.mysqld.plist in ~/Library/LaunchAgents
+        We overwrite any existing #{plist_path.basename} in ~/Library/LaunchAgents
         if we are upgrading because previous versions of this brew created the
         plist with a version specific program argument.
 
@@ -94,9 +96,9 @@ class Mariadb < Formula
       <key>KeepAlive</key>
       <true/>
       <key>Label</key>
-      <string>com.mysql.mysqld</string>
+      <string>#{plist_name}</string>
       <key>Program</key>
-      <string>#{bin}/mysqld_safe</string>
+      <string>#{HOMEBREW_PREFIX}/bin/mysqld_safe</string>
       <key>RunAtLoad</key>
       <true/>
       <key>UserName</key>

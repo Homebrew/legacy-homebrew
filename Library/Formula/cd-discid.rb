@@ -7,7 +7,7 @@ class CdDiscid < Formula
 
   def patches
   { :p0 =>
-    "http://trac.macports.org/export/70630/trunk/dports/audio/cd-discid/files/patch-cd-discid.c.diff"
+    "https://trac.macports.org/export/70630/trunk/dports/audio/cd-discid/files/patch-cd-discid.c.diff"
   }
   end
 

@@ -15,7 +15,7 @@ class Pil < Formula
     archs.remove_ppc!
     # Can't build universal on 32-bit hardware. See:
     # https://github.com/mxcl/homebrew/issues/5844
-    archs.delete! :x86_64 if Hardware.is_32_bit?
+    archs.delete :x86_64 if Hardware.is_32_bit?
     ENV['ARCHFLAGS'] = archs.as_arch_flags
 
     inreplace "setup.py" do |s|
