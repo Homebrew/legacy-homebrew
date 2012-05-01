@@ -11,6 +11,7 @@ class GitMultipush < Formula
 
   def install
     if ARGV.build_head?
+      ENV['GIT_DIR'] = cached_location/'.git'
       inreplace 'make/gen-version.mk', '.git', '$(GIT_DIR)'
       system "make"
     end
