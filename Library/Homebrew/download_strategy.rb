@@ -355,7 +355,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
       git_args = %w(git clone)
       git_args << "--depth" << "1" if support_depth?
       git_args << @url << @clone
-      safe_system *git_args
+      safe_system(*git_args)
     else
       puts "Updating #{@clone}"
       Dir.chdir(@clone) do

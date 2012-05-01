@@ -105,7 +105,7 @@ class LanguageModuleDependency < Requirement
   def fatal?; true; end
 
   def satisfied?
-    quiet_system *the_test
+    quiet_system(*the_test)
   end
 
   def message; <<-EOS.undent
