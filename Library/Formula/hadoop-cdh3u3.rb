@@ -5,6 +5,8 @@ class HadoopCDH3 < Formula
   url 'http://archive.cloudera.com/cdh/3/hadoop-0.20.2-cdh3u3.tar.gz'
   md5 'bec38b1d8821a034d79cadb0e568d60c'
 
+  version '0.20.2-cdh3u3'
+
   def shim_script target
     <<-EOS.undent
     #!/bin/bash
