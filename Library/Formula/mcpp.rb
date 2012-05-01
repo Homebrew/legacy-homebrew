@@ -6,6 +6,7 @@ class Mcpp < Formula
   md5 '512de48c87ab023a69250edc7a0c7b05'
 
   # stpcpy is a macro on OS X; trying to define it as an extern is invalid.
+  # Patch from ZeroC fixing EOL comment parsing
   def patches; DATA; end
 
   def install
