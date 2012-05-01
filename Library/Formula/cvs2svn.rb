@@ -1,19 +1,33 @@
 require 'formula'
 
+class PythonWithGdbm < Requirement
+  def message; <<-EOS.undent
+    The Python being used does not include gdbm support,
+    but it is required to build this formula:
+
+      #{`which python`.chomp}
+
+    Homebrew's Python includes gdbm support.
+    EOS
+  end
+
+  def satisfied?
+    quiet_system "python", "-c", "import gdbm"
+  end
+
+  def fatal?
+    true
+  end
+end
+
 class Cvs2svn < Formula
   url 'http://trac.macports.org/export/70472/distfiles/cvs2svn/cvs2svn-2.3.0.tar.gz'
   homepage 'http://cvs2svn.tigris.org/'
   md5 '6c412baec974f3ff64b9145944682a15'
 
-  def install
-    unless quiet_system "/usr/bin/env", "python", "-c", "import gdbm"
-      onoe "The Python being used doesn't have gdbm support:"
-      puts `which python`
-      puts "The Homebrew-built Python does include gdbm support, which"
-      puts "is required for this formula."
-      exit 1
-    end
+  depends_on PythonWithGdbm.new
 
+  def install
     system "python", "setup.py", "install", "--prefix=#{prefix}"
     system "make man"
     man1.install gzip('cvs2svn.1', 'cvs2git.1', 'cvs2bzr.1')
