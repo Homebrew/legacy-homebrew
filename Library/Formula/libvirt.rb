@@ -6,7 +6,7 @@ class Libvirt < Formula
   url 'ftp://libvirt.org/libvirt/libvirt-0.9.11.3.tar.gz'
   sha256 'aa73b329d2f6eb200991b9dc378d4636c15cd2f95ca224995d01b45257584fa2'
 
-  # Latest (roughly) monthly release.  Enable this by brewing with --devel option
+  # Latest (roughly) monthly release.
   devel do
     version "0.9.11"
     url 'ftp://libvirt.org/libvirt/libvirt-0.9.11.tar.gz'
@@ -29,7 +29,6 @@ class Libvirt < Formula
 
   def options
     [
-      ['--devel', 'Build from the leading edge release series, instead of the stable series.'],
       ['--without-libvirtd', 'Build only the virsh client and development libraries.']
     ]
   end
