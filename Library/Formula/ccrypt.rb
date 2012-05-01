@@ -6,7 +6,13 @@ class Ccrypt < Formula
   md5 'c3f78019d7a166dd66f1d4b1390c62c2'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--mandir=#{man}"
+    # Tests fail with clang at higher optimization
+    ENV.no_optimization if ENV.compiler == :clang
+
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make install"
     system "make check"
   end

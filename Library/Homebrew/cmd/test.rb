@@ -12,15 +12,13 @@ module Homebrew extend self
     ARGV.formulae.each do |f|
       # Cannot test uninstalled formulae
       unless f.installed?
-        puts "Testing requires the latest version of #{f.name}"
-        Homebrew.failed = true
+        ofail "Testing requires the latest version of #{f.name}"
         next
       end
 
       # Cannot test formulae without a test method
       unless f.respond_to? :test
-        puts "#{f.name} defines no test"
-        Homebrew.failed = true
+        ofail "#{f.name} defines no test"
         next
       end
 
@@ -29,8 +27,7 @@ module Homebrew extend self
         # tests can also return false to indicate failure
         raise if f.test == false
       rescue
-        puts "#{f.name}: failed"
-        Homebrew.failed = true
+        ofail "#{f.name}: failed"
       end
     end
   end
