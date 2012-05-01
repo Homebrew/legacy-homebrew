@@ -29,6 +29,12 @@ class Wine < Formula
     cause 'llvm-gcc does not respect force_align_arg_pointer'
   end
 
+  # Wine tests CFI support by calling clang, but then attempts to use as, which
+  # does not work. Use clang for assembling too.
+  def patches
+    DATA if ENV.compiler == :clang
+  end
+
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
   # configure: libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
 
@@ -88,14 +94,6 @@ class Wine < Formula
     (bin+'wine').write(wine_wrapper)
   end
 
-  def patches
-    p = []
-    # Wine tests CFI support by calling clang, but then attempts to use as, which
-    # does not work. Use clang for assembling too.
-    p << 'https://raw.github.com/gist/1755988/266f883f568c223ab25da08581c1a08c47bb770f/winebuild.patch' if ENV.compiler == :clang
-    p
-  end
-
   def caveats
     s = <<-EOS.undent
       For best results, you will want to install the latest version of XQuartz:
@@ -110,3 +108,23 @@ class Wine < Formula
     return s
   end
 end
+
+__END__
+diff --git a/tools/winebuild/utils.c b/tools/winebuild/utils.c
+index 09f9b73..ed198f8 100644
+--- a/tools/winebuild/utils.c
++++ b/tools/winebuild/utils.c
+@@ -345,10 +345,11 @@ struct strarray *get_as_command(void)
+ 
+     if (!as_command)
+     {
+-        static const char * const commands[] = { "gas", "as", NULL };
+-        as_command = find_tool( "as", commands );
++        static const char * const commands[] = { "clang", NULL };
++        as_command = find_tool( "clang", commands );
+     }
+     strarray_add_one( args, as_command );
++    strarray_add_one( args, "-c" );
+ 
+     if (force_pointer_size)
+     {
