@@ -19,7 +19,7 @@ class Jstalk < Formula
 
   def install
     ["JSTalk Framework", "jstalk command line", "JSTalk Editor"].each do |t|
-      system "xcodebuild", "-target", t, "-configuration", "Release", "ONLY_ACTIVE_ARCH=YES"
+      system "xcodebuild", "-target", t, "-configuration", "Release", "ONLY_ACTIVE_ARCH=YES", "SYMROOT=build"
     end
 
     cd 'build/Release' do
