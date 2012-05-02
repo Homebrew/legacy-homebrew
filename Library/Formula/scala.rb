@@ -8,7 +8,7 @@ end
 
 class ScalaCompletion < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'https://raw.github.com/scala/scala-dist/27bc0c25145a8/completion.d/2.9.1/scala'
+  url 'https://raw.github.com/scala/scala-dist/27bc0c25145a83691e3678c7dda602e765e13413/completion.d/2.9.1/scala'
   version '2.9.1'
   md5 '40cb02604b718fd0977a12d932b9e693'
 end
