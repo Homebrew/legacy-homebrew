@@ -76,8 +76,9 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       # Use more than 4 characters to not clash with magicbytes
       magic_bytes = "____pkg"
     else
-      # get the first six bytes
-      File.open(@tarball_path) { |f| magic_bytes = f.read(6) }
+      # get 6 bytes magic number
+      # (POSIX tar magic has a 257 bytes offset)
+      File.open(@tarball_path) { |f| magic_bytes = f.read(262) }
     end
 
     # magic numbers stolen from /usr/share/file/magic/
@@ -85,7 +86,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     when /^PK\003\004/ # .zip archive
       quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @tarball_path
       chdir
-    when /^\037\213/, /^BZh/, /^\037\235/  # gzip/bz2/compress compressed
+    when /^.{257}ustar/, /^\037\213/, /^BZh/, /^\037\235/  # uncompressed/gzip/bz2/compress
       # TODO check if it's really a tar archive
       safe_system '/usr/bin/tar', 'xf', @tarball_path
       chdir
