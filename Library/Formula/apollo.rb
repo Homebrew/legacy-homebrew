@@ -9,9 +9,9 @@ end
 
 class Apollo < Formula
   homepage 'http://activemq.apache.org/apollo'
-  url "http://archive.apache.org/dist/activemq/activemq-apollo/1.0/apache-apollo-1.0-unix-distro.tar.gz"
-  version "1.0"
-  md5 '7388ff240b48acabcd6ec6859dbbbff6'
+  url "http://archive.apache.org/dist/activemq/activemq-apollo/1.2/apache-apollo-1.2-unix-distro.tar.gz"
+  version "1.2"
+  md5 '3c74a4070975a6da73653502d647658c'
 
   def install
     prefix.install %w{ LICENSE NOTICE readme.html docs examples }
