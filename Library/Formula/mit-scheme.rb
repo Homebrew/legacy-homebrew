@@ -34,3 +34,38 @@ class MitScheme < Formula
     system "make install"
   end
 end
+
+__END__
+diff --git a/src/configure b/src/configure
+index 23187c9..7e348ab 100755
+--- a/src/configure
++++ b/src/configure
+@@ -6257,7 +6257,11 @@ echo "$as_me: error: Unable to determine MacOSX version" >&2;}
+     else
+ 	SDK=MacOSX${MACOSX}
+     fi
++	if test "${MACOSX}" = 10.7; then
++	MACOSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/${SDK}.sdk
++	else
+     MACOSX_SYSROOT=/Developer/SDKs/${SDK}.sdk
++	fi
+     if test ! -d "${MACOSX_SYSROOT}"; then
+ 	{ { echo "$as_me:$LINENO: error: No MacOSX SDK for version: ${MACOSX}" >&5
+ echo "$as_me: error: No MacOSX SDK for version: ${MACOSX}" >&2;}
+
+diff --git a/src/lib/include/configure b/src/lib/include/configure
+index d4c7717..c8dd3e6 100755
+--- a/src/lib/include/configure
++++ b/src/lib/include/configure
+@@ -5311,7 +5311,11 @@ echo "$as_me: error: Unable to determine MacOSX version" >&2;}
+     else
+ 	SDK=MacOSX${MACOSX}
+     fi
++	if test "${MACOSX}" = 10.7; then
++	MACOSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/${SDK}.sdk
++	else
+     MACOSX_SYSROOT=/Developer/SDKs/${SDK}.sdk
++	fi
+     if test ! -d "${MACOSX_SYSROOT}"; then
+ 	{ { echo "$as_me:$LINENO: error: No MacOSX SDK for version: ${MACOSX}" >&5
+ echo "$as_me: error: No MacOSX SDK for version: ${MACOSX}" >&2;}
