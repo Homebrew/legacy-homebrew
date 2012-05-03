@@ -18,9 +18,9 @@ class Zsh < Formula
     args = %W[
       --prefix=#{prefix}
       --enable-fndir=#{share}/zsh/functions
-      --enable-site-fndir=#{share}/zsh/site-functions
       --enable-scriptdir=#{share}/zsh/scripts
-      --enable-site-scriptdir=#{share}/zsh/site-scripts
+      --enable-site-fndir=#{HOMEBREW_PREFIX}/share/zsh/site-functions
+      --enable-site-scriptdir=#{HOMEBREW_PREFIX}/share/zsh/site-scripts
       --enable-cap
       --enable-maildir-support
       --enable-multibyte
@@ -38,6 +38,12 @@ class Zsh < Formula
       "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
     system "make install"
+
+    # These are site-specific (non-version dependant) file locations.
+    # They shouldn't be symlinks to the Cellar or else a user cannot
+    # override the contents.
+    (HOMEBREW_PREFIX + "share/zsh/site-functions").mkpath
+    (HOMEBREW_PREFIX + "share/zsh/site-scripts").mkpath
   end
 
   def test
