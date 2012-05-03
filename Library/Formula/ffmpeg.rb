@@ -49,16 +49,16 @@ class Ffmpeg < Formula
             "--cc=#{ENV.cc}"]
 
     args << "--enable-libx264" if Formula.factory('x264').linked_keg.exist?
-    args << "--enable-libfaac" if Formula.factory('faac').installed?
-    args << "--enable-libmp3lame" if Formula.factory('lame').installed?
-    args << "--enable-librtmp" if Formula.factory('rtmpdump').installed?
-    args << "--enable-libtheora" if Formula.factory('theora').installed?
-    args << "--enable-libvorbis" if Formula.factory('libvorbis').installed?
-    args << "--enable-libvpx" if Formula.factory('libvpx').installed?
-    args << "--enable-libxvid" if Formula.factory('xvid').installed?
-    args << "--enable-libopencore-amrnb" if Formula.factory('opencore-amr').installed?
-    args << "--enable-libopencore-amrwb" if Formula.factory('opencore-amr').installed?
-    args << "--enable-libass" if Formula.factory('libass').installed?
+    args << "--enable-libfaac" if Formula.factory('faac').linked_keg.exist?
+    args << "--enable-libmp3lame" if Formula.factory('lame').linked_keg.exist?
+    args << "--enable-librtmp" if Formula.factory('rtmpdump').linked_keg.exist?
+    args << "--enable-libtheora" if Formula.factory('theora').linked_keg.exist?
+    args << "--enable-libvorbis" if Formula.factory('libvorbis').linked_keg.exist?
+    args << "--enable-libvpx" if Formula.factory('libvpx').linked_keg.exist?
+    args << "--enable-libxvid" if Formula.factory('xvid').linked_keg.exist?
+    args << "--enable-libopencore-amrnb" if Formula.factory('opencore-amr').linked_keg.exist?
+    args << "--enable-libopencore-amrwb" if Formula.factory('opencore-amr').linked_keg.exist?
+    args << "--enable-libass" if Formula.factory('libass').linked_keg.exist?
     args << "--disable-ffplay" unless ffplay?
 
     # For 32-bit compilation under gcc 4.2, see:
