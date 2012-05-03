@@ -15,9 +15,8 @@ class Patches
     end
   end
 
-  # Collects the urls and output names of all external patches
-  def external_curl_args
-    @patches.select{|p| p.external?}.collect{|p| p.curl_args}.flatten
+  def external_patches?
+    not external_curl_args.empty?
   end
 
   def each(&blk)
@@ -27,7 +26,25 @@ class Patches
     @patches.empty?
   end
 
+  def download!
+    return unless external_patches?
+
+    # downloading all at once is much more efficient, especially for FTP
+    curl(*external_curl_args)
+
+    external_patches.each{|p| p.stage!}
+  end
+
 private
+
+  def external_patches
+     @patches.select{|p| p.external?}
+  end
+
+  # Collects the urls and output names of all external patches
+  def external_curl_args
+    external_patches.collect{|p| p.curl_args}.flatten
+  end
 
   def normalize_patches patches
     if patches.kind_of? Hash
@@ -40,29 +57,21 @@ private
 end
 
 class Patch
+  # Used by formula to unpack after downloading
   attr_reader :compression
-  attr_reader :url
-  attr_reader :download_filename
+  attr_reader :compressed_filename
 
   def initialize patch_p, filename, url
     @patch_p = patch_p
     @patch_filename = filename
-    @compression = false
+    @compressed_filename = nil
+    @compression = nil
     @url = nil
 
     if url.kind_of? File # true when DATA is passed
       write_data url
     elsif looks_like_url(url)
-      @download_filename = @patch_filename
-      @url = url # Save URL
-      case @url
-      when /\.gz$/
-        @compression = :gzip
-        @download_filename += '.gz'
-      when /\.bz2$/
-        @compression = :bzip2
-        @download_filename += '.bz2'
-      end
+      @url = url # Save URL to mark this as an external patch
     else
       # it's a file on the local filesystem
       # use URL as the filename for patch
@@ -70,12 +79,22 @@ class Patch
     end
   end
 
-  def external?
-    !!@url
+  # rename the downloaded file to take compression into account
+  def stage!
+    return unless external?
+    detect_compression!
+    case @compression
+    when :gzip
+      @compressed_filename = @patch_filename + '.gz'
+      FileUtils.mv @patch_filename, @compressed_filename
+    when :bzip2
+      @compressed_filename = @patch_filename + '.bz2'
+      FileUtils.mv @patch_filename, @compressed_filename
+    end
   end
 
-  def compressed?
-    !!@compression
+  def external?
+    not @url.nil?
   end
 
   def patch_args
@@ -83,10 +102,22 @@ class Patch
   end
 
   def curl_args
-    [@url, '-o', @download_filename]
+    [@url, '-o', @patch_filename]
   end
 
 private
+
+  # Detect compression type from the downloaded patch.
+  def detect_compression!
+    # If nil we have not tried to detect yet
+    if @compression.nil?
+      path = Pathname.new(@patch_filename)
+      if path.exist?
+        @compression = path.compression_type
+        @compression ||= :none # If nil, convert to :none
+      end
+    end
+  end
 
   # Write the given file object (DATA) out to a local file for patch
   def write_data f
