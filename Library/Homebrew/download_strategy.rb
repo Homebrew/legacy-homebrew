@@ -70,33 +70,23 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def stage
-    if @tarball_path.extname == '.jar'
-      magic_bytes = nil
-    elsif @tarball_path.extname == '.pkg'
-      # Use more than 4 characters to not clash with magicbytes
-      magic_bytes = "____pkg"
-    else
-      # get the first six bytes
-      File.open(@tarball_path) { |f| magic_bytes = f.read(6) }
-    end
-
-    # magic numbers stolen from /usr/share/file/magic/
-    case magic_bytes
-    when /^PK\003\004/ # .zip archive
+    case @tarball_path.compression_type
+    when :zip
       quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @tarball_path
       chdir
-    when /^\037\213/, /^BZh/, /^\037\235/  # gzip/bz2/compress compressed
+    when :gzip, :bzip2, :compress
+      # Assume these are also tarred
       # TODO check if it's really a tar archive
       safe_system '/usr/bin/tar', 'xf', @tarball_path
       chdir
-    when /^\xFD7zXZ\x00/ # xz compressed
+    when :xz
       raise "You must install XZutils: brew install xz" unless which_s "xz"
       safe_system "xz -dc \"#{@tarball_path}\" | /usr/bin/tar xf -"
       chdir
-    when '____pkg'
+    when :pkg
       safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, File.basename(@url)
       chdir
-    when /Rar!/
+    when :rar
       quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, @tarball_path
     else
       # we are assuming it is not an archive, use original filename
@@ -324,14 +314,10 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 
   def support_depth?
-    !commit_history_required? and depth_supported_host?
+    @spec != :revision and host_supports_depth?
   end
 
-  def commit_history_required?
-    @spec == :sha
-  end
-
-  def depth_supported_host?
+  def host_supports_depth?
     @url =~ %r(git://) or @url =~ %r(https://github.com/)
   end
 
@@ -352,16 +338,30 @@ class GitDownloadStrategy < AbstractDownloadStrategy
 
     unless @clone.exist?
       # Note: first-time checkouts are always done verbosely
-      git_args = %w(git clone)
-      git_args << "--depth" << "1" if support_depth?
-      git_args << @url << @clone
-      safe_system *git_args
+      clone_args = %w[git clone]
+      clone_args << '--depth' << '1' if support_depth?
+
+      case @spec
+      when :branch, :tag
+        clone_args << '--branch' << @ref
+      end
+
+      clone_args << @url << @clone
+      safe_system(*clone_args)
     else
       puts "Updating #{@clone}"
       Dir.chdir(@clone) do
-        safe_system 'git', 'remote', 'set-url', 'origin', @url
-        quiet_safe_system 'git', 'fetch', 'origin'
-        quiet_safe_system 'git', 'fetch', '--tags' if @spec == :tag
+        safe_system 'git', 'config', 'remote.origin.url', @url
+
+        safe_system 'git', 'config', 'remote.origin.fetch', case @spec
+          when :branch then "+refs/heads/#{@ref}:refs/remotes/origin/#{@ref}"
+          when :tag then "+refs/tags/#{@ref}:refs/tags/#{@ref}"
+          else '+refs/heads/master:refs/remotes/origin/master'
+          end
+
+        git_args = %w[git fetch origin]
+        git_args << '--depth' << '1' if support_depth?
+        quiet_safe_system(*git_args)
       end
     end
   end
@@ -373,9 +373,9 @@ class GitDownloadStrategy < AbstractDownloadStrategy
         ohai "Checking out #{@spec} #{@ref}"
         case @spec
         when :branch
-          nostdout { quiet_safe_system 'git', 'checkout', "origin/#{@ref}" }
-        when :tag, :sha
-          nostdout { quiet_safe_system 'git', 'checkout', @ref }
+          nostdout { quiet_safe_system 'git', 'checkout', "origin/#{@ref}", '--' }
+        when :tag, :revision
+          nostdout { quiet_safe_system 'git', 'checkout', @ref, '--' }
         end
       else
         # otherwise the checkout-index won't checkout HEAD
@@ -393,7 +393,6 @@ class GitDownloadStrategy < AbstractDownloadStrategy
         safe_system 'git', 'submodule', '--quiet', 'foreach', '--recursive', sub_cmd
       end
     end
-    ENV['GIT_DIR'] = cached_location+'.git'
   end
 end
 
