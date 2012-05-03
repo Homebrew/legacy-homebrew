@@ -2,8 +2,8 @@ require 'formula'
 
 class Redis < Formula
   homepage 'http://redis.io/'
-  url 'http://redis.googlecode.com/files/redis-2.4.11.tar.gz'
-  md5 'ccd193d80196855343840db6110bf58d'
+  url 'http://redis.googlecode.com/files/redis-2.4.13.tar.gz'
+  sha256 'b6e057b6b5cd5946f8b46b2427401400686ed4f6c4af446eb1f0ec170d3f87be'
 
   head 'https://github.com/antirez/redis.git', :branch => 'unstable'
 
