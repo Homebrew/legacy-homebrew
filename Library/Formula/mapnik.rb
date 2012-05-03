@@ -20,7 +20,7 @@ class Mapnik < Formula
     icu = Formula.factory("icu4c")
     # mapnik compiles can take ~1.5 GB per job for some .cpp files
     # so lets be cautious by limiting to CPUS/2
-    jobs = ENV.make_jobs
+    jobs = ENV.make_jobs.to_i
     if jobs > 2
         jobs = Integer(jobs/2)
     end
