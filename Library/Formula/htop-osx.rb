@@ -20,7 +20,7 @@ class HtopOsx < Formula
       sudo chown root:wheel #{bin}/htop
       sudo chmod u+s #{bin}/htop
 
-    You should be certain that you trust any software you granting root privileges.
+    You should be certain that you trust any software you grant root privileges.
     EOS
   end
 end
