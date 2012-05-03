@@ -10,6 +10,15 @@ class Ack < Formula
     man1.install 'ack.1'
     bin.install 'ack'
     (prefix+'etc/bash_completion.d').install 'etc/ack.bash_completion.sh'
-    (share+'zsh/functions').install 'etc/ack.zsh_completion' => '_ack'
+    (share+'zsh/site-functions').install 'etc/ack.zsh_completion' => '_ack'
+  end
+
+  def caveats; <<-EOS.undent
+    Bash completion has been installed to:
+      #{etc}/bash_completion.d
+
+    zsh completion has been installed to:
+      #{HOMEBREW_PREFIX}/share/zsh/site-functions
+    EOS
   end
 end
