@@ -1,6 +1,6 @@
 require 'formula'
 
-class HadoopCDH3 < Formula
+class HadoopCdh3u3 < Formula
   homepage 'https://ccp.cloudera.com/display/SUPPORT/CDH3+Downloadable+Tarballs'
   url 'http://archive.cloudera.com/cdh/3/hadoop-0.20.2-cdh3u3.tar.gz'
   md5 'bec38b1d8821a034d79cadb0e568d60c'
