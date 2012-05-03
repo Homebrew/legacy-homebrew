@@ -80,4 +80,8 @@ class Git < Formula
       #{HOMEBREW_PREFIX}/share/git-core/contrib
     EOS
   end
+
+  def test
+    `#{bin}/git --version` == "git version #{version}\n"
+  end
 end
