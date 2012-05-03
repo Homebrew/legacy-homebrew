@@ -55,6 +55,7 @@ class Glib < Formula
     args = %W[
       --disable-maintainer-mode
       --disable-dependency-tracking
+      --disable-dtrace
       --prefix=#{prefix}
     ]
 
