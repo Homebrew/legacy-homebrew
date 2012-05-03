@@ -2,19 +2,16 @@ require 'formula'
 
 class Shiboken < Formula
   homepage 'http://www.pyside.org/docs/shiboken'
-  url 'http://www.pyside.org/files/shiboken-latest.tar.bz2'
-  md5 'fa451b6c4f3e06cce283a84550a96fd2'
+  url 'http://pyside.org/files/shiboken-1.1.0.tar.bz2'
+  md5 '9c9d696c8c426fb5abf28a6bd3759558'
 
   depends_on 'cmake' => :build
-  depends_on 'qt'
+  depends_on 'generatorrunner'
 
   def install
     # Building the tests also runs them. Not building and running tests cuts
     # install time in half.
-    mkdir 'build'
-    chdir 'build' do
-      system "cmake .. #{std_cmake_parameters} -DBUILD_TESTS=OFF"
-      system "make install"
-    end
+    system "cmake #{std_cmake_parameters} -DBUILD_TESTS=OFF ."
+    system "make install"
   end
 end

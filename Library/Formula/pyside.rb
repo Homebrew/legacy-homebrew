@@ -10,8 +10,8 @@ end
 
 class Pyside < Formula
   homepage 'http://www.pyside.org'
-  url 'http://www.pyside.org/files/pyside-latest.tar.bz2'
-  md5 '0176d3746074afe47373d7302e1b4501'
+  url 'http://www.pyside.org/files/pyside-qt4.7+1.1.0.tar.bz2'
+  md5 '233f0c6d2b3daf58cf88877d7f74557b'
 
   depends_on 'cmake' => :build
   depends_on 'shiboken'
@@ -23,12 +23,9 @@ class Pyside < Formula
     qt = Formula.factory 'qt'
     ENV.append_to_cflags "-F#{qt.prefix}/Frameworks"
 
-    mkdir 'build'
-    chdir 'build' do
-      # Also need `ALTERNATIVE_QT_INCLUDE_DIR` to prevent "missing file" errors.
-      system "cmake .. #{std_cmake_parameters} -DALTERNATIVE_QT_INCLUDE_DIR=#{qt.prefix}/Frameworks -DSITE_PACKAGE=#{site_package_dir} -DBUILD_TESTS=NO"
-      system 'make install'
-    end
+    # Also need `ALTERNATIVE_QT_INCLUDE_DIR` to prevent "missing file" errors.
+    system "cmake #{std_cmake_parameters} -DALTERNATIVE_QT_INCLUDE_DIR=#{qt.prefix}/Frameworks -DSITE_PACKAGE=#{site_package_dir} -DBUILD_TESTS=NO ."
+    system 'make install'
   end
 
   def caveats
