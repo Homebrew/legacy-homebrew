@@ -349,7 +349,6 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     unless @clone.exist?
       # Note: first-time checkouts are always done verbosely
       clone_args = %w[git clone]
-      clone_args << '--single-branch'
       clone_args << '--depth' << '1' if support_depth?
 
       case @spec
