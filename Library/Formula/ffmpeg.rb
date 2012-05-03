@@ -48,7 +48,7 @@ class Ffmpeg < Formula
             "--enable-libfreetype",
             "--cc=#{ENV.cc}"]
 
-    args << "--enable-libx264" if Formula.factory('x264').installed?
+    args << "--enable-libx264" if Formula.factory('x264').linked_keg.exist?
     args << "--enable-libfaac" if Formula.factory('faac').installed?
     args << "--enable-libmp3lame" if Formula.factory('lame').installed?
     args << "--enable-librtmp" if Formula.factory('rtmpdump').installed?
