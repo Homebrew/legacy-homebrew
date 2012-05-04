@@ -6,8 +6,6 @@ class Akka < Formula
   md5 '362f9c04176ed89199ae85c6d090ee71'
   version '2.0.1'
 
-  # depends_on 'scala'
-
   def install
     # Translate akka script
     inreplace "bin/akka", /^declare AKKA_HOME=.*$/, "declare AKKA_HOME=#{prefix}"
