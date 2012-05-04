@@ -7,7 +7,7 @@ class Couchdb < Formula
   md5 'a5cbbcaac288831b3d8a08b725657f10'
 
   devel do
-   url 'http://git-wip-us.apache.org/repos/asf/couchdb.git', :using => :git, :tag => '1.3.x'
+   url 'http://git-wip-us.apache.org/repos/asf/couchdb.git', :tag => '1.3.x'
    version '1.3.x'
   end
 
