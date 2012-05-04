@@ -33,7 +33,10 @@ class Libimobiledevice < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--without-swig"
+                          # As long as libplist builds without SWIG and Cython
+                          # bindings, libimobiledevice must as well.
+                          "--without-swig",
+                          "--without-cython"
     system "make install"
   end
 end
