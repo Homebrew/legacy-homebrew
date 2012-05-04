@@ -360,7 +360,6 @@ class GitDownloadStrategy < AbstractDownloadStrategy
           end
 
         git_args = %w[git fetch origin]
-        git_args << '--depth' << '1' if support_depth?
         quiet_safe_system(*git_args)
       end
     end
