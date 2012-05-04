@@ -2,8 +2,8 @@ require 'formula'
 
 class AtlassianPluginSdk < Formula
   homepage 'https://developer.atlassian.com/display/DOCS/Atlassian+Plugin+SDK+Documentation'
-  url 'https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/amps/atlassian-plugin-sdk/3.10/atlassian-plugin-sdk-3.10.tar.gz'
-  md5 '077113feb248434eb83573feeed61a89'
+  url 'https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/amps/atlassian-plugin-sdk/3.10.1/atlassian-plugin-sdk-3.10.1.tar.gz'
+  md5 'b3ca03b642cf37de383e2952525d8941'
 
   def install
     # Remove windows files
