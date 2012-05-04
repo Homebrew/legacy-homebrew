@@ -3,13 +3,9 @@ require 'formula'
 class Couchdb < Formula
   homepage "http://couchdb.apache.org/"
   url 'http://www.apache.org/dyn/closer.cgi?path=couchdb/releases/1.2.0/apache-couchdb-1.2.0.tar.gz'
-  head 'http://git-wip-us.apache.org/repos/asf/couchdb.git'
   md5 'a5cbbcaac288831b3d8a08b725657f10'
 
-  devel do
-   url 'http://git-wip-us.apache.org/repos/asf/couchdb.git', :tag => '1.3.x'
-   version '1.3.x'
-  end
+  head 'http://git-wip-us.apache.org/repos/asf/couchdb.git'
 
   depends_on 'help2man' => :build
   depends_on 'spidermonkey'
