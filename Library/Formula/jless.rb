@@ -30,7 +30,7 @@ class Jless < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{prefix}/share/man"
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make install binprefix=j manprefix=j"
   end
 
