@@ -2,8 +2,8 @@ require 'formula'
 
 class Libimobiledevice < Formula
   homepage 'http://www.libimobiledevice.org/'
-  url 'http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.1.tar.bz2'
-  md5 'cdc13037e822d9ac2e109536701d153a'
+  url 'http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.4.tar.bz2'
+  md5 '3f28cbc6a2e30d34685049c0abde5183'
 
   head 'http://cgit.sukimashita.com/libimobiledevice.git'
 
