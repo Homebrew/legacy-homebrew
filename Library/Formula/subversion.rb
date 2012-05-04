@@ -89,6 +89,7 @@ class Subversion < Formula
     args << "--enable-javahl" << "--without-jikes" if build_java?
     args << "--with-ruby-sitedir=#{lib}/ruby" if build_ruby?
 
+    ENV['ac_cv_python_compile'] = "#{ENV.cc}"  # Fixes issue #10914
     system "./configure", *args
     system "make"
     system "make install"
