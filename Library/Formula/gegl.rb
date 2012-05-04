@@ -8,6 +8,7 @@ class Gegl < Formula
   depends_on 'babl'
   depends_on 'glib'
   depends_on 'gettext'
+  depends_on 'intltool' => :build
   depends_on 'pkg-config' => :build
 
   def options
