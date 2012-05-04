@@ -8,8 +8,8 @@ class Quicknoting < Formula
 
   def install
     (bin+'quicknoting').write <<-EOS.undent
-      #!/bin/sh
-      exec java -jar #{libexec}/quicknoting.jar "$@"
+      #!/bin/bash
+      exec java -jar "#{libexec}/quicknoting.jar" "$@"
     EOS
 
     libexec.install Dir['*']
