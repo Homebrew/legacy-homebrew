@@ -60,6 +60,8 @@ class Patch
   # Used by formula to unpack after downloading
   attr_reader :compression
   attr_reader :compressed_filename
+  # Used by audit
+  attr_reader :url
 
   def initialize patch_p, filename, url
     @patch_p = patch_p
