@@ -241,8 +241,9 @@ class Pathname
   end
 
   def compression_type
-    # Don't treat jars as compressed
+    # Don't treat jars or wars as compressed
     return nil if self.extname == '.jar'
+    return nil if self.extname == '.war'
 
     # OS X installer package
     return :pkg if self.extname == '.pkg'
