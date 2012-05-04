@@ -42,7 +42,7 @@ class Jenkins < Formula
   <array>
   <string>/usr/bin/java</string>
   <string>-jar</string>
-  <string>#{HOMEBREW_PREFIX}/libexec/jenkins.war</string>
+  <string>#{libexec}/jenkins.war</string>
   <string>--httpListenAddress=127.0.0.1</string>
   </array>
   <key>RunAtLoad</key>
