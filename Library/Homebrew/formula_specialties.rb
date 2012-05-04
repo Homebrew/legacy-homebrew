@@ -30,7 +30,7 @@ class AmazonWebServicesFormula < Formula
   end
 
   # Use this method to generate standard caveats.
-  def standard_instructions var_name, var_value=prefix+'jars'
+  def standard_instructions var_name, var_value=linked_keg+'jars'
     <<-EOS.undent
       Before you can use these tools you must export some variables to your $SHELL
       and download your X.509 certificate and private key from Amazon Web Services.
@@ -46,8 +46,8 @@ class AmazonWebServicesFormula < Formula
        * On Zsh, add them to `~/.zprofile` instead.
 
       export JAVA_HOME="$(/usr/libexec/java_home)"
-      export EC2_PRIVATE_KEY="$(/bin/ls $HOME/.ec2/pk-*.pem)"
-      export EC2_CERT="$(/bin/ls $HOME/.ec2/cert-*.pem)"
+      export EC2_PRIVATE_KEY="$(/bin/ls "$HOME"/.ec2/pk-*.pem | /usr/bin/head -1)"
+      export EC2_CERT="$(/bin/ls "$HOME"/.ec2/cert-*.pem | /usr/bin/head -1)"
       export #{var_name}="#{var_value}"
     EOS
   end
