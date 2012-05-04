@@ -11,6 +11,9 @@ class Cogl < Formula
   depends_on 'glib'
 
   def install
+    if ARGV.build_head? 
+      system "./autogen.sh"
+    end
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
