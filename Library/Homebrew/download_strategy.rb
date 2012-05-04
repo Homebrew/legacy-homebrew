@@ -74,7 +74,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     when :zip
       quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @tarball_path
       chdir
-    when :gzip, :bzip2, :compress
+    when :gzip, :bzip2, :compress, :tar
       # Assume these are also tarred
       # TODO check if it's really a tar archive
       safe_system '/usr/bin/tar', 'xf', @tarball_path
