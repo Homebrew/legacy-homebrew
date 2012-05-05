@@ -15,6 +15,6 @@ class Uchardet < Formula
   end
 
   def test
-    system "uchardet", __FILE__
+    system "#{bin}/uchardet", __FILE__
   end
 end
