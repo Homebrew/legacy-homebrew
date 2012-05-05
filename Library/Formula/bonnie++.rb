@@ -10,8 +10,4 @@ class Bonniexx < Formula
                           "--prefix=#{prefix}", "--mandir=#{man}"
     system "make install"
   end
-
-  def test
-    system "test -e #{sbin}/bonnie++"
-  end
 end
