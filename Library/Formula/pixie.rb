@@ -23,6 +23,6 @@ class Pixie < Formula
   end
 
   def test
-    system "rndr -v"
+    system "#{bin}/rndr -v"
   end
 end
