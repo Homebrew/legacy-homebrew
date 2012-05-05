@@ -7,6 +7,11 @@ class HtopOsx < Formula
 
   depends_on "automake" => :build if MacOS.xcode_version.to_f >= 4.3
 
+  fails_with :clang do
+    build 318
+    cause 'htop to abort immediately after start.'
+  end
+
   def install
     system "./autogen.sh"
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
