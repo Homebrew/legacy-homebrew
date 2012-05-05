@@ -25,7 +25,6 @@ class Dash < Formula
   end
 
   def test
-    system "#{HOMEBREW_PREFIX}/bin/dash -c \"echo Hello!\""
-    puts "  ^--- That works."
+    system bin/'dash', '-c', 'echo Hello!'
   end
 end
