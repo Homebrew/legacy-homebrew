@@ -24,6 +24,6 @@ EOS
   end
 
   def test
-    system "appledoc --version"
+    system "#{bin}/appledoc --version"
   end
 end
