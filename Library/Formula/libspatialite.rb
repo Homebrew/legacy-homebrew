@@ -6,7 +6,7 @@ end
 
 class Libspatialite < Formula
   homepage 'https://www.gaia-gis.it/fossil/libspatialite/index'
-  url 'http://www.gaia-gis.it/gaia-sins/libspatialite-amalgamation-3.0.1.tar.gz'
+  url 'http://www.gaia-gis.it/gaia-sins/libspatialite-sources/libspatialite-amalgamation-3.0.1.tar.gz'
   md5 'df7f0f714c2de1dc2791ddef6e8eaba5'
 
   def options
