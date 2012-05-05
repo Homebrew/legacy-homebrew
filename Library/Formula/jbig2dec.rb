@@ -12,6 +12,6 @@ class Jbig2dec < Formula
   end
 
   def test
-    system 'jbig2dec', '--version'
+    system "#{bin}/jbig2dec", '--version'
   end
 end
