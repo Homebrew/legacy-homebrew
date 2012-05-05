@@ -28,6 +28,6 @@ class Newlisp < Formula
 
   # Use the IDE to test a complete installation
   def test
-    system "newlisp-edit"
+    system "#{bin}/newlisp-edit"
   end
 end
