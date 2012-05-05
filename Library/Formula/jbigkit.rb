@@ -15,8 +15,7 @@ class Jbigkit < Formula
     # Set for a universal build and patch the Makefile.
     # There's no configure. It creates a static lib.
     ENV.universal_binary
-    inreplace 'Makefile', "CCFLAGS = -O2 -W", "CCFLAGS = #{ENV.cflags}"
-    system "make"
+    system "make", "CC=#{ENV.cc}", "CCFLAGS=#{ENV.cflags}"
 
     # It needs j1 to make the tests happen in sequence.
     ENV.deparallelize
