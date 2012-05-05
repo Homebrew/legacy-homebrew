@@ -1,7 +1,7 @@
 require 'formula'
 
 class GnupgIdea < Formula
-  head 'http://www.gnupg.dk/contrib-dk/idea.c.gz', :using  => NoUnzipCurlDownloadStrategy
+  head 'http://www.gnupg.dk/contrib-dk/idea.c.gz', :using  => :nounzip
   md5 '9dc3bc086824a8c7a331f35e09a3e57f'
 end
 

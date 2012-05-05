@@ -74,7 +74,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     when :zip
       quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @tarball_path
       chdir
-    when :gzip, :bzip2, :compress
+    when :gzip, :bzip2, :compress, :tar
       # Assume these are also tarred
       # TODO check if it's really a tar archive
       safe_system '/usr/bin/tar', 'xf', @tarball_path
@@ -360,7 +360,6 @@ class GitDownloadStrategy < AbstractDownloadStrategy
           end
 
         git_args = %w[git fetch origin]
-        git_args << '--depth' << '1' if support_depth?
         quiet_safe_system(*git_args)
       end
     end
