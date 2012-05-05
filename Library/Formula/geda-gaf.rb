@@ -14,6 +14,7 @@ class GedaGaf < Formula
   def install
     # Help configure find libraries
     ENV.x11
+    ENV.append 'CFLAGS', "-DGLIB_COMPILATION"
 
     gettext = Formula.factory('gettext')
 
