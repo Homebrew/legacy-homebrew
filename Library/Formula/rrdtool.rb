@@ -46,9 +46,10 @@ class Rrdtool < Formula
   end
 
   def test
-    system "ruby", prefix+"test.rb"
-    system "open test.png"
-    puts "You may want to `rm test.{rrd,png}`"
+    mktemp do
+      system "ruby", prefix/"test.rb"
+      system "/usr/bin/qlmanage", "-p", "test.png"
+    end
   end
 end
 
