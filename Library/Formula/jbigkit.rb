@@ -37,14 +37,9 @@ class Jbigkit < Formula
   end
 
   def test
-    puts
     mktemp do
-      system "#{HOMEBREW_PREFIX}/bin/jbgtopbm #{prefix}/examples/ccitt7.jbg | pbmtojbg - testoutput.jbg"
+      system "#{bin}/jbgtopbm #{prefix}/examples/ccitt7.jbg | #{bin}/pbmtojbg - testoutput.jbg"
       system "/usr/bin/cmp #{prefix}/examples/ccitt7.jbg testoutput.jbg"
-      ohai "The test was successful converting between jbig and pbm and back."
-      puts
-      system "/usr/bin/file #{HOMEBREW_PREFIX}/lib/libjbig.a #{HOMEBREW_PREFIX}/lib/libjbig85.a"
-      puts
     end
   end
 end
