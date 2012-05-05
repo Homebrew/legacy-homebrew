@@ -41,6 +41,7 @@ class Subversion < Formula
   # for consistency. - @adamv
   depends_on 'neon'
   depends_on 'sqlite'
+  depends_on 'serf'
 
   if ARGV.build_universal?
     depends_on UniversalNeon.new
@@ -80,6 +81,7 @@ class Subversion < Formula
             "--with-ssl",
             "--with-zlib=/usr",
             "--with-sqlite=#{HOMEBREW_PREFIX}",
+            "--with-serf=#{HOMEBREW_PREFIX}",
             # use our neon, not OS X's
             "--disable-neon-version-check",
             "--disable-mod-activation",
