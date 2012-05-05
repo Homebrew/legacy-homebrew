@@ -1,7 +1,7 @@
 require 'formula'
 
 class SqliteFunctions < Formula
-  url 'http://www.sqlite.org/contrib/download/extension-functions.c?get=25', :using  => NoUnzipCurlDownloadStrategy
+  url 'http://www.sqlite.org/contrib/download/extension-functions.c?get=25', :using  => :nounzip
   md5 '3a32bfeace0d718505af571861724a43'
   version '2010-01-06'
 end
