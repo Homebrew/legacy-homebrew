@@ -12,7 +12,7 @@ class Fastjar < Formula
   end
 
   def test
-    system "fastjar -V"
-    system "grepjar -V"
+    system "#{bin}/fastjar -V"
+    system "#{bin}/grepjar -V"
   end
 end
