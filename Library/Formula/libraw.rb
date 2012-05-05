@@ -38,8 +38,8 @@ class Libraw < Formula
       netraw = "http://www.rawsamples.ch/raws/nikon/d1/RAW_NIKON_D1.NEF"
       localraw = "#{HOMEBREW_CACHE}/Formula/RAW_NIKON_D1.NEF"
       if File.exists? localraw
-        system "#{HOMEBREW_PREFIX}/bin/raw-identify -u #{localraw}"
-        system "#{HOMEBREW_PREFIX}/bin/simple_dcraw -v -T #{localraw}"
+        system "#{bin}/raw-identify -u #{localraw}"
+        system "#{bin}/simple_dcraw -v -T #{localraw}"
         system "/usr/bin/qlmanage -p #{localraw}.tiff >& /dev/null &"
       else
         puts ""
