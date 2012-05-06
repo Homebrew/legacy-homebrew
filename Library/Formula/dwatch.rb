@@ -6,14 +6,21 @@ class Dwatch < Formula
   md5 '25c06240cb5ab8126badc8a78dcd2b79'
 
   def install
-    bin.mkpath  # Makefile uses cp, not install
-    man1.mkpath # ditto
+    # Makefile uses cp, not install
+    bin.mkpath
+    man1.mkpath
 
-    system "make install CC=#{ENV.cc} PREFIX=#{prefix} MANDIR=#{man} ETCDIR=#{etc}"
+    system "make", "install",
+                   "CC=#{ENV.cc}",
+                   "PREFIX=#{prefix}",
+                   "MANDIR=#{man}",
+                   "ETCDIR=#{etc}"
+
     etc.install "dwatch.conf"
   end
 
   def test
-    system "dwatch -h" # not that it HAS -h. bitches, but exits 0
+    # '-h' is not actually an option, but it exits 0
+    system "#{bin}/dwatch -h"
   end
 end
