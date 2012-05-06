@@ -56,6 +56,7 @@ class Erlang < Formula
   def options
     [
       ['--disable-hipe', "Disable building hipe; fails on various OS X systems."],
+      ['--enable-dtrace', 'Enable dtrace probes (off by default, R15B01 and later only)'],      
       ['--halfword', 'Enable halfword emulator (64-bit builds only)'],
       ['--time', '"brew test --time" to include a time-consuming test.'],
       ['--no-docs', 'Do not install documentation.']
@@ -89,6 +90,10 @@ class Erlang < Formula
       args << '--enable-hipe'
     end
 
+    if ARGV.include? '--enable-dtrace'
+      args << "--with-dynamic-trace=dtrace"
+    end
+    
     if MacOS.prefer_64_bit?
       args << "--enable-darwin-64bit"
       args << "--enable-halfword-emulator" if ARGV.include? '--halfword' # Does not work with HIPE yet. Added for testing only
