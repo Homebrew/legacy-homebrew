@@ -18,6 +18,6 @@ class Bbcp < Formula
   end
 
   def test
-    system "#{bin}/bbcp","--help"
+    system "#{bin}/bbcp", "--help"
   end
 end
