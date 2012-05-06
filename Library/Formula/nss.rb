@@ -52,8 +52,8 @@ class Nss < Formula
     # See: http://www.mozilla.org/projects/security/pki/nss/tools/certutil.html
     mktemp do
       File.open('passwd', 'w') {|f| f.write("It's a secret to everyone.") }
-      system "certutil -N -d #{Dir.getwd} -f passwd"
-      system "certutil -L -d #{Dir.getwd}"
+      system "#{bin}/certutil -N -d #{Dir.getwd} -f passwd"
+      system "#{bin}/certutil -L -d #{Dir.getwd}"
     end
   end
 
