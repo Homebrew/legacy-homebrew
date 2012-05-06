@@ -17,7 +17,7 @@ class Gptfdisk < Formula
   end
 
   def test
-    system "echo | gdisk"
+    system "echo | #{sbin}/gdisk"
   end
 end
 __END__
