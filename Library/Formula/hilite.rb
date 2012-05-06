@@ -12,6 +12,6 @@ class Hilite < Formula
   end
 
   def test
-    `hilite bash -c "echo 'stderr in red' >&2"`
+    `#{bin}/hilite bash -c "echo 'stderr in red' >&2"`
   end
 end
