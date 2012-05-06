@@ -14,6 +14,6 @@ class Jp2a < Formula
   end
 
   def test
-    system "jp2a -V"
+    system "#{bin}/jp2a -V"
   end
 end
