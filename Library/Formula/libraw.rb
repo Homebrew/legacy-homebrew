@@ -35,29 +35,20 @@ class Libraw < Formula
 
   def test
     mktemp do
-      netraw = "http://www.rawsamples.ch/raws/nikon/d1/RAW_NIKON_D1.NEF"
-      localraw = "#{HOMEBREW_CACHE}/Formula/RAW_NIKON_D1.NEF"
-      if File.exists? localraw
-        system "#{bin}/raw-identify -u #{localraw}"
-        system "#{bin}/simple_dcraw -v -T #{localraw}"
-        system "/usr/bin/qlmanage -p #{localraw}.tiff >& /dev/null &"
-      else
-        puts ""
-        opoo <<-EOS.undent
-          A good test that uses libraw.dylib to open and convert a RAW image
-          to tiff was delayed until the RAW test image from the Internet is in your
-          cache. To download that image and run the test, simply type
+      cached_raw = HOMEBREW_CACHE/'RAW_NIKON_D1.NEF'
 
-             brew fetch #{netraw}
-             brew test libraw
-
-          It's a fairly small image, 4 MB, that takes less time to download than
-          read this.  Please ignore the harmless message from brew fetch about
-          No Available Formula.  Brew fetch works correctly as does this well
-          written software.
-
-        EOS
+      unless cached_raw.exist?
+        curl 'http://www.rawsamples.ch/raws/nikon/d1/RAW_NIKON_D1.NEF',
+          '-o', cached_raw
       end
+
+      raise unless cached_raw.sha1 == 'd84d47caeb8275576b1c7c4550263de21855cf42'
+
+      cp cached_raw, Pathname.pwd
+
+      system "#{bin}/raw-identify", "-u", "RAW_NIKON_D1.NEF"
+      system "#{bin}/simple_dcraw", "-v", "-T", "RAW_NIKON_D1.NEF"
+      system "/usr/bin/qlmanage", "-p", "RAW_NIKON_D1.NEF.tiff"
     end
   end
 end
