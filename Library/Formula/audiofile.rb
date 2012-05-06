@@ -27,8 +27,8 @@ class Audiofile < Formula
     inn  = '/System/Library/Sounds/Glass.aiff'
     out  = 'Glass.wav'
     hear_bin = '/usr/bin/qlmanage'
-    conv_bin = "#{HOMEBREW_PREFIX}/bin/sfconvert"
-    info_bin = "#{HOMEBREW_PREFIX}/bin/sfinfo"
+    conv_bin = "#{bin}/sfconvert"
+    info_bin = "#{bin}/sfinfo"
 
     unless File.exist?(conv_bin) and File.exist?(inn) and
           File.exist?(hear_bin) and File.exist?(info_bin)
