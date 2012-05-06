@@ -17,12 +17,7 @@ class Psftools < Formula
       curl "http://www.zone38.net/font/pc8x8.zip", "-O"
       system "/usr/bin/unzip pc8x8.zip"
       system "#{bin}/fon2fnts pc8x8.fon"
-      if File.exist? "PC8X8_9.fnt"
-        puts "PC8X8_9.fnt was extracted"
-      else
-        puts "PC8X8_9.fnt was not extracted"
-        raise "PC8X8_9.fnt was not extracted"
-      end
+      raise unless File.exist? "PC8X8_9.fnt"
     end
   end
 end
