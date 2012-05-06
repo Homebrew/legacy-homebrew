@@ -19,7 +19,7 @@ class NewickUtils < Formula
   end
 
   def test
-    system "echo '(B:1,C:2)A;' | nw_display -"
+    system "echo '(B:1,C:2)A;' | #{bin}/nw_display -"
   end
 end
 
