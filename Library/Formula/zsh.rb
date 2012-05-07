@@ -18,9 +18,9 @@ class Zsh < Formula
     args = %W[
       --prefix=#{prefix}
       --enable-fndir=#{share}/zsh/functions
-      --enable-site-fndir=#{share}/zsh/site-functions
       --enable-scriptdir=#{share}/zsh/scripts
-      --enable-site-scriptdir=#{share}/zsh/site-scripts
+      --enable-site-fndir=#{HOMEBREW_PREFIX}/share/zsh/site-functions
+      --enable-site-scriptdir=#{HOMEBREW_PREFIX}/share/zsh/site-scripts
       --enable-cap
       --enable-maildir-support
       --enable-multibyte

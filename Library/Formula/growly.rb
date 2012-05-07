@@ -11,6 +11,6 @@ class Growly < Formula
   end
 
   def test
-    system 'growly "echo Hello, world!"'
+    system "#{bin}/growly", "echo Hello, world!"
   end
 end
