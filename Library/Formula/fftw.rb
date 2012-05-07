@@ -37,8 +37,5 @@ class Fftw < Formula
     # no SIMD optimization available
     system "./configure", "--enable-long-double", *args
     system "make install"
-
-    #wtf file?
-    (info+'dir').unlink
   end
 end
