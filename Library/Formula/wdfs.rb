@@ -6,6 +6,7 @@ class Wdfs < Formula
   md5 '628bb44194d04c1cf8aacc446ed0a230'
 
   depends_on 'pkg-config' => :build
+  depends_on 'glib'
   depends_on 'neon'
   depends_on 'fuse4x'
 
