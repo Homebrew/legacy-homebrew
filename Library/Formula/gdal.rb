@@ -38,6 +38,10 @@ class Gdal < Formula
   depends_on 'giflib'
   depends_on 'proj'
   depends_on 'geos'
+  # To ensure compatibility with SpatiaLite. Might be possible to do this
+  # conditially, but the additional complexity is just not worth saving an
+  # extra few seconds of build time.
+  depends_on 'sqlite'
 
   depends_on "postgresql" if postgres?
   depends_on "mysql" if mysql?
@@ -99,13 +103,13 @@ class Gdal < Formula
       "--with-libz=/usr",
       "--with-png=/usr/X11",
       "--with-expat=/usr",
-      "--with-sqlite3=/usr",
 
       # Default Homebrew backends.
       "--with-jpeg=#{HOMEBREW_PREFIX}",
       "--with-jpeg12",
       "--with-gif=#{HOMEBREW_PREFIX}",
       "--with-curl=/usr/bin/curl-config",
+      "--with-sqlite3=#{HOMEBREW_PREFIX}",
 
       # GRASS backend explicitly disabled.  Creates a chicken-and-egg problem.
       # Should be installed separately after GRASS installation using the
