@@ -10,6 +10,8 @@ class Librasterlite < Formula
 
   def install
     ENV.x11 # For image format libraries
+    # Ensure Homebrew SQLite libraries are found before the system SQLite
+    ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
