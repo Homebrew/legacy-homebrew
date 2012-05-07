@@ -12,8 +12,10 @@ class SpatialiteTools < Formula
 
   def install
     # See: https://github.com/mxcl/homebrew/issues/3328
-    ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
     ENV.append 'LDFLAGS', '-liconv'
+    # Ensure Homebrew SQLite is found before system SQLite.
+    ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
