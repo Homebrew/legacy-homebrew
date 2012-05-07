@@ -35,6 +35,8 @@ class MitScheme < Formula
   end
   
   def patches
+    # fix installation issue with OS X 10.7 and Xcode in /Application
+    # http://savannah.gnu.org/patch/?7775
     DATA
   end
 end
