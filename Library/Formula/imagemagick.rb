@@ -60,11 +60,6 @@ class Imagemagick < Formula
   head 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
     :using => UnsafeSubversionDownloadStrategy
 
-  bottle do
-    sha1 '6f66457ee040b67921d30a16a2fbdbce4311b5f1' => :snowleopard
-    sha1 'ad1647061a1d7bc4a0fee0d90c16005f40d97683' => :lion
-  end
-
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
 
