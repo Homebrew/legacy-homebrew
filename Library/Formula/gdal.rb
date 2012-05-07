@@ -20,10 +20,14 @@ def which_python
   "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
 end
 
-
 def opencl?
   ARGV.include? "--enable-opencl"
 end
+
+def armadillo?
+  ARGV.include? "--enable-armadillo"
+end
+
 
 class Gdal < Formula
   homepage 'http://www.gdal.org/'
@@ -48,6 +52,8 @@ class Gdal < Formula
 
   # Without Numpy, the Python bindings can't deal with raster data.
   depends_on 'numpy' => :python unless no_python?
+
+  depends_on 'armadillo' if armadillo?
 
   if complete?
     # Raster libraries
@@ -76,7 +82,8 @@ class Gdal < Formula
       ['--with-postgres', 'Specify PostgreSQL as a dependency.'],
       ['--with-mysql', 'Specify MySQL as a dependency.'],
       ['--without-python', 'Build without Python support (disables a lot of tools).'],
-      ['--enable-opencl', 'Build with support for OpenCL.']
+      ['--enable-opencl', 'Build with OpenCL acceleration.'],
+      ['--enable-armadillo', 'Build with Armadillo accelerated TPS transforms.']
     ]
   end
 
@@ -195,6 +202,9 @@ class Gdal < Formula
 
     # OpenCL support
     args << "--with-opencl" if opencl?
+
+    # Armadillo support.
+    args << (armadillo? ? '--with-armadillo=yes' : '--with-armadillo=no')
 
     return args
   end
