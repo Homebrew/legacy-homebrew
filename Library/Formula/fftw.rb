@@ -2,8 +2,8 @@ require 'formula'
 
 class Fftw < Formula
   homepage 'http://www.fftw.org'
-  url 'http://www.fftw.org/fftw-3.3.1.tar.gz'
-  md5 '76f5f3c7577613d0fbedaae77450ac91'
+  url 'http://www.fftw.org/fftw-3.3.2.tar.gz'
+  md5 '6977ee770ed68c85698c7168ffa6e178'
 
   def install
     args = ["--enable-shared",
