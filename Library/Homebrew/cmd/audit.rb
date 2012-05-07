@@ -413,7 +413,7 @@ module Homebrew extend self
         puts problems * "\n"
         puts
         brew_count += 1
-        problem_count += problems.size
+        problem_count += problems.select{ |p| p.start_with? ' *' }.size
       end
     end
 
