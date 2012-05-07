@@ -3,7 +3,7 @@ require 'formula'
 class Sbt < Formula
   url "http://typesafe.artifactoryonline.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.11.3/sbt-launch.jar"
   homepage 'http://github.com/harrah/xsbt/'
-  version '0.11.2'
+  version '0.11.3'
   md5 '653cc42660766e3e046570ec1a94c0c7'
 
   def install
