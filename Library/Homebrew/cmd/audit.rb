@@ -120,11 +120,6 @@ def audit_formula_text name, text
     problems << " * Use 'ARGV.include?' instead of 'ARGV.flag?'"
   end
 
-  # MacPorts patches should specify a revision, not trunk
-  if text =~ %r[macports/trunk]
-    problems << " * MacPorts patches should specify a revision instead of trunk"
-  end
-
   # Avoid hard-coding compilers
   if text =~ %r[(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]]
     problems << " * Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
@@ -211,9 +206,13 @@ def audit_formula_patches f
   patches = Patches.new(f.patches)
   patches.each do |p|
     next unless p.external?
-    if p.url =~ %r[raw\.github\.com]
+    case p.url
+    when %r[raw\.github\.com], %r[gist\.github\.com/raw]
       problems << " * Using raw GitHub URLs is not recommended:"
-      problems << " * #{p.url}"
+      problems << "   #{p.url}"
+    when %r[macports/trunk]
+      problems << " * MacPorts patches should specify a revision instead of trunk:"
+      problems << "   #{p.url}"
     end
   end
   return problems
