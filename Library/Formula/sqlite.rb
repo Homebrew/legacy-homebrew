@@ -44,8 +44,7 @@ class Sqlite < Formula
 
     ENV.universal_binary if ARGV.build_universal?
 
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking",
-                          (ARGV.include? "--with-functions") ? "--enable-dynamic-extensions" : ""
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--enable-dynamic-extensions"
     system "make install"
 
     if ARGV.include? "--with-functions"
