@@ -21,6 +21,11 @@ class Postgresql < Formula
 
   skip_clean :all
 
+  def patches
+    # Fix PL/Python build: https://github.com/mxcl/homebrew/issues/11162
+    DATA
+  end
+  
   def install
     ENV.libxml2 if MacOS.snow_leopard?
 
@@ -199,3 +204,18 @@ To install gems without sudo, see the Homebrew wiki.
     EOPLIST
   end
 end
+
+
+__END__
+diff --git a/src/pl/plpython/Makefile b/src/pl/plpython/Makefile
+index df07fc2..7c90bff 100644
+--- a/src/pl/plpython/Makefile
++++ b/src/pl/plpython/Makefile
+@@ -24,7 +24,6 @@ endif
+ # Darwin (OS X) has its own ideas about how to do this.
+ ifeq ($(PORTNAME), darwin)
+ shared_libpython = yes
+-override python_libspec = -framework Python
+ override python_additional_libs =
+ endif
+ 
