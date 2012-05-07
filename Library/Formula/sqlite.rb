@@ -23,7 +23,7 @@ class Sqlite < Formula
   def options
   [
     ["--with-docs", "Install HTML documentation"],
-    ["--with-rtree", "Enable the R*Tree index module"],
+    ["--without-rtree", "Disable the R*Tree index module"],
     ["--with-fts", "Enable the FTS Module"],
     ["--universal", "Build a universal binary"],
     ["--with-functions", "Enable more math and string functions for SQL queries"]
@@ -35,7 +35,7 @@ class Sqlite < Formula
     # http://groups.google.com/group/spatialite-users/browse_thread/thread/8e1cfa79f2d02a00#
     ENV.Os
 
-    ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_RTREE" if ARGV.include? "--with-rtree"
+    ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_RTREE" unless ARGV.include? "--without-rtree"
     ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS" if ARGV.include? "--with-fts"
 
     # enable these options by default
