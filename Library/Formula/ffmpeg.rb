@@ -5,9 +5,9 @@ def ffplay?
 end
 
 class Ffmpeg < Formula
-  url 'http://ffmpeg.org/releases/ffmpeg-0.10.2.tar.bz2'
   homepage 'http://ffmpeg.org/'
-  sha1 '743f44a71f93b14c9b26ca2424b0da8457cef4be'
+  url 'http://ffmpeg.org/releases/ffmpeg-0.10.3.tar.bz2'
+  sha1 '4fb6f682dbc1b4ea54178040d515fc3a4c05d415'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
