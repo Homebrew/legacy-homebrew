@@ -34,7 +34,9 @@ class Vmalloc < Formula
     man.install 'man/man3'
   end
 
-  def caveats
-    "We agreed to the OSI Common Public License Version 1.0 for you.\nIf this is unacceptable you should uninstall."
+  def caveats; <<-EOS.undent
+    We agreed to the OSI Common Public License Version 1.0 for you.
+    If this is unacceptable you should uninstall.
+    EOS
   end
 end

@@ -20,6 +20,6 @@ class Tmap < Formula
   end
 
   def test
-    system "tmap"
+    system "#{bin}/tmap -v"
   end
 end

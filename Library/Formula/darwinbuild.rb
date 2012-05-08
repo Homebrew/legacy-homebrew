@@ -11,7 +11,7 @@ class Darwinbuild < Formula
   def install
     ENV.delete('CC')
     ENV.delete('LD')
-    system "xcodebuild -configuration Release install DSTROOT=/ PREFIX=#{prefix}"
+    system "xcodebuild", "-configuration", "Release", "install", "DSTROOT=/", "PREFIX=#{prefix}", "SYMROOT=build"
   end
 end
 
