@@ -22,7 +22,7 @@ class Proj < Formula
     # The datum grid files are required to support datum shifting
     ProjDatumgrid.new.brew { cp Dir["*"], buildpath/'nad' }
 
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
 end
