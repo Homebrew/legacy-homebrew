@@ -16,7 +16,7 @@ class Go < Formula
     cd prefix do
       # The version check is due to:
       # http://codereview.appspot.com/5654068
-      (Pathname.pwd+'VERSION').write 'default' if ARGV.build_head?
+      (prefix/'VERSION').write 'default' if ARGV.build_head?
 
       # Build only. Run `brew test go` to run distrib's tests.
       cd 'src' do
