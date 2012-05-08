@@ -26,8 +26,8 @@ class Rrdtool < Formula
     ENV.libxml2
     ENV.x11
 
-    which_perl = `/usr/bin/which perl`.chomp
-    which_ruby = `/usr/bin/which ruby`.chomp
+    which_perl = which 'perl'
+    which_ruby = which 'ruby'
 
     opoo "Using system Ruby. RRD module will be installed to /Library/Ruby/..." if which_ruby == "/usr/bin/ruby"
     opoo "Using system Perl. RRD module will be installed to /Library/Perl/..." if which_perl == "/usr/bin/perl"
