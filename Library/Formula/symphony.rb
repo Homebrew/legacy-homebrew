@@ -24,8 +24,8 @@ class Symphony < Formula
       cd 'ThirdParty/Glpk' do
         system "./get.Glpk"
       end
-      dir_glpk = Pathname.getwd + 'ThirdParty/Glpk/glpk/src'
-      ENV.append "CPPFLAGS", "-I#{dir_glpk}"
+
+      ENV.append "CPPFLAGS", "-I#{buildpath}/ThirdParty/Glpk/glpk/src"
       ENV.append "CDEFS", "-DUSE_GLPMPL"
       args << "--with-gmpl"
     end
