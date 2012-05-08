@@ -1,35 +1,38 @@
 require 'formula'
 
 class Movgrab < Formula
-  url 'http://sites.google.com/site/columscode/files/movgrab-1.1.9.tgz'
   homepage 'http://sites.google.com/site/columscode'
-  sha1 'd1439dea2a2ae2c0ef14322bac3693c57275570e'
+  url 'http://sites.google.com/site/columscode/files/movgrab-1.1.10.tgz'
+  sha1 '2a87105501a3397d513c495d9d1f982ef2e09195'
 
   def patches
-    # diffs 1-3 fix compile errors with Clang, non-void functions should return a value
-    # diff 4 fixes compile error with Clang, c99 "inline" function -> unresolved symbols.
-    # All patches including the --no-recusion hack have been emailed upstream.
+    # 1-3 fix Clang compile errors: non-void functions should return a value
+    # 4 fixes Clang compile error: c99 "inline" function -> unresolved symbols.
+    # All patches including the --no-recusion hack have been emailed upstream at
+    # version 1.1.9.  As of 1.1.10, no reply from the developer.
     DATA
   end
 
   def install
-    # If we let configure recurse into libUseful-2.0, it propogates CC and CFLAGS into
-    # the second configure command line, which configure can't parse, causing an error.
-    # The workaround is to manually configure libUseful-2.0 without the env vars.
+    # When configure recurses into libUseful-2.0, it puts CC and CFLAGS into
+    # the second configure command line causing an error, invalid host type.
+    # The workaround is to manually configure libUseful-2.0 without those.
     # The cache-file and srcdir arguments parse ok.  So those were left in.
-    system "./configure", "--prefix=#{prefix}", "--no-recursion"
+    system './configure', "--prefix=#{prefix}", '--no-recursion'
     cd 'libUseful-2.0' do
-      system "./configure", "--prefix=#{prefix}", '--cache-file=/dev/null', '--srcdir=.'
+      system './configure', "--prefix=#{prefix}",
+                            '--cache-file=/dev/null',
+                            '--srcdir=.'
     end
-    system "make"
-    system "make install"
+    system 'make'
+    system 'make install'
   end
 end
 
 __END__
 --- a/main.c	2012-02-10 07:34:13.000000000 -0800
 +++ b/main.c	2012-02-12 10:22:28.000000000 -0800
-@@ -78,7 +78,7 @@
+@@ -76,7 +76,7 @@
  int Port;
  int RetVal=FALSE;
  
