@@ -33,7 +33,7 @@ class Justniffer < Formula
   end
 
   def test
-    system "justniffer --version | grep '^justniffer'"
+    system "#{bin}/justniffer --version | grep '^justniffer'"
   end
 
   def caveats; <<-EOS.undent

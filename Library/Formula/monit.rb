@@ -13,6 +13,6 @@ class Monit < Formula
   end
 
   def test
-    system "monit -h"
+    system "#{bin}/monit -h"
   end
 end
