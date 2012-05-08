@@ -69,7 +69,7 @@ diff --git a/install.sh b/install.sh
 index ea5f8c3..0108774 100755
 --- a/install.sh
 +++ b/install.sh
-@@ -290,6 +290,14 @@ case $ARCH in
+@@ -290,6 +290,17 @@ case $ARCH in
  esac
  
  case $OPSYS in
@@ -77,9 +77,12 @@ index ea5f8c3..0108774 100755
 +    # find the SDK directory
 +    SDKDIR=/Developer/SDKs
 +    [ -d $SDKDIR ] || SDKDIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
++    [ -d $SDKDIR ] || SDKDIR=
 +    # finding the correct SDK
-+    SDKVERSION=`/usr/bin/sw_vers -productVersion | grep -o ^[0-9][0-9]\.[0-9]`
-+    EXTRA_DEFS="SDK=-isysroot ${SDKDIR}/MacOSX${SDKVERSION}.sdk -mmacosx-version-min=$SDKVERSION"
++    if [ "$SDKDIR" ]; then
++        SDKVERSION=`/usr/bin/sw_vers -productVersion | grep -o ^[0-9][0-9]\.[0-9]`
++        EXTRA_DEFS="SDK=-isysroot ${SDKDIR}/MacOSX${SDKVERSION}.sdk -mmacosx-version-min=$SDKVERSION"
++    fi
 +  ;;
      solaris)
  	MAKE=/usr/ccs/bin/make
