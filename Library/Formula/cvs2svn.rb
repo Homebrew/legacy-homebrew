@@ -5,7 +5,7 @@ class PythonWithGdbm < Requirement
     The Python being used does not include gdbm support,
     but it is required to build this formula:
 
-      #{`which python`.chomp}
+      #{which 'python'}
 
     Homebrew's Python includes gdbm support.
     EOS

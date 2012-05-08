@@ -37,7 +37,7 @@ class CouchdbLucene < Formula
 os_process_timeout=60000 ; increase the timeout from 5 seconds.
 
 [external]
-fti=#{`which python`.chomp} #{prefix}/tools/couchdb-external-hook.py
+fti=#{which 'python'} #{prefix}/tools/couchdb-external-hook.py
 
 [httpd_db_handlers]
 _fti = {couch_httpd_external, handle_external_req, <<"fti">>}
