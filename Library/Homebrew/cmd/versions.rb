@@ -2,7 +2,7 @@ require 'formula'
 
 module Homebrew extend self
   def versions
-    raise "Please `brew install git` first" unless which_s "git"
+    raise "Please `brew install git` first" unless which "git"
     raise "Please `brew update' first" unless (HOMEBREW_REPOSITORY/".git").directory?
 
     raise FormulaUnspecifiedError if ARGV.named.empty?
