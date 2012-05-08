@@ -309,7 +309,9 @@ class Formula
     end
   end
 
-  def self.factory name
+  def self.factory name, opts={}
+    opts[:force_load] ||= false
+
     # If an instance of Formula is passed, just return it
     return name if name.kind_of? Formula
 
@@ -327,20 +329,32 @@ class Formula
       FileUtils.rm target_file, :force => true
       curl url, '-o', target_file
 
-      require target_file
+      if opts[:force_load]
+        load target_file
+      else
+        require target_file
+      end
       install_type = :from_url
     else
       name = Formula.canonical_name(name)
       # If name was a path or mapped to a cached formula
       if name.include? "/"
-        require name
+        if opts[:force_load]
+          load name
+        else
+          require name
+        end
         path = Pathname.new(name)
         name = path.stem
         install_type = :from_path
         target_file = path.to_s
       else
         # For names, map to the path and then require
-        require Formula.path(name)
+        if opts[:force_load]
+          load Formula.path(name)
+        else
+          require Formula.path(name)
+        end
         install_type = :from_name
       end
     end

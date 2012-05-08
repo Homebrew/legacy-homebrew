@@ -29,6 +29,26 @@ module Homebrew extend self
       end
     end
 
+    # Many formulas add dependencies conditionally depending on ARGV; this is
+    # done when the formula is loaded. In the long term, all uses of ARGV should
+    # be removed from formulas in favor of some higher level mechanism, but for
+    # now, this ensures that formulas see an ARGV with the correct options when
+    # upgrading.
+    saved_args = ARGV.shift(ARGV.size)
+    outdated.map! do |f|
+      tab = Tab.for_formula(f)
+      ARGV.concat tab.used_options
+      # "Forget" formula class before reloading the file, otherwise dependencies
+      # are kept
+      Object.class_eval{ remove_const f.class.name.to_sym }
+      f = Formula.factory f.name, {:force_load => true} rescue nil
+      ARGV.clear
+      f
+    end
+    ARGV.concat(saved_args)
+    # The chunk of code above can be removed once all uses of ARGV are removed
+    # from formulas.
+
     # Expand the outdated list to include outdated dependencies then sort and
     # reduce such that dependencies are installed first and installation is not
     # attempted twice. Sorting is implicit the way `recursive_deps` returns
