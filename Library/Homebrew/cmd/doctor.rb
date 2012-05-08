@@ -633,7 +633,7 @@ def check_for_multiple_volumes
 end
 
 def check_for_git
-  unless which_s "git" then <<-EOS.undent
+  unless which "git" then <<-EOS.undent
     Git could not be found in your PATH.
     Homebrew uses Git for several internal functions, and some formulae use Git
     checkouts instead of stable tarballs. You may want to install Git:
@@ -643,7 +643,7 @@ def check_for_git
 end
 
 def check_git_newline_settings
-  return unless which_s "git"
+  return unless which "git"
 
   autocrlf = `git config --get core.autocrlf`.chomp
   safecrlf = `git config --get core.safecrlf`.chomp
@@ -774,7 +774,7 @@ def check_missing_deps
 end
 
 def check_git_status
-  return unless which_s "git"
+  return unless which "git"
   HOMEBREW_REPOSITORY.cd do
     unless `git status -s -- Library/Homebrew/ 2>/dev/null`.chomp.empty? then <<-EOS.undent
       You have uncommitted modifications to Homebrew's core.
@@ -803,7 +803,7 @@ end
 
 def check_git_version
   # see https://github.com/blog/642-smart-http-support
-  return unless which_s "git"
+  return unless which "git"
   `git --version`.chomp =~ /git version (\d)\.(\d)\.(\d)/
 
   if $2.to_i < 6 or $2.to_i == 6 and $3.to_i < 6 then <<-EOS.undent
@@ -815,7 +815,7 @@ def check_git_version
 end
 
 def check_for_enthought_python
-  if which_s "enpkg" then <<-EOS.undent
+  if which "enpkg" then <<-EOS.undent
     Enthought Python was found in your PATH.
     This can cause build problems, as this software installs its own
     copies of iconv and libxml2 into directories that are picked up by
@@ -825,7 +825,7 @@ def check_for_enthought_python
 end
 
 def check_for_bad_python_symlink
-  return unless which_s "python"
+  return unless which "python"
   # Indeed Python --version outputs to stderr (WTF?)
   `python --version 2>&1` =~ /Python (\d+)\./
   unless $1 == "2" then <<-EOS.undent

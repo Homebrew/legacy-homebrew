@@ -147,18 +147,13 @@ def puts_columns items, star_items=[]
   end
 end
 
-def which cmd, silent=false
-  cmd += " 2>/dev/null" if silent
-  path = `/usr/bin/which #{cmd}`.chomp
+def which cmd
+  path = `/usr/bin/which #{cmd} 2>/dev/null`.chomp
   if path.empty?
     nil
   else
     Pathname.new(path)
   end
-end
-
-def which_s cmd
-  which cmd, true
 end
 
 def which_editor
@@ -167,9 +162,9 @@ def which_editor
   return editor unless editor.nil?
 
   # Find Textmate
-  return 'mate' if which_s "mate"
+  return 'mate' if which "mate"
   # Find # BBEdit / TextWrangler
-  return 'edit' if which_s "edit"
+  return 'edit' if which "edit"
   # Default to vim
   return '/usr/bin/vim'
 end
@@ -405,7 +400,7 @@ module MacOS extend self
       # Xcode 4.3 xc* tools hang indefinately if xcode-select path is set thus
       raise if `xcode-select -print-path 2>/dev/null`.chomp == "/"
 
-      raise unless which_s "xcodebuild"
+      raise unless which "xcodebuild"
       `xcodebuild -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
       raise if $1.nil? or not $?.success?
       $1

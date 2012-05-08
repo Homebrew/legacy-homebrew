@@ -4,7 +4,7 @@ require 'cmd/untap'
 module Homebrew extend self
 
   def update
-    abort "Please `brew install git' first." unless which_s "git"
+    abort "Please `brew install git' first." unless which "git"
 
     # ensure GIT_CONFIG is unset as we need to operate on .git/config
     ENV.delete('GIT_CONFIG')
