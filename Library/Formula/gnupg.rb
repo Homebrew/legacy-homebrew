@@ -12,7 +12,7 @@ class Gnupg < Formula
 
   def options
     [
-      ["--idea", "Build with (patented) IDEA cipher"],
+      ["--idea", "Build with the patented IDEA cipher"],
       ["--8192", "Build with support for private keys up to 8192 bits"],
     ]
   end
@@ -24,9 +24,7 @@ class Gnupg < Formula
     end
 
     if ARGV.include? '--idea'
-      opoo "You are building with support for the patented IDEA cipher."
-      d=Pathname.getwd
-      GnupgIdea.new.brew { (d+'cipher').install Dir['*'] }
+      GnupgIdea.new.brew { (buildpath/'cipher').install Dir['*'] }
       system 'gunzip', 'cipher/idea.c.gz'
     end
 
@@ -46,10 +44,12 @@ class Gnupg < Formula
   end
 
   def caveats
-    if ARGV.include? '--idea'
-      <<-EOS.undent
-        Please read http://www.gnupg.org/faq/why-not-idea.en.html before doing so.
-        You will then need to add the following line to your ~/.gnupg/gpg.conf or
+    if ARGV.include? '--idea' then <<-EOS.undent
+      This build of GnuPG contains support for the patented IDEA cipher.
+      Please read http://www.gnupg.org/faq/why-not-idea.en.html before using
+      this software.
+
+      You will then need to add the following line to your ~/.gnupg/gpg.conf or
         ~/.gnupg/options file:
           load-extension idea
       EOS
