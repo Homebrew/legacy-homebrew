@@ -70,7 +70,7 @@ class Postgis < Formula
     # install everything to a staging directory and manually move the pieces
     # into the appropriate prefixes.
     mkdir 'stage'
-    system 'make', 'install', "DESTDIR=#{Dir.getwd}/stage"
+    system 'make', 'install', "DESTDIR=#{buildpath}/stage"
 
     # Install PostGIS plugin libraries into the Postgres keg so that they can
     # be loaded and so PostGIS databases will continue to function even if
