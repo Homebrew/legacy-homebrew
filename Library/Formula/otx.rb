@@ -6,7 +6,7 @@ class Otx < Formula
 
   def install
     system 'xcodebuild SYMROOT=build'
-    build = Pathname.getwd + 'build/Release'
+    build = buildpath/'build/Release'
     bin.install build+"otx"
     prefix.install build+"otx.app"
   end
