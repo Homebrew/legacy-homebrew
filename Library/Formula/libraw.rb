@@ -1,5 +1,11 @@
 require 'formula'
 
+class LibrawTestFile < Formula
+  url 'http://www.rawsamples.ch/raws/nikon/d1/RAW_NIKON_D1.NEF',
+    :using => NoUnzipCurlDownloadStrategy
+  sha1 'd84d47caeb8275576b1c7c4550263de21855cf42'
+end
+
 class LibrawDemosaicGPL2 < Formula
   url 'http://www.libraw.org/data/LibRaw-demosaic-pack-GPL2-0.14.6.tar.gz'
   sha1 'cde9b65ba48b6111353964127532d2d2203edb9a'
@@ -34,21 +40,11 @@ class Libraw < Formula
   end
 
   def test
-    mktemp do
-      cached_raw = HOMEBREW_CACHE/'RAW_NIKON_D1.NEF'
-
-      unless cached_raw.exist?
-        curl 'http://www.rawsamples.ch/raws/nikon/d1/RAW_NIKON_D1.NEF',
-          '-o', cached_raw
-      end
-
-      raise unless cached_raw.sha1 == 'd84d47caeb8275576b1c7c4550263de21855cf42'
-
-      cp cached_raw, Pathname.pwd
-
-      system "#{bin}/raw-identify", "-u", "RAW_NIKON_D1.NEF"
-      system "#{bin}/simple_dcraw", "-v", "-T", "RAW_NIKON_D1.NEF"
-      system "/usr/bin/qlmanage", "-p", "RAW_NIKON_D1.NEF.tiff"
+    LibrawTestFile.new.brew do
+      filename = 'RAW_NIKON_D1.NEF'
+      system "#{bin}/raw-identify", "-u", filename
+      system "#{bin}/simple_dcraw", "-v", "-T", filename
+      system "/usr/bin/qlmanage", "-p", "#{filename}.tiff"
     end
   end
 end
