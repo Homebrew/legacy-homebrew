@@ -29,6 +29,8 @@ class Mpfr < Formula
     end
 
     system "./configure", *args
+    system "make"
+    system "make check"
     system "make install"
   end
 end
