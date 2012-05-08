@@ -2,7 +2,7 @@ require 'formula'
 
 class LibrawTestFile < Formula
   url 'http://www.rawsamples.ch/raws/nikon/d1/RAW_NIKON_D1.NEF',
-    :using => NoUnzipCurlDownloadStrategy
+    :using => :nounzip
   sha1 'd84d47caeb8275576b1c7c4550263de21855cf42'
 end
 
