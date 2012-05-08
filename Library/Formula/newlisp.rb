@@ -2,8 +2,8 @@ require 'formula'
 
 class Newlisp < Formula
   homepage 'http://www.newlisp.org/'
-  url 'http://www.newlisp.org/downloads/newlisp-10.4.2.tgz'
-  sha1 '75257d8737802affba114a5de6ff558feed4ef36'
+  url 'http://www.newlisp.org/downloads/newlisp-10.4.3.tgz'
+  sha1 'cf5f5514a2a18dd317aa5e6f38907f0a8879156f'
 
   depends_on 'readline'
 
