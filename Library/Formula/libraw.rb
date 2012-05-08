@@ -24,7 +24,7 @@ class Libraw < Formula
   depends_on 'little-cms2'
 
   def install
-    d = Pathname.getwd.dirname
+    d = buildpath.dirname
     LibrawDemosaicGPL2.new.brew { d.install Dir['*'] }
     LibrawDemosaicGPL3.new.brew { d.install Dir['*'] }
 
