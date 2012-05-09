@@ -1,9 +1,9 @@
 require 'formula'
 
-class Jp2a < Formula
-  url 'http://sourceforge.net/projects/jp2a/files/jp2a/1.0.6/jp2a-1.0.6.tar.gz'
-  homepage 'http://csl.sublevel3.org/jp2a/'
-  md5 'eb6281eee29acf1c494dcaf7d745a5df'
+class Jpeginfo < Formula
+  homepage 'http://www.kokkonen.net/tjko/projects.html'
+  url 'http://www.kokkonen.net/tjko/src/jpeginfo-1.6.1.tar.gz'
+  md5 '344be10d6b16ec559c5d8b7e3707241f'
 
   depends_on 'jpeg'
 
@@ -14,6 +14,6 @@ class Jp2a < Formula
   end
 
   def test
-    system "#{bin}/jp2a -V"
+    system "#{bin}/jpeginfo --help"
   end
 end

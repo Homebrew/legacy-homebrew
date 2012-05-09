@@ -31,6 +31,6 @@ class Trafficserver < Formula
   end
 
   def test
-    system "trafficserver status"
+    system "#{bin}/trafficserver status"
   end
 end

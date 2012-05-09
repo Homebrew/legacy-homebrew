@@ -70,33 +70,23 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def stage
-    if @tarball_path.extname == '.jar'
-      magic_bytes = nil
-    elsif @tarball_path.extname == '.pkg'
-      # Use more than 4 characters to not clash with magicbytes
-      magic_bytes = "____pkg"
-    else
-      # get the first six bytes
-      File.open(@tarball_path) { |f| magic_bytes = f.read(6) }
-    end
-
-    # magic numbers stolen from /usr/share/file/magic/
-    case magic_bytes
-    when /^PK\003\004/ # .zip archive
+    case @tarball_path.compression_type
+    when :zip
       quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @tarball_path
       chdir
-    when /^\037\213/, /^BZh/, /^\037\235/  # gzip/bz2/compress compressed
+    when :gzip, :bzip2, :compress, :tar
+      # Assume these are also tarred
       # TODO check if it's really a tar archive
       safe_system '/usr/bin/tar', 'xf', @tarball_path
       chdir
-    when /^\xFD7zXZ\x00/ # xz compressed
-      raise "You must install XZutils: brew install xz" unless which_s "xz"
+    when :xz
+      raise "You must install XZutils: brew install xz" unless which "xz"
       safe_system "xz -dc \"#{@tarball_path}\" | /usr/bin/tar xf -"
       chdir
-    when '____pkg'
+    when :pkg
       safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, File.basename(@url)
       chdir
-    when /Rar!/
+    when :rar
       quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, @tarball_path
     else
       # we are assuming it is not an archive, use original filename
@@ -332,7 +322,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 
   def fetch
-    raise "You must install Git: brew install git" unless which_s "git"
+    raise "You must install Git: brew install git" unless which "git"
 
     ohai "Cloning #{@url}"
 
@@ -349,7 +339,6 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     unless @clone.exist?
       # Note: first-time checkouts are always done verbosely
       clone_args = %w[git clone]
-      clone_args << '--single-branch'
       clone_args << '--depth' << '1' if support_depth?
 
       case @spec
@@ -371,7 +360,6 @@ class GitDownloadStrategy < AbstractDownloadStrategy
           end
 
         git_args = %w[git fetch origin]
-        git_args << '--depth' << '1' if support_depth?
         quiet_safe_system(*git_args)
       end
     end
@@ -467,7 +455,7 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
   def cached_location; @clone; end
 
   def fetch
-    raise "You must install Mercurial: brew install mercurial" unless which_s "hg"
+    raise "You must install Mercurial: brew install mercurial" unless which "hg"
 
     ohai "Cloning #{@url}"
 
@@ -508,7 +496,7 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
   def cached_location; @clone; end
 
   def fetch
-    raise "You must install bazaar first" unless which_s "bzr"
+    raise "You must install bazaar first" unless which "bzr"
 
     ohai "Cloning #{@url}"
     unless @clone.exist?
@@ -551,7 +539,7 @@ class FossilDownloadStrategy < AbstractDownloadStrategy
   def cached_location; @clone; end
 
   def fetch
-    raise "You must install fossil first" unless which_s "fossil"
+    raise "You must install fossil first" unless which "fossil"
 
     ohai "Cloning #{@url}"
     unless @clone.exist?
