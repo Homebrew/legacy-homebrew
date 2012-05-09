@@ -4,8 +4,8 @@ def build_tests?; ARGV.include? '--test'; end
 
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/'
-  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.32/glib-2.32.1.tar.xz'
-  sha256 '484d5b7fc09f3fa398355adaf74b369768f5859866c299f229c99721990f8398'
+  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.32/glib-2.32.2.tar.xz'
+  sha256 'b1764abf00bac96e0e93e29fb9715ce75f3583579acac40648e18771d43d6136'
 
   depends_on 'xz' => :build
   depends_on 'gettext'
@@ -16,18 +16,10 @@ class Glib < Formula
     cause "Undefined symbol errors while linking"
   end
 
-  fails_with :clang do
-    build 318
-    cause <<-EOS.undent
-      Software that links against a clang-built glib experiences runtime errors:
-        GLib-ERROR (recursed) **: The thread system is not yet initialized.
-      EOS
-  end
-
   def patches
-    # https://bugzilla.gnome.org/show_bug.cgi?id=673047
-    # https://bugzilla.gnome.org/show_bug.cgi?id=644473
-    # https://bugzilla.gnome.org/show_bug.cgi?id=673135
+    # https://bugzilla.gnome.org/show_bug.cgi?id=673047  Still open @ 2.32.2
+    # https://bugzilla.gnome.org/show_bug.cgi?id=644473  Still open @ 2.32.2
+    # https://bugzilla.gnome.org/show_bug.cgi?id=673135  Resolved as wontfix.
     p = { :p1 => %W[
         https://raw.github.com/gist/2235195/19cdaebdff7dcc94ccd9b3747d43a09318f0b846/glib-gunicollate.diff
         https://raw.github.com/gist/2235202/26f885e079e4d61da26d239970301b818ddbb4ab/glib-gtimezone.diff
@@ -58,6 +50,7 @@ class Glib < Formula
       --disable-dependency-tracking
       --disable-dtrace
       --prefix=#{prefix}
+      --localstatedir=#{var}
     ]
 
     # glib and pkg-config 0.26 have circular dependencies, so we should build glib without pkg-config
