@@ -32,6 +32,11 @@ at_exit do
     # can be inconvenient for the user. But we need to be safe.
     system "/usr/bin/sudo -k"
 
+    if ENV['HOMEBREW_ERROR_PIPE']
+      require 'fcntl'
+      IO.new(ENV['HOMEBREW_ERROR_PIPE'].to_i, 'w').fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
+    end
+
     install(Formula.factory($0))
   rescue Exception => e
     if ENV['HOMEBREW_ERROR_PIPE']
