@@ -7,8 +7,6 @@ class Nrpe < Formula
 
   depends_on 'nagios-plugins'
 
-  def plugins; HOMEBREW_PREFIX+'sbin/nagios-plugins'; end
-
   def install
     user  = `id -un`.chomp
     group = `id -gn`.chomp
@@ -18,7 +16,7 @@ class Nrpe < Formula
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--libexecdir=#{plugins}",
+                          "--libexecdir=#{sbin}",
                           "--with-nrpe-user=#{user}",
                           "--with-nrpe-group=#{group}",
                           "--with-nagios-user=#{user}",
@@ -33,8 +31,8 @@ class Nrpe < Formula
 
   def caveats
     <<-EOS.undent
-    The nagios plugin check_nrpe has been installed to:
-      #{plugins}
+    The nagios plugin check_nrpe has been installed in:
+      #{HOMEBREW_PREFIX}/sbin
 
     You can start the daemon with
       #{bin}/nrpe -c #{etc}/nrpe.cfg -d
