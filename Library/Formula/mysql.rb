@@ -14,6 +14,10 @@ class Mysql < Formula
     cause "https://github.com/mxcl/homebrew/issues/issue/144"
   end
 
+  fails_with :clang do
+    build 318
+  end
+
   skip_clean :all # So "INSTALL PLUGIN" can work.
 
   def options
