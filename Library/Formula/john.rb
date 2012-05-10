@@ -2,8 +2,9 @@ require 'formula'
 
 class John < Formula
   homepage 'http://www.openwall.com/john/'
-  url 'http://www.openwall.com/john/g/john-1.7.9.tar.bz2'
-  md5 '45f54fc59386ecd67daaef9f19781d93'
+  url 'http://www.openwall.com/john/g/john-1.7.9-jumbo-5.tar.bz2'
+  md5 'e7a9912e6011399d4df35013d0440c67'
+  version '1.7.9'
 
   fails_with :llvm do
     build 2334
@@ -28,14 +29,14 @@ end
 
 
 __END__
---- a/src/john.c	2010-01-01 22:58:55.000000000 -0500
-+++ b/src/john.c	2010-01-01 22:59:11.000000000 -0500
-@@ -290,7 +290,7 @@ static void john_init(char *name, int ar
- 		cfg_init(CFG_PRIVATE_ALT_NAME, 1);
+--- a/src/john.c	2012-05-01 19:59:09.000000000 +0200
++++ b/src/john.c	2012-05-01 19:59:31.000000000 +0200
+@@ -436,7 +436,7 @@ static void john_init(char *name, int ar
+ 			cfg_init(CFG_PRIVATE_ALT_NAME, 1);
  #endif
- 		cfg_init(CFG_FULL_NAME, 1);
--		cfg_init(CFG_ALT_NAME, 0);
-+		cfg_init(CFG_ALT_NAME, 1);
+ 			cfg_init(CFG_FULL_NAME, 1);
+-			cfg_init(CFG_ALT_NAME, 0);
++			cfg_init(CFG_ALT_NAME, 1);
+ 		}
  	}
  
- 	status_init(NULL, 1);
