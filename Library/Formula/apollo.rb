@@ -7,18 +7,41 @@ class BerkeleyDbJe < Formula
   md5 '09fa2cb8431bb4ca5a0a0f83d3d57ed0'
 end
 
+class FuseMQApolloMQTT < Formula
+  homepage 'https://github.com/fusesource/fuse-extra/tree/master/fusemq-apollo/fusemq-apollo-mqtt'
+  url "http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/fuse-extra/fusemq-apollo-mqtt/1.2/fusemq-apollo-mqtt-1.2-uber.jar"
+  version '1.2'
+  md5 '73ec840bdff182f4bbd8f9e8a60e4af4'
+end
+
 class Apollo < Formula
   homepage 'http://activemq.apache.org/apollo'
-  url "http://archive.apache.org/dist/activemq/activemq-apollo/1.2/apache-apollo-1.2-unix-distro.tar.gz"
-  version "1.2"
-  md5 '3c74a4070975a6da73653502d647658c'
+  url "http://archive.apache.org/dist/activemq/activemq-apollo/1.3/apache-apollo-1.3-unix-distro.tar.gz"
+  version "1.3"
+  md5 '13759c529b238731ebea269254a840b9'
+
+
+  def options
+    [
+      ["--no-bdb", "Install without bdb store support."],
+      ["--no-mqtt", "Install without MQTT protocol support."]
+    ]
+  end
 
   def install
     prefix.install %w{ LICENSE NOTICE readme.html docs examples }
     libexec.install Dir['*']
 
-    BerkeleyDbJe.new.brew do
-      (libexec+"lib").install Dir['*.jar']
+    unless ARGV.include? "--no-bdb"
+      BerkeleyDbJe.new.brew do
+        (libexec+"lib").install Dir['*.jar']
+      end
+    end
+
+    unless ARGV.include? "--no-mqtt"
+      FuseMQApolloMQTT.new.brew do
+        (libexec+"lib").install Dir['*.jar']
+      end
     end
 
     (bin+'apollo').write <<-EOS.undent
@@ -32,7 +55,7 @@ class Apollo < Formula
 
   def caveats; <<-EOS.undent
     To create the broker:
-      #{bin}/apollo create #{var}/apollo
+        #{bin}/apollo create #{var}/apollo
 
     If this is your first install, automatically load on login with:
         mkdir -p ~/Library/LaunchAgents
@@ -45,7 +68,7 @@ class Apollo < Formula
         launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     Or to start the broker in the foreground run:
-        sudo #{var}/apollo/bin/apollo-broker run
+        #{var}/apollo/bin/apollo-broker run
 
     EOS
   end
