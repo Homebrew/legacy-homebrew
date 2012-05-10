@@ -1,8 +1,8 @@
 require 'formula'
 
 class Darwinbuild < Formula
-  head 'http://svn.macosforge.org/repository/darwinbuild/trunk/', :using => :svn
   homepage 'http://darwinbuild.macosforge.org/'
+  head 'http://svn.macosforge.org/repository/darwinbuild/trunk/'
 
   def patches
     DATA

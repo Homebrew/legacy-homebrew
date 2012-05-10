@@ -21,7 +21,8 @@ class Grass < Formula
   homepage 'http://grass.osgeo.org/'
   url 'http://grass.osgeo.org/grass64/source/grass-6.4.2.tar.gz'
   md5 'd3398d6b1e3a2ef19cfb6e39a5ae9919'
-  head 'https://svn.osgeo.org/grass/grass/trunk', :using => :svn
+
+  head 'https://svn.osgeo.org/grass/grass/trunk'
 
   depends_on "pkg-config" => :build
   depends_on "gettext"

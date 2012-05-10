@@ -22,7 +22,7 @@ class Boost < Formula
   url 'http://downloads.sourceforge.net/project/boost/boost/1.49.0/boost_1_49_0.tar.bz2'
   md5 '0d202cb811f934282dea64856a175698'
 
-  head 'http://svn.boost.org/svn/boost/trunk', :using => :svn
+  head 'http://svn.boost.org/svn/boost/trunk'
 
   bottle do
     sha1 '6b706780670a8bec5b3e0355f5dfeeaa37d9a41e' => :lion

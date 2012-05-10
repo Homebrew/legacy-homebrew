@@ -5,7 +5,7 @@ class Ffmpeg2theora < Formula
   url 'http://v2v.cc/~j/ffmpeg2theora/downloads/ffmpeg2theora-0.28.tar.bz2'
   md5 '31e389bfa0719f489af38b6fb2bd0a1f'
 
-  head 'http://svn.xiph.org/trunk/ffmpeg2theora', :using => :svn
+  head 'http://svn.xiph.org/trunk/ffmpeg2theora'
 
   depends_on 'pkg-config' => :build
   depends_on 'scons' => :build
