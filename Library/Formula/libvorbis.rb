@@ -5,7 +5,7 @@ class Libvorbis < Formula
   md5 '798a4211221073c1409f26eac4567e8b'
   homepage 'http://vorbis.com'
 
-  head 'http://svn.xiph.org/trunk/vorbis', :using => :svn
+  head 'http://svn.xiph.org/trunk/vorbis'
 
   depends_on 'pkg-config' => :build
   depends_on 'libogg'
