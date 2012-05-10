@@ -579,6 +579,8 @@ def detect_download_strategy url
   when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
   when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
   when %r[^http://www.apache.org/dyn/closer.cgi] then CurlApacheMirrorDownloadStrategy
+    # Common URL patterns
+  when %r[^https?://svn\.] then SubversionDownloadStrategy
     # Otherwise just try to download
   else CurlDownloadStrategy
   end
