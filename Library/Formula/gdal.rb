@@ -20,17 +20,21 @@ def which_python
   "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
 end
 
-
 def opencl?
   ARGV.include? "--enable-opencl"
 end
+
+def armadillo?
+  ARGV.include? "--enable-armadillo"
+end
+
 
 class Gdal < Formula
   homepage 'http://www.gdal.org/'
   url 'http://download.osgeo.org/gdal/gdal-1.9.0.tar.gz'
   md5 '1853f3d8eb5232ae030abe007840cade'
 
-  head 'https://svn.osgeo.org/gdal/trunk/gdal', :using => :svn
+  head 'https://svn.osgeo.org/gdal/trunk/gdal'
 
   depends_on 'doxygen' => :build
 
@@ -38,12 +42,18 @@ class Gdal < Formula
   depends_on 'giflib'
   depends_on 'proj'
   depends_on 'geos'
+  # To ensure compatibility with SpatiaLite. Might be possible to do this
+  # conditially, but the additional complexity is just not worth saving an
+  # extra few seconds of build time.
+  depends_on 'sqlite'
 
   depends_on "postgresql" if postgres?
   depends_on "mysql" if mysql?
 
   # Without Numpy, the Python bindings can't deal with raster data.
   depends_on 'numpy' => :python unless no_python?
+
+  depends_on 'armadillo' if armadillo?
 
   if complete?
     # Raster libraries
@@ -72,7 +82,8 @@ class Gdal < Formula
       ['--with-postgres', 'Specify PostgreSQL as a dependency.'],
       ['--with-mysql', 'Specify MySQL as a dependency.'],
       ['--without-python', 'Build without Python support (disables a lot of tools).'],
-      ['--enable-opencl', 'Build with support for OpenCL.']
+      ['--enable-opencl', 'Build with OpenCL acceleration.'],
+      ['--enable-armadillo', 'Build with Armadillo accelerated TPS transforms.']
     ]
   end
 
@@ -99,13 +110,13 @@ class Gdal < Formula
       "--with-libz=/usr",
       "--with-png=/usr/X11",
       "--with-expat=/usr",
-      "--with-sqlite3=/usr",
 
       # Default Homebrew backends.
       "--with-jpeg=#{HOMEBREW_PREFIX}",
       "--with-jpeg12",
       "--with-gif=#{HOMEBREW_PREFIX}",
       "--with-curl=/usr/bin/curl-config",
+      "--with-sqlite3=#{HOMEBREW_PREFIX}",
 
       # GRASS backend explicitly disabled.  Creates a chicken-and-egg problem.
       # Should be installed separately after GRASS installation using the
@@ -191,6 +202,9 @@ class Gdal < Formula
 
     # OpenCL support
     args << "--with-opencl" if opencl?
+
+    # Armadillo support.
+    args << (armadillo? ? '--with-armadillo=yes' : '--with-armadillo=no')
 
     return args
   end
