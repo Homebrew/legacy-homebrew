@@ -194,7 +194,8 @@ class Pathname
 
     # eg. foobar-4.5.1-1
     # eg. ruby-1.9.1-p243
-    /-((\d+\.)*\d\.\d+-(p|rc|RC)?\d+)$/.match stem
+    # eg. mpich2-1.4.1p1
+    /-((\d+\.)*\d\.\d+-?(p|rc|RC)?\d+)$/.match stem
     return $1 if $1
 
     # eg. lame-398-1
