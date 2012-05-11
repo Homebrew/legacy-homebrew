@@ -117,6 +117,7 @@ class Pathname
   end
 
   # extended to support common double extensions
+  alias extname_old extname
   def extname
     return $1 if to_s =~ bottle_regex
     return $1 if to_s =~ old_bottle_regex
@@ -237,6 +238,34 @@ class Pathname
     return $1 if $1
 
     nil
+  end
+
+  def compression_type
+    # Don't treat jars or wars as compressed
+    return nil if self.extname == '.jar'
+    return nil if self.extname == '.war'
+
+    # OS X installer package
+    return :pkg if self.extname == '.pkg'
+
+    # Get enough of the file to detect common file types
+    # POSIX tar magic has a 257 byte offset
+    magic_bytes = nil
+    File.open(self) { |f| magic_bytes = f.read(262) }
+
+    # magic numbers stolen from /usr/share/file/magic/
+    case magic_bytes
+    when /^PK\003\004/   then :zip
+    when /^\037\213/     then :gzip
+    when /^BZh/          then :bzip2
+    when /^\037\235/     then :compress
+    when /^.{257}ustar/  then :tar
+    when /^\xFD7zXZ\x00/ then :xz
+    when /^Rar!/         then :rar
+    else
+      # Assume it is not an archive
+      nil
+    end
   end
 
   def incremental_hash(hasher)

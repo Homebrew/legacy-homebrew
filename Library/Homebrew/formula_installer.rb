@@ -182,7 +182,12 @@ class FormulaInstaller
 
     args = ARGV.clone
     unless args.include? '--fresh'
-      args.concat tab.used_options unless tab.nil?
+      unless tab.nil?
+        args.concat tab.used_options
+        # FIXME: enforce the download of the non-bottled package
+        # in the spawned Ruby process.
+        args << '--build-from-source'
+      end
       args.uniq! # Just in case some dupes were added
     end
 
