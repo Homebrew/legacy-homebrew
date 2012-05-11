@@ -1,5 +1,20 @@
 require 'formula'
 
+class Ruby18x < Requirement
+  def message; <<-EOS.undent
+    MacVim compiles against whatever Ruby it finds in your path, and has
+    problems working with Ruby 1.9. We've detected Ruby 1.9 in your path,
+    so this compile may fail.
+    EOS
+  end
+  def fatal?
+    false
+  end
+  def satisfied?
+    `ruby --version` =~ /1\.8\.\d/
+  end
+end
+
 class Macvim < Formula
   homepage 'http://code.google.com/p/macvim/'
   url 'https://github.com/b4winckler/macvim/tarball/snapshot-64'
@@ -17,6 +32,7 @@ class Macvim < Formula
   ]
   end
 
+  depends_on Ruby18x.new
   depends_on 'cscope' if ARGV.include? '--with-cscope'
   depends_on 'lua' if ARGV.include? '--with-lua'
 
@@ -32,6 +48,10 @@ class Macvim < Formula
     # PPC support (which isn't needed in Homebrew-supported systems.)
     arch = MacOS.prefer_64_bit? ? 'x86_64' : 'i386'
     ENV['ARCHFLAGS'] = "-arch #{arch}"
+
+    if `ruby --version` =~ /1\.9\.\d/
+      opoo "Your default ruby is 1.9.x, install will likely fail. Try using system ruby"
+    end
 
     args = ["--with-features=huge",
             "--with-tlib=ncurses",
