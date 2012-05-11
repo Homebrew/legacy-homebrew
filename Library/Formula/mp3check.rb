@@ -7,8 +7,8 @@ class Mp3check < Formula
 
   def install
     ENV.deparallelize
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
-    system "make install"
+
+    system 'make'
+    bin.install 'mp3check'
   end
 end
