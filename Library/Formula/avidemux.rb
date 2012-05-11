@@ -6,7 +6,7 @@ class Avidemux < Formula
   url 'http://downloads.sourceforge.net/avidemux/avidemux_2.5.6.tar.gz'
   sha1 '47205c236bf6a4435b9d4dd944493c7b7e2752f5'
 
-  head 'http://svn.berlios.de/svnroot/repos/avidemux/branches/avidemux_2.5_branch_gruntster', :using => :svn
+  head 'http://svn.berlios.de/svnroot/repos/avidemux/branches/avidemux_2.5_branch_gruntster'
 
   depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
