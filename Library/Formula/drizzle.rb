@@ -2,8 +2,8 @@ require 'formula'
 
 class Drizzle < Formula
   homepage 'http://drizzle.org'
-  url 'http://launchpad.net/drizzle/elliott/2011-03-14/+download/drizzle7-2011.03.13.tar.gz'
-  md5 'e152edfec45779c0bd34ece707aa022d'
+  url 'https://launchpad.net/drizzle/7.1/7.1.33/+download/drizzle-7.1.33-stable.tar.gz'
+  md5 '80dbbbdb3ba0ae0059e77cc59e05e45b'
 
   depends_on 'protobuf'
   depends_on 'boost'
