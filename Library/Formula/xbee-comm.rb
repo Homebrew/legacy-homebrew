@@ -3,9 +3,9 @@ require 'formula'
 class XbeeComm < Formula
   homepage 'https://github.com/guyzmo/xbee-comm.git'
   head 'https://github.com/guyzmo/xbee-comm.git'
-  url 'https://github.com/guyzmo/xbee-comm/tarball/a013ada8a1fa14a7d74f9d69064eafb9fd15126f'
-  md5 '955a811d4c99a7c0ea9d9620237756d0'
-  version '1.0'
+  url 'https://github.com/guyzmo/xbee-comm/tarball/v1.5'
+  md5 '63f35b76c9df4f1dd58c082f42e7f19a'
+  version '1.5'
 
   depends_on "automake" => :build
 
