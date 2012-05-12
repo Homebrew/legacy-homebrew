@@ -16,7 +16,7 @@ class P7zip < Formula
       mv 'makefile.macosx_64bits', 'makefile.machine'
     end
 
-    system "make all3"
+    system "make", "all3", "CC=#{ENV.cc} $(ALLFLAGS)", "CXX=#{ENV.cxx} $(ALLFLAGS)"
     system "make", "DEST_HOME=#{prefix}", "DEST_MAN=#{man}", "install"
   end
 end

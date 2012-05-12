@@ -74,13 +74,13 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     when :zip
       quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @tarball_path
       chdir
-    when :gzip, :bzip2, :compress
+    when :gzip, :bzip2, :compress, :tar
       # Assume these are also tarred
       # TODO check if it's really a tar archive
       safe_system '/usr/bin/tar', 'xf', @tarball_path
       chdir
     when :xz
-      raise "You must install XZutils: brew install xz" unless which_s "xz"
+      raise "You must install XZutils: brew install xz" unless which "xz"
       safe_system "xz -dc \"#{@tarball_path}\" | /usr/bin/tar xf -"
       chdir
     when :pkg
@@ -322,7 +322,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 
   def fetch
-    raise "You must install Git: brew install git" unless which_s "git"
+    raise "You must install Git: brew install git" unless which "git"
 
     ohai "Cloning #{@url}"
 
@@ -360,7 +360,6 @@ class GitDownloadStrategy < AbstractDownloadStrategy
           end
 
         git_args = %w[git fetch origin]
-        git_args << '--depth' << '1' if support_depth?
         quiet_safe_system(*git_args)
       end
     end
@@ -456,7 +455,7 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
   def cached_location; @clone; end
 
   def fetch
-    raise "You must install Mercurial: brew install mercurial" unless which_s "hg"
+    raise "You must install Mercurial: brew install mercurial" unless which "hg"
 
     ohai "Cloning #{@url}"
 
@@ -497,7 +496,7 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
   def cached_location; @clone; end
 
   def fetch
-    raise "You must install bazaar first" unless which_s "bzr"
+    raise "You must install bazaar first" unless which "bzr"
 
     ohai "Cloning #{@url}"
     unless @clone.exist?
@@ -540,7 +539,7 @@ class FossilDownloadStrategy < AbstractDownloadStrategy
   def cached_location; @clone; end
 
   def fetch
-    raise "You must install fossil first" unless which_s "fossil"
+    raise "You must install fossil first" unless which "fossil"
 
     ohai "Cloning #{@url}"
     unless @clone.exist?
@@ -580,6 +579,8 @@ def detect_download_strategy url
   when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
   when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
   when %r[^http://www.apache.org/dyn/closer.cgi] then CurlApacheMirrorDownloadStrategy
+    # Common URL patterns
+  when %r[^https?://svn\.] then SubversionDownloadStrategy
     # Otherwise just try to download
   else CurlDownloadStrategy
   end
