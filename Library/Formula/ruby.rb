@@ -5,7 +5,7 @@ class Ruby < Formula
   url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p194.tar.gz'
   sha256 '46e2fa80be7efed51bd9cdc529d1fe22ebc7567ee0f91db4ab855438cf4bd8bb'
 
-  head 'http://svn.ruby-lang.org/repos/ruby/trunk/', :using => :svn
+  head 'http://svn.ruby-lang.org/repos/ruby/trunk/'
 
   depends_on 'pkg-config' => :build
   depends_on 'readline'
