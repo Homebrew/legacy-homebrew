@@ -139,15 +139,13 @@ class Avidemux < Formula
       system "make"
 
       # Two dylibs that are only built as part of the Qt gui need an RPATH
-      # set on their internal deps. Check if they exist before patching them.
-      # A patch to introduce RPATH use upstream is being fashioned.
-      fxv = 'ADM_videoEncoder/ADM_vidEnc_xvid/qt4/cmake_install.cmake'
-      fx2 = 'ADM_videoEncoder/ADM_vidEnc_x264/qt4/cmake_install.cmake'
-      if (File.exists? fxv and File.exists? fx2) then
-        inreplace fxv,
+      # set on their internal deps. Check if Qt4 exists before patching them,
+      # otherwise the inreplaces will fail.
+      if Formula.factory('qt').linked_keg.exist?
+        inreplace 'ADM_videoEncoder/ADM_vidEnc_xvid/qt4/cmake_install.cmake',
           '"libADM_vidEnc_xvid.dylib"',
           '"${CMAKE_INSTALL_PREFIX}/lib/ADM_plugins/videoEncoder/libADM_vidEnc_xvid.dylib"'
-        inreplace fx2,
+        inreplace 'ADM_videoEncoder/ADM_vidEnc_x264/qt4/cmake_install.cmake',
           '"libADM_vidEnc_x264.dylib"',
           '"${CMAKE_INSTALL_PREFIX}/lib/ADM_plugins/videoEncoder/libADM_vidEnc_x264.dylib"'
       end
