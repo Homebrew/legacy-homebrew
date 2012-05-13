@@ -15,16 +15,15 @@ class Libdnet < Formula
   end
 
   def install
-    # "manual" autoreconf to get '.dylib' extension on shared lib
-    system "aclocal --force -I config"
-    system "glibtoolize --copy --force"
-    system "autoconf --force"
-    system "autoheader --force"
-    system "automake --add-missing --copy --force-missing"
+    # autoreconf to get '.dylib' extension on shared lib
+    ENV['ACLOCAL'] = 'aclocal -I config'
+    system 'autoreconf', '-ivf'
 
-    args = ["--disable-debug", "--disable-dependency-tracking",
-            "--prefix=#{prefix}",
-            "--mandir=#{man}"]
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --mandir=#{man}
+    ]
     args << "--with-python" if ARGV.include? "--with-python"
     system "./configure", *args
     system "make install"

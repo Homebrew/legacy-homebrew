@@ -1,8 +1,8 @@
 require 'formula'
 
 class Otx < Formula
-  head 'http://otx.osxninja.com/builds/trunk/', :using => :svn
   homepage 'http://otx.osxninja.com/'
+  head 'http://otx.osxninja.com/builds/trunk/', :using => :svn
 
   def install
     system 'xcodebuild SYMROOT=build'

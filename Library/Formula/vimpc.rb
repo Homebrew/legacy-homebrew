@@ -5,7 +5,7 @@ class Vimpc < Formula
   url 'http://downloads.sourceforge.net/project/vimpc/Release%200.05/vimpc-0.05.tar.gz'
   md5 'f96cdc10827ddfbb53318e9ab4bab93b'
 
-  head 'https://github.com/richoH/vimpc.git'
+  head 'https://github.com/richo/vimpc.git'
 
   depends_on 'pkg-config' => :build
   depends_on 'pcre++'

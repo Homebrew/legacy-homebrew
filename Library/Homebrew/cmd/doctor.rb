@@ -32,7 +32,12 @@ end
 
 
 def path_folders
-  ENV['PATH'].split(':').collect{|p| remove_trailing_slash(File.expand_path(p))}.uniq
+  @path_folders ||= ENV['PATH'].split(':').collect do |p|
+    begin remove_trailing_slash(File.expand_path(p))
+    rescue ArgumentError
+      onoe "The following PATH component is invalid: #{p}"
+    end
+  end.uniq.compact
 end
 
 
