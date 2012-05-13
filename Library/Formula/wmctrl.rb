@@ -18,8 +18,8 @@ class Wmctrl < Formula
 
   def patches
     # 64-bit arch 
-    # (patch derived from packages.debian.org, licensed under the terms 
-    #  of the GNU General Public License)
+    # (patch derived from http://patch-tracker.debian.org/package/wmctrl/1.07-6
+    #  licensed under the terms of the GNU General Public License)
     DATA
   end
 end
