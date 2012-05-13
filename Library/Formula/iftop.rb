@@ -8,6 +8,8 @@ class Iftop < Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--mandir=#{man}"
-    system "make install"
+    system "make"
+    bin.install "iftop"
+    man8.install "iftop.8"
   end
 end
