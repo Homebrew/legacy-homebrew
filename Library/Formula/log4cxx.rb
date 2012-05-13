@@ -32,6 +32,6 @@ class Log4cxx < Formula
                           "--prefix=#{prefix}",
                           # Docs won't install on OS X
                           "--disable-doxygen"
-    system "make install"
+    system 'make install'
   end
 end
