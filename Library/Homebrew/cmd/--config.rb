@@ -45,29 +45,29 @@ module Homebrew extend self
   end
 
   def describe_perl
-    perl = `which perl`.chomp
-    return "N/A" if perl.empty?
+    perl = which 'perl'
+    return "N/A" if perl.nil?
 
-    real_perl = Pathname.new(perl).realpath.to_s
+    real_perl = Pathname.new(perl).realpath
     return perl if perl == real_perl
     return "#{perl} => #{real_perl}"
   end
 
   def describe_python
-    python = `which python`.chomp
-    return "N/A" if python.empty?
+    python = which 'python'
+    return "N/A" if python.nil?
 
-    real_python = Pathname.new(python).realpath.to_s
+    real_python = Pathname.new(python).realpath
 
     return python if python == real_python
     return "#{python} => #{real_python}"
   end
 
   def describe_ruby
-    ruby = `which ruby`.chomp
-    return "N/A" if ruby.empty?
+    ruby = which 'ruby'
+    return "N/A" if ruby.nil?
 
-    real_ruby = Pathname.new(ruby).realpath.to_s
+    real_ruby = Pathname.new(ruby).realpath
     return ruby if ruby == real_ruby
     return "#{ruby} => #{real_ruby}"
   end
