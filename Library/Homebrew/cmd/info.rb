@@ -21,7 +21,7 @@ module Homebrew extend self
   end
 
   def github_fork
-    if system "/usr/bin/which -s git"
+    if which 'git'
       if `git remote -v` =~ %r{origin\s+(https?://|git(?:@|://))github.com[:/](.+)/homebrew}
         $2
       end
