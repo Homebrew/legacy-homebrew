@@ -475,14 +475,7 @@ def check_pkg_config_paths
   binary = `/usr/bin/which pkg-config`.chomp
   return if binary.empty?
 
-  # Use the debug output to determine which paths are searched
-  pkg_config_paths = []
-
-  debug_output = `pkg-config --debug 2>&1`
-  debug_output.split("\n").each do |line|
-    line =~ /Scanning directory '(.*)'/
-    pkg_config_paths << $1 if $1
-  end
+  pkg_config_paths = `pkg-config --variable pc_path pkg-config`.chomp.split(':')
 
   # Check that all expected paths are being searched
   unless pkg_config_paths.include? "/usr/X11/lib/pkgconfig"
