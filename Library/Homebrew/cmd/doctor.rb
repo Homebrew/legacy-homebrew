@@ -669,9 +669,9 @@ end
 def check_for_autoconf
   return if MacOS.xcode_version >= "4.3"
 
-  autoconf = `/usr/bin/which autoconf`.chomp
+  autoconf = which('autoconf')
   safe_autoconfs = %w[/usr/bin/autoconf /Developer/usr/bin/autoconf]
-  unless autoconf.empty? or safe_autoconfs.include? autoconf then <<-EOS.undent
+  unless autoconf.nil? or safe_autoconfs.include? autoconf.to_s then <<-EOS.undent
     An "autoconf" in your path blocks the Xcode-provided version at:
       #{autoconf}
 
