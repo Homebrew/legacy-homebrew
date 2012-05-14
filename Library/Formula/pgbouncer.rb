@@ -1,17 +1,21 @@
 require 'formula'
 
 class Pgbouncer < Formula
-  url 'http://pgfoundry.org/frs/download.php/3197/pgbouncer-1.5.tgz'
   homepage 'http://wiki.postgresql.org/wiki/PgBouncer'
-  md5 '6179fdc7f7e3c702fe834d655676de4c'
+  url 'http://pgfoundry.org/frs/download.php/3240/pgbouncer-1.5.1.tar.gz'
+  md5 '90348e2583ba2fadecaa1aa3cc5a5e78'
 
+  depends_on 'asciidoc' => :build
+  depends_on 'xmlto' => :build
   depends_on 'libevent'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    ENV['XML_CATALOG_FILES'] = "#{etc}/xml/catalog"
+
+    system "./configure", "--disable-debug",
                           "--with-libevent=#{HOMEBREW_PREFIX}",
                           "--prefix=#{prefix}"
-    system "ln -s ../install-sh doc/install-sh"
+    ln_s "../install-sh", "doc/install-sh"
     system "make install"
     bin.install "etc/mkauth.py"
     etc.install %w(etc/pgbouncer.ini etc/userlist.txt)
