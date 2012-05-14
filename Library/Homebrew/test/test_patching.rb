@@ -39,7 +39,7 @@ class PatchingTests < Test::Unit::TestCase
   end
   
   def test_single_patch
-    nostdout do
+    shutup do
       DefaultPatchBall.new('test_patch').brew do
         s = read_file 'libexec/NOOP'
         assert !s.include?("NOOP"), "File was unpatched."
@@ -49,7 +49,7 @@ class PatchingTests < Test::Unit::TestCase
   end
 
   def test_patch_list
-    nostdout do
+    shutup do
       ListPatchBall.new('test_patch_list').brew do
         s = read_file 'libexec/NOOP'
         assert !s.include?("NOOP"), "File was unpatched."
@@ -59,7 +59,7 @@ class PatchingTests < Test::Unit::TestCase
   end
 
   def test_p0_patch
-    nostdout do
+    shutup do
       P0PatchBall.new('test_p0_patch').brew do
         s = read_file 'libexec/NOOP'
         assert !s.include?("NOOP"), "File was unpatched."
@@ -69,7 +69,7 @@ class PatchingTests < Test::Unit::TestCase
   end
 
   def test_p1_patch
-    nostdout do
+    shutup do
       P1PatchBall.new('test_p1_patch').brew do
         s = read_file 'libexec/NOOP'
         assert !s.include?("NOOP"), "File was unpatched."

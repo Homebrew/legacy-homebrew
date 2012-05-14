@@ -55,7 +55,8 @@ class Graphviz < Formula
       }
       EOS
 
-      system "#{bin}/dot -Tpdf -o sample.pdf sample.dot && /usr/bin/open ./sample.pdf && /bin/sleep 3"
+      system "#{bin}/dot", "-Tpdf", "-o", "sample.pdf", "sample.dot"
+      system "/usr/bin/qlmanage", "-p", "./sample.pdf"
     end
   end
 

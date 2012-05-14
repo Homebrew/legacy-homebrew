@@ -2,8 +2,8 @@ require 'formula'
 
 class Autojump < Formula
   homepage 'https://github.com/joelthelion/autojump/wiki'
-  url 'https://github.com/downloads/joelthelion/autojump/autojump_v19.tar.gz'
-  md5 '7dd928f0fb5958067c53fa196a091e53'
+  url 'https://github.com/downloads/joelthelion/autojump/autojump_v20.tar.gz'
+  md5 '5297817c33959cb5afc070f5d174b24f'
 
   head 'https://github.com/joelthelion/autojump.git'
 
@@ -14,7 +14,7 @@ class Autojump < Formula
     man1.install 'autojump.1'
     (prefix+'etc').install 'autojump.sh' => 'autojump'
     (prefix+'etc').install 'autojump.bash', 'autojump.zsh'
-    (share+'zsh/functions').install '_j'
+    (share+'zsh/site-functions').install '_j'
   end
 
   def caveats; <<-EOS.undent
@@ -23,6 +23,9 @@ class Autojump < Formula
     if [ -f `brew --prefix`/etc/autojump ]; then
       . `brew --prefix`/etc/autojump
     fi
+
+    zsh completion has been installed to:
+      #{HOMEBREW_PREFIX}/share/zsh/site-functions
     EOS
   end
 end

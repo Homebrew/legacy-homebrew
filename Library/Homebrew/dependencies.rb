@@ -74,6 +74,10 @@ class Dependency
     @name == other_dep.to_s
   end
 
+  def <=>(other_dep)
+    @name <=> other_dep.to_s
+  end
+
   def options
     @tags.select{|p|p.start_with? '--'}
   end
@@ -101,7 +105,7 @@ class LanguageModuleDependency < Requirement
   def fatal?; true; end
 
   def satisfied?
-    quiet_system *the_test
+    quiet_system(*the_test)
   end
 
   def message; <<-EOS.undent

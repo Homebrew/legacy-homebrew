@@ -1,18 +1,18 @@
 require 'formula'
 
 class Avocadodb < Formula
-  url "https://github.com/triAGENS/AvocadoDB/zipball/v0.2.2"
-  head "https://github.com/triAGENS/AvocadoDB.git"
-
   homepage 'http://www.avocadodb.org/'
-  sha1 '497d175e703be57a0b4bd227c7dbd75b58631c3c'
+  url "https://github.com/triAGENS/AvocadoDB/zipball/v0.3.9"
+  sha1 '95ac8035b709d3c5849dabe2f5cf8475142d9b48'
+
+  head "https://github.com/triAGENS/AvocadoDB.git"
 
   depends_on 'libev'
   depends_on 'v8'
-  depends_on 'boost' => :build
 
   def install
     system "./configure", "--prefix=#{prefix}",
+                          "--disable-relative",
                           "--disable-all-in-one",
                           "--disable-debug",
                           "--disable-dependency-tracking",
@@ -25,16 +25,16 @@ class Avocadodb < Formula
   end
 
   def caveats; <<-EOS.undent
-    Please note that this is a very early version of AvocadoDB. There will be
-    bugs and it would be really appreciated it if you report them:
+    Please note that this is a very early version if AvocadoDB. There will be
+    bugs and the AvocadoDB team would really appreciate it if you report them:
 
       https://github.com/triAGENS/AvocadoDB/issues
 
-    To start AvocadoDB, run:
+    To start the AvocadoDB server, run:
         avocado
 
-    To start AvocadoDB with an interactive (REPL) shell, run:
-        avocado --shell
+    To start the AvocadoDB shell, run:
+        avocsh
     EOS
   end
 end

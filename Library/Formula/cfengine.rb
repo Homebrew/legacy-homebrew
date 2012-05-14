@@ -1,19 +1,21 @@
 require 'formula'
 
 class Cfengine < Formula
-  url 'https://cfengine.com/source-code/download?file=cfengine-3.2.3.tar.gz'
   homepage 'http://cfengine.com/'
-  md5 'be118dd95537221da38008845fc0d84a'
+  url 'https://cfengine.com/source-code/download?file=cfengine-3.3.1.tar.gz'
+  sha1 '254b1a5db2d4b01daf49455c9c9a5dac5b3f2fdb'
 
   depends_on 'tokyo-cabinet'
 
   def install
-    system "./configure", "--with-tokyocabinet", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
-    system "/usr/bin/make install"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-workdir=#{var}/cfengine",
+                          "--with-tokyocabinet"
+    system "make install"
   end
 
   def test
-    system "#{sbin}/cf-agent -V"
+    system "#{bin}/cf-agent -V"
   end
 end

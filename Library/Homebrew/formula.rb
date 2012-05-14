@@ -12,8 +12,8 @@ class Formula
   include FileUtils
 
   attr_reader :name, :path, :url, :version, :homepage, :specs, :downloader
-  attr_reader :standard, :unstable
-  attr_reader :bottle_url, :bottle_sha1, :head
+  attr_reader :standard, :unstable, :head
+  attr_reader :bottle_version, :bottle_url, :bottle_sha1
 
   # The build folder, usually in /tmp.
   # Will only be non-nil during the stage method.
@@ -23,6 +23,7 @@ class Formula
   def initialize name='__UNKNOWN__', path=nil
     set_instance_variable 'homepage'
     set_instance_variable 'url'
+    set_instance_variable 'bottle_version'
     set_instance_variable 'bottle_url'
     set_instance_variable 'bottle_sha1'
     set_instance_variable 'head'
@@ -60,6 +61,8 @@ class Formula
     CHECKSUM_TYPES.each { |type| set_instance_variable type }
 
     @downloader = download_strategy.new @spec_to_use.url, name, version, @spec_to_use.specs
+
+    @bottle_url ||= bottle_base_url + bottle_filename(self) if @bottle_sha1
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -442,6 +445,7 @@ public
   def fetch
     if install_bottle? self
       downloader = CurlBottleDownloadStrategy.new bottle_url, name, version, nil
+      mirror_list = []
     else
       downloader = @downloader
       # Don't attempt mirrors if this install is not pointed at a "stable" URL.
@@ -521,17 +525,16 @@ private
     patch_list = Patches.new(patches)
     return if patch_list.empty?
 
-    unless patch_list.external_curl_args.empty?
+    if patch_list.external_patches?
       ohai "Downloading patches"
-      # downloading all at once is much more efficient, especially for FTP
-      curl(*patch_list.external_curl_args)
+      patch_list.download!
     end
 
     ohai "Patching"
     patch_list.each do |p|
       case p.compression
-        when :gzip  then safe_system "/usr/bin/gunzip",  p.download_filename
-        when :bzip2 then safe_system "/usr/bin/bunzip2", p.download_filename
+        when :gzip  then safe_system "/usr/bin/gunzip",  p.compressed_filename
+        when :bzip2 then safe_system "/usr/bin/bunzip2", p.compressed_filename
       end
       # -f means don't prompt the user if there are errors; just exit with non-zero status
       safe_system '/usr/bin/patch', '-f', *(p.patch_args)
@@ -549,8 +552,8 @@ private
     instance_variable_set("@#{type}", class_value) if class_value
   end
 
-  def method_added method
-    raise 'You cannot override Formula.brew' if method == 'brew'
+  def self.method_added method
+    raise 'You cannot override Formula.brew' if method == :brew
   end
 
   class << self
@@ -568,8 +571,8 @@ private
     end
 
     attr_rw :version, :homepage, :mirrors, :specs
-    attr_rw :keg_only_reason, :skip_clean_all, :bottle_url, :bottle_sha1
-    attr_rw :cc_failures
+    attr_rw :keg_only_reason, :skip_clean_all, :cc_failures
+    attr_rw :bottle_version, :bottle_url, :bottle_sha1
     attr_rw(*CHECKSUM_TYPES)
 
     def head val=nil, specs=nil
@@ -588,14 +591,14 @@ private
 
     def stable &block
       raise "url and md5 must be specified in a block" unless block_given?
-      instance_eval &block unless ARGV.build_devel? or ARGV.build_head?
+      instance_eval(&block) unless ARGV.build_devel? or ARGV.build_head?
     end
 
     def devel &block
       raise "url and md5 must be specified in a block" unless block_given?
       if ARGV.build_devel?
         @mirrors = nil # clear out mirrors from the stable release
-        instance_eval &block
+        instance_eval(&block)
       end
     end
 
@@ -603,6 +606,10 @@ private
       return unless block_given?
 
       bottle_block = Class.new do
+        def self.version version
+          @version = version
+        end
+
         def self.url url
           @url = url
         end
@@ -617,18 +624,15 @@ private
           end
         end
 
-        def self.url_sha1
-          if @sha1 && @url
-            return @url, @sha1
-          elsif @sha1
-            return nil, @sha1
-          end
+        def self.data
+          @version = 0 unless @version
+          return @version, @url, @sha1 if @sha1 && @url
+          return @version, nil, @sha1 if @sha1
         end
       end
 
-      bottle_block.instance_eval &block
-      @bottle_url, @bottle_sha1 = bottle_block.url_sha1
-      @bottle_url ||= "#{bottle_base_url}#{name.downcase}-#{@version||@standard.detect_version}#{bottle_native_suffix}" if @bottle_sha1
+      bottle_block.instance_eval(&block)
+      @bottle_version, @bottle_url, @bottle_sha1 = bottle_block.data
     end
 
     def mirror val, specs=nil

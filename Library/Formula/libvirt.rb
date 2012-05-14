@@ -2,8 +2,14 @@ require 'formula'
 
 class Libvirt < Formula
   homepage 'http://www.libvirt.org'
-  url 'ftp://libvirt.org/libvirt/libvirt-0.9.10.tar.gz'
-  sha256 '5b81d9f054ee4b395b0ab4f59845d082baaa6d6c2a038c966309156dde16e11d'
+  url 'http://libvirt.org/sources/stable_updates/libvirt-0.9.11.3.tar.gz'
+  sha256 'aa73b329d2f6eb200991b9dc378d4636c15cd2f95ca224995d01b45257584fa2'
+
+  # Latest (roughly) monthly release.
+  devel do
+    url 'http://libvirt.org/sources/libvirt-0.9.12.tar.gz'
+    sha256 '298ffc7f2a6d6e78aae46f11a0980f4bc17fa2928f5de6cd9e8abaf5990336e7'
+  end
 
   depends_on "gnutls"
   depends_on "yajl"
@@ -17,13 +23,6 @@ class Libvirt < Formula
   fails_with :llvm do
     build 2326
     cause "Undefined symbols when linking"
-  end
-
-  # Includes a patch by Lincoln Myers <lincoln_myers@yahoo.com>,
-  # fixing a recently introduced compilation bug on OSX.
-  # Patch is already included upstream, and will be in libvirt 0.9.11.
-  def patches
-    DATA
   end
 
   def options
@@ -55,7 +54,6 @@ class Libvirt < Formula
     # Update the SASL config file with the Homebrew prefix
     inreplace "#{etc}/sasl2/libvirt.conf" do |s|
       s.gsub! "/etc/", "#{HOMEBREW_PREFIX}/etc/"
-      s.gsub! "/var/", "#{HOMEBREW_PREFIX}/var/"
     end
 
     # If the libvirt daemon is built, update its config file to reflect
@@ -68,23 +66,3 @@ class Libvirt < Formula
     end
   end
 end
-
-__END__
-# Fix for OSX by Lincoln Myers <lincoln_myers@yahoo.com>
---- a/src/util/virfile.h
-+++ b/src/util/virfile.h
-@@ -58,10 +58,10 @@ typedef virFileWrapperFd *virFileWrapperFdPtr;
-
- int virFileDirectFdFlag(void);
-
--enum {
-+enum virFileWrapperFdFlags {
-     VIR_FILE_WRAPPER_BYPASS_CACHE   = (1 << 0),
-     VIR_FILE_WRAPPER_NON_BLOCKING   = (1 << 1),
--} virFileWrapperFdFlags;
-+};
-
- virFileWrapperFdPtr virFileWrapperFdNew(int *fd,
-                                         const char *name,
---
-1.7.8.3
