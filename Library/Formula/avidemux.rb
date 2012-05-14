@@ -6,7 +6,7 @@ class Avidemux < Formula
   url 'http://downloads.sourceforge.net/avidemux/avidemux_2.5.6.tar.gz'
   sha1 '47205c236bf6a4435b9d4dd944493c7b7e2752f5'
 
-  head 'http://svn.berlios.de/svnroot/repos/avidemux/branches/avidemux_2.5_branch_gruntster', :using => :svn
+  head 'http://svn.berlios.de/svnroot/repos/avidemux/branches/avidemux_2.5_branch_gruntster'
 
   depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
@@ -139,15 +139,13 @@ class Avidemux < Formula
       system "make"
 
       # Two dylibs that are only built as part of the Qt gui need an RPATH
-      # set on their internal deps. Check if they exist before patching them.
-      # A patch to introduce RPATH use upstream is being fashioned.
-      fxv = 'ADM_videoEncoder/ADM_vidEnc_xvid/qt4/cmake_install.cmake'
-      fx2 = 'ADM_videoEncoder/ADM_vidEnc_x264/qt4/cmake_install.cmake'
-      if (File.exists? fxv and File.exists? fx2) then
-        inreplace fxv,
+      # set on their internal deps. Check if Qt4 exists before patching them,
+      # otherwise the inreplaces will fail.
+      if Formula.factory('qt').linked_keg.exist?
+        inreplace 'ADM_videoEncoder/ADM_vidEnc_xvid/qt4/cmake_install.cmake',
           '"libADM_vidEnc_xvid.dylib"',
           '"${CMAKE_INSTALL_PREFIX}/lib/ADM_plugins/videoEncoder/libADM_vidEnc_xvid.dylib"'
-        inreplace fx2,
+        inreplace 'ADM_videoEncoder/ADM_vidEnc_x264/qt4/cmake_install.cmake',
           '"libADM_vidEnc_x264.dylib"',
           '"${CMAKE_INSTALL_PREFIX}/lib/ADM_plugins/videoEncoder/libADM_vidEnc_x264.dylib"'
       end

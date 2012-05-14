@@ -32,7 +32,12 @@ end
 
 
 def path_folders
-  ENV['PATH'].split(':').collect{|p| remove_trailing_slash(File.expand_path(p))}.uniq
+  @path_folders ||= ENV['PATH'].split(':').collect do |p|
+    begin remove_trailing_slash(File.expand_path(p))
+    rescue ArgumentError
+      onoe "The following PATH component is invalid: #{p}"
+    end
+  end.uniq.compact
 end
 
 
@@ -470,14 +475,7 @@ def check_pkg_config_paths
   binary = `/usr/bin/which pkg-config`.chomp
   return if binary.empty?
 
-  # Use the debug output to determine which paths are searched
-  pkg_config_paths = []
-
-  debug_output = `pkg-config --debug 2>&1`
-  debug_output.split("\n").each do |line|
-    line =~ /Scanning directory '(.*)'/
-    pkg_config_paths << $1 if $1
-  end
+  pkg_config_paths = `pkg-config --variable pc_path pkg-config`.chomp.split(':')
 
   # Check that all expected paths are being searched
   unless pkg_config_paths.include? "/usr/X11/lib/pkgconfig"
@@ -664,9 +662,9 @@ end
 def check_for_autoconf
   return if MacOS.xcode_version >= "4.3"
 
-  autoconf = `/usr/bin/which autoconf`.chomp
+  autoconf = which('autoconf')
   safe_autoconfs = %w[/usr/bin/autoconf /Developer/usr/bin/autoconf]
-  unless autoconf.empty? or safe_autoconfs.include? autoconf then <<-EOS.undent
+  unless autoconf.nil? or safe_autoconfs.include? autoconf.to_s then <<-EOS.undent
     An "autoconf" in your path blocks the Xcode-provided version at:
       #{autoconf}
 
