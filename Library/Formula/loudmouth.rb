@@ -11,6 +11,10 @@ class Loudmouth < Formula
   depends_on 'gnutls'
   depends_on 'libidn'
 
+  def patches
+    DATA
+  end
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
@@ -18,3 +22,20 @@ class Loudmouth < Formula
     system "make install"
   end
 end
+
+
+__END__
+diff --git a/loudmouth/lm-error.c b/loudmouth/lm-error.c
+index 103aaaf..74d3315 100644
+--- a/loudmouth/lm-error.c
++++ b/loudmouth/lm-error.c
+@@ -25,7 +25,7 @@
+  */
+ 
+ #include <config.h>
+-#include <glib/gerror.h>
++#include <glib.h>
+ #include "lm-error.h"
+ 
+ GQuark
+
