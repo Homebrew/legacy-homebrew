@@ -2,8 +2,8 @@ require 'formula'
 
 class Lame < Formula
   homepage 'http://lame.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/sourceforge/lame/lame-3.99.4.tar.gz'
-  md5 'e54d7847bfd01f18d56c07e65147d75a'
+  url 'http://downloads.sourceforge.net/sourceforge/lame/lame-3.99.5.tar.gz'
+  md5 '84835b313d4a8b68f5349816d33e07ce'
 
   def install
     system "./configure", "--disable-debug", "--prefix=#{prefix}", "--enable-nasm"
