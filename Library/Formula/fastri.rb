@@ -6,6 +6,6 @@ class Fastri < Formula
   md5 '3a7d0a64b1c8e230a34ef7b4bad30dbe'
 
   def install
-    system "ruby setup.rb all --prefix='#{prefix}'"
+    system "ruby", "setup.rb", "all", "--prefix=#{prefix}"
   end
 end
