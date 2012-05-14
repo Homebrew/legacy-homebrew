@@ -2,8 +2,16 @@ require 'formula'
 
 class Libvirt < Formula
   homepage 'http://www.libvirt.org'
-  url 'ftp://libvirt.org/libvirt/libvirt-0.9.11.tar.gz'
-  sha256 'ce98fe435f83e109623a021b1f714fe806c3ab556d0780ce959cf75c98766062'
+  version "0.9.11.3"
+  url 'http://libvirt.org/sources/stable_updates/libvirt-0.9.11.3.tar.gz'
+  sha256 'aa73b329d2f6eb200991b9dc378d4636c15cd2f95ca224995d01b45257584fa2'
+
+  # Latest (roughly) monthly release.
+  devel do
+    version "0.9.11"
+    url 'http://libvirt.org/sources/libvirt-0.9.11.tar.gz'
+    sha256 'ce98fe435f83e109623a021b1f714fe806c3ab556d0780ce959cf75c98766062'
+  end
 
   depends_on "gnutls"
   depends_on "yajl"
@@ -20,7 +28,9 @@ class Libvirt < Formula
   end
 
   def options
-    [['--without-libvirtd', 'Build only the virsh client and development libraries.']]
+    [
+      ['--without-libvirtd', 'Build only the virsh client and development libraries.']
+    ]
   end
 
   def install
