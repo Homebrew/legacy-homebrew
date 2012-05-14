@@ -9,7 +9,7 @@ class Postgis < Formula
   url 'http://postgis.org/download/postgis-2.0.0.tar.gz'
   md5 '639d2b5d6a7dc94ea2e60d6942a615bc'
 
-  head 'http://svn.osgeo.org/postgis/trunk/', :using => :svn
+  head 'http://svn.osgeo.org/postgis/trunk/'
 
   depends_on 'postgresql'
   depends_on 'proj'
@@ -70,7 +70,7 @@ class Postgis < Formula
     # install everything to a staging directory and manually move the pieces
     # into the appropriate prefixes.
     mkdir 'stage'
-    system 'make', 'install', "DESTDIR=#{Dir.getwd}/stage"
+    system 'make', 'install', "DESTDIR=#{buildpath}/stage"
 
     # Install PostGIS plugin libraries into the Postgres keg so that they can
     # be loaded and so PostGIS databases will continue to function even if
