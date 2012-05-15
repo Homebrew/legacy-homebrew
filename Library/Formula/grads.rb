@@ -11,18 +11,19 @@ class Grads < Formula
   md5 '3c94e4e2f840a323df24df5264e159ff'
 
   def install
-    bin.install ['bin/bufrscan', 'bin/grads', 'bin/grib2scan', 'bin/gribmap', 'bin/gribscan', 'bin/gxeps', 'bin/gxps', 'bin/gxtran', 'bin/stnmap', 'bin/wgrib']
+    rm 'bin/INSTALL'
+    prefix.install 'bin/COPYRIGHT'
+    prefix.install 'bin'
 
     # Install the required supplementary files
     GradsSupplementary.new.brew{ (lib+'grads').install Dir['*'] }
   end
 
-  if HOMEBREW_PREFIX.to_s != '/usr/local'
-    def caveats
-      <<-EOS.undent
-        In order to use the GrADS tools, you will need to set the GADDIR
-        environment variable to:
-          #{HOMEBREW_PREFIX}/lib/grads
+  def caveats
+    if HOMEBREW_PREFIX.to_s != '/usr/local' then <<-EOS.undent
+      In order to use the GrADS tools, you will need to set the GADDIR
+      environment variable to:
+        #{HOMEBREW_PREFIX}/lib/grads
       EOS
     end
   end

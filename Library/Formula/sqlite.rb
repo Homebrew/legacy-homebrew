@@ -49,7 +49,11 @@ class Sqlite < Formula
 
     if ARGV.include? "--with-functions"
       SqliteFunctions.new.brew { mv 'extension-functions.c?get=25', buildpath/'extension-functions.c' }
-      system ENV.cc, "-fno-common", "-dynamiclib", "extension-functions.c", "-o", "libsqlitefunctions.dylib", *ENV.cflags.split
+      system ENV.cc, "-fno-common",
+                     "-dynamiclib",
+                     "extension-functions.c",
+                     "-o", "libsqlitefunctions.dylib",
+                     *ENV.cflags.split
       lib.install "libsqlitefunctions.dylib"
     end
 
