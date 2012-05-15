@@ -16,7 +16,7 @@ class Libimobiledevice < Formula
 
   if MacOS.xcode_version >= "4.3" and ARGV.build_head?
     depends_on 'libtool' => :build
-    depends_on 'autoconf' => :build
+    depends_on 'automake' => :build
   end
 
   def install
