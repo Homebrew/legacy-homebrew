@@ -74,6 +74,10 @@ class MacvimSplitBrowser < Formula
   end
 
   def caveats; <<-EOS.undent
+    This formula will most probably conflict with the macvim formula.
+    If you already installed MacVim from Homebrew, please remove it using:
+        brew uninstall macvim
+
     MacVim.app installed to:
       #{prefix}
 
