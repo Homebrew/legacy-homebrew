@@ -10,7 +10,7 @@ class Valkyrie < Formula
   depends_on 'valgrind'
 
   def install
-    system "qmake PREFIX=#{prefix}"
+    system "qmake", "PREFIX=#{prefix}"
     system "make install"
 
     #Move app to where homebrew expects it to be
