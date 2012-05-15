@@ -8,6 +8,11 @@ class Cfengine < Formula
   depends_on 'tokyo-cabinet'
   depends_on 'pcre'
 
+  def patches
+    # See https://github.com/cfengine/core/commit/ce2b8abf
+    "https://github.com/cfengine/core/commit/ce2b8abf.patch" if ENV.compiler == :clang
+  end
+
   def install
     # Find our libpcre
     ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
