@@ -20,12 +20,12 @@ class PdflibLite < Formula
                           "--without-ruby"
     system "make"
     system "make install"
+  end
 
-    def caveats; <<-EOM
-pdflib-lite is not open source software; usage restrictions apply!
-Be sure to understand and obey the license terms, which can be found at:
-http://www.pdflib.com/products/pdflib-family/pdflib-lite/pdflib-lite-licensing/
-      EOM
-    end
+  def caveats; <<-EOS.undent
+    pdflib-lite is not open source software; usage restrictions apply!
+    Be sure to understand and obey the license terms, which can be found at:
+    http://www.pdflib.com/products/pdflib-family/pdflib-lite/pdflib-lite-licensing/
+    EOS
   end
 end
