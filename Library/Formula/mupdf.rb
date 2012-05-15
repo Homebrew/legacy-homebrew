@@ -33,7 +33,7 @@ class Mupdf < Formula
 
   def install
     ENV.x11 # For LibPNG and Freetype
-    system "make install prefix=#{prefix}"
+    system "make", "install", "prefix=#{prefix}"
 
     # MuPDF comes with some handy command-line tools. However, their names can
     # clash with other tools installed by formulae such as Poppler. So, we

@@ -74,7 +74,9 @@ class Octave < Formula
     args = [
       "--disable-dependency-tracking",
       "--prefix=#{prefix}",
-      "--with-blas=#{'-ldotwrp ' if snow_leopard_64?}-framework Accelerate"
+      # Cant use `-framework Accelerate` because `mkoctfile`, the tool used to
+      # compile extension packages, can't parse `-framework` flags.
+      "--with-blas=#{'-ldotwrp ' if snow_leopard_64?}-Wl,-framework -Wl,Accelerate"
     ]
     args << "--without-framework-carbon" if MacOS.lion?
 

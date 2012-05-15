@@ -8,7 +8,7 @@ class Daemon < Formula
   def install
     system "./config"
     system "make"
-    system "make PREFIX=#{prefix} install"
+    system "make", "PREFIX=#{prefix}", "install"
   end
 
   def test

@@ -334,6 +334,11 @@ class Formula
       # If name was a path or mapped to a cached formula
       if name.include? "/"
         require name
+
+        # require allows filenames to drop the .rb extension, but everything else
+        # in our codebase will require an exact and fullpath.
+        name = "#{name}.rb" unless name =~ /\.rb$/
+
         path = Pathname.new(name)
         name = path.stem
         install_type = :from_path
