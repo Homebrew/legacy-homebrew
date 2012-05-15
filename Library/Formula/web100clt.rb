@@ -22,6 +22,6 @@ class Web100clt < Formula
   end
 
   def test
-    system "#{bin}/web100clt -v"
+    system "#{bin}/web100clt", "-v"
   end
 end

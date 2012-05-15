@@ -28,6 +28,6 @@ class Vimpc < Formula
   end
 
   def test
-    system "#{bin}/vimpc -v"
+    system "#{bin}/vimpc", "-v"
   end
 end

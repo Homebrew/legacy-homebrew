@@ -12,6 +12,6 @@ class Xclip < Formula
   end
 
   def test
-    system "#{bin}/xclip -version"
+    system "#{bin}/xclip", "-version"
   end
 end

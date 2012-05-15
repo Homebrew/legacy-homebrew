@@ -22,6 +22,6 @@ class Imapfilter < Formula
   end
 
   def test
-    system "#{bin}/imapfilter -V"
+    system "#{bin}/imapfilter", "-V"
   end
 end

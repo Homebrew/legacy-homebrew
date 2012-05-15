@@ -21,7 +21,7 @@ class Checkstyle < Formula
       (Pathname.pwd/"Test.java").write <<-EOS.undent
         public class Test{ }
       EOS
-      system "#{bin}/checkstyle -c #{libexec}/sun_checks.xml -r Test.java"
+      system "#{bin}/checkstyle", "-c", "#{libexec}/sun_checks.xml", "-r", "Test.java"
     end
   end
 end

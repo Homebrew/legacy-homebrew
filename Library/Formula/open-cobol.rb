@@ -15,6 +15,6 @@ class OpenCobol < Formula
   end
 
   def test
-    system "#{bin}/cobc --help"
+    system "#{bin}/cobc", "--help"
   end
 end

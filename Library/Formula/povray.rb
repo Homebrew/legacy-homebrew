@@ -24,7 +24,7 @@ class Povray < Formula
   def test
     ohai "Rendering all test scenes; this may take a while"
     mktemp do
-      system "#{share}/povray-3.6/scripts/allscene.sh -o ."
+      system "#{share}/povray-3.6/scripts/allscene.sh", "-o", "."
     end
   end
 end

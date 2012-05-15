@@ -12,6 +12,6 @@ class Daemon < Formula
   end
 
   def test
-    system "#{bin}/daemon --version"
+    system "#{bin}/daemon", "--version"
   end
 end

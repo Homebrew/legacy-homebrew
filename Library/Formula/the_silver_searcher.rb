@@ -29,6 +29,6 @@ class TheSilverSearcher < Formula
   end
 
   def test
-    system "#{bin}/ag --version"
+    system "#{bin}/ag", "--version"
   end
 end

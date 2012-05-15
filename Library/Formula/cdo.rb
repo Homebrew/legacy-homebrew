@@ -35,6 +35,6 @@ class Cdo < Formula
   end
 
   def test
-    system "#{bin}/cdo -h"
+    system "#{bin}/cdo", "-h"
   end
 end

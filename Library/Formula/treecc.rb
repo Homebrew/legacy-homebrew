@@ -12,6 +12,6 @@ class Treecc < Formula
   end
 
   def test
-    system "#{bin}/treecc -v"
+    system "#{bin}/treecc", "-v"
   end
 end

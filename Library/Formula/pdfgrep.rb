@@ -15,6 +15,6 @@ class Pdfgrep < Formula
   end
 
   def test
-    system "#{bin}/pdfgrep --version"
+    system "#{bin}/pdfgrep", "--version"
   end
 end

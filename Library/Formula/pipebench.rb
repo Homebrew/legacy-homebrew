@@ -12,6 +12,6 @@ class Pipebench < Formula
   end
 
   def test
-    system "#{bin}/pipebench -h"
+    system "#{bin}/pipebench", "-h"
   end
 end

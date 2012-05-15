@@ -46,6 +46,6 @@ class Cmake < Formula
   end
 
   def test
-    system "#{bin}/cmake -E echo testing"
+    system "#{bin}/cmake", "-E", "echo", "testing"
   end
 end

@@ -35,6 +35,6 @@ class Wget < Formula
   end
 
   def test
-    system "#{bin}/wget -O - www.google.com"
+    system "#{bin}/wget", "-O", "-", "www.google.com"
   end
 end

@@ -11,6 +11,6 @@ class Dmenu < Formula
   end
 
   def test
-    system "#{bin}/dmenu -v"
+    system "#{bin}/dmenu", "-v"
   end
 end

@@ -11,6 +11,6 @@ class Wbox < Formula
   end
 
   def test
-    system "#{bin}/wbox www.google.com 1"
+    system "#{bin}/wbox", "www.google.com", "1"
   end
 end

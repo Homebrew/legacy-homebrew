@@ -58,7 +58,7 @@ class Ghc < Formula
       opoo "The current version of haskell-platform will NOT work with this version of GHC!"
     end
 
-    system "./configure --prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 

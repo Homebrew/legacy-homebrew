@@ -25,6 +25,6 @@ class Cfengine < Formula
   end
 
   def test
-    system "#{bin}/cf-agent -V"
+    system "#{bin}/cf-agent", "-V"
   end
 end

@@ -12,6 +12,6 @@ class Tal < Formula
   end
 
   def test
-    system "#{bin}/tal /etc/passwd"
+    system "#{bin}/tal", "/etc/passwd"
   end
 end

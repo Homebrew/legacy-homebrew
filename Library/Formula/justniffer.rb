@@ -28,7 +28,7 @@ class Justniffer < Formula
   end
 
   def install
-    system "./configure --prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 

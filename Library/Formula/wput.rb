@@ -20,7 +20,7 @@ class Wput < Formula
   end
 
   def test
-    system "#{bin}/wput --version"
+    system "#{bin}/wput", "--version"
   end
 end
 

@@ -14,6 +14,6 @@ class WaitOn < Formula
   end
 
   def test
-    system "#{bin}/wait_on -v"
+    system "#{bin}/wait_on", "-v"
   end
 end
