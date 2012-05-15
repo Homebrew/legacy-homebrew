@@ -9,7 +9,6 @@ class Sshfs < Formula
   depends_on 'pkg-config' => :build
   depends_on 'fuse4x'
   depends_on 'glib'
-  depends_on "automake" if MacOS.xcode_version >= "4.3"
 
   if MacOS.xcode_version >= "4.3"
     # remove the autoreconf if possible, no comment provided about why it is there

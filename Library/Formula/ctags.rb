@@ -7,6 +7,8 @@ class Ctags < Formula
 
   head 'https://ctags.svn.sourceforge.net/svnroot/ctags/trunk'
 
+  depends_on 'autoconf' => :build if MacOS.xcode_version.to_f >= 4.3
+
   fails_with :llvm do
     build 2335
     cause "Resulting executable generates erroneous tag files"

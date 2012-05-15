@@ -6,10 +6,11 @@ class Asciidoc < Formula
   head 'https://code.google.com/p/asciidoc/', :using => :hg
   homepage 'http://www.methods.co.nz/asciidoc'
 
+  depends_on 'autoconf' => :build if MacOS.xcode_version.to_f >= 4.3 and ARGV.build_head?
   depends_on 'docbook'
 
   def install
-    system "autoconf" if ARGV.build_head? and not File.exists? "./configure"
+    system "autoconf" if ARGV.build_head?
     system "./configure", "--prefix=#{prefix}"
 
     # otherwise OS X's xmllint bails out
