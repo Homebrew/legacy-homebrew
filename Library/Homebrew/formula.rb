@@ -333,6 +333,10 @@ class Formula
       name = Formula.canonical_name(name)
       # If name was a path or mapped to a cached formula
       if name.include? "/"
+        # If the "path" does not end in .rb, reject it (solves path.stem == path problem)
+        if !name.end_with? '.rb'
+          raise FormulaUnavailableError.new(name)
+        end
         require name
         path = Pathname.new(name)
         name = path.stem
