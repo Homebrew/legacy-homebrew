@@ -105,7 +105,7 @@ class Llvm < Formula
   end
 
   def test
-    system "#{bin}/llvm-config --version"
+    system "#{bin}/llvm-config", "--version"
   end
 
   def caveats; <<-EOS.undent

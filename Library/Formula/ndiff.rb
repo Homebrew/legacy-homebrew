@@ -17,6 +17,6 @@ class Ndiff < Formula
   end
 
   def test
-    system "#{bin}/ndiff --help"
+    system "#{bin}/ndiff", "--help"
   end
 end

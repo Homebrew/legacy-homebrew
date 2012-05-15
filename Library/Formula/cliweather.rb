@@ -10,6 +10,6 @@ class Cliweather < Formula
   end
 
   def test
-    system "#{bin}/cliweather 98027"
+    system "#{bin}/cliweather", "98027"
   end
 end

@@ -113,7 +113,7 @@ class Qt < Formula
   end
 
   def test
-    "#{bin}/qmake --version"
+    system "#{bin}/qmake", "--version"
   end
 
   def caveats; <<-EOS.undent

@@ -26,6 +26,6 @@ class GmapGsnap < Formula
   end
 
   def test
-    system "#{bin}/gsnap --version"
+    system "#{bin}/gsnap", "--version"
   end
 end
