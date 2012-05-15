@@ -1,11 +1,13 @@
 require 'formula'
 
 class Pgbouncer < Formula
-  url 'http://pgfoundry.org/frs/download.php/3197/pgbouncer-1.5.tgz'
+  url 'http://pgfoundry.org/frs/download.php/3240/pgbouncer-1.5.1.tar.gz'
   homepage 'http://wiki.postgresql.org/wiki/PgBouncer'
-  md5 '6179fdc7f7e3c702fe834d655676de4c'
+  md5 '90348e2583ba2fadecaa1aa3cc5a5e78'
 
   depends_on 'libevent'
+  depends_on 'asciidoc'
+  depends_on 'xmlto'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
