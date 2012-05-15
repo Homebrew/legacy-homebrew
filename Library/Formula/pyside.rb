@@ -24,7 +24,12 @@ class Pyside < Formula
     ENV.append_to_cflags "-F#{qt.prefix}/Frameworks"
 
     # Also need `ALTERNATIVE_QT_INCLUDE_DIR` to prevent "missing file" errors.
-    system "cmake #{std_cmake_parameters} -DALTERNATIVE_QT_INCLUDE_DIR='#{qt.prefix}/Frameworks' -DSITE_PACKAGE=#{site_package_dir} -DBUILD_TESTS=NO ."
+    args = std_cmake_parameters.split + %W[
+      -DALTERNATIVE_QT_INCLUDE_DIR=#{qt.prefix}/Frameworks
+      -DSITE_PACKAGE=#{site_package_dir}
+      -DBUILD_TESTS=NO
+      .]
+    system "cmake", *args
     system 'make install'
   end
 

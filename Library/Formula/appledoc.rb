@@ -7,7 +7,13 @@ class Appledoc < Formula
   md5 '142cf80513ca8eda2aba631483b2e4e6'
 
   def install
-    system "xcodebuild", "-project", "appledoc.xcodeproj", "-target", "appledoc", "-configuration", "Release", "install", "SYMROOT=build", "DSTROOT=build", "INSTALL_PATH=/bin"
+    system "xcodebuild", "-project", "appledoc.xcodeproj",
+                         "-target", "appledoc",
+                         "-configuration", "Release",
+                         "install",
+                         "SYMROOT=build",
+                         "DSTROOT=build",
+                         "INSTALL_PATH=/bin"
     bin.install "build/bin/appledoc"
     prefix.install "Templates/"
   end
