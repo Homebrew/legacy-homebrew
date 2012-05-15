@@ -1,20 +1,43 @@
 require 'formula'
 
 class Snort < Formula
-  url 'http://www.snort.org/dl/snort-current/snort-2.9.0.5.tar.gz'
   homepage 'http://www.snort.org'
-  md5 'a7e6f0b013f767d09c99f8f91757e355'
+  url 'http://www.snort.org/dl/snort-current/snort-2.9.2.2.tar.gz'
+  md5 '4254389550e3be31afebc70e64e6002f'
 
   depends_on 'daq'
   depends_on 'libdnet'
   depends_on 'pcre'
 
+  def options
+    [['--enable-debug', "Compile Snort with --enable-debug and --enable-debug-msgs"]]
+  end
+
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--enable-ipv6", "--enable-zlib",
-                          "--enable-mpls", "--enable-targetbased", "--enable-ppm",
-                          "--enable-perfprofiling", "--enable-active-response",
-                          "--enable-normalizer"
+    args = %W[--prefix=#{prefix}
+              --disable-dependency-tracking
+              --enable-ipv6
+              --enable-gre
+              --enable-mpls
+              --enable-targetbased
+              --enable-decoder-preprocessor-rules
+              --enable-ppm
+              --enable-perfprofiling
+              --enable-zlib
+              --enable-active-response
+              --enable-normalizer
+              --enable-reload
+              --enable-react
+              --enable-flexresp3]
+
+    if ARGV.include?('--enable-debug')
+      args << "--enable-debug"
+      args << "--enable-debug-msgs"
+    else
+      args << "--disable-debug"
+    end
+
+    system "./configure", *args
     system "make install"
   end
 
