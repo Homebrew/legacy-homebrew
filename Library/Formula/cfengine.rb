@@ -6,6 +6,7 @@ class Cfengine < Formula
   sha1 '254b1a5db2d4b01daf49455c9c9a5dac5b3f2fdb'
 
   depends_on 'tokyo-cabinet'
+  depends_on 'pcre'
 
   def install
     system "./configure", "--disable-dependency-tracking",
