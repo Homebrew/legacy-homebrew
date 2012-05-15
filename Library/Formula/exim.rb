@@ -41,7 +41,7 @@ class Exim < Formula
       # For non-/usr/local HOMEBREW_PREFIX
       s << "LOOKUP_INCLUDE=-I#{HOMEBREW_PREFIX}/include\n"
       s << "LOOKUP_LIBS=-L#{HOMEBREW_PREFIX}/lib\n"
-   end
+    end
 
     inreplace 'OS/Makefile-Darwin' do |s|
       s.remove_make_var! %w{CC CFLAGS}
