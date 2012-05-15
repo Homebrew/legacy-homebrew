@@ -9,7 +9,7 @@ class Ddrescue < Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "CXX=#{ENV['CXX']}"
+                          "CXX=#{ENV.cxx}"
     system "make install"
   end
 end

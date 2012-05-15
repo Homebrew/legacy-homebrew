@@ -67,7 +67,7 @@ class Boost < Formula
 
     # Force boost to compile using the appropriate GCC version
     open("user-config.jam", "a") do |file|
-      file.write "using darwin : : #{ENV['CXX']} ;\n"
+      file.write "using darwin : : #{ENV.cxx} ;\n"
       file.write "using mpi ;\n" if ARGV.include? '--with-mpi'
     end
 

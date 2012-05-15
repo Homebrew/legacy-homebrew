@@ -76,7 +76,7 @@ class Qt < Formula
     end
 
     # Needed for Qt 4.8.1 due to attempting to link moc with gcc.
-    ENV['LD'] = ENV['CXX']
+    ENV['LD'] = ENV.cxx
 
     system "./configure", *args
     system "make"
