@@ -25,6 +25,6 @@ class Dash < Formula
   end
 
   def test
-    system bin/'dash', '-c', 'echo Hello!'
+    system "#{bin}/dash", "-c", "echo Hello!"
   end
 end
