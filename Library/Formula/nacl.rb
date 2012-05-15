@@ -29,7 +29,7 @@ class Nacl < Formula
     # but plenty of the key generation routines depend on it. Users shouldn't have to
     # know this.
     nacl_libdir = "build/#{hoststr}/lib/#{archstr}"
-    system "ar -r #{nacl_libdir}/libnacl.a #{nacl_libdir}/randombytes.o"
+    system "ar", "-r", "#{nacl_libdir}/libnacl.a", "#{nacl_libdir}/randombytes.o"
     lib.install "#{nacl_libdir}/libnacl.a"
   end
 end

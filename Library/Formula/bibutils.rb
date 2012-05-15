@@ -6,7 +6,7 @@ class Bibutils < Formula
   md5 '395f46393eca8e184652c5e8e1ae83b6'
 
   def install
-    system "./configure --install-dir #{prefix}"
+    system "./configure", "--install-dir", prefix
 
     # The configure script replaces the CC variable wrong, so fix it here
     inreplace 'Makefile' do |s|

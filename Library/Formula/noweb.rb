@@ -15,17 +15,17 @@ class Noweb < Formula
 
       if which 'kpsewhich'
         ohai 'TeX installation found. Installing TeX support files there might fail if your user does not have permission'
-        texmf = "`kpsewhich -var-value=TEXMFLOCAL`"
+        texmf = Pathname.new(`kpsewhich -var-value=TEXMFLOCAL`.chomp)
       else
         ohai 'No TeX installation found. Installing TeX support files in the noweb Cellar.'
-        texmf = "#{prefix}"
+        texmf = prefix
       end
 
       bin.mkpath
       lib.mkpath
       man.mkpath
+      (texmf/'tex/generic/noweb').mkpath
 
-      system "mkdir -p #{texmf}/tex/generic/noweb"
       system "make", "install", "BIN=#{bin}",
                                 "LIB=#{lib}",
                                 "MAN=#{man}",

@@ -16,7 +16,7 @@ class John < Formula
     arch = Hardware.is_64_bit? ? '64' : 'sse2'
 
     cd 'src' do
-      system "make clean macosx-x86-#{arch}"
+      system "make", "clean", "macosx-x86-#{arch}"
     end
 
     rm 'README'

@@ -8,7 +8,7 @@ class Innotop < Formula
   depends_on 'DBD::mysql' => :perl
 
   def install
-    system "perl Makefile.PL PREFIX=#{prefix}"
+    system "perl", "Makefile.PL", "PREFIX=#{prefix}"
     system "make install"
   end
 end

@@ -12,6 +12,9 @@ class CdDiscid < Formula
   end
 
   def install
-    system "export prefix=#{prefix}; make -e install"
+    system "make", "prefix=#{prefix}",
+                   "CC=#{ENV.cc}",
+                   "CFLAGS=#{ENV.cflags}",
+                   "install"
   end
 end

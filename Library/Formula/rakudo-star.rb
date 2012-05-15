@@ -10,7 +10,7 @@ class RakudoStar < Formula
   depends_on 'pcre' => :optional
 
   def install
-    system "perl Configure.pl --prefix=#{prefix} --gen-parrot"
+    system "perl", "Configure.pl", "--prefix=#{prefix}", "--gen-parrot"
     system "make"
     system "make install"
   end

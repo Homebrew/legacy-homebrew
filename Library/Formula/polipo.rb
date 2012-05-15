@@ -9,9 +9,15 @@ class Polipo < Formula
   def install
     cache_root = (var + "cache/polipo")
     cache_root.mkpath
-    make_opts = "PREFIX=#{prefix} LOCAL_ROOT=#{share}/polipo/www DISK_CACHE_ROOT=#{cache_root} MANDIR=#{man} INFODIR=#{info} PLATFORM_DEFINES=-DHAVE_IPv6"
-    system "make all #{make_opts}"
-    system "make install #{make_opts}"
+    args = %W[PREFIX=#{prefix}
+              LOCAL_ROOT=#{share}/polipo/www
+              DISK_CACHE_ROOT=#{cache_root}
+              MANDIR=#{man}
+              INFODIR=#{info}
+              PLATFORM_DEFINES=-DHAVE_IPv6]
+
+    system "make", "all", *args
+    system "make", "install", *args
 
     plist_path.write startup_plist
     plist_path.chmod 0644

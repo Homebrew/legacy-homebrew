@@ -7,6 +7,6 @@ class Magit < Formula
   head 'https://github.com/magit/magit.git'
 
   def install
-    system "make install DESTDIR=#{prefix} PREFIX="
+    system "make", "install", "DESTDIR=#{prefix}", "PREFIX="
   end
 end

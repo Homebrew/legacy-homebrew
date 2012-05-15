@@ -28,7 +28,7 @@ class Dnsmasq < Formula
       s.change_make_var! "CFLAGS", ENV.cflags
     end
 
-    system "make install PREFIX=#{prefix}"
+    system "make", "install", "PREFIX=#{prefix}"
 
     prefix.install "dnsmasq.conf.example"
     plist_path.write startup_plist

@@ -13,6 +13,6 @@ class GitSh < Formula
 
   def install
     system "make"
-    system "make install PREFIX=#{prefix}"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 end

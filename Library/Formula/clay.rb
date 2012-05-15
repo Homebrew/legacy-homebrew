@@ -16,6 +16,6 @@ class Clay < Formula
   end
 
   def test
-    system "#{bin}/clay -e 'println(\"Hello, Clay!\");'"
+    system "#{bin}/clay", "-e", "println(\"Hello, Clay!\");"
   end
 end

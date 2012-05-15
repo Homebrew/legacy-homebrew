@@ -28,6 +28,6 @@ class Jruby < Formula
   end
 
   def test
-    system "#{bin}/jruby -e 'puts \"hello\"'"
+    system "#{bin}/jruby", "-e", "puts 'hello'"
   end
 end

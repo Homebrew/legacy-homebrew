@@ -20,7 +20,7 @@ class Nss < Formula
     ]
     args << 'USE_64=1' if MacOS.prefer_64_bit?
 
-    system "make build_coreconf build_dbm all -C mozilla/security/nss #{args.join ' '}"
+    system "make", "build_coreconf", "build_dbm", "all", "-C", "mozilla/security/nss", *args
 
     # We need to use cp here because all files get cross-linked into the dist
     # hierarchy, and Homebrew's Pathname.install moves the symlink into the keg
@@ -52,8 +52,8 @@ class Nss < Formula
     # See: http://www.mozilla.org/projects/security/pki/nss/tools/certutil.html
     mktemp do
       File.open('passwd', 'w') {|f| f.write("It's a secret to everyone.") }
-      system "#{bin}/certutil -N -d #{Dir.getwd} -f passwd"
-      system "#{bin}/certutil -L -d #{Dir.getwd}"
+      system "#{bin}/certutil", "-N", "-d", pwd, "-f", "passwd"
+      system "#{bin}/certutil", "-L", "-d", pwd
     end
   end
 

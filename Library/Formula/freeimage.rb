@@ -25,10 +25,10 @@ class Freeimage < Formula
 
   def install
     ENV.universal_binary if ARGV.build_universal?
-    system "gnumake -f Makefile.gnu"
-    system "gnumake -f Makefile.gnu install PREFIX=#{prefix}"
-    system "gnumake -f Makefile.fip"
-    system "gnumake -f Makefile.fip install PREFIX=#{prefix}"
+    system "make", "-f", "Makefile.gnu"
+    system "make", "-f", "Makefile.gnu", "install", "PREFIX=#{prefix}"
+    system "make", "-f", "Makefile.fip"
+    system "make", "-f", "Makefile.fip", "install", "PREFIX=#{prefix}"
   end
 end
 

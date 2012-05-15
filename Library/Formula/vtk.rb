@@ -73,7 +73,7 @@ class Vtk < Formula
     # to get the right RPATH in the python libraries (the .so files in the vtk egg).
     # Also readable: http://vtk.1045678.n5.nabble.com/VTK-Python-Wrappers-on-Red-Hat-td1246159.html
     args << "-DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=ON"
-    ENV['DYLD_LIBRARY_PATH'] = `pwd`.strip + "/build/bin"
+    ENV['DYLD_LIBRARY_PATH'] = buildpath/'build/bin'
 
     args << ".."
 
@@ -84,10 +84,10 @@ class Vtk < Formula
       #   collect2: ld returned 1 exit status
       #   make[2]: *** [bin/vtkpython] Error 1
       # We symlink such that the DCMAKE_INSTALL_NAME_DIR is available and points to the current build/bin
-      mkpath "#{lib}" # create empty directories, because we need it here
-      system "ln -s " + ENV['DYLD_LIBRARY_PATH'] + " '#{lib}/vtk-5.8'"
+      lib.mkpath # create empty directories, because we need it here
+      ln_s ENV['DYLD_LIBRARY_PATH'], lib/'vtk-5.8'
       system "make"
-      system "rm '#{lib}/vtk-5.8'" # Remove our symlink, was only needed to make make succeed.
+      rm lib/'vtk-5.8' # Remove our symlink, was only needed to make make succeed.
       # end work-a-round
       system "make install" # Finally move libs in their places.
     end

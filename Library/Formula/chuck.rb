@@ -6,7 +6,7 @@ class Chuck < Formula
   md5 'ac8459b4067c2491fbdeb61d122a5985'
 
   def install
-    system "make -C src/ osx-#{Hardware.cpu_type}"
+    system "make", "-C", "src", "osx-#{Hardware.cpu_type}"
     bin.install "src/chuck"
     (share+'chuck').install "examples/"
   end

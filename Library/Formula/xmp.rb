@@ -14,6 +14,6 @@ class Xmp < Formula
   end
 
   def test
-    system "#{bin}/xmp --load-only #{share}/SynthSong1"
+    system "#{bin}/xmp", "--load-only", "#{share}/SynthSong1"
   end
 end
