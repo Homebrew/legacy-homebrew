@@ -38,6 +38,11 @@ class Jenkins < Formula
 <dict>
   <key>Label</key>
   <string>#{plist_name}</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+  <key>SSH_AUTH_SOCK</key>
+  <string>$SSH_AUTH_SOCK</string>
+  </dict>
   <key>ProgramArguments</key>
   <array>
   <string>/usr/bin/java</string>
