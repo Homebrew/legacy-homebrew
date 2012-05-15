@@ -7,7 +7,7 @@ class Pngrewrite < Formula
 
   def install
     ENV.libpng
-    system "#{ENV.cc} #{ENV['CFLAGS']} #{ENV['CPPFLAGS']} -o pngrewrite pngrewrite.c #{ENV['LDFLAGS']} -lpng"
+    system "#{ENV.cc} #{ENV.cflags} #{ENV.cppflags} -o pngrewrite pngrewrite.c #{ENV.ldflags} -lpng"
     bin.install 'pngrewrite'
   end
 end
