@@ -9,6 +9,6 @@ class Dvtm < Formula
   def install
     inreplace 'config.mk', 'LIBS = -lc -lutil -lncursesw', 'LIBS = -lc -lutil -lncurses'
     inreplace 'Makefile', 'strip -s', 'strip'
-    system "make PREFIX=#{prefix} install"
+    system "make", "PREFIX=#{prefix}", "install"
   end
 end
