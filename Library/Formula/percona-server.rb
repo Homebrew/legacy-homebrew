@@ -1,10 +1,10 @@
 require 'formula'
 
 class PerconaServer < Formula
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.22-25.2/source/Percona-Server-5.5.22-rel25.2.tar.gz'
   homepage 'http://www.percona.com'
-  md5 '2fc67b0e0e31c1a7949beae9399abc33'
-  version '5.5.22-25.2'
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.23-25.3/source/Percona-Server-5.5.23-rel25.3.tar.gz'
+  version '5.5.23-25.3'
+  md5 'b098914c14256187686db0ccbc46a6d4'
 
   keg_only "This brew conflicts with 'mysql'. It's safe to `brew link` if you haven't installed 'mysql'"
 
