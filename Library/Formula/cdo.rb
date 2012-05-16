@@ -6,9 +6,8 @@ end
 
 class Cdo < Formula
   homepage 'https://code.zmaw.de/projects/cdo'
-  url 'https://code.zmaw.de/attachments/download/2372'
-  version '1.5.4'
-  md5 'ceacb1acfa921a5bf1a3e4cda1097405'
+  url 'https://code.zmaw.de/attachments/download/2879/cdo-1.5.5.tar.gz'
+  md5 '8072ebfebfa6a2c9b4ee4098d9fec338'
 
   depends_on 'netcdf'
   depends_on 'hdf5'
@@ -19,6 +18,9 @@ class Cdo < Formula
   end
 
   def install
+    ENV['CFLAGS'] += " -D_REENTRANT"
+    ENV['CFLAGS'] += " -fopenmp" if not MacOS.leopard? and ENV.compiler == :gcc
+
     args = ["--disable-debug", "--disable-dependency-tracking",
             "--prefix=#{prefix}",
             "--with-netcdf=#{HOMEBREW_PREFIX}",
