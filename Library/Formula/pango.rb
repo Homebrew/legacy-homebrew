@@ -2,7 +2,7 @@ require 'formula'
 
 class Pango < Formula
   homepage 'http://www.pango.org/'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.30/pango-1.30.0.tar.xz'
+  url 'ftp://ftp.gnome.org/pub/GNOME/sources/pango/1.30/pango-1.30.0.tar.xz'
   sha256 '7c6d2ab024affaed0e942f9279b818235f9c6a36d9fc50688f48d387f4102dff'
 
   depends_on 'pkg-config' => :build
