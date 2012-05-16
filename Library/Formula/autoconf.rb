@@ -21,7 +21,7 @@ class Autoconf < Formula
   end
 
   def test
-    system "#{bin}/autoconf --version"
+    system "#{bin}/autoconf", "--version"
   end
 end
 

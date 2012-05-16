@@ -16,6 +16,6 @@ class GnuArch < Formula
   end
 
   def test
-    system "#{bin}/tla -V"
+    system "#{bin}/tla", "-V"
   end
 end

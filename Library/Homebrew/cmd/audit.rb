@@ -318,7 +318,7 @@ def audit_formula_instance f
       problems << " * Can't find dependency \"#{d}\"."
     end
 
-    case d
+    case d.name
     when "git", "python", "ruby", "emacs", "mysql", "postgresql", "mercurial"
       problems << <<-EOS
  * Don't use #{d} as a dependency. We allow non-Homebrew

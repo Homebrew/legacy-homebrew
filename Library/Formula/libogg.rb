@@ -5,7 +5,7 @@ class Libogg < Formula
   url 'http://downloads.xiph.org/releases/ogg/libogg-1.3.0.tar.gz'
   md5 '0a7eb40b86ac050db3a789ab65fe21c2'
 
-  head 'http://svn.xiph.org/trunk/ogg', :using => :svn
+  head 'http://svn.xiph.org/trunk/ogg'
 
   if ARGV.build_head?
     depends_on "automake" => :build
@@ -17,10 +17,7 @@ class Libogg < Formula
   end
 
   def install
-    if ARGV.build_head?
-      system "./autogen.sh"
-    end
-
+    system "./autogen.sh" if ARGV.build_head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"

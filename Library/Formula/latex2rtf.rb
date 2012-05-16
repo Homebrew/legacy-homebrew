@@ -11,6 +11,6 @@ class Latex2rtf < Formula
       s.change_make_var! 'MAN_INSTALL', man1
     end
 
-    system "make PREFIX=#{prefix} install"
+    system "make", "PREFIX=#{prefix}", "install"
   end
 end

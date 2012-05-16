@@ -34,7 +34,7 @@ class Gdal < Formula
   url 'http://download.osgeo.org/gdal/gdal-1.9.0.tar.gz'
   md5 '1853f3d8eb5232ae030abe007840cade'
 
-  head 'https://svn.osgeo.org/gdal/trunk/gdal', :using => :svn
+  head 'https://svn.osgeo.org/gdal/trunk/gdal'
 
   depends_on 'doxygen' => :build
 
