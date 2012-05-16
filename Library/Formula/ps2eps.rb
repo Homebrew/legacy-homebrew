@@ -9,14 +9,11 @@ class Ps2eps < Formula
 
   def install
     inreplace 'bin/ps2eps', /^eval.*$/, '#!/usr/bin/perl'
-    bin.mkpath
     bin.install 'bin/ps2eps'
-    share.mkpath
     share.install Dir['doc/man']
-    doc.mkpath
     doc.install Dir['doc/pdf']
     doc.install Dir['doc/html']
-    system "#{ENV.cc} -O2 src/C/bbox.c -obbox"
+    system "#{ENV.cc} -O3 src/C/bbox.c -obbox"
     bin.install 'bbox'
   end
 end
