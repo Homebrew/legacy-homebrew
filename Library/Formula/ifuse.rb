@@ -8,7 +8,7 @@ class Ifuse < Formula
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'libimobiledevice'
-  depends_on 'fuse4x'
+  depends_on 'fuse4x' unless File.exists? '/usr/local/lib/libfuse.dylib'
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
