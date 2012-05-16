@@ -11,8 +11,8 @@ class CouchdbLucene < Formula
   def install
     system "mvn"
 
-    system "tar -xzf target/couchdb-lucene-#{version}-dist.tar.gz"
-    system "mv couchdb-lucene-#{version}/* #{prefix}"
+    system "tar", "-xzf", "target/couchdb-lucene-#{version}-dist.tar.gz"
+    prefix.install Dir["couchdb-lucene-#{version}/*"]
 
     (etc + "couchdb/local.d/couchdb-lucene.ini").write ini_file
     plist_path.write startup_plist

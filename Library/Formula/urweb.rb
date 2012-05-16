@@ -7,7 +7,6 @@ class Urweb < Formula
   head 'http://hg.impredicative.com/urweb', :using => :hg
 
   depends_on 'mlton'
-  depends_on "automake" if MacOS.xcode_version >= "4.3"
 
   if MacOS.xcode_version >= "4.3"
     # remove the autoreconf if possible, no comment provided about why it is there
@@ -17,8 +16,9 @@ class Urweb < Formula
   end
 
   def install
-    system "aclocal && autoreconf -i --force"
-    system "./configure --prefix=#{prefix}"
+    system "aclocal"
+    system "autoreconf -i --force"
+    system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
   end

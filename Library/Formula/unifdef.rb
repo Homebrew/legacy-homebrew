@@ -9,7 +9,7 @@ class Unifdef < Formula
     "The unifdef provided by Xcode cannot compile gevent."
 
   def install
-    system "make prefix=#{prefix} install"
+    system "make", "PREFIX=#{prefix}", "install"
   end
 
   def test

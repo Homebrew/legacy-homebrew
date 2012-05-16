@@ -11,6 +11,6 @@ class Ispc < Formula
   end
 
   def test
-    system "#{bin}/ispc -v"
+    system "#{bin}/ispc", "-v"
   end
 end

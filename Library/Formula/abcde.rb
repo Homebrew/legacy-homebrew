@@ -14,8 +14,8 @@ class Abcde < Formula
   depends_on 'mkcue'
 
   def install
-    # Makefile hardcodes installing files owned by root; don't do this.
-    inreplace 'Makefile', '-o 0', ''
-    system "export prefix=#{prefix};export DESTDIR=$prefix;make -e install"
+    bin.install 'abcde', 'cddb-tool'
+    etc.install 'abcde.conf' unless (etc/'abcde.conf').exist?
+    man1.install 'abcde.1', 'cddb-tool.1'
   end
 end

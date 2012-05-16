@@ -9,7 +9,7 @@ class PerconaToolkit < Formula
   depends_on 'DBD::mysql' => :perl
 
   def install
-    system "perl Makefile.PL PREFIX=#{prefix}"
+    system "perl", "Makefile.PL", "PREFIX=#{prefix}"
     system "make"
     system "make test"
     system "make install"
