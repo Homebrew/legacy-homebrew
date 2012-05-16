@@ -21,7 +21,7 @@ class Minc < Formula
   end
 
   def install
-    system "autoreconf", "--force", "--instal"
+    system "autoreconf", "--force", "--install"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

@@ -16,7 +16,19 @@ class Yarp < Formula
   depends_on 'jpeg'
 
   def install
-    system "cmake #{std_cmake_parameters} -DCREATE_LIB_MATH=TRUE -DCREATE_GUIS=TRUE -DCREATE_YMANAGER=TRUE -DYARP_USE_SYSTEM_SQLITE=TRUE -DCREATE_OPTIONAL_CARRIERS=TRUE -DENABLE_yarpcar_mjpeg_carrier=TRUE -DENABLE_yarpcar_rossrv_carrier=TRUE -DENABLE_yarpcar_tcpros_carrier=TRUE -DENABLE_yarpcar_xmlrpc_carrier=TRUE ."
+    args = std_cmake_parameters.split + %W[
+      -DCREATE_LIB_MATH=TRUE
+      -DCREATE_GUIS=TRUE
+      -DCREATE_YMANAGER=TRUE
+      -DYARP_USE_SYSTEM_SQLITE=TRUE
+      -DCREATE_OPTIONAL_CARRIERS=TRUE
+      -DENABLE_yarpcar_mjpeg_carrier=TRUE
+      -DENABLE_yarpcar_rossrv_carrier=TRUE
+      -DENABLE_yarpcar_tcpros_carrier=TRUE
+      -DENABLE_yarpcar_xmlrpc_carrier=TRUE
+      .]
+
+    system "cmake", *args
     system "make install"
   end
 end

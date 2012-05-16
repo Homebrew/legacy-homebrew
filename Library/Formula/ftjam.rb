@@ -6,7 +6,7 @@ class Ftjam < Formula
   md5 'e61304b370ba06f68082f0219a196576'
 
   def install
-    system "./configure --prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     system 'make'
     system 'make install'
   end
