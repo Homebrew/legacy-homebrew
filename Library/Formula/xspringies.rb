@@ -10,6 +10,6 @@ class Xspringies < Formula
       s.change_make_var! "LIBS", '-L/usr/X11/lib -lm -lX11'
       s.gsub! 'mkdirhier', 'mkdir -p'
     end
-    system "make -f Makefile.std DDIR=#{prefix}/ install"
+    system "make", "-f", "Makefile.std", "DDIR=#{prefix}/", "install"
   end
 end

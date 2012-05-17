@@ -10,16 +10,23 @@ def build_jit?; ARGV.include? '--jit'; end
 
 class Clang < Formula
   homepage  'http://llvm.org/'
-  head      'http://llvm.org/git/clang.git', :using => :git
   url       'http://llvm.org/releases/3.0/clang-3.0.tar.gz'
   md5       '43350706ae6cf05d0068885792ea0591'
+
+  head      'http://llvm.org/git/clang.git'
 end
 
 class Llvm < Formula
   homepage  'http://llvm.org/'
-  head      'http://llvm.org/git/llvm.git', :using => :git
   url       'http://llvm.org/releases/3.0/llvm-3.0.tar.gz'
   md5       'a8e5f5f1c1adebae7b4a654c376a6005'
+
+  head      'http://llvm.org/git/llvm.git'
+
+  bottle do
+    sha1 'f6feaab7d1e4f45cd5f0b63d465e65f491fcc27c' => :lion
+    sha1 '0b4a9baac5cd07192f992ef3621371e9cde3979a' => :snowleopard
+  end
 
   def patches
     # changes the link options for the shared library build
@@ -95,6 +102,10 @@ class Llvm < Formula
       bin.install 'tools/scan-view/startfile.py'
       bin.install 'tools/scan-view/Resources'
     end if build_analyzer?
+  end
+
+  def test
+    system "#{bin}/llvm-config", "--version"
   end
 
   def caveats; <<-EOS.undent

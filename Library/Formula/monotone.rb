@@ -17,7 +17,10 @@ class Monotone < Formula
   depends_on 'lua'
   depends_on 'pcre'
 
-  fails_with_llvm "linker fails", :build => 2334
+  fails_with :llvm do
+    build 2334
+    cause "linker fails"
+  end
 
   def install
     botan18_prefix = libexec+'botan18'
@@ -36,10 +39,14 @@ class Monotone < Formula
     # building boost (which takes approximately forever) if it's not already installed.
     # This is suggested in the Monotone installation instructions.
 
+    boost_prefix = buildpath/'boost'
     boost = Formula.factory('boost')
     unless boost.installed?
-      # Add header location to CPPFLAGS
-      boost.brew { ENV.append "CPPFLAGS", "-I#{buildpath}" }
+      boost.brew do
+        boost_prefix.install Dir['*']
+        # Add header location to CPPFLAGS
+        ENV.append 'CPPFLAGS', "-I#{boost_prefix}"
+      end
     end
 
     system "./configure", "--disable-dependency-tracking",

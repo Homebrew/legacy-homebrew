@@ -28,6 +28,6 @@ class Libtool < Formula
   end
 
   def test
-    system "#{bin}/glibtoolize --version"
+    system "#{bin}/glibtoolize", "--version"
   end
 end

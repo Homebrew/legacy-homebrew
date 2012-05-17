@@ -1,15 +1,18 @@
 require 'formula'
 
 class Nmap < Formula
-  url 'http://nmap.org/dist/nmap-5.51.tar.bz2'
   homepage 'http://nmap.org/5/'
+  url 'http://nmap.org/dist/nmap-5.51.tar.bz2'
   md5 '0b80d2cb92ace5ebba8095a4c2850275'
+
   head 'https://guest:@svn.nmap.org/nmap/', :using => :svn
 
   # Leopard's version of OpenSSL isn't new enough
   depends_on "openssl" if MacOS.leopard?
 
-  fails_with_llvm :build => 2334
+  fails_with :llvm do
+    build 2334
+  end
 
   # The configure script has a C file to test for some functionality that uses
   # void main(void). This does not compile with clang but does compile with

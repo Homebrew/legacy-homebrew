@@ -14,7 +14,7 @@ class Opentracker < Formula
     # First libowfat must be compiled and installed where opentracker is expecting it
     libowfat_include = Pathname.new(pwd) + 'libowfat'
     Libowfat.new.brew do
-      system "make install INCLUDEDIR=#{libowfat_include} LIBDIR=#{libowfat_include} MAN3DIR=."
+      system "make", "install", "INCLUDEDIR=#{libowfat_include}", "LIBDIR=#{libowfat_include}", "MAN3DIR=."
     end
 
     # Tell opentracker that libowfat headers are located in the same directory as itself

@@ -7,27 +7,27 @@ ENV.setup_build_environment
 
 module Homebrew extend self
   def test
-    raise KegUnspecifiedError if ARGV.named.empty?
+    raise FormulaUnspecifiedError if ARGV.named.empty?
 
     ARGV.formulae.each do |f|
       # Cannot test uninstalled formulae
       unless f.installed?
-        puts "#{f.name} not installed"
+        ofail "Testing requires the latest version of #{f.name}"
         next
       end
 
       # Cannot test formulae without a test method
       unless f.respond_to? :test
-        puts "#{f.name} defines no test"
+        ofail "#{f.name} defines no test"
         next
       end
 
       puts "Testing #{f.name}"
       begin
         # tests can also return false to indicate failure
-        puts "#{f.name}: failed" if f.test == false
+        raise if f.test == false
       rescue
-        puts "#{f.name}: failed"
+        ofail "#{f.name}: failed"
       end
     end
   end

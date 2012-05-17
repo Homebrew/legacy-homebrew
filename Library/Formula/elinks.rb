@@ -5,7 +5,7 @@ class Elinks < Formula
   url 'http://elinks.or.cz/download/elinks-0.11.7.tar.bz2'
   md5 'fcd087a6d2415cd4c6fd1db53dceb646'
 
-  head 'http://elinks.cz/elinks.git', :using => :git
+  head 'http://elinks.cz/elinks.git'
 
   devel do
     version '0.12pre5'
@@ -13,11 +13,13 @@ class Elinks < Formula
     md5 '92790144290131ac5e63b44548b45e08'
   end
 
-  fails_with_llvm :build => 2326
-
   if ARGV.build_head? and MacOS.xcode_version >= "4.3"
     depends_on "automake" => :build
     depends_on "libtool" => :build
+  end
+
+  fails_with :llvm do
+    build 2326
   end
 
   # enables 256 colors, per the manual

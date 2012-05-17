@@ -7,8 +7,12 @@ class Ctags < Formula
 
   head 'https://ctags.svn.sourceforge.net/svnroot/ctags/trunk'
 
-  # true for both 5.8 and head
-  fails_with_llvm "Resulting executable generates erroneous tag files", :build => 2335
+  depends_on 'autoconf' => :build if MacOS.xcode_version.to_f >= 4.3
+
+  fails_with :llvm do
+    build 2335
+    cause "Resulting executable generates erroneous tag files"
+  end
 
   def install
     if ARGV.build_head?

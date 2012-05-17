@@ -2,8 +2,8 @@ require 'formula'
 
 class Mercurial < Formula
   homepage 'http://mercurial.selenic.com/'
-  url 'http://mercurial.selenic.com/release/mercurial-2.1.1.tar.gz'
-  sha1 'd6cc4b649b6705113732e62756788542897ba008'
+  url 'http://mercurial.selenic.com/release/mercurial-2.2.1.tar.gz'
+  sha1 '40961a436920628ff9db48dc8aab8012d72dcd52'
 
   head 'http://selenic.com/repo/hg', :using => :hg
 
@@ -11,11 +11,6 @@ class Mercurial < Formula
 
   def options
     [["--doc", "build the documentation. Depends on 'docutils' module."]]
-  end
-
-  def patches
-    # Fix xcodebuild handling in setup.py; is present in HEAD
-    "http://selenic.com/hg/raw-rev/5536770b3c88" unless ARGV.build_head?
   end
 
   def install
@@ -66,5 +61,9 @@ class Mercurial < Formula
           brew cleanup mercurial && brew link mercurial
       EOS
     end
+  end
+
+  def test
+    system "#{bin}/hg", "debuginstall"
   end
 end
