@@ -9,11 +9,8 @@ class Rans < Formula
   depends_on 'gflags'
 
   def install
-    inreplace 'Makefile' do |s|
-      s.change_make_var! "prefix", prefix
-    end
     system "make all -j"
     system "make check"
-    system "make install"
+    system "make install prefix=#{prefix}"
   end
 end
