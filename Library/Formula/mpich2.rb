@@ -6,13 +6,25 @@ class Mpich2 < Formula
   version '1.4.1p1'
   md5 'b470666749bcb4a0449a072a18e2c204'
 
+  def options
+    [
+      ['--disable-fortran', "Do not attempt to build Fortran bindings"],
+    ]
+  end
+
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--mandir=#{man}",
-                          "--disable-f77",
-                          "--disable-fc",
-                          "--with-device=ch3:nemesis",
-                          "--enable-shared"
+    args = [
+      "--prefix=#{prefix}",
+      "--mandir=#{man}",
+      "--enable-shared"
+    ]
+    if ARGV.include? '--disable-fortran'
+      args << "--disable-f77" << "--disable-fc"
+    else
+      ENV.fortran
+    end
+
+    system "./configure", *args
     system "make"
     system "make install"
   end
