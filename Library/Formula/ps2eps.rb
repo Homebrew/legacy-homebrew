@@ -13,7 +13,7 @@ class Ps2eps < Formula
     share.install Dir['doc/man']
     doc.install Dir['doc/pdf']
     doc.install Dir['doc/html']
-    system "#{ENV.cc} -O3 src/C/bbox.c -obbox"
+    system "#{ENV.cc} #{ENV.cflags} src/C/bbox.c -obbox"
     bin.install 'bbox'
   end
 end
