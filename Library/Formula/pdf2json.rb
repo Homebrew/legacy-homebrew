@@ -7,6 +7,13 @@ class Pdf2json < Formula
 
   depends_on 'xpdf'
 
+  fails_with :clang do
+  build 2336
+  cause <<-EOS.undent
+    goo fails compile with bad value (native) for -march= switch errors.
+    EOS
+  end
+
   def install
     system "./configure", "--prefix=#{prefix}"
     # Fix manpage install location. See:
