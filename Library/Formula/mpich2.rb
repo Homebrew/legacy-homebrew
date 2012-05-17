@@ -35,4 +35,9 @@ class Mpich2 < Formula
     both packages install their own versions of mpicc/mpicxx and mpirun.
     EOS
   end
+
+  def test
+    # a better test would be to build and run a small MPI program
+    system "#{bin}/mpicc", "-show"
+  end
 end
