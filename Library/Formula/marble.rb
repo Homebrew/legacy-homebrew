@@ -6,6 +6,7 @@ class Marble < Formula
   md5 '4e9b84a0d29dc5734bc7f11e5855e16e'
 
   depends_on 'cmake' => :build
+  depends_on 'qt'
 
   def patches
     #Patch to disable architecture forcing (https://git.reviewboard.kde.org/r/104942/)
