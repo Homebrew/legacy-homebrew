@@ -27,10 +27,14 @@ class Mpich2 < Formula
     system "./configure", *args
     system "make"
     system "make install"
+
+    # MPE installs several helper scripts like "mpeuninstall" to the sbin
+    # directory, which we don't need when installing via homebrew
+    sbin.rmtree
   end
 
   def caveats; <<-EOS.undent
-    Please be aware that installing this formula along with the OpenMPI
+    Please be aware that installing this formula along with the `openmpi`
     formula will cause neither MPI installation to work correctly as
     both packages install their own versions of mpicc/mpicxx and mpirun.
     EOS
