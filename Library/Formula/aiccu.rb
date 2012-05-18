@@ -8,7 +8,7 @@ class Aiccu < Formula
   def patches; DATA; end
 
   def install
-    system "sed -i~ -e 's/daemonize true/daemonize false/' doc/aiccu.conf"
+    inreplace 'doc/aiccu.conf', 'daemonize true', 'daemonize false'
     system "make", "prefix=#{prefix}"
     system "make", "install", "prefix=#{prefix}"
 
