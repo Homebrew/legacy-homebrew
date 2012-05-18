@@ -12,8 +12,8 @@ class Node < Formula
     md5 '552b1e97539f2d574a2c56b849dea6a5'
   end
 
-  # Leopard OpenSSL is not new enough, so use our keg-only one
-  depends_on 'openssl' if MacOS.leopard?
+  # Native OpenSSL is not new enough, so use our keg-only one
+  depends_on 'openssl'
 
   fails_with :llvm do
     build 2326
