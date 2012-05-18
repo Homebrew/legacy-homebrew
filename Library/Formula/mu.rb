@@ -30,7 +30,7 @@ class Mu < Formula
   depends_on 'glib'
   depends_on 'gmime'
   depends_on 'xapian'
-  depends_on Emacs23Installed.new
+  depends_on Emacs23Installed.new if ARGV.include? '--with-emacs'
 
   if ARGV.build_head? and MacOS.xcode_version >= "4.3"
     depends_on "automake" => :build
@@ -44,7 +44,15 @@ class Mu < Formula
     DATA unless ARGV.build_head?
   end
 
+  def options
+    [['--with-emacs', 'Build with emacs support']]
+  end
+
   def install
+    # Explicitly tell the build not to include emacs support as the version
+    # shipped by default with Mac OS X is too old.
+    ENV['EMACS'] = 'no' unless ARGV.include? '--with-emacs'
+
     system 'autoreconf', '-ivf' if ARGV.build_head?
     system  "./configure", "--prefix=#{prefix}",
       "--disable-dependency-tracking", "--with-gui=none"
