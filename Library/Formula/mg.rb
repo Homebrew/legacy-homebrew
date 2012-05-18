@@ -10,5 +10,6 @@ class Mg < Formula
     inreplace 'Makefile.in', '-Wno-error=unused-but-set-variable', ''
     system "./configure"
     system "make", "install", "prefix=#{prefix}", "mandir=#{man}"
+    doc.install "tutorial"
   end
 end
