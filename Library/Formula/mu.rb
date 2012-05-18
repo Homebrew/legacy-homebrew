@@ -1,25 +1,5 @@
 require 'formula'
 
-class Emacs23Installed < Requirement
-  def message; <<-EOS.undent
-    Emacs 23 or greater is required to build this software.
-
-    You can install this with Homebrew:
-      brew install emacs
-
-    Or you can use any other Emacs distribution
-    that provides version 23 or greater.
-    EOS
-  end
-  def satisfied?
-    `emacs --version 2>/dev/null` =~ /^GNU Emacs (\d{2})/
-    $1.to_i >= 23
-  end
-  def fatal?
-    true
-  end
-end
-
 class Mu < Formula
   homepage 'http://www.djcbsoftware.nl/code/mu/'
   url 'http://mu0.googlecode.com/files/mu-0.9.8.4.tar.gz'
@@ -30,7 +10,6 @@ class Mu < Formula
   depends_on 'glib'
   depends_on 'gmime'
   depends_on 'xapian'
-  depends_on Emacs23Installed.new
 
   if ARGV.build_head? and MacOS.xcode_version >= "4.3"
     depends_on "automake" => :build
@@ -63,6 +42,25 @@ end
 __END__
 --- a/configure	2012-05-08 04:26:10.000000000 -0700
 +++ b/configure	2012-05-11 23:20:57.000000000 -0700
+@@ -16715,15 +16715,10 @@
+ 
+ fi
+ fi
+-EMACS=$ac_cv_prog_EMACS
+-if test -n "$EMACS"; then
+-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $EMACS" >&5
+-$as_echo "$EMACS" >&6; }
+-else
+-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+-$as_echo "no" >&6; }
+-fi
+ 
++EMACS=
++{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
++$as_echo "no" >&6; }
+ 
+   test -n "$EMACS" && break
+ done
 @@ -17640,7 +17640,7 @@
    xapian_version=$($XAPIAN_CONFIG --version | sed -e 's/.* //')
  fi
