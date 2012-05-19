@@ -84,6 +84,7 @@ class Emacs < Formula
       system "make bootstrap"
       system "make install"
       prefix.install "nextstep/Emacs.app"
+      inreplace "nextstep/emacswrapper.sh","%EMACS%",prefix+'Emacs.app/Contents/MacOS/Emacs'
       chmod 0755,"nextstep/emacswrapper.sh"
       mv "nextstep/emacswrapper.sh",'nextstep/emacs'
       bin.install "nextstep/emacs"
@@ -180,11 +181,7 @@ index 30b73c2..f0c154e 100644
 diff a/nextstep/emacswrapper.sh a/nextstep/emacswrapper.sh
 --- a/nextstep/emacswrapper.sh
 +++ b/nextstep/emacswrapper.sh
-@@ -0,0 +1,7 @@
+@@ -0,0 +1,3 @@
 +#!/bin/bash
 +
-+SOURCE="${BASH_SOURCE[0]}"
-+while [ -h "$SOURCE" ] ; do SOURCE="$(readlink "$SOURCE")"; done
-+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-+EMACS="$DIR/../Emacs.app/Contents/MacOS/Emacs"
-+"$EMACS" -nw $@
++"%EMACS%" -nw $@
