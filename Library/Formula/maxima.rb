@@ -28,7 +28,7 @@ class Maxima < Formula
   end
 
   def test
-    system "#{bin}/maxima --batch-string='run_testsuite(); quit();'"
+    system "#{bin}/maxima", "--batch-string='run_testsuite(); quit();'"
   end
 end
 
