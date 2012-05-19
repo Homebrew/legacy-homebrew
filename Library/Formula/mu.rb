@@ -1,5 +1,25 @@
 require 'formula'
 
+class Emacs23Installed < Requirement
+  def message; <<-EOS.undent
+    Emacs 23 or greater is required to build this software.
+
+    You can install this with Homebrew:
+      brew install emacs
+
+    Or you can use any other Emacs distribution
+    that provides version 23 or greater.
+    EOS
+  end
+  def satisfied?
+    `emacs --version 2>/dev/null` =~ /^GNU Emacs (\d{2})/
+    $1.to_i >= 23
+  end
+  def fatal?
+    true
+  end
+end
+
 class Mu < Formula
   homepage 'http://www.djcbsoftware.nl/code/mu/'
   url 'http://mu0.googlecode.com/files/mu-0.9.8.4.tar.gz'
@@ -10,7 +30,7 @@ class Mu < Formula
   depends_on 'glib'
   depends_on 'gmime'
   depends_on 'xapian'
-  depends_on 'emacs' => :optional if ARGV.include? '--with-emacs'
+  depends_on Emacs23Installed.new if ARGV.include? '--with-emacs'
 
   if ARGV.build_head? and MacOS.xcode_version >= "4.3"
     depends_on "automake" => :build
