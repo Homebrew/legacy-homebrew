@@ -4,8 +4,8 @@ def build_tests?; ARGV.include? '--test'; end
 
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/'
-  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.32/glib-2.32.2.tar.xz'
-  sha256 'b1764abf00bac96e0e93e29fb9715ce75f3583579acac40648e18771d43d6136'
+  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.32/glib-2.32.3.tar.xz'
+  sha256 'b65ceb462807e4a2f91c95e4293ce6bbefca308cb44a1407bcfdd9e40363ff4d'
 
   depends_on 'xz' => :build
   depends_on 'gettext'
@@ -17,8 +17,8 @@ class Glib < Formula
   end
 
   def patches
-    # https://bugzilla.gnome.org/show_bug.cgi?id=673047  Still open @ 2.32.2
-    # https://bugzilla.gnome.org/show_bug.cgi?id=644473  Still open @ 2.32.2
+    # https://bugzilla.gnome.org/show_bug.cgi?id=673047  Still open at 2.32.3
+    # https://bugzilla.gnome.org/show_bug.cgi?id=644473  Still open at 2.32.3
     # https://bugzilla.gnome.org/show_bug.cgi?id=673135  Resolved as wontfix.
     p = { :p1 => %W[
         https://raw.github.com/gist/2235195/19cdaebdff7dcc94ccd9b3747d43a09318f0b846/glib-gunicollate.diff
