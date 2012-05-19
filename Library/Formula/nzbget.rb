@@ -20,5 +20,7 @@ class Nzbget < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
+	prefix.install "nzbget.conf.example"
+	prefix.install "postprocess-example.conf"
   end
 end
