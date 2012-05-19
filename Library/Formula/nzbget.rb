@@ -12,6 +12,10 @@ class Nzbget < Formula
   depends_on 'libpar2'
   depends_on 'gnutls'
 
+  fails_with :clang do
+    build 318
+  end
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
