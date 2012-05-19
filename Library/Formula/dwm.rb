@@ -13,7 +13,7 @@ class Dwm < Formula
     '{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },',
     '{ MODKEY|ControlMask,           XK_q,      quit,           {0} },'
     inreplace 'dwm.1', '.B Mod1\-Shift\-q', '.B Mod1\-Control\-q'
-    system "make PREFIX=#{prefix} install"
+    system "make", "PREFIX=#{prefix}", "install"
   end
 
   def caveats
