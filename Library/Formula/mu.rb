@@ -10,6 +10,7 @@ class Mu < Formula
   depends_on 'glib'
   depends_on 'gmime'
   depends_on 'xapian'
+  depends_on 'emacs' => :optional if ARGV.include? '--with-emacs'
 
   if ARGV.build_head? and MacOS.xcode_version >= "4.3"
     depends_on "automake" => :build
@@ -23,7 +24,17 @@ class Mu < Formula
     DATA unless ARGV.build_head?
   end
 
+  def options
+    [
+      ['--with-emacs', 'Build with emacs support']
+    ]
+  end
+
   def install
+    # Explicitly tell the build not to include emacs support as the version
+    # shipped by default with Mac OS X is too old.
+    ENV['EMACS'] = 'no' unless Formula.factory('emacs').installed?
+
     system 'autoreconf', '-ivf' if ARGV.build_head?
     system  "./configure", "--prefix=#{prefix}",
       "--disable-dependency-tracking", "--with-gui=none"
@@ -42,25 +53,6 @@ end
 __END__
 --- a/configure	2012-05-08 04:26:10.000000000 -0700
 +++ b/configure	2012-05-11 23:20:57.000000000 -0700
-@@ -16715,15 +16715,10 @@
- 
- fi
- fi
--EMACS=$ac_cv_prog_EMACS
--if test -n "$EMACS"; then
--  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $EMACS" >&5
--$as_echo "$EMACS" >&6; }
--else
--  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
--$as_echo "no" >&6; }
--fi
- 
-+EMACS=
-+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-+$as_echo "no" >&6; }
- 
-   test -n "$EMACS" && break
- done
 @@ -17640,7 +17640,7 @@
    xapian_version=$($XAPIAN_CONFIG --version | sed -e 's/.* //')
  fi
