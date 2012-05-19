@@ -1,10 +1,12 @@
 require 'formula'
 
 class Byobu < Formula
-  url 'http://launchpad.net/byobu/trunk/5.12/+download/byobu_5.12.orig.tar.gz'
+  url 'http://launchpad.net/byobu/trunk/5.17/+download/byobu_5.17.orig.tar.gz'
   homepage 'http://launchpad.net/byobu'
-  md5 '15c3d0fd2923fba0a6d77fc52d59b81a'
+  md5 '50551374a67dbf77349b0b453044ed6c'
 
+  depends_on 'coreutils'
+  
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make install"
