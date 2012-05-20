@@ -4,8 +4,11 @@ class Phash < Formula
   url 'http://www.phash.org/releases/pHash-0.9.4.tar.gz'
   homepage 'http://www.phash.org/'
   sha1 '9710b8a1d4d24e7fc3ac43c33eac8e89d9e727d7'
-
-  depends_on 'cimg' unless  ARGV.include? "--disable-image-hash" and ARGV.include? "--disable-video-hash"
+  
+  unless Formula.factory('cimg').linked_keg.exist?
+    depends_on 'cimg' unless ARGV.include? "--disable-image-hash" and ARGV.include? "--disable-video-hash"
+  end
+  
   depends_on 'ffmpeg' unless ARGV.include? "--disable-video-hash"
 
   unless ARGV.include? "--disable-audio-hash"
@@ -34,8 +37,13 @@ class Phash < Formula
             "--enable-shared"]
 
     # disable specific hashes if specified as an option
-    args << "--disable-image-hash" if ARGV.include? "--disable-image-hash"
-    args << "--disable-video-hash" if ARGV.include? "--disable-video-hash"
+    if Formula.factory('cimg').linked_keg.exist?
+      args << "--disable-image-hash" if ARGV.include? "--disable-image-hash"
+      args << "--disable-video-hash" if ARGV.include? "--disable-video-hash"
+    else
+      args << "--disable-image-hash" << "--disable-video-hash"
+    end
+    
     args << "--disable-audio-hash" if ARGV.include? "--disable-audio-hash"
 
     system "./configure", *args
