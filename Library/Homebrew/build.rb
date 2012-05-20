@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
 
 # This script is called by formula_installer as a separate instance.
 # Rationale: Formula can use __END__, Formula can change ENV

@@ -91,10 +91,7 @@ module Homebrew extend self
     puts hardware
     puts "MacOS: #{MACOS_FULL_VERSION}-#{kernel}"
     puts "Xcode: #{xcode_version}"
-    puts "/usr/bin/ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}" if RUBY_VERSION.to_f != 1.8
-
-    ruby = Pathname.new("/usr/bin/ruby")
-    puts "/usr/bin/ruby => #{ruby.realpath}" unless ruby.realpath.to_s =~ %r{^/System}
+    puts "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby:\n  #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}" if RUBY_VERSION.to_f != 1.8
 
     ponk = macports_or_fink_installed?
     puts "MacPorts/Fink: #{ponk}" if ponk
@@ -119,7 +116,6 @@ module Homebrew extend self
     MacPorts or Fink? #{macports_or_fink_installed?}
     X11: #{describe_x11}
     System Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
-    /usr/bin/ruby => #{real_path("/usr/bin/ruby")}
     Which Perl:   #{describe_perl}
     Which Python: #{describe_python}
     Which Ruby:   #{describe_ruby}

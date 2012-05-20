@@ -28,13 +28,14 @@ class Rrdtool < Formula
 
     which_perl = which 'perl'
     which_ruby = which 'ruby'
+    ruby_path  = "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby"
 
-    opoo "Using system Ruby. RRD module will be installed to /Library/Ruby/..." if which_ruby == "/usr/bin/ruby"
+    opoo "Using system Ruby. RRD module will be installed to /Library/Ruby/..." if which_ruby.realpath == ruby_path
     opoo "Using system Perl. RRD module will be installed to /Library/Perl/..." if which_perl == "/usr/bin/perl"
 
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--mandir=#{man}"]
     args << "--enable-perl-site-install" if which_perl == "/usr/bin/perl"
-    args << "--enable-ruby-site-install" if which_ruby == "/usr/bin/ruby"
+    args << "--enable-ruby-site-install" if which_ruby.realpath == ruby_path
 
     system "./configure", *args
 

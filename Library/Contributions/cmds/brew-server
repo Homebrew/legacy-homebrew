@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
 
 ## brew server: Run a local webserver for browsing available and installed brews.
 # Note: this external command is ruby, but set up as a shell script, so that it gets exec'd.
