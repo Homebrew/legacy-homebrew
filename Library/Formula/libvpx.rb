@@ -26,6 +26,16 @@ class Libvpx < Formula
     args << "--enable-mem-tracker" if ARGV.include? "--mem-tracker"
     args << "--enable-postproc-visualizer" if ARGV.include? "--visualizer"
 
+    # see http://code.google.com/p/webm/issues/detail?id=401
+    # Configure misdetects 32-bit 10.6.
+    # Determine if the computer runs Darwin 9, 10, or 11 using uname -r.
+    osver = %x[uname -r | cut -d. -f1].chomp
+    if MacOS.prefer_64_bit? then
+      args << "--target=x86_64-darwin#{osver}-gcc"
+    else
+      args << "--target=x86-darwin#{osver}-gcc"
+    end
+
     mkdir 'macbuild' do
       system "../configure", *args
       system "make install"
