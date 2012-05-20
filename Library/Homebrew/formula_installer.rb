@@ -195,7 +195,7 @@ class FormulaInstaller
       begin
         read.close
         exec '/usr/bin/nice',
-             '/usr/bin/ruby',
+             '/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby',
              '-I', Pathname.new(__FILE__).dirname,
              '-rbuild',
              '--',
