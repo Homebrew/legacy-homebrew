@@ -95,7 +95,7 @@ __brew_complete_tapped ()
 __brew_complete_taps ()
 {
     if [[ -z "$__brew_cached_taps" ]]; then
-        __brew_cached_taps="$(/usr/bin/ruby -e '
+        __brew_cached_taps="$(/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -e '
             require "open-uri"
             require "yaml"
 
