@@ -6,7 +6,7 @@ class Md5sha1sum < Formula
   md5 'a75c5e21071ffa66fad1001de040517a'
 
   def install
-    system "./configure --prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     system "make"
     bin.install 'md5sum'
     bin.install_symlink bin/'md5sum' => 'sha1sum'

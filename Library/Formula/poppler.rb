@@ -44,7 +44,7 @@ class Poppler < Formula
 
     # Install poppler font data.
     PopplerData.new.brew do
-      system "make install prefix=#{prefix}"
+      system "make", "install", "prefix=#{prefix}"
     end
   end
 end

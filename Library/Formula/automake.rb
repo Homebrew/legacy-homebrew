@@ -24,6 +24,6 @@ class Automake < Formula
   end
 
   def test
-    system "#{bin}/automake --version"
+    system "#{bin}/automake", "--version"
   end
 end

@@ -40,6 +40,6 @@ class Mydumper < Formula
   end
 
   def test
-    system "#{bin}/mydumper --version"
+    system "#{bin}/mydumper", "--version"
   end
 end

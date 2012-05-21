@@ -38,7 +38,7 @@ class Jbigkit < Formula
   def test
     mktemp do
       system "#{bin}/jbgtopbm #{prefix}/examples/ccitt7.jbg | #{bin}/pbmtojbg - testoutput.jbg"
-      system "/usr/bin/cmp #{prefix}/examples/ccitt7.jbg testoutput.jbg"
+      system "/usr/bin/cmp", "#{prefix}/examples/ccitt7.jbg", "testoutput.jbg"
     end
   end
 end
