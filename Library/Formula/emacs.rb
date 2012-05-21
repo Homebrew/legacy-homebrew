@@ -120,8 +120,8 @@ class Emacs < Formula
         Emacs.app was installed to:
           #{prefix}
 
-        Command-line emacs can be used by setting up an alias:
-          A wrapper for command line use has been installed to /usr/local/bin/emacs
+         A wrapper for command line use has been installed to /usr/local/bin/emacs
+          This wrapper invokes the Emacs executable within the app bundle with -nw
 
          To link the application to a normal Mac OS X location:
            brew linkapps
