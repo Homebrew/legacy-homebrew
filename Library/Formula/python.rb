@@ -13,6 +13,11 @@ class Distribute < Formula
   md5 'ecd75ea629fee6d59d26f88c39b2d291'
 end
 
+ class Pip < Formula
+   url 'http://pypi.python.org/packages/source/p/pip/pip-1.1.tar.gz'
+   md5 '62a9f08dd5dc69d76734568a6c040508'
+ end
+
 class Python < Formula
   homepage 'http://www.python.org/'
   url 'http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2'
@@ -99,11 +104,9 @@ class Python < Formula
       install-scripts=#{scripts_folder}
     EOF
 
-    # Install distribute. The user can then do:
-    # $ easy_install pip
-    # $ pip install --upgrade distribute
-    # to get newer versions of distribute outside of Homebrew.
+    # Install distribute and pip
     Distribute.new.brew { system "#{bin}/python", "setup.py", "install" }
+    Pip.new.brew { system "#{bin}/python", "setup.py", "install" }
   end
 
   def caveats
@@ -126,13 +129,11 @@ class Python < Formula
       specifing the install-scripts folder as:
         #{scripts_folder}
 
-      If you install Python packages via "python setup.py install", easy_install, pip,
-      any provided scripts will go into the install-scripts folder above, so you may
-      want to add it to your PATH.
+      If you install Python packages via "pip install x" or "python setup.py install"
+      (or the outdated easy_install), any provided scripts will go into the
+      install-scripts folder above, so you may want to add it to your PATH.
 
-      Distribute has been installed, so easy_install is available.
-      To update distribute itself outside of Homebrew:
-          #{scripts_folder}/easy_install pip
+      Distribute has been installed. To update distribute itself outside of Homebrew:
           #{scripts_folder}/pip install --upgrade distribute
 
       See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
