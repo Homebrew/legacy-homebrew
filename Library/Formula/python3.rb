@@ -186,4 +186,9 @@ class Python3 < Formula
   def scripts_folder
     HOMEBREW_PREFIX+"share/python3"
   end
+
+  def test
+    # See: https://github.com/mxcl/homebrew/pull/10487
+    `#{bin}/python3 -c 'from decimal import Decimal; print(Decimal(4) / Decimal(2))'`.chomp == '2'
+  end
 end
