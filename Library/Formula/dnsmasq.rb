@@ -2,8 +2,8 @@ require 'formula'
 
 class Dnsmasq < Formula
   homepage 'http://www.thekelleys.org.uk/dnsmasq/doc.html'
-  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.60.tar.gz'
-  md5 '5a09908e02724d759ac60d9cafd27de8'
+  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.61.tar.gz'
+  md5 '6ed0a5c2524dfc3a74ef494ee2469f09'
 
   def options
     [['--with-idn', "Compile with IDN support"]]
@@ -28,7 +28,7 @@ class Dnsmasq < Formula
       s.change_make_var! "CFLAGS", ENV.cflags
     end
 
-    system "make install PREFIX=#{prefix}"
+    system "make", "install", "PREFIX=#{prefix}"
 
     prefix.install "dnsmasq.conf.example"
     plist_path.write startup_plist

@@ -15,8 +15,7 @@ class Jbigkit < Formula
     # Set for a universal build and patch the Makefile.
     # There's no configure. It creates a static lib.
     ENV.universal_binary
-    inreplace 'Makefile', "CCFLAGS = -O2 -W", "CCFLAGS = #{ENV.cflags}"
-    system "make"
+    system "make", "CC=#{ENV.cc}", "CCFLAGS=#{ENV.cflags}"
 
     # It needs j1 to make the tests happen in sequence.
     ENV.deparallelize
@@ -37,14 +36,9 @@ class Jbigkit < Formula
   end
 
   def test
-    puts
     mktemp do
-      system "#{HOMEBREW_PREFIX}/bin/jbgtopbm #{prefix}/examples/ccitt7.jbg | pbmtojbg - testoutput.jbg"
-      system "/usr/bin/cmp #{prefix}/examples/ccitt7.jbg testoutput.jbg"
-      ohai "The test was successful converting between jbig and pbm and back."
-      puts
-      system "/usr/bin/file #{HOMEBREW_PREFIX}/lib/libjbig.a #{HOMEBREW_PREFIX}/lib/libjbig85.a"
-      puts
+      system "#{bin}/jbgtopbm #{prefix}/examples/ccitt7.jbg | #{bin}/pbmtojbg - testoutput.jbg"
+      system "/usr/bin/cmp", "#{prefix}/examples/ccitt7.jbg", "testoutput.jbg"
     end
   end
 end

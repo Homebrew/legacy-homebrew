@@ -13,6 +13,6 @@ class Csup < Formula
   end
 
   def test
-    system "#{bin}/csup -v"
+    system "#{bin}/csup", "-v"
   end
 end

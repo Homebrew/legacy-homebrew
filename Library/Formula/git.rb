@@ -1,19 +1,19 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.7.10.tar.gz'
-  sha1 '5852d1dead0190edeba1803a70fac5d76523a616'
+  url 'http://git-core.googlecode.com/files/git-manpages-1.7.10.2.tar.gz'
+  sha1 '6cc3f80185bdd1a608cf373b05313b2adc82b898'
 end
 
 class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.10.tar.gz'
-  sha1 'd624d67dd4988dad8164f4395d74b73c21434a29'
+  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.10.2.tar.gz'
+  sha1 '004a2bf989b935657e2e1e6000a748d83657649f'
 end
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.7.10.tar.gz'
-  sha1 '501ee8685c148d377950e42c111e01d83fd1d41a'
+  url 'http://git-core.googlecode.com/files/git-1.7.10.2.tar.gz'
+  sha1 'e4b7f746ff4e356baaddcad0b2911376efde031b'
 
   head 'https://github.com/git/git.git'
 
@@ -79,5 +79,11 @@ class Git < Formula
     The 'contrib' directory has been installed to:
       #{HOMEBREW_PREFIX}/share/git-core/contrib
     EOS
+  end
+
+  def test
+    HOMEBREW_REPOSITORY.cd do
+      `#{bin}/git ls-files -- bin`.chomp == 'bin/brew'
+    end
   end
 end

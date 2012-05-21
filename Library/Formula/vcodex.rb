@@ -42,8 +42,10 @@ class Vcodex < Formula
     man.install 'man/man3'
   end
 
-  def caveats
-    "We agreed to the AT&T Source Code License for you.\nIf this is unacceptable you should uninstall."
+  def caveats; <<-EOS.undent
+    We agreed to the AT&T Source Code License for you.
+    If this is unacceptable you should uninstall.
+    EOS
   end
 end
 

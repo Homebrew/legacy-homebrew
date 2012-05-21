@@ -6,6 +6,6 @@ class Gitslave < Formula
   md5 '7fed63110ae1a656af10462f60592000'
 
   def install
-    system "make install prefix=#{prefix}"
+    system "make", "install", "prefix=#{prefix}"
   end
 end

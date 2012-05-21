@@ -182,7 +182,12 @@ class FormulaInstaller
 
     args = ARGV.clone
     unless args.include? '--fresh'
-      args.concat tab.used_options unless tab.nil?
+      unless tab.nil?
+        args.concat tab.used_options
+        # FIXME: enforce the download of the non-bottled package
+        # in the spawned Ruby process.
+        args << '--build-from-source'
+      end
       args.uniq! # Just in case some dupes were added
     end
 
@@ -266,12 +271,6 @@ class FormulaInstaller
 
   def paths
     @paths ||= ENV['PATH'].split(':').map{ |p| File.expand_path p }
-  end
-
-  def in_aclocal_dirlist?
-    File.open("/usr/share/aclocal/dirlist") do |dirlist|
-      dirlist.grep(%r{^#{HOMEBREW_PREFIX}/share/aclocal$}).length > 0
-    end rescue false
   end
 
   def check_PATH
@@ -380,8 +379,12 @@ class FormulaInstaller
   def check_m4
     return if MacOS.xcode_version.to_f >= 4.3
 
+    return if File.open("/usr/share/aclocal/dirlist") do |dirlist|
+      dirlist.grep(%r{^#{HOMEBREW_PREFIX}/share/aclocal$}).length > 0
+    end rescue false
+
     # Check for m4 files
-    if Dir[f.share+"aclocal/*.m4"].length > 0 and not in_aclocal_dirlist?
+    if Dir[f.share+"aclocal/*.m4"].length > 0
       opoo 'm4 macros were installed to "share/aclocal".'
       puts "Homebrew does not append \"#{HOMEBREW_PREFIX}/share/aclocal\""
       puts "to \"/usr/share/aclocal/dirlist\". If an autoconf script you use"

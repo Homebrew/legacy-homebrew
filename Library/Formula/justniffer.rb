@@ -28,12 +28,12 @@ class Justniffer < Formula
   end
 
   def install
-    system "./configure --prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 
   def test
-    system "justniffer --version | grep '^justniffer'"
+    system "#{bin}/justniffer --version | grep '^justniffer'"
   end
 
   def caveats; <<-EOS.undent

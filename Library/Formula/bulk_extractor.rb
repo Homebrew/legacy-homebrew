@@ -8,8 +8,8 @@ class BulkExtractor < Formula
   depends_on 'afflib' => :optional
   depends_on 'exiv2' => :optional
   depends_on 'libewf' => :optional
-  depends_on 'autoconf' if MacOS.xcode_version >= "4.3"
-  depends_on 'automake' if MacOS.xcode_version >= "4.3"
+  depends_on 'autoconf' => :build if MacOS.xcode_version.to_f >= 4.3
+  depends_on 'automake' => :build if MacOS.xcode_version.to_f >= 4.3
 
   def install
     system "autoreconf", "-i"

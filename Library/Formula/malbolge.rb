@@ -12,7 +12,7 @@ class Malbolge < Formula
   end
 
   def install
-    system "#{ENV['CXX']}", "malbolge.c", "-o", "malbolge"
+    system ENV.cxx, "malbolge.c", "-o", "malbolge"
     bin.install 'malbolge'
   end
 end
