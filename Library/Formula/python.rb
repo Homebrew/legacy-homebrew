@@ -114,8 +114,11 @@ class Python < Formula
 
       You may want to symlink this Framework to a standard OS X location,
       such as:
-          mkdir ~/Frameworks
-          ln -s "#{prefix}/Frameworks/Python.framework" ~/Frameworks
+          mkdir -p ~/Library/Frameworks/Python.framework/Versions
+          ln -s "#{prefix}/Frameworks/Python.framework/Versions/2.7" ~/Library/Frameworks/Python.framework/Versions/2.7
+          ln -s ~/Library/Frameworks/Python.framework/Versions/2.7 ~/Library/Frameworks/Python.framework/Versions/Current
+          ln -s ~/Library/Frameworks/Python.framework/Versions/2.7/Python ~/Library/Frameworks/Python.framework/Python
+          ln -s ~/Library/Frameworks/Python.framework/Versions/2.7/Resources ~/Library/Frameworks/Python.framework/Resources
     EOS
 
     general_caveats = <<-EOS.undent
