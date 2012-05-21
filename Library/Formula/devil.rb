@@ -14,6 +14,9 @@ class Devil < Formula
   def patches; DATA; end
 
   def install
+    # devil won't find libpng without ENV.x11
+    ENV.x11
+
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--enable-ILU"
     system "make install"
