@@ -63,7 +63,7 @@ def audit_formula_text name, text
   end
 
   # Prefer formula path shortcuts in Pathname+
-  if text =~ %r{\(\s*(prefix\s*\+\s*(['"])(bin|include|libexec|lib|sbin|share))}
+  if text =~ %r{\(\s*(prefix\s*\+\s*(['"])(bin|include|libexec|lib|sbin|share)[/'"])}
     problems << " * \"(#{$1}...#{$2})\" should be \"(#{$3}+...)\""
   end
 
@@ -118,11 +118,6 @@ def audit_formula_text name, text
   # using ARGV.flag? for formula options is generally a bad thing
   if text =~ /ARGV\.flag\?/
     problems << " * Use 'ARGV.include?' instead of 'ARGV.flag?'"
-  end
-
-  # MacPorts patches should specify a revision, not trunk
-  if text =~ %r[macports/trunk]
-    problems << " * MacPorts patches should specify a revision instead of trunk"
   end
 
   # Avoid hard-coding compilers
@@ -211,9 +206,13 @@ def audit_formula_patches f
   patches = Patches.new(f.patches)
   patches.each do |p|
     next unless p.external?
-    if p.url =~ %r[raw\.github\.com]
+    case p.url
+    when %r[raw\.github\.com], %r[gist\.github\.com/raw]
       problems << " * Using raw GitHub URLs is not recommended:"
-      problems << " * #{p.url}"
+      problems << "   #{p.url}"
+    when %r[macports/trunk]
+      problems << " * MacPorts patches should specify a revision instead of trunk:"
+      problems << "   #{p.url}"
     end
   end
   return problems
@@ -319,7 +318,7 @@ def audit_formula_instance f
       problems << " * Can't find dependency \"#{d}\"."
     end
 
-    case d
+    case d.name
     when "git", "python", "ruby", "emacs", "mysql", "postgresql", "mercurial"
       problems << <<-EOS
  * Don't use #{d} as a dependency. We allow non-Homebrew
@@ -414,13 +413,10 @@ module Homebrew extend self
         puts problems * "\n"
         puts
         brew_count += 1
-        problem_count += problems.size
+        problem_count += problems.select{ |p| p.start_with? ' *' }.size
       end
     end
 
-    if errors
-      puts "#{problem_count} problems in #{brew_count} brews"
-      Homebrew.failed = true
-    end
+    ofail "#{problem_count} problems in #{brew_count} brews" if errors
   end
 end

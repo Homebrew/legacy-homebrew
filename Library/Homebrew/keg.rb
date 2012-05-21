@@ -80,6 +80,7 @@ class Keg < Pathname
       when INFOFILE_RX then ENV['HOMEBREW_KEEP_INFO'] ? :info : :skip_file
       when LOCALEDIR_RX then :mkpath
       when *share_mkpaths then :mkpath
+      when /^zsh/ then :mkpath
       else :link
       end
     end
@@ -97,7 +98,7 @@ class Keg < Pathname
       when /^ocaml/ then :mkpath
       when /^perl5/ then :mkpath
       when 'php' then :mkpath
-      when /^python[23]\.\d$/ then :mkpath
+      when /^python[23]\.\d/ then :mkpath
       when 'ruby' then :mkpath
       # Everything else is symlinked to the cellar
       else :link

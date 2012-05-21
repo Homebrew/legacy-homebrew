@@ -174,6 +174,6 @@ class Python < Formula
 
   def test
     # See: https://github.com/mxcl/homebrew/pull/10487
-    system "#{bin}/python -c 'from decimal import Decimal; print Decimal(4) / Decimal(2)'"
+    `#{bin}/python -c 'from decimal import Decimal; print Decimal(4) / Decimal(2)'`.chomp == '2'
   end
 end

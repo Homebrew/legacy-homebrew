@@ -54,6 +54,7 @@ module Homebrew extend self
 
     installer = FormulaInstaller.new(f, tab)
     installer.show_header = false
+    installer.install_bottle = install_bottle?(f) and tab.used_options.empty?
 
     oh1 "Upgrading #{f.name}"
 
@@ -66,8 +67,7 @@ module Homebrew extend self
     installer.caveats
     installer.finish
   rescue CannotInstallFormulaError => e
-    onoe e
-    Homebrew.failed = true
+    ofail e
   rescue BuildError => e
     e.dump
     puts

@@ -13,6 +13,6 @@ class Asciitex < Formula
   end
 
   def test
-    system "#{bin}/asciiTeX -f #{prefix}/EXAMPLES"
+    system "#{bin}/asciiTeX", "-f", "#{prefix}/EXAMPLES"
   end
 end

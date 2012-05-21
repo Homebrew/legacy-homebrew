@@ -32,21 +32,26 @@ class Sphinx < Formula
       EOS
   end
 
-  def install
-    lstem = Pathname.pwd+'libstemmer_c'
-    Libstemmer.new.brew { lstem.install Dir['*'] }
+  def options
+    [
+      ['--mysql', 'Force compiling against MySQL.'],
+      ['--pgsql', 'Force compiling against PostgreSQL.'],
+    ]
+  end
 
-    args = ["--prefix=#{prefix}",
-            "--disable-debug",
-            "--disable-dependency-tracking",
-            "--localstatedir=#{var}"]
+  def install
+    Libstemmer.new.brew { (buildpath/'libstemmer_c').install Dir['*'] }
+
+    args = %W[--prefix=#{prefix}
+              --disable-dependency-tracking
+              --localstatedir=#{var}]
 
     # always build with libstemmer support
     args << "--with-libstemmer"
 
     # configure script won't auto-select PostgreSQL
-    args << "--with-pgsql" if which 'pg_config'
-    args << "--without-mysql" unless which 'mysql'
+    args << "--with-pgsql" if ARGV.include?('--pgsql') or which 'pg_config'
+    args << "--without-mysql" unless ARGV.include?('--mysql') or which 'mysql_config'
 
     system "./configure", *args
     system "make install"

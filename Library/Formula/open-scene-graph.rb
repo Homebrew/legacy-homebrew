@@ -17,6 +17,11 @@ class OpenSceneGraph < Formula
   depends_on 'librsvg' => :optional
   depends_on 'collada-dom' => :optional
 
+  devel do
+    url 'http://www.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-3.1.1.zip'
+    md5 '079b9c1738057227b1804c6698fc9c89'
+  end
+
   fails_with :clang do
     build 318
     cause <<-EOS.undent
@@ -25,10 +30,13 @@ class OpenSceneGraph < Formula
       EOS
   end
 
-  # The mini-Boost finder in FindCOLLADA doesn't find our boost, so fix it.
-  def patches
-    return DATA
-  end
+  # First patch: The mini-Boost finder in FindCOLLADA doesn't find our boost, so fix it.
+  # Second patch:
+  # Lion replacement for CGDisplayBitsPerPixel();
+  # taken from: http://www.openscenegraph.org/projects/osg/changeset/12790/OpenSceneGraph/trunk/src/osgViewer/DarwinUtils.mm
+  # Issue at: https://github.com/mxcl/homebrew/issues/11391
+  # should be obsolete with some newer versions (current version is: 3.0.1)
+  def patches; DATA; end
 
   def install
     args = %W{
@@ -83,3 +91,54 @@ index 428cb29..6206580 100644
          PATHS
          ${COLLADA_DOM_ROOT}/external-libs/boost/lib/${COLLADA_BUILDNAME}
          ${COLLADA_DOM_ROOT}/external-libs/boost/lib/mingw
+
+
+Index: OpenSceneGraph/trunk/src/osgViewer/DarwinUtils.mm
+===================================================================
+--- a/src/osgViewer/DarwinUtils.mm (revision 12292)
++++ b/src/osgViewer/DarwinUtils.mm (revision 12790)
+@@ -48,4 +48,23 @@
+ namespace osgDarwin {
+ 
++//
++// Lion replacement for CGDisplayBitsPerPixel(CGDirectDisplayID displayId)
++//
++size_t displayBitsPerPixel( CGDirectDisplayID displayId )
++{
++
++    CGDisplayModeRef mode = CGDisplayCopyDisplayMode(displayId);
++    size_t depth = 0;
++
++    CFStringRef pixEnc = CGDisplayModeCopyPixelEncoding(mode);
++    if(CFStringCompare(pixEnc, CFSTR(IO32BitDirectPixels), kCFCompareCaseInsensitive) == kCFCompareEqualTo)
++        depth = 32;
++    else if(CFStringCompare(pixEnc, CFSTR(IO16BitDirectPixels), kCFCompareCaseInsensitive) == kCFCompareEqualTo)
++        depth = 16;
++    else if(CFStringCompare(pixEnc, CFSTR(IO8BitIndexedPixels), kCFCompareCaseInsensitive) == kCFCompareEqualTo)
++        depth = 8;
++
++    return depth;
++}
+ 
+ static inline CGRect toCGRect(NSRect nsRect)
+@@ -314,5 +333,5 @@
+     resolution.width = CGDisplayPixelsWide(id);
+     resolution.height = CGDisplayPixelsHigh(id);
+-    resolution.colorDepth = CGDisplayBitsPerPixel(id);
++    resolution.colorDepth = displayBitsPerPixel(id);
+     resolution.refreshRate = getDictDouble (CGDisplayCurrentMode(id), kCGDisplayRefreshRate);        // Not tested
+     if (resolution.refreshRate<0) resolution.refreshRate = 0;
+@@ -403,5 +422,5 @@
+         CGDisplayBestModeForParametersAndRefreshRate(
+                         displayid, 
+-                        CGDisplayBitsPerPixel(displayid), 
++                        displayBitsPerPixel(displayid), 
+                         width, height,  
+                         refresh,  
+@@ -433,5 +452,5 @@
+         CGDisplayBestModeForParametersAndRefreshRate(
+                         displayid, 
+-                        CGDisplayBitsPerPixel(displayid), 
++                        displayBitsPerPixel(displayid), 
+                         width, height,  
+                         refreshRate,  
