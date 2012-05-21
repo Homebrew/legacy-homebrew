@@ -2,8 +2,8 @@ require 'formula'
 
 class Ejabberd < Formula
   homepage 'http://www.ejabberd.im'
-  url "http://www.process-one.net/downloads/ejabberd/2.1.10/ejabberd-2.1.10.tar.gz"
-  md5 '70f0e17983114c62893e43b6ef2e9d0c'
+  url "http://www.process-one.net/downloads/ejabberd/2.1.11/ejabberd-2.1.11.tgz"
+  md5 'a70b040c4e7602f47718c8afe8780d50'
 
   depends_on "openssl" if MacOS.leopard?
   depends_on "erlang"
