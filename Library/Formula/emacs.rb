@@ -84,10 +84,13 @@ class Emacs < Formula
       system "make bootstrap"
       system "make install"
       prefix.install "nextstep/Emacs.app"
-
+      inreplace "nextstep/emacswrapper.sh","%EMACS%",prefix+'Emacs.app/Contents/MacOS/Emacs'
+      chmod 0755,"nextstep/emacswrapper.sh"
+      mv "nextstep/emacswrapper.sh",'nextstep/emacs'
+      bin.install "nextstep/emacs"
+      
       unless ARGV.build_head?
         bin.mkpath
-        ln_s prefix+'Emacs.app/Contents/MacOS/Emacs', bin+'emacs'
         ln_s prefix+'Emacs.app/Contents/MacOS/bin/emacsclient', bin
         ln_s prefix+'Emacs.app/Contents/MacOS/bin/etags', bin
       end
@@ -117,8 +120,8 @@ class Emacs < Formula
         Emacs.app was installed to:
           #{prefix}
 
-        Command-line emacs can be used by setting up an alias:
-          alias emacs="#{prefix}/Emacs.app/Contents/MacOS/Emacs -nw"
+         A wrapper for command line use has been installed to /usr/local/bin/emacs
+          This wrapper invokes the Emacs executable within the app bundle with -nw
 
          To link the application to a normal Mac OS X location:
            brew linkapps
@@ -175,3 +178,10 @@ index 30b73c2..f0c154e 100644
                         && [[theEvent charactersIgnoringModifiers] length] > 0))
  /*[[theEvent characters] length] */
          {
+diff a/nextstep/emacswrapper.sh a/nextstep/emacswrapper.sh
+--- a/nextstep/emacswrapper.sh
++++ b/nextstep/emacswrapper.sh
+@@ -0,0 +1,3 @@
++#!/bin/bash
++
++"%EMACS%" -nw $@
