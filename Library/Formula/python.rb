@@ -27,7 +27,8 @@ class Python < Formula
     [
       ["--framework", "Do a 'Framework' build instead of a UNIX-style build."],
       ["--universal", "Build for both 32 & 64 bit Intel."],
-      ["--static", "Build static libraries."]
+      ["--static", "Build static libraries."],
+      ["--with-sqlite-dynamic-extensions", "Build sqlite3 module with dyn. extensions."]
     ]
   end
 
@@ -59,8 +60,11 @@ class Python < Formula
     end
 
     # allow sqlite3 module to load extensions
-    inreplace "setup.py",
-      'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', ''
+    # http://docs.python.org/library/sqlite3.html#f1
+    if ARGV.include? '--with-sqlite-dynamic-extensions'
+      inreplace "setup.py",
+        'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', ''
+    end
 
     system "./configure", *args
 
