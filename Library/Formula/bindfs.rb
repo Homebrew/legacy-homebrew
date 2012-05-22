@@ -14,6 +14,6 @@ class Bindfs < Formula
   end
 
   def test
-    system "#{bin}/bindfs -V"
+    system "#{bin}/bindfs", "-V"
   end
 end

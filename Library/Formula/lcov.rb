@@ -9,7 +9,7 @@ class Lcov < Formula
     %w(bin/gendesc bin/genhtml bin/geninfo bin/genpng bin/lcov).each do |file|
       inreplace file, '/etc/lcovrc', "#{prefix}/etc/lcovrc"
     end
-    system "make PREFIX=#{prefix} install"
+    system "make", "PREFIX=#{prefix}", "install"
   end
 
   def patches

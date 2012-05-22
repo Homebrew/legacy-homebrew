@@ -47,9 +47,9 @@ class Audiofile < Formula
     end
 
     mktemp do
-      system "#{conv_bin} #{inn} #{out} format wave"
-      system "#{info_bin} --short --reporterror #{out}"
-      system "#{hear_bin} -p #{out}" if ARGV.verbose?
+      system conv_bin, inn, out, 'format', 'wave'
+      system info_bin, '--short', '--reporterror', out
+      system hear_bin, '-p', out if ARGV.verbose?
     end
   end
 end

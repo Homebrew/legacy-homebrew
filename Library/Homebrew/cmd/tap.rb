@@ -12,7 +12,7 @@ module Homebrew extend self
   end
 
   def install_tap user, repo
-    raise "brew install git" unless system "/usr/bin/which -s git"
+    raise "brew install git" unless which 'git'
 
     # we special case homebrew so users don't have to shift in a terminal
     repouser = if user == "homebrew" then "Homebrew" else user end

@@ -39,8 +39,11 @@ class Pango < Formula
 
   def test
     mktemp do
-      system "#{bin}/pango-view -t 'test-image' --waterfall --rotate=10 --annotate=1 --header -q -o output.png"
-      system "/usr/bin/qlmanage -p output.png"
+      system "#{bin}/pango-view", "-t", "test-image",
+                                  "--waterfall", "--rotate=10",
+                                  "--annotate=1", "--header",
+                                  "-q", "-o", "output.png"
+      system "/usr/bin/qlmanage", "-p", "output.png"
     end
   end
 end

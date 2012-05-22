@@ -8,7 +8,7 @@ class Catdoc < Formula
   def install
     # catdoc configure says it respects --mandir=, but does not.
     ENV['man1dir'] = man1
-    system "./configure --disable-debug --disable-dependency-tracking --prefix=#{prefix}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
     # The INSTALL file confuses make on case insensitive filesystems.
     system "mv INSTALL INSTALL.txt"
     system "make"
