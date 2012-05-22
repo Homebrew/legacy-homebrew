@@ -59,6 +59,9 @@ class Python3 < Formula
 
     if build_framework?
       args << "--enable-framework=#{prefix}/Frameworks"
+      # Force apps and the CLI utils to be installed relative to the prefix
+      inreplace 'configure', '*/Library', '*'
+      inreplace 'configure', 'MDIR="`dirname "${MDIR}"`"', "MDIR=\"#{prefix}\""
     else
       args << "--enable-shared" unless ARGV.include? '--static'
     end
@@ -67,6 +70,17 @@ class Python3 < Formula
     system "make"
     ENV.j1 # Installs must be serialized
     system "make install"
+
+    if as_framework?
+      # Move the apps and add the version suffix.
+      # Normally they're in a versioned folder, but linkapps does not preserve
+      # folder names or structure when linking.
+      python_vers = "3.2"
+      ['IDLE', 'Python Launcher'].each do |a|
+        mv(prefix+"Applications/Python 3.2/#{a}.app", prefix+"#{a} (3.2).app")
+      end
+      (prefix+'Applications').rmtree
+    end
 
     # Post-install, fix up the site-packages and install-scripts folders
     # so that user-installed Python software survives minor updates, such
