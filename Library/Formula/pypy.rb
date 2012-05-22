@@ -1,8 +1,8 @@
 require 'formula'
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.26.tar.gz'
-  md5 '841f4262a70107f85260362f5def8206'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.27.tar.gz'
+  md5 'ecd75ea629fee6d59d26f88c39b2d291'
 end
 
 class Pypy < Formula

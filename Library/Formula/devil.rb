@@ -10,10 +10,21 @@ class Devil < Formula
   depends_on 'little-cms'
   depends_on 'jasper'
 
+  # see http://sourceforge.net/tracker/?func=detail&aid=3404133&group_id=4470&atid=104470
+  # also, even with -std=gnu99 removed from the configure script,
+  # devil fails to build with clang++ while compiling il_exr.cpp
+  fails_with :clang do
+    build 318
+    cause "invalid -std=gnu99 flag while building C++"
+  end
+
   # fix compilation issue for iluc.c
   def patches; DATA; end
 
   def install
+    # devil won't find libpng without ENV.x11
+    ENV.x11
+
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--enable-ILU"
     system "make install"
