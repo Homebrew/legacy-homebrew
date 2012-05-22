@@ -30,7 +30,7 @@ class Rabbitmq < Formula
     enabled_plugins_path = etc+'rabbitmq/enabled_plugins'
     enabled_plugins_path.write enabled_plugins unless enabled_plugins_path.exist?
 
-    # Create the plist file      
+    # Create the plist file
     plist_path.write startup_plist
     plist_path.chmod 0644
   end
@@ -48,12 +48,12 @@ class Rabbitmq < Formula
         launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     Management Plugin enabled by default at http://localhost:55672
-    
+
     To start rabbitmq-server manually:
         rabbitmq-server
     EOS
   end
-  
+
   def enabled_plugins
     return <<-EOS.undent
       [rabbitmq_management,rabbitmq_management_visualiser].
@@ -64,10 +64,10 @@ class Rabbitmq < Formula
     return <<-EOS.undent
     CONFIG_FILE=#{etc}/rabbitmq/rabbitmq
     NODE_IP_ADDRESS=127.0.0.1
-    NODENAME=rabbit@localhost    
+    NODENAME=rabbit@localhost
     EOS
   end
-  
+
   def startup_plist
     return <<-EOPLIST
 <?xml version="1.0" encoding="UTF-8"?>
@@ -96,7 +96,4 @@ class Rabbitmq < Formula
 </plist>
     EOPLIST
   end
-
 end
-
-__END__
