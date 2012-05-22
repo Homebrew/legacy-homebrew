@@ -23,7 +23,7 @@ class Scantailor < Formula
   end
 
   def install
-    system "cmake #{std_cmake_parameters} -DPNG_INCLUDE_DIR=/usr/X11/include ."
+    system "cmake", ".", "-DPNG_INCLUDE_DIR=/usr/X11/include", *std_cmake_args
     system "make install"
   end
 end

@@ -24,7 +24,7 @@ class Teem < Formula
   end
 
   def install
-    cmake_args = std_cmake_parameters.split
+    cmake_args = std_cmake_args
     cmake_args << "-DBUILD_SHARED_LIBS:BOOL=ON"
 
     if ARGV.include? '--experimental-apps'
