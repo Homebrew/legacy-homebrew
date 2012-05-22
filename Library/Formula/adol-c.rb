@@ -1,28 +1,44 @@
 require 'formula'
 
+# Are sparse derivatives requested?
+def enable_sparse?; ARGV.include? '--enable-sparse'; end
+
 class AdolC < Formula
-  homepage 'https://projects.coin-or.org/ADOL-C'
-  url 'http://www.coin-or.org/download/source/ADOL-C/ADOL-C-2.2.1.tgz'
-  md5 '5fe149865b47f77344ff910702da8b99'
+  url 'http://www.coin-or.org/download/source/ADOL-C/ADOL-C-2.3.0.tgz'
+  homepage 'http://www.coin-or.org/projects/ADOL-C.xml'
+  md5 'c06013e6023ac9c7066738a84b9dafa5'
 
-  head 'https://projects.coin-or.org/svn/ADOL-C/trunk/', :using => :svn
-  # HEAD contains bugfix for NaNs appearing in 2.2.1
-  # http://answerpot.com/showthread.php?2997935-sparse_jac+return+unreasonable+NaN's
+  def options
+    [
+        ['--enable-sparse', "build sparse drivers"]
+    ]
+  end
 
-  # realpath is used in configure to find colpack
-  depends_on 'aardvark_shell_utils' => :build
-  depends_on 'colpack'
+  if enable_sparse?
+    # As of version 2.3.0, Colpack no longer has to be downloaded to a subfolder
+    # of Adol-C. But we need recent versions of automake and autoconf.
+    depends_on 'colpack'  => :build
+  end
+
+  depends_on 'automake' => :build
+  depends_on 'autoconf' => :build
+  depends_on 'libtool'  => :build
 
   def install
-    inreplace "configure" do |s|
-      s.gsub! "readlink -f", "realpath"
-      s.gsub! "lib64", "lib"
+    system "autoreconf -fi"
+
+    # Don't install libs to lib64/
+    inreplace 'configure', 'lib64', 'lib'
+
+    args = ["--disable-debug",
+            "--disable-dependency-tracking",
+            "--prefix=#{prefix}"]
+
+    if enable_sparse?
+      args = args + ["--enable-sparse"]
     end
 
-    system "./configure", "--prefix=#{prefix}",
-                          "--enable-sparse",
-                          "--with-colpack=#{HOMEBREW_PREFIX}"
+    system "./configure", *args
     system "make install"
-    system "make test"
   end
 end
