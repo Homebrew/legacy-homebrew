@@ -74,7 +74,7 @@ class Avidemux < Formula
     # Build the core.
     gettext = Formula.factory('gettext')
     mkdir 'corebuild' do
-      args = std_cmake_parameters.split + %W[
+      args = std_cmake_args + %W[
         -DCMAKE_PREFIX_PATH=#{gettext.prefix}
         -DMAC_BUNDLE_DIR=#{prefix}
         -DGTK=OFF
@@ -116,7 +116,7 @@ class Avidemux < Formula
     end
 
     mkdir 'plugbuild' do
-      args = std_cmake_parameters.split + %W[
+      args = std_cmake_args + %W[
         -DGTK=OFF
         -DSDL=OFF
         -DESD=OFF

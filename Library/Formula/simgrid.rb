@@ -14,7 +14,10 @@ class Simgrid < Formula
   end
 
   def install
-    system "cmake -Denable_debug=on -Denable_compile_optimizations=off #{std_cmake_parameters} ."
+    system "cmake", ".",
+                    "-Denable_debug=on",
+                    "-Denable_compile_optimizations=off",
+                    *std_cmake_args
     system "make install"
   end
 end

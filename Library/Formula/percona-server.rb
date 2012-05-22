@@ -38,7 +38,7 @@ class PerconaServer < Formula
     # Make sure the var/msql directory exists
     (var+"percona").mkpath
 
-    args = std_cmake_parameters.split + [
+    args = std_cmake_args + [
       ".",
       "-DMYSQL_DATADIR=#{var}/percona",
       "-DINSTALL_MANDIR=#{man}",

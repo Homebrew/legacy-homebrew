@@ -21,7 +21,7 @@ class Flann < Formula
   depends_on 'numpy' => :python if ARGV.include? '--enable-python'
 
   def install
-    args = std_cmake_parameters.split
+    args = std_cmake_args
     if ARGV.include? '--enable-matlab'
       args << '-DBUILD_MATLAB_BINDINGS:BOOL=ON'
     else

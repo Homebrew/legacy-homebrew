@@ -11,7 +11,7 @@ class Shiboken < Formula
   def install
     # Building the tests also runs them. Not building and running tests cuts
     # install time in half.
-    system "cmake #{std_cmake_parameters} -DBUILD_TESTS=OFF ."
+    system "cmake", ".", "-DBUILD_TESTS=OFF", *std_cmake_args
     system "make install"
   end
 end

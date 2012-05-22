@@ -8,7 +8,7 @@ class Opencc < Formula
   depends_on 'cmake' => :build
 
   def install
-    args = std_cmake_parameters.split
+    args = std_cmake_args
     args << '-DENABLE_GETTEXT:BOOL=OFF'
     system 'cmake', '.', *args
     system 'make'

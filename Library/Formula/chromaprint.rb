@@ -13,12 +13,9 @@ class Chromaprint < Formula
   depends_on 'ffmpeg' unless ARGV.include? '--without-examples'
 
   def install
-    if ARGV.include? '--without-examples'
-      args = std_cmake_parameters
-    else
-      args = std_cmake_parameters + ' -DBUILD_EXAMPLES=ON'
-    end
-    system "cmake #{args} ."
+    args = std_cmake_args
+    args << '-DBUILD_EXAMPLES=ON' unless ARGV.include? '--without-examples'
+    system "cmake", ".", *args
     system "make install"
   end
 end

@@ -10,9 +10,9 @@ class Libmusicbrainz < Formula
 
   def install
     neon = Formula.factory("neon")
-    neon_args = "-DNEON_LIBRARIES:FILEPATH='#{neon.lib}/libneon.dylib' -DNEON_INCLUDE_DIR:PATH='#{neon.include}/neon'"
-
-    system "cmake #{std_cmake_parameters} #{neon_args} ."
+    neon_args %W[-DNEON_LIBRARIES:FILEPATH=#{neon.lib}/libneon.dylib
+                 -DNEON_INCLUDE_DIR:PATH=#{neon.include}/neon]
+    system "cmake", ".", *(std_cmake_args + neon_args)
     system "make install"
   end
 end

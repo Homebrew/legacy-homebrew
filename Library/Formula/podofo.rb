@@ -17,7 +17,9 @@ class Podofo < Formula
 
     mkdir 'build' do
       # Build shared to simplify linking for other programs.
-      system "cmake #{std_cmake_parameters} -DPODOFO_BUILD_SHARED:BOOL=TRUE .."
+      system "cmake", "..",
+                      "-DPODOFO_BUILD_SHARED:BOOL=TRUE",
+                      *std_cmake_args
       system "make install"
     end
   end
