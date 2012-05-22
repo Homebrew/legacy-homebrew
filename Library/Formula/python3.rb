@@ -123,7 +123,8 @@ class Python3 < Formula
 
       You may want to symlink this Framework to a standard OS X location,
       such as:
-          ln -s "#{prefix}/Frameworks/Python.framework/Versions/3.2" /Library/Frameworks/Python.framework/Versions/3.2
+          mkdir -p ~/Library/Frameworks/Python.framework/Versions
+          ln -s "#{prefix}/Frameworks/Python.framework/Versions/3.2" ~/Library/Frameworks/Python.framework/Versions/3.2
     EOS
 
     # Tk warning only for 10.6 (not for Lion)
@@ -137,14 +138,14 @@ class Python3 < Formula
       A "distutils.cfg" has been written, specifing the install-scripts folder as:
         #{scripts_folder}
 
-      If you install Python packages via "python3 setup.py install", easy_install, pip,
-      any provided scripts will go into the install-scripts folder above, so you may
-      want to add it to your PATH.
+      If you install Python packages via "python3 setup.py install", easy_install3, 
+      pip-3.2, any provided scripts will go into the install-scripts folder above, so 
+      you may want to add it to your PATH.
 
       Distribute has been installed, so easy_install is available.
       To update distribute itself outside of Homebrew:
-          #{scripts_folder}/easy_install pip
-          #{scripts_folder}/pip install --upgrade distribute
+          #{scripts_folder}/easy_install3 pip
+          #{scripts_folder}/pip-3.2 install --upgrade distribute
 
       See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
     EOS
