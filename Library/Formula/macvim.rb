@@ -10,7 +10,6 @@ class Macvim < Formula
 
   def options
   [
-    ["--custom-icons", "Try to generate custom document icons."],
     ["--with-cscope", "Build with Cscope support."],
     ["--override-system-vim", "Override system vim."],
     ["--with-lua", "Build with Lua scripting support."]
@@ -19,6 +18,11 @@ class Macvim < Formula
 
   depends_on 'cscope' if ARGV.include? '--with-cscope'
   depends_on 'lua' if ARGV.include? '--with-lua'
+
+  def patches
+    # fixes warnings during build for makeicns on OS X 10.5
+    "https://github.com/xoob/macvim/commit/feb69a3354d3e5f24a3d2fecbb559de635b83fa0.patch"
+  end
 
   def install
     # MacVim's Xcode project gets confused by $CC, so remove it
@@ -51,14 +55,12 @@ class Macvim < Formula
 
     system "./configure", *args
 
-    # Building custom icons fails for many users, so off by default.
-    unless ARGV.include? "--custom-icons"
-      inreplace "src/MacVim/icons/Makefile", "$(MAKE) -C makeicns", ""
-      inreplace "src/MacVim/icons/make_icons.py", "dont_create = False", "dont_create = True"
-    end
-
+    # Build custom document icons
     # Reference: https://github.com/b4winckler/macvim/wiki/building
-    system "cd src/MacVim/icons && make getenvy"
+    cd "src/MacVim/icons" do
+      system "make -i getenvy"
+      system "make all"
+    end
 
     system "make"
 
