@@ -13,7 +13,7 @@ class Lasi < Formula
   depends_on 'doxygen'
 
   def install
-    system "cmake -DCMAKE_INSTALL_PREFIX='#{prefix}' ."
+    system "cmake", ".", *std_cmake_args
     system "make install"
   end
 end
