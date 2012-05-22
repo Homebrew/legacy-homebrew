@@ -123,7 +123,6 @@ class Python3 < Formula
 
       You may want to symlink this Framework to a standard OS X location,
       such as:
-          mkdir -p /Library/Frameworks/Python.framework/Versions
           ln -s "#{prefix}/Frameworks/Python.framework/Versions/3.2" /Library/Frameworks/Python.framework/Versions/3.2
     EOS
 
