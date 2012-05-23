@@ -45,10 +45,14 @@ class Keg
   end
 
   def dylibs
+    require 'find'
+    dylibs = []
     if (lib = join 'lib').directory?
-      lib.children.select{ |pn| pn.extname == '.dylib' and not pn.symlink? }
-    else
-      []
+      lib.find do |pn|
+        next if pn.symlink? or pn.directory?
+        dylibs << pn if pn.extname == '.dylib'
+      end
     end
+    dylibs
   end
 end
