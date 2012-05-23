@@ -9,8 +9,20 @@ class Libagg < Formula
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
 
+  fails_with :clang do
+    build 318
+    cause <<-EOS.undent
+      AGG tries to return a const reference as a non-const reference, which is
+      rejected by clang 3.1 but accepted by gcc
+    EOS
+  end
+
   def install
     ENV.x11 # For freetype
+
+    # AM_C_PROTOTYPES was removed in automake 1.12, as it's only needed for
+    # pre-ANSI compilers
+    inreplace 'configure.in', 'AM_C_PROTOTYPES', ''
 
     # No configure script. We need to run autoreconf, and aclocal and automake
     # need some direction.
