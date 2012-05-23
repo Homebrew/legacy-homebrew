@@ -22,7 +22,8 @@ class GpgAgent < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--enable-agent-only"
+                          "--enable-agent-only",
+                          "--with-pinentry-pgm=#{HOMEBREW_PREFIX}/bin/pinentry"
     system "make install"
   end
 end
