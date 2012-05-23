@@ -21,7 +21,7 @@ class Opencolorio < Formula
   end
 
   def install
-    args = std_cmake_parameters.split
+    args = std_cmake_args
     args << "-DOCIO_BUILD_JNIGLUE=ON" if ARGV.include? '--with-java'
     args << "-DOCIO_BUILD_TESTS=ON" if ARGV.include? '--with-tests'
     args << "-DOCIO_BUILD_DOCS=ON" if ARGV.include? '--with-docs'

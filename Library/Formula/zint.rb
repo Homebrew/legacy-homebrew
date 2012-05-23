@@ -11,7 +11,10 @@ class Zint < Formula
 
   def install
     mkdir 'zint-build' do
-      system "cmake #{std_cmake_parameters} -DCMAKE_PREFIX_PATH='#{prefix}' -DCMAKE_C_FLAGS=-I/usr/X11/include .."
+      system "cmake", "..",
+                      "-DCMAKE_PREFIX_PATH=#{prefix}",
+                      "-DCMAKE_C_FLAGS=-I/usr/X11/include",
+                      *std_cmake_args
       system "make install"
     end
   end
