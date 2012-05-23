@@ -9,8 +9,8 @@ class Sedna < Formula
 
   def install
     # Build needs to be created from outside the source directory.
-    mktemp do
-      system "cmake #{std_cmake_parameters} #{buildpath}"
+    mkdir 'build' do
+      system "cmake", "..", *std_cmake_args
       system "make install"
     end
   end
