@@ -31,12 +31,13 @@ end
 
 class Gdal < Formula
   homepage 'http://www.gdal.org/'
-  url 'http://download.osgeo.org/gdal/gdal-1.9.0.tar.gz'
-  md5 '1853f3d8eb5232ae030abe007840cade'
+  url 'http://download.osgeo.org/gdal/gdal-1.9.1.tar.gz'
+  md5 'c5cf09b92dac1f5775db056e165b34f5'
 
   head 'https://svn.osgeo.org/gdal/trunk/gdal'
 
-  depends_on 'doxygen' => :build
+  # For creating up to date man pages.
+  depends_on 'doxygen' => :build if ARGV.build_head?
 
   depends_on 'jpeg'
   depends_on 'giflib'
@@ -210,13 +211,13 @@ class Gdal < Formula
   end
 
   def install
-    # The 1.9.0 release appears to contain a regression where linking flags for
-    # Sqlite are not added at a critical moment when the GDAL library is being
-    # assembled. This causes the build to fail due to missing symbols.
+    # Linking flags for SQLite are not added at a critical moment when the GDAL
+    # library is being assembled. This causes the build to fail due to missing
+    # symbols.
     #
     # Fortunately, this can be remedied using LDFLAGS.
     ENV.append 'LDFLAGS', '-lsqlite3'
-    # Needed by libdap
+    # Needed by libdap.
     ENV.append 'CPPFLAGS', '-I/usr/include/libxml2' if complete?
 
     # Reset ARCHFLAGS to match how we build.
@@ -256,12 +257,8 @@ class Gdal < Formula
       end
     end
 
-    # For some reason, the 1.9.0 source contains an empty `man` directory which
-    # fools Make into thinking there is nothing that needs to be done.
-    rmtree 'man'
-    system 'make', 'man'
+    system 'make', 'man' if ARGV.build_head?
     system 'make', 'install-man'
-
     # Clean up any stray doxygen files.
     Dir[bin + '*.dox'].each { |p| rm p }
   end
