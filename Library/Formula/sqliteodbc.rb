@@ -20,18 +20,20 @@ class Sqliteodbc < Formula
       ENV['LDFLAGS'] = '-arch i386 -arch x86_64'
       args << '--disable-dependency-tracking'
     end
-    args << '--with-sqlite3=/usr/local/'
+    args << "--with-sqlite3=#{HOMEBREW_PREFIX}"
 
     system './configure', *args
     system 'make install'
 
-    dylib_src      = File.join(prefix,'libsqlite3odbc-0.95.dylib')
-    static_lib_src = File.join(prefix, 'libsqlite3odbc.a')
-    lib.install_symlink dylib_src => 'libsqlite3odbc.dylib'
-    lib.install_symlink static_lib_src
+    dylib_src      = prefix + 'libsqlite3odbc-0.95.dylib'
+    static_lib_src = prefix + 'libsqlite3odbc.a'
+
+    lib.install dylib_src => 'libsqlite3odbc.dylib'
+    lib.install static_lib_src
   end
 
   def test
-    File.symlink? File.join(lib,"libsqlite3odbc.dylib")
+    File.exists? File.join(lib, 'libsqlite3odbc.dylib')
+    File.exists? File.join(lib, 'libsqlite3odbc.a')
   end
 end
