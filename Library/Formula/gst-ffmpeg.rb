@@ -9,7 +9,9 @@ class GstFfmpeg < Formula
   # ffmpeg is bundled with gst-ffmpeg
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    system './configure', "--prefix=#{prefix}",
+                          "--with-ffmpeg-extra-configure=--cc=#{ENV.cc}",
+                          '--disable-dependency-tracking'
     system "make install"
   end
 end
