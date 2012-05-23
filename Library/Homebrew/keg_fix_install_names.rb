@@ -50,7 +50,7 @@ class Keg
     if (lib = join 'lib').directory?
       lib.find do |pn|
         next if pn.symlink? or pn.directory?
-        dylibs << pn if pn.extname == '.dylib'
+        dylibs << pn if pn.dylib?
       end
     end
     dylibs
