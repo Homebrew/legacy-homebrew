@@ -15,8 +15,8 @@ EOS
 
   def patches
     {:p0 => [
-        "http://ftpmirror.gnu.org/readline/readline-6.2-patches/readline62-001",
-        "http://ftpmirror.gnu.org/readline/readline-6.2-patches/readline62-002"
+        "http://gnu.mirrors.pair.com/gnu/readline/readline-6.2-patches/readline62-001",
+        "http://mirror.anl.gov/pub/gnu/readline/readline-6.2-patches/readline62-002"
       ]}
   end
 
