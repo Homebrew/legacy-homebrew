@@ -1,5 +1,5 @@
 require 'formula'
-class CasperJS < Formula
+class Casperjs < Formula
   homepage 'http://casperjs.org'
   head 'git://github.com/n1k0/casperjs.git'
   url 'https://github.com/n1k0/casperjs/tarball/0.6.8'
