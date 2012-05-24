@@ -35,6 +35,8 @@ class Netcdf < Formula
   end
 
   def install
+    ENV.fortran if fortran?
+
     common_args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
@@ -43,7 +45,7 @@ class Netcdf < Formula
     ]
 
     args = common_args.clone
-    args << '--enable-netcdf4'
+    args.concat %w[--enable-netcdf4 --disable-doxygen]
 
     system './configure', *args
     system 'make install'
@@ -60,8 +62,6 @@ class Netcdf < Formula
     end unless no_cxx?
 
     NetcdfFortran.new.brew do
-      ENV.fortran
-
       system './configure', *common_args
       system 'make install'
     end if fortran?
