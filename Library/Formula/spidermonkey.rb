@@ -13,14 +13,14 @@ class Spidermonkey < Formula
   url 'http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz'
   version '1.8.5'
 
+  # This is terribly, terribly slow the first time.
+  # head 'https://hg.mozilla.org/tracemonkey', :using => :hg
+  head 'https://hg.mozilla.org/tracemonkey/archive/tip.tar.gz', :using => :curl
+
   # Don't provide an md5 for the HEAD build
   unless ARGV.build_head?
     md5 'a4574365938222adca0a6bd33329cb32'
   end
-
-  # This is terribly, terribly slow the first time.
-  # head 'https://hg.mozilla.org/tracemonkey', :using => :hg
-  head 'https://hg.mozilla.org/tracemonkey/archive/tip.tar.gz', :using => :curl
 
   depends_on 'readline'
   depends_on 'nspr'
@@ -31,7 +31,7 @@ class Spidermonkey < Formula
     ENV['CFLAGS'] = ENV['CFLAGS'].gsub(/-msse[^\s]+/, '') if MacOS.leopard?
 
     # For some reason SpiderMonkey requires Autoconf-2.13
-    ac213_prefix = Pathname.pwd.join('ac213')
+    ac213_prefix = buildpath/'ac213'
     Autoconf213.new.brew do |f|
       # Force use of plain "awk"
       inreplace 'configure', 'for ac_prog in mawk gawk nawk awk', 'for ac_prog in awk'
@@ -43,9 +43,6 @@ class Spidermonkey < Formula
     end
 
     cd "js/src" do
-      # Fixes a bug with linking against CoreFoundation. Tests all pass after
-      # building like this. See: http://openradar.appspot.com/7209349
-      inreplace "configure.in", "LDFLAGS=\"$LDFLAGS -framework Cocoa\"", ""
       system "#{ac213_prefix}/bin/autoconf213"
 
       # Remove the broken *(for anyone but FF) install_name

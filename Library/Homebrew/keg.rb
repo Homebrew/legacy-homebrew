@@ -9,7 +9,7 @@ class Keg < Pathname
 
   # locale-specific directories have the form language[_territory][.codeset][@modifier]
   LOCALEDIR_RX = /(locale|man)\/([a-z]{2}|C|POSIX)(_[A-Z]{2})?(\.[a-zA-Z\-0-9]+(@.+)?)?/
-  INFOFILE_RX = %r[info/[^.].*?\.info$]
+  INFOFILE_RX = %r[info/([^.].*?\.info|dir)$]
 
   # if path is a file in a keg then this will return the containing Keg object
   def self.for path
@@ -29,15 +29,17 @@ class Keg < Pathname
 
   def unlink
     n=0
-    Pathname.new(self).find do |src|
-      next if src == self
-      dst=HOMEBREW_PREFIX+src.relative_path_from(self)
-      next unless dst.symlink?
-      dst.uninstall_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
-      dst.unlink
-      dst.parent.rmdir_if_possible
-      n+=1
-      Find.prune if src.directory?
+    %w[bin etc lib include sbin share var].map{ |d| self/d }.each do |src|
+      src.find do |src|
+        next if src == self
+        dst=HOMEBREW_PREFIX+src.relative_path_from(self)
+        next unless dst.symlink?
+        dst.uninstall_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
+        dst.unlink
+        dst.parent.rmdir_if_possible
+        n+=1
+        Find.prune if src.directory?
+      end
     end
     linked_keg_record.unlink if linked_keg_record.exist?
     n
@@ -68,42 +70,44 @@ class Keg < Pathname
     # yeah indeed, you have to force anything you need in the main tree into
     # these dirs REMEMBER that *NOT* everything needs to be in the main tree
     link_dir('etc') {:mkpath}
-    link_dir('bin') { |path| :skip if path.directory? }
-    link_dir('sbin') { |path| :skip if path.directory? }
+    link_dir('bin') {:skip_dir}
+    link_dir('sbin') {:skip_dir}
     link_dir('include') {:link}
 
     link_dir('share') do |path|
       case path.to_s
-      when 'locale/locale.alias' then :skip
-      when INFOFILE_RX then :info if ENV['HOMEBREW_KEEP_INFO']
+      when 'locale/locale.alias' then :skip_file
+      when INFOFILE_RX then ENV['HOMEBREW_KEEP_INFO'] ? :info : :skip_file
       when LOCALEDIR_RX then :mkpath
       when *share_mkpaths then :mkpath
+      when /^zsh/ then :mkpath
       else :link
       end
     end
 
     link_dir('lib') do |path|
       case path.to_s
-      when 'charset.alias' then :skip
+      when 'charset.alias' then :skip_file
       # pkg-config database gets explicitly created
       when 'pkgconfig' then :mkpath
       # lib/language folders also get explicitly created
+      when /^gdk-pixbuf/ then :mkpath
       when 'ghc' then :mkpath
       when 'lua' then :mkpath
       when 'node' then :mkpath
       when /^ocaml/ then :mkpath
       when /^perl5/ then :mkpath
       when 'php' then :mkpath
-      when /^python[23]\.\d$/ then :mkpath
+      when /^python[23]\.\d/ then :mkpath
       when 'ruby' then :mkpath
       # Everything else is symlinked to the cellar
       else :link
       end
     end
 
-    (HOMEBREW_REPOSITORY/"Library/LinkedKegs"/fname).make_relative_symlink(self)
+    linked_keg_record.make_relative_symlink(self)
 
-    return $n+$d
+    return $n + $d
   end
 
 protected
@@ -122,6 +126,14 @@ protected
     puts "Won't resolve conflicts for symlink #{dst} as it doesn't resolve into the Cellar" if ARGV.verbose?
   end
 
+  def make_relative_symlink dst, src
+    if dst.exist? and dst.realpath == src.realpath
+      puts "Skipping; already exists: #{dst}" if ARGV.verbose?
+    else
+      dst.make_relative_symlink src
+    end
+  end
+
   # symlinks the contents of self+foo recursively into /usr/local/foo
   def link_dir foo
     root = self+foo
@@ -137,13 +149,14 @@ protected
         Find.prune if File.basename(src) == '.DS_Store'
 
         case yield src.relative_path_from(root)
-        when :skip
+        when :skip_file, nil
           Find.prune
         when :info
-          dst.make_relative_symlink(src)
+          next if File.basename(src) == 'dir' # skip historical local 'dir' files
+          make_relative_symlink dst, src
           dst.install_info
         else
-          dst.make_relative_symlink(src)
+          make_relative_symlink dst, src
         end
       elsif src.directory?
         # if the dst dir already exists, then great! walk the rest of the tree tho
@@ -154,13 +167,13 @@ protected
         Find.prune if src.extname.to_s == '.app'
 
         case yield src.relative_path_from(root)
-        when :skip
+        when :skip_dir
           Find.prune
         when :mkpath
           dst.mkpath unless resolve_any_conflicts(dst)
         else
           unless resolve_any_conflicts(dst)
-            dst.make_relative_symlink(src)
+            make_relative_symlink dst, src
             Find.prune
           end
         end

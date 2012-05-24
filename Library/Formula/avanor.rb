@@ -11,7 +11,7 @@ class Avanor < Formula
       s.gsub! "LD = gpp", "LD = cpp"
     end
 
-    system "make DATA_DIR=#{share}/avanor/"
+    system "make", "DATA_DIR=#{share}/avanor/"
     bin.install "avanor"
     (share+"avanor").install "manual"
   end

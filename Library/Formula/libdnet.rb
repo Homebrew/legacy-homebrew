@@ -5,22 +5,27 @@ class Libdnet < Formula
   homepage 'http://code.google.com/p/libdnet/'
   md5 '9253ef6de1b5e28e9c9a62b882e44cc9'
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+  if MacOS.xcode_version >= '4.3'
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
 
-  def install
-    # "manual" autoreconf to get '.dylib' extension on shared lib
-    system "aclocal --force -I config"
-    system "glibtoolize --copy --force"
-    system "autoconf --force"
-    system "autoheader --force"
-    system "automake --add-missing --copy --force-missing"
+  def options
+    [['--with-python', 'Build Python module too.']]
+  end
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+  def install
+    # autoreconf to get '.dylib' extension on shared lib
+    ENV['ACLOCAL'] = 'aclocal -I config'
+    system 'autoreconf', '-ivf'
+
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --mandir=#{man}
+    ]
+    args << "--with-python" if ARGV.include? "--with-python"
+    system "./configure", *args
     system "make install"
   end
 end

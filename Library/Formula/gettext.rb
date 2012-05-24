@@ -9,8 +9,7 @@ class Gettext < Formula
   keg_only "OS X provides the BSD gettext library and some software gets confused if both are in the library path."
 
   bottle do
-    url 'https://downloads.sf.net/project/machomebrew/Bottles/gettext-0.18.1.1-bottle.tar.gz'
-    sha1 'c75fdb192f1b49c9e7e2039c66e24f60f26bc027'
+    sha1 'c75fdb192f1b49c9e7e2039c66e24f60f26bc027' => :lion
   end
 
   def options

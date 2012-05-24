@@ -1,9 +1,9 @@
 require 'formula'
 
 class Swig < Formula
-  url 'http://downloads.sourceforge.net/project/swig/swig/swig-2.0.4/swig-2.0.4.tar.gz'
   homepage 'http://www.swig.org/'
-  md5 '4319c503ee3a13d2a53be9d828c3adc0'
+  url 'http://downloads.sourceforge.net/project/swig/swig/swig-2.0.6/swig-2.0.6.tar.gz'
+  md5 '86bc02218774ca75bdf7766db74a62c6'
 
   depends_on 'pcre'
 

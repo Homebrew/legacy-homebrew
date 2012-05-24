@@ -1,24 +1,30 @@
 require 'formula'
 
+class LibrawTestFile < Formula
+  url 'http://www.rawsamples.ch/raws/nikon/d1/RAW_NIKON_D1.NEF',
+    :using => :nounzip
+  sha1 'd84d47caeb8275576b1c7c4550263de21855cf42'
+end
+
 class LibrawDemosaicGPL2 < Formula
-  url 'http://www.libraw.org/data/LibRaw-demosaic-pack-GPL2-0.14.5.tar.gz'
-  sha1 'ad7e7f090f925a17dc5167c57f051cd090ed17ae'
+  url 'http://www.libraw.org/data/LibRaw-demosaic-pack-GPL2-0.14.6.tar.gz'
+  sha1 'cde9b65ba48b6111353964127532d2d2203edb9a'
 end
 
 class LibrawDemosaicGPL3 < Formula
-  url 'http://www.libraw.org/data/LibRaw-demosaic-pack-GPL3-0.14.5.tar.gz'
-  sha1 '7911e658119e98e3b56203f209fb27b18ec75fd9'
+  url 'http://www.libraw.org/data/LibRaw-demosaic-pack-GPL3-0.14.6.tar.gz'
+  sha1 'b89bb2f44dbd42c0aa2a4fee2c6c7bb2a73d6dac'
 end
 
 class Libraw < Formula
-  url 'http://www.libraw.org/data/LibRaw-0.14.5.tar.gz'
   homepage 'http://www.libraw.org/'
-  sha1 '5f53787177add7322aa19b926dff34fa28265e16'
+  url 'http://www.libraw.org/data/LibRaw-0.14.6.tar.gz'
+  sha1 '0a55901d17165cc7e902af9c376df9bab4c40833'
 
-  depends_on 'little-cms'
+  depends_on 'little-cms2'
 
   def install
-    d = Pathname.getwd.dirname
+    d = buildpath.dirname
     LibrawDemosaicGPL2.new.brew { d.install Dir['*'] }
     LibrawDemosaicGPL3.new.brew { d.install Dir['*'] }
 
@@ -34,30 +40,11 @@ class Libraw < Formula
   end
 
   def test
-    mktemp do
-      netraw = "http://www.rawsamples.ch/raws/nikon/d1/RAW_NIKON_D1.NEF"
-      localraw = "#{HOMEBREW_CACHE}/Formula/RAW_NIKON_D1.NEF"
-      if File.exists? localraw
-        system "#{HOMEBREW_PREFIX}/bin/raw-identify -u #{localraw}"
-        system "#{HOMEBREW_PREFIX}/bin/simple_dcraw -v -T #{localraw}"
-        system "/usr/bin/qlmanage -p #{localraw}.tiff >& /dev/null &"
-      else
-        puts ""
-        opoo <<-EOS.undent
-          A good test that uses libraw.dylib to open and convert a RAW image
-          to tiff was delayed until the RAW test image from the Internet is in your
-          cache. To download that image and run the test, simply type
-
-             brew fetch #{netraw}
-             brew test libraw
-
-          It's a fairly small image, 4 MB, that takes less time to download than
-          read this.  Please ignore the harmless message from brew fetch about
-          No Available Formula.  Brew fetch works correctly as does this well
-          written software.
-
-        EOS
-      end
+    LibrawTestFile.new.brew do
+      filename = 'RAW_NIKON_D1.NEF'
+      system "#{bin}/raw-identify", "-u", filename
+      system "#{bin}/simple_dcraw", "-v", "-T", filename
+      system "/usr/bin/qlmanage", "-p", "#{filename}.tiff"
     end
   end
 end

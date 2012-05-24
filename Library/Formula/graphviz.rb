@@ -5,14 +5,17 @@ def build_bindings?
 end
 
 class Graphviz < Formula
+  homepage 'http://graphviz.org/'
   url 'http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.28.0.tar.gz'
   md5 '8d26c1171f30ca3b1dc1b429f7937e58'
-  homepage 'http://graphviz.org/'
 
   depends_on 'pkg-config' => :build
-
   depends_on 'pango' if ARGV.include? '--with-pangocairo'
   depends_on 'swig' if build_bindings?
+
+  fails_with :clang do
+    build 318
+  end
 
   def options
     [["--with-pangocairo", "Build with Pango/Cairo for alternate PDF output"],
@@ -52,7 +55,8 @@ class Graphviz < Formula
       }
       EOS
 
-      system "#{bin}/dot -Tpdf -o sample.pdf sample.dot && /usr/bin/open ./sample.pdf && /bin/sleep 3"
+      system "#{bin}/dot", "-Tpdf", "-o", "sample.pdf", "sample.dot"
+      system "/usr/bin/qlmanage", "-p", "./sample.pdf"
     end
   end
 

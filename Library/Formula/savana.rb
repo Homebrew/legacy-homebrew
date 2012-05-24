@@ -4,7 +4,6 @@ class Savana < Formula
   homepage 'http://savana.codehaus.org'
   url 'http://repository.codehaus.org/org/codehaus/savana/1.2/savana-1.2-install.tar.gz'
   md5 'cb0d5907540799d7d48fc23ca80f6b0f'
-  version '1.2'
 
   def install
     # Remove Windows files

@@ -3,31 +3,37 @@ require 'formula'
 class WineGecko < Formula
   url 'http://downloads.sourceforge.net/wine/wine_gecko-1.4-x86.msi', :using => :nounzip
   sha1 'c30aa99621e98336eb4b7e2074118b8af8ea2ad5'
-end
 
-class WineGeckoOld < Formula
-  url 'http://downloads.sourceforge.net/wine/wine_gecko-1.0.0-x86.cab', :using => :nounzip
-  sha1 'afa22c52bca4ca77dcb9edb3c9936eb23793de01'
+  devel do
+    url 'http://downloads.sourceforge.net/wine/wine_gecko-1.5-x86.msi', :using => :nounzip
+    sha1 '07b2bc74d03c885bb39124a7641715314cd3ae71'
+  end
 end
 
 class Wine < Formula
   homepage 'http://winehq.org/'
-  url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.2.3.tar.bz2'
-  sha256 '3fd8d3f2b466d07eb90b8198cdc9ec3005917a4533db7b8c6c69058a2e57c61f'
+  url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.4.tar.bz2'
+  sha256 '99a437bb8bd350bb1499d59183635e58217e73d631379c43cfd0d6020428ee65'
   head 'git://source.winehq.org/git/wine.git'
 
   devel do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.4-rc4.tar.bz2'
-    sha256 '3105c4f7e0a3c326c3dc82257b6af96dd5db6cc2afbe4b8a936563d2da04d1ec'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.4.tar.bz2'
+    sha256 '90b10450b1afb4d54dfd20529e040daa4ee901c52b2f3bc452a86c2e06b4b759'
   end
 
   depends_on 'jpeg'
   depends_on 'libicns'
 
-  # gnutls not needed since 1.3.16
-  depends_on 'gnutls' unless ARGV.build_devel? or ARGV.build_head?
+  fails_with :llvm do
+    build 2336
+    cause 'llvm-gcc does not respect force_align_arg_pointer'
+  end
 
-  fails_with_llvm 'llvm-gcc does not respect force_align_arg_pointer', :build => 2336
+  # Wine tests CFI support by calling clang, but then attempts to use as, which
+  # does not work. Use clang for assembling too.
+  def patches
+    DATA if ENV.compiler == :clang
+  end
 
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
   # configure: libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
@@ -37,10 +43,10 @@ class Wine < Formula
   # Including /usr/lib because wine, as of 1.3.15, tries to dlopen
   # libncurses.5.4.dylib, and fails to find it without the fallback path.
 
-  def wine_wrapper; <<-EOS
-#!/bin/sh
-DYLD_FALLBACK_LIBRARY_PATH="/usr/X11/lib:#{HOMEBREW_PREFIX}/lib:/usr/lib" "#{bin}/wine.bin" "$@"
-EOS
+  def wine_wrapper; <<-EOS.undent
+    #!/bin/sh
+    DYLD_FALLBACK_LIBRARY_PATH="/usr/X11/lib:#{HOMEBREW_PREFIX}/lib:/usr/lib" "#{bin}/wine.bin" "$@"
+    EOS
   end
 
   def install
@@ -51,7 +57,13 @@ EOS
 
     ENV["LIBS"] = "-lGL -lGLU"
     ENV.append "CFLAGS", build32
-    ENV.O1 if ENV.compiler == :clang
+    if ENV.compiler == :clang
+      opoo <<-EOS.undent
+        Clang currently miscompiles some parts of Wine. If you have gcc, you
+        can get a more stable build with:
+          brew install wine --use-gcc
+      EOS
+    end
     ENV.append "CXXFLAGS", "-D_DARWIN_NO_64_BIT_INODE"
     ENV.append "LDFLAGS", "#{build32} -framework CoreServices -lz -lGL -lGLU"
 
@@ -73,28 +85,13 @@ EOS
     rm_rf share+'applications'
 
     # Download Gecko once so we don't need to redownload for each prefix
-    gecko = (ARGV.build_devel? or ARGV.build_head?) ? WineGecko.new : WineGeckoOld.new
+    gecko = WineGecko.new
     gecko.brew { (share+'wine/gecko').install Dir["*"] }
 
     # Use a wrapper script, so rename wine to wine.bin
     # and name our startup script wine
     mv (bin+'wine'), (bin+'wine.bin')
     (bin+'wine').write(wine_wrapper)
-  end
-
-  def patches
-    p = []
-    # There is a bug in the Lion version of ld that prevents Wine from building
-    # correctly; see <http://bugs.winehq.org/show_bug.cgi?id=27929>
-    # We have backported Camillo Lugaresi's patch from upstream. The patch can
-    # be removed from this formula once it lands in both the devel and stable
-    # branches of Wine.
-    p << DATA if MacOS.lion? and not (ARGV.build_devel? or ARGV.build_head?)
-
-    # Wine tests CFI support by calling clang, but then attempts to use as, which
-    # does not work. Use clang for assembling too.
-    p << 'https://raw.github.com/gist/1755988/266f883f568c223ab25da08581c1a08c47bb770f/winebuild.patch' if ENV.compiler == :clang
-    p
   end
 
   def caveats
@@ -108,30 +105,26 @@ EOS
       Or check out:
         http://code.google.com/p/osxwinebuilder/
     EOS
-    if not (ARGV.build_devel? or ARGV.build_head?)
-      s += <<-EOS.undent
-
-        The stable version of Wine is very old. You will get better results with
-        the development version. Use:
-          brew install wine --devel
-      EOS
-    end
     return s
   end
 end
 
-
 __END__
-diff --git a/configure b/configure
-index e8bc505..4b9a6d4 100755
---- a/configure
-+++ b/configure
-@@ -6417,7 +6417,7 @@ fi
+diff --git a/tools/winebuild/utils.c b/tools/winebuild/utils.c
+index 09f9b73..ed198f8 100644
+--- a/tools/winebuild/utils.c
++++ b/tools/winebuild/utils.c
+@@ -345,10 +345,11 @@ struct strarray *get_as_command(void)
  
-     APPLICATIONSERVICESLIB="-framework ApplicationServices"
+     if (!as_command)
+     {
+-        static const char * const commands[] = { "gas", "as", NULL };
+-        as_command = find_tool( "as", commands );
++        static const char * const commands[] = { "clang", NULL };
++        as_command = find_tool( "clang", commands );
+     }
+     strarray_add_one( args, as_command );
++    strarray_add_one( args, "-c" );
  
--    LDEXECFLAGS="-image_base 0x7bf00000 -Wl,-segaddr,WINE_DOS,0x00000000,-segaddr,WINE_SHAREDHEAP,0x7f000000"
-+    LDEXECFLAGS="-image_base 0x7bf00000 -Wl,-macosx_version_min,10.6,-segaddr,WINE_DOS,0x00000000,-segaddr,WINE_SHAREDHEAP,0x7f000000"
- 
-     if test "$ac_cv_header_DiskArbitration_DiskArbitration_h" = "yes"
-     then
+     if (force_pointer_size)
+     {

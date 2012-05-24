@@ -1,10 +1,9 @@
 require 'formula'
 
 class Vips < Formula
-  url 'http://www.vips.ecs.soton.ac.uk/supported/current/vips-7.26.3.tar.gz'
   homepage 'http://www.vips.ecs.soton.ac.uk/'
-
-  md5 '1fbf164ef0da8e835a036c56ff659e8e'
+  url 'http://www.vips.ecs.soton.ac.uk/supported/current/vips-7.28.0.tar.gz'
+  md5 '16429e3b82d869936312c0a35faaf5d0'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'

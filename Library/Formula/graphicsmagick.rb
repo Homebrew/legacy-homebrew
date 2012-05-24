@@ -36,7 +36,7 @@ class Graphicsmagick < Formula
   depends_on 'ghostscript' => :recommended if ghostscript_srsly?
   depends_on 'xz' => :optional
 
-  fails_with_llvm
+  fails_with :llvm
 
   def skip_clean? path
     path.extname == '.la'

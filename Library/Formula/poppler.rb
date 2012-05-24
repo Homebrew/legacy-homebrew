@@ -10,8 +10,8 @@ end
 
 class Poppler < Formula
   homepage 'http://poppler.freedesktop.org'
-  url 'http://poppler.freedesktop.org/poppler-0.18.4.tar.gz'
-  md5 '12658f3308597e57f3faff538cc73baf'
+  url 'http://poppler.freedesktop.org/poppler-0.20.0.tar.gz'
+  md5 '5bca54b9561bf5b14d9344efce2cd4f3'
 
   depends_on 'pkg-config' => :build
   depends_on 'qt' if qt?
@@ -44,7 +44,7 @@ class Poppler < Formula
 
     # Install poppler font data.
     PopplerData.new.brew do
-      system "make install prefix=#{prefix}"
+      system "make", "install", "prefix=#{prefix}"
     end
   end
 end

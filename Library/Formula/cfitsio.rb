@@ -8,16 +8,15 @@ end
 
 class Cfitsio < Formula
   homepage 'http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html'
-  url 'ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio3290.tar.gz'
-  version '3.29'
-  md5 'bba93808486cf5edac236a941283b3c3'
+  url 'ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio3300.tar.gz'
+  sha1 '70fd41db978401f423c07f53e6e7bf45b489e5cb'
+  version '3.30'
 
   def options
     [['--with-examples', "Compile and install example programs."]]
   end
 
   def install
-    # --disable-debug and --disable-dependency-tracking are not recognized by configure
     system "./configure", "--prefix=#{prefix}"
     system "make shared"
     system "make install"
@@ -32,7 +31,7 @@ class Cfitsio < Formula
         Dir['*.c'].each do |f|
           # compressed_fits.c does not work (obsolete function call)
           next if f == 'compress_fits.c'
-          system "#{ENV.cc} #{f} -I#{include} -L#{lib} -lcfitsio -lm -o bin/#{f.sub('.c','')}"
+          system ENV.cc, f, "-I#{include}", "-L#{lib}", "-lcfitsio", "-lm", "-o", "bin/#{f.sub('.c', '')}"
         end
         bin.install Dir['bin/*']
       end

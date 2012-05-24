@@ -17,8 +17,13 @@ class Scantailor < Formula
   depends_on 'jpeg'
   depends_on 'libtiff'
 
+  fails_with :clang do
+    build 318
+    cause "calling a private constructor of class 'mcalc::Mat<double>'"
+  end
+
   def install
-    system "cmake #{std_cmake_parameters} -DPNG_INCLUDE_DIR=/usr/X11/include ."
+    system "cmake", ".", "-DPNG_INCLUDE_DIR=/usr/X11/include", *std_cmake_args
     system "make install"
   end
 end

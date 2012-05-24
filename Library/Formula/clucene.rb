@@ -8,13 +8,13 @@ class Clucene < Formula
 
   def install
     if ARGV.build_head?
-      system "cmake #{std_cmake_parameters} ."
+      system "cmake", ".", *std_cmake_args
     else
       system "./configure", "--disable-debug", "--disable-dependency-tracking",
                             "--prefix=#{prefix}"
     end
 
-    # Install in parallel. See:
+    # Serialize the install step. See:
     # https://github.com/mxcl/homebrew/issues/8712
     ENV.j1
     system "make install"

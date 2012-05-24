@@ -16,6 +16,8 @@ class Ghostscript < Formula
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
   depends_on 'libtiff'
+  depends_on 'jbig2dec'
+  depends_on 'little-cms2'
 
   if ARGV.build_head? and MacOS.xcode_version >= "4.3"
     depends_on "automake" => :build
@@ -26,7 +28,7 @@ class Ghostscript < Formula
     # If the install version of any of these doesn't match
     # the version included in ghostscript, we get errors
     # Taken from the MacPorts portfile - http://bit.ly/ghostscript-portfile
-    renames = ["jpeg", "libpng", "tiff", "zlib"]
+    renames = %w(jpeg libpng tiff zlib lcms2 jbig2dec)
     renames << "freetype" if 10.7 <= MACOS_VERSION
     renames.each do |lib|
       mv lib, "#{lib}_local"
@@ -43,14 +45,19 @@ class Ghostscript < Formula
 
     cd src_dir do
       move_included_source_copies
+      args = %W[
+        --prefix=#{prefix}
+        --disable-cups
+        --disable-compile-inits
+        --disable-gtk
+        --with-system-libtiff
+      ]
 
-      system "./autogen.sh" if ARGV.build_head?
-      system "./configure", "--prefix=#{prefix}", "--disable-debug",
-                            # the cups component adamantly installs to /usr so fuck it
-                            "--disable-cups",
-                            "--disable-compile-inits",
-                            "--disable-gtk"
-
+      if ARGV.build_head?
+        system './autogen.sh', *args
+      else
+        system './configure', *args
+      end
       # versioned stuff in main tree is pointless for us
       inreplace 'Makefile', '/$(GS_DOT_VERSION)', ''
       system "make install"

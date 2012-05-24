@@ -1,39 +1,38 @@
 require 'formula'
 
 class Ddclient < Formula
-  url 'http://sourceforge.net/projects/ddclient/files/ddclient/ddclient-3.8.1/ddclient-3.8.1.tar.bz2'
   homepage 'http://sourceforge.net/apps/trac/ddclient'
+  url 'http://sourceforge.net/projects/ddclient/files/ddclient/ddclient-3.8.1/ddclient-3.8.1.tar.bz2'
   md5 '7fa417bc65f8f0e6ce78418a4f631988'
 
   def install
     # Adjust default paths in script
     inreplace 'ddclient' do |s|
-      s.gsub! "/etc/ddclient", (etc + 'ddclient')
-      s.gsub! "/var/cache/ddclient", (var + 'run/ddclient')
+      s.gsub! "/etc/ddclient", "#{etc}/ddclient"
+      s.gsub! "/var/cache/ddclient", "#{var}/run/ddclient"
     end
 
-    # Copy script to sbin
     sbin.install "ddclient"
 
     # Install sample files
     inreplace 'sample-ddclient-wrapper.sh',
-      "/etc/ddclient", (etc + 'ddclient')
+      "/etc/ddclient", "#{etc}/ddclient"
 
     inreplace 'sample-etc_cron.d_ddclient',
-      "/usr/sbin/ddclient", (sbin + 'ddclient')
+      "/usr/sbin/ddclient", "#{sbin}/ddclient"
 
     inreplace 'sample-etc_ddclient.conf',
-      "/var/run/ddclient.pid", (var + 'run/ddclient/pid')
+      "/var/run/ddclient.pid", "#{var}/run/ddclient/pid"
 
-    (share + 'doc/ddclient').install %w(
+    (share+'doc/ddclient').install %w(
       sample-ddclient-wrapper.sh
       sample-etc_cron.d_ddclient
       sample-etc_ddclient.conf
     )
 
     # Create etc & var paths
-    (etc + 'ddclient').mkpath
-    (var + 'run/ddclient').mkpath
+    (etc+'ddclient').mkpath
+    (var+'run/ddclient').mkpath
 
     # Write the launchd script
     plist_path.write startup_plist

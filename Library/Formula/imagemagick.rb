@@ -13,6 +13,10 @@ def use_wmf?
   ARGV.include? '--use-wmf'
 end
 
+def use_rsvg?
+  ARGV.include? '--use-rsvg'
+end
+
 def use_lqr?
   ARGV.include? '--use-lqr'
 end
@@ -56,11 +60,6 @@ class Imagemagick < Formula
   head 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
     :using => UnsafeSubversionDownloadStrategy
 
-  bottle do
-    url 'https://downloads.sf.net/project/machomebrew/Bottles/imagemagick-6.7.5-7-bottle.tar.gz'
-    sha1 'ad1647061a1d7bc4a0fee0d90c16005f40d97683'
-  end
-
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
 
@@ -71,6 +70,7 @@ class Imagemagick < Formula
   depends_on 'jasper' => :optional
 
   depends_on 'libwmf' if use_wmf?
+  depends_on 'librsvg' if use_rsvg?
   depends_on 'liblqr' if use_lqr?
   depends_on 'openexr' if use_exr?
 
@@ -79,10 +79,18 @@ class Imagemagick < Formula
     path.extname == '.la'
   end
 
+  def patches
+    # Fixes xml2-config that can be missing --prefix.  See issue #11789
+    # Remove if the final Mt. Lion xml2-config supports --prefix.
+    # Not reporting this upstream until the final Mt. Lion is released.
+    DATA
+  end
+
   def options
     [
       ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
       ['--use-wmf', 'Compile with libwmf support.'],
+      ['--use-rsvg', 'Compile with librsvg support.'],
       ['--use-lqr', 'Compile with liblqr support.'],
       ['--use-exr', 'Compile with openexr support.'],
       ['--disable-openmp', 'Disable OpenMP.'],
@@ -121,6 +129,7 @@ class Imagemagick < Formula
     end
 
     args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
+    args << "--with-rsvg" if use_rsvg?
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
@@ -141,3 +150,16 @@ class Imagemagick < Formula
     system "#{bin}/identify", "/Library/Application Support/Apple/iChat Icons/Flags/Argentina.gif"
   end
 end
+
+__END__
+--- a/configure	2012-02-25 09:03:23.000000000 -0800
++++ b/configure	2012-04-26 03:32:15.000000000 -0700
+@@ -31924,7 +31924,7 @@
+         # Debian installs libxml headers under /usr/include/libxml2/libxml with
+         # the shared library installed under /usr/lib, whereas the package
+         # installs itself under $prefix/libxml and $prefix/lib.
+-        xml2_prefix=`xml2-config --prefix`
++        xml2_prefix=/usr
+         if test -d "${xml2_prefix}/include/libxml2"; then
+             CPPFLAGS="$CPPFLAGS -I${xml2_prefix}/include/libxml2"
+         fi

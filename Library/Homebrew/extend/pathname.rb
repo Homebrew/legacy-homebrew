@@ -1,4 +1,5 @@
 require 'pathname'
+require 'bottles'
 
 # we enhance pathname to make our code more readable
 class Pathname
@@ -7,8 +8,16 @@ class Pathname
     sources.each do |src|
       case src
       when Array
+        if src.empty?
+          opoo "tried to install empty array to #{self}"
+          return []
+        end
         src.each {|s| results << install_p(s) }
       when Hash
+        if src.empty?
+          opoo "tried to install empty hash to #{self}"
+          return []
+        end
         src.each {|s, new_basename| results << install_p(s, new_basename) }
       else
         results << install_p(src)
@@ -89,6 +98,15 @@ class Pathname
     File.open(self, 'w') {|f| f.write content }
   end
 
+  # NOTE always overwrites
+  def atomic_write content
+    require 'tempfile'
+    tf = Tempfile.new(self.basename.to_s)
+    tf.write(content)
+    tf.close
+    FileUtils.mv tf.path, self.to_s
+  end
+
   def cp dst
     if file?
       FileUtils.cp to_s, dst
@@ -99,8 +117,10 @@ class Pathname
   end
 
   # extended to support common double extensions
+  alias extname_old extname
   def extname
-    return $1 if to_s =~ /(\.bottle\.tar\.gz)$/
+    return $1 if to_s =~ bottle_regex
+    return $1 if to_s =~ old_bottle_regex
     /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
     return $1 if $1
     return File.extname(to_s)
@@ -151,21 +171,21 @@ class Pathname
     end
 
     # github tarballs, like v1.2.3
-    %r[github.com/.*/(zip|tar)ball/v?((\d\.)+\d+)$].match to_s
+    %r[github.com/.*/(zip|tar)ball/v?((\d+\.)+\d+)$].match to_s
     return $2 if $2
 
     # eg. https://github.com/sam-github/libnet/tarball/libnet-1.1.4
-    %r[github.com/.*/(zip|tar)ball/.*-((\d\.)+\d+)$].match to_s
+    %r[github.com/.*/(zip|tar)ball/.*-((\d+\.)+\d+)$].match to_s
     return $2 if $2
 
     # dashed version
     # eg. github.com/isaacs/npm/tarball/v0.2.5-1
-    %r[github.com/.*/(zip|tar)ball/v?((\d\.)+\d+-(\d+))$].match to_s
+    %r[github.com/.*/(zip|tar)ball/v?((\d+\.)+\d+-(\d+))$].match to_s
     return $2 if $2
 
     # underscore version
     # eg. github.com/petdance/ack/tarball/1.93_02
-    %r[github.com/.*/(zip|tar)ball/v?((\d\.)+\d+_(\d+))$].match to_s
+    %r[github.com/.*/(zip|tar)ball/v?((\d+\.)+\d+_(\d+))$].match to_s
     return $2 if $2
 
     # eg. boost_1_39_0
@@ -194,8 +214,10 @@ class Pathname
     return $1 if $1
 
     # eg. foobar4.5.1
-    /((\d+\.)*\d+)$/.match stem
-    return $1 if $1
+    unless /^erlang-/.match basename
+      /((\d+\.)*\d+)$/.match stem
+      return $1 if $1
+    end
 
     # eg foobar-4.5.0-bin
     /-((\d+\.)+\d+[abc]?)[-._](bin|dist|stable|src|sources?)$/.match stem
@@ -205,22 +227,45 @@ class Pathname
     /_((\d+\.)+\d+[abc]?)[.]orig$/.match stem
     return $1 if $1
 
-    # brew bottle style e.g. qt-4.7.3-bottle.tar.gz
-    /-((\d+\.)*\d+(-\d)*)-bottle$/.match stem
-    return $1 if $1
-
     # eg. otp_src_R13B (this is erlang's style)
     # eg. astyle_1.23_macosx.tar.gz
     stem.scan(/_([^_]+)/) do |match|
       return match.first if /\d/.match $1
     end
 
-    # erlang bottle style, booya
-    # e.g. erlang-R14B03-bottle.tar.gz
-    /-([^-]+)-bottle$/.match stem
+    # old erlang bottle style e.g. erlang-R14B03-bottle.tar.gz
+    /-([^-]+)/.match stem
     return $1 if $1
 
     nil
+  end
+
+  def compression_type
+    # Don't treat jars or wars as compressed
+    return nil if self.extname == '.jar'
+    return nil if self.extname == '.war'
+
+    # OS X installer package
+    return :pkg if self.extname == '.pkg'
+
+    # Get enough of the file to detect common file types
+    # POSIX tar magic has a 257 byte offset
+    magic_bytes = nil
+    File.open(self) { |f| magic_bytes = f.read(262) }
+
+    # magic numbers stolen from /usr/share/file/magic/
+    case magic_bytes
+    when /^PK\003\004/   then :zip
+    when /^\037\213/     then :gzip
+    when /^BZh/          then :bzip2
+    when /^\037\235/     then :compress
+    when /^.{257}ustar/  then :tar
+    when /^\xFD7zXZ\x00/ then :xz
+    when /^Rar!/         then :rar
+    else
+      # Assume it is not an archive
+      nil
+    end
   end
 
   def incremental_hash(hasher)
@@ -275,14 +320,26 @@ class Pathname
 
     self.dirname.mkpath
     Dir.chdir self.dirname do
-      # TODO use Ruby function so we get exceptions
-      # NOTE Ruby functions may work, but I had a lot of problems
-      rv = system 'ln', '-sf', src.relative_path_from(self.dirname), self.basename
-      unless rv and $? == 0
-        raise <<-EOS.undent
-          Could not create symlink #{to_s}.
-          Check that you have permissions on #{self.dirname}
-          EOS
+      # NOTE only system ln -s will create RELATIVE symlinks
+      quiet_system 'ln', '-s', src.relative_path_from(self.dirname), self.basename
+      if not $?.success?
+        if self.exist?
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            Target #{self} already exists. You may need to delete it.
+            EOS
+        elsif !dirname.writable?
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            #{dirname} is not writable. You should change its permissions.
+            EOS
+        else
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            #{self} may already exist.
+            #{dirname} may not be writable.
+            EOS
+        end
       end
     end
   end
@@ -315,6 +372,36 @@ class Pathname
     end
     system '/usr/bin/install-info', '--delete', '--quiet', self.to_s, (self.dirname+'dir').to_s
   end
+
+  def all_formula pwd = self
+    children.map{ |child| child.relative_path_from(pwd) }.each do |pn|
+      yield pn if pn.to_s =~ /.rb$/
+    end
+    children.each do |child|
+      child.all_formula(pwd) do |pn|
+        yield pn
+      end if child.directory?
+    end
+  end
+
+  def find_formula
+    # remove special casing once tap is established and alt removed
+    if self == HOMEBREW_LIBRARY/"Taps/adamv-alt"
+      all_formula do |file|
+        yield file
+      end
+      return
+    end
+
+    [self/:Formula, self/:HomebrewFormula, self].each do |d|
+      if d.exist?
+        d.children.map{ |child| child.relative_path_from(self) }.each do |pn|
+          yield pn if pn.to_s =~ /.rb$/
+        end
+        break
+      end
+    end
+  end
 end
 
 # sets $n and $d so you can observe creation of stuff
@@ -336,7 +423,6 @@ module ObserverPathnameExtension
   end
   def make_relative_symlink src
     super
-    puts "ln #{to_s}" if ARGV.verbose?
     $n+=1
   end
   def install_info

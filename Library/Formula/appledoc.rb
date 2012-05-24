@@ -7,7 +7,13 @@ class Appledoc < Formula
   md5 '142cf80513ca8eda2aba631483b2e4e6'
 
   def install
-    system "xcodebuild", "-project", "appledoc.xcodeproj", "-target", "appledoc", "-configuration", "Release", "install", "SYMROOT=build", "DSTROOT=build", "INSTALL_PATH=/bin"
+    system "xcodebuild", "-project", "appledoc.xcodeproj",
+                         "-target", "appledoc",
+                         "-configuration", "Release",
+                         "install",
+                         "SYMROOT=build",
+                         "DSTROOT=build",
+                         "INSTALL_PATH=/bin"
     bin.install "build/bin/appledoc"
     prefix.install "Templates/"
   end
@@ -15,16 +21,15 @@ class Appledoc < Formula
   def caveats; <<-EOS
 Make the documentation templates available to `appledoc':
 
-    mkdir -p "#{ENV['HOME']}/Library/Application Support/appledoc"
-    ln -sf "#{prefix}/Templates" "~/Library/Application Support/appledoc"
+    ln -sf "#{prefix}/Templates" "#{ENV['HOME']}/Library/Application Support/appledoc"
 
 If you have edited the templates yourself, you should check for important changes.
 
-NOTE someone should patch this tool so thic caveat is unecessary.
+NOTE someone should patch this tool so this caveat is unecessary.
 EOS
   end
 
   def test
-    system "appledoc --version"
+    system "#{bin}/appledoc", "--version"
   end
 end

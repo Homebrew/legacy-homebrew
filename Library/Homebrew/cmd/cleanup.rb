@@ -1,4 +1,5 @@
 require 'formula'
+require 'bottles'
 require 'cmd/prune'
 
 module Homebrew extend self
@@ -51,10 +52,12 @@ module Homebrew extend self
   def clean_cache
     HOMEBREW_CACHE.children.each do |pn|
       next unless pn.file?
-      pn.stem =~ /^(.+)-(.+)$/ # greedy so works even if formula-name has hyphens in it
-      if $1 and $2
-        f = Formula.factory($1) rescue nil
-        if not f or (f.version != $2 or ARGV.switch? "s" and not f.installed?)
+      version = pn.version
+      name = pn.basename.to_s.match(/(.*)-(#{version})/).captures.first rescue nil
+      if name and version
+        f = Formula.factory(name) rescue nil
+        old_bottle = bottle_file_outdated? f, pn
+        if not f or (f.version != version or ARGV.switch? "s" and not f.installed?) or old_bottle
           puts "Removing #{pn}..."
           rm pn unless ARGV.switch? 'n'
         end

@@ -7,7 +7,9 @@ class W3m < Formula
 
   depends_on 'bdw-gc'
 
-  fails_with_llvm :build => 2334
+  fails_with :llvm do
+    build 2334
+  end
 
   def patches
     # patch to build against bdw-gc 7.2 by @waltarix

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Elasticsearch < Formula
-  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.18.7.tar.gz'
   homepage 'http://www.elasticsearch.org'
-  md5 'c4de29abf930693b0a4290df3250e128'
+  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.19.4.tar.gz'
+  md5 '8058ae9d76bbf4ddc5b6bcbefb3706c0'
 
   def cluster_name
     "elasticsearch_#{ENV['USER']}"
@@ -64,6 +64,10 @@ class Elasticsearch < Formula
         ln -nfs #{plist_path} ~/Library/LaunchAgents/
         launchctl load -wF ~/Library/LaunchAgents/#{plist_path.basename}
 
+    If upgrading from 0.18 ElasticSearch requires flushing before shutting
+    down the cluster with no indexing operations happening after flush:
+        curl host:9200/_flush
+
     To stop the ElasticSearch daemon:
         launchctl unload -wF ~/Library/LaunchAgents/#{plist_path.basename}
 
@@ -100,6 +104,11 @@ class Elasticsearch < Formula
             <string>-f</string>
             <string>-D es.config=#{prefix}/config/elasticsearch.yml</string>
           </array>
+          <key>EnvironmentVariables</key>
+          <dict>
+            <key>ES_JAVA_OPTS</key>
+            <string>-Xss200000</string>
+          </dict>
           <key>RunAtLoad</key>
           <true/>
           <key>UserName</key>

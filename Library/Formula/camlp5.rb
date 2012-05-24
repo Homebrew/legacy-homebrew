@@ -20,7 +20,7 @@ class Camlp5 < Formula
       strictness = "-transitional"
     end
 
-    system "./configure -prefix #{prefix} -mandir #{man} #{strictness}"
+    system "./configure", "-prefix", prefix, "-mandir", man, strictness
     # this build fails if jobs are parallelized
     ENV.deparallelize
     system "make world.opt"
