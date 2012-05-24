@@ -122,7 +122,7 @@ class Gdal < Formula
       # Should be installed separately after GRASS installation using the
       # official GDAL GRASS plugin.
       "--without-grass",
-      "--without-libgrass"
+      "--without-libgrass",
 
       # Poppler explicitly disabled. GDAL currently can't compile against
       # Poppler 0.20.0.
