@@ -117,14 +117,14 @@ class FormulaCreator
         # ENV.j1  # if your formula's build system can't parallelize
 
     <% if mode == :cmake %>
-        system "cmake . \#{std_cmake_parameters}"
+        system "cmake", ".", *std_cmake_args
     <% elsif mode == :autotools %>
         system "./configure", "--disable-debug", "--disable-dependency-tracking",
                               "--prefix=\#{prefix}"
     <% else %>
         system "./configure", "--disable-debug", "--disable-dependency-tracking",
                               "--prefix=\#{prefix}"
-        # system "cmake . \#{std_cmake_parameters}"
+        # system "cmake", ".", *std_cmake_args
     <% end %>
         system "make install" # if this fails, try separate make/make install steps
       end
