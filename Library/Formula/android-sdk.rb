@@ -19,8 +19,8 @@ class AndroidSdk < Formula
     mv 'tools', prefix
 
     %w[android apkbuilder ddms dmtracedump draw9patch etc1tool emulator
-    hierarchyviewer hprof-conv lint mksdcard monkeyrunner traceview
-    zipalign].each do |tool|
+    emulator-arm emulator-x86 hierarchyviewer hprof-conv lint mksdcard
+    monitor monkeyrunner traceview zipalign].each do |tool|
       (bin/tool).write <<-EOS.undent
         #!/bin/sh
         TOOL="#{prefix}/tools/#{tool}"
@@ -37,12 +37,14 @@ class AndroidSdk < Formula
       dst.make_relative_symlink src
     end
 
-    (bin+'adb').write <<-EOS.undent
-      #!/bin/sh
-      ADB="#{prefix}/platform-tools/adb"
-      test -f "$ADB" && exec "$ADB" "$@"
-      echo Use the \\`android\\' tool to install the \\"Android SDK Platform-tools\\".
-    EOS
+    %w[aapt adb aidl dexdump dx fastboot llvm-rs-cc].each do |platform_tool|
+      (bin/platform_tool).write <<-EOS.undent
+        #!/bin/sh
+        PLATFORM_TOOL="#{prefix}/platform-tools/#{platform_tool}"
+        test -f "$PLATFORM_TOOL" && exec "$PLATFORM_TOOL" "$@"
+        echo Use the \\`android\\' tool to install the \\"Android SDK Platform-tools\\".
+      EOS
+    end
   end
 
   def caveats; <<-EOS.undent
