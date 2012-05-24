@@ -11,7 +11,7 @@ class Musepack < Formula
   depends_on 'libreplaygain'
 
   def install
-    system "cmake . #{std_cmake_parameters}"
+    system "cmake", ".", *std_cmake_args
     system "make install"
     lib.install 'libmpcdec/libmpcdec.dylib'
   end

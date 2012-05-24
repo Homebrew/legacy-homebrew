@@ -9,7 +9,7 @@ class Taglib < Formula
 
   def install
     ENV.append 'CXXFLAGS', "-DNDEBUG=1"
-    system "cmake #{std_cmake_parameters} -DWITH_MP4=ON -DWITH_ASF=ON"
+    system "cmake", "-DWITH_MP4=ON", "-DWITH_ASF=ON", *std_cmake_args
     system "make"
     system "make install"
   end

@@ -87,6 +87,10 @@ class Formula
     @cc_failures ||= CompilerFailures.new
     @cc_failures << fails_with_llvm_reason
   end
+
+  def std_cmake_parameters
+    "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None -Wno-dev"
+  end
 end
 
 class UnidentifiedFormula < Formula

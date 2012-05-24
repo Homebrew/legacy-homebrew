@@ -11,7 +11,7 @@ class Openmeeg < Formula
   depends_on 'hdf5'
 
   def install
-    system "cmake #{std_cmake_parameters} -DUSE_PROGRESSBAR=ON ."
+    system "cmake", ".", "-DUSE_PROGRESSBAR=ON", *std_cmake_args
     system "make install"
   end
 end

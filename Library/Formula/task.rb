@@ -10,7 +10,7 @@ class Task < Formula
   skip_clean :all
 
   def install
-    system "cmake #{std_cmake_parameters}"
+    system "cmake", ".", *std_cmake_args
     system "make install"
     (etc+'bash_completion.d').install 'scripts/bash/task_completion.sh'
     (share+'zsh/site-functions').install   'scripts/zsh/_task'

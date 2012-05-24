@@ -4,33 +4,66 @@ def fortran?
   ARGV.include? '--enable-fortran'
 end
 
+def no_cxx?
+  ARGV.include? '--disable-cxx'
+end
+
+class NetcdfCXX < Formula
+  homepage 'http://www.unidata.ucar.edu/software/netcdf'
+  url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-cxx4-4.2.tar.gz'
+  md5 'd019853802092cf686254aaba165fc81'
+end
+
+class NetcdfFortran < Formula
+  homepage 'http://www.unidata.ucar.edu/software/netcdf'
+  url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-fortran-4.2.tar.gz'
+  md5 'cc3bf530223e8f4aff93793b9f197bf3'
+end
+
 class Netcdf < Formula
-  url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.1.3.tar.gz'
-  homepage 'http://www.unidata.ucar.edu/software/netcdf/'
-  md5 'ead16cb3b671f767396387dcb3c1a814'
+  homepage 'http://www.unidata.ucar.edu/software/netcdf'
+  url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.2.tar.gz'
+  md5 'b920a6c3a30e9cd46fe96d9fb65ef17e'
 
   depends_on 'hdf5'
 
   def options
-    [['--enable-fortran', 'Compile Fortran bindings']]
+    [
+      ['--enable-fortran', 'Compile Fortran bindings'],
+      ['--disable-cxx', "Don't compile C++ bindings"]
+    ]
   end
 
   def install
-    ENV.fortran if fortran?
-    ENV.append 'LDFLAGS', '-lsz' # So configure finds szip during HDF5 tests
+    common_args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --enable-static
+      --enable-shared
+    ]
 
-    # HDF5 is required to create and access files in the version 4 format
-    hdf5 = Formula.factory 'hdf5'
+    args = common_args.clone
+    args << '--enable-netcdf4'
 
-    args = ["--disable-dependency-tracking",
-            "--prefix=#{prefix}",
-            "--with-hdf5=#{hdf5.prefix}",
-            "--enable-netcdf4",
-            "--enable-shared",
-            "--with-szlib=#{HOMEBREW_PREFIX}"]
-    args << "--disable-fortran" unless fortran?
+    system './configure', *args
+    system 'make install'
 
-    system "./configure", *args
-    system "make install"
+    # Add newly created installation to paths so that binding libraries can
+    # find the core libs.
+    ENV.prepend 'PATH', bin
+    ENV.prepend 'CPPFLAGS', "-I#{include}"
+    ENV.prepend 'LDFLAGS', "-L#{lib}"
+
+    NetcdfCXX.new.brew do
+      system './configure', *common_args
+      system 'make install'
+    end unless no_cxx?
+
+    NetcdfFortran.new.brew do
+      ENV.fortran
+
+      system './configure', *common_args
+      system 'make install'
+    end if fortran?
   end
 end
