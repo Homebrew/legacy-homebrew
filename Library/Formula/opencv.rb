@@ -40,7 +40,8 @@ class Opencv < Formula
   def options
     [
       ["--32-bit", "Build 32-bit only."],
-      ["--with-qt", "Build qt backend."]
+      ["--with-qt", "Build qt backend."],
+      ["--with-tbb", "Build OpenCV with WITH_TBB=ON option"]
     ]
   end
 
@@ -48,6 +49,7 @@ class Opencv < Formula
     args = std_cmake_args
     args << "-DOPENCV_EXTRA_C_FLAGS='-arch i386 -m32'" if ARGV.build_32_bit?
     args << "-DWITH_QT=ON" if ARGV.include? "--with-qt"
+    args << "-DWITH_TBB=ON" if ARGV.include? "--with-tbb"
 
     # The CMake `FindPythonLibs` Module is dumber than a bag of hammers when
     # more than one python installation is available---for example, it clings
