@@ -70,7 +70,6 @@ class Gdal < Formula
     depends_on "unixodbc" # OS X version is not complete enough
     depends_on "libspatialite"
     depends_on "xerces-c"
-    depends_on "poppler"
     depends_on "freexl"
 
     # Other libraries
@@ -124,6 +123,10 @@ class Gdal < Formula
       # official GDAL GRASS plugin.
       "--without-grass",
       "--without-libgrass"
+
+      # Poppler explicitly disabled. GDAL currently can't compile against
+      # Poppler 0.20.0.
+      "--without-poppler"
     ]
 
     # Optional library support for additional formats.
@@ -138,7 +141,6 @@ class Gdal < Formula
         "--with-odbc=#{HOMEBREW_PREFIX}",
         "--with-spatialite=#{HOMEBREW_PREFIX}",
         "--with-xerces=#{HOMEBREW_PREFIX}",
-        "--with-poppler=#{HOMEBREW_PREFIX}",
         "--with-freexl=#{HOMEBREW_PREFIX}",
         "--with-dods-root=#{HOMEBREW_PREFIX}"
       ]
@@ -155,7 +157,6 @@ class Gdal < Formula
         "--without-epsilon",
         "--without-spatialite",
         "--without-libkml",
-        "--without-poppler",
         "--without-podofo",
         "--with-freexl=no",
         "--with-dods-root=no",
