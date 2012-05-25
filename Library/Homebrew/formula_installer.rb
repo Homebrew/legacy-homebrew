@@ -326,7 +326,7 @@ class FormulaInstaller
   def check_non_libraries
     return unless File.exist? f.lib
 
-    valid_libraries = %w(.a .dylib .framework .la .o .so)
+    valid_libraries = %w(.a .dylib .framework .jnilib .la .o .so)
     allowed_non_libraries = %w(.jar .prl .pm)
     non_libraries = f.lib.children.select do |g|
       next if g.directory?
