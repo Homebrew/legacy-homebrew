@@ -2,13 +2,12 @@ require 'formula'
 
 class Qt < Formula
   homepage 'http://qt.nokia.com/'
-  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.8.1.tar.gz'
-  md5 '7960ba8e18ca31f0c6e4895a312f92ff'
+  url 'http://releases.qt-project.org/qt4/source/qt-everywhere-opensource-src-4.8.2.tar.gz'
+  md5 '3c1146ddf56247e16782f96910a8423b'
 
   bottle do
-    version 1
-    sha1 '6ab958b8fbc0595837f12339eaae1e050413ea62' => :snowleopard
-    sha1 '29615109d8bdf97bdd3a193cba0589e7c24db10a' => :lion
+    sha1 'a634c873a3ce825649c913f5d9ad790397390f74' => :snowleopard
+    sha1 'd11c466d3cbc80d3b94431daf481a217bf9097fd' => :lion
   end
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'

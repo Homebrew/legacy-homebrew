@@ -9,7 +9,10 @@ class Physfs < Formula
 
   def install
     mkdir 'macbuild' do
-      system "cmake #{std_cmake_parameters} -DPHYSFS_BUILD_WX_TEST=FALSE -DPHYSFS_BUILD_TEST=TRUE .."
+      system "cmake", "..",
+                      "-DPHYSFS_BUILD_WX_TEST=FALSE",
+                      "-DPHYSFS_BUILD_TEST=TRUE",
+                      *std_cmake_args
       system "make"
       system "make install"
     end
