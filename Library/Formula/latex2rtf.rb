@@ -7,9 +7,11 @@ class Latex2rtf < Formula
 
   def install
     inreplace "Makefile" do |s|
-      s.remove_make_var! 'PREFIX?'
+      s.remove_make_var! 'PREFIX\?'
       s.change_make_var! 'MAN_INSTALL', man1
     end
+
+    ENV['PLATFORM'] = '-DUNIX'
 
     system "make", "PREFIX=#{prefix}", "install"
   end
