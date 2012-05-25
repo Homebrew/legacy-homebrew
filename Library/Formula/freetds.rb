@@ -13,8 +13,7 @@ class Freetds < Formula
 
   def install
     args = ["--prefix=#{prefix}",
-            "--with-tdsver=7.0",
-            "--enable-msdblib",
+            "--with-tdsver=7.1",
             "--mandir=#{man}"
             ]
     
