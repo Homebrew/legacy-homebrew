@@ -1,10 +1,10 @@
 require 'formula'
 
 class Midgard2 < Formula
-  url 'http://www.midgard-project.org/midcom-serveattachmentguid-b459b3e443f711e0a6353dc3bca0241a241a/midgard2-core-10.05.4.tar.gz'
+  url 'https://github.com/midgardproject/midgard-core/tarball/10.05.6'
   head 'https://github.com/midgardproject/midgard-core.git', :branch => 'ratatoskr'
   homepage 'http://www.midgard-project.org/'
-  md5 '99dcf5d5e39901712a882598e3da17d2'
+  md5 'df630e99f4311afe72346a72c9acbe66'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
@@ -17,10 +17,11 @@ class Midgard2 < Formula
   end
 
   def install
-    if ARGV.build_head?
-      system "autoreconf", "-i", "--force"
-      system "automake"
-    end
+    # Package checks macros are needed for autoreconf to behave
+    # correctly OSes < Lion
+    cp "/usr/X11/share/aclocal/pkg.m4", "m4" if MACOS_VERSION < 10.7
+    system "autoreconf", "-i", "--force"
+    system "automake"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-libgda4",
