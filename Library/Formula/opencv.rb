@@ -9,7 +9,7 @@ def site_package_dir
 end
 
 class Opencv < Formula
-  homepage ''
+  homepage 'http://opencv.willowgarage.com/wiki/'
   url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.0/OpenCV-2.4.0.tar.bz2'
   md5 '1fcda4ed3d0655f033ac30be8bad4882'
 
@@ -32,9 +32,6 @@ class Opencv < Formula
   # Fix compile on llvm-gcc-4.2. See
   #   "https://code.ros.org/trac/opencv/ticket/1431"
   #   "https://code.ros.org/trac/opencv/ticket/1432"
-  # def patches
-  #   DATA
-  # end
 
   def options
     [
