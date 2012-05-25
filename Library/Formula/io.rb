@@ -15,7 +15,7 @@ class Io < Formula
   def install
     ENV.j1
     mkdir 'buildroot' do
-      system "cmake #{std_cmake_parameters} .."
+      system "cmake", "..", *std_cmake_args
       system 'make'
       output = %x[./_build/binaries/io ../libs/iovm/tests/correctness/run.io]
       if $?.exitstatus != 0

@@ -4,13 +4,13 @@ class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
 
   if Hardware.is_64_bit? and not ARGV.build_32_bit?
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.0.4.tgz'
-    md5 '0d8dddfe267f6ba0ce36baa82afa6947'
-    version '2.0.4-x86_64'
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.0.5.tgz'
+    md5 '876e3e16d78e3aefdd728d06a7972ee3'
+    version '2.0.5-x86_64'
   else
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.0.4.tgz'
-    md5 '37df92b98d6bd22d06c394966f8c3b8b'
-    version '2.0.4-i386'
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.0.5.tgz'
+    md5 '2ef8c34bf8bd5b56f7fd795d6e153eab'
+    version '2.0.5-i386'
   end
 
   skip_clean :all
@@ -31,6 +31,9 @@ class Mongodb < Formula
     (prefix+'mongod.conf').write mongodb_conf
     plist_path.write startup_plist
     plist_path.chmod 0644
+
+    # copy the config file to etc if this is the first install.
+    etc.install prefix+'mongod.conf' unless File.exists? etc+"mongod.conf"
   end
 
   def caveats; <<-EOS.undent
@@ -45,11 +48,9 @@ class Mongodb < Formula
         launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     Or start it manually:
-        mongod run --config #{prefix}/mongod.conf
+        mongod run --config #{etc}/mongod.conf
 
     The launchctl plist above expects the config file to be at #{etc}/mongod.conf.
-    If this is a first install, you can copy one from #{prefix}/mongod.conf:
-        cp #{prefix}/mongod.conf #{etc}/mongod.conf
     EOS
   end
 

@@ -4,7 +4,8 @@ class Cmus < Formula
   url 'http://downloads.sourceforge.net/cmus/cmus-v2.4.3.tar.bz2'
   homepage 'http://cmus.sourceforge.net/'
   md5 '75452cf007637214c4ab5444e076114b'
-  head 'https://git.gitorious.org/cmus/cmus.git', :using => :git
+
+  head 'https://git.gitorious.org/cmus/cmus.git'
 
   depends_on 'pkg-config' => :build
   depends_on 'libao'

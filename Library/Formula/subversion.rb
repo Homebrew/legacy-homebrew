@@ -89,6 +89,10 @@ class Subversion < Formula
     args << "--enable-javahl" << "--without-jikes" if build_java?
     args << "--with-ruby-sitedir=#{lib}/ruby" if build_ruby?
 
+    # The system Python is built with llvm-gcc, so we override this
+    # variable to prevent failures due to incompatible CFLAGS
+    ENV['ac_cv_python_compile'] = ENV.cc
+
     system "./configure", *args
     system "make"
     system "make install"

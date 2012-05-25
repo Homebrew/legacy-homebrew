@@ -4,13 +4,13 @@ class Riak < Formula
   homepage 'http://wiki.basho.com/Riak.html'
 
   if Hardware.is_64_bit? and not ARGV.build_32_bit?
-    url 'http://downloads.basho.com.s3-website-us-east-1.amazonaws.com/riak/1.1/1.1.1/riak-1.1.1-osx-x86_64.tar.gz'
-    version '1.1.1x86_64'
-    sha256 '5d3ab7810459ff40608522cfe2e231078b5fa40adc405bdeddd734ffef47bb9e'
+    url 'http://downloads.basho.com.s3-website-us-east-1.amazonaws.com/riak/1.1/1.1.2/riak-1.1.2-osx-x86_64.tar.gz'
+    version '1.1.2-x86_64'
+    sha256 '84ca1068125abcbe9bcab47be3222ffbb7f8bca2125d5b6005af8ec33460a266'
   else
-    url 'http://downloads.basho.com.s3-website-us-east-1.amazonaws.com/riak/1.1/1.1.1/riak-1.1.1-osx-i386.tar.gz'
-    version '1.1.1-i386'
-    sha256 '2f977f0c9bed8838a17c50aac515fc2e1c009feb5c83e7da463fd3dd1fee3e95'
+    url 'http://downloads.basho.com.s3-website-us-east-1.amazonaws.com/riak/1.1/1.1.2/riak-1.1.2-osx-i386.tar.gz'
+    version '1.1.2-i386'
+    sha256 'b2d1783aa1cf95870b4902c6770d9e17e272d3f24f49ae593811abe490a5aa91'
   end
 
   skip_clean :all

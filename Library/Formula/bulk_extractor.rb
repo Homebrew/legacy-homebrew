@@ -2,15 +2,18 @@ require 'formula'
 
 class BulkExtractor < Formula
   homepage 'http://afflib.org/software/bulk_extractor'
-  url 'https://github.com/downloads/simsong/bulk_extractor/bulk_extractor-1.2.0.tar.gz'
-  md5 '95172e2a149681054b712890e8fdad57'
+  url 'https://github.com/downloads/simsong/bulk_extractor/bulk_extractor-1.2.2.tar.gz'
+  md5 '11ccee3709ac862a41edad309153c7a3'
 
   depends_on 'afflib' => :optional
   depends_on 'exiv2' => :optional
   depends_on 'libewf' => :optional
+  depends_on 'autoconf' => :build if MacOS.xcode_version.to_f >= 4.3
+  depends_on 'automake' => :build if MacOS.xcode_version.to_f >= 4.3
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "autoreconf", "-i"
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
 

@@ -2,12 +2,12 @@ require 'formula'
 
 class Qt < Formula
   homepage 'http://qt.nokia.com/'
-  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.8.1.tar.gz'
-  md5 '7960ba8e18ca31f0c6e4895a312f92ff'
+  url 'http://releases.qt-project.org/qt4/source/qt-everywhere-opensource-src-4.8.2.tar.gz'
+  md5 '3c1146ddf56247e16782f96910a8423b'
 
   bottle do
-    sha1 '6913b065d9e4647e4389269012bf9c7fe13dd726' => :snowleopard
-    sha1 'd523bfbc1c7e50cdd10b64b1b10db187ec7e7c2b' => :lion
+    sha1 'a634c873a3ce825649c913f5d9ad790397390f74' => :snowleopard
+    sha1 'd11c466d3cbc80d3b94431daf481a217bf9097fd' => :lion
   end
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
@@ -75,7 +75,7 @@ class Qt < Formula
     end
 
     # Needed for Qt 4.8.1 due to attempting to link moc with gcc.
-    ENV['LD'] = ENV['CXX']
+    ENV['LD'] = ENV.cxx
 
     system "./configure", *args
     system "make"
@@ -94,9 +94,8 @@ class Qt < Formula
     # Some config scripts will only find Qt in a "Frameworks" folder
     # VirtualBox is an example of where this is needed
     # See: https://github.com/mxcl/homebrew/issues/issue/745
-    # TODO - surely this link can be made without the `cd`
     cd prefix do
-      ln_s lib, "Frameworks"
+      ln_s lib, prefix + "Frameworks"
     end
 
     # The pkg-config files installed suggest that headers can be found in the
@@ -106,10 +105,14 @@ class Qt < Formula
       framework_name = File.basename(File.dirname(path), '.framework')
       ln_s path.realpath, include+framework_name
     end
+
+    Pathname.glob(bin + '*.app').each do |path|
+      mv path, prefix
+    end
   end
 
   def test
-    "#{bin}/qmake --version"
+    system "#{bin}/qmake", "--version"
   end
 
   def caveats; <<-EOS.undent

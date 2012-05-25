@@ -7,7 +7,7 @@ class Emacs < Formula
   md5 '070c68ad8e3c31fb3cb2414feaf5e6f0'
 
   if ARGV.include? "--use-git-head"
-    head 'git://git.sv.gnu.org/emacs.git'
+    head 'http://git.sv.gnu.org/r/emacs.git'
   else
     head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
   end
@@ -55,6 +55,10 @@ class Emacs < Formula
   end
 
   def install
+    # HEAD builds are currently blowing up when built in parallel
+    # as of April 20 2012
+    ENV.j1 if ARGV.build_head?
+
     args = ["--prefix=#{prefix}",
             "--without-dbus",
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",

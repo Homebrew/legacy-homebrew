@@ -59,6 +59,7 @@ class Formula
   # in compatability because the naming is somewhat confusing
   def self.resolve_alias name
     opoo 'Formula.resolve_alias is deprecated and will eventually be removed'
+    opoo 'Use Formula.canonical_name instead.'
 
     # Don't resolve paths or URLs
     return name if name.include?("/")
@@ -85,6 +86,10 @@ class Formula
     fails_with_llvm_reason = FailsWithLLVM.new(msg, data)
     @cc_failures ||= CompilerFailures.new
     @cc_failures << fails_with_llvm_reason
+  end
+
+  def std_cmake_parameters
+    "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None -Wno-dev"
   end
 end
 

@@ -1,13 +1,14 @@
 require 'formula'
 
 class Gegl < Formula
-  url 'ftp://ftp.gimp.org/pub/gegl/0.1/gegl-0.1.8.tar.bz2'
+  url 'ftp://ftp.gimp.org/pub/gegl/0.2/gegl-0.2.0.tar.bz2'
   homepage 'http://www.gegl.org/'
-  md5 'c8279b86b3d584ee4f503839fc500425'
+  md5 '32b00002f1f1e316115c4ed922e1dec8'
 
   depends_on 'babl'
   depends_on 'glib'
   depends_on 'gettext'
+  depends_on 'intltool' => :build
   depends_on 'pkg-config' => :build
 
   def options

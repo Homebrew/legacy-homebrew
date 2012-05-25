@@ -17,6 +17,6 @@ class Libidn < Formula
   end
 
   def test
-    system "#{bin}/idn --version"
+    system "#{bin}/idn", "--version"
   end
 end

@@ -56,6 +56,6 @@ class Gnuplot < Formula
   end
 
   def test
-    system "#{bin}/gnuplot --version"
+    system "#{bin}/gnuplot", "--version"
   end
 end

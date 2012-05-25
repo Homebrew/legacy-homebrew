@@ -8,6 +8,7 @@ class Pcb < Formula
 
   head 'git://git.gpleda.org/pcb.git'
 
+  depends_on "automake" => :build if MacOS.xcode_version >= "4.3"
   depends_on 'pkg-config' => :build
   depends_on 'intltool'
   depends_on 'gettext'
@@ -15,7 +16,6 @@ class Pcb < Formula
   depends_on 'gd'
   depends_on 'glib'
   depends_on 'gtkglext'
-  depends_on "automake" if MacOS.xcode_version >= "4.3"
 
   # See comments in intltool formula
   depends_on 'XML::Parser' => :perl

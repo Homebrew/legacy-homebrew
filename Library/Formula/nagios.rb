@@ -1,9 +1,9 @@
 require 'formula'
 
 class Nagios < Formula
-  url 'http://downloads.sourceforge.net/project/nagios/nagios-3.x/nagios-3.2.3/nagios-3.2.3.tar.gz'
   homepage 'http://www.nagios.org/'
-  md5 'fe1be46e6976a52acdb021a782b5d04b'
+  url 'http://downloads.sourceforge.net/project/nagios/nagios-3.x/nagios-3.4.1/nagios-3.4.1.tar.gz'
+  md5 '2fa8acfb2a92b1bf8d173a855832de1f'
 
   depends_on 'gd'
   depends_on 'nagios-plugins'
@@ -24,6 +24,7 @@ class Nagios < Formula
                           "--sysconfdir=#{nagios_etc}",
                           "--localstatedir=#{nagios_var}",
                           "--datadir=#{htdocs}",
+                          "--libexecdir=#{HOMEBREW_PREFIX}/sbin", # Plugin dir
                           "--with-cgiurl=/nagios/cgi-bin",
                           "--with-htmurl=/nagios",
                           "--with-nagios-user=#{user}",
@@ -38,10 +39,6 @@ class Nagios < Formula
     system "make install-config"
     system "make install-webconf"
     (share+plist_path).write startup_plist
-
-    # Symlink plugins
-    libexec.rmdir
-    ln_s HOMEBREW_PREFIX+'sbin/nagios-plugins', libexec
   end
 
   def startup_plist

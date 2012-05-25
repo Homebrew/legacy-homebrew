@@ -8,6 +8,9 @@ class Ettercap < Formula
   depends_on 'pcre'
   depends_on 'libnet'
 
+  # Stripping breaks plugin support
+  skip_clean 'bin'
+
   # The below DATA patch fixes an issue where the linker doesn't get passed the ettercap-built
   # 'libwdg' archive which is used for the ncurses interface, thus causing a build failure.
   # See https://github.com/mxcl/homebrew/pull/9540
@@ -19,7 +22,7 @@ class Ettercap < Formula
                           "--mandir=#{man}",
                           "--infodir=#{info}",
                           "--disable-gtk",
-                          "--disable-plugins",
+                          "--enable-plugins",
                           "--with-openssl=/usr",
                           "--with-libpcap=/usr",
                           "--with-libncurses=/usr",

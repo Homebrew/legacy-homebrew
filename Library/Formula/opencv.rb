@@ -45,7 +45,7 @@ class Opencv < Formula
   end
 
   def install
-    args = std_cmake_parameters.split
+    args = std_cmake_args
     args << "-DOPENCV_EXTRA_C_FLAGS='-arch i386 -m32'" if ARGV.build_32_bit?
     args << "-DWITH_QT=ON" if ARGV.include? "--with-qt"
 

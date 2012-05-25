@@ -33,10 +33,4 @@ class Ispell < Formula
     system "make all"
     system "make install"
   end
-
-  def test
-    %w{ buildhash defmt-c defmt-sh findaffix icombine ijoin ispell munchlist tryaffix}.each do |f|
-      system "test -x #{bin}/#{f}"
-    end
-  end
 end

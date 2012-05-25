@@ -53,6 +53,15 @@ def onoe error
   puts lines unless lines.empty?
 end
 
+def ofail error
+  onoe error
+  Homebrew.failed = true
+end
+
+def odie error
+  onoe error
+  exit 1
+end
 
 def pretty_duration s
   return "2 seconds" if s < 3 # avoids the plural problem ;)
@@ -138,18 +147,13 @@ def puts_columns items, star_items=[]
   end
 end
 
-def which cmd, silent=false
-  cmd += " 2>/dev/null" if silent
-  path = `/usr/bin/which #{cmd}`.chomp
+def which cmd
+  path = `/usr/bin/which #{cmd} 2>/dev/null`.chomp
   if path.empty?
     nil
   else
     Pathname.new(path)
   end
-end
-
-def which_s cmd
-  which cmd, true
 end
 
 def which_editor
@@ -158,9 +162,9 @@ def which_editor
   return editor unless editor.nil?
 
   # Find Textmate
-  return 'mate' if which_s "mate"
+  return 'mate' if which "mate"
   # Find # BBEdit / TextWrangler
-  return 'edit' if which_s "edit"
+  return 'edit' if which "edit"
   # Default to vim
   return '/usr/bin/vim'
 end
@@ -396,7 +400,7 @@ module MacOS extend self
       # Xcode 4.3 xc* tools hang indefinately if xcode-select path is set thus
       raise if `xcode-select -print-path 2>/dev/null`.chomp == "/"
 
-      raise unless which_s "xcodebuild"
+      raise unless which "xcodebuild"
       `xcodebuild -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
       raise if $1.nil? or not $?.success?
       $1
@@ -478,8 +482,8 @@ module MacOS extend self
     return false unless MACOS
 
     %w[port fink].each do |ponk|
-      path = `/usr/bin/which #{ponk} 2>/dev/null`
-      return ponk unless path.empty?
+      path = which(ponk)
+      return ponk unless path.nil?
     end
 
     # we do the above check because macports can be relocated and fink may be
@@ -523,20 +527,21 @@ module MacOS extend self
   end
 
   StandardCompilers = {
-    "3.1.4" => {:gcc_40_build_version=>5493, :gcc_42_build_version=>5577, :llvm_build_version=>2064},
+    "3.1.4" => {:gcc_40_build_version=>5493, :gcc_42_build_version=>5577},
     "3.2.6" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"1.7", :clang_build_version=>77},
-    "4.0.0" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"2.0", :clang_build_version=>137},
+    "4.0" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"2.0", :clang_build_version=>137},
     "4.0.1" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"2.0", :clang_build_version=>137},
     "4.0.2" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"2.0", :clang_build_version=>137},
-    "4.2.0" => {:llvm_build_version=>2336, :clang_version=>"3.0", :clang_build_version=>211},
-    "4.3.0" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
+    "4.2" => {:llvm_build_version=>2336, :clang_version=>"3.0", :clang_build_version=>211},
+    "4.3" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
     "4.3.1" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
     "4.3.2" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318}
   }
 
   def compilers_standard?
     xcode = MacOS.xcode_version
-    return unless StandardCompilers.keys.include? xcode
+    # Assume compilers are okay if Xcode version not in hash
+    return true unless StandardCompilers.keys.include? xcode
 
     StandardCompilers[xcode].all? {|k,v| MacOS.send(k) == v}
   end

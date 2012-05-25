@@ -2,8 +2,8 @@ require 'formula'
 
 class Ace < Formula
   homepage 'http://www.cse.wustl.edu/~schmidt/ACE.html'
-  url 'http://download.dre.vanderbilt.edu/previous_versions/ACE-6.0.3.tar.bz2'
-  md5 'c38cff517ee80825a37f3b1e84f15229'
+  url 'http://download.dre.vanderbilt.edu/previous_versions/ACE-6.1.1.tar.bz2'
+  md5 'f3ddd96823ebada5a52a9e23f26560bb'
 
   def install
     # ACE has two methods of compilation, "traditional" and ./configure.
@@ -15,10 +15,13 @@ class Ace < Formula
     # for this version of OSX.
     ver = %x[sw_vers -productVersion].chomp.split(".")
     ver = ver.slice(0).to_i*100 + ver.slice(1).to_i
-    name = { 1002 => 'macosx', 1003 => 'macosx_panther',
-             1004 => 'macosx_tiger', 1005 => 'macosx_leopard',
+    name = { 1002 => 'macosx',
+             1003 => 'macosx_panther',
+             1004 => 'macosx_tiger',
+             1005 => 'macosx_leopard',
              1006 => 'macosx_snowleopard',
-             1007 => 'macosx_lion' }[ver]
+             1007 => 'macosx_lion',
+             1008 => 'macosx_mountainlion' }[ver]
     makefile = "platform_#{name}.GNU"
     header = "config-" + name.sub('_','-') + ".h"
 
@@ -38,7 +41,8 @@ class Ace < Formula
                            "DESTDIR=",
                            "INST_DIR=/ace",
                            "debug=0",
-                           "shared_libs=1", "static_libs=0",
+                           "shared_libs=1",
+                           "static_libs=0",
                            "install"
     end
   end

@@ -1,10 +1,11 @@
 require 'formula'
 
 class Gremlin < Formula
-  url 'https://github.com/downloads/tinkerpop/gremlin/gremlin-1.3.zip'
   homepage 'http://gremlin.tinkerpop.com/'
+  url 'https://github.com/downloads/tinkerpop/gremlin/gremlin-1.3.zip'
   md5 'c524ee20e119c3b6059cfd0b7873d94c'
-  head 'https://github.com/tinkerpop/gremlin.git', :using => :git
+
+  head 'https://github.com/tinkerpop/gremlin.git'
 
   depends_on 'maven' if ARGV.build_head?
 

@@ -1,12 +1,14 @@
 require 'formula'
 
 class Appswitch < Formula
-  url 'http://web.sabi.net/nriley/software/appswitch-1.1.tar.gz'
   homepage 'http://web.sabi.net/nriley/software/'
-  md5 '07cf9884a07939da487898cddba0c296'
+  url 'http://web.sabi.net/nriley/software/appswitch-1.1.1.tar.gz'
+  sha1 'df5535adadfcf219c60d28397b99627ae7be3148'
 
   def install
-    system "#{ENV.cc} -o appswitch #{ENV.cflags} main.c -framework ApplicationServices"
+    # Because the tarball always comes with a precompiled binary and because
+    # compiling this now would require using xcodebuild from a full XCode
+    # install, let's just use the binary so that we can support CLT only.
     man1.install gzip('appswitch.1')
     bin.install 'appswitch'
   end

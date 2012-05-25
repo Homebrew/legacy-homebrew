@@ -27,35 +27,29 @@ class Audiofile < Formula
     inn  = '/System/Library/Sounds/Glass.aiff'
     out  = 'Glass.wav'
     hear_bin = '/usr/bin/qlmanage'
-    conv_bin = "#{HOMEBREW_PREFIX}/bin/sfconvert"
-    info_bin = "#{HOMEBREW_PREFIX}/bin/sfinfo"
+    conv_bin = "#{bin}/sfconvert"
+    info_bin = "#{bin}/sfinfo"
 
     unless File.exist?(conv_bin) and File.exist?(inn) and
           File.exist?(hear_bin) and File.exist?(info_bin)
       opoo <<-EOS.undent
-        The test program couldn't locate one of these files that normally exist:
+        One of the following files could not be located, and so
+        the test was not executed:
            #{inn}
            #{conv_bin}
            #{info_bin}
            #{hear_bin}
-        We are sorry for the mistake.  Another test you can run on this software
-        will occur during install if you add --with-check like this:
 
+        Audiofile can also be tested at build-time:
+          brew install -v audiofile --with-check
       EOS
-      oh1 '    brew rm audiofile'
-      oh1 '    brew -v install audiofile --with-check'
       return
     end
 
     mktemp do
-      system "#{conv_bin} #{inn} #{out} format wave"
-      system "#{info_bin} --short --reporterror #{out}"
-      system "#{hear_bin} -p #{out}" if ARGV.verbose?
-      puts
-      oh1 <<-EOS.undent
-        Cheers mate. You converted a system sound from the Audio
-        Interchange File Format \"aiff\" to the MS RIFF Wave format.
-      EOS
+      system conv_bin, inn, out, 'format', 'wave'
+      system info_bin, '--short', '--reporterror', out
+      system hear_bin, '-p', out if ARGV.verbose?
     end
   end
 end
