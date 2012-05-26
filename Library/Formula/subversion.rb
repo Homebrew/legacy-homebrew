@@ -31,8 +31,8 @@ end
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.7.4.tar.bz2'
-  sha1 '57a3cd351c1dbedddd020e7a1952df6cd2674527'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.7.5.tar.bz2'
+  sha1 '05c079762690d5ac1ccd2549742e7ef70fa45cf1'
 
   depends_on 'pkg-config' => :build
 
