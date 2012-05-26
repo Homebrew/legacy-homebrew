@@ -1,8 +1,5 @@
 require 'formula'
 
-# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
 class Byacc < Formula
   homepage 'http://invisible-island.net/byacc/byacc.html'
   url 'http://invisible-island.net/datafiles/release/byacc.tar.gz'
