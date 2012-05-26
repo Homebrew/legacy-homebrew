@@ -10,7 +10,11 @@ class Eigen < Formula
   def install
     ENV.fortran
     mkdir 'eigen-build' do
-      system "cmake", "..", "-Dpkg_config_libdir=#{lib}", *std_cmake_args
+      args = std_cmake_args
+      args.delete '-DCMAKE_BUILD_TYPE=None'
+      args << '-DCMAKE_BUILD_TYPE=Release'
+
+      system "cmake", "..", "-Dpkg_config_libdir=#{lib}", *args
       system "make install"
     end
   end
