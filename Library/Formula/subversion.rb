@@ -4,6 +4,7 @@ def build_java?;      ARGV.include? "--java";   end
 def build_perl?;      ARGV.include? "--perl";   end
 def build_python?;    ARGV.include? "--python"; end
 def build_ruby?;      ARGV.include? "--ruby";   end
+def with_unicode_path?; ARGV.include? "--unicode-path"; end
 
 class UniversalNeon < Requirement
   def message; <<-EOS.undent
@@ -54,7 +55,17 @@ class Subversion < Formula
       ['--python', 'Build Python bindings.'],
       ['--ruby', 'Build Ruby bindings.'],
       ['--universal', 'Build as a Universal Intel binary.'],
+      ['--unicode-path', 'Include support for OS X UTF-8-MAC filename'],
     ]
+  end
+
+  def patches
+    # Patch for Subversion handling of OS X UTF-8-MAC filename.
+    if with_unicode_path?
+      { :p0 =>
+        "https://raw.github.com/gist/1900750/4888cafcf58f7355e2656fe192a77e2b6726e338/patch-path.c.diff"
+      }
+    end
   end
 
   def install
@@ -165,6 +176,18 @@ class Subversion < Formula
         You may need to link the Java bindings into the Java Extensions folder:
           sudo mkdir -p /Library/Java/Extensions
           sudo ln -s #{HOMEBREW_PREFIX}/lib/libsvnjavahl-1.dylib /Library/Java/Extensions/libsvnjavahl-1.dylib
+
+      EOS
+    end
+
+    if with_unicode_path?
+      s += <<-EOS.undent
+        This unicode-path version implements a hack to deal with composed/decomposed
+        unicode handling on Mac OS X which is different from linux and windows.
+        It is an implementation of solution 1 from
+        http://svn.collab.net/repos/svn/trunk/notes/unicode-composition-for-filenames
+        which _WILL_ break some setups. Please be sure you understand what you
+        are asking for when you install this version.
 
       EOS
     end
