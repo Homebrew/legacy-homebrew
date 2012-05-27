@@ -18,15 +18,16 @@ class Zorba < Formula
 
   def install
     icu4c = Formula.factory('icu4c')
+    # zorba has to be built from a seperate dir, so create one
     mktemp do
-      args = [std_cmake_parameters]
+      args = std_cmake_parameters.split
       # use ICU4C from keg
       args << "-DICU_INCLUDE_DIR=#{icu4c.include}"
       args << "-DICU_LIBRARY_DIR=#{icu4c.lib}"
       # macos comes with libxslt so we may as well use it
       args << "-DZORBA_XQUERYX=ON"
       args << "-DZORBA_WITH_BIG_INTEGER=OFF" if ARGV.include? '--disable-big-integer'
-      system "cmake #{args.join ' '} #{buildpath}"
+      system "cmake", buildpath, *args
       system "make install"
     end
   end
