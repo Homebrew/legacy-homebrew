@@ -2,8 +2,8 @@ require 'formula'
 
 class Mercurial < Formula
   homepage 'http://mercurial.selenic.com/'
-  url 'http://mercurial.selenic.com/release/mercurial-2.1.2.tar.gz'
-  sha1 '6fa2f2510757e3e62efa9d8953f8b703b84075b2'
+  url 'http://mercurial.selenic.com/release/mercurial-2.2.1.tar.gz'
+  sha1 '40961a436920628ff9db48dc8aab8012d72dcd52'
 
   head 'http://selenic.com/repo/hg', :using => :hg
 
@@ -61,5 +61,9 @@ class Mercurial < Formula
           brew cleanup mercurial && brew link mercurial
       EOS
     end
+  end
+
+  def test
+    system "#{bin}/hg", "debuginstall"
   end
 end

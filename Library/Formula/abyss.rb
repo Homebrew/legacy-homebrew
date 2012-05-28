@@ -23,6 +23,6 @@ class Abyss < Formula
   end
 
   def test
-    system "#{bin}/ABYSS --version"
+    system "#{bin}/ABYSS", "--version"
   end
 end

@@ -22,7 +22,7 @@ class Boost < Formula
   url 'http://downloads.sourceforge.net/project/boost/boost/1.49.0/boost_1_49_0.tar.bz2'
   md5 '0d202cb811f934282dea64856a175698'
 
-  head 'http://svn.boost.org/svn/boost/trunk', :using => :svn
+  head 'http://svn.boost.org/svn/boost/trunk'
 
   bottle do
     sha1 '6b706780670a8bec5b3e0355f5dfeeaa37d9a41e' => :lion
@@ -67,7 +67,7 @@ class Boost < Formula
 
     # Force boost to compile using the appropriate GCC version
     open("user-config.jam", "a") do |file|
-      file.write "using darwin : : #{ENV['CXX']} ;\n"
+      file.write "using darwin : : #{ENV.cxx} ;\n"
       file.write "using mpi ;\n" if ARGV.include? '--with-mpi'
     end
 

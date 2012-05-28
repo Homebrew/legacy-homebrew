@@ -72,7 +72,7 @@ begin
 
   # Add example external commands to PATH before checking.
   ENV['PATH'] += ":#{HOMEBREW_REPOSITORY}/Library/Contributions/cmds"
-  if which_s "brew-#{cmd}"
+  if which "brew-#{cmd}"
     %w[CACHE CELLAR LIBRARY_PATH PREFIX REPOSITORY].each do |e|
       ENV["HOMEBREW_#{e}"] = Object.const_get "HOMEBREW_#{e}"
     end

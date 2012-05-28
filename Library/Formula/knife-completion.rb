@@ -5,6 +5,8 @@ class KnifeCompletion < GithubGistFormula
   homepage 'https://gist.github.com/1050685'
   md5 '488e4ce424c37d2e4efcf7041fdacfd8'
 
+  depends_on 'gnu-sed'
+
   def install
     (prefix+'etc/bash_completion.d').install Dir['*']
   end

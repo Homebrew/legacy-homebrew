@@ -14,7 +14,7 @@ class Autojump < Formula
     man1.install 'autojump.1'
     (prefix+'etc').install 'autojump.sh' => 'autojump'
     (prefix+'etc').install 'autojump.bash', 'autojump.zsh'
-    (share+'zsh/functions').install '_j'
+    (share+'zsh/site-functions').install '_j'
   end
 
   def caveats; <<-EOS.undent
@@ -23,6 +23,9 @@ class Autojump < Formula
     if [ -f `brew --prefix`/etc/autojump ]; then
       . `brew --prefix`/etc/autojump
     fi
+
+    zsh completion has been installed to:
+      #{HOMEBREW_PREFIX}/share/zsh/site-functions
     EOS
   end
 end

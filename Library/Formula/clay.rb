@@ -11,11 +11,11 @@ class Clay < Formula
   depends_on 'llvm'  => :build
 
   def install
-    system "cmake #{std_cmake_parameters} ."
+    system "cmake", ".", *std_cmake_args
     system "make install"
   end
 
   def test
-    system "#{bin}/clay -e 'println(\"Hello, Clay!\");'"
+    system "#{bin}/clay", "-e", "println(\"Hello, Clay!\");"
   end
 end

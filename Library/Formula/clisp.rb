@@ -59,7 +59,7 @@ class Clisp < Formula
   end
 
   def test
-    system "#{bin}/clisp --version"
+    system "#{bin}/clisp", "--version"
   end
 end
 

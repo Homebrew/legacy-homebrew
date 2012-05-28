@@ -9,7 +9,7 @@ class Libreplaygain < Formula
   depends_on 'cmake' => :build
 
   def install
-    system "cmake . #{std_cmake_parameters}"
+    system "cmake", ".", *std_cmake_args
     system "make install"
     include.install 'include/replaygain/'
   end

@@ -18,6 +18,6 @@ class Jigdo < Formula
   end
 
   def test
-    system "#{bin}/jigdo-file -h"
+    system "#{bin}/jigdo-file", "-h"
   end
 end

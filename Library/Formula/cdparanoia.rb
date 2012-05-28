@@ -5,6 +5,8 @@ class Cdparanoia < Formula
   homepage 'http://www.xiph.org/paranoia/'
   md5 'b304bbe8ab63373924a744eac9ebc652'
 
+  depends_on 'autoconf' => :build if MacOS.xcode_version.to_f >= 4.3
+
   fails_with :llvm do
     build 2326
     cause '"File too small" error while linking'

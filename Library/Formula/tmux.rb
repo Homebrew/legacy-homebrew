@@ -33,6 +33,6 @@ class Tmux < Formula
   end
 
   def test
-    system "#{bin}/tmux -V"
+    system "#{bin}/tmux", "-V"
   end
 end

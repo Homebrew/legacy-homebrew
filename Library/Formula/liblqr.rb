@@ -6,6 +6,8 @@ class Liblqr < Formula
   md5 '0e24ed3c9fcdcb111062640764d7b87a'
   version '0.4.1'
 
+  head 'git://repo.or.cz/liblqr.git'
+
   depends_on 'glib'
 
   def install

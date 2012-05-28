@@ -9,7 +9,7 @@ class Aften < Formula
 
   def install
     mkdir 'default' do
-      system "cmake #{std_cmake_parameters} -DSHARED=ON .."
+      system "cmake", "-DSHARED=ON", "..", *std_cmake_args
       system "make install"
     end
   end
