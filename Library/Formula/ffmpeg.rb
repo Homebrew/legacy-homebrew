@@ -6,8 +6,8 @@ end
 
 class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
-  url 'http://ffmpeg.org/releases/ffmpeg-0.10.3.tar.bz2'
-  sha1 '4fb6f682dbc1b4ea54178040d515fc3a4c05d415'
+  url 'http://ffmpeg.org/releases/ffmpeg-0.11.tar.bz2'
+  sha1 '1aa3443c20b1c5d132d1fe06de7cc949a7219edd'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
