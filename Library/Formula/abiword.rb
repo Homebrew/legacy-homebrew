@@ -16,6 +16,7 @@ class Abiword < Formula
   depends_on 'enchant'
   depends_on 'cairo'
   depends_on 'pango'
+  depends_on 'wv'
   depends_on 'imagemagick'
 
   def install
