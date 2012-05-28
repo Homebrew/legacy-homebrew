@@ -1,9 +1,9 @@
 require 'formula'
 
-def build_java?;      ARGV.include? "--java";   end
-def build_perl?;      ARGV.include? "--perl";   end
-def build_python?;    ARGV.include? "--python"; end
-def build_ruby?;      ARGV.include? "--ruby";   end
+def build_java?;   ARGV.include? "--java";   end
+def build_perl?;   ARGV.include? "--perl";   end
+def build_python?; ARGV.include? "--python"; end
+def build_ruby?;   ARGV.include? "--ruby";   end
 def with_unicode_path?; ARGV.include? "--unicode-path"; end
 
 class UniversalNeon < Requirement
