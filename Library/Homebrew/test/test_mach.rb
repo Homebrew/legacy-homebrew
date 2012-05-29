@@ -77,6 +77,21 @@ class MachOPathnameTests < Test::Unit::TestCase
     assert_no_match /Mach-O [^ ]* ?executable/,
       `/usr/bin/file -h '#{pn}'`.chomp
   end
+
+  def test_architecture_list_extension
+    archs = [:i386, :x86_64, :ppc7400, :ppc64]
+    archs.extend(ArchitectureListExtension)
+    assert archs.universal?
+    archs.remove_ppc!
+    assert_equal 2, archs.length
+    assert_match /-arch i386/, archs.as_arch_flags
+    assert_match /-arch x86_64/, archs.as_arch_flags
+
+    pn = Pathname.new("#{TEST_FOLDER}/mach/fat.dylib")
+    assert pn.archs.universal?
+    assert_match /-arch i386/, pn.archs.as_arch_flags
+    assert_match /-arch x86_64/, pn.archs.as_arch_flags
+  end
 end
 
 class TextExecutableTests < Test::Unit::TestCase

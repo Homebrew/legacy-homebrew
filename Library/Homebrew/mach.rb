@@ -1,3 +1,18 @@
+module ArchitectureListExtension
+  def universal?
+    self.include? :i386 and self.include? :x86_64
+  end
+
+  def remove_ppc!
+    self.delete :ppc7400
+    self.delete :ppc64
+  end
+
+  def as_arch_flags
+    self.collect{ |a| "-arch #{a}" }.join(' ')
+  end
+end
+
 module MachO
   # Mach-O binary methods, see:
   # /usr/include/mach-o/loader.h
@@ -52,7 +67,7 @@ module MachO
   end
 
   def archs
-    mach_data.map{ |m| m.fetch :arch }
+    mach_data.map{ |m| m.fetch :arch }.extend(ArchitectureListExtension)
   end
 
   def arch
