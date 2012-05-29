@@ -29,9 +29,14 @@ class Cmake < Formula
 
   depends_on NoExpatFramework.new
 
-  # Correct FindPkgConfig found variable. Remove for CMake 2.8.9.
   def patches
-    "https://github.com/Kitware/CMake/commit/3ea850.patch"
+    [
+      # Correct FindPkgConfig found variable. Remove for CMake 2.8.9.
+      "https://github.com/Kitware/CMake/commit/3ea850.patch",
+      # Protect the default value of CMAKE_FIND_FRAMEWORK so that it can be
+      # overridden from the command line. Remove for CMake 2.8.9.
+      "https://github.com/Kitware/CMake/commit/8b2fb3.patch"
+    ]
   end
 
   def install
