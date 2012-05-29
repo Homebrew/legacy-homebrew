@@ -1,7 +1,7 @@
 require 'formula'
 
 class Fuse4x < Formula
-  homepage 'http://fuse4x.org/'
+  homepage 'http://fuse4x.github.com'
   # NOTE: Version 0.10 contains a nasty race condition. Wait for 0.10.1
   url 'https://github.com/fuse4x/fuse.git', :tag => "fuse4x_0_9_0"
   version "0.9.0"
