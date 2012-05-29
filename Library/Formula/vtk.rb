@@ -19,7 +19,7 @@ class Vtk < Formula
   end
 
   def install
-    args = std_cmake_parameters.split + [
+    args = std_cmake_args + [
              "-DVTK_REQUIRED_OBJCXX_FLAGS:STRING=''",
              "-DVTK_USE_CARBON:BOOL=OFF",
              "-DBUILD_TESTING:BOOL=OFF",

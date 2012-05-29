@@ -239,8 +239,8 @@ class Formula
   # Setting it to Release would ignore our flags.
   # Note: there isn't a std_autotools variant because autotools is a lot
   # less consistent and the standard parameters are more memorable.
-  def std_cmake_parameters
-    "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None -Wno-dev"
+  def std_cmake_args
+    %W[-DCMAKE_INSTALL_PREFIX=#{prefix} -DCMAKE_BUILD_TYPE=None -Wno-dev]
   end
 
   def self.class_s name

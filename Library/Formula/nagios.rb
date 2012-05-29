@@ -24,6 +24,7 @@ class Nagios < Formula
                           "--sysconfdir=#{nagios_etc}",
                           "--localstatedir=#{nagios_var}",
                           "--datadir=#{htdocs}",
+                          "--libexecdir=#{HOMEBREW_PREFIX}/sbin", # Plugin dir
                           "--with-cgiurl=/nagios/cgi-bin",
                           "--with-htmurl=/nagios",
                           "--with-nagios-user=#{user}",
@@ -38,10 +39,6 @@ class Nagios < Formula
     system "make install-config"
     system "make install-webconf"
     (share+plist_path).write startup_plist
-
-    # Symlink plugins
-    libexec.rmdir
-    ln_s HOMEBREW_PREFIX+'sbin/nagios-plugins', libexec
   end
 
   def startup_plist
