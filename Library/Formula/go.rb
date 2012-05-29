@@ -23,6 +23,12 @@ class Go < Formula
         system './make.bash'
       end
     end
+
+    # Don't install header files; they aren't necessary and can
+    # cause problems with other builds. See:
+    # http://trac.macports.org/ticket/30203
+    # http://code.google.com/p/go/issues/detail?id=2407
+    include.rmtree
   end
 
   def test
