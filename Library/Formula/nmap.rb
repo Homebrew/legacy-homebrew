@@ -20,7 +20,8 @@ class Nmap < Formula
     args = %W[--prefix=#{prefix}
               --with-libpcre=included
               --with-liblua=included
-              --without-zenmap]
+              --without-zenmap
+              --disable-universal]
 
     if MacOS.leopard?
       openssl = Formula.factory('openssl')
