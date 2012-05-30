@@ -18,4 +18,8 @@ class Ngircd < Formula
                           "--enable-ipv6"
     system "make install"
   end
+
+  def test
+    system "bash", "-c", "#{sbin}/ngircd --version; test $? -eq 1"
+  end
 end
