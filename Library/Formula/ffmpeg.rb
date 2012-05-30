@@ -27,10 +27,6 @@ class Ffmpeg < Formula
 
   depends_on 'sdl' if ffplay?
 
-  fails_with :llvm do
-    cause 'Undefined symbols when linking libavfilter'
-  end
-
   def options
     [
       ["--with-tools", "Install additional FFmpeg tools."],
