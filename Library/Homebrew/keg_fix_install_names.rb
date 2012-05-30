@@ -13,6 +13,10 @@ class Keg
               system "install_name_tool", "-change", bad_name, "@loader_path/#{new_name}", dylib
             else
               opoo "Could not fix install names for #{dylib}"
+              if ARGV.debug?
+                puts "bad_name: #{bad_name}"
+                puts "new_name: #{new_name}"
+              end
             end
           end
         end
