@@ -21,7 +21,7 @@ class Qhull < Formula
   end
 
   def install
-    system "cmake #{std_cmake_parameters} -DMAN_INSTALL_DIR='#{man1}' ."
+    system "cmake", ".", "-DMAN_INSTALL_DIR=#{man1}", *std_cmake_args
     system "make install"
   end
 end

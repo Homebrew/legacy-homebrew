@@ -19,7 +19,7 @@ class Vrpn < Formula
   end
 
   def install
-    args = std_cmake_parameters.split
+    args = std_cmake_args
 
     if ARGV.include? '--clients'
       args << "-DVRPN_BUILD_CLIENTS:BOOL=ON"
