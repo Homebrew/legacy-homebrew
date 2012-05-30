@@ -10,7 +10,7 @@ class Xchat < Formula
   depends_on 'gtk+'
 
   # Adjust to newer glib include conventions
-  # No upstream activity since 2010
+  # Reported at https://sourceforge.net/tracker/?func=detail&aid=3446968&group_id=239&atid=100239
   def patches; DATA; end
 
   def install
