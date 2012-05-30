@@ -2,8 +2,8 @@ require 'formula'
 
 class Abyss < Formula
   homepage 'http://www.bcgsc.ca/platform/bioinfo/software/abyss'
-  url 'http://www.bcgsc.ca/downloads/abyss/abyss-1.3.3.tar.gz'
-  md5 '15953363d4ef5795d3a82d129e4ca240'
+  url 'http://www.bcgsc.ca/downloads/abyss/abyss-1.3.4.tar.gz'
+  md5 '5a79f33f828db3c626627c5facd0f712'
   head 'https://github.com/sjackman/abyss.git'
 
   # Only header files are used from these packages, so :build is appropriate
