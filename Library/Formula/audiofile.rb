@@ -1,9 +1,9 @@
 require 'formula'
 
 class Audiofile < Formula
-  url 'https://github.com/downloads/mpruett/audiofile/audiofile-0.3.2.tar.gz'
-  sha1 'fb55a3c9153475daa8932d3626797e033d149c1d'
   homepage 'http://www.68k.org/~michael/audiofile/'
+  url 'https://github.com/downloads/mpruett/audiofile/audiofile-0.3.4.tar.gz'
+  sha1 'e6f664b0d551df35ce0c10e38e5617bcd4605335'
 
   depends_on 'lcov' if ARGV.include? '--with-lcov'
 
