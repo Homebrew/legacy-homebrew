@@ -23,11 +23,6 @@ class Llvm < Formula
 
   head      'http://llvm.org/git/llvm.git'
 
-  bottle do
-    sha1 'f6feaab7d1e4f45cd5f0b63d465e65f491fcc27c' => :lion
-    sha1 '0b4a9baac5cd07192f992ef3621371e9cde3979a' => :snowleopard
-  end
-
   def patches
     # changes the link options for the shared library build
     # to use the preferred way to build libraries in Mac OS X
