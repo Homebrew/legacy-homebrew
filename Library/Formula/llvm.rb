@@ -10,16 +10,16 @@ def build_jit?; ARGV.include? '--jit'; end
 
 class Clang < Formula
   homepage  'http://llvm.org/'
-  url       'http://llvm.org/releases/3.0/clang-3.0.tar.gz'
-  md5       '43350706ae6cf05d0068885792ea0591'
+  url       'http://llvm.org/releases/3.1/clang-3.1.src.tar.gz'
+  md5       '59bf2d3120a3805f27cafda3823caaf8'
 
   head      'http://llvm.org/git/clang.git'
 end
 
 class Llvm < Formula
   homepage  'http://llvm.org/'
-  url       'http://llvm.org/releases/3.0/llvm-3.0.tar.gz'
-  md5       'a8e5f5f1c1adebae7b4a654c376a6005'
+  url       'http://llvm.org/releases/3.1/llvm-3.1.src.tar.gz'
+  md5       '16eaa7679f84113f65b12760fdfe4ee1'
 
   head      'http://llvm.org/git/llvm.git'
 
