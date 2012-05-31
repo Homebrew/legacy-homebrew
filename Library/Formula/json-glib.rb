@@ -2,8 +2,8 @@ require 'formula'
 
 class JsonGlib < Formula
   homepage 'http://live.gnome.org/JsonGlib'
-  url 'ftp://ftp.gnome.org/pub/GNOME/sources/json-glib/0.12/json-glib-0.12.4.tar.bz2'
-  sha256 '462cd611016ae189d5e3f258dc7741e6a2e8267404b4e3806aaf346d50f1df7e'
+  url 'ftp://ftp.gnome.org/pub/GNOME/sources/json-glib/0.14/json-glib-0.14.2.tar.bz2'
+  sha256 'b62cb148ae49d30d8ad807912ba3c7cf189459e2d75233620aae411cf8ea6c04'
 
   depends_on 'glib'
 

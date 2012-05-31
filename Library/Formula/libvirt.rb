@@ -2,8 +2,14 @@ require 'formula'
 
 class Libvirt < Formula
   homepage 'http://www.libvirt.org'
-  url 'ftp://libvirt.org/libvirt/libvirt-0.9.8.tar.gz'
-  sha256 '31b20864e44bb18a2d01b7ac6569f114cbe1007689219bf24a07ddb7528abe0e'
+  url 'http://libvirt.org/sources/stable_updates/libvirt-0.9.11.3.tar.gz'
+  sha256 'aa73b329d2f6eb200991b9dc378d4636c15cd2f95ca224995d01b45257584fa2'
+
+  # Latest (roughly) monthly release.
+  devel do
+    url 'http://libvirt.org/sources/libvirt-0.9.12.tar.gz'
+    sha256 '298ffc7f2a6d6e78aae46f11a0980f4bc17fa2928f5de6cd9e8abaf5990336e7'
+  end
 
   depends_on "gnutls"
   depends_on "yajl"
@@ -14,7 +20,10 @@ class Libvirt < Formula
     depends_on "libxml2"
   end
 
-  fails_with_llvm "Undefined symbols when linking", :build => "2326"
+  fails_with :llvm do
+    build 2326
+    cause "Undefined symbols when linking"
+  end
 
   def options
     [['--without-libvirtd', 'Build only the virsh client and development libraries.']]
@@ -45,7 +54,6 @@ class Libvirt < Formula
     # Update the SASL config file with the Homebrew prefix
     inreplace "#{etc}/sasl2/libvirt.conf" do |s|
       s.gsub! "/etc/", "#{HOMEBREW_PREFIX}/etc/"
-      s.gsub! "/var/", "#{HOMEBREW_PREFIX}/var/"
     end
 
     # If the libvirt daemon is built, update its config file to reflect
@@ -58,4 +66,3 @@ class Libvirt < Formula
     end
   end
 end
-

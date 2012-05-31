@@ -1,5 +1,4 @@
 require 'formula'
-require 'hardware'
 
 def no_magick?
   ARGV.include? '--without-graphicsmagick'
@@ -19,10 +18,10 @@ def snow_leopard_64?
 end
 
 class Octave < Formula
-  url 'http://ftpmirror.gnu.org/octave/octave-3.4.3.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/octave/octave-3.4.3.tar.bz2'
   homepage 'http://www.gnu.org/software/octave/index.html'
-  md5 '185b08f4e4a7b646d76e4d33b77fa87e'
+  url 'http://ftpmirror.gnu.org/octave/octave-3.6.1.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/octave/octave-3.6.1.tar.bz2'
+  md5 'b543dd5ca743cba8c1d3474b1b99ae41'
 
   depends_on 'pkg-config' => :build
   depends_on 'gnu-sed' => :build
@@ -75,7 +74,9 @@ class Octave < Formula
     args = [
       "--disable-dependency-tracking",
       "--prefix=#{prefix}",
-      "--with-blas=#{'-ldotwrp ' if snow_leopard_64?}-framework Accelerate"
+      # Cant use `-framework Accelerate` because `mkoctfile`, the tool used to
+      # compile extension packages, can't parse `-framework` flags.
+      "--with-blas=#{'-ldotwrp ' if snow_leopard_64?}-Wl,-framework -Wl,Accelerate"
     ]
     args << "--without-framework-carbon" if MacOS.lion?
 
@@ -88,7 +89,7 @@ class Octave < Formula
 
   def caveats
     native_caveats = <<-EOS.undent
-      Octave 3.4.0 supports "native" plotting using OpenGL and FLTK. You can activate
+      Octave supports "native" plotting using OpenGL and FLTK. You can activate
       it for all future figures using the Octave command
 
           graphics_toolkit ("fltk")

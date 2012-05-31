@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cassandra < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.0.5/apache-cassandra-1.0.5-bin.tar.gz'
   homepage 'http://cassandra.apache.org'
-  sha1 'e9b06bd3d9173babfc406593d586599eb96c72e6'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.1.0/apache-cassandra-1.1.0-bin.tar.gz'
+  sha1 'fba12b5b89211487c6d595f69d13e8b963732b62'
 
   def install
     (var+"lib/cassandra").mkpath
@@ -31,15 +31,15 @@ class Cassandra < Formula
     prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc,lib/licenses}"]
     prefix.install Dir["lib/*.jar"]
 
-    (prefix+'org.apache.cassandra.plist').write startup_plist
-    (prefix+'org.apache.cassandra.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent
     If this is your first install, automatically load on login with:
       mkdir -p ~/Library/LaunchAgents
-      cp #{prefix}/org.apache.cassandra.plist ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/org.apache.cassandra.plist
+      cp #{plist_path} ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
     EOS
   end
 
@@ -52,11 +52,11 @@ class Cassandra < Formula
     <true/>
 
     <key>Label</key>
-    <string>org.apache.cassandra</string>
+    <string>#{plist_name}</string>
 
     <key>ProgramArguments</key>
     <array>
-        <string>#{bin}/cassandra</string>
+        <string>#{HOMEBREW_PREFIX}/bin/cassandra</string>
         <string>-f</string>
     </array>
 

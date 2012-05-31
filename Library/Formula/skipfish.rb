@@ -15,7 +15,7 @@ class Skipfish < Formula
       "#define ASSETS_DIR	       \"#{libexec}/assets\""
     system "make"
     bin.install "skipfish"
-    libexec.install ["dictionaries", "assets"]
+    libexec.install "assets", "dictionaries"
   end
 
   def caveats; <<-EOS.undent

@@ -2,8 +2,8 @@ require 'formula'
 
 class Geany < Formula
   homepage 'http://geany.org/'
-  url 'http://download.geany.org/geany-0.20.tar.gz'
-  sha256 '8d8ec9411c58c706befcca00435f4ec7af2f60a057e9fac232246f4893bf4050'
+  url 'http://download.geany.org/geany-0.21.tar.gz'
+  sha256 'a1aa27d2f946ccca8a4e57faf0029cf6aa544d5d52f0170e017c137c33b4b67d'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'

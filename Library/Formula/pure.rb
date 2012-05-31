@@ -1,14 +1,19 @@
 require 'formula'
 
-class Pure < Formula
-  url 'http://pure-lang.googlecode.com/files/pure-0.47.tar.gz'
-  homepage 'http://code.google.com/p/pure-lang/'
-  sha1 'f47915ffa9fd0c7dee40f364a5751bfd4f945bf1'
+class PureDocs < Formula
+  url 'http://pure-lang.googlecode.com/files/pure-docs-0.53.tar.gz'
+  sha1 'c0ad274d344d982e65b15b63daf3a267c50ab186'
+end
 
-  depends_on 'wget'
+class Pure < Formula
+  homepage 'http://code.google.com/p/pure-lang/'
+  url 'http://pure-lang.googlecode.com/files/pure-0.53.tar.gz'
+  sha1 '67f1394c06d885b79fc824283f0f7551a6fb2641'
+
   depends_on 'llvm'
   depends_on 'gmp'
   depends_on 'readline'
+  depends_on 'mpfr'
 
   def install
     system "./configure", "--disable-debug",
@@ -16,7 +21,9 @@ class Pure < Formula
                           "--enable-release",
                           "--without-elisp"
     system "make"
+    system "make check"
     system "make install"
-    system "make install-docs"
+
+    PureDocs.new.brew { system "make", "prefix=#{prefix}", "install" }
   end
 end

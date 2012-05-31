@@ -3,8 +3,10 @@ require 'testing_env'
 require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
 ARGV.extend(HomebrewArgvExtension)
 
+require 'extend/ENV'
+ENV.extend(HomebrewEnvExtension)
+
 require 'test/testball'
-require 'utils'
 
 class AbstractDownloadStrategy
   attr_reader :url
@@ -14,15 +16,6 @@ class MostlyAbstractFormula <Formula
   @url=''
   @homepage = 'http://example.com/'
 end
-
-class TestBallOverrideBrew <Formula
-  def initialize
-    super "foo"
-  end
-  def brew
-  end
-end
-
 
 class FormulaTests < Test::Unit::TestCase
 
@@ -44,7 +37,17 @@ class FormulaTests < Test::Unit::TestCase
   end
 
   def test_cant_override_brew
-    assert_raises(RuntimeError) { TestBallOverrideBrew.new }
+    assert_raises(RuntimeError) do
+      eval <<-EOS
+      class TestBallOverrideBrew <Formula
+        def initialize
+          super "foo"
+        end
+        def brew
+        end
+      end
+      EOS
+    end
   end
   
   def test_abstract_formula
@@ -56,10 +59,11 @@ class FormulaTests < Test::Unit::TestCase
 
   def test_mirror_support
     HOMEBREW_CACHE.mkpath unless HOMEBREW_CACHE.exist?
-    f = TestBallWithMirror.new
-    tarball, downloader = f.fetch
-
-    assert_equal f.url, "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
-    assert_equal downloader.url, "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+    nostdout do
+      f = TestBallWithMirror.new
+      tarball, downloader = f.fetch
+      assert_equal f.url, "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
+      assert_equal downloader.url, "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+    end
   end
 end

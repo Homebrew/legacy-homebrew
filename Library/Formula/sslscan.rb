@@ -1,23 +1,23 @@
 require 'formula'
 
 class Sslscan < Formula
-  url 'http://sourceforge.net/projects/sslscan/files/sslscan/sslscan%201.8.0/sslscan-1.8.0.tgz'
   homepage 'https://www.titania-security.com/labs/sslscan'
+  url 'http://sourceforge.net/projects/sslscan/files/sslscan/sslscan%201.8.0/sslscan-1.8.0.tgz'
   md5 '7f5fa87019024366691c6b27cb3a81e7'
 
+  # Remove hardcoded gcc in Makefile
   def patches
-    # Fixes the Makefile to properly build sslscan
     DATA
   end
 
   def install
     system "make"
-    bin.install ["sslscan"]
-    man1.install ["sslscan.1"]
+    bin.install "sslscan"
+    man1.install "sslscan.1"
   end
 
   def test
-    system "sslscan"
+    system "#{bin}/sslscan"
   end
 end
 

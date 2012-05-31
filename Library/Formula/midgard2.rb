@@ -11,6 +11,11 @@ class Midgard2 < Formula
   depends_on 'dbus-glib'
   depends_on 'libgda'
 
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
     if ARGV.build_head?
       system "autoreconf", "-i", "--force"

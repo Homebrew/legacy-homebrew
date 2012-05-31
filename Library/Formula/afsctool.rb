@@ -8,7 +8,7 @@ class Afsctool < Formula
 
   def install
     ENV.fast
-    Dir.chdir "afsctool_34" do
+    cd "afsctool_34" do
       system "#{ENV.cc} #{ENV.cflags} -lz -framework CoreServices -o afsctool afsctool.c"
       bin.install 'afsctool'
     end

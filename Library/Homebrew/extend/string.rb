@@ -13,11 +13,21 @@ end
 
 # used by the inreplace function (in utils.rb)
 module StringInreplaceExtension
+  # Warn if nothing was replaced
+  def gsub! before, after, audit_result=true
+    sub = super(before, after)
+    if audit_result and sub.nil?
+      opoo "inreplace: replacement of '#{before}' with '#{after}' failed"
+    end
+    return sub
+  end
+
   # Looks for Makefile style variable defintions and replaces the
   # value with "new_value", or removes the definition entirely.
   def change_make_var! flag, new_value
     new_value = "#{flag}=#{new_value}"
-    gsub! Regexp.new("^#{flag}[ \\t]*=[ \\t]*(.*)$"), new_value
+    sub = gsub! Regexp.new("^#{flag}[ \\t]*=[ \\t]*(.*)$"), new_value, false
+    opoo "inreplace: changing '#{flag}' to '#{new_value}' failed" if sub.nil?
   end
 
   # Removes variable assignments completely.
@@ -26,7 +36,8 @@ module StringInreplaceExtension
     flags = [flags] unless flags.kind_of? Array
     flags.each do |flag|
       # Also remove trailing \n, if present.
-      gsub! Regexp.new("^#{flag}[ \\t]*=(.*)$\n?"), ""
+      sub = gsub! Regexp.new("^#{flag}[ \\t]*=(.*)$\n?"), "", false
+      opoo "inreplace: removing '#{flag}' failed" if sub.nil?
     end
   end
 

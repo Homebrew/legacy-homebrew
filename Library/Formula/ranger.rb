@@ -1,18 +1,15 @@
 require 'formula'
 
 class Ranger < Formula
-  url 'http://ranger.nongnu.org/ranger-1.5.2.tar.gz'
   homepage 'http://ranger.nongnu.org/'
-  head 'git://git.savannah.nongnu.org/ranger.git', :using => :git
+  url 'http://nongnu.org/ranger/ranger-1.5.3.tar.gz'
+  md5 'ab90a2aa4d77cacbd47f45ed6b7c58f2'
 
-  unless ARGV.build_head?
-    md5 '75b1e15b50ecced0a337ae30741daa3b'
-  end
+  head 'git://git.savannah.nongnu.org/ranger.git'
 
   def install
     man1.install 'doc/ranger.1'
-    libexec.install ['ranger.py', 'ranger']
-    bin.mkpath
-    ln_s libexec+'ranger.py', bin+'ranger'
+    libexec.install 'ranger.py', 'ranger'
+    bin.install_symlink libexec+'ranger.py' => 'ranger'
   end
 end

@@ -2,8 +2,8 @@ require 'formula'
 
 class SwiProlog < Formula
   homepage 'http://www.swi-prolog.org/'
-  url 'http://www.swi-prolog.org/download/stable/src/pl-5.10.5.tar.gz'
-  sha256 '38d938d6a64e894685aa44bf9ea34b5505764cd084e07e6b4c21a9dd89b579d5'
+  url 'http://www.swi-prolog.org/download/stable/src/pl-6.0.2.tar.gz'
+  sha256 '9dbc4d3aef399204263f168583e54468078528bff75c48c7895ae3efe5499b75'
   head 'git://www.swi-prolog.org/home/pl/git/pl.git'
 
   depends_on 'pkg-config' => :build
@@ -19,7 +19,10 @@ class SwiProlog < Formula
     depends_on 'expat'
   end
 
-  fails_with_llvm "Exported procedure chr_translate:chr_translate_line_info/3 is not defined"
+  fails_with :llvm do
+    build 2335
+    cause "Exported procedure chr_translate:chr_translate_line_info/3 is not defined"
+  end
 
   def options
     [['--lite', "Don't install any packages; overrides --with-jpl"],

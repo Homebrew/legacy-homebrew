@@ -1,9 +1,17 @@
 require 'formula'
 
 class KyotoCabinet < Formula
-  url 'http://fallabs.com/kyotocabinet/pkg/kyotocabinet-1.2.72.tar.gz'
   homepage 'http://fallabs.com/kyotocabinet/'
-  sha1 '3ce2a2b2f8f8d36aa6dea840f62f88342fcd2a3a'
+  url 'http://fallabs.com/kyotocabinet/pkg/kyotocabinet-1.2.75.tar.gz'
+  sha1 'ab4d59ca575455328f2b63628cc33c70d666570c'
+
+  fails_with :clang do
+    build 318
+    cause <<-EOS.undent
+      Kyoto-cabinet relies on GCC atomic intrinsics, but Clang does not
+      implement them for non-integer types.
+      EOS
+  end
 
   def install
     system "./configure", "--disable-debug", "--prefix=#{prefix}"

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ykpers < Formula
-  url 'http://yubikey-personalization.googlecode.com/files/ykpers-1.3.5.tar.gz'
+  url 'http://yubikey-personalization.googlecode.com/files/ykpers-1.6.3.tar.gz'
   homepage 'http://code.google.com/p/yubikey-personalization/'
-  md5 '9aeea5a005afcd431de3dd591400fac5'
+  md5 '585b73f18a74d85a920065abcc1d82f7'
 
   depends_on 'libyubikey'
 

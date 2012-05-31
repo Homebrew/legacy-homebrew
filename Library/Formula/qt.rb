@@ -1,14 +1,20 @@
 require 'formula'
-require 'hardware'
 
 class Qt < Formula
-  url 'http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.8.0.tar.gz'
-  md5 'e8a5fdbeba2927c948d9f477a6abe904'
   homepage 'http://qt.nokia.com/'
-  bottle 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.8.0-bottle.tar.gz'
-  bottle_sha1 'd03b56811d2cac933b6103bd4c8ac636dea3b877'
+  url 'http://releases.qt-project.org/qt4/source/qt-everywhere-opensource-src-4.8.2.tar.gz'
+  md5 '3c1146ddf56247e16782f96910a8423b'
+
+  bottle do
+    sha1 'a634c873a3ce825649c913f5d9ad790397390f74' => :snowleopard
+    sha1 'd11c466d3cbc80d3b94431daf481a217bf9097fd' => :lion
+  end
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
+
+  fails_with :clang do
+    build 318
+  end
 
   def options
     [
@@ -24,13 +30,6 @@ class Qt < Formula
   depends_on 'sqlite' if MacOS.leopard?
 
   def install
-    # Needed for Qt 4.8.0 due to attempting to link moc with gcc.
-    ENV['LD'] = ENV['CXX']
-
-    inreplace "src/corelib/tools/qstring.cpp",
-      "# ifdef __SSE4_2__",
-      "# if defined(__SSE4_2__) && defined(_SIDD_UWORD_OPS)"
-
     ENV.x11
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
     args = ["-prefix", prefix,
@@ -69,12 +68,14 @@ class Qt < Formula
     if ARGV.include? '--with-debug-and-release'
       args << "-debug-and-release"
       # Debug symbols need to find the source so build in the prefix
-      Dir.chdir '..'
-      mv "qt-everywhere-opensource-src-#{version}", "#{prefix}/src"
-      Dir.chdir "#{prefix}/src"
+      mv "../qt-everywhere-opensource-src-#{version}", "#{prefix}/src"
+      cd "#{prefix}/src"
     else
       args << "-release"
     end
+
+    # Needed for Qt 4.8.1 due to attempting to link moc with gcc.
+    ENV['LD'] = ENV.cxx
 
     system "./configure", *args
     system "make"
@@ -94,16 +95,24 @@ class Qt < Formula
     # VirtualBox is an example of where this is needed
     # See: https://github.com/mxcl/homebrew/issues/issue/745
     cd prefix do
-      ln_s lib, "Frameworks"
+      ln_s lib, prefix + "Frameworks"
     end
 
-    # The pkg-config files installed suggest that geaders can be found in the
+    # The pkg-config files installed suggest that headers can be found in the
     # `include` directory. Make this so by creating symlinks from `include` to
     # the Frameworks' Headers folders.
     Pathname.glob(lib + '*.framework/Headers').each do |path|
       framework_name = File.basename(File.dirname(path), '.framework')
       ln_s path.realpath, include+framework_name
     end
+
+    Pathname.glob(bin + '*.app').each do |path|
+      mv path, prefix
+    end
+  end
+
+  def test
+    system "#{bin}/qmake", "--version"
   end
 
   def caveats; <<-EOS.undent

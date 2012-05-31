@@ -10,7 +10,10 @@ class Generatorrunner < Formula
   depends_on 'apiextractor'
 
   def install
-    system "cmake . #{std_cmake_parameters}"
+    system "cmake", ".",
+                    "-DCMAKE_INSTALL_NAME_DIR=#{HOMEBREW_PREFIX}/lib",
+                    "-DCMAKE_BUILD_WITH_INSTALL_RPATH=ON",
+                    *std_cmake_args
     system "make install"
   end
 end

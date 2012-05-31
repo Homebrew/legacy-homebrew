@@ -23,9 +23,9 @@ end
 
 class ConfigureTests < Test::Unit::TestCase
   def test_detect_failed_configure
-    f=ConfigureFails.new
+    f = ConfigureFails.new
     begin
-      f.brew { f.install }
+      shutup { f.brew { f.install } }
     rescue BuildError => e
       assert e.was_running_configure?
     end
@@ -48,6 +48,7 @@ class InstallTests < Test::Unit::TestCase
     # tests use the same formula name without
     # stepping on each other.
     keg=Keg.new f.prefix
+    keg.unlink
     keg.uninstall
     assert !keg.exist?
     assert !f.installed?

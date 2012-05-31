@@ -9,7 +9,7 @@ class Cssembed < Formula
     libexec.install "cssembed-0.4.5.jar"
     (bin+'cssembed').write <<-EOS.undent
       #!/bin/sh
-      java -jar "#{libexec}/cssembed-0.4.5.jar" $@
+      java -jar "#{libexec}/cssembed-0.4.5.jar" "$@"
     EOS
   end
 end

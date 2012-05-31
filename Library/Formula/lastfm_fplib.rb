@@ -1,8 +1,8 @@
 require 'formula'
 
 class LastfmFplib < Formula
-  head 'svn://svn.audioscrobbler.net/recommendation/MusicID/lastfm_fplib'
   homepage 'http://blog.last.fm/2007/08/29/audio-fingerprinting-for-clean-metadata'
+  head 'svn://svn.audioscrobbler.net/recommendation/MusicID/lastfm_fplib'
 
   depends_on 'cmake' => :build
   depends_on 'taglib'
@@ -11,7 +11,7 @@ class LastfmFplib < Formula
   depends_on 'fftw'
 
   def install
-    system "cmake . #{std_cmake_parameters}"
+    system "cmake", ".", *std_cmake_args
     system "make install"
   end
 end

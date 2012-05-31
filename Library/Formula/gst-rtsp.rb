@@ -9,6 +9,12 @@ class GstRtsp < Formula
   depends_on 'gettext'
   depends_on 'gst-plugins-base'
 
+  if MacOS.xcode_version >= "4.3"
+    # when and if the tarball provides configure, remove autogen.sh and these deps
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
     system "./autogen.sh", "--disable-debug", "--disable-dependency-tracking",
                            "--prefix=#{prefix}",

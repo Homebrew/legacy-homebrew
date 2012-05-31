@@ -1,8 +1,8 @@
 require 'formula'
 
 class Unrar < Formula
-  url 'http://www.rarlab.com/rar/unrarsrc-4.1.3.tar.gz'
-  sha1 'cd9385c3297b4e0fc3c5d3e462741f1e97fbaa49'
+  url 'http://www.rarlab.com/rar/unrarsrc-4.2.1.tar.gz'
+  sha1 '10f48ec272f413c983032b2e0cbe4e94781c7b3b'
   homepage 'http://www.rarlab.com'
 
   def install

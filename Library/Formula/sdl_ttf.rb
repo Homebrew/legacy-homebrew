@@ -7,7 +7,12 @@ class SdlTtf < Formula
 
   depends_on 'sdl'
 
+  def options
+    [['--universal', 'Build universal binaries.']]
+  end
+
   def install
+    ENV.universal_binary if ARGV.build_universal?
     ENV.x11 # For Freetype
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

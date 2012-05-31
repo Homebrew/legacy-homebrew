@@ -1,10 +1,10 @@
 require 'formula'
 
 class Jpeg < Formula
-  url 'http://www.ijg.org/files/jpegsrc.v8c.tar.gz'
-  version '8c'
-  md5 'a2c10c04f396a9ce72894beb18b4e1f9'
+  url 'http://www.ijg.org/files/jpegsrc.v8d.tar.gz'
+  sha1 'f080b2fffc7581f7d19b968092ba9ebc234556ff'
   homepage 'http://www.ijg.org'
+  version '8d'
 
   def install
     ENV.universal_binary   # Builds universal libs. Default is static & shared.

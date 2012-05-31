@@ -8,7 +8,7 @@ class PutmailQueue < Formula
   depends_on 'putmail'
 
   def install
-    bin.install ['putmail_dequeue.py', 'putmail_enqueue.py']
+    bin.install 'putmail_dequeue.py', 'putmail_enqueue.py'
     man1.install Dir["man/man1/*.1"]
   end
 end

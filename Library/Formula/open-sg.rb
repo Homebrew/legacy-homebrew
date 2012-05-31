@@ -1,8 +1,9 @@
 require 'formula'
 
 class OpenSg < Formula
-  head 'cvs://:pserver:anonymous@opensg.cvs.sourceforge.net:/cvsroot/opensg:OpenSG'
   homepage 'http://www.opensg.org/wiki'
+
+  head 'cvs://:pserver:anonymous@opensg.cvs.sourceforge.net:/cvsroot/opensg:OpenSG'
 
   depends_on 'libtiff'
   depends_on 'jpeg'
@@ -11,8 +12,9 @@ class OpenSg < Formula
     ENV.deparallelize
     ENV.no_optimization
     system "./configure", "--prefix=#{prefix}", "--enable-glut", "--enable-tif", "--enable-jpg"
-    Dir.chdir 'Builds/i386-apple-darwin-g++'
-    system "make opt"
-    system "make install"
+    cd 'Builds/i386-apple-darwin-g++' do
+      system "make opt"
+      system "make install"
+    end
   end
 end

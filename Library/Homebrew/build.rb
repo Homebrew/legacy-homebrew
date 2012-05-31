@@ -23,6 +23,19 @@ at_exit do
     ENV.setup_build_environment
     # we must do this or tools like pkg-config won't get found by configure scripts etc.
     ENV.prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? "#{HOMEBREW_PREFIX}/bin"
+    # this is a safety measure for Xcode 4.3 which started not installing
+    # dev tools into /usr/bin as a default
+    ENV.prepend 'PATH', MacOS.dev_tools_path, ':' unless ORIGINAL_PATHS.include? MacOS.dev_tools_path
+
+    # Force any future invocations of sudo to require the user's password to be
+    # re-entered. This is in-case any build script call sudo. Certainly this is
+    # can be inconvenient for the user. But we need to be safe.
+    system "/usr/bin/sudo -k"
+
+    if ENV['HOMEBREW_ERROR_PIPE']
+      require 'fcntl'
+      IO.new(ENV['HOMEBREW_ERROR_PIPE'].to_i, 'w').fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
+    end
 
     install(Formula.factory($0))
   rescue Exception => e
@@ -46,8 +59,19 @@ def install f
       ENV.prepend 'LDFLAGS', "-L#{dep.lib}"
       ENV.prepend 'CPPFLAGS', "-I#{dep.include}"
       ENV.prepend 'PATH', "#{dep.bin}", ':'
-      ENV.prepend 'PKG_CONFIG_PATH', dep.lib+'pkgconfig', ':'
+
+      pcdir = dep.lib/'pkgconfig'
+      ENV.prepend 'PKG_CONFIG_PATH', pcdir, ':' if pcdir.directory?
+
+      acdir = dep.share/'aclocal'
+      ENV.prepend 'ACLOCAL_PATH', acdir, ':' if acdir.directory?
     end
+  end
+
+  if f.fails_with? ENV.compiler
+    cs = CompilerSelector.new f
+    cs.select_compiler
+    cs.advise
   end
 
   f.brew do
@@ -59,7 +83,7 @@ def install f
       if ARGV.flag? '--git'
         system "git init"
         system "git add -A"
-        puts "This folder is now a git repo. Make your changes and then use:"
+        puts "This directory is now a git repo. Make your changes and then use:"
         puts "  git diff | pbcopy"
         puts "to copy the diff to the clipboard."
       end

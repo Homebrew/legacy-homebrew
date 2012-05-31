@@ -51,14 +51,19 @@ For the full command list, see the COMMANDS section.
   * `cat` <formula>:
     Display the source to <formula>.
 
-  * `cleanup [--force] [-n]` [<formula>]:
+  * `cleanup [--force] [-ns]` [<formulae>]:
     For all installed or specific formulae, remove any older versions from the
     cellar. By default, does not remove out-of-date keg-only brews, as other
-    software may link directly to specific versions.
+    software may link directly to specific versions. In addition old downloads from
+    the Homebrew download-cache are deleted.
 
     If `--force` is passed, remove out-of-date keg-only brews as well.
 
     If `-n` is passed, show what would be removed, but do not actually remove anything.
+
+    If `-s` is passed, scrubs the cache, removing downloads for even the latest
+    versions of formula. Note downloads for any installed formula will still not be
+    deleted. If you want to delete those too: `rm -rf $(brew --cache)`
 
   * `create [--autotools|--cmake] [--no-fetch]` <URL>:
     Generate a formula for the downloadable file at <URL> and open it in
@@ -137,15 +142,14 @@ For the full command list, see the COMMANDS section.
   * `install [--force] [--debug] [--ignore-dependencies] [--fresh] [--use-clang] [--use-gcc] [--use-llvm] [--build-from-source] [--devel] [--HEAD]` <formula>:
     Install <formula>.
 
-    <formula> is usually the name of the formula to install, but may also be
-    the URL for an arbitrary formula.
+    <formula> is usually the name of the formula to install, but it can be specified
+    several different ways. See [SPECIFYING FORMULAE][].
 
-    If `--force` is passed, will install <formula> even if it is already
-    installed. This can be used to re-install a formula without removing
-    it first.
+    If `--force` is passed, will install <formula> if it exists, even if it
+    is blacklisted.
 
     If `--debug` is passed and brewing fails, open a shell inside the
-    temporary folder used for compiling.
+    temporary directory used for compiling.
 
     If `--ignore-dependencies` is passed, skip installing any dependencies of
     any kind. If they are not already present, the formula will probably fail
@@ -243,6 +247,11 @@ For the full command list, see the COMMANDS section.
   * `search --macports`|`--fink` <text>:
     Search for <text> on the MacPorts or Fink package search page.
 
+  * `tap` [<tap>]:
+    Tap a new formula repository from GitHub, or list existing taps.
+
+    <tap> is of the form <user>/<repo>, e.g. `brew tap homebrew/dupes`.
+
   * `test` <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
     test method. There is no standard output or return code, but it should
@@ -254,6 +263,9 @@ For the full command list, see the COMMANDS section.
   * `unlink` <formula>:
     Unsymlink <formula> from the Homebrew prefix. This can be useful for
     temporarily disabling a formula: `brew unlink foo && commands && brew link foo`.
+
+  * `untap` <tap>:
+    Remove a tapped repository.
 
   * `update [--rebase]`:
     Fetch the newest version of Homebrew and all formulae from GitHub using
@@ -283,14 +295,14 @@ For the full command list, see the COMMANDS section.
     Display Homebrew's download cache. *Default:* `~/Library/Caches/Homebrew`
 
   * `--cache` <formula>:
-    Display the file or folder used to cache <formula>.
+    Display the file or directory used to cache <formula>.
 
   * `--cellar`:
     Display Homebrew's Cellar path. *Default:* `/usr/local/Cellar`
 
   * `--cellar` <formula>:
     Display the location in the cellar where <formula> would be installed,
-    without any sort of versioned folder as the last path.
+    without any sort of versioned directory as the last path.
 
   * `--config`:
     Show Homebrew and system configuration useful for debugging. If you file
@@ -304,8 +316,8 @@ For the full command list, see the COMMANDS section.
     Display the location in the cellar where <formula> is or would be installed.
 
   * `--repository`:
-    Display where Homebrew's `.git` folder is located. For standard installs,
-    the `prefix` and `repository` are the same folder.
+    Display where Homebrew's `.git` directory is located. For standard installs,
+    the `prefix` and `repository` are the same directory.
 
   * `-v`, `--version`:
     Print the version number of brew to standard error and exit.
@@ -317,14 +329,32 @@ scripts that reside somewhere in the PATH, named `brew-<cmdname>` or
 `brew-<cmdname>.rb`, which can be invoked like `brew cmdname`. This allows you
 to create your own commands without modifying Homebrew's internals.
 
-A number of (useful, but unsupported) example commands are included and enabled
+A number of (useful, but unsupported) external commands are included and enabled
 by default:
 
-    $ ls `brew --repository`/Library/Contributions/examples
+    $ ls `brew --repository`/Library/Contributions/cmds
 
 Documentation for the included external commands as well as instructions for
 creating your own can be found on the wiki:
 <http://wiki.github.com/mxcl/homebrew/External-Commands>
+
+## SPECIFYING FORMULAE
+
+Many Homebrew commands accept one or more <formula> arguments. These arguments
+can take several different forms:
+
+  * The name of a formula:
+    e.g. `git`, `node`, `wget`.
+
+  * The fully-qualified name of a tapped formula:
+    Sometimes a formula from a tapped repository may conflict with one in mxcl/master.
+    You can still access these formulae by using a special syntax, e.g.
+    `homebrew/dupes/vim` or `homebrew/versions/node4`.
+
+  * An arbitrary URL:
+    Homebrew can install formulae via URL, e.g.
+    `https://raw.github.com/mxcl/homebrew/master/Library/Formula/git.rb`.
+    The formula file will be cached for later use.
 
 ## ENVIRONMENT
 
@@ -333,10 +363,10 @@ creating your own can be found on the wiki:
     provides a bottle.
 
   * HOMEBREW\_CACHE:
-    If set, instructs Homebrew to use the give folder as the download cache.
+    If set, instructs Homebrew to use the give directory as the download cache.
     Otherwise, `~/Library/Caches/Homebrew` is used.
 
-    This can be used to keep downloads out of your home folder, if you have
+    This can be used to keep downloads out of your home directory, if you have
     it mounted on an SSD or are using FileVault for instance.
 
   * HOMEBREW\_CURL\_VERBOSE:
@@ -358,15 +388,18 @@ creating your own can be found on the wiki:
 
   * HOMEBREW\_EDITOR:
     If set, Homebrew will use this editor when editing a single formula, or
-    several formulae in the same folder.
+    several formulae in the same directory.
 
     *NOTE*: `brew edit` will open all of Homebrew as discontinuous files and
-    folders. TextMate can handle this correctly in project mode, but many
+    directories. TextMate can handle this correctly in project mode, but many
     editors will do strange things in this case.
 
   * HOMEBREW\_KEEP\_INFO:
     If set, Homebrew will not remove files from `share/info`, allowing them
-    to be linked from the Cellar.
+    to be linked from the Cellar. To access these info files, prepend
+    `share/info` to your `INFOPATH` environment variable.
+
+    *Example:* `export INFOPATH='/usr/local/share/info:/usr/share/info'`
 
   * HOMEBREW\_MAKE\_JOBS:
     If set, instructs Homebrew to use the value of `HOMEBREW_MAKE_JOBS` as
@@ -381,8 +414,8 @@ creating your own can be found on the wiki:
     Set this to force Homebrew to use a particular svn binary.
 
   * HOMEBREW\_TEMP:
-    If set, instructs Homebrew to use `HOMEBREW_TEMP` as the temporary folder
-    for building packages. This may be needed if your system temp folder and
+    If set, instructs Homebrew to use `HOMEBREW_TEMP` as the temporary directory
+    for building packages. This may be needed if your system temp directory and
     Homebrew Prefix are on different volumes, as OS X has trouble moving
     symlinks across volumes when the target does not yet exist.
 

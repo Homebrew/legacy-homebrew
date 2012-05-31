@@ -1,12 +1,14 @@
 require 'formula'
 
 class Devtodo < Formula
-  url 'http://swapoff.org/files/devtodo/devtodo-0.1.20.tar.gz'
   homepage 'http://swapoff.org/DevTodo'
+  url 'http://swapoff.org/files/devtodo/devtodo-0.1.20.tar.gz'
   md5 '4a6241437cb56f237f850bcd2233c3c4'
 
   depends_on "readline"
 
+  # Fix invalid regex. See http://swapoff.org/ticket/54
+  # @adamv - this url not responding 3/17/2012
   def patches
     DATA
   end
@@ -27,8 +29,6 @@ class Devtodo < Formula
 end
 
 __END__
-Fix invalid regex. See http://swapoff.org/ticket/54
-
 --- a/util/XML.cc	Mon Dec 10 22:26:55 2007
 +++ b/util/XML.cc	Mon Dec 10 22:27:07 2007
 @@ -49,7 +49,7 @@ void XML::init() {

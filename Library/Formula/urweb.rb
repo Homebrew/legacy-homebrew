@@ -8,9 +8,17 @@ class Urweb < Formula
 
   depends_on 'mlton'
 
+  if MacOS.xcode_version >= "4.3"
+    # remove the autoreconf if possible, no comment provided about why it is there
+    # so we have no basis to make a decision at this point.
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
-    system "aclocal && autoreconf -i --force"
-    system "./configure --prefix=#{prefix}"
+    system "aclocal"
+    system "autoreconf -i --force"
+    system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
   end

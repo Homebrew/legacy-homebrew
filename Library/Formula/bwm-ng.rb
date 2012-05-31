@@ -5,6 +5,10 @@ class BwmNg < Formula
   homepage 'http://www.gropp.org/?id=projects&sub=bwm-ng'
   md5 'd3a02484fb7946371bfb4e10927cebfb'
 
+  fails_with :clang do
+    build 318
+  end
+
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"

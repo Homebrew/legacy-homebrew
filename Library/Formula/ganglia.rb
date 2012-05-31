@@ -1,8 +1,8 @@
 require 'formula'
 
 class Ganglia < Formula
-  url 'http://downloads.sourceforge.net/project/ganglia/ganglia%20monitoring%20core/3.1.7/ganglia-3.1.7.tar.gz'
   homepage 'http://ganglia.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/project/ganglia/ganglia%20monitoring%20core/3.1.7/ganglia-3.1.7.tar.gz'
   md5 '6aa5e2109c2cc8007a6def0799cf1b4c'
 
   depends_on 'confuse'
@@ -17,36 +17,40 @@ class Ganglia < Formula
     DATA
   end
 
+  if MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
     # ENV var needed to confirm putting the config in the prefix until 3.2
     ENV['GANGLIA_ACK_SYSCONFDIR'] = '1'
 
     # Grab the standard autogen.sh and run it twice, to update libtool
     curl "http://buildconf.git.sourceforge.net/git/gitweb.cgi?p=buildconf/buildconf;a=blob_plain;f=autogen.sh;hb=HEAD", "-o", "autogen.sh"
-    ENV['LIBTOOLIZE'] = "/usr/bin/glibtoolize"
 
+    ENV['LIBTOOLIZE'] = "/usr/bin/glibtoolize" if MacOS.xcode_version < "4.3"
     ENV['PROJECT'] = "ganglia"
     system "/bin/sh ./autogen.sh --download"
 
-    Dir.chdir "libmetrics" do
+    cd "libmetrics" do
       ENV['PROJECT'] = "libmetrics"
       system "/bin/sh ../autogen.sh --download"
     end
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--sbindir=#{bin}",
                           "--sysconfdir=#{etc}",
                           "--with-gexec",
-                          "--with-gmetad"
-
-    # build and install
+                          "--with-gmetad",
+                          "--with-libpcre=#{HOMEBREW_PREFIX}"
     system "make install"
 
-    Dir.chdir "web" do
+    cd "web" do
       system "make", "conf.php"
       system "make", "version.php"
-
       inreplace "conf.php", "/usr/bin/rrdtool", "#{HOMEBREW_PREFIX}/bin/rrdtool"
     end
 

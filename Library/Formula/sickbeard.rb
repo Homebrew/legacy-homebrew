@@ -1,9 +1,9 @@
 require 'formula'
 
 class Sickbeard < Formula
-  url 'https://github.com/midgetspy/Sick-Beard/tarball/build-489'
+  url 'https://github.com/midgetspy/Sick-Beard/tarball/build-494'
   homepage 'http://www.sickbeard.com/'
-  md5 'fee7c987f12dc48f0d7c057c9f61c180'
+  md5 'ffa9a21ee0c99af8319e434323f4ca64'
 
   head 'https://github.com/midgetspy/Sick-Beard.git'
 
@@ -11,10 +11,9 @@ class Sickbeard < Formula
 
   def install
     prefix.install Dir['*']
-    bin.mkpath
     (bin+"sickbeard").write(startup_script)
-    (prefix+"com.sickbeard.sickbeard.plist").write(startup_plist)
-    (prefix+"com.sickbeard.sickbeard.plist").chmod 0644
+    plist_path.write(startup_plist)
+    plist_path.chmod 0644
   end
 
   def startup_plist; <<-EOS.undent
@@ -23,10 +22,10 @@ class Sickbeard < Formula
     <plist version="1.0">
     <dict>
       <key>Label</key>
-      <string>com.sickbeard.sickbeard</string>
+      <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-           <string>#{bin}/sickbeard</string>
+           <string>#{HOMEBREW_PREFIX}/bin/sickbeard</string>
            <string>-q</string>
            <string>--nolaunch</string>
            <string>-p</string>
@@ -70,12 +69,12 @@ class Sickbeard < Formula
     To launch automatically on startup, copy and paste the following into a terminal:
 
         mkdir -p ~/Library/LaunchAgents
-        (launchctl unload -w ~/Library/LaunchAgents/com.sickbeard.sickbeard.plist 2>/dev/null || true)
-        ln -sf #{prefix}/com.sickbeard.sickbeard.plist ~/Library/LaunchAgents/com.sickbeard.sickbeard.plist
-        launchctl load -w ~/Library/LaunchAgents/com.sickbeard.sickbeard.plist
+        (launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename} 2>/dev/null || true)
+        ln -sf #{plist_path} ~/Library/LaunchAgents/#{plist_path.basename}
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     You may want to edit:
-      #{prefix}/com.sickbeard.sickbeard.plist
+      #{plist_path}
     to change the port (default: 8081) or user (default: #{`whoami`.chomp}).
     EOS
   end

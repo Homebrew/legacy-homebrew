@@ -1,13 +1,14 @@
 require 'formula'
 
 class AvroC < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=avro/avro-1.5.1/c/avro-c-1.5.1.tar.gz'
   homepage 'http://avro.apache.org/'
-  md5 '80228a62dd58ec19eb8d436258b91952'
+  url 'http://www.apache.org/dyn/closer.cgi?path=avro/avro-1.6.3/c/avro-c-1.6.3.tar.gz'
+  md5 'af3f15605b47d02719706e5d67de8e75'
+
+  depends_on 'cmake' => :build
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "cmake", ".", *std_cmake_args
     system "make install"
   end
 end

@@ -1,31 +1,40 @@
 require 'formula'
 
+class NoExpatFramework < Requirement
+  def message; <<-EOS.undent
+    Detected /Library/Frameworks/expat.framework
+
+    This will be picked up by CMake's build system and likely cause the
+    build to fail, trying to link to a 32-bit version of expat.
+
+    You may need to move this file out of the way to compile CMake.
+    EOS
+  end
+  def satisfied?
+    not File.exist? "/Library/Frameworks/expat.framework"
+  end
+end
+
+
 class Cmake < Formula
-  url 'http://www.cmake.org/files/v2.8/cmake-2.8.7.tar.gz'
-  md5 'e1b237aeaed880f65dec9c20602452f6'
+  url 'http://www.cmake.org/files/v2.8/cmake-2.8.8.tar.gz'
+  md5 'ba74b22c788a0c8547976b880cd02b17'
   homepage 'http://www.cmake.org/'
-  bottle 'https://downloads.sf.net/project/machomebrew/Bottles/cmake-2.8.7-bottle.tar.gz'
-  bottle_sha1 '8f4731fa17bf96afa2cdbfa48aaf6020a9836e3f'
+
+  bottle do
+    version 1
+    sha1 'e1251ca112398348b1a150600826fc2befb200dd' => :lion
+    sha1 '51d960d0ebff661babd23970f69e9fcaaac9b1f3' => :snowleopard
+  end
+
+  depends_on NoExpatFramework.new
+
+  # Correct FindPkgConfig found variable. Remove for CMake 2.8.9.
+  def patches
+    "https://github.com/Kitware/CMake/commit/3ea850.patch"
+  end
 
   def install
-    # A framework-installed expat will be detected and mess things up.
-    if File.exist? "/Library/Frameworks/expat.framework"
-      opoo "/Library/Frameworks/expat.framework detected"
-      puts <<-EOS.undent
-        This will be picked up by CMake's build system and likey cause the
-        build to fail, trying to link to a 32-bit version of expat.
-        You may need to move this file out of the way for this brew to work.
-      EOS
-    end
-
-    if ENV['GREP_OPTIONS'] == "--color=always"
-      opoo "GREP_OPTIONS is set to '--color=always'"
-      puts <<-EOS.undent
-        Having `GREP_OPTIONS` set this way causes CMake builds to fail.
-        You will need to `unset GREP_OPTIONS` before brewing.
-      EOS
-    end
-
     system "./bootstrap", "--prefix=#{prefix}",
                           "--system-libs",
                           "--no-system-libarchive",
@@ -34,5 +43,9 @@ class Cmake < Formula
                           "--mandir=/share/man"
     system "make"
     system "make install"
+  end
+
+  def test
+    system "#{bin}/cmake", "-E", "echo", "testing"
   end
 end

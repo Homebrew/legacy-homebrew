@@ -5,6 +5,7 @@ class Libagg < Formula
   url 'http://www.antigrain.com/agg-2.5.tar.gz'
   md5 '0229a488bc47be10a2fee6cf0b2febd6'
 
+  depends_on "automake" => :build if MacOS.xcode_version >= "4.3"
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
 
@@ -13,10 +14,10 @@ class Libagg < Formula
 
     # No configure script. We need to run autoreconf, and aclocal and automake
     # need some direction.
-    ENV['ACLOCAL'] = "/usr/bin/aclocal -I#{HOMEBREW_PREFIX}/share/aclocal" # To find SDL m4 files
+    ENV['ACLOCAL'] = "aclocal -I#{HOMEBREW_PREFIX}/share/aclocal" # To find SDL m4 files
     # This part snatched from MacPorts
-    ENV['AUTOMAKE'] = "/usr/bin/automake --foreign --add-missing --ignore-deps"
-    system "/usr/bin/autoreconf -fi"
+    ENV['AUTOMAKE'] = "automake --foreign --add-missing --ignore-deps"
+    system "autoreconf -fi"
 
     system "./configure",
            "--disable-debug",

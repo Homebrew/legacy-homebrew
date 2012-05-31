@@ -1,23 +1,23 @@
 require 'formula'
 
 class EasyTag < Formula
-  url 'http://archive.ubuntu.com/ubuntu/pool/universe/e/easytag/easytag_2.1.6.orig.tar.gz'
-  homepage 'http://easytag.sf.net'
-  md5 '91b57699ac30c1764af33cc389a64c71'
+  homepage 'http://easytag.sourceforge.net'
+  url 'http://sourceforge.net/projects/easytag/files/easytag%20%28gtk%202%29/2.1/easytag-2.1.7.tar.bz2'
+  md5 '9df3e800d80e754670642f2ba5e03539'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'gtk+'
-  depends_on 'id3lib'
   depends_on 'libid3tag'
-  depends_on 'mp4v2'
+  depends_on 'id3lib' => :optional
+  depends_on 'libvorbis' => :optional
+  depends_on 'speex' => :optional
+  depends_on 'flac' => :optional
+  depends_on 'mp4v2' => :optional
+  depends_on 'wavpack' => :optional
 
   def install
-    # Use mp4v2 instead of mp4
-    inreplace ['configure', 'src/mp4_header.c', 'src/mp4_tag.c'],
-      "#include <mp4.h>", "#include <mp4v2/mp4v2.h>"
-
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
     ENV.deparallelize # make install fails in parallel

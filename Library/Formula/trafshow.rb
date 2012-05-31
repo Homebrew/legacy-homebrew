@@ -9,7 +9,7 @@ class Trafshow < Formula
     files = %w[patch-domain_resolver.c patch-colormask.c patch-trafshow.c patch-trafshow.1 patch-configure]
     {
       :p0 =>
-      files.collect{|p| "http://trac.macports.org/export/68507/trunk/dports/net/trafshow/files/#{p}"}
+      files.collect{|p| "https://trac.macports.org/export/68507/trunk/dports/net/trafshow/files/#{p}"}
     }
   end
 

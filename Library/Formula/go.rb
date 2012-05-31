@@ -1,35 +1,39 @@
 require 'formula'
 
 class Go < Formula
-  if ARGV.include? "--use-git"
-    url 'https://github.com/tav/go.git', :tag => 'release.r60.3'
-    head 'https://github.com/tav/go.git'
-  else
-    url 'http://go.googlecode.com/hg/', :revision => 'release.r60.3'
-    head 'http://go.googlecode.com/hg/'
-  end
-  version 'r60.3'
   homepage 'http://golang.org'
+  url 'http://go.googlecode.com/files/go1.0.1.src.tar.gz'
+  version '1.0.1'
+  sha1 'fc8a6d6725f7f2bf7c94685c5fd0880c9b7f67f6'
+
+  head 'http://go.googlecode.com/hg/'
 
   skip_clean 'bin'
 
-  def options
-    [["--use-git", "Use git mirror instead of official hg repository"]]
-  end
-
   def install
-    prefix.install %w[src include test doc misc lib favicon.ico AUTHORS]
-    Dir.chdir prefix
-    mkdir %w[pkg bin]
-    File.open('VERSION', 'w') {|f| f.write('release.r60.3 9516') }
+    prefix.install Dir['*']
 
-    Dir.chdir 'src' do
-      # Tests take a very long time to run. Build only
-      system "./make.bash"
+    cd prefix do
+      # The version check is due to:
+      # http://codereview.appspot.com/5654068
+      (prefix/'VERSION').write 'default' if ARGV.build_head?
+
+      # Build only. Run `brew test go` to run distrib's tests.
+      cd 'src' do
+        system './make.bash'
+      end
     end
 
-    # Don't need the src folder, but do keep the Makefiles as Go projects use these
-    Dir['src/*'].each{|f| rm_rf f unless f.match(/^src\/(pkg|Make)/) }
-    rm_rf %w[include test]
+    # Don't install header files; they aren't necessary and can
+    # cause problems with other builds. See:
+    # http://trac.macports.org/ticket/30203
+    # http://code.google.com/p/go/issues/detail?id=2407
+    include.rmtree
+  end
+
+  def test
+    cd "#{prefix}/src" do
+      system './run.bash --no-rebuild'
+    end
   end
 end

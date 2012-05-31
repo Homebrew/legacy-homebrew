@@ -1,24 +1,31 @@
 require 'formula'
 
 class Synergy < Formula
+  homepage 'http://synergy-foss.org'
+  version '1.3.8'
 
-  if ARGV.build_head?
-    url 'http://synergy.googlecode.com/files/synergy-1.4.3-MacOSX106-Universal.zip'
-    sha1 'aa60fa6ac975dd22dc095d6cd9f3dc755b91bb64'
-    version '1.4.3'
+  if MacOS.lion?
+    url 'http://synergy.googlecode.com/files/synergy-1.3.8-MacOSX107-Universal.zip'
+    sha1 '6b9b0e75a468b9f9c80519894e4d2d589aca2d31'
   else
-    # Newer 1.3.x versions have a critical bug on OS X:
-    # http://code.google.com/p/synergy-plus/issues/detail?id=47
-    # Do not bump this to 1.3.7 or newer until that issue is resolved.
-    url 'http://synergy.googlecode.com/files/synergy-1.3.6p2-MacOSX-Universal.zip'
-    sha1 '5b9336fb553db17bd109e3f2bca517af18ed3863'
-    version '1.3.6p2'
+    url 'http://synergy.googlecode.com/files/synergy-1.3.8-MacOSX106-Universal.zip'
+    sha1 'cedf8dc0f5f1d95b967fabcd4ed9bfc0f72840e6'
   end
 
-  homepage 'http://synergy-foss.org'
+  devel do
+    version '1.4.8'
+    if MacOS.lion?
+      url 'http://synergy.googlecode.com/files/synergy-1.4.8-MacOSX107-x86_64.dmg'
+      sha1 '8c3f0326d74c935c20cc83c79dda20677d9b5814'
+    elsif MacOS.snow_leopard?
+      url 'http://synergy.googlecode.com/files/synergy-1.4.8-MacOSX106-i386.dmg'
+      sha1 '1de78afdc838b1c0ef21e36d996b18ff6019b191'
+    else
+      opoo "No --devel for this version of OS X."
+    end
+  end
 
   def install
-    bin.install 'synergyc'
-    bin.install 'synergys'
+    bin.install 'synergyc', 'synergys'
   end
 end

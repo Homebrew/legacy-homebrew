@@ -1,13 +1,15 @@
 require 'formula'
 
 class Fourstore < Formula
-  url 'http://4store.org/download/4store-v1.1.3.tar.gz'
   homepage 'http://4store.org/'
-  md5 'ed5015c95c97a424274f71e7918a9607'
+  url 'http://4store.org/download/4store-v1.1.4.tar.gz'
+  md5 'e15773fa72bb885f2613a8778fcbb7b6'
 
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'raptor'
   depends_on 'rasqal'
+  depends_on 'pcre'
 
   def install
     system "./configure", "--prefix=#{prefix}",

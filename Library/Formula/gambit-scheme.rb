@@ -1,9 +1,9 @@
 require 'formula'
 
 class GambitScheme < Formula
-  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.6/source/gambc-v4_6_2.tgz'
   homepage 'http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page'
-  md5 'f6230a1f1f56b8113e0b9e391074bcb0'
+  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.6/source/gambc-v4_6_5.tgz'
+  sha256 '54de513a78f0fb1841ef1411b8f2d64a2bd6810cee7554fe408b0ba79ff00910'
 
   def options
     [
@@ -14,23 +14,29 @@ class GambitScheme < Formula
 
   skip_clean :all
 
-  fails_with_llvm "ld crashes during the build process or segfault at runtime"
+  fails_with :llvm do
+    build 2335
+    cause "ld crashes during the build process or segfault at runtime"
+  end
 
   def install
-    ENV.O2 # Gambit Scheme doesn't like full optimizations
+    args = ["--disable-debug",
+            "--prefix=#{prefix}",
+            "--infodir=#{info}",
+            # Recommended to improve the execution speed and compactness
+            # of the generated executables. Increases compilation times.
+            "--enable-single-host"]
+    args << "--enable-shared" if ARGV.include? '--enable-shared'
 
-    configure_args = [
-      "--prefix=#{prefix}",
-      "--infodir=#{info}",
-      "--disable-debug",
-      # Recommended to improve the execution speed and compactness
-      # of the generated executables. Increases compilation times.
-      "--enable-single-host"
-    ]
+    unless ENV.compiler == :gcc
+      opoo <<-EOS.undent
+        Compiling Gambit Scheme with Clang or LLVM-GCC takes a very long time.
+        If you have GCC, you can compile it much faster with:
+          brew install gambit-scheme --use-gcc
+        EOS
+    end
 
-    configure_args << "--enable-shared" if ARGV.include? '--enable-shared'
-
-    system "./configure", *configure_args
+    system "./configure", *args
     system "make check" if ARGV.include? '--with-check'
 
     ENV.j1
