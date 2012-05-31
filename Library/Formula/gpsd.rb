@@ -1,8 +1,8 @@
 require 'formula'
 
 class Gpsd < Formula
-  url 'http://git.savannah.gnu.org/cgit/gpsd.git/snapshot/release-3.5.tar.gz'
   homepage 'https://savannah.nongnu.org/projects/gpsd'
+  url 'http://git.savannah.gnu.org/cgit/gpsd.git/snapshot/release-3.5.tar.gz'
   md5 'a3f88b41c36ee2f2bce6d9ca961688fa'
 
   depends_on 'scons' => :build
