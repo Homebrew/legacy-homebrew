@@ -1,6 +1,6 @@
 require 'formula'
 
-class Xmltoman <Formula
+class Xmltoman < Formula
   url 'http://downloads.sourceforge.net/project/xmltoman/xmltoman/xmltoman-0.4.tar.gz/xmltoman-0.4.tar.gz'
   homepage 'http://sourceforge.net/projects/xmltoman/'
   md5 '99be944b9fce40b3fe397049bf14a097'

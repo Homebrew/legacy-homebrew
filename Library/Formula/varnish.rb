@@ -1,14 +1,14 @@
 require 'formula'
 
-class Varnish <Formula
-  url 'http://www.varnish-software.com/sites/default/files/varnish-2.1.4.tar.gz'
+class Varnish < Formula
   homepage 'http://www.varnish-cache.org/'
-  md5 'e794a37b6fbb786a083c0946103ae103'
+  url 'http://repo.varnish-cache.org/source/varnish-3.0.2.tar.gz'
+  sha1 '906f1536cb7e728d18d9425677907ae723943df7'
 
   depends_on 'pkg-config' => :build
   depends_on 'pcre'
 
-  # Do not strip varnish binaries: Otherwise, the magic string end pointer isn't found.
+  # If stripped, the magic string end pointer isn't found.
   skip_clean :all
 
   def install

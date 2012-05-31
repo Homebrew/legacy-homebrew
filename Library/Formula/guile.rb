@@ -1,14 +1,15 @@
 require 'formula'
 
-class Guile <Formula
-  url 'ftp://ftp.gnu.org/gnu/guile/guile-1.8.7.tar.gz'
-  head 'ftp://alpha.gnu.org/gnu/guile/guile-1.9.11.tar.gz'
+class Guile < Formula
   homepage 'http://www.gnu.org/software/guile/'
+  url 'http://ftpmirror.gnu.org/guile/guile-1.8.7.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/guile/guile-1.8.7.tar.gz'
+  sha1 '24cd2f06439c76d41d982a7384fe8a0fe5313b54'
 
-  if ARGV.build_head?
-    sha1 'abd1424a927302db31395db828d4d14fa68d13f9'
-  else
-    sha1 '24cd2f06439c76d41d982a7384fe8a0fe5313b54'
+  devel do
+    url 'http://ftpmirror.gnu.org/guile/guile-2.0.5.tar.gz'
+    mirror 'http://ftp.gnu.org/gnu/guile/guile-2.0.5.tar.gz'
+    sha1 '0cf94962ab637975bf2ad00afa15638dcc67408f'
   end
 
   depends_on 'pkg-config' => :build
@@ -19,6 +20,11 @@ class Guile <Formula
 
   # GNU Readline is required; libedit won't work.
   depends_on 'readline'
+
+  fails_with :llvm do
+    build 2336
+    cause "Segfaults during compilation"
+  end
 
   def install
     system "./configure", "--disable-dependency-tracking",

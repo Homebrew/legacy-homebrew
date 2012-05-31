@@ -1,10 +1,10 @@
 require 'formula'
 
-class SshCopyId <Formula
-  url 'http://ftp.heanet.ie/pub/OpenBSD/OpenSSH/portable/openssh-5.5p1.tar.gz'
-  version '5.5p1'
+class SshCopyId < Formula
   homepage 'http://openssh.org/'
-  md5 '88633408f4cb1eb11ec7e2ec58b519eb'
+  url 'http://ftp.lambdaserver.com/pub/OpenBSD/OpenSSH/portable/openssh-6.0p1.tar.gz'
+  version '6.0p1'
+  sha1 'f691e53ef83417031a2854b8b1b661c9c08e4422'
 
   def install
     bin.install 'contrib/ssh-copy-id'

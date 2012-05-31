@@ -1,6 +1,6 @@
 require 'formula'
 
-class VorbisTools <Formula
+class VorbisTools < Formula
   url 'http://downloads.xiph.org/releases/vorbis/vorbis-tools-1.4.0.tar.gz'
   md5 '567e0fb8d321b2cd7124f8208b8b90e6'
   homepage 'http://vorbis.com'

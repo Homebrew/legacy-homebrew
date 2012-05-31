@@ -1,9 +1,19 @@
 require 'formula'
 
-class Zookeeper <Formula
-  url 'http://mirror.switch.ch/mirror/apache/dist/hadoop/zookeeper/zookeeper-3.3.1/zookeeper-3.3.1.tar.gz'
-  homepage 'http://hadoop.apache.org/zookeeper'
-  md5 'bdcd73634e3f6623a025854f853c3d0d'
+class Zookeeper < Formula
+  homepage 'http://zookeeper.apache.org/'
+  url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.3/zookeeper-3.4.3.tar.gz'
+  md5 'e43b96df6e29cb43518d2fcd1867486c'
+
+  head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
+
+  def options
+    [
+      ["--c", "Build C bindings."],
+      ["--perl", "Build Perl bindings."],
+      ["--python", "Build Python bindings."],
+    ]
+  end
 
   def shim_script target
     <<-EOS.undent
@@ -32,15 +42,64 @@ class Zookeeper <Formula
     EOS
   end
 
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
+    # Don't try to build extensions for PPC
+    if Hardware.is_32_bit?
+      ENV['ARCHFLAGS'] = "-arch i386"
+    else
+      ENV['ARCHFLAGS'] = "-arch i386 -arch x86_64"
+    end
+
+    # Prep work for svn compile.
+    if ARGV.build_head?
+      system "ant", "compile_jute"
+
+      cd "src/c" do
+        system "autoreconf", "-if"
+      end
+    end
+
+    build_python = ARGV.include? "--python"
+    build_perl = ARGV.include? "--perl"
+    build_c = build_python or build_perl or ARGV.include? "--c"
+
+    # Build & install C libraries.
+    cd "src/c" do
+      system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--without-cppunit"
+      system "make install"
+    end if build_c
+
+    # Install Python bindings
+    cd "src/contrib/zkpython" do
+      system "python", "src/python/setup.py", "build"
+      system "python", "src/python/setup.py", "install", "--prefix=#{prefix}"
+    end if build_python
+
+    # Install Perl bindings
+    cd "src/contrib/zkperl" do
+      system "perl", "Makefile.PL", "PREFIX=#{prefix}", "--zookeeper-include=#{include}/c-client-src", "--zookeeper-lib=#{lib}"
+      system "make install"
+    end if build_perl
+
     # Remove windows executables
     rm_f Dir["bin/*.cmd"]
 
     # Install Java stuff
-    libexec.install %w(bin contrib lib)
-    libexec.install Dir['*.jar']
+    if ARGV.build_head?
+      system "ant"
+      libexec.install %w(bin src/contrib src/java/lib)
+      libexec.install Dir['build/*.jar']
+    else
+      libexec.install %w(bin contrib lib)
+      libexec.install Dir['*.jar']
+    end
 
-    # Create neccessary directories
+    # Create necessary directories
     bin.mkpath
     (etc+'zookeeper').mkpath
     (var+'log/zookeeper').mkpath

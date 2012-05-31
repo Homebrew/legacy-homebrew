@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ngrep <Formula
+class Ngrep < Formula
   url 'http://downloads.sourceforge.net/project/ngrep/ngrep/1.45/ngrep-1.45.tar.bz2'
   homepage 'http://ngrep.sourceforge.net/'
   md5 'bc8150331601f3b869549c94866b4f1c'

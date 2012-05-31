@@ -1,18 +1,50 @@
 require 'formula'
 
-class Tor <Formula
-  url 'https://www.torproject.org/dist/tor-0.2.1.27.tar.gz'
+class Tor < Formula
   homepage 'https://www.torproject.org/'
-  md5 '1719642b3f25a23c3b3843ee99be18fb'
+  url 'https://www.torproject.org/dist/tor-0.2.2.36.tar.gz'
+  md5 '620b2110086aba01236b57f1d5aba416'
 
   depends_on 'libevent'
 
-  def patches
-    {:p0 => 'https://gist.github.com/raw/344132/d27d1cd3042d7c58120688d79ed25a2fc959a2de/config.guess-x86_64patch.diff' }
+  def install
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "make install"
+
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
-  def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-    system "make install"
+  def startup_plist
+    return <<-EOPLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>#{plist_name}</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>UserName</key>
+    <string>#{`whoami`.chomp}</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>#{HOMEBREW_PREFIX}/bin/tor</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>#{HOMEBREW_PREFIX}</string>
+  </dict>
+</plist>
+    EOPLIST
+  end
+
+  def caveats; <<-EOS.undent
+    You can start tor automatically on login with:
+      mkdir -p ~/Library/LaunchAgents
+      cp #{plist_path} ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+    EOS
   end
 end

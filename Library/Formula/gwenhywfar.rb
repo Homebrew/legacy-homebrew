@@ -1,9 +1,10 @@
 require 'formula'
 
-class Gwenhywfar <Formula
-  url 'http://www2.aquamaniac.de/sites/download/download.php?package=01&release=55&file=01&dummy=gwenhywfar-4.0.2.tar.gz'
-  homepage 'http://gwenhywfar.sourceforge.net/'
-  md5 'd9f95ad9d0bee821ad373af5a57114e7'
+class Gwenhywfar < Formula
+  url 'http://www2.aquamaniac.de/sites/download/download.php?package=01&release=66&file=01&dummy=gwenhywfar-4.3.2.tar.gz'
+  homepage 'http://www.aqbanking.de/'
+  md5 '6fcd39f64e6357321cffeaca470fbe52'
+  head 'http://devel.aqbanking.de/svn/gwenhywfar/trunk'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
@@ -11,8 +12,11 @@ class Gwenhywfar <Formula
 
   def options
     [[
-      "--with-gui=XX,...",
-      "Install gui support XX where XX is the name of the gui toolkit\n\te.g.: --with-gui=gtk\n\tAvailable gui toolkits are: qt, gtk"
+      "--with-gui=XX,...", <<-EOS.undent
+        Install gui support XX where XX is the name of the gui toolkit
+        \te.g.: --with-gui=gtk
+        \tAvailable gui toolkits are: qt, gtk"
+        EOS
     ]]
   end
 

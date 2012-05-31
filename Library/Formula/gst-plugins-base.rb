@@ -1,14 +1,17 @@
 require 'formula'
 
-class GstPluginsBase <Formula
+class GstPluginsBase < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-0.10.30.tar.bz2'
-  md5 '3ad90152b58563e1314af26c263f3c4c'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-0.10.35.tar.bz2'
+  md5 '1d300983525f4f09030eb3ba47cb04b0'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'gstreamer'
-  depends_on 'liboil'
+
+  # The set of optional dependencies is based on the intersection of
+  # gst-plugins-base-0.10.35/REQUIREMENTS and Homebrew formulas
+  depends_on 'orc' => :optional
   depends_on 'gtk+' => :optional
   depends_on 'libogg' => :optional
   depends_on 'pango' => :optional
@@ -16,7 +19,6 @@ class GstPluginsBase <Formula
   depends_on 'libvorbis' => :optional
 
   def install
-    system "autoreconf -f -i" unless File.exist? "configure"
     # gnome-vfs turned off due to lack of formula for it. MacPorts has it.
     system "./configure", "--prefix=#{prefix}", "--disable-debug",
       "--disable-dependency-tracking", "--enable-experimental",

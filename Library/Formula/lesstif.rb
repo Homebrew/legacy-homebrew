@@ -1,6 +1,6 @@
 require 'formula'
 
-class Lesstif <Formula
+class Lesstif < Formula
   url 'http://sourceforge.net/projects/lesstif/files/lesstif/0.95.2/lesstif-0.95.2.tar.bz2'
   md5 '754187dbac09fcf5d18296437e72a32f'
   homepage 'http://lesstif.sourceforge.net'

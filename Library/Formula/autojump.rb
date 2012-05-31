@@ -1,25 +1,31 @@
 require 'formula'
 
-class Autojump <Formula
-  url 'https://github.com/downloads/joelthelion/autojump/autojump_v14.tar.gz'
+class Autojump < Formula
   homepage 'https://github.com/joelthelion/autojump/wiki'
-  md5 '7c0a41a2d33aee11a844dc17f7825dc9'
-  version '14'
+  url 'https://github.com/downloads/joelthelion/autojump/autojump_v20.tar.gz'
+  md5 '5297817c33959cb5afc070f5d174b24f'
+
+  head 'https://github.com/joelthelion/autojump.git'
 
   def install
-    bin.install "autojump"
-    man1.install "autojump.1"
+    inreplace 'autojump.sh', '/etc/profile.d/', "#{prefix}/etc/"
 
-    inreplace "autojump.sh", '/etc/profile.d/', (prefix+'etc/')
-    (prefix+'etc').install "autojump.sh" => "autojump"
-    (prefix+'etc').install ["autojump.bash", "autojump.zsh"]
+    bin.install 'autojump'
+    man1.install 'autojump.1'
+    (prefix+'etc').install 'autojump.sh' => 'autojump'
+    (prefix+'etc').install 'autojump.bash', 'autojump.zsh'
+    (share+'zsh/site-functions').install '_j'
   end
 
   def caveats; <<-EOS.undent
-    Add the following lines to your ~/.bash_profile file:
+    Add the following lines to your ~/.bash_profile or ~/.zshrc file (and
+    remember to source the file to update your current session):
     if [ -f `brew --prefix`/etc/autojump ]; then
       . `brew --prefix`/etc/autojump
     fi
+
+    zsh completion has been installed to:
+      #{HOMEBREW_PREFIX}/share/zsh/site-functions
     EOS
   end
 end

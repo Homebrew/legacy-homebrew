@@ -1,28 +1,52 @@
 require 'formula'
 
-def build_java?; ARGV.include? "--java"; end
-def build_perl?; ARGV.include? "--perl"; end
+def build_java?;   ARGV.include? "--java";   end
+def build_perl?;   ARGV.include? "--perl";   end
 def build_python?; ARGV.include? "--python"; end
-def build_ruby?; ARGV.include? "--ruby"; end
-def build_universal?; ARGV.include? '--universal'; end
-def with_unicode_path?; ARGV.include? '--unicode-path'; end
+def build_ruby?;   ARGV.include? "--ruby";   end
+def with_unicode_path?; ARGV.include? "--unicode-path"; end
 
-# On 10.5 we need newer versions of apr, neon etc.
-# On 10.6 we only need a newer version of neon
-class SubversionDeps <Formula
-  url 'http://subversion.tigris.org/downloads/subversion-deps-1.6.15.tar.bz2'
-  md5 '4aeb48233e62cf4afe9f5700ebed9150'
+class UniversalNeon < Requirement
+  def message; <<-EOS.undent
+      A universal build was requested, but neon was already built for a single arch.
+      You may need to `brew rm neon` first.
+    EOS
+  end
+  def satisfied?
+    f = Formula.factory('neon')
+    !f.installed? || archs_for_command(f.lib+'libneon.dylib').universal?
+  end
 end
 
-class Subversion <Formula
-  url 'http://subversion.tigris.org/downloads/subversion-1.6.15.tar.bz2'
-  md5 '113fca1d9e4aa389d7dc2b210010fa69'
+class UniversalSqlite < Requirement
+  def message; <<-EOS.undent
+      A universal build was requested, but sqlite was already built for a single arch.
+      You may need to `brew rm sqlite` first.
+    EOS
+  end
+  def satisfied?
+    f = Formula.factory('sqlite')
+    !f.installed? || archs_for_command(f.lib+'libsqlite3.dylib').universal?
+  end
+end
+
+class Subversion < Formula
   homepage 'http://subversion.apache.org/'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.7.5.tar.bz2'
+  sha1 '05c079762690d5ac1ccd2549742e7ef70fa45cf1'
 
   depends_on 'pkg-config' => :build
 
-  # On Snow Leopard, build a new neon. For Leopard, the deps above include this.
-  depends_on 'neon' if MACOS_VERSION >= 10.6
+  # If Subversion can use the Lion versions of these, please
+  # open an issue with a patch. Build against Homebrewed versions
+  # for consistency. - @adamv
+  depends_on 'neon'
+  depends_on 'sqlite'
+
+  if ARGV.build_universal?
+    depends_on UniversalNeon.new
+    depends_on UniversalSqlite.new
+  end
 
   def options
     [
@@ -31,56 +55,33 @@ class Subversion <Formula
       ['--python', 'Build Python bindings.'],
       ['--ruby', 'Build Ruby bindings.'],
       ['--universal', 'Build as a Universal Intel binary.'],
-      ['--unicode-path', 'Include support for OS X unicode (but see caveats!)']
+      ['--unicode-path', 'Include support for OS X UTF-8-MAC filename'],
     ]
   end
 
   def patches
-    # Patch to find Java headers
-    p = { :p0 =>
-      "http://trac.macports.org/export/73004/trunk/dports/devel/subversion-javahlbindings/files/patch-configure.diff"
-    }
-
-    # Patch for subversion handling of OS X Unicode paths (see caveats)
+    # Patch for Subversion handling of OS X UTF-8-MAC filename.
     if with_unicode_path?
-      p[:p1] = "https://gist.github.com/raw/434424/subversion-unicode-path.patch"
-    end
-
-    return p
-  end
-
-  def setup_leopard
-    # Slot dependencies into place
-    d=Pathname.getwd
-    SubversionDeps.new.brew { d.install Dir['*'] }
-  end
-
-  def check_neon_arch
-    # Check that Neon was built universal if we are building w/ --universal
-    neon = Formula.factory('neon')
-    if neon.installed?
-      neon_arch = archs_for_command(neon.lib+'libneon.dylib')
-      unless neon_arch.universal?
-        opoo "A universal build was requested, but neon was already built for a single arch."
-        puts "You may need to `brew rm neon` first."
-      end
+      { :p0 =>
+        "https://raw.github.com/gist/1900750/4888cafcf58f7355e2656fe192a77e2b6726e338/patch-path.c.diff"
+      }
     end
   end
 
   def install
-    if build_java? and not build_universal?
-      opoo "A non-Universal Java build was requested."
-      puts "To use Java bindings with various Java IDEs, you might need a universal build:"
-      puts "  brew install --universal --java subversion"
+    if build_java?
+      unless ARGV.build_universal?
+        opoo "A non-Universal Java build was requested."
+        puts "To use Java bindings with various Java IDEs, you might need a universal build:"
+        puts "  brew install subversion --universal --java"
+      end
+
+      unless (ENV["JAVA_HOME"] or "").empty?
+        opoo "JAVA_HOME is set. Try unsetting it if JNI headers cannot be found."
+      end
     end
 
-    ENV.universal_binary if build_universal?
-
-    if MACOS_VERSION < 10.6
-      setup_leopard
-    else
-      check_neon_arch if build_universal?
-    end
+    ENV.universal_binary if ARGV.build_universal?
 
     # Use existing system zlib
     # Use dep-provided other libraries
@@ -89,6 +90,7 @@ class Subversion <Formula
             "--prefix=#{prefix}",
             "--with-ssl",
             "--with-zlib=/usr",
+            "--with-sqlite=#{HOMEBREW_PREFIX}",
             # use our neon, not OS X's
             "--disable-neon-version-check",
             "--disable-mod-activation",
@@ -97,10 +99,10 @@ class Subversion <Formula
 
     args << "--enable-javahl" << "--without-jikes" if build_java?
     args << "--with-ruby-sitedir=#{lib}/ruby" if build_ruby?
-    args << "--with-unicode-path" if with_unicode_path?
 
-    # Undo a bit of the MacPorts patch
-    inreplace "configure", "@@DESTROOT@@/", ""
+    # The system Python is built with llvm-gcc, so we override this
+    # variable to prevent failures due to incompatible CFLAGS
+    ENV['ac_cv_python_compile'] = ENV.cc
 
     system "./configure", *args
     system "make"
@@ -114,16 +116,16 @@ class Subversion <Formula
     if build_perl?
       ENV.j1 # This build isn't parallel safe
       # Remove hard-coded ppc target, add appropriate ones
-      if build_universal?
+      if ARGV.build_universal?
         arches = "-arch x86_64 -arch i386"
-      elsif MACOS_VERSION < 10.6
+      elsif MacOS.leopard?
         arches = "-arch i386"
       else
         arches = "-arch x86_64"
       end
 
-      # Use verison-appropriate system Perl
-      if MACOS_VERSION < 10.6
+      # Use version-appropriate system Perl
+     if MacOS.leopard?
         perl_version = "5.8.8"
       else
         perl_version = "5.10.0"
@@ -153,18 +155,6 @@ class Subversion <Formula
   def caveats
     s = ""
 
-    if with_unicode_path?
-      s += <<-EOS.undent
-        This unicode-path version implements a hack to deal with composed/decomposed
-        unicode handling on Mac OS X which is different from linux and windows.
-        It is an implementation of solution 1 from
-        http://svn.collab.net/repos/svn/trunk/notes/unicode-composition-for-filenames
-        which _WILL_ break some setups. Please be sure you understand what you
-        are asking for when you install this version.
-
-      EOS
-    end
-
     if build_python?
       s += <<-EOS.undent
         You may need to add the Python bindings to your PYTHONPATH from:
@@ -184,7 +174,20 @@ class Subversion <Formula
     if build_java?
       s += <<-EOS.undent
         You may need to link the Java bindings into the Java Extensions folder:
-          sudo ln -s #{HOMEBREW_PREFIX}/lib/libsvnjavahl-1.dylib /Library/Java/Extensions
+          sudo mkdir -p /Library/Java/Extensions
+          sudo ln -s #{HOMEBREW_PREFIX}/lib/libsvnjavahl-1.dylib /Library/Java/Extensions/libsvnjavahl-1.dylib
+
+      EOS
+    end
+
+    if with_unicode_path?
+      s += <<-EOS.undent
+        This unicode-path version implements a hack to deal with composed/decomposed
+        unicode handling on Mac OS X which is different from linux and windows.
+        It is an implementation of solution 1 from
+        http://svn.collab.net/repos/svn/trunk/notes/unicode-composition-for-filenames
+        which _WILL_ break some setups. Please be sure you understand what you
+        are asking for when you install this version.
 
       EOS
     end

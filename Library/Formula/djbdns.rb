@@ -1,6 +1,6 @@
 require 'formula'
 
-class Djbdns <Formula
+class Djbdns < Formula
   url 'http://cr.yp.to/djbdns/djbdns-1.05.tar.gz'
   homepage 'http://cr.yp.to/djbdns.html'
   md5 '3147c5cd56832aa3b41955c7a51cbeb2'

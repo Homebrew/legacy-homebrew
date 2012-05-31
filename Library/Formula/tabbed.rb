@@ -1,6 +1,6 @@
 require 'formula'
 
-class Tabbed <Formula
+class Tabbed < Formula
   url 'http://dl.suckless.org/tools/tabbed-0.3.tar.gz'
   homepage 'http://tools.suckless.org/tabbed'
   md5 '4a30458f9adc38db549f735b8fb6451b'
@@ -12,6 +12,6 @@ class Tabbed <Formula
     inreplace 'config.def.h',
       '{ MODKEY|ShiftMask,             XK_Return, spawn,          { .v = (char*[]){ "surf", "-e", winid, NULL} } },',
       '{ MODKEY|ShiftMask,             XK_Return, spawn,          { .v = (char*[]){ "xterm", "-into", winid, NULL} } },'
-    system "make  PREFIX=#{prefix} install"
+    system "make", "PREFIX=#{prefix}", "install"
   end
 end

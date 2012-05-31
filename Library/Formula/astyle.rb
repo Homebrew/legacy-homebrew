@@ -1,14 +1,13 @@
 require 'formula'
 
-class Astyle <Formula
-  url 'http://downloads.sourceforge.net/sourceforge/astyle/astyle_1.24_macosx.tar.gz'
-  md5 '9b63dadac58e867f14b3894befbdc9b3'
+class Astyle < Formula
   homepage 'http://astyle.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/sourceforge/astyle/astyle_2.02.1_macosx.tar.gz'
+  md5 '38f3a20be7ba685496d479316d6004b0'
 
   def install
-    Dir.chdir 'src' do
-      ENV['prefix']=prefix
-      system "make -f ../build/mac/Makefile"
+    cd 'src' do
+      system "make", "CXX=#{ENV.cxx}", "-f", "../build/mac/Makefile"
       bin.install "bin/astyle"
     end
   end

@@ -1,12 +1,13 @@
 require 'formula'
 
-class GoogleSparsehash <Formula
-  url 'http://google-sparsehash.googlecode.com/files/sparsehash-1.7.tar.gz'
+class GoogleSparsehash < Formula
   homepage 'http://code.google.com/p/google-sparsehash/'
-  sha1 'b9355e6aa2564b6a2d9fc2e1ac3f9773dbca8f59'
+  url 'http://google-sparsehash.googlecode.com/files/sparsehash-1.12.tar.gz'
+  sha1 '6c6da5d03b6b71ba69cf056087a94b5f01048782'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make check"
     system "make install"
   end

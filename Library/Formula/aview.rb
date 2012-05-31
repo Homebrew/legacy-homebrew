@@ -1,6 +1,6 @@
 require 'formula'
 
-class Aview <Formula
+class Aview < Formula
   url 'http://downloads.sourceforge.net/aa-project/aview-1.3.0rc1.tar.gz'
   homepage 'http://aa-project.sourceforge.net/aview/'
   md5 '093f298e7787591e229b59d039c72f4d'
@@ -12,6 +12,7 @@ class Aview <Formula
   end
 
   def install
+    ENV.x11
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"

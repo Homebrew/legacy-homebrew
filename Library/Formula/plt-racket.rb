@@ -1,22 +1,22 @@
 require 'formula'
 
-class PltRacket <Formula
-  # Use GitHub; tarball doesn't have everything needed for building on OS X
-  url 'git://github.com/plt/racket.git', :tag => 'v5.0.1'
+class PltRacket < Formula
   homepage 'http://racket-lang.org/'
-  version '5.0.1'
+  # Use GitHub; tarball doesn't have everything needed for building on OS X
+  url 'https://github.com/plt/racket.git', :tag => 'v5.2'
+  version '5.2'
 
-  # Don't sttip symbols; need them for dynamic linking.
+  # Don't strip symbols; need them for dynamic linking.
   skip_clean 'bin'
 
   def install
-    Dir.chdir 'src' do
+    cd 'src' do
       args = ["--disable-debug", "--disable-dependency-tracking",
               "--enable-xonx",
               "--enable-shared",
               "--prefix=#{prefix}" ]
 
-      if snow_leopard_64?
+      if MacOS.prefer_64_bit?
         args += ["--enable-mac64", "--enable-sgc", "--disable-gracket"]
       end
 

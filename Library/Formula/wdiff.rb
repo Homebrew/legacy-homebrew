@@ -1,14 +1,17 @@
 require 'formula'
 
-class Wdiff <Formula
-  url 'http://ftp.gnu.org/gnu/wdiff/wdiff-0.6.3.tar.gz'
+class Wdiff < Formula
   homepage 'http://www.gnu.org/software/wdiff/'
-  md5 '6f62b672202974a4f55ab50eac4021a1'
+  url 'http://ftpmirror.gnu.org/wdiff/wdiff-1.1.1.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/wdiff/wdiff-1.1.1.tar.gz'
+  md5 '2214c54f3b380e6cee622674638bc766'
 
   depends_on 'gettext' => :optional
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--enable-experimental"
     system "make install"
   end
 end

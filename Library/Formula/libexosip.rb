@@ -1,6 +1,6 @@
 require 'formula'
 
-class Libexosip <Formula
+class Libexosip < Formula
   url 'http://www.very-clever.com/download/nongnu/exosip/libeXosip2-3.3.0.tar.gz'
   homepage 'http://www.antisip.com/as/'
   md5 'a2739067b51c1e417c5aef9606b285b2'

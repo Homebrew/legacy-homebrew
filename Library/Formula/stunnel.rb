@@ -1,12 +1,13 @@
 require 'formula'
 
-class Stunnel <Formula
-  url 'http://www.stunnel.org/download/stunnel/src/stunnel-4.34.tar.gz'
+class Stunnel < Formula
   homepage 'http://www.stunnel.org/'
-  md5 'bbd274e8364ea3ceca0ee5190e13edd1'
+  url 'ftp://ftp.stunnel.org/stunnel/archive/4.x/stunnel-4.53.tar.gz'
+  md5 'ab3bfc915357d67da18c73f73610d593'
 
+  # This patch installs a bogus .pem in lieu of interactive cert generation.
+  # - additionally stripping carriage-returns
   def patches
-    # This patch installs a bogus .pem in lieu of interactive cert generation
     DATA
   end
 
@@ -24,8 +25,7 @@ class Stunnel <Formula
       A bogus SSL server certificate has been installed to:
         #{etc}/stunnel/stunnel.pem
 
-      This certificate will be used by default unless a config file says
-      otherwise!
+      This certificate will be used by default unless a config file says otherwise!
 
       In your stunnel configuration, specify a SSL certificate with
       the "cert =" option for each service.
@@ -33,17 +33,84 @@ class Stunnel <Formula
   end
 end
 
+
 __END__
 diff --git a/tools/stunnel.cnf b/tools/stunnel.cnf
-index 274f9a0..d5d7cc0 100644
+index d8c3174..5ad26e0 100644
 --- a/tools/stunnel.cnf
 +++ b/tools/stunnel.cnf
-@@ -7,6 +7,7 @@ default_bits = 1024
- encrypt_key = yes
- distinguished_name = req_dn
- x509_extensions = cert_type
-+prompt = no
- 
- [ req_dn ]
- countryName = Country Name (2 letter code)
-
+@@ -1,42 +1,30 @@
+-# OpenSSL configuration file to create a server certificate
+-# by Michal Trojnara 1998-2012
+-
+-[ req ]
+-# the default key length is secure and quite fast - do not change it
+-default_bits                    = 2048
+-# comment out the next line to protect the private key with a passphrase
+-encrypt_key                     = no
+-distinguished_name              = req_dn
+-x509_extensions                 = cert_type
+-
+-[ req_dn ]
+-countryName = Country Name (2 letter code)
+-countryName_default             = PL
+-countryName_min                 = 2
+-countryName_max                 = 2
+-
+-stateOrProvinceName             = State or Province Name (full name)
+-stateOrProvinceName_default     = Mazovia Province
+-
+-localityName                    = Locality Name (eg, city)
+-localityName_default            = Warsaw
+-
+-organizationName                = Organization Name (eg, company)
+-organizationName_default        = Stunnel Developers
+-
+-organizationalUnitName          = Organizational Unit Name (eg, section)
+-organizationalUnitName_default  = Provisional CA
+-
+-0.commonName                    = Common Name (FQDN of your server)
+-0.commonName_default            = localhost
+-
+-# To create a certificate for more than one name uncomment:
+-# 1.commonName                  = DNS alias of your server
+-# 2.commonName                  = DNS alias of your server
+-# ...
+-# See http://home.netscape.com/eng/security/ssl_2.0_certificate.html
+-# to see how Netscape understands commonName.
+-
+-[ cert_type ]
+-nsCertType                      = server
+-
++# OpenSSL configuration file to create a server certificate
++# by Michal Trojnara 1998-2012
++
++[ req ]
++# the default key length is secure and quite fast - do not change it
++default_bits                    = 2048
++# comment out the next line to protect the private key with a passphrase
++encrypt_key                     = no
++distinguished_name              = req_dn
++x509_extensions                 = cert_type
++prompt                          = no
++
++[ req_dn ]
++countryName                     = PL
++stateOrProvinceName             = Mazovia Province
++localityName                    = Warsaw
++organizationName                = Stunnel Developers
++organizationalUnitName          = Provisional CA
++0.commonName                    = localhost
++
++# To create a certificate for more than one name uncomment:
++# 1.commonName                  = DNS alias of your server
++# 2.commonName                  = DNS alias of your server
++# ...
++# See http://home.netscape.com/eng/security/ssl_2.0_certificate.html
++# to see how Netscape understands commonName.
++
++[ cert_type ]
++nsCertType                      = server
++
+--
+1.7.9

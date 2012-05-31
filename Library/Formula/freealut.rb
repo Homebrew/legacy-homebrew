@@ -1,12 +1,18 @@
 require 'formula'
 
-class Freealut <Formula
+class Freealut < Formula
   url 'http://connect.creativelabs.com/openal/Downloads/ALUT/freealut-1.1.0.tar.gz'
   homepage 'http://connect.creativelabs.com/openal/Documentation/The%20OpenAL%20Utility%20Toolkit.htm'
   md5 'e089b28a0267faabdb6c079ee173664a'
 
   # Adds the OpenAL frameworks to the library list so linking succeeds
   def patches; DATA; end
+
+  if MacOS.xcode_version >= "4.3"
+    # when and if the tarball provides configure, remove autogen.sh and these deps
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   def install
     system "./autogen.sh"

@@ -1,10 +1,11 @@
 require 'formula'
 
-class Ledger <Formula
-  url 'ftp://ftp.newartisans.com/pub/ledger/ledger-2.6.2.tar.gz'
-  md5 'b2e6fa98e7339d1e130b1ea9af211c0f'
-  homepage 'http://www.newartisans.com/software/ledger.html'
-  head 'git://github.com/jwiegley/ledger.git', :branch => 'next'
+class Ledger < Formula
+  homepage 'http://ledger-cli.org'
+  url 'ftp://ftp.newartisans.com/pub/ledger/ledger-2.6.3.tar.gz'
+  md5 '6d5d8396b1cdde5f605854c7d21d1460'
+
+  head 'https://github.com/jwiegley/ledger.git', :branch => 'next'
 
   depends_on 'gettext'
   depends_on 'boost'
@@ -13,14 +14,24 @@ class Ledger <Formula
   depends_on 'pcre'
   depends_on 'expat'
 
+  def options
+    [['--no-python', 'Disable Python support']]
+  end
+
   def install
-    unless 'HEAD' == @version
+    # find Homebrew's libpcre
+    ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
+
+    unless ARGV.build_head?
       system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     else
       # gmp installs x86_64 only
       inreplace 'acprep', "'-arch', 'i386', ", "" if Hardware.is_64_bit?
-      system "./acprep -j#{Hardware.processor_count} opt make -- --prefix=#{prefix}"
+      no_python = ((ARGV.include? '--no-python') ? '--no-python' : '')
+      system "./acprep", no_python, "-j#{ENV.make_jobs}", "opt", "make", "--", "--prefix=#{prefix}"
     end
-    system "make install"
+    system 'make'
+    ENV.deparallelize
+    system 'make install'
   end
 end

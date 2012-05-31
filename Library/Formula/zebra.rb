@@ -1,14 +1,14 @@
 require 'formula'
 
-class Zebra <Formula
-  url 'http://ftp.indexdata.dk/pub/zebra/idzebra-2.0.44.tar.gz'
+class Zebra < Formula
+  url 'http://ftp.indexdata.dk/pub/zebra/idzebra-2.0.50.tar.gz'
   homepage 'http://www.indexdata.com/zebra'
-  md5 'aa7562e0a1bff05d79893c128bfde35e'
+  md5 '4393217c9973bf5959396ad4150ee24e'
 
   depends_on 'yaz'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-mod-text",
                           "--enable-mod-grs-regx",

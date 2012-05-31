@@ -1,26 +1,22 @@
 require 'formula'
 
-class Binutils <Formula
-  url 'http://ftp.gnu.org/gnu/binutils/binutils-2.20.tar.gz'
+class Binutils < Formula
   homepage 'http://www.gnu.org/software/binutils/binutils.html'
-  md5 'e99487e0c4343d6fa68b7c464ff4a962'
-
-  def options
-    [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
-  end
+  url 'http://ftpmirror.gnu.org/binutils/binutils-2.22.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/binutils/binutils-2.22.tar.gz'
+  md5 '8b3ad7090e3989810943aa19103fdb83'
 
   def install
-    ENV.append 'CPPFLAGS', "-I#{include}"
-
-    args = ["--prefix=#{prefix}",
-            "--disable-debug",
-            "--disable-dependency-tracking",
-            "--infodir=#{info}",
-            "--mandir=#{man}",
-            "--disable-werror" ]
-    args << "--program-prefix=g" unless ARGV.include? '--default-names'
-
-    system "./configure", *args
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--program-prefix=g",
+                          "--prefix=#{prefix}",
+                          "--infodir=#{info}",
+                          "--mandir=#{man}",
+                          "--disable-werror",
+                          "--enable-interwork",
+                          "--enable-multilib",
+                          "--enable-targets=x86_64-elf,arm-none-eabi,m32r"
     system "make"
     system "make install"
   end

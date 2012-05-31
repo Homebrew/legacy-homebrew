@@ -1,12 +1,12 @@
 require 'formula'
 
-class SwiProlog <Formula
-  url 'http://www.swi-prolog.org/download/stable/src/pl-5.10.2.tar.gz'
-  head 'git://www.swi-prolog.org/home/pl/git/pl.git'
+class SwiProlog < Formula
   homepage 'http://www.swi-prolog.org/'
-  md5 '7973bcfd3854ae0cb647cc62f2faabcf'
+  url 'http://www.swi-prolog.org/download/stable/src/pl-6.0.2.tar.gz'
+  sha256 '9dbc4d3aef399204263f168583e54468078528bff75c48c7895ae3efe5499b75'
+  head 'git://www.swi-prolog.org/home/pl/git/pl.git'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'readline'
   depends_on 'gmp'
   depends_on 'jpeg'
@@ -14,8 +14,15 @@ class SwiProlog <Formula
   depends_on 'gawk'
 
   # 10.5 versions of these are too old
-  depends_on 'fontconfig' if MACOS_VERSION < 10.6
-  depends_on 'expat' if MACOS_VERSION < 10.6
+  if MacOS.leopard?
+    depends_on 'fontconfig'
+    depends_on 'expat'
+  end
+
+  fails_with :llvm do
+    build 2335
+    cause "Exported procedure chr_translate:chr_translate_line_info/3 is not defined"
+  end
 
   def options
     [['--lite', "Don't install any packages; overrides --with-jpl"],

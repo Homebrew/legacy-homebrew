@@ -1,16 +1,16 @@
 require 'formula'
 
-class Webalizer <Formula
-  url 'ftp://ftp.mrunix.net/pub/webalizer/webalizer-2.23-03-src.tar.bz2'
+class Webalizer < Formula
   homepage 'http://www.mrunix.net/webalizer/'
-  md5 '7c67943867a33b7a56b7332af47d2b2a'
-  version '2.23-03'
+  url 'ftp://ftp.mrunix.net/pub/webalizer/webalizer-2.23-05-src.tgz'
+  version '2.23-05'
+  md5 '304338cf3b1e9389123380d5f7d88d58'
 
-  depends_on 'libpng'
   depends_on 'gd'
-  depends_on 'berkeley-db' # Enables reverse DNS support
+  depends_on 'berkeley-db'
 
   def install
+    ENV.x11 # For libpng
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

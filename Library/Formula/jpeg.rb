@@ -1,13 +1,13 @@
 require 'formula'
 
-class Jpeg <Formula
-  url 'http://www.ijg.org/files/jpegsrc.v8b.tar.gz'
-  version '8b'
-  md5 'e022acbc5b36cd2cb70785f5b575661e'
+class Jpeg < Formula
+  url 'http://www.ijg.org/files/jpegsrc.v8d.tar.gz'
+  sha1 'f080b2fffc7581f7d19b968092ba9ebc234556ff'
   homepage 'http://www.ijg.org'
+  version '8d'
 
   def install
-    ENV.universal_binary
+    ENV.universal_binary   # Builds universal libs. Default is static & shared.
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end

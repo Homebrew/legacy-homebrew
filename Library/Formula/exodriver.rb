@@ -1,12 +1,11 @@
 require 'formula'
 
-class Exodriver <Formula
-  url  'https://github.com/labjack/exodriver/tarball/98cf1f83ff65ab7a317f4310d46081a476ae939c'
+class Exodriver < Formula
   homepage 'http://labjack.com/support/linux-and-mac-os-x-drivers'
-  md5 'ec227347ccaf0772d175d3a2cf557105'
-  version '2.0-0-98cf1f8'
+  url 'https://github.com/labjack/exodriver/tarball/v2.5.0'
+  md5 '85e8782d81ecd49012bbcf51c72d9ef8'
 
-  head 'https://github.com/labjack/exodriver.git', :using => :git
+  head 'https://github.com/labjack/exodriver.git'
 
   depends_on 'libusb'
 
@@ -15,16 +14,12 @@ class Exodriver <Formula
   end
 
   def install
+    ENV.universal_binary if ARGV.build_universal?
+
     cd 'liblabjackusb'
-    mv 'Makefile.MacOSX', 'Makefile'
-
-    inreplace 'Makefile' do |s|
-      s.change_make_var! 'DESTINATION', lib
-      s.change_make_var! 'HEADER_DESTINATION', include
-    end
-
-    ENV.universal_binary if ARGV.include? "--universal"
-    system "make"
-    system "make install"
+    system "make", "-f", "Makefile",
+                   "DESTINATION=#{lib}",
+                   "HEADER_DESTINATION=#{include}",
+                   "install"
   end
 end

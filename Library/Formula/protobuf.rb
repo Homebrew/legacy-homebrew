@@ -1,16 +1,37 @@
 require 'formula'
 
-class Protobuf <Formula
-  url 'http://protobuf.googlecode.com/files/protobuf-2.3.0.tar.bz2'
-  sha1 'db0fbdc58be22a676335a37787178a4dfddf93c6'
+class Protobuf < Formula
   homepage 'http://code.google.com/p/protobuf/'
+  url 'http://protobuf.googlecode.com/files/protobuf-2.4.1.tar.bz2'
+  sha1 'df5867e37a4b51fb69f53a8baf5b994938691d6d'
+
+  fails_with :llvm do
+    build 2334
+  end
+
+  def options
+    [['--universal', 'Do a universal build']]
+  end
 
   def install
-    fails_with_llvm
+    # Don't build in debug mode. See:
+    # https://github.com/mxcl/homebrew/issues/9279
+    # http://code.google.com/p/protobuf/source/browse/trunk/configure.ac#61
+    ENV.prepend 'CXXFLAGS', '-DNDEBUG'
+    ENV.universal_binary if ARGV.build_universal?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-zlib"
     system "make"
     system "make install"
+
+    # Install editor support and examples
+    doc.install %w( editors examples )
+  end
+
+  def caveats; <<-EOS.undent
+    Editor support and examples have been installed to:
+      #{doc}/protobuf
+    EOS
   end
 end

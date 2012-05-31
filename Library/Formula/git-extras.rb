@@ -1,21 +1,13 @@
 require 'formula'
 
-class GitExtras <Formula
-  url 'git://github.com/visionmedia/git-extras.git', :tag => '0.0.7'
-  version '0.0.7'
-  head 'git://github.com/visionmedia/git-extras.git', :branch => 'master'
-
+class GitExtras < Formula
   homepage 'https://github.com/visionmedia/git-extras'
+  url 'https://github.com/visionmedia/git-extras/tarball/1.5.0'
+  sha1 '60e0ad00b046d76b3c111d9cc3d02aa4191e450a'
 
-  # Patch won't be needed in 0.0.8. See:
-  # https://github.com/visionmedia/git-extras/issues/issue/25
-  def patches
-    "https://github.com/visionmedia/git-extras/commit/88d3c87f8022ed6af9c268f09b505d8ba984501b.diff"
-  end
+  head 'https://github.com/visionmedia/git-extras.git', :branch => 'master'
 
   def install
-    inreplace 'Makefile', '/usr/local', prefix
-    bin.mkpath
-    system "make", "install"
+    system "make", "PREFIX=#{prefix}", "install"
   end
 end

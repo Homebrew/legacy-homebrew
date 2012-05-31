@@ -1,20 +1,22 @@
 require 'formula'
 
-class Readline <Formula
-  url 'ftp://ftp.cwru.edu/pub/bash/readline-6.1.tar.gz'
-  md5 'fc2f7e714fe792db1ce6ddc4c9fb4ef3'
+class Readline < Formula
   homepage 'http://tiswww.case.edu/php/chet/readline/rltop.html'
+  url 'http://ftpmirror.gnu.org/readline/readline-6.2.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/readline/readline-6.2.tar.gz'
+  sha256 '79a696070a058c233c72dd6ac697021cc64abd5ed51e59db867d66d196a89381'
+  version '6.2.2'
 
   keg_only <<-EOS
-OS X provides the BSD Readline library. In order to prevent conflicts when
-programs look for libreadline we are defaulting this GNU Readline installation
-to keg-only.
+OS X provides the BSD libedit library, which shadows libreadline.
+In order to prevent conflicts when programs look for libreadline we are
+defaulting this GNU Readline installation to keg-only.
 EOS
 
   def patches
     {:p0 => [
-        "ftp://ftp.gnu.org/gnu/readline/readline-6.1-patches/readline61-001",
-        "ftp://ftp.gnu.org/gnu/readline/readline-6.1-patches/readline61-002",
+        "http://ftpmirror.gnu.org/readline/readline-6.2-patches/readline62-001",
+        "http://ftpmirror.gnu.org/readline/readline-6.2-patches/readline62-002"
       ]}
   end
 

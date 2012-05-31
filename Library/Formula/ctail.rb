@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ctail <Formula
+class Ctail < Formula
   url 'http://ctail.i-want-a-pony.com/downloads/ctail-0.1.0.tar.bz2'
   homepage 'http://ctail.i-want-a-pony.com/'
   md5 'fc39139aeaf3400aa13b338e2266b976'

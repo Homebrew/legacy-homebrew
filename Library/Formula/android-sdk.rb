@@ -1,27 +1,31 @@
 require 'formula'
 
-class AndroidSdk <Formula
-  url 'http://dl.google.com/android/android-sdk_r08-mac_86.zip'
+class AndroidSdk < Formula
   homepage 'http://developer.android.com/index.html'
-  md5 'd2e392c4e4680cbf2dfd6dbf82b662c7'
-  version 'r8'
+  url 'http://dl.google.com/android/android-sdk_r18-macosx.zip'
+  version 'r18'
+  md5 '8328e8a5531c9d6f6f1a0261cb97af36'
 
+  # TODO docs and platform-tools
+  # See the long comment below for the associated problems
   def self.var_dirs
-    %w[platforms docs samples temp add-ons]
+    %w[platforms samples temp add-ons sources system-images extras]
   end
 
   skip_clean var_dirs
 
   def install
-    mkdir bin
-
     mv 'SDK Readme.txt', prefix/'README'
     mv 'tools', prefix
 
-    %w[android apkbuilder ddms dmtracedump draw9patch emulator
-           hierarchyviewer hprof-conv layoutopt mksdcard traceview
-           zipalign].each do |tool|
-      (bin/tool).make_link(prefix/'tools'/tool)
+    %w[android apkbuilder ddms dmtracedump draw9patch etc1tool emulator
+    hierarchyviewer hprof-conv lint mksdcard monkeyrunner traceview
+    zipalign].each do |tool|
+      (bin/tool).write <<-EOS.undent
+        #!/bin/sh
+        TOOL="#{prefix}/tools/#{tool}"
+        exec "$TOOL" "$@"
+      EOS
     end
 
     # this is data that should be preserved across upgrades, but the Android
@@ -32,11 +36,34 @@ class AndroidSdk <Formula
       src.mkpath unless src.directory?
       dst.make_relative_symlink src
     end
+
+    (bin+'adb').write <<-EOS.undent
+      #!/bin/sh
+      ADB="#{prefix}/platform-tools/adb"
+      test -f "$ADB" && exec "$ADB" "$@"
+      echo Use the \\`android\\' tool to install the \\"Android SDK Platform-tools\\".
+    EOS
   end
 
   def caveats; <<-EOS.undent
-    We put the useful tools in the PATH. Like the `android` tool. You probably
-    want to run that now.
+    Now run the `android' tool to install the actual SDK stuff.
+
+    The Android-SDK location for IDEs such as Eclipse, IntelliJ etc is:
+      #{prefix}
+
+    You will have to install the platform-tools and docs EVERY time this formula
+    updates. If you want to try and fix this then see the comment in this formula.
+
+    You may need to add the following to your .bashrc:
+      export ANDROID_SDK_ROOT=#{prefix}
     EOS
   end
+
+  # The `android' tool insists on deleting #{prefix}/platform-tools
+  # and then installing the new one. So it is impossible for us to redirect
+  # the SDK location to var so that the platform-tools don't have to be
+  # freshly installed EVERY DANG time the base SDK updates.
+
+  # Ideas: make android a script that calls the actual android tool, but after
+  # that tool exits it repairs the directory locations?
 end

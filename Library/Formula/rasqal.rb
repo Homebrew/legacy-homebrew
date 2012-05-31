@@ -1,14 +1,16 @@
 require 'formula'
 
-class Rasqal <Formula
-  url 'http://download.librdf.org/source/rasqal-0.9.20.tar.gz'
+class Rasqal < Formula
   homepage 'http://librdf.org/rasqal/'
-  md5 'c45b6cd784298e264e8757d14355ecce'
+  url 'http://download.librdf.org/source/rasqal-0.9.29.tar.gz'
+  sha1 'a005556bf62d44a8fa1cc2faf931f78ed4516852'
 
   depends_on 'raptor'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    system './configure', "--prefix=#{prefix}",
+                          "--with-html-dir=#{share}/doc",
+                          '--disable-dependency-tracking'
     system "make install"
   end
 end

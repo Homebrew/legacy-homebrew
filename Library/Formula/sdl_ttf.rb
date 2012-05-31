@@ -1,13 +1,18 @@
 require 'formula'
 
-class SdlTtf <Formula
+class SdlTtf < Formula
   url 'http://www.libsdl.org/projects/SDL_ttf/release/SDL_ttf-2.0.9.tar.gz'
   homepage 'http://www.libsdl.org/projects/SDL_ttf/'
   md5 '6dd5a85e4924689a35a5fb1cb3336156'
 
   depends_on 'sdl'
 
+  def options
+    [['--universal', 'Build universal binaries.']]
+  end
+
   def install
+    ENV.universal_binary if ARGV.build_universal?
     ENV.x11 # For Freetype
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

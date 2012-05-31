@@ -1,12 +1,11 @@
 require 'formula'
 
-class Yajl <Formula
+class Yajl < Formula
   homepage 'http://lloyd.github.com/yajl/'
-  url 'http://cloud.github.com/downloads/lloyd/yajl/yajl-1.0.9.tar.gz'
-  md5 '8643ff2fef762029e51c86882a4d0fc6'
+  url 'http://github.com/lloyd/yajl/tarball/2.0.4'
+  sha256 'c19b9691cf15f22e74d903cd06ac9ba5e1e216e6a1b82bfe787c3b48a25bc118'
 
-  # Configure uses cmake, even though it looks like we're
-  # just using autotools below.
+  # Configure uses cmake internally
   depends_on 'cmake' => :build
 
   def install

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mp3gain <Formula
+class Mp3gain < Formula
   url 'http://downloads.sourceforge.net/project/mp3gain/mp3gain/1.5.1/mp3gain-1_5_1-src.zip'
   version "1.5.1"
   homepage 'http://mp3gain.sourceforge.net'

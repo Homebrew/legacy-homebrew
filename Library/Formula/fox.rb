@@ -1,9 +1,19 @@
 require 'formula'
 
-class Fox <Formula
-  url 'http://www.fox-toolkit.org/ftp/fox-1.7.23.tar.gz'
+class Fox < Formula
   homepage 'http://www.fox-toolkit.org/'
-  md5 'ee8430d6480d3289d54b847f47405670'
+  url 'ftp://ftp.fox-toolkit.org/pub/fox-1.6.44.tar.gz'
+  md5 '5d3658faf0855826ff6ce8f95e413949'
+
+  # Development and stable branches are incompatible
+  devel do
+    url 'http://ftp.fox-toolkit.org/pub/fox-1.7.32.tar.gz'
+    md5 '1cf2607d15ffad5b664cf65bfcd249bc'
+  end
+
+  fails_with :llvm do
+    cause "Inline asm errors during build"
+  end if ARGV.build_devel?
 
   def install
     ENV.x11

@@ -1,38 +1,69 @@
 require 'formula'
 
-class Netcdf <Formula
-  url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.1.1.tar.gz'
-  homepage 'http://www.unidata.ucar.edu/software/netcdf/'
-  md5 '79c5ff14c80d5e18dd8f1fceeae1c8e1'
+def fortran?
+  ARGV.include? '--enable-fortran'
+end
+
+def no_cxx?
+  ARGV.include? '--disable-cxx'
+end
+
+class NetcdfCXX < Formula
+  homepage 'http://www.unidata.ucar.edu/software/netcdf'
+  url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-cxx4-4.2.tar.gz'
+  md5 'd019853802092cf686254aaba165fc81'
+end
+
+class NetcdfFortran < Formula
+  homepage 'http://www.unidata.ucar.edu/software/netcdf'
+  url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-fortran-4.2.tar.gz'
+  md5 'cc3bf530223e8f4aff93793b9f197bf3'
+end
+
+class Netcdf < Formula
+  homepage 'http://www.unidata.ucar.edu/software/netcdf'
+  url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.2.tar.gz'
+  md5 'b920a6c3a30e9cd46fe96d9fb65ef17e'
 
   depends_on 'hdf5'
-  depends_on 'gfortran' if ARGV.include? '--fortran'
 
   def options
-    [['--fortran', 'Compile with Fortran support']]
+    [
+      ['--enable-fortran', 'Compile Fortran bindings'],
+      ['--disable-cxx', "Don't compile C++ bindings"]
+    ]
   end
 
   def install
-    # HDF5 is required to create and access files in the version 4 format
-    hdf5 = Formula.factory('hdf5')
+    ENV.fortran if fortran?
 
-    args = ["--disable-dependency-tracking",
-            "--prefix=#{prefix}",
-            "--with-hdf5=#{hdf5.prefix}",
-            "--enable-netcdf4",
-            "--enable-shared"]
-    args << "--disable-fortran" unless ARGV.include? '--fortran'
+    common_args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --enable-static
+      --enable-shared
+    ]
 
-    system "./configure", *args
-    system "make install"
-  end
+    args = common_args.clone
+    args.concat %w[--enable-netcdf4 --disable-doxygen]
 
-  def caveats; <<-EOS
-To build with (experimental) fortran support:
-  brew install netcdf --fortran
+    system './configure', *args
+    system 'make install'
 
-You may have to set FCFLAGS and FFLAGS to be consistant with Homebrew's use
-of C compilers in order for the brew to install correctly.
-    EOS
+    # Add newly created installation to paths so that binding libraries can
+    # find the core libs.
+    ENV.prepend 'PATH', bin
+    ENV.prepend 'CPPFLAGS', "-I#{include}"
+    ENV.prepend 'LDFLAGS', "-L#{lib}"
+
+    NetcdfCXX.new.brew do
+      system './configure', *common_args
+      system 'make install'
+    end unless no_cxx?
+
+    NetcdfFortran.new.brew do
+      system './configure', *common_args
+      system 'make install'
+    end if fortran?
   end
 end

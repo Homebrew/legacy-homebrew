@@ -1,6 +1,6 @@
 require 'formula'
 
-class Rubber <Formula
+class Rubber < Formula
   url 'http://launchpad.net/rubber/trunk/1.1/+download/rubber-20100306.tar.gz'
   homepage 'https://launchpad.net/rubber/'
   md5 'f3e41773853db232630d4a71636b2ba4'
@@ -21,7 +21,7 @@ class Rubber <Formula
 
     # Don't need to peg to a specific Python version
     Dir["#{bin}/*"].each do |f|
-      inreplace f, "#{HOMEBREW_PREFIX}/bin/python", "/usr/bin/env python"
+      inreplace f, /^#!.*\/python.*$/, "#!/usr/bin/env python"
     end
   end
 end

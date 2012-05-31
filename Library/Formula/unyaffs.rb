@@ -1,6 +1,6 @@
 require 'formula'
 
-class Unyaffs <Formula
+class Unyaffs < Formula
   head 'http://unyaffs.googlecode.com/svn/trunk/'
   homepage 'http://code.google.com/p/unyaffs/'
 

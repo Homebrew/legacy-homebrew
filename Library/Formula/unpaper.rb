@@ -1,6 +1,6 @@
 require 'formula'
 
-class Unpaper <Formula
+class Unpaper < Formula
   url 'http://download.berlios.de/unpaper/unpaper-0.3.tar.gz'
   homepage 'http://unpaper.berlios.de/'
   md5 'be41eaf8556e7df39ab53939c99c4f7b'

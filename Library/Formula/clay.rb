@@ -1,14 +1,21 @@
 require 'formula'
 
-class Clay <Formula
-  url 'http://tachyon.in/clay/binaries/clay-macosx-2010.11.13.zip'
-  homepage 'http://claylanguage.org'
-  version '2010.11.13'
-  md5 '4039c21970b9ccc1217bc5a731a16914'
+class Clay < Formula
+  homepage 'http://claylabs.com/clay/'
+  url 'https://github.com/jckarter/clay/tarball/v0.1.0'
+  md5 'fa34b4ecc0ab13047f802b9aac6d850b'
+
+  head 'https://github.com/jckarter/clay.git'
+
+  depends_on 'cmake' => :build
+  depends_on 'llvm'  => :build
 
   def install
-    libexec.install Dir['*']
-    bin.mkpath
-    ln_s libexec+'clay', bin
+    system "cmake", ".", *std_cmake_args
+    system "make install"
+  end
+
+  def test
+    system "#{bin}/clay", "-e", "println(\"Hello, Clay!\");"
   end
 end

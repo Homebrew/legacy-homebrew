@@ -1,13 +1,12 @@
 require 'formula'
 
-class IcarusVerilog <Formula
-  url 'ftp://ftp.icarus.com/pub/eda/verilog/v0.9/verilog-0.9.2.tar.gz'
-  homepage 'http://www.icarus.com/eda/verilog/'
-  md5 'e3b3409f0a7aa382c0bfbb019655f647'
+class IcarusVerilog < Formula
+  homepage 'http://iverilog.icarus.com/'
+  url 'ftp://icarus.com/pub/eda/verilog/v0.9/verilog-0.9.5.tar.gz'
+  md5 '3eaeafbb8f0f36765676ab1aaa0fe330'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 end

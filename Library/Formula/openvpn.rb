@@ -1,14 +1,19 @@
 require 'formula'
 
-class Openvpn <Formula
-  url 'http://openvpn.net/release/openvpn-2.1.3.tar.gz'
+class Openvpn < Formula
   homepage 'http://openvpn.net/'
-  md5 '7486d3e270ba4b033e311d3e022a0ad7'
+  url 'http://build.openvpn.net/downloads/releases/openvpn-2.2.2.tar.gz'
+  mirror 'http://swupdate.openvpn.org/community/releases/openvpn-2.2.2.tar.gz'
+  sha256 '54ca8b260e2ea3b26e84c2282ccb5f8cb149edcfd424b686d5fb22b8dbbeac00'
 
-  depends_on 'lzo' => :recommended
+  depends_on 'lzo'
 
-  skip_clean 'etc'
-  skip_clean 'var'
+  # This patch fixes compilation on Lion
+  # There is a long history of confusion between these two consts:
+  # http://www.google.com/search?q=SOL_IP+IPPROTO_IP
+  def patches
+    DATA
+  end
 
   def install
     # Build and install binary
@@ -17,8 +22,8 @@ class Openvpn <Formula
 
     # Adjust sample file paths
     inreplace ["sample-config-files/openvpn-startup.sh", "sample-scripts/openvpn.init"] do |s|
-      s.gsub! "/etc/openvpn", (etc + 'openvpn')
-      s.gsub! "/var/run/openvpn", (var + 'run/openvpn')
+      s.gsub! "/etc/openvpn", etc+'openvpn'
+      s.gsub! "/var/run/openvpn", var+'run/openvpn'
     end
 
     # Install sample files
@@ -31,7 +36,8 @@ class Openvpn <Formula
     (var + 'run/openvpn').mkpath
 
     # Write the launchd script
-    (prefix + 'org.openvpn.plist').write startup_plist
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS
@@ -52,12 +58,12 @@ For OpenVPN to work as a server, you will need to do the following:
 
 2) Install the launchd item in /Library/LaunchDaemons, like so:
 
-   sudo cp -vf #{prefix}/org.openvpn.plist /Library/LaunchDaemons/.
-   sudo chown -v root:wheel /Library/LaunchDaemons/org.openvpn.plist
+   sudo cp -vf #{plist_path} /Library/LaunchDaemons/.
+   sudo chown -v root:wheel /Library/LaunchDaemons/#{plist_path.basename}
 
 3) Start the daemon using:
 
-   sudo launchctl load /Library/LaunchDaemons/org.openvpn.plist
+   sudo launchctl load /Library/LaunchDaemons/#{plist_path.basename}
 
 Next boot of system will automatically start OpenVPN.
 EOS
@@ -70,10 +76,10 @@ EOS
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>org.openvpn</string>
+  <string>#{plist_name}</string>
   <key>ProgramArguments</key>
   <array>
-    <string>#{sbin}/openvpn</string>
+    <string>#{HOMEBREW_PREFIX}/sbin/openvpn</string>
     <string>--config</string>
     <string>#{etc}/openvpn/openvpn.conf</string>
   </array>
@@ -94,3 +100,20 @@ EOS
 EOS
   end
 end
+
+__END__
+diff --git a/socket.c b/socket.c
+index 4720398..faa1782 100644
+--- a/socket.c
++++ b/socket.c
+@@ -35,6 +35,10 @@
+
+ #include "memdbg.h"
+
++#ifndef SOL_IP
++#define SOL_IP IPPROTO_IP
++#endif
++
+ const int proto_overhead[] = { /* indexed by PROTO_x */
+   IPv4_UDP_HEADER_SIZE,
+   IPv4_TCP_HEADER_SIZE,

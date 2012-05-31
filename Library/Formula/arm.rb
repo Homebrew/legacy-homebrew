@@ -2,16 +2,14 @@ require 'formula'
 
 class Arm < Formula
   homepage 'http://www.atagar.com/arm/'
-  url 'http://www.atagar.com/arm/resources/arm-1.3.7-1.tar.bz2'
-  sha256 '2d815dbf9608e501ab8d40f9f785c13308cd282821e36bda5bbbb62d548e0e0b'
+  url 'https://archive.torproject.org/arm/arm-1.4.4.1.tar.bz2'
+  sha256 'bdf4342d61d0f8a6395a5d7ee2e1471a5db9327c59d7cdc89315116045a3abf8'
 
   def install
-    (share+"arm").mkpath
     (share+"arm").install Dir["*"]
-
-    (bin+'arm').write <<-EOS
-#!/bin/sh
-cd #{share}/arm; arm $@
+    (bin+'arm').write <<-EOS.undent
+      #!/bin/sh
+      exec "#{share}/arm/arm" "$@"
     EOS
   end
 

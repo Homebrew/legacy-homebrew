@@ -1,17 +1,29 @@
 require 'formula'
 
-class Scantailor <Formula
-  url 'http://downloads.sourceforge.net/project/scantailor/scantailor/0.9.9.2/scantailor-0.9.9.2.tar.gz'
+class Scantailor < Formula
   homepage 'http://scantailor.sourceforge.net/'
-  md5 '0944b12c936019fe12269c7a356d60d0'
+  url 'http://downloads.sourceforge.net/project/scantailor/scantailor/0.9.11/scantailor-0.9.11.tar.gz'
+  md5 '15984c8828ecb2de542ac94e3c41a810'
 
-  depends_on 'cmake'
+  devel do
+    url 'http://downloads.sourceforge.net/project/scantailor/scantailor-devel/enhanced/scantailor-enhanced-20111213.tar.gz'
+    version 'enhanced-20111213'
+    md5 'bcba593dcba17880429884fe2bfb1d2a'
+  end
+
+  depends_on 'cmake' => :build
   depends_on 'qt'
-  depends_on 'jpeg'
   depends_on 'boost'
+  depends_on 'jpeg'
+  depends_on 'libtiff'
+
+  fails_with :clang do
+    build 318
+    cause "calling a private constructor of class 'mcalc::Mat<double>'"
+  end
 
   def install
-    system "cmake . #{std_cmake_parameters}"
+    system "cmake", ".", "-DPNG_INCLUDE_DIR=/usr/X11/include", *std_cmake_args
     system "make install"
   end
 end

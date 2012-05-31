@@ -1,6 +1,6 @@
 require 'formula'
 
-class Hilite <Formula
+class Hilite < Formula
   url 'http://downloads.sourceforge.net/project/hilite/hilite/1.5/hilite.c'
   version '1.5'
   homepage 'http://sourceforge.net/projects/hilite/'
@@ -12,6 +12,6 @@ class Hilite <Formula
   end
 
   def test
-    `hilite bash -c "echo 'stderr in red' >&2"`
+    system "#{bin}/hilite", "bash", "-c", "echo 'stderr in red' >&2"
   end
 end

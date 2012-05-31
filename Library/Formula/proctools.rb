@@ -1,13 +1,15 @@
 require 'formula'
 
-class Proctools <Formula
+class Proctools < Formula
   url 'http://downloads.sourceforge.net/project/proctools/proctools/0.4pre1/proctools-0.4pre1.tar.gz'
   homepage 'http://proctools.sourceforge.net/'
   version '0.4pre1'
   md5 '714e4350749c680a7806635632d524b1'
 
+  depends_on 'bsdmake' => :build if MacOS.xcode_version.to_f >= 4.3
+
   def patches
-    base = "http://svn.macports.org/repository/macports/trunk/dports/sysutils/proctools/files"
+    base = "https://trac.macports.org/export/89276/trunk/dports/sysutils/proctools/files"
     { :p0 => ["patch-pfind-Makefile.diff",
               "patch-pfind-pfind.c.diff",
               "patch-pgrep-Makefile.diff",
@@ -20,7 +22,7 @@ class Proctools <Formula
   end
 
   def install
-    system "/usr/bin/bsdmake"
+    system "bsdmake"
 
     ["pgrep/pgrep", "pkill/pkill", "pfind/pfind"].each do |prog|
       bin.install prog

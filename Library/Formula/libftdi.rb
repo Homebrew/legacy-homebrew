@@ -1,16 +1,15 @@
 require 'formula'
 
-class Libftdi <Formula
-  url "http://www.intra2net.com/en/developer/libftdi/download/libftdi-0.17.tar.gz"
+class Libftdi < Formula
   homepage 'http://www.intra2net.com/en/developer/libftdi'
-  md5 '810c69cfaa078b49795c224ef9b6b851'
+  url "http://www.intra2net.com/en/developer/libftdi/download/libftdi-0.20.tar.gz"
+  md5 '355d4474e3faa81b485d6a604b06951f'
 
   depends_on 'boost'
   depends_on 'libusb-compat'
 
   def install
-    mkdir 'libftdi-build'
-    Dir.chdir 'libftdi-build' do
+    mkdir 'libftdi-build' do
       system "../configure", "--prefix=#{prefix}"
       system "make"
       system "make install"

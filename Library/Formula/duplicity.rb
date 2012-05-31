@@ -1,24 +1,27 @@
 require 'formula'
 
-class Duplicity <Formula
-  url 'http://code.launchpad.net/duplicity/0.6-series/0.6.11/+download/duplicity-0.6.11.tar.gz'
+class Duplicity < Formula
   homepage 'http://www.nongnu.org/duplicity/'
-  md5 '1116be7aababa467336eac2092f66ab7'
+  url 'https://launchpad.net/duplicity/0.6-series/0.6.18/+download/duplicity-0.6.18.tar.gz'
+  md5 '66b5e64de43e09d3c3ff9890faf9de07'
 
   depends_on 'librsync'
   depends_on 'gnupg'
 
   def install
     ENV.universal_binary
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
-  end
+    # Install mostly into libexec
+    system "python", "setup.py", "install",
+                     "--prefix=#{prefix}",
+                     "--install-purelib=#{libexec}",
+                     "--install-platlib=#{libexec}",
+                     "--install-scripts=#{bin}"
 
-  def caveats
-    <<-EOS.undent
-      If you are using a non-Homebrew-built Python, you may need to add:
-        #{HOMEBREW_PREFIX}/lib/pythonX.Y/site-packages
-      to your PYTHONPATH, where "X.Y" was the version of Python this
-      formula was built against.
-    EOS
+    # Shift files around to avoid needing a PYTHONPATH
+    mv bin+'duplicity', bin+'duplicity.py'
+    mv Dir[bin+'*'], libexec
+
+    bin.install_symlink "#{libexec}/duplicity.py" => "duplicity"
+    bin.install_symlink "#{libexec}/rdiffdir"
   end
 end

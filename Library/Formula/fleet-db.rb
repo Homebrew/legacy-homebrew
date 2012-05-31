@@ -1,23 +1,21 @@
 require 'formula'
 
-class FleetDb <Formula
+class FleetDb < Formula
   url 'http://fleetdb.s3.amazonaws.com/fleetdb-standalone-0.2.0.jar'
-  version '0.2.0'
   homepage 'http://fleetdb.org'
   md5 'e7c0b9dd61650300e82da46bab6ee560'
 
   def install
-    prefix.mkpath
-    prefix.install Dir['*']
-    (bin+'fleetdb-server').write <<-SCRIPT
-#!/bin/sh
-java -cp #{prefix}/fleetdb-standalone-0.2.0.jar fleetdb.server $@
-SCRIPT
+    libexec.install "fleetdb-standalone-0.2.0.jar"
+    (bin+'fleetdb-server').write <<-EOS.undent
+      #!/bin/sh
+      java -cp "#{libexec}/fleetdb-standalone-0.2.0.jar" fleetdb.server "$@"
+    EOS
   end
 
-  def caveats; <<-CAVAETS
-To start a FleetDB server:
-    fleetdb-server -f /path/to/data.fdb
-CAVAETS
+  def caveats; <<-EOS.undent
+    To start a FleetDB server:
+      fleetdb-server -f /path/to/data.fdb
+    EOS
   end
 end

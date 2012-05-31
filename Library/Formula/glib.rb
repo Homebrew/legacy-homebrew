@@ -1,75 +1,78 @@
 require 'formula'
 
-class Libiconv <Formula
-  url 'http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.13.1.tar.gz'
-  md5 '7ab33ebd26687c744a37264a330bbe9a'
-  homepage 'http://www.gnu.org/software/libiconv/'
-end
-
 def build_tests?; ARGV.include? '--test'; end
 
-class Glib <Formula
-  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.24/glib-2.24.2.tar.bz2'
-  sha256 '3aeb521abd3642dd1224379f0e54915957e5010f888a4ae74afa0ad54da0160c'
-  homepage 'http://www.gtk.org'
+class Glib < Formula
+  homepage 'http://developer.gnome.org/glib/'
+  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.32/glib-2.32.3.tar.xz'
+  sha256 'b65ceb462807e4a2f91c95e4293ce6bbefca308cb44a1407bcfdd9e40363ff4d'
 
-  depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
   depends_on 'gettext'
+  depends_on 'libffi'
+
+  fails_with :llvm do
+    build 2334
+    cause "Undefined symbol errors while linking"
+  end
 
   def patches
-    mp = "http://trac.macports.org/export/69965/trunk/dports/devel/glib2/files/"
-    {
-      :p0 => [
-        mp+"patch-configure.in.diff",
-        mp+"patch-child-test.c.diff"
-      ]
-    }
+    # https://bugzilla.gnome.org/show_bug.cgi?id=673047  Still open at 2.32.3
+    # https://bugzilla.gnome.org/show_bug.cgi?id=644473  Still open at 2.32.3
+    # https://bugzilla.gnome.org/show_bug.cgi?id=673135  Resolved as wontfix.
+    p = { :p1 => %W[
+        https://raw.github.com/gist/2235195/19cdaebdff7dcc94ccd9b3747d43a09318f0b846/glib-gunicollate.diff
+        https://raw.github.com/gist/2235202/26f885e079e4d61da26d239970301b818ddbb4ab/glib-gtimezone.diff
+        https://raw.github.com/gist/2246469/591586214960f7647b1454e7d547c3935988a0a7/glib-configurable-paths.diff
+      ]}
+    p[:p0] = %W[
+        https://trac.macports.org/export/92183/trunk/dports/devel/glib2/files/patch-configure.diff
+      ] if ARGV.build_universal?
+    p
   end
 
   def options
-    [['--test', 'Build a debug build and run tests. NOTE: Tests may hang on "unix-streams".']]
+  [
+    ['--universal', 'Build universal binaries.'],
+    ['--test', 'Build a debug build and run tests. NOTE: Not all tests succeed yet.']
+  ]
   end
 
   def install
-    fails_with_llvm "Undefined symbol errors while linking"
+    ENV.universal_binary if ARGV.build_universal?
 
-    # Snow Leopard libiconv doesn't have a 64bit version of the libiconv_open
-    # function, which breaks things for us, so we build our own
-    # http://www.mail-archive.com/gtk-list@gnome.org/msg28747.html
+    # -w is said to causes gcc to emit spurious errors for this package
+    ENV.enable_warnings if ENV.compiler == :gcc
 
-    iconvd = Pathname.getwd+'iconv'
-    iconvd.mkpath
+    # Disable dtrace; see https://trac.macports.org/ticket/30413
+    args = %W[
+      --disable-maintainer-mode
+      --disable-dependency-tracking
+      --disable-dtrace
+      --prefix=#{prefix}
+      --localstatedir=#{var}
+    ]
 
-    Libiconv.new.brew do
-      system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                            "--prefix=#{iconvd}",
-                            "--enable-static", "--disable-shared"
-      system "make install"
-    end
-
-    # indeed, amazingly, -w causes gcc to emit spurious errors for this package!
-    ENV.enable_warnings
-
-    # Statically link to libiconv so glib doesn't use the bugged version in 10.6
-    ENV['LDFLAGS'] += " #{iconvd}/lib/libiconv.a"
-
-    args = ["--disable-dependency-tracking", "--disable-rebuilds",
-            "--prefix=#{prefix}",
-            "--with-libiconv=gnu"]
-
-    args << "--disable-debug" unless build_tests?
+    # glib and pkg-config 0.26 have circular dependencies, so we should build glib without pkg-config
+    # The pkg-config dependency can be eliminated if certain env variables are set
+    # Note that this *may* need to be updated if any new dependencies are added in the future
+    # See http://permalink.gmane.org/gmane.comp.package-management.pkg-config/627
+    ENV['ZLIB_CFLAGS'] = ''
+    ENV['ZLIB_LIBS'] = '-lz'
+    # libffi include paths are dramatically ugly
+    libffi = Formula.factory('libffi')
+    ENV['LIBFFI_CFLAGS'] = "-I #{libffi.lib}/libffi-#{libffi.version}/include"
+    ENV['LIBFFI_LIBS'] = '-lffi'
 
     system "./configure", *args
 
-    # Fix for 64-bit support, from MacPorts
-    curl "http://trac.macports.org/export/69965/trunk/dports/devel/glib2/files/config.h.ed", "-O"
-    system "ed - config.h < config.h.ed"
+    if ARGV.build_universal?
+      system "curl 'https://trac.macports.org/export/92179/trunk/dports/devel/glib2/files/config.h.ed' | ed - config.h"
+    end
 
     system "make"
-    # Supress a folder already exists warning during install
-    # Also needed for running tests
-    ENV.j1
-    system "make test" if build_tests?
+    # the spawn-multithreaded tests require more open files
+    system "ulimit -n 1024; make check" if build_tests?
     system "make install"
 
     # This sucks; gettext is Keg only to prevent conflicts with the wider
@@ -86,5 +89,33 @@ class Glib <Formula
     end
 
     (share+'gtk-doc').rmtree
+  end
+
+  def test
+    unless Formula.factory("pkg-config").installed?
+      puts "pkg-config is required to run this test, but is not installed"
+      exit 1
+    end
+
+    mktemp do
+      (Pathname.pwd/'test.c').write <<-EOS.undent
+        #include <string.h>
+        #include <glib.h>
+
+        int main(void)
+        {
+            gchar *result_1, *result_2;
+            char *str = "string";
+
+            result_1 = g_convert(str, strlen(str), "ASCII", "UTF-8", NULL, NULL, NULL);
+            result_2 = g_convert(result_1, strlen(result_1), "UTF-8", "ASCII", NULL, NULL, NULL);
+
+            return (strcmp(str, result_2) == 0) ? 0 : 1;
+        }
+        EOS
+      system ENV.cc, "-o", "test", "test.c",
+        *`pkg-config --cflags --libs glib-2.0`.split
+      system "./test"
+    end
   end
 end

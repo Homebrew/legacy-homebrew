@@ -1,14 +1,15 @@
 require 'formula'
 
-class Swfmill <Formula
-  url 'http://swfmill.org/releases/swfmill-0.2.12.tar.gz'
+class Swfmill < Formula
   homepage 'http://swfmill.org'
-  md5 '88a634cad4d8d025c84c6e8916a8b1c4'
+  url 'http://swfmill.org/releases/swfmill-0.3.2.tar.gz'
+  md5 'c607f8aba506ec32cc4423446fe6644e'
 
   depends_on 'pkg-config' => :build
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    # Has trouble linking against zlib unless we add it here - @adamv
+    system "make", "LIBS=-lz", "install"
   end
 end

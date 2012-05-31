@@ -1,17 +1,27 @@
 require 'formula'
 
-class Libevent <Formula
-  url "http://www.monkey.org/~provos/libevent-1.4.14b-stable.tar.gz"
+class Libevent < Formula
   homepage 'http://www.monkey.org/~provos/libevent/'
-  md5 'a00e037e4d3f9e4fe9893e8a2d27918c'
+  url 'https://github.com/downloads/libevent/libevent/libevent-2.0.18-stable.tar.gz'
+  sha1 '2a2cc87ce1945f43dfa5a5f9575fef3d14a8f57a'
+
   head 'git://levent.git.sourceforge.net/gitroot/levent/levent'
 
-  def install
-    fails_with_llvm "Undefined symbol '_current_base' reported during linking.", :build => 2326
+  fails_with :llvm do
+    build 2326
+    cause "Undefined symbol '_current_base' reported during linking."
+  end
 
-    ENV.j1 # Needed for Mac Pro compilation
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  def install
+    ENV.j1
     system "./autogen.sh" if ARGV.build_head?
     system "./configure", "--prefix=#{prefix}"
+    system "make"
     system "make install"
   end
 end

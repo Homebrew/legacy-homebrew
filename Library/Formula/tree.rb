@@ -1,14 +1,21 @@
 require 'formula'
 
-class Tree <Formula
-  url 'ftp://mama.indstate.edu/linux/tree/tree-1.5.3.tgz'
+class Tree < Formula
   homepage 'http://mama.indstate.edu/users/ice/tree/'
-  md5 'c07ce9065667a23f27aca4de8ecccb10'
+  url 'http://mama.indstate.edu/users/ice/tree/src/tree-1.6.0.tgz'
+  md5 '04e967a3f4108d50cde3b4b0e89e970a'
 
   def install
-    system "#{ENV.cc} #{ENV.cflags} -o tree tree.c strverscmp.c"
+    ENV.append 'CFLAGS', '-fomit-frame-pointer'
+    ENV.append 'CFLAGS', '-no-cpp-precomp' unless ENV.compiler == :clang
+    objs = 'tree.o unix.o html.o xml.o hash.o color.o strverscmp.o'
 
-    bin.install "tree"
-    man1.install "man/tree.1"
+    system "make", "prefix=#{prefix}",
+                   "MANDIR=#{man1}",
+                   "CC=#{ENV.cc}",
+                   "CFLAGS=#{ENV.cflags}",
+                   "LDFLAGS=#{ENV.ldflags}",
+                   "OBJS=#{objs}",
+                   "install"
   end
 end

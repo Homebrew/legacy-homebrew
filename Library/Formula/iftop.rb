@@ -1,6 +1,6 @@
 require 'formula'
 
-class Iftop <Formula
+class Iftop < Formula
   url 'http://www.ex-parrot.com/~pdw/iftop/download/iftop-0.17.tar.gz'
   homepage 'http://www.ex-parrot.com/~pdw/iftop/'
   md5 '062bc8fb3856580319857326e0b8752d'

@@ -1,16 +1,14 @@
 require 'formula'
 
-class Libmemcached <Formula
-  url 'http://download.tangent.org/libmemcached-0.43.tar.gz'
+class Libmemcached < Formula
   homepage 'http://libmemcached.org'
-  md5 'f6940255a1889871ef3a29f430370950'
+  url 'http://launchpad.net/libmemcached/1.0/1.0.4/+download/libmemcached-1.0.4.tar.gz'
+  md5 '6eded403ce736f6ac3c42c8f54dc88ae'
 
   depends_on 'memcached'
 
   def install
-    if MACOS_VERSION < 10.6
-      ENV.append_to_cflags "-undefined dynamic_lookup"
-    end
+    ENV.append_to_cflags "-undefined dynamic_lookup" if MacOS.leopard?
 
     system "./configure", "--prefix=#{prefix}"
     system "make install"

@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mosml <Formula
+class Mosml < Formula
   version '2.01'
   url 'http://www.itu.dk/people/sestoft/mosml/mos201src.tar.gz'
   homepage 'http://www.itu.dk/people/sestoft/mosml.html'

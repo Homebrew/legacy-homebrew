@@ -4,14 +4,21 @@ def use_python?
   ARGV.include? '--enable-python-bindings'
 end
 
-class Libemu <Formula
-  head 'http://git.carnivore.it/libemu.git', :using => :git
+class Libemu < Formula
+  head 'http://git.carnivore.it/libemu.git'
   homepage 'http://libemu.carnivore.it/'
 
   depends_on 'pkg-config' => :build
 
   def options
     [["--enable-python-bindings", "Compile bindings for Python"]]
+  end
+
+  if MacOS.xcode_version >= "4.3"
+    # remove the autoreconf if possible, no comment provided about why it is there
+    # so we have no basis to make a decision at this point.
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   def install

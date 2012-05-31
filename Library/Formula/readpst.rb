@@ -1,6 +1,6 @@
 require 'formula'
 
-class Readpst <Formula
+class Readpst < Formula
   url 'http://www.five-ten-sg.com/libpst/packages/libpst-0.6.49.tar.gz'
   homepage 'http://www.five-ten-sg.com/libpst/'
   md5 'a0a0f927e82ab14bb042bd8bbd97c312'

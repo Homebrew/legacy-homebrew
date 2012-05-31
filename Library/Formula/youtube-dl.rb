@@ -1,8 +1,8 @@
 require 'formula'
 
-class YoutubeDl <ScriptFileFormula
-  url 'https://github.com/rg3/youtube-dl/raw/2010.12.09/youtube-dl'
+class YoutubeDl < ScriptFileFormula
+  url 'https://github.com/rg3/youtube-dl/raw/2012.02.27/youtube-dl'
   homepage 'http://rg3.github.com/youtube-dl/'
-  md5 '3f30efd79e00d104296b0bf80c732d3d'
-  version '2010.12.09'
+  sha256 '98146a510fed3d39a34a686e1100d6df4efa2b9b9e194649e615afc1ff646834'
+  version '2012.02.27'
 end

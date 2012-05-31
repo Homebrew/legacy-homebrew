@@ -1,13 +1,14 @@
 require 'formula'
 
-class Hydra <Formula
-  url 'http://freeworld.thc.org/releases/hydra-5.7-src.tar.gz'
-  homepage 'http://freeworld.thc.org/thc-hydra/'
-  md5 'a8ad06ed726208800ca9a3c09aaf9cf7'
+class Hydra < Formula
+  url 'http://www.thc.org/releases/hydra-7.2-src.tar.gz'
+  homepage 'http://www.thc.org/thc-hydra/'
+  sha1 '1f31cc2ee3605b5e46edce48ec23f6065c8df7f1'
 
   def install
-    system "./configure", "--disable-xhydra", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     bin.mkpath
-    system "make install"
+    system "make all install"
+    share.install prefix+"man" # Put man pages in correct place
   end
 end
