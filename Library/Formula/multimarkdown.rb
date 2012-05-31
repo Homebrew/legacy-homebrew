@@ -9,10 +9,20 @@ class Multimarkdown < Formula
   head 'https://github.com/fletcher/peg-multimarkdown.git', :branch => 'development'
 
   def install
-    ENV.append 'CFLAGS', '-include GLibFacade.h'
-    system "make"
+    # Since we want to use our CFLAGS, we need to add the following:
+    ENV.append_to_cflags '-include GLibFacade.h'
+    ENV.append_to_cflags '-D MD_USE_GET_OPT=1'
+    ENV.append_to_cflags '-I..'
+    system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}"
     bin.install 'multimarkdown'
-    bin.install Dir['Support/bin/*']
     bin.install Dir['scripts/*']
+    # The support stuff will be put into the Cellar only
+    prefix.install Dir['Support']
+  end
+
+  def caveats; <<-EOS.undent
+    Support files have been installed to:
+      #{prefix}/Support
+    EOS
   end
 end
