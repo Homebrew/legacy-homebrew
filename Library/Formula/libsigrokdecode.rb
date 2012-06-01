@@ -1,8 +1,13 @@
 require 'formula'
 
 class NeedsPython3 < Requirement
+
+  # looks for python3-config
   def satisfied?
-    is_python_version_3? || python3_found?
+    ENV['PATH'].split(':').each do |path|
+      return true if File.executable? "#{path}/python3-config"
+    end
+    return false
   end
 
   def fatal?
@@ -10,24 +15,11 @@ class NeedsPython3 < Requirement
   end
 
   def message; <<-EOS.undent
-    This library depends on Python version 3.
+    This library depends on Python version 3 but python3-config
+    was not found on your PATH.
+    You can install a python3 distribution using:
+      brew install python3
     EOS
-  end
-
-private
-
-  # check if default python command is version 3
-  def is_python_version_3?
-    return true if `python -c 'import sys;print(sys.version[:1])'`.to_i == 3
-    return false
-  end
-
-  # check if python3 command is found in PATH
-  def python3_found?
-    ENV['PATH'].split(':').each do |path|
-      return true if File.executable? "#{path}/python3"
-    end
-    return false
   end
 end
 
