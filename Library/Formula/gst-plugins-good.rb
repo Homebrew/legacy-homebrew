@@ -2,8 +2,8 @@ require 'formula'
 
 class GstPluginsGood < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-0.10.30.tar.bz2'
-  md5 '62fd7a3ef187c4f99b3d7c352d58dae9'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-0.10.31.tar.bz2'
+  sha256 '7e27840e40a7932ef2dc032d7201f9f41afcaf0b437daf5d1d44dc96d9e35ac6'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
