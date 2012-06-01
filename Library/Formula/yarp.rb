@@ -16,7 +16,7 @@ class Yarp < Formula
   depends_on 'jpeg'
 
   def install
-    args = std_cmake_parameters.split + %W[
+    args = std_cmake_args + %W[
       -DCREATE_LIB_MATH=TRUE
       -DCREATE_GUIS=TRUE
       -DCREATE_YMANAGER=TRUE

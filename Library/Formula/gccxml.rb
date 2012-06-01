@@ -9,7 +9,7 @@ class Gccxml < Formula
 
   def install
     mkdir 'gccxml-build' do
-      system "cmake #{std_cmake_parameters} .."
+      system "cmake", ".", *std_cmake_args
       system "make"
       system "make install"
     end
