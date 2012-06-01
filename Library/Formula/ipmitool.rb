@@ -11,7 +11,7 @@ class Ipmitool < Formula
 
   def patches
     # optionally incorporate delloem patches
-    { :p1 => "https://gist.github.com/raw/2838711/dc127edd2ba34e1e801bf2a07afa2e3c81a9817f/ipmitool-1.8.11-delloem.patch" } if ARGV.include? '--with-delloem'
+    { :p1 => "https://gist.github.com/raw/2838711/eb2bc8538ae92e33075b08867975167316d72cc2/ipmitool-1.8.11-99.dell.patch" } if ARGV.include? '--with-delloem'
   end
 
   def install
