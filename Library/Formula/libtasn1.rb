@@ -2,9 +2,9 @@ require 'formula'
 
 class Libtasn1 < Formula
   homepage 'http://www.gnu.org/software/libtasn1/'
-  url 'http://ftpmirror.gnu.org/libtasn1/libtasn1-2.12.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/libtasn1/libtasn1-2.12.tar.gz'
-  md5 '4eba39fb962d6cf5a370267eae8ff52b'
+  url 'http://ftpmirror.gnu.org/libtasn1/libtasn1-2.13.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/libtasn1/libtasn1-2.13.tar.gz'
+  md5 'df27eaddcc46172377e6b907e33ddc83'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
