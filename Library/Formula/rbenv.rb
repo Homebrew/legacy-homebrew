@@ -14,6 +14,8 @@ class Rbenv < Formula
   def caveats; <<-EOS.undent
     To enable shims and autocompletion, add rbenv init to your profile:
       if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+    You'll also need to update your path:
+      export PATH="$HOME/.rbenv/bin:$PATH"
     EOS
   end
 end
