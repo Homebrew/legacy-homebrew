@@ -11,7 +11,7 @@ class Wv2 < Formula
 
   def install
     ENV.append 'LDFLAGS', '-liconv -lgobject-2.0' # work around broken detection
-    system "cmake #{std_cmake_parameters} ."
+    system "cmake", ".", *std_cmake_args
     system "make install"
   end
 end

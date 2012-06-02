@@ -13,6 +13,10 @@ class Keg
               system "install_name_tool", "-change", bad_name, "@loader_path/#{new_name}", dylib
             else
               opoo "Could not fix install names for #{dylib}"
+              if ARGV.debug?
+                puts "bad_name: #{bad_name}"
+                puts "new_name: #{new_name}"
+              end
             end
           end
         end
@@ -45,10 +49,14 @@ class Keg
   end
 
   def dylibs
+    require 'find'
+    dylibs = []
     if (lib = join 'lib').directory?
-      lib.children.select{ |pn| pn.extname == '.dylib' and not pn.symlink? }
-    else
-      []
+      lib.find do |pn|
+        next if pn.symlink? or pn.directory?
+        dylibs << pn if pn.dylib?
+      end
     end
+    dylibs
   end
 end

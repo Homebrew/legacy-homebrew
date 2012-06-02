@@ -12,6 +12,6 @@ class Tabbed < Formula
     inreplace 'config.def.h',
       '{ MODKEY|ShiftMask,             XK_Return, spawn,          { .v = (char*[]){ "surf", "-e", winid, NULL} } },',
       '{ MODKEY|ShiftMask,             XK_Return, spawn,          { .v = (char*[]){ "xterm", "-into", winid, NULL} } },'
-    system "make  PREFIX=#{prefix} install"
+    system "make", "PREFIX=#{prefix}", "install"
   end
 end

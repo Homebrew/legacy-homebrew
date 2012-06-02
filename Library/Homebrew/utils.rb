@@ -147,18 +147,13 @@ def puts_columns items, star_items=[]
   end
 end
 
-def which cmd, silent=false
-  cmd += " 2>/dev/null" if silent
-  path = `/usr/bin/which #{cmd}`.chomp
+def which cmd
+  path = `/usr/bin/which #{cmd} 2>/dev/null`.chomp
   if path.empty?
     nil
   else
     Pathname.new(path)
   end
-end
-
-def which_s cmd
-  which cmd, true
 end
 
 def which_editor
@@ -167,9 +162,9 @@ def which_editor
   return editor unless editor.nil?
 
   # Find Textmate
-  return 'mate' if which_s "mate"
+  return 'mate' if which "mate"
   # Find # BBEdit / TextWrangler
-  return 'edit' if which_s "edit"
+  return 'edit' if which "edit"
   # Default to vim
   return '/usr/bin/vim'
 end
@@ -191,43 +186,10 @@ def gzip *paths
   end
 end
 
-module ArchitectureListExtension
-  def universal?
-    self.include? :i386 and self.include? :x86_64
-  end
-
-  def remove_ppc!
-    self.delete :ppc7400
-    self.delete :ppc64
-  end
-
-  def as_arch_flags
-    self.collect{ |a| "-arch #{a}" }.join(' ')
-  end
-end
-
 # Returns array of architectures that the given command or library is built for.
 def archs_for_command cmd
-  cmd = cmd.to_s # If we were passed a Pathname, turn it into a string.
-  cmd = `/usr/bin/which #{cmd}` unless Pathname.new(cmd).absolute?
-  cmd.gsub! ' ', '\\ '  # Escape spaces in the filename.
-
-  lines = `/usr/bin/file -L #{cmd}`
-  archs = lines.to_a.inject([]) do |archs, line|
-    case line
-    when /Mach-O (executable|dynamically linked shared library) ppc/
-      archs << :ppc7400
-    when /Mach-O 64-bit (executable|dynamically linked shared library) ppc64/
-      archs << :ppc64
-    when /Mach-O (executable|dynamically linked shared library) i386/
-      archs << :i386
-    when /Mach-O 64-bit (executable|dynamically linked shared library) x86_64/
-      archs << :x86_64
-    else
-      archs
-    end
-  end
-  archs.extend(ArchitectureListExtension)
+  cmd = which(cmd) unless Pathname.new(cmd).absolute?
+  Pathname.new(cmd).archs
 end
 
 def inreplace path, before=nil, after=nil
@@ -405,7 +367,7 @@ module MacOS extend self
       # Xcode 4.3 xc* tools hang indefinately if xcode-select path is set thus
       raise if `xcode-select -print-path 2>/dev/null`.chomp == "/"
 
-      raise unless which_s "xcodebuild"
+      raise unless which "xcodebuild"
       `xcodebuild -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
       raise if $1.nil? or not $?.success?
       $1
@@ -487,8 +449,8 @@ module MacOS extend self
     return false unless MACOS
 
     %w[port fink].each do |ponk|
-      path = `/usr/bin/which #{ponk} 2>/dev/null`
-      return ponk unless path.empty?
+      path = which(ponk)
+      return ponk unless path.nil?
     end
 
     # we do the above check because macports can be relocated and fink may be

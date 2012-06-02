@@ -16,13 +16,19 @@ class Go < Formula
     cd prefix do
       # The version check is due to:
       # http://codereview.appspot.com/5654068
-      (Pathname.pwd+'VERSION').write 'default' if ARGV.build_head?
+      (prefix/'VERSION').write 'default' if ARGV.build_head?
 
       # Build only. Run `brew test go` to run distrib's tests.
       cd 'src' do
         system './make.bash'
       end
     end
+
+    # Don't install header files; they aren't necessary and can
+    # cause problems with other builds. See:
+    # http://trac.macports.org/ticket/30203
+    # http://code.google.com/p/go/issues/detail?id=2407
+    include.rmtree
   end
 
   def test

@@ -9,7 +9,7 @@ class MysqlConnectorCxx < Formula
   depends_on 'boost' => :build
 
   def install
-    system "cmake #{std_cmake_parameters} ."
+    system "cmake", ".", *std_cmake_args
     ENV.j1
     system "make install"
   end

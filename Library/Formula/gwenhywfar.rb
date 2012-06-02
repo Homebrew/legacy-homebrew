@@ -12,8 +12,11 @@ class Gwenhywfar < Formula
 
   def options
     [[
-      "--with-gui=XX,...",
-      "Install gui support XX where XX is the name of the gui toolkit\n\te.g.: --with-gui=gtk\n\tAvailable gui toolkits are: qt, gtk"
+      "--with-gui=XX,...", <<-EOS.undent
+        Install gui support XX where XX is the name of the gui toolkit
+        \te.g.: --with-gui=gtk
+        \tAvailable gui toolkits are: qt, gtk"
+        EOS
     ]]
   end
 

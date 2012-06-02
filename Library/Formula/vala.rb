@@ -19,6 +19,6 @@ class Vala < Formula
   end
 
   def test
-    system "#{bin}/valac --version"
+    system "#{bin}/valac", "--version"
   end
 end

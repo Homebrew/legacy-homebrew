@@ -40,13 +40,11 @@ class Sphinx < Formula
   end
 
   def install
-    lstem = Pathname.pwd+'libstemmer_c'
-    Libstemmer.new.brew { lstem.install Dir['*'] }
+    Libstemmer.new.brew { (buildpath/'libstemmer_c').install Dir['*'] }
 
-    args = ["--prefix=#{prefix}",
-            "--disable-debug",
-            "--disable-dependency-tracking",
-            "--localstatedir=#{var}"]
+    args = %W[--prefix=#{prefix}
+              --disable-dependency-tracking
+              --localstatedir=#{var}]
 
     # always build with libstemmer support
     args << "--with-libstemmer"

@@ -7,6 +7,11 @@ class Qemu < Formula
 
   depends_on 'jpeg'
   depends_on 'gnutls'
+  depends_on 'glib'
+
+  fails_with :clang do
+    build 318
+  end
 
   # Borrow these patches from MacPorts
   def patches

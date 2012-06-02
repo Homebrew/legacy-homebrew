@@ -15,6 +15,6 @@ class Sc68 < Formula
 
   def test
     # SC68 ships with a sample module; test attempts to print its metadata
-    system "#{bin}/info68 #{share}/sc68/Sample/About-Intro.sc68 -C ': ' -N -L"
+    system "#{bin}/info68", "#{share}/sc68/Sample/About-Intro.sc68", "-C", ": ", "-N", "-L"
   end
 end

@@ -7,7 +7,7 @@ class Dcal < Formula
   version '0.1.0'
 
   def install
-    system "#{ENV['CXX']}", "dcal.c", "-o", "dcal"
+    system ENV.cxx, "dcal.c", "-o", "dcal"
     bin.install 'dcal'
   end
 end

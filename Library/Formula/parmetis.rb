@@ -8,7 +8,7 @@ class Parmetis < Formula
   depends_on 'cmake' => :build
 
   def install
-    system "make config prefix=#{prefix}"
+    system "make", "config", "prefix=#{prefix}"
     system 'make install'
   end
 end

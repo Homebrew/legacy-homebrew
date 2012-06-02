@@ -16,6 +16,6 @@ class Ivy < Formula
   end
 
   def test
-    system "#{bin}/ivy -version"
+    system "#{bin}/ivy", "-version"
   end
 end
