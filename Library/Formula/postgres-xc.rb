@@ -106,10 +106,10 @@ class PostgresXc < Formula
     plist_path('gtm').chmod 0644
     plist_path('gtm_proxy').write gtm_proxy_startup_plist('gtm_proxy')
     plist_path('gtm_proxy').chmod 0644
-    plist_path('coord1').write coordinator_startup_plist('coord1')
-    plist_path('coord1').chmod 0644
-    plist_path('datanode1').write datanode_startup_plist('datanode1')
-    plist_path('datanode1').chmod 0644
+    plist_path('coord').write coordinator_startup_plist('coord')
+    plist_path('coord').chmod 0644
+    plist_path('datanode').write datanode_startup_plist('datanode')
+    plist_path('datanode').chmod 0644
 
     mkpath var+'postgres-xc' # Create data directory
   end
@@ -140,142 +140,58 @@ class PostgresXc < Formula
   end
 
   def caveats; <<-EOS.undent
-    Postgres-XC has four types of node servers:
-    GTM, GTM-Proxy, Coordinator, and Datanode.
+    To get started with Postgres-XC, read the documents at
+      http://sourceforge.net/projects/postgres-xc/files/Publication/
+      http://postgres-xc.sourceforge.net/docs/1_0/tutorial-start.html
 
-    ### GTM (Global Transaction Manager)
+    Launchd plist templates to automatically load the various nodes can be copied from:
+      #{plist_path('gtm')}
+      #{plist_path('gtm_proxy')}
+      #{plist_path('datanode')}
+      #{plist_path('coord')}
 
-    If this is your first install, create GTM's working directory:
+    For a first cluster, you may start with a single GTM (Global Transaction Manager),
+    a pair of Data Nodes and a single Coordinator, all on the same machine:
 
       initgtm -Z gtm -D #{var}/postgres-xc/gtm
-
-    You may also want to edit
-
-      #{var}/postgres-xc/gtm/gtm.conf
-
-    to set at least the listen addresses and port.
-
-    To load GTM automatically on login:
-
-      mkdir -p ~/Library/LaunchAgents
-      cp #{plist_path('gtm')} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path('gtm').basename}
-
-    Or start it manually with:
-
-      gtm -D #{var}/postgres-xc/gtm
-
-    If this is an upgrade and you already have the #{plist_path('gtm').basename} loaded:
-
-      launchctl unload -w ~/Library/LaunchAgents/#{plist_path('gtm').basename}
-      cp #{plist_path('gtm')} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path('gtm').basename}
-
-    ### GTM-Proxy
-
-    If this is your first install, create GTM-Proxy's working directory:
-
-      initgtm -Z gtm_proxy #{var}/postgres-xc/gtm_proxy
-
-    You may also want to edit
-
-      #{var}/postgres-xc/gtm_proxy/gtm_proxy.conf
-
-    to set at least the listen addresses and port.
-
-    To load GTM-Proxy automatically on login:
-
-      mkdir -p ~/Library/LaunchAgents
-      cp #{plist_path('gtm_proxy')} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path('gtm_proxy').basename}
-
-    Or start it manually with:
-
-      gtm_proxy -D #{var}/postgres-xc/gtm_proxy -n 2 -s localhost -t 6666
-
-    The above assumes that GTM is listening on the same machine on port 6666.
-    You need to modify the command and the plist above if your GTM configuration
-    is different.
-
-    If this is an upgrade and you already have the #{plist_path('gtm_proxy').basename} loaded:
-
-      launchctl unload -w ~/Library/LaunchAgents/#{plist_path('gtm_proxy').basename}
-      cp #{plist_path('gtm_proxy')} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path('gtm_proxy').basename}
-
-    ### Coordinator
-
-    If this is your first install, create a coordinator's working directory:
-    (change 'coord1' as required):
-
-      initdb -D #{var}/postgres-xc/coord1 --nodename coord1
-
-    You may also want to edit
-
-      #{var}/postgres-xc/coord1/postgresql.conf
-
-    to set at least the listen addresses and port.
-
-    To load the coordinator automatically on login:
-
-      mkdir -p ~/Library/LaunchAgents
-      cp #{plist_path('coord1')} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path('coord1').basename}
-
-    Or start it manually with:
-
-      postgres -C -D #{var}/postgres-xc/coord1 -i
-
-    If this is an upgrade and you already have the #{plist_path('coord1').basename} loaded:
-
-      launchctl unload -w ~/Library/LaunchAgents/#{plist_path('coord1').basename}
-      cp #{plist_path('coord1')} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path('coord1').basename}
-
-    ### Datanode
-
-    If this is your first install, create a datanode's working directory:
-    (change 'datanode1' as required):
-
       initdb -D #{var}/postgres-xc/datanode1 --nodename datanode1
+      initdb -D #{var}/postgres-xc/datanode2 --nodename datanode2
+      initdb -D #{var}/postgres-xc/coord --nodename coord
 
-    You may also want to edit
-
+    Edit
       #{var}/postgres-xc/datanode1/postgresql.conf
+      #{var}/postgres-xc/datanode2/postgresql.conf
+    and change the ports to 15432 and 15433, respectively.
 
-    to set at least the listen addresses and port.
-
-    To load the datanode automatically on login:
+    Then, launch the nodes and connect to the coordinator:
 
       mkdir -p ~/Library/LaunchAgents
-      cp #{plist_path('datanode1')} ~/Library/LaunchAgents/
+      cp #{plist_path('gtm')} ~/Library/LaunchAgents/
+      cp #{plist_path('datanode')} ~/Library/LaunchAgents/#{plist_name('datanode') + '1.plist'}
+      cp #{plist_path('datanode')} ~/Library/LaunchAgents/#{plist_name('datanode') + '2.plist'}
+      cp #{plist_path('coord')} ~/Library/LaunchAgents/
+      sed -i -e 's/datanode/datanode1/g' ~/Library/LaunchAgents/#{plist_name('datanode') + '1.plist'}
+      sed -i -e 's/datanode/datanode2/g' ~/Library/LaunchAgents/#{plist_name('datanode') + '2.plist'}
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path('gtm').basename}
       launchctl load -w ~/Library/LaunchAgents/#{plist_path('datanode1').basename}
-
-    Or start it manually with:
-
-      postgres -X -D #{var}/postgres-xc/datanode1 -i
-
-    If this is an upgrade and you already have the #{plist_path('datanode1').basename} loaded:
-
-      launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-      cp #{plist_path} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    ### Other notes
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path('datanode2').basename}
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path('coord').basename}
+      psql postgres
+        create node datanode1 with (type='datanode', port=15432);
+        create node datanode2 with (type='datanode', port=15433);
+        select * from pgxc_node;
+        select pgxc_pool_reload();
 
     If you get the following error:
       FATAL:  could not create shared memory segment: Cannot allocate memory
     then you need to tweak your system's shared memory parameters:
       http://www.postgresql.org/docs/current/static/kernel-resources.html#SYSVIPC
 
-    You may also need to edit the plists above to use the correct "UserName".
-
-    If you launch more server processes on the same machine, you must make
-    sure that they all listen on different ports.
-
-    See also:
-      http://sourceforge.net/projects/postgres-xc/files/Publication/start_pgxc_in_10_commands.txt
-      http://postgres-xc.sourceforge.net/docs/1_0/runtime.html
+    To shutdown everything, unload the plists in reverse order:
+      launchctl unload -w ~/Library/LaunchAgents/#{plist_path('coord').basename}
+      launchctl unload -w ~/Library/LaunchAgents/#{plist_path('datanode2').basename}
+      launchctl unload -w ~/Library/LaunchAgents/#{plist_path('datanode1').basename}
+      launchctl unload -w ~/Library/LaunchAgents/#{plist_path('gtm').basename}
     EOS
   end
 
