@@ -835,6 +835,12 @@ end
 
 def check_for_outdated_homebrew
   HOMEBREW_REPOSITORY.cd do
+    if File.directory? ".git"
+      local = `git rev-parse -q --verify refs/remotes/origin/master`.chomp
+      remote = /^([a-f0-9]{40})/.match(`git ls-remote origin refs/heads/master`)[0]
+      return if local == remote
+    end
+
     timestamp = if File.directory? ".git"
       `git log -1 --format="%ct" HEAD`.to_i
     else
