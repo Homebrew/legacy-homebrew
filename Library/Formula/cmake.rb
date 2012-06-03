@@ -22,9 +22,9 @@ class Cmake < Formula
   homepage 'http://www.cmake.org/'
 
   bottle do
-    version 1
-    sha1 'e1251ca112398348b1a150600826fc2befb200dd' => :lion
-    sha1 '51d960d0ebff661babd23970f69e9fcaaac9b1f3' => :snowleopard
+    version 2
+    sha1 '64de3916cea46cf98ff0853db401109394cfbd5d' => :lion
+    sha1 'da25300b55944c84e6a0c2e4efc57bb160a02806' => :snowleopard
   end
 
   depends_on NoExpatFramework.new
