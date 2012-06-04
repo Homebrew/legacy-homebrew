@@ -11,6 +11,12 @@ class Libinfinity < Formula
   depends_on 'gnutls'
   depends_on 'libgsasl'
 
+  # Reported upstream here: http://gobby.0x539.de/trac/ticket/595
+  fails_with :clang do
+    build 318
+    cause 'Non-void function should return a value'
+  end
+
   # MacPorts patch to fix pam include
   def patches
     { :p0 => [
