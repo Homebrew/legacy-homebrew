@@ -3,7 +3,7 @@ require 'formula'
 class HaskellPlatform < Formula
   url 'http://lambda.haskell.org/platform/download/2012.2.0.0/haskell-platform-2012.2.0.0.tar.gz'
   homepage 'http://hackage.haskell.org/platform/'
-  md5 'db09bc4279c0ef9e0beb5462b793413b'
+  sha1 '91405b8d864d35d90effb9aac3ad9309ea6d86a7'
 
   depends_on 'ghc'
 
