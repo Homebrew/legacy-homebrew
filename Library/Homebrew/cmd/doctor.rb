@@ -876,6 +876,16 @@ def check_for_bad_python_symlink
   end
 end
 
+def check_for_pydistutils_cfg_in_home
+  if File.exist? ENV['HOME']+'/.pydistutils.cfg' then <<-EOS.undent
+    A .pydistutils.cfg file was found in $HOME, which may cause Python
+    builds to fail. See:
+      http://bugs.python.org/issue6138
+      http://bugs.python.org/issue4655
+    EOS
+  end
+end
+
 def check_for_outdated_homebrew
   return unless which 'git'
   HOMEBREW_REPOSITORY.cd do
