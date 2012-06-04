@@ -1,8 +1,8 @@
 require 'formula'
 
 class TokyoTyrant < Formula
-  url 'http://fallabs.com/tokyotyrant/tokyotyrant-1.1.41.tar.gz'
   homepage 'http://fallabs.com/tokyotyrant/'
+  url 'http://fallabs.com/tokyotyrant/tokyotyrant-1.1.41.tar.gz'
   md5 'a47e58897bd1cbbac173d5a66cc32ae3'
 
   depends_on 'tokyo-cabinet'
