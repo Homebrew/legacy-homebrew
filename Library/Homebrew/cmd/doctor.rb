@@ -876,6 +876,14 @@ def check_for_bad_python_symlink
   end
 end
 
+def check_for_pydistutils_cfg_in_home
+  # We had a lot off issues because that config can redirect install locations
+  if File.exist?( ENV['HOME']+'/.pydistutils.cfg' )
+      'Detected '+ENV['HOME']+'/.pydistutils.cfg which may cause trouble.
+         (See http://bugs.python.org/issue6138 and http://bugs.python.org/issue4655)'
+    end
+end
+
 def check_for_outdated_homebrew
   return unless which 'git'
   HOMEBREW_REPOSITORY.cd do
