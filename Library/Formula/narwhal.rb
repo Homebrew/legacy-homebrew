@@ -1,7 +1,7 @@
 require 'formula'
 
 class Narwhal < Formula
-  homepage 'http://www.narwhaljs.org/'
+  homepage 'https://github.com/280north/narwhal'
   url 'https://github.com/280north/narwhal/tarball/v0.3.2'
   md5 'c5f8c0af38b79a7a7b827d3f05f79e21'
 
