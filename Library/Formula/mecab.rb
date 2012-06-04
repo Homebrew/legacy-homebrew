@@ -2,8 +2,8 @@ require 'formula'
 
 class Mecab < Formula
   homepage 'http://mecab.sourceforge.net/'
-  url 'http://mecab.googlecode.com/files/mecab-0.993.tar.gz'
-  sha1 '7e5daa765e83fe0f5d46f33a3b96dfab49299946'
+  url 'http://mecab.googlecode.com/files/mecab-0.994.tar.gz'
+  sha1 '5fcad4b7ccc2b5f6f37dea9ef6f2ef602bb92d54'
 
   def install
     system "./configure", "--disable-dependency-tracking",
