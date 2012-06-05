@@ -313,9 +313,16 @@ module MacOS extend self
     end
   end
 
+  def x11_prefix
+    @x11_prefix ||= if Pathname.new('/opt/X11/lib/libpng.dylib').exist?
+      Pathname.new('/opt/X11')
+    elsif Pathname.new('/usr/X11/lib/libpng.dylib').exist?
+      Pathname.new('/usr/X11')
+    end
+  end
+
   def x11_installed?
-    # Even if only Xcode (without CLT) is installed, this dylib is there.
-    Pathname.new('/usr/X11/lib/libpng.dylib').exist?
+    not x11_prefix.nil?
   end
 
   def macports_or_fink_installed?
