@@ -15,24 +15,13 @@ end
 
 class Ghc < Formula
   homepage 'http://haskell.org/ghc/'
-  version '7.0.4'
+  version '7.4.1'
   if Hardware.is_64_bit? and not ARGV.build_32_bit?
-    url "http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-x86_64-apple-darwin.tar.bz2"
-    md5 'af89d3d2ca6e9b23384baacb7d8161dd'
+    url 'http://www.haskell.org/ghc/dist/7.4.1/ghc-7.4.1-x86_64-apple-darwin.tar.bz2'
+    sha1 '1acdb6aba3172b28cea55037e58edb2aff4b656d'
   else
-    url "http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2"
-    md5 'ce297e783d113cf1547386703d1b1061'
-  end
-
-  devel do
-    version '7.4.1'
-    if Hardware.is_64_bit? and not ARGV.build_32_bit?
-      url "http://www.haskell.org/ghc/dist/7.4.1/ghc-7.4.1-x86_64-apple-darwin.tar.bz2"
-      md5 '04a572f72c25e9d8fcbd7e9363d276bf'
-    else
-      url "http://www.haskell.org/ghc/dist/7.4.1/ghc-7.4.1-i386-apple-darwin.tar.bz2"
-      md5 '80243578b243224800f217e5e3060836'
-    end
+    url 'http://www.haskell.org/ghc/dist/7.4.1/ghc-7.4.1-i386-apple-darwin.tar.bz2'
+    sha1 '9d96a85b8ca7113a40d0d702d0822bf822d718bb'
   end
 
   depends_on NeedsSnowLeopard.new
