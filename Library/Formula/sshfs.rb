@@ -2,13 +2,13 @@ require 'formula'
 
 class Sshfs < Formula
   homepage 'http://fuse.sourceforge.net/sshfs.html'
-  url 'https://github.com/fuse4x/sshfs.git', :tag => 'sshfs_2_4_0'
+  url 'https://github.com/fuse4x/sshfs/tarball/sshfs_2_4_0'
+  md5 'c9ea547b9684ec4d85437393a2731322'
   version '2.4.0'
 
   depends_on 'pkg-config' => :build
   depends_on 'fuse4x'
   depends_on 'glib'
-  depends_on "automake" if MacOS.xcode_version >= "4.3"
 
   if MacOS.xcode_version >= "4.3"
     # remove the autoreconf if possible, no comment provided about why it is there

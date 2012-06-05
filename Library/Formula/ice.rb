@@ -8,10 +8,8 @@ class Ice < Formula
   depends_on 'berkeley-db'
   depends_on 'mcpp'
 
-  def patches
-    # Patch for Ice-3.4.1 to work with Berkely DB 5.X.
-    "http://gist.github.com/raw/459204/44183ae997afb8ec19148fec498a11d67b5ae8bf/Ice-3.4.1-db5.patch"
-  end
+  # Patch for Ice-3.4.1 to work with Berkely DB 5.X.
+  def patches; DATA; end
 
   def options
     [
@@ -46,3 +44,21 @@ class Ice < Formula
     end
   end
 end
+
+__END__
+--- ./cpp/src/Freeze/MapI.cpp   
++++ ./cpp/src/Freeze/MapI.cpp                                      
+@@ -1487,10 +1487,10 @@ Freeze::MapHelperI::size() const
+
+     try
+     {
+-#if DB_VERSION_MAJOR != 4
+-#error Freeze requires DB 4.x
++#if DB_VERSION_MAJOR < 4
++#error Freeze requires DB 4.x or greater
+ #endif
+-#if DB_VERSION_MINOR < 3
++#if DB_VERSION_MAJOR == 4 && DB_VERSION_MINOR < 3
+         _db->stat(&s, 0);
+ #else
+         _db->stat(_connection->dbTxn(), &s, 0);

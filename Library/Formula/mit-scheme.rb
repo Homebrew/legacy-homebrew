@@ -1,10 +1,10 @@
 require 'formula'
 
 class MitScheme < Formula
-  url 'http://ftpmirror.gnu.org/mit-scheme/stable.pkg/9.0.1/mit-scheme-c-9.0.1.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/mit-scheme/stable.pkg/9.0.1/mit-scheme-c-9.0.1.tar.gz'
   homepage 'http://www.gnu.org/software/mit-scheme/'
-  md5 '92884092806dd075f103cd1e9996413c'
+  url 'http://ftpmirror.gnu.org/mit-scheme/stable.pkg/9.1.1/mit-scheme-c-9.1.1.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/mit-scheme/stable.pkg/9.1.1/mit-scheme-c-9.1.1.tar.gz'
+  md5 '89abdc6702388591e18bd14b93f7b548'
 
   # Do not strip the binaries, this will cause missing symbol errors on launch
   skip_clean :all

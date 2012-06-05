@@ -14,7 +14,7 @@ class Jack < Formula
   end
 
   def install
-    ENV['LINKFLAGS'] = ENV['LDFLAGS']
+    ENV['LINKFLAGS'] = ENV.ldflags
     system "./waf","configure","--prefix=#{prefix}"
     system "./waf","build"
     system "./waf","install"

@@ -33,7 +33,7 @@ module Homebrew extend self
       end
     end
   rescue MultipleVersionsInstalledError => e
-    onoe e
+    ofail e
     puts "Use `brew remove --force #{e.name}` to remove all versions."
   end
 end

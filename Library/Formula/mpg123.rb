@@ -2,20 +2,15 @@ require 'formula'
 
 class Mpg123 < Formula
   homepage 'http://www.mpg123.de/'
-  url 'http://downloads.sourceforge.net/project/mpg123/mpg123/1.13.6/mpg123-1.13.6.tar.bz2'
-  sha1 '61ae9edb105d4051858fe636fb2e54bd275cdfd9'
-
-  # mpg123 can't find its plugins if there are no la files
-  def skip_clean? path
-    path.extname == '.la'
-  end
+  url 'http://downloads.sourceforge.net/project/mpg123/mpg123/1.14.2/mpg123-1.14.2.tar.bz2'
+  mirror 'http://www.mpg123.de/download/mpg123-1.14.2.tar.bz2'
+  sha1 '887a453e49e3d49d539a712ee66a8d9da16e3325'
 
   def install
     args = ["--disable-debug", "--disable-dependency-tracking",
-            "--with-optimization=4",
             "--prefix=#{prefix}",
-            "--with-audio=coreaudio",
-            "--with-default-audio=coreaudio"]
+            '--with-default-audio=coreaudio',
+            '--with-module-suffix=.so']
 
     if MacOS.prefer_64_bit?
       args << "--with-cpu=x86-64"
@@ -24,14 +19,6 @@ class Mpg123 < Formula
     end
 
     system "./configure", *args
-
-    ['.', 'src', 'src/output', 'src/libmpg123'].each do |path|
-      inreplace "#{path}/Makefile" do |s|
-        # why do we do this?
-        s.change_make_var! "LDFLAGS", "-Wl,-read_only_relocs,suppress"
-      end
-    end
-
     system "make install"
   end
 end

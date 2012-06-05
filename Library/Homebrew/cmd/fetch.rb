@@ -26,6 +26,7 @@ module Homebrew extend self
         FileUtils.rm_rf where_to if File.exist? where_to
       end
 
+      already_downloaded = f.cached_download.exist?
       the_tarball, _ = f.fetch
       next unless the_tarball.kind_of? Pathname
 
@@ -35,6 +36,7 @@ module Homebrew extend self
       previous_sha1 = f.instance_variable_get(:@sha1).to_s.downcase
       previous_sha2 = f.instance_variable_get(:@sha256).to_s.downcase unless bottle
 
+      puts "Downloaded to: #{the_tarball}" unless already_downloaded
       puts "MD5:  #{the_tarball.md5}" unless bottle
       puts "SHA1: #{the_tarball.sha1}"
       puts "SHA256: #{the_tarball.sha2}" unless bottle

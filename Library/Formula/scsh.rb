@@ -8,6 +8,8 @@ class Scsh < Formula
   def install
     # will not build 64-bit
     ENV.m32
+    # build system is not parallel-safe
+    ENV.deparallelize
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--infodir=#{info}",

@@ -57,6 +57,6 @@ class Ffmbc < Formula
   end
 
   def test
-    system "#{bin}/ffmbc -h"
+    system "#{bin}/ffmbc", "-h"
   end
 end

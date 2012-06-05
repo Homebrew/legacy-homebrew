@@ -5,8 +5,10 @@ class Lua < Formula
   url 'http://www.lua.org/ftp/lua-5.1.4.tar.gz'
   md5 'd0870f2de55d59c1c8419f36e8fac150'
 
-  fails_with_llvm "Lua itself compiles with LLVM, but may fail when other software tries to link.",
-                  :build => 2326
+  fails_with :llvm do
+    build 2326
+    cause "Lua itself compiles with LLVM, but may fail when other software tries to link."
+  end
 
   # Skip cleaning both empty folders and bin/libs so external symbols still work.
   skip_clean :all

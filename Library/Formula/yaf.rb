@@ -9,7 +9,9 @@ class Yaf < Formula
   depends_on 'glib'
   depends_on 'libfixbuf'
 
-  fails_with_llvm "Undefined symbols during compile"
+  fails_with :llvm do
+    cause "Undefined symbols during compile"
+  end
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

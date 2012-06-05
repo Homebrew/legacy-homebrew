@@ -8,6 +8,6 @@ class Ioping < Formula
 
   def install
     system "make"
-    system "make install PREFIX=#{prefix}"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 end

@@ -7,7 +7,10 @@ class Libxml2 < Formula
 
   keg_only :provided_by_osx
 
-  fails_with_llvm "Undefined symbols when linking", :build => "2326"
+  fails_with :llvm do
+    build 2326
+    cause "Undefined symbols when linking"
+  end
 
   def options
     [

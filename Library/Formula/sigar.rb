@@ -66,7 +66,7 @@ class Sigar < Formula
 
     # Install Ruby bindings
     cd "bindings/ruby" do
-      system "ruby", "extconf.rb", "--prefix='#{prefix}'"
+      system "ruby", "extconf.rb", "--prefix=#{prefix}"
       system "make install"
     end if ARGV.include? "--ruby"
   end

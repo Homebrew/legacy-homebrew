@@ -10,7 +10,10 @@ class Gnutls < Formula
   depends_on 'libgcrypt'
   depends_on 'libtasn1' => :optional
 
-  fails_with_llvm "Undefined symbols when linking", :build => "2326"
+  fails_with :llvm do
+    build 2326
+    cause "Undefined symbols when linking"
+  end
 
   def install
     ENV.universal_binary # build fat so wine can use it

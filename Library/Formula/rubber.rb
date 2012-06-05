@@ -21,7 +21,7 @@ class Rubber < Formula
 
     # Don't need to peg to a specific Python version
     Dir["#{bin}/*"].each do |f|
-      inreplace f, "#{HOMEBREW_PREFIX}/bin/python", "/usr/bin/env python"
+      inreplace f, /^#!.*\/python.*$/, "#!/usr/bin/env python"
     end
   end
 end

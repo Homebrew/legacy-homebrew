@@ -17,7 +17,9 @@ class Vice < Formula
     end
   end
 
-  fails_with_llvm :build => 2335
+  fails_with :llvm do
+    build 2335
+  end
 
   def install
     ENV.libpng

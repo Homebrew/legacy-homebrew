@@ -1,12 +1,12 @@
 require 'formula'
 
 class SeleniumServerStandalone < Formula
-  url 'http://selenium.googlecode.com/files/selenium-server-standalone-2.16.1.jar'
+  url 'http://selenium.googlecode.com/files/selenium-server-standalone-2.21.0.jar'
   homepage 'http://seleniumhq.org/'
-  md5 'ce6e50d8c9114ffea5f712b93e088e5f'
+  sha1 '04faa9b9cc78c8fcc1f098fd8cdf1960e13d8d7d'
 
   def install
-    prefix.install "selenium-server-standalone-2.16.1.jar"
+    prefix.install "selenium-server-standalone-#{version}.jar"
     plist_path.write startup_plist
     plist_path.chmod 0644
   end
@@ -24,7 +24,7 @@ class SeleniumServerStandalone < Formula
         launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     Or start it manually with:
-      java -jar #{prefix}/selenium-server-standalone-2.16.1.jar -p 4444
+      java -jar #{prefix}/selenium-server-standalone-#{version}.jar -p 4444
     EOS
   end
 
@@ -44,7 +44,7 @@ class SeleniumServerStandalone < Formula
         <array>
                 <string>/usr/bin/java</string>
                 <string>-jar</string>
-                <string>#{prefix}/selenium-server-standalone-2.16.1.jar</string>
+                <string>#{prefix}/selenium-server-standalone-#{version}.jar</string>
                 <string>-port</string>
                 <string>4444</string>
         </array>

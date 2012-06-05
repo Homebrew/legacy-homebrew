@@ -2,20 +2,22 @@ require 'formula'
 
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.6.13/node-v0.6.13.tar.gz'
-  md5 '87078586e226fd7a4db60d38bea9aad6'
+  url 'http://nodejs.org/dist/v0.6.18/node-v0.6.18.tar.gz'
+  md5 '4a3d3123ccc7b9b21c1990fe074e3d14'
 
   head 'https://github.com/joyent/node.git'
 
   devel do
-    url 'http://nodejs.org/dist/v0.7.6/node-v0.7.6.tar.gz'
-    md5 '09f336ce0247bb316550cfe21ff92dd6'
+    url 'http://nodejs.org/dist/v0.7.9/node-v0.7.9.tar.gz'
+    md5 '4f5485d1eda670fec93f4d8398c2b3ec'
   end
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.leopard?
 
-  fails_with_llvm :build => 2326
+  fails_with :llvm do
+    build 2326
+  end
 
   # Stripping breaks dynamic loading
   skip_clean :all

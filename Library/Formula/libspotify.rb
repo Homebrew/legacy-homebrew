@@ -2,21 +2,21 @@ require 'formula'
 
 class Libspotify < Formula
   homepage 'http://developer.spotify.com/en/libspotify/overview/'
-  url "http://developer.spotify.com/download/libspotify/libspotify-10.1.16-Darwin-universal.zip"
-  md5 'd26c3f34b7416ffcfdf27b525b7febeb'
+  url "http://developer.spotify.com/download/libspotify/libspotify-11.1.60-Darwin-universal.zip"
+  md5 '655e5648a6b2132df770270257a4c47c'
 
   def install
-    (include+'libspotify').install "libspotify.framework/Versions/10.1.16/Headers/api.h"
-    lib.install "libspotify.framework/Versions/10.1.16/libspotify" => "libspotify.10.1.16.dylib"
+    (include+'libspotify').install "libspotify.framework/Versions/11.1.60/Headers/api.h"
+    lib.install "libspotify.framework/Versions/11.1.60/libspotify" => "libspotify.11.1.60.dylib"
     doc.install Dir['docs/*']
     man3.install Dir['man3/*']
 
     cd lib
-    ln_s "libspotify.10.1.16.dylib", "libspotify.dylib"
-    ln_s "libspotify.10.1.16.dylib", "libspotify.10.dylib"
+    ln_s "libspotify.11.1.60.dylib", "libspotify.dylib"
+    ln_s "libspotify.11.1.60.dylib", "libspotify.11.dylib"
 
     system "install_name_tool", "-id",
-           "#{HOMEBREW_PREFIX}/lib/libspotify.10.1.16.dylib",
+           "#{HOMEBREW_PREFIX}/lib/libspotify.11.1.60.dylib",
            "libspotify.dylib"
 
     (lib+'pkgconfig/libspotify.pc').write pc_content

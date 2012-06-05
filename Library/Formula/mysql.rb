@@ -2,14 +2,17 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.5/en/'
-  url 'http://downloads.mysql.com/archives/mysql-5.5/mysql-5.5.20.tar.gz'
-  md5 '375794ebf84b4c7b63f1676bc7416cd0'
+  url 'http://downloads.mysql.com/archives/mysql-5.5/mysql-5.5.24.tar.gz'
+  md5 'dc84f8a0305e054c859533944e79f803'
 
   depends_on 'cmake' => :build
   depends_on 'readline'
   depends_on 'pidof'
 
-  fails_with_llvm "https://github.com/mxcl/homebrew/issues/issue/144", :build => 2326
+  fails_with :llvm do
+    build 2326
+    cause "https://github.com/mxcl/homebrew/issues/issue/144"
+  end
 
   skip_clean :all # So "INSTALL PLUGIN" can work.
 
@@ -25,9 +28,11 @@ class Mysql < Formula
     ]
   end
 
-  def patches
-    DATA
-  end
+  # Remove optimization flags from `mysql_config --cflags`
+  # This facilitates easy compilation of gems using a brewed mysql
+  # CMake patch needed for CMake 2.8.8.
+  # Reported here: http://bugs.mysql.com/bug.php?id=65050
+  def patches; DATA; end
 
   def install
     # Make sure the var/mysql directory exists
@@ -159,22 +164,6 @@ end
 
 
 __END__
-diff --git a/scripts/mysqld_safe.sh b/scripts/mysqld_safe.sh
-index 0d2045a..2fdd5ce 100644
---- a/scripts/mysqld_safe.sh
-+++ b/scripts/mysqld_safe.sh
-@@ -558,7 +558,7 @@ else
- fi
- 
- USER_OPTION=""
--if test -w / -o "$USER" = "root"
-+if test -w /sbin -o "$USER" = "root"
- then
-   if test "$user" != "root" -o $SET_USER = 1
-   then
-
-# Remove optimization flags from `mysql-config --cflags`
-# This facilitates easy compilation of gems using a brewed mysql
 diff --git a/scripts/mysql_config.sh b/scripts/mysql_config.sh
 index 9296075..70c18db 100644
 --- a/scripts/mysql_config.sh
@@ -190,3 +179,18 @@ index 9296075..70c18db 100644
  do
    # The first option we might strip will always have a space before it because
    # we set -I$pkgincludedir as the first option
+diff --git a/configure.cmake b/configure.cmake
+index c3cc787..6193481 100644
+--- a/configure.cmake
++++ b/configure.cmake
+@@ -149,7 +149,9 @@ IF(UNIX)
+   SET(CMAKE_REQUIRED_LIBRARIES
+     ${LIBM} ${LIBNSL} ${LIBBIND} ${LIBCRYPT} ${LIBSOCKET} ${LIBDL} ${CMAKE_THREAD_LIBS_INIT} ${LIBRT})
+
+-  LIST(REMOVE_DUPLICATES CMAKE_REQUIRED_LIBRARIES)
++  IF(CMAKE_REQUIRED_LIBRARIES)
++    LIST(REMOVE_DUPLICATES CMAKE_REQUIRED_LIBRARIES)
++  ENDIF()
+   LINK_LIBRARIES(${CMAKE_THREAD_LIBS_INIT})
+
+   OPTION(WITH_LIBWRAP "Compile with tcp wrappers support" OFF)

@@ -5,7 +5,7 @@ class SagaCore < Formula
   url 'http://download.saga.cct.lsu.edu/saga-core/saga-core-1.6.tgz'
   md5 'a5cda84bdae1f96646f39fda0aa7db73'
 
-  head 'https://svn.cct.lsu.edu/repos/saga/core/trunk/', :using => :svn
+  head 'https://svn.cct.lsu.edu/repos/saga/core/trunk/'
 
   depends_on 'boost'
   depends_on 'postgresql'

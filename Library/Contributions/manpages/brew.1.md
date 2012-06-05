@@ -142,8 +142,8 @@ For the full command list, see the COMMANDS section.
   * `install [--force] [--debug] [--ignore-dependencies] [--fresh] [--use-clang] [--use-gcc] [--use-llvm] [--build-from-source] [--devel] [--HEAD]` <formula>:
     Install <formula>.
 
-    <formula> is usually the name of the formula to install, but may also be
-    the URL for an arbitrary formula.
+    <formula> is usually the name of the formula to install, but it can be specified
+    several different ways. See [SPECIFYING FORMULAE][].
 
     If `--force` is passed, will install <formula> if it exists, even if it
     is blacklisted.
@@ -337,6 +337,24 @@ by default:
 Documentation for the included external commands as well as instructions for
 creating your own can be found on the wiki:
 <http://wiki.github.com/mxcl/homebrew/External-Commands>
+
+## SPECIFYING FORMULAE
+
+Many Homebrew commands accept one or more <formula> arguments. These arguments
+can take several different forms:
+
+  * The name of a formula:
+    e.g. `git`, `node`, `wget`.
+
+  * The fully-qualified name of a tapped formula:
+    Sometimes a formula from a tapped repository may conflict with one in mxcl/master.
+    You can still access these formulae by using a special syntax, e.g.
+    `homebrew/dupes/vim` or `homebrew/versions/node4`.
+
+  * An arbitrary URL:
+    Homebrew can install formulae via URL, e.g.
+    `https://raw.github.com/mxcl/homebrew/master/Library/Formula/git.rb`.
+    The formula file will be cached for later use.
 
 ## ENVIRONMENT
 

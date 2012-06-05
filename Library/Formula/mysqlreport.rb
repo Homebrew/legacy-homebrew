@@ -1,8 +1,12 @@
 require 'formula'
 
-class Mysqlreport < ScriptFileFormula
-  url 'http://hackmysql.com/scripts/mysqlreport'
-  version '3.5'
+class Mysqlreport < Formula
   homepage 'http://hackmysql.com/mysqlreport'
-  md5 'cdad8742d2f6e7f5b296a4d1620dfa18'
+  url 'http://hackmysql.com/scripts/mysqlreport-3.5.tgz'
+  md5 '33a345f5e2c89b083a9ff0423f7fd7b4'
+
+  def install
+    bin.install "mysqlreport"
+    doc.install Dir["*.html"]
+  end
 end

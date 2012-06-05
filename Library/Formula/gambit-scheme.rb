@@ -2,8 +2,8 @@ require 'formula'
 
 class GambitScheme < Formula
   homepage 'http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page'
-  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.6/source/gambc-v4_6_4.tgz'
-  md5 'f4a65f834b36b7ffbd0292021889a8e3'
+  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.6/source/gambc-v4_6_5.tgz'
+  sha256 '54de513a78f0fb1841ef1411b8f2d64a2bd6810cee7554fe408b0ba79ff00910'
 
   def options
     [
@@ -14,7 +14,10 @@ class GambitScheme < Formula
 
   skip_clean :all
 
-  fails_with_llvm "ld crashes during the build process or segfault at runtime", :build => 2335
+  fails_with :llvm do
+    build 2335
+    cause "ld crashes during the build process or segfault at runtime"
+  end
 
   def install
     args = ["--disable-debug",
@@ -24,6 +27,14 @@ class GambitScheme < Formula
             # of the generated executables. Increases compilation times.
             "--enable-single-host"]
     args << "--enable-shared" if ARGV.include? '--enable-shared'
+
+    unless ENV.compiler == :gcc
+      opoo <<-EOS.undent
+        Compiling Gambit Scheme with Clang or LLVM-GCC takes a very long time.
+        If you have GCC, you can compile it much faster with:
+          brew install gambit-scheme --use-gcc
+        EOS
+    end
 
     system "./configure", *args
     system "make check" if ARGV.include? '--with-check'

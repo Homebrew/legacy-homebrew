@@ -9,7 +9,7 @@ class Keg < Pathname
 
   # locale-specific directories have the form language[_territory][.codeset][@modifier]
   LOCALEDIR_RX = /(locale|man)\/([a-z]{2}|C|POSIX)(_[A-Z]{2})?(\.[a-zA-Z\-0-9]+(@.+)?)?/
-  INFOFILE_RX = %r[info/[^.].*?\.info$]
+  INFOFILE_RX = %r[info/([^.].*?\.info|dir)$]
 
   # if path is a file in a keg then this will return the containing Keg object
   def self.for path
@@ -29,15 +29,17 @@ class Keg < Pathname
 
   def unlink
     n=0
-    Pathname.new(self).find do |src|
-      next if src == self
-      dst=HOMEBREW_PREFIX+src.relative_path_from(self)
-      next unless dst.symlink?
-      dst.uninstall_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
-      dst.unlink
-      dst.parent.rmdir_if_possible
-      n+=1
-      Find.prune if src.directory?
+    %w[bin etc lib include sbin share var].map{ |d| self/d }.each do |src|
+      src.find do |src|
+        next if src == self
+        dst=HOMEBREW_PREFIX+src.relative_path_from(self)
+        next unless dst.symlink?
+        dst.uninstall_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
+        dst.unlink
+        dst.parent.rmdir_if_possible
+        n+=1
+        Find.prune if src.directory?
+      end
     end
     linked_keg_record.unlink if linked_keg_record.exist?
     n
@@ -75,9 +77,10 @@ class Keg < Pathname
     link_dir('share') do |path|
       case path.to_s
       when 'locale/locale.alias' then :skip_file
-      when INFOFILE_RX then :info if ENV['HOMEBREW_KEEP_INFO']
+      when INFOFILE_RX then ENV['HOMEBREW_KEEP_INFO'] ? :info : :skip_file
       when LOCALEDIR_RX then :mkpath
       when *share_mkpaths then :mkpath
+      when /^zsh/ then :mkpath
       else :link
       end
     end
@@ -95,7 +98,7 @@ class Keg < Pathname
       when /^ocaml/ then :mkpath
       when /^perl5/ then :mkpath
       when 'php' then :mkpath
-      when /^python[23]\.\d$/ then :mkpath
+      when /^python[23]\.\d/ then :mkpath
       when 'ruby' then :mkpath
       # Everything else is symlinked to the cellar
       else :link
@@ -146,9 +149,10 @@ protected
         Find.prune if File.basename(src) == '.DS_Store'
 
         case yield src.relative_path_from(root)
-        when :skip_file
+        when :skip_file, nil
           Find.prune
         when :info
+          next if File.basename(src) == 'dir' # skip historical local 'dir' files
           make_relative_symlink dst, src
           dst.install_info
         else

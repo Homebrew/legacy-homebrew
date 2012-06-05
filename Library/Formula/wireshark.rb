@@ -2,12 +2,12 @@ require 'formula'
 
 class Wireshark < Formula
   homepage 'http://www.wireshark.org'
-  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.6.5.tar.bz2'
-  md5 '794948a10d387fc8e37d824ea11dbac9'
+  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.6.8.tar.bz2'
+  sha1 'fb79058c66944581b822e4d8370848f953cfc9d4'
 
   devel do
-    url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.7.0.tar.bz2'
-    md5 'c9f646a15fed6e31c4aa88322b8cce2a'
+    url 'http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.7.1.tar.bz2'
+    sha1 '8f49b60c971ffd4857cb05afa82e22152261645f'
   end
 
   depends_on 'pkg-config' => :build
@@ -42,20 +42,20 @@ class Wireshark < Formula
   end
 
   def caveats; <<-EOS.undent
-      If your list of available capture interfaces is empty
-      (default OS X behavior), try the following commands:
+    If your list of available capture interfaces is empty
+    (default OS X behavior), try the following commands:
 
-        wget https://bugs.wireshark.org/bugzilla/attachment.cgi?id=3373 -O ChmodBPF.tar.gz
-        tar zxvf ChmodBPF.tar.gz
-        open ChmodBPF/Install\\ ChmodBPF.app
+      curl https://bugs.wireshark.org/bugzilla/attachment.cgi?id=3373 -o ChmodBPF.tar.gz
+      tar zxvf ChmodBPF.tar.gz
+      open ChmodBPF/Install\\ ChmodBPF.app
 
-      This adds a launch daemon that changes the permissions of your BPF
-      devices so that all users in the 'admin' group - all users with
-      'Allow user to administer this computer' turned on - have both read
-      and write access to those devices.
+    This adds a launch daemon that changes the permissions of your BPF
+    devices so that all users in the 'admin' group - all users with
+    'Allow user to administer this computer' turned on - have both read
+    and write access to those devices.
 
-      See bug report:
-        https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=3760
+    See bug report:
+      https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=3760
     EOS
   end
 end

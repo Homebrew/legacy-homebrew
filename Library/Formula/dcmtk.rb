@@ -12,13 +12,15 @@ class Dcmtk < Formula
     [['--with-docs', 'Install development libraries/headers and HTML docs']]
   end
 
-  # fails_with_clang: https://github.com/mxcl/homebrew/issues/10884#issuecomment-4467514
+  fails_with :clang do
+    build 318
+  end
 
   def install
     ENV.m64 if MacOS.prefer_64_bit?
     ENV.x11
 
-    args = std_cmake_parameters.split
+    args = std_cmake_args
     args << '-DDCMTK_WITH_DOXYGEN=YES' if ARGV.include? '--with-docs'
 
     mkdir 'build' do

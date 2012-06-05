@@ -2,8 +2,8 @@ require 'formula'
 
 class Bazaar < Formula
   homepage 'http://bazaar-vcs.org/'
-  url 'http://launchpad.net/bzr/2.4/2.4.2/+download/bzr-2.4.2.tar.gz'
-  md5 'cfc06fddd348445c65a247c0b33a05db'
+  url 'https://launchpad.net/bzr/2.5/2.5.1/+download/bzr-2.5.1.tar.gz'
+  md5 'ac5079858364a046071000d5cdccb67b'
 
   def options
     [["--system", "Install using the OS X system Python."]]

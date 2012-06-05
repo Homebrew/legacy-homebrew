@@ -7,6 +7,11 @@ class Jasper < Formula
 
   depends_on 'jpeg'
 
+  fails_with :llvm do
+    build 2326
+    cause "Undefined symbols when linking"
+  end
+
   def options
     [["--universal", "Build a universal binary."]]
   end
@@ -16,8 +21,6 @@ class Jasper < Formula
   # an alpha channel. See:
   # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=469786
   def patches; DATA; end
-
-  fails_with_llvm "Undefined symbols when linking", :build => "2326"
 
   def install
     ENV.universal_binary if ARGV.build_universal?

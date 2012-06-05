@@ -13,8 +13,8 @@ end
 
 class R < Formula
   homepage 'http://www.r-project.org'
-  url 'http://cran.r-project.org/src/base/R-2/R-2.14.2.tar.gz'
-  md5 'f5c8657543a293a80d025be58cf1ef71'
+  url 'http://cran.r-project.org/src/base/R-2/R-2.15.0.tar.gz'
+  md5 '905f638990492618559202cc1e48a867'
 
   depends_on 'readline'
   depends_on 'libtiff'

@@ -7,13 +7,15 @@ require 'bottles'
 
 class FormulaInstaller
   attr :f
+  attr :tab
   attr :show_summary_heading, true
   attr :ignore_deps, true
   attr :install_bottle, true
   attr :show_header, true
 
-  def initialize ff
+  def initialize ff, tab=nil
     @f = ff
+    @tab = tab
     @show_header = true
     @ignore_deps = ARGV.include? '--ignore-dependencies' || ARGV.interactive?
     @install_bottle = install_bottle? ff
@@ -111,9 +113,10 @@ class FormulaInstaller
   end
 
   def install_dependency dep
+    dep_tab = Tab.for_formula(dep)
     outdated_keg = Keg.new(dep.linked_keg.realpath) rescue nil
 
-    fi = FormulaInstaller.new dep
+    fi = FormulaInstaller.new(dep, dep_tab)
     fi.ignore_deps = true
     fi.show_header = false
     oh1 "Installing #{f} dependency: #{dep}"
@@ -179,8 +182,12 @@ class FormulaInstaller
 
     args = ARGV.clone
     unless args.include? '--fresh'
-      previous_install = Tab.for_formula f
-      args.concat previous_install.used_options
+      unless tab.nil?
+        args.concat tab.used_options
+        # FIXME: enforce the download of the non-bottled package
+        # in the spawned Ruby process.
+        args << '--build-from-source'
+      end
       args.uniq! # Just in case some dupes were added
     end
 
@@ -188,7 +195,7 @@ class FormulaInstaller
       begin
         read.close
         exec '/usr/bin/nice',
-             '/usr/bin/ruby',
+             '/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby',
              '-I', Pathname.new(__FILE__).dirname,
              '-rbuild',
              '--',
@@ -266,12 +273,6 @@ class FormulaInstaller
     @paths ||= ENV['PATH'].split(':').map{ |p| File.expand_path p }
   end
 
-  def in_aclocal_dirlist?
-    File.open("/usr/share/aclocal/dirlist") do |dirlist|
-      dirlist.grep(%r{^#{HOMEBREW_PREFIX}/share/aclocal$}).length > 0
-    end rescue false
-  end
-
   def check_PATH
     # warn the user if stuff was installed outside of their PATH
     [f.bin, f.sbin].each do |bin|
@@ -325,11 +326,12 @@ class FormulaInstaller
   def check_non_libraries
     return unless File.exist? f.lib
 
-    valid_libraries = %w(.a .dylib .framework .la .so)
+    valid_libraries = %w(.a .dylib .framework .jnilib .la .o .so)
+    allowed_non_libraries = %w(.jar .prl .pm)
     non_libraries = f.lib.children.select do |g|
       next if g.directory?
       extname = g.extname
-      (extname != ".jar") and (not valid_libraries.include? extname)
+      (not allowed_non_libraries.include? extname) and (not valid_libraries.include? extname)
     end
 
     unless non_libraries.empty?
@@ -377,8 +379,12 @@ class FormulaInstaller
   def check_m4
     return if MacOS.xcode_version.to_f >= 4.3
 
+    return if File.open("/usr/share/aclocal/dirlist") do |dirlist|
+      dirlist.grep(%r{^#{HOMEBREW_PREFIX}/share/aclocal$}).length > 0
+    end rescue false
+
     # Check for m4 files
-    if Dir[f.share+"aclocal/*.m4"].length > 0 and not in_aclocal_dirlist?
+    if Dir[f.share+"aclocal/*.m4"].length > 0
       opoo 'm4 macros were installed to "share/aclocal".'
       puts "Homebrew does not append \"#{HOMEBREW_PREFIX}/share/aclocal\""
       puts "to \"/usr/share/aclocal/dirlist\". If an autoconf script you use"

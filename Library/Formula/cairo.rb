@@ -11,10 +11,12 @@ class Cairo < Formula
   keg_only :provided_by_osx,
             "The Cairo provided by Leopard is too old for newer software to link against."
 
-  fails_with_llvm "Throws an 'lto could not merge' error during build.", :build => 2336
+  fails_with :llvm do
+    build 2336
+    cause "Throws an 'lto could not merge' error during build."
+  end
 
   def install
-    ENV.x11
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}

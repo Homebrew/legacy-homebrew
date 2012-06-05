@@ -13,7 +13,7 @@ class Qrupdate < Formula
     inreplace 'Makeconf' do |s|
       # as per the caveats in the gfortran formula:
       s.gsub! /^(FC=).*/, "\\1#{HOMEBREW_PREFIX}/bin/gfortran"
-      s.gsub! /^(FFLAGS=).*/, "\\1"+ENV["CFLAGS"]
+      s.gsub! /^(FFLAGS=).*/, "\\1"+ENV["FCFLAGS"]
       s.gsub! /^(BLAS=).*/, "\\1#{ENV["LDFLAGS"]} -ldotwrp -framework Accelerate"
       s.gsub! /^(LAPACK=).*/, "\\1#{ENV["LDFLAGS"]} -ldotwrp -framework Accelerate"
     end

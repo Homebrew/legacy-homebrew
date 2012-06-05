@@ -1,15 +1,26 @@
 require 'pathname'
 require 'bottles'
+require 'mach'
 
 # we enhance pathname to make our code more readable
 class Pathname
+  include MachO
+
   def install *sources
     results = []
     sources.each do |src|
       case src
       when Array
+        if src.empty?
+          opoo "tried to install empty array to #{self}"
+          return []
+        end
         src.each {|s| results << install_p(s) }
       when Hash
+        if src.empty?
+          opoo "tried to install empty hash to #{self}"
+          return []
+        end
         src.each {|s, new_basename| results << install_p(s, new_basename) }
       else
         results << install_p(src)
@@ -109,9 +120,9 @@ class Pathname
   end
 
   # extended to support common double extensions
+  alias extname_old extname
   def extname
     return $1 if to_s =~ bottle_regex
-    # old brew bottle style
     return $1 if to_s =~ old_bottle_regex
     /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
     return $1 if $1
@@ -206,8 +217,10 @@ class Pathname
     return $1 if $1
 
     # eg. foobar4.5.1
-    /((\d+\.)*\d+)$/.match stem
-    return $1 if $1
+    unless /^erlang-/.match basename
+      /((\d+\.)*\d+)$/.match stem
+      return $1 if $1
+    end
 
     # eg foobar-4.5.0-bin
     /-((\d+\.)+\d+[abc]?)[-._](bin|dist|stable|src|sources?)$/.match stem
@@ -228,6 +241,40 @@ class Pathname
     return $1 if $1
 
     nil
+  end
+
+  def compression_type
+    # Don't treat jars or wars as compressed
+    return nil if self.extname == '.jar'
+    return nil if self.extname == '.war'
+
+    # OS X installer package
+    return :pkg if self.extname == '.pkg'
+
+    # Get enough of the file to detect common file types
+    # POSIX tar magic has a 257 byte offset
+    magic_bytes = nil
+    File.open(self) { |f| magic_bytes = f.read(262) }
+
+    # magic numbers stolen from /usr/share/file/magic/
+    case magic_bytes
+    when /^PK\003\004/   then :zip
+    when /^\037\213/     then :gzip
+    when /^BZh/          then :bzip2
+    when /^\037\235/     then :compress
+    when /^.{257}ustar/  then :tar
+    when /^\xFD7zXZ\x00/ then :xz
+    when /^Rar!/         then :rar
+    else
+      # Assume it is not an archive
+      nil
+    end
+  end
+
+  def text_executable?
+    %r[#!\s*(/.+)+] === open('r') { |f| f.readline }
+  rescue EOFError
+    false
   end
 
   def incremental_hash(hasher)
@@ -285,11 +332,23 @@ class Pathname
       # NOTE only system ln -s will create RELATIVE symlinks
       quiet_system 'ln', '-s', src.relative_path_from(self.dirname), self.basename
       if not $?.success?
-        raise <<-EOS.undent
-          Could not symlink file: #{src.expand_path}
-          Check #{self} does not already exist.
-          Check #{dirname} is writable.
-        EOS
+        if self.exist?
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            Target #{self} already exists. You may need to delete it.
+            EOS
+        elsif !dirname.writable?
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            #{dirname} is not writable. You should change its permissions.
+            EOS
+        else
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            #{self} may already exist.
+            #{dirname} may not be writable.
+            EOS
+        end
       end
     end
   end
@@ -373,7 +432,6 @@ module ObserverPathnameExtension
   end
   def make_relative_symlink src
     super
-    puts "ln #{to_s}" if ARGV.verbose?
     $n+=1
   end
   def install_info

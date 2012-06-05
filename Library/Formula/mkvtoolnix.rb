@@ -12,12 +12,16 @@ class Mkvtoolnix < Formula
   depends_on 'flac' => :optional
   depends_on 'lzo' => :optional
 
+  fails_with :clang do
+    build 318
+  end
+
   def install
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--with-boost-libdir=#{HOMEBREW_PREFIX}/lib", # For non-/usr/local prefix
                           "--with-boost-regex=boost_regex-mt" # via macports
-    system "./drake -j#{ENV.make_jobs}"
+    system "./drake", "-j#{ENV.make_jobs}"
     system "./drake install"
   end
 end

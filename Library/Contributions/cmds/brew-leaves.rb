@@ -10,9 +10,9 @@ def get_used_by
     next if f.deps == nil
 
     f.deps.each do |dep|
-      _deps = used_by[dep] || []
+      _deps = used_by[dep.to_s] || []
       _deps << f.name unless _deps.include? f.name
-      used_by[dep] = _deps
+      used_by[dep.to_s] = _deps
     end
   end
 
@@ -23,5 +23,5 @@ deps_graph = get_used_by()
 installed = HOMEBREW_CELLAR.children.select { |pn| pn.directory? }.collect { |pn| pn.basename.to_s }
 installed.each do |name|
   deps = deps_graph[name] || []
-  puts name unless deps.any? { |dep| installed.include? dep }
+  puts name unless deps.any? { |dep| installed.include? dep.to_s }
 end

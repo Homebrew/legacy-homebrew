@@ -2,21 +2,21 @@ require 'formula'
 
 class ScalaDocs < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.1-1-devel-docs.tgz'
-  md5 '6bfdd990c379c1b2c87335c89f6c444c'
+  url 'http://www.scala-lang.org/downloads/distrib/files/scala-docs-2.9.2.zip'
+  md5 '48d9102789bf696d3d8621fb24ed47da'
 end
 
 class ScalaCompletion < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'https://raw.github.com/scala/scala-dist/27bc0c25145a8/completion.d/2.9.1/scala'
+  url 'https://raw.github.com/scala/scala-dist/27bc0c25145a83691e3678c7dda602e765e13413/completion.d/2.9.1/scala'
   version '2.9.1'
   md5 '40cb02604b718fd0977a12d932b9e693'
 end
 
 class Scala < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.1-1.tgz'
-  md5 'bde2427b3f56e9c5ccb86a4376ac0d93'
+  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.2.tgz'
+  md5 'bc1f68ce3f989347231f2e23784deee9'
 
   def options
     [['--with-docs', 'Also install library documentation']]

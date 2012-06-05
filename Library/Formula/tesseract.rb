@@ -89,8 +89,8 @@ class TesseractEnglishData < Formula
 end
 
 class Tesseract < Formula
-  url 'http://tesseract-ocr.googlecode.com/files/tesseract-3.01.tar.gz'
   homepage 'http://code.google.com/p/tesseract-ocr/'
+  url 'http://tesseract-ocr.googlecode.com/files/tesseract-3.01.tar.gz'
   md5 '1ba496e51a42358fb9d3ffe781b2d20a'
 
   depends_on 'libtiff'
@@ -102,8 +102,10 @@ class Tesseract < Formula
     depends_on "libtool" => :build
   end
 
-  fails_with_llvm "Executable 'tesseract' segfaults on 10.6 when compiled with llvm-gcc",
-                  :build => "2206"
+  fails_with :llvm do
+    build 2206
+    cause "Executable 'tesseract' segfaults on 10.6 when compiled with llvm-gcc"
+  end
 
   # mftraining has a missing symbols error when cleaned
   skip_clean 'bin'
@@ -117,7 +119,7 @@ class Tesseract < Formula
 
     # explicitly state leptonica header location, as the makefile defaults to /usr/local/include,
     # which doesn't work for non-default homebrew location
-    ENV['LIBLEPT_HEADERSDIR'] = "#{HOMEBREW_PREFIX}/include"
+    ENV['LIBLEPT_HEADERSDIR'] = HOMEBREW_PREFIX/"include"
 
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"

@@ -10,6 +10,6 @@ class Tkdiff < Formula
   end
 
   def test
-    system "#{bin}/tkdiff --help"
+    system "#{bin}/tkdiff", "--help"
   end
 end

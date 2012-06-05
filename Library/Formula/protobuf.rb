@@ -5,7 +5,9 @@ class Protobuf < Formula
   url 'http://protobuf.googlecode.com/files/protobuf-2.4.1.tar.bz2'
   sha1 'df5867e37a4b51fb69f53a8baf5b994938691d6d'
 
-  fails_with_llvm :build => 2334
+  fails_with :llvm do
+    build 2334
+  end
 
   def options
     [['--universal', 'Do a universal build']]
