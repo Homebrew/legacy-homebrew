@@ -437,8 +437,13 @@ module MacOS extend self
     end
   end
 
+  def x11_prefix
+    return Pathname.new('/opt/X11') if Pathname.new('/opt/X11/lib/libpng.dylib').exist?
+    return Pathname.new('/usr/X11') if Pathname.new('/usr/X11/lib/libpng.dylib').exist?
+  end
+
   def x11_installed?
-    Pathname.new('/usr/X11/lib/libpng.dylib').exist?
+    x11_prefix != nil
   end
 
   def macports_or_fink_installed?

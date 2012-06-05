@@ -262,15 +262,16 @@ Please take one of the following actions:
   end
 
   def x11
-    opoo "You do not have X11 installed, this formula may not build." if not MacOS.x11_installed?
+    prefix = MacOS.x11_prefix
+    opoo "You do not have X11 installed, this formula may not build." unless prefix
 
     # There are some config scripts (e.g. freetype) here that should go in the path
-    prepend 'PATH', '/usr/X11/bin', ':'
+    prepend 'PATH', prefix + 'bin', ':'
     # CPPFLAGS are the C-PreProcessor flags, *not* C++!
-    append 'CPPFLAGS', '-I/usr/X11/include'
-    append 'LDFLAGS', '-L/usr/X11/lib'
+    append 'CPPFLAGS', "-I#{prefix}/include"
+    append 'LDFLAGS', "-L#{prefix}/lib"
     # CMake ignores the variables above
-    append 'CMAKE_PREFIX_PATH', '/usr/X11', ':'
+    append 'CMAKE_PREFIX_PATH', prefix, ':'
   end
   alias_method :libpng, :x11
 
