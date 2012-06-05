@@ -2,9 +2,9 @@ require 'formula'
 
 class Gnunet < Formula
   homepage 'https://gnunet.org/'
-  url 'http://ftpmirror.gnu.org/gnunet/gnunet-0.9.1.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/gnunet/gnunet-0.9.1.tar.gz'
-  md5 'f5ff4c6a87e7b24047319af46113e5c3'
+  url 'http://ftpmirror.gnu.org/gnunet/gnunet-0.9.3.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/gnunet/gnunet-0.9.3.tar.gz'
+  sha256 '50586ba4f82c4890f191bd79b1bb6504a5e9b9f90371f0c011879f25f9cef15e'
 
   depends_on 'libgcrypt'
   depends_on 'libextractor'
