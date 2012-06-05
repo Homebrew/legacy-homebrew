@@ -1,22 +1,20 @@
 require 'formula'
 
 class AndroidSdk < Formula
-  url 'http://dl.google.com/android/android-sdk_r18-macosx.zip'
   homepage 'http://developer.android.com/index.html'
-  md5 '8328e8a5531c9d6f6f1a0261cb97af36'
+  url 'http://dl.google.com/android/android-sdk_r18-macosx.zip'
   version 'r18'
+  md5 '8328e8a5531c9d6f6f1a0261cb97af36'
 
+  # TODO docs and platform-tools
+  # See the long comment below for the associated problems
   def self.var_dirs
     %w[platforms samples temp add-ons sources system-images extras]
-    # TODO docs and platform-tools
-    # See the long comment below for the associated problems
   end
 
   skip_clean var_dirs
 
   def install
-    mkdir bin
-
     mv 'SDK Readme.txt', prefix/'README'
     mv 'tools', prefix
 
@@ -44,21 +42,20 @@ class AndroidSdk < Formula
       ADB="#{prefix}/platform-tools/adb"
       test -f "$ADB" && exec "$ADB" "$@"
       echo Use the \\`android\\' tool to install the \\"Android SDK Platform-tools\\".
-      EOS
+    EOS
   end
 
   def caveats; <<-EOS.undent
     Now run the `android' tool to install the actual SDK stuff.
 
-    NOTE you should tell Eclipse, IntelliJ etc. to use the Android-SDK found
-    here: #{prefix}
+    The Android-SDK location for IDEs such as Eclipse, IntelliJ etc is:
+      #{prefix}
 
     You will have to install the platform-tools and docs EVERY time this formula
     updates. If you want to try and fix this then see the comment in this formula.
 
     You may need to add the following to your .bashrc:
-
-       export ANDROID_SDK_ROOT=#{prefix}
+      export ANDROID_SDK_ROOT=#{prefix}
     EOS
   end
 
