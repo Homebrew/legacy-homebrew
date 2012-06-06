@@ -5,6 +5,8 @@ module MacOS extend self
   XCODE_3_BUNDLE_ID = "com.apple.Xcode"
   CLT_STANDALONE_PKG_ID = "com.apple.pkg.DeveloperToolsCLILeo"
   CLT_FROM_XCODE_PKG_ID = "com.apple.pkg.DeveloperToolsCLI"
+  APPLE_X11_BUNDLE_ID = "org.x.X11"
+  XQUARTZ_BUNDLE_ID = "org.macosforge.xquartz.X11"
 
   def version
     MACOS_VERSION
@@ -310,6 +312,16 @@ module MacOS extend self
     @clang_build_version ||= if locate("clang")
       `#{locate("clang")} --version` =~ %r[tags/Apple/clang-(\d{2,})]
       $1.to_i
+    end
+  end
+
+  def xquartz_version
+    # This returns the version number of XQuartz, not of the upstream X.org
+    # (which is why it is not called x11_version). Note that the X11.app
+    # distributed by Apple is also XQuartz, and therefore covered by this method.
+    path = app_with_bundle_id(XQUARTZ_BUNDLE_ID) or app_with_bundle_id(APPLE_X11_BUNDLE_ID)
+    version = if not path.nil? and path.exist?
+      `mdls -raw -name kMDItemVersion #{path}`.strip
     end
   end
 
