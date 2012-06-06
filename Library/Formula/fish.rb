@@ -13,6 +13,8 @@ class Fish < Formula
   depends_on 'readline'
   skip_clean 'share/doc'
 
+  conflicts_with "fishfish"
+
   def patches
     p = []
 
