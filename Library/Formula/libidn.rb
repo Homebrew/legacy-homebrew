@@ -2,9 +2,9 @@ require 'formula'
 
 class Libidn < Formula
   homepage 'http://www.gnu.org/software/libidn/'
-  url 'http://ftpmirror.gnu.org/libidn/libidn-1.23.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/libidn/libidn-1.23.tar.gz'
-  sha256 '25b42d75851ebae52e1c969353b74eefd3d6817f41c8d2a6db258f5ec60c5e6a'
+  url 'http://ftpmirror.gnu.org/libidn/libidn-1.25.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/libidn/libidn-1.25.tar.gz'
+  sha256 '7fe625328a6a5d837d723c462c1788affb84d9c9fc0ae5cd0ce9ac7724c34716'
 
   depends_on 'pkg-config' => :build
 
