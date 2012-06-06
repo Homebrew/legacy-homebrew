@@ -29,3 +29,5 @@ HOMEBREW_CELLAR.subdirs.each do |keg|
     end
   end
 end
+
+puts "Finished linking. Find the links under ~/Applications."
