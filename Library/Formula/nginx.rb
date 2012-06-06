@@ -3,11 +3,11 @@ require 'formula'
 class Nginx < Formula
   homepage 'http://nginx.org/'
   url 'http://nginx.org/download/nginx-1.2.1.tar.gz'
-  md5 'ceacae12d66d1f021bf3737a0269b6f4'
+  sha1 '4fb69411f6c3ebb5818005955a085e891e77b2d8'
 
   devel do
     url 'http://nginx.org/download/nginx-1.3.1.tar.gz'
-    md5 '228d2fb1ad53ba21c3a1cb5d84d21074'
+    sha1 '36a4147799e303a6f19cd8ff9fb52c2fc07a840d'
   end
 
   depends_on 'pcre'
