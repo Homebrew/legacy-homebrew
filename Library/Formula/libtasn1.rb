@@ -7,6 +7,7 @@ class Libtasn1 < Formula
   md5 'df27eaddcc46172377e6b907e33ddc83'
 
   def install
+    ENV.universal_binary
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
