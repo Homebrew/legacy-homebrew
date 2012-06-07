@@ -268,6 +268,7 @@ Please take one of the following actions:
     # There are some config scripts (e.g. freetype) here that should go in the path
     prepend 'PATH', prefix + 'bin', ':'
     prepend 'PKG_CONFIG_PATH', prefix + 'lib/pkgconfig', ':'
+    prepend 'PKG_CONFIG_PATH', prefix + 'share/pkgconfig', ':'
     # CPPFLAGS are the C-PreProcessor flags, *not* C++!
     append 'CPPFLAGS', "-I#{prefix}/include"
     append 'LDFLAGS', "-L#{prefix}/lib"
