@@ -7,7 +7,6 @@ class Freetds < Formula
   #depends_on "openssl"
 
   def install
-    #openssl = Formula.factory('openssl')
     system "./configure", "--prefix=#{prefix}", "--with-tdsver=7.1", "--mandir=#{man}", "--with-openssl"
     system 'make'
     ENV.j1 # Or fails to install on multi-core machines
