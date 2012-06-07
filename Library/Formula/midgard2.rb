@@ -18,8 +18,9 @@ class Midgard2 < Formula
 
   def install
     # Package checks macros are needed for autoreconf to behave
-    # correctly OSes < Lion
-    cp "/usr/X11/share/aclocal/pkg.m4", "m4" if MACOS_VERSION < 10.7
+    # correctly.
+    pkg_config_path = Formula.factory("pkg-config").installed_prefix
+    cp "#{pkg_config_path}/share/aclocal/pkg.m4", "m4"
     system "autoreconf", "-i", "--force"
     system "automake"
     system "./configure", "--disable-dependency-tracking",
