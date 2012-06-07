@@ -13,6 +13,13 @@ class Glade < Formula
   depends_on 'hicolor-icon-theme'
 
   def install
+    pydir = 'python' + `python -c 'import sys;print(sys.version[:3])'`.strip
+    libxml2 = Formula.factory('libxml2')
+    ENV.prepend 'PYTHONPATH', libxml2.lib/pydir/'site-packages', ':'
+
+    # Find our docbook catalog
+    ENV['XML_CATALOG_FILES'] = "#{etc}/xml/catalog"
+
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
