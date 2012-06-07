@@ -6,11 +6,9 @@ class Libsvm < Formula
   md5 'a1b1083fe69a4ac695da753f4c83ed42'
 
   def install
-    inreplace 'Makefile', '-soname', '-install_name'
-    inreplace 'Makefile', 'libsvm.so.$(SHVER)', 'libsvm.$(SHVER).dylib'
-
     system "make", "CFLAGS=#{ENV.cflags}"
     system "make lib"
+    mv 'libsvm.so.2', 'libsvm.2.dylib'
     ln_s 'libsvm.2.dylib', 'libsvm.dylib'
 
     bin.install 'svm-scale', 'svm-train', 'svm-predict'
