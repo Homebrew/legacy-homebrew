@@ -26,6 +26,9 @@ class Yasm < Formula
       args << '--enable-python-bindings'
     end
 
+    # Avoid "ld: library not found for -lcrt1.10.6.o" on Xcode without CLT
+    ENV['LIBS'] = ENV.ldflags
+    ENV['INCLUDES'] = ENV.cppflags
     system './autogen.sh' if ARGV.build_head?
     system './configure', *args
     system 'make install'
