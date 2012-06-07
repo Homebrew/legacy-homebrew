@@ -102,7 +102,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
 
 private
   def chdir
-    entries=Dir['*']
+    entries=Dir['*/']
     case entries.length
       when 0 then raise "Empty archive"
       when 1 then Dir.chdir entries.first rescue nil
@@ -561,6 +561,21 @@ class FossilDownloadStrategy < AbstractDownloadStrategy
   end
 end
 
+class RpmDownloadStrategy < CurlDownloadStrategy
+  attr_reader :inner_tarball
+
+  def initialize url, name, version, specs
+      super
+      @inner_tarball = "#{name}-#{version}.tar.gz"
+  end
+
+  def stage
+    safe_system "rpm2cpio <#{@tarball_path} | cpio -dvim"
+    safe_system "tar -xzf #{@inner_tarball}"
+    chdir
+  end
+end
+
 def detect_download_strategy url
   case url
     # We use a special URL pattern for cvs
@@ -580,6 +595,7 @@ def detect_download_strategy url
   when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
   when %r[^http://www.apache.org/dyn/closer.cgi] then CurlApacheMirrorDownloadStrategy
     # Common URL patterns
+  when %r[^https?://.*rpm] then RpmDownloadStrategy
   when %r[^https?://svn\.] then SubversionDownloadStrategy
     # Otherwise just try to download
   else CurlDownloadStrategy

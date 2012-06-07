@@ -10,10 +10,19 @@ class Beecrypt < Formula
   def install
     # Compilation fails if we allow Homebrew to set CFLAGS/CPPFLAGS/CXXFLAGS.
     ENV.delete "CFLAGS"
-    ENV.delete "CPPFLAGS"
     ENV.delete "CXXFLAGS"
+    ENV.delete "CPPFLAGS"
+        
+    arch=%x[echo `uname -m`-apple-darwin`uname -r`].strip
+    args = %W[
+        --build=#{arch}
+        --prefix=#{prefix}
+        --disable-openmp
+        --without-java
+        --without-python
+    ]
 
-    system "./configure", "--prefix=#{prefix}", "--disable-openmp", "--without-java", "--without-python"
+    system "./configure", *args
     system "make"
     system "make install"
   end
