@@ -7,6 +7,7 @@ class Mjpegtools < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
+  depends_on :x11
   depends_on 'libquicktime' => :optional
   depends_on 'libdv' => :optional
   depends_on 'gtk+' => :optional
@@ -28,7 +29,6 @@ class Mjpegtools < Formula
   end
 
   def install
-    ENV.x11
     args = ["--disable-dependency-tracking",
             "--enable-simd-accel",
             "--prefix=#{prefix}"]
