@@ -4,6 +4,7 @@ require 'formula'
 class Multimarkdown < Formula
   homepage 'http://fletcherpenney.net/multimarkdown/'
   url 'https://github.com/fletcher/peg-multimarkdown.git', :tag => '3.6'
+  version '3.6'
 
   head 'https://github.com/fletcher/peg-multimarkdown.git', :branch => 'development'
 
