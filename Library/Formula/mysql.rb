@@ -2,8 +2,8 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.5/en/'
-  url 'http://downloads.mysql.com/archives/mysql-5.5/mysql-5.5.24.tar.gz'
-  md5 'dc84f8a0305e054c859533944e79f803'
+  url 'http://downloads.mysql.com/archives/mysql-5.5/mysql-5.5.25.tar.gz'
+  md5 '9e2a3d5b41eac7fae41b93e5b71ea49c'
 
   depends_on 'cmake' => :build
   depends_on 'readline'
@@ -30,8 +30,6 @@ class Mysql < Formula
 
   # Remove optimization flags from `mysql_config --cflags`
   # This facilitates easy compilation of gems using a brewed mysql
-  # CMake patch needed for CMake 2.8.8.
-  # Reported here: http://bugs.mysql.com/bug.php?id=65050
   def patches; DATA; end
 
   def install
@@ -179,18 +177,3 @@ index 9296075..70c18db 100644
  do
    # The first option we might strip will always have a space before it because
    # we set -I$pkgincludedir as the first option
-diff --git a/configure.cmake b/configure.cmake
-index c3cc787..6193481 100644
---- a/configure.cmake
-+++ b/configure.cmake
-@@ -149,7 +149,9 @@ IF(UNIX)
-   SET(CMAKE_REQUIRED_LIBRARIES
-     ${LIBM} ${LIBNSL} ${LIBBIND} ${LIBCRYPT} ${LIBSOCKET} ${LIBDL} ${CMAKE_THREAD_LIBS_INIT} ${LIBRT})
-
--  LIST(REMOVE_DUPLICATES CMAKE_REQUIRED_LIBRARIES)
-+  IF(CMAKE_REQUIRED_LIBRARIES)
-+    LIST(REMOVE_DUPLICATES CMAKE_REQUIRED_LIBRARIES)
-+  ENDIF()
-   LINK_LIBRARIES(${CMAKE_THREAD_LIBS_INIT})
-
-   OPTION(WITH_LIBWRAP "Compile with tcp wrappers support" OFF)
