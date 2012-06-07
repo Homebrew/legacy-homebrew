@@ -1,7 +1,7 @@
 require 'formula'
 
 class BulkExtractor < Formula
-  homepage 'http://afflib.org/software/bulk_extractor'
+  homepage 'https://github.com/simsong/bulk_extractor/wiki'
   url 'https://github.com/downloads/simsong/bulk_extractor/bulk_extractor-1.2.2.tar.gz'
   md5 '11ccee3709ac862a41edad309153c7a3'
 
