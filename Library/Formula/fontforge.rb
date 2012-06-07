@@ -11,6 +11,7 @@ class Fontforge < Formula
   depends_on 'gettext'
   depends_on 'pango'
   depends_on 'potrace'
+  depends_on :x11
 
   def options
     [['--without-python', 'Build without Python.']]
@@ -28,7 +29,6 @@ class Fontforge < Formula
 
     args << "--without-python" if ARGV.include? "--without-python"
 
-    ENV.x11
     # Fix linker error; see: http://trac.macports.org/ticket/25012
     ENV.append "LDFLAGS", "-lintl"
     system "./configure", *args

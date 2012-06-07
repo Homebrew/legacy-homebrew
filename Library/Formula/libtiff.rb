@@ -5,12 +5,13 @@ class Libtiff < Formula
   url 'http://download.osgeo.org/libtiff/tiff-4.0.1.tar.gz'
   sha256 '9a7a039e516c37478038740f1642818250bfb1414cf404cc8b569e5f9d4bf2f0'
 
+  depends_on :x11
+
   def options
     [["--universal", "Builds a universal binary"]]
   end
 
   def install
-    ENV.x11 # Needed to pick up GL/gL.h, otherwise compile error.
     ENV.universal_binary if ARGV.build_universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

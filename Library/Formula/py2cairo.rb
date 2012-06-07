@@ -6,6 +6,7 @@ class Py2cairo < Formula
   md5 '20337132c4ab06c1146ad384d55372c5'
 
   depends_on 'cairo'
+  depends_on :x11
 
   def options
     [['--universal', 'Build universal binaries']]

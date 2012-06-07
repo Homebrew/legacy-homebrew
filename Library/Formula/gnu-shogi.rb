@@ -5,6 +5,8 @@ class GnuShogi < Formula
   homepage 'http://www.cs.caltech.edu/~mvanier/hacking/gnushogi/gnushogi.html'
   md5 'a18eae93afc89bfd368ed5f6768be791'
 
+  depends_on :x11
+
   def patches
       # gcc 4.2.1 flags the following error
       # In file included from attacks.c:32:
@@ -21,8 +23,8 @@ class GnuShogi < Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--x-include=/usr/X11/include",
-                          "--x-lib=/usr/X11/lib"
+                          "--x-include=#{MacOS.x11_prefix}/include",
+                          "--x-lib=#{MacOS.x11_prefix}/lib"
     system "make"
     system "make", "install", "MANDIR=#{man6}", "INFODIR=#{info}"
   end

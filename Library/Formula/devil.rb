@@ -5,6 +5,7 @@ class Devil < Formula
   homepage 'http://sourceforge.net/projects/openil/'
   md5 '7918f215524589435e5ec2e8736d5e1d'
 
+  depends_on :x11
   depends_on 'jpeg'
   depends_on 'libtiff'
   depends_on 'little-cms'
@@ -22,9 +23,6 @@ class Devil < Formula
   def patches; DATA; end
 
   def install
-    # devil won't find libpng without ENV.x11
-    ENV.x11
-
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--enable-ILU"
     system "make install"

@@ -12,6 +12,8 @@ class Emacs < Formula
     head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
   end
 
+  depends_on :x11 if ARGV.include? "--with-x"
+
   # Stripping on Xcode 4 causes malformed object errors.
   # Just skip everything.
   skip_clean :all
@@ -69,7 +71,6 @@ class Emacs < Formula
       prefix.install "nextstep/Emacs.app"
     else
       if ARGV.include? "--with-x"
-        ENV.x11
         # These libs are not specified in xft's .pc. See:
         # https://trac.macports.org/browser/trunk/dports/editors/emacs/Portfile#L74
         # https://github.com/mxcl/homebrew/issues/8156

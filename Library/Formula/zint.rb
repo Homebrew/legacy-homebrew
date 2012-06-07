@@ -8,12 +8,13 @@ class Zint < Formula
   head 'git://zint.git.sourceforge.net/gitroot/zint/zint'
 
   depends_on 'cmake' => :build
+  depends_on :x11
 
   def install
     mkdir 'zint-build' do
       system "cmake", "..",
                       "-DCMAKE_PREFIX_PATH=#{prefix}",
-                      "-DCMAKE_C_FLAGS=-I/usr/X11/include",
+                      "-DCMAKE_C_FLAGS=-I#{MacOS.x11_prefix}/include",
                       *std_cmake_args
       system "make install"
     end

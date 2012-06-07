@@ -7,6 +7,7 @@ class Meld < Formula
 
   depends_on 'intltool' => :build
   depends_on 'xz' => :build
+  depends_on :x11
   depends_on 'pygtk'
   depends_on 'pygobject'
   depends_on 'rarian'

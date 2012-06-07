@@ -9,6 +9,7 @@ class Xplanet < Formula
   depends_on 'jpeg'
   depends_on 'giflib'
   depends_on 'libtiff'
+  depends_on :x11
 
   def options
     [['--with-x', "Build for X11 instead of Aqua."]]
@@ -22,7 +23,6 @@ class Xplanet < Formula
       args << "--with-aqua" << "--without-x"
     end
 
-    ENV.x11
     system "./configure", *args
     system "make install"
   end

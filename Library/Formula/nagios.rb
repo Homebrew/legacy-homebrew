@@ -7,6 +7,7 @@ class Nagios < Formula
 
   depends_on 'gd'
   depends_on 'nagios-plugins'
+  depends_on :x11 # Required to compile some CGI's against the build-in libpng.
 
   def nagios_sbin;  prefix+'cgi-bin';       end
   def nagios_etc;   etc+'nagios';           end
@@ -16,7 +17,6 @@ class Nagios < Formula
   def group;        `id -gn`.chomp;         end
 
   def install
-    ENV.x11 # Required to compile some CGI's against the build-in libpng.
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

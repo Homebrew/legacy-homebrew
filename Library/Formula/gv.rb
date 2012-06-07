@@ -8,11 +8,11 @@ class Gv < Formula
 
   depends_on 'ghostscript'
   depends_on 'xaw3d'
+  depends_on :x11
 
   skip_clean 'share/gv/safe-gs-workdir'
 
   def install
-    ENV.x11
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--enable-SIGCHLD-fallback"
     system "make install"

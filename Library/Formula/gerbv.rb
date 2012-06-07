@@ -8,15 +8,13 @@ class Gerbv < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gtk+'
   depends_on 'cairo' if MacOS.leopard?
+  depends_on :x11
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-update-desktop-database"
     system "make install"
-  end
-
-  def caveats
-    "Note: gerbv is an X11 application."
   end
 end

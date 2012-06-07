@@ -9,6 +9,7 @@ class Gnuplot < Formula
   depends_on 'pkg-config' => :build
   depends_on 'readline'
   depends_on 'pango'
+  depends_on :x11
   depends_on 'pdflib-lite' if ARGV.include? "--pdf"
   depends_on 'lua' unless ARGV.include? '--nolua'
   depends_on 'gd' unless ARGV.include? "--nogd"
@@ -30,7 +31,6 @@ class Gnuplot < Formula
 
   def install
     # Help configure find libraries
-    ENV.x11
     readline = Formula.factory 'readline'
     pdflib = Formula.factory 'pdflib-lite'
     gd = Formula.factory 'gd'

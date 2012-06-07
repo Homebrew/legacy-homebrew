@@ -6,6 +6,7 @@ class Vice < Formula
   homepage 'http://vice-emu.sourceforge.net/'
 
   depends_on 'jpeg'
+  depends_on :libpng
 
   def remove_unused_icons
     Pathname.glob libexec+'*.app' do |d|
@@ -22,8 +23,6 @@ class Vice < Formula
   end
 
   def install
-    ENV.libpng
-
     # Use Cocoa instead of X
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

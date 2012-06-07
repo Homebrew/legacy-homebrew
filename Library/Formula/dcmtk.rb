@@ -5,6 +5,7 @@ class Dcmtk < Formula
   url 'ftp://dicom.offis.de/pub/dicom/offis/software/dcmtk/dcmtk360/dcmtk-3.6.0.tar.gz'
   md5 '19409e039e29a330893caea98715390e'
 
+  depends_on :x11
   depends_on 'libtiff'
   depends_on 'doxygen' if ARGV.include? '--with-docs'
 
@@ -18,7 +19,6 @@ class Dcmtk < Formula
 
   def install
     ENV.m64 if MacOS.prefer_64_bit?
-    ENV.x11
 
     args = std_cmake_args
     args << '-DDCMTK_WITH_DOXYGEN=YES' if ARGV.include? '--with-docs'

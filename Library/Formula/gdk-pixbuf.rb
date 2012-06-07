@@ -10,6 +10,7 @@ class GdkPixbuf < Formula
   depends_on 'glib'
   depends_on 'jasper'
   depends_on 'libtiff'
+  depends_on :x11
 
   # 'loaders.cache' must be writable by other packages
   skip_clean 'lib/gdk-pixbuf-2.0'

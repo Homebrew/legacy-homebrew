@@ -28,7 +28,6 @@ class Graphviz < Formula
   end
 
   def install
-    ENV.x11
     args = ["--disable-debug",
             "--disable-dependency-tracking",
             "--prefix=#{prefix}",

@@ -6,14 +6,15 @@ class Aview < Formula
   md5 '093f298e7787591e229b59d039c72f4d'
 
   depends_on 'aalib'
+  depends_on :x11
 
   def patches
     DATA
   end
 
   def install
-    ENV.x11
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make install"

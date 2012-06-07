@@ -17,6 +17,7 @@ class Poppler < Formula
   depends_on 'qt' if qt?
   depends_on 'glib' if glib?
   depends_on 'cairo' if glib? # Needs a newer Cairo build than OS X 10.6.7 provides
+  depends_on :x11 # Fontconfig headers
 
   def options
     [
@@ -26,8 +27,6 @@ class Poppler < Formula
   end
 
   def install
-    ENV.x11 # For Fontconfig headers
-
     if qt?
       ENV['POPPLER_QT4_CFLAGS'] = `#{HOMEBREW_PREFIX}/bin/pkg-config QtCore QtGui --libs`.chomp
       ENV.append 'LDFLAGS', "-Wl,-F#{HOMEBREW_PREFIX}/lib"

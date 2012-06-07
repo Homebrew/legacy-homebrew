@@ -10,6 +10,7 @@ class Abiword < Formula
     sha1 '34a6e4e9c5619e8f2d619ac844519fc9378405b3'
   end
 
+  depends_on :libpng
   depends_on 'jpeg'
   depends_on 'fribidi'
   depends_on 'libgsf'
@@ -20,7 +21,6 @@ class Abiword < Formula
   depends_on 'imagemagick'
 
   def install
-    ENV.libpng
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

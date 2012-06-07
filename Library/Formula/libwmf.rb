@@ -7,12 +7,12 @@ class Libwmf < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'gd'
+  depends_on :libpng
 
   def install
-    ENV.libpng
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-freetype=/usr/X11"
+                          "--with-freetype=#{MacOS.x11_prefix}"
     system "make"
     ENV.j1 # yet another rubbish Makefile
     system "make install"

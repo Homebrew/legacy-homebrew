@@ -1,13 +1,14 @@
 require 'formula'
 
 class Gd < Formula
-  url "http://www.libgd.org/releases/gd-2.0.36RC1.tar.gz"
-  homepage "http://bitbucket.org/pierrejoye/gd-libgd"
-  mirror "http://download.osgeo.org/mapserver/libgd/gd-2.0.36RC1.tar.gz"
-  md5 "39ac48e6d5e0012a3bd2248a0102f209"
+  homepage 'http://bitbucket.org/pierrejoye/gd-libgd'
+  url 'http://www.libgd.org/releases/gd-2.0.36RC1.tar.gz'
+  mirror 'http://download.osgeo.org/mapserver/libgd/gd-2.0.36RC1.tar.gz'
+  md5 '39ac48e6d5e0012a3bd2248a0102f209'
 
-  head "http://bitbucket.org/pierrejoye/gd-libgd", :using => :hg
+  head 'http://bitbucket.org/pierrejoye/gd-libgd', :using => :hg
 
+  depends_on :x11
   depends_on 'jpeg' => :recommended
 
   fails_with :llvm do
@@ -16,8 +17,7 @@ class Gd < Formula
   end
 
   def install
-    ENV.x11
-    system "./configure", "--prefix=#{prefix}", "--with-freetype=/usr/X11"
+    system "./configure", "--prefix=#{prefix}", "--with-freetype=#{MacOS.x11_prefix}"
     system "make install"
     (lib+'pkgconfig/gdlib.pc').write pkg_file
   end

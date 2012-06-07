@@ -8,6 +8,7 @@ class Libagg < Formula
   depends_on "automake" => :build if MacOS.xcode_version >= "4.3"
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
+  depends_on :x11 # for Freetype
 
   fails_with :clang do
     build 318
@@ -18,8 +19,6 @@ class Libagg < Formula
   end
 
   def install
-    ENV.x11 # For freetype
-
     # AM_C_PROTOTYPES was removed in automake 1.12, as it's only needed for
     # pre-ANSI compilers
     inreplace 'configure.in', 'AM_C_PROTOTYPES', ''

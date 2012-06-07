@@ -9,6 +9,7 @@ class Gource < Formula
   depends_on 'glm' => :build
   depends_on 'pkg-config' => :build
 
+  depends_on :x11 # for Freetype
   depends_on 'boost'
   depends_on 'glew'
   depends_on 'jpeg'
@@ -22,8 +23,6 @@ class Gource < Formula
   end
 
   def install
-    ENV.x11 # Put freetype-config in path
-
     # For non-/usr/local installs
     ENV.append "CXXFLAGS", "-I#{HOMEBREW_PREFIX}/include"
 

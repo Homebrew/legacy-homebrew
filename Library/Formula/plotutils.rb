@@ -6,9 +6,9 @@ class Plotutils < Formula
   homepage 'http://www.gnu.org/software/plotutils/'
   md5 'c08a424bd2438c80a786a7f4b5bb6a40'
 
-  def install
-    ENV.x11 # enable libpng support
+  depends_on :libpng
 
+  def install
     # Fix usage of libpng to be 1.5 compatible
     inreplace 'libplot/z_write.c', 'png_ptr->jmpbuf', 'png_jmpbuf (png_ptr)'
 

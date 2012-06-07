@@ -5,8 +5,9 @@ class Icoutils < Formula
   homepage 'http://www.nongnu.org/icoutils/'
   md5 'b58f375e0f8731595e8d0ecdc3a0acb9'
 
+  depends_on :libpng
+
   def install
-    ENV.libpng
     system "./configure", "--disable-dependency-tracking",
                           "--disable-rpath",
                           "--prefix=#{prefix}"

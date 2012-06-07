@@ -8,6 +8,7 @@ class Pango < Formula
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'glib'
+  depends_on :x11
 
   if MacOS.leopard?
     depends_on 'fontconfig' # Leopard's fontconfig is too old.
@@ -26,7 +27,6 @@ class Pango < Formula
   end
 
   def install
-    ENV.x11
     system "./configure", "--disable-dependency-tracking",
                           "--disable-debug",
                           "--prefix=#{prefix}",

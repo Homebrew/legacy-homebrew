@@ -6,6 +6,7 @@ class Mldonkey < Formula
   sha1 'be8c261e2fbd365dd3866af15a854b074fbc59c1'
 
   depends_on 'objective-caml'
+  depends_on :libpng
 
   if ARGV.include? "--with-x"
     depends_on 'librsvg'
@@ -26,8 +27,6 @@ class Mldonkey < Formula
   end
 
   def install
-    ENV.libpng
-
     # Fix compiler selection
     ENV['OCAMLC'] = "#{HOMEBREW_PREFIX}/bin/ocamlc.opt -cc #{ENV.cc}"
 

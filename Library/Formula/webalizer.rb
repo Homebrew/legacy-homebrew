@@ -8,10 +8,11 @@ class Webalizer < Formula
 
   depends_on 'gd'
   depends_on 'berkeley-db'
+  depends_on :libpng
 
   def install
-    ENV.x11 # For libpng
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end

@@ -9,10 +9,9 @@ class SdlRtf < Formula
 
   depends_on 'sdl'
   depends_on 'sdl_ttf'
+  depends_on :x11
 
   def install
-    # Sdl assumes X11 is present on UNIX
-    ENV.x11
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end

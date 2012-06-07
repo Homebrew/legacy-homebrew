@@ -7,12 +7,11 @@ class Clutter < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'atk'
-  # Cairo is keg-only and usually only used for Leopard builds.
-  # But Clutter requires a newer version of Cairo that what comes with Snow Leopard.
-  depends_on 'cairo'
   depends_on 'intltool'
   depends_on 'json-glib'
   depends_on 'pango'
+  depends_on 'cairo' # for cairo-gobject
+  depends_on :x11
 
   def install
     system "./configure", "--prefix=#{prefix}",

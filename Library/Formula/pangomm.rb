@@ -9,6 +9,7 @@ class Pangomm < Formula
   depends_on 'pango'
   depends_on 'glibmm'
   depends_on 'cairomm'
+  depends_on :x11
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"

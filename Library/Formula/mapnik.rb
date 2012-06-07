@@ -13,6 +13,7 @@ class Mapnik < Formula
   depends_on 'icu4c'
   depends_on 'boost'
   depends_on 'cairomm' => :optional
+  depends_on :x11
 
   # Reported upstream: https://github.com/mapnik/mapnik/issues/1171
   # Fix is in head.  Remove at 2.0.2.
@@ -21,8 +22,6 @@ class Mapnik < Formula
   end
 
   def install
-    ENV.x11 # for freetype-config
-
     icu = Formula.factory("icu4c")
     # mapnik compiles can take ~1.5 GB per job for some .cpp files
     # so lets be cautious by limiting to CPUS/2

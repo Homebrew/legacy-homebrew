@@ -6,9 +6,9 @@ class Mathgl < Formula
   md5 'acd33e68911d9506f60d769dce23f95e'
 
   depends_on 'gsl'
+  depends_on :x11
 
   def install
-    ENV.x11
     ENV['LIBS'] = '-lz'
 
     # Fixed upstream: this line can be removed when v2 is released

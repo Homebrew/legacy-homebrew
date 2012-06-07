@@ -5,6 +5,7 @@ class Tiff2png < Formula
   url 'ftp://ftp.simplesystems.org/pub/libpng/png/applications/tiff2png/tiff2png-0.91.tar.gz'
   md5 'b5db7add863c5cf469197aa327c0b202'
 
+  depends_on :x11
   depends_on 'libtiff'
   depends_on 'jpeg'
 
@@ -17,8 +18,8 @@ class Tiff2png < Formula
                                          "LIBTIFF=#{HOMEBREW_PREFIX}/lib",
                                          "TIFFINC=#{HOMEBREW_PREFIX}/include",
                                          "LIBJPEG=#{HOMEBREW_PREFIX}/lib",
-                                         "LIBPNG=/usr/X11/lib",
-                                         "PNGINC=/usr/X11/include",
+                                         "LIBPNG=#{MacOS.x11_prefix}/lib",
+                                         "PNGINC=#{MacOS.x11_prefix}/include",
                                          "ZLIB=/usr/lib",
                                          "DEBUGFLAGS="
     bin.install 'tiff2png'

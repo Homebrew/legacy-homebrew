@@ -63,6 +63,8 @@ class Imagemagick < Formula
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
 
+  depends_on :x11
+
   depends_on 'ghostscript' => :recommended if ghostscript_srsly?
 
   depends_on 'libtiff' => :optional
@@ -103,8 +105,6 @@ class Imagemagick < Formula
   end
 
   def install
-    ENV.x11 # Add to PATH for freetype-config on Snow Leopard
-
     args = [ "--disable-osx-universal-binary",
              "--without-perl", # I couldn't make this compile
              "--prefix=#{prefix}",

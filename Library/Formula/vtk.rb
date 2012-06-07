@@ -6,6 +6,7 @@ class Vtk < Formula
   md5 '37b7297d02d647cc6ca95b38174cb41f'
 
   depends_on 'cmake' => :build
+  depends_on :x11
   depends_on 'qt' if ARGV.include? '--qt'
 
   def options
@@ -62,9 +63,9 @@ class Vtk < Formula
     args << "-DVTK_USE_COCOA:BOOL=ON" unless ARGV.include? "--x11"
 
     if ARGV.include? '--x11'
-      args << "-DOPENGL_INCLUDE_DIR:PATH='/usr/X11R6/include'"
-      args << "-DOPENGL_gl_LIBRARY:FILEPATH='/usr/X11R6/lib/libGL.dylib'"
-      args << "-DOPENGL_glu_LIBRARY:FILEPATH='/usr/X11R6/lib/libGLU.dylib"
+      args << "-DOPENGL_INCLUDE_DIR:PATH='#{MacOS.x11_prefix}/include'"
+      args << "-DOPENGL_gl_LIBRARY:FILEPATH='#{MacOS.x11_prefix}/lib/libGL.dylib'"
+      args << "-DOPENGL_glu_LIBRARY:FILEPATH='#{MacOS.x11_prefix}/lib/libGLU.dylib"
       args << "-DVTK_USE_COCOA:BOOL=OFF"
       args << "-DVTK_USE_X:BOOL=ON"
     end

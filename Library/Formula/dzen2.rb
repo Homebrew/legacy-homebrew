@@ -5,8 +5,9 @@ class Dzen2 < Formula
   homepage 'http://sites.google.com/site/gotmor/dzen'
   md5 '5978620c2124c8a8ad52d7f17ce94fd7'
 
+  depends_on :x11
+
   def install
-    ENV.x11
     ENV.append 'LDFLAGS', '-lX11 -lXinerama -lXpm'
     ENV.append_to_cflags '-DVERSION=\"${VERSION}\" -DDZEN_XINERAMA -DDZEN_XPM'
 

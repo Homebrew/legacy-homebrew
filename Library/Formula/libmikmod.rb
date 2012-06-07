@@ -5,12 +5,13 @@ class Libmikmod < Formula
   url 'http://mikmod.shlomifish.org/files/libmikmod-3.2.0b4.tar.gz'
   sha256 'da0c4fcfc5ca15c653baeb62b8cf91b35cfa11c1081a1aacc1e443a7d35db870'
 
+  depends_on :x11
+
   def options
     [[ '--with-debug', 'Enable debugging symbols']]
   end
 
   def install
-    ENV.x11
     if ARGV.include? '--with-debug' then
       (ENV.compiler == :clang) ? ENV.Og : ENV.O2
     end

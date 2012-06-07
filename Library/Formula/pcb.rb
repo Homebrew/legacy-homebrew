@@ -16,6 +16,7 @@ class Pcb < Formula
   depends_on 'gd'
   depends_on 'glib'
   depends_on 'gtkglext'
+  depends_on :x11
 
   # See comments in intltool formula
   depends_on 'XML::Parser' => :perl
@@ -25,8 +26,6 @@ class Pcb < Formula
   end
 
   def install
-    ENV.x11
-
     system "./autogen.sh" if ARGV.build_head?
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

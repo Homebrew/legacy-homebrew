@@ -31,8 +31,8 @@ class Grass < Formula
   depends_on "libtiff"
   depends_on "unixodbc"
   depends_on "fftw"
-
   depends_on "cairo" if MacOS.leopard?
+  depends_on :x11
 
   # Patches ensure 32 bit system python is used for wxWidgets and that files
   # are not installed outside of the prefix.
@@ -60,7 +60,7 @@ class Grass < Formula
 
     args = [
       "--disable-debug", "--disable-dependency-tracking",
-      "--with-libs=/usr/X11/lib #{HOMEBREW_PREFIX}/lib",
+      "--with-libs=#{MacOS.x11_prefix}/lib #{HOMEBREW_PREFIX}/lib",
       "--with-includes=#{HOMEBREW_PREFIX}/include",
       "--enable-largefile",
       "--enable-shared",
@@ -74,7 +74,7 @@ class Grass < Formula
       "--with-sqlite",
       "--with-odbc",
       "--with-geos=#{HOMEBREW_PREFIX}/bin/geos-config",
-      "--with-png-includes=/usr/X11/include",
+      "--with-png-includes=#{MacOS.x11_prefix}/include",
       "--with-png",
       "--with-readline-includes=#{readline.include}",
       "--with-readline-libs=#{readline.lib}",
@@ -82,7 +82,7 @@ class Grass < Formula
       "--with-nls-includes=#{gettext.include}",
       "--with-nls-libs=#{gettext.lib}",
       "--with-nls",
-      "--with-freetype-includes=/usr/X11/include /usr/X11/include/freetype2",
+      "--with-freetype-includes=#{MacOS.x11_prefix}/include #{MacOS.x11_prefix}/include/freetype2",
       "--with-freetype",
       "--without-tcltk" # Disabled due to compatibility issues with OS X Tcl/Tk
     ]
@@ -106,7 +106,7 @@ class Grass < Formula
       args << "--with-cairo-includes=#{cairo.include}/cairo"
       args << "--with-cairo-libs=#{cairo.lib}"
     else
-      args << "--with-cairo-includes=/usr/X11/include /usr/X11/include/cairo"
+      args << "--with-cairo-includes=#{MacOS.x11_prefix}/include #{MacOS.x11_prefix}/include/cairo"
     end
 
     args << "--with-cairo"

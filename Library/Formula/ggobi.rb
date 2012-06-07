@@ -12,6 +12,7 @@ class Ggobi < Formula
   depends_on 'fontconfig'
   depends_on 'pango'
   depends_on 'gettext'
+  depends_on :x11
 
   def install
     # Necessary for ggobi to build - based on patch from MacPorts

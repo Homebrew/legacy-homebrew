@@ -11,6 +11,7 @@ class Fltk < Formula
     version '1.3.x-r9327'
   end
 
+  depends_on :libpng
   depends_on 'jpeg'
 
   fails_with :clang do
@@ -19,7 +20,6 @@ class Fltk < Formula
   end
 
   def install
-    ENV.libpng
     system "./configure", "--prefix=#{prefix}", "--enable-threads"
     system "make install"
   end

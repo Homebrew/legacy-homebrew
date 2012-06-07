@@ -5,6 +5,7 @@ class Mapserver < Formula
   url 'http://download.osgeo.org/mapserver/mapserver-6.0.2.tar.gz'
   md5 'd831c905b1b0df7ac09a80c3f9387374'
 
+  depends_on :x11
   depends_on 'gd'
   depends_on 'proj'
   depends_on 'gdal'
@@ -28,7 +29,7 @@ class Mapserver < Formula
       "--with-proj",
       "--with-gdal",
       "--with-ogr",
-      "--with-png=/usr/X11"
+      "--with-png=#{MacOS.x11_prefix}"
     ]
 
     args.push "--with-geos" if ARGV.include? '--with-geos'
@@ -56,7 +57,6 @@ class Mapserver < Formula
   end
 
   def install
-    ENV.x11
     system "./configure", *configure_args
     system "make"
     bin.install %w(mapserv shp2img legend shptree shptreevis

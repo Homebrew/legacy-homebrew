@@ -8,6 +8,7 @@ class Gtkglextmm < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gtkglext'
   depends_on 'gtkmm'
+  depends_on :x11
 
   # Fixes header include order, using patch from macports: https://trac.macports.org/ticket/27059
   # Upstream bug report: https://bugzilla.gnome.org/show_bug.cgi?id=636831

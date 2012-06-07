@@ -9,9 +9,9 @@ class Openjpeg < Formula
 
   depends_on 'little-cms2'
   depends_on 'libtiff'
+  depends_on :libpng
 
   def install
-    ENV.x11  # So it can find libpng
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end

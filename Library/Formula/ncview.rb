@@ -5,6 +5,7 @@ class Ncview < Formula
   homepage 'http://meteora.ucsd.edu/~pierce/ncview_home_page.html'
   md5 '34e25f5949af342a1783542799f51bed'
 
+  depends_on :x11
   depends_on "netcdf"
 
   # Disable a block in configure that tries to pass an RPATH to the compiler.
@@ -14,8 +15,6 @@ class Ncview < Formula
   end
 
   def install
-    ENV.x11 # For GUI and libpng.
-
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking"
     system "make install"
