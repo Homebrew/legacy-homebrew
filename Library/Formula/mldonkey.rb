@@ -8,6 +8,7 @@ class Mldonkey < Formula
   depends_on 'objective-caml'
 
   if ARGV.include? "--with-x"
+    depends_on :x11
     depends_on 'librsvg'
     depends_on 'lablgtk'
   end
@@ -18,11 +19,7 @@ class Mldonkey < Formula
 
   def install
     args = ["--prefix=#{prefix}"]
-
-    if ARGV.include? "--with-x"
-      ENV.x11
-      args << "--enable-gui=newgui2"
-    end
+    args << "--enable-gui=newgui2" if ARGV.include? '--with-x'
 
     system "./configure", *args
     system "make install"

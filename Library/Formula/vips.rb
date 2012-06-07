@@ -6,6 +6,7 @@ class Vips < Formula
   md5 '16429e3b82d869936312c0a35faaf5d0'
 
   depends_on 'pkg-config' => :build
+  depends_on :libpng
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'jpeg' => :optional
@@ -19,7 +20,6 @@ class Vips < Formula
   depends_on 'openexr' => :optional
 
   def install
-    ENV.x11 # for libpng
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end

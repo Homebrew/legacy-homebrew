@@ -13,10 +13,11 @@ class Synfig < Formula
   depends_on 'libsigc++'
   depends_on 'libxml++'
   depends_on 'imagemagick'
+  depends_on :libpng
 
   def install
-    ENV.libpng
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end
