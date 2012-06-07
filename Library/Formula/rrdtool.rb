@@ -11,6 +11,7 @@ class Rrdtool < Formula
   depends_on 'intltool'
   depends_on 'expat'
   depends_on 'pango'
+  depends_on :x11
 
   # Can use lua if it is found, but don't force users to install
   depends_on 'lua' => :optional if ARGV.include? "--lua"
@@ -24,7 +25,6 @@ class Rrdtool < Formula
 
   def install
     ENV.libxml2
-    ENV.x11
 
     which_perl = which 'perl'
     which_ruby = which 'ruby'

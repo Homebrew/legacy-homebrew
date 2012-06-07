@@ -6,6 +6,7 @@ class SdlTtf < Formula
   md5 '6dd5a85e4924689a35a5fb1cb3336156'
 
   depends_on 'sdl'
+  depends_on :x11 # for Freetype
 
   def options
     [['--universal', 'Build universal binaries.']]
@@ -13,12 +14,11 @@ class SdlTtf < Formula
 
   def install
     ENV.universal_binary if ARGV.build_universal?
-    ENV.x11 # For Freetype
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-sdltest",
-                          "--with-freetype-exec-prefix=/usr/X11"
+                          "--with-freetype-exec-prefix=#{MacOS.x11_prefix}"
     system "make install"
   end
 end
