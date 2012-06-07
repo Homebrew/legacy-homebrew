@@ -26,25 +26,31 @@ class DependencyCollector
 
   def add spec
     case spec
+    when :x11        then @external_deps << X11Dependency.new
     when String      then @deps << Dependency.new(spec)
     when Formula     then @deps << Dependency.new(spec.name)
     when Dependency  then @deps << spec
     when Requirement then @external_deps << spec
     when Hash
       key, value = spec.shift
-      case value
-      when Array
-        @deps << Dependency.new(key, value)
-      when *LANGUAGE_MODULES
-        @external_deps << LanguageModuleDependency.new(value, key)
+      if key == :x11
+        @external_deps << X11Dependency.new(value)
       else
-        # :optional, :recommended, :build, :universal and "32bit" are predefined
-        @deps << Dependency.new(key, [value])
+        case value
+        when Array
+          @deps << Dependency.new(key, value)
+        when *LANGUAGE_MODULES
+          @external_deps << LanguageModuleDependency.new(value, key)
+        else
+          # :optional, :recommended, :build, :universal and "32bit" are predefined
+          @deps << Dependency.new(key, [value])
+        end
       end
     else
       raise "Unsupported type #{spec.class} for #{spec}"
     end
   end
+
 end
 
 
@@ -140,4 +146,25 @@ class LanguageModuleDependency < Requirement
       when :ruby    then "gem install"
     end
   end
+end
+
+class X11Dependency < Requirement
+
+  def initialize min_version=nil
+    @min_version = min_version
+  end
+
+  def fatal?; true; end
+
+  def satisfied?
+    MacOS.x11_installed? and (@min_version == nil or @min_version <= MacOS.xquartz_version)
+  end
+
+  def message; <<-EOS.undent
+    Unsatisfied dependency: XQuartz #{@min_version}
+    Please install the latest version of XQuartz:
+      https://xquartz.macosforge.org
+    EOS
+  end
+
 end
