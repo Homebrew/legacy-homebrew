@@ -18,8 +18,6 @@ class Gtkx3 < Formula
   depends_on 'atk' => :optional
 
   def install
-    ENV.x11
-    ENV.prepend 'PKG_CONFIG_PATH', Formula.factory('cairo').lib/'pkgconfig', ':'
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
