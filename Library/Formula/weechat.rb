@@ -2,20 +2,13 @@ require 'formula'
 
 class Weechat < Formula
   homepage 'http://www.weechat.org'
-  url 'http://www.weechat.org/files/src/weechat-0.3.7.tar.bz2'
-  md5 '62bb5002b2ba9e5816dfeededc3fa276'
+  url 'http://www.weechat.org/files/src/weechat-0.3.8.tar.bz2'
+  sha1 '50387983f3aa20946a0b3d466acafa35f86411f5'
 
   depends_on 'cmake' => :build
   depends_on 'gettext'
   depends_on 'gnutls'
   depends_on 'guile' if ARGV.include? '--guile'
-
-  # Patch fixes the perl bindings to not segfault on exit.  Remove at 0.3.8.
-  # Adapted from the weechat patch which would not apply cleanly.
-  # http://git.savannah.gnu.org/gitweb/?p=weechat.git;a=patch;h=2b26348965941c961f1ad73cfc7c6605be5abf3e
-  def patches
-    DATA
-  end
 
   def options
     [
@@ -71,16 +64,3 @@ class Weechat < Formula
     EOS
   end
 end
-
-__END__
---- a/src/plugins/scripts/perl/weechat-perl.c	2012-02-20 05:07:35.000000000 -0800
-+++ b/src/plugins/scripts/perl/weechat-perl.c	2012-05-23 11:00:10.000000000 -0700
-@@ -1016,7 +1016,7 @@
-     }
- #endif
- 
--#if defined(PERL_SYS_TERM) && !defined(__FreeBSD__) && !defined(WIN32) && !defined(__CYGWIN__)
-+#if defined(PERL_SYS_TERM) && !defined(__FreeBSD__) && !defined(WIN32) && !defined(__CYGWIN__) && !(defined(__APPLE__) && defined(__MACH__))
-     /*
-      * we call this function on all OS, but NOT on FreeBSD or Cygwin,
-      * because it crashes with no reason (bug in Perl?)
