@@ -23,6 +23,10 @@ class Pow < Formula
 
       Installs launchd agent to start on login:
         pow --install-local
+
+      Enables both launchd agents:
+        sudo launchctl load -w /Library/LaunchDaemons/cx.pow.firewall.plist
+        launchctl load -w ~/Library/LaunchAgents/cx.pow.powd.plist
     EOS
   end
 end
