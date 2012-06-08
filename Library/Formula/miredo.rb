@@ -7,7 +7,7 @@ class Miredo < Formula
 
   head 'git://http://git.remlab.net/git/miredo.git'
 
-  depends_on "Judy"
+  depends_on "judy"
 
   if ARGV.build_head?
     depends_on "autoconf" => :build
