@@ -9,16 +9,17 @@ class Dart < Formula
   def shim_script target
     <<-EOS.undent
       #!/bin/bash
-      exec "#{target}" "$@"
+      exec dart "#{target}" "$@"
     EOS
   end
 
   def install
     libexec.install Dir['*']
 
-    (bin+'dart').write shim_script("#{libexec}/bin/dart")
-    (bin+'dart2js').write shim_script("#{libexec}/bin/dart2js")
-    (bin+'pub').write shim_script("#{libexec}/bin/pub")
+    bin.install_symlink libexec+'bin/dart'
+    (bin+'dart2js').write shim_script(libexec+'lib/compiler/implementation/dart2js.dart')
+    (bin+'dartdoc').write shim_script(libexec+'lib/dartdoc/dartdoc.dart')
+    (bin+'pub').write shim_script(libexec+'util/pub/pub.dart')
   end
 
   def test
