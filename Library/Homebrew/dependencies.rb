@@ -29,7 +29,7 @@ class DependencyCollector
     spec, tag = spec.shift if spec.is_a? Hash
 
     dep = case spec
-    when :x11
+    when :x11, :libpng
       X11Dependency.new(tag)
     when String
       if LANGUAGE_MODULES.include? tag
