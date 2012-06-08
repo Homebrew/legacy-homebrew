@@ -5,7 +5,7 @@ class Treefrog < Formula
   url 'http://downloads.sourceforge.net/project/treefrog/src/treefrog-0.84.tar.gz'
   sha1 '287ff031a072bbba54bbdb46bcd4d7725591c86f'
 
-  depends_on 'qt' => :build
+  depends_on 'qt'
 
   def install
     system "./configure", "--framework=#{lib}", "--bindir=#{bin}", "--datadir=#{share}"
