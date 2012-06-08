@@ -1,9 +1,9 @@
 require 'formula'
 
 class Le < Formula
-  url 'http://ftp.yar.ru/pub/source/le/le-1.14.5.tar.bz2'
+  url 'http://ftp.yar.ru/pub/source/le/le-1.14.6.tar.bz2'
   homepage 'http://directory.fsf.org/project/le-editor/'
-  md5 '92d9ff5e0e91eba6b93d49d50070143c'
+  md5 '1ec0496142b8be06dbc6139b87961140'
 
   def install
     ENV.j1
