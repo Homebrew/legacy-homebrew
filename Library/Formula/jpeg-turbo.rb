@@ -5,20 +5,16 @@ class JpegTurbo < Formula
   url 'http://downloads.sourceforge.net/project/libjpeg-turbo/1.2.0/libjpeg-turbo-1.2.0.tar.gz'
   md5 '5329fa80953938cb4f097afae55059e2'
 
-  if MacOS.xcode_version.to_f >= 4.3
-    depends_on 'automake' => :build
-    depends_on 'libtool' => :build
+  if MacOS.prefer_64_bit?
+    depends_on 'nasm' => :build
   end
-  depends_on 'nasm' => :build
 
   keg_only "libjpeg-turbo is not linked to prevent conflicts with the standard libjpeg."
 
   def install
-    # we need to reconfigure
-    ENV['LIBTOOLIZE'] = 'glibtoolize'
-    system "autoreconf", "-ivf"
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+    args << "--host=x86_64-apple-darwin" if MacOS.prefer_64_bit?
+    system "./configure", *args
     system "make install"
   end
 
