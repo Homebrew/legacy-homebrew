@@ -13,6 +13,11 @@ class Sleuthkit < Formula
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
+  
+  def patches
+    # required for new-ish libewf releases (API change)
+    "http://downloads.sourceforge.net/project/libewf/patches%20for%203rd%20party%20software/sleuthkit/tsk3.2.3-libewf.patch" if !ARGV.build_head?
+  end
 
   def patches
     # required for new-ish libewf releases (API change)
