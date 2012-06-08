@@ -26,6 +26,9 @@ class GnomeDocUtils < Formula
     libxml2 = Formula.factory('libxml2')
     ENV.prepend 'PYTHONPATH', libxml2.lib/pydir/'site-packages', ':'
 
+    # Find our docbook catalog
+    ENV['XML_CATALOG_FILES'] = "#{etc}/xml/catalog"
+
     system "./configure", "--prefix=#{prefix}",
                           "--disable-scrollkeeper",
                           "--enable-build-utils=yes"

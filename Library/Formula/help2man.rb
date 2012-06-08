@@ -7,6 +7,10 @@ class Help2man < Formula
   sha256 'f7c85b9af84a87d7da912b62dadf426118841750ed1e4598787a54fddaf82b9c'
 
   def install
+  	# install is not parallel safe
+  	# see https://github.com/mxcl/homebrew/issues/12609
+  	ENV.j1
+
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end

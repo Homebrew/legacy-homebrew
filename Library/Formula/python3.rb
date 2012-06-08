@@ -63,10 +63,21 @@ class Python3 < Formula
       args << "--enable-shared" unless ARGV.include? '--static'
     end
 
+    if File.exist?( ENV['HOME']+'/.pydistutils.cfg' )
+      opoo 'Detected '+ENV['HOME']+'/.pydistutils.cfg which may cause trouble.
+         (See http://bugs.python.org/issue6138)'
+    end
+
     system "./configure", *args
     system "make"
     ENV.j1 # Installs must be serialized
     system "make install"
+
+    # The "python3" executable is forgotten if the --framework option is used.
+    # Make sure homebrew symlinks it to `brew --prefix`/bin.
+    if ! (File.exist? "#{bin}/python3")
+      ln_s "#{bin}/python3.2", "#{bin}/python3"
+    end
 
     # Post-install, fix up the site-packages and install-scripts folders
     # so that user-installed Python software survives minor updates, such
@@ -83,7 +94,7 @@ class Python3 < Formula
 
     # Tell distutils-based installers where to put scripts
     scripts_folder.mkpath
-    (effective_lib+"python3.2/distutils/distutils.cfg").write <<-EOF.undent
+    (effective_lib/"python3.2/distutils/distutils.cfg").write <<-EOF.undent
       [install]
       install-scripts=#{scripts_folder}
     EOF
@@ -96,13 +107,15 @@ class Python3 < Formula
       system "#{bin}/python3.2", "setup.py", "install"
 
       # Symlink to easy_install3 to match python3 command.
-      if !(scripts_folder+'easy_install3').exist?
+      unless (scripts_folder/'easy_install3').exist?
         ln_s "#{scripts_folder}/easy_install", "#{scripts_folder}/easy_install3"
       end
     end
   end
 
   def caveats
+    # Since right now, python 2.x is still the default (for homebrew), we
+    # suggest only a symlink to the framework Version 3.2 and not "Current".
     framework_caveats = <<-EOS.undent
 
       Framework Python was installed to:
@@ -110,32 +123,35 @@ class Python3 < Formula
 
       You may want to symlink this Framework to a standard OS X location,
       such as:
-          mkdir ~/Frameworks
-          ln -s "#{prefix}/Frameworks/Python.framework" ~/Frameworks
+        mkdir -p ~/Library/Frameworks/Python.framework/Versions
+        ln -s "#{prefix}/Frameworks/Python.framework/Versions/3.2" ~/Library/Frameworks/Python.framework/Versions/3.2
+    EOS
+
+    # Tk warning only for 10.6 (not for Lion)
+    tk_caveats = <<-EOS.undent
+      Apple's Tcl/Tk is not recommended for use with Python on Mac OS X 10.6.
+      For more information see: http://www.python.org/download/mac/tcltk/
+
     EOS
 
     general_caveats = <<-EOS.undent
-      Apple's Tcl/Tk is not recommended for use with 64-bit Python.
-      For more information see: http://www.python.org/download/mac/tcltk/
-
-      A "distutils.cfg" has been written to:
-        #{effective_lib}/python3.2/distutils
-      specifing the install-scripts folder as:
+      A "distutils.cfg" has been written, specifing the install-scripts folder as:
         #{scripts_folder}
 
-      If you install Python packages via "python3 setup.py install", easy_install, pip,
-      any provided scripts will go into the install-scripts folder above, so you may
-      want to add it to your PATH.
+      If you install Python packages via "python3 setup.py install", easy_install3,
+      pip-3.2, any provided scripts will go into the install-scripts folder above, so
+      you may want to add it to your PATH.
 
       Distribute has been installed, so easy_install is available.
       To update distribute itself outside of Homebrew:
-          #{scripts_folder}/easy_install pip
-          #{scripts_folder}/pip install --upgrade distribute
+        #{scripts_folder}/easy_install3 pip
+        #{scripts_folder}/pip-3.2 install --upgrade distribute
 
       See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
     EOS
 
     s = general_caveats
+    s += tk_caveats if not MacOS.lion?
     s += framework_caveats if as_framework?
     return s
   end
@@ -169,5 +185,10 @@ class Python3 < Formula
   # Where distribute will install executable scripts
   def scripts_folder
     HOMEBREW_PREFIX+"share/python3"
+  end
+
+  # See: https://github.com/mxcl/homebrew/pull/10487
+  def test
+    `#{bin}/python3 -c 'from decimal import Decimal; print(Decimal(4) / Decimal(2))'`.chomp == '2'
   end
 end
