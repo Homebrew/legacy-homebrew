@@ -31,6 +31,8 @@ class DependencyCollector
     dep = case spec
     when :x11, :libpng
       X11Dependency.new(tag)
+    when Symbol
+      raise "Unsupported special dependency #{spec}"
     when String
       if LANGUAGE_MODULES.include? tag
         LanguageModuleDependency.new(tag, spec)
