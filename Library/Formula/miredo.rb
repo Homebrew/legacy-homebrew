@@ -20,18 +20,6 @@ class Miredo < Formula
     DATA
   end
 
-  def caveats; <<-EOS
-You must also install tuntap:
-
-  The TunTap project provides kernel extensions for Mac OS X that allow
-  creation of virtual network interfaces.
-
-  http://tuntaposx.sourceforge.net/
-
-Because these are kernel extensions, there is no Homebrew formula for tuntap.
-
-EOS
-  end
   def install
     system "./bootstrap" if ARGV.build_head?
     args = ["--disable-debug",
@@ -43,6 +31,18 @@ EOS
     system "make install"
   end
 
+  def caveats; <<-EOS
+  You must also install tuntap:
+
+  The TunTap project provides kernel extensions for Mac OS X that allow
+  creation of virtual network interfaces.
+
+  http://tuntaposx.sourceforge.net/
+
+  Because these are kernel extensions, there is no Homebrew formula for tuntap.
+
+  EOS
+  end
 end
 
 __END__
