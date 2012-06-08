@@ -16,6 +16,8 @@ class Gpac < Formula
   md5 '755e8c438a48ebdb13525dd491f5b0d1'
   head 'https://gpac.svn.sourceforge.net/svnroot/gpac/trunk/gpac', :using => :svn
 
+  depends_on :x11
+
   depends_on 'a52dec' => :optional
   depends_on 'jpeg' => :optional
   depends_on 'faad2' => :optional
@@ -35,9 +37,9 @@ class Gpac < Formula
             "--prefix=#{prefix}",
             "--mandir=#{man}",
             # gpac build system is barely functional
-            "--extra-cflags=-I/usr/X11/include",
+            "--extra-cflags=-I#{MacOS.x11_prefix}/include",
             # Force detection of X libs on 64-bit kernel
-            "--extra-ldflags=-L/usr/X11/lib"]
+            "--extra-ldflags=-L#{MacOS.x11_prefix}/lib"]
     args << "--use-ffmpeg=no" unless ARGV.build_head?
     args << "--use-openjpeg=no" unless ARGV.build_head?
 

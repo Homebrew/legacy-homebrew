@@ -6,13 +6,13 @@ class Xpdf < Formula
   md5 'af75f772bee0e5ae4a811ff9d03eac5a'
 
   depends_on 'lesstif'
+  depends_on :x11
 
   # see: http://gnats.netbsd.org/45562
   def patches; DATA; end
 
   def install
-    ENV.x11
-    ENV.append_to_cflags '-I/usr/X11/include -I/usr/X11/include/freetype2'
+    ENV.append_to_cflags "-I#{MacOS.x11_prefix}/include -I#{MacOS.x11_prefix}/include/freetype2"
 
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make"

@@ -9,6 +9,7 @@ class Pango < Formula
   depends_on 'glib'
 
   if MacOS.leopard?
+    depends_on :x11
     depends_on 'fontconfig' # Leopard's fontconfig is too old.
     depends_on 'cairo' # Leopard doesn't come with Cairo.
   elsif MacOS.lion?
@@ -16,7 +17,10 @@ class Pango < Formula
     # to segfault. See the following ticket for information:
     #
     #   https://trac.macports.org/ticket/30370
-    depends_on 'cairo'
+    #   https://github.com/mxcl/homebrew/issues/7140
+    depends_on :x11 => '2.7.2'
+  else
+    depends_on :x11
   end
 
   fails_with :llvm do
@@ -25,7 +29,6 @@ class Pango < Formula
   end
 
   def install
-    ENV.x11
     system "./configure", "--disable-dependency-tracking",
                           "--disable-debug",
                           "--prefix=#{prefix}",

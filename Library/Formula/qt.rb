@@ -12,6 +12,8 @@ class Qt < Formula
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
 
+  depends_on :x11
+
   fails_with :clang do
     build 318
   end
@@ -31,11 +33,10 @@ class Qt < Formula
   depends_on 'sqlite' if MacOS.leopard?
 
   def install
-    ENV.x11
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
     args = ["-prefix", prefix,
             "-system-libpng", "-system-zlib",
-            "-L/usr/X11/lib", "-I/usr/X11/include",
+            "-L#{MacOS.x11_prefix}/lib", "-I#{MacOS.x11_prefix}/include",
             "-confirm-license", "-opensource",
             "-cocoa", "-fast" ]
 

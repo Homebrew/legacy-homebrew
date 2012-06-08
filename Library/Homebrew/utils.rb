@@ -437,8 +437,26 @@ module MacOS extend self
     end
   end
 
+  def app_with_bundle_id id
+    path = `mdfind "kMDItemCFBundleIdentifier == '#{id}'"`.strip
+    return Pathname.new(path) unless path.empty?
+  end
+
+  def xquartz_version
+    # This returns the version number of XQuartz, not of the upstream X.org (which is why
+    # it is not called x11_version). Note that the X11.app distributed by Apple is also
+    # XQuartz, and therefore covered by this method.
+    path = app_with_bundle_id('org.macosforge.xquartz.X11') || app_with_bundle_id('org.x.X11')
+    version = `mdls -raw -name kMDItemVersion #{path}` if path.exist?
+  end
+
+  def x11_prefix
+    return Pathname.new('/opt/X11') if Pathname.new('/opt/X11/lib/libpng.dylib').exist?
+    return Pathname.new('/usr/X11') if Pathname.new('/usr/X11/lib/libpng.dylib').exist?
+  end
+
   def x11_installed?
-    Pathname.new('/usr/X11/lib/libpng.dylib').exist?
+    x11_prefix != nil
   end
 
   def macports_or_fink_installed?

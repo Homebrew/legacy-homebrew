@@ -5,14 +5,13 @@ class Geomview < Formula
   homepage 'http://www.geomview.org'
   md5 '29c7e6d678af7b9968980f92954419bb'
 
+  depends_on :x11
   depends_on 'lesstif'
 
   def install
-    ENV.x11
-
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-
     system "make install"
   end
 end
