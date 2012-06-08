@@ -2,9 +2,9 @@ require 'formula'
 
 class Dart < Formula
   homepage 'http://www.dartlang.org/'
-  url 'https://gsdview.appspot.com/dart-editor-archive-integration/7696/dart-macos.zip'
-  version '7696'
-  md5 '27d9d1a0fba78f2caaea455162f7e166'
+  url 'https://gsdview.appspot.com/dart-editor-archive-integration/8370/dart-macos.zip'
+  version '8370'
+  md5 '2406053200f03a31ab05fb77b4894cac'
 
   def shim_script target
     <<-EOS.undent
