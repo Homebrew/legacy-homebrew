@@ -7,13 +7,12 @@ require 'formula'
 
 class Gsutil < Formula
   homepage 'http://code.google.com/p/gsutil/'
-  url 'http://gsutil.googlecode.com/files/gsutil_01-13-2012.tar.gz'
-  sha1 'fe1aa1c5fe5b3d7d099fc37367d8fc15acb99435'
-  version '2012-01-13'
+  url 'http://commondatastorage.googleapis.com/pub/gsutil_3.9.tar.gz'
+  sha1 '33e728bc5d6d26c81737446843ffa0f9a5dbc8b5'
 
   def install
     libexec.install Dir["*"]
-    bin.install_symlink libexec+'gsutil'
+    bin.install_symlink libexec/'gsutil'
   end
 
   def test
