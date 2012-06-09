@@ -1,8 +1,8 @@
 require 'formula'
 
 class Zint < Formula
-  homepage 'http://www.zint.org.uk'
-  url 'http://downloads.sourceforge.net/project/zint/zint/2.4.3/zint-2.4.3.tar.gz'
+  homepage 'http://zint.github.com/'
+  url 'https://github.com/downloads/zint/zint/zint-2.4.3.tar.gz'
   md5 '2b47caff88cb746f212d6a0497185358'
 
   head 'git://zint.git.sourceforge.net/gitroot/zint/zint'

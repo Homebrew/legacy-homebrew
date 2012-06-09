@@ -2,8 +2,8 @@ require 'formula'
 
 class Algol68g < Formula
   homepage 'http://www.xs4all.nl/~jmvdveer/algol.html'
-  url 'http://jmvdveer.home.xs4all.nl/algol68g-2.3.7.tar.gz'
-  md5 '8a1c2f169b7aaa9d9155b42b6b5a12bf'
+  url 'http://jmvdveer.home.xs4all.nl/algol68g-2.4.tar.gz'
+  sha1 '80212604dd1ed532635177bb4d17853c8a036189'
 
   depends_on 'gsl' => :optional
 
