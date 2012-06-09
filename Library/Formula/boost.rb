@@ -43,6 +43,7 @@ class Boost < Formula
       ["--universal", "Build universal binaries"],
       ["--without-python", "Build without Python"],
       ["--with-icu", "Build regexp engine with icu support"],
+      ["--enable-static", "Build as static libraries"],
     ]
   end
 
@@ -89,6 +90,7 @@ class Boost < Formula
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if ARGV.include? "--universal"
     args << "--without-python" if ARGV.include? "--without-python"
+    args << "--enable-static" ARGV.include? "--enable-static"
 
     system "./bootstrap.sh", *bargs
     system "./bjam", *args
