@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libquicktime < Formula
-  url 'http://downloads.sourceforge.net/project/libquicktime/libquicktime/1.2.3/libquicktime-1.2.3.tar.gz'
+  url 'http://downloads.sourceforge.net/project/libquicktime/libquicktime/1.2.4/libquicktime-1.2.4.tar.gz'
   homepage 'http://libquicktime.sourceforge.net/'
-  md5 '9a82a1546408605ea8337b3a7c78786e'
+  md5 '81cfcebad9b7ee7e7cfbefc861d6d61b'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
