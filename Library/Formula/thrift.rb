@@ -2,9 +2,10 @@ require 'formula'
 
 class Thrift < Formula
   homepage 'http://thrift.apache.org'
-  head 'http://svn.apache.org/repos/asf/thrift/trunk'
   url 'http://www.apache.org/dyn/closer.cgi?path=thrift/0.8.0/thrift-0.8.0.tar.gz'
   md5 'd29dfcd38d476cbc420b6f4d80ab966c'
+
+  head 'http://svn.apache.org/repos/asf/thrift/trunk'
 
   depends_on 'boost'
 
@@ -14,7 +15,7 @@ class Thrift < Formula
     # isn't needed anymore at all but I can't test that.
     cp "/usr/X11/share/aclocal/pkg.m4", "aclocal" if MACOS_VERSION < 10.7
 
-    system "./bootstrap.sh" if version == 'HEAD'
+    system "./bootstrap.sh" if ARGV.build_head?
 
     # Language bindings try to install outside of Homebrew's prefix, so
     # omit them here. For ruby you can install the gem, and for Python
