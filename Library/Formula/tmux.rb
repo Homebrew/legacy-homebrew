@@ -1,9 +1,9 @@
 require 'formula'
 
 class Tmux < Formula
-  url 'http://sourceforge.net/projects/tmux/files/tmux/tmux-1.6/tmux-1.6.tar.gz'
-  md5 '3e37db24aa596bf108a0442a81c845b3'
   homepage 'http://tmux.sourceforge.net'
+  url 'http://sourceforge.net/projects/tmux/files/tmux/tmux-1.6/tmux-1.6.tar.gz'
+  sha1 '8756f6bcecb18102b87e5d6f5952ba2541f68ed3'
 
   head 'https://tmux.svn.sourceforge.net/svnroot/tmux/trunk'
 
@@ -24,9 +24,15 @@ class Tmux < Formula
 
     # Install bash completion scripts for use with bash-completion
     (prefix+'etc/bash_completion.d').install "examples/bash_completion_tmux.sh" => 'tmux'
+
+    # Install addtional meta file
+    prefix.install 'NOTES'
   end
 
   def caveats; <<-EOS.undent
+    Additional information can be found in:
+      #{prefix}/NOTES
+
     Bash completion script was installed to:
       #{etc}/bash_completion.d/tmux
     EOS
