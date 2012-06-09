@@ -1,19 +1,12 @@
 require 'formula'
 
 class Colpack < Formula
-  url 'http://www.cscapes.org/download/ColPack/ColPack-1.0.4.tar.gz'
   homepage 'http://www.cscapes.org/coloringpage/software.htm'
-  md5 '0595cc882b0232be773ec29e7de24fc1'
+  url 'http://www.cscapes.org/download/ColPack/ColPack-1.0.6.tar.gz'
+  sha1 '4be7e9e818e0c72fc8c72e29b1898d6dd46348aa'
 
   def install
-    inreplace "makefile" do |s|
-      s.gsub! ".so", ".dylib"
-      s.gsub! "-soname,", "-install_name,#{prefix}/build/lib/"
-      s.gsub! "\$\(PWD\)", ".."
-      s.gsub! ".exe", ""
-    end
-    system "make"
-    prefix.install Dir['build/include','build/lib']
-    bin.install('ColPack')
+    system './configure', "--prefix=#{prefix}", '--disable-dependency-tracking'
+    system "make install"
   end
 end
