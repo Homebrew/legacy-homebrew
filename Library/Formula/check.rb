@@ -1,9 +1,9 @@
 require 'formula'
 
 class Check < Formula
-  url 'http://downloads.sourceforge.net/project/check/check/0.9.8/check-0.9.8.tar.gz'
+  url 'http://snapshots.aelius.com/check/check-0.9.8-20110416.tar.gz'
   homepage 'http://check.sourceforge.net/'
-  md5 '5d75e9a6027cde79d2c339ef261e7470'
+  md5 'cd549cd714b01315ead37418f15f5f0d'
 
   def options
     [["--universal", "Build a universal binary."]]
