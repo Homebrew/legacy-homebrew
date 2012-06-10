@@ -2,13 +2,13 @@ require 'formula'
 
 class Dircproxy < Formula
   homepage 'http://code.google.com/p/dircproxy/'
-  url 'http://dircproxy.googlecode.com/files/dircproxy-1.1.0.tar.gz'
-  sha1 'a967a542c4c6063e8f977276b68deb6692c9d150'
+  url 'http://dircproxy.googlecode.com/files/dircproxy-1.2.0-RC1.tar.gz'
+  sha1 '7dc4b3aa2e10222f74e280de69c41f571335a96b'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+                          "--enable-ssl"
     system "make install"
   end
 end
