@@ -1,9 +1,9 @@
 require 'formula'
 
 class Jmeter < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=jmeter/binaries/apache-jmeter-2.6.tgz'
+  url 'http://apache.webxcreen.org/jmeter/binaries/apache-jmeter-2.7.tgz'
   homepage 'http://jakarta.apache.org/jmeter/'
-  md5 '87c13f4e1b32b5ec5f2a77426d624b4d'
+  md5 '73435baa6ed99c528dacfa36c7e1f119'
 
   def startup_script name
     <<-EOS.undent
