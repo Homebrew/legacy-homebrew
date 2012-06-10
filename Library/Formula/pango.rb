@@ -2,10 +2,11 @@ require 'formula'
 
 class Pango < Formula
   homepage 'http://www.pango.org/'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.30/pango-1.30.0.tar.xz'
-  sha256 '7c6d2ab024affaed0e942f9279b818235f9c6a36d9fc50688f48d387f4102dff'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.30/pango-1.30.1.tar.xz'
+  sha256 '3a8c061e143c272ddcd5467b3567e970cfbb64d1d1600a8f8e62435556220cbe'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
   depends_on 'glib'
 
   if MacOS.leopard?
