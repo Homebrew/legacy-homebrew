@@ -3,15 +3,16 @@ require 'formula'
 class AspellLang < Formula
   def install
     aspell = Formula.factory 'aspell'
-    system "PATH=$PATH:#{aspell.prefix}/bin; ./configure --vars ASPELL=#{aspell.prefix}/bin/aspell PREZIP=#{aspell.prefix}/bin/prezip"
-    system "PATH=$PATH:#{aspell.prefix}/bin; make install"
+    ENV.prepend 'PATH', aspell.bin, ':'
+    system "./configure", "--vars", "ASPELL=#{aspell.bin}/aspell", "PREZIP=#{aspell.bin}/prezip"
+    system "make install"
   end
 end
 
 class Aspell < Formula
+  homepage 'http://aspell.net/'
   url 'http://ftpmirror.gnu.org/aspell/aspell-0.60.6.1.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/aspell/aspell-0.60.6.1.tar.gz'
-  homepage 'http://aspell.net/'
   md5 'e66a9c9af6a60dc46134fdacf6ce97d7'
 
   fails_with :llvm do
