@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
 
 # This script is called by formula_installer as a separate instance.
 # Rationale: Formula can use __END__, Formula can change ENV
@@ -26,6 +26,16 @@ at_exit do
     # this is a safety measure for Xcode 4.3 which started not installing
     # dev tools into /usr/bin as a default
     ENV.prepend 'PATH', MacOS.dev_tools_path, ':' unless ORIGINAL_PATHS.include? MacOS.dev_tools_path
+
+    # Force any future invocations of sudo to require the user's password to be
+    # re-entered. This is in-case any build script call sudo. Certainly this is
+    # can be inconvenient for the user. But we need to be safe.
+    system "/usr/bin/sudo -k"
+
+    if ENV['HOMEBREW_ERROR_PIPE']
+      require 'fcntl'
+      IO.new(ENV['HOMEBREW_ERROR_PIPE'].to_i, 'w').fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
+    end
 
     install(Formula.factory($0))
   rescue Exception => e

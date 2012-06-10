@@ -237,10 +237,18 @@ class Formula
   # Standard parameters for CMake builds.
   # Using Build Type "None" tells cmake to use our CFLAGS,etc. settings.
   # Setting it to Release would ignore our flags.
+  # Setting CMAKE_FIND_FRAMEWORK to "LAST" tells CMake to search for our
+  # libraries before trying to utilize Frameworks, many of which will be from
+  # 3rd party installs.
   # Note: there isn't a std_autotools variant because autotools is a lot
   # less consistent and the standard parameters are more memorable.
-  def std_cmake_parameters
-    "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None -Wno-dev"
+  def std_cmake_args
+    %W[
+      -DCMAKE_INSTALL_PREFIX=#{prefix}
+      -DCMAKE_BUILD_TYPE=None
+      -DCMAKE_FIND_FRAMEWORK=LAST
+      -Wno-dev
+    ]
   end
 
   def self.class_s name
@@ -334,6 +342,11 @@ class Formula
       # If name was a path or mapped to a cached formula
       if name.include? "/"
         require name
+
+        # require allows filenames to drop the .rb extension, but everything else
+        # in our codebase will require an exact and fullpath.
+        name = "#{name}.rb" unless name =~ /\.rb$/
+
         path = Pathname.new(name)
         name = path.stem
         install_type = :from_path

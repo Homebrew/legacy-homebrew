@@ -18,7 +18,8 @@ class Transcode < Formula
   depends_on 'libquicktime'
 
   def install
-    args = ["--disable-debug", "--disable-dependency-tracking",
+    args = ["--disable-debug",
+            "--disable-dependency-tracking",
             "--prefix=#{prefix}",
             "--enable-a52",
             "--enable-faac",

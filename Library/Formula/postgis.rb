@@ -9,7 +9,7 @@ class Postgis < Formula
   url 'http://postgis.org/download/postgis-2.0.0.tar.gz'
   md5 '639d2b5d6a7dc94ea2e60d6942a615bc'
 
-  head 'http://svn.osgeo.org/postgis/trunk/', :using => :svn
+  head 'http://svn.osgeo.org/postgis/trunk/'
 
   depends_on 'postgresql'
   depends_on 'proj'
@@ -108,9 +108,9 @@ class Postgis < Formula
 
     <<-EOS.undent
       To create a spatially-enabled database, see the documentation:
-        http://postgis.refractions.net/documentation/manual-1.5/ch02.html#id2630392
+        http://postgis.refractions.net/documentation/manual-2.0/postgis_installation.html#create_new_db_extensions
       and to upgrade your existing spatial databases, see here:
-        http://postgis.refractions.net/documentation/manual-1.5/ch02.html#upgrading
+        http://postgis.refractions.net/documentation/manual-2.0/postgis_installation.html#upgrading
 
       PostGIS SQL scripts installed to:
         #{HOMEBREW_PREFIX}/share/postgis

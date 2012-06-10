@@ -1,17 +1,17 @@
 require 'formula'
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.26.tar.gz'
-  md5 '841f4262a70107f85260362f5def8206'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.27.tar.gz'
+  md5 'ecd75ea629fee6d59d26f88c39b2d291'
 end
 
 class Pypy < Formula
   homepage 'http://pypy.org/'
 
   if MacOS.prefer_64_bit?
-    url 'https://bitbucket.org/pypy/pypy/downloads/pypy-1.8-osx64.tar.bz2'
-    version '1.8'
-    md5 '1c293253e8e4df411c3dd59dff82a663'
+    url 'https://bitbucket.org/pypy/pypy/downloads/pypy-1.9-osx64.tar.bz2'
+    version '1.9'
+    md5 'aad9c4b7b827583e37fe8ae0f7cfe0ff'
   else
     url 'http://pypy.org/download/pypy-1.4.1-osx.tar.bz2'
     version '1.4.1'

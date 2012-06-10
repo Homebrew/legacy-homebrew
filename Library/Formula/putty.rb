@@ -12,7 +12,7 @@ class Putty < Formula
       system "./configure", "--prefix=#{prefix}",
                             "--disable-gtktest",
                             "--with-gtk-prefix=/dev/null"
-      system "make VER=-DRELEASE=#{version} all-cli"
+      system "make", "VER=-DRELEASE=#{version}", "all-cli"
       # install manually
       bin.install %w{ plink pscp psftp puttygen }
     end

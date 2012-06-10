@@ -12,7 +12,7 @@ class Swftools < Formula
 
   depends_on 'jpeg'
   depends_on 'lame'
-  depends_on 'ungif'
+  depends_on 'giflib'
   depends_on 'fftw'
 
   def patches
