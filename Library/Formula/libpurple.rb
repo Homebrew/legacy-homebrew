@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libpurple < Formula
-  url 'http://downloads.sourceforge.net/project/pidgin/Pidgin/2.7.3/pidgin-2.7.3.tar.bz2'
   homepage 'http://pidgin.im/'
-  md5 'e4bbadadae85e5e008690b52dd51f102'
+  url 'http://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.4/pidgin-2.10.4.tar.bz2'
+  sha1 'f9ce34e69f97bcd1bb216aefb6d687b5b47f0796'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
