@@ -21,6 +21,10 @@ class Nss < Formula
     ]
     args << 'USE_64=1' if MacOS.prefer_64_bit?
 
+    # Remove the broken (for anyone but Firefox) install_name
+    inreplace "mozilla/security/coreconf/Darwin.mk", "-install_name @executable_path", "-install_name #{lib}"
+    inreplace "mozilla/security/nss/lib/freebl/config.mk", "@executable_path", lib
+
     system "make", "build_coreconf", "build_dbm", "all", "-C", "mozilla/security/nss", *args
 
     # We need to use cp here because all files get cross-linked into the dist
