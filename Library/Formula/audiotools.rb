@@ -19,8 +19,8 @@ class Audiotools < Formula
   depends_on 'vorbis-tools'
 
   def install
-      system "python setup.py build"
-      system "python setup.py install", "--prefix=#{prefix}"
+      system "python", "setup.py", "build"
+      system "python", "setup.py", "install", "--prefix=#{prefix}"
   end
 
   def patches
