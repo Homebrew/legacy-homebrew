@@ -94,5 +94,3 @@ class Boost < Formula
     system "./bjam", *args
   end
 end
-
-__END__
