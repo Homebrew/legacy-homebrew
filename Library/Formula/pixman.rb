@@ -2,8 +2,8 @@ require 'formula'
 
 class Pixman < Formula
   homepage 'http://cairographics.org/'
-  url 'http://cairographics.org/releases/pixman-0.24.4.tar.gz'
-  sha1 'efaa09789128ebc42d17a11d2e350b7217a7cd05'
+  url 'http://cairographics.org/releases/pixman-0.26.2.tar.gz'
+  sha256 'c9ab554b5160679d958bfa1753cb9e6edd1e53c4745c963a1394eea4f0b13ce2'
 
   depends_on 'pkg-config' => :build
   depends_on :x11
@@ -24,10 +24,14 @@ class Pixman < Formula
   def install
     ENV.universal_binary if ARGV.build_universal?
 
+    args = %W[--disable-dependency-tracking
+              --disable-gtk
+              --prefix=#{prefix}]
+
+    args << "--disable-mmx" if ENV.compiler == :clang
+
     # Disable gtk as it is only used to build tests
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--enable-gtk=no"
+    system "./configure", *args
     system "make install"
   end
 end
