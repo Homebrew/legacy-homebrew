@@ -16,7 +16,8 @@ class Nss < Formula
       'NS_USE_GCC=1',
       'NO_MDUPDATE=1',
       'NSS_USE_SYSTEM_SQLITE=1',
-      "NSPR_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/nspr"
+      "NSPR_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/nspr",
+      "NSPR_LIB_DIR=#{HOMEBREW_PREFIX}/lib"
     ]
     args << 'USE_64=1' if MacOS.prefer_64_bit?
 
