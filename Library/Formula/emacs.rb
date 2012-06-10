@@ -21,14 +21,6 @@ class Emacs < Formula
     cause "Duplicate symbol errors while linking."
   end
 
-  fails_with :clang do
-    build 318
-    cause <<-EOS.undent
-      Non-void functions should return values.
-      http://lists.gnu.org/archive/html/emacs-devel/2010-11/msg00133.html
-      EOS
-  end unless ARGV.build_head?
-
   def options
     [
       ["--cocoa", "Build a Cocoa version of emacs"],
@@ -39,14 +31,10 @@ class Emacs < Formula
   end
 
   def patches
-    p = []
-
     if ARGV.include? "--cocoa"
       # Fullscreen patch, works against 23.3 and HEAD.
-      p << "https://raw.github.com/gist/1746342/702dfe9e2dd79fddd536aa90d561efdeec2ba716"
+      "https://raw.github.com/gist/1746342/702dfe9e2dd79fddd536aa90d561efdeec2ba716"
     end
-
-    return p
   end
 
   def install
