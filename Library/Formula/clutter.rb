@@ -2,8 +2,8 @@ require 'formula'
 
 class Clutter < Formula
   homepage 'http://clutter-project.org/'
-  url 'http://source.clutter-project.org/sources/clutter/1.6/clutter-1.6.20.tar.bz2'
-  sha256 'c4e40c7a553a0437a3b8c54da440bf54b44114bd83d68d4eeea425fed90e046e'
+  url 'http://source.clutter-project.org/sources/clutter/1.10/clutter-1.10.6.tar.bz2'
+  sha256 '791bf752de2636989b82007d9f2a3a83bba56b13c329f40ca67e4d35ed982b31'
 
   depends_on 'pkg-config' => :build
   depends_on 'atk'
@@ -12,6 +12,8 @@ class Clutter < Formula
   depends_on 'pango'
   depends_on 'cairo' # for cairo-gobject
   depends_on :x11
+  depends_on 'cogl'
+  depends_on 'gdk-pixbuf'
 
   def install
     system "./configure", "--prefix=#{prefix}",
