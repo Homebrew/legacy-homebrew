@@ -1,8 +1,8 @@
 require 'formula'
 
 class Monetdb < Formula
-  url 'http://dev.monetdb.org/downloads/sources/Dec2011/MonetDB-11.7.5.tar.bz2'
-  sha1 '67444140c9ef015c7e18bc26faa69f33c1a1220c'
+  url 'http://dev.monetdb.org/downloads/sources/Apr2012-SP1/MonetDB-11.9.5.tar.bz2'
+  sha1 '28b0b86a417581414e506664ab03a1bd6b9d94c7'
   homepage 'http://www.monetdb.org/'
 
   head 'http://dev.monetdb.org/hg/MonetDB', :using => :hg
@@ -19,7 +19,8 @@ class Monetdb < Formula
                           "--enable-debug=no",
                           "--enable-assert=no",
                           "--enable-optimize=yes",
-                          "--enable-testing=no"
+                          "--enable-testing=no",
+                          "--without-rubygem"
     system "make install"
   end
 end
