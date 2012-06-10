@@ -1,9 +1,9 @@
 require 'formula'
 
 class Synfig < Formula
-  url 'http://downloads.sourceforge.net/project/synfig/synfig/0.63.03/synfig-0.63.03.tar.gz'
   homepage 'http://synfig.org'
-  md5 '9bd77cd2fc2381adfbd50a7b9c1c6e7c'
+  url 'http://downloads.sourceforge.net/project/synfig/synfig/0.63.05/synfig-0.63.05.tar.gz'
+  sha1 'd532b8dd37a7eed10ea5de6f5b2b2dd419648f2c'
 
   head 'git://synfig.git.sourceforge.net/gitroot/synfig/synfig'
 
