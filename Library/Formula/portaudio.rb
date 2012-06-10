@@ -15,6 +15,13 @@ class Portaudio < Formula
     [["--universal", "Build a universal binary."]]
   end
 
+  # Fix PyAudio compilation on Lion
+  def patches
+    if MacOS.lion?
+      "https://trac.macports.org/export/94150/trunk/dports/audio/portaudio/files/patch-include__pa_mac_core.h.diff"
+    end
+  end
+
   def install
     ENV.universal_binary if ARGV.build_universal?
 
