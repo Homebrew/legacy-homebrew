@@ -12,7 +12,7 @@ class Siege < Formula
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--localstatedir=#{var}",
-                          "--with-ssl",
+                          "--with-ssl"
     system "make install"
   end
 
