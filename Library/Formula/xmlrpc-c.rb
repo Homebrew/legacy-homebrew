@@ -2,8 +2,8 @@ require 'formula'
 
 class XmlrpcC < Formula
   homepage 'http://xmlrpc-c.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/sourceforge/xmlrpc-c/xmlrpc-c-1.16.40.tgz'
-  md5 '0b5c026d48c21937261d90bdadda7248'
+  url 'http://downloads.sourceforge.net/sourceforge/xmlrpc-c/xmlrpc-c-1.16.41.tgz'
+  sha1 'aee10abad995ff745d10223b7335c374a931aa1f'
 
   def install
     ENV.deparallelize
