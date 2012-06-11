@@ -32,7 +32,8 @@ class Python < Formula
     [
       ["--framework", "Do a 'Framework' build instead of a UNIX-style build."],
       ["--universal", "Build for both 32 & 64 bit Intel."],
-      ["--static", "Build static libraries."]
+      ["--static", "Build static libraries."],
+      ["--with-sqlite-dynamic-extensions", "Build sqlite3 module with dyn. extensions."]
     ]
   end
 
@@ -61,11 +62,19 @@ class Python < Formula
       args << "--enable-framework=#{prefix}/Frameworks"
     else
       args << "--enable-shared" unless ARGV.include? '--static'
+      # Building with --enable-shared links the wrong (system) Python lib:
+      # http://bugs.python.org/issue11445
+      # > otool -L python.exe
+      # > /System/Library/Frameworks/Python.framework/Versions/2.7/Python
+      ENV.prepend 'LDFLAGS',  '-L.'
     end
 
-    # allow sqlite3 module to load extensions
-    inreplace "setup.py",
-      'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', ''
+    # Allow sqlite3 module to load extensions:
+    # http://docs.python.org/library/sqlite3.html#f1
+    if ARGV.include? '--with-sqlite-dynamic-extensions'
+      inreplace "setup.py",
+        'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', ''
+    end
 
     system "./configure", *args
 
@@ -82,13 +91,13 @@ class Python < Formula
     # as going from 2.7.0 to 2.7.1.
 
     # Remove the site-packages that Python created in its Cellar.
-    site_packages.rmtree
+    cellar_site_packages.rmtree
 
     # Create a site-packages in the prefix.
     prefix_site_packages.mkpath
 
     # Symlink the prefix site-packages into the cellar.
-    ln_s prefix_site_packages, site_packages
+    ln_s prefix_site_packages, cellar_site_packages
 
     # This is a fix for better interoperability with pyqt. See:
     # https://github.com/mxcl/homebrew/issues/6176
@@ -161,7 +170,7 @@ class Python < Formula
   end
 
   # The Cellar location of site-packages
-  def site_packages
+  def cellar_site_packages
     effective_lib+"python2.7/site-packages"
   end
 
