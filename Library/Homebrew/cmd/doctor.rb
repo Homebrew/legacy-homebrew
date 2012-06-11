@@ -1,3 +1,6 @@
+require 'set'
+require 'cmd/missing'
+
 class Volumes
   def initialize
     @volumes = []
@@ -752,18 +755,17 @@ def check_tmpdir
 end
 
 def check_missing_deps
-  s = []
-  `brew missing`.each_line do |line|
-    line =~ /(.*): (.*)/
-    $2.split.each do |dep|
-        s << dep unless s.include? dep
-    end
+  s = Set.new
+  missing_deps = Homebrew.find_missing_brews(Homebrew.installed_brews)
+  missing_deps.each do |m|
+    s.merge m[1]
   end
+
   if s.length > 0 then <<-EOS.undent
     Some installed formula are missing dependencies.
     You should `brew install` the missing dependencies:
 
-        brew install #{s * " "}
+        brew install #{s.to_a.sort * " "}
 
     Run `brew missing` for more details.
     EOS
