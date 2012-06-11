@@ -34,7 +34,8 @@ class Sip < Formula
     system "python", "configure.py",
                               "--destdir=#{lib}/#{which_python}/site-packages",
                               "--bindir=#{bin}",
-                              "--incdir=#{include}"
+                              "--incdir=#{include}",
+                              "--sipdir=#{HOMEBREW_PREFIX}/share/sip"
     system "make install"
   end
 
