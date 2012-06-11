@@ -5,6 +5,10 @@ class Html2text < Formula
   homepage 'http://www.mbayer.de/html2text/'
   md5 '6097fe07b948e142315749e6620c9cfc'
 
+  def patches
+    "http://www.mbayer.de/html2text/downloads/patch-utf8-html2text-1.3.2a.diff"
+  end
+
   def install
     inreplace 'configure',
               'for i in "CC" "g++" "cc" "$CC"; do',
