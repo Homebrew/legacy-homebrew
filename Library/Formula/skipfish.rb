@@ -3,7 +3,7 @@ require 'formula'
 class Skipfish < Formula
   homepage 'http://code.google.com/p/skipfish/'
   url 'http://skipfish.googlecode.com/files/skipfish-2.07b.tgz'
-  sha1 'ff860b840ec7e579e9fac08e4fd8f4e2'
+  sha1 'eb8811137dd474adc02a657d371c4427b28f8d97'
 
   depends_on 'libidn'
 
