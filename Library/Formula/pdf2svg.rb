@@ -6,10 +6,6 @@ class PopplerGlib < Requirement
     poppler.installed_with? '--with-glib'
   end
 
-  def fatal?
-    true
-  end
-
   def message; <<-EOS.undent
     pdf2svg requires the Poppler-Glib bindings but Poppler was not installed
     with support for glib. Please reinstall Poppler using the `--with-glib`

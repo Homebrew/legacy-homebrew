@@ -8,6 +8,8 @@ class NeedsSnowLeopard < Requirement
   def satisfied?
     MacOS.snow_leopard?
   end
+
+  def fatal?; false; end	# why is this non-fatal? is 10.6 required or not?
 end
 
 class GoogleJsTest < Formula

@@ -11,6 +11,7 @@ class OasaPythonModule < Requirement
     args = %W{/usr/bin/env python -c import\ oasa}
     quiet_system *args
   end
+  def fatal?; false; end	# eventually we should have depends_on ... => :optional
 end
 
 class OpenBabel < Formula

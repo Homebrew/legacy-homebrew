@@ -16,6 +16,7 @@ class StandardHomebrewLocation < Requirement
   def satisfied?
     HOMEBREW_PREFIX.to_s == "/usr/local"
   end
+  def fatal?; false; end	# why is this non-fatal if it won't work without it?
 end
 
 class Mlton < Formula

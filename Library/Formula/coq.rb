@@ -12,9 +12,6 @@ class TransitionalMode < Requirement
     # If installed, make sure it is transitional instead of strict.
     `camlp5 -pmode 2>&1`.chomp == 'transitional'
   end
-  def fatal?
-    true
-  end
 end
 
 class Coq < Formula

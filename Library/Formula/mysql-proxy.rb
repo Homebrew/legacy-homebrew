@@ -18,9 +18,6 @@ class MySqlInstalled < Requirement
   def satisfied?
     which 'mysql_config'
   end
-  def fatal?
-    true
-  end
 end
 
 class MysqlProxy < Formula

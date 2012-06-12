@@ -13,6 +13,7 @@ class NoExpatFramework < Requirement
   def satisfied?
     not File.exist? "/Library/Frameworks/expat.framework"
   end
+  def fatal?; false; end	# shouldn't we check for an actual arch mismatch?
 end
 
 

@@ -14,9 +14,6 @@ class PostgresqlInstalled < Requirement
   def satisfied?
     which 'pg_config'
   end
-  def fatal?
-    true
-  end
 end
 
 class Osm2pgsql < Formula

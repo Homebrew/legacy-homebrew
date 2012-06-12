@@ -13,6 +13,7 @@ class NoBdb5 < Requirement
     f = Formula.factory("berkeley-db")
     not f.installed?
   end
+  def fatal?; false; end	# figure out what the problem is
 end
 
 class Squid < Formula

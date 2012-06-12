@@ -16,6 +16,7 @@ class UniversalNeon < Requirement
     f = Formula.factory('neon')
     !f.installed? || archs_for_command(f.lib+'libneon.dylib').universal?
   end
+  def fatal?; false; end	# why is this non-fatal? is it required or not?
 end
 
 class UniversalSqlite < Requirement
@@ -28,6 +29,7 @@ class UniversalSqlite < Requirement
     f = Formula.factory('sqlite')
     !f.installed? || archs_for_command(f.lib+'libsqlite3.dylib').universal?
   end
+  def fatal?; false; end	# why is this non-fatal? is it required or not?
 end
 
 class Subversion < Formula

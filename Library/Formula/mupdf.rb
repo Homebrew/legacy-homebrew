@@ -5,10 +5,6 @@ class NeedsSnowLeopard < Requirement
     MACOS_VERSION >= 10.6
   end
 
-  def fatal?
-    true
-  end
-
   def message; <<-EOS.undent
     The version of Freetype that comes with Leopard is too old to build MuPDF
     against. It is possible to get MuPDF working on Leopard using the Freetype

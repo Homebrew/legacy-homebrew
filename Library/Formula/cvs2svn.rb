@@ -14,10 +14,6 @@ class PythonWithGdbm < Requirement
   def satisfied?
     quiet_system "python", "-c", "import gdbm"
   end
-
-  def fatal?
-    true
-  end
 end
 
 class Cvs2svn < Formula

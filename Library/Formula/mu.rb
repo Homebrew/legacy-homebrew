@@ -15,9 +15,6 @@ class Emacs23Installed < Requirement
     `emacs --version 2>/dev/null` =~ /^GNU Emacs (\d{2})/
     $1.to_i >= 23
   end
-  def fatal?
-    true
-  end
 end
 
 class Mu < Formula

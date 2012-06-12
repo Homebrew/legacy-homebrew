@@ -85,11 +85,11 @@ end
 
 
 # A base class for non-formula requirements needed by formulae.
-# A "fatal" requirement is one that will fail the build if it is not present.
-# By default, Requirements are non-fatal.
+# A "fatal" requirement is one that is required for the build to proceed.
+# A requirement may be made non-fatal to simply display a message before the build.
 class Requirement
   def satisfied?; false; end
-  def fatal?; false; end
+  def fatal?; true; end
   def message; ""; end
 end
 
@@ -101,8 +101,6 @@ class LanguageModuleDependency < Requirement
     @module_name = module_name
     @import_name = import_name || module_name
   end
-
-  def fatal?; true; end
 
   def satisfied?
     quiet_system(*the_test)

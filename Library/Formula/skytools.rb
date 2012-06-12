@@ -14,9 +14,6 @@ class PostgresqlInstalled < Requirement
   def satisfied?
     which 'postgres'
   end
-  def fatal?
-    true
-  end
 end
 
 class Skytools < Formula

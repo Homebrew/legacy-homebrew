@@ -15,10 +15,6 @@ class ErlangInstalled < Requirement
   def satisfied?
     which 'erl'
   end
-
-  def fatal?
-    true
-  end
 end
 
 class Elixir < Formula

@@ -15,6 +15,7 @@ class UniversalPython < Requirement
   def satisfied?
     archs_for_command("python").universal?
   end
+  def fatal?; false; end	# "likely" fail? is this required or not??
 end
 
 class Boost < Formula
