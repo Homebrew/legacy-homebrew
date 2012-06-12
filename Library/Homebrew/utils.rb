@@ -523,17 +523,16 @@ module GitHub extend self
     name = f.name if Formula === name
 
     require 'open-uri'
-    require 'yaml'
+    require 'vendor/multi_json'
 
     issues = []
 
-    open "http://github.com/api/v2/yaml/issues/search/mxcl/homebrew/open/#{name}" do |f|
-      yaml = YAML::load(f.read);
-      yaml['issues'].each do |issue|
+    uri = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/#{name}")
+
+    open uri do |f|
+      MultiJson.decode(f.read)['issues'].each do |issue|
         # don't include issues that just refer to the tool in their body
-        if issue['title'].include? name
-          issues << issue['html_url']
-        end
+        issues << issue['html_url'] if issue['title'].include? name
       end
     end
 
@@ -547,11 +546,11 @@ module GitHub extend self
     require 'vendor/multi_json'
 
     query = rx.source.delete('.*').gsub('\\', '')
-    uri = URI.parse("http://github.com/api/v2/json/issues/search/mxcl/homebrew/open/#{query}")
+    uri = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/#{query}")
 
     open uri do |f|
-      MultiJson.decode(f.read)["issues"].each do |pull|
-        yield pull['pull_request_url'] if rx.match pull['title'] and pull["pull_request_url"]
+      MultiJson.decode(f.read)['issues'].each do |pull|
+        yield pull['pull_request_url'] if rx.match pull['title'] and pull['pull_request_url']
       end
     end
   rescue
