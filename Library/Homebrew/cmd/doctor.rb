@@ -168,22 +168,12 @@ def check_for_stray_las
 end
 
 def check_for_x11
-  unless x11_installed?
-    <<-EOS.undent
-      X11 not installed.
-      You don't have X11 installed as part of your OS X installation.
-      This is not required for all formulae, but is expected by some.
-    EOS
-  end
-end
-
-def check_for_nonstandard_x11
-  x11 = Pathname.new('/usr/X11')
-  if x11.symlink?
-    <<-EOS.undent
-      /usr/X11 is a symlink
-      Homebrew's X11 support has only be tested with Apple's X11.
-      In particular, "XQuartz" and "XDarwin" are not known to be compatible.
+  unless MacOS.x11_installed? then <<-EOS.undent
+    X11 is not installed.
+    You don't have X11 installed as part of your OS X installation.
+    This is not required for all formulae, but is expected by some.
+    You can download the latest version of XQuartz from:
+      https://xquartz.macosforge.org
     EOS
   end
 end
@@ -497,26 +487,6 @@ def check_which_pkg_config
 
     `./configure` may have problems finding brew-installed packages using
     this other pkg-config.
-    EOS
-  end
-end
-
-def check_pkg_config_paths
-  binary = which 'pkg-config'
-  return if binary.nil?
-
-  pkg_config_paths = `pkg-config --variable pc_path pkg-config`.chomp.split(':')
-
-  # Check that all expected paths are being searched
-  unless pkg_config_paths.include? "/usr/X11/lib/pkgconfig"
-    <<-EOS.undent
-      Your pkg-config is not checking "/usr/X11/lib/pkgconfig" for packages.
-      Earlier versions of the pkg-config formula did not add this path
-      to the search path, which means that other formula may not be able
-      to find certain dependencies.
-
-      To resolve this issue, re-brew pkg-config with:
-        brew rm pkg-config && brew install pkg-config
     EOS
   end
 end
