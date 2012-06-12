@@ -1,9 +1,10 @@
 require 'formula'
 
 class PdflibLite < Formula
-  url 'http://www.pdflib.com/binaries/PDFlib/705/PDFlib-Lite-7.0.5.tar.gz'
   homepage 'http://www.pdflib.com/download/free-software/pdflib-lite/'
-  md5 '34a1cc89e2cfdc1e43ba57019e442a90'
+  url 'http://www.pdflib.com/binaries/PDFlib/705/PDFlib-Lite-7.0.5p3.tar.gz'
+  version '7.0.5p3'
+  sha1 '42e0605ae21f4b6d25fa2d20e78fed6df36fbaa9'
 
   def install
     # Without the following substitution, pdflib-lite runs into weird
