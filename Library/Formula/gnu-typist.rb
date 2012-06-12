@@ -1,10 +1,10 @@
 require 'formula'
 
 class GnuTypist < Formula
-  url 'http://ftpmirror.gnu.org/gtypist/gtypist-2.8.3.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/gtypist/gtypist-2.8.3.tar.bz2'
   homepage 'http://www.gnu.org/software/gtypist/'
-  md5 '43be4b69315a202cccfed0efd011d66c'
+  url 'http://ftpmirror.gnu.org/gtypist/gtypist-2.9.1.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/gtypist/gtypist-2.9.1.tar.gz'
+  sha256 'a5885654aab74027999a67a9bbd7c3b6823479f89a6f1439244bf9c5536fb67d'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
