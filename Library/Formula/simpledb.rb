@@ -14,7 +14,10 @@ class Simpledb < Formula
   def install
 
     SimpledbAwsLibraries.new.brew { mv 'src', buildpath/'perl-lib' }
-    system "mv bin/simpledb simpledb-perl"
+
+    system 'pod2man', 'bin/simpledb', 'simpledb.1'
+
+    system 'mv', 'bin/simpledb', 'simpledb-perl'
 
     open("simpledb", 'w') { |f|
       f.puts "#!/bin/sh\n"
@@ -26,6 +29,7 @@ class Simpledb < Formula
     prefix.install 'simpledb-perl'
     prefix.install 'perl-lib'
     bin.install 'simpledb'
+    man1.install 'simpledb.1'
 
   end
 
