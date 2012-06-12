@@ -11,9 +11,15 @@ class Geany < Formula
   depends_on 'gtk+'
 
   def install
+    # Needed to compile against current version of glib.
+    # Check that this is still needed when updating the formula.
+    ENV.append 'LDFLAGS', '-lgmodule-2.0'
+
     intltool = Formula.factory('intltool')
     ENV.append "PATH", intltool.bin, ":"
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end
