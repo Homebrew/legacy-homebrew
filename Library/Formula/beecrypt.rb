@@ -8,11 +8,7 @@ class Beecrypt < Formula
   depends_on "icu4c"
 
   def install
-    # Compilation fails if we allow Homebrew to set CFLAGS/CPPFLAGS/CXXFLAGS.
-    ENV.delete "CFLAGS"
-    ENV.delete "CPPFLAGS"
-    ENV.delete "CXXFLAGS"
-
+    ENV.remove_from_cflags /-march=\S*/
     system "./configure", "--prefix=#{prefix}", "--disable-openmp", "--without-java", "--without-python"
     system "make"
     system "make install"
