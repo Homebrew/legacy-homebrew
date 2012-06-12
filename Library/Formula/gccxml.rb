@@ -2,8 +2,7 @@ require 'formula'
 
 class Gccxml < Formula
   homepage 'http://www.gccxml.org/HTML/Index.html'
-  url "cvs://:pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML:gccxml"
-  version 'HEAD'
+  head "cvs://:pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML:gccxml"
 
   depends_on 'cmake' => :build
 
