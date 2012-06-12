@@ -7,7 +7,7 @@ class GnuTypist < Formula
   sha256 'a5885654aab74027999a67a9bbd7c3b6823479f89a6f1439244bf9c5536fb67d'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end
