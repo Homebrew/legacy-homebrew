@@ -1,10 +1,10 @@
 require 'formula'
 
 class Clisp < Formula
+  homepage 'http://www.clisp.org/'
   url 'http://ftpmirror.gnu.org/clisp/release/2.49/clisp-2.49.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/clisp/release/2.49/clisp-2.49.tar.bz2'
-  homepage 'http://clisp.cons.org/'
-  md5 '1962b99d5e530390ec3829236d168649'
+  sha1 '7e8d585ef8d0d6349ffe581d1ac08681e6e670d4'
 
   depends_on 'libsigsegv'
   depends_on 'readline'

@@ -18,6 +18,7 @@ class Dart < Formula
 
     (bin+'dart').write shim_script("#{libexec}/bin/dart")
     (bin+'dart2js').write shim_script("#{libexec}/bin/dart2js")
+    (bin+'pub').write shim_script("#{libexec}/bin/pub")
   end
 
   def test
