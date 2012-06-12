@@ -8,10 +8,7 @@ class Verilator < Formula
   skip_clean 'bin' # Allows perl scripts to keep their executable flag
 
   def install
-    args = ["--prefix=#{prefix}"]
-
-    ohai "#{bin}"
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
   end
