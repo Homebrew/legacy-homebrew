@@ -8,7 +8,6 @@ class Eigen < Formula
   depends_on 'cmake' => :build
 
   def install
-    ENV.fortran
     mkdir 'eigen-build' do
       args = std_cmake_args
       args.delete '-DCMAKE_BUILD_TYPE=None'
