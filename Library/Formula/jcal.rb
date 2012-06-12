@@ -21,7 +21,7 @@ class Jcal < Formula
   end
 
   def test
-    system "#{bin}/jcal -y"
+    system "#{bin}/jcal", "-y"
     system "#{bin}/jdate"
   end
 end

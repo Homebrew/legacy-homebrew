@@ -17,7 +17,10 @@ class Sbcl < Formula
     sha1 '3c13225c8fe3eabf54e9d368e6b74318a5546430'
   end
 
-  fails_with_llvm "Compilation fails with LLVM.", :build => 2334
+  fails_with :llvm do
+    build 2334
+    cause "Compilation fails with LLVM."
+  end
 
   skip_clean 'bin'
   skip_clean 'lib'
@@ -64,20 +67,17 @@ class Sbcl < Formula
       value =~ /[\x80-\xff]/
     end
 
-    SbclBootstrapBinaries.new.brew {
+    SbclBootstrapBinaries.new.brew do
       # We only need the binaries for bootstrapping, so don't install anything:
       command = Dir.pwd + "/src/runtime/sbcl"
       core = Dir.pwd + "/output/sbcl.core"
       xc_cmdline = "#{command} --core #{core} --disable-debugger --no-userinit --no-sysinit"
 
       cd buildpath do
-        if ARGV.build_32_bit?
-          system "SBCL_ARCH=x86 ./make.sh --prefix='#{prefix}' --xc-host='#{xc_cmdline}'"
-        else
-          system "./make.sh --prefix='#{prefix}' --xc-host='#{xc_cmdline}'"
-        end
+        ENV['SBCL_ARCH'] = 'x86' if ARGV.build_32_bit?
+        system "./make.sh", "--prefix=#{prefix}", "--xc-host=#{xc_cmdline}"
       end
-    }
+    end
 
     ENV['INSTALL_ROOT'] = prefix
     system "sh install.sh"

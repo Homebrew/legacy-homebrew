@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libgphoto2 < Formula
-  url 'http://downloads.sourceforge.net/project/gphoto/libgphoto/2.4.11/libgphoto2-2.4.11.tar.bz2'
-  md5 '16a22b9739e45a95980ed62705fe7333'
   homepage 'http://www.gphoto.org/proj/libgphoto2/'
+  url 'http://downloads.sourceforge.net/project/gphoto/libgphoto/2.4.13/libgphoto2-2.4.13.tar.bz2'
+  md5 'd20a32fe2bb7d802a6a8c3b6f7f97c5e'
 
   depends_on 'pkg-config' => :build
   depends_on 'libusb-compat'

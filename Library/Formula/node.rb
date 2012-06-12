@@ -2,26 +2,28 @@ require 'formula'
 
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.6.12/node-v0.6.12.tar.gz'
-  md5 'a12766ae4003c9712927d1fa134ed9f6'
+  url 'http://nodejs.org/dist/v0.6.19/node-v0.6.19.tar.gz'
+  sha1 'f6c5cfbadff4788ac3a95f8263a0c2f4e07444b6'
 
   head 'https://github.com/joyent/node.git'
 
   devel do
-    url 'http://nodejs.org/dist/v0.7.5/node-v0.7.5.tar.gz'
-    md5 '5dd0c1c2053f610c0eee973c5264ee4e'
+    url 'http://nodejs.org/dist/v0.7.10/node-v0.7.10.tar.gz'
+    sha1 'febb23cd3e2d63f2e956661b18697283'
   end
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.leopard?
 
-  fails_with_llvm :build => 2326
+  fails_with :llvm do
+    build 2326
+  end
 
   # Stripping breaks dynamic loading
   skip_clean :all
 
   def options
-    [["--debug", "Build with debugger hooks."]]
+    [["--enable-debug", "Build with debugger hooks."]]
   end
 
   def install
@@ -34,7 +36,7 @@ class Node < Formula
 
     # Why skip npm install? Read https://github.com/mxcl/homebrew/pull/8784.
     args = ["--prefix=#{prefix}", "--without-npm"]
-    args << "--debug" if ARGV.include? '--debug'
+    args << "--debug" if ARGV.include? '--enable-debug'
 
     system "./configure", *args
     system "make install"

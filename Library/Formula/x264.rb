@@ -1,12 +1,12 @@
 require 'formula'
 
 class X264 < Formula
-  url 'http://download.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20120111-2245.tar.bz2'
   homepage 'http://www.videolan.org/developers/x264.html'
-  md5 'a4a18f7172e50b6cecc1c65324a03c9e'
-  version 'r2245'
+  url 'http://download.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20120609-2245-stable.tar.bz2'
+  sha1 '9abf3129cf4ebdf4409164a9334f52aad935bdd2'
+  version 'r2197' # brew install -v --HEAD x264 will display the version.
 
-  head 'git://git.videolan.org/x264.git'
+  head 'http://git.videolan.org/git/x264.git', :branch => 'stable'
 
   depends_on 'yasm' => :build
 
@@ -15,9 +15,10 @@ class X264 < Formula
   end
 
   def install
-    # Having this set can fail the endian test!
-    ENV['GREP_OPTIONS'] = ''
-
+    if ARGV.build_head?
+      ENV['GIT_DIR'] = cached_download/'.git'
+      system './version.sh'
+    end
     args = ["--prefix=#{prefix}", "--enable-shared"]
     args << "--bit-depth=10" if ARGV.include?('--10-bit')
 
@@ -31,5 +32,13 @@ class X264 < Formula
     end
 
     system "make install"
+  end
+
+  def caveats; <<-EOS.undent
+    Because x264 installs its library with a version number that changes,
+    any of these that you have installed should be reinstalled each time you
+    upgrade x264.
+       avidemux, ffmbc, ffmpeg, gst-plugins-ugly
+    EOS
   end
 end

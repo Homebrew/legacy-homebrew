@@ -1,59 +1,95 @@
 require 'formula'
 
 class Babl < Formula
-  url 'ftp://ftp.gimp.org/pub/babl/0.1/babl-0.1.6.tar.bz2'
   homepage 'http://www.gegl.org/babl/'
-  md5 'dc960981a5ec5330fc1c177be9f59068'
+  url 'ftp://ftp.gtk.org/pub/babl/0.1/babl-0.1.10.tar.bz2'
+  md5 '9e1542ab5c0b12ea3af076a9a2f02d79'
 
   head 'git://git.gnome.org/babl'
 
   depends_on 'pkg-config' => :build
 
   def options
-  [
-    ["--universal", "Builds a universal binary"],
-  ]
+    [["--universal", "Builds a universal binary"]]
   end
 
   def patches
-    # Fixes an error when compiling with clang
-    # The fix was found on macports: https://trac.macports.org/browser/trunk/dports/graphics/babl/files/clang.patch
+    # There are two patches.
+    # The first one changes an include <values.h> (deleted on Mac OS X) to <limits.h>
+    # The second one fixes an error when compiling with clang. See:
+    # https://trac.macports.org/browser/trunk/dports/graphics/babl/files/clang.patch
     { :p0 => DATA }
   end
 
   def install
     if ARGV.build_universal?
       ENV.universal_binary
-      opoo 'Compilation may fail at babl-cpuaccel.c using gcc for a universal build' if ENV.compiler == :gcc
+      if ENV.compiler == :gcc
+        opoo 'Compilation may fail at babl-cpuaccel.c using gcc for a universal build'
+      end
     end
 
-    argv = ["--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"]
-
-    system "./configure", *argv
-    system "/usr/bin/make install"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
+    system "make install"
   end
 end
 
 __END__
-Index: extensions/sse-fixups.c
-===================================================================
---- extensions/sse-fixups.c.orig 2011-06-28 20:01:39.000000000 -0700
-+++ extensions/sse-fixups.c 2011-06-28 20:01:29.000000000 -0700
-@@ -21,7 +21,7 @@
- 
- #include "config.h"
- 
--#if defined(__GNUC__) && (__GNUC__ >= 4) && defined(USE_SSE) && defined(USE_MMX)
-+#if !defined(__clang__) && defined(__GNUC__) && (__GNUC__ >= 4) && defined(USE_SSE) && defined(USE_MMX)
- 
- #include <stdint.h>
- #include <stdlib.h>
-@@ -173,7 +173,7 @@
- int
- init (void)
- {
--#if defined(__GNUC__) && (__GNUC__ >= 4) && defined(USE_SSE) && defined(USE_MMX)
-+#if !defined(__clang__) && defined(__GNUC__) && (__GNUC__ >= 4) && defined(USE_SSE) && defined(USE_MMX)
- 
-   Babl *rgbaF_linear = babl_format_new (
-     babl_model ("RGBA"),
+diff -cr babl.ori/babl-palette.c babl/babl-palette.c
+*** babl.ori/babl-palette.c	Sat Apr 14 01:31:40 2012
+--- babl/babl-palette.c	Sat Apr 14 01:32:15 2012
+***************
+*** 19,25 ****
+  #include <stdlib.h>
+  #include <string.h>
+  #include <stdio.h>
+! #include <values.h>
+  #include <assert.h>
+  #include "config.h"
+  #include "babl-internal.h"
+--- 19,25 ----
+  #include <stdlib.h>
+  #include <string.h>
+  #include <stdio.h>
+! #include <limits.h>
+  #include <assert.h>
+  #include "config.h"
+  #include "babl-internal.h"
+diff -cr extensions.ori/sse-fixups.c extensions/sse-fixups.c
+*** extensions.ori/sse-fixups.c	Sat Apr 14 01:31:40 2012
+--- extensions/sse-fixups.c	Sat Apr 14 01:33:44 2012
+***************
+*** 21,27 ****
+  
+  #include "config.h"
+  
+! #if defined(__GNUC__) && (__GNUC__ >= 4) && defined(USE_SSE) && defined(USE_MMX)
+  
+  #include <stdint.h>
+  #include <stdlib.h>
+--- 21,27 ----
+  
+  #include "config.h"
+  
+! #if !defined(__clang__) && defined(__GNUC__) && (__GNUC__ >= 4) && defined(USE_SSE) && defined(USE_MMX)
+  
+  #include <stdint.h>
+  #include <stdlib.h>
+***************
+*** 177,183 ****
+  int
+  init (void)
+  {
+! #if defined(__GNUC__) && (__GNUC__ >= 4) && defined(USE_SSE) && defined(USE_MMX)
+  
+    const Babl *rgbaF_linear = babl_format_new (
+      babl_model ("RGBA"),
+--- 177,183 ----
+  int
+  init (void)
+  {
+! #if !defined(__clang__) && defined(__GNUC__) && (__GNUC__ >= 4) && defined(USE_SSE) && defined(USE_MMX)
+  
+    const Babl *rgbaF_linear = babl_format_new (
+      babl_model ("RGBA"),

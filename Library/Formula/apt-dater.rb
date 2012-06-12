@@ -23,7 +23,7 @@ class AptDater < Formula
   end
 
   def test
-    system "#{bin}/apt-dater -v"
+    system "#{bin}/apt-dater", "-v"
   end
 end
 

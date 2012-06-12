@@ -9,8 +9,10 @@ class Rtmpdump < Formula
 
   depends_on 'openssl' if MacOS.leopard?
 
-  # note: as of LLVM build 2336, this still has runtime issues
-  fails_with_llvm "Crashes at runtime"
+  fails_with :llvm do
+    # note: as of LLVM build 2336, this still has runtime issues
+    cause "Crashes at runtime"
+  end
 
   # Use dylib instead of so
   def patches; DATA; end unless ARGV.build_head?

@@ -11,9 +11,11 @@ module Homebrew extend self
 
     uses = Formula.all.select do |f|
       ARGV.formulae.all? do |ff|
-        # For each formula given, show which other formulas depend on it.
-        # We only go one level up, ie. direct dependencies.
-        f.deps.include? ff.name
+        if ARGV.flag? '--recursive'
+          f.recursive_deps.include? ff
+        else
+          f.deps.include? ff.name
+        end
       end
     end
 

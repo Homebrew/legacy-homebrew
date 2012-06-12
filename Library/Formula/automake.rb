@@ -2,9 +2,9 @@ require 'formula'
 
 class Automake < Formula
   homepage 'http://www.gnu.org/software/automake/'
-  url 'http://ftpmirror.gnu.org/automake/automake-1.11.3.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/automake/automake-1.11.3.tar.gz'
-  md5 '93ecb319f0365cb801990b00f658d026'
+  url 'http://ftpmirror.gnu.org/automake/automake-1.12.1.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/automake/automake-1.12.1.tar.gz'
+  sha1 'e39d3e95e384549cbac22f9f0b110fa53825ddef'
 
   depends_on "autoconf" => :build
 
@@ -24,6 +24,6 @@ class Automake < Formula
   end
 
   def test
-    system "#{bin}/automake --version"
+    system "#{bin}/automake", "--version"
   end
 end

@@ -2,9 +2,9 @@ require 'formula'
 
 class Ceylon < Formula
   homepage 'http://ceylon-lang.org/'
-  url 'http://ceylon-lang.org/download/dist/1_0_Milestone1'
-  version '1.0.M1'
-  md5 '627ebfc52fc9ba93fc63df59f8309509'
+  url 'http://ceylon-lang.org/download/dist/1_0_Milestone2'
+  version '0.2'
+  md5 'ae52a9bb0bac65f36e783121df049e55'
 
   def install
     rm_f Dir["bin/*.bat"]
@@ -19,7 +19,7 @@ class Ceylon < Formula
   def test
     cd "#{libexec}/samples/helloworld" do
       system "#{bin}/ceylonc", "com.acme.helloworld"
-      system "#{bin}/ceylond", "-private", "com.acme.helloworld"
+      system "#{bin}/ceylond", "-non-shared", "com.acme.helloworld"
       system "#{bin}/ceylon", "com.acme.helloworld/1.0.0", "John"
     end
   end

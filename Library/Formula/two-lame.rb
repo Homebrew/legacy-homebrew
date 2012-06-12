@@ -1,12 +1,18 @@
 require 'formula'
 
 class TwoLame < Formula
-  url 'http://downloads.sourceforge.net/twolame/twolame-0.3.12.tar.gz'
   homepage 'http://www.twolame.org/'
-  md5 'd38c3ead5ac49b7425c1a9ef91126a35'
+  url 'http://downloads.sourceforge.net/twolame/twolame-0.3.13.tar.gz'
+  sha1 '3ca460472c2f6eeedad70291d8e37da88b64eb8b'
+
+  depends_on 'libsndfile' if ARGV.include? '--frontend'
+
+  def options
+    [['--frontend', 'Build the twolame frontend using libsndfile']]
+  end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-    system "make install"
+    system './configure', "--prefix=#{prefix}", '--disable-dependency-tracking'
+    system 'make install'
   end
 end

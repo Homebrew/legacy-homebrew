@@ -1,10 +1,11 @@
 require 'formula'
 
 class Fontforge < Formula
-  url 'http://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20110222.tar.bz2'
-  head 'git://fontforge.git.sourceforge.net/gitroot/fontforge/fontforge'
   homepage 'http://fontforge.sourceforge.net'
+  url 'http://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20110222.tar.bz2'
   md5 '5be4dda345b5d73a27cc399df96e463a'
+
+  head 'git://fontforge.git.sourceforge.net/gitroot/fontforge/fontforge'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
@@ -15,10 +16,16 @@ class Fontforge < Formula
     [['--without-python', 'Build without Python.']]
   end
 
-  fails_with_llvm "Compiling cvexportdlg.c fails with error: initializer element is not constant", :build => 2336
+  fails_with :llvm do
+    build 2336
+    cause "Compiling cvexportdlg.c fails with error: initializer element is not constant"
+  end
 
   def install
-    args = ["--prefix=#{prefix}", "--enable-double", "--without-freetype-bytecode"]
+    args = ["--prefix=#{prefix}",
+            "--enable-double",
+            "--without-freetype-bytecode"]
+
     args << "--without-python" if ARGV.include? "--without-python"
 
     ENV.x11
@@ -30,6 +37,14 @@ class Fontforge < Formula
     inreplace "Makefile" do |s|
       s.gsub! "/Applications", "$(prefix)"
       s.gsub! "ln -s /usr/local/bin/fontforge", "ln -s $(bindir)/fontforge"
+    end
+
+    # Fix hard-coded include file paths. Reported usptream:
+    # http://sourceforge.net/mailarchive/forum.php?thread_name=C1A32103-A62D-468B-AD8A-A8E0E7126AA5%40smparkes.net&forum_name=fontforge-devel
+    # https://trac.macports.org/ticket/33284
+    header_prefix = MacOS.xcode_prefix
+    inreplace %w(fontforge/macbinary.c fontforge/startui.c gutils/giomime.c) do |s|
+      s.gsub! "/Developer", header_prefix
     end
 
     system "make"

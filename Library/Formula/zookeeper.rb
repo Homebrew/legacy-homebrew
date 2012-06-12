@@ -9,6 +9,7 @@ class Zookeeper < Formula
 
   def options
     [
+      ["--c", "Build C bindings."],
       ["--perl", "Build Perl bindings."],
       ["--python", "Build Python bindings."],
     ]
@@ -63,23 +64,27 @@ class Zookeeper < Formula
       end
     end
 
+    build_python = ARGV.include? "--python"
+    build_perl = ARGV.include? "--perl"
+    build_c = build_python or build_perl or ARGV.include? "--c"
+
     # Build & install C libraries.
     cd "src/c" do
       system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--without-cppunit"
       system "make install"
-    end
+    end if build_c
 
     # Install Python bindings
     cd "src/contrib/zkpython" do
       system "python", "src/python/setup.py", "build"
       system "python", "src/python/setup.py", "install", "--prefix=#{prefix}"
-    end if ARGV.include? "--python"
+    end if build_python
 
     # Install Perl bindings
     cd "src/contrib/zkperl" do
       system "perl", "Makefile.PL", "PREFIX=#{prefix}", "--zookeeper-include=#{include}/c-client-src", "--zookeeper-lib=#{lib}"
       system "make install"
-    end if ARGV.include? "--perl"
+    end if build_perl
 
     # Remove windows executables
     rm_f Dir["bin/*.cmd"]

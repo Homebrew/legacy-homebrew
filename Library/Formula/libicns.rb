@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libicns < Formula
-  url 'http://downloads.sourceforge.net/project/icns/icns/libicns-0.7.1/libicns-0.7.1.tar.gz'
   homepage 'http://icns.sourceforge.net/'
-  md5 'ff4624353a074c6cb51e41d145070e10'
+  url 'http://downloads.sourceforge.net/project/icns/icns/libicns-0.8.0/libicns-0.8.0.tar.gz'
+  sha256 '8a720d45f6cf3cb88255d80965e486857b77b894a345e9a6b321cb03aa3d064a'
 
   depends_on 'jasper'
 

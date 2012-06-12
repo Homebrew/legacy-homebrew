@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cassandra < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.0.7/apache-cassandra-1.0.7-bin.tar.gz'
   homepage 'http://cassandra.apache.org'
-  sha1 '8ae535821b29eead5b7dc7788a0e66ecf1ac267e'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.1.1/apache-cassandra-1.1.1-bin.tar.gz'
+  sha1 '32c6719c53dae7c520c91028e98b2c66d18fc264'
 
   def install
     (var+"lib/cassandra").mkpath
@@ -28,7 +28,7 @@ class Cassandra < Formula
     rm Dir["bin/*.bat"]
 
     (etc+"cassandra").install Dir["conf/*"]
-    prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc,lib/licenses}"]
+    prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc,pylib,lib/licenses}"]
     prefix.install Dir["lib/*.jar"]
 
     plist_path.write startup_plist
@@ -40,6 +40,13 @@ class Cassandra < Formula
       mkdir -p ~/Library/LaunchAgents
       cp #{plist_path} ~/Library/LaunchAgents/
       launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+
+    If you plan to use the CQL shell (cqlsh), you will need the Python CQL library
+    installed. Since Homebrew prefers using pip for Python packages, you can
+    install that using:
+
+      pip install cql
+
     EOS
   end
 

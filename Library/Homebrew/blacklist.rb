@@ -1,10 +1,15 @@
 def blacklisted? name
   case name.downcase
-  when 'vim', 'screen', /^rubygems?$/ then <<-EOS.undent
+  when /^vim?$/, 'screen', /^rubygems?$/ then <<-EOS.undent
     Apple distributes #{name} with OS X, you can find it in /usr/bin.
     EOS
   when 'libarchive', 'libpcap' then <<-EOS.undent
     Apple distributes #{name} with OS X, you can find it in /usr/lib.
+    EOS
+  when 'libiconv' then <<-EOS.undent
+    Apple distributes #{name} with OS X, you can find it in /usr/lib.
+    Some build scripts fail to detect it correctly, please check existing
+    formulae for solutions.
     EOS
   when 'libxml', 'libxlst' then <<-EOS.undent
     Apple distributes #{name} with OS X, you can find it in /usr/lib.
@@ -40,11 +45,10 @@ def blacklisted? name
     Although if you prefer, there is a formula in homebrew-alt.
     EOS
   when 'npm' then <<-EOS.undent
-    npm can be installed thusly by following the instructions at
-      http://npmjs.org/
+    Homebrew does not provide npm because it is self-updating. To install it, first
+    `brew install nodejs' and then:
 
-    To do it in one line, use this command:
-      curl http://npmjs.org/install.sh | sh
+        curl http://npmjs.org/install.sh | sh
     EOS
   when /(lib)?lzma/
     "lzma is now part of the xz formula."

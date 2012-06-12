@@ -1,19 +1,21 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.7.9.3.tar.gz'
-  sha1 '223daa871a64facc60bdf643c50c78eac21c88f4'
+  url 'http://git-core.googlecode.com/files/git-manpages-1.7.10.4.tar.gz'
+  sha1 '0769f6ff48d89df908cfe2af85fb4072b4178746'
 end
 
 class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.9.3.tar.gz'
-  sha1 '2d488c3975da1c2ea90965b82233a986c498a8c2'
+  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.10.4.tar.gz'
+  sha1 '951ecda5cbc3e7a5f30b419506ec24b54afa2b93'
 end
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.7.9.3.tar.gz'
-  sha1 '6216153da1139c25cb96cfb4441eff327013ec4f'
+  url 'http://git-core.googlecode.com/files/git-1.7.10.4.tar.gz'
+  sha1 'ddc305ab520246790faa72bbaab4b9bf5bcf23fa'
+
+  head 'https://github.com/git/git.git'
 
   depends_on 'pcre' if ARGV.include? '--with-pcre'
 
@@ -31,11 +33,11 @@ class Git < Formula
     ENV['V'] = '1' # build verbosely
     ENV['NO_R_TO_GCC_LINKER'] = '1' # pass arguments to LD correctly
     ENV['NO_GETTEXT'] = '1'
-    # workaround for users of perlbrew
-    ENV['PERL_PATH'] = which 'perl'
+    ENV['PERL_PATH'] = which 'perl' # workaround for users of perlbrew
+    ENV['PYTHON_PATH'] = which 'python' # python can be brewed or unbrewed
 
     # Clean XCode 4.x installs don't include Perl MakeMaker
-    ENV['NO_PERL_MAKEMAKER']='1' if MacOS.lion?
+    ENV['NO_PERL_MAKEMAKER'] = '1' if MacOS.lion?
 
     ENV['BLK_SHA1'] = '1' if ARGV.include? '--with-blk-sha1'
 
@@ -49,6 +51,15 @@ class Git < Formula
                    "CFLAGS=#{ENV.cflags}",
                    "LDFLAGS=#{ENV.ldflags}",
                    "install"
+
+    # Install the OS X keychain credential helper
+    cd 'contrib/credential/osxkeychain' do
+      system "make", "CC=#{ENV.cc}",
+                     "CFLAGS=#{ENV.cflags}",
+                     "LDFLAGS=#{ENV.ldflags}"
+      bin.install 'git-credential-osxkeychain'
+      system "make", "clean"
+    end
 
     # install the completion script first because it is inside 'contrib'
     (prefix+'etc/bash_completion.d').install 'contrib/completion/git-completion.bash'
@@ -64,8 +75,17 @@ class Git < Formula
     Bash completion has been installed to:
       #{etc}/bash_completion.d
 
+    The OS X keychain credential helper has been installed to:
+      #{HOMEBREW_PREFIX}/bin/git-credential-osxkeychain
+
     The 'contrib' directory has been installed to:
       #{HOMEBREW_PREFIX}/share/git-core/contrib
     EOS
+  end
+
+  def test
+    HOMEBREW_REPOSITORY.cd do
+      `#{bin}/git ls-files -- bin`.chomp == 'bin/brew'
+    end
   end
 end

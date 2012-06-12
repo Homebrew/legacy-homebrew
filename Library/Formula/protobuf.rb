@@ -1,11 +1,13 @@
 require 'formula'
 
 class Protobuf < Formula
-  url 'http://protobuf.googlecode.com/files/protobuf-2.4.1.tar.bz2'
   homepage 'http://code.google.com/p/protobuf/'
+  url 'http://protobuf.googlecode.com/files/protobuf-2.4.1.tar.bz2'
   sha1 'df5867e37a4b51fb69f53a8baf5b994938691d6d'
 
-  fails_with_llvm :build => 2334
+  fails_with :llvm do
+    build 2334
+  end
 
   def options
     [['--universal', 'Do a universal build']]
@@ -22,5 +24,14 @@ class Protobuf < Formula
                           "--with-zlib"
     system "make"
     system "make install"
+
+    # Install editor support and examples
+    doc.install %w( editors examples )
+  end
+
+  def caveats; <<-EOS.undent
+    Editor support and examples have been installed to:
+      #{doc}/protobuf
+    EOS
   end
 end

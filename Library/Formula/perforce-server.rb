@@ -1,10 +1,17 @@
 require 'formula'
 
 class PerforceServer < Formula
-  url 'http://filehost.perforce.com/perforce/r11.1/bin.darwin90u/p4d'
   homepage 'http://www.perforce.com/'
-  md5 '9099ad567f43cc7bb0821492a1eb3fe6'
-  version '2011.1.409024'
+
+  if MacOS.prefer_64_bit?
+    url 'http://filehost.perforce.com/perforce/r12.1/bin.darwin90x86_64/p4d'
+    md5 '30779829f7bdfdea5c57c5018e7cff35'
+    version '2012.1.459601-x86_64'
+  else
+    url 'http://filehost.perforce.com/perforce/r12.1/bin.darwin90x86/p4d'
+    md5 '4bae8014aa541b453e524f65cfb15dcc'
+    version '2012.1.459601-x86'
+  end
 
   def install
     bin.install 'p4d'

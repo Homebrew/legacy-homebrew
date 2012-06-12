@@ -7,7 +7,10 @@ class Streamripper < Formula
 
   depends_on 'glib'
 
-  fails_with_llvm "Strange runtime errors with LLVM.", :build => 2335
+  fails_with :llvm do
+    build 2335
+    cause "Strange runtime errors with LLVM."
+  end
 
   def install
     # the Makefile ignores CPPFLAGS from the environment, which

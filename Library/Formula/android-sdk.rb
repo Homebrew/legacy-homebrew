@@ -1,30 +1,31 @@
 require 'formula'
 
 class AndroidSdk < Formula
-  url 'http://dl.google.com/android/android-sdk_r16-macosx.zip'
   homepage 'http://developer.android.com/index.html'
-  md5 'd1dc2b6f13eed5e3ce5cf26c4e4c47aa'
-  version 'r16'
+  url 'http://dl.google.com/android/android-sdk_r18-macosx.zip'
+  version 'r18'
+  md5 '8328e8a5531c9d6f6f1a0261cb97af36'
 
+  # TODO docs and platform-tools
+  # See the long comment below for the associated problems
   def self.var_dirs
-    %w[platforms samples temp add-ons]
-    # TODO docs, google-market_licensing and platform-tools
-    # See the long comment below for the associated problems
+    %w[platforms samples temp add-ons sources system-images extras]
   end
 
   skip_clean var_dirs
 
   def install
-    mkdir bin
-
     mv 'SDK Readme.txt', prefix/'README'
     mv 'tools', prefix
 
-    %w[android apkbuilder ddms dmtracedump draw9patch emulator
-       emulator-arm emulator-x86 hierarchyviewer hprof-conv
-       lint mksdcard monkeyrunner sqlite3 traceview
-       zipalign].each do |tool|
-      (bin/tool).make_link(prefix/'tools'/tool)
+    %w[android apkbuilder ddms dmtracedump draw9patch etc1tool emulator
+    hierarchyviewer hprof-conv lint mksdcard monkeyrunner traceview
+    zipalign].each do |tool|
+      (bin/tool).write <<-EOS.undent
+        #!/bin/sh
+        TOOL="#{prefix}/tools/#{tool}"
+        exec "$TOOL" "$@"
+      EOS
     end
 
     # this is data that should be preserved across upgrades, but the Android
@@ -40,23 +41,21 @@ class AndroidSdk < Formula
       #!/bin/sh
       ADB="#{prefix}/platform-tools/adb"
       test -f "$ADB" && exec "$ADB" "$@"
-      echo Use the \\`android\\' tool to install adb.
-      EOS
-    (bin+'adb').chmod 0755
+      echo Use the \\`android\\' tool to install the \\"Android SDK Platform-tools\\".
+    EOS
   end
 
   def caveats; <<-EOS.undent
     Now run the `android' tool to install the actual SDK stuff.
 
-    NOTE you should tell Eclipse, IntelliJ etc. to use the Android-SDK found
-    here: #{prefix}
+    The Android-SDK location for IDEs such as Eclipse, IntelliJ etc is:
+      #{prefix}
 
-    You will have to install the platform-tools EVERY time this formula updates.
-    If you want to try and fix this then see the comment in this formula.
+    You will have to install the platform-tools and docs EVERY time this formula
+    updates. If you want to try and fix this then see the comment in this formula.
 
     You may need to add the following to your .bashrc:
-
-       export ANDROID_SDK_ROOT=#{prefix}
+      export ANDROID_SDK_ROOT=#{prefix}
     EOS
   end
 

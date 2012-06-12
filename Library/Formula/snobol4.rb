@@ -1,12 +1,12 @@
 require 'formula'
 
 class Snobol4 < Formula
-  url 'ftp://ftp.ultimate.com/snobol/snobol4-1.2.tar.gz'
   homepage 'http://www.snobol4.org/'
-  md5 '5265d1e21b8d1963e0c7fe830c3d5172'
+  url 'ftp://ftp.ultimate.com/snobol/snobol4-1.4.1.tar.gz'
+  sha1 'bfff40320b75fef507b463eacdf7c74a2e448f72'
 
   def install
-    system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system './configure', "--prefix=#{prefix}", "--mandir=#{man}"
+    system 'make install'
   end
 end

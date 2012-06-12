@@ -28,11 +28,44 @@ module Homebrew extend self
         puts msg
       end
 
-      if search_results.empty? and not blacklisted? query
-        puts "No formula found for \"#{query}\". Searching open pull requests..."
-        GitHub.find_pull_requests(rx) { |pull| puts pull }
+      if query
+        $found = search_results.length
+
+        # TODO parallelize!
+        puts_columns search_tap "adamv", "alt", rx
+        puts_columns search_tap "josegonzalez", "php", rx
+        puts_columns search_tap "Homebrew", "versions", rx
+        puts_columns search_tap "Homebrew", "dupes", rx
+        puts_columns search_tap "Homebrew", "games", rx
+
+        if $found == 0 and not blacklisted? query
+          puts "No formula found for \"#{query}\". Searching open pull requests..."
+          GitHub.find_pull_requests(rx) { |pull| puts pull }
+        end
       end
     end
+  end
+
+  def search_tap user, repo, rx
+    return [] if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}").directory?
+
+    require 'open-uri'
+    require 'vendor/multi_json'
+
+    results = []
+    open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |f|
+      user.downcase! if user == "Homebrew" # special handling for the Homebrew organization
+      MultiJson.decode(f.read)["tree"].map{ |hash| hash['path'] }.compact.each do |file|
+        name = File.basename(file, '.rb')
+        if file =~ /\.rb$/ and name =~ rx
+          results << "#{user}/#{repo}/#{name}"
+          $found += 1
+        end
+      end
+    end
+    results
+  rescue
+    []
   end
 
   def search_brews rx

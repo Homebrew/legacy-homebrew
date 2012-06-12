@@ -7,12 +7,13 @@ class Libkate < Formula
 
   depends_on 'libogg' => :recommended
 
+  fails_with :gcc do
+    build 5666
+    cause "Segfault during compilation"
+  end
+
   def install
     ENV.libpng
-    # GCC 4.2 segfaults during compilation
-    # FIXME when we can do fails_with :gcc
-    ENV.llvm if ENV.compiler == :gcc
-
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

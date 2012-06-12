@@ -1,10 +1,9 @@
 require 'formula'
 
 class GitCola < Formula
-  url 'https://github.com/downloads/git-cola/git-cola/git-cola-1.7.4.1.tar.gz'
   homepage 'http://git-cola.github.com/'
-  md5 'd0f667c91e12a707df73060bf0822c27'
-
+  url 'https://github.com/git-cola/git-cola/tarball/v1.7.7'
+  md5 'c48e597494851f8fd8b1829bd0291443'
   head 'https://github.com/git-cola/git-cola.git'
 
   depends_on 'pyqt'

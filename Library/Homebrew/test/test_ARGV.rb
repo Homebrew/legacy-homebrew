@@ -18,6 +18,10 @@ ARGV.extend ExtendArgvPlusYeast
 
 class ARGVTests < Test::Unit::TestCase
 
+  def teardown
+    ARGV.reset
+  end
+
   def test_ARGV
     assert ARGV.named.empty?
     
@@ -31,7 +35,6 @@ class ARGVTests < Test::Unit::TestCase
   end
 
   def test_switch?
-    ARGV.reset
     ARGV.unshift "-ns"
     ARGV.unshift "-i"
     ARGV.unshift "--bar"

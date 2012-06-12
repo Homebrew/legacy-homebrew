@@ -2,8 +2,8 @@ require 'formula'
 
 class Liblas < Formula
   homepage 'http://liblas.org'
-  url 'http://download.osgeo.org/liblas/libLAS-1.6.1.tar.gz'
-  sha1 '0eada80c6de49e9e866f746645cb227034c3af4a'
+  url 'http://download.osgeo.org/liblas/libLAS-1.7.0.tar.gz'
+  md5 '03de7a61132902846c12f3b28c38eb37'
 
   depends_on 'cmake' => :build
   depends_on 'libgeotiff'
@@ -21,7 +21,7 @@ class Liblas < Formula
       #   http://liblas.org/compilation.html
       ENV['Boost_INCLUDE_DIR'] = "#{HOMEBREW_PREFIX}/include"
       ENV['Boost_LIBRARY_DIRS'] = "#{HOMEBREW_PREFIX}/lib"
-      system "cmake #{std_cmake_parameters} .."
+      system "cmake", "..", *std_cmake_args
       system "make"
       system "make test" if ARGV.include? '--with-test'
       system "make install"

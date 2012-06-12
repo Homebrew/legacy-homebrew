@@ -5,8 +5,15 @@ class Log4cxx < Formula
   homepage 'http://logging.apache.org/log4cxx/index.html'
   md5 'b30ffb8da3665178e68940ff7a61084c'
 
-  fails_with_llvm "Fails with \"collect2: ld terminated with signal 11 [Segmentation fault]\".",
-    :build => 2334
+  fails_with :llvm do
+    build 2334
+    cause "Fails with 'collect2: ld terminated with signal 11 [Segmentation fault]'"
+  end
+
+  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   def options
     [
@@ -16,7 +23,12 @@ class Log4cxx < Formula
 
   def install
     ENV.universal_binary if ARGV.build_universal?
+    ENV.O2 # Using -Os causes build failures on Snow Leopard.
 
+    # Fixes build error with clang, old libtool scripts. cf. #12127
+    # Reported upstream here: https://issues.apache.org/jira/browse/LOGCXX-396
+    # Remove at: unknown, waiting for developer comments.
+    system './autogen.sh'
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           # Docs won't install on OS X

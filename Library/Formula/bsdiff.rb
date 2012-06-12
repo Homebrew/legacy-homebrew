@@ -5,12 +5,14 @@ class Bsdiff < Formula
   homepage 'http://www.daemonology.net/bsdiff'
   md5 'e6d812394f0e0ecc8d5df255aa1db22a'
 
+  depends_on 'bsdmake' => :build if MacOS.xcode_version.to_f >= 4.3
+
   def patches
     DATA
   end
 
   def install
-    system "/usr/bin/bsdmake"
+    system "bsdmake"
     bin.install "bsdiff"
     man1.install "bsdiff.1"
   end
