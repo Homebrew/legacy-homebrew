@@ -155,6 +155,7 @@ def install_wx_python
         wxWidgets 2.8.x builds 32-bit only, so you probably won't be able to use it
         for other Homebrew-installed software. You can try to build with --devel to
         get the wxWidgets 2.9.x (unstable) for 64-bit and cocoa support.
+        For wxPython support add --python.
 
       EOS
       if ARGV.include? '--python'
@@ -171,7 +172,11 @@ def install_wx_python
         EOS
       end
     else
-      s += "wx 2.9.x is the unstable (--devel) release. Some things *may* be broken.\n\n"
+      s += <<-EOS.undent
+        wx 2.9.x is the unstable (--devel) release. Some things *may* be broken.
+        For wxPython support add --python.
+
+      EOS
     end
 
     if ARGV.include? '--python'
