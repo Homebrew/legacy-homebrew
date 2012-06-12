@@ -1,9 +1,9 @@
 require 'formula'
 
 class Skipfish < Formula
-  url 'http://skipfish.googlecode.com/files/skipfish-2.03b.tgz'
   homepage 'http://code.google.com/p/skipfish/'
-  md5 'ff860b840ec7e579e9fac08e4fd8f4e2'
+  url 'http://skipfish.googlecode.com/files/skipfish-2.07b.tgz'
+  sha1 'ff860b840ec7e579e9fac08e4fd8f4e2'
 
   depends_on 'libidn'
 
@@ -13,9 +13,9 @@ class Skipfish < Formula
     inreplace "config.h",
       "#define ASSETS_DIR              \"assets\"",
       "#define ASSETS_DIR	       \"#{libexec}/assets\""
-    system "make"
-    bin.install "skipfish"
-    libexec.install "assets", "dictionaries"
+    system 'make'
+    bin.install 'skipfish'
+    libexec.install %w(assets dictionaries)
   end
 
   def caveats; <<-EOS.undent
@@ -26,7 +26,9 @@ class Skipfish < Formula
     carefully to make the right choice. This step has a profound impact
     on the quality of results later on.
 
-    "skipfish -h" prints out usage information.
+    Use this command to print usage information:
+      skipfish -h
+
     EOS
   end
 end
