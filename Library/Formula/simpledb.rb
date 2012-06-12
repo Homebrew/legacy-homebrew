@@ -12,21 +12,20 @@ class Simpledb < Formula
   md5 "11be9d9c7bdd77d881cb6d10ea755c5a"
 
   def install
-
     SimpledbAwsLibraries.new.brew { mv 'src', buildpath/'perl-lib' }
-    system "mv bin/simpledb simpledb-perl"
 
+    system 'pod2man', 'bin/simpledb', 'simpledb.1'
+
+    system 'mv', 'bin/simpledb', 'simpledb-perl'
     open("simpledb", 'w') { |f|
       f.puts "#!/bin/sh\n"
       f.puts "exec perl -Tw -Mlib=#{prefix}/perl-lib #{prefix}/simpledb-perl \"$@\""
     }
-
     chmod 0755, 'simpledb'
 
     prefix.install 'simpledb-perl'
     prefix.install 'perl-lib'
     bin.install 'simpledb'
-
+    man1.install 'simpledb.1'
   end
-
 end
