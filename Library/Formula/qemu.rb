@@ -2,8 +2,8 @@ require 'formula'
 
 class Qemu < Formula
   homepage 'http://www.qemu.org/'
-  url 'http://wiki.qemu.org/download/qemu-1.0.1.tar.gz'
-  sha1 '4d08b5a83538fcd7b222bec6f1c584da8d12497a'
+  url 'http://wiki.qemu.org/download/qemu-1.1.0.tar.bz2'
+  sha256 '927f498eff8dce2334de9338cae9e3a7c63bd472c85451235c45de5029140fc0'
 
   depends_on 'jpeg'
   depends_on 'gnutls'
@@ -13,19 +13,10 @@ class Qemu < Formula
     build 318
   end
 
-  # Borrow these patches from MacPorts
-  def patches
-    { :p0 => [
-      "https://trac.macports.org/export/92470/trunk/dports/emulators/qemu/files/patch-configure.diff",
-      "https://trac.macports.org/export/92470/trunk/dports/emulators/qemu/files/patch-cocoa-uint16-redefined.diff"
-    ]}
-  end
-
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--cc=#{ENV.cc}",
                           "--host-cc=#{ENV.cc}",
-                          "--disable-darwin-user",
                           "--enable-cocoa",
                           "--disable-bsd-user",
                           "--disable-guest-agent"

@@ -3,7 +3,7 @@ require 'formula'
 class PerconaToolkit < Formula
   homepage 'http://www.percona.com/software/percona-toolkit/'
   url 'http://www.percona.com/redir/downloads/percona-toolkit/2.1.1/percona-toolkit-2.1.1.tar.gz'
-  md5 '14be6a3e31c7b20aeca78e3e0aed6edc'
+  sha1 'bbaf2440c55bb62b5e98d08bd3246e82c84f6f2a'
 
   depends_on 'Time::HiRes' => :perl
   depends_on 'DBD::mysql' => :perl

@@ -23,7 +23,7 @@ class Apollo < Formula
 
     (bin+'apollo').write <<-EOS.undent
       #!/bin/bash
-      exec #{libexec}/bin/#{name} $@
+      exec "#{libexec}/bin/#{name}" "$@"
     EOS
 
     plist_path.write startup_plist

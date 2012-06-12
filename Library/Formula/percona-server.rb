@@ -2,9 +2,9 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.23-25.3/source/Percona-Server-5.5.23-rel25.3.tar.gz'
-  version '5.5.23-25.3'
-  md5 'b098914c14256187686db0ccbc46a6d4'
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.24-26.0/source/Percona-Server-5.5.24-rel26.0.tar.gz'
+  version '5.5.24-26.0'
+  sha1 '4a815b545263d008f7112b7e8b1170ae97e9cf3e'
 
   keg_only "This brew conflicts with 'mysql'. It's safe to `brew link` if you haven't installed 'mysql'"
 
@@ -50,7 +50,11 @@ class PerconaServer < Formula
       "-DDEFAULT_CHARSET=utf8",
       "-DDEFAULT_COLLATION=utf8_general_ci",
       "-DSYSCONFDIR=#{etc}",
-      "-DCMAKE_BUILD_TYPE=RelWithDebInfo"
+      "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
+      # PAM plugin is Linux-only at the moment
+      "-DWITHOUT_AUTH_PAM=1",
+      "-DWITHOUT_AUTH_PAM_COMPAT=1",
+      "-DWITHOUT_DIALOG=1"
     ]
 
     # To enable unit testing at build, we need to download the unit testing suite
@@ -201,16 +205,3 @@ index 37e0e35..38ad6c8 100644
  then
    if test "$user" != "root" -o $SET_USER = 1
    then
-diff --git a/storage/innobase/buf/buf0buf.c b/storage/innobase/buf/buf0buf.c
-index 6a71b7b..47ee988 100644
---- a/storage/innobase/buf/buf0buf.c
-+++ b/storage/innobase/buf/buf0buf.c
-@@ -57,7 +57,7 @@ Created 11/5/1995 Heikki Tuuri
- /* prototypes for new functions added to ha_innodb.cc */
- trx_t* innobase_get_trx();
- 
--inline void _increment_page_get_statistics(buf_block_t* block, trx_t* trx)
-+static inline void _increment_page_get_statistics(buf_block_t* block, trx_t* trx)
- {
-    ulint           block_hash;
-    ulint           block_hash_byte;
