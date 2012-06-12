@@ -10,10 +10,6 @@ class Silk < Formula
   depends_on 'libfixbuf'
   depends_on 'yaf'
 
-  fails_with :llvm do
-    cause "Undefined symbols during compile"
-  end
-
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
