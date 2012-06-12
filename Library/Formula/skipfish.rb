@@ -10,6 +10,7 @@ class Skipfish < Formula
   def install
     ENV.append "CFLAGS", "-I#{HOMEBREW_PREFIX}/include"
     ENV.append "LDFLAGS", "-L#{HOMEBREW_PREFIX}/lib"
+    FileUtils.chmod 0640, 'config.h'
     inreplace "config.h",
       "#define ASSETS_DIR              \"assets\"",
       "#define ASSETS_DIR	       \"#{libexec}/assets\""
