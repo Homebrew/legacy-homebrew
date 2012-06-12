@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mldonkey < Formula
-  url 'http://downloads.sourceforge.net/project/mldonkey/mldonkey/3.1.0/mldonkey-3.1.0.tar.bz2'
   homepage 'http://mldonkey.sourceforge.net/Main_Page'
-  md5 '072726d158ba1e936c554be341e7ceff'
+  url 'http://downloads.sourceforge.net/project/mldonkey/mldonkey/3.1.1/mldonkey-3.1.1.tar.bz2'
+  sha1 '2d0bc9f849728528f833e32db3b051aab51b6c7f'
 
   depends_on 'objective-caml'
 
@@ -17,12 +17,14 @@ class Mldonkey < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}"]
+    ENV.libpng
 
-    if ARGV.include? "--with-x"
-      ENV.x11
-      args << "--enable-gui=newgui2"
-    end
+    # Fix compiler selection
+    ENV['OCAMLC'] = "#{HOMEBREW_PREFIX}/bin/ocamlc.opt -cc #{ENV.cc}"
+    inreplace 'Makefile', '-O6', '' if ENV.compiler == :clang
+
+    args = ["--prefix=#{prefix}"]
+    args << "--enable-gui=newgui2" if ARGV.include? "--with-x"
 
     system "./configure", *args
     system "make install"
