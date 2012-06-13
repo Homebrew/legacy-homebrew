@@ -2,8 +2,8 @@ require 'formula'
 
 class OpenMpi < Formula
   homepage 'http://www.open-mpi.org/'
-  url 'http://www.open-mpi.org/software/ompi/v1.4/downloads/openmpi-1.4.5.tar.gz'
-  md5 '28b2a7f9c2fcee0217facf47bf35d5ea'
+  url 'http://www.open-mpi.org/software/ompi/v1.6/downloads/openmpi-1.6.tar.bz2'
+  sha1 '8b81eea712bb8f8120468003b5f29baecedf2367'
 
   def install
     # Compiler complains about link compatibility with FORTRAN otherwise
