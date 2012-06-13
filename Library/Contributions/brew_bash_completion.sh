@@ -378,6 +378,7 @@ _brew ()
             link ln
             list ls
             log
+            missing
             options
             outdated
             prune
@@ -411,6 +412,7 @@ _brew ()
     install)                    _brew_install ;;
     list|ls)                    _brew_list ;;
     log)                        _brew_log ;;
+    missing)                    __brew_complete_formulae ;;
     options)                    _brew_options ;;
     outdated)                   _brew_outdated ;;
     search|-S)                  _brew_search ;;
