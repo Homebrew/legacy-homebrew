@@ -1,9 +1,9 @@
 require 'formula'
 
-class Rpm2cpio < ScriptFileFormula
-  url 'http://www.freebsd.org/cgi/cvsweb.cgi/~checkout~/ports/archivers/rpm2cpio/files/rpm2cpio?rev=1.4'
+class Rpm2cpio < Formula
   homepage 'http://www.freebsd.org/cgi/cvsweb.cgi/ports/archivers/rpm2cpio/'
-  md5 '27f19cf1b0b05cfb3256b6b1781378f2'
+  url 'http://www.freebsd.org/cgi/cvsweb.cgi/~checkout~/ports/archivers/rpm2cpio/files/rpm2cpio?rev=1.4'
+  sha1 '7bd6e848eed9444a4dacf9759cc195ca56ab19b2'
   version '1.4'
   
   depends_on 'xz'
