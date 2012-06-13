@@ -11,6 +11,7 @@ class Beecrypt < Formula
     ENV.remove_from_cflags /-march=\S*/
     system "./configure", "--prefix=#{prefix}", "--disable-openmp", "--without-java", "--without-python"
     system "make"
+    system "make check"
     system "make install"
   end
 end
