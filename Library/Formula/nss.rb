@@ -16,9 +16,14 @@ class Nss < Formula
       'NS_USE_GCC=1',
       'NO_MDUPDATE=1',
       'NSS_USE_SYSTEM_SQLITE=1',
-      "NSPR_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/nspr"
+      "NSPR_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/nspr",
+      "NSPR_LIB_DIR=#{HOMEBREW_PREFIX}/lib"
     ]
     args << 'USE_64=1' if MacOS.prefer_64_bit?
+
+    # Remove the broken (for anyone but Firefox) install_name
+    inreplace "mozilla/security/coreconf/Darwin.mk", "-install_name @executable_path", "-install_name #{lib}"
+    inreplace "mozilla/security/nss/lib/freebl/config.mk", "@executable_path", lib
 
     system "make", "build_coreconf", "build_dbm", "all", "-C", "mozilla/security/nss", *args
 
