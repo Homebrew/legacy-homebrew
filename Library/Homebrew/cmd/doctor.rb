@@ -785,7 +785,7 @@ def check_git_status
     unless `git status -s -- Library/Homebrew/ 2>/dev/null`.chomp.empty? then <<-EOS.undent
       You have uncommitted modifications to Homebrew's core.
       Unless you know what you are doing, you should run:
-        cd #{HOMEBREW_REPOSITORY} && git reset --hard
+        cd #{HOMEBREW_REPOSITORY}/Library && git reset --hard && git clean -f
       EOS
     end
   end
