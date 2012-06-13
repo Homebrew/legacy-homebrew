@@ -1,3 +1,6 @@
+require 'set'
+require 'cmd/missing'
+
 class Volumes
   def initialize
     @volumes = []
@@ -457,23 +460,22 @@ def check_user_path_3
 end
 
 def check_which_pkg_config
-  binary = `/usr/bin/which pkg-config`.chomp
-  return if binary.empty?
+  binary = which 'pkg-config'
+  return if binary.nil?
 
-  unless binary == "#{HOMEBREW_PREFIX}/bin/pkg-config"
-    <<-EOS.undent
-      You have a non-brew 'pkg-config' in your PATH:
-        #{binary}
+  unless binary.to_s == "#{HOMEBREW_PREFIX}/bin/pkg-config" then <<-EOS.undent
+    You have a non-Homebrew 'pkg-config' in your PATH:
+      #{binary}
 
-      `./configure` may have problems finding brew-installed packages using
-      this other pkg-config.
+    `./configure` may have problems finding brew-installed packages using
+    this other pkg-config.
     EOS
   end
 end
 
 def check_pkg_config_paths
-  binary = `/usr/bin/which pkg-config`.chomp
-  return if binary.empty?
+  binary = which 'pkg-config'
+  return if binary.nil?
 
   pkg_config_paths = `pkg-config --variable pc_path pkg-config`.chomp.split(':')
 
@@ -753,18 +755,17 @@ def check_tmpdir
 end
 
 def check_missing_deps
-  s = []
-  `brew missing`.each_line do |line|
-    line =~ /(.*): (.*)/
-    $2.split.each do |dep|
-        s << dep unless s.include? dep
-    end
+  s = Set.new
+  missing_deps = Homebrew.find_missing_brews(Homebrew.installed_brews)
+  missing_deps.each do |m|
+    s.merge m[1]
   end
+
   if s.length > 0 then <<-EOS.undent
     Some installed formula are missing dependencies.
     You should `brew install` the missing dependencies:
 
-        brew install #{s * " "}
+        brew install #{s.to_a.sort * " "}
 
     Run `brew missing` for more details.
     EOS
