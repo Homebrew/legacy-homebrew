@@ -6,7 +6,7 @@ class Par2 < Formula
   sha1 '2fcdc932b5d7b4b1c68c4a4ca855ca913d464d2f'
 
   def patches
-    "http://sage.math.washington.edu/home/binegar/src/par2cmdline-0.4-gcc4.patch"
+    "http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/app-arch/par2cmdline/files/par2cmdline-0.4-gcc4.patch?revision=1.1"
   end
 
   def install
