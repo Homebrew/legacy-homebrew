@@ -870,8 +870,11 @@ def check_for_unlinked_but_not_keg_only
     You have unlinked kegs in your Cellar
     Leaving kegs unlinked can lead to build-trouble and cause brews that depend on
     those kegs to fail to run properly once built. Consider running:
-
-        brew unlink #{unlinked * "\n        "}
+        brew unlink KEG
+        or
+        brew link KEG
+    for:
+        #{unlinked * "\n        "}
     EOS
   end
 end
