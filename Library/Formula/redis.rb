@@ -8,8 +8,8 @@ class Redis < Formula
   head 'https://github.com/antirez/redis.git', :branch => 'unstable'
 
   devel do
-    url  'http://redis.googlecode.com/files/redis-2.6.0-rc3.tar.gz'
-    sha1 '322b60dfa4a498b66fa1125ac97d80d40024099b'
+    url  'http://redis.googlecode.com/files/redis-2.6.0-rc4.tar.gz'
+    sha1 'df702940c2249d71e6dc6b16c12e6fa12543cb8e'
   end
 
   fails_with :llvm do
