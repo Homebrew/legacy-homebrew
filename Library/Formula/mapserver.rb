@@ -11,9 +11,11 @@ class Mapserver < Formula
 
   depends_on 'geos' if ARGV.include? '--with-geos'
   depends_on 'postgresql' if ARGV.include? '--with-postgresql' and not MacOS.lion?
+  depends_on 'fcgi' if ARGV.include? '--with-fastcgi'
 
   def options
     [
+      ["--with-fastcgi", "Build with fastcgi support"],
       ["--with-geos", "Build support for GEOS spatial operations"],
       ["--with-php", "Build PHP MapScript module"],
       ["--with-postgresql", "Build support for PostgreSQL as a data source"]
@@ -38,6 +40,10 @@ class Mapserver < Formula
       else
         args.push "--with-postgis=#{HOMEBREW_PREFIX}/bin/pg_config"
       end
+    end
+
+    if ARGV.include? '--with-fastcgi'
+      args.push "--with-fastcgi=#{HOMEBREW_PREFIX}"
     end
 
     args
