@@ -75,14 +75,16 @@ def install f
   end
 
   f.brew do
+    if ARGV.flag? '--git'
+      system "git init"
+      system "git add -A"
+    end
     if ARGV.flag? '--interactive'
       ohai "Entering interactive mode"
       puts "Type `exit' to return and finalize the installation"
       puts "Install to this prefix: #{f.prefix}"
 
       if ARGV.flag? '--git'
-        system "git init"
-        system "git add -A"
         puts "This directory is now a git repo. Make your changes and then use:"
         puts "  git diff | pbcopy"
         puts "to copy the diff to the clipboard."
