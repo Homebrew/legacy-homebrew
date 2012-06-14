@@ -1,12 +1,13 @@
 require 'formula'
 
 class Libvorbis < Formula
-  url 'http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.2.tar.bz2'
-  md5 '798a4211221073c1409f26eac4567e8b'
   homepage 'http://vorbis.com'
+  url 'http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.3.tar.xz'
+  sha1 '31d1a0ec4815bf1ee638b0f2850f03efcd48022a'
 
   head 'http://svn.xiph.org/trunk/vorbis'
 
+  depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
   depends_on 'libogg'
 
@@ -24,8 +25,7 @@ class Libvorbis < Formula
       system "./autogen.sh"
     end
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system './configure', "--prefix=#{prefix}", '--disable-dependency-tracking'
     system "make install"
   end
 end
