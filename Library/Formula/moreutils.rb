@@ -8,7 +8,7 @@ class Moreutils < Formula
 
   def install
     # Building the man pages requires DocBook, so we skip them.
-    scripts = %w[combine ts vidir vipe zrun]
+    scripts = %w[chronic combine ts vidir vipe zrun]
     binaries = %w[isutf8 ifne pee sponge mispipe lckdo parallel]
     # Just `make all` will try to build the man pages.
     system "make", *binaries
