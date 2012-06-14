@@ -1,3 +1,7 @@
+# Note that you may have to add the /user/local/sbin to path in your ~/.bash_profile
+# So in your "~/.bash_profile" add
+# export PATH=$PATH:/usr/local/sbin
+
 require 'formula'
 
 class Nginx < Formula
