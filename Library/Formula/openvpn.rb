@@ -15,6 +15,18 @@ class Openvpn < Formula
     DATA
   end
 
+  def options
+    [["--ipv6", "Build with the IPv6 patch buy Gert Doering"]]
+  end
+
+  def patches
+    p = []
+    if ARGV.include? "--ipv6"
+      # IPv6 patch, probably not needed in 2.3 
+      p << "http://www.greenie.net/ipv6/openvpn-2.2.0-ipv6-20110522-1.patch.gz"
+    end
+  end
+
   def install
     # Build and install binary
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
