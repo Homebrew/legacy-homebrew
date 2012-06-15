@@ -2,9 +2,9 @@ require 'formula'
 
 class Go < Formula
   homepage 'http://golang.org'
-  url 'http://go.googlecode.com/files/go1.0.1.src.tar.gz'
-  version '1.0.1'
-  sha1 'fc8a6d6725f7f2bf7c94685c5fd0880c9b7f67f6'
+  url 'http://go.googlecode.com/files/go1.0.2.src.tar.gz'
+  version '1.0.2'
+  sha1 '408bb361df8c34b1bba41383812154e932907526'
 
   head 'http://go.googlecode.com/hg/'
 
