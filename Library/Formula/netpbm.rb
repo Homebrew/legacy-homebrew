@@ -2,9 +2,6 @@ require 'formula'
 
 class Netpbm < Formula
   homepage 'http://netpbm.sourceforge.net'
-  url 'http://sourceforge.net/projects/netpbm/files/super_stable/10.35.82/netpbm-10.35.82.tgz'
-  md5 'fcae2fc7928ad7d31b0540ec0c3e710b'
-
   head 'http://netpbm.svn.sourceforge.net/svnroot/netpbm/trunk'
 
   depends_on "libtiff"
@@ -13,20 +10,13 @@ class Netpbm < Formula
   def install
     ENV.x11 # For PNG
 
-    if ARGV.build_head?
-      system "cp", "config.mk.in", "config.mk"
-      config = "config.mk"
-    else
-      system "cp", "Makefile.config.in", "Makefile.config"
-      config = "Makefile.config"
-    end
-
-    inreplace config do |s|
+    system "cp", "config.mk.in", "config.mk"
+    inreplace "config.mk" do |s|
       s.remove_make_var! "CC"
       s.change_make_var! "CFLAGS_SHLIB", "-fno-common"
       s.change_make_var! "NETPBMLIBTYPE", "dylib"
       s.change_make_var! "NETPBMLIBSUFFIX", "dylib"
-      s.change_make_var! "LDSHLIB", "--shared -o $(SONAME)"
+      s.change_make_var! "LDSHLIB", "--shared -o $(SONAME) -install_name @executable_path/../lib/libnetpbm.$(MAJ).$(MIN).dylib"
       s.change_make_var! "TIFFLIB", "-ltiff"
       s.change_make_var! "JPEGLIB", "-ljpeg"
       s.change_make_var! "PNGLIB", "-lpng"
@@ -35,7 +25,8 @@ class Netpbm < Formula
       s.change_make_var! "JASPERHDR_DIR", "#{HOMEBREW_PREFIX}/include/jasper"
     end
 
-    ENV.deparallelize
+    ENV.no_optimization # any optimization cflags cause runtime problem with libpng (https://github.com/mxcl/homebrew/pull/12451#issuecomment-6002756)
+    ENV.append_to_cflags '-D_BSD_SOURCE'
     system "make"
     system "make", "package", "pkgdir=#{buildpath}/stage"
     cd 'stage' do
