@@ -2,6 +2,8 @@ require 'formula'
 
 class WpCli < Formula
   homepage 'https://github.com/andreascreten/wp-cli/'
+
+  # Use the tag instead of the tarball to get submodules
   url 'https://github.com/andreascreten/wp-cli.git', :tag => 'v0.4.0'
   version '0.4.0'
 
