@@ -55,9 +55,6 @@ def blacklisted? name
   when 'xcode' then <<-EOS.undent
     Xcode can be installed via the App Store (on Lion), or from:
       http://connect.apple.com/
-
-    If you download from the App Store, make sure you run the installer
-    placed in /Applications after the download completes.
     EOS
   end
 end
