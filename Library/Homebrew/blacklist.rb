@@ -53,7 +53,7 @@ def blacklisted? name
   when /(lib)?lzma/
     "lzma is now part of the xz formula."
   when 'xcode' then <<-EOS.undent
-    Xcode can be installed via the App Store (on Lion), or from:
+    Xcode can be installed via the App Store (on Lion or newer), or from:
       http://connect.apple.com/
     EOS
   end
