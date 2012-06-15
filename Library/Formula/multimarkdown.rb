@@ -1,8 +1,9 @@
 require 'formula'
 
-# url uses git tag to download submodules.
 class Multimarkdown < Formula
   homepage 'http://fletcherpenney.net/multimarkdown/'
+
+  # Use the tag instead of the tarball to get submodules
   url 'https://github.com/fletcher/peg-multimarkdown.git', :tag => '3.6'
   version '3.6'
 
