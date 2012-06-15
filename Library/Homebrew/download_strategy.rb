@@ -87,6 +87,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, File.basename(@url)
       chdir
     when :rar
+      raise "You must install unrar: brew install unrar" unless which "unrar"
       quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, @tarball_path
     else
       # we are assuming it is not an archive, use original filename
