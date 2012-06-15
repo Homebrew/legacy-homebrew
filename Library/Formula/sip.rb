@@ -34,7 +34,9 @@ class Sip < Formula
     system "python", "configure.py",
                               "--destdir=#{lib}/#{which_python}/site-packages",
                               "--bindir=#{bin}",
-                              "--incdir=#{include}"
+                              "--incdir=#{include}",
+                              "CFLAGS=#{ENV.cflags}",
+                              "LFLAGS=#{ENV.ldflags}"
     system "make install"
   end
 
