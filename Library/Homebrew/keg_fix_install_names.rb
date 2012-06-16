@@ -1,21 +1,31 @@
+require 'find'
+
 class Keg
   def fix_install_names
-    dylibs.each do |dylib|
-      bad_install_names_for dylib do |id, bad_names|
-        dylib.ensure_writable do
-          system "install_name_tool", "-id", id, dylib
+    mach_o_files.each do |file|
+      bad_install_names_for file do |id, bad_names|
+        file.ensure_writable do
+          system "install_name_tool", "-id", id, file if file.dylib?
+
           bad_names.each do |bad_name|
             new_name = bad_name
-            new_name = Pathname.new(bad_name).basename unless (dylib.parent + new_name).exist?
-            # this fixes some problems, maybe not all. opencv seems to have badnames of the type
-            # "lib/libblah.dylib"
-            if (dylib.parent + new_name).exist?
-              system "install_name_tool", "-change", bad_name, "@loader_path/#{new_name}", dylib
+            new_name = Pathname.new(bad_name).basename unless (file.parent + new_name).exist?
+
+            # First check to see if the dylib is present in the current
+            # directory, so we can skip the more expensive search.
+            if (file.parent + new_name).exist?
+              system "install_name_tool", "-change", bad_name, "@loader_path/#{new_name}", file
             else
-              opoo "Could not fix install names for #{dylib}"
-              if ARGV.debug?
-                puts "bad_name: #{bad_name}"
-                puts "new_name: #{new_name}"
+              # Otherwise, try and locate the appropriate dylib by walking
+              # the entire 'lib' tree recursively.
+              abs_name = (self+'lib').find do |pn|
+                break pn if pn.basename == Pathname.new(new_name)
+              end
+
+              if abs_name and abs_name.exist?
+                system "install_name_tool", "-change", bad_name, abs_name, file
+              else
+                opoo "Could not fix install names for #{file}"
               end
             end
           end
@@ -28,35 +38,40 @@ class Keg
 
   OTOOL_RX = /\t(.*) \(compatibility version (\d+\.)*\d+, current version (\d+\.)*\d+\)/
 
-  def bad_install_names_for dylib
-    dylib = dylib.to_s
-
-    ENV['HOMEBREW_DYLIB'] = dylib # solves all shell escaping problems
-    install_names = `otool -L "$HOMEBREW_DYLIB"`.split "\n"
+  def bad_install_names_for file
+    ENV['HOMEBREW_MACH_O_FILE'] = file.to_s # solves all shell escaping problems
+    install_names = `otool -L "$HOMEBREW_MACH_O_FILE"`.split "\n"
 
     install_names.shift # first line is fluff
     install_names.map!{ |s| OTOOL_RX =~ s && $1 }
-    id = install_names.shift
+
+    # Bundles don't have an ID
+    id = install_names.shift unless file.mach_o_bundle?
+
     install_names.compact!
     install_names.reject!{ |fn| fn =~ /^@(loader|executable)_path/ }
-    install_names.reject!{ |fn| fn[0,1] == '/' }
+
+    # Don't fix absolute paths unless they are rooted in the build directory
+    install_names.reject! do |fn|
+      tmp = ENV['HOMEBREW_TEMP'] ? Regexp.escape(ENV['HOMEBREW_TEMP']) : '/tmp'
+      fn[0,1] == '/' and not %r[^#{tmp}] === fn
+    end
 
     # the shortpath ensures that library upgrades don’t break installed tools
-    shortpath = HOMEBREW_PREFIX + Pathname.new(dylib).relative_path_from(self)
-    id = if shortpath.exist? then shortpath else dylib end
+    shortpath = HOMEBREW_PREFIX + Pathname.new(file).relative_path_from(self)
+    id = if shortpath.exist? then shortpath else file end
 
     yield id, install_names
   end
 
-  def dylibs
-    require 'find'
-    dylibs = []
+  def mach_o_files
+    mach_o_files = []
     if (lib = join 'lib').directory?
       lib.find do |pn|
         next if pn.symlink? or pn.directory?
-        dylibs << pn if pn.dylib?
+        mach_o_files << pn if pn.dylib? or pn.mach_o_bundle?
       end
     end
-    dylibs
+    mach_o_files
   end
 end
