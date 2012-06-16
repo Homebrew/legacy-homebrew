@@ -50,10 +50,10 @@ module MachO
           end
 
         type = case read(4, offset + 12).unpack("N")[0]
-         when 0x00000002, 0x02000000 then :executable
-         when 0x00000006, 0x06000000 then :dylib
-         else :dunno
-         end
+          when 0x00000002, 0x02000000 then :executable
+          when 0x00000006, 0x06000000 then :dylib
+          else :dunno
+          end
 
         mach_data << { :arch => arch, :type => type }
       end
