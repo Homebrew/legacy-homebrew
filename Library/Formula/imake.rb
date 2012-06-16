@@ -2,19 +2,21 @@ require 'formula'
 
 class ImakeXorgCfFiles < Formula
   url 'http://xorg.freedesktop.org/releases/individual/util/xorg-cf-files-1.0.4.tar.bz2'
-  md5 '700c6d040d36a569e657a3ba5e1d8b24'
+  sha1 'c58b7252df481572ec1ccd77b9f1ab561ed89e45'
 end
 
 class Imake < Formula
-  url 'http://xorg.freedesktop.org/releases/individual/util/imake-1.0.4.tar.bz2'
   homepage 'http://xorg.freedesktop.org'
-  md5 '48133c75bd77c127c7eff122e08ebbf6'
+  url 'http://xorg.freedesktop.org/releases/individual/util/imake-1.0.5.tar.bz2'
+  sha1 '1fd3dca267d125ad86583d7f9663b6ff532cddd1'
 
   depends_on 'pkg-config' => :build
 
   def install
+    # So it can find xorg-macros.pc.  Using ENV.x11 didn't work.
+    ENV['PKG_CONFIG_PATH'] = '/usr/X11/share/pkgconfig'
     ENV.deparallelize
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
+    system './configure', "--prefix=#{prefix}", '--disable-dependency-tracking'
     system "make install"
     # install X config files
     ImakeXorgCfFiles.new.brew do
