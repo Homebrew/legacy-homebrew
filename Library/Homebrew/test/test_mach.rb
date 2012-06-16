@@ -135,7 +135,7 @@ class TextExecutableTests < Test::Unit::TestCase
 
   def test_malformed_shebang
     pn = Pathname.new('baz')
-    pn.write '#! '
+    pn.write ' #!'
     assert !pn.universal?
     assert !pn.i386?
     assert !pn.x86_64?
@@ -146,7 +146,7 @@ class TextExecutableTests < Test::Unit::TestCase
     assert !pn.text_executable?
     assert_equal [], pn.archs
     assert pn.arch == :dunno
-    assert_match /text executable/, `/usr/bin/file -h '#{pn}'`.chomp
+    assert_no_match /text executable/, `/usr/bin/file -h '#{pn}'`.chomp
   end
 
   def teardown

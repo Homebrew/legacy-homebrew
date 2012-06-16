@@ -272,7 +272,7 @@ class Pathname
   end
 
   def text_executable?
-    %r[#!\s*(/.+)+] === open('r') { |f| f.readline }
+    %r[^#!\s*.+] === open('r') { |f| f.readline }
   rescue EOFError
     false
   end
