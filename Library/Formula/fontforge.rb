@@ -4,17 +4,12 @@ class Fontforge < Formula
   homepage 'http://fontforge.sourceforge.net'
   url 'http://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20110222.tar.bz2'
   md5 '5be4dda345b5d73a27cc399df96e463a'
-
   head 'git://fontforge.git.sourceforge.net/gitroot/fontforge/fontforge'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'pango'
   depends_on 'potrace'
-
-  def options
-    [['--without-python', 'Build without Python.']]
-  end
 
   fails_with :llvm do
     build 2336
@@ -24,9 +19,8 @@ class Fontforge < Formula
   def install
     args = ["--prefix=#{prefix}",
             "--enable-double",
-            "--without-freetype-bytecode"]
-
-    args << "--without-python" if ARGV.include? "--without-python"
+            "--without-freetype-bytecode",
+            "--enable-pyextension"]
 
     ENV.x11
     # Fix linker error; see: http://trac.macports.org/ticket/25012
@@ -49,6 +43,8 @@ class Fontforge < Formula
 
     system "make"
     system "make install"
+    system "make install_prog"
+    system "make install_py"
   end
 
   def caveats; <<-EOS.undent
@@ -58,6 +54,7 @@ class Fontforge < Formula
         brew linkapps
     or:
         ln -s #{prefix}/FontForge.app /Applications
+
     EOS
   end
 end
