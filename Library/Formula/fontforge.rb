@@ -49,6 +49,8 @@ class Fontforge < Formula
 
     system "make"
     system "make install"
+    # Install FontForge utilities
+    system "make install_prog"
   end
 
   def caveats; <<-EOS.undent
