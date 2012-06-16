@@ -1,10 +1,10 @@
 require 'formula'
 
 class IscDhcp < Formula
-  url 'ftp://ftp.isc.org/isc/dhcp/4.2.3-P1/dhcp-4.2.3-P1.tar.gz'
   homepage 'http://www.isc.org/software/dhcp'
-  version '4.2.3-P1'
-  sha256 '4860625e07c290768d513b9a2260e655ae4bad4cc5c4c8f5eaaeb4f9cbfa96af'
+  url 'ftp://ftp.isc.org/isc/dhcp/4.2.3-P2/dhcp-4.2.3-P2.tar.gz'
+  sha256 '5cf7ae2cad9c4ca0103748b2476ec8ea78484e408f8fe597e4e0a4afb051b469'
+  version '4.2.3-P2'
 
   def install
     # use one dir under var for all runtime state.
