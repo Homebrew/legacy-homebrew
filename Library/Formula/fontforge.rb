@@ -26,7 +26,12 @@ class Fontforge < Formula
             "--enable-double",
             "--without-freetype-bytecode"]
 
-    args << "--without-python" if ARGV.include? "--without-python"
+    # Include python extension unless FontForge is configured without python
+    if ARGV.include? "--without-python"
+      args << "--without-python"
+    else
+      args << "--enable-pyextension"
+    end 
 
     ENV.x11
     # Fix linker error; see: http://trac.macports.org/ticket/25012
@@ -51,6 +56,8 @@ class Fontforge < Formula
     system "make install"
     # Install FontForge utilities
     system "make install_prog"
+    # Install FontForge python module, if included
+    system "make install_py" if args.include? "--enable-pyextension"
   end
 
   def caveats; <<-EOS.undent
