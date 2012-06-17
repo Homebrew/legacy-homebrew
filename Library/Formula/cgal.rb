@@ -2,8 +2,8 @@ require 'formula'
 
 class Cgal < Formula
   homepage 'http://www.cgal.org/'
-  url 'https://gforge.inria.fr/frs/download.php/29125/CGAL-3.9.tar.gz'
-  sha1 'cc99fad7116f221b6301326834f71ff65cebf2eb'
+  url 'https://gforge.inria.fr/frs/download.php/30387/CGAL-4.0.tar.gz'
+  sha1 '3cbc6431918fe56146cd70713d6cfa6c37c0ad0c'
 
   depends_on 'cmake' => :build
   depends_on 'boost'
