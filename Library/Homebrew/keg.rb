@@ -58,7 +58,7 @@ class Keg < Pathname
     linked_keg_record.directory? and self == linked_keg_record.realpath
   end
 
-  def link
+  def link mode=nil
     raise "Cannot link #{fname}\nAnother version is already linked: #{linked_keg_record.realpath}" if linked_keg_record.directory?
 
     $n=0
@@ -70,12 +70,12 @@ class Keg < Pathname
 
     # yeah indeed, you have to force anything you need in the main tree into
     # these dirs REMEMBER that *NOT* everything needs to be in the main tree
-    link_dir('etc') {:mkpath}
-    link_dir('bin') {:skip_dir}
-    link_dir('sbin') {:skip_dir}
-    link_dir('include') {:link}
+    link_dir('etc', mode) {:mkpath}
+    link_dir('bin', mode) {:skip_dir}
+    link_dir('sbin', mode) {:skip_dir}
+    link_dir('include', mode) {:link}
 
-    link_dir('share') do |path|
+    link_dir('share', mode) do |path|
       case path.to_s
       when 'locale/locale.alias' then :skip_file
       when INFOFILE_RX then ENV['HOMEBREW_KEEP_INFO'] ? :info : :skip_file
@@ -86,7 +86,7 @@ class Keg < Pathname
       end
     end
 
-    link_dir('lib') do |path|
+    link_dir('lib', mode) do |path|
       case path.to_s
       when 'charset.alias' then :skip_file
       # pkg-config database gets explicitly created
@@ -106,7 +106,7 @@ class Keg < Pathname
       end
     end
 
-    linked_keg_record.make_relative_symlink(self)
+    linked_keg_record.make_relative_symlink(self) unless mode == :dryrun
 
     return $n + $d
   end
@@ -127,16 +127,21 @@ protected
     puts "Won't resolve conflicts for symlink #{dst} as it doesn't resolve into the Cellar" if ARGV.verbose?
   end
 
-  def make_relative_symlink dst, src
+  def make_relative_symlink dst, src, mode=nil
     if dst.exist? and dst.realpath == src.realpath
       puts "Skipping; already exists: #{dst}" if ARGV.verbose?
+    # cf. git-clean -n: list files to delete, don't really link or delete
+    elsif mode == :dryrun
+      puts dst if dst.exist?
+      return
     else
+      dst.delete if mode == :force && dst.exist?
       dst.make_relative_symlink src
     end
   end
 
   # symlinks the contents of self+foo recursively into /usr/local/foo
-  def link_dir foo
+  def link_dir foo, mode=nil
     root = self+foo
     return unless root.exist?
 
@@ -154,10 +159,10 @@ protected
           Find.prune
         when :info
           next if File.basename(src) == 'dir' # skip historical local 'dir' files
-          make_relative_symlink dst, src
+          make_relative_symlink dst, src, mode
           dst.install_info
         else
-          make_relative_symlink dst, src
+          make_relative_symlink dst, src, mode
         end
       elsif src.directory?
         # if the dst dir already exists, then great! walk the rest of the tree tho
