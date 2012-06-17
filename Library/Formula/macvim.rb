@@ -58,7 +58,9 @@ class Macvim < Formula
     end
 
     # Reference: https://github.com/b4winckler/macvim/wiki/building
-    system "cd src/MacVim/icons && make getenvy"
+    cd 'src/MacVim/icons' do
+      system "make getenvy"
+    end
 
     system "make"
 

@@ -9,7 +9,9 @@ class Samtools < Formula
   def install
     system "make"
     system "make razip"
-    system "cd bcftools; make"
+    cd 'bcftools' do
+      system "make"
+    end
 
     bin.install %w{samtools razip bcftools/bcftools bcftools/vcfutils.pl}
     bin.install %w{misc/maq2sam-long misc/maq2sam-short misc/md5fa misc/md5sum-lite misc/seqtk misc/wgsim}
