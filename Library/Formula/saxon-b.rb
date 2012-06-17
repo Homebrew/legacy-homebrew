@@ -7,7 +7,7 @@ class SaxonB < Formula
   md5 'b1d08c1e2483e31021ed6e59c281c369'
 
   def install
-    system "mkdir saxon-b; mv *.jar doc notices saxon-b/"
+    (buildpath/'saxon-b').install Dir['*.jar', 'doc', 'notices']
     share.install Dir['*']
   end
 end
