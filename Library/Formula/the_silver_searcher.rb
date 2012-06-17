@@ -2,8 +2,9 @@ require 'formula'
 
 class TheSilverSearcher < Formula
   homepage 'https://github.com/ggreer/the_silver_searcher'
-  url 'https://github.com/ggreer/the_silver_searcher/tarball/0.5'
-  md5 'e39ccf313e40156176fb9fcd5373864c'
+  url 'https://github.com/ggreer/the_silver_searcher/tarball/0.7.2'
+  sha1 '48c33fa25ded5c446c0fca8d32b10872aee38e70'
+
   head 'https://github.com/ggreer/the_silver_searcher.git'
 
   if MacOS.xcode_version >= '4.3'
