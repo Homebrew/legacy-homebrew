@@ -9,12 +9,9 @@ module Homebrew extend self
       abort "Cowardly refusing to `sudo brew link'"
     end
 
-    if ARGV.force?
-      mode = :force
-    elsif ARGV.include?("--dry-run") || ARGV.include?("-n")
-      mode = :dryrun
-    else
-      mode = nil
+    if ARGV.force? then mode = :force
+    elsif ARGV.dry_run? then mode = :dryrun
+    else mode = nil
     end
 
     ARGV.kegs.each do |keg|
