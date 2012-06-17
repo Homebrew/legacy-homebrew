@@ -53,7 +53,7 @@ def audit_formula_text name, text
   end
 
   # Check for string interpolation of single values.
-  if text =~ /(system|inreplace|gsub!|change_make_var!) .* ['"]#\{(\w+)\}['"]/
+  if text =~ /(system|inreplace|gsub!|change_make_var!) .* ['"]#\{(\w+(\.\w+)?)\}['"]/
     problems << " * Don't need to interpolate \"#{$2}\" with #{$1}"
   end
 
