@@ -2,7 +2,7 @@ require 'formula'
 
 class TheSilverSearcher < Formula
   homepage 'https://github.com/ggreer/the_silver_searcher'
-  url 'https://github.com/ggreer/the_silver_searcher/tarball/0.5'
+  url 'https://github.com/ggreer/the_silver_searcher/tarball/0.7.2'
   md5 'e39ccf313e40156176fb9fcd5373864c'
   head 'https://github.com/ggreer/the_silver_searcher.git'
 
