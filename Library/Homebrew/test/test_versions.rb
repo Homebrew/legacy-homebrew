@@ -230,5 +230,6 @@ class VersionTests < Test::Unit::TestCase
       '3.3.12ga7'
     check 'http://www.gedanken.demon.co.uk/download-wwwoffle/wwwoffle-2.9h.tgz', '2.9h'
     check 'http://synergy.googlecode.com/files/synergy-1.3.6p2-MacOSX-Universal.zip', '1.3.6p2'
+    check 'http://www.mcs.anl.gov/research/projects/mpich2/downloads/tarballs/1.4.1p1/mpich2-1.4.1p1.tar.gz', '1.4.1p1'
   end
 end
