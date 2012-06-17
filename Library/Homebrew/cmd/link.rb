@@ -11,7 +11,7 @@ module Homebrew extend self
 
     if ARGV.force?
       mode = :force
-    elsif ARGV.include?("--dry-run") || ARGV.include?("-n")
+    elsif ARGV.dry_run?
       mode = :dryrun
     else
       mode = nil
