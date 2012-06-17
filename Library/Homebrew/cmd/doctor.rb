@@ -463,7 +463,15 @@ def check_which_pkg_config
   binary = which 'pkg-config'
   return if binary.nil?
 
-  unless binary.to_s == "#{HOMEBREW_PREFIX}/bin/pkg-config" then <<-EOS.undent
+  mono_config = Pathname.new("/usr/bin/pkg-config")
+  if mono_config.exist? && mono_config.realpath.to_s.include?("Mono.framework") then <<-EOS.undent
+    You have a non-Homebrew 'pkg-config' in your PATH:
+      /usr/bin/pkg-config => #{mono_config.realpath}
+
+    This was most likely created by the Mono installer. `./configure` may
+    have problems finding brew-installed packages using this other pkg-config.
+    EOS
+  elsif binary.to_s != "#{HOMEBREW_PREFIX}/bin/pkg-config" then <<-EOS.undent
     You have a non-Homebrew 'pkg-config' in your PATH:
       #{binary}
 
