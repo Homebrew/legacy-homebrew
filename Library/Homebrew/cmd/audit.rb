@@ -129,6 +129,10 @@ def audit_formula_text name, text
     problems << " * Use \"\#{ENV.cxx}\" instead of hard-coding \"#{$3}\""
   end
 
+  if text =~ /system\s+['"](env|export)/
+    problems << " * Use ENV instead of invoking '#{$1}' to modify the environment"
+  end
+
   return problems
 end
 
