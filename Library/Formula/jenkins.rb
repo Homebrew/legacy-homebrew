@@ -9,7 +9,11 @@ class Jenkins < Formula
   head 'https://github.com/jenkinsci/jenkins.git'
 
   def install
-    system "mvn clean install -pl war -am -DskipTests && mv war/target/jenkins.war ." if ARGV.build_head?
+    if ARGV.build_head?
+      system "mvn clean install -pl war -am -DskipTests"
+      mv 'war/target/jenkins.war', '.'
+    end
+
     libexec.install "jenkins.war"
     plist_path.write startup_plist
     plist_path.chmod 0644
