@@ -133,6 +133,10 @@ def audit_formula_text name, text
     problems << " * Use ENV instead of invoking '#{$1}' to modify the environment"
   end
 
+  if text =~ /version == ['"]HEAD['"]/
+    problems << " * Use 'ARGV.build_head?' instead of inspecting 'version'"
+  end
+
   return problems
 end
 
