@@ -50,10 +50,11 @@ module MachO
           end
 
         type = case read(4, offset + 12).unpack("N")[0]
-         when 0x00000002, 0x02000000 then :executable
-         when 0x00000006, 0x06000000 then :dylib
-         else :dunno
-         end
+          when 0x00000002, 0x02000000 then :executable
+          when 0x00000006, 0x06000000 then :dylib
+          when 0x00000008, 0x08000000 then :bundle
+          else :dunno
+          end
 
         mach_data << { :arch => arch, :type => type }
       end
@@ -104,5 +105,9 @@ module MachO
 
   def mach_o_executable?
     mach_data.map{ |m| m.fetch :type }.include? :executable
+  end
+
+  def mach_o_bundle?
+    mach_data.map{ |m| m.fetch :type }.include? :bundle
   end
 end

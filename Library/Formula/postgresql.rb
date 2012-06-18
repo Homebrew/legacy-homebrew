@@ -25,7 +25,7 @@ class Postgresql < Formula
     # Fix PL/Python build: https://github.com/mxcl/homebrew/issues/11162
     DATA
   end
-  
+
   def install
     ENV.libxml2 if MacOS.snow_leopard?
 

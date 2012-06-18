@@ -1,18 +1,14 @@
 require 'formula'
 
 class Silk < Formula
-  url 'http://tools.netsa.cert.org/releases/silk-2.4.0.tar.gz'
   homepage 'http://tools.netsa.cert.org/silk/'
-  md5 '3c12579712e2f49b07e56055a209d20a'
+  url 'http://tools.netsa.cert.org/releases/silk-2.4.7.tar.gz'
+  sha1 '2ff0cd1d00de70f667728830aa3e920292e99aec'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'libfixbuf'
   depends_on 'yaf'
-
-  fails_with :llvm do
-    cause "Undefined symbols during compile"
-  end
 
   def install
     system "./configure", "--disable-dependency-tracking",
