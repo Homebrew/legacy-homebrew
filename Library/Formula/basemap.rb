@@ -4,7 +4,7 @@ require 'formula'
 # PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
 
 class Basemap < Formula
-  homepage ''
+  homepage 'http://matplotlib.github.com/basemap/'
   url 'http://downloads.sourceforge.net/project/matplotlib/matplotlib-toolkits/basemap-1.0.4/basemap-1.0.4.tar.gz'
   sha1 'b6d312129d2ae7fb612490516cf87daaf18cb033'
 
@@ -16,13 +16,13 @@ class Basemap < Formula
   # matplotlib package.
   def patches
     DATA
-  end  
+  end
 
   def install
     ENV.x11
     system "python setup.py config"
     system "python setup.py build"
-    system "python setup.py install --prefix=#{prefix}"    
+    system "python setup.py install --prefix=#{prefix}"
   end
 
   def which_python
