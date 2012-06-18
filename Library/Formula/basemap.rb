@@ -1,8 +1,5 @@
 require 'formula'
 
-# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
 class Basemap < Formula
   homepage 'http://matplotlib.github.com/basemap/'
   url 'http://downloads.sourceforge.net/project/matplotlib/matplotlib-toolkits/basemap-1.0.4/basemap-1.0.4.tar.gz'
