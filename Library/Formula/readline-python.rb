@@ -1,13 +1,14 @@
 require 'formula'
 
-class Ipython < Formula
-  homepage 'http://ipython.org/'
-  url 'http://archive.ipython.org/release/0.12.1/ipython-0.12.1.tar.gz'
-  sha1 'c4af9009d67460a894274cd80fb1d15251822f32'
-
-  depends_on 'readline-python'
+class ReadlinePython < Formula
+  homepage 'https://github.com/ludwigschwardt/python-readline'
+  url 'http://pypi.python.org/packages/source/r/readline/readline-6.2.2.tar.gz'
+  md5 'ad9d4a5a3af37d31daf36ea917b08c77'
 
   def install
+    dir="#{prefix}/#{site_package_dir}"
+    ENV["PYTHONPATH"] = "#{dir}:" + ENV["PYTHONPATH"]
+    mkdir_p dir
     system "python setup.py config"
     system "python setup.py build"
     system "python setup.py install --prefix=#{prefix}"
@@ -23,7 +24,7 @@ class Ipython < Formula
 
   def caveats
     <<-EOS
-IPython Python modules have been linked to:
+Python readline modules have been linked to:
     #{HOMEBREW_PREFIX}/#{site_package_dir}
 
 Make sure this folder is on your PYTHONPATH.

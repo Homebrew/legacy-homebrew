@@ -11,7 +11,7 @@ class SphinxPython < Formula
   def install
     dir="#{prefix}/#{site_package_dir}"
     ENV["PYTHONPATH"] = "#{dir}:" + ENV["PYTHONPATH"]
-    FileUtils.mkdir_p dir
+    mkdir_p dir
     system "python setup.py build"
     system "python setup.py install --prefix=#{prefix}"
   end
