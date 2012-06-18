@@ -11,7 +11,7 @@ end
 class GitFlow < Formula
   homepage 'https://github.com/nvie/gitflow'
 
-  # Use the tag instead of the tarball to get the submodule
+  # Use the tag instead of the tarball to get submodules
   url 'https://github.com/nvie/gitflow.git', :tag => '0.4.1'
   version '0.4.1'
 
