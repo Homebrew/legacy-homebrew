@@ -40,12 +40,19 @@ class Cmake < Formula
   end
 
   def install
+    # Tell .bootstrap about the location of the MacOS SDK,
+    # otherwise ZLIB & Co. will not be found.
+    (Pathname.pwd/"CMAKE_FIND_ROOT_PATH.txt").write <<-EOS.undent
+      SET ( CMAKE_FIND_ROOT_PATH "#{MacOS.macosx_sdk_path}/usr")
+      EOS
+
     system "./bootstrap", "--prefix=#{prefix}",
                           "--system-libs",
                           "--no-system-libarchive",
                           "--datadir=/share/cmake",
                           "--docdir=/share/doc/cmake",
-                          "--mandir=/share/man"
+                          "--mandir=/share/man",
+                          "--init=CMAKE_FIND_ROOT_PATH.txt"
     system "make"
     system "make install"
   end
