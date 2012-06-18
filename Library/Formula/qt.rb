@@ -30,6 +30,14 @@ class Qt < Formula
   depends_on "d-bus" if ARGV.include? '--with-qtdbus'
   depends_on 'sqlite' if MacOS.leopard?
 
+  def patches
+    # fixes conflict on osx 10.5. See qt bug:
+    # https://bugreports.qt-project.org/browse/QTBUG-23258
+    if MacOS.leopard?
+      "http://bugreports.qt-project.org/secure/attachment/26712/Patch-Qt-4.8-for-10.5"
+    end
+  end
+
   def install
     ENV.x11
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
