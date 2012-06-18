@@ -2,8 +2,8 @@ require 'formula'
 
 class Qrupdate < Formula
   homepage 'http://sourceforge.net/projects/qrupdate/'
-  url 'http://downloads.sourceforge.net/qrupdate/qrupdate-1.1.1.tar.gz'
-  sha1 '8fbaba202b0d4bf80852b2dc6c8d1d4b90b816d4'
+  url 'http://downloads.sourceforge.net/qrupdate/qrupdate-1.1.2.tar.gz'
+  sha1 'f7403b646ace20f4a2b080b4933a1e9152fac526'
 
   depends_on 'dotwrp'
 
@@ -22,6 +22,7 @@ class Qrupdate < Formula
       s.gsub! 'install -D', 'install'
     end
     lib.mkpath
-    system "make -j 1 install"
+    ENV.j1
+    system 'make install'
   end
 end
