@@ -14,7 +14,6 @@ class Poco < Formula
                           "--omit=Data/MySQL,Data/ODBC",
                           "--no-samples",
                           "--no-tests"
-    system "make"
     system "make install"
   end
 end
