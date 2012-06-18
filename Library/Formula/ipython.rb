@@ -6,6 +6,9 @@ class Ipython < Formula
   sha1 'c4af9009d67460a894274cd80fb1d15251822f32'
 
   depends_on 'readline-python'
+  depends_on 'pygments'
+  depends_on 'pyzmq'
+  depends_on 'pyqt'
 
   def install
     system "python setup.py config"
