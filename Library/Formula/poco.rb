@@ -9,9 +9,11 @@ class Poco < Formula
     arch = Hardware.is_64_bit? ? 'Darwin64': 'Darwin'
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--config=#{arch}",
                           "--omit=Data/MySQL,Data/ODBC",
-                          "--prefix=#{prefix}"
+                          "--no-samples",
+                          "--no-tests"
     system "make"
     system "make install"
   end
