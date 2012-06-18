@@ -53,7 +53,7 @@ def audit_formula_text name, text
   end
 
   # Check for string interpolation of single values.
-  if text =~ /(system|inreplace|gsub!|change_make_var!) .* ['"]#\{(\w+)\}['"]/
+  if text =~ /(system|inreplace|gsub!|change_make_var!) .* ['"]#\{(\w+(\.\w+)?)\}['"]/
     problems << " * Don't need to interpolate \"#{$2}\" with #{$1}"
   end
 
@@ -127,6 +127,14 @@ def audit_formula_text name, text
 
   if text =~ %r[(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?((g|llvm-g|clang)\+\+)['" ]]
     problems << " * Use \"\#{ENV.cxx}\" instead of hard-coding \"#{$3}\""
+  end
+
+  if text =~ /system\s+['"](env|export)/
+    problems << " * Use ENV instead of invoking '#{$1}' to modify the environment"
+  end
+
+  if text =~ /version == ['"]HEAD['"]/
+    problems << " * Use 'ARGV.build_head?' instead of inspecting 'version'"
   end
 
   return problems
