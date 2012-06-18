@@ -113,6 +113,11 @@ class Qt < Formula
       mv path, prefix
     end
   end
+  
+  def patches
+    # fixes conflict on osx 10.5+ see qt bug: https://bugreports.qt-project.org/browse/QTBUG-23258
+    "http://bugreports.qt-project.org/secure/attachment/26712/Patch-Qt-4.8-for-10.5"
+  end
 
   def test
     system "#{bin}/qmake", "--version"
