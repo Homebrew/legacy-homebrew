@@ -12,6 +12,10 @@ def use_wmf?
   ARGV.include? '--use-wmf'
 end
 
+def make_perl_module?
+  ARGV.include? '--with-perl'
+end
+
 def quantum_depth
   if ARGV.include? '--with-quantum-depth-32'
     32
@@ -48,6 +52,7 @@ class Graphicsmagick < Formula
       ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
       ['--without-magick-plus-plus', "Don't build C++ library."],
       ['--use-wmf', 'Compile with libwmf support.'],
+      ['--with-perl', 'Install Graphics::Magick Perl module in standard directory (not in homebrew Cellar).'],
       ['--with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'],
       ['--with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'],
       ['--with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'],
@@ -64,13 +69,21 @@ class Graphicsmagick < Formula
             "--prefix=#{prefix}",
             "--enable-shared", "--disable-static"]
     args << "--without-magick-plus-plus" if ARGV.include? '--without-magick-plus-plus'
+    args << "--with-perl" if make_perl_module?
     args << "--disable-openmp" if MacOS.leopard? # libgomp unavailable
     args << "--with-gslib" if ghostscript_srsly?
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
               unless ghostscript_fonts?
     args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
-
+    
     system "./configure", *args
     system "make install"
+    if make_perl_module? then
+      Dir.chdir("PerlMagick");
+      system "perl Makefile.PL"
+      system "make"
+      system "make install"
+      Dir.chdir ".."
+    end
   end
 end
