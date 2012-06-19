@@ -764,6 +764,7 @@ def check_tmpdir
 end
 
 def check_missing_deps
+  return unless HOMEBREW_CELLAR.exist?
   s = Set.new
   missing_deps = Homebrew.find_missing_brews(Homebrew.installed_brews)
   missing_deps.each do |m|
