@@ -99,20 +99,22 @@ class FormulaTests < Test::Unit::TestCase
     assert_equal CurlDownloadStrategy, f.devel.download_strategy
     assert_equal GitDownloadStrategy, f.head.download_strategy
 
-    assert f.stable.has_checksum?
-    assert f.bottle.has_checksum?
-    assert f.devel.has_checksum?
-    assert !f.head.has_checksum?
-    assert_equal :sha1, f.stable.checksum_type
-    assert_equal :sha1, f.bottle.checksum_type
-    assert_equal :sha256, f.devel.checksum_type
-    assert_nil f.head.checksum_type
+    assert_instance_of Checksum, f.stable.checksum
+    assert_instance_of Checksum, f.bottle.checksum
+    assert_instance_of Checksum, f.devel.checksum
+    assert !f.stable.checksum.empty?
+    assert !f.bottle.checksum.empty?
+    assert !f.devel.checksum.empty?
+    assert_nil f.head.checksum
+    assert_equal :sha1, f.stable.checksum.hash_type
+    assert_equal :sha1, f.bottle.checksum.hash_type
+    assert_equal :sha256, f.devel.checksum.hash_type
     assert_equal case MacOS.cat
       when :snowleopard then 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
       when :lion then 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d'
-      end, f.bottle.sha1
-    assert_match /[0-9a-fA-F]{40}/, f.stable.sha1
-    assert_match /[0-9a-fA-F]{64}/, f.devel.sha256
+      end, f.bottle.checksum.hexdigest
+    assert_match /[0-9a-fA-F]{40}/, f.stable.checksum.hexdigest
+    assert_match /[0-9a-fA-F]{64}/, f.devel.checksum.hexdigest
 
     assert_nil f.stable.md5
     assert_nil f.stable.sha256
@@ -155,11 +157,10 @@ class FormulaTests < Test::Unit::TestCase
     assert_nil f.stable.specs
     assert_equal({ :tag => 'foo' }, f.head.specs)
 
-    assert f.stable.has_checksum?
-    assert !f.head.has_checksum?
-    assert_equal :md5, f.stable.checksum_type
-    assert_nil f.head.checksum_type
-    assert_match /[0-9a-fA-F]{32}/, f.stable.md5
+    assert_instance_of Checksum, f.stable.checksum
+    assert_nil f.head.checksum
+    assert_equal :md5, f.stable.checksum.hash_type
+    assert_match /[0-9a-fA-F]{32}/, f.stable.checksum.hexdigest
 
     assert !f.stable.explicit_version?
     assert_equal '0.1', f.stable.version
@@ -209,9 +210,10 @@ class FormulaTests < Test::Unit::TestCase
 
       assert_equal 'file:///foo.com/testball-0.1-bottle.tar.gz', f.bottle.url
 
-      assert f.bottle.has_checksum?
-      assert_equal :sha1, f.bottle.checksum_type
-      assert_equal 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d', f.bottle.sha1
+      assert_instance_of Checksum, f.bottle.checksum
+      assert_equal :sha1, f.bottle.checksum.hash_type
+      assert !f.bottle.checksum.empty?
+      assert_equal 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d', f.bottle.sha1.hexdigest
       assert_nil f.bottle.md5
       assert_nil f.bottle.sha256
 
@@ -238,7 +240,7 @@ class FormulaTests < Test::Unit::TestCase
 
     assert_equal f.head, f.active_spec
     assert_equal 'HEAD', f.version
-    assert !f.head.has_checksum?
+    assert_nil f.head.checksum
     assert_equal 'https://github.com/mxcl/homebrew.git', f.url
     assert_equal GitDownloadStrategy, f.download_strategy
     assert_instance_of GitDownloadStrategy, f.downloader
@@ -255,7 +257,7 @@ class FormulaTests < Test::Unit::TestCase
 
     assert_equal f.head, f.active_spec
     assert_equal 'HEAD', f.version
-    assert !f.head.has_checksum?
+    assert_nil f.head.checksum
     assert_equal 'https://github.com/mxcl/homebrew.git', f.url
     assert_equal GitDownloadStrategy, f.download_strategy
     assert_instance_of GitDownloadStrategy, f.downloader
@@ -272,7 +274,7 @@ class FormulaTests < Test::Unit::TestCase
 
     assert_equal f.head, f.active_spec
     assert_equal 'HEAD', f.version
-    assert !f.head.has_checksum?
+    assert_nil f.head.checksum
     assert_equal 'https://github.com/mxcl/homebrew.git', f.url
     assert_equal GitDownloadStrategy, f.download_strategy
     assert_instance_of GitDownloadStrategy, f.downloader
@@ -288,9 +290,9 @@ class FormulaTests < Test::Unit::TestCase
 
     assert_equal f.stable, f.active_spec
 
-    assert !f.stable.has_checksum?
-    assert !f.devel.has_checksum?
-    assert !f.head.has_checksum?
+    assert_nil f.stable.checksum
+    assert_nil f.devel.checksum
+    assert_nil f.head.checksum
 
     assert_equal MercurialDownloadStrategy, f.stable.download_strategy
     assert_equal BazaarDownloadStrategy, f.devel.download_strategy

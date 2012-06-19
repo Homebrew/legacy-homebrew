@@ -38,7 +38,7 @@ class Formula
 
     # Ensure the bottle URL is set. If it does not have a checksum,
     # then a bottle is not available for the current platform.
-    if @bottle and @bottle.has_checksum?
+    if @bottle and not (@bottle.checksum.nil? or @bottle.checksum.empty?)
       @bottle.url ||= bottle_base_url + bottle_filename(self)
     else
       @bottle = nil
@@ -514,31 +514,7 @@ public
 
   # For FormulaInstaller.
   def verify_download_integrity fn
-    # Checksums don't apply to HEAD
-    return if @active_spec == @head
-
-    type = @active_spec.checksum_type || :md5
-    supplied = @active_spec.send(type)
-    type = type.to_s.upcase
-
-    require 'digest'
-    hasher = Digest.const_get(type)
-    hash = fn.incremental_hash(hasher)
-
-    if supplied and not supplied.empty?
-      message = <<-EOS.undent
-        #{type} mismatch
-        Expected: #{supplied}
-        Got: #{hash}
-        Archive: #{fn}
-        (To retry an incomplete download, remove the file above.)
-        EOS
-      raise message unless supplied.upcase == hash.upcase
-    else
-      opoo "Cannot verify package integrity"
-      puts "The formula did not provide a download checksum"
-      puts "For your reference the #{type} is: #{hash}"
-    end
+    @active_spec.verify_download_integrity(fn)
   end
 
 private
@@ -605,7 +581,7 @@ private
 
     attr_rw :homepage, :keg_only_reason, :skip_clean_all, :cc_failures
 
-    SoftwareSpec::CHECKSUM_TYPES.each do |cksum|
+    Checksum::TYPES.each do |cksum|
       class_eval %Q{
         def #{cksum}(val=nil)
           unless val.nil?
