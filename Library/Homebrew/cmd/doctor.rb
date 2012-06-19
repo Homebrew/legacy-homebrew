@@ -68,7 +68,7 @@ def check_for_macgpg2
       Several other checks in this script will turn up problems, such as stray
       dylibs in /usr/local and permissions issues with share and man in /usr/local/.
     EOS
-  end
+  end unless File.exist? '/usr/local/MacGPG2/share/gnupg/VERSION'
 end
 
 def check_for_stray_dylibs
