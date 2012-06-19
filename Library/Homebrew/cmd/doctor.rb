@@ -844,6 +844,7 @@ def check_for_bad_python_symlink
 end
 
 def check_for_outdated_homebrew
+  return unless which 'git'
   HOMEBREW_REPOSITORY.cd do
     if File.directory? ".git"
       local = `git rev-parse -q --verify refs/remotes/origin/master`.chomp
