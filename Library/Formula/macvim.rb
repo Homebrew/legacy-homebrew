@@ -49,10 +49,6 @@ class Macvim < Formula
     arch = MacOS.prefer_64_bit? ? 'x86_64' : 'i386'
     ENV['ARCHFLAGS'] = "-arch #{arch}"
 
-    if `ruby --version` =~ /1\.9\.\d/
-      opoo "Your default ruby is 1.9.x, install will likely fail. Try using system ruby"
-    end
-
     args = ["--with-features=huge",
             "--with-tlib=ncurses",
             "--enable-multibyte",
