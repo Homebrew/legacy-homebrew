@@ -1,9 +1,8 @@
 require 'download_strategy'
+require 'checksums'
 
 class SoftwareSpec
   attr_reader :checksum, :mirrors, :specs, :strategy
-
-  CHECKSUM_TYPES = [:md5, :sha1, :sha256].freeze
 
   VCS_SYMBOLS = {
     :bzr     => BazaarDownloadStrategy,
@@ -15,17 +14,6 @@ class SoftwareSpec
     :post    => CurlPostDownloadStrategy,
     :svn     => SubversionDownloadStrategy,
   }
-
-  # Detect which type of checksum is being used, or nil if none
-  def checksum_type
-    @checksum_type ||= CHECKSUM_TYPES.detect do |type|
-      instance_variable_defined?("@#{type}")
-    end
-  end
-
-  def has_checksum?
-    (checksum_type and self.send(checksum_type)) || false
-  end
 
   # Was the version defined in the DSL, or detected from the URL?
   def explicit_version?
@@ -45,11 +33,29 @@ class SoftwareSpec
     return detected
   end
 
+  def verify_download_integrity fn
+    fn.verify_checksum @checksum
+  rescue ChecksumMissingError
+    opoo "Cannot verify package integrity"
+    puts "The formula did not provide a download checksum"
+    puts "For your reference the SHA1 is: #{fn.sha1}"
+  rescue ChecksumMismatchError => e
+    e.advice = <<-EOS.undent
+    Archive: #{fn}
+    (To retry an incomplete download, remove the file above.)
+    EOS
+    raise e
+  end
+
   # The methods that follow are used in the block-form DSL spec methods
-  CHECKSUM_TYPES.each do |cksum|
+  Checksum::TYPES.each do |cksum|
     class_eval %Q{
       def #{cksum}(val=nil)
-        val.nil? ? @#{cksum} : @#{cksum} = val
+        if val.nil?
+          @checksum if @checksum.nil? or @checksum.hash_type == :#{cksum}
+        else
+          @checksum = Checksum.new(:#{cksum}, val)
+        end
       end
     }
   end
@@ -84,7 +90,6 @@ class HeadSoftwareSpec < SoftwareSpec
   def initialize
     super
     @version = 'HEAD'
-    @checksum = nil
   end
 
   def verify_download_integrity fn
@@ -97,13 +102,14 @@ class Bottle < SoftwareSpec
   attr_reader :revision
 
   def initialize
+    super
     @revision = 0
     @strategy = CurlBottleDownloadStrategy
   end
 
   # Checksum methods in the DSL's bottle block optionally take
   # a Hash, which indicates the platform the checksum applies on.
-  CHECKSUM_TYPES.each do |cksum|
+  Checksum::TYPES.each do |cksum|
     class_eval %Q{
       def #{cksum}(val=nil)
         @#{cksum} ||= Hash.new
@@ -111,11 +117,13 @@ class Bottle < SoftwareSpec
         when nil
           @#{cksum}[MacOS.cat]
         when String
-          @#{cksum}[:lion] = val
+          @#{cksum}[:lion] = Checksum.new(:#{cksum}, val)
         when Hash
           key, value = val.shift
-          @#{cksum}[value] = key
+          @#{cksum}[value] = Checksum.new(:#{cksum}, key)
         end
+
+        @checksum = @#{cksum}[MacOS.cat] if @#{cksum}.has_key? MacOS.cat
       end
     }
   end

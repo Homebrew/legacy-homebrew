@@ -22,7 +22,7 @@ def built_bottle? f
 end
 
 def bottle_current? f
-  f.bottle.url && f.bottle.has_checksum? && f.bottle.version == f.stable.version
+  f.bottle.url && !f.bottle.checksum.empty? && f.bottle.version == f.stable.version
 end
 
 def bottle_file_outdated? f, file
