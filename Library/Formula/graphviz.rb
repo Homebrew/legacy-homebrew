@@ -19,7 +19,8 @@ class Graphviz < Formula
 
   def options
     [["--with-pangocairo", "Build with Pango/Cairo for alternate PDF output"],
-     ["--with[out]-bindings", "Build Perl/Python/Ruby/etc. bindings (default on Lion; may not work on earlier systems)"]]
+     ["--with[out]-bindings", "Build Perl/Python/Ruby/etc. bindings (default on Lion; may not work on earlier systems)"],
+     ["--universal", "Build a universal binary."]]
   end
 
   def patches
@@ -28,6 +29,7 @@ class Graphviz < Formula
   end
 
   def install
+    ENV.universal_binary if ARGV.build_universal?
     ENV.x11
     args = ["--disable-debug",
             "--disable-dependency-tracking",
