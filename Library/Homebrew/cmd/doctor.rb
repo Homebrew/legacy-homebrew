@@ -596,6 +596,7 @@ def check_for_DYLD_INSERT_LIBRARIES
 end
 
 def check_for_symlinked_cellar
+  return unless HOMEBREW_CELLAR.exist?
   if HOMEBREW_CELLAR.symlink?
     <<-EOS.undent
       Symlinked Cellars can cause problems.
