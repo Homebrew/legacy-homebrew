@@ -290,22 +290,21 @@ def audit_formula_specs f
       end
     end
 
-    cksum = s.checksum_type
-    unless cksum.nil?
-      hash = s.send(cksum).strip
-      len = case cksum
+    cksum = s.checksum
+    next if cksum.nil?
+
+    len = case cksum.hash_type
       when :md5 then 32
       when :sha1 then 40
       when :sha256 then 64
       end
 
-      if hash.empty?
-        problems << " * #{cksum} is empty"
-      else
-        problems << " * #{cksum} should be #{len} characters" unless hash.length == len
-        problems << " * #{cksum} contains invalid characters" unless hash =~ /^[a-fA-F0-9]+$/
-        problems << " * #{cksum} should be lowercase" unless hash == hash.downcase
-      end
+    if cksum.empty?
+      problems << " * #{cksum.hash_type} is empty"
+    else
+      problems << " * #{cksum.hash_type} should be #{len} characters" unless cksum.hexdigest.length == len
+      problems << " * #{cksum.hash_type} contains invalid characters" unless cksum.hexdigest =~ /^[a-fA-F0-9]+$/
+      problems << " * #{cksum.hash_type} should be lowercase" unless cksum.hexdigest == cksum.hexdigest.downcase
     end
   end
 

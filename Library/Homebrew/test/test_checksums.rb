@@ -13,7 +13,7 @@ class ChecksumTests < Test::Unit::TestCase
   end
   
   def bad_checksum f
-    assert_raises RuntimeError do
+    assert_raises ChecksumMismatchError do
       nostdout { f.new.brew {} }
     end
   end
