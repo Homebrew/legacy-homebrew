@@ -37,16 +37,15 @@ class Macvim < Formula
             "--with-tlib=ncurses",
             "--enable-multibyte",
             "--with-macarchs=#{arch}",
-            "--enable-perlinterp",
-            "--enable-pythoninterp",
-            "--enable-rubyinterp",
-            "--enable-tclinterp"]
+            "--enable-perlinterp=dynamic",
+            "--enable-pythoninterp=dynamic",
+            "--enable-rubyinterp=dynamic",
+            "--enable-tclinterp=dynamic"]
 
     args << "--enable-cscope" if ARGV.include? "--with-cscope"
 
     if ARGV.include? "--with-lua"
-      args << "--enable-luainterp"
-      args << "--with-lua-prefix=#{HOMEBREW_PREFIX}"
+      args << "--enable-luainterp=dynamic"
     end
 
     system "./configure", *args
