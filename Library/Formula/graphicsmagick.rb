@@ -79,7 +79,7 @@ class Graphicsmagick < Formula
     system "./configure", *args
     system "make install"
     if make_perl_module?
-      Dir.chdir("PerlMagick") do
+      cd 'PerlMagick' do
         system "perl Makefile.PL"
         system "make"
         system "make install"
