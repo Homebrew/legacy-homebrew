@@ -2,8 +2,8 @@ require 'formula'
 
 class Quassel < Formula
   homepage 'http://www.quassel-irc.org/'
-  url 'http://www.quassel-irc.org/pub/quassel-0.7.3.tar.bz2'
-  md5 'f12b2b09d8ebe533781aa969597d671c'
+  url 'http://www.quassel-irc.org/pub/quassel-0.8.0.tar.bz2'
+  sha1 'b74967fa9f19b5d7c708279075cc0ef3a3dbbe8b'
 
   head 'git://git.quassel-irc.org/quassel.git'
 
@@ -21,26 +21,27 @@ class Quassel < Formula
 end
 
 __END__
---- a/src/qtui/chatscene.cpp	2009-10-04 17:42:09.000000000 -0400
-+++ b/src/qtui/chatscene.cpp	2009-10-04 18:09:13.000000000 -0400
-@@ -26,7 +26,7 @@
- #include <QPersistentModelIndex>
+--- a/src/qtui/chatscene.cpp	2012-03-20 13:39:20.000000000 -0700
++++ b/src/qtui/chatscene.cpp	2012-06-20 10:06:44.000000000 -0700
+@@ -33,7 +33,7 @@
+ #endif
  
  #ifdef HAVE_WEBKIT
 -#  include <QWebView>
-+#  include <QtWebkit/QWebView>
++#  include <QtWebKit/QWebView>
  #endif
-
-#include "chatitem.h"
-
---- a/src/qtui/webpreviewitem.cpp	2009-10-04 17:42:09.000000000 -0400
-+++ b/src/qtui/webpreviewitem.cpp	2009-10-04 18:11:19.000000000 -0400
-@@ -24,7 +24,7 @@
-
+ 
+ #include "chatitem.h"
+--- a/src/qtui/webpreviewitem.cpp	2012-03-20 13:39:20.000000000 -0700
++++ b/src/qtui/webpreviewitem.cpp	2012-06-20 10:08:51.000000000 -0700
+@@ -24,8 +24,8 @@
+ 
  #include <QGraphicsProxyWidget>
  #include <QPainter>
 -#include <QWebView>
+-#include <QWebSettings>
 +#include <QtWebKit/QWebView>
-
- WebPreviewItem::WebPreviewItem(const QString &url)
++#include <QtWebKit/QWebSettings>
+ 
+ WebPreviewItem::WebPreviewItem(const QUrl &url)
    : QGraphicsItem(0), // needs to be a top level item as we otherwise cannot guarantee that it's on top of other chatlines
