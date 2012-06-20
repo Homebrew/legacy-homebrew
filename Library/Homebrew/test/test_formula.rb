@@ -105,6 +105,7 @@ class FormulaTests < Test::Unit::TestCase
     assert_equal case MacOS.cat
       when :snowleopard then 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
       when :lion then 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d'
+      when :mountainlion then '8badf00d8badf00d8badf00d8badf00d8badf00d'
       end, f.bottle.checksum.hexdigest
     assert_match /[0-9a-fA-F]{40}/, f.stable.checksum.hexdigest
     assert_match /[0-9a-fA-F]{64}/, f.devel.checksum.hexdigest
@@ -294,5 +295,16 @@ class FormulaTests < Test::Unit::TestCase
     assert_equal({ :tag => '0.2' }, f.stable.specs)
     assert_equal({ :tag => '0.3' }, f.devel.specs)
     assert f.head.specs.empty?
+  end
+
+  def test_revised_bottle_specs
+    f = RevisedBottleSpecTestBall.new
+
+    assert_equal 1, f.bottle.revision
+    assert_equal case MacOS.cat
+      when :snowleopard then 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
+      when :lion then 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d'
+      when :mountainlion then '8badf00d8badf00d8badf00d8badf00d8badf00d'
+      end, f.bottle.checksum.hexdigest
   end
 end
