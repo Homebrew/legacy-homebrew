@@ -112,6 +112,7 @@ class SpecTestBall < Formula
   bottle do
     sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snowleopard
     sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d' => :lion
+    sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountainlion
   end
 
   def initialize name=nil
@@ -222,5 +223,66 @@ class ExplicitStrategySpecTestBall < Formula
 
   def initialize name=nil
     super "explicitstrategyspectestball"
+  end
+end
+
+class SnowLeopardBottleSpecTestBall < Formula
+  homepage 'http://example.com'
+  url 'file:///foo.com/testball-0.1.tbz'
+  sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
+
+  bottle do
+    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snowleopard
+  end
+
+  def initialize name=nil
+    super "snowleopardbottlespectestball"
+  end
+end
+
+class LionBottleSpecTestBall < Formula
+  homepage 'http://example.com'
+  url 'file:///foo.com/testball-0.1.tbz'
+  sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
+
+  bottle do
+    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :lion
+  end
+
+  def initialize name=nil
+    super "lionbottlespectestball"
+  end
+end
+
+class AllCatsBottleSpecTestBall < Formula
+  homepage 'http://example.com'
+  url 'file:///foo.com/testball-0.1.tbz'
+  sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
+
+  bottle do
+    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snowleopard
+    sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d' => :lion
+    sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountainlion
+  end
+
+  def initialize name=nil
+    super "allcatsbottlespectestball"
+  end
+end
+
+class RevisedBottleSpecTestBall < Formula
+  homepage 'http://example.com'
+  url 'file:///foo.com/testball-0.1.tbz'
+  sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
+
+  bottle do
+    version 1
+    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snowleopard
+    sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d' => :lion
+    sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountainlion
+  end
+
+  def initialize name=nil
+    super "revisedbottlespectestball"
   end
 end
