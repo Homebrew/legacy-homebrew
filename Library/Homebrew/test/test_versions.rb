@@ -1,8 +1,4 @@
 require 'testing_env'
-
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-ARGV.extend(HomebrewArgvExtension)
-
 require 'formula'
 require 'test/testball'
 

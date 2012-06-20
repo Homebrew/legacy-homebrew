@@ -1,6 +1,4 @@
 require 'testing_env'
-require 'utils'
-
 require 'extend/string'
 
 class StringTest <Test::Unit::TestCase

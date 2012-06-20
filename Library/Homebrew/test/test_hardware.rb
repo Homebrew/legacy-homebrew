@@ -1,10 +1,5 @@
 require 'testing_env'
-
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-ARGV.extend(HomebrewArgvExtension)
-
 require 'hardware'
-
 
 class HardwareTests < Test::Unit::TestCase
   # these will raise if we don't recognise your mac, but that prolly 
