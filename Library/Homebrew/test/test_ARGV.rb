@@ -20,9 +20,9 @@ class ARGVTests < Test::Unit::TestCase
 
   def test_ARGV
     assert ARGV.named.empty?
-    
+
     (HOMEBREW_CELLAR+'mxcl/10.0').mkpath
-    
+
     ARGV.reset
     ARGV.unshift 'mxcl'
     assert_equal 1, ARGV.named.length

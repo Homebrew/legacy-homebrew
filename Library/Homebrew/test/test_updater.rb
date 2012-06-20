@@ -82,7 +82,7 @@ class UpdaterTests < Test::Unit::TestCase
       assert report.select_formula(:R).empty?
     end
   end
-  
+
   def test_update_homebrew_with_formulae_changes
     diff_output = fixture('update_git_diff_output_with_formulae_changes')
 
