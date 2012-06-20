@@ -1,10 +1,5 @@
 require 'testing_env'
-
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-ARGV.extend(HomebrewArgvExtension)
-
 require 'test/testball'
-require 'utils'
 
 
 class DefaultPatchBall <TestBall

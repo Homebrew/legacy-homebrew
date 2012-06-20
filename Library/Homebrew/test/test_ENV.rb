@@ -1,10 +1,5 @@
 require 'testing_env'
-require 'utils'
 require 'hardware'
-require 'extend/ENV'
-require 'extend/ARGV'
-ENV.extend(HomebrewEnvExtension)
-ARGV.extend(HomebrewArgvExtension)
   
 class EnvironmentTests < Test::Unit::TestCase
   def test_ENV_options
