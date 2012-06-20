@@ -52,7 +52,7 @@ class Graphicsmagick < Formula
       ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
       ['--without-magick-plus-plus', "Don't build C++ library."],
       ['--use-wmf', 'Compile with libwmf support.'],
-      ['--with-perl', 'Install Graphics::Magick Perl module in standard directory (not in homebrew Cellar).'],
+      ['--with-perl', 'Install Graphics::Magick Perl module in standard directory (not in homebrew Cellar). To avoid permission issues, use perlbrew (http://www.perlbrew.pl/).'],
       ['--with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'],
       ['--with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'],
       ['--with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'],
@@ -78,12 +78,12 @@ class Graphicsmagick < Formula
     
     system "./configure", *args
     system "make install"
-    if make_perl_module? then
-      Dir.chdir("PerlMagick");
-      system "perl Makefile.PL"
-      system "make"
-      system "make install"
-      Dir.chdir ".."
+    if make_perl_module?
+      Dir.chdir("PerlMagick") do
+        system "perl Makefile.PL"
+        system "make"
+        system "make install"
+      end
     end
   end
 end
