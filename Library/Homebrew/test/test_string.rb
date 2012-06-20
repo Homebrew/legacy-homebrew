@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'extend/string'
 
-class StringTest <Test::Unit::TestCase
+class StringTest < Test::Unit::TestCase
   def test_undent
     undented = <<-EOS.undent
     hi

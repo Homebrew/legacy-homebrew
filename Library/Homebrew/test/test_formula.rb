@@ -5,7 +5,7 @@ class AbstractDownloadStrategy
   attr_reader :url
 end
 
-class MostlyAbstractFormula <Formula
+class MostlyAbstractFormula < Formula
   @url=''
   @homepage = 'http://example.com/'
 end
@@ -20,7 +20,7 @@ class FormulaTests < Test::Unit::TestCase
       end
     end
   end
-  
+
   def test_class_naming
     assert_equal 'ShellFm', Formula.class_s('shell.fm')
     assert_equal 'Fooxx', Formula.class_s('foo++')
@@ -32,7 +32,7 @@ class FormulaTests < Test::Unit::TestCase
   def test_cant_override_brew
     assert_raises(RuntimeError) do
       eval <<-EOS
-      class TestBallOverrideBrew <Formula
+      class TestBallOverrideBrew < Formula
         def initialize
           super "foo"
         end
@@ -42,7 +42,7 @@ class FormulaTests < Test::Unit::TestCase
       EOS
     end
   end
-  
+
   def test_abstract_formula
     f=MostlyAbstractFormula.new
     assert_equal '__UNKNOWN__', f.name
