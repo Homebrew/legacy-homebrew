@@ -20,9 +20,6 @@ class OpenMpi < Formula
   end
 
   def install
-    # Compiler complains about link compatibility with FORTRAN otherwise
-    ENV.delete('CFLAGS')
-    ENV.delete('CXXFLAGS')
     args = %W[
       --prefix=#{prefix}
       --disable-dependency-tracking
@@ -33,13 +30,16 @@ class OpenMpi < Formula
     else
       ENV.fortran
     end
+
     system './configure', *args
     system 'make all'
     system 'make check' if ARGV.include? '--test'
     system 'make install'
-    # If Fortran bindings were built, there will be a stra `.mod` file (Fortran
-    # header) in `lib` that needs to be moved to `include`.
+
+    # If Fortran bindings were built, there will be a stray `.mod` file
+    # (Fortran header) in `lib` that needs to be moved to `include`.
     mv "#{lib}/mpi.mod", include if File.exists? "#{lib}/mpi.mod"
+
     mv "#{bin}/vtsetup.jar", libexec
     (bin+'vtsetup.jar').write <<-EOS.undent
       #!/bin/bash
