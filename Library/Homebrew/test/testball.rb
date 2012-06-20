@@ -1,6 +1,6 @@
 require 'formula'
 
-class TestBall <Formula
+class TestBall < Formula
   # name parameter required for some Formula::factory
   def initialize name=nil
     @url="file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
@@ -32,7 +32,7 @@ class TestBallWithMirror < Formula
   end
 end
 
-class ConfigureFails <Formula
+class ConfigureFails < Formula
   # name parameter required for some Formula::factory
   def initialize name=nil
     @url="file:///#{TEST_FOLDER}/tarballs/configure_fails.tar.gz"

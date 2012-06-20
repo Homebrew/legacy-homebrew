@@ -4,10 +4,10 @@ require 'test/testball'
 require 'keg'
 
 
-class TestScriptFileFormula <ScriptFileFormula
+class TestScriptFileFormula < ScriptFileFormula
   url "file:///#{Pathname.new(ABS__FILE__).realpath}"
   version "1"
-  
+
   def initialize
     @name='test-script-formula'
     @homepage = 'http://example.com/'
@@ -37,7 +37,7 @@ class InstallTests < Test::Unit::TestCase
 
     # Allow the test to do some processing
     yield
-    
+
     # Remove the brewed formula and double check
     # that it did get removed. This lets multiple
     # tests use the same formula name without
@@ -51,13 +51,13 @@ class InstallTests < Test::Unit::TestCase
 
   def test_a_basic_install
     f=TestBall.new
-    
+
     assert_equal Formula.path(f.name), f.path
     assert !f.installed?
-    
+
     temporary_install f do
       assert_match Regexp.new("^#{HOMEBREW_CELLAR}/"), f.prefix.to_s
-    
+
       # Test that things made it into the Keg
       assert f.bin.directory?
       assert_equal 3, f.bin.children.length
@@ -66,7 +66,7 @@ class InstallTests < Test::Unit::TestCase
       assert_equal 1, libexec.children.length
       assert !(f.prefix+'main.c').exist?
       assert f.installed?
-    
+
       # Test that things make it into the Cellar
       keg=Keg.new f.prefix
       keg.link
@@ -75,15 +75,15 @@ class InstallTests < Test::Unit::TestCase
       assert_equal 3, (HOMEBREW_PREFIX+'bin').children.length
     end
   end
-  
+
   def test_script_install
     f=TestScriptFileFormula.new
-    
+
     temporary_install f do
       nostdout do
         f.brew { f.install }
       end
-    
+
       assert_equal 1, f.bin.children.length
     end
   end
