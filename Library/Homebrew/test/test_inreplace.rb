@@ -1,5 +1,4 @@
 require 'testing_env'
-require 'utils'
 require 'extend/string'
 
 class InreplaceTest < Test::Unit::TestCase

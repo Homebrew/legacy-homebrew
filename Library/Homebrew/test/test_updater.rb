@@ -1,12 +1,7 @@
 abort if ARGV.include? "--skip-update"
 
 require 'testing_env'
-
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-ARGV.extend(HomebrewArgvExtension)
-
 require 'formula'
-require 'utils'
 require 'cmd/update'
 
 class UpdaterMock < Updater

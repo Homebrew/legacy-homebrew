@@ -1,8 +1,5 @@
 require 'testing_env'
 
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-ARGV.extend(HomebrewArgvExtension)
-
 def file pn
   `/usr/bin/file -h '#{pn}'`.chomp
 end

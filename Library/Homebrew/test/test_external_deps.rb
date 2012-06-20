@@ -1,12 +1,7 @@
 require 'testing_env'
-
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-ARGV.extend(HomebrewArgvExtension)
-
 require 'extend/string'
 require 'test/testball'
 require 'formula_installer'
-require 'utils'
 
 
 class ExternalDepsTests < Test::Unit::TestCase
