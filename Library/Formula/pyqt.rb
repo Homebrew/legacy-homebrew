@@ -33,44 +33,37 @@ class Pyqt < Formula
   end
 
   def test
-    test_program = <<-EOS
-#!/usr/bin/env python
-# Taken from: http://zetcode.com/tutorials/pyqt4/firstprograms/
+    # Reference: http://zetcode.com/tutorials/pyqt4/firstprograms/
+    mktemp do
+      ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages", ':'
 
-import sys
-from PyQt4 import QtGui, QtCore
+      (Pathname.pwd/'test.py').write <<-EOS.undent
+        #!/usr/bin/env python
 
+        import sys
+        from PyQt4 import QtGui, QtCore
 
-class QuitButton(QtGui.QWidget):
-    def __init__(self, parent=None):
-        QtGui.QWidget.__init__(self, parent)
+        class QuitButton(QtGui.QWidget):
+            def __init__(self, parent=None):
+                QtGui.QWidget.__init__(self, parent)
 
-        self.setGeometry(300, 300, 250, 150)
-        self.setWindowTitle('Quit button')
+                self.setGeometry(300, 300, 250, 150)
+                self.setWindowTitle('Quit button')
 
-        quit = QtGui.QPushButton('Close', self)
-        quit.setGeometry(10, 10, 60, 35)
+                quit = QtGui.QPushButton('Close', self)
+                quit.setGeometry(10, 10, 60, 35)
 
-        self.connect(quit, QtCore.SIGNAL('clicked()'),
-            QtGui.qApp, QtCore.SLOT('quit()'))
+                self.connect(quit, QtCore.SIGNAL('clicked()'),
+                    QtGui.qApp, QtCore.SLOT('quit()'))
 
+        app = QtGui.QApplication(sys.argv)
+        qb = QuitButton()
+        qb.show()
+        app.exec_()
+        sys.exit(0)
+        EOS
 
-app = QtGui.QApplication(sys.argv)
-qb = QuitButton()
-qb.show()
-app.exec_()
-sys.exit(0)
-    EOS
-
-    ohai "Writing test script 'test_pyqt.py'."
-    open("test_pyqt.py", "w+") do |file|
-      file.write test_program
+      system "python", "test.py"
     end
-
-    ENV['PYTHONPATH'] = "#{HOMEBREW_PREFIX}/lib/python"
-    system "python test_pyqt.py"
-
-    ohai "Removing test script 'test_pyqt.py'."
-    rm "test_pyqt.py"
   end
 end

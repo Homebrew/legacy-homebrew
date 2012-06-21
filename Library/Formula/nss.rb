@@ -16,11 +16,16 @@ class Nss < Formula
       'NS_USE_GCC=1',
       'NO_MDUPDATE=1',
       'NSS_USE_SYSTEM_SQLITE=1',
-      "NSPR_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/nspr"
+      "NSPR_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/nspr",
+      "NSPR_LIB_DIR=#{HOMEBREW_PREFIX}/lib"
     ]
     args << 'USE_64=1' if MacOS.prefer_64_bit?
 
-    system "make build_coreconf build_dbm all -C mozilla/security/nss #{args.join ' '}"
+    # Remove the broken (for anyone but Firefox) install_name
+    inreplace "mozilla/security/coreconf/Darwin.mk", "-install_name @executable_path", "-install_name #{lib}"
+    inreplace "mozilla/security/nss/lib/freebl/config.mk", "@executable_path", lib
+
+    system "make", "build_coreconf", "build_dbm", "all", "-C", "mozilla/security/nss", *args
 
     # We need to use cp here because all files get cross-linked into the dist
     # hierarchy, and Homebrew's Pathname.install moves the symlink into the keg
@@ -52,8 +57,8 @@ class Nss < Formula
     # See: http://www.mozilla.org/projects/security/pki/nss/tools/certutil.html
     mktemp do
       File.open('passwd', 'w') {|f| f.write("It's a secret to everyone.") }
-      system "certutil -N -d #{Dir.getwd} -f passwd"
-      system "certutil -L -d #{Dir.getwd}"
+      system "#{bin}/certutil", "-N", "-d", pwd, "-f", "passwd"
+      system "#{bin}/certutil", "-L", "-d", pwd
     end
   end
 

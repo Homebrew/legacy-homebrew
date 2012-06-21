@@ -11,7 +11,7 @@ end
 class GitFlow < Formula
   homepage 'https://github.com/nvie/gitflow'
 
-  # Use the tag instead of the tarball to get the submodule
+  # Use the tag instead of the tarball to get submodules
   url 'https://github.com/nvie/gitflow.git', :tag => '0.4.1'
   version '0.4.1'
 
@@ -22,7 +22,16 @@ class GitFlow < Formula
 
     GitFlowCompletion.new.brew do
       (prefix+'etc/bash_completion.d').install "git-flow-completion.bash"
-      (share+'zsh/functions').install "git-flow-completion.zsh"
+      (share+'zsh/site-functions').install "git-flow-completion.zsh"
     end
+  end
+
+  def caveats; <<-EOS.undent
+    Bash completion has been installed to:
+      #{etc}/bash_completion.d
+
+    zsh completion has been installed to:
+      #{HOMEBREW_PREFIX}/share/zsh/site-functions
+    EOS
   end
 end

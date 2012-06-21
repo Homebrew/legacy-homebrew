@@ -2,24 +2,38 @@ require 'formula'
 
 class Dart < Formula
   homepage 'http://www.dartlang.org/'
-  url 'http://commondatastorage.googleapis.com/dart-dump-render-tree/sdk/dart-macos-2559.zip'
-  md5 '0569646b92aa059f1ca024f9504b32eb'
+  url 'https://gsdview.appspot.com/dart-editor-archive-integration/8370/dart-macos.zip'
+  version '8370'
+  sha1 '3012ee60ef3ecc082a9ce2cb780feffb488540f5'
 
   def shim_script target
     <<-EOS.undent
       #!/bin/bash
-      exec "#{target}" "$@"
+      exec dart "#{target}" "$@"
     EOS
   end
 
   def install
     libexec.install Dir['*']
 
-    (bin+'dart').write shim_script("#{libexec}/bin/dart")
-    (bin+'frogc').write shim_script("#{libexec}/bin/frogc")
+    bin.install_symlink libexec+'bin/dart'
+    (bin+'dart2js').write shim_script(libexec+'lib/compiler/implementation/dart2js.dart')
+    (bin+'dartdoc').write shim_script(libexec+'lib/dartdoc/dartdoc.dart')
+    (bin+'pub').write shim_script(libexec+'util/pub/pub.dart')
   end
 
   def test
-    system "#{bin}/dart"
+    mktemp do
+      (Pathname.pwd+'sample.dart').write <<-EOS.undent
+      void main() {
+        Options opts = new Options();
+        for (String arg in opts.arguments) {
+          print(arg);
+        }
+      }
+      EOS
+
+      `#{bin}/dart sample.dart test message` == "test\nmessage\n"
+    end
   end
 end

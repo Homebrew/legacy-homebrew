@@ -1,32 +1,45 @@
 require 'formula'
 
+class NoExpatFramework < Requirement
+  def message; <<-EOS.undent
+    Detected /Library/Frameworks/expat.framework
+
+    This will be picked up by CMake's build system and likely cause the
+    build to fail, trying to link to a 32-bit version of expat.
+
+    You may need to move this file out of the way to compile CMake.
+    EOS
+  end
+  def satisfied?
+    not File.exist? "/Library/Frameworks/expat.framework"
+  end
+end
+
+
 class Cmake < Formula
-  url 'http://www.cmake.org/files/v2.8/cmake-2.8.7.tar.gz'
-  md5 'e1b237aeaed880f65dec9c20602452f6'
+  url 'http://www.cmake.org/files/v2.8/cmake-2.8.8.tar.gz'
+  md5 'ba74b22c788a0c8547976b880cd02b17'
   homepage 'http://www.cmake.org/'
 
-  # Fix issues with Xcode 4.3. Remove for 2.8.8.
-  def patches
-    [ 'https://github.com/Kitware/CMake/commit/5663e.patch',
-      'https://github.com/Kitware/CMake/commit/4693c.patch' ]
+  bottle do
+    version 2
+    sha1 '64de3916cea46cf98ff0853db401109394cfbd5d' => :lion
+    sha1 'da25300b55944c84e6a0c2e4efc57bb160a02806' => :snowleopard
   end
 
-  bottle do
-    sha1 '53988412bf3ebdf85dc44e8f7656f58b927b644f' => :snowleopard
-    sha1 '3a57f6f44186e0dba34ef8b8fb4a9047e9e5d8a3' => :lion
+  depends_on NoExpatFramework.new
+
+  def patches
+    [
+      # Correct FindPkgConfig found variable. Remove for CMake 2.8.9.
+      "https://github.com/Kitware/CMake/commit/3ea850.patch",
+      # Protect the default value of CMAKE_FIND_FRAMEWORK so that it can be
+      # overridden from the command line. Remove for CMake 2.8.9.
+      "https://github.com/Kitware/CMake/commit/8b2fb3.patch"
+    ]
   end
 
   def install
-    # A framework-installed expat will be detected and mess things up.
-    if File.exist? "/Library/Frameworks/expat.framework"
-      opoo "/Library/Frameworks/expat.framework detected"
-      puts <<-EOS.undent
-        This will be picked up by CMake's build system and likey cause the
-        build to fail, trying to link to a 32-bit version of expat.
-        You may need to move this file out of the way for this brew to work.
-      EOS
-    end
-
     system "./bootstrap", "--prefix=#{prefix}",
                           "--system-libs",
                           "--no-system-libarchive",
@@ -35,5 +48,9 @@ class Cmake < Formula
                           "--mandir=/share/man"
     system "make"
     system "make install"
+  end
+
+  def test
+    system "#{bin}/cmake", "-E", "echo", "testing"
   end
 end

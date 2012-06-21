@@ -1,0 +1,23 @@
+require 'rake'
+require 'rake/testtask'
+
+Dir.chdir File.expand_path(File.dirname(__FILE__))
+
+TEST_FILES = FileList['test_*.rb']
+
+task :default => :test
+
+Rake::TestTask.new :test do |t|
+  t.libs << Dir.pwd
+  t.test_files = TEST_FILES
+end
+
+namespace :test do
+  TEST_FILES.each do |file|
+    task = /test_(.+)\.rb/.match(file)
+    Rake::TestTask.new(task[1]) do |t|
+      t.libs << Dir.pwd
+      t.pattern = task[0]
+    end
+  end
+end

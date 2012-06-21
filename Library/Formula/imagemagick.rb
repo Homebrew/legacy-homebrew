@@ -54,16 +54,11 @@ class Imagemagick < Formula
   homepage 'http://www.imagemagick.org'
 
   # upstream's stable tarballs tend to disappear, so we provide our own mirror
-  url 'http://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.7.5-7.tar.bz2'
-  sha256 'fe88eb9f3ce832b0027b58a04c26871886a0721779b5c0044213018c6a6ba49f'
+  url 'http://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.7.7-6.tar.bz2'
+  sha256 'fb32cdeef812bc2c3bb9e9f48f3cfc75c1e2640f784ef2670a0dbf948e538677'
 
   head 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
     :using => UnsafeSubversionDownloadStrategy
-
-  bottle do
-    sha1 '6f66457ee040b67921d30a16a2fbdbce4311b5f1' => :snowleopard
-    sha1 'ad1647061a1d7bc4a0fee0d90c16005f40d97683' => :lion
-  end
 
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
@@ -82,6 +77,13 @@ class Imagemagick < Formula
 
   def skip_clean? path
     path.extname == '.la'
+  end
+
+  def patches
+    # Fixes xml2-config that can be missing --prefix.  See issue #11789
+    # Remove if the final Mt. Lion xml2-config supports --prefix.
+    # Not reporting this upstream until the final Mt. Lion is released.
+    DATA
   end
 
   def options
@@ -148,3 +150,16 @@ class Imagemagick < Formula
     system "#{bin}/identify", "/Library/Application Support/Apple/iChat Icons/Flags/Argentina.gif"
   end
 end
+
+__END__
+--- a/configure	2012-02-25 09:03:23.000000000 -0800
++++ b/configure	2012-04-26 03:32:15.000000000 -0700
+@@ -31924,7 +31924,7 @@
+         # Debian installs libxml headers under /usr/include/libxml2/libxml with
+         # the shared library installed under /usr/lib, whereas the package
+         # installs itself under $prefix/libxml and $prefix/lib.
+-        xml2_prefix=`xml2-config --prefix`
++        xml2_prefix=/usr
+         if test -d "${xml2_prefix}/include/libxml2"; then
+             CPPFLAGS="$CPPFLAGS -I${xml2_prefix}/include/libxml2"
+         fi

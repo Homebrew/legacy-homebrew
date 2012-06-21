@@ -1,9 +1,15 @@
 require 'formula'
 
 class Html2text < Formula
-  url 'http://www.mbayer.de/html2text/downloads/html2text-1.3.2a.tar.gz'
   homepage 'http://www.mbayer.de/html2text/'
-  md5 '6097fe07b948e142315749e6620c9cfc'
+  url 'http://www.mbayer.de/html2text/downloads/html2text-1.3.2a.tar.gz'
+  sha1 '91d46e3218d05b0783bebee96a14f0df0eb9773e'
+
+  # Patch provided by author. See:
+  # http://www.mbayer.de/html2text/faq.shtml#sect6
+  def patches
+    "http://www.mbayer.de/html2text/downloads/patch-utf8-html2text-1.3.2a.diff"
+  end
 
   def install
     inreplace 'configure',

@@ -9,6 +9,10 @@ class Ncmpcpp < Formula
   depends_on 'libmpdclient'
   depends_on 'fftw' if ARGV.include? "--visualizer"
 
+  fails_with :clang do
+    build 318
+  end
+
   def options
     [
       ["--outputs", "Compile with mpd outputs control"],

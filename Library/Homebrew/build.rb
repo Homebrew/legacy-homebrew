@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
 
 # This script is called by formula_installer as a separate instance.
 # Rationale: Formula can use __END__, Formula can change ENV
@@ -26,6 +26,22 @@ at_exit do
     # this is a safety measure for Xcode 4.3 which started not installing
     # dev tools into /usr/bin as a default
     ENV.prepend 'PATH', MacOS.dev_tools_path, ':' unless ORIGINAL_PATHS.include? MacOS.dev_tools_path
+
+    # Force any future invocations of sudo to require the user's password to be
+    # re-entered. This is in-case any build script call sudo. Certainly this is
+    # can be inconvenient for the user. But we need to be safe.
+    system "/usr/bin/sudo -k"
+
+    # The main Homebrew process expects to eventually see EOF on the error
+    # pipe in FormulaInstaller#build. However, if any child process fails to
+    # terminate (i.e, fails to close the descriptor), this won't happen, and
+    # the installer will hang. Set close-on-exec to prevent this.
+    # Whether it is *wise* to launch daemons from formulae is a separate
+    # question altogether.
+    if ENV['HOMEBREW_ERROR_PIPE']
+      require 'fcntl'
+      IO.new(ENV['HOMEBREW_ERROR_PIPE'].to_i, 'w').fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
+    end
 
     install(Formula.factory($0))
   rescue Exception => e
@@ -65,14 +81,16 @@ def install f
   end
 
   f.brew do
+    if ARGV.flag? '--git'
+      system "git init"
+      system "git add -A"
+    end
     if ARGV.flag? '--interactive'
       ohai "Entering interactive mode"
       puts "Type `exit' to return and finalize the installation"
       puts "Install to this prefix: #{f.prefix}"
 
       if ARGV.flag? '--git'
-        system "git init"
-        system "git add -A"
         puts "This directory is now a git repo. Make your changes and then use:"
         puts "  git diff | pbcopy"
         puts "to copy the diff to the clipboard."

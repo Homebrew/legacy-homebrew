@@ -2,21 +2,13 @@ require 'formula'
 
 class Go < Formula
   homepage 'http://golang.org'
-  url 'http://go.googlecode.com/files/go.go1.src.tar.gz'
-  version '1'
-  sha1 '6023623d083db1980965335b8ac4fa8b428fa484'
+  url 'http://go.googlecode.com/files/go1.0.2.src.tar.gz'
+  version '1.0.2'
+  sha1 '408bb361df8c34b1bba41383812154e932907526'
 
-  if ARGV.include? "--use-git"
-    head 'https://github.com/tav/go.git'
-  else
-    head 'http://go.googlecode.com/hg/'
-  end
+  head 'http://go.googlecode.com/hg/'
 
   skip_clean 'bin'
-
-  def options
-    [["--use-git", "Use git mirror instead of official hg repository"]]
-  end
 
   def install
     prefix.install Dir['*']
@@ -24,13 +16,19 @@ class Go < Formula
     cd prefix do
       # The version check is due to:
       # http://codereview.appspot.com/5654068
-      (Pathname.pwd+'VERSION').write 'default' if ARGV.build_head?
+      (prefix/'VERSION').write 'default' if ARGV.build_head?
 
       # Build only. Run `brew test go` to run distrib's tests.
       cd 'src' do
         system './make.bash'
       end
     end
+
+    # Don't install header files; they aren't necessary and can
+    # cause problems with other builds. See:
+    # http://trac.macports.org/ticket/30203
+    # http://code.google.com/p/go/issues/detail?id=2407
+    include.rmtree
   end
 
   def test

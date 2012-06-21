@@ -1,9 +1,9 @@
 require 'formula'
 
 class Reposurgeon < Formula
-  url 'http://www.catb.org/esr/reposurgeon/reposurgeon-0.7.tar.gz'
+  url 'http://www.catb.org/esr/reposurgeon/reposurgeon-1.9.tar.gz'
   homepage 'http://www.catb.org/esr/reposurgeon/'
-  md5 'cede4de54cc56b259c14969afaeeeb7f'
+  md5 '5ebedd5f69e3e5b42aada02b237e724c'
 
   def install
     bin.install "reposurgeon"

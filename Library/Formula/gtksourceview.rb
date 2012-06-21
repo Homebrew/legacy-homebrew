@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gtksourceview < Formula
-  url 'http://ftp.gnome.org/pub/GNOME/sources/gtksourceview/2.11/gtksourceview-2.11.2.tar.gz'
   homepage 'http://projects.gnome.org/gtksourceview/'
-  md5 '7c4bbdc1d1628932362b4f222e80afd4'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/gtksourceview/2.10/gtksourceview-2.10.5.tar.gz'
+  md5 '220db5518e3f7fa06c980f057b22ba62'
 
   depends_on 'pkg-config' => :build
   depends_on 'intltool'
@@ -11,7 +11,7 @@ class Gtksourceview < Formula
   depends_on 'gtk+'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end

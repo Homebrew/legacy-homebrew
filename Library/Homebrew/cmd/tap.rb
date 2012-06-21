@@ -12,7 +12,7 @@ module Homebrew extend self
   end
 
   def install_tap user, repo
-    raise "brew install git" unless system "/usr/bin/which -s git"
+    raise "brew install git" unless which 'git'
 
     # we special case homebrew so users don't have to shift in a terminal
     repouser = if user == "homebrew" then "Homebrew" else user end
@@ -61,7 +61,7 @@ module Homebrew extend self
   private
 
   def tap_args
-    ARGV.first =~ %r{^(\w+)/(homebrew-)?(\w+)$}
+    ARGV.first =~ %r{^(\S+)/(homebrew-)?(\w+)$}
     raise "Invalid usage" unless $1 and $3
     [$1, $3]
   end

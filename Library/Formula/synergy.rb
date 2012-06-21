@@ -1,16 +1,15 @@
 require 'formula'
 
 class Synergy < Formula
-  # Newer 1.3.x versions have a critical bug on OS X:
-  # http://code.google.com/p/synergy-plus/issues/detail?id=47
-  # Do not bump this to 1.3.7 or newer until that issue is resolved.
-  url 'http://synergy.googlecode.com/files/synergy-1.3.6p2-MacOSX-Universal.zip'
-  sha1 '5b9336fb553db17bd109e3f2bca517af18ed3863'
   homepage 'http://synergy-foss.org'
+  version '1.3.8'
 
-  devel do
-    url 'http://synergy.googlecode.com/files/synergy-1.4.3-MacOSX106-Universal.zip'
-    sha1 'aa60fa6ac975dd22dc095d6cd9f3dc755b91bb64'
+  if MacOS.lion?
+    url 'http://synergy.googlecode.com/files/synergy-1.3.8-MacOSX107-Universal.zip'
+    sha1 '6b9b0e75a468b9f9c80519894e4d2d589aca2d31'
+  else
+    url 'http://synergy.googlecode.com/files/synergy-1.3.8-MacOSX106-Universal.zip'
+    sha1 'cedf8dc0f5f1d95b967fabcd4ed9bfc0f72840e6'
   end
 
   def install
