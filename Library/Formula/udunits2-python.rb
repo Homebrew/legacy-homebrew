@@ -25,7 +25,7 @@ class Udunits2Python < Formula
 
   def caveats
     <<-EOS
-netCDF4 Python modules have been linked to:
+udunits2 Python modules have been linked to:
     #{HOMEBREW_PREFIX}/#{site_package_dir}
 
 Make sure this folder is on your PYTHONPATH.
