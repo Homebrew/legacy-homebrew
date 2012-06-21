@@ -2,8 +2,8 @@ require 'formula'
 
 class Libqglviewer < Formula
   homepage 'http://www.libqglviewer.com/'
-  url 'http://www.libqglviewer.com/src/libQGLViewer-2.3.16.tar.gz'
-  md5 'e5b358a5af2e8aeeab91021770b10211'
+  url 'http://www.libqglviewer.com/src/libQGLViewer-2.3.17.tar.gz'
+  md5 'f565ce9fa424c5f51e222dc2712ca42e'
 
   depends_on 'qt'
 
@@ -16,7 +16,7 @@ class Libqglviewer < Formula
   def patches
     DATA
   end
-
+ 
   def install
     args = ["PREFIX=#{prefix}"]
 
