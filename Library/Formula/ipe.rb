@@ -15,6 +15,13 @@ class Ipe < Formula
   # some fixed default paths (and homebrew does not agree)
   # reported upstream:
   # https://sourceforge.net/apps/mantisbt/ipe7/view.php?id=105
+
+  # TODO: clean up this patch; upstream doesn't want to carry it.
+  # Also, we will always have pkg-config installed, so we don't need
+  # the patch to handle the case where it isn't.
+  # Recommend we take upstream's recommendation and set ENV vars for
+  # the paths to override those in configure.
+  # @adamv
   def patches; DATA; end
 
   fails_with :clang do
