@@ -3,25 +3,37 @@ require 'cmd/missing'
 
 class Volumes
   def initialize
-    @volumes = []
-    raw_mounts=`/sbin/mount`
-    raw_mounts.split("\n").each do |line|
-      case line
-      when /^(.+) on (\S+) \(/
-        @volumes << [$1, $2]
-      end
-    end
-    # Sort volumes by longest path prefix first
-    @volumes.sort! {|a,b| b[1].length <=> a[1].length}
+    @volumes = get_mounts
   end
 
   def which path
-    @volumes.each_index do |i|
-      vol = @volumes[i]
-      return i if vol[1].start_with? path.to_s
+    vols = get_mounts path
+
+    # no volume found
+    if vols.empty?
+      return -1
     end
 
-    return -1
+    vol_index = @volumes.index(vols[0])
+    # volume not found in volume list
+    if vol_index.nil?
+      return -1
+    end
+    return vol_index
+  end
+
+  def get_mounts path=nil
+    vols = []
+    # get the volume of path, if path is nil returns all volumes
+    raw_df = `/bin/df -P #{path}`
+    raw_df.split("\n").each do |line|
+      case line
+      # regex matches: /dev/disk0s2   489562928 440803616  48247312    91%    /
+      when /^(.*)\s+([0-9]+)\s+([0-9]+)\s+([0-9]+)\s+([0-9]{1,3}\%)\s+(.*)/
+        vols << $6
+      end
+    end
+    return vols
   end
 end
 
