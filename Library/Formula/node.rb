@@ -9,7 +9,7 @@ class Node < Formula
 
   devel do
     url 'http://nodejs.org/dist/v0.7.12/node-v0.7.12.tar.gz'
-    sha1 'cb570abacbf4eb7e23c3d2620d00dd3080d9c19d'
+    sha1 '036ab6662287901db9d85df93a5d2a25'
   end
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
