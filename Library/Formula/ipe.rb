@@ -3,7 +3,7 @@ require 'formula'
 class Ipe < Formula
   homepage 'http://ipe7.sourceforge.net'
   url 'http://sourceforge.net/projects/ipe7/files/ipe/7.1.0/ipe-7.1.2-src.tar.gz'
-  md5 '887f65359d60e184a446cbe77def5176'
+  sha1 '7c55d2b72bb256dc99b18145644ae27edc9a056c'
 
   depends_on 'pkg-config' => :build
   depends_on 'makeicns' => :build
@@ -17,8 +17,18 @@ class Ipe < Formula
   # https://sourceforge.net/apps/mantisbt/ipe7/view.php?id=105
   def patches; DATA; end
 
+  fails_with :clang do
+    build 318
+    cause <<-EOS.undent
+      IPE should be compiled with the same flags as Qt, which uses LLVM.
+      ipeui_common.cpp:1: error: bad value (native) for -march= switch
+    EOS
+  end
+
   def install
     cd 'src' do
+      system "make", "IPEPREFIX=#{prefix}"
+      ENV.j1 # Parallel install fails
       system "make", "IPEPREFIX=#{prefix}", "install"
     end
   end
