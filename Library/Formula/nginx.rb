@@ -43,6 +43,7 @@ class Nginx < Formula
     args = ["--prefix=#{prefix}",
             "--with-http_ssl_module",
             "--with-pcre",
+            "--with-ipv6",
             "--with-cc-opt='-I#{HOMEBREW_PREFIX}/include'",
             "--with-ld-opt='-L#{HOMEBREW_PREFIX}/lib'",
             "--conf-path=#{etc}/nginx/nginx.conf",
