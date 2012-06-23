@@ -17,16 +17,7 @@ class Phantomjs < Formula
 
   depends_on SnowLeopardOrNewer.new
 
-  # phantomjs wrapper script to hide dock icon
-  # See http://code.google.com/p/phantomjs/issues/detail?id=281
-  def script; <<-EOS.undent
-    #!/bin/sh
-    exec "#{libexec}/phantomjs" "$@"
-    EOS
-  end
-
   def install
-    libexec.install 'bin/phantomjs', 'bin/Info.plist'
-    (bin+'phantomjs').write script
+    (prefix+'bin').install 'bin/phantomjs'
   end
 end
