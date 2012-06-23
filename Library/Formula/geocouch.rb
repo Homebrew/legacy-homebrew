@@ -123,7 +123,7 @@ class Geocouch < Formula
 
     Alternately, prepare launchctl to start/stop geocouch as follows:
 
-      /bin/cp #{geocouch_share}/geocouch.plist ~/Library/LaunchAgents
+      cp #{geocouch_share}/geocouch.plist ~/Library/LaunchAgents
       chmod 0644 ~/Library/LaunchAgents/geocouch.plist
 
       launchctl load ~/Library/LaunchAgents/geocouch.plist
@@ -147,7 +147,7 @@ class Geocouch < Formula
 
     One last thing: to uninstall geocouch from your couchdb installation:
 
-      /bin/rm /usr/local/etc/couchdb/default.d/geocouch.ini
+      rm #{HOMEBREW_PREFIX}/etc/couchdb/default.d/geocouch.ini
       unset ERL_FLAGS
       brew uninstall geocouch couchdb;  brew install couchdb
 
