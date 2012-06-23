@@ -2,8 +2,8 @@ require 'formula'
 
 class GitFtp < Formula
   homepage 'https://github.com/resmo/git-ftp'
-  url 'https://github.com/resmo/git-ftp/tarball/0.7.5'
-  md5 '59cafe4c6d8dc8a1b2250d696936ec52'
+  url 'https://github.com/resmo/git-ftp/tarball/0.8.0'
+  md5 'd20043261ab5ca28804891b531e63c13'
 
   head 'https://github.com/resmo/git-ftp.git'
 
