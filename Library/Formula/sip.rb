@@ -8,10 +8,11 @@ require 'formula'
 # which causes panic and terror to flood the Homebrew issue tracker.
 
 class Sip < Formula
-  url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.13.2.tar.gz'
-  sha1 'd6c0835738438f8ccff012164a6c6192abc52792'
-  head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
+  url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.13.3.tar.gz'
+  sha1 '672f0bd9c13860979ab2a7753b2bf91475a4deeb'
+
+  head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
 
   def patches
     DATA

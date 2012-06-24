@@ -15,11 +15,16 @@ class Libvpx < Formula
     ]
   end
 
+  # Fixes build error on ML, discussed in:
+  # https://github.com/mxcl/homebrew/issues/12567
+  # yasm: FATAL: unable to open include file `asm_enc_offsets.asm'.  Reported to:
+  # https://groups.google.com/a/webmproject.org/group/webm-discuss/browse_thread/thread/39d1166feac1061c
+  # Not yet in HEAD as of 20 JUN 2012.
+  def patches; DATA; end
+
   def install
     args = ["--prefix=#{prefix}",
             "--enable-pic",
-            "--enable-vp8",
-            "--disable-debug",
             "--disable-examples",
             "--disable-runtime-cpu-detect"]
     args << "--enable-gcov" if ARGV.include? "--gcov" and not ENV.compiler == :clang
@@ -42,3 +47,16 @@ class Libvpx < Formula
     end
   end
 end
+
+__END__
+--- a/build/make/gen_asm_deps.sh	2012-05-08 16:14:00.000000000 -0700
++++ b/build/make/gen_asm_deps.sh	2012-06-19 20:26:54.000000000 -0700
+@@ -42,7 +42,7 @@
+ 
+ [ -n "$srcfile" ] || show_help
+ sfx=${sfx:-asm}
+-includes=$(LC_ALL=C egrep -i "include +\"?+[a-z0-9_/]+\.${sfx}" $srcfile |
++includes=$(LC_ALL=C egrep -i "include +\"+[a-z0-9_/]+\.${sfx}" $srcfile |
+            perl -p -e "s;.*?([a-z0-9_/]+.${sfx}).*;\1;")
+ #" restore editor state
+ for inc in ${includes}; do
