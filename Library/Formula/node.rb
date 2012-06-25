@@ -2,8 +2,8 @@ require 'formula'
 
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.6.19/node-v0.6.19.tar.gz'
-  sha1 'f6c5cfbadff4788ac3a95f8263a0c2f4e07444b6'
+  url 'http://nodejs.org/dist/v0.8.0/node-v0.8.0.tar.gz'
+  sha1 '5171fb46fbfee5ac7129c4b17207a3f35a1f57e8'
 
   head 'https://github.com/joyent/node.git'
 
@@ -27,11 +27,9 @@ class Node < Formula
   end
 
   def install
-    unless ARGV.build_devel?
-      inreplace 'wscript' do |s|
-        s.gsub! '/usr/local', HOMEBREW_PREFIX
-        s.gsub! '/opt/local/lib', '/usr/lib'
-      end
+    inreplace 'wscript' do |s|
+      s.gsub! '/usr/local', HOMEBREW_PREFIX
+      s.gsub! '/opt/local/lib', '/usr/lib'
     end
 
     # Why skip npm install? Read https://github.com/mxcl/homebrew/pull/8784.
