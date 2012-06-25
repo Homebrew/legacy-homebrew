@@ -361,7 +361,7 @@ module MacOS extend self
 
   def sdk_path(v=MacOS.version)
     # The path of the MacOSX SDK.
-    if not MacOS.xctools_fucked?
+    if !MacOS.xctools_fucked? and File.directory? `xcode-select -print-path`.chomp
       path = `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.chomp.chomp
     elsif File.directory? '/Developer/SDKs/MacOS#{v}.sdk'
       # the old default (or wild wild west style)
