@@ -6,8 +6,6 @@ class Eg < Formula
   sha1 'd17165c20ea1b3887f1f81ec6d1217727b817409'
   version "1.7.3"
 
-  depends_on "git"
-
   def install
     bin.install "eg"
   end
