@@ -17,6 +17,7 @@ class Cairo < Formula
   end
 
   def install
+    ENV.x11
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
