@@ -5,8 +5,8 @@ require 'formula'
 
 class Pyqt < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/pyqt'
-  url 'http://www.riverbankcomputing.co.uk/static/Downloads/PyQt4/PyQt-mac-gpl-4.9.2.tar.gz'
-  sha1 '92d55cb6f57fdb9d61497c21770bb2458b102e8d'
+  url 'http://www.riverbankcomputing.co.uk/static/Downloads/PyQt4/PyQt-mac-gpl-4.9.3.tar.gz'
+  sha1 '6b315c4fdeecb6695a364ab0359a8090cff01661'
 
   depends_on 'sip'
   depends_on 'qt'
