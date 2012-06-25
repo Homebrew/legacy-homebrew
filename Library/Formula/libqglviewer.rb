@@ -3,7 +3,7 @@ require 'formula'
 class Libqglviewer < Formula
   homepage 'http://www.libqglviewer.com/'
   url 'http://www.libqglviewer.com/src/libQGLViewer-2.3.17.tar.gz'
-  md5 'f565ce9fa424c5f51e222dc2712ca42e'
+  sha1 '03b1da73bdb07988184c1f5d7c1c360be27b2a0e'
 
   depends_on 'qt'
 
