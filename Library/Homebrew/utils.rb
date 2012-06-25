@@ -320,7 +320,7 @@ module MacOS extend self
         # xcode-select is not configured properly (i.e. xctools_fucked?).
         p = "#{MacOS.xcode_prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin/#{tool}"
         if File.executable?  p
-          path Pathname.new  p
+          path = Pathname.new  p
         else
           path = nil
         end
@@ -334,9 +334,6 @@ module MacOS extend self
     @dev_tools_path ||= if File.exist? "/usr/bin/cc" and File.exist? "/usr/bin/make"
       # probably a safe enough assumption (the unix way)
       Pathname.new "/usr/bin"
-    elsif not xctools_fucked?
-      # The new way of finding stuff via locate:
-      Pathname.new(locate 'make').dirname
     elsif File.exist? "#{xcode_prefix}/usr/bin/make"
       # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
       Pathname.new "#{xcode_prefix}/usr/bin"
