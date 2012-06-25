@@ -49,7 +49,10 @@ class Ffmpeg < Formula
             "--enable-nonfree",
             "--enable-hardcoded-tables",
             "--enable-libfreetype",
-            "--cc=#{ENV.cc}"]
+            "--cc=#{ENV.cc}",
+            "--host-cflags=#{ENV.cflags}",
+            "--host-ldflags=#{ENV.ldflags}"
+           ]
 
     args << "--enable-libx264" if Formula.factory('x264').linked_keg.exist?
     args << "--enable-libfaac" if Formula.factory('faac').linked_keg.exist?
