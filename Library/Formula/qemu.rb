@@ -25,11 +25,6 @@ class Qemu < Formula
       --disable-guest-agent
       --disable-sdl
     ]
-    if MacOS.prefer_64_bit?
-      args << '--target-list=x86_64-softmmu'
-    else
-      args << '--target-list=i386-softemu'
-    end
     system "./configure", *args
     system "make install"
   end
