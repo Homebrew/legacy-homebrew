@@ -7,11 +7,6 @@ class Node < Formula
 
   head 'https://github.com/joyent/node.git'
 
-  devel do
-    url 'http://nodejs.org/dist/v0.7.12/node-v0.7.12.tar.gz'
-    sha1 'cb570abacbf4eb7e23c3d2620d00dd3080d9c19d'
-  end
-
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.leopard?
 
@@ -27,11 +22,6 @@ class Node < Formula
   end
 
   def install
-    inreplace 'wscript' do |s|
-      s.gsub! '/usr/local', HOMEBREW_PREFIX
-      s.gsub! '/opt/local/lib', '/usr/lib'
-    end
-
     # Why skip npm install? Read https://github.com/mxcl/homebrew/pull/8784.
     args = ["--prefix=#{prefix}", "--without-npm"]
     args << "--debug" if ARGV.include? '--enable-debug'
