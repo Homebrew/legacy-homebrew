@@ -8,6 +8,7 @@ class Rlwrap < Formula
   depends_on 'readline'
 
   def install
+    ENV.append 'LDFLAGS', '-lreadline.6.2'
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end
