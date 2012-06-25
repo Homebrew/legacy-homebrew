@@ -310,8 +310,8 @@ module MacOS extend self
       end
     else
       # otherwise lets try and figure it out ourselves
-      p = "#{MacOS.dev_tools_path}/#{tool}"
-      if File.executable?  p
+      p = "#{MacOS.dev_tools_path}/#{tool}" if xctools_fucked?
+      if p and File.executable?  p
         path = Pathname.new  p
       else
         # This is for the use-case where xcode-select is not set up with
