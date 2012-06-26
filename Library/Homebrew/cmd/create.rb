@@ -89,7 +89,10 @@ class FormulaCreator
 
     unless ARGV.include? "--no-fetch" and version
       strategy = DownloadStrategyDetector.new(url).detect
-      @sha1 = strategy.new(url, name, version, nil).fetch.sha1 if strategy == CurlDownloadStrategy
+      spec = SoftwareSpec.new
+      spec.url(url)
+      spec.version(version)
+      @sha1 = strategy.new(name, spec).fetch.sha1 if strategy == CurlDownloadStrategy
     end
 
     path.write ERB.new(template, nil, '>').result(binding)

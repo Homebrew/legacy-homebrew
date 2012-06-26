@@ -58,7 +58,7 @@ class Formula
 
     # If we got an explicit path, use that, else determine from the name
     @path = path.nil? ? self.class.path(name) : Pathname.new(path)
-    @downloader = download_strategy.new(@active_spec.url, name, @active_spec.version, @active_spec.specs)
+    @downloader = download_strategy.new(name, @active_spec)
   end
 
   # Derive specs from class ivars
@@ -488,28 +488,10 @@ public
 
   # For brew-fetch and others.
   def fetch
-    downloader = @downloader
-    mirror_list = case @active_spec
-    when @stable, @devel then @active_spec.mirrors
-    else []
-    end
-
     # Ensure the cache exists
     HOMEBREW_CACHE.mkpath
 
-    # TODO teach download strategies to take a SoftwareSpec
-    # object, and move mirror handling into CurlDownloadStrategy
-    begin
-      fetched = downloader.fetch
-    rescue CurlDownloadStrategyError => e
-      raise e if mirror_list.empty?
-      puts "Trying a mirror..."
-      url, specs = mirror_list.shift.values_at :url, :specs
-      downloader = download_strategy.new url, name, version, specs
-      retry
-    end
-
-    return fetched, downloader
+    return @downloader.fetch, @downloader
   end
 
   # For FormulaInstaller.
@@ -631,9 +613,9 @@ private
       @stable.version(val)
     end
 
-    def mirror val, specs=nil
+    def mirror val
       @stable ||= SoftwareSpec.new
-      @stable.mirror(val, specs)
+      @stable.mirror(val)
     end
 
     def dependencies

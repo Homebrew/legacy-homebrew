@@ -60,9 +60,9 @@ class SoftwareSpec
     return @version
   end
 
-  def mirror val, specs=nil
+  def mirror val
     @mirrors ||= []
-    @mirrors << { :url => val, :specs => specs }
+    @mirrors << val
   end
 end
 

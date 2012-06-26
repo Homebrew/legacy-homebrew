@@ -1,9 +1,12 @@
 class AbstractDownloadStrategy
-  def initialize url, name, version, specs
-    @url=url
-    case specs when Hash
-      @spec = specs.keys.first # only use first spec
-      @ref = specs.values.first
+  def initialize name, package
+    @url = package.url
+    @specs = package.specs
+
+    case @specs
+    when Hash
+      @spec = @specs.keys.first # only use first spec
+      @ref = @specs.values.first
     end
   end
 
@@ -31,9 +34,10 @@ end
 class CurlDownloadStrategy < AbstractDownloadStrategy
   attr_reader :tarball_path
 
-  def initialize url, name, version, specs
+  def initialize name, package
     super
-    @unique_token="#{name}-#{version}" unless name.to_s.empty? or name == '__UNKNOWN__'
+    @mirrors = package.mirrors
+    @unique_token = "#{name}-#{package.version}" unless name.to_s.empty? or name == '__UNKNOWN__'
     if @unique_token
       @tarball_path=HOMEBREW_CACHE+(@unique_token+ext)
     else
@@ -67,6 +71,11 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       puts "Already downloaded: #{@tarball_path}"
     end
     return @tarball_path # thus performs checksum verification
+  rescue CurlDownloadStrategyError
+    raise if @mirrors.empty?
+    puts "Trying a mirror..."
+    @url = @mirrors.shift
+    retry
   end
 
   def stage
@@ -180,15 +189,15 @@ end
 
 # This strategy extracts our binary packages.
 class CurlBottleDownloadStrategy < CurlDownloadStrategy
-  def initialize url, name, version, specs
+  def initialize name, package
     super
-    @tarball_path = HOMEBREW_CACHE/"#{name}-#{version}#{ext}"
+    @tarball_path = HOMEBREW_CACHE/"#{name}-#{package.version}#{ext}"
 
     unless @tarball_path.exist?
       # Stop people redownloading bottles just because I (Mike) was stupid.
-      old_bottle_path = HOMEBREW_CACHE/"#{name}-#{version}-bottle.tar.gz"
-      old_bottle_path = HOMEBREW_CACHE/"#{name}-#{version}.#{MacOS.cat}.bottle-bottle.tar.gz" unless old_bottle_path.exist?
-      old_bottle_path = HOMEBREW_CACHE/"#{name}-#{version}-7.#{MacOS.cat}.bottle.tar.gz" unless old_bottle_path.exist? or name != "imagemagick"
+      old_bottle_path = HOMEBREW_CACHE/"#{name}-#{package.version}-bottle.tar.gz"
+      old_bottle_path = HOMEBREW_CACHE/"#{name}-#{package.version}.#{MacOS.cat}.bottle-bottle.tar.gz" unless old_bottle_path.exist?
+      old_bottle_path = HOMEBREW_CACHE/"#{name}-#{package.version}-7.#{MacOS.cat}.bottle.tar.gz" unless old_bottle_path.exist? or name != "imagemagick"
       FileUtils.mv old_bottle_path, @tarball_path if old_bottle_path.exist?
     end
   end
@@ -199,7 +208,7 @@ class CurlBottleDownloadStrategy < CurlDownloadStrategy
 end
 
 class SubversionDownloadStrategy < AbstractDownloadStrategy
-  def initialize url, name, version, specs
+  def initialize name, package
     super
     @unique_token="#{name}--svn" unless name.to_s.empty? or name == '__UNKNOWN__'
     @unique_token += "-HEAD" if ARGV.include? '--HEAD'
@@ -304,7 +313,7 @@ class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
 end
 
 class GitDownloadStrategy < AbstractDownloadStrategy
-  def initialize url, name, version, specs
+  def initialize name, package
     super
     @unique_token="#{name}--git" unless name.to_s.empty? or name == '__UNKNOWN__'
     @clone=HOMEBREW_CACHE+@unique_token
@@ -397,7 +406,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
 end
 
 class CVSDownloadStrategy < AbstractDownloadStrategy
-  def initialize url, name, version, specs
+  def initialize name, package
     super
     @unique_token="#{name}--cvs" unless name.to_s.empty? or name == '__UNKNOWN__'
     @co=HOMEBREW_CACHE+@unique_token
@@ -447,7 +456,7 @@ private
 end
 
 class MercurialDownloadStrategy < AbstractDownloadStrategy
-  def initialize url, name, version, specs
+  def initialize name, package
     super
     @unique_token="#{name}--hg" unless name.to_s.empty? or name == '__UNKNOWN__'
     @clone=HOMEBREW_CACHE+@unique_token
@@ -488,7 +497,7 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
 end
 
 class BazaarDownloadStrategy < AbstractDownloadStrategy
-  def initialize url, name, version, specs
+  def initialize name, package
     super
     @unique_token="#{name}--bzr" unless name.to_s.empty? or name == '__UNKNOWN__'
     @clone=HOMEBREW_CACHE+@unique_token
@@ -531,7 +540,7 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
 end
 
 class FossilDownloadStrategy < AbstractDownloadStrategy
-  def initialize url, name, version, specs
+  def initialize name, package
     super
     @unique_token="#{name}--fossil" unless name.to_s.empty? or name == '__UNKNOWN__'
     @clone=HOMEBREW_CACHE+@unique_token
