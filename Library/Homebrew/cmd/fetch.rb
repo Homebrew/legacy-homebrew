@@ -36,14 +36,10 @@ module Homebrew extend self
       puts "SHA1: #{the_tarball.sha1}"
       puts "SHA256: #{the_tarball.sha2}"
 
-      unless previous_md5.nil? or previous_md5.empty? or the_tarball.md5 == previous_md5
-        opoo "Formula reports different MD5: #{previous_md5}"
-      end
-      unless previous_sha1.nil? or previous_sha1.empty? or the_tarball.sha1 == previous_sha1
-        opoo "Formula reports different SHA1: #{previous_sha1}"
-      end
-      unless previous_sha2.nil? or previous_sha2.empty? or the_tarball.sha2 == previous_sha2
-        opoo "Formula reports different SHA256: #{previous_sha2}"
+      begin
+        f.verify_download_integrity the_tarball
+      rescue ChecksumMismatchError => e
+        opoo "Formula reports different #{e.hash_type}: #{e.expected}"
       end
     end
   end
