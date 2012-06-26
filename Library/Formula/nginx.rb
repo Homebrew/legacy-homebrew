@@ -6,8 +6,8 @@ class Nginx < Formula
   sha1 '4fb69411f6c3ebb5818005955a085e891e77b2d8'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.3.1.tar.gz'
-    sha1 '36a4147799e303a6f19cd8ff9fb52c2fc07a840d'
+    url 'http://nginx.org/download/nginx-1.3.2.tar.gz'
+    sha1 'a3507cb2f13332489804f79885541c717f8f4bf0'
   end
 
   depends_on 'pcre'
