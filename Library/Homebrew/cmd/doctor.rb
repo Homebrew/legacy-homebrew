@@ -210,7 +210,7 @@ def check_for_broken_symlinks
     end
   end
   unless broken_symlinks.empty? then <<-EOS.undent
-    Broken symlinks were found. Remove them with `brew prune':
+    Broken symlinks were found. Remove them with `brew prune`:
       #{broken_symlinks * "\n      "}
     EOS
   end
