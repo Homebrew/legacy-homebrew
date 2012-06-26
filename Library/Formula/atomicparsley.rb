@@ -13,6 +13,10 @@ class Atomicparsley < Formula
     depends_on "libtool" => :build
   end
 
+  def patches
+    DATA # Fixes compilation with newer automake versions
+  end
+
   def install
     system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}",
@@ -22,3 +26,16 @@ class Atomicparsley < Formula
   end
 end
 
+__END__
+diff --git a/configure.ac b/configure.ac
+index 24099c9..eedd3cf 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -62,6 +62,7 @@ if test "$GCC" = "yes" ; then
+   CXXFLAGS="$CXXFLAGS -Wall"""
+ fi
+ AC_PROG_OBJC
++AC_PROG_OBJCXX
+ AC_C_BIGENDIAN
+
+ AC_HEADER_DIRENT
