@@ -33,7 +33,9 @@ module Homebrew extend self
         end
 
       guess = '(guessed)' unless MacOS.xcode_installed?
-      prefix = "=> #{MacOS.xcode_prefix}" unless MacOS.xcode_prefix.to_s == default_prefix
+      prefix = if MacOS.xcode_installed?
+        "=> #{MacOS.xcode_prefix}" unless MacOS.xcode_prefix.to_s == default_prefix
+      end
 
       [MacOS.xcode_version, guess, prefix].compact.join(' ')
     end
