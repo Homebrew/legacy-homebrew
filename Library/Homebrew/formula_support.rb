@@ -2,35 +2,15 @@ require 'download_strategy'
 require 'checksums'
 
 class SoftwareSpec
-  attr_reader :checksum, :mirrors, :specs, :strategy
-
-  VCS_SYMBOLS = {
-    :bzr     => BazaarDownloadStrategy,
-    :curl    => CurlDownloadStrategy,
-    :cvs     => CVSDownloadStrategy,
-    :git     => GitDownloadStrategy,
-    :hg      => MercurialDownloadStrategy,
-    :nounzip => NoUnzipCurlDownloadStrategy,
-    :post    => CurlPostDownloadStrategy,
-    :svn     => SubversionDownloadStrategy,
-  }
+  attr_reader :checksum, :mirrors, :specs
 
   # Was the version defined in the DSL, or detected from the URL?
   def explicit_version?
     @explicit_version || false
   end
 
-  # Returns a suitable DownloadStrategy class that can be
-  # used to retrieve this software package.
   def download_strategy
-    return detect_download_strategy(@url) if @strategy.nil?
-
-    # If a class is passed, assume it is a download strategy
-    return @strategy if @strategy.kind_of? Class
-
-    detected = VCS_SYMBOLS[@strategy]
-    raise "Unknown strategy #{@strategy} was requested." unless detected
-    return detected
+    @download_strategy ||= DownloadStrategyDetector.new(@url, @using).detect
   end
 
   def verify_download_integrity fn
@@ -64,9 +44,9 @@ class SoftwareSpec
     return @url if val.nil?
     @url = val
     if specs.nil?
-      @strategy = nil
+      @using = nil
     else
-      @strategy = specs.delete :using
+      @using = specs.delete :using
       @specs = specs
     end
   end
@@ -104,7 +84,6 @@ class Bottle < SoftwareSpec
   def initialize
     super
     @revision = 0
-    @strategy = CurlBottleDownloadStrategy
   end
 
   # Checksum methods in the DSL's bottle block optionally take

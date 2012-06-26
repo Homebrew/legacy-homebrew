@@ -88,7 +88,7 @@ class FormulaCreator
     end
 
     unless ARGV.include? "--no-fetch" and version
-      strategy = detect_download_strategy url
+      strategy = DownloadStrategyDetector.new(url).detect
       @sha1 = strategy.new(url, name, version, nil).fetch.sha1 if strategy == CurlDownloadStrategy
     end
 
