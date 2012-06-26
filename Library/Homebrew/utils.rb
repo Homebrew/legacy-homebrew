@@ -298,31 +298,31 @@ module MacOS extend self
     return @locate_cache[tool] if @locate_cache.has_key? tool
 
     if File.executable? "/usr/bin/#{tool}"
+      # Always prefer the unix style.
       path = Pathname.new "/usr/bin/#{tool}"
-    elsif not MacOS.xctools_fucked? and system "/usr/bin/xcrun -find #{tool} 1>/dev/null 2>&1"
-      # xcrun was provided first with Xcode 4.3 and allows us to proxy
-      # tool usage thus avoiding various bugs
-      p = `/usr/bin/xcrun -find #{tool}`.chomp
-      if File.executable?  p
-        path = Pathname.new  p
-      else
-        path = nil
-      end
     else
-      # otherwise lets try and figure it out ourselves
-      p = "#{MacOS.dev_tools_path}/#{tool}"
-      if File.executable?  p
-        path = Pathname.new  p
+      # Xcrun was provided first with Xcode 4.3 and allows us to proxy
+      # tool usage thus avoiding various bugs.
+      p = `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp unless MacOS.xctools_fucked?
+      if !p.nil? and !p.empty? and File.executable? p
+        path = Pathname.new p
       else
-        # This is for the use-case where xcode-select is not set up with
-        # Xcode 4.3+. The tools in Xcode 4.3+ are split over two locations,
+        # This is for the use-case where xcode-select is not set up correctly
+        # with Xcode 4.3+. The tools in Xcode 4.3+ are split over two locations,
         # usually xcrun would figure that out for us, but it won't work if
-        # xcode-select is not configured properly (i.e. xctools_fucked?).
-        p = "#{MacOS.xcode_prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin/#{tool}"
-        if File.executable?  p
-          path = Pathname.new  p
+        # xcode-select is not configured properly.
+        p = "#{MacOS.dev_tools_path}/#{tool}"
+        if File.executable? p
+          path = Pathname.new p
         else
-          path = nil
+          # Otherwise lets look in the second location.
+          p = "#{MacOS.xctoolchain_path}/usr/bin/#{tool}"
+          if File.executable? p
+            path = Pathname.new p
+          else
+            # We digged so deep but all is lost now.
+            path = nil
+          end
         end
       end
     end
@@ -334,14 +334,18 @@ module MacOS extend self
     @dev_tools_path ||= if File.exist? "/usr/bin/cc" and File.exist? "/usr/bin/make"
       # probably a safe enough assumption (the unix way)
       Pathname.new "/usr/bin"
+    elsif not xctools_fucked? and system "/usr/bin/xcrun -find make 1>/dev/null 2>&1"
+      # Wherever "make" is there are the dev tools.
+      # The new way of finding stuff via locate.
+      Pathname.new(`/usr/bin/xcrun -find make`.chomp).dirname
     elsif File.exist? "#{xcode_prefix}/usr/bin/make"
       # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
       Pathname.new "#{xcode_prefix}/usr/bin"
     else
-      # yes this seems dumb, but we can't throw because the existance of
-      # dev tools is not mandatory for installing formula. Eventually we
-      # should make formula specify if they need dev tools or not.
-      Pathname.new "/usr/bin"
+      # Since we are pretty unrelenting in finding Xcode no matter where
+      # it hides, we can now throw in the towel.
+      opoo "You really should consult the `brew doctor`!"
+      ""
     end
   end
 
@@ -361,7 +365,8 @@ module MacOS extend self
 
   def sdk_path(v=MacOS.version)
     # The path of the MacOSX SDK.
-    if !MacOS.xctools_fucked? and File.directory? `xcode-select -print-path 2>/dev/null`.chomp
+    p = `xcode-select -print-path 2>/dev/null`.chomp
+    if !MacOS.xctools_fucked? and File.executable? "#{p}/usr/bin/make"
       path = `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.strip
     elsif File.directory? '/Developer/SDKs/MacOS#{v}.sdk'
       # the old default (or wild wild west style)
@@ -423,13 +428,13 @@ module MacOS extend self
     @xcode_prefix ||= begin
       path = `/usr/bin/xcode-select -print-path 2>/dev/null`.chomp
       path = Pathname.new path
-      if $?.success? and path.directory? and path.absolute?
+      if $?.success? and path.absolute? and File.executable? "#{path}/usr/bin/make"
         path
-      elsif File.directory? '/Developer'
+      elsif File.executable? '/Developer/usr/bin/make'
         # we do this to support cowboys who insist on installing
         # only a subset of Xcode
         Pathname.new '/Developer'
-      elsif File.directory? '/Applications/Xcode.app/Contents/Developer'
+      elsif File.executable? '/Applications/Xcode.app/Contents/Developer/usr/bin/make'
         # fallback for broken Xcode 4.3 installs
         Pathname.new '/Applications/Xcode.app/Contents/Developer'
       else
@@ -442,10 +447,10 @@ module MacOS extend self
           path = `mdfind "kMDItemCFBundleIdentifier == 'com.apple.Xcode'"`.strip
         end
         path = "#{path}/Contents/Developer"
-        if path.empty? or not File.directory? path
-          nil
-        else
+        if !path.empty? and File.executable? "#{path}/usr/bin/make"
           Pathname.new path
+        else
+          nil
         end
       end
     end
