@@ -5,8 +5,8 @@ require 'formula'
 
 class IcalBuddy < Formula
   homepage 'http://hasseg.org/icalBuddy/'
-  url 'http://hasseg.org/git-public/icalBuddy.git', :tag => 'v1.8.0'
-  version '1.8.0'
+  url 'http://hasseg.org/git-public/icalBuddy.git', :tag => 'v1.8.2'
+  version '1.8.2'
 
   head 'http://hasseg.org/git-public/icalBuddy.git'
 
