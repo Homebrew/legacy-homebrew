@@ -64,10 +64,18 @@ class Subversion < Formula
     # Patch for Subversion handling of OS X UTF-8-MAC filename.
     if with_unicode_path?
       { :p0 =>
-        "https://raw.github.com/gist/1900750/4888cafcf58f7355e2656fe192a77e2b6726e338/patch-path.c.diff"
+      "https://raw.github.com/gist/1900750/4888cafcf58f7355e2656fe192a77e2b6726e338/patch-path.c.diff"
       }
     end
   end
+
+  # When building Perl, Python or Ruby bindings, need to use a compiler that
+  # recognizes GCC-style switches, since that's what the system languages
+  # were compiled against.
+  fails_with :clang do
+    build 318
+    cause "core.c:1: error: bad value (native) for -march= switch"
+  end if build_perl? or build_python? or build_ruby?
 
   def install
     if build_java?
@@ -126,16 +134,14 @@ class Subversion < Formula
         arches = "-arch x86_64"
       end
 
-      # Use version-appropriate system Perl
-     if MacOS.leopard?
-        perl_version = "5.8.8"
-      else
-        perl_version = "5.10.0"
+      perl_core = Pathname.new(`perl -MConfig -e 'print $Config{archlib}'`)+'CORE'
+      unless perl_core.exist?
+        onoe "perl CORE directory does not exist in '#{perl_core}'"
       end
 
       inreplace "Makefile" do |s|
         s.change_make_var! "SWIG_PL_INCLUDES",
-          "$(SWIG_INCLUDES) #{arches} -g -pipe -fno-common -DPERL_DARWIN -fno-strict-aliasing -I/usr/local/include -I/System/Library/Perl/#{perl_version}/darwin-thread-multi-2level/CORE"
+          "$(SWIG_INCLUDES) #{arches} -g -pipe -fno-common -DPERL_DARWIN -fno-strict-aliasing -I/usr/local/include -I#{perl_core}"
       end
       system "make swig-pl"
       system "make install-swig-pl"

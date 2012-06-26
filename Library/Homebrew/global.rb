@@ -85,9 +85,14 @@ module Homebrew extend self
 end
 
 FORMULA_META_FILES = %w[README README.md ChangeLog CHANGES COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
-ISSUES_URL = "https://github.com/mxcl/homebrew/wiki/reporting-bugs"
+ISSUES_URL = "https://github.com/mxcl/homebrew/wiki/bug-fixing-checklist"
 
 unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
   $:.unshift(File.expand_path("#{__FILE__}/../compat"))
   require 'compatibility'
+end
+
+# For Xcode-only installs, we add the path of the included unix tools (like git)
+if MacOS.dev_tools_path.to_s != '/usr/bin'
+  ENV['PATH'] = ENV['PATH'].to_s + ':' + MacOS.dev_tools_path
 end
