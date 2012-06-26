@@ -4,6 +4,11 @@ require 'checksums'
 class SoftwareSpec
   attr_reader :checksum, :mirrors, :specs
 
+  def initialize url=nil, version=nil
+    @url = url
+    @version = version
+  end
+
   # Was the version defined in the DSL, or detected from the URL?
   def explicit_version?
     @explicit_version || false
@@ -67,9 +72,8 @@ class SoftwareSpec
 end
 
 class HeadSoftwareSpec < SoftwareSpec
-  def initialize
+  def initialize url=nil, version='HEAD'
     super
-    @version = 'HEAD'
   end
 
   def verify_download_integrity fn
@@ -81,7 +85,7 @@ class Bottle < SoftwareSpec
   attr_writer :url
   attr_reader :revision
 
-  def initialize
+  def initialize url=nil, version=nil
     super
     @revision = 0
   end
