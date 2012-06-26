@@ -231,7 +231,7 @@ Please take one of the following actions:
     remove 'CPPFLAGS', "-isystem #{HOMEBREW_PREFIX}/include"
     remove 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
     sdk = MacOS.sdk_path(v)
-    unless sdk.nil?
+    unless sdk.nil? or MacOS.clt_installed?
       self['SDKROOT'] = nil
       remove 'CPPFLAGS', "-isysroot #{sdk}"
       remove 'CPPFLAGS', "-isystem #{sdk}/usr/include"
@@ -262,7 +262,7 @@ Please take one of the following actions:
     append 'CPPFLAGS', "-isystem #{HOMEBREW_PREFIX}/include"
     prepend 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
     sdk = MacOS.sdk_path(v)
-    unless sdk.nil?
+    unless sdk.nil? or MacOS.clt_installed?
       # Extra setup to support Xcode 4.3+ without CLT.
       self['SDKROOT'] = sdk
       # Teach the preprocessor and compiler (some don't respect CPPFLAGS)
