@@ -2,8 +2,8 @@ require 'formula'
 
 class Play < Formula
   homepage 'http://www.playframework.org/'
-  url 'http://download.playframework.org/releases/play-2.0.1.zip'
-  md5 'f860f006a713a6c9949c4c3f3efc33fb'
+  url 'http://download.playframework.org/releases/play-2.0.2.zip'
+  md5 'd1408ffca1f35cc89167e0717dd31069'
 
   def install
     rm Dir['*.bat'] # remove windows' bat files
