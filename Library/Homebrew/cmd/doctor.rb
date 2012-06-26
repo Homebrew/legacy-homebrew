@@ -403,27 +403,15 @@ def check_xcode_prefix
 end
 
 def check_xcode_select_path
-  path = `xcode-select -print-path 2>/dev/null`.chomp
   # with the advent of CLT-only support, we don't need xcode-select
   return if MacOS.clt_installed?
-  unless File.directory? path and File.file? "#{path}/usr/bin/xcodebuild" and not MacOS.xctools_fucked?
-    # won't guess at the path they should use because it's too hard to get right
-    # We specify /Applications/Xcode.app/Contents/Developer even though
-    # /Applications/Xcode.app should work because people don't install the new CLI
-    # tools and then it doesn't work. Lets hope the location doesn't change in the
-    # future.
-
+  unless File.file? "#{MacOS.xcode_folder}/usr/bin/xcodebuild" and not MacOS.xctools_fucked?
+    path = MacOS.app_with_bundle_id(MacOS::XCODE_4_BUNDLE_ID) or MacOS.app_with_bundle_id(MacOS::XCODE_3_BUNDLE_ID)
+    path = '/Developer' if path.nil? or not path.directory?
     <<-EOS.undent
       Your Xcode is configured with an invalid path.
-      You should change it to the correct path. Please note that there is no correct
-      path at this time if you have *only* installed the Command Line Tools for Xcode.
-      If your Xcode is pre-4.3 or you installed the whole of Xcode 4.3 then one of
-      these is (probably) what you want:
-
-          sudo xcode-select -switch /Developer
-          sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
-
-      DO NOT SET / OR EVERYTHING BREAKS!
+      You should change it to the correct path:
+        sudo xcode-select -switch #{path}
     EOS
   end
 end
