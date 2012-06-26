@@ -320,7 +320,7 @@ module MacOS extend self
         # xcode-select is not configured properly (i.e. xctools_fucked?).
         p = "#{MacOS.xcode_prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin/#{tool}"
         if File.executable?  p
-          path Pathname.new  p
+          path = Pathname.new  p
         else
           path = nil
         end
@@ -334,9 +334,6 @@ module MacOS extend self
     @dev_tools_path ||= if File.exist? "/usr/bin/cc" and File.exist? "/usr/bin/make"
       # probably a safe enough assumption (the unix way)
       Pathname.new "/usr/bin"
-    elsif not xctools_fucked?
-      # The new way of finding stuff via locate:
-      Pathname.new(locate 'make').dirname
     elsif File.exist? "#{xcode_prefix}/usr/bin/make"
       # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
       Pathname.new "#{xcode_prefix}/usr/bin"
@@ -364,8 +361,8 @@ module MacOS extend self
 
   def sdk_path(v=MacOS.version)
     # The path of the MacOSX SDK.
-    if not MacOS.xctools_fucked?
-      path = `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.chomp
+    if !MacOS.xctools_fucked? and File.directory? `xcode-select -print-path 2>/dev/null`.chomp
+      path = `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.strip
     elsif File.directory? '/Developer/SDKs/MacOS#{v}.sdk'
       # the old default (or wild wild west style)
       path = "/Developer/SDKs/MacOS#{v}.sdk"

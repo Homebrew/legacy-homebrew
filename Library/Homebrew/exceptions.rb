@@ -125,16 +125,18 @@ class BuildError < Homebrew::InstallationError
     onoe "#{e.to_s.strip} (#{formula_name}.rb:#{error_line})"
     issues = GitHub.issues_for_formula formula_name
     if issues.empty?
-      puts "If `brew doctor' does not help diagnose the issue, please report the bug:"
+      puts "If `brew doctor` does not, this may help you fix or report the issue:"
       puts "    #{Tty.em}#{issues_url}#{Tty.reset}"
     else
       puts "These existing issues may help you:", *issues.map{ |s| "    #{Tty.em}#{s}#{Tty.reset}" }
-      puts "Otherwise, please report the bug:"
+      puts "Otherwise, this may help you fix or report the issue:"
       puts "    #{Tty.em}#{issues_url}#{Tty.reset}"
     end
     if e.was_running_configure?
-      puts "We saved the configure log, please gist it if you report the issue:"
+      puts "We saved the configure log:"
       puts "    ~/Library/Logs/Homebrew/config.log"
+      puts "If you report the issue please paste the config.log here:"
+      puts "    #{Tty.em}http://gist.github.com/#{Tty.reset}"
     end
   end
 end
