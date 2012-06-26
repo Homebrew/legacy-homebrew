@@ -158,15 +158,17 @@ class ChecksumMismatchError < RuntimeError
   attr :advice, true
   attr :expected
   attr :actual
+  attr :hash_type
 
   def initialize expected, actual
     @expected = expected
     @actual = actual
+    @hash_type = expected.hash_type.to_s.upcase
 
     super <<-EOS.undent
-      #{expected.hash_type.to_s.upcase} mismatch
-      Expected: #{expected}
-      Actual: #{actual}
+      #{@hash_type} mismatch
+      Expected: #{@expected}
+      Actual: #{@actual}
       EOS
   end
 
