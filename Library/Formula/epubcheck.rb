@@ -1,15 +1,15 @@
 require 'formula'
 
 class Epubcheck < Formula
-  url 'http://epubcheck.googlecode.com/files/epubcheck-1.2.zip'
   homepage 'http://code.google.com/p/epubcheck/'
+  url 'http://epubcheck.googlecode.com/files/epubcheck-1.2.zip'
   sha1 '86036eadad8408070791b3da368958239ed8a410'
 
   def install
-    libexec.install Dir["epubcheck-1.2.jar", "lib"]
-    (bin+'epubcheck').write <<-EOS.undent
+    libexec.install "epubcheck-1.2.jar", "lib"
+    (bin/'epubcheck').write <<-EOS.undent
       #!/bin/sh
-      java -jar "#{libexec}/epubcheck-1.2.jar" "$1"
+      java -jar "#{libexec}/epubcheck-1.2.jar" "$@"
     EOS
   end
 
