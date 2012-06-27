@@ -3,25 +3,37 @@ require 'cmd/missing'
 
 class Volumes
   def initialize
-    @volumes = []
-    raw_mounts=`/sbin/mount`
-    raw_mounts.split("\n").each do |line|
-      case line
-      when /^(.+) on (\S+) \(/
-        @volumes << [$1, $2]
-      end
-    end
-    # Sort volumes by longest path prefix first
-    @volumes.sort! {|a,b| b[1].length <=> a[1].length}
+    @volumes = get_mounts
   end
 
   def which path
-    @volumes.each_index do |i|
-      vol = @volumes[i]
-      return i if vol[1].start_with? path.to_s
+    vols = get_mounts path
+
+    # no volume found
+    if vols.empty?
+      return -1
     end
 
-    return -1
+    vol_index = @volumes.index(vols[0])
+    # volume not found in volume list
+    if vol_index.nil?
+      return -1
+    end
+    return vol_index
+  end
+
+  def get_mounts path=nil
+    vols = []
+    # get the volume of path, if path is nil returns all volumes
+    raw_df = `/bin/df -P #{path}`
+    raw_df.split("\n").each do |line|
+      case line
+      # regex matches: /dev/disk0s2   489562928 440803616  48247312    91%    /
+      when /^(.*)\s+([0-9]+)\s+([0-9]+)\s+([0-9]+)\s+([0-9]{1,3}\%)\s+(.*)/
+        vols << $6
+      end
+    end
+    return vols
   end
 end
 
@@ -205,16 +217,31 @@ def check_for_broken_symlinks
 end
 
 def check_for_latest_xcode
-  if MacOS.xcode_version.nil?
-    if MacOS.version >= 10.7 then return <<-EOS.undent
-      We couldn't detect any version of Xcode.
-      The latest Xcode can be obtained from the Mac App Store.
-      Alternatively, the Command Line Tools package can be obtained from
-        http://connect.apple.com
-      EOS
-    else return <<-EOS.undent
-      We couldn't detect any version of Xcode.
-      The latest Xcode can be obtained from http://connect.apple.com
+  if not MacOS.xcode_installed?
+    # no Xcode, now it depends on the OS X version...
+    if MacOS.version >= 10.7 then
+      if not MacOS.clt_installed?
+        return <<-EOS.undent
+          No Xcode version found!
+          No compiler found in /usr/bin!
+
+          To fix this, either:
+          - Install the "Command Line Tools for Xcode" from http://connect.apple.com/
+            Homebrew does not require all of Xcode, you only need the CLI tools package!
+            (However, you need a (free) Apple Developer ID.)
+          - Install Xcode from the Mac App Store. (Normal Apple ID is sufficient, here)
+        EOS
+      else
+        return <<-EOS.undent
+          Experimental support for using the "Command Line Tools" without Xcode.
+          Some formulae need Xcode to be installed (for the Frameworks not in the CLT.)
+        EOS
+      end
+    else
+      # older Mac systems should just install their old Xcode. We don't advertize the CLT.
+      return <<-EOS.undent
+        We couldn't detect any version of Xcode.
+        If you downloaded Xcode from the App Store, you may need to run the installer.
       EOS
     end
   end
@@ -224,21 +251,24 @@ def check_for_latest_xcode
     when 10.6 then "3.2.6"
     else "4.3"
   end
-  if MacOS.xcode_version < latest_xcode then <<-EOS.undent
-    You have Xcode #{MacOS.xcode_version}, which is outdated.
+  if MacOS.xcode_installed? and MacOS.xcode_version < latest_xcode then <<-EOS.undent
+    You have Xcode-#{MacOS.xcode_version}, which is outdated.
     Please install Xcode #{latest_xcode}.
     EOS
   end
 end
 
 def check_cc
-  unless File.exist? '/usr/bin/cc' then <<-EOS.undent
-    You have no /usr/bin/cc.
-    This means you probably can't build *anything*. You need to install the Command
-    Line Tools for Xcode. You can either download this from http://connect.apple.com
-    or install them from inside Xcode's Download preferences. Homebrew does not
-    require all of Xcode! You only need the Command Line Tools package!
-    EOS
+  unless MacOS.clt_installed?
+    if MacOS.xcode_version >= "4.3"
+      return <<-EOS.undent
+        Experimental support for using Xcode without the "Command Line Tools".
+      EOS
+    else
+      return <<-EOS.undent
+        No compiler found in /usr/bin!
+      EOS
+    end
   end
 end
 
@@ -374,7 +404,9 @@ end
 
 def check_xcode_select_path
   path = `xcode-select -print-path 2>/dev/null`.chomp
-  unless File.directory? path and File.file? "#{path}/usr/bin/xcodebuild"
+  # with the advent of CLT-only support, we don't need xcode-select
+  return if MacOS.clt_installed?
+  unless File.directory? path and File.file? "#{path}/usr/bin/xcodebuild" and not MacOS.xctools_fucked?
     # won't guess at the path they should use because it's too hard to get right
     # We specify /Applications/Xcode.app/Contents/Developer even though
     # /Applications/Xcode.app should work because people don't install the new CLI
@@ -840,6 +872,16 @@ def check_for_bad_python_symlink
   unless $1 == "2" then <<-EOS.undent
     python is symlinked to python#$1
     This will confuse build scripts and in general lead to subtle breakage.
+    EOS
+  end
+end
+
+def check_for_pydistutils_cfg_in_home
+  if File.exist? ENV['HOME']+'/.pydistutils.cfg' then <<-EOS.undent
+    A .pydistutils.cfg file was found in $HOME, which may cause Python
+    builds to fail. See:
+      http://bugs.python.org/issue6138
+      http://bugs.python.org/issue4655
     EOS
   end
 end
