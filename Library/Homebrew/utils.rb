@@ -298,7 +298,6 @@ module MacOS extend self
     return @locate_cache[tool] if @locate_cache.has_key? tool
 
     if File.executable? "/usr/bin/#{tool}"
-      # Always prefer the unix style.
       path = Pathname.new "/usr/bin/#{tool}"
     else
       # Xcrun was provided first with Xcode 4.3 and allows us to proxy
@@ -336,7 +335,6 @@ module MacOS extend self
       Pathname.new "/usr/bin"
     elsif not xctools_fucked? and system "/usr/bin/xcrun -find make 1>/dev/null 2>&1"
       # Wherever "make" is there are the dev tools.
-      # The new way of finding stuff via locate.
       Pathname.new(`/usr/bin/xcrun -find make`.chomp).dirname
     elsif File.exist? "#{xcode_prefix}/usr/bin/make"
       # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
