@@ -15,6 +15,7 @@ class PerconaServer < Formula
   skip_clean :all # So "INSTALL PLUGIN" can work.
 
   fails_with :llvm do
+    build 2334
     cause "https://github.com/mxcl/homebrew/issues/issue/144"
   end
 
