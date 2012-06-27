@@ -2,8 +2,8 @@ require 'formula'
 
 class Elasticsearch < Formula
   homepage 'http://www.elasticsearch.org'
-  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.19.6.tar.gz'
-  md5 '5a3709238147ddd0953306f6193e3b3a'
+  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.19.7.tar.gz'
+  md5 '2d4f6d608862c47963483a1d7fa6e8c6'
 
   def cluster_name
     "elasticsearch_#{ENV['USER']}"
