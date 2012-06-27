@@ -288,6 +288,17 @@ module MacOS extend self
     end
   end
 
+  # Locate the "current Xcode folder" via xcode-select. See:
+  # man xcode-select
+  def xcode_folder
+    @xcode_folder ||= `xcode-select -print-path 2>/dev/null`.strip
+  end
+
+  # Xcode 4.3 tools hang if "/" is set
+  def xctools_fucked?
+    xcode_folder == "/"
+  end
+
   def locate tool
     # Don't call tools (cc, make, strip, etc.) directly!
     # Give the name of the binary you look for as a string to this method
@@ -363,8 +374,7 @@ module MacOS extend self
 
   def sdk_path(v=MacOS.version)
     # The path of the MacOSX SDK.
-    p = `xcode-select -print-path 2>/dev/null`.chomp
-    if !MacOS.xctools_fucked? and File.executable? "#{p}/usr/bin/make"
+    if !MacOS.xctools_fucked? and File.executable? "#{xcode_folder}/usr/bin/make"
       path = `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.strip
     elsif File.directory? '/Developer/SDKs/MacOS#{v}.sdk'
       # the old default (or wild wild west style)
@@ -378,11 +388,6 @@ module MacOS extend self
     else
       Pathname.new path
     end
-  end
-
-  def xctools_fucked?
-    # Xcode 4.3 tools hang if "/" is set
-    @xctools_fucked ||= `/usr/bin/xcode-select -print-path 2>/dev/null`.chomp == "/"
   end
 
   def default_cc
@@ -424,8 +429,7 @@ module MacOS extend self
 
   def xcode_prefix
     @xcode_prefix ||= begin
-      path = `/usr/bin/xcode-select -print-path 2>/dev/null`.chomp
-      path = Pathname.new path
+      path = Pathname.new xcode_folder
       if $?.success? and path.absolute? and File.executable? "#{path}/usr/bin/make"
         path
       elsif File.executable? '/Developer/usr/bin/make'
@@ -473,7 +477,6 @@ module MacOS extend self
     end
   end
 
-
  def xcode_version
     # may return a version string
     # that is guessed based on the compiler, so do not
@@ -490,7 +493,7 @@ module MacOS extend self
       end
 
       # Xcode 4.3 xc* tools hang indefinately if xcode-select path is set thus
-      raise if `xcode-select -print-path 2>/dev/null`.chomp == "/"
+      raise if xctools_fucked?
 
       raise unless which "xcodebuild"
       `xcodebuild -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
