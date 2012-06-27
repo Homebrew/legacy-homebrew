@@ -7,6 +7,11 @@ class Beecrypt < Formula
 
   depends_on "icu4c"
 
+  def patches
+    # fix build with newer clang, gcc 4.7 (https://bugs.gentoo.org/show_bug.cgi?id=413951)
+    { :p0 => DATA }
+  end
+
   def install
     ENV.remove_from_cflags /-march=\S*/
     system "./configure", "--prefix=#{prefix}", "--disable-openmp", "--without-java", "--without-python"
@@ -15,3 +20,16 @@ class Beecrypt < Formula
     system "make install"
   end
 end
+
+__END__
+--- include/beecrypt/c++/util/AbstractSet.h~	2009-06-17 13:05:55.000000000 +0200
++++ include/beecrypt/c++/util/AbstractSet.h	2012-06-03 17:45:55.229399461 +0200
+@@ -56,7 +56,7 @@
+ 					if (c->size() != size())
+ 						return false;
+ 
+-					return containsAll(*c);
++					return this->containsAll(*c);
+ 				}
+ 				return false;
+ 			}
