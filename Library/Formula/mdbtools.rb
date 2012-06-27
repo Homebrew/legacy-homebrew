@@ -20,7 +20,7 @@ class Mdbtools < Formula
   end
 
   def install
-    system "NOCONFIGURE='yes' ACLOCAL_FLAGS='-I#{HOMEBREW_PREFIX}/share/aclocal' ./autogen.sh"
+    system "NOCONFIGURE='yes' ./autogen.sh"
     system "./configure", "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--disable-glibtest"
