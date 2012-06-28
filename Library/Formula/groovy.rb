@@ -2,8 +2,8 @@ require 'formula'
 
 class Groovy < Formula
   homepage 'http://groovy.codehaus.org/'
-  url 'http://dist.groovy.codehaus.org/distributions/groovy-binary-1.8.6.zip'
-  sha1 '470fd9b2ea4f2cf405b8a71d92e7a8a4753b1a8c'
+  url 'http://dist.groovy.codehaus.org/distributions/groovy-binary-2.0.0.zip'
+  sha1 '6ae42581500e157759a56129d215c0a870cd2a4d'
 
   devel do
     url 'http://dist.groovy.codehaus.org/distributions/groovy-binary-2.0.0-rc-4.zip'
