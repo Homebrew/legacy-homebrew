@@ -2,77 +2,31 @@ require 'formula'
 
 class Mdbtools < Formula
   homepage 'https://github.com/brianb/mdbtools/'
-  url "https://github.com/brianb/mdbtools/tarball/0.7_rc1"
-  sha1 '584d001105d1744424db9b781a83c67ae2ecac04'
+  url "https://github.com/brianb/mdbtools/tarball/0.7"
+  sha1 '62fe0703fd8691e4536e1012317406bdb72594cf'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
-  depends_on 'gawk' => :optional # To generate docs
+  depends_on 'readline'
 
   if MacOS.xcode_version >= "4.3"
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
 
-  # Use glibtoolize, remove unknown linker flags
-  # glibtoolize patch has been accepted upstream:
-  # https://github.com/brianb/mdbtools/pull/10
+  # remove unknown linker flags
   def patches
     DATA
   end
 
   def install
     system "NOCONFIGURE='yes' ./autogen.sh"
-    system "./configure", "--prefix=#{prefix}",
-                          "--mandir=#{man}",
-                          "--disable-glibtest"
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 end
 
 __END__
-diff --git a/autogen.sh b/autogen.sh
-index 0d07ee5..1ae1923 100755
---- a/autogen.sh
-+++ b/autogen.sh
-@@ -18,14 +18,20 @@ DIE=0
-   DIE=1
- }
- 
--(grep "^A[CM]_PROG_LIBTOOL" $srcdir/configure.in >/dev/null) && {
--  (libtool --version) < /dev/null > /dev/null 2>&1 || {
--    echo
--    echo "**Error**: You must have \`libtool' installed."
--    echo "Get ftp://ftp.gnu.org/pub/gnu/libtool-1.2d.tar.gz"
--    echo "(or a newer version if it is available)"
--    DIE=1
--  }
-+grep "^A[CM]_PROG_LIBTOOL" configure.in >/dev/null && {
-+  if which libtoolize && (libtooloze --version) < /dev/null > /dev/null 2>&1; then
-+    LIBTOOLIZE=libtoolize
-+  else
-+      if which glibtoolize && (glibtoolize --version) < /dev/null > /dev/null 2>&1; then
-+        LIBTOOLIZE=glibtoolize
-+      else
-+        echo
-+        echo "**Error**: You must have \`libtool' installed."
-+        echo "Get ftp://ftp.gnu.org/pub/gnu/libtool-1.2d.tar.gz"
-+        echo "(or a newer version if it is available)"
-+        DIE=1
-+      fi
-+  fi
- }
- 
- grep "^AM_GNU_GETTEXT" $srcdir/configure.in >/dev/null && {
-@@ -129,7 +135,7 @@ do
-       aclocal $aclocalinclude
-       if grep "^A[CM]_PROG_LIBTOOL" configure.in >/dev/null; then
- 	echo "Running libtoolize..."
--	libtoolize --force --copy
-+	${LIBTOOLIZE} --force --copy
-       fi
-       if grep "^A[CM]_CONFIG_HEADER" configure.in >/dev/null; then
- 	echo "Running autoheader..."
 diff --git a/configure.in b/configure.in
 index 797ad72..bec756d 100644
 --- a/configure.in
