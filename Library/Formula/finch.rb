@@ -2,8 +2,9 @@ require 'formula'
 
 class Finch < Formula
   homepage 'http://developer.pidgin.im/wiki/Using%20Finch'
-  url 'http://sourceforge.net/projects/pidgin/files/Pidgin/2.7.11/pidgin-2.7.11.tar.bz2'
-  sha256 'a24e2c3118bd47983955d398c9cf5543c12e95527cdf7de9d273a6e92f9d160b'
+  url 'http://sourceforge.net/projects/pidgin/files/Pidgin/2.10.4/pidgin-2.10.4.tar.bz2'
+  md5 '264f9ae89742b8ee168306b85d2fb51e'
+
 
   depends_on 'pkg-config' => :build
   depends_on 'libidn'
@@ -17,7 +18,6 @@ class Finch < Formula
     #   * Sametime (meanwhile)
     #   * Bonjour (avahi)
     #   * Communicating with other programs (d-bus)
-    #   * Perl scripting
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-gtkui",
@@ -25,8 +25,7 @@ class Finch < Formula
                           "--disable-vv",
                           "--disable-meanwhile",
                           "--disable-avahi",
-                          "--disable-dbus",
-                          "--disable-perl"
+                          "--disable-dbus"
     system "make install"
   end
 end
