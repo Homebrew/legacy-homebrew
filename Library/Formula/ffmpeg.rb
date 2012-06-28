@@ -4,10 +4,14 @@ def ffplay?
   ARGV.include? '--with-ffplay'
 end
 
+def openjpeg?
+  ARGV.include? '--with-openjpeg'
+end
+
 class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
-  url 'http://ffmpeg.org/releases/ffmpeg-0.11.tar.bz2'
-  sha1 '1aa3443c20b1c5d132d1fe06de7cc949a7219edd'
+  url 'http://ffmpeg.org/releases/ffmpeg-0.11.1.tar.bz2'
+  sha1 'bf01742be60c2e6280371fc4189d5d28933f1a56'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
@@ -26,11 +30,13 @@ class Ffmpeg < Formula
   depends_on 'libass' => :optional
 
   depends_on 'sdl' if ffplay?
+  depends_on 'openjpeg' if openjpeg?
 
   def options
     [
       ["--with-tools", "Install additional FFmpeg tools."],
-      ["--with-ffplay", "Build ffplay."]
+      ["--with-ffplay", "Build ffplay."],
+      ["--with-openjpeg", "Use openjpeg for jpeg2000 support"]
     ]
   end
 
@@ -58,6 +64,7 @@ class Ffmpeg < Formula
     args << "--enable-libass" if Formula.factory('libass').linked_keg.exist?
     args << "--enable-libvo-aacenc" if Formula.factory('libvo-aacenc').linked_keg.exist?
     args << "--disable-ffplay" unless ffplay?
+    args << "--enable-libopenjpeg" if openjpeg?
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22

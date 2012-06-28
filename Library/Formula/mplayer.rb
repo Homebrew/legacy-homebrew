@@ -2,27 +2,24 @@ require 'formula'
 
 class Mplayer < Formula
   homepage 'http://www.mplayerhq.hu/'
-  url 'ftp://ftp.mplayerhq.hu/MPlayer/releases/MPlayer-1.0rc4.tar.bz2'
-  md5 '1699c94de39da9c4c5d34e8f58e418f0'
+  url 'http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.1.tar.xz'
+  sha1 '913a4bbeab7cbb515c2f43ad39bc83071b2efd75'
 
   head 'svn://svn.mplayerhq.hu/mplayer/trunk', :using => StrictSubversionDownloadStrategy
 
   depends_on 'pkg-config' => :build
   depends_on 'yasm' => :build
+  depends_on 'xz' => :build
 
-  fails_with :llvm do
-    cause "Missing symbols error while linking"
-  end
+  fails_with :clang do
+    build 211
+    cause 'Inline asm errors during compile on 32bit Snow Leopard.'
+  end unless MacOS.prefer_64_bit?
 
   def patches
-    # When building from SVN HEAD, configure prompts the user to pull FFmpeg
-    # from git.  Don't do that.
-    if ARGV.build_head?
-      DATA
-    elsif `uname -r` =~ /^11\./
-      # Lion requires the following diff (which is already fixed in svn trunk)
-      "https://raw.github.com/gist/1105164/704c64c97ab7ffcc3e5f69b1c5d4fb0850f572c1/vd_mpng.c.diff"
-    end
+    # When building SVN, configure prompts the user to pull FFmpeg from git.
+    # Don't do that.
+    DATA if ARGV.build_head?
   end
 
   def install
@@ -30,12 +27,18 @@ class Mplayer < Formula
     # * https://github.com/mxcl/homebrew/issues/622
     # * http://trac.macports.org/browser/trunk/dports/multimedia/mplayer-devel/Portfile
     # (B) Any kind of optimisation breaks the build
+    # (C) It turns out that ENV.O1 fixes link errors with llvm.
     ENV['CFLAGS'] = ''
     ENV['CXXFLAGS'] = ''
+    ENV.O1 if ENV.compiler == :llvm
 
     # we disable cdparanoia because homebrew's version is hacked to work on OS X
     # and mplayer doesn't expect the hacks we apply. So it chokes.
-    system './configure', "--prefix=#{prefix}", "--disable-cdparanoia"
+    # Specify our compiler to stop ffmpeg from defaulting to gcc.
+    system './configure', "--prefix=#{prefix}",
+                          "--cc=#{ENV.cc}",
+                          "--host-cc=#{ENV.cc}",
+                          "--disable-cdparanoia"
     system "make"
     system "make install"
   end

@@ -2,8 +2,8 @@ require 'formula'
 
 class GambitScheme < Formula
   homepage 'http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page'
-  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.6/source/gambc-v4_6_5.tgz'
-  sha256 '54de513a78f0fb1841ef1411b8f2d64a2bd6810cee7554fe408b0ba79ff00910'
+  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.6/source/gambc-v4_6_6.tgz'
+  sha256 '4e8b18bb350124138d1f9bf143dda0ab5e55f3c3d489a6dc233a15a003f161d2'
 
   def options
     [

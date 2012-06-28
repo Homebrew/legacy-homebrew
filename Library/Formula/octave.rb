@@ -19,9 +19,9 @@ end
 
 class Octave < Formula
   homepage 'http://www.gnu.org/software/octave/index.html'
-  url 'http://ftpmirror.gnu.org/octave/octave-3.6.1.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/octave/octave-3.6.1.tar.bz2'
-  md5 'b543dd5ca743cba8c1d3474b1b99ae41'
+  url 'http://ftpmirror.gnu.org/octave/octave-3.6.2.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/octave/octave-3.6.2.tar.bz2'
+  sha1 '145fef0122268086727a60e1c33e29d56fd546d7'
 
   depends_on 'pkg-config' => :build
   depends_on 'gnu-sed' => :build
