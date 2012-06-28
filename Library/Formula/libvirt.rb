@@ -2,8 +2,8 @@ require 'formula'
 
 class Libvirt < Formula
   homepage 'http://www.libvirt.org'
-  url 'http://libvirt.org/sources/stable_updates/libvirt-0.9.11.3.tar.gz'
-  sha256 'aa73b329d2f6eb200991b9dc378d4636c15cd2f95ca224995d01b45257584fa2'
+  url 'http://libvirt.org/sources/stable_updates/libvirt-0.9.11.4.tar.gz'
+  sha256 'f3e16a62dff9720e1541da5561f448853e9821baa4622a0064dc28589eebed45'
 
   # Latest (roughly) monthly release.
   devel do
