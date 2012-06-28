@@ -15,7 +15,7 @@ class Mdbtools < Formula
   end
 
   # Use glibtoolize, remove unknown linker flags
-  # glibtoolize patch sent upstream:
+  # glibtoolize patch has been accepted upstream:
   # https://github.com/brianb/mdbtools/pull/10
   def patches
     DATA
