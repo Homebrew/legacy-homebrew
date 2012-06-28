@@ -1,4 +1,11 @@
 module MacOS extend self
+
+  MDITEM_BUNDLE_ID_KEY = "kMDItemCFBundleIdentifier"
+  XCODE_4_BUNDLE_ID = "com.apple.dt.Xcode"
+  XCODE_3_BUNDLE_ID = "com.apple.Xcode"
+  CLT_STANDALONE_PKG_ID = "com.apple.pkg.DeveloperToolsCLILeo"
+  CLT_FROM_XCODE_PKG_ID = "com.apple.pkg.DeveloperToolsCLI"
+
   def version
     MACOS_VERSION
   end
@@ -32,15 +39,14 @@ module MacOS extend self
     # Note, that different ways to install the CLTs lead to different
     # version numbers.
     @clt_version ||= begin
-      # CLT installed via stand-alone website download
-      clt_pkginfo_stand_alone = `pkgutil --pkg-info com.apple.pkg.DeveloperToolsCLILeo 2>/dev/null`.strip
-      # CLT installed via preferences from within Xcode
-      clt_pkginfo_from_xcode = `pkgutil --pkg-info com.apple.pkg.DeveloperToolsCLI 2>/dev/null`.strip
-      if not clt_pkginfo_stand_alone.empty?
-        clt_pkginfo_stand_alone =~ /version: (.*)$/
+      standalone = pkgutil_info(CLT_STANDALONE_PKG_ID)
+      from_xcode = pkgutil_info(CLT_FROM_XCODE_PKG_ID)
+
+      if not standalone.empty?
+        standalone =~ /version: (.*)$/
         $1
-      elsif not clt_pkginfo_from_xcode.empty?
-        clt_pkginfo_from_xcode =~ /version: (.*)$/
+      elsif not from_xcode.empty?
+        from_xcode =~ /version: (.*)$/
         $1
       else
         # We return "" instead of nil because we want clt_installed? to be true on older Macs.
@@ -191,16 +197,11 @@ module MacOS extend self
         # Ask Spotlight where Xcode is. If the user didn't install the
         # helper tools and installed Xcode in a non-conventional place, this
         # is our only option. See: http://superuser.com/questions/390757
-        path = `mdfind "kMDItemCFBundleIdentifier == 'com.apple.dt.Xcode'"`.strip
-        if path.empty?
-          # Xcode 3 had a different identifier
-          path = `mdfind "kMDItemCFBundleIdentifier == 'com.apple.Xcode'"`.strip
-        end
-        path = "#{path}/Contents/Developer"
-        if !path.empty? and File.executable? "#{path}/usr/bin/make"
-          Pathname.new path
-        else
-          nil
+        path = app_with_bundle_id(XCODE_4_BUNDLE_ID) or app_with_bundle_id(XCODE_3_BUNDLE_ID)
+
+        unless path.nil?
+          path += "Contents/Developer"
+          path if File.executable? "#{path}/usr/bin/make"
         end
       end
     end
@@ -208,24 +209,14 @@ module MacOS extend self
 
   def xcode_installed?
     # Telling us whether the Xcode.app is installed or not.
-    @xcode_installed ||= begin
-      if File.directory? '/Applications/Xcode.app'
-        true
-      elsif File.directory? '/Developer/Applications/Xcode.app' # old style
-        true
-      elsif not `mdfind "kMDItemCFBundleIdentifier == 'com.apple.dt.Xcode'"`.strip.empty?
-        # Xcode 4
-        true
-      elsif not `mdfind "kMDItemCFBundleIdentifier == 'com.apple.Xcode'"`.strip.empty?
-        # Xcode 3
-        true
-      else
-        false
-      end
-    end
+    @xcode_installed ||= File.directory?('/Applications/Xcode.app') ||
+      File.directory?('/Developer/Applications/Xcode.app') ||
+      app_with_bundle_id(XCODE_4_BUNDLE_ID) ||
+      app_with_bundle_id(XCODE_3_BUNDLE_ID) ||
+      false
   end
 
- def xcode_version
+  def xcode_version
     # may return a version string
     # that is guessed based on the compiler, so do not
     # use it in order to check if Xcode is installed.
@@ -404,5 +395,20 @@ module MacOS extend self
     return true unless StandardCompilers.keys.include? xcode
 
     StandardCompilers[xcode].all? {|k,v| MacOS.send(k) == v}
+  end
+
+  def app_with_bundle_id id
+    mdfind(MDITEM_BUNDLE_ID_KEY, id)
+  end
+
+  private
+
+  def mdfind attribute, id
+    path = `mdfind "#{attribute} == '#{id}'"`.strip
+    Pathname.new(path) unless path.empty?
+  end
+
+  def pkgutil_info id
+    `pkgutil --pkg-info #{id} 2>/dev/null`.strip
   end
 end
