@@ -2,8 +2,8 @@ require 'formula'
 
 class VertX < Formula
   homepage 'http://vertx.io/'
-  url 'https://github.com/downloads/purplefox/vert.x/vert.x-1.0.final.tar.gz'
-  md5 'ecfaf3a8e2c749e75b6618980255308e'
+  url 'http://vertx.io/downloads/vert.x-1.1.0.final.tar.gz'
+  md5 '34198d0079c7e3197106903acba4bb2a'
 
 
   def install
