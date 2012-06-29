@@ -19,7 +19,7 @@ class AndroidSdk < Formula
     mv 'tools', prefix
 
     %w[android apkbuilder ddms dmtracedump draw9patch etc1tool emulator
-    hierarchyviewer hprof-conv lint mksdcard monkeyrunner traceview
+    hierarchyviewer hprof-conv lint mksdcard monitor monkeyrunner traceview
     zipalign].each do |tool|
       (bin/tool).write <<-EOS.undent
         #!/bin/sh
