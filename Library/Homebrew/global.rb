@@ -92,7 +92,10 @@ unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
   require 'compatibility'
 end
 
-# For Xcode-only installs, we add the path of the included unix tools (like git)
-if MacOS.dev_tools_path.to_s != '/usr/bin'
+ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(File.expand_path(p)) }
+
+# Xcode-only installs place tools in non-standard locations, and we also want
+# to ensure the dev tools are in the PATH in build.rb
+unless ORIGINAL_PATHS.include? MacOS.dev_tools_path
   ENV['PATH'] = ENV['PATH'].to_s + ':' + MacOS.dev_tools_path
 end
