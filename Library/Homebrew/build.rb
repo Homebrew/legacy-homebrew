@@ -21,11 +21,11 @@ at_exit do
 
     ENV.extend(HomebrewEnvExtension)
     ENV.setup_build_environment
-    # we must do this or tools like pkg-config won't get found by configure scripts etc.
-    ENV.prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? "#{HOMEBREW_PREFIX}/bin"
     # this is a safety measure for Xcode 4.3 which started not installing
     # dev tools into /usr/bin as a default
-    ENV.prepend 'PATH', MacOS.dev_tools_path, ':' unless ORIGINAL_PATHS.include? MacOS.dev_tools_path
+    ENV.prepend 'PATH', MacOS.dev_tools_path, ':' unless ORIGINAL_PATHS.include? MacOS.dev_tools_path.to_s
+    # we must do this or tools like pkg-config won't get found by configure scripts etc.
+    ENV.prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? "#{HOMEBREW_PREFIX}/bin"
 
     # Force any future invocations of sudo to require the user's password to be
     # re-entered. This is in-case any build script call sudo. Certainly this is
