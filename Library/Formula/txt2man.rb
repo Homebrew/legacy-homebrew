@@ -15,12 +15,12 @@ class Txt2man < Formula
       s.gsub! "/man/man1", "/share/man/man1"
     end
 
-    system "make install" # if this fails, try separate make/make install steps
+    system "make install"
   end
 
   def test
-    system "txt2man", "-h"
-    system "src2man", "-h"
-    system "bookman", "-h"
+    system "#{bin}/txt2man", "-h"
+    system "#{bin}/src2man", "-h"
+    system "#{bin}/bookman", "-h"
   end
 end
