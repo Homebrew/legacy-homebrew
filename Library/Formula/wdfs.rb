@@ -17,6 +17,6 @@ class Wdfs < Formula
   end
 
   def test
-    system "#{bin}/wdfs -v"
+    system "#{bin}/wdfs", "-v"
   end
 end

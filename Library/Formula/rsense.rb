@@ -30,6 +30,6 @@ class Rsense < Formula
   end
 
   def test
-    system "#{bin}/rsense version"
+    system "#{bin}/rsense", "version"
   end
 end

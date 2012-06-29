@@ -2,9 +2,9 @@ require 'formula'
 
 class Jetty < Formula
   homepage 'http://www.eclipse.org/jetty/'
-  url 'http://download.eclipse.org/jetty/8.1.3.v20120416/dist/jetty-distribution-8.1.3.v20120416.tar.gz'
-  version '8.1.3'
-  md5 'a7eedf4616dc45fa78c07637901fa6a0'
+  url 'http://download.eclipse.org/jetty/8.1.4.v20120524/dist/jetty-distribution-8.1.4.v20120524.tar.gz'
+  version '8.1.4'
+  sha1 '7943e7d7fa0b460f034fde6d32487c9b33b9f829'
 
   skip_clean :all
 

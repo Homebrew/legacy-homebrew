@@ -41,7 +41,7 @@ class Zsh < Formula
   end
 
   def test
-    system "#{bin}/zsh --version"
+    system "#{bin}/zsh", "--version"
   end
 
   def caveats; <<-EOS.undent

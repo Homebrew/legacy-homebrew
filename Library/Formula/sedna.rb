@@ -8,10 +8,9 @@ class Sedna < Formula
   depends_on 'cmake' => :build
 
   def install
-    path = pwd
     # Build needs to be created from outside the source directory.
-    mktemp do
-      system "cmake #{std_cmake_parameters} #{path}"
+    mkdir 'build' do
+      system "cmake", "..", *std_cmake_args
       system "make install"
     end
   end

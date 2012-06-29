@@ -2,8 +2,13 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.2.0.tar.gz'
-  md5 'a02ef93d65a7031a1ea3256ad5eba626'
+  url 'http://nginx.org/download/nginx-1.2.1.tar.gz'
+  sha1 '4fb69411f6c3ebb5818005955a085e891e77b2d8'
+
+  devel do
+    url 'http://nginx.org/download/nginx-1.3.2.tar.gz'
+    sha1 'a3507cb2f13332489804f79885541c717f8f4bf0'
+  end
 
   depends_on 'pcre'
 
@@ -85,14 +90,12 @@ class Nginx < Formula
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
-    <true/>
+    <false/>
     <key>UserName</key>
     <string>#{`whoami`.chomp}</string>
     <key>ProgramArguments</key>
     <array>
         <string>#{HOMEBREW_PREFIX}/sbin/nginx</string>
-        <string>-g</string>
-        <string>daemon off;</string>
     </array>
     <key>WorkingDirectory</key>
     <string>#{HOMEBREW_PREFIX}</string>

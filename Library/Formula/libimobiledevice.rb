@@ -16,7 +16,7 @@ class Libimobiledevice < Formula
 
   if MacOS.xcode_version >= "4.3" and ARGV.build_head?
     depends_on 'libtool' => :build
-    depends_on 'autoconf' => :build
+    depends_on 'automake' => :build
   end
 
   def install
@@ -33,9 +33,8 @@ class Libimobiledevice < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          # As long as libplist builds without SWIG and Cython
+                          # As long as libplist builds without Cython
                           # bindings, libimobiledevice must as well.
-                          "--without-swig",
                           "--without-cython"
     system "make install"
   end

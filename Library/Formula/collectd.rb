@@ -1,9 +1,9 @@
 require 'formula'
 
 class Collectd < Formula
-  url 'http://collectd.org/files/collectd-5.0.2.tar.bz2'
   homepage 'http://collectd.org/'
-  md5 '47f70ae20801f10be355dc8109d696aa'
+  url 'http://collectd.org/files/collectd-5.1.0.tar.bz2'
+  md5 '141570150b4608c0c567330f6f146e0f'
 
   depends_on 'pkg-config' => :build
 
@@ -14,7 +14,7 @@ class Collectd < Formula
     cause <<-EOS.undent
       Clang interacts poorly with the collectd-bundled libltdl,
       causing configure to fail.
-      EOS
+    EOS
   end
 
   def install

@@ -96,6 +96,10 @@ module HomebrewArgvExtension
     include? '--devel'
   end
 
+  def build_stable?
+    not (build_head? or build_devel?)
+  end
+
   def build_universal?
     include? '--universal'
   end

@@ -7,16 +7,16 @@ class SqliteFunctions < Formula
 end
 
 class SqliteDocs < Formula
-  url 'http://www.sqlite.org/sqlite-doc-3071100.zip'
-  sha1 '87cbed1918c2604daefd3588a8555067e55e53cf'
-  version '3.7.11'
+  url 'http://www.sqlite.org/sqlite-doc-3071300.zip'
+  sha1 '839f471d03de777b050bf585ab6175a27d96c360'
+  version '3.7.13'
 end
 
 class Sqlite < Formula
   homepage 'http://sqlite.org/'
-  url 'http://www.sqlite.org/sqlite-autoconf-3071100.tar.gz'
-  sha1 'a768f76b10df84d6a2c66178544d42725a8fdaf0'
-  version '3.7.11'
+  url 'http://sqlite.org/sqlite-autoconf-3071300.tar.gz'
+  sha1 'd3833b6ad68db8505d1044f761dd962f415cd302'
+  version '3.7.13'
 
   depends_on 'readline' => :optional
 
@@ -49,7 +49,11 @@ class Sqlite < Formula
 
     if ARGV.include? "--with-functions"
       SqliteFunctions.new.brew { mv 'extension-functions.c?get=25', buildpath/'extension-functions.c' }
-      system ENV.cc, "-fno-common", "-dynamiclib", "extension-functions.c", "-o", "libsqlitefunctions.dylib", *ENV.cflags.split
+      system ENV.cc, "-fno-common",
+                     "-dynamiclib",
+                     "extension-functions.c",
+                     "-o", "libsqlitefunctions.dylib",
+                     *ENV.cflags.split
       lib.install "libsqlitefunctions.dylib"
     end
 

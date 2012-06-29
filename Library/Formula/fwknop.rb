@@ -12,6 +12,6 @@ class Fwknop < Formula
   end
 
   def test
-    system "#{bin}/fwknop --version"
+    system "#{bin}/fwknop", "--version"
   end
 end

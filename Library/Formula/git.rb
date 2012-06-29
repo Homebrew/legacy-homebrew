@@ -1,19 +1,19 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.7.10.2.tar.gz'
-  sha1 '6cc3f80185bdd1a608cf373b05313b2adc82b898'
+  url 'http://git-core.googlecode.com/files/git-manpages-1.7.11.1.tar.gz'
+  sha1 'e2defbf75ff15d7684d70457e41bc45fb22f0e1f'
 end
 
 class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.10.2.tar.gz'
-  sha1 '004a2bf989b935657e2e1e6000a748d83657649f'
+  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.11.1.tar.gz'
+  sha1 'f7d288033a508f673824a52bc21073232e7c9736'
 end
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.7.10.2.tar.gz'
-  sha1 'e4b7f746ff4e356baaddcad0b2911376efde031b'
+  url 'http://git-core.googlecode.com/files/git-1.7.11.1.tar.gz'
+  sha1 'd09664978931d215e43241689eb09371b509c7ce'
 
   head 'https://github.com/git/git.git'
 
@@ -37,7 +37,7 @@ class Git < Formula
     ENV['PYTHON_PATH'] = which 'python' # python can be brewed or unbrewed
 
     # Clean XCode 4.x installs don't include Perl MakeMaker
-    ENV['NO_PERL_MAKEMAKER']='1' if MacOS.lion?
+    ENV['NO_PERL_MAKEMAKER'] = '1' if MacOS.lion?
 
     ENV['BLK_SHA1'] = '1' if ARGV.include? '--with-blk-sha1'
 
@@ -54,7 +54,9 @@ class Git < Formula
 
     # Install the OS X keychain credential helper
     cd 'contrib/credential/osxkeychain' do
-      system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}"
+      system "make", "CC=#{ENV.cc}",
+                     "CFLAGS=#{ENV.cflags}",
+                     "LDFLAGS=#{ENV.ldflags}"
       bin.install 'git-credential-osxkeychain'
       system "make", "clean"
     end

@@ -23,10 +23,11 @@ def quantum_depth
 end
 
 class Graphicsmagick < Formula
-  url 'http://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.13/GraphicsMagick-1.3.13.tar.bz2'
-  head 'hg://http://graphicsmagick.hg.sourceforge.net:8000/hgroot/graphicsmagick/graphicsmagick'
   homepage 'http://www.graphicsmagick.org/'
-  md5 '1b5128e1868317ec7eb11a718f261a41'
+  url 'http://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.15/GraphicsMagick-1.3.15.tar.bz2'
+  sha256 'fd79168feaca5a2d230ce294541bb3655fd0fb6f21aec7c29dd7f00db14109ed'
+
+  head 'hg://http://graphicsmagick.hg.sourceforge.net:8000/hgroot/graphicsmagick/graphicsmagick'
 
   depends_on 'jpeg'
   depends_on 'libwmf' if use_wmf?

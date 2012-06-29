@@ -12,6 +12,6 @@ class Gsoap < Formula
   end
 
   def test
-    system "#{bin}/soapcpp2 -v"
+    system "#{bin}/soapcpp2", "-v"
   end
 end

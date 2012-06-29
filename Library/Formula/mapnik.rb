@@ -15,9 +15,9 @@ class Mapnik < Formula
   depends_on 'cairomm' => :optional
 
   # Reported upstream: https://github.com/mapnik/mapnik/issues/1171
-  # Fix is not yet in HEAD as of 3 MAY 2012, but likely will be in 2.0.2.
+  # Fix is in head.  Remove at 2.0.2.
   def patches
-    DATA
+    DATA unless ARGV.build_head?
   end
 
   def install

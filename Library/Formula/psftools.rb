@@ -20,7 +20,7 @@ class Psftools < Formula
     # The zip file has a fon in it, use fon2fnts to extrat to fnt
     mktemp do
       Pc8x8Font.new.brew do
-        system "#{bin}/fon2fnts pc8x8.fon"
+        system "#{bin}/fon2fnts", "pc8x8.fon"
         raise unless File.exist? "PC8X8_9.fnt"
       end
     end

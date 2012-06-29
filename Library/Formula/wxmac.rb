@@ -99,6 +99,7 @@ def install_wx_python
       "--disable-debug",
       "--prefix=#{prefix}",
       "--enable-unicode",
+      "--enable-std_string",
       "--enable-display",
       "--with-opengl"
     ]
@@ -132,7 +133,7 @@ def install_wx_python
     unless ARGV.build_devel?
       # erlang needs contrib/stc during configure phase.
       %w{ gizmos stc ogl }.each do |c|
-       system "make -C contrib/src/#{c} install"
+       system "make", "-C", "contrib/src/#{c}", "install"
       end
     end
 

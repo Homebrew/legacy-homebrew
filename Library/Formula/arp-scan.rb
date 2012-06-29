@@ -12,6 +12,6 @@ class ArpScan < Formula
   end
 
   def test
-    system "#{bin}/arp-scan -V"
+    system "#{bin}/arp-scan", "-V"
   end
 end
