@@ -7,6 +7,7 @@
 !/bin/brew
 !/share/man/man1/brew.1
 .DS_Store
+/Library/Contributions/cmds/brew-desc.rb
 /Library/LinkedKegs
 /Library/Taps
 /Library/Formula/.gitignore
