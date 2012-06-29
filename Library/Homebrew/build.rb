@@ -4,8 +4,6 @@
 # Rationale: Formula can use __END__, Formula can change ENV
 # Thrown exceptions are propogated back to the parent process over a pipe
 
-ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| File.expand_path p }
-
 require 'global'
 
 at_exit do
@@ -22,10 +20,7 @@ at_exit do
     ENV.extend(HomebrewEnvExtension)
     ENV.setup_build_environment
     # we must do this or tools like pkg-config won't get found by configure scripts etc.
-    ENV.prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? "#{HOMEBREW_PREFIX}/bin"
-    # this is a safety measure for Xcode 4.3 which started not installing
-    # dev tools into /usr/bin as a default
-    ENV.prepend 'PATH', MacOS.dev_tools_path, ':' unless ORIGINAL_PATHS.include? MacOS.dev_tools_path
+    ENV.prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? HOMEBREW_PREFIX/'bin'
 
     # Force any future invocations of sudo to require the user's password to be
     # re-entered. This is in-case any build script call sudo. Certainly this is
