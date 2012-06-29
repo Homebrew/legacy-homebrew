@@ -30,6 +30,9 @@ class Libevent < Formula
 
   def install
     ENV.j1
+    # Sees https://github.com/mxcl/homebrew/pull/5947
+    ENV.universal_binary
+
     system "./autogen.sh" if ARGV.build_head?
     system "./configure", "--prefix=#{prefix}"
     system "make"
