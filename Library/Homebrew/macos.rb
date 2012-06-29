@@ -175,21 +175,6 @@ module MacOS extend self
     end
   end
 
-  def gcc_42_build_version
-    @gcc_42_build_version ||= if File.exist? "#{dev_tools_path}/gcc-4.2" \
-      and not Pathname.new("#{dev_tools_path}/gcc-4.2").realpath.basename.to_s =~ /^llvm/
-      `#{dev_tools_path}/gcc-4.2 --version` =~ /build (\d{4,})/
-      $1.to_i
-    end
-  end
-
-  def gcc_40_build_version
-    @gcc_40_build_version ||= if File.exist? "#{dev_tools_path}/gcc-4.0"
-      `#{dev_tools_path}/gcc-4.0 --version` =~ /build (\d{4,})/
-      $1.to_i
-    end
-  end
-
   def xcode_prefix
     @xcode_prefix ||= begin
       path = Pathname.new xcode_folder
@@ -302,6 +287,21 @@ module MacOS extend self
           "4.3"
         end
       end
+    end
+  end
+
+  def gcc_40_build_version
+    @gcc_40_build_version ||= if locate("gcc-4.0")
+      `#{locate("gcc-4.0")} --version` =~ /build (\d{4,})/
+      $1.to_i
+    end
+  end
+
+  def gcc_42_build_version
+    @gcc_42_build_version ||= if locate("gcc-4.2") \
+      and not locate("gcc-4.2").realpath.basename.to_s =~ /^llvm/
+      `#{locate("gcc-4.2")} --version` =~ /build (\d{4,})/
+      $1.to_i
     end
   end
 
