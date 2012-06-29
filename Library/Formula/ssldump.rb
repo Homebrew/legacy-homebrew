@@ -18,24 +18,14 @@ class Ssldump < Formula
   end
 
   def patches
-    # reorder include files
-    # => http://sourceforge.net/tracker/index.php?func=detail&aid=1622854&group_id=68993&atid=523055
-    DATA
+    {
+      :p1 => [
+        # reorder include files
+        # => http://sourceforge.net/tracker/index.php?func=detail&aid=1622854&group_id=68993&atid=523055
+        'https://raw.github.com/gist/2321613/52c0a816d8dda102d5c1f5da2a2e857fcf4bad2a/reorder-include-files.diff',
+        # increase pcap sample size from an arbitrary 5000 the max TLS packet size 18432
+        'https://raw.github.com/gist/2321618/329aa95747beeec33aabf48d9c113af59493c3f4/increase-sample-buffer-size.diff'
+      ],
+    }
   end
 end
-
-__END__
---- a/base/pcap-snoop.c	2010-03-18 22:59:13.000000000 -0700
-+++ b/base/pcap-snoop.c	2010-03-18 22:59:30.000000000 -0700
-@@ -46,10 +46,9 @@
- 
- static char *RCSSTRING="$Id: pcap-snoop.c,v 1.14 2002/09/09 21:02:58 ekr Exp $";
- 
--
-+#include <net/bpf.h>
- #include <pcap.h>
- #include <unistd.h>
--#include <net/bpf.h>
- #ifndef _WIN32
- #include <sys/param.h>
- #endif
