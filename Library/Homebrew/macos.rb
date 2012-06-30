@@ -132,7 +132,7 @@ module MacOS extend self
     @xctoolchain_path ||= begin
       path = Pathname.new("#{MacOS.xcode_prefix}/Toolchains/XcodeDefault.xctoolchain")
       # If only the CLT are installed, all tools will be under dev_tools_path,
-      # and this path will be nil.
+      # this path won't exist, and xctoolchain_path will be nil.
       path if path.exist?
     end
   end
