@@ -128,34 +128,28 @@ module MacOS extend self
   end
 
   def xctoolchain_path
-    # Beginning with Xcode 4.3, clang and some other tools are located in a xctoolchain dir.
+    # As of Xcode 4.3, some tools are located in the "xctoolchain" directory
     @xctoolchain_path ||= begin
       path = Pathname.new("#{MacOS.xcode_prefix}/Toolchains/XcodeDefault.xctoolchain")
-      if path.exist?
-        path
-      else
-        # ok, there are no Toolchains in xcode_prefix
-        # and that's ok as long as everything is in dev_tools_path="/usr/bin" (i.e. clt_installed?)
-        nil
-      end
+      # If only the CLT are installed, all tools will be under dev_tools_path,
+      # and this path will be nil.
+      path if path.exist?
     end
   end
 
   def sdk_path(v=MacOS.version)
-    # The path of the MacOSX SDK.
-    if !MacOS.xctools_fucked? and File.executable? "#{xcode_folder}/usr/bin/make"
-      path = `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.strip
-    elsif File.directory? '/Developer/SDKs/MacOS#{v}.sdk'
-      # the old default (or wild wild west style)
-      path = "/Developer/SDKs/MacOS#{v}.sdk"
-    elsif File.directory? "#{xcode_prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
-      # xcode_prefix is pretty smart, so lets look inside to find the sdk
-      path = "#{xcode_prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
-    end
-    if path.nil? or path.empty? or not File.directory? path
-      nil
-    else
-      Pathname.new path
+    @sdk_path ||= begin
+      path = if !MacOS.xctools_fucked? and File.executable? "#{xcode_folder}/usr/bin/make"
+        `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.strip
+      elsif File.directory? '/Developer/SDKs/MacOS#{v}.sdk'
+        # the old default (or wild wild west style)
+        "/Developer/SDKs/MacOS#{v}.sdk"
+      elsif File.directory? "#{xcode_prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
+        # xcode_prefix is pretty smart, so lets look inside to find the sdk
+        "#{xcode_prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
+      end
+
+      Pathname.new(path) unless path.nil? or path.empty? or not File.directory? path
     end
   end
 
