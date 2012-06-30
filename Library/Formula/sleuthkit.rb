@@ -21,12 +21,7 @@ class Sleuthkit < Formula
   end
 
   def install
-    if ARGV.build_head?
-      system "glibtoolize"
-      system "aclocal"
-      system "automake", "--add-missing", "--copy"
-      system "autoconf"
-    end
+    system "./bootstrap" if ARGV.build_head?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
