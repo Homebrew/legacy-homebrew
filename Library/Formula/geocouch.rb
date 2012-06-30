@@ -47,7 +47,7 @@ class Geocouch < Formula
       '<string>geocouch</string>'
     inreplace (share/'geocouch/geocouch.plist'), '<key>HOME</key>', <<-EOS.lstrip.chop
       <key>ERL_FLAGS</key>
-      <string>-pa #{geocouch_share}/build</string>
+      <string>-pa #{geocouch_share}/ebin</string>
       <key>HOME</key>
     EOS
     inreplace (share/'geocouch/geocouch.plist'), '%bindir%/%couchdb_command_name%', \
@@ -113,12 +113,12 @@ class Geocouch < Formula
 
     To start geocouch manually and verify any geocouch version information (-V),
 
-      ERL_FLAGS="-pa #{geocouch_share}/build"  couchdb -V
+      ERL_FLAGS="-pa #{geocouch_share}/ebin"  couchdb -V
 
     For general convenience, export your ERL_FLAGS (erlang flags, above) in
     your login shell, and then start geocouch:
 
-      export ERL_FLAGS="-pa #{geocouch_share}/build"
+      export ERL_FLAGS="-pa #{geocouch_share}/ebin"
       couchdb
 
     Alternately, prepare launchctl to start/stop geocouch as follows:
