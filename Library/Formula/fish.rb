@@ -5,7 +5,7 @@ class Fish < Formula
   homepage 'http://fishshell.com'
   md5 'ead6b7c6cdb21f35a3d4aa1d5fa596f1'
 
-  head 'git://gitorious.org/fish-shell/fish-shell.git'
+  head 'git://github.com/fish-shell/fish-shell.git'
 
   # Indeed, the head build always builds documentation
   depends_on 'doxygen' => :build if ARGV.build_head?
