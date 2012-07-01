@@ -2,10 +2,11 @@ require 'formula'
 
 class Cairo < Formula
   homepage 'http://cairographics.org/'
-  url 'http://www.cairographics.org/releases/cairo-1.10.2.tar.gz'
-  sha1 'ccce5ae03f99c505db97c286a0c9a90a926d3c6e'
+  url 'http://cairographics.org/releases/cairo-1.12.2.tar.xz'
+  sha256 'b786bc4a70542bcb09f2d9d13e5e6a0c86408cbf6d1edde5f0de807eecf93f96'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz'=> :build
   depends_on 'pixman'
 
   keg_only :provided_by_osx,
@@ -29,7 +30,7 @@ class Cairo < Formula
       --prefix=#{prefix}
       --with-x
     ]
-    args << '--enable-xcb' unless MacOS.leopard?
+    args << '--enable-xcb=no' if MacOS.leopard?
 
     system "./configure", *args
     system "make install"
