@@ -6,6 +6,7 @@ class SdlImage < Formula
   md5 '6c06584b31559e2b59f2b982d0d1f628'
 
   depends_on 'sdl'
+  depends_on :x11 # for Freetype
 
   def options
     [['--universal', 'Build universal binaries.']]
@@ -13,13 +14,12 @@ class SdlImage < Formula
 
   def install
     ENV.universal_binary if ARGV.build_universal?
-    ENV.x11 # For Freetype
     inreplace 'SDL_image.pc.in', '@prefix@', HOMEBREW_PREFIX
 
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
                           "--disable-sdltest",
-                          "--with-freetype-exec-prefix=/usr/X11"
+                          "--with-freetype-exec-prefix=#{MacOS.x11_prefix}"
     system "make install"
   end
 end

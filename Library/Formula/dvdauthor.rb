@@ -10,6 +10,7 @@ class Dvdauthor < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'libdvdread'
+  depends_on :x11
 
   # Fix build with png-1.5. Patch has been applied upstream, but no tagged
   # release has been made since 2010. See:
@@ -20,7 +21,6 @@ class Dvdauthor < Formula
   end
 
   def install
-    ENV.x11 # For libpng, etc.
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"

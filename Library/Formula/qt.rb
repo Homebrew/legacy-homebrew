@@ -12,6 +12,8 @@ class Qt < Formula
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
 
+  depends_on :x11
+
   fails_with :clang do
     build 318
   end
@@ -30,12 +32,19 @@ class Qt < Formula
   depends_on "d-bus" if ARGV.include? '--with-qtdbus'
   depends_on 'sqlite' if MacOS.leopard?
 
+  def patches
+    # fixes conflict on osx 10.5. See qt bug:
+    # https://bugreports.qt-project.org/browse/QTBUG-23258
+    if MacOS.leopard?
+      "http://bugreports.qt-project.org/secure/attachment/26712/Patch-Qt-4.8-for-10.5"
+    end
+  end
+
   def install
-    ENV.x11
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
     args = ["-prefix", prefix,
             "-system-libpng", "-system-zlib",
-            "-L/usr/X11/lib", "-I/usr/X11/include",
+            "-L#{MacOS.x11_prefix}/lib", "-I#{MacOS.x11_prefix}/include",
             "-confirm-license", "-opensource",
             "-cocoa", "-fast" ]
 
