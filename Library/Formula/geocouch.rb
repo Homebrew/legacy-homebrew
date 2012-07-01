@@ -4,7 +4,7 @@ class Geocouch < Formula
   homepage 'https://github.com/couchbase/geocouch'
   head 'https://github.com/couchbase/geocouch.git', :tag => 'couchdb1.2.x'
   url 'https://github.com/couchbase/geocouch/zipball/couchdb1.2.x'
-  md5 'af82d325bdf0a93d7a98bc650fc926b9'
+  sha1 'ec9d912f39710b69115b6d0dae6277e387215377'
 
   devel do
     url 'https://github.com/couchbase/geocouch.git', :tag => 'master'
@@ -29,25 +29,25 @@ class Geocouch < Formula
     #  Grab couchdb 1.2.x.
     couchdb_dir = buildpath/'couchdb-src'
     couchdb = Formula.factory 'couchdb'
-    couchdb.brew { couchdb_dir.install Dir[ '*'] }
-    ENV[ 'COUCH_SRC'] = couchdb_dir/"src/couchdb"
+    couchdb.brew { couchdb_dir.install Dir['*'] }
+    ENV['COUCH_SRC'] = couchdb_dir/"src/couchdb"
 
     #  Build geocouch.
     system "make"
 
     #  Install geocouch build files.
     (share/'geocouch').mkpath
-    rm_rf share/'geocouch/build/'
-    (share/'geocouch').install Dir[ 'build']
+    rm_rf share/'geocouch/ebin/'
+    (share/'geocouch').install Dir['ebin']
 
     #  Install geocouch.plist for launchctl support.
-    (share/'geocouch').install Dir[ couchdb_dir/'etc/launchd/org.apache.couchdb.plist.tpl.in']
+    (share/'geocouch').install Dir[couchdb_dir/'etc/launchd/org.apache.couchdb.plist.tpl.in']
     mv share/'geocouch/org.apache.couchdb.plist.tpl.in', share/'geocouch/geocouch.plist'
     inreplace (share/'geocouch/geocouch.plist'), '<string>org.apache.couchdb</string>', \
       '<string>geocouch</string>'
     inreplace (share/'geocouch/geocouch.plist'), '<key>HOME</key>', <<-EOS.lstrip.chop
       <key>ERL_FLAGS</key>
-      <string>-pa #{geocouch_share}/build</string>
+      <string>-pa #{geocouch_share}/ebin</string>
       <key>HOME</key>
     EOS
     inreplace (share/'geocouch/geocouch.plist'), '%bindir%/%couchdb_command_name%', \
@@ -58,10 +58,10 @@ class Geocouch < Formula
     (share/'geocouch/geocouch.plist').chmod 0644
 
     #  Install geocouch.ini into couchdb.
-    (etc/'couchdb/default.d').install Dir[ 'etc/couchdb/default.d/geocouch.ini']
+    (etc/'couchdb/default.d').install Dir['etc/couchdb/default.d/geocouch.ini']
 
     #  Install tests into couchdb.
-    test_files = Dir[ 'share/www/script/test/*.js']
+    test_files = Dir['share/www/script/test/*.js']
     #  Normal recipe "should" read:
     #      (share/'couchdb/www/script/test/').install test_files
     #  which would symlink geocouch tests into the couchdb share.  But couchdb
@@ -76,7 +76,7 @@ class Geocouch < Formula
     rm_rf (couchdb_share/'www/script/test/geocouch')
     (couchdb_share/'www/script/test/geocouch').mkpath
     (couchdb_share/'www/script/test/geocouch').install test_files
-    Dir[ (couchdb_share/'www/script/test/geocouch/*.js')].each  \
+    Dir[(couchdb_share/'www/script/test/geocouch/*.js')].each  \
       { |geotest| system "cd #{couchdb_share/'www/script/test'};  ln -s geocouch/#{File.basename( geotest)} ."}
     #  Complete the install by referencing the geocouch tests in couch_tests.js
     #  (which runs the tests).
@@ -113,12 +113,12 @@ class Geocouch < Formula
 
     To start geocouch manually and verify any geocouch version information (-V),
 
-      ERL_FLAGS="-pa #{geocouch_share}/build"  couchdb -V
+      ERL_FLAGS="-pa #{geocouch_share}/ebin"  couchdb -V
 
     For general convenience, export your ERL_FLAGS (erlang flags, above) in
     your login shell, and then start geocouch:
 
-      export ERL_FLAGS="-pa #{geocouch_share}/build"
+      export ERL_FLAGS="-pa #{geocouch_share}/ebin"
       couchdb
 
     Alternately, prepare launchctl to start/stop geocouch as follows:
