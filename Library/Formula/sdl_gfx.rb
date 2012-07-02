@@ -1,9 +1,9 @@
 require 'formula'
 
 class SdlGfx < Formula
-  url 'http://www.ferzkopp.net/Software/SDL_gfx-2.0/SDL_gfx-2.0.20.tar.gz'
   homepage 'http://www.ferzkopp.net/joomla/content/view/19/14/'
-  md5 '8a787e538a8e4d80d4927535be5af083'
+  url 'http://www.ferzkopp.net/Software/SDL_gfx-2.0/SDL_gfx-2.0.23.tar.gz'
+  sha1 'aae60e7fed539f3f8a0a0bd6da3bbcf625642596'
 
   depends_on 'sdl'
 
@@ -15,10 +15,7 @@ class SdlGfx < Formula
     ENV.universal_binary if ARGV.build_universal?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--enable-static=no",
-                          "--enable-shared=yes",
-                          "--disable-sdltest",
-                          "--disable-mmx"
+                          "--disable-sdltest"
     system "make install"
   end
 end
