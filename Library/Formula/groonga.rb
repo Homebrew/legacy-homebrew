@@ -17,6 +17,13 @@ class Groonga < Formula
   end
 end
 
+
+# The patch below to fix a problem that breaks build on OSX.
+# The patch is tentative for groonga 2.0.4 release.
+# This should be removed on the next groonga release
+# because the problem have been fixed on upstream's master
+# by the commit:
+#   https://github.com/groonga/groonga/commit/690db3c1610cba7c8e4225a64ded72a1fe90053a
 __END__
 diff --git a/src/nginx-module/config b/src/nginx-module/config
 index a25a377..7eafdf7 100644
