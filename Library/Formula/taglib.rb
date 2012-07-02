@@ -1,9 +1,9 @@
 require 'formula'
 
 class Taglib < Formula
-  url 'http://developer.kde.org/~wheeler/files/src/taglib-1.7.tar.gz'
-  md5 '6a7e312668f153fa905a81714aebc257'
-  homepage 'http://developer.kde.org/~wheeler/taglib.html'
+  homepage 'http://taglib.github.com/'
+  url 'https://github.com/downloads/taglib/taglib/taglib-1.7.2.tar.gz'
+  sha1 'e657384ccf3284db2daba32dccece74534286012'
 
   depends_on 'cmake' => :build
 
