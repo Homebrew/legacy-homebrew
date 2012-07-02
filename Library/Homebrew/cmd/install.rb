@@ -17,7 +17,26 @@ module Homebrew extend self
       abort "Cowardly refusing to `sudo brew install'"
     end
 
-    install_formulae ARGV.formulae
+    formulae = [ARGV.formulae].flatten.compact
+
+    if ARGV.include? '--help'
+      run_config_help_formulae formulae
+    else
+      install_formulae formulae
+    end
+  end
+
+  def run_config_help_formulae formulae
+    formulae.each do |f|
+      f.stage do
+        if Pathname.new('configure').file?
+          ohai "Running 'configure --help' for #{f}"
+          system './configure --help'
+        else
+          onoe "No configure file for #{f}"
+        end
+      end
+    end
   end
 
   def check_ppc
@@ -66,7 +85,6 @@ module Homebrew extend self
   end
 
   def install_formulae formulae
-    formulae = [formulae].flatten.compact
     unless formulae.empty?
       perform_preinstall_checks
       formulae.each do |f|
