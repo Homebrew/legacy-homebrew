@@ -1,9 +1,9 @@
 require 'formula'
 
 class SdlImage < Formula
-  url 'http://www.libsdl.org/projects/SDL_image/release/SDL_image-1.2.10.tar.gz'
   homepage 'http://www.libsdl.org/projects/SDL_image'
-  md5 '6c06584b31559e2b59f2b982d0d1f628'
+  url 'http://www.libsdl.org/projects/SDL_image/release/SDL_image-1.2.12.tar.gz'
+  sha1 '5e3e393d4e366638048bbb10d6a269ea3f4e4cf2'
 
   depends_on 'sdl'
   depends_on :x11 # for Freetype
