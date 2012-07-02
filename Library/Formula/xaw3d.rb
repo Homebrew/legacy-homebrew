@@ -6,9 +6,9 @@ class Xaw3d < Formula
   md5 '29ecfdcd6bcf47f62ecfd672d31269a1'
 
   depends_on 'imake' => :build
+  depends_on :x11
 
   def install
-    ENV.x11
     inreplace 'lib/Xaw3d/Imakefile', 'XCOMM EXTRA_INCLUDES', 'EXTRA_INCLUDES'
     cd 'lib/Xaw3d' do
       mkdir 'X11' do

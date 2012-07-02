@@ -18,7 +18,7 @@ class Portaudio < Formula
   # Fix PyAudio compilation on Lion
   def patches
     if MacOS.lion?
-      "https://trac.macports.org/export/94150/trunk/dports/audio/portaudio/files/patch-include__pa_mac_core.h.diff"
+      { :p0 => "https://trac.macports.org/export/94150/trunk/dports/audio/portaudio/files/patch-include__pa_mac_core.h.diff" }
     end
   end
 
