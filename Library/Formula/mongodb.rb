@@ -13,6 +13,18 @@ class Mongodb < Formula
     version '2.0.6-i386'
   end
 
+  devel do
+    if Hardware.is_64_bit? and not ARGV.build_32_bit?
+      url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.1.2.tgz'
+      md5 '1114ff57e8cb70eb71a296358973f1db'
+      version '2.1.2-x86_64'
+    else
+      url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.1.2.tgz'
+      md5 '418c5d0cd96fb579e0e97aeeaed63694'
+      version '2.1.2-i386'
+    end
+  end
+
   skip_clean :all
 
   def options
