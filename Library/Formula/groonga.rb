@@ -24,6 +24,7 @@ end
 # because the problem have been fixed on upstream's master
 # by the commit:
 #   https://github.com/groonga/groonga/commit/690db3c1610cba7c8e4225a64ded72a1fe90053a
+#   https://github.com/groonga/groonga/commit/26ec2251c28dda151c66f4a530f2330d009edb32
 __END__
 diff --git a/src/nginx-module/config b/src/nginx-module/config
 index a25a377..7eafdf7 100644
@@ -34,7 +35,7 @@ index a25a377..7eafdf7 100644
  if [ "$GROONGA_HTTPD_IN_TREE" = yes ]; then
    groonga_cflags="${GROONGA_HTTPD_CFLAGS} -I ${GROONGA_HTTPD_IN_TREE_INCLUDE_PATH}"
 -  groonga_libs="-L ${GROONGA_HTTPD_IN_TREE_LINK_PATH} ${GROONGA_HTTPD_LIBS} -Wl,-rpath=${GROONGA_HTTPD_RPATH}"
-+  groonga_libs="-L ${GROONGA_HTTPD_IN_TREE_LINK_PATH} ${GROONGA_HTTPD_LIBS} -Wl,-rpath -Wl,${GROONGA_HTTPD_RPATH}"
++  groonga_libs="-L${GROONGA_HTTPD_IN_TREE_LINK_PATH} ${GROONGA_HTTPD_LIBS} -Wl,-rpath -Wl,${GROONGA_HTTPD_RPATH}"
  
    ngx_addon_name=ngx_http_groonga_module
    HTTP_MODULES="$HTTP_MODULES ngx_http_groonga_module"
