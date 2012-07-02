@@ -1,7 +1,7 @@
 require 'formula'
 
 class Fiwalk < Formula
-  url 'http://afflib.org/downloads/fiwalk-0.6.16.tar.gz'
+  url 'https://github.com/downloads/kfairbanks/sleuthkit/fiwalk-0.6.16.tar.gz'
   homepage 'http://afflib.org/software/fiwalk'
   md5 '282925766aa0e7ca7c5b894d28e0c9ee'
 
