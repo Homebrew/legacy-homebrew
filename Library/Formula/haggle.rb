@@ -8,12 +8,12 @@ class Haggle < Formula
   depends_on 'sqlite'
 
   fails_with :clang do
-      build 318
-      cause "no class named 'const_iterator' in 'List<T>'"
+    build 318
+    cause "no class named 'const_iterator' in 'List<T>'"
   end
 
   def install
-    system "./configure"
+    system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
   end
