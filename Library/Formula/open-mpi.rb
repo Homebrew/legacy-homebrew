@@ -6,9 +6,6 @@ class OpenMpi < Formula
   md5 '28b2a7f9c2fcee0217facf47bf35d5ea'
 
   def install
-    # Compiler complains about link compatibility with FORTRAN otherwise
-    ENV.delete('CFLAGS')
-    ENV.delete('CXXFLAGS')
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
 
