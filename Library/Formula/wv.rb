@@ -8,10 +8,10 @@ class Wv < Formula
   depends_on 'glib'
   depends_on 'libgsf'
   depends_on 'libwmf'
+  depends_on :libpng
 
   def install
     ENV.libxml2
-    ENV.libpng
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"

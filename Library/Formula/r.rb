@@ -19,6 +19,7 @@ class R < Formula
   depends_on 'readline'
   depends_on 'libtiff'
   depends_on 'jpeg'
+  depends_on :x11
 
   depends_on 'valgrind' if valgrind?
 
@@ -31,7 +32,6 @@ class R < Formula
   def install
     ENV.Og if valgrind?
     ENV.fortran
-    ENV.x11 # So PNG gets added to the x11 and cairo plotting devices
 
     args = [
       "--prefix=#{prefix}",

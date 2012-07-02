@@ -9,6 +9,7 @@ class Ipe < Formula
   depends_on 'makeicns' => :build
   depends_on 'lua'
   depends_on 'qt'
+  depends_on :x11
 
   # configure library paths using pkg-config
   # because ipe assumes that Qt and other libs are installed in
