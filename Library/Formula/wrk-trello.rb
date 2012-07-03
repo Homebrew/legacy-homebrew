@@ -10,7 +10,7 @@ class WrkTrello < Formula
     #!/bin/sh
 
     export WRK_HOME=#{libexec}
-    #{libexec}/bin/wrk
+    #{libexec}/bin/wrk $@
     EOS
   end
 
