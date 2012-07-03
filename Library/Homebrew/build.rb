@@ -10,6 +10,8 @@ at_exit do
   # the whole of everything must be run in at_exit because the formula has to
   # be the run script as __END__ must work for *that* formula.
 
+  error_pipe = nil
+
   begin
     raise $! if $! # an exception was already thrown when parsing the formula
 
@@ -35,15 +37,15 @@ at_exit do
     # question altogether.
     if ENV['HOMEBREW_ERROR_PIPE']
       require 'fcntl'
-      IO.new(ENV['HOMEBREW_ERROR_PIPE'].to_i, 'w').fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
+      error_pipe = IO.new(ENV['HOMEBREW_ERROR_PIPE'].to_i, 'w')
+      error_pipe.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
     end
 
     install(Formula.factory($0))
   rescue Exception => e
-    if ENV['HOMEBREW_ERROR_PIPE']
-      pipe = IO.new(ENV['HOMEBREW_ERROR_PIPE'].to_i, 'w')
-      Marshal.dump(e, pipe)
-      pipe.close
+    unless error_pipe.nil?
+      Marshal.dump(e, error_pipe)
+      error_pipe.close
       exit! 1
     else
       onoe e
