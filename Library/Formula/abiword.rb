@@ -20,9 +20,31 @@ class Abiword < Formula
   depends_on 'wv'
   depends_on 'imagemagick'
 
+  def patches
+    if ARGV.build_devel?
+      {:p0 => "http://bugzilla.abisource.com/attachment.cgi?id=5477"}
+    else
+      DATA
+    end
+  end
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end
 end
+
+__END__
+diff --git a/src/af/util/xp/ut_go_file.h b/src/af/util/xp/ut_go_file.h
+index e29d7b7..8d5f608 100644
+--- a/src/af/util/xp/ut_go_file.h
++++ b/src/af/util/xp/ut_go_file.h
+@@ -31,7 +31,6 @@
+ 
+ #include <glib.h>
+ #include <gsf/gsf.h>
+-#include <glib/gerror.h>
+ #include <time.h>
+ 
+ G_BEGIN_DECLS
