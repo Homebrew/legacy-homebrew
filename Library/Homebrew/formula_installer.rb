@@ -212,8 +212,14 @@ class FormulaInstaller
       write.close
       Process.wait
       data = read.read
-      raise Marshal.load(data) unless data.nil? or data.empty?
-      raise "Suspicious installation failure" unless $?.success?
+      if data.nil? or data.empty?
+        raise "Suspicious installation failure" unless $?.success?
+      else
+        e = Marshal.load(data)
+        onoe e.inspect
+        puts e.backtrace
+        raise e
+      end
 
       # Write an installation receipt (a Tab) to the prefix
       Tab.for_install(f, args).write if f.installed?
