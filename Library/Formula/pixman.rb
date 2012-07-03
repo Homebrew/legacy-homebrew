@@ -8,6 +8,11 @@ class Pixman < Formula
   depends_on 'pkg-config' => :build
   depends_on :x11
 
+  keg_only :provided_by_osx, <<-EOS.undent
+    Apple provides an outdated version of libpixman in it's X11 distribution.
+    A more up-to-date version is available in XQuartz.
+    EOS
+
   fails_with :llvm do
     build 2336
     cause <<-EOS.undent
