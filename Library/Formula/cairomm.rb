@@ -7,7 +7,7 @@ class Cairomm < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'libsigc++'
-  depends_on 'cairo' if MACOS_VERSION <= 10.6
+  depends_on 'cairo'
 
   def install
     system "./configure", "--disable-dependency-tracking",

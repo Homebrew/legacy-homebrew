@@ -14,6 +14,7 @@ class Gtkx < Formula
   depends_on 'pango'
   depends_on 'jasper' => :optional
   depends_on 'atk' => :optional
+  depends_on 'cairo'
   depends_on :x11
 
   fails_with :llvm do
