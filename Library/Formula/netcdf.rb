@@ -35,7 +35,14 @@ class Netcdf < Formula
   end
 
   def install
-    ENV.fortran if fortran?
+    if fortran?
+      ENV.fortran
+      # fix for ifort not accepting the --force-load argument, causing
+      # the library libnetcdff.dylib to be missing all the f90 symbols.
+      # http://www.unidata.ucar.edu/software/netcdf/docs/known_problems.html#intel-fortran-macosx
+      # https://github.com/mxcl/homebrew/issues/13050
+      ENV['lt_cv_ld_force_load'] = 'no' if ENV['FC'] == 'ifort'
+    end
 
     common_args = %W[
       --disable-dependency-tracking
