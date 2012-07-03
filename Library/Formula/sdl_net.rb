@@ -1,9 +1,9 @@
 require 'formula'
 
 class SdlNet < Formula
-  url 'http://www.libsdl.org/projects/SDL_net/release/SDL_net-1.2.7.tar.gz'
   homepage 'http://www.libsdl.org/projects/SDL_net/'
-  md5 '6bd4662d1423810f3140d4da21b6d912'
+  url 'http://www.libsdl.org/projects/SDL_net/release/SDL_net-1.2.8.tar.gz'
+  sha1 'fd393059fef8d9925dc20662baa3b25e02b8405d'
 
   depends_on 'sdl'
 

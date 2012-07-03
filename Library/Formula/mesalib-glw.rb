@@ -5,6 +5,8 @@ class MesalibGlw < Formula
   homepage 'http://www.mesa3d.org'
   md5 '81a2a4b7cbfce7553f7ad8d924edbe2f'
 
+  depends_on :x11
+
   def options
     [
       ['--enable-static', "build static library"]
@@ -28,7 +30,7 @@ class MesalibGlw < Formula
     inreplace 'configs/autoconf' do |s|
       s.gsub! /.so/, '.dylib'
       s.gsub! /SRC_DIRS = mesa glw/, 'SRC_DIRS = glw'
-      s.gsub! /-L\$\(TOP\)\/\$\(LIB_DIR\)/, '-L/usr/X11/lib'
+      s.gsub! /-L\$\(TOP\)\/\$\(LIB_DIR\)/, "-L#{MacOS.x11_prefix}/lib"
     end
 
     inreplace 'src/glw/Makefile' do |s|
