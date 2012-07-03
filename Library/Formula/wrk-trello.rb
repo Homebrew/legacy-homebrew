@@ -8,15 +8,13 @@ class WrkTrello < Formula
 
 
   def install
-    bin.install 'bin/wrk'
-    # wrk script expects the jars to be inside the lib folder, so
-    # `lib` inside `libexec` it is.
-    libexec.install 'lib'
+    libexec.install Dir['*']
+    bin.install_symlink "#{libexec}/bin/wrk"
   end
 
   def caveats
     <<-EOS.undent
-    You should set WRK_HOME and PLY_HOME to
+    You should set WRK_HOME to
     #{libexec}
 
     To get your token go here:
