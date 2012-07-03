@@ -2,7 +2,7 @@ require 'formula'
 
 class Qscintilla2 < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/qscintilla/intro'
-  url 'http://www.riverbankcomputing.co.uk/static/Downloads/QScintilla2/QScintilla-gpl-2.6.1.tar.gz'
+  url 'http://www.riverbankcomputing.co.uk/static/Downloads/QScintilla2/QScintilla-gpl-2.6.2.tar.gz'
   sha1 'c68dbeaafb4f5dbe0d8200ae907cced0c7762e19'
 
   depends_on 'pyqt'
