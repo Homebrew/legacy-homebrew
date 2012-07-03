@@ -3,7 +3,7 @@ require 'formula'
 class Abiword < Formula
   homepage 'http://www.abisource.com/'
   url 'http://www.abisource.com/downloads/abiword/2.8.6/source/abiword-2.8.6.tar.gz'
-  md5 'f883b0a7f26229a9c66fd6a1a94381aa'
+  sha1 '998f69d038000b3fc027d4259548f02d67c8d0df'
 
   devel do
     url 'http://www.abisource.com/downloads/abiword/2.9.2/source/abiword-2.9.2.tar.gz'
