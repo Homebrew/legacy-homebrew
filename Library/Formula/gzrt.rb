@@ -7,7 +7,7 @@ class Gzrt < Formula
 
   def install
     system "make"
-	bin.install("gzrecover")	
-	man1.install("gzrecover.1")	
+    bin.install "gzrecover"
+    man1.install "gzrecover.1"
   end
 end
