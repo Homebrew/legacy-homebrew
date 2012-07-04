@@ -22,16 +22,21 @@ class Cmake < Formula
   homepage 'http://www.cmake.org/'
 
   bottle do
-    version 1
-    sha1 'e1251ca112398348b1a150600826fc2befb200dd' => :lion
-    sha1 '51d960d0ebff661babd23970f69e9fcaaac9b1f3' => :snowleopard
+    version 2
+    sha1 '64de3916cea46cf98ff0853db401109394cfbd5d' => :lion
+    sha1 'da25300b55944c84e6a0c2e4efc57bb160a02806' => :snowleopard
   end
 
   depends_on NoExpatFramework.new
 
-  # Correct FindPkgConfig found variable. Remove for CMake 2.8.9.
   def patches
-    "https://github.com/Kitware/CMake/commit/3ea850.patch"
+    [
+      # Correct FindPkgConfig found variable. Remove for CMake 2.8.9.
+      "https://github.com/Kitware/CMake/commit/3ea850.patch",
+      # Protect the default value of CMAKE_FIND_FRAMEWORK so that it can be
+      # overridden from the command line. Remove for CMake 2.8.9.
+      "https://github.com/Kitware/CMake/commit/8b2fb3.patch"
+    ]
   end
 
   def install

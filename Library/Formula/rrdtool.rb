@@ -11,6 +11,7 @@ class Rrdtool < Formula
   depends_on 'intltool'
   depends_on 'expat'
   depends_on 'pango'
+  depends_on :x11
 
   # Can use lua if it is found, but don't force users to install
   depends_on 'lua' => :optional if ARGV.include? "--lua"
@@ -24,17 +25,17 @@ class Rrdtool < Formula
 
   def install
     ENV.libxml2
-    ENV.x11
 
     which_perl = which 'perl'
     which_ruby = which 'ruby'
+    ruby_path  = "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby"
 
-    opoo "Using system Ruby. RRD module will be installed to /Library/Ruby/..." if which_ruby == "/usr/bin/ruby"
-    opoo "Using system Perl. RRD module will be installed to /Library/Perl/..." if which_perl == "/usr/bin/perl"
+    opoo "Using system Ruby. RRD module will be installed to /Library/Ruby/..." if which_ruby.realpath.to_s == ruby_path
+    opoo "Using system Perl. RRD module will be installed to /Library/Perl/..." if which_perl.to_s == "/usr/bin/perl"
 
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--mandir=#{man}"]
-    args << "--enable-perl-site-install" if which_perl == "/usr/bin/perl"
-    args << "--enable-ruby-site-install" if which_ruby == "/usr/bin/ruby"
+    args << "--enable-perl-site-install" if which_perl.to_s == "/usr/bin/perl"
+    args << "--enable-ruby-site-install" if which_ruby.realpath.to_s == ruby_path
 
     system "./configure", *args
 

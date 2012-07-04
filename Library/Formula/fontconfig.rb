@@ -9,9 +9,9 @@ class Fontconfig < Formula
     "Leopard comes with version 2.4.x, which is too old for many packages."
 
   depends_on 'pkg-config' => :build
+  depends_on :x11
 
   def install
-    ENV.x11
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end

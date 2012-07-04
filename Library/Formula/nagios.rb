@@ -7,6 +7,7 @@ class Nagios < Formula
 
   depends_on 'gd'
   depends_on 'nagios-plugins'
+  depends_on :x11 # Required to compile some CGI's against the build-in libpng.
 
   def nagios_sbin;  prefix+'cgi-bin';       end
   def nagios_etc;   etc+'nagios';           end
@@ -16,7 +17,6 @@ class Nagios < Formula
   def group;        `id -gn`.chomp;         end
 
   def install
-    ENV.x11 # Required to compile some CGI's against the build-in libpng.
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -24,6 +24,7 @@ class Nagios < Formula
                           "--sysconfdir=#{nagios_etc}",
                           "--localstatedir=#{nagios_var}",
                           "--datadir=#{htdocs}",
+                          "--libexecdir=#{HOMEBREW_PREFIX}/sbin", # Plugin dir
                           "--with-cgiurl=/nagios/cgi-bin",
                           "--with-htmurl=/nagios",
                           "--with-nagios-user=#{user}",
@@ -38,10 +39,6 @@ class Nagios < Formula
     system "make install-config"
     system "make install-webconf"
     (share+plist_path).write startup_plist
-
-    # Symlink plugins
-    libexec.rmdir
-    ln_s HOMEBREW_PREFIX+'sbin/nagios-plugins', libexec
   end
 
   def startup_plist

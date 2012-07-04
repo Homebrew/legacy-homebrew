@@ -195,7 +195,7 @@ class FormulaInstaller
       begin
         read.close
         exec '/usr/bin/nice',
-             '/usr/bin/ruby',
+             '/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby',
              '-I', Pathname.new(__FILE__).dirname,
              '-rbuild',
              '--',
@@ -326,12 +326,11 @@ class FormulaInstaller
   def check_non_libraries
     return unless File.exist? f.lib
 
-    valid_libraries = %w(.a .dylib .framework .la .o .so)
-    allowed_non_libraries = %w(.jar .prl .pm)
+    valid_extensions = %w(.a .dylib .framework .jnilib .la .o .so
+                          .jar .prl .pm)
     non_libraries = f.lib.children.select do |g|
       next if g.directory?
-      extname = g.extname
-      (not allowed_non_libraries.include? extname) and (not valid_libraries.include? extname)
+      not valid_extensions.include? g.extname
     end
 
     unless non_libraries.empty?

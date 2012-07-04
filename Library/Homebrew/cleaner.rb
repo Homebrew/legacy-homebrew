@@ -37,7 +37,7 @@ class Cleaner
     puts "strip #{path}" if ARGV.verbose?
     path.chmod 0644 # so we can strip
     unless path.stat.nlink > 1
-      system "/usr/bin/strip", *(args+path)
+      system "#{MacOS.locate('strip')}", *(args+path)
     else
       path = path.to_s.gsub ' ', '\\ '
 
@@ -45,7 +45,7 @@ class Cleaner
       # is this expected behaviour? patch does it too… still, this fixes it
       tmp = `/usr/bin/mktemp -t homebrew_strip`.chomp
       begin
-        `/usr/bin/strip #{args} -o #{tmp} #{path}`
+        `#{MacOS.locate('strip')} #{args} -o #{tmp} #{path}`
         `/bin/cat #{tmp} > #{path}`
       ensure
         FileUtils.rm tmp
@@ -55,15 +55,14 @@ class Cleaner
 
   def clean_file path
     perms = 0444
-    case `/usr/bin/file -h '#{path}'`
-    when /Mach-O dynamically linked shared library/
+    if path.dylib?
       # Stripping libraries is causing no end of trouble. Lets just give up,
       # and try to do it manually in instances where it makes sense.
       #strip path, '-SxX'
-    when /Mach-O [^ ]* ?executable/
+    elsif path.mach_o_executable?
       strip path
       perms = 0555
-    when /text executable/
+    elsif path.text_executable?
       perms = 0555
     end
     path.chmod perms

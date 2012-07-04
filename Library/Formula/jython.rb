@@ -6,8 +6,8 @@ class Jython < Formula
   sha1 'd4534a691edf40aa1d51723dfe3e22db1e39b432'
 
   devel do
-    url "http://downloads.sourceforge.net/project/jython/jython-dev/2.7.0a1/jython_installer-2.7a1.jar"
-    sha1 'c2fc5232da2c9de0cca357bf4fa5dc312bbf1294'
+    url "http://downloads.sourceforge.net/project/jython/jython-dev/2.7.0a2/jython_installer-2.7a2.jar"
+    sha1 'b4a0bd80800221d9a6b5462120c327e27b307544'
   end
 
   def install

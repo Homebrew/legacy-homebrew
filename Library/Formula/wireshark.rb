@@ -2,8 +2,8 @@ require 'formula'
 
 class Wireshark < Formula
   homepage 'http://www.wireshark.org'
-  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.6.7.tar.bz2'
-  sha1 '392c4f35cd8d16287ba9eba3afec226fcadd9746'
+  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.6.8.tar.bz2'
+  sha1 'fb79058c66944581b822e4d8370848f953cfc9d4'
 
   devel do
     url 'http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.7.1.tar.bz2'
@@ -15,7 +15,11 @@ class Wireshark < Formula
   depends_on 'c-ares' => :optional
   depends_on 'pcre' => :optional
   depends_on 'glib'
-  depends_on 'gtk+' if ARGV.include? '--with-x'
+
+  if ARGV.include? '--with-x'
+    depends_on :x11
+    depends_on 'gtk+'
+  end
 
   def options
     [
@@ -42,20 +46,20 @@ class Wireshark < Formula
   end
 
   def caveats; <<-EOS.undent
-      If your list of available capture interfaces is empty
-      (default OS X behavior), try the following commands:
+    If your list of available capture interfaces is empty
+    (default OS X behavior), try the following commands:
 
-        wget https://bugs.wireshark.org/bugzilla/attachment.cgi?id=3373 -O ChmodBPF.tar.gz
-        tar zxvf ChmodBPF.tar.gz
-        open ChmodBPF/Install\\ ChmodBPF.app
+      curl https://bugs.wireshark.org/bugzilla/attachment.cgi?id=3373 -o ChmodBPF.tar.gz
+      tar zxvf ChmodBPF.tar.gz
+      open ChmodBPF/Install\\ ChmodBPF.app
 
-      This adds a launch daemon that changes the permissions of your BPF
-      devices so that all users in the 'admin' group - all users with
-      'Allow user to administer this computer' turned on - have both read
-      and write access to those devices.
+    This adds a launch daemon that changes the permissions of your BPF
+    devices so that all users in the 'admin' group - all users with
+    'Allow user to administer this computer' turned on - have both read
+    and write access to those devices.
 
-      See bug report:
-        https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=3760
+    See bug report:
+      https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=3760
     EOS
   end
 end

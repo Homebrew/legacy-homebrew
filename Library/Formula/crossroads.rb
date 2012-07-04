@@ -2,8 +2,8 @@ require 'formula'
 
 class Crossroads < Formula
   homepage 'http://www.crossroads.io/'
-  url 'http://download.crossroads.io/libxs-1.0.1.tar.gz'
-  md5 '915aaf168f4a47d8ccf6d03b33845038'
+  url 'http://download.crossroads.io/libxs-1.2.0.tar.gz'
+  md5 'aac1264bb0d03704bd2126419b981fd5'
   head 'https://github.com/crossroads-io/libxs.git'
 
   fails_with :llvm do
