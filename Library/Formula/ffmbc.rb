@@ -6,6 +6,7 @@ class Ffmbc < Formula
   md5 '547bb7b7963224dd66dffa8b25e623b3'
 
   depends_on 'yasm' => :build
+  depends_on :x11
   depends_on 'x264' => :optional
   depends_on 'faac' => :optional
   depends_on 'lame' => :optional
@@ -16,7 +17,6 @@ class Ffmbc < Formula
   depends_on 'xvid' => :optional
 
   def install
-    ENV.x11
     args = ["--prefix=#{prefix}",
             "--disable-debug",
             "--disable-shared",

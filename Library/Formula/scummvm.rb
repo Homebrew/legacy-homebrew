@@ -6,13 +6,13 @@ class Scummvm < Formula
   md5 'aa094c2224aad22d5340a1d2d919c883'
 
   depends_on 'sdl'
+  depends_on :libpng
   depends_on 'flac' => :recommended
   depends_on 'libvorbis' => :recommended
   depends_on 'libogg' => :recommended
   depends_on 'fluid-synth' => :optional
 
   def install
-    ENV.libpng
     system "./configure", "--prefix=#{prefix}", "--disable-debug"
     system "make"
     system "make install"

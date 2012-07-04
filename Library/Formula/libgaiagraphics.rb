@@ -7,13 +7,11 @@ class Libgaiagraphics < Formula
 
   depends_on 'libgeotiff'
   depends_on 'jpeg'
-
-  # Leopard's Cairo is too old.
   depends_on 'cairo' if MacOS.leopard?
+  depends_on :x11
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end
