@@ -2,8 +2,8 @@ require 'formula'
 
 class WrkTrello < Formula
   homepage 'https://github.com/blangel/wrk'
-  url 'http://surma-filedump.s3.amazonaws.com/wrk-1.0.tar.gz'
-  sha1 '14aedc84b3ee0a348e7c4f511e1ec014a20590ee'
+  url 'http://cloud.github.com/downloads/blangel/wrk/wrk-1.0.1.tar.gz'
+  sha1 'a1dc3c2cac173a8a4b2e0270edb91855be17a735'
 
   def script; <<-EOS.undent
     #!/bin/sh
