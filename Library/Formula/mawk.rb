@@ -1,10 +1,9 @@
 require 'formula'
 
 class Mawk < Formula
-  url 'http://invisible-island.net/datafiles/release/mawk.tar.gz'
   homepage 'http://invisible-island.net/mawk/mawk.html'
-  md5 '447e7c322fa1e58141f5085bae87351f'
-  version '1.3.4'
+  url 'ftp://invisible-island.net/mawk/mawk-1.3.4-20120627.tgz'
+  sha1 'bf920a9f74830a0cebbb6573c0cf3c9b5e920946'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
