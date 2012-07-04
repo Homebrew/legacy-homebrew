@@ -15,7 +15,11 @@ class Wireshark < Formula
   depends_on 'c-ares' => :optional
   depends_on 'pcre' => :optional
   depends_on 'glib'
-  depends_on 'gtk+' if ARGV.include? '--with-x'
+
+  if ARGV.include? '--with-x'
+    depends_on :x11
+    depends_on 'gtk+'
+  end
 
   def options
     [
