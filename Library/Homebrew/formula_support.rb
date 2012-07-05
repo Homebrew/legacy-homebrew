@@ -7,6 +7,7 @@ class SoftwareSpec
   def initialize url=nil, version=nil
     @url = url
     @version = version
+    @mirrors = []
   end
 
   # Was the version defined in the DSL, or detected from the URL?
