@@ -22,17 +22,17 @@ def built_bottle? f
 end
 
 def bottle_current? f
-  f.bottle.url && !f.bottle.checksum.empty? && f.bottle.version == f.stable.version
+  f.bottle and f.bottle.url && !f.bottle.checksum.empty? && f.bottle.version == f.stable.version
 end
 
 def bottle_file_outdated? f, file
   filename = file.basename.to_s
-  return nil unless (filename.match(bottle_regex) or filename.match(old_bottle_regex)) and f.bottle_url
+  return nil unless (filename.match(bottle_regex) or filename.match(old_bottle_regex)) and f.bottle and f.bottle.url
 
   bottle_ext = filename.match(bottle_native_regex).captures.first rescue nil
   bottle_ext ||= filename.match(old_bottle_regex).captures.first rescue nil
-  bottle_url_ext = f.bottle_url.match(bottle_native_regex).captures.first rescue nil
-  bottle_url_ext ||= f.bottle_url.match(old_bottle_regex).captures.first rescue nil
+  bottle_url_ext = f.bottle.url.match(bottle_native_regex).captures.first rescue nil
+  bottle_url_ext ||= f.bottle.url.match(old_bottle_regex).captures.first rescue nil
 
   bottle_ext && bottle_url_ext && bottle_ext != bottle_url_ext
 end
