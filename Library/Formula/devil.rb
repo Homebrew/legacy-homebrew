@@ -15,7 +15,7 @@ class Devil < Formula
   # also, even with -std=gnu99 removed from the configure script,
   # devil fails to build with clang++ while compiling il_exr.cpp
   fails_with :clang do
-    build 318
+    build 421
     cause "invalid -std=gnu99 flag while building C++"
   end
 
