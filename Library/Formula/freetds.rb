@@ -2,7 +2,7 @@ require 'formula'
 
 class Freetds < Formula
   homepage 'http://www.freetds.org/'
-  url 'http://ibiblio.org/pub/Linux/ALPHA/freetds/stable/freetds-0.91.tar.gz'
+  url 'http://mirrors.ibiblio.org/freetds/stable/freetds-0.91.tar.gz'
   sha1 '3ab06c8e208e82197dc25d09ae353d9f3be7db52'
 
   depends_on "pkg-config" => :build

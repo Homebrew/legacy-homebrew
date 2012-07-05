@@ -168,22 +168,12 @@ def check_for_stray_las
 end
 
 def check_for_x11
-  unless x11_installed?
-    <<-EOS.undent
-      X11 not installed.
-      You don't have X11 installed as part of your OS X installation.
-      This is not required for all formulae, but is expected by some.
-    EOS
-  end
-end
-
-def check_for_nonstandard_x11
-  x11 = Pathname.new('/usr/X11')
-  if x11.symlink?
-    <<-EOS.undent
-      /usr/X11 is a symlink
-      Homebrew's X11 support has only be tested with Apple's X11.
-      In particular, "XQuartz" and "XDarwin" are not known to be compatible.
+  unless MacOS.x11_installed? then <<-EOS.undent
+    X11 is not installed.
+    You don't have X11 installed as part of your OS X installation.
+    This is not required for all formulae, but is expected by some.
+    You can download the latest version of XQuartz from:
+      https://xquartz.macosforge.org
     EOS
   end
 end
@@ -403,27 +393,15 @@ def check_xcode_prefix
 end
 
 def check_xcode_select_path
-  path = `xcode-select -print-path 2>/dev/null`.chomp
   # with the advent of CLT-only support, we don't need xcode-select
   return if MacOS.clt_installed?
-  unless File.directory? path and File.file? "#{path}/usr/bin/xcodebuild" and not MacOS.xctools_fucked?
-    # won't guess at the path they should use because it's too hard to get right
-    # We specify /Applications/Xcode.app/Contents/Developer even though
-    # /Applications/Xcode.app should work because people don't install the new CLI
-    # tools and then it doesn't work. Lets hope the location doesn't change in the
-    # future.
-
+  unless File.file? "#{MacOS.xcode_folder}/usr/bin/xcodebuild" and not MacOS.xctools_fucked?
+    path = MacOS.app_with_bundle_id(MacOS::XCODE_4_BUNDLE_ID) or MacOS.app_with_bundle_id(MacOS::XCODE_3_BUNDLE_ID)
+    path = '/Developer' if path.nil? or not path.directory?
     <<-EOS.undent
       Your Xcode is configured with an invalid path.
-      You should change it to the correct path. Please note that there is no correct
-      path at this time if you have *only* installed the Command Line Tools for Xcode.
-      If your Xcode is pre-4.3 or you installed the whole of Xcode 4.3 then one of
-      these is (probably) what you want:
-
-          sudo xcode-select -switch /Developer
-          sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
-
-      DO NOT SET / OR EVERYTHING BREAKS!
+      You should change it to the correct path:
+        sudo xcode-select -switch #{path}
     EOS
   end
 end
@@ -509,26 +487,6 @@ def check_which_pkg_config
 
     `./configure` may have problems finding brew-installed packages using
     this other pkg-config.
-    EOS
-  end
-end
-
-def check_pkg_config_paths
-  binary = which 'pkg-config'
-  return if binary.nil?
-
-  pkg_config_paths = `pkg-config --variable pc_path pkg-config`.chomp.split(':')
-
-  # Check that all expected paths are being searched
-  unless pkg_config_paths.include? "/usr/X11/lib/pkgconfig"
-    <<-EOS.undent
-      Your pkg-config is not checking "/usr/X11/lib/pkgconfig" for packages.
-      Earlier versions of the pkg-config formula did not add this path
-      to the search path, which means that other formula may not be able
-      to find certain dependencies.
-
-      To resolve this issue, re-brew pkg-config with:
-        brew rm pkg-config && brew install pkg-config
     EOS
   end
 end

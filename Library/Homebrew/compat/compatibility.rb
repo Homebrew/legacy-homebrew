@@ -91,6 +91,10 @@ class Formula
   def std_cmake_parameters
     "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None -DCMAKE_FIND_FRAMEWORK=LAST -Wno-dev"
   end
+
+  class << self
+    attr_rw :bottle_sha1
+  end
 end
 
 class UnidentifiedFormula < Formula
