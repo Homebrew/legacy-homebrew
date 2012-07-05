@@ -11,7 +11,7 @@ class Qscintilla2 < Formula
   def install
     ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages", ':'
 
-    cd 'Qt4' do
+    cd 'Qt4Qt5' do
       inreplace 'qscintilla.pro' do |s|
         s.gsub! '$$[QT_INSTALL_LIBS]', lib
         s.gsub! "$$[QT_INSTALL_HEADERS]", include
