@@ -20,9 +20,18 @@ class Openconnect < Formula
     args = ["--prefix=#{prefix}",
             "--sbindir=#{bin}",
             "--mandir=#{man}",
+            "--localstatedir=#{var}",
             "--with-vpnc-script=#{etc}/vpnc-script"]
 
     system "./configure", *args
     system "make install"
+  end
+
+  def caveats; <<-EOS.undent
+    OpenConnect requires the use of a TUN/TAP driver.
+
+    You can download one at http://tuntaposx.sourceforge.net/
+    and install it prior to running OpenConnect.
+    EOS
   end
 end
