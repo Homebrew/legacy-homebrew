@@ -3,8 +3,9 @@ require 'formula'
 class Geocouch < Formula
   homepage 'https://github.com/couchbase/geocouch'
   head 'https://github.com/couchbase/geocouch.git', :tag => 'couchdb1.2.x'
-  url 'https://github.com/couchbase/geocouch/zipball/couchdb1.2.x'
-  sha1 'ec9d912f39710b69115b6d0dae6277e387215377'
+  url 'https://github.com/couchbase/geocouch/tarball/couchdb1.2.x_v0.3.0'
+  sha1 'f8e9ba7b330550bd09531f70eb2d16c88e95f4d7'
+  version '1.2.0'
 
   devel do
     url 'https://github.com/couchbase/geocouch.git', :tag => 'master'
