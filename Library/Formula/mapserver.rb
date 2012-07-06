@@ -3,7 +3,7 @@ require 'formula'
 class Mapserver < Formula
   homepage 'http://mapserver.org/'
   url 'http://download.osgeo.org/mapserver/mapserver-6.0.3.tar.gz'
-  md5 '0d2ad6f56e8a1b5755e856a54f90071c'
+  sha1 'd7aa1041c6d9a46da7f5e29ae1b66639d5d050ab'
 
   depends_on :x11
   depends_on 'gd'
