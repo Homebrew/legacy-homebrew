@@ -5,6 +5,7 @@ class Scotch < Formula
   url 'https://gforge.inria.fr/frs/download.php/28933'
   version '5.1.12'
   md5 'f873ff2bad519f9be7bc7b117bbe0bc4'
+  depends_on 'open-mpi'
 
   def install
     cd 'src' do
