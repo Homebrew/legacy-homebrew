@@ -10,18 +10,14 @@ def install_language_data
     'slk-frak' => '9420b153514fd0b3f8d77240ca1523b5c6d672d0'
   }
 
-  langs.each do |lang, sha1|
-    language_klass = <<-EOS
-    class #{lang.delete('-').capitalize} < Formula
-      url 'http://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.01.#{lang}.tar.gz'
+  langs.each do |lang, sha|
+    klass = Class.new(Formula) do
+      url "http://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.01.#{lang}.tar.gz"
       version '3.01'
-      sha1 '#{sha1}'
+      sha1 sha
     end
 
-    #{lang.delete('-').capitalize}.new
-    EOS
-
-    eval(language_klass).brew { mv Dir['tessdata/*'], "#{share}/tessdata/" }
+    klass.new.brew { mv Dir['tessdata/*'], "#{share}/tessdata/" }
   end
 
   # pre-3.01 language data uses a different URL format and installs differently
@@ -64,19 +60,15 @@ def install_language_data
     'cat'       => '0301a9c81c1d646bd1b135ca89476fb63bd634f8'
   }
 
-  langs_old.each do |lang, sha1|
-    language_klass = <<-EOS
-    class #{lang.delete('-').capitalize} < Formula
-      url 'http://tesseract-ocr.googlecode.com/files/#{lang}.traineddata.gz',
+  langs_old.each do |lang, sha|
+    klass = Class.new(Formula) do
+      url "http://tesseract-ocr.googlecode.com/files/#{lang}.traineddata.gz",
         :using => GzipOnlyDownloadStrategy
       version '3.00'
-      sha1 '#{sha1}'
+      sha1 sha
     end
 
-    #{lang.delete('-').capitalize}.new
-    EOS
-
-    eval(language_klass).brew { mv Dir['*'], "#{share}/tessdata/" }
+    klass.new.brew { mv Dir['*'], "#{share}/tessdata/" }
   end
 
 end
