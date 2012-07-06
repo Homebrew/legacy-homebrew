@@ -56,7 +56,21 @@ at_exit do
 end
 
 def install f
-  ENV.x11 if f.external_deps.any? { |dep| dep.is_a? X11Dependency }
+  # Some Requirements modify environment variables during installation.
+  f.external_deps.each do |dep|
+    if dep.is_a? X11Dependency
+      ENV.x11
+    elsif dep.is_a? MPIDependency
+      dep.lang_list.each do |lang|
+        compiler = 'mpi' + lang.to_s
+        mpi_path = which compiler
+
+        # Fortran 90 environment var has a different name
+        compiler = 'MPIFC' if lang == :f90
+        ENV[compiler.upcase] = mpi_path
+      end
+    end
+  end
 
   f.recursive_deps.uniq.each do |dep|
     dep = Formula.factory dep

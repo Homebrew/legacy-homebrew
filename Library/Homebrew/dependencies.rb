@@ -174,6 +174,8 @@ end
 
 class MPIDependency < Requirement
 
+  attr_reader :lang_list
+
   def initialize *lang_list
     @lang_list = lang_list
     @non_functional = []
