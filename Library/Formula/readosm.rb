@@ -2,8 +2,8 @@ require 'formula'
 
 class Readosm < Formula
   homepage 'https://www.gaia-gis.it/fossil/readosm/index'
-  url 'http://www.gaia-gis.it/gaia-sins/readosm-sources/readosm-1.0.0.tar.gz'
-  md5 'ed50a748d430612ecbead6ad3d271410'
+  url 'http://www.gaia-gis.it/gaia-sins/readosm-sources/readosm-1.0.0a.tar.gz'
+  sha1 '87fcbbb03ae98db1dafe8e41183891b8fe1ae5c9'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
