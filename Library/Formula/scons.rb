@@ -10,6 +10,18 @@ class Scons < Formula
     system "/usr/bin/python", "setup.py", "install",
              "--prefix=#{prefix}",
              "--standalone-lib",
+             # SCons gets handsy with sys.path---`scons-local` is one place it
+             # will look when all is said and done.
+             "--install-lib=#{libexec}/scons-local",
+             "--install-scripts=#{bin}",
+             "--install-data=#{libexec}",
              "--no-version-script", "--no-install-man"
+
+    # Re-root scripts to libexec so they can import SCons and symlink back into
+    # bin. Similar tactics are used in the duplicity formula.
+    bin.children.each do |p|
+      mv p, "#{libexec}/#{p.basename}.py"
+      bin.install_symlink "#{libexec}/#{p.basename}.py" => p.basename
+    end
   end
 end
