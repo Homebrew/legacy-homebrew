@@ -6,28 +6,24 @@ def build_python?; ARGV.include? "--python"; end
 def build_ruby?;   ARGV.include? "--ruby";   end
 def with_unicode_path?; ARGV.include? "--unicode-path"; end
 
-class UniversalNeon < Requirement
-  def message; <<-EOS.undent
-      A universal build was requested, but neon was already built for a single arch.
-      You may need to `brew rm neon` first.
-    EOS
+class RequiresUniversal < Requirement
+  def initialize(formula_name, library_name)
+    @formula_name = formula_name
+    @library_name = library_name
   end
-  def satisfied?
-    f = Formula.factory('neon')
-    !f.installed? || archs_for_command(f.lib+'libneon.dylib').universal?
-  end
-end
 
-class UniversalSqlite < Requirement
   def message; <<-EOS.undent
-      A universal build was requested, but sqlite was already built for a single arch.
-      You may need to `brew rm sqlite` first.
+      A universal build was requested, but #{@formula_name} was already built for a single arch.
+      You may need to `brew rm #{@formula_name}` first.
     EOS
   end
+
   def satisfied?
-    f = Formula.factory('sqlite')
-    !f.installed? || archs_for_command(f.lib+'libsqlite3.dylib').universal?
+    f = Formula.factory(@formula_name)
+    !f.installed? || archs_for_command(f.lib+@library_name).universal?
   end
+
+  def fatal?; true; end
 end
 
 class Subversion < Formula
@@ -45,8 +41,8 @@ class Subversion < Formula
   depends_on 'serf'
 
   if ARGV.build_universal?
-    depends_on UniversalNeon.new
-    depends_on UniversalSqlite.new
+    depends_on RequiresUniversal.new('neon', 'libneon.dylib')
+    depends_on RequiresUniversal.new('sqlite', 'libsqlite3.dylib')
   end
 
   def options
