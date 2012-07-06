@@ -118,9 +118,9 @@ class FormulaTests < Test::Unit::TestCase
     assert_nil f.devel.sha1
 
     assert_equal 1, f.stable.mirrors.length
-    assert_nil f.bottle.mirrors
+    assert f.bottle.mirrors.empty?
     assert_equal 1, f.devel.mirrors.length
-    assert_nil f.head.mirrors
+    assert f.head.mirrors.empty?
 
     assert !f.stable.explicit_version?
     assert !f.bottle.explicit_version?
