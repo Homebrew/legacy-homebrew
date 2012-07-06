@@ -6,9 +6,9 @@ class Konoha < Formula
   sha1 'c4cfdc956bd583f8c3e8e696eeb0316ca78b1389'
 
   depends_on 'cmake' => :build
+  depends_on MPIDependency.new(:cc, :cxx)
   depends_on 'pcre'
   depends_on 'json-c'
-  depends_on 'open-mpi'
   depends_on 'sqlite'
 
   def install
