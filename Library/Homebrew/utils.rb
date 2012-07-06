@@ -109,8 +109,10 @@ end
 # prints no output
 def quiet_system cmd, *args
   Homebrew.system(cmd, *args) do
-    $stdout.close
-    $stderr.close
+    # Redirect output streams to `/dev/null` instead of closing as some programs
+    # will fail to execute if they can't write to an open stream.
+    $stdout.reopen('/dev/null')
+    $stderr.reopen('/dev/null')
   end
 end
 
