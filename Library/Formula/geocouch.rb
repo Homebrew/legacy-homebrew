@@ -5,6 +5,7 @@ class Geocouch < Formula
   head 'https://github.com/couchbase/geocouch.git', :tag => 'couchdb1.2.x'
   url 'https://github.com/couchbase/geocouch/tarball/f8957f4468692cfdefc29a645471e321870dd005'
   sha1 'f8e9ba7b330550bd09531f70eb2d16c88e95f4d7'
+  version '1.2.0'
 
   devel do
     url 'https://github.com/couchbase/geocouch.git', :tag => 'master'
