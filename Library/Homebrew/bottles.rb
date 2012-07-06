@@ -56,11 +56,11 @@ def bottle_native_regex
 end
 
 def bottle_regex
-  /(\.[a-z]+\.bottle\.(\d+\.)?tar\.gz)$/
+  Pathname::BOTTLE_EXTNAME_RX
 end
 
 def old_bottle_regex
-  /((\.[a-z]+)?[\.-]bottle\.tar\.gz)$/
+  Pathname::OLD_BOTTLE_EXTNAME_RX
 end
 
 def bottle_base_url
