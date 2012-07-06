@@ -578,9 +578,9 @@ class DownloadStrategyDetector
   end
 
   def detect
-    case @strategy
-    when AbstractDownloadStrategy then @strategy
-    when Symbol then detect_from_symbol
+    if @strategy.is_a? Class and @strategy.ancestors.include? AbstractDownloadStrategy
+      @strategy
+    elsif @strategy.is_a? Symbol then detect_from_symbol
     else detect_from_url
     end
   end
