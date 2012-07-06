@@ -93,7 +93,9 @@ class Formula
   end
 
   class << self
-    attr_rw :bottle_sha1
+    def bottle_sha1 val=nil
+      val.nil? ? @bottle_sha1 : @bottle_sha1 = val
+    end
   end
 end
 
