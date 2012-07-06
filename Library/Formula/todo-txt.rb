@@ -10,23 +10,15 @@ class TodoTxt < Formula
   def install
     bin.install 'todo.sh'
     prefix.install 'todo.cfg' # Default config file
-    prefix.install 'todo_completion' # Bash Completion File
+    (prefix+'etc/bash_completion.d').install 'todo_completion' # Bash Completion File
   end
 
-  def caveats
-    if File.directory?("#{HOMEBREW_PREFIX}/etc/bash_completion.d")
-       <<-EOS.undent
-         To configure, copy the default config to your home and edit it:
-           cp #{prefix}/todo.cfg ~/.todo.cfg
-           
-         To install bash completion:
-           ln -s #{prefix}/todo_completion #{HOMEBREW_PREFIX}/etc/bash_completion.d/todo      
-        EOS
-    else
-      <<-EOS.undent
-        To configure, copy the default config to your home and edit it:
-          cp #{prefix}/todo.cfg ~/.todo.cfg
-       EOS
-    end 
+  def caveats; <<-EOS.undent
+      To configure, copy the default config to your home and edit it:
+        cp #{prefix}/todo.cfg ~/.todo.cfg
+          
+      Bash completion has been installed to:
+        #{etc}/bash_completion.d  
+      EOS
   end
 end
