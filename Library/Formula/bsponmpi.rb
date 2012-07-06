@@ -6,7 +6,7 @@ class Bsponmpi < Formula
   md5 '75db882a340ef5e97d8398db3e1611d0'
 
   depends_on 'scons' => :build
-  depends_on 'open-mpi'
+  depends_on MPIDependency.new(:cc, :cxx)
 
   def install
     system "scons -Q mode=release"
