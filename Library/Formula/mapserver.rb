@@ -2,8 +2,8 @@ require 'formula'
 
 class Mapserver < Formula
   homepage 'http://mapserver.org/'
-  url 'http://download.osgeo.org/mapserver/mapserver-6.0.2.tar.gz'
-  md5 'd831c905b1b0df7ac09a80c3f9387374'
+  url 'http://download.osgeo.org/mapserver/mapserver-6.0.3.tar.gz'
+  md5 '0d2ad6f56e8a1b5755e856a54f90071c'
 
   depends_on :x11
   depends_on 'gd'
