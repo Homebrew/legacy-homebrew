@@ -76,8 +76,7 @@ module Homebrew extend self
           fi.caveats
           fi.finish
         rescue CannotInstallFormulaError => e
-          onoe e.message
-          Homebrew.failed = true
+          ofail e.message
         end
       end
     end

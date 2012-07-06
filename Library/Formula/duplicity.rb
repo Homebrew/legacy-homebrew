@@ -2,8 +2,8 @@ require 'formula'
 
 class Duplicity < Formula
   homepage 'http://www.nongnu.org/duplicity/'
-  url 'https://launchpad.net/duplicity/0.6-series/0.6.18/+download/duplicity-0.6.18.tar.gz'
-  md5 '66b5e64de43e09d3c3ff9890faf9de07'
+  url 'http://code.launchpad.net/duplicity/0.6-series/0.6.19/+download/duplicity-0.6.19.tar.gz'
+  md5 'c88122d0b651f84f3bfa42e55591c36b'
 
   depends_on 'librsync'
   depends_on 'gnupg'

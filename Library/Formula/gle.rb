@@ -7,12 +7,11 @@ class Gle < Formula
   md5 '5eef0a63ee0077237b8a36fe1a24407f'
 
   depends_on 'pkg-config' => :build
+  depends_on :x11
   depends_on 'jpeg' => :optional
   depends_on 'libtiff' => :optional
 
   def install
-    ENV.x11
-
     arch = MacOS.prefer_64_bit? ? "x86_64" : "i386"
     system "./configure", "--prefix=#{prefix}",
                           "--with-arch=#{arch}",

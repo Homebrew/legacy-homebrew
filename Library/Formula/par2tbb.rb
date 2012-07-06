@@ -41,6 +41,6 @@ class Par2tbb < Formula
   end
 
   def test
-    system "par2"
+    system "#{bin}/par2"
   end
 end

@@ -35,11 +35,11 @@ class Mydumper < Formula
   depends_on 'pcre'
 
   def install
-    system "cmake #{std_cmake_parameters} ."
+    system "cmake", ".", *std_cmake_args
     system "make install"
   end
 
   def test
-    system "#{bin}/mydumper --version"
+    system "#{bin}/mydumper", "--version"
   end
 end

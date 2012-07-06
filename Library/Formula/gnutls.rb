@@ -2,9 +2,9 @@ require 'formula'
 
 class Gnutls < Formula
   homepage 'http://www.gnu.org/software/gnutls/gnutls.html'
-  url 'http://ftpmirror.gnu.org/gnutls/gnutls-2.12.18.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/gnutls/gnutls-2.12.18.tar.bz2'
-  md5 'e9215d00d2930e09bc8f23f02b54f2d1'
+  url 'http://ftpmirror.gnu.org/gnutls/gnutls-2.12.20.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/gnutls/gnutls-2.12.20.tar.bz2'
+  sha256 '4884eafcc8383ed23209199bbc72ad04f4eb94955a50a594125ff34c6889c564'
 
   depends_on 'pkg-config' => :build
   depends_on 'libgcrypt'

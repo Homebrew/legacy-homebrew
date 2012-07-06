@@ -15,7 +15,6 @@ class Dc3dd < Formula
                           "--infodir=#{info}"
     system "make"
     system "make install"
-    rm (lib+'charset.alias')
     prefix.install %w[README Options_Reference.txt Sample_Commands.txt]
   end
 end

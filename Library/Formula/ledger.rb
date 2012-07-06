@@ -28,7 +28,7 @@ class Ledger < Formula
       # gmp installs x86_64 only
       inreplace 'acprep', "'-arch', 'i386', ", "" if Hardware.is_64_bit?
       no_python = ((ARGV.include? '--no-python') ? '--no-python' : '')
-      system "./acprep #{no_python} -j#{ENV.make_jobs} opt make -- --prefix=#{prefix}"
+      system "./acprep", no_python, "-j#{ENV.make_jobs}", "opt", "make", "--", "--prefix=#{prefix}"
     end
     system 'make'
     ENV.deparallelize

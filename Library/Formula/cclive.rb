@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cclive < Formula
-  url 'http://cclive.googlecode.com/files/cclive-0.7.7.tar.bz2'
+  url 'http://cclive.googlecode.com/files/cclive-0.7.9.tar.bz2'
   homepage 'http://cclive.sourceforge.net/'
-  md5 '666e521bb6fd42fb5178025febbfc3b1'
+  md5 'b80cf3faac291df8c6514fe1bc4a93d2'
 
   depends_on 'pkg-config' => :build
   depends_on 'quvi'

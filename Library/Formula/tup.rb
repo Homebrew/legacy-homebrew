@@ -17,7 +17,7 @@ class Tup < Formula
   end
 
   def test
-    system "#{bin}/tup -v"
+    system "#{bin}/tup", "-v"
   end
 
   def caveats; <<-EOS.undent

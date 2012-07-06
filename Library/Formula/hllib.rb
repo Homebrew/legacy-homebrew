@@ -36,7 +36,7 @@ class Hllib < Formula
       inreplace 'Main.c', 'HLExtract.exe', 'hlextract'
       # Make the binary build path and build
       bin.mkpath
-      system ENV['CC'], 'Main.c', "-I#{include}", "-L#{lib}", '-lhl', '-o', bin+'hlextract'
+      system ENV.cc, 'Main.c', "-I#{include}", "-L#{lib}", '-lhl', '-o', bin+'hlextract'
     end
   end
 end

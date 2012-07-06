@@ -2,22 +2,21 @@ require 'formula'
 
 class Pango < Formula
   homepage 'http://www.pango.org/'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.30/pango-1.30.0.tar.xz'
-  sha256 '7c6d2ab024affaed0e942f9279b818235f9c6a36d9fc50688f48d387f4102dff'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.30/pango-1.30.1.tar.xz'
+  sha256 '3a8c061e143c272ddcd5467b3567e970cfbb64d1d1600a8f8e62435556220cbe'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
   depends_on 'glib'
+  depends_on :x11
 
-  if MacOS.leopard?
-    depends_on 'fontconfig' # Leopard's fontconfig is too old.
-    depends_on 'cairo' # Leopard doesn't come with Cairo.
-  elsif MacOS.lion?
-    # The Cairo library shipped with Lion contains a flaw that causes Graphviz
-    # to segfault. See the following ticket for information:
-    #
-    #   https://trac.macports.org/ticket/30370
-    depends_on 'cairo'
-  end
+  depends_on 'fontconfig' if MacOS.leopard?
+
+  # The Cairo library shipped with Lion contains a flaw that causes Graphviz
+  # to segfault. See the following ticket for information:
+  #   https://trac.macports.org/ticket/30370
+  # We depend on our cairo on all platforms for consistency
+  depends_on 'cairo'
 
   fails_with :llvm do
     build 2326
@@ -25,7 +24,6 @@ class Pango < Formula
   end
 
   def install
-    ENV.x11
     system "./configure", "--disable-dependency-tracking",
                           "--disable-debug",
                           "--prefix=#{prefix}",
@@ -39,8 +37,11 @@ class Pango < Formula
 
   def test
     mktemp do
-      system "#{bin}/pango-view -t 'test-image' --waterfall --rotate=10 --annotate=1 --header -q -o output.png"
-      system "/usr/bin/qlmanage -p output.png"
+      system "#{bin}/pango-view", "-t", "test-image",
+                                  "--waterfall", "--rotate=10",
+                                  "--annotate=1", "--header",
+                                  "-q", "-o", "output.png"
+      system "/usr/bin/qlmanage", "-p", "output.png"
     end
   end
 end

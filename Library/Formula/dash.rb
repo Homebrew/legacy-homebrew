@@ -7,7 +7,7 @@ class Dash < Formula
 
   head 'https://git.kernel.org/pub/scm/utils/dash/dash.git'
 
-  depends_on "automake" if MacOS.xcode_version >= "4.3" and ARGV.build_head?
+  depends_on "automake" => :build if MacOS.xcode_version >= "4.3" and ARGV.build_head?
 
   def install
     if ARGV.build_head?
@@ -25,7 +25,6 @@ class Dash < Formula
   end
 
   def test
-    system "#{HOMEBREW_PREFIX}/bin/dash -c \"echo Hello!\""
-    puts "  ^--- That works."
+    system "#{bin}/dash", "-c", "echo Hello!"
   end
 end

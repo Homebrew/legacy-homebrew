@@ -15,24 +15,13 @@ end
 
 class Ghc < Formula
   homepage 'http://haskell.org/ghc/'
-  version '7.0.4'
+  version '7.4.2'
   if Hardware.is_64_bit? and not ARGV.build_32_bit?
-    url "http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-x86_64-apple-darwin.tar.bz2"
-    md5 'af89d3d2ca6e9b23384baacb7d8161dd'
+    url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2'
+    sha1 '7c655701672f4b223980c3a1068a59b9fbd08825'
   else
-    url "http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2"
-    md5 'ce297e783d113cf1547386703d1b1061'
-  end
-
-  devel do
-    version '7.4.1'
-    if Hardware.is_64_bit? and not ARGV.build_32_bit?
-      url "http://www.haskell.org/ghc/dist/7.4.1/ghc-7.4.1-x86_64-apple-darwin.tar.bz2"
-      md5 '04a572f72c25e9d8fcbd7e9363d276bf'
-    else
-      url "http://www.haskell.org/ghc/dist/7.4.1/ghc-7.4.1-i386-apple-darwin.tar.bz2"
-      md5 '80243578b243224800f217e5e3060836'
-    end
+    url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2'
+    sha1 '60f749893332d7c22bb4905004a67510992d8ef6'
   end
 
   depends_on NeedsSnowLeopard.new
@@ -54,11 +43,7 @@ class Ghc < Formula
   end
 
   def install
-    if ARGV.build_devel?
-      opoo "The current version of haskell-platform will NOT work with this version of GHC!"
-    end
-
-    system "./configure --prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 
