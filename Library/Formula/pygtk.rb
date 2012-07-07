@@ -5,6 +5,7 @@ class Pygtk < Formula
   homepage 'http://www.pygtk.org/'
   md5 'a1051d5794fd7696d3c1af6422d17a49'
 
+  depends_on :x11
   depends_on 'glib'
   depends_on 'gtk+'
   depends_on 'pygobject'
