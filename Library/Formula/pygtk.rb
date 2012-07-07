@@ -9,6 +9,7 @@ class Pygtk < Formula
   depends_on 'gtk+'
   depends_on 'pygobject'
   depends_on 'py2cairo'
+  depends_on :x11
 
   def options
     [["--universal", "Builds a universal binary"]]
