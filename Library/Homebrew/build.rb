@@ -95,9 +95,6 @@ def install f
 
       interactive_shell f
       nil
-    elsif ARGV.include? '--help'
-      system './configure --help'
-      exit $?
     else
       f.prefix.mkpath
       f.install
