@@ -7,6 +7,11 @@ class Zookeeper < Formula
 
   head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
 
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
+  end
+
   def options
     [
       ["--c", "Build C bindings."],
@@ -40,11 +45,6 @@ class Zookeeper < Formula
       log4j.appender.zklog.layout = org.apache.log4j.PatternLayout
       log4j.appender.zklog.layout.ConversionPattern = %d{yyyy-MM-dd HH:mm:ss} %c{1} [%p] %m%n
     EOS
-  end
-
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
   end
 
   def install

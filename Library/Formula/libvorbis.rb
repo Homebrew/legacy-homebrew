@@ -12,20 +12,15 @@ class Libvorbis < Formula
   depends_on 'libogg'
 
   if ARGV.build_head?
-    depends_on "automake" => :build
-
-    if MacOS.xcode_version >= "4.3"
-      depends_on "libtool" => :build
-      depends_on "autoconf" => :build
-    end
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
   end
 
   def install
-    if ARGV.build_head?
-      system "./autogen.sh"
-    end
-
-    system './configure', "--prefix=#{prefix}", '--disable-dependency-tracking'
+    system "./autogen.sh" if ARGV.build_head?
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

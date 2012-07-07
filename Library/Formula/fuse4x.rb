@@ -6,8 +6,8 @@ class Fuse4x < Formula
   md5 '1c82dd00feff6e422b6cef81abd98185'
   version "0.9.1"
 
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
+  depends_on :automake
+  depends_on :libtool
   depends_on 'gettext'
   depends_on 'fuse4x-kext'
 

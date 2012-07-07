@@ -5,9 +5,9 @@ class Privoxy < Formula
   url 'http://downloads.sourceforge.net/project/ijbswa/Sources/3.0.19%20%28stable%29/privoxy-3.0.19-stable-src.tar.gz'
   sha1 'a82287cbf48375ef449d021473a366baeca49250'
 
-  if MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
   end
 
   depends_on 'pcre'

@@ -6,14 +6,10 @@ class Urweb < Formula
   md5 '18ad629eb55b0c4a62ef15ef561e0f1a'
   head 'http://hg.impredicative.com/urweb', :using => :hg
 
-  depends_on 'mlton'
+  depends_on :automake
+  depends_on :libtool
 
-  if MacOS.xcode_version >= "4.3"
-    # remove the autoreconf if possible, no comment provided about why it is there
-    # so we have no basis to make a decision at this point.
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  depends_on 'mlton'
 
   def install
     system "aclocal"

@@ -6,7 +6,7 @@ class Recode < Formula
   md5 'f82e9a6ede9119268c13493c9add2809'
 
   depends_on "gettext"
-  depends_on "libtool" => :build if MacOS.xcode_version.to_f >= 4.3
+  depends_on :libtool
 
   # Patches from MacPorts
   # No reason for patch given, no link to patches given. Someone shoot that guy :P

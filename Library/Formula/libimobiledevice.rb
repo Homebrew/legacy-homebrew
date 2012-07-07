@@ -14,9 +14,9 @@ class Libimobiledevice < Formula
   depends_on 'usbmuxd'
   depends_on 'gnutls'
 
-  if MacOS.xcode_version >= "4.3" and ARGV.build_head?
-    depends_on 'libtool' => :build
-    depends_on 'automake' => :build
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
   end
 
   def install

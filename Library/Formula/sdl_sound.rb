@@ -6,6 +6,11 @@ class SdlSound < Formula
   md5 'aa09cd52df85d29bee87a664424c94b5'
   head 'http://hg.icculus.org/icculus/SDL_sound', :using => :hg
 
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
   depends_on 'flac' => :optional
@@ -14,11 +19,6 @@ class SdlSound < Formula
   depends_on 'libvorbis' => :optional
   depends_on 'speex' => :optional
   depends_on 'physfs' => :optional
-
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
 
   def install
     if ARGV.build_head?

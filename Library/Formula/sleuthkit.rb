@@ -7,14 +7,14 @@ class Sleuthkit < Formula
 
   head 'https://github.com/sleuthkit/sleuthkit.git'
 
+  if ARGV.build_head?
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
+  end
+
   depends_on 'afflib' => :optional
   depends_on 'libewf' => :optional
-
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
 
   def patches
     # required for new-ish libewf releases (API change)

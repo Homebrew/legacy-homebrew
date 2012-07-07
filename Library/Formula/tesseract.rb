@@ -85,14 +85,11 @@ class Tesseract < Formula
   url 'http://tesseract-ocr.googlecode.com/files/tesseract-3.01.tar.gz'
   md5 '1ba496e51a42358fb9d3ffe781b2d20a'
 
+  depends_on :automake
+  depends_on :libtool
+
   depends_on 'libtiff'
   depends_on 'leptonica'
-
-  if MacOS.xcode_version >= "4.3"
-    # when and if the tarball provides configure, remove autogen.sh and these deps
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
 
   fails_with :llvm do
     build 2206

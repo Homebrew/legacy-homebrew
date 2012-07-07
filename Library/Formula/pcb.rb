@@ -8,7 +8,7 @@ class Pcb < Formula
 
   head 'git://git.gpleda.org/pcb.git'
 
-  depends_on "automake" => :build if MacOS.xcode_version >= "4.3"
+  depends_on :automake
   depends_on 'pkg-config' => :build
   depends_on 'intltool'
   depends_on 'gettext'

@@ -7,17 +7,17 @@ class Znc < Formula
 
   head 'https://github.com/znc/znc.git'
 
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'c-ares' => :optional
 
   skip_clean 'bin/znc'
   skip_clean 'bin/znc-config'
   skip_clean 'bin/znc-buildmod'
-
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
 
   def options
     [['--enable-debug', "Compile ZNC with --enable-debug"]]

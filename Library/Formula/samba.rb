@@ -5,11 +5,9 @@ class Samba < Formula
   url 'http://samba.org/samba/ftp/stable/samba-3.6.5.tar.gz'
   sha1 'e41611c95b2bb91c7735928742b8aff4fc0da76e'
 
-  # This formula calls autogen.sh.  So add the standard deps.
-  if MacOS.xcode_version >= '4.3'
-    depends_on 'automake' => :build
-    depends_on 'libtool'  => :build
-  end
+  # Needed for autogen.sh
+  depends_on :automake
+  depends_on :libtool
 
   # Fixes the Grouplimit of 16 users os OS X.
   # Bug has been raised upstream:

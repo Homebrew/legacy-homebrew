@@ -5,10 +5,10 @@ class Libagg < Formula
   url 'http://www.antigrain.com/agg-2.5.tar.gz'
   md5 '0229a488bc47be10a2fee6cf0b2febd6'
 
-  depends_on "automake" => :build if MacOS.xcode_version >= "4.3"
+  depends_on :automake
+  depends_on :x11 # for Freetype
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
-  depends_on :x11 # for Freetype
 
   fails_with :clang do
     build 318

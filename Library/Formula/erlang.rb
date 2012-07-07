@@ -43,11 +43,9 @@ class Erlang < Formula
   # may as well skip bin too, everything is just shell scripts
   skip_clean ['lib', 'bin']
 
-  if MacOS.xcode_version >= "4.3"
-    # remove the autoreconf if possible
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  # remove the autoreconf if possible
+  depends_on :automake
+  depends_on :libtool
 
   fails_with :llvm do
     build 2334
