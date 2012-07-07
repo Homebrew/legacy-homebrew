@@ -238,7 +238,6 @@ Please take one of the following actions:
       remove 'CPPFLAGS', "-I#{sdk}/usr/include"
       remove_from_cflags "-isystem #{sdk}/usr/include"
       remove_from_cflags "-isysroot #{sdk}"
-      remove_from_cflags "-L#{sdk}/usr/lib"
       remove_from_cflags "-I#{sdk}/usr/include"
       remove 'LDFLAGS', "-L#{sdk}/usr/lib"
       remove 'LDFLAGS', "-I#{sdk}/usr/include"
@@ -274,14 +273,11 @@ Please take one of the following actions:
       append_to_cflags "-isystem #{sdk}/usr/include"
       # Some software needs this (e.g. python shows error: /usr/include/zlib.h: No such file or directory)
       append 'CPPFLAGS', "-I#{sdk}/usr/include"
-      # Needed because CC passes this to the linker and some projects
-      # forget to use the LDFLAGS explicitly:
-      append_to_cflags "-L#{sdk}/usr/lib"
       # And finally the "normal" things one expects for the CFLAGS and LDFLAGS:
       append_to_cflags "-I#{sdk}/usr/include"
-      prepend 'LDFLAGS', "-L#{sdk}/usr/lib"
-      # Believe it or not, sometime only the LDFLAGS are used :/
-      prepend 'LDFLAGS', "-I#{sdk}/usr/include"
+      append 'LDFLAGS', "-L#{sdk}/usr/lib"
+      # Believe it or not, sometimes only the LDFLAGS are used :/
+      append 'LDFLAGS', "-I#{sdk}/usr/include"
       # Needed to build cmake itself and perhaps some cmake projects:
       append 'CMAKE_PREFIX_PATH', "#{sdk}/usr", ':'
       append 'CMAKE_FRAMEWORK_PATH', "#{sdk}/System/Library/Frameworks", ':'
