@@ -59,6 +59,9 @@ private
 
   def parse_symbol_spec spec, tag
     case spec
+    when :autoconf, :automake, :libtool
+      # Xcode no longer comes with autotools
+      MacOS.xcode_version >= "4.3" ? Dependency.new(spec.to_s) : nil
     when :x11, :libpng
       X11Dependency.new(tag)
     else
