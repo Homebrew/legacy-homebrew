@@ -9,9 +9,14 @@ def with_unicode_path?; ARGV.include? "--unicode-path"; end
 class UniversalNeon < Requirement
   def message; <<-EOS.undent
       A universal build was requested, but neon was already built for a single arch.
-      You may need to `brew rm neon` first.
+      You will need to `brew rm neon` first.
     EOS
   end
+
+  def fatal?
+    true
+  end
+
   def satisfied?
     f = Formula.factory('neon')
     !f.installed? || archs_for_command(f.lib+'libneon.dylib').universal?
@@ -21,12 +26,34 @@ end
 class UniversalSqlite < Requirement
   def message; <<-EOS.undent
       A universal build was requested, but sqlite was already built for a single arch.
-      You may need to `brew rm sqlite` first.
+      You will need to `brew rm sqlite` first.
     EOS
   end
+
+  def fatal?
+    true
+  end
+
   def satisfied?
     f = Formula.factory('sqlite')
     !f.installed? || archs_for_command(f.lib+'libsqlite3.dylib').universal?
+  end
+end
+
+class UniversalSerf < Requirement
+  def message; <<-EOS.undent
+      A universal build was requested, but serf was already built for a single arch.
+      You will need to `brew rm serf` first.
+    EOS
+  end
+
+  def fatal?
+    true
+  end
+
+  def satisfied?
+    f = Formula.factory('serf')
+    !f.installed? || archs_for_command(f.lib+'libserf-1.0.0.0.dylib').universal?
   end
 end
 
@@ -47,6 +74,7 @@ class Subversion < Formula
   if ARGV.build_universal?
     depends_on UniversalNeon.new
     depends_on UniversalSqlite.new
+    depends_on UniversalSerf.new
   end
 
   def options
