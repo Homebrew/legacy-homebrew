@@ -6,7 +6,7 @@ class Automake < Formula
   mirror 'http://ftp.gnu.org/gnu/automake/automake-1.12.1.tar.gz'
   sha1 'e39d3e95e384549cbac22f9f0b110fa53825ddef'
 
-  depends_on "autoconf" => :build
+  depends_on :autoconf
 
   if MacOS.xcode_version.to_f < 4.3 or File.file? "/usr/bin/automake"
     keg_only "Xcode (up to and including 4.2) provides (a rather old) Automake."
@@ -16,11 +16,12 @@ class Automake < Formula
     system "./configure", "--prefix=#{prefix}"
     system "make install"
 
-    # our aclocal must go first: https://github.com/mxcl/homebrew/issues/10618
+    # Our aclocal must go first. See:
+    # https://github.com/mxcl/homebrew/issues/10618
     (share/"aclocal/dirlist").write <<-EOS.undent
       #{HOMEBREW_PREFIX}/share/aclocal
       /usr/share/aclocal
-      EOS
+    EOS
   end
 
   def test

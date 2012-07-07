@@ -1,17 +1,15 @@
 require 'formula'
 
 class Libdnet < Formula
-  url 'http://libdnet.googlecode.com/files/libdnet-1.12.tgz'
   homepage 'http://code.google.com/p/libdnet/'
+  url 'http://libdnet.googlecode.com/files/libdnet-1.12.tgz'
   md5 '9253ef6de1b5e28e9c9a62b882e44cc9'
 
-  if MacOS.xcode_version >= '4.3'
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  depends_on :automake
+  depends_on :libtool
 
   def options
-    [['--with-python', 'Build Python module too.']]
+    [['--with-python', 'Build Python module.']]
   end
 
   def install

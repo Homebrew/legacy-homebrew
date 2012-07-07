@@ -3,13 +3,14 @@ require 'formula'
 class BulkExtractor < Formula
   homepage 'https://github.com/simsong/bulk_extractor/wiki'
   url 'https://github.com/downloads/simsong/bulk_extractor/bulk_extractor-1.2.2.tar.gz'
-  md5 '11ccee3709ac862a41edad309153c7a3'
+  sha1 '2f0a2049259f826afe253cf5baeeb139b795dddb'
+
+  depends_on :autoconf
+  depends_on :automake
 
   depends_on 'afflib' => :optional
   depends_on 'exiv2' => :optional
   depends_on 'libewf' => :optional
-  depends_on 'autoconf' => :build if MacOS.xcode_version.to_f >= 4.3
-  depends_on 'automake' => :build if MacOS.xcode_version.to_f >= 4.3
 
   def install
     system "autoreconf", "-i"

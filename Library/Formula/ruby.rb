@@ -7,7 +7,7 @@ class Ruby < Formula
 
   head 'http://svn.ruby-lang.org/repos/ruby/trunk/'
 
-  depends_on 'autoconf' => :build if MacOS.xcode_version.to_f >= 4.3 and ARGV.build_head?
+  depends_on :autoconf if ARGV.build_head?
   depends_on 'pkg-config' => :build
   depends_on 'readline'
   depends_on 'gdbm'
