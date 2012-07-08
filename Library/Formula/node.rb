@@ -2,15 +2,10 @@ require 'formula'
 
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.6.19/node-v0.6.19.tar.gz'
-  sha1 'f6c5cfbadff4788ac3a95f8263a0c2f4e07444b6'
+  url 'http://nodejs.org/dist/v0.8.1/node-v0.8.1.tar.gz'
+  sha1 '892790553b8121ba8624d8293d0cb7d8b01094d7'
 
   head 'https://github.com/joyent/node.git'
-
-  devel do
-    url 'http://nodejs.org/dist/v0.7.11/node-v0.7.11.tar.gz'
-    sha1 '8edf853bfe327efab55009ac75b6344e17da890e'
-  end
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.leopard?
@@ -27,13 +22,6 @@ class Node < Formula
   end
 
   def install
-    unless ARGV.build_devel?
-      inreplace 'wscript' do |s|
-        s.gsub! '/usr/local', HOMEBREW_PREFIX
-        s.gsub! '/opt/local/lib', '/usr/lib'
-      end
-    end
-
     # Why skip npm install? Read https://github.com/mxcl/homebrew/pull/8784.
     args = ["--prefix=#{prefix}", "--without-npm"]
     args << "--debug" if ARGV.include? '--enable-debug'

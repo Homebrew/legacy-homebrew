@@ -39,6 +39,8 @@ class Gdal < Formula
   # For creating up to date man pages.
   depends_on 'doxygen' => :build if ARGV.build_head?
 
+  depends_on :x11
+
   depends_on 'jpeg'
   depends_on 'giflib'
   depends_on 'proj'
@@ -108,7 +110,7 @@ class Gdal < Formula
 
       # Backends supported by OS X.
       "--with-libz=/usr",
-      "--with-png=/usr/X11",
+      "--with-png=#{MacOS.x11_prefix}",
       "--with-expat=/usr",
 
       # Default Homebrew backends.

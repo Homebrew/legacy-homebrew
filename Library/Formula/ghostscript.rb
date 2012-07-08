@@ -18,6 +18,7 @@ class Ghostscript < Formula
   depends_on 'libtiff'
   depends_on 'jbig2dec'
   depends_on 'little-cms2'
+  depends_on :libpng
 
   if ARGV.build_head? and MacOS.xcode_version >= "4.3"
     depends_on "automake" => :build
@@ -36,10 +37,9 @@ class Ghostscript < Formula
   end
 
   def install
-    ENV.libpng
     ENV.deparallelize
     # ghostscript configure ignores LDFLAGs apparently
-    ENV['LIBS'] = "-L/usr/X11/lib"
+    ENV['LIBS'] = "-L#{MacOS.x11_prefix}/lib"
 
     src_dir = ARGV.build_head? ? "gs" : "."
 

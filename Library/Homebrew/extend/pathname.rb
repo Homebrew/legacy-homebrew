@@ -1,10 +1,12 @@
 require 'pathname'
-require 'bottles'
 require 'mach'
 
 # we enhance pathname to make our code more readable
 class Pathname
   include MachO
+
+  BOTTLE_EXTNAME_RX = /(\.[a-z]+\.bottle\.(\d+\.)?tar\.gz)$/
+  OLD_BOTTLE_EXTNAME_RX = /((\.[a-z]+)?[\.-]bottle\.tar\.gz)$/
 
   def install *sources
     results = []
@@ -122,8 +124,10 @@ class Pathname
   # extended to support common double extensions
   alias extname_old extname
   def extname
-    return $1 if to_s =~ bottle_regex
-    return $1 if to_s =~ old_bottle_regex
+    BOTTLE_EXTNAME_RX.match to_s
+    return $1 if $1
+    OLD_BOTTLE_EXTNAME_RX.match to_s
+    return $1 if $1
     /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
     return $1 if $1
     return File.extname(to_s)
@@ -300,6 +304,13 @@ class Pathname
   def sha2
     require 'digest/sha2'
     incremental_hash(Digest::SHA2)
+  end
+  alias_method :sha256, :sha2
+
+  def verify_checksum expected
+    raise ChecksumMissingError if expected.nil? or expected.empty?
+    actual = Checksum.new(expected.hash_type, send(expected.hash_type).downcase)
+    raise ChecksumMismatchError.new(expected, actual) unless expected == actual
   end
 
   if '1.9' <= RUBY_VERSION

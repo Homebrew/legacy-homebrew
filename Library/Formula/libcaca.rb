@@ -8,6 +8,7 @@ class Libcaca < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'imlib2'
+  depends_on :x11
 
   fails_with :llvm do
     cause "Unsupported inline asm: input constraint with a matching output constraint of incompatible type"

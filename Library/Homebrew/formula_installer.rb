@@ -29,7 +29,7 @@ class FormulaInstaller
     end
 
     # Building head-only without --HEAD is an error
-    if not ARGV.build_head? and f.standard.nil?
+    if not ARGV.build_head? and f.stable.nil?
       raise CannotInstallFormulaError, <<-EOS.undent
         #{f} is a head-only formula
         Install with `brew install --HEAD #{f.name}
@@ -37,7 +37,7 @@ class FormulaInstaller
     end
 
     # Building stable-only with --HEAD is an error
-    if ARGV.build_head? and f.unstable.nil?
+    if ARGV.build_head? and f.head.nil?
       raise CannotInstallFormulaError, "No head is defined for #{f.name}"
     end
 
@@ -261,7 +261,7 @@ class FormulaInstaller
 
   def pour
     fetched, downloader = f.fetch
-    f.verify_download_integrity fetched, f.bottle_sha1, "SHA1"
+    f.verify_download_integrity fetched
     HOMEBREW_CELLAR.cd do
       downloader.stage
     end
@@ -326,12 +326,11 @@ class FormulaInstaller
   def check_non_libraries
     return unless File.exist? f.lib
 
-    valid_libraries = %w(.a .dylib .framework .jnilib .la .o .so)
-    allowed_non_libraries = %w(.jar .prl .pm)
+    valid_extensions = %w(.a .dylib .framework .jnilib .la .o .so
+                          .jar .prl .pm)
     non_libraries = f.lib.children.select do |g|
       next if g.directory?
-      extname = g.extname
-      (not allowed_non_libraries.include? extname) and (not valid_libraries.include? extname)
+      not valid_extensions.include? g.extname
     end
 
     unless non_libraries.empty?
