@@ -92,6 +92,13 @@ module Homebrew extend self
     puts "Xcode: #{describe_xcode}"
     puts "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby:\n  #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}" if RUBY_VERSION.to_f != 1.8
 
+    unless MacOS.compilers_standard?
+      puts "GCC-4.0: #{gcc_40 ? "build #{gcc_40}" : "N/A"}"
+      puts "GCC-4.2: #{gcc_42 ? "build #{gcc_42}" : "N/A"}"
+      puts "LLVM: #{llvm ? "build #{llvm}" : "N/A"}"
+      puts "Clang: #{clang ? "#{clang} build #{clang_build}" : "N/A"}"
+    end
+
     ponk = macports_or_fink_installed?
     puts "MacPorts/Fink: #{ponk}" if ponk
 
