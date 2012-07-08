@@ -19,15 +19,11 @@ end
 
 class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.49.0/boost_1_49_0.tar.bz2'
-  md5 '0d202cb811f934282dea64856a175698'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.50.0/boost_1_50_0.tar.bz2'
+  md5 '52dd00be775e689f55a987baebccc462'
+  sha1 'ee06f89ed472cf369573f8acf9819fbc7173344e'
 
   head 'http://svn.boost.org/svn/boost/trunk'
-
-  bottle do
-    sha1 '6b706780670a8bec5b3e0355f5dfeeaa37d9a41e' => :lion
-    sha1 '46945515d520009fbbc101e4ae19f28db1433752' => :snowleopard
-  end
 
   depends_on UniversalPython.new if needs_universal_python?
   depends_on "icu4c" if ARGV.include? "--with-icu"
