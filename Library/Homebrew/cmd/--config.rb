@@ -95,8 +95,7 @@ module Homebrew extend self
     ponk = macports_or_fink_installed?
     puts "MacPorts/Fink: #{ponk}" if ponk
 
-    x11 = describe_x11
-    puts "X11: #{x11}" unless x11 == "/usr/X11"
+    puts "X11: #{describe_x11}"
   end
 
   def config_s
