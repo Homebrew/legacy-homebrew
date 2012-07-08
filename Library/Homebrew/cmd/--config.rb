@@ -45,11 +45,11 @@ module Homebrew extend self
     @describe_clt ||= if MacOS.clt_installed? then MacOS.clt_version else 'N/A' end
   end
 
-  def sha
-    sha = HOMEBREW_REPOSITORY.cd do
+  def head
+    head = HOMEBREW_REPOSITORY.cd do
       `git rev-parse --verify -q HEAD 2>/dev/null`.chomp
     end
-    if sha.empty? then "(none)" else sha end
+    if head.empty? then "(none)" else head end
   end
 
   def describe_path path
@@ -85,11 +85,14 @@ module Homebrew extend self
 
   # we try to keep output minimal
   def dump_build_config
+    puts "HOMEBREW_VERSION: #{HOMEBREW_VERSION}"
+    puts "HEAD: #{head}"
     puts "HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}" if HOMEBREW_PREFIX.to_s != "/usr/local"
     puts "HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}" if HOMEBREW_CELLAR.to_s != "#{HOMEBREW_PREFIX}/Cellar"
     puts hardware
     puts "OS X: #{MACOS_FULL_VERSION}-#{kernel}"
     puts "Xcode: #{describe_xcode}"
+    puts "CLT: #{describe_clt}" if MacOS.xcode_version.to_f >= 4.3
     puts "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby:\n  #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}" if RUBY_VERSION.to_f != 1.8
 
     unless MacOS.compilers_standard?
@@ -108,7 +111,7 @@ module Homebrew extend self
   def config_s
     config_s = <<-EOS.undent
     HOMEBREW_VERSION: #{HOMEBREW_VERSION}
-    HEAD: #{sha}
+    HEAD: #{head}
     HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}
     HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}
     #{hardware}
