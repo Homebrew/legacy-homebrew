@@ -239,7 +239,13 @@ def check_for_latest_xcode
   latest_xcode = case MacOS.version
     when 10.5 then "3.1.4"
     when 10.6 then "3.2.6"
-    else "4.3"
+    when 10.7 then "4.3.3"
+    else nil
+  end
+  if latest_xcode.nil?
+    return <<-EOS.undent
+    Not sure what version of Xcode is the latest for OS X #{MacOS.version}.
+    EOS
   end
   if MacOS.xcode_installed? and MacOS.xcode_version < latest_xcode then <<-EOS.undent
     You have Xcode-#{MacOS.xcode_version}, which is outdated.
