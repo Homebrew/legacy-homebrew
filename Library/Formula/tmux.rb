@@ -14,6 +14,10 @@ class Tmux < Formula
     depends_on "libtool" => :build
   end
 
+  def patches
+    'https://raw.github.com/gist/3072340/b542acd02503ebf501d6cacc8deac422f0776634/tmux-darwin-get-cwd.patch'
+  end
+
   def install
     system "sh", "autogen.sh" if ARGV.build_head?
 
