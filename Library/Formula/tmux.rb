@@ -7,11 +7,20 @@ class Tmux < Formula
 
   head 'https://tmux.svn.sourceforge.net/svnroot/tmux/trunk'
 
+  depends_on 'pkg-config' => :build
   depends_on 'libevent'
 
   if ARGV.build_head? and MacOS.xcode_version >= "4.3"
     depends_on "automake" => :build
     depends_on "libtool" => :build
+  end
+
+  def patches
+    # This patch adds the implementation of osdep_get_cwd for Darwin platform,
+    # so that tmux can get current working directory correctly under Mac OS.
+    # NOTE: it applies to 1.6 only, and should be removed when 1.7 is out.
+    #       (because it has been merged upstream)
+   DATA
   end
 
   def install
@@ -42,3 +51,32 @@ class Tmux < Formula
     system "#{bin}/tmux", "-V"
   end
 end
+
+__END__
+diff --git a/osdep-darwin.c b/osdep-darwin.c
+index c5820df..7b15446 100644
+--- a/osdep-darwin.c
++++ b/osdep-darwin.c
+@@ -18,6 +18,7 @@
+
+ #include <sys/types.h>
+ #include <sys/sysctl.h>
++#include <libproc.h>
+
+ #include <event.h>
+ #include <stdlib.h>
+@@ -52,6 +53,15 @@
+ char *
+ osdep_get_cwd(pid_t pid)
+ {
++	static char wd[PATH_MAX];
++	struct proc_vnodepathinfo pathinfo;
++	int ret;
++
++	ret = proc_pidinfo(pid, PROC_PIDVNODEPATHINFO, 0, &pathinfo, sizeof(pathinfo));
++	if (ret == sizeof(pathinfo)) {
++		strlcpy(wd, pathinfo.pvi_cdir.vip_path, sizeof(wd));
++		return (wd);
++	}
+ 	return (NULL);
+ }
