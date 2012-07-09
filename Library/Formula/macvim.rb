@@ -4,7 +4,9 @@ class Ruby18x < Requirement
   def message; <<-EOS.undent
     MacVim compiles against whatever Ruby it finds in your path, and has
     problems working with Ruby 1.9. We've detected Ruby 1.9 in your path,
-    so this compile may fail.
+    so this compile may fail. If you have trouble, consider retrying this
+    installation after configuring the system Ruby to be primary, i.e.
+    'export PATH=/usr/bin:$PATH'
     EOS
   end
   def fatal?
