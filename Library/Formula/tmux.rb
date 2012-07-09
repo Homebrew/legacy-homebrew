@@ -20,7 +20,7 @@ class Tmux < Formula
     # so that tmux can get current working directory correctly under Mac OS.
     # NOTE: it applies to 1.6 only, and should be removed when 1.7 is out.
     #       (because it has been merged upstream)
-   DATA
+   DATA if ARGV.build_stable?
   end
 
   def install
