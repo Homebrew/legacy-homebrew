@@ -25,26 +25,31 @@ class DependencyCollector
   end
 
   def add spec
-    case spec
-    when String      then @deps << Dependency.new(spec)
-    when Formula     then @deps << Dependency.new(spec.name)
-    when Dependency  then @deps << spec
-    when Requirement then @external_deps << spec
-    when Hash
-      key, value = spec.shift
-      case value
-      when Array
-        @deps << Dependency.new(key, value)
-      when *LANGUAGE_MODULES
-        @external_deps << LanguageModuleDependency.new(value, key)
+    tag = nil
+    spec, tag = spec.shift if spec.is_a? Hash
+
+    dep = case spec
+    when :x11, :libpng
+      X11Dependency.new(tag)
+    when Symbol
+      raise "Unsupported special dependency #{spec}"
+    when String
+      if LANGUAGE_MODULES.include? tag
+        LanguageModuleDependency.new(tag, spec)
       else
-        # :optional, :recommended, :build, :universal and "32bit" are predefined
-        @deps << Dependency.new(key, [value])
+        Dependency.new(spec, tag)
       end
+    when Formula
+      Dependency.new(spec.name, tag)
+    when Dependency, Requirement
+      spec
     else
       raise "Unsupported type #{spec.class} for #{spec}"
     end
+
+    (dep.is_a?(Requirement) ? @external_deps : @deps) << dep
   end
+
 end
 
 
@@ -62,8 +67,11 @@ class Dependency
 
   def initialize name, tags=nil
     @name = name
-    tags = [] if tags == nil
-    @tags = tags.each {|s| s.to_s}
+    @tags = case tags
+      when Array then tags.each {|s| s.to_s}
+      when nil then []
+      else [tags.to_s]
+    end
   end
 
   def to_s
@@ -140,4 +148,25 @@ class LanguageModuleDependency < Requirement
       when :ruby    then "gem install"
     end
   end
+end
+
+class X11Dependency < Requirement
+
+  def initialize min_version=nil
+    @min_version = min_version
+  end
+
+  def fatal?; true; end
+
+  def satisfied?
+    MacOS.x11_installed? and (@min_version == nil or @min_version <= MacOS.xquartz_version)
+  end
+
+  def message; <<-EOS.undent
+    Unsatisfied dependency: XQuartz #{@min_version}
+    Please install the latest version of XQuartz:
+      https://xquartz.macosforge.org
+    EOS
+  end
+
 end

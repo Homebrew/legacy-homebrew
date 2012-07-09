@@ -8,6 +8,7 @@ class Gtkglext < Formula
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'gtk+'
+  depends_on :x11
 
   def patches
       # fixes an incompatibility with recent GTK versions
@@ -16,7 +17,6 @@ class Gtkglext < Formula
   end
 
   def install
-    ENV.x11
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

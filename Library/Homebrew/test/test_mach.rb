@@ -1,8 +1,5 @@
 require 'testing_env'
 
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-ARGV.extend(HomebrewArgvExtension)
-
 def file pn
   `/usr/bin/file -h '#{pn}'`.chomp
 end
@@ -139,12 +136,6 @@ class MachOPathnameTests < Test::Unit::TestCase
 end
 
 class TextExecutableTests < Test::Unit::TestCase
-  TMPDIR = HOMEBREW_PREFIX/'tmp'
-
-  def setup
-    FileUtils.mkdir_p TMPDIR
-  end
-
   def test_simple_shebang
     pn = Pathname.new('foo')
     pn.write '#!/bin/sh'
@@ -191,9 +182,5 @@ class TextExecutableTests < Test::Unit::TestCase
     assert_equal [], pn.archs
     assert pn.arch == :dunno
     assert_no_match /text executable/, file(pn)
-  end
-
-  def teardown
-    TMPDIR.rmtree
   end
 end
