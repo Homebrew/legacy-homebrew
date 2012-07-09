@@ -16,6 +16,8 @@ class R < Formula
   url 'http://cran.r-project.org/src/base/R-2/R-2.15.1.tar.gz'
   sha1 'f0e6912be6dfc0d1fdc4be66048304d8befe8424'
 
+  head 'https://svn.r-project.org/R/trunk'
+
   depends_on 'readline'
   depends_on 'libtiff'
   depends_on 'jpeg'
@@ -40,6 +42,9 @@ class R < Formula
       "--with-lapack"
     ]
     args << '--with-valgrind-instrumentation=2' if valgrind?
+
+    # Pull down recommended packages if building from HEAD.
+    system './tools/rsync-recommended' if ARGV.build_head?
 
     system "./configure", *args
     system "make"
