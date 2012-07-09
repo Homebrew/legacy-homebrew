@@ -11,7 +11,7 @@ class Jocaml < Formula
   skip_clean :all
 
   def install
-    system "./configure", "--prefix", HOMEBREW_PREFIX, "--mandir", man
+    system "./configure", "--prefix", prefix, "--mandir", man
     ENV.deparallelize # Builds are not parallel-safe, esp. with many cores
     system "make world"
     system "make opt"
@@ -21,6 +21,6 @@ class Jocaml < Formula
 
     # site-lib in the Cellar will be a symlink to the HOMEBREW_PREFIX location,
     # which is mkpath'd by Keg#link when something installs into it
-    ln_s HOMEBREW_PREFIX+"lib/ocaml/site-lib", lib+"ocaml/site-lib"
+    ln_s prefix+"lib/ocaml/site-lib", lib+"ocaml/site-lib"
   end
 end
