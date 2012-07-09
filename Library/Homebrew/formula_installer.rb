@@ -377,7 +377,7 @@ class FormulaInstaller
 
   def check_m4
     # Newer versions of Xcode don't come with autotools
-    return if MacOS.xcode_version.to_f >= 4.3
+    return if MacOS::Xcode.version.to_f >= 4.3
 
     # If the user has added our path to dirlist, don't complain
     return if File.open("/usr/share/aclocal/dirlist") do |dirlist|
