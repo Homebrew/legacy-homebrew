@@ -1,5 +1,10 @@
 require 'formula'
 
+class EmacsMac < Formula
+  url 'ftp://ftp.math.s.chiba-u.ac.jp//emacs/emacs-24.1-mac-3.0.tar.gz'
+  sha1 '5e97373ed88e73de46a0be164f6b1b35f37ade4c'
+end
+
 class Emacs < Formula
   homepage 'http://www.gnu.org/software/emacs/'
   url 'http://ftpmirror.gnu.org/emacs/emacs-24.1.tar.bz2'
@@ -26,6 +31,7 @@ class Emacs < Formula
   def options
     [
       ["--cocoa", "Build a Cocoa version of emacs"],
+      ["--mac", "Compile Mac port version of Emacs by Yamamoto Mitsuharu"],
       ["--srgb", "Enable sRGB colors in the Cocoa version of emacs"],
       ["--with-x", "Include X11 support"],
       ["--use-git-head", "Use Savannah git mirror for HEAD builds"],
@@ -69,6 +75,22 @@ class Emacs < Formula
       system "make bootstrap"
       system "make install"
       prefix.install "nextstep/Emacs.app"
+    elsif ARGV.include? "--mac"
+      pwd = Dir.pwd
+      EmacsMac.new.brew {
+        cp_r Dir["mac"], "#{pwd}/"
+        cp Dir["src/*"], "#{pwd}/src/"
+        cp Dir["lisp/term/mac-win.el"], "#{pwd}/lisp/term/"
+        cp "patch-mac", "#{pwd}/"
+      }
+
+      safe_system '/usr/bin/patch', '-p0', '-i', 'patch-mac'
+
+      args << "--with-mac" << "--enable-mac-app=#{prefix}"
+
+      system "./configure", *args
+      system "make bootstrap"
+      system "make install"
     else
       if ARGV.include? "--with-x"
         # These libs are not specified in xft's .pc. See:
