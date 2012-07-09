@@ -9,6 +9,7 @@ class GnuTypist < Formula
   depends_on 'gettext'
 
   # Use Apple's ncurses instead of ncursesw.
+  # TODO: use an IFDEF for apple and submit upstream
   def patches; DATA; end
 
   def install
