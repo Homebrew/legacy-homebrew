@@ -207,10 +207,10 @@ def check_for_broken_symlinks
 end
 
 def check_for_latest_xcode
-  if not MacOS.xcode_installed?
+  if not MacOS::Xcode.installed?
     # no Xcode, now it depends on the OS X version...
     if MacOS.version >= 10.7 then
-      if not MacOS.clt_installed?
+      if not MacOS::CLT.installed?
         return <<-EOS.undent
           No Xcode version found!
           No compiler found in /usr/bin!
@@ -248,16 +248,16 @@ def check_for_latest_xcode
     Not sure what version of Xcode is the latest for OS X #{MacOS.version}.
     EOS
   end
-  if MacOS.xcode_installed? and MacOS.xcode_version < latest_xcode then <<-EOS.undent
-    You have Xcode-#{MacOS.xcode_version}, which is outdated.
+  if MacOS::Xcode.installed? and MacOS::Xcode.version < latest_xcode then <<-EOS.undent
+    You have Xcode-#{MacOS::Xcode.version}, which is outdated.
     Please install Xcode #{latest_xcode}.
     EOS
   end
 end
 
 def check_cc
-  unless MacOS.clt_installed?
-    if MacOS.xcode_version >= "4.3"
+  unless MacOS::CLT.installed?
+    if MacOS::Xcode.version >= "4.3"
       return <<-EOS.undent
         Experimental support for using Xcode without the "Command Line Tools".
       EOS
@@ -389,7 +389,7 @@ def check_homebrew_prefix
 end
 
 def check_xcode_prefix
-  prefix = MacOS.xcode_prefix
+  prefix = MacOS::Xcode.prefix
   return if prefix.nil?
   if prefix.to_s.match(' ')
     <<-EOS.undent
@@ -401,9 +401,9 @@ end
 
 def check_xcode_select_path
   # with the advent of CLT-only support, we don't need xcode-select
-  return if MacOS.clt_installed?
-  unless File.file? "#{MacOS.xcode_folder}/usr/bin/xcodebuild" and not MacOS.xctools_fucked?
-    path = MacOS.app_with_bundle_id(MacOS::XCODE_4_BUNDLE_ID) || MacOS.app_with_bundle_id(MacOS::XCODE_3_BUNDLE_ID)
+  return if MacOS::CLT.installed?
+  unless File.file? "#{MacOS::Xcode.folder}/usr/bin/xcodebuild" and not MacOS::Xcode.xctools_fucked?
+    path = MacOS.app_with_bundle_id(MacOS::Xcode::V4_BUNDLE_ID) || MacOS.app_with_bundle_id(MacOS::Xcode::V3_BUNDLE_ID)
     path = '/Developer' if path.nil? or not path.directory?
     <<-EOS.undent
       Your Xcode is configured with an invalid path.
@@ -677,7 +677,7 @@ def check_git_newline_settings
 end
 
 def check_for_autoconf
-  return if MacOS.xcode_version >= "4.3"
+  return if MacOS::Xcode.version >= "4.3"
 
   autoconf = which('autoconf')
   safe_autoconfs = %w[/usr/bin/autoconf /Developer/usr/bin/autoconf]
