@@ -5,8 +5,8 @@ class Libmp3splt < Formula
   url 'http://downloads.sourceforge.net/project/mp3splt/libmp3splt/0.7.2/libmp3splt-0.7.2.tar.gz'
   md5 '848817d1d980729aec99bbc62caddd76'
 
+  # Linking fails on 10.6 (and lower?) without a duplicate libtool; see #10350
   unless MacOS.lion?
-    depends_on 'automake' => :build
     depends_on 'libtool' => :build
   end
 
@@ -18,10 +18,6 @@ class Libmp3splt < Formula
   depends_on 'libvorbis'
 
   def install
-    unless MacOS.lion?
-      system "./autogen.sh"
-      system "autoconf"
-    end
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
