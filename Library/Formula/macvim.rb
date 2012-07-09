@@ -1,20 +1,5 @@
 require 'formula'
 
-class Ruby18x < Requirement
-  def message; <<-EOS.undent
-    MacVim compiles against whatever Ruby it finds in your path, and has
-    problems working with Ruby 1.9. We've detected Ruby 1.9 in your path,
-    so this compile may fail.
-    EOS
-  end
-  def fatal?
-    false
-  end
-  def satisfied?
-    `ruby --version` =~ /1\.8\.\d/
-  end
-end
-
 class Macvim < Formula
   homepage 'http://code.google.com/p/macvim/'
   url 'https://github.com/b4winckler/macvim/tarball/snapshot-64'
@@ -32,7 +17,6 @@ class Macvim < Formula
   ]
   end
 
-  depends_on Ruby18x.new
   depends_on 'cscope' if ARGV.include? '--with-cscope'
   depends_on 'lua' if ARGV.include? '--with-lua'
 
@@ -56,7 +40,8 @@ class Macvim < Formula
             "--enable-perlinterp",
             "--enable-pythoninterp",
             "--enable-rubyinterp",
-            "--enable-tclinterp"]
+            "--enable-tclinterp",
+            "--with-ruby-command=/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby"]
 
     args << "--enable-cscope" if ARGV.include? "--with-cscope"
 
