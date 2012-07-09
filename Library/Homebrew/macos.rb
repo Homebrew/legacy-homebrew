@@ -3,6 +3,8 @@ module MacOS extend self
   MDITEM_BUNDLE_ID_KEY = "kMDItemCFBundleIdentifier"
   XCODE_4_BUNDLE_ID = "com.apple.dt.Xcode"
   XCODE_3_BUNDLE_ID = "com.apple.Xcode"
+  XCODE_4_BUNDLE_PATH = Pathname.new("/Applications/Xcode.app")
+  XCODE_3_BUNDLE_PATH = Pathname.new("/Developer/Applications/Xcode.app")
   CLT_STANDALONE_PKG_ID = "com.apple.pkg.DeveloperToolsCLILeo"
   CLT_FROM_XCODE_PKG_ID = "com.apple.pkg.DeveloperToolsCLI"
   APPLE_X11_BUNDLE_ID = "org.x.X11"
@@ -84,7 +86,7 @@ module MacOS extend self
     else
       # Xcrun was provided first with Xcode 4.3 and allows us to proxy
       # tool usage thus avoiding various bugs.
-      p = `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp unless MacOS.xctools_fucked?
+      p = `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp unless xctools_fucked?
       if !p.nil? and !p.empty? and File.executable? p
         path = Pathname.new p
       else
@@ -92,12 +94,12 @@ module MacOS extend self
         # with Xcode 4.3+. The tools in Xcode 4.3+ are split over two locations,
         # usually xcrun would figure that out for us, but it won't work if
         # xcode-select is not configured properly.
-        p = "#{MacOS.dev_tools_path}/#{tool}"
+        p = "#{dev_tools_path}/#{tool}"
         if File.executable? p
           path = Pathname.new p
         else
           # Otherwise lets look in the second location.
-          p = "#{MacOS.xctoolchain_path}/usr/bin/#{tool}"
+          p = "#{xctoolchain_path}/usr/bin/#{tool}"
           if File.executable? p
             path = Pathname.new p
           else
@@ -132,16 +134,16 @@ module MacOS extend self
   def xctoolchain_path
     # As of Xcode 4.3, some tools are located in the "xctoolchain" directory
     @xctoolchain_path ||= begin
-      path = Pathname.new("#{MacOS.xcode_prefix}/Toolchains/XcodeDefault.xctoolchain")
+      path = Pathname.new("#{xcode_prefix}/Toolchains/XcodeDefault.xctoolchain")
       # If only the CLT are installed, all tools will be under dev_tools_path,
       # this path won't exist, and xctoolchain_path will be nil.
       path if path.exist?
     end
   end
 
-  def sdk_path(v=MacOS.version)
+  def sdk_path v=version
     @sdk_path ||= begin
-      path = if !MacOS.xctools_fucked? and File.executable? "#{xcode_folder}/usr/bin/make"
+      path = if not xctools_fucked? and File.executable? "#{xcode_folder}/usr/bin/make"
         `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.strip
       elsif File.directory? '/Developer/SDKs/MacOS#{v}.sdk'
         # the old default (or wild wild west style)
@@ -180,15 +182,15 @@ module MacOS extend self
   def xcode_prefix
     @xcode_prefix ||= begin
       path = Pathname.new xcode_folder
-      if $?.success? and path.absolute? and File.executable? "#{path}/usr/bin/make"
+      if path.absolute? and (path/'usr/bin/make').executable?
         path
       elsif File.executable? '/Developer/usr/bin/make'
         # we do this to support cowboys who insist on installing
         # only a subset of Xcode
         Pathname.new '/Developer'
-      elsif File.executable? '/Applications/Xcode.app/Contents/Developer/usr/bin/make'
+      elsif (XCODE_4_BUNDLE_PATH/'Contents/Developer/usr/bin/make').executable?
         # fallback for broken Xcode 4.3 installs
-        Pathname.new '/Applications/Xcode.app/Contents/Developer'
+        XCODE_4_BUNDLE_PATH/'Contents/Developer'
       else
         # Ask Spotlight where Xcode is. If the user didn't install the
         # helper tools and installed Xcode in a non-conventional place, this
@@ -197,7 +199,7 @@ module MacOS extend self
 
         unless path.nil?
           path += "Contents/Developer"
-          path if File.executable? "#{path}/usr/bin/make"
+          path if (path/'usr/bin/make').executable?
         end
       end
     end
@@ -205,8 +207,8 @@ module MacOS extend self
 
   def xcode_installed?
     # Telling us whether the Xcode.app is installed or not.
-    @xcode_installed ||= File.directory?('/Applications/Xcode.app') ||
-      File.directory?('/Developer/Applications/Xcode.app') ||
+    @xcode_installed ||= XCODE_4_BUNDLE_PATH.exist? ||
+      XCODE_3_BUNDLE_PATH.exist? ||
       app_with_bundle_id(XCODE_4_BUNDLE_ID) ||
       app_with_bundle_id(XCODE_3_BUNDLE_ID) ||
       false
@@ -221,7 +223,7 @@ module MacOS extend self
 
       # this shortcut makes xcode_version work for people who don't realise you
       # need to install the CLI tools
-      xcode43build = "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild"
+      xcode43build = "#{XCODE_4_BUNDLE_PATH}/Contents/Developer/usr/bin/xcodebuild"
       if File.file? xcode43build
         `#{xcode43build} -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
         return $1 if $1
@@ -406,7 +408,7 @@ module MacOS extend self
   }
 
   def compilers_standard?
-    xcode = MacOS.xcode_version
+    xcode = xcode_version
     # Assume compilers are okay if Xcode version not in hash
     return true unless StandardCompilers.keys.include? xcode
 
