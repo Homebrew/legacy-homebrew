@@ -186,10 +186,17 @@ For the full command list, see the COMMANDS section.
     If `--git` is passed, Homebrew will create a Git repository, useful for
     creating patches to the software.
 
-  * `ln`, `link` <formula>:
+  * `ln`, `link [--force] [--dry-run]` <formula>:
     Symlink all of <formula>'s installed files into the Homebrew prefix. This
     is done automatically when you install formula, but can be useful for DIY
     installations.
+
+    If `--force` is passed, Homebrew will delete files which already exist in
+    the prefix while linking.
+
+    If `--dry-run` or `-n` is passed, Homebrew will list all files which would
+    be deleted by `brew link --force`, but will not actually link or delete
+    any files.
 
   * `ls, list [--unbrewed] [--versions]` [<formulae>]:
     Without any arguments, list all installed formulae.
