@@ -87,6 +87,9 @@ module HomebrewArgvExtension
   def one?
     flag? '--1'
   end
+  def dry_run?
+    include?('--dry-run') || switch?('n')
+  end
 
   def build_head?
     include? '--HEAD'
