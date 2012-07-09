@@ -28,14 +28,11 @@ module MacOS extend self
     end
   end
 
+  # This is true ift he standard UNIX tools are present under /usr. For
+  # Xcode < 4.3, this is the standard location. Otherwise, it means that
+  # the user has installed the "Command Line Tools for Xcode" package.
   def clt_installed?
-    # If the command line tools are installed, most unix standard
-    # tools, libs and headers are in /usr.
-    # Returns true, also for older Xcode/OSX versions that had everything in /usr
-    # Beginning with Xcode 4.3, the dev tools are no longer installed
-    # in /usr and SDKs no longer in /Developer by default.
-    # But Apple provides an optional "Command Line Tools for Xcode" package.
-    not clt_version.empty? or dev_tools_path == Pathname.new("/usr/bin")
+    dev_tools_path == Pathname.new("/usr/bin")
   end
 
   def clt_version
@@ -53,10 +50,7 @@ module MacOS extend self
         from_xcode =~ /version: (.*)$/
         $1
       else
-        # We return "" instead of nil because we want clt_installed? to be true on older Macs.
-        # So clt_version.empty? does not mean there are no unix tools in /usr, it just means
-        # that the "Command Line Tools for Xcode" package is not installed
-        "" # No CLT or recipe available to pkgutil.
+        nil
       end
     end
   end
