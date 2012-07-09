@@ -118,6 +118,7 @@ class Requirement
   def satisfied?; false; end
   def fatal?; false; end
   def message; ""; end
+  def modify_build_environment; nil end
 end
 
 
@@ -186,6 +187,10 @@ class X11Dependency < Requirement
     Please install the latest version of XQuartz:
       https://xquartz.macosforge.org
     EOS
+  end
+
+  def modify_build_environment
+    ENV.x11
   end
 
 end
