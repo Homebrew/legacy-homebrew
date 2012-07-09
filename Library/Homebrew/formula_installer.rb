@@ -376,13 +376,15 @@ class FormulaInstaller
   end
 
   def check_m4
+    # Newer versions of Xcode don't come with autotools
     return if MacOS.xcode_version.to_f >= 4.3
 
+    # If the user has added our path to dirlist, don't complain
     return if File.open("/usr/share/aclocal/dirlist") do |dirlist|
       dirlist.grep(%r{^#{HOMEBREW_PREFIX}/share/aclocal$}).length > 0
     end rescue false
 
-    # Check for m4 files
+    # Check for installed m4 files
     if Dir[f.share+"aclocal/*.m4"].length > 0
       opoo 'm4 macros were installed to "share/aclocal".'
       puts "Homebrew does not append \"#{HOMEBREW_PREFIX}/share/aclocal\""
