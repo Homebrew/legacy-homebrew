@@ -9,8 +9,7 @@ class Libpst < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}",
-                          # "--mandir=#{man}",
-                          "--with-boost-python=boost_python-mt"
+                          "--disable-python"
     system "make install"
   end
 end
