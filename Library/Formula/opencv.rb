@@ -10,8 +10,8 @@ end
 
 class Opencv < Formula
   homepage 'http://opencv.willowgarage.com/wiki/'
-  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.1/OpenCV-2.4.1.tar.bz2'
-  sha1 'bc6f23c62c8e3e0746f6f95067d54340d12aed56'
+  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.2/OpenCV-2.4.2.tar.bz2'
+  sha1 '96ff27b87e0f028d1d16201afebabec4e0c72367'
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
