@@ -14,6 +14,14 @@ class Tmux < Formula
     depends_on "libtool" => :build
   end
 
+  def patches
+    # This patch adds the implementation of osdep_get_cwd for Darwin platform,
+    # so that tmux can get current working directory correctly under Mac OS.
+    # NOTE: it applies to 1.6 only, and should be removed when 1.7 is out.
+    #       (because it has been merged upstream)
+    'https://raw.github.com/gist/3072340/b542acd02503ebf501d6cacc8deac422f0776634/tmux-darwin-get-cwd.patch'
+  end
+
   def install
     system "sh", "autogen.sh" if ARGV.build_head?
 
