@@ -5,7 +5,7 @@ class SoundTouch < Formula
   homepage 'http://www.surina.net/soundtouch/'
   md5 '5456481d8707d2a2c27466ea64a099cb'
 
-  depends_on 'autoconf' => :build unless MacOS.xcode_version.to_f >= 4.3
+  depends_on :autoconf
 
   def install
     # SoundTouch has a small amount of inline assembly. The assembly has two labeled
