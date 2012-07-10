@@ -10,8 +10,8 @@ end
 
 class Opencv < Formula
   homepage 'http://opencv.willowgarage.com/wiki/'
-  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.1/OpenCV-2.4.1.tar.bz2'
-  sha1 'bc6f23c62c8e3e0746f6f95067d54340d12aed56'
+  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.2/OpenCV-2.4.2.tar.bz2'
+  sha1 '96ff27b87e0f028d1d16201afebabec4e0c72367'
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
@@ -33,13 +33,6 @@ class Opencv < Formula
       ["--with-qt", "Build qt backend."],
       ["--with-tbb", "Build with TBB support."]
     ]
-  end
-
-  def patches
-    # fixes HighGUI build failure on Mac OS X – Not linking against AppKit framework
-    # patch is taken from upstream bug report
-    # upstream patch should be included in version 2.4.2
-    return DATA
   end
 
   def install
@@ -86,17 +79,3 @@ class Opencv < Formula
     EOS
   end
 end
-
-__END__
-diff --git a/modules/highgui/CMakeLists.txt b/modules/highgui/CMakeLists.txt
-index ecd0276..f045ec2 100644
---- a/modules/highgui/CMakeLists.txt
-+++ b/modules/highgui/CMakeLists.txt
-@@ -180,7 +180,7 @@ elseif(APPLE)
-     list(APPEND HIGHGUI_LIBRARIES "-framework Carbon" "-framework QuickTime" "-framework CoreFoundation" "-framework QuartzCore")
-   else()
-     list(APPEND highgui_srcs src/cap_qtkit.mm)
--    list(APPEND HIGHGUI_LIBRARIES "-framework QTKit" "-framework QuartzCore")
-+    list(APPEND HIGHGUI_LIBRARIES "-framework QTKit" "-framework QuartzCore" "-framework AppKit")
-   endif()
- endif()
