@@ -122,9 +122,9 @@ class FormulaTests < Test::Unit::TestCase
     assert_equal 1, f.devel.mirrors.length
     assert f.head.mirrors.empty?
 
-    assert !f.stable.explicit_version?
-    assert !f.bottle.explicit_version?
-    assert !f.devel.explicit_version?
+    assert f.stable.version.detected_from_url?
+    assert f.bottle.version.detected_from_url?
+    assert f.devel.version.detected_from_url?
     assert_version_equal '0.1', f.stable.version
     assert_version_equal '0.1', f.bottle.version
     assert_version_equal '0.2', f.devel.version
@@ -159,8 +159,8 @@ class FormulaTests < Test::Unit::TestCase
     assert_version_equal '0.3', f.version
     assert_version_equal '0.3', f.stable.version
     assert_version_equal '0.4', f.devel.version
-    assert f.stable.explicit_version?
-    assert f.devel.explicit_version?
+    assert !f.stable.version.detected_from_url?
+    assert !f.devel.version.detected_from_url?
   end
 
   def test_old_bottle_specs
@@ -182,7 +182,7 @@ class FormulaTests < Test::Unit::TestCase
       assert_nil f.bottle.md5
       assert_nil f.bottle.sha256
 
-      assert !f.bottle.explicit_version?
+      assert f.bottle.version.detected_from_url?
       assert_equal 0, f.bottle.revision
       assert_version_equal '0.1', f.bottle.version
     else
