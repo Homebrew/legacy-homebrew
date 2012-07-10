@@ -2,9 +2,9 @@ require 'formula'
 
 class StanfordParser < Formula
   homepage 'http://nlp.stanford.edu/software/lex-parser.shtml'
-  url 'http://nlp.stanford.edu/software/stanford-parser-2012-02-03.tgz'
-  md5 'ebb6c7362b02c8b17832854421d6bb49'
-  version '2.0'
+  url 'http://nlp.stanford.edu/software/stanford-parser-2012-07-09.tgz'
+  sha1 'd5c0ea5f974d0e2776321b1aaab85647c908dd51'
+  version '2.0.3'
 
   def shim_script target_script
     <<-EOS.undent
