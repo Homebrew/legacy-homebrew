@@ -2,8 +2,8 @@ require 'formula'
 
 class Uwsgi < Formula
   homepage 'http://projects.unbit.it/uwsgi/'
-  url 'http://projects.unbit.it/downloads/uwsgi-1.1.2.tar.gz'
-  md5 '69d2a89e283a047c750dde858a384e25'
+  url 'http://projects.unbit.it/downloads/uwsgi-1.2.4.tar.gz'
+  sha1 '853ddbc1e4a0d98f2e81930dff46239d4bb12310'
 
   skip_clean :all # stripping breaks the executable
 
