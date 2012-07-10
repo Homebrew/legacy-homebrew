@@ -6,7 +6,8 @@ class Automake < Formula
   mirror 'http://ftp.gnu.org/gnu/automake/automake-1.12.1.tar.gz'
   sha1 'e39d3e95e384549cbac22f9f0b110fa53825ddef'
 
-  depends_on :autoconf
+  # Always needs a newer autoconf, even on Snow Leopard.
+  depends_on 'autoconf'
 
   if MacOS.xcode_version.to_f < 4.3 or File.file? "/usr/bin/automake"
     keg_only "Xcode (up to and including 4.2) provides (a rather old) Automake."
