@@ -3,7 +3,7 @@ require 'formula'
 class X3270 < Formula
   homepage 'http://x3270.bgp.nu/'
   url 'http://sourceforge.net/projects/x3270/files/x3270/3.3.12ga10/suite3270-3.3.12ga10-src.tgz'
-  md5 '0549b971383c0ce5b662d0c03409a941     '
+  sha1 '582bb7f3f3523e08404cc8eff80860efd7a79e1b'
 
   def options
     [
