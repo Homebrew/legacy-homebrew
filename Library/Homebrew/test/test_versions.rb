@@ -11,6 +11,10 @@ module VersionAssertions
   def assert_version_nil url
     assert_nil Version.parse(url)
   end
+
+  def assert_comparison a, comparison, b
+    eval "assert Version.new(a) #{comparison} Version.new(b)"
+  end
 end
 
 class TestBadVersion < TestBall
@@ -21,7 +25,19 @@ class TestBadVersion < TestBall
   end
 end
 
-class VersionTests < Test::Unit::TestCase
+class VersionComparisonTests < Test::Unit::TestCase
+  include VersionAssertions
+
+  def test_version_comparisons
+    assert_comparison '0.1', '==', '0.1.0'
+    assert_comparison '0.1', '!=', '0.2'
+    assert_comparison '1.2.3', '>', '1.2.2'
+    assert_comparison '1.2.3-p34', '>', '1.2.3-p33'
+    assert_comparison '1.2.4', '<', '1.2.4.1'
+  end
+end
+
+class VersionParsingTests < Test::Unit::TestCase
   include VersionAssertions
 
   def test_pathname_version
