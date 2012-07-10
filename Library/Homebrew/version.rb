@@ -1,9 +1,14 @@
 class Version
   include Comparable
 
-  def initialize val
+  def initialize val, detected=false
     return val if val.is_a? Version or val.nil?
     @version = val.to_s
+    @detected_from_url = detected
+  end
+
+  def detected_from_url?
+    @detected_from_url
   end
 
   def head?
@@ -39,7 +44,7 @@ class Version
 
   def self.parse spec
     version = _parse(spec)
-    Version.new(version) unless version.nil?
+    Version.new(version, true) unless version.nil?
   end
 
   private

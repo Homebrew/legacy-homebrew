@@ -11,11 +11,6 @@ class SoftwareSpec
     @mirrors = []
   end
 
-  # Was the version defined in the DSL, or detected from the URL?
-  def explicit_version?
-    @explicit_version || false
-  end
-
   def download_strategy
     @download_strategy ||= DownloadStrategyDetector.new(@url, @using).detect
   end
@@ -63,7 +58,6 @@ class SoftwareSpec
       @version ||= Version.parse(@url)
     else
       @version = Version.new(val)
-      @explicit_version = true
     end
   end
 
