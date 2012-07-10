@@ -3,20 +3,6 @@ require 'formula'
 require 'test/testball'
 require 'version'
 
-module VersionAssertions
-  def assert_version_detected expected, url
-    assert_equal expected, Version.parse(url).to_s
-  end
-
-  def assert_version_nil url
-    assert_nil Version.parse(url)
-  end
-
-  def assert_version_comparison a, comparison, b
-    eval "assert Version.new(a) #{comparison} Version.new(b)"
-  end
-end
-
 class TestBadVersion < TestBall
   def initialize name=nil
     @stable = SoftwareSpec.new
@@ -34,6 +20,9 @@ class VersionComparisonTests < Test::Unit::TestCase
     assert_version_comparison '1.2.3', '>', '1.2.2'
     assert_version_comparison '1.2.3-p34', '>', '1.2.3-p33'
     assert_version_comparison '1.2.4', '<', '1.2.4.1'
+    assert_version_comparison 'HEAD', '==', 'HEAD'
+    assert_version_comparison 'HEAD', '>', '1.2.3'
+    assert_version_comparison '1.2.3', '<', 'HEAD'
   end
 end
 
@@ -43,7 +32,7 @@ class VersionParsingTests < Test::Unit::TestCase
   def test_pathname_version
     d = HOMEBREW_CELLAR/'foo-0.1.9'
     d.mkpath
-    assert_equal '0.1.9', d.version
+    assert_version_equal '0.1.9', d.version
   end
 
   def test_no_version
