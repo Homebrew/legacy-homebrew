@@ -6,12 +6,30 @@ class Version
     @version = val.to_s.strip
   end
 
+  def head?
+    @version == 'HEAD'
+  end
+
   def nums
     @version.scan(/\d+/).map { |d| d.to_i }
   end
 
   def <=>(other)
-    @version <=> other.version
+    return nil unless other.is_a? Version
+    return 0 if self.head? and other.head?
+    return 1 if self.head? and not other.head?
+    return -1 if not self.head? and other.head?
+    return 1 if other.nil?
+
+    snums = self.nums
+    onums = other.nums
+
+    count = [snums.length, onums.length].max
+
+    snums.fill(0, snums.length, count - snums.length)
+    onums.fill(0, onums.length, count - onums.length)
+
+    snums <=> onums
   end
 
   def to_s
