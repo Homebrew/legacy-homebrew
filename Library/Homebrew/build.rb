@@ -4,13 +4,13 @@
 # Rationale: Formula can use __END__, Formula can change ENV
 # Thrown exceptions are propogated back to the parent process over a pipe
 
-ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| File.expand_path p }
-
 require 'global'
 
 at_exit do
   # the whole of everything must be run in at_exit because the formula has to
   # be the run script as __END__ must work for *that* formula.
+
+  error_pipe = nil
 
   begin
     raise $! if $! # an exception was already thrown when parsing the formula
@@ -22,10 +22,7 @@ at_exit do
     ENV.extend(HomebrewEnvExtension)
     ENV.setup_build_environment
     # we must do this or tools like pkg-config won't get found by configure scripts etc.
-    ENV.prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? "#{HOMEBREW_PREFIX}/bin"
-    # this is a safety measure for Xcode 4.3 which started not installing
-    # dev tools into /usr/bin as a default
-    ENV.prepend 'PATH', MacOS.dev_tools_path, ':' unless ORIGINAL_PATHS.include? MacOS.dev_tools_path
+    ENV.prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? HOMEBREW_PREFIX/'bin'
 
     # Force any future invocations of sudo to require the user's password to be
     # re-entered. This is in-case any build script call sudo. Certainly this is
@@ -40,15 +37,15 @@ at_exit do
     # question altogether.
     if ENV['HOMEBREW_ERROR_PIPE']
       require 'fcntl'
-      IO.new(ENV['HOMEBREW_ERROR_PIPE'].to_i, 'w').fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
+      error_pipe = IO.new(ENV['HOMEBREW_ERROR_PIPE'].to_i, 'w')
+      error_pipe.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
     end
 
     install(Formula.factory($0))
   rescue Exception => e
-    if ENV['HOMEBREW_ERROR_PIPE']
-      pipe = IO.new(ENV['HOMEBREW_ERROR_PIPE'].to_i, 'w')
-      Marshal.dump(e, pipe)
-      pipe.close
+    unless error_pipe.nil?
+      Marshal.dump(e, error_pipe)
+      error_pipe.close
       exit! 1
     else
       onoe e
@@ -59,6 +56,8 @@ at_exit do
 end
 
 def install f
+  ENV.x11 if f.external_deps.any? { |dep| dep.is_a? X11Dependency }
+
   f.recursive_deps.uniq.each do |dep|
     dep = Formula.factory dep
     if dep.keg_only?
@@ -98,9 +97,6 @@ def install f
 
       interactive_shell f
       nil
-    elsif ARGV.include? '--help'
-      system './configure --help'
-      exit $?
     else
       f.prefix.mkpath
       f.install

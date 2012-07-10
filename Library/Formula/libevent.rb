@@ -12,9 +12,9 @@ class Libevent < Formula
     cause "Undefined symbol '_current_base' reported during linking."
   end
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
   end
 
   depends_on "doxygen" => :build if ARGV.include? '--enable-manpages'
@@ -25,10 +25,12 @@ class Libevent < Formula
   end
 
   def options
-    [['--enable-manpages', "Install the libevent manpages"]]
+    [["--enable-manpages", "Install the libevent manpages"],
+     ["--universal", "Builds a universal binary"]]
   end
 
   def install
+    ENV.universal_binary if ARGV.build_universal?
     ENV.j1
     system "./autogen.sh" if ARGV.build_head?
     system "./configure", "--prefix=#{prefix}"

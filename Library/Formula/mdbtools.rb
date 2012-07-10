@@ -9,10 +9,8 @@ class Mdbtools < Formula
   depends_on 'glib'
   depends_on 'readline'
 
-  if MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  depends_on :automake
+  depends_on :libtool
 
   # remove unknown linker flags
   def patches

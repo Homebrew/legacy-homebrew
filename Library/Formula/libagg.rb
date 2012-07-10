@@ -5,7 +5,8 @@ class Libagg < Formula
   url 'http://www.antigrain.com/agg-2.5.tar.gz'
   md5 '0229a488bc47be10a2fee6cf0b2febd6'
 
-  depends_on "automake" => :build if MacOS.xcode_version >= "4.3"
+  depends_on :automake
+  depends_on :x11 # for Freetype
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
 
@@ -18,8 +19,6 @@ class Libagg < Formula
   end
 
   def install
-    ENV.x11 # For freetype
-
     # AM_C_PROTOTYPES was removed in automake 1.12, as it's only needed for
     # pre-ANSI compilers
     inreplace 'configure.in', 'AM_C_PROTOTYPES', ''

@@ -12,6 +12,7 @@ class Dia < Formula
   depends_on 'pango'
   depends_on 'libtiff'
   depends_on 'gtk+'
+  depends_on :x11
 
   def patches
     # fixes compilation with glib 2.31+
@@ -21,7 +22,6 @@ class Dia < Formula
   end
 
   def install
-    ENV.x11
     # fix for Leopard, potentially others with isspecial defined elswhere
     inreplace 'objects/GRAFCET/boolequation.c', 'isspecial', 'char_isspecial'
     system "./configure", "--enable-debug=no",

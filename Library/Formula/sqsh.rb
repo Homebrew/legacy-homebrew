@@ -5,6 +5,7 @@ class Sqsh < Formula
   homepage 'http://www.sqsh.org/'
   md5 'ce929dc8e23cedccac98288d24785e2d'
 
+  depends_on :x11
   depends_on 'freetds'
   depends_on 'readline'
 
@@ -23,8 +24,8 @@ class Sqsh < Formula
 
     if ARGV.include? "--with-x"
       args << "--with-x"
-      args << "--x-libraries=/usr/X11/lib"
-      args << "--x-includes=/usr/X11/includes"
+      args << "--x-libraries=#{MacOS.x11_prefix}/lib"
+      args << "--x-includes=#{MacOS.x11_prefix}/includes"
     end
 
     ENV['SYBASE'] = Freetds.new("freetds").prefix
