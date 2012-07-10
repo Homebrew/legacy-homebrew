@@ -2,6 +2,9 @@ require 'formula'
 
 class RmlMmc < Formula
   homepage 'http://www.ida.liu.se/labs/pelab/rml'
+  url 'https://build.openmodelica.org/apt/pool/contrib/rml-mmc_229.orig.tar.gz'
+  sha1 '5fd2cda54fafcfeeb68ebfa4ddb9865622d09c5b'
+
   head 'https://openmodelica.org/svn/MetaModelica/trunk', :using => :svn
 
   depends_on 'smlnj'
