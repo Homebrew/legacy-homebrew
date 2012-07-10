@@ -76,9 +76,6 @@ class Ice < Formula
     if ARGV.include? '--java'
       Dir.chdir "java" do
         system "ant ice-jar"
-        Dir.chdir "lib" do
-          lib.install ['Ice.jar', 'ant-ice.jar']
-        end
       end
     end
 
