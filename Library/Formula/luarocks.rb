@@ -4,8 +4,8 @@ def use_luajit?; ARGV.include? '--with-luajit'; end
 
 class Luarocks < Formula
   homepage 'http://luarocks.org'
-  url 'http://luarocks.org/releases/luarocks-2.0.8.tar.gz'
-  md5 '07cf84e352d86fe161f7b2ec43f360cc'
+  url 'http://luarocks.org/releases/luarocks-2.0.9.tar.gz'
+  sha1 '84656ef2c1261a21a7e8aaf347743f8e542d2f49'
 
   depends_on use_luajit? ? 'luajit' : 'lua'
 
@@ -13,12 +13,9 @@ class Luarocks < Formula
     cause "Lua itself compiles with llvm, but may fail when other software tries to link."
   end
 
+  # See comments at __END__
   def patches
-    p = []
-    p << DATA if HOMEBREW_PREFIX.to_s == '/usr/local'
-    # Allow parallel builds; will be in 2.0.9
-    p << "https://github.com/keplerproject/luarocks/commit/0431ed91571e4b7986a1178df48232abff7c0916.patch"
-    p
+    DATA if HOMEBREW_PREFIX.to_s == '/usr/local'
   end
 
   def options
@@ -56,17 +53,32 @@ end
 # write a better patch.
 __END__
 diff --git a/src/luarocks/fs/lua.lua b/src/luarocks/fs/lua.lua
-index 3a547fe..ca4ddc5 100644
+index 67c3ce0..2d149c7 100644
 --- a/src/luarocks/fs/lua.lua
 +++ b/src/luarocks/fs/lua.lua
-@@ -619,10 +619,5 @@ end
+@@ -653,24 +653,5 @@ end
  -- @return boolean or (boolean, string): true on success, false on failure,
  -- plus an error message.
  function check_command_permissions(flags)
 -   local root_dir = path.root_dir(cfg.rocks_dir)
--   if not flags["local"] and not (fs.is_writable(root_dir) or fs.is_writable(dir.dir_name(root_dir))) then
--      return nil, "Your user does not have write permissions in " .. root_dir ..
--                  " \n-- you may want to run as a privileged user or use your local tree with --local."
+-   local ok = true
+-   local err = ""
+-   for _, dir in ipairs { cfg.rocks_dir, root_dir, dir.dir_name(root_dir) } do
+-      if fs.exists(dir) and not fs.is_writable(dir) then
+-         ok = false
+-         err = "Your user does not have write permissions in " .. dir
+-         break
+-      end
 -   end
-    return true
+-   if ok then
+-      return true
+-   else
+-      if flags["local"] then
+-         err = err .. " \n-- please check your permissions."
+-      else
+-         err = err .. " \n-- you may want to run as a privileged user or use your local tree with --local."
+-      end
+-      return nil, err
+-   end
++   return true
  end
