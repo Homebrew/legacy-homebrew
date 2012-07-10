@@ -10,7 +10,7 @@ class Bash < Formula
   depends_on 'readline'
 
   def patches
-    patch_level = version.split('.').last.to_i
+    patch_level = version.to_s.split('.').last.to_i
     {'p0' => (1..patch_level).map { |i| "http://ftpmirror.gnu.org/bash/bash-4.2-patches/bash42-%03d" % i }}
   end
 

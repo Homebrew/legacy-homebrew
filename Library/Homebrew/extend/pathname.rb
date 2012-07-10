@@ -163,8 +163,7 @@ class Pathname
 
   def version
     require 'version'
-    version = Version.parse(self)
-    version.to_s unless version.nil?
+    Version.parse(self)
   end
 
   def compression_type
