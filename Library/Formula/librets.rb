@@ -1,29 +1,14 @@
 require 'formula'
 
 class Librets < Formula
-  url 'http://www.crt.realtors.org/projects/rets/librets/files/librets-1.5.2.tar.gz'
+  url 'http://www.crt.realtors.org/projects/rets/librets/files/librets-1.5.3.tar.gz'
   homepage 'http://code.crt.realtors.org/projects/librets'
-  md5 '74bcea0eb11f3c66cde5dc3ecea05224'
+  md5 'a23c8ae01f1169ea3c79438ba4e92c78'
 
   depends_on 'boost'
+  depends_on 'swig'
 
   def install
-    # allow compilation against the OSX-provided SWIG 1.3.31
-    inreplace "configure",
-      "        check=\"1.3.33\"",
-      "        check=\"1.3.31\""
-
-    inreplace "project/build/ac-macros/swig.m4",
-      "    check=\"1.3.33\"",
-      "    check=\"1.3.31\""
-
-    # Allow compilation against boost 1.46.0
-    inreplace "project/librets/src/RetsExceptionContext.cpp",
-      "#include <boost/filesystem/path.hpp>",
-      "#define BOOST_FILESYSTEM_VERSION 2\n#include <boost/filesystem/path.hpp>"
-
-    # Snow Leopard's SWIG is detected as too old,
-    # so disable language bindings.
     system "./configure", "--disable-debug",
                           "--enable-shared_dependencies",
                           "--prefix=#{prefix}",
