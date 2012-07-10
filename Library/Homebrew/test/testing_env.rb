@@ -65,3 +65,21 @@ ARGV.extend(HomebrewArgvExtension)
 
 require 'extend/ENV'
 ENV.extend(HomebrewEnvExtension)
+
+module VersionAssertions
+  def assert_version_equal expected, actual
+    assert_equal Version.new(expected), actual
+  end
+
+  def assert_version_detected expected, url
+    assert_equal expected, Version.parse(url).to_s
+  end
+
+  def assert_version_nil url
+    assert_nil Version.parse(url)
+  end
+
+  def assert_version_comparison a, comparison, b
+    eval "assert Version.new(a) #{comparison} Version.new(b)"
+  end
+end
