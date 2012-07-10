@@ -3,7 +3,7 @@ class Version
 
   def initialize val
     return val if val.is_a? Version or val.nil?
-    @version = val.to_s.strip
+    @version = val.to_s
   end
 
   def head?
@@ -38,6 +38,86 @@ class Version
   alias_method :to_str, :to_s
 
   def self.parse spec
-    Pathname.new(spec.to_s).version
+    version = _parse(spec)
+    Version.new(version) unless version.nil?
+  end
+
+  private
+
+  def self._parse spec
+    spec = Pathname.new(spec) unless spec.is_a? Pathname
+
+    stem = if spec.directory?
+      spec.basename.to_s
+    elsif %r[((?:sourceforge.net|sf.net)/.*)/download$].match(spec.to_s)
+      Pathname.new(spec.dirname).stem
+    else
+      spec.stem
+    end
+
+    # GitHub tarballs, e.g. v1.2.3
+    m = %r[github.com/.+/(?:zip|tar)ball/v?((\d+\.)+\d+)$].match(spec.to_s)
+    return m.captures.first unless m.nil?
+
+    # e.g. https://github.com/sam-github/libnet/tarball/libnet-1.1.4
+    m = %r[github.com/.+/(?:zip|tar)ball/.*-((\d+\.)+\d+)$].match(spec.to_s)
+    return m.captures.first unless m.nil?
+
+    # e.g. https://github.com/isaacs/npm/tarball/v0.2.5-1
+    m = %r[github.com/.+/(?:zip|tar)ball/v?((\d+\.)+\d+-(\d+))$].match(spec.to_s)
+    return m.captures.first unless m.nil?
+
+    # e.g. https://github.com/petdance/ack/tarball/1.93_02
+    m = %r[github.com/.+/(?:zip|tar)ball/v?((\d+\.)+\d+_(\d+))$].match(spec.to_s)
+    return m.captures.first unless m.nil?
+
+    # e.g. boost_1_39_0
+    m = /((\d+_)+\d+)$/.match(stem)
+    return m.captures.first.gsub('_', '.') unless m.nil?
+
+    # e.g. foobar-4.5.1-1
+    # e.g. ruby-1.9.1-p243
+    m = /-((\d+\.)*\d\.\d+-(p|rc|RC)?\d+)$/.match(stem)
+    return m.captures.first unless m.nil?
+
+    # e.g. lame-398-1
+    m = /-((\d)+-\d)/.match(stem)
+    return m.captures.first unless m.nil?
+
+    # e.g. foobar-4.5.1
+    m = /-((\d+\.)*\d+)$/.match(stem)
+    return m.captures.first unless m.nil?
+
+    # e.g. foobar-4.5.1b
+    m = /-((\d+\.)*\d+([abc]|rc|RC)\d*)$/.match(stem)
+    return m.captures.first unless m.nil?
+
+    # e.g. foobar-4.5.0-beta1, or foobar-4.50-beta
+    m = /-((\d+\.)*\d+-beta(\d+)?)$/.match(stem)
+    return m.captures.first unless m.nil?
+
+    # e.g. foobar4.5.1
+    m = /((\d+\.)*\d+)$/.match(stem)
+    return m.captures.first unless m.nil?
+
+    # e.g. foobar-4.5.0-bin
+    m = /-((\d+\.)+\d+[abc]?)[-._](bin|dist|stable|src|sources?)$/.match(stem)
+    return m.captures.first unless m.nil?
+
+    # e.g. dash_0.5.5.1.orig.tar.gz (Debian style)
+    m = /_((\d+\.)+\d+[abc]?)[.]orig$/.match(stem)
+    return m.captures.first unless m.nil?
+
+    # e.g. erlang-R14B03-bottle.tar.gz (old erlang bottle style)
+    m = /-([^-]+)/.match(stem)
+    return m.captures.first unless m.nil?
+
+    # e.g. opt_src_R13B (erlang)
+    m = /otp_src_(.+)/.match(stem)
+    return m.captures.first unless m.nil?
+
+    # e.g. astyle_1.23_macosx.tar.gz
+    m = /_([^_]+)/.match(stem)
+    return m.captures.first unless m.nil?
   end
 end
