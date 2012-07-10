@@ -5,7 +5,7 @@ require 'version'
 
 module VersionAssertions
   def assert_version url, version
-    assert_equal version, Version.parse(url)
+    assert_equal version, Version.parse(url).to_s
   end
 
   def assert_version_nil url
