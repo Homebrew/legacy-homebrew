@@ -25,7 +25,7 @@ class Shapelib < Formula
     include.install 'shapefil.h'
 
     cd lib do
-      ln_s "libshp.#{version}.dylib", "libshp.#{version.split('.').first}.dylib"
+      ln_s "libshp.#{version}.dylib", "libshp.#{version.to_s.split('.').first}.dylib"
       ln_s "libshp.#{version}.dylib", "libshp.dylib"
     end
   end
