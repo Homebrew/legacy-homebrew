@@ -28,11 +28,20 @@ class DependencyCollector
     tag = nil
     spec, tag = spec.shift if spec.is_a? Hash
 
-    dep = case spec
-    when :x11, :libpng
-      X11Dependency.new(tag)
+    dep = parse_spec(spec, tag)
+    # Some symbol specs are conditional, and resolve to nil if there is no
+    # dependency needed for the current platform.
+    return if dep.nil?
+    # Add dep to the correct bucket
+    (dep.is_a?(Requirement) ? @external_deps : @deps) << dep
+  end
+
+private
+
+  def parse_spec spec, tag
+    case spec
     when Symbol
-      raise "Unsupported special dependency #{spec}"
+      parse_symbol_spec(spec, tag)
     when String
       if LANGUAGE_MODULES.include? tag
         LanguageModuleDependency.new(tag, spec)
@@ -46,8 +55,18 @@ class DependencyCollector
     else
       raise "Unsupported type #{spec.class} for #{spec}"
     end
+  end
 
-    (dep.is_a?(Requirement) ? @external_deps : @deps) << dep
+  def parse_symbol_spec spec, tag
+    case spec
+    when :autoconf, :automake, :bsdmake, :libtool
+      # Xcode no longer provides autotools or some other build tools
+      MacOS.xcode_version >= "4.3" ? Dependency.new(spec.to_s) : nil
+    when :x11, :libpng
+      X11Dependency.new(tag)
+    else
+      raise "Unsupported special dependency #{spec}"
+    end
   end
 
 end

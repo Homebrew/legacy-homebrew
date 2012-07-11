@@ -24,6 +24,7 @@ class Mu < Formula
   homepage 'http://www.djcbsoftware.nl/code/mu/'
   url 'http://mu0.googlecode.com/files/mu-0.9.8.4.tar.gz'
   sha1 'd586dddcc5b2f73e0bc1c835c199644a65c0f5b5'
+
   head 'https://github.com/djcb/mu.git'
 
   depends_on 'gettext'
@@ -32,9 +33,9 @@ class Mu < Formula
   depends_on 'xapian'
   depends_on Emacs23Installed.new if ARGV.include? '--with-emacs'
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
   end
 
   # Fixes configure error using Xapian-1.2.10, where it thinks 1.2.10 < 1.2

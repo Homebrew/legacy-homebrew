@@ -193,7 +193,7 @@ module MacOS extend self
         # Ask Spotlight where Xcode is. If the user didn't install the
         # helper tools and installed Xcode in a non-conventional place, this
         # is our only option. See: http://superuser.com/questions/390757
-        path = app_with_bundle_id(XCODE_4_BUNDLE_ID) or app_with_bundle_id(XCODE_3_BUNDLE_ID)
+        path = app_with_bundle_id(XCODE_4_BUNDLE_ID) || app_with_bundle_id(XCODE_3_BUNDLE_ID)
 
         unless path.nil?
           path += "Contents/Developer"
@@ -319,7 +319,7 @@ module MacOS extend self
     # This returns the version number of XQuartz, not of the upstream X.org
     # (which is why it is not called x11_version). Note that the X11.app
     # distributed by Apple is also XQuartz, and therefore covered by this method.
-    path = app_with_bundle_id(XQUARTZ_BUNDLE_ID) or app_with_bundle_id(APPLE_X11_BUNDLE_ID)
+    path = app_with_bundle_id(XQUARTZ_BUNDLE_ID) || app_with_bundle_id(APPLE_X11_BUNDLE_ID)
     version = if not path.nil? and path.exist?
       `mdls -raw -name kMDItemVersion #{path}`.strip
     end
