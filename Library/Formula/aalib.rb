@@ -5,14 +5,9 @@ class Aalib < Formula
   url 'http://downloads.sourceforge.net/aa-project/aalib-1.4rc4.tar.gz'
   md5 'd5aa8e9eae07b7441298b5c30490f6a6'
 
+  depends_on :automake
+  depends_on :libtool
   depends_on :x11
-
-  if MacOS.xcode_version >= "4.3"
-    # remove the autoreconf if possible, no comment provided about why it is there
-    # so we have no basis to make a decision at this point.
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
 
   # Fix malloc/stdlib issue on OS X
   def patches
@@ -21,7 +16,7 @@ class Aalib < Formula
 
   def install
     ENV.ncurses_define
-    system 'autoreconf --force --install'
+    system 'autoreconf --force --install' # To fix X11 linker flags
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
