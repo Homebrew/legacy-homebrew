@@ -17,9 +17,9 @@ end
 
 
 class Cmake < Formula
-  url 'http://www.cmake.org/files/v2.8/cmake-2.8.8.tar.gz'
-  md5 'ba74b22c788a0c8547976b880cd02b17'
   homepage 'http://www.cmake.org/'
+  url 'http://www.cmake.org/files/v2.8/cmake-2.8.8.tar.gz'
+  sha1 'a74dfc3e0a0d7f857ac5dda03bb99ebf07676da1'
 
   bottle do
     version 3
@@ -28,6 +28,10 @@ class Cmake < Formula
   end
 
   depends_on NoExpatFramework.new
+
+  def options
+    [["--enable-ninja", "Enable Ninja build system support"]]
+  end
 
   def patches
     [
@@ -42,12 +46,21 @@ class Cmake < Formula
   end
 
   def install
-    system "./bootstrap", "--prefix=#{prefix}",
-                          "--system-libs",
-                          "--no-system-libarchive",
-                          "--datadir=/share/cmake",
-                          "--docdir=/share/doc/cmake",
-                          "--mandir=/share/man"
+    args = %W[
+      --prefix=#{prefix}
+      --system-libs
+      --no-system-libarchive
+      --datadir=/share/cmake
+      --docdir=/share/doc/cmake
+      --mandir=/share/man
+    ]
+
+    if ARGV.include? "--enable-ninja"
+      args << "--"
+      args << "-DCMAKE_ENABLE_NINJA=1"
+    end
+
+    system "./bootstrap", *args
     system "make"
     system "make install"
   end
