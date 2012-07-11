@@ -278,4 +278,11 @@ class FormulaTests < Test::Unit::TestCase
       when :mountainlion then '8badf00d8badf00d8badf00d8badf00d8badf00d'
       end, f.bottle.checksum.hexdigest
   end
+
+  def test_custom_version_scheme
+    f = CustomVersionSchemeTestBall.new
+
+    assert_version_equal '1.0', f.version
+    assert_instance_of CustomVersionScheme, f.version
+  end
 end
