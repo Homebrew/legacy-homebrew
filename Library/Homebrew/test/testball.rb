@@ -271,3 +271,17 @@ class RevisedBottleSpecTestBall < Formula
     super "revisedbottlespectestball"
   end
 end
+
+class CustomVersionScheme < Version
+end
+
+class CustomVersionSchemeTestBall < Formula
+  homepage 'http://example.com'
+  url 'file:///foo.com/testball-0.1.tbz'
+  sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
+  version '1.0' => CustomVersionScheme
+
+  def initialize name=nil
+    super "customversionschemetestball"
+  end
+end
