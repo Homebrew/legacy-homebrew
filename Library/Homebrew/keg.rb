@@ -67,6 +67,15 @@ class Keg < Pathname
     dir.directory? and not dir.children.length.zero?
   end
 
+  def version
+    require 'version'
+    Version.new(basename.to_s)
+  end
+
+  def basename
+    Pathname.new(self.to_s).basename
+  end
+
   def link mode=nil
     raise "Cannot link #{fname}\nAnother version is already linked: #{linked_keg_record.realpath}" if linked_keg_record.directory?
 
