@@ -13,7 +13,7 @@ class Yasm < Formula
 
   if ARGV.build_head?
     depends_on 'gettext'
-    depends_on 'automake' => :build if MacOS.xcode_version.to_f >= 4.3
+    depends_on :automake
   end
 
   depends_on 'Cython' => :python if ARGV.include? '--enable-python'
