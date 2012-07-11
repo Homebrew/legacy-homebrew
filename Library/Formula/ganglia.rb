@@ -27,7 +27,7 @@ class Ganglia < Formula
     # Grab the standard autogen.sh and run it twice, to update libtool
     curl "http://buildconf.git.sourceforge.net/git/gitweb.cgi?p=buildconf/buildconf;a=blob_plain;f=autogen.sh;hb=HEAD", "-o", "autogen.sh"
 
-    ENV['LIBTOOLIZE'] = "/usr/bin/glibtoolize" if MacOS.xcode_version < "4.3"
+    ENV['LIBTOOLIZE'] = "/usr/bin/glibtoolize" if MacOS::Xcode.provides_autotools?
     ENV['PROJECT'] = "ganglia"
     system "/bin/sh ./autogen.sh --download"
 
