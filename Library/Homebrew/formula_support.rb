@@ -45,9 +45,7 @@ class SoftwareSpec
   def url val=nil, specs=nil
     return @url if val.nil?
     @url = val
-    if specs.nil?
-      @using = nil
-    else
+    unless specs.nil?
       @using = specs.delete :using
       @specs = specs
     end
