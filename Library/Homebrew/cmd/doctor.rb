@@ -240,6 +240,7 @@ def check_for_latest_xcode
     when 10.5 then "3.1.4"
     when 10.6 then "3.2.6"
     when 10.7 then "4.3.3"
+    when 10.8 then "4.4"
     else nil
   end
   if latest_xcode.nil?
