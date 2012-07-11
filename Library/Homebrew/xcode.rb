@@ -122,6 +122,10 @@ module MacOS::Xcode extend self
   def provides_autotools?
     version.to_f < 4.3
   end
+
+  def provides_gcc?
+    version.to_f < 4.3
+  end
 end
 
 module MacOS::CLT extend self
