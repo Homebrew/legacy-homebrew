@@ -63,10 +63,4 @@ class Osmium < Formula
     > brew install gdal --complete
     EOS
   end
-
-  def test
-    cd 'test' do
-      system './run_tests.sh'
-    end
-  end
 end
