@@ -7,7 +7,7 @@ class Zookeeper < Formula
 
   head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
@@ -15,6 +15,11 @@ class Zookeeper < Formula
   option "c",      "Build C bindings."
   option "perl",   "Build Perl bindings."
   option "python", "Build Python bindings."
+
+  fails_with :clang do
+    build 421
+    "ld: duplicate symbol [...] for architecture x86_64"
+  end if build.include? 'c' or build.include? 'perl' or build.include? 'python'
 
   def shim_script target
     <<-EOS.undent
@@ -73,6 +78,13 @@ class Zookeeper < Formula
 
     # Install Python bindings
     cd "src/contrib/zkpython" do
+      if MacOS::CLT.installed? or Formula.factory("python").linked_keg.exist?
+        ENV.append_to_cflags `python-config --includes`.chomp
+      else
+        # Since Lion, Apple removed the header files from Python.
+        # They put the headers into Xcode and didn't update python-config.
+        ENV.append_to_cflags "-I#{MacOS.sdk_path}/System/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7"
+      end
       system "python", "src/python/setup.py", "build"
       system "python", "src/python/setup.py", "install", "--prefix=#{prefix}"
     end if build_python
