@@ -48,8 +48,8 @@ class Osmium < Formula
   end
 
   def caveats; <<-EOS.undent
-    parts of osmium deoend on gdal with spatialite-support.
-    if you find yourself needing spatialite, reinstall gdal like this:
+    parts of osmium depend on gdal with spatialite-support. if you find yourself
+    needing spatialite, reinstall gdal like this before compiling your program:
     > brew rm gdal
     > brew install gdal --complete
     EOS
