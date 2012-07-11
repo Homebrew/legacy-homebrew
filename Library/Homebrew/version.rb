@@ -126,3 +126,24 @@ class Version
     return m.captures.first unless m.nil?
   end
 end
+
+class VersionSchemeDetector
+  def initialize scheme
+    @scheme = scheme
+  end
+
+  def detect
+    if @scheme.is_a? Class and @scheme.ancestors.include? Version
+      @scheme
+    elsif @scheme.is_a? Symbol then detect_from_symbol
+    else
+      raise "Unknown version scheme #{@scheme} was requested."
+    end
+  end
+
+  private
+
+  def detect_from_symbol
+    raise "Unknown version scheme #{@scheme} was requested."
+  end
+end
