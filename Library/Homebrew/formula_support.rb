@@ -52,11 +52,14 @@ class SoftwareSpec
   end
 
   def version val=nil
-    if val.nil?
-      @version ||= Version.parse(@url)
-    else
-      @version = Version.new(val)
-    end
+    @version ||= case val
+      when nil then Version.parse(@url)
+      when Hash
+        key, value = val.shift
+        scheme = VersionSchemeDetector.new(value).detect
+        scheme.new(key)
+      else Version.new(val)
+      end
   end
 
   def mirror val
