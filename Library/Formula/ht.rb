@@ -15,7 +15,8 @@ class Ht < Formula
   def install
     system "chmod +x ./install-sh"
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--disable-x11-textmode"
     system "make install"
   end
 end
