@@ -5,14 +5,11 @@ class Qemu < Formula
   url 'http://wiki.qemu.org/download/qemu-1.1.0-1.tar.bz2'
   sha256 '1e566f8cbc33e5fb7d5f364c0fd1cdde9e921e647223b5d7ae7e5f95544b258d'
 
+  head 'git://git.qemu.org/qemu.git'
+
   depends_on 'jpeg'
   depends_on 'gnutls'
   depends_on 'glib'
-
-  fails_with :clang do
-    build 318
-    cause 'Compile error: global register variables are not supported'
-  end
 
   def install
     # Disable the sdl backend. Let it use CoreAudio instead.
@@ -21,6 +18,7 @@ class Qemu < Formula
       --cc=#{ENV.cc}
       --host-cc=#{ENV.cc}
       --enable-cocoa
+      --enable-tcg-interpreter
       --disable-bsd-user
       --disable-guest-agent
       --disable-sdl
