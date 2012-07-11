@@ -42,7 +42,7 @@ class Fontforge < Formula
     # Fix hard-coded include file paths. Reported usptream:
     # http://sourceforge.net/mailarchive/forum.php?thread_name=C1A32103-A62D-468B-AD8A-A8E0E7126AA5%40smparkes.net&forum_name=fontforge-devel
     # https://trac.macports.org/ticket/33284
-    header_prefix = MacOS.xcode_prefix
+    header_prefix = MacOS::Xcode.prefix
     inreplace %w(fontforge/macbinary.c fontforge/startui.c gutils/giomime.c) do |s|
       s.gsub! "/Developer", header_prefix
     end

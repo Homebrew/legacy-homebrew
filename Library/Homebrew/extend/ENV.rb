@@ -10,7 +10,7 @@ module HomebrewEnvExtension
     remove_cc_etc
 
     # make any aclocal stuff installed in Homebrew available
-    self['ACLOCAL_PATH'] = "#{HOMEBREW_PREFIX}/share/aclocal" if MacOS::Xcode.version < "4.3"
+    self['ACLOCAL_PATH'] = "#{HOMEBREW_PREFIX}/share/aclocal" if MacOS::Xcode.provides_autotools?
 
     self['MAKEFLAGS'] = "-j#{self.make_jobs}"
 

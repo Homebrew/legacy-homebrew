@@ -61,7 +61,7 @@ private
     case spec
     when :autoconf, :automake, :bsdmake, :libtool
       # Xcode no longer provides autotools or some other build tools
-      MacOS.xcode_version >= "4.3" ? Dependency.new(spec.to_s) : nil
+      Dependency.new(spec.to_s) unless MacOS::Xcode.provides_autotools?
     when :x11, :libpng
       X11Dependency.new(tag)
     else
