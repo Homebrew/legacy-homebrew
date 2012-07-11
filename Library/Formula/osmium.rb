@@ -35,18 +35,9 @@ class Osmium < Formula
 
     cd 'examples' do
       system 'make'
-      bin.install 'osmium_convert'
-      bin.install 'osmium_debug'
-      bin.install 'osmium_store_and_debug'
-      bin.install 'osmium_find_bbox'
-      bin.install 'osmium_progress'
-      bin.install 'osmium_range_from_history'
-      bin.install 'osmium_sizeof'
-      bin.install 'osmium_stats'
-      bin.install 'osmium_time'
-      bin.install 'osmium_toogr'
-      bin.install 'osmium_toogr2'
-      bin.install 'osmium_toshape'
+
+      # install all files beginning with osmium_ but without a dot (excluding cpp and dSYM)
+      bin.install Dir['osmium_*'].find_all{|item| not item.include? '.'}
       bin.install 'nodedensity'
     end
 
