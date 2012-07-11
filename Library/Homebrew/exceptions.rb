@@ -148,3 +148,31 @@ end
 # raised by safe_system in utils.rb
 class ErrorDuringExecution < RuntimeError
 end
+
+# raised by Pathname#verify_checksum when cksum is nil or empty
+class ChecksumMissingError < ArgumentError
+end
+
+# raised by Pathname#verify_checksum when verification fails
+class ChecksumMismatchError < RuntimeError
+  attr :advice, true
+  attr :expected
+  attr :actual
+  attr :hash_type
+
+  def initialize expected, actual
+    @expected = expected
+    @actual = actual
+    @hash_type = expected.hash_type.to_s.upcase
+
+    super <<-EOS.undent
+      #{@hash_type} mismatch
+      Expected: #{@expected}
+      Actual: #{@actual}
+      EOS
+  end
+
+  def to_s
+    super + advice
+  end
+end
