@@ -10,16 +10,16 @@ class Tmux < Formula
   depends_on 'pkg-config' => :build
   depends_on 'libevent'
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
   end
 
+  # This patch adds the implementation of osdep_get_cwd for Darwin platform,
+  # so that tmux can get current working directory correctly under Mac OS.
+  # NOTE: it applies to 1.6 only, and should be removed when 1.7 is out.
+  #       (because it has been merged upstream)
   def patches
-    # This patch adds the implementation of osdep_get_cwd for Darwin platform,
-    # so that tmux can get current working directory correctly under Mac OS.
-    # NOTE: it applies to 1.6 only, and should be removed when 1.7 is out.
-    #       (because it has been merged upstream)
    DATA if ARGV.build_stable?
   end
 

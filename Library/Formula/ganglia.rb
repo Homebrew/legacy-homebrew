@@ -5,6 +5,9 @@ class Ganglia < Formula
   url 'http://downloads.sourceforge.net/project/ganglia/ganglia%20monitoring%20core/3.1.7/ganglia-3.1.7.tar.gz'
   md5 '6aa5e2109c2cc8007a6def0799cf1b4c'
 
+  depends_on :automake
+  depends_on :libtool
+
   depends_on 'confuse'
   depends_on 'pcre'
   depends_on 'rrdtool'
@@ -15,11 +18,6 @@ class Ganglia < Formula
     # Also, for some reason, having inline or static keywords in gperf generated files
     # causes missing symbol link errors - manually patch those out for now.
     DATA
-  end
-
-  if MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
   end
 
   def install

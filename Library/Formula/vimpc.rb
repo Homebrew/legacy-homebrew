@@ -7,14 +7,14 @@ class Vimpc < Formula
 
   head 'https://github.com/richo/vimpc.git'
 
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'pcre++'
   depends_on 'libmpdclient'
-
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
 
   def install
     if ARGV.build_head?
