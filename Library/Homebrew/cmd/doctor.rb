@@ -402,7 +402,7 @@ end
 def check_xcode_select_path
   # with the advent of CLT-only support, we don't need xcode-select
   return if MacOS::CLT.installed?
-  unless File.file? "#{MacOS::Xcode.folder}/usr/bin/xcodebuild" and not MacOS::Xcode.xctools_fucked?
+  unless File.file? "#{MacOS::Xcode.folder}/usr/bin/xcodebuild" and not MacOS::Xcode.bad_xcode_select_path?
     path = MacOS.app_with_bundle_id(MacOS::Xcode::V4_BUNDLE_ID) || MacOS.app_with_bundle_id(MacOS::Xcode::V3_BUNDLE_ID)
     path = '/Developer' if path.nil? or not path.directory?
     <<-EOS.undent
