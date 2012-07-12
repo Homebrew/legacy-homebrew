@@ -211,6 +211,24 @@ _brew_install ()
     __brew_complete_formulae
 }
 
+_brew_link ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        if __brewcomp_words_include "--dry-run"; then
+            return
+        elif __brewcomp_words_include "--force"; then
+            return
+        else
+            __brewcomp "--dry-run --force"
+            return
+        fi
+        ;;
+    esac
+    __brew_complete_installed
+}
+
 _brew_list ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
@@ -375,7 +393,6 @@ _brew ()
             home
             info abv
             install
-            link ln
             list ls
             log
             missing
@@ -401,7 +418,7 @@ _brew ()
     case "$cmd" in
     --cache|--cellar|--prefix)  __brew_complete_formulae ;;
     audit|cat|edit|home)        __brew_complete_formulae ;;
-    link|ln|test|unlink)        __brew_complete_installed ;;
+    test|unlink)                __brew_complete_installed ;;
     upgrade)                    __brew_complete_outdated ;;
     cleanup)                    _brew_cleanup ;;
     create)                     _brew_create ;;
@@ -410,6 +427,7 @@ _brew ()
     fetch)                      _brew_fetch ;;
     info|abv)                   _brew_info ;;
     install)                    _brew_install ;;
+    link|ln)                    _brew_link ;;
     list|ls)                    _brew_list ;;
     log)                        _brew_log ;;
     missing)                    __brew_complete_formulae ;;
