@@ -2,9 +2,9 @@ require 'formula'
 
 class Jenkins < Formula
   homepage 'http://jenkins-ci.org'
-  url 'http://mirrors.jenkins-ci.org/war/1.464/jenkins.war'
-  version '1.464'
-  md5 'a859f7340fa85edd18f7837d92b987a8'
+  url 'http://mirrors.jenkins-ci.org/war/1.474/jenkins.war'
+  version '1.474'
+  md5 '9c70bd281f5d04550371fe91da6ec9a6'
 
   head 'https://github.com/jenkinsci/jenkins.git'
 
