@@ -12,6 +12,7 @@ class Graphviz < Formula
   depends_on 'pkg-config' => :build
   depends_on 'pango' if ARGV.include? '--with-pangocairo'
   depends_on 'swig' if build_bindings?
+  depends_on :x11
 
   fails_with :clang do
     build 318
