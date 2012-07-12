@@ -1,9 +1,9 @@
 require 'formula'
 
 class Rrdtool < Formula
-  url 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.4.5.tar.gz'
+  url 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.4.7.tar.gz'
   homepage 'http://oss.oetiker.ch/rrdtool/index.en.html'
-  md5 '4d116dba9a0888d8aaac179e35d3980a'
+  sha1 'faab7df7696b69f85d6f89dd9708d7cf0c9a273b'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
@@ -11,6 +11,7 @@ class Rrdtool < Formula
   depends_on 'intltool'
   depends_on 'expat'
   depends_on 'pango'
+  depends_on :x11
 
   # Can use lua if it is found, but don't force users to install
   depends_on 'lua' => :optional if ARGV.include? "--lua"
@@ -24,7 +25,6 @@ class Rrdtool < Formula
 
   def install
     ENV.libxml2
-    ENV.x11
 
     which_perl = which 'perl'
     which_ruby = which 'ruby'

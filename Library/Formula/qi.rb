@@ -17,11 +17,17 @@ class Qi < Formula
 
   def install
     if ARGV.include? '--SBCL'
-      system "cd Lisp; sbcl --load 'install.lsp'"
+      cd 'Lisp' do
+        system "sbcl", "--load", "install.lsp"
+      end
+
       system "echo \"#!/bin/bash\nsbcl --core #{prefix}/Qi.core $*\" > qi"
       prefix.install ['Lisp/Qi.core']
     else
-      system "cd Lisp; clisp install.lsp"
+      cd 'Lisp' do
+        system "clisp", "install.lsp"
+      end
+
       system "echo \"#!/bin/bash\nclisp -M #{prefix}/Qi.mem $*\" > qi"
       prefix.install ['Lisp/Qi.mem']
     end

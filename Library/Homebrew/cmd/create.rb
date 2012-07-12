@@ -88,8 +88,9 @@ class FormulaCreator
     end
 
     unless ARGV.include? "--no-fetch" and version
-      strategy = detect_download_strategy url
-      @sha1 = strategy.new(url, name, version, nil).fetch.sha1 if strategy == CurlDownloadStrategy
+      spec = SoftwareSpec.new(url, version)
+      strategy = spec.download_strategy
+      @sha1 = strategy.new(name, spec).fetch.sha1 if strategy == CurlDownloadStrategy
     end
 
     path.write ERB.new(template, nil, '>').result(binding)
@@ -111,9 +112,9 @@ class FormulaCreator
     <% elsif mode == nil %>
       # depends_on 'cmake' => :build
     <% end %>
+    depends_on :x11 # if your formula requires any X11/XQuartz components
 
       def install
-        # ENV.x11 # if your formula requires any X11 headers
         # ENV.j1  # if your formula's build system can't parallelize
 
     <% if mode == :cmake %>

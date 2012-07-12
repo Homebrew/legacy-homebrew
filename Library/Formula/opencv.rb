@@ -10,8 +10,8 @@ end
 
 class Opencv < Formula
   homepage 'http://opencv.willowgarage.com/wiki/'
-  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.0/OpenCV-2.4.0.tar.bz2'
-  md5 '1fcda4ed3d0655f033ac30be8bad4882'
+  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.2/OpenCV-2.4.2.tar.bz2'
+  sha1 '96ff27b87e0f028d1d16201afebabec4e0c72367'
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
@@ -30,7 +30,8 @@ class Opencv < Formula
   def options
     [
       ["--32-bit", "Build 32-bit only."],
-      ["--with-qt", "Build qt backend."]
+      ["--with-qt", "Build qt backend."],
+      ["--with-tbb", "Build with TBB support."]
     ]
   end
 
@@ -38,6 +39,7 @@ class Opencv < Formula
     args = std_cmake_args
     args << "-DOPENCV_EXTRA_C_FLAGS='-arch i386 -m32'" if ARGV.build_32_bit?
     args << "-DWITH_QT=ON" if ARGV.include? "--with-qt"
+    args << "-DWITH_TBB=ON" if ARGV.include? "--with-tbb"
 
     # The CMake `FindPythonLibs` Module is dumber than a bag of hammers when
     # more than one python installation is available---for example, it clings

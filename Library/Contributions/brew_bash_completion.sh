@@ -95,28 +95,7 @@ __brew_complete_tapped ()
 __brew_complete_taps ()
 {
     if [[ -z "$__brew_cached_taps" ]]; then
-        __brew_cached_taps="$(/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -e '
-            require "open-uri"
-            require "yaml"
-
-            begin
-              uri = URI.parse("http://github.com/api/v2/yaml/repos/search/homebrew")
-
-              open uri do |f|
-                YAML::load(f.read)["repositories"].each do |repo|
-                  if repo[:name] =~ /^homebrew-(\w+)$/
-                    puts tap = if repo[:username] == "Homebrew"
-                      "homebrew/#{$1}"
-                    else
-                      repo[:username]+"/"+$1
-                    end
-                  end
-                end
-              end
-            rescue
-              nil
-            end
-        ' 2>/dev/null)"
+        __brew_cached_taps="$(brew ls-taps)"
     fi
 
     __brewcomp "$__brew_cached_taps"
@@ -230,6 +209,24 @@ _brew_install ()
         ;;
     esac
     __brew_complete_formulae
+}
+
+_brew_link ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        if __brewcomp_words_include "--dry-run"; then
+            return
+        elif __brewcomp_words_include "--force"; then
+            return
+        else
+            __brewcomp "--dry-run --force"
+            return
+        fi
+        ;;
+    esac
+    __brew_complete_installed
 }
 
 _brew_list ()
@@ -399,6 +396,7 @@ _brew ()
             link ln
             list ls
             log
+            missing
             options
             outdated
             prune
@@ -421,7 +419,7 @@ _brew ()
     case "$cmd" in
     --cache|--cellar|--prefix)  __brew_complete_formulae ;;
     audit|cat|edit|home)        __brew_complete_formulae ;;
-    link|ln|test|unlink)        __brew_complete_installed ;;
+    test|unlink)                __brew_complete_installed ;;
     upgrade)                    __brew_complete_outdated ;;
     cleanup)                    _brew_cleanup ;;
     create)                     _brew_create ;;
@@ -430,8 +428,10 @@ _brew ()
     fetch)                      _brew_fetch ;;
     info|abv)                   _brew_info ;;
     install)                    _brew_install ;;
+    link|ln)                    _brew_link ;;
     list|ls)                    _brew_list ;;
     log)                        _brew_log ;;
+    missing)                    __brew_complete_formulae ;;
     options)                    _brew_options ;;
     outdated)                   _brew_outdated ;;
     search|-S)                  _brew_search ;;

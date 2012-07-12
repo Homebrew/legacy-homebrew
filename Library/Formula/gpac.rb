@@ -11,10 +11,13 @@ require 'formula'
 #
 
 class Gpac < Formula
-  url 'http://downloads.sourceforge.net/gpac/gpac-0.4.5.tar.gz'
   homepage 'http://gpac.sourceforge.net/index.php'
-  md5 '755e8c438a48ebdb13525dd491f5b0d1'
+  url 'http://downloads.sourceforge.net/gpac/gpac-0.5.0.tar.gz'
+  sha1 '48ba16272bfa153abb281ff8ed31b5dddf60cf20'
+
   head 'https://gpac.svn.sourceforge.net/svnroot/gpac/trunk/gpac', :using => :svn
+
+  depends_on :x11
 
   depends_on 'a52dec' => :optional
   depends_on 'jpeg' => :optional
@@ -24,9 +27,8 @@ class Gpac < Formula
   depends_on 'mad' => :optional
   depends_on 'sdl' => :optional
   depends_on 'theora' => :optional
-
-  depends_on 'ffmpeg' => :optional if ARGV.build_head?
-  depends_on 'openjpeg' => :optional if ARGV.build_head?
+  depends_on 'ffmpeg' => :optional
+  depends_on 'openjpeg' => :optional
 
   def install
     ENV.deparallelize
@@ -35,11 +37,9 @@ class Gpac < Formula
             "--prefix=#{prefix}",
             "--mandir=#{man}",
             # gpac build system is barely functional
-            "--extra-cflags=-I/usr/X11/include",
+            "--extra-cflags=-I#{MacOS.x11_prefix}/include",
             # Force detection of X libs on 64-bit kernel
-            "--extra-ldflags=-L/usr/X11/lib"]
-    args << "--use-ffmpeg=no" unless ARGV.build_head?
-    args << "--use-openjpeg=no" unless ARGV.build_head?
+            "--extra-ldflags=-L#{MacOS.x11_prefix}/lib"]
 
     system "chmod +x configure"
     system "./configure", *args

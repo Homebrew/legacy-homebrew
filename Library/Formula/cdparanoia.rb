@@ -1,11 +1,11 @@
 require 'formula'
 
 class Cdparanoia < Formula
-  url 'http://downloads.xiph.org/releases/cdparanoia/cdparanoia-III-10.2.src.tgz'
   homepage 'http://www.xiph.org/paranoia/'
+  url 'http://downloads.xiph.org/releases/cdparanoia/cdparanoia-III-10.2.src.tgz'
   md5 'b304bbe8ab63373924a744eac9ebc652'
 
-  depends_on 'autoconf' => :build if MacOS.xcode_version.to_f >= 4.3
+  depends_on :autoconf
 
   fails_with :llvm do
     build 2326
@@ -23,8 +23,11 @@ class Cdparanoia < Formula
     system "autoconf"
     # Libs are installed as keg-only because most software that searches for cdparanoia
     # will fail to link against it cleanly due to our patches
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-           "--prefix=#{prefix}", "--mandir=#{man}", "--libdir=#{libexec}"
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}",
+                          "--libdir=#{libexec}"
     system "make all"
     system "make install"
   end

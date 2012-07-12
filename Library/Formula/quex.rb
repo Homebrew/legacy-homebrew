@@ -2,8 +2,8 @@ require 'formula'
 
 class Quex < Formula
   homepage 'http://quex.org/'
-  url 'http://downloads.sourceforge.net/project/quex/DOWNLOAD/quex-0.60.2.tar.gz'
-  md5 '836b724616020db2e661e4758b265239'
+  url 'http://downloads.sourceforge.net/project/quex/DOWNLOAD/quex-0.62.6.zip'
+  sha1 'a773b9d44b4cf9d9cbfd289ab1420cffdc26ed32'
 
   def install
     libexec.install 'demo', 'quex', 'quex-exe.py'

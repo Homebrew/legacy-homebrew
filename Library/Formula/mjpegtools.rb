@@ -7,6 +7,7 @@ class Mjpegtools < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
+  depends_on :x11
   depends_on 'libquicktime' => :optional
   depends_on 'libdv' => :optional
   depends_on 'gtk+' => :optional
@@ -19,8 +20,15 @@ class Mjpegtools < Formula
     [["--without-x", "Build without X support"]]
   end
 
+  fails_with :clang do
+    build 318
+    cause <<-EOS.undent
+      In file included from newdenoise.cc:19:
+      ./MotionSearcher.hh:2199:3: error: use of undeclared identifier 'DeleteRegion'
+    EOS
+  end
+
   def install
-    ENV.x11
     args = ["--disable-dependency-tracking",
             "--enable-simd-accel",
             "--prefix=#{prefix}"]
