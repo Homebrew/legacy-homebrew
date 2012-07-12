@@ -2,11 +2,18 @@ require 'formula'
 
 class Dart < Formula
   homepage 'http://www.dartlang.org/'
-  url 'https://gsdview.appspot.com/dart-editor-archive-integration/8370/dart-macos.zip'
-  version '8370'
-  sha1 '3012ee60ef3ecc082a9ce2cb780feffb488540f5'
+  url 'https://gsdview.appspot.com/dart-editor-archive-integration/9474/dart-macos.zip'
+  version '9474'
+  sha1 'be58f1fcb223bf1f109d2b7a3c35d75072bf3fe1'
 
   def shim_script target
+    <<-EOS.undent
+      #!/bin/bash
+      #{target} "$@"
+    EOS
+  end
+
+  def dart_script target
     <<-EOS.undent
       #!/bin/bash
       exec dart "#{target}" "$@"
@@ -17,9 +24,10 @@ class Dart < Formula
     libexec.install Dir['*']
 
     bin.install_symlink libexec+'bin/dart'
-    (bin+'dart2js').write shim_script(libexec+'lib/compiler/implementation/dart2js.dart')
-    (bin+'dartdoc').write shim_script(libexec+'lib/dartdoc/dartdoc.dart')
-    (bin+'pub').write shim_script(libexec+'util/pub/pub.dart')
+    (bin+'dart_analyzer').write shim_script(libexec+'bin/dart_analyzer')
+    (bin+'dart2js').write shim_script(libexec+'bin/dart2js')
+    (bin+'pub').write shim_script(libexec+'bin/pub')
+    (bin+'dartdoc').write dart_script(libexec+'lib/dartdoc/dartdoc.dart')
   end
 
   def test
