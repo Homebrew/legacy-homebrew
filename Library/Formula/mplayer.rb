@@ -35,10 +35,14 @@ class Mplayer < Formula
     # we disable cdparanoia because homebrew's version is hacked to work on OS X
     # and mplayer doesn't expect the hacks we apply. So it chokes.
     # Specify our compiler to stop ffmpeg from defaulting to gcc.
+    # Disable openjpeg because it defines int main(), which hides mplayer's main().
+    # This issue was reported upstream against openjpeg 1.5.0:
+    # http://code.google.com/p/openjpeg/issues/detail?id=152
     system './configure', "--prefix=#{prefix}",
                           "--cc=#{ENV.cc}",
                           "--host-cc=#{ENV.cc}",
-                          "--disable-cdparanoia"
+                          "--disable-cdparanoia",
+                          "--disable-libopenjpeg"
     system "make"
     system "make install"
   end
