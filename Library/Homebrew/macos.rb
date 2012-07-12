@@ -36,7 +36,7 @@ module MacOS extend self
     else
       # Xcrun was provided first with Xcode 4.3 and allows us to proxy
       # tool usage thus avoiding various bugs.
-      p = `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp unless Xcode.xctools_fucked?
+      p = `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp unless Xcode.bad_xcode_select_path?
       if !p.nil? and !p.empty? and File.executable? p
         path = Pathname.new p
       else
@@ -67,7 +67,7 @@ module MacOS extend self
     @dev_tools_path ||= if File.exist? "/usr/bin/cc" and File.exist? "/usr/bin/make"
       # probably a safe enough assumption (the unix way)
       Pathname.new "/usr/bin"
-    elsif not Xcode.xctools_fucked? and system "/usr/bin/xcrun -find make 1>/dev/null 2>&1"
+    elsif not Xcode.bad_xcode_select_path? and system "/usr/bin/xcrun -find make 1>/dev/null 2>&1"
       # Wherever "make" is there are the dev tools.
       Pathname.new(`/usr/bin/xcrun -find make`.chomp).dirname
     elsif File.exist? "#{Xcode.prefix}/usr/bin/make"
@@ -93,7 +93,7 @@ module MacOS extend self
 
   def sdk_path v=version
     @sdk_path ||= begin
-      path = if not Xcode.xctools_fucked? and File.executable? "#{Xcode.folder}/usr/bin/make"
+      path = if not Xcode.bad_xcode_select_path? and File.executable? "#{Xcode.folder}/usr/bin/make"
         `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.strip
       elsif File.directory? '/Developer/SDKs/MacOS#{v}.sdk'
         # the old default (or wild wild west style)
