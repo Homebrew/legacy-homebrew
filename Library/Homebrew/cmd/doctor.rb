@@ -402,7 +402,7 @@ def check_xcode_select_path
   # with the advent of CLT-only support, we don't need xcode-select
   return if MacOS.clt_installed?
   unless File.file? "#{MacOS.xcode_folder}/usr/bin/xcodebuild" and not MacOS.xctools_fucked?
-    path = MacOS.app_with_bundle_id(MacOS::XCODE_4_BUNDLE_ID) or MacOS.app_with_bundle_id(MacOS::XCODE_3_BUNDLE_ID)
+    path = MacOS.app_with_bundle_id(MacOS::XCODE_4_BUNDLE_ID) || MacOS.app_with_bundle_id(MacOS::XCODE_3_BUNDLE_ID)
     path = '/Developer' if path.nil? or not path.directory?
     <<-EOS.undent
       Your Xcode is configured with an invalid path.
