@@ -6,6 +6,7 @@ class Shiboken < Formula
   sha1 'd24efc1e7499e9d7db4dfc85a975291e3cb3f311'
 
   depends_on 'cmake' => :build
+  depends_on 'qt'
 
   def install
     # Building the tests also runs them. Not building and running tests cuts
