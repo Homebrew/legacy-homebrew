@@ -70,6 +70,8 @@ private
       end
     when :x11
       X11Dependency.new(tag)
+    when :xcode
+      XCodeDependency.new
     else
       raise "Unsupported special dependency #{spec}"
     end
@@ -320,5 +322,18 @@ class ConflictRequirement < Requirement
   # The user can chose to force installation even in the face of conflicts.
   def fatal?
     not ARGV.force?
+  end
+end
+
+class XCodeDependency < Requirement
+  def fatal?; true; end
+
+  def satisfied?
+    MacOS::Xcode.installed?
+  end
+
+  def message; <<-EOS.undent
+    XCode is required to compile this software.
+    EOS
   end
 end
