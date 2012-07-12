@@ -393,6 +393,7 @@ _brew ()
             home
             info abv
             install
+            link ln
             list ls
             log
             missing
