@@ -12,7 +12,7 @@ module MacOS::Xcode extend self
   end
 
   # Xcode 4.3 tools hang if "/" is set
-  def xctools_fucked?
+  def bad_xcode_select_path?
     folder == "/"
   end
 
@@ -68,7 +68,7 @@ module MacOS::Xcode extend self
       end
 
       # Xcode 4.3 xc* tools hang indefinately if xcode-select path is set thus
-      raise if xctools_fucked?
+      raise if bad_xcode_select_path?
 
       raise unless which "xcodebuild"
       `xcodebuild -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
