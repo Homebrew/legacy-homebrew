@@ -22,9 +22,9 @@ class Cmake < Formula
   homepage 'http://www.cmake.org/'
 
   bottle do
-    version 2
-    sha1 '64de3916cea46cf98ff0853db401109394cfbd5d' => :lion
-    sha1 'da25300b55944c84e6a0c2e4efc57bb160a02806' => :snowleopard
+    version 3
+    sha1 'bdfb5fcd6743d65f6cfe00b314f9d3f1049e902b' => :lion
+    sha1 '3a77fc17a7b1d3cceabddcca5c126c6b911c2f90' => :snowleopard
   end
 
   depends_on NoExpatFramework.new
@@ -33,6 +33,8 @@ class Cmake < Formula
     [
       # Correct FindPkgConfig found variable. Remove for CMake 2.8.9.
       "https://github.com/Kitware/CMake/commit/3ea850.patch",
+      # Workaround DeployQt4 issue. Remove for CMake 2.8.9.
+      "https://github.com/Kitware/CMake/commit/374b9b.patch",
       # Protect the default value of CMAKE_FIND_FRAMEWORK so that it can be
       # overridden from the command line. Remove for CMake 2.8.9.
       "https://github.com/Kitware/CMake/commit/8b2fb3.patch"
