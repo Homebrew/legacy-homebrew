@@ -1,30 +1,20 @@
 require 'formula'
 
-# Include a private copy of this Python app
-# so we don't have to worry about clashing dependencies.
-class Pygments < Formula
-  url 'http://pypi.python.org/packages/source/P/Pygments/Pygments-1.3.1.tar.gz'
-  homepage 'http://pygments.org/'
-  md5 '54be67c04834f13d7e255e1797d629a5'
-end
-
 class Shocco < Formula
   homepage 'http://rtomayko.github.com/shocco/'
-  head 'https://github.com/rtomayko/shocco.git',
-          :commit => '06ab9ecebd713a1a6ae695b190a775ca6dfeb7b2'
+  url 'https://github.com/rtomayko/shocco/tarball/a5bddd08ec'
+  sha1 'f581bbf52a4981ce2c7cf97910169d3d9d498305'
+  version '20111210'
+  
+  head 'https://github.com/rtomayko/shocco.git'
 
   depends_on 'markdown'
+  depends_on 'pygments' => :python
 
   def install
-    Pygments.new.brew { libexec.install 'pygmentize','pygments' }
-
-    # Brew into libexec, along with Pygments
-    system "./configure", "PYGMENTIZE=#{libexec}/pygmentize", "--prefix=#{libexec}"
+    system "./configure", "--prefix=#{prefix}"
     system "make"
-    libexec.install "shocco"
-
-    # Link the script into bin
-    bin.install_symlink libexec+"shocco"
+    bin.install "shocco"
   end
 
   def caveats
