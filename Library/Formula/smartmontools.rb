@@ -1,9 +1,9 @@
 require 'formula'
 
 class Smartmontools < Formula
-  url 'http://downloads.sourceforge.net/project/smartmontools/smartmontools/5.42/smartmontools-5.42.tar.gz'
+  url 'http://downloads.sourceforge.net/project/smartmontools/smartmontools/5.43/smartmontools-5.43.tar.gz'
   homepage 'http://sourceforge.net/apps/trac/smartmontools/'
-  md5 '4460bf9a79a1252ff5c00ba52cf76b2a'
+  md5 'a1cb2c3d8cc2de377037fe9e7cef40a9'
 
   def install
     (var+'run').mkpath
