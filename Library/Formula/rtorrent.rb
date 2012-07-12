@@ -1,20 +1,14 @@
 require 'formula'
 
 class Rtorrent < Formula
-  url 'http://libtorrent.rakshasa.no/downloads/rtorrent-0.8.9.tar.gz'
   homepage 'http://libtorrent.rakshasa.no/'
-  md5 '629247636cb1210663b52dadbd040a6c'
+  url 'http://libtorrent.rakshasa.no/downloads/rtorrent-0.9.2.tar.gz'
+  sha1 '2a642d722745091265037ed8929a23c237a3b99f'
 
   depends_on 'pkg-config' => :build
   depends_on 'libsigc++'
   depends_on 'libtorrent'
   depends_on 'xmlrpc-c' => :optional
-
-  # Upstream says this is fixed in 0.9.x series, so check if this is
-  # still needed when the next stable rtorrent release is made.
-  fails_with :clang do
-    build 318
-  end
 
   def install
     args = ["--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"]

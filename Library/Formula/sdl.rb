@@ -7,9 +7,11 @@ class Sdl < Formula
 
   head 'http://hg.libsdl.org/SDL', :using => :hg
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+  depends_on :x11
+
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
   end
 
   def options
@@ -24,8 +26,6 @@ class Sdl < Formula
 
     ENV.universal_binary if ARGV.build_universal?
 
-    # Sdl assumes X11 is present on UNIX
-    ENV.x11
     system "./autogen.sh" if ARGV.build_head?
 
     args = %W[--prefix=#{prefix} --disable-nasm]

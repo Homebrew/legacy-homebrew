@@ -29,6 +29,7 @@ class Mupdf < Formula
   depends_on 'jpeg'
   depends_on 'openjpeg'
   depends_on 'jbig2dec'
+  depends_on :x11 # libpng, freetype
 
   def patches
     # Fix up the Makefile so it doesn't mess with our CFLAGS.
@@ -36,7 +37,6 @@ class Mupdf < Formula
   end
 
   def install
-    ENV.x11 # For LibPNG and Freetype
     system "make", "install", "prefix=#{prefix}"
   end
 end

@@ -6,10 +6,9 @@ class Feh < Formula
   md5 '7dee285e8dd34f69058b0977283b3a8a'
 
   depends_on 'giblib' => :build
+  depends_on :x11
 
   def install
-    ENV.x11
-
     system "make", "PREFIX=#{prefix}"
     system "make", "PREFIX=#{prefix}", "install"
   end

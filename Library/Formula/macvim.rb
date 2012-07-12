@@ -1,25 +1,10 @@
 require 'formula'
 
-class Ruby18x < Requirement
-  def message; <<-EOS.undent
-    MacVim compiles against whatever Ruby it finds in your path, and has
-    problems working with Ruby 1.9. We've detected Ruby 1.9 in your path,
-    so this compile may fail.
-    EOS
-  end
-  def fatal?
-    false
-  end
-  def satisfied?
-    `ruby --version` =~ /1\.8\.\d/
-  end
-end
-
 class Macvim < Formula
   homepage 'http://code.google.com/p/macvim/'
   url 'https://github.com/b4winckler/macvim/tarball/snapshot-64'
   version '7.3-64'
-  md5 '5bdc0bc618b3179130f846f8d0f81283'
+  sha1 'c8bf2d758f52a1173112138fefbf4e5ab08015ff'
 
   head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
@@ -32,7 +17,6 @@ class Macvim < Formula
   ]
   end
 
-  depends_on Ruby18x.new
   depends_on 'cscope' if ARGV.include? '--with-cscope'
   depends_on 'lua' if ARGV.include? '--with-lua'
 
@@ -49,14 +33,17 @@ class Macvim < Formula
     arch = MacOS.prefer_64_bit? ? 'x86_64' : 'i386'
     ENV['ARCHFLAGS'] = "-arch #{arch}"
 
-    args = ["--with-features=huge",
-            "--with-tlib=ncurses",
-            "--enable-multibyte",
-            "--with-macarchs=#{arch}",
-            "--enable-perlinterp",
-            "--enable-pythoninterp",
-            "--enable-rubyinterp",
-            "--enable-tclinterp"]
+    args = %W[
+      --with-features=huge
+      --with-tlib=ncurses
+      --enable-multibyte
+      --with-macarchs=#{arch}
+      --enable-perlinterp
+      --enable-pythoninterp
+      --enable-rubyinterp
+      --enable-tclinterp
+      --with-ruby-command=/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
+    ]
 
     args << "--enable-cscope" if ARGV.include? "--with-cscope"
 

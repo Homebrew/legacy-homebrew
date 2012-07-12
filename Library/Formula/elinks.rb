@@ -3,7 +3,7 @@ require 'formula'
 class Elinks < Formula
   homepage 'http://elinks.or.cz/'
   url 'http://elinks.or.cz/download/elinks-0.11.7.tar.bz2'
-  md5 'fcd087a6d2415cd4c6fd1db53dceb646'
+  sha1 'd13edc1477d0ab32cafe7d3c1f3a23ae1c0a5c54'
 
   head 'http://elinks.cz/elinks.git'
 
@@ -13,9 +13,9 @@ class Elinks < Formula
     md5 '92790144290131ac5e63b44548b45e08'
   end
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
   end
 
   fails_with :llvm do

@@ -13,12 +13,15 @@ end
 
 class R < Formula
   homepage 'http://www.r-project.org'
-  url 'http://cran.r-project.org/src/base/R-2/R-2.15.0.tar.gz'
-  md5 '905f638990492618559202cc1e48a867'
+  url 'http://cran.r-project.org/src/base/R-2/R-2.15.1.tar.gz'
+  sha1 'f0e6912be6dfc0d1fdc4be66048304d8befe8424'
+
+  head 'https://svn.r-project.org/R/trunk'
 
   depends_on 'readline'
   depends_on 'libtiff'
   depends_on 'jpeg'
+  depends_on :x11
 
   depends_on 'valgrind' if valgrind?
 
@@ -31,7 +34,6 @@ class R < Formula
   def install
     ENV.Og if valgrind?
     ENV.fortran
-    ENV.x11 # So PNG gets added to the x11 and cairo plotting devices
 
     args = [
       "--prefix=#{prefix}",
@@ -40,6 +42,9 @@ class R < Formula
       "--with-lapack"
     ]
     args << '--with-valgrind-instrumentation=2' if valgrind?
+
+    # Pull down recommended packages if building from HEAD.
+    system './tools/rsync-recommended' if ARGV.build_head?
 
     system "./configure", *args
     system "make"

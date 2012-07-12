@@ -11,17 +11,17 @@ class Fox < Formula
     md5 '1cf2607d15ffad5b664cf65bfcd249bc'
   end
 
+  depends_on :x11
+
   fails_with :llvm do
     cause "Inline asm errors during build"
   end if ARGV.build_devel?
 
   def install
-    ENV.x11
-
     # Yep, won't find freetype unless this is all set.
-    ENV.append "CFLAGS", "-I/usr/X11/include/freetype2"
-    ENV.append "CPPFLAGS", "-I/usr/X11/include/freetype2"
-    ENV.append "CXXFLAGS", "-I/usr/X11/include/freetype2"
+    ENV.append "CFLAGS", "-I#{MacOS.x11_prefix}/include/freetype2"
+    ENV.append "CPPFLAGS", "-I#{MacOS.x11_prefix}/include/freetype2"
+    ENV.append "CXXFLAGS", "-I#{MacOS.x11_prefix}/include/freetype2"
 
     system "./configure", "--enable-release",
                           "--prefix=#{prefix}",

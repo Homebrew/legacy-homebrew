@@ -21,6 +21,7 @@ class Wine < Formula
     sha256 'b178bc34a69341a8f0a7ff73f7dadf2562ed2e5eb03dc0522b7c4d6002e53994'
   end
 
+  depends_on :x11
   depends_on 'jpeg'
   depends_on 'libicns'
 
@@ -45,13 +46,11 @@ class Wine < Formula
 
   def wine_wrapper; <<-EOS.undent
     #!/bin/sh
-    DYLD_FALLBACK_LIBRARY_PATH="/usr/X11/lib:#{HOMEBREW_PREFIX}/lib:/usr/lib" "#{bin}/wine.bin" "$@"
+    DYLD_FALLBACK_LIBRARY_PATH="#{MacOS.x11_prefix}/lib:#{HOMEBREW_PREFIX}/lib:/usr/lib" "#{bin}/wine.bin" "$@"
     EOS
   end
 
   def install
-    ENV.x11
-
     # Build 32-bit; Wine doesn't support 64-bit host builds on OS X.
     build32 = "-arch i386 -m32"
 
@@ -68,8 +67,8 @@ class Wine < Formula
     ENV.append "LDFLAGS", "#{build32} -framework CoreServices -lz -lGL -lGLU"
 
     args = ["--prefix=#{prefix}",
-            "--x-include=/usr/X11/include/",
-            "--x-lib=/usr/X11/lib/",
+            "--x-include=#{MacOS.x11_prefix}/include/",
+            "--x-lib=#{MacOS.x11_prefix}/lib/",
             "--with-x",
             "--with-coreaudio",
             "--with-opengl"]
