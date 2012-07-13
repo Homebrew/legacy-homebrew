@@ -4,14 +4,18 @@ def glib?; ARGV.include? '--with-glib'; end
 def qt?; ARGV.include? '--with-qt4'; end
 
 class PopplerData < Formula
-  url 'http://poppler.freedesktop.org/poppler-data-0.4.5.tar.gz'
+  url 'http://cgit.freedesktop.org/poppler/poppler-data/snapshot/poppler-data-POPPLER_DATA_0_4_5.tar.gz'
   md5 '448dd7c5077570e340340706cef931aa'
+  head 'http://anongit.freedesktop.org/git/poppler/poppler-data.git'
+  version '0.4.5'
 end
 
 class Poppler < Formula
   homepage 'http://poppler.freedesktop.org'
-  url 'http://poppler.freedesktop.org/poppler-0.20.0.tar.gz'
-  md5 '5bca54b9561bf5b14d9344efce2cd4f3'
+  url 'http://cgit.freedesktop.org/poppler/poppler/snapshot/poppler-poppler-0.20.2.tar.gz'
+  md5 'c17fab1ef78bae7a44083fb0a15ca374'
+  head 'http://anongit.freedesktop.org/git/poppler/poppler.git'
+  version '0.20.2'
 
   depends_on 'pkg-config' => :build
   depends_on 'qt' if qt?
