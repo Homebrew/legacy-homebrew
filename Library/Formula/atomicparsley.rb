@@ -2,8 +2,8 @@ require 'formula'
 
 class Atomicparsley < Formula
   homepage 'http://bitbucket.org/wez/atomicparsley/overview/'
-  url 'https://bitbucket.org/wez/atomicparsley/get/0.9.4.tar.bz2'
-  sha1 'd38dee8fddf1d554d07a18edb28635c4eb6bedde'
+  url 'https://bitbucket.org/dinkypumpkin/atomicparsley/downloads/atomicparsley-0.9.5.tar.bz2'
+  sha1 'ffdf42179f83b344670bd7d7b6cfd829e1a1ea6a'
 
   head 'https://bitbucket.org/wez/atomicparsley', :using => :hg
 
