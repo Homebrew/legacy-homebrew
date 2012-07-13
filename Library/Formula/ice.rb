@@ -29,14 +29,6 @@ class Ice < Formula
     "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 
-  def site_package_dir
-    "#{which_python}/site-packages"
-  end
-
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
-  end
-
   def options
     [
       ['--doc', 'Install documentation'],
