@@ -2,45 +2,45 @@ require 'formula'
 
 class Ice < Formula
   homepage 'http://www.zeroc.com'
-  url 'http://www.zeroc.com/download/Ice/3.4/Ice-3.4.1.tar.gz'
-  md5 '3aae42aa47dec74bb258c1a1b2847a1a'
+  url 'http://www.zeroc.com/download/Ice/3.4/Ice-3.4.2.tar.gz'
+  md5 'e97672eb4a63c6b8dd202d0773e19dc7'
 
   depends_on 'berkeley-db'
   depends_on 'mcpp'
+  # other dependencies listed for Ice are for additional utilities not compiled
 
   # * compile against Berkely DB 5.X
   # * use our selected compiler
+  # * solve the upCast problem in current (3.4.2) upstream
   def patches
-    [
-      "https://trac.macports.org/export/94734/trunk/dports/devel/ice-cpp/files/patch-ice.cpp.config.Make.rules.Darwin.diff",
-      DATA
-    ]
+    { :p0 => "https://raw.github.com/romainbossart/Hello-World/master/ice_for_clang_2012-03-05.patch", 
+      :p1 => [
+        "https://trac.macports.org/export/94734/trunk/dports/devel/ice-cpp/files/patch-ice.cpp.config.Make.rules.Darwin.diff",
+        DATA
+        ] 
+    }
+  end
+
+  def site_package_dir
+    "#{which_python}/site-packages"
+  end
+
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 
   def options
     [
       ['--doc', 'Install documentation'],
-      ['--demo', 'Build demos']
+      ['--demo', 'Build demos'],
+      ['--java', 'Build java library'],
+      ['--python', 'Build python library']
     ]
-  end
-
-  # See:
-  # http://www.zeroc.com/forums/bug-reports/4965-slice2cpp-output-does-not-compile-standards-conformant-compiler.html
-  fails_with :clang do
-    build 318
-    cause <<-EOS.undent
-      In file included from BuiltinSequences.cpp:23:
-      In file included from ../../include/Ice/BuiltinSequences.h:30:
-      ../../include/Ice/Stream.h:545:19: error: invalid use of incomplete type 'Ice::MarshalException'
-                  throw MarshalException(__FILE__, __LINE__, "enumerator out of range");
-      (and many other errors)
-    EOS
   end
 
   def install
     ENV.O2
     inreplace "cpp/config/Make.rules" do |s|
-      s.gsub! "#OPTIMIZE", "OPTIMIZE"
       s.gsub! "/opt/Ice-$(VERSION)", prefix
       s.gsub! "/opt/Ice-$(VERSION_MAJOR).$(VERSION_MINOR)", prefix
     end
@@ -49,6 +49,7 @@ class Ice < Formula
     wb = 'config src include'
     wb += ' doc' if ARGV.include? '--doc'
     wb += ' demo' if ARGV.include? '--demo'
+
     inreplace "cpp/Makefile" do |s|
       s.change_make_var! "SUBDIRS", wb
     end
@@ -61,6 +62,31 @@ class Ice < Formula
       system "make"
       system "make install"
     end
+
+    if ARGV.include? '--java'
+      Dir.chdir "java" do
+        system "ant ice-jar"
+      end
+    end
+
+    if ARGV.include? '--python'
+
+      inreplace "py/config/Make.rules" do |s|
+        s.gsub! "/opt/Ice-$(VERSION)", prefix
+        s.gsub! "/opt/Ice-$(VERSION_MAJOR).$(VERSION_MINOR)", prefix
+      end
+
+      Dir.chdir "py" do
+        system "make"
+        system "make install"
+      end
+
+      # install python bits
+      Dir.chdir "#{prefix}/python" do
+        (lib + site_package_dir).install Dir['*']
+      end
+    end
+
   end
 end
 
