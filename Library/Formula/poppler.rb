@@ -5,13 +5,13 @@ def qt?; ARGV.include? '--with-qt4'; end
 
 class PopplerData < Formula
   url 'http://poppler.freedesktop.org/poppler-data-0.4.5.tar.gz'
-  md5 '448dd7c5077570e340340706cef931aa'
+  sha256 '3190bc457bafe4b158f79a08e8a3f1824031ec12acefc359e68e0f04da0f70fd'
 end
 
 class Poppler < Formula
   homepage 'http://poppler.freedesktop.org'
-  url 'http://poppler.freedesktop.org/poppler-0.20.0.tar.gz'
-  md5 '5bca54b9561bf5b14d9344efce2cd4f3'
+  url 'http://poppler.freedesktop.org/poppler-0.20.2.tar.gz'
+  sha256 '2debc5034e0e85402957d84fb2674737658a3dbe8a3c631e1792e3f8c88ce369'
 
   depends_on 'pkg-config' => :build
   depends_on 'qt' if qt?
