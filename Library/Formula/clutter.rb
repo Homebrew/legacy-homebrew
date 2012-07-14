@@ -17,9 +17,9 @@ class Clutter < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}",
-                          "--with-flavour=osx",
-                          "--with-imagebackend=quartz",
-                          "--disable-introspection"
+                          "--disable-introspection",
+                          "--enable-quartz-backend",
+                          "--disable-x11-backend"
     system "make install"
   end
 end
