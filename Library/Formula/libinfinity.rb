@@ -10,8 +10,10 @@ class Libinfinity < Formula
   depends_on 'gtk+'
   depends_on 'gnutls'
   depends_on 'libgsasl'
+  depends_on :x11
 
   # Reported upstream here: http://gobby.0x539.de/trac/ticket/595
+  # Supposedly fixed in HEAD.  Test and remove at libinfinity-0.5.3.
   fails_with :clang do
     build 318
     cause 'Non-void function should return a value'
