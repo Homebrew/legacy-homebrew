@@ -9,14 +9,27 @@ module Homebrew extend self
       abort "Cowardly refusing to `sudo brew link'"
     end
 
+    if ARGV.force? then mode = :force
+    elsif ARGV.dry_run? then mode = :dryrun
+    else mode = nil
+    end
+
     ARGV.kegs.each do |keg|
-      if keg.linked_keg_record.directory? and keg.linked_keg_record.realpath == keg
+      if keg.linked?
         opoo "Already linked: #{keg}"
         next
       end
 
+      if mode == :dryrun
+        print "Would remove:\n" do
+          keg.link(mode)
+        end
+
+        next
+      end
+
       print "Linking #{keg}... " do
-        puts "#{keg.link} symlinks created"
+        puts "#{keg.link(mode)} symlinks created"
       end
     end
   end

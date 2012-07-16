@@ -1,8 +1,8 @@
 require 'formula'
 
 class Log4cxx < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=logging/log4cxx/0.10.0/apache-log4cxx-0.10.0.tar.gz'
   homepage 'http://logging.apache.org/log4cxx/index.html'
+  url 'http://www.apache.org/dyn/closer.cgi?path=logging/log4cxx/0.10.0/apache-log4cxx-0.10.0.tar.gz'
   md5 'b30ffb8da3665178e68940ff7a61084c'
 
   fails_with :llvm do
@@ -10,15 +10,13 @@ class Log4cxx < Formula
     cause "Fails with 'collect2: ld terminated with signal 11 [Segmentation fault]'"
   end
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
   end
 
   def options
-    [
-      ["--universal", "Build for both 32 & 64 bit Intel."]
-    ]
+    [["--universal", "Build for both 32 & 64 bit Intel."]]
   end
 
   def install

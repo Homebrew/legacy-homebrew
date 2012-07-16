@@ -3,9 +3,9 @@ require 'formula'
 class WaitOn < Formula
   homepage 'http://www.freshports.org/sysutils/wait_on/'
   url 'ftp://ftp.ugh.net.au/pub/unix/wait_on/wait_on-1.1.tar.gz'
-  md5 '6b5917ad6136fdd8295d2d1299db10d5'
+  sha1 '9e3fb51b6324f5aca7664fb8165f61a52bd5bd61'
 
-  depends_on 'bsdmake' => :build if MacOS.xcode_version.to_f >= 4.3
+  depends_on :bsdmake
 
   def install
     system "bsdmake"

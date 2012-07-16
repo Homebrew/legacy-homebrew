@@ -7,14 +7,12 @@ class Freeswitch < Formula
 
   head 'git://git.freeswitch.org/freeswitch.git'
 
+  depends_on :autoconf
+  depends_on :automake
+  depends_on :libtool
+
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
-
-  if MacOS.xcode_version >= "4.3"
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
 
   def install
     system "./bootstrap.sh -j#{ENV.make_jobs}"

@@ -13,6 +13,8 @@ class JpegTurbo < Formula
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
     args << "--host=x86_64-apple-darwin" if MacOS.prefer_64_bit?
     system "./configure", *args
+    system 'make'
+    ENV.j1 # Stops a race condition error: file exists
     system "make install"
   end
 
