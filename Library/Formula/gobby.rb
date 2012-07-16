@@ -16,7 +16,13 @@ class Gobby < Formula
   depends_on 'gettext'
   depends_on 'hicolor-icon-theme'
   depends_on 'libinfinity'
+  depends_on 'libunique'
   depends_on :x11
+
+  fails_with :clang do
+    build 318
+    cause "template specialization requires 'template<>'"
+  end
 
   def install
     system "./configure", "--disable-dependency-tracking",
