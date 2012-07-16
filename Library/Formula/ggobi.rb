@@ -14,6 +14,11 @@ class Ggobi < Formula
   depends_on 'gettext'
   depends_on :x11
 
+  fails_with :clang do
+    build 318
+    cause 'clang will not accept that 0 is a positive integer.'
+  end
+
   def install
     # Necessary for ggobi to build - based on patch from MacPorts
     # See: https://trac.macports.org/export/64669/trunk/dports/science/ggobi/files/patch-src-texture.diff
