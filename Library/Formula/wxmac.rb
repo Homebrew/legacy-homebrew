@@ -23,7 +23,8 @@ class Wxmac < Formula
   def options
     [
       ['--python', 'Build Python bindings'],
-      ['--devel', 'Using unstable 2.9.x series (But 64-bit & cocoa support!)']
+      ['--devel', 'Using unstable 2.9.x series (But 64-bit & cocoa support!)'],
+      ['--fixqt', 'No quicktime; fixes problems w/ e.g. wxhaskell; use w/ --devel, 64-bit']
     ]
   end
 
@@ -125,6 +126,11 @@ def install_wx_python
 
       # build will fail on Lion unless we use the 10.6 sdk (note wx 2.9 does fine)
       ENV.append_to_cflags '-isysroot /Developer/SDKs/MacOSX10.6.sdk -mmacosx-version-min=10.6' if MacOS.lion?
+    end
+
+    if ARGV.include? '--fixqt'
+      inreplace %w[ build/osx/wxcarbon.xcconfig build/osx/wxcocoa.xcconfig configure configure.in ],
+        '-framework QuickTime', ''
     end
 
     system "./configure", *args
