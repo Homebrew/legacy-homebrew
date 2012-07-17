@@ -22,7 +22,7 @@ class Genstats < Formula
 
   def test
     # TODO(dan): be more thorough
-    system "genstats -h"
+    system "genstats -h | grep folkert@vanheusden.com"
   end
 
   def patches
