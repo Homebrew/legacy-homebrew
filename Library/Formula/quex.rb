@@ -7,6 +7,7 @@ class Quex < Formula
 
   def install
     libexec.install 'demo', 'quex', 'quex-exe.py'
+    prefix.install %w(README COPYRIGHT.txt)
 
     # Use a shim script to set QUEX_PATH on the user's behalf
     bin.mkpath
