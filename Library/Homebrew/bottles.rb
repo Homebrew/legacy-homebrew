@@ -3,8 +3,8 @@ require 'extend/ARGV'
 
 def bottle_filename f, bottle_version=nil
   name = f.name.downcase
-  version = f.version || f.standard.detect_version
-  bottle_version = bottle_version || f.bottle_version
+  version = f.stable.version
+  bottle_version ||= f.bottle.revision.to_i
   "#{name}-#{version}#{bottle_native_suffix(bottle_version)}"
 end
 
@@ -22,24 +22,24 @@ def built_bottle? f
 end
 
 def bottle_current? f
-  f.bottle_url && f.bottle_sha1 && Pathname.new(f.bottle_url).version == f.version
+  f.bottle and f.bottle.url && !f.bottle.checksum.empty? && f.bottle.version == f.stable.version
 end
 
 def bottle_file_outdated? f, file
   filename = file.basename.to_s
-  return nil unless (filename.match(bottle_regex) or filename.match(old_bottle_regex)) and f.bottle_url
+  return nil unless (filename.match(bottle_regex) or filename.match(old_bottle_regex)) and f.bottle and f.bottle.url
 
   bottle_ext = filename.match(bottle_native_regex).captures.first rescue nil
   bottle_ext ||= filename.match(old_bottle_regex).captures.first rescue nil
-  bottle_url_ext = f.bottle_url.match(bottle_native_regex).captures.first rescue nil
-  bottle_url_ext ||= f.bottle_url.match(old_bottle_regex).captures.first rescue nil
+  bottle_url_ext = f.bottle.url.match(bottle_native_regex).captures.first rescue nil
+  bottle_url_ext ||= f.bottle.url.match(old_bottle_regex).captures.first rescue nil
 
   bottle_ext && bottle_url_ext && bottle_ext != bottle_url_ext
 end
 
 def bottle_new_version f
   return 0 unless bottle_current? f
-  f.bottle_version + 1
+  f.bottle.revision + 1
 end
 
 def bottle_native_suffix version=nil
@@ -56,11 +56,11 @@ def bottle_native_regex
 end
 
 def bottle_regex
-  /(\.[a-z]+\.bottle\.(\d+\.)?tar\.gz)$/
+  Pathname::BOTTLE_EXTNAME_RX
 end
 
 def old_bottle_regex
-  /((\.[a-z]+)?[\.-]bottle\.tar\.gz)$/
+  Pathname::OLD_BOTTLE_EXTNAME_RX
 end
 
 def bottle_base_url

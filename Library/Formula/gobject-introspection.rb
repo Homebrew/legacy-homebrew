@@ -16,7 +16,10 @@ class GobjectIntrospection < Formula
 
   def install
     ENV.universal_binary if ARGV.build_universal?
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          # Tests require (at least) cairo, disable them.
+                          "--disable-tests"
     system "make install"
   end
 end
