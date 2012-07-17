@@ -18,6 +18,7 @@ class PkgConfig < Formula
         #{HOMEBREW_PREFIX}/share/pkgconfig
         /usr/local/lib/pkgconfig
         /usr/lib/pkgconfig
+        #{MacOS.x11_prefix}/lib/pkgconfig
       ].uniq
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
