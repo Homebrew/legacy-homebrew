@@ -16,6 +16,7 @@ class Ffmpeg < Formula
   head 'git://git.videolan.org/ffmpeg.git'
 
   depends_on 'yasm' => :build
+  depends_on :x11
   depends_on 'x264' => :optional
   depends_on 'faac' => :optional
   depends_on 'lame' => :optional
@@ -41,7 +42,6 @@ class Ffmpeg < Formula
   end
 
   def install
-    ENV.x11
     args = ["--prefix=#{prefix}",
             "--enable-shared",
             "--enable-gpl",
@@ -49,7 +49,10 @@ class Ffmpeg < Formula
             "--enable-nonfree",
             "--enable-hardcoded-tables",
             "--enable-libfreetype",
-            "--cc=#{ENV.cc}"]
+            "--cc=#{ENV.cc}",
+            "--host-cflags=#{ENV.cflags}",
+            "--host-ldflags=#{ENV.ldflags}"
+           ]
 
     args << "--enable-libx264" if Formula.factory('x264').linked_keg.exist?
     args << "--enable-libfaac" if Formula.factory('faac').linked_keg.exist?

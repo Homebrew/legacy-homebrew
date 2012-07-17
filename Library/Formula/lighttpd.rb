@@ -2,8 +2,8 @@ require 'formula'
 
 class Lighttpd < Formula
   homepage 'http://www.lighttpd.net/'
-  url 'http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.30.tar.bz2'
-  sha256 '0d795597e4666dbf6ffe44b4a42f388ddb44736ddfab0b1ac091e5bb35212c2d'
+  url 'http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.31.tar.bz2'
+  sha256 '5209e7a25d3044cb21b34d6a2bb3a6f6c216ba903ea486a803d070582e5e26ac'
 
   depends_on 'pkg-config' => :build
   depends_on 'pcre'

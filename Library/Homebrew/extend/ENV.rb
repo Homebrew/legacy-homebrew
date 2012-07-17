@@ -238,7 +238,6 @@ Please take one of the following actions:
       remove 'CPPFLAGS', "-I#{sdk}/usr/include"
       remove_from_cflags "-isystem #{sdk}/usr/include"
       remove_from_cflags "-isysroot #{sdk}"
-      remove_from_cflags "-L#{sdk}/usr/lib"
       remove_from_cflags "-I#{sdk}/usr/include"
       remove 'LDFLAGS', "-L#{sdk}/usr/lib"
       remove 'LDFLAGS', "-I#{sdk}/usr/include"
@@ -274,14 +273,11 @@ Please take one of the following actions:
       append_to_cflags "-isystem #{sdk}/usr/include"
       # Some software needs this (e.g. python shows error: /usr/include/zlib.h: No such file or directory)
       append 'CPPFLAGS', "-I#{sdk}/usr/include"
-      # Needed because CC passes this to the linker and some projects
-      # forget to use the LDFLAGS explicitly:
-      append_to_cflags "-L#{sdk}/usr/lib"
       # And finally the "normal" things one expects for the CFLAGS and LDFLAGS:
       append_to_cflags "-I#{sdk}/usr/include"
-      prepend 'LDFLAGS', "-L#{sdk}/usr/lib"
-      # Believe it or not, sometime only the LDFLAGS are used :/
-      prepend 'LDFLAGS', "-I#{sdk}/usr/include"
+      append 'LDFLAGS', "-L#{sdk}/usr/lib"
+      # Believe it or not, sometimes only the LDFLAGS are used :/
+      append 'LDFLAGS', "-I#{sdk}/usr/include"
       # Needed to build cmake itself and perhaps some cmake projects:
       append 'CMAKE_PREFIX_PATH', "#{sdk}/usr", ':'
       append 'CMAKE_FRAMEWORK_PATH', "#{sdk}/System/Library/Frameworks", ':'
@@ -310,25 +306,33 @@ Please take one of the following actions:
   def x11
     opoo "You do not have X11 installed, this formula may not build." unless MacOS.x11_installed?
 
-    if MacOS.clt_installed?
-      # For Xcode < 4.3 clt_installed? is true. So here is the old style /usr/X11:
-      # There are some config scripts (e.g. freetype) here that should go in the path
-      # (note we don't use MacOS.sdk_path here, because there is no ./usr/bin in there)
-      prepend 'PATH', "/usr/X11/bin", ':'
-      # CPPFLAGS are the C-PreProcessor flags, *not* C++!
-      append 'CPPFLAGS', "-I/usr/X11/include"
-      # Even without Xcode or the CLTs, /usr/X11/lib is there
-      append 'LDFLAGS', "-L/usr/X11/lib"
+    # There are some config scripts here that should go in the PATH. This
+    # path is always under MacOS.x11_prefix, even for Xcode-only systems.
+    prepend 'PATH', MacOS.x11_prefix/'bin', ':'
+
+    # Similarily, pkgconfig files are only found under MacOS.x11_prefix.
+    prepend 'PKG_CONFIG_PATH', MacOS.x11_prefix/'lib/pkgconfig', ':'
+    prepend 'PKG_CONFIG_PATH', MacOS.x11_prefix/'share/pkgconfig', ':'
+
+    append 'LDFLAGS', "-L#{MacOS.x11_prefix}/lib"
+    append 'CMAKE_PREFIX_PATH', MacOS.x11_prefix, ':'
+
+    # We prefer XQuartz if it is installed. Otherwise, we look for Apple's
+    # X11. For Xcode-only systems, the headers are found in the SDK.
+    prefix = if MacOS.x11_prefix.to_s == '/opt/X11' or MacOS.clt_installed?
+      MacOS.x11_prefix
     else
-      # For Xcode 4.3 and above *without* CLT, we find the includes in the SDK:
-      # Only the SDK has got include files. (they are no longer in /usr/X11/include !)
-      # Todo: do we need to add cairo, fontconfig, GL, libpng15, pixman-1, VG, xcb, too?
-      append 'CFLAGS', "-I#{MacOS.sdk_path}/usr/X11/include"
-      append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/X11/include"
-      append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/X11/include/freetype2"
-      # The libs are still in /usr/X11/lib but to be consistent with the includes, we use the SDK, right?
-      append 'LDFLAGS', "-L#{MacOS.sdk_path}/usr/X11/lib"
-      append 'CMAKE_INCLUDE_PATH', "#{MacOS.sdk_path}/usr/X11/include", ':'
+      MacOS.sdk_path/'usr/X11'
+    end
+
+    append 'CPPFLAGS', "-I#{prefix}/include"
+
+    append 'CMAKE_PREFIX_PATH', prefix, ':'
+    append 'CMAKE_INCLUDE_PATH', prefix/'include', ':'
+
+    unless MacOS.clt_installed?
+      append 'CPPFLAGS', "-I#{prefix}/include/freetype2"
+      append 'CFLAGS', "-I#{prefix}/include"
     end
   end
   alias_method :libpng, :x11

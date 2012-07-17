@@ -1,12 +1,18 @@
 require 'formula'
 
+# NOTE: version 2.0 is out, but it requires Bash 4, and OS X ships
+# with 3.2.48
 class BashCompletion < Formula
-  url 'http://bash-completion.alioth.debian.org/files/bash-completion-1.3.tar.bz2'
   homepage 'http://bash-completion.alioth.debian.org/'
-  md5 'a1262659b4bbf44dc9e59d034de505ec'
+  url 'http://bash-completion.alioth.debian.org/files/bash-completion-1.3.tar.bz2'
+  sha1 '6a46b93f44c56cc336632ab28d90c0595fbcc98f'
+
   head 'git://git.debian.org/git/bash-completion/bash-completion.git'
 
-  depends_on "automake" => :build if ARGV.build_head? and MacOS.xcode_version.to_f >= 4.3
+  if ARGV.build_head?
+    depends_on :autoconf
+    depends_on :automake
+  end
 
   def install
     inreplace "bash_completion" do |s|

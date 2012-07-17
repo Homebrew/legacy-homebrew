@@ -10,9 +10,9 @@ class Zeromq < Formula
   md5 '1b11aae09b19d18276d0717b2ea288f6'
   head 'https://github.com/zeromq/libzmq.git'
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
   end
 
   fails_with :llvm do

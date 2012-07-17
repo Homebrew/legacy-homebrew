@@ -1,12 +1,8 @@
 require 'testing_env'
-
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-ARGV.extend(HomebrewArgvExtension)
-
 require 'formula'
 require 'test/testball'
 
-class MockFormula <Formula
+class MockFormula < Formula
   def initialize url
     @url=url
     @homepage = 'http://example.com/'
@@ -14,7 +10,7 @@ class MockFormula <Formula
   end
 end
 
-class TestBadVersion <TestBall
+class TestBadVersion < TestBall
   @version="versions can't have spaces"
 end
 

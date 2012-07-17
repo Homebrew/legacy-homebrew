@@ -5,6 +5,8 @@ module MacOS extend self
   XCODE_3_BUNDLE_ID = "com.apple.Xcode"
   CLT_STANDALONE_PKG_ID = "com.apple.pkg.DeveloperToolsCLILeo"
   CLT_FROM_XCODE_PKG_ID = "com.apple.pkg.DeveloperToolsCLI"
+  APPLE_X11_BUNDLE_ID = "org.x.X11"
+  XQUARTZ_BUNDLE_ID = "org.macosforge.xquartz.X11"
 
   def version
     MACOS_VERSION
@@ -191,7 +193,7 @@ module MacOS extend self
         # Ask Spotlight where Xcode is. If the user didn't install the
         # helper tools and installed Xcode in a non-conventional place, this
         # is our only option. See: http://superuser.com/questions/390757
-        path = app_with_bundle_id(XCODE_4_BUNDLE_ID) or app_with_bundle_id(XCODE_3_BUNDLE_ID)
+        path = app_with_bundle_id(XCODE_4_BUNDLE_ID) || app_with_bundle_id(XCODE_3_BUNDLE_ID)
 
         unless path.nil?
           path += "Contents/Developer"
@@ -268,8 +270,10 @@ module MacOS extend self
           "4.2"
         when 31
           "4.3"
+        when 40
+          "4.4"
         else
-          "4.3"
+          "4.4"
         end
       end
     end
@@ -313,9 +317,26 @@ module MacOS extend self
     end
   end
 
+  def xquartz_version
+    # This returns the version number of XQuartz, not of the upstream X.org
+    # (which is why it is not called x11_version). Note that the X11.app
+    # distributed by Apple is also XQuartz, and therefore covered by this method.
+    path = app_with_bundle_id(XQUARTZ_BUNDLE_ID) || app_with_bundle_id(APPLE_X11_BUNDLE_ID)
+    version = if not path.nil? and path.exist?
+      `mdls -raw -name kMDItemVersion #{path}`.strip
+    end
+  end
+
+  def x11_prefix
+    @x11_prefix ||= if Pathname.new('/opt/X11/lib/libpng.dylib').exist?
+      Pathname.new('/opt/X11')
+    elsif Pathname.new('/usr/X11/lib/libpng.dylib').exist?
+      Pathname.new('/usr/X11')
+    end
+  end
+
   def x11_installed?
-    # Even if only Xcode (without CLT) is installed, this dylib is there.
-    Pathname.new('/usr/X11/lib/libpng.dylib').exist?
+    not x11_prefix.nil?
   end
 
   def macports_or_fink_installed?
@@ -380,7 +401,8 @@ module MacOS extend self
     "4.3" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
     "4.3.1" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
     "4.3.2" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
-    "4.3.3" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318}
+    "4.3.3" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
+    "4.4" => {:llvm_build_version=>2336, :clang_version=>"4.0", :clang_build_version=>421}
   }
 
   def compilers_standard?

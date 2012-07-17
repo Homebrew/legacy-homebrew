@@ -8,6 +8,7 @@ class Xchat < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'gtk+'
+  depends_on :x11
 
   # Adjust to newer glib include conventions
   # Reported at https://sourceforge.net/tracker/?func=detail&aid=3446968&group_id=239&atid=100239

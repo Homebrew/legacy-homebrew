@@ -15,6 +15,7 @@ class GedaGaf < Formula
   depends_on 'gtk+'
   depends_on 'guile'
   depends_on 'gawk'
+  depends_on :x11
 
   # MacPorts fix for glib 2.32 includes
   # Needed for 1.6.2 and 1.7.x
@@ -24,7 +25,6 @@ class GedaGaf < Formula
 
   def install
     # Help configure find libraries
-    ENV.x11
     gettext = Formula.factory('gettext')
 
     system "./configure", "--prefix=#{prefix}",
