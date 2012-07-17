@@ -57,6 +57,7 @@ end
 
 def install f
   ENV.x11 if f.external_deps.any? { |dep| dep.is_a? X11Dependency }
+  ENV.universal_binary if ARGV.build_universal?
 
   f.recursive_deps.uniq.each do |dep|
     dep = Formula.factory dep
