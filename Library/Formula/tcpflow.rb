@@ -3,18 +3,25 @@ require 'formula'
 class Tcpflow < Formula
   homepage 'https://github.com/simsong/tcpflow'
   url 'https://github.com/downloads/simsong/tcpflow/tcpflow-1.2.6.tar.gz'
-  md5 '7562f8a1a65f1ce1238be84a1fe83bf6'
+  sha1 '4267c491cd5f944f8deba727aa7870ced1ad2224'
 
   # Patch from MacPorts
   def patches; DATA; end
 
-  def install
-    if MacOS.leopard?
+  def copy_libtool_files!
+    if MacOS.xcode_version >= "4.3"
+      s = Formula.factory('libtool').share
+      d = "#{s}/libtool/config"
+      cp ["#{d}/config.guess", "#{d}/config.sub"], "."
+    elsif MacOS.leopard?
       cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config.*"], "."
     else
       cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config/config.*"], "."
     end
+  end
 
+  def install
+    copy_libtool_files!
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
