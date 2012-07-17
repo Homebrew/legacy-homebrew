@@ -173,6 +173,6 @@ class ChecksumMismatchError < RuntimeError
   end
 
   def to_s
-    super + advice
+    super + advice.to_s
   end
 end
