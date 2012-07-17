@@ -35,6 +35,13 @@ class Opencv < Formula
     ]
   end
 
+  def patches
+    # fixes HighGUI build failure on Mac OS X – Not linking against AppKit framework
+    # patch is taken from upstream bug report
+    # upstream patch should be included in version 2.4.2
+    return DATA
+  end
+
   def install
     args = std_cmake_args
     args << "-DOPENCV_EXTRA_C_FLAGS='-arch i386 -m32'" if ARGV.build_32_bit?
@@ -79,3 +86,17 @@ class Opencv < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/modules/highgui/CMakeLists.txt b/modules/highgui/CMakeLists.txt
+index ecd0276..f045ec2 100644
+--- a/modules/highgui/CMakeLists.txt
++++ b/modules/highgui/CMakeLists.txt
+@@ -180,7 +180,7 @@ elseif(APPLE)
+     list(APPEND HIGHGUI_LIBRARIES "-framework Carbon" "-framework QuickTime" "-framework CoreFoundation" "-framework QuartzCore")
+   else()
+     list(APPEND highgui_srcs src/cap_qtkit.mm)
+-    list(APPEND HIGHGUI_LIBRARIES "-framework QTKit" "-framework QuartzCore")
++    list(APPEND HIGHGUI_LIBRARIES "-framework QTKit" "-framework QuartzCore" "-framework AppKit")
+   endif()
+ endif()
