@@ -85,10 +85,10 @@ class Formula
     end
   end
 
-  def url;      @active_spec.url;           end
-  def version;  @active_spec.version;       end
-  def specs;    @active_spec.specs;         end
-  def mirrors;  @active_spec.mirrors or []; end
+  def url;      @active_spec.url;     end
+  def version;  @active_spec.version; end
+  def specs;    @active_spec.specs;   end
+  def mirrors;  @active_spec.mirrors; end
 
   # if the dir is there, but it's empty we consider it not installed
   def installed?
