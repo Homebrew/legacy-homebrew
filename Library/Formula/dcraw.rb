@@ -2,8 +2,8 @@ require 'formula'
 
 class Dcraw < Formula
   homepage 'http://www.cybercom.net/~dcoffin/dcraw/'
-  url 'http://www.cybercom.net/~dcoffin/dcraw/archive/dcraw-9.12.tar.gz'
-  md5 '917fee61e1509b935a8b8ff08b067b5f'
+  url 'http://www.cybercom.net/~dcoffin/dcraw/archive/dcraw-9.16.tar.gz'
+  md5 '493d8d30ed1356ed3824a730be49e709'
 
   depends_on 'jpeg'
   depends_on 'jasper'
