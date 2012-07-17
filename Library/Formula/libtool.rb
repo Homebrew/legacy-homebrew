@@ -12,6 +12,10 @@ class Libtool < Formula
   if MacOS.xcode_version.to_f < 4.3 or File.file? "/usr/bin/glibtoolize"
     keg_only "Xcode (up to and including 4.2) provides (a rather old) Libtool."
   end
+  
+  def options
+    [["--universal", "Builds a universal binary"]]
+  end
 
   def options
     [["--universal", "Builds a universal binary"]]
