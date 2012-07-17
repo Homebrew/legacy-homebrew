@@ -14,6 +14,8 @@ class Groonga < Formula
     DATA
   end
 
+  depends_on 'msgpack'
+
   def install
     system "./configure", "--prefix=#{prefix}", "--with-zlib"
     system "make install"
