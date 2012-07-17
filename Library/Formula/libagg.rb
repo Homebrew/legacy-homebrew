@@ -23,6 +23,10 @@ class Libagg < Formula
     # pre-ANSI compilers
     inreplace 'configure.in', 'AM_C_PROTOTYPES', ''
 
+    # AM_C_PROTOTYPES was removed in automake 1.12, as it's only needed for
+    # pre-ANSI compilers
+    inreplace 'configure.in', 'AM_C_PROTOTYPES', ''
+
     # No configure script. We need to run autoreconf, and aclocal and automake
     # need some direction.
     ENV['ACLOCAL'] = "aclocal -I#{HOMEBREW_PREFIX}/share/aclocal" # To find SDL m4 files
