@@ -7,7 +7,7 @@ class Abiword < Formula
 
   devel do
     url 'http://www.abisource.com/downloads/abiword/2.9.2/source/abiword-2.9.2.tar.gz'
-    sha1 '34a6e4e9c5619e8f2d619ac844519fc9378405b3'
+    md5 '9dee7ea5d1f44ba1cd444f22e1ab770f'
   end
 
   depends_on :libpng
