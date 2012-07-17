@@ -11,6 +11,11 @@ class AircrackNg < Formula
     DATA
   end
 
+  def patches
+    # Remove root requirement from OUI update script.  Fixes #12752.
+    DATA
+  end
+
   def install
     # Force i386, otherwise you get errors:
     #  sha1-sse2.S:190:32-bit absolute addressing is not supported for x86-64
