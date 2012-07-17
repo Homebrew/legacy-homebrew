@@ -18,16 +18,19 @@ class Wget < Formula
   end
 
   def options
-    [["--enable-iri", "Enable iri support."]]
+    [
+        ["--enable-iri", "Enable iri support."],
+        ["--enable-debug", "Enable debug support."]
+    ]
   end
 
   def install
     system "./bootstrap" if ARGV.build_head?
-    args = ["--disable-debug",
-            "--prefix=#{prefix}",
+    args = ["--prefix=#{prefix}",
             "--sysconfdir=#{etc}",
             "--with-ssl=openssl"]
 
+    args << "--disable-debug" unless ARGV.include? "--enable-debug"
     args << "--disable-iri" unless ARGV.include? "--enable-iri"
 
     system "./configure", *args
