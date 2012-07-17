@@ -1,9 +1,9 @@
 require 'formula'
 
 class JsdocToolkit < Formula
-  url 'http://jsdoc-toolkit.googlecode.com/files/jsdoc_toolkit-2.3.2.zip'
   homepage 'http://code.google.com/p/jsdoc-toolkit/'
-  sha1 'd8c3977cee202c06a9d6a85b2b9b068d21309fad'
+  url 'https://jsdoc-toolkit.googlecode.com/files/jsdoc_toolkit-2.4.0.zip'
+  sha1 'bd276ec58dbd419326760226174eba09810d26ee'
 
   def install
     system "/bin/echo '#!/bin/ksh\nJSDOCDIR=\"#{libexec}/jsdoc-toolkit\"' > jsdoc"
