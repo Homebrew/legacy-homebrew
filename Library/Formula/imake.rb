@@ -14,6 +14,8 @@ class Imake < Formula
   depends_on :x11
 
   def install
+    # So it can find xorg-macros.pc.  Using ENV.x11 didn't work.
+    ENV['PKG_CONFIG_PATH'] = '/usr/X11/share/pkgconfig'
     ENV.deparallelize
     system './configure', "--prefix=#{prefix}", '--disable-dependency-tracking'
     system "make install"
