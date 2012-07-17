@@ -499,8 +499,6 @@ public
     @active_spec.verify_download_integrity(fn)
   end
 
-private
-
   def stage
     fetched, downloader = fetch
     verify_download_integrity fetched if fetched.kind_of? Pathname
@@ -512,6 +510,8 @@ private
       @buildpath = nil
     end
   end
+
+private
 
   def patch
     patch_list = Patches.new(patches)
