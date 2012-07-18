@@ -78,7 +78,7 @@ class Subversion < Formula
   end
 
   # Building Ruby bindings requires libtool
-  depends_on 'libtool' if build_ruby? and MacOS.xcode_version >= "4.3"
+  depends_on :libtool if build_ruby?
 
   def options
     [

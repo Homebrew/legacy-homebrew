@@ -179,7 +179,7 @@ protected
           dst.mkpath unless resolve_any_conflicts(dst)
         else
           unless resolve_any_conflicts(dst)
-            make_relative_symlink dst, src
+            make_relative_symlink dst, src, mode
             Find.prune
           end
         end

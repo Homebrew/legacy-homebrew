@@ -8,12 +8,9 @@ class Libogg < Formula
   head 'http://svn.xiph.org/trunk/ogg'
 
   if ARGV.build_head?
-    depends_on "automake" => :build
-
-    if MacOS.xcode_version >= "4.3"
-      depends_on "libtool" => :build
-      depends_on "autoconf" => :build
-    end
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
   end
 
   def install

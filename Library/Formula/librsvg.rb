@@ -1,11 +1,12 @@
 require 'formula'
 
 class Librsvg < Formula
-  homepage 'http://librsvg.sourceforge.net/'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/librsvg/2.34/librsvg-2.34.1.tar.bz2'
-  sha256 '9f98ab27c4ae04a7c3a37277aeb581feb8035a8b1e1937b06e27423a176a0a73'
+  homepage 'https://live.gnome.org/LibRsvg'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/librsvg/2.36/librsvg-2.36.1.tar.xz'
+  sha256 '786b95e1a091375c5ef2997a21c69ff24d7077afeff18197355f54d9dcbcd8c5'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
   depends_on 'gtk+'
   depends_on 'libcroco'
   depends_on :x11
@@ -13,8 +14,10 @@ class Librsvg < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--disable-Bsymbolic",
                           "--enable-tools=yes",
-                          "--enable-pixbuf-loader=yes"
+                          "--enable-pixbuf-loader=yes",
+                          "--enable-introspection=no"
     system "make install"
   end
 end

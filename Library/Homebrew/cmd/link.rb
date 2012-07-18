@@ -15,7 +15,7 @@ module Homebrew extend self
     end
 
     ARGV.kegs.each do |keg|
-      if keg.linked_keg_record.directory? and keg.linked_keg_record.realpath == keg
+      if keg.linked?
         opoo "Already linked: #{keg}"
         next
       end
