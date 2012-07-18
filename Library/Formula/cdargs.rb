@@ -28,17 +28,8 @@ class Cdargs < Formula
   end
 
   def caveats; <<-EOS.undent
-      Support files for bash, tcsh and emacs are located in:
+      Support files for bash, tcsh, and emacs have been installed to:
         #{prefix}/contrib
-
-      The file for bash is also symlinked to:
-        #{etc}/bash_completion.d/cdargs-bash.sh
-
-      Source it from your .bash_profile or .bashrc to get nice aliases and bash completion.
-
-      For zsh use the bash script.
-
-      Consult the cdargs man page for more details and instructions.
     EOS
   end
 end

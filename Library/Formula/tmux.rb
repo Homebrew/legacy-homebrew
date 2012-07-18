@@ -31,20 +31,10 @@ class Tmux < Formula
                           "--prefix=#{prefix}", "--sysconfdir=#{etc}"
     system "make install"
 
-    # Install bash completion scripts for use with bash-completion
     (prefix+'etc/bash_completion.d').install "examples/bash_completion_tmux.sh" => 'tmux'
 
     # Install addtional meta file
     prefix.install 'NOTES'
-  end
-
-  def caveats; <<-EOS.undent
-    Additional information can be found in:
-      #{prefix}/NOTES
-
-    Bash completion script was installed to:
-      #{etc}/bash_completion.d/tmux
-    EOS
   end
 
   def test
