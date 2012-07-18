@@ -141,8 +141,7 @@ class FormulaInstaller
   end
 
   def caveats
-    the_caveats = (f.caveats || "").strip
-    unless the_caveats.empty?
+    unless f.caveats.to_s.strip.empty?
       ohai "Caveats", f.caveats
       @show_summary_heading = true
     end
