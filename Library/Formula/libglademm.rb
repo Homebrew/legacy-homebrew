@@ -8,6 +8,7 @@ class Libglademm < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gtkmm'
   depends_on 'libglade'
+  depends_on :x11
 
   def install
     system "./configure", "--disable-dependency-tracking",
