@@ -31,10 +31,4 @@ class Scala < Formula
     ScalaCompletion.new.brew { (prefix+'etc/bash_completion.d').install 'scala' }
     ScalaDocs.new.brew { doc.install Dir['*'] } if ARGV.include? '--with-docs'
   end
-
-  def caveats; <<-EOS.undent
-    Bash completion has been installed to:
-      #{etc}/bash_completion.d
-    EOS
-  end
 end
