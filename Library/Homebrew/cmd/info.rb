@@ -96,8 +96,7 @@ module Homebrew extend self
       Homebrew.dump_options_for_formula f
     end
 
-    the_caveats = (f.caveats || "").strip
-    unless the_caveats.empty?
+    unless f.caveats.to_s.strip.empty?
       ohai "Caveats"
       puts f.caveats
     end
