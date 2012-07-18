@@ -88,11 +88,9 @@ module Homebrew extend self
     history = github_info(f)
     puts history if history
 
-    the_caveats = (f.caveats || "").strip
-    unless the_caveats.empty?
+    unless f.caveats.to_s.strip.empty?
       puts
-      ohai "Caveats"
-      puts f.caveats
+      ohai "Caveats", f.caveats
     end
 
   rescue FormulaUnavailableError
