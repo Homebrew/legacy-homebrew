@@ -158,6 +158,22 @@ class FormulaInstaller
       check_infopages
       check_m4
     end
+
+    keg = Keg.new(f.prefix)
+
+    if keg.completion_installed? :bash
+      ohai 'Caveats', <<-EOS.undent
+        Bash completion has been installed to:
+          #{HOMEBREW_PREFIX}/etc/bash_completion.d
+        EOS
+    end
+
+    if keg.completion_installed? :zsh
+      ohai 'Caveats', <<-EOS.undent
+        zsh completion has been installed to:
+          #{HOMEBREW_PREFIX}/share/zsh/site-functions
+        EOS
+    end
   end
 
   def finish
