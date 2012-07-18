@@ -1,8 +1,8 @@
 require 'formula'
 
 class Mutt < Formula
-  url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.21.tar.gz'
   homepage 'http://www.mutt.org/'
+  url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.21.tar.gz'
   md5 'a29db8f1d51e2f10c070bf88e8a553fd'
 
   depends_on 'tokyo-cabinet'
@@ -22,10 +22,10 @@ class Mutt < Formula
   def patches
     urls = [
       ['--sidebar-patch', 'https://raw.github.com/nedos/mutt-sidebar-patch/master/mutt-sidebar.patch'],
-      ['--trash-patch', 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-5/features/trash-folder'],
+      ['--trash-patch', 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.1/features/trash-folder'],
       ['--ignore-thread-patch', 'http://ben.at.tanjero.com/patches/ignore-thread-1.5.21.patch'],
       ['--pgp-verbose-mime-patch',
-          'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-5/features-old/patch-1.5.4.vk.pgp_verbose_mime'],
+          'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.1/features-old/patch-1.5.4.vk.pgp_verbose_mime'],
     ]
 
     p = []
