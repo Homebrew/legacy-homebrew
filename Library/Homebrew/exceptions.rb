@@ -149,7 +149,7 @@ end
 class ErrorDuringExecution < RuntimeError
 end
 
-# raised by Pathname#verify_checksum when cksum is nil or empty
+# raised by Pathname#verify_checksum when "expected" is nil or empty
 class ChecksumMissingError < ArgumentError
 end
 
@@ -173,6 +173,6 @@ class ChecksumMismatchError < RuntimeError
   end
 
   def to_s
-    super + advice
+    super + advice.to_s
   end
 end
