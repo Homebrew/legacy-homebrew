@@ -12,13 +12,4 @@ class TodoTxt < Formula
     prefix.install 'todo.cfg' # Default config file
     (prefix+'etc/bash_completion.d').install 'todo_completion'
   end
-
-  def caveats; <<-EOS.undent
-    To configure, copy the default config to your home and edit it:
-      cp #{prefix}/todo.cfg ~/.todo.cfg
-
-    Bash completion has been installed to:
-      #{etc}/bash_completion.d
-    EOS
-  end
 end

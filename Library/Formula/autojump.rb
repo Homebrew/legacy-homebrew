@@ -23,9 +23,6 @@ class Autojump < Formula
     if [ -f `brew --prefix`/etc/autojump ]; then
       . `brew --prefix`/etc/autojump
     fi
-
-    zsh completion has been installed to:
-      #{HOMEBREW_PREFIX}/share/zsh/site-functions
     EOS
   end
 end
