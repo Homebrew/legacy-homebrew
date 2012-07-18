@@ -108,7 +108,7 @@ class Test
 
     if ARGV.include? "--html" and not @@css
       require 'erb'
-      root = HOMEBREW_CONTRIBUTED_CMDS
+      root = HOMEBREW_CONTRIBUTED_CMDS/"brew-test-bot"
       @@css = IO.read root + "brew-test-bot.css"
       @@index_html = ERB.new IO.read root + "brew-test-bot.index.html.erb"
       @@commit_html = ERB.new IO.read root + "brew-test-bot.commit.html.erb"
