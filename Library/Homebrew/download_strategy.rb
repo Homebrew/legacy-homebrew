@@ -493,6 +493,15 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
         safe_system 'hg', 'archive', '-y', '-t', 'files', dst
       end
     end
+    
+    # check for submodules
+    if File.exist?('.hgsub')
+      # TODO: Try to do this without reading .hgsub file.
+      sub_cmd = IO.readlines(".hgsub")[0]
+      sub_path, sub_repo = sub_cmd.strip().split('=')
+      puts "cloning subrepo #{sub_path} #{sub_repo}"
+      safe_system 'hg', 'clone', sub_repo, sub_path
+    end
   end
 end
 
