@@ -44,8 +44,8 @@ class Nginx < Formula
             "--with-http_ssl_module",
             "--with-pcre",
             "--with-ipv6",
-            "--with-cc-opt='-I#{HOMEBREW_PREFIX}/include'",
-            "--with-ld-opt='-L#{HOMEBREW_PREFIX}/lib'",
+            "--with-cc-opt=-I#{HOMEBREW_PREFIX}/include",
+            "--with-ld-opt=-L#{HOMEBREW_PREFIX}/lib",
             "--conf-path=#{etc}/nginx/nginx.conf",
             "--pid-path=#{var}/run/nginx.pid",
             "--lock-path=#{var}/nginx/nginx.lock"]
