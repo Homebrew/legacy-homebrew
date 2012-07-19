@@ -21,7 +21,9 @@ class Putty < Formula
     end
   end
 
-  def caveats
-    "This formula did not build the Mac OS X GUI PuTTY.app."
+  def caveats; <<-EOS
+This formula does not build the Mac OS X GUI PuTTY.app. It installs plink, pscp, psftp, 
+and the puttygen command line utilities.
+    EOS
   end
 end
