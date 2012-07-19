@@ -22,8 +22,8 @@ end
 
 class Netcdf < Formula
   homepage 'http://www.unidata.ucar.edu/software/netcdf'
-  url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.2.tar.gz'
-  md5 'b920a6c3a30e9cd46fe96d9fb65ef17e'
+  url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.2.1.tar.gz'
+  md5 'a8603acfd6b95bd885ef0d225c16ce9f'
 
   depends_on 'hdf5'
 
