@@ -3,7 +3,7 @@ require 'formula'
 class Libinfinity < Formula
   homepage 'http://gobby.0x539.de/trac/wiki/Infinote/Libinfinity'
   url 'http://releases.0x539.de/libinfinity/libinfinity-0.5.2.tar.gz'
-  md5 '1b2eee8150654baa7bba5900b96ffdc3'
+  sha1 '0864b7f00c44b7bed9f6b69e0e322e0359883358'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
