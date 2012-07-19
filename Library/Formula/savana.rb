@@ -18,13 +18,6 @@ class Savana < Formula
       exec "#{libexec}/bin/sav" "$@"
     EOS
 
-    # Install the Savana bash completion file, renaming it to be specific to savana.
     (prefix+'etc/bash_completion.d').install 'etc/bash_completion' => 'savana-completion.bash'
-  end
-
-  def caveats; <<-EOS.undent
-    Bash completion has been installed to:
-      #{etc}/bash_completion.d
-    EOS
   end
 end
