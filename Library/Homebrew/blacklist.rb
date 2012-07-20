@@ -40,7 +40,7 @@ def blacklisted? name
     EOS
   when 'macruby' then <<-EOS.undent
     MacRuby works better when you install their package:
-      http://www.macruby.org/downloads.html
+      http://www.macruby.org/
 
     Although if you prefer, there is a formula in homebrew-alt.
     EOS
