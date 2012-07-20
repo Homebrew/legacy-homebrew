@@ -6,6 +6,7 @@ class Byobu < Formula
   sha1 '81ed721b643addf84c7aba10f173c27dc69391bd'
 
   depends_on 'coreutils'
+  depends_on 'gnu-sed' # fails with BSD sed
 
   def install
     system "./configure", "--prefix=#{prefix}"
