@@ -29,6 +29,7 @@ class Ffmpeg < Formula
   depends_on 'opencore-amr' => :optional
   depends_on 'libvo-aacenc' => :optional
   depends_on 'libass' => :optional
+  depends_on 'libcaca' => :optional
 
   depends_on 'sdl' if ffplay?
   depends_on 'openjpeg' if openjpeg?
@@ -65,6 +66,7 @@ class Ffmpeg < Formula
     args << "--enable-libopencore-amrnb" if Formula.factory('opencore-amr').linked_keg.exist?
     args << "--enable-libopencore-amrwb" if Formula.factory('opencore-amr').linked_keg.exist?
     args << "--enable-libass" if Formula.factory('libass').linked_keg.exist?
+    args << "--enable-libcaca" if Formula.factory('libcaca').linked_keg.exist?
     args << "--enable-libvo-aacenc" if Formula.factory('libvo-aacenc').linked_keg.exist?
     args << "--disable-ffplay" unless ffplay?
     args << "--enable-libopenjpeg" if openjpeg?
