@@ -11,19 +11,19 @@ end
 class NetcdfCXX < Formula
   homepage 'http://www.unidata.ucar.edu/software/netcdf'
   url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-cxx4-4.2.tar.gz'
-  md5 'd019853802092cf686254aaba165fc81'
+  sha1 '59628c9f06c211a47517fc00d8b068da159ffa9d'
 end
 
 class NetcdfFortran < Formula
   homepage 'http://www.unidata.ucar.edu/software/netcdf'
   url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-fortran-4.2.tar.gz'
-  md5 'cc3bf530223e8f4aff93793b9f197bf3'
+  sha1 'f1887314455330f4057bc8eab432065f8f6f74ef'
 end
 
 class Netcdf < Formula
   homepage 'http://www.unidata.ucar.edu/software/netcdf'
-  url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.2.tar.gz'
-  md5 'b920a6c3a30e9cd46fe96d9fb65ef17e'
+  url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.2.1.tar.gz'
+  sha1 'dfb6b10ef8dd20e785efa5e29b448383090f144d'
 
   depends_on 'hdf5'
 
