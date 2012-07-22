@@ -2,13 +2,13 @@ require 'formula'
 
 class Icu4c < Formula
   homepage 'http://site.icu-project.org/'
-  url 'http://download.icu-project.org/files/icu4c/4.8.1.1/icu4c-4_8_1_1-src.tgz'
-  version '4.8.1.1'
-  md5 'ea93970a0275be6b42f56953cd332c17'
+  url 'http://download.icu-project.org/files/icu4c/49.1.2/icu4c-49_1_2-src.tgz'
+  version '49.1.2'
+  md5 'bbc609fe5237202d7abf016141012a45'
 
   bottle do
-    sha1 '1cedfcb295cf637ad98d4f891d5c87b072f3a870' => :snowleopard
-    sha1 '51b6e6e735ea581a2736127414e600362846b7e1' => :lion
+    sha1 '528b8bec1b821d5503eb98b565840d8a3aeca63e' => :lion
+    sha1 'c77579349187ee0cec5842f71aea2a446c770db7' => :snowleopard
   end
 
   keg_only "Conflicts; see: https://github.com/mxcl/homebrew/issues/issue/167"
@@ -23,7 +23,7 @@ class Icu4c < Formula
     ENV.universal_binary if ARGV.build_universal?
 
     ENV.append "LDFLAGS", "-headerpad_max_install_names"
-    args = ["--prefix=#{prefix}", "--disable-samples", "--enable-static"]
+    args = ["--prefix=#{prefix}", "--disable-samples", "--disable-tests", "--enable-static"]
     args << "--with-library-bits=64" if MacOS.prefer_64_bit?
     cd "source" do
       system "./configure", *args
