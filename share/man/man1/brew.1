@@ -84,8 +84,8 @@ If \fB\-\-autotools\fR is passed, create a basic template for an Autotools\-styl
 If \fB\-\-no\-fetch\fR is passed, Homebrew will not download \fIURL\fR to the cache and will thus not add the MD5 to the formula for you\.
 .
 .TP
-\fBdeps [\-\-1] [\-n] [\-\-tree] [\-\-all]\fR \fIformula\fR
-Show \fIformula\fR\'s dependencies\.
+\fBdeps [\-\-1] [\-n] [\-\-tree] [\-\-all] [\-\-installed]\fR \fIformula\fR \.\.\.
+Show \fIformula\fR\'s dependencies\. You can show the dependencies for multiple formulae at once or use \fB\-\-all\fR or \fB\-\-installed\fR to show the dependencies for all formulae or all installed formulae respectively\.
 .
 .IP
 If \fB\-\-1\fR is passed, only show dependencies one level down, instead of recursing\.
@@ -98,6 +98,9 @@ If \fB\-\-tree\fR is passed, show dependencies as a tree\.
 .
 .IP
 If \fB\-\-all\fR is passed, show dependencies for all formulae\.
+.
+.IP
+If \fB\-\-installed\fR is passed, show dependencies for all installed formulae\.
 .
 .TP
 \fBdiy [\-\-set\-name] [\-\-set\-version]\fR

@@ -76,8 +76,10 @@ For the full command list, see the COMMANDS section.
     If `--no-fetch` is passed, Homebrew will not download <URL> to the cache and
     will thus not add the MD5 to the formula for you.
 
-  * `deps [--1] [-n] [--tree] [--all]` <formula>:
-    Show <formula>'s dependencies.
+  * `deps [--1] [-n] [--tree] [--all] [--installed]` <formula> ...:
+    Show <formula>'s dependencies. You can show the dependencies for multiple
+    formulae at once or use `--all` or `--installed` to show the dependencies
+    for all formulae or all installed formulae respectively.
 
     If `--1` is passed, only show dependencies one level down, instead of
     recursing.
@@ -87,6 +89,8 @@ For the full command list, see the COMMANDS section.
     If `--tree` is passed, show dependencies as a tree.
 
     If `--all` is passed, show dependencies for all formulae.
+
+    If `--installed` is passed, show dependencies for all installed formulae.
 
   * `diy [--set-name] [--set-version]`:
     Automatically determine the installation prefix for non-Homebrew software.
