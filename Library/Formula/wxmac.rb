@@ -1,27 +1,36 @@
 require 'formula'
 
+class FrameworkPython < Requirement
+  def message; <<-EOS.undent
+    Python needs to be built as a framework.
+    EOS
+  end
+  def satisfied?
+    q = `python -c "import distutils.sysconfig as c; print(c.get_config_var('PYTHONFRAMEWORK'))"`
+    not q.chomp.empty?
+  end
+  def fatal?; true; end
+end
+
 class Wxmac < Formula
-  # wxPython 2.9 with 64bit and cocoa support ships a (patched) wxmac:
-  url 'http://sourceforge.net/projects/wxpython/files/wxPython/2.9.3.1/wxPython-src-2.9.3.1.tar.bz2'
-  md5 '11f5a423c05c43b4ff8c9f11f1986f04'
   homepage 'http://www.wxwidgets.org'
+  url 'http://sourceforge.net/projects/wxpython/files/wxPython/2.9.3.1/wxPython-src-2.9.3.1.tar.bz2'
+  sha1 '0202f64e1e99fb69d22d7be0d38cf7dcf3d80d79'
 
   def options
-    [
-      ['--no-python', 'Do not build Python bindings']
-    ]
+    [['--no-python', 'Do not build Python bindings']]
   end
 
-  def check_framework_python
-    # Check if python is built as a framework
-    q = `python -c "import distutils.sysconfig as c; print(c.get_config_var('PYTHONFRAMEWORK'))"`
-    if q.chomp.empty?
-      onoe "Python needs to be built as a framework. `brew python`."
-      exit 98
+  depends_on FrameworkPython.new unless ARGV.include? "--no-python"
+
+  def patches
+    # webkit and clang 3.x needs fix for wx(Python) 2.9.3.1: http://trac.wxwidgets.org/ticket/13565
+    if MacOS.clang_version.to_f >= 3.0
+      { :p0 => "http://trac.wxwidgets.org/raw-attachment/ticket/13565/ClangCompat.diff" }
     end
   end
 
-def install_wx_python
+  def install_wx_python
     args = [
       # Reference our wx-config
       "WX_CONFIG=#{bin}/wx-config",
@@ -49,35 +58,26 @@ def install_wx_python
     end
   end
 
-  def patches
-    # webkit and clang 3.x needs fix for wx(Python) 2.9.3.1: http://trac.wxwidgets.org/ticket/13565
-    if MacOS.clang_version.to_f >= 3.0
-      { :p0 => "http://trac.wxwidgets.org/raw-attachment/ticket/13565/ClangCompat.diff" }
-    end
-  end
-
   def install
-    check_framework_python unless ARGV.include? "--no-python"
-
     args = [
-             "--disable-debug",
-             "--prefix=#{prefix}",
-             "--enable-unicode",
-             "--enable-std_string",
-             "--enable-display",
-             "--with-opengl",
-             "--with-osx_cocoa",
-             "--with-libjpeg",
-             "--with-libtiff",
-             "--with-libpng",
-             "--with-zlib",
-             "--enable-dnd",
-             "--enable-clipboard",
-             "--enable-webkit",
-             "--enable-svg",
-             "--with-expat",
-             "--with-macosx-version-min=#{MacOS.version}" # need to set this, to avoid configure defaulting to 10.5
-           ]
+      "--disable-debug",
+      "--prefix=#{prefix}",
+      "--enable-unicode",
+      "--enable-std_string",
+      "--enable-display",
+      "--with-opengl",
+      "--with-osx_cocoa",
+      "--with-libjpeg",
+      "--with-libtiff",
+      "--with-libpng",
+      "--with-zlib",
+      "--enable-dnd",
+      "--enable-clipboard",
+      "--enable-webkit",
+      "--enable-svg",
+      "--with-expat",
+      "--with-macosx-version-min=#{MacOS.version}" # need to set this, to avoid configure defaulting to 10.5
+    ]
 
     system "./configure", *args
     system "make install"
