@@ -21,5 +21,10 @@ class PkgConfig < Formula
     system "make"
     system "make check"
     system "make install"
+
+    # Fix some bullshit.
+    # pkg-config tries to install glib's m4 macros, which will conflict with
+    # an actual glib install.
+    rm Dir["#{share}/aclocal/g*.m4"]
   end
 end
