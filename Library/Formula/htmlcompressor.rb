@@ -6,10 +6,10 @@ class Htmlcompressor < Formula
   md5 '91575c89c83d0563dcf2aad409e4748f'
 
   def install
-    libexec.install "htmlcompressor-1.5.2.jar"
+    libexec.install "htmlcompressor-#{version}.jar"
     (bin+'htmlcompressor').write <<-EOS.undent
       #!/bin/sh
-      java -jar "#{libexec}/htmlcompressor-1.5.2.jar" $@
+      java -jar "#{libexec}/htmlcompressor-#{version}.jar" $@
     EOS
   end
 end
