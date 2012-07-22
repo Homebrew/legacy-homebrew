@@ -24,7 +24,8 @@ class PkgConfig < Formula
 
     # Fix some bullshit.
     # pkg-config tries to install glib's m4 macros, which will conflict with
-    # an actual glib install.
+    # an actual glib install. See:
+    # https://bugs.freedesktop.org/show_bug.cgi?id=52031
     rm Dir["#{share}/aclocal/g*.m4"]
   end
 end
