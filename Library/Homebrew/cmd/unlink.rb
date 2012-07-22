@@ -3,7 +3,6 @@ module Homebrew extend self
     raise KegUnspecifiedError if ARGV.named.empty?
 
     ARGV.kegs.each do |keg|
-      return if !keg.linked?
       print "Unlinking #{keg}... "
       puts "#{keg.unlink} links removed"
     end
