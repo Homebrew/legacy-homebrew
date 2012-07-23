@@ -2,8 +2,8 @@ require 'formula'
 
 class Zsh < Formula
   homepage 'http://www.zsh.org/'
-  url 'http://sourceforge.net/projects/zsh/files/zsh-dev/4.3.17/zsh-4.3.17.tar.gz'
-  md5 '9074077945550d6684ebe18b3b167d52'
+  url 'https://github.com/zsh-users/zsh/zipball/zsh-5.0.0'
+  md5 '70d3322829e5eca007cb83a14c1d4b4e'
 
   depends_on 'gdbm'
   depends_on 'pcre'
