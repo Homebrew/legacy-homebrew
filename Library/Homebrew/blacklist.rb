@@ -23,7 +23,7 @@ def blacklisted? name
     EOS
   when 'wxwidgets' then <<-EOS.undent
     An old version of wxWidgets can be found in /usr/X11/lib. However, Homebrew
-    does provide a newer version, 2.8.10:
+    does provide a newer version:
 
         brew install wxmac
     EOS
