@@ -12,7 +12,7 @@ class Mame < Formula
   def install
     ENV['MACOSX_USE_LIBSDL'] = '1'
     ENV['INCPATH'] = '-I./src/lib/util -I/usr/X11/include'
-    ENV['PTR64'] = if MacOS.prefer_64_bit? then '0' else '1' end
+    ENV['PTR64'] = if MacOS.prefer_64_bit? then '1' else '0' end
 
     # Builds MAME
     system 'make', 'TARGET=mame', 'SUBTARGET=mame'

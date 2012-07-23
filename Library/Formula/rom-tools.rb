@@ -1,6 +1,6 @@
 require 'formula'
 
-class Mess < Formula
+class RomTools < Formula
   url 'svn://messdev.no-ip.org/mess', :revision => 15603
   head 'svn://messdev.no-ip.org/mess'
   homepage 'http://www.mess.org/'
@@ -14,15 +14,20 @@ class Mess < Formula
     ENV['INCPATH'] = '-I./src/lib/util -I/usr/X11/include'
     ENV['PTR64'] = if MacOS.prefer_64_bit? then '1' else '0' end
 
-    system 'make' # Builds MESS
-    if MacOS.prefer_64_bit?
-      bin.install 'mess64' => 'mess'
-    else
-      bin.install 'mess'
-    end
+    system 'make romcmp'
+    system 'make jedutil'
+    system 'make chdman'
+    system 'make tools'
+
+    bin.install ['castool', 'chdman', 'floptool', 'imgtool', 'jedutil',
+                 'ldresample', 'ldverify', 'regreg', 'romcmp', 'src2html',
+                 'srcclean', 'testkeys', 'unidasm']
+
+    bin.install 'split' => 'rom-split'
   end
 
   def test
-    system "mess -h"
+    system "chdman -h"
   end
 end
+
