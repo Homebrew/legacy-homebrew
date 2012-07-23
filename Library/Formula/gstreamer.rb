@@ -33,6 +33,10 @@ class Gstreamer < Formula
     system "make"
     system "make install"
   end
+  
+  def patches
+    DATA
+  end
 end
 
 __END__
