@@ -27,7 +27,7 @@ class Omniorb < Formula
     system "make"
     system "make install"
 
-    omniorb_prefix = "#{prefix}".strip
+    omniorb_prefix = "#{prefix}"
 
     return unless ARGV.include? '--python'
 
@@ -51,12 +51,12 @@ class Omniorb < Formula
     if ARGV.include? '--python'
       s += <<-EOS.undent
         The Python mappings won't function until you amend your PYTHONPATH like so:
-          export PYTHONPATH=#{omniorb_prefix}/src/lib/lib/#{which_python}/site-packages:$PYTHONPATH
+          export PYTHONPATH="#{which_omniorb}/src/lib/lib/#{which_python}/site-packages:$PYTHONPATH"
 
         If you get an error like:
           $ omniidl: Could not import back-end 'python'
         You might want to further amend your PYTHONPATH like:
-           export PYTHONPATH="#{omniorb_prefix}/src/lib/lib/#{which_python}/site-packages/omniidl_be:$PYTHONPATH"
+           export PYTHONPATH="#{which_omniorb}/src/lib/lib/#{which_python}/site-packages/omniidl_be:$PYTHONPATH"
 
       EOS
     end
@@ -65,6 +65,10 @@ class Omniorb < Formula
 
   def which_python
     "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+  end
+
+  def which_omniorb
+    `brew --prefix omniorb`.strip
   end
 
  def test
