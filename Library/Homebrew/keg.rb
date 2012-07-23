@@ -29,14 +29,18 @@ class Keg < Pathname
 
   def unlink
     n=0
-    return n if !linked?
 
     %w[bin etc lib include sbin share var].map{ |d| self/d }.each do |src|
       next unless src.exist?
       src.find do |src|
         next if src == self
         dst=HOMEBREW_PREFIX+src.relative_path_from(self)
-        next unless dst.symlink?
+
+        # check whether the file to be unlinked is from the current keg first
+        if !dst.symlink? || !dst.exist? || src.expand_path != dst.realpath
+          next
+        end
+
         dst.uninstall_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
         dst.unlink
         dst.parent.rmdir_if_possible
