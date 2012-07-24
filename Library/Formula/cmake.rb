@@ -29,6 +29,10 @@ class Cmake < Formula
 
   depends_on NoExpatFramework.new
 
+  def options
+    [["--enable-ninja", "Enable Ninja build system support"]]
+  end
+
   def patches
     [
       # Correct FindPkgConfig found variable. Remove for CMake 2.8.9.
@@ -42,12 +46,19 @@ class Cmake < Formula
   end
 
   def install
-    system "./bootstrap", "--prefix=#{prefix}",
-                          "--system-libs",
-                          "--no-system-libarchive",
-                          "--datadir=/share/cmake",
-                          "--docdir=/share/doc/cmake",
-                          "--mandir=/share/man"
+    args = [ "--prefix=#{prefix}",
+             "--system-libs",
+             "--no-system-libarchive",
+             "--datadir=/share/cmake",
+             "--docdir=/share/doc/cmake",
+             "--mandir=/share/man" ]
+
+    if ARGV.include? "--enable-ninja"
+      args << "--"
+      args << "-DCMAKE_ENABLE_NINJA=1"
+    end
+
+    system "./bootstrap", *args
     system "make"
     system "make install"
   end
