@@ -422,8 +422,8 @@ class Formula
     HOMEBREW_REPOSITORY+"Library/Formula/#{name.downcase}.rb"
   end
 
-  def deps;          self.class.dependencies.deps;          end
-  def external_deps; self.class.dependencies.external_deps; end
+  def deps;         self.class.dependencies.deps;         end
+  def requirements; self.class.dependencies.requirements; end
 
   # deps are in an installable order
   # which means if a depends on b then b will be ordered before a in this list
