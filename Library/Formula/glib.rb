@@ -103,8 +103,9 @@ class Glib < Formula
             return (strcmp(str, result_2) == 0) ? 0 : 1;
         }
         EOS
-      system ENV.cc, "-o", "test", "test.c",
-        *`pkg-config --cflags --libs glib-2.0`.split
+      flags = *`pkg-config --cflags --libs glib-2.0`.split
+      flags += ENV.cflags.split
+      system ENV.cc, "-o", "test", "test.c", *flags
       system "./test"
     end
   end

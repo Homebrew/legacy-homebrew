@@ -18,7 +18,9 @@ def install_bottle? f
 end
 
 def built_bottle? f
-  Tab.for_formula(f).built_bottle
+  f = Formula.factory f unless f.kind_of? Formula
+  return false unless f.installed?
+  Tab.for_keg(f.installed_prefix).built_bottle
 end
 
 def bottle_current? f

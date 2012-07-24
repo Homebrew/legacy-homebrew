@@ -95,6 +95,7 @@ class Erlang < Formula
 
     system "./configure", *args
     system "touch lib/wx/SKIP" if MacOS.snow_leopard?
+    ENV.j1 # Parallel builds not working again as of at least R15B01
     system "make"
     system "make install"
 

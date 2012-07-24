@@ -573,10 +573,19 @@ def check_for_config_scripts
   end
 end
 
-def check_for_dyld_vars
+def check_for_DYLD_LIBRARY_PATH
   if ENV['DYLD_LIBRARY_PATH']
     <<-EOS.undent
       Setting DYLD_LIBRARY_PATH can break dynamic linking.
+      You should probably unset it.
+    EOS
+  end
+end
+
+def check_for_DYLD_FALLBACK_LIBRARY_PATH
+  if ENV['DYLD_FALLBACK_LIBRARY_PATH']
+    <<-EOS.undent
+      Setting DYLD_FALLBACK_LIBRARY_PATH can break dynamic linking.
       You should probably unset it.
     EOS
   end
@@ -856,8 +865,10 @@ def check_for_outdated_homebrew
   HOMEBREW_REPOSITORY.cd do
     if File.directory? ".git"
       local = `git rev-parse -q --verify refs/remotes/origin/master`.chomp
-      remote = /^([a-f0-9]{40})/.match(`git ls-remote origin refs/heads/master`)[0]
-      return if local == remote
+      remote = /^([a-f0-9]{40})/.match(`git ls-remote origin refs/heads/master 2>/dev/null`)
+      if remote.nil? || local == remote[0]
+        return
+      end
     end
 
     timestamp = if File.directory? ".git"
