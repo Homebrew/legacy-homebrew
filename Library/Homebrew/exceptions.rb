@@ -65,12 +65,15 @@ class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError
   end
 end
 
-class UnsatisfiedRequirement < Homebrew::InstallationError
-  attr :dep
+class UnsatisfiedRequirements < Homebrew::InstallationError
+  attr :reqs
 
-  def initialize formula, dep
-    @dep = dep
-    super formula, "An unsatisfied requirement failed this build."
+  def initialize formula, reqs
+    @reqs = reqs
+    message = (reqs.length == 1) \
+                ? "An unsatisfied requirement failed this build." \
+                : "Unsatisifed requirements failed this build."
+    super formula, message
   end
 end
 
