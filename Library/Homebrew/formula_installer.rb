@@ -43,7 +43,8 @@ class FormulaInstaller
 
     f.recursive_deps.each do |dep|
       if dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
-        raise CannotInstallFormulaError, "You must `brew link #{dep}' before #{f} can be installed"
+        raise CannotInstallFormulaError,
+              "You must `brew link #{dep}' before #{f} can be installed"
       end
     end unless ignore_deps
 
@@ -66,13 +67,23 @@ class FormulaInstaller
       EOS
     end
 
-    f.external_deps.each do |dep|
-      unless dep.satisfied?
-        puts dep.message
-        if dep.fatal? and not ignore_deps
-          raise UnsatisfiedRequirement.new(f, dep)
+    # Build up a list of unsatisifed fatal requirements
+    first_message = true
+    unsatisfied_fatals = []
+    f.requirements.each do |req|
+      unless req.satisfied?
+        # Newline between multiple messages
+        puts unless first_message
+        puts req.message
+        first_message = false
+        if req.fatal? and not ignore_deps
+          unsatisfied_fatals << req
         end
       end
+    end
+
+    unless unsatisfied_fatals.empty?
+      raise UnsatisfiedRequirements.new(f, unsatisfied_fatals)
     end
 
     unless ignore_deps

@@ -19,11 +19,11 @@ class DependencyCollector
     :chicken, :jruby, :lua, :node, :perl, :python, :rbx, :ruby
   ].freeze
 
-  attr_reader :deps, :external_deps
+  attr_reader :deps, :requirements
 
   def initialize
     @deps = Dependencies.new
-    @external_deps = Set.new
+    @requirements = Set.new
   end
 
   def add spec
@@ -35,7 +35,7 @@ class DependencyCollector
     # dependency needed for the current platform.
     return if dep.nil?
     # Add dep to the correct bucket
-    (dep.is_a?(Requirement) ? @external_deps : @deps) << dep
+    (dep.is_a?(Requirement) ? @requirements : @deps) << dep
   end
 
 private
