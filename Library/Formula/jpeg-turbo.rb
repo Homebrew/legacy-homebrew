@@ -11,7 +11,12 @@ class JpegTurbo < Formula
 
   def install
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-    args << "--host=x86_64-apple-darwin" if MacOS.prefer_64_bit?
+    if MacOS.prefer_64_bit?
+      args << "--host=x86_64-apple-darwin"
+      # Auto-detect our 64-bit nasm
+      args << "NASM=#{Formula.factory('nasm').bin}/nasm"
+    end
+
     system "./configure", *args
     system 'make'
     ENV.j1 # Stops a race condition error: file exists
