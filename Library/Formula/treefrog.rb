@@ -2,21 +2,24 @@ require 'formula'
 
 class Treefrog < Formula
   homepage 'http://www.treefrogframework.org'
-  url 'http://downloads.sourceforge.net/project/treefrog/src/treefrog-0.84.tar.gz'
-  sha1 '287ff031a072bbba54bbdb46bcd4d7725591c86f'
+  url 'http://downloads.sourceforge.net/project/treefrog/src/treefrog-1.0.tar.gz'
+  sha1 'a231e2480856c20fc6efb5bfc2f37d751767ab8e'
 
   depends_on 'qt'
 
   def install
     system "./configure", "--framework=#{lib}", "--bindir=#{bin}", "--datadir=#{share}"
-    Dir.chdir("src")
-    system "make"
-    system "make install"
-    Dir.chdir("../tools")
-    system "make"
-    system "make install"
-    system "install_name_tool -change treefrog.framework/Versions/0/treefrog #{lib}/treefrog.framework/Versions/0/treefrog #{bin}/treefrog"
-    system "install_name_tool -change treefrog.framework/Versions/0/treefrog #{lib}/treefrog.framework/Versions/0/treefrog #{bin}/tadpole"
+    cd 'src' do
+      system "make"
+      system "make install"
+    end
+    cd 'tools' do
+      system "make"
+      system "make install"
+      system "install_name_tool", "-change", "treefrog.framework/Versions/1/treefrog", "#{lib}/treefrog.framework/Versions/1/treefrog", "#{bin}/treefrog"
+      system "install_name_tool", "-change", "treefrog.framework/Versions/1/treefrog", "#{lib}/treefrog.framework/Versions/1/treefrog", "#{bin}/tadpole"
+    end
+
   end
 
   def test
