@@ -3,7 +3,7 @@ require 'formula'
 class Tinyscheme < Formula
   homepage 'http://tinyscheme.sourceforge.net'
   url 'http://downloads.sourceforge.net/project/tinyscheme/tinyscheme/tinyscheme-1.40/tinyscheme-1.40.tar.gz'
-  md5 '776c42ac5528d15e897ef052fa4b0420'
+  sha1 'e03f7ac41f0517bb35eced2772c79eb9db42ea82'
   version '1.40'
 
   def install
