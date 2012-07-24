@@ -31,7 +31,7 @@ class Mysql < Formula
 
   # Remove optimization flags from `mysql_config --cflags`
   # This facilitates easy compilation of gems using a brewed mysql
-  # Also fix compilation with Xcode and no CLT.
+  # Also fix compilation with Xcode and no CLT: http://bugs.mysql.com/bug.php?id=66001
   def patches; DATA; end
 
   def install
