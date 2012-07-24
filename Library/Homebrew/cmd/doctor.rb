@@ -439,7 +439,7 @@ def check_user_path_1
                 #{conflicts * "\n                "}
 
             Consider amending your PATH so that #{HOMEBREW_PREFIX}/bin
-            is ahead of /usr/bin in your PATH.
+            occurs before /usr/bin in your PATH.
           EOS
         end
       end
