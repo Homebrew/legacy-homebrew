@@ -2,9 +2,9 @@ require 'formula'
 
 class AndroidSdk < Formula
   homepage 'http://developer.android.com/index.html'
-  url 'http://dl.google.com/android/android-sdk_r20-macosx.zip'
-  version 'r20'
-  md5 'b6b6035ccec55ec2aa057438eb1db1f4'
+  url 'http://dl.google.com/android/android-sdk_r20.0.1-macosx.zip'
+  version 'r20.0.1'
+  md5 'cc132d04bc551b23b0c507cf5943df57'
 
   # TODO docs and platform-tools
   # See the long comment below for the associated problems
