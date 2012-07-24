@@ -439,7 +439,7 @@ def check_user_path_1
                 #{conflicts * "\n                "}
 
             Consider amending your PATH so that #{HOMEBREW_PREFIX}/bin
-            is ahead of /usr/bin in your PATH.
+            occurs before /usr/bin in your PATH.
           EOS
         end
       end
@@ -573,10 +573,19 @@ def check_for_config_scripts
   end
 end
 
-def check_for_dyld_vars
+def check_for_DYLD_LIBRARY_PATH
   if ENV['DYLD_LIBRARY_PATH']
     <<-EOS.undent
       Setting DYLD_LIBRARY_PATH can break dynamic linking.
+      You should probably unset it.
+    EOS
+  end
+end
+
+def check_for_DYLD_FALLBACK_LIBRARY_PATH
+  if ENV['DYLD_FALLBACK_LIBRARY_PATH']
+    <<-EOS.undent
+      Setting DYLD_FALLBACK_LIBRARY_PATH can break dynamic linking.
       You should probably unset it.
     EOS
   end
