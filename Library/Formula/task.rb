@@ -2,8 +2,8 @@ require 'formula'
 
 class Task < Formula
   homepage 'http://www.taskwarrior.org/'
-  url 'http://www.taskwarrior.org/download/task-2.1.0.tar.gz'
-  sha1 'fd1120db56bf44e0d84191d5dce29a6d9d872a8a'
+  url 'http://www.taskwarrior.org/download/task-2.1.1.tar.gz'
+  sha1 'c23cb320f3478e37527c5c3cc547286f97bacc7c'
 
   depends_on "cmake" => :build
 
