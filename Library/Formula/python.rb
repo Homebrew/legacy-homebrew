@@ -8,6 +8,22 @@ def as_framework?
   (self.installed? and File.exists? prefix+"Frameworks/Python.framework") or build_framework?
 end
 
+class TkCheck < Requirement
+  def message; <<-EOS.undent
+    Tk.framework detected in /Library/Frameworks
+    and that can make python builds to fail.
+    https://github.com/mxcl/homebrew/issues/11602
+    EOS
+  end
+
+  def fatal?; false; end
+
+  def satisfied?
+    not File.exist? '/Library/Frameworks/Tk.framework'
+  end
+end
+
+
 class Distribute < Formula
   url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.27.tar.gz'
   md5 'ecd75ea629fee6d59d26f88c39b2d291'
@@ -21,8 +37,9 @@ end
 class Python < Formula
   homepage 'http://www.python.org/'
   url 'http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2'
-  md5 'c57477edd6d18bd9eeca2f21add73919'
+  sha1 '842c4e2aff3f016feea3c6e992c7fa96e49c9aa0'
 
+  depends_on TkCheck.new
   depends_on 'pkg-config' => :build
   depends_on 'readline' => :optional # Prefer over OS X's libedit
   depends_on 'sqlite'   => :optional # Prefer over OS X's older version
