@@ -12,8 +12,8 @@ end
 
 class Phantomjs < Formula
   homepage 'http://www.phantomjs.org/'
-  url "http://phantomjs.googlecode.com/files/phantomjs-1.6.0-macosx-static.zip"
-  sha1 '7e4a4f069ffb32ab693d3234a9d67096a7ad23a3'
+  url 'http://phantomjs.googlecode.com/files/phantomjs-1.6.1-macosx-static.zip'
+  sha1 '69a616fa035a815f05e1892e3ff795ef740f568b'
 
   depends_on SnowLeopardOrNewer.new
 
