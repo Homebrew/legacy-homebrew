@@ -16,7 +16,6 @@ class LibtorrentRasterbar < Formula
   end
 
   def install
-
     args = [
       "--disable-debug",
       "--disable-dependency-tracking",
