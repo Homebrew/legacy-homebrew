@@ -43,7 +43,12 @@ class Rrdtool < Formula
     ENV["ARCHFLAGS"] = MacOS.prefer_64_bit? ? "-arch x86_64" : "-arch i386"
 
     system "make install"
+
+    inreplace 'bindings/ruby/test.rb' do |s|
+      s.gsub! /\$\:\s\<\<\s'.+'/, "$: << '#{prefix}'"
+    end
     prefix.install "bindings/ruby/test.rb"
+    prefix.install "bindings/ruby/RRD.bundle"
   end
 
   def test
