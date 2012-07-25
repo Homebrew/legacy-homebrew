@@ -168,7 +168,7 @@ def check_for_stray_las
 end
 
 def check_for_x11
-  unless MacOS.x11_installed? then <<-EOS.undent
+  unless MacOS::XQuartz.installed? then <<-EOS.undent
     X11 is not installed.
     You don't have X11 installed as part of your OS X installation.
     This is not required for all formulae, but is expected by some.
