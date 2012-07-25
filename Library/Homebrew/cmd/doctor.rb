@@ -936,9 +936,9 @@ module Homebrew extend self
     checks.methods.select{ |method| method =~ /^check_/ }.sort.each do |method|
       out = checks.send(method)
       unless out.nil? or out.empty?
-        puts unless Homebrew.failed?
         lines = out.to_s.split('\n')
-        ofail lines.shift
+        opoo lines.shift
+        Homebrew.failed = true
         puts lines
       end
     end
