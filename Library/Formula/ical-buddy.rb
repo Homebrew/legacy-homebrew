@@ -5,11 +5,10 @@ require 'formula'
 
 class IcalBuddy < Formula
   homepage 'http://hasseg.org/icalBuddy/'
-  url 'http://hasseg.org/git-public/icalBuddy.git', :tag => 'v1.8.0',
-    :using => :git
-  version '1.8.0'
+  url 'http://hasseg.org/git-public/icalBuddy.git', :tag => 'v1.8.2'
+  version '1.8.2'
 
-  head 'http://hasseg.org/git-public/icalBuddy.git', :using => :git
+  head 'http://hasseg.org/git-public/icalBuddy.git'
 
   def install
     arch = MacOS.prefer_64_bit? ? "x86_64" : "i386"

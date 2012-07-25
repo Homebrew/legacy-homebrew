@@ -1,9 +1,13 @@
 require 'formula'
 
 class SoundTouch < Formula
-  url 'http://www.surina.net/soundtouch/soundtouch-1.5.0.tar.gz'
   homepage 'http://www.surina.net/soundtouch/'
-  md5 '5456481d8707d2a2c27466ea64a099cb'
+  url 'http://www.surina.net/soundtouch/soundtouch-1.6.0.tar.gz'
+  sha256 '8776edaf7299ffe1e8c97285f020365a63c0e01aa4f6f7c5fd1d011c0ded278f'
+
+  depends_on :autoconf
+  depends_on :automake
+  depends_on :libtool
 
   def install
     # SoundTouch has a small amount of inline assembly. The assembly has two labeled
@@ -13,10 +17,9 @@ class SoundTouch < Formula
     # 64bit causes soundstretch to segfault when ever it is run.
     ENV.m32
 
-    # The build fails complaining about out of date libtools. Rerunning the autoconf prevents the error.
-    system "autoconf"
-
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    # The tarball doesn't contain a configure script, so we have to bootstrap.
+    system "/bin/sh bootstrap"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
 end

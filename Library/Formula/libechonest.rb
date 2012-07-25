@@ -2,15 +2,15 @@ require 'formula'
 
 class Libechonest < Formula
   homepage 'https://projects.kde.org/projects/playground/libs/libechonest'
-  url 'http://pwsp.cleinias.com/libechonest-1.2.1.tar.bz2'
-  sha1 '5ad5897c91c365b32840e75e806c9725c89b4522'
+  url 'http://files.lfranchi.com/libechonest-2.0.0.tar.bz2'
+  sha1 '817a7c2b821d23edbbf6c387deefbfc6dddee66c'
 
   depends_on 'cmake' => :build
   depends_on 'qt'
   depends_on 'qjson'
 
   def install
-    system "cmake #{std_cmake_parameters} ."
+    system "cmake", ".", *std_cmake_args
     system "make install"
   end
 end

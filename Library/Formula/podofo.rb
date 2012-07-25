@@ -8,16 +8,17 @@ class Podofo < Formula
   depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
 
+  depends_on :x11
   depends_on 'jpeg'
   depends_on 'libtiff'
   depends_on 'lua'
 
   def install
-    ENV.x11 # For Freetype and Fontconfig
-
     mkdir 'build' do
       # Build shared to simplify linking for other programs.
-      system "cmake #{std_cmake_parameters} -DPODOFO_BUILD_SHARED:BOOL=TRUE .."
+      system "cmake", "..",
+                      "-DPODOFO_BUILD_SHARED:BOOL=TRUE",
+                      *std_cmake_args
       system "make install"
     end
   end

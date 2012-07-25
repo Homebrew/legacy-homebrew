@@ -2,37 +2,37 @@ require 'formula'
 
 class PerconaToolkit < Formula
   homepage 'http://www.percona.com/software/percona-toolkit/'
-  url 'http://www.percona.com/redir/downloads/percona-toolkit/2.1.1/percona-toolkit-2.1.1.tar.gz'
-  md5 '14be6a3e31c7b20aeca78e3e0aed6edc'
+  url 'http://www.percona.com/redir/downloads/percona-toolkit/2.1.2/percona-toolkit-2.1.2.tar.gz'
+  sha1 '739e4e97c61762fa1b7bbdf2c16f660b3ffc43e1'
 
   depends_on 'Time::HiRes' => :perl
   depends_on 'DBD::mysql' => :perl
 
   def install
-    system "perl Makefile.PL PREFIX=#{prefix}"
+    system "perl", "Makefile.PL", "PREFIX=#{prefix}"
     system "make"
     system "make test"
     system "make install"
   end
 
   def test
-    system "pt-archiver"
-    system "pt-config-diff"
-    system "pt-deadlock-logger"
-    system "pt-duplicate-key-checker"
-    system "pt-find"
-    system "pt-fk-error-logger"
-    system "pt-heartbeat"
-    system "pt-kill"
-    system "pt-log-player"
-    system "pt-pmp"
-    system "pt-slave-delay"
-    system "pt-slave-find"
-    system "pt-slave-restart"
-    system "pt-summary"
-    system "pt-table-checksum"
-    system "pt-table-sync"
-    system "pt-upgrade"
-    system "pt-variable-advisor"
+    system "#{bin}/pt-archiver"
+    system "#{bin}/pt-config-diff"
+    system "#{bin}/pt-deadlock-logger"
+    system "#{bin}/pt-duplicate-key-checker"
+    system "#{bin}/pt-find"
+    system "#{bin}/pt-fk-error-logger"
+    system "#{bin}/pt-heartbeat"
+    system "#{bin}/pt-kill"
+    system "#{bin}/pt-log-player"
+    system "#{bin}/pt-pmp"
+    system "#{bin}/pt-slave-delay"
+    system "#{bin}/pt-slave-find"
+    system "#{bin}/pt-slave-restart"
+    system "#{bin}/pt-summary"
+    system "#{bin}/pt-table-checksum"
+    system "#{bin}/pt-table-sync"
+    system "#{bin}/pt-upgrade"
+    system "#{bin}/pt-variable-advisor"
   end
 end

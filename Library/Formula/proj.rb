@@ -20,10 +20,9 @@ class Proj < Formula
 
   def install
     # The datum grid files are required to support datum shifting
-    d = Dir.getwd
-    ProjDatumgrid.new.brew { cp Dir["*"], "#{d}/nad/" }
+    ProjDatumgrid.new.brew { cp Dir["*"], buildpath/'nad' }
 
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
 end

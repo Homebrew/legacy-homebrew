@@ -2,12 +2,12 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.0.14.tar.gz'
-  md5 '019844e48c34952253ca26dd6e28c35c'
+  url 'http://nginx.org/download/nginx-1.2.2.tar.gz'
+  sha1 '1893940485e21f8c9bdc8058eb9cc2826d629d04'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.1.18.tar.gz'
-    md5 '82f4b4b1fba68f5f83cc2c641fb6c4c5'
+    url 'http://nginx.org/download/nginx-1.3.3.tar.gz'
+    sha1 '27e3d93e68ecaf154370f2fbcc4021807405e0d1'
   end
 
   depends_on 'pcre'
@@ -43,8 +43,9 @@ class Nginx < Formula
     args = ["--prefix=#{prefix}",
             "--with-http_ssl_module",
             "--with-pcre",
-            "--with-cc-opt='-I#{HOMEBREW_PREFIX}/include'",
-            "--with-ld-opt='-L#{HOMEBREW_PREFIX}/lib'",
+            "--with-ipv6",
+            "--with-cc-opt=-I#{HOMEBREW_PREFIX}/include",
+            "--with-ld-opt=-L#{HOMEBREW_PREFIX}/lib",
             "--conf-path=#{etc}/nginx/nginx.conf",
             "--pid-path=#{var}/run/nginx.pid",
             "--lock-path=#{var}/nginx/nginx.lock"]
@@ -90,14 +91,12 @@ class Nginx < Formula
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
-    <true/>
+    <false/>
     <key>UserName</key>
     <string>#{`whoami`.chomp}</string>
     <key>ProgramArguments</key>
     <array>
         <string>#{HOMEBREW_PREFIX}/sbin/nginx</string>
-        <string>-g</string>
-        <string>daemon off;</string>
     </array>
     <key>WorkingDirectory</key>
     <string>#{HOMEBREW_PREFIX}</string>

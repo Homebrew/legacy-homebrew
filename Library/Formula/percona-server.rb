@@ -1,10 +1,10 @@
 require 'formula'
 
 class PerconaServer < Formula
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.15-21.0/source/Percona-Server-5.5.15-rel21.0.tar.gz'
   homepage 'http://www.percona.com'
-  md5 'd04b6d1cc863f121f5d1eac8bc618331'
-  version '5.5.15-21.0'
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.25a-27.1/source/Percona-Server-5.5.25a-rel27.1.tar.gz'
+  version '5.5.25-27.1'
+  sha1 'f3388960311b159e46efd305ecdeb806fe2c7fdc'
 
   keg_only "This brew conflicts with 'mysql'. It's safe to `brew link` if you haven't installed 'mysql'"
 
@@ -15,6 +15,7 @@ class PerconaServer < Formula
   skip_clean :all # So "INSTALL PLUGIN" can work.
 
   fails_with :llvm do
+    build 2334
     cause "https://github.com/mxcl/homebrew/issues/issue/144"
   end
 
@@ -38,7 +39,7 @@ class PerconaServer < Formula
     # Make sure the var/msql directory exists
     (var+"percona").mkpath
 
-    args = std_cmake_parameters.split + [
+    args = std_cmake_args + [
       ".",
       "-DMYSQL_DATADIR=#{var}/percona",
       "-DINSTALL_MANDIR=#{man}",
@@ -49,7 +50,12 @@ class PerconaServer < Formula
       "-DWITH_SSL=yes",
       "-DDEFAULT_CHARSET=utf8",
       "-DDEFAULT_COLLATION=utf8_general_ci",
-      "-DSYSCONFDIR=#{etc}"
+      "-DSYSCONFDIR=#{etc}",
+      "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
+      # PAM plugin is Linux-only at the moment
+      "-DWITHOUT_AUTH_PAM=1",
+      "-DWITHOUT_AUTH_PAM_COMPAT=1",
+      "-DWITHOUT_DIALOG=1"
     ]
 
     # To enable unit testing at build, we need to download the unit testing suite
@@ -158,22 +164,11 @@ end
 
 
 __END__
---- old/scripts/mysqld_safe.sh  2009-09-02 04:10:39.000000000 -0400
-+++ new/scripts/mysqld_safe.sh  2009-09-02 04:52:55.000000000 -0400
-@@ -383,7 +383,7 @@
- fi
-
- USER_OPTION=""
--if test -w / -o "$USER" = "root"
-+if test -w /sbin -o "$USER" = "root"
- then
-   if test "$user" != "root" -o $SET_USER = 1
-   then
 diff --git a/scripts/mysql_config.sh b/scripts/mysql_config.sh
-index efc8254..8964b70 100644
+index 9296075..a600de2 100644
 --- a/scripts/mysql_config.sh
 +++ b/scripts/mysql_config.sh
-@@ -132,7 +132,8 @@ for remove in DDBUG_OFF DSAFEMALLOC USAFEMALLOC DSAFE_MUTEX \
+@@ -137,7 +137,8 @@ for remove in DDBUG_OFF DSAFE_MUTEX DUNIV_MUST_NOT_INLINE DFORCE_INIT_OF_VARS \
                DEXTRA_DEBUG DHAVE_purify O 'O[0-9]' 'xO[0-9]' 'W[-A-Za-z]*' \
                'mtune=[-A-Za-z0-9]*' 'mcpu=[-A-Za-z0-9]*' 'march=[-A-Za-z0-9]*' \
                Xa xstrconst "xc99=none" AC99 \
@@ -183,20 +178,16 @@ index efc8254..8964b70 100644
  do
    # The first option we might strip will always have a space before it because
    # we set -I$pkgincludedir as the first option
-diff --git a/configure.cmake b/configure.cmake
-index 0014c1d..21fe471 100644
---- a/configure.cmake
-+++ b/configure.cmake
-@@ -391,7 +391,11 @@ CHECK_FUNCTION_EXISTS (pthread_attr_setscope HAVE_PTHREAD_ATTR_SETSCOPE)
- CHECK_FUNCTION_EXISTS (pthread_attr_setstacksize HAVE_PTHREAD_ATTR_SETSTACKSIZE)
- CHECK_FUNCTION_EXISTS (pthread_condattr_create HAVE_PTHREAD_CONDATTR_CREATE)
- CHECK_FUNCTION_EXISTS (pthread_condattr_setclock HAVE_PTHREAD_CONDATTR_SETCLOCK)
--CHECK_FUNCTION_EXISTS (pthread_init HAVE_PTHREAD_INIT)
-+
-+IF (NOT CMAKE_OSX_SYSROOT)
-+    CHECK_FUNCTION_EXISTS (pthread_init HAVE_PTHREAD_INIT)
-+ENDIF (NOT CMAKE_OSX_SYSROOT)
-+
- CHECK_FUNCTION_EXISTS (pthread_key_delete HAVE_PTHREAD_KEY_DELETE)
- CHECK_FUNCTION_EXISTS (pthread_rwlock_rdlock HAVE_PTHREAD_RWLOCK_RDLOCK)
- CHECK_FUNCTION_EXISTS (pthread_sigmask HAVE_PTHREAD_SIGMASK)
+diff --git a/scripts/mysqld_safe.sh b/scripts/mysqld_safe.sh
+index 37e0e35..38ad6c8 100644
+--- a/scripts/mysqld_safe.sh
++++ b/scripts/mysqld_safe.sh
+@@ -558,7 +558,7 @@ else
+ fi
+ 
+ USER_OPTION=""
+-if test -w / -o "$USER" = "root"
++if test -w /sbin -o "$USER" = "root"
+ then
+   if test "$user" != "root" -o $SET_USER = 1
+   then

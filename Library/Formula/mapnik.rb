@@ -13,17 +13,29 @@ class Mapnik < Formula
   depends_on 'icu4c'
   depends_on 'boost'
   depends_on 'cairomm' => :optional
+  depends_on :x11
+
+  # Reported upstream: https://github.com/mapnik/mapnik/issues/1171
+  # Fix is in head.  Remove at 2.0.2.
+  def patches
+    DATA unless ARGV.build_head?
+  end
 
   def install
-    ENV.x11 # for freetype-config
-
     icu = Formula.factory("icu4c")
+    # mapnik compiles can take ~1.5 GB per job for some .cpp files
+    # so lets be cautious by limiting to CPUS/2
+    jobs = ENV.make_jobs
+    if jobs > 2
+        jobs = Integer(jobs/2)
+    end
+
     system "python",
            "scons/scons.py",
            "configure",
            "CC=\"#{ENV.cc}\"",
            "CXX=\"#{ENV.cxx}\"",
-           "JOBS=#{ENV.make_jobs}",
+           "JOBS=#{jobs}",
            "PREFIX=#{prefix}",
            "ICU_INCLUDES=#{icu.include}",
            "ICU_LIBS=#{icu.lib}",
@@ -43,3 +55,19 @@ class Mapnik < Formula
     "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 end
+
+__END__
+--- a/bindings/python/build.py
++++ b/bindings/python/build.py
+@@ -143,10 +143,7 @@ paths += "__all__ = [mapniklibpath,inputpluginspath,fontscollectionpath]\n"
+ if not os.path.exists('mapnik'):
+     os.mkdir('mapnik')
+
+-if hasattr(os.path,'relpath'): # python 2.6 and above
+-    file('mapnik/paths.py','w').write(paths % (os.path.relpath(env['MAPNIK_LIB_DIR'],target_path)))
+-else:
+-    file('mapnik/paths.py','w').write(paths % (env['MAPNIK_LIB_DIR']))
++file('mapnik/paths.py','w').write(paths % (env['MAPNIK_LIB_DIR']))
+
+ # force open perms temporarily so that `sudo scons install`
+ # does not later break simple non-install non-sudo rebuild

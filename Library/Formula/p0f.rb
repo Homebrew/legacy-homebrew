@@ -2,8 +2,8 @@ require 'formula'
 
 class P0f < Formula
   homepage 'http://lcamtuf.coredump.cx/p0f3/'
-  url 'http://lcamtuf.coredump.cx/p0f3/releases/p0f-3.03b.tgz'
-  md5 '034d068deb68badfbede6dcc89cc80cf'
+  url 'http://lcamtuf.coredump.cx/p0f3/releases/p0f-3.05b.tgz'
+  sha1 'e6f39c3811e681272e772f33588aa46b75975708'
 
   def install
     inreplace "config.h", "p0f.fp", "#{etc}/p0f/p0f.fp"

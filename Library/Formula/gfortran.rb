@@ -64,8 +64,8 @@ class Gfortran < Formula
   skip_clean :all
 
   def install
-    if MacOS.xcode_version >= '4.2' and MACOS_VERSION == 10.7
-      ohai "Installing gfortran 4.2.4 for XCode 4.2 (build 5666)"
+    if MacOS.xcode_version >= '4.2' and MACOS_VERSION >= 10.7
+      ohai "Installing gfortran 4.2.4 for XCode 4.2 (build 5666) or higher"
       safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
 
       # This package installs a whole GCC suite. Remove non-fortran

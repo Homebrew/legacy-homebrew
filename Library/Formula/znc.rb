@@ -1,10 +1,16 @@
 require 'formula'
 
 class Znc < Formula
-  url 'http://znc.in/releases/archive/znc-0.204.tar.gz'
-  md5 '7c7247423fc08b0c5c62759a50a9bca3'
   homepage 'http://wiki.znc.in/ZNC'
+  url 'http://znc.in/releases/archive/znc-0.206.tar.gz'
+  sha1 'c5fe2575ef29187d2de5d08a08e17458c0ce54b9'
+
   head 'https://github.com/znc/znc.git'
+
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'c-ares' => :optional
@@ -12,11 +18,6 @@ class Znc < Formula
   skip_clean 'bin/znc'
   skip_clean 'bin/znc-config'
   skip_clean 'bin/znc-buildmod'
-
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
 
   def options
     [['--enable-debug', "Compile ZNC with --enable-debug"]]

@@ -10,9 +10,10 @@ class Swftools < Formula
   url 'http://www.swftools.org/swftools-0.9.2.tar.gz'
   sha1 'd7cf8874c4187d2edd3e40d20ba325ca17b91973'
 
+  depends_on :x11
   depends_on 'jpeg'
   depends_on 'lame'
-  depends_on 'ungif'
+  depends_on 'giflib'
   depends_on 'fftw'
 
   def patches
@@ -24,7 +25,6 @@ class Swftools < Formula
   end
 
   def install
-    ENV.x11 # Add to PATH for freetype-config on Snow Leopard
     Xpdf.new.brew { (buildpath+'lib/pdf').install Dir['*'] }
     system "./configure", "--prefix=#{prefix}"
     system "make"

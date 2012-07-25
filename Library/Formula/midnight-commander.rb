@@ -1,10 +1,10 @@
 require 'formula'
 
 class MidnightCommander < Formula
-  url 'http://www.midnight-commander.org/downloads/mc-4.8.0.tar.bz2',
-      :using => CurlUnsafeDownloadStrategy
   homepage 'http://www.midnight-commander.org/'
-  sha256 'dbf077b318c13fc6d465dc67bd43958f067b9ff7e21041975bd14927dfa31b52'
+  url 'http://www.midnight-commander.org/downloads/mc-4.8.4.tar.bz2',
+      :using => CurlUnsafeDownloadStrategy
+  sha256 '917f32a6ce0b8e3ec893bb18af73e64c246d79066322041608352623a579234b'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'

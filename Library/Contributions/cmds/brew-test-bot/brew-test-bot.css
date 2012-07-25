@@ -1,0 +1,75 @@
+body {
+	background: #27221a;
+	color: #f6e6cc;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 1.5em;
+}
+
+h1, h2 {
+	text-align: center;
+	font-weight: bold;
+}
+
+h1 {
+	font-size: 3em;
+	padding-top: 0.5em;
+	padding-bottom: 0;
+	margin-bottom: 0;
+	text-shadow: 1px 1px 10px rgba(0,0,0,0.25);
+	color: #D7AF72;
+	letter-spacing: -3px;
+}
+
+h2 {
+	font-size: 0.8em;
+	margin-top: 0;
+	padding-top: 0;
+	padding-bottom: 1em;
+	color: #A1804C;
+}
+
+h1 a:link, h1 a:visited, h2 a:link, h2 a:visited {
+	text-decoration: none;
+}
+
+table {
+	background-color: rgba(0, 0, 0, 0.30);
+	color: white;
+	border-radius: 0.4em;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	font-size: inherit;
+	font-family: monospace;
+	list-style-type: none;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+td {
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+.prompt {
+	color: #E3D796;
+}
+
+.status {
+	text-align: right;
+}
+
+.running a:link, .running a:visited {
+	color: orange;
+}
+
+.passed a:link, .passed a:visited {
+	color: green;
+}
+
+.failed a:link, .failed a:visited {
+	color: red;
+}
+
+a:active, a:visited {
+	color: inherit;
+}

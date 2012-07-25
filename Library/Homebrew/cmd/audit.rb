@@ -53,7 +53,7 @@ def audit_formula_text name, text
   end
 
   # Check for string interpolation of single values.
-  if text =~ /(system|inreplace|gsub!|change_make_var!) .* ['"]#\{(\w+)\}['"]/
+  if text =~ /(system|inreplace|gsub!|change_make_var!) .* ['"]#\{(\w+(\.\w+)?)\}['"]/
     problems << " * Don't need to interpolate \"#{$2}\" with #{$1}"
   end
 
@@ -63,7 +63,7 @@ def audit_formula_text name, text
   end
 
   # Prefer formula path shortcuts in Pathname+
-  if text =~ %r{\(\s*(prefix\s*\+\s*(['"])(bin|include|libexec|lib|sbin|share))}
+  if text =~ %r{\(\s*(prefix\s*\+\s*(['"])(bin|include|libexec|lib|sbin|share)[/'"])}
     problems << " * \"(#{$1}...#{$2})\" should be \"(#{$3}+...)\""
   end
 
@@ -120,11 +120,6 @@ def audit_formula_text name, text
     problems << " * Use 'ARGV.include?' instead of 'ARGV.flag?'"
   end
 
-  # MacPorts patches should specify a revision, not trunk
-  if text =~ %r[macports/trunk]
-    problems << " * MacPorts patches should specify a revision instead of trunk"
-  end
-
   # Avoid hard-coding compilers
   if text =~ %r[(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]]
     problems << " * Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
@@ -132,6 +127,14 @@ def audit_formula_text name, text
 
   if text =~ %r[(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?((g|llvm-g|clang)\+\+)['" ]]
     problems << " * Use \"\#{ENV.cxx}\" instead of hard-coding \"#{$3}\""
+  end
+
+  if text =~ /system\s+['"](env|export)/
+    problems << " * Use ENV instead of invoking '#{$1}' to modify the environment"
+  end
+
+  if text =~ /version == ['"]HEAD['"]/
+    problems << " * Use 'ARGV.build_head?' instead of inspecting 'version'"
   end
 
   return problems
@@ -192,28 +195,18 @@ def audit_formula_options f, text
   return problems
 end
 
-def audit_formula_version f, text
-  # Version as defined in the DSL (or nil)
-  version_text = f.class.send('version').to_s
-
-  # Version as determined from the URL
-  version_url = Pathname.new(f.url).version
-
-  if version_url == version_text
-    return [" * version #{version_text} is redundant with version scanned from url"]
-  end
-
-  return []
-end
-
 def audit_formula_patches f
   problems = []
   patches = Patches.new(f.patches)
   patches.each do |p|
     next unless p.external?
-    if p.url =~ %r[raw\.github\.com]
+    case p.url
+    when %r[raw\.github\.com], %r[gist\.github\.com/raw]
       problems << " * Using raw GitHub URLs is not recommended:"
-      problems << " * #{p.url}"
+      problems << "   #{p.url}"
+    when %r[macports/trunk]
+      problems << " * MacPorts patches should specify a revision instead of trunk:"
+      problems << "   #{p.url}"
     end
   end
   return problems
@@ -231,8 +224,7 @@ def audit_formula_urls f
     problems << " * Google Code homepage should end with a slash."
   end
 
-  urls = [(f.url rescue nil), (f.head rescue nil)].reject {|p| p.nil?}
-  urls.uniq! # head-only formulae result in duplicate entries
+  urls = [(f.stable.url rescue nil), (f.devel.url rescue nil), (f.head.url rescue nil)].reject {|p| p.nil?}
 
   # Check GNU urls; doesn't apply to mirrors
   urls.each do |p|
@@ -242,10 +234,8 @@ def audit_formula_urls f
   end
 
   # the rest of the checks apply to mirrors as well
-  f.mirrors.each do |m|
-    mirror = m.values_at :url
-    urls << (mirror.to_s rescue nil)
-  end
+  mirrors = [(f.stable.mirrors rescue []), (f.devel.mirrors rescue [])].flatten.reject { |m| m.nil? }
+  urls.concat mirrors.map { |m| m[:url] }
 
   # Check SourceForge urls
   urls.each do |p|
@@ -283,19 +273,39 @@ def audit_formula_urls f
   return problems
 end
 
-def audit_formula_specs text
+def audit_formula_specs f
   problems = []
 
-  if text =~ /devel .+(url '.+').+(url '.+')/m
-    problems << " * 'devel' block found before stable 'url'"
-  end
+  [:stable, :devel].each do |spec|
+    s = f.send(spec)
+    next if s.nil?
 
-  if text =~ /devel .+(head '.+')/m
-    problems << " * 'devel' block found before 'head'"
-  end
+    if s.version.to_s.empty?
+      problems << " * invalid or missing #{spec} version"
+    else
+      version_text = s.version if s.explicit_version?
+      version_url = Pathname.new(s.url).version
+      if version_url == version_text
+        problems << " * #{spec} version #{version_text} is redundant with version scanned from URL"
+      end
+    end
 
-  if text =~ /devel do\s+end/
-    problems << " * Empty 'devel' block found"
+    cksum = s.checksum
+    next if cksum.nil?
+
+    len = case cksum.hash_type
+      when :md5 then 32
+      when :sha1 then 40
+      when :sha256 then 64
+      end
+
+    if cksum.empty?
+      problems << " * #{cksum.hash_type} is empty"
+    else
+      problems << " * #{cksum.hash_type} should be #{len} characters" unless cksum.hexdigest.length == len
+      problems << " * #{cksum.hash_type} contains invalid characters" unless cksum.hexdigest =~ /^[a-fA-F0-9]+$/
+      problems << " * #{cksum.hash_type} should be lowercase" unless cksum.hexdigest == cksum.hexdigest.downcase
+    end
   end
 
   return problems
@@ -319,7 +329,7 @@ def audit_formula_instance f
       problems << " * Can't find dependency \"#{d}\"."
     end
 
-    case d
+    case d.name
     when "git", "python", "ruby", "emacs", "mysql", "postgresql", "mercurial"
       problems << <<-EOS
  * Don't use #{d} as a dependency. We allow non-Homebrew
@@ -330,35 +340,13 @@ EOS
     end
   end
 
-  problems += [' * invalid or missing version'] if f.version.to_s.empty?
-
-  %w[md5 sha1 sha256].each do |checksum|
-    hash = f.instance_variable_get("@#{checksum}")
-    next if hash.nil?
-    hash = hash.strip
-
-    len = case checksum
-      when 'md5' then 32
-      when 'sha1' then 40
-      when 'sha256' then 64
-    end
-
-    if hash.empty?
-      problems << " * #{checksum} is empty"
-    else
-      problems << " * #{checksum} should be #{len} characters" unless hash.length == len
-      problems << " * #{checksum} contains invalid characters" unless hash =~ /^[a-fA-F0-9]+$/
-      problems << " * #{checksum} should be lowercase" unless hash == hash.downcase
-    end
-  end
-
   return problems
 end
 
 # Formula extensions for auditing
 class Formula
   def head_only?
-    @unstable and @standard.nil?
+    @head and @stable.nil?
   end
 
   def formula_text
@@ -405,8 +393,7 @@ module Homebrew extend self
 
       problems += audit_formula_text(f.name, text_without_patch)
       problems += audit_formula_options(f, text_without_patch)
-      problems += audit_formula_version(f, text_without_patch)
-      problems += audit_formula_specs(text_without_patch)
+      problems += audit_formula_specs(f)
 
       unless problems.empty?
         errors = true
@@ -414,13 +401,10 @@ module Homebrew extend self
         puts problems * "\n"
         puts
         brew_count += 1
-        problem_count += problems.size
+        problem_count += problems.select{ |p| p.start_with? ' *' }.size
       end
     end
 
-    if errors
-      puts "#{problem_count} problems in #{brew_count} brews"
-      Homebrew.failed = true
-    end
+    ofail "#{problem_count} problems in #{brew_count} brews" if errors
   end
 end

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>BrewBot</title>
+	<style>
+	<%= css %>
+	</style>
+</head>
+<body>
+	<div>
+		<h1><a href="index.html">BrewBot</h1>
+		<table>
+			<% dirs.each_with_index do |dir,index| %>
+			<tr>
+				<td><%= dir %></td>
+				<td><%= dates[index] %></td>
+				<td class='status <%= statuses[index] %>'><a href='<%= dir %>/index.html'><%= statuses[index].upcase %></a></td>
+			</tr>
+			<% end  %>
+		</table>
+	</div>
+</body>
+</html>

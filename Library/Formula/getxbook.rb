@@ -1,9 +1,9 @@
 require 'formula'
 
 class Getxbook < Formula
-  url 'http://njw.me.uk/software/getxbook/getxbook-0.6.tar.bz2'
   homepage 'http://njw.me.uk/software/getxbook/'
-  md5 'd19826109c6590072c3784bf49e7f4ba'
+  url 'http://njw.me.uk/software/getxbook/getxbook-0.9.tar.bz2'
+  sha1 '833b37fd121b24090ce59424886571be4bedf6c2'
 
   def install
     system "make", "CC=#{ENV.cc}", "PREFIX=#{prefix}", "install"

@@ -2,8 +2,8 @@ require 'formula'
 
 class Elasticsearch < Formula
   homepage 'http://www.elasticsearch.org'
-  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.19.2.tar.gz'
-  md5 'edbaa629f0a0777b815cf687b2c591b7'
+  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.19.8.tar.gz'
+  sha1 '5f2732eedc79a0d8b79d1c8a99f505b3d0465188'
 
   def cluster_name
     "elasticsearch_#{ENV['USER']}"
@@ -28,6 +28,9 @@ class Elasticsearch < Formula
       # 2. Configure paths
       s.gsub! /#\s*path\.data\: [^\n]+/, "path.data: #{var}/elasticsearch/"
       s.gsub! /#\s*path\.logs\: [^\n]+/, "path.logs: #{var}/log/elasticsearch/"
+
+      # 3. Bind to loopback IP for laptops roaming different networks
+      s.gsub! /#\s*network\.host\: [^\n]+/, "network.host: 127.0.0.1"
     end
 
     inreplace "#{bin}/elasticsearch.in.sh" do |s|
@@ -104,6 +107,11 @@ class Elasticsearch < Formula
             <string>-f</string>
             <string>-D es.config=#{prefix}/config/elasticsearch.yml</string>
           </array>
+          <key>EnvironmentVariables</key>
+          <dict>
+            <key>ES_JAVA_OPTS</key>
+            <string>-Xss200000</string>
+          </dict>
           <key>RunAtLoad</key>
           <true/>
           <key>UserName</key>

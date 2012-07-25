@@ -5,16 +5,16 @@ class Vimpc < Formula
   url 'http://downloads.sourceforge.net/project/vimpc/Release%200.05/vimpc-0.05.tar.gz'
   md5 'f96cdc10827ddfbb53318e9ab4bab93b'
 
-  head 'https://github.com/richoH/vimpc.git'
+  head 'https://github.com/richo/vimpc.git'
+
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'pcre++'
   depends_on 'libmpdclient'
-
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
 
   def install
     if ARGV.build_head?
@@ -28,6 +28,6 @@ class Vimpc < Formula
   end
 
   def test
-    system "#{bin}/vimpc -v"
+    system "#{bin}/vimpc", "-v"
   end
 end

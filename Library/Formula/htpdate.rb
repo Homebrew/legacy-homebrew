@@ -14,6 +14,6 @@ class Htpdate < Formula
   end
 
   def test
-    system "#{bin}/htpdate -h"
+    system "#{bin}/htpdate", "-h"
   end
 end

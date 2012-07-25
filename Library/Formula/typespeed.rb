@@ -6,7 +6,10 @@ class Typespeed < Formula
   md5 '578102b418c7df84903d3e90df2e7483'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    # Fix the hardcoded gcc.
+    inreplace 'src/Makefile.in', 'gcc', ENV.cc
+    inreplace 'testsuite/Makefile.in', 'gcc', ENV.cc
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
 end

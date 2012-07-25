@@ -2,7 +2,7 @@ require 'formula'
 
 class Fltk < Formula
   homepage 'http://www.fltk.org/'
-  url 'http://ftp2.easysw.com/pub/fltk/1.3.0/fltk-1.3.0-source.tar.gz'
+  url 'http://ftp.easysw.com/pub/fltk/1.3.0/fltk-1.3.0-source.tar.gz'
   md5 '44d5d7ba06afdd36ea17da6b4b703ca3'
 
   devel do
@@ -11,6 +11,7 @@ class Fltk < Formula
     version '1.3.x-r9327'
   end
 
+  depends_on :libpng
   depends_on 'jpeg'
 
   fails_with :clang do
@@ -19,7 +20,6 @@ class Fltk < Formula
   end
 
   def install
-    ENV.libpng
     system "./configure", "--prefix=#{prefix}", "--enable-threads"
     system "make install"
   end

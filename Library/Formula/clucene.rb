@@ -8,7 +8,7 @@ class Clucene < Formula
 
   def install
     if ARGV.build_head?
-      system "cmake #{std_cmake_parameters} ."
+      system "cmake", ".", *std_cmake_args
     else
       system "./configure", "--disable-debug", "--disable-dependency-tracking",
                             "--prefix=#{prefix}"

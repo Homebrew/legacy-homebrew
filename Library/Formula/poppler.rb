@@ -5,18 +5,19 @@ def qt?; ARGV.include? '--with-qt4'; end
 
 class PopplerData < Formula
   url 'http://poppler.freedesktop.org/poppler-data-0.4.5.tar.gz'
-  md5 '448dd7c5077570e340340706cef931aa'
+  sha256 '3190bc457bafe4b158f79a08e8a3f1824031ec12acefc359e68e0f04da0f70fd'
 end
 
 class Poppler < Formula
   homepage 'http://poppler.freedesktop.org'
-  url 'http://poppler.freedesktop.org/poppler-0.18.4.tar.gz'
-  md5 '12658f3308597e57f3faff538cc73baf'
+  url 'http://poppler.freedesktop.org/poppler-0.20.2.tar.gz'
+  sha256 '2debc5034e0e85402957d84fb2674737658a3dbe8a3c631e1792e3f8c88ce369'
 
   depends_on 'pkg-config' => :build
   depends_on 'qt' if qt?
   depends_on 'glib' if glib?
   depends_on 'cairo' if glib? # Needs a newer Cairo build than OS X 10.6.7 provides
+  depends_on :x11 # Fontconfig headers
 
   def options
     [
@@ -26,8 +27,6 @@ class Poppler < Formula
   end
 
   def install
-    ENV.x11 # For Fontconfig headers
-
     if qt?
       ENV['POPPLER_QT4_CFLAGS'] = `#{HOMEBREW_PREFIX}/bin/pkg-config QtCore QtGui --libs`.chomp
       ENV.append 'LDFLAGS', "-Wl,-F#{HOMEBREW_PREFIX}/lib"
@@ -44,7 +43,7 @@ class Poppler < Formula
 
     # Install poppler font data.
     PopplerData.new.brew do
-      system "make install prefix=#{prefix}"
+      system "make", "install", "prefix=#{prefix}"
     end
   end
 end

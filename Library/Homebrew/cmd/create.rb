@@ -57,7 +57,7 @@ end
 
 class FormulaCreator
   attr :url
-  attr :md5
+  attr :sha1
   attr :name, true
   attr :path, true
   attr :mode, true
@@ -88,8 +88,9 @@ class FormulaCreator
     end
 
     unless ARGV.include? "--no-fetch" and version
-      strategy = detect_download_strategy url
-      @md5 = strategy.new(url, name, version, nil).fetch.md5 if strategy == CurlDownloadStrategy
+      spec = SoftwareSpec.new(url, version)
+      strategy = spec.download_strategy
+      @sha1 = strategy.new(name, spec).fetch.sha1 if strategy == CurlDownloadStrategy
     end
 
     path.write ERB.new(template, nil, '>').result(binding)
@@ -104,27 +105,27 @@ class FormulaCreator
     class #{Formula.class_s name} < Formula
       homepage ''
       url '#{url}'
-      md5 '#{md5}'
+      sha1 '#{sha1}'
 
     <% if mode == :cmake %>
       depends_on 'cmake' => :build
     <% elsif mode == nil %>
       # depends_on 'cmake' => :build
     <% end %>
+    depends_on :x11 # if your formula requires any X11/XQuartz components
 
       def install
-        # ENV.x11 # if your formula requires any X11 headers
         # ENV.j1  # if your formula's build system can't parallelize
 
     <% if mode == :cmake %>
-        system "cmake . \#{std_cmake_parameters}"
+        system "cmake", ".", *std_cmake_args
     <% elsif mode == :autotools %>
         system "./configure", "--disable-debug", "--disable-dependency-tracking",
                               "--prefix=\#{prefix}"
     <% else %>
         system "./configure", "--disable-debug", "--disable-dependency-tracking",
                               "--prefix=\#{prefix}"
-        # system "cmake . \#{std_cmake_parameters}"
+        # system "cmake", ".", *std_cmake_args
     <% end %>
         system "make install" # if this fails, try separate make/make install steps
       end

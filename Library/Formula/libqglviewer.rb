@@ -2,8 +2,8 @@ require 'formula'
 
 class Libqglviewer < Formula
   homepage 'http://www.libqglviewer.com/'
-  url 'http://www.libqglviewer.com/src/libQGLViewer-2.3.15.tar.gz'
-  md5 'f06186fc20d38a1f20c8b1378093d1e8'
+  url 'http://www.libqglviewer.com/src/libQGLViewer-2.3.17.tar.gz'
+  sha1 '03b1da73bdb07988184c1f5d7c1c360be27b2a0e'
 
   depends_on 'qt'
 

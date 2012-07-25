@@ -5,6 +5,7 @@ class Pygtk < Formula
   homepage 'http://www.pygtk.org/'
   md5 'a1051d5794fd7696d3c1af6422d17a49'
 
+  depends_on :x11
   depends_on 'glib'
   depends_on 'gtk+'
   depends_on 'pygobject'
@@ -20,6 +21,16 @@ class Pygtk < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
+  end
+
+  def caveats; <<-EOS.undent
+    For non-Homebrew Python, you need to amend your PYTHONPATH like so:
+      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
+    EOS
+  end
+
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 
   def test
