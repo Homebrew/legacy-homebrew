@@ -2,9 +2,9 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.24-26.0/source/Percona-Server-5.5.24-rel26.0.tar.gz'
-  version '5.5.24-26.0'
-  sha1 '4a815b545263d008f7112b7e8b1170ae97e9cf3e'
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.25a-27.1/source/Percona-Server-5.5.25a-rel27.1.tar.gz'
+  version '5.5.25-27.1'
+  sha1 'f3388960311b159e46efd305ecdeb806fe2c7fdc'
 
   keg_only "This brew conflicts with 'mysql'. It's safe to `brew link` if you haven't installed 'mysql'"
 
@@ -164,21 +164,6 @@ end
 
 
 __END__
-diff --git a/configure.cmake b/configure.cmake
-index c3cc787..6193481 100644
---- a/configure.cmake
-+++ b/configure.cmake
-@@ -149,7 +149,9 @@ IF(UNIX)
-   SET(CMAKE_REQUIRED_LIBRARIES 
-     ${LIBM} ${LIBNSL} ${LIBBIND} ${LIBCRYPT} ${LIBSOCKET} ${LIBDL} ${CMAKE_THREAD_LIBS_INIT} ${LIBRT})
- 
--  LIST(REMOVE_DUPLICATES CMAKE_REQUIRED_LIBRARIES)
-+  IF(CMAKE_REQUIRED_LIBRARIES)
-+    LIST(REMOVE_DUPLICATES CMAKE_REQUIRED_LIBRARIES)
-+  ENDIF()
-   LINK_LIBRARIES(${CMAKE_THREAD_LIBS_INIT})
-   
-   OPTION(WITH_LIBWRAP "Compile with tcp wrappers support" OFF)
 diff --git a/scripts/mysql_config.sh b/scripts/mysql_config.sh
 index 9296075..a600de2 100644
 --- a/scripts/mysql_config.sh
