@@ -19,19 +19,23 @@ class GstPluginsBase < Formula
   depends_on 'libvorbis' => :optional
 
   def install
-    # gnome-vfs turned off due to lack of formula for it. MacPorts has it.
-    system "./configure", *%w[--disable-debug
-                              --disable-dependency-tracking
-                              --enable-introspection=no
-                              --enable-experimental
-                              --disable-libvisual
-                              --disable-alsa
-                              --disable-cdparanoia
-                              --without-x
-                              --disable-x
-                              --disable-xvideo
-                              --disable-xshm
-                              --disable-gnome_vfs]
+    # gnome-vfs turned off due to lack of formula for it.
+    args = %W[
+      --prefix=#{prefix}
+      --disable-debug
+      --disable-dependency-tracking
+      --enable-introspection=no
+      --enable-experimental
+      --disable-libvisual
+      --disable-alsa
+      --disable-cdparanoia
+      --without-x
+      --disable-x
+      --disable-xvideo
+      --disable-xshm
+      --disable-gnome_vfs
+    ]
+    system "./configure", *args
     system "make"
     system "make install"
   end
