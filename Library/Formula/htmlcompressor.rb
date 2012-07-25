@@ -1,9 +1,9 @@
 require 'formula'
 
 class Htmlcompressor < Formula
-  url 'http://htmlcompressor.googlecode.com/files/htmlcompressor-1.5.2.jar'
+  url 'http://htmlcompressor.googlecode.com/files/htmlcompressor-1.5.3.jar'
   homepage 'http://code.google.com/p/htmlcompressor/'
-  md5 '91575c89c83d0563dcf2aad409e4748f'
+  sha1 '57db73b92499e018b2f2978f1c7aa7b1238c7a39'
 
   def options
     [
