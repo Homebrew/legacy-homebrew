@@ -12,10 +12,8 @@ class Qt < Formula
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
 
-  depends_on :x11
-
   fails_with :clang do
-    build 318
+    build 421
   end
 
   def options
@@ -37,19 +35,27 @@ class Qt < Formula
     # https://bugreports.qt-project.org/browse/QTBUG-23258
     if MacOS.leopard?
       "http://bugreports.qt-project.org/secure/attachment/26712/Patch-Qt-4.8-for-10.5"
+    # add support for Mountain Lion
+    elsif MacOS.mountain_lion?
+      [ "https://qt.gitorious.org/qt/qt/commit/422f1b?format=patch",
+        "https://qt.gitorious.org/qt/qt/commit/665355?format=patch" ]
     end
+
   end
 
   def install
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
     args = ["-prefix", prefix,
-            "-system-libpng", "-system-zlib",
-            "-L#{MacOS.x11_prefix}/lib", "-I#{MacOS.x11_prefix}/include",
+            "-system-zlib",
             "-confirm-license", "-opensource",
             "-cocoa", "-fast" ]
 
     # See: https://github.com/mxcl/homebrew/issues/issue/744
     args << "-system-sqlite" if MacOS.leopard?
+
+    # TODO: Fix on Mountain Lion so WebKit can be built.
+    args << "-no-webkit" if MacOS.mountain_lion?
+
     args << "-plugin-sql-mysql" if (HOMEBREW_CELLAR+"mysql").directory?
 
     if ARGV.include? '--with-qtdbus'
