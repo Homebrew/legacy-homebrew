@@ -1,13 +1,13 @@
 require 'formula'
 
 class WpCli < Formula
-  homepage 'https://github.com/andreascreten/wp-cli/'
+  homepage 'https://github.com/wp-cli/wp-cli/'
 
   # Use the tag instead of the tarball to get submodules
-  url 'https://github.com/andreascreten/wp-cli.git', :tag => 'v0.4.0'
-  version '0.4.0'
+  url 'https://github.com/wp-cli/wp-cli.git', :tag => 'v0.5.0'
+  version '0.5.0'
 
-  head 'https://github.com/andreascreten/wp-cli.git'
+  head 'https://github.com/wp-cli/wp-cli.git'
 
   def install
       prefix.install Dir['src/*']
