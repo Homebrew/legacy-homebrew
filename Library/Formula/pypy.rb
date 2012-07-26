@@ -35,7 +35,7 @@ class Pypy < Formula
 
     # Tell distutils-based installers where to put scripts
     scripts_folder.mkpath
-    (prefix+"lib-python/modified-2.7/distutils/distutils.cfg").write <<-EOF.undent
+    (distutils+"distutils.cfg").write <<-EOF.undent
       [install]
       install-scripts=#{scripts_folder}
     EOF
@@ -57,7 +57,7 @@ class Pypy < Formula
   def caveats
     message = <<-EOS.undent
     A "distutils.cfg" has been written to:
-      #{lib}/pypy/distutils
+      #{distutils}
     specifing the install-scripts folder as:
       #{scripts_folder}
 
@@ -91,5 +91,14 @@ class Pypy < Formula
   # Where distribute will install executable scripts
   def scripts_folder
     HOMEBREW_PREFIX+"share/pypy"
+  end
+
+  # The Cellar location of distutils
+  def distutils
+    if MacOS.prefer_64_bit?
+      prefix+"lib-python/2.7/distutils"
+    else
+      prefix+"lib-python/modified-2.5.2/distutils"
+    end
   end
 end
