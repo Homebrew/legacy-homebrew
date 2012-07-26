@@ -5,6 +5,11 @@ class BulkExtractor < Formula
   url 'https://github.com/downloads/simsong/bulk_extractor/bulk_extractor-1.2.2.tar.gz'
   sha1 '2f0a2049259f826afe253cf5baeeb139b795dddb'
 
+  devel do
+    url 'https://github.com/downloads/simsong/bulk_extractor/bulk_extractor-1.3b5.tar.gz'
+    sha1 '04a3d49f35efc7381ae1d3f516bdad273a0f49ee'
+  end
+
   depends_on :autoconf
   depends_on :automake
 
@@ -19,15 +24,15 @@ class BulkExtractor < Formula
     system "make install"
 
     # Install documentation
-    (share+name+'doc').install Dir['doc/*.{html,txt,pdf}']
+    (share/'bulk_extractor/doc').install Dir['doc/*.{html,txt,pdf}']
 
     # Install Python utilities
-    (share+name+'python').install Dir['python/*.py']
+    (share/'bulk_extractor/python').install Dir['python/*.py']
   end
 
   def caveats; <<-EOS.undent
     You may need to add the directory containing the Python bindings to your PYTHONPATH:
-      #{share+name}/python
+      #{share}/bulk_extractor/python
     EOS
   end
 end
