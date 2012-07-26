@@ -60,7 +60,7 @@ class Grass < Formula
 
     args = [
       "--disable-debug", "--disable-dependency-tracking",
-      "--with-libs=#{MacOS.x11_prefix}/lib #{HOMEBREW_PREFIX}/lib",
+      "--with-libs=#{MacOS::XQuartz.lib} #{HOMEBREW_PREFIX}/lib",
       "--with-includes=#{HOMEBREW_PREFIX}/include",
       "--enable-largefile",
       "--enable-shared",
@@ -74,7 +74,7 @@ class Grass < Formula
       "--with-sqlite",
       "--with-odbc",
       "--with-geos=#{HOMEBREW_PREFIX}/bin/geos-config",
-      "--with-png-includes=#{MacOS.x11_prefix}/include",
+      "--with-png-includes=#{MacOS::XQuartz.include}",
       "--with-png",
       "--with-readline-includes=#{readline.include}",
       "--with-readline-libs=#{readline.lib}",
@@ -82,7 +82,7 @@ class Grass < Formula
       "--with-nls-includes=#{gettext.include}",
       "--with-nls-libs=#{gettext.lib}",
       "--with-nls",
-      "--with-freetype-includes=#{MacOS.x11_prefix}/include #{MacOS.x11_prefix}/include/freetype2",
+      "--with-freetype-includes=#{MacOS::XQuartz.include} #{MacOS::XQuartz.include}/freetype2",
       "--with-freetype",
       "--without-tcltk" # Disabled due to compatibility issues with OS X Tcl/Tk
     ]
@@ -106,7 +106,7 @@ class Grass < Formula
       args << "--with-cairo-includes=#{cairo.include}/cairo"
       args << "--with-cairo-libs=#{cairo.lib}"
     else
-      args << "--with-cairo-includes=#{MacOS.x11_prefix}/include #{MacOS.x11_prefix}/include/cairo"
+      args << "--with-cairo-includes=#{MacOS::XQuartz.include} #{MacOS::XQuartz.include}/cairo"
     end
 
     args << "--with-cairo"
