@@ -11,6 +11,7 @@ class Libpurple < Formula
   depends_on 'intltool'
   depends_on 'libidn'
   depends_on 'gnutls'
+  depends_on 'libxml2'
 
   def install
     # Just build the library, so disable all this UI stuff
