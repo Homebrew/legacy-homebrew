@@ -1,9 +1,9 @@
 require 'formula'
 
 class Toilet < Formula
-  url 'http://caca.zoy.org/raw-attachment/wiki/toilet/toilet-0.2.tar.gz'
+  url 'http://caca.zoy.org/raw-attachment/wiki/toilet/toilet-0.3.tar.gz'
   homepage 'http://caca.zoy.org/wiki/toilet'
-  md5 '4dec7585a2a2d716a765d553cdc1ddaf'
+  sha1 '73ea7aa2b0470ac0fecc103d7eeed0048684a505'
 
   depends_on 'libcaca'
 
