@@ -4,6 +4,7 @@ class IcarusVerilog < Formula
   homepage 'http://iverilog.icarus.com/'
   url 'ftp://icarus.com/pub/eda/verilog/v0.9/verilog-0.9.5.tar.gz'
   sha1 '3a69cb935ab562882a07a52904f3cba74aed2229'
+  head 'git://github.com/steveicarus/iverilog.git'
 
   devel do
     url 'ftp://ftp.icarus.com/pub/eda/verilog/snapshots/verilog-20120501.tar.gz'
@@ -12,7 +13,7 @@ class IcarusVerilog < Formula
 
   # Yes indeed, this software fails to compile out of the box with both
   # LLVM and Clang.
-
+  
   fails_with :llvm do
     build '2336'
     cause <<-EOS.undent
@@ -30,9 +31,25 @@ class IcarusVerilog < Formula
   end
 
   def install
+<<<<<<< HEAD
+=======
+    # ENV Vars were causing build errors
+    # So we clear them out
+    ENV['CC'] = "gcc"
+    ENV['CXX'] = "g++"
+    ENV['LD'] = "ld"
+    ENV['OBJC']="gcc"
+    ENV['CFLAGS'] =  "-fnested-functions"
+    ENV['CPPFLAGS']=""
+    ENV['CXXFLAGS']=""
+
+    system "sh autoconf.sh"
+>>>>>>> 5a39686... Removed ENV vars causing icarus-verilog recipe not to build on Mountain Lion
     system "./configure", "--prefix=#{prefix}"
-    system "make"
+    system "make check"
     # Separate steps, as install does not depend on compile properly
+    system "make"
+    system "make installdirs"
     system "make install"
   end
 end
