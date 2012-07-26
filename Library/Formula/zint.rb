@@ -14,7 +14,7 @@ class Zint < Formula
     mkdir 'zint-build' do
       system "cmake", "..",
                       "-DCMAKE_PREFIX_PATH=#{prefix}",
-                      "-DCMAKE_C_FLAGS=-I#{MacOS.x11_prefix}/include",
+                      "-DCMAKE_C_FLAGS=-I#{MacOS::XQuartz.include}",
                       *std_cmake_args
       system "make install"
     end

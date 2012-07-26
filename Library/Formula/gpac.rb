@@ -37,9 +37,9 @@ class Gpac < Formula
             "--prefix=#{prefix}",
             "--mandir=#{man}",
             # gpac build system is barely functional
-            "--extra-cflags=-I#{MacOS.x11_prefix}/include",
+            "--extra-cflags=-I#{MacOS::XQuartz.include}",
             # Force detection of X libs on 64-bit kernel
-            "--extra-ldflags=-L#{MacOS.x11_prefix}/lib"]
+            "--extra-ldflags=-L#{MacOS::XQuartz.lib}"]
 
     system "chmod +x configure"
     system "./configure", *args
