@@ -2,9 +2,9 @@ require 'formula'
 
 class AdobeAirSdk < Formula
   homepage 'http://www.adobe.com/products/air/sdk/'
-  url 'http://airdownload.adobe.com/air/mac/download/3.1/AdobeAIRSDK.tbz2'
-  md5 'f2137a34888ce71574da87e0cc3b7b06'
-  version '3.1'
+  url 'http://airdownload.adobe.com/air/mac/download/3.3/AdobeAIRSDK.tbz2'
+  sha1 '6fd563409e59e3ee66fa8ce0b60d4e9896b9a4af'
+  version '3.3'
 
   def startup_script name
     (bin+name).write <<-EOS.undent

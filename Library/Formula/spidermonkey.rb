@@ -31,7 +31,7 @@ class Spidermonkey < Formula
     ENV['CFLAGS'] = ENV['CFLAGS'].gsub(/-msse[^\s]+/, '') if MacOS.leopard?
 
     # For some reason SpiderMonkey requires Autoconf-2.13
-    ac213_prefix = Pathname.pwd.join('ac213')
+    ac213_prefix = buildpath/'ac213'
     Autoconf213.new.brew do |f|
       # Force use of plain "awk"
       inreplace 'configure', 'for ac_prog in mawk gawk nawk awk', 'for ac_prog in awk'

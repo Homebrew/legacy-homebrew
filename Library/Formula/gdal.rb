@@ -20,30 +20,43 @@ def which_python
   "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
 end
 
-
 def opencl?
   ARGV.include? "--enable-opencl"
 end
 
+def armadillo?
+  ARGV.include? "--enable-armadillo"
+end
+
+
 class Gdal < Formula
   homepage 'http://www.gdal.org/'
-  url 'http://download.osgeo.org/gdal/gdal-1.9.0.tar.gz'
-  md5 '1853f3d8eb5232ae030abe007840cade'
+  url 'http://download.osgeo.org/gdal/gdal-1.9.1.tar.gz'
+  md5 'c5cf09b92dac1f5775db056e165b34f5'
 
-  head 'https://svn.osgeo.org/gdal/trunk/gdal', :using => :svn
+  head 'https://svn.osgeo.org/gdal/trunk/gdal'
 
-  depends_on 'doxygen' => :build
+  # For creating up to date man pages.
+  depends_on 'doxygen' => :build if ARGV.build_head?
+
+  depends_on :x11
 
   depends_on 'jpeg'
   depends_on 'giflib'
   depends_on 'proj'
   depends_on 'geos'
+  # To ensure compatibility with SpatiaLite. Might be possible to do this
+  # conditially, but the additional complexity is just not worth saving an
+  # extra few seconds of build time.
+  depends_on 'sqlite'
 
   depends_on "postgresql" if postgres?
   depends_on "mysql" if mysql?
 
   # Without Numpy, the Python bindings can't deal with raster data.
   depends_on 'numpy' => :python unless no_python?
+
+  depends_on 'armadillo' if armadillo?
 
   if complete?
     # Raster libraries
@@ -59,7 +72,6 @@ class Gdal < Formula
     depends_on "unixodbc" # OS X version is not complete enough
     depends_on "libspatialite"
     depends_on "xerces-c"
-    depends_on "poppler"
     depends_on "freexl"
 
     # Other libraries
@@ -72,7 +84,8 @@ class Gdal < Formula
       ['--with-postgres', 'Specify PostgreSQL as a dependency.'],
       ['--with-mysql', 'Specify MySQL as a dependency.'],
       ['--without-python', 'Build without Python support (disables a lot of tools).'],
-      ['--enable-opencl', 'Build with support for OpenCL.']
+      ['--enable-opencl', 'Build with OpenCL acceleration.'],
+      ['--enable-armadillo', 'Build with Armadillo accelerated TPS transforms.']
     ]
   end
 
@@ -97,21 +110,25 @@ class Gdal < Formula
 
       # Backends supported by OS X.
       "--with-libz=/usr",
-      "--with-png=/usr/X11",
+      "--with-png=#{MacOS.x11_prefix}",
       "--with-expat=/usr",
-      "--with-sqlite3=/usr",
 
       # Default Homebrew backends.
       "--with-jpeg=#{HOMEBREW_PREFIX}",
       "--with-jpeg12",
       "--with-gif=#{HOMEBREW_PREFIX}",
       "--with-curl=/usr/bin/curl-config",
+      "--with-sqlite3=#{HOMEBREW_PREFIX}",
 
       # GRASS backend explicitly disabled.  Creates a chicken-and-egg problem.
       # Should be installed separately after GRASS installation using the
       # official GDAL GRASS plugin.
       "--without-grass",
-      "--without-libgrass"
+      "--without-libgrass",
+
+      # Poppler explicitly disabled. GDAL currently can't compile against
+      # Poppler 0.20.0.
+      "--without-poppler"
     ]
 
     # Optional library support for additional formats.
@@ -126,7 +143,6 @@ class Gdal < Formula
         "--with-odbc=#{HOMEBREW_PREFIX}",
         "--with-spatialite=#{HOMEBREW_PREFIX}",
         "--with-xerces=#{HOMEBREW_PREFIX}",
-        "--with-poppler=#{HOMEBREW_PREFIX}",
         "--with-freexl=#{HOMEBREW_PREFIX}",
         "--with-dods-root=#{HOMEBREW_PREFIX}"
       ]
@@ -143,7 +159,6 @@ class Gdal < Formula
         "--without-epsilon",
         "--without-spatialite",
         "--without-libkml",
-        "--without-poppler",
         "--without-podofo",
         "--with-freexl=no",
         "--with-dods-root=no",
@@ -192,17 +207,20 @@ class Gdal < Formula
     # OpenCL support
     args << "--with-opencl" if opencl?
 
+    # Armadillo support.
+    args << (armadillo? ? '--with-armadillo=yes' : '--with-armadillo=no')
+
     return args
   end
 
   def install
-    # The 1.9.0 release appears to contain a regression where linking flags for
-    # Sqlite are not added at a critical moment when the GDAL library is being
-    # assembled. This causes the build to fail due to missing symbols.
+    # Linking flags for SQLite are not added at a critical moment when the GDAL
+    # library is being assembled. This causes the build to fail due to missing
+    # symbols.
     #
     # Fortunately, this can be remedied using LDFLAGS.
     ENV.append 'LDFLAGS', '-lsqlite3'
-    # Needed by libdap
+    # Needed by libdap.
     ENV.append 'CPPFLAGS', '-I/usr/include/libxml2' if complete?
 
     # Reset ARCHFLAGS to match how we build.
@@ -242,12 +260,8 @@ class Gdal < Formula
       end
     end
 
-    # For some reason, the 1.9.0 source contains an empty `man` directory which
-    # fools Make into thinking there is nothing that needs to be done.
-    rmtree 'man'
-    system 'make', 'man'
+    system 'make', 'man' if ARGV.build_head?
     system 'make', 'install-man'
-
     # Clean up any stray doxygen files.
     Dir[bin + '*.dox'].each { |p| rm p }
   end

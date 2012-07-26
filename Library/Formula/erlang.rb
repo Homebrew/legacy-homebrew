@@ -43,11 +43,9 @@ class Erlang < Formula
   # may as well skip bin too, everything is just shell scripts
   skip_clean ['lib', 'bin']
 
-  if MacOS.xcode_version >= "4.3"
-    # remove the autoreconf if possible
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  # remove the autoreconf if possible
+  depends_on :automake
+  depends_on :libtool
 
   fails_with :llvm do
     build 2334
@@ -80,7 +78,8 @@ class Erlang < Formula
             "--enable-threads",
             "--enable-dynamic-ssl-lib",
             "--enable-shared-zlib",
-            "--enable-smp-support"]
+            "--enable-smp-support",
+            "--with-dynamic-trace=dtrace"]
 
     unless ARGV.include? '--disable-hipe'
       # HIPE doesn't strike me as that reliable on OS X
@@ -96,6 +95,7 @@ class Erlang < Formula
 
     system "./configure", *args
     system "touch lib/wx/SKIP" if MacOS.snow_leopard?
+    ENV.j1 # Parallel builds not working again as of at least R15B01
     system "make"
     system "make install"
 

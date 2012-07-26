@@ -87,6 +87,16 @@ class Formula
     @cc_failures ||= CompilerFailures.new
     @cc_failures << fails_with_llvm_reason
   end
+
+  def std_cmake_parameters
+    "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None -DCMAKE_FIND_FRAMEWORK=LAST -Wno-dev"
+  end
+
+  class << self
+    def bottle_sha1 val=nil
+      val.nil? ? @bottle_sha1 : @bottle_sha1 = val
+    end
+  end
 end
 
 class UnidentifiedFormula < Formula
@@ -127,7 +137,7 @@ class FailsWithLLVM
     # latest version we have tested against so we will switch to GCC and
     # bump this integer when Xcode 4.3 is released. TODO do that!
     if build.to_i >= 2336
-      if MacOS.xcode_version < "4.2"
+      if MacOS::Xcode.version < "4.2"
         opoo "Formula will not build with LLVM, using GCC"
         ENV.gcc
       else
@@ -146,11 +156,37 @@ class FailsWithLLVM
       that we can update the formula accordingly. Thanks!
       EOS
     puts
-    if MacOS.xcode_version < "4.2"
+    if MacOS::Xcode.version < "4.2"
       puts "If it doesn't work you can: brew install --use-gcc"
     else
       puts "If it doesn't work you can try: brew install --use-clang"
     end
     puts
+  end
+end
+
+module MacOS extend self
+  def xcode_folder
+    Xcode.folder
+  end
+
+  def xcode_prefix
+    Xcode.prefix
+  end
+
+  def xcode_installed?
+    Xcode.installed?
+  end
+
+  def xcode_version
+    Xcode.version
+  end
+
+  def clt_installed?
+    CLT.installed?
+  end
+
+  def clt_version?
+    CLT.version
   end
 end

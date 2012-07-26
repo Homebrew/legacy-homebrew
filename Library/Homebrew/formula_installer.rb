@@ -29,7 +29,7 @@ class FormulaInstaller
     end
 
     # Building head-only without --HEAD is an error
-    if not ARGV.build_head? and f.standard.nil?
+    if not ARGV.build_head? and f.stable.nil?
       raise CannotInstallFormulaError, <<-EOS.undent
         #{f} is a head-only formula
         Install with `brew install --HEAD #{f.name}
@@ -37,7 +37,7 @@ class FormulaInstaller
     end
 
     # Building stable-only with --HEAD is an error
-    if ARGV.build_head? and f.unstable.nil?
+    if ARGV.build_head? and f.head.nil?
       raise CannotInstallFormulaError, "No head is defined for #{f.name}"
     end
 
@@ -182,7 +182,12 @@ class FormulaInstaller
 
     args = ARGV.clone
     unless args.include? '--fresh'
-      args.concat tab.used_options unless tab.nil?
+      unless tab.nil?
+        args.concat tab.used_options
+        # FIXME: enforce the download of the non-bottled package
+        # in the spawned Ruby process.
+        args << '--build-from-source'
+      end
       args.uniq! # Just in case some dupes were added
     end
 
@@ -190,7 +195,7 @@ class FormulaInstaller
       begin
         read.close
         exec '/usr/bin/nice',
-             '/usr/bin/ruby',
+             '/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby',
              '-I', Pathname.new(__FILE__).dirname,
              '-rbuild',
              '--',
@@ -256,7 +261,7 @@ class FormulaInstaller
 
   def pour
     fetched, downloader = f.fetch
-    f.verify_download_integrity fetched, f.bottle_sha1, "SHA1"
+    f.verify_download_integrity fetched
     HOMEBREW_CELLAR.cd do
       downloader.stage
     end
@@ -266,12 +271,6 @@ class FormulaInstaller
 
   def paths
     @paths ||= ENV['PATH'].split(':').map{ |p| File.expand_path p }
-  end
-
-  def in_aclocal_dirlist?
-    File.open("/usr/share/aclocal/dirlist") do |dirlist|
-      dirlist.grep(%r{^#{HOMEBREW_PREFIX}/share/aclocal$}).length > 0
-    end rescue false
   end
 
   def check_PATH
@@ -327,12 +326,11 @@ class FormulaInstaller
   def check_non_libraries
     return unless File.exist? f.lib
 
-    valid_libraries = %w(.a .dylib .framework .la .o .so)
-    allowed_non_libraries = %w(.jar .prl .pm)
+    valid_extensions = %w(.a .dylib .framework .jnilib .la .o .so
+                          .jar .prl .pm)
     non_libraries = f.lib.children.select do |g|
       next if g.directory?
-      extname = g.extname
-      (not allowed_non_libraries.include? extname) and (not valid_libraries.include? extname)
+      not valid_extensions.include? g.extname
     end
 
     unless non_libraries.empty?
@@ -378,10 +376,16 @@ class FormulaInstaller
   end
 
   def check_m4
-    return if MacOS.xcode_version.to_f >= 4.3
+    # Newer versions of Xcode don't come with autotools
+    return if MacOS::Xcode.version.to_f >= 4.3
 
-    # Check for m4 files
-    if Dir[f.share+"aclocal/*.m4"].length > 0 and not in_aclocal_dirlist?
+    # If the user has added our path to dirlist, don't complain
+    return if File.open("/usr/share/aclocal/dirlist") do |dirlist|
+      dirlist.grep(%r{^#{HOMEBREW_PREFIX}/share/aclocal$}).length > 0
+    end rescue false
+
+    # Check for installed m4 files
+    if Dir[f.share+"aclocal/*.m4"].length > 0
       opoo 'm4 macros were installed to "share/aclocal".'
       puts "Homebrew does not append \"#{HOMEBREW_PREFIX}/share/aclocal\""
       puts "to \"/usr/share/aclocal/dirlist\". If an autoconf script you use"

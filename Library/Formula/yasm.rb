@@ -13,7 +13,7 @@ class Yasm < Formula
 
   if ARGV.build_head?
     depends_on 'gettext'
-    depends_on 'automake' => :build if MacOS.xcode_version.to_f >= 4.3
+    depends_on :automake
   end
 
   depends_on 'Cython' => :python if ARGV.include? '--enable-python'
@@ -26,6 +26,9 @@ class Yasm < Formula
       args << '--enable-python-bindings'
     end
 
+    # Avoid "ld: library not found for -lcrt1.10.6.o" on Xcode without CLT
+    ENV['LIBS'] = ENV.ldflags
+    ENV['INCLUDES'] = ENV.cppflags
     system './autogen.sh' if ARGV.build_head?
     system './configure', *args
     system 'make install'

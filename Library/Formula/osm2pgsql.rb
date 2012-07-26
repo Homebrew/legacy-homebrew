@@ -20,15 +20,14 @@ class PostgresqlInstalled < Requirement
 end
 
 class Osm2pgsql < Formula
-  head 'http://svn.openstreetmap.org/applications/utils/export/osm2pgsql/', :using => :svn
   homepage 'http://wiki.openstreetmap.org/wiki/Osm2pgsql'
-
-  if MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  head 'http://svn.openstreetmap.org/applications/utils/export/osm2pgsql/'
 
   depends_on PostgresqlInstalled.new
+
+  depends_on :automake
+  depends_on :libtool
+
   depends_on "geos"
   depends_on "proj"
   depends_on "protobuf-c" => :optional

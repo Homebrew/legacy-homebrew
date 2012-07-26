@@ -2,8 +2,9 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.5/en/'
-  url 'http://downloads.mysql.com/archives/mysql-5.5/mysql-5.5.20.tar.gz'
-  md5 '375794ebf84b4c7b63f1676bc7416cd0'
+  url 'http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.25a.tar.gz/from/http://cdn.mysql.com/'
+  version '5.5.25a'
+  sha1 '85dfea413a7d5d2733a40f9dd79cf2320302979f'
 
   depends_on 'cmake' => :build
   depends_on 'readline'
@@ -30,8 +31,7 @@ class Mysql < Formula
 
   # Remove optimization flags from `mysql_config --cflags`
   # This facilitates easy compilation of gems using a brewed mysql
-  # CMake patch needed for CMake 2.8.8.
-  # Reported here: http://bugs.mysql.com/bug.php?id=65050
+  # Also fix compilation with Xcode and no CLT: http://bugs.mysql.com/bug.php?id=66001
   def patches; DATA; end
 
   def install
@@ -179,18 +179,16 @@ index 9296075..70c18db 100644
  do
    # The first option we might strip will always have a space before it because
    # we set -I$pkgincludedir as the first option
-diff --git a/configure.cmake b/configure.cmake
-index c3cc787..6193481 100644
---- a/configure.cmake
-+++ b/configure.cmake
-@@ -149,7 +149,9 @@ IF(UNIX)
-   SET(CMAKE_REQUIRED_LIBRARIES
-     ${LIBM} ${LIBNSL} ${LIBBIND} ${LIBCRYPT} ${LIBSOCKET} ${LIBDL} ${CMAKE_THREAD_LIBS_INIT} ${LIBRT})
-
--  LIST(REMOVE_DUPLICATES CMAKE_REQUIRED_LIBRARIES)
-+  IF(CMAKE_REQUIRED_LIBRARIES)
-+    LIST(REMOVE_DUPLICATES CMAKE_REQUIRED_LIBRARIES)
-+  ENDIF()
-   LINK_LIBRARIES(${CMAKE_THREAD_LIBS_INIT})
-
-   OPTION(WITH_LIBWRAP "Compile with tcp wrappers support" OFF)
+diff --git a/cmake/libutils.cmake b/cmake/libutils.cmake
+index 89a9de9..677c68d 100644
+--- a/cmake/libutils.cmake
++++ b/cmake/libutils.cmake
+@@ -183,7 +183,7 @@ MACRO(MERGE_STATIC_LIBS TARGET OUTPUT_NAME LIBS_TO_MERGE)
+       # binaries properly)
+       ADD_CUSTOM_COMMAND(TARGET ${TARGET} POST_BUILD
+         COMMAND rm ${TARGET_LOCATION}
+-        COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION} 
++        COMMAND libtool -static -o ${TARGET_LOCATION} 
+         ${STATIC_LIBS}
+       )  
+     ELSE()

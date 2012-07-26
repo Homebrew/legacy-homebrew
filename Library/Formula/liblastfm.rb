@@ -9,6 +9,12 @@ class Liblastfm < Formula
   depends_on 'fftw'
   depends_on 'libsamplerate'
 
+  # See issue #12886.  Reported in: https://github.com/mxcl/liblastfm/issues/14
+  fails_with :clang do
+    build 318
+    cause 'error: reference to non-static member function must be called'
+  end
+
   def install
     system "./configure", "--release", "--prefix", prefix
     system "make"

@@ -2,8 +2,8 @@ require 'formula'
 
 class Libimobiledevice < Formula
   homepage 'http://www.libimobiledevice.org/'
-  url 'http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.1.tar.bz2'
-  md5 'cdc13037e822d9ac2e109536701d153a'
+  url 'http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.4.tar.bz2'
+  md5 '3f28cbc6a2e30d34685049c0abde5183'
 
   head 'http://cgit.sukimashita.com/libimobiledevice.git'
 
@@ -14,9 +14,9 @@ class Libimobiledevice < Formula
   depends_on 'usbmuxd'
   depends_on 'gnutls'
 
-  if MacOS.xcode_version >= "4.3" and ARGV.build_head?
-    depends_on 'libtool' => :build
-    depends_on 'autoconf' => :build
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
   end
 
   def install
@@ -33,7 +33,9 @@ class Libimobiledevice < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--without-swig"
+                          # As long as libplist builds without Cython
+                          # bindings, libimobiledevice must as well.
+                          "--without-cython"
     system "make install"
   end
 end

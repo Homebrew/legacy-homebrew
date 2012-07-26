@@ -2,8 +2,8 @@ require 'formula'
 
 class BerkeleyDb < Formula
   homepage 'http://www.oracle.com/technology/products/berkeley-db/index.html'
-  url 'http://download.oracle.com/berkeley-db/db-5.3.15.tar.gz'
-  md5 '5493fb5f7cc3915887c836b096f18773'
+  url 'http://download.oracle.com/berkeley-db/db-5.3.21.tar.gz'
+  sha1 '32e43c4898c8996750c958a90c174bd116fcba83'
 
   def options
     [['--without-java', 'Compile without Java support.']]

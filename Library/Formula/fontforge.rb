@@ -11,6 +11,7 @@ class Fontforge < Formula
   depends_on 'gettext'
   depends_on 'pango'
   depends_on 'potrace'
+  depends_on :x11
 
   def options
     [['--without-python', 'Build without Python.']]
@@ -28,7 +29,6 @@ class Fontforge < Formula
 
     args << "--without-python" if ARGV.include? "--without-python"
 
-    ENV.x11
     # Fix linker error; see: http://trac.macports.org/ticket/25012
     ENV.append "LDFLAGS", "-lintl"
     system "./configure", *args
@@ -42,7 +42,7 @@ class Fontforge < Formula
     # Fix hard-coded include file paths. Reported usptream:
     # http://sourceforge.net/mailarchive/forum.php?thread_name=C1A32103-A62D-468B-AD8A-A8E0E7126AA5%40smparkes.net&forum_name=fontforge-devel
     # https://trac.macports.org/ticket/33284
-    header_prefix = MacOS.xcode_prefix
+    header_prefix = MacOS::Xcode.prefix
     inreplace %w(fontforge/macbinary.c fontforge/startui.c gutils/giomime.c) do |s|
       s.gsub! "/Developer", header_prefix
     end

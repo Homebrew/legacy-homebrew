@@ -2,8 +2,8 @@ require 'formula'
 
 class Zsh < Formula
   homepage 'http://www.zsh.org/'
-  url 'http://sourceforge.net/projects/zsh/files/zsh-dev/4.3.17/zsh-4.3.17.tar.gz'
-  md5 '9074077945550d6684ebe18b3b167d52'
+  url 'http://www.zsh.org/pub/zsh-5.0.0.tar.bz2'
+  sha1 '692669243433c55384a54b397a1cc926e582e9f2'
 
   depends_on 'gdbm'
   depends_on 'pcre'
@@ -18,9 +18,9 @@ class Zsh < Formula
     args = %W[
       --prefix=#{prefix}
       --enable-fndir=#{share}/zsh/functions
-      --enable-site-fndir=#{share}/zsh/site-functions
       --enable-scriptdir=#{share}/zsh/scripts
-      --enable-site-scriptdir=#{share}/zsh/site-scripts
+      --enable-site-fndir=#{HOMEBREW_PREFIX}/share/zsh/site-functions
+      --enable-site-scriptdir=#{HOMEBREW_PREFIX}/share/zsh/site-scripts
       --enable-cap
       --enable-maildir-support
       --enable-multibyte
@@ -41,7 +41,7 @@ class Zsh < Formula
   end
 
   def test
-    system "#{bin}/zsh --version"
+    system "#{bin}/zsh", "--version"
   end
 
   def caveats; <<-EOS.undent

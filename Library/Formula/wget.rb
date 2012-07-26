@@ -6,7 +6,7 @@ class Wget < Formula
   mirror 'http://ftp.gnu.org/gnu/wget/wget-1.13.4.tar.bz2'
   md5 '12115c3750a4d92f9c6ac62bac372e85'
 
-  head 'bzr://http://bzr.savannah.gnu.org/r/wget/trunk'
+  head 'git://git.savannah.gnu.org/wget.git'
 
   depends_on "openssl" if MacOS.leopard?
   depends_on "libidn" if ARGV.include? "--enable-iri"
@@ -35,6 +35,6 @@ class Wget < Formula
   end
 
   def test
-    system "#{bin}/wget -O - www.google.com"
+    system "#{bin}/wget", "-O", "-", "www.google.com"
   end
 end

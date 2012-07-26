@@ -1,12 +1,7 @@
 abort if ARGV.include? "--skip-update"
 
 require 'testing_env'
-
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-ARGV.extend(HomebrewArgvExtension)
-
 require 'formula'
-require 'utils'
 require 'cmd/update'
 
 class UpdaterMock < Updater
@@ -87,7 +82,7 @@ class UpdaterTests < Test::Unit::TestCase
       assert report.select_formula(:R).empty?
     end
   end
-  
+
   def test_update_homebrew_with_formulae_changes
     diff_output = fixture('update_git_diff_output_with_formulae_changes')
 

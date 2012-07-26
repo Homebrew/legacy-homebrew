@@ -2,8 +2,8 @@ require 'formula'
 
 class Fasd < Formula
   homepage 'https://github.com/clvv/fasd'
-  url 'https://github.com/clvv/fasd/tarball/0.5.4'
-  md5 '9f051346463f19771d64c6a31a85a22b'
+  url 'https://github.com/clvv/fasd/tarball/1.0.0'
+  sha1 '4e8e39ea8847d8d9402634c60b6c4fbf461e71dd'
 
   def install
     bin.install 'fasd'

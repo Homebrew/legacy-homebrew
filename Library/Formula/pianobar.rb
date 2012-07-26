@@ -2,8 +2,8 @@ require 'formula'
 
 class Pianobar < Formula
   homepage 'https://github.com/PromyLOPh/pianobar/'
-  url 'https://github.com/PromyLOPh/pianobar/tarball/2012.04.24'
-  md5 'bbdb0f5e0bfd811496488e5c3b85a8fd'
+  url 'https://github.com/PromyLOPh/pianobar/tarball/2012.06.24'
+  sha1 '510dfbbc411e516a71f56d71dfb06086faabd4dd'
 
   head 'https://github.com/PromyLOPh/pianobar.git'
 
@@ -11,6 +11,7 @@ class Pianobar < Formula
   depends_on 'mad'
   depends_on 'faad2'
   depends_on 'gnutls'
+  depends_on 'json-c'
 
   skip_clean 'bin'
 
@@ -22,23 +23,17 @@ class Pianobar < Formula
   def install
     # Discard Homebrew's CFLAGS as Pianobar reportedly doesn't like them
     ENV['CFLAGS'] = "-O2 -DNDEBUG " +
-              # fixes a segfault: https://github.com/PromyLOPh/pianobar/issues/138
-              "-D_DARWIN_C_SOURCE " +
-              # Or it doesn't build at all
-              "-std=c99 " +
-              # build if we aren't /usr/local'
-              "#{ENV["CPPFLAGS"]} #{ENV["LDFLAGS"]}"
+                    # fixes a segfault: https://github.com/PromyLOPh/pianobar/issues/138
+                    "-D_DARWIN_C_SOURCE " +
+                    # Or it doesn't build at all
+                    "-std=c99 " +
+                    # build if we aren't /usr/local'
+                    "#{ENV["CPPFLAGS"]} #{ENV["LDFLAGS"]}"
 
     system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"
 
     # Install contrib folder too, why not.
-    prefix.install Dir['contrib']
-  end
-
-  # (Temporary?) workaround for pandora protocol change
-  # For detail: https://github.com/PromyLOPh/pianobar/issues/236
-  def patches
-    "https://raw.github.com/gist/2500616/bf2fc7c339791be9dce8ebf0ecca3f6647c9e3f2/gistfile1"
+    prefix.install 'contrib'
   end
 end

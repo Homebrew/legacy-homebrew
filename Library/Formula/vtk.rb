@@ -6,6 +6,7 @@ class Vtk < Formula
   md5 '37b7297d02d647cc6ca95b38174cb41f'
 
   depends_on 'cmake' => :build
+  depends_on :x11
   depends_on 'qt' if ARGV.include? '--qt'
 
   def options
@@ -19,7 +20,7 @@ class Vtk < Formula
   end
 
   def install
-    args = std_cmake_parameters.split + [
+    args = std_cmake_args + [
              "-DVTK_REQUIRED_OBJCXX_FLAGS:STRING=''",
              "-DVTK_USE_CARBON:BOOL=OFF",
              "-DBUILD_TESTING:BOOL=OFF",
@@ -62,9 +63,9 @@ class Vtk < Formula
     args << "-DVTK_USE_COCOA:BOOL=ON" unless ARGV.include? "--x11"
 
     if ARGV.include? '--x11'
-      args << "-DOPENGL_INCLUDE_DIR:PATH='/usr/X11R6/include'"
-      args << "-DOPENGL_gl_LIBRARY:FILEPATH='/usr/X11R6/lib/libGL.dylib'"
-      args << "-DOPENGL_glu_LIBRARY:FILEPATH='/usr/X11R6/lib/libGLU.dylib"
+      args << "-DOPENGL_INCLUDE_DIR:PATH='#{MacOS.x11_prefix}/include'"
+      args << "-DOPENGL_gl_LIBRARY:FILEPATH='#{MacOS.x11_prefix}/lib/libGL.dylib'"
+      args << "-DOPENGL_glu_LIBRARY:FILEPATH='#{MacOS.x11_prefix}/lib/libGLU.dylib"
       args << "-DVTK_USE_COCOA:BOOL=OFF"
       args << "-DVTK_USE_X:BOOL=ON"
     end
@@ -73,7 +74,7 @@ class Vtk < Formula
     # to get the right RPATH in the python libraries (the .so files in the vtk egg).
     # Also readable: http://vtk.1045678.n5.nabble.com/VTK-Python-Wrappers-on-Red-Hat-td1246159.html
     args << "-DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=ON"
-    ENV['DYLD_LIBRARY_PATH'] = `pwd`.strip + "/build/bin"
+    ENV['DYLD_LIBRARY_PATH'] = buildpath/'build/bin'
 
     args << ".."
 
@@ -84,10 +85,10 @@ class Vtk < Formula
       #   collect2: ld returned 1 exit status
       #   make[2]: *** [bin/vtkpython] Error 1
       # We symlink such that the DCMAKE_INSTALL_NAME_DIR is available and points to the current build/bin
-      mkpath "#{lib}" # create empty directories, because we need it here
-      system "ln -s " + ENV['DYLD_LIBRARY_PATH'] + " '#{lib}/vtk-5.8'"
+      lib.mkpath # create empty directories, because we need it here
+      ln_s ENV['DYLD_LIBRARY_PATH'], lib/'vtk-5.8'
       system "make"
-      system "rm '#{lib}/vtk-5.8'" # Remove our symlink, was only needed to make make succeed.
+      rm lib/'vtk-5.8' # Remove our symlink, was only needed to make make succeed.
       # end work-a-round
       system "make install" # Finally move libs in their places.
     end

@@ -4,20 +4,22 @@ class Gnuplot < Formula
   homepage 'http://www.gnuplot.info'
   url 'http://downloads.sourceforge.net/project/gnuplot/gnuplot/4.6.0/gnuplot-4.6.0.tar.gz'
   md5 '8e6e92b4596ea0eb75e16a57fc79efec'
+
   head 'cvs://:pserver:anonymous@gnuplot.cvs.sourceforge.net:/cvsroot/gnuplot:gnuplot', :using => :cvs
+
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'readline'
   depends_on 'pango'
+  depends_on :x11
   depends_on 'pdflib-lite' if ARGV.include? "--pdf"
   depends_on 'lua' unless ARGV.include? '--nolua'
   depends_on 'gd' unless ARGV.include? "--nogd"
   depends_on 'wxmac' if ARGV.include? "--wx"
-
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
 
   def options
     [
@@ -30,7 +32,6 @@ class Gnuplot < Formula
 
   def install
     # Help configure find libraries
-    ENV.x11
     readline = Formula.factory 'readline'
     pdflib = Formula.factory 'pdflib-lite'
     gd = Formula.factory 'gd'
@@ -56,6 +57,6 @@ class Gnuplot < Formula
   end
 
   def test
-    system "#{bin}/gnuplot --version"
+    system "#{bin}/gnuplot", "--version"
   end
 end

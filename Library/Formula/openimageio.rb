@@ -31,14 +31,13 @@ class OiioImages < Formula
   url 'https://github.com/OpenImageIO/oiio-images/tarball/9bf43561f5'
   sha1 '8f12a86098120fd10ceb294a0d3aa1c95a0d3f80'
   version '1.0.0'
-  def initialize; super "oiioimages"; end
 end
 
 
 class Openimageio < Formula
   homepage 'http://openimageio.org'
-  url 'https://github.com/OpenImageIO/oiio/tarball/Release-1.0.3'
-  sha1 '69919017a9fbc716d593eb508d04ea46626e96ed'
+  url 'https://github.com/OpenImageIO/oiio/tarball/Release-1.0.8'
+  sha1 '9ac265c279392117025cc18061742c3c1392d549'
 
   head 'https://github.com/OpenImageIO/oiio.git'
 
@@ -116,7 +115,7 @@ class Openimageio < Formula
       Bmpsuite.new.brew { (d+'bmpsuite').install Dir['*'] }
       Tgautils.new.brew { (d+'TGAUTILS').install Dir['*'] }
       OpenexrImages.new.brew { (d+'openexr-images-1.5.0').install Dir['*'] }
-      OiioImages.new.brew { (d+'oiio-images').install Dir['*'] }
+      OiioImages.new('oiioimages').brew { (d+'oiio-images').install Dir['*'] }
     end
 
 

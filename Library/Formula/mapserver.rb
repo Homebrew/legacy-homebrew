@@ -2,18 +2,21 @@ require 'formula'
 
 class Mapserver < Formula
   homepage 'http://mapserver.org/'
-  url 'http://download.osgeo.org/mapserver/mapserver-6.0.2.tar.gz'
-  md5 'd831c905b1b0df7ac09a80c3f9387374'
+  url 'http://download.osgeo.org/mapserver/mapserver-6.0.3.tar.gz'
+  sha1 'd7aa1041c6d9a46da7f5e29ae1b66639d5d050ab'
 
+  depends_on :x11
   depends_on 'gd'
   depends_on 'proj'
   depends_on 'gdal'
 
   depends_on 'geos' if ARGV.include? '--with-geos'
   depends_on 'postgresql' if ARGV.include? '--with-postgresql' and not MacOS.lion?
+  depends_on 'fcgi' if ARGV.include? '--with-fastcgi'
 
   def options
     [
+      ["--with-fastcgi", "Build with fastcgi support"],
       ["--with-geos", "Build support for GEOS spatial operations"],
       ["--with-php", "Build PHP MapScript module"],
       ["--with-postgresql", "Build support for PostgreSQL as a data source"]
@@ -26,7 +29,7 @@ class Mapserver < Formula
       "--with-proj",
       "--with-gdal",
       "--with-ogr",
-      "--with-png=/usr/X11"
+      "--with-png=#{MacOS.x11_prefix}"
     ]
 
     args.push "--with-geos" if ARGV.include? '--with-geos'
@@ -40,6 +43,10 @@ class Mapserver < Formula
       end
     end
 
+    if ARGV.include? '--with-fastcgi'
+      args.push "--with-fastcgi=#{HOMEBREW_PREFIX}"
+    end
+
     args
   end
 
@@ -50,7 +57,6 @@ class Mapserver < Formula
   end
 
   def install
-    ENV.x11
     system "./configure", *configure_args
     system "make"
     bin.install %w(mapserv shp2img legend shptree shptreevis

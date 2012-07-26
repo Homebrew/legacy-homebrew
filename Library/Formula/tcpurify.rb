@@ -11,6 +11,6 @@ class Tcpurify < Formula
   end
 
   def test
-    system "#{bin}/tcpurify -v" # Using -v, as without that it returns -1
+    system "#{bin}/tcpurify", "-v"
   end
 end

@@ -10,9 +10,9 @@ class Zeromq < Formula
   md5 '1b11aae09b19d18276d0717b2ea288f6'
   head 'https://github.com/zeromq/libzmq.git'
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
   end
 
   fails_with :llvm do
@@ -29,13 +29,13 @@ class Zeromq < Formula
 
   def build_fat
     # make 32-bit
-    system "CFLAGS=\"$CFLAGS -arch i386\" CXXFLAGS=\"$CXXFLAGS -arch i386\" ./configure --disable-dependency-tracking --prefix=#{prefix} #{pgm_flags}"
+    system "CFLAGS=\"$CFLAGS -arch i386\" CXXFLAGS=\"$CXXFLAGS -arch i386\" ./configure --disable-dependency-tracking --prefix='#{prefix}' #{pgm_flags}"
     system "make"
     system "mv src/.libs src/libs-32"
     system "make clean"
 
     # make 64-bit
-    system "CFLAGS=\"$CFLAGS -arch x86_64\" CXXFLAGS=\"$CXXFLAGS -arch x86_64\" ./configure --disable-dependency-tracking --prefix=#{prefix} #{pgm_flags}"
+    system "CFLAGS=\"$CFLAGS -arch x86_64\" CXXFLAGS=\"$CXXFLAGS -arch x86_64\" ./configure --disable-dependency-tracking --prefix='#{prefix}' #{pgm_flags}"
     system "make"
     system "mv src/.libs/libzmq.1.dylib src/.libs/libzmq.64.dylib"
 

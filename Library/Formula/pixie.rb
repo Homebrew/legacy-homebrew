@@ -8,12 +8,12 @@ class Pixie < Formula
   depends_on 'libtiff'
   depends_on 'fltk'
   depends_on 'openexr'
+  depends_on :libpng
 
   def install
     openexr = Formula.factory('openexr')
     ilmbase = Formula.factory('ilmbase')
 
-    ENV.x11 # For libpng
     ENV.append "CPPFLAGS", "-I#{openexr.include}/OpenEXR -I#{ilmbase.include}/OpenEXR"
     ENV.append "LDFLAGS",  "-L#{openexr.lib} -L#{ilmbase.lib}"
     system "./configure", "--disable-dependency-tracking",
@@ -23,6 +23,6 @@ class Pixie < Formula
   end
 
   def test
-    system "rndr -v"
+    system "#{bin}/rndr", "-v"
   end
 end

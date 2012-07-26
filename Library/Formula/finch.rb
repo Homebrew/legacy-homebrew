@@ -2,8 +2,8 @@ require 'formula'
 
 class Finch < Formula
   homepage 'http://developer.pidgin.im/wiki/Using%20Finch'
-  url 'http://sourceforge.net/projects/pidgin/files/Pidgin/2.7.11/pidgin-2.7.11.tar.bz2'
-  sha256 'a24e2c3118bd47983955d398c9cf5543c12e95527cdf7de9d273a6e92f9d160b'
+  url 'http://sourceforge.net/projects/pidgin/files/Pidgin/2.10.4/pidgin-2.10.4.tar.bz2'
+  sha256 '8fbef835c8dfa2281532ad7064d664477d72015d6dcd4345362dcfe658aaee0e'
 
   depends_on 'pkg-config' => :build
   depends_on 'libidn'

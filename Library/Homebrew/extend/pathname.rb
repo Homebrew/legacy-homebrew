@@ -1,8 +1,13 @@
 require 'pathname'
-require 'bottles'
+require 'mach'
 
 # we enhance pathname to make our code more readable
 class Pathname
+  include MachO
+
+  BOTTLE_EXTNAME_RX = /(\.[a-z]+\.bottle\.(\d+\.)?tar\.gz)$/
+  OLD_BOTTLE_EXTNAME_RX = /((\.[a-z]+)?[\.-]bottle\.tar\.gz)$/
+
   def install *sources
     results = []
     sources.each do |src|
@@ -117,9 +122,12 @@ class Pathname
   end
 
   # extended to support common double extensions
+  alias extname_old extname
   def extname
-    return $1 if to_s =~ bottle_regex
-    return $1 if to_s =~ old_bottle_regex
+    BOTTLE_EXTNAME_RX.match to_s
+    return $1 if $1
+    OLD_BOTTLE_EXTNAME_RX.match to_s
+    return $1 if $1
     /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
     return $1 if $1
     return File.extname(to_s)
@@ -239,6 +247,40 @@ class Pathname
     nil
   end
 
+  def compression_type
+    # Don't treat jars or wars as compressed
+    return nil if self.extname == '.jar'
+    return nil if self.extname == '.war'
+
+    # OS X installer package
+    return :pkg if self.extname == '.pkg'
+
+    # Get enough of the file to detect common file types
+    # POSIX tar magic has a 257 byte offset
+    magic_bytes = nil
+    File.open(self) { |f| magic_bytes = f.read(262) }
+
+    # magic numbers stolen from /usr/share/file/magic/
+    case magic_bytes
+    when /^PK\003\004/   then :zip
+    when /^\037\213/     then :gzip
+    when /^BZh/          then :bzip2
+    when /^\037\235/     then :compress
+    when /^.{257}ustar/  then :tar
+    when /^\xFD7zXZ\x00/ then :xz
+    when /^Rar!/         then :rar
+    else
+      # Assume it is not an archive
+      nil
+    end
+  end
+
+  def text_executable?
+    %r[^#!\s*.+] === open('r') { |f| f.readline }
+  rescue EOFError
+    false
+  end
+
   def incremental_hash(hasher)
     incr_hash = hasher.new
     self.open('r') do |f|
@@ -262,6 +304,13 @@ class Pathname
   def sha2
     require 'digest/sha2'
     incremental_hash(Digest::SHA2)
+  end
+  alias_method :sha256, :sha2
+
+  def verify_checksum expected
+    raise ChecksumMissingError if expected.nil? or expected.empty?
+    actual = Checksum.new(expected.hash_type, send(expected.hash_type).downcase)
+    raise ChecksumMismatchError.new(expected, actual) unless expected == actual
   end
 
   if '1.9' <= RUBY_VERSION
@@ -298,6 +347,11 @@ class Pathname
           raise <<-EOS.undent
             Could not symlink file: #{src.expand_path}
             Target #{self} already exists. You may need to delete it.
+            To force the link and delete this file, do:
+              brew link -f formula_name
+
+            To list all files that would be deleted:
+              brew link -n formula_name
             EOS
         elsif !dirname.writable?
           raise <<-EOS.undent

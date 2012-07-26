@@ -40,7 +40,7 @@ def blacklisted? name
     EOS
   when 'macruby' then <<-EOS.undent
     MacRuby works better when you install their package:
-      http://www.macruby.org/downloads.html
+      http://www.macruby.org/
 
     Although if you prefer, there is a formula in homebrew-alt.
     EOS
@@ -53,11 +53,8 @@ def blacklisted? name
   when /(lib)?lzma/
     "lzma is now part of the xz formula."
   when 'xcode' then <<-EOS.undent
-    Xcode can be installed via the App Store (on Lion), or from:
+    Xcode can be installed via the App Store (on Lion or newer), or from:
       http://connect.apple.com/
-
-    If you download from the App Store, make sure you run the installer
-    placed in /Applications after the download completes.
     EOS
   end
 end

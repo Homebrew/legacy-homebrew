@@ -8,16 +8,38 @@ def as_framework?
   (self.installed? and File.exists? prefix+"Frameworks/Python.framework") or build_framework?
 end
 
-class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.26.tar.gz'
-  md5 '841f4262a70107f85260362f5def8206'
+class TkCheck < Requirement
+  def message; <<-EOS.undent
+    Tk.framework detected in /Library/Frameworks
+    and that can make python builds to fail.
+    https://github.com/mxcl/homebrew/issues/11602
+    EOS
+  end
+
+  def fatal?; false; end
+
+  def satisfied?
+    not File.exist? '/Library/Frameworks/Tk.framework'
+  end
 end
+
+
+class Distribute < Formula
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.28.tar.gz'
+  md5 'b400b532e33f78551e6847c1f5965e56'
+end
+
+ class Pip < Formula
+   url 'http://pypi.python.org/packages/source/p/pip/pip-1.1.tar.gz'
+   md5 '62a9f08dd5dc69d76734568a6c040508'
+ end
 
 class Python < Formula
   homepage 'http://www.python.org/'
   url 'http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2'
-  md5 'c57477edd6d18bd9eeca2f21add73919'
+  sha1 '842c4e2aff3f016feea3c6e992c7fa96e49c9aa0'
 
+  depends_on TkCheck.new
   depends_on 'pkg-config' => :build
   depends_on 'readline' => :optional # Prefer over OS X's libedit
   depends_on 'sqlite'   => :optional # Prefer over OS X's older version
@@ -99,11 +121,9 @@ class Python < Formula
       install-scripts=#{scripts_folder}
     EOF
 
-    # Install distribute. The user can then do:
-    # $ easy_install pip
-    # $ pip install --upgrade distribute
-    # to get newer versions of distribute outside of Homebrew.
+    # Install distribute and pip
     Distribute.new.brew { system "#{bin}/python", "setup.py", "install" }
+    Pip.new.brew { system "#{bin}/python", "setup.py", "install" }
   end
 
   def caveats
@@ -112,10 +132,12 @@ class Python < Formula
       Framework Python was installed to:
         #{prefix}/Frameworks/Python.framework
 
-      You may want to symlink this Framework to a standard OS X location,
-      such as:
-          mkdir ~/Frameworks
-          ln -s "#{prefix}/Frameworks/Python.framework" ~/Frameworks
+      You may want to symlink this Framework to a standard OS X location:
+        mkdir -p ~/Library/Frameworks/Python.framework/Versions
+        ln -s "#{prefix}/Frameworks/Python.framework/Versions/2.7" ~/Library/Frameworks/Python.framework/Versions/2.7
+        ln -s ~/Library/Frameworks/Python.framework/Versions/2.7 ~/Library/Frameworks/Python.framework/Versions/Current
+        ln -s ~/Library/Frameworks/Python.framework/Versions/2.7/Python ~/Library/Frameworks/Python.framework/Python
+        ln -s ~/Library/Frameworks/Python.framework/Versions/2.7/Resources ~/Library/Frameworks/Python.framework/Resources
     EOS
 
     general_caveats = <<-EOS.undent
@@ -124,13 +146,11 @@ class Python < Formula
       specifing the install-scripts folder as:
         #{scripts_folder}
 
-      If you install Python packages via "python setup.py install", easy_install, pip,
-      any provided scripts will go into the install-scripts folder above, so you may
-      want to add it to your PATH.
+      If you install Python packages via "pip install x" or "python setup.py install"
+      (or the outdated easy_install), any provided scripts will go into the
+      install-scripts folder above, so you may want to add it to your PATH.
 
-      Distribute has been installed, so easy_install is available.
-      To update distribute itself outside of Homebrew:
-          #{scripts_folder}/easy_install pip
+      Distribute has been installed. To update distribute itself outside of Homebrew:
           #{scripts_folder}/pip install --upgrade distribute
 
       See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
@@ -174,6 +194,6 @@ class Python < Formula
 
   def test
     # See: https://github.com/mxcl/homebrew/pull/10487
-    system "#{bin}/python -c 'from decimal import Decimal; print Decimal(4) / Decimal(2)'"
+    `#{bin}/python -c 'from decimal import Decimal; print Decimal(4) / Decimal(2)'`.chomp == '2'
   end
 end

@@ -7,7 +7,7 @@ class Sipp < Formula
   version '3.2'
 
   def install
-    system "make DESTDIR=#{prefix}"
+    system "make", "DESTDIR=#{prefix}"
     bin.install "sipp"
   end
 end
