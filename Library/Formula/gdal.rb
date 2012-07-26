@@ -110,7 +110,7 @@ class Gdal < Formula
 
       # Backends supported by OS X.
       "--with-libz=/usr",
-      "--with-png=#{MacOS.x11_prefix}",
+      "--with-png=#{MacOS::XQuartz.prefix}",
       "--with-expat=/usr",
 
       # Default Homebrew backends.

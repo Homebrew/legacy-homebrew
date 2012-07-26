@@ -12,7 +12,7 @@ class SwiProlog < Formula
   depends_on 'jpeg'
   depends_on 'mcrypt'
   depends_on 'gawk'
-  depends_on :x11 if x11_installed?
+  depends_on :x11 if MacOS::XQuartz.installed?
 
   # 10.5 versions of these are too old
   if MacOS.leopard?
@@ -34,7 +34,7 @@ class SwiProlog < Formula
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
     ENV.append 'DISABLE_PKGS', "jpl" if ARGV.include? "--without-jpl"
 
-    unless x11_installed?
+    unless MacOS::XQuartz.installed?
       # SWI-Prolog requires X11 for XPCE
       opoo "It appears that X11 is not installed. The XPCE packages will not be built."
       ENV.append 'DISABLE_PKGS', "xpce"

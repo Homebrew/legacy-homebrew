@@ -9,7 +9,7 @@ class Tabbed < Formula
   depends_on :x11
 
   def install
-    inreplace 'config.mk', "LIBS = -L/usr/lib -lc -lX11', 'LIBS = -L#{MacOS.x11_prefix}/lib -lc -lX11"
+    inreplace 'config.mk', "LIBS = -L/usr/lib -lc -lX11', 'LIBS = -L#{MacOS::XQuartz.lib} -lc -lX11"
     inreplace 'tabbed.1', 'new surf-window.', 'new xterm-window.'
     inreplace 'config.def.h',
       '{ MODKEY|ShiftMask,             XK_Return, spawn,          { .v = (char*[]){ "surf", "-e", winid, NULL} } },',

@@ -23,8 +23,8 @@ class GnuShogi < Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--x-include=#{MacOS.x11_prefix}/include",
-                          "--x-lib=#{MacOS.x11_prefix}/lib"
+                          "--x-include=#{MacOS::XQuartz.include}",
+                          "--x-lib=#{MacOS::XQuartz.lib}"
     system "make"
     system "make", "install", "MANDIR=#{man6}", "INFODIR=#{info}"
   end
