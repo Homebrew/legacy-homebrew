@@ -38,12 +38,18 @@ class Qt < Formula
     # add support for Mountain Lion
     elsif MacOS.mountain_lion?
       [ "https://qt.gitorious.org/qt/qt/commit/422f1b?format=patch",
-        "https://qt.gitorious.org/qt/qt/commit/665355?format=patch" ]
+        "https://qt.gitorious.org/qt/qt/commit/665355?format=patch",
+        "https://raw.github.com/gist/3185874/qtwebkitpatch.patch" ]
     end
 
   end
 
   def install
+    # add webkit support for mountain lion
+    if MacOS.mountain_lion?
+      curl "http://svn.webkit.org/repository/webkit/trunk/WebKitLibraries/libWebKitSystemInterfaceMountainLion.a", '-o', 'src/3rdparty/webkit/WebKitLibraries/libWebKitSystemInterfaceMountainLion.a'
+    end
+
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
     args = ["-prefix", prefix,
             "-system-zlib",
@@ -52,9 +58,6 @@ class Qt < Formula
 
     # See: https://github.com/mxcl/homebrew/issues/issue/744
     args << "-system-sqlite" if MacOS.leopard?
-
-    # TODO: Fix on Mountain Lion so WebKit can be built.
-    args << "-no-webkit" if MacOS.mountain_lion?
 
     args << "-plugin-sql-mysql" if (HOMEBREW_CELLAR+"mysql").directory?
 
@@ -139,3 +142,4 @@ class Qt < Formula
     EOS
   end
 end
+
