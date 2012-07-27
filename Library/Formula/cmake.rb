@@ -23,6 +23,7 @@ class Cmake < Formula
 
   bottle do
     version 3
+    sha1 '64e1a488bc669f7676c99874b8496ac147d1bc70' => :mountainlion
     sha1 'bdfb5fcd6743d65f6cfe00b314f9d3f1049e902b' => :lion
     sha1 '3a77fc17a7b1d3cceabddcca5c126c6b911c2f90' => :snowleopard
   end
