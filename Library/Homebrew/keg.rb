@@ -29,6 +29,7 @@ class Keg < Pathname
 
   def unlink
     n=0
+
     %w[bin etc lib include sbin share var].map{ |d| self/d }.each do |src|
       next unless src.exist?
       src.find do |src|

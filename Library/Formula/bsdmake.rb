@@ -5,7 +5,7 @@ class Bsdmake < Formula
   url 'http://opensource.apple.com/tarballs/bsdmake/bsdmake-24.tar.gz'
   md5 '7856e53a7f8b29cd899e2ce98eb4a467'
 
-  if MacOS.xcode_version.to_f < 4.3 or File.file? "/usr/bin/bsdmake"
+  if MacOS::Xcode.provides_autotools? or File.file? "/usr/bin/bsdmake"
     keg_only "Recent versions of OS X no longer provide this tool."
   end
 
