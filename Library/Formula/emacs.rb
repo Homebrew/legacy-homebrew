@@ -1,8 +1,8 @@
 require 'formula'
 
 class EmacsMac < Formula
-  url 'ftp://ftp.math.s.chiba-u.ac.jp//emacs/emacs-24.1-mac-3.0.tar.gz'
-  sha1 '5e97373ed88e73de46a0be164f6b1b35f37ade4c'
+  url 'ftp://ftp.math.s.chiba-u.ac.jp//emacs/emacs-24.1-mac-3.1.tar.gz'
+  sha1 '57bf58606b11a39e91e723c4bfb53fd72da9ef02'
 end
 
 class Emacs < Formula
