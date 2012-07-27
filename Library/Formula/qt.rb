@@ -46,7 +46,9 @@ class Qt < Formula
 
   def install
     # add webkit support for mountain lion
-    curl "http://svn.webkit.org/repository/webkit/trunk/WebKitLibraries/libWebKitSystemInterfaceMountainLion.a", '-o', 'src/3rdparty/webkit/WebKitLibraries/libWebKitSystemInterfaceMountainLion.a'
+    if MacOS.mountain_lion?
+      curl "http://svn.webkit.org/repository/webkit/trunk/WebKitLibraries/libWebKitSystemInterfaceMountainLion.a", '-o', 'src/3rdparty/webkit/WebKitLibraries/libWebKitSystemInterfaceMountainLion.a'
+    end
 
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
     args = ["-prefix", prefix,
