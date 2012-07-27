@@ -92,10 +92,11 @@ module MacOS extend self
   end
 
   def sdk_path v=version
-    @sdk_path ||= begin
+    @sdk_path ||= {}
+    @sdk_path[v.to_s] ||= begin
       path = if not Xcode.bad_xcode_select_path? and File.executable? "#{Xcode.folder}/usr/bin/make"
         `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.strip
-      elsif File.directory? '/Developer/SDKs/MacOS#{v}.sdk'
+      elsif File.directory? "/Developer/SDKs/MacOS#{v}.sdk"
         # the old default (or wild wild west style)
         "/Developer/SDKs/MacOS#{v}.sdk"
       elsif File.directory? "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
