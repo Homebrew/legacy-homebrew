@@ -1,3 +1,5 @@
+require 'set'
+
 ## This file defines dependencies and requirements.
 ##
 ## A dependency is a formula that another formula needs to install.
@@ -21,7 +23,7 @@ class DependencyCollector
 
   def initialize
     @deps = Dependencies.new
-    @external_deps = []
+    @external_deps = Set.new
   end
 
   def add spec
@@ -118,6 +120,15 @@ class Requirement
   def satisfied?; false; end
   def fatal?; false; end
   def message; ""; end
+  def modify_build_environment; nil end
+
+  def eql?(other)
+    other.is_a? self.class and hash == other.hash
+  end
+
+  def hash
+    @message.hash
+  end
 end
 
 
@@ -186,6 +197,10 @@ class X11Dependency < Requirement
     Please install the latest version of XQuartz:
       https://xquartz.macosforge.org
     EOS
+  end
+
+  def modify_build_environment
+    ENV.x11
   end
 
 end

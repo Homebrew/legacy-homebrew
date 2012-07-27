@@ -207,15 +207,14 @@ end
 
 
 __END__
-diff --git a/src/pl/plpython/Makefile b/src/pl/plpython/Makefile
-index df07fc2..7c90bff 100644
---- a/src/pl/plpython/Makefile
-+++ b/src/pl/plpython/Makefile
-@@ -24,7 +24,6 @@ endif
+--- a/src/pl/plpython/Makefile	2011-09-23 08:03:52.000000000 +1000
++++ b/src/pl/plpython/Makefile	2011-10-26 21:43:40.000000000 +1100
+@@ -24,8 +24,6 @@
  # Darwin (OS X) has its own ideas about how to do this.
  ifeq ($(PORTNAME), darwin)
  shared_libpython = yes
 -override python_libspec = -framework Python
- override python_additional_libs =
+-override python_additional_libs =
  endif
  
+ # If we don't have a shared library and the platform doesn't allow it
