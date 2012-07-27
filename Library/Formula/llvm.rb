@@ -29,10 +29,21 @@ class Llvm < Formula
   end
 
   def patches
+    patchList = []
+
     # changes the link options for the shared library build
     # to use the preferred way to build libraries in Mac OS X
     # Reported upstream: http://llvm.org/bugs/show_bug.cgi?id=8985
-    DATA if build_shared?
+    if build_shared?
+      patchList.push( "http://pastebin.com/raw.php?i=kEfrhKH3" )
+    end
+
+    # Allows compilation on 10.8, which has been reported 
+    # upstream http://llvm.org/bugs/show_bug.cgi?id=13472
+    if :mountainlion
+      patchList.push( "http://pastebin.com/raw.php?i=SP2YcKFx" )
+    end
+    return patchList
   end
 
   def options
@@ -119,19 +130,3 @@ class Llvm < Formula
     buildpath/'tools/clang'
   end
 end
-
-
-__END__
-diff --git i/Makefile.rules w/Makefile.rules
-index 5fc77a5..a6baaf4 100644
---- i/Makefile.rules
-+++ w/Makefile.rules
-@@ -507,7 +507,7 @@ ifeq ($(HOST_OS),Darwin)
-   # Get "4" out of 10.4 for later pieces in the makefile.
-   DARWIN_MAJVERS := $(shell echo $(DARWIN_VERSION)| sed -E 's/10.([0-9]).*/\1/')
-
--  LoadableModuleOptions := -Wl,-flat_namespace -Wl,-undefined,suppress
-+  LoadableModuleOptions := -Wl,-undefined,dynamic_lookup
-   SharedLinkOptions := -dynamiclib
-   ifneq ($(ARCH),ARM)
-     SharedLinkOptions += -mmacosx-version-min=$(DARWIN_VERSION)
