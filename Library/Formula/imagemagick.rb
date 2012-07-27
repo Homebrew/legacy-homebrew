@@ -25,6 +25,10 @@ def disable_openmp?
   ARGV.include? '--disable-openmp'
 end
 
+def disable_opencl?
+  ARGV.include? '--disable-opencl'
+end
+
 def enable_hdri?
   ARGV.include? '--enable-hdri'
 end
@@ -96,6 +100,7 @@ class Imagemagick < Formula
       ['--use-lqr', 'Compile with liblqr support.'],
       ['--use-exr', 'Compile with openexr support.'],
       ['--disable-openmp', 'Disable OpenMP.'],
+      ['--disable-opencl', 'Disable OpenCL.'],
       ['--enable-hdri', 'Compile with HDRI support enabled'],
       ['--with-magick-plus-plus', 'Compile with C++ interface.'],
       ['--with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'],
@@ -114,6 +119,7 @@ class Imagemagick < Formula
              "--with-modules"]
 
     args << "--disable-openmp" if MacOS.leopard? or disable_openmp?
+    args << "--disable-opencl" if disable_opencl?
     args << "--without-gslib" unless ghostscript_srsly?
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
                 unless ghostscript_srsly? or ghostscript_fonts?
