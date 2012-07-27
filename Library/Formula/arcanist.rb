@@ -23,4 +23,10 @@ class Arcanist < Formula
   def test
     system "arc help"
   end
+
+  def caveats
+    <<-EOS.undent
+    Now check out http://www.phabricator.com/docs/phabricator/article/Arcanist_User_Guide.html#overview
+    EOS
+  end
 end
