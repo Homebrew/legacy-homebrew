@@ -14,7 +14,8 @@ class Quvi < Formula
                           "--prefix=#{prefix}",
                           "--enable-nsfw",
                           "--enable-todo",
-                          "--enable-nlfy"
+                          "--enable-nlfy",
+                          "libcurl_CFLAGS=-I/usr/include", "libcurl_LIBS=-lcurl"
     system "make install"
   end
 end
