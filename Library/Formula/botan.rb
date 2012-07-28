@@ -2,8 +2,8 @@ require 'formula'
 
 class Botan < Formula
   homepage 'http://botan.randombit.net/'
-  url 'http://files.randombit.net/botan/v1.10/Botan-1.10.1.tbz'
-  md5 '7ae93e205491a8e75115bfca983ff7f9'
+  url 'http://botan.randombit.net/files/Botan-1.10.3.tbz'
+  sha1 '9f929101bf75c19432f49f57c80d2d26eec91dcb'
 
   def options
     [['--enable-debug', "Enable debug build of Botan"]]
