@@ -8,6 +8,6 @@ class Pngxx < Formula
   depends_on :libpng
 
   def install
-    system "make install"
+    system "make", "prefix=#{prefix}", "install"
   end
 end
