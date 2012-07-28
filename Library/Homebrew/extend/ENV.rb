@@ -9,6 +9,12 @@ module HomebrewEnvExtension
     delete('CLICOLOR_FORCE') # autotools doesn't like this
     remove_cc_etc
 
+    # Mountain Lion no longer ships a few .pcs; make sure we pick up our versions
+    if MacOS.mountain_lion?
+      prepend 'PKG_CONFIG_PATH',
+        HOMEBREW_REPOSITORY/'Library/Homebrew/pkgconfig', ':'
+    end
+
     # make any aclocal stuff installed in Homebrew available
     self['ACLOCAL_PATH'] = "#{HOMEBREW_PREFIX}/share/aclocal" if MacOS::Xcode.provides_autotools?
 
