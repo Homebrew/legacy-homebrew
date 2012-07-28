@@ -2,8 +2,8 @@ require 'formula'
 
 class Xplanet < Formula
   homepage 'http://xplanet.sourceforge.net/'
-  url 'http://sourceforge.net/projects/xplanet/files/xplanet/1.2.2/xplanet-1.2.2.tar.gz'
-  md5 'b38c3b4cfdd772643f876a9bb15f288b'
+  url 'http://sourceforge.net/projects/xplanet/files/xplanet/1.3.0/xplanet-1.3.0.tar.gz'
+  sha1 '7c5208b501b441a0184cbb334a5658d0309d7dac'
 
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
