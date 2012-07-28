@@ -84,7 +84,7 @@ chmods = %w( . bin etc include lib lib/pkgconfig Library sbin share var var/log 
              share/man/man5 share/man/man6 share/man/man7 share/man/man8
              share/info share/doc share/aclocal ).
             map{ |d| "/usr/local/#{d}" }.
-            select{ |d| File.directory? d and not File.writable? d }
+            select{ |d| File.directory? d and not File.writable_real? d }
 chgrps = chmods.reject{ |d| File.stat(d).grpowned? }
 
 unless chmods.empty?

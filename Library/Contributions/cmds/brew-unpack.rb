@@ -73,7 +73,7 @@ supplied, patches will also be downloaded and applied.
       unpack_dir.mkpath unless unpack_dir.exist?
     end
 
-    raise "Cannot write to #{unpack_dir}" unless unpack_dir.writable?
+    raise "Cannot write to #{unpack_dir}" unless unpack_dir.writable_real?
 
     formulae.each do |f|
       # Create a nice name for the stage folder.
