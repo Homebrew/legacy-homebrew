@@ -2,8 +2,8 @@ require 'formula'
 
 class Libtiff < Formula
   homepage 'http://www.remotesensing.org/libtiff/'
-  url 'http://download.osgeo.org/libtiff/tiff-4.0.1.tar.gz'
-  sha256 '9a7a039e516c37478038740f1642818250bfb1414cf404cc8b569e5f9d4bf2f0'
+  url 'http://download.osgeo.org/libtiff/tiff-4.0.2.tar.gz'
+  sha256 'aa29f1f5bfe3f443c3eb4dac472ebde15adc8ff0464b83376f35e3b2fef935da'
 
   depends_on :x11
 
