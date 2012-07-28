@@ -279,7 +279,7 @@ def __check_subdir_access base
 
   target.find do |d|
     next unless d.directory?
-    cant_read << d unless d.writable?
+    cant_read << d unless d.writable_real?
   end
 
   cant_read.sort!
@@ -300,7 +300,7 @@ end
 def check_access_usr_local
   return unless HOMEBREW_PREFIX.to_s == '/usr/local'
 
-  unless Pathname('/usr/local').writable? then <<-EOS.undent
+  unless Pathname('/usr/local').writable_real? then <<-EOS.undent
     The /usr/local directory is not writable.
     Even if this directory was writable when you installed Homebrew, other
     software may change permissions on this directory. Some versions of the
@@ -322,7 +322,7 @@ end
 
 def __check_folder_access base, msg
   folder = HOMEBREW_PREFIX+base
-  if folder.exist? and not folder.writable?
+  if folder.exist? and not folder.writable_real?
     <<-EOS.undent
       #{folder} isn't writable.
       This can happen if you "sudo make install" software that isn't managed
