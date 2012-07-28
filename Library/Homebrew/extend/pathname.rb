@@ -333,6 +333,111 @@ class Pathname
     (dirname+readlink).exist?
   end
 
+  def site(target)
+    dst = target + "/site.py"
+    if not File.exists?(dst)
+      File.open(dst, 'w') do |f|
+        f.puts(<<-EOS
+def __boot():
+    import sys, imp, os, os.path   
+    PYTHONPATH = os.environ.get('PYTHONPATH')
+    if PYTHONPATH is None or (sys.platform=='win32' and not PYTHONPATH):
+        PYTHONPATH = []
+    else:
+        PYTHONPATH = PYTHONPATH.split(os.pathsep)
+
+    pic = getattr(sys,'path_importer_cache',{})
+    stdpath = sys.path[len(PYTHONPATH):]
+    mydir = os.path.dirname(__file__)
+    #print "searching",stdpath,sys.path
+
+    for item in stdpath:
+        if item==mydir or not item:
+            continue    # skip if current dir. on Windows, or my own directory
+        importer = pic.get(item)
+        if importer is not None:
+            loader = importer.find_module('site')
+            if loader is not None:
+                # This should actually reload the current module
+                loader.load_module('site')
+                break
+        else:
+            try:
+                stream, path, descr = imp.find_module('site',[item])
+            except ImportError:
+                continue
+            if stream is None:
+                continue
+            try:
+                # This should actually reload the current module
+                imp.load_module('site',stream,path,descr)
+            finally:
+                stream.close()
+            break
+    else:
+        raise ImportError("Couldn't find the real 'site' module")
+
+    #print "loaded", __file__
+
+    known_paths = dict([(makepath(item)[1],1) for item in sys.path]) # 2.2 comp
+
+    oldpos = getattr(sys,'__egginsert',0)   # save old insertion position
+    sys.__egginsert = 0                     # and reset the current one
+
+    for item in PYTHONPATH:
+        addsitedir(item)
+
+    sys.__egginsert += oldpos           # restore effective old position
+
+    d,nd = makepath(stdpath[0])
+    insert_at = None
+    new_path = []
+
+    for item in sys.path:
+        p,np = makepath(item)
+
+        if np==nd and insert_at is None:
+            # We've hit the first 'system' path entry, so added entries go here
+            insert_at = len(new_path)
+
+        if np in known_paths or insert_at is None:
+            new_path.append(item)
+        else:
+            # new path after the insert point, back-insert it
+            new_path.insert(insert_at, item)
+            insert_at += 1
+
+    sys.path[:] = new_path
+
+if __name__=='site':    
+    __boot()
+    del __boot
+        EOS
+        )
+      end
+    end
+  end
+
+  def easy_install
+    python="python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+    dir="#{HOMEBREW_PREFIX}/lib/#{python}/site-packages"
+    target="#{dir}/easy-install.pth"
+    dist=Dir.glob("#{dir}/*.egg")
+    File.unlink(target) if File.exists?(target)
+    File.open(target, 'w') do |f|
+      f.puts("import sys; sys.__plen = len(sys.path)")
+      for item in dist do
+        if Dir.glob("#{item}/*").length == 0:
+          Dir.unlink(item)
+        else
+          f.puts("./" + File.basename(item))
+        end
+      end
+      f.puts("import sys; new=sys.path[sys.__plen:]; del sys.path[sys.__plen:]; p=getattr(sys,'__egginsert',0); sys.path[p:p]=new; sys.__egginsert = p+len(new)")
+    end
+    site(dir)
+  end
+
   # perhaps confusingly, this Pathname object becomes the symlink pointing to
   # the src paramter.
   def make_relative_symlink src
@@ -340,6 +445,16 @@ class Pathname
 
     self.dirname.mkpath
     Dir.chdir self.dirname do
+
+      basename = File.basename(src)
+      if basename.match(/easy-install\.pth/)
+        easy_install
+        return
+      end
+      if basename.match(/site\.py/)
+        return
+      end
+
       # NOTE only system ln -s will create RELATIVE symlinks
       quiet_system 'ln', '-s', src.relative_path_from(self.dirname), self.basename
       if not $?.success?
