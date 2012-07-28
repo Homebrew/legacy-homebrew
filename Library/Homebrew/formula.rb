@@ -626,6 +626,21 @@ private
       dependencies.add(dep)
     end
 
+    def conflicts_with formula, opts={}
+      message = <<-EOS.undent
+      #{formula} cannot be installed alongside #{name.downcase}.
+      EOS
+      message << "This is because #{opts[:reason]}\n" if opts[:reason]
+      if !ARGV.force? then message << <<-EOS.undent
+      Please `brew unlink` or `brew uninstall` #{formula} before continuing.
+      To install anyway, use:
+        brew install --force
+        EOS
+      end
+
+      dependencies.add ConflictRequirement.new(formula, message)
+    end
+
     def skip_clean paths
       if paths == :all
         @skip_clean_all = true

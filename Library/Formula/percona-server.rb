@@ -6,11 +6,14 @@ class PerconaServer < Formula
   version '5.5.25-27.1'
   sha1 'f3388960311b159e46efd305ecdeb806fe2c7fdc'
 
-  keg_only "This brew conflicts with 'mysql'. It's safe to `brew link` if you haven't installed 'mysql'"
-
   depends_on 'cmake' => :build
   depends_on 'readline'
   depends_on 'pidof'
+
+  conflicts_with 'mysql',
+    :because => "percona-server and mysql install the same binaries."
+  conflicts_with 'mariadb',
+    :because => "percona-server and mariadb install the same binaries."
 
   skip_clean :all # So "INSTALL PLUGIN" can work.
 
