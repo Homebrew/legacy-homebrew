@@ -7,6 +7,14 @@ class Ykpers < Formula
 
   depends_on 'libyubikey'
 
+  # Pre-Lion fix, per MacPorts. See:
+  # https://trac.macports.org/ticket/34910
+  def patches
+    {:p0 =>
+    "https://trac.macports.org/export/96037/trunk/dports/security/ykpers/files/patch-pre-Lion-strnlen.diff"
+    } unless MacOS.lion?
+  end
+
   def install
     libyubikey_prefix = Formula.factory('libyubikey').prefix
     system "./configure", "--prefix=#{prefix}",
