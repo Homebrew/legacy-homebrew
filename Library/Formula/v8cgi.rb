@@ -2,8 +2,8 @@ require 'formula'
 
 class V8cgi < Formula
   homepage 'http://code.google.com/p/v8cgi/'
-  url 'http://v8cgi.googlecode.com/files/v8cgi-0.9.2-src.tar.gz'
-  sha1 '790aa7d177cccc94e2cb3ba4ca06213765094f01'
+  url 'http://v8cgi.googlecode.com/files/v8cgi-0.9.3-src.tar.gz'
+  sha1 'a3dd4a648bce71aa3cb37ba2c1921f0605ff50f0'
 
   head 'http://v8cgi.googlecode.com/svn/trunk/'
 

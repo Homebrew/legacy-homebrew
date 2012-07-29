@@ -3,8 +3,8 @@ require 'formula'
 class Fuse4x < Formula
   homepage 'http://fuse4x.github.com'
   url 'https://github.com/fuse4x/fuse/tarball/fuse4x_0_9_1'
-  version "0.9.1"
-  sha1 '2665cac4be0f976c94dcd65b776582a489826806'
+  version '0.9.1'
+  sha1 '31eff485411f106daa81ef6c7c3d31abbdcd41b4'
 
   # Always use newer versions of these tools
   depends_on 'automake' => :build
