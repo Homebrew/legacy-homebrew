@@ -1,9 +1,9 @@
 require 'formula'
 
 class Icecast < Formula
-  url 'http://downloads.xiph.org/releases/icecast/icecast-2.3.2.tar.gz'
+  url 'http://downloads.xiph.org/releases/icecast/icecast-2.3.3.tar.gz'
   homepage 'http://www.icecast.org/'
-  md5 'ff516b3ccd2bcc31e68f460cd316093f'
+  md5 '2b5d1b40778922e5f6431b7758c359ad'
 
   depends_on 'libogg' => :optional
   depends_on 'theora' => :optional
