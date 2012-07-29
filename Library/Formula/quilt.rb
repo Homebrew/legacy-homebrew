@@ -2,8 +2,8 @@ require 'formula'
 
 class Quilt < Formula
   homepage 'http://savannah.nongnu.org/projects/quilt'
-  url 'http://download.savannah.gnu.org/releases/quilt/quilt-0.48.tar.gz'
-  md5 'f77adda60039ffa753f3c584a286f12b'
+  url 'http://download.savannah.gnu.org/releases/quilt/quilt-0.60.tar.gz'
+  sha1 'c93c79598c55ba288f60babcc74a9fc9b04404b6'
 
   depends_on 'gnu-sed'
   depends_on 'coreutils'
