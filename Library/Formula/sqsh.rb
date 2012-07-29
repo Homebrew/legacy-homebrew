@@ -1,9 +1,9 @@
 require 'formula'
 
 class Sqsh < Formula
-  url 'http://downloads.sourceforge.net/sourceforge/sqsh/sqsh-2.1.7.tar.gz'
   homepage 'http://www.sqsh.org/'
-  md5 'ce929dc8e23cedccac98288d24785e2d'
+  url 'http://downloads.sourceforge.net/sourceforge/sqsh/sqsh-2.1.8.tar.gz'
+  sha1 'c16ed1c913169e19340971e3162cca8a8f23ed05'
 
   depends_on :x11
   depends_on 'freetds'
