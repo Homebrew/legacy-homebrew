@@ -1,8 +1,8 @@
 require 'formula'
 
 class Writerperfect < Formula
-  url 'http://downloads.sourceforge.net/libwpd/writerperfect-0.8.0.tar.bz2'
-  md5 'cb55b682737ee99cff9c632f0b360372'
+  url 'http://downloads.sourceforge.net/libwpd/writerperfect-0.8.1.tar.bz2'
+  md5 '82d6b9ae2e9699899766beb322b898d2'
   homepage 'http://libwpd.sourceforge.net/'
 
   depends_on 'pkg-config' => :build
