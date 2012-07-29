@@ -7,9 +7,6 @@ class NeedsLion < Requirement
   def message
     "Nu requires Mac OS X 10.7 or newer"
   end
-  def fatal?
-    true
-  end
 end
 
 class Nu < Formula

@@ -11,6 +11,8 @@ class NeedsSnowLeopard < Requirement
         http://hackage.haskell.org/trac/ghc/ticket/6009
     EOS
   end
+
+  def fatal?; false; end	# why is this non-fatal? is 10.6 required or not?
 end
 
 class Ghc < Formula

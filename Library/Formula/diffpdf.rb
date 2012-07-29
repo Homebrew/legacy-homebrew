@@ -6,10 +6,6 @@ class PopplerQt4 < Requirement
     poppler.installed_with? '--with-qt4'
   end
 
-  def fatal?
-    true
-  end
-
   def message; <<-EOS.undent
     DiffPDF requires the Poppler-Qt4 bindings but Poppler was not installed
     with support for Qt. Please reinstall Poppler using the `--with-qt4`

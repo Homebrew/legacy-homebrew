@@ -10,9 +10,6 @@ class TexInstalled < Requirement
   def satisfied?
     which 'latex'
   end
-  def fatal?
-    true
-  end
 end
 
 class Asymptote < Formula

@@ -17,7 +17,7 @@ class GnupgInstalled < Requirement
     which 'gpg' or which 'gpg2'
   end
 
-  def fatal?
+  def fatal?	# is it really useful to allow users to build this without installing the requirements?
     false
   end
 end

@@ -12,7 +12,7 @@ class HomebrewedPython < Requirement
   def satisfied?
     Formula.factory('python').installed?
   end
-  def fatal?
+  def fatal?	# TODO: figure this out
     false
   end
 end

@@ -13,6 +13,7 @@ class NoBdb5 < Requirement
     f = Formula.factory("berkeley-db")
     not f.installed?
   end
+  def fatal?; false; end	# can fail? what is the problem, and why don't we fix it?
 end
 
 class Dsniff < Formula

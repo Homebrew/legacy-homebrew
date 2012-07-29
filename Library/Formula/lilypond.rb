@@ -10,9 +10,6 @@ class TexInstalled < Requirement
   def satisfied?
     which 'mpost'
   end
-  def fatal?
-    true
-  end
 end
 
 class Lilypond < Formula

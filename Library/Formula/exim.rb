@@ -13,6 +13,7 @@ class NoBdb5 < Requirement
     f = Formula.factory("berkeley-db")
     not f.installed?
   end
+  def fatal?; false; end	# need to figure this out
 end
 
 class Exim < Formula

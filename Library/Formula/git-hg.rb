@@ -14,6 +14,7 @@ class HgInstalled < Requirement
   def satisfied?
     which 'hg'
   end
+  def fatal?; false; end	# why is this non-fatal? is mercurial required or not?
 end
 
 class GitHg < Formula

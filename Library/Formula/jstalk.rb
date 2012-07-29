@@ -8,6 +8,8 @@ class NeedsSnowLeopard < Requirement
   def message
     "jstalk requires Mac OS X 10.6 or newer"
   end
+
+  def fatal?; false; end	# why is this non-fatal? is 10.6 required or not?
 end
 
 class Jstalk < Formula

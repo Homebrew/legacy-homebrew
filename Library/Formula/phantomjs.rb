@@ -8,6 +8,8 @@ class SnowLeopardOrNewer < Requirement
   def message
     "PhantomJS requires Mac OS X 10.6 (Snow Leopard) or newer."
   end
+
+  def fatal?; false; end	# why is this non-fatal? is 10.6 required or not?
 end
 
 class Phantomjs < Formula
