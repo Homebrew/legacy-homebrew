@@ -10,9 +10,11 @@ class Curl < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'libssh2' if ARGV.include? "--with-ssh"
+  depends_on 'c-ares' if ARGV.include? "--enable-ares"
 
   def options
     [["--with-ssh", "Build with scp and sftp support."]]
+    [["--enable-ares", "Build with asynchronous dns resolver c-ares."]]
   end
 
   def install
@@ -22,7 +24,8 @@ class Curl < Formula
         --prefix=#{prefix}]
 
     args << "--with-libssh2" if ARGV.include? "--with-ssh"
-
+    args << "--enable-ares" if ARGV.include? "--enable-ares"
+    
     system "./configure", *args
     system "make install"
   end
