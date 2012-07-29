@@ -2,8 +2,8 @@ require 'formula'
 
 class Samba < Formula
   homepage 'http://samba.org/'
-  url 'http://samba.org/samba/ftp/stable/samba-3.6.5.tar.gz'
-  sha1 'e41611c95b2bb91c7735928742b8aff4fc0da76e'
+  url 'http://samba.org/samba/ftp/stable/samba-3.6.6.tar.gz'
+  sha1 'f1516ce332fe11c68a052855edd745368ac4d8e9'
 
   # Needed for autogen.sh
   depends_on :automake
