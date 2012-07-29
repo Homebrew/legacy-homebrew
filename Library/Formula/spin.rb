@@ -2,9 +2,9 @@ require 'formula'
 
 class Spin < Formula
   homepage 'http://spinroot.com/spin/whatispin.html'
-  url 'http://spinroot.com/spin/Src/spin610.tar.gz'
-  version '6.1.0'
-  md5 '89c0d322c3a5aded1fda9b0d30327d19'
+  url 'http://spinroot.com/spin/Src/spin622.tar.gz'
+  version '6.2.2'
+  sha1 'f402048864761d0fceefa61e8f03a9ee33a16a4c'
 
   fails_with :llvm do
     build 2334
@@ -29,18 +29,20 @@ end
 
 # manual patching is required by the spin install process
 __END__
-diff --git a/Src6.1.0/makefile b/Src6.1.0/makefile
-index 9a9735d..82b5c15 100644
---- a/Src6.1.0/makefile
-+++ b/Src6.1.0/makefile
-@@ -14,11 +14,11 @@
+diff --git a/Src6.2.2/makefile b/Src6.2.2/makefile
+index 02d2a02..7687e0a 100644
+--- a/Src6.2.2/makefile
++++ b/Src6.2.2/makefile
+@@ -13,12 +13,12 @@
+ 
  # see also ./make_pc for a simpler script, not requiring make
  
- CC=gcc
--CFLAGS=-O2 -ansi -DNXT -D_POSIX_SOURCE -Wno-format-security	# on some systems add: -I/usr/include
-+#CFLAGS=-O2 -ansi -DNXT -D_POSIX_SOURCE -Wno-format-security	# on some systems add: -I/usr/include
+-CC=gcc
+-CFLAGS=-O2 -DNXT	# on some systems add: -I/usr/include
++#CC=gcc
++#CFLAGS=-O2 -DNXT	# on some systems add: -I/usr/include
  
- # CC=cc -m32 	# for 32bit compilation on a 64bit system (not recommended)
+ # CC=gcc -m32 	# 32bit compilation on a 64bit system
  # for a more picky compilation use gcc-4 and:
 -# CFLAGS=-std=c99 -Wstrict-prototypes -pedantic -fno-strength-reduce -fno-builtin -W -Wshadow -Wpointer-arith -Wcast-qual -Winline -Wall -g -DNXT -DPC
 +CFLAGS=-std=c99 -Wstrict-prototypes -pedantic -fno-strength-reduce -fno-builtin -W -Wshadow -Wpointer-arith -Wcast-qual -Winline -Wall -g -DNXT -DMAC
