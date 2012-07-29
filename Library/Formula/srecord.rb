@@ -2,8 +2,8 @@ require 'formula'
 
 class Srecord < Formula
   homepage 'http://srecord.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/srecord/srecord/1.59/srecord-1.59.tar.gz'
-  md5 '5e01ba19c4f3fb8b5beca47cb46665f2'
+  url 'http://srecord.sourceforge.net/srecord-1.60.tar.gz'
+  sha1 '0e0e94e735578346138c916117a8d6c8324e9fec'
 
   depends_on 'boost'
   depends_on 'libgcrypt'
