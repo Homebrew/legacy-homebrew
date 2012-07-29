@@ -2,8 +2,8 @@ require 'formula'
 
 class Rust < Formula
   homepage 'http://www.rust-lang.org/'
-  url 'http://dl.rust-lang.org/dist/rust-0.3.tar.gz'
-  sha256 'b34c895b9596abb6942d1688e6a5189b08b92e2507234779779c1af91e9ae84e'
+  url 'http://dl.rust-lang.org/dist/rust-0.3.1.tar.gz'
+  sha256 'eb99ff2e745ecb6eaf01d4caddebce397a2b4cda6836a051cb2d493b9cedd018'
 
   fails_with :clang do
     build 318
