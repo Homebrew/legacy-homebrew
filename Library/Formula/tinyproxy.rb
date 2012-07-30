@@ -1,11 +1,13 @@
 require 'formula'
 
 class Tinyproxy < Formula
-  url 'https://www.banu.com/pub/tinyproxy/1.8/tinyproxy-1.8.3.tar.bz2'
   homepage 'https://www.banu.com/tinyproxy/'
+  url 'https://www.banu.com/pub/tinyproxy/1.8/tinyproxy-1.8.3.tar.bz2'
   md5 '292ac51da8ad6ae883d4ebf56908400d'
 
   skip_clean 'var/run'
+
+  option 'reverse', "Enable reverse proxying"
 
   depends_on 'asciidoc' => :build
 
@@ -18,10 +20,16 @@ class Tinyproxy < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-regexcheck"
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --disable-regexcheck
+    ]
+
+    args << '--enable-reverse' if build.include? 'reverse'
+
+    system "./configure", *args
 
     # Fix broken XML lint
     # See: http://www.freebsd.org/cgi/query-pr.cgi?pr=154624
