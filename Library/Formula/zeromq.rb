@@ -7,7 +7,8 @@ end
 class Zeromq < Formula
   homepage 'http://www.zeromq.org/'
   url 'http://download.zeromq.org/zeromq-2.2.0.tar.gz'
-  md5 '1b11aae09b19d18276d0717b2ea288f6'
+  sha1 'e4bc024c33d3e62f658640625e061ce4e8bd1ff1'
+
   head 'https://github.com/zeromq/libzmq.git'
 
   if build.head?
@@ -36,7 +37,9 @@ class Zeromq < Formula
     system "mv src/.libs/libzmq.1.dylib src/.libs/libzmq.64.dylib"
 
     # merge UB
-    system "lipo", "-create", "src/libs-32/libzmq.1.dylib", "src/.libs/libzmq.64.dylib", "-output", "src/.libs/libzmq.1.dylib"
+    system "lipo", "-create", "src/libs-32/libzmq.1.dylib",
+                              "src/.libs/libzmq.64.dylib",
+                   "-output", "src/.libs/libzmq.1.dylib"
   end
 
   def install
