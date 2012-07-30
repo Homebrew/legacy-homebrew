@@ -7,8 +7,8 @@ class Par2tbb < Formula
 
   depends_on 'tbb'
 
-  conficts_with "par2",
-    :because "par2tbb and par2 install the same binaries."
+  conflicts_with "par2",
+    :because => "par2tbb and par2 install the same binaries."
 
   fails_with :clang do
     build 318
