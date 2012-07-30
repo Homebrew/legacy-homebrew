@@ -1,9 +1,9 @@
 require 'formula'
 
 class Tabix < Formula
-  url 'http://sourceforge.net/projects/samtools/files/tabix/tabix-0.2.5.tar.bz2'
   homepage 'http://samtools.sourceforge.net/'
-  md5 '1fb65a3f79a81681ad6d5012498d2d51'
+  url 'http://sourceforge.net/projects/samtools/files/tabix/tabix-0.2.6.tar.bz2'
+  sha1 '4f0cac0da585abddc222956cac1b6e508ca1c49e'
   head 'https://samtools.svn.sourceforge.net/svnroot/samtools/trunk/tabix'
 
   def install
