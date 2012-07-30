@@ -7,7 +7,7 @@ class Blast < Formula
   md5 '01256b808e3af49a5087945b6a8c8293'
 
   fails_with :clang do
-    build 318
+    build 421
   end
 
   def options
@@ -16,6 +16,8 @@ class Blast < Formula
 
   # fixes to 2.2.25 acknowledged upstream by Aaron U. per email
   # inform configure about -Os
+  #
+  # still an issue in 2.2.26
   def patches
     DATA
   end
