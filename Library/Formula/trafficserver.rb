@@ -21,7 +21,10 @@ class Trafficserver < Formula
     ENV.enable_warnings
     # Needed for OpenSSL headers on Lion.
     ENV.append_to_cflags "-Wno-deprecated-declarations"
-    system "./configure", "--prefix=#{prefix}", "--with-user=#{ENV['USER']}", "--with-group=admin"
+    system "./configure", "--prefix=#{prefix}",
+                          "--mandir=#{man}",
+                          "--with-user=#{ENV['USER']}",
+                          "--with-group=admin"
     system "make install"
   end
 
