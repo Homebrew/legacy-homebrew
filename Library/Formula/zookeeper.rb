@@ -3,7 +3,7 @@ require 'formula'
 class Zookeeper < Formula
   homepage 'http://zookeeper.apache.org/'
   url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.3/zookeeper-3.4.3.tar.gz'
-  md5 'e43b96df6e29cb43518d2fcd1867486c'
+  sha1 '8ac02ee34b94461fed19320d789f251e6a2a6796'
 
   head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
 
@@ -20,8 +20,8 @@ class Zookeeper < Formula
     <<-EOS.undent
       #!/usr/bin/env bash
       . "#{etc}/zookeeper/defaults"
-      cd #{libexec}/bin
-      ./#{target} $*
+      cd "#{libexec}/bin"
+      ./#{target} "$@"
     EOS
   end
 
@@ -34,7 +34,6 @@ class Zookeeper < Formula
   def default_log4j_properties
     <<-EOS.undent
       log4j.rootCategory=WARN, zklog
-
       log4j.appender.zklog = org.apache.log4j.FileAppender
       log4j.appender.zklog.File = #{var}/log/zookeeper/zookeeper.log
       log4j.appender.zklog.Append = true
@@ -66,7 +65,9 @@ class Zookeeper < Formula
 
     # Build & install C libraries.
     cd "src/c" do
-      system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--without-cppunit"
+      system "./configure", "--disable-dependency-tracking",
+                            "--prefix=#{prefix}",
+                            "--without-cppunit"
       system "make install"
     end if build_c
 
@@ -78,7 +79,9 @@ class Zookeeper < Formula
 
     # Install Perl bindings
     cd "src/contrib/zkperl" do
-      system "perl", "Makefile.PL", "PREFIX=#{prefix}", "--zookeeper-include=#{include}/c-client-src", "--zookeeper-lib=#{lib}"
+      system "perl", "Makefile.PL", "PREFIX=#{prefix}",
+                                    "--zookeeper-include=#{include}/c-client-src",
+                                    "--zookeeper-lib=#{lib}"
       system "make install"
     end if build_perl
 
@@ -110,15 +113,16 @@ class Zookeeper < Formula
     }
 
     # Install default config files
-    defaults = etc+'zookeeper/defaults'
+    defaults = etc/'zookeeper/defaults'
     defaults.write(default_zk_env) unless defaults.exist?
 
-    log4j_properties = etc+'zookeeper/log4j.properties'
+    log4j_properties = etc/'zookeeper/log4j.properties'
     log4j_properties.write(default_log4j_properties) unless log4j_properties.exist?
 
-    unless (etc+'zookeeper/zoo.cfg').exist?
-      inreplace 'conf/zoo_sample.cfg', /^dataDir=.*/, "dataDir=#{var}/run/zookeeper/data"
-      (etc+'zookeeper').install 'conf/zoo_sample.cfg'
+    unless (etc/'zookeeper/zoo.cfg').exist?
+      inreplace 'conf/zoo_sample.cfg',
+                /^dataDir=.*/, "dataDir=#{var}/run/zookeeper/data"
+      (etc/'zookeeper').install 'conf/zoo_sample.cfg'
     end
   end
 end
