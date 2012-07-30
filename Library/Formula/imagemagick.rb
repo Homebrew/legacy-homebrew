@@ -9,47 +9,6 @@ def ghostscript_fonts?
   File.directory? "#{HOMEBREW_PREFIX}/share/ghostscript/fonts"
 end
 
-def use_wmf?
-  ARGV.include? '--use-wmf'
-end
-
-def use_rsvg?
-  ARGV.include? '--use-rsvg'
-end
-
-def use_lqr?
-  ARGV.include? '--use-lqr'
-end
-
-def disable_openmp?
-  ARGV.include? '--disable-openmp'
-end
-
-def enable_hdri?
-  ARGV.include? '--enable-hdri'
-end
-
-def magick_plus_plus?
-  ARGV.include? '--with-magick-plus-plus'
-end
-
-def use_exr?
-  ARGV.include? '--use-exr'
-end
-
-def quantum_depth_8?
-  ARGV.include? '--with-quantum-depth-8'
-end
-
-def quantum_depth_16?
-  ARGV.include? '--with-quantum-depth-16'
-end
-
-def quantum_depth_32?
-  ARGV.include? '--with-quantum-depth-32'
-end
-
-
 class Imagemagick < Formula
   homepage 'http://www.imagemagick.org'
 
@@ -61,21 +20,19 @@ class Imagemagick < Formula
     :using => UnsafeSubversionDownloadStrategy
 
   depends_on 'pkg-config' => :build
-  depends_on 'jpeg'
 
-  depends_on :x11
+  depends_on 'jpeg'
+  depends_on :libpng
 
   depends_on 'ghostscript' => :recommended if ghostscript_srsly?
 
-  depends_on 'libtiff' => :optional
-  depends_on 'little-cms' => :optional
-  depends_on 'jasper' => :optional
-
-  depends_on 'libwmf' if use_wmf?
-  depends_on 'librsvg' if use_rsvg?
-  depends_on 'liblqr' if use_lqr?
-  depends_on 'openexr' if use_exr?
-
+  depends_on 'libtiff' if ARGV.include? '--use-tiff'
+  depends_on 'little-cms' if ARGV.include? '--use-cms'
+  depends_on 'jasper' if ARGV.include? '--use-jpeg2000'
+  depends_on 'libwmf' if ARGV.include? '--use-wmf'
+  depends_on 'librsvg' if ARGV.include? '--use-rsvg'
+  depends_on 'liblqr' if ARGV.include? '--use-lqr'
+  depends_on 'openexr' if ARGV.include? '--use-exr'
 
   def skip_clean? path
     path.extname == '.la'
@@ -91,6 +48,9 @@ class Imagemagick < Formula
   def options
     [
       ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
+      ['--use-tiff', 'Compile with libtiff support.'],
+      ['--use-cms', 'Compile with little-cms support.'],
+      ['--use-jpeg2000', 'Compile with jasper support.'],
       ['--use-wmf', 'Compile with libwmf support.'],
       ['--use-rsvg', 'Compile with librsvg support.'],
       ['--use-lqr', 'Compile with liblqr support.'],
@@ -113,23 +73,23 @@ class Imagemagick < Formula
              "--disable-static",
              "--with-modules"]
 
-    args << "--disable-openmp" if MacOS.leopard? or disable_openmp?
-    args << "--without-gslib" unless ghostscript_srsly?
+    args << "--disable-openmp" if MacOS.leopard? or ARGV.include? '--disable-openmp'
+    args << "--without-gslib" unless ARGV.include? '--with-ghostscript'
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
                 unless ghostscript_srsly? or ghostscript_fonts?
-    args << "--without-magick-plus-plus" unless magick_plus_plus?
-    args << "--enable-hdri=yes" if enable_hdri?
+    args << "--without-magick-plus-plus" unless ARGV.include? '--with-magick-plus-plus'
+    args << "--enable-hdri=yes" if ARGV.include? '--enable-hdri'
 
-    if quantum_depth_32?
+    if ARGV.include? '--with-quantum-depth-32'
       quantum_depth = 32
-    elsif quantum_depth_16?
+    elsif ARGV.include? '--with-quantum-depth-16'
       quantum_depth = 16
-    elsif quantum_depth_8?
+    elsif ARGV.include? '--with-quantum-depth-8'
       quantum_depth = 8
     end
 
     args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
-    args << "--with-rsvg" if use_rsvg?
+    args << "--with-rsvg" if ARGV.include? '--use-rsvg'
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
