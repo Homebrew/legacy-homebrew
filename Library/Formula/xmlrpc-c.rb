@@ -11,6 +11,7 @@ class XmlrpcC < Formula
     system "./configure", "--disable-debug",
                           "--enable-libxml2-backend",
                           "--prefix=#{prefix}"
+    system "make"
     system "make install"
   end
 end
