@@ -5,21 +5,17 @@ class Audiofile < Formula
   url 'https://github.com/downloads/mpruett/audiofile/audiofile-0.3.4.tar.gz'
   sha1 'e6f664b0d551df35ce0c10e38e5617bcd4605335'
 
-  depends_on 'lcov' if ARGV.include? '--with-lcov'
+  option 'with-lcov', 'Enable Code Coverage support using lcov.'
+  option 'with-check', 'Run the test suite during install ~30sec'
 
-  def options
-    [
-      ['--with-lcov', 'Enable Code Coverage support using lcov.'],
-      ['--with-check', 'Run the test suite during install ~30sec']
-    ]
-  end
+  depends_on 'lcov' if build.include? 'with-lcov'
 
   def install
-    args = ["--prefix=#{prefix}", "--disable-dependency-tracking"]
-    args << '--enable-coverage' if ARGV.include? '--with-lcov'
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+    args << '--enable-coverage' if build.include? 'with-lcov'
     system "./configure", *args
     system "make"
-    system "make check" if ARGV.include? '--with-check'
+    system "make check" if build.include? 'with-check'
     system "make install"
   end
 
