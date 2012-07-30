@@ -10,7 +10,7 @@ class Zeromq < Formula
   md5 '1b11aae09b19d18276d0717b2ea288f6'
   head 'https://github.com/zeromq/libzmq.git'
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
@@ -20,12 +20,8 @@ class Zeromq < Formula
     cause "Segfault while linking"
   end
 
-  def options
-    [
-      ['--with-pgm', 'Build with PGM extension'],
-      ['--universal', 'Build as a Universal Intel binary.']
-    ]
-  end
+  option :universal
+  option 'with-pgm', 'Build with PGM extension'
 
   def build_fat
     # make 32-bit
@@ -44,13 +40,13 @@ class Zeromq < Formula
   end
 
   def install
-    system "./autogen.sh" if ARGV.build_head?
+    system "./autogen.sh" if build.head?
 
     if ARGV.build_universal?
       build_fat
     else
       args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-      args << "--with-pgm" if ARGV.include? '--with-pgm'
+      args << "--with-pgm" if build.include? 'with-pgm'
       system "./configure", *args
     end
 
