@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libpng < Formula
-  url 'http://downloads.sourceforge.net/project/libpng/libpng12/1.2.44/libpng-1.2.44.tar.bz2'
   homepage 'http://www.libpng.org/pub/png/libpng.html'
-  md5 'e3ac7879d62ad166a6f0c7441390d12b'
+  url 'http://downloads.sf.net/project/libpng/libpng15/1.5.12/libpng-1.5.12.tar.gz'
+  sha1 'c329f3a9b720d7ae14e8205fa6e332236573704b'
 
   keg_only :provided_by_osx,
             "TODO: Which software depends on this newer version of libpng?"
