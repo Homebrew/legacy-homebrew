@@ -7,7 +7,7 @@ class Blast < Formula
   md5 '01256b808e3af49a5087945b6a8c8293'
 
   fails_with :clang do
-    build 318
+    build 421
   end
 
   def options
