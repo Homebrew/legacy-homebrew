@@ -15,14 +15,24 @@ class Libxml2 < Formula
   def options
     [
       ['--with-python', 'Compile the libxml2 Python 2.x modules'],
-      ['--universal', 'Build a universal binary.']
+      ['--universal', 'Build a universal binary.'],
+      ["--32-bit", "Build 32-bit only."]
     ]
   end
 
   def install
     ENV.universal_binary if ARGV.build_universal?
 
-    system "./configure", "--prefix=#{prefix}", "--without-python"
+    args = ["--prefix=#{prefix}", "--without-python"]
+    if MacOS.prefer_64_bit? and not ARGV.build_32_bit?
+      ENV.m64
+      args << "--build=x86_64-apple-darwin"
+    else
+      ENV.m32
+      args << "--build=none-apple-darwin"
+    end
+
+    system "./configure", *args
     system "make"
     ENV.deparallelize
     system "make install"
