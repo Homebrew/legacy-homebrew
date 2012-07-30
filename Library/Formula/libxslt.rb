@@ -9,10 +9,24 @@ class Libxslt < Formula
 
   depends_on 'libxml2'
 
+  def options
+    [
+      ["--32-bit", "Build 32-bit only."]
+    ]
+  end
+
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-dependency-tracking",
-                          "--with-libxml-prefix=#{Formula.factory('libxml2').prefix}"
+    args = ["--prefix=#{prefix}",
+            "--disable-dependency-tracking",
+            "--with-libxml-prefix=#{Formula.factory('libxml2').prefix}"
+          ]
+
+    if ! MacOS.prefer_64_bit? || ARGV.build_32_bit?
+      ENV.append_to_cflags '-arch i386 -m32'
+      args << "--build=none-apple-darwin"
+    end
+
+    system "./configure", *args
     system "make"
     system "make install"
   end
