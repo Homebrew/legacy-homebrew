@@ -59,6 +59,9 @@ class Formula
     # If we got an explicit path, use that, else determine from the name
     @path = path.nil? ? self.class.path(name) : Pathname.new(path)
     @downloader = download_strategy.new(name, @active_spec)
+
+    # Combine DSL `option` and `def options`
+    options.each {|o| self.class.build.add(o[0], o[1]) }
   end
 
   # Derive specs from class ivars
@@ -159,6 +162,10 @@ class Formula
   # plist name, i.e. the name of the launchd service
   def plist_name; 'homebrew.mxcl.'+name end
   def plist_path; prefix+(plist_name+'.plist') end
+
+  def build
+    self.class.build
+  end
 
   # Use the @active_spec to detect the download strategy.
   # Can be overriden to force a custom download strategy
@@ -579,6 +586,10 @@ private
       }
     end
 
+    def build
+      @build ||= BuildOptions.new(ARGV)
+    end
+
     def url val=nil, specs=nil
       if val.nil?
         return @stable.url if @stable
@@ -628,6 +639,14 @@ private
 
     def depends_on dep
       dependencies.add(dep)
+    end
+
+    def option name, description=nil
+      # Support symbols
+      name = name.to_s
+      raise "Option name is required." if name.empty?
+      raise "Options should not start with dashes." if name[0, 1] == "-"
+      build.add name, description
     end
 
     def conflicts_with formula, opts={}
