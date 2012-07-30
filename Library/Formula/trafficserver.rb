@@ -2,15 +2,10 @@ require 'formula'
 
 class Trafficserver < Formula
   homepage 'http://trafficserver.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi/trafficserver/trafficserver-3.0.4.tar.bz2'
-  md5 '90e259fb09cb7439c6908f1f5344c40f'
+  url 'http://www.apache.org/dyn/closer.cgi/trafficserver/trafficserver-3.2.0.tar.bz2'
+  sha1 '0d7461f0711387b1049e50522e61281be6f5cf38'
 
   head 'http://svn.apache.org/repos/asf/trafficserver/traffic/trunk/'
-
-  devel do
-    url 'http://www.apache.org/dyn/closer.cgi/trafficserver/trafficserver-3.1.2-unstable.tar.bz2'
-    md5 '2208cb9a0d0b7cea07770d51b1cf7df2'
-  end
 
   depends_on 'pcre'
 
