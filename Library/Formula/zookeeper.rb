@@ -12,13 +12,9 @@ class Zookeeper < Formula
     depends_on :libtool
   end
 
-  def options
-    [
-      ["--c", "Build C bindings."],
-      ["--perl", "Build Perl bindings."],
-      ["--python", "Build Python bindings."],
-    ]
-  end
+  option "c",      "Build C bindings."
+  option "perl",   "Build Perl bindings."
+  option "python", "Build Python bindings."
 
   def shim_script target
     <<-EOS.undent
@@ -56,7 +52,7 @@ class Zookeeper < Formula
     end
 
     # Prep work for svn compile.
-    if ARGV.build_head?
+    if build.head?
       system "ant", "compile_jute"
 
       cd "src/c" do
@@ -64,9 +60,9 @@ class Zookeeper < Formula
       end
     end
 
-    build_python = ARGV.include? "--python"
-    build_perl = ARGV.include? "--perl"
-    build_c = build_python or build_perl or ARGV.include? "--c"
+    build_python = build.include? "python"
+    build_perl = build.include? "perl"
+    build_c = build_python or build_perl or build.include? "c"
 
     # Build & install C libraries.
     cd "src/c" do
@@ -90,7 +86,7 @@ class Zookeeper < Formula
     rm_f Dir["bin/*.cmd"]
 
     # Install Java stuff
-    if ARGV.build_head?
+    if build.head?
       system "ant"
       libexec.install %w(bin src/contrib src/java/lib)
       libexec.install Dir['build/*.jar']
