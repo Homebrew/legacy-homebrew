@@ -7,8 +7,8 @@ end
 
 class Openconnect < Formula
   homepage 'http://www.infradead.org/openconnect.html'
-  url 'ftp://ftp.infradead.org/pub/openconnect/openconnect-4.03.tar.gz'
-  sha1 '2d071ea714481a201ff1659e2041c56d140475d5'
+  url 'ftp://ftp.infradead.org/pub/openconnect/openconnect-4.06.tar.gz'
+  sha1 'f51321920310d2e582fc246dcc77c43f9e01cc71'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
