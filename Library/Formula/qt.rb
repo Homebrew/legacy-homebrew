@@ -38,7 +38,7 @@ class Qt < Formula
     if MacOS.leopard?
       "http://bugreports.qt-project.org/secure/attachment/26712/Patch-Qt-4.8-for-10.5"
     # add support for Mountain Lion
-    # gist submitted upstream here: https://codereview.qt-project.org/#change,31646
+    # should be unneeded for 4.8.3
     elsif MacOS.mountain_lion?
       [ "https://qt.gitorious.org/qt/qt/commit/422f1b?format=patch",
         "https://qt.gitorious.org/qt/qt/commit/665355?format=patch",
