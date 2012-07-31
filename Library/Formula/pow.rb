@@ -9,6 +9,10 @@ class Pow < Formula
 
   def install
     libexec.install Dir['*']
+    mkdir_p "#{ ENV['HOME'] }/Library/Application\ Support/Pow/Hosts"
+    unless File.exist? "#{ ENV['HOME'] }/.pow"
+      ln_s "#{ ENV['HOME'] }/Library/Application\ Support/Pow/Hosts", "#{ ENV['HOME'] }/.pow"
+    end
     (bin/'pow').write <<-EOS.undent
       #!/bin/sh
       export POW_BIN="#{HOMEBREW_PREFIX}/bin/pow"
