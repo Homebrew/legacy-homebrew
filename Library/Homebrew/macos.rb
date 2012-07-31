@@ -269,7 +269,7 @@ module MacOS extend self
   end
 
   def mdfind attribute, id
-    path = `mdfind "#{attribute} == '#{id}'"`.split("\n").first.strip
+    path = `mdfind "#{attribute} == '#{id}'"`.split("\n").first
     Pathname.new(path) unless path.empty?
   end
 
