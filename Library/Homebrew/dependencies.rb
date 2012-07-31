@@ -287,3 +287,23 @@ class MPIDependency < Requirement
   end
 
 end
+
+class ConflictRequirement < Requirement
+  attr_reader :formula
+
+  def initialize formula, message
+    @formula = formula
+    @message = message
+  end
+
+  def message; @message; end
+
+  def satisfied?
+    keg = Formula.factory(@formula).prefix
+    not keg.exist? && Keg.new(keg).linked?
+  end
+
+  def fatal?
+    not ARGV.force?
+  end
+end

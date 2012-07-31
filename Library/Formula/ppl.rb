@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ppl < Formula
-  url 'http://bugseng.com/products/ppl/download/ftp/releases/0.11.2/ppl-0.11.2.tar.bz2'
   homepage 'http://bugseng.com/products/ppl/'
-  md5 'c24429e6c3bc97d45976a63f40f489a1'
+  url 'http://bugseng.com/products/ppl/download/ftp/releases/1.0/ppl-1.0.tar.gz'
+  sha1 '5f543206cc9de17d48ff797e977547b61b40ab2c'
 
   depends_on 'gmp'
 
