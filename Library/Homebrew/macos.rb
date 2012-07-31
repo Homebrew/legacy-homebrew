@@ -270,7 +270,7 @@ module MacOS extend self
 
   def mdfind attribute, id
     path = `mdfind "#{attribute} == '#{id}'"`.split("\n").first
-    Pathname.new(path) unless path.empty?
+    Pathname.new(path) unless path.nil? or path.empty?
   end
 
   def pkgutil_info id
