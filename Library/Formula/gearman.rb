@@ -11,7 +11,7 @@ class Gearman < Formula
   depends_on 'ossp-uuid'
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--without-mysql"
     system "make install"
 
     plist_path.write startup_plist
