@@ -6,6 +6,7 @@ class Serf < Formula
   sha1 '231af70b7567a753b49df4216743010c193884b7'
 
   def install
+    ENV.universal_binary if ARGV.build_universal?
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
