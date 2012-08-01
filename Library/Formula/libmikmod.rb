@@ -2,8 +2,8 @@ require 'formula'
 
 class Libmikmod < Formula
   homepage 'http://mikmod.shlomifish.org'
-  url 'http://mikmod.shlomifish.org/files/libmikmod-3.2.0b4.tar.gz'
-  sha256 'da0c4fcfc5ca15c653baeb62b8cf91b35cfa11c1081a1aacc1e443a7d35db870'
+  url 'http://mikmod.shlomifish.org/files/libmikmod-3.2.0.tar.gz'
+  sha256 '734c8490bbf9b0c587920b92414dcfa3c2267838a0cdf698d5f1fb6bba8f661e'
 
   depends_on :x11
 
