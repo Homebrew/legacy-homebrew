@@ -10,6 +10,11 @@ class Mysql < Formula
   depends_on 'readline'
   depends_on 'pidof'
 
+  conflicts_with 'mariadb',
+    :because => "mysql and mariadb install the same binaries."
+  conflicts_with 'percona-server',
+    :because => "mysql and percona-server install the same binaries."
+
   fails_with :llvm do
     build 2326
     cause "https://github.com/mxcl/homebrew/issues/issue/144"

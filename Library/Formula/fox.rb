@@ -19,9 +19,9 @@ class Fox < Formula
 
   def install
     # Yep, won't find freetype unless this is all set.
-    ENV.append "CFLAGS", "-I#{MacOS.x11_prefix}/include/freetype2"
-    ENV.append "CPPFLAGS", "-I#{MacOS.x11_prefix}/include/freetype2"
-    ENV.append "CXXFLAGS", "-I#{MacOS.x11_prefix}/include/freetype2"
+    ENV.append "CFLAGS", "-I#{MacOS::XQuartz.include}/freetype2"
+    ENV.append "CPPFLAGS", "-I#{MacOS::XQuartz.include}/freetype2"
+    ENV.append "CXXFLAGS", "-I#{MacOS::XQuartz.include}/freetype2"
 
     system "./configure", "--enable-release",
                           "--prefix=#{prefix}",

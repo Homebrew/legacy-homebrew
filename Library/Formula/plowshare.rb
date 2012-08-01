@@ -2,8 +2,8 @@ require 'formula'
 
 class Plowshare < Formula
   homepage 'http://code.google.com/p/plowshare/'
-  url 'http://plowshare.googlecode.com/files/plowshare-snapshot-git20120225.tar.gz'
-  sha1 'f47806261e620a9c1c6e5c9323f3471aabbe058b'
+  url 'http://plowshare.googlecode.com/files/plowshare-snapshot-git20120707.tar.gz'
+  sha1 'ca7b5eccf817b88584f0b4a6769ab770b2af1e1a'
 
   head 'https://code.google.com/p/plowshare/', :using => :git
 
