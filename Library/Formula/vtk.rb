@@ -63,9 +63,9 @@ class Vtk < Formula
     args << "-DVTK_USE_COCOA:BOOL=ON" unless ARGV.include? "--x11"
 
     if ARGV.include? '--x11'
-      args << "-DOPENGL_INCLUDE_DIR:PATH='#{MacOS.x11_prefix}/include'"
-      args << "-DOPENGL_gl_LIBRARY:FILEPATH='#{MacOS.x11_prefix}/lib/libGL.dylib'"
-      args << "-DOPENGL_glu_LIBRARY:FILEPATH='#{MacOS.x11_prefix}/lib/libGLU.dylib"
+      args << "-DOPENGL_INCLUDE_DIR:PATH='#{MacOS::XQuartz.include}'"
+      args << "-DOPENGL_gl_LIBRARY:FILEPATH='#{MacOS::XQuartz.lib}/libGL.dylib'"
+      args << "-DOPENGL_glu_LIBRARY:FILEPATH='#{MacOS::XQuartz.lib}/libGLU.dylib"
       args << "-DVTK_USE_COCOA:BOOL=OFF"
       args << "-DVTK_USE_X:BOOL=ON"
     end
