@@ -10,7 +10,7 @@ class Sbt < Formula
     (bin+'sbt').write <<-EOS.undent
       #!/bin/sh
       test -f ~/.sbtconfig && . ~/.sbtconfig
-      exec java -Xmx512M ${SBT_OPTS} -jar #{libexec}/sbt-launch.jar "$@"
+      exec java -Xmx512M -XX:MaxPermSize=256m ${SBT_OPTS} -jar #{libexec}/sbt-launch.jar "$@"
     EOS
 
     libexec.install Dir['*']
