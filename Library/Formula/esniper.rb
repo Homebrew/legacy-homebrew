@@ -4,7 +4,7 @@ class Esniper < Formula
   homepage 'http://sourceforge.net/projects/esniper/'
   url 'http://downloads.sourceforge.net/project/esniper/esniper/2.27.0/esniper-2-27-0.tgz'
   version '2.27'
-  sha1 ''
+  sha1 '33b9a3d44a9d78ae61f39120a4e116cadd05a2c2'
 
   def install
     system "./configure", "--disable-dependency-tracking",
