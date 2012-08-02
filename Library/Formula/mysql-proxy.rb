@@ -24,9 +24,9 @@ class MySqlInstalled < Requirement
 end
 
 class MysqlProxy < Formula
-  url 'http://launchpad.net/mysql-proxy/0.8/0.8.0/+download/mysql-proxy-0.8.0.tar.gz'
   homepage 'https://launchpad.net/mysql-proxy'
-  md5 'b6a9748d72e8db7fe3789fbdd60ff451'
+  url 'https://launchpad.net/mysql-proxy/0.8/0.8.2/+download/mysql-proxy-0.8.2.tar.gz'
+  sha1 '3ae4f2f68849cfd95eeaf033af8df78d643dbf4d'
 
   depends_on MySqlInstalled.new
   depends_on 'pkg-config' => :build
