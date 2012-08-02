@@ -6,6 +6,19 @@
     <meta name="dc.creator" content="Rémi Prévost - http://exomel.com" />
     <link rel="stylesheet" href="./css/screen.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="./css/fonts/chunkfive/chunkfive.css" type="text/css" media="screen" />
+    <script type="text/javascript">
+        function selectText() {
+            if (document.selection) {
+                var range = document.body.createTextRange();
+                range.moveToElementText(document.getElementById('selectable'));
+                range.select();
+            } else if (window.getSelection) {
+                var range = document.createRange();
+                range.selectNode(document.getElementById('selectable'));
+                window.getSelection().addRange(range);
+            }
+        }
+    </script>
   </head>
   <body>
     <div id="wrap">
@@ -50,7 +63,6 @@ bin/wget -&gt; ../Cellar/wget/1.12/bin/wget</code></pre>
                 <p>Homebrew is self-contained and unintrusive. </p>
               </div>
               <div class="col-2">
-                <p class="button"><a href="http://wiki.github.com/mxcl/homebrew/installation">Install Homebrew Today!</a></p>
               </div>
             </div>
           </li>
@@ -97,29 +109,22 @@ Created /usr/local/Library/Formula/foo.rb</code></pre>
             </div>
           </li>
           <li>
-            <div class="group row">
+            <div class="group row" style='border-bottom:0'>
               <div class="col-1">
                 <p>Homebrew complements OS X. Install your gems with <code>gem</code>, and their dependencies with <code>brew</code>.</p>
               </div>
             </div>
           </li>
           <li>
-            <div class="row group button button-large">
-              <p><a href="http://wiki.github.com/mxcl/homebrew">Please! Oh please teach me more!</a></p>
+            <div class="group row" style='border:0; margin-bottom: 5em'>
+              <h2 style='margin-top:0.5em; margin-bottom: 0.2em'>Install Homebrew</h2>
+              <pre style='text-align:center' id='selectable' onclick="selectText()"><code style='font-size:1.65em'>ruby <(curl -fsS https://raw.github.com/mxcl/homebrew/go)</code></pre>
+              <p>Paste that into Terminal. The script explains what it will do and then pauses before it does it. There are more installation options <a href='https://github.com/mxcl/homebrew/wiki/Installation'>here</a>.
             </div>
           </li>
+
           <li>
-            <div class="group row quote">
-              <blockquote>
-                <span>“</span>
-                Homebrew is the bee’s knees, friends. So far it’s a perfect replacement for MacPorts.
-                <span>”</span>
-              </blockquote>
-              <cite>— <a href="http://twitter.com/thillerson/status/6688848379">@thillerson</a></cite>
-            </div>
-          </li>
-          <li>
-            <div class="group row credits">
+            <div class="group row credits" style='border:0'>
               <p>Original code by <a href="http://methylblue.com/">Max Howell</a>. Website by <a href="http://exomel.com">Rémi Prévost</a>.</p>
             </div>
           </li>
