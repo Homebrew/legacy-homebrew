@@ -189,7 +189,7 @@ class X11Dependency < Requirement
   def fatal?; true; end
 
   def satisfied?
-    MacOS.x11_installed? and (@min_version == nil or @min_version <= MacOS.xquartz_version)
+    MacOS::XQuartz.installed? and (@min_version.nil? or @min_version <= MacOS::XQuartz.version)
   end
 
   def message; <<-EOS.undent
