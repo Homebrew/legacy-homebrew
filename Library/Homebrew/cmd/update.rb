@@ -20,10 +20,15 @@ module Homebrew extend self
     new_files = []
     Dir["Library/Taps/*"].each do |tapd|
       cd tapd do
-        updater = Updater.new
-        updater.pull!
-        report.merge!(updater.report) do |key, oldval, newval|
-          oldval.concat(newval)
+        begin
+          updater = Updater.new
+          updater.pull!
+          report.merge!(updater.report) do |key, oldval, newval|
+            oldval.concat(newval)
+          end
+        rescue
+          tapd =~ %r{^Library/Taps/(\w+)-(\w+)}
+          onoe "Failed to update tap: #$1/#$2"
         end
       end
     end

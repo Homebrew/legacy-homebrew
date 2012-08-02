@@ -6,16 +6,16 @@ class Qt < Formula
   md5 '3c1146ddf56247e16782f96910a8423b'
 
   bottle do
-    sha1 'a634c873a3ce825649c913f5d9ad790397390f74' => :snowleopard
-    sha1 'd11c466d3cbc80d3b94431daf481a217bf9097fd' => :lion
+    version 1
+    sha1 'dfa0daa951e889a2548b1cff66759b449b5a6b98' => :mountainlion
+    sha1 '0905eb8b2c5a9bae0d1f9a8234173daba680c48c' => :lion
+    sha1 'c37ac19d54c4684d8996a0ee96cdf971bd2c1f7b' => :snowleopard
   end
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
 
-  depends_on :x11
-
   fails_with :clang do
-    build 318
+    build 421
   end
 
   def options
@@ -37,19 +37,30 @@ class Qt < Formula
     # https://bugreports.qt-project.org/browse/QTBUG-23258
     if MacOS.leopard?
       "http://bugreports.qt-project.org/secure/attachment/26712/Patch-Qt-4.8-for-10.5"
+    # add support for Mountain Lion
+    # should be unneeded for 4.8.3
+    elsif MacOS.mountain_lion?
+      [ "https://qt.gitorious.org/qt/qt/commit/422f1b?format=patch",
+        "https://qt.gitorious.org/qt/qt/commit/665355?format=patch",
+        "https://raw.github.com/gist/3187034/893252db0ae3bb9bb5fa3ff7c530c7978399b101/0001-Fix-WebKit-on-OS-X-Mountain-Lion.patch" ]
     end
+
   end
 
   def install
+    # Apply binary git patch; normal patch ignores this.
+    # TODO: Autodetect binary patches and apply them correctly.
+    system "git apply --exclude=*/QtWebKit.pro 002-homebrew.diff" if MacOS.mountain_lion?
+
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
     args = ["-prefix", prefix,
-            "-system-libpng", "-system-zlib",
-            "-L#{MacOS.x11_prefix}/lib", "-I#{MacOS.x11_prefix}/include",
+            "-system-zlib",
             "-confirm-license", "-opensource",
             "-cocoa", "-fast" ]
 
     # See: https://github.com/mxcl/homebrew/issues/issue/744
     args << "-system-sqlite" if MacOS.leopard?
+
     args << "-plugin-sql-mysql" if (HOMEBREW_CELLAR+"mysql").directory?
 
     if ARGV.include? '--with-qtdbus'

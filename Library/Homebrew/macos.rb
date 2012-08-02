@@ -1,8 +1,6 @@
 module MacOS extend self
 
   MDITEM_BUNDLE_ID_KEY = "kMDItemCFBundleIdentifier"
-  APPLE_X11_BUNDLE_ID = "org.x.X11"
-  XQUARTZ_BUNDLE_ID = "org.macosforge.xquartz.X11"
 
   def version
     MACOS_VERSION
@@ -92,10 +90,11 @@ module MacOS extend self
   end
 
   def sdk_path v=version
-    @sdk_path ||= begin
+    @sdk_path ||= {}
+    @sdk_path[v.to_s] ||= begin
       path = if not Xcode.bad_xcode_select_path? and File.executable? "#{Xcode.folder}/usr/bin/make"
         `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.strip
-      elsif File.directory? '/Developer/SDKs/MacOS#{v}.sdk'
+      elsif File.directory? "/Developer/SDKs/MacOS#{v}.sdk"
         # the old default (or wild wild west style)
         "/Developer/SDKs/MacOS#{v}.sdk"
       elsif File.directory? "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
@@ -165,28 +164,6 @@ module MacOS extend self
       `#{locate("clang")} --version` =~ %r[tags/Apple/clang-(\d{2,})]
       $1.to_i
     end
-  end
-
-  def xquartz_version
-    # This returns the version number of XQuartz, not of the upstream X.org
-    # (which is why it is not called x11_version). Note that the X11.app
-    # distributed by Apple is also XQuartz, and therefore covered by this method.
-    path = app_with_bundle_id(XQUARTZ_BUNDLE_ID) || app_with_bundle_id(APPLE_X11_BUNDLE_ID)
-    version = if not path.nil? and path.exist?
-      `mdls -raw -name kMDItemVersion #{path}`.strip
-    end
-  end
-
-  def x11_prefix
-    @x11_prefix ||= if Pathname.new('/opt/X11/lib/libpng.dylib').exist?
-      Pathname.new('/opt/X11')
-    elsif Pathname.new('/usr/X11/lib/libpng.dylib').exist?
-      Pathname.new('/usr/X11')
-    end
-  end
-
-  def x11_installed?
-    not x11_prefix.nil?
   end
 
   def macports_or_fink_installed?
@@ -268,8 +245,8 @@ module MacOS extend self
   end
 
   def mdfind attribute, id
-    path = `mdfind "#{attribute} == '#{id}'"`.strip
-    Pathname.new(path) unless path.empty?
+    path = `mdfind "#{attribute} == '#{id}'"`.split("\n").first
+    Pathname.new(path) unless path.nil? or path.empty?
   end
 
   def pkgutil_info id
@@ -277,4 +254,5 @@ module MacOS extend self
   end
 end
 
-require 'xcode'
+require 'macos/xcode'
+require 'macos/xquartz'
