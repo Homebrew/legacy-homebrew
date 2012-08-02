@@ -2,7 +2,7 @@ require 'formula'
 
 module Homebrew extend self
   def edit
-    unless (HOMEBREW_PREFIX/'.git').directory?
+    unless (HOMEBREW_REPOSITORY/'.git').directory?
       raise <<-EOS.undent
         Changes will be lost!
         The first time you `brew update', all local changes will be lost, you should
