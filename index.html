@@ -32,7 +32,7 @@
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Homebrew is the easiest and most flexible way to install the UNIX tools Apple didn't include with OS X.</p>
+                <p>Homebrew installs the stuff you need that Apple didn’t.</p>
               </div>
               <div class="col-2">
                 <pre><code><span style="color: #e3d796;">$</span> brew install wget</code></pre>
@@ -42,7 +42,7 @@
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Homebrew installs packages into their own isolated prefix and then symlinks everything into <code>/usr/local</code>.</p>
+                <p>Homebrew installs packages to their own directory and then symlinks their files into <code>/usr/local</code>.</p>
               </div>
               <div class="col-2">
                 <pre><code><span style="color: #e3d796;">$</span> cd /usr/local
@@ -60,16 +60,14 @@ bin/wget -&gt; ../Cellar/wget/1.12/bin/wget</code></pre>
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Homebrew is self-contained and unintrusive. </p>
-              </div>
-              <div class="col-2">
+                <p>Homebrew won’t install files outside its prefix, and you can place a Homebrew installation wherever you like.</p>
               </div>
             </div>
           </li>
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Create your own Homebrew packages in seconds.</p>
+                <p>Trivially create your own Homebrew packages.</p>
               </div>
               <div class="col-2">
                 <pre><code><span style="color: #e3d796;">$</span> brew create http://foo.com/bar-1.0.tgz
@@ -80,7 +78,7 @@ Created /usr/local/Library/Formula/foo.rb</code></pre>
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Homebrew has a Git foundation, so enjoy version control on your brewing customizations and easily merge upstream updates. </p>
+                <p>It's all git and ruby underneath, so hack away with the knowledge that you can easily revert your modifications and merge upstream updates.</p>
               </div>
               <div class="col-2">
                 <pre><code><span style="color: #e3d796;">$</span> brew edit wget <span style="color: #666;"># opens in $EDITOR!</span></code></pre>
