@@ -9,7 +9,10 @@ class Dotwrp < Formula
 
   def install
     ENV.fortran
-
+    # remove optimization flags which don't work with gfortran
+    ENV["FFLAGS"] = ENV["FFLAGS"].map {|s| s.gsub('-msse4.1', '')}.join(' ')
+    ENV["FFLAGS"] = ENV["FFLAGS"].map {|s| s.gsub('-march=core2', '')}.join(' ')
+    
     # note: fno-underscoring is vital to override the symbols in Accelerate
     system "#{ENV["FC"]} #{ENV["FFLAGS"]} -fno-underscoring -c dotwrp.f90"
     system "/usr/bin/ar -cru libdotwrp.a dotwrp.o"
