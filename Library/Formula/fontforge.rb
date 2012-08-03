@@ -2,8 +2,9 @@ require 'formula'
 
 class Fontforge < Formula
   homepage 'http://fontforge.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20110222.tar.bz2'
-  md5 '5be4dda345b5d73a27cc399df96e463a'
+  url 'http://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20120731-b.tar.bz2'
+  sha1 'b520f532b48e557c177dffa29120225066cc4e84'
+  version '20120731'
 
   head 'git://fontforge.git.sourceforge.net/gitroot/fontforge/fontforge'
 
