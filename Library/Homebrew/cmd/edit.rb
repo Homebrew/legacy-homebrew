@@ -2,6 +2,14 @@ require 'formula'
 
 module Homebrew extend self
   def edit
+    unless (HOMEBREW_REPOSITORY/'.git').directory?
+      raise <<-EOS.undent
+        Changes will be lost!
+        The first time you `brew update', all local changes will be lost, you should
+        thus `brew update' before you `brew edit'!
+        EOS
+    end
+
     # If no brews are listed, open the project root in an editor.
     if ARGV.named.empty?
       editor = File.basename which_editor

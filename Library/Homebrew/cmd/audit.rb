@@ -337,6 +337,14 @@ def audit_formula_instance f
 EOS
     when 'gfortran'
       problems << " * Use ENV.fortran during install instead of depends_on 'gfortran'"
+
+    when 'open-mpi', 'mpich2'
+      problems << <<-EOS.undent
+          * There are multiple conflicting ways to install MPI. Use a MPIDependency:
+              depends_on MPIDependency.new(<lang list>)
+            Where <lang list> is a comma delimited list that can include:
+              :cc, :cxx, :f90, :f77
+        EOS
     end
   end
 

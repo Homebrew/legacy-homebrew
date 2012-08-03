@@ -56,7 +56,7 @@ at_exit do
 end
 
 def install f
-  ENV.x11 if f.external_deps.any? { |dep| dep.is_a? X11Dependency }
+  f.external_deps.each { |dep| dep.modify_build_environment }
 
   f.recursive_deps.uniq.each do |dep|
     dep = Formula.factory dep
