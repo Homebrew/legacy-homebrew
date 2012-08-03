@@ -5,6 +5,13 @@ class PureFtpd < Formula
   homepage 'http://www.pureftpd.org/'
   md5 'fa53507ff8e9fdca0197917ec8d106a3'
 
+  def options
+    [
+      ['--no-anonymous', "Do not allow anonymous logins"],
+      ['--enable-virtualusers', "Use Pure-FTPd virtual users mechanism"]
+    ]
+  end
+
   def install
     args = ["--disable-dependency-tracking",
             "--prefix=#{prefix}",
@@ -29,6 +36,22 @@ class PureFtpd < Formula
 
     system "./configure", *args
     system "make install"
+
+    # allow anonymous users to login?
+    if ARGV.include? '--no-anonymous'
+      @anonymous_flag = "-E"
+    else
+      @anonymous_flag = ""
+    end
+
+    # enable virtual users?
+    if ARGV.include? '--enable-virtualusers'
+      @virtualuser_flag = "-l puredb:#{etc}/pureftpd.pdb"
+    else
+      @virtualuser_flag = ""
+    end
+
+
     plist_path.write startup_plist
     plist_path.chmod 0644
   end
@@ -61,7 +84,7 @@ class PureFtpd < Formula
     <key>ProgramArguments</key>
     <array>
       <string>#{HOMEBREW_PREFIX}/sbin/pure-ftpd</string>
-      <string>-A -j -z</string>
+      <string>-A -j -z #{@anonymous_flag} #{@virtualuser_flag}</string>
     </array>
     <key>RunAtLoad</key>
     <true/>
