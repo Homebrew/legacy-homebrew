@@ -58,14 +58,13 @@ class PureFtpd < Formula
 
   def caveats; <<-EOS.undent
     If this is your first install, automatically load on login with:
-      mkdir -p ~/Library/LaunchAgents
-      cp #{plist_path} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+      sudo cp #{plist_path} /Library/LaunchDaemons/#{plist_name}
+      sudo launchctl load -w /Library/LaunchDaemons/#{plist_name}
 
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-      launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-      cp #{plist_path} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+    If this is an upgrade and you already have the #{plist_name} loaded:
+      sudo launchctl unload -w ~/Library/LaunchAgents/#{plist_name}
+      sudo cp #{plist_path} ~/Library/LaunchAgents/#{plist_name}
+      sudo launchctl load -w ~/Library/LaunchAgents/#{plist_name}
 
     To start pure-ftpd manually:
       pure-ftpd <options>
