@@ -5,6 +5,13 @@ class PureFtpd < Formula
   homepage 'http://www.pureftpd.org/'
   md5 'fa53507ff8e9fdca0197917ec8d106a3'
 
+  def options
+    [
+      ['--no-anonymous', "Do not allow anonymous logins"],
+      ['--enable-virtualusers', "Use Pure-FTPd virtual users mechanism"]
+    ]
+  end
+
   def install
     args = ["--disable-dependency-tracking",
             "--prefix=#{prefix}",
@@ -29,20 +36,35 @@ class PureFtpd < Formula
 
     system "./configure", *args
     system "make install"
+
+    # allow anonymous users to login?
+    if ARGV.include? '--no-anonymous'
+      @anonymous_flag = "-E"
+    else
+      @anonymous_flag = ""
+    end
+
+    # enable virtual users?
+    if ARGV.include? '--enable-virtualusers'
+      @virtualuser_flag = "-l puredb:#{etc}/pureftpd.pdb"
+    else
+      @virtualuser_flag = ""
+    end
+
+
     plist_path.write startup_plist
     plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent
     If this is your first install, automatically load on login with:
-      mkdir -p ~/Library/LaunchAgents
-      cp #{plist_path} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+      sudo cp #{plist_path} /Library/LaunchDaemons/#{plist_name}
+      sudo launchctl load -w /Library/LaunchDaemons/#{plist_name}
 
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-      launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-      cp #{plist_path} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+    If this is an upgrade and you already have the #{plist_name} loaded:
+      sudo launchctl unload -w ~/Library/LaunchAgents/#{plist_name}
+      sudo cp #{plist_path} ~/Library/LaunchAgents/#{plist_name}
+      sudo launchctl load -w ~/Library/LaunchAgents/#{plist_name}
 
     To start pure-ftpd manually:
       pure-ftpd <options>
@@ -61,7 +83,7 @@ class PureFtpd < Formula
     <key>ProgramArguments</key>
     <array>
       <string>#{HOMEBREW_PREFIX}/sbin/pure-ftpd</string>
-      <string>-A -j -z</string>
+      <string>-A -j -z #{@anonymous_flag} #{@virtualuser_flag}</string>
     </array>
     <key>RunAtLoad</key>
     <true/>
