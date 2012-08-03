@@ -19,6 +19,11 @@ class Ctags < Formula
       system "autoheader"
       system "autoconf"
     end
+
+    # Compilation with -Os or -O2 results in an executable that
+    # generates erroneous tag files
+    ENV["CFLAGS"] = ENV["CFLAGS"].sub("-Os", "-O1")
+
     system "./configure", "--prefix=#{prefix}",
                           "--enable-macro-patterns",
                           "--mandir=#{man}",
