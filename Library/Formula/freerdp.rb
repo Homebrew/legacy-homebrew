@@ -10,14 +10,11 @@ class Freerdp < Formula
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
 
+  # Upstream; check for removal on 1.1 release.
   def patches
     [
-      # Fixes clang build problems
-      # Already upstream, check for removal on 1.1 release:
-      # https://github.com/FreeRDP/FreeRDP/pull/544
-      'https://github.com/mikemcquaid/FreeRDP/commit/1d3289.patch',
-      # Fixes Mountain Lion build problem
-      'https://github.com/mikemcquaid/FreeRDP/commit/e32f9e.patch'
+      'https://github.com/FreeRDP/FreeRDP/commit/1d3289.patch',
+      'https://github.com/FreeRDP/FreeRDP/commit/e32f9e.patch'
     ]
   end
 
