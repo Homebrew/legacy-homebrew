@@ -10,6 +10,7 @@ class Gd < Formula
 
   depends_on :x11
   depends_on 'jpeg' => :recommended
+  depends_on 'cmake' => :build if ARGV.build_head?
 
   fails_with :llvm do
     build 2326
@@ -17,8 +18,19 @@ class Gd < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--with-freetype=#{MacOS::XQuartz.prefix}"
-    system "make install"
+    ENV.x11
+    if ARGV.build_head?
+      mkdir "build" do
+        system "cmake", "..", *std_cmake_args
+        system "make install"
+      end
+    else
+      system "./configure",
+             "--prefix=#{prefix}",
+             "--with-freetype=#{MacOS::XQuartz.prefix}",
+             "MACOSX_DEPLOYMENT_TARGET=#{MACOS_VERSION}"
+      system "make install"
+    end
     (lib+'pkgconfig/gdlib.pc').write pkg_file
   end
 
@@ -32,7 +44,7 @@ ldflags=  -L/${prefix}/lib
 
 Name: gd
 Description: A graphics library for quick creation of PNG or JPEG images
-Version: 2.0.36RC1
+Version: #{version}
 Requires:
 Libs: -L${libdir} -lgd
 Libs.private: -lXpm -lX11 -ljpeg -lfontconfig -lfreetype -lpng12 -lz -lm
