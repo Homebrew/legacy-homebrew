@@ -23,13 +23,17 @@ module Homebrew extend self
       if ARGV.include? '--compact'
         puts f.options.collect {|o| o[0]} * " "
       else
-        puts f.name
-        f.options.each do |o|
-          puts o[0]
-          puts "\t"+o[1]
-        end
+        puts f.name if ff.length > 1
+        dump_options_for_formula f
         puts
       end
+    end
+  end
+
+  def dump_options_for_formula f
+    f.options.each do |o|
+      puts o[0]
+      puts "\t"+o[1]
     end
   end
 end
