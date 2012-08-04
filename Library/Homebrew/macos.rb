@@ -205,14 +205,17 @@ module MacOS extend self
   def snow_leopard?
     10.6 <= MACOS_VERSION # Actually Snow Leopard or newer
   end
+  alias :snow_leopard_or_newer? :snow_leopard?
 
   def lion?
     10.7 <= MACOS_VERSION # Actually Lion or newer
   end
+  alias :lion_or_newer? :lion?
 
   def mountain_lion?
     10.8 <= MACOS_VERSION # Actually Mountain Lion or newer
   end
+  alias :mountain_lion_or_newer? :mountain_lion?
 
   def prefer_64_bit?
     Hardware.is_64_bit? and not leopard?
