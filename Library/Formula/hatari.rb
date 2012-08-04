@@ -2,8 +2,8 @@ require 'formula'
 
 class Hatari < Formula
   homepage 'http://hatari.tuxfamily.org'
-  url 'http://download.tuxfamily.org/hatari/1.6.1/hatari-1.6.1.tar.bz2'
-  md5 '14f6af33734c971cb4f349a38c6981a1'
+  url 'http://download.tuxfamily.org/hatari/1.6.2/hatari-1.6.2.tar.bz2'
+  sha1 'fce28eb59d7b1574537bfdba757fddc31534bb17'
 
   depends_on 'cmake' => :build
   depends_on 'sdl'
