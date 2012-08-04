@@ -77,6 +77,10 @@ module Homebrew extend self
           end
         end
       end
+      if pn.basename.to_s.split('.').last == 'incomplete'
+        puts "Removing #{pn}..."
+        rm pn unless ARGV.dry_run?
+      end
     end
   end
 
