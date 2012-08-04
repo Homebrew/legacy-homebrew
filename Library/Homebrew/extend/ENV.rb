@@ -12,7 +12,7 @@ module HomebrewEnvExtension
     if MacOS.mountain_lion?
       # Fix issue with sed barfing on unicode characters on Mountain Lion.
       delete('LC_ALL')
-      self['LANG']="C"
+      self['LC_CTYPE']="C"
 
       # Mountain Lion no longer ships a few .pcs; make sure we pick up our versions
       prepend 'PKG_CONFIG_PATH',
