@@ -49,6 +49,7 @@ class Graphviz < Formula
       system "xcodebuild", "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"
     end
     prefix.install "macosx/build/Release/Graphviz.app"
+    (bin+'gvmap.sh').unlink
   end
 
   def test
