@@ -48,7 +48,7 @@ def blacklisted? name
     Homebrew does not provide npm because it is self-updating. To install it, first
     `brew install nodejs' and then:
 
-        curl http://npmjs.org/install.sh | sh
+        curl https://npmjs.org/install.sh | sh
     EOS
   when /(lib)?lzma/
     "lzma is now part of the xz formula."
