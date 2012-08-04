@@ -3,7 +3,7 @@ require 'formula'
 class Groovyserv < Formula
   homepage 'http://kobo.github.com/groovyserv/'
   url 'https://github.com/downloads/kobo/groovyserv/groovyserv-0.10-src.zip'
-  sha1 '1dd29a044338f1eb9dbb80369059a918de77e131'
+  sha1 'b8912ce7871458be6452876ab0215b5c89e82ad0'
 
   head 'https://github.com/kobo/groovyserv.git'
 
