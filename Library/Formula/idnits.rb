@@ -1,9 +1,9 @@
 require 'formula'
 
 class Idnits < Formula
-  url 'http://tools.ietf.org/tools/idnits/idnits-2.12.11.tgz'
   homepage 'http://tools.ietf.org/tools/idnits/'
-  md5 '8ec3c5bac662407df42495e5d8e93512'
+  url 'http://tools.ietf.org/tools/idnits/idnits-2.12.13.tgz'
+  sha1 'd2a773ccca1a4eb00c4d001c6670a0131a6e939f'
 
   depends_on 'aspell'
 
