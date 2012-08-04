@@ -6,12 +6,10 @@ class Pixman < Formula
   sha256 'c9ab554b5160679d958bfa1753cb9e6edd1e53c4745c963a1394eea4f0b13ce2'
 
   depends_on 'pkg-config' => :build
-  depends_on :x11
 
-  keg_only :provided_by_osx, <<-EOS.undent
-    Apple provides an outdated version of libpixman in its X11 distribution.
-    A more up-to-date version is available in XQuartz.
-    EOS
+  keg_only :provided_by_osx,
+    "Apple provides an outdated version of libpixman in its X11 distribution." \
+    if MacOS.x11_installed?
 
   fails_with :llvm do
     build 2336
