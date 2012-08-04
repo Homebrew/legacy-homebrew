@@ -3,11 +3,18 @@ require 'formula'
 class Fuse4x < Formula
   homepage 'http://fuse4x.github.com'
   url 'https://github.com/fuse4x/fuse/tarball/fuse4x_0_9_1'
-  md5 '1c82dd00feff6e422b6cef81abd98185'
-  version "0.9.1"
+  version '0.9.1'
+  sha1 '31eff485411f106daa81ef6c7c3d31abbdcd41b4'
 
+  # Always use newer versions of these tools
+  depends_on 'automake' => :build
+  depends_on 'libtool' => :build
+
+<<<<<<< HEAD
   depends_on :automake
   depends_on :libtool
+=======
+>>>>>>> 1cd31e942565affb535d538f85d0c2f7bc613b5a
   depends_on 'gettext'
   depends_on 'fuse4x-kext'
 

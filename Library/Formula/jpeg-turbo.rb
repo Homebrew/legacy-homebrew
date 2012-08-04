@@ -2,8 +2,8 @@ require 'formula'
 
 class JpegTurbo < Formula
   homepage 'http://www.libjpeg-turbo.org/'
-  url 'http://downloads.sourceforge.net/project/libjpeg-turbo/1.2.0/libjpeg-turbo-1.2.0.tar.gz'
-  sha1 '4ab00afc9a8d54cd2e7a67aacb9c49e01a8bccac'
+  url 'http://downloads.sourceforge.net/project/libjpeg-turbo/1.2.1/libjpeg-turbo-1.2.1.tar.gz'
+  sha1 'a4992e102c6d88146709e8e6ce5896d5d0b5a361'
 
   depends_on 'nasm' => :build if MacOS.prefer_64_bit?
 
@@ -11,7 +11,12 @@ class JpegTurbo < Formula
 
   def install
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-    args << "--host=x86_64-apple-darwin" if MacOS.prefer_64_bit?
+    if MacOS.prefer_64_bit?
+      args << "--host=x86_64-apple-darwin"
+      # Auto-detect our 64-bit nasm
+      args << "NASM=#{Formula.factory('nasm').bin}/nasm"
+    end
+
     system "./configure", *args
     system 'make'
     ENV.j1 # Stops a race condition error: file exists

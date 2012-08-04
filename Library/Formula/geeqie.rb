@@ -8,6 +8,7 @@ class Geeqie < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'intltool'
+  depends_on :x11
   depends_on 'gtk+'
   depends_on 'imagemagick' => :recommended
   depends_on 'exiv2' => :recommended

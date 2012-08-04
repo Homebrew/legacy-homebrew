@@ -5,11 +5,16 @@ class Privoxy < Formula
   url 'http://downloads.sourceforge.net/project/ijbswa/Sources/3.0.19%20%28stable%29/privoxy-3.0.19-stable-src.tar.gz'
   sha1 'a82287cbf48375ef449d021473a366baeca49250'
 
+<<<<<<< HEAD
   if ARGV.build_head?
     depends_on :automake
     depends_on :libtool
   end
 
+=======
+  depends_on :automake
+  depends_on :libtool
+>>>>>>> 1cd31e942565affb535d538f85d0c2f7bc613b5a
   depends_on 'pcre'
 
   def install

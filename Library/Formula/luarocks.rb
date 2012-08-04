@@ -4,8 +4,13 @@ def use_luajit?; ARGV.include? '--with-luajit'; end
 
 class Luarocks < Formula
   homepage 'http://luarocks.org'
+<<<<<<< HEAD
   url 'http://luarocks.org/releases/luarocks-2.0.9.tar.gz'
   sha1 '84656ef2c1261a21a7e8aaf347743f8e542d2f49'
+=======
+  url 'http://luarocks.org/releases/luarocks-2.0.10.tar.gz'
+  sha1 '90db1c46940816ae82a8037e585769e3e8845f66'
+>>>>>>> 1cd31e942565affb535d538f85d0c2f7bc613b5a
 
   depends_on use_luajit? ? 'luajit' : 'lua'
 

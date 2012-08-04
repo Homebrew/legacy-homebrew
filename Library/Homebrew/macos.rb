@@ -1,12 +1,6 @@
 module MacOS extend self
 
   MDITEM_BUNDLE_ID_KEY = "kMDItemCFBundleIdentifier"
-  XCODE_4_BUNDLE_ID = "com.apple.dt.Xcode"
-  XCODE_3_BUNDLE_ID = "com.apple.Xcode"
-  CLT_STANDALONE_PKG_ID = "com.apple.pkg.DeveloperToolsCLILeo"
-  CLT_FROM_XCODE_PKG_ID = "com.apple.pkg.DeveloperToolsCLI"
-  APPLE_X11_BUNDLE_ID = "org.x.X11"
-  XQUARTZ_BUNDLE_ID = "org.macosforge.xquartz.X11"
 
   def version
     MACOS_VERSION
@@ -26,50 +20,6 @@ module MacOS extend self
     end
   end
 
-  def clt_installed?
-    # If the command line tools are installed, most unix standard
-    # tools, libs and headers are in /usr.
-    # Returns true, also for older Xcode/OSX versions that had everything in /usr
-    # Beginning with Xcode 4.3, the dev tools are no longer installed
-    # in /usr and SDKs no longer in /Developer by default.
-    # But Apple provides an optional "Command Line Tools for Xcode" package.
-    not clt_version.empty? or dev_tools_path == Pathname.new("/usr/bin")
-  end
-
-  def clt_version
-    # Version string (a pretty damn long one) of the CLT package.
-    # Note, that different ways to install the CLTs lead to different
-    # version numbers.
-    @clt_version ||= begin
-      standalone = pkgutil_info(CLT_STANDALONE_PKG_ID)
-      from_xcode = pkgutil_info(CLT_FROM_XCODE_PKG_ID)
-
-      if not standalone.empty?
-        standalone =~ /version: (.*)$/
-        $1
-      elsif not from_xcode.empty?
-        from_xcode =~ /version: (.*)$/
-        $1
-      else
-        # We return "" instead of nil because we want clt_installed? to be true on older Macs.
-        # So clt_version.empty? does not mean there are no unix tools in /usr, it just means
-        # that the "Command Line Tools for Xcode" package is not installed
-        "" # No CLT or recipe available to pkgutil.
-      end
-    end
-  end
-
-  # Locate the "current Xcode folder" via xcode-select. See:
-  # man xcode-select
-  def xcode_folder
-    @xcode_folder ||= `xcode-select -print-path 2>/dev/null`.strip
-  end
-
-  # Xcode 4.3 tools hang if "/" is set
-  def xctools_fucked?
-    xcode_folder == "/"
-  end
-
   def locate tool
     # Don't call tools (cc, make, strip, etc.) directly!
     # Give the name of the binary you look for as a string to this method
@@ -84,7 +34,7 @@ module MacOS extend self
     else
       # Xcrun was provided first with Xcode 4.3 and allows us to proxy
       # tool usage thus avoiding various bugs.
-      p = `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp unless MacOS.xctools_fucked?
+      p = `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp unless Xcode.bad_xcode_select_path?
       if !p.nil? and !p.empty? and File.executable? p
         path = Pathname.new p
       else
@@ -92,12 +42,12 @@ module MacOS extend self
         # with Xcode 4.3+. The tools in Xcode 4.3+ are split over two locations,
         # usually xcrun would figure that out for us, but it won't work if
         # xcode-select is not configured properly.
-        p = "#{MacOS.dev_tools_path}/#{tool}"
+        p = "#{dev_tools_path}/#{tool}"
         if File.executable? p
           path = Pathname.new p
         else
           # Otherwise lets look in the second location.
-          p = "#{MacOS.xctoolchain_path}/usr/bin/#{tool}"
+          p = "#{xctoolchain_path}/usr/bin/#{tool}"
           if File.executable? p
             path = Pathname.new p
           else
@@ -115,12 +65,12 @@ module MacOS extend self
     @dev_tools_path ||= if File.exist? "/usr/bin/cc" and File.exist? "/usr/bin/make"
       # probably a safe enough assumption (the unix way)
       Pathname.new "/usr/bin"
-    elsif not xctools_fucked? and system "/usr/bin/xcrun -find make 1>/dev/null 2>&1"
+    elsif not Xcode.bad_xcode_select_path? and system "/usr/bin/xcrun -find make 1>/dev/null 2>&1"
       # Wherever "make" is there are the dev tools.
       Pathname.new(`/usr/bin/xcrun -find make`.chomp).dirname
-    elsif File.exist? "#{xcode_prefix}/usr/bin/make"
+    elsif File.exist? "#{Xcode.prefix}/usr/bin/make"
       # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
-      Pathname.new "#{xcode_prefix}/usr/bin"
+      Pathname.new "#{Xcode.prefix}/usr/bin"
     else
       # Since we are pretty unrelenting in finding Xcode no matter where
       # it hides, we can now throw in the towel.
@@ -132,23 +82,24 @@ module MacOS extend self
   def xctoolchain_path
     # As of Xcode 4.3, some tools are located in the "xctoolchain" directory
     @xctoolchain_path ||= begin
-      path = Pathname.new("#{MacOS.xcode_prefix}/Toolchains/XcodeDefault.xctoolchain")
+      path = Pathname.new("#{Xcode.prefix}/Toolchains/XcodeDefault.xctoolchain")
       # If only the CLT are installed, all tools will be under dev_tools_path,
       # this path won't exist, and xctoolchain_path will be nil.
       path if path.exist?
     end
   end
 
-  def sdk_path(v=MacOS.version)
-    @sdk_path ||= begin
-      path = if !MacOS.xctools_fucked? and File.executable? "#{xcode_folder}/usr/bin/make"
+  def sdk_path v=version
+    @sdk_path ||= {}
+    @sdk_path[v.to_s] ||= begin
+      path = if not Xcode.bad_xcode_select_path? and File.executable? "#{Xcode.folder}/usr/bin/make"
         `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.strip
-      elsif File.directory? '/Developer/SDKs/MacOS#{v}.sdk'
+      elsif File.directory? "/Developer/SDKs/MacOS#{v}.sdk"
         # the old default (or wild wild west style)
         "/Developer/SDKs/MacOS#{v}.sdk"
-      elsif File.directory? "#{xcode_prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
-        # xcode_prefix is pretty smart, so lets look inside to find the sdk
-        "#{xcode_prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
+      elsif File.directory? "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
+        # Xcode.prefix is pretty smart, so lets look inside to find the sdk
+        "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
       end
 
       Pathname.new(path) unless path.nil? or path.empty? or not File.directory? path
@@ -167,9 +118,9 @@ module MacOS extend self
       when "clang" then :clang
       else
         # guess :(
-        if xcode_version >= "4.3"
+        if Xcode.version >= "4.3"
           :clang
-        elsif xcode_version >= "4.2"
+        elsif Xcode.version >= "4.2"
           :llvm
         else
           :gcc
@@ -177,6 +128,7 @@ module MacOS extend self
     end
   end
 
+<<<<<<< HEAD
   def xcode_prefix
     @xcode_prefix ||= begin
       path = Pathname.new xcode_folder
@@ -279,6 +231,8 @@ module MacOS extend self
     end
   end
 
+=======
+>>>>>>> 1cd31e942565affb535d538f85d0c2f7bc613b5a
   def gcc_40_build_version
     @gcc_40_build_version ||= if locate("gcc-4.0")
       `#{locate("gcc-4.0")} --version` =~ /build (\d{4,})/
@@ -315,28 +269,6 @@ module MacOS extend self
       `#{locate("clang")} --version` =~ %r[tags/Apple/clang-(\d{2,})]
       $1.to_i
     end
-  end
-
-  def xquartz_version
-    # This returns the version number of XQuartz, not of the upstream X.org
-    # (which is why it is not called x11_version). Note that the X11.app
-    # distributed by Apple is also XQuartz, and therefore covered by this method.
-    path = app_with_bundle_id(XQUARTZ_BUNDLE_ID) || app_with_bundle_id(APPLE_X11_BUNDLE_ID)
-    version = if not path.nil? and path.exist?
-      `mdls -raw -name kMDItemVersion #{path}`.strip
-    end
-  end
-
-  def x11_prefix
-    @x11_prefix ||= if Pathname.new('/opt/X11/lib/libpng.dylib').exist?
-      Pathname.new('/opt/X11')
-    elsif Pathname.new('/usr/X11/lib/libpng.dylib').exist?
-      Pathname.new('/usr/X11')
-    end
-  end
-
-  def x11_installed?
-    not x11_prefix.nil?
   end
 
   def macports_or_fink_installed?
@@ -406,7 +338,7 @@ module MacOS extend self
   }
 
   def compilers_standard?
-    xcode = MacOS.xcode_version
+    xcode = Xcode.version
     # Assume compilers are okay if Xcode version not in hash
     return true unless StandardCompilers.keys.include? xcode
 
@@ -417,14 +349,15 @@ module MacOS extend self
     mdfind(MDITEM_BUNDLE_ID_KEY, id)
   end
 
-  private
-
   def mdfind attribute, id
-    path = `mdfind "#{attribute} == '#{id}'"`.strip
-    Pathname.new(path) unless path.empty?
+    path = `mdfind "#{attribute} == '#{id}'"`.split("\n").first
+    Pathname.new(path) unless path.nil? or path.empty?
   end
 
   def pkgutil_info id
     `pkgutil --pkg-info #{id} 2>/dev/null`.strip
   end
 end
+
+require 'macos/xcode'
+require 'macos/xquartz'

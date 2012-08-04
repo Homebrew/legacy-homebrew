@@ -14,7 +14,7 @@ class Dcmtk < Formula
   end
 
   fails_with :clang do
-    build 318
+    build 421
   end
 
   def install
