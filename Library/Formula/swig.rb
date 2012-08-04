@@ -7,7 +7,12 @@ class Swig < Formula
 
   depends_on 'pcre'
 
+  def options
+    [['--universal', 'Build swig as a universal binary']]
+  end
+
   def install
+    ENV.universal_binary if ARGV.build_universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
