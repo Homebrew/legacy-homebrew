@@ -44,15 +44,20 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     else
       @tarball_path=HOMEBREW_CACHE+File.basename(@url)
     end
+    @temporary_path=Pathname.new(@tarball_path.to_s + ".incomplete")
   end
 
   def cached_location
     @tarball_path
   end
 
+  def downloaded_size
+    @temporary_path.size? or 0
+  end
+
   # Private method, can be overridden if needed.
   def _fetch
-    curl @url, '-o', @tarball_path
+    curl @url, '-C', downloaded_size, '-o', @temporary_path
   end
 
   def fetch
@@ -66,13 +71,13 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       begin
         _fetch
       rescue Exception => e
-        ignore_interrupts { @tarball_path.unlink if @tarball_path.exist? }
         if e.kind_of? ErrorDuringExecution
           raise CurlDownloadStrategyError, "Download failed: #{@url}"
         else
           raise
         end
       end
+      ignore_interrupts { @temporary_path.rename(@tarball_path) }
     else
       puts "Already downloaded: #{@tarball_path}"
     end
@@ -154,8 +159,8 @@ class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
     mirrors = MultiJson.decode(open("#{@url}&asjson=1").read)
     url = mirrors.fetch('preferred') + mirrors.fetch('path_info')
 
-    ohai "Best Mirror #{url}"
-    curl url, '-o', @tarball_path
+    ohai "Best Mirror #{mirror_url}"
+    curl url, '-C', downloaded_size, '-o', @temporary_path
   rescue IndexError
     raise "Couldn't determine mirror. Try again later."
   end
@@ -166,7 +171,7 @@ end
 class CurlPostDownloadStrategy < CurlDownloadStrategy
   def _fetch
     base_url,data = @url.split('?')
-    curl base_url, '-d', data, '-o', @tarball_path
+    curl base_url, '-d', data, '-C', downloaded_size, '-o', @temporary_path
   end
 end
 
@@ -191,7 +196,7 @@ end
 # Try not to need this, as we probably won't accept the formula.
 class CurlUnsafeDownloadStrategy < CurlDownloadStrategy
   def _fetch
-    curl @url, '--insecure', '-o', @tarball_path
+    curl @url, '--insecure', '-C', downloaded_size, '-o', @temporary_path
   end
 end
 
