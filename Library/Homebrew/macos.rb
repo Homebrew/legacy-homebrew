@@ -3,7 +3,8 @@ module MacOS extend self
   MDITEM_BUNDLE_ID_KEY = "kMDItemCFBundleIdentifier"
 
   def version
-    MACOS_VERSION
+    require 'version'
+    MacOSVersion.new(MACOS_VERSION.to_s)
   end
 
   def cat
