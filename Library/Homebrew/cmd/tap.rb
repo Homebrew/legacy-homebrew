@@ -72,7 +72,7 @@ end
 class Pathname
   def tap_ref
     case self.to_s
-    when %r{^#{HOMEBREW_LIBRARY}/Taps/(\w+)-(\w+)/(.+)}
+    when %r{^#{HOMEBREW_LIBRARY}/Taps/([a-z\-_]+)-(\w+)/(.+)}
       "#$1/#$2/#{File.basename($3, '.rb')}"
     when %r{^#{HOMEBREW_LIBRARY}/Formula/(.+)}
       "mxcl/master/#{File.basename($1, '.rb')}"
