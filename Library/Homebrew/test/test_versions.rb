@@ -24,6 +24,13 @@ class VersionComparisonTests < Test::Unit::TestCase
     assert_version_comparison 'HEAD', '>', '1.2.3'
     assert_version_comparison '1.2.3', '<', 'HEAD'
   end
+
+  def test_macos_version_comparison
+    v = MacOSVersion.new(10.6)
+    assert v == 10.6
+    assert v == :snow_leopard
+    assert v < :lion
+  end
 end
 
 class VersionParsingTests < Test::Unit::TestCase
