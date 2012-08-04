@@ -6,10 +6,11 @@ class Fontconfig < Formula
   sha1 'e377cbe989cd22d3a10020309c906ecbbcac0043'
 
   keg_only :provided_by_osx,
-    "Leopard comes with version 2.4.x, which is too old for many packages."
+    "Leopard comes with version 2.4.x, which is too old for many packages." \
+    if MacOS.x11_installed?
 
+  depends_on :freetype
   depends_on 'pkg-config' => :build
-  depends_on :x11
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
