@@ -897,10 +897,14 @@ def check_for_unlinked_but_not_keg_only
     end
   end.map{ |pn| pn.basename }
 
+  # NOTE very old kegs will be linked without the LinkedKegs symlink
+  # this will trigger this warning but it's wrong, we could detect that though
+  # but I don't feel like writing the code.
+
   if not unlinked.empty? then <<-EOS.undent
     You have unlinked kegs in your Cellar
     Leaving kegs unlinked can lead to build-trouble and cause brews that depend on
-    those kegs to fail to run properly once built.
+    those kegs to fail to run properly once built. Run `brew link` on these:
 
         #{unlinked * "\n        "}
     EOS
