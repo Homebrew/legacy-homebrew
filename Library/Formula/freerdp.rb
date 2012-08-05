@@ -7,6 +7,7 @@ class Freerdp < Formula
 
   head 'https://github.com/FreeRDP/FreeRDP.git'
 
+  depends_on :x11
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
 
@@ -19,7 +20,7 @@ class Freerdp < Formula
   end
 
   def install
-    system "cmake", ".", "-DWITH_X11=OFF", *std_cmake_args
+    system "cmake", ".", *std_cmake_args
     system "make install"
   end
 end
