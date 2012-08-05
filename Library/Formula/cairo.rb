@@ -3,7 +3,7 @@ require 'formula'
 class Cairo < Formula
   homepage 'http://cairographics.org/'
   url 'http://cairographics.org/releases/cairo-1.12.2.tar.xz'
-  sha1 'bc2ee50690575f16dab33af42a2e6cdc6451e3f9'
+  sha256 'b786bc4a70542bcb09f2d9d13e5e6a0c86408cbf6d1edde5f0de807eecf93f96'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz'=> :build
