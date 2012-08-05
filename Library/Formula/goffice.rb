@@ -10,6 +10,7 @@ class Goffice < Formula
   depends_on 'intltool'
   depends_on 'libgsf'
   depends_on 'gtk+'
+  depends_on :x11
 
   def install
     system "./configure", "--disable-dependency-tracking",
