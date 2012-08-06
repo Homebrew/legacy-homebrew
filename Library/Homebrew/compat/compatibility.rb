@@ -34,7 +34,7 @@ def llvm_build
 end
 
 def x11_installed?
-  MacOS::XQuartz.installed?
+  MacOS::X11.installed?
 end
 
 def macports_or_fink_installed?
@@ -191,10 +191,10 @@ module MacOS extend self
   end
 
   def x11_installed?
-    XQuartz.installed?
+    X11.installed?
   end
 
   def x11_prefix
-    XQuartz.prefix
+    X11.prefix
   end
 end
