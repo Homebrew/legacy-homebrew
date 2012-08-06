@@ -167,17 +167,6 @@ def check_for_stray_las
   s
 end
 
-def check_for_x11
-  unless MacOS::XQuartz.installed? then <<-EOS.undent
-    X11 is not installed.
-    You don't have X11 installed as part of your OS X installation.
-    This is not required for all formulae, but is expected by some.
-    You can download the latest version of XQuartz from:
-      https://xquartz.macosforge.org
-    EOS
-  end
-end
-
 def check_for_other_package_managers
   if macports_or_fink_installed?
     <<-EOS.undent
