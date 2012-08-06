@@ -2,8 +2,8 @@ require 'formula'
 
 class Dos2unix < Formula
   homepage 'http://waterlan.home.xs4all.nl/dos2unix.html'
-  url 'http://waterlan.home.xs4all.nl/dos2unix/dos2unix-6.0.tar.gz'
-  sha1 '77ff5b9203f2a0abc4900c00d69e8d5b67d617a5'
+  url 'http://waterlan.home.xs4all.nl/dos2unix/dos2unix-6.0.1.tar.gz'
+  sha1 '4f07a16ab3c875cd668e8d9ac3845c6dedce2980'
 
   depends_on "gettext" if ARGV.include? "--enable-nls"
 
