@@ -2,8 +2,8 @@ require 'formula'
 
 class Colordiff < Formula
   homepage 'http://colordiff.sourceforge.net/'
-  url 'http://colordiff.sourceforge.net/colordiff-1.0.9.tar.gz'
-  md5 '31864847eaa4e900f72bbb6bbc64f1ec'
+  url 'http://colordiff.sourceforge.net/colordiff-1.0.10.tar.gz'
+  sha1 'eeedbe025b9f250134d91fd68fd3940748bbe102'
 
   def patches; DATA; end
 
