@@ -40,7 +40,6 @@ class Dgtal < Formula
     args << '.'
     system "cmake", *args
     system "make"
-    system "make test"
     system "make install" 
   end
 
