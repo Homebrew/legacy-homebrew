@@ -18,7 +18,10 @@ class Wxmac < Formula
   sha1 '0202f64e1e99fb69d22d7be0d38cf7dcf3d80d79'
 
   def options
-    [['--no-python', 'Do not build Python bindings']]
+    [
+      ['--no-python', 'Do not build Python bindings'],
+      ['--no-quicktime', 'Disable quicktime; fixes problems w/ e.g. wxhaskell (64-bit)']
+    ]
   end
 
   depends_on FrameworkPython.new unless ARGV.include? "--no-python"
@@ -79,6 +82,11 @@ class Wxmac < Formula
       "--with-macosx-version-min=#{MacOS.version}" # need to set this, to avoid configure defaulting to 10.5
     ]
 
+    if ARGV.include? '--no-quicktime'
+      inreplace %w[ build/osx/wxcarbon.xcconfig build/osx/wxcocoa.xcconfig configure configure.in ],
+        '-framework QuickTime', ''
+    end
+
     system "./configure", *args
     system "make install"
 
@@ -91,6 +99,17 @@ class Wxmac < Formula
 
   def caveats
     s = ''
+
+    s += <<-EOS.undent
+      wxhaskell (64-bit) doesn't work properly b/c quicktime is
+      erroneously included.  See:
+        http://trac.wxwidgets.org/ticket/14144
+        https://github.com/jodonoghue/wxHaskell/issues/2
+        http://comments.gmane.org/gmane.comp.lang.haskell.wxhaskell.devel/788
+      Use --no-quicktime to fix this.
+
+    EOS
+
     unless ARGV.include? '--no-python'
       q = `python -c "import distutils.sysconfig as c; print(c.get_config_var('PYTHONFRAMEWORK'))"`
       if q.chomp.empty?
