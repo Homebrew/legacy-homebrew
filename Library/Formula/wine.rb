@@ -46,7 +46,7 @@ class Wine < Formula
 
   def wine_wrapper; <<-EOS.undent
     #!/bin/sh
-    DYLD_FALLBACK_LIBRARY_PATH="#{MacOS::XQuartz.lib}:#{HOMEBREW_PREFIX}/lib:/usr/lib" "#{bin}/wine.bin" "$@"
+    DYLD_FALLBACK_LIBRARY_PATH="#{MacOS::X11.lib}:#{HOMEBREW_PREFIX}/lib:/usr/lib" "#{bin}/wine.bin" "$@"
     EOS
   end
 
@@ -67,8 +67,8 @@ class Wine < Formula
     ENV.append "LDFLAGS", "#{build32} -framework CoreServices -lz -lGL -lGLU"
 
     args = ["--prefix=#{prefix}",
-            "--x-include=#{MacOS::XQuartz.include}",
-            "--x-lib=#{MacOS::XQuartz.lib}",
+            "--x-include=#{MacOS::X11.include}",
+            "--x-lib=#{MacOS::X11.lib}",
             "--with-x",
             "--with-coreaudio",
             "--with-opengl"]

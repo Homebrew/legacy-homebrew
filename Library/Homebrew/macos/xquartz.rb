@@ -26,6 +26,16 @@ module MacOS::XQuartz extend self
   def installed?
     not prefix.nil?
   end
+end
+
+module MacOS::X11 extend self
+  def prefix
+    MacOS::XQuartz.prefix
+  end
+
+  def installed?
+    MacOS::XQuartz.installed?
+  end
 
   # If XQuartz and/or the CLT are installed, headers will be found under
   # /opt/X11/include or /usr/X11/include. For Xcode-only systems, they are

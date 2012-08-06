@@ -12,7 +12,7 @@ class Mess < Formula
 
   def install
     ENV['MACOSX_USE_LIBSDL'] = '1'
-    ENV['INCPATH'] = "-I./src/lib/util -I#{MacOS::XQuartz.include}"
+    ENV['INCPATH'] = "-I./src/lib/util -I#{MacOS::X11.include}"
     ENV['PTR64'] = (MacOS.prefer_64_bit? ? '1' : '0')
 
     system 'make'
