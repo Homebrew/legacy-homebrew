@@ -6,9 +6,9 @@ end
 
 class Cdo < Formula
   homepage 'https://code.zmaw.de/projects/cdo'
-  url 'https://code.zmaw.de/attachments/download/2372'
-  version '1.5.4'
-  md5 'ceacb1acfa921a5bf1a3e4cda1097405'
+  url 'https://code.zmaw.de/attachments/download/3605/cdo-1.5.6.1.tar.gz'
+  version '1.5.6.1'
+  sha1 '180517a3c234a47e5e19ae15084bb2fe2bda2d06'
 
   depends_on 'netcdf'
   depends_on 'hdf5'
