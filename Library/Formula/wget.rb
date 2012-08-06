@@ -2,9 +2,9 @@ require 'formula'
 
 class Wget < Formula
   homepage 'http://www.gnu.org/software/wget/'
-  url 'http://ftpmirror.gnu.org/wget/wget-1.13.4.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/wget/wget-1.13.4.tar.bz2'
-  md5 '12115c3750a4d92f9c6ac62bac372e85'
+  url 'http://ftpmirror.gnu.org/wget/wget-1.14.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/wget/wget-1.14.tar.gz'
+  sha1 'c487bce740b3a1847a35fb29b5c6700c46f639b8'
 
   head 'git://git.savannah.gnu.org/wget.git'
 
