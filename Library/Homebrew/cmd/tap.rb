@@ -4,7 +4,8 @@ module Homebrew extend self
     if ARGV.empty?
       tapd = HOMEBREW_LIBRARY/"Taps"
       tapd.children.each do |tap|
-        puts tap.basename.sub('-', '/') if (tap/'.git').directory?
+        next unless (tap/'.git').directory?
+        puts tap.basename.to_s =~ /^direct_/ ? tap.basename.sub(/^direct_/,'') : tap.basename.sub('-','/')
       end if tapd.directory?
     elsif ARGV.first == "--repair"
       repair_taps
@@ -13,17 +14,13 @@ module Homebrew extend self
     end
   end
 
-  def install_tap user, repo
+  def install_tap clone_url, tapd_name
     raise "brew install git" unless which 'git'
 
-    # we special case homebrew so users don't have to shift in a terminal
-    repouser = if user == "homebrew" then "Homebrew" else user end
-    user = "homebrew" if user == "Homebrew"
-
     # we downcase to avoid case-insensitive filesystem issues
-    tapd = HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}"
+    tapd = HOMEBREW_LIBRARY/"Taps/#{tapd_name.downcase}"
     raise "Already tapped!" if tapd.directory?
-    abort unless system "git clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}"
+    abort unless system "git clone #{clone_url} #{tapd}"
 
     files = []
     tapd.find_formula{ |file| files << tapd.basename.join(file) }
@@ -84,10 +81,24 @@ module Homebrew extend self
 
   private
 
-  def tap_args
-    ARGV.first =~ %r{^(\S+)/(homebrew-)?(\w+)$}
-    raise "Invalid usage" unless $1 and $3
-    [$1, $3]
+  def tap_args return_nil = false
+    case ARGV.first
+    when %r{^(https?|git)://\S+/(\S+?)(\.git)?$}
+      [ARGV.first, "direct_#{File.basename($2)}"]
+    when %r{^\S+@\S+:(\S+?)(\.git)?$}
+      [ARGV.first, "direct_#{File.basename($1)}"]
+    when %r{^(\S+)/(homebrew-)?(\w+)$}
+      user, repo = $1, $3
+
+      # we special case homebrew so users don't have to shift in a terminal
+      repouser = if user == "homebrew" then "Homebrew" else user end
+      user = "homebrew" if user == "Homebrew"
+
+      ["https://github.com/#{repouser}/homebrew-#{repo}", "#{user}-#{repo}"]
+    else
+      return nil if return_nil
+      raise "Invalid usage"
+    end
   end
 
 end
