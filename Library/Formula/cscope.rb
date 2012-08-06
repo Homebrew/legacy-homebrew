@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cscope < Formula
-  url 'http://downloads.sourceforge.net/sourceforge/cscope/cscope-15.7a.tar.bz2'
   homepage 'http://cscope.sourceforge.net/'
-  md5 'da43987622ace8c36bbf14c15a350ec1'
+  url 'http://sourceforge.net/projects/cscope/files/cscope/15.8a/cscope-15.8a.tar.gz'
+  sha1 '00f76825791b895532778f720c509cd13b9d6846'
 
   # Patch from http://bugs.gentoo.org/show_bug.cgi?ctype=html&id=111621
   def patches; DATA; end
