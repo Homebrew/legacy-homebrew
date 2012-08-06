@@ -189,7 +189,7 @@ class X11Dependency < Requirement
   def fatal?; true; end
 
   def satisfied?
-    MacOS.x11_installed? and (@min_version == nil or @min_version <= MacOS.xquartz_version)
+    MacOS::XQuartz.installed? and (@min_version.nil? or @min_version <= MacOS::XQuartz.version)
   end
 
   def message; <<-EOS.undent
@@ -286,4 +286,24 @@ class MPIDependency < Requirement
     end
   end
 
+end
+
+class ConflictRequirement < Requirement
+  attr_reader :formula
+
+  def initialize formula, message
+    @formula = formula
+    @message = message
+  end
+
+  def message; @message; end
+
+  def satisfied?
+    keg = Formula.factory(@formula).prefix
+    not keg.exist? && Keg.new(keg).linked?
+  end
+
+  def fatal?
+    not ARGV.force?
+  end
 end

@@ -32,7 +32,7 @@ class Bsdmake < Formula
                  '@PREFIX@', prefix
 
     # X11 path shouldn't be munged
-    inreplace 'mk/sys.mk', '@PREFIX@', MacOS.x11_prefix
+    inreplace 'mk/sys.mk', '@PREFIX@', MacOS::X11.prefix
 
     inreplace 'mk/bsd.own.mk' do |s|
       s.gsub! '@INSTALL_USER@', `id -un`.chomp

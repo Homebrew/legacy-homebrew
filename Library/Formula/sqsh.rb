@@ -24,8 +24,8 @@ class Sqsh < Formula
 
     if ARGV.include? "--with-x"
       args << "--with-x"
-      args << "--x-libraries=#{MacOS.x11_prefix}/lib"
-      args << "--x-includes=#{MacOS.x11_prefix}/includes"
+      args << "--x-libraries=#{MacOS::X11.lib}"
+      args << "--x-includes=#{MacOS::X11.include}"
     end
 
     ENV['SYBASE'] = Freetds.new("freetds").prefix

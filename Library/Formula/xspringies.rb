@@ -9,7 +9,7 @@ class Xspringies < Formula
 
   def install
     inreplace 'Makefile.std' do |s|
-      s.change_make_var! "LIBS", "-L#{MacOS.x11_prefix}/lib -lm -lX11"
+      s.change_make_var! "LIBS", "-L#{MacOS::X11.lib} -lm -lX11"
       s.gsub! 'mkdirhier', 'mkdir -p'
     end
     system "make", "-f", "Makefile.std", "DDIR=#{prefix}/", "install"

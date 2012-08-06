@@ -9,8 +9,12 @@ module HomebrewEnvExtension
     delete('CLICOLOR_FORCE') # autotools doesn't like this
     remove_cc_etc
 
-    # Mountain Lion no longer ships a few .pcs; make sure we pick up our versions
     if MacOS.mountain_lion?
+      # Fix issue with sed barfing on unicode characters on Mountain Lion.
+      delete('LC_ALL')
+      self['LC_CTYPE']="C"
+
+      # Mountain Lion no longer ships a few .pcs; make sure we pick up our versions
       prepend 'PKG_CONFIG_PATH',
         HOMEBREW_REPOSITORY/'Library/Homebrew/pkgconfig', ':'
     end
@@ -310,35 +314,26 @@ Please take one of the following actions:
   end
 
   def x11
-    opoo "You do not have X11 installed, this formula may not build." unless MacOS.x11_installed?
-
-    # There are some config scripts here that should go in the PATH. This
-    # path is always under MacOS.x11_prefix, even for Xcode-only systems.
-    prepend 'PATH', MacOS.x11_prefix/'bin', ':'
-
-    # Similarily, pkgconfig files are only found under MacOS.x11_prefix.
-    prepend 'PKG_CONFIG_PATH', MacOS.x11_prefix/'lib/pkgconfig', ':'
-    prepend 'PKG_CONFIG_PATH', MacOS.x11_prefix/'share/pkgconfig', ':'
-
-    append 'LDFLAGS', "-L#{MacOS.x11_prefix}/lib"
-    append 'CMAKE_PREFIX_PATH', MacOS.x11_prefix, ':'
-
-    # We prefer XQuartz if it is installed. Otherwise, we look for Apple's
-    # X11. For Xcode-only systems, the headers are found in the SDK.
-    prefix = if MacOS.x11_prefix.to_s == '/opt/X11' or MacOS::CLT.installed?
-      MacOS.x11_prefix
-    else
-      MacOS.sdk_path/'usr/X11'
+    unless MacOS::X11.installed?
+      opoo "You do not have X11 installed, this formula may not build."
     end
 
-    append 'CPPFLAGS', "-I#{prefix}/include"
+    # There are some config scripts here that should go in the PATH
+    prepend 'PATH', MacOS::X11.bin, ':'
 
-    append 'CMAKE_PREFIX_PATH', prefix, ':'
-    append 'CMAKE_INCLUDE_PATH', prefix/'include', ':'
+    prepend 'PKG_CONFIG_PATH', MacOS::X11.lib/'pkgconfig', ':'
+    prepend 'PKG_CONFIG_PATH', MacOS::X11.share/'pkgconfig', ':'
+
+    append 'LDFLAGS', "-L#{MacOS::X11.lib}"
+    append 'CMAKE_PREFIX_PATH', MacOS::X11.prefix, ':'
+    append 'CMAKE_INCLUDE_PATH', MacOS::X11.include, ':'
+
+    append 'CPPFLAGS', "-I#{MacOS::X11.include}"
 
     unless MacOS::CLT.installed?
-      append 'CPPFLAGS', "-I#{prefix}/include/freetype2"
-      append 'CFLAGS', "-I#{prefix}/include"
+      append 'CMAKE_PREFIX_PATH', MacOS.sdk_path/'usr/X11', ':'
+      append 'CPPFLAGS', "-I#{MacOS::X11.include}/freetype2"
+      append 'CFLAGS', "-I#{MacOS::X11.include}"
     end
   end
   alias_method :libpng, :x11
