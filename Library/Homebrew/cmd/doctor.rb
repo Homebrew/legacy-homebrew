@@ -213,10 +213,7 @@ def check_for_latest_xcode
       else
         return <<-EOS.undent
           Experimental support for using the "Command Line Tools" without Xcode.
-          You have only installed Xcode. If stuff is not building, try installing
-          the Command Line Tools package.
-          You do not need Xcode for most Homebrew packages, the CLT is usually enough;
-          however having said this some packages DO require Xcode! Check for that.
+          Some formulae need Xcode to be installed (for the Frameworks not in the CLT.)
         EOS
       end
     else
@@ -252,6 +249,8 @@ def check_cc
     if MacOS::Xcode.version >= "4.3"
       return <<-EOS.undent
         Experimental support for using Xcode without the "Command Line Tools".
+        You have only installed Xcode. If stuff is not building, try installing the
+        "Command Line Tools for Xcode" package.
       EOS
     else
       return <<-EOS.undent
