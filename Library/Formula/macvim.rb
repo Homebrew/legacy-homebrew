@@ -21,12 +21,6 @@ class Macvim < Formula
   depends_on 'lua' if ARGV.include? '--with-lua'
 
   def install
-    # MacVim's Xcode project gets confused by $CC, so remove it
-    ENV['CC'] = nil
-    ENV['CFLAGS'] = nil
-    ENV['CXX'] = nil
-    ENV['CXXFLAGS'] = nil
-
     # Set ARCHFLAGS so the Python app (with C extension) that is
     # used to create the custom icons will not try to compile in
     # PPC support (which isn't needed in Homebrew-supported systems.)
@@ -69,7 +63,7 @@ class Macvim < Formula
 
     prefix.install "src/MacVim/build/Release/MacVim.app"
     inreplace "src/MacVim/mvim", /^# VIM_APP_DIR=\/Applications$/,
-              "VIM_APP_DIR=#{prefix}"
+                                 "VIM_APP_DIR=#{prefix}"
     bin.install "src/MacVim/mvim"
 
     # Create MacVim vimdiff, view, ex equivalents
