@@ -21,7 +21,7 @@ class Libharu < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           # libpng doesn't get picked up
-                          "--with-png=#{MacOS::XQuartz.prefix}"
+                          "--with-png=#{MacOS::X11.prefix}"
     system "make install"
   end
 end
