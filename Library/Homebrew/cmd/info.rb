@@ -21,7 +21,7 @@ module Homebrew extend self
   end
 
   def github_fork
-    if which 'git'
+    if which 'git' and (HOMEBREW_REPOSITORY/".git").directory?
       if `git remote -v` =~ %r{origin\s+(https?://|git(?:@|://))github.com[:/](.+)/homebrew}
         $2
       end
@@ -93,9 +93,14 @@ module Homebrew extend self
     history = github_info(f)
     puts history if history
 
+    unless f.options.empty?
+      require 'cmd/options'
+      ohai "Options"
+      Homebrew.dump_options_for_formula f
+    end
+
     the_caveats = (f.caveats || "").strip
     unless the_caveats.empty?
-      puts
       ohai "Caveats"
       puts f.caveats
     end

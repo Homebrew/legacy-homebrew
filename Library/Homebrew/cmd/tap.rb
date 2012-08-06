@@ -6,6 +6,8 @@ module Homebrew extend self
       tapd.children.each do |tap|
         puts tap.basename.sub('-', '/') if (tap/'.git').directory?
       end if tapd.directory?
+    elsif ARGV.first == "--repair"
+      repair_taps
     else
       install_tap(*tap_args)
     end
@@ -58,6 +60,28 @@ module Homebrew extend self
     tapped
   end
 
+  def repair_taps
+    count = 0
+    # prune dead symlinks in Formula
+    Dir["#{HOMEBREW_REPOSITORY}/Library/Formula/*.rb"].each do |fn|
+      if not File.exist? fn
+        File.delete fn
+        count += 1
+      end
+    end
+    puts "Pruned #{count} dead formula"
+
+    count = 0
+    # check symlinks are all set in each tap
+    HOMEBREW_REPOSITORY.join("Library/Taps").children.each do |tap|
+      files = []
+      tap.find_formula{ |file| files << tap.basename.join(file) }
+      count += link_tap_formula(files)
+    end
+
+    puts "Tapped #{count} formula"
+  end
+
   private
 
   def tap_args
@@ -72,7 +96,7 @@ end
 class Pathname
   def tap_ref
     case self.to_s
-    when %r{^#{HOMEBREW_LIBRARY}/Taps/(\w+)-(\w+)/(.+)}
+    when %r{^#{HOMEBREW_LIBRARY}/Taps/([a-z\-_]+)-(\w+)/(.+)}
       "#$1/#$2/#{File.basename($3, '.rb')}"
     when %r{^#{HOMEBREW_LIBRARY}/Formula/(.+)}
       "mxcl/master/#{File.basename($1, '.rb')}"
