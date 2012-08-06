@@ -314,26 +314,26 @@ Please take one of the following actions:
   end
 
   def x11
-    unless MacOS::XQuartz.installed?
+    unless MacOS::X11.installed?
       opoo "You do not have X11 installed, this formula may not build."
     end
 
     # There are some config scripts here that should go in the PATH
-    prepend 'PATH', MacOS::XQuartz.bin, ':'
+    prepend 'PATH', MacOS::X11.bin, ':'
 
-    prepend 'PKG_CONFIG_PATH', MacOS::XQuartz.lib/'pkgconfig', ':'
-    prepend 'PKG_CONFIG_PATH', MacOS::XQuartz.share/'pkgconfig', ':'
+    prepend 'PKG_CONFIG_PATH', MacOS::X11.lib/'pkgconfig', ':'
+    prepend 'PKG_CONFIG_PATH', MacOS::X11.share/'pkgconfig', ':'
 
-    append 'LDFLAGS', "-L#{MacOS::XQuartz.lib}"
-    append 'CMAKE_PREFIX_PATH', MacOS::XQuartz.prefix, ':'
-    append 'CMAKE_INCLUDE_PATH', MacOS::XQuartz.include, ':'
+    append 'LDFLAGS', "-L#{MacOS::X11.lib}"
+    append 'CMAKE_PREFIX_PATH', MacOS::X11.prefix, ':'
+    append 'CMAKE_INCLUDE_PATH', MacOS::X11.include, ':'
 
-    append 'CPPFLAGS', "-I#{MacOS::XQuartz.include}"
+    append 'CPPFLAGS', "-I#{MacOS::X11.include}"
 
     unless MacOS::CLT.installed?
       append 'CMAKE_PREFIX_PATH', MacOS.sdk_path/'usr/X11', ':'
-      append 'CPPFLAGS', "-I#{MacOS::XQuartz.include}/freetype2"
-      append 'CFLAGS', "-I#{MacOS::XQuartz.include}"
+      append 'CPPFLAGS', "-I#{MacOS::X11.include}/freetype2"
+      append 'CFLAGS', "-I#{MacOS::X11.include}"
     end
   end
   alias_method :libpng, :x11
