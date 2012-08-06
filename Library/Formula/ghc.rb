@@ -31,7 +31,7 @@ class Ghc < Formula
   skip_clean ['bin', 'lib']
 
   fails_with :clang do
-    build 318
+    build 421
     cause <<-EOS.undent
       Building with Clang configures GHC to use Clang as its preprocessor,
       which causes subsequent GHC-based builds to fail.
