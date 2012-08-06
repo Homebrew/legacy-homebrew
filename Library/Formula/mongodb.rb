@@ -70,6 +70,10 @@ class Mongodb < Formula
     # Store data in #{var}/mongodb instead of the default /data/db
     dbpath = #{var}/mongodb
 
+    # Append logs to #{var}/log/mongodb/mongo.log
+    logpath = #{var}/log/mongodb/mongo.log
+    logappend = true
+
     # Only accept local connections
     bind_ip = 127.0.0.1
     EOS
