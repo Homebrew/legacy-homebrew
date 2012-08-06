@@ -8,9 +8,9 @@ end
 
 class Cfitsio < Formula
   homepage 'http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html'
-  url 'ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio3300.tar.gz'
-  sha1 '70fd41db978401f423c07f53e6e7bf45b489e5cb'
-  version '3.30'
+  url 'ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio3310.tar.gz'
+  sha1 '35360dccc69dc5f12efb6fc9096ad951b59244d5'
+  version '3.310'
 
   def options
     [['--with-examples', "Compile and install example programs."]]
