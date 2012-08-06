@@ -27,6 +27,7 @@ class Dgtal < Formula
     args << std_cmake_args
     args << "-DCMAKE_BUILD_TYPE=Release"
     args << "-DBUILD_EXAMPLES=OFF"
+    args << "-DWITH_C11:bool=false"
     if ARGV.include? '--with-gmp'
       args << "-DWITH_GMP=ON"
     end
