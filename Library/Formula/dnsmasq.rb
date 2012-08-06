@@ -2,8 +2,8 @@ require 'formula'
 
 class Dnsmasq < Formula
   homepage 'http://www.thekelleys.org.uk/dnsmasq/doc.html'
-  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.61.tar.gz'
-  md5 '6ed0a5c2524dfc3a74ef494ee2469f09'
+  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.62.tar.gz'
+  sha1 'c011531a8a92b35ede387525293bfdf93b201039'
 
   def options
     [['--with-idn', "Compile with IDN support"]]
