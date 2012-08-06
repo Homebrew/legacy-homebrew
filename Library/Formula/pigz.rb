@@ -2,8 +2,8 @@ require 'formula'
 
 class Pigz < Formula
   homepage 'http://www.zlib.net/pigz/'
-  url 'http://www.zlib.net/pigz/pigz-2.2.4.tar.gz'
-  md5 '9df2a3c742524446fa4e797c17e8fd85'
+  url 'http://www.zlib.net/pigz/pigz-2.2.5.tar.gz'
+  sha1 '8c7895c7891a4945050a2f6308b9fe3d6b4c28fc'
 
   def install
     system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}"

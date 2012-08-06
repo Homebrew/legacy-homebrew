@@ -18,8 +18,8 @@ class Tiff2png < Formula
                                          "LIBTIFF=#{HOMEBREW_PREFIX}/lib",
                                          "TIFFINC=#{HOMEBREW_PREFIX}/include",
                                          "LIBJPEG=#{HOMEBREW_PREFIX}/lib",
-                                         "LIBPNG=#{MacOS.x11_prefix}/lib",
-                                         "PNGINC=#{MacOS.x11_prefix}/include",
+                                         "LIBPNG=#{MacOS::X11.lib}",
+                                         "PNGINC=#{MacOS::X11.include}",
                                          "ZLIB=/usr/lib",
                                          "DEBUGFLAGS="
     bin.install 'tiff2png'

@@ -10,6 +10,11 @@ class Mysql < Formula
   depends_on 'readline'
   depends_on 'pidof'
 
+  conflicts_with 'mariadb',
+    :because => "mysql and mariadb install the same binaries."
+  conflicts_with 'percona-server',
+    :because => "mysql and percona-server install the same binaries."
+
   fails_with :llvm do
     build 2326
     cause "https://github.com/mxcl/homebrew/issues/issue/144"
@@ -31,6 +36,7 @@ class Mysql < Formula
 
   # Remove optimization flags from `mysql_config --cflags`
   # This facilitates easy compilation of gems using a brewed mysql
+  # Also fix compilation with Xcode and no CLT: http://bugs.mysql.com/bug.php?id=66001
   def patches; DATA; end
 
   def install
@@ -178,3 +184,16 @@ index 9296075..70c18db 100644
  do
    # The first option we might strip will always have a space before it because
    # we set -I$pkgincludedir as the first option
+diff --git a/cmake/libutils.cmake b/cmake/libutils.cmake
+index 89a9de9..677c68d 100644
+--- a/cmake/libutils.cmake
++++ b/cmake/libutils.cmake
+@@ -183,7 +183,7 @@ MACRO(MERGE_STATIC_LIBS TARGET OUTPUT_NAME LIBS_TO_MERGE)
+       # binaries properly)
+       ADD_CUSTOM_COMMAND(TARGET ${TARGET} POST_BUILD
+         COMMAND rm ${TARGET_LOCATION}
+-        COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION} 
++        COMMAND libtool -static -o ${TARGET_LOCATION} 
+         ${STATIC_LIBS}
+       )  
+     ELSE()

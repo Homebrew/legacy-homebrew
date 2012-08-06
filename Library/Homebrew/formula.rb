@@ -85,10 +85,10 @@ class Formula
     end
   end
 
-  def url;      @active_spec.url;           end
-  def version;  @active_spec.version;       end
-  def specs;    @active_spec.specs;         end
-  def mirrors;  @active_spec.mirrors or []; end
+  def url;      @active_spec.url;     end
+  def version;  @active_spec.version; end
+  def specs;    @active_spec.specs;   end
+  def mirrors;  @active_spec.mirrors; end
 
   # if the dir is there, but it's empty we consider it not installed
   def installed?
@@ -624,6 +624,21 @@ private
 
     def depends_on dep
       dependencies.add(dep)
+    end
+
+    def conflicts_with formula, opts={}
+      message = <<-EOS.undent
+      #{formula} cannot be installed alongside #{name.downcase}.
+      EOS
+      message << "This is because #{opts[:reason]}\n" if opts[:reason]
+      if !ARGV.force? then message << <<-EOS.undent
+      Please `brew unlink` or `brew uninstall` #{formula} before continuing.
+      To install anyway, use:
+        brew install --force
+        EOS
+      end
+
+      dependencies.add ConflictRequirement.new(formula, message)
     end
 
     def skip_clean paths

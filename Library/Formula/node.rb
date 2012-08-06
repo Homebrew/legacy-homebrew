@@ -2,8 +2,8 @@ require 'formula'
 
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.8.2/node-v0.8.2.tar.gz'
-  sha1 '0e743d21b487151e67950f09198def058db19a1e'
+  url 'http://nodejs.org/dist/v0.8.5/node-v0.8.5.tar.gz'
+  sha1 '835ba5ca429e56f65aeb1a5d9730fff105e86337'
 
   head 'https://github.com/joyent/node.git'
 
@@ -34,7 +34,7 @@ class Node < Formula
     <<-EOS.undent
       Homebrew has NOT installed npm. We recommend the following method of
       installation:
-        curl http://npmjs.org/install.sh | sh
+        curl https://npmjs.org/install.sh | sh
 
       After installing, add the following path to your NODE_PATH environment
       variable to have npm libraries picked up:

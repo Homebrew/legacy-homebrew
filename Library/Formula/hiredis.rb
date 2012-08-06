@@ -8,7 +8,7 @@ class Hiredis < Formula
   head 'https://github.com/antirez/hiredis.git'
 
   fails_with :clang do
-    build 318
+    build 421
     cause <<-EOS.undent
       argument to 'va_arg' is of incomplete type 'void'
       This is fixed in HEAD, and can be removed for the next release.

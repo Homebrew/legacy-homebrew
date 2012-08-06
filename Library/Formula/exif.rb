@@ -1,9 +1,9 @@
 require 'formula'
 
 class Exif < Formula
-  url 'http://downloads.sourceforge.net/project/libexif/exif/0.6.19/exif-0.6.19.tar.bz2'
   homepage 'http://libexif.sourceforge.net/'
-  md5 '75f0dd6f9f2d128261721c0896e0b324'
+  url 'http://sourceforge.net/projects/libexif/files/exif/0.6.21/exif-0.6.21.tar.gz'
+  sha1 'd23139d26226b70c66d035bbc64482792c9f1101'
 
   depends_on 'pkg-config' => :build
   depends_on 'popt'

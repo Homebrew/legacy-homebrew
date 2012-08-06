@@ -17,9 +17,9 @@ def blacklisted? name
     to call ENV.libxml2 in your formula's install function.
     EOS
   when 'freetype', 'libpng' then <<-EOS.undent
-    Apple distributes #{name} with OS X, you can find it in /usr/X11/lib.
-    However not all build scripts look here, so you may need to call ENV.x11
-    in your formula's install function.
+    Apple distributed #{name} with OS X until 10.8. It is also distributed
+    as part of XQuartz. You can find the XQuartz installer here:
+      http://xquartz.macosforge.org
     EOS
   when 'wxwidgets' then <<-EOS.undent
     An old version of wxWidgets can be found in /usr/X11/lib. However, Homebrew
@@ -40,7 +40,7 @@ def blacklisted? name
     EOS
   when 'macruby' then <<-EOS.undent
     MacRuby works better when you install their package:
-      http://www.macruby.org/downloads.html
+      http://www.macruby.org/
 
     Although if you prefer, there is a formula in homebrew-alt.
     EOS
@@ -48,7 +48,7 @@ def blacklisted? name
     Homebrew does not provide npm because it is self-updating. To install it, first
     `brew install nodejs' and then:
 
-        curl http://npmjs.org/install.sh | sh
+        curl https://npmjs.org/install.sh | sh
     EOS
   when /(lib)?lzma/
     "lzma is now part of the xz formula."

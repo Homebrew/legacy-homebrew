@@ -2,16 +2,16 @@ require 'formula'
 
 class Groovyserv < Formula
   homepage 'http://kobo.github.com/groovyserv/'
-  url 'https://github.com/downloads/kobo/groovyserv/groovyserv-0.9-src.zip'
-  sha1 '54464608f90a381b44cf7959136e1b1f31a3919c'
+  url 'https://github.com/downloads/kobo/groovyserv/groovyserv-0.10-src.zip'
+  sha1 'b8912ce7871458be6452876ab0215b5c89e82ad0'
 
   head 'https://github.com/kobo/groovyserv.git'
 
-  depends_on 'gradle' => :build
   depends_on 'groovy'
 
   def install
-    system 'gradle clean executables'
+    ENV['CC'] = ENV['CFLAGS'] = nil # to workaround
+    system './gradlew clean executables'
 
     prefix.install %w{LICENSE.txt README.txt NOTICE.txt}
 

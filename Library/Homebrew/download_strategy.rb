@@ -486,11 +486,9 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
     Dir.chdir @clone do
       if @spec and @ref
         ohai "Checking out #{@spec} #{@ref}"
-        Dir.chdir @clone do
-          safe_system 'hg', 'archive', '-y', '-r', @ref, '-t', 'files', dst
-        end
+        safe_system 'hg', 'archive', '--subrepos', '-y', '-r', @ref, '-t', 'files', dst
       else
-        safe_system 'hg', 'archive', '-y', '-t', 'files', dst
+        safe_system 'hg', 'archive', '--subrepos', '-y', '-t', 'files', dst
       end
     end
   end

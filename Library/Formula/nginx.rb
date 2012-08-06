@@ -6,8 +6,8 @@ class Nginx < Formula
   sha1 '1893940485e21f8c9bdc8058eb9cc2826d629d04'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.3.3.tar.gz'
-    sha1 '27e3d93e68ecaf154370f2fbcc4021807405e0d1'
+    url 'http://nginx.org/download/nginx-1.3.4.tar.gz'
+    sha1 'ea3027b93a0f82cf9e176c90128c669ea2a688ae'
   end
 
   depends_on 'pcre'
@@ -44,8 +44,8 @@ class Nginx < Formula
             "--with-http_ssl_module",
             "--with-pcre",
             "--with-ipv6",
-            "--with-cc-opt='-I#{HOMEBREW_PREFIX}/include'",
-            "--with-ld-opt='-L#{HOMEBREW_PREFIX}/lib'",
+            "--with-cc-opt=-I#{HOMEBREW_PREFIX}/include",
+            "--with-ld-opt=-L#{HOMEBREW_PREFIX}/lib",
             "--conf-path=#{etc}/nginx/nginx.conf",
             "--pid-path=#{var}/run/nginx.pid",
             "--lock-path=#{var}/nginx/nginx.lock"]

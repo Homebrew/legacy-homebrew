@@ -11,7 +11,8 @@ class SLang < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}",
-                          "--with-png=#{MacOS.x11_prefix}"
+                          "--with-pnglib=#{MacOS::X11.lib}",
+                          "--with-pnginc=#{MacOS::X11.include}"
     ENV.j1
     system "make"
     system "make install"

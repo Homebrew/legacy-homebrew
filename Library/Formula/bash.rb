@@ -5,7 +5,7 @@ class Bash < Formula
   url 'http://ftpmirror.gnu.org/bash/bash-4.2.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/bash/bash-4.2.tar.gz'
   sha256 'a27a1179ec9c0830c65c6aa5d7dab60f7ce1a2a608618570f96bfa72e95ab3d8'
-  version '4.2.29'
+  version '4.2.37'
 
   depends_on 'readline'
 

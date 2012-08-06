@@ -1,9 +1,9 @@
 require 'formula'
 
 class Jasper < Formula
-  homepage 'http://slackware.sukkology.net/packages/jasper/'
-  url 'http://slackware.sukkology.net/packages/jasper/jasper-1.900.1.zip'
-  md5 'a342b2b4495b3e1394e161eb5d85d754'
+  homepage 'http://www.ece.uvic.ca/~frodo/jasper/'
+  url 'http://www.ece.uvic.ca/~frodo/jasper/software/jasper-1.900.1.zip'
+  sha1 '9c5735f773922e580bf98c7c7dfda9bbed4c5191'
 
   depends_on 'jpeg'
 

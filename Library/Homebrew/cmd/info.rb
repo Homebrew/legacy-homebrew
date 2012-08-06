@@ -68,6 +68,11 @@ module Homebrew extend self
     end
 
     puts "Depends on: #{f.deps*', '}" unless f.deps.empty?
+    conflicts = []
+    f.external_deps.each do |dep|
+      conflicts << dep.formula if dep.is_a? ConflictRequirement
+    end
+    puts "Conflicts with: #{conflicts*', '}" unless conflicts.empty?
 
     if f.rack.directory?
       kegs = f.rack.children
@@ -88,9 +93,14 @@ module Homebrew extend self
     history = github_info(f)
     puts history if history
 
+    unless f.options.empty?
+      require 'cmd/options'
+      ohai "Options"
+      Homebrew.dump_options_for_formula f
+    end
+
     the_caveats = (f.caveats || "").strip
     unless the_caveats.empty?
-      puts
       ohai "Caveats"
       puts f.caveats
     end

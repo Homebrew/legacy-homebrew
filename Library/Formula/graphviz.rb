@@ -7,7 +7,7 @@ end
 class Graphviz < Formula
   homepage 'http://graphviz.org/'
   url 'http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.28.0.tar.gz'
-  md5 '8d26c1171f30ca3b1dc1b429f7937e58'
+  sha1 '4725d88a13e071ee22e632de551d4a55ca08ee7d'
 
   depends_on 'pkg-config' => :build
   depends_on 'pango' if ARGV.include? '--with-pangocairo'
@@ -19,8 +19,11 @@ class Graphviz < Formula
   end
 
   def options
-    [["--with-pangocairo", "Build with Pango/Cairo for alternate PDF output"],
-     ["--with[out]-bindings", "Build Perl/Python/Ruby/etc. bindings (default on Lion; may not work on earlier systems)"]]
+    [
+      ["--with-pangocairo", "Build with Pango/Cairo for alternate PDF output"],
+      ["--with[out]-bindings", "Build Perl/Python/Ruby/etc. bindings (default on Lion; may not work on earlier systems)"],
+      ['--universal', 'Build Graphviz with universal binaries and libraries']
+    ]
   end
 
   def patches
@@ -29,6 +32,7 @@ class Graphviz < Formula
   end
 
   def install
+    ENV.universal_binary if ARGV.build_universal?
     args = ["--disable-debug",
             "--disable-dependency-tracking",
             "--prefix=#{prefix}",
@@ -45,6 +49,7 @@ class Graphviz < Formula
       system "xcodebuild", "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"
     end
     prefix.install "macosx/build/Release/Graphviz.app"
+    (bin+'gvmap.sh').unlink
   end
 
   def test

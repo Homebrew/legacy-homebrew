@@ -3,7 +3,7 @@ require 'formula'
 class Recode < Formula
   homepage 'http://recode.progiciels-bpi.ca/index.html'
   url 'https://github.com/pinard/Recode/tarball/v3.6'
-  md5 'f82e9a6ede9119268c13493c9add2809'
+  sha1 '417c36dfe9c729276a3d439d280b515b615241df'
 
   depends_on "gettext"
   depends_on :libtool
@@ -14,17 +14,22 @@ class Recode < Formula
     { :p0 => DATA }
   end
 
+  def copy_libtool_files!
+    if MacOS::Xcode.version >= "4.3"
+      s = Formula.factory('libtool').share
+      d = "#{s}/libtool/config"
+      cp ["#{d}/config.guess", "#{d}/config.sub"], "."
+    elsif MacOS.leopard?
+      cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config.*"], "."
+    else
+      cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config/config.*"], "."
+    end
+  end
+
   def install
     ENV.append 'LDFLAGS', '-liconv'
 
-    if MacOS.xcode_version >= "4.3"
-      d = "#{HOMEBREW_PREFIX}/share/libtool/config"
-      cp ["#{d}/config.guess", "#{d}/config.sub"], "."
-    elsif MacOS.leopard?
-      cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config.*"], "."
-    else
-      cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config/config.*"], "."
-    end
+    copy_libtool_files!
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--without-included-gettext",

@@ -13,7 +13,7 @@ class SdlGfx < Formula
 
   def install
     ENV.universal_binary if ARGV.build_universal?
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-sdltest"
     system "make install"

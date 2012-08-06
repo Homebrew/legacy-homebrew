@@ -19,7 +19,7 @@ class Gmp < Formula
     # Also force use of 4.2 on 10.6 in case a user has changed the default
     # Do not force if xcode > 4.2 since it does not have /usr/bin/gcc-4.2 as default
     # FIXME convert this to appropriate fails_with annotations
-    ENV.gcc unless MacOS.xcode_version.to_f >= 4.2
+    ENV.gcc if MacOS::Xcode.provides_gcc?
 
     args = %W[--prefix=#{prefix} --enable-cxx]
 
