@@ -14,7 +14,7 @@ class Xpdf < Formula
   def install
     ENV.append_to_cflags "-I#{MacOS::X11.include} -#{MacOS::X11.include}/freetype2"
 
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}", "--with-Xm-library=no"
     system "make"
     system "make install"
   end
