@@ -22,7 +22,9 @@ class Nginx < Formula
   def options
     [
       ['--with-passenger', "Compile with support for Phusion Passenger module"],
-      ['--with-webdav',    "Compile with support for WebDAV module"]
+      ['--with-webdav',    "Compile with support for WebDAV module"],
+      ['--with-mp4',    "Compile with support for MP4 streaming"],
+      ['--with-flv',    "Compile with support for FLV streaming"]
     ]
   end
 
@@ -52,6 +54,8 @@ class Nginx < Formula
 
     args << passenger_config_args if ARGV.include? '--with-passenger'
     args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
+    args << "--with-http_mp4_module" if ARGV.include? '--with-mp4'
+    args << "--with-http_flv_module" if ARGV.include? '--with-flv'
 
     system "./configure", *args
     system "make"
