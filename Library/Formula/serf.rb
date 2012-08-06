@@ -20,6 +20,8 @@ class Serf < Formula
       ENV['CPP'] = "#{ENV.cc} -E"
       # Use HB libtool not the one from apr that also has a bad path.
       ENV['APR_LIBTOOL'] = 'glibtool'
+      # Especially for Xcode-only, the apr hearders are needed by glibtool
+      ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include/apr-1"
     end
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
