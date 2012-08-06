@@ -22,7 +22,8 @@ class Nginx < Formula
   def options
     [
       ['--with-passenger', "Compile with support for Phusion Passenger module"],
-      ['--with-webdav',    "Compile with support for WebDAV module"]
+      ['--with-webdav',    "Compile with support for WebDAV module"],
+      ['--with-ldap',      "Compile with support for LDAP Authentication"]
     ]
   end
 
@@ -52,6 +53,12 @@ class Nginx < Formula
 
     args << passenger_config_args if ARGV.include? '--with-passenger'
     args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
+
+    if ARGV.include? '--with-ldap'
+      system "rm -rf /tmp/homebrew/nginx-auth-ldap"
+      system "git clone https://code.google.com/p/nginx-auth-ldap/ /tmp/homebrew/nginx-auth-ldap"
+      args << "--add-module=/tmp/homebrew/nginx-auth-ldap"
+    end
 
     system "./configure", *args
     system "make"
