@@ -7,8 +7,11 @@ module Homebrew extend self
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
     ARGV.named.each do |name|
-      msg = blacklisted? name
-      raise "No available formula for #{name}\n#{msg}" if msg
+      # if a formula has been tapped ignore the blacklisting
+      if not File.file? HOMEBREW_REPOSITORY/"Library/Formula/#{name}.rb"
+        msg = blacklisted? name
+        raise "No available formula for #{name}\n#{msg}" if msg
+      end
     end unless ARGV.force?
 
     if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
