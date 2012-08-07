@@ -72,18 +72,3 @@ class Sphinx < Formula
     EOS
   end
 end
-
-__END__
-diff --git a/configure b/configure
-index aebac75..82d6d05 100755
---- a/configure
-+++ b/configure
-@@ -4361,7 +4361,7 @@ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
- 
- #ifdef __GNUC__
- #if __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ > 3)
--void main() {}
-+int main() {}
- #else
- syntax error
- #endif
