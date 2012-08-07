@@ -630,7 +630,7 @@ private
       message = <<-EOS.undent
       #{formula} cannot be installed alongside #{name.downcase}.
       EOS
-      message << "This is because #{opts[:reason]}\n" if opts[:reason]
+      message << "This is because #{opts[:because]}\n" if opts[:because]
       if !ARGV.force? then message << <<-EOS.undent
       Please `brew unlink` or `brew uninstall` #{formula} before continuing.
       To install anyway, use:
