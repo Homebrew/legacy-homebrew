@@ -8,10 +8,7 @@ class RestShell < Formula
 
   def install
     libexec.install Dir['*']
-    (bin/'rest-shell').write <<-EOS.undent
-      #!/bin/bash
-      exec "#{libexec}/bin/rest-shell" "$@"
-    EOS
+    bin.write_exec_script libexec/'bin/rest-shell'
   end
 
   def test

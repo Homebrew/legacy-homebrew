@@ -35,12 +35,10 @@ class OpenMpi < Formula
 
     # If Fortran bindings were built, there will be a stray `.mod` file
     # (Fortran header) in `lib` that needs to be moved to `include`.
-    mv "#{lib}/mpi.mod", include if File.exists? "#{lib}/mpi.mod"
+    include.install lib/'mpi.mod' if File.exists? "#{lib}/mpi.mod"
 
-    mv "#{bin}/vtsetup.jar", libexec
-    (bin+'vtsetup.jar').write <<-EOS.undent
-      #!/bin/bash
-      java -jar "#{libexec}/vtsetup.jar" "$@"
-    EOS
+    # Not sure why the wrapped script has a jar extension - adamv
+    libexec.install bin/'vtsetup.jar'
+    bin.write_jar_script libexec/'vtsetup.jar', 'vtsetup.jar'
   end
 end
