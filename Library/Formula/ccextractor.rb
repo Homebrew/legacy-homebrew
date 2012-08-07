@@ -1,8 +1,5 @@
 require 'formula'
 
-# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
 class Ccextractor < Formula
   homepage 'http://ccextractor.sourceforge.net/'
   url 'http://sourceforge.net/projects/ccextractor/files/ccextractor/0.62/ccextractor.src.0.62.zip/'
