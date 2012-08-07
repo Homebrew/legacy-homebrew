@@ -4,7 +4,8 @@ module Homebrew extend self
     if ARGV.empty?
       tapd = HOMEBREW_LIBRARY/"Taps"
       tapd.children.each do |tap|
-        puts tap.basename.sub('-', '/') if (tap/'.git').directory?
+        # only replace the *last* dash: yes, tap filenames suck
+        puts tap.basename.to_s.reverse.sub('-', '/').reverse if (tap/'.git').directory?
       end if tapd.directory?
     elsif ARGV.first == "--repair"
       repair_taps
