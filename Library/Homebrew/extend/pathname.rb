@@ -353,7 +353,7 @@ class Pathname
             To list all files that would be deleted:
               brew link -n formula_name
             EOS
-        elsif !dirname.writable?
+        elsif !dirname.writable_real?
           raise <<-EOS.undent
             Could not symlink file: #{src.expand_path}
             #{dirname} is not writable. You should change its permissions.
@@ -375,7 +375,7 @@ class Pathname
 
   def ensure_writable
     saved_perms = nil
-    unless writable?
+    unless writable_real?
       saved_perms = stat.mode
       chmod 0644
     end
