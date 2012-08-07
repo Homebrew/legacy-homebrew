@@ -425,6 +425,10 @@ class Formula
   def deps;         self.class.dependencies.deps;         end
   def requirements; self.class.dependencies.requirements; end
 
+  def conflicts
+    requirements.select { |r| r.is_a? ConflictRequirement }
+  end
+
   # deps are in an installable order
   # which means if a depends on b then b will be ordered before a in this list
   def recursive_deps
