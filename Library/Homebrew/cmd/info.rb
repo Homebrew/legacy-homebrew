@@ -69,7 +69,7 @@ module Homebrew extend self
 
     puts "Depends on: #{f.deps*', '}" unless f.deps.empty?
     conflicts = []
-    f.external_deps.each do |dep|
+    f.requirements.each do |dep|
       conflicts << dep.formula if dep.is_a? ConflictRequirement
     end
     puts "Conflicts with: #{conflicts*', '}" unless conflicts.empty?
