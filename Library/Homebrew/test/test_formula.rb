@@ -6,8 +6,7 @@ class AbstractDownloadStrategy
 end
 
 class MostlyAbstractFormula < Formula
-  @url=''
-  @homepage = 'http://example.com/'
+  url ''
 end
 
 class FormulaTests < Test::Unit::TestCase
@@ -130,35 +129,6 @@ class FormulaTests < Test::Unit::TestCase
     assert_equal '0.2', f.devel.version
     assert_equal 'HEAD', f.head.version
     assert_equal 0, f.bottle.revision
-  end
-
-  def test_ancient_formula_specs
-    f = AncientSpecTestBall.new
-
-    assert_equal 'http://example.com', f.homepage
-    assert_equal 'file:///foo.com/testball-0.1.tbz', f.url
-    assert_equal '0.1', f.version
-    assert_equal f.stable, f.active_spec
-    assert_equal CurlDownloadStrategy, f.download_strategy
-    assert_instance_of CurlDownloadStrategy, f.downloader
-
-    assert_instance_of SoftwareSpec, f.stable
-    assert_instance_of HeadSoftwareSpec, f.head
-
-    assert_equal 'file:///foo.com/testball-0.1.tbz', f.stable.url
-    assert_equal 'https://github.com/mxcl/homebrew.git', f.head.url
-
-    assert_nil f.stable.specs
-    assert_equal({ :tag => 'foo' }, f.head.specs)
-
-    assert_instance_of Checksum, f.stable.checksum
-    assert_nil f.head.checksum
-    assert_equal :md5, f.stable.checksum.hash_type
-    assert_match /[0-9a-fA-F]{32}/, f.stable.checksum.hexdigest
-
-    assert !f.stable.explicit_version?
-    assert_equal '0.1', f.stable.version
-    assert_equal 'HEAD', f.head.version
   end
 
   def test_devel_active_spec

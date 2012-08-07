@@ -3,8 +3,9 @@ require 'formula'
 class TestBall < Formula
   # name parameter required for some Formula::factory
   def initialize name=nil
-    @url="file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
     @homepage = 'http://example.com/'
+    @stable ||= SoftwareSpec.new
+    @stable.url "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
     super "testball"
   end
   def install
@@ -21,24 +22,21 @@ class TestBallWithRealPath < TestBall
 end
 
 class TestBallWithMirror < Formula
-  # `url` is bogus---curl should fail to download it. The mirror is fine
-  # though.
   url "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
   mirror "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
 
   def initialize name=nil
-    @homepage = 'http://example.com/'
     super "testballwithmirror"
   end
 end
 
 class ConfigureFails < Formula
   # name parameter required for some Formula::factory
+  url "file:///#{TEST_FOLDER}/tarballs/configure_fails.tar.gz"
+  version '1.0.0'
+  md5 '9385e1b68ab8af68ac2c35423443159b'
+
   def initialize name=nil
-    @url="file:///#{TEST_FOLDER}/tarballs/configure_fails.tar.gz"
-    @homepage = 'http://example.com/'
-    @version = '1.0.0'
-    @md5 = '9385e1b68ab8af68ac2c35423443159b'
     super "configurefails"
   end
 
@@ -49,8 +47,7 @@ end
 
 class TestCompilerFailures < Formula
   def initialize name=nil
-    @url="file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
-    @homepage = 'http://example.com/'
+    @stable = SoftwareSpec.new "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
     super "compilerfailures"
   end
 end
@@ -117,18 +114,6 @@ class SpecTestBall < Formula
 
   def initialize name=nil
     super "spectestball"
-  end
-end
-
-class AncientSpecTestBall < Formula
-  @homepage='http://example.com'
-  @url='file:///foo.com/testball-0.1.tbz'
-  @md5='060844753f2a3b36ecfc3192d307dab2'
-  @head='https://github.com/mxcl/homebrew.git'
-  @specs={ :tag => 'foo' }
-
-  def initialize name=nil
-    super "ancientspectestball"
   end
 end
 
