@@ -249,6 +249,8 @@ def check_cc
     if MacOS::Xcode.version >= "4.3"
       return <<-EOS.undent
         Experimental support for using Xcode without the "Command Line Tools".
+        You have only installed Xcode. If stuff is not building, try installing the
+        "Command Line Tools for Xcode" package.
       EOS
     else
       return <<-EOS.undent
@@ -277,7 +279,7 @@ def __check_subdir_access base
 
   target.find do |d|
     next unless d.directory?
-    cant_read << d unless d.writable?
+    cant_read << d unless d.writable_real?
   end
 
   cant_read.sort!
@@ -298,7 +300,7 @@ end
 def check_access_usr_local
   return unless HOMEBREW_PREFIX.to_s == '/usr/local'
 
-  unless Pathname('/usr/local').writable? then <<-EOS.undent
+  unless Pathname('/usr/local').writable_real? then <<-EOS.undent
     The /usr/local directory is not writable.
     Even if this directory was writable when you installed Homebrew, other
     software may change permissions on this directory. Some versions of the
@@ -320,7 +322,7 @@ end
 
 def __check_folder_access base, msg
   folder = HOMEBREW_PREFIX+base
-  if folder.exist? and not folder.writable?
+  if folder.exist? and not folder.writable_real?
     <<-EOS.undent
       #{folder} isn't writable.
       This can happen if you "sudo make install" software that isn't managed
@@ -390,8 +392,14 @@ end
 
 def check_xcode_select_path
   # with the advent of CLT-only support, we don't need xcode-select
-  return if MacOS::CLT.installed?
-  unless File.file? "#{MacOS::Xcode.folder}/usr/bin/xcodebuild" and not MacOS::Xcode.bad_xcode_select_path?
+
+  if MacOS::Xcode.bad_xcode_select_path?
+    <<-EOS.undent
+      Your xcode-select path is set to /
+      You must unset it or builds will hang:
+        sudo rm /usr/share/xcode-select/xcode_dir_link
+    EOS
+  elsif not MacOS::CLT.installed? and not File.file? "#{MacOS::Xcode.folder}/usr/bin/xcodebuild"
     path = MacOS.app_with_bundle_id(MacOS::Xcode::V4_BUNDLE_ID) || MacOS.app_with_bundle_id(MacOS::Xcode::V3_BUNDLE_ID)
     path = '/Developer' if path.nil? or not path.directory?
     <<-EOS.undent
@@ -783,7 +791,7 @@ def check_git_status
     unless `git status -s -- Library/Homebrew/ 2>/dev/null`.chomp.empty? then <<-EOS.undent
       You have uncommitted modifications to Homebrew's core.
       Unless you know what you are doing, you should run:
-        cd #{HOMEBREW_REPOSITORY} && git reset --hard
+        cd #{HOMEBREW_REPOSITORY}/Library && git reset --hard && git clean -f
       EOS
     end
   end
