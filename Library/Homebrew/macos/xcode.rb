@@ -70,7 +70,7 @@ module MacOS::Xcode extend self
     xcode43build = V4_BUNDLE_PATH/'Contents/Developer/usr/bin/xcodebuild'
     if xcode43build.file?
       `#{xcode43build} -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
-      $1 if $1
+      return $1 if $1
     end
 
     # Xcode 4.3 xc* tools hang indefinately if xcode-select path is set thus
