@@ -22,7 +22,6 @@ class Keg < Pathname
   end
 
   def uninstall
-    chmod_R 0777 # ensure we have permission to delete
     rmtree
     parent.rmdir_if_possible
   end
