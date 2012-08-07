@@ -2,7 +2,7 @@ require 'formula'
 
 class E2fsprogs < Formula
   homepage 'http://e2fsprogs.sourceforge.net/'
-  url 'http://prdownloads.sourceforge.net/e2fsprogs/e2fsprogs-1.42.5.tar.gz'
+  url 'http://downloads.sourceforge.net/e2fsprogs/e2fsprogs-1.42.5.tar.gz'
   sha1 '41bc6d247238eac65864193e6de941956da493cb'
 
   head 'https://git.kernel.org/pub/scm/fs/ext2/e2fsprogs.git'
