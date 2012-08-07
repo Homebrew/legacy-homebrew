@@ -32,13 +32,7 @@ class BulkExtractor < Formula
 
     # Install the GUI the Homebrew way
     libexec.install 'java_gui/BEViewer.jar'
-    (bin+'BEViewer').write script
-  end
-
-  def script; <<-EOS.undent
-    #!/bin/sh
-    exec java -Xmx1g -jar #{libexec}/BEViewer.jar "$@"
-    EOS
+    bin.write_jar_script libexec/"BEViewer.jar", "BEViewer", "-Xmx1g"
   end
 
   def caveats; <<-EOS.undent

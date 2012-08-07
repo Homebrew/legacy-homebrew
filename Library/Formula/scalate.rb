@@ -6,14 +6,6 @@ class Scalate < Formula
   version '1.5.3'
   sha1 '17e3cd6252b36c9cf80566738299c7e19df957bf'
 
-  # This startup script for Scalate calls the real startup script installed
-  # to Homebrew's cellar. This avoids issues with local vs. absolute symlinks.
-  def startup_script; <<-EOS.undent
-    #!/bin/bash
-    "#{libexec}/bin/scalate" "$@"
-    EOS
-  end
-
   def install
     # Recursively fix the permissions of extracted regular files
     # excluding the bin directory contents.
@@ -23,7 +15,7 @@ class Scalate < Formula
 
     prefix.install %w{ license.txt readme.html }
     libexec.install Dir['*']
-    (bin+'scalate').write startup_script
+    bin.write_exec_sript libexec/'bin/scalate'
   end
 
   def caveats; <<-EOS.undent
