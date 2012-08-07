@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "July 2012" "Homebrew" "brew"
+.TH "BREW" "1" "August 2012" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -10,7 +10,7 @@
 \fBbrew\fR \-\-version
 .
 .br
-\fBbrew\fR [\-v|\-\-verbose] command [options] [formula] \.\.\.
+\fBbrew\fR [\-\-verbose|\-v] command [options] [formula] \.\.\.
 .
 .SH "DESCRIPTION"
 Homebrew is the easiest and most flexible way to install the UNIX tools Apple didn\'t include with OS X\.
@@ -286,6 +286,12 @@ Tap a new formula repository from GitHub, or list existing taps\.
 .
 .IP
 \fItap\fR is of the form \fIuser\fR/\fIrepo\fR, e\.g\. \fBbrew tap homebrew/dupes\fR\.
+.
+.TP
+\fBtap \-\-repair\fR:
+.
+.IP
+Ensures all tapped formula are symlinked into Library/Formula and prunes dead formula from Library/Formula\.
 .
 .TP
 \fBtest\fR \fIformula\fR
