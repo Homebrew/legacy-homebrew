@@ -258,6 +258,11 @@ For the full command list, see the COMMANDS section.
 
     <tap> is of the form <user>/<repo>, e.g. `brew tap homebrew/dupes`.
 
+  * `tap --repair`:
+
+    Ensures all tapped formula are symlinked into Library/Formula and prunes dead
+    formula from Library/Formula.
+
   * `test` <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
     test method. There is no standard output or return code, but it should
