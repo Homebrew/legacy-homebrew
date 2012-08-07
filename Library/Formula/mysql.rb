@@ -7,8 +7,7 @@ class Mysql < Formula
   sha1 '85dfea413a7d5d2733a40f9dd79cf2320302979f'
 
   depends_on 'cmake' => :build
-  depends_on 'readline'
-  depends_on 'pidof'
+  depends_on 'pidof' unless MacOS.mountain_lion?
 
   conflicts_with 'mariadb',
     :because => "mysql and mariadb install the same binaries."
@@ -97,6 +96,8 @@ class Mysql < Formula
     # Fix up the control script and link into bin
     inreplace "#{prefix}/support-files/mysql.server" do |s|
       s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
+      # pidof can be replaced with pgrep from proctools on Mountain Lion
+      s.gsub!(/pidof/, 'pgrep') if MacOS.mountain_lion?
     end
     ln_s "#{prefix}/support-files/mysql.server", bin
   end
