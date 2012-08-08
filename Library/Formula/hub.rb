@@ -22,13 +22,4 @@ class Hub < Formula
       '/usr/bin/rake'
     end
   end
-
-  def caveats; <<-EOS.undent
-    Bash completion has been installed to:
-      #{etc}/bash_completion.d
-
-    zsh completion has been installed to:
-      #{HOMEBREW_PREFIX}/share/zsh/site-functions
-    EOS
-  end
 end

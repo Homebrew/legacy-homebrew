@@ -58,6 +58,15 @@ class Keg < Pathname
     linked_keg_record.directory? and self == linked_keg_record.realpath
   end
 
+  def completion_installed? shell
+    dir = case shell
+      when :bash then self/'etc/bash_completion.d'
+      when :zsh then self/'share/zsh/site-functions'
+      end
+    return if dir.nil?
+    dir.directory? and not dir.children.length.zero?
+  end
+
   def link mode=nil
     raise "Cannot link #{fname}\nAnother version is already linked: #{linked_keg_record.realpath}" if linked_keg_record.directory?
 

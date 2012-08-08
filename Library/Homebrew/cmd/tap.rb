@@ -4,7 +4,8 @@ module Homebrew extend self
     if ARGV.empty?
       tapd = HOMEBREW_LIBRARY/"Taps"
       tapd.children.each do |tap|
-        puts tap.basename.sub('-', '/') if (tap/'.git').directory?
+        # only replace the *last* dash: yes, tap filenames suck
+        puts tap.basename.to_s.reverse.sub('-', '/').reverse if (tap/'.git').directory?
       end if tapd.directory?
     elsif ARGV.first == "--repair"
       repair_taps
@@ -29,6 +30,22 @@ module Homebrew extend self
     tapd.find_formula{ |file| files << tapd.basename.join(file) }
     tapped = link_tap_formula(files)
     puts "Tapped #{tapped} formula"
+
+    # Figure out if this repo is private
+    # curl will throw an exception if the repo is private (Github returns a 404)
+    begin
+      curl('-Ifso', '/dev/null', "https://api.github.com/repos/#{repouser}/homebrew-#{repo}")
+    rescue
+      puts
+      puts "It looks like you tapped a private repository"
+      puts "In order to not input your credentials every time"
+      puts "you can use git HTTP credential caching or issue the"
+      puts "following command:"
+      puts
+      puts "   cd #{tapd}"
+      puts "   git remote set-url origin git@github.com:#{repouser}/homebrew-#{repo}.git"
+      puts
+    end
   end
 
   def link_tap_formula formulae
