@@ -14,8 +14,9 @@ class OsspUuid < Formula
   end
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
-    if ARGV.include? '--32-bit'
+    if ARGV.build_universal?
+      ENV.universal_binary
+    elsif ARGV.include? '--32-bit'
       ENV.append 'CFLAGS', '-arch i386'
       ENV.append 'LDFLAGS', '-arch i386'
     end
