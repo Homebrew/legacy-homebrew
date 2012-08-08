@@ -2,8 +2,8 @@ require 'formula'
 
 class Vala < Formula
   homepage 'http://live.gnome.org/Vala'
-  url 'http://download.gnome.org/sources/vala/0.17/vala-0.17.2.tar.xz'
-  sha1 '3d79a42d3206da4a757945256de49f1c71c4e35a'
+  url 'http://download.gnome.org/sources/vala/0.17/vala-0.17.4.tar.xz'
+  sha1 'e7ac9fa432eedb480827f7664ad1e26f55aaed87'
 
   head 'git://git.gnome.org/vala'
 
