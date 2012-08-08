@@ -9,6 +9,7 @@ class Xqilla < Formula
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--with-xerces=#{HOMEBREW_PREFIX}",
                           "--prefix=#{prefix}"
     system "make install"
   end
