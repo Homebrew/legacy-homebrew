@@ -12,7 +12,8 @@ class Docbook < Formula
                 Docbookxml44,
                 Docbookxml45,
                 Docbookxml50,
-                Docbookxsl]
+                Docbookxsl,
+                Docbookxslns]
 
     (etc+'xml').mkpath
     system "xmlcatalog", "--noout", "--create", "#{etc}/xml/catalog"
@@ -94,4 +95,22 @@ class Docbookxsl < Formula
   end
 
   def catalog; 'docbook/xsl/'+version; end
+end
+
+class Docbookxslns < Formula
+  homepage 'http://docbook.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl-ns/1.77.1/docbook-xsl-ns-1.77.1.tar.bz2'
+  md5 '432e4ad25c24a6e83de844cb9c683500'
+
+  def install
+    doc_files = %w[AUTHORS BUGS COPYING NEWS README RELEASE-NOTES.txt TODO VERSION]
+    xsl_files = %w[assembly catalog.xml common docsrc eclipse epub epub3 extensions
+                   fo highlighting html htmlhelp images javahelp lib log manpages
+                   params profiling roundtrip slides template tests tools webhelp
+                   website xhtml xhtml-1_1 xhtml5]
+    docbook = Formula.factory 'docbook'
+    (docbook.prefix+'docbook/xsl-ns'+version).install xsl_files + doc_files
+  end
+
+  def catalog; 'docbook/xsl-ns/'+version; end
 end
