@@ -12,9 +12,9 @@ class ExternalDepsTests < Test::Unit::TestCase
     end
 
     # Should have found a dep
-    assert d.external_deps.size == 1
+    assert d.requirements.size == 1
 
-    d.external_deps do |dep|
+    d.requirements do |req|
       assert !d.satisfied?
     end
   end
@@ -26,9 +26,9 @@ class ExternalDepsTests < Test::Unit::TestCase
     end
 
     # Should have found a dep
-    assert d.external_deps.size == 1
+    assert d.requirements.size == 1
 
-    d.external_deps do |dep|
+    d.requirements do |req|
       assert d.satisfied?
     end
   end
