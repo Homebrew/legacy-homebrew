@@ -1,10 +1,11 @@
 require 'formula'
 
 class Libgee < Formula
-  url 'http://download.gnome.org/sources/libgee/0.6/libgee-0.6.3.tar.bz2'
   homepage 'http://live.gnome.org/Libgee'
-  sha256 'fc3479d692752289c6c1e312fdd79d1f9fdf5322d16fa8f4faf0d6a5e61c5af8'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/libgee/0.6/libgee-0.6.5.tar.xz'
+  sha256 '99b78db2492c533e386a07bce9aab1de4bdf23284b1a485b893683de388fff48'
 
+  depends_on 'xz' => :build
   depends_on 'vala'
 
   def install
