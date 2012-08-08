@@ -167,17 +167,6 @@ def check_for_stray_las
   s
 end
 
-def check_for_x11
-  unless MacOS::XQuartz.installed? then <<-EOS.undent
-    X11 is not installed.
-    You don't have X11 installed as part of your OS X installation.
-    This is not required for all formulae, but is expected by some.
-    You can download the latest version of XQuartz from:
-      https://xquartz.macosforge.org
-    EOS
-  end
-end
-
 def check_for_other_package_managers
   if macports_or_fink_installed?
     <<-EOS.undent
@@ -260,6 +249,8 @@ def check_cc
     if MacOS::Xcode.version >= "4.3"
       return <<-EOS.undent
         Experimental support for using Xcode without the "Command Line Tools".
+        You have only installed Xcode. If stuff is not building, try installing the
+        "Command Line Tools for Xcode" package.
       EOS
     else
       return <<-EOS.undent
@@ -288,7 +279,7 @@ def __check_subdir_access base
 
   target.find do |d|
     next unless d.directory?
-    cant_read << d unless d.writable?
+    cant_read << d unless d.writable_real?
   end
 
   cant_read.sort!
@@ -309,7 +300,7 @@ end
 def check_access_usr_local
   return unless HOMEBREW_PREFIX.to_s == '/usr/local'
 
-  unless Pathname('/usr/local').writable? then <<-EOS.undent
+  unless Pathname('/usr/local').writable_real? then <<-EOS.undent
     The /usr/local directory is not writable.
     Even if this directory was writable when you installed Homebrew, other
     software may change permissions on this directory. Some versions of the
@@ -331,7 +322,7 @@ end
 
 def __check_folder_access base, msg
   folder = HOMEBREW_PREFIX+base
-  if folder.exist? and not folder.writable?
+  if folder.exist? and not folder.writable_real?
     <<-EOS.undent
       #{folder} isn't writable.
       This can happen if you "sudo make install" software that isn't managed
@@ -401,8 +392,14 @@ end
 
 def check_xcode_select_path
   # with the advent of CLT-only support, we don't need xcode-select
-  return if MacOS::CLT.installed?
-  unless File.file? "#{MacOS::Xcode.folder}/usr/bin/xcodebuild" and not MacOS::Xcode.bad_xcode_select_path?
+
+  if MacOS::Xcode.bad_xcode_select_path?
+    <<-EOS.undent
+      Your xcode-select path is set to /
+      You must unset it or builds will hang:
+        sudo rm /usr/share/xcode-select/xcode_dir_link
+    EOS
+  elsif not MacOS::CLT.installed? and not File.file? "#{MacOS::Xcode.folder}/usr/bin/xcodebuild"
     path = MacOS.app_with_bundle_id(MacOS::Xcode::V4_BUNDLE_ID) || MacOS.app_with_bundle_id(MacOS::Xcode::V3_BUNDLE_ID)
     path = '/Developer' if path.nil? or not path.directory?
     <<-EOS.undent
@@ -794,7 +791,7 @@ def check_git_status
     unless `git status -s -- Library/Homebrew/ 2>/dev/null`.chomp.empty? then <<-EOS.undent
       You have uncommitted modifications to Homebrew's core.
       Unless you know what you are doing, you should run:
-        cd #{HOMEBREW_REPOSITORY} && git reset --hard
+        cd #{HOMEBREW_REPOSITORY}/Library && git reset --hard && git clean -f
       EOS
     end
   end
@@ -897,10 +894,14 @@ def check_for_unlinked_but_not_keg_only
     end
   end.map{ |pn| pn.basename }
 
+  # NOTE very old kegs will be linked without the LinkedKegs symlink
+  # this will trigger this warning but it's wrong, we could detect that though
+  # but I don't feel like writing the code.
+
   if not unlinked.empty? then <<-EOS.undent
     You have unlinked kegs in your Cellar
     Leaving kegs unlinked can lead to build-trouble and cause brews that depend on
-    those kegs to fail to run properly once built.
+    those kegs to fail to run properly once built. Run `brew link` on these:
 
         #{unlinked * "\n        "}
     EOS

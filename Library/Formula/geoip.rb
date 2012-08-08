@@ -14,8 +14,6 @@ class Geoip < Formula
   end
 
   def install
-    # Fix issue with sed barfing on unicode characters on Mountain Lion.
-    ENV.delete('LANG')
     ENV.universal_binary if ARGV.build_universal?
 
     # Fixes a build error on Lion when configure does a variant of autoreconf
