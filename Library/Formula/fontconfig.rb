@@ -7,7 +7,7 @@ class Fontconfig < Formula
 
   keg_only :provided_by_osx,
     "Leopard comes with version 2.4.x, which is too old for many packages." \
-    if MacOS.x11_installed?
+    if MacOS::X11.installed?
 
   depends_on :freetype
   depends_on 'pkg-config' => :build
