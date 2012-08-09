@@ -10,7 +10,7 @@ class Botan < Formula
   def install
     args = ["--prefix=#{prefix}"]
     args << "--cpu=x86_64" if MacOS.prefer_64_bit?
-    args << "--enable-debug" if build.include? "--enable-debug"
+    args << "--enable-debug" if build.include? "enable-debug"
     # The --cc option needs "clang" or "gcc" and not the full path.
     args << "--cc=#{ENV.compiler.to_s}"
 

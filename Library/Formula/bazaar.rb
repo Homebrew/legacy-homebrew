@@ -14,13 +14,13 @@ class Bazaar < Formula
     system "make man1/bzr.1"
     man1.install "man1/bzr.1"
 
-    if build.include? "--system"
+    if build.include? "system"
       ENV.prepend "PATH", "/System/Library/Frameworks/Python.framework/Versions/Current/bin", ":"
     end
 
     # Find the arch for the Python we are building against.
     # We remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
-    if build.include? "--system"
+    if build.include? "system"
       python_cmd = "/usr/bin/python"
     else
       python_cmd = "python"
@@ -31,7 +31,7 @@ class Bazaar < Formula
     ENV['ARCHFLAGS'] = archs.as_arch_flags
 
     system "make"
-    inreplace "bzr", "#! /usr/bin/env python", "#!/usr/bin/python" if build.include? "--system"
+    inreplace "bzr", "#! /usr/bin/env python", "#!/usr/bin/python" if build.include? "system"
     libexec.install 'bzr', 'bzrlib'
 
     bin.install_symlink libexec+'bzr'

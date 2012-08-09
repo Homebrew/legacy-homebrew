@@ -15,7 +15,7 @@ class BerkeleyDb < Formula
             "--prefix=#{prefix}",
             "--mandir=#{man}",
             "--enable-cxx"]
-    args << "--enable-java" unless build.include? "--without-java"
+    args << "--enable-java" unless build.include? "without-java"
 
     # BerkeleyDB requires you to build everything from the build_unix subdirectory
     cd 'build_unix' do
