@@ -8,11 +8,12 @@ class Macvim < Formula
 
   head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
+  option "custom-icons", "Try to generate custom document icons"
+  option "override-system-vim", "Override system vim"
+
   def options
   [
-    ["--custom-icons", "Try to generate custom document icons."],
     ["--with-cscope", "Build with Cscope support."],
-    ["--override-system-vim", "Override system vim."],
     ["--with-lua", "Build with Lua scripting support."]
   ]
   end
@@ -49,7 +50,7 @@ class Macvim < Formula
     system "./configure", *args
 
     # Building custom icons fails for many users, so off by default.
-    unless ARGV.include? "--custom-icons"
+    unless build.include? "custom-icons"
       inreplace "src/MacVim/icons/Makefile", "$(MAKE) -C makeicns", ""
       inreplace "src/MacVim/icons/make_icons.py", "dont_create = False", "dont_create = True"
     end
@@ -68,7 +69,7 @@ class Macvim < Formula
 
     # Create MacVim vimdiff, view, ex equivalents
     executables = %w[mvimdiff mview mvimex]
-    executables += %w[vi vim vimdiff view vimex] if ARGV.include? "--override-system-vim"
+    executables += %w[vi vim vimdiff view vimex] if build.include? "override-system-vim"
     executables.each {|f| ln_s bin+'mvim', bin+f}
   end
 
