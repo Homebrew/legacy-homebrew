@@ -13,7 +13,7 @@ class Mariadb < Formula
     :because => "mariadb and percona-server install the same binaries."
 
   fails_with :clang do
-    build 318
+    build 421
   end
 
   def options
