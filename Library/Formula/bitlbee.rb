@@ -21,7 +21,6 @@ class Bitlbee < Formula
 
     args = ["--prefix=#{prefix}",
             "--debug=0",
-            "--strip=0", # Let Homebrew handle the stripping
             "--ssl=gnutls",
             "--pidfile=#{var}/bitlbee/run/bitlbee.pid",
             "--config=#{var}/bitlbee/lib/",
