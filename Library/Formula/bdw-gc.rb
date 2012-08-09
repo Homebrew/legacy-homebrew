@@ -10,12 +10,10 @@ class BdwGc < Formula
     cause 'Segfault 11 during make check'
   end
 
-  def options
-    [['--universal', 'Make a 32/64-bit Intel build.']]
-  end
+  option :universal
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
