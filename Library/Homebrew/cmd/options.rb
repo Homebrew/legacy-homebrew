@@ -31,7 +31,7 @@ module Homebrew extend self
   end
 
   def dump_options_for_formula f
-    f.options.each do |k,v|
+    f.build.each do |k,v|
       puts k
       puts "\t"+v
     end
