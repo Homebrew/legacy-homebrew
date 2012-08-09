@@ -1,11 +1,11 @@
 require 'formula'
 
 class SLang < Formula
-  url 'ftp://space.mit.edu/pub/davis/slang/v2.2/slang-2.2.4.tar.bz2'
   homepage 'http://www.jedsoft.org/slang/'
-  md5 '7fcfd447e378f07dd0c0bae671fe6487'
+  url 'ftp://space.mit.edu/pub/davis/slang/v2.2/slang-2.2.4.tar.bz2'
+  sha1 '34e68a993888d0ae2ebc7bc31b40bc894813a7e2'
 
-  depends_on :x11
+  depends_on :libpng # For png-module.so
   depends_on 'pcre' => :optional
   depends_on 'oniguruma' => :optional
 

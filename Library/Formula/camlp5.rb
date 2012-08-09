@@ -10,8 +10,7 @@ class Camlp5 < Formula
   option 'strict', 'Compile in strict mode'
 
   def install
-    # compile for strict or transitional
-    if build.include? '--strict'
+    if build.include? 'strict'
       strictness = "-strict"
     else
       strictness = "-transitional"
