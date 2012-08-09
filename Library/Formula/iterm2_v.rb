@@ -4,26 +4,26 @@ require 'formula'
 # PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
 
 class Iterm2V < Formula
-  homepage ''
-  url 'http://iterm2.googlecode.com/files/iTerm2_v1_0_0.zip'
-  sha1 '31f744128d3a3f4de5b9966f9569358e715b740f'
+  homepage 'http://www.iterm2.com/'
+  version '1.0.0'
+  url 'http://iterm2.googlecode.com/files/iTerm2-1_0_0_20120726.zip'
+  sha1 '19538b6be5cb6f97e34aa729983a90ebc7a0e7ea'
 
   # depends_on 'cmake' => :build
-depends_on :x11 # if your formula requires any X11/XQuartz components
+  # depends_on :x11 # if your formula requires any X11/XQuartz components
 
   def install
-    # ENV.j1  # if your formula's build system can't parallelize
-
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
-    # system "cmake", ".", *std_cmake_args
-    system "make install" # if this fails, try separate make/make install steps
+	prefix.install "iTerm.app"
   end
 
-  def test
-    # This test will fail and we won't accept that! It's enough to just replace
-    # "false" with the main program this formula installs, but it'd be nice if you
-    # were more thorough. Run the test with `brew test iTerm2_v`.
-    system "false"
+  def caveats; <<-EOS.undent
+    iTerm.app installed to:
+      #{prefix}
+
+    To link the application to a normal Mac OS X location:
+        brew linkapps
+    or:
+        ln -s #{prefix}/iTerm.app /Applications
+    EOS
   end
 end
